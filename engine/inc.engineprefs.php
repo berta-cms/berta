@@ -12,7 +12,7 @@ require 'config/inc.conf.php';
 
 
 // berta's version
-$options['version'] = '0.6.6';
+$options['version'] = '1.0';
 
 
 

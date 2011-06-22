@@ -70,6 +70,9 @@ if($auth_action == "login" && !$errStr) {
 		<div class="xMAlign-outer">
 			<div class="xMAlign-inner">
 				<form name="xLoginForm" action="<? echo $ENGINE_ABS_ROOT ?>login.php" method="post">
+                    <div class="xDukaLoginLogo">
+                        <img src="<? echo $ENGINE_ABS_ROOT ?>layout/duka.png" alt="duka" />
+                    </div>
 					<? if($errStr) { ?>
 					 	<div class="xLoginError"><? echo $errStr ?></div>
 					<? } ?>
@@ -78,7 +81,10 @@ if($auth_action == "login" && !$errStr) {
 					<!--[if (gte IE 9)|!(IE)]><!--> <input type="hidden" name="auth_browser" value="supported" /> <!--<![endif]-->
 					<input type="text" name="auth_user" id="auth_user" class="xLoginField" />
 					<input type="password" name="auth_pass" id="auth_pass" class="xLoginField" />
-					<input type="submit" name="auth_subm" id="auth_subm" class="xLoginSubmit" value="BERTA v<? echo BertaBase::$options['version'] ?>" />
+					<input type="submit" name="auth_subm" id="auth_subm" class="xLoginSubmit" value="Log in" />
+					<p>
+                        berta v <? echo BertaBase::$options['version'] ?> - duka - <? echo date('Y') ?>
+                    </p>
 				</form>
 			</div>
 		</div>

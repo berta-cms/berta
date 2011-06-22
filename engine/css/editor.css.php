@@ -928,12 +928,25 @@ body.xLoginPageBody {
 				width: 220px;
 				margin: 0 auto 0;
 			}
-						
+			
+			body.xLoginPageBody form p {
+                clear: both;
+                color: #6f37f2;
+                padding-top: 30px;
+            }
+			
 			body.xLoginPageBody .xLogout {
 				display: block;
 				width: 220px;
 				margin: 0 auto 0;
 			}
+
+            body.xLoginPageBody .xDukaLoginLogo {
+                float: right;
+                text-align: left;
+                width: 205px;
+                margin-bottom: 30px;
+            }
 			
 			body.xLoginPageBody .xLoginError {
 				display: block;

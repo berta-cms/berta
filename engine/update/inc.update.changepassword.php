@@ -16,8 +16,8 @@ if ($options['AUTH_password']!=$decoded['old_password']){
 	//every thing is correct, now change the password
     $content=file_get_contents($conf_file);
     $new_content=str_replace(
-        "\$options['AUTH_password'] = '".$decoded['old_password']."'",
-        "\$options['AUTH_password'] = '".$decoded['new_password']."'",
+        "\$options['AUTH_password'] =                       '".$decoded['old_password']."'",
+        "\$options['AUTH_password'] =                       '".$decoded['new_password']."'",
         $content
     );
 
