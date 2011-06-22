@@ -1,0 +1,121 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+	"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+	<title>BERTA</title>
+	<style type="text/css">
+		body { background-color: #fff; }
+		body, body * {
+			color: #000;
+			font-family: Monaco, Courier, "Courier New", mono;
+			font-size: 11px;
+		}
+		h2 { font-size: 140%; padding: 0; margin: 0 0 0; }
+		div.pre { margin-left: 30px; white-space: pre; }
+		div.copy { margin-left: 30px; }
+		a { color: #666; text-decoration: underline; }
+	
+	</style>
+</head>
+
+<body>
+<div class="pre">
+	
+<h2>BERTA</h2>
+
+	BERTA is a free content management system (CMS) created for anybody who wants
+	to show their work online. BERTA is perfectly suited for portfolios of visual
+	content (images and videos). 
+	
+	The public part of BERTA works in all major browsers and does not require flash.
+	
+	The private part, where the content editing takes place, should be used with
+	Safari 3+ or Mozilla Firefox 3+, as it hasn't been tested in other browsers.
+	A flash player 9+ ir necessary for advanced file uploading features.
+	
+	Server requirements:
+		PHP 5 with GD (for image resizing) and multibyte (unicode strings) support
+		Preferably Apache webserver, but any other will do
+		
+	BERTA does NOT require a database. All data are stored in files on the server.
+
+    
+
+<h2>HOW TO INSTALL BERTA ON YOUR SERVER?</h2>
+
+    1) In the downloaded and unzipped Berta files go to the folder <em>engine/config</em> and
+       open the file inc.conf.php in a simple text editor (TextEdit on Macs or Notepad on PC).
+       In place of <strong><em>admin</em></strong> and <strong><em>xxx</em></strong> write a username and password of your choice. With those you
+       will log on to your Berta's engine.
+
+    2) Copy all unzipped files to your webserver using an FTP program.
+       For Macs we recommend the free <a href="http://cyberduck.ch/">CyberDuck</a>.
+       For PC users we recommend the free and lightweight <a href="http://filezilla-project.org/">FileZilla</a>.
+
+       On some servers when you connect you have to navigate to the right folder
+       which contains files visible from the internet. It can be called
+       <em>httpdocs</em> or <em>wwwroot</em> or <em>www</em>. Ask your hosting provider if you're unsure.
+
+    3) When the files are on the server, in the same folder where you put the other files
+       create a folder named (all lower case letters):
+	
+            <strong><em>storage</em></strong> 
+			
+       and set it writable:
+	
+            In CyberDuck click on <em>storage</em> folder and press Command-I on your
+            keyboard. Tick all checkboxes in the permissions sections and press <em>Apply</em>.
+            In FileZilla right-click on <em>storage</em> folder and choose <em>File
+            Permissions</em>. Then tick all checkboxes and press <em>OK</em>.
+			
+    4) Open your browser (for editing please use only Safari or Firefox), and navigate to
+	
+            www.yourdomain.com/engine/
+		
+	   where www.yourdomain.com is the address of your site. Then log in using the username
+	   and password you set earlier in step (1) and follow the final install instructions on the screen.
+
+
+
+<h2>HOW TO UPDATE FROM A PREVIOUS VERSION?</h2>
+
+	The procedure is the same as installing new version except the step (3) as the storage
+	folder is a place where all your content lives. In case you have installed custom templates, 
+	you will also need to keep the templates folder. But otherwise everything else
+	should be overwritten.
+	
+	PLEASE NOTE THAT IF YOU UPDATE FROM 0.4b OR OLDER VERSION TO ANYTHING ABOVE 0.5b, THEN
+	SOME OF YOUR DATE MIGHT BE LOST!!!!
+
+
+
+<h2>***</h2>
+
+    We will be very happy to get any feedback from you.
+
+    <a href="mailto:berta@hungrylab.lv">berta@hungrylab.lv</a>
+    <a href="http://berta.hungry.lv" target="_blank">berta.hungry.lv</a>
+
+    hungryLab team
+
+
+
+
+
+
+
+
+
+	
+</div>
+
+<div class="copy">
+	(c) hungryLab<br />
+    <a href="http://www.hungrylab.lv">www.hungrylab.lv</a><br />
+    <a href="mailto:info@hungrylab.lv">info@hungrylab.lv</a>
+</div>
+	
+
+</body>
+</html>

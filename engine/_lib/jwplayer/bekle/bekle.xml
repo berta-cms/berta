@@ -1,0 +1,84 @@
+<?xml version="1.0"?>
+<skin version="1.0" name="Bekle" author="LongTail Video">
+
+	<settings>
+		<setting name="backcolor" value="0x000000" />
+		<setting name="frontcolor" value="0xFFFFFF" />
+		<setting name="lightcolor" value="0x000000" />
+		<setting name="screencolor" value="0x000000" />
+	</settings>
+
+	<components>
+		<component name="controlbar">
+			<settings>
+				<setting name="margin" value="10" />
+				<setting name="fontsize" value="10" />
+			</settings>
+
+			<elements>
+				<element name="background" src="background.png" />
+				<element name="capLeft" src="capLeft.png" />
+				<element name="capRight" src="capRight.png" />
+				<element name="divider" src="divider.png" />
+								
+				<element name="blankButton" src="blankButton.png" />
+				<element name="blankButtonOver" src="blankButton.png" />
+				
+				<element name="playButton" src="playButton.png" />
+				<element name="playButtonOver" src="playButton.png" />
+				
+				<element name="pauseButton" src="pauseButton.png" />
+				<element name="pauseButtonOver" src="pauseButton.png" />
+				
+				<element name="prevButton" src="prevButton.png" />
+				<element name="prevButtonOver" src="prevButton.png" />
+				<element name="nextButton" src="nextButton.png" />
+				<element name="nextButtonOver" src="nextButton.png" />
+				
+				<element name="timeSliderRail" src="timeSliderRail.png" />      							
+				<element name="timeSliderBuffer" src="timeSliderBuffer.png" />
+				<element name="timeSliderProgress" src="timeSliderProgress.png" />
+				<element name="timeSliderThumb" src="timeSliderThumb.png" />
+				
+				<element name="fullscreenButton" src="fullscreenButton.png" />
+				<element name="fullscreenButtonOver" src="fullscreenButton.png" />
+				
+				<element name="normalscreenButton" src="normalscreenButton.png" />
+				<element name="normalscreenButtonOver" src="normalscreenButton.png" />
+				
+				<element name="volumeSliderRail" src="volumeSliderRail.png" />
+				<element name="volumeSliderBuffer" src="volumeSliderBuffer.png" />
+				<element name="volumeSliderProgress" src="volumeSliderProgress.png" />
+			</elements>
+		</component>
+		
+		<component name="display">
+			<elements>
+				<element name="background" src="background.png" />
+				<element name="playIcon" src="playIcon.png" />
+				<element name="muteIcon" src="muteIcon.png" />
+				<element name="errorIcon" src="errorIcon.png" />
+				<element name="bufferIcon" src="bufferIcon.png" />
+			</elements>
+		</component>
+		
+		<component name="dock">
+			<elements>
+				<element name="button" src="button.png" />
+				<element name="buttonOver" src="button.png" />
+			</elements>
+		</component>
+		
+		<component name="playlist">
+			<elements>
+				<element name="background" src="background.png" />
+				<element name="item" src="item.png" />
+				<element name="itemOver" src="itemOver.png" />
+				<element name="sliderRail" src="sliderRail.png" />
+				<element name="sliderThumb" src="sliderThumb.png" />
+			</elements>
+		</component>
+
+	</components>
+
+</skin>
