@@ -312,7 +312,13 @@ class BertaEditor extends BertaContent {
 						}
 
 					} else {
-						$blog['entry'][$eId]['mediaCacheData'] = array('file' => array());
+
+                        $mediaCacheData=array('file' => array());
+                        if (isset($blog['entry'][$eId]['mediaCacheData'])){
+                              $mediaCacheData=array_merge($mediaCacheData, $blog['entry'][$eId]['mediaCacheData']);
+                        }
+                        $blog['entry'][$eId]['mediaCacheData']=$mediaCacheData;
+
 					}
 				}
 			}
