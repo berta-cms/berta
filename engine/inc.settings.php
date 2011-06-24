@@ -53,7 +53,7 @@ $settingsDefinition = array(
 	),
 	
 	'entryLayout' => array(
-        'galleryFullScreenDefault' => array('format' => 'select',	'default' => 'no', 'values' => array('yes', 'no'),	'title' => 'Lightbox by default is ON', 'description' => 'Enables Lightbox mode for new entries by default.'),
+        'galleryFullScreenDefault' => array('format' => 'select',	'default' => 'yes', 'values' => array('yes', 'no'),	'title' => 'Lightbox by default is ON', 'description' => 'Enables Lightbox mode for new entries by default.'),
         'galleryFullScreenBackground' => array('format' => 'select',	'default' => 'black', 'values' => array('black', 'white'),	'title' => 'Lightbox background color', 'description' => ''),
         'galleryFullScreenFrame' => array('format' => 'select',	'default' => 'yes', 'values' => array('yes', 'no'),	'title' => 'Lightbox image frame', 'description' => 'Enables/Disables Lightbox frame.'),        
 		'galleryFullScreenCloseText' =>	array('format' => 'text',	'allow_blank' => true, 	'default' => 'x',	'title' => 'Lightbox close button', 	'description' => ''),
