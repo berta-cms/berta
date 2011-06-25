@@ -63,8 +63,8 @@ if($jsonRequest) {
 									'<a href="#" class="o2 xAction' . ($galType == 'row' ? ' selected' : '') . ' xCommand-SET_GALLERY_TYPE xParams-row" title="horizontal row of images"><span>horizontal row of images</span></a>',
 								 '</div>';
 							echo '<div class="xEntrySetImageSize">',
-									'<a href="#" class="o1 xAction' . ($imageSize == 'large' ? ' selected' : '') . ' xCommand-SET_GALLERY_SIZE xParams-large" title="Large images"><span>Large images</span></a>',
 									'<a href="#" class="o2 xAction' . ($imageSize == 'small' ? ' selected' : '') . ' xCommand-SET_GALLERY_SIZE xParams-small" title="Small images"><span>Small images</span></a>',
+									'<a href="#" class="o1 xAction' . ($imageSize == 'large' ? ' selected' : '') . ' xCommand-SET_GALLERY_SIZE xParams-large" title="Large images"><span>Large images</span></a>',
 								 '</div>';
 							echo '<div class="xEntryFullScreen">',
 									'<a href="#" class="' . ($FullScreen == 'yes' ? 'selected ' : '') . 'xAction xCommand-SET_FULLSCREEN xParams-' . ($FullScreen == 'yes' ? 'yes' : 'no') . '" title="Lightbox"><span>yes/no</span></a>',

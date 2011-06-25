@@ -58,6 +58,9 @@ class BertaEditor extends BertaContent {
 	
 	public static function saveBlog($sName, &$blog) {
 		
+		
+
+		
 		if(empty($blog['@attributes'])) $blog['@attributes'] = array();
 		if(empty($blog['@attributes']['section'])) $blog['@attributes']['section'] = $sName;
 		
@@ -231,8 +234,12 @@ class BertaEditor extends BertaContent {
 
 						if(!count($entryCache) || empty($entryCache['file'])) {
 							// if the media cache is empty, create a fresh array
+                            $mediaCacheData=array('file' => array());
+                            if (isset($blog['entry'][$eId]['mediaCacheData'])){
+                                  $mediaCacheData=array_merge($blog['entry'][$eId]['mediaCacheData'], $mediaCacheData);
+                            }
+                            $blog['entry'][$eId]['mediaCacheData']=$mediaCacheData;
 
-							$blog['entry'][$eId]['mediaCacheData'] = array('file' => array());
 							$entryCache =& $blog['entry'][$eId]['mediaCacheData'];
 							foreach($mediaFiles as $im) {
 								$attr = array('type' => $im['type'], 'src' => $im['src']);
@@ -315,7 +322,7 @@ class BertaEditor extends BertaContent {
 
                         $mediaCacheData=array('file' => array());
                         if (isset($blog['entry'][$eId]['mediaCacheData'])){
-                              $mediaCacheData=array_merge($mediaCacheData, $blog['entry'][$eId]['mediaCacheData']);
+                            $mediaCacheData=array_merge($blog['entry'][$eId]['mediaCacheData'], $mediaCacheData);
                         }
                         $blog['entry'][$eId]['mediaCacheData']=$mediaCacheData;
 

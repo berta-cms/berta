@@ -81,8 +81,8 @@ $options['images']['preview_prefix'] = '_preview_';	// MUST start with an unders
 $options['images']['small_width'] = 200;
 $options['images']['small_height'] = 200;
 
-$options['images']['large_width'] = 500;
-$options['images']['large_height'] = 500;
+$options['images']['large_width'] = 600;
+$options['images']['large_height'] = 600;
 
 
 $xEditSelectorSimple = 'xEditable';	// simple input

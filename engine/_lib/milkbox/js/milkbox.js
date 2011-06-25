@@ -60,7 +60,7 @@ var Milkbox = new Class({
 		this.formtags = null;
 		this.prepareGalleries();
 		
-		if(this.options.overlayOpacity == 0){ this.options.overlayOpacity = 0.0001 }
+		if(this.options.overlayOpacity == 0 || bertaGlobalOptions.galleryFullScreenBackground=='none'){ this.options.overlayOpacity = 0.0001 }
 		this.saveOptions();//then use restoreOptions()
 
 		//if no galleries, stop here and prevent extra memory usage.
@@ -215,6 +215,16 @@ var Milkbox = new Class({
  				fileSize = this.computeSize(fileSize);
  				file.setProperties({ 'width':fileSize.width, 'height':fileSize.height });
  			}
+ 			
+ 			//add onclick event when image is clicked - shows next image
+ 			if (this.currentGallery.length>1){
+
+ 			    file.addEvent('click',this.next_prev_aux.bindWithEvent(this,'next'));
+ 			    
+ 			}else{
+ 			 	file.setStyle('cursor','default');
+            }
+ 			
  		} else {//is an swf file
  			fileSize.extend({ 'height':file.retrieve('height').toInt(), 'width':file.retrieve('width').toInt() });
  		}
@@ -718,6 +728,7 @@ var Milkbox = new Class({
 				this.center.addClass('milkbox_theme_white');				
 			}
 		}	
+
 		this.canvas = new Element('div', {'id':'mbCanvas'}).inject(this.center);		
 		this.bottom = new Element('div',{'id':'mbBottom'}).inject(this.center).setStyle('visibility','hidden');
 		this.bottom.setStyle('text-align',bertaGlobalOptions.galleryFullScreenCaptionAlign);	
