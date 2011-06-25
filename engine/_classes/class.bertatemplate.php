@@ -276,10 +276,10 @@ class BertaTemplate extends BertaBase {
 		$sttingsJS = Zend_Json::encode($jsSettings);
 		
 		//
-		
+		$now = time();
 		$vars['berta']['css'] = <<<DOC
 	<link rel="stylesheet" href="{$engineAbsRoot}css/default.css" type="text/css" charset="utf-8" />
-	<link rel="stylesheet" href="{$templatesAbsRoot}{$this->name}/style.css.php" type="text/css" />
+	<link rel="stylesheet" href="{$templatesAbsRoot}{$this->name}/style.css.php?{$now}" type="text/css" />
 	
 DOC;
 		if($this->loggedIn) {

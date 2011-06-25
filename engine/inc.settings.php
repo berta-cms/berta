@@ -46,19 +46,24 @@ $settingsDefinition = array(
 		'favicon' => 				array('format' => 'icon',	'default' => '',  	'title' => 'Favicon', 'description' => 'Small picture to display in the address bar of the browser. The file must be in .ICO format and 16x16 pixels big.'),
 	),
 	'media' => array(
-		'imagesSmallWidth' => 		array('format' => 'text',	'default' => $options['images']['small_width'], 		'css_units' => false, 'title' => 'Small image width', 'description' => ''),
+		'imagesSmallWidth' => 		array('format' => 'text',	'default' => $options['images']['small_width'], 		'css_units' => false, 'title' => 'Small image width', 'description' => 'Maximum size of a small image (visible if \'Small images\' are switched on in the gallery editor). These settings don\'t affect original image.'),
 		'imagesSmallHeight' => 		array('format' => 'text',	'default' => $options['images']['small_height'], 		'css_units' => false, 'title' => 'Small image height', 'description' => ''),
-		'imagesLargeWidth' => 		array('format' => 'text',	'default' => $options['images']['large_width'], 		'css_units' => false, 'title' => 'Large image width', 'description' => ''),
+		'imagesLargeWidth' => 		array('format' => 'text',	'default' => $options['images']['large_width'], 		'css_units' => false, 'title' => 'Large image width', 'description' => 'Maximum size of a large image (visible if \'Large images\' are switched on in the gallery editor). These settings don\'t affect original image.'),
 		'imagesLargeHeight' => 		array('format' => 'text',	'default' => $options['images']['large_height'], 		'css_units' => false, 'title' => 'Large image height', 'description' => '')
 	),
 	
 	'entryLayout' => array(
-        'galleryFullScreenDefault' => array('format' => 'select',	'default' => 'yes', 'values' => array('yes', 'no'),	'title' => 'Lightbox by default is ON', 'description' => 'Enables Lightbox mode for new entries by default.'),
-        'galleryFullScreenBackground' => array('format' => 'select',	'default' => 'black', 'values' => array('black', 'white'),	'title' => 'Lightbox background color', 'description' => ''),
-        'galleryFullScreenFrame' => array('format' => 'select',	'default' => 'yes', 'values' => array('yes', 'no'),	'title' => 'Lightbox image frame', 'description' => 'Enables/Disables Lightbox frame.'),        
-		'galleryFullScreenCloseText' =>	array('format' => 'text',	'allow_blank' => true, 	'default' => 'x',	'title' => 'Lightbox close button', 	'description' => ''),
-        'galleryFullScreenImageNumbers' => array('format' => 'select',	'default' => 'yes', 'values' => array('yes', 'no'),	'title' => 'Lightbox image numbers', 'description' => ''),
-        'galleryFullScreenCaptionAlign' => array('format' => 'select',	'default' => 'left', 'values' => array('left', 'right', 'center'),	'title' => 'Lightbox caption alignment', 'description' => ''),
+	    'group_lightbox' => array('format' => false, 'default' => false, 'title' => 'Lightbox settings:'),
+        'galleryFullScreenDefault' => array('format' => 'select',	'default' => 'yes', 'values' => array('yes', 'no'),	'title' => 'by default is ON', 'description' => 'Enables Lightbox mode for new entries by default.'),
+        'galleryFullScreenBackground' => array('format' => 'select',	'default' => 'black', 'values' => array('black', 'white', 'none'),	'title' => 'background color', 'description' => 'Color of the Lightbox background – none/black/white.'),
+        'galleryFullScreenFrame' => array('format' => 'select',	'default' => 'no', 'values' => array('yes', 'no'),	'title' => 'image frame', 'description' => 'Enables/Disables frame around image.'),
+		'galleryFullScreenCloseText' =>	array('format' => 'text',	'allow_blank' => true, 	'default' => 'x',	'title' => 'close button', 	'description' => '\'Close\' symbol. You can enter your own.'),
+        'galleryFullScreenImageNumbers' => array('format' => 'select',	'default' => 'yes', 'values' => array('yes', 'no'),	'title' => 'image numbers', 'description' => 'Enables/Disables numbers below the image.'),
+        'galleryFullScreenCaptionAlign' => array('format' => 'select',	'default' => 'left', 'values' => array('left', 'right', 'center'),	'title' => 'caption alignment', 'description' => 'Caption alignment left/right/center.'),
+
+	    'space' => array('format' => false, 'default' => false, 'title' => '&nbsp;'),
+
+	    'group_gallery' => array('format' => false, 'default' => false, 'title' => 'Image gallery appierance:'),
         'gallerySlideshowAutoRewind' => array('format' => 'select',	'default' => 'no', 'values' => array('yes', 'no'),	'title' => 'Auto-rewind gallery slideshow', 'description' => 'Display the first image after clicking on the last image in galleries that are in slideshow mode.'),
 		'galleryVideoPlayer' => 	array('format' => 'select',	'default' => 'JWPlayer',  							'values' => array('JWPlayer', /*'JWPlayer_Overlay',*/ 'NonverBlaster'),			'title' => 'Video player', 'description' => 'Choose between the two visually different players for your video files.')
         //'galleryFullScreenImgOpacity' => array('format' => 'text',	'default' => '70%', 'css_units' => false, 'title' => 'Gallery image transparency', 'description' => 'Transparency of image, works only if gallery fullscreen is enabled. 100% means no transparency.')
