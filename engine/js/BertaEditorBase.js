@@ -357,10 +357,13 @@ var BertaEditorBase = new Class({
 				el.getElement('.xHandle').addEvent('click', function(event) {
 					event.preventDefault();
 				})
-				
+
+				var gridStep=parseInt(bertaGlobalOptions.gridStep);
+				gridStep=isNaN(gridStep)||gridStep<1?1:gridStep;
+
 				el.makeDraggable({
 				    snap: 0,
-				    grid: 5,
+				    grid: gridStep,
 					handle: el.getElement('.xHandle'),
 				    onSnap: function(el) {
 						el.addClass('xEditing');						

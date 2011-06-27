@@ -259,6 +259,7 @@ class BertaTemplate extends BertaBase {
 			'videoPlayerType' => $this->settings->get('entryLayout', 'galleryVideoPlayer'),
 			'slideshowAutoRewind' => $this->settings->get('entryLayout', 'gallerySlideshowAutoRewind'),
 			'sectionType' => $vars['berta']['section']['type'],
+			'gridStep' => $this->settings->get('pageLayout', 'gridStep'),
 			'galleryFullScreenBackground' => $this->settings->get('entryLayout', 'galleryFullScreenBackground'),			
 			'galleryFullScreenFrame' => $this->settings->get('entryLayout', 'galleryFullScreenFrame'),
 			'galleryFullScreenCloseText' => $this->settings->get('entryLayout', 'galleryFullScreenCloseText'),			
