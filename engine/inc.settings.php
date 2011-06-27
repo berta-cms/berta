@@ -44,6 +44,7 @@ $settingsDefinition = array(
 
 	'pageLayout' => array(
 		'favicon' => 				array('format' => 'icon',	'default' => '',  	'title' => 'Favicon', 'description' => 'Small picture to display in the address bar of the browser. The file must be in .ICO format and 16x16 pixels big.'),
+		'gridStep' =>          		array('format' => 'text',	'default' => 5,    'title' => 'Grid step', 'description' => 'Distance in pixels for snap-to-grid dragging.')
 	),
 	'media' => array(
 		'imagesSmallWidth' => 		array('format' => 'text',	'default' => $options['images']['small_width'], 		'css_units' => false, 'title' => 'Small image width', 'description' => 'Maximum size of a small image (visible if \'Small images\' are switched on in the gallery editor). These settings don\'t affect original image.'),
