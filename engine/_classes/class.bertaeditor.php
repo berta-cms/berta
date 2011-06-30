@@ -1,4 +1,4 @@
-<?
+<?php
 
 
 
@@ -516,12 +516,22 @@ class BertaEditor extends BertaContent {
 				$_SESSION['_berta_newsticker_numtries'] = !empty($_SESSION['_berta_newsticker_numtries']) ? ++$_SESSION['_berta_newsticker_numtries'] : 1;
 			}
 		}
-		
+
+		$m0 = I18n::_('close this');
+		$m1 = I18n::_('my site');
+		$m2 = I18n::_('sections');
+		$m3 = I18n::_('settings');
+		$m4 = I18n::_('template design');
+		$m5 = I18n::_('profile');
+		$m6 = I18n::_('sign out');
+
 		$m1Class = $selectedSection == 'site' ? ' class="selected"' : '';
 		$m2Class = $selectedSection == 'sections' ? ' class="selected"' : '';
 		$m3Class = $selectedSection == 'settings' ? ' class="selected"' : '';
 		$m4Class = $selectedSection == 'template' ? ' class="selected"' : '';
-		$m5Class = $selectedSection == 'profile' ? ' class="selected"' : '';		
+		$m5Class = $selectedSection == 'profile' ? ' selected' : '';
+
+
 
 		$str = <<<DOC
 			<div id="xTopPanelContainer" class="xPanel">
@@ -530,16 +540,16 @@ class BertaEditor extends BertaContent {
 					<div id="xNewsTickerContainer" class="$tickerClass">
 						<div class="news-ticker-background $tickerColorClass"></div>
 						<div class="news-ticker-content">$newsTickerContent</div>
-						<a href="#" class="close">close this</a>
+						<a href="#" class="close">$m0</a>
 						<br class="clear" />
 					</div>
 					<ul id="xEditorMenu">
 						<li id="xEditorMenuBg"></li>
-						<li$m1Class><a href=".">my site</a></li><li>|</li>
-						<li$m2Class><a href="sections.php">sections</a></li><li>|</li>
-						<li$m3Class><a href="settings.php">settings</a></li><li>|</li>
-						<li$m4Class><a href="settings.php?mode=template">template design</a></li>
-						<li class="last"><a href="profile.php">profile</a> | <a href="logout.php">sign out</a></li>
+						<li$m1Class><a href=".">$m1</a></li><li>|</li>
+						<li$m2Class><a href="sections.php">$m2</a></li><li>|</li>
+						<li$m3Class><a href="settings.php">$m3</a></li><li>|</li>
+						<li$m4Class><a href="settings.php?mode=template">$m4</a></li>
+						<li class="last$m5Class"><a href="profile.php">$m5</a> | <a href="logout.php">$m6</a></li>
 					</ul>
 				</div>
 			</div>

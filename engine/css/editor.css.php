@@ -1060,6 +1060,7 @@ body.xSettingsPageBody {
 	body.xSettingsPageBody #contentContainer {
 		margin-left: 0;
 		margin-right: auto;
+		width: 980px;
 	}
 
 	body.xSettingsPageBody a { color: #666; text-decoration: underline !important; }

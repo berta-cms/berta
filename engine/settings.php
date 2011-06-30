@@ -58,10 +58,10 @@ $topPanelHTML = BertaEditor::getTopPanelHTML($mode);
 	<div id="allContainer">
 		<div id="contentContainer">
 			
-			<h1 id="allPageTitle"><? echo $mode == 'template' ? 'Template design' : 'Settings' ?></h1>
+			<h1 id="allPageTitle"><? echo $mode == 'template' ? I18n::_('Template design') : I18n::_('Settings') ?></h1>
 			<? if($mode == 'template') { ?>
 				<div class="entry" difficulty="0">
-					<div>These are settings for template &quot;<? echo $berta->template->name ?>&quot;.</div>
+					<div><?= I18n::_('These are settings for template') ?> &quot;<?= $berta->template->name ?>&quot;.</div>
 				</div>
 			<? } ?>
 			
@@ -73,28 +73,33 @@ $topPanelHTML = BertaEditor::getTopPanelHTML($mode);
 			$tabsHTML = '';
 			$contentHTML = '';
 			
-			foreach($settings->settingsDefinition as $sSectionCaption => $sSection) {
-	
-				$tabsHTML .= "<li><a href=\"#\" class=\"settingsTab\">$sSectionCaption</a></li>";
+			foreach($settings->settingsDefinition as $sSectionKey => $sSection) {
+
+				$tabCaption = !empty($sSection['_']['title']) ? htmlspecialchars($sSection['_']['title']) : $sSectionKey;
+				$tabsHTML .= "<li><a href=\"#\" class=\"settingsTab\">$tabCaption</a></li>";
 	
 				$contentHTML .= "<div class=\"settingsContent\">\n";
-				foreach($sSection as $sCaption => $s) {
-					$contentHTML .= '	<div class="entry">' . "\n";
-		
-					// caption
-					$contentHTML .= '	<div class="caption">' . ($s['title'] ? ($s['title']) : $sCaption) . '</div>';
-		
-					// value
-					$value = $settings->get($sSectionCaption, $sCaption, false, false);	// don't use empty + don't inherit from base
-					$contentHTML .= BertaEditor::getSettingsItemEditHTML($propertyPrefix . $sSectionCaption . '/' . $sCaption, $s, $value) . "\n";
+				foreach($sSection as $sKey => $s) {
 					
-					// description
-					if(!empty($s['description'])) {
-						$contentHTML .= '	<div class="description">' . $s['description'] . '</div>' . "\n";
+					// Dont render keys that start with an underscore
+					if(substr($sKey, 0, 1) != '_') {
+						$contentHTML .= '	<div class="entry">' . "\n";
+
+						// caption
+						$contentHTML .= '	<div class="caption">' . ($s['title'] ? ($s['title']) : $sKey) . '</div>';
+
+						// value
+						$value = $settings->get($sSectionKey, $sKey, false, false);	// don't use empty + don't inherit from base
+						$contentHTML .= BertaEditor::getSettingsItemEditHTML($propertyPrefix . $sSectionKey . '/' . $sKey, $s, $value) . "\n";
+
+						// description
+						if(!empty($s['description'])) {
+							$contentHTML .= '	<div class="description">' . $s['description'] . '</div>' . "\n";
+						}
+
+						$contentHTML .= '	<br class="clear" />' . "\n";
+						$contentHTML .= "	</div>\n";
 					}
-					
-					$contentHTML .= '	<br class="clear" />' . "\n";
-					$contentHTML .= "	</div>\n";
 				}
 				$contentHTML .= "</div>\n";
 			}
@@ -107,23 +112,16 @@ $topPanelHTML = BertaEditor::getTopPanelHTML($mode);
 			?>
 			<br class="clear" />
 			<hr />
-			<h2>Some help with CSS values</h2>
+			<h2><?= I18n::_('Some help with CSS values') ?></h2>
 
 			<div class="entry">
-				<div class="caption" style="width: 60px">Units</div>
+				<div class="caption" style="width: 60px"><?= I18n::_('Units') ?></div>
 				<div class="value" style="width: 300px; padding-right: 30px">
-					Valid units for any numerical value are:<br />
-					<strong>px</strong> - pixels<br />
-					<strong>em</strong> - 1 em = one length of letter M in the font used<br />
-					<strong>%</strong> - percent of the font size or percent of the dimensions of the container element (e.g. the page etc.)
+					<?= I18n::_('Valid units for any numerical value are:<br /><strong>px</strong> - pixels<br /><strong>em</strong> - 1 em = one length of letter M in the font used<br /><strong>%</strong> - percent of the font size or percent of the dimensions of the container element (e.g. the page etc.)') ?>
 				</div>
-				<div class="caption" style="width: 60px">Margins</div>
+				<div class="caption" style="width: 60px"><?= I18n::_('Margins') ?></div>
 				<div class="value" style="width: 300px;">
-					Margins are tricky. Use px or em as units. You can set margins in 4 ways, bu entering:<br/>
-					<strong>1 value</strong> - sets top, right, bottom and left margins to the same value. Example: <em>10px</em>.<br />
-					<strong>2 values</strong> - sets top and bottom margins to the first value, left and right - to the second. Example: <em>0 5px</em>.<br />
-					<strong>3 values</strong> - sets top margin to the first value, left and right - to the second, bottom - to the third value. Example: <em>10px 0 20px</em>.<br />
-					<strong>4 values</strong> - sets all margins in the following order: top, right, bottom, left. Example: <em>10px 0 20px 2px</em>.
+					<?= I18n::_('Margins are tricky. Use px or em as units. You can set margins in 4 ways, bu entering:<br/><strong>1 value</strong> - sets top, right, bottom and left margins to the same value. Example: <em>10px</em>.<br /><strong>2 values</strong> - sets top and bottom margins to the first value, left and right - to the second. Example: <em>0 5px</em>.<br /><strong>3 values</strong> - sets top margin to the first value, left and right - to the second, bottom - to the third value. Example: <em>10px 0 20px</em>.<br /><strong>4 values</strong> - sets all margins in the following order: top, right, bottom, left. Example: <em>10px 0 20px 2px</em>.') ?>
 				</div>
 			</div>
 			<br class="clear" />

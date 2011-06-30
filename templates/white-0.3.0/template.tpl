@@ -136,6 +136,28 @@
 
 
 		</div>
+
+
+		{section name=foo loop=10}
+		    { assign var="setting_name_image" value="banner`$smarty.section.foo.iteration`_image" }
+			{ assign var="setting_name_link" value="banner`$smarty.section.foo.iteration`_link" }
+			{ assign var="setting_pos_name" value="banner`$smarty.section.foo.iteration`XY" }
+
+			{ if $berta.settings.banners.$setting_name_image }
+				<div class="floating-banner xEditableDragXY xProperty-{ $setting_pos_name }" style="{ bannerPos xy_name=$setting_pos_name }">
+					<div class="xHandle"></div>
+					{ if $berta.settings.banners.$setting_name_link }
+						<a href="{ $berta.settings.banners.$setting_name_link }" target="_blank">
+							<img src="{ $berta.options.MEDIA_ABS_ROOT }{ $berta.settings.banners.$setting_name_image }" />
+						</a>
+					{ else }
+					<img src="{ $berta.options.MEDIA_ABS_ROOT }{ $berta.settings.banners.$setting_name_image }" />
+					{ /if }
+				</div>
+
+			{ /if }
+		{/section}
+
 	</div>
 
 
