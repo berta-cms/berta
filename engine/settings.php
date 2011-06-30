@@ -58,10 +58,10 @@ $topPanelHTML = BertaEditor::getTopPanelHTML($mode);
 	<div id="allContainer">
 		<div id="contentContainer">
 			
-			<h1 id="allPageTitle"><? echo $mode == 'template' ? 'Template design' : 'Settings' ?></h1>
+			<h1 id="allPageTitle"><? echo $mode == 'template' ? I18n::_('Template design') : I18n::_('Settings') ?></h1>
 			<? if($mode == 'template') { ?>
 				<div class="entry" difficulty="0">
-					<div>These are settings for template &quot;<? echo $berta->template->name ?>&quot;.</div>
+					<div><?= I18n::_('These are settings for template') ?> &quot;<?= $berta->template->name ?>&quot;.</div>
 				</div>
 			<? } ?>
 			
@@ -73,28 +73,33 @@ $topPanelHTML = BertaEditor::getTopPanelHTML($mode);
 			$tabsHTML = '';
 			$contentHTML = '';
 			
-			foreach($settings->settingsDefinition as $sSectionCaption => $sSection) {
-	
-				$tabsHTML .= "<li><a href=\"#\" class=\"settingsTab\">$sSectionCaption</a></li>";
+			foreach($settings->settingsDefinition as $sSectionKey => $sSection) {
+
+				$tabCaption = !empty($sSection['_']['title']) ? htmlspecialchars($sSection['_']['title']) : $sSectionKey;
+				$tabsHTML .= "<li><a href=\"#\" class=\"settingsTab\">$tabCaption</a></li>";
 	
 				$contentHTML .= "<div class=\"settingsContent\">\n";
-				foreach($sSection as $sCaption => $s) {
-					$contentHTML .= '	<div class="entry">' . "\n";
-		
-					// caption
-					$contentHTML .= '	<div class="caption">' . ($s['title'] ? ($s['title']) : $sCaption) . '</div>';
-		
-					// value
-					$value = $settings->get($sSectionCaption, $sCaption, false, false);	// don't use empty + don't inherit from base
-					$contentHTML .= BertaEditor::getSettingsItemEditHTML($propertyPrefix . $sSectionCaption . '/' . $sCaption, $s, $value) . "\n";
+				foreach($sSection as $sKey => $s) {
 					
-					// description
-					if(!empty($s['description'])) {
-						$contentHTML .= '	<div class="description">' . $s['description'] . '</div>' . "\n";
+					// Dont render keys that start with an underscore
+					if(substr($sKey, 0, 1) != '_') {
+						$contentHTML .= '	<div class="entry">' . "\n";
+
+						// caption
+						$contentHTML .= '	<div class="caption">' . ($s['title'] ? ($s['title']) : $sKey) . '</div>';
+
+						// value
+						$value = $settings->get($sSectionKey, $sKey, false, false);	// don't use empty + don't inherit from base
+						$contentHTML .= BertaEditor::getSettingsItemEditHTML($propertyPrefix . $sSectionKey . '/' . $sKey, $s, $value) . "\n";
+
+						// description
+						if(!empty($s['description'])) {
+							$contentHTML .= '	<div class="description">' . $s['description'] . '</div>' . "\n";
+						}
+
+						$contentHTML .= '	<br class="clear" />' . "\n";
+						$contentHTML .= "	</div>\n";
 					}
-					
-					$contentHTML .= '	<br class="clear" />' . "\n";
-					$contentHTML .= "	</div>\n";
 				}
 				$contentHTML .= "</div>\n";
 			}

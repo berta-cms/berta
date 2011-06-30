@@ -1,4 +1,4 @@
-<?
+<?php
 
 include_once dirname(__FILE__) . '/../_lib/smarty/Smarty.class.php';
 include_once dirname(__FILE__) . '/Zend/Json.php';
@@ -270,6 +270,11 @@ class BertaTemplate extends BertaBase {
 				'engineABSRoot' => htmlspecialchars($engineAbsRoot),
 				'siteABSRoot' => htmlspecialchars(self::$options['SITE_ABS_ROOT']),
 				'template' => htmlspecialchars(self::$options['SITE_ABS_ROOT'] . 'templates/' . $this->name . '/')
+			),
+			'i18n' => array(
+				'afterinstall_note' => I18n::_('<p>Congratulations! You have successfully installed Berta.</p><p>Now, before adding your content, you have to create a new section. Go to the <a href="sections.php">sections page</a> and do that!</p>'),
+				'create new entry here' => I18n::_('create new entry here'),
+
 			)
 			//'settings' => $vars['berta']['settings']
 		);

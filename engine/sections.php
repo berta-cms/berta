@@ -33,16 +33,16 @@ $topPanelHTML = BertaEditor::getTopPanelHTML('sections');
 	<div id="allContainer">
 		<div id="contentContainer">
 			
-			<h1 id="allPageTitle">Sections</h1>
+			<h1 id="allPageTitle"><?= I18n::_('Sections') ?></h1>
 
 			<div id="xSectionsEditor">
 				<div class="listHead">
 					<div class="csHandle">&nbsp;</div>
-					<div class="csTitle">Title as displayed in main menu</div>
-					<div class="csBehaviour">Type</div>
-					<div class="csDetails">Details</div>
-					<div class="csPub">Is published?</div>
-					<div class="csDelete">Delete</div>
+					<div class="csTitle"><?= I18n::_('Title as displayed in main menu') ?></div>
+					<div class="csBehaviour"><?= I18n::_('Type') ?></div>
+					<div class="csDetails"><?= I18n::_('Details') ?></div>
+					<div class="csPub"><?= I18n::_('Is published?') ?></div>
+					<div class="csDelete"><?= I18n::_('Delete') ?></div>
 					<br class="clear" />
 				</div>
 				<ul><?
@@ -83,15 +83,13 @@ $topPanelHTML = BertaEditor::getTopPanelHTML('sections');
 					echo '</div>';
 					
 					echo '<div class="csPub"><span class="' . $xEditSelectorYesNo . ' xProperty-published xSection-' . $sN . ' xSectionField">' . (!empty($s['@attributes']['published']) ? '1' : '0') . '</span></div>';
-					echo '<div class="csDelete"><a href="#" class="xSectionDelete">delete</a></div>';
+					echo '<div class="csDelete"><a href="#" class="xSectionDelete">'.I18n::_('delete').'</a></div>';
 					echo '</li>';
 				}
 				
-				
-				
 				?></ul><br class="clear" />
 				
-				<a id="xCreateNewSection" class="xPanel" href="#" class="xAction-sectionCreateNew"><span>create new section</span></a>
+				<a id="xCreateNewSection" class="xPanel" href="#" class="xAction-sectionCreateNew"><span><?= I18n::_('create new section') ?></span></a>
 			
 			
 				<br class="clear" />

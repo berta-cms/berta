@@ -139,7 +139,7 @@ var BertaEditor = new Class({
 				
 						// entry deleting and creating
 						new Element('A', { 'class': 'xCreateNewEntry xPanel xAction-entryCreateNew', 'href': '#'}).adopt(
-							new Element('span', { 'html': 'create new entry here' })
+							new Element('span', { 'html': this.options.i18n['create new entry here'] })
 						).inject(this.entriesList, 'after');
 						$$('.xEntryDelete').addEvent('click', this.entryDelete.bindWithEvent(this));
 						$$('.xCreateNewEntry').addEvent('click', this.entryCreate.bindWithEvent(this));
@@ -182,9 +182,7 @@ var BertaEditor = new Class({
 						new Element('DIV', { 
 							'class': 'xPanel', 
 							'styles': { 'clear': 'both'}, 
-							'html': '<p>Congratulations! You have successfully installed Berta.</p>' +
-									'<p>Now, before adding your content, you have to create a new section. ' + 
-									'Go to the <a href="sections.php">sections page</a> and do that!</p>'
+							'html': this.options.i18n.afterinstall_note,
 						}).inject(this.entriesList, 'after');
 					}
 				} else {

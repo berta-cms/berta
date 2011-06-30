@@ -11,19 +11,36 @@ $options =& BertaBase::$options;
 require 'config/inc.conf.php';
 
 
-// berta's version
+/**
+ * Berta's release version
+ */
 $options['version'] = '0.6.6';
 
 
+/**
+ * Interface language (I18n)
+ * A file named like the value of this option must be placed into engine/lang folder, containing all translations
+ */
+$options['language'] = 'lv';
 
-// absolute root
-$options['SITE_ABS_ROOT'] = $SITE_ABS_ROOT;	// this is defined in inc.page.php that includes this preferences file
-$options['SITE_HOST_ADDRESS'] = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'];
 
 
-// PATHS -------------------------------------------------------------------------------------//
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// system folders...
+/**
+ * Base paths - absolute root and host
+ */
+$options['SITE_ABS_ROOT'] = $SITE_ABS_ROOT;	// $SITE_ABS_ROOT is defined in inc.page.php that includes this file
+$options['SITE_HOST_ADDRESS'] = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 'https' : 'http') .
+                                    '://' . $_SERVER['HTTP_HOST'];
+
+
+/**
+ * System folders
+ */
 
 $options['ENGINE_ROOT'] = $ENGINE_ROOT;
 $options['SITE_ROOT'] = $SITE_ROOT;
@@ -33,7 +50,9 @@ $options['TEMPLATES_ABS_ROOT'] = $options['SITE_ABS_ROOT'] . 'templates/';
 $options['TEMPLATES_FULL_SERVER_PATH'] = realpath($SITE_ROOT . 'templates') . '/';
 
 
-// writable folders...
+/**
+ * Writable folders
+ */
 
 $options['XML_ROOT'] = $SITE_ROOT . 'storage/';
 $options['MEDIA_FOLDER_NAME'] = 'media';
@@ -45,7 +64,10 @@ $options['ENGINE_ABS_ROOT'] = $ENGINE_ABS_ROOT; // this is defined in inc.page.p
 $options['MEDIA_ABS_ROOT'] = $options['SITE_ABS_ROOT'] . 'storage/media/';
 $options['CACHE_ABS_ROOT'] = $options['SITE_ABS_ROOT'] . 'storage/cache/';
 
-// file name templates...
+
+/**
+ * File name templates
+ */
 
 $options['settings.xml'] = 'settings.xml';
 $options['settings.%.xml'] = 'settings.%.xml';
@@ -58,8 +80,10 @@ $options['tags'] = array();
 $options['tags']['all_value'] = 'a181a603769c1f98ad927e7367c7aa51';
 
 
+
 // if hosted on HIP, need to show "hosted on HIP"
 $options['hip_ipaddr'] = array('85.31.99.218', '85.31.102.201');
+
 
 // external
 $options['newsticker_update_uri'] = array(
@@ -84,6 +108,14 @@ $options['images']['small_height'] = 200;
 $options['images']['large_width'] = 600;
 $options['images']['large_height'] = 600;
 
+
+
+
+
+
+/**
+ * Editables
+ */
 
 $xEditSelectorSimple = 'xEditable';	// simple input
 $xEditSelectorColor = 'xEditableColor';	// simple input

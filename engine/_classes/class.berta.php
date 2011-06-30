@@ -1,6 +1,7 @@
-<?
+<?php
 
 include_once 'class.bertabase.php';
+include_once 'class.i18n.php';
 include_once 'class.bertasecurity.php';
 include_once 'class.bertautils.php';
 include_once 'class.bertacontent.php';
@@ -8,7 +9,8 @@ include_once 'class.bertatemplate.php';
 
 include_once 'class.settings.php';
 
-class Berta extends BertaBase {
+class Berta extends BertaBase
+{
 	
 	public $security;
 	public $settings;
@@ -26,16 +28,24 @@ class Berta extends BertaBase {
 	
 	public $content;
 	
-	public function Berta($options = array()) {
+	function __construct(array $options = array())
+	{
+		// Initialize I18n
+		new I18n();
+
+		// Set variables
 		$this->environment = !empty(self::$options['ENVIRONMENT']) ? self::$options['ENVIRONMENT'] : 'site';
 		$this->apacheRewriteUsed = !empty($_REQUEST['__rewrite']) ? true : false;
 		$this->security = new BertaSecurity($this->environment);
+
+		// [Bad bad bad practice!] Update logged in status in the options
 		self::$options['logged_in'] = $this->security->userLoggedIn;
 	}
 	
 
 	// 1st: init settings
-	public function init($setttingsDefaults) {
+	public function init(array $setttingsDefaults)
+	{
 		$this->settings = new Settings($setttingsDefaults);				// general site-wide settings
 		
 		$templateName = $this->settings->get('template', 'template');
@@ -43,19 +53,24 @@ class Berta extends BertaBase {
 	}
 	
 	// finally: init content
-	public function	initContent($full_url, $sectionName, $tagName) {
+	public function	initContent($full_url, $sectionName, $tagName)
+	{
 		
 		$this->requestURI = $this->apacheRewriteUsed ? $full_url : false;
 		
 		// seciton ...
 		
 		$this->sections = BertaContent::getSections();
-		if(!$sectionName || empty($this->sections[$sectionName])) {
+		if(!$sectionName || empty($this->sections[$sectionName]))
+		{
 			if($this->environment == 'engine')
 				list($sectionName, ) = each($this->sections);
-			else {
-				foreach($this->sections as $sName => $s) {
-					if(!empty($s['@attributes']['published'])) {
+			else
+			{
+				foreach($this->sections as $sName => $s)
+				{
+					if(!empty($s['@attributes']['published']))
+					{
 						$sectionName = $sName;
 						break;
 					}
@@ -69,9 +84,13 @@ class Berta extends BertaBase {
 		$this->content = BertaContent::loadBlog($sectionName);
 		$this->allContent = array($this->sectionName => $this->content);
 		//var_dump($this->sectionName, $this->sections[$this->sectionName]['get_all_entries_by_section']);
-		if(!empty($this->sections[$this->sectionName]['get_all_entries_by_section']) && $this->sections[$this->sectionName]['get_all_entries_by_section']['value'] == 'yes') {
-			foreach($this->sections as $sName => $s) {
-				if($this->sectionName != $sName /*&& $this->environment == 'engine' || !empty($s['@attributes']['published'])*/) {
+		if(!empty($this->sections[$this->sectionName]['get_all_entries_by_section'])
+		   && $this->sections[$this->sectionName]['get_all_entries_by_section']['value'] == 'yes')
+		{
+			foreach($this->sections as $sName => $s)
+			{
+				if($this->sectionName != $sName /*&& $this->environment == 'engine' || !empty($s['@attributes']['published'])*/)
+				{
 					$this->allContent[$sName] = BertaContent::loadBlog($sName);
 				}
 			}
@@ -93,7 +112,8 @@ class Berta extends BertaBase {
 				&& !empty($this->tags[$this->sectionName]) 
 				&& empty($this->tagName) 
 				&& empty($this->sections[$this->sectionName]['@attributes']['has_direct_content'])
-				&& $this->settings->get('navigation', 'alwaysSelectTag') == 'yes') {
+				&& $this->settings->get('navigation', 'alwaysSelectTag') == 'yes')
+		{
 			$this->tagName = reset(array_keys($this->tags[$this->sectionName]));
 		}
 		
@@ -114,7 +134,8 @@ class Berta extends BertaBase {
 	}
 	
 	
-	public function output() {
+	public function output()
+	{
 		return $this->template->output();
 	}
 	
