@@ -12,6 +12,13 @@ return array(
 	/* menu item */ 'profile' => 'mans profils',
 	/* menu item */ 'sign out' => 'izlogoties',
 
+
+	// Translations from the login/logout interface
+
+	'Log in' => 'Ielogoties',
+	'Logout ok. Please wait...' => 'Lūdzu, uzgaidi...',
+
+
 	// Translatins from sections editor (sections.php)
 
 	/* title */ 'Sections' => 'Sadaļas',
@@ -108,6 +115,7 @@ return array(
 	'create new entry here' => 'izveidot jaunu ierakstu',
 
 
+	
 	// Translations for default template
 
 	/* setting tab */ 'General font settings' => 'Vispārīgie teksta uzstādījumi',
@@ -204,15 +212,32 @@ return array(
 	/* setting name */ 'Decoration when hovered' => 'Izgaismotā elementa rotājums',
 	/* setting name */ 'Decoration when selected' => 'Aktīvā elementa rotājums',
 
-	'' => '',
-	'' => '',
-	'' => '',
-	'' => '',
-	'' => '',
-	'' => '',
-	'' => '',
-	'' => '',
-	'' => '',
+
+
+	// Translations for White template
+
+	/* pgeHeading */
+	/* setting name */ 'Empty space on top' => '',
+	/* setting name */ 'Empty space on bottom' => '',
+
+	/* pageLayout */
+	/* setting name */ 'Widh of content area' => '',
+	/* help text */    'Width of texts in the entries. This does not apply to the width of images.' => '',
+	/* setting name */ 'How far content is from page top?' => '',
+	/* help text */    'The vertical distance between the top of the page and the content area.' => '',
+	/* setting name */ 'How far content is from menu?' => '',
+	/* help text */    'The horizontal distance between the menu and the content area.' => '',
+	/* setting name */ 'Width of the left column' => '',
+
+	/* entryLayout */
+	/* setting name */ 'Space between entries' => '',
+	/* help text */    'Distance from entry to entry. In pixels.' => '',
+	/* help text */    'Horizontal space bween images when gallery is in "row" mode' => '',
+
+
+
+	//
+
 	'' => '',
 	'' => '',
 	'' => '',

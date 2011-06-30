@@ -75,7 +75,7 @@ $templateConf = array(
 		'_' => array('title' => I18n::_('Page heading')),
 		'image' => 					array('format' => 'image',		'default' => '', 'min_width' => 1, 'min_height' => 1, 'max_width' => 1000, 'max_height' => 1000, 	'title' => I18n::_('Header image'),  'description' => I18n::_('Picture to use instead of text.')),
 		'color' => 					array('format' => 'color',		'default' => '#333333', 					                                                        'title' => I18n::_('Color'),         'description' => ''),
-		'fontFamily' => 			array('format' => 'fontselect',		'values' => $fontOptionsWithInherit, 'default' => 'inherit', 			                        'title' => I18n::_('Font face'),     'description' => ''),
+		'fontFamily' => 			array('format' => 'fontselect',	'values' => $fontOptionsWithInherit, 'default' => 'inherit', 			                        'title' => I18n::_('Font face'),     'description' => ''),
 		'fontSize' => 				array('format' => 'text',		'default' => '1.2em', 					                                                            'title' => I18n::_('Font size'),     'description' => ''),
 		'fontWeight' => 			array('format' => 'select',		'values' => array('normal', 'bold'), 'default' => 'bold', 				                            'title' => I18n::_('Font weight'),   'description' => ''),
 		'fontStyle' => 				array('format' => 'select',		'values' => array('normal', 'italic'), 'default' => 'normal', 			                            'title' => I18n::_('Font style'),    'description' => ''),

@@ -30,7 +30,7 @@ while(list($idx, ) = each($_COOKIE)) {
 	<div class="xMAlign-container xPanel">
 		<div class="xMAlign-outer">
 			<div class="xMAlign-inner">
-				<p class="xLogout">Logout ok. Please wait...</p>
+				<p class="xLogout"><?= I18n::_('Logout ok. Please wait...') ?></p>
 			</div>
 		</div>
 	</div>

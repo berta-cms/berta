@@ -75,7 +75,7 @@ $topPanelHTML = BertaEditor::getTopPanelHTML($mode);
 			
 			foreach($settings->settingsDefinition as $sSectionKey => $sSection) {
 
-				$tabCaption = !empty($sSection['_']['title']) ? htmlspecialchars($sSection['_']['title']) : $sSectionKey;
+				$tabCaption = !empty($sSection['_']['title']) ? htmlspecialchars($sSection['_']['title']) : "<em>$sSectionKey</em>";
 				$tabsHTML .= "<li><a href=\"#\" class=\"settingsTab\">$tabCaption</a></li>";
 	
 				$contentHTML .= "<div class=\"settingsContent\">\n";
@@ -86,7 +86,7 @@ $topPanelHTML = BertaEditor::getTopPanelHTML($mode);
 						$contentHTML .= '	<div class="entry">' . "\n";
 
 						// caption
-						$contentHTML .= '	<div class="caption">' . ($s['title'] ? ($s['title']) : $sKey) . '</div>';
+						$contentHTML .= '	<div class="caption">' . ($s['title'] ? ($s['title']) : "<em>$sKey</em>") . '</div>';
 
 						// value
 						$value = $settings->get($sSectionKey, $sKey, false, false);	// don't use empty + don't inherit from base

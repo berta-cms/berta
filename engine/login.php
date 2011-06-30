@@ -81,7 +81,7 @@ if($auth_action == "login" && !$errStr) {
 					<!--[if (gte IE 9)|!(IE)]><!--> <input type="hidden" name="auth_browser" value="supported" /> <!--<![endif]-->
 					<input type="text" name="auth_user" id="auth_user" class="xLoginField" />
 					<input type="password" name="auth_pass" id="auth_pass" class="xLoginField" />
-					<input type="submit" name="auth_subm" id="auth_subm" class="xLoginSubmit" value="Log in" />
+					<input type="submit" name="auth_subm" id="auth_subm" class="xLoginSubmit" value="<?= I18n::_('Log in') ?>" />
 					<p>
                         berta v <? echo BertaBase::$options['version'] ?> - duka - <? echo date('Y') ?>
                     </p>
