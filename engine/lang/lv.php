@@ -29,6 +29,12 @@ return array(
 	/* title */ 'Template design' => 'Izskats',
 	'These are settings for template' => 'Šie ir uzstādījumi veidnei',
 
+	'Some help with CSS values' => 'CSS vērtību skaidrojums',
+	'Units' => 'Vienības',
+	'Valid units for any numerical value are:<br /><strong>px</strong> - pixels<br /><strong>em</strong> - 1 em = one length of letter M in the font used<br /><strong>%</strong> - percent of the font size or percent of the dimensions of the container element (e.g. the page etc.)' => '',
+	'Margins' => 'Malas',
+	'Margins are tricky. Use px or em as units. You can set margins in 4 ways, bu entering:<br/><strong>1 value</strong> - sets top, right, bottom and left margins to the same value. Example: <em>10px</em>.<br /><strong>2 values</strong> - sets top and bottom margins to the first value, left and right - to the second. Example: <em>0 5px</em>.<br /><strong>3 values</strong> - sets top margin to the first value, left and right - to the second, bottom - to the third value. Example: <em>10px 0 20px</em>.<br /><strong>4 values</strong> - sets all margins in the following order: top, right, bottom, left. Example: <em>10px 0 20px 2px</em>.' => '',
+	
 	// Translations from inc.settings.php
 
 	/* setting tab & setting name */ 'Template' => 'Veidne',
@@ -100,6 +106,124 @@ return array(
 	'<p>Congratulations! You have successfully installed Berta.</p><p>Now, before adding your content, you have to create a new section. Go to the <a href="sections.php">sections page</a> and do that!</p>' =>
 		'<p>Congratulations! You have successfully installed Berta.</p><p>Now, before adding your content, you have to create a new section. Go to the <a href="sections.php">sections page</a> and do that!</p>',
 	'create new entry here' => 'izveidot jaunu ierakstu',
+
+
+	// Translations for default template
+
+	/* setting tab */ 'General font settings' => 'Vispārīgie teksta uzstādījumi',
+	/* setting name */ 'Color' => 'Krāsa',
+	/* setting name */ 'Font face' => 'Šrifts',
+	/* setting name */ 'Font size' => 'Šritfta izmērs',
+	/* setting name */ 'Font weight' => 'Šrifta treknums',
+	/* setting name */ 'Font style' => 'Šrifta stils',
+	/* setting name */ 'Font variant' => 'Burtu veids',
+	/* setting name */ 'Line height' => 'Rindas augstums',
+	/* help text */    'Height of text line. Use em, px or % values or the default value "normal"' => 'Attālums starp divu teksta rindiņu pamatnēm. Izmanto "em", "px" vai "%" vienības, kā arī noklusēto vērtību "normal"',
+
+	/* setting tab */ 'Hyperlinks' => 'Hipersaites',
+	/* setting name */ 'Link color' => '',
+	/* setting name */ 'Visited link color' => '',
+	/* setting name */ 'Link color when hovered' => '',
+	/* setting name */ 'Link color when clicked' => '',
+	/* setting name */ 'Link decoration' => '',
+	/* setting name */ 'Visited link decoration' => '',
+	/* setting name */ 'Link decoration when hovered' => '',
+	/* setting name */ 'Link decoration when clicked' => '',
+
+	/* setting tab */ 'Background' => 'Fons',
+	/* setting name */ 'Background color' => '',
+	/* setting name */ 'Is background image enabled?' => '',
+	/* setting name */ 'Background image' => '',
+	/* help text */    'Picture to use for page background.' => '',
+	/* setting name */ 'Background tiling' => '',
+	/* help text */    'How the background fills the screen?' => '',
+	/* setting name */ 'Background alignment' => '',
+	/* help text */    'Where the background image is positioned?' => '',
+	/* setting name */ 'Background position' => '',
+	/* help text */    'Sets how background behaves in relation with the browser window.' => '',
+
+	/* setting name */ 'Content position' => '',
+	/* setting name */ 'Text alignment' => '',
+	/* setting name */ 'Width of content area' => '',
+	/* setting name */ 'Page margins' => '',
+	/* help text */    'How far the content is from browser edges. Please see the short CSS guide at the bottom of this page.' => '',
+	/* setting name */ 'Top menu margins' => '',
+	/* help text */    'How big is the distance from the top menu to the other page elements' => '',
+
+	/* setting tab */ 'Page heading' => 'Lapas virsraksts',
+	/* setting name */ 'Header image' => '',
+	/* help text */    'Picture to use instead of text.' => '',
+	/* help text */    'How far the heading is form other elements in page. Please see the short CSS guide at the bottom of this page.' => '',
+	/* help text */    'How far the menu is form other elements in page. Please see the short CSS guide at the bottom of this page.' => '',
+
+	/* setting tab */ 'Main menu' => 'Galvenā izvēlne',
+	/* setting name */ 'Menu items separator' => '',
+	/* setting name */ 'Space width around separator' => '',
+	/* help text */    'The distance from the separator to the menu item on both sides' => '',
+
+	/* setting tab */ 'Submenu' => 'Apakšizvēlne',
+
+	/* setting name */ 'Entry margins' => '',
+	/* help text */    'Margins around entries. Please see the short CSS guide at the bottom of this page.' => '',
+	/* setting name */ 'Gallery position' => '',
+	/* setting name */ 'Default gallery type' => '',
+	/* help text */    'Slideshow means that an image menu plus only one image is visible at a time. Row means that all images are visible.' => '',
+	/* setting name */ 'Space between images in row' => '',
+	/* setting name */ 'Gallery margins' => '',
+	/* help text */    'Margin around gallery block' => '',
+	/* setting name */ 'Display tags by each entry' => '',
+	/* help text */    'This determines whether people will see tags you set for each entry. Regardless of this settting, tags still will make up the main menu.' => '',
+	/* setting name */ 'Date format in entries' => '',
+	/* setting name */ 'Date separator' => '',
+	/* help text */    'Separator symbol that divides year, month and day' => '',
+	/* setting name */ 'Time separator' => '',
+
+	/* setting tab */  'Entry heading'=> '',
+	/* help text */    'How far the entry heading is form other elements in page. Please see the short CSS guide at the bottom of this page.' => '',
+
+	/* setting tab */ 'Entry footer' =>  '',
+
+
+
+	// Translations for Messy template
+
+	/* setting name */ 'Entry text width' => '',
+	/* setting name */ 'Space between images and image navigation' => '',
+	/* help text */    'Vertical space between images and image navigation (the digits below the image) when gallery is in "slideshow" mode' => '',
+	/* setting name */ 'Empty space below gallery' => '',
+	/* help text */    'Distance between the gallery and the content below' => '',
+
+	/* setting name */ 'Logo image' => '',
+	/* help text */    'Picture to use instead of header text. Max size: 140 x 400 pixels. If the image is larger, it will be reduced.' => '',
+
+	/* setting name */ 'Color when hovered' => 'Izgaismotā elementa krāsa',
+	/* help text */    'Color of the element under mouse cursor' => 'Krāsa elementam, kas atrodas zem peles kursora bultiņas',
+	/* setting name */ 'Color when selected' => 'Aktīvā elementa krāsa',
+	/* help text */    'Color of the element of the currently opened section' => 'Krāsa patlaban atvērtās sadaļas elementam',
+	/* setting name */ 'Decoration' => 'Rotājums',
+	/* setting name */ 'Decoration when hovered' => 'Izgaismotā elementa rotājums',
+	/* setting name */ 'Decoration when selected' => 'Aktīvā elementa rotājums',
+
+	'' => '',
+	'' => '',
+	'' => '',
+	'' => '',
+	'' => '',
+	'' => '',
+	'' => '',
+	'' => '',
+	'' => '',
+	'' => '',
+	'' => '',
+	'' => '',
+	'' => '',
+	'' => '',
+	'' => '',
+	'' => '',
+	'' => '',
+	'' => '',
+	'' => '',
+	'' => '',
 	'' => '',
 	'' => '',
 	'' => '',
