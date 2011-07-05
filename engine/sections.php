@@ -97,16 +97,15 @@ $topPanelHTML = BertaEditor::getTopPanelHTML('sections');
 				<h2></h2>
 
 				<div class="entry">
-					<div class="caption">What are sections?</div>
+					<div class="caption"><?= I18n::_('What are sections?') ?></div>
 					<div class="value value-long">
-						Sections are main divisions in your site. Think of them as containers for your content. They appear as menu items in the main menu. 
+						<?= I18n::_('sections_help_text') ?>
 					</div>
 				</div>
 				<div class="entry">
-					<div class="caption">What is the "external link"?</div>
+					<div class="caption"><?= I18n::_('What is the "external link"?') ?></div>
 					<div class="value value-long">
-						If you want any of the items in your main menu to lead the visitor somewhere else than your site, specify the external link.
-						It can be an email link (e.g., <em>mailto:sombeody@someplace.net</em>) or a link to another website (e.g. <em>http://www.example.com</em>).
+						<?= I18n::_('external_link_help_text') ?>
 					</div>
 				</div>
 				<br class="clear" />

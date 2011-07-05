@@ -111,6 +111,8 @@
 			</div>
 
 		</div>
+
+
 		
 		{section name=foo loop=10} 
 		    { assign var="setting_name_image" value="banner`$smarty.section.foo.iteration`_image" }
@@ -131,6 +133,8 @@
 			
 			{ /if }
 		{/section}
+
+		{ dukaLogoBanner }
 			
 	</div>
 	
