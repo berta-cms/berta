@@ -14,7 +14,7 @@ $topPanelHTML = BertaEditor::getTopPanelHTML('sections');
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title><? echo $berta->settings->get('texts', 'pageTitle') ?> / sections</title>
+<title><? echo $berta->settings->get('texts', 'pageTitle') ?> / <?= I18n::_('Sections') ?></title>
 <link rel="SHORTCUT ICON" href="favicon.ico"/>
 <link rel="stylesheet" href="<? echo $ENGINE_ABS_ROOT ?>css/default.css" type="text/css"  charset="utf-8" />
 <link rel="stylesheet" href="<? echo $ENGINE_ABS_ROOT ?>css/editor.css.php" type="text/css"  charset="utf-8" />

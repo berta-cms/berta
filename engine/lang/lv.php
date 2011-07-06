@@ -2,7 +2,7 @@
 
 return array(
 
-	'berta_copyright_text' => '(latviski) Built with <a href="http://www.berta.lv/" target="_blank" title="Create your own portfolio with Berta in minutes!">Berta</a>',
+	'berta_copyright_text' => '<a href="http://duka.riga.lv/" target="_blank" title="Create your own portfolio with Berta in minutes!">duka</a> & <a href="http://www.berta.lv/" target="_blank" title="Create your own portfolio with Berta in minutes!">berta</a>',
 
 	// Translations from the top "admin" menu
 
@@ -25,15 +25,20 @@ return array(
 	/* button */ 'create new section' => 'izveidot jaunu sadaļu',
 	/* button */ 'delete' => 'dzēst',
 
-	'What are sections?' => '(latviski)',
-	'sections_help_text' => '(latviski) Sections are main divisions in your site. Think of them as containers for your content. They appear as menu items in the main menu. ',
-	'What is the "external link"?' => '(latviski)',
-	'external_link_help_text' => '(latviski) If you want any of the items in your main menu to lead the visitor somewhere else than your site, specify the external link. It can be an email link (e.g., <em>mailto:sombeody@someplace.net</em>) or a link to another website (e.g. <em>http://www.example.com</em>).',
-	'' => '',
-	'' => '',
-	'' => '',
-	'' => '',
+	'What are sections?' => 'Kas ir sadaļas?',
+	'sections_help_text' => 'Sadaļas ir lapas pamatelementi un to nosaukumi veido galveno izvēlni (menu).',
+	'What is the "external link"?' => 'Kas ir "external link" (ārējā saite)?',
+	'external_link_help_text' => 'Izvēlnes elements var būt ārējā saite. Piemēram epasta adrese <em>mailto:sombeody@someplace.net</em>) vai saite uz citu mājas lapu (piemēram, <em>http://www.example.com</em>)',
 
+
+	// Translations from profile page (profile.php)
+	'Profile' => 'Profils',
+	'Old password' => 'Vecā parole',
+	'New password' => 'Jaunā parole',
+	'Retype new password' => 'Jaunā parole vēlreiz',
+	'Change password' => 'Nomainīt paroli',
+	'password_help_text' => 'Parolei jābūt vismaz 6 simbolus garai<br /> un tai jāsatur tikai lielie/mazie latīņu burti un/vai cipari (A-Z, a-z, 0-9).',
+	'' => '',
 
 	// Translations from settings page (settings.php)
 
@@ -46,8 +51,7 @@ return array(
 	'units_help_text' =>
 		'Var izmantot sekojošas vienības: <br /><strong>px</strong> – pikseļi<br /><strong>em</strong> - 1 em = viena burta M platums attiecīgajā šriftā<br /><strong>%</strong> - procenti no šrifta izmēra vai arī procenti no konteinera elementa izmēra',
 	'Margins' => 'Malas',
-	'margins_help_text' =>
-		'?????? are tricky. Use px or em as units. You can set margins in 4 ways, by entering:<br/><strong>1 value</strong> - sets top, right, bottom and left margins to the same value. Example: <em>10px</em>.<br /><strong>2 values</strong> - sets top and bottom margins to the first value, left and right - to the second. Example: <em>0 5px</em>.<br /><strong>3 values</strong> - sets top margin to the first value, left and right - to the second, bottom - to the third value. Example: <em>10px 0 20px</em>.<br /><strong>4 values</strong> - sets all margins in the following order: top, right, bottom, left. Example: <em>10px 0 20px 2px</em>.',
+	'margins_help_text' => 'Ir 4 veidi kā var ievadīt izmēru apmalēm (margins):<br/><strong>1 vērtība</strong> – iestāda augšējo, labo, apakšējo un kreiso apmales platumu vienādā izmērā. Piemēram, <em>10px</em>.<br /><strong>2 vērtības</strong> – pirmais cipars iestāda augšējo un apakšējo apmales platumu, bet otrs kreiso un labo malas platumu. Piemēram: <em>0 5px</em>.<br /><strong>3 vērtības</strong> – pirmā vērtība iestāda augšējās apmales platumu, otra kreiso un labo apmali, bet trešā apakšas apmales platumu. Piemēram: <em>10px 0 20px</em>.<br /><strong>4 vērtības</strong> - iestāda platumus visām apmalēm sekojošā secībā: augša, labā mala, apakša, kreisā apmale. Piemēram: <em>10px 0 20px 2px</em>',
 	
 	// Translations from inc.settings.php
 
@@ -73,8 +77,8 @@ return array(
 	/* setting tab */ 'Page layout' => 'Lapas izskats',
 	/* setting name */ 'Favicon' => 'Favicon',
 	/* help text */    'Small picture to display in the address bar of the browser. The file must be in .ICO format and 16x16 pixels big.' => '16x16 pikseļu attēls, kurš atrodams pretī adrešu laukam pārlūkprogrammā. Failam jābūt .ICO formātā.',
-	/* setting name */ 'Grid step' => 'Grid step',
-	/* help text */    'Distance in pixels for snap-to-grid dragging.' => 'Rūtiņas izmērs pikseļos. Ja lielāks par 1, tad elementi pielips pie šī neredzamā rūtiņu sieta (snap to grid).',
+	/* setting name */ 'Grid step' => 'Režģa solis',
+	/* help text */    'Distance in pixels for snap-to-grid dragging.' => 'Režģa rūtiņas izmērs pikseļos. Ja lielāks par 1, tad elementi pielips pie šī neredzamā režģa (snap to grid).',
 
 	/* setting tab */ 'Entry layout' => 'Ieraksta izskats',
 	/* setting name */ 'Small image width' => 'Mazā attēla platums',
@@ -93,19 +97,19 @@ return array(
 	/* setting name */ 'Image frame' => 'Attēla rāmis',
 	/* help text */    'Enables/Disables a frame around image.' => 'Ieslēdz/izslēdz rāmi apkārt attēlam',
 	/* setting name */ 'Close button' => 'Aizvēršanas simbols',
-	/* help text */    '&quot;Close&quot; symbol. You can enter your own.' => '"Aivēršanas" simbols. Vari ievadīt jebkādu simbolu vai tekstu.',
+	/* help text */    '&quot;Close&quot; symbol. You can enter your own.' => '"Aivēršanas" simbols. Vari ievadīt jebkādu simbolu.',
 	/* setting name */ 'Image numbers' => 'Cipari zem attēla',
 	/* help text */    'Enables/disables numbers below the image.' => 'Ieslēgt/izslēgt ciparus zem attēla',
 	/* setting name */ 'Caption alignment' => 'Paskaidrojuma teksta pozīcija',
 	/* help text */    'Positioning of the image caption text.' => 'Paskaidrojuma (caption) teksta pozīcija',
 	/* setting subcategory */ 'Image gallery appierance:' => '<strong>Attēlu galerijas izskats:</strong>',
 	/* setting name */ 'Auto-rewind gallery slideshow' => 'Atgriezties galerijas uz sākumu',
-	/* help text */    'Display the first image after clicking on the last image in galleries that are in slideshow mode.' => 'Radīt pirmo attēlu pēc pēdējā, kad attēli ir slaidrādes režīmā',
+	/* help text */    'Display the first image after clicking on the last image in galleries that are in slideshow mode.' => 'Slaidrādes režīmā pirmais attēls seko pēdējam.',
 	/* setting name */ 'Video player' => 'Video player izskats',
 	/* help text */    'Choose between the two visually different players for your video files.' => 'Izvēlies starp diviem dažādiem video player veidiem.',
 
 	/* setting tab */ 'Banners' => 'Banneri',
-	/* setting name */ 'Banner image' => 'Banner attēls',
+	/* setting name */ 'Banner image' => 'Bannera attēls',
 	/* setting name */ 'Banner link' => 'Bannera saite',
 
 	/* setting name */ 'DUKA banner color' => 'DUKAs logotipa krāsa',
@@ -169,8 +173,8 @@ return array(
 	/* setting name */ 'Text alignment' => 'Teksta izkārtojums',
 	/* setting name */ 'Width of content area' => 'Satura joslas platums',
 	/* setting name */ 'Page margins' => 'Lapas apmales',
-	/* help text */    'How far the content is from browser edges. Please see the short CSS guide at the bottom of this page.' => '',
-	/* setting name */ 'Top menu margins' => 'Menu augšas apmale',
+	/* help text */    'How far the content is from browser edges. Please see the short CSS guide at the bottom of this page.' => 'Kāds ir attālums no lapas satura līdz pārlūkprogrammas malām. Skaties CSS vērtību skaidrojumu lapas apakšā.',
+	/* setting name */ 'Top menu margins' => 'Izvēlnes augšas apmale',
 	/* help text */    'How big is the distance from the top menu to the other page elements' => 'Attālums starp galvenās izvēlnes līdz citiem lapas elementiem',
 
 	/* setting tab */ 'Page heading' => 'Lapas virsraksts',

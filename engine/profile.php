@@ -12,7 +12,7 @@ $topPanelHTML = BertaEditor::getTopPanelHTML('profile');
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title><? echo $berta->settings->get('texts', 'pageTitle') ?> / sections</title>
+<title><? echo $berta->settings->get('texts', 'pageTitle') ?> / <?= I18n::_('Profile') ?></title>
 <link rel="SHORTCUT ICON" href="favicon.ico"/>
 <link rel="stylesheet" href="<? echo $ENGINE_ABS_ROOT ?>css/default.css" type="text/css"  charset="utf-8" />
 <link rel="stylesheet" href="<? echo $ENGINE_ABS_ROOT ?>css/editor.css.php" type="text/css"  charset="utf-8" />
@@ -30,18 +30,18 @@ $topPanelHTML = BertaEditor::getTopPanelHTML('profile');
 	<? echo $topPanelHTML ?>
 	<div id="allContainer">
 		<div id="contentContainer">
-			<h1 id="allPageTitle">Profile</h1>
+			<h1 id="allPageTitle"><?= I18n::_('Profile') ?></h1>
 
 			<div id="xSectionsEditor">
 						
 				<form name="password_form" id="password_form" method="get" action="<? echo htmlspecialchars($ENGINE_ROOT) ?>update.php" >
-					<label for="old_password">Old password</label><br />
+					<label for="old_password"><?= I18n::_('Old password') ?></label><br />
 					<input type="password" name="old_password" id="old_password" value="" /><br />
-					<label for="new_password">New password</label><br />
+					<label for="new_password"><?= I18n::_('New password') ?></label><br />
 					<input type="password" name="new_password" id="new_password" value="" /><br />
-					<label for="retype_password">Retype new password</label><br />
+					<label for="retype_password"><?= I18n::_('Retype new password') ?></label><br />
 					<input type="password" name="retype_password" id="retype_password" value="" /><br />
-					<input type="submit" name="xBertaEditorChangePassword" id="xBertaEditorChangePassword" value="Change password" />
+					<input type="submit" name="xBertaEditorChangePassword" id="xBertaEditorChangePassword" value="<?= I18n::_('Change password') ?>" />
 				</form>				
 			
 				<br class="clear" />
@@ -49,7 +49,7 @@ $topPanelHTML = BertaEditor::getTopPanelHTML('profile');
 		
 				<div class="entry">
 					<div class="value value-long">
-						Password must be at least 6 characters long<br /> and containing alphanumeric (A-Z, a-z, 0-9) characters.
+						<?= I18n::_('password_help_text') ?>
 					</div>
 				</div>
 				<p>&nbsp; </p>

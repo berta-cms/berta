@@ -490,7 +490,9 @@ class BertaEditor extends BertaContent {
 	}
 	
 	public static function getTopPanelHTML($selectedSection = 'site') {
-		$tickerClass = !empty($_COOKIE['_berta_newsticker_hidden']) ? 'xHidden' : '';
+		//$tickerClass = !empty($_COOKIE['_berta_newsticker_hidden']) ? 'xHidden' : '';
+		$tickerClass = 'xHidden';
+
 		$tickerColorClass = empty($_COOKIE['_berta_newsticker_hilight']) ? 'xNewsTickerRed' : 'xNewsTickerGrey';
 		$newsTickerContent = false;
 		

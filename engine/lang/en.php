@@ -10,6 +10,8 @@ return array(
 	'sections_help_text' => 'Sections are main divisions in your site. Think of them as containers for your content. They appear as menu items in the main menu. ',
 	'external_link_help_text' => 'If you want any of the items in your main menu to lead the visitor somewhere else than your site, specify the external link. It can be an email link (e.g., <em>mailto:sombeody@someplace.net</em>) or a link to another website (e.g. <em>http://www.example.com</em>).',
 
+	'password_help_text' => 'Password must be at least 6 characters long<br /> and containing alphanumeric (A-Z, a-z, 0-9) characters.',
+	
 	'' => ''
 
 )
