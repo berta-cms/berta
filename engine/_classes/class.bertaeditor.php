@@ -490,8 +490,8 @@ class BertaEditor extends BertaContent {
 	}
 	
 	public static function getTopPanelHTML($selectedSection = 'site') {
-		//$tickerClass = !empty($_COOKIE['_berta_newsticker_hidden']) ? 'xHidden' : '';
-		$tickerClass = 'xHidden';
+		$tickerClass = !empty($_COOKIE['_berta_newsticker_hidden']) ? 'xHidden' : '';
+
 
 		$tickerColorClass = empty($_COOKIE['_berta_newsticker_hilight']) ? 'xNewsTickerRed' : 'xNewsTickerGrey';
 		$newsTickerContent = false;
@@ -517,6 +517,10 @@ class BertaEditor extends BertaContent {
 				
 				$_SESSION['_berta_newsticker_numtries'] = !empty($_SESSION['_berta_newsticker_numtries']) ? ++$_SESSION['_berta_newsticker_numtries'] : 1;
 			}
+		}
+
+		if(!$newsTickerContent) {
+			$tickerClass = 'xHidden';
 		}
 
 		$m0 = I18n::_('close this');
