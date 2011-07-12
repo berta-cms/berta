@@ -2,7 +2,7 @@
 
 return array(
 
-	'berta_copyright_text' => '<a href="http://duka.riga.lv/" target="_blank" title="Create your own portfolio with Berta in minutes!">duka</a> & <a href="http://www.berta.lv/" target="_blank" title="Create your own portfolio with Berta in minutes!">berta</a>',
+	'berta_copyright_text' => '<a href="http://www.berta.lv/" target="_blank" title="Create your own portfolio with Berta in minutes!">berta</a>',
 
 	// Translations from the top "admin" menu
 
@@ -111,15 +111,6 @@ return array(
 	/* setting tab */ 'Banners' => 'Banneri',
 	/* setting name */ 'Banner image' => 'Bannera attēls',
 	/* setting name */ 'Banner link' => 'Bannera saite',
-
-	/* setting name */ 'DUKA banner color' => 'DUKAs logotipa krāsa',
-	/* help text */    'DUKA banner is always visible on your website. You can, however, choose its color.' => 'DUKAs logotips tavā lapā vienmēr ir redzams, taču tu vari izvēlēties tā krāsu.',
-	/* setting value */  'Magenta' => 'Violeta',
-	/* setting value */  'Blue' => 'Zila',
-	/* setting value */  'Light blue' => 'Gaiši zila',
-	/* setting value */  'Cyan' => 'Zili zaļa',
-	/* setting value */  'Black' => 'Melna',
-
 
 	/* setting tab */ 'Other settings' => 'Dažādi',
 	/* setting name */ 'Google Analytics ID' => 'Google Analytics ID',

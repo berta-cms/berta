@@ -179,8 +179,6 @@
 			{ /if }
 		{/section}
 
-		{ dukaLogoBanner }
-
 
 	</div>
 

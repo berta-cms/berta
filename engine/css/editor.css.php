@@ -941,7 +941,7 @@ body.xLoginPageBody {
 				margin: 0 auto 0;
 			}
 
-            body.xLoginPageBody .xDukaLoginLogo {
+            body.xLoginPageBody .xLoginLogo {
                 float: right;
                 text-align: left;
                 width: 205px;

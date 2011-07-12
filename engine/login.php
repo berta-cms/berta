@@ -70,8 +70,8 @@ if($auth_action == "login" && !$errStr) {
 		<div class="xMAlign-outer">
 			<div class="xMAlign-inner">
 				<form name="xLoginForm" action="<? echo $ENGINE_ABS_ROOT ?>login.php" method="post">
-                    <div class="xDukaLoginLogo">
-                        <img src="<? echo $ENGINE_ABS_ROOT ?>layout/duka.png" alt="duka" />
+                    <div class="xLoginLogo">
+                        <img src="<? echo $ENGINE_ABS_ROOT ?>layout/berta.png" alt="berta v <? echo BertaBase::$options['version'] ?>" />
                     </div>
 					<? if($errStr) { ?>
 					 	<div class="xLoginError"><? echo $errStr ?></div>
@@ -83,7 +83,7 @@ if($auth_action == "login" && !$errStr) {
 					<input type="password" name="auth_pass" id="auth_pass" class="xLoginField" />
 					<input type="submit" name="auth_subm" id="auth_subm" class="xLoginSubmit" value="<?= I18n::_('Log in') ?>" />
 					<p>
-                        berta v <? echo BertaBase::$options['version'] ?> - duka - <? echo date('Y') ?>
+                        berta v <? echo BertaBase::$options['version'] ?> - <? echo date('Y') ?>
                     </p>
 				</form>
 			</div>
