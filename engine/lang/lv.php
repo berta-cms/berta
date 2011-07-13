@@ -14,7 +14,7 @@ return array(
 	/* menu item */ 'profile' => 'mans profils',
 	/* menu item */ 'sign out' => 'izlogoties',
 
-	// Translatins from sections editor (sections.php)
+	// Translations from sections editor (sections.php)
 
 	/* title */ 'Sections' => 'Sadaļas',
 	/* column */ 'Title as displayed in main menu' => 'Nosaukums (galvenajā izvēlnē)',
