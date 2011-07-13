@@ -92,6 +92,11 @@ $settingsDefinition = array(
 		'banner7_image' => 			array('format' => 'image',		'default' => '', 'min_width' => 1, 'min_height' => 1, 'max_width' => 3000, 'max_height' => 3000, 	 	'title' => I18n::_('Banner image').' (7)', 'description' => ''),
 		'banner7_link'  => 			array('format' => 'text',		'allow_blank' => true,	'default' => null, 	'title' => I18n::_('Banner link').' (7)', 'description' => ''),
 	),
+
+	'language' => array(
+		'_' =>                      array('title' => I18n::_('Language')),
+		'language' => 	array('format' => 'select',	'allow_blank' => false, 'default' => $options['default_language'], 		'values' => $options['languages'], 	'title' => I18n::_('Interface language'),   'description' => '')
+ 	),
 	
 	'settings' => array(
 		'_' =>                      array('title' => I18n::_('Other settings')),

@@ -21,7 +21,9 @@ $options['version'] = '0.7';
  * Interface language (I18n)
  * A file named like the value of this option must be placed into engine/lang folder, containing all translations
  */
-$options['language'] = 'lv';
+
+$options['default_language'] = 'en';
+$options['languages'] = array('en' => 'English', 'lv' => 'Latviešu');
 
 
 

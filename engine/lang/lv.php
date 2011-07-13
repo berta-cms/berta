@@ -14,7 +14,13 @@ return array(
 	/* menu item */ 'profile' => 'mans profils',
 	/* menu item */ 'sign out' => 'izlogoties',
 
-	// Translations from sections editor (sections.php)
+	// Translatins from login / logout window
+
+	'Logout ok. Please wait...' => 'Lūdzu, uzgaidi...',
+	'Log in' => 'Ielogoties',
+
+
+	// Translatins from sections editor (sections.php)
 
 	/* title */ 'Sections' => 'Sadaļas',
 	/* column */ 'Title as displayed in main menu' => 'Nosaukums (galvenajā izvēlnē)',
@@ -111,6 +117,9 @@ return array(
 	/* setting tab */ 'Banners' => 'Banneri',
 	/* setting name */ 'Banner image' => 'Bannera attēls',
 	/* setting name */ 'Banner link' => 'Bannera saite',
+
+	/* setting tab */ 'Language' => 'Valoda',
+	/* setting name */ 'Interface language' => 'Valoda',
 
 	/* setting tab */ 'Other settings' => 'Dažādi',
 	/* setting name */ 'Google Analytics ID' => 'Google Analytics ID',

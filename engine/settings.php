@@ -12,6 +12,8 @@ if($loggedIn) {
 
 $mode = !empty($_GET['mode']) ? $_GET['mode'] : 'settings';
 
+include($ENGINE_ROOT . 'inc.settings.php');
+$berta->settings = new Settings($settingsDefinition);
 						  
 $menuSeparator = $berta->settings->get('menu', 'separator');
 $topPanelHTML = BertaEditor::getTopPanelHTML($mode);
