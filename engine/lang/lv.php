@@ -19,6 +19,13 @@ return array(
 	'Logout ok. Please wait...' => 'Lūdzu, uzgaidi...',
 	'Log in' => 'Ielogoties',
 
+	// First visit
+
+	'welcome_text__not_installed' => '<h2>Thank you for choosing Berta!</h2>
+		   							  <p>Berta is not installed.<br />Please <a href="<? echo $ENGINE_ABS_ROOT ?>">log in</a> and follow the install procedure.</p>',
+
+	'welcome' => 'welcome',
+
 
 	// Translatins from sections editor (sections.php)
 

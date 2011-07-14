@@ -12,7 +12,19 @@ return array(
 
 	'password_help_text' => 'Password must be at least 6 characters long<br /> and containing alphanumeric (A-Z, a-z, 0-9) characters.',
 	
-	'' => ''
+	'welcome_text__not_installed' => '<h2>Thank you for choosing Berta!</h2>
+		   <p>Berta is not installed.<br />Please <a href="<? echo $ENGINE_ABS_ROOT ?>">log in</a> and follow the install procedure.</p>',
+
+
+	'' => '',
+	'' => '',
+	'' => '',
+	'' => '',
+	'' => '',
+	'' => '',
+	'' => '',
+	'' => '',
+
 
 )
 
