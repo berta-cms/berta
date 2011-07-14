@@ -27,7 +27,7 @@ $settingsDefinition = array(
 
 	// siteTexts block is NOT editable in the settings page. It is reserved for texts appearing only on the page
 	'siteTexts' => array(
-		'_' =>                      array('title' => I18n::_('Texts in the website')),
+		'_' =>                      array('title' => I18n::_('Texts in the website'), 'invisible' => true),
 		'siteHeading' => 			array('format' => 'text',	'allow_blank' => true,	'default' => null, 				'title' => I18n::_('Main heading'), 'description' => ''),
 	),
 
