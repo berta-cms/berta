@@ -65,9 +65,7 @@ body {
 	<div class="xMAlign-container xPanel">
 		<div class="xMAlign-outer">
 			<div class="xMAlign-inner">
-				<h2>Thank you for choosing Berta!</h2>
-				<p>This server does not meet Berta's requirements.<br />
-					Please check that PHP version 5 or above is installed on the server.</p>
+				<?= I18n::_('welcome_text__not_supported') ?>
 			</div>
 		</div>
 	</div>

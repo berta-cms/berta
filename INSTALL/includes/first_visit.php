@@ -22,7 +22,6 @@ if(empty($CHECK_INCLUDED)) {
 		<div class="xMAlign-outer">
 			<div class="xMAlign-inner">
 				<?= I18n::_('welcome_text__not_installed') ?>
-
 			</div>
 		</div>
 	</div>

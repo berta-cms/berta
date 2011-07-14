@@ -21,10 +21,26 @@ return array(
 
 	// First visit
 
-	'welcome_text__not_installed' => '<h2>Thank you for choosing Berta!</h2>
-		   							  <p>Berta is not installed.<br />Please <a href="<? echo $ENGINE_ABS_ROOT ?>">log in</a> and follow the install procedure.</p>',
-
 	'welcome' => 'welcome',
+	'welcome_text__not_installed' => '<h2>Paldies,<br/>ka izvēlējies Bertu!</h2>
+		   							  <p>Berta is not installed.<br />Please <a href="./engine/">log in</a> and follow the install procedure.</p>',
+
+	'welcome_text__not_supported' => '<h2>Paldies,<br/>ka izvēlējies Bertu!</h2>
+										<p>This server does not meet Berta\'s requirements.<br />
+										Please check that PHP version 5 or above is installed on the server.</p>',
+
+	'Setup your site' => 'Setup your site',
+	'setup_info_text' => 'Click on the fields with yellow background to edit them.
+							Then press Enter or click anywhere outside the field to save.
+							This way it will be throughout your site — all that has a yellow background is editable. You will also be able to change these settings later.',
+	'What is the title of your site?' => 'Kāds ir tavas lapas virsraksts?',
+	'Site title will be visible in all sections of your site.' => '',
+	'What is your name?' => 'Kā tevi sauc?',
+	'Your name will be put in the copyright notice in the footer of yout site. You can leave it blank.' => '',
+	'How would you — in one sentence — describe your site?' => '',
+	'This will appear under your site name as an excerpt in search engine results.' => '',
+	'Note: the fields that already have value appear yellow only when you roll over them with your mouse. Click on the text below to edit.' => '',
+	'Done!' => 'Darīts!',
 
 
 	// Translatins from sections editor (sections.php)
@@ -67,6 +83,9 @@ return array(
 	'margins_help_text' => 'Ir 4 veidi kā var ievadīt izmēru apmalēm (margins):<br/><strong>1 vērtība</strong> – iestāda augšējo, labo, apakšējo un kreiso apmales platumu vienādā izmērā. Piemēram, <em>10px</em>.<br /><strong>2 vērtības</strong> – pirmais cipars iestāda augšējo un apakšējo apmales platumu, bet otrs kreiso un labo malas platumu. Piemēram: <em>0 5px</em>.<br /><strong>3 vērtības</strong> – pirmā vērtība iestāda augšējās apmales platumu, otra kreiso un labo apmali, bet trešā apakšas apmales platumu. Piemēram: <em>10px 0 20px</em>.<br /><strong>4 vērtības</strong> - iestāda platumus visām apmalēm sekojošā secībā: augša, labā mala, apakša, kreisā apmale. Piemēram: <em>10px 0 20px 2px</em>',
 	
 	// Translations from inc.settings.php
+
+	'Texts in the website' => 'Teksti lapā',
+	'Main heading' => 'Lapas galvenais virsraksts',
 
 	/* setting tab & setting name */ 'Template' => 'Veidne',
 	/* help text */    'Templates are like skins or themes for your site. You can choose one template from the ones installed in your templates folder. To add a new template to this list, upload it to the templates folder via FTP.' => 'Veidnes ir "ādiņas" jeb tēmas, kuras izmaina lapas elementu izvietojumu un izskatu.',
