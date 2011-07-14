@@ -24,8 +24,14 @@ $settingsFontSelect = array_merge(array('inherit' => '(inherit from general-font
 
 $settingsDefinition = array(
 
-	// there is also "site-texts" block, but it is editable directly from blog, not from settings page
-	
+
+	// siteTexts block is NOT editable in the settings page. It is reserved for texts appearing only on the page
+	'siteTexts' => array(
+		'_' =>                      array('title' => I18n::_('Texts in the website'), 'hidden' => true),
+		'siteHeading' => 			array('format' => 'text',	'allow_blank' => true,	'default' => null, 				'title' => I18n::_('Main heading'), 'description' => ''),
+	),
+
+
 	'template' => array(
 		'_' =>                      array('title' => I18n::_('Template')),
 		'template' =>				array('format' => 'select',	'values' => 'templates', 'allow_blank' => false,	'default' => 'default', 				'title' => I18n::_('Template'), 'description' => I18n::_('Templates are like skins or themes for your site. You can choose one template from the ones installed in your templates folder. To add a new template to this list, upload it to the templates folder via FTP.')),
@@ -93,6 +99,11 @@ $settingsDefinition = array(
 		'banner7_image' => 			array('format' => 'image',		'default' => '', 'min_width' => 1, 'min_height' => 1, 'max_width' => 3000, 'max_height' => 3000, 	 	'title' => I18n::_('Banner image').' (7)', 'description' => ''),
 		'banner7_link'  => 			array('format' => 'text',		'allow_blank' => true,	'default' => null, 	'title' => I18n::_('Banner link').' (7)', 'description' => ''),
 	),
+
+	'language' => array(
+		'_' =>                      array('title' => I18n::_('Language')),
+		'language' => 	array('format' => 'select',	'allow_blank' => false, 'default' => $options['default_language'], 		'values' => $options['languages'], 	'title' => I18n::_('Interface language'),   'description' => '')
+ 	),
 	
 	'settings' => array(
 		'_' =>                      array('title' => I18n::_('Other settings')),

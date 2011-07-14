@@ -12,7 +12,23 @@ return array(
 
 	'password_help_text' => 'Password must be at least 6 characters long<br /> and containing alphanumeric (A-Z, a-z, 0-9) characters.',
 	
-	'' => ''
+	'welcome_text__not_installed' => '<h2>Thank you for choosing Berta!</h2>
+		   <p>Berta is not installed.<br />Please <a href="./engine/">log in</a> and follow the install procedure.</p>',
+
+	'welcome_text__not_supported' => '<h2>Thank you for choosing Berta!</h2>
+										<p>This server does not meet Berta\'s requirements.<br />
+										Please check that PHP version 5 or above is installed on the server.</p>',
+	'setup_info_text' => 'Click on the fields with yellow background to edit them.
+							Then press Enter or click anywhere outside the field to save.
+							This way it will be throughout your site — all that has a yellow background is editable. You will also be able to change these settings later.',
+
+	'' => '',
+	'' => '',
+	'' => '',
+	'' => '',
+	'' => '',
+	'' => '',
+
 
 )
 

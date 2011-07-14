@@ -14,14 +14,16 @@ require 'config/inc.conf.php';
 /**
  * Berta's release version
  */
-$options['version'] = '0.6.6';
+$options['version'] = '0.7';
 
 
 /**
  * Interface language (I18n)
  * A file named like the value of this option must be placed into engine/lang folder, containing all translations
  */
-$options['language'] = 'lv';
+
+$options['default_language'] = 'lv';
+$options['languages'] = array('en' => 'English', 'lv' => 'Latviešu');
 
 
 

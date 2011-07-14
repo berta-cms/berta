@@ -12,7 +12,7 @@ if(empty($CHECK_INCLUDED)) {
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title><? echo $berta->settings->get('texts', 'pageTitle') ?> / welcome</title>
+<title><? echo $berta->settings->get('texts', 'pageTitle') ?> / <?= I18n::_('welcome') ?></title>
 <link href="<? echo $ENGINE_ABS_ROOT ?>css/default.css" rel="stylesheet" type="text/css" />
 <link href="<? echo $ENGINE_ABS_ROOT ?>css/login.css" rel="stylesheet" type="text/css" />
 <link href="<? echo $ENGINE_ABS_ROOT ?>css/editor.css.php" rel="stylesheet" type="text/css" />
@@ -21,8 +21,7 @@ if(empty($CHECK_INCLUDED)) {
 	<div class="xMAlign-container xPanel">
 		<div class="xMAlign-outer">
 			<div class="xMAlign-inner">
-				<h2>Thank you for choosing Berta!</h2>
-				<p>Berta is not installed.<br />Please <a href="<? echo $ENGINE_ABS_ROOT ?>">log in</a> and follow the install procedure.</p>
+				<?= I18n::_('welcome_text__not_installed') ?>
 			</div>
 		</div>
 	</div>
