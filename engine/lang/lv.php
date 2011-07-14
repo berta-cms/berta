@@ -125,7 +125,7 @@ return array(
 	/* setting name */ 'Banner image' => 'Bannera attēls',
 	/* setting name */ 'Banner link' => 'Bannera saite',
 
-	/* setting tab */ 'Language' => 'Valoda',
+	/* setting tab */ 'Language' => 'Language',
 	/* setting name */ 'Interface language' => 'Valoda',
 
 	/* setting tab */ 'Other settings' => 'Dažādi',
@@ -215,7 +215,7 @@ return array(
 	/* setting tab */  'Entry heading'=> 'Iearaksta virsraksts',
 	/* help text */    'How far the entry heading is form other elements in page. Please see the short CSS guide at the bottom of this page.' => 'Cik tālu ieraksta virsraksts atrodas no pārējiem lapas elementiem. Skatiet CSS skaidrojumu lapas apakšā.',
 
-	/* setting tab */ 'Entry footer' =>  '',
+	/* setting tab */ 'Entry footer' =>  'Ieraksta apakša',
 
 
 
