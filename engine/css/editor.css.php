@@ -931,7 +931,7 @@ body.xLoginPageBody {
 			
 			body.xLoginPageBody form p {
                 clear: both;
-                color: #6f37f2;
+                color: #000000;
                 padding-top: 30px;
             }
 			
