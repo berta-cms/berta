@@ -14,14 +14,16 @@ require 'config/inc.conf.php';
 /**
  * Berta's release version
  */
-$options['version'] = '0.6.6';
+$options['version'] = '0.7';
 
 
 /**
  * Interface language (I18n)
  * A file named like the value of this option must be placed into engine/lang folder, containing all translations
  */
-$options['language'] = 'lv';
+
+$options['default_language'] = 'lv';
+$options['languages'] = array('en' => 'English', 'lv' => 'Latviešu');
 
 
 
@@ -86,12 +88,12 @@ $options['hip_ipaddr'] = array('85.31.99.218', '85.31.102.201');
 
 
 // external
-$options['newsticker_update_uri'] = false; /*array(
+$options['newsticker_update_uri'] = array(
 	//'http://www.hungrylab.lv/berta/news_ticker.php',
 	'http://www.berta.lv/news_ticker.php'
 );
 foreach($options['hip_ipaddr'] as $ip)
-	$options['newsticker_update_uri'][] = 'http://' . $ip . '/berta-remote/news_ticker.php';*/
+	$options['newsticker_update_uri'][] = 'http://' . $ip . '/berta-remote/news_ticker.php';
 
 
 // thumbnail size for editor layout

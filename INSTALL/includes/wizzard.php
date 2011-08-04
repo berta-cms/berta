@@ -8,6 +8,11 @@ if(empty($CHECK_INCLUDED)) {
 	include $ENGINE_ROOT . 'inc.page.php';
 }
 
+include($ENGINE_ROOT . 'inc.settings.php');
+$berta->settings = new Settings($settingsDefinition);
+
+include_once $ENGINE_ROOT . '_classes/class.bertaeditor.php';
+
 ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -42,26 +47,42 @@ if(!empty($settings['berta']['installed'])) {
 			<div class="xMAlign-outer">
 				<div class="xMAlign-inner justify">
 					<div id="xFirstTimeWizzard">
-						<h2>Setup your site</h2>
-						<p class="emphasis">Click on the fields with yellow background to edit them. 
-							Then press Enter or click anywhere outside the field to save.
-							This way it will be throughout your site — all that has a yellow background is editable. You will also be able to change these settings later.</p>
+						<h2><?= I18n::_('Setup your site') ?></h2>
+
+						<p class="emphasis"><?= I18n::_('setup_info_text') ?></p>
 						
-						<p>1. What is the title of your site?</p>	
-						<p class="subInfo">Site title will be visible in all sections of your site.</p>
-						<p class="xFirstTimeField <? echo $xEditSelectorSimple ?> xProperty-siteHeading xRequired-<? echo $berta->settings->isRequired('siteTexts', 'siteHeading') ? '1': '0' ?>"><? echo $berta->settings->get('siteTexts', 'siteHeading', true) ?></p>	
-						
-						<p>2. What is your name?</p>
-						<p class="subInfo">Your name will be put in the copyright notice in the footer of yout site. You can leave it blank.</p>
-						<p class="xFirstTimeField <? echo $xEditSelectorSimple ?> xProperty-texts/ownerName xRequired-<? echo $berta->settings->isRequired('texts', 'ownerName') ? '1': '0' ?>"><? echo $berta->settings->get('texts', 'ownerName', true) ?></p>
-					
-						<p>3. How would you — in one sentence — describe your site?</p>
-						<p class="subInfo">This will appear under your site name as an excerpt in search engine results.</p>
-						<p class="subInfo">Note: the fields that already have value appear yellow only when you roll over them with your mouse. Click on the text below to edit.</p>
+
+						<p>1. <?= I18n::_('What is the title of your site?') ?></p>
+						<p class="subInfo"><?= I18n::_('Site title will be visible in all sections of your site.') ?></p>
+
+						<?php /* OLD: <p class="xFirstTimeField <? echo $xEditSelectorSimple ?> xProperty-siteHeading xRequired-<? echo $berta->settings->isRequired('siteTexts', 'siteHeading') ? '1': '0' ?>"><? echo $berta->settings->get('siteTexts', 'siteHeading', true) ?></p>*/ ?>
+						<?= BertaEditor::getSettingsItemEditHTML(
+								'siteTexts/siteHeading',
+								$berta->settings->getDefinition('siteTexts', 'siteHeading'),
+								$berta->settings->get('siteTexts', 'siteHeading', false),
+								array('xCaption' => str_replace(' ', '+', $berta->settings->getDefinitionParam('siteTexts', 'siteHeading', 'title'))),
+								"p") ?>
+
+
+						<p>2. <?= I18n::_('What is your name?') ?></p>
+						<p class="subInfo"><?= I18n::_('Your name will be put in the copyright notice in the footer of yout site. You can leave it blank.') ?></p>
+
+						<?php /* OLD: <p class="xFirstTimeField <? echo $xEditSelectorSimple ?> xProperty-texts/ownerName xRequired-<? echo $berta->settings->isRequired('texts', 'ownerName') ? '1': '0' ?>"><? echo $berta->settings->get('texts', 'ownerName', true) ?></p>*/ ?>
+						<?= BertaEditor::getSettingsItemEditHTML(
+								'texts/ownerName',
+								$berta->settings->getDefinition('texts', 'ownerName'),
+								$berta->settings->get('texts', 'ownerName', false),
+								array('xCaption' => str_replace(' ', '+', $berta->settings->getDefinitionParam('texts', 'ownerName', 'title'))),
+								"p") ?>
+
+
+						<p>3. <?= I18n::_('How would you — in one sentence — describe your site?') ?></p>
+						<p class="subInfo"><?= I18n::_('This will appear under your site name as an excerpt in search engine results.') ?></p>
+						<p class="subInfo"><?= I18n::_('Note: the fields that already have value appear yellow only when you roll over them with your mouse. Click on the text below to edit.') ?></p>
 						<p class="xFirstTimeField <? echo $xEditSelectorSimple ?> xProperty-texts/metaDescription xRequired-<? echo $berta->settings->isRequired('texts', 'metaDescription') ? '1': '0' ?>"><? echo $berta->settings->get('texts', 'metaDescription', true) ?></p>
-						
-						<p><input type="button" value=" Done! " id="xFirstTimeCheckContinue" onclick="window.location='<? echo $ENGINE_ABS_ROOT ?>?_berta_install_done=1'" /></p>
-					
+
+						<p><input type="button" value=" <?= I18n::_('Done!') ?> " id="xFirstTimeCheckContinue" onclick="window.location='<? echo $ENGINE_ABS_ROOT ?>?_berta_install_done=1'" /></p>
+
 					</div>
 					<?
 

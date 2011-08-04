@@ -1,2 +1,5 @@
 storage/*
 .idea/*
+.DS_Store
+.gitignore
+.git

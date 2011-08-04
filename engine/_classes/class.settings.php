@@ -155,7 +155,13 @@ class Settings {
 		return $workingArray;
 	}
 	
-	
+	public function getDefinition($collection, $prop) {
+		if(isset($this->settingsDefinition[$collection][$prop])) {
+			return $this->settingsDefinition[$collection][$prop];
+		} else {
+			return null;
+		}
+	}
 	public function getDefinitionParam($collection, $prop, $param) {
 		if(isset($this->settingsDefinition[$collection][$prop][$param])) {
 			return $this->settingsDefinition[$collection][$prop][$param];
@@ -163,6 +169,8 @@ class Settings {
 			return null;
 		}
 	}
+
+
 	
 	public function getEmpty($property = false) {
 		return BertaContent::getXEmpty($property);

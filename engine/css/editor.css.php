@@ -941,7 +941,7 @@ body.xLoginPageBody {
 				margin: 0 auto 0;
 			}
 
-            body.xLoginPageBody .xDukaLoginLogo {
+            body.xLoginPageBody .xLoginLogo {
                 float: right;
                 text-align: left;
                 width: 205px;
@@ -1035,14 +1035,14 @@ input#xFirstTimeCheckContinue {
 	
 }
 	#xFirstTimeWizzard p.subInfo { color: #999; margin-top: -6px; font-size: 90%; }
-	.xFirstTimeField { 
+	#xFirstTimeWizzard p.xEditable {
 		padding: 5px !important; 
 		margin-bottom: 20px !important; 
 	}
-	.xFirstTimeField:before {
+	#xFirstTimeWizzard p.xEditable:before {
 		content: "› ";
 	}
-	.xFirstTimeField, .xFirstTimeField * { font-size: 16px !important;	}
+	#xFirstTimeWizzard p.xEditable, #xFirstTimeWizzard p.xEditable * { font-size: 16px !important;	}
 
 
 

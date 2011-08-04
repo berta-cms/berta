@@ -47,6 +47,8 @@ class Berta extends BertaBase
 	public function init(array $setttingsDefaults)
 	{
 		$this->settings = new Settings($setttingsDefaults);				// general site-wide settings
+
+		I18n::load_language($this->settings->get('language', 'language'));
 		
 		$templateName = $this->settings->get('template', 'template');
 		$this->template = new BertaTemplate($templateName, $this->settings, $this->security->userLoggedIn);
