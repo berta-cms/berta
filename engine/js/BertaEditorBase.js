@@ -682,7 +682,7 @@ var BertaEditorBase = new Class({
 
 				plugins: "save,insertanything,paste",
 
-				valid_elements : "iframe[*],object[*],embed[*],param[*],form[*],input[*],textarea[*],select[*]," + 
+				valid_elements : "script[src],fb:comments[*],iframe[*],object[*],embed[*],param[*],form[*],input[*],textarea[*],select[*]," + 
 								 "p[class],b[class],i[class],span[class],strong[class],em[class],a[href|target|class|style|title],br[*],u[class]," + 
 								 "ul,li,ol,img[*],hr[class]",
 				custom_elements : '',

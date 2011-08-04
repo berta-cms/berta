@@ -14,7 +14,7 @@ require 'config/inc.conf.php';
 /**
  * Berta's release version
  */
-$options['version'] = '0.7';
+$options['version'] = '0.7.0';
 
 
 /**
@@ -22,7 +22,7 @@ $options['version'] = '0.7';
  * A file named like the value of this option must be placed into engine/lang folder, containing all translations
  */
 
-$options['default_language'] = 'lv';
+$options['default_language'] = 'en';
 $options['languages'] = array('en' => 'English', 'lv' => 'Latviešu');
 
 
