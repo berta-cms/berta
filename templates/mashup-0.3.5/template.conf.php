@@ -79,6 +79,7 @@ $templateConf = array(
 		'image' => 				array('format' => 'image',		'default' => '', 'min_width' => 1, 'min_height' => 1, 'max_width' => 'setting:template:sideBar:width', 'max_height' => 1600, 	 	'title' => 'Logo image', 'description' => 'Picture to use instead of header text. Max size: 140 x 400 pixels. If the image is larger, it will be reduced.'),		
 		'color' => 				array('format' => 'color',		'default' => '#1a1a1a', 					'title' => 'Heading text color', 'description' => ''),
 		'fontFamily' => 		array('format' => 'fontselect',	'values' => $fontOptionsWithInherit, 'default' => 'Georgia, "Times New Roman", Times, serif', 			'title' => 'Heading font', 'description' => ''), 
+		'googleFont' => 			array('format' => 'text',		'default' => '', 															'title' => 'Google web fonts',         'description' => '<a href="http://www.google.com/webfonts" target="_blank">Google web fonts</a>'),
 		'fontSize' => 			array('format' => 'text',		'default' => '10px', 					'title' => 'Heading font size', 'description' => ''),
 		'fontWeight' => 		array('format' => 'select',		'values' => array('normal', 'bold'), 'default' => 'normal', 				'title' => 'Heading font weight', 'description' => ''),
 		'fontStyle' => 			array('format' => 'select',		'values' => array('normal', 'italic'), 'default' => 'normal', 			'title' => 'Heading font style', 'description' => ''),
@@ -97,6 +98,7 @@ $templateConf = array(
 	
 	'menu' => array(
 		'fontFamily' => 			array('format' => 'fontselect',	'values' => $fontOptionsWithInherit, 'default' => 'inherit', 			'title' => 'Font face', 'description' => ''), 
+		'googleFont' => 			array('format' => 'text',		'default' => '', 															'title' => 'Google web fonts',         'description' => '<a href="http://www.google.com/webfonts" target="_blank">Google web fonts</a>'),
 		'fontSize' => 				array('format' => 'text',		'default' => '10px', 								'title' => 'Font size', 'description' => ''),
 		'fontWeight' => 			array('format' => 'select',		'values' => array('normal', 'bold'), 'default' => 'normal', 		'title' => 'Font weight', 'description' => ''),
 		'fontStyle' => 				array('format' => 'select',		'values' => array('normal', 'italic'), 'default' => 'normal', 		'title' => 'Font style', 'description' => ''),
@@ -111,6 +113,7 @@ $templateConf = array(
 	
 	'tagsMenu' => array(
 		'fontFamily' => 			array('format' => 'fontselect',	'values' => $fontOptionsWithInherit, 'default' => 'inherit', 			'title' => 'Font face', 'description' => ''), 
+		'googleFont' => 			array('format' => 'text',		'default' => '', 															'title' => 'Google web fonts',         'description' => '<a href="http://www.google.com/webfonts" target="_blank">Google web fonts</a>'),
 		'fontSize' => 				array('format' => 'text',		'default' => '11px', 								'title' => 'Font size', 'description' => ''),
 		'fontWeight' => 			array('format' => 'select',		'values' => array('normal', 'bold'), 'default' => 'normal', 		'title' => 'Font weight', 'description' => ''),
 		'fontStyle' => 				array('format' => 'select',		'values' => array('normal', 'italic'), 'default' => 'normal', 		'title' => 'Font style', 'description' => ''),

@@ -18,6 +18,7 @@
 	
 	{ $berta.scripts }
 	{ $berta.css }
+	{ googleWebFontsAPI }		
 	<script type="text/javascript" src="{ $berta.options.TEMPLATES_ABS_ROOT }{ $berta.templateName }/superwhite.js"></script>
 </head>
 
