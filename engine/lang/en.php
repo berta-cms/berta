@@ -29,6 +29,8 @@ return array(
 	'description_banner' => 'Banner file',
 	'description_banner_link' => 'Banner link',
 	'description_language' => 'Choose Your favorite language',
+	'Heading position' => 'Heading position',
+	'description_heading_position' => 'Heading position fixed or relative',
 	'' => '',
 	'' => '',
 

@@ -88,11 +88,10 @@ a img { border: none; }
 	position: relative;
 }
 
-h1 {
+#contentContainer h1 {
 	padding: 0;
 	margin: 0;
 	z-index: 50000;
-	
 	color: <? echo $s->get('heading', 'color') ?>;
 	font-family: <? echo $s->getFont('heading') ?>;
 	font-size: <? echo $s->get('heading', 'fontSize') ?>;
@@ -100,6 +99,7 @@ h1 {
 	font-style: <? echo $s->get('heading', 'fontStyle') ?>;
 	font-variant: <? echo $s->get('heading', 'fontVariant') ?>;
 	line-height: <? echo $s->get('heading', 'lineHeight') ?>;
+	position: <? echo $s->get('heading', 'position') ?> !important;
 }
 	h1 a {
 		color: <? echo $s->get('heading', 'color') ?> !important;
