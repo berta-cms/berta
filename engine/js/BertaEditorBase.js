@@ -394,21 +394,7 @@ var BertaEditorBase = new Class({
 						this.elementEdit_save(null, el, null, null, value, value);
 				    }.bind(this)
 				});
-					
-				
 				this.hideControlPanel(el);
-				
-				
-				/*
-				if ( (el.hasClass('xEntry') || el.hasClass('xProperty-additionalTextXY')) &&  parseInt(el.getStyle('top'))<40 ){
-					el.addEvent('mouseenter', function(){
-						$('xTopPanelContainer').hide();
-					});			
-					el.addEvent('mouseleave', function(){
-						$('xTopPanelContainer').show();
-					});					
-				}	
-				*/
 				break;
 			
 			case this.options.xBertaEditorClassAction:
@@ -426,8 +412,7 @@ var BertaEditorBase = new Class({
 				break;
 		}
 	},
-	
-	
+		
 	
 	
 	  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
