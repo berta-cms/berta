@@ -117,6 +117,7 @@ h1 {
 	font-style: <? echo $s->get('menu', 'fontStyle') ?>;
 	font-variant: <? echo $s->get('menu', 'fontVariant') ?>;
 	line-height: <? echo $s->get('menu', 'lineHeight') ?>;
+	position: <? echo $s->get('menu', 'position') ?> !important;
 }
 	.menuItem a:link, .menuItem a:visited { 
 		color: <? echo $s->get('menu', 'colorLink') ?>;
@@ -135,6 +136,9 @@ h1 {
 		list-style: none;
 		margin: 0;
 		padding: 0;
+		position: relative;
+		left: <? echo $s->get('tagsMenu', 'x') ?>;
+		top: <? echo $s->get('tagsMenu', 'y') ?>;		
 	}
 		.menuItem li {
 			margin: 0;
