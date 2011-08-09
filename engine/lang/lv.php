@@ -21,7 +21,7 @@ return array(
 
 	// First visit
 
-	'welcome' => 'welcome',
+	'welcome' => 'Esi sveicināts!',
 	'welcome_text__not_installed' => '<h2>Paldies,<br/>ka izvēlējies Bertu!</h2>
 		   							  <p>Berta is not installed.<br />Please <a href="./engine/">log in</a> and follow the install procedure.</p>',
 
@@ -77,8 +77,7 @@ return array(
 
 	'Some help with CSS values' => 'CSS vērtību skaidrojums',
 	'Units' => 'Vienības',
-	'units_help_text' =>
-		'Var izmantot sekojošas vienības: <br /><strong>px</strong> – pikseļi<br /><strong>em</strong> - 1 em = viena burta M platums attiecīgajā šriftā<br /><strong>%</strong> - procenti no šrifta izmēra vai arī procenti no konteinera elementa izmēra',
+	'units_help_text' => 'Var izmantot sekojošas vienības: <br /><strong>px</strong> – pikseļi<br /><strong>em</strong> - 1 em = viena burta M platums attiecīgajā šriftā<br /><strong>%</strong> - procenti no šrifta izmēra vai arī procenti no konteinera elementa izmēra',
 	'Margins' => 'Malas',
 	'margins_help_text' => 'Ir 4 veidi kā var ievadīt izmēru apmalēm (margins):<br/><strong>1 vērtība</strong> – iestāda augšējo, labo, apakšējo un kreiso apmales platumu vienādā izmērā. Piemēram, <em>10px</em>.<br /><strong>2 vērtības</strong> – pirmais cipars iestāda augšējo un apakšējo apmales platumu, bet otrs kreiso un labo malas platumu. Piemēram: <em>0 5px</em>.<br /><strong>3 vērtības</strong> – pirmā vērtība iestāda augšējās apmales platumu, otra kreiso un labo apmali, bet trešā apakšas apmales platumu. Piemēram: <em>10px 0 20px</em>.<br /><strong>4 vērtības</strong> - iestāda platumus visām apmalēm sekojošā secībā: augša, labā mala, apakša, kreisā apmale. Piemēram: <em>10px 0 20px 2px</em>',
 	
@@ -90,7 +89,7 @@ return array(
 	/* setting tab & setting name */ 'Template' => 'Veidne',
 	/* help text */    'Templates are like skins or themes for your site. You can choose one template from the ones installed in your templates folder. To add a new template to this list, upload it to the templates folder via FTP.' => 'Veidnes ir "ādiņas" jeb tēmas, kuras izmaina lapas elementu izvietojumu un izskatu.',
 
-	/* setting tab */ 'Texts' => 'Vispārīgi',
+	/* setting tab */ 'Info' => 'Vispārīgi',
 	/* setting name */ 'Your name' => 'Tavs vārds',
 	/* help text */    'Your name will be put in a meta-tag in the code of your site. You can choose any name ;)' => 'Tavs vārds tiks saglabāts meta-tagā lapas kodā. Vārds var būt jebkāds.',
 	/* setting name */ 'Page title (title bar)' => 'Lapas virsraksts',
@@ -257,16 +256,16 @@ return array(
 	/* setting name */ 'Decoration when hovered' => 'Izgaismotā elementa rotājums',
 	/* setting name */ 'Decoration when selected' => 'Aktīvā elementa rotājums',
 
-	'googleFont_description' => '<a href="http://www.google.com/webfonts" target="_blank">Google web fonti</a>',
+	'googleFont_description' => 'Ieraksti google fonta nosaukumu. Apskati kādi fonti ir piejami: <a href="http://www.google.com/webfonts" target="_blank">Google web fonti</a> Ja izvēlēts google fonts, tad sistēmas fonti netiks ņemti vērā.',
 	'Menu position' => 'Izvēlnes pozīcija',
 	'Positon X' => 'X pozīcija',
 	'Positon Y' => 'Y pozīcija',
-	'description_tagsMenu_x' => 'Apakšizvēlnes X pozīcija',
-	'description_tagsMenu_y' => 'Apakšizvēlnes Y pozīcija',
+	'description_tagsMenu_x' => 'Apakšizvēlnes X pozīcija pikseļos (piem.: 50px)',
+	'description_tagsMenu_y' => 'Apakšizvēlnes Y pozīcija pikseļos (piem.: 50px)',
 	'description_menu_position' => 'Izvēlnes pozicionēšana',
-	'description_banner' => 'Banera attēla fails',
-	'description_banner_link' => 'Banera saite',
-	'description_language' => 'Izvēlies vēlamo saskarnes valodu',
+	'description_banner' => 'Banneri ir bildes, kuras redzamas visās sadaļās, pimēram, twitter ikonas vai pogas. Var pievienot līdz 7 dažādiem elementiem.',
+	'description_banner_link' => 'Bannera saite. Adreses priekšā neaizmirsti pievienot http:// (piem.: http://www.berta.lv)',
+	'description_language' => 'Choose language of berta interface',
 	'Heading position' => 'Galvenes pozīcija',
 	'description_heading_position' => 'Galvenes novietojums, fiksēts vai nefiksēts',
 	'' => '',
