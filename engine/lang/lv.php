@@ -128,7 +128,7 @@ return array(
 	/* setting name */ 'Image frame' => 'Attēla rāmis',
 	/* help text */    'Enables/Disables a frame around image.' => 'Ieslēdz/izslēdz rāmi apkārt attēlam',
 	/* setting name */ 'Close button' => 'Aizvēršanas simbols',
-	/* help text */    '&quot;Close&quot; symbol. You can enter your own.' => '"Aivēršanas" simbols. Vari ievadīt jebkādu simbolu.',
+	/* help text */    '&quot;Close&quot; symbol. You can enter your own.' => '"Aizvēršanas" simbols. Vari ievadīt jebkādu simbolu.',
 	/* setting name */ 'Image numbers' => 'Cipari zem attēla',
 	/* help text */    'Enables/disables numbers below the image.' => 'Ieslēgt/izslēgt ciparus zem attēla',
 	/* setting name */ 'Caption alignment' => 'Paskaidrojuma teksta pozīcija',
