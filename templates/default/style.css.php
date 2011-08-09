@@ -181,6 +181,7 @@ h1 {
 		#additionalText {
 			position: absolute;
 			max-width: 500px;
+			z-index: 49000;
 		}
 		.ie #additionalText {
 			width: 500px;
