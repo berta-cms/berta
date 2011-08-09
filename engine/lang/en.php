@@ -23,8 +23,9 @@ return array(
 							This way it will be throughout your site — all that has a yellow background is editable. You will also be able to change these settings later.',
 
 	'googleFont_description' => '<a href="http://www.google.com/webfonts" target="_blank">Google web fonts</a>',
-	'' => '',
-	'' => '',
+	'description_tagsMenu_x' => 'description_tagsMenu_x asdf',
+	'description_tagsMenu_y' => 'description_tagsMenu_y asdf',
+	'description_menu_position' => 'description_menu_position asdf',
 	'' => '',
 	'' => '',
 	'' => '',
