@@ -16,6 +16,7 @@
 	
 	{ $berta.scripts }
 	{ $berta.css }
+	{ googleWebFontsAPI }		
 	<script type="text/javascript" src="{ $berta.options.TEMPLATES_ABS_ROOT }{ $berta.templateName }/mess.js"></script>
 </head>
 

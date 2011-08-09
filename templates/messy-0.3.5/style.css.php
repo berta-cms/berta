@@ -27,7 +27,7 @@ html, body {
 body {
 	background-color: #fff;
 	color: <? echo $s->get('generalFontSettings', 'color') ?>;
-	font-family: <? echo $s->get('generalFontSettings', 'fontFamily') ?>;
+	font-family: <? echo $s->getFont('generalFontSettings') ?>;
 	font-size: <? echo $s->get('generalFontSettings', 'fontSize') ?>;
 	font-weight: <? echo $s->get('generalFontSettings', 'fontWeight') ?>;
 	font-style: <? echo $s->get('generalFontSettings', 'fontStyle') ?>;
@@ -88,18 +88,18 @@ a img { border: none; }
 	position: relative;
 }
 
-h1 {
+#contentContainer h1 {
 	padding: 0;
 	margin: 0;
 	z-index: 50000;
-	
 	color: <? echo $s->get('heading', 'color') ?>;
-	font-family: <? echo $s->get('heading', 'fontFamily') ?>;
+	font-family: <? echo $s->getFont('heading') ?>;
 	font-size: <? echo $s->get('heading', 'fontSize') ?>;
 	font-weight: <? echo $s->get('heading', 'fontWeight') ?>;
 	font-style: <? echo $s->get('heading', 'fontStyle') ?>;
 	font-variant: <? echo $s->get('heading', 'fontVariant') ?>;
 	line-height: <? echo $s->get('heading', 'lineHeight') ?>;
+	position: <? echo $s->get('heading', 'position') ?> !important;
 }
 	h1 a {
 		color: <? echo $s->get('heading', 'color') ?> !important;
@@ -111,12 +111,13 @@ h1 {
 
 .menuItem {
 	z-index: 45000;
-	font-family: <? echo $s->get('menu', 'fontFamily') ?>;
+	font-family: <? echo $s->getFont('menu') ?>;
 	font-size: <? echo $s->get('menu', 'fontSize') ?>;
 	font-weight: <? echo $s->get('menu', 'fontWeight') ?>;
 	font-style: <? echo $s->get('menu', 'fontStyle') ?>;
 	font-variant: <? echo $s->get('menu', 'fontVariant') ?>;
 	line-height: <? echo $s->get('menu', 'lineHeight') ?>;
+	position: <? echo $s->get('menu', 'position') ?> !important;
 }
 	.menuItem a:link, .menuItem a:visited { 
 		color: <? echo $s->get('menu', 'colorLink') ?>;
@@ -135,11 +136,14 @@ h1 {
 		list-style: none;
 		margin: 0;
 		padding: 0;
+		position: relative;
+		left: <? echo $s->get('tagsMenu', 'x') ?>;
+		top: <? echo $s->get('tagsMenu', 'y') ?>;		
 	}
 		.menuItem li {
 			margin: 0;
 			padding: 0;
-			font-family: <? echo $s->get('tagsMenu', 'fontFamily') ?>;
+			font-family: <? echo $s->getFont('tagsMenu') ?>;
 			font-size: <? echo $s->get('tagsMenu', 'fontSize') ?>;
 			font-weight: <? echo $s->get('tagsMenu', 'fontWeight') ?>;
 			font-style: <? echo $s->get('tagsMenu', 'fontStyle') ?>;

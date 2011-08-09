@@ -30,7 +30,7 @@ html, body {
 body {
 	background-color: #fff;
 	color: <? echo $s->get('generalFontSettings', 'color') ?>;
-	font-family: <? echo $s->get('generalFontSettings', 'fontFamily') ?>;
+	font-family: <? echo $s->getFont('generalFontSettings') ?>;
 	font-size: <? echo $s->get('generalFontSettings', 'fontSize') ?>;
 	font-weight: <? echo $s->get('generalFontSettings', 'fontWeight') ?>;
 	font-style: <? echo $s->get('generalFontSettings', 'fontStyle') ?>;
@@ -126,7 +126,7 @@ a img { border: none; }
 				padding: 0;
 				margin: 0;
 				color: <? echo $s->get('sideBar', 'color') ?>;
-				font-family: <? echo $s->get('sideBar', 'fontFamily') ?>;
+				font-family: <? echo $s->getFont('sideBar') ?>;
 				font-size: <? echo $s->get('sideBar', 'fontSize') ?>;
 				font-weight: <? echo $s->get('sideBar', 'fontWeight') ?>;
 				font-style: <? echo $s->get('sideBar', 'fontStyle') ?>;
@@ -178,7 +178,7 @@ a img { border: none; }
 			}
 				#sideColumnTop ul li {
 					padding-bottom: 6px;
-					font-family: <? echo $s->get('menu', 'fontFamily') ?>;
+					font-family: <? echo $s->getFont('menu') ?>;
 					font-size: <? echo $s->get('menu', 'fontSize') ?>;
 					font-weight: <? echo $s->get('menu', 'fontWeight') ?>;
 					font-style: <? echo $s->get('menu', 'fontStyle') ?>;
@@ -196,7 +196,7 @@ a img { border: none; }
 					#sideColumnTop ul ul li {
 						padding-bottom: 0;
 						text-transform: none;
-						font-family: <? echo $s->get('tagsMenu', 'fontFamily') ?>;
+						font-family: <? echo $s->getFont('tagsMenu') ?>;
 						font-size: <? echo $s->get('tagsMenu', 'fontSize') ?>;
 						font-weight: <? echo $s->get('tagsMenu', 'fontWeight') ?>;
 						font-style: <? echo $s->get('tagsMenu', 'fontStyle') ?>;

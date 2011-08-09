@@ -33,6 +33,7 @@ $templateConf = array(
 		'_' => array('title' => I18n::_('General font settings')),
 		'color' => 				array('format' => 'color',		'default' => '#363636', 							                'title' => I18n::_('Color'),         'description' => ''),
 		'fontFamily' => 		array('format' => 'fontselect',	'values' => $fontOptions, 'default' => 'Arial, sans-serif', 		'title' => I18n::_('Font face'),     'description' => ''),
+		'googleFont' => 			array('format' => 'text',		'default' => '', 															'title' => 'Google web fonts',         'description' => I18n::_('googleFont_description')),
 		'fontSize' => 			array('format' => 'text',		'default' => '12px', 								                'title' => I18n::_('Font size'),     'description' => ''),
 		'fontWeight' => 		array('format' => 'select',		'values' => array('normal', 'bold'), 'default' => 'normal', 		'title' => I18n::_('Font weight'),   'description' => ''),
 		'fontStyle' => 			array('format' => 'select',		'values' => array('normal', 'italic'), 'default' => 'normal', 		'title' => I18n::_('Font style'),    'description' => ''),
@@ -61,9 +62,11 @@ $templateConf = array(
 	
 	'heading' => array(
 		'_' => array('title' => I18n::_('Page heading')),
+		'position' => 				array('format' => 'select',		'values' => array('fixed', 'absolute'), 'default' => 'absolute', 		                        'title' => I18n::_('Heading position'),           'description' => I18n::_('description_heading_position')),
 		'image' => 				array('format' => 'image',		'default' => '', 'min_width' => 1, 'min_height' => 1, 'max_width' => 140, 'max_height' => 400, 	 	'title' => I18n::_('Logo image'),    'description' => I18n::_('Picture to use instead of header text. Max size: 140 x 400 pixels. If the image is larger, it will be reduced.')),
 		'color' => 				array('format' => 'color',		'default' => '#000000',                                                                             'title' => I18n::_('Color'),         'description' => ''),
 		'fontFamily' => 		array('format' => 'fontselect',	'values' => $fontOptionsWithInherit, 'default' => '"Courier New", Courier, monospace', 			    'title' => I18n::_('Font face'),     'description' => ''),
+		'googleFont' => 			array('format' => 'text',		'default' => '', 															'title' => 'Google web fonts',         'description' => I18n::_('googleFont_description')),
 		'fontSize' => 			array('format' => 'text',		'default' => '30px',                                                                                'title' => I18n::_('Font size'),     'description' => ''),
 		'fontWeight' => 		array('format' => 'select',		'values' => array('normal', 'bold'), 'default' => 'bold',                                           'title' => I18n::_('Font weight'),   'description' => ''),
 		'fontStyle' => 			array('format' => 'select',		'values' => array('normal', 'italic'), 'default' => 'normal',                                       'title' => I18n::_('Font style'),    'description' => ''),
@@ -73,7 +76,9 @@ $templateConf = array(
 	
 	'menu' => array(
 		'_' => array('title' => I18n::_('Main menu')),
+		'position' => 				array('format' => 'select',		'values' => array('fixed', 'absolute'), 'default' => 'absolute', 		                        'title' => I18n::_('Menu position'),           'description' => I18n::_('description_menu_position')),
 		'fontFamily' => 			array('format' => 'fontselect',	'values' => $fontOptionsWithInherit, 'default' => '"Courier New", Courier, monospace',  'title' => I18n::_('Font face'),             'description' => ''),
+		'googleFont' => 			array('format' => 'text',		'default' => '', 															'title' => 'Google web fonts',         'description' => I18n::_('googleFont_description')),
 		'fontSize' => 				array('format' => 'text',		'default' => '20px', 								                                    'title' => I18n::_('Font size'),             'description' => ''),
 		'fontWeight' => 			array('format' => 'select',		'values' => array('normal', 'bold'), 'default' => 'bold', 		                        'title' => I18n::_('Font weight'),           'description' => ''),
 		'fontStyle' => 				array('format' => 'select',		'values' => array('normal', 'italic'), 'default' => 'normal', 		                    'title' => I18n::_('Font style'),            'description' => ''),
@@ -88,7 +93,10 @@ $templateConf = array(
 	
 	'tagsMenu' => array(
 		'_' => array('title' => I18n::_('Submenu')),
+		'x' => 				array('format' => 'text',		'default' => '0', 								                                    'title' => I18n::_('Positon X'),             'description' => I18n::_('description_tagsMenu_x')),		
+		'y' => 				array('format' => 'text',		'default' => '0', 								                                    'title' => I18n::_('Positon Y'),             'description' => I18n::_('description_tagsMenu_y')),				
 		'fontFamily' => 			array('format' => 'fontselect',	'values' => $fontOptionsWithInherit, 'default' => '"Courier New", Courier, monospace',  'title' => I18n::_('Font face'),             'description' => ''),
+		'googleFont' => 			array('format' => 'text',		'default' => '', 															'title' => 'Google web fonts',         'description' => I18n::_('googleFont_description')),
 		'fontSize' => 				array('format' => 'text',		'default' => '16px', 								                                    'title' => I18n::_('Font size'),             'description' => ''),
 		'fontWeight' => 			array('format' => 'select',		'values' => array('normal', 'bold'), 'default' => 'normal',                             'title' => I18n::_('Font weight'),           'description' => ''),
 		'fontStyle' => 				array('format' => 'select',		'values' => array('normal', 'italic'), 'default' => 'normal',                           'title' => I18n::_('Font style'),            'description' => ''),

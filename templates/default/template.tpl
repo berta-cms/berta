@@ -17,6 +17,7 @@
 	{ /if }
 	{ $berta.scripts }
 	{ $berta.css }
+	{ googleWebFontsAPI }	
 </head>
 
 <body>
