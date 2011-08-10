@@ -31,7 +31,7 @@ return array(
 	'description_language' => 'Choose language of berta interface',
 	'Heading position' => 'Heading position fixed or absolute. Fixed always stays in one place, absolute moves together with content.',
 	'description_heading_position' => 'Heading position fixed or absolute. Fixed always stays in one place, absolute moves together with content.',
-	'' => '',
+	'description_submenu_alwaysopen' => 'Submenu is open when menu item is current.',
 	'' => '',
 
 

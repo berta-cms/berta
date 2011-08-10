@@ -60,7 +60,7 @@
 					<div class="menuItem xSection-{ $sName } { messClasses property='positionXY' } { if $currnetSectionName == $section.name }menuItemSelected{ /if }" style="{ messStyles xy=$section.positionXY }">
 						<a href="{ bertaLink section=$sName }" target="{ bertaTarget section=$sName }">{ $section.title }</a>
 			
-						{ if !empty($berta.tags.$sName) }
+						{ if !empty($berta.tags.$sName) && ($berta.settings.tagsMenu.alwaysOpen=='yes' || $berta.sectionName==$sName) }
 							<ul>
 								{ foreach from=$berta.tags.$sName key="tName" item="tag" name="subSectionsMenuLoop" }
 									<li { if $berta.tagName == $tName and $currnetSectionName == $section.name }class="selected"{ /if }>
