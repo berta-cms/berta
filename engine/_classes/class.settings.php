@@ -82,7 +82,15 @@ class Settings {
 		if(isset($this->settings[$collection][$prop])) unset($this->settings[$collection][$prop]);
 		return true;
 	}
-	
+
+   	public function getFont($collection) {
+		if( isset($this->settings[$collection]['googleFont']) && !empty( $this->settings[$collection]['googleFont']) ) {
+			$googleFont=explode(':',$this->settings[$collection]['googleFont']);
+			return $googleFont[0];
+		}else{
+			return $this->get($collection,'fontFamily');
+		}
+	}
 	
 	public function get($collection, $prop, $useEmptyIfEmpty = false, $inheritBase = true) {
 		//echo $collection, $prop, $this->settingsDefinition[$collection][$prop]['default'];

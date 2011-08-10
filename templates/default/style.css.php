@@ -26,7 +26,7 @@ if(!1) { ?><style type="text/css"><? } ?>
 
 body {
 	color: <? echo $s->get('generalFontSettings', 'color') ?>;
-	font-family: <? echo $s->get('generalFontSettings', 'fontFamily') ?>;
+	font-family: <? echo $s->getFont('generalFontSettings') ?>;
 	font-size: <? echo $s->get('generalFontSettings', 'fontSize') ?>;
 	font-weight: <? echo $s->get('generalFontSettings', 'fontWeight') ?>;
 	font-style: <? echo $s->get('generalFontSettings', 'fontStyle') ?>;
@@ -76,7 +76,7 @@ a img { border: none; }
 
 h1 { 
 	color: <? echo $s->get('pageHeading', 'color') ?>;
-	font-family: <? echo $s->get('pageHeading', 'fontFamily') ?>;
+	font-family: <? echo $s->getFont('pageHeading') ?>;
 	font-size: <? echo $s->get('pageHeading', 'fontSize') ?>;
 	font-weight: <? echo $s->get('pageHeading', 'fontWeight') ?>;
 	font-style: <? echo $s->get('pageHeading', 'fontStyle') ?>;
@@ -148,7 +148,7 @@ h1 {
 		}
 		
 			div#siteTopMenu ul#mainMenu li {
-				font-family: <? echo $s->get('menu', 'fontFamily') ?>;
+				font-family: <? echo $s->getFont('menu') ?>;
 				font-size: <? echo $s->get('menu', 'fontSize') ?>;
 				font-weight: <? echo $s->get('menu', 'fontWeight') ?>;
 				font-style: <? echo $s->get('menu', 'fontStyle') ?>;
@@ -166,7 +166,7 @@ h1 {
 		}
 
 			div#siteTopMenu ul#subMenu li {
-				font-family: <? echo $s->get('subMenu', 'fontFamily') ?>;
+				font-family: <? echo $s->getFont('subMenu') ?>;
 				font-size: <? echo $s->get('subMenu', 'fontSize') ?>;
 				font-weight: <? echo $s->get('subMenu', 'fontWeight') ?>;
 				font-style: <? echo $s->get('subMenu', 'fontStyle') ?>;
@@ -181,6 +181,7 @@ h1 {
 		#additionalText {
 			position: absolute;
 			max-width: 500px;
+			z-index: 49000;
 		}
 		.ie #additionalText {
 			width: 500px;
@@ -217,7 +218,7 @@ h1 {
 				width: 100%;
 				float: <? echo $contentFloat ?>;
 				color: <? echo $s->get('entryHeading', 'color') ?>;
-				font-family: <? echo $s->get('entryHeading', 'fontFamily') ?>;
+				font-family: <? echo $s->getFont('entryHeading') ?>;
 				font-size: <? echo $s->get('entryHeading', 'fontSize') ?>;
 				font-weight: <? echo $s->get('entryHeading', 'fontWeight') ?>;
 				font-style: <? echo $s->get('entryHeading', 'fontStyle') ?>;
@@ -340,7 +341,7 @@ h1 {
 				clear: both;
 				padding: 0;
 				color: <? echo $s->get('entryFooter', 'color') ?>;
-				font-family: <? echo $s->get('entryFooter', 'fontFamily') ?>;
+				font-family: <? echo $s->getFont('entryFooter') ?>;
 				font-size: <? echo $s->get('entryFooter', 'fontSize') ?>;
 				font-weight: <? echo $s->get('entryFooter', 'fontWeight') ?>;
 				font-style: <? echo $s->get('entryFooter', 'fontStyle') ?>;

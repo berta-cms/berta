@@ -357,7 +357,7 @@ var BertaEditorBase = new Class({
 				el.getElement('.xHandle').addEvent('click', function(event) {
 					event.preventDefault();
 				})
-
+				
 				var gridStep=parseInt(bertaGlobalOptions.gridStep);
 				gridStep=isNaN(gridStep)||gridStep<1?1:gridStep;
 
@@ -373,21 +373,28 @@ var BertaEditorBase = new Class({
 						el.grab(xCoords , 'top');
 				    },
 					onDrag: function(){
+						$('xTopPanelContainer').hide();
                         if (parseInt(el.getStyle('left'))<0){
                             el.setStyle('left', '0');
                         }
-                        if (parseInt(el.getStyle('top'))<0){
+                        
+                        if (el.hasClass('xEntry') && parseInt(el.getStyle('top'))<20 ){
+	                        el.setStyle('top', '20px');
+                        }else if (parseInt(el.getStyle('top'))<0){
                             el.setStyle('top', '0');
                         }
 						$('xCoords').set('html', 'X:'+parseInt(el.getStyle('left'))+' Y:'+parseInt(el.getStyle('top')));
 					},
 				    onComplete: function(el) {
+						$('xTopPanelContainer').show();
+						this.hideControlPanel(el);
 					    $('xCoords').destroy();
 				       	el.removeClass('xEditing');
 						var value = parseInt(el.getStyle('left')) + ',' + parseInt(el.getStyle('top'));
 						this.elementEdit_save(null, el, null, null, value, value);
 				    }.bind(this)
 				});
+				this.hideControlPanel(el);
 				break;
 			
 			case this.options.xBertaEditorClassAction:
@@ -401,13 +408,11 @@ var BertaEditorBase = new Class({
 					}
 				}.bindWithEvent(el, this));
 			
-			
 			default:
 				break;
 		}
 	},
-	
-	
+		
 	
 	
 	  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -456,6 +461,17 @@ var BertaEditorBase = new Class({
 			}
 		}).post();
 	},
+	
+	hideControlPanel: function(el) {
+		if ( (el.hasClass('xEntry') || el.hasClass('xProperty-additionalTextXY')) &&  parseInt(el.getStyle('top'))<40 ){
+			el.addEvent('mouseenter', function(){
+				$('xTopPanelContainer').hide();
+			});			
+			el.addEvent('mouseleave', function(){
+				$('xTopPanelContainer').show();
+			});					
+		}	
+	},	
 
 	
 	  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

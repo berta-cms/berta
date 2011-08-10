@@ -25,7 +25,7 @@ html, body {
 body {
 	background-color: #fff;
 	color: <? echo $s->get('generalFontSettings', 'color') ?>;
-	font-family: <? echo $s->get('generalFontSettings', 'fontFamily') ?>;
+	font-family: <? echo $s->getFont('generalFontSettings') ?>;
 	font-size: <? echo $s->get('generalFontSettings', 'fontSize') ?>;
 	font-weight: <? echo $s->get('generalFontSettings', 'fontWeight') ?>;
 	font-style: <? echo $s->get('generalFontSettings', 'fontStyle') ?>;
@@ -115,7 +115,7 @@ a img { border: none; }
 				padding: 0;
 				margin: 0;
 				color: <? echo $s->get('pageHeading', 'color') ?>;
-				font-family: <? echo $s->get('pageHeading', 'fontFamily') ?>;
+				font-family: <? echo $s->getFont('pageHeading') ?>;
 				font-size: <? echo $s->get('pageHeading', 'fontSize') ?>;
 				font-weight: <? echo $s->get('pageHeading', 'fontWeight') ?>;
 				font-style: <? echo $s->get('pageHeading', 'fontStyle') ?>;

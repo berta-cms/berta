@@ -18,6 +18,7 @@
 	
 	{ $berta.scripts }
 	{ $berta.css }
+	{ googleWebFontsAPI }		
 	<script type="text/javascript">{literal}
 		BertaGallery.implement({
 			layout_update: function() {

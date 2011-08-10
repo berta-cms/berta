@@ -148,13 +148,13 @@ else if($decoded['action'] == 'CREATE_NEW_SECTION') {
 			//$returnUpdate .= '<div class="csBehaviour"><a href="#">reload page</a></div>';
 			$returnUpdate .= '<div class="csDetails"></div>';
 			//$returnUpdate .= '<div class="csLink"><span class="' . $xEditSelectorSimple . ' xProperty-sectionLink xParam-' . $sName . '" title="Link of the website where to lead the visitor when s/he navigates to this section">' . BertaEditor::getXEmpty('sectionLink') . '</span></div>';
-			$returnUpdate .= '<div class="csPub"><span class="' . $xEditSelectorYesNo . ' xProperty-published xSection-' . $sName . '">0</span></div>';
+			$returnUpdate .= '<div class="csPub"><span class="' . $xEditSelectorYesNo . ' xProperty-published xSection-' . $sName . '">1</span></div>';
 			$returnUpdate .= '<div class="csDelete"><a href="#" class="xSectionDelete">delete</a></div>';
 			$returnReal = $sName;
 
 			$sectionsList = BertaEditor::getSections();
 			$sectionsList[$sName] = array(
-				'@attributes' => array('tags_behavior' => 'invisible'),
+				'@attributes' => array('tags_behavior' => 'invisible', 'published'=>1),
 				'name' => $sName, 
 				'title' => array('value' => '')
 			);
