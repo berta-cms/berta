@@ -22,13 +22,13 @@ return array(
 							Then press Enter or click anywhere outside the field to save.
 							This way it will be throughout your site — all that has a yellow background is editable. You will also be able to change these settings later.',
 
-	'googleFont_description' => 'Type in any google font name. To check avaliable fonts go to <a href="http://www.google.com/webfonts" target="_blank">Google web fonts</a>. Remember – google font overrides system font. Leave empty if you want to use system font.',
+	'googleFont_description' => 'Type in any google font name. To check avaliable fonts go to <a href="http://www.google.com/webfonts" target="_blank">Google web fonts</a>. Remember – google font overrides system font. Leave empty if you want to use system font. Example: <em>Marvel</em> vai <em>Marvel:700italic</em>',
 	'description_tagsMenu_x' => 'Submenu X position in pixels (i.e. 10px)',
 	'description_tagsMenu_y' => 'Submenu Y position in pixels (i.e. 10px)',
 	'description_menu_position' => 'Menu position',
 	'description_banner' => 'Banners are images which are visible in all sections. Use it for buttons or social icons in your site',
 	'description_banner_link' => 'Banner link \'http://\' should be in front of the address',
-	'description_language' => 'Choose language of berta interface',
+	'description_language' => 'Choose language of berta interface. Refresh site, to apply.',
 	'Heading position' => 'Heading position fixed or absolute. Fixed always stays in one place, absolute moves together with content.',
 	'description_heading_position' => 'Heading position fixed or absolute. Fixed always stays in one place, absolute moves together with content.',
 	'description_submenu_alwaysopen' => 'Submenu is open when menu item is current.',
