@@ -22,6 +22,9 @@ html, body {
 	width: 100%;
 	height: 100%;
 }
+.ie6 html {
+	overflow-y: hidden;
+}
 
 
 body {
@@ -34,8 +37,6 @@ body {
 	font-variant: <? echo $s->get('generalFontSettings', 'fontVariant') ?>;
 	line-height: <? echo $s->get('generalFontSettings', 'lineHeight') ?>;
 	
-	text-align: left;
-	
 	background-color: <? echo $s->get('background', 'backgroundColor') ?>;
 	<? if($s->get('background', 'backgroundImageEnabled') == 'yes') { ?>
 		<? if($s->get('background', 'backgroundImage')) { ?>
@@ -45,7 +46,13 @@ body {
 		background-position: <? echo $s->get('background', 'backgroundPosition') ?>;
 		background-attachment: <? echo $s->get('background', 'backgroundAttachment') ?>;
 	<? } ?>
+	
+	text-align: left;
 }
+.ie6 body {
+	overflow-y: hidden;
+}
+
 
 a:link { 
 	color: <? echo $s->get('links', 'colorLink') ?>;
@@ -70,10 +77,12 @@ a:active {
 
 a img { border: none; }
 
-
-.mess {
-	position: absolute !important;
+.noHorizScroll {
+	overflow-x: hidden !important;
 }
+
+
+
 
 
 
@@ -81,264 +90,348 @@ a img { border: none; }
 	position: relative;
 	margin: 0;
 	padding: 0;
-	/*overflow: <? if($isEngineView) echo 'visible'; else echo 'auto' ?>;*/
+}
+.ie6 #allContainer {
+	width: 100%;
+	height: 100%;
+	overflow-x: auto;
 }
 
-#contentContainer {
-	position: relative;
-}
-
-#contentContainer h1 {
-	padding: 0;
-	margin: 0;
-	z-index: 50000;
-	color: <? echo $s->get('heading', 'color') ?>;
-	font-family: <? echo $s->getFont('heading') ?>;
-	font-size: <? echo $s->get('heading', 'fontSize') ?>;
-	font-weight: <? echo $s->get('heading', 'fontWeight') ?>;
-	font-style: <? echo $s->get('heading', 'fontStyle') ?>;
-	font-variant: <? echo $s->get('heading', 'fontVariant') ?>;
-	line-height: <? echo $s->get('heading', 'lineHeight') ?>;
-	position: <? echo $s->get('heading', 'position') ?> !important;
-}
-	h1 a {
-		color: <? echo $s->get('heading', 'color') ?> !important;
-		text-decoration: none;
+	#sideColumn {
+		position: fixed;
+		z-index: 2000;
+		left: <? echo $s->get('sideBar', 'marginLeft') ?>;
+		width: <? echo $s->get('sideBar', 'width') ?>;
+		top: 0; bottom: 0;
+		<? if($s->get('sideBar', 'transparent') == 'no') { ?>
+		background-color: <? echo $s->get('sideBar', 'backgroundColor') ?>;
+		<? } ?>
 	}
-
-#contentContainer h2 {
-	z-index: 45000;
-	font-family: <? echo $s->getFont('menu') ?>;
-	font-size: <? echo $s->get('menu', 'fontSize') ?>;
-	font-weight: <? echo $s->get('menu', 'fontWeight') ?>;
-	font-style: <? echo $s->get('menu', 'fontStyle') ?>;
-	font-variant: <? echo $s->get('menu', 'fontVariant') ?>;
-	line-height: 20px;
-}
-
-.menuItem {
-	z-index: 45000;
-	font-family: <? echo $s->getFont('menu') ?>;
-	font-size: <? echo $s->get('menu', 'fontSize') ?>;
-	font-weight: <? echo $s->get('menu', 'fontWeight') ?>;
-	font-style: <? echo $s->get('menu', 'fontStyle') ?>;
-	font-variant: <? echo $s->get('menu', 'fontVariant') ?>;
-	line-height: <? echo $s->get('menu', 'lineHeight') ?>;
-	position: <? echo $s->get('menu', 'position') ?> !important;
-}
-	.menuItem a:link, .menuItem a:visited { 
-		color: <? echo $s->get('menu', 'colorLink') ?>;
-		text-decoration: <? echo $s->get('menu', 'textDecorationLink') ?>;
-	}
-	.menuItem a:hover, .menuItem a:active { 
-		color: <? echo $s->get('menu', 'colorHover') ?>;
-		text-decoration: <? echo $s->get('menu', 'textDecorationHover') ?>;
-	}
-	.menuItemSelected>a { 
-		color: <? echo $s->get('menu', 'colorActive') ?> !important;
-		text-decoration: <? echo $s->get('menu', 'textDecorationActive') ?> !important;
+	.ie6 #sideColumn {
+		position: absolute;
+		height: 100%;
 	}
 	
-	.menuItem ul {
-		list-style: none;
-		margin: 0;
-		padding: 0;
-		position: relative;
-		left: <? echo $s->get('tagsMenu', 'x') ?>;
-		top: <? echo $s->get('tagsMenu', 'y') ?>;		
-	}
-		.menuItem li {
-			margin: 0;
-			padding: 0;
-			font-family: <? echo $s->getFont('tagsMenu') ?>;
-			font-size: <? echo $s->get('tagsMenu', 'fontSize') ?>;
-			font-weight: <? echo $s->get('tagsMenu', 'fontWeight') ?>;
-			font-style: <? echo $s->get('tagsMenu', 'fontStyle') ?>;
-			font-variant: <? echo $s->get('tagsMenu', 'fontVariant') ?>;
-			line-height: <? echo $s->get('tagsMenu', 'lineHeight') ?>;
+		#sideColumnTop {
+			padding-left: 20px;
+			padding-right: 20px;
+			padding-top: <? echo $s->get('sideBar', 'marginTop') ?>;
+			padding-bottom: 20px;
+			/*width: 140px;*/
 		}
-			.menuItem li a:link, .menuItem li a:visited { 
+	
+			#sideColumnTop h1 { 
+				min-height: 40px;
+				float: none;
+				padding: 0;
+				margin: 0;
+				color: <? echo $s->get('sideBar', 'color') ?>;
+				font-family: <? echo $s->getFont('sideBar') ?>;
+				font-size: <? echo $s->get('sideBar', 'fontSize') ?>;
+				font-weight: <? echo $s->get('sideBar', 'fontWeight') ?>;
+				font-style: <? echo $s->get('sideBar', 'fontStyle') ?>;
+				font-variant: <? echo $s->get('sideBar', 'fontVariant') ?>;
+				line-height: <? echo $s->get('sideBar', 'lineHeight') ?>;
+				
+				margin-bottom: <? echo $s->get('sideBar', 'marginBottom') ?>;
+			}
+				#sideColumnTop h1 a {
+					color: <? echo $s->get('sideBar', 'color') ?> !important;
+					text-decoration: none;
+				}
+		
+			#sideColumnTop li a:link, #sideColumnTop li a:visited { 
+				color: <? echo $s->get('menu', 'colorLink') ?>;
+				text-decoration: <? echo $s->get('menu', 'textDecorationLink') ?>;
+			}
+			#sideColumnTop li a:hover { 
+				color: <? echo $s->get('menu', 'colorHover') ?>;
+				text-decoration: <? echo $s->get('menu', 'textDecorationHover') ?>;
+				/*border: <? echo $s->get('links', 'border:hover') ?>;*/
+			}
+			#sideColumnTop li a:active, #sideColumnTop li.selected>a { 
+				color: <? echo $s->get('menu', 'colorActive') ?>;
+				text-decoration: <? echo $s->get('menu', 'textDecorationActive') ?>;
+				/*border: <? echo $s->get('links', 'border:active') ?>;*/
+			}
+			
+			#sideColumnTop li li a:link, #sideColumnTop li li a:visited { 
 				color: <? echo $s->get('tagsMenu', 'colorLink') ?>;
 				text-decoration: <? echo $s->get('tagsMenu', 'textDecorationLink') ?>;
 			}
-			.menuItem li a:hover, .menuItem li a:active { 
+			#sideColumnTop li li a:hover { 
 				color: <? echo $s->get('tagsMenu', 'colorHover') ?>;
 				text-decoration: <? echo $s->get('tagsMenu', 'textDecorationHover') ?>;
+				/*border: <? echo $s->get('links', 'border:hover') ?>;*/
 			}
-			.menuItem li.selected>a { 
-				color: <? echo $s->get('tagsMenu', 'colorActive') ?> !important;
-				text-decoration: <? echo $s->get('tagsMenu', 'textDecorationActive') ?> !important;
+			#sideColumnTop li li a:active, #sideColumnTop li li.selected>a { 
+				color: <? echo $s->get('tagsMenu', 'colorActive') ?>;
+				text-decoration: <? echo $s->get('tagsMenu', 'textDecorationActive') ?>;
+				/*border: <? echo $s->get('links', 'border:active') ?>;*/
 			}
-
-
 			
 
-	
-	
-
-
-#pageEntries {
-	position: relative;
-	margin: 0;
-	padding: 0;
-	list-style: none;
-}
-	#pageEntries .xEntry {
-		position: relative;
-		max-width: <? echo $s->get('entryLayout', 'contentWidth') ?>;
-		min-width: 150px;
-		clear: both;
-		list-style:none;
-		margin-bottom: <? echo $s->get('entryLayout', 'spaceBetween') ?>;
+			#sideColumnTop ul {
+				list-style: none;
+				margin: 0 0 20px;
+				padding: 0;
+			}
+				#sideColumnTop ul li {
+					padding-bottom: 6px;
+					font-family: <? echo $s->getFont('menu') ?>;
+					font-size: <? echo $s->get('menu', 'fontSize') ?>;
+					font-weight: <? echo $s->get('menu', 'fontWeight') ?>;
+					font-style: <? echo $s->get('menu', 'fontStyle') ?>;
+					font-variant: <? echo $s->get('menu', 'fontVariant') ?>;
+					line-height: <? echo $s->get('menu', 'lineHeight') ?>;
+					
+				}
+					#sideColumnTop ul li.selected>a {
+						/*font-weight: bold;
+						color: #000;*/
+					}
+				#sideColumnTop ul ul {
+					margin: 0 0 0 0px;
+				}
+					#sideColumnTop ul ul li {
+						padding-bottom: 0;
+						text-transform: none;
+						font-family: <? echo $s->getFont('tagsMenu') ?>;
+						font-size: <? echo $s->get('tagsMenu', 'fontSize') ?>;
+						font-weight: <? echo $s->get('tagsMenu', 'fontWeight') ?>;
+						font-style: <? echo $s->get('tagsMenu', 'fontStyle') ?>;
+						font-variant: <? echo $s->get('tagsMenu', 'fontVariant') ?>;
+						line-height: <? echo $s->get('tagsMenu', 'lineHeight') ?>;
+					}
+			
+			#sideColumnTop ul select { 
+				width: 100%;
+			}
+			
+			
+		#additionalText {
+			position: absolute;
+			min-width: 140px;
+		}
+			#additionalText p { margin: 0; padding: 0; }
 		
-		padding: 0;
-	}
-	
-
-	#pageEntries .xEntry .xGalleryContainer {
-		position: relative;
-		clear: both;
-		padding: 0;
-		margin-bottom: <? echo $s->get('entryLayout', 'galleryMargin') ?>;
-	}
-	#pageEntries .xEntry .xGalleryType-slideshow {}
-	#pageEntries .xEntry .xGalleryType-row {}
 				
-		#pageEntries .xEntry .xGalleryContainer .xGallery { 
-			position: relative; 
-			display: block;
+		#sideColumnBottom {
+			position: absolute;
+			bottom: 0;
+			width: 140px;
+			padding: 20px 20px 30px;
 		}
-		#pageEntries .xEntry .xGalleryType-slideshow .xGallery {
-			margin-bottom: <? echo $s->get('entryLayout', 'galleryNavMargin') ?>;
+			#sideColumnBottom p {
+				width: 100%;
+				font-size: 80%;
+				margin: 0;
+				padding: 0;
+			}
+			#sideColumnBottom #userCopyright {
+				
+			}
+			#sideColumnBottom #bertaCopyright {
+				
+			}
+			
+
+
+	#contentContainer {
+		position: relative;
+		z-index: 1000;
+	}
+	.ie6 #contentContainer {
+		left: 0;
+		top: 0;
+		width: 100%;
+		height: 100%;
+		overflow: auto !important;
+	}
+	
+		#firstPageMarkedEntries {
+			position: relative;
 		}
-		
-			#pageEntries .xEntry .xGalleryType-row .xGalleryItem {
+			#firstPageMarkedEntries .xEntry {
+				width: <? echo $s->get('pageLayout', 'contentWidth') ?>;
+			}
+			.firstPagePic {
 				position: absolute;
 			}
-					
-		#pageEntries .xEntry .xGalleryContainer ul.xGalleryNav {
-			display: block;
-			position: relative;
-			clear: both;
-			margin: 0 0 2px;
-			padding: 0;
-			list-style: none;
-			height: 18px;
-		}
-			#pageEntries .xEntry .xGalleryContainer ul.xGalleryNav li {
-				display: block;
-				float: left;
-				list-style: none;
-				line-height: 96%;
-				margin: 0;
-			}
-				#pageEntries .xEntry .xGalleryContainer ul.xGalleryNav .xGalleryImageCaption { display: none; }
-				#pageEntries .xEntry .xGalleryContainer ul.xGalleryNav a {
+				.firstPagePic .xGalleryEditButton {
+					display: none;
+				}
+					.firstPagePic .xGalleryEditButton span {
+						display: none;
+					}
+				.firstPagePic .xGallery {
+					<? if($s->get('firstPage', 'imageHaveShadows') == 'yes') { ?>
+					background: url('layout/shadow.png') right bottom;
+					<? } ?>
+				}
+					.firstPagePic .xGalleryItem {
+						position: absolute;
+						<? if($s->get('firstPage', 'imageHaveShadows') == 'yes') { ?>
+						left: -5px;
+						top: -5px;
+						<? } ?>
+					}
+				.firstPagePicLink {
 					display: block;
-					float: left;
-					padding: 1px 5px 1px;
-					color: <? echo $s->get('menu', 'colorLink') ?>;
-					text-decoration: <? echo $s->get('menu', 'textDecorationLink') ?>;
+					position: absolute;
+					left: 0;
+					top: 0;
+					z-index: 1000;
 					outline: none;
 				}
-			#pageEntries .xGalleryContainer ul.xGalleryNav li a:hover {
-				color: <? echo $s->get('menu', 'colorHover') ?>;
-				text-decoration: <? echo $s->get('menu', 'textDecorationHover') ?>;
-			}
-			#pageEntries .xGalleryContainer ul.xGalleryNav li.selected a {
-				color: <? echo $s->get('menu', 'colorActive') ?>;
-				text-decoration: <? echo $s->get('menu', 'textDecorationActive') ?>;
-			}
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-	#pageEntries .xEntry .entryText {
-		position: relative;
-		clear: both;
-		margin: 0 0 6px;
-	}
-		#pageEntries .xEntry .entryText p {
-			margin: 0 0 6px;
+	
+	
+	
+	
+		#mainColumnContainer {
+			position: relative;
+			padding-left: <? echo $s->get('sideBar', 'marginLeft') ?>;;
 		}
-		#pageEntries .xEntry .entryText ul {
-			margin: 0 0 6px;
-			padding: 0 0 0 15px;
+	
+		#mainColumn {
+			position: relative;
+			margin-top: <? echo $s->get('pageLayout', 'paddingTop') ?>;
+			margin-left: <? echo $s->get('sideBar', 'width') ?>;
+			padding-bottom: 20px;
+			padding-left: <? echo $s->get('pageLayout', 'paddingLeft') ?>;
+			/*width: 800px;*/
+			width: <? echo $s->get('pageLayout', 'contentWidth') ?>;
 		}
-			#pageEntries .xEntry .entryText ul li {
-				list-style-type: circle;
-				margin: 0 0 3px 0;
+
+
+		ol#pageEntries {
+			position: relative;
+			margin: 0;
+			padding: 0;
+			list-style: none;
+		}
+			ol#pageEntries li.xEntry {
+				position: relative;
+				clear: both;
+				list-style:none;
+				margin-bottom: <? echo $s->get('entryLayout', 'spaceBetween') ?>;
 				padding: 0;
 			}
-		#pageEntries .xEntry .entryText ol {
-			margin: 0 0 6px;
-			padding: 0 0 0 15px;
-		}
-			#pageEntries .xEntry .entryText ol li {
-				margin: 0 0 3px 0;
-				padding: 0;
-				list-style-type: decimal;
-			}
+	
+				ol#pageEntries li.xEntry h2 {
+					padding: 0;
+					margin: 0;
+					font-size: 16px;
+					font-weight: bold;
+				}
+				ol#pageEntries li.xEntry .xGalleryContainer {
+					position: relative;
+					clear: both;
+					padding: 0;
+					margin-bottom: <? echo $s->get('entryLayout', 'galleryMargin') ?>;
+				}
+				ol#pageEntries li.xEntry .xGalleryType-slideshow {
 
-
-	#pageEntries li.xEntry .entryTags {
-		position: relative;
-		clear: both;
-	}
+				}
+				ol#pageEntries li.xEntry .xGalleryType-row {
 				
+				}
 				
-
-	#additionalText {
-		z-index: 49000;
-		min-width: 140px;
-	}
-		#additionalText p { margin: 0; padding: 0; }
-
+					ol#pageEntries li.xEntry .xGalleryContainer .xGallery { 
+						position: relative; 
+					}
+					ol#pageEntries li.xEntry .xGalleryType-slideshow .xGallery {
+						margin-bottom: <? echo $s->get('entryLayout', 'galleryNavMargin') ?>;
+					}
 					
+						.xGalleryContainer .xGallery div.xGalleryItem { display: block; }
+						.xGalleryType-row div.xGalleryItem {
+							padding-bottom: <? echo $s->get('entryLayout', 'spaceBetweenRowImages') ?>;
+						}
+						.xGalleryImageCaption { position: relative; }
+						.xGalleryType-slideshow .xGalleryImageCaption { display: none; }
+		
+					ol#pageEntries .xGalleryContainer ul.xGalleryNav {
+						display: block;
+						position: relative;
+						clear: both;
+						margin: 0 0 2px;
+						padding: 0;
+						list-style: none;
+						height: 18px;
+					}
+						ol#pageEntries .xGalleryContainer ul.xGalleryNav li {
+							display: block;
+							float: left;
+							list-style: none;
+							line-height: 96%;
+							margin: 0;
+						}
+						ol#pageEntries .xGalleryContainer ul.xGalleryNav li .xGalleryImageCaption { display: none; }
+						ol#pageEntries .xGalleryContainer ul.xGalleryNav li a {
+							display: block;
+							float: left;
+							padding: 1px 5px 1px;
+							color: <? echo $s->get('menu', 'colorLink') ?>;
+							text-decoration: <? echo $s->get('menu', 'textDecorationLink') ?>;
+							outline: none;
+						}
+						ol#pageEntries .xGalleryContainer ul.xGalleryNav li a:hover {
+							color: <? echo $s->get('menu', 'colorHover') ?>;
+							text-decoration: <? echo $s->get('menu', 'textDecorationHover') ?>;
+						}
+						ol#pageEntries .xGalleryContainer ul.xGalleryNav li.selected a {
+							color: <? echo $s->get('menu', 'colorActive') ?>;
+							text-decoration: <? echo $s->get('menu', 'textDecorationActive') ?>;
+						}
+			
+			
+				ol#pageEntries li.xEntry .entryText {
+					position: relative;
+					clear: both;
+					margin: 0 0 6px;
+				}
+					ol#pageEntries li.xEntry .entryText p {
+						margin: 0 0 6px;
+					}
+					ol#pageEntries li.xEntry .entryText ul {
+						margin: 0 0 6px;
+						padding: 0 0 0 15px;
+					}
+						ol#pageEntries li.xEntry .entryText ul li {
+							list-style-type: circle;
+							margin: 0 0 3px 0;
+							padding: 0;
+						}
+					ol#pageEntries li.xEntry .entryText ol {
+						margin: 0 0 6px;
+						padding: 0 0 0 15px;
+					}
+						ol#pageEntries li.xEntry .entryText ol li {
+							margin: 0 0 3px 0;
+							padding: 0;
+							list-style-type: decimal;
+						}
+			
+		 
+				ol#pageEntries li.xEntry .entryTags {
+					position: relative;
+					clear: both;
+				}
+				
+				
+				
+				
 	.floating-banner {
 		position: absolute;
 		z-index: 3000;
 	}
-
 				
 				
-#bottom {
-	position: fixed;
-	bottom: 20px;
-	font-size: 10px;
-	right: 20px;
-	z-index: 10000000;
-	
-}	
-	#bottom p {
-		float: left;
-		margin-right: 10px;
-		margin-bottom: 0;
-	}
 		
 
-.bertaBanner {
-	overflow: hidden;
-}
+	
 
-.bertaBanner a:hover .link {
-	display: none;
-}
 
-::-moz-selection {
-   background:#000000;
-   color:#ffffff;
-}
-    
-::selection{
-   background:#000000;
-   color:#ffffff;
-}
 
 <? if(!1) { ?></style><? } ?>

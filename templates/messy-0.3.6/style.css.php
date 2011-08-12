@@ -315,6 +315,15 @@ a img { border: none; }
 		margin-bottom: 0;
 	}
 		
+::-moz-selection {
+   background:#000000;
+   color:#ffffff;
+}
+    
+::selection{
+   background:#000000;
+   color:#ffffff;
+}
 
 
 
