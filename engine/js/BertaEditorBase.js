@@ -684,7 +684,7 @@ var BertaEditorBase = new Class({
 				theme : "advanced",
 				width : "600px", height : "300px",
 				//content_css : "<? echo $ENGINE_ABS_ROOT ?>css/mce.css.php",
-				theme_advanced_buttons1 : "save,|,pasteword,|,undo,redo,|,bold,italic,removeformat,cleanup,styleprops,|,bullist,numlist,outdent,indent,|,justifyleft,justifycenter,justifyright,justifyfull,|,hr,link,unlink,insertanything,|,code",
+				theme_advanced_buttons1 : "save,|,pasteword,|,undo,redo,|,bold,italic,removeformat,cleanup,styleprops,|,bullist,numlist,outdent,indent,|,hr,link,unlink,insertanything,|,code",
 				theme_advanced_buttons2 : "",
 				theme_advanced_buttons3 : "",
 				theme_advanced_path : true,
@@ -699,7 +699,7 @@ var BertaEditorBase = new Class({
 				plugins: "save,insertanything,paste",
 
 				valid_elements : "script[src],fb:comments[*],iframe[*],object[*],embed[*],param[*],form[*],input[*],textarea[*],select[*]," + 
-								 "p[class|style],b[class],i[class],span[class],strong[class],em[class],a[href|target|class|style|title],br[*],u[class]," + 
+								 "p[class],b[class],i[class],span[class],strong[class],em[class],a[href|target|class|style|title],br[*],u[class]," + 
 								 "ul,li,ol,img[*],hr[class]",
 				custom_elements : '',
 				extended_valid_elements : '',
