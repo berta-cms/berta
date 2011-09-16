@@ -2,6 +2,9 @@
 define('AUTH_AUTHREQUIRED', true);
 define('BERTA_ENVIRONMENT', 'engine');
 include('inc.page.php');
+
+if ($options['HOSTING_PROFILE']) {header('location:' . $options['HOSTING_PROFILE']); exit;}
+
 $loggedIn = $berta->security->userLoggedIn;
 include_once $ENGINE_ROOT . '_classes/class.bertaeditor.php';
 
