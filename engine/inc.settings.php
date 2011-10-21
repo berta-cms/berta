@@ -104,6 +104,8 @@ $settingsDefinition = array(
 		'language' => 	array('format' => 'select',	'allow_blank' => false, 'default' => $options['default_language'], 		'values' => $options['languages'], 	'title' => I18n::_('Interface language'),   'description' => I18n::_('description_language'))
  	),
 	
+	
+	
 	'settings' => array(
 		'_' =>                      array('title' => I18n::_('Other settings')),
 		'googleAnalyticsId' => 		array('format' => 'text',	'allow_blank' => true, 	'default' => '', 			'html_entities'	=> true,			'title' => I18n::_('Google Analytics ID'), 'validator' => 'GoogleAnalytics', 		'description' => I18n::_('The ID of the <a href="http://google.com/analytics" target="_blank">Google Analytics</a> site profile. To obtain an ID, register in <a href="http://google.com/analytics" target="_blank">Google Analytics</a> and create a profile for your site.')),
@@ -111,4 +113,7 @@ $settingsDefinition = array(
  	)
 );
 
+if(file_exists(($INDEX_INCLUDED ? '' : '.').'./shop/inc.settings.php')) {
+	include(($INDEX_INCLUDED ? '' : '.').'./shop/inc.settings.php');
+}
 ?>

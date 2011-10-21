@@ -192,6 +192,15 @@ class BertaTemplate extends BertaBase {
 		
 		$vars['berta']['pageTitle'] = $this->settings->get('texts', 'pageTitle');
 		
+		global $shopEnabled;
+		$vars['berta']['shop_enabled'] = false;
+		if(isset($shopEnabled) && $shopEnabled === true) {
+			$vars['berta']['shop_enabled'] = true;
+		}
+		//$vars['berta']['shop'] = array();
+		//$vars['berta']['shop'] = array('cart_name' => I18n::_('Shopping cart'));
+		
+		
 		// add sections ...
 		$vars['berta']['requestURI'] = $this->requestURI;
 		$vars['berta']['sectionName'] = $this->sectionName;

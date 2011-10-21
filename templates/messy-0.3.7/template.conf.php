@@ -24,7 +24,8 @@ $sectionTypes = array(
 	'external_link' => array('title' => 'External link', 'params' => array(
 		'link' => array('format' => 'text',	'default' => ''), 
 		'target' => array('format' => 'select', 'values' => array('_self' => 'Same window', '_blank' => 'New window'), 'default' => '_blank')
-	))
+	)),
+	
 );
 
 $templateConf = array(
@@ -123,6 +124,10 @@ $templateConf = array(
 		'textDecorationActive' => array('format' => 'select',		'values' => array('none', 'underline', 'overline', 'line-through'),		'default' => 'underline', 	'title' => I18n::_('Link decoration when clicked'),  'description' => '')
 	)
 );
+
+if(file_exists('../shop/template.conf.php')) {
+	include('../shop/template.conf.php');
+}
 
 return array($sectionTypes, $templateConf);
 

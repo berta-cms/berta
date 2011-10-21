@@ -234,6 +234,9 @@ a img { border: none; }
 					text-decoration: <? echo $s->get('menu', 'textDecorationLink') ?>;
 					outline: none;
 				}
+				
+				.xGalleryImageCaption { display: none; }
+				
 			#pageEntries .xGalleryContainer ul.xGalleryNav li a:hover {
 				color: <? echo $s->get('menu', 'colorHover') ?>;
 				text-decoration: <? echo $s->get('menu', 'textDecorationHover') ?>;
@@ -284,6 +287,8 @@ a img { border: none; }
 		position: relative;
 		clear: both;
 	}
+
+	
 				
 				
 
@@ -324,6 +329,11 @@ a img { border: none; }
    background:#000000;
    color:#ffffff;
 }
+
+.hidden {
+	display: none;
+}
+
 
 
 

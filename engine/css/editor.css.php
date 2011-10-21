@@ -1129,6 +1129,7 @@ body.xSettingsPageBody {
 			width: 250px;
 			height: auto;
 			min-height: 1px;
+			word-wrap: break-word;
 		}
 		body.xSettingsPageBody div.entry div.value-long {
 			width: 430px;
