@@ -77,7 +77,7 @@
 			{ /if }
 			<div id="contentContainer">
 				{ if $berta.section.type == 'shop' }
-				<a href="https://docs.google.com/spreadsheet/viewform?formkey=dDk5UzdGcl9ZbmJsN0dyd2VINURGZ0E6MQ" target="_blank" style="visibility: hidden;" id="feedback_url"><img src="/engine/layout/feedback_button.png" /></a>
+				<a href="https://docs.google.com/spreadsheet/viewform?formkey=dDk5UzdGcl9ZbmJsN0dyd2VINURGZ0E6MQ" target="_blank" style="visibility: hidden;" id="feedback_url"><img src="{ $berta.options.ENGINE_ABS_ROOT }layout/feedback_button.png" /></a>
 				<script>
 				{literal}
 				window.addEvent('domready', function(){ 
