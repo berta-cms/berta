@@ -1,3 +1,9 @@
 storage/*
 .idea/*
 .DS_Store
+shop/*
+.buildpath
+.dropbox
+.project
+.settings
+Icon
