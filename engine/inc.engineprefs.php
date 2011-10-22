@@ -89,8 +89,7 @@ $options['hip_ipaddr'] = array('85.31.99.218', '85.31.102.201');
 
 // external
 $options['newsticker_update_uri'] = array(
-	//'http://www.hungrylab.lv/berta/news_ticker.php',
-	'http://www.berta.lv/news_ticker.php'
+	'http://www.berta.me/news_ticker.php'
 );
 foreach($options['hip_ipaddr'] as $ip)
 	$options['newsticker_update_uri'][] = 'http://' . $ip . '/berta-remote/news_ticker.php';

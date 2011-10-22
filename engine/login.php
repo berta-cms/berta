@@ -83,7 +83,7 @@ if($auth_action == "login" && !$errStr) {
 					<input type="password" name="auth_pass" id="auth_pass" class="xLoginField" />
 					<input type="submit" name="auth_subm" id="auth_subm" class="xLoginSubmit" value="<?= I18n::_('Log in') ?>" />
 					<p>
-                        berta v <? echo BertaBase::$options['version'] ?> - <? echo date('Y') ?>
+                        berta v <? echo BertaBase::$options['version'] ?> 2008-<? echo date('Y') ?>
                     </p>
 				</form>
 			</div>

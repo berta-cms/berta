@@ -2,7 +2,7 @@
 
 return array(
 
-	'berta_copyright_text' => '<a href="http://www.berta.lv/" target="_blank" title="Create your own portfolio with Berta in minutes!">berta</a>',
+	'berta_copyright_text' => '<a href="http://www.berta.me/" target="_blank" title="Create your own portfolio with Berta in minutes!">berta</a>',
 
 	// Translations from the top "admin" menu
 
@@ -264,7 +264,7 @@ return array(
 	'description_tagsMenu_y' => 'Apakšizvēlnes Y pozīcija pikseļos (piem.: 50px)',
 	'description_menu_position' => 'Izvēlnes pozicionēšana',
 	'description_banner' => 'Banneri ir bildes, kuras redzamas visās sadaļās, pimēram, twitter ikonas vai pogas. Var pievienot līdz 7 dažādiem elementiem.',
-	'description_banner_link' => 'Bannera saite. Adreses priekšā neaizmirsti pievienot http:// (piem.: http://www.berta.lv)',
+	'description_banner_link' => 'Bannera saite. Adreses priekšā neaizmirsti pievienot http:// (piem.: http://www.berta.me)',
 	'description_language' => 'Choose language of berta interface. Refresh site to apply.',
 	'Heading position' => 'Galvenes pozīcija',
 	'description_heading_position' => 'Galvenes novietojums, fiksēts vai nefiksēts',
