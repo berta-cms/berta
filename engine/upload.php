@@ -67,6 +67,9 @@ $constraints['max_orig_height'] = $berta->settings->get('media', 'imagesOrigMaxH
 //$constraints['max_orig_width'] = 50;
 //$constraints['max_orig_height'] = 50;
 
+$constraints['max_orig_width'] = 2000;
+$constraints['max_orig_height'] = 2000;
+
 // if image is being uploaded for a settings, then different constraints apply
 if($settingsProperty) {
 	$settings = $berta->settings;
@@ -144,6 +147,8 @@ if(($entryId && $mediaFolder || $settingsProperty) && isset($_FILES['Filedata'])
 				array(IMAGETYPE_GIF, IMAGETYPE_JPEG, IMAGETYPE_PNG)))			$error = 'Only JPG, GIF, PNG images and FLV (F4V) videos are supported.';
 			//if(!$error && (($imInfo[0] < $constraints['min_width']) ||
 			//			  ($imInfo[1] < $constraints['min_height'])))			$error = 'Please don\'t upload super-small images!';
+			if(!$error && (($imInfo[0] > $constraints['max_orig_width']) ||
+						  ($imInfo[1] > $constraints['max_orig_height'])))		$error = 'Please don\'t upload images larger than '.$constraints['max_orig_width'].'x'.$constraints['max_orig_height'].'px !';		
 			$fileType = 'image';
 		}
 	}
