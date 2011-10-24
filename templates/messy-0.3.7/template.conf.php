@@ -125,7 +125,7 @@ $templateConf = array(
 	)
 );
 
-if(file_exists('../shop/template.conf.php')) {
+if(@file_exists('../shop/template.conf.php')) {
 	include('../shop/template.conf.php');
 }
 

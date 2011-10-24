@@ -113,7 +113,7 @@ $settingsDefinition = array(
  	)
 );
 
-if(file_exists(($INDEX_INCLUDED ? '' : '.').'./shop/inc.settings.php')) {
+if(@file_exists(($INDEX_INCLUDED ? '' : '.').'./shop/inc.settings.php')) {
 	include(($INDEX_INCLUDED ? '' : '.').'./shop/inc.settings.php');
 }
 ?>
