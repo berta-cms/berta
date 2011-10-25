@@ -48,7 +48,21 @@ class BertaTemplate extends BertaBase {
 		$this->name = $templateName;
 		$tPath = self::$options['TEMPLATES_FULL_SERVER_PATH'] . $this->name;
 		if(!file_exists($tPath)) {
-			$this->name = 'default';
+		
+		    $template=explode('-',$this->name);
+            $template=$template[0];
+
+            //try to get same template with different version if not exists
+            foreach ( $this->getAllTemplates() AS $tpl ){
+                list($template_all)=explode('-',$tpl);
+                if ($template_all==$template){
+                    $this->name = $tpl;
+                    break;
+                }else{
+                    $this->name = 'default';
+                }
+                
+            }
 			$tPath = self::$options['TEMPLATES_FULL_SERVER_PATH'] . $this->name;
 		}
 		
