@@ -157,7 +157,11 @@
 								{ elseif !empty($entry.cartPrice)}
 									<div class="cartPrice" title="{ $entry.cartPrice }">{ $entry.cartPrice|@toPrice }</div>
 									<div class="cartTitle hidden" style="display:none">{ $entry.cartTitle }</div>
+									<br class="clear">
+									{if $entry.cartAttributes}
 									<div class="cartAttributes">{ $entry.cartAttributes|@toCartAttributes }</div>
+									<br class="clear">
+									{/if}
 									<span class="aele"><span>{ $berta.settings.shop.addToBasket }</span></span>
 									
 								{ /if }

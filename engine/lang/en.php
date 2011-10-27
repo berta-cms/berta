@@ -22,7 +22,7 @@ return array(
 							Then press Enter or click anywhere outside the field to save.
 							This way it will be throughout your site — all that has a yellow background is editable. You will also be able to change these settings later.',
 
-	'googleFont_description' => 'Type in any google font name. To check avaliable fonts go to <a href="http://www.google.com/webfonts" target="_blank">Google web fonts</a>. Remember – google font overrides system font. Leave empty if you want to use system font. Example: <em>Marvel</em> vai <em>Marvel:700italic</em>',
+	'googleFont_description' => 'Type in any google font name. To check avaliable fonts go to <a href="http://www.google.com/webfonts" target="_blank">Google web fonts</a>. Remember – google font overrides system font. Leave empty if you want to use system font. Example: <em>Marvel</em> or <em>Marvel:700italic</em>',
 	'description_tagsMenu_x' => 'Submenu X position in pixels (i.e. 10px)',
 	'description_tagsMenu_y' => 'Submenu Y position in pixels (i.e. 10px)',
 	'description_menu_position' => 'Menu position',
