@@ -35,7 +35,7 @@ if(!1) { ?><style type="text/css"><? } ?>
 		padding: 0;
 	}
 	.xEntryCheck {
-		float: right !important;
+		/*float: right !important;*/
 	}
 	.xEntryEditWrapButtons { 
 		border-bottom: none;
@@ -77,7 +77,7 @@ if(!1) { ?><style type="text/css"><? } ?>
 		.xEntryEditWrapButtons a.xEntryDelete:hover { background-color: none; }
 			.xEntryEditWrapButtons a.xEntryDelete span { display: none; }
 	
-		.xEntryCheck span { display: inline-block; float: right; margin-left: 3px; }
+		.xEntryCheck span { /*display: inline-block; float: right; margin-left: 3px;*/ }
 	
 			.xEntrySetGalType>span { display: none !important; }
 	

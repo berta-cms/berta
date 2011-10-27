@@ -165,9 +165,6 @@
 								<div class="addedToCart hidden"></div>
 
 							{ /if }
-							{ if $berta.environment == 'engine' || $berta.settings.entryLayout.displayTags == 'yes' && !empty($entry.tags) }
-							<br class="clear"><div title="{ $entry.tags|@implode:',' }" class="entryTags xEditableRC xProperty-tags xFormatModifier-toTags">{ $entry.tags|@toTags }</div>
-							{ /if }
 
 
 							{* entry footer wraps the entry including the header - don't leave it out! *}

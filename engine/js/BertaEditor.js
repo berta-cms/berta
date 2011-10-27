@@ -137,6 +137,17 @@ var BertaEditor = new Class({
 						this.entriesList.getElements('.xEntry .xEntryEditWrap').addEvent('mouseenter', this.entryOnHover.bindWithEvent(this));
 						this.entriesList.getElements('.xEntry .xEntryEditWrap').addEvent('mouseleave', this.entryOnUnHover.bindWithEvent(this));
 				
+						this.entriesList.getElements('.xEntry .xEntryDropdown').addEvent('mouseenter', this.entryDropdownToggle.bindWithEvent(this));
+						this.entriesList.getElements('.xEntry .xEntryDropdown').addEvent('click', this.entryDropdownToggle.bindWithEvent(this));
+												
+						this.entriesList.getElements('.xEntry .xEntryDropdownBox').addEvents({
+						 	mouseleave: function(event){
+						 		this.removeClass('xVisible');
+								dropdown = this.getParent().getElement('.xEntryDropdown');
+								dropdown.removeClass('xEntryDropdowHover');						    
+						    }														
+						});												
+				
 						// entry deleting and creating
 						new Element('A', { 'class': 'xCreateNewEntry xPanel xAction-entryCreateNew', 'href': '#'}).adopt(
 							new Element('span', { 'html': this.options.i18n['create new entry here'] })
@@ -565,7 +576,6 @@ var BertaEditor = new Class({
 	
 	
 	entryOnHover: function(event) {
-		
 		event = new Event(event);
 		var target = $(event.target);
 		//console.debug('in: ', target.get('tag'), target);
@@ -580,16 +590,40 @@ var BertaEditor = new Class({
 		if(!target.hasClass('xEntry')) target = target.getParent('.xEntry');
 		target.removeClass('xEntryHover');
 		
-	}
-	
-	
-	
-	
-	
-	
-	
+	},
+	entryDropdownToggle: function(event) {
+		var dropdown = $(event.target);
+		var dropdownPos=dropdown.getPosition();
+		var dropdownSize=dropdown.getSize();		
+
+		var entry=dropdown.getParent().getParent();
+		var entryPos=parseInt(entry.getParent().getStyle('left'));
+		entryPos=isNaN(entryPos)?0:entryPos;
+		
+		dropdownBox=entry.getElement('.xEntryDropdownBox');
+		var dropdownBoxSize=dropdownBox.getDimensions();
+		
+		dropdownBox.toggleClass('xVisible', true);
 
 	
+		if (dropdownBox.hasClass('xVisible')){
+
+			dropdown.addClass('xEntryDropdowHover');
+		
+			var mainColumn_margin_padding=0;
+			var mainColumn = $('mainColumn');
+			
+			if (mainColumn) {
+				mainColumn_margin_padding = parseInt(mainColumn.getStyle('padding-left')) + parseInt(mainColumn.getStyle('margin-left'));
+			}
+		
+			var dropdownBoxLeftPos = dropdownPos.x - dropdownBoxSize.width + parseInt(dropdownSize.x/2+1)  - mainColumn_margin_padding - entryPos;
+		
+			dropdownBox.setStyle('left', dropdownBoxLeftPos + 'px');
+		}else{
+			dropdown.removeClass('xEntryDropdowHover');
+		}
+	}
 	
 });
 
@@ -597,13 +631,3 @@ BertaEditor.EDITABLES_INIT = 'editables_init';
 
 
 var bertaEditor = new BertaEditor(window.bertaGlobalOptions);
-
-
-
-
-
-
-
-
-
-

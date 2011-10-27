@@ -135,12 +135,6 @@
 						{ assign var=hasURL value= $berta.environment == 'engine' || !empty($entry.url) }
 						{ if $hasTags || $hasDate || $hasURL }
 						<div class="entryContent">
-							<div class="tagsList">
-								{ if $hasDate }<div title="{ $entry.date }" class="xEditableRC xProperty-date xFormatModifier-toDate">{ $entry.date|toDate }</div>{ /if }
-								{ if $hasTags && $hasDate }<div>&nbsp;|&nbsp;</div>{ /if } 
-								{ if $hasTags }<div title="{ $entry.tags|@implode:',' }" class="xEditableRC xProperty-tags xFormatModifier-toTags">{ $entry.tags|@toTags }</div>{ /if }
-							</div>
-							<br class="clear" />
 							<div class="xEditable xProperty-url">{ $entry.url }</div>
 						</div>
 						{ /if }

@@ -10,6 +10,7 @@
  */
 function smarty_function_entryHeader($params, &$smarty) {
 	global $berta;
+		
 	$settings = $berta->template->settings;
 	
 	if($berta->environment != 'engine') return '';
@@ -29,16 +30,33 @@ function smarty_function_entryHeader($params, &$smarty) {
 	}*/
 	$markedValue = !empty($params['entry']['marked']['value']) ? 1 : 0;
 	
+	$tags=isset($params['entry']['tags'])?implode(', ',$params['entry']['tags']):'';
+	
 	return <<<DOC
 		<a class="xCreateNewEntry xPanel xAction-entryCreateNew" href="#"><span>create new entry here</span></a>
 	
 		<div class="xEntryEditWrap">
 			<div class="xEntryEditWrapButtons xPanel">
+				
 				$moveButton
 				
-				<a href="#" class="xEntryDelete xAction-entryDelete" title="delete"><span>delete entry</span></a>
-				<div class="xEntryCheck"><label>marked <span class="xEditableRealCheck xProperty-marked">$markedValue</span></label></div>
+				<div class="tagsList">
+					<div title="$tags" class="xEditableRC xProperty-submenu xFormatModifier-toTags">$tags</div>
+				</div>
+
+				<div class="xEntryDropdown"></div>
+
 				<br class="clear" />
+			</div>
+			<div class="xEntryDropdownBox">
+				<ul>
+					<li>
+						<a><div class="xEntryCheck"><label><span class="xEditableRealCheck xProperty-marked">$markedValue</span>Marked</label></div></a>
+					</li>
+					<li>					
+						<a href="#" class="xEntryDelete xAction-entryDelete" title="delete"><span>Delete</span></a>
+					</li>									
+				</ul>
 			</div>
 DOC;
 }
