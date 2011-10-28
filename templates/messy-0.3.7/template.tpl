@@ -23,8 +23,11 @@
 	{ googleWebFontsAPI }	
 	{ /if }
 	<script type="text/javascript" src="{ $berta.options.TEMPLATES_ABS_ROOT }{ $berta.templateName }/mess.js"></script>
+
+	{ if $berta.section.type == 'shop' and $berta.shop_enabled == true }
 	<script type="text/javascript" src="{ $berta.options.SITE_ABS_ROOT }shop/js/shop.js"></script>	
-	<link rel="stylesheet" href="{ $berta.options.SITE_ABS_ROOT }shop/css/shop.css" type="text/css" />
+	<link rel="stylesheet" href="{ $berta.options.SITE_ABS_ROOT }shop/css/shop.css.php?{$smarty.now}" type="text/css" />
+	{ /if }
 </head>
 
 <body>
@@ -141,6 +144,12 @@
 							{* entryGallery prints the image gallery for the entry *}
 							{ entryGallery entry=$entry }
 
+
+							{ if ($berta.environment == 'engine' || !empty($entry.cartTitle)) and $berta.section.type == 'shop' and $berta.shop_enabled == true }
+								<h2><span class="xEditable xProperty-cartTitle xCaption-item-name cCartTitle">{ $entry.cartTitle }</span></h2>
+							{ /if }
+
+
 							{ if $berta.environment == 'engine' || !empty($entry.description) }
 							<div class="entryText xEditableMCE xProperty-description">{ $entry.description }</div>
 							{ /if }
@@ -151,13 +160,15 @@
 								<div class="addToCart">
 								
 								{ if $berta.environment == 'engine' }
-									<div class="xEditable xProperty-cartTitle xCaption-name cCartTitle">{ $entry.cartTitle }</div>
 									<div class="cartPrice xEditableRC xProperty-cartPrice xCaption-price xFormatModifier-toPrice" title="{ $entry.cartPrice }">{ $entry.cartPrice|@toPrice }</div>
 									<br class="clear" /><div class="xEditable xProperty-cartAttributes xCaption-attribute cCartAttributes">{ $entry.cartAttributes }</div>
 								{ elseif !empty($entry.cartPrice)}
 									<div class="cartPrice" title="{ $entry.cartPrice }">{ $entry.cartPrice|@toPrice }</div>
-									<div class="cartTitle hidden" style="display:none">{ $entry.cartTitle }</div>
+									<br class="clear">
+									{if $entry.cartAttributes}
 									<div class="cartAttributes">{ $entry.cartAttributes|@toCartAttributes }</div>
+									<br class="clear">
+									{/if}
 									<span class="aele"><span>{ $berta.settings.shop.addToBasket }</span></span>
 									
 								{ /if }

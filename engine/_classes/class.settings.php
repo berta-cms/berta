@@ -87,6 +87,14 @@ class Settings {
 		if( isset($this->settings[$collection]['googleFont']) && !empty( $this->settings[$collection]['googleFont']) ) {
 			$googleFont=explode(':',$this->settings[$collection]['googleFont']);
 			return $googleFont[0];
+		}elseif( $collection=='shopItem' ||  $collection=='shopPrice' ){
+		
+			if( isset($this->settings['shop'][$collection.'googleFont']) && !empty( $this->settings['shop'][$collection.'googleFont']) ) {
+				$googleFont=explode(':',$this->settings['shop'][$collection.'googleFont']);
+				return $googleFont[0];
+			}else{
+				return $this->get('shop',$collection.'fontFamily');
+			}		
 		}else{
 			return $this->get($collection,'fontFamily');
 		}

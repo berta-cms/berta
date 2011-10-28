@@ -1,6 +1,8 @@
 <?
 
 
+
+
 $settingsFontSelectGeneral = array(
 	'"Helvetica Neue", Helvetica, Arial, sans-serif' => 'Helvetica Neue, Helvetica, Arial, sans-serif',
 	'Helvetica, Arial, sans-serif' => 'Helvetica, Arial, sans-serif',
@@ -113,7 +115,8 @@ $settingsDefinition = array(
  	)
 );
 
-if(@file_exists(($INDEX_INCLUDED ? '' : '.').'./shop/inc.settings.php')) {
+if(@file_exists($SITE_ROOT .'shop/inc.settings.php')) {	
 	include(($INDEX_INCLUDED ? '' : '.').'./shop/inc.settings.php');
 }
+
 ?>
