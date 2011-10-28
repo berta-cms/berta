@@ -167,7 +167,6 @@
 									<br class="clear">
 									{if $entry.cartAttributes}
 									<div class="cartAttributes">{ $entry.cartAttributes|@toCartAttributes }</div>
-									<br class="clear">
 									{/if}
 									<span class="aele"><span>{ $berta.settings.shop.addToBasket }</span></span>
 									
