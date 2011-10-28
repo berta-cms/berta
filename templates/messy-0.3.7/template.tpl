@@ -24,7 +24,7 @@
 	{ /if }
 	<script type="text/javascript" src="{ $berta.options.TEMPLATES_ABS_ROOT }{ $berta.templateName }/mess.js"></script>
 
-	{ if $berta.section.type == 'shop' and $berta.shop_enabled == true }
+	{ if $berta.shop_enabled == true }
 	<script type="text/javascript" src="{ $berta.options.SITE_ABS_ROOT }shop/js/shop.js"></script>	
 	<link rel="stylesheet" href="{ $berta.options.SITE_ABS_ROOT }shop/css/shop.css.php?{$smarty.now}" type="text/css" />
 	{ /if }
