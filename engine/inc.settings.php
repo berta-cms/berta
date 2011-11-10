@@ -56,7 +56,7 @@ $settingsDefinition = array(
 	'pageLayout' => array(
 		'_' =>                      array('title' => I18n::_('Page layout')),
 		'favicon' => 				array('format' => 'icon',	'default' => '',  	    'title' => I18n::_('Favicon'),      'description' => I18n::_('Small picture to display in the address bar of the browser. The file must be in .ICO format and 16x16 pixels big.')),
-		'gridStep' =>          		array('format' => 'text',	'default' => 5,         'title' => I18n::_('Grid step'),    'description' => I18n::_('Distance in pixels for snap-to-grid dragging.'))
+		'gridStep' =>          		array('format' => 'text',	'default' => 10,         'title' => I18n::_('Grid step'),    'description' => I18n::_('Distance in pixels for snap-to-grid dragging.'))
 	),
 	'media' => array(
 		'_' =>                      array('title' => I18n::_('Media')),
@@ -116,7 +116,7 @@ $settingsDefinition = array(
 );
 
 if(@file_exists($SITE_ROOT .'shop/inc.settings.php')) {	
-	include(($INDEX_INCLUDED ? '' : '.').'./shop/inc.settings.php');
+	include($SITE_ROOT .'shop/inc.settings.php');
 }
 
 ?>

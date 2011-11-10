@@ -79,14 +79,17 @@
 				{ /if }
 			{ /if }
 			<div id="contentContainer">
-				{ if $berta.section.type == 'shop' }
+				{ if 1==1 }
 				<a href="https://docs.google.com/spreadsheet/viewform?formkey=dDk5UzdGcl9ZbmJsN0dyd2VINURGZ0E6MQ" target="_blank" style="visibility: hidden;" id="feedback_url"><img src="{ $berta.options.ENGINE_ABS_ROOT }layout/feedback_button.png" /></a>
 				<script>
 				{literal}
 				window.addEvent('domready', function(){ 
 					//feedback
-					var mt = ($(window).getScrollSize().y+$(window).getScroll().y)/2;
-					$('feedback_url').setStyles({'visibility':'visible','position':'absolute','left':'0px','top':mt-128+'px'});
+					var mt = parseInt(($(window).getSize().y)/2);
+
+
+
+					$('feedback_url').setStyles({'visibility':'visible','position':'absolute','left':'0px','top':mt-69+'px'});
 					
 				});
 				{/literal}
@@ -169,10 +172,10 @@
 									<div class="cartAttributes">{ $entry.cartAttributes|@toCartAttributes }</div>
 									{/if}
 									<span class="aele"><span>{ $berta.settings.shop.addToBasket }</span></span>
-									
+									<span class="addedToCart hidden"></span>	
 								{ /if }
 								</div>
-								<div class="addedToCart hidden"></div>
+								
 
 							{ /if }
 

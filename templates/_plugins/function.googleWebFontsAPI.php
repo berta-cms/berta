@@ -60,11 +60,6 @@ function smarty_function_googleWebFontsAPI() {
 		$fonts[]=urlencode($heading);
 	}		
 
-	$heading = $berta->settings->get('shop', 'shopItemgoogleFont');
-	if (!empty($heading)) {
-		$fonts[]=urlencode($heading);
-	}	
-
 	$heading = $berta->settings->get('shop', 'priceItemgoogleFont');
 	if (!empty($heading)) {
 		$fonts[]=urlencode($heading);

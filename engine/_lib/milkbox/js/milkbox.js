@@ -11,7 +11,7 @@ var Milkbox = new Class({
 	Implements:[Options,Events],
 	
 	options:{//set all the options here
-		overlayOpacity:0.7,
+		overlayOpacity:0.85,
 		topPosition:50,
 		initialWidth:250,
 		initialHeight:250,

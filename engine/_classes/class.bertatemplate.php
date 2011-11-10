@@ -150,7 +150,15 @@ class BertaTemplate extends BertaBase {
 				
 					//var_dump($entries[$id]['tags'], $tagName);
 				
+
+					//I'm not sure what I'm doing here - this can make a bug in sorting order
+					/*
 					if(!$tagName && ($this->environment == 'engine' || !$entries[$id]['tags'])
+							|| $tagName && isset($entries[$id]['tags'][$tagName])) {
+						$entriesForTag[$id] = $entries[$id];	
+					}
+					*/
+					if(!$tagName && !$entries[$id]['tags']
 							|| $tagName && isset($entries[$id]['tags'][$tagName])) {
 						$entriesForTag[$id] = $entries[$id];	
 					}

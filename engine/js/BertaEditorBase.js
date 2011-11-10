@@ -354,9 +354,44 @@ var BertaEditorBase = new Class({
 			case this.options.xBertaEditorClassDragXY:
 				el.store('onElementSave', onElementSave);
 				el.addClass(editorClass.substr(1));
-				el.getElement('.xHandle').addEvent('click', function(event) {
-					event.preventDefault();
-				})
+
+				var xGuideLineX;
+				var xGuideLineY;
+
+				el.getElement('.xHandle').addEvents({
+					click: function(event) {
+						event.preventDefault();
+					},
+					mouseenter: function(event){
+						//create guidelines
+						winSize=document.getScrollSize();
+
+						//console.log(winSize);
+
+						xGuideLineX = new Element('div', {
+						    'id': 'xGuideLineX',
+						    'class': 'xGuideLine',
+							styles: {
+						    	width: winSize.x +'px'
+						    }						    
+						});
+						xGuideLineY = new Element('div', {
+						    'id': 'xGuideLineY',
+						    'class': 'xGuideLine',
+							styles: {
+						    	height: winSize.y +'px'
+						    }					
+						});								
+						
+						xGuideLineX.inject(document.body);				
+						xGuideLineY.inject(document.body);
+						self.drawGuideLines(el, xGuideLineX, xGuideLineY);	
+					},
+					mouseleave: function(event){
+						xGuideLineX.destroy();
+						xGuideLineY.destroy();
+					}					 
+				});
 				
 				var gridStep=parseInt(bertaGlobalOptions.gridStep);
 				gridStep=isNaN(gridStep)||gridStep<1?1:gridStep;
@@ -384,6 +419,7 @@ var BertaEditorBase = new Class({
                             el.setStyle('top', '0');
                         }
 						$('xCoords').set('html', 'X:'+parseInt(el.getStyle('left'))+' Y:'+parseInt(el.getStyle('top')));
+						self.drawGuideLines(el, xGuideLineX, xGuideLineY);	
 					},
 				    onComplete: function(el) {
 						$('xTopPanelContainer').show();
@@ -418,6 +454,14 @@ var BertaEditorBase = new Class({
 	  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	 ///  Supporting functions for editables  /////////////////////////////////////////////////////////////////////////////////////////////
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+	drawGuideLines: function (el, xGuideLineX, xGuideLineY){
+		var x = el.getStyle('top');
+		var y = el.getStyle('left');
+		xGuideLineX.setStyle('top', x);
+		xGuideLineY.setStyle('left', y);
+	},
 
 	eSup_onYesNoClick: function(event) {
 		event.stop();
@@ -684,7 +728,7 @@ var BertaEditorBase = new Class({
 				theme : "advanced",
 				width : "600px", height : "300px",
 				//content_css : "<? echo $ENGINE_ABS_ROOT ?>css/mce.css.php",
-				theme_advanced_buttons1 : "save,|,pasteword,|,undo,redo,|,bold,italic,removeformat,cleanup,styleprops,|,bullist,numlist,outdent,indent,|,justifyleft,justifycenter,justifyright,justifyfull,|,hr,link,unlink,insertanything,|,code",
+				theme_advanced_buttons1 : "save,|,pasteword,|,undo,redo,|,bold,italic,removeformat,cleanup,styleprops,|,bullist,numlist,outdent,indent,|,justifyleft,justifycenter,justifyright,justifyfull,|,formatselect,hr,link,unlink,insertanything,|,code",
 				theme_advanced_buttons2 : "",
 				theme_advanced_buttons3 : "",
 				theme_advanced_path : true,
@@ -698,9 +742,11 @@ var BertaEditorBase = new Class({
 
 				plugins: "save,insertanything,paste",
 
+				theme_advanced_blockformats : "p,h2",
+
 				valid_elements : "script[src],fb:comments[*],iframe[*],object[*],embed[*],param[*],form[*],input[*],textarea[*],select[*]," + 
 								 "p[class|style],b[class],i[class],span[class],strong[class],em[class],a[href|target|class|style|title],br[*],u[class]," + 
-								 "ul,li,ol,img[*],hr[class]",
+								 "ul,li,ol,img[*],hr[class],h2",
 				custom_elements : '',
 				extended_valid_elements : '',
 				convert_urls: false,

@@ -110,6 +110,9 @@ class Berta extends BertaBase
 		
 		// in the engine mode one can view all entries for a section, even if the section has subsections
 		// but in the front-ends mode, if there are subsections, the first of them is automatically selected.
+
+		//I'm not sure what I'm doing here - this can make a bug in sorting order
+		/*
 		if($this->environment != 'engine' 
 				&& !empty($this->tags[$this->sectionName]) 
 				&& empty($this->tagName) 
@@ -118,7 +121,19 @@ class Berta extends BertaBase
 		{
 			$this->tagName = reset(array_keys($this->tags[$this->sectionName]));
 		}
+		*/
+		if( !empty($this->tags[$this->sectionName]) 
+				&& empty($this->tagName) 
+				&& empty($this->sections[$this->sectionName]['@attributes']['has_direct_content'])
+				&& $this->settings->get('navigation', 'alwaysSelectTag') == 'yes')
+		{
+			$this->tagName = reset(array_keys($this->tags[$this->sectionName]));
+		}		
+
 		
+
+
+
 		
 		// tags ....
 		
@@ -138,9 +153,9 @@ class Berta extends BertaBase
 	
 	public function output()
 	{
+
 		return $this->template->output();
 	}
-	
 	
 	
 	

@@ -72,6 +72,7 @@ body.xEditorEnabled { }
 	/*background-color:#FFFFFF !important;
 	color: #000000 !important;*/
 	background-image: none !important;
+	z-index: 1;
 }
 
 .xEmpty {	/* class of the span that is placed inside empty editable elements */
@@ -493,7 +494,7 @@ ul#pageEntries {
 			
 			.tagsList {
 			    float: left;
-			    padding: 3px;
+			    padding-top: 3px;
 			    width: 50%;
 			    height: 18px;
 				overflow: hidden;
@@ -606,6 +607,8 @@ a.xCreateNewEntry.xSaving {
 	border: 1px solid #666;
 	color: #333;
 	width: 700px;
+    position: relative;
+    z-index: 1;	
 }
 
 	.xEntryGalleryEditor .xEntryGalleryToolbar {
@@ -1343,7 +1346,22 @@ body.xSettingsPageBody {
 			-moz-opacity: 1;
 		}
 	
-	
+.xGuideLine {
+	position: absolute;
+	background-color: #4affff;	
+	z-index: 10000000;
+}
+
+#xGuideLineX {
+	height: 1px;	
+}
+
+#xGuideLineY {
+	width: 1px;	
+	top: 0px;
+}
+
+
 /* some helpers */	
 	
 .xVisible {

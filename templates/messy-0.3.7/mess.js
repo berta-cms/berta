@@ -78,6 +78,16 @@ var MessyMess = new Class({
 			});
 			$$('.xEntryMove').addClass('xHandle');
 			$$('.xEntryToBack').addEvent('click', this.editor_saveOrder.bindWithEvent(this));
+
+			$$('.xEditableDragXY').addEvents({
+				mouseenter: function(){
+					$$('.xCreateNewEntry').hide();
+				},
+				mouseleave: function(){
+					$$('.xCreateNewEntry').show();
+					$$('.xEntry .xCreateNewEntry').hide();
+				}
+			});
 		}
 	},
 	

@@ -187,6 +187,16 @@ a img { border: none; }
 		padding: 0;
 	}
 	
+	#pageEntries .xEntry h2 {
+				color: <? echo $s->get('entryHeading', 'color') ?>;
+				font-family: <? echo $s->getFont('entryHeading') ?>;
+				font-size: <? echo $s->get('entryHeading', 'fontSize') ?>;
+				font-weight: <? echo $s->get('entryHeading', 'fontWeight') ?>;
+				font-style: <? echo $s->get('entryHeading', 'fontStyle') ?>;
+				font-variant: <? echo $s->get('entryHeading', 'fontVariant') ?>;
+				line-height: <? echo $s->get('entryHeading', 'lineHeight') ?>;
+				margin: <? echo $s->get('entryHeading', 'margin') ?>;
+	}
 
 	#pageEntries .xEntry .xGalleryContainer {
 		position: relative;
