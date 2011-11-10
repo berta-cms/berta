@@ -23,7 +23,7 @@ $options['version'] = '0.7.3b';
  */
 
 $options['default_language'] = 'en';
-$options['languages'] = array('en' => 'English', 'lv' => 'Latviešu');
+$options['languages'] = array('en' => 'English', 'lv' => 'Latviešu', 'fr' => 'Français');
 
 
 
