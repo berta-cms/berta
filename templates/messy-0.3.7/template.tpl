@@ -79,7 +79,7 @@
 				{ /if }
 			{ /if }
 			<div id="contentContainer">
-				{ if 1==1 }
+				{ if 1==2 }
 				<a href="https://docs.google.com/spreadsheet/viewform?formkey=dDk5UzdGcl9ZbmJsN0dyd2VINURGZ0E6MQ" target="_blank" style="visibility: hidden;" id="feedback_url"><img src="{ $berta.options.ENGINE_ABS_ROOT }layout/feedback_button.png" /></a>
 				<script>
 				{literal}
