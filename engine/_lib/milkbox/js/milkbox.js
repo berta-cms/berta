@@ -228,12 +228,17 @@ var Milkbox = new Class({
  		} else {//is an swf file
  			fileSize.extend({ 'height':file.retrieve('height').toInt(), 'width':file.retrieve('width').toInt() });
  		}
- 				
+
+
  		centerSize = centerSize.extend(this.center.getStyles('width','height')).map(function(item){ return item.toInt(); });
 
  		if(fileSize.width != centerSize.width){ 
- 			targetSize.width = fileSize.width + canvasAddSize;
- 			targetSize.marginLeft = -(targetSize.width/2).round();
+ 			//also include padding
+            var paddings = this.center.getStyles('padding-left','padding-right');
+            paddings = parseInt(paddings['padding-left'])+parseInt(paddings['padding-right']);
+
+ 			targetSize.width = fileSize.width + canvasAddSize ;
+ 			targetSize.marginLeft = -((targetSize.width+paddings)/2).round();
  		}
  		 		
  		gap = (canvasSize.y-canvasAddSize > 0) ? centerSize.height - canvasSize.y : 0; 
@@ -776,7 +781,7 @@ var Milkbox = new Class({
 		this.description.empty();
 		this.bottom.setStyles({'visibility':'hidden','display':''});
 		
-   	this.canvas.setStyles({'opacity':0, 'width':'', 'height':''});
+   	    this.canvas.setStyles({'opacity':0, 'width':'', 'height':''});
  		this.canvas.empty();
  		
  		this.count.empty();

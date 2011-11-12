@@ -69,8 +69,12 @@ var MessyMess = new Class({
 	},
 	
 	onDOMReady: function() {
+
+		//scroll fix (iphone viewport workaround)
+		window.addEvent('resize',this.stickToBottom.bindWithEvent(this));
+		window.addEvent('scroll',this.stickToBottom.bindWithEvent(this));
+
 		var messyItems = $$('.mess');
-		
 		
 		if(bertaGlobalOptions.environment == 'engine') {
 			messyItems.each(function(el) {
@@ -91,7 +95,13 @@ var MessyMess = new Class({
 		}
 	},
 	
-	
+	stickToBottom: function(){
+		$('bottom').setStyles({
+			'position': 'absolute',
+			'top': (window.pageYOffset + window.innerHeight - 45) + 'px'
+		});		
+	},
+
 	editor_saveOrder: function(event) {
 		event.stop();
 		
