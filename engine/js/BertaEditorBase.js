@@ -69,6 +69,7 @@ var BertaEditorBase = new Class({
 	
 	elementEdit_instances: new Array(),
 	
+	shiftPressed: false,
 	
 	intialize: function() {
 		this.initConsoleReplacement();
@@ -78,8 +79,17 @@ var BertaEditorBase = new Class({
 		if(!window.console) window.console = {};
 		if(!window.console.debug) window.console.debug = function() { };
 		if(!window.console.log) window.console.log = function() { };
+
+		var editor=this;
+		$(document).addEvent('keydown', function(event){
+		    if (event.shift){
+				editor.shiftPressed=true;
+		    }
+		}).addEvent('keyup', function() {
+			editor.shiftPressed=false;
+		});			
 	},
-	
+
 	initNewsTicker: function() {
 		// init news ticker for all pages
 		this.newsTickerContainer = $('xNewsTickerContainer');
@@ -104,6 +114,7 @@ var BertaEditorBase = new Class({
 		
 		var bPlaceholderSet = this.makePlaceholderIfEmpty(el),
 			self = this;
+		
 
 		switch(editorClass) {
 			case this.options.xBertaEditorClassSimple:
@@ -396,6 +407,10 @@ var BertaEditorBase = new Class({
 				var gridStep=parseInt(bertaGlobalOptions.gridStep);
 				gridStep=isNaN(gridStep)||gridStep<1?1:gridStep;
 
+				var allEntries = $('pageEntries').getElements('.mess');
+
+				var dragAll = false;
+
 				el.makeDraggable({
 				    snap: 0,
 				    grid: gridStep,
@@ -406,8 +421,28 @@ var BertaEditorBase = new Class({
 							id: 'xCoords'
 						});						
 						el.grab(xCoords , 'top');
+						dragAll = self.shiftPressed;
+						if(dragAll){
+							el.startTop = parseInt(el.getStyle('top'));
+							el.startLeft = parseInt(el.getStyle('left'));	
+							
+							i=0;
+							var entriesStartTop = new Array();
+							var entriesStartLeft = new Array();
+
+							allEntries.each(function(entry){
+								if (el != entry){									
+									entriesStartTop[i]=parseInt(entry.getStyle('top'));
+									entriesStartLeft[i]=parseInt(entry.getStyle('left'));
+									i++;
+								}
+							});	
+							
+							el.entriesStartTop = entriesStartTop;
+							el.entriesStartLeft = entriesStartLeft;											
+						}
 				    },
-					onDrag: function(){
+					onDrag: function(){				
 						$('xTopPanelContainer').hide();
                         if (parseInt(el.getStyle('left'))<0){
                             el.setStyle('left', '0');
@@ -417,17 +452,47 @@ var BertaEditorBase = new Class({
 	                        el.setStyle('top', '20px');
                         }else if (parseInt(el.getStyle('top'))<0){
                             el.setStyle('top', '0');
-                        }
+                        }                      
 						$('xCoords').set('html', 'X:'+parseInt(el.getStyle('left'))+' Y:'+parseInt(el.getStyle('top')));
 						self.drawGuideLines(el, xGuideLineX, xGuideLineY);	
+
+						if (dragAll){
+							el.movedTop = parseInt(el.getStyle('top')) - el.startTop;
+							el.movedLeft = parseInt(el.getStyle('left')) - el.startLeft;
+							
+							i=0;
+							allEntries.each(function(entry){
+								if (el != entry){									
+									entry.setStyles({
+										top: el.movedTop + el.entriesStartTop[i] + 'px',
+										left: el.movedLeft + el.entriesStartLeft[i] + 'px'
+									});								
+									i++;
+								}
+							});
+						}
 					},
 				    onComplete: function(el) {
+
 						$('xTopPanelContainer').show();
 						this.hideControlPanel(el);
 					    $('xCoords').destroy();
 				       	el.removeClass('xEditing');
-						var value = parseInt(el.getStyle('left')) + ',' + parseInt(el.getStyle('top'));
-						this.elementEdit_save(null, el, null, null, value, value);
+
+				       	var editor = this;
+
+				       	if (dragAll){			       	
+							allEntries.each(function(entry){
+								var value = parseInt(entry.getStyle('left')) + ',' + parseInt(entry.getStyle('top'));
+								editor.elementEdit_save(null, entry, null, null, value, value);							
+							});				       	
+				       		
+					    }else{
+							var value = parseInt(el.getStyle('left')) + ',' + parseInt(el.getStyle('top'));
+							this.elementEdit_save(null, el, null, null, value, value);
+						}
+						dragAll = false;
+
 				    }.bind(this)
 				});
 				this.hideControlPanel(el);
