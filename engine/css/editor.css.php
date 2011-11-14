@@ -452,6 +452,7 @@ ul#pageEntries {
 				white-space: nowrap;
 			}
 			
+			.xEntryDropdownBox ul li .customWidth, 			
 			.xEntryDropdownBox ul li a {		
 				color: #000;
 				text-decoration: none;
@@ -459,12 +460,23 @@ ul#pageEntries {
 				padding: 0 18px;
 				line-height: 22px;
 			}
+
+			.xEntryDropdownBox .customWidth {
+				height: 22px;
+				
+			}
+
+			.xEntryDropdownBox .customWidth input {
+				display: block;
+				width: 100%;
+			}
 			
 			.xEntryDropdownBox ul li:hover {
 				background-color: #666666;
 				color: #fff;
 			}
 			
+			.xEntryDropdownBox ul li:hover div, 
 			.xEntryDropdownBox ul li:hover a {
 				color: #fff;			
 			}
@@ -490,8 +502,7 @@ ul#pageEntries {
 			.xEntryDropdownBox ul li:hover input.checked {
 				background: url('../layout/check.png') no-repeat center -22px;
 			}
-
-			
+						
 			.tagsList {
 			    float: left;
 			    padding-top: 3px;

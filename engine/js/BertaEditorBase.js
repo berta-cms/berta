@@ -349,7 +349,7 @@ var BertaEditorBase = new Class({
 				break;
 				
 			case this.options.xEditableRealCheck:
-			
+
 				el.store('onElementSave', onElementSave);
 				el.addClass(editorClass.substr(1));
 				
@@ -421,7 +421,7 @@ var BertaEditorBase = new Class({
 							id: 'xCoords'
 						});						
 						el.grab(xCoords , 'top');
-						dragAll = self.shiftPressed;
+						dragAll = self.shiftPressed && el.hasClass('xEntry');
 						if(dragAll){
 							el.startTop = parseInt(el.getStyle('top'));
 							el.startLeft = parseInt(el.getStyle('left'));	
@@ -542,6 +542,15 @@ var BertaEditorBase = new Class({
 			checkBoxEl.toggleClass('checked');
 			var value = checkBoxEl.hasClass('checked') ? "1" : "0";
 			
+			if (el.hasClass('xProperty-fixed')){
+				var entry = el.getParent('.xEntry');
+				if (value=="1"){
+					entry.addClass('xFixed');
+				}else{
+					entry.removeClass('xFixed');
+				}
+			}
+			
 			this.elementEdit_save(null, el, null, null, value, value);
 		}
 	},
@@ -638,7 +647,15 @@ var BertaEditorBase = new Class({
 					newContent = String(newContent) + 'px';
 				}
 			}
-			//console.debug(newContent);
+
+			if (el.hasClass('xProperty-width')){
+				var entry = el.getParent('.xEntry');
+				if (newContent.length){
+					entry.setStyle('width', newContent);
+				}else{
+					entry.setStyle('width', null);
+				}				
+			}
 
 			// SAVE
 			el.removeClass('xEditing');
@@ -793,7 +810,7 @@ var BertaEditorBase = new Class({
 				theme : "advanced",
 				width : "600px", height : "300px",
 				//content_css : "<? echo $ENGINE_ABS_ROOT ?>css/mce.css.php",
-				theme_advanced_buttons1 : "save,|,pasteword,|,undo,redo,|,bold,italic,removeformat,cleanup,styleprops,|,bullist,numlist,outdent,indent,|,justifyleft,justifycenter,justifyright,justifyfull,|,formatselect,hr,link,unlink,insertanything,|,code",
+				theme_advanced_buttons1 : "save,|,pasteword,|,undo,redo,|,bold,italic,removeformat,cleanup,styleprops,|,bullist,numlist,outdent,indent,|,justifyleft,justifycenter,justifyright,justifyfull,|,formatselect,link,unlink,insertanything,|,code",
 				theme_advanced_buttons2 : "",
 				theme_advanced_buttons3 : "",
 				theme_advanced_path : true,

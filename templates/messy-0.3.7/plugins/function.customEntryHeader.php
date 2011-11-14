@@ -15,8 +15,10 @@ function smarty_function_customEntryHeader($params, &$smarty) {
 	if($berta->environment != 'engine') return '';
 	
 	$markedValue = !empty($params['entry']['marked']['value']) ? 1 : 0;
+	$fixedValue = !empty($params['entry']['fixed']['value']) ? 1 : 0;
 	
 	$tags=isset($params['entry']['tags'])?implode(', ',$params['entry']['tags']):'';
+	$customWidth=isset($params['entry']['width']['value']) ? $params['entry']['width'] : '';
 	
 	return <<<DOC
 		<a class="xCreateNewEntry xPanel xAction-entryCreateNew" href="#"><span>create new entry here</span></a>
@@ -38,6 +40,14 @@ function smarty_function_customEntryHeader($params, &$smarty) {
 					<li>				
 						<a href="#" class="xEntryToBack" title="send to back behind others"><span>Send to back</span></a>
 					</li>				
+					<li>
+						<a><div class="xEntryCheck"><label><span class="xEditableRealCheck xProperty-fixed">$fixedValue</span>Fixed position</label></div></a>
+					</li>						
+					<li>
+						<div class="customWidth">
+							<div title="$customWidth" class="xEditableRC xProperty-width">$customWidth</div>
+						</div>	
+					</li>	
 					<li>
 						<a><div class="xEntryCheck"><label><span class="xEditableRealCheck xProperty-marked">$markedValue</span>Marked</label></div></a>
 					</li>

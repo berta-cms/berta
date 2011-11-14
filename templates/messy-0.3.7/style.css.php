@@ -344,8 +344,9 @@ a img { border: none; }
 	display: none;
 }
 
-
-
+.xFixed {
+	position: fixed !important;
+}
 
 
 
