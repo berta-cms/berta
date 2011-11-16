@@ -4,6 +4,9 @@ define('SETTINGS_INSTALLREQUIRED', false);
 define('BERTA_ENVIRONMENT', 'engine');
 require 'inc.page.php';
 
+if(is_mobile()){
+	header('Location: ./mobile.php');exit;
+}
 
 if($berta->security->user) {
 	$berta->security->destroy();
@@ -20,10 +23,9 @@ if($authErr)
     $errStr = $berta->security->getError("auth", $authErr);
 
 if($auth_action == "login" && !$errStr) {
+	
 	if(empty($_REQUEST['auth_browser']) || $_REQUEST['auth_browser'] == 'invalid') {
-		header('Location: ./ie.php');
-		exit;
-		
+		header('Location: ./ie.php');exit;
 	} else {
 	
     	if($berta->security->login($_REQUEST['auth_user'], $_REQUEST['auth_pass'], $options['AUTH_user'], $options['AUTH_password'])) {

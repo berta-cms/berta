@@ -270,7 +270,7 @@ return array(
 	'description_heading_position' => 'Galvenes novietojums, fiksēts vai nefiksēts',
 	'description_submenu_alwaysopen' => 'Apakšizvēlnes ir vienmēr atvērtas.',	
 	'Submenu is allways open' => 'Apakšizvēlne vienmēr atvērta',
-	'' => '',
+	'mobile_device_detected' => 'Labot lapas saturu ar šo mobilo ierīci nav iespējams!',
 	'' => '',
 	'' => '',
 	'' => '',
