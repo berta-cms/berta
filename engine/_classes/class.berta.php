@@ -50,7 +50,8 @@ class Berta extends BertaBase
 
 		I18n::load_language($this->settings->get('language', 'language'));
 		
-		$templateName = $this->settings->get('template', 'template');
+		$templateName = $this->settings->get('template', 'template', true);
+
 		$this->template = new BertaTemplate($templateName, $this->settings, $this->security->userLoggedIn);
 	}
 	

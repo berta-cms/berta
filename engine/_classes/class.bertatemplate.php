@@ -40,14 +40,33 @@ class BertaTemplate extends BertaBase {
 		    'smarty_resource_text_get_secure',
 		    'smarty_resource_text_get_trusted')
 		);
-		
+
 		$this->load($this->name, $generalSettingsInstance);
 	}
 	
 	public function load($templateName, $generalSettingsInstance = false) {
-		$this->name = $templateName;
+
+		//set default temaplte as messy
+		if (!$templateName){	
+            foreach ( $this->getAllTemplates() AS $tpl ){
+                list($template_all)=explode('-',$tpl);
+                if ($template_all=='messy'){
+                    $templateName = $tpl;
+                    break;
+                }else{
+                	$templateName = 'default';
+                }
+            }
+            //save in settings
+            $settings = new Settings(false);
+			$settings->update('template', 'template', array('value'=>$templateName));
+			$settings->save();
+		}
+		
+		$this->name =  $templateName;
+
 		$tPath = self::$options['TEMPLATES_FULL_SERVER_PATH'] . $this->name;
-		if(!file_exists($tPath)) {
+		if(!file_exists($tPath)) {	
 		
 		    $template=explode('-',$this->name);
             $template=$template[0];
@@ -58,14 +77,16 @@ class BertaTemplate extends BertaBase {
                 if ($template_all==$template){
                     $this->name = $tpl;
                     break;
+                //default template = messy
                 }else{
-                    $this->name = 'default';
+                	$this->name = 'default';
                 }
-                
             }
 			$tPath = self::$options['TEMPLATES_FULL_SERVER_PATH'] . $this->name;
-		}
+		}	
+
 		
+
 		if(file_exists($tPath) && file_exists($tPath . '/template.conf.php')) {
 			$this->smarty->template_dir = $tPath;
 			$this->smarty->plugins_dir = array('plugins', self::$options['TEMPLATES_FULL_SERVER_PATH'] . '_plugins', $tPath . '/plugins');

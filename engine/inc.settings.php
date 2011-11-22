@@ -36,7 +36,7 @@ $settingsDefinition = array(
 
 	'template' => array(
 		'_' =>                      array('title' => I18n::_('Template')),
-		'template' =>				array('format' => 'select',	'values' => 'templates', 'allow_blank' => false,	'default' => 'default', 				'title' => I18n::_('Template'), 'description' => I18n::_('Templates are like skins or themes for your site. You can choose one template from the ones installed in your templates folder. To add a new template to this list, upload it to the templates folder via FTP.')),
+		'template' =>				array('format' => 'select',	'values' => 'templates', 'allow_blank' => false,	'default' => false, 				'title' => I18n::_('Template'), 'description' => I18n::_('Templates are like skins or themes for your site. You can choose one template from the ones installed in your templates folder. To add a new template to this list, upload it to the templates folder via FTP.')),
 	),
 	
 	'texts' => array(
