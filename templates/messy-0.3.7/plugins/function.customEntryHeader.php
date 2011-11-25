@@ -15,6 +15,7 @@ function smarty_function_customEntryHeader($params, &$smarty) {
 	if($berta->environment != 'engine') return '';
 	
 	$markedValue = !empty($params['entry']['marked']['value']) ? 1 : 0;
+
 	$fixedValue = !empty($params['entry']['fixed']['value']) ? 1 : 0;
 	$tags=isset($params['entry']['tags'])?implode(', ',$params['entry']['tags']):'';
 	$customWidth=isset($params['entry']['width']['value']) ? $params['entry']['width'] : '';
