@@ -58,6 +58,17 @@ if(!1) { ?><style type="text/css"><? } ?>
 			background-color: #fff;
 			padding: 0px;
 		}
+
+		.xEntryDropdownBox div.xEntrySeperator {
+			border-bottom: 1px dotted #000;
+			padding-top: 4px;
+			margin: 0px 18px 0px 18px;
+		}
+
+		.xEntryDropdownBox div.xEntryBoxParams {
+			margin: 0px 18px 0px 18px;
+			font-size: 12px;
+		}	
 		
 		.xEntryEditWrapButtons a.xEntryMove{ 
 			display: block;
