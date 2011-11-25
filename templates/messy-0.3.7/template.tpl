@@ -1,7 +1,4 @@
-
-
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
@@ -79,7 +76,7 @@
 				{ /if }
 			{ /if }
 			<div id="contentContainer">
-				{ if 1==2 }
+				{ if 1==1 }
 				<a href="https://docs.google.com/spreadsheet/viewform?formkey=dDk5UzdGcl9ZbmJsN0dyd2VINURGZ0E6MQ" target="_blank" style="visibility: hidden;" id="feedback_url"><img src="{ $berta.options.ENGINE_ABS_ROOT }layout/feedback_button.png" /></a>
 				<script>
 				{literal}
@@ -139,10 +136,14 @@
 
 					{* now loop through all entries and print them out *}
 					{ foreach from=$entries item="entry" name="entriesLoop" }
-						<div class="{ entryClasses entry=$entry } { messClasses property='positionXY' } xShopMessyEntry" style="{ messStyles xy=$entry.positionXY entry=$entry } {if $entry.width} width:{$entry.width};{elseif strlen(trim($berta.settings.shop.entryWidth)) > 0  && $berta.section.type == 'shop'} width: { $berta.settings.shop.entryWidth }px;{ /if }">
+						<div class="{ entryClasses entry=$entry } { messClasses property='positionXY' } xShopMessyEntry" style="{ messStyles xy=$entry.positionXY entry=$entry } { if strlen(trim($berta.settings.shop.entryWidth)) > 0  && $berta.section.type == 'shop'} width: { $berta.settings.shop.entryWidth }px{ /if }">
 		
 							{* the entry settings and delete and move buttons live in the entryHeader - don't leave it out! *}
-							{ customEntryHeader entry=$entry }
+							{ assign var=isshopentry value=0 }
+							{ if $berta.section.type == 'shop' and $berta.shop_enabled == true }
+								{ assign var=isshopentry value=1 }
+							{ /if }
+							{ customEntryHeader entry=$entry ishopentry=$isshopentry }
 
 							{* entryGallery prints the image gallery for the entry *}
 							{ entryGallery entry=$entry }
@@ -164,7 +165,7 @@
 								
 								{ if $berta.environment == 'engine' }
 									<div class="cartPrice xEditableRC xProperty-cartPrice xCaption-price xFormatModifier-toPrice" title="{ $entry.cartPrice }">{ $entry.cartPrice|@toPrice }</div>
-									<br class="clear" /><div class="xEditable xProperty-cartAttributes xCaption-attribute cCartAttributes">{ $entry.cartAttributes }</div>
+									{* <br class="clear" /> *}
 								{ elseif !empty($entry.cartPrice)}
 									<div class="cartPrice" title="{ $entry.cartPrice }">{ $entry.cartPrice|@toPrice }</div>
 									<br class="clear">
