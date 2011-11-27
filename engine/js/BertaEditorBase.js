@@ -826,9 +826,9 @@ var BertaEditorBase = new Class({
 
 				theme_advanced_blockformats : "p,h2",
 
-				valid_elements : "script[src],fb:comments[*],iframe[*],object[*],embed[*],param[*],form[*],input[*],textarea[*],select[*]," + 
+				valid_elements : "iframe[*],object[*],embed[*],param[*],form[*],input[*],textarea[*],select[*]," + 
 								 "p[class|style],b[class],i[class],span[class],strong[class],em[class],a[href|target|class|style|title],br[*],u[class]," + 
-								 "ul,li,ol,img[*],hr[class],h2",
+								 "ul,li,ol,img[*],hr[class],h2,div[*]",
 				custom_elements : '',
 				extended_valid_elements : '',
 				convert_urls: false,
@@ -845,7 +845,7 @@ var BertaEditorBase = new Class({
 		this.tinyMCESettings.simple = new this.tinyMCESettings.Base({
 			mode : "exact",
 			theme_advanced_buttons1 : "save,bold,italic,removeformat,link,code",
-			valid_elements : "p,b,i,strong,em,a[href|target|class|style],br[*],u,img[*]",
+			valid_elements : "p[*],b,i,strong,em,a[href|target|class|style],br[*],u,img[*],div[*],iframe[*]",
 			width : "100%", height: "60px",
 			theme_advanced_statusbar_location : null,
 			plugins: "save,insertanything"

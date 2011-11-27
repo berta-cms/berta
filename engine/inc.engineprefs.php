@@ -91,7 +91,8 @@ $options['tags']['all_value'] = 'a181a603769c1f98ad927e7367c7aa51';
 
 
 // if hosted on HIP, need to show "hosted on HIP"
-$options['hip_ipaddr'] = array('85.31.99.218', '85.31.102.201');
+//$options['hip_ipaddr'] = array('85.31.99.218', '85.31.102.201');
+$options['hip_ipaddr'] = array();
 
 
 // external

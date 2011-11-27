@@ -156,6 +156,7 @@
 
 	</div>
 
+	{ include file="../_includes/inc.js_include.tpl" }
 
 	{ include file="../_includes/inc.counter.tpl"  }
 </body>

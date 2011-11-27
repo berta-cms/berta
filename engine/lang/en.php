@@ -32,7 +32,8 @@ return array(
 	'Heading position' => 'Heading position fixed or absolute. Fixed always stays in one place, absolute moves together with content.',
 	'description_heading_position' => 'Heading position fixed or absolute. Fixed always stays in one place, absolute moves together with content.',
 	'description_submenu_alwaysopen' => 'Submenu is open when menu item is current.',
-	'mobile_device_detected' => 'You can\'t use mobile device to edit your site!'
+	'mobile_device_detected' => 'You can\'t use mobile device to edit your site!',
+	'javascript_include' => 'Javascript code included right before closing &lt;/body&gt; element.'
 
 
 )

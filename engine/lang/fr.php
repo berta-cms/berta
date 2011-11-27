@@ -32,6 +32,7 @@ Chaque élément de votre site ayant un fond jaune est donc modifiable. Vous ser
 'Heading position' => 'Position de l\'entête : fixe (Fixed) ou absolue (Absolute). La position fixe restera toujours en place sur la page, la positions absolue se déplace avec le contenu au défilement.',
 'description_heading_position' => 'Position de la description d\'entête : fixe (Fixed) ou absolue (Absolute). La position fixe restera toujours en place sur la page, la positions absolue se déplace avec le contenu au défilement.',
 'description_submenu_alwaysopen' => 'Un sous-menu est ouvert lorsqu\'un élément de menu est actif.',
+'javascript_include' => 'Javascript code included right before closing &lt;/body&gt; element.',
 '' => '',
 
 

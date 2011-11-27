@@ -271,6 +271,7 @@ return array(
 	'description_submenu_alwaysopen' => 'Apakšizvēlnes ir vienmēr atvērtas.',	
 	'Submenu is allways open' => 'Apakšizvēlne vienmēr atvērta',
 	'mobile_device_detected' => 'Labot lapas saturu ar šo mobilo ierīci nav iespējams!',
+	'javascript_include' => 'Javascript kods, kurš tiks iekļauts tieši pirms &lt;/body&gt; elementa.',
 	'' => '',
 	'' => '',
 	'' => '',
