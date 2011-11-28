@@ -1,1 +1,1 @@
-{$berta.settings.settings.jsInclude|@html_entity_decode|replace:'<br />':' '}
+{$berta.settings.settings.jsInclude|@html_entity_decode|replace:'<br />':"\n"}

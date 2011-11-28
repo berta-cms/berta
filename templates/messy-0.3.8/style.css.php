@@ -274,6 +274,15 @@ a img { border: none; }
 		#pageEntries .xEntry .entryText p {
 			margin: 0 0 6px;
 		}
+
+		/* disqus fix */
+		#pageEntries #dsq-content ul, #pageEntries #dsq-content li {
+		    list-style-position: outside;
+		    list-style-type: none;
+		    margin: 0;
+		    padding: 0;
+		}
+		
 		#pageEntries .xEntry .entryText ul {
 			margin: 0 0 6px;
 			padding: 0 0 0 15px;
