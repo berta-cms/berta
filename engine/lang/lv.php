@@ -23,7 +23,7 @@ return array(
 
 	'welcome' => 'Esi sveicināts!',
 	'welcome_text__not_installed' => '<h2>Paldies,<br/>ka izvēlējies Bertu!</h2>
-		   							  <p>Berta is not installed.<br />Please <a href="./engine/">log in</a> and follow the install procedure.</p>',
+		   							  <p>Berta nav uzstādīta.<br />Lūdzu <a href="./engine/">ielogojies</a> un seko uzstādīšanas procedūrai.</p>',
 
 	'welcome_text__not_supported' => '<h2>Paldies,<br/>ka izvēlējies Bertu!</h2>
 										<p>This server does not meet Berta\'s requirements.<br />
@@ -37,9 +37,9 @@ return array(
 	'Site title will be visible in all sections of your site.' => '',
 	'What is your name?' => 'Kā tevi sauc?',
 	'Your name will be put in the copyright notice in the footer of yout site. You can leave it blank.' => '',
-	'How would you — in one sentence — describe your site?' => '',
-	'This will appear under your site name as an excerpt in search engine results.' => '',
-	'Note: the fields that already have value appear yellow only when you roll over them with your mouse. Click on the text below to edit.' => '',
+	'How would you — in one sentence — describe your site?' => 'Kā tu aprakstītu savu lapu vienā teikumā?',
+	'This will appear under your site name as an excerpt in search engine results.' => 'Meklētāj programmās tas parādīsies zem tavs lapas nosaukuma kā apraksts.',
+	'Note: the fields that already have value appear yellow only when you roll over them with your mouse. Click on the text below to edit.' => 'Piezīme: aizpildītie lauki kļūst dzelteni tiem uzbraucot ar peles kursoru. Klikšķini uz teksta zemāk, lai labotu.',
 	'Done!' => 'Darīts!',
 
 
