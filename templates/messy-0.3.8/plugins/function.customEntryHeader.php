@@ -31,7 +31,7 @@ function smarty_function_customEntryHeader($params, &$smarty) {
 		<div class="xEntryEditWrap">
 			<div class="xEntryEditWrapButtons xPanel">
 				
-				<a href="#" class="xEntryMove xHandle" title="drag to move around"><span>move entry</span></a>
+				<a href="#" class="xEntryMove xHandle" title="Drag + Shift to move all"><span>move entry</span></a>
 								
 				<div class="tagsList">
 					<div title="$tags" class="xEditableRC xProperty-submenu xFormatModifier-toTags">$tags</div>
