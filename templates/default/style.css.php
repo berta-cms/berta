@@ -310,6 +310,15 @@ h1 {
 				ol#pageEntries li.xEntry .entryText p {
 					margin: 0 0 6px;
 				}
+
+				/* disqus fix */
+				ol#pageEntries #dsq-content ul, ol#pageEntries #dsq-content li {
+				    list-style-position: outside;
+				    list-style-type: none;
+				    margin: 0;
+				    padding: 0;
+				}
+				
 				ol#pageEntries li.xEntry .entryText ul {
 					margin: 0 0 6px;
 					padding: 0 0 0 15px;

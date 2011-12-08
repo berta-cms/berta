@@ -61,6 +61,15 @@ var inlineEdit = new Class({
 				'font-size': '100%'
 				//'border': '0'
 			});
+
+			//set height for longtext - textarea
+			if (this.options.type=='textarea'){
+				var height = element.getSize().y; 
+				this.inputBox.setStyles({
+					'height': height+'px'
+				});
+			}
+
 			if(!this.inputBox.value) { 
 				try {
 					this.inputBox.set('html', content);

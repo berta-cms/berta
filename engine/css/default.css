@@ -65,3 +65,7 @@ div.xGalleryItem {
 .xFullscreen {
 	display: none;
 }
+
+* {
+	-webkit-text-size-adjust: none;
+}

@@ -69,6 +69,7 @@ var BertaEditorBase = new Class({
 	
 	elementEdit_instances: new Array(),
 	
+	shiftPressed: false,
 	
 	intialize: function() {
 		this.initConsoleReplacement();
@@ -78,8 +79,17 @@ var BertaEditorBase = new Class({
 		if(!window.console) window.console = {};
 		if(!window.console.debug) window.console.debug = function() { };
 		if(!window.console.log) window.console.log = function() { };
+
+		var editor=this;
+		$(document).addEvent('keydown', function(event){
+		    if (event.shift){
+				editor.shiftPressed=true;
+		    }
+		}).addEvent('keyup', function() {
+			editor.shiftPressed=false;
+		});			
 	},
-	
+
 	initNewsTicker: function() {
 		// init news ticker for all pages
 		this.newsTickerContainer = $('xNewsTickerContainer');
@@ -104,6 +114,7 @@ var BertaEditorBase = new Class({
 		
 		var bPlaceholderSet = this.makePlaceholderIfEmpty(el),
 			self = this;
+		
 
 		switch(editorClass) {
 			case this.options.xBertaEditorClassSimple:
@@ -338,7 +349,7 @@ var BertaEditorBase = new Class({
 				break;
 				
 			case this.options.xEditableRealCheck:
-			
+
 				el.store('onElementSave', onElementSave);
 				el.addClass(editorClass.substr(1));
 				
@@ -354,12 +365,51 @@ var BertaEditorBase = new Class({
 			case this.options.xBertaEditorClassDragXY:
 				el.store('onElementSave', onElementSave);
 				el.addClass(editorClass.substr(1));
-				el.getElement('.xHandle').addEvent('click', function(event) {
-					event.preventDefault();
-				})
+
+				var xGuideLineX;
+				var xGuideLineY;
+
+				el.getElement('.xHandle').addEvents({
+					click: function(event) {
+						event.preventDefault();
+					},
+					mouseenter: function(event){
+						//create guidelines
+						winSize=document.getScrollSize();
+
+						//console.log(winSize);
+
+						xGuideLineX = new Element('div', {
+						    'id': 'xGuideLineX',
+						    'class': 'xGuideLine',
+							styles: {
+						    	width: winSize.x +'px'
+						    }						    
+						});
+						xGuideLineY = new Element('div', {
+						    'id': 'xGuideLineY',
+						    'class': 'xGuideLine',
+							styles: {
+						    	height: winSize.y +'px'
+						    }					
+						});								
+						
+						xGuideLineX.inject(document.body);				
+						xGuideLineY.inject(document.body);
+						self.drawGuideLines(el, xGuideLineX, xGuideLineY);	
+					},
+					mouseleave: function(event){
+						xGuideLineX.destroy();
+						xGuideLineY.destroy();
+					}					 
+				});
 				
 				var gridStep=parseInt(bertaGlobalOptions.gridStep);
 				gridStep=isNaN(gridStep)||gridStep<1?1:gridStep;
+
+				var allEntries = $('pageEntries').getElements('.mess');
+
+				var dragAll = false;
 
 				el.makeDraggable({
 				    snap: 0,
@@ -371,8 +421,28 @@ var BertaEditorBase = new Class({
 							id: 'xCoords'
 						});						
 						el.grab(xCoords , 'top');
+						dragAll = self.shiftPressed && el.hasClass('xEntry');
+						if(dragAll){
+							el.startTop = parseInt(el.getStyle('top'));
+							el.startLeft = parseInt(el.getStyle('left'));	
+							
+							i=0;
+							var entriesStartTop = new Array();
+							var entriesStartLeft = new Array();
+
+							allEntries.each(function(entry){
+								if (el != entry){									
+									entriesStartTop[i]=parseInt(entry.getStyle('top'));
+									entriesStartLeft[i]=parseInt(entry.getStyle('left'));
+									i++;
+								}
+							});	
+							
+							el.entriesStartTop = entriesStartTop;
+							el.entriesStartLeft = entriesStartLeft;											
+						}
 				    },
-					onDrag: function(){
+					onDrag: function(){				
 						$('xTopPanelContainer').hide();
                         if (parseInt(el.getStyle('left'))<0){
                             el.setStyle('left', '0');
@@ -382,16 +452,47 @@ var BertaEditorBase = new Class({
 	                        el.setStyle('top', '20px');
                         }else if (parseInt(el.getStyle('top'))<0){
                             el.setStyle('top', '0');
-                        }
+                        }                      
 						$('xCoords').set('html', 'X:'+parseInt(el.getStyle('left'))+' Y:'+parseInt(el.getStyle('top')));
+						self.drawGuideLines(el, xGuideLineX, xGuideLineY);	
+
+						if (dragAll){
+							el.movedTop = parseInt(el.getStyle('top')) - el.startTop;
+							el.movedLeft = parseInt(el.getStyle('left')) - el.startLeft;
+							
+							i=0;
+							allEntries.each(function(entry){
+								if (el != entry){									
+									entry.setStyles({
+										top: el.movedTop + el.entriesStartTop[i] + 'px',
+										left: el.movedLeft + el.entriesStartLeft[i] + 'px'
+									});								
+									i++;
+								}
+							});
+						}
 					},
 				    onComplete: function(el) {
+
 						$('xTopPanelContainer').show();
 						this.hideControlPanel(el);
 					    $('xCoords').destroy();
 				       	el.removeClass('xEditing');
-						var value = parseInt(el.getStyle('left')) + ',' + parseInt(el.getStyle('top'));
-						this.elementEdit_save(null, el, null, null, value, value);
+
+				       	var editor = this;
+
+				       	if (dragAll){			       	
+							allEntries.each(function(entry){
+								var value = parseInt(entry.getStyle('left')) + ',' + parseInt(entry.getStyle('top'));
+								editor.elementEdit_save(null, entry, null, null, value, value);							
+							});				       	
+				       		
+					    }else{
+							var value = parseInt(el.getStyle('left')) + ',' + parseInt(el.getStyle('top'));
+							this.elementEdit_save(null, el, null, null, value, value);
+						}
+						dragAll = false;
+
 				    }.bind(this)
 				});
 				this.hideControlPanel(el);
@@ -419,6 +520,14 @@ var BertaEditorBase = new Class({
 	 ///  Supporting functions for editables  /////////////////////////////////////////////////////////////////////////////////////////////
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+
+	drawGuideLines: function (el, xGuideLineX, xGuideLineY){
+		var x = el.getStyle('top');
+		var y = el.getStyle('left');
+		xGuideLineX.setStyle('top', x);
+		xGuideLineY.setStyle('left', y);
+	},
+
 	eSup_onYesNoClick: function(event) {
 		event.stop();
 		var target = $(event.target);
@@ -432,6 +541,15 @@ var BertaEditorBase = new Class({
 		if(!el.hasClass('xSaving')) {
 			checkBoxEl.toggleClass('checked');
 			var value = checkBoxEl.hasClass('checked') ? "1" : "0";
+			
+			if (el.hasClass('xProperty-fixed')){
+				var entry = el.getParent('.xEntry');
+				if (value=="1"){
+					entry.addClass('xFixed');
+				}else{
+					entry.removeClass('xFixed');
+				}
+			}
 			
 			this.elementEdit_save(null, el, null, null, value, value);
 		}
@@ -529,7 +647,15 @@ var BertaEditorBase = new Class({
 					newContent = String(newContent) + 'px';
 				}
 			}
-			//console.debug(newContent);
+
+			if (el.hasClass('xProperty-width')){
+				var entry = el.getParent('.xEntry');
+				if (newContent.length){
+					entry.setStyle('width', newContent);
+				}else{
+					entry.setStyle('width', null);
+				}				
+			}
 
 			// SAVE
 			el.removeClass('xEditing');
@@ -684,7 +810,7 @@ var BertaEditorBase = new Class({
 				theme : "advanced",
 				width : "600px", height : "300px",
 				//content_css : "<? echo $ENGINE_ABS_ROOT ?>css/mce.css.php",
-				theme_advanced_buttons1 : "save,|,pasteword,|,undo,redo,|,bold,italic,removeformat,cleanup,styleprops,|,bullist,numlist,outdent,indent,|,justifyleft,justifycenter,justifyright,justifyfull,|,hr,link,unlink,insertanything,|,code",
+				theme_advanced_buttons1 : "save,|,pasteword,|,undo,redo,|,bold,italic,removeformat,cleanup,styleprops,|,bullist,numlist,outdent,indent,|,justifyleft,justifycenter,justifyright,justifyfull,|,formatselect,link,unlink,insertanything,|,code",
 				theme_advanced_buttons2 : "",
 				theme_advanced_buttons3 : "",
 				theme_advanced_path : true,
@@ -698,9 +824,11 @@ var BertaEditorBase = new Class({
 
 				plugins: "save,insertanything,paste",
 
-				valid_elements : "script[src],fb:comments[*],iframe[*],object[*],embed[*],param[*],form[*],input[*],textarea[*],select[*]," + 
+				theme_advanced_blockformats : "p,h2",
+
+				valid_elements : "iframe[*],object[*],embed[*],param[*],form[*],input[*],textarea[*],select[*]," + 
 								 "p[class|style],b[class],i[class],span[class],strong[class],em[class],a[href|target|class|style|title],br[*],u[class]," + 
-								 "ul,li,ol,img[*],hr[class]",
+								 "ul,li,ol,img[*],hr[class],h2,div[*]",
 				custom_elements : '',
 				extended_valid_elements : '',
 				convert_urls: false,
@@ -717,7 +845,7 @@ var BertaEditorBase = new Class({
 		this.tinyMCESettings.simple = new this.tinyMCESettings.Base({
 			mode : "exact",
 			theme_advanced_buttons1 : "save,bold,italic,removeformat,link,code",
-			valid_elements : "p,b,i,strong,em,a[href|target|class|style],br[*],u,img[*]",
+			valid_elements : "p[*],b,i,strong,em,a[href|target|class|style],br[*],u,img[*],div[*],iframe[*]",
 			width : "100%", height: "60px",
 			theme_advanced_statusbar_location : null,
 			plugins: "save,insertanything"

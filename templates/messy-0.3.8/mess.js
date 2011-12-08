@@ -69,8 +69,12 @@ var MessyMess = new Class({
 	},
 	
 	onDOMReady: function() {
+
+		//scroll fix (iphone viewport workaround)
+		window.addEvent('resize',this.stickToBottom.bindWithEvent(this));
+		window.addEvent('scroll',this.stickToBottom.bindWithEvent(this));
+
 		var messyItems = $$('.mess');
-		
 		
 		if(bertaGlobalOptions.environment == 'engine') {
 			messyItems.each(function(el) {
@@ -78,10 +82,26 @@ var MessyMess = new Class({
 			});
 			$$('.xEntryMove').addClass('xHandle');
 			$$('.xEntryToBack').addEvent('click', this.editor_saveOrder.bindWithEvent(this));
+
+			$$('.xEditableDragXY').addEvents({
+				mouseenter: function(){
+					$$('.xCreateNewEntry').hide();
+				},
+				mouseleave: function(){
+					$$('.xCreateNewEntry').show();
+					$$('.xEntry .xCreateNewEntry').hide();
+				}
+			});
 		}
 	},
 	
-	
+	stickToBottom: function(){
+		$('bottom').setStyles({
+			'position': 'absolute',
+			'top': (window.pageYOffset + window.innerHeight - 45) + 'px'
+		});		
+	},
+
 	editor_saveOrder: function(event) {
 		event.stop();
 		

@@ -210,14 +210,13 @@ class BertaGallery extends BertaBase {
 	
 	private static function getResizedSrc($folder, $src, $w, $h) {
 		$newSrc = '_'.$w.'x'.$h.'_'.$src;
-		if(file_exists($newSrc) || self::createThumbnail($folder . $src, $folder . $newSrc, $w, $h)) {
+		if(file_exists($folder.$newSrc) || self::createThumbnail($folder . $src, $folder . $newSrc, $w, $h)) {
 			return $newSrc;
 		} else {
 			return $src;
 		}
 	}
-	
-	
+		
 	public static function createThumbnail($imagePath, $thumbPath, $thumbWidth, $thumbHeight) {
 		if(file_exists($imagePath)) {
 			$imageInfo = getimagesize($imagePath);
@@ -243,7 +242,7 @@ class BertaGallery extends BertaBase {
 				      case IMAGETYPE_PNG:   imagepng($imageThumb, $thumbPath);    break;
 				      default: return false;
 				    }
-					if(file_exists($thumbPath)) chmod($thumbPath, 0666);
+					if(file_exists($thumbPath)) @chmod($thumbPath, 0666);
 					
 					return true;
 				}

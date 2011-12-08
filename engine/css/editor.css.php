@@ -72,6 +72,7 @@ body.xEditorEnabled { }
 	/*background-color:#FFFFFF !important;
 	color: #000000 !important;*/
 	background-image: none !important;
+	z-index: 1;
 }
 
 .xEmpty {	/* class of the span that is placed inside empty editable elements */
@@ -214,7 +215,6 @@ a.xEditorLink, a.xEditorLink * {
 		text-transform: none;
 		text-decoration: none;
 		font-weight: normal;
-		font-style: normal;
 	}
 	.xPanel p { margin: 0 0 10px; padding: 0; }
 	.xPanel a { color: #666; text-decoration: underline !important; }
@@ -383,9 +383,9 @@ ul#pageEntries {
 		.xEntryEditWrapButtons { 
 			visibility: hidden;
 			height: 20px;
-			margin: -26px 0 2px;
+			margin: -26px 0 0 0;
 			background: transparent url('../layout/bg-entry-header.png') repeat;
-			padding: 2px 5px 2px;
+			padding: 2px 0 2px 5px;
 			-moz-border-radius: 8px;
 			-webkit-border-radius: 8px;
 			border-radius: 8px;
@@ -423,7 +423,104 @@ ul#pageEntries {
 				float: right;
 				margin-top: 1px;
 			}
-		
+
+			.xEntryEditWrapButtons .xEntryDropdown {
+				float: right;
+				background: url('../layout/dropdown_sprite.png') no-repeat center 0;
+				width: 28px;
+				height: 100%;
+				cursor: pointer;
+			}
+
+			.xEntryEditWrapButtons .xEntryDropdowHover {
+				background-position: center -20px;
+			}
+			
+			.xEntryDropdownBox {
+				position: absolute;
+				border: 1px solid #666666;
+				background-color: #fff;
+				z-index: 1;
+				display: none;
+				background: rgba(255, 255, 255, 0.96);
+			}
+			
+			.xEntryDropdownBox ul {
+				padding:0;
+				margin:0;
+				list-style: none;
+				white-space: nowrap;
+			}
+			
+			.xEntryDropdownBox ul li .customWidth, 			
+			.xEntryDropdownBox ul li a {		
+				color: #000;
+				text-decoration: none;
+				display: block;
+				padding: 0 18px;
+				line-height: 22px;
+			}
+
+			.xEntryDropdownBox .customWidth {
+				height: 22px;
+				
+			}
+
+			.xEntryDropdownBox .customWidth input {
+				display: block;
+				width: 100%;
+			}
+			
+			.xEntryDropdownBox ul li:hover {
+				background-color: #666666;
+				color: #fff;
+			}
+			
+			.xEntryDropdownBox ul li:hover div, 
+			.xEntryDropdownBox ul li:hover a {
+				color: #fff;			
+			}
+			
+			.xEntryDropdownBox ul li .xEntryCheck {
+				position: relative;
+				left: -18px;
+			}
+
+			.xEntryDropdownBox ul li .xEntryCheck label {
+				vertical-align: top;
+			}
+
+			.xEntryDropdownBox .xEditableRealCheck input {
+				background: none;
+				width: 18px;
+			}
+
+			.xEntryDropdownBox .xEditableRealCheck input.checked {
+				background: url('../layout/check.png') no-repeat center 0;
+			}
+
+			.xEntryDropdownBox ul li:hover input.checked {
+				background: url('../layout/check.png') no-repeat center -22px;
+			}
+						
+			.tagsList {
+			    float: left;
+			    padding-top: 3px;
+			    width: 50%;
+			    height: 18px;
+				overflow: hidden;
+				white-space: nowrap;
+				
+			}
+
+			.tagsList .xEmpty{
+				background: none;				
+			}
+
+			.xPanel .tagsList {
+				font-style: italic;
+			}
+
 		
 		.xGalleryContainer  {
 			/*width: 100%;*/
@@ -521,6 +618,8 @@ a.xCreateNewEntry.xSaving {
 	border: 1px solid #666;
 	color: #333;
 	width: 700px;
+    position: relative;
+    z-index: 1;	
 }
 
 	.xEntryGalleryEditor .xEntryGalleryToolbar {
@@ -1129,6 +1228,7 @@ body.xSettingsPageBody {
 			width: 250px;
 			height: auto;
 			min-height: 1px;
+			word-wrap: break-word;
 		}
 		body.xSettingsPageBody div.entry div.value-long {
 			width: 430px;
@@ -1257,10 +1357,27 @@ body.xSettingsPageBody {
 			-moz-opacity: 1;
 		}
 	
+.xGuideLine {
+	position: absolute;
+	background-color: #4affff;	
+	z-index: 10000000;
+}
+
+#xGuideLineX {
+	height: 1px;	
+}
+
+#xGuideLineY {
+	width: 1px;	
+	top: 0px;
+}
+
+
+/* some helpers */	
 	
-	
-	
-	
+.xVisible {
+	display: block;
+}	
 	
 	
 	
