@@ -148,7 +148,7 @@ return array(
 
 	/* setting tab */ 'Other settings' => 'Dažādi',
 	/* setting name */ 'Google Analytics ID' => 'Google Analytics ID',
-	/* help text */    'The ID of the <a href="http://google.com/analytics" target="_blank">Google Analytics</a> site profile. To obtain an ID, register in <a href="http://google.com/analytics" target="_blank">Google Analytics</a> and create a profile for your site.' => '<a href="http://google.com/analytics" target="_blank">Google Analytics</a> numurs. To var iegūt, ja izmanto Google. Dodies uz <a href="http://google.com/analytics" target="_blank">Google Analytics</a>, lai izveidotu savu profilu un iegūtu savu ID',
+	/* help text */    'The ID of the Google Analytics site profile. To obtain an ID, register in <a href="http://google.com/analytics" target="_blank">Google Analytics</a> and create a profile for your site.' => 'Google Analytics numurs. Dodies uz <a href="http://google.com/analytics" target="_blank">Google Analytics</a>, lai izveidotu savu profilu un iegūtu savu ID',
 	/* setting name */ 'Advanced file uploading enabled' => 'Uzlabotā failu augšup-lādēšana',
 	/* help text */    'Set if the advanced uploading features (selecting multiple files at once, asynchronous uploading) are enabled. You should not disable them UNLESS you are experiencing problems with file uploads.' => 'Nodrošina iespēju augšuplēdēt vairākus failus vienlaicīgi. Izvēlies "No" tikai tad, ja ir problēmas ar attēlu augšuplādi.',
 
@@ -271,7 +271,7 @@ return array(
 	'description_submenu_alwaysopen' => 'Apakšizvēlnes ir vienmēr atvērtas.',	
 	'Submenu is allways open' => 'Apakšizvēlne vienmēr atvērta',
 	'mobile_device_detected' => 'Labot lapas saturu ar šo mobilo ierīci nav iespējams!',
-	'javascript_include' => 'Javascript kods, kurš tiks iekļauts tieši pirms &lt;/body&gt; elementa.',
+	'javascript_include' => 'Javascript kods, kurš tiks iekļauts tieši pirms &lt;/body&gt; elementa. Uzzini vairāk kā <a href="https://github.com/berta-cms/berta/wiki/Include-JavaScript-code" target="_blank" title="How to include JavaScript code">iekļaut JavaScript kodu.</a>',
 	'' => '',
 	'' => '',
 	'' => '',
