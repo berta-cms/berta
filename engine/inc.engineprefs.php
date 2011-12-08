@@ -68,10 +68,11 @@ $options['CACHE_ABS_ROOT'] = $options['SITE_ABS_ROOT'] . 'storage/cache/';
 
 
 /**
-* Account link - if hosted
-*/
+ * Account link - if hosted
+ */
 
 $options['HOSTING_PROFILE'] = file_exists($ENGINE_ROOT.'hosting')?file_get_contents($ENGINE_ROOT.'hosting'):false;
+
 
 
 /**
