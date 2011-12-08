@@ -1,6 +1,8 @@
 <?
 
 
+
+
 $settingsFontSelectGeneral = array(
 	'"Helvetica Neue", Helvetica, Arial, sans-serif' => 'Helvetica Neue, Helvetica, Arial, sans-serif',
 	'Helvetica, Arial, sans-serif' => 'Helvetica, Arial, sans-serif',
@@ -34,7 +36,7 @@ $settingsDefinition = array(
 
 	'template' => array(
 		'_' =>                      array('title' => I18n::_('Template')),
-		'template' =>				array('format' => 'select',	'values' => 'templates', 'allow_blank' => false,	'default' => 'default', 				'title' => I18n::_('Template'), 'description' => I18n::_('Templates are like skins or themes for your site. You can choose one template from the ones installed in your templates folder. To add a new template to this list, upload it to the templates folder via FTP.')),
+		'template' =>				array('format' => 'select',	'values' => 'templates', 'allow_blank' => false,	'default' => false, 				'title' => I18n::_('Template'), 'description' => I18n::_('Templates are like skins or themes for your site. You can choose one template from the ones installed in your templates folder. To add a new template to this list, upload it to the templates folder via FTP.')),
 	),
 	
 	'texts' => array(
@@ -54,7 +56,7 @@ $settingsDefinition = array(
 	'pageLayout' => array(
 		'_' =>                      array('title' => I18n::_('Page layout')),
 		'favicon' => 				array('format' => 'icon',	'default' => '',  	    'title' => I18n::_('Favicon'),      'description' => I18n::_('Small picture to display in the address bar of the browser. The file must be in .ICO format and 16x16 pixels big.')),
-		'gridStep' =>          		array('format' => 'text',	'default' => 5,         'title' => I18n::_('Grid step'),    'description' => I18n::_('Distance in pixels for snap-to-grid dragging.'))
+		'gridStep' =>          		array('format' => 'text',	'default' => 10,         'title' => I18n::_('Grid step'),    'description' => I18n::_('Distance in pixels for snap-to-grid dragging.'))
 	),
 	'media' => array(
 		'_' =>                      array('title' => I18n::_('Media')),
@@ -107,8 +109,14 @@ $settingsDefinition = array(
 	'settings' => array(
 		'_' =>                      array('title' => I18n::_('Other settings')),
 		'googleAnalyticsId' => 		array('format' => 'text',	'allow_blank' => true, 	'default' => '', 			'html_entities'	=> true,			'title' => I18n::_('Google Analytics ID'), 'validator' => 'GoogleAnalytics', 		'description' => I18n::_('The ID of the <a href="http://google.com/analytics" target="_blank">Google Analytics</a> site profile. To obtain an ID, register in <a href="http://google.com/analytics" target="_blank">Google Analytics</a> and create a profile for your site.')),
-		'flashUploadEnabled' => 	array('format' => 'select',	'allow_blank' => false, 'default' => 'yes', 		'values' => array('yes', 'no'), 	'title' => I18n::_('Advanced file uploading enabled'), 								'description' => I18n::_('Set if the advanced uploading features (selecting multiple files at once, asynchronous uploading) are enabled. You should not disable them UNLESS you are experiencing problems with file uploads.'))
+		'flashUploadEnabled' => 	array('format' => 'select',	'allow_blank' => false, 'default' => 'yes', 		'values' => array('yes', 'no'), 	'title' => I18n::_('Advanced file uploading enabled'), 								'description' => I18n::_('Set if the advanced uploading features (selecting multiple files at once, asynchronous uploading) are enabled. You should not disable them UNLESS you are experiencing problems with file uploads.')),
+		'jsInclude' => 		array('format' => 'longtext',	'allow_blank' => true, 	'default' => '', 			'html_entities'	=> true,			'title' => I18n::_('Javascript include'), 'description' => I18n::_('javascript_include'))
+
  	)
 );
+
+if(@file_exists($SITE_ROOT .'shop/inc.settings.php')) {	
+	include($SITE_ROOT .'shop/inc.settings.php');
+}
 
 ?>

@@ -20,6 +20,9 @@ function smarty_function_entryClasses($params, &$smarty) {
 		
 		if(!empty($entry['section']))
 			$classes[] = 'xSection-' . $entry['section']['name']['value'];
+
+		if(!empty($params['entry']['fixed']))
+			$classes[] = 'xFixed';
 	}
 	
 	return implode(' ', $classes);

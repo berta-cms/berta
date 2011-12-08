@@ -4,6 +4,9 @@ define('SETTINGS_INSTALLREQUIRED', false);
 define('BERTA_ENVIRONMENT', 'engine');
 require 'inc.page.php';
 
+if(is_mobile()){
+	header('Location: ./mobile.php');exit;
+}
 
 if($berta->security->user) {
 	$berta->security->destroy();
@@ -20,10 +23,9 @@ if($authErr)
     $errStr = $berta->security->getError("auth", $authErr);
 
 if($auth_action == "login" && !$errStr) {
+	
 	if(empty($_REQUEST['auth_browser']) || $_REQUEST['auth_browser'] == 'invalid') {
-		header('Location: ./ie.php');
-		exit;
-		
+		header('Location: ./ie.php');exit;
 	} else {
 	
     	if($berta->security->login($_REQUEST['auth_user'], $_REQUEST['auth_pass'], $options['AUTH_user'], $options['AUTH_password'])) {
@@ -83,7 +85,7 @@ if($auth_action == "login" && !$errStr) {
 					<input type="password" name="auth_pass" id="auth_pass" class="xLoginField" />
 					<input type="submit" name="auth_subm" id="auth_subm" class="xLoginSubmit" value="<?= I18n::_('Log in') ?>" />
 					<p>
-                        berta v <? echo BertaBase::$options['version'] ?> - <? echo date('Y') ?>
+                        berta v <? echo BertaBase::$options['version'] ?> 2008-<? echo date('Y') ?>
                     </p>
 				</form>
 			</div>

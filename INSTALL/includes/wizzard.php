@@ -23,7 +23,7 @@ include_once $ENGINE_ROOT . '_classes/class.bertaeditor.php';
 <link href="<? echo $ENGINE_ABS_ROOT ?>css/editor.css.php" rel="stylesheet" type="text/css" />
 <? include $ENGINE_ROOT . 'inc.header_default_scripts.php' ?>
 <script type="text/javascript" src="<? echo $ENGINE_ABS_ROOT ?>js/Assets.js" charset="utf-8"></script>
-<script type="text/javascript" src="<? echo $ENGINE_ABS_ROOT ?>js/moorainbow/mooRainbow.1.2b2.js" charset="utf-8"></script>
+<script type="text/javascript" src="<? echo $ENGINE_ABS_ROOT ?>_lib/moorainbow/mooRainbow.1.2b2.js" charset="utf-8"></script>
 <script type="text/javascript" src="<? echo $ENGINE_ABS_ROOT ?>js/BertaEditorBase.js"></script>
 <script type="text/javascript" src="<? echo $ENGINE_ABS_ROOT ?>js/inline_edit.js" charset="utf-8"></script>
 <script type="text/javascript" src="<? echo $ENGINE_ABS_ROOT ?>js/BertaEditor.js" charset="utf-8"></script>

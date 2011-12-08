@@ -41,7 +41,7 @@ if($jsonRequest) {
 	
 	// some preprocessing -------------------------------------------------------------------------------------------
 	switch($decoded['property']) {
-		case 'tags':	// tags are to be formatted with a special divider in the updatable field
+		case 'submenu':	// tags are to be formatted with a special divider in the updatable field
 			$t = preg_replace("/,\s+/", ',', $decoded['value']);
 			$returnUpdate = explode(',', $t);
 			$returnReal = str_replace(',', ', ', $t);
@@ -108,7 +108,7 @@ if($jsonRequest) {
 				$blog = BertaEditor::loadBlog($decoded['section']);
 				$e =& BertaEditor::getEntry($decoded['entry'], $blog);
 				
-				if($decoded['property'] == 'tags') {	// entry tags need special attention as they are put into separate xml tags
+				if($decoded['property'] == 'submenu') {	// entry tags need special attention as they are put into separate xml tags
 					$e['tags'] = array('tag' => array());
 					foreach($returnUpdate as $t) $e['tags']['tag'][] = array('value' => trim($t));
 					$allowFormatModifier = true;	// tags always should be displayed with a modifier
@@ -239,7 +239,7 @@ if($jsonRequest) {
 				
 				$e['updated'] = array('value' => date('d.m.Y H:i:s'));
 				BertaEditor::saveBlog($decoded['section'], $blog);
-				if($decoded['property'] == 'tags') 
+				if($decoded['property'] == 'submenu') 
 					BertaEditor::populateTags($decoded['section'], $blog);
 			
 			} 

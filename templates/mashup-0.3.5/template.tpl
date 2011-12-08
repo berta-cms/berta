@@ -120,11 +120,7 @@
 									{ if $berta.environment == 'engine' || !empty($entry.description) }
 									<div class="entryText xEditableMCE xProperty-description">{ $entry.description }</div>
 									{ /if }
-					
-									{ if $berta.environment == 'engine' || $berta.settings.entryLayout.displayTags == 'yes' && !empty($entry.tags) }
-									<div title="{ $entry.tags|@implode:',' }" class="entryTags xEditableRC xProperty-tags xFormatModifier-toTags">{ $entry.tags|@toTags }</div>
-									{ /if }
-		
+														
 									{* entry footer wraps the entry including the header - don't leave it out! *}
 									{ entryFooter entry=$entry }
 								</li>
@@ -165,6 +161,8 @@
 
 			
 	</div>
+	
+	{ include file="../_includes/inc.js_include.tpl" }
 
 	{ include file="../_includes/inc.counter.tpl"  }
 </body>

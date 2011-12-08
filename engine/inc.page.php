@@ -88,6 +88,7 @@ if(AUTH_AUTHREQUIRED && !$berta->security->authentificated) {
 // settings ------------------------------------------------------------------------------------------------------------------------------------------
 
 include($ENGINE_ROOT . 'inc.settings.php');
+
 $berta->init($settingsDefinition);
 
 // settings install management ----------------------------------------

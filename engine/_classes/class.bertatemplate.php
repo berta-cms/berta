@@ -40,18 +40,53 @@ class BertaTemplate extends BertaBase {
 		    'smarty_resource_text_get_secure',
 		    'smarty_resource_text_get_trusted')
 		);
-		
+
 		$this->load($this->name, $generalSettingsInstance);
 	}
 	
 	public function load($templateName, $generalSettingsInstance = false) {
-		$this->name = $templateName;
-		$tPath = self::$options['TEMPLATES_FULL_SERVER_PATH'] . $this->name;
-		if(!file_exists($tPath)) {
-			$this->name = 'default';
-			$tPath = self::$options['TEMPLATES_FULL_SERVER_PATH'] . $this->name;
+
+		//set default temaplte as messy
+		if (!$templateName){	
+            foreach ( $this->getAllTemplates() AS $tpl ){
+                list($template_all)=explode('-',$tpl);
+                if ($template_all=='messy'){
+                    $templateName = $tpl;
+                    break;
+                }else{
+                	$templateName = 'default';
+                }
+            }
+            //save in settings
+            $settings = new Settings(false);
+			$settings->update('template', 'template', array('value'=>$templateName));
+			$settings->save();
 		}
 		
+		$this->name =  $templateName;
+
+		$tPath = self::$options['TEMPLATES_FULL_SERVER_PATH'] . $this->name;
+		if(!file_exists($tPath)) {	
+		
+		    $template=explode('-',$this->name);
+            $template=$template[0];
+
+            //try to get same template with different version if not exists
+            foreach ( $this->getAllTemplates() AS $tpl ){
+                list($template_all)=explode('-',$tpl);
+                if ($template_all==$template){
+                    $this->name = $tpl;
+                    break;
+                //default template = messy
+                }else{
+                	$this->name = 'default';
+                }
+            }
+			$tPath = self::$options['TEMPLATES_FULL_SERVER_PATH'] . $this->name;
+		}	
+
+		
+
 		if(file_exists($tPath) && file_exists($tPath . '/template.conf.php')) {
 			$this->smarty->template_dir = $tPath;
 			$this->smarty->plugins_dir = array('plugins', self::$options['TEMPLATES_FULL_SERVER_PATH'] . '_plugins', $tPath . '/plugins');
@@ -136,7 +171,15 @@ class BertaTemplate extends BertaBase {
 				
 					//var_dump($entries[$id]['tags'], $tagName);
 				
+
+					//I'm not sure what I'm doing here - this can make a bug in sorting order
+					/*
 					if(!$tagName && ($this->environment == 'engine' || !$entries[$id]['tags'])
+							|| $tagName && isset($entries[$id]['tags'][$tagName])) {
+						$entriesForTag[$id] = $entries[$id];	
+					}
+					*/
+					if(!$tagName && !$entries[$id]['tags']
 							|| $tagName && isset($entries[$id]['tags'][$tagName])) {
 						$entriesForTag[$id] = $entries[$id];	
 					}
@@ -191,6 +234,15 @@ class BertaTemplate extends BertaBase {
 		//print_r($vars['berta']['settings']);
 		
 		$vars['berta']['pageTitle'] = $this->settings->get('texts', 'pageTitle');
+		
+		global $shopEnabled;
+		$vars['berta']['shop_enabled'] = false;
+		if(isset($shopEnabled) && $shopEnabled === true) {
+			$vars['berta']['shop_enabled'] = true;
+		}
+		//$vars['berta']['shop'] = array();
+		//$vars['berta']['shop'] = array('cart_name' => I18n::_('Shopping cart'));
+		
 		
 		// add sections ...
 		$vars['berta']['requestURI'] = $this->requestURI;

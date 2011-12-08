@@ -35,7 +35,7 @@ if(!1) { ?><style type="text/css"><? } ?>
 		padding: 0;
 	}
 	.xEntryCheck {
-		float: right !important;
+		/*float: right !important;*/
 	}
 	.xEntryEditWrapButtons { 
 		border-bottom: none;
@@ -58,6 +58,17 @@ if(!1) { ?><style type="text/css"><? } ?>
 			background-color: #fff;
 			padding: 0px;
 		}
+
+		.xEntryDropdownBox div.xEntrySeperator {
+			border-bottom: 1px dotted #000;
+			padding-top: 4px;
+			margin: 0px 18px 0px 18px;
+		}
+
+		.xEntryDropdownBox div.xEntryBoxParams {
+			margin: 0px 18px 0px 18px;
+			font-size: 12px;
+		}	
 		
 		.xEntryEditWrapButtons a.xEntryMove{ 
 			display: block;
@@ -77,7 +88,7 @@ if(!1) { ?><style type="text/css"><? } ?>
 		.xEntryEditWrapButtons a.xEntryDelete:hover { background-color: none; }
 			.xEntryEditWrapButtons a.xEntryDelete span { display: none; }
 	
-		.xEntryCheck span { display: inline-block; float: right; margin-left: 3px; }
+		.xEntryCheck span { /*display: inline-block; float: right; margin-left: 3px;*/ }
 	
 			.xEntrySetGalType>span { display: none !important; }
 	

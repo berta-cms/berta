@@ -86,6 +86,7 @@ a img { border: none; }
 
 #contentContainer {
 	position: relative;
+	width: <? echo $s->get('pageLayout', 'contentWidth') ?>;
 }
 
 #contentContainer h1 {
@@ -187,6 +188,16 @@ a img { border: none; }
 		padding: 0;
 	}
 	
+	#pageEntries .xEntry h2 {
+				color: <? echo $s->get('entryHeading', 'color') ?>;
+				font-family: <? echo $s->getFont('entryHeading') ?>;
+				font-size: <? echo $s->get('entryHeading', 'fontSize') ?>;
+				font-weight: <? echo $s->get('entryHeading', 'fontWeight') ?>;
+				font-style: <? echo $s->get('entryHeading', 'fontStyle') ?>;
+				font-variant: <? echo $s->get('entryHeading', 'fontVariant') ?>;
+				line-height: <? echo $s->get('entryHeading', 'lineHeight') ?>;
+				margin: <? echo $s->get('entryHeading', 'margin') ?>;
+	}
 
 	#pageEntries .xEntry .xGalleryContainer {
 		position: relative;
@@ -234,6 +245,9 @@ a img { border: none; }
 					text-decoration: <? echo $s->get('menu', 'textDecorationLink') ?>;
 					outline: none;
 				}
+				
+				.xGalleryImageCaption { display: none; }
+				
 			#pageEntries .xGalleryContainer ul.xGalleryNav li a:hover {
 				color: <? echo $s->get('menu', 'colorHover') ?>;
 				text-decoration: <? echo $s->get('menu', 'textDecorationHover') ?>;
@@ -260,6 +274,15 @@ a img { border: none; }
 		#pageEntries .xEntry .entryText p {
 			margin: 0 0 6px;
 		}
+
+		/* disqus fix */
+		#pageEntries #dsq-content ul, #pageEntries #dsq-content li {
+		    list-style-position: outside;
+		    list-style-type: none;
+		    margin: 0;
+		    padding: 0;
+		}
+		
 		#pageEntries .xEntry .entryText ul {
 			margin: 0 0 6px;
 			padding: 0 0 0 15px;
@@ -284,6 +307,8 @@ a img { border: none; }
 		position: relative;
 		clear: both;
 	}
+
+	
 				
 				
 
@@ -325,7 +350,13 @@ a img { border: none; }
    color:#ffffff;
 }
 
+.hidden {
+	display: none;
+}
 
+.xFixed {
+	position: fixed !important;
+}
 
 
 

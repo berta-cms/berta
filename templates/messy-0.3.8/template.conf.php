@@ -24,7 +24,8 @@ $sectionTypes = array(
 	'external_link' => array('title' => 'External link', 'params' => array(
 		'link' => array('format' => 'text',	'default' => ''), 
 		'target' => array('format' => 'select', 'values' => array('_self' => 'Same window', '_blank' => 'New window'), 'default' => '_blank')
-	))
+	)),
+	
 );
 
 $templateConf = array(
@@ -50,7 +51,26 @@ $templateConf = array(
 		'backgroundPosition' => 	array('format' => 'select',		'values' => array('top left', 'top center', 'top right', 'center left', 'center', 'center right', 'bottom left', 'bottom center', 'bottom right'), 'default' => 'top left', 	            'title' => I18n::_('Background alignment'),                  'description' => I18n::_('Where the background image is positioned?')),
 		'backgroundAttachment' => 	array('format' => 'select',		'values' => array('fixed' => 'Fixed to browser window', 'fill' => 'Filled in browser window', 'scroll' => 'No stretch, scroll along with content'), 'default' => 'scroll', 		            'title' => I18n::_('Background position'),                   'description' => I18n::_('Sets how background behaves in relation with the browser window.'))
 	),
+
+
+	'pageLayout' => array(
+		'_' => array('title' => I18n::_('Page layout')),
+		'contentWidth' => 			array('format' => 'text',		'default' => '900px', 'css_units' => true,			                                                'title' => I18n::_('Width of content area'),    'description' => '')
+	),	
 	
+	'entryHeading' => array(
+		'_' => array('title' => I18n::_('Entry heading')),
+		'color' => 				array('format' => 'color',		'default' => '#363636', 					                                    'title' => I18n::_('Color'),             'description' => ''),
+		'fontFamily' => 		array('format' => 'fontselect',	'values' => $fontOptions, 'default' => 'Arial, sans-serif', 			        'title' => I18n::_('Font face'),         'description' => ''),
+		'googleFont' => 			array('format' => 'text',		'default' => '', 															'title' => 'Google web fonts',         'description' => I18n::_('googleFont_description')),
+		'fontSize' => 			array('format' => 'text',		'default' => '1.8em', 					                                        'title' => I18n::_('Font size'),         'description' => ''),
+		'fontWeight' => 		array('format' => 'select',		'values' => array('normal', 'bold'), 'default' => 'normal', 			        'title' => I18n::_('Font weight'),       'description' => ''),
+		'fontStyle' => 			array('format' => 'select',		'values' => array('normal', 'italic'), 'default' => 'normal', 			        'title' => I18n::_('Font style'),        'description' => ''),
+		'fontVariant' => 		array('format' => 'select',		'values' => array('normal', 'small-caps'), 'default' => 'normal', 		        'title' => I18n::_('Font variant'),      'description' => ''),
+		'lineHeight' => 		array('format' => 'text',		'default' => 'normal', 					                                        'title' => I18n::_('Line height'),       'description' => I18n::_('Height of text line. Use em, px or % values or the default value "normal"')),
+		'margin' => 			array('format' => 'text',		'default' => '0', 						                                        'title' => I18n::_('Margins'),           'description' => I18n::_('How far the entry heading is form other elements in page. Please see the short CSS guide at the bottom of this page.')),
+	),
+		
 	'entryLayout' => array(
 		'_' => array('title' => I18n::_('Entry layout')),
 		'contentWidth' => 		array('format' => 'text',	'default' => '400px',	'css_units' => true,                                'title' => I18n::_('Entry text width'),                             'description' => ''),
@@ -65,7 +85,7 @@ $templateConf = array(
 		'position' => 				array('format' => 'select',		'values' => array('fixed', 'absolute'), 'default' => 'absolute', 		                        'title' => I18n::_('Heading position'),           'description' => I18n::_('description_heading_position')),
 		'image' => 				array('format' => 'image',		'default' => '', 'min_width' => 1, 'min_height' => 1, 'max_width' => 140, 'max_height' => 400, 	 	'title' => I18n::_('Logo image'),    'description' => I18n::_('Picture to use instead of header text. Max size: 140 x 400 pixels. If the image is larger, it will be reduced.')),
 		'color' => 				array('format' => 'color',		'default' => '#000000',                                                                             'title' => I18n::_('Color'),         'description' => ''),
-		'fontFamily' => 		array('format' => 'fontselect',	'values' => $fontOptionsWithInherit, 'default' => '"Courier New", Courier, monospace', 			    'title' => I18n::_('Font face'),     'description' => ''),
+		'fontFamily' => 		array('format' => 'fontselect',	'values' => $fontOptionsWithInherit, 'default' => '"Arial black", Gadget', 			    'title' => I18n::_('Font face'),     'description' => ''),
 		'googleFont' => 			array('format' => 'text',		'default' => '', 															'title' => 'Google web fonts',         'description' => I18n::_('googleFont_description')),
 		'fontSize' => 			array('format' => 'text',		'default' => '30px',                                                                                'title' => I18n::_('Font size'),     'description' => ''),
 		'fontWeight' => 		array('format' => 'select',		'values' => array('normal', 'bold'), 'default' => 'bold',                                           'title' => I18n::_('Font weight'),   'description' => ''),
@@ -77,7 +97,7 @@ $templateConf = array(
 	'menu' => array(
 		'_' => array('title' => I18n::_('Main menu')),
 		'position' => 				array('format' => 'select',		'values' => array('fixed', 'absolute'), 'default' => 'absolute', 		                        'title' => I18n::_('Menu position'),           'description' => I18n::_('description_menu_position')),
-		'fontFamily' => 			array('format' => 'fontselect',	'values' => $fontOptionsWithInherit, 'default' => '"Courier New", Courier, monospace',  'title' => I18n::_('Font face'),             'description' => ''),
+		'fontFamily' => 			array('format' => 'fontselect',	'values' => $fontOptionsWithInherit, 'default' => '"Arial black", Gadget',  'title' => I18n::_('Font face'),             'description' => ''),
 		'googleFont' => 			array('format' => 'text',		'default' => '', 															'title' => 'Google web fonts',         'description' => I18n::_('googleFont_description')),
 		'fontSize' => 				array('format' => 'text',		'default' => '20px', 								                                    'title' => I18n::_('Font size'),             'description' => ''),
 		'fontWeight' => 			array('format' => 'select',		'values' => array('normal', 'bold'), 'default' => 'bold', 		                        'title' => I18n::_('Font weight'),           'description' => ''),
@@ -93,7 +113,7 @@ $templateConf = array(
 	
 	'tagsMenu' => array(
 		'_' => array('title' => I18n::_('Submenu')),
-		'fontFamily' => 			array('format' => 'fontselect',	'values' => $fontOptionsWithInherit, 'default' => '"Courier New", Courier, monospace',  'title' => I18n::_('Font face'),             'description' => ''),
+		'fontFamily' => 			array('format' => 'fontselect',	'values' => $fontOptionsWithInherit, 'default' => '"Arial black", Gadget',  'title' => I18n::_('Font face'),             'description' => ''),
 		'googleFont' => 			array('format' => 'text',		'default' => '', 															'title' => 'Google web fonts',         'description' => I18n::_('googleFont_description')),
 		'fontSize' => 				array('format' => 'text',		'default' => '16px', 								                                    'title' => I18n::_('Font size'),             'description' => ''),
 		'fontWeight' => 			array('format' => 'select',		'values' => array('normal', 'bold'), 'default' => 'normal',                             'title' => I18n::_('Font weight'),           'description' => ''),
@@ -123,6 +143,10 @@ $templateConf = array(
 		'textDecorationActive' => array('format' => 'select',		'values' => array('none', 'underline', 'overline', 'line-through'),		'default' => 'underline', 	'title' => I18n::_('Link decoration when clicked'),  'description' => '')
 	)
 );
+
+if(@file_exists('../shop/template.conf.php')) {
+	include('../shop/template.conf.php');
+}
 
 return array($sectionTypes, $templateConf);
 

@@ -10,6 +10,7 @@
  */
 function smarty_function_googleWebFontsAPI() {
 	global $berta;
+
 	$s = $berta->template->settings;
 	$fonts=array();
 	$js_include='';
@@ -58,6 +59,11 @@ function smarty_function_googleWebFontsAPI() {
 	if (!empty($heading)) {
 		$fonts[]=urlencode($heading);
 	}		
+
+	$heading = $berta->settings->get('shop', 'priceItemgoogleFont');
+	if (!empty($heading)) {
+		$fonts[]=urlencode($heading);
+	}	
 
 	if ($fonts){
 		$js_include="<link href='http://fonts.googleapis.com/css?family=".implode('|',$fonts)."' rel='stylesheet' type='text/css'>";

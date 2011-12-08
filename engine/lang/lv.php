@@ -2,7 +2,7 @@
 
 return array(
 
-	'berta_copyright_text' => '<a href="http://www.berta.lv/" target="_blank" title="Create your own portfolio with Berta in minutes!">berta</a>',
+	'berta_copyright_text' => '<a href="http://www.berta.me/" target="_blank" title="Create your own portfolio with Berta in minutes!">berta</a>',
 
 	// Translations from the top "admin" menu
 
@@ -23,7 +23,7 @@ return array(
 
 	'welcome' => 'Esi sveicināts!',
 	'welcome_text__not_installed' => '<h2>Paldies,<br/>ka izvēlējies Bertu!</h2>
-		   							  <p>Berta is not installed.<br />Please <a href="./engine/">log in</a> and follow the install procedure.</p>',
+		   							  <p>Berta nav uzstādīta.<br />Lūdzu <a href="./engine/">ielogojies</a> un seko uzstādīšanas procedūrai.</p>',
 
 	'welcome_text__not_supported' => '<h2>Paldies,<br/>ka izvēlējies Bertu!</h2>
 										<p>This server does not meet Berta\'s requirements.<br />
@@ -37,9 +37,9 @@ return array(
 	'Site title will be visible in all sections of your site.' => '',
 	'What is your name?' => 'Kā tevi sauc?',
 	'Your name will be put in the copyright notice in the footer of yout site. You can leave it blank.' => '',
-	'How would you — in one sentence — describe your site?' => '',
-	'This will appear under your site name as an excerpt in search engine results.' => '',
-	'Note: the fields that already have value appear yellow only when you roll over them with your mouse. Click on the text below to edit.' => '',
+	'How would you — in one sentence — describe your site?' => 'Kā tu aprakstītu savu lapu vienā teikumā?',
+	'This will appear under your site name as an excerpt in search engine results.' => 'Meklētāj programmās tas parādīsies zem tavs lapas nosaukuma kā apraksts.',
+	'Note: the fields that already have value appear yellow only when you roll over them with your mouse. Click on the text below to edit.' => 'Piezīme: aizpildītie lauki kļūst dzelteni tiem uzbraucot ar peles kursoru. Klikšķini uz teksta zemāk, lai labotu.',
 	'Done!' => 'Darīts!',
 
 
@@ -148,7 +148,7 @@ return array(
 
 	/* setting tab */ 'Other settings' => 'Dažādi',
 	/* setting name */ 'Google Analytics ID' => 'Google Analytics ID',
-	/* help text */    'The ID of the <a href="http://google.com/analytics" target="_blank">Google Analytics</a> site profile. To obtain an ID, register in <a href="http://google.com/analytics" target="_blank">Google Analytics</a> and create a profile for your site.' => '<a href="http://google.com/analytics" target="_blank">Google Analytics</a> numurs. To var iegūt, ja izmanto Google. Dodies uz <a href="http://google.com/analytics" target="_blank">Google Analytics</a>, lai izveidotu savu profilu un iegūtu savu ID',
+	/* help text */    'The ID of the Google Analytics site profile. To obtain an ID, register in <a href="http://google.com/analytics" target="_blank">Google Analytics</a> and create a profile for your site.' => 'Google Analytics numurs. Dodies uz <a href="http://google.com/analytics" target="_blank">Google Analytics</a>, lai izveidotu savu profilu un iegūtu savu ID',
 	/* setting name */ 'Advanced file uploading enabled' => 'Uzlabotā failu augšup-lādēšana',
 	/* help text */    'Set if the advanced uploading features (selecting multiple files at once, asynchronous uploading) are enabled. You should not disable them UNLESS you are experiencing problems with file uploads.' => 'Nodrošina iespēju augšuplēdēt vairākus failus vienlaicīgi. Izvēlies "No" tikai tad, ja ir problēmas ar attēlu augšuplādi.',
 
@@ -264,13 +264,14 @@ return array(
 	'description_tagsMenu_y' => 'Apakšizvēlnes Y pozīcija pikseļos (piem.: 50px)',
 	'description_menu_position' => 'Izvēlnes pozicionēšana',
 	'description_banner' => 'Banneri ir bildes, kuras redzamas visās sadaļās, pimēram, twitter ikonas vai pogas. Var pievienot līdz 7 dažādiem elementiem.',
-	'description_banner_link' => 'Bannera saite. Adreses priekšā neaizmirsti pievienot http:// (piem.: http://www.berta.lv)',
+	'description_banner_link' => 'Bannera saite. Adreses priekšā neaizmirsti pievienot http:// (piem.: http://www.berta.me)',
 	'description_language' => 'Choose language of berta interface. Refresh site to apply.',
 	'Heading position' => 'Galvenes pozīcija',
 	'description_heading_position' => 'Galvenes novietojums, fiksēts vai nefiksēts',
 	'description_submenu_alwaysopen' => 'Apakšizvēlnes ir vienmēr atvērtas.',	
 	'Submenu is allways open' => 'Apakšizvēlne vienmēr atvērta',
-	'' => '',
+	'mobile_device_detected' => 'Labot lapas saturu ar šo mobilo ierīci nav iespējams!',
+	'javascript_include' => 'Javascript kods, kurš tiks iekļauts tieši pirms &lt;/body&gt; elementa. Uzzini vairāk kā <a href="https://github.com/berta-cms/berta/wiki/Include-JavaScript-code" target="_blank" title="How to include JavaScript code">iekļaut JavaScript kodu.</a>',
 	'' => '',
 	'' => '',
 	'' => '',
