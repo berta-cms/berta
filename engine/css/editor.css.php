@@ -686,13 +686,12 @@ a.xCreateNewEntry.xSaving {
 		}
 		
 			.xEntryGalleryAddMedia a.xEntryAddImagesLink span {
-				text-decoration: none;
 				color: #000;
 			}
 			
-			.xEntryGalleryAddMedia a.xEntryAddImagesLink:hover {
-				text-decoration: underline !important;
-			}
+			.xEntryGalleryAddMedia a.xEntryAddImagesLink.hover span {
+                text-decoration: underline !important;
+            }
        
 		.xEntryGalleryEditor .xEntryGalleryMenu {
 			padding: 6px 6px 0;
