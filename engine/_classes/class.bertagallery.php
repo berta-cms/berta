@@ -26,10 +26,13 @@ class BertaGallery extends BertaBase {
         //return entry ID - needed for milkbox
 		$galleryFullScreen = !$isAdminMode && isset($entry['mediaCacheData']['@attributes']['fullscreen']) && $entry['mediaCacheData']['@attributes']['fullscreen']=='yes'?$entry['id']['value']:false;
 
-		return BertaGallery::getHTML($imgs, $entry['mediafolder']['value'], $galleryType, $isAdminMode, false, 1, $galleryFullScreen, $imageSize);
+		
+		$galleryAutoPlay = !empty($entry['mediaCacheData']['@attributes']['autoplay']) ? $entry['mediaCacheData']['@attributes']['autoplay'] : '0';
+
+		return BertaGallery::getHTML($imgs, $entry['mediafolder']['value'], $galleryType, $isAdminMode, false, 1, $galleryFullScreen, $imageSize, $galleryAutoPlay);
 	}
 	
-	public static function getHTML($imgs, $mediaFolderName, $galleryType, $isAdminMode = false, $bReturnFullInfo = false, $sizeRatio = 1, $galleryFullScreen = false, $imageSize = 'large') {
+	public static function getHTML($imgs, $mediaFolderName, $galleryType, $isAdminMode = false, $bReturnFullInfo = false, $sizeRatio = 1, $galleryFullScreen = false, $imageSize = 'large', $galleryAutoPlay = '0') {
 		global $berta;
 		$strOut = '';
 		
@@ -44,7 +47,7 @@ class BertaGallery extends BertaBase {
 		if($imgs && count($imgs) > 0) {
 			list($firstImageHTML, $firstImageWidth, $firstImageHeight) = BertaGallery::getImageHTML($imgs[0], $mediaFolderName, $isAdminMode, $sizeRatio, $imageTargetWidth, $imageTargetHeight);
 			
-			$strOut = '<div class="xGalleryContainer xGalleryHasImages xGalleryType-' . $galleryType . '">';
+			$strOut = '<div class="xGalleryContainer xGalleryHasImages xGalleryType-' . $galleryType . ' xGalleryAutoPlay-' . $galleryAutoPlay . '">';
 			$strOut .= "<div class=\"xGallery\" style=\"width: {$firstImageWidth}px; height: {$firstImageHeight}px;\">";
 			$strOut .= $firstImageHTML;
 			if($isAdminMode) $strOut .= '<a href="#" class="xGalleryEditButton xEditorLink xSysCaption xMAlign-container"><span class="xMAlign-outer"><span class="xMAlign-inner">edit gallery</span></span></a>';
@@ -123,7 +126,7 @@ class BertaGallery extends BertaBase {
 
         //print_R ($imgs);
 
-		$navStr = '<ul class="xGalleryNav" ' . ((count($imgs) == 1 || $galleryType == 'row') ? 'style="display:none"' : '') . '>';
+		$navStr = '<ul class="xGalleryNav" ' . ((count($imgs) == 1 || $galleryType == 'row' || $galleryType == 'link') ? 'style="display:none"' : '') . '>'; // <link/> / added || $galleryType == 'link'
 		for($i = 0; $i < count($imgs); $i++) {
 			$width = $height = $isPoster = 0;
 			

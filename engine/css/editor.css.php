@@ -171,10 +171,9 @@ body.xEditorEnabled { }
 	}
 
 
-a.xEditorLink, a.xEditorLink * {
+/*a.xEditorLink, a.xEditorLink * {
 	text-decoration: underline;
-}
-
+}*/
 .xEditableImage {}
 .xEditableICO {}
 	.xEditableImage span.file, .xEditableICO span.file, .xEditableImage span.name, .xEditableICO span.name {
@@ -273,9 +272,8 @@ a.xEditorLink, a.xEditorLink * {
 	/*padding: 0 10px;*/
  	margin-top: 0;
 	margin-bottom: 0;
-	z-index: 11000;
 	position: fixed;
-	left: 0; top: 0; right: 0;
+	left: 0; top: 0;
 	margin-bottom: -20px;
 	background-color: transparent !important;
 }
@@ -283,20 +281,22 @@ a.xEditorLink, a.xEditorLink * {
 	position: relative;
 }
 	#xTopPanel {
-		width: 100%; /*<? echo $berta->settings->get('page-layout', 'content-width') ?>;*/
-		border-bottom: 1px solid #ccc;
+		width: 460px;
+		z-index: 60000;
+		position: relative;
 		text-align: left !important;
+		left: 0;
 	}
 	
 		#xNewsTickerContainer {
 			position: relative;
-			padding: 5px 15px 1px;
+			padding: 8px 8px;
 		}
 		.xNewsTickerRed {
 			background-color: #FFA9C6;
 		}
 		.xNewsTickerGrey {
-			background-color: #cccccc;
+			background-color: #E9E9E9;
 		}
 		
 			#xNewsTickerContainer * {
@@ -307,46 +307,53 @@ a.xEditorLink, a.xEditorLink * {
 				z-index: 1;
 				position: absolute;
 				left: 0; top: 0; bottom: 0; right: 0;
-				-moz-opacity: 0.7;
-				-webkit-opacity: 0.7;
-				-o-opacity: 0.7;
-				opacity: 0.7;
+				border-right: 1px solid #4a4a4a;
+				border-bottom: 1px solid #4a4a4a;
+				/*-moz-opacity: 0.8;
+				-webkit-opacity: 0.8;
+				-o-opacity: 0.8;
+				opacity: 0.8;*/
 			}
 			#xNewsTickerContainer .news-ticker-content {
 				float: left;
-				width: 80%;
 				color: #333;
 			}
 				#xNewsTickerContainer .news-ticker-content .run-in {
 					font-weight: bold;
 				}
+				
 			#xNewsTickerContainer a.close {
-				float: right;
 				color: #666666;
 				font-size: 100%;
+				position: absolute; top: 0; right: 3px;
+				text-decoration: none !important;
+				font-weight: bold;
 			}
 	
 		ul#xEditorMenu {
 			position: relative;
 			display: block;
 			margin: 0;
-			padding: 2px 15px;
+			padding: 2px 6px/*15px*/;
 			height: 15px;
 			list-style: none;
 		}
 			ul#xEditorMenu li {
 				position: relative;
 				float: left;
-				margin-right: 10px;
+				padding-right: 10px;
 				z-index: 10;
+				color: #E9E9E9;
 			}
-				ul#xEditorMenu li a { text-decoration: none !important;  }
+				ul#xEditorMenu li a { 
+					text-decoration: none !important;
+					color: #E9E9E9;
+				}
+				
+				ul#xEditorMenu li a:hover { color: #000; }
+			
 			ul#xEditorMenu li.selected, ul#xEditorMenu li.selected a {
 				font-weight: bold;
-			}
-			ul#xEditorMenu li.last {
-				float: right;
-				margin-right: 0;
 			}
 			
 			#xEditorMenuBg {
@@ -354,13 +361,42 @@ a.xEditorLink, a.xEditorLink * {
 				position: absolute !important;
 				z-index: 1 !important;
 				left: 0; top: 0; right: 0; bottom: 0;
-				-moz-opacity: 0.8;
+				/*-moz-opacity: 0.8;
 				-webkit-opacity: 0.8;
 				-o-opacity: 0.8;
-				opacity: 0.8;
-				background: #fff;
+				opacity: 0.8;*/
+				background-color: #4A4A4A;
 			}
 
+	
+	#xTopPanelSlideIn, #xTopPanelSlideOut {
+		position: relative;
+		z-index: 2;
+		padding: 2px 0 2px 4px;
+		padding-left: 4px;
+		float: left;
+		width: 20px;
+		/*-moz-opacity: 0.8;
+		-webkit-opacity: 0.8;
+		-o-opacity: 0.8;
+		opacity: 0.8;*/
+	}
+		#xTopPanelSlideOut { 
+			left: -24px;
+			margin-right: -24px;
+			background-color: #4A4A4A;
+		}
+		
+		#xTopPanelSlideIn span,
+		#xTopPanelSlideOut span {
+			color: #E9E9E9;
+			cursor: pointer;
+		}
+		
+		#xTopPanelSlideIn span:hover,
+		#xTopPanelSlideOut span:hover {
+			color: #000;
+		}
 
 
 
@@ -614,158 +650,212 @@ a.xCreateNewEntry.xSaving {
 }
 .xEntryGalleryEditor {
 	padding: 0 0 0;
-	background-color: #fff;
-	border: 1px solid #666;
+	background-color: #e9e9e9;
 	color: #333;
 	width: 700px;
+	height: 327px;
     position: relative;
     z-index: 1;	
 }
 
-	.xEntryGalleryEditor .xEntryGalleryToolbar {
-		min-height: 22px;
-		padding: 4px;
-		background-color: #666666;
+	.xEntryGalleryEditor .xEntryGallerySettings,
+	.xEntryGalleryEditor .xEntryGalleryFullScreen,
+	.xEntryGalleryEditor .xEntryGalleryImageSize {
+		width: 200px;
+		padding: 6px;
 	}
-		.xEntryAddImagesFallback {
-			height: 27px;
-			float: left;
-			padding: 1px 15px 0px 0;
-			border-right: 1px solid #fff;
+	
+		.xEntryGalleryEditor .xEntryGalleryAddMedia {
+			padding: 6px;
 		}
-			.xEntryAddImagesFallback .xUploadFile {
-				
-			}
-			.xEntryAddImagesFallback .xUploadButton {
-				
-			}
+	
+		.xEntryGalleryAddMedia .xEntryAddImagesFallback {
+			display: block;
+		}
+			.xEntryGalleryAddMedia .xEntryAddImagesFallback .xUploadFile {}
+			.xEntryGalleryAddMedia .xEntryAddImagesFallback .xUploadButton {}
 			.xEntryUploadFrame {
 				display: none;
 			}
-		.xEntryGalleryToolbar a.xEntryAddImagesLink {
-			float: left;
+		
+		.xEntryGalleryAddMedia a.xEntryAddImagesLink {
+			padding-top: 6px;
 			display: block;
-			height: 21px;
             width: 70px;
-            background: url('../layout/sprite.png') no-repeat;
-			background-position: 0px 0px;
+            text-decoration: none !important;
 		}
-		.xEntryGalleryToolbar a.xEntryAddImagesLink:hover,
-		.xEntryGalleryToolbar a.xEntryAddImagesLink.hover {
-			background-position: 0px -42px;
-		}
-			.xEntryGalleryToolbar a.xEntryAddImagesLink span {
-				display: none;
+		
+			.xEntryGalleryAddMedia a.xEntryAddImagesLink span {
+				text-decoration: none;
+				color: #000;
 			}
-		.xEntryGalleryToolbar .xEntrySetGalType,
-		.xEntryGalleryToolbar .xEntrySetImageSize,
-        .xEntryGalleryToolbar .xEntryFullScreen	{
+			
+			.xEntryGalleryAddMedia a.xEntryAddImagesLink:hover {
+				text-decoration: underline !important;
+			}
+       
+		.xEntryGalleryEditor .xEntryGalleryMenu {
+			padding: 6px 6px 0;
+			min-height: 40px;
+			background-color: #4a4a4a;
+		}
+		
+		.xEntryGalleryMenu .xEntryMedia,
+		.xEntryGalleryMenu .xEntryMediaSettings,
+		.xEntryGalleryMenu .xEntryFullScreenSettings,
+		.xEntryGalleryMenu .xEntryImageSizeSettings {
 			float: left;
 			display: block;
-			height: 21px;
-			margin-left: 4px;
+			height: 40px;
 		}
-			.xEntryGalleryToolbar .xEntrySetGalType span,
-			.xEntryGalleryToolbar .xEntrySetImageSize span,
-            .xEntryGalleryToolbar .xEntryFullScreen span {
-				display: block;
-				float: left;
-				height: 21px;
+		
+		.xEntryGalleryMenu .xEntryMedia a,
+		.xEntryGalleryMenu .xEntryMediaSettings a,
+		.xEntryGalleryMenu .xEntryFullScreenSettings a,
+		.xEntryGalleryMenu .xEntryImageSizeSettings a {
+			float: left;
+			display: block;
+			margin-right: 4px;
+			height: 40px;
+			width: 40px;
+			background-repeat: no-repeat;
+		}
+		
+		.xEntryGalleryMenu .xEntryMedia a span,
+		.xEntryGalleryMenu .xEntryMediaSettings a span,
+		.xEntryGalleryMenu .xEntryFullScreenSettings a span,
+		.xEntryGalleryMenu .xEntryImageSizeSettings a span {
+			display: block;
+			float: left;
+			height: 40px;
+		}
+		
+		.xEntryGalleryMenu .xEntryMedia a {
+			background: url('../layout/sprites_new.gif') no-repeat;
+			background-position: 0px -40px;
+			
+		}
+		
+			.xEntryGalleryMenu .xEntryMedia a:hover {
+				background-position: 0px -80px;
 			}
-			.xEntryGalleryToolbar .xEntrySetGalType a,
-			.xEntryGalleryToolbar .xEntrySetImageSize a,
-            .xEntryGalleryToolbar .xEntryFullScreen a {
-				display: block;
-				float: left;
-				width: 21px;
-				height: 21px;
-				background-repeat: no-repeat
+		
+			.xEntryGalleryMenu .xEntryMedia a.selected {
+				background-position: 0px 0px;
 			}
-
-            .xEntryGalleryToolbar .xEntrySetGalType a.o1.selected {
-			    background-position: -70px -21px;
+		
+		.xEntryGalleryMenu .xEntryMediaSettings a {
+			background: url('../layout/sprites_new.gif') no-repeat;
+			background-position: -40px -40px;
+			
+		}
+		
+			.xEntryGalleryMenu .xEntryMediaSettings a:hover {	
+				background-position: -40px -80px;
 			}
-			.xEntryGalleryToolbar .xEntrySetGalType a.o1 {
-                background: url('../layout/sprite.png') no-repeat;
-                background-position: -70px 0px;
-                margin-right: 1px;
-            }
-			.xEntryGalleryToolbar .xEntrySetGalType a.o1:hover {
-			    background-position: -70px -42px;
+		
+			.xEntryGalleryMenu .xEntryMediaSettings a.selected {
+				background-position: -40px 0px;
+			}
+		
+		.xEntryGalleryMenu .xEntryFullScreenSettings a {
+			background: url('../layout/sprites_new.gif') no-repeat;
+			background-position: -80px -40px;
+		}
+		
+			.xEntryGalleryMenu .xEntryFullScreenSettings a:hover {
+				background-position: -80px -80px;
+			}
+		
+			.xEntryGalleryMenu .xEntryFullScreenSettings a.selected {
+				background-position: -80px 0px;
 			}
 			
-            .xEntryGalleryToolbar .xEntrySetGalType a.o2.selected {
-			    background-position: -91px -21px;
+		.xEntryGalleryMenu .xEntryImageSizeSettings a {
+			background: url('../layout/sprites_new.gif') no-repeat;
+			background-position: -120px -40px;
+		}
+		
+			.xEntryGalleryMenu .xEntryImageSizeSettings a:hover {
+				background-position: -120px -80px;
 			}
-			.xEntryGalleryToolbar .xEntrySetGalType a.o2 {
-                background: url('../layout/sprite.png') no-repeat;
-                background-position: -91px 0px;
-                margin-right: 1px;
-            }
-			.xEntryGalleryToolbar .xEntrySetGalType a.o2:hover {
-			    background-position: -91px -42px;
+		
+			.xEntryGalleryMenu .xEntryImageSizeSettings a.selected {
+				background-position: -120px 0px;
 			}
-
-            .xEntryGalleryToolbar .xEntrySetImageSize a.o1.selected {
-			    background-position: -112px -21px;
+		
+		
+		.xEntryGalleryMenu .xEntryMedia a span,
+		.xEntryGalleryMenu .xEntryMediaSettings a span,
+		.xEntryGalleryMenu .xEntryFullScreenSettings a span,
+		.xEntryGalleryMenu .xEntryImageSizeSettings a span {
+				display: none;
+		}
+		
+		.xEntryGallerySettings .xEntrySetGalType {
+			width: 200px;
+			padding: 6px 0;
+		}
+		
+		.xEntryGallerySettings .xEntrySlideshowSettings {
+			width: 200px;
+			padding: 16px 0;
+		}
+		
+			.xEntrySlideshowSettings .caption,
+			.xEntryGalleryFullScreen .caption,
+			.xEntryGalleryImageSize .caption {
+				float: left;
 			}
-			.xEntryGalleryToolbar .xEntrySetImageSize a.o1 {
-                background: url('../layout/sprite.png') no-repeat;
-                background-position: -112px 0px;
-                margin-right: 1px;
-            }
-			.xEntryGalleryToolbar .xEntrySetImageSize a.o1:hover {
-			    background-position: -112px -42px;
-			}
-
-            .xEntryGalleryToolbar .xEntrySetImageSize a.o2.selected {
-			    background-position: -133px -21px;
-			}
-			.xEntryGalleryToolbar .xEntrySetImageSize a.o2 {
-                background: url('../layout/sprite.png') no-repeat;
-                background-position: -133px 0px;
-                margin-right: 1px;
-            }
-			.xEntryGalleryToolbar .xEntrySetImageSize a.o2:hover {
-			    background-position: -133px -42px;
-			}
-
-            .xEntryGalleryToolbar .xEntryFullScreen a.selected {
-			    background-position: -154px -21px;
-			}
-			.xEntryGalleryToolbar .xEntryFullScreen a {
-                background: url('../layout/sprite.png') no-repeat;
-                background-position: -154px 0px;
-                margin-right: 1px;
-            }
-			.xEntryGalleryToolbar .xEntryFullScreen a:hover {
-			    background-position: -154px -42px;
+			.xEntryGalleryFullScreen .caption,
+			.xEntryGalleryImageSize .caption {
+				padding: 6px 0;
 			}
 			
-				.xEntryGalleryToolbar .xEntrySetGalType a span,
-				.xEntryGalleryToolbar .xEntrySetImageSize a span,
-                .xEntryGalleryToolbar .xEntryFullScreen a span {
-                    display: none;
-                }
+			.xEntrySlideshowSettings .xEntryAutoPlay,
+			.xEntrySlideshowSettings .xEntryAutoPlay input,
+			.xEntryGalleryFullScreen .xEntrySetFullScreen,
+			.xEntryGalleryFullScreen .xEntrySetFullScreen input,
+			.xEntryGalleryImageSize .xEntrySetImageSize,
+			.xEntryGalleryImageSize .xEntrySetImageSize input {
+				float: right;
+			}
+			.xEntryGalleryFullScreen .xEntrySetFullScreen,
+			.xEntryGalleryFullScreen .xEntrySetFullScreen input,
+			.xEntryGalleryImageSize .xEntrySetImageSize,
+			.xEntryGalleryImageSize .xEntrySetImageSize input {
+				padding: 6px 0;
+			}
+			
+			.xEntrySlideshowSettings .xEntryAutoPlay {
+				width: 50px;
+				text-align: center;
+			}
+			
+			.xEntryGalleryFullScreen .xEntrySetFullScreen,
+			.xEntryGalleryImageSize .xEntrySetImageSize {
+				width: 80px;
+			}
 
-		.xEntryGalleryToolbar a.xEntryGalCloseLink {
+		.xEntryGalleryMenu a.xEntryGalCloseLink {
 			float: right;
 			display: block;
-			width: 21px;
-			height: 21px;
-			background: url('../layout/sprite.png') no-repeat;
-			background-position: -175px 0px;
+			text-decoration: none !important;
 		}
-		.xEntryGalleryToolbar a.xEntryGalCloseLink:hover {
-			background-position: -175px -21px;
-		}
-			.xEntryGalleryToolbar a.xEntryGalCloseLink span { display: none; }
+			.xEntryGalleryMenu a.xEntryGalCloseLink span {
+				color: #e9e9e9;
+				font-weight: bold;
+			}
+			
+			.xEntryGalleryMenu a.xEntryGalCloseLink span:hover {
+				color: #000;
+			}
 
 
 	.xEntryGalleryEditor .images {
 		clear: both;
-		padding: 5px 0 0;
-		margin: 0 5px 3px;
+		padding: 8px 6px 0;
+		margin: 0;
 		overflow-x:scroll;
 		overflow-y:hidden;
 		height: <? echo BertaBase::$options['images']['small_thumb_height'] ? ((BertaBase::$options['images']['small_thumb_height'] + 160) . 'px') : 'auto' ?>;
@@ -788,7 +878,7 @@ a.xCreateNewEntry.xSaving {
 				margin: 0 5px 0 0;
 				/*margin: 0;*/
 				min-width: 140px;
-				height: <? echo ((int) BertaBase::$options['images']['small_thumb_height'] + 160) . 'px' ?>;
+				height: <? echo ((int) BertaBase::$options['images']['small_thumb_height'] + 140) . 'px' ?>;
 				background: #efefef; 
 			}
 			.xEntryGalleryEditor .images ul li.video {
@@ -1145,9 +1235,31 @@ input#xFirstTimeCheckContinue {
 
 
 
+/* tips ---------------------------------------------------------------------------------------------------- */
+.tip-top {
+	border-color: transparent transparent #000;
+	border-style: solid;
+	border-width: 0 12px 18px 0;
+	height: 0;
+	margin: 0 15px;
+	width: 0;
+	z-index: 55000;
+}
 
+.tip {
+	position: relative;
+	background-color: #000;
+	color: #fff;
+	width: 140px;
+	padding: 10px;
+	border-radius: 8px;
+	z-index: 55000;
+}
 
-
+	.tip a#xRemoveTips {
+		color: #fff;
+		text-decoration: underline;
+	}
 
 /*  setttings pages  --------------------------------------------------------------------------------------- */
 
@@ -1378,18 +1490,6 @@ body.xSettingsPageBody {
 .xVisible {
 	display: block;
 }	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 		
 <? if(!1) { ?></style><? } ?>

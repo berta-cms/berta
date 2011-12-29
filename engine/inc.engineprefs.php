@@ -14,7 +14,7 @@ require 'config/inc.conf.php';
 /**
  * Berta's release version
  */
-$options['version'] = '0.7.4b';
+$options['version'] = '0.7.5b';
 
 
 /**
@@ -98,10 +98,10 @@ $options['hip_ipaddr'] = array();
 
 // external
 $options['newsticker_update_uri'] = array(
-	'http://www.berta.me/news_ticker.php'
+	'http://www.berta.me/news_ticker_test.php'
 );
 foreach($options['hip_ipaddr'] as $ip)
-	$options['newsticker_update_uri'][] = 'http://' . $ip . '/berta-remote/news_ticker.php';
+	$options['newsticker_update_uri'][] = 'http://' . $ip . '/berta-remote/news_ticker_test.php';
 
 
 // thumbnail size for editor layout

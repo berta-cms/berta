@@ -36,7 +36,7 @@ var BertaGallery = new Class({
 	initialize: function(container, options) {
 		this.setOptions(options);
 		this.attach(container);
-		this.loadFirst();
+		this.loadFirst();		
 	},
 
 	attach: function(container) {
@@ -58,8 +58,12 @@ var BertaGallery = new Class({
 				
 				this.newObjectInjectWhere = this.options.environment == 'site' ? this.imageContainer : this.imageContainer.getElement('.xGalleryEditButton');
 				this.newObjectInjectPosition = this.options.environment == 'site' ? 'bottom' : 'before';
-				
-			} else {
+			}
+			else if(this.type == 'link') {
+				this.newObjectInjectWhere = this.options.environment == 'site' ? this.imageContainer : this.imageContainer.getElement('.xGalleryEditButton');
+				this.newObjectInjectPosition = this.options.environment == 'site' ? 'bottom' : 'before';
+			}
+			else {
 				this.rowClearElement = new Element('br', { 'class': 'clear' }).inject(this.imageContainer);
 				
 				this.newObjectInjectWhere = this.options.environment == 'site' ? this.rowClearElement : this.imageContainer.getElement('.xGalleryEditButton');
@@ -97,6 +101,7 @@ var BertaGallery = new Class({
 			this.nav_highlightItem(li);
 			var aEl = this.navContainer.getElement('li a');
 			var fistItemType = aEl.getClassStoredValue('xType');
+			this.autoplay = parseInt(this.container.getClassStoredValue('xGalleryAutoPlay'));
 			
 			if(fistItemType != 'image') {
 				// load only if not image, because if that's image, it's already written in the HTML
@@ -104,6 +109,7 @@ var BertaGallery = new Class({
 			} else {
 				this.currentSrc = aEl.get('href');
 				this.preload = this.imageContainer.getElement('div.xGalleryItem');
+				//console.debug(this.preload);
 				
 				if( (this.fullscreen || this.getNext()) && this.type == 'slideshow' ) {
 					this.preload.setStyle('cursor', 'pointer');
@@ -113,11 +119,41 @@ var BertaGallery = new Class({
 					}else{
 					   this.preload.addEvent('click', this.loadNext.bind(this));
                     }
+                    
+                    if(this.autoplay > 0) {
+						var obj=this;
+						var time = this.autoplay * 1000;
+						if (li.getParent().getElements('a').length>1){
+							setInterval(function(){ 
+								obj.loadNext(true);
+							}, time);
+						}
+					}
 				}
+							
+				if(this.type == 'link') {
+					if(!this.getNext()) {
+						var topImg = this.imageContainer.getFirst('.xGalleryItem');
+						var linkHref = topImg.getChildren('.xGalleryImageCaption').get('text');
+						var patt = /http:\/\//i;
+						if(!patt.test(linkHref)) linkHref = 'http://' + linkHref;
+						//console.debug(topImg);
+						
+						topImg.getElements('img').setStyle('cursor', 'pointer');
+						topImg.addEvent('click', function(event) {
+							event.stop();
+							window.location = linkHref;
+						});	
+					} else {
+						this.loadNext();
+					}
+				}
+				
 				if(this.type == 'row') {
 					this.layout_update();
 					this.loadNext();
 				}
+
 			}
 		}
 	},
@@ -131,7 +167,7 @@ var BertaGallery = new Class({
 				this.load(aEl.get('href'), aEl.getClassStoredValue('xType'), aEl.getClassStoredValue('xW'), aEl.getClassStoredValue('xH'), aEl.getClassStoredValue('xVideoHref'), nextLi.getElement('.xGalleryImageCaption').get('html'), false, aEl.getClassStoredValue('xImgIndex'));
             } else {
 				//after everything is loaded - attach fullscreen for gallery row mode
-				if (this.fullscreen && this.type == 'row'){
+				if (this.fullscreen && this.type == 'row') {
                     this.attachRowFullscreen();
 				}
 			}
@@ -209,6 +245,11 @@ var BertaGallery = new Class({
 		}
 	},
 	
+/*
+	if(mType == 'image') this.layout_inject(bDeleteExisting, true);
+	this.layout_finisage(src, mType, mWidth, mHeight);
+*/
+
 	layout_inject: function(bDeleteExisting, bDoContainerFade) {
 		//console.debug('inject ', this.preload, ' with bDeleteExisting = ', bDeleteExisting);
 		if(bDeleteExisting) this.imageContainer.getChildren('.xGalleryItem').destroy();
@@ -299,7 +340,6 @@ var BertaGallery = new Class({
 			this.currentSrc = null;
 			this.phase = "fadeout";
 			this.imageFadeOutFx.start('opacity', 0).chain(this.load_Render.bind(this, [ src, mType, mWidth, mHeight, videoPath, caption, bDeleteExisting, xImgIndex ]));
-			
 		} else {
 			this.currentSrc = null;
 			this.load_Render(src, mType, mWidth, mHeight, videoPath, caption, bDeleteExisting, xImgIndex);
@@ -321,9 +361,10 @@ var BertaGallery = new Class({
 		switch(mType) {
 			case 'image':
 				this.phase = "preload";
-				this.preload = new Asset.image(src, this.type == 'slideshow' ? {
+				this.preload = new Asset.image(src, this.type == 'slideshow' ? { 
 					'onload': this.load_Finish.bind(this, [ src, mType, mWidth, mHeight, bDeleteExisting ])
 				} : {});
+				
 				this.preload = new Element('div', { 'class': 'image' }).adopt(this.preload);
 				if(this.type == 'row') {
 					if(mWidth) this.preload.setStyle('width', mWidth + 'px');
@@ -422,6 +463,7 @@ var BertaGallery = new Class({
 		// test if the loaded image's src is the last invoked image's src
 		if(src == this.currentSrc) {
 			if(this.type == 'slideshow') {
+				//console.debug(this.preload);
 				this.phase = "fadein";
 				this.imageResizeFx.start({
 					'width': mWidth,
@@ -431,7 +473,36 @@ var BertaGallery = new Class({
 					if(mType == 'image') this.layout_inject(bDeleteExisting, true);
 					this.layout_finisage(src, mType, mWidth, mHeight);
 				}.bind(this));
-			} else {
+			} 
+			else if(this.type == 'link') {
+				this.phase = "done";
+				if(mType == 'image') this.layout_inject(bDeleteExisting, false);
+				var topImg = this.imageContainer.getFirst('.xGalleryItem');
+				var bottomImg = this.imageContainer.getLast('.xGalleryItem');
+				
+				var linkHref = bottomImg.getChildren('.xGalleryImageCaption').get('text');
+				var patt = /http:\/\//i;
+				if(!patt.test(linkHref)) linkHref = 'http://' + linkHref;
+				
+				bottomImg.setStyle('display', 'none');
+				bottomImg.getElements('img').setStyle('cursor', 'pointer');
+				topImg.addEvent('mouseenter', function(event) {
+					event.stop();
+					topImg.setStyle('display', 'none');
+					bottomImg.setStyle('display', '');
+				});
+				bottomImg.addEvent('mouseleave', function(event) {
+					event.stop();
+					bottomImg.setStyle('display', 'none');
+					topImg.setStyle('display', '');
+				});	
+				
+				bottomImg.addEvent('click', function(event) {
+					event.stop();
+					window.location = linkHref;
+				});
+			}
+			else {
 				this.phase = "done";
 				//console.debug(this.preload);
 				if(mType == 'image') this.layout_inject(bDeleteExisting, false);
@@ -440,7 +511,6 @@ var BertaGallery = new Class({
 				
 				//new Fx.Tween(this.preload, { duration: 'normal', transition: Fx.Transitions.Sine.easeInOut }).set('opacity', 0).start('opacity', 1);
             	this.loadNext();
-            	
 			}
 		}
 	}

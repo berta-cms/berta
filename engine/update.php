@@ -210,6 +210,17 @@ if($jsonRequest) {
 							if(empty($e['mediaCacheData']['@attributes'])) $e['mediaCacheData']['@attributes'] = array();
 							$e['mediaCacheData']['@attributes']['fullscreen'] = $decoded['params'];
 							break;
+						/* <autoplay> */
+						case 'SET_AUTOPLAY':
+							if(preg_match('/^\d+$/', $decoded['params'])) {
+								if(preg_match('/^[0]+.[1-9]+/', $decoded['params'])) $decoded['params'] = preg_replace('/^[0]+/', '', $decoded['params']);
+								if(empty($e['mediaCacheData']['@attributes'])) $e['mediaCacheData']['@attributes'] = array();
+								$e['mediaCacheData']['@attributes']['autoplay'] = $decoded['params'];
+							} else {
+								$e['mediaCacheData']['@attributes']['autoplay'] = 0;
+							}
+							break;
+						/* </autoplay> */
 						case 'PUT_BEFORE':
 							$newEntriesList = array(); $entryPut = false; $hasEntries = false;
 							if(!empty($blog['entry']['@attributes'])) $newEntriesList['@attributes'] = $blog['entry']['@attributes'];

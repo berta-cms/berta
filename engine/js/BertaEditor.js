@@ -127,11 +127,11 @@ var BertaEditor = new Class({
 			case 'entries':
 			default:
 				
+				this.container = document.getElementById('contentContainer');
 				this.entriesList = $$('.xEntriesList')[0];
 				if(this.entriesList) {
 					this.currentSection = this.entriesList.getClassStoredValue('xSection');
 					this.currentTag = this.entriesList.getClassStoredValue('xTag');
-				
 					
 					if(this.currentSection) {
 						this.entriesList.getElements('.xEntry .xEntryEditWrap').addEvent('mouseenter', this.entryOnHover.bindWithEvent(this));
@@ -147,14 +147,14 @@ var BertaEditor = new Class({
 								dropdown.removeClass('xEntryDropdowHover');						    
 						    }														
 						});												
-				
+
 						// entry deleting and creating
 						new Element('A', { 'class': 'xCreateNewEntry xPanel xAction-entryCreateNew', 'href': '#'}).adopt(
 							new Element('span', { 'html': this.options.i18n['create new entry here'] })
 						).inject(this.entriesList, 'after');
 						$$('.xEntryDelete').addEvent('click', this.entryDelete.bindWithEvent(this));
 						$$('.xCreateNewEntry').addEvent('click', this.entryCreate.bindWithEvent(this));
-				
+
 						// galleries
 						this.entriesList.getElements('.xGalleryContainer').each(function(item) {
 							var g = new BertaGallery(item, { 
@@ -187,14 +187,77 @@ var BertaEditor = new Class({
 								}.bind(this)
 							});
 						}
-				
+						
 						this.highlightNewEntry.delay(100, this);
-					} else {
-						new Element('DIV', { 
-							'class': 'xPanel', 
-							'styles': { 'clear': 'both'}, 
-							'html': this.options.i18n.afterinstall_note,
-						}).inject(this.entriesList, 'after');
+						
+						// New entry tip
+						if(!Cookie.read('_berta_tips') && this.galleries.length == 0) {
+							var newEntry_tip_anchor = this.container.getElement('a.xCreateNewEntry');
+							
+							var newEntryTip = new Tips(newEntry_tip_anchor, {
+								fixed: true,
+								className: 'xTipNewEntry',
+								offset: {'x': 80, 'y': 28},
+								onHide: function(tip, el) {
+									tip.setStyle('display', '');
+								}
+							});
+							
+							newEntry_tip_anchor.store('tip:title', this.options.i18n.newEntryTip_title);
+							newEntry_tip_anchor.store('tip:text', this.options.i18n.newEntryTip_text);
+							
+							newEntry_tip_anchor.fireEvent('mouseenter');
+						}
+				
+						// New entry content tip
+						if(!Cookie.read('_berta_tips') && 
+						   this.container.getElements('.xEntry .xEntryEditWrap .xGalleryHasImages').length == 0 && 
+						   this.container.getElements('.xEntry .xEntryEditWrap .entryText .xEmpty').length > 0) {
+							var newEntryContent_tip_anchor = this.entriesList.getElements('.xEntry');
+							
+							var newEntryContentTip = new Tips(newEntryContent_tip_anchor, {
+								fixed: true,
+								className: 'xTipNewEntryContent',
+								offset: {'x': 20, 'y': 42},
+								onHide: function(tip, el) {
+									tip.setStyle('display', '');
+								}
+							});
+							
+							newEntryContent_tip_anchor.store('tip:title', this.options.i18n.newEntryContentTip_title);
+							newEntryContent_tip_anchor.store('tip:text', this.options.i18n.newEntryContentTip_text);
+								
+							newEntryContent_tip_anchor.fireEvent('mouseenter');
+							this.container.getChildren('a.xCreateNewEntry')[0].setStyle('display', 'block'); // Fixes 'create new entry' button's display problems
+						}
+					} else if(!this.currentSection && !Cookie.read('_berta_tips')) {
+						// New section tip
+						var newSection_tip_anchor = document.getElementById('newSectionTip');
+			
+						var newSectionTip = new Tips(newSection_tip_anchor, {
+							fixed: true,
+							className: 'xTipNewSection',
+							showDelay: 0,
+							offset: {'x': 8, 'y': 20},
+							onHide: function(tip, el) {
+								tip.setStyle('display', '');
+							}
+						});
+						
+						newSection_tip_anchor.store('tip:title', this.options.i18n.newSectionTip_title);
+						newSection_tip_anchor.store('tip:text', this.options.i18n.newSectionTip_text);
+							
+						newSection_tip_anchor.fireEvent('mouseenter');
+						
+						document.getElementById('xRemoveTips').addEvent('click', function(event) {
+							event.stop();
+					
+							if(confirm("Berta asks:\n\nAre you sure you want to remove tips?\nYou will not be able to view them again.")) {
+								// Destroys and disposes of newEntryContentTip & sets cookie
+								$$('.xTipNewSection').destroy(); $$('.xTipNewSection').dispose();
+								var noTipsCookie = Cookie.write('_berta_tips', 'hidden', {duration: 365});
+							}
+						});
 					}
 				} else {
 					this.editablesInit();
@@ -279,7 +342,6 @@ var BertaEditor = new Class({
 		}
 	},
 
-
 	tabsInit: function() {
 		var tabs = new MGFX.Tabs('.settingsTab','.settingsContent', {
 			autoplay: false,
@@ -357,8 +419,12 @@ var BertaEditor = new Class({
 	onGalleryEditClick: function(event) {	// replaces the gallery with gallery editor
 		event.stop();
 		
-		var galleryContainer = $(event.target).getParent('.xGalleryContainer');
+		// Destroys and disposes of newEntryContentTip & sets cookie
+		$$('.xTipNewEntryContent').destroy(); $$('.xTipNewEntryContent').dispose();
+		var noTipsCookie = Cookie.write('_berta_tips', 'hidden', {duration: 365});
 		
+		
+		var galleryContainer = $(event.target).getParent('.xGalleryContainer');
 		
 		var galleryInstance, galleryInstanceIndex;
 		if(this.galleries.some(function(item, index) { 
@@ -507,7 +573,7 @@ var BertaEditor = new Class({
 		if(this.processHandler.isIdleOrWarnIfBusy()) {
 			if(confirm("Berta asks:\n\nAre you sure you want to delete this entry along with all the images and other stuff it has attached and never have it back and never regret it afterwards?")) {
 				var btn = $(event.target);
-				var entryObj = $(event.target).getParent('.xEntry');	
+				var entryObj = $(event.target).getParent('.xEntry');
 				
 				btn.setProperty('display', 'none');
 				entryObj.addClass('xSavingAtLarge');
@@ -528,6 +594,9 @@ var BertaEditor = new Class({
 						} else if(resp && !resp.error_message) {
 							this.unlinearProcess_stop(deleteProcessId);
 							entryObj.destroy();
+							
+							// Deletes newEntryContentTip (will show on mouseover)
+							$$('.xTipNewEntryContent').dispose();
 						} else {
 							alert(resp.error_message);
 							btn.setProperty('display', 'inline');

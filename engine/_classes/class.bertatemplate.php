@@ -324,7 +324,12 @@ class BertaTemplate extends BertaBase {
 				'template' => htmlspecialchars(self::$options['SITE_ABS_ROOT'] . 'templates/' . $this->name . '/')
 			),
 			'i18n' => array(
-				'afterinstall_note' => I18n::_('<p>Congratulations! You have successfully installed Berta.</p><p>Now, before adding your content, you have to create a new section. Go to the <a href="sections.php">sections page</a> and do that!</p>'),
+				'newSectionTip_title' => I18n::_('1 of 3'),
+				'newSectionTip_text' => I18n::_('First we recommend to create a new section.<br/><br/><a href="#" id="xRemoveTips">Quit tour?</a>'),
+				'newEntryTip_title' => I18n::_('2 of 3'),
+				'newEntryTip_text' => I18n::_('Next step is to create a new entry.'),
+				'newEntryContentTip_title' => I18n::_('3 of 3'),
+				'newEntryContentTip_text' => I18n::_('Add content - images, text or embed HTML...'),
 				'create new entry here' => I18n::_('create new entry here'),
 
 			)
@@ -361,6 +366,8 @@ DOC;
 DOC;
 		if($this->loggedIn) {
 			$vars['berta']['scripts'] .= <<<DOC
+	<script src="{$engineAbsRoot}_lib/mootools/mootools-1.2.5.1-more-tips.js" type="text/javascript" charset="utf-8"></script>		
+	
 	<script type="text/javascript" src="{$engineAbsRoot}js/Assets.js" charset="utf-8"></script>
 	<script type="text/javascript" src="{$engineAbsRoot}js/BertaEditorBase.js" charset="utf-8"></script>
 	<script type="text/javascript" src="{$engineAbsRoot}js/inline_edit.js" charset="utf-8"></script>

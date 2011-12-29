@@ -85,8 +85,18 @@ class BertaUtils extends BertaBase {
 	    $page    = @file_get_contents($url, false, $context);
 
 	    $result  = array( );
-	    if ( $page != false )
-	        $result['content'] = $page;
+	    if ( $page != false ) {
+			$pContent = Array_XML::xml2array($page, 'messages');
+			
+			if(self::cmpVersions($pContent['version'], $o['version'])) {
+	        	$result['content'] = $pContent['update'];
+	        } elseif (!isset($_COOKIE['_berta_newsticker_news']) || $pContent['news'] != $_COOKIE['_berta_newsticker_news']) {
+				setcookie('_berta_newsticker_news', $pContent['news'], time() + 60*60*12, '/');
+				$result['content'] = $pContent['news'];
+			} else {
+				$result['content'] = $pContent['tips']['tip'][rand(0, sizeof($pContent['tips']['tip']) - 1)];
+			}
+		}
 	    else if ( !isset( $http_response_header ) )
 	        return null;    // Bad url, timeout
 
@@ -105,8 +115,20 @@ class BertaUtils extends BertaBase {
 	            break;
 	        }
 	    }
-
+	    
 	    return $result;
+	}
+
+	private function cmpVersions($v1, $v2) {	
+		$arr1 = explode('.', substr($v1, 0, -1));
+		$arr2 = explode('.', substr($v2, 0, -1));
+		
+		foreach($arr1 as $key=>$value) {
+			if((int)$value > (int)$arr2[$key]) {
+				return true;
+				continue;
+			}
+		}
 	}
 	
 

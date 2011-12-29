@@ -44,10 +44,31 @@ if($jsonRequest) {
 					$galType = !empty($entry['mediaCacheData']['@attributes']['type']) ? $entry['mediaCacheData']['@attributes']['type'] : 'slideshow';
 					$imageSize = !empty($entry['mediaCacheData']['@attributes']['size']) ? $entry['mediaCacheData']['@attributes']['size'] : 'large';
 					$FullScreen=!empty($entry['mediaCacheData']['@attributes']['fullscreen']) ? $entry['mediaCacheData']['@attributes']['fullscreen'] : $berta->settings->get('entryLayout', 'galleryFullScreenDefault');
+					$autoPlay = !empty($entry['mediaCacheData']['@attributes']['autoplay']) ? $entry['mediaCacheData']['@attributes']['autoplay'] : '0';
 					
 					echo '<div class="xEntryGalleryEditor-wrap"><div class="xEntryGalleryEditor xPanel">';
 						//echo ';
-						echo '<div class="xEntryGalleryToolbar xGreyBack">';
+
+						echo '<div class="xEntryGalleryMenu">';
+							echo '<div class="xEntryMedia tab">',
+									'<a href="#" class="xParams-media selected" title="media"><span>media</span></a>',	
+								 '</div>';
+							echo '<div class="xEntryMediaSettings tab">',
+									'<a href="#" class="xParams-media_settings" title="gallery settings"><span>settings</span></a>',	
+								 '</div>';
+
+							echo '<div class="xEntryFullScreenSettings tab ">',
+									'<a href="#" class="xParams-fullscreen" title="lightbox"><span>lightbox</span></a>',
+								 '</div>';
+
+							echo '<div class="xEntryImageSizeSettings tab ">',
+									'<a href="#" class="xParams-image_size title="image size"><span>image size</span></a>',
+								 '</div>';
+
+							echo '<a class="xEntryGalCloseLink xEditorLink" href="#" title="close image editor"><span>X</span></a>';
+						echo '</div>';
+						
+						echo '<div class="xEntryGalleryAddMedia">';
 							echo '<div class="xEntryAddImagesFallback">' .
 									'<iframe name="xEntryUploadFrame' . $entry['id']['value'] . '" id="xEntryUploadFrame' . $entry['id']['value'] . '" class="xEntryUploadFrame"></iframe>' . 
 									'<form target="xEntryUploadFrame' . $entry['id']['value'] . '" action="' . $ENGINE_ABS_ROOT . 'upload.php?section=' . $decoded['section'] . '&amp;entry=' . $entry['id']['value'] . '&amp;mediafolder=' . $entry['mediafolder']['value'] . '&amp;session_id=' . session_id() . '" class="xEntryGalleryForm" method="post" enctype="multipart/form-data">' . 
@@ -57,24 +78,29 @@ if($jsonRequest) {
 										'<input type="submit" value="Upload" class="xUploadButton" />' .
 									'</form>' . 
 								 '</div>';
-							echo '<a class="xEntryAddImagesLink xEditorLink xHidden" href="#"><span>add media</span></a>';
-							echo '<div class="xEntrySetGalType">',
-									'<a href="#" class="o1 xAction' . ($galType == 'slideshow' ? ' selected' : '') . ' xCommand-SET_GALLERY_TYPE xParams-slideshow" title="slideshow"><span>slideshow</span></a>',
-									'<a href="#" class="o2 xAction' . ($galType == 'row' ? ' selected' : '') . ' xCommand-SET_GALLERY_TYPE xParams-row" title="horizontal row of images"><span>horizontal row of images</span></a>',
-								 '</div>';
-							echo '<div class="xEntrySetImageSize">',
-									'<a href="#" class="o2 xAction' . ($imageSize == 'small' ? ' selected' : '') . ' xCommand-SET_GALLERY_SIZE xParams-small" title="Small images"><span>Small images</span></a>',
-									'<a href="#" class="o1 xAction' . ($imageSize == 'large' ? ' selected' : '') . ' xCommand-SET_GALLERY_SIZE xParams-large" title="Large images"><span>Large images</span></a>',
-								 '</div>';
-							echo '<div class="xEntryFullScreen">',
-									'<a href="#" class="' . ($FullScreen == 'yes' ? 'selected ' : '') . 'xAction xCommand-SET_FULLSCREEN xParams-' . ($FullScreen == 'yes' ? 'yes' : 'no') . '" title="Lightbox"><span>yes/no</span></a>',
-								 '</div>';
-							echo '<a class="xEntryGalCloseLink xEditorLink" href="#" title="close image editor"><span>close image editor</span></a>';
+							echo '<a class="xEntryAddImagesLink xEditorLink xHidden" href="#"><span>+ add media</span></a>';
 						echo '</div>';
-				
+
+						echo '<div class="xEntryGallerySettings xGreyBack xHidden">';
+							echo '<div class="xEntrySetGalType xEditableSelectRC xCommand-SET_GALLERY_TYPE" x_options="slideshow||row||link">' . $galType . '</div>';
+							echo '<div class="xEntrySlideshowSettings' . ($galType == 'slideshow' ? '' : ' xHidden') . '">',
+									'<div class="caption">autoplay</div>',
+								 	'<div class="xEntryAutoPlay xEditableRC xCommand-SET_AUTOPLAY xCaption-0" title="' . $autoPlay . '">' . $autoPlay . '</div>',
+								 '</div>';
+						echo '</div>';
+						
+						echo '<div class="xEntryGalleryFullScreen xHidden">';
+							echo '<div class="caption">fullscreen</div>',
+								 '<div class="xEntrySetFullScreen xEditableSelectRC xCommand-SET_FULLSCREEN" x_options="yes||no">' . $FullScreen . '</div>';
+						echo '</div>';
+						
+						echo '<div class="xEntryGalleryImageSize xHidden">';
+							echo '<div class="caption">image size</div>',
+								 '<div class="xEntrySetImageSize xEditableSelectRC xCommand-SET_GALLERY_SIZE" x_options="large||small">' . $imageSize . '</div>';
+						echo '</div>';
+						
 						echo '<div class="images"><ul>';
 							if(!empty($entry['mediaCacheData']['file']) && count($entry['mediaCacheData']['file']) > 0) {
-					
 								// if the xml tag is not a list tag, convert it.
 								Array_XML::makeListIfNotList($entry['mediaCacheData']['file']);
 					
@@ -123,7 +149,6 @@ if($jsonRequest) {
 								//echo '<li class="placeholder"><img src="' . $ENGINE_ROOT . 'layout/gallery-placeholder.gif" /></li>';
 							}
 						echo "</ul></div>\n";
-				
 						//echo '</form>';
 					echo "</div></div>\n";
 				}

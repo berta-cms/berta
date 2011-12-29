@@ -30,8 +30,6 @@ Element.implement({
 	}
 });
 
-
-
 var BertaEditorBase = new Class({
 	
 	Implements: [Options, Events],
@@ -187,16 +185,17 @@ var BertaEditorBase = new Class({
 				el.addClass(editorClass.substr(1));
 				el.addEvent('click', function(event, editor) {
 					if(!this.hasClass('xSaving') && !this.hasClass('xEditing')) {
-						this.addClass('xEditing');
-						
-						if(this.inlineIsEmpty()) this.innerHTML = '';
-						editor.elementEdit_instances.push(this.inlineEdit({ type: 'select', 
-																  subtype: this.hasClass(editor.options.xBertaEditorClassFontSelect.substr(1)) ? 'font' : 
-																			(this.hasClass(editor.options.xBertaEditorClassSelectRC.substr(1)) ? 'rc' : ''), 
-																  selectOptions: this.getProperty('x_options').split('||'), 
-																  onComplete: editor.elementEdit_save.bind(editor) }));
-						editor.fireEvent(BertaEditorBase.EDITABLE_START, [el, editor.elementEdit_instances[editor.elementEdit_instances.length - 1]]);
-					}
+											//console.debug(this);
+											this.addClass('xEditing');
+											
+											if(this.inlineIsEmpty()) this.innerHTML = '';
+											editor.elementEdit_instances.push(this.inlineEdit({ type: 'select', 
+																					  subtype: this.hasClass(editor.options.xBertaEditorClassFontSelect.substr(1)) ? 'font' : 
+																								(this.hasClass(editor.options.xBertaEditorClassSelectRC.substr(1)) ? 'rc' : ''), 
+																					  selectOptions: this.getProperty('x_options').split('||'), 
+																					  onComplete: editor.elementEdit_save.bind(editor) }));
+											editor.fireEvent(BertaEditorBase.EDITABLE_START, [el, editor.elementEdit_instances[editor.elementEdit_instances.length - 1]]);
+										}
 				}.bindWithEvent(el, this));
 				break;
 			
@@ -608,10 +607,10 @@ var BertaEditorBase = new Class({
 	},
 	
 	elementEdit_save: function(elEditor, el, oldContent, oldContentText, newContent, newContentText) {
-		//console.log(oldContent);
-		//console.log(newContent)
-		//console.log(oldContentText);
-		//console.log(newContentText);;
+		// console.log(oldContent);
+		// console.log(newContent);
+		// console.log(oldContentText);
+		// console.log(newContentText);
 		
 		if(oldContent == newContent) {
 			var content = oldContent;
@@ -661,11 +660,19 @@ var BertaEditorBase = new Class({
 			el.removeClass('xEditing');
 			el.addClass('xSaving');
 			
+			// Get action for Gallery type, Autoplay, Full screen & Image size
+			var action = el.getClassStoredValue('xCommand');
+			if(action) {
+				editorParams = newContentText;
+				//console.debug(newContentText);
+			}
+			
 			new Request.JSON({
 				url: this.options.updateUrl, 
 				data: "json=" + JSON.encode({
 					section: entryInfo.section, entry: entryInfo.entryId, property: property, params: editorParams, value: newContent ? this.escapeForJSON(newContent) : null,
-					before: this.escapeForJSON(el.get('old_content') ? el.get('old_content') : oldContent), 
+					action: action,
+					before: this.escapeForJSON(el.get('old_content') ? el.get('old_content') : oldContent),
 					before_real: this.escapeForJSON(el.get('title') ? el.get('title') : oldContent),
 					format_modifier: el.getClassStoredValue('xFormatModifier')
 					/*use_css_units: useCSSUnits*/
@@ -721,12 +728,28 @@ var BertaEditorBase = new Class({
 									}
 									el.set('html', resp.update);
 								}
+								
+								//console.debug(newContentText);
+								if(newContentText == 'slideshow') {
+									el.getSiblings('.xEntrySlideshowSettings').removeClass('xHidden');
+								}
+								if(newContentText == 'row') {
+									el.getSiblings('.xEntrySlideshowSettings').addClass('xHidden');
+								}
+								if(newContentText == 'link') {
+									el.getSiblings('.xEntrySlideshowSettings').addClass('xHidden');
+								}
 								break;
 								
 							case el.hasClass(this.options.xBertaEditorClassRC.substr(1)):
 								// for simple RC textfields we additionally set the real_content property
-								el.set('title', elEditor.removeHTMLEntities(resp.real));
-								el.set('html', resp.update);
+								if( el.hasClass('xEntryAutoPlay') && !(/^\d+$/.test(newContentText)) ) {
+									el.set('title', 0);
+									el.set('text', 0);
+								} else {
+									el.set('title', elEditor.removeHTMLEntities(resp.real));
+									el.set('html', resp.update);
+								}
 								break;
 							
 							default:
@@ -823,6 +846,10 @@ var BertaEditorBase = new Class({
 				save_onsavecallback: this.tinyMCE_onSave.bind(this),
 
 				plugins: "save,insertanything,paste",
+				
+				/* TEST */
+
+				/* /TEST */
 
 				theme_advanced_blockformats : "p,h2",
 
@@ -911,14 +938,37 @@ var BertaEditorBase = new Class({
 		return retObj;
 	}
 	
-	
-	
 });
 
 BertaEditorBase.EDITABLE_START = 'editable_start';
 BertaEditorBase.EDITABLE_FINISH = 'editable_finish';
 
 
+// Toggles top panel's visibility
+window.addEvent('domready', function(){
+	var slideEl = document.getElementById('xTopPanel');
+	var slideIn = document.getElementById('xTopPanelSlideIn');
+	var slideOut = document.getElementById('xTopPanelSlideOut');
+
+	var fxIn = new Fx.Tween(slideEl);
+	var fxOut = new Fx.Tween(slideOut);
+
+	slideIn.getElement('span').addEvent('click', function(event) {
+		event.stop();
+		
+		fxIn.start('left', -460).chain(function() {
+			fxOut.start('left', 0);
+		});
+	});
+	
+	slideOut.getElement('span').addEvent('click', function(event) {
+		event.stop();
+		
+		fxOut.start('left', -24).chain(function() {
+			fxIn.start('left', 0);
+		});
+	});
+});
 
 
 function TidyEditor(t, v){

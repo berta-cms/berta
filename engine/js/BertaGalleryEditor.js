@@ -73,6 +73,8 @@ var BertaGalleryEditor = new Class({
 		this.strip = this.container.getElement('.images ul');
 		this.editorContainer = this.container.getElement('.xEntryGalleryProps');
 		
+		this.initTabs();
+		
 		this.stripUpdate();
 		$clear(this.stripUpdatePeriod);
 		this.stripUpdatePeriod = this.stripUpdate.periodical(300, this);
@@ -87,22 +89,29 @@ var BertaGalleryEditor = new Class({
 		this.uploadQueueProcessId = this.unlinearProcess_getId('upload-queue');
 		this.sortingProcessId = this.unlinearProcess_getId('sorting-save');
 		
-		// move handle
-		this.container.getElements('.xEntrySetGalType a').each(function(item) {
-			item.addEvent('click', this.onGalTypeChangeClick.bindWithEvent(this));
-			this.elementEdit_init(item, this.options.xBertaEditorClassAction);
+		// gallery type handle
+		this.container.getElements('.xEntrySetGalType').each(function(item) {
+			this.elementEdit_init(item, this.options.xBertaEditorClassSelectRC);
+		}, this);
+		
+		// tabs handle
+		this.container.getElements('.xEntryGalleryMenu div.tab a').each(function(item) {
+			item.addEvent('click', this.onGalTabClick.bindWithEvent(this));
 		}, this);
 
-		// image size for gallery handle
-		this.container.getElements('.xEntrySetImageSize a').each(function(item) {
-			item.addEvent('click', this.onImageSizeChangeClick.bindWithEvent(this));
-			this.elementEdit_init(item, this.options.xBertaEditorClassAction);
+		// image size for gallery handle		
+		this.container.getElements('.xEntrySetImageSize').each(function(item) {
+			this.elementEdit_init(item, this.options.xBertaEditorClassSelectRC);
 		}, this);
 
-		// fullscreen handle
-		this.container.getElements('.xEntryFullScreen a').each(function(item) {
-			item.addEvent('click', this.onFullScreenChangeClick.bindWithEvent(this));
-			this.elementEdit_init(item, this.options.xBertaEditorClassAction);
+		// fullscreen handle	
+		this.container.getElements('.xEntrySetFullScreen').each(function(item) {
+			this.elementEdit_init(item, this.options.xBertaEditorClassSelectRC);
+		}, this);
+
+		// autoplay handle
+		this.container.getElements('.xEntryAutoPlay').each(function(item) {
+			this.elementEdit_init(item, this.options.xBertaEditorClassRC);
 		}, this);
 
 		// close link
@@ -555,36 +564,59 @@ var BertaGalleryEditor = new Class({
 		}
 	},
 
-	onGalTypeChangeClick: function(event) {
-		event.stop();
-		var target = $(event.target);
-		if(target.get('tag') != 'a') target = target.getParent('a');
-		
-		target.getParent('div').getChildren('a').removeClass('selected');
-		target.addClass('selected');
-	},
-
-	onImageSizeChangeClick: function(event) {
-		event.stop();
-		var target = $(event.target);
-		if(target.get('tag') != 'a') target = target.getParent('a');
-
-		target.getParent('div').getChildren('a').removeClass('selected');
-		target.addClass('selected');
+	initTabs: function() {
+		var target = this.container;
+		var settings = target.getChildren('.xEntryGallerySettings');
+		var fullscreen = target.getChildren('.xEntryGalleryFullScreen');
+		var imageSize = target.getChildren('.xEntryGalleryImageSize');
 	},
 	
-	onFullScreenChangeClick: function(event) {
+	onGalTabClick: function(event) {
 		event.stop();
 		var target = $(event.target);
+		var tabsContainer = target.getParent('.xEntryGalleryMenu');
 		
-		if (target.hasClass('selected')){
-            target.removeClass('selected');
-            target.removeClass('xParams-yes');
-            target.addClass('xParams-no');
-        }else{
-            target.removeClass('xParams-no');
-            target.addClass('selected xParams-yes');
-        }
+		var media = tabsContainer.getSiblings('.images');
+		var addMedia = tabsContainer.getSiblings('.xEntryGalleryAddMedia');
+		var settings = tabsContainer.getSiblings('.xEntryGallerySettings');
+		var swiffEl = tabsContainer.getSiblings('.swiff-uploader-box');
+		var fullscreen = tabsContainer.getSiblings('.xEntryGalleryFullScreen');
+		var imageSize = tabsContainer.getSiblings('.xEntryGalleryImageSize');
+		
+		var tab = target.getClassStoredValue('xParams');
+		//console.debug(tab);
+		
+		if(tab == 'media') {
+			tabsContainer.getElements('.tab a').removeClass('selected');
+			target.addClass('selected');
+
+			$$(settings, fullscreen, imageSize).addClass('xHidden');
+			$$(media, addMedia, swiffEl).removeClass('xHidden');
+		}
+		
+		if(tab == 'media_settings') {
+			tabsContainer.getElements('.tab a').removeClass('selected');
+			target.addClass('selected');
+			
+			$$(media, swiffEl, addMedia, fullscreen, imageSize).addClass('xHidden');
+			settings.removeClass('xHidden');
+		}
+		
+		if(tab == 'fullscreen') {
+			tabsContainer.getElements('.tab a').removeClass('selected');
+			target.addClass('selected');
+			
+			$$(media, swiffEl, addMedia, settings, imageSize).addClass('xHidden');
+			fullscreen.removeClass('xHidden');
+		}
+		
+		if(tab == 'image_size') {
+			tabsContainer.getElements('.tab a').removeClass('selected');
+			target.addClass('selected');
+			
+			$$(media, swiffEl, addMedia, settings, fullscreen).addClass('xHidden');
+			imageSize.removeClass('xHidden');
+		}
 	},
 
 	onCloseClick: function(event) {

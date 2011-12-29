@@ -523,7 +523,6 @@ class BertaEditor extends BertaContent {
 			$tickerClass = 'xHidden';
 		}
 
-		$m0 = I18n::_('close this');
 		$m1 = I18n::_('my site');
 		$m2 = I18n::_('sections');
 		$m3 = I18n::_('settings');
@@ -535,28 +534,31 @@ class BertaEditor extends BertaContent {
 		$m2Class = $selectedSection == 'sections' ? ' class="selected"' : '';
 		$m3Class = $selectedSection == 'settings' ? ' class="selected"' : '';
 		$m4Class = $selectedSection == 'template' ? ' class="selected"' : '';
-		$m5Class = $selectedSection == 'profile' ? ' selected' : '';
+		$m5Class = $selectedSection == 'profile' ? ' class="selected"' : '';
 
 		$m5_link=self::$options['HOSTING_PROFILE']?self::$options['HOSTING_PROFILE']:'profile.php';
 
+//<div id="xTopPanelToggle"><span class="in selected">◄</span><span class="out">►</span></div>
 		$str = <<<DOC
 			<div id="xTopPanelContainer" class="xPanel">
-				<div id="xTopPanel">
-					
-					<div id="xNewsTickerContainer" class="$tickerClass">
-						<div class="news-ticker-background $tickerColorClass"></div>
-						<div class="news-ticker-content">$newsTickerContent</div>
-						<a href="#" class="close">$m0</a>
-						<br class="clear" />
-					</div>
+				<div id="xTopPanelSlideOut"><span>►</span></div>
+				<div id="xTopPanel">	
+					<div id="xTopPanelSlideIn"><span>◄</span></div>
 					<ul id="xEditorMenu">
 						<li id="xEditorMenuBg"></li>
 						<li$m1Class><a href=".">$m1</a></li><li>|</li>
-						<li$m2Class><a href="sections.php">$m2</a></li><li>|</li>
+						<li$m2Class id="newSectionTip"><a href="sections.php">$m2</a></li><li>|</li>
 						<li$m3Class><a href="settings.php">$m3</a></li><li>|</li>
-						<li$m4Class><a href="settings.php?mode=template">$m4</a></li>
-						<li class="last$m5Class"><a href="$m5_link">$m5</a> | <a href="logout.php">$m6</a></li>
+						<li$m4Class><a href="settings.php?mode=template">$m4</a></li><li>|</li>
+						<li$m5Class><a href="$m5_link">$m5</a></li><li>|</li>
+						<li><a href="logout.php">$m6</a></li>
 					</ul>
+					<div id="xNewsTickerContainer" class="$tickerClass">
+						<div class="news-ticker-background $tickerColorClass"></div>
+						<div class="news-ticker-content">$newsTickerContent</div>
+						<a href="#" class="close">X</a>
+						<br class="clear" />
+					</div>
 				</div>
 			</div>
 DOC;
