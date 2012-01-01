@@ -385,6 +385,7 @@ body.xEditorEnabled { }
 			left: -24px;
 			margin-right: -24px;
 			background-color: #4A4A4A;
+			z-index: 60000;
 		}
 		
 		#xTopPanelSlideIn span,
@@ -476,7 +477,7 @@ ul#pageEntries {
 				position: absolute;
 				border: 1px solid #666666;
 				background-color: #fff;
-				z-index: 1;
+				z-index: 56000;
 				display: none;
 				background: rgba(255, 255, 255, 0.96);
 			}
@@ -655,7 +656,7 @@ a.xCreateNewEntry.xSaving {
 	width: 700px;
 	height: 327px;
     position: relative;
-    z-index: 1;	
+    z-index: 55000;	
 }
 
 	.xEntryGalleryEditor .xEntryGallerySettings,
