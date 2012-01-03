@@ -292,9 +292,6 @@ body.xEditorEnabled { }
 			position: relative;
 			padding: 8px 8px;
 		}
-		.xNewsTickerRed {
-			background-color: #FFA9C6;
-		}
 		.xNewsTickerGrey {
 			background-color: #E9E9E9;
 		}

@@ -492,8 +492,6 @@ class BertaEditor extends BertaContent {
 	public static function getTopPanelHTML($selectedSection = 'site') {
 		$tickerClass = !empty($_COOKIE['_berta_newsticker_hidden']) ? 'xHidden' : '';
 
-
-		$tickerColorClass = empty($_COOKIE['_berta_newsticker_hilight']) ? 'xNewsTickerRed' : 'xNewsTickerGrey';
 		$newsTickerContent = false;
 		
 	//	$_SESSION['_berta_newsticker'] = false;				// for testing...
@@ -554,7 +552,7 @@ class BertaEditor extends BertaContent {
 						<li><a href="logout.php">$m6</a></li>
 					</ul>
 					<div id="xNewsTickerContainer" class="$tickerClass">
-						<div class="news-ticker-background $tickerColorClass"></div>
+						<div class="news-ticker-background xNewsTickerGrey"></div>
 						<div class="news-ticker-content">$newsTickerContent</div>
 						<a href="#" class="close">X</a>
 						<br class="clear" />
