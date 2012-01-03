@@ -732,20 +732,27 @@ var BertaEditorBase = new Class({
 								//console.debug(newContentText);
 								if(newContentText == 'slideshow') {
 									el.getSiblings('.xEntrySlideshowSettings').removeClass('xHidden');
+									el.getSiblings('.xEntryLinkSettings').addClass('xHidden');
 								}
 								if(newContentText == 'row') {
 									el.getSiblings('.xEntrySlideshowSettings').addClass('xHidden');
+									el.getSiblings('.xEntryLinkSettings').addClass('xHidden');
 								}
 								if(newContentText == 'link') {
+									el.getSiblings('.xEntryLinkSettings').removeClass('xHidden');
 									el.getSiblings('.xEntrySlideshowSettings').addClass('xHidden');
 								}
 								break;
+								
 								
 							case el.hasClass(this.options.xBertaEditorClassRC.substr(1)):
 								// for simple RC textfields we additionally set the real_content property
 								if( el.hasClass('xEntryAutoPlay') && !(/^\d+$/.test(newContentText)) ) {
 									el.set('title', 0);
 									el.set('text', 0);
+								} else if( el.hasClass('xEntryLinkAddress') && !(/^(http:\/\/)/i.test(newContentText)) ) {
+									el.set('title', 'http://' + newContentText);
+									el.set('text', 'http://' + newContentText);								
 								} else {
 									el.set('title', elEditor.removeHTMLEntities(resp.real));
 									el.set('html', resp.update);

@@ -788,12 +788,14 @@ a.xCreateNewEntry.xSaving {
 				display: none;
 		}
 		
-		.xEntryGallerySettings .xEntrySlideshowSettings {
+		.xEntryGallerySettings .xEntrySlideshowSettings,
+		.xEntryGallerySettings .xEntryLinkSettings {
 			margin: 16px 0;
 		}
 			
 			.xEntryGallerySettings .caption,
 			.xEntrySlideshowSettings .caption,
+			.xEntryGallerySettings .caption,
 			.xEntryGalleryFullScreen .caption,
 			.xEntryGalleryImageSize .caption {
 				width: 200px;
@@ -809,6 +811,8 @@ a.xCreateNewEntry.xSaving {
 			.xEntryGallerySettings .xEntrySetGalType input,
 			.xEntrySlideshowSettings .xEntryAutoPlay,
 			.xEntrySlideshowSettings .xEntryAutoPlay input,
+			.xEntryLinkSettings .xEntryLinkAddress,
+			.xEntryLinkSettings .xEntryLinkAddress input,
 			.xEntryGalleryFullScreen .xEntrySetFullScreen,
 			.xEntryGalleryFullScreen .xEntrySetFullScreen input,
 			.xEntryGalleryImageSize .xEntrySetImageSize,
@@ -827,6 +831,10 @@ a.xCreateNewEntry.xSaving {
 			.xEntrySlideshowSettings .xEntryAutoPlay {
 				width: 50px;
 				text-align: center;
+			}
+			
+			.xEntryLinkSettings .xEntryLinkAddress {
+				width: 200px;
 			}
 			
 			.xEntryGalleryFullScreen .xEntrySetFullScreen,
