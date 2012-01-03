@@ -306,10 +306,10 @@ body.xEditorEnabled { }
 				left: 0; top: 0; bottom: 0; right: 0;
 				border-right: 1px solid #4a4a4a;
 				border-bottom: 1px solid #4a4a4a;
-				/*-moz-opacity: 0.8;
+				-moz-opacity: 0.8;
 				-webkit-opacity: 0.8;
 				-o-opacity: 0.8;
-				opacity: 0.8;*/
+				opacity: 0.8;
 			}
 			#xNewsTickerContainer .news-ticker-content {
 				float: left;
@@ -659,7 +659,6 @@ a.xCreateNewEntry.xSaving {
 	.xEntryGalleryEditor .xEntryGallerySettings,
 	.xEntryGalleryEditor .xEntryGalleryFullScreen,
 	.xEntryGalleryEditor .xEntryGalleryImageSize {
-		width: 200px;
 		padding: 6px;
 	}
 	
@@ -789,39 +788,40 @@ a.xCreateNewEntry.xSaving {
 				display: none;
 		}
 		
-		.xEntryGallerySettings .xEntrySetGalType {
-			width: 200px;
-			padding: 6px 0;
-		}
-		
 		.xEntryGallerySettings .xEntrySlideshowSettings {
-			width: 200px;
-			padding: 16px 0;
+			margin: 16px 0;
 		}
-		
+			
+			.xEntryGallerySettings .caption,
 			.xEntrySlideshowSettings .caption,
 			.xEntryGalleryFullScreen .caption,
 			.xEntryGalleryImageSize .caption {
+				width: 200px;
 				float: left;
 			}
+			.xEntryGallerySettings>.caption,
 			.xEntryGalleryFullScreen .caption,
 			.xEntryGalleryImageSize .caption {
 				padding: 6px 0;
 			}
 			
+			.xEntryGallerySettings .xEntrySetGalType,
+			.xEntryGallerySettings .xEntrySetGalType input,
 			.xEntrySlideshowSettings .xEntryAutoPlay,
 			.xEntrySlideshowSettings .xEntryAutoPlay input,
 			.xEntryGalleryFullScreen .xEntrySetFullScreen,
 			.xEntryGalleryFullScreen .xEntrySetFullScreen input,
 			.xEntryGalleryImageSize .xEntrySetImageSize,
 			.xEntryGalleryImageSize .xEntrySetImageSize input {
-				float: right;
+				float: left;
 			}
+			.xEntryGallerySettings .xEntrySetGalType,
+			.xEntryGallerySettings .xEntrySetGalType input,
 			.xEntryGalleryFullScreen .xEntrySetFullScreen,
 			.xEntryGalleryFullScreen .xEntrySetFullScreen input,
 			.xEntryGalleryImageSize .xEntrySetImageSize,
 			.xEntryGalleryImageSize .xEntrySetImageSize input {
-				padding: 6px 0;
+				margin: 6px 0;
 			}
 			
 			.xEntrySlideshowSettings .xEntryAutoPlay {
@@ -832,6 +832,9 @@ a.xCreateNewEntry.xSaving {
 			.xEntryGalleryFullScreen .xEntrySetFullScreen,
 			.xEntryGalleryImageSize .xEntrySetImageSize {
 				width: 80px;
+			}
+			.xEntryGallerySettings .xEntrySetGalType {
+				width: 140px;
 			}
 
 		.xEntryGalleryMenu a.xEntryGalCloseLink {
