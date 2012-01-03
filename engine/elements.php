@@ -62,7 +62,7 @@ if($jsonRequest) {
 								 '</div>';
 
 							echo '<div class="xEntryImageSizeSettings tab ">',
-									'<a href="#" class="xParams-image_size title="large/small image size"><span>image size</span></a>',
+									'<a href="#" class="xParams-image_size" title="large/small image size"><span>image size</span></a>',
 								 '</div>';
 
 							echo '<a class="xEntryGalCloseLink xEditorLink" href="#" title="close image editor"><span>X</span></a>';
