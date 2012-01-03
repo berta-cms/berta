@@ -358,10 +358,10 @@ body.xEditorEnabled { }
 				position: absolute !important;
 				z-index: 1 !important;
 				left: 0; top: 0; right: 0; bottom: 0;
-				/*-moz-opacity: 0.8;
-				-webkit-opacity: 0.8;
-				-o-opacity: 0.8;
-				opacity: 0.8;*/
+				-moz-opacity: 0.9;
+				-webkit-opacity: 0.9;
+				-o-opacity: 0.9;
+				opacity: 0.9;
 				background-color: #4A4A4A;
 			}
 
@@ -373,10 +373,10 @@ body.xEditorEnabled { }
 		padding-left: 4px;
 		float: left;
 		width: 20px;
-		/*-moz-opacity: 0.8;
-		-webkit-opacity: 0.8;
-		-o-opacity: 0.8;
-		opacity: 0.8;*/
+		-moz-opacity: 0.9;
+		-webkit-opacity: 0.9;
+		-o-opacity: 0.9;
+		opacity: 0.9;
 	}
 		#xTopPanelSlideOut { 
 			left: -24px;
