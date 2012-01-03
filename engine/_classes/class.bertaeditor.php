@@ -536,12 +536,11 @@ class BertaEditor extends BertaContent {
 
 		$m5_link=self::$options['HOSTING_PROFILE']?self::$options['HOSTING_PROFILE']:'profile.php';
 
-//<div id="xTopPanelToggle"><span class="in selected">◄</span><span class="out">►</span></div>
 		$str = <<<DOC
 			<div id="xTopPanelContainer" class="xPanel">
-				<div id="xTopPanelSlideOut"><span>►</span></div>
+				<div id="xTopPanelSlideOut"><span title="show menu">►</span></div>
 				<div id="xTopPanel">	
-					<div id="xTopPanelSlideIn"><span>◄</span></div>
+					<div id="xTopPanelSlideIn"><span title="hide menu">◄</span></div>
 					<ul id="xEditorMenu">
 						<li id="xEditorMenuBg"></li>
 						<li$m1Class><a href=".">$m1</a></li><li>|</li>
