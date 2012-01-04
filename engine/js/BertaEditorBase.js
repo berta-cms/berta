@@ -954,28 +954,30 @@ BertaEditorBase.EDITABLE_FINISH = 'editable_finish';
 // Toggles top panel's visibility
 window.addEvent('domready', function(){
 	var slideEl = document.getElementById('xTopPanel');
-	var slideIn = document.getElementById('xTopPanelSlideIn');
-	var slideOut = document.getElementById('xTopPanelSlideOut');
-
-	var fxIn = new Fx.Tween(slideEl);
-	var fxOut = new Fx.Tween(slideOut);
-
-	slideIn.getElement('span').addEvent('click', function(event) {
-		event.stop();
+	if(slideEl) {
+		var slideIn = document.getElementById('xTopPanelSlideIn');
+		var slideOut = document.getElementById('xTopPanelSlideOut');
 		
-		fxIn.start('left', -460).chain(function() {
-			fxOut.start('left', 0);
-		});
-	});
-	
-	slideOut.getElement('span').addEvent('click', function(event) {
-		event.stop();
+		var fxIn = new Fx.Tween(slideEl);
+		var fxOut = new Fx.Tween(slideOut);
 		
-		fxOut.start('left', -24).chain(function() {
-			fxIn.start('left', 0);
+		slideIn.getElement('span').addEvent('click', function(event) {
+			event.stop();
+			
+			fxIn.start('left', -460).chain(function() {
+				fxOut.start('left', 0);
+			});
 		});
-	});
-});
+		
+		slideOut.getElement('span').addEvent('click', function(event) {
+			event.stop();
+			
+			fxOut.start('left', -24).chain(function() {
+				fxIn.start('left', 0);
+			});
+		});
+	}
+})
 
 
 function TidyEditor(t, v){
