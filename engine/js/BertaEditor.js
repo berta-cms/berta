@@ -240,7 +240,18 @@ var BertaEditor = new Class({
 							showDelay: 0,
 							offset: {'x': 8, 'y': 20},
 							onHide: function(tip, el) {
-								tip.setStyle('display', '');
+								tip.show();
+							},
+							onShow: function(tip, el) {
+								document.getElementById('xRemoveTips').addEvent('click', function(event) {
+									event.stop();
+								
+									if(confirm("Berta asks:\n\nAre you sure you want to remove tips?\nYou will not be able to view them again.")) {
+										// Destroys and disposes of newEntryContentTip & sets cookie
+										$$('.xTipNewSection').destroy(); $$('.xTipNewSection').dispose();
+										var noTipsCookie = Cookie.write('_berta_tips', 'hidden', {duration: 365});
+									}
+								});
 							}
 						});
 						
@@ -248,16 +259,6 @@ var BertaEditor = new Class({
 						newSection_tip_anchor.store('tip:text', this.options.i18n.newSectionTip_text);
 							
 						newSection_tip_anchor.fireEvent('mouseenter');
-						
-						document.getElementById('xRemoveTips').addEvent('click', function(event) {
-							event.stop();
-					
-							if(confirm("Berta asks:\n\nAre you sure you want to remove tips?\nYou will not be able to view them again.")) {
-								// Destroys and disposes of newEntryContentTip & sets cookie
-								$$('.xTipNewSection').destroy(); $$('.xTipNewSection').dispose();
-								var noTipsCookie = Cookie.write('_berta_tips', 'hidden', {duration: 365});
-							}
-						});
 					}
 				} else {
 					this.editablesInit();
