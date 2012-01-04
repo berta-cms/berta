@@ -1260,7 +1260,10 @@ input#xFirstTimeCheckContinue {
 	color: #fff;
 	width: 140px;
 	padding: 10px;
-	border-radius: 8px;
+	border-radius: 2px;
+	-moz-border-radius: 2px;
+	-webkit-border-radius: 2px;
+	-o-border-radius: 2px;
 	z-index: 55000;
 }
 
