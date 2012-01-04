@@ -271,11 +271,16 @@ var BertaEditor = new Class({
 			this.newsTickerContainer.getElement('a.close').addEvent('click', function(event) {
 				event.stop();
 				new Fx.Slide(this.newsTickerContainer, { duration: 800, transition: Fx.Transitions.Quint.easeInOut }).show().slideOut();
-				this.newsTickerContainer.addClass('xNewsTickerHidden');
 				Cookie.write('_berta_newsticker_hidden', 1);
 			}.bind(this));
 			
-			this.hideNewsTicker.delay(7000);
+			
+			var newsStripBg = this.newsTickerContainer.getElement('.news-ticker-background');
+			if(newsStripBg.hasClass('xNewsTickerRed')) {
+				newsStripBg.set('morph', { duration: 2000 });
+				newsStripBg.morph.delay(2000, newsStripBg, '.xNewsTickerGrey');
+				Cookie.write('_berta_newsticker_hilight', 1);
+			}
 		}
 	},
 	
@@ -284,13 +289,6 @@ var BertaEditor = new Class({
 
 	},
 	
-	hideNewsTicker: function() {
-		this.newsTickerContainer = $('xNewsTickerContainer');
-		if(!this.newsTickerContainer.hasClass('xNewsTickerHidden')) {
-			new Fx.Slide(this.newsTickerContainer, { duration: 800, transition: Fx.Transitions.Quint.easeInOut }).show().slideOut();
-			Cookie.write('_berta_newsticker_hidden', 1);
-		}
-	},
 	  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	 ///|  INIT  |/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

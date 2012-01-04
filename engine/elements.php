@@ -51,18 +51,18 @@ if($jsonRequest) {
 
 						echo '<div class="xEntryGalleryMenu">';
 							echo '<div class="xEntryMedia tab">',
-									'<a href="#" class="xParams-media selected" title="add images and videos"><span>media</span></a>',	
+									'<a href="#" class="xParams-media selected" title="media"><span>media</span></a>',	
 								 '</div>';
 							echo '<div class="xEntryMediaSettings tab">',
 									'<a href="#" class="xParams-media_settings" title="gallery settings"><span>settings</span></a>',	
 								 '</div>';
 
 							echo '<div class="xEntryFullScreenSettings tab ">',
-									'<a href="#" class="xParams-fullscreen" title="lightbox on/off"><span>lightbox</span></a>',
+									'<a href="#" class="xParams-fullscreen" title="lightbox"><span>lightbox</span></a>',
 								 '</div>';
 
 							echo '<div class="xEntryImageSizeSettings tab ">',
-									'<a href="#" class="xParams-image_size" title="large/small image size"><span>image size</span></a>',
+									'<a href="#" class="xParams-image_size title="image size"><span>image size</span></a>',
 								 '</div>';
 
 							echo '<a class="xEntryGalCloseLink xEditorLink" href="#" title="close image editor"><span>X</span></a>';
@@ -82,22 +82,21 @@ if($jsonRequest) {
 						echo '</div>';
 
 						echo '<div class="xEntryGallerySettings xGreyBack xHidden">';
-							echo '<div class="caption">gallery type</div>',
-								 '<div class="xEntrySetGalType xEditableSelectRC xCommand-SET_GALLERY_TYPE" x_options="slideshow||row||link">' . $galType . '</div><br class="clear" />';
+							echo '<div class="xEntrySetGalType xEditableSelectRC xCommand-SET_GALLERY_TYPE" x_options="slideshow||row||link">' . $galType . '</div>';
 							echo '<div class="xEntrySlideshowSettings' . ($galType == 'slideshow' ? '' : ' xHidden') . '">',
-									'<div class="caption">autoplay seconds</div>',
+									'<div class="caption">autoplay</div>',
 								 	'<div class="xEntryAutoPlay xEditableRC xCommand-SET_AUTOPLAY xCaption-0" title="' . $autoPlay . '">' . $autoPlay . '</div>',
 								 '</div>';
 						echo '</div>';
 						
 						echo '<div class="xEntryGalleryFullScreen xHidden">';
 							echo '<div class="caption">fullscreen</div>',
-								 '<div class="xEntrySetFullScreen xEditableSelectRC xCommand-SET_FULLSCREEN" x_options="yes||no">' . $FullScreen . '</div><br class="clear" />';
+								 '<div class="xEntrySetFullScreen xEditableSelectRC xCommand-SET_FULLSCREEN" x_options="yes||no">' . $FullScreen . '</div>';
 						echo '</div>';
 						
 						echo '<div class="xEntryGalleryImageSize xHidden">';
 							echo '<div class="caption">image size</div>',
-								 '<div class="xEntrySetImageSize xEditableSelectRC xCommand-SET_GALLERY_SIZE" x_options="large||small">' . $imageSize . '</div><br class="clear" />';
+								 '<div class="xEntrySetImageSize xEditableSelectRC xCommand-SET_GALLERY_SIZE" x_options="large||small">' . $imageSize . '</div>';
 						echo '</div>';
 						
 						echo '<div class="images"><ul>';
