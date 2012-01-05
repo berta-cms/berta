@@ -115,8 +115,8 @@ $settingsDefinition = array(
  	)
 );
 
-if(@file_exists($SITE_ROOT .'shop/inc.settings.php')) {	
-	include($SITE_ROOT .'shop/inc.settings.php');
+if(@file_exists($SITE_ROOT .'_plugins/_shop/inc.settings.php')) {	
+	include($SITE_ROOT .'_plugins/_shop/inc.settings.php');
 }
 
 ?>
