@@ -1,7 +1,7 @@
 storage/*
 .idea/*
 .DS_Store
-_plugins/_shop/*
+_plugin_shop/*
 .buildpath
 .dropbox
 .project

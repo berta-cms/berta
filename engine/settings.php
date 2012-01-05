@@ -10,6 +10,7 @@ if($loggedIn) {
 	exit;
 }
 
+
 $mode = !empty($_GET['mode']) ? $_GET['mode'] : 'settings';
 
 include($ENGINE_ROOT . 'inc.settings.php');
@@ -17,6 +18,8 @@ $berta->settings = new Settings($settingsDefinition);
 						  
 $menuSeparator = $berta->settings->get('menu', 'separator');
 $topPanelHTML = BertaEditor::getTopPanelHTML($mode);
+
+include($ENGINE_ROOT . 'inc.tips.php');
 
 ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -36,7 +39,8 @@ $topPanelHTML = BertaEditor::getTopPanelHTML($mode);
 			"engineABSRoot":"<? echo BertaEditor::$options['ENGINE_ABS_ROOT'] ?>",
 			"siteABSRoot" : "<? echo BertaEditor::$options['SITE_ABS_ROOT'] ?>",
 			"template" : "<? echo BertaEditor::$options['SITE_ABS_ROOT'] . 'templates/' . $berta->template->name . '/' ?>"
-		}
+		},
+		"i18n":<? echo $sttingsJS ?>
 	};
 </script>
 <script type="text/javascript" src="<? echo $ENGINE_ABS_ROOT ?>js/Assets.js" charset="utf-8"></script>

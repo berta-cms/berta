@@ -208,7 +208,7 @@ body.xEditorEnabled { }
 	color: #333;
 }
 	.xPanel * {
-		font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+		font-family: Arial, sans-serif;
 		font-size: 12px;
 		line-height: 15px;
 		text-transform: none;

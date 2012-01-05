@@ -22,8 +22,8 @@
 	<script type="text/javascript" src="{ $berta.options.TEMPLATES_ABS_ROOT }{ $berta.templateName }/mess.js"></script>
 
 	{ if $berta.shop_enabled == true }
-	<script type="text/javascript" src="{ $berta.options.SITE_ABS_ROOT }_plugins/_shop/js/shop.js"></script>	
-	<link rel="stylesheet" href="{ $berta.options.SITE_ABS_ROOT }_plugins/_shop/css/shop.css.php?{$smarty.now}" type="text/css" />
+	<script type="text/javascript" src="{ $berta.options.SITE_ABS_ROOT }_plugin_shop/js/shop.js"></script>	
+	<link rel="stylesheet" href="{ $berta.options.SITE_ABS_ROOT }_plugin_shop/css/shop.css.php?{$smarty.now}" type="text/css" />
 	{ /if }
 </head>
 
@@ -49,7 +49,7 @@
 		{ if $berta.environment == 'engine' }
 		<div style="height: 50px"></div>
 		{ /if }
-		{ include file="../../_plugins/_shop/_includes/inc.shopping_cart.tpl"  }
+		{ include file="../../_plugin_shop/_includes/inc.shopping_cart.tpl"  }
 		</div> {* allContainer *}
 	{ else }
 		

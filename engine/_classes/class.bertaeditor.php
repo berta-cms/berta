@@ -543,10 +543,10 @@ class BertaEditor extends BertaContent {
 					<div id="xTopPanelSlideIn"><span title="hide menu">◄</span></div>
 					<ul id="xEditorMenu">
 						<li id="xEditorMenuBg"></li>
-						<li$m1Class><a href=".">$m1</a></li><li>|</li>
-						<li$m2Class id="newSectionTip"><a href="sections.php">$m2</a></li><li>|</li>
-						<li$m3Class><a href="settings.php">$m3</a></li><li>|</li>
-						<li$m4Class><a href="settings.php?mode=template">$m4</a></li><li>|</li>
+						<li$m1Class id="xGoToMySiteTip"><a href=".">$m1</a></li><li>|</li>
+						<li$m2Class id="xNewSectionTip"><a href="sections.php">$m2</a></li><li>|</li>
+						<li$m3Class id="xSettingsTip"><a href="settings.php">$m3</a></li><li>|</li>
+						<li$m4Class id="xTemplateDesignTip"><a href="settings.php?mode=template">$m4</a></li><li>|</li>
 						<li$m5Class><a href="$m5_link">$m5</a></li><li>|</li>
 						<li><a href="logout.php">$m6</a></li>
 					</ul>
