@@ -62,7 +62,7 @@ var BertaEditor_Sections = new Class({
 		
 		//Go to my site tip
 		if(Cookie.read('_berta_tips') && Cookie.read('_berta_tips') == 'create_entry') {
-			var goToMySiteCookie_tip_anchor = document.getElementById('xGoToMySiteTip');
+			var goToMySiteCookie_tip_anchor = document.getElementById('xMySite');
 		    		
 		    var goToMySiteTip = new Tips(goToMySiteCookie_tip_anchor, {
 		        fixed: true,
@@ -81,7 +81,7 @@ var BertaEditor_Sections = new Class({
 		
 		// Template design tip
 		if(Cookie.read('_berta_tips') && Cookie.read('_berta_tips') == 'template_design') {    
-		    var templateDesign_tip_anchor = document.getElementById('xTemplateDesignTip');
+		    var templateDesign_tip_anchor = document.getElementById('xTemplateDesign');
 		    		
 		    var templateDesignTip = new Tips(templateDesign_tip_anchor, {
 		        fixed: true,
@@ -104,7 +104,7 @@ var BertaEditor_Sections = new Class({
 
 		// Settings tip
 		if(Cookie.read('_berta_tips') && Cookie.read('_berta_tips') == 'settings') {
-		    var settings_tip_anchor = document.getElementById('xSettingsTip');
+		    var settings_tip_anchor = document.getElementById('xSettings');
 		    
 		    var settingsTip = new Tips(settings_tip_anchor, {
 		        fixed: true,
@@ -276,7 +276,7 @@ var BertaEditor_Sections = new Class({
 						$$('.xTipCreateSection').destroy(); $$('.xTipCreateSection').dispose();
 					
 						// Go to my site tip
-						var goToMySiteCookie_tip_anchor = document.getElementById('xGoToMySiteTip');
+						var goToMySiteCookie_tip_anchor = document.getElementById('xMySite');
 						    	
 						var goToMySiteTip = new Tips(goToMySiteCookie_tip_anchor, {
 						    fixed: true,

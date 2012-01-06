@@ -1,6 +1,6 @@
 <?
 
-$jsSettings = array(
+$tipTexts = array(
 	'newSectionTip_title' => I18n::_('Step 1 of 5'),
 	'newSectionTip_text' => I18n::_('First we recommend to create a new section.<br/><br/><a href="#" id="xRemoveTips">Quit tour?</a>'),
 	'createSectionTip_title' => I18n::_('Step 1 of 5'),
@@ -15,9 +15,9 @@ $jsSettings = array(
 	'templateDesignTip_text' => I18n::_('Change the looks of your template here!'),
 	'settingsTip_title' => I18n::_('Step 5 of 5'),
 	'settingsTip_text' => I18n::_('Change the template & edit Berta\'s settings.'),
+	
+	'createShopSectionsTip_title' => I18n::_(''),
+	'createShopSectionsTip_text' => I18n::_('I see you\'ve got Berta shop installed.<br/>Click here to set it up!'),
 );
-
-$sttingsJS = json_encode($jsSettings);
-
 
 ?>
