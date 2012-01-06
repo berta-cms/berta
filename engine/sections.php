@@ -9,6 +9,7 @@ include_once $ENGINE_ROOT . '_classes/class.bertaeditor.php';
 $allSections = BertaContent::getSections();
 $topPanelHTML = BertaEditor::getTopPanelHTML('sections');
 
+global $shopEnabled;
 include($ENGINE_ROOT . 'inc.tips.php');
 $sttingsJS = json_encode($tipTexts);
 
@@ -23,6 +24,7 @@ $sttingsJS = json_encode($tipTexts);
 <? include 'inc.header_default_scripts.php' ?>
 <script type="text/javascript">
 	var bertaGlobalOptions = {
+		"shopEnabled":"<? echo $shopEnabled ?>",
 		"i18n":<? echo $sttingsJS ?>
 	};
 </script>

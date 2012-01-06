@@ -309,7 +309,7 @@ class BertaTemplate extends BertaBase {
 		$templatesAbsRoot = self::$options['TEMPLATES_ABS_ROOT'];
 		$jsSettings = array(
 			'environment' => $this->environment,
-			'shopEnabled' => $vars['berta']['shop_enabled'],
+			'shopEnabled' => $shopEnabled,
 			'flashUploadEnabled' => $this->settings->get('settings', 'flashUploadEnabled') == 'yes' ? 'true' : 'false',
 			'videoPlayerType' => $this->settings->get('entryLayout', 'galleryVideoPlayer'),
 			'slideshowAutoRewind' => $this->settings->get('entryLayout', 'gallerySlideshowAutoRewind'),

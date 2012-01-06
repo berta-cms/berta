@@ -19,6 +19,7 @@ $berta->settings = new Settings($settingsDefinition);
 $menuSeparator = $berta->settings->get('menu', 'separator');
 $topPanelHTML = BertaEditor::getTopPanelHTML($mode);
 
+global $shopEnabled;
 include($ENGINE_ROOT . 'inc.tips.php');
 $sttingsJS = json_encode($tipTexts);
 
@@ -35,6 +36,7 @@ $sttingsJS = json_encode($tipTexts);
 <? include 'inc.header_default_scripts.php' ?>
 <script type="text/javascript">
 	var bertaGlobalOptions = {
+		"shopEnabled":"<? echo $shopEnabled ?>",
 		"paths":{
 			"engineRoot":"<? echo BertaEditor::$options['ENGINE_ROOT'] ?>",
 			"engineABSRoot":"<? echo BertaEditor::$options['ENGINE_ABS_ROOT'] ?>",
@@ -79,12 +81,12 @@ $sttingsJS = json_encode($tipTexts);
 			
 			$tabsHTML = '';
 			$contentHTML = '';
-			
+
 			foreach($settings->settingsDefinition as $sSectionKey => $sSection) {
 
 				if(empty($sSection['_']['invisible'])) {
 					$tabCaption = !empty($sSection['_']['title']) ? htmlspecialchars($sSection['_']['title']) : "<em>$sSectionKey</em>";
-					$tabsHTML .= "<li><a href=\"#\" class=\"settingsTab\">$tabCaption</a></li>";
+					$tabsHTML .= "<li><a href=\"#\" class=\"settingsTab\"" . ($sSectionKey == 'shop' ? ' id="shopSettings"' : '') . ">$tabCaption</a></li>";
 
 					$contentHTML .= "<div class=\"settingsContent\">\n";
 					foreach($sSection as $sKey => $s) {
