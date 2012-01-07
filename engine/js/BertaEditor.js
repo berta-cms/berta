@@ -425,7 +425,7 @@ var BertaEditor = new Class({
 				
 						// New entry content tip
 						if(Cookie.read('_berta_tips') && Cookie.read('_berta_tips') == 'entry_content'  &&
-				           this.container.getElements('.xEntry .xEntryEditWrap .xGalleryHasImages').length > 0) {
+				           this.container.getElements('.xEntry .xEntryEditWrap .xGalleryHasImages').length == 0) {
 							
 							var newEntryContent_tip_anchor = this.entriesList.getElements('.xEntry');
 							
@@ -442,7 +442,9 @@ var BertaEditor = new Class({
 							newEntryContent_tip_anchor.store('tip:text', this.options.i18n.newEntryContentTip_text);
 								
 							newEntryContent_tip_anchor.fireEvent('mouseenter');
-							this.container.getChildren('a.xCreateNewEntry')[0].setStyle('display', 'block'); // Fixes 'create new entry' button's display problems
+							// Fixes 'create new entry' button's & top panel display problems
+							document.getElementById('xTopPanelContainer').setStyle('display', 'block');
+							this.container.getChildren('a.xCreateNewEntry')[0].setStyle('display', 'block'); 
 						}
 						
 						// Template design tip
@@ -535,7 +537,7 @@ var BertaEditor = new Class({
 						    goToShopSettings_tip_anchor.fireEvent('mouseenter');
 						    
 						    goToShopSettings_tip_anchor.addEvent('click', function() {
-						    	Cookie.write('_berta_shop_tips', 'shop_settings', {duration: 3665});
+						    	Cookie.write('_berta_shop_tips', 'shop_settings', {duration: 365, path: '/'});
 						    });
 						}
 						
@@ -543,25 +545,48 @@ var BertaEditor = new Class({
 						if(this.options.shopEnabled && 
 						   Cookie.read('_berta_tips') && Cookie.read('_berta_tips') == 'hidden' &&
 						   Cookie.read('_berta_shop_tips') && Cookie.read('_berta_shop_tips') == 'create_shop_entry') {
-						    
-						    if(this.options.sectionType == 'shop') {
-						    	var createShopEntry_tip_anchor = this.container.getElement('a.xCreateNewEntry');
-						    	
-						    	var createShopEntryTip = new Tips(createShopEntry_tip_anchor, {
-						        	fixed: true,
-						        	className: 'xTipCreateShopEntry',
-						        	offset: {'x': 80, 'y': 28},
-						        	onHide: function(tip, el) {
-						        		tip.show();
-						        	}
-						    	});
-						    	
-						    	createShopEntry_tip_anchor.store('tip:title', this.options.i18n.createShopEntryTip_title);
-						    	createShopEntry_tip_anchor.store('tip:text', this.options.i18n.createShopEntryTip_text);
-						    	
-						    	createShopEntry_tip_anchor.addEvent('click', function() {
+						    						    
+						    if(this.options.sectionType == 'shop') {	
+						    	if(this.galleries.length == 0) {				    
+						    		var createShopEntry_tip_anchor = this.container.getElement('a.xCreateNewEntry');
+						    		
+						    		var createShopEntryTip = new Tips(createShopEntry_tip_anchor, {
+						    		    fixed: true,
+						    		    className: 'xTipCreateShopEntry',
+						    		    offset: {'x': 80, 'y': 28},
+						    		    onHide: function(tip, el) {
+						    		    	tip.show();
+						    		    }
+						    		});
+						    		
+						    		createShopEntry_tip_anchor.store('tip:title', this.options.i18n.createShopEntryTip_title);
+						    		createShopEntry_tip_anchor.store('tip:text', this.options.i18n.createShopEntryTip_text);
+						    		createShopEntry_tip_anchor.addEvent('click', function() {
+						    			Cookie.write('_berta_shop_tips', 'goto_shopping_cart', {duration: 365, path: '/'});
+						    		});
+						    	} else {
+						    		// Go to shopping cart tip
 						    		Cookie.write('_berta_shop_tips', 'goto_shopping_cart', {duration: 365, path: '/'});
-						    	});
+									var createShopEntry_tip_anchor = document.getElementById('xShoppingCart');
+									    
+									var templateDesignTip = new Tips(createShopEntry_tip_anchor, {
+									    fixed: true,
+									    className: 'xTipGoToShoppingCartMySite',
+									    offset: {'x': -28, 'y': 20},
+									    onHide: function(tip, el) {
+									    	tip.show();
+									    }
+									});
+									
+									createShopEntry_tip_anchor.store('tip:title', this.options.i18n.goToShoppingCartTip_title);
+									createShopEntry_tip_anchor.store('tip:text', this.options.i18n.goToShoppingCartTip_text);
+									
+									createShopEntry_tip_anchor.addEvent('click', function() {
+									    Cookie.write('_berta_shop_tips', 'hidden', {duration: 365, path: '/'});
+									});
+									    
+									createShopEntry_tip_anchor.fireEvent('mouseenter');
+						    	}
 						    } else {
 						    	var createShopEntry_tip_anchor = document.getElementById('xMySite');
 						    	
@@ -613,7 +638,9 @@ var BertaEditor = new Class({
 						
 						if(this.options.templateName.substr(0,5) != 'messy')
 							Cookie.write('_berta_tips', 'hidden', {duration: 365, path: '/'});
-					
+						
+						this.container.getElement('h1').hide();
+						
 						var newSection_tip_anchor = document.getElementById('xSections');
 			
 						var newSectionTip = new Tips(newSection_tip_anchor, {
@@ -864,9 +891,7 @@ var BertaEditor = new Class({
 			update: container,
 			onComplete: function(resp) {
 				container.removeClass('xSavingAtLarge');
-				
-				console.debug('asd');
-				
+								
 				// for some mysterious reason, mootools somehow looses track of what is what
 				container = container.getElement('.xGalleryEditButton').getParent('.xGalleryContainer');
 			
@@ -887,6 +912,8 @@ var BertaEditor = new Class({
 				// Template design tip
 				if(Cookie.read('_berta_tips') && Cookie.read('_berta_tips') == 'entry_content' &&
 				   this.container.getElements('.xEntry .xEntryEditWrap .xGalleryHasImages').length > 0) {
+					
+					$('xTopPanelContainer').show();
 					
 					Cookie.write('_berta_tips', 'template_design', {duration: 365, path: '/'});
 					
