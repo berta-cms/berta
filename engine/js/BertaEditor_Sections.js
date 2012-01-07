@@ -430,7 +430,7 @@ var BertaEditor_Sections = new Class({
 						goToShopSettings_tip_anchor.fireEvent('mouseenter');
 						
 						goToShopSettings_tip_anchor.addEvent('click', function() {
-		    				Cookie.write('_berta_shop_tips', 'shop_settings', {duration: 3665});
+		    				Cookie.write('_berta_shop_tips', 'shop_settings', {duration: 365, path: '/'});
 		   	 			});
 					}
 				} else {
