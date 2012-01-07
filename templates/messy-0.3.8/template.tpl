@@ -58,6 +58,7 @@
 
 			{* *** shopping ********************************************************************* *}
 			{ if $berta.shop_enabled == true }
+				
 				{ assign var="shoppingCartSection" value="" }
 				{ foreach from=$berta.publishedSections item="section" key="sName" name="sectionsMenuLoop" }
 					{ if $section.type == 'shopping_cart' }
@@ -66,7 +67,11 @@
 				{ /foreach }
 				{ if $shoppingCartSection }
 				<div id="shoppingCart" { if $berta.environment == 'engine' } style="margin-top: 40px;" { /if } > {* class="hidden" *}
+				{if $berta.environment == 'engine' }
+					<a href="{ bertaLink section=$shoppingCartSection.name }" id="xShoppingCart"><span class="title">{ $shoppingCartSection.title }</span><span class="numItemsContainer hidden"> (<span class="numItems">0</span>)</span></a>
+				{else}
 					<a href="javascript:openShoppingCart('{ bertaLink section=$shoppingCartSection.name }');"><span class="title">{ $shoppingCartSection.title }</span><span class="numItemsContainer hidden"> (<span class="numItems">0</span>)</span></a>
+				{/if}
 					{*
 					{ if $berta.environment == "engine" && $checkoutCompleteSection }
 					| <a href="{ bertaLink section=$checkoutCompleteSection.name }">{ $checkoutCompleteSection.title }</a>
@@ -112,7 +117,7 @@
 				{ if count($berta.publishedSections) > 0 }
 					{ assign var="currnetSectionName" value=$berta.sectionName }
 					{ foreach from=$berta.publishedSections item="section" key="sName" name="sectionsMenuLoop" }
-						{ if ($section.type == 'shopping_cart' &&  $berta.environment == 'engine') || $section.type != 'shopping_cart' }
+						{ if $section.type != 'shopping_cart' }
 						
 						<div class="menuItem xSection-{ $sName } { messClasses property='positionXY' } { if $currnetSectionName == $section.name }menuItemSelected{ /if }" style="{ messStyles xy=$section.positionXY }">
 							<a href="{ bertaLink section=$sName }" target="{ bertaTarget section=$sName }">{ $section.title }</a>

@@ -1272,6 +1272,11 @@ input#xFirstTimeCheckContinue {
 		text-decoration: underline;
 	}
 
+.xTipGoToShoppingCartMySite .tip-top {
+	border-width: 0 0 18px 12px;
+	margin: 0 15px 0 140px;
+}
+
 /*  setttings pages  --------------------------------------------------------------------------------------- */
 
 body.xSettingsPageBody {

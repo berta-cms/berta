@@ -86,9 +86,11 @@ var MessyMess = new Class({
 			$$('.xEditableDragXY').addEvents({
 				mouseenter: function(){
 					$$('.xCreateNewEntry').hide();
+					$('xTopPanelContainer').hide();
 				},
 				mouseleave: function(){
 					$$('.xCreateNewEntry').show();
+					$('xTopPanelContainer').show();
 					$$('.xEntry .xCreateNewEntry').hide();
 				}
 			});

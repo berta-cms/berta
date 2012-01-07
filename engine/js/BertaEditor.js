@@ -586,12 +586,12 @@ var BertaEditor = new Class({
 						   Cookie.read('_berta_tips') && Cookie.read('_berta_tips') == 'hidden' &&
 						   Cookie.read('_berta_shop_tips') && Cookie.read('_berta_shop_tips') == 'goto_shopping_cart') {
 							
-							var goToShoppingCart_tip_anchor = document.getElementById('xMySite');
+							var goToShoppingCart_tip_anchor = document.getElementById('xShoppingCart');
 							    
 							var templateDesignTip = new Tips(goToShoppingCart_tip_anchor, {
 							    fixed: true,
-							    className: 'xTipGoToShoppingCart',
-							    offset: {'x': 4, 'y': 20},
+							    className: 'xTipGoToShoppingCartMySite',
+							    offset: {'x': -28, 'y': 20},
 							    onHide: function(tip, el) {
 							    	tip.show();
 							    }
