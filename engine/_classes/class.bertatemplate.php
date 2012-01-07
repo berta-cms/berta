@@ -308,6 +308,7 @@ class BertaTemplate extends BertaBase {
 		$engineAbsRoot = self::$options['ENGINE_ABS_ROOT'];
 		$templatesAbsRoot = self::$options['TEMPLATES_ABS_ROOT'];
 		$jsSettings = array(
+			'templateName' => $this->name,
 			'environment' => $this->environment,
 			'shopEnabled' => $shopEnabled,
 			'flashUploadEnabled' => $this->settings->get('settings', 'flashUploadEnabled') == 'yes' ? 'true' : 'false',
