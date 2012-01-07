@@ -98,7 +98,7 @@ var BertaEditor_Sections = new Class({
 		    templateDesign_tip_anchor.fireEvent('mouseenter');
 		    
 		    templateDesign_tip_anchor.addEvent('click', function() {
-		    	Cookie.write('_berta_tips', 'settings', {duration: 365});
+		    	Cookie.write('_berta_tips', 'settings', {duration: 365, path: '/', path: '/'});
 		    });
 		}
 
@@ -121,7 +121,7 @@ var BertaEditor_Sections = new Class({
 		    settings_tip_anchor.fireEvent('mouseenter');
 		    
 		    settings_tip_anchor.addEvent('click', function() {
-				Cookie.write('_berta_tips', 'hidden', {duration: 365});
+				Cookie.write('_berta_tips', 'hidden', {duration: 365, path: '/'});
 			});
 		}
 		
@@ -175,7 +175,7 @@ var BertaEditor_Sections = new Class({
 		    goToShopSettings_tip_anchor.fireEvent('mouseenter');
 		    
 		    goToShopSettings_tip_anchor.addEvent('click', function() {
-		    	Cookie.write('_berta_shop_tips', 'shop_settings', {duration: 365});
+		    	Cookie.write('_berta_shop_tips', 'shop_settings', {duration: 365, path: '/'});
 		    });
 		}
 		
@@ -183,7 +183,7 @@ var BertaEditor_Sections = new Class({
 		if(this.options.shopEnabled && 
 		   Cookie.read('_berta_tips') && Cookie.read('_berta_tips') == 'hidden' &&
 		   Cookie.read('_berta_shop_tips') && Cookie.read('_berta_shop_tips') == 'create_shop_entry') {
-		    Cookie.write('_berta_shop_tips', 'create_shop_entry' ,{duration: 365});
+		    Cookie.write('_berta_shop_tips', 'create_shop_entry' ,{duration: 365, path: '/'});
 		    
 		    // Go to my site tip
 		    var goToMySite_tip_anchor = document.getElementById('xMySite');
@@ -393,7 +393,7 @@ var BertaEditor_Sections = new Class({
 						    
 						goToMySite_tip_anchor.fireEvent('mouseenter');
 						
-						Cookie.write('_berta_tips', 'create_entry', {duration: 365});
+						Cookie.write('_berta_tips', 'create_entry', {duration: 365, path: '/'});
 					}
 					
 		    		// Create shoping cart section tip
@@ -406,11 +406,11 @@ var BertaEditor_Sections = new Class({
 					        
 					    createShopSection_tip_anchor.fireEvent('mouseenter');
 					    
-		    			Cookie.write('_berta_shop_tips', 'create_shop_cart', {duration: 365});
+		    			Cookie.write('_berta_shop_tips', 'create_shop_cart', {duration: 365, path: '/'});
 					} else 
 					if(this.options.shopEnabled && Cookie.read('_berta_shop_tips') && Cookie.read('_berta_shop_tips') == 'create_shop_cart') {
 						$$('.xCreateShopSectionTip').destroy(); $$('.xCreateShopSectionTip').dispose();
-						Cookie.write('_berta_shop_tips', 'goto_shop_settings' ,{duration: 365});
+						Cookie.write('_berta_shop_tips', 'goto_shop_settings' ,{duration: 365, path: '/'});
 						
 						// Go to shop settings tip
 						var goToShopSettings_tip_anchor = document.getElementById('xSettings');
