@@ -37,6 +37,7 @@ $sttingsJS = json_encode($tipTexts);
 <script type="text/javascript">
 	var bertaGlobalOptions = {
 		"shopEnabled":"<? echo $shopEnabled ?>",
+		"templateName":"<? echo $berta->template->name ?>",
 		"paths":{
 			"engineRoot":"<? echo BertaEditor::$options['ENGINE_ROOT'] ?>",
 			"engineABSRoot":"<? echo BertaEditor::$options['ENGINE_ABS_ROOT'] ?>",

@@ -25,6 +25,7 @@ $sttingsJS = json_encode($tipTexts);
 <script type="text/javascript">
 	var bertaGlobalOptions = {
 		"shopEnabled":"<? echo $shopEnabled ?>",
+		"templateName":"<? echo $berta->template->name ?>",
 		"i18n":<? echo $sttingsJS ?>
 	};
 </script>

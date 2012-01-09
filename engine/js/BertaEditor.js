@@ -217,7 +217,7 @@ var BertaEditor = new Class({
 				}
 				
 				// Shop sections tip
-				if(this.options.shopEnabled &&
+				if(this.options.shopEnabled && this.options.templateName.substr(0,5) == 'messy' &&
 				   Cookie.read('_berta_tips') && Cookie.read('_berta_tips') == 'hidden' &&
 				   (!Cookie.read('_berta_shop_tips') || Cookie.read('_berta_shop_tips') == 'create_shop_cart')) {
 				    var shopSections_tip_anchor = document.getElementById('xSections');
@@ -238,7 +238,7 @@ var BertaEditor = new Class({
 				}
 				
 				// Go to shop settings tip
-				if(this.options.shopEnabled && 
+				if(this.options.shopEnabled && this.options.templateName.substr(0,5) == 'messy' &&
 				   Cookie.read('_berta_tips') && Cookie.read('_berta_tips') == 'hidden' &&
 				   Cookie.read('_berta_shop_tips') && Cookie.read('_berta_shop_tips') == 'shop_settings') {
 				
@@ -281,7 +281,7 @@ var BertaEditor = new Class({
 				}
 				
 				// Create shop entry
-				if(this.options.shopEnabled && 
+				if(this.options.shopEnabled && this.options.templateName.substr(0,5) == 'messy' && 
 				   Cookie.read('_berta_tips') && Cookie.read('_berta_tips') == 'hidden' &&
 				   Cookie.read('_berta_shop_tips') && Cookie.read('_berta_shop_tips') == 'create_shop_entry') {
 				    
@@ -303,7 +303,7 @@ var BertaEditor = new Class({
 				}
 				
 				// Go to shopping cart tip
-				if(this.options.shopEnabled &&
+				if(this.options.shopEnabled && this.options.templateName.substr(0,5) == 'messy' &&
 				   Cookie.read('_berta_tips') && Cookie.read('_berta_tips') == 'hidden' &&
 				   Cookie.read('_berta_shop_tips') && Cookie.read('_berta_shop_tips') == 'goto_shopping_cart') {
 				    
@@ -495,7 +495,7 @@ var BertaEditor = new Class({
 						}
 												
 						// Shop sections tip
-						if(this.options.shopEnabled &&
+						if(this.options.shopEnabled && this.options.templateName.substr(0,5) == 'messy' &&
 						   Cookie.read('_berta_tips') && Cookie.read('_berta_tips') == 'hidden' &&
 						   (!Cookie.read('_berta_shop_tips') || Cookie.read('_berta_shop_tips') == 'create_shop_cart')) {
 							var shopSections_tip_anchor = document.getElementById('xSections');
@@ -516,7 +516,7 @@ var BertaEditor = new Class({
 						}
 						
 						// Go to shop settings tip
-						if(this.options.shopEnabled && 
+						if(this.options.shopEnabled && this.options.templateName.substr(0,5) == 'messy' && 
 						   Cookie.read('_berta_tips') && Cookie.read('_berta_tips') == 'hidden' &&
 						   Cookie.read('_berta_shop_tips') && (Cookie.read('_berta_shop_tips') == 'goto_shop_settings' || Cookie.read('_berta_shop_tips') == 'shop_settings') ) {
 						
@@ -542,7 +542,7 @@ var BertaEditor = new Class({
 						}
 						
 						// Create shop entry
-						if(this.options.shopEnabled && 
+						if(this.options.shopEnabled && this.options.templateName.substr(0,5) == 'messy' && 
 						   Cookie.read('_berta_tips') && Cookie.read('_berta_tips') == 'hidden' &&
 						   Cookie.read('_berta_shop_tips') && Cookie.read('_berta_shop_tips') == 'create_shop_entry') {
 						    						    
@@ -607,7 +607,7 @@ var BertaEditor = new Class({
 						}
 						
 						// Go to shopping cart tip
-						if(this.options.shopEnabled &&
+						if(this.options.shopEnabled && this.options.templateName.substr(0,5) == 'messy' &&
 						   Cookie.read('_berta_tips') && Cookie.read('_berta_tips') == 'hidden' &&
 						   Cookie.read('_berta_shop_tips') && Cookie.read('_berta_shop_tips') == 'goto_shopping_cart') {
 							
