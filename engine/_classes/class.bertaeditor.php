@@ -538,11 +538,10 @@ class BertaEditor extends BertaContent {
 
 		$str = <<<DOC
 			<div id="xTopPanelContainer" class="xPanel">
-				<div id="xTopPanelSlideOut"><span title="show menu">►</span></div>
+				<div id="xTopPanelSlideIn"><span title="show menu">▼</span></div>
 				<div id="xTopPanel">	
-					<div id="xTopPanelSlideIn"><span title="hide menu">◄</span></div>
 					<ul id="xEditorMenu">
-						<li id="xEditorMenuBg"></li>
+						<li id="xTopPanelSlideOut"><span title="hide menu">▲</span></li>
 						<li$m1Class id="xMySite"><a href=".">$m1</a></li><li>|</li>
 						<li$m2Class id="xSections"><a href="sections.php">$m2</a></li><li>|</li>
 						<li$m3Class id="xSettings"><a href="settings.php">$m3</a></li><li>|</li>

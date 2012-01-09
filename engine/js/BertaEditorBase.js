@@ -955,25 +955,27 @@ BertaEditorBase.EDITABLE_FINISH = 'editable_finish';
 window.addEvent('domready', function(){
 	var slideEl = document.getElementById('xTopPanel');
 	if(slideEl) {
-		var slideIn = document.getElementById('xTopPanelSlideIn');
-		var slideOut = document.getElementById('xTopPanelSlideOut');
+		var slideOutEl = document.getElementById('xTopPanelSlideOut');
+		var slideInEl = document.getElementById('xTopPanelSlideIn');
 		
-		var fxIn = new Fx.Tween(slideEl);
-		var fxOut = new Fx.Tween(slideOut);
+		var fxOut = new Fx.Tween(slideEl);
+		var fxIn = new Fx.Tween(slideInEl);
 		
-		slideIn.getElement('span').addEvent('click', function(event) {
+		slideOutEl.getElement('span').addEvent('click', function(event) {
 			event.stop();
 			
-			fxIn.start('left', -460).chain(function() {
-				fxOut.start('left', 0);
+			$('xNewsTickerContainer').hide();
+			
+			fxOut.start('top', -19).chain(function() {
+				fxIn.start('top', 0);
 			});
 		});
 		
-		slideOut.getElement('span').addEvent('click', function(event) {
+		slideInEl.getElement('span').addEvent('click', function(event) {
 			event.stop();
 			
-			fxOut.start('left', -24).chain(function() {
-				fxIn.start('left', 0);
+			fxIn.start('top', -19).chain(function() {
+				fxOut.start('top', 0);
 			});
 		});
 	}

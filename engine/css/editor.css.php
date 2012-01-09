@@ -269,28 +269,29 @@ body.xEditorEnabled { }
 /* top panel ----------------------------------------------------------------------------------------------- */
 
 #xTopPanelContainer {
-	/*padding: 0 10px;*/
  	margin-top: 0;
 	margin-bottom: 0;
 	position: fixed;
 	left: 0; top: 0;
-	margin-bottom: -20px;
+	/*margin-bottom: -20px;*/
 	background-color: transparent !important;
 }
 .xSettingsPageBody #xTopPanelContainer {
-	position: relative;
+	position: absolute;
 }
 	#xTopPanel {
-		width: 460px;
+		/*max-width: 600px;*/
 		z-index: 60000;
 		position: relative;
 		text-align: left !important;
-		left: 0;
+		top: 0;
+		background: rgb(074, 074, 074);
+		background: rgba(074, 074, 074, 0.9);
 	}
 	
 		#xNewsTickerContainer {
 			position: relative;
-			padding: 8px 8px;
+			padding: 16px 8px;
 		}
 		.xNewsTickerGrey {
 			background-color: #E9E9E9;
@@ -306,10 +307,10 @@ body.xEditorEnabled { }
 				left: 0; top: 0; bottom: 0; right: 0;
 				border-right: 1px solid #4a4a4a;
 				border-bottom: 1px solid #4a4a4a;
-				-moz-opacity: 0.8;
-				-webkit-opacity: 0.8;
-				-o-opacity: 0.8;
-				opacity: 0.8;
+				-moz-opacity: 0.9;
+				-webkit-opacity: 0.9;
+				-o-opacity: 0.9;
+				opacity: 0.9;
 			}
 			#xNewsTickerContainer .news-ticker-content {
 				float: left;
@@ -352,38 +353,21 @@ body.xEditorEnabled { }
 			ul#xEditorMenu li.selected, ul#xEditorMenu li.selected a {
 				font-weight: bold;
 			}
-			
-			#xEditorMenuBg {
-				float: none !important;
-				position: absolute !important;
-				z-index: 1 !important;
-				left: 0; top: 0; right: 0; bottom: 0;
-				-moz-opacity: 0.9;
-				-webkit-opacity: 0.9;
-				-o-opacity: 0.9;
-				opacity: 0.9;
-				background-color: #4A4A4A;
-			}
 
 	
-	#xTopPanelSlideIn, #xTopPanelSlideOut {
+	#xTopPanelSlideIn {
 		position: relative;
 		z-index: 2;
 		padding: 2px 0 2px 4px;
 		padding-left: 4px;
-		float: left;
 		width: 20px;
-		-moz-opacity: 0.9;
-		-webkit-opacity: 0.9;
-		-o-opacity: 0.9;
-		opacity: 0.9;
+		top: -19px;
+		margin-bottom: -19px;
+		background-color: #4A4A4A;
+		z-index: 60000;
+		background: rgb(074, 074, 074);
+		background: rgba(074, 074, 074, 0.9);
 	}
-		#xTopPanelSlideOut { 
-			left: -24px;
-			margin-right: -24px;
-			background-color: #4A4A4A;
-			z-index: 60000;
-		}
 		
 		#xTopPanelSlideIn span,
 		#xTopPanelSlideOut span {
