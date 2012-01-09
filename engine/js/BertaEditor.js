@@ -228,7 +228,18 @@ var BertaEditor = new Class({
 				        offset: {'x': 8, 'y': 20},
 				        onHide: function(tip, el) {
 				        	tip.show();
-				        }
+				        },
+				        onShow: function(tip, el) {
+				    		document.getElementById('xRemoveTips').addEvent('click', function(event) {
+				    			event.stop();
+				    		
+				    			if(confirm("Berta asks:\n\nAre you sure you want to remove tips?\nYou will not be able to view them again.")) {
+				    				// Destroys and disposes of newEntryContentTip & sets cookie
+				    				$$('.xTipShopSections').destroy(); $$('.xTipShopSections').dispose();
+				    				Cookie.write('_berta_shop_tips', 'hidden', {duration: 365, path: '/'});
+				    			}
+				    		});
+				    	}
 				    });
 				    
 				    shopSections_tip_anchor.store('tip:title', this.options.i18n.shopSectionsTip_title);
@@ -506,7 +517,18 @@ var BertaEditor = new Class({
 							    offset: {'x': 8, 'y': 20},
 							    onHide: function(tip, el) {
 							    	tip.show();
-							    }
+							    },
+						        onShow: function(tip, el) {
+						    		document.getElementById('xRemoveTips').addEvent('click', function(event) {
+						    			event.stop();
+						    		
+						    			if(confirm("Berta asks:\n\nAre you sure you want to remove tips?\nYou will not be able to view them again.")) {
+						    				// Destroys and disposes of newEntryContentTip & sets cookie
+						    				$$('.xTipShopSections').destroy(); $$('.xTipShopSections').dispose();
+						    				Cookie.write('_berta_shop_tips', 'hidden', {duration: 365, path: '/'});
+						    			}
+						    		});
+						    	}
 							});
 							
 							shopSections_tip_anchor.store('tip:title', this.options.i18n.shopSectionsTip_title);
