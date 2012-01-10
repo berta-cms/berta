@@ -492,8 +492,6 @@ class BertaEditor extends BertaContent {
 	public static function getTopPanelHTML($selectedSection = 'site') {
 		$tickerClass = !empty($_COOKIE['_berta_newsticker_hidden']) ? 'xHidden' : '';
 
-
-		$tickerColorClass = empty($_COOKIE['_berta_newsticker_hilight']) ? 'xNewsTickerRed' : 'xNewsTickerGrey';
 		$newsTickerContent = false;
 		
 	//	$_SESSION['_berta_newsticker'] = false;				// for testing...
@@ -538,23 +536,21 @@ class BertaEditor extends BertaContent {
 
 		$m5_link=self::$options['HOSTING_PROFILE']?self::$options['HOSTING_PROFILE']:'profile.php';
 
-//<div id="xTopPanelToggle"><span class="in selected">◄</span><span class="out">►</span></div>
 		$str = <<<DOC
 			<div id="xTopPanelContainer" class="xPanel">
-				<div id="xTopPanelSlideOut"><span>►</span></div>
+				<div id="xTopPanelSlideIn"><span title="show menu">▼</span></div>
 				<div id="xTopPanel">	
-					<div id="xTopPanelSlideIn"><span>◄</span></div>
 					<ul id="xEditorMenu">
-						<li id="xEditorMenuBg"></li>
-						<li$m1Class><a href=".">$m1</a></li><li>|</li>
-						<li$m2Class id="newSectionTip"><a href="sections.php">$m2</a></li><li>|</li>
-						<li$m3Class><a href="settings.php">$m3</a></li><li>|</li>
-						<li$m4Class><a href="settings.php?mode=template">$m4</a></li><li>|</li>
+						<li id="xTopPanelSlideOut"><span title="hide menu">▲</span></li>
+						<li$m1Class id="xMySite"><a href=".">$m1</a></li><li>|</li>
+						<li$m2Class id="xSections"><a href="sections.php">$m2</a></li><li>|</li>
+						<li$m3Class id="xSettings"><a href="settings.php">$m3</a></li><li>|</li>
+						<li$m4Class id="xTemplateDesign"><a href="settings.php?mode=template">$m4</a></li><li>|</li>
 						<li$m5Class><a href="$m5_link">$m5</a></li><li>|</li>
 						<li><a href="logout.php">$m6</a></li>
 					</ul>
 					<div id="xNewsTickerContainer" class="$tickerClass">
-						<div class="news-ticker-background $tickerColorClass"></div>
+						<div class="news-ticker-background xNewsTickerGrey"></div>
 						<div class="news-ticker-content">$newsTickerContent</div>
 						<a href="#" class="close">X</a>
 						<br class="clear" />

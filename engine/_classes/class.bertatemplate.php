@@ -302,11 +302,15 @@ class BertaTemplate extends BertaBase {
 		
 		
 		// berta scripts ...
+		global $ENGINE_ROOT;		
+		include($ENGINE_ROOT . 'inc.tips.php');
 		
 		$engineAbsRoot = self::$options['ENGINE_ABS_ROOT'];
 		$templatesAbsRoot = self::$options['TEMPLATES_ABS_ROOT'];
 		$jsSettings = array(
+			'templateName' => $this->name,
 			'environment' => $this->environment,
+			'shopEnabled' => $shopEnabled,
 			'flashUploadEnabled' => $this->settings->get('settings', 'flashUploadEnabled') == 'yes' ? 'true' : 'false',
 			'videoPlayerType' => $this->settings->get('entryLayout', 'galleryVideoPlayer'),
 			'slideshowAutoRewind' => $this->settings->get('entryLayout', 'gallerySlideshowAutoRewind'),
@@ -323,18 +327,16 @@ class BertaTemplate extends BertaBase {
 				'siteABSRoot' => htmlspecialchars(self::$options['SITE_ABS_ROOT']),
 				'template' => htmlspecialchars(self::$options['SITE_ABS_ROOT'] . 'templates/' . $this->name . '/')
 			),
+			
 			'i18n' => array(
-				'newSectionTip_title' => I18n::_('1 of 3'),
-				'newSectionTip_text' => I18n::_('First we recommend to create a new section.<br/><br/><a href="#" id="xRemoveTips">Quit tour?</a>'),
-				'newEntryTip_title' => I18n::_('2 of 3'),
-				'newEntryTip_text' => I18n::_('Next step is to create a new entry.'),
-				'newEntryContentTip_title' => I18n::_('3 of 3'),
-				'newEntryContentTip_text' => I18n::_('Add content - images, text or embed HTML...'),
 				'create new entry here' => I18n::_('create new entry here'),
-
-			)
+			),
 			//'settings' => $vars['berta']['settings']
 		);
+		
+		foreach($tipTexts as $key=>$value) {
+			$jsSettings['i18n'][$key] = $value;
+		}
 		
 		$sttingsJS = Zend_Json::encode($jsSettings);
 		

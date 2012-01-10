@@ -28,11 +28,12 @@ class BertaGallery extends BertaBase {
 
 		
 		$galleryAutoPlay = !empty($entry['mediaCacheData']['@attributes']['autoplay']) ? $entry['mediaCacheData']['@attributes']['autoplay'] : '0';
+		$galleryLinkAddress = !empty($entry['mediaCacheData']['@attributes']['link_address']) ? 'xGalleryLinkAddress-' . $entry['mediaCacheData']['@attributes']['link_address'] : 'xGalleryLinkAddress-http://';
 
-		return BertaGallery::getHTML($imgs, $entry['mediafolder']['value'], $galleryType, $isAdminMode, false, 1, $galleryFullScreen, $imageSize, $galleryAutoPlay);
+		return BertaGallery::getHTML($imgs, $entry['mediafolder']['value'], $galleryType, $isAdminMode, false, 1, $galleryFullScreen, $imageSize, $galleryAutoPlay, $galleryLinkAddress);
 	}
 	
-	public static function getHTML($imgs, $mediaFolderName, $galleryType, $isAdminMode = false, $bReturnFullInfo = false, $sizeRatio = 1, $galleryFullScreen = false, $imageSize = 'large', $galleryAutoPlay = '0') {
+	public static function getHTML($imgs, $mediaFolderName, $galleryType, $isAdminMode = false, $bReturnFullInfo = false, $sizeRatio = 1, $galleryFullScreen = false, $imageSize = 'large', $galleryAutoPlay = '0', $galleryLinkAddress = '') {
 		global $berta;
 		$strOut = '';
 		
@@ -47,7 +48,7 @@ class BertaGallery extends BertaBase {
 		if($imgs && count($imgs) > 0) {
 			list($firstImageHTML, $firstImageWidth, $firstImageHeight) = BertaGallery::getImageHTML($imgs[0], $mediaFolderName, $isAdminMode, $sizeRatio, $imageTargetWidth, $imageTargetHeight);
 			
-			$strOut = '<div class="xGalleryContainer xGalleryHasImages xGalleryType-' . $galleryType . ' xGalleryAutoPlay-' . $galleryAutoPlay . '">';
+			$strOut = '<div class="xGalleryContainer xGalleryHasImages xGalleryType-' . $galleryType . ' xGalleryAutoPlay-' . $galleryAutoPlay . ' ' . ($galleryType == 'link' ? $galleryLinkAddress : '') . '">';
 			$strOut .= "<div class=\"xGallery\" style=\"width: {$firstImageWidth}px; height: {$firstImageHeight}px;\">";
 			$strOut .= $firstImageHTML;
 			if($isAdminMode) $strOut .= '<a href="#" class="xGalleryEditButton xEditorLink xSysCaption xMAlign-container"><span class="xMAlign-outer"><span class="xMAlign-inner">edit gallery</span></span></a>';

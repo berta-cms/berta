@@ -208,7 +208,7 @@ body.xEditorEnabled { }
 	color: #333;
 }
 	.xPanel * {
-		font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+		font-family: Arial, sans-serif;
 		font-size: 12px;
 		line-height: 15px;
 		text-transform: none;
@@ -269,31 +269,29 @@ body.xEditorEnabled { }
 /* top panel ----------------------------------------------------------------------------------------------- */
 
 #xTopPanelContainer {
-	/*padding: 0 10px;*/
  	margin-top: 0;
 	margin-bottom: 0;
 	position: fixed;
 	left: 0; top: 0;
-	margin-bottom: -20px;
+	/*margin-bottom: -20px;*/
 	background-color: transparent !important;
 }
 .xSettingsPageBody #xTopPanelContainer {
-	position: relative;
+	position: absolute;
 }
 	#xTopPanel {
-		width: 460px;
+		max-width: 600px;
 		z-index: 60000;
 		position: relative;
 		text-align: left !important;
-		left: 0;
+		top: 0;
+		background: rgb(074, 074, 074);
+		background: rgba(074, 074, 074, 0.9);
 	}
 	
 		#xNewsTickerContainer {
 			position: relative;
-			padding: 8px 8px;
-		}
-		.xNewsTickerRed {
-			background-color: #FFA9C6;
+			padding: 16px 8px;
 		}
 		.xNewsTickerGrey {
 			background-color: #E9E9E9;
@@ -309,10 +307,10 @@ body.xEditorEnabled { }
 				left: 0; top: 0; bottom: 0; right: 0;
 				border-right: 1px solid #4a4a4a;
 				border-bottom: 1px solid #4a4a4a;
-				/*-moz-opacity: 0.8;
-				-webkit-opacity: 0.8;
-				-o-opacity: 0.8;
-				opacity: 0.8;*/
+				-moz-opacity: 0.9;
+				-webkit-opacity: 0.9;
+				-o-opacity: 0.9;
+				opacity: 0.9;
 			}
 			#xNewsTickerContainer .news-ticker-content {
 				float: left;
@@ -355,37 +353,21 @@ body.xEditorEnabled { }
 			ul#xEditorMenu li.selected, ul#xEditorMenu li.selected a {
 				font-weight: bold;
 			}
-			
-			#xEditorMenuBg {
-				float: none !important;
-				position: absolute !important;
-				z-index: 1 !important;
-				left: 0; top: 0; right: 0; bottom: 0;
-				/*-moz-opacity: 0.8;
-				-webkit-opacity: 0.8;
-				-o-opacity: 0.8;
-				opacity: 0.8;*/
-				background-color: #4A4A4A;
-			}
 
 	
-	#xTopPanelSlideIn, #xTopPanelSlideOut {
+	#xTopPanelSlideIn {
 		position: relative;
 		z-index: 2;
 		padding: 2px 0 2px 4px;
 		padding-left: 4px;
-		float: left;
 		width: 20px;
-		/*-moz-opacity: 0.8;
-		-webkit-opacity: 0.8;
-		-o-opacity: 0.8;
-		opacity: 0.8;*/
+		top: -19px;
+		margin-bottom: -19px;
+		background-color: #4A4A4A;
+		z-index: 60000;
+		background: rgb(074, 074, 074);
+		background: rgba(074, 074, 074, 0.9);
 	}
-		#xTopPanelSlideOut { 
-			left: -24px;
-			margin-right: -24px;
-			background-color: #4A4A4A;
-		}
 		
 		#xTopPanelSlideIn span,
 		#xTopPanelSlideOut span {
@@ -476,7 +458,7 @@ ul#pageEntries {
 				position: absolute;
 				border: 1px solid #666666;
 				background-color: #fff;
-				z-index: 1;
+				z-index: 56000;
 				display: none;
 				background: rgba(255, 255, 255, 0.96);
 			}
@@ -655,13 +637,12 @@ a.xCreateNewEntry.xSaving {
 	width: 700px;
 	height: 327px;
     position: relative;
-    z-index: 1;	
+    z-index: 55000;	
 }
 
 	.xEntryGalleryEditor .xEntryGallerySettings,
 	.xEntryGalleryEditor .xEntryGalleryFullScreen,
 	.xEntryGalleryEditor .xEntryGalleryImageSize {
-		width: 200px;
 		padding: 6px;
 	}
 	
@@ -686,13 +667,12 @@ a.xCreateNewEntry.xSaving {
 		}
 		
 			.xEntryGalleryAddMedia a.xEntryAddImagesLink span {
-				text-decoration: none;
 				color: #000;
 			}
 			
-			.xEntryGalleryAddMedia a.xEntryAddImagesLink:hover {
-				text-decoration: underline !important;
-			}
+			.xEntryGalleryAddMedia a.xEntryAddImagesLink.hover span {
+                text-decoration: underline !important;
+            }
        
 		.xEntryGalleryEditor .xEntryGalleryMenu {
 			padding: 6px 6px 0;
@@ -731,7 +711,7 @@ a.xCreateNewEntry.xSaving {
 		}
 		
 		.xEntryGalleryMenu .xEntryMedia a {
-			background: url('../layout/sprites_new.gif') no-repeat;
+			background: url('../layout/gallery_icons_sprite.gif') no-repeat;
 			background-position: 0px -40px;
 			
 		}
@@ -745,7 +725,7 @@ a.xCreateNewEntry.xSaving {
 			}
 		
 		.xEntryGalleryMenu .xEntryMediaSettings a {
-			background: url('../layout/sprites_new.gif') no-repeat;
+			background: url('../layout/gallery_icons_sprite.gif') no-repeat;
 			background-position: -40px -40px;
 			
 		}
@@ -759,7 +739,7 @@ a.xCreateNewEntry.xSaving {
 			}
 		
 		.xEntryGalleryMenu .xEntryFullScreenSettings a {
-			background: url('../layout/sprites_new.gif') no-repeat;
+			background: url('../layout/gallery_icons_sprite.gif') no-repeat;
 			background-position: -80px -40px;
 		}
 		
@@ -772,7 +752,7 @@ a.xCreateNewEntry.xSaving {
 			}
 			
 		.xEntryGalleryMenu .xEntryImageSizeSettings a {
-			background: url('../layout/sprites_new.gif') no-repeat;
+			background: url('../layout/gallery_icons_sprite.gif') no-repeat;
 			background-position: -120px -40px;
 		}
 		
@@ -792,39 +772,44 @@ a.xCreateNewEntry.xSaving {
 				display: none;
 		}
 		
-		.xEntryGallerySettings .xEntrySetGalType {
-			width: 200px;
-			padding: 6px 0;
+		.xEntryGallerySettings .xEntrySlideshowSettings,
+		.xEntryGallerySettings .xEntryLinkSettings {
+			margin: 16px 0;
 		}
-		
-		.xEntryGallerySettings .xEntrySlideshowSettings {
-			width: 200px;
-			padding: 16px 0;
-		}
-		
+			
+			.xEntryGallerySettings .caption,
 			.xEntrySlideshowSettings .caption,
+			.xEntryGallerySettings .caption,
 			.xEntryGalleryFullScreen .caption,
 			.xEntryGalleryImageSize .caption {
+				width: 200px;
 				float: left;
 			}
+			.xEntryGallerySettings>.caption,
 			.xEntryGalleryFullScreen .caption,
 			.xEntryGalleryImageSize .caption {
 				padding: 6px 0;
 			}
 			
+			.xEntryGallerySettings .xEntrySetGalType,
+			.xEntryGallerySettings .xEntrySetGalType input,
 			.xEntrySlideshowSettings .xEntryAutoPlay,
 			.xEntrySlideshowSettings .xEntryAutoPlay input,
+			.xEntryLinkSettings .xEntryLinkAddress,
+			.xEntryLinkSettings .xEntryLinkAddress input,
 			.xEntryGalleryFullScreen .xEntrySetFullScreen,
 			.xEntryGalleryFullScreen .xEntrySetFullScreen input,
 			.xEntryGalleryImageSize .xEntrySetImageSize,
 			.xEntryGalleryImageSize .xEntrySetImageSize input {
-				float: right;
+				float: left;
 			}
+			.xEntryGallerySettings .xEntrySetGalType,
+			.xEntryGallerySettings .xEntrySetGalType input,
 			.xEntryGalleryFullScreen .xEntrySetFullScreen,
 			.xEntryGalleryFullScreen .xEntrySetFullScreen input,
 			.xEntryGalleryImageSize .xEntrySetImageSize,
 			.xEntryGalleryImageSize .xEntrySetImageSize input {
-				padding: 6px 0;
+				margin: 6px 0;
 			}
 			
 			.xEntrySlideshowSettings .xEntryAutoPlay {
@@ -832,9 +817,16 @@ a.xCreateNewEntry.xSaving {
 				text-align: center;
 			}
 			
+			.xEntryLinkSettings .xEntryLinkAddress {
+				width: 200px;
+			}
+			
 			.xEntryGalleryFullScreen .xEntrySetFullScreen,
 			.xEntryGalleryImageSize .xEntrySetImageSize {
 				width: 80px;
+			}
+			.xEntryGallerySettings .xEntrySetGalType {
+				width: 140px;
 			}
 
 		.xEntryGalleryMenu a.xEntryGalCloseLink {
@@ -1252,7 +1244,10 @@ input#xFirstTimeCheckContinue {
 	color: #fff;
 	width: 140px;
 	padding: 10px;
-	border-radius: 8px;
+	border-radius: 2px;
+	-moz-border-radius: 2px;
+	-webkit-border-radius: 2px;
+	-o-border-radius: 2px;
 	z-index: 55000;
 }
 
@@ -1260,6 +1255,11 @@ input#xFirstTimeCheckContinue {
 		color: #fff;
 		text-decoration: underline;
 	}
+
+.xTipGoToShoppingCartMySite .tip-top {
+	border-width: 0 0 18px 12px;
+	margin: 0 15px 0 140px;
+}
 
 /*  setttings pages  --------------------------------------------------------------------------------------- */
 

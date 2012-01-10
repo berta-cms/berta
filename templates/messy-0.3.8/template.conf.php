@@ -144,8 +144,8 @@ $templateConf = array(
 	)
 );
 
-if(@file_exists('../shop/template.conf.php')) {
-	include('../shop/template.conf.php');
+if(@file_exists('../_plugin_shop/template.conf.php')) {
+	include('../_plugin_shop/template.conf.php');
 }
 
 return array($sectionTypes, $templateConf);

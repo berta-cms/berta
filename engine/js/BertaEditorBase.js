@@ -732,20 +732,27 @@ var BertaEditorBase = new Class({
 								//console.debug(newContentText);
 								if(newContentText == 'slideshow') {
 									el.getSiblings('.xEntrySlideshowSettings').removeClass('xHidden');
+									el.getSiblings('.xEntryLinkSettings').addClass('xHidden');
 								}
 								if(newContentText == 'row') {
 									el.getSiblings('.xEntrySlideshowSettings').addClass('xHidden');
+									el.getSiblings('.xEntryLinkSettings').addClass('xHidden');
 								}
 								if(newContentText == 'link') {
+									el.getSiblings('.xEntryLinkSettings').removeClass('xHidden');
 									el.getSiblings('.xEntrySlideshowSettings').addClass('xHidden');
 								}
 								break;
+								
 								
 							case el.hasClass(this.options.xBertaEditorClassRC.substr(1)):
 								// for simple RC textfields we additionally set the real_content property
 								if( el.hasClass('xEntryAutoPlay') && !(/^\d+$/.test(newContentText)) ) {
 									el.set('title', 0);
 									el.set('text', 0);
+								} else if( el.hasClass('xEntryLinkAddress') && !(/^(http:\/\/)/i.test(newContentText)) ) {
+									el.set('title', 'http://' + newContentText);
+									el.set('text', 'http://' + newContentText);								
 								} else {
 									el.set('title', elEditor.removeHTMLEntities(resp.real));
 									el.set('html', resp.update);
@@ -947,28 +954,32 @@ BertaEditorBase.EDITABLE_FINISH = 'editable_finish';
 // Toggles top panel's visibility
 window.addEvent('domready', function(){
 	var slideEl = document.getElementById('xTopPanel');
-	var slideIn = document.getElementById('xTopPanelSlideIn');
-	var slideOut = document.getElementById('xTopPanelSlideOut');
-
-	var fxIn = new Fx.Tween(slideEl);
-	var fxOut = new Fx.Tween(slideOut);
-
-	slideIn.getElement('span').addEvent('click', function(event) {
-		event.stop();
+	if(slideEl) {
+		var slideOutEl = document.getElementById('xTopPanelSlideOut');
+		var slideInEl = document.getElementById('xTopPanelSlideIn');
 		
-		fxIn.start('left', -460).chain(function() {
-			fxOut.start('left', 0);
-		});
-	});
-	
-	slideOut.getElement('span').addEvent('click', function(event) {
-		event.stop();
+		var fxOut = new Fx.Tween(slideEl);
+		var fxIn = new Fx.Tween(slideInEl);
 		
-		fxOut.start('left', -24).chain(function() {
-			fxIn.start('left', 0);
+		slideOutEl.getElement('span').addEvent('click', function(event) {
+			event.stop();
+			
+			$('xNewsTickerContainer').hide();
+			
+			fxOut.start('top', -19).chain(function() {
+				fxIn.start('top', 0);
+			});
 		});
-	});
-});
+		
+		slideInEl.getElement('span').addEvent('click', function(event) {
+			event.stop();
+			
+			fxIn.start('top', -19).chain(function() {
+				fxOut.start('top', 0);
+			});
+		});
+	}
+})
 
 
 function TidyEditor(t, v){

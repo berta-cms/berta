@@ -45,24 +45,25 @@ if($jsonRequest) {
 					$imageSize = !empty($entry['mediaCacheData']['@attributes']['size']) ? $entry['mediaCacheData']['@attributes']['size'] : 'large';
 					$FullScreen=!empty($entry['mediaCacheData']['@attributes']['fullscreen']) ? $entry['mediaCacheData']['@attributes']['fullscreen'] : $berta->settings->get('entryLayout', 'galleryFullScreenDefault');
 					$autoPlay = !empty($entry['mediaCacheData']['@attributes']['autoplay']) ? $entry['mediaCacheData']['@attributes']['autoplay'] : '0';
+					$linkAddress = !empty($entry['mediaCacheData']['@attributes']['link_address']) ? $entry['mediaCacheData']['@attributes']['link_address'] : '';
 					
 					echo '<div class="xEntryGalleryEditor-wrap"><div class="xEntryGalleryEditor xPanel">';
 						//echo ';
 
 						echo '<div class="xEntryGalleryMenu">';
 							echo '<div class="xEntryMedia tab">',
-									'<a href="#" class="xParams-media selected" title="media"><span>media</span></a>',	
+									'<a href="#" class="xParams-media selected" title="add images and videos"><span>media</span></a>',	
 								 '</div>';
 							echo '<div class="xEntryMediaSettings tab">',
 									'<a href="#" class="xParams-media_settings" title="gallery settings"><span>settings</span></a>',	
 								 '</div>';
 
 							echo '<div class="xEntryFullScreenSettings tab ">',
-									'<a href="#" class="xParams-fullscreen" title="lightbox"><span>lightbox</span></a>',
+									'<a href="#" class="xParams-fullscreen" title="lightbox on/off"><span>lightbox</span></a>',
 								 '</div>';
 
 							echo '<div class="xEntryImageSizeSettings tab ">',
-									'<a href="#" class="xParams-image_size title="image size"><span>image size</span></a>',
+									'<a href="#" class="xParams-image_size" title="large/small image size"><span>image size</span></a>',
 								 '</div>';
 
 							echo '<a class="xEntryGalCloseLink xEditorLink" href="#" title="close image editor"><span>X</span></a>';
@@ -82,21 +83,26 @@ if($jsonRequest) {
 						echo '</div>';
 
 						echo '<div class="xEntryGallerySettings xGreyBack xHidden">';
-							echo '<div class="xEntrySetGalType xEditableSelectRC xCommand-SET_GALLERY_TYPE" x_options="slideshow||row||link">' . $galType . '</div>';
+							echo '<div class="caption">gallery type</div>',
+								 '<div class="xEntrySetGalType xEditableSelectRC xCommand-SET_GALLERY_TYPE" x_options="slideshow||row||link">' . $galType . '</div><br class="clear" />';
 							echo '<div class="xEntrySlideshowSettings' . ($galType == 'slideshow' ? '' : ' xHidden') . '">',
-									'<div class="caption">autoplay</div>',
+									'<div class="caption">autoplay seconds</div>',
 								 	'<div class="xEntryAutoPlay xEditableRC xCommand-SET_AUTOPLAY xCaption-0" title="' . $autoPlay . '">' . $autoPlay . '</div>',
+								 '</div>';
+							echo '<div class="xEntryLinkSettings' . ($galType == 'link' ? '' : ' xHidden') . ' ">',
+									'<div class="caption">link address</div>',
+									'<div class="xEntryLinkAddress xEditableRC xCommand-SET_LINK_ADDRESS" title="' . ($linkAddress ? $linkAddress : 'http://') . '">' . ($linkAddress ? $linkAddress : 'http://example.com/') . '</div>',
 								 '</div>';
 						echo '</div>';
 						
 						echo '<div class="xEntryGalleryFullScreen xHidden">';
 							echo '<div class="caption">fullscreen</div>',
-								 '<div class="xEntrySetFullScreen xEditableSelectRC xCommand-SET_FULLSCREEN" x_options="yes||no">' . $FullScreen . '</div>';
+								 '<div class="xEntrySetFullScreen xEditableSelectRC xCommand-SET_FULLSCREEN" x_options="yes||no">' . $FullScreen . '</div><br class="clear" />';
 						echo '</div>';
 						
 						echo '<div class="xEntryGalleryImageSize xHidden">';
 							echo '<div class="caption">image size</div>',
-								 '<div class="xEntrySetImageSize xEditableSelectRC xCommand-SET_GALLERY_SIZE" x_options="large||small">' . $imageSize . '</div>';
+								 '<div class="xEntrySetImageSize xEditableSelectRC xCommand-SET_GALLERY_SIZE" x_options="large||small">' . $imageSize . '</div><br class="clear" />';
 						echo '</div>';
 						
 						echo '<div class="images"><ul>';
@@ -138,7 +144,7 @@ if($jsonRequest) {
 											echo '<img class="img" src="' . $imageThumbSrc . '" />';
 											echo '<span class="grabHandle xMAlign-container"><span class="xMAlign-outer"><a class="xMAlign-inner" title="click and drag to move"><span></span></a></span></span>';
 											echo '<a href="#" class="delete"></a>';
-											echo '<div class="xEGEImageCaption ' . $xEditSelectorMCESimple . ' xProperty-galleryImageCaption xCaption-caption xParam-' . $im['@attributes']['src'] . '">', !empty($im['value']) ? $im['value'] : '', '</div>';
+											echo '<div class="xEGEImageCaption ' . $xEditSelectorMCESimple . ' xProperty-galleryImageCaption xCaption-image-caption xParam-' . $im['@attributes']['src'] . '">', !empty($im['value']) ? $im['value'] : '', '</div>';
 											echo '</li>';
 										}
 									
