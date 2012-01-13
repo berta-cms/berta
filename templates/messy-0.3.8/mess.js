@@ -87,10 +87,12 @@ var MessyMess = new Class({
 				mouseenter: function(){
 					$$('.xCreateNewEntry').hide();
 					$('xTopPanelContainer').hide();
+					$('xBgEditorPanelTrigContainer').hide();
 				},
 				mouseleave: function(){
 					$$('.xCreateNewEntry').show();
 					$('xTopPanelContainer').show();
+					$('xBgEditorPanelTrigContainer').show();
 					$$('.xEntry .xCreateNewEntry').hide();
 				}
 			});

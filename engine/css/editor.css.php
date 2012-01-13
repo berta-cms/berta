@@ -389,6 +389,8 @@ body.xEditorEnabled { }
 
 /* background editor ----------------------------------------------------------------------------------------------- */
 
+#xMooRainbow {left: 100px;}
+
 #xBgEditorPanelTrigContainer {
 	margin: 0;
  	padding: 0;
@@ -463,22 +465,31 @@ body.xEditorEnabled { }
     	        text-decoration: underline !important;
     	    }
     	    
-		.xBgSettings .xBgSlideshowSettings {
+		.xBgSettings .xBgSlideshowSettings  {
 			margin: 6px 0;
 		}
+		
+		.xBgSettings .xBgColorSettings {
+			margin: 10px 0;
+		}
 			
-			.xBgSlideshowSettings .caption {
+			.xBgSlideshowSettings .caption,
+			.xBgColorSettings .caption {
 				width: 200px;
 				float: left;
 			}
 			
 			.xBgSlideshowSettings .xBgAutoPlay {
 		    	width: 50px;
-		    	text-align: center;
 			}
 			
 			.xBgSlideshowSettings .xBgAutoPlay,
 			.xBgSlideshowSettings .xBgAutoPlay input {
+				float: left;
+			}
+			
+			.xBgColorSettings .xBgColor,
+			.xBgColorSettings .xBgColor span {
 				float: left;
 			}
 
@@ -1173,7 +1184,6 @@ a.xCreateNewEntry.xSaving {
 			
 			.xEntrySlideshowSettings .xEntryAutoPlay {
 				width: 50px;
-				text-align: center;
 			}
 			
 			.xEntryLinkSettings .xEntryLinkAddress {

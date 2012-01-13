@@ -94,7 +94,12 @@ var BertaBgEditor = new Class({
 		this.container.getElements('.xBgAutoPlay').each(function(item) {
 			this.elementEdit_init(item, this.options.xBertaEditorClassRC);
 		}, this);
-
+		
+		// bg color handle
+		this.container.getElements('.xBgColor').each(function(item) { 
+			this.elementEdit_init(item, this.options.xBertaEditorClassColor) 
+		}, this);
+		
 		// close link
 		this.container.getElement('a.xBgEditorCloseLink').addEvent('click', this.onCloseClick.bindWithEvent(this));
 		

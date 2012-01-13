@@ -351,6 +351,7 @@ DOC;
 			$vars['berta']['css'] .= <<<DOC
 	<link rel="stylesheet" href="{$engineAbsRoot}css/editor.css.php" type="text/css" />
 	<link rel="stylesheet" href="{$templatesAbsRoot}{$this->name}/editor.css.php" type="text/css" />
+	<link rel="stylesheet" href="{$engineAbsRoot}_lib/moorainbow/mooRainbow.css" type="text/css" charset="utf-8" />
 DOC;
 		}else{
 			$vars['berta']['css'] .= <<<DOC
@@ -382,6 +383,7 @@ DOC;
 	<script type="text/javascript" src="{$engineAbsRoot}js/BertaEditor.js" charset="utf-8"></script>
 
 	<script type="text/javascript" src="{$engineAbsRoot}_lib/tiny_mce/tiny_mce_gzip.js"></script>
+	<script type="text/javascript" src="{$engineAbsRoot}_lib/moorainbow/mooRainbow.1.2b2.js" charset="utf-8"></script>
 DOC;
 		} else {
 			$vars['berta']['scripts'] .= <<<DOC
