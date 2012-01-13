@@ -73,7 +73,7 @@ $templateConf = array(
 		
 	'entryLayout' => array(
 		'_' => array('title' => I18n::_('Entry layout')),
-		'contentWidth' => 		array('format' => 'text',	'default' => '400px',	'css_units' => true,                                'title' => I18n::_('Entry text width'),                             'description' => ''),
+		'contentWidth' => 		array('format' => 'text',	'default' => '400px',	'css_units' => true,                                'title' => I18n::_('Entry text max width'),                             'description' => ''),
 		'defaultGalleryType' =>  array('format' => 'select',		'values' => array('slideshow', 'row'), 'default' => 'slideshow',    'title' => I18n::_('Default gallery type'),                         'description' => I18n::_('Slideshow means that an image menu plus only one image is visible at a time. Row means that all images are visible.')),
 		'galleryNavMargin' => 	 array('format' => 'text',		'default' => '0', 'css_units' => true,					                'title' => I18n::_('Space between images and image navigation'), 	'description' => I18n::_('Vertical space between images and image navigation (the digits below the image) when gallery is in "slideshow" mode')),
 		'galleryMargin' => 		 array('format' => 'text',		'default' => '0', 'css_units' => true,				                    'title' => I18n::_('Empty space below gallery'), 	                'description' => I18n::_('Distance between the gallery and the content below')),
