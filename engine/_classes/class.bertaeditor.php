@@ -59,6 +59,19 @@ class BertaEditor extends BertaContent {
 			$xmlPath = realpath(self::$options['XML_ROOT'] . str_replace('%', $sectionName, self::$options['blog.%.xml']));
 			if(!$xmlPath || @unlink($xmlPath)) {
 				$oldSectionsList = BertaEditor::getSections();
+				// delete all section background media
+				if(!empty($oldSectionsList[$sectionName]['mediafolder']['value'])) {
+					$sectionMediaFolder = self::$options['MEDIA_ROOT'] . $oldSectionsList[$sectionName]['mediafolder']['value'];
+					if(file_exists($sectionMediaFolder)) {
+						$dir = opendir($sectionMediaFolder);
+						while($fItem = readdir($dir)) {
+							if($fItem != '.' && $fItem != '..') {
+								@unlink($sectionMediaFolder . '/' . $fItem);
+							}	
+						}
+						$dirsDeleted &= @rmdir($sectionMediaFolder);
+					}
+				}
 				if(isset($oldSectionsList[$sectionName])) unset($oldSectionsList[$sectionName]);
 				BertaEditor::saveSections($oldSectionsList);
 				
