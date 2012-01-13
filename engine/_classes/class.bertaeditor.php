@@ -4,6 +4,23 @@
 
 class BertaEditor extends BertaContent {
 	
+	public static function getSectionMediafolder($sName) {
+		$mediaRoot = self::$options['MEDIA_ROOT'];
+		$sectionMfName = $sName . '-background';
+		
+		if(file_exists($mediaRoot . $sectionMfName) && is_dir($mediaRoot . $sectionMfName)) {
+			$MFTestNum = 1;
+			do {
+				$mFTest = $sectionMfName . $MFTestNum;
+				$MFTestNum++;
+			} while(file_exists($mediaRoot . $mFTest));
+			
+			$sectionMfName = $mFTest;
+		}
+		
+		return $sectionMfName;
+	}
+	
 	public static function saveSections($sections) {
 		$sectionsToSave = array('section' => array());
 		foreach($sections as $s) $sectionsToSave['section'][] = $s;
