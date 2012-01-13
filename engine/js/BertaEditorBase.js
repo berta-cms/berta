@@ -628,6 +628,7 @@ var BertaEditorBase = new Class({
 			var noHTMLEntities = el.hasClass('xNoHTMLEntities');
 			var editorParams = el.getClassStoredValue('xParam');
 			var entryInfo = this.getEntryInfoForElement(el);
+			if(entryInfo.section == '') entryInfo.section = this.sectionName;	
 			
 			// check if new content is not empty and revert it to default value, if specified
 			if(!el.hasClass(this.options.xBertaEditorClassYesNo.substr(1)) && (!newContent || newContent.test('^([\s\xA0]|\&nbsp\;)+$'))) {
@@ -943,6 +944,14 @@ var BertaEditorBase = new Class({
 			retObj.section = retObj.listObj ? retObj.listObj.getClassStoredValue('xSection') : '';
 			
 		return retObj;
+	},
+	
+	getSectionNameForElement:function(el) {
+		var retString;
+		
+		retString = el.getClassStoredValue('xSection') ? el.getClassStoredValue('xSection') : null;
+		
+		return retString;
 	}
 	
 });

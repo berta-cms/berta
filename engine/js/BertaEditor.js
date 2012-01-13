@@ -362,7 +362,10 @@ var BertaEditor = new Class({
 								dropdown.removeClass('xEntryDropdowHover');						    
 						    }														
 						});												
-
+						
+						// section background editing
+						$('xBgEditorPanelTrig').addEvent('click', this.onBgEditClick.bindWithEvent(this));
+						
 						// entry deleting and creating
 						new Element('A', { 'class': 'xCreateNewEntry xPanel xAction-entryCreateNew', 'href': '#'}).adopt(
 							new Element('span', { 'html': this.options.i18n['create new entry here'] })
@@ -851,6 +854,34 @@ var BertaEditor = new Class({
 	  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	 ///|  Gallery  |//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	onBgEditClick: function(event) {
+		event.stop();
+		
+		var bgEditorPanel = null;
+		var bgEditorContainer = $('xBgEditorPanelContainer');
+		
+		var bBgEditor = new BertaBgEditor(bgEditorContainer, { 
+			engineRoot: this.options.paths.engineRoot,
+		    flashUploadEnabled: this.options.flashUploadEnabled
+		});
+		
+
+		bBgEditor.addEvent('load', function() {
+			this.fireEvent(BertaEditorBase.EDITABLE_START, [bgEditorContainer, bBgEditor]);
+			event.target.hide();
+		}.bind(this));
+
+		bBgEditor.addEvent('close', function() {
+			bgEditorPanel = $('xBgEditorPanel');
+		    bgEditorPanel.destroy(); bgEditorPanel.dispose();
+		    bBgEditor = null;
+		    event.target.show();
+		    this.fireEvent(BertaEditorBase.EDITABLE_FINISH, [bgEditorContainer, bBgEditor]);
+		}.bind(this));
+		
+		//console.debug(this);
+	},
 
 	onGalleryEditClick: function(event) {	// replaces the gallery with gallery editor
 		event.stop();

@@ -30,6 +30,7 @@ $entryId = !empty($_GET['entry']) ? $_GET['entry'] : false;
 $mediaFolder = !empty($_GET['mediafolder']) ? $_GET['mediafolder'] : false;
 $posterFor = !empty($_GET['poster_for']) ? $_GET['poster_for'] : false;
 $uplosadType = !empty($_REQUEST['upload_type']) ? $_REQUEST['upload_type'] : 'fancy';
+$sectionBackground = !empty($_GET['section_background']) ? $_GET['section_background'] : false;
 
 $paramMinWidth = !empty($_REQUEST['min_width']) ? $_REQUEST['min_width'] : false;
 $paramMinHeight = !empty($_REQUEST['min_height']) ? $_REQUEST['min_height'] : false;
@@ -122,7 +123,7 @@ $result = array();
 //$result['addr'] = substr_replace(gethostbyaddr($_SERVER['REMOTE_ADDR']), '******', 0, 6);
 //$result['agent'] = $_SERVER['HTTP_USER_AGENT'];
 
-if(($entryId && $mediaFolder || $settingsProperty) && isset($_FILES['Filedata'])) {
+if(($entryId && $mediaFolder || $settingsProperty || $sectionName && $mediaFolder) && isset($_FILES['Filedata'])) {
 
 	$file = $_FILES['Filedata']['tmp_name'];
 	$error = false;
@@ -169,15 +170,15 @@ if(($entryId && $mediaFolder || $settingsProperty) && isset($_FILES['Filedata'])
 		if($mediaFolder) {
 			$fileFolder = $options['MEDIA_ROOT'] . $mediaFolder;
 			if(!file_exists($fileFolder) || !is_dir($fileFolder)) {
-				if(!@mkdir($fileFolder, 0777)) {
-					$result['status'] = 0;
-					$result['error'] = 'Cannot create media folder! Check permissions of the storage folder.';
-				}
+			    if(!@mkdir($fileFolder, 0777)) {
+			    	$result['status'] = 0;
+			    	$result['error'] = 'Cannot create media folder! Check permissions of the storage folder.';
+			    }
 			} elseif(!is_writable($fileFolder)) {
-				if(!@chmod($fileFolder, 0777)) {
-					$result['status'] = 0;
-					$result['error'] = 'Media folder is not writable!';
-				}
+			    if(!@chmod($fileFolder, 0777)) {
+			    	$result['status'] = 0;
+			    	$result['error'] = 'Media folder is not writable!';
+			    }
 			}
 			$fileFolder .= '/';
 		}
@@ -225,7 +226,7 @@ if(($entryId && $mediaFolder || $settingsProperty) && isset($_FILES['Filedata'])
 				} else {
 					chmod($fileFolder . $fName, 0666);
 					BertaEditor::images_deleteDerivatives($fileFolder, $fName);
-				
+					
 					// in case of video, all is done
 					if($videoExt || $fileExt) {
 						if($settingsProperty) { // update setings value
@@ -236,7 +237,7 @@ if(($entryId && $mediaFolder || $settingsProperty) && isset($_FILES['Filedata'])
 							}
 							$settings->update($settingsProperty[0], $settingsProperty[1], $fName);
 							$settings->save();
-						} 
+						}
 						else { // update image cache
 							$blog = BertaEditor::loadBlog($sectionName);
 							BertaEditor::updateImageCacheFor($blog, $entryId);
@@ -287,7 +288,16 @@ if(($entryId && $mediaFolder || $settingsProperty) && isset($_FILES['Filedata'])
 								//echo $settingsProperty[0], ' ', $settingsProperty[1],  ' ', $fName;
 								$settings->update($settingsProperty[0], $settingsProperty[1], $fName);
 								$settings->save();
-							} 
+							}
+							elseif($sectionBackground) {
+								$sectionsToEdit = BertaEditor::getSections();
+								
+								if(empty($sectionsToEdit[$sectionName]['mediafolder'])) $sectionsToEdit[$sectionName]['mediafolder'] = array();
+								if(empty($sectionsToEdit[$sectionName]['mediafolder']['value'])) $sectionsToEdit[$sectionName]['mediafolder']['value'] = $mediaFolder;
+								
+								BertaEditor::updateImageCacheForSection($sectionsToEdit[$sectionName]);
+								BertaEditor::saveSections($sectionsToEdit);
+							}
 							else { // update image cache
 								$blog = BertaEditor::loadBlog($sectionName);
 
