@@ -359,5 +359,60 @@ a img { border: none; }
 }
 
 
+/* section background --------------------------------------*/
+
+#xBackgroundWrapper #xBackground {
+	position: fixed;
+	z-index: -1000;
+	width: 100%;
+	height: 100%;
+	/* z-index: -1; */
+}
+
+#xBackgroundWrapper #xBackgroundNext {
+	position: fixed;
+	width: 40px;
+	height: 29px;
+	background: url('layout/arrow_next_sprite.png');
+	background-position: 0px 0px;
+	z-index: 1000;
+	right: 0px;
+	top: 50%;
+	margin-top: -14px;
+	cursor: pointer;
+}
+	#xBackgroundWrapper #xBackgroundNext:hover { background-position: 0px -29px; }
+
+#xBackgroundWrapper #xBackgroundPrevious {
+	position: fixed;
+	width: 40px;
+	height: 29px;
+	background: url('layout/arrow_prev_sprite.png');
+	background-position: 0px 0px;
+	z-index: 1000;
+	left: 0px;
+	top: 50%;
+	margin-top: -14px;
+	cursor: pointer;
+}
+	#xBackgroundWrapper #xBackgroundPrevious:hover { background-position: 0px -29px; }
+
+	#xBackground .visual {
+		position: absolute;
+		top: 0; right: 0; bottom: 0; left: 0;
+		overflow: hidden;
+		z-index: 10;
+	}
+		#xBackground .visual-image {
+			position: absolute;
+			top: 0; right: 0; bottom: 0; left: 0;
+			visibility: hidden;
+		}
+		#xBackground .visual-image.sel {
+			visibility: visible;
+		}
+		#xBackground .bg-element {
+			position: absolute; display: block;
+		}
 
 <? if(!1) { ?></style><? } ?>

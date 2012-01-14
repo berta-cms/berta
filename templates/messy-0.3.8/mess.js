@@ -88,11 +88,15 @@ var MessyMess = new Class({
 					$$('.xCreateNewEntry').hide();
 					$('xTopPanelContainer').hide();
 					$('xBgEditorPanelTrigContainer').hide();
+					$('xBackgroundNext').hide();
+					$('xBackgroundPrevious').hide();
 				},
 				mouseleave: function(){
 					$$('.xCreateNewEntry').show();
 					$('xTopPanelContainer').show();
 					$('xBgEditorPanelTrigContainer').show();
+					$('xBackgroundNext').show();
+					$('xBackgroundPrevious').show();
 					$$('.xEntry .xCreateNewEntry').hide();
 				}
 			});
@@ -213,6 +217,164 @@ var MessyMess = new Class({
 		}
 	}
 	
+});
+
+
+var BertaBackground = new Class({
+	
+	Implements: Options,
+	
+	options: {
+		type: 'image',
+		alignment: 'center',
+		negMarginTop: 0,
+		negMarginBottom: 0
+	},
+	
+	container: null,
+	images: null,
+	
+	// methods: {
+// 
+		// destroy: function() {
+			// this.each(function() {
+// 
+			// });
+// 
+			// return this;
+		// },
+// 
+		// /**
+		 // * Sets/retrieves options variable
+		 // *
+		 // * @param name  string  option name
+		 // * @param value mixed   (optional) value for option
+		 // */
+		// option: function(name, value) {
+			// var data = $(this).data('background');
+			// if(value === undefined) {
+				// return data.options[name];
+			// } else {
+				// data.options[name] = value;
+			// }
+		// },
+// 
+		// /*'enable': function() {
+			// return this.each(function() {
+// 
+			// })
+		// },
+		// 'disable': function() {
+			// return this.each(function() {
+// 
+			// })
+		// }*/
+	// },
+	
+	initialize: function(options) {
+		this.setOptions(options);
+		this.container = $('xBackground');
+		this.images = this.container.getElements('img');
+		// if ( methods[methodOrOptions] ) {
+			// return methods[methodOrOptions].apply( this, Array.prototype.slice.call( arguments, 1 ));
+// 
+		// } else if ( typeof methodOrOptions === 'object' || ! methodOrOptions ) {
+			return this._init.apply( this, arguments );
+
+		// } else {
+			// $.error( 'Method ' +  method + ' does not exist on jQuery.background' );
+			// return this;
+		// }
+	},
+	
+	_init: function() {
+		this.images.each(function(item, index) {
+			var $el = item,
+				data = { options: this.options };
+				
+/*
+			for (var attrname in item.dataset) {
+				data.options[attrname] = item.dataset[attrname];
+			}
+*/
+			
+			data.width = $el.getSize().x;
+			data.height = $el.getSize().y;
+
+			// VIDEO
+/*
+			switch(data.options.type) {
+				case 'image':
+				case 'cycle':
+				case 'camera':
+
+				break;
+ 
+				case 'video':
+ 
+					$el.setStyle('width', 'auto')
+					   .setStyle('height', 'auto');
+ 
+					//backgroundElement = $('#background .visualVideoContainer');
+ 
+				break;
+			}
+*/
+
+			data.resizeFunc = this._onResize;
+			
+			$el.store('background', data);
+			
+			window.addEvent('resize', function() { data.resizeFunc(item) });
+			data.resizeFunc(item);
+			//console.debug(data);
+		}.bind(this));
+		return this;
+	},
+	
+	_onResize: function(target) {		
+		var wnd = window,
+			w = wnd.getSize().x,
+			h = wnd.getSize().y,
+			
+			$el = target,
+			data = $el.retrieve('background');
+		
+		var posX, posY;
+		
+		// scale
+		var scaleX = w / data.width, scaleY = h / (data.height - data.options.negMarginTop - data.options.negMarginBottom);
+		if(scaleX > scaleY) scaleY = scaleX; else scaleX = scaleY;
+
+		// position X
+/*
+		if(data.options.alignment == 'top_left' || data.options.alignment == 'bottom_left') {
+			posX = 0;
+		} else if(data.options.alignment == 'top_right' || data.options.alignment == 'bottom_right') {
+			posX = Math.round(w - data.width * scaleX);
+		} else {
+*/
+			posX = Math.round((w - data.width * scaleX) / 2);
+/* 		} */
+
+		// position Y
+/*
+		if(data.options.alignment == 'top_left' || data.options.alignment == 'top_center' || data.options.alignment == 'top_right') {
+			posY = 0;
+		} else if(data.options.alignment != 'center') {
+			posY = Math.round(h - data.height * scaleY + data.options.negMarginBottom * scaleY);
+		} else {
+*/
+			//console.debug((h - (backgroundOrigHeight * scaleY)) / 2, (h - (backgroundOrigHeight * scaleY)) / 2 - backgroundNegMarginTop * scaleY);
+			posY = Math.round((h - (data.height * scaleY)) / 2 - data.options.negMarginTop * scaleY);
+/* 		} */
+
+		$el.setStyle('width', data.width * scaleX)
+		   .setStyle('height', data.height * scaleY)
+		   .setStyle('left', posX)
+		   .setStyle('top', posY);
+
+	},
 });
 
 

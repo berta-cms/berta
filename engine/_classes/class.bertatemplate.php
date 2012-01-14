@@ -265,7 +265,7 @@ class BertaTemplate extends BertaBase {
 				// add variables from template section-type settings
 				foreach($s as $key => $val) {
 					if($key != '@attributes' && !isset($vars['berta']['sections'][$sName][$key]))
-						$vars['berta']['sections'][$sName][$key] = isset($val['value']) ? $val['value'] : null;
+						$vars['berta']['sections'][$sName][$key] = isset($val['value']) ? $val['value'] : $val;
 				}
 				
 				// - show all sections when in engine mode

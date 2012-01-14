@@ -80,6 +80,28 @@
 				</div>
 				{ /if }
 			{ /if }
+			
+			{**** background images **************************************************}
+			<div id="xBackgroundWrapper">
+				<div id="xBackground" data-background-type="cycle">
+					<div class="visual">
+					{ foreach $berta.section.mediaCacheData.file as $fKey => $fVal }
+					    { if $fKey !== '@attributes' && $fKey !== 'value'  }
+					    <div class="visual-image{ if $fVal@first } sel{ /if }">
+					    	<img width="{ $fVal['@attributes'].width }" height="{ $fVal['@attributes'].height }" src="{ $berta.options.MEDIA_ROOT }{ $berta.section.mediafolder }/{ $fVal['@attributes'].src }" class="bg-element visualContent" data-alignment="center"/>
+					    </div>
+					    { elseif $fKey === '@attributes' && $fKey !== 'value' }
+					    <div class="visual-image sel">
+					    	<img width="{ $fVal.width }" height="{ $fVal.height }" src="{ $berta.options.MEDIA_ROOT }{ $berta.section.mediafolder }/{ $fVal.src }" class="bg-element visualContent" data-alignment="center"/>
+					    </div>
+					    { /if }
+					{ /foreach }
+					</div>
+				</div>
+				<div id="xBackgroundPrevious"></div>
+				<div id="xBackgroundNext">	</div>
+			</div>
+			
 			<div id="contentContainer">
 				{ if 1==2 }
 				<a href="https://docs.google.com/spreadsheet/viewform?formkey=dDk5UzdGcl9ZbmJsN0dyd2VINURGZ0E6MQ" target="_blank" style="visibility: hidden;" id="feedback_url"><img src="{ $berta.options.ENGINE_ABS_ROOT }layout/feedback_button.png" /></a>
@@ -240,5 +262,9 @@
 		
 		{ include file="../_includes/inc.counter.tpl"  }
 	{ /if }
+	
+	<script type="text/javascript">
+	{literal} var bertaBackground = new BertaBackground(); {/literal}
+	</script>
 </body>
 </html>
