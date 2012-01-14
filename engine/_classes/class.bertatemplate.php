@@ -229,6 +229,11 @@ class BertaTemplate extends BertaBase {
 		$vars['berta']['environment'] = $this->environment;
 		$vars['berta']['templateName'] = $this->name;
 		$vars['berta']['options'] =& self::$options;
+
+		if ( isset($_SESSION['_berta_msg']) ){
+			$vars['berta']['msg'] = $_SESSION['_berta_msg'];
+			unset( $_SESSION['_berta_msg'] );
+		}
 		
 		$vars['berta']['settings'] = $this->settings->getApplied();
 		//print_r($vars['berta']['settings']);

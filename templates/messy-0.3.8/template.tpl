@@ -38,7 +38,8 @@
 		
 		{* all templates must include allContainer *}
 		<div id="allContainer">
-		
+
+
 		
 		{* engine panel lives in pageHeader - don't leave it out *}
 		{ pageHeader }
@@ -240,5 +241,9 @@
 		
 		{ include file="../_includes/inc.counter.tpl"  }
 	{ /if }
+
+	{if $berta.msg}
+		<script type="text/javascript">alert('{$berta.msg}');</script>
+	{/if}
 </body>
 </html>
