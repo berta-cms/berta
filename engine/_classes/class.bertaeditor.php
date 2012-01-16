@@ -248,115 +248,110 @@ class BertaEditor extends BertaContent {
 	
 	public static function updateImageCacheForSection(&$section) {
 		if(!empty($section)) {
-			//foreach($section as $sId => $s) {
-				//if((string) $sId == '@attributes') continue;
-				//if(!$entryId || (!empty($e['id']['value']) && $entryId == $e['id']['value'])) {
-	
-					$mediaFiles = array();
-					if(!empty($section['mediafolder']['value']))
-						$mediaFiles = BertaEditor::gatherMediaFilesIn($section['mediafolder']['value']);
-						
-					//var_dump($mediaFiles);
 
-					if($mediaFiles) {
+			$mediaFiles = array();
+			if(!empty($section['mediafolder']['value']))
+			    $mediaFiles = BertaEditor::gatherMediaFilesIn($section['mediafolder']['value']);
+			    
+			//var_dump($mediaFiles);
 
-						$sectionCache =& $section['mediaCacheData'];
+			if($mediaFiles) {
 
-						if(!count($sectionCache) || empty($sectionCache['file'])) {
-							// if the media cache is empty, create a fresh array
-                            $mediaCacheData=array('file' => array());
-                            if (isset($section['mediaCacheData'])){
-                                  $mediaCacheData=array_merge($section['mediaCacheData'], $mediaCacheData);
-                            }
-                            $section['mediaCacheData']=$mediaCacheData;
+			    $sectionCache =& $section['mediaCacheData'];
 
-							$sectionCache =& $section['mediaCacheData'];
-							foreach($mediaFiles as $im) {
-								$attr = array('type' => $im['type'], 'src' => $im['src']);
-								if(!empty($im['poster_frame'])) $attr['poster_frame'] = $im['poster_frame'];
-								if(!empty($im['width'])) $attr['width'] = $im['width'];
-								if(!empty($im['height'])) $attr['height'] = $im['height'];
-								$sectionCache['file'][] = array('value' => '', '@attributes' => $attr);
-							}
-							
-							// if moving from an older version of XML
-							unset($sectionCache['images']);
-							unset($sectionCache['videos']);
+			    if(!count($sectionCache) || empty($sectionCache['file'])) {
+			    	// if the media cache is empty, create a fresh array
+                    $mediaCacheData=array('file' => array());
+                    if (isset($section['mediaCacheData'])){
+                          $mediaCacheData=array_merge($section['mediaCacheData'], $mediaCacheData);
+                    }
+                    $section['mediaCacheData']=$mediaCacheData;
 
-							//echo "\n\n-----\n\n"; var_dump($entryCache);
-						} else {
-							Array_XML::makeListIfNotList($sectionCache['file']);
+			    	$sectionCache =& $section['mediaCacheData'];
+			    	foreach($mediaFiles as $im) {
+			    		$attr = array('type' => $im['type'], 'src' => $im['src']);
+			    		if(!empty($im['poster_frame'])) $attr['poster_frame'] = $im['poster_frame'];
+			    		if(!empty($im['width'])) $attr['width'] = $im['width'];
+			    		if(!empty($im['height'])) $attr['height'] = $im['height'];
+			    		$sectionCache['file'][] = array('value' => '', '@attributes' => $attr);
+			    	}
+			    	
+			    	// if moving from an older version of XML
+			    	unset($sectionCache['images']);
+			    	unset($sectionCache['videos']);
 
-							//echo "\n\n-----\n\n"; var_dump($entryCache);
+			    	//echo "\n\n-----\n\n"; var_dump($entryCache);
+			    } else {
+			    	Array_XML::makeListIfNotList($sectionCache['file']);
 
-							// first check if all items in cache are still inside the folder
-							foreach($sectionCache['file'] as $cacheIndex => $cacheIm) {
-								
-								// try to find the entry among the files in the folder
-								$foundIndex = false;
-								foreach($mediaFiles as $i => $im) {
-									
-									// *** compatibility with versions <= 0.5.5b
-									$isFromOldVersion = empty($cacheIm['@attributes']['src']);
-									$srcFromCache = $isFromOldVersion ? $cacheIm['value'] : $cacheIm['@attributes']['src'];
-									
-									// if image found in cache, update cache entry
-									if($srcFromCache == $im['src']) {
-										$foundIndex = true;
-										$_section = array('@attributes' => array());
-										if(!$isFromOldVersion) $_section['value'] = !empty($cacheIm['value']) ? $cacheIm['value'] : '';
-										if(!empty($cacheIm['@attributes'])) $_section['@attributes'] = $cacheIm['@attributes'];
-										$_section['@attributes']['src'] = $im['src'];
-										
-										$_section['@attributes']['type'] = $im['type'];
-										if(!empty($im['poster_frame'])) $_section['@attributes']['poster_frame'] = $im['poster_frame'];
-										if(!empty($im['width'])) $_section['@attributes']['width'] = $im['width'];
-										if(!empty($im['height'])) $_section['@attributes']['height'] = $im['height'];
-										
-										$sectionCache['file'][$cacheIndex] = $_section;
-										
-										unset($mediaFiles[$i]);
-										break;
-									}
-								}
-								
-								// if the file was not found in the folder, delete the entry
-								if(!$foundIndex) unset($sectionCache['file'][$cacheIndex]);
-							}
+			    	//echo "\n\n-----\n\n"; var_dump($entryCache);
 
-							// loop through the rest of real files and add them to cache
-							foreach($mediaFiles as $im) {
-								$attr = array('type' => $im['type'], 'src' => $im['src']);
-								if(!empty($im['poster_frame'])) $attr['poster_frame'] = $im['poster_frame'];
-								if(!empty($im['width'])) $attr['width'] = $im['width'];
-								if(!empty($im['height'])) $attr['height'] = $im['height'];
-								$sectionCache['file'][] = array('value' => '', '@attributes' => $attr);
-							}
+			    	// first check if all items in cache are still inside the folder
+			    	foreach($sectionCache['file'] as $cacheIndex => $cacheIm) {
+			    		
+			    		// try to find the entry among the files in the folder
+			    		$foundIndex = false;
+			    		foreach($mediaFiles as $i => $im) {
+			    			
+			    			// *** compatibility with versions <= 0.5.5b
+			    			$isFromOldVersion = empty($cacheIm['@attributes']['src']);
+			    			$srcFromCache = $isFromOldVersion ? $cacheIm['value'] : $cacheIm['@attributes']['src'];
+			    			
+			    			// if image found in cache, update cache entry
+			    			if($srcFromCache == $im['src']) {
+			    				$foundIndex = true;
+			    				$_section = array('@attributes' => array());
+			    				if(!$isFromOldVersion) $_section['value'] = !empty($cacheIm['value']) ? $cacheIm['value'] : '';
+			    				if(!empty($cacheIm['@attributes'])) $_section['@attributes'] = $cacheIm['@attributes'];
+			    				$_section['@attributes']['src'] = $im['src'];
+			    				
+			    				$_section['@attributes']['type'] = $im['type'];
+			    				if(!empty($im['poster_frame'])) $_section['@attributes']['poster_frame'] = $im['poster_frame'];
+			    				if(!empty($im['width'])) $_section['@attributes']['width'] = $im['width'];
+			    				if(!empty($im['height'])) $_section['@attributes']['height'] = $im['height'];
+			    				
+			    				$sectionCache['file'][$cacheIndex] = $_section;
+			    				
+			    				unset($mediaFiles[$i]);
+			    				break;
+			    			}
+			    		}
+			    		
+			    		// if the file was not found in the folder, delete the entry
+			    		if(!$foundIndex) unset($sectionCache['file'][$cacheIndex]);
+			    	}
 
-							//echo "\n\n-----\n\n"; var_dump($entryCache);
+			    	// loop through the rest of real files and add them to cache
+			    	foreach($mediaFiles as $im) {
+			    		$attr = array('type' => $im['type'], 'src' => $im['src']);
+			    		if(!empty($im['poster_frame'])) $attr['poster_frame'] = $im['poster_frame'];
+			    		if(!empty($im['width'])) $attr['width'] = $im['width'];
+			    		if(!empty($im['height'])) $attr['height'] = $im['height'];
+			    		$sectionCache['file'][] = array('value' => '', '@attributes' => $attr);
+			    	}
 
-							// compact arrays
-							$sectionCache['file'] = array_values($sectionCache['file']);
-							
-							// if moving from an older version of XML
-							unset($sectionCache['images']);
-							unset($sectionCache['videos']);
+			    	//echo "\n\n-----\n\n"; var_dump($entryCache);
 
-							//echo "\n\n-----\n\n"; var_dump($entryCache);
-						}
+			    	// compact arrays
+			    	$sectionCache['file'] = array_values($sectionCache['file']);
+			    	
+			    	// if moving from an older version of XML
+			    	unset($sectionCache['images']);
+			    	unset($sectionCache['videos']);
 
-					} else {
-                        $mediaCacheData=array('file' => array());
-                        
-                        if (isset($section['mediaCacheData'])) {
-                            $mediaCacheData=array_merge($section['mediaCacheData'], $mediaCacheData);
-                        } 
-                        
-                        $section['mediaCacheData']=$mediaCacheData;
+			    	//echo "\n\n-----\n\n"; var_dump($entryCache);
+			    }
 
-					}
-				//}
-			//}
+			} else {
+                $mediaCacheData=array('file' => array());
+                
+                if (isset($section['mediaCacheData'])) {
+                    $mediaCacheData=array_merge($section['mediaCacheData'], $mediaCacheData);
+                } 
+                
+                $section['mediaCacheData']=$mediaCacheData;
+
+			}
 
 		}
 	}
@@ -572,6 +567,24 @@ class BertaEditor extends BertaContent {
 			return $thumbPath;
 		} elseif(BertaGallery::createThumbnail($imagePath, $thumbPath, self::$options['images']['small_thumb_width'], self::$options['images']['small_thumb_height'])) {
 			return $thumbPath;
+		}
+		
+		return false;
+	}
+	
+	public static function images_getBgImageFor($imagePath) {
+		$fileName = basename($imagePath);
+		$dirName = dirname($imagePath);
+		if($dirName) $dirName .= '/';
+	
+		$bgImagePath = $dirName . self::$options['images']['bg_image_prefix'] . $fileName;
+		
+		list($width, $height) = getimagesize($imagePath);
+		
+		if(file_exists($bgImagePath)) {
+			return $bgImagePath;
+		} elseif(BertaGallery::createThumbnail($imagePath, $bgImagePath, $width, $height)) {
+			return $bgImagePath;
 		}
 		
 		return false;

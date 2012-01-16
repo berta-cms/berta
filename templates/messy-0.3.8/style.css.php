@@ -361,15 +361,15 @@ a img { border: none; }
 
 /* section background --------------------------------------*/
 
-#xBackgroundWrapper #xBackground {
+#xBackgroundContainer #xBackground {
 	position: fixed;
 	z-index: -1000;
 	width: 100%;
 	height: 100%;
-	/* z-index: -1; */
+	z-index: -1;
 }
 
-#xBackgroundWrapper #xBackgroundNext {
+#xBackgroundContainer #xBackgroundNext {
 	position: fixed;
 	width: 40px;
 	height: 29px;
@@ -380,10 +380,12 @@ a img { border: none; }
 	top: 50%;
 	margin-top: -14px;
 	cursor: pointer;
+	visibility: visible;
 }
-	#xBackgroundWrapper #xBackgroundNext:hover { background-position: 0px -29px; }
+	#xBackgroundContainer #xBackgroundNext:hover { background-position: 0px -29px; }
+	#xBackgroundContainer #xBackgroundNext.absHidden { visibility: hidden; } 
 
-#xBackgroundWrapper #xBackgroundPrevious {
+#xBackgroundContainer #xBackgroundPrevious {
 	position: fixed;
 	width: 40px;
 	height: 29px;
@@ -394,25 +396,32 @@ a img { border: none; }
 	top: 50%;
 	margin-top: -14px;
 	cursor: pointer;
+	visibility: visible;
 }
-	#xBackgroundWrapper #xBackgroundPrevious:hover { background-position: 0px -29px; }
-
-	#xBackground .visual {
-		position: absolute;
-		top: 0; right: 0; bottom: 0; left: 0;
-		overflow: hidden;
-		z-index: 10;
-	}
-		#xBackground .visual-image {
-			position: absolute;
-			top: 0; right: 0; bottom: 0; left: 0;
+	#xBackgroundContainer #xBackgroundPrevious:hover { background-position: 0px -29px; }
+	#xBackgroundContainer #xBackgroundPrevious.absHidden { visibility: hidden; }
+/*
+		#xBackground .visual {
 			visibility: hidden;
 		}
-		#xBackground .visual-image.sel {
+		#xBackground .visual.sel {
 			visibility: visible;
 		}
-		#xBackground .bg-element {
-			position: absolute; display: block;
-		}
+*/
+			#xBackground .visual-image {
+				position: absolute;
+				top: 0; right: 0; bottom: 0; left: 0;
+				overflow: hidden;
+			}
+				#xBackground .bg-element {
+					position: absolute; display: block;
+				}
+			#xBackground .visual-caption {
+				position: absolute;
+				width: <? echo $s->get('entryLayout', 'contentWidth') ?>;
+				text-align: center;
+				top: 50%; left: 50%;
+				margin-left: -<? echo $s->get('entryLayout', 'contentWidth')/2 ?>px;
+			}
 
 <? if(!1) { ?></style><? } ?>

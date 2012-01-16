@@ -278,6 +278,12 @@ if(($entryId && $mediaFolder || $settingsProperty || $sectionName && $mediaFolde
 							// create the small thumb
 							$smallThumbPath = BertaEditor::images_getSmallThumbFor($fileFolder . $fName);
 							$smallThumbInfo = getimagesize($smallThumbPath);
+							
+							// if uploaded for background, create lighter image
+							if($sectionBackground) {
+								$bgImagePath = BertaEditor::images_getBgImageFor($fileFolder . $fName);
+								$bgImageInfo = getimagesize($bgImagePath);
+							}
 
 							if($settingsProperty) { // update setings value
 								if($settings->get($settingsProperty[0], $settingsProperty[1])) {
@@ -318,6 +324,11 @@ if(($entryId && $mediaFolder || $settingsProperty || $sectionName && $mediaFolde
 							$result['size'] = $_FILES['Filedata']['size'];
 							$result['width'] = $imInfo[0];
 							$result['height'] = $imInfo[1];
+							if($sectionBackground) {
+								$result['smallthumb_path'] = $bgImagePath;
+								$result['bg_image_width'] = $bgImageInfo[0];
+								$result['bg_image_height'] = $bgImageInfo[1];
+							}
 					
 						} else {
 							$result['status'] = 0;

@@ -172,7 +172,7 @@ if($jsonRequest) {
 				
 				$sections = BertaEditor::getSections();
 				$section = $sections[$decoded['section']];
-				
+
 				if(!empty($section['mediafolder']['value']))
 					$sectionMF = $section['mediafolder']['value'];
 				else
@@ -215,9 +215,7 @@ if($jsonRequest) {
 					    	 '</div>';
 					   	echo '<div class="xBgColorSettings">',
 					    		'<div class="caption">background color</div>',
-					    	 	'<div class="xBgColor xEditableColor xProperty-sectionBgColor xNoHTMLEntities xCSSUnits-0 xRequired-1 " title="' . $bgColor . '">',
-					    	 		'<span class="colorPreview" style="background-color: rgb(54, 54, 54); "></span>' . $bgColor . '',
-					    	 	'</div>',
+					    	 	'<div class="xBgColor xEditableColor xProperty-sectionBgColor xNoHTMLEntities xCSSUnits-0 xRequired-1 " title="' . $bgColor . '">' . $bgColor . '</div>',
 					    	 '</div>';
 					echo '</div>';
 					echo '<div class="images"><ul>';

@@ -109,6 +109,9 @@ $options['images']['small_thumb_width'] = false;	// false means "auto"
 $options['images']['small_thumb_height'] = 80;
 $options['images']['small_thumb_prefix'] = '_smallthumb_';	// MUST start with an underscore ("_")
 
+// background image prefix
+$options['images']['bg_image_prefix'] = '_bg_';
+
 // preview pic size and prefix
 $options['images']['preview_prefix'] = '_preview_';	// MUST start with an underscore ("_")
 

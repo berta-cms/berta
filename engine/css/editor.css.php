@@ -492,7 +492,17 @@ body.xEditorEnabled { }
 			.xBgColorSettings .xBgColor span {
 				float: left;
 			}
-
+			
+				.xBgColor span.colorPreview {
+					display: block;
+					float: left;
+					width: 1.2em;
+					height: 1.2em;
+					margin-right: 5px;
+					cursor: pointer;
+					border: 1px solid #000;
+				}
+				
 	/* tabs */
 	#xBgEditorPanel .xBgEditorTabs {
 		padding: 6px 6px 0;

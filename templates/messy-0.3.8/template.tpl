@@ -81,25 +81,46 @@
 				{ /if }
 			{ /if }
 			
-			{**** background images **************************************************}
-			<div id="xBackgroundWrapper">
-				<div id="xBackground" data-background-type="cycle">
-					<div class="visual">
-					{ foreach $berta.section.mediaCacheData.file as $fKey => $fVal }
-					    { if $fKey !== '@attributes' && $fKey !== 'value'  }
-					    <div class="visual-image{ if $fVal@first } sel{ /if }">
-					    	<img width="{ $fVal['@attributes'].width }" height="{ $fVal['@attributes'].height }" src="{ $berta.options.MEDIA_ROOT }{ $berta.section.mediafolder }/{ $fVal['@attributes'].src }" class="bg-element visualContent" data-alignment="center"/>
-					    </div>
-					    { elseif $fKey === '@attributes' && $fKey !== 'value' }
-					    <div class="visual-image sel">
-					    	<img width="{ $fVal.width }" height="{ $fVal.height }" src="{ $berta.options.MEDIA_ROOT }{ $berta.section.mediafolder }/{ $fVal.src }" class="bg-element visualContent" data-alignment="center"/>
-					    </div>
-					    { /if }
-					{ /foreach }
-					</div>
+			{* *** section background ************************************************* *}
+			<div id="xBackgroundContainer">
+				<div id="xBackground" style="background-color: { $berta.section.sectionBgColor }">
+					{ if $berta.section.mediaCacheData.file && $berta.section.mediaCacheData.file['@attributes'] && $berta.section.mediaCacheData.file['@attributes'].type == 'image' }
+					
+						<div class="visual-image">
+						    <img width="{ $berta.section.mediaCacheData.file['@attributes'].width }" height="{ $berta.section.mediaCacheData.file['@attributes'].height }" src="{ $berta.options.MEDIA_ROOT }{ $berta.section.mediafolder }/_bg_{ $berta.section.mediaCacheData.file['@attributes'].src }" class="bg-element visualContent" data-alignment="center"/>
+						</div>
+						<div class="visual-caption" style="color: { $berta.section.sectionBgColor }">
+						    { $berta.section.mediaCacheData.file.value }
+						</div>
+						
+					{ elseif $berta.section.mediaCacheData.file && !$berta.section.mediaCacheData.file['@attributes'] }
+					
+						<div class="visual-list">
+						{ foreach $berta.section.mediaCacheData.file as $fKey => $fVal } { if  $fVal['@attributes'].type == 'image' }
+							<input type="hidden" width="{ $fVal['@attributes'].width }" height="{ $fVal['@attributes'].height }" src="{ $berta.options.MEDIA_ROOT }{ $berta.section.mediafolder }/_bg_{ $fVal['@attributes'].src }" caption="{ $fVal['value'] }" { if $fVal@first }class="sel"{ /if } />
+						{ /if } { /foreach }
+						</div>
+						
+						{ foreach $berta.section.mediaCacheData.file as $fKey => $fVal }
+					    	{ if $fVal@first && $fVal['@attributes'].type == 'image' }
+					    		<div class="visual-image">
+					    			<img width="{ $fVal['@attributes'].width }" height="{ $fVal['@attributes'].height }" src="{ $berta.options.MEDIA_ROOT }{ $berta.section.mediafolder }/_bg_{ $fVal['@attributes'].src }" class="bg-element visualContent" data-alignment="center"/>
+					    		</div>
+					    		<div class="visual-caption" style="color: { $berta.section.sectionBgColor }">
+					    			{ $fVal['value'] }
+					    		</div>
+					    	{ /if }
+						{ /foreach }
+						
+					{ /if }
 				</div>
-				<div id="xBackgroundPrevious"></div>
-				<div id="xBackgroundNext">	</div>
+				{ if $berta.section.mediaCacheData.file['@attributes'] || !$berta.section.mediaCacheData.file  }
+					<div id="xBackgroundPrevious" class="absHidden"></div>
+					<div id="xBackgroundNext" class="absHidden"></div>
+				{ else }
+					<div id="xBackgroundPrevious"></div>
+					<div id="xBackgroundNext"></div>
+				{ /if }
 			</div>
 			
 			<div id="contentContainer">
@@ -262,9 +283,5 @@
 		
 		{ include file="../_includes/inc.counter.tpl"  }
 	{ /if }
-	
-	<script type="text/javascript">
-	{literal} var bertaBackground = new BertaBackground(); {/literal}
-	</script>
 </body>
 </html>

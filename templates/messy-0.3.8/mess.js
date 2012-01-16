@@ -69,7 +69,87 @@ var MessyMess = new Class({
 	},
 	
 	onDOMReady: function() {
+		// Init BertaBackground
+		var bgNextButton = $('xBackgroundNext'),
+			bgPreviousButton = $('xBackgroundPrevious'),
+			bgContainer = $('xBackground');
+		
+		var bgImage = bgContainer.getElement('.visual-image img');
 
+		if(bgImage) {
+			var bgImagesList = bgContainer.getElement('.visual-list');
+			var	bgCaption = bgContainer.getElement('.visual-caption');
+			
+			/*
+	bgItems.each(function(item) {
+				if(item.getNext()) {
+					bgNext = item.getNext();
+					bgPrevious = item.getPrevious();
+				}
+				else {
+					bgNext = container.getFirst();
+					bgPrevious = container.getLast();
+				}
+			});
+	*/
+			
+			bgNextButton.addEvent('click', function(event) {
+				event.stop();
+			
+				bgSelected = bgImagesList.getElement('.sel');
+			
+				if(bgSelected.getNext())
+					bgNext = bgSelected.getNext();
+				else
+					bgNext = bgImagesList.getFirst();
+				
+				myFx = new Fx.Tween(bgImage, {duration: 'short', property: 'opacity'});
+				
+				newWidth = bgNext.get('width');	newHeight = bgNext.get('height'); newSrc = bgNext.get('src'); newCaption = bgNext.get('caption');
+				
+				bgSelected.removeClass('sel');
+				bgNext.addClass('sel');
+				bgImage.set('width', newWidth); bgImage.set('height', newHeight); bgImage.set('src', newSrc); bgCaption.set('html', newCaption);
+			});
+	
+			
+			bgPreviousButton.addEvent('click', function(event) {
+				event.stop();
+			
+				bgSelected = bgImagesList.getElement('.sel');		
+				
+				if(bgSelected.getPrevious())
+					bgPrevious = bgSelected.getPrevious();
+				else
+					bgPrevious = bgImagesList.getLast();
+				
+				newWidth = bgPrevious.get('width');	newHeight = bgPrevious.get('height'); newSrc = bgPrevious.get('src'); newCaption = bgPrevious.get('caption');
+				
+				bgSelected.removeClass('sel');
+				bgPrevious.addClass('sel');
+				bgImage.set('width', newWidth);	bgImage.set('height', newHeight); bgImage.set('src', newSrc); bgCaption.set('html', newCaption);
+			});
+			
+			/*
+	var time = 4000;
+			setInterval(function(){ 
+			 	var selected = bgContainer.getElement('.sel');
+	 
+				if(selected.getNext()) {
+					nextEl = selected.getNext();
+				}
+				else {
+					nextEl = bgContainer.getFirst();
+				}
+				selected.removeClass('sel');
+				nextEl.addClass('sel');
+	 		 
+			}, time);
+	*/
+			
+			var bertaBackground = new BertaBackground();
+		}
+		
 		//scroll fix (iphone viewport workaround)
 		window.addEvent('resize',this.stickToBottom.bindWithEvent(this));
 		window.addEvent('scroll',this.stickToBottom.bindWithEvent(this));
@@ -137,17 +217,6 @@ var MessyMess = new Class({
 			}.bind(this)
 		}).post();
 	},
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	
 	
@@ -232,116 +301,70 @@ var BertaBackground = new Class({
 	},
 	
 	container: null,
-	images: null,
-	
-	// methods: {
-// 
-		// destroy: function() {
-			// this.each(function() {
-// 
-			// });
-// 
-			// return this;
-		// },
-// 
-		// /**
-		 // * Sets/retrieves options variable
-		 // *
-		 // * @param name  string  option name
-		 // * @param value mixed   (optional) value for option
-		 // */
-		// option: function(name, value) {
-			// var data = $(this).data('background');
-			// if(value === undefined) {
-				// return data.options[name];
-			// } else {
-				// data.options[name] = value;
-			// }
-		// },
-// 
-		// /*'enable': function() {
-			// return this.each(function() {
-// 
-			// })
-		// },
-		// 'disable': function() {
-			// return this.each(function() {
-// 
-			// })
-		// }*/
-	// },
+	image: null,
+	nextButton: null,
+	previousButton: null,
 	
 	initialize: function(options) {
 		this.setOptions(options);
 		this.container = $('xBackground');
-		this.images = this.container.getElements('img');
-		// if ( methods[methodOrOptions] ) {
-			// return methods[methodOrOptions].apply( this, Array.prototype.slice.call( arguments, 1 ));
-// 
-		// } else if ( typeof methodOrOptions === 'object' || ! methodOrOptions ) {
-			return this._init.apply( this, arguments );
+		this.image = this.container.getElement('img');
+		this.nextButton = $('xBackgroundNext');
+		this.previousButton = $('xBackgroundPrevious');
 
-		// } else {
-			// $.error( 'Method ' +  method + ' does not exist on jQuery.background' );
-			// return this;
-		// }
+		this.nextButton.addEvent('click', function() { return this._init() }.bind(this));
+		this.previousButton.addEvent('click', function() { return this._init() }.bind(this));	
+		return this._init();
 	},
 	
 	_init: function() {
-		this.images.each(function(item, index) {
-			var $el = item,
-				data = { options: this.options };
-				
-/*
-			for (var attrname in item.dataset) {
-				data.options[attrname] = item.dataset[attrname];
-			}
-*/
-			
-			data.width = $el.getSize().x;
-			data.height = $el.getSize().y;
+		var el = this.image,
+		    data = { options: this.options };
+		
+		data.width = parseInt(el.get('width'));
+		data.height = parseInt(el.get('height'));
 
-			// VIDEO
 /*
-			switch(data.options.type) {
-				case 'image':
-				case 'cycle':
-				case 'camera':
-
-				break;
- 
-				case 'video':
- 
-					$el.setStyle('width', 'auto')
-					   .setStyle('height', 'auto');
- 
-					//backgroundElement = $('#background .visualVideoContainer');
- 
-				break;
-			}
+		for (var attrname in item.dataset) {
+		    data.options[attrname] = item.dataset[attrname];
+		}
 */
 
-			data.resizeFunc = this._onResize;
-			
-			$el.store('background', data);
-			
-			window.addEvent('resize', function() { data.resizeFunc(item) });
-			data.resizeFunc(item);
-			//console.debug(data);
-		}.bind(this));
+		// VIDEO
+/*
+		switch(data.options.type) {
+		    case 'image':
+		    case 'cycle':
+		    case 'camera':
+
+		    break;
+ 
+		    case 'video':
+ 
+		    	el.setStyle('width', 'auto')
+		    	   .setStyle('height', 'auto');
+ 
+		    	//backgroundElement = $('#background .visualVideoContainer');
+ 
+		    break;
+		}
+*/
+
+		data.resizeFunc = this._onResize;
+		
+		window.addEvent('resize', function() {data.resizeFunc(el, data)}.bind(this));
+		data.resizeFunc(el, data);
+		
 		return this;
 	},
 	
-	_onResize: function(target) {		
+	_onResize: function(target, data) {		
 		var wnd = window,
 			w = wnd.getSize().x,
-			h = wnd.getSize().y,
-			
-			$el = target,
-			data = $el.retrieve('background');
+			h = wnd.getSize().y;
 		
 		var posX, posY;
-		
+
 		// scale
 		var scaleX = w / data.width, scaleY = h / (data.height - data.options.negMarginTop - data.options.negMarginBottom);
 		if(scaleX > scaleY) scaleY = scaleX; else scaleX = scaleY;
@@ -369,11 +392,10 @@ var BertaBackground = new Class({
 			posY = Math.round((h - (data.height * scaleY)) / 2 - data.options.negMarginTop * scaleY);
 /* 		} */
 
-		$el.setStyle('width', data.width * scaleX)
-		   .setStyle('height', data.height * scaleY)
-		   .setStyle('left', posX)
-		   .setStyle('top', posY);
-
+		target.setStyle('width', data.width * scaleX)
+		   	.setStyle('height', data.height * scaleY)
+		   	.setStyle('left', posX)
+		   	.setStyle('top', posY);
 	},
 });
 
