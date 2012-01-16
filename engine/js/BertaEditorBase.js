@@ -174,7 +174,7 @@ var BertaEditorBase = new Class({
 						this.set('text', this.get('title'));
 						editor.elementEdit_instances.push(this.inlineEdit({ onComplete: editor.elementEdit_save.bind(editor) }));
 						editor.fireEvent(BertaEditorBase.EDITABLE_START, [el, editor.elementEdit_instances[editor.elementEdit_instances.length - 1]]);
-					}
+					}	
 				}.bindWithEvent(el, this));
 				break;
 			
@@ -305,7 +305,7 @@ var BertaEditorBase = new Class({
 					if(!this.hasClass('xSaving') && !this.hasClass('xEditing')) {
 						this.addClass('xEditing');
 						this.set('old_content', el.get('html'));
-
+		
 						var tempValue;
 						if(results = this.get('html').match(/\#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/))
 							tempValue = results[0];			// set to the matched color value

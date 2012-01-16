@@ -933,6 +933,15 @@ var BertaEditor = new Class({
 				
 				this.galleryLoad(galleryContainer);
 				
+				if(this.options.templateName.substr(0,5) == 'messy') {
+					$$('.xCreateNewEntry').show();
+					$('xTopPanelContainer').show();
+					$('xBgEditorPanelTrigContainer').show();
+					$('xBackgroundNext').show();
+					$('xBackgroundPrevious').show();
+					$$('.xEntry .xCreateNewEntry').hide();
+				}
+				
 			}.bind(this));
 		}
 	},

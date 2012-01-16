@@ -214,7 +214,7 @@ if($jsonRequest) {
 					    	 	'<br class="clear" />',
 					    	 '</div>';
 					   	echo '<div class="xBgColorSettings">',
-					    		'<div class="caption">background color</div>',
+					    		'<div class="caption">background / caption color</div>',
 					    	 	'<div class="xBgColor xEditableColor xProperty-sectionBgColor xNoHTMLEntities xCSSUnits-0 xRequired-1 " title="' . $bgColor . '">' . $bgColor . '</div>',
 					    	 '</div>';
 					echo '</div>';

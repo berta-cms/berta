@@ -85,6 +85,7 @@
 			{* *** section background ************************************************* *}
 			<div id="xBackgroundContainer">
 				<div id="xBackground" style="background-color: { $berta.section.sectionBgColor }">
+					{* if only one image *}
 					{ if $berta.section.mediaCacheData.file && $berta.section.mediaCacheData.file['@attributes'] && $berta.section.mediaCacheData.file['@attributes'].type == 'image' }
 					
 						<div class="visual-image">
@@ -93,7 +94,8 @@
 						<div class="visual-caption" style="color: { $berta.section.sectionBgColor }">
 						    { $berta.section.mediaCacheData.file.value }
 						</div>
-						
+					
+					{* if two or more images *}
 					{ elseif $berta.section.mediaCacheData.file && !$berta.section.mediaCacheData.file['@attributes'] }
 					
 						<div class="visual-list">
@@ -115,6 +117,8 @@
 						
 					{ /if }
 				</div>
+				
+				{* don't show arrows if one one none images *}
 				{ if $berta.section.mediaCacheData.file['@attributes'] || !$berta.section.mediaCacheData.file  }
 					<div id="xBackgroundPrevious" class="bgHidden"></div>
 					<div id="xBackgroundNext" class="bgHidden"></div>

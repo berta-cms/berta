@@ -389,8 +389,6 @@ body.xEditorEnabled { }
 
 /* background editor ----------------------------------------------------------------------------------------------- */
 
-#xMooRainbow {left: 100px;}
-
 #xBgEditorPanelTrigContainer {
 	margin: 0;
  	padding: 0;

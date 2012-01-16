@@ -546,10 +546,17 @@ var MooRainbow = new Class({
 	},
 	rePosition: function() {
 		var coords = this.element.getCoordinates();
-		this.layout.setStyles({
-			'left': coords.left,
-			'top': coords.top + coords.height + 1
-		});
+		if($('xBgEditorPanel')) {
+			this.layout.setStyles({
+				'left': coords.left-168,
+				'top': coords.top + coords.height + 1
+			});
+		} else {
+			this.layout.setStyles({
+				'left': coords.left,
+				'top': coords.top + coords.height + 1
+			});
+		}
 	},
 	
 	snippet: function(mode, type) {
