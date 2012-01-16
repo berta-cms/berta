@@ -751,9 +751,9 @@ var BertaEditorBase = new Class({
 								if( el.hasClass('xEntryAutoPlay') && !(/^\d+$/.test(newContentText)) ) {
 									el.set('title', 0);
 									el.set('text', 0);
-								} else if( el.hasClass('xEntryLinkAddress') && !(/^(http:\/\/)/i.test(newContentText)) ) {
-									el.set('title', 'http://' + newContentText);
-									el.set('text', 'http://' + newContentText);								
+								} else if( el.hasClass('xEntryLinkAddress') && !newContentText ) {
+									el.set('title', 'http://');
+									el.set('html', 'http://');
 								} else {
 									el.set('title', elEditor.removeHTMLEntities(resp.real));
 									el.set('html', resp.update);

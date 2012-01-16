@@ -91,7 +91,7 @@ if($jsonRequest) {
 								 '</div>';
 							echo '<div class="xEntryLinkSettings' . ($galType == 'link' ? '' : ' xHidden') . ' ">',
 									'<div class="caption">link address</div>',
-									'<div class="xEntryLinkAddress xEditableRC xCommand-SET_LINK_ADDRESS" title="' . ($linkAddress ? $linkAddress : 'http://') . '">' . ($linkAddress ? $linkAddress : 'http://example.com/') . '</div>',
+									'<div class="xEntryLinkAddress xEditableRC xCommand-SET_LINK_ADDRESS" title="' . ($linkAddress ? $linkAddress : 'http://') . '">' . ($linkAddress ? $linkAddress : 'http://') . '</div>',
 								 '</div>';
 						echo '</div>';
 						
