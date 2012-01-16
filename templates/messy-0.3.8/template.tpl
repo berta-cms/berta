@@ -82,6 +82,7 @@
 				{ /if }
 			{ /if }
 			
+			
 			{* *** section background ************************************************* *}
 			<div id="xBackgroundContainer">
 				<div id="xBackground" style="background-color: { $berta.section.sectionBgColor }">
@@ -92,7 +93,7 @@
 						    <img width="{ $berta.section.mediaCacheData.file['@attributes'].width }" height="{ $berta.section.mediaCacheData.file['@attributes'].height }" src="{ $berta.options.MEDIA_ROOT }{ $berta.section.mediafolder }/_bg_{ $berta.section.mediaCacheData.file['@attributes'].src }" class="bg-element visualContent" data-alignment="center"/>
 						</div>
 						<div class="visual-caption" style="color: { $berta.section.sectionBgColor }">
-						    { $berta.section.mediaCacheData.file.value }
+						    { if !($berta.section.mediaCacheData.file.value|is_array) }{ $berta.section.mediaCacheData.file.value }{ /if }
 						</div>
 					
 					{* if two or more images *}
@@ -100,7 +101,7 @@
 					
 						<div class="visual-list">
 						{ foreach $berta.section.mediaCacheData.file as $fKey => $fVal } { if  $fVal['@attributes'].type == 'image' }
-							<input type="hidden" width="{ $fVal['@attributes'].width }" height="{ $fVal['@attributes'].height }" src="{ $berta.options.MEDIA_ROOT }{ $berta.section.mediafolder }/_bg_{ $fVal['@attributes'].src }" caption="{ $fVal['value'] }" { if $fVal@first }class="sel"{ /if } />
+							<input type="hidden" width="{ $fVal['@attributes'].width }" height="{ $fVal['@attributes'].height }" src="{ $berta.options.MEDIA_ROOT }{ $berta.section.mediafolder }/_bg_{ $fVal['@attributes'].src }" caption="{ if !($fVal['value']|is_array) }{ $fVal['value'] }{ /if }" { if $fVal@first }class="sel"{ /if } />
 						{ /if } { /foreach }
 						</div>
 						
@@ -127,6 +128,7 @@
 					<div id="xBackgroundNext"></div>
 				{ /if }
 			</div>
+			
 			
 			<div id="contentContainer">
 				{ if 1==2 }
