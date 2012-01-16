@@ -383,7 +383,7 @@ a img { border: none; }
 	visibility: visible;
 }
 	#xBackgroundContainer #xBackgroundNext:hover { background-position: 0px -29px; }
-	#xBackgroundContainer #xBackgroundNext.absHidden { visibility: hidden; } 
+	#xBackgroundContainer #xBackgroundNext.bgHidden { visibility: hidden; } 
 
 #xBackgroundContainer #xBackgroundPrevious {
 	position: fixed;
@@ -399,7 +399,7 @@ a img { border: none; }
 	visibility: visible;
 }
 	#xBackgroundContainer #xBackgroundPrevious:hover { background-position: 0px -29px; }
-	#xBackgroundContainer #xBackgroundPrevious.absHidden { visibility: hidden; }
+	#xBackgroundContainer #xBackgroundPrevious.bgHidden { visibility: hidden; }
 /*
 		#xBackground .visual {
 			visibility: hidden;

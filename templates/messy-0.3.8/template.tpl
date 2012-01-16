@@ -116,8 +116,8 @@
 					{ /if }
 				</div>
 				{ if $berta.section.mediaCacheData.file['@attributes'] || !$berta.section.mediaCacheData.file  }
-					<div id="xBackgroundPrevious" class="absHidden"></div>
-					<div id="xBackgroundNext" class="absHidden"></div>
+					<div id="xBackgroundPrevious" class="bgHidden"></div>
+					<div id="xBackgroundNext" class="bgHidden"></div>
 				{ else }
 					<div id="xBackgroundPrevious"></div>
 					<div id="xBackgroundNext"></div>
