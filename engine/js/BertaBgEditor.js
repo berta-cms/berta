@@ -594,6 +594,7 @@ var BertaBgEditor = new Class({
 			this.detach();
 			this.fireEvent("close", this, 10);
 			this.removeEvents();
+			location.reload();
 		}
 	}
 	

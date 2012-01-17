@@ -84,7 +84,6 @@ class BertaTemplate extends BertaBase {
             }
 			$tPath = self::$options['TEMPLATES_FULL_SERVER_PATH'] . $this->name;
 		}	
-
 		
 
 		if(file_exists($tPath) && file_exists($tPath . '/template.conf.php')) {

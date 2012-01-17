@@ -719,16 +719,6 @@ class BertaEditor extends BertaContent {
 			</div>
 DOC;
 		
-		if($selectedSection == 'site') {
-			$str .= <<<DOC
-				<div id="xBgEditorPanelContainer">
-				</div>
-				<div id="xBgEditorPanelTrigContainer">
-					<a href="#" id="xBgEditorPanelTrig"><span>background settings</span></a>
-				</div>
-DOC;
-		}
-		
 		return $str;
 	}
 	

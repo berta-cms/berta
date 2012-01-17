@@ -306,7 +306,7 @@ class BertaGallery extends BertaBase {
 					}
 
 					
-					$returnImages .= '<div class="box"><a href="#"><img src="' . $mFolder . $imgSrc . '" ' . ($width ? "width=\"$width\"" : '') . ' ' . ($height ? "height=\"$height\"" : '') . ' /></a></div>';
+					$returnImages .= '<div class="box"><a href="#"><img src="' . $mFolder . $imgSrc . '" /></a></div>';
 				}
 			}
 		
