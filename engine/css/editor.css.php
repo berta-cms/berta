@@ -273,7 +273,6 @@ body.xEditorEnabled { }
 	margin-bottom: 0;
 	position: fixed;
 	left: 0; top: 0;
-	/*margin-bottom: -20px;*/
 	background-color: transparent !important;
 }
 .xSettingsPageBody #xTopPanelContainer {
@@ -285,33 +284,24 @@ body.xEditorEnabled { }
 		position: relative;
 		text-align: left !important;
 		top: 0;
-		background: rgb(074, 074, 074);
-		background: rgba(074, 074, 074, 0.9);
+		background: rgb(54, 54, 54);
+		background: rgba(54, 54, 54, 0.8);
 	}
 	
 		#xNewsTickerContainer {
 			position: relative;
 			padding: 16px 8px;
-		}
-		.xNewsTickerGrey {
-			background-color: #E9E9E9;
+			border-right: 1px solid #4a4a4a;
+			border-bottom: 1px solid #4a4a4a;
+			background: rgb(255, 255, 255);
+			background: rgba(255, 255, 255, 0.8);
 		}
 		
 			#xNewsTickerContainer * {
 				color: #333;
 			}
 			#xNewsTickerContainer>* { z-index: 10; position: relative; }
-			#xNewsTickerContainer .news-ticker-background {
-				z-index: 1;
-				position: absolute;
-				left: 0; top: 0; bottom: 0; right: 0;
-				border-right: 1px solid #4a4a4a;
-				border-bottom: 1px solid #4a4a4a;
-				-moz-opacity: 0.9;
-				-webkit-opacity: 0.9;
-				-o-opacity: 0.9;
-				opacity: 0.9;
-			}
+			
 			#xNewsTickerContainer .news-ticker-content {
 				float: left;
 				color: #333;
@@ -332,7 +322,7 @@ body.xEditorEnabled { }
 			position: relative;
 			display: block;
 			margin: 0;
-			padding: 2px 6px/*15px*/;
+			padding: 2px 6px;
 			height: 15px;
 			list-style: none;
 		}

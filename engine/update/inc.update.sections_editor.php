@@ -179,6 +179,7 @@ else if($decoded['property'] == 'galleryImageCaption') {	// image / video captio
     		break;
     	}
     }
+    BertaEditor::updateImageCacheForSection($sectionsList[$sName]);
     BertaEditor::saveSections($sectionsList);
 }
 else if($decoded['action'] == 'SET_AUTOPLAY') {

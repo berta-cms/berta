@@ -111,6 +111,7 @@ $options['images']['small_thumb_prefix'] = '_smallthumb_';	// MUST start with an
 
 // background image prefix
 $options['images']['bg_image_prefix'] = '_bg_';
+$options['images']['grid_image_prefix'] = '_grid_';
 
 // preview pic size and prefix
 $options['images']['preview_prefix'] = '_preview_';	// MUST start with an underscore ("_")

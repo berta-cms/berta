@@ -288,6 +288,10 @@ class BertaTemplate extends BertaBase {
 				}
 			}
 		}
+		if(isset($_POST['bSubmitSectionViewType']) && isset($_POST['bSectionViewType']) && $_POST['bSectionViewType'] == 'grid') {
+			$vars['berta']['section']['sectionViewType'] = $_POST['bSectionViewType'];
+		}
+
 		
 	//	var_dump($vars['berta']['publishedSections']);
 		

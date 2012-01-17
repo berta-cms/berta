@@ -256,9 +256,65 @@ class BertaGallery extends BertaBase {
 		return false;
 	}
 	
+	public static function images_getGridImageFor($mFolder, $fName, $fSizes) {
+		global $berta;
+	
+		$imageTargetWidth = $berta->template->settings->get('media', 'imagesSmallWidth', false, true);
+		$imageTargetHeight = $berta->template->settings->get('media', 'imagesSmallWidth', false, true);
+		
+		if($fSizes[0] && $fSizes[1] && $imageTargetWidth && $imageTargetHeight && 
+		  ($fSizes[0] > $imageTargetWidth || $fSizes[0] > $imageTargetHeight)) {
+		    list($gridWidth, $gridHeight) = self::fitInBounds($fSizes[0], $fSizes[1], $imageTargetWidth, $imageTargetHeight);					
+		    $gridImagePath = self::getResizedSrc($mFolder, $fName, $gridWidth, $gridHeight);
+		}
+		
+		return $mFolder . $gridImagePath;
+	}
+	
+	public static function getHTMLForGridView($section) {
+		global $berta;
+	
+		$imgs = BertaGallery::getImagesArray($section);	
+		$mediaFolder = $section['mediafolder'];
+		$mFolder = self::$options['MEDIA_ROOT'] . $mediaFolder . '/';
+		$width = $height = 0;
+		
+		$imageTargetWidth = $berta->template->settings->get('media', 'imagesSmallWidth', false, true);
+		$imageTargetHeight = $berta->template->settings->get('media', 'imagesSmallWidth', false, true);
+		
+		if($imgs && count($imgs) > 0)
+			foreach ($imgs as $img) {
+				if($img['@attributes']['type'] == 'image') {
+				
+					$imgSrc = $img['@attributes']['src'];
+					
+					if(!empty($img['@attributes']['width']) && !empty($img['@attributes']['height'])) {
+						$width = (int) $img['@attributes']['width'];
+						$height = (int) $img['@attributes']['height'];
+					}
+					
+					if(!$width || !$height) {
+						$imgSize = getimagesize($mFolder . $imgSrc);
+						$width = $imgSize ? (int) $imgSize[0] : false;
+						$height = $imgSize ? (int) $imgSize[1] : false;
+					}
+					
+					if($width && $height && $imageTargetWidth && $imageTargetHeight && 
+					  ($width > $imageTargetWidth || $height > $imageTargetHeight)) {
+						list($width, $height) = self::fitInBounds($width, $height, $imageTargetWidth, $imageTargetHeight);					
+						$imgSrc = self::getResizedSrc($mFolder, $imgSrc, $width, $height);
+					}
+
+					
+					$returnImages .= '<div class="box"><a href="#"><img src="' . $mFolder . $imgSrc . '" ' . ($width ? "width=\"$width\"" : '') . ' ' . ($height ? "height=\"$height\"" : '') . ' /></a></div>';
+				}
+			}
+		
+		return $returnImages;
+	}
+
+
 }
-
-
 
 
 

@@ -279,10 +279,13 @@ if(($entryId && $mediaFolder || $settingsProperty || $sectionName && $mediaFolde
 							$smallThumbPath = BertaEditor::images_getSmallThumbFor($fileFolder . $fName);
 							$smallThumbInfo = getimagesize($smallThumbPath);
 							
-							// if uploaded for background, create lighter image
+							// if uploaded for background, create lighter image & create an image for grid
 							if($sectionBackground) {
 								$bgImagePath = BertaEditor::images_getBgImageFor($fileFolder . $fName);
 								$bgImageInfo = getimagesize($bgImagePath);
+								
+								$gridImagePath = BertaGallery::images_getGridImageFor($fileFolder, $fName, $bgImageInfo);					
+								$gridImageInfo = getimagesize($gridImagePath);
 							}
 
 							if($settingsProperty) { // update setings value
@@ -325,9 +328,10 @@ if(($entryId && $mediaFolder || $settingsProperty || $sectionName && $mediaFolde
 							$result['width'] = $imInfo[0];
 							$result['height'] = $imInfo[1];
 							if($sectionBackground) {
-								$result['smallthumb_path'] = $bgImagePath;
 								$result['bg_image_width'] = $bgImageInfo[0];
 								$result['bg_image_height'] = $bgImageInfo[1];
+								$result['grid_image_width'] = $gridImageInfo[0];
+								$result['grid_image_height'] = $gridImageInfo[1];
 							}
 					
 						} else {

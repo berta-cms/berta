@@ -710,7 +710,7 @@ class BertaEditor extends BertaContent {
 						<li><a href="logout.php">$m6</a></li>
 					</ul>
 					<div id="xNewsTickerContainer" class="$tickerClass">
-						<div class="news-ticker-background xNewsTickerGrey"></div>
+						
 						<div class="news-ticker-content">$newsTickerContent</div>
 						<a href="#" class="close">X</a>
 						<br class="clear" />

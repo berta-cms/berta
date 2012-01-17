@@ -423,5 +423,14 @@ a img { border: none; }
 				top: 50%; left: 50%;
 				margin-left: -<? echo $s->get('entryLayout', 'contentWidth')/2 ?>px;
 			}
+#gridView {
+	margin-left: <? echo $s->get('grid', 'marginLeft') ?>;
+	margin-top: <? echo $s->get('grid', 'marginTop') ?>;
+	width: <? echo $s->get('grid', 'contentWidth') ?>;
+}
+	#gridView .box {
+		float: left;
+		margin: 5px;
+	}
 
 <? if(!1) { ?></style><? } ?>

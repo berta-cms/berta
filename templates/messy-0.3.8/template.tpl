@@ -20,6 +20,7 @@
 	{ googleWebFontsAPI }	
 	{ /if }
 	<script type="text/javascript" src="{ $berta.options.TEMPLATES_ABS_ROOT }{ $berta.templateName }/mess.js"></script>
+	<script type="text/javascript" src="{ $berta.options.TEMPLATES_ABS_ROOT }{ $berta.templateName }/mooMasonry.js"></script>
 
 	{ if $berta.shop_enabled == true }
 	<script type="text/javascript" src="{ $berta.options.SITE_ABS_ROOT }_plugin_shop/js/shop.js"></script>	
@@ -28,6 +29,10 @@
 </head>
 
 <body>
+<form method="post" action="">
+	<input type="hidden" name="bSectionViewType" value="grid" />
+	<input type="submit" name="bSubmitSectionViewType" value="Grid me!" style="position: absolute; left: 500px;" />
+</form>
 	{ if ($berta.section.type == 'shopping_cart' &&  $berta.environment == 'engine') || $berta.section.type != 'shopping_cart'  }
 		
 		{if $berta.settings.background.backgroundAttachment=='fill' AND $berta.settings.background.backgroundImageEnabled=='yes' AND $berta.settings.background.backgroundImage!=''}
@@ -61,7 +66,7 @@
 			{ if $berta.shop_enabled == true }
 				
 				{ assign var="shoppingCartSection" value="" }
-				{ foreach from=$berta.publishedSections item="section" key="sName" name="sectionsMenuLoop" }
+				{ foreach $berta.publishedSections as $sName => $section }
 					{ if $section.type == 'shopping_cart' }
 							{ assign var="shoppingCartSection" value=$berta.publishedSections.$sName }
 					{ /if }
@@ -87,22 +92,24 @@
 			<div id="xBackgroundContainer">
 				<div id="xBackground" style="background-color: { $berta.section.sectionBgColor }">
 					{* if only one image *}
-					{ if $berta.section.mediaCacheData.file && $berta.section.mediaCacheData.file['@attributes'] && $berta.section.mediaCacheData.file['@attributes'].type == 'image' }
+					{ if $berta.section.mediaCacheData.file['@attributes'] && $berta.section.mediaCacheData.file['@attributes'].type == 'image' && !($berta.section.sectionViewType && $berta.section.type == 'grid') }
 					
 						<div class="visual-image">
 						    <img width="{ $berta.section.mediaCacheData.file['@attributes'].width }" height="{ $berta.section.mediaCacheData.file['@attributes'].height }" src="{ $berta.options.MEDIA_ROOT }{ $berta.section.mediafolder }/_bg_{ $berta.section.mediaCacheData.file['@attributes'].src }" class="bg-element visualContent" data-alignment="center"/>
 						</div>
 						<div class="visual-caption" style="color: { $berta.section.sectionBgColor }">
-						    { if !($berta.section.mediaCacheData.file.value|is_array) }{ $berta.section.mediaCacheData.file.value }{ /if }
+						    { $berta.section.mediaCacheData.file.value }
 						</div>
 					
 					{* if two or more images *}
-					{ elseif $berta.section.mediaCacheData.file && !$berta.section.mediaCacheData.file['@attributes'] }
+					{ elseif $berta.section.mediaCacheData.file && !$berta.section.mediaCacheData.file['@attributes'] && !($berta.section.sectionViewType && $berta.section.type == 'grid') }
 					
 						<div class="visual-list">
-						{ foreach $berta.section.mediaCacheData.file as $fKey => $fVal } { if  $fVal['@attributes'].type == 'image' }
-							<input type="hidden" width="{ $fVal['@attributes'].width }" height="{ $fVal['@attributes'].height }" src="{ $berta.options.MEDIA_ROOT }{ $berta.section.mediafolder }/_bg_{ $fVal['@attributes'].src }" caption="{ if !($fVal['value']|is_array) }{ $fVal['value'] }{ /if }" { if $fVal@first }class="sel"{ /if } />
-						{ /if } { /foreach }
+						{ foreach $berta.section.mediaCacheData.file as $fKey => $fVal }
+						{ if  $fVal['@attributes'].type == 'image' }
+							<input type="hidden" width="{ $fVal['@attributes'].width }" height="{ $fVal['@attributes'].height }" src="{ $berta.options.MEDIA_ROOT }{ $berta.section.mediafolder }/_bg_{ $fVal['@attributes'].src }" caption="{ $fVal['value'] }" { if $fVal@first }class="sel"{ /if } />
+						{ /if }
+						{ /foreach }
 						</div>
 						
 						{ foreach $berta.section.mediaCacheData.file as $fKey => $fVal }
@@ -119,8 +126,8 @@
 					{ /if }
 				</div>
 				
-				{* don't show arrows if one one none images *}
-				{ if $berta.section.mediaCacheData.file['@attributes'] || !$berta.section.mediaCacheData.file  }
+				{* don't show arrows if one or less images or is in grid view *}
+				{ if $berta.section.mediaCacheData.file['@attributes'] || !$berta.section.mediaCacheData.file || ($berta.section.type == 'grid' && $berta.section.sectionViewType == 'grid')  }
 					<div id="xBackgroundPrevious" class="bgHidden"></div>
 					<div id="xBackgroundNext" class="bgHidden"></div>
 				{ else }
@@ -131,24 +138,8 @@
 			
 			
 			<div id="contentContainer">
-				{ if 1==2 }
-				<a href="https://docs.google.com/spreadsheet/viewform?formkey=dDk5UzdGcl9ZbmJsN0dyd2VINURGZ0E6MQ" target="_blank" style="visibility: hidden;" id="feedback_url"><img src="{ $berta.options.ENGINE_ABS_ROOT }layout/feedback_button.png" /></a>
-				<script>
-				{literal}
-				window.addEvent('domready', function(){ 
-					//feedback
-					var mt = parseInt(($(window).getSize().y)/2);
-
-
-
-					$('feedback_url').setStyles({'visibility':'visible','position':'absolute','left':'0px','top':mt-69+'px'});
-					
-				});
-				{/literal}
-				</script>
-				{ /if }
-				<!-- PAGE HEADING -->
 			
+				<!-- PAGE HEADING -->
 				{ if $berta.settings.heading.image }
 				<h1 class="{ messClasses property='siteHeadingXY' }" style="{ messStyles xy=$siteHeadingXY }"><a href="{ bertaLink }"><img src="{ $berta.options.MEDIA_ABS_ROOT }{ $berta.settings.heading.image }" /></a></h1>
 				{ else }
@@ -166,7 +157,7 @@
 				<!-- MENU -->
 				{ if count($berta.publishedSections) > 0 }
 					{ assign var="currnetSectionName" value=$berta.sectionName }
-					{ foreach from=$berta.publishedSections item="section" key="sName" name="sectionsMenuLoop" }
+					{ foreach $berta.publishedSections as $sName => $section }
 						{ if $section.type != 'shopping_cart' }
 						
 						<div class="menuItem xSection-{ $sName } { messClasses property='positionXY' } { if $currnetSectionName == $section.name }menuItemSelected{ /if }" style="{ messStyles xy=$section.positionXY }">
@@ -174,7 +165,7 @@
 				
 							{ if !empty($berta.tags.$sName) && ($berta.settings.tagsMenu.alwaysOpen=='yes' || $berta.sectionName==$sName) }
 								<ul>
-									{ foreach from=$berta.tags.$sName key="tName" item="tag" name="subSectionsMenuLoop" }
+									{ foreach $berta.tags.$sName as $tName => $tag }
 										<li { if $berta.tagName == $tName and $currnetSectionName == $section.name }class="selected"{ /if }>
 											<a href="{ bertaLink section=$sName tag=$tName }" target="{ bertaTarget section=$sName tag=$tName }">{ $tag.title }</a>
 										</li>
@@ -186,19 +177,21 @@
 					{ /foreach }
 				{ /if }
 				
-
+				
+				{* If not grid view *}
+				{ if !($berta.section.sectionViewType && $berta.section.type == 'grid') }
 				<div id="pageEntries" class="{ entriesListClasses } xNoEntryOrdering">
 
 					{* now loop through all entries and print them out *}
-					{ foreach from=$entries item="entry" name="entriesLoop" }
+					{ foreach $entries as $entry }
 
 						<div class="{ entryClasses entry=$entry } { messClasses property='positionXY' } xShopMessyEntry" style="{ messStyles xy=$entry.positionXY entry=$entry } {if $entry.width} width:{$entry.width};{elseif strlen(trim($berta.settings.shop.entryWidth)) > 0  && $berta.section.type == 'shop'} width: { $berta.settings.shop.entryWidth }px{ /if }">
 
 		
 							{* the entry settings and delete and move buttons live in the entryHeader - don't leave it out! *}
-							{ assign var=isshopentry value=0 }
+							{ $isshopentry=0 }
 							{ if $berta.section.type == 'shop' and $berta.shop_enabled == true }
-								{ assign var=isshopentry value=1 }
+								{ $isshopentry=1 }
 							{ /if }
 							{ customEntryHeader entry=$entry ishopentry=$isshopentry }
 
@@ -212,7 +205,7 @@
 
 
 							{ if $berta.environment == 'engine' || !empty($entry.description) }
-							<div class="entryText xEditableMCE xProperty-description">{ $entry.description }</div>
+								<div class="entryText xEditableMCE xProperty-description">{ $entry.description }</div>
 							{ /if }
 		
 							
@@ -247,6 +240,7 @@
 
 					{ /foreach }
 				</div>
+				{ /if }
 				
 				
 				<div id="additionalText" class="{ messClasses property='additionalTextXY' }" style="{ messStyles xy=$additionalTextXY }"> 
@@ -256,7 +250,12 @@
 				</div>
 
 			</div>
-
+	
+			{ if ($berta.section.type == 'grid' && $berta.section.sectionViewType == 'grid') }
+			    <div id="gridView">
+			    	{ gridView section=$berta.section }
+			    </div>
+			{ /if }
 
 			
 			{section name=foo loop=10} 
@@ -294,5 +293,19 @@
 	{if $berta.msg}
 		<script type="text/javascript">alert('{$berta.msg}');</script>
 	{/if}
+	
+	<script type="text/javascript">
+		{literal}
+		window.addEvent('load', function() {
+		if($('gridView')) {
+			console.log($('gridView'));
+			$('gridView').masonry({
+				singleMode: true,
+    			itemSelector: '.box' 
+			});
+		}
+		});
+		{/literal}
+	</script>
 </body>
 </html>

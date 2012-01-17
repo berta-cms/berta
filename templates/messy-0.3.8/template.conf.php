@@ -25,6 +25,7 @@ $sectionTypes = array(
 		'link' => array('format' => 'text',	'default' => ''), 
 		'target' => array('format' => 'select', 'values' => array('_self' => 'Same window', '_blank' => 'New window'), 'default' => '_blank')
 	)),
+	'grid' => array('title' => 'Grid'),
 	
 );
 
@@ -141,6 +142,16 @@ $templateConf = array(
 		'textDecorationVisited' =>array('format' => 'select',		'values' => array('none', 'underline', 'overline', 'line-through'),		'default' => 'none', 		'title' => I18n::_('Visited link decoration'),       'description' => ''),
 		'textDecorationHover' => 	array('format' => 'select',		'values' => array('none', 'underline', 'overline', 'line-through'),		'default' => 'underline', 	'title' => I18n::_('Link decoration when hovered'),  'description' => ''),
 		'textDecorationActive' => array('format' => 'select',		'values' => array('none', 'underline', 'overline', 'line-through'),		'default' => 'underline', 	'title' => I18n::_('Link decoration when clicked'),  'description' => '')
+	),
+	
+	'grid' => array(
+		'_' => array('title' => I18n::_('Grid')),
+		'marginLeft' => 		array('format' => 'text', 		'default' => '200px',			'title' => I18n::_('Left margin'),
+'description' => ''),
+		'marginTop' => 			array('format' => 'text', 		'default' => '100px',			'title' => I18n::_('Top margin'),
+'description' => ''),
+		'contentWidth' => 		array('format' => 'text', 		'default' => '70%',			'title' => I18n::_('Grid container width'),
+'description' => 'IMPORTANT! This must be set as percentage.'),
 	)
 );
 
