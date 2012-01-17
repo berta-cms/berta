@@ -152,13 +152,12 @@ var MessyMess = new Class({
 		}
 		
 		$$('.gridItem').each(function(item) {
-			item.addEvent('click', function() {
-				/*
-alert('aa');
-				return false;
-*/
-			}.bind(this));
-		});
+			item.addEvent('click', function(event) {
+				_berta_grid_img_link = this.src.substr(this.src.lastIndexOf('/')+2);
+				_berta_grid_img_link = _berta_grid_img_link.substr(_berta_grid_img_link.indexOf('_')+1);
+				Cookie.write('_berta_grid_img_link', 'JackBauer', {duration: 0});
+			});
+		}.bind(this));
 		
 		//scroll fix (iphone viewport workaround)
 		window.addEvent('resize',this.stickToBottom.bindWithEvent(this));

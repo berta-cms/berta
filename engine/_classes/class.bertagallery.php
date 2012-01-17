@@ -19,7 +19,6 @@ class BertaGallery extends BertaBase {
 	}
 	
 	public static function getHTMLForEntry($entry, $isAdminMode = false) {
-	echo $_REQUEST['__rewrite'] . 'dslkfjgksdjfglkjdsfl;gkjdsl;kfgjskdjfgkljsdhfglkjhsdfgkljhsdf';
 		$imgs = BertaGallery::getImagesArray($entry);
 		$galleryType = !empty($entry['mediaCacheData']['@attributes']['type']) ? $entry['mediaCacheData']['@attributes']['type'] : 'slideshow';
 		$imageSize = !empty($entry['mediaCacheData']['@attributes']['size']) ? $entry['mediaCacheData']['@attributes']['size'] : 'large';
