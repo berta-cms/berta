@@ -302,19 +302,5 @@
 	{if $berta.msg}
 		<script type="text/javascript">alert('{$berta.msg}');</script>
 	{/if}
-	
-	<script type="text/javascript">
-		{literal}
-		window.addEvent('load', function() {
-		if($('gridView')) {
-			console.log($('gridView'));
-			$('gridView').masonry({
-				singleMode: true,
-    			itemSelector: '.box' 
-			});
-		}
-		});
-		{/literal}
-	</script>
 </body>
 </html>

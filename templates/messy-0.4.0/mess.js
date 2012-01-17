@@ -8,6 +8,7 @@ var MessyMess = new Class({
 	
 	initialize: function() {
 		window.addEvent('domready', this.onDOMReady.bind(this));
+		window.addEvent('load', this.onLoad.bind(this));
 		
 		BertaGallery.implement({
 			layout_update: function() {
@@ -150,6 +151,15 @@ var MessyMess = new Class({
 			var bertaBackground = new BertaBackground();
 		}
 		
+		$$('.gridItem').each(function(item) {
+			item.addEvent('click', function() {
+				/*
+alert('aa');
+				return false;
+*/
+			}.bind(this));
+		});
+		
 		//scroll fix (iphone viewport workaround)
 		window.addEvent('resize',this.stickToBottom.bindWithEvent(this));
 		window.addEvent('scroll',this.stickToBottom.bindWithEvent(this));
@@ -180,6 +190,16 @@ var MessyMess = new Class({
 					$$('.xEntry .xCreateNewEntry').hide();
 				}
 			});
+		}
+	},
+	
+	onLoad: function() {
+		// Massonry grid
+		if($('gridView')) {
+		    $('gridView').masonry({
+		    	singleMode: true,
+    	    	itemSelector: '.box' 
+		    });
 		}
 	},
 	

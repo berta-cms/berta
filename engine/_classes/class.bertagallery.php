@@ -19,6 +19,7 @@ class BertaGallery extends BertaBase {
 	}
 	
 	public static function getHTMLForEntry($entry, $isAdminMode = false) {
+	echo $_REQUEST['__rewrite'] . 'dslkfjgksdjfglkjdsfl;gkjdsl;kfgjskdjfgkljsdhfglkjhsdfgkljhsdf';
 		$imgs = BertaGallery::getImagesArray($entry);
 		$galleryType = !empty($entry['mediaCacheData']['@attributes']['type']) ? $entry['mediaCacheData']['@attributes']['type'] : 'slideshow';
 		$imageSize = !empty($entry['mediaCacheData']['@attributes']['size']) ? $entry['mediaCacheData']['@attributes']['size'] : 'large';
@@ -282,6 +283,14 @@ class BertaGallery extends BertaBase {
 		$imageTargetWidth = $berta->template->settings->get('media', 'imagesSmallWidth', false, true);
 		$imageTargetHeight = $berta->template->settings->get('media', 'imagesSmallWidth', false, true);
 		
+		if($berta->environment == 'engine') {
+			$linkHref = '?section=' . $section['name'];
+		} elseif($berta->environment == 'site' && isset($_REQUEST['__rewrite'])) {
+			$linkHref = $section['name'];
+		} elseif($berta->environment == 'site' && !isset($_REQUEST['__rewrite'])) {
+			$linkHref = '?section=' . $section['name'];
+		}
+		
 		if($imgs && count($imgs) > 0)
 			foreach ($imgs as $img) {
 				if($img['@attributes']['type'] == 'image') {
@@ -304,12 +313,12 @@ class BertaGallery extends BertaBase {
 						list($width, $height) = self::fitInBounds($width, $height, $imageTargetWidth, $imageTargetHeight);					
 						$imgSrc = self::getResizedSrc($mFolder, $imgSrc, $width, $height);
 					}
-
+				
 					
-					$returnImages .= '<div class="box"><a href="#"><img src="' . $mFolder . $imgSrc . '" /></a></div>';
+					$returnImages .= '<div class="box"><a href="' . $linkHref . '"><img class="gridItem" src="' . $mFolder . $imgSrc . '" /></a></div>';
 				}
 			}
-		
+
 		return $returnImages;
 	}
 
