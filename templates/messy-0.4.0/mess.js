@@ -155,7 +155,7 @@ var MessyMess = new Class({
 			item.addEvent('click', function(event) {
 				_berta_grid_img_link = this.src.substr(this.src.lastIndexOf('/')+2);
 				_berta_grid_img_link = _berta_grid_img_link.substr(_berta_grid_img_link.indexOf('_')+1);
-				Cookie.write('_berta_grid_img_link', 'JackBauer', {duration: 0});
+				Cookie.write('_berta_grid_img_link', _berta_grid_img_link, {duration: 0});
 			});
 		}.bind(this));
 		
@@ -200,6 +200,9 @@ var MessyMess = new Class({
     	    	itemSelector: '.box' 
 		    });
 		}
+		
+		if(Cookie.read('_berta_grid_img_link'))
+			Cookie.dispose('_berta_grid_img_link');
 	},
 	
 	stickToBottom: function(){

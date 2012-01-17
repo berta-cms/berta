@@ -117,10 +117,25 @@
 						<div class="visual-list">
 						{ foreach $berta.section.mediaCacheData.file as $fKey => $fVal }
 						{ if  $fVal['@attributes'].type == 'image' }
-							<input type="hidden" width="{ $fVal['@attributes'].width }" height="{ $fVal['@attributes'].height }" src="{ $berta.options.MEDIA_ROOT }{ $berta.section.mediafolder }/_bg_{ $fVal['@attributes'].src }" caption="{ $fVal['value'] }" { if $fVal@first }class="sel"{ /if } />
+							<input type="hidden" width="{ $fVal['@attributes'].width }" height="{ $fVal['@attributes'].height }" src="{ $berta.options.MEDIA_ROOT }{ $berta.section.mediafolder }/_bg_{ $fVal['@attributes'].src }" caption="{ $fVal['value'] }" {if $smarty.cookies._berta_grid_img_link && $smarty.cookies._berta_grid_img_link == $fVal['@attributes'].src }class="sel"{ elseif !$smarty.cookies._berta_grid_img_link && $fVal@first }class="sel"{ /if } />
 						{ /if }
 						{ /foreach }
 						</div>
+						
+						{ if $smarty.cookies._berta_grid_img_link }
+						
+						{ foreach $berta.section.mediaCacheData.file as $fKey => $fVal }
+					    	{ if $smarty.cookies._berta_grid_img_link == $fVal['@attributes'].src }
+					    		<div class="visual-image">
+					    			<img width="{ $fVal['@attributes'].width }" height="{ $fVal['@attributes'].height }" src="{ $berta.options.MEDIA_ROOT }{ $berta.section.mediafolder }/_bg_{ $fVal['@attributes'].src }" class="bg-element visualContent" data-alignment="center"/>
+					    		</div>
+					    		<div class="visual-caption" style="color: { $berta.section.sectionBgColor }">
+					    			{ $fVal['value'] }
+					    		</div>
+					    	{ /if }
+						{ /foreach }
+						
+						{ else }
 						
 						{ foreach $berta.section.mediaCacheData.file as $fKey => $fVal }
 					    	{ if $fVal@first && $fVal['@attributes'].type == 'image' }
@@ -132,6 +147,8 @@
 					    		</div>
 					    	{ /if }
 						{ /foreach }
+						
+						{ /if }
 						
 					{ /if }
 				</div>
