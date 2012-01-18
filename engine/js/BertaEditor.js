@@ -343,6 +343,10 @@ var BertaEditor = new Class({
 				
 				this.container = document.getElementById('contentContainer');
 				this.entriesList = $$('.xEntriesList')[0];
+				
+				// section background editing
+				$('xBgEditorPanelTrig').addEvent('click', this.onBgEditClick.bindWithEvent(this));
+				
 				if(this.entriesList) {
 				
 					this.currentSection = this.entriesList.getClassStoredValue('xSection');
@@ -362,9 +366,6 @@ var BertaEditor = new Class({
 								dropdown.removeClass('xEntryDropdowHover');						    
 						    }														
 						});												
-						
-						// section background editing
-						$('xBgEditorPanelTrig').addEvent('click', this.onBgEditClick.bindWithEvent(this));
 						
 						// entry deleting and creating
 						new Element('A', { 'class': 'xCreateNewEntry xPanel xAction-entryCreateNew', 'href': '#'}).adopt(

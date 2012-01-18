@@ -41,7 +41,7 @@
         <div id="allContainer">
         
         {* grid trigger *}
-        { if $berta.section.type == 'grid' && $berta.section.mediaCacheData.file }
+        { if $berta.section.type == 'grid' && $berta.section.mediaCacheData.file && !$berta.section.sectionViewType == 'grid' }
         <form method="post" action="">
             <input type="hidden" name="bSectionViewType" value="grid" />
             <input type="submit" id="bSubmitSectionViewType" name="bSubmitSectionViewType" value="" { if $berta.environment == 'engine' }style="top: 44px"{ /if } />
@@ -96,7 +96,7 @@
             <div id="xBgEditorPanelContainer">
             </div>
             <div id="xBgEditorPanelTrigContainer">
-                <a href="#" id="xBgEditorPanelTrig"><span>background settings</span></a>
+                <a href="#" id="xBgEditorPanelTrig" title="edit background gallery"><span>background settings</span></a>
             </div>
             { /if }
             <div id="xBackgroundContainer">
