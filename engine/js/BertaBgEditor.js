@@ -121,7 +121,7 @@ var BertaBgEditor = new Class({
 	detach: function() {
 		$clear(this.stripUpdatePeriod);
 		this.uploader.detatch();
-		this.container.getElement('.xBgAutoPlay').removeEvents();
+/* 		this.container.getElement('.xBgAutoPlay').removeEvents(); */
 		this.sortingDeactivate();
 		this.processHandler.removeObservable(this);
 		
