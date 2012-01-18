@@ -1,5 +1,5 @@
 
-var BertaGalleryEditor = new Class({
+var BertaBgEditor = new Class({
 	
 	Extends: BertaEditorBase,
 	Implements: [Options, Events, UnlinearProcessDispatcher],
@@ -20,7 +20,6 @@ var BertaGalleryEditor = new Class({
 	
 	// content context settings
 	sectionName: null,
-	entryId: null,
 	
 	// uploadiung stuff
 	uploader: null,
@@ -36,16 +35,13 @@ var BertaGalleryEditor = new Class({
 	processHandler: null,
 
 	
-	initialize: function(galleryEditorContainerElement, options) {
+	initialize: function(bgEditorContainerElement, options) {
 		this.setOptions(options);
 		this.tinyMCE_ConfigurationsInit();
-		this.allContainer = galleryEditorContainerElement;
+		this.allContainer = bgEditorContainerElement;
 		
-		var entryInfo = this.getEntryInfoForElement(this.allContainer);
-		this.sectionName = entryInfo.section;
-		this.entryId = entryInfo.entryId;
-		this.entryNum = entryInfo.entryNum;
-		//this.options.editorInstance = editorInstance;
+		var selectedSection = this.allContainer.getParent().getElement('.menuItemSelected');
+		this.sectionName = this.getSectionNameForElement(selectedSection);
 		
 		this.processHandler = new UnlinearProcessHandler(); // singleton process handler
 		this.processHandler.addObservable(this);
@@ -62,17 +58,17 @@ var BertaGalleryEditor = new Class({
 				this.fireEvent('load');
 			}.bind(this)
 		}).post({"json": JSON.encode({
-				'section': this.sectionName, 'entry': this.entryId, 'property': 'galleryEditor'
+				'section': this.sectionName, 'property': 'bgEditor'
 			})
 		});
 	},
 	
 	attach: function() {
 		
-		this.container = this.allContainer.getElement('.xEntryGalleryEditor');
+		this.container = this.allContainer.getElement('#xBgEditorPanel');
 		this.strip = this.container.getElement('.images ul');
-		this.editorContainer = this.container.getElement('.xEntryGalleryProps');
-		
+		//this.editorContainer = this.container.getElement('.xEntryGalleryProps');
+
 /* 		this.initTabs(); */
 		
 		this.stripUpdate();
@@ -89,38 +85,23 @@ var BertaGalleryEditor = new Class({
 		this.uploadQueueProcessId = this.unlinearProcess_getId('upload-queue');
 		this.sortingProcessId = this.unlinearProcess_getId('sorting-save');
 		
-		// gallery type handle
-		this.container.getElements('.xEntrySetGalType').each(function(item) {
-			this.elementEdit_init(item, this.options.xBertaEditorClassSelectRC);
-		}, this);
-		
 		// tabs handle
-		this.container.getElements('.xEntryGalleryMenu div.tab a').each(function(item) {
+		this.container.getElements('.xBgEditorTabs div.tab a').each(function(item) {
 			item.addEvent('click', this.onGalTabClick.bindWithEvent(this));
 		}, this);
 
-		// image size for gallery handle		
-		this.container.getElements('.xEntrySetImageSize').each(function(item) {
-			this.elementEdit_init(item, this.options.xBertaEditorClassSelectRC);
-		}, this);
-
-		// fullscreen handle	
-		this.container.getElements('.xEntrySetFullScreen').each(function(item) {
-			this.elementEdit_init(item, this.options.xBertaEditorClassSelectRC);
-		}, this);
-
 		// autoplay handle
-		this.container.getElements('.xEntryAutoPlay').each(function(item) {
+		this.container.getElements('.xBgAutoPlay').each(function(item) {
 			this.elementEdit_init(item, this.options.xBertaEditorClassRC);
 		}, this);
 		
-		// link address handle
-		this.container.getElements('.xEntryLinkAddress').each(function(item) {
-			this.elementEdit_init(item, this.options.xBertaEditorClassRC);
+		// bg color handle
+		this.container.getElements('.xBgColor').each(function(item) { 
+			this.elementEdit_init(item, this.options.xBertaEditorClassColor) 
 		}, this);
-
+		
 		// close link
-		this.container.getElement('a.xEntryGalCloseLink').addEvent('click', this.onCloseClick.bindWithEvent(this));
+		this.container.getElement('a.xBgEditorCloseLink').addEvent('click', this.onCloseClick.bindWithEvent(this));
 		
 		// caption fields
 		this.container.getElements('div.xEGEImageCaption').each(function(item) {
@@ -140,12 +121,12 @@ var BertaGalleryEditor = new Class({
 	detach: function() {
 		$clear(this.stripUpdatePeriod);
 		this.uploader.detatch();
-		this.container.getElements('.xEntrySetGalType a').removeEvents();
+		this.container.getElement('.xBgAutoPlay').removeEvents();
 		this.sortingDeactivate();
 		this.processHandler.removeObservable(this);
 		
 		if(this.uploader.box) this.uploader.box.empty();
-		this.allContainer.empty();
+		this.container.empty();
 	},
 	
 	
@@ -157,7 +138,7 @@ var BertaGalleryEditor = new Class({
 		var uploader = this.uploader = new BertaGalleryUploader(this.strip, this, { 
 			verbose: false,
 			flashEnabled: this.options.flashUploadEnabled,
-			url: this.container.getElement('.xEntryGalleryForm').get('action'),
+			url: this.container.getElement('.xBgEditorForm').get('action'),
 			path: this.options.engineRoot + 'js/swiff/Swiff.Uploader.swf',
 			fileClass: BertaGalleryUploader.File,
 
@@ -167,8 +148,8 @@ var BertaGalleryEditor = new Class({
 
 			// this is our browse button, *target* is overlayed with the Flash movie
 			container: this.container,
-			target: this.container.getElement('.xEntryAddImagesLink'),
-			fallback: this.container.getElement('.xEntryAddImagesFallback'),
+			target: this.container.getElement('.xBgAddImagesLink'),
+			fallback: this.container.getElement('.xBgAddImagesFallback'),
 
 			onStart: function() {
 				this.isUploading = true;
@@ -341,7 +322,7 @@ var BertaGalleryEditor = new Class({
 			var uploader = new BertaGalleryUploader(false, this, { 
 				verbose: false,
 				flashEnabled: true,
-				url: this.container.getElement('.xEntryGalleryForm').get('action') + '&poster_for=' + videoSrc,
+				url: this.container.getElement('.xBgEditorForm').get('action') + '&poster_for=' + videoSrc,
 				path: this.options.engineRoot + 'js/swiff/Swiff.Uploader.swf',
 				fileClass: Swiff.Uploader.File,
 
@@ -495,8 +476,7 @@ var BertaGalleryEditor = new Class({
 		new Request.JSON({
 			url: this.options.updateUrl,
 			data: "json=" + JSON.encode({
-				section: this.sectionName, entry: this.entryId,
-				property: 'galleryOrder', value: newOrder
+				section: this.sectionName, property: 'galleryOrder', value: newOrder
 			}),
 			onComplete: function(resp) { 
 				this.unlinearProcess_stop(this.sortingProcessId);
@@ -550,8 +530,7 @@ var BertaGalleryEditor = new Class({
 			new Request.JSON({
 				url: this.options.updateUrl,
 				data: "json=" + JSON.encode({
-					section: this.sectionName, entry: this.entryId,
-					property: 'galleryImageDelete', value: liElement.get('filename')
+					section: this.sectionName, property: 'galleryImageDelete', value: liElement.get('filename')
 				}),
 				onComplete: function(resp) { 
 					this.unlinearProcess_stop(deleteProcessId);
@@ -572,23 +551,20 @@ var BertaGalleryEditor = new Class({
 /*
 	initTabs: function() {
 		var target = this.container;
-		var settings = target.getChildren('.xEntryGallerySettings');
-		var fullscreen = target.getChildren('.xEntryGalleryFullScreen');
-		var imageSize = target.getChildren('.xEntryGalleryImageSize');
+		var addMedia = target.getChildren('.xBgMedia')
+		var settings = target.getChildren('.xBgMediaSettings');
 	},
 */
 	
 	onGalTabClick: function(event) {
 		event.stop();
 		var target = $(event.target);
-		var tabsContainer = target.getParent('.xEntryGalleryMenu');
+		var tabsContainer = target.getParent('.xBgEditorTabs');
 		
 		var media = tabsContainer.getSiblings('.images');
-		var addMedia = tabsContainer.getSiblings('.xEntryGalleryAddMedia');
-		var settings = tabsContainer.getSiblings('.xEntryGallerySettings');
+		var addMedia = tabsContainer.getSiblings('.xBgAddMedia');
+		var settings = tabsContainer.getSiblings('.xBgSettings');
 		var swiffEl = tabsContainer.getSiblings('.swiff-uploader-box');
-		var fullscreen = tabsContainer.getSiblings('.xEntryGalleryFullScreen');
-		var imageSize = tabsContainer.getSiblings('.xEntryGalleryImageSize');
 		
 		var tab = target.getClassStoredValue('xParams');
 		//console.debug(tab);
@@ -597,7 +573,7 @@ var BertaGalleryEditor = new Class({
 			tabsContainer.getElements('.tab a').removeClass('selected');
 			target.addClass('selected');
 
-			$$(settings, fullscreen, imageSize).addClass('xHidden');
+			$$(settings).addClass('xHidden');
 			$$(media, addMedia, swiffEl).removeClass('xHidden');
 		}
 		
@@ -605,24 +581,8 @@ var BertaGalleryEditor = new Class({
 			tabsContainer.getElements('.tab a').removeClass('selected');
 			target.addClass('selected');
 			
-			$$(media, swiffEl, addMedia, fullscreen, imageSize).addClass('xHidden');
+			$$(media, swiffEl, addMedia).addClass('xHidden');
 			settings.removeClass('xHidden');
-		}
-		
-		if(tab == 'fullscreen') {
-			tabsContainer.getElements('.tab a').removeClass('selected');
-			target.addClass('selected');
-			
-			$$(media, swiffEl, addMedia, settings, imageSize).addClass('xHidden');
-			fullscreen.removeClass('xHidden');
-		}
-		
-		if(tab == 'image_size') {
-			tabsContainer.getElements('.tab a').removeClass('selected');
-			target.addClass('selected');
-			
-			$$(media, swiffEl, addMedia, settings, fullscreen).addClass('xHidden');
-			imageSize.removeClass('xHidden');
 		}
 	},
 
@@ -634,6 +594,7 @@ var BertaGalleryEditor = new Class({
 			this.detach();
 			this.fireEvent("close", this, 10);
 			this.removeEvents();
+			location.reload();
 		}
 	}
 	

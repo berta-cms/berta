@@ -359,5 +359,95 @@ a img { border: none; }
 }
 
 
+/* section background --------------------------------------*/
+
+#xBackgroundContainer #xBackground {
+	position: fixed;
+	z-index: -1000;
+	width: 100%;
+	height: 100%;
+	z-index: -1;
+}
+
+#xBackgroundContainer #xBackgroundNext {
+	position: fixed;
+	width: 40px;
+	height: 29px;
+	background: url('layout/arrow_next_sprite.png');
+	background-position: 0px 0px;
+	z-index: 1000;
+	right: 0px;
+	top: 50%;
+	margin-top: -14px;
+	cursor: pointer;
+	visibility: visible;
+}
+	#xBackgroundContainer #xBackgroundNext:hover { background-position: 0px -29px; }
+	#xBackgroundContainer #xBackgroundNext.bgHidden { visibility: hidden; } 
+
+#xBackgroundContainer #xBackgroundPrevious {
+	position: fixed;
+	width: 40px;
+	height: 29px;
+	background: url('layout/arrow_prev_sprite.png');
+	background-position: 0px 0px;
+	z-index: 1000;
+	left: 0px;
+	top: 50%;
+	margin-top: -14px;
+	cursor: pointer;
+	visibility: visible;
+}
+	#xBackgroundContainer #xBackgroundPrevious:hover { background-position: 0px -29px; }
+	#xBackgroundContainer #xBackgroundPrevious.bgHidden { visibility: hidden; }
+/*
+		#xBackground .visual {
+			visibility: hidden;
+		}
+		#xBackground .visual.sel {
+			visibility: visible;
+		}
+*/
+			#xBackground .visual-image {
+				position: absolute;
+				top: 0; right: 0; bottom: 0; left: 0;
+				overflow: hidden;
+			}
+				#xBackground .bg-element {
+					position: absolute; display: block;
+				}
+			#xBackground .visual-caption {
+				position: absolute;
+				width: <? echo $s->get('entryLayout', 'contentWidth') ?>;
+				text-align: center;
+				top: 50%; left: 50%;
+				margin-left: -<? echo $s->get('entryLayout', 'contentWidth')/2 ?>px;
+			}
+#gridView {
+	left: <? echo $s->get('grid', 'marginLeft') ?>;
+	top: <? echo $s->get('grid', 'marginTop') ?>;
+	width: <? echo $s->get('grid', 'contentWidth') ?>;
+}
+	#gridView .box {
+		float: left;
+		margin: 5px;
+	}
+	
+#bSubmitSectionViewType {
+	width: 100px;
+	height: 29px;
+	cursor: pointer;
+	position: absolute;
+	right: 4px;
+	top: 4px;
+	border: none;
+	background: none;
+	background: url('layout/thumbnails.png');
+	background-position: 0px 0px;
+}
+	#bSubmitSectionViewType:hover { 
+		background-position: 0 -29px;
+	}
+	
 
 <? if(!1) { ?></style><? } ?>

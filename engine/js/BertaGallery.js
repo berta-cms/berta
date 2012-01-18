@@ -135,8 +135,8 @@ var BertaGallery = new Class({
 					if(!this.getNext()) {
 						var topImg = this.imageContainer.getFirst('.xGalleryItem');
 						var linkHref = this.container.getClassStoredValue('xGalleryLinkAddress');
-						var patt = /http:\/\//i;
-						if(!patt.test(linkHref)) linkHref = 'http://' + linkHref;
+						//var patt = /http:\/\//i;
+						//if(!patt.test(linkHref)) linkHref = 'http://' + linkHref;
 						
 						topImg.getElements('img').setStyle('cursor', 'pointer');
 						topImg.addEvent('click', function(event) {
@@ -480,8 +480,8 @@ var BertaGallery = new Class({
 				var bottomImg = this.imageContainer.getLast('.xGalleryItem');
 				
 				var linkHref = this.container.getClassStoredValue('xGalleryLinkAddress');
-				var patt = /http:\/\//i;
-				if(!patt.test(linkHref)) linkHref = 'http://' + linkHref;
+				//var patt = /http:\/\//i;
+				//if(!patt.test(linkHref)) linkHref = 'http://' + linkHref;
 				
 				bottomImg.setStyle('display', 'none');
 				bottomImg.getElements('img').setStyle('cursor', 'pointer');

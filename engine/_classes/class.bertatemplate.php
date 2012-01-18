@@ -84,7 +84,6 @@ class BertaTemplate extends BertaBase {
             }
 			$tPath = self::$options['TEMPLATES_FULL_SERVER_PATH'] . $this->name;
 		}	
-
 		
 
 		if(file_exists($tPath) && file_exists($tPath . '/template.conf.php')) {
@@ -270,7 +269,7 @@ class BertaTemplate extends BertaBase {
 				// add variables from template section-type settings
 				foreach($s as $key => $val) {
 					if($key != '@attributes' && !isset($vars['berta']['sections'][$sName][$key]))
-						$vars['berta']['sections'][$sName][$key] = isset($val['value']) ? $val['value'] : null;
+						$vars['berta']['sections'][$sName][$key] = isset($val['value']) ? $val['value'] : $val;
 				}
 				
 				// - show all sections when in engine mode
@@ -288,6 +287,10 @@ class BertaTemplate extends BertaBase {
 				}
 			}
 		}
+		if(isset($_POST['bSubmitSectionViewType']) && isset($_POST['bSectionViewType']) && $_POST['bSectionViewType'] == 'grid') {
+			$vars['berta']['section']['sectionViewType'] = $_POST['bSectionViewType'];
+		}
+
 		
 	//	var_dump($vars['berta']['publishedSections']);
 		
@@ -356,6 +359,7 @@ DOC;
 			$vars['berta']['css'] .= <<<DOC
 	<link rel="stylesheet" href="{$engineAbsRoot}css/editor.css.php" type="text/css" />
 	<link rel="stylesheet" href="{$templatesAbsRoot}{$this->name}/editor.css.php" type="text/css" />
+	<link rel="stylesheet" href="{$engineAbsRoot}_lib/moorainbow/mooRainbow.css" type="text/css" charset="utf-8" />
 DOC;
 		}else{
 			$vars['berta']['css'] .= <<<DOC
@@ -382,10 +386,12 @@ DOC;
 	<script type="text/javascript" src="{$engineAbsRoot}js/swiff/Swiff.Uploader.js" charset="utf-8"></script>
 	<script type="text/javascript" src="{$engineAbsRoot}js/BertaGalleryEditorAssets.js" charset="utf-8"></script>
 	<script type="text/javascript" src="{$engineAbsRoot}js/BertaGalleryEditor.js" charset="utf-8"></script>
+	<script type="text/javascript" src="{$engineAbsRoot}js/BertaBgEditor.js" charset="utf-8"></script>
 
 	<script type="text/javascript" src="{$engineAbsRoot}js/BertaEditor.js" charset="utf-8"></script>
 
 	<script type="text/javascript" src="{$engineAbsRoot}_lib/tiny_mce/tiny_mce_gzip.js"></script>
+	<script type="text/javascript" src="{$engineAbsRoot}_lib/moorainbow/mooRainbow.1.2b2.js" charset="utf-8"></script>
 DOC;
 		} else {
 			$vars['berta']['scripts'] .= <<<DOC

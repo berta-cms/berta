@@ -4,6 +4,23 @@
 
 class BertaEditor extends BertaContent {
 	
+	public static function getSectionMediafolder($sName) {
+		$mediaRoot = self::$options['MEDIA_ROOT'];
+		$sectionMfName = $sName . '-background';
+		
+		if(file_exists($mediaRoot . $sectionMfName) && is_dir($mediaRoot . $sectionMfName)) {
+			$MFTestNum = 1;
+			do {
+				$mFTest = $sectionMfName . $MFTestNum;
+				$MFTestNum++;
+			} while(file_exists($mediaRoot . $mFTest));
+			
+			$sectionMfName = $mFTest;
+		}
+		
+		return $sectionMfName;
+	}
+	
 	public static function saveSections($sections) {
 		$sectionsToSave = array('section' => array());
 		foreach($sections as $s) $sectionsToSave['section'][] = $s;
@@ -42,6 +59,19 @@ class BertaEditor extends BertaContent {
 			$xmlPath = realpath(self::$options['XML_ROOT'] . str_replace('%', $sectionName, self::$options['blog.%.xml']));
 			if(!$xmlPath || @unlink($xmlPath)) {
 				$oldSectionsList = BertaEditor::getSections();
+				// delete all section background media
+				if(!empty($oldSectionsList[$sectionName]['mediafolder']['value'])) {
+					$sectionMediaFolder = self::$options['MEDIA_ROOT'] . $oldSectionsList[$sectionName]['mediafolder']['value'];
+					if(file_exists($sectionMediaFolder)) {
+						$dir = opendir($sectionMediaFolder);
+						while($fItem = readdir($dir)) {
+							if($fItem != '.' && $fItem != '..') {
+								@unlink($sectionMediaFolder . '/' . $fItem);
+							}	
+						}
+						$dirsDeleted &= @rmdir($sectionMediaFolder);
+					}
+				}
 				if(isset($oldSectionsList[$sectionName])) unset($oldSectionsList[$sectionName]);
 				BertaEditor::saveSections($oldSectionsList);
 				
@@ -211,6 +241,118 @@ class BertaEditor extends BertaContent {
 				if($eId === '@attributes') continue;
 				$blog['entry'][$eId]['updated'] = array('value' => date('d.m.Y H:i:s'));
 			}
+		}
+	}
+	
+	
+	
+	public static function updateImageCacheForSection(&$section) {
+		if(!empty($section)) {
+
+			$mediaFiles = array();
+			if(!empty($section['mediafolder']['value']))
+			    $mediaFiles = BertaEditor::gatherMediaFilesIn($section['mediafolder']['value']);
+			    
+			//var_dump($mediaFiles);
+
+			if($mediaFiles) {
+
+			    $sectionCache =& $section['mediaCacheData'];
+
+			    if(!count($sectionCache) || empty($sectionCache['file'])) {
+			    	// if the media cache is empty, create a fresh array
+                    $mediaCacheData=array('file' => array());
+                    if (isset($section['mediaCacheData'])){
+                          $mediaCacheData=array_merge($section['mediaCacheData'], $mediaCacheData);
+                    }
+                    $section['mediaCacheData']=$mediaCacheData;
+
+			    	$sectionCache =& $section['mediaCacheData'];
+			    	foreach($mediaFiles as $im) {
+			    		$attr = array('type' => $im['type'], 'src' => $im['src']);
+			    		if(!empty($im['poster_frame'])) $attr['poster_frame'] = $im['poster_frame'];
+			    		if(!empty($im['width'])) $attr['width'] = $im['width'];
+			    		if(!empty($im['height'])) $attr['height'] = $im['height'];
+			    		$sectionCache['file'][] = array('value' => '', '@attributes' => $attr);
+			    	}
+			    	
+			    	// if moving from an older version of XML
+			    	unset($sectionCache['images']);
+			    	unset($sectionCache['videos']);
+
+			    	//echo "\n\n-----\n\n"; var_dump($entryCache);
+			    } else {
+			    	Array_XML::makeListIfNotList($sectionCache['file']);
+
+			    	//echo "\n\n-----\n\n"; var_dump($entryCache);
+
+			    	// first check if all items in cache are still inside the folder
+			    	foreach($sectionCache['file'] as $cacheIndex => $cacheIm) {
+			    		
+			    		// try to find the entry among the files in the folder
+			    		$foundIndex = false;
+			    		foreach($mediaFiles as $i => $im) {
+			    			
+			    			// *** compatibility with versions <= 0.5.5b
+			    			$isFromOldVersion = empty($cacheIm['@attributes']['src']);
+			    			$srcFromCache = $isFromOldVersion ? $cacheIm['value'] : $cacheIm['@attributes']['src'];
+			    			
+			    			// if image found in cache, update cache entry
+			    			if($srcFromCache == $im['src']) {
+			    				$foundIndex = true;
+			    				$_section = array('@attributes' => array());
+			    				if(!$isFromOldVersion) $_section['value'] = !empty($cacheIm['value']) ? $cacheIm['value'] : '';
+			    				if(!empty($cacheIm['@attributes'])) $_section['@attributes'] = $cacheIm['@attributes'];
+			    				$_section['@attributes']['src'] = $im['src'];
+			    				
+			    				$_section['@attributes']['type'] = $im['type'];
+			    				if(!empty($im['poster_frame'])) $_section['@attributes']['poster_frame'] = $im['poster_frame'];
+			    				if(!empty($im['width'])) $_section['@attributes']['width'] = $im['width'];
+			    				if(!empty($im['height'])) $_section['@attributes']['height'] = $im['height'];
+			    				
+			    				$sectionCache['file'][$cacheIndex] = $_section;
+			    				
+			    				unset($mediaFiles[$i]);
+			    				break;
+			    			}
+			    		}
+			    		
+			    		// if the file was not found in the folder, delete the entry
+			    		if(!$foundIndex) unset($sectionCache['file'][$cacheIndex]);
+			    	}
+
+			    	// loop through the rest of real files and add them to cache
+			    	foreach($mediaFiles as $im) {
+			    		$attr = array('type' => $im['type'], 'src' => $im['src']);
+			    		if(!empty($im['poster_frame'])) $attr['poster_frame'] = $im['poster_frame'];
+			    		if(!empty($im['width'])) $attr['width'] = $im['width'];
+			    		if(!empty($im['height'])) $attr['height'] = $im['height'];
+			    		$sectionCache['file'][] = array('value' => '', '@attributes' => $attr);
+			    	}
+
+			    	//echo "\n\n-----\n\n"; var_dump($entryCache);
+
+			    	// compact arrays
+			    	$sectionCache['file'] = array_values($sectionCache['file']);
+			    	
+			    	// if moving from an older version of XML
+			    	unset($sectionCache['images']);
+			    	unset($sectionCache['videos']);
+
+			    	//echo "\n\n-----\n\n"; var_dump($entryCache);
+			    }
+
+			} else {
+                $mediaCacheData=array('file' => array());
+                
+                if (isset($section['mediaCacheData'])) {
+                    $mediaCacheData=array_merge($section['mediaCacheData'], $mediaCacheData);
+                } 
+                
+                $section['mediaCacheData']=$mediaCacheData;
+
+			}
+
 		}
 	}
 	
@@ -430,6 +572,24 @@ class BertaEditor extends BertaContent {
 		return false;
 	}
 	
+	public static function images_getBgImageFor($imagePath) {
+		$fileName = basename($imagePath);
+		$dirName = dirname($imagePath);
+		if($dirName) $dirName .= '/';
+	
+		$bgImagePath = $dirName . self::$options['images']['bg_image_prefix'] . $fileName;
+		
+		list($width, $height) = getimagesize($imagePath);
+		
+		if(file_exists($bgImagePath)) {
+			return $bgImagePath;
+		} elseif(BertaGallery::createThumbnail($imagePath, $bgImagePath, $width, $height)) {
+			return $bgImagePath;
+		}
+		
+		return false;
+	}
+	
 	
 	/*public static function images_resampleIfNeeded($imagePath, $constraints, $widthOrig = null, $heightOrig = null) {
 		if(is_null($widthOrig) || is_null($heightOrig)) {
@@ -550,7 +710,7 @@ class BertaEditor extends BertaContent {
 						<li><a href="logout.php">$m6</a></li>
 					</ul>
 					<div id="xNewsTickerContainer" class="$tickerClass">
-						<div class="news-ticker-background xNewsTickerGrey"></div>
+						
 						<div class="news-ticker-content">$newsTickerContent</div>
 						<a href="#" class="close">X</a>
 						<br class="clear" />

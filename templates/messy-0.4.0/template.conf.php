@@ -25,6 +25,7 @@ $sectionTypes = array(
 		'link' => array('format' => 'text',	'default' => ''), 
 		'target' => array('format' => 'select', 'values' => array('_self' => 'Same window', '_blank' => 'New window'), 'default' => '_blank')
 	)),
+	'grid' => array('title' => 'Grid'),
 	
 );
 
@@ -73,7 +74,7 @@ $templateConf = array(
 		
 	'entryLayout' => array(
 		'_' => array('title' => I18n::_('Entry layout')),
-		'contentWidth' => 		array('format' => 'text',	'default' => '400px',	'css_units' => true,                                'title' => I18n::_('Entry text width'),                             'description' => ''),
+		'contentWidth' => 		array('format' => 'text',	'default' => '400px',	'css_units' => true,                                'title' => I18n::_('Entry text max width'),                             'description' => ''),
 		'defaultGalleryType' =>  array('format' => 'select',		'values' => array('slideshow', 'row'), 'default' => 'slideshow',    'title' => I18n::_('Default gallery type'),                         'description' => I18n::_('Slideshow means that an image menu plus only one image is visible at a time. Row means that all images are visible.')),
 		'galleryNavMargin' => 	 array('format' => 'text',		'default' => '0', 'css_units' => true,					                'title' => I18n::_('Space between images and image navigation'), 	'description' => I18n::_('Vertical space between images and image navigation (the digits below the image) when gallery is in "slideshow" mode')),
 		'galleryMargin' => 		 array('format' => 'text',		'default' => '0', 'css_units' => true,				                    'title' => I18n::_('Empty space below gallery'), 	                'description' => I18n::_('Distance between the gallery and the content below')),
@@ -141,6 +142,16 @@ $templateConf = array(
 		'textDecorationVisited' =>array('format' => 'select',		'values' => array('none', 'underline', 'overline', 'line-through'),		'default' => 'none', 		'title' => I18n::_('Visited link decoration'),       'description' => ''),
 		'textDecorationHover' => 	array('format' => 'select',		'values' => array('none', 'underline', 'overline', 'line-through'),		'default' => 'underline', 	'title' => I18n::_('Link decoration when hovered'),  'description' => ''),
 		'textDecorationActive' => array('format' => 'select',		'values' => array('none', 'underline', 'overline', 'line-through'),		'default' => 'underline', 	'title' => I18n::_('Link decoration when clicked'),  'description' => '')
+	),
+	
+	'grid' => array(
+		'_' => array('title' => I18n::_('Grid')),
+		'marginLeft' => 		array('format' => 'text', 		'default' => '200px',			'title' => I18n::_('Left margin'),
+'description' => ''),
+		'marginTop' => 			array('format' => 'text', 		'default' => '100px',			'title' => I18n::_('Top margin'),
+'description' => ''),
+		'contentWidth' => 		array('format' => 'text', 		'default' => '70%',			'title' => I18n::_('Grid container width'),
+'description' => 'IMPORTANT! This must be set as percentage.'),
 	)
 );
 
