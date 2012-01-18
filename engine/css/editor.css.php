@@ -273,7 +273,6 @@ body.xEditorEnabled { }
 	margin-bottom: 0;
 	position: fixed;
 	left: 0; top: 0;
-	/*margin-bottom: -20px;*/
 	background-color: transparent !important;
 }
 .xSettingsPageBody #xTopPanelContainer {
@@ -285,33 +284,24 @@ body.xEditorEnabled { }
 		position: relative;
 		text-align: left !important;
 		top: 0;
-		background: rgb(074, 074, 074);
-		background: rgba(074, 074, 074, 0.9);
+		background: rgb(54, 54, 54);
+		background: rgba(54, 54, 54, 0.8);
 	}
 	
 		#xNewsTickerContainer {
 			position: relative;
 			padding: 16px 8px;
-		}
-		.xNewsTickerGrey {
-			background-color: #E9E9E9;
+			border-right: 1px solid #4a4a4a;
+			border-bottom: 1px solid #4a4a4a;
+			background: rgb(255, 255, 255);
+			background: rgba(255, 255, 255, 0.8);
 		}
 		
 			#xNewsTickerContainer * {
 				color: #333;
 			}
 			#xNewsTickerContainer>* { z-index: 10; position: relative; }
-			#xNewsTickerContainer .news-ticker-background {
-				z-index: 1;
-				position: absolute;
-				left: 0; top: 0; bottom: 0; right: 0;
-				border-right: 1px solid #4a4a4a;
-				border-bottom: 1px solid #4a4a4a;
-				-moz-opacity: 0.9;
-				-webkit-opacity: 0.9;
-				-o-opacity: 0.9;
-				opacity: 0.9;
-			}
+			
 			#xNewsTickerContainer .news-ticker-content {
 				float: left;
 				color: #333;
@@ -332,7 +322,7 @@ body.xEditorEnabled { }
 			position: relative;
 			display: block;
 			margin: 0;
-			padding: 2px 6px/*15px*/;
+			padding: 2px 6px;
 			height: 15px;
 			list-style: none;
 		}
@@ -379,6 +369,385 @@ body.xEditorEnabled { }
 		#xTopPanelSlideOut span:hover {
 			color: #000;
 		}
+
+
+
+
+
+
+
+
+/* background editor ----------------------------------------------------------------------------------------------- */
+
+#xBgEditorPanelTrigContainer {
+	margin: 0;
+ 	padding: 0;
+	position: fixed;
+	right: 0; top: 0;
+	background-color: transparent !important;
+    display: block;
+    height: 40px;
+}
+    #xBgEditorPanelTrigContainer a {
+    	background: url('../layout/gallery_icons_sprite.gif') no-repeat;
+    	background-position: -280px 0px;
+    	width: 40px;
+    	height: 40px;
+    	display: block;
+    }
+    	#xBgEditorPanelTrigContainer a:hover {
+    		background-position: -280px -80px;
+    	}
+			
+		#xBgEditorPanelTrigContainer a span {
+			display: block;
+			height: 40px;
+		}
+			#xBgEditorPanelTrigContainer a span { display: none; }
+
+#xBgEditorPanelContainer {
+ 	margin: 0;
+ 	padding: 0;
+	clear: both;
+}
+
+#xBgEditorPanelContainer #xBgEditorPanel {
+    position: fixed;
+    display: block;
+    right: 0;
+    top: 0;
+    padding: 0;
+    margin: 0;
+    width: 430px;
+    height: 327px;
+    z-index: 55000;
+	background-color: #e9e9e9;
+	color: #333;
+}
+
+	/* containers */
+	#xBgEditorPanel .xBgSettings,
+	#xBgEditorPanel .xBgAddMedia {
+		padding: 6px;
+	}
+	
+		.xBgAddMedia .xBgAddImagesFallback {
+		    display: block;
+		}
+		    .xBgUploadFrame {
+		    	display: none;
+		    }
+		
+		.xBgAddMedia a.xBgAddImagesLink {
+		    padding-top: 6px;
+		    display: block;
+    	    width: 70px;
+    	    text-decoration: none !important;
+		}
+		
+		    .xBgAddMedia a.xBgAddImagesLink span {
+		    	color: #000;
+		    }
+		    
+		    .xBgAddMedia a.xBgAddImagesLink.hover span {
+    	        text-decoration: underline !important;
+    	    }
+    	    
+		.xBgSettings .xBgSlideshowSettings  {
+			margin: 6px 0;
+		}
+		
+		.xBgSettings .xBgColorSettings {
+			margin: 10px 0;
+		}
+			
+			.xBgSlideshowSettings .caption,
+			.xBgColorSettings .caption {
+				width: 200px;
+				float: left;
+			}
+			
+			.xBgSlideshowSettings .xBgAutoPlay {
+		    	width: 50px;
+			}
+			
+			.xBgSlideshowSettings .xBgAutoPlay,
+			.xBgSlideshowSettings .xBgAutoPlay input {
+				float: left;
+			}
+			
+			.xBgColorSettings .xBgColor,
+			.xBgColorSettings .xBgColor span {
+				float: left;
+			}
+			
+				.xBgColor span.colorPreview {
+					display: block;
+					float: left;
+					width: 1.2em;
+					height: 1.2em;
+					margin-right: 5px;
+					cursor: pointer;
+					border: 1px solid #000;
+				}
+				
+	/* tabs */
+	#xBgEditorPanel .xBgEditorTabs {
+		padding: 6px 6px 0;
+		min-height: 40px;
+		background-color: #4a4a4a;
+	}
+	
+		.xBgEditorTabs .xBgMedia,
+		.xBgEditorTabs .xBgMediaSettings {
+			float: left;
+			display: block;
+			height: 40px;
+		}
+		
+		.xBgEditorTabs .xBgMedia a,
+		.xBgEditorTabs .xBgMediaSettings a {
+			float: left;
+			display: block;
+			margin-right: 4px;
+			height: 40px;
+			width: 40px;
+			background-repeat: no-repeat;
+		}
+		
+		.xBgEditorTabs .xBgMedia a span,
+		.xBgEditorTabs .xBgMediaSettings a span {
+			display: block;
+			float: left;
+			height: 40px;
+		}
+
+		.xBgEditorTabs a.xBgEditorCloseLink {
+			float: right;
+		    display: block;
+		    text-decoration: none !important;
+		}
+		    .xBgEditorTabs a.xBgEditorCloseLink span {
+		    	color: #e9e9e9;
+		    	font-weight: bold;
+		    }
+		    
+		    .xBgEditorTabs a.xBgEditorCloseLink span:hover {
+		    	color: #000;
+		    }
+	
+		.xBgEditorTabs .xBgMedia a {
+			background: url('../layout/gallery_icons_sprite.gif') no-repeat;
+			background-position: 0px -40px;
+			
+		}
+		
+			.xBgEditorTabs .xBgMedia a:hover {
+				background-position: 0px -80px;
+			}
+		
+			.xBgEditorTabs .xBgMedia a.selected {
+				background-position: 0px 0px;
+			}
+		
+		.xBgEditorTabs .xBgMediaSettings a {
+			background: url('../layout/gallery_icons_sprite.gif') no-repeat;
+			background-position: -160px -40px;
+			
+		}
+		
+			.xBgEditorTabs .xBgMediaSettings a:hover {	
+				background-position: -160px -80px;
+			}
+		
+			.xBgEditorTabs .xBgMediaSettings a.selected {
+				background-position: -160px 0px;
+			}
+
+		.xBgEditorTabs .xBgMedia a span,
+		.xBgEditorTabs .xBgMediaSettings a span {
+			display: none;
+		}
+
+	/* images / videos */
+	#xBgEditorPanel .images {
+		clear: both;
+		padding: 8px 6px 0;
+		margin: 0;
+		overflow-x:scroll;
+		overflow-y:hidden;
+		height: <? echo BertaBase::$options['images']['small_thumb_height'] ? ((BertaBase::$options['images']['small_thumb_height'] + 160) . 'px') : 'auto' ?>;
+	}
+		#xBgEditorPanel .images ul {
+			position: relative;
+			width: auto;
+			list-style: none;
+			margin: 0;
+			padding: 0;
+		}
+		#xBgEditorPanel .images ul.processing { }
+		#xBgEditorPanel .images ul.sorting,
+		#xBgEditorPanel .images ul.sorting * { cursor: -moz-grabbing !important; }
+		
+			#xBgEditorPanel .images ul li {
+				display: block;
+				position: relative;
+				float: left;
+				margin: 0 5px 0 0;
+				/*margin: 0;*/
+				min-width: 140px;
+				height: <? echo ((int) BertaBase::$options['images']['small_thumb_height'] + 140) . 'px' ?>;
+				background: #efefef; 
+			}
+			#xBgEditorPanel .images ul li.video {
+				
+			}
+				#xBgEditorPanel .images ul li img {
+					margin: 0 auto 0;
+					display: block;
+				}
+			
+			#xBgEditorPanel .images ul li.selected { }
+				#xBgEditorPanel .images ul li.selected img {
+					opacity: 0.7;
+					-moz-opacity: 0.7;
+				}
+			
+				/* delete button - trashcan */
+				#xBgEditorPanel .images ul li .delete {
+					display: block;
+					position: absolute;
+					visibility: hidden;
+					top: 0;
+					right: 0; /*5px;*/
+					width: 15px;
+					height: 15px;
+					background: #fff url('../layout/trashbin.gif') no-repeat center center;
+					border: 1px solid #333;
+				}
+				#xBgEditorPanel .images ul li .delete:hover {
+					background-color: #9A0303;
+				}
+				#xBgEditorPanel .images ul li.hover .delete { visibility: visible; }
+				#xBgEditorPanel .images ul.processing li .delete { visibility: hidden !important; }
+			
+				/* grab handle */
+				#xBgEditorPanel .images ul li .grabHandle {
+					visibility: hidden;
+					position: absolute;
+					top: 0; left: 0;
+					width: 100%; 
+					height: <? echo BertaBase::$options['images']['small_thumb_height'] . 'px' ?>;
+					margin: 0; padding: 0;
+				}
+					#xBgEditorPanel .images ul li .grabHandle .xMAlign-inner { 
+						width: 25px; height: 25px; 
+						margin: 0 auto 0;
+						cursor: move;
+						border-radius: 5px;
+						-moz-border-radius: 5px;
+					}
+					#xBgEditorPanel .images ul li.video .grabHandle .xMAlign-inner { margin-bottom: 20px; }
+						#xBgEditorPanel .images ul li .grabHandle .xMAlign-inner span { 
+							display: block;
+							width: 100%; height: 100%;
+							background: transparent url('../layout/grab.gif') no-repeat center center; 
+						}
+					#xBgEditorPanel .images ul li .grabHandle .xMAlign-inner:hover,
+					#xBgEditorPanel .images ul li.grabbing .grabHandle .xMAlign-inner {
+						background-image: url('../layout/semi-transparent.png');
+						border: 1px solid #666;
+					}
+				#xBgEditorPanel .images ul li.hover .grabHandle { visibility: visible; }
+				#xBgEditorPanel .images ul.processing li .grabHandle { visibility: hidden; }
+				#xBgEditorPanel .images ul.processing li.grabbing .grabHandle { visibility: visible !important; }
+			
+				/* video placeholder and dimensions form */
+				#xBgEditorPanel .images li .placeholderContainer {
+					min-width: 100px;
+					height: <? echo BertaBase::$options['images']['small_thumb_height'] . 'px' ?>;
+					background-position: center center;
+					background-repeat: no-repeat;
+					background-color: #000;
+				}
+					#xBgEditorPanel .images li .placeholder {
+						min-width: 100px;
+						height: 100%;
+						background: url('../layout/movie.gif') center center repeat-x;
+					}
+				#xBgEditorPanel .images li .dimsForm {
+					position: absolute;
+					top: <? echo ((int) BertaBase::$options['images']['small_thumb_height'] - 27) . 'px' ?>;
+					/*bottom: 7px;*/
+					width: 100%;
+					padding: 2px 0;
+					background-image: url('../layout/semi-transparent-white.png');
+					text-align: center;
+				}
+					#xBgEditorPanel .images li .dimsForm .posterContainer {
+						position: relative;
+					}
+					#xBgEditorPanel .images li .dimsForm a.poster { 
+						display: block; 
+						width: 100%;
+						height: 16px;
+						margin: 0 0 2px; 
+						text-align:center; 
+						font-size: 10px;
+						color: #333; 
+					}
+					#xBgEditorPanel .images li .dimsForm a.poster:hover { color: #666; }
+					#xBgEditorPanel .images li .dimsForm span.dim { 
+						display: inline-block; 
+						min-width: 25px;
+						margin: 0 2px; 
+						font-size: 10px; 
+					}
+						#xBgEditorPanel .images li .dimsForm span.dim * { font-size: 10px; }
+						#xBgEditorPanel .images li .dimsForm span.dim input { width: 30px !important; padding: 0 !important; border: 1px solid #666; }
+				
+				#xBgEditorPanel .images li .xEGEImageCaption {
+					width: 150px;
+					height: 135px;
+					overflow-y: hidden;
+					margin-top: 3px;
+					font-size: 90%;
+				}
+					#xBgEditorPanel .images li .xEGEImageCaption * {
+						font-size: 90%;
+					}
+				
+			#xBgEditorPanel .images ul li.file {
+				width: 160px;
+				height: 80px;
+				padding: 0;
+				margin: 0 5px 0 0;
+				background-color: #666;
+				background-image: url('../layout/gallery-loader.gif');
+				background-position: 100% 0%;
+				background-repeat: no-repeat;
+				overflow: hidden;
+			}
+				#xBgEditorPanel .images ul li.file .file-remove { display: none; }
+				#xBgEditorPanel .images ul li.file .file-name { display: block; margin: 5px; }
+				#xBgEditorPanel .images ul li.file .file-info { display: none; }
+			#xBgEditorPanel .images ul li.file-complete {
+				background-position: 0% 0%;
+			}
+			#xBgEditorPanel .images ul li.file-failed {
+				background-image: none;
+				background-color: #A00;
+				color: #fff;
+			}
+				#xBgEditorPanel .images ul li.file-failed .file-info { display: block; margin: 5px; }
+			#xBgEditorPanel .images ul li.file-uploading {
+				
+			}
+			
+
+
+
+
 
 
 
@@ -626,12 +995,11 @@ a.xCreateNewEntry.xSaving {
 
 .xEntryGalleryEditor-wrap {
 	clear: both;
-	backgrou1nd-color: #fff;
 	margin: 5px 0 5px -3px;
 	min-width: 580px;
 }
 .xEntryGalleryEditor {
-	padding: 0 0 0;
+	padding: 0;
 	background-color: #e9e9e9;
 	color: #333;
 	width: 700px;
@@ -776,7 +1144,7 @@ a.xCreateNewEntry.xSaving {
 		.xEntryGallerySettings .xEntryLinkSettings {
 			margin: 16px 0;
 		}
-			
+
 			.xEntryGallerySettings .caption,
 			.xEntrySlideshowSettings .caption,
 			.xEntryGallerySettings .caption,
@@ -814,7 +1182,6 @@ a.xCreateNewEntry.xSaving {
 			
 			.xEntrySlideshowSettings .xEntryAutoPlay {
 				width: 50px;
-				text-align: center;
 			}
 			
 			.xEntryLinkSettings .xEntryLinkAddress {

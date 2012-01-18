@@ -174,7 +174,7 @@ var BertaEditorBase = new Class({
 						this.set('text', this.get('title'));
 						editor.elementEdit_instances.push(this.inlineEdit({ onComplete: editor.elementEdit_save.bind(editor) }));
 						editor.fireEvent(BertaEditorBase.EDITABLE_START, [el, editor.elementEdit_instances[editor.elementEdit_instances.length - 1]]);
-					}
+					}	
 				}.bindWithEvent(el, this));
 				break;
 			
@@ -305,7 +305,7 @@ var BertaEditorBase = new Class({
 					if(!this.hasClass('xSaving') && !this.hasClass('xEditing')) {
 						this.addClass('xEditing');
 						this.set('old_content', el.get('html'));
-
+		
 						var tempValue;
 						if(results = this.get('html').match(/\#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/))
 							tempValue = results[0];			// set to the matched color value
@@ -406,7 +406,7 @@ var BertaEditorBase = new Class({
 				var gridStep=parseInt(bertaGlobalOptions.gridStep);
 				gridStep=isNaN(gridStep)||gridStep<1?1:gridStep;
 
-				var allEntries = $('pageEntries').getElements('.mess');
+				if( $('pageEntries') ) var allEntries = $('pageEntries').getElements('.mess');
 
 				var dragAll = false;
 
@@ -628,6 +628,7 @@ var BertaEditorBase = new Class({
 			var noHTMLEntities = el.hasClass('xNoHTMLEntities');
 			var editorParams = el.getClassStoredValue('xParam');
 			var entryInfo = this.getEntryInfoForElement(el);
+			if(entryInfo.section == '') entryInfo.section = this.sectionName;	
 			
 			// check if new content is not empty and revert it to default value, if specified
 			if(!el.hasClass(this.options.xBertaEditorClassYesNo.substr(1)) && (!newContent || newContent.test('^([\s\xA0]|\&nbsp\;)+$'))) {
@@ -750,9 +751,9 @@ var BertaEditorBase = new Class({
 								if( el.hasClass('xEntryAutoPlay') && !(/^\d+$/.test(newContentText)) ) {
 									el.set('title', 0);
 									el.set('text', 0);
-								} else if( el.hasClass('xEntryLinkAddress') && !(/^(http:\/\/)/i.test(newContentText)) ) {
-									el.set('title', 'http://' + newContentText);
-									el.set('text', 'http://' + newContentText);								
+								} else if( el.hasClass('xEntryLinkAddress') && !newContentText ) {
+									el.set('title', 'http://');
+									el.set('html', 'http://');
 								} else {
 									el.set('title', elEditor.removeHTMLEntities(resp.real));
 									el.set('html', resp.update);
@@ -943,6 +944,14 @@ var BertaEditorBase = new Class({
 			retObj.section = retObj.listObj ? retObj.listObj.getClassStoredValue('xSection') : '';
 			
 		return retObj;
+	},
+	
+	getSectionNameForElement:function(el) {
+		var retString;
+		
+		retString = el.getClassStoredValue('xSection') ? el.getClassStoredValue('xSection') : null;
+		
+		return retString;
 	}
 	
 });

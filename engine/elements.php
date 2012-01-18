@@ -91,7 +91,7 @@ if($jsonRequest) {
 								 '</div>';
 							echo '<div class="xEntryLinkSettings' . ($galType == 'link' ? '' : ' xHidden') . ' ">',
 									'<div class="caption">link address</div>',
-									'<div class="xEntryLinkAddress xEditableRC xCommand-SET_LINK_ADDRESS" title="' . ($linkAddress ? $linkAddress : 'http://') . '">' . ($linkAddress ? $linkAddress : 'http://example.com/') . '</div>',
+									'<div class="xEntryLinkAddress xEditableRC xCommand-SET_LINK_ADDRESS" title="' . ($linkAddress ? $linkAddress : 'http://') . '">' . ($linkAddress ? $linkAddress : 'http://') . '</div>',
 								 '</div>';
 						echo '</div>';
 						
@@ -166,9 +166,111 @@ if($jsonRequest) {
 			break;
 		
 		
+		case 'bgEditor':
 		
-		
-		
+			if($decoded['section']) {
+				
+				$sections = BertaEditor::getSections();
+				$section = $sections[$decoded['section']];
+
+				if(!empty($section['mediafolder']['value']))
+					$sectionMF = $section['mediafolder']['value'];
+				else
+					$sectionMF = BertaEditor::getSectionMediafolder($section['name']['value']);
+				
+				$autoPlay = !empty($section['mediaCacheData']['@attributes']['autoplay']) ? $section['mediaCacheData']['@attributes']['autoplay'] : '0';
+				$bgColor = !empty($section['sectionBgColor']['value']) ? $section['sectionBgColor']['value'] : '#FFFFFF';
+
+				
+				echo '<div id="xBgEditorPanel" class="xPanel">';
+					echo '<div class="xBgEditorTabs">';
+						echo '<div class="xBgMedia tab">',
+					    		'<a href="#" class="xParams-media selected" title="add images and videos"><span>media</span></a>',	
+					    	 '</div>';
+					    echo '<div class="xBgMediaSettings tab">',
+					    		'<a href="#" class="xParams-media_settings" title="background settings"><span>settings</span></a>',	
+					    	 '</div>';
+				
+					    echo '<a class="xBgEditorCloseLink" href="#" title="close background editor"><span>X</span></a>';
+					echo '</div>';
+					
+					echo '<div class="xBgAddMedia">';
+					    echo '<div class="xBgAddImagesFallback">' .
+					    		'<iframe name="xBgUploadFrame" id="xBgUploadFrame" class="xBgUploadFrame"></iframe>' . 
+					    		'<form target="xBgUploadFrame" action="' . $ENGINE_ABS_ROOT . 'upload.php?section=' . $section['name']['value'] . '&amp;mediafolder=' . $sectionMF . '&amp;session_id=' . session_id() . '&amp;section_background=true" class="xBgEditorForm" method="post" enctype="multipart/form-data">' . 
+					    			'<input type="hidden" name="upload_key" value="" />' . 
+					    			'<input type="hidden" name="upload_type" value="fallback" />' . 
+					    			//'<input type="file" name="Filedata" class="xUploadFile" /> ' .
+					    			'<input type="submit" value="Upload" class="xUploadButton" />' .
+					    		'</form>' . 
+					    	 '</div>';
+					    echo '<a class="xBgAddImagesLink xHidden" href="#"><span>+ add media</span></a>';
+					echo '</div>';
+				
+					echo '<div class="xBgSettings xGreyBack xHidden">';
+					    echo '<div class="xBgSlideshowSettings">',
+					    		'<div class="caption">autoplay seconds</div>',
+					    	 	'<div class="xBgAutoPlay xEditableRC xCommand-SET_AUTOPLAY xCaption-0" title="' . $autoPlay . '">' . $autoPlay . '</div>',
+					    	 	'<br class="clear" />',
+					    	 '</div>';
+					   	echo '<div class="xBgColorSettings">',
+					    		'<div class="caption">background / caption color</div>',
+					    	 	'<div class="xBgColor xEditableColor xProperty-sectionBgColor xNoHTMLEntities xCSSUnits-0 xRequired-1 " title="' . $bgColor . '">' . $bgColor . '</div>',
+					    	 '</div>';
+					echo '</div>';
+					echo '<div class="images"><ul>';
+					    if(!empty($section['mediaCacheData']['file']) && count($section['mediaCacheData']['file']) > 0) {
+					    	// if the xml tag is not a list tag, convert it.
+					    	Array_XML::makeListIfNotList($section['mediaCacheData']['file']);
+					
+					    	// print out images
+					    	foreach($section['mediaCacheData']['file'] as $idx => $im) {
+					    		if((string) $idx == '@attributes') continue;
+					    		$imageThumbSrc = false;
+					    		$imageWidth = 'auto';
+					    		if($im['@attributes']['type'] == 'video') {
+					    			if(!empty($im['@attributes']['poster_frame'])) {
+	 				    				$imSrc = $options['MEDIA_ROOT'] . $section['mediafolder']['value'] . '/' . (string) $im['@attributes']['poster_frame'];
+					    				$imageThumbSrc = BertaEditor::images_getSmallThumbFor($imSrc);
+					    				$imageSize = getimagesize($imageThumbSrc);
+					    				$imageWidth = $imageSize[0] + 'px';
+					    			}
+					    			
+					    			echo '<li class="video" filename="' . (string) $im['@attributes']['src'] . '" fileinfo="' . '' . '">';
+					    			echo '<div class="placeholderContainer" style="background-image: ' . ($imageThumbSrc ? ('url(' . $imageThumbSrc . '?no_cache=' . rand() . ')') : 'none') . '; width: ' . $imageWidth . ';"><div class="placeholder"></div></div>';
+					    			echo '<span class="grabHandle xMAlign-container"><span class="xMAlign-outer"><a class="xMAlign-inner" title="click and drag to move"><span></span></a></span></span>';
+					    			echo '<a href="#" class="delete"></a>';
+					    			echo '<div class="dimsForm">' . 
+					    					'<div class="posterContainer"></div><a class="poster" href="#">' . ($imageThumbSrc ? 'change' : 'upload') . ' poster frame</a>' .
+					    					/*'<span class="dim" property="width" x_params="' . $im['value'] . '">' . (!empty($im['@attributes']['width']) ? $im['@attributes']['width'] : BertaEditor::getXEmpty('width')) . '</span> x ' .
+					    					'<span class="dim" property="height" x_params="' . $im['value'] . '">' . (!empty($im['@attributes']['height']) ? $im['@attributes']['height'] : BertaEditor::getXEmpty('height')) . '</span>' . */
+					    				 '</div>';
+					    			echo '<div class="xEGEImageCaption ' . $xEditSelectorMCESimple . ' xProperty-galleryImageCaption xCaption-caption xParam-' . $im['@attributes']['src'] . '">', !empty($im['value']) ? $im['value'] : '', '</div>';
+					    			echo '</li>';
+					    			echo "\n";
+					    			
+					    		} else {
+					    			$imSrc = $options['MEDIA_ROOT'] . $section['mediafolder']['value'] . '/' . (string) $im['@attributes']['src'];
+					    			$imageThumbSrc = BertaEditor::images_getSmallThumbFor($imSrc);
+					    			if($imageThumbSrc) {
+					    				echo '<li filename="' . (string) $im['@attributes']['src'] . '" fileinfo="' . '' . '">';
+					    				echo '<img class="img" src="' . $imageThumbSrc . '" />';
+					    				echo '<span class="grabHandle xMAlign-container"><span class="xMAlign-outer"><a class="xMAlign-inner" title="click and drag to move"><span></span></a></span></span>';
+					    				echo '<a href="#" class="delete"></a>';
+					    				echo '<div class="xEGEImageCaption ' . $xEditSelectorMCESimple . ' xProperty-galleryImageCaption xCaption-image-caption xParam-' . $im['@attributes']['src'] . '">', !empty($im['value']) ? $im['value'] : '', '</div>';
+					    				echo '</li>';
+					    			}
+					    		
+					    		}
+				
+					    	}
+					    } else {
+					    	//echo '<li class="placeholder"><img src="' . $ENGINE_ROOT . 'layout/gallery-placeholder.gif" /></li>';
+					    }
+					echo "</ul></div>\n";
+				echo '</div>';
+			}
+			break;
 	}
 	
 	

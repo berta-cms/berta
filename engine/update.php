@@ -221,11 +221,11 @@ if($jsonRequest) {
 							break;
 						case 'SET_LINK_ADDRESS':
 							if(empty($e['mediaCacheData']['@attributes'])) $e['mediaCacheData']['@attributes'] = array();
-								if(!preg_match('/^(http:\/\/)/i', $decoded['params'])) {
-									$decoded['params'] = 'http://' . $decoded['params'];
+								if(!empty($decoded['params'])) {
 									$e['mediaCacheData']['@attributes']['link_address'] = str_replace(' ', '', $decoded['params']);
 								} else {
-									$e['mediaCacheData']['@attributes']['link_address'] = str_replace(' ', '', $decoded['params']);
+									$e['mediaCacheData']['@attributes']['link_address'] = 'http://';
+									$returnUpdate = 'http://';
 								}
 							break;
 						case 'PUT_BEFORE':
