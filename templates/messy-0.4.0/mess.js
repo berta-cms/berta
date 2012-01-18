@@ -75,7 +75,7 @@ var MessyMess = new Class({
 			bgPreviousButton = $('xBackgroundPrevious'),
 			bgContainer = $('xBackground');
 		
-		var bgImage = bgContainer.getElement('.visual-image img');
+		if(bgContainer) var bgImage = bgContainer.getElement('.visual-image img');
 
 		if(bgImage) {
 			var bgImagesList = bgContainer.getElement('.visual-list');
