@@ -37,6 +37,16 @@
             </div>
         {/if}
         
+        {* check for shop *}
+        { if $berta.shop_enabled == true }
+        	{ assign var="shoppingCartSection" value="" }
+            { foreach $berta.publishedSections as $sName => $section }
+                { if $section.type == 'shopping_cart' }
+                        { assign var="shoppingCartSection" value=$berta.publishedSections.$sName }
+                { /if }
+            { /foreach }
+        { /if }
+        
         {* all templates must include allContainer *}
         <div id="allContainer">
         
@@ -44,7 +54,7 @@
         { if $berta.section.type == 'grid' && $berta.section.mediaCacheData.file && !$berta.section.sectionViewType == 'grid' }
         <form method="post" action="">
             <input type="hidden" name="bSectionViewType" value="grid" />
-            <input type="submit" id="bSubmitSectionViewType" name="bSubmitSectionViewType" value="" { if $berta.environment == 'engine' }style="top: 44px"{ /if } />
+            <input type="submit" id="bSubmitSectionViewType" name="bSubmitSectionViewType" value="" { if $berta.environment == 'engine' }style="right: 44px"{ else if $berta.environment == 'site' && $shoppingCartSection } style="top: 24px; right: 16px;" { /if } />
         </form>
         { /if }
 
@@ -68,12 +78,6 @@
             {* *** shopping ********************************************************************* *}
             { if $berta.shop_enabled == true }
                 
-                { assign var="shoppingCartSection" value="" }
-                { foreach $berta.publishedSections as $sName => $section }
-                    { if $section.type == 'shopping_cart' }
-                            { assign var="shoppingCartSection" value=$berta.publishedSections.$sName }
-                    { /if }
-                { /foreach }
                 { if $shoppingCartSection }
                 <div id="shoppingCart" { if $berta.environment == 'engine' } style="margin-top: 40px;" { /if } > {* class="hidden" *}
                 {if $berta.environment == 'engine' }

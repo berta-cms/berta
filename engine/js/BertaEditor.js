@@ -345,7 +345,7 @@ var BertaEditor = new Class({
 				this.entriesList = $$('.xEntriesList')[0];
 				
 				// section background editing
-				$('xBgEditorPanelTrig').addEvent('click', this.onBgEditClick.bindWithEvent(this));
+				if($('xBgEditorPanelTrig')) $('xBgEditorPanelTrig').addEvent('click', this.onBgEditClick.bindWithEvent(this));
 				
 				if(this.entriesList) {
 				
