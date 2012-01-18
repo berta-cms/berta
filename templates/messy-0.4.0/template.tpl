@@ -100,7 +100,7 @@
 			</div>
 			{ /if }
 			<div id="xBackgroundContainer">
-				<div id="xBackground" style="background-color: { $berta.section.sectionBgColor }">
+				<div id="xBackground" data-autoplay="{$berta.section.mediaCacheData['@attributes']['autoplay']}" style="background-color: { $berta.section.sectionBgColor }">
 					{* if only one image *}
 					{ if $berta.section.mediaCacheData.file['@attributes'] && $berta.section.mediaCacheData.file['@attributes'].type == 'image' && !($berta.section.sectionViewType && $berta.section.type == 'grid') }
 					

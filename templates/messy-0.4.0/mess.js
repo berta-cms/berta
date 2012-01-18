@@ -82,6 +82,30 @@ var MessyMess = new Class({
 			var	bgCaption = bgContainer.getElement('.visual-caption');
 			
 			/*
+if(bgContainer.dataset.autoplay && bgContainer.dataset.autoplay > 0) {
+				time = bgContainer.dataset.autoplay * 1000;
+				
+				setInterval(function() {
+					bgSelected = bgImagesList.getElement('.sel');
+			
+					if(bgSelected.getNext())
+					    bgNext = bgSelected.getNext();
+					else
+					    bgNext = bgImagesList.getFirst();
+					
+					myFx = new Fx.Tween(bgImage, {duration: 'short', property: 'opacity'});
+					
+					newWidth = bgNext.get('width');	newHeight = bgNext.get('height'); newSrc = bgNext.get('src'); newCaption = bgNext.get('caption');
+					
+					bgSelected.removeClass('sel');
+					bgNext.addClass('sel');
+					bgImage.set('width', newWidth); bgImage.set('height', newHeight); bgImage.set('src', newSrc); bgCaption.set('html', newCaption);
+
+				}, time);
+			}
+*/
+			
+			/*
 	bgItems.each(function(item) {
 				if(item.getNext()) {
 					bgNext = item.getNext();
