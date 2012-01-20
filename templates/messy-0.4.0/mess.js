@@ -80,7 +80,7 @@ var MessyMess = new Class({
 		if(bgImage) {
 			var bgImagesList = bgContainer.getElement('.visual-list');
 			var	bgCaption = bgContainer.getElement('.visual-caption');
-			
+            
 			/*
 if(bgContainer.dataset.autoplay && bgContainer.dataset.autoplay > 0) {
 				time = bgContainer.dataset.autoplay * 1000;
@@ -341,9 +341,7 @@ var BertaBackground = new Class({
 	
 	options: {
 		type: 'image',
-		alignment: 'center',
-		negMarginTop: 0,
-		negMarginBottom: 0
+		image_size: 'fit_to_screen',
 	},
 	
 	container: null,
@@ -353,28 +351,25 @@ var BertaBackground = new Class({
 	
 	initialize: function(options) {
 		this.setOptions(options);
+        
 		this.container = $('xBackground');
 		this.image = this.container.getElement('img');
 		this.nextButton = $('xBackgroundNext');
 		this.previousButton = $('xBackgroundPrevious');
-
+        
 		this.nextButton.addEvent('click', function() { return this._init() }.bind(this));
 		this.previousButton.addEvent('click', function() { return this._init() }.bind(this));	
 		return this._init();
 	},
 	
 	_init: function() {
-		var el = this.image,
-		    data = { options: this.options };
+		var el = this.image;
+		var data = { options: this.options };
 		
+        data.options.image_size = this.container.dataset['image_size'];
+
 		data.width = parseInt(el.get('width'));
 		data.height = parseInt(el.get('height'));
-
-/*
-		for (var attrname in item.dataset) {
-		    data.options[attrname] = item.dataset[attrname];
-		}
-*/
 
 		// VIDEO
 /*
@@ -400,6 +395,27 @@ var BertaBackground = new Class({
 		
 		window.addEvent('resize', function() {data.resizeFunc(el, data)}.bind(this));
 		data.resizeFunc(el, data);
+        
+        //var bgImagesList = bgContainer.getElement('.visual-list');
+        //var	bgCaption = bgContainer.getElement('.visual-caption');
+        //bgNextButton.addEvent('click', function(event) {
+        //    event.stop();
+        //
+        //    bgSelected = bgImagesList.getElement('.sel');
+        //
+        //    if(bgSelected.getNext())
+        //        bgNext = bgSelected.getNext();
+        //    else
+        //        bgNext = bgImagesList.getFirst();
+        //    
+        //    myFx = new Fx.Tween(bgImage, {duration: 'short', property: 'opacity'});
+        //    
+        //    newWidth = bgNext.get('width');	newHeight = bgNext.get('height'); newSrc = bgNext.get('src'); newCaption = bgNext.get('caption');
+        //    
+        //    bgSelected.removeClass('sel');
+        //    bgNext.addClass('sel');
+        //    bgImage.set('width', newWidth); bgImage.set('height', newHeight); bgImage.set('src', newSrc); bgCaption.set('html', newCaption);
+        //});
 		
 		return this;
 	},
@@ -412,31 +428,27 @@ var BertaBackground = new Class({
 		var posX, posY;
 
 		// scale
-		var scaleX = w / data.width, scaleY = h / (data.height - data.options.negMarginTop - data.options.negMarginBottom);
-		if(scaleX > scaleY) scaleY = scaleX; else scaleX = scaleY;
-
+		var scaleX = w / data.width, scaleY = h / data.height;
+        
+		if(data.width>=data.height)
+			if(scaleX > scaleY) scaleY = scaleX; else scaleX = scaleY;
+		else
+			if(scaleX > scaleY) scaleX = scaleY; else scaleY = scaleX;
+		
+        
+        if(data.options.image_size == 'medium') {
+            scaleX = scaleX*0.7;
+            scaleY = scaleY*0.7;
+        } else if(data.options.image_size == 'small') {
+            scaleX = scaleX*0.5;
+            scaleY = scaleY*0.5;
+        }
+		
 		// position X
-/*
-		if(data.options.alignment == 'top_left' || data.options.alignment == 'bottom_left') {
-			posX = 0;
-		} else if(data.options.alignment == 'top_right' || data.options.alignment == 'bottom_right') {
-			posX = Math.round(w - data.width * scaleX);
-		} else {
-*/
-			posX = Math.round((w - data.width * scaleX) / 2);
-/* 		} */
+		posX = Math.round((w - data.width * scaleX) / 2);
 
 		// position Y
-/*
-		if(data.options.alignment == 'top_left' || data.options.alignment == 'top_center' || data.options.alignment == 'top_right') {
-			posY = 0;
-		} else if(data.options.alignment != 'center') {
-			posY = Math.round(h - data.height * scaleY + data.options.negMarginBottom * scaleY);
-		} else {
-*/
-			//console.debug((h - (backgroundOrigHeight * scaleY)) / 2, (h - (backgroundOrigHeight * scaleY)) / 2 - backgroundNegMarginTop * scaleY);
-			posY = Math.round((h - (data.height * scaleY)) / 2 - data.options.negMarginTop * scaleY);
-/* 		} */
+		posY = Math.round((h - (data.height * scaleY)) / 2);
 
 		target.setStyle('width', data.width * scaleX)
 		   	.setStyle('height', data.height * scaleY)
