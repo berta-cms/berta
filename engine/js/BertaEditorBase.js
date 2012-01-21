@@ -748,7 +748,7 @@ var BertaEditorBase = new Class({
 								
 							case el.hasClass(this.options.xBertaEditorClassRC.substr(1)):
 								// for simple RC textfields we additionally set the real_content property
-								if( el.hasClass('xEntryAutoPlay') && !(/^\d+$/.test(newContentText)) ) {
+								if( (el.hasClass('xEntryAutoPlay') || el.hasClass('xBgAutoPlay')) && !(/^\d+$/.test(newContentText)) ) {
 									el.set('title', 0);
 									el.set('text', 0);
 								} else if( el.hasClass('xEntryLinkAddress') && !newContentText ) {

@@ -178,7 +178,8 @@ if($jsonRequest) {
 				else
 					$sectionMF = BertaEditor::getSectionMediafolder($section['name']['value']);
 				
-			//	$autoPlay = !empty($section['mediaCacheData']['@attributes']['autoplay']) ? $section['mediaCacheData']['@attributes']['autoplay'] : '0';
+				$autoPlay = !empty($section['mediaCacheData']['@attributes']['autoplay']) ? $section['mediaCacheData']['@attributes']['autoplay'] : '0';
+				$bgSize = !empty($section['mediaCacheData']['@attributes']['image_size']) ? $section['mediaCacheData']['@attributes']['image_size'] : 'large';
 				$bgColor = !empty($section['sectionBgColor']['value']) ? $section['sectionBgColor']['value'] : '#FFFFFF';
 
 				
@@ -208,13 +209,18 @@ if($jsonRequest) {
 					echo '</div>';
 				
 					echo '<div class="xBgSettings xGreyBack xHidden">';
-					  /*
-  echo '<div class="xBgSlideshowSettings">',
+						echo '<div class="xBgImgSizeSettings">',
+					    		'<div class="caption">background image size</div>',
+					    	 	'<div class="xBgImgSize xEditableSelectRC xCommand-SET_BG_IMG_SIZE" x_options="large||medium||small">' . $bgSize . '</div>',
+								'<br class="clear" />',
+					    	 '</div>';
+					
+						echo '<div class="xBgSlideshowSettings">',
 					    		'<div class="caption">autoplay seconds</div>',
 					    	 	'<div class="xBgAutoPlay xEditableRC xCommand-SET_AUTOPLAY xCaption-0" title="' . $autoPlay . '">' . $autoPlay . '</div>',
 					    	 	'<br class="clear" />',
 					    	 '</div>';
-*/
+
 					   	echo '<div class="xBgColorSettings">',
 					    		'<div class="caption">background / caption color</div>',
 					    	 	'<div class="xBgColor xEditableColor xProperty-sectionBgColor xNoHTMLEntities xCSSUnits-0 xRequired-1 " title="' . $bgColor . '">' . $bgColor . '</div>',

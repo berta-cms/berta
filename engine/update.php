@@ -104,7 +104,7 @@ if($jsonRequest) {
 		if(!empty($decoded['section'])) {	// the property is for for the blog
 
 
-			if($decoded['entry']) {	// the property belongs to an entry								
+			if(!empty($decoded['entry'])) {	// the property belongs to an entry								
 				$blog = BertaEditor::loadBlog($decoded['section']);
 				$e =& BertaEditor::getEntry($decoded['entry'], $blog);
 				

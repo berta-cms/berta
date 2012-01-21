@@ -194,6 +194,13 @@ else if($decoded['action'] == 'SET_AUTOPLAY') {
 	}
 	BertaEditor::saveSections($sectionsList);
 }
+else if($decoded['action'] == 'SET_BG_IMG_SIZE') {
+	$sectionsList = BertaEditor::getSections();
+	$sName = $decoded['section'];
+	if(empty($sectionsList[$sName]['mediaCacheData']['@attributes'])) $sectionsList[$sName]['mediaCacheData']['@attributes'] = array();
+	$sectionsList[$sName]['mediaCacheData']['@attributes']['image_size'] = $decoded['params'];
+	BertaEditor::saveSections($sectionsList);
+}
 else if($decoded['action'] == 'ORDER_SECTIONS') {	// apply the new order
 	$oldSectionsList = BertaEditor::getSections();
 	$newSectionsList = array();

@@ -104,7 +104,7 @@
             </div>
             { /if }
             <div id="xBackgroundContainer">
-                <div id="xBackground" data-autoplay="{$berta.section.mediaCacheData['@attributes']['autoplay']}" data-image_size="$berta.section.mediaCacheData['@attributes']['imageSize']" style="background-color: { $berta.section.sectionBgColor }">
+                <div id="xBackground" data-autoplay="{$berta.section.mediaCacheData['@attributes']['autoplay']}" data-image_size="{$berta.section.mediaCacheData['@attributes']['image_size']}" style="background-color: { $berta.section.sectionBgColor }">
                     {* if only one image *}
                     { if $berta.section.mediaCacheData.file['@attributes'] && $berta.section.mediaCacheData.file['@attributes'].type == 'image' && !($berta.section.sectionViewType && $berta.section.type == 'grid') }
                     

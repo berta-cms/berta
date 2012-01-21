@@ -341,7 +341,7 @@ var BertaBackground = new Class({
 	
 	options: {
 		type: 'image',
-		image_size: 'fit_to_screen',
+		image_size: 'large',
 	},
 	
 	container: null,

@@ -452,25 +452,33 @@ body.xEditorEnabled { }
 		    .xBgAddMedia a.xBgAddImagesLink.hover span {
     	        text-decoration: underline !important;
     	    }
-    	    
-		.xBgSettings .xBgSlideshowSettings  {
+    	  
+		.xBgSettings .xBgImgSizeSettings {
 			margin: 6px 0;
 		}
 		
-		.xBgSettings .xBgColorSettings {
+		.xBgSettings .xBgColorSettings,
+		.xBgSettings .xBgSlideshowSettings {
 			margin: 10px 0;
 		}
-			
+			.xBgImgSizeSettings .caption,
 			.xBgSlideshowSettings .caption,
 			.xBgColorSettings .caption {
 				width: 200px;
 				float: left;
 			}
 			
+			
 			.xBgSlideshowSettings .xBgAutoPlay {
 		    	width: 50px;
 			}
 			
+			.xBgImgSizeSettings .xBgImgSize {
+				width: 100px;
+			}
+			
+			.xBgImgSizeSettings .xBgImgSize,
+			.xBgImgSizeSettings .xBgImgSize select,
 			.xBgSlideshowSettings .xBgAutoPlay,
 			.xBgSlideshowSettings .xBgAutoPlay input {
 				float: left;

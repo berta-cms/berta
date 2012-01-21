@@ -266,9 +266,11 @@ class BertaGallery extends BertaBase {
           ($fSizes[0] > $imageTargetWidth || $fSizes[0] > $imageTargetHeight)) {
             list($gridWidth, $gridHeight) = self::fitInBounds($fSizes[0], $fSizes[1], $imageTargetWidth, $imageTargetHeight);                   
             $gridImagePath = self::getResizedSrc($mFolder, $fName, $gridWidth, $gridHeight);
+            
+            return $mFolder . $gridImagePath;
         }
         
-        return $mFolder . $gridImagePath;
+        return '';
     }
     
     public static function getHTMLForGridView($section) {
