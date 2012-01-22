@@ -71,111 +71,11 @@ var MessyMess = new Class({
 	
 	onDOMReady: function() {
 		// Init BertaBackground
-		var bgNextButton = $('xBackgroundNext'),
-			bgPreviousButton = $('xBackgroundPrevious'),
-			bgContainer = $('xBackground');
+		var bgContainer = $('xBackground');
 		
 		if(bgContainer) var bgImage = bgContainer.getElement('.visual-image img');
 
 		if(bgImage) {
-			//var bgImagesList = bgContainer.getElement('.visual-list');
-			//var	bgCaption = bgContainer.getElement('.visual-caption');
-            
-			/*
-if(bgContainer.dataset.autoplay && bgContainer.dataset.autoplay > 0) {
-				time = bgContainer.dataset.autoplay * 1000;
-				
-				setInterval(function() {
-					bgSelected = bgImagesList.getElement('.sel');
-			
-					if(bgSelected.getNext())
-					    bgNext = bgSelected.getNext();
-					else
-					    bgNext = bgImagesList.getFirst();
-					
-					myFx = new Fx.Tween(bgImage, {duration: 'short', property: 'opacity'});
-					
-					newWidth = bgNext.get('width');	newHeight = bgNext.get('height'); newSrc = bgNext.get('src'); newCaption = bgNext.get('caption');
-					
-					bgSelected.removeClass('sel');
-					bgNext.addClass('sel');
-					bgImage.set('width', newWidth); bgImage.set('height', newHeight); bgImage.set('src', newSrc); bgCaption.set('html', newCaption);
-
-				}, time);
-			}
-*/
-			
-			/*
-	bgItems.each(function(item) {
-				if(item.getNext()) {
-					bgNext = item.getNext();
-					bgPrevious = item.getPrevious();
-				}
-				else {
-					bgNext = container.getFirst();
-					bgPrevious = container.getLast();
-				}
-			});
-	*/
-			
-		/*
-	bgNextButton.addEvent('click', function(event) {
-				event.stop();
-			
-				bgSelected = bgImagesList.getElement('.sel');
-			
-				if(bgSelected.getNext())
-					bgNext = bgSelected.getNext();
-				else
-					bgNext = bgImagesList.getFirst();
-				
-				myFx = new Fx.Tween(bgImage, {duration: 'short', property: 'opacity'});
-				
-				newWidth = bgNext.get('width');	newHeight = bgNext.get('height'); newSrc = bgNext.get('src'); newCaption = bgNext.get('caption');
-				
-				bgSelected.removeClass('sel');
-				bgNext.addClass('sel');
-				bgImage.set('width', newWidth); bgImage.set('height', newHeight); bgImage.set('src', newSrc); bgCaption.set('html', newCaption);
-			});
-*/
-	
-			
-/*
-			bgPreviousButton.addEvent('click', function(event) {
-				event.stop();
-			
-				bgSelected = bgImagesList.getElement('.sel');		
-				
-				if(bgSelected.getPrevious())
-					bgPrevious = bgSelected.getPrevious();
-				else
-					bgPrevious = bgImagesList.getLast();
-				
-				newWidth = bgPrevious.get('width');	newHeight = bgPrevious.get('height'); newSrc = bgPrevious.get('src'); newCaption = bgPrevious.get('caption');
-				
-				bgSelected.removeClass('sel');
-				bgPrevious.addClass('sel');
-				bgImage.set('width', newWidth);	bgImage.set('height', newHeight); bgImage.set('src', newSrc); bgCaption.set('html', newCaption);
-			});
-*/
-			
-			/*
-	var time = 4000;
-			setInterval(function(){ 
-			 	var selected = bgContainer.getElement('.sel');
-	 
-				if(selected.getNext()) {
-					nextEl = selected.getNext();
-				}
-				else {
-					nextEl = bgContainer.getFirst();
-				}
-				selected.removeClass('sel');
-				nextEl.addClass('sel');
-	 		 
-			}, time);
-	*/
-			
 			var bertaBackground = new BertaBackground();
 		}
 		
@@ -340,21 +240,25 @@ if(bgContainer.dataset.autoplay && bgContainer.dataset.autoplay > 0) {
 
 
 var BertaBackground = new Class({
-	
 	Implements: Options,
 	
 	options: {
 		type: 'image',
 		image_size: 'large',
+        autoplay: 0,
 	},
 	
+    container: null,
 	imagesList: null,
 	caption: null,
-	container: null,
 	image: null,
+    
 	nextButton: null,
 	previousButton: null,
-	
+    
+    selected: null,
+    autoplayInterval: null,
+    
 	initialize: function(options) {
 		this.setOptions(options);
 		
@@ -366,62 +270,116 @@ var BertaBackground = new Class({
 		this.caption = this.container.getElement('.visual-caption');
 		this.image = this.container.getElement('.visual-image img');
         
-        this._init();
+        var data = { options: this.options };
+            data.options.image_size = this.container.dataset['image_size'];
+            data.options.autoplay = this.container.dataset['autoplay'];
         
+        var imgFx = new Fx.Tween(this.image, {duration: 'short', property: 'opacity'});
+        
+        this._init(data);
+        
+        // Next image button click    
         this.nextButton.addEvent('click', function(event) {
             event.stop();
-
-            selected = this.imagesList.getElement('.sel');
-
-			if(selected.getNext())
-                nextImage = selected.getNext();
+            
+            this.selected = this.imagesList.getElement('.sel');
+            
+            if(data.options.autoplay > 0) {
+                clearInterval(this.autoplayInterval);
+                this._autoplay(data, imgFx);
+            }
+            
+			if(this.selected.getNext())
+                nextImage = this.selected.getNext();
             else
                 nextImage = this.imagesList.getFirst();
             
-            myFx = new Fx.Tween(this.image, {duration: 'short', property: 'opacity'});
-           
-            myFx.start(0).chain(function() {
-            
-            	this._newImageData(nextImage);
-            	this._init();
-            	
-            	myFx.start(0);
-            
-            }.bind(this)).chain(function() {
-            	myFx.start(1);
-            }.bind(this));
+            imgFx.start(1,0).chain(
+                function() { this._newImageData(nextImage); this._init(data); imgFx.start(0,0); }.bind(this),
+                function() { imgFx.start(0,1); }.bind(this)
+            );
             
         }.bind(this));
+        
+        // Previous image button click
+        this.previousButton.addEvent('click', function(event) {
+            event.stop();
+            
+            this.selected = this.imagesList.getElement('.sel');
+           
+            if(data.options.autoplay > 0) {
+                clearInterval(this.autoplayInterval);
+                this._autoplay(data, imgFx);
+            }
+            
+			if(this.selected.getPrevious())
+                nextImage = this.selected.getPrevious();
+            else
+                nextImage = this.imagesList.getLast();
+            
+            imgFx.start(1,0).chain(
+                function() { this._newImageData(nextImage); this._init(data); imgFx.start(0,0); }.bind(this),
+                function() { imgFx.start(0,1); }.bind(this)
+            );            
+        }.bind(this));
+        
+        // Autoplay
+        if(data.options.autoplay > 0) {
+            this._autoplay(data, imgFx);
+        }
 	},
 
-
+    _autoplay: function(data, imgFx) {
+        time = data.options.autoplay * 1000;
+        this.autoplayInterval = setInterval(function() {
+            this.selected = this.imagesList.getElement('.sel');
+        
+            if(this.selected.getNext())
+                nextImage = this.selected.getNext();
+            else
+                nextImage = this.imagesList.getFirst();
+            
+            imgFx.start(1,0).chain(
+                function() { this._newImageData(nextImage); this._init(data); imgFx.start(0,0); }.bind(this),
+                function() { imgFx.start(0,1); }.bind(this)
+            );
+        }.bind(this), time);
+    },
+    
 	_newImageData: function(nextImage) {
 		newWidth = nextImage.get('width'); newHeight = nextImage.get('height'); newSrc = nextImage.get('src');
         newCaption = nextImage.get('caption');
             	
-        selected.removeClass('sel');
+        this.selected.removeClass('sel');
         nextImage.addClass('sel');
         
         this.image.set('width', newWidth); this.image.set('height', newHeight); this.image.set('src', newSrc);
         this.caption.set('html', newCaption);
 	},
 
-	_init: function() {
-		var el = this.image;
-		var data = { options: this.options };
-		
-        data.options.image_size = this.container.dataset['image_size'];
+	_init: function(data) {
+		var el = this.image, scaleMultiplier;
 
 		data.width = parseInt(el.get('width'));
 		data.height = parseInt(el.get('height'));
-		
-		window.addEvent('resize', function() {this._onResize(el, data)}.bind(this));
-		this._onResize(el, data);
+        
+        if(!data.options.image_size || data.options.image_size == 'large') {
+            scaleMultiplier = 1;
+            scaleMultiplier = 1;
+        } else if(data.options.image_size == 'medium') {
+            scaleMultiplier = 0.7;
+            scaleMultiplier = 0.7;
+        } else if(data.options.image_size == 'small') {
+            scaleMultiplier = 0.5;
+            scaleMultiplier = 0.5;
+        }
 
-		return this;
+        window.removeEvent('resize');
+		window.addEvent('resize', function() { this._onResize(el, data, scaleMultiplier) }.bind(this));
+		this._onResize(el, data, scaleMultiplier);
 	},
 	
-	_onResize: function(target, data) {
+	_onResize: function(el, data, scaleMultiplier) {
 		var wnd = window,
 			w = wnd.getSize().x,
 			h = wnd.getSize().y;
@@ -436,14 +394,9 @@ var BertaBackground = new Class({
 		else
 			if(scaleX > scaleY) scaleX = scaleY; else scaleY = scaleX;
 		
-        
-        if(data.options.image_size == 'medium') {
-            scaleX = scaleX*0.7;
-            scaleY = scaleY*0.7;
-        } else if(data.options.image_size == 'small') {
-            scaleX = scaleX*0.5;
-            scaleY = scaleY*0.5;
-        }
+        // scale based on background image size
+        scaleX = scaleX*scaleMultiplier;
+        scaleY = scaleY*scaleMultiplier;
 		
 		// position X
 		posX = Math.round((w - data.width * scaleX) / 2);
@@ -451,7 +404,7 @@ var BertaBackground = new Class({
 		// position Y
 		posY = Math.round((h - (data.height * scaleY)) / 2);
 
-		target.setStyle('width', data.width * scaleX)
+		el.setStyle('width', data.width * scaleX)
 		   	.setStyle('height', data.height * scaleY)
 		   	.setStyle('left', posX)
 		   	.setStyle('top', posY);
