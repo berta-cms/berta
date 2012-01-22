@@ -78,8 +78,8 @@ var MessyMess = new Class({
 		if(bgContainer) var bgImage = bgContainer.getElement('.visual-image img');
 
 		if(bgImage) {
-			var bgImagesList = bgContainer.getElement('.visual-list');
-			var	bgCaption = bgContainer.getElement('.visual-caption');
+			//var bgImagesList = bgContainer.getElement('.visual-list');
+			//var	bgCaption = bgContainer.getElement('.visual-caption');
             
 			/*
 if(bgContainer.dataset.autoplay && bgContainer.dataset.autoplay > 0) {
@@ -118,7 +118,8 @@ if(bgContainer.dataset.autoplay && bgContainer.dataset.autoplay > 0) {
 			});
 	*/
 			
-			bgNextButton.addEvent('click', function(event) {
+		/*
+	bgNextButton.addEvent('click', function(event) {
 				event.stop();
 			
 				bgSelected = bgImagesList.getElement('.sel');
@@ -136,8 +137,10 @@ if(bgContainer.dataset.autoplay && bgContainer.dataset.autoplay > 0) {
 				bgNext.addClass('sel');
 				bgImage.set('width', newWidth); bgImage.set('height', newHeight); bgImage.set('src', newSrc); bgCaption.set('html', newCaption);
 			});
+*/
 	
 			
+/*
 			bgPreviousButton.addEvent('click', function(event) {
 				event.stop();
 			
@@ -154,6 +157,7 @@ if(bgContainer.dataset.autoplay && bgContainer.dataset.autoplay > 0) {
 				bgPrevious.addClass('sel');
 				bgImage.set('width', newWidth);	bgImage.set('height', newHeight); bgImage.set('src', newSrc); bgCaption.set('html', newCaption);
 			});
+*/
 			
 			/*
 	var time = 4000;
@@ -344,6 +348,8 @@ var BertaBackground = new Class({
 		image_size: 'large',
 	},
 	
+	imagesList: null,
+	caption: null,
 	container: null,
 	image: null,
 	nextButton: null,
@@ -351,17 +357,55 @@ var BertaBackground = new Class({
 	
 	initialize: function(options) {
 		this.setOptions(options);
-        
-		this.container = $('xBackground');
-		this.image = this.container.getElement('img');
-		this.nextButton = $('xBackgroundNext');
+		
+        this.nextButton = $('xBackgroundNext');
 		this.previousButton = $('xBackgroundPrevious');
+		this.container = $('xBackground');
+		
+		this.imagesList = this.container.getElement('.visual-list');
+		this.caption = this.container.getElement('.visual-caption');
+		this.image = this.container.getElement('.visual-image img');
         
-		this.nextButton.addEvent('click', function() { return this._init() }.bind(this));
-		this.previousButton.addEvent('click', function() { return this._init() }.bind(this));	
-		return this._init();
+        this._init();
+        
+        this.nextButton.addEvent('click', function(event) {
+            event.stop();
+
+            selected = this.imagesList.getElement('.sel');
+
+			if(selected.getNext())
+                nextImage = selected.getNext();
+            else
+                nextImage = this.imagesList.getFirst();
+            
+            myFx = new Fx.Tween(this.image, {duration: 'short', property: 'opacity'});
+           
+            myFx.start(0).chain(function() {
+            
+            	this._newImageData(nextImage);
+            	this._init();
+            	
+            	myFx.start(0);
+            
+            }.bind(this)).chain(function() {
+            	myFx.start(1);
+            }.bind(this));
+            
+        }.bind(this));
 	},
-	
+
+
+	_newImageData: function(nextImage) {
+		newWidth = nextImage.get('width'); newHeight = nextImage.get('height'); newSrc = nextImage.get('src');
+        newCaption = nextImage.get('caption');
+            	
+        selected.removeClass('sel');
+        nextImage.addClass('sel');
+        
+        this.image.set('width', newWidth); this.image.set('height', newHeight); this.image.set('src', newSrc);
+        this.caption.set('html', newCaption);
+	},
+
 	_init: function() {
 		var el = this.image;
 		var data = { options: this.options };
@@ -370,57 +414,14 @@ var BertaBackground = new Class({
 
 		data.width = parseInt(el.get('width'));
 		data.height = parseInt(el.get('height'));
-
-		// VIDEO
-/*
-		switch(data.options.type) {
-		    case 'image':
-		    case 'cycle':
-		    case 'camera':
-
-		    break;
- 
-		    case 'video':
- 
-		    	el.setStyle('width', 'auto')
-		    	   .setStyle('height', 'auto');
- 
-		    	//backgroundElement = $('#background .visualVideoContainer');
- 
-		    break;
-		}
-*/
-
-		data.resizeFunc = this._onResize;
 		
-		window.addEvent('resize', function() {data.resizeFunc(el, data)}.bind(this));
-		data.resizeFunc(el, data);
-        
-        //var bgImagesList = bgContainer.getElement('.visual-list');
-        //var	bgCaption = bgContainer.getElement('.visual-caption');
-        //bgNextButton.addEvent('click', function(event) {
-        //    event.stop();
-        //
-        //    bgSelected = bgImagesList.getElement('.sel');
-        //
-        //    if(bgSelected.getNext())
-        //        bgNext = bgSelected.getNext();
-        //    else
-        //        bgNext = bgImagesList.getFirst();
-        //    
-        //    myFx = new Fx.Tween(bgImage, {duration: 'short', property: 'opacity'});
-        //    
-        //    newWidth = bgNext.get('width');	newHeight = bgNext.get('height'); newSrc = bgNext.get('src'); newCaption = bgNext.get('caption');
-        //    
-        //    bgSelected.removeClass('sel');
-        //    bgNext.addClass('sel');
-        //    bgImage.set('width', newWidth); bgImage.set('height', newHeight); bgImage.set('src', newSrc); bgCaption.set('html', newCaption);
-        //});
-		
+		window.addEvent('resize', function() {this._onResize(el, data)}.bind(this));
+		this._onResize(el, data);
+
 		return this;
 	},
 	
-	_onResize: function(target, data) {		
+	_onResize: function(target, data) {
 		var wnd = window,
 			w = wnd.getSize().x,
 			h = wnd.getSize().y;
@@ -459,3 +460,23 @@ var BertaBackground = new Class({
 
 
 var messyMess = new MessyMess();
+
+		// VIDEO for _init();
+/*
+		switch(data.options.type) {
+		    case 'image':
+		    case 'cycle':
+		    case 'camera':
+
+		    break;
+ 
+		    case 'video':
+ 
+		    	el.setStyle('width', 'auto')
+		    	   .setStyle('height', 'auto');
+ 
+		    	//backgroundElement = $('#background .visualVideoContainer');
+ 
+		    break;
+		}
+*/
