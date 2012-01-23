@@ -158,11 +158,11 @@
                 
                 {* don't show arrows if one or less images or is in grid view *}
                 { if $berta.section.mediaCacheData.file['@attributes'] || !$berta.section.mediaCacheData.file || ($berta.section.type == 'grid' && $smarty.cookies._berta_grid_view)  }
-                    <div id="xBackgroundPrevious" class="bgHidden"></div>
-                    <div id="xBackgroundNext" class="bgHidden"></div>
+                    <div id="xBackgroundPrevious" class="bgHidden"><a href="#"><span>previous</span></a></div>
+                    <div id="xBackgroundNext" class="bgHidden"><a href="#"><span>next</span></a></div>
                 { else }
-                    <div id="xBackgroundPrevious"></div>
-                    <div id="xBackgroundNext"></div>
+                    <div id="xBackgroundPrevious"><a href="#"><span>previous</span></a></div>
+                    <div id="xBackgroundNext"><a href="#"><span>next</span></a></div>
                 { /if }
             </div>
             

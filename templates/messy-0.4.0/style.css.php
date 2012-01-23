@@ -372,34 +372,42 @@ a img { border: none; }
 #xBackgroundContainer #xBackgroundNext {
 	position: fixed;
 	width: 40px;
-	height: 29px;
-	background: url('layout/arrow_next_sprite.png');
-	background-position: 0px 0px;
 	z-index: 1000;
 	right: 0px;
 	top: 50%;
 	margin-top: -14px;
-	cursor: pointer;
 	visibility: visible;
 }
-	#xBackgroundContainer #xBackgroundNext:hover { background-position: 0px -29px; }
-	#xBackgroundContainer #xBackgroundNext.bgHidden { visibility: hidden; } 
+	#xBackgroundContainer #xBackgroundNext.bgHidden { visibility: hidden; }
+	#xBackgroundNext a {
+		background: url('layout/arrow_next_sprite.png');
+		background-position: 0px 0px;
+		width: 40px;
+		height: 29px;
+		display: block;
+	}
+	#xBackgroundContainer #xBackgroundNext a:hover { background-position: 0px -29px; }
+	#xBackgroundContainer #xBackgroundNext a span { display: none; }
 
 #xBackgroundContainer #xBackgroundPrevious {
 	position: fixed;
 	width: 40px;
-	height: 29px;
-	background: url('layout/arrow_prev_sprite.png');
-	background-position: 0px 0px;
 	z-index: 1000;
 	left: 0px;
 	top: 50%;
 	margin-top: -14px;
-	cursor: pointer;
 	visibility: visible;
 }
-	#xBackgroundContainer #xBackgroundPrevious:hover { background-position: 0px -29px; }
 	#xBackgroundContainer #xBackgroundPrevious.bgHidden { visibility: hidden; }
+	#xBackgroundPrevious a {
+		background: url('layout/arrow_prev_sprite.png');
+		background-position: 0px 0px;
+		width: 40px;
+		height: 29px;
+		display: block;
+	}
+	#xBackgroundContainer #xBackgroundPrevious a:hover { background-position: 0px -29px; }
+	#xBackgroundContainer #xBackgroundPrevious a span { display: none; }
 /*
 		#xBackground .visual {
 			visibility: hidden;
