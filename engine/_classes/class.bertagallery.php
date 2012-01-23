@@ -256,7 +256,8 @@ class BertaGallery extends BertaBase {
         return false;
     }
     
-    public static function images_getGridImageFor($mFolder, $fName, $fSizes) {
+    /*
+public static function images_getGridImageFor($mFolder, $fName, $fSizes) {
         global $berta;
     
         $imageTargetWidth = $berta->template->settings->get('media', 'imagesSmallWidth', false, true);
@@ -272,6 +273,7 @@ class BertaGallery extends BertaBase {
         
         return '';
     }
+*/
     
     public static function getHTMLForGridView($section) {
         global $berta;
@@ -297,6 +299,7 @@ class BertaGallery extends BertaBase {
                 
                     $imgSrc = $img['@attributes']['src'];
                     
+/*
                     if(!empty($img['@attributes']['width']) && !empty($img['@attributes']['height'])) {
                         $width = (int) $img['@attributes']['width'];
                         $height = (int) $img['@attributes']['height'];
@@ -313,9 +316,10 @@ class BertaGallery extends BertaBase {
                         list($width, $height) = self::fitInBounds($width, $height, $imageTargetWidth, $imageTargetHeight);                  
                         $imgSrc = self::getResizedSrc($mFolder, $imgSrc, $width, $height);
                     }
-                
-                    
-                    $returnImages .= '<div class="box"><a href="' . $linkHref . '"><img class="gridItem" src="' . $mFolderABS . $imgSrc . '" /></a></div>';
+*/
+                	$imgSrc = BertaEditor::images_getGridImageFor($mFolder . $imgSrc);
+                	 
+                    $returnImages .= '<div class="box"><a href="' . $linkHref . '"><img class="xGridItem" src="' . $mFolderABS . $imgSrc . '" /></a></div>';
                 }
             }
 

@@ -423,31 +423,38 @@ a img { border: none; }
 				top: 50%; left: 50%;
 				margin-left: -<? echo $s->get('entryLayout', 'contentWidth')/2 ?>px;
 			}
-#gridView {
+
+#xGridView {
 	left: <? echo $s->get('grid', 'marginLeft') ?>;
 	top: <? echo $s->get('grid', 'marginTop') ?>;
 	width: <? echo $s->get('grid', 'contentWidth') ?>;
 }
-	#gridView .box {
+	#xGridView .box {
 		float: left;
 		margin: 5px;
 	}
 	
-#bSubmitSectionViewType {
+#xGridViewTriggerContainer {
 	width: 100px;
-	height: 29px;
-	cursor: pointer;
 	position: absolute;
 	right: 4px;
 	top: 4px;
-	border: none;
-	background: none;
-	background: url('layout/thumbnails.png');
-	background-position: 0px 0px;
+	display: block;
 }
-	#bSubmitSectionViewType:hover { 
-		background-position: 0 -29px;
+	#xGridViewTriggerContainer a {
+		width: 100px;
+		height: 29px;
+		background: url('layout/thumbnails.png');
+		background-position: 0px 0px;
+		display: block;
 	}
 	
+		#xGridViewTriggerContainer a:hover { 
+			background-position: 0 -29px;
+		}
+	
+		#xGridViewTriggerContainer a span {
+			display: none;
+		}
 
 <? if(!1) { ?></style><? } ?>

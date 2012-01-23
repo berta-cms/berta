@@ -150,7 +150,7 @@ $templateConf = array(
 'description' => ''),
 		'marginTop' => 			array('format' => 'text', 		'default' => '100px',			'title' => I18n::_('Top margin'),
 'description' => ''),
-		'contentWidth' => 		array('format' => 'text', 		'default' => '70%',			'title' => I18n::_('Grid container width'),
+		'contentWidth' => 		array('format' => 'text', 		'default' => '66%',			'title' => I18n::_('Grid container width'),
 'description' => 'IMPORTANT! This must be set as percentage.'),
 	)
 );

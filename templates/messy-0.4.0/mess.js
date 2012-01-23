@@ -79,13 +79,21 @@ var MessyMess = new Class({
 			var bertaBackground = new BertaBackground();
 		}
 		
-		$$('.gridItem').each(function(item) {
-			item.addEvent('click', function(event) {
-				_berta_grid_img_link = this.src.substr(this.src.lastIndexOf('/')+2);
-				_berta_grid_img_link = _berta_grid_img_link.substr(_berta_grid_img_link.indexOf('_')+1);
-				Cookie.write('_berta_grid_img_link', _berta_grid_img_link, {duration: 0});
+		if($('xGridView')) {
+		
+			$('xGridView').setStyle('visibility', 'hidden');
+		
+			$$('.xGridItem').addEvent('click', function() {
+					_berta_grid_img_link = this.src.substr(this.src.lastIndexOf('/')+2);
+					_berta_grid_img_link = _berta_grid_img_link.substr(_berta_grid_img_link.indexOf('_')+1);
+					Cookie.write('_berta_grid_img_link', _berta_grid_img_link, {duration: 0});
 			});
-		}.bind(this));
+		}
+		
+		if($('xGridViewTrigger'))
+			$('xGridViewTrigger').addEvent('click', function() {
+				Cookie.write('_berta_grid_view', 'berta_grid_view', {duration: 0});
+			});
 		
 		//scroll fix (iphone viewport workaround)
 		window.addEvent('resize',this.stickToBottom.bindWithEvent(this));
@@ -122,15 +130,20 @@ var MessyMess = new Class({
 	
 	onLoad: function() {
 		// Massonry grid
-		if($('gridView')) {
-		    $('gridView').masonry({
+		if($('xGridView')) {
+			$('xGridView').setStyle('visibility', 'visible');
+		
+		    $('xGridView').masonry({
 		    	singleMode: true,
-    	    	itemSelector: '.box' 
+    	    	itemSelector: '.box'
 		    });
 		}
 		
 		if(Cookie.read('_berta_grid_img_link'))
 			Cookie.dispose('_berta_grid_img_link');
+		
+		if(Cookie.read('_berta_grid_view'))
+			Cookie.dispose('_berta_grid_view');
 	},
 	
 	stickToBottom: function(){

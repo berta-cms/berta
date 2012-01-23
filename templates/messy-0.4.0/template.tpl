@@ -51,11 +51,10 @@
         <div id="allContainer">
         
         {* grid trigger *}
-        { if $berta.section.type == 'grid' && $berta.section.mediaCacheData.file && !$berta.section.sectionViewType == 'grid' }
-        <form method="post" action="">
-            <input type="hidden" name="bSectionViewType" value="grid" />
-            <input type="submit" id="bSubmitSectionViewType" name="bSubmitSectionViewType" value="" { if $berta.environment == 'engine' }style="right: 44px"{ else if $berta.environment == 'site' && $shoppingCartSection } style="top: 24px; right: 16px;" { /if } />
-        </form>
+        { if $berta.section.type == 'grid' && $berta.section.mediaCacheData.file && !$smarty.cookies._berta_grid_view }
+		<div id="xGridViewTriggerContainer" { if $berta.environment == 'engine' }style="right: 44px"{ else if $berta.environment == 'site' && $shoppingCartSection } style="top: 24px; right: 16px;" { /if }>
+			<a id="xGridViewTrigger" href="{ bertaLink section=$berta.sectionName }"><span>thumbnails</span></a>
+		</div>
         { /if }
 
         
@@ -106,7 +105,7 @@
             <div id="xBackgroundContainer">
                 <div id="xBackground" data-autoplay="{$berta.section.mediaCacheData['@attributes']['autoplay']}" data-image_size="{$berta.section.mediaCacheData['@attributes']['image_size']}" style="background-color: { $berta.section.sectionBgColor }">
                     {* if only one image *}
-                    { if $berta.section.mediaCacheData.file['@attributes'] && $berta.section.mediaCacheData.file['@attributes'].type == 'image' && !($berta.section.sectionViewType && $berta.section.type == 'grid') }
+                    { if $berta.section.mediaCacheData.file['@attributes'] && $berta.section.mediaCacheData.file['@attributes'].type == 'image' && !($smarty.cookies._berta_grid_view && $berta.section.type == 'grid') }
                     
                         <div class="visual-image">
                             <img width="{ $berta.section.mediaCacheData.file['@attributes'].width }" height="{ $berta.section.mediaCacheData.file['@attributes'].height }" src="{ $berta.options.MEDIA_ROOT }{ $berta.section.mediafolder }/_bg_{ $berta.section.mediaCacheData.file['@attributes'].src }" class="bg-element visualContent" />
@@ -116,7 +115,7 @@
                         </div>
                     
                     {* if two or more images *}
-                    { elseif $berta.section.mediaCacheData.file && !$berta.section.mediaCacheData.file['@attributes'] && !($berta.section.sectionViewType && $berta.section.type == 'grid') }
+                    { elseif $berta.section.mediaCacheData.file && !$berta.section.mediaCacheData.file['@attributes'] && !($smarty.cookies._berta_grid_view && $berta.section.type == 'grid') }
                     
                         <div class="visual-list">
                         { foreach $berta.section.mediaCacheData.file as $fKey => $fVal }
@@ -158,7 +157,7 @@
                 </div>
                 
                 {* don't show arrows if one or less images or is in grid view *}
-                { if $berta.section.mediaCacheData.file['@attributes'] || !$berta.section.mediaCacheData.file || ($berta.section.type == 'grid' && $berta.section.sectionViewType == 'grid')  }
+                { if $berta.section.mediaCacheData.file['@attributes'] || !$berta.section.mediaCacheData.file || ($berta.section.type == 'grid' && $smarty.cookies._berta_grid_view)  }
                     <div id="xBackgroundPrevious" class="bgHidden"></div>
                     <div id="xBackgroundNext" class="bgHidden"></div>
                 { else }
@@ -187,17 +186,17 @@
             
                 <!-- MENU -->
                 { if count($berta.publishedSections) > 0 }
-                    { assign var="currnetSectionName" value=$berta.sectionName }
+                    { assign var="currentSectionName" value=$berta.sectionName }
                     { foreach $berta.publishedSections as $sName => $section }
                         { if $section.type != 'shopping_cart' }
                         
-                        <div class="menuItem xSection-{ $sName } { messClasses property='positionXY' } { if $currnetSectionName == $section.name }menuItemSelected{ /if }" style="{ messStyles xy=$section.positionXY }">
+                        <div class="menuItem xSection-{ $sName } { messClasses property='positionXY' } { if $currentSectionName == $section.name }menuItemSelected{ /if }" style="{ messStyles xy=$section.positionXY }">
                             <a href="{ bertaLink section=$sName }" target="{ bertaTarget section=$sName }">{ $section.title }</a>
                 
                             { if !empty($berta.tags.$sName) && ($berta.settings.tagsMenu.alwaysOpen=='yes' || $berta.sectionName==$sName) }
                                 <ul>
                                     { foreach $berta.tags.$sName as $tName => $tag }
-                                        <li { if $berta.tagName == $tName and $currnetSectionName == $section.name }class="selected"{ /if }>
+                                        <li { if $berta.tagName == $tName and $currentSectionName == $section.name }class="selected"{ /if }>
                                             <a href="{ bertaLink section=$sName tag=$tName }" target="{ bertaTarget section=$sName tag=$tName }">{ $tag.title }</a>
                                         </li>
                                     { /foreach }    
@@ -210,7 +209,7 @@
                 
                 
                 {* If not grid view *}
-                { if !($berta.section.sectionViewType && $berta.section.type == 'grid') }
+                { if !($smarty.cookies._berta_grid_view && $berta.section.type == 'grid') }
                 <div id="pageEntries" class="{ entriesListClasses } xNoEntryOrdering">
 
                     {* now loop through all entries and print them out *}
@@ -304,10 +303,10 @@
                 
         </div>
         
-                    { if ($berta.section.type == 'grid' && $berta.section.sectionViewType == 'grid') }
-                <div id="gridView">
-                    { gridView section=$berta.section }
-                </div>
+            { if ($berta.section.type == 'grid' && $smarty.cookies._berta_grid_view) }
+            <div id="xGridView">
+            	{ gridView section=$berta.section }
+            </div>
             { /if }
         
         <div id="bottom">

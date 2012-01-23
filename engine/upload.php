@@ -284,8 +284,8 @@ if(($entryId && $mediaFolder || $settingsProperty || $sectionName && $mediaFolde
 								$bgImagePath = BertaEditor::images_getBgImageFor($fileFolder . $fName);
 								$bgImageInfo = getimagesize($bgImagePath);
 								
-								$gridImagePath = BertaGallery::images_getGridImageFor($fileFolder, $fName, $bgImageInfo);					
-								if($gridImagePath) $gridImageInfo = getimagesize($gridImagePath);
+								$gridImageSrc = BertaEditor::images_getGridImageFor($fileFolder . $fName);					
+								if($gridImageSrc) $gridImageInfo = getimagesize($fileFolder . $gridImageSrc);
 							}
 
 							if($settingsProperty) { // update setings value
@@ -330,7 +330,7 @@ if(($entryId && $mediaFolder || $settingsProperty || $sectionName && $mediaFolde
 							if($sectionBackground) {
 								$result['bg_image_width'] = $bgImageInfo[0];
 								$result['bg_image_height'] = $bgImageInfo[1];
-								if($gridImagePath) {
+								if($gridImageSrc) {
 									$result['grid_image_width'] = $gridImageInfo[0];
 									$result['grid_image_height'] = $gridImageInfo[1];
 								}
