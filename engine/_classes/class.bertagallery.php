@@ -275,6 +275,24 @@ public static function images_getGridImageFor($mFolder, $fName, $fSizes) {
     }
 */
     
+    public static function images_getGridImageFor($imagePath) {
+		$fileName = basename($imagePath);
+		$dirName = dirname($imagePath);
+		if($dirName) $dirName .= '/';
+		
+		$newFileName = self::$options['images']['grid_image_prefix'] . $fileName;
+		
+		$gridImagePath = $dirName . $newFileName;
+		
+		if(file_exists($gridImagePath)) {
+			return $newFileName;
+		} elseif(self::createThumbnail($imagePath, $gridImagePath, 200, '')) {
+			return $newFileName;
+		}
+		
+		return false;
+	}
+    
     public static function getHTMLForGridView($section) {
         global $berta;
     
@@ -317,7 +335,7 @@ public static function images_getGridImageFor($mFolder, $fName, $fSizes) {
                         $imgSrc = self::getResizedSrc($mFolder, $imgSrc, $width, $height);
                     }
 */
-                	$imgSrc = BertaEditor::images_getGridImageFor($mFolder . $imgSrc);
+                	$imgSrc = self::images_getGridImageFor($mFolder . $imgSrc);
                 	 
                     $returnImages .= '<div class="box"><a href="' . $linkHref . '"><img class="xGridItem" src="' . $mFolderABS . $imgSrc . '" /></a></div>';
                 }

@@ -284,7 +284,7 @@ if(($entryId && $mediaFolder || $settingsProperty || $sectionName && $mediaFolde
 								$bgImagePath = BertaEditor::images_getBgImageFor($fileFolder . $fName);
 								$bgImageInfo = getimagesize($bgImagePath);
 								
-								$gridImageSrc = BertaEditor::images_getGridImageFor($fileFolder . $fName);					
+								$gridImageSrc = BertaGallery::images_getGridImageFor($fileFolder . $fName);					
 								if($gridImageSrc) $gridImageInfo = getimagesize($fileFolder . $gridImageSrc);
 							}
 
