@@ -380,11 +380,11 @@ var BertaBackground = new Class({
             scaleMultiplier = 1;
             scaleMultiplier = 1;
         } else if(data.options.image_size == 'medium') {
-            scaleMultiplier = 0.7;
-            scaleMultiplier = 0.7;
+            scaleMultiplier = 0.85;
+            scaleMultiplier = 0.85;
         } else if(data.options.image_size == 'small') {
-            scaleMultiplier = 0.5;
-            scaleMultiplier = 0.5;
+            scaleMultiplier = 0.65;
+            scaleMultiplier = 0.65;
         }
 
         window.removeEvent('resize');
@@ -402,7 +402,7 @@ var BertaBackground = new Class({
 		// scale
 		var scaleX = w / data.width, scaleY = h / data.height;
         
-		if(data.width>=data.height)
+		if(data.width>=data.height && scaleMultiplier == 1)
 			if(scaleX > scaleY) scaleY = scaleX; else scaleX = scaleY;
 		else
 			if(scaleX > scaleY) scaleX = scaleY; else scaleY = scaleX;
