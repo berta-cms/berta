@@ -145,7 +145,7 @@ $templateConf = array(
 	),
 	
 	'grid' => array(
-		'_' => array('title' => I18n::_('Grid')),
+		'_' => array('title' => I18n::_('Thumbnails')),
 		'marginLeft' => 		array('format' => 'text', 		'default' => '200px',			'title' => I18n::_('Left margin'),
 'description' => ''),
 		'marginTop' => 			array('format' => 'text', 		'default' => '100px',			'title' => I18n::_('Top margin'),

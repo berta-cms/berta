@@ -271,6 +271,10 @@ var BertaBackground = new Class({
     
     selected: null,
     autoplayInterval: null,
+    data: null,
+    
+    fadeOutFx: null,
+    fadeInFx: null,
     
 	initialize: function(options) {
 		this.setOptions(options);
@@ -279,17 +283,19 @@ var BertaBackground = new Class({
 		this.previousButton = $('xBackgroundPrevious');
 		this.container = $('xBackground');
 		
+        this.imageContainer = this.container.getElement('.visual-image');
 		this.imagesList = this.container.getElement('.visual-list');
 		this.caption = this.container.getElement('.visual-caption');
 		this.image = this.container.getElement('.visual-image img');
         
-        var data = { options: this.options };
-            data.options.image_size = this.container.dataset['image_size'];
-            data.options.autoplay = this.container.dataset['autoplay'];
+        this.data = { options: this.options };
+        this.data.options.image_size = this.container.dataset['image_size'];
+        this.data.options.autoplay = this.container.dataset['autoplay'];
         
-        var imgFx = new Fx.Tween(this.image, {duration: 'short', property: 'opacity'});
-        
-        this._init(data);
+        this.fadeOutFx = new Fx.Tween(this.imageContainer, { duration: 'short', transition: Fx.Transitions.Sine.easeInOut });
+        this.fadeInFx = new Fx.Tween(this.imageContainer, { duration: 'normal', transition: Fx.Transitions.Sine.easeInOut });
+
+        this._init();
         
         // Next image button click    
         this.nextButton.addEvent('click', function(event) {
@@ -297,21 +303,19 @@ var BertaBackground = new Class({
             
             this.selected = this.imagesList.getElement('.sel');
             
-            if(data.options.autoplay > 0) {
-                clearInterval(this.autoplayInterval);
-                this._autoplay(data, imgFx);
-            }
+            //if(this.data.options.autoplay > 0) {
+            //    clearInterval(this.autoplayInterval);
+            //    this._autoplay(this.data, imgFx);
+            //}
             
 			if(this.selected.getNext())
-                nextImage = this.selected.getNext();
+                newImage = this.selected.getNext();
             else
-                nextImage = this.imagesList.getFirst();
+                newImage = this.imagesList.getFirst();
             
-            imgFx.start(1,0).chain(
-                function() { this._newImageData(nextImage); this._init(data); imgFx.start(0,0); }.bind(this),
-                function() { imgFx.start(0,1); }.bind(this)
+            this.fadeOutFx.start('opacity', 0).chain(
+                function() { this._getNewImage(newImage); }.bind(this)
             );
-            
         }.bind(this));
         
         // Previous image button click
@@ -320,89 +324,96 @@ var BertaBackground = new Class({
             
             this.selected = this.imagesList.getElement('.sel');
            
-            if(data.options.autoplay > 0) {
-                clearInterval(this.autoplayInterval);
-                this._autoplay(data, imgFx);
-            }
+            //if(this.data.options.autoplay > 0) {
+            //    clearInterval(this.autoplayInterval);
+            //    this._autoplay(this.data, imgFx);
+            //}
             
 			if(this.selected.getPrevious())
-                nextImage = this.selected.getPrevious();
+                newImage = this.selected.getPrevious();
             else
-                nextImage = this.imagesList.getLast();
+                newImage = this.imagesList.getLast();
             
-            imgFx.start(1,0).chain(
-                function() { this._newImageData(nextImage); this._init(data); imgFx.start(0,0); }.bind(this),
-                function() { imgFx.start(0,1); }.bind(this)
-            );            
+            this.fadeOutFx.start('opacity', 0).chain(
+                function() { this._getNewImage(newImage); }.bind(this)
+            );          
         }.bind(this));
         
         // Autoplay
-        if(data.options.autoplay > 0) {
-            this._autoplay(data, imgFx);
+        if(this.data.options.autoplay > 0) {
+            this._autoplay();
         }
 	},
 
-    _autoplay: function(data, imgFx) {
-        time = data.options.autoplay * 1000;
+    _autoplay: function() {
+        time = this.data.options.autoplay * 1000;
         this.autoplayInterval = setInterval(function() {
             this.selected = this.imagesList.getElement('.sel');
-        
-            if(this.selected.getNext())
-                nextImage = this.selected.getNext();
-            else
-                nextImage = this.imagesList.getFirst();
             
-            imgFx.start(1,0).chain(
-                function() { this._newImageData(nextImage); this._init(data); imgFx.start(0,0); }.bind(this),
-                function() { imgFx.start(0,1); }.bind(this)
+			if(this.selected.getNext())
+                newImage = this.selected.getNext();
+            else
+                newImage = this.imagesList.getFirst();
+            
+            this.fadeOutFx.start('opacity', 0).chain(
+                function() { this._getNewImage(newImage); }.bind(this)
             );
         }.bind(this), time);
     },
     
-	_newImageData: function(nextImage) {
-		newWidth = nextImage.get('width'); newHeight = nextImage.get('height'); newSrc = nextImage.get('src');
-        newCaption = nextImage.get('caption');
-            	
+	_getNewImage: function(newImage) {
+		newWidth = newImage.get('width'); newHeight = newImage.get('height'); newSrc = newImage.get('src');
+        newCaption = newImage.get('caption');
+        
         this.selected.removeClass('sel');
-        nextImage.addClass('sel');
+        newImage.addClass('sel');
         
-        this.image.set('width', newWidth); this.image.set('height', newHeight); this.image.set('src', newSrc);
-        this.caption.set('html', newCaption);
+        if(obj = this.image) obj.destroy();
+        
+        this.image = new Asset.image(newSrc, { class: 'bg-element visualContent', width: newWidth, height: newHeight, onLoad: this._getNewImageFinish.bind(this) });
+        
+        this._init();
 	},
+    
+    _getNewImageFinish: function() {
+        this.container.getElement('.visual-image').adopt(this.image);
+        this.fadeInFx.set('opacity', 0).start('opacity', 1);
+        this.caption.set('html', newCaption);
+    },
 
-	_init: function(data) {
+	_init: function() {
 		var el = this.image, scaleMultiplier;
-
-		data.width = parseInt(el.get('width'));
-		data.height = parseInt(el.get('height'));
         
-        if(!data.options.image_size || data.options.image_size == 'large') {
+		this.data.width = parseInt(el.get('width'));
+		this.data.height = parseInt(el.get('height'));
+        
+        if(!this.data.options.image_size || this.data.options.image_size == 'large') {
             scaleMultiplier = 1;
             scaleMultiplier = 1;
-        } else if(data.options.image_size == 'medium') {
+        } else if(this.data.options.image_size == 'medium') {
             scaleMultiplier = 0.85;
             scaleMultiplier = 0.85;
-        } else if(data.options.image_size == 'small') {
+        } else if(this.data.options.image_size == 'small') {
             scaleMultiplier = 0.65;
             scaleMultiplier = 0.65;
         }
 
         window.removeEvent('resize');
-		window.addEvent('resize', function() { this._onResize(el, data, scaleMultiplier) }.bind(this));
-		this._onResize(el, data, scaleMultiplier);
+		window.addEvent('resize', function() { this._onResize(el, scaleMultiplier) }.bind(this));
+		this._onResize(el, scaleMultiplier);
 	},
 	
-	_onResize: function(el, data, scaleMultiplier) {
+	_onResize: function(el, scaleMultiplier) {
 		var wnd = window,
 			w = wnd.getSize().x,
 			h = wnd.getSize().y;
 		
 		var posX, posY;
-
+       
 		// scale
-		var scaleX = w / data.width, scaleY = h / data.height;
+		var scaleX = w / this.data.width, scaleY = h / this.data.height;
         
-		if(data.width>=data.height && scaleMultiplier == 1)
+		if(this.data.width>=this.data.height && scaleMultiplier == 1)
 			if(scaleX > scaleY) scaleY = scaleX; else scaleX = scaleY;
 		else
 			if(scaleX > scaleY) scaleX = scaleY; else scaleY = scaleX;
@@ -412,15 +423,15 @@ var BertaBackground = new Class({
         scaleY = scaleY*scaleMultiplier;
 		
 		// position X
-		posX = Math.round((w - data.width * scaleX) / 2);
+		posX = Math.round((w - this.data.width * scaleX) / 2);
 
 		// position Y
-		posY = Math.round((h - (data.height * scaleY)) / 2);
+		posY = Math.round((h - (this.data.height * scaleY)) / 2);
 
-		el.setStyle('width', data.width * scaleX)
-		   	.setStyle('height', data.height * scaleY)
+		el.setStyle('width', this.data.width * scaleX)
+		   	.setStyle('height', this.data.height * scaleY)
 		   	.setStyle('left', posX)
-		   	.setStyle('top', posY);
+		   	.setStyle('top', posY);       
 	},
 });
 
