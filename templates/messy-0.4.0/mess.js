@@ -317,7 +317,7 @@ var BertaBackground = new Class({
                 function() { this._getNewImage(newImage); }.bind(this)
             );
         }.bind(this));
-        
+
         // Previous image button click
         this.previousButton.addEvent('click', function(event) {
             event.stop();
@@ -338,6 +338,31 @@ var BertaBackground = new Class({
                 function() { this._getNewImage(newImage); }.bind(this)
             );          
         }.bind(this));
+        
+        window.addEvent('keydown', function(event) {
+            event.stop();
+            if(event.key == 'right') {
+                this.selected = this.imagesList.getElement('.sel');
+                if(this.selected.getNext())
+                    newImage = this.selected.getNext();
+                else
+                    newImage = this.imagesList.getFirst();
+                
+                this.fadeOutFx.start('opacity', 0).chain(
+                    function() { this._getNewImage(newImage); }.bind(this)
+                );
+            } else if(event.key == 'left') {
+                this.selected = this.imagesList.getElement('.sel');
+                if(this.selected.getPrevious())
+                    newImage = this.selected.getPrevious();
+                else
+                    newImage = this.imagesList.getLast();
+                
+                this.fadeOutFx.start('opacity', 0).chain(
+                    function() { this._getNewImage(newImage); }.bind(this)
+                ); 
+            }
+        }.bind(this));  
         
         // Autoplay
         if(this.data.options.autoplay > 0) {
