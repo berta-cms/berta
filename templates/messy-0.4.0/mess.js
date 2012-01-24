@@ -70,34 +70,34 @@ var MessyMess = new Class({
 	},
 	
 	onDOMReady: function() {
-		// Init BertaBackground
+		// Berta Background
 		var bgContainer = $('xBackground');
-		
+        
 		if(bgContainer) var bgImage = bgContainer.getElement('.visual-image img');
 
 		if(bgImage) {
 			var bertaBackground = new BertaBackground();
 		}
 		
+        // Grid view
 		if($('xGridView')) {
-		
-			$('xGridView').setStyle('visibility', 'hidden');
-		
 			$$('.xGridItem').addEvent('click', function() {
 					_berta_grid_img_link = this.src.substr(this.src.lastIndexOf('/')+2);
 					_berta_grid_img_link = _berta_grid_img_link.substr(_berta_grid_img_link.indexOf('_')+1);
 					Cookie.write('_berta_grid_img_link', _berta_grid_img_link, {duration: 0});
 			});
 		}
-		
+
 		if($('xGridViewTrigger'))
 			$('xGridViewTrigger').addEvent('click', function() {
 				Cookie.write('_berta_grid_view', 'berta_grid_view', {duration: 0});
 			});
 		
 		//scroll fix (iphone viewport workaround)
-		window.addEvent('resize',this.stickToBottom.bindWithEvent(this));
-		window.addEvent('scroll',this.stickToBottom.bindWithEvent(this));
+        if(!navigator.userAgent.match(/OS 5_\d like Mac OS X/i) && /iphone|ipad|ipod|android|blackberry|mini|windows\sce|palm/i.test(navigator.userAgent.toLowerCase())) {
+            window.addEvent('resize',this.stickToBottom.bindWithEvent(this));
+            window.addEvent('scroll',this.stickToBottom.bindWithEvent(this));
+        }
 
 		var messyItems = $$('.mess');
 		
@@ -131,9 +131,12 @@ var MessyMess = new Class({
 	onLoad: function() {
 		// Massonry grid
 		if($('xGridView')) {
-			$('xGridView').setStyle('visibility', 'visible');
-		
-		    $('xGridView').masonry({
+            if((navigator.userAgent.match(/iPhone/i)))
+                setTimeout(function() {$('xGridView').setStyle('visibility', 'visible');}, 10);
+            else
+                $('xGridView').setStyle('visibility', 'visible');
+		   
+            $('xGridView').masonry({
 		    	singleMode: true,
     	    	itemSelector: '.box'
 		    });
@@ -147,6 +150,7 @@ var MessyMess = new Class({
 	},
 	
 	stickToBottom: function(){
+        bottomWidth = $('bottom').getSize().x
 		$('bottom').setStyles({
 			'position': 'absolute',
 			'top': (window.pageYOffset + window.innerHeight - 45) + 'px'
@@ -289,8 +293,8 @@ var BertaBackground = new Class({
 		this.image = this.container.getElement('.visual-image img');
         
         this.data = { options: this.options };
-        this.data.options.image_size = this.container.dataset['image_size'];
-        this.data.options.autoplay = this.container.dataset['autoplay'];
+        this.data.options.image_size = this.container.getClassStoredValue('xBgDataImageSize');
+        this.data.options.autoplay = this.container.getClassStoredValue('xBgDataAutoplay');
         
         this.fadeOutFx = new Fx.Tween(this.imageContainer, { duration: 'short', transition: Fx.Transitions.Sine.easeInOut });
         this.fadeInFx = new Fx.Tween(this.imageContainer, { duration: 'normal', transition: Fx.Transitions.Sine.easeInOut });
@@ -303,10 +307,10 @@ var BertaBackground = new Class({
             
             this.selected = this.imagesList.getElement('.sel');
             
-            //if(this.data.options.autoplay > 0) {
-            //    clearInterval(this.autoplayInterval);
-            //    this._autoplay(this.data, imgFx);
-            //}
+            if(this.data.options.autoplay > 0) {
+                clearInterval(this.autoplayInterval);
+                this._autoplay();
+            }
             
 			if(this.selected.getNext())
                 newImage = this.selected.getNext();
@@ -324,10 +328,10 @@ var BertaBackground = new Class({
             
             this.selected = this.imagesList.getElement('.sel');
            
-            //if(this.data.options.autoplay > 0) {
-            //    clearInterval(this.autoplayInterval);
-            //    this._autoplay(this.data, imgFx);
-            //}
+            if(this.data.options.autoplay > 0) {
+                clearInterval(this.autoplayInterval);
+                this._autoplay();
+            }
             
 			if(this.selected.getPrevious())
                 newImage = this.selected.getPrevious();
@@ -340,27 +344,10 @@ var BertaBackground = new Class({
         }.bind(this));
         
         window.addEvent('keydown', function(event) {
-            event.stop();
             if(event.key == 'right') {
-                this.selected = this.imagesList.getElement('.sel');
-                if(this.selected.getNext())
-                    newImage = this.selected.getNext();
-                else
-                    newImage = this.imagesList.getFirst();
-                
-                this.fadeOutFx.start('opacity', 0).chain(
-                    function() { this._getNewImage(newImage); }.bind(this)
-                );
+                this.nextButton.fireEvent('click', event);
             } else if(event.key == 'left') {
-                this.selected = this.imagesList.getElement('.sel');
-                if(this.selected.getPrevious())
-                    newImage = this.selected.getPrevious();
-                else
-                    newImage = this.imagesList.getLast();
-                
-                this.fadeOutFx.start('opacity', 0).chain(
-                    function() { this._getNewImage(newImage); }.bind(this)
-                ); 
+                this.previousButton.fireEvent('click', event);
             }
         }.bind(this));  
         
