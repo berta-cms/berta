@@ -129,6 +129,18 @@ var MessyMess = new Class({
 	},
 	
 	onLoad: function() {
+		var hideContent;
+		window.addEvent('mousemove', function() {
+			if(hideContent) {
+				clearTimeout(hideContent);
+				hideContent = 0;
+			}
+			
+			$('contentContainer').fade('in', {duration: 'long'});
+    		hideContent = setTimeout(function() {
+    		    $('contentContainer').fade('out', {duration: 'short'});
+    		}, 3000)
+		});
 		// Massonry grid
 		if($('xGridView')) {
             if((navigator.userAgent.match(/iPhone/i)))
