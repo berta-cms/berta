@@ -310,6 +310,8 @@ var BertaBackground = new Class({
     
     fadeOutFx: null,
     fadeInFx: null,
+    captionFadeOutFx: null,
+    captionFadeInFx: null,
     
 	initialize: function(options) {
 		this.setOptions(options);
@@ -329,6 +331,8 @@ var BertaBackground = new Class({
         
         this.fadeOutFx = new Fx.Tween(this.imageContainer, { duration: 'short', transition: Fx.Transitions.Sine.easeInOut });
         this.fadeInFx = new Fx.Tween(this.imageContainer, { duration: 'normal', transition: Fx.Transitions.Sine.easeInOut });
+        this.captionFadeOutFx = new Fx.Tween(this.caption, { duration: 'short', transition: Fx.Transitions.Sine.easeInOut });
+        this.captionFadeInFx = new Fx.Tween(this.caption, { duration: 'normal', transition: Fx.Transitions.Sine.easeInOut });
 
         this._init();
         
@@ -348,6 +352,7 @@ var BertaBackground = new Class({
             else
                 newImage = this.imagesList.getFirst();
             
+            this.captionFadeOutFx.start('opacity', 0);
             this.fadeOutFx.start('opacity', 0).chain(
                 function() { this._getNewImage(newImage); }.bind(this)
             );
@@ -369,6 +374,7 @@ var BertaBackground = new Class({
             else
                 newImage = this.imagesList.getLast();
             
+            this.captionFadeOutFx.start('opacity', 0);
             this.fadeOutFx.start('opacity', 0).chain(
                 function() { this._getNewImage(newImage); }.bind(this)
             );          
@@ -398,6 +404,7 @@ var BertaBackground = new Class({
             else
                 newImage = this.imagesList.getFirst();
             
+            this.captionFadeOutFx.start('opacity', 0);
             this.fadeOutFx.start('opacity', 0).chain(
                 function() { this._getNewImage(newImage); }.bind(this)
             );
@@ -421,6 +428,7 @@ var BertaBackground = new Class({
     _getNewImageFinish: function() {
         this.container.getElement('.visual-image').adopt(this.image);
         this.fadeInFx.set('opacity', 0).start('opacity', 1);
+        this.captionFadeInFx.set('opacity', 0).start('opacity', 1);
         this.caption.set('html', newCaption);
     },
 

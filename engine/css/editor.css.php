@@ -485,11 +485,14 @@ body.xEditorEnabled { }
 			}
 			
 			.xBgColorSettings .xBgColor,
-			.xBgColorSettings .xBgColor span {
+			.xBgColorSettings .xBgColor span,
+			.xBgColorSettings .xBgCaptionColor,
+			.xBgColorSettings .xBgCaptionColor span {
 				float: left;
 			}
 			
-				.xBgColor span.colorPreview {
+				.xBgColor span.colorPreview,
+				.xBgCaptionColor span.colorPreview {
 					display: block;
 					float: left;
 					width: 1.2em;

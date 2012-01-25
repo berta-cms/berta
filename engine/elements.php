@@ -181,6 +181,7 @@ if($jsonRequest) {
 				$autoPlay = !empty($section['mediaCacheData']['@attributes']['autoplay']) ? $section['mediaCacheData']['@attributes']['autoplay'] : '0';
 				$bgSize = !empty($section['mediaCacheData']['@attributes']['image_size']) ? $section['mediaCacheData']['@attributes']['image_size'] : 'large';
 				$bgColor = !empty($section['sectionBgColor']['value']) ? $section['sectionBgColor']['value'] : '#FFFFFF';
+				$bgCaptionColor = !empty($section['mediaCacheData']['@attributes']['caption_color']) ? $section['mediaCacheData']['@attributes']['caption_color'] : '#FFFFFF';
 
 				
 				echo '<div id="xBgEditorPanel" class="xPanel">';
@@ -222,9 +223,13 @@ if($jsonRequest) {
 					    	 '</div>';
 
 					   	echo '<div class="xBgColorSettings">',
-					    		'<div class="caption">background / caption color</div>',
+					    		'<div class="caption">background color</div>',
 					    	 	'<div class="xBgColor xEditableColor xProperty-sectionBgColor xNoHTMLEntities xCSSUnits-0 xRequired-1 " title="' . $bgColor . '">' . $bgColor . '</div>',
-					    	 '</div>';
+								'<br class="clear" />',
+								'<div class="caption">caption color</div>',
+					    	 	'<div class="xBgCaptionColor xEditableColor xCommand-SET_BG_CAPTION_COLOR xNoHTMLEntities xCSSUnits-0 xRequired-1 " title="' . $bgCaptionColor . '">' . $bgCaptionColor . '</div>',
+								'<br class="clear" />',
+							 '</div>';
 					echo '</div>';
 					echo '<div class="images"><ul>';
 					    if(!empty($section['mediaCacheData']['file']) && count($section['mediaCacheData']['file']) > 0) {

@@ -103,14 +103,14 @@
             </div>
             { /if }
             <div id="xBackgroundContainer">
-                <div id="xBackground" class="xBgDataAutoplay-{$berta.section.mediaCacheData['@attributes']['autoplay']} xBgDataImageSize-{$berta.section.mediaCacheData['@attributes']['image_size']}" style="background-color: { $berta.section.sectionBgColor }">
+                <div id="xBackground" class="xBgDataAutoplay-{$berta.section.mediaCacheData['@attributes'].autoplay} xBgDataImageSize-{$berta.section.mediaCacheData['@attributes'].image_size}" style="background-color: { $berta.section.sectionBgColor }">
                     {* if only one image *}
                     { if $berta.section.mediaCacheData.file['@attributes'] && $berta.section.mediaCacheData.file['@attributes'].type == 'image' && !($smarty.cookies._berta_grid_view && $berta.section.type == 'grid') }
                     
                         <div class="visual-image">
                             <img width="{ $berta.section.mediaCacheData.file['@attributes'].width }" height="{ $berta.section.mediaCacheData.file['@attributes'].height }" src="{ $berta.options.MEDIA_ROOT }{ $berta.section.mediafolder }/_bg_{ $berta.section.mediaCacheData.file['@attributes'].src }" class="bg-element visualContent" />
                         </div>
-                        <div class="visual-caption" style="color: { $berta.section.sectionBgColor }">
+                        <div class="visual-caption" style="color: { $berta.section.mediaCacheData['@attributes'].caption_color }">
                             { $berta.section.mediaCacheData.file.value }
                         </div>
                     
@@ -132,7 +132,7 @@
                                     <div class="visual-image">
                                         <img width="{ $fVal['@attributes'].width }" height="{ $fVal['@attributes'].height }" src="{ $berta.options.MEDIA_ABS_ROOT }{ $berta.section.mediafolder }/_bg_{ $fVal['@attributes'].src }" class="bg-element visualContent" />
                                     </div>
-                                    <div class="visual-caption" style="color: { $berta.section.sectionBgColor }">
+                                    <div class="visual-caption" style="color: { $berta.section.mediaCacheData['@attributes'].caption_color }">
                                         { $fVal['value'] }
                                     </div>
                                 { /if }
@@ -145,7 +145,7 @@
                                     <div class="visual-image">
                                         <img width="{ $fVal['@attributes'].width }" height="{ $fVal['@attributes'].height }" src="{ $berta.options.MEDIA_ABS_ROOT }{ $berta.section.mediafolder }/_bg_{ $fVal['@attributes'].src }" class="bg-element visualContent" />
                                     </div>
-                                    <div class="visual-caption" style="color: { $berta.section.sectionBgColor }">
+                                    <div class="visual-caption" style="color: { $berta.section.mediaCacheData['@attributes'].caption_color }">
                                         { $fVal['value'] }
                                     </div>
                                 { /if }
