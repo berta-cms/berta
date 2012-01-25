@@ -103,7 +103,7 @@
             </div>
             { /if }
             <div id="xBackgroundContainer">
-                <div id="xBackground" data-autoplay="{$berta.section.mediaCacheData['@attributes']['autoplay']}" data-image_size="{$berta.section.mediaCacheData['@attributes']['image_size']}" style="background-color: { $berta.section.sectionBgColor }">
+                <div id="xBackground" class="xBgDataAutoplay-{$berta.section.mediaCacheData['@attributes']['autoplay']} xBgDataImageSize-{$berta.section.mediaCacheData['@attributes']['image_size']}" style="background-color: { $berta.section.sectionBgColor }">
                     {* if only one image *}
                     { if $berta.section.mediaCacheData.file['@attributes'] && $berta.section.mediaCacheData.file['@attributes'].type == 'image' && !($smarty.cookies._berta_grid_view && $berta.section.type == 'grid') }
                     
