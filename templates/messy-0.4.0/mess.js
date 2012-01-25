@@ -144,7 +144,7 @@ var MessyMess = new Class({
 		// Massonry grid
 		if($('xGridView')) {
             if((navigator.userAgent.match(/iPhone/i)))
-                setTimeout(function() {$('xGridView').setStyle('visibility', 'visible');}, 10);
+                setTimeout(function() {$('xGridView').setStyle('visibility', 'visible');}, 100);
             else
                 $('xGridView').setStyle('visibility', 'visible');
 		   
