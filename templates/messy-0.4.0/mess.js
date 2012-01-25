@@ -145,13 +145,13 @@ var MessyMess = new Class({
                         hideContent = 0;
                     }
                     
-                    $('contentContainer').fade('in');
-                    $('xGridViewTrigger').fade('in');
-                    $('bottom').fade('in');
+                    $('contentContainer').setStyle('opacity', '1');
+                    $('xGridViewTrigger').setStyle('opacity', '1');
+                    $('bottom').setStyle('opacity', '1');
                     hideContent = setTimeout(function() {
-                        $('contentContainer').fade('out');
-                        $('xGridViewTrigger').fade('out');
-                        $('bottom').fade('out');
+                        $('contentContainer').tween('opacity', '0');
+                        $('xGridViewTrigger').tween('opacity', '0');
+                        $('bottom').tween('opacity', '0');
                     }, 3000);
                     
                     lastX = event.page.x;
