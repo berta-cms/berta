@@ -129,18 +129,37 @@ var MessyMess = new Class({
 	},
 	
 	onLoad: function() {
-		var hideContent;
-		window.addEvent('mousemove', function() {
-			if(hideContent) {
-				clearTimeout(hideContent);
-				hideContent = 0;
-			}
-			
-			$('contentContainer').fade('in', {duration: 'long'});
-    		hideContent = setTimeout(function() {
-    		    $('contentContainer').fade('out', {duration: 'short'});
-    		}, 3000)
-		});
+        
+        // Hide content
+        if($('xBackground').getElement('.visual-image')) {
+            var hideContent, lastX, lastY;
+            window.addEvent('mousemove', function(event) {       
+                if(!lastX && !lastY) {
+                    lastX = event.page.x;
+                    lastY = event.page.y;
+                }
+    
+                if(event.page.x != lastX && event.page.y != lastY) {
+                    if(hideContent) {
+                        clearTimeout(hideContent);
+                        hideContent = 0;
+                    }
+                    
+                    $('contentContainer').fade('in');
+                    $('xGridViewTrigger').fade('in');
+                    $('bottom').fade('in');
+                    hideContent = setTimeout(function() {
+                        $('contentContainer').fade('out');
+                        $('xGridViewTrigger').fade('out');
+                        $('bottom').fade('out');
+                    }, 3000);
+                    
+                    lastX = event.page.x;
+                    lastY = event.page.y;
+                }           
+            });
+        }
+        
 		// Massonry grid
 		if($('xGridView')) {
             if((navigator.userAgent.match(/iPhone/i)))
