@@ -124,7 +124,7 @@
                         <div class="menuItem xSection-{ $sName } { messClasses property='positionXY' } { if $currentSectionName == $section.name }menuItemSelected{ /if }" style="{ messStyles xy=$section.positionXY }">
                             <a href="{ bertaLink section=$sName }" target="{ bertaTarget section=$sName }">{ $section.title }</a>
                 
-                            { if $berta.settings.tagsMenu.status=='visible' && (!empty($berta.tags.$sName) && ($berta.settings.tagsMenu.alwaysOpen=='yes' || $berta.sectionName==$sName)) }
+                            { if $berta.settings.tagsMenu.hidden=='no' && (!empty($berta.tags.$sName) && ($berta.settings.tagsMenu.alwaysOpen=='yes' || $berta.sectionName==$sName)) }
                                 <ul>
                                     { foreach $berta.tags.$sName as $tName => $tag }
                                         <li { if $berta.tagName == $tName and $currentSectionName == $section.name }class="selected"{ /if }>

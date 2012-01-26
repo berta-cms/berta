@@ -114,7 +114,6 @@ $templateConf = array(
 	
 	'tagsMenu' => array(
 		'_' => array('title' => I18n::_('Submenu')),
-        'status' =>                 array('format' => 'select',     'values' => array('visible', 'hidden'), 'default' => 'visible',                         'title' => I18n::_('Submenu status'),        'description' => 'Show or hide submenus'),
 		'fontFamily' => 			array('format' => 'fontselect',	'values' => $fontOptionsWithInherit, 'default' => '"Arial black", Gadget',  'title' => I18n::_('Font face'),             'description' => ''),
 		'googleFont' => 			array('format' => 'text',		'default' => '', 															'title' => 'Google web fonts',         'description' => I18n::_('googleFont_description')),
 		'fontSize' => 				array('format' => 'text',		'default' => '16px', 								                                    'title' => I18n::_('Font size'),             'description' => ''),
@@ -129,8 +128,8 @@ $templateConf = array(
 		'textDecorationActive' => 	array('format' => 'select',		'values' => array('none', 'underline', 'overline', 'line-through'),		'default' => 'underline', 	'title' => I18n::_('Decoration when selected'),    'description' => ''),
 		'x' => 				array('format' => 'text',		'default' => '0', 								                                    'title' => I18n::_('Positon X'),             'description' => I18n::_('description_tagsMenu_x')),		
 		'y' => 				array('format' => 'text',		'default' => '0', 								                                    'title' => I18n::_('Positon Y'),             'description' => I18n::_('description_tagsMenu_y')),
-		'alwaysOpen' =>  		 array('format' => 'select',	'values' => array('yes', 'no'), 'default' => 'yes', 	                    'title' => I18n::_('Submenu is allways open'),                   'description' => I18n::_('description_submenu_alwaysopen'))				
-		
+		'alwaysOpen' =>  		 array('format' => 'select',	'values' => array('yes', 'no'), 'default' => 'yes', 	                    'title' => I18n::_('Submenu is allways open'),                   'description' => I18n::_('description_submenu_alwaysopen')),				
+		'hidden' =>                 array('format' => 'select',     'values' => array('yes', 'no'), 'default' => 'no',                         'title' => I18n::_('Submenu is hidden'),        'description' => ''),
 	),
 	
 	'links' => array(
