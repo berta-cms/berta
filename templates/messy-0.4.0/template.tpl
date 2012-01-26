@@ -117,14 +117,18 @@
                     {* if two or more images *}
                     { elseif $berta.section.mediaCacheData.file && !$berta.section.mediaCacheData.file['@attributes'] && !($smarty.cookies._berta_grid_view && $berta.section.type == 'grid') }
                     
-                        <div class="visual-list">
+                        <ul class="visual-list">
                         { foreach $berta.section.mediaCacheData.file as $fKey => $fVal }
                         { if  $fVal['@attributes'].type == 'image' }
-                            <input type="hidden" width="{ $fVal['@attributes'].width }" height="{ $fVal['@attributes'].height }" src="{ $berta.options.MEDIA_ABS_ROOT }{ $berta.section.mediafolder }/_bg_{ $fVal['@attributes'].src }" caption="{ $fVal['value'] }" {if $smarty.cookies._berta_grid_img_link && $smarty.cookies._berta_grid_img_link == $fVal['@attributes'].src }class="sel"{ elseif !$smarty.cookies._berta_grid_img_link && $fVal@first }class="sel"{ /if } />
+                            <li {if $smarty.cookies._berta_grid_img_link && $smarty.cookies._berta_grid_img_link == $fVal['@attributes'].src }class="sel"{ elseif !$smarty.cookies._berta_grid_img_link && $fVal@first }class="sel"{ /if }>
+                                <input type="hidden" width="{ $fVal['@attributes'].width }" height="{ $fVal['@attributes'].height }" src="{ $berta.options.MEDIA_ABS_ROOT }{ $berta.section.mediafolder }/_bg_{ $fVal['@attributes'].src }" />
+                                <textarea>{ $fVal['value'] }</textarea>
+                            </li>
                         { /if }
                         { /foreach }
-                        </div>
+                        </ul>
                         
+                        {* if thumbnail cookie has been created *}
                         { if $smarty.cookies._berta_grid_img_link }
                         
                             { foreach $berta.section.mediaCacheData.file as $fKey => $fVal }
@@ -138,6 +142,7 @@
                                 { /if }
                             { /foreach }
                         
+                        {* if no thumbnail cookie *}
                         { else }
                         
                             { foreach $berta.section.mediaCacheData.file as $fKey => $fVal }

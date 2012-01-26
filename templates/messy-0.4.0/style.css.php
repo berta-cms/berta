@@ -409,12 +409,15 @@ a img { border: none; }
 	#xBackgroundContainer #xBackgroundPrevious a:hover { background-position: 0px -29px; }
 	#xBackgroundContainer #xBackgroundPrevious a span { display: none; }
 			
+			#xBackground .visual-list {
+				display: none;
+			}
 			#xBackground .visual-image {
 				position: absolute;
 				top: 0; right: 0; bottom: 0; left: 0;
 				overflow: hidden;
 			}
-				#xBackground .bg-element {
+				#xBackground .visual-image .bg-element {
 					position: absolute; display: block;
 				}
 			#xBackground .visual-caption {
@@ -424,6 +427,11 @@ a img { border: none; }
 				top: 50%; left: 50%;
 				margin-left: -<? echo $s->get('entryLayout', 'contentWidth')/2 ?>px;
 			}
+				#xBackground .visual-caption * {
+					background: inherit !important;
+					color: inherit !important;
+					background-color: transparent !important;
+				}
 
 #xGridView {
 	left: <? echo $s->get('grid', 'marginLeft') ?>;

@@ -347,14 +347,15 @@ var BertaBackground = new Class({
                 this._autoplay();
             }
             
-			if(this.selected.getNext())
-                newImage = this.selected.getNext();
+			if(this.selected.getNext()) {
+                newBgContent = this.selected.getNext();
+			}
             else
-                newImage = this.imagesList.getFirst();
+                newBgContent = this.imagesList.getFirst();
             
             this.captionFadeOutFx.start('opacity', 0);
             this.fadeOutFx.start('opacity', 0).chain(
-                function() { this._getNewImage(newImage); }.bind(this)
+                function() { this._getnewBgContent(newBgContent); }.bind(this)
             );
         }.bind(this));
 
@@ -370,13 +371,13 @@ var BertaBackground = new Class({
             }
             
 			if(this.selected.getPrevious())
-                newImage = this.selected.getPrevious();
+                newBgContent = this.selected.getPrevious();
             else
-                newImage = this.imagesList.getLast();
+                newBgContent = this.imagesList.getLast();
             
             this.captionFadeOutFx.start('opacity', 0);
             this.fadeOutFx.start('opacity', 0).chain(
-                function() { this._getNewImage(newImage); }.bind(this)
+                function() { this._getnewBgContent(newBgContent); }.bind(this)
             );          
         }.bind(this));
         
@@ -400,13 +401,13 @@ var BertaBackground = new Class({
             this.selected = this.imagesList.getElement('.sel');
             
 			if(this.selected.getNext())
-                newImage = this.selected.getNext();
+                newBgContent = this.selected.getNext();
             else
-                newImage = this.imagesList.getFirst();
+                newBgContent = this.imagesList.getFirst();
             
             this.captionFadeOutFx.start('opacity', 0);
             this.fadeOutFx.start('opacity', 0).chain(
-                function() { this._getNewImage(newImage); }.bind(this)
+                function() { this._getnewBgContent(newBgContent); }.bind(this)
             );
         }.bind(this), time);
     },
@@ -415,22 +416,23 @@ var BertaBackground = new Class({
         this.caption.setStyle('margin-top', '-' + (this.caption.getSize().y / 2) + 'px');
     },    
     
-	_getNewImage: function(newImage) {
+	_getnewBgContent: function(newBgContent) {
+        newImage = newBgContent.getElement('input');
 		newWidth = newImage.get('width'); newHeight = newImage.get('height'); newSrc = newImage.get('src');
-        newCaption = newImage.get('caption');
+        newCaption = newBgContent.getElement('textarea').get('text');
         
         this.selected.removeClass('sel');
-        newImage.addClass('sel');
+        newBgContent.addClass('sel');
         
         if(obj = this.image) obj.destroy();
         
         this.caption.set('html', newCaption);        
-        this.image = new Asset.image(newSrc, { class: 'bg-element visualContent', width: newWidth, height: newHeight, onLoad: this._getNewImageFinish.bind(this) });
+        this.image = new Asset.image(newSrc, { class: 'bg-element visualContent', width: newWidth, height: newHeight, onLoad: this._getnewBgContentFinish.bind(this) });
         
         this._init();
 	},
     
-    _getNewImageFinish: function() {
+    _getnewBgContentFinish: function() {
         this.container.getElement('.visual-image').adopt(this.image);
         this.fadeInFx.set('opacity', 0).start('opacity', 1);
         this.captionFadeInFx.set('opacity', 0).start('opacity', 1);
