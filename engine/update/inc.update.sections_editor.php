@@ -222,6 +222,13 @@ else if($decoded['action'] == 'SET_BG_FADE_CONTENT') {
 	$sectionsList[$sName]['mediaCacheData']['@attributes']['fade_content'] = $decoded['params'];
 	BertaEditor::saveSections($sectionsList);
 }
+else if($decoded['action'] == 'SET_BG_HIDE_IMAGES') {
+	$sectionsList = BertaEditor::getSections();
+	$sName = $decoded['section'];
+	if(empty($sectionsList[$sName]['mediaCacheData']['@attributes'])) $sectionsList[$sName]['mediaCacheData']['@attributes'] = array();
+	$sectionsList[$sName]['mediaCacheData']['@attributes']['hide_images'] = $decoded['params'];
+	BertaEditor::saveSections($sectionsList);
+}
 else if($decoded['action'] == 'RESET_BG_CAPTION_COLOR') {
 	$sectionsList = BertaEditor::getSections();
 	$sName = $decoded['section'];

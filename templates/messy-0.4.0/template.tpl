@@ -51,7 +51,7 @@
         <div id="allContainer">
         
         {* grid trigger *}
-        { if $berta.section.type == 'grid' && $berta.section.mediaCacheData.file && !$smarty.cookies._berta_grid_view }
+        { if $berta.section.type == 'grid' && $berta.section.mediaCacheData.file && !$smarty.cookies._berta_grid_view  && (!$berta.section.mediaCacheData['@attributes'].hide_images || $berta.section.mediaCacheData['@attributes'].hide_images == 'no') }
 		<div id="xGridViewTriggerContainer" { if $berta.environment == 'engine' }style="right: 44px"{ else if $berta.environment == 'site' && $shoppingCartSection } style="top: 24px; right: 16px;" { /if }>
 			<a id="xGridViewTrigger" href="{ bertaLink section=$berta.sectionName }"><span>thumbnails</span></a>
 		</div>
@@ -247,9 +247,17 @@
                 {* if only one image *}
                 { if $berta.section.mediaCacheData.file['@attributes'] && $berta.section.mediaCacheData.file['@attributes'].type == 'image' && !($smarty.cookies._berta_grid_view && $berta.section.type == 'grid') }
                 
+                    {* if both (images & caption) are visible *}
+                    { if !$berta.section.mediaCacheData['@attributes'].hide_images || $berta.section.mediaCacheData['@attributes'].hide_images == 'no' }
                     <div class="visual-image">
                         <img width="{ $berta.section.mediaCacheData.file['@attributes'].width }" height="{ $berta.section.mediaCacheData.file['@attributes'].height }" src="{ $berta.options.MEDIA_ROOT }{ $berta.section.mediafolder }/_bg_{ $berta.section.mediaCacheData.file['@attributes'].src }" class="bg-element visualContent" />
                     </div>
+                    {* if only caption is visible *}
+                    { else }
+                    <div class="visual-image">
+                        <img width="" height="" src="" class="bg-element visualContent" />
+                    </div>
+                    { /if }
                     <div class="visual-caption" style="background: rgb({ $berta.section.mediaCacheData['@attributes'].caption_bg_color }); background: rgba({ $berta.section.mediaCacheData['@attributes'].caption_bg_color },0.5); color: { $berta.section.mediaCacheData['@attributes'].caption_color }">
                         { $berta.section.mediaCacheData.file.value }
                     </div>
@@ -258,14 +266,27 @@
                 { elseif $berta.section.mediaCacheData.file && !$berta.section.mediaCacheData.file['@attributes'] && !($smarty.cookies._berta_grid_view && $berta.section.type == 'grid') }
                 
                     <ul class="visual-list">
-                    { foreach $berta.section.mediaCacheData.file as $fKey => $fVal }
-                    { if  $fVal['@attributes'].type == 'image' }
-                        <li {if $smarty.cookies._berta_grid_img_link && $smarty.cookies._berta_grid_img_link == $fVal['@attributes'].src }class="sel"{ elseif !$smarty.cookies._berta_grid_img_link && $fVal@first }class="sel"{ /if }>
-                            <input type="hidden" width="{ $fVal['@attributes'].width }" height="{ $fVal['@attributes'].height }" src="{ $berta.options.MEDIA_ABS_ROOT }{ $berta.section.mediafolder }/_bg_{ $fVal['@attributes'].src }" />
-                            <textarea>{ $fVal['value'] }</textarea>
-                        </li>
+                    {* if (both images & caption) are visible *}
+                    { if !$berta.section.mediaCacheData['@attributes'].hide_images || $berta.section.mediaCacheData['@attributes'].hide_images == 'no' }
+                        { foreach $berta.section.mediaCacheData.file as $fKey => $fVal }
+                        { if  $fVal['@attributes'].type == 'image' }
+                            <li {if $smarty.cookies._berta_grid_img_link && $smarty.cookies._berta_grid_img_link == $fVal['@attributes'].src }class="sel"{ elseif !$smarty.cookies._berta_grid_img_link && $fVal@first }class="sel"{ /if }>
+                                <input type="hidden" width="{ $fVal['@attributes'].width }" height="{ $fVal['@attributes'].height }" src="{ $berta.options.MEDIA_ABS_ROOT }{ $berta.section.mediafolder }/_bg_{ $fVal['@attributes'].src }" />
+                                <textarea>{ $fVal['value'] }</textarea>
+                            </li>
+                        { /if }
+                        { /foreach }
+                    {* if only caption is visible *}
+                    { else }
+                        { foreach $berta.section.mediaCacheData.file as $fKey => $fVal }
+                        { if  $fVal['@attributes'].type == 'image' }
+                            <li {if $smarty.cookies._berta_grid_img_link && $smarty.cookies._berta_grid_img_link == $fVal['@attributes'].src }class="sel"{ elseif !$smarty.cookies._berta_grid_img_link && $fVal@first }class="sel"{ /if }>
+                                <input type="hidden" width="" height="" src="" />
+                                <textarea>{ $fVal['value'] }</textarea>
+                            </li>
+                        { /if }
+                        { /foreach }
                     { /if }
-                    { /foreach }
                     </ul>
                     
                     {* if thumbnail cookie has been created *}
@@ -284,17 +305,31 @@
                     
                     {* if no thumbnail cookie *}
                     { else }
-                    
-                        { foreach $berta.section.mediaCacheData.file as $fKey => $fVal }
-                            { if $fVal@first && $fVal['@attributes'].type == 'image' }
-                                <div class="visual-image">
-                                    <img width="{ $fVal['@attributes'].width }" height="{ $fVal['@attributes'].height }" src="{ $berta.options.MEDIA_ABS_ROOT }{ $berta.section.mediafolder }/_bg_{ $fVal['@attributes'].src }" class="bg-element visualContent" />
-                                </div>
-                                <div class="visual-caption" style="background: rgb({ $berta.section.mediaCacheData['@attributes'].caption_bg_color }); background: rgba({ $berta.section.mediaCacheData['@attributes'].caption_bg_color },0.5); color: { $berta.section.mediaCacheData['@attributes'].caption_color }">
-                                    { $fVal['value'] }
-                                </div>
-                            { /if }
-                        { /foreach }
+                        {* if both (images & caption) are visible *}
+                        { if !$berta.section.mediaCacheData['@attributes'].hide_images || $berta.section.mediaCacheData['@attributes'].hide_images == 'no' }
+                            { foreach $berta.section.mediaCacheData.file as $fKey => $fVal }
+                                { if $fVal@first && $fVal['@attributes'].type == 'image' }
+                                    <div class="visual-image">
+                                        <img width="{ $fVal['@attributes'].width }" height="{ $fVal['@attributes'].height }" src="{ $berta.options.MEDIA_ABS_ROOT }{ $berta.section.mediafolder }/_bg_{ $fVal['@attributes'].src }" class="bg-element visualContent" />
+                                    </div>
+                                    <div class="visual-caption" style="background: rgb({ $berta.section.mediaCacheData['@attributes'].caption_bg_color }); background: rgba({ $berta.section.mediaCacheData['@attributes'].caption_bg_color },0.5); color: { $berta.section.mediaCacheData['@attributes'].caption_color }">
+                                        { $fVal['value'] }
+                                    </div>
+                                { /if }
+                            { /foreach }
+                        {* if only caption is visible *}
+                        { else }
+                            { foreach $berta.section.mediaCacheData.file as $fKey => $fVal }
+                                { if $fVal@first && $fVal['@attributes'].type == 'image' }
+                                    <div class="visual-image">
+                                        <img width="" height="" src="" class="bg-element visualContent" />
+                                    </div>
+                                    <div class="visual-caption" style="background: rgb({ $berta.section.mediaCacheData['@attributes'].caption_bg_color }); background: rgba({ $berta.section.mediaCacheData['@attributes'].caption_bg_color },0.5); color: { $berta.section.mediaCacheData['@attributes'].caption_color }">
+                                        { $fVal['value'] }
+                                    </div>
+                                { /if }
+                            { /foreach }
+                        { /if }
                     
                     { /if }
                     
