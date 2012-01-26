@@ -120,6 +120,11 @@ var BertaBgEditor = new Class({
 			this.elementEdit_init(item, this.options.xBertaEditorClassSelectRC);
 		}, this);
 		
+		// reset bg colors handler
+		this.container.getElements('.xBgColorReset a').each(function(item) {
+			this.elementEdit_init(item.getParent('div'), this.options.xBertaEditorClassReset);
+		}, this);
+		
 		// close link
 		this.container.getElement('a.xBgEditorCloseLink').addEvent('click', this.onCloseClick.bindWithEvent(this));
 		

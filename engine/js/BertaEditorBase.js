@@ -51,7 +51,8 @@ var BertaEditorBase = new Class({
 		xBertaEditorClassDragXY: '.xEditableDragXY',
 		
 		xBertaEditorClassAction: '.xAction',
-
+		xBertaEditorClassReset: '.xReset',
+		
 		xBertaEditorClassGallery: '.xEntryGalleryEditor',
 		
 		xEmptyClass: '.xEmpty',
@@ -507,6 +508,17 @@ var BertaEditorBase = new Class({
 						if(action) editor.elementEdit_action(el, action, params);
 					}
 				}.bindWithEvent(el, this));
+				
+			case this.options.xBertaEditorClassReset:
+				el.store('onActionComplete', onElementSave);
+				el.addClass(editorClass.substr(1));
+				el.addEvent('click', function(event, editor) {
+					if(!this.hasClass('xSaving') && !this.hasClass('xEditing')) {
+						var action = this.getClassStoredValue('xCommand');
+						var params = this.getClassStoredValue('xParams');
+						if(action) editor.elementEdit_reset(el, action, params);
+					}
+				}.bindWithEvent(el, this));
 			
 			default:
 				break;
@@ -794,6 +806,8 @@ var BertaEditorBase = new Class({
 	elementEdit_action: function(el, action, params) {
 		el.addClass('xSaving');
 		var entryInfo = this.getEntryInfoForElement(el);
+		if(entryInfo.section == '') entryInfo.section = this.sectionName;
+		
 		new Request.JSON({
 			url: this.options.updateUrl,
 			data: "json=" + JSON.encode({
@@ -814,6 +828,45 @@ var BertaEditorBase = new Class({
 				}
 			}.bind(this)
 		}).post();
+	},
+	
+	
+	
+	elementEdit_reset: function(el, action, params) {
+		if(el.hasClass('xBgColorReset') && confirm('Are you sure you want to remove this color?')) {
+			el.addClass('xSaving');
+			var entryInfo = this.getEntryInfoForElement(el);
+			if(entryInfo.section == '') entryInfo.section = this.sectionName;
+			
+			new Request.JSON({
+				url: this.options.updateUrl,
+				data: "json=" + JSON.encode({
+					section: entryInfo.section,	action: action, property: null, value: null
+				}),
+				onComplete: function(resp) {
+					if(!resp) {
+						alert('server produced an error while performing the requested action! something went sooooo wrong...');
+					} else if(resp && !resp.error_message) {
+					} else {
+						alert(resp.error_message);
+					}
+					if(el) {
+						el.removeClass.delay(500, el, 'xSaving');
+						elem = el.getSiblings('.xCommand-' + params);
+						if(elem.length == 0) elem = el.getSiblings('.xProperty-' + params);
+						elem.each(function(item) {
+							item.set('title', '#ffffff').set('text', '#ffffff');
+							new Element('SPAN', { 
+								'class': 'colorPreview', 
+								'styles': {
+									'background-color': 'rgb(255, 255, 255)'
+								}
+							}).inject(item, 'top');
+						});
+					}
+				}.bind(this)
+			}).post();
+		}
 	},
 	
 	

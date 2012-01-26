@@ -428,6 +428,7 @@ a img { border: none; }
 				text-align: center;
 				top: 50%; left: 50%;
 				margin-left: -<? echo $s->get('entryLayout', 'contentWidth')/2 ?>px;
+				padding: 0 10px;
 			}
 				#xBackground .visual-caption * {
 					background: inherit !important;

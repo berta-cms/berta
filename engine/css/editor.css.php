@@ -481,6 +481,7 @@ body.xEditorEnabled { }
 				.xBgColorSettings .xBgCaptionBackColor {
 					float: left;
 					margin-top: 6px;
+					width: 100px;
 				}
 			
 				.xBgColor span.colorPreview,
@@ -494,6 +495,19 @@ body.xEditorEnabled { }
 					cursor: pointer;
 					border: 1px solid #000;
 				}
+				
+				.xBgColorReset {
+					float: left;
+					margin-top: 6px;
+					cursor: pointer;
+				}
+					.xBgColorReset a {
+						color: #333;
+						text-decoration: none !important;
+					}
+					.xBgColorReset a span:hover {
+						text-decoration: underline;
+					}
 		
 		.xBgImgSizeSettings,
 		.xBgSlideshowSettings {
