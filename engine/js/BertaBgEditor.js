@@ -579,6 +579,8 @@ var BertaBgEditor = new Class({
 		var media = tabsContainer.getSiblings('.images');
 		var addMedia = tabsContainer.getSiblings('.xBgAddMedia');
 		var settings = tabsContainer.getSiblings('.xBgSettings');
+		var imageSize = tabsContainer.getSiblings('.xBgImgSizeSettings');
+		var slideshowSettings = tabsContainer.getSiblings('.xBgSlideshowSettings');
 		var swiffEl = tabsContainer.getSiblings('.swiff-uploader-box');
 		
 		var tab = target.getClassStoredValue('xParams');
@@ -588,16 +590,26 @@ var BertaBgEditor = new Class({
 			tabsContainer.getElements('.tab a').removeClass('selected');
 			target.addClass('selected');
 
-			$$(settings).addClass('xHidden');
+			$$(settings, imageSize, slideshowSettings).addClass('xHidden');
 			$$(media, addMedia, swiffEl).removeClass('xHidden');
-		}
-		
-		if(tab == 'media_settings') {
+		} else if(tab == 'settings') {
 			tabsContainer.getElements('.tab a').removeClass('selected');
 			target.addClass('selected');
 			
-			$$(media, swiffEl, addMedia).addClass('xHidden');
+			$$(media, swiffEl, addMedia, imageSize, slideshowSettings).addClass('xHidden');
 			settings.removeClass('xHidden');
+		} else if(tab == 'image_size_settings') {
+			tabsContainer.getElements('.tab a').removeClass('selected');
+			target.addClass('selected');
+			
+			$$(media, swiffEl, addMedia, settings, slideshowSettings).addClass('xHidden');
+			imageSize.removeClass('xHidden');
+		} else if(tab == 'slideshow_settings') {
+			tabsContainer.getElements('.tab a').removeClass('selected');
+			target.addClass('selected');
+			
+			$$(media, swiffEl, addMedia, settings, imageSize).addClass('xHidden');
+			slideshowSettings.removeClass('xHidden');
 		}
 	},
 

@@ -189,13 +189,18 @@ if($jsonRequest) {
 				
 				echo '<div id="xBgEditorPanel" class="xPanel">';
 					echo '<div class="xBgEditorTabs">';
-						echo '<div class="xBgMedia tab">',
+						echo '<div class="xBgMediaTab tab">',
 					    		'<a href="#" class="xParams-media selected" title="add images and videos"><span>media</span></a>',	
 					    	 '</div>';
-					    echo '<div class="xBgMediaSettings tab">',
-					    		'<a href="#" class="xParams-media_settings" title="background settings"><span>settings</span></a>',	
+					    echo '<div class="xBgSettingsTab tab">',
+					    		'<a href="#" class="xParams-settings" title="background settings"><span>background settings</span></a>',	
 					    	 '</div>';
-				
+						echo '<div class="xBgSlideshowSettingsTab tab">',
+					    		'<a href="#" class="xParams-slideshow_settings" title="slideshow settings"><span>slideshow settings</span></a>',	
+					    	 '</div>';
+						echo '<div class="xBgImgSizeSettingsTab tab">',
+					    		'<a href="#" class="xParams-image_size_settings" title="image size"><span>image size</span></a>',	
+					    	 '</div>';
 					    echo '<a class="xBgEditorCloseLink" href="#" title="close background editor"><span>X</span></a>';
 					echo '</div>';
 					
@@ -212,19 +217,7 @@ if($jsonRequest) {
 					    echo '<a class="xBgAddImagesLink xHidden" href="#"><span>+ add media</span></a>';
 					echo '</div>';
 				
-					echo '<div class="xBgSettings xGreyBack xHidden">';
-						echo '<div class="xBgImgSizeSettings">',
-					    		'<div class="caption">background image size</div>',
-					    	 	'<div class="xBgImgSize xEditableSelectRC xCommand-SET_BG_IMG_SIZE" x_options="large||medium||small">' . $bgSize . '</div>',
-								'<br class="clear" />',
-					    	 '</div>';
-					
-						echo '<div class="xBgSlideshowSettings">',
-					    		'<div class="caption">autoplay seconds</div>',
-					    	 	'<div class="xBgAutoPlay xEditableRC xCommand-SET_AUTOPLAY xCaption-0" title="' . $autoPlay . '">' . $autoPlay . '</div>',
-					    	 	'<br class="clear" />',
-					    	 '</div>';
-
+					echo '<div class="xBgSettings xHidden">';
 					   	echo '<div class="xBgColorSettings">',
 					    		'<div class="caption">background color</div>',
 					    	 	'<div class="xBgColor xEditableColor xProperty-sectionBgColor xNoHTMLEntities xCSSUnits-0 xRequired-1 " title="' . $bgColor . '">' . $bgColor . '</div>',
@@ -237,6 +230,19 @@ if($jsonRequest) {
 								'<br class="clear" />',
 							 '</div>';
 					echo '</div>';
+					
+					echo '<div class="xBgImgSizeSettings xHidden">';
+					    echo '<div class="caption">background image size</div>',
+							 '<div class="xBgImgSize xEditableSelectRC xCommand-SET_BG_IMG_SIZE" x_options="large||medium||small">' . $bgSize . '</div>',
+							 '<br class="clear" />';
+					echo '</div>';
+					
+					echo '<div class="xBgSlideshowSettings xHidden">';
+					    echo '<div class="caption">autoplay seconds</div>',
+							 '<div class="xBgAutoPlay xEditableRC xCommand-SET_AUTOPLAY xCaption-0" title="' . $autoPlay . '">' . $autoPlay . '</div>',
+							 '<br class="clear" />';
+					echo '</div>';
+							 
 					echo '<div class="images"><ul>';
 					    if(!empty($section['mediaCacheData']['file']) && count($section['mediaCacheData']['file']) > 0) {
 					    	// if the xml tag is not a list tag, convert it.
