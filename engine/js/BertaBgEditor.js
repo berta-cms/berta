@@ -115,6 +115,11 @@ var BertaBgEditor = new Class({
 			this.elementEdit_init(item, this.options.xBertaEditorClassSelectRC);
 		}, this);
 		
+		// bg fade content handle
+		this.container.getElements('.xBgFading').each(function(item) { 
+			this.elementEdit_init(item, this.options.xBertaEditorClassSelectRC);
+		}, this);
+		
 		// close link
 		this.container.getElement('a.xBgEditorCloseLink').addEvent('click', this.onCloseClick.bindWithEvent(this));
 		

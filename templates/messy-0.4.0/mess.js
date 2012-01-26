@@ -5,6 +5,10 @@ var MessyMess = new Class({
 	shoppingCart: null,
 	reservation: null,
 	pageScroller: null,
+    
+    fadeContent: null,
+    bgContainer: null,
+    bgImage: null,
 	
 	initialize: function() {
 		window.addEvent('domready', this.onDOMReady.bind(this));
@@ -71,12 +75,13 @@ var MessyMess = new Class({
 	
 	onDOMReady: function() {
 		// Berta Background
-		var bgContainer = $('xBackground');
+		this.bgContainer = $('xBackground');
         
-		if(bgContainer) var bgImage = bgContainer.getElement('.visual-image img');
-
-		if(bgImage) {
+		if(this.bgContainer) this.bgImage = this.bgContainer.getElement('.visual-image img');
+        
+		if(this.bgImage) {
 			var bertaBackground = new BertaBackground();
+            this.fadeContent = this.bgContainer.getClassStoredValue('xBgDataFading');
 		}
 		
         // Grid view
@@ -129,9 +134,8 @@ var MessyMess = new Class({
 	},
 	
 	onLoad: function() {
-        
-        // Hide content
-        if($('xBackground').getElement('.visual-image')) {
+        // Fade content
+        if(this.fadeContent == 'enabled' && this.bgContainer.getElement('.visual-image')) {
             var hideContent, lastX, lastY;
             window.addEvent('mousemove', function(event) {       
                 if(!lastX && !lastY) {
@@ -145,12 +149,10 @@ var MessyMess = new Class({
                         hideContent = 0;
                     }
                     
-                    $('contentContainer').setStyle('opacity', '1');
-                    $('xGridViewTrigger').setStyle('opacity', '1');
+                    $('allContainer').setStyle('opacity', '1');
                     $('bottom').setStyle('opacity', '1');
                     hideContent = setTimeout(function() {
-                        $('contentContainer').tween('opacity', '0');
-                        $('xGridViewTrigger').tween('opacity', '0');
+                        $('allContainer').tween('opacity', '0');
                         $('bottom').tween('opacity', '0');
                     }, 3000);
                     
@@ -313,6 +315,7 @@ var BertaBackground = new Class({
     captionFadeOutFx: null,
     captionFadeInFx: null,
     
+    
 	initialize: function(options) {
 		this.setOptions(options);
 		
@@ -395,6 +398,7 @@ var BertaBackground = new Class({
         }
 	},
 
+    
     _autoplay: function() {
         time = this.data.options.autoplay * 1000;
         this.autoplayInterval = setInterval(function() {

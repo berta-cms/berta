@@ -180,6 +180,8 @@ if($jsonRequest) {
 				
 				$autoPlay = !empty($section['mediaCacheData']['@attributes']['autoplay']) ? $section['mediaCacheData']['@attributes']['autoplay'] : '0';
 				$bgSize = !empty($section['mediaCacheData']['@attributes']['image_size']) ? $section['mediaCacheData']['@attributes']['image_size'] : 'large';
+				$bgFading = !empty($section['mediaCacheData']['@attributes']['fade_content']) ? $section['mediaCacheData']['@attributes']['fade_content'] : 'disabled';
+				
 				$bgColor = !empty($section['sectionBgColor']['value']) ? $section['sectionBgColor']['value'] : '#FFFFFF';
 				$bgCaptionColor = !empty($section['mediaCacheData']['@attributes']['caption_color']) ? $section['mediaCacheData']['@attributes']['caption_color'] : '#FFFFFF';
 				$bgCaptionBackColorTmp = !empty($section['mediaCacheData']['@attributes']['caption_bg_color']) ? explode(',', $section['mediaCacheData']['@attributes']['caption_bg_color']) : explode(',', '255,255,255');
@@ -218,7 +220,12 @@ if($jsonRequest) {
 					echo '</div>';
 				
 					echo '<div class="xBgSettings xHidden">';
-					   	echo '<div class="xBgColorSettings">',
+					   	echo '<div class="xBgFadingSettings">',
+					    		'<div class="caption">fade content</div>',
+					    	 	'<div class="xBgFading xEditableSelectRC xCommand-SET_BG_FADE_CONTENT" x_options="enabled||disabled">' . $bgFading . '</div>',
+								'<br class="clear" />',
+							 '</div>';
+						echo '<div class="xBgColorSettings">',
 					    		'<div class="caption">background color</div>',
 					    	 	'<div class="xBgColor xEditableColor xProperty-sectionBgColor xNoHTMLEntities xCSSUnits-0 xRequired-1 " title="' . $bgColor . '">' . $bgColor . '</div>',
 								'<br class="clear" />',

@@ -455,22 +455,33 @@ body.xEditorEnabled { }
     	        text-decoration: underline !important;
     	    }
 
-		/*.xBgSettings {*/
-		/*	margin: 6px 0;*/
-		/*}*/
-
+		.xBgSettings {
+			margin: 6px 0;
+		}
+			
+			.xBgFadingSettings .caption {
+				width: 200px;
+				float: left;
+			}
+			
+				.xBgFadingSettings .xBgFading,
+				.xBgColorSettings .xBgFading select {
+					float: left;
+					width: 100px;
+				}
+				
 			.xBgColorSettings .caption {
 				width: 200px;
 				float: left;
 				margin-top: 6px;
 			}
 
-			.xBgColorSettings .xBgColor,
-			.xBgColorSettings .xBgCaptionColor,
-			.xBgColorSettings .xBgCaptionBackColor {
-				float: left;
-				margin-top: 6px;
-			}
+				.xBgColorSettings .xBgColor,
+				.xBgColorSettings .xBgCaptionColor,
+				.xBgColorSettings .xBgCaptionBackColor {
+					float: left;
+					margin-top: 6px;
+				}
 			
 				.xBgColor span.colorPreview,
 				.xBgCaptionColor span.colorPreview,
