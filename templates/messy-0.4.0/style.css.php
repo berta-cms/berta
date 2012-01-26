@@ -363,10 +363,10 @@ a img { border: none; }
 
 #xBackgroundContainer #xBackground {
 	position: fixed;
-	z-index: -1000;
+	/*z-index: -1000;*/
+	z-index: -1;
 	width: 100%;
 	height: 100%;
-	z-index: -1;
 }
 
 #xBackgroundContainer #xBackgroundNext {
@@ -408,14 +408,7 @@ a img { border: none; }
 	}
 	#xBackgroundContainer #xBackgroundPrevious a:hover { background-position: 0px -29px; }
 	#xBackgroundContainer #xBackgroundPrevious a span { display: none; }
-/*
-		#xBackground .visual {
-			visibility: hidden;
-		}
-		#xBackground .visual.sel {
-			visibility: visible;
-		}
-*/
+			
 			#xBackground .visual-image {
 				position: absolute;
 				top: 0; right: 0; bottom: 0; left: 0;

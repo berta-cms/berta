@@ -664,8 +664,9 @@ var BertaEditorBase = new Class({
 			// Get action for Gallery type, Autoplay, Full screen & Image size
 			var action = el.getClassStoredValue('xCommand');
 			if(action) {
-				editorParams = newContentText;
-				//console.debug(newContentText);
+				if(action == 'SET_BG_CAPTION_BACK_COLOR') editorParams = newContentText.hexToRgb(true).join(',');
+				else editorParams = newContentText;
+				//console.debug(editorParams);
 			}
 			
 			new Request.JSON({

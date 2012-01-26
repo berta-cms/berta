@@ -110,7 +110,7 @@
                         <div class="visual-image">
                             <img width="{ $berta.section.mediaCacheData.file['@attributes'].width }" height="{ $berta.section.mediaCacheData.file['@attributes'].height }" src="{ $berta.options.MEDIA_ROOT }{ $berta.section.mediafolder }/_bg_{ $berta.section.mediaCacheData.file['@attributes'].src }" class="bg-element visualContent" />
                         </div>
-                        <div class="visual-caption" style="color: { $berta.section.mediaCacheData['@attributes'].caption_color }">
+                        <div class="visual-caption" style="background: rgb({ $berta.section.mediaCacheData['@attributes'].caption_bg_color }); background: rgba({ $berta.section.mediaCacheData['@attributes'].caption_bg_color },0.4); color: { $berta.section.mediaCacheData['@attributes'].caption_color }">
                             { $berta.section.mediaCacheData.file.value }
                         </div>
                     
@@ -132,7 +132,7 @@
                                     <div class="visual-image">
                                         <img width="{ $fVal['@attributes'].width }" height="{ $fVal['@attributes'].height }" src="{ $berta.options.MEDIA_ABS_ROOT }{ $berta.section.mediafolder }/_bg_{ $fVal['@attributes'].src }" class="bg-element visualContent" />
                                     </div>
-                                    <div class="visual-caption" style="color: { $berta.section.mediaCacheData['@attributes'].caption_color }">
+                                    <div class="visual-caption" style="background: rgb({ $berta.section.mediaCacheData['@attributes'].caption_bg_color }); background: rgba({ $berta.section.mediaCacheData['@attributes'].caption_bg_color },0.4); color: { $berta.section.mediaCacheData['@attributes'].caption_color }">
                                         { $fVal['value'] }
                                     </div>
                                 { /if }
@@ -145,7 +145,7 @@
                                     <div class="visual-image">
                                         <img width="{ $fVal['@attributes'].width }" height="{ $fVal['@attributes'].height }" src="{ $berta.options.MEDIA_ABS_ROOT }{ $berta.section.mediafolder }/_bg_{ $fVal['@attributes'].src }" class="bg-element visualContent" />
                                     </div>
-                                    <div class="visual-caption" style="color: { $berta.section.mediaCacheData['@attributes'].caption_color }">
+                                    <div class="visual-caption" style="background: rgb({ $berta.section.mediaCacheData['@attributes'].caption_bg_color }); background: rgba({ $berta.section.mediaCacheData['@attributes'].caption_bg_color },0.4); color: { $berta.section.mediaCacheData['@attributes'].caption_color }">
                                         { $fVal['value'] }
                                     </div>
                                 { /if }

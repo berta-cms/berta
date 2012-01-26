@@ -411,6 +411,10 @@ var BertaBackground = new Class({
         }.bind(this), time);
     },
     
+    _centerCaption: function() {
+        this.caption.setStyle('margin-top', '-' + (this.caption.getSize().y / 2) + 'px');
+    },    
+    
 	_getNewImage: function(newImage) {
 		newWidth = newImage.get('width'); newHeight = newImage.get('height'); newSrc = newImage.get('src');
         newCaption = newImage.get('caption');
@@ -420,6 +424,7 @@ var BertaBackground = new Class({
         
         if(obj = this.image) obj.destroy();
         
+        this.caption.set('html', newCaption);        
         this.image = new Asset.image(newSrc, { class: 'bg-element visualContent', width: newWidth, height: newHeight, onLoad: this._getNewImageFinish.bind(this) });
         
         this._init();
@@ -429,7 +434,6 @@ var BertaBackground = new Class({
         this.container.getElement('.visual-image').adopt(this.image);
         this.fadeInFx.set('opacity', 0).start('opacity', 1);
         this.captionFadeInFx.set('opacity', 0).start('opacity', 1);
-        this.caption.set('html', newCaption);
     },
 
 	_init: function() {
@@ -452,6 +456,7 @@ var BertaBackground = new Class({
         window.removeEvent('resize');
 		window.addEvent('resize', function() { this._onResize(el, scaleMultiplier) }.bind(this));
 		this._onResize(el, scaleMultiplier);
+        this._centerCaption();
 	},
 	
 	_onResize: function(el, scaleMultiplier) {

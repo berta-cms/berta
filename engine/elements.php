@@ -182,7 +182,10 @@ if($jsonRequest) {
 				$bgSize = !empty($section['mediaCacheData']['@attributes']['image_size']) ? $section['mediaCacheData']['@attributes']['image_size'] : 'large';
 				$bgColor = !empty($section['sectionBgColor']['value']) ? $section['sectionBgColor']['value'] : '#FFFFFF';
 				$bgCaptionColor = !empty($section['mediaCacheData']['@attributes']['caption_color']) ? $section['mediaCacheData']['@attributes']['caption_color'] : '#FFFFFF';
-
+				$bgCaptionBackColorTmp = !empty($section['mediaCacheData']['@attributes']['caption_bg_color']) ? explode(',', $section['mediaCacheData']['@attributes']['caption_bg_color']) : explode(',', '255,255,255');
+				$bgCaptionBackColor = '#';
+				foreach($bgCaptionBackColorTmp as $val)
+					$bgCaptionBackColor .= dechex($val);
 				
 				echo '<div id="xBgEditorPanel" class="xPanel">';
 					echo '<div class="xBgEditorTabs">';
@@ -228,6 +231,9 @@ if($jsonRequest) {
 								'<br class="clear" />',
 								'<div class="caption">caption color</div>',
 					    	 	'<div class="xBgCaptionColor xEditableColor xCommand-SET_BG_CAPTION_COLOR xNoHTMLEntities xCSSUnits-0 xRequired-1 " title="' . $bgCaptionColor . '">' . $bgCaptionColor . '</div>',
+								'<br class="clear" />',
+								'<div class="caption">caption background color</div>',
+					    	 	'<div class="xBgCaptionBackColor xEditableColor xCommand-SET_BG_CAPTION_BACK_COLOR xNoHTMLEntities xCSSUnits-0 xRequired-1 " title="' . $bgCaptionBackColor . '">' . $bgCaptionBackColor . '</div>',
 								'<br class="clear" />',
 							 '</div>';
 					echo '</div>';
