@@ -427,7 +427,9 @@ body.xEditorEnabled { }
 
 	/* containers */
 	#xBgEditorPanel .xBgSettings,
-	#xBgEditorPanel .xBgAddMedia {
+	#xBgEditorPanel .xBgAddMedia,
+	#xBgEditorPanel .xBgSlideshowSettings,
+	#xBgEditorPanel .xBgImgSizeSettings {
 		padding: 6px;
 	}
 	
@@ -452,36 +454,39 @@ body.xEditorEnabled { }
 		    .xBgAddMedia a.xBgAddImagesLink.hover span {
     	        text-decoration: underline !important;
     	    }
-    	    
-		.xBgSettings .xBgSlideshowSettings  {
+
+		.xBgSettings {
 			margin: 6px 0;
 		}
-		
-		.xBgSettings .xBgColorSettings {
-			margin: 10px 0;
-		}
 			
-			.xBgSlideshowSettings .caption,
-			.xBgColorSettings .caption {
+			.xBgFadingSettings .caption {
 				width: 200px;
 				float: left;
 			}
 			
-			.xBgSlideshowSettings .xBgAutoPlay {
-		    	width: 50px;
-			}
-			
-			.xBgSlideshowSettings .xBgAutoPlay,
-			.xBgSlideshowSettings .xBgAutoPlay input {
+				.xBgFadingSettings .xBgFading,
+				.xBgColorSettings .xBgFading select {
+					float: left;
+					width: 100px;
+				}
+				
+			.xBgColorSettings .caption {
+				width: 200px;
 				float: left;
+				margin-top: 6px;
 			}
+
+				.xBgColorSettings .xBgColor,
+				.xBgColorSettings .xBgCaptionColor,
+				.xBgColorSettings .xBgCaptionBackColor {
+					float: left;
+					margin-top: 6px;
+					width: 100px;
+				}
 			
-			.xBgColorSettings .xBgColor,
-			.xBgColorSettings .xBgColor span {
-				float: left;
-			}
-			
-				.xBgColor span.colorPreview {
+				.xBgColor span.colorPreview,
+				.xBgCaptionColor span.colorPreview,
+				.xBgCaptionBackColor span.colorPreview {
 					display: block;
 					float: left;
 					width: 1.2em;
@@ -491,6 +496,47 @@ body.xEditorEnabled { }
 					border: 1px solid #000;
 				}
 				
+				.xBgColorReset {
+					float: left;
+					margin-top: 6px;
+					cursor: pointer;
+				}
+					.xBgColorReset a {
+						color: #333;
+						text-decoration: none !important;
+					}
+					.xBgColorReset a span:hover {
+						text-decoration: underline;
+					}
+		
+		.xBgImgSizeSettings,
+		.xBgSlideshowSettings {
+			margin: 6px 0;
+		}
+			
+			.xBgImgSizeSettings .caption,
+			.xBgSlideshowSettings .caption {
+				width: 200px;
+				float: left;
+			}
+			
+			.xBgImgSizeSettings .xBgImgSize,
+			.xBgImgSizeSettings .xBgImgSize select {
+				width: 100px;
+			}
+			
+			.xBgSlideshowSettings .xBgAutoPlay,
+			.xBgSlideshowSettings .xBgAutoPlay input {
+				width: 50px;
+			}
+			
+			.xBgImgSizeSettings .xBgImgSize,
+			.xBgImgSizeSettings .xBgImgSize select,
+			.xBgSlideshowSettings .xBgAutoPlay,
+			.xBgSlideshowSettings .xBgAutoPlay input {
+				float: left;
+			}
+		
 	/* tabs */
 	#xBgEditorPanel .xBgEditorTabs {
 		padding: 6px 6px 0;
@@ -498,15 +544,19 @@ body.xEditorEnabled { }
 		background-color: #4a4a4a;
 	}
 	
-		.xBgEditorTabs .xBgMedia,
-		.xBgEditorTabs .xBgMediaSettings {
+		.xBgEditorTabs .xBgMediaTab,
+		.xBgEditorTabs .xBgSettingsTab,
+		.xBgEditorTabs .xBgImgSizeSettingsTab,
+		.xBgEditorTabs .xBgSlideshowSettingsTab {
 			float: left;
 			display: block;
 			height: 40px;
 		}
 		
-		.xBgEditorTabs .xBgMedia a,
-		.xBgEditorTabs .xBgMediaSettings a {
+		.xBgEditorTabs .xBgMediaTab a,
+		.xBgEditorTabs .xBgSettingsTab a,
+		.xBgEditorTabs .xBgImgSizeSettingsTab a,
+		.xBgEditorTabs .xBgSlideshowSettingsTab  a {
 			float: left;
 			display: block;
 			margin-right: 4px;
@@ -516,7 +566,9 @@ body.xEditorEnabled { }
 		}
 		
 		.xBgEditorTabs .xBgMedia a span,
-		.xBgEditorTabs .xBgMediaSettings a span {
+		.xBgEditorTabs .xBgMediaSettings a span,
+		.xBgEditorTabs .xBgImgSizeSettings a span,
+		.xBgEditorTabs .xBgSlideshowSettingsTab  a span {
 			display: block;
 			float: left;
 			height: 40px;
@@ -536,36 +588,66 @@ body.xEditorEnabled { }
 		    	color: #000;
 		    }
 	
-		.xBgEditorTabs .xBgMedia a {
+		.xBgEditorTabs .xBgMediaTab a {
 			background: url('../layout/gallery_icons_sprite.gif') no-repeat;
 			background-position: 0px -40px;
 			
 		}
 		
-			.xBgEditorTabs .xBgMedia a:hover {
+			.xBgEditorTabs .xBgMediaTab a:hover {
 				background-position: 0px -80px;
 			}
 		
-			.xBgEditorTabs .xBgMedia a.selected {
+			.xBgEditorTabs .xBgMediaTab a.selected {
 				background-position: 0px 0px;
 			}
 		
-		.xBgEditorTabs .xBgMediaSettings a {
+		.xBgEditorTabs .xBgSettingsTab a {
 			background: url('../layout/gallery_icons_sprite.gif') no-repeat;
 			background-position: -160px -40px;
 			
 		}
 		
-			.xBgEditorTabs .xBgMediaSettings a:hover {	
+			.xBgEditorTabs .xBgSettingsTab a:hover {	
 				background-position: -160px -80px;
 			}
 		
-			.xBgEditorTabs .xBgMediaSettings a.selected {
+			.xBgEditorTabs .xBgSettingsTab a.selected {
 				background-position: -160px 0px;
 			}
-
-		.xBgEditorTabs .xBgMedia a span,
-		.xBgEditorTabs .xBgMediaSettings a span {
+		
+		.xBgEditorTabs .xBgImgSizeSettingsTab a {
+			background: url('../layout/gallery_icons_sprite.gif') no-repeat;
+			background-position: -120px -40px;
+			
+		}
+		
+			.xBgEditorTabs .xBgImgSizeSettingsTab a:hover {	
+				background-position: -120px -80px;
+			}
+		
+			.xBgEditorTabs .xBgImgSizeSettingsTab a.selected {
+				background-position: -120px 0px;
+			}
+		
+		.xBgEditorTabs .xBgSlideshowSettingsTab a {
+			background: url('../layout/gallery_icons_sprite.gif') no-repeat;
+			background-position: -40px -40px;
+			
+		}
+		
+			.xBgEditorTabs .xBgSlideshowSettingsTab a:hover {	
+				background-position: -40px -80px;
+			}
+		
+			.xBgEditorTabs .xBgSlideshowSettingsTab a.selected {
+				background-position: -40px 0px;
+			}
+			
+		.xBgEditorTabs .xBgMediaTab a span,
+		.xBgEditorTabs .xBgSettingsTab a span,
+		.xBgEditorTabs .xBgImgSizeSettingsTab a span,
+		.xBgEditorTabs .xBgSlideshowSettingsTab a span {
 			display: none;
 		}
 

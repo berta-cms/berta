@@ -135,9 +135,21 @@ var BertaEditor_Sections = new Class({
 		    	fixed: true,
 		        className: 'xCreateShopSectionTip',
 		        offset: {'x': 460, 'y': 20},
+				showDelay: 0,
 		        onHide: function(tip, el) {
 		        	tip.show();
-		        }
+		        },
+				onShow: function(tip, el) {
+					$('xRemoveTips').addEvent('click', function(event) {
+						event.stop();
+						
+						if(confirm("Berta asks:\n\nAre you sure you want to remove tips?\nYou will not be able to view them again.")) {
+							// Destroys and disposes of newEntryContentTip & sets cookie
+							$$('.xCreateShopSectionTip').destroy(); $$('.xCreateShopSectionTip').dispose();
+							Cookie.write('_berta_shop_tips', 'hidden', {duration: 365, path: '/'});
+						}
+					});
+				}
 		    });
 		    
 		    if (Cookie.read('_berta_shop_tips') && Cookie.read('_berta_shop_tips') == 'create_shop_cart') {

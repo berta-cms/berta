@@ -86,7 +86,7 @@ a img { border: none; }
 
 #contentContainer {
 	position: relative;
-	width: <? echo $s->get('pageLayout', 'contentWidth') ?>;
+	width: 100%;
 }
 
 #contentContainer h1 {
@@ -363,91 +363,113 @@ a img { border: none; }
 
 #xBackgroundContainer #xBackground {
 	position: fixed;
-	z-index: -1000;
+	top: 0;
+	left: 0;
+	/*z-index: -1000;*/
+	z-index: -1;
 	width: 100%;
 	height: 100%;
-	z-index: -1;
 }
 
 #xBackgroundContainer #xBackgroundNext {
 	position: fixed;
 	width: 40px;
-	height: 29px;
-	background: url('layout/arrow_next_sprite.png');
-	background-position: 0px 0px;
 	z-index: 1000;
 	right: 0px;
 	top: 50%;
 	margin-top: -14px;
-	cursor: pointer;
 	visibility: visible;
 }
-	#xBackgroundContainer #xBackgroundNext:hover { background-position: 0px -29px; }
-	#xBackgroundContainer #xBackgroundNext.bgHidden { visibility: hidden; } 
+	#xBackgroundContainer #xBackgroundNext.bgHidden { visibility: hidden; }
+	#xBackgroundNext a {
+		background: url('layout/arrow_next_sprite.png');
+		background-position: 0px 0px;
+		width: 40px;
+		height: 29px;
+		display: block;
+	}
+	#xBackgroundContainer #xBackgroundNext a:hover { background-position: 0px -29px; }
+	#xBackgroundContainer #xBackgroundNext a span { display: none; }
 
 #xBackgroundContainer #xBackgroundPrevious {
 	position: fixed;
 	width: 40px;
-	height: 29px;
-	background: url('layout/arrow_prev_sprite.png');
-	background-position: 0px 0px;
 	z-index: 1000;
 	left: 0px;
 	top: 50%;
 	margin-top: -14px;
-	cursor: pointer;
 	visibility: visible;
 }
-	#xBackgroundContainer #xBackgroundPrevious:hover { background-position: 0px -29px; }
 	#xBackgroundContainer #xBackgroundPrevious.bgHidden { visibility: hidden; }
-/*
-		#xBackground .visual {
-			visibility: hidden;
-		}
-		#xBackground .visual.sel {
-			visibility: visible;
-		}
-*/
+	#xBackgroundPrevious a {
+		background: url('layout/arrow_prev_sprite.png');
+		background-position: 0px 0px;
+		width: 40px;
+		height: 29px;
+		display: block;
+	}
+	#xBackgroundContainer #xBackgroundPrevious a:hover { background-position: 0px -29px; }
+	#xBackgroundContainer #xBackgroundPrevious a span { display: none; }
+			
+			#xBackground .visual-list {
+				display: none;
+			}
 			#xBackground .visual-image {
 				position: absolute;
 				top: 0; right: 0; bottom: 0; left: 0;
 				overflow: hidden;
 			}
-				#xBackground .bg-element {
+				#xBackground .visual-image .bg-element {
 					position: absolute; display: block;
 				}
 			#xBackground .visual-caption {
 				position: absolute;
 				width: <? echo $s->get('entryLayout', 'contentWidth') ?>;
-				text-align: center;
+				text-align: left;
 				top: 50%; left: 50%;
 				margin-left: -<? echo $s->get('entryLayout', 'contentWidth')/2 ?>px;
+				padding: 0 10px;
 			}
-#gridView {
-	left: <? echo $s->get('grid', 'marginLeft') ?>;
-	top: <? echo $s->get('grid', 'marginTop') ?>;
+				#xBackground .visual-caption * {
+					background: inherit !important;
+					color: inherit !important;
+					background-color: transparent !important;
+				}
+
+#xGridView {
+	top: 100px;
+	left: <? echo (100 - $s->get('grid', 'contentWidth'))/2 ?>%;
+	right: <? echo (100 - $s->get('grid', 'contentWidth'))/2 ?>%;
 	width: <? echo $s->get('grid', 'contentWidth') ?>;
+	visibility: hidden;
 }
-	#gridView .box {
+	#xGridView .box {
 		float: left;
 		margin: 5px;
 	}
 	
-#bSubmitSectionViewType {
-	width: 100px;
-	height: 29px;
-	cursor: pointer;
+#xGridViewTriggerContainer {
+	width: 22px;
 	position: absolute;
-	right: 4px;
-	top: 4px;
-	border: none;
-	background: none;
-	background: url('layout/thumbnails.png');
-	background-position: 0px 0px;
+	right: 20px;
+	top: 20px;
+	margin-right: 10px;
+	display: block;
 }
-	#bSubmitSectionViewType:hover { 
-		background-position: 0 -29px;
+	#xGridViewTriggerContainer a {
+		width: 22px;
+		height: 18px;
+		background: url('layout/thumbnails.png');
+		background-position: 0px 0px;
+		display: block;
 	}
 	
+		#xGridViewTriggerContainer a:hover { 
+			background-position: 0 -18px;
+		}
+	
+		#xGridViewTriggerContainer a span {
+			display: none;
+		}
 
 <? if(!1) { ?></style><? } ?>
