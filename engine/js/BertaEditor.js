@@ -283,7 +283,7 @@ var BertaEditor = new Class({
 						    	tip.show();
 						    }
 						});
-						 console.log(this);
+
 						createShopEntry_tip_anchor.store('tip:title', this.options.i18n.goToMySiteShopTip_title);
 						createShopEntry_tip_anchor.store('tip:text', this.options.i18n.goToMySiteShopTip_text);
 						    

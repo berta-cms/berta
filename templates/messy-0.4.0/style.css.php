@@ -449,22 +449,23 @@ a img { border: none; }
 	}
 	
 #xGridViewTriggerContainer {
-	width: 36px;
+	width: 22px;
 	position: absolute;
-	right: 4px;
-	top: 4px;
+	right: 20px;
+	top: 20px;
+	margin-right: 10px;
 	display: block;
 }
 	#xGridViewTriggerContainer a {
-		width: 36px;
-		height: 29px;
+		width: 22px;
+		height: 18px;
 		background: url('layout/thumbnails.png');
 		background-position: 0px 0px;
 		display: block;
 	}
 	
 		#xGridViewTriggerContainer a:hover { 
-			background-position: 0 -29px;
+			background-position: 0 -18px;
 		}
 	
 		#xGridViewTriggerContainer a span {

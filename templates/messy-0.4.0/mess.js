@@ -9,6 +9,7 @@ var MessyMess = new Class({
     fadeContent: null,
     bgContainer: null,
     bgImage: null,
+    bgCaption: null,
 	
 	initialize: function() {
 		window.addEvent('domready', this.onDOMReady.bind(this));
@@ -77,9 +78,12 @@ var MessyMess = new Class({
 		// Berta Background
 		this.bgContainer = $('xBackground');
         
-		if(this.bgContainer) this.bgImage = this.bgContainer.getElement('.visual-image img');
+		if(this.bgContainer)  {
+            this.bgImage = this.bgContainer.getElement('.visual-image img');
+            this.bgCaption = this.bgContainer.getElement('.visual-caption');
+        }
         
-		if(this.bgImage) {
+		if(this.bgImage || this.bgCaption) {
 			var bertaBackground = new BertaBackground();
             this.fadeContent = this.bgContainer.getClassStoredValue('xBgDataFading');
 		}
@@ -92,12 +96,22 @@ var MessyMess = new Class({
 					Cookie.write('_berta_grid_img_link', _berta_grid_img_link, {duration: 0});
 			});
 		}
+        
+        // Key events
+        
 
-		if($('xGridViewTrigger'))
+		if($('xGridViewTrigger')) {
 			$('xGridViewTrigger').addEvent('click', function() {
 				Cookie.write('_berta_grid_view', 'berta_grid_view', {duration: 0});
 			});
-		
+            
+            window.addEvent('keydown', function(event) {
+                if(event.key == 'up') {
+                    $('xGridViewTrigger').fireEvent('click', event);
+                    window.location.href = $('xGridViewTrigger').get('href');
+                }
+            }); 
+        }
 		//scroll fix (iphone viewport workaround)
         if(!navigator.userAgent.match(/OS 5_\d like Mac OS X/i) && /iphone|ipad|ipod|android|blackberry|mini|windows\sce|palm/i.test(navigator.userAgent.toLowerCase())) {
             window.addEvent('resize',this.stickToBottom.bindWithEvent(this));
@@ -358,8 +372,9 @@ var BertaBackground = new Class({
             
             this.captionFadeOutFx.start('opacity', 0);
             this.fadeOutFx.start('opacity', 0).chain(
-                function() { this._getnewBgContent(newBgContent); }.bind(this)
+                function() { this._getNewBgContent(newBgContent); }.bind(this)
             );
+
         }.bind(this));
 
         // Previous image button click
@@ -380,7 +395,7 @@ var BertaBackground = new Class({
             
             this.captionFadeOutFx.start('opacity', 0);
             this.fadeOutFx.start('opacity', 0).chain(
-                function() { this._getnewBgContent(newBgContent); }.bind(this)
+                function() { this._getNewBgContent(newBgContent); }.bind(this)
             );          
         }.bind(this));
         
@@ -412,35 +427,38 @@ var BertaBackground = new Class({
             
             this.captionFadeOutFx.start('opacity', 0);
             this.fadeOutFx.start('opacity', 0).chain(
-                function() { this._getnewBgContent(newBgContent); }.bind(this)
+                function() { this._getNewBgContent(newBgContent); }.bind(this)
             );
         }.bind(this), time);
     },
     
     _centerCaption: function() {
-        this.caption.setStyle('margin-top', '-' + (this.caption.getSize().y / 2) + 'px');
+        if(this.caption) this.caption.setStyle('margin-top', '-' + (this.caption.getSize().y / 2) + 'px');
     },    
     
-	_getnewBgContent: function(newBgContent) {
-        newImage = newBgContent.getElement('input');
-		newWidth = newImage.get('width'); newHeight = newImage.get('height'); newSrc = newImage.get('src');
-        newCaption = newBgContent.getElement('textarea').get('text');
-        
+	_getNewBgContent: function(newBgContent) {
         this.selected.removeClass('sel');
         newBgContent.addClass('sel');
-        
-        if(obj = this.image) obj.destroy();
-        
-        this.caption.set('html', newCaption);        
-        this.image = new Asset.image(newSrc, { class: 'bg-element visualContent', width: newWidth, height: newHeight, onLoad: this._getnewBgContentFinish.bind(this) });
-        
-        this._init();
+
+        if(newBgContent.get('tag') == 'input') {
+            if(obj = this.image) obj.destroy();
+            
+            newImage = newBgContent;
+            newWidth = newImage.get('width'); newHeight = newImage.get('height'); newSrc = newImage.get('src');
+            this.image = new Asset.image(newSrc, { class: 'bg-element visualContent', width: newWidth, height: newHeight, onLoad: this._getNewBgContentFinish.bind(this) });
+            this._init();
+        }
+        else if(newBgContent.get('tag') == 'textarea') {
+            newCaption = newBgContent.get('text');
+            this.caption.set('html', newCaption);
+            this._centerCaption();
+            this.captionFadeInFx.set('opacity', 0).start('opacity', 1);
+        }
 	},
     
-    _getnewBgContentFinish: function() {
+    _getNewBgContentFinish: function() {
         this.container.getElement('.visual-image').adopt(this.image);
         this.fadeInFx.set('opacity', 0).start('opacity', 1);
-        this.captionFadeInFx.set('opacity', 0).start('opacity', 1);
     },
 
 	_init: function() {
