@@ -448,14 +448,14 @@ a img { border: none; }
 	}
 	
 #xGridViewTriggerContainer {
-	width: 100px;
+	width: 36px;
 	position: absolute;
 	right: 4px;
 	top: 4px;
 	display: block;
 }
 	#xGridViewTriggerContainer a {
-		width: 100px;
+		width: 36px;
 		height: 29px;
 		background: url('layout/thumbnails.png');
 		background-position: 0px 0px;
