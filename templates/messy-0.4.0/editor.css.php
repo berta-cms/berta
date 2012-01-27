@@ -96,7 +96,8 @@ if(!1) { ?><style type="text/css"><? } ?>
 	#contentContainer>.xCreateNewEntry {
 		position: absolute;
 		width: 200px;
-		right: 8px;
+		right: 50%;
+		margin-right: -100px;
 		top: 30px;
 	}
 	.xEntry .xCreateNewEntry {

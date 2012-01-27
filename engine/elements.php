@@ -181,7 +181,6 @@ if($jsonRequest) {
 				$autoPlay = !empty($section['mediaCacheData']['@attributes']['autoplay']) ? $section['mediaCacheData']['@attributes']['autoplay'] : '0';
 				$bgSize = !empty($section['mediaCacheData']['@attributes']['image_size']) ? $section['mediaCacheData']['@attributes']['image_size'] : 'medium';
 				$bgFading = !empty($section['mediaCacheData']['@attributes']['fade_content']) ? $section['mediaCacheData']['@attributes']['fade_content'] : 'disabled';
-				$bgImgHide = !empty($section['mediaCacheData']['@attributes']['hide_images']) ? $section['mediaCacheData']['@attributes']['hide_images'] : 'no';
 				
 				$bgColor = !empty($section['sectionBgColor']['value']) ? $section['sectionBgColor']['value'] : '#ffffff';
 				$bgCaptionColor = !empty($section['mediaCacheData']['@attributes']['caption_color']) ? $section['mediaCacheData']['@attributes']['caption_color'] : '#ffffff';
@@ -221,11 +220,6 @@ if($jsonRequest) {
 					echo '</div>';
 				
 					echo '<div class="xBgSettings xHidden">';
-						echo '<div class="xBgImgHideSettings">',
-					    		'<div class="caption">show caption only</div>',
-					    	 	'<div class="xBgImgHide xEditableSelectRC xCommand-SET_BG_HIDE_IMAGES" x_options="yes||no">' . $bgImgHide . '</div>',
-								'<br class="clear" />',
-							 '</div>';
 					   	echo '<div class="xBgFadingSettings">',
 					    		'<div class="caption">fade content</div>',
 					    	 	'<div class="xBgFading xEditableSelectRC xCommand-SET_BG_FADE_CONTENT" x_options="enabled||disabled">' . $bgFading . '</div>',

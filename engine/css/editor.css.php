@@ -462,25 +462,12 @@ body.xEditorEnabled { }
 			.xBgFadingSettings .caption {
 				width: 200px;
 				float: left;
-				margin-top: 6px;
 			}
 			
 				.xBgFadingSettings .xBgFading,
 				.xBgColorSettings .xBgFading select {
 					float: left;
 					width: 100px;
-					margin-top: 6px;
-				}
-				
-			.xBgImgHideSettings .caption {
-				width: 200px;
-				float: left;
-			}
-			
-				.xBgImgHideSettings .xBgImgHide,
-				.xBgImgHideSettings .xBgImgHide select {
-					float: left;
-					width: 70px;
 				}
 				
 			.xBgColorSettings .caption {
@@ -1050,8 +1037,7 @@ a.xCreateNewEntry {
 	display: block;
 	height: 24px;
 	background: transparent;
-	left: 50%;
-	margin: 0 0 28px -100px;
+	margin: 0 0 28px;
 	-moz-border-radius: 8px;
 	-webkit-border-radius: 8px;
 	border-radius: 8px;
