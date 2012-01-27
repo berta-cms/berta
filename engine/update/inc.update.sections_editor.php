@@ -194,6 +194,54 @@ else if($decoded['action'] == 'SET_AUTOPLAY') {
 	}
 	BertaEditor::saveSections($sectionsList);
 }
+else if($decoded['action'] == 'SET_BG_IMG_SIZE') {
+	$sectionsList = BertaEditor::getSections();
+	$sName = $decoded['section'];
+	if(empty($sectionsList[$sName]['mediaCacheData']['@attributes'])) $sectionsList[$sName]['mediaCacheData']['@attributes'] = array();
+	$sectionsList[$sName]['mediaCacheData']['@attributes']['image_size'] = $decoded['params'];
+	BertaEditor::saveSections($sectionsList);
+}
+else if($decoded['action'] == 'SET_BG_CAPTION_COLOR') {
+	$sectionsList = BertaEditor::getSections();
+	$sName = $decoded['section'];
+	if(empty($sectionsList[$sName]['mediaCacheData']['@attributes'])) $sectionsList[$sName]['mediaCacheData']['@attributes'] = array();
+	$sectionsList[$sName]['mediaCacheData']['@attributes']['caption_color'] = $decoded['params'];
+	BertaEditor::saveSections($sectionsList);
+}
+else if($decoded['action'] == 'SET_BG_CAPTION_BACK_COLOR') {
+	$sectionsList = BertaEditor::getSections();
+	$sName = $decoded['section'];
+	if(empty($sectionsList[$sName]['mediaCacheData']['@attributes'])) $sectionsList[$sName]['mediaCacheData']['@attributes'] = array();
+	$sectionsList[$sName]['mediaCacheData']['@attributes']['caption_bg_color'] = $decoded['params'];
+	BertaEditor::saveSections($sectionsList);
+}
+else if($decoded['action'] == 'SET_BG_FADE_CONTENT') {
+	$sectionsList = BertaEditor::getSections();
+	$sName = $decoded['section'];
+	if(empty($sectionsList[$sName]['mediaCacheData']['@attributes'])) $sectionsList[$sName]['mediaCacheData']['@attributes'] = array();
+	$sectionsList[$sName]['mediaCacheData']['@attributes']['fade_content'] = $decoded['params'];
+	BertaEditor::saveSections($sectionsList);
+}
+else if($decoded['action'] == 'RESET_BG_CAPTION_COLOR') {
+	$sectionsList = BertaEditor::getSections();
+	$sName = $decoded['section'];
+	if(empty($sectionsList[$sName]['mediaCacheData']['@attributes'])) $sectionsList[$sName]['mediaCacheData']['@attributes'] = array();
+	$sectionsList[$sName]['mediaCacheData']['@attributes']['caption_color'] = '';
+	BertaEditor::saveSections($sectionsList);
+}
+else if($decoded['action'] == 'RESET_BG_CAPTION_BACK_COLOR') {
+	$sectionsList = BertaEditor::getSections();
+	$sName = $decoded['section'];
+	if(empty($sectionsList[$sName]['mediaCacheData']['@attributes'])) $sectionsList[$sName]['mediaCacheData']['@attributes'] = array();
+	$sectionsList[$sName]['mediaCacheData']['@attributes']['caption_bg_color'] = '';
+	BertaEditor::saveSections($sectionsList);
+}
+else if($decoded['action'] == 'sectionBgColorReset') {
+	$sectionsList = BertaEditor::getSections();
+	$sName = $decoded['section'];
+	if(isset($sectionsList[$sName]['sectionBgColor'])) unset($sectionsList[$sName]['sectionBgColor']);
+	BertaEditor::saveSections($sectionsList);
+}
 else if($decoded['action'] == 'ORDER_SECTIONS') {	// apply the new order
 	$oldSectionsList = BertaEditor::getSections();
 	$newSectionsList = array();

@@ -256,20 +256,24 @@ class BertaGallery extends BertaBase {
         return false;
     }
     
-    public static function images_getGridImageFor($mFolder, $fName, $fSizes) {
-        global $berta;
-    
-        $imageTargetWidth = $berta->template->settings->get('media', 'imagesSmallWidth', false, true);
-        $imageTargetHeight = $berta->template->settings->get('media', 'imagesSmallWidth', false, true);
-        
-        if($fSizes[0] && $fSizes[1] && $imageTargetWidth && $imageTargetHeight && 
-          ($fSizes[0] > $imageTargetWidth || $fSizes[0] > $imageTargetHeight)) {
-            list($gridWidth, $gridHeight) = self::fitInBounds($fSizes[0], $fSizes[1], $imageTargetWidth, $imageTargetHeight);                   
-            $gridImagePath = self::getResizedSrc($mFolder, $fName, $gridWidth, $gridHeight);
-        }
-        
-        return $mFolder . $gridImagePath;
-    }
+    public static function images_getGridImageFor($imagePath) {
+		$fileName = basename($imagePath);
+		$dirName = dirname($imagePath);
+		if($dirName) $dirName .= '/';
+		
+		$newFileName = self::$options['images']['grid_image_prefix'] . $fileName;
+		
+		$gridImagePath = $dirName . $newFileName;
+        //$sizes = getimagesize($gridImagePath);
+		//if(file_exists($gridImagePath) && $sizes[0] == 140) {
+        if(file_exists($gridImagePath)) {
+			return $newFileName;
+		} elseif(self::createThumbnail($imagePath, $gridImagePath, 140, '')) {
+			return $newFileName;
+		}
+		
+		return false;
+	}
     
     public static function getHTMLForGridView($section) {
         global $berta;
@@ -295,6 +299,7 @@ class BertaGallery extends BertaBase {
                 
                     $imgSrc = $img['@attributes']['src'];
                     
+/*
                     if(!empty($img['@attributes']['width']) && !empty($img['@attributes']['height'])) {
                         $width = (int) $img['@attributes']['width'];
                         $height = (int) $img['@attributes']['height'];
@@ -311,9 +316,10 @@ class BertaGallery extends BertaBase {
                         list($width, $height) = self::fitInBounds($width, $height, $imageTargetWidth, $imageTargetHeight);                  
                         $imgSrc = self::getResizedSrc($mFolder, $imgSrc, $width, $height);
                     }
-                
-                    
-                    $returnImages .= '<div class="box"><a href="' . $linkHref . '"><img class="gridItem" src="' . $mFolderABS . $imgSrc . '" /></a></div>';
+*/
+                	$imgSrc = self::images_getGridImageFor($mFolder . $imgSrc);
+                	 
+                    $returnImages .= '<div class="box"><a href="' . $linkHref . '"><img class="xGridItem" src="' . $mFolderABS . $imgSrc . '" /></a></div>';
                 }
             }
 

@@ -5,6 +5,11 @@ var MessyMess = new Class({
 	shoppingCart: null,
 	reservation: null,
 	pageScroller: null,
+    
+    fadeContent: null,
+    bgContainer: null,
+    bgImage: null,
+    bgCaption: null,
 	
 	initialize: function() {
 		window.addEvent('domready', this.onDOMReady.bind(this));
@@ -70,122 +75,48 @@ var MessyMess = new Class({
 	},
 	
 	onDOMReady: function() {
-		// Init BertaBackground
-		var bgNextButton = $('xBackgroundNext'),
-			bgPreviousButton = $('xBackgroundPrevious'),
-			bgContainer = $('xBackground');
-		
-		if(bgContainer) var bgImage = bgContainer.getElement('.visual-image img');
-
-		if(bgImage) {
-			var bgImagesList = bgContainer.getElement('.visual-list');
-			var	bgCaption = bgContainer.getElement('.visual-caption');
-			
-			/*
-if(bgContainer.dataset.autoplay && bgContainer.dataset.autoplay > 0) {
-				time = bgContainer.dataset.autoplay * 1000;
-				
-				setInterval(function() {
-					bgSelected = bgImagesList.getElement('.sel');
-			
-					if(bgSelected.getNext())
-					    bgNext = bgSelected.getNext();
-					else
-					    bgNext = bgImagesList.getFirst();
-					
-					myFx = new Fx.Tween(bgImage, {duration: 'short', property: 'opacity'});
-					
-					newWidth = bgNext.get('width');	newHeight = bgNext.get('height'); newSrc = bgNext.get('src'); newCaption = bgNext.get('caption');
-					
-					bgSelected.removeClass('sel');
-					bgNext.addClass('sel');
-					bgImage.set('width', newWidth); bgImage.set('height', newHeight); bgImage.set('src', newSrc); bgCaption.set('html', newCaption);
-
-				}, time);
-			}
-*/
-			
-			/*
-	bgItems.each(function(item) {
-				if(item.getNext()) {
-					bgNext = item.getNext();
-					bgPrevious = item.getPrevious();
-				}
-				else {
-					bgNext = container.getFirst();
-					bgPrevious = container.getLast();
-				}
-			});
-	*/
-			
-			bgNextButton.addEvent('click', function(event) {
-				event.stop();
-			
-				bgSelected = bgImagesList.getElement('.sel');
-			
-				if(bgSelected.getNext())
-					bgNext = bgSelected.getNext();
-				else
-					bgNext = bgImagesList.getFirst();
-				
-				myFx = new Fx.Tween(bgImage, {duration: 'short', property: 'opacity'});
-				
-				newWidth = bgNext.get('width');	newHeight = bgNext.get('height'); newSrc = bgNext.get('src'); newCaption = bgNext.get('caption');
-				
-				bgSelected.removeClass('sel');
-				bgNext.addClass('sel');
-				bgImage.set('width', newWidth); bgImage.set('height', newHeight); bgImage.set('src', newSrc); bgCaption.set('html', newCaption);
-			});
-	
-			
-			bgPreviousButton.addEvent('click', function(event) {
-				event.stop();
-			
-				bgSelected = bgImagesList.getElement('.sel');		
-				
-				if(bgSelected.getPrevious())
-					bgPrevious = bgSelected.getPrevious();
-				else
-					bgPrevious = bgImagesList.getLast();
-				
-				newWidth = bgPrevious.get('width');	newHeight = bgPrevious.get('height'); newSrc = bgPrevious.get('src'); newCaption = bgPrevious.get('caption');
-				
-				bgSelected.removeClass('sel');
-				bgPrevious.addClass('sel');
-				bgImage.set('width', newWidth);	bgImage.set('height', newHeight); bgImage.set('src', newSrc); bgCaption.set('html', newCaption);
-			});
-			
-			/*
-	var time = 4000;
-			setInterval(function(){ 
-			 	var selected = bgContainer.getElement('.sel');
-	 
-				if(selected.getNext()) {
-					nextEl = selected.getNext();
-				}
-				else {
-					nextEl = bgContainer.getFirst();
-				}
-				selected.removeClass('sel');
-				nextEl.addClass('sel');
-	 		 
-			}, time);
-	*/
-			
+		// Berta Background
+		this.bgContainer = $('xBackground');
+        
+		if(this.bgContainer)  {
+            this.bgImage = this.bgContainer.getElement('.visual-image img');
+            this.bgCaption = this.bgContainer.getElement('.visual-caption');
+        }
+        
+		if(this.bgImage || this.bgCaption) {
 			var bertaBackground = new BertaBackground();
+            this.fadeContent = this.bgContainer.getClassStoredValue('xBgDataFading');
 		}
 		
-		$$('.gridItem').each(function(item) {
-			item.addEvent('click', function(event) {
-				_berta_grid_img_link = this.src.substr(this.src.lastIndexOf('/')+2);
-				_berta_grid_img_link = _berta_grid_img_link.substr(_berta_grid_img_link.indexOf('_')+1);
-				Cookie.write('_berta_grid_img_link', _berta_grid_img_link, {duration: 0});
+        // Grid view
+		if($('xGridView')) {
+			$$('.xGridItem').addEvent('click', function() {
+					_berta_grid_img_link = this.src.substr(this.src.lastIndexOf('/')+2);
+					_berta_grid_img_link = _berta_grid_img_link.substr(_berta_grid_img_link.indexOf('_')+1);
+					Cookie.write('_berta_grid_img_link', _berta_grid_img_link, {duration: 0});
 			});
-		}.bind(this));
-		
+		}
+        
+        // Key events
+        
+
+		if($('xGridViewTrigger')) {
+			$('xGridViewTrigger').addEvent('click', function() {
+				Cookie.write('_berta_grid_view', 'berta_grid_view', {duration: 0});
+			});
+            
+            window.addEvent('keydown', function(event) {
+                if(event.key == 'up') {
+                    $('xGridViewTrigger').fireEvent('click', event);
+                    window.location.href = $('xGridViewTrigger').get('href');
+                }
+            }); 
+        }
 		//scroll fix (iphone viewport workaround)
-		window.addEvent('resize',this.stickToBottom.bindWithEvent(this));
-		window.addEvent('scroll',this.stickToBottom.bindWithEvent(this));
+        if(!navigator.userAgent.match(/OS 5_\d like Mac OS X/i) && /iphone|ipad|ipod|android|blackberry|mini|windows\sce|palm/i.test(navigator.userAgent.toLowerCase())) {
+            window.addEvent('resize',this.stickToBottom.bindWithEvent(this));
+            window.addEvent('scroll',this.stickToBottom.bindWithEvent(this));
+        }
 
 		var messyItems = $$('.mess');
 		
@@ -217,19 +148,56 @@ if(bgContainer.dataset.autoplay && bgContainer.dataset.autoplay > 0) {
 	},
 	
 	onLoad: function() {
+        // Fade content
+        if(this.fadeContent == 'enabled' && this.bgContainer.getElement('.visual-image')) {
+            var hideContent, lastX, lastY;
+            window.addEvent('mousemove', function(event) {       
+                if(!lastX && !lastY) {
+                    lastX = event.page.x;
+                    lastY = event.page.y;
+                }
+    
+                if(event.page.x != lastX && event.page.y != lastY) {
+                    if(hideContent) {
+                        clearTimeout(hideContent);
+                        hideContent = 0;
+                    }
+                    
+                    $('allContainer').setStyle('opacity', '1');
+                    $('bottom').setStyle('opacity', '1');
+                    hideContent = setTimeout(function() {
+                        $('allContainer').tween('opacity', '0');
+                        $('bottom').tween('opacity', '0');
+                    }, 3000);
+                    
+                    lastX = event.page.x;
+                    lastY = event.page.y;
+                }           
+            });
+        }
+        
 		// Massonry grid
-		if($('gridView')) {
-		    $('gridView').masonry({
+		if($('xGridView')) {
+            if((navigator.userAgent.match(/iPhone/i)))
+                setTimeout(function() {$('xGridView').setStyle('visibility', 'visible');}, 100);
+            else
+                $('xGridView').setStyle('visibility', 'visible');
+		   
+            $('xGridView').masonry({
 		    	singleMode: true,
-    	    	itemSelector: '.box' 
+    	    	itemSelector: '.box'
 		    });
 		}
 		
 		if(Cookie.read('_berta_grid_img_link'))
 			Cookie.dispose('_berta_grid_img_link');
+		
+		if(Cookie.read('_berta_grid_view'))
+			Cookie.dispose('_berta_grid_view');
 	},
 	
 	stickToBottom: function(){
+        bottomWidth = $('bottom').getSize().x
 		$('bottom').setStyles({
 			'position': 'absolute',
 			'top': (window.pageYOffset + window.innerHeight - 45) + 'px'
@@ -336,47 +304,222 @@ if(bgContainer.dataset.autoplay && bgContainer.dataset.autoplay > 0) {
 
 
 var BertaBackground = new Class({
-	
 	Implements: Options,
 	
 	options: {
 		type: 'image',
-		alignment: 'center',
-		negMarginTop: 0,
-		negMarginBottom: 0
+		image_size: 'large',
+        autoplay: 0,
 	},
 	
-	container: null,
+    container: null,
+	imagesList: null,
+	caption: null,
 	image: null,
+    
 	nextButton: null,
 	previousButton: null,
-	
+    
+    selected: null,
+    autoplayInterval: null,
+    data: null,
+    
+    fadeOutFx: null,
+    fadeInFx: null,
+    captionFadeOutFx: null,
+    captionFadeInFx: null,
+    
+    
 	initialize: function(options) {
 		this.setOptions(options);
-		this.container = $('xBackground');
-		this.image = this.container.getElement('img');
-		this.nextButton = $('xBackgroundNext');
+		
+        this.nextButton = $('xBackgroundNext');
 		this.previousButton = $('xBackgroundPrevious');
+		this.container = $('xBackground');
+		
+        this.imageContainer = this.container.getElement('.visual-image');
+		this.imagesList = this.container.getElement('.visual-list');
+		this.caption = this.container.getElement('.visual-caption');
+		this.image = this.container.getElement('.visual-image img');
+        
+        this.data = { options: this.options };
+        this.data.options.image_size = this.container.getClassStoredValue('xBgDataImageSize');
+        this.data.options.autoplay = this.container.getClassStoredValue('xBgDataAutoplay');
+        
+        this.fadeOutFx = new Fx.Tween(this.imageContainer, { duration: 'short', transition: Fx.Transitions.Sine.easeInOut });
+        this.fadeInFx = new Fx.Tween(this.imageContainer, { duration: 'normal', transition: Fx.Transitions.Sine.easeInOut });
+        this.captionFadeOutFx = new Fx.Tween(this.caption, { duration: 'short', transition: Fx.Transitions.Sine.easeInOut });
+        this.captionFadeInFx = new Fx.Tween(this.caption, { duration: 'normal', transition: Fx.Transitions.Sine.easeInOut });
 
-		this.nextButton.addEvent('click', function() { return this._init() }.bind(this));
-		this.previousButton.addEvent('click', function() { return this._init() }.bind(this));	
-		return this._init();
+        this._init();
+        
+        // Next image button click    
+        this.nextButton.addEvent('click', function(event) {
+            event.stop();
+            
+            this.selected = this.imagesList.getElement('.sel');
+            
+            if(this.data.options.autoplay > 0) {
+                clearInterval(this.autoplayInterval);
+                this._autoplay();
+            }
+            
+			if(this.selected.getNext()) {
+                newBgContent = this.selected.getNext();
+			}
+            else
+                newBgContent = this.imagesList.getFirst();
+            
+            this.captionFadeOutFx.start('opacity', 0);
+            this.fadeOutFx.start('opacity', 0).chain(
+                function() { this._getNewBgContent(newBgContent); }.bind(this)
+            );
+
+        }.bind(this));
+
+        // Previous image button click
+        this.previousButton.addEvent('click', function(event) {
+            event.stop();
+            
+            this.selected = this.imagesList.getElement('.sel');
+           
+            if(this.data.options.autoplay > 0) {
+                clearInterval(this.autoplayInterval);
+                this._autoplay();
+            }
+            
+			if(this.selected.getPrevious())
+                newBgContent = this.selected.getPrevious();
+            else
+                newBgContent = this.imagesList.getLast();
+            
+            this.captionFadeOutFx.start('opacity', 0);
+            this.fadeOutFx.start('opacity', 0).chain(
+                function() { this._getNewBgContent(newBgContent); }.bind(this)
+            );          
+        }.bind(this));
+        
+        // Key events
+        window.addEvent('keydown', function(event) {
+            if(event.key == 'right') {
+                this.nextButton.fireEvent('click', event);
+            } else if(event.key == 'left') {
+                this.previousButton.fireEvent('click', event);
+            }
+        }.bind(this));  
+        
+        // Autoplay
+        if(this.data.options.autoplay > 0) {
+            this._autoplay();
+        }
+	},
+
+    
+    _autoplay: function() {
+        time = this.data.options.autoplay * 1000;
+        this.autoplayInterval = setInterval(function() {
+            this.selected = this.imagesList.getElement('.sel');
+            
+			if(this.selected.getNext())
+                newBgContent = this.selected.getNext();
+            else
+                newBgContent = this.imagesList.getFirst();
+            
+            this.captionFadeOutFx.start('opacity', 0);
+            this.fadeOutFx.start('opacity', 0).chain(
+                function() { this._getNewBgContent(newBgContent); }.bind(this)
+            );
+        }.bind(this), time);
+    },
+    
+    _centerCaption: function() {
+        if(this.caption) this.caption.setStyle('margin-top', '-' + (this.caption.getSize().y / 2) + 'px');
+    },    
+    
+	_getNewBgContent: function(newBgContent) {
+        this.selected.removeClass('sel');
+        newBgContent.addClass('sel');
+
+        if(newBgContent.get('tag') == 'input') {
+            if(obj = this.image) obj.destroy();
+            
+            newImage = newBgContent;
+            newWidth = newImage.get('width'); newHeight = newImage.get('height'); newSrc = newImage.get('src');
+            this.image = new Asset.image(newSrc, { class: 'bg-element visualContent', width: newWidth, height: newHeight, onLoad: this._getNewBgContentFinish.bind(this) });
+            this._init();
+        }
+        else if(newBgContent.get('tag') == 'textarea') {
+            newCaption = newBgContent.get('text');
+            this.caption.set('html', newCaption);
+            this._centerCaption();
+            this.captionFadeInFx.set('opacity', 0).start('opacity', 1);
+        }
+	},
+    
+    _getNewBgContentFinish: function() {
+        this.container.getElement('.visual-image').adopt(this.image);
+        this.fadeInFx.set('opacity', 0).start('opacity', 1);
+    },
+
+	_init: function() {
+		var el = this.image, scaleMultiplier;
+        
+		this.data.width = parseInt(el.get('width'));
+		this.data.height = parseInt(el.get('height'));
+        
+        if(this.data.options.image_size == 'large') {
+            scaleMultiplier = 1;
+            scaleMultiplier = 1;
+        } else if(!this.data.options.image_size || this.data.options.image_size == 'medium') {
+            scaleMultiplier = 0.85;
+            scaleMultiplier = 0.85;
+        } else if(this.data.options.image_size == 'small') {
+            scaleMultiplier = 0.65;
+            scaleMultiplier = 0.65;
+        }
+
+        window.removeEvent('resize');
+		window.addEvent('resize', function() { this._onResize(el, scaleMultiplier) }.bind(this));
+		this._onResize(el, scaleMultiplier);
+        this._centerCaption();
 	},
 	
-	_init: function() {
-		var el = this.image,
-		    data = { options: this.options };
+	_onResize: function(el, scaleMultiplier) {
+		var wnd = window,
+			w = wnd.getSize().x,
+			h = wnd.getSize().y;
 		
-		data.width = parseInt(el.get('width'));
-		data.height = parseInt(el.get('height'));
+		var posX, posY;
+       
+		// scale
+		var scaleX = w / this.data.width, scaleY = h / this.data.height;
+        
+		if(this.data.width>=this.data.height && scaleMultiplier == 1)
+			if(scaleX > scaleY) scaleY = scaleX; else scaleX = scaleY;
+		else
+			if(scaleX > scaleY) scaleX = scaleY; else scaleY = scaleX;
+		
+        // scale based on background image size
+        scaleX = scaleX*scaleMultiplier;
+        scaleY = scaleY*scaleMultiplier;
+		
+		// position X
+		posX = Math.round((w - this.data.width * scaleX) / 2);
 
-/*
-		for (var attrname in item.dataset) {
-		    data.options[attrname] = item.dataset[attrname];
-		}
-*/
+		// position Y
+		posY = Math.round((h - (this.data.height * scaleY)) / 2);
 
-		// VIDEO
+		el.setStyle('width', this.data.width * scaleX)
+		   	.setStyle('height', this.data.height * scaleY)
+		   	.setStyle('left', posX)
+		   	.setStyle('top', posY);       
+	},
+});
+
+
+var messyMess = new MessyMess();
+
+		// VIDEO for _init();
 /*
 		switch(data.options.type) {
 		    case 'image':
@@ -395,55 +538,3 @@ var BertaBackground = new Class({
 		    break;
 		}
 */
-
-		data.resizeFunc = this._onResize;
-		
-		window.addEvent('resize', function() {data.resizeFunc(el, data)}.bind(this));
-		data.resizeFunc(el, data);
-		
-		return this;
-	},
-	
-	_onResize: function(target, data) {		
-		var wnd = window,
-			w = wnd.getSize().x,
-			h = wnd.getSize().y;
-		
-		var posX, posY;
-
-		// scale
-		var scaleX = w / data.width, scaleY = h / (data.height - data.options.negMarginTop - data.options.negMarginBottom);
-		if(scaleX > scaleY) scaleY = scaleX; else scaleX = scaleY;
-
-		// position X
-/*
-		if(data.options.alignment == 'top_left' || data.options.alignment == 'bottom_left') {
-			posX = 0;
-		} else if(data.options.alignment == 'top_right' || data.options.alignment == 'bottom_right') {
-			posX = Math.round(w - data.width * scaleX);
-		} else {
-*/
-			posX = Math.round((w - data.width * scaleX) / 2);
-/* 		} */
-
-		// position Y
-/*
-		if(data.options.alignment == 'top_left' || data.options.alignment == 'top_center' || data.options.alignment == 'top_right') {
-			posY = 0;
-		} else if(data.options.alignment != 'center') {
-			posY = Math.round(h - data.height * scaleY + data.options.negMarginBottom * scaleY);
-		} else {
-*/
-			//console.debug((h - (backgroundOrigHeight * scaleY)) / 2, (h - (backgroundOrigHeight * scaleY)) / 2 - backgroundNegMarginTop * scaleY);
-			posY = Math.round((h - (data.height * scaleY)) / 2 - data.options.negMarginTop * scaleY);
-/* 		} */
-
-		target.setStyle('width', data.width * scaleX)
-		   	.setStyle('height', data.height * scaleY)
-		   	.setStyle('left', posX)
-		   	.setStyle('top', posY);
-	},
-});
-
-
-var messyMess = new MessyMess();

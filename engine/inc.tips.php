@@ -22,7 +22,7 @@ $tipTexts = array(
 	'shopSectionsTip_text' => I18n::_('I see you\'ve got Berta shop installed.<br/>Click here to set it up!<br/><br/><a href="#" id="xRemoveTips">Quit tour?</a>'),
 	
 	'createShopSectionTip_title' => I18n::_('Step 1 of 7'),
-	'createShopSectionTip_text' => I18n::_('Create a new section & change type to "Shop".'),
+	'createShopSectionTip_text' => I18n::_('Create a new section & change type to "Shop".<br/><br/><a href="#" id="xRemoveTips">Quit tour?</a>'),
 	
 	'createShopCartSectionTip_title' => I18n::_('Step 2 of 7'),
 	'createShopCartSectionTip_text' => I18n::_('Create another new section & change type to "Shopping cart".'),

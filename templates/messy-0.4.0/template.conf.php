@@ -52,12 +52,6 @@ $templateConf = array(
 		'backgroundPosition' => 	array('format' => 'select',		'values' => array('top left', 'top center', 'top right', 'center left', 'center', 'center right', 'bottom left', 'bottom center', 'bottom right'), 'default' => 'top left', 	            'title' => I18n::_('Background alignment'),                  'description' => I18n::_('Where the background image is positioned?')),
 		'backgroundAttachment' => 	array('format' => 'select',		'values' => array('fixed' => 'Fixed to browser window', 'fill' => 'Filled in browser window', 'scroll' => 'No stretch, scroll along with content'), 'default' => 'scroll', 		            'title' => I18n::_('Background position'),                   'description' => I18n::_('Sets how background behaves in relation with the browser window.'))
 	),
-
-
-	'pageLayout' => array(
-		'_' => array('title' => I18n::_('Page layout')),
-		'contentWidth' => 			array('format' => 'text',		'default' => '900px', 'css_units' => true,			                                                'title' => I18n::_('Width of content area'),    'description' => '')
-	),	
 	
 	'entryHeading' => array(
 		'_' => array('title' => I18n::_('Entry heading')),
@@ -128,8 +122,8 @@ $templateConf = array(
 		'textDecorationActive' => 	array('format' => 'select',		'values' => array('none', 'underline', 'overline', 'line-through'),		'default' => 'underline', 	'title' => I18n::_('Decoration when selected'),    'description' => ''),
 		'x' => 				array('format' => 'text',		'default' => '0', 								                                    'title' => I18n::_('Positon X'),             'description' => I18n::_('description_tagsMenu_x')),		
 		'y' => 				array('format' => 'text',		'default' => '0', 								                                    'title' => I18n::_('Positon Y'),             'description' => I18n::_('description_tagsMenu_y')),
-		'alwaysOpen' =>  		 array('format' => 'select',	'values' => array('yes', 'no'), 'default' => 'yes', 	                    'title' => I18n::_('Submenu is allways open'),                   'description' => I18n::_('description_submenu_alwaysopen'))				
-		
+		'alwaysOpen' =>  		 array('format' => 'select',	'values' => array('yes', 'no'), 'default' => 'yes', 	                    'title' => I18n::_('Submenu is allways open'),                   'description' => I18n::_('description_submenu_alwaysopen')),				
+		'hidden' =>                 array('format' => 'select',     'values' => array('yes', 'no'), 'default' => 'no',                         'title' => I18n::_('Submenu is hidden'),        'description' => ''),
 	),
 	
 	'links' => array(
@@ -145,13 +139,9 @@ $templateConf = array(
 	),
 	
 	'grid' => array(
-		'_' => array('title' => I18n::_('Grid')),
-		'marginLeft' => 		array('format' => 'text', 		'default' => '200px',			'title' => I18n::_('Left margin'),
-'description' => ''),
-		'marginTop' => 			array('format' => 'text', 		'default' => '100px',			'title' => I18n::_('Top margin'),
-'description' => ''),
-		'contentWidth' => 		array('format' => 'text', 		'default' => '70%',			'title' => I18n::_('Grid container width'),
-'description' => 'IMPORTANT! This must be set as percentage.'),
+		'_' => array('title' => I18n::_('Thumbnails')),
+		'contentWidth' => 		array('format' => 'text', 		'default' => '60%',			'title' => I18n::_('Thumbnail container width'),
+'description' => 'IMPORTANT! This must be set as percentage. '),
 	)
 );
 

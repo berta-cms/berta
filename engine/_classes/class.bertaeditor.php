@@ -590,7 +590,6 @@ class BertaEditor extends BertaContent {
 		return false;
 	}
 	
-	
 	/*public static function images_resampleIfNeeded($imagePath, $constraints, $widthOrig = null, $heightOrig = null) {
 		if(is_null($widthOrig) || is_null($heightOrig)) {
 			$imInfo = getimagesize($imagePath);
