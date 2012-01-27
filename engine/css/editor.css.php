@@ -1050,7 +1050,8 @@ a.xCreateNewEntry {
 	display: block;
 	height: 24px;
 	background: transparent;
-	margin: 0 0 28px;
+	left: 50%;
+	margin: 0 0 28px -100px;
 	-moz-border-radius: 8px;
 	-webkit-border-radius: 8px;
 	border-radius: 8px;

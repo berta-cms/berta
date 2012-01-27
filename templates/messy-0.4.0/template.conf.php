@@ -52,12 +52,6 @@ $templateConf = array(
 		'backgroundPosition' => 	array('format' => 'select',		'values' => array('top left', 'top center', 'top right', 'center left', 'center', 'center right', 'bottom left', 'bottom center', 'bottom right'), 'default' => 'top left', 	            'title' => I18n::_('Background alignment'),                  'description' => I18n::_('Where the background image is positioned?')),
 		'backgroundAttachment' => 	array('format' => 'select',		'values' => array('fixed' => 'Fixed to browser window', 'fill' => 'Filled in browser window', 'scroll' => 'No stretch, scroll along with content'), 'default' => 'scroll', 		            'title' => I18n::_('Background position'),                   'description' => I18n::_('Sets how background behaves in relation with the browser window.'))
 	),
-
-
-	'pageLayout' => array(
-		'_' => array('title' => I18n::_('Page layout')),
-		'contentWidth' => 			array('format' => 'text',		'default' => '900px', 'css_units' => true,			                                                'title' => I18n::_('Width of content area'),    'description' => '')
-	),	
 	
 	'entryHeading' => array(
 		'_' => array('title' => I18n::_('Entry heading')),

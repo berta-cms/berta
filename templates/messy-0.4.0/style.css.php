@@ -86,7 +86,7 @@ a img { border: none; }
 
 #contentContainer {
 	position: relative;
-	width: <? echo $s->get('pageLayout', 'contentWidth') ?>;
+	width: 100%;
 }
 
 #contentContainer h1 {
