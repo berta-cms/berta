@@ -179,7 +179,7 @@ if($jsonRequest) {
 					$sectionMF = BertaEditor::getSectionMediafolder($section['name']['value']);
 				
 				$autoPlay = !empty($section['mediaCacheData']['@attributes']['autoplay']) ? $section['mediaCacheData']['@attributes']['autoplay'] : '0';
-				$bgSize = !empty($section['mediaCacheData']['@attributes']['image_size']) ? $section['mediaCacheData']['@attributes']['image_size'] : 'large';
+				$bgSize = !empty($section['mediaCacheData']['@attributes']['image_size']) ? $section['mediaCacheData']['@attributes']['image_size'] : 'medium';
 				$bgFading = !empty($section['mediaCacheData']['@attributes']['fade_content']) ? $section['mediaCacheData']['@attributes']['fade_content'] : 'disabled';
 				$bgImgHide = !empty($section['mediaCacheData']['@attributes']['hide_images']) ? $section['mediaCacheData']['@attributes']['hide_images'] : 'no';
 				

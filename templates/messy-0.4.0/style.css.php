@@ -437,8 +437,9 @@ a img { border: none; }
 				}
 
 #xGridView {
-	left: <? echo $s->get('grid', 'marginLeft') ?>;
-	top: <? echo $s->get('grid', 'marginTop') ?>;
+	top: 100px;
+	left: <? echo (100 - $s->get('grid', 'contentWidth'))/2 ?>%;
+	right: <? echo (100 - $s->get('grid', 'contentWidth'))/2 ?>%;
 	width: <? echo $s->get('grid', 'contentWidth') ?>;
 	visibility: hidden;
 }

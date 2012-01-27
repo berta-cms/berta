@@ -256,25 +256,6 @@ class BertaGallery extends BertaBase {
         return false;
     }
     
-    /*
-public static function images_getGridImageFor($mFolder, $fName, $fSizes) {
-        global $berta;
-    
-        $imageTargetWidth = $berta->template->settings->get('media', 'imagesSmallWidth', false, true);
-        $imageTargetHeight = $berta->template->settings->get('media', 'imagesSmallWidth', false, true);
-        
-        if($fSizes[0] && $fSizes[1] && $imageTargetWidth && $imageTargetHeight && 
-          ($fSizes[0] > $imageTargetWidth || $fSizes[0] > $imageTargetHeight)) {
-            list($gridWidth, $gridHeight) = self::fitInBounds($fSizes[0], $fSizes[1], $imageTargetWidth, $imageTargetHeight);                   
-            $gridImagePath = self::getResizedSrc($mFolder, $fName, $gridWidth, $gridHeight);
-            
-            return $mFolder . $gridImagePath;
-        }
-        
-        return '';
-    }
-*/
-    
     public static function images_getGridImageFor($imagePath) {
 		$fileName = basename($imagePath);
 		$dirName = dirname($imagePath);
@@ -283,10 +264,10 @@ public static function images_getGridImageFor($mFolder, $fName, $fSizes) {
 		$newFileName = self::$options['images']['grid_image_prefix'] . $fileName;
 		
 		$gridImagePath = $dirName . $newFileName;
-		
+        //$sizes = getimagesize($gridImagePath);
 		if(file_exists($gridImagePath)) {
 			return $newFileName;
-		} elseif(self::createThumbnail($imagePath, $gridImagePath, 200, '')) {
+		} elseif(self::createThumbnail($imagePath, $gridImagePath, 140, '')) {
 			return $newFileName;
 		}
 		

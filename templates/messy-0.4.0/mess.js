@@ -448,10 +448,10 @@ var BertaBackground = new Class({
 		this.data.width = parseInt(el.get('width'));
 		this.data.height = parseInt(el.get('height'));
         
-        if(!this.data.options.image_size || this.data.options.image_size == 'large') {
+        if(this.data.options.image_size == 'large') {
             scaleMultiplier = 1;
             scaleMultiplier = 1;
-        } else if(this.data.options.image_size == 'medium') {
+        } else if(!this.data.options.image_size || this.data.options.image_size == 'medium') {
             scaleMultiplier = 0.85;
             scaleMultiplier = 0.85;
         } else if(this.data.options.image_size == 'small') {

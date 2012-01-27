@@ -146,12 +146,8 @@ $templateConf = array(
 	
 	'grid' => array(
 		'_' => array('title' => I18n::_('Thumbnails')),
-		'marginLeft' => 		array('format' => 'text', 		'default' => '200px',			'title' => I18n::_('Left margin'),
-'description' => ''),
-		'marginTop' => 			array('format' => 'text', 		'default' => '100px',			'title' => I18n::_('Top margin'),
-'description' => ''),
-		'contentWidth' => 		array('format' => 'text', 		'default' => '66%',			'title' => I18n::_('Grid container width'),
-'description' => 'IMPORTANT! This must be set as percentage.'),
+		'contentWidth' => 		array('format' => 'text', 		'default' => '60%',			'title' => I18n::_('Thumbnail container width'),
+'description' => 'IMPORTANT! This must be set as percentage. '),
 	)
 );
 
