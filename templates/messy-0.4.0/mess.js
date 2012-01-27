@@ -384,6 +384,7 @@ var BertaBackground = new Class({
             );          
         }.bind(this));
         
+        // Key events
         window.addEvent('keydown', function(event) {
             if(event.key == 'right') {
                 this.nextButton.fireEvent('click', event);

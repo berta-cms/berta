@@ -425,7 +425,7 @@ a img { border: none; }
 			#xBackground .visual-caption {
 				position: absolute;
 				width: <? echo $s->get('entryLayout', 'contentWidth') ?>;
-				text-align: center;
+				text-align: left;
 				top: 50%; left: 50%;
 				margin-left: -<? echo $s->get('entryLayout', 'contentWidth')/2 ?>px;
 				padding: 0 10px;

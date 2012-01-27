@@ -265,7 +265,8 @@ class BertaGallery extends BertaBase {
 		
 		$gridImagePath = $dirName . $newFileName;
         //$sizes = getimagesize($gridImagePath);
-		if(file_exists($gridImagePath)) {
+		//if(file_exists($gridImagePath) && $sizes[0] == 140) {
+        if(file_exists($gridImagePath)) {
 			return $newFileName;
 		} elseif(self::createThumbnail($imagePath, $gridImagePath, 140, '')) {
 			return $newFileName;
