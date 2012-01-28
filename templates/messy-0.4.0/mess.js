@@ -101,8 +101,10 @@ var MessyMess = new Class({
         
 
 		if($('xGridViewTrigger')) {
-			$('xGridViewTrigger').addEvent('click', function() {
-				Cookie.write('_berta_grid_view', 'berta_grid_view', {duration: 0});
+			$('xGridViewTrigger').addEvent('click', function(event) {
+                gridViewPath = event.target.get('href');
+                if(gridViewPath.length > 1) gridViewPath = gridViewPath.substr(0, gridViewPath.length - 1);
+				Cookie.write('_berta_grid_view', 'berta_grid_view', {duration: 0, path: gridViewPath});
 			});
             
             window.addEvent('keydown', function(event) {
