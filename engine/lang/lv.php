@@ -158,6 +158,7 @@ return array(
 	'<p>Congratulations! You have successfully installed Berta.</p><p>Now, before adding your content, you have to create a new section. Go to the <a href="sections.php">sections page</a> and do that!</p>' =>
 		'<p>Apsveicam! Esi veiksmīgi izveidojis savu web lapu!</p><p>Pirms pievienot saturu, tev jāizveido jauna sadaļa. Dodies uz <a href="sections.php">sadaļas</a></p>',
 	'create new entry here' => 'izveidot jaunu ierakstu',
+    'create new entry' => 'izveidot jaunu ierakstu',
 
 
 	// Translations for default template

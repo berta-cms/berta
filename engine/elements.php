@@ -242,7 +242,7 @@ if($jsonRequest) {
 					    	 	'<div class="xBgColor xEditableColor xProperty-sectionBgColor xNoHTMLEntities xCSSUnits-0 xRequired-1 " title="' . $bgColor . '">' . $bgColorText . '</div>',
 								'<div class="xBgColorReset xReset xCommand-sectionBgColorReset xParams-sectionBgColor"><a href="#"><span>remove</span></a></div>',
 								'<br class="clear" />',
-								'<div class="caption">caption color</div>',
+								'<div class="caption">caption text color</div>',
 					    	 	'<div class="xBgCaptionColor xEditableColor xCommand-SET_BG_CAPTION_COLOR xNoHTMLEntities xCSSUnits-0 xRequired-1 " title="' . $bgCaptionColor . '">' . $bgCaptionColorText . '</div>',
 								'<div class="xBgColorReset xReset xCommand-RESET_BG_CAPTION_COLOR xParams-SET_BG_CAPTION_COLOR"><a href="#"><span>remove</span></a></div>',
 								'<br class="clear" />',

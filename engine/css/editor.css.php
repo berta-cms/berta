@@ -1882,8 +1882,8 @@ body.xSettingsPageBody {
 			}
 			#xSectionsEditor ul.xSaving .csHandle .handle { visibility: hidden !important; }
 		#xSectionsEditor .csTitle { width: 200px; }
-		#xSectionsEditor .csBehaviour { width: 100px; }
-		#xSectionsEditor .csDetails { width: 410px; }
+		#xSectionsEditor .csBehaviour { width: 130px; }
+		#xSectionsEditor .csDetails { width: 380px; }
 		#xSectionsEditor .csPub { width: 100px; }
 		#xSectionsEditor .csDelete { width: 50px; text-align: right; }
 			#xSectionsEditor .csDelete a { color: #f00; }
