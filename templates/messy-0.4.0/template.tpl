@@ -225,7 +225,7 @@
                 { /if }
             
                 <!-- MENU -->
-                { if count($berta.publishedSections) > 0 }
+                { if count($berta.publishedSections) > 0 && ($berta.environment == 'engine' || ($berta.environment == 'site' && $berta.settings.navigation.landingSectionMenuVisible=='no' && $berta.sectionName != $berta.sections|@key) || ($berta.environment == 'site' && $berta.settings.navigation.landingSectionMenuVisible=='yes')) }
                     { assign var="currentSectionName" value=$berta.sectionName }
                     { foreach $berta.publishedSections as $sName => $section }
                         { if $section.type != 'shopping_cart' }
