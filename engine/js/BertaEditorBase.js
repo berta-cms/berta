@@ -855,13 +855,13 @@ var BertaEditorBase = new Class({
 						elem = el.getSiblings('.xCommand-' + params);
 						if(elem.length == 0) elem = el.getSiblings('.xProperty-' + params);
 						elem.each(function(item) {
-							item.set('title', '#ffffff').set('text', '#ffffff');
-							new Element('SPAN', { 
-								'class': 'colorPreview', 
-								'styles': {
-									'background-color': 'rgb(255, 255, 255)'
-								}
-							}).inject(item, 'top');
+							item.set('title', '#ffffff').set('text', 'none');
+							//new Element('SPAN', { 
+							//	'class': 'colorPreview', 
+							//	'styles': {
+							//		'background-color': 'rgb(255, 255, 255)'
+							//	}
+							//}).inject(item, 'top');
 						});
 					}
 				}.bind(this)
