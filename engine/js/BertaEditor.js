@@ -373,8 +373,12 @@ var BertaEditor = new Class({
 						});												
 						
 						// entry deleting and creating
+						if(this.options.templateName.substr(0,5) != 'messy')
+							createNewEntryText = this.options.i18n['create new entry here'];
+						else
+							createNewEntryText = this.options.i18n['create new entry'];
 						new Element('A', { 'class': 'xCreateNewEntry xPanel xAction-entryCreateNew', 'href': '#'}).adopt(
-							new Element('span', { 'html': this.options.i18n['create new entry here'] })
+							new Element('span', { 'html': createNewEntryText })
 						).inject(this.entriesList, 'after');
 						$$('.xEntryDelete').addEvent('click', this.entryDelete.bindWithEvent(this));
 						$$('.xCreateNewEntry').addEvent('click', this.entryCreate.bindWithEvent(this));
