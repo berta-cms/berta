@@ -40,6 +40,8 @@ var BertaEditor_Sections = new Class({
 		this.initNewsTicker();
 		this.sectionsEditorInit();
 		
+		if($('xNewsTickerContainer')) $('xNewsTickerContainer').hide();
+
 		// Create section tip
 		if(!Cookie.read('_berta_tips') && this.sectionsMenu.getChildren().length == 0) {
 			
@@ -140,7 +142,7 @@ var BertaEditor_Sections = new Class({
 		        	tip.show();
 		        },
 				onShow: function(tip, el) {
-					$('xRemoveTips').addEvent('click', function(event) {
+					if($('xRemoveTips')) $('xRemoveTips').addEvent('click', function(event) {
 						event.stop();
 						
 						if(confirm("Berta asks:\n\nAre you sure you want to remove tips?\nYou will not be able to view them again.")) {
