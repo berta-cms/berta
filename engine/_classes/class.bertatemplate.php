@@ -335,6 +335,7 @@ class BertaTemplate extends BertaBase {
 			
 			'i18n' => array(
 				'create new entry here' => I18n::_('create new entry here'),
+				'create new entry' => I18n::_('create new entry'),
 			),
 			//'settings' => $vars['berta']['settings']
 		);
