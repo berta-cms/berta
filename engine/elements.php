@@ -183,11 +183,23 @@ if($jsonRequest) {
 				$bgFading = !empty($section['mediaCacheData']['@attributes']['fade_content']) ? $section['mediaCacheData']['@attributes']['fade_content'] : 'disabled';
 				
 				$bgColor = !empty($section['sectionBgColor']['value']) ? $section['sectionBgColor']['value'] : '#ffffff';
+				$bgColorText = !empty($section['sectionBgColor']['value']) ? $section['sectionBgColor']['value'] : 'none';
 				$bgCaptionColor = !empty($section['mediaCacheData']['@attributes']['caption_color']) ? $section['mediaCacheData']['@attributes']['caption_color'] : '#ffffff';
+				$bgCaptionColorText = !empty($section['mediaCacheData']['@attributes']['caption_color']) ? $section['mediaCacheData']['@attributes']['caption_color'] : 'none';
 				$bgCaptionBackColorTmp = !empty($section['mediaCacheData']['@attributes']['caption_bg_color']) ? explode(',', $section['mediaCacheData']['@attributes']['caption_bg_color']) : explode(',', '255,255,255');
+				
 				$bgCaptionBackColor = '#';
 				foreach($bgCaptionBackColorTmp as $val)
 					$bgCaptionBackColor .= dechex($val);
+					
+				$bgCaptionBackColorTextTmp = !empty($section['mediaCacheData']['@attributes']['caption_bg_color']) ? explode(',', $section['mediaCacheData']['@attributes']['caption_bg_color']) : 'none';
+				if($bgCaptionBackColorTextTmp != 'none') {
+					$bgCaptionBackColorText = '#';
+					foreach($bgCaptionBackColorTextTmp as $val)
+						$bgCaptionBackColorText .= dechex($val);
+				} else {
+					$bgCaptionBackColorText = 'none';
+				}
 				
 				echo '<div id="xBgEditorPanel" class="xPanel">';
 					echo '<div class="xBgEditorTabs">';
@@ -227,15 +239,15 @@ if($jsonRequest) {
 							 '</div>';
 						echo '<div class="xBgColorSettings">',
 					    		'<div class="caption">background color</div>',
-					    	 	'<div class="xBgColor xEditableColor xProperty-sectionBgColor xNoHTMLEntities xCSSUnits-0 xRequired-1 " title="' . $bgColor . '">' . $bgColor . '</div>',
+					    	 	'<div class="xBgColor xEditableColor xProperty-sectionBgColor xNoHTMLEntities xCSSUnits-0 xRequired-1 " title="' . $bgColor . '">' . $bgColorText . '</div>',
 								'<div class="xBgColorReset xReset xCommand-sectionBgColorReset xParams-sectionBgColor"><a href="#"><span>remove</span></a></div>',
 								'<br class="clear" />',
 								'<div class="caption">caption color</div>',
-					    	 	'<div class="xBgCaptionColor xEditableColor xCommand-SET_BG_CAPTION_COLOR xNoHTMLEntities xCSSUnits-0 xRequired-1 " title="' . $bgCaptionColor . '">' . $bgCaptionColor . '</div>',
+					    	 	'<div class="xBgCaptionColor xEditableColor xCommand-SET_BG_CAPTION_COLOR xNoHTMLEntities xCSSUnits-0 xRequired-1 " title="' . $bgCaptionColor . '">' . $bgCaptionColorText . '</div>',
 								'<div class="xBgColorReset xReset xCommand-RESET_BG_CAPTION_COLOR xParams-SET_BG_CAPTION_COLOR"><a href="#"><span>remove</span></a></div>',
 								'<br class="clear" />',
 								'<div class="caption">caption background color</div>',
-					    	 	'<div class="xBgCaptionBackColor xEditableColor xCommand-SET_BG_CAPTION_BACK_COLOR xNoHTMLEntities xCSSUnits-0 xRequired-1 " title="' . $bgCaptionBackColor . '">' . $bgCaptionBackColor . '</div>',
+					    	 	'<div class="xBgCaptionBackColor xEditableColor xCommand-SET_BG_CAPTION_BACK_COLOR xNoHTMLEntities xCSSUnits-0 xRequired-1 " title="' . $bgCaptionBackColor . '">' . $bgCaptionBackColorText . '</div>',
 								'<div class="xBgColorReset xReset xCommand-RESET_BG_CAPTION_BACK_COLOR xParams-SET_BG_CAPTION_BACK_COLOR"><a href="#"><span>remove</span></a></div>',
 								'<br class="clear" />',
 							 '</div>';

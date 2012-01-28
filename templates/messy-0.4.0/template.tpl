@@ -340,17 +340,17 @@
                 
                 { /if }
             {/section}
+            
+            {* grid trigger *}
+            { if $berta.section.type == 'grid' && $berta.section.mediaCacheData.file && !$berta.section.mediaCacheData.file['@attributes'] && !$smarty.cookies._berta_grid_view }
+            <div id="xGridViewTriggerContainer" { if $berta.environment == 'engine' }style="right: 44px"{ else if $berta.environment == 'site' && $shoppingCartSection } style="top: 24px;" { /if }>
+                <a id="xGridViewTrigger" href="{ bertaLink section=$berta.sectionName }"><span>thumbnails</span></a>
+            </div>
+            { /if }
                 
         </div>
         
         {* *** grid view ********************************************************** *}
-        {* grid trigger *}
-        { if $berta.section.type == 'grid' && $berta.section.mediaCacheData.file && !$berta.section.mediaCacheData.file['@attributes'] && !$smarty.cookies._berta_grid_view }
-		<div id="xGridViewTriggerContainer" { if $berta.environment == 'engine' }style="right: 44px"{ else if $berta.environment == 'site' && $shoppingCartSection } style="top: 24px;" { /if }>
-			<a id="xGridViewTrigger" href="{ bertaLink section=$berta.sectionName }"><span>thumbnails</span></a>
-		</div>
-        { /if }
-        
         { if ($berta.section.type == 'grid' && $smarty.cookies._berta_grid_view) }
         <div id="xGridView">
             { gridView section=$berta.section }
