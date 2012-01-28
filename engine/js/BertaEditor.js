@@ -120,6 +120,8 @@ var BertaEditor = new Class({
 					this.tabsInit.delay(300);
 				}
 				
+				if($('xNewsTickerContainer')) this.hideNewsTicker();
+
 				// New section tip
 				if(!Cookie.read('_berta_tips')) {
 				    var newSection_tip_anchor = document.getElementById('xSections');
@@ -348,6 +350,8 @@ var BertaEditor = new Class({
 				// section background editing
 				if($('xBgEditorPanelTrig')) $('xBgEditorPanelTrig').addEvent('click', this.onBgEditClick.bindWithEvent(this));
 				
+				if($('xNewsTickerContainer') && (Cookie.read('_berta_tips') != 'hidden' || Cookie.read('_berta_shop_tips') != 'hidden')) this.hideNewsTicker();
+
 				if(this.entriesList) {
 				
 					this.currentSection = this.entriesList.getClassStoredValue('xSection');
@@ -666,7 +670,7 @@ var BertaEditor = new Class({
 							Cookie.write('_berta_tips', 'hidden', {duration: 365, path: '/'});
 						
 						this.container.getElement('h1').hide();
-						
+
 						var newSection_tip_anchor = document.getElementById('xSections');
 			
 						var newSectionTip = new Tips(newSection_tip_anchor, {
@@ -700,6 +704,8 @@ var BertaEditor = new Class({
 					} else if(!this.currentSection && Cookie.read('_berta_tips') && Cookie.read('_berta_tips') == 'hidden' && (!Cookie.read('_berta_shop_tips') || Cookie.read('_berta_shop_tips') == 'create_shop_cart')) {
 						// Shop sections tip
 						if(this.options.shopEnabled && this.options.templateName.substr(0,5) == 'messy') {
+							this.container.getElement('h1').hide();
+
 							var shopSections_tip_anchor = document.getElementById('xSections');
 							
 							var shopSectionsTip = new Tips(shopSections_tip_anchor, {
