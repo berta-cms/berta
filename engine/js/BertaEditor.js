@@ -765,6 +765,7 @@ var BertaEditor = new Class({
 		this.newsTickerContainer = $('xNewsTickerContainer');
 		if(!this.newsTickerContainer.hasClass('xNewsTickerHidden')) {
 			new Fx.Slide(this.newsTickerContainer, { duration: 800, transition: Fx.Transitions.Quint.easeInOut }).show().slideOut();
+			this.newsTickerContainer.addClass('xNewsTickerHidden');
 			Cookie.write('_berta_newsticker_hidden', 1);
 		}
 	},

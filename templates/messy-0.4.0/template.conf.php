@@ -25,7 +25,7 @@ $sectionTypes = array(
 		'link' => array('format' => 'text',	'default' => ''), 
 		'target' => array('format' => 'select', 'values' => array('_self' => 'Same window', '_blank' => 'New window'), 'default' => '_blank')
 	)),
-	'grid' => array('title' => 'Grid'),
+	'grid' => array('title' => 'Thumbnails enabled'),
 	
 );
 
