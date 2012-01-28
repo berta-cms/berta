@@ -287,10 +287,15 @@ class BertaGallery extends BertaBase {
         $imageTargetWidth = $berta->template->settings->get('media', 'imagesSmallWidth', false, true);
         $imageTargetHeight = $berta->template->settings->get('media', 'imagesSmallWidth', false, true);
         
+        reset($berta->sections);
+        $firstKey = key($berta->sections);
+        
         if($berta->environment == 'engine' || ($berta->environment == 'site' && !isset($_REQUEST['__rewrite']))) {
             $linkHref = '?section=' . $section['name'];
-        } elseif($berta->environment == 'site' && isset($_REQUEST['__rewrite'])) {
+        } elseif($berta->environment == 'site' && isset($_REQUEST['__rewrite']) && $section['name'] != $firstKey) {
             $linkHref = self::$options['SITE_ABS_ROOT'] . $section['name'] . '/';
+        } elseif($berta->environment == 'site' && isset($_REQUEST['__rewrite']) && $section['name'] == $firstKey) {
+            $linkHref = self::$options['SITE_ABS_ROOT'];
         }
         
         if($imgs && count($imgs) > 0)
