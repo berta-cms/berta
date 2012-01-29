@@ -389,7 +389,7 @@ body.xEditorEnabled { }
     height: 40px;
 }
     #xBgEditorPanelTrigContainer a {
-    	background: url('../layout/gallery_icons_sprite.gif') no-repeat;
+    	background: url('../layout/gallery_icons_sprite.png') no-repeat;
     	background-position: -280px 0px;
     	width: 40px;
     	height: 40px;
@@ -585,7 +585,7 @@ body.xEditorEnabled { }
 		    }
 	
 		.xBgEditorTabs .xBgMediaTab a {
-			background: url('../layout/gallery_icons_sprite.gif') no-repeat;
+			background: url('../layout/gallery_icons_sprite.png') no-repeat;
 			background-position: 0px -40px;
 			
 		}
@@ -599,7 +599,7 @@ body.xEditorEnabled { }
 			}
 		
 		.xBgEditorTabs .xBgSettingsTab a {
-			background: url('../layout/gallery_icons_sprite.gif') no-repeat;
+			background: url('../layout/gallery_icons_sprite.png') no-repeat;
 			background-position: -160px -40px;
 			
 		}
@@ -613,7 +613,7 @@ body.xEditorEnabled { }
 			}
 		
 		.xBgEditorTabs .xBgImgSizeSettingsTab a {
-			background: url('../layout/gallery_icons_sprite.gif') no-repeat;
+			background: url('../layout/gallery_icons_sprite.png') no-repeat;
 			background-position: -120px -40px;
 			
 		}
@@ -627,7 +627,7 @@ body.xEditorEnabled { }
 			}
 		
 		.xBgEditorTabs .xBgSlideshowSettingsTab a {
-			background: url('../layout/gallery_icons_sprite.gif') no-repeat;
+			background: url('../layout/gallery_icons_sprite.png') no-repeat;
 			background-position: -40px -40px;
 			
 		}
@@ -1157,7 +1157,7 @@ a.xCreateNewEntry.xSaving {
 		}
 		
 		.xEntryGalleryMenu .xEntryMedia a {
-			background: url('../layout/gallery_icons_sprite.gif') no-repeat;
+			background: url('../layout/gallery_icons_sprite.png') no-repeat;
 			background-position: 0px -40px;
 			
 		}
@@ -1171,7 +1171,7 @@ a.xCreateNewEntry.xSaving {
 			}
 		
 		.xEntryGalleryMenu .xEntryMediaSettings a {
-			background: url('../layout/gallery_icons_sprite.gif') no-repeat;
+			background: url('../layout/gallery_icons_sprite.png') no-repeat;
 			background-position: -40px -40px;
 			
 		}
@@ -1185,7 +1185,7 @@ a.xCreateNewEntry.xSaving {
 			}
 		
 		.xEntryGalleryMenu .xEntryFullScreenSettings a {
-			background: url('../layout/gallery_icons_sprite.gif') no-repeat;
+			background: url('../layout/gallery_icons_sprite.png') no-repeat;
 			background-position: -80px -40px;
 		}
 		
@@ -1198,7 +1198,7 @@ a.xCreateNewEntry.xSaving {
 			}
 			
 		.xEntryGalleryMenu .xEntryImageSizeSettings a {
-			background: url('../layout/gallery_icons_sprite.gif') no-repeat;
+			background: url('../layout/gallery_icons_sprite.png') no-repeat;
 			background-position: -120px -40px;
 		}
 		

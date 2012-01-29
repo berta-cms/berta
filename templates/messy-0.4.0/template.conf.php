@@ -141,7 +141,7 @@ $templateConf = array(
 	'grid' => array(
 		'_' => array('title' => I18n::_('Thumbnails')),
 		'contentWidth' => 		array('format' => 'text', 		'default' => '60%',			'title' => I18n::_('Thumbnail container width'),
-'description' => 'IMPORTANT! This must be set as percentage. '),
+'description' => 'IMPORTANT! This must be set as percentage. i.e. 60% '),
 	)
 );
 
