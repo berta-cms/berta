@@ -513,6 +513,7 @@ var BertaEditorBase = new Class({
 				el.store('onActionComplete', onElementSave);
 				el.addClass(editorClass.substr(1));
 				el.addEvent('click', function(event, editor) {
+					event.stop();
 					if(!this.hasClass('xSaving') && !this.hasClass('xEditing')) {
 						var action = this.getClassStoredValue('xCommand');
 						var params = this.getClassStoredValue('xParams');
@@ -624,7 +625,7 @@ var BertaEditorBase = new Class({
 		// console.log(oldContentText);
 		// console.log(newContentText);
 		
-		if(oldContent == newContent) {
+		if(oldContent == newContent && !el.hasClass('xBgColor')) {
 			var content = oldContent;
 			if(content.test('^([\s\xA0]|\&nbsp\;)+$')) content = ''; // empty, if contains only rubbish (\xA0 == &nbsp;)
 			if(content) {
@@ -634,7 +635,7 @@ var BertaEditorBase = new Class({
 			}
 			el.removeClass('xEditing');
 		
-		} else if(oldContent != newContent) {
+		} else if(oldContent != newContent || el.hasClass('xBgColor')) {
 			var property = el.getClassStoredValue('xProperty');
 			var useCSSUnits = el.getClassStoredValue('xCSSUnits') > 0;
 			var noHTMLEntities = el.hasClass('xNoHTMLEntities');

@@ -476,17 +476,13 @@ body.xEditorEnabled { }
 				margin-top: 6px;
 			}
 
-				.xBgColorSettings .xBgColor,
-				.xBgColorSettings .xBgCaptionColor,
-				.xBgColorSettings .xBgCaptionBackColor {
+				.xBgColorSettings .xBgColor {
 					float: left;
 					margin-top: 6px;
 					width: 100px;
 				}
 			
-				.xBgColor span.colorPreview,
-				.xBgCaptionColor span.colorPreview,
-				.xBgCaptionBackColor span.colorPreview {
+				.xBgColor span.colorPreview {
 					display: block;
 					float: left;
 					width: 1.2em;
