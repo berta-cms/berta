@@ -834,7 +834,7 @@ var BertaEditorBase = new Class({
 	
 	
 	elementEdit_reset: function(el, action, params) {
-		if(el.hasClass('xBgColorReset') && confirm('Are you sure you want to remove this color?')) {
+		if(el.hasClass('xBgColorReset') && confirm('Berta asks:\n\nAre you sure you want to remove this color?')) {
 			el.addClass('xSaving');
 			var entryInfo = this.getEntryInfoForElement(el);
 			if(entryInfo.section == '') entryInfo.section = this.sectionName;
