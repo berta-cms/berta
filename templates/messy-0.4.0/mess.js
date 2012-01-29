@@ -133,14 +133,14 @@ var MessyMess = new Class({
 				mouseenter: function(){
 					$$('.xCreateNewEntry').hide();
 					$('xTopPanelContainer').hide();
-					$('xBgEditorPanelTrigContainer').hide();
+					if($('xBgEditorPanelTrigContainer')) $('xBgEditorPanelTrigContainer').hide();
 					$('xBackgroundNext').hide();
 					$('xBackgroundPrevious').hide();
 				},
 				mouseleave: function(){
 					$$('.xCreateNewEntry').show();
 					$('xTopPanelContainer').show();
-					$('xBgEditorPanelTrigContainer').show();
+					if($('xBgEditorPanelTrigContainer')) $('xBgEditorPanelTrigContainer').show();
 					$('xBackgroundNext').show();
 					$('xBackgroundPrevious').show();
 					$$('.xEntry .xCreateNewEntry').hide();

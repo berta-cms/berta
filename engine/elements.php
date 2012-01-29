@@ -243,11 +243,11 @@ if($jsonRequest) {
 								'<div class="xBgColorReset xReset xCommand-sectionBgColorReset xParams-sectionBgColor"><a href="#"><span>remove</span></a></div>',
 								'<br class="clear" />',
 								'<div class="caption">caption text color</div>',
-					    	 	'<div class="xBgCaptionColor xEditableColor xCommand-SET_BG_CAPTION_COLOR xNoHTMLEntities xCSSUnits-0 xRequired-1 " title="' . $bgCaptionColor . '">' . $bgCaptionColorText . '</div>',
+					    	 	'<div class="xBgColor xEditableColor xCommand-SET_BG_CAPTION_COLOR xNoHTMLEntities xCSSUnits-0 xRequired-1 " title="' . $bgCaptionColor . '">' . $bgCaptionColorText . '</div>',
 								'<div class="xBgColorReset xReset xCommand-RESET_BG_CAPTION_COLOR xParams-SET_BG_CAPTION_COLOR"><a href="#"><span>remove</span></a></div>',
 								'<br class="clear" />',
 								'<div class="caption">caption background color</div>',
-					    	 	'<div class="xBgCaptionBackColor xEditableColor xCommand-SET_BG_CAPTION_BACK_COLOR xNoHTMLEntities xCSSUnits-0 xRequired-1 " title="' . $bgCaptionBackColor . '">' . $bgCaptionBackColorText . '</div>',
+					    	 	'<div class="xBgColor xEditableColor xCommand-SET_BG_CAPTION_BACK_COLOR xNoHTMLEntities xCSSUnits-0 xRequired-1 " title="' . $bgCaptionBackColor . '">' . $bgCaptionBackColorText . '</div>',
 								'<div class="xBgColorReset xReset xCommand-RESET_BG_CAPTION_BACK_COLOR xParams-SET_BG_CAPTION_BACK_COLOR"><a href="#"><span>remove</span></a></div>',
 								'<br class="clear" />',
 							 '</div>';
