@@ -7,7 +7,6 @@
 /*////////*/   // set your desired username and password here:   |||||||||||||||
 /*////////*/   $options['AUTH_user'] = 'admin';
 /*////////*/   $options['AUTH_password'] = 'xxx';
-/*////////*/   $options['SHOP_authentification'] = 'xxx';
 /*////////*/   
 /*////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
 
