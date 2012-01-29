@@ -202,7 +202,7 @@
 
             <div id="contentContainer">
             
-                { if $berta.environment == 'engine' }
+                { if $berta.environment == 'engine' && $berta.sections }
                 <div id="xBgEditorPanelContainer"></div>
                 <div id="xBgEditorPanelTrigContainer">
                     <a href="#" id="xBgEditorPanelTrig" title="edit background gallery"><span>background settings</span></a>
