@@ -100,16 +100,6 @@ var BertaBgEditor = new Class({
 			this.elementEdit_init(item, this.options.xBertaEditorClassColor) 
 		}, this);
 		
-		// bg caption color handle
-		this.container.getElements('.xBgCaptionColor').each(function(item) { 
-			this.elementEdit_init(item, this.options.xBertaEditorClassColor) 
-		}, this);
-		
-		// bg caption background color handle
-		this.container.getElements('.xBgCaptionBackColor').each(function(item) { 
-			this.elementEdit_init(item, this.options.xBertaEditorClassColor) 
-		}, this);
-		
 		// bg size handle
 		this.container.getElements('.xBgImgSize').each(function(item) { 
 			this.elementEdit_init(item, this.options.xBertaEditorClassSelectRC);
