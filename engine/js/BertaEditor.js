@@ -350,7 +350,7 @@ var BertaEditor = new Class({
 				// section background editing
 				if($('xBgEditorPanelTrig')) $('xBgEditorPanelTrig').addEvent('click', this.onBgEditClick.bindWithEvent(this));
 				
-				if($('xNewsTickerContainer') && (Cookie.read('_berta_tips') != 'hidden' || Cookie.read('_berta_shop_tips') != 'hidden')) this.hideNewsTicker();
+				if($('xNewsTickerContainer') && (Cookie.read('_berta_tips') != 'hidden' || (this.options.shopEnabled && Cookie.read('_berta_shop_tips') != 'hidden'))) this.hideNewsTicker();
 
 				if(this.entriesList) {
 				
