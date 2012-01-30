@@ -101,15 +101,15 @@ var MessyMess = new Class({
         
 
 		if($('xGridViewTrigger')) {
-			$('xGridViewTrigger').addEvent('click', function(event) {
-                gridViewPath = event.target.get('href');
+			$('xGridViewTrigger').addEvent('click', function() {
+                gridViewPath = this.get('href');
                 if(gridViewPath.length > 1) gridViewPath = gridViewPath.substr(0, gridViewPath.length - 1);
 				Cookie.write('_berta_grid_view', 'berta_grid_view', {duration: 0, path: gridViewPath});
 			});
             
             window.addEvent('keydown', function(event) {
                 if(event.key == 'up') {
-                    $('xGridViewTrigger').fireEvent('click', event);
+                    $('xGridViewTrigger').fireEvent('click');
                     window.location.href = $('xGridViewTrigger').get('href');
                 }
             }); 
@@ -377,7 +377,7 @@ var BertaBackground = new Class({
                 function() { this._getNewBgContent(newBgContent); }.bind(this)
             );
 
-        }.bind(this));
+        }.bindWithEvent(this));
 
         // Previous image button click
         this.previousButton.addEvent('click', function(event) {
@@ -399,7 +399,7 @@ var BertaBackground = new Class({
             this.fadeOutFx.start('opacity', 0).chain(
                 function() { this._getNewBgContent(newBgContent); }.bind(this)
             );          
-        }.bind(this));
+        }.bindWithEvent(this));
         
         // Key events
         window.addEvent('keydown', function(event) {
@@ -408,7 +408,7 @@ var BertaBackground = new Class({
             } else if(event.key == 'left') {
                 this.previousButton.fireEvent('click', event);
             }
-        }.bind(this));  
+        }.bindWithEvent(this));
         
         // Autoplay
         if(this.data.options.autoplay > 0) {
