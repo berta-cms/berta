@@ -47,22 +47,24 @@
 		
 		<div id="sideColumn">
 			<div id="sideColumnTop">
-			
-				{ if $berta.settings.pageHeading.image }
-				<h1><a href="{ bertaLink }"><img src="{ $berta.options.MEDIA_ABS_ROOT }{ $berta.settings.pageHeading.image }" /></a></h1>
-				{ else }
-				<h1 class="xEditable xProperty-siteHeading">
-					{ if $berta.environment == "engine" }
-						{ $siteHeading }
-					{ else }
-						<a href="{ bertaLink }">{ $siteHeading }</a>
-					{ /if }
-				</h1>
-				{ /if }
+
+                { if ($berta.environment == 'site' && $berta.settings.navigation.landingSectionMenuVisible=='yes') || $berta.environment == 'engine' || ($berta.environment == 'site' && $berta.settings.navigation.landingSectionMenuVisible=='no' && $berta.sectionName != $berta.sections|@key) }
+                    { if $berta.settings.pageHeading.image }
+                    <h1><a href="{ bertaLink }"><img src="{ $berta.options.MEDIA_ABS_ROOT }{ $berta.settings.pageHeading.image }" /></a></h1>
+                    { else }
+                    <h1 class="xEditable xProperty-siteHeading">
+                        { if $berta.environment == "engine" }
+                            { $siteHeading }
+                        { else }
+                            <a href="{ bertaLink }">{ $siteHeading }</a>
+                        { /if }
+                    </h1>
+                    { /if }
+                { /if }
 				
 					
 					
-				{ if count($berta.publishedSections) > 0 }
+				{ if count($berta.publishedSections) > 0 && (($berta.environment == 'site' && $berta.settings.navigation.landingSectionMenuVisible=='yes') || $berta.environment == 'engine' || ($berta.environment == 'site' && $berta.settings.navigation.landingSectionMenuVisible=='no' && $berta.sectionName != $berta.sections|@key)) }
 					<ul>
 						{ assign var="sName" value=$berta.sectionName }
 						{ foreach from=$berta.publishedSections item="section" name="sectionsMenuLoop" }
