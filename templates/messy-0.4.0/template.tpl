@@ -210,6 +210,7 @@
                 { /if }
                 
                 <!-- PAGE HEADING -->
+                { if ($berta.environment == 'site' && $berta.settings.navigation.landingSectionMenuVisible=='yes') || $berta.environment == 'engine' || ($berta.environment == 'site' && $berta.settings.navigation.landingSectionMenuVisible=='no' && $berta.sectionName != $berta.sections|@key) }
                 { if $berta.settings.heading.image }
                 <h1 class="{ messClasses property='siteHeadingXY' }" style="{ messStyles xy=$siteHeadingXY }"><a href="{ bertaLink }"><img src="{ $berta.options.MEDIA_ABS_ROOT }{ $berta.settings.heading.image }" /></a></h1>
                 { else }
@@ -222,6 +223,7 @@
                     { /if }
                     </span>
                 </h1>
+                { /if }
                 { /if }
             
                 <!-- MENU -->
