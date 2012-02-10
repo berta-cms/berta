@@ -370,6 +370,14 @@ a img { border: none; }
 	width: 100%;
 	height: 100%;
 }
+    #xBackground #xBackgroundLoader {
+        width: 31px;
+        height: 31px;
+        position: absolute;
+        left: 50%; top: 50%;
+        margin-left: -15px; margin-top: -15px;
+        display: none;
+    }
 
 #xBackgroundContainer #xBackgroundNext {
 	position: fixed;

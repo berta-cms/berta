@@ -80,6 +80,7 @@ var MessyMess = new Class({
         
 		if(this.bgContainer)  {
             this.bgImage = this.bgContainer.getElement('.visual-image img');
+            this.bgImage.hide(); // Hide image while the content hasn't loaded completely
             this.bgCaption = this.bgContainer.getElement('.visual-caption');
         }
         
@@ -150,6 +151,10 @@ var MessyMess = new Class({
 	},
 	
 	onLoad: function() {
+        //Show background image when site content is loaded
+        if(this.bgContainer)
+            this.bgImage.show();
+
         // Fade content
         if(this.fadeContent == 'enabled' && this.bgContainer.getElement('.visual-image')) {
             var hideContent, lastX, lastY;
@@ -338,12 +343,13 @@ var BertaBackground = new Class({
         this.nextButton = $('xBackgroundNext');
 		this.previousButton = $('xBackgroundPrevious');
 		this.container = $('xBackground');
+        this.loader = $('xBackgroundLoader');
 		
         this.imageContainer = this.container.getElement('.visual-image');
 		this.imagesList = this.container.getElement('.visual-list');
 		this.caption = this.container.getElement('.visual-caption');
 		this.image = this.container.getElement('.visual-image img');
-        
+
         this.data = { options: this.options };
         this.data.options.image_size = this.container.getClassStoredValue('xBgDataImageSize');
         this.data.options.autoplay = this.container.getClassStoredValue('xBgDataAutoplay');
@@ -444,7 +450,9 @@ var BertaBackground = new Class({
 
         if(newBgContent.get('tag') == 'input') {
             if(obj = this.image) obj.destroy();
-            
+
+            this.loader.setStyle('display', 'block');
+
             newImage = newBgContent;
             newWidth = newImage.get('width'); newHeight = newImage.get('height'); newSrc = newImage.get('src');
             this.image = new Asset.image(newSrc, { class: 'bg-element visualContent', width: newWidth, height: newHeight, onLoad: this._getNewBgContentFinish.bind(this) });
@@ -459,6 +467,7 @@ var BertaBackground = new Class({
 	},
     
     _getNewBgContentFinish: function() {
+        this.loader.setStyle('display', 'none');
         this.container.getElement('.visual-image').adopt(this.image);
         this.fadeInFx.set('opacity', 0).start('opacity', 1);
     },

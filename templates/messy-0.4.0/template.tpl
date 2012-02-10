@@ -34,6 +34,9 @@
         {* *** section background ************************************************* *}
         <div id="xBackgroundContainer">
             <div id="xBackground" class="xBgDataAutoplay-{$berta.section.mediaCacheData['@attributes'].autoplay} xBgDataImageSize-{$berta.section.mediaCacheData['@attributes'].image_size} xBgDataFading-{ if $berta.environment == 'site' }{$berta.section.mediaCacheData['@attributes'].fade_content}{ /if }" style="background-color: { $berta.section.sectionBgColor }">
+                <div id="xBackgroundLoader">
+                    <img src="{ $berta.options.ENGINE_ABS_ROOT }layout/bg-loader.gif" alt="Background loader." />
+                </div>
                 {* if only one image *}
                 { if $berta.section.mediaCacheData.file['@attributes'] && $berta.section.mediaCacheData.file['@attributes'].type == 'image' && !($smarty.cookies._berta_grid_view && $berta.section.type == 'grid') }
                    
@@ -57,7 +60,7 @@
                         </div>
                     { else }
                         <div class="visual-image">
-                            <img width="{ $berta.section.mediaCacheData.file['@attributes'].width }" height="{ $berta.section.mediaCacheData.file['@attributes'].height }" src="{ $berta.options.MEDIA_ROOT }{ $berta.section.mediafolder }/_bg_{ $berta.section.mediaCacheData.file['@attributes'].src }" class="bg-element visualContent" />
+                            <img width="{ $berta.section.mediaCacheData.file['@attributes'].width }" height="{ $berta.section.mediaCacheData.file['@attributes'].height }" src="{ $berta.options.MEDIA_ABS_ROOT }{ $berta.section.mediafolder }/_bg_{ $berta.section.mediaCacheData.file['@attributes'].src }" class="bg-element visualContent" />
                         </div>
                         <div class="visual-caption" style="background: rgb({ $berta.section.mediaCacheData['@attributes'].caption_bg_color }); background: rgba({ $berta.section.mediaCacheData['@attributes'].caption_bg_color },0.5); color: { $berta.section.mediaCacheData['@attributes'].caption_color }">
                         </div>
