@@ -10,6 +10,7 @@ var MessyMess = new Class({
     bgContainer: null,
     bgImage: null,
     bgCaption: null,
+    bgLoader: null,
 	
 	initialize: function() {
 		window.addEvent('domready', this.onDOMReady.bind(this));
@@ -77,17 +78,23 @@ var MessyMess = new Class({
 	onDOMReady: function() {
 		// Berta Background
 		this.bgContainer = $('xBackground');
+        this.bgLoader = $('xBackgroundLoader');
         
 		if(this.bgContainer)  {
             this.bgImage = this.bgContainer.getElement('.visual-image img');
-            //this.bgImage.hide(); // Hide image while the content hasn't loaded completely
             this.bgCaption = this.bgContainer.getElement('.visual-caption');
-        }
+
         
-		if(this.bgImage || this.bgCaption) {
-			var bertaBackground = new BertaBackground();
-            this.fadeContent = this.bgContainer.getClassStoredValue('xBgDataFading');
-		}
+            if(this.bgImage || this.bgCaption) {
+                var bertaBackground = new BertaBackground();
+                this.fadeContent = this.bgContainer.getClassStoredValue('xBgDataFading');
+            }
+
+            if(this.bgImage) {
+                this.bgImage.setStyle('display', 'none');
+                this.bgLoader.setStyle('display', 'block');
+            }
+        }
 		
         // Grid view
 		if($('xGridView')) {
@@ -130,15 +137,12 @@ var MessyMess = new Class({
 
 			$$('.xEditableDragXY').addEvents({
 				mouseenter: function(){
-					//$$('.xCreateNewEntry').hide();
 					$('xTopPanelContainer').hide();
 					if($('xBgEditorPanelTrigContainer')) $('xBgEditorPanelTrigContainer').hide();
 					$('xBackgroundNext').hide();
 					$('xBackgroundPrevious').hide();
 				},
 				mouseleave: function(){
-					//$$('.xCreateNewEntry').show();
-					//$$('.xEntry .xCreateNewEntry').hide();
 					$('xTopPanelContainer').show();
 					if($('xBgEditorPanelTrigContainer')) $('xBgEditorPanelTrigContainer').show();
 					$('xBackgroundNext').show();
@@ -149,11 +153,10 @@ var MessyMess = new Class({
 	},
 	
 	onLoad: function() {
-        //Show background image when site content is loaded
-        /*
-if(this.bgContainer)
-            this.bgImage.show();
-*/
+        if(this.bgContainer && this.bgImage) {
+            this.bgLoader.setStyle('display', 'none');
+            this.bgImage.setStyle('display', 'block')
+        }
 
         // Fade content
         if(this.fadeContent == 'enabled' && this.bgContainer.getElement('.visual-image')) {
@@ -318,23 +321,25 @@ var BertaBackground = new Class({
 		image_size: 'large',
         autoplay: 0,
 	},
-	
+
     container: null,
+    nextButton: null,
+    previousButton: null,
+    loader: null,
+
+    imageContainer: null,
+    captionContainer: null,
 	imagesList: null,
 	caption: null,
 	image: null,
-    
-	nextButton: null,
-	previousButton: null,
-    
+
     selected: null,
     autoplayInterval: null,
     data: null,
-    
+
+    fadeElements: null,
     fadeOutFx: null,
     fadeInFx: null,
-    captionFadeOutFx: null,
-    captionFadeInFx: null,
     
     
 	initialize: function(options) {
@@ -344,22 +349,23 @@ var BertaBackground = new Class({
 		this.previousButton = $('xBackgroundPrevious');
 		this.container = $('xBackground');
         this.loader = $('xBackgroundLoader');
-		
+
+        this.imagesList = this.container.getElement('.visual-list');
         this.imageContainer = this.container.getElement('.visual-image');
-		this.imagesList = this.container.getElement('.visual-list');
-		this.caption = this.container.getElement('.visual-caption');
-		this.image = this.container.getElement('.visual-image img');
+        this.captionContainer = this.container.getElement('.visual-caption');
+		this.image = this.imageContainer.getElement('img');
+        this.caption = this.captionContainer.getElement('.caption-content');
 
         this.data = { options: this.options };
         this.data.options.image_size = this.container.getClassStoredValue('xBgDataImageSize');
         this.data.options.autoplay = this.container.getClassStoredValue('xBgDataAutoplay');
-        
-        this.fadeOutFx = new Fx.Tween(this.imageContainer, { duration: 'short', transition: Fx.Transitions.Sine.easeInOut });
-        this.fadeInFx = new Fx.Tween(this.imageContainer, { duration: 'normal', transition: Fx.Transitions.Sine.easeInOut });
-        this.captionFadeOutFx = new Fx.Tween(this.caption, { duration: 'short', transition: Fx.Transitions.Sine.easeInOut });
-        this.captionFadeInFx = new Fx.Tween(this.caption, { duration: 'normal', transition: Fx.Transitions.Sine.easeInOut });
 
-        this._init();
+        this.fadeElements = $$('.visual-image, .visual-caption');
+        this.fadeOutFx = new Fx.Elements(this.fadeElements, { duration: 'short', transition: Fx.Transitions.Sine.easeInOut });
+        this.fadeInFx  = new Fx.Elements(this.fadeElements, { duration: 'normal', transition: Fx.Transitions.Sine.easeInOut });
+
+        if(this.image) this._init();
+        else if(this.caption) this._centerCaption();
         
         // Next image button click    
         this.nextButton.addEvent('click', function(event) {
@@ -372,14 +378,12 @@ var BertaBackground = new Class({
                 this._autoplay();
             }
             
-			if(this.selected.getNext()) {
+			if(this.selected.getNext())
                 newBgContent = this.selected.getNext();
-			}
             else
                 newBgContent = this.imagesList.getFirst();
-            
-            this.captionFadeOutFx.start('opacity', 0);
-            this.fadeOutFx.start('opacity', 0).chain(
+
+            this.fadeOutFx.start({ '0': { 'opacity': 0 }, '1': { 'opacity': 0 } }).chain(
                 function() { this._getNewBgContent(newBgContent); }.bind(this)
             );
 
@@ -400,9 +404,8 @@ var BertaBackground = new Class({
                 newBgContent = this.selected.getPrevious();
             else
                 newBgContent = this.imagesList.getLast();
-            
-            this.captionFadeOutFx.start('opacity', 0);
-            this.fadeOutFx.start('opacity', 0).chain(
+
+            this.fadeOutFx.start({ '0': { 'opacity': 0 }, '1': { 'opacity': 0 } }).chain(
                 function() { this._getNewBgContent(newBgContent); }.bind(this)
             );          
         }.bindWithEvent(this));
@@ -432,44 +435,50 @@ var BertaBackground = new Class({
                 newBgContent = this.selected.getNext();
             else
                 newBgContent = this.imagesList.getFirst();
-            
-            this.captionFadeOutFx.start('opacity', 0);
-            this.fadeOutFx.start('opacity', 0).chain(
+
+            this.fadeOutFx.start({ '0': { 'opacity': 0 }, '1': { 'opacity': 0 } }).chain(
                 function() { this._getNewBgContent(newBgContent); }.bind(this)
             );
         }.bind(this), time);
     },
-    
-    _centerCaption: function() {
-        if(this.caption) this.caption.setStyle('margin-top', '-' + (this.caption.getSize().y / 2) + 'px');
-    },    
-    
-	_getNewBgContent: function(newBgContent) {
-        this.selected.removeClass('sel');
-        newBgContent.addClass('sel');
 
-        if(newBgContent.get('tag') == 'input') {
-            if(obj = this.image) obj.destroy();
+	_getNewBgContent: function(newContent) {
+        this.selected.removeClass('sel');
+        newContent.addClass('sel');
+
+        if(newContent.get('tag') == 'input') {
+            if(img = this.image) img.destroy();
+            if(caption = this.caption) caption.destroy();
 
             this.loader.setStyle('display', 'block');
-
-            newImage = newBgContent;
-            newWidth = newImage.get('width'); newHeight = newImage.get('height'); newSrc = newImage.get('src');
-            this.image = new Asset.image(newSrc, { class: 'bg-element visualContent', width: newWidth, height: newHeight, onLoad: this._getNewBgContentFinish.bind(this) });
-            this._init();
+            newImage = newContent; newWidth = newImage.get('width'); newHeight = newImage.get('height'); newSrc = newImage.get('src');
+            this.image = new Asset.image(newSrc, { class: 'bg-element visualContent', width: newWidth, height: newHeight, onLoad: this._getNewBgImageFinish.bind(this) });
         }
-        else if(newBgContent.get('tag') == 'textarea') {
-            newCaption = newBgContent.get('text');
-            this.caption.set('html', newCaption);
-            this._centerCaption();
-            this.captionFadeInFx.set('opacity', 0).start('opacity', 1);
+        else if(newContent.get('tag') == 'textarea') {
+            if(img = this.image) img.destroy();
+            if(caption = this.caption) caption.destroy();
+
+            newCaption = newContent.get('text');
+            this.caption = new Element('div', { 'class': 'caption-content', 'html': newCaption });
+            this._getNewBgCaptionFinish();
         }
 	},
     
-    _getNewBgContentFinish: function() {
+    _getNewBgImageFinish: function() {
         this.loader.setStyle('display', 'none');
-        this.container.getElement('.visual-image').adopt(this.image);
-        this.fadeInFx.set('opacity', 0).start('opacity', 1);
+        this.imageContainer.adopt(this.image);
+        this._init();
+        this.fadeInFx.set({ '0': { 'opacity': 0 }, '1': { 'opacity': 0 } }).start({ '0': { 'opacity': 1 }, '1': { 'opacity': 1 } });
+    },
+
+    _getNewBgCaptionFinish: function() {
+        this.captionContainer.adopt(this.caption);
+        this._centerCaption();
+        this.fadeInFx.set({ '0': { 'opacity': 0 }, '1': { 'opacity': 0 } }).start({ '0': { 'opacity': 1 }, '1': { 'opacity': 1 } });
+    },
+
+    _centerCaption: function() {
+        this.captionContainer.setStyle('margin-top', '-' + (this.captionContainer.getSize().y / 2) + 'px');
     },
 
 	_init: function() {
@@ -492,7 +501,6 @@ var BertaBackground = new Class({
         window.removeEvent('resize');
 		window.addEvent('resize', function() { this._onResize(el, scaleMultiplier) }.bind(this));
 		this._onResize(el, scaleMultiplier);
-        this._centerCaption();
 	},
 	
 	_onResize: function(el, scaleMultiplier) {
