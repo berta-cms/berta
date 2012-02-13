@@ -80,7 +80,7 @@ var MessyMess = new Class({
         
 		if(this.bgContainer)  {
             this.bgImage = this.bgContainer.getElement('.visual-image img');
-            this.bgImage.hide(); // Hide image while the content hasn't loaded completely
+            //this.bgImage.hide(); // Hide image while the content hasn't loaded completely
             this.bgCaption = this.bgContainer.getElement('.visual-caption');
         }
         
@@ -97,9 +97,6 @@ var MessyMess = new Class({
 					Cookie.write('_berta_grid_img_link', _berta_grid_img_link, {duration: 0});
 			});
 		}
-        
-        // Key events
-        
 
 		if($('xGridViewTrigger')) {
 			$('xGridViewTrigger').addEvent('click', function() {
@@ -108,6 +105,7 @@ var MessyMess = new Class({
 				Cookie.write('_berta_grid_view', 'berta_grid_view', {duration: 0, path: gridViewPath});
 			});
             
+            // Key events
             window.addEvent('keydown', function(event) {
                 if(event.key == 'up') {
                     $('xGridViewTrigger').fireEvent('click');
@@ -132,19 +130,19 @@ var MessyMess = new Class({
 
 			$$('.xEditableDragXY').addEvents({
 				mouseenter: function(){
-					$$('.xCreateNewEntry').hide();
+					//$$('.xCreateNewEntry').hide();
 					$('xTopPanelContainer').hide();
 					if($('xBgEditorPanelTrigContainer')) $('xBgEditorPanelTrigContainer').hide();
 					$('xBackgroundNext').hide();
 					$('xBackgroundPrevious').hide();
 				},
 				mouseleave: function(){
-					$$('.xCreateNewEntry').show();
+					//$$('.xCreateNewEntry').show();
+					//$$('.xEntry .xCreateNewEntry').hide();
 					$('xTopPanelContainer').show();
 					if($('xBgEditorPanelTrigContainer')) $('xBgEditorPanelTrigContainer').show();
 					$('xBackgroundNext').show();
 					$('xBackgroundPrevious').show();
-					$$('.xEntry .xCreateNewEntry').hide();
 				}
 			});
 		}
@@ -152,8 +150,10 @@ var MessyMess = new Class({
 	
 	onLoad: function() {
         //Show background image when site content is loaded
-        if(this.bgContainer)
+        /*
+if(this.bgContainer)
             this.bgImage.show();
+*/
 
         // Fade content
         if(this.fadeContent == 'enabled' && this.bgContainer.getElement('.visual-image')) {
