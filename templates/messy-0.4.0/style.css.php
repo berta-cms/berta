@@ -450,6 +450,7 @@ a img { border: none; }
 
 #xGridView {
 	top: 100px;
+	padding-bottom: 100px;
 	left: <? echo (100 - $s->get('grid', 'contentWidth'))/2 ?>%;
 	right: <? echo (100 - $s->get('grid', 'contentWidth'))/2 ?>%;
 	width: <? echo $s->get('grid', 'contentWidth') ?>;
