@@ -452,7 +452,7 @@ var BertaBackground = new Class({
 
             this.loader.setStyle('display', 'block');
             newImage = newContent; newWidth = newImage.get('width'); newHeight = newImage.get('height'); newSrc = newImage.get('src');
-            this.image = new Asset.image(newSrc, { class: 'bg-element visualContent', width: newWidth, height: newHeight, onLoad: this._getNewBgImageFinish.bind(this) });
+            this.image = new Asset.image(newSrc, { 'class': 'bg-element visualContent', 'width': newWidth, 'height': newHeight, 'onLoad': this._getNewBgImageFinish.bind(this) });
         }
         else if(newContent.get('tag') == 'textarea') {
             if(img = this.image) img.destroy();
