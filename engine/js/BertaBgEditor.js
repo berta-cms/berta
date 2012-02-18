@@ -91,9 +91,7 @@ var BertaBgEditor = new Class({
 		}, this);
 
 		// autoplay handle
-		this.container.getElements('.xBgAutoPlay').each(function(item) {
-			this.elementEdit_init(item, this.options.xBertaEditorClassRC);
-		}, this);
+		this.elementEdit_init(this.container.getElement('.xBgAutoPlay'), this.options.xBertaEditorClassRC);
 		
 		// bg color handle
 		this.container.getElements('.xBgColor').each(function(item) { 
@@ -101,14 +99,10 @@ var BertaBgEditor = new Class({
 		}, this);
 		
 		// bg size handle
-		this.container.getElements('.xBgImgSize').each(function(item) { 
-			this.elementEdit_init(item, this.options.xBertaEditorClassSelectRC);
-		}, this);
+		this.elementEdit_init(this.container.getElement('.xBgImgSize'), this.options.xBertaEditorClassSelectRC);
 		
 		// bg fade content handle
-		this.container.getElements('.xBgFading').each(function(item) { 
-			this.elementEdit_init(item, this.options.xBertaEditorClassSelectRC);
-		}, this);
+		this.elementEdit_init(this.container.getElement('.xBgFading'), this.options.xBertaEditorClassSelectRC);
 		
 		// reset bg colors handler
 		this.container.getElements('.xBgColorReset a').each(function(item) {

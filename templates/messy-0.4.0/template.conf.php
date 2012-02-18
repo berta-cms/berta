@@ -53,6 +53,11 @@ $templateConf = array(
 		'backgroundAttachment' => 	array('format' => 'select',		'values' => array('fixed' => 'Fixed to browser window', 'fill' => 'Filled in browser window', 'scroll' => 'No stretch, scroll along with content'), 'default' => 'scroll', 		            'title' => I18n::_('Background position'),                   'description' => I18n::_('Sets how background behaves in relation with the browser window.'))
 	),
 	
+	'navigation' => array(
+		'_' => array('title' => I18n::_('Navigation')),
+		'bgButtonType' =>			array('format' => 'select', 'default' => 'dark', 'values' => array('dark', 'bright'),	'title' => I18n::_('Background button type'),	'description' => I18n::_('Select type for background gallery buttons.'))
+	),
+	
 	'entryHeading' => array(
 		'_' => array('title' => I18n::_('Entry heading')),
 		'color' => 				array('format' => 'color',		'default' => '#363636', 					                                    'title' => I18n::_('Color'),             'description' => ''),

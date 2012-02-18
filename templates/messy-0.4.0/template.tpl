@@ -74,10 +74,10 @@
                         { foreach $berta.section.mediaCacheData.file as $fKey => $fVal }
                         { if  $fVal['@attributes'].type == 'image' }
                             { if $fVal['value'] }
-                                <textarea>{ $fVal['value'] }</textarea>
-                                <input type="hidden" width="{ $fVal['@attributes'].width }" height="{ $fVal['@attributes'].height }" src="{ $berta.options.MEDIA_ABS_ROOT }{ $berta.section.mediafolder }/_bg_{ $fVal['@attributes'].src }" {if $smarty.cookies._berta_grid_img_link && $smarty.cookies._berta_grid_img_link == $fVal['@attributes'].src }class="sel"{ elseif !$smarty.cookies._berta_grid_img_link && $fVal@first }class="sel"{ /if } />
+                                <textarea data-index="{ $fVal@iteration }">{ $fVal['value'] }</textarea>
+                                <input data-index="{ $fVal@iteration }" type="hidden" width="{ $fVal['@attributes'].width }" height="{ $fVal['@attributes'].height }" src="{ $berta.options.MEDIA_ABS_ROOT }{ $berta.section.mediafolder }/_bg_{ $fVal['@attributes'].src }" {if $smarty.cookies._berta_grid_img_link && $smarty.cookies._berta_grid_img_link == $fVal['@attributes'].src }class="sel"{ elseif !$smarty.cookies._berta_grid_img_link && $fVal@first }class="sel"{ /if } />
                             { else }
-                                <input type="hidden" width="{ $fVal['@attributes'].width }" height="{ $fVal['@attributes'].height }" src="{ $berta.options.MEDIA_ABS_ROOT }{ $berta.section.mediafolder }/_bg_{ $fVal['@attributes'].src }" {if $smarty.cookies._berta_grid_img_link && $smarty.cookies._berta_grid_img_link == $fVal['@attributes'].src }class="sel"{ elseif !$smarty.cookies._berta_grid_img_link && $fVal@first }class="sel"{ /if } />
+                                <input data-index="{ $fVal@iteration }" type="hidden" width="{ $fVal['@attributes'].width }" height="{ $fVal['@attributes'].height }" src="{ $berta.options.MEDIA_ABS_ROOT }{ $berta.section.mediafolder }/_bg_{ $fVal['@attributes'].src }" {if $smarty.cookies._berta_grid_img_link && $smarty.cookies._berta_grid_img_link == $fVal['@attributes'].src }class="sel"{ elseif !$smarty.cookies._berta_grid_img_link && $fVal@first }class="sel"{ /if } />
                             { /if }
                         { /if }
                         { /foreach }
@@ -99,10 +99,10 @@
                         { foreach $berta.section.mediaCacheData.file as $fKey => $fVal }
                         { if  $fVal['@attributes'].type == 'image' }
                             { if $fVal['value'] }
-                                <textarea {if $smarty.cookies._berta_grid_img_link && $smarty.cookies._berta_grid_img_link == $fVal['@attributes'].src }class="sel"{ elseif !$smarty.cookies._berta_grid_img_link && $fVal@first }class="sel"{ /if }>{ $fVal['value'] }</textarea>
-                                <input type="hidden" width="{ $fVal['@attributes'].width }" height="{ $fVal['@attributes'].height }" src="{ $berta.options.MEDIA_ABS_ROOT }{ $berta.section.mediafolder }/_bg_{ $fVal['@attributes'].src }" />
+                                <textarea data-index="{ $fVal@iteration }" {if $smarty.cookies._berta_grid_img_link && $smarty.cookies._berta_grid_img_link == $fVal['@attributes'].src }class="sel"{ elseif !$smarty.cookies._berta_grid_img_link && $fVal@first }class="sel"{ /if }>{ $fVal['value'] }</textarea>
+                                <input data-index="{ $fVal@iteration }" type="hidden" width="{ $fVal['@attributes'].width }" height="{ $fVal['@attributes'].height }" src="{ $berta.options.MEDIA_ABS_ROOT }{ $berta.section.mediafolder }/_bg_{ $fVal['@attributes'].src }" />
                             { else }
-                                <input type="hidden" width="{ $fVal['@attributes'].width }" height="{ $fVal['@attributes'].height }" src="{ $berta.options.MEDIA_ABS_ROOT }{ $berta.section.mediafolder }/_bg_{ $fVal['@attributes'].src }" {if $smarty.cookies._berta_grid_img_link && $smarty.cookies._berta_grid_img_link == $fVal['@attributes'].src }class="sel"{ elseif !$smarty.cookies._berta_grid_img_link && $fVal@first }class="sel"{ /if } />
+                                <input data-index="{ $fVal@iteration }" type="hidden" width="{ $fVal['@attributes'].width }" height="{ $fVal['@attributes'].height }" src="{ $berta.options.MEDIA_ABS_ROOT }{ $berta.section.mediafolder }/_bg_{ $fVal['@attributes'].src }" {if $smarty.cookies._berta_grid_img_link && $smarty.cookies._berta_grid_img_link == $fVal['@attributes'].src }class="sel"{ elseif !$smarty.cookies._berta_grid_img_link && $fVal@first }class="sel"{ /if } />
                             { /if }
                         { /if }
                         { /foreach }
@@ -128,6 +128,9 @@
                     { /if }
                     
                 { /if }
+                
+                <div id="xBackgroundLeft"></div>
+                <div id="xBackgroundRight"></div>
             </div>
             
             {* don't show arrows if one or less images or is in grid view *}
@@ -135,8 +138,8 @@
                 <div id="xBackgroundPrevious" class="bgHidden"><a href="#"><span>previous</span></a></div>
                 <div id="xBackgroundNext" class="bgHidden"><a href="#"><span>next</span></a></div>
             { else }
-                <div id="xBackgroundPrevious"><a href="#"><span>previous</span></a></div>
-                <div id="xBackgroundNext"><a href="#"><span>next</span></a></div>
+                <div id="xBackgroundPrevious"><div class="xBackgroundImgCounter left"></div></div>
+                <div id="xBackgroundNext"><div class="xBackgroundImgCounter right"></div></div>
             { /if }
         </div>
 

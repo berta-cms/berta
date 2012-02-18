@@ -330,10 +330,16 @@ var BertaBackground = new Class({
     imageContainer: null,
     captionContainer: null,
 	imagesList: null,
+	imageCount: null,
 	caption: null,
 	image: null,
 
     selected: null,
+    selectedIndex: null,
+    counterText: null,
+    rightCounter: null,
+    leftCounter: null,
+    
     autoplayInterval: null,
     data: null,
 
@@ -349,13 +355,21 @@ var BertaBackground = new Class({
 		this.previousButton = $('xBackgroundPrevious');
 		this.container = $('xBackground');
         this.loader = $('xBackgroundLoader');
+        this.rightCounter = this.nextButton.getElement('.xBackgroundImgCounter');
+        this.leftCounter = this.previousButton.getElement('.xBackgroundImgCounter');
 
         this.imagesList = this.container.getElement('.visual-list');
+        this.imageCount = this.imagesList.getChildren('input').length;
         this.imageContainer = this.container.getElement('.visual-image');
         this.captionContainer = this.container.getElement('.visual-caption');
 		this.image = this.imageContainer.getElement('img');
         this.caption = this.captionContainer.getElement('.caption-content');
-
+		
+		this.selected = this.imagesList.getElement('.sel');	
+		this.selectedIndex = this.selected.get('data-index');
+ 		this.rightCounter.set('text', (parseInt(this.selectedIndex) + 1 ) + '/' + this.imageCount + ' >');
+ 		this.leftCounter.set('text', '< ' + (parseInt(this.selectedIndex) == 1 ? this.imageCount : (parseInt(this.selectedIndex) - 1 )) + '/' + this.imageCount);
+		
         this.data = { options: this.options };
         this.data.options.image_size = this.container.getClassStoredValue('xBgDataImageSize');
         this.data.options.autoplay = this.container.getClassStoredValue('xBgDataAutoplay');
@@ -366,6 +380,11 @@ var BertaBackground = new Class({
 
         if(this.image) this._init();
         else if(this.caption) this._centerCaption();
+        
+        window.addEvent('mousemove', function() {
+        	this.nextButton.setStyle('left', window.event.clientX+'px').setStyle('top', window.event.clientY+'px');
+        	this.previousButton.setStyle('left', window.event.clientX+'px').setStyle('top', window.event.clientY+'px');
+        }.bind(this));
         
         // Next image button click    
         this.nextButton.addEvent('click', function(event) {
@@ -419,12 +438,23 @@ var BertaBackground = new Class({
             }
         }.bindWithEvent(this));
         
+                
+        $('xBackgroundLeft').addEvent('mouseenter', function() {
+        	this.leftCounter.show();
+        	this.rightCounter.hide();
+        }.bind(this));
+        
+        $('xBackgroundRight').addEvent('mouseenter', function() {
+        	this.rightCounter.show();
+        	this.leftCounter.hide();
+       	}.bind(this));
+
+        
         // Autoplay
         if(this.data.options.autoplay > 0) {
             this._autoplay();
         }
 	},
-
     
     _autoplay: function() {
         time = this.data.options.autoplay * 1000;
@@ -445,6 +475,10 @@ var BertaBackground = new Class({
 	_getNewBgContent: function(newContent) {
         this.selected.removeClass('sel');
         newContent.addClass('sel');
+        
+        this.selectedIndex = newContent.get('data-index');
+ 		this.rightCounter.set('text', (parseInt(this.selectedIndex) + 1 ) + '/' + this.imageCount + ' >');
+ 		this.leftCounter.set('text', '< ' + (parseInt(this.selectedIndex) == 1 ? this.imageCount : (parseInt(this.selectedIndex) - 1 )) + '/' + this.imageCount);
 
         if(newContent.get('tag') == 'input') {
             if(img = this.image) img.destroy();

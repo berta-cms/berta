@@ -365,8 +365,6 @@ a img { border: none; }
 	position: fixed;
 	top: 0;
 	left: 0;
-	/*z-index: -1000;*/
-	/*z-index: -1;*/
 	width: 100%;
 	height: 100%;
 }
@@ -378,76 +376,94 @@ a img { border: none; }
         margin-left: -15px; margin-top: -15px;
         display: none;
     }
-
-#xBackgroundContainer #xBackgroundNext {
-	position: fixed;
-	width: 40px;
-	z-index: 1000;
-	right: 0px;
-	top: 50%;
-	margin-top: -14px;
-	visibility: visible;
-}
-	#xBackgroundContainer #xBackgroundNext.bgHidden { visibility: hidden; }
-	#xBackgroundNext a {
-		background: url('layout/arrow_next_sprite.png');
-		background-position: 0px 0px;
-		width: 40px;
-		height: 29px;
-		display: block;
+    #xBackground #xBackgroundRight,
+    #xBackground #xBackgroundLeft {
+    	position: absolute;
+    	width: 50%;
+    	height: 100%;
+    }
+    #xBackground #xBackgroundRight { right: 0; }
+    #xBackground #xBacgroundLeft { left: 0; }
+    
+    #xBackground .visual-list {
+	    display: none;
 	}
-	#xBackgroundContainer #xBackgroundNext a:hover { background-position: 0px -29px; }
-	#xBackgroundContainer #xBackgroundNext a span { display: none; }
+	#xBackground .visual-image {
+	    position: absolute;
+	    top: 0; right: 0; bottom: 0; left: 0;
+	    overflow: hidden;
+	    z-index: 0;
+	}
+	    #xBackground .visual-image .bg-element {
+	    	position: absolute;
+	    	display: block;
+	    }
+	#xBackground .visual-caption {
+	    position: absolute;
+	    width: <? echo $s->get('entryLayout', 'contentWidth') ?>;
+	    text-align: left;
+	    top: 50%; left: 50%;
+	    margin-left: -<? echo $s->get('entryLayout', 'contentWidth')/2 ?>px;
+	    padding: 0 10px;
+	    z-index: 0;
+	}
+	    #xBackground .visual-caption * {
+	    	background: inherit !important;
+	    	color: inherit !important;
+	    	background-color: transparent !important;
+	    }
 
+#xBackgroundContainer #xBackgroundNext,
 #xBackgroundContainer #xBackgroundPrevious {
 	position: fixed;
-	width: 40px;
+	width: 160px;
+	
+/*
 	z-index: 1000;
-	left: 0px;
 	top: 50%;
-	margin-top: -14px;
+	margin-top: -12px;
+*/
 	visibility: visible;
 }
-	#xBackgroundContainer #xBackgroundPrevious.bgHidden { visibility: hidden; }
-	#xBackgroundPrevious a {
-		background: url('layout/arrow_prev_sprite.png');
-		background-position: 0px 0px;
-		width: 40px;
-		height: 29px;
-		display: block;
-	}
-	#xBackgroundContainer #xBackgroundPrevious a:hover { background-position: 0px -29px; }
-	#xBackgroundContainer #xBackgroundPrevious a span { display: none; }
-			
-			#xBackground .visual-list {
-				display: none;
-			}
-			#xBackground .visual-image {
-				position: absolute;
-				top: 0; right: 0; bottom: 0; left: 0;
-				overflow: hidden;
-				z-index: 0;
-				/*z-index: -1;*/
-			}
-				#xBackground .visual-image .bg-element {
-					position: absolute; display: block;
-				}
-			#xBackground .visual-caption {
-				position: absolute;
-				width: <? echo $s->get('entryLayout', 'contentWidth') ?>;
-				text-align: left;
-				top: 50%; left: 50%;
-				margin-left: -<? echo $s->get('entryLayout', 'contentWidth')/2 ?>px;
-				padding: 0 10px;
-				z-index: 0;
-				/*z-index: -1;*/
-			}
-				#xBackground .visual-caption * {
-					background: inherit !important;
-					color: inherit !important;
-					background-color: transparent !important;
-				}
+	
+#xBackgroundContainer #xBackgroundNext { right: 10px; }
+#xBackgroundContainer #xBackgroundPrevious { left: 10px; }
 
+	#xBackgroundNext.bgHidden,
+	#xBackgroundPrevious.bgHidden { visibility: hidden; }
+	
+	#xBackgroundNext .xBackgroundImgCounter,
+    #xBackgroundPrevious .xBackgroundImgCounter {
+        position: relative;
+        font-family: <? echo $s->getFont('heading') ?>;
+		font-size: <? echo $s->get('heading', 'fontSize') ?>;
+		font-weight: <? echo $s->get('heading', 'fontWeight') ?>;
+		font-style: <? echo $s->get('heading', 'fontStyle') ?>;
+		font-variant: <? echo $s->get('heading', 'fontVariant') ?>;
+		line-height: <? echo $s->get('heading', 'lineHeight') ?>;
+    }
+    	#xBackgroundNext .xBackgroundImgCounter.right {
+    		right: 170px;
+    		text-align: right;
+    	}
+    	#xBackgroundPrevious .xBackgroundImgCounter.left {
+			left: 16px;
+    		text-align: left;
+    	}
+/*
+	#xBackgroundNext a,
+	#xBackgroundPrevious a {
+		background: url('layout/bg_nav_buttons_<? echo $s->get('navigation', 'bgButtonType') ?>.png');
+		width: 24px;
+		height: 24px;
+		display: block;
+	}	
+	#xBackgroundNext a { background-position: -24px 0px; }
+	#xBackgroundPrevious a { background-position: 0px 0px; }
+	#xBackgroundNext a span,
+	#xBackgroundPrevious a span { display: none; }
+*/
+		
 #xGridView {
 	top: 100px;
 	padding-bottom: 100px;

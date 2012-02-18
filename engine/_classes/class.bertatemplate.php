@@ -288,6 +288,11 @@ class BertaTemplate extends BertaBase {
 			}
 		}
 
+		$vars['berta']['settings']['bgButtonSettings'] = array();
+		if(!empty($vars['berta']['section']['mediaCacheData']['@attributes']['bg_button_type']))
+			$vars['berta']['settings']['bgButtonSettings']['bgButtonType'] = $vars['berta']['section']['mediaCacheData']['@attributes']['bg_button_type'];
+		else
+			$vars['berta']['settings']['bgButtonSettings']['bgButtonType'] = 'dark';
 		
 	//	var_dump($vars['berta']['publishedSections']);
 		
@@ -411,6 +416,7 @@ DOC;
 		while(list($vName, $vContent) = each($vars)) {
 			$this->smarty->assign($vName, $vContent);
 		}
+		
 	}
 	
 	
