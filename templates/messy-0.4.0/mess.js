@@ -139,14 +139,18 @@ var MessyMess = new Class({
 				mouseenter: function(){
 					$('xTopPanelContainer').hide();
 					if($('xBgEditorPanelTrigContainer')) $('xBgEditorPanelTrigContainer').hide();
-					$('xBackgroundNext').hide();
-					$('xBackgroundPrevious').hide();
+					if($('xBackgroundNext') && $('xBackgroundPrevious')) {
+                        $('xBackgroundNext').hide();
+					    $('xBackgroundPrevious').hide();
+                    }
 				},
 				mouseleave: function(){
 					$('xTopPanelContainer').show();
 					if($('xBgEditorPanelTrigContainer')) $('xBgEditorPanelTrigContainer').show();
-					$('xBackgroundNext').show();
-					$('xBackgroundPrevious').show();
+                    if($('xBackgroundNext') && $('xBackgroundPrevious')) {
+					    $('xBackgroundNext').show();
+					    $('xBackgroundPrevious').show();
+                    }
 				}
 			});
 		}
@@ -185,7 +189,7 @@ var MessyMess = new Class({
                 }           
             });
         }
-        
+
 		// Massonry grid
 		if($('xGridView')) {
             if((navigator.userAgent.match(/iPhone/i)))
@@ -325,20 +329,27 @@ var BertaBackground = new Class({
     container: null,
     nextButton: null,
     previousButton: null,
+    nextClickArea: null,
+    previousClickArea: null,
     loader: null,
+
+    rightCounter: null,
+    leftCounter: null,
 
     imageContainer: null,
     captionContainer: null,
 	imagesList: null,
-	imageCount: null,
+    bgElements: null,
+    bgElementCount: null,
 	caption: null,
 	image: null,
 
     selected: null,
     selectedIndex: null,
-    counterText: null,
     rightCounter: null,
     leftCounter: null,
+    rightCounterContent: null,
+    leftCounterContent: null,
     
     autoplayInterval: null,
     data: null,
@@ -353,22 +364,30 @@ var BertaBackground = new Class({
 		
         this.nextButton = $('xBackgroundNext');
 		this.previousButton = $('xBackgroundPrevious');
-		this.container = $('xBackground');
+        this.nextClickArea = $('xBackgroundRight');
+        this.previousClickArea = $('xBackgroundLeft');
+        this.rightCounter = $('xBackgroundRightCounter');
+        this.leftCounter = $('xBackgroundLeftCounter');
         this.loader = $('xBackgroundLoader');
-        this.rightCounter = this.nextButton.getElement('.xBackgroundImgCounter');
-        this.leftCounter = this.previousButton.getElement('.xBackgroundImgCounter');
+		this.container = $('xBackground');
 
         this.imagesList = this.container.getElement('.visual-list');
-        this.imageCount = this.imagesList.getChildren('input').length;
+        this.bgElements = this.imagesList.getChildren();
+        this.bgElementCount = this.bgElements.length;
+
         this.imageContainer = this.container.getElement('.visual-image');
         this.captionContainer = this.container.getElement('.visual-caption');
 		this.image = this.imageContainer.getElement('img');
         this.caption = this.captionContainer.getElement('.caption-content');
-		
-		this.selected = this.imagesList.getElement('.sel');	
-		this.selectedIndex = this.selected.get('data-index');
- 		this.rightCounter.set('text', (parseInt(this.selectedIndex) + 1 ) + '/' + this.imageCount + ' >');
- 		this.leftCounter.set('text', '< ' + (parseInt(this.selectedIndex) == 1 ? this.imageCount : (parseInt(this.selectedIndex) - 1 )) + '/' + this.imageCount);
+
+        this.selected = this.imagesList.getElement('.sel');
+ 		if (this.rightCounter && this.leftCounter) {
+            this.rightCounterContent = this.rightCounter.getElement('.counterContent');
+            this.leftCounterContent = this.leftCounter.getElement('.counterContent');
+            this._getCounter();
+            this.rightCounter.hide();
+            this.leftCounter.hide();
+        }
 		
         this.data = { options: this.options };
         this.data.options.image_size = this.container.getClassStoredValue('xBgDataImageSize');
@@ -380,91 +399,94 @@ var BertaBackground = new Class({
 
         if(this.image) this._init();
         else if(this.caption) this._centerCaption();
-        
-        window.addEvent('mousemove', function() {
-        	this.nextButton.setStyle('left', window.event.clientX+'px').setStyle('top', window.event.clientY+'px');
-        	this.previousButton.setStyle('left', window.event.clientX+'px').setStyle('top', window.event.clientY+'px');
-        }.bind(this));
-        
-        // Next image button click    
-        this.nextButton.addEvent('click', function(event) {
-            event.stop();
-            
-            this.selected = this.imagesList.getElement('.sel');
-            
-            if(this.data.options.autoplay > 0) {
-                clearInterval(this.autoplayInterval);
-                this._autoplay();
-            }
-            
-			if(this.selected.getNext())
-                newBgContent = this.selected.getNext();
-            else
-                newBgContent = this.imagesList.getFirst();
 
-            this.fadeOutFx.start({ '0': { 'opacity': 0 }, '1': { 'opacity': 0 } }).chain(
-                function() { this._getNewBgContent(newBgContent); }.bind(this)
-            );
+        // If not mobile device
+        if (this.nextClickArea && this.previousClickArea) {
 
-        }.bindWithEvent(this));
+            this.nextClickArea.addEvents({
+                'click': function() {
+                    this._getNext();
+                    this._getCounter();
+                }.bind(this),
+                'mouseenter': function() {
+                    this.leftCounter.hide();
+                    this.rightCounter.show();
+                }.bind(this),
+                'mouseleave': function() {
+                    this.leftCounter.hide();
+                    this.rightCounter.hide();
+                }.bind(this)
+            });
 
-        // Previous image button click
-        this.previousButton.addEvent('click', function(event) {
-            event.stop();
-            
-            this.selected = this.imagesList.getElement('.sel');
-           
-            if(this.data.options.autoplay > 0) {
-                clearInterval(this.autoplayInterval);
-                this._autoplay();
-            }
-            
-			if(this.selected.getPrevious())
-                newBgContent = this.selected.getPrevious();
-            else
-                newBgContent = this.imagesList.getLast();
+            this.previousClickArea.addEvents({
+                'click': function() {
+                    this._getPrevious();
+                    this._getCounter();
+                }.bind(this),
+                'mouseenter': function() {
+                    this.rightCounter.hide();
+                    this.leftCounter.show();
+                }.bind(this),
+                'mouseleave': function() {
+                    this.rightCounter.hide();
+                    this.leftCounter.hide();
+                }.bind(this)
+            });
 
-            this.fadeOutFx.start({ '0': { 'opacity': 0 }, '1': { 'opacity': 0 } }).chain(
-                function() { this._getNewBgContent(newBgContent); }.bind(this)
-            );          
-        }.bindWithEvent(this));
-        
-        // Key events
-        window.addEvent('keydown', function(event) {
-            if(event.key == 'right') {
-                this.nextButton.fireEvent('click', event);
-            } else if(event.key == 'left') {
-                this.previousButton.fireEvent('click', event);
-            }
-        }.bindWithEvent(this));
-        
-                
-        $('xBackgroundLeft').addEvent('mouseenter', function() {
-        	this.leftCounter.show();
-        	this.rightCounter.hide();
-        }.bind(this));
-        
-        $('xBackgroundRight').addEvent('mouseenter', function() {
-        	this.rightCounter.show();
-        	this.leftCounter.hide();
-       	}.bind(this));
+            window.addEvents({
+                'keydown': function(event) {
+                    if(event.key == 'right') {
+                        this._getNext();
+                        this._getCounter();
+                    } else if(event.key == 'left') {
+                        this._getPrevious();
+                        this._getCounter();
+                    }
+                }.bind(this),
+                'mousemove': function(event) {
+                    this.rightCounter.setStyles({'left': event.client.x+'px', 'top': event.client.y+'px'});
+                    this.leftCounter.setStyles({'left': event.client.x+'px', 'top': event.client.y+'px'});
+                }.bind(this)
+            });
 
-        
+        }
+
+        // If mobile device
+        if (this.nextButton && this.previousButton) {
+
+            // Next image button click
+            this.nextButton.addEvent('click', function(event) {
+                event.stop();
+                this._getNext();
+            }.bind(this));
+
+            // Previous image button click
+            this.previousButton.addEvent('click', function(event) {
+                event.stop();
+                this._getPrevious();
+            }.bind(this));
+
+        }
+
         // Autoplay
         if(this.data.options.autoplay > 0) {
             this._autoplay();
         }
 	},
-    
+
     _autoplay: function() {
         time = this.data.options.autoplay * 1000;
         this.autoplayInterval = setInterval(function() {
-            this.selected = this.imagesList.getElement('.sel');
-            
 			if(this.selected.getNext())
                 newBgContent = this.selected.getNext();
             else
                 newBgContent = this.imagesList.getFirst();
+
+            this.selected.removeClass('sel');
+            newBgContent.addClass('sel');
+            this.selected = newBgContent;
+
+            if(this.rightCounter && this.leftCounter) this._getCounter();
 
             this.fadeOutFx.start({ '0': { 'opacity': 0 }, '1': { 'opacity': 0 } }).chain(
                 function() { this._getNewBgContent(newBgContent); }.bind(this)
@@ -472,14 +494,53 @@ var BertaBackground = new Class({
         }.bind(this), time);
     },
 
-	_getNewBgContent: function(newContent) {
-        this.selected.removeClass('sel');
-        newContent.addClass('sel');
-        
-        this.selectedIndex = newContent.get('data-index');
- 		this.rightCounter.set('text', (parseInt(this.selectedIndex) + 1 ) + '/' + this.imageCount + ' >');
- 		this.leftCounter.set('text', '< ' + (parseInt(this.selectedIndex) == 1 ? this.imageCount : (parseInt(this.selectedIndex) - 1 )) + '/' + this.imageCount);
+    _getCounter: function() {
+        this.selectedIndex = this.bgElements.indexOf(this.selected) + 1;
+        this.rightCounterContent.set('text', (this.selectedIndex == this.bgElementCount ? 1 : (this.selectedIndex + 1) ) + '/' + this.bgElementCount);
+        this.leftCounterContent.set('text', (this.selectedIndex == 1 ? this.bgElementCount : (this.selectedIndex - 1) ) + '/' + this.bgElementCount);
+    },
 
+    _getNext: function() {
+        if(this.data.options.autoplay > 0) {
+            clearInterval(this.autoplayInterval);
+            this._autoplay();
+        }
+
+        if(this.selected.getNext())
+            newBgContent = this.selected.getNext();
+        else
+            newBgContent = this.imagesList.getFirst();
+
+        this.selected.removeClass('sel');
+        newBgContent.addClass('sel');
+        this.selected = newBgContent;
+
+        this.fadeOutFx.start({ '0': { 'opacity': 0 }, '1': { 'opacity': 0 } }).chain(
+            function() { this._getNewBgContent(newBgContent); }.bind(this)
+        );
+    },
+
+    _getPrevious: function() {
+        if(this.data.options.autoplay > 0) {
+            clearInterval(this.autoplayInterval);
+            this._autoplay();
+        }
+
+        if(this.selected.getPrevious())
+            newBgContent = this.selected.getPrevious();
+        else
+            newBgContent = this.imagesList.getLast();
+
+        this.selected.removeClass('sel');
+        newBgContent.addClass('sel');
+        this.selected = newBgContent;
+
+        this.fadeOutFx.start({ '0': { 'opacity': 0 }, '1': { 'opacity': 0 } }).chain(
+            function() { this._getNewBgContent(newBgContent); }.bind(this)
+        );
+    },
+
+	_getNewBgContent: function(newContent) {
         if(newContent.get('tag') == 'input') {
             if(img = this.image) img.destroy();
             if(caption = this.caption) caption.destroy();

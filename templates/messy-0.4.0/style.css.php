@@ -376,15 +376,7 @@ a img { border: none; }
         margin-left: -15px; margin-top: -15px;
         display: none;
     }
-    #xBackground #xBackgroundRight,
-    #xBackground #xBackgroundLeft {
-    	position: absolute;
-    	width: 50%;
-    	height: 100%;
-    }
-    #xBackground #xBackgroundRight { right: 0; }
-    #xBackground #xBacgroundLeft { left: 0; }
-    
+
     #xBackground .visual-list {
 	    display: none;
 	}
@@ -413,56 +405,81 @@ a img { border: none; }
 	    	background-color: transparent !important;
 	    }
 
+    #xBackground #xBackgroundRight,
+    #xBackground #xBackgroundLeft {
+        position: absolute;
+        width: 50%;
+        height: 100%;
+    }
+    #xBackground #xBackgroundRight {
+        right: 0;
+        <? if (preg_match('/safari/i',$DEVICE_USER_AGENT) && !preg_match('/chrome/i',$DEVICE_USER_AGENT)) { ?>
+            cursor: url(layout/arrow_right_<? echo $s->get('navigation', 'bgButtonType') ?>.gif), pointer;
+        <? } else { ?>
+            cursor: url(layout/arrow_right_<? echo $s->get('navigation', 'bgButtonType') ?>.cur), url(layout/arrow_right_<? echo $s->get('navigation', 'bgButtonType') ?>.gif), pointer;
+        <? } ?>
+    }
+    #xBackground #xBackgroundLeft {
+        left: 0;
+        <? if (preg_match('/safari/i',$DEVICE_USER_AGENT) && !preg_match('/chrome/i',$DEVICE_USER_AGENT)) { ?>
+            cursor: url(layout/arrow_left_<? echo $s->get('navigation', 'bgButtonType') ?>.gif), pointer;
+        <? } else { ?>
+            cursor: url(layout/arrow_left_<? echo $s->get('navigation', 'bgButtonType') ?>.cur), url(layout/arrow_left_<? echo $s->get('navigation', 'bgButtonType') ?>.gif), pointer;
+        <? } ?>
+    }
+
+    #xBackground #xBackgroundRightCounter,
+    #xBackground #xBackgroundLeftCounter {
+        position: absolute;
+        color: <? echo $s->get('heading', 'color') ?>;
+        font-family: <? echo $s->getFont('heading') ?>;
+        font-size: <? echo $s->get('heading', 'fontSize') ?>;
+        font-weight: <? echo $s->get('heading', 'fontWeight') ?>;
+        font-style: <? echo $s->get('heading', 'fontStyle') ?>;
+        font-variant: <? echo $s->get('heading', 'fontVariant') ?>;
+        line-height: <? echo $s->get('heading', 'lineHeight') ?>;
+    }
+        #xBackground #xBackgroundRightCounter .counterContent {
+            position: absolute;
+            right: 8px;
+            <? if (preg_match('/safari/i',$DEVICE_USER_AGENT) && !preg_match('/chrome/i',$DEVICE_USER_AGENT)) { ?>
+                cursor: url(layout/arrow_right_<? echo $s->get('navigation', 'bgButtonType') ?>.gif), pointer;
+            <? } else { ?>
+                cursor: url(layout/arrow_right_<? echo $s->get('navigation', 'bgButtonType') ?>.cur), url(layout/arrow_right_<? echo $s->get('navigation', 'bgButtonType') ?>.gif), pointer;
+            <? } ?>
+        }
+        #xBackground #xBackgroundLeftCounter .counterContent {
+            position: absolute;
+            left: 26px;
+            <? if (preg_match('/safari/i',$DEVICE_USER_AGENT) && !preg_match('/chrome/i',$DEVICE_USER_AGENT)) { ?>
+            cursor: url(layout/arrow_left_<? echo $s->get('navigation', 'bgButtonType') ?>.gif), pointer;
+            <? } else { ?>
+            cursor: url(layout/arrow_left_<? echo $s->get('navigation', 'bgButtonType') ?>.cur), url(layout/arrow_left_<? echo $s->get('navigation', 'bgButtonType') ?>.gif), pointer;
+            <? } ?>
+        }
+
 #xBackgroundContainer #xBackgroundNext,
 #xBackgroundContainer #xBackgroundPrevious {
 	position: fixed;
-	width: 160px;
-	
-/*
+	width: 24px;
 	z-index: 1000;
 	top: 50%;
 	margin-top: -12px;
-*/
 	visibility: visible;
 }
-	
-#xBackgroundContainer #xBackgroundNext { right: 10px; }
-#xBackgroundContainer #xBackgroundPrevious { left: 10px; }
-
-	#xBackgroundNext.bgHidden,
-	#xBackgroundPrevious.bgHidden { visibility: hidden; }
-	
-	#xBackgroundNext .xBackgroundImgCounter,
-    #xBackgroundPrevious .xBackgroundImgCounter {
-        position: relative;
-        font-family: <? echo $s->getFont('heading') ?>;
-		font-size: <? echo $s->get('heading', 'fontSize') ?>;
-		font-weight: <? echo $s->get('heading', 'fontWeight') ?>;
-		font-style: <? echo $s->get('heading', 'fontStyle') ?>;
-		font-variant: <? echo $s->get('heading', 'fontVariant') ?>;
-		line-height: <? echo $s->get('heading', 'lineHeight') ?>;
-    }
-    	#xBackgroundNext .xBackgroundImgCounter.right {
-    		right: 170px;
-    		text-align: right;
-    	}
-    	#xBackgroundPrevious .xBackgroundImgCounter.left {
-			left: 16px;
-    		text-align: left;
-    	}
-/*
+#xBackgroundContainer #xBackgroundNext { right: 20px; }
+#xBackgroundContainer #xBackgroundPrevious { left: 20px; }
 	#xBackgroundNext a,
 	#xBackgroundPrevious a {
 		background: url('layout/bg_nav_buttons_<? echo $s->get('navigation', 'bgButtonType') ?>.png');
 		width: 24px;
 		height: 24px;
 		display: block;
-	}	
+	}
 	#xBackgroundNext a { background-position: -24px 0px; }
 	#xBackgroundPrevious a { background-position: 0px 0px; }
 	#xBackgroundNext a span,
 	#xBackgroundPrevious a span { display: none; }
-*/
 		
 #xGridView {
 	top: 100px;
@@ -480,21 +497,21 @@ a img { border: none; }
 #xGridViewTriggerContainer {
 	width: 22px;
 	position: absolute;
-	right: 20px;
-	top: 20px;
+	right: 12px;
+	top: 12px;
 	margin-right: 10px;
 	display: block;
 }
 	#xGridViewTriggerContainer a {
-		width: 22px;
-		height: 18px;
-		background: url('layout/thumbnails.png');
-		background-position: 0px 0px;
+		width: 24px;
+		height: 24px;
+		background: url('layout/bg_nav_buttons_<? echo $s->get('navigation', 'bgButtonType') ?>.png');
+		background-position: -48px 0px;
 		display: block;
 	}
 	
 		#xGridViewTriggerContainer a:hover { 
-			background-position: 0 -18px;
+			background-position: -48px -24px;
 		}
 	
 		#xGridViewTriggerContainer a span {
