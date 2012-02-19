@@ -317,13 +317,15 @@ var MessyMess = new Class({
 });
 
 
+
 var BertaBackground = new Class({
 	Implements: Options,
 	
 	options: {
 		type: 'image',
-		image_size: 'large',
+		image_size: 'medium',
         autoplay: 0,
+        image_scale: null
 	},
 
     container: null,
@@ -362,43 +364,7 @@ var BertaBackground = new Class({
 	initialize: function(options) {
 		this.setOptions(options);
 		
-        this.nextButton = $('xBackgroundNext');
-		this.previousButton = $('xBackgroundPrevious');
-        this.nextClickArea = $('xBackgroundRight');
-        this.previousClickArea = $('xBackgroundLeft');
-        this.rightCounter = $('xBackgroundRightCounter');
-        this.leftCounter = $('xBackgroundLeftCounter');
-        this.loader = $('xBackgroundLoader');
-		this.container = $('xBackground');
-
-        this.imagesList = this.container.getElement('.visual-list');
-        this.bgElements = this.imagesList.getChildren();
-        this.bgElementCount = this.bgElements.length;
-
-        this.imageContainer = this.container.getElement('.visual-image');
-        this.captionContainer = this.container.getElement('.visual-caption');
-		this.image = this.imageContainer.getElement('img');
-        this.caption = this.captionContainer.getElement('.caption-content');
-
-        this.selected = this.imagesList.getElement('.sel');
- 		if (this.rightCounter && this.leftCounter) {
-            this.rightCounterContent = this.rightCounter.getElement('.counterContent');
-            this.leftCounterContent = this.leftCounter.getElement('.counterContent');
-            this._getCounter();
-            this.rightCounter.hide();
-            this.leftCounter.hide();
-        }
-		
-        this.data = { options: this.options };
-        this.data.options.image_size = this.container.getClassStoredValue('xBgDataImageSize');
-        this.data.options.autoplay = this.container.getClassStoredValue('xBgDataAutoplay');
-
-        this.fadeElements = $$('.visual-image, .visual-caption');
-        this.fadeOutFx = new Fx.Elements(this.fadeElements, { duration: 'short', transition: Fx.Transitions.Sine.easeInOut });
-        this.fadeInFx  = new Fx.Elements(this.fadeElements, { duration: 'normal', transition: Fx.Transitions.Sine.easeInOut });
-
-        if(this.image) this._init();
-        else if(this.caption) this._centerCaption();
+        this._init();
 
         // If not mobile device
         if (this.nextClickArea && this.previousClickArea) {
@@ -467,12 +433,58 @@ var BertaBackground = new Class({
             }.bind(this));
 
         }
+	},
+
+    _init: function() {
+        this.nextButton = $('xBackgroundNext');
+        this.previousButton = $('xBackgroundPrevious');
+        this.nextClickArea = $('xBackgroundRight');
+        this.previousClickArea = $('xBackgroundLeft');
+        this.rightCounter = $('xBackgroundRightCounter');
+        this.leftCounter = $('xBackgroundLeftCounter');
+        this.loader = $('xBackgroundLoader');
+        this.container = $('xBackground');
+
+        this.imagesList = this.container.getElement('.visual-list');
+        this.bgElements = this.imagesList.getChildren();
+        this.bgElementCount = this.bgElements.length;
+
+        this.imageContainer = this.container.getElement('.visual-image');
+        this.captionContainer = this.container.getElement('.visual-caption');
+        this.image = this.imageContainer.getElement('img');
+        this.caption = this.captionContainer.getElement('.caption-content');
+
+        this.selected = this.imagesList.getElement('.sel');
+        if (this.rightCounter && this.leftCounter) {
+            this.rightCounterContent = this.rightCounter.getElement('.counterContent');
+            this.leftCounterContent = this.leftCounter.getElement('.counterContent');
+            this._getCounter();
+            this.rightCounter.hide();
+            this.leftCounter.hide();
+        }
+
+        this.data = { options: this.options };
+        this.data.options.image_size = this.container.getClassStoredValue('xBgDataImageSize');
+        this.data.options.autoplay = this.container.getClassStoredValue('xBgDataAutoplay');
+        if(this.data.options.image_size == 'large')
+            this.data.options.image_scale = 1;
+        else if(!this.data.options.image_size || this.data.options.image_size == 'medium')
+            this.data.options.image_scale = 0.85;
+        else if(this.data.options.image_size == 'small')
+            this.data.options.image_scale = 0.65;
+
+        this.fadeElements = $$('.visual-image, .visual-caption');
+        this.fadeOutFx = new Fx.Elements(this.fadeElements, { duration: 'short', transition: Fx.Transitions.Sine.easeInOut });
+        this.fadeInFx  = new Fx.Elements(this.fadeElements, { duration: 'normal', transition: Fx.Transitions.Sine.easeInOut });
+
+        if(this.image) this._centerImage();
+        else if(this.caption) this._centerCaption();
 
         // Autoplay
         if(this.data.options.autoplay > 0) {
             this._autoplay();
         }
-	},
+    },
 
     _autoplay: function() {
         time = this.data.options.autoplay * 1000;
@@ -494,6 +506,7 @@ var BertaBackground = new Class({
         }.bind(this), time);
     },
 
+    // Gets & sets image counter content
     _getCounter: function() {
         this.selectedIndex = this.bgElements.indexOf(this.selected) + 1;
         this.rightCounterContent.set('text', (this.selectedIndex == this.bgElementCount ? 1 : (this.selectedIndex + 1) ) + '/' + this.bgElementCount);
@@ -562,7 +575,7 @@ var BertaBackground = new Class({
     _getNewBgImageFinish: function() {
         this.loader.setStyle('display', 'none');
         this.imageContainer.adopt(this.image);
-        this._init();
+        this._centerImage();
         this.fadeInFx.set({ '0': { 'opacity': 0 }, '1': { 'opacity': 0 } }).start({ '0': { 'opacity': 1 }, '1': { 'opacity': 1 } });
     },
 
@@ -576,29 +589,16 @@ var BertaBackground = new Class({
         this.captionContainer.setStyle('margin-top', '-' + (this.captionContainer.getSize().y / 2) + 'px');
     },
 
-	_init: function() {
-		var el = this.image, scaleMultiplier;
-        
-		this.data.width = parseInt(el.get('width'));
-		this.data.height = parseInt(el.get('height'));
-        
-        if(this.data.options.image_size == 'large') {
-            scaleMultiplier = 1;
-            scaleMultiplier = 1;
-        } else if(!this.data.options.image_size || this.data.options.image_size == 'medium') {
-            scaleMultiplier = 0.85;
-            scaleMultiplier = 0.85;
-        } else if(this.data.options.image_size == 'small') {
-            scaleMultiplier = 0.65;
-            scaleMultiplier = 0.65;
-        }
+    _centerImage: function() {
+		this.data.width = parseInt(this.image.get('width'));
+		this.data.height = parseInt(this.image.get('height'));
 
         window.removeEvent('resize');
-		window.addEvent('resize', function() { this._onResize(el, scaleMultiplier) }.bind(this));
-		this._onResize(el, scaleMultiplier);
+		window.addEvent('resize', function() { this._onResize() }.bind(this));
+		this._onResize();
 	},
 	
-	_onResize: function(el, scaleMultiplier) {
+	_onResize: function() {
 		var wnd = window,
 			w = wnd.getSize().x,
 			h = wnd.getSize().y;
@@ -608,14 +608,14 @@ var BertaBackground = new Class({
 		// scale
 		var scaleX = w / this.data.width, scaleY = h / this.data.height;
         
-		if(this.data.width>=this.data.height && scaleMultiplier == 1)
+		if(this.data.width>=this.data.height && this.data.options.image_scale == 1)
 			if(scaleX > scaleY) scaleY = scaleX; else scaleX = scaleY;
 		else
 			if(scaleX > scaleY) scaleX = scaleY; else scaleY = scaleX;
 		
         // scale based on background image size
-        scaleX = scaleX*scaleMultiplier;
-        scaleY = scaleY*scaleMultiplier;
+        scaleX = scaleX*this.data.options.image_scale;
+        scaleY = scaleY*this.data.options.image_scale;
 		
 		// position X
 		posX = Math.round((w - this.data.width * scaleX) / 2);
@@ -623,17 +623,19 @@ var BertaBackground = new Class({
 		// position Y
 		posY = Math.round((h - (this.data.height * scaleY)) / 2);
 
-		el.setStyle('width', this.data.width * scaleX)
-		   	.setStyle('height', this.data.height * scaleY)
-		   	.setStyle('left', posX)
-		   	.setStyle('top', posY);       
+        this.image.setStyles({
+            'width': this.data.width * scaleX,
+            'height': this.data.height * scaleY,
+            'left': posX,
+            'top': posY
+        });
 	},
 });
 
 
 var messyMess = new MessyMess();
 
-		// VIDEO for _init();
+		// VIDEO for _centerImage();
 /*
 		switch(data.options.type) {
 		    case 'image':
