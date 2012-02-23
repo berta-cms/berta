@@ -384,7 +384,6 @@ a img { border: none; }
 	    position: absolute;
 	    top: 0; right: 0; bottom: 0; left: 0;
 	    overflow: hidden;
-	    z-index: 0;
 	}
 	    #xBackground .visual-image .bg-element {
 	    	position: absolute;
@@ -397,7 +396,6 @@ a img { border: none; }
 	    top: 50%; left: 50%;
 	    margin-left: -<? echo $s->get('entryLayout', 'contentWidth')/2 ?>px;
 	    padding: 0 10px;
-	    z-index: 0;
 	}
 	    #xBackground .visual-caption * {
 	    	background: inherit !important;

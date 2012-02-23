@@ -335,9 +335,6 @@ var BertaBackground = new Class({
     previousClickArea: null,
     loader: null,
 
-    rightCounter: null,
-    leftCounter: null,
-
     imageContainer: null,
     captionContainer: null,
 	imagesList: null,
@@ -416,9 +413,18 @@ var BertaBackground = new Class({
             });
 
         }
-
         // If mobile device
-        if (this.nextButton && this.previousButton) {
+        else if (this.nextButton && this.previousButton) {
+
+            // Image click event
+            this.imageContainer.addEvent('click', function() {
+                this._getNext();
+            }.bind(this));
+
+            // Caption click event
+            this.captionContainer.addEvent('click', function() {
+                this._getNext();
+            }.bind(this));
 
             // Next image button click
             this.nextButton.addEvent('click', function(event) {
