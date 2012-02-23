@@ -285,17 +285,23 @@ class BertaGallery extends BertaBase {
 
         $alwaysSelectTag = $berta->settings->get('navigation', 'alwaysSelectTag') == 'yes';
         $notFirstTag = $tag != reset(array_keys($berta->tags[$section['name']]));
-        reset($berta->sections);
-        $firstKey = key($berta->sections);
+        $firstSection = $section['name'] == reset(array_keys($berta->sections));
 
-        if($berta->environment == 'engine' || ($berta->environment == 'site' && !$berta->apacheRewriteUsed)) {
+        if(($berta->environment == 'engine' || ($berta->environment == 'site' && !$berta->apacheRewriteUsed)) && !$firstSection) {
             $linkHref = '?section=' . $section['name'];
             if($tag != null && (($alwaysSelectTag && $notFirstTag) || !$alwaysSelectTag)) $linkHref .= '&tag=' . $tag;
-        } elseif($berta->environment == 'site' && $berta->apacheRewriteUsed && $section['name'] != $firstKey) {
+        }
+        elseif(($berta->environment == 'engine' || ($berta->environment == 'site' && !$berta->apacheRewriteUsed)) && $firstSection) {
+            $linkHref = self::$options['SITE_ABS_ROOT'];
+            if($tag != null && (($alwaysSelectTag && $notFirstTag) || !$alwaysSelectTag)) $linkHref .= '?section=' . $section['name'] . '&tag=' . $tag;
+        }
+        elseif($berta->environment == 'site' && $berta->apacheRewriteUsed && !$firstSection) {
             $linkHref = self::$options['SITE_ABS_ROOT'] . $section['name'] . '/';
             if($tag != null && (($alwaysSelectTag && $notFirstTag) || !$alwaysSelectTag)) $linkHref .= $tag . '/';
-        } elseif($berta->environment == 'site' && $berta->apacheRewriteUsed && $section['name'] == $firstKey) {
+        }
+        elseif($berta->environment == 'site' && $berta->apacheRewriteUsed && $firstSection) {
             $linkHref = self::$options['SITE_ABS_ROOT'];
+            if($tag != null && (($alwaysSelectTag && $notFirstTag) || !$alwaysSelectTag)) $linkHref .= $section['name'] . '/' . $tag . '/';
         }
         
         if($imgs && count($imgs) > 0)

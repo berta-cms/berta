@@ -184,9 +184,14 @@ var MessyMess = new Class({
                     
                     $('allContainer').setStyle('opacity', '1');
                     $('bottom').setStyle('opacity', '1');
+                    $('xBackgroundLeftCounter').setStyle('opacity', 1);
+                    $('xBackgroundRightCounter').setStyle('opacity', 1);
+
                     hideContent = setTimeout(function() {
                         $('allContainer').tween('opacity', '0');
                         $('bottom').tween('opacity', '0');
+                        $('xBackgroundLeftCounter').tween('opacity', '0');
+                        $('xBackgroundRightCounter').tween('opacity', '0');
                     }, 3000);
                     
                     lastX = event.page.x;
