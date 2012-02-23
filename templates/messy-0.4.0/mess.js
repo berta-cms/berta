@@ -84,7 +84,6 @@ var MessyMess = new Class({
             this.bgImage = this.bgContainer.getElement('.visual-image img');
             this.bgCaption = this.bgContainer.getElement('.visual-caption');
 
-        
             if(this.bgImage || this.bgCaption) {
                 var bertaBackground = new BertaBackground();
                 this.fadeContent = this.bgContainer.getClassStoredValue('xBgDataFading');
@@ -412,8 +411,7 @@ var BertaBackground = new Class({
                     }
                 }.bind(this),
                 'mousemove': function(event) {
-                    this.rightCounter.setStyles({'left': event.client.x+'px', 'top': event.client.y+'px'});
-                    this.leftCounter.setStyles({'left': event.client.x+'px', 'top': event.client.y+'px'});
+                    this._moveCounter.delay(200,this,event);
                 }.bind(this)
             });
 
@@ -517,11 +515,15 @@ var BertaBackground = new Class({
         }.bind(this), time);
     },
 
-    // Gets & sets image counter content
     _getCounter: function() {
         this.selectedIndex = this.bgElements.indexOf(this.selected) + 1;
         this.rightCounterContent.set('text', (this.selectedIndex == this.bgElementCount ? 1 : (this.selectedIndex + 1) ) + '/' + this.bgElementCount);
         this.leftCounterContent.set('text', (this.selectedIndex == 1 ? this.bgElementCount : (this.selectedIndex - 1) ) + '/' + this.bgElementCount);
+    },
+
+    _moveCounter: function(e) {
+        this.rightCounter.setStyles({'left': e.client.x+'px', 'top': e.client.y+'px'});
+        this.leftCounter.setStyles({'left': e.client.x+'px', 'top': e.client.y+'px'});
     },
 
     _getNext: function() {
