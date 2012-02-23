@@ -411,7 +411,7 @@ var BertaBackground = new Class({
                     }
                 }.bind(this),
                 'mousemove': function(event) {
-                    this._moveCounter.delay(200,this,event);
+                    this._moveCounter(event);
                 }.bind(this)
             });
 
