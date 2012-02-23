@@ -99,17 +99,15 @@ var MessyMess = new Class({
         // Grid view
 		if($('xGridView')) {
 			$$('.xGridItem').addEvent('click', function() {
-					_berta_grid_img_link = this.src.substr(this.src.lastIndexOf('/')+2);
-					_berta_grid_img_link = _berta_grid_img_link.substr(_berta_grid_img_link.indexOf('_')+1);
-					Cookie.write('_berta_grid_img_link', _berta_grid_img_link, {duration: 0});
+                _berta_grid_img_link = this.src.substr(this.src.lastIndexOf('/')+2);
+                _berta_grid_img_link = _berta_grid_img_link.substr(_berta_grid_img_link.indexOf('_')+1);
+                Cookie.write('_berta_grid_img_link', _berta_grid_img_link, {duration: 0});
 			});
 		}
 
 		if($('xGridViewTrigger')) {
 			$('xGridViewTrigger').addEvent('click', function() {
-                gridViewPath = this.get('href');
-                if(gridViewPath.length > 1) gridViewPath = gridViewPath.substr(0, gridViewPath.length - 1);
-				Cookie.write('_berta_grid_view', 'berta_grid_view', {duration: 0, path: gridViewPath});
+				Cookie.write('_berta_grid_view', 'berta_grid_view', {duration: 0});
 			});
             
             // Key events
@@ -120,6 +118,13 @@ var MessyMess = new Class({
                 }
             }); 
         }
+
+        if(Cookie.read('_berta_grid_img_link'))
+            Cookie.dispose('_berta_grid_img_link');
+
+        if(Cookie.read('_berta_grid_view'))
+            Cookie.dispose('_berta_grid_view');
+
 		//scroll fix (iphone viewport workaround)
         if(!navigator.userAgent.match(/OS 5_\d like Mac OS X/i) && /iphone|ipad|ipod|android|blackberry|mini|windows\sce|palm/i.test(navigator.userAgent.toLowerCase())) {
             window.addEvent('resize',this.stickToBottom.bindWithEvent(this));
@@ -202,12 +207,7 @@ var MessyMess = new Class({
     	    	itemSelector: '.box'
 		    });
 		}
-		
-		if(Cookie.read('_berta_grid_img_link'))
-			Cookie.dispose('_berta_grid_img_link');
-		
-		if(Cookie.read('_berta_grid_view'))
-			Cookie.dispose('_berta_grid_view');
+
 	},
 	
 	stickToBottom: function(){
