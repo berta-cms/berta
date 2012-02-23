@@ -411,18 +411,18 @@ a img { border: none; }
     }
     #xBackground #xBackgroundRight {
         right: 0;
-        <? if (preg_match('/safari/i',$DEVICE_USER_AGENT) && !preg_match('/chrome/i',$DEVICE_USER_AGENT)) { ?>
-            cursor: url(layout/arrow_right_<? echo $s->get('navigation', 'bgButtonType') ?>.gif), pointer;
+        <? if (preg_match('/msie/i',$DEVICE_USER_AGENT)) { ?>
+            cursor: url(templates/messy-0.4.0/layout/arrow_right_<? echo $s->get('navigation', 'bgButtonType') ?>.cur), pointer;
         <? } else { ?>
-            cursor: url(layout/arrow_right_<? echo $s->get('navigation', 'bgButtonType') ?>.cur), url(layout/arrow_right_<? echo $s->get('navigation', 'bgButtonType') ?>.gif), pointer;
+            cursor: url(layout/arrow_right_<? echo $s->get('navigation', 'bgButtonType') ?>.gif), pointer;
         <? } ?>
     }
     #xBackground #xBackgroundLeft {
         left: 0;
-        <? if (preg_match('/safari/i',$DEVICE_USER_AGENT) && !preg_match('/chrome/i',$DEVICE_USER_AGENT)) { ?>
-            cursor: url(layout/arrow_left_<? echo $s->get('navigation', 'bgButtonType') ?>.gif), pointer;
+        <? if (preg_match('/msie/i',$DEVICE_USER_AGENT)) { ?>
+            cursor: url(templates/messy-0.4.0/layout/arrow_left_<? echo $s->get('navigation', 'bgButtonType') ?>.cur), pointer;
         <? } else { ?>
-            cursor: url(layout/arrow_left_<? echo $s->get('navigation', 'bgButtonType') ?>.cur), url(layout/arrow_left_<? echo $s->get('navigation', 'bgButtonType') ?>.gif), pointer;
+            cursor: url(layout/arrow_left_<? echo $s->get('navigation', 'bgButtonType') ?>.gif), pointer;
         <? } ?>
     }
 
@@ -440,19 +440,19 @@ a img { border: none; }
         #xBackground #xBackgroundRightCounter .counterContent {
             position: absolute;
             right: 8px;
-            <? if (preg_match('/safari/i',$DEVICE_USER_AGENT) && !preg_match('/chrome/i',$DEVICE_USER_AGENT)) { ?>
-                cursor: url(layout/arrow_right_<? echo $s->get('navigation', 'bgButtonType') ?>.gif), pointer;
+            <? if (preg_match('/msie/i',$DEVICE_USER_AGENT)) { ?>
+                cursor: url(templates/messy-0.4.0/layout/arrow_right_<? echo $s->get('navigation', 'bgButtonType') ?>.cur), pointer;
             <? } else { ?>
-                cursor: url(layout/arrow_right_<? echo $s->get('navigation', 'bgButtonType') ?>.cur), url(layout/arrow_right_<? echo $s->get('navigation', 'bgButtonType') ?>.gif), pointer;
+                cursor: url(layout/arrow_right_<? echo $s->get('navigation', 'bgButtonType') ?>.gif), pointer;
             <? } ?>
         }
         #xBackground #xBackgroundLeftCounter .counterContent {
             position: absolute;
             left: 26px;
-            <? if (preg_match('/safari/i',$DEVICE_USER_AGENT) && !preg_match('/chrome/i',$DEVICE_USER_AGENT)) { ?>
-            cursor: url(layout/arrow_left_<? echo $s->get('navigation', 'bgButtonType') ?>.gif), pointer;
+            <? if (preg_match('/msie/i',$DEVICE_USER_AGENT)) { ?>
+                cursor: url(templates/messy-0.4.0/layout/arrow_left_<? echo $s->get('navigation', 'bgButtonType') ?>.cur), pointer;
             <? } else { ?>
-            cursor: url(layout/arrow_left_<? echo $s->get('navigation', 'bgButtonType') ?>.cur), url(layout/arrow_left_<? echo $s->get('navigation', 'bgButtonType') ?>.gif), pointer;
+                cursor: url(layout/arrow_left_<? echo $s->get('navigation', 'bgButtonType') ?>.gif), pointer;
             <? } ?>
         }
 
