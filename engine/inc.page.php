@@ -2,7 +2,11 @@
 
 error_reporting(E_ALL);
 @ini_set("display_errors", 1);
+@ini_set("ignore_user_abort", 1);
 
+// Detects mobile devices
+include_once '_lib/mobile_device_detect/mobile_device_detect.php';
+$MOBILE_DEVICE = mobile_device_detect($DEVICE_USER_AGENT);
 
 // Set multibyte encoding to UTF-8 for better canonization of strings
 if(function_exists('mb_internal_encoding') && function_exists('mb_regex_encoding')) {

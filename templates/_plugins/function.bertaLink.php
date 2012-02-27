@@ -13,7 +13,7 @@ function smarty_function_bertaLink($params, &$smarty) {
 	$settings = $berta->template->settings;
 	$constructPrettyLink = $berta->apacheRewriteUsed && $berta->environment == 'site';
 	$alwaysSelectTag = $berta->settings->get('navigation', 'alwaysSelectTag') == 'yes';
-	
+
 	if(!empty($params['section']) && empty($berta->sections[$params['section']]))
 		$params['section'] = reset(array_keys($berta->sections));
 	

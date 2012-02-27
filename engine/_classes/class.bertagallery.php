@@ -275,55 +275,40 @@ class BertaGallery extends BertaBase {
 		return false;
 	}
     
-    public static function getHTMLForGridView($section) {
+    public static function getHTMLForGridView($section, $tag) {
         global $berta;
-    
+
         $imgs = BertaGallery::getImagesArray($section); 
         $mediaFolder = $section['mediafolder'];
         $mFolder = self::$options['MEDIA_ROOT'] . $mediaFolder . '/';
         $mFolderABS = self::$options['MEDIA_ABS_ROOT'] . $mediaFolder . '/';
-        $width = $height = 0;
-        
-        $imageTargetWidth = $berta->template->settings->get('media', 'imagesSmallWidth', false, true);
-        $imageTargetHeight = $berta->template->settings->get('media', 'imagesSmallWidth', false, true);
-        
-        reset($berta->sections);
-        $firstKey = key($berta->sections);
-        
-        if($berta->environment == 'engine' || ($berta->environment == 'site' && !isset($_REQUEST['__rewrite']))) {
+
+        $alwaysSelectTag = $berta->settings->get('navigation', 'alwaysSelectTag') == 'yes';
+        $notFirstTag = $tag != reset(array_keys($berta->tags[$section['name']]));
+        $firstSection = $section['name'] == reset(array_keys($berta->sections));
+
+        if(($berta->environment == 'engine' || ($berta->environment == 'site' && !$berta->apacheRewriteUsed)) && !$firstSection) {
             $linkHref = '?section=' . $section['name'];
-        } elseif($berta->environment == 'site' && isset($_REQUEST['__rewrite']) && $section['name'] != $firstKey) {
-            $linkHref = self::$options['SITE_ABS_ROOT'] . $section['name'] . '/';
-        } elseif($berta->environment == 'site' && isset($_REQUEST['__rewrite']) && $section['name'] == $firstKey) {
+            if($tag != null && (($alwaysSelectTag && $notFirstTag) || !$alwaysSelectTag)) $linkHref .= '&tag=' . $tag;
+        }
+        elseif(($berta->environment == 'engine' || ($berta->environment == 'site' && !$berta->apacheRewriteUsed)) && $firstSection) {
             $linkHref = self::$options['SITE_ABS_ROOT'];
+            if($tag != null && (($alwaysSelectTag && $notFirstTag) || !$alwaysSelectTag)) $linkHref .= '?section=' . $section['name'] . '&tag=' . $tag;
+        }
+        elseif($berta->environment == 'site' && $berta->apacheRewriteUsed && !$firstSection) {
+            $linkHref = self::$options['SITE_ABS_ROOT'] . $section['name'] . '/';
+            if($tag != null && (($alwaysSelectTag && $notFirstTag) || !$alwaysSelectTag)) $linkHref .= $tag . '/';
+        }
+        elseif($berta->environment == 'site' && $berta->apacheRewriteUsed && $firstSection) {
+            $linkHref = self::$options['SITE_ABS_ROOT'];
+            if($tag != null && (($alwaysSelectTag && $notFirstTag) || !$alwaysSelectTag)) $linkHref .= $section['name'] . '/' . $tag . '/';
         }
         
         if($imgs && count($imgs) > 0)
             foreach ($imgs as $img) {
                 if($img['@attributes']['type'] == 'image') {
-                
                     $imgSrc = $img['@attributes']['src'];
-                    
-/*
-                    if(!empty($img['@attributes']['width']) && !empty($img['@attributes']['height'])) {
-                        $width = (int) $img['@attributes']['width'];
-                        $height = (int) $img['@attributes']['height'];
-                    }
-                    
-                    if(!$width || !$height) {
-                        $imgSize = getimagesize($mFolder . $imgSrc);
-                        $width = $imgSize ? (int) $imgSize[0] : false;
-                        $height = $imgSize ? (int) $imgSize[1] : false;
-                    }
-                    
-                    if($width && $height && $imageTargetWidth && $imageTargetHeight && 
-                      ($width > $imageTargetWidth || $height > $imageTargetHeight)) {
-                        list($width, $height) = self::fitInBounds($width, $height, $imageTargetWidth, $imageTargetHeight);                  
-                        $imgSrc = self::getResizedSrc($mFolder, $imgSrc, $width, $height);
-                    }
-*/
                 	$imgSrc = self::images_getGridImageFor($mFolder . $imgSrc);
-                	 
                     $returnImages .= '<div class="box"><a href="' . $linkHref . '"><img class="xGridItem" src="' . $mFolderABS . $imgSrc . '" /></a></div>';
                 }
             }

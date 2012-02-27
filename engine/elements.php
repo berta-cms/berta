@@ -184,10 +184,11 @@ if($jsonRequest) {
 				
 				$bgColor = !empty($section['sectionBgColor']['value']) ? $section['sectionBgColor']['value'] : '#ffffff';
 				$bgColorText = !empty($section['sectionBgColor']['value']) ? $section['sectionBgColor']['value'] : 'none';
+				
 				$bgCaptionColor = !empty($section['mediaCacheData']['@attributes']['caption_color']) ? $section['mediaCacheData']['@attributes']['caption_color'] : '#ffffff';
 				$bgCaptionColorText = !empty($section['mediaCacheData']['@attributes']['caption_color']) ? $section['mediaCacheData']['@attributes']['caption_color'] : 'none';
-				$bgCaptionBackColorTmp = !empty($section['mediaCacheData']['@attributes']['caption_bg_color']) ? explode(',', $section['mediaCacheData']['@attributes']['caption_bg_color']) : explode(',', '255,255,255');
 				
+				$bgCaptionBackColorTmp = !empty($section['mediaCacheData']['@attributes']['caption_bg_color']) ? explode(',', $section['mediaCacheData']['@attributes']['caption_bg_color']) : explode(',', '255,255,255');			
 				$bgCaptionBackColor = '#';
 				foreach($bgCaptionBackColorTmp as $val)
 					$bgCaptionBackColor .= dechex($val);

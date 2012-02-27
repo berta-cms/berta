@@ -90,9 +90,7 @@ var BertaGalleryEditor = new Class({
 		this.sortingProcessId = this.unlinearProcess_getId('sorting-save');
 		
 		// gallery type handle
-		this.container.getElements('.xEntrySetGalType').each(function(item) {
-			this.elementEdit_init(item, this.options.xBertaEditorClassSelectRC);
-		}, this);
+		this.elementEdit_init(this.container.getElement('.xEntrySetGalType'), this.options.xBertaEditorClassSelectRC);
 		
 		// tabs handle
 		this.container.getElements('.xEntryGalleryMenu div.tab a').each(function(item) {
@@ -100,24 +98,16 @@ var BertaGalleryEditor = new Class({
 		}, this);
 
 		// image size for gallery handle		
-		this.container.getElements('.xEntrySetImageSize').each(function(item) {
-			this.elementEdit_init(item, this.options.xBertaEditorClassSelectRC);
-		}, this);
+		this.elementEdit_init(this.container.getElement('.xEntrySetImageSize'), this.options.xBertaEditorClassSelectRC);
 
 		// fullscreen handle	
-		this.container.getElements('.xEntrySetFullScreen').each(function(item) {
-			this.elementEdit_init(item, this.options.xBertaEditorClassSelectRC);
-		}, this);
+		this.elementEdit_init(this.container.getElement('.xEntrySetFullScreen'), this.options.xBertaEditorClassSelectRC);
 
 		// autoplay handle
-		this.container.getElements('.xEntryAutoPlay').each(function(item) {
-			this.elementEdit_init(item, this.options.xBertaEditorClassRC);
-		}, this);
+		this.elementEdit_init(this.container.getElement('.xEntryAutoPlay'), this.options.xBertaEditorClassRC);
 		
 		// link address handle
-		this.container.getElements('.xEntryLinkAddress').each(function(item) {
-			this.elementEdit_init(item, this.options.xBertaEditorClassRC);
-		}, this);
+		this.elementEdit_init(this.container.getElement('.xEntryLinkAddress'), this.options.xBertaEditorClassRC);
 
 		// close link
 		this.container.getElement('a.xEntryGalCloseLink').addEvent('click', this.onCloseClick.bindWithEvent(this));

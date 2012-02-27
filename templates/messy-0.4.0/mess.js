@@ -10,6 +10,7 @@ var MessyMess = new Class({
     bgContainer: null,
     bgImage: null,
     bgCaption: null,
+    bgLoader: null,
 	
 	initialize: function() {
 		window.addEvent('domready', this.onDOMReady.bind(this));
@@ -77,36 +78,38 @@ var MessyMess = new Class({
 	onDOMReady: function() {
 		// Berta Background
 		this.bgContainer = $('xBackground');
+        this.bgLoader = $('xBackgroundLoader');
         
 		if(this.bgContainer)  {
             this.bgImage = this.bgContainer.getElement('.visual-image img');
             this.bgCaption = this.bgContainer.getElement('.visual-caption');
+
+            if(this.bgImage || this.bgCaption) {
+                var bertaBackground = new BertaBackground();
+                this.fadeContent = this.bgContainer.getClassStoredValue('xBgDataFading');
+            }
+
+            if(this.bgImage) {
+                this.bgImage.setStyle('display', 'none');
+                this.bgLoader.setStyle('display', 'block');
+            }
         }
-        
-		if(this.bgImage || this.bgCaption) {
-			var bertaBackground = new BertaBackground();
-            this.fadeContent = this.bgContainer.getClassStoredValue('xBgDataFading');
-		}
 		
         // Grid view
 		if($('xGridView')) {
 			$$('.xGridItem').addEvent('click', function() {
-					_berta_grid_img_link = this.src.substr(this.src.lastIndexOf('/')+2);
-					_berta_grid_img_link = _berta_grid_img_link.substr(_berta_grid_img_link.indexOf('_')+1);
-					Cookie.write('_berta_grid_img_link', _berta_grid_img_link, {duration: 0});
+                _berta_grid_img_link = this.src.substr(this.src.lastIndexOf('/')+2);
+                _berta_grid_img_link = _berta_grid_img_link.substr(_berta_grid_img_link.indexOf('_')+1);
+                Cookie.write('_berta_grid_img_link', _berta_grid_img_link, {duration: 0});
 			});
 		}
-        
-        // Key events
-        
 
 		if($('xGridViewTrigger')) {
 			$('xGridViewTrigger').addEvent('click', function() {
-                gridViewPath = this.get('href');
-                if(gridViewPath.length > 1) gridViewPath = gridViewPath.substr(0, gridViewPath.length - 1);
-				Cookie.write('_berta_grid_view', 'berta_grid_view', {duration: 0, path: gridViewPath});
+				Cookie.write('_berta_grid_view', 'berta_grid_view', {duration: 0});
 			});
             
+            // Key events
             window.addEvent('keydown', function(event) {
                 if(event.key == 'up') {
                     $('xGridViewTrigger').fireEvent('click');
@@ -114,6 +117,13 @@ var MessyMess = new Class({
                 }
             }); 
         }
+
+        if(Cookie.read('_berta_grid_img_link'))
+            Cookie.dispose('_berta_grid_img_link');
+
+        if(Cookie.read('_berta_grid_view'))
+            Cookie.dispose('_berta_grid_view');
+
 		//scroll fix (iphone viewport workaround)
         if(!navigator.userAgent.match(/OS 5_\d like Mac OS X/i) && /iphone|ipad|ipod|android|blackberry|mini|windows\sce|palm/i.test(navigator.userAgent.toLowerCase())) {
             window.addEvent('resize',this.stickToBottom.bindWithEvent(this));
@@ -131,25 +141,31 @@ var MessyMess = new Class({
 
 			$$('.xEditableDragXY').addEvents({
 				mouseenter: function(){
-					$$('.xCreateNewEntry').hide();
 					$('xTopPanelContainer').hide();
 					if($('xBgEditorPanelTrigContainer')) $('xBgEditorPanelTrigContainer').hide();
-					$('xBackgroundNext').hide();
-					$('xBackgroundPrevious').hide();
+					if($('xBackgroundNext') && $('xBackgroundPrevious')) {
+                        $('xBackgroundNext').hide();
+					    $('xBackgroundPrevious').hide();
+                    }
 				},
 				mouseleave: function(){
-					$$('.xCreateNewEntry').show();
 					$('xTopPanelContainer').show();
 					if($('xBgEditorPanelTrigContainer')) $('xBgEditorPanelTrigContainer').show();
-					$('xBackgroundNext').show();
-					$('xBackgroundPrevious').show();
-					$$('.xEntry .xCreateNewEntry').hide();
+                    if($('xBackgroundNext') && $('xBackgroundPrevious')) {
+					    $('xBackgroundNext').show();
+					    $('xBackgroundPrevious').show();
+                    }
 				}
 			});
 		}
 	},
 	
 	onLoad: function() {
+        if(this.bgContainer && this.bgImage) {
+            this.bgLoader.setStyle('display', 'none');
+            this.bgImage.setStyle('display', 'block')
+        }
+
         // Fade content
         if(this.fadeContent == 'enabled' && this.bgContainer.getElement('.visual-image')) {
             var hideContent, lastX, lastY;
@@ -167,9 +183,14 @@ var MessyMess = new Class({
                     
                     $('allContainer').setStyle('opacity', '1');
                     $('bottom').setStyle('opacity', '1');
+                    $('xBackgroundLeftCounter').setStyle('opacity', 1);
+                    $('xBackgroundRightCounter').setStyle('opacity', 1);
+
                     hideContent = setTimeout(function() {
                         $('allContainer').tween('opacity', '0');
                         $('bottom').tween('opacity', '0');
+                        $('xBackgroundLeftCounter').tween('opacity', '0');
+                        $('xBackgroundRightCounter').tween('opacity', '0');
                     }, 3000);
                     
                     lastX = event.page.x;
@@ -177,7 +198,7 @@ var MessyMess = new Class({
                 }           
             });
         }
-        
+
 		// Massonry grid
 		if($('xGridView')) {
             if((navigator.userAgent.match(/iPhone/i)))
@@ -190,12 +211,7 @@ var MessyMess = new Class({
     	    	itemSelector: '.box'
 		    });
 		}
-		
-		if(Cookie.read('_berta_grid_img_link'))
-			Cookie.dispose('_berta_grid_img_link');
-		
-		if(Cookie.read('_berta_grid_view'))
-			Cookie.dispose('_berta_grid_view');
+
 	},
 	
 	stickToBottom: function(){
@@ -305,188 +321,297 @@ var MessyMess = new Class({
 });
 
 
+
 var BertaBackground = new Class({
 	Implements: Options,
 	
 	options: {
 		type: 'image',
-		image_size: 'large',
+		image_size: 'medium',
         autoplay: 0,
+        image_scale: null
 	},
-	
+
     container: null,
+    nextButton: null,
+    previousButton: null,
+    nextClickArea: null,
+    previousClickArea: null,
+    loader: null,
+
+    imageContainer: null,
+    captionContainer: null,
 	imagesList: null,
+    bgElements: null,
+    bgElementCount: null,
 	caption: null,
 	image: null,
-    
-	nextButton: null,
-	previousButton: null,
-    
+
     selected: null,
+    selectedIndex: null,
+    rightCounter: null,
+    leftCounter: null,
+    rightCounterContent: null,
+    leftCounterContent: null,
+    
     autoplayInterval: null,
     data: null,
-    
+
+    fadeElements: null,
     fadeOutFx: null,
     fadeInFx: null,
-    captionFadeOutFx: null,
-    captionFadeInFx: null,
     
     
 	initialize: function(options) {
 		this.setOptions(options);
 		
+        this._init();
+
+        // If not mobile device
+        if (this.nextClickArea && this.previousClickArea) {
+
+            this.nextClickArea.addEvents({
+                'click': function() {
+                    this._getNext();
+                    this._getCounter();
+                }.bind(this),
+                'mouseenter': function() {
+                    this.leftCounter.hide();
+                    this.rightCounter.show();
+                }.bind(this),
+                'mouseleave': function() {
+                    this.leftCounter.hide();
+                    this.rightCounter.hide();
+                }.bind(this)
+            });
+
+            this.previousClickArea.addEvents({
+                'click': function() {
+                    this._getPrevious();
+                    this._getCounter();
+                }.bind(this),
+                'mouseenter': function() {
+                    this.rightCounter.hide();
+                    this.leftCounter.show();
+                }.bind(this),
+                'mouseleave': function() {
+                    this.rightCounter.hide();
+                    this.leftCounter.hide();
+                }.bind(this)
+            });
+
+            window.addEvents({
+                'keydown': function(event) {
+                    if(event.key == 'right') {
+                        this._getNext();
+                        this._getCounter();
+                    } else if(event.key == 'left') {
+                        this._getPrevious();
+                        this._getCounter();
+                    }
+                }.bind(this),
+                'mousemove': function(event) {
+                    this._moveCounter(event);
+                }.bind(this)
+            });
+
+        }
+        // If mobile device
+        else if (this.nextButton && this.previousButton) {
+
+            // Image click event
+            this.imageContainer.addEvent('click', function() {
+                this._getNext();
+            }.bind(this));
+
+            // Caption click event
+            this.captionContainer.addEvent('click', function() {
+                this._getNext();
+            }.bind(this));
+
+            // Next image button click
+            this.nextButton.addEvent('click', function(event) {
+                event.stop();
+                this._getNext();
+            }.bind(this));
+
+            // Previous image button click
+            this.previousButton.addEvent('click', function(event) {
+                event.stop();
+                this._getPrevious();
+            }.bind(this));
+
+        }
+	},
+
+    _init: function() {
         this.nextButton = $('xBackgroundNext');
-		this.previousButton = $('xBackgroundPrevious');
-		this.container = $('xBackground');
-		
+        this.previousButton = $('xBackgroundPrevious');
+        this.nextClickArea = $('xBackgroundRight');
+        this.previousClickArea = $('xBackgroundLeft');
+        this.rightCounter = $('xBackgroundRightCounter');
+        this.leftCounter = $('xBackgroundLeftCounter');
+        this.loader = $('xBackgroundLoader');
+        this.container = $('xBackground');
+
+        this.imagesList = this.container.getElement('.visual-list');
+        this.bgElements = this.imagesList.getChildren();
+        this.bgElementCount = this.bgElements.length;
+
         this.imageContainer = this.container.getElement('.visual-image');
-		this.imagesList = this.container.getElement('.visual-list');
-		this.caption = this.container.getElement('.visual-caption');
-		this.image = this.container.getElement('.visual-image img');
-        
+        this.captionContainer = this.container.getElement('.visual-caption');
+        this.image = this.imageContainer.getElement('img');
+        this.caption = this.captionContainer.getElement('.caption-content');
+
+        this.selected = this.imagesList.getElement('.sel');
+        if (this.rightCounter && this.leftCounter) {
+            this.rightCounterContent = this.rightCounter.getElement('.counterContent');
+            this.leftCounterContent = this.leftCounter.getElement('.counterContent');
+            this._getCounter();
+            this.rightCounter.hide();
+            this.leftCounter.hide();
+        }
+
         this.data = { options: this.options };
         this.data.options.image_size = this.container.getClassStoredValue('xBgDataImageSize');
         this.data.options.autoplay = this.container.getClassStoredValue('xBgDataAutoplay');
-        
-        this.fadeOutFx = new Fx.Tween(this.imageContainer, { duration: 'short', transition: Fx.Transitions.Sine.easeInOut });
-        this.fadeInFx = new Fx.Tween(this.imageContainer, { duration: 'normal', transition: Fx.Transitions.Sine.easeInOut });
-        this.captionFadeOutFx = new Fx.Tween(this.caption, { duration: 'short', transition: Fx.Transitions.Sine.easeInOut });
-        this.captionFadeInFx = new Fx.Tween(this.caption, { duration: 'normal', transition: Fx.Transitions.Sine.easeInOut });
+        if(this.data.options.image_size == 'large')
+            this.data.options.image_scale = 1;
+        else if(!this.data.options.image_size || this.data.options.image_size == 'medium')
+            this.data.options.image_scale = 0.85;
+        else if(this.data.options.image_size == 'small')
+            this.data.options.image_scale = 0.65;
 
-        this._init();
-        
-        // Next image button click    
-        this.nextButton.addEvent('click', function(event) {
-            event.stop();
-            
-            this.selected = this.imagesList.getElement('.sel');
-            
-            if(this.data.options.autoplay > 0) {
-                clearInterval(this.autoplayInterval);
-                this._autoplay();
-            }
-            
-			if(this.selected.getNext()) {
-                newBgContent = this.selected.getNext();
-			}
-            else
-                newBgContent = this.imagesList.getFirst();
-            
-            this.captionFadeOutFx.start('opacity', 0);
-            this.fadeOutFx.start('opacity', 0).chain(
-                function() { this._getNewBgContent(newBgContent); }.bind(this)
-            );
+        this.fadeElements = $$('.visual-image, .visual-caption');
+        this.fadeOutFx = new Fx.Elements(this.fadeElements, { duration: 'short', transition: Fx.Transitions.Sine.easeInOut });
+        this.fadeInFx  = new Fx.Elements(this.fadeElements, { duration: 'normal', transition: Fx.Transitions.Sine.easeInOut });
 
-        }.bindWithEvent(this));
+        if(this.image) this._centerImage();
+        else if(this.caption) this._centerCaption();
 
-        // Previous image button click
-        this.previousButton.addEvent('click', function(event) {
-            event.stop();
-            
-            this.selected = this.imagesList.getElement('.sel');
-           
-            if(this.data.options.autoplay > 0) {
-                clearInterval(this.autoplayInterval);
-                this._autoplay();
-            }
-            
-			if(this.selected.getPrevious())
-                newBgContent = this.selected.getPrevious();
-            else
-                newBgContent = this.imagesList.getLast();
-            
-            this.captionFadeOutFx.start('opacity', 0);
-            this.fadeOutFx.start('opacity', 0).chain(
-                function() { this._getNewBgContent(newBgContent); }.bind(this)
-            );          
-        }.bindWithEvent(this));
-        
-        // Key events
-        window.addEvent('keydown', function(event) {
-            if(event.key == 'right') {
-                this.nextButton.fireEvent('click', event);
-            } else if(event.key == 'left') {
-                this.previousButton.fireEvent('click', event);
-            }
-        }.bindWithEvent(this));
-        
         // Autoplay
         if(this.data.options.autoplay > 0) {
             this._autoplay();
         }
-	},
+    },
 
-    
     _autoplay: function() {
         time = this.data.options.autoplay * 1000;
         this.autoplayInterval = setInterval(function() {
-            this.selected = this.imagesList.getElement('.sel');
-            
 			if(this.selected.getNext())
                 newBgContent = this.selected.getNext();
             else
                 newBgContent = this.imagesList.getFirst();
-            
-            this.captionFadeOutFx.start('opacity', 0);
-            this.fadeOutFx.start('opacity', 0).chain(
+
+            this.selected.removeClass('sel');
+            newBgContent.addClass('sel');
+            this.selected = newBgContent;
+
+            if(this.rightCounter && this.leftCounter) this._getCounter();
+
+            this.fadeOutFx.start({ '0': { 'opacity': 0 }, '1': { 'opacity': 0 } }).chain(
                 function() { this._getNewBgContent(newBgContent); }.bind(this)
             );
         }.bind(this), time);
     },
-    
-    _centerCaption: function() {
-        if(this.caption) this.caption.setStyle('margin-top', '-' + (this.caption.getSize().y / 2) + 'px');
-    },    
-    
-	_getNewBgContent: function(newBgContent) {
-        this.selected.removeClass('sel');
-        newBgContent.addClass('sel');
 
-        if(newBgContent.get('tag') == 'input') {
-            if(obj = this.image) obj.destroy();
-            
-            newImage = newBgContent;
-            newWidth = newImage.get('width'); newHeight = newImage.get('height'); newSrc = newImage.get('src');
-            this.image = new Asset.image(newSrc, { class: 'bg-element visualContent', width: newWidth, height: newHeight, onLoad: this._getNewBgContentFinish.bind(this) });
-            this._init();
-        }
-        else if(newBgContent.get('tag') == 'textarea') {
-            newCaption = newBgContent.get('text');
-            this.caption.set('html', newCaption);
-            this._centerCaption();
-            this.captionFadeInFx.set('opacity', 0).start('opacity', 1);
-        }
-	},
-    
-    _getNewBgContentFinish: function() {
-        this.container.getElement('.visual-image').adopt(this.image);
-        this.fadeInFx.set('opacity', 0).start('opacity', 1);
+    _getCounter: function() {
+        this.selectedIndex = this.bgElements.indexOf(this.selected) + 1;
+        this.rightCounterContent.set('text', (this.selectedIndex == this.bgElementCount ? 1 : (this.selectedIndex + 1) ) + '/' + this.bgElementCount);
+        this.leftCounterContent.set('text', (this.selectedIndex == 1 ? this.bgElementCount : (this.selectedIndex - 1) ) + '/' + this.bgElementCount);
     },
 
-	_init: function() {
-		var el = this.image, scaleMultiplier;
-        
-		this.data.width = parseInt(el.get('width'));
-		this.data.height = parseInt(el.get('height'));
-        
-        if(this.data.options.image_size == 'large') {
-            scaleMultiplier = 1;
-            scaleMultiplier = 1;
-        } else if(!this.data.options.image_size || this.data.options.image_size == 'medium') {
-            scaleMultiplier = 0.85;
-            scaleMultiplier = 0.85;
-        } else if(this.data.options.image_size == 'small') {
-            scaleMultiplier = 0.65;
-            scaleMultiplier = 0.65;
+    _moveCounter: function(e) {
+        this.rightCounter.setStyles({'left': e.client.x+'px', 'top': e.client.y+'px'});
+        this.leftCounter.setStyles({'left': e.client.x+'px', 'top': e.client.y+'px'});
+    },
+
+    _getNext: function() {
+        if(this.data.options.autoplay > 0) {
+            clearInterval(this.autoplayInterval);
+            this._autoplay();
         }
 
-        window.removeEvent('resize');
-		window.addEvent('resize', function() { this._onResize(el, scaleMultiplier) }.bind(this));
-		this._onResize(el, scaleMultiplier);
+        if(this.selected.getNext())
+            newBgContent = this.selected.getNext();
+        else
+            newBgContent = this.imagesList.getFirst();
+
+        this.selected.removeClass('sel');
+        newBgContent.addClass('sel');
+        this.selected = newBgContent;
+
+        this.fadeOutFx.start({ '0': { 'opacity': 0 }, '1': { 'opacity': 0 } }).chain(
+            function() { this._getNewBgContent(newBgContent); }.bind(this)
+        );
+    },
+
+    _getPrevious: function() {
+        if(this.data.options.autoplay > 0) {
+            clearInterval(this.autoplayInterval);
+            this._autoplay();
+        }
+
+        if(this.selected.getPrevious())
+            newBgContent = this.selected.getPrevious();
+        else
+            newBgContent = this.imagesList.getLast();
+
+        this.selected.removeClass('sel');
+        newBgContent.addClass('sel');
+        this.selected = newBgContent;
+
+        this.fadeOutFx.start({ '0': { 'opacity': 0 }, '1': { 'opacity': 0 } }).chain(
+            function() { this._getNewBgContent(newBgContent); }.bind(this)
+        );
+    },
+
+	_getNewBgContent: function(newContent) {
+        if(newContent.get('tag') == 'input') {
+            if(img = this.image) img.destroy();
+            if(caption = this.caption) caption.destroy();
+
+            this.loader.setStyle('display', 'block');
+            newImage = newContent; newWidth = newImage.get('width'); newHeight = newImage.get('height'); newSrc = newImage.get('src');
+            this.image = new Asset.image(newSrc, { 'class': 'bg-element', 'width': newWidth, 'height': newHeight, 'onLoad': this._getNewBgImageFinish.bind(this) });
+        }
+        else if(newContent.get('tag') == 'textarea') {
+            if(img = this.image) img.destroy();
+            if(caption = this.caption) caption.destroy();
+
+            newCaption = newContent.get('text');
+            this.caption = new Element('div', { 'class': 'caption-content', 'html': newCaption });
+            this._getNewBgCaptionFinish();
+        }
+	},
+    
+    _getNewBgImageFinish: function() {
+        this.loader.setStyle('display', 'none');
+        this.imageContainer.adopt(this.image);
+        this._centerImage();
+        this.fadeInFx.set({ '0': { 'opacity': 0 }, '1': { 'opacity': 0 } }).start({ '0': { 'opacity': 1 }, '1': { 'opacity': 1 } });
+    },
+
+    _getNewBgCaptionFinish: function() {
+        this.captionContainer.adopt(this.caption);
         this._centerCaption();
+        this.fadeInFx.set({ '0': { 'opacity': 0 }, '1': { 'opacity': 0 } }).start({ '0': { 'opacity': 1 }, '1': { 'opacity': 1 } });
+    },
+
+    _centerCaption: function() {
+        this.captionContainer.setStyle('margin-top', '-' + (this.captionContainer.getSize().y / 2) + 'px');
+    },
+
+    _centerImage: function() {
+		this.data.width = parseInt(this.image.get('width'));
+		this.data.height = parseInt(this.image.get('height'));
+
+        window.removeEvent('resize');
+		window.addEvent('resize', function() { this._onResize() }.bind(this));
+		this._onResize();
 	},
 	
-	_onResize: function(el, scaleMultiplier) {
+	_onResize: function() {
 		var wnd = window,
 			w = wnd.getSize().x,
 			h = wnd.getSize().y;
@@ -496,14 +621,14 @@ var BertaBackground = new Class({
 		// scale
 		var scaleX = w / this.data.width, scaleY = h / this.data.height;
         
-		if(this.data.width>=this.data.height && scaleMultiplier == 1)
+		if(this.data.width>=this.data.height && this.data.options.image_scale == 1)
 			if(scaleX > scaleY) scaleY = scaleX; else scaleX = scaleY;
 		else
 			if(scaleX > scaleY) scaleX = scaleY; else scaleY = scaleX;
 		
         // scale based on background image size
-        scaleX = scaleX*scaleMultiplier;
-        scaleY = scaleY*scaleMultiplier;
+        scaleX = scaleX*this.data.options.image_scale;
+        scaleY = scaleY*this.data.options.image_scale;
 		
 		// position X
 		posX = Math.round((w - this.data.width * scaleX) / 2);
@@ -511,17 +636,19 @@ var BertaBackground = new Class({
 		// position Y
 		posY = Math.round((h - (this.data.height * scaleY)) / 2);
 
-		el.setStyle('width', this.data.width * scaleX)
-		   	.setStyle('height', this.data.height * scaleY)
-		   	.setStyle('left', posX)
-		   	.setStyle('top', posY);       
+        this.image.setStyles({
+            'width': this.data.width * scaleX,
+            'height': this.data.height * scaleY,
+            'left': posX,
+            'top': posY
+        });
 	},
 });
 
 
 var messyMess = new MessyMess();
 
-		// VIDEO for _init();
+		// VIDEO for _centerImage();
 /*
 		switch(data.options.type) {
 		    case 'image':
