@@ -372,6 +372,7 @@ a img { border: none; }
         width: 31px;
         height: 31px;
         position: absolute;
+        background: url('layout/loader_<? echo $s->get('navigation', 'bgButtonType') ?>.gif') no-repeat;
         left: 50%; top: 50%;
         margin-left: -15px; margin-top: -15px;
         display: none;

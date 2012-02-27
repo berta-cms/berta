@@ -284,8 +284,7 @@ class BertaTemplate extends BertaBase {
 				if($this->sectionName == $sName) {
 					$vars['berta']['pageTitle'] .= ' / ' . $s['title']['value'];
 					$vars['berta']['section'] =& $vars['berta']['sections'][$sName];
-                    $vars['berta']['section']['bg_button_type'] = $this->settings->settings['navigation']['bgButtonType'];
-				}
+                }
 			}
 		}
 		
