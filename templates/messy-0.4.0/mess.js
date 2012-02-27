@@ -432,7 +432,7 @@ var BertaBackground = new Class({
         else if (this.nextButton && this.previousButton) {
 
             // Image click event
-            this.imageContainer.addEvent('click', function() {
+            this.imageContainer.addEvent('click:relay(img)', function() {
                 this._getNext();
             }.bind(this));
 
