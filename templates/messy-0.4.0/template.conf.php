@@ -45,12 +45,17 @@ $templateConf = array(
 	
 	'background' => array(
 		'_' => array('title' => I18n::_('Background')),
-		'backgroundColor' =>		array('format' => 'color',		'default' => '#FFFFFF',									                                                                                                                                    'title' => I18n::_('Background color'),                      'description' => ''),
+		'backgroundColor' =>		array('format' => 'color',		'default' => '#FFFFFF',									                                                                                                                                    'title' => I18n::_('Background color'),                      'description' => I18n::_('IMPORTANT! These settings will be overwritten, if you are using background gallery feature. You access it by clicking \'edit background gallery\' button in each section.')),
 		'backgroundImageEnabled'=>  array('format' => 'select',		'values' => array('yes', 'no'), 'default' => 'no', 				                                                                                                                            'title' => I18n::_('Is background image enabled?'),          'description' => ''),
 		'backgroundImage' => 		array('format' => 'image',		'default' => '', 'min_width' => 1, 'min_height' => 1, 'max_width' => 3000, 'max_height' => 3000, 	 	                                                                                    'title' => I18n::_('Background image'),                      'description' => I18n::_('Picture to use for page background.')),
 		'backgroundRepeat' => 		array('format' => 'select',		'values' => array('repeat'=>'tile vertically and horizontally', 'repeat-x' => 'tile horizontally', 'repeat-y' => 'tile vertically', 'no-repeat'=>'no tiling'), 'default' => 'repeat', 		'title' => I18n::_('Background tiling'),                     'description' => I18n::_('How the background fills the screen?')),
 		'backgroundPosition' => 	array('format' => 'select',		'values' => array('top left', 'top center', 'top right', 'center left', 'center', 'center right', 'bottom left', 'bottom center', 'bottom right'), 'default' => 'top left', 	            'title' => I18n::_('Background alignment'),                  'description' => I18n::_('Where the background image is positioned?')),
 		'backgroundAttachment' => 	array('format' => 'select',		'values' => array('fixed' => 'Fixed to browser window', 'fill' => 'Filled in browser window', 'scroll' => 'No stretch, scroll along with content'), 'default' => 'scroll', 		            'title' => I18n::_('Background position'),                   'description' => I18n::_('Sets how background behaves in relation with the browser window.'))
+	),
+	
+	'navigation' => array(
+		'_' => array('title' => I18n::_('Navigation')),
+		'bgButtonType' =>			array('format' => 'select', 'default' => 'dark', 'values' => array('dark', 'bright'),	'title' => I18n::_('Background button type'),	'description' => I18n::_('Select type for background gallery buttons.'))
 	),
 	
 	'entryHeading' => array(

@@ -284,10 +284,9 @@ class BertaTemplate extends BertaBase {
 				if($this->sectionName == $sName) {
 					$vars['berta']['pageTitle'] .= ' / ' . $s['title']['value'];
 					$vars['berta']['section'] =& $vars['berta']['sections'][$sName];
-				}
+                }
 			}
 		}
-
 		
 	//	var_dump($vars['berta']['publishedSections']);
 		
@@ -411,6 +410,7 @@ DOC;
 		while(list($vName, $vContent) = each($vars)) {
 			$this->smarty->assign($vName, $vContent);
 		}
+		
 	}
 	
 	

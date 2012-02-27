@@ -465,11 +465,19 @@ body.xEditorEnabled { }
 			}
 			
 				.xBgFadingSettings .xBgFading,
-				.xBgColorSettings .xBgFading select {
+				.xBgColorSettings .xBgFading select,
+				.xBgButtonTypeSettings .xBgButtonType,
+				.xBgButtonTypeSettings .xBgButtonType select {
 					float: left;
 					width: 100px;
 				}
 				
+				.xBgButtonTypeSettings .xBgButtonType,
+				.xBgButtonTypeSettings .xBgButtonType select {
+					margin-top: 6px;
+				}
+			
+			.xBgButtonTypeSettings .caption,	
 			.xBgColorSettings .caption {
 				width: 200px;
 				float: left;

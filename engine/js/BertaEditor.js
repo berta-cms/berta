@@ -982,8 +982,6 @@ var BertaEditor = new Class({
 					$$('.xCreateNewEntry').show();
 					$('xTopPanelContainer').show();
 					$('xBgEditorPanelTrigContainer').show();
-					$('xBackgroundNext').show();
-					$('xBackgroundPrevious').show();
 					$$('.xEntry .xCreateNewEntry').hide();
 				}
 				
