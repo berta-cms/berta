@@ -12,6 +12,13 @@ var MessyMess = new Class({
     bgCaption: null,
     bgLoader: null,
 	
+	bgGridViewTrigger: null,
+	bgNext: null,
+	bgPrevious: null,
+	bgRightCounter: null,
+	bgLeftCounter: null,
+	
+	
 	initialize: function() {
 		window.addEvent('domready', this.onDOMReady.bind(this));
 		window.addEvent('load', this.onLoad.bind(this));
@@ -83,6 +90,12 @@ var MessyMess = new Class({
 		if(this.bgContainer)  {
             this.bgImage = this.bgContainer.getElement('.visual-image img');
             this.bgCaption = this.bgContainer.getElement('.visual-caption');
+			
+			this.bgGridViewTrigger = $('xGridViewTrigger');
+			this.bgNext = $('xBackgroundNext');
+			this.bgPrevious = $('xBackgroundPrevious');
+			this.bgRightCounter = $('xBackgroundRightCounter');
+			this.bgLeftCounter = $('xBackgroundLeftCounter');
 
             if(this.bgImage || this.bgCaption) {
                 var bertaBackground = new BertaBackground();
@@ -104,18 +117,18 @@ var MessyMess = new Class({
 			});
 		}
 
-		if($('xGridViewTrigger')) {
-			$('xGridViewTrigger').addEvent('click', function() {
+		if(this.bgGridViewTrigger) {
+			this.bgGridViewTrigger.addEvent('click', function() {
 				Cookie.write('_berta_grid_view', 'berta_grid_view', {duration: 0});
 			});
             
             // Key events
             window.addEvent('keydown', function(event) {
                 if(event.key == 'up') {
-                    $('xGridViewTrigger').fireEvent('click');
-                    window.location.href = $('xGridViewTrigger').get('href');
+                    this.bgGridViewTrigger.fireEvent('click');
+                    window.location.href = this.bgGridViewTrigger.get('href');
                 }
-            }); 
+            }.bind(this)); 
         }
 
         if(Cookie.read('_berta_grid_img_link'))
@@ -143,17 +156,17 @@ var MessyMess = new Class({
 				mouseenter: function(){
 					$('xTopPanelContainer').hide();
 					if($('xBgEditorPanelTrigContainer')) $('xBgEditorPanelTrigContainer').hide();
-					if($('xBackgroundNext') && $('xBackgroundPrevious')) {
-                        $('xBackgroundNext').hide();
-					    $('xBackgroundPrevious').hide();
+					if(this.bgNext && this.bgPrevious) {
+                        this.bgNext.hide();
+					    this.bgPrevious.hide();
                     }
 				},
 				mouseleave: function(){
 					$('xTopPanelContainer').show();
 					if($('xBgEditorPanelTrigContainer')) $('xBgEditorPanelTrigContainer').show();
-                    if($('xBackgroundNext') && $('xBackgroundPrevious')) {
-					    $('xBackgroundNext').show();
-					    $('xBackgroundPrevious').show();
+                    if(this.bgNext && this.bgPrevious) {
+					    this.bgNext.show();
+					    this.bgPrevious.show();
                     }
 				}
 			});
@@ -174,7 +187,7 @@ var MessyMess = new Class({
                     lastX = event.page.x;
                     lastY = event.page.y;
                 }
-    
+
                 if(event.page.x != lastX && event.page.y != lastY) {
                     if(hideContent) {
                         clearTimeout(hideContent);
@@ -183,32 +196,31 @@ var MessyMess = new Class({
                     
                     $('allContainer').setStyle('opacity', '1');
                     $('bottom').setStyle('opacity', '1');
-                    if($('xBackgroundNext') && $('xBackgroundPrevious')) {
-                        $('xBackgroundNext').setStyle('opacity', '1');
-                        $('xBackgroundPrevious').setStyle('opacity', '1');
-                    }
-                    if($('xBackgroundLeftCounter') && $('xBackgroundRightCounter')) {
-                        $('xBackgroundLeftCounter').setStyle('opacity', 1);
-                        $('xBackgroundRightCounter').setStyle('opacity', 1);
+					if(this.bgLeftCounter && this.bgRightCounter) {
+                        this.bgLeftCounter.setStyle('opacity', 1);
+                        this.bgRightCounter.setStyle('opacity', 1);
+                    } else if(this.bgNext && this.bgPrevious) {
+                        this.bgNext.setStyle('opacity', '1');
+                        this.bgPrevious.setStyle('opacity', '1');
                     }
 
                     hideContent = setTimeout(function() {
                         $('allContainer').tween('opacity', '0');
                         $('bottom').tween('opacity', '0');
-                        if($('xBackgroundNext') && $('xBackgroundPrevious')) {
-                            $('xBackgroundNext').tween('opacity', '0');
-                            $('xBackgroundPrevious').tween('opacity', '0');
+                        if(this.bgLeftCounter && this.bgRightCounter) {
+                            this.bgLeftCounter.tween('opacity', '0');
+                            this.bgRightCounter.tween('opacity', '0');
                         }
-                        if($('xBackgroundLeftCounter') && $('xBackgroundRightCounter')) {
-                            $('xBackgroundLeftCounter').tween('opacity', '0');
-                            $('xBackgroundRightCounter').tween('opacity', '0');
+						else if(this.bgNext && this.bgPrevious) {
+                            this.bgNext.tween('opacity', '0');
+                            this.bgPrevious.tween('opacity', '0');
                         }
-                    }, 3000);
+                    }.bind(this), 3000);
                     
                     lastX = event.page.x;
                     lastY = event.page.y;
                 }           
-            });
+            }.bind(this));
         }
 
 		// Massonry grid
