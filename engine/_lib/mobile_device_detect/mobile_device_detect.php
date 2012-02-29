@@ -69,7 +69,7 @@ function mobile_device_detect(&$user_agent,$iphone=true,$ipad=true,$android=true
 
     $mobile_browser   = false; // set mobile browser as false till we can prove otherwise
     $user_agent       = $_SERVER['HTTP_USER_AGENT']; // get the user agent value - this should be cleaned to ensure no nefarious input gets executed
-    $accept           = $_SERVER['HTTP_ACCEPT']; // get the content accept value - this should be cleaned to ensure no nefarious input gets executed
+    //$accept           = $_SERVER['HTTP_ACCEPT']; // get the content accept value - this should be cleaned to ensure no nefarious input gets executed
 
     switch(true){ // using a switch against the following statements which could return true is more efficient than the previous method of using if statements
 
@@ -134,10 +134,10 @@ function mobile_device_detect(&$user_agent,$iphone=true,$ipad=true,$android=true
             $status = 'Mobile matched on piped preg_match';
             break; // break out and skip the rest if we've preg_match on the user agent returned true
 
-        case ((strpos($accept,'text/vnd.wap.wml')>0)||(strpos($accept,'application/vnd.wap.xhtml+xml')>0)); // is the device showing signs of support for text/vnd.wap.wml or application/vnd.wap.xhtml+xml
-            $mobile_browser = true; // set mobile browser to true
-            $status = 'Mobile matched on content accept header';
-            break; // break out and skip the rest if we've had a match on the content accept headers
+        //case ((strpos($accept,'text/vnd.wap.wml')>0)||(strpos($accept,'application/vnd.wap.xhtml+xml')>0)); // is the device showing signs of support for text/vnd.wap.wml or application/vnd.wap.xhtml+xml
+        //    $mobile_browser = true; // set mobile browser to true
+        //    $status = 'Mobile matched on content accept header';
+        //    break; // break out and skip the rest if we've had a match on the content accept headers
 
         case (isset($_SERVER['HTTP_X_WAP_PROFILE'])||isset($_SERVER['HTTP_PROFILE'])); // is the device giving us a HTTP_X_WAP_PROFILE or HTTP_PROFILE header - only mobile devices would do this
             $mobile_browser = true; // set mobile browser to true
