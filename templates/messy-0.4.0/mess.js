@@ -156,18 +156,10 @@ var MessyMess = new Class({
 				mouseenter: function(){
 					$('xTopPanelContainer').hide();
 					if($('xBgEditorPanelTrigContainer')) $('xBgEditorPanelTrigContainer').hide();
-					if(this.bgNext && this.bgPrevious) {
-                        this.bgNext.hide();
-					    this.bgPrevious.hide();
-                    }
 				},
 				mouseleave: function(){
 					$('xTopPanelContainer').show();
 					if($('xBgEditorPanelTrigContainer')) $('xBgEditorPanelTrigContainer').show();
-                    if(this.bgNext && this.bgPrevious) {
-					    this.bgNext.show();
-					    this.bgPrevious.show();
-                    }
 				}
 			});
 		}
