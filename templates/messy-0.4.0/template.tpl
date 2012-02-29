@@ -7,6 +7,7 @@
     <meta name="keywords" content="{ $berta.settings.texts.metaKeywords }" />
     <meta name="description" content="{ $berta.settings.texts.metaDescription }" />
     <meta name="author" content="{ $berta.settings.texts.ownerName }" />
+    {$berta.settings.settings.googleSiteVerification|@html_entity_decode}
     
     { if $berta.settings.pageLayout.favicon }
     <link rel="SHORTCUT ICON" href="{ $berta.options.MEDIA_ABS_ROOT }{ $berta.settings.pageLayout.favicon }" />
