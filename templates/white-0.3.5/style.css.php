@@ -183,7 +183,7 @@ a img { border: none; }
 		}
 			#sideColumnBottom p {
 				width: 100%;
-				font-size: 80%;
+				font-size: 10px;
 				margin: 0;
 				padding: 0;
 			}
