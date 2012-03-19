@@ -151,8 +151,11 @@ $templateConf = array(
 		'fontStyle' => 			array('format' => 'select',		'values' => array('inherit', 'normal', 'italic'), 'default' => 'inherit', 		'title' => I18n::_('Font style'),        'description' => ''),
 		'fontVariant' => 			array('format' => 'select',		'values' => array('inherit', 'normal', 'small-caps'), 'default' => 'inherit','title' =>I18n::_('Font variant'),      'description' => ''),
 		'lineHeight' => 			array('format' => 'text',		'default' => 'inherit', 					                                'title' => I18n::_('Line height'),       'description' => I18n::_('Height of text line. Use em, px or % values or the default value "normal"')),
-	)
-	
+	),
+	'css' => array(
+		'_' => array('title' => I18n::_('Custom CSS')),
+		'customCSS' =>	array('format' => 'longtext',	'allow_blank' => true,	'default' => '',	'html_entities'	=> true,	'title' => I18n::_('Custom CSS'), 'description' => I18n::_('description_custom_css'))
+	)	
 	
 
 );

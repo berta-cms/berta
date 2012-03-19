@@ -16,8 +16,12 @@
     { /if }
     { if ($berta.section.type == 'shopping_cart' &&  $berta.environment == 'engine') || $berta.section.type != 'shopping_cart'  }
     { $berta.scripts }
-    
     { $berta.css }
+    {if $berta.settings.css.customCSS}
+        <style type="text/css">
+        {$berta.settings.css.customCSS|@html_entity_decode|replace:'<br />':"\n"}
+        </style>
+    {/if}
     { googleWebFontsAPI }   
     { /if }
     <script type="text/javascript" src="{ $berta.options.TEMPLATES_ABS_ROOT }{ $berta.templateName }/mess.js"></script>

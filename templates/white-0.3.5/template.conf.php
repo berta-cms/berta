@@ -105,6 +105,10 @@ $templateConf = array(
 		'galleryNavMargin' => 	 array('format' => 'text',		'default' => '0', 'css_units' => true,                                  'title' => I18n::_('Space between images and image navigation'),     'description' => I18n::_('Vertical space between images and image navigation (the digits below the image) when gallery is in "slideshow" mode')),
 		'galleryMargin' => 		 array('format' => 'text',		'default' => '1em', 'css_units' => true,                                'title' => I18n::_('Empty space below gallery'),                     'description' => I18n::_('Distance between the gallery and the content below')),
 		'displayTags' =>  		 array('format' => 'select',	'values' => array('yes', 'no'), 'default' => 'yes',                     'title' => I18n::_('Display tags by each entry'),                    'description' => I18n::_('This determines whether people will see tags you set for each entry. Regardless of this settting, tags still will make up the main menu.'))
+	),
+	'css' => array(
+		'_' => array('title' => I18n::_('Custom CSS')),
+		'customCSS' =>	array('format' => 'longtext',	'allow_blank' => true,	'default' => '',	'html_entities'	=> true,	'title' => I18n::_('Custom CSS'), 'description' => I18n::_('description_custom_css'))
 	)
 );
 

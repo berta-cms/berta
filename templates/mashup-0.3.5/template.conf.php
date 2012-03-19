@@ -136,6 +136,11 @@ $templateConf = array(
 		'textDecorationVisited' =>array('format' => 'select',		'values' => array('none', 'underline', 'overline', 'line-through'),		'default' => 'none', 		'title' => 'Visited link decoration', 'description' => ''),
 		'textDecorationHover' => 	array('format' => 'select',		'values' => array('none', 'underline', 'overline', 'line-through'),		'default' => 'underline', 		'title' => 'Link decoration when hovered', 'description' => ''),
 		'textDecorationActive' => array('format' => 'select',		'values' => array('none', 'underline', 'overline', 'line-through'),		'default' => 'underline', 		'title' => 'Link decoration when clicked', 'description' => '')
+	),
+	
+	'css' => array(
+		'_' => array('title' => I18n::_('Custom CSS')),
+		'customCSS' =>	array('format' => 'longtext',	'allow_blank' => true,	'default' => '',	'html_entities'	=> true,	'title' => I18n::_('Custom CSS'), 'description' => I18n::_('description_custom_css'))
 	)
 );
 

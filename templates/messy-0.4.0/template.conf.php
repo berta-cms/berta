@@ -144,9 +144,12 @@ $templateConf = array(
 	),
 	
 	'grid' => array(
-		'_' => array('title' => I18n::_('Thumbnails')),
-		'contentWidth' => 		array('format' => 'text', 		'default' => '60%',			'title' => I18n::_('Thumbnail container width'),
-'description' => 'IMPORTANT! This must be set as percentage. i.e. 60% '),
+		'_' => array('title' => I18n::_('Thumbnails')),	'contentWidth' => array('format' => 'text',	'default' => '60%',	'title' => I18n::_('Thumbnail container width'),	'description' => 'IMPORTANT! This must be set as percentage. i.e. 60% ')
+	),
+
+	'css' => array(
+		'_' => array('title' => I18n::_('Custom CSS')),
+		'customCSS' =>	array('format' => 'longtext',	'allow_blank' => true,	'default' => '',	'html_entities'	=> true,	'title' => I18n::_('Custom CSS'), 'description' => I18n::_('description_custom_css'))
 	)
 );
 

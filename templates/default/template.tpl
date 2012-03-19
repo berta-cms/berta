@@ -19,6 +19,11 @@
 	{ /if }
 	{ $berta.scripts }
 	{ $berta.css }
+    {if $berta.settings.css.customCSS}
+        <style type="text/css">
+        {$berta.settings.css.customCSS|@html_entity_decode|replace:'<br />':"\n"}
+        </style>
+    {/if}
 	{ googleWebFontsAPI }	
 </head>
 
