@@ -127,7 +127,7 @@ class BertaGallery extends BertaBase {
 
         //print_R ($imgs);
 
-        $navStr = '<ul class="xGalleryNav" ' . ((count($imgs) == 1 || $galleryType == 'row' || $galleryType == 'link') ? 'style="display:none"' : '') . '>'; // <link/> / added || $galleryType == 'link'
+        $navStr = '<ul class="xGalleryNav" ' . ((count($imgs) == 1 || $galleryType == 'row' || $galleryType == 'link' || $galleryType == 'pile') ? 'style="display:none"' : '') . '>'; // <link/> / added || $galleryType == 'link'
         for($i = 0; $i < count($imgs); $i++) {
             $width = $height = $isPoster = 0;
             

@@ -33,6 +33,9 @@ br.clear { clear: both; }
 	margin-left: 0;
 	margin-right: auto;
 }
+	#pageEntries .xEntry .xGalleryType-pile .xGalleryItem {
+		position: absolute;
+	}
 
 .bertaCopyright { 
 	clear: left;
