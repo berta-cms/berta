@@ -217,9 +217,11 @@ a img { border: none; }
 		}
 		
 			#pageEntries .xEntry .xGalleryType-row .xGalleryItem {
-				position: absolute;
+				position: relative;
+				float: left;
+				padding-right: 1em;
 			}
-					
+			
 		#pageEntries .xEntry .xGalleryContainer ul.xGalleryNav {
 			display: block;
 			position: relative;

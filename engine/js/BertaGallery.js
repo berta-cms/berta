@@ -148,7 +148,7 @@ var BertaGallery = new Class({
 					}
 				}
 				
-				if(this.type == 'row') {
+				if(this.type == 'row' || this.type == 'pile') {
 					this.layout_update();
 					this.loadNext();
 				}
@@ -166,7 +166,7 @@ var BertaGallery = new Class({
 				this.load(aEl.get('href'), aEl.getClassStoredValue('xType'), aEl.getClassStoredValue('xW'), aEl.getClassStoredValue('xH'), aEl.getClassStoredValue('xVideoHref'), nextLi.getElement('.xGalleryImageCaption').get('html'), false, aEl.getClassStoredValue('xImgIndex'));
             } else {
 				//after everything is loaded - attach fullscreen for gallery row mode
-				if (this.fullscreen && this.type == 'row') {
+				if (this.fullscreen && (this.type == 'row' || this.type == 'pile')) {
                     this.attachRowFullscreen();
 				}
 			}
@@ -241,8 +241,60 @@ var BertaGallery = new Class({
 			
 			this.imageContainer.setStyle('width', (totalWidth + numImages /* for "em" discrepancy */) + 'px');
 			//this.imageContainer.setStyle('height', maxHeight + 'px');
+		} else if(this.type == 'pile') {
+			var margin = 0;
+			var totalHeight = 0, totalWidth = 0;
+			if(!this.layout_pileOnHoverBinded) this.layout_pileOnHoverBinded = this.layout_pileOnHover.bindWithEvent(this);
+			this.imageContainer.getChildren('.xGalleryItem').each(function(el) {
+				totalHeight = Math.max(totalHeight, margin + parseInt(el.getStyle('height')));
+				totalWidth = Math.max(totalWidth, margin + parseInt(el.getStyle('width')));
+				el.setStyles({
+					'left': margin + 'px',
+					'top': margin + 'px'
+				});
+				el.addEvent('mouseover', this.layout_pileOnHoverBinded);
+				
+				margin += 30;
+			}, this);
+			
+			this.imageContainer.setStyle('height', totalHeight + 'px');
+			this.imageContainer.setStyle('width', totalWidth + 'px');
+			this.layout_rowTotalHeight = totalHeight;
+			this.layout_rowTotalWidth = totalWidth;
 		}
 	},
+	
+	layout_pileOnHover: bertaGlobalOptions.environment == 'site' ? function(event) {
+		event.stop();
+		var target = $(event.target);
+		if(!target.hasClass('xGalleryItem')) target = target.getParent('.xGalleryItem');
+		if(target) {
+			var imElements = this.imageContainer.getChildren('.xGalleryItem');
+			var z = 1000, zPlus = 200, numElements = imElements.length;
+			this.imageContainer.getChildren('.xGalleryItem').each(function(el, idx) {
+				
+				// set correct z-index
+				zSignChange = false;
+				el.setStyle('z-index', z);
+				if(el == target) { zPlus = -199; zSignChange = true; }
+				z += zPlus;
+				
+				// move either to left-top or bottom-right corner
+				/*var margin;
+				if(zPlus > 0 || zSignChange) margin = idx * 30;
+				else margin = -(numElements - 1 - idx) * 30;
+				console.debug(
+					margin
+				);
+				el.setStyles({
+					left: (zPlus > 0 ? margin : this.layout_rowTotalWidth - parseInt(el.getStyle('width')) - margin) + 'px',
+					top: (zPlus > 0 ? margin : this.layout_rowTotalHeight - parseInt(el.getStyle('height')) - margin) + 'px'
+				});*/
+				
+			}, this);
+			
+		}
+	} : $empty,
 	
 /*
 	if(mType == 'image') this.layout_inject(bDeleteExisting, true);
@@ -365,13 +417,13 @@ var BertaGallery = new Class({
 				} : {});
 				
 				this.preload = new Element('div', { 'class': 'image' }).adopt(this.preload);
-				if(this.type == 'row') {
+				if(this.type == 'row' || this.type == 'pile') {
 					if(mWidth) this.preload.setStyle('width', mWidth + 'px');
 					if(mHeight) this.preload.setStyle('height', mHeight + 'px');
 				}
 				
 				this.preload = new Element('div', { 'class': 'xGalleryItem xGalleryItemType-image xImgIndex-'+this.xImgIndex }).adopt(this.preload);
-				if(this.type == 'row') {
+				if(this.type == 'row' || this.type == 'pile') {
 					if(mWidth) this.preload.setStyle('width', mWidth + 'px');
 					if(mHeight) this.preload.setStyle('height', mHeight + 'px');
 				}

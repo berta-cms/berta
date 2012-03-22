@@ -22,6 +22,26 @@ var SuperWhite = new Class({
 					});
 					this.imageContainer.setStyle('height', totalHeight + 'px');
 					this.imageContainer.setStyle('width', maxWidth + 'px');
+				} else if(this.type == 'pile') {
+					var margin = 0;
+					var totalHeight = 0, totalWidth = 0;
+					if(!this.layout_pileOnHoverBinded) this.layout_pileOnHoverBinded = this.layout_pileOnHover.bindWithEvent(this);
+					this.imageContainer.getChildren('.xGalleryItem').each(function(el) {
+						totalHeight = Math.max(totalHeight, margin + parseInt(el.getStyle('height')));
+						totalWidth = Math.max(totalWidth, margin + parseInt(el.getStyle('width')));
+						el.setStyles({
+							'left': margin + 'px',
+							'top': margin + 'px'
+						});
+						el.addEvent('mouseover', this.layout_pileOnHoverBinded);
+						
+						margin += 30;
+					}, this);
+					
+					this.imageContainer.setStyle('height', totalHeight + 'px');
+					this.imageContainer.setStyle('width', totalWidth + 'px');
+					this.layout_rowTotalHeight = totalHeight;
+					this.layout_rowTotalWidth = totalWidth;
 				}
 			}
 		});

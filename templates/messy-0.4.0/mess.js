@@ -22,64 +22,6 @@ var MessyMess = new Class({
 	initialize: function() {
 		window.addEvent('domready', this.onDOMReady.bind(this));
 		window.addEvent('load', this.onLoad.bind(this));
-		
-		BertaGallery.implement({
-			layout_update: function() {
-				if(this.type == 'row') {
-					var margin = 0;
-					var totalHeight = 0, totalWidth = 0;
-					if(!this.layout_rowOnHoverBinded) this.layout_rowOnHoverBinded = this.layout_rowOnHover.bindWithEvent(this);
-					this.imageContainer.getChildren('.xGalleryItem').each(function(el) {
-						totalHeight = Math.max(totalHeight, margin + parseInt(el.getStyle('height')));
-						totalWidth = Math.max(totalWidth, margin + parseInt(el.getStyle('width')));
-						el.setStyles({
-							'left': margin + 'px',
-							'top': margin + 'px'
-						});
-						el.addEvent('mouseover', this.layout_rowOnHoverBinded);
-						
-						margin += 30;
-					}, this);
-					
-					this.imageContainer.setStyle('height', totalHeight + 'px');
-					this.imageContainer.setStyle('width', totalWidth + 'px');
-					this.layout_rowTotalHeight = totalHeight;
-					this.layout_rowTotalWidth = totalWidth;
-				}
-			}, 
-			
-			layout_rowOnHover: bertaGlobalOptions.environment == 'site' ? function(event) {
-				event.stop();
-				var target = $(event.target);
-				if(!target.hasClass('xGalleryItem')) target = target.getParent('.xGalleryItem');
-				if(target) {
-					var imElements = this.imageContainer.getChildren('.xGalleryItem');
-					var z = 1000, zPlus = 200, numElements = imElements.length;
-					this.imageContainer.getChildren('.xGalleryItem').each(function(el, idx) {
-						
-						// set correct z-index
-						zSignChange = false;
-						el.setStyle('z-index', z);
-						if(el == target) { zPlus = -199; zSignChange = true; }
-						z += zPlus;
-						
-						// move either to left-top or bottom-right corner
-						/*var margin;
-						if(zPlus > 0 || zSignChange) margin = idx * 30;
-						else margin = -(numElements - 1 - idx) * 30;
-						console.debug(
-							margin
-						);
-						el.setStyles({
-							left: (zPlus > 0 ? margin : this.layout_rowTotalWidth - parseInt(el.getStyle('width')) - margin) + 'px',
-							top: (zPlus > 0 ? margin : this.layout_rowTotalHeight - parseInt(el.getStyle('height')) - margin) + 'px'
-						});*/
-						
-					}, this);
-					
-				}
-			} : $empty
-		});
 	},
 	
 	onDOMReady: function() {
