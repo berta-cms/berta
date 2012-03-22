@@ -144,7 +144,9 @@ $templateConf = array(
 	),
 	
 	'grid' => array(
-		'_' => array('title' => I18n::_('Thumbnails')),	'contentWidth' => array('format' => 'text',	'default' => '60%',	'title' => I18n::_('Thumbnail container width'),	'description' => 'IMPORTANT! This must be set as percentage. i.e. 60% ')
+		'_' => array('title' => I18n::_('Thumbnails')),
+        'whatAreThumbnails' => array('format' => '', 'default' => '', 'title' => I18n::_('Thumbnails can be turned on by setting the section type to \'Thumbnails enabled\' & adding more than 1 images to background gallery.<br/><br/>')),
+        'contentWidth' => array('format' => 'text',	'default' => '60%',	'title' => I18n::_('Thumbnail container width'),	'description' => 'IMPORTANT! This must be set as percentage. i.e. 60% '),
 	),
 
 	'css' => array(
