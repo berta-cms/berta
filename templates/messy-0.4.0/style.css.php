@@ -207,6 +207,8 @@ a img { border: none; }
 	}
 	#pageEntries .xEntry .xGalleryType-slideshow {}
 	#pageEntries .xEntry .xGalleryType-row {}
+    #pageEntries .xEntry .xGalleryType-pile {}
+    #pageEntries .xEntry .xGalleryType-column {}
 				
 		#pageEntries .xEntry .xGalleryContainer .xGallery { 
 			position: relative; 
@@ -215,11 +217,15 @@ a img { border: none; }
 		#pageEntries .xEntry .xGalleryType-slideshow .xGallery {
 			margin-bottom: <? echo $s->get('entryLayout', 'galleryNavMargin') ?>;
 		}
-		
+
+            #pageEntries .xEntry .xGalleryType-column .xGalleryItem {
+                padding-bottom: <? echo $s->get('entryLayout', 'spaceBetweenImages') ?>;
+            }
+
 			#pageEntries .xEntry .xGalleryType-row .xGalleryItem {
 				position: relative;
 				float: left;
-				padding-right: 1em;
+				padding-right: <? echo $s->get('entryLayout', 'spaceBetweenImages') ?>;
 			}
 			
 		#pageEntries .xEntry .xGalleryContainer ul.xGalleryNav {

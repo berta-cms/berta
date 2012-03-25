@@ -75,7 +75,8 @@ $templateConf = array(
 		'_' => array('title' => I18n::_('Entry layout')),
 		'contentWidth' => 		array('format' => 'text',	'default' => '400px',	'css_units' => true,                                'title' => I18n::_('Entry text max width'),                             'description' => ''),
 		'defaultGalleryType' =>  array('format' => 'select',		'values' => array('slideshow', 'row'), 'default' => 'slideshow',    'title' => I18n::_('Default gallery type'),                         'description' => I18n::_('Slideshow means that an image menu plus only one image is visible at a time. Row means that all images are visible.')),
-		'galleryNavMargin' => 	 array('format' => 'text',		'default' => '0', 'css_units' => true,					                'title' => I18n::_('Space between images and image navigation'), 	'description' => I18n::_('Vertical space between images and image navigation (the digits below the image) when gallery is in "slideshow" mode')),
+        'spaceBetweenImages' =>  array('format' => 'text',		'default' => '1em', 'css_units' => true,                                'title' => I18n::_('Space between images in row and column'),       'description' => I18n::_('Horizontal/vertical space between images when gallery is in "row"/"column" mode')),
+        'galleryNavMargin' => 	 array('format' => 'text',		'default' => '0', 'css_units' => true,					                'title' => I18n::_('Space between images and image navigation'), 	'description' => I18n::_('Vertical space between images and image navigation (the digits below the image) when gallery is in "slideshow" mode')),
 		'galleryMargin' => 		 array('format' => 'text',		'default' => '0', 'css_units' => true,				                    'title' => I18n::_('Empty space below gallery'), 	                'description' => I18n::_('Distance between the gallery and the content below')),
 		'displayTags' =>  		 array('format' => 'select',	'values' => array('yes', 'no'), 'default' => 'no', 	                    'title' => I18n::_('Display tags by each entry'),                   'description' => I18n::_('This determines whether people will see tags you set for each entry. Regardless of this settting, tags still will make up the main menu.'))
 	),
@@ -144,7 +145,9 @@ $templateConf = array(
 	),
 	
 	'grid' => array(
-		'_' => array('title' => I18n::_('Thumbnails')),	'contentWidth' => array('format' => 'text',	'default' => '60%',	'title' => I18n::_('Thumbnail container width'),	'description' => 'IMPORTANT! This must be set as percentage. i.e. 60% ')
+		'_' => array('title' => I18n::_('Thumbnails')),
+        'whatAreThumbnails' => array('format' => '', 'default' => '', 'title' => I18n::_('Thumbnails can be turned on by setting the section type to \'Thumbnails enabled\' & adding more than 1 images to background gallery.<br/><br/>')),
+        'contentWidth' => array('format' => 'text',	'default' => '60%',	'title' => I18n::_('Thumbnail container width'),	'description' => 'IMPORTANT! This must be set as percentage. i.e. 60% '),
 	),
 
 	'css' => array(
