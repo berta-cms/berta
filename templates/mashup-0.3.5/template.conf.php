@@ -62,9 +62,9 @@ $templateConf = array(
 	'entryLayout' => array(
 		'spaceBetween' => 		 array('format' => 'text',	'default' => '20px', 'css_units' => true,		'title' => 'Space between entries', 	'description' => 'Distance from entry to entry. In pixels.'),
 		'defaultGalleryType' =>  array('format' => 'select',		'values' => array('slideshow', 'row'), 'default' => 'slideshow', 					'title' => 'Default gallery type', 'description' => ''),
-		'spaceBetweenRowImages'=>array('format' => 'text',		'default' => '5px', 'css_units' => true,				'title' => 'Space between images in row', 'description' => 'Horizontal space bween images when gallery is in "row" mode'),
-		'galleryNavMargin' => 	 array('format' => 'text',		'default' => '5px', 'css_units' => true,					'title' => 'Space between images and image navigation', 	'description' => 'Vertical space between images and image navigation (the digits below the image) when gallery is in "slideshow" mode'),
-		'galleryMargin' => 		 array('format' => 'text',		'default' => '5px', 'css_units' => true,				'title' => 'Empty space below gallery', 	'description' => 'Distance between the gallery and the content below'),
+        'spaceBetweenImages' =>  array('format' => 'text',		'default' => '1em', 'css_units' => true,    'title' => I18n::_('Space between images in row and column'),       'description' => I18n::_('Horizontal/vertical space between images when gallery is in "row"/"column" mode')),
+		'galleryNavMargin' => 	 array('format' => 'text',		'default' => '5px', 'css_units' => true,	'title' => 'Space between images and image navigation', 	'description' => 'Vertical space between images and image navigation (the digits below the image) when gallery is in "slideshow" mode'),
+		'galleryMargin' => 		 array('format' => 'text',		'default' => '5px', 'css_units' => true,	'title' => 'Empty space below gallery', 	'description' => 'Distance between the gallery and the content below'),
 		'displayTags' =>  		 array('format' => 'select',	'values' => array('yes', 'no'), 'default' => 'no', 	'title' => 'Display tags by each entry', 'description' => 'This determines whether people will see tags you set for each entry. Regardless of this settting, tags still will make up the main menu.')
 	),
 	

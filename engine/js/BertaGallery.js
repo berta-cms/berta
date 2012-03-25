@@ -148,7 +148,7 @@ var BertaGallery = new Class({
 					}
 				}
 				
-				if(this.type == 'row' || this.type == 'pile') {
+				if(this.type == 'row' || this.type == 'pile' || this.type == 'column') {
 					this.layout_update();
 					this.loadNext();
 				}
@@ -166,7 +166,7 @@ var BertaGallery = new Class({
 				this.load(aEl.get('href'), aEl.getClassStoredValue('xType'), aEl.getClassStoredValue('xW'), aEl.getClassStoredValue('xH'), aEl.getClassStoredValue('xVideoHref'), nextLi.getElement('.xGalleryImageCaption').get('html'), false, aEl.getClassStoredValue('xImgIndex'));
             } else {
 				//after everything is loaded - attach fullscreen for gallery row mode
-				if (this.fullscreen && (this.type == 'row' || this.type == 'pile')) {
+				if (this.fullscreen && (this.type == 'row' || this.type == 'pile' || this.type == 'column')) {
                     this.attachRowFullscreen();
 				}
 			}
@@ -261,7 +261,18 @@ var BertaGallery = new Class({
 			this.imageContainer.setStyle('width', totalWidth + 'px');
 			this.layout_rowTotalHeight = totalHeight;
 			this.layout_rowTotalWidth = totalWidth;
-		}
+		} else if(this.type == 'column') {
+            //this.imageContainer.getChildren('.xGalleryItem').setStyle('height', 'auto');
+            //this.imageContainer.setStyle('height', 'auto');
+            var totalHeight = 0, maxWidth = 0, itmSize;
+            this.imageContainer.getChildren('.xGalleryItem').each(function(item) {
+                itmSize = item.getSize();
+                totalHeight += itmSize.y;
+                if(itmSize.x > maxWidth) maxWidth = itmSize.x;
+            });
+            this.imageContainer.setStyle('height', totalHeight + 'px');
+            this.imageContainer.setStyle('width', maxWidth + 'px');
+        }
 	},
 	
 	layout_pileOnHover: bertaGlobalOptions.environment == 'site' ? function(event) {
@@ -417,13 +428,13 @@ var BertaGallery = new Class({
 				} : {});
 				
 				this.preload = new Element('div', { 'class': 'image' }).adopt(this.preload);
-				if(this.type == 'row' || this.type == 'pile') {
+				if(this.type == 'row' || this.type == 'pile' || this.type == 'column') {
 					if(mWidth) this.preload.setStyle('width', mWidth + 'px');
 					if(mHeight) this.preload.setStyle('height', mHeight + 'px');
 				}
 				
 				this.preload = new Element('div', { 'class': 'xGalleryItem xGalleryItemType-image xImgIndex-'+this.xImgIndex }).adopt(this.preload);
-				if(this.type == 'row' || this.type == 'pile') {
+				if(this.type == 'row' || this.type == 'pile' || this.type == 'column') {
 					if(mWidth) this.preload.setStyle('width', mWidth + 'px');
 					if(mHeight) this.preload.setStyle('height', mHeight + 'px');
 				}
