@@ -34,11 +34,11 @@ return array(
 							Then press Enter or click anywhere outside the field to save.
 							This way it will be throughout your site — all that has a yellow background is editable. You will also be able to change these settings later.',
 	'What is the title of your site?' => 'Kāds ir tavas lapas virsraksts?',
-	'Site title will be visible in all sections of your site.' => '',
-	'What is your name?' => 'Kā tevi sauc?',
-	'Your name will be put in the copyright notice in the footer of yout site. You can leave it blank.' => '',
+	'Site title will be visible in all sections of your site.' => 'Lapas virsraksts būs redzams visās sadaļās',
+	'What is your name?' => 'Ievadi savu vārdu',
+	'Your name will be put in the copyright notice in the footer of yout site. You can leave it blank.' => 'Vārds tiks pievienots pie (c) simbola lapas apakšā. Lauku var atstāt arī tukšu.',
 	'How would you — in one sentence — describe your site?' => 'Kā tu aprakstītu savu lapu vienā teikumā?',
-	'This will appear under your site name as an excerpt in search engine results.' => 'Meklētāj programmās tas parādīsies zem tavs lapas nosaukuma kā apraksts.',
+	'This will appear under your site name as an excerpt in search engine results.' => 'Meklētāj-programmās tas parādīsies zem tavas lapas nosaukuma kā apraksts.',
 	'Note: the fields that already have value appear yellow only when you roll over them with your mouse. Click on the text below to edit.' => 'Piezīme: aizpildītie lauki kļūst dzelteni tiem uzbraucot ar peles kursoru. Klikšķini uz teksta zemāk, lai labotu.',
 	'Done!' => 'Darīts!',
 
@@ -95,7 +95,7 @@ return array(
 	/* setting name */ 'Page title (title bar)' => 'Lapas virsraksts',
 	/* help text */    'Text that appears in the bowser title bar' => 'Teksts, kas redzams pārlūka loga augšpusē',
 	/* setting name */ '<META> description' => '&lt;META&gt; apraksts',
-	/* help text */    'Site description is visible only to search engines. It should not be longer than one or two sentences.' => 'Lapas apraksts redzams tikai meklēšanas dzinējiem, piemēram, Google. Tam nevajadzētu pārsniegt 2 teikumus.',
+	/* help text */    'Site description. It should not be longer than one or two sentences.' => 'Lapas apraksts. Tam nevajadzētu pārsniegt 2 teikumus.',
 	/* setting name */ '<META> keywords' => '&lt;META&gt; atslēgvārdi',
 	/* help text */    'Keywords visible only to search engines. Keywords along with the description can improve your site ranking in search results.' => 'Atslēgvārdi ir redzami tikai meklētājiem, tādiem kā Google. Tie var uzlabot tavas lapas pozīciju meklēšanas rezultātos. Vēlams, lai tie ir atbilstoši lapas saturam.',
 
@@ -148,7 +148,7 @@ return array(
 
 	/* setting tab */ 'Other settings' => 'Dažādi',
 	/* setting name */ 'Google Analytics ID' => 'Google Analytics ID',
-	/* help text */    'The ID of the Google Analytics site profile. To obtain an ID, register in <a href="http://google.com/analytics" target="_blank">Google Analytics</a> and create a profile for your site.' => 'Google Analytics numurs. Dodies uz <a href="http://google.com/analytics" target="_blank">Google Analytics</a>, lai izveidotu savu profilu un iegūtu savu ID',
+	/* help text */    'The ID of the Google Analytics site profile (example: <em>UA-1234567-12</em>). To obtain an ID, register in <a href="http://google.com/analytics" target="_blank">Google Analytics</a> and create a profile for your site.' => 'Google Analytics numurs. Dodies uz <a href="http://google.com/analytics" target="_blank">Google Analytics</a>, lai izveidotu savu profilu un iegūtu savu ID (piemēram: <em>UA-1234567-12</em>)',
 	/* setting name */ 'Advanced file uploading enabled' => 'Uzlabotā failu augšup-lādēšana',
 	/* help text */    'Set if the advanced uploading features (selecting multiple files at once, asynchronous uploading) are enabled. You should not disable them UNLESS you are experiencing problems with file uploads.' => 'Nodrošina iespēju augšuplēdēt vairākus failus vienlaicīgi. Izvēlies "No" tikai tad, ja ir problēmas ar attēlu augšuplādi.',
 
@@ -229,7 +229,7 @@ return array(
 	/* setting name */ 'Date format in entries' => 'Datuma formāts ierakstiem',
 	/* setting name */ 'Date separator' => 'Datuma atdalītājs',
 	/* help text */    'Separator symbol that divides year, month and day' => 'Simbols, kas atdala gadu, mēnesi un dienu',
-	/* setting name */ 'Time separator' => 'Laika ciparu atdalītājsimbols',
+	/* setting name */ 'Time separator' => 'Laika ciparu atdalītāj-simbols',
 
 	/* setting tab */  'Entry heading'=> 'Iearaksta virsraksts',
 	/* help text */    'How far the entry heading is form other elements in page. Please see the short CSS guide at the bottom of this page.' => 'Cik tālu ieraksta virsraksts atrodas no pārējiem lapas elementiem. Skatiet CSS skaidrojumu lapas apakšā.',
