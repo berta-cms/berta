@@ -78,7 +78,7 @@ $settingsDefinition = array(
         'galleryFullScreenCaptionAlign' => array('format' => 'select',	'default' => 'left', 'values' => array('left', 'right', 'center'),	    'title' => I18n::_('Caption alignment'),    'description' => I18n::_('Positioning of the image caption text.')),
 
 	    'space' => array('format' => false, 'default' => false,                 'title' => '&nbsp;'),
-	    'group_gallery' => array('format' => false, 'default' => false,         'title' => I18n::_('Image gallery appierance:')),
+	    'group_gallery' => array('format' => false, 'default' => false,         'title' => I18n::_('Image gallery appearance:')),
         'gallerySlideshowAutoRewind' => array('format' => 'select',	'default' => 'no', 'values' => array('yes', 'no'),	                                                    'title' => I18n::_('Auto-rewind gallery slideshow'),    'description' => I18n::_('Display the first image after clicking on the last image in galleries that are in slideshow mode.')),
 		'galleryVideoPlayer' => 	array('format' => 'select',	'default' => 'JWPlayer',  'values' => array('JWPlayer', /*'JWPlayer_Overlay',*/ 'NonverBlaster'),			'title' => I18n::_('Video player'),                     'description' => I18n::_('Choose between the two visually different players for your video files.'))
         //'galleryFullScreenImgOpacity' => array('format' => 'text',	'default' => '70%', 'css_units' => false, 'title' => 'Gallery image transparency', 'description' => 'Transparency of image, works only if gallery fullscreen is enabled. 100% means no transparency.')

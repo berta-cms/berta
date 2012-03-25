@@ -252,15 +252,24 @@ h1 {
 			ol#pageEntries li.xEntry .xGalleryType-row {
 				
 			}
+            ol#pageEntries li.xEntry .xGalleryType-pile {
+
+            }
+            ol#pageEntries li.xEntry .xGalleryType-column {
+
+            }
 				
 				ol#pageEntries li.xEntry .xGalleryContainer .xGallery { 
 					position: relative; 
 					margin: <? echo $s->get('entryLayout', 'galleryMargin') ?>;
 				}
 					ol#pageEntries li.xEntry .xGalleryContainer .xGallery div.xGalleryItem { display: block; }
+                    ol#pageEntries li.xEntry .xGalleryType-column div.xGalleryItem {
+                        padding-bottom: <? echo $s->get('entryLayout', 'spaceBetweenImages') ?>;
+                    }
 					ol#pageEntries li.xEntry .xGalleryType-row div.xGalleryItem {
 						float: left;
-						padding-right: <? echo $s->get('entryLayout', 'spaceBetweenRowImages') ?>;
+						padding-right: <? echo $s->get('entryLayout', 'spaceBetweenImages') ?>;
 						padding-bottom: 5px;
 					}
 					ol#pageEntries li.xEntry .xGalleryType-slideshow .xGalleryImageCaption { display: none; }

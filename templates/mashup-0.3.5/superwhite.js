@@ -8,43 +8,6 @@ var SuperWhite = new Class({
 	
 	initialize: function() {
 		window.addEvent('domready', this.onDOMReady.bind(this));
-		
-		BertaGallery.implement({
-			layout_update: function() {
-				if(this.type == 'row') {
-					//this.imageContainer.getChildren('.xGalleryItem').setStyle('height', 'auto');
-					//this.imageContainer.setStyle('height', 'auto');
-					var totalHeight = 0, maxWidth = 0, itmSize;
-					this.imageContainer.getChildren('.xGalleryItem').each(function(item) {
-						itmSize = item.getSize();
-						totalHeight += itmSize.y;
-						if(itmSize.x > maxWidth) maxWidth = itmSize.x;
-					});
-					this.imageContainer.setStyle('height', totalHeight + 'px');
-					this.imageContainer.setStyle('width', maxWidth + 'px');
-				} else if(this.type == 'pile') {
-					var margin = 0;
-					var totalHeight = 0, totalWidth = 0;
-					if(!this.layout_pileOnHoverBinded) this.layout_pileOnHoverBinded = this.layout_pileOnHover.bindWithEvent(this);
-					this.imageContainer.getChildren('.xGalleryItem').each(function(el) {
-						totalHeight = Math.max(totalHeight, margin + parseInt(el.getStyle('height')));
-						totalWidth = Math.max(totalWidth, margin + parseInt(el.getStyle('width')));
-						el.setStyles({
-							'left': margin + 'px',
-							'top': margin + 'px'
-						});
-						el.addEvent('mouseover', this.layout_pileOnHoverBinded);
-						
-						margin += 30;
-					}, this);
-					
-					this.imageContainer.setStyle('height', totalHeight + 'px');
-					this.imageContainer.setStyle('width', totalWidth + 'px');
-					this.layout_rowTotalHeight = totalHeight;
-					this.layout_rowTotalWidth = totalWidth;
-				}
-			}
-		});
 	},
 	
 	onDOMReady: function() {

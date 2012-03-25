@@ -336,6 +336,12 @@ a img { border: none; }
 				ol#pageEntries li.xEntry .xGalleryType-row {
 				
 				}
+                ol#pageEntries li.xEntry .xGalleryType-pile {
+
+                }
+                ol#pageEntries li.xEntry .xGalleryType-column {
+
+                }
 				
 					ol#pageEntries li.xEntry .xGalleryContainer .xGallery { 
 						position: relative; 
@@ -345,9 +351,14 @@ a img { border: none; }
 					}
 					
 						.xGalleryContainer .xGallery div.xGalleryItem { display: block; }
-						.xGalleryType-row div.xGalleryItem {
-							padding-bottom: <? echo $s->get('entryLayout', 'spaceBetweenRowImages') ?>;
+						.xGalleryType-column div.xGalleryItem {
+							padding-bottom: <? echo $s->get('entryLayout', 'spaceBetweenImages') ?>;
 						}
+                        .xGalleryType-row .xGalleryItem {
+                            position: relative;
+                            float: left;
+                            padding-right: <? echo $s->get('entryLayout', 'spaceBetweenImages') ?>;
+                        }
 						.xGalleryImageCaption { position: relative; }
 						.xGalleryType-slideshow .xGalleryImageCaption { display: none; }
 		

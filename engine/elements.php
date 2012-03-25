@@ -84,7 +84,7 @@ if($jsonRequest) {
 
 						echo '<div class="xEntryGallerySettings xGreyBack xHidden">';
 							echo '<div class="caption">gallery type</div>',
-								 '<div class="xEntrySetGalType xEditableSelectRC xCommand-SET_GALLERY_TYPE" x_options="slideshow||row||pile||link">' . $galType . '</div><br class="clear" />';
+								 '<div class="xEntrySetGalType xEditableSelectRC xCommand-SET_GALLERY_TYPE" x_options="slideshow||row||column||pile||link">' . $galType . '</div><br class="clear" />';
 							echo '<div class="xEntrySlideshowSettings' . ($galType == 'slideshow' ? '' : ' xHidden') . '">',
 									'<div class="caption">autoplay seconds</div>',
 								 	'<div class="xEntryAutoPlay xEditableRC xCommand-SET_AUTOPLAY xCaption-0" title="' . $autoPlay . '">' . $autoPlay . '</div>',
