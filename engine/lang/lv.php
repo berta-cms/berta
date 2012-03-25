@@ -283,6 +283,13 @@ return array(
     /* setting name */ 'Decoration when opened' => 'Atvērtā elementa rotājums',
 
 
+    // Translations for White template
+
+    /* setting name */ 'Empty space on top' => 'Tukša vieta izvēlnes augšpusē',
+    /* setting name */ 'Empty space on bottom' => 'Tukša vieta izvēlnes apakšpusē',
+    /* setting name */ 'How far content is from menu?' => 'Cik tālu lapas saturs atrodas no galvenās izvēlnes?',
+    /* setting name */ 'Width of the left column' => 'Kreisās kolonnas platums',
+
 
     // Translations for Messy template
 
