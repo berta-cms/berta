@@ -336,9 +336,10 @@ class BertaTemplate extends BertaBase {
 				'create new entry here' => I18n::_('create new entry here'),
 				'create new entry' => I18n::_('create new entry'),
 			),
+			'lastUpdated' => substr($this->settings->base->settings['berta']['lastUpdated'],0,-4),
 			//'settings' => $vars['berta']['settings']
 		);
-		
+/* 		echo '<pre>'; print_r($this->settings->base->settings['berta']['lastUpdated']); echo '</pre>'; */
 		foreach($tipTexts as $key=>$value) {
 			$jsSettings['i18n'][$key] = $value;
 		}
