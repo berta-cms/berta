@@ -22,7 +22,7 @@ return array(
 							Puis, appuyez sur Entrée ou cliquez ailleurs pour enregistrer.
 							Chaque élément de votre site ayant un fond jaune est donc modifiable. Vous serez en mesure de changer ces paramètres plus tard.',
 
-	'googleFont_description' => 'Tapez le nom d\'une fonte Google font. Pour voir les fontes disponibles, rendez-vous sur <a href="http://www.google.com/webfonts" target="_blank">Google web fonts</a>. Attention  – les fontes Google font prennent le dessus sur les fontes système. Laissez le champ vide pour utiliser une fonte système. Exemple : <em>Marvel</em> ou <em>Marvel:700italic</em>',
+	'googleFont_description' => 'Tapez le nom d\'une fonte Google font. Pour voir les fontes disponibles, rendez-vous sur <a href="http://www.google.com/webfonts" target="_blank">Google web fonts</a>. Attention  – les fontes Google font prennent le dessus sur les fontes système. Laissez le champ vide pour utiliser une fonte système. Exemple : <em>Marvel</em>, <em>Marvel:700italic</em> ou <em>Josefin Slab:700italic</em>',
 	'description_tagsMenu_x' => 'Position X du sous-menu en pixels (ex. 10px)',
 	'description_tagsMenu_y' => 'Position Y du sous-menu en pixels (ex. 10px)',
 	'description_menu_position' => 'Position du menu',
