@@ -674,6 +674,13 @@ var BertaEditorBase = new Class({
 			el.removeClass('xEditing');
 			el.addClass('xSaving');
 			
+			if(el.hasClass(this.options.xBertaEditorClassSimple.substr(1))) {
+				if(/(\spx|\spt|\sem)$/i.test(newContent)) {
+					newContent = newContent.replace(/(\spx|\spt|\sem)$/i, newContent.substr(-2));
+					newContentText = newContent;
+				}
+			}
+			
 			// Get action for Gallery type, Autoplay, Full screen & Image size
 			var action = el.getClassStoredValue('xCommand');
 			if(action) {
