@@ -309,16 +309,12 @@ return array(
 	/* setting name */ 'Decoration when hovered' => 'Izgaismotā elementa rotājums',
 	/* setting name */ 'Decoration when selected' => 'Aktīvā elementa rotājums',
 
-<<<<<<< HEAD
     /* setting name */ 'Thumbnails' => 'Sīktēli',
     /* setting name */ 'Thumbnails can be turned on by setting the section type to "Thumbnails enabled" & adding more than 1 images to background gallery.' => 'Sīktēli var tikt ieslēgti iestatot sadaļas tipu kā "Thumbnails enabled" un pievienojot vairāk kā vienu bildi fona galerijai.',
     /* setting name */ 'Thumbnail container width' => 'Sīktēlu konteinera platums',
     /* help text */    'IMPORTANT! This must be set as percentage. i.e. 60%' => 'UZMANĪBU! Šim parametram jābūt ievadītam kā procentiem. Piemēram, 60%',
 
-	'googleFont_description' => 'Ieraksti google fonta nosaukumu. Apskati kādi fonti ir piejami: <a href="http://www.google.com/webfonts" target="_blank">Google web fonti</a> Ja izvēlēts google fonts, tad sistēmas fonti netiks ņemti vērā. Piemērs: <em>Marvel</em> vai <em>Marvel:700italic</em>',
-=======
 	'googleFont_description' => 'Ieraksti google fonta nosaukumu. Apskati kādi fonti ir piejami: <a href="http://www.google.com/webfonts" target="_blank">Google web fonti</a> Ja izvēlēts google fonts, tad sistēmas fonti netiks ņemti vērā. Piemērs: <em>Marvel</em>, <em>Marvel:700italic</em> vai <em>Josefin Slab:700italic</em>',
->>>>>>> upstream/master
 	'Menu position' => 'Izvēlnes pozīcija',
 	'Positon X' => 'X pozīcija',
 	'Positon Y' => 'Y pozīcija',
