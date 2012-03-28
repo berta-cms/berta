@@ -94,6 +94,8 @@ class BertaEditor extends BertaContent {
 		if(empty($blog['@attributes'])) $blog['@attributes'] = array();
 		if(empty($blog['@attributes']['section'])) $blog['@attributes']['section'] = $sName;
 		
+		$blog['@attributes']['last_upd_ver'] = self::$options['int_version'];
+		
 		$blogCopy = array_copy($blog);
 		Array_XML::addCDATA($blogCopy);
 		

@@ -29,10 +29,7 @@
     {literal}<script type="text/javascript">
     
     	/* Backup for versions pre 0.8.2, if not updated */
-		var lastUpdDate = new Date(bertaGlobalOptions['lastUpdated']);
-		var updDate = lastUpdDate.getDate(); var updMonth = lastUpdDate.getMonth()+1; var updYear = lastUpdDate.getFullYear();
-		var updHours = lastUpdDate.getHours();  var updMinutes = lastUpdDate.getMinutes();
-		if(updMinutes < 14 && updHours <= 21 && updDate <= 26 && updMonth <= 3 && updYear <= 2012) {
+		if(parseInt(bertaGlobalOptions['lastUpdVer']) < 1082) {
 			BertaGallery.implement({
 				layout_update: function() {
 					if(this.type == 'pile') {
