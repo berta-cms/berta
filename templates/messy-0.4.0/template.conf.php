@@ -45,7 +45,7 @@ $templateConf = array(
 	
 	'background' => array(
 		'_' => array('title' => I18n::_('Background')),
-		'backgroundColor' =>		array('format' => 'color',		'default' => '#FFFFFF',									                                                                                                                                    'title' => I18n::_('Background color'),                      'description' => I18n::_('IMPORTANT! These settings will be overwritten, if you are using background gallery feature. You access it by clicking \'edit background gallery\' button in each section.')),
+		'backgroundColor' =>		array('format' => 'color',		'default' => '#FFFFFF',									                                                                                                                                    'title' => I18n::_('Background color'),                      'description' => I18n::_('IMPORTANT! These settings will be overwritten, if you are using background gallery feature. You access it by clicking "edit background gallery" button in each section.')),
 		'backgroundImageEnabled'=>  array('format' => 'select',		'values' => array('yes', 'no'), 'default' => 'no', 				                                                                                                                            'title' => I18n::_('Is background image enabled?'),          'description' => ''),
 		'backgroundImage' => 		array('format' => 'image',		'default' => '', 'min_width' => 1, 'min_height' => 1, 'max_width' => 3000, 'max_height' => 3000, 	 	                                                                                    'title' => I18n::_('Background image'),                      'description' => I18n::_('Picture to use for page background.')),
 		'backgroundRepeat' => 		array('format' => 'select',		'values' => array('repeat'=>'tile vertically and horizontally', 'repeat-x' => 'tile horizontally', 'repeat-y' => 'tile vertically', 'no-repeat'=>'no tiling'), 'default' => 'repeat', 		'title' => I18n::_('Background tiling'),                     'description' => I18n::_('How the background fills the screen?')),
@@ -146,7 +146,7 @@ $templateConf = array(
 	
 	'grid' => array(
 		'_' => array('title' => I18n::_('Thumbnails')),
-        'whatAreThumbnails' => array('format' => '', 'default' => '', 'title' => I18n::_('Thumbnails can be turned on by setting the section type to \'Thumbnails enabled\' & adding more than 1 images to background gallery.<br/><br/>')),
+        'whatAreThumbnails' => array('format' => '', 'default' => '', 'title' => I18n::_('Thumbnails can be turned on by setting the section type to "Thumbnails enabled" & adding more than 1 images to background gallery.') . '<br/><br/>'),
         'contentWidth' => array('format' => 'text',	'default' => '60%',	'title' => I18n::_('Thumbnail container width'),	'description' => 'IMPORTANT! This must be set as percentage. i.e. 60% '),
 	),
 
