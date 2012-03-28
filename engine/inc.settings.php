@@ -43,7 +43,7 @@ $settingsDefinition = array(
 		'_' =>                      array('title' => I18n::_('Texts')),
 		'ownerName' => 				array('format' => 'text',	'allow_blank' => true,	'default' => null, 				'title' => I18n::_('Your name'), 'description' => I18n::_('Your name will be put in a meta-tag in the code of your site. You can choose any name ;)')),
 		'pageTitle' => 				array('format' => 'text',	'allow_blank' => true,	'default' => 'berta', 			'title' => I18n::_('Page title (title bar)'), 'description' => I18n::_('Text that appears in the bowser title bar')),
-		'metaDescription' => 		array('format' => 'text',	'allow_blank' => true,	'default' => 'Personal portfolio built with Berta', 			'title' => I18n::_('<META> description'), 'description' => I18n::_('Site description is visible only to search engines. It should not be longer than one or two sentences.')),
+		'metaDescription' => 		array('format' => 'text',	'allow_blank' => true,	'default' => 'Personal portfolio built with Berta', 			'title' => I18n::_('<META> description'), 'description' => I18n::_('Short site description. It should not be longer than one or two sentences.')),
 		'metaKeywords' => 			array('format' => 'text',	'allow_blank' => true,	'default' => 'berta', 			'title' => I18n::_('<META> keywords'), 'description' => I18n::_('Keywords visible only to search engines. Keywords along with the description can improve your site ranking in search results.'))
 	),
 	
