@@ -24,10 +24,8 @@ var MessyMess = new Class({
 		window.addEvent('load', this.onLoad.bind(this));
 		
 		/* Backup for versions pre 0.8.2, if not updated */
-		console.log(parseInt(bertaGlobalOptions['lastUpdVer']));
 		if(parseInt(bertaGlobalOptions['lastUpdVer']) < 1082) {
 			BertaGallery.implement({
-			
 				layout_update: function() {
 					if(this.type == 'pile' || this.type == 'row') {
 						var margin = 0;
@@ -61,7 +59,6 @@ var MessyMess = new Class({
 			            this.imageContainer.setStyle('width', maxWidth + 'px');
 			        }
 				}
-	
 			});
 		}
 	},
