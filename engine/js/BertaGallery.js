@@ -259,6 +259,7 @@ var BertaGallery = new Class({
 			
 			this.imageContainer.setStyle('height', totalHeight + 'px');
 			this.imageContainer.setStyle('width', totalWidth + 'px');
+			this.imageContainer.getElements('.xGalleryItem').setStyle('position', 'absolute');
 			this.layout_rowTotalHeight = totalHeight;
 			this.layout_rowTotalWidth = totalWidth;
 		} else if(this.type == 'column') {
@@ -272,6 +273,7 @@ var BertaGallery = new Class({
             });
             this.imageContainer.setStyle('height', totalHeight + 'px');
             this.imageContainer.setStyle('width', maxWidth + 'px');
+			this.imageContainer.getElements('.xGalleryItem').setStyle('position', 'relative');
         }
 	},
 	
