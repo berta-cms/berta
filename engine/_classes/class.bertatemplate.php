@@ -306,7 +306,7 @@ class BertaTemplate extends BertaBase {
 		
 		// gets berta's version at the time the section was last updated
 		$blog = BertaContent::loadBlog($this->sectionName);
-		if(array_key_exists('@attributes',$blog)) $lastUpdVer = $blog['@attributes']['last_upd_ver'];
+		if(!empty($blog['@attributes']['last_upd_ver'])) $lastUpdVer = $blog['@attributes']['last_upd_ver'];
 		else $lastUpdVer = 0;
 		
 		// berta scripts ...
