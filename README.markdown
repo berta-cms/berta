@@ -10,7 +10,7 @@ Changelog
 ----------
 **v0.8.2b (release date 29 Mar 2012)**
  * add custom CSS from admin panel
- * row, column, pule, slideshow gallery support in all templates
+ * row, column, pile, slideshow gallery support in all templates
  * validation for px, em values
  * added license.txt
  * other minor improvements 
