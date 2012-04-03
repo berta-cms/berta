@@ -25,50 +25,7 @@
         {$berta.settings.css.customCSS|@html_entity_decode|replace:'<br />':"\n"}
         </style>
     {/if}
-    
-    {literal}<script type="text/javascript">
-    
-    	/* Backup for versions pre 0.8.2, if not updated */
-		if(parseInt(bertaGlobalOptions['lastUpdVer']) < 1082) {
-			BertaGallery.implement({
-				layout_update: function() {
-					if(this.type == 'pile') {
-						var margin = 0;
-						var totalHeight = 0, totalWidth = 0;
-						if(!this.layout_pileOnHoverBinded) this.layout_pileOnHoverBinded = this.layout_pileOnHover.bindWithEvent(this);
-						this.imageContainer.getChildren('.xGalleryItem').each(function(el) {
-							totalHeight = Math.max(totalHeight, margin + parseInt(el.getStyle('height')));
-							totalWidth = Math.max(totalWidth, margin + parseInt(el.getStyle('width')));
-							el.setStyles({
-								'left': margin + 'px',
-								'top': margin + 'px'
-							});
-							el.addEvent('mouseover', this.layout_pileOnHoverBinded);
-							
-							margin += 30;
-						}, this);
-						
-						this.imageContainer.setStyle('height', totalHeight + 'px');
-						this.imageContainer.setStyle('width', totalWidth + 'px');
-						this.layout_rowTotalHeight = totalHeight;
-						this.layout_rowTotalWidth = totalWidth;
-					} else if(this.type == 'column' || this.type == 'row') {
-			            var totalHeight = 0, maxWidth = 0, itmSize;
-			            this.imageContainer.getChildren('.xGalleryItem').each(function(item) {
-			                itmSize = item.getSize();
-			                totalHeight += itmSize.y;
-			                if(itmSize.x > maxWidth) maxWidth = itmSize.x;
-			            });
-			            this.imageContainer.setStyle('height', totalHeight + 'px');
-			            this.imageContainer.setStyle('width', maxWidth + 'px');
-			            this.imageContainer.getElements('.xGalleryItem').setStyles({'padding-bottom': '1em', 'padding-right': '0', 'float': 'none'});
-			        }
-				}
-			});
-		}
 
-    </script>{/literal}
-    
 	{ googleWebFontsAPI }
 </head>
 
