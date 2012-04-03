@@ -9,7 +9,7 @@ if(is_array($sections)) {
 			
 			// ------- ...
 			// updates ...
-			
+
 			if(empty($blog['@attributes']['version']) && $blog['@attributes']['version'] != $options['version']) {
 				
 				$ver = array(0, 5, 0);
@@ -44,11 +44,11 @@ if(is_array($sections)) {
 					}
 					
 				}
-				
+
 				// set version
 				$blog['@attributes']['version'] = $options['version'];
 			}
-			
+            
 			// update some old settings ...
 
 			$g = $berta->settings->get('settings', 'google-analytics-id');
