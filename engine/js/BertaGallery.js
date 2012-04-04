@@ -240,6 +240,7 @@ var BertaGallery = new Class({
 			});
 			
 			this.imageContainer.setStyle('width', (totalWidth + numImages /* for "em" discrepancy */) + 'px');
+			this.imageContainer.getElements('.xGalleryItem').setStyle('position', 'relative');
 			//this.imageContainer.setStyle('height', maxHeight + 'px');
 		} else if(this.type == 'pile') {
 			var margin = 0;

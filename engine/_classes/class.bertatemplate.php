@@ -304,11 +304,6 @@ class BertaTemplate extends BertaBase {
 		$texts = $this->settings->base->getAll('siteTexts');
 		foreach($texts as $tVar => $t) if(!isset($vars[$tVar])) $vars[$tVar] = $t;
 		
-		// gets berta's version at the time the section was last updated
-		$blog = BertaContent::loadBlog($this->sectionName);
-		if(!empty($blog['@attributes']['last_upd_ver'])) $lastUpdVer = $blog['@attributes']['last_upd_ver'];
-		else $lastUpdVer = 0;
-		
 		// berta scripts ...
 		global $ENGINE_ROOT;		
 		include($ENGINE_ROOT . 'inc.tips.php');
@@ -340,7 +335,6 @@ class BertaTemplate extends BertaBase {
 				'create new entry here' => I18n::_('create new entry here'),
 				'create new entry' => I18n::_('create new entry'),
 			),
-			'lastUpdVer' => $lastUpdVer,
 			//'settings' => $vars['berta']['settings']
 		);
 		
