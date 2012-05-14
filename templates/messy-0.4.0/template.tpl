@@ -156,7 +156,7 @@
                 <img src="{ $berta.options.MEDIA_ABS_ROOT }{ $berta.settings.background.backgroundImage }" />
             </div>
         {/if}
-        
+
         {* check for shop *}
         { if $berta.shop_enabled == true }
         	{ assign var="shoppingCartSection" value="" }
