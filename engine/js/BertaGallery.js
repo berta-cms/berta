@@ -180,7 +180,7 @@ var BertaGallery = new Class({
             item.addEvent('click', function() {
                 var ImgIndex = this.getClassStoredValue('xImgIndex');
                 var GalleryId = this.getParent('.xEntry').getClassStoredValue('xEntryId');
-                
+
                 milkbox.showGallery(
                     {
                     gallery:'gallery-'+GalleryId,
@@ -194,7 +194,7 @@ var BertaGallery = new Class({
 	loadFullscreen: function() {
         var ImgIndex=this.preload.getClassStoredValue('xImgIndex');
         var GalleryId=this.container.getParent().getClassStoredValue('xEntryId');
-        
+
         milkbox.showGallery({
             gallery:'gallery-'+GalleryId,
             index:ImgIndex-1
