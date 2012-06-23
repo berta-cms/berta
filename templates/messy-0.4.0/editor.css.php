@@ -119,8 +119,24 @@ if(!1) { ?><style type="text/css"><? } ?>
 	.mess:hover>.xHandle {
 		visibility: visible;
 	}
-	
-	
+
+    .subMenu a {
+        float: left;
+    }
+    .subMenu .xtHandle {
+        float: left;
+        margin-left: 10px;
+        width: 30px;
+    }
+        .subMenu .xtHandle .handle {
+            display: block;
+            width: 18px;
+            height: 18px;
+            background: url('layout/grab.gif') no-repeat;
+            cursor: move;
+        }
+            .subMenu ul.xSaving .xtHandle .handle { visibility: hidden !important; }
+
 	#xCoords {
 		z-index: 1;
 		background-color: #FFFFB7;

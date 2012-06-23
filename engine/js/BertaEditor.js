@@ -48,7 +48,8 @@ var BertaEditor = new Class({
 	/* DOM elements */
 	entriesList: null,				// the OL element thad contains the entries
 	newsTickerContainer: null,
-	
+    subMenu: null,
+
 	/* variables containing information */
 	currentSection: null,			// the name of the section opened
 	currentTag: null,				// the name of the tag selected
@@ -56,6 +57,7 @@ var BertaEditor = new Class({
 	
 	
 	/* old */
+    submenuSortables: new Array(),
 	orderSortables: null,
 	tagsMenu: null,
 	tips: null,
@@ -144,6 +146,9 @@ var BertaEditor = new Class({
 				
 						this.entriesList.getElements('.xEntry .xEntryDropdown').addEvent('mouseenter', this.entryDropdownToggle.bindWithEvent(this));
 						this.entriesList.getElements('.xEntry .xEntryDropdown').addEvent('click', this.entryDropdownToggle.bindWithEvent(this));
+
+                        if($$('.subMenu')) this.subMenu = $$('.subMenu');
+                        if(this.subMenu) this.submenuSortingInit();
 												
 						this.entriesList.getElements('.xEntry .xEntryDropdownBox').addEvents({
 						 	mouseleave: function(event){
@@ -152,7 +157,7 @@ var BertaEditor = new Class({
 								dropdown.removeClass('xEntryDropdowHover');						    
 						    }														
 						});												
-						
+
 						// entry deleting and creating
 						if(this.options.templateName.substr(0,5) != 'messy')
 							createNewEntryText = this.options.i18n['create new entry here'];
@@ -667,8 +672,54 @@ var BertaEditor = new Class({
 		}else{
 			dropdown.removeClass('xEntryDropdowHover');
 		}
-	}
-	
+	},
+
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ///|  Submenu Sorting  |/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    submenuSortingInit: function() {
+        this.subMenu.each(function(item, index) {
+            if(item.hasClass('xAllowOrdering')) {
+                this.submenuSortables[index] = new Sortables(item, {
+                    handle: '.handle',
+                    constrain: true,
+                    clone: true,
+                    opacity: 0.3,
+                    revert: true,
+                    onComplete: function(el) {
+                        //console.log('Submenu order finish');
+                        this.submenuOrderSave(el, item);
+                    }.bind(this),
+                    onStart: function(el, clone) {
+                        //console.log('Submenu order start');
+                    }.bind(this)
+                });
+            }
+        }.bind(this));
+    },
+
+    submenuOrderSave: function(elJustMoved, subMenu) {
+        subMenu.addClass('xSaving');
+        var section = subMenu.getClassStoredValue('xSection');
+        var tag = elJustMoved.getClassStoredValue('xTag');
+        var next = elJustMoved.getNext('li');
+        var nextTag = next ? next.getClassStoredValue('xTag') : null;
+
+        new Request.JSON({
+            url: this.options.updateUrl,
+            data: "json=" + JSON.encode({
+                section: section, tag: tag, value: nextTag,
+                action: 'ORDER_SUBMENUS', property: ''
+            }),
+            onComplete: function(resp) {
+                subMenu.removeClass('xSaving');
+            }.bind(this)
+        }).post();
+    }
+
+
 });
 
 BertaEditor.EDITABLES_INIT = 'editables_init';
