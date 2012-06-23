@@ -18,7 +18,7 @@ $value = !empty($_REQUEST['value']) ? $_REQUEST['value'] : false;
 $jsonRequest = !empty($_REQUEST['json']) ? stripslashes($_REQUEST['json']) : false;
 
 if($jsonRequest) {
-	
+
 	//var_dump($jsonRequest);
 	// convert bad characters to their escaped equivalents
 	$jsonRequest = str_replace(array("\n", "\r", "\t"), array('\n', '', ' '), $jsonRequest);
@@ -280,7 +280,28 @@ if($jsonRequest) {
 				//BertaEditor::saveBlog($decoded['section'], $blog);
 				//BertaEditor::populateTags($decoded['section'], $blog);
 			
-			} 
+			} else if($decoded['action'] == 'ORDER_SUBMENUS') {
+                $tagPut = false; $hasTags = false;
+                $tags = BertaEditor::getTags();
+                $currentSectionTags = $tags[$decoded['section']];
+                $movedTag = $currentSectionTags[$decoded['tag']];
+                $newSectionTags = array();
+
+                foreach($currentSectionTags as $tName => $t) {
+                    $hasTags = true;
+                    if($tName == $decoded['value']) {
+                        $newSectionTags[$decoded['tag']] = $movedTag;
+                        $tagPut = true;
+                    }
+                    if($tName != $decoded['tag'] ) {
+                        $newSectionTags[$tName] = $t;
+                    }
+                }
+                if($hasTags && !$tagPut) $newSectionTags[$decoded['tag']] = $movedTag;
+
+                $tags[$decoded['section']] = $newSectionTags;
+                BertaEditor::saveTags($tags);
+            }
 			else {	// section property															
 				include 'update/inc.update.sections_editor.php';
 				
