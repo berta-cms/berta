@@ -91,13 +91,10 @@
 							{ assign var="firstSection" value="1" }
 							{ foreach from=$berta.tags.$sName key="tName" item="tag" name="subMenuLoop" }
 								{ if $berta.tagName == $tName }<li class="selected xTag-{ $tName }">{ else }<li class="xTag-{ $tName }">{ /if }
-									{ if !$firstSection }
+									{ if $berta.environment == 'engine' || !$firstSection }
 										<span class="separator">{ $berta.settings.subMenu.separator }</span>
 									{ /if }
-									<a href="{ bertaLink section=$berta.sectionName tag=$tName }" target="{ bertaTarget section=$berta.sectionName tag=$tName }">{ $tag.title }</a>
-                                    { if $berta.tags.$sName|@count > 1 && $berta.environment == 'engine' }
-                                    <span style="margin-left: 10px; cursor: pointer;" class="handle"><></span>
-                                    { /if }
+									<a class="handle" href="{ bertaLink section=$berta.sectionName tag=$tName }" target="{ bertaTarget section=$berta.sectionName tag=$tName }">{ $tag.title }</a>
 								</li>
 								{ assign var="firstSection" value="0" }
 							{ /foreach }	

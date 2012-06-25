@@ -71,10 +71,7 @@
 									<ul class="subMenu xSection-{ $sName }{ if $berta.tags.$sName|@count > 1 && $berta.environment == 'engine' } xAllowOrdering{ /if }">
 										{ foreach from=$berta.tags.$sName key="tName" item="tag" name="subSectionsMenuLoop" }
 											{ if $berta.tagName == $tName and $currnetSectionName == $section.name }<li class="selected xTag-{ $tName }">{ else }<li class="xTag-{ $tName }">{ /if }
-												<a href="{ bertaLink section=$sName tag=$tName }" target="{ bertaTarget section=$sName tag=$tName }">{ $tag.title }</a>
-                                                { if $berta.tags.$sName|@count > 1 && $berta.environment == 'engine' }
-                                                <span style="margin-left: 10px; cursor: pointer;" class="handle">X</span>
-                                                { /if }
+												<a class="handle" href="{ bertaLink section=$sName tag=$tName }" target="{ bertaTarget section=$sName tag=$tName }">{ $tag.title }</a>
 											</li>
 								 		{ /foreach }	
 									</ul>
