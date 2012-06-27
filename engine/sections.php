@@ -9,10 +9,6 @@ include_once $ENGINE_ROOT . '_classes/class.bertaeditor.php';
 $allSections = BertaContent::getSections();
 $topPanelHTML = BertaEditor::getTopPanelHTML('sections');
 
-global $shopEnabled;
-include($ENGINE_ROOT . 'inc.tips.php');
-$sttingsJS = json_encode($tipTexts);
-
 ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -22,13 +18,6 @@ $sttingsJS = json_encode($tipTexts);
 <link rel="stylesheet" href="<? echo $ENGINE_ABS_ROOT ?>css/default.css" type="text/css"  charset="utf-8" />
 <link rel="stylesheet" href="<? echo $ENGINE_ABS_ROOT ?>css/editor.css.php" type="text/css"  charset="utf-8" />
 <? include 'inc.header_default_scripts.php' ?>
-<script type="text/javascript">
-	var bertaGlobalOptions = {
-		"shopEnabled":"<? echo $shopEnabled ?>",
-		"templateName":"<? echo $berta->template->name ?>",
-		"i18n":<? echo $sttingsJS ?>
-	};
-</script>
 <script type="text/javascript" src="<? echo $ENGINE_ABS_ROOT ?>js/Assets.js" charset="utf-8"></script>
 <script type="text/javascript" src="<? echo $ENGINE_ABS_ROOT ?>js/BertaEditorBase.js"></script>
 <script type="text/javascript" src="<? echo $ENGINE_ABS_ROOT ?>js/inline_edit.js" charset="utf-8"></script>

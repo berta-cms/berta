@@ -87,14 +87,14 @@
 				{* *** sub menu ********************************************************************* *}
 				{ assign var="sName" value=$berta.sectionName }
 				{ if !empty($berta.tags.$sName) }
-						<ul id="subMenu">
+						<ul id="subMenu" class="subMenu xSection-{ $sName }{ if $berta.tags.$sName|@count > 1 && $berta.environment == 'engine' } xAllowOrdering{ /if }">
 							{ assign var="firstSection" value="1" }
 							{ foreach from=$berta.tags.$sName key="tName" item="tag" name="subMenuLoop" }
-								{ if $berta.tagName == $tName }<li class="selected">{ else }<li>{ /if }
-									{ if !$firstSection }
+								{ if $berta.tagName == $tName }<li class="selected xTag-{ $tName }">{ else }<li class="xTag-{ $tName }">{ /if }
+									{ if $berta.environment == 'engine' || !$firstSection }
 										<span class="separator">{ $berta.settings.subMenu.separator }</span>
 									{ /if }
-									<a href="{ bertaLink section=$berta.sectionName tag=$tName }" target="{ bertaTarget section=$berta.sectionName tag=$tName }">{ $tag.title }</a>
+									<a class="handle" href="{ bertaLink section=$berta.sectionName tag=$tName }" target="{ bertaTarget section=$berta.sectionName tag=$tName }">{ $tag.title }</a>
 								</li>
 								{ assign var="firstSection" value="0" }
 							{ /foreach }	
