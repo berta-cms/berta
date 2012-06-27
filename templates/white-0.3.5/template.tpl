@@ -64,11 +64,11 @@
 								<a href="{ bertaLink section=$section.name }" target="{ bertaTarget section=$section.name }">{ $section.title }</a>
 							
 								{ if $sName == $section.name and !empty($berta.tags.$sName) }
-									<ul>
+									<ul class="subMenu xSection-{ $sName }{ if $berta.tags.$sName|@count > 1 && $berta.environment == 'engine' } xAllowOrdering{ /if }">
 										{ foreach from=$berta.tags.$sName key="tName" item="tag" name="subSectionsMenuLoop" }
-											{ if $berta.tagName == $tName }<li class="selected">{ else }<li>{ /if }
-												<a href="{ bertaLink section=$berta.sectionName tag=$tName }" target="{ bertaTarget section=$berta.sectionName tag=$tName }">{ $tag.title }</a>
-											</li>
+											{ if $berta.tagName == $tName }<li class="selected xTag-{ $tName }">{ else }<li class="xTag-{ $tName }">{ /if }
+												<a class="handle" href="{ bertaLink section=$berta.sectionName tag=$tName }" target="{ bertaTarget section=$berta.sectionName tag=$tName }">{ $tag.title }</a>
+                                            </li>
 										{ /foreach }	
 									</ul>
 								{ /if }

@@ -1680,40 +1680,6 @@ input#xFirstTimeCheckContinue {
 
 
 
-/* tips ---------------------------------------------------------------------------------------------------- */
-.tip-top {
-	border-color: transparent transparent #000;
-	border-style: solid;
-	border-width: 0 12px 18px 0;
-	height: 0;
-	margin: 0 15px;
-	width: 0;
-	z-index: 55000;
-}
-
-.tip {
-	position: relative;
-	background-color: #000;
-	color: #fff;
-	width: 140px;
-	padding: 10px;
-	border-radius: 2px;
-	-moz-border-radius: 2px;
-	-webkit-border-radius: 2px;
-	-o-border-radius: 2px;
-	z-index: 55000;
-}
-
-	.tip a#xRemoveTips {
-		color: #fff;
-		text-decoration: underline;
-	}
-
-.xTipGoToShoppingCartMySite .tip-top {
-	border-width: 0 0 18px 12px;
-	margin: 0 15px 0 140px;
-}
-
 /*  setttings pages  --------------------------------------------------------------------------------------- */
 
 body.xSettingsPageBody {

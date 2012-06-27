@@ -120,7 +120,6 @@ if(!1) { ?><style type="text/css"><? } ?>
 		visibility: visible;
 	}
 	
-	
 	#xCoords {
 		z-index: 1;
 		background-color: #FFFFB7;

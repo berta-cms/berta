@@ -68,10 +68,10 @@
 								<a href="{ bertaLink section=$sName }" target="{ bertaTarget section=$sName }">{ $section.title }</a>
 						
 								{ if !empty($berta.tags.$sName) }
-									<ul>
+									<ul class="subMenu xSection-{ $sName }{ if $berta.tags.$sName|@count > 1 && $berta.environment == 'engine' } xAllowOrdering{ /if }">
 										{ foreach from=$berta.tags.$sName key="tName" item="tag" name="subSectionsMenuLoop" }
-											{ if $berta.tagName == $tName and $currnetSectionName == $section.name }<li class="selected">{ else }<li>{ /if }
-												<a href="{ bertaLink section=$sName tag=$tName }" target="{ bertaTarget section=$sName tag=$tName }">{ $tag.title }</a>
+											{ if $berta.tagName == $tName and $currnetSectionName == $section.name }<li class="selected xTag-{ $tName }">{ else }<li class="xTag-{ $tName }">{ /if }
+												<a class="handle" href="{ bertaLink section=$sName tag=$tName }" target="{ bertaTarget section=$sName tag=$tName }">{ $tag.title }</a>
 											</li>
 								 		{ /foreach }	
 									</ul>
