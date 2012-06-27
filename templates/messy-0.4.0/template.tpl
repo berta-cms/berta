@@ -156,7 +156,7 @@
                 <img src="{ $berta.options.MEDIA_ABS_ROOT }{ $berta.settings.background.backgroundImage }" />
             </div>
         {/if}
-        
+
         {* check for shop *}
         { if $berta.shop_enabled == true }
         	{ assign var="shoppingCartSection" value="" }
@@ -234,17 +234,16 @@
                     { assign var="currentSectionName" value=$berta.sectionName }
                     { foreach $berta.publishedSections as $sName => $section }
                         { if $section.type != 'shopping_cart' }
-                        
                         <div class="menuItem xSection-{ $sName } { messClasses property='positionXY' } { if $currentSectionName == $section.name }menuItemSelected{ /if }" style="{ messStyles xy=$section.positionXY }">
                             <a href="{ bertaLink section=$sName }" target="{ bertaTarget section=$sName }">{ $section.title }</a>
                 
                             { if $berta.settings.tagsMenu.hidden=='no' && (!empty($berta.tags.$sName) && ($berta.settings.tagsMenu.alwaysOpen=='yes' || $berta.sectionName==$sName)) }
-                                <ul>
+                                <ul class="subMenu xSection-{ $sName }{ if $berta.tags.$sName|@count > 1 && $berta.environment == 'engine' } xAllowOrdering{ /if }">
                                     { foreach $berta.tags.$sName as $tName => $tag }
-                                        <li { if $berta.tagName == $tName and $currentSectionName == $section.name }class="selected"{ /if }>
-                                            <a href="{ bertaLink section=$sName tag=$tName }" target="{ bertaTarget section=$sName tag=$tName }">{ $tag.title }</a>
+                                        <li class="xTag-{ $tName }{ if $berta.tagName == $tName and $currentSectionName == $section.name } selected{ /if }">
+                                            <a class="handle" href="{ bertaLink section=$sName tag=$tName }" target="{ bertaTarget section=$sName tag=$tName }">{ $tag.title }</a>
                                         </li>
-                                    { /foreach }    
+                                    { /foreach }
                                 </ul>
                             { /if }
                         </div>

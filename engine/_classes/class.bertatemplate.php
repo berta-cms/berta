@@ -305,15 +305,11 @@ class BertaTemplate extends BertaBase {
 		foreach($texts as $tVar => $t) if(!isset($vars[$tVar])) $vars[$tVar] = $t;
 		
 		// berta scripts ...
-		global $ENGINE_ROOT;		
-		include($ENGINE_ROOT . 'inc.tips.php');
-		
 		$engineAbsRoot = self::$options['ENGINE_ABS_ROOT'];
 		$templatesAbsRoot = self::$options['TEMPLATES_ABS_ROOT'];
 		$jsSettings = array(
 			'templateName' => $this->name,
 			'environment' => $this->environment,
-			'shopEnabled' => $shopEnabled,
 			'flashUploadEnabled' => $this->settings->get('settings', 'flashUploadEnabled') == 'yes' ? 'true' : 'false',
 			'videoPlayerType' => $this->settings->get('entryLayout', 'galleryVideoPlayer'),
 			'slideshowAutoRewind' => $this->settings->get('entryLayout', 'gallerySlideshowAutoRewind'),
@@ -337,11 +333,7 @@ class BertaTemplate extends BertaBase {
 			),
 			//'settings' => $vars['berta']['settings']
 		);
-		
-		foreach($tipTexts as $key=>$value) {
-			$jsSettings['i18n'][$key] = $value;
-		}
-		
+
 		$sttingsJS = Zend_Json::encode($jsSettings);
 		
 		//
@@ -374,8 +366,6 @@ DOC;
 DOC;
 		if($this->loggedIn) {
 			$vars['berta']['scripts'] .= <<<DOC
-	<script src="{$engineAbsRoot}_lib/mootools/mootools-1.2.5.1-more-tips.js" type="text/javascript" charset="utf-8"></script>
-	
 	<script type="text/javascript" src="{$engineAbsRoot}js/Assets.js" charset="utf-8"></script>
 	<script type="text/javascript" src="{$engineAbsRoot}js/BertaEditorBase.js" charset="utf-8"></script>
 	<script type="text/javascript" src="{$engineAbsRoot}js/inline_edit.js" charset="utf-8"></script>

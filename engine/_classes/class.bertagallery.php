@@ -41,7 +41,7 @@ class BertaGallery extends BertaBase {
         $mFolderABS = self::$options['MEDIA_ABS_ROOT'] . $mediaFolderName . '/';
 
         $imageTargetWidth = $berta->template->settings->get('media', 'images' . ucfirst($imageSize) . 'Width', false, true);
-        $imageTargetHeight = $berta->template->settings->get('media', 'images' . ucfirst($imageSize) . 'Width', false, true);
+        $imageTargetHeight = $berta->template->settings->get('media', 'images' . ucfirst($imageSize) . 'Height', false, true);
 
         // print output ...
     
@@ -78,7 +78,7 @@ class BertaGallery extends BertaBase {
         $mFolder = self::$options['MEDIA_ROOT'] . $mediaFolder . '/';
         $mFolderABS = self::$options['MEDIA_ABS_ROOT'] . $mediaFolder . '/';
         $realWidth = $width = $realHeight = $height = 0;
-        
+
         $firstImageHTML = $firstImageWidth = $firstImageHeight = null;
         if($img) {
             if($img['@attributes']['type'] == 'image' || !empty($img['@attributes']['poster_frame'])) {
@@ -101,7 +101,6 @@ class BertaGallery extends BertaBase {
                 
                 if($width && $height && $imageTargetWidth && $imageTargetHeight && ($width > $imageTargetWidth || $height > $imageTargetHeight)) {
                     list($width, $height) = self::fitInBounds($width, $height, $imageTargetWidth, $imageTargetHeight);
-                    
                     $imgSrc = self::getResizedSrc($mFolder, $imgSrc, $width, $height);
                 }
                 
