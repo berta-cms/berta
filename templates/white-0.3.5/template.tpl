@@ -103,16 +103,16 @@
 					{* now loop through all entries and print them out *}
 					{ foreach from=$entries key="entryId" item="entry" name="entriesLoop" }
 						<li class="entry { entryClasses entry=$entry }">
-							
+
 							{* the entry settings and delete and move buttons live in the entryHeader - don't leave it out! *}
 							{ entryHeader entry=$entry }
-				
+
 							{* entryGallery prints the image gallery for the entry *}
 							{ entryGallery entry=$entry }
-				
+
 							{ if $berta.environment == 'engine' || !empty($entry.description) }
 							<div class="entryText xEditableMCE xProperty-description">{ $entry.description }</div>
-							{ /if }					
+							{ /if }
 				
 							{* entry footer wraps the entry including the header - don't leave it out! *}
 							{ entryFooter entry=$entry }
