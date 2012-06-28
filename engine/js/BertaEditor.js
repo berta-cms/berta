@@ -689,11 +689,15 @@ var BertaEditor = new Class({
                     opacity: 0.3,
                     revert: true,
                     onComplete: function(el) {
-                        //console.log('Submenu order finish');
-                        this.submenuOrderSave(el, item);
+                        if(item.hasClass('xSortNotClick')) {
+                        	//console.log('Submenu order finish');
+                        	this.submenuOrderSave(el, item);
+                        	item.removeClass('xSortNotClick');
+                        }
                     }.bind(this),
                     onStart: function(el, clone) {
                         //console.log('Submenu order start');
+                        item.addClass('xSortNotClick');
                     }.bind(this)
                 });
             }
