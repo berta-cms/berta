@@ -394,8 +394,12 @@ var BertaEditorBase = new Class({
 						    }					
 						});								
 						
-						xGuideLineX.inject(document.body);				
-						xGuideLineY.inject(document.body);
+						xGuideLineX.inject(document.body);
+						if(document.body.getElement('#contentContainer.xCentered')) {				
+							xGuideLineY.inject(document.body.getElement('#contentContainer'));
+						} else {
+							xGuideLineY.inject(document.body);
+						}
 						self.drawGuideLines(el, xGuideLineX, xGuideLineY);	
 					},
 					mouseleave: function(event){

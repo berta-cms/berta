@@ -105,6 +105,44 @@ var MessyMess = new Class({
 				}
 			});
 		}
+
+
+        // Centering guides
+        var container = $('contentContainer');
+        var centeredLayout = container.hasClass('xCentered') ? true : false;
+        
+        if(centeredLayout) {
+            document.body.setStyle('overflow-y', 'scroll');
+
+            var guidesColor = container.getClassStoredValue('xCenteringGuides') == 'dark' ? 'rgba(0,0,0,0.3)' : 'rgba(255,255,255,0.3)';
+            var w = (window.getSize().x - container.getSize().x) / 2;
+            var el1 = new Element('div', {
+                'styles': {
+                    'background-color': guidesColor,
+                    'position': 'fixed',
+                    'left': 0,  
+                    'height': '100%',
+                    'width': w + 'px'
+                }
+            });
+            var el2 = new Element('div', {
+                'styles': {
+                    'background-color': guidesColor,
+                    'position': 'fixed',
+                    'right': 0,
+                    'height': '100%',
+                    'width': w + 'px'
+                }
+            });
+            el1.inject(document.body, 'top');
+            el2.inject(document.body, 'top'); 
+
+            window.addEvent('resize', function() {
+                var w1 = (window.getSize().x - container.getSize().x) / 2;
+                el1.setStyle('width', w + 'px');
+                el2.setStyle('width', w + 'px');
+            });
+        }
 	},
 	
 	onLoad: function() {
@@ -169,7 +207,6 @@ var MessyMess = new Class({
     	    	itemSelector: '.box'
 		    });
 		}
-
 	},
 	
 	stickToBottom: function(){
