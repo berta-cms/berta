@@ -111,37 +111,48 @@ var MessyMess = new Class({
         var container = $('contentContainer');
         var centeredLayout = container.hasClass('xCentered') ? true : false;
         
-        if(centeredLayout && bertaGlobalOptions.environment == 'engine') {
-            document.body.setStyle('overflow-y', 'scroll');
+        if(centeredLayout) {
+            var fixedItems = container.getElements('.xFixed');
+            if(fixedItems.length > 0) {
+                var guidesWidth = (window.getSize().x - container.getSize().x) / 2;
+                fixedItems.each(function(item) {
+                    var wF = guidesWidth + parseInt(item.getStyle('left'));
+                    item.setStyle('left', wF + 'px');
+                });
+            }
 
-            var guidesColor = container.getClassStoredValue('xCenteringGuides') == 'dark' ? 'rgba(0,0,0,0.5)' : 'rgba(255,255,255,0.5)';
-            var w = (window.getSize().x - container.getSize().x) / 2;
-            var el1 = new Element('div', {
-                'styles': {
-                    'background-color': guidesColor,
-                    'position': 'fixed',
-                    'left': 0,  
-                    'height': '100%',
-                    'width': w + 'px'
-                }
-            });
-            var el2 = new Element('div', {
-                'styles': {
-                    'background-color': guidesColor,
-                    'position': 'fixed',
-                    'right': 0,
-                    'height': '100%',
-                    'width': w + 'px'
-                }
-            });
-            el1.inject(document.body, 'top');
-            el2.inject(document.body, 'top'); 
+            if(bertaGlobalOptions.environment == 'engine') {
+                document.body.setStyle('overflow-y', 'scroll');
 
-            window.addEvent('resize', function() {
+                var guidesColor = container.getClassStoredValue('xCenteringGuides') == 'dark' ? 'rgba(0,0,0,0.5)' : 'rgba(255,255,255,0.5)';
                 var w = (window.getSize().x - container.getSize().x) / 2;
-                el1.setStyle('width', w + 'px');
-                el2.setStyle('width', w + 'px');
-            });
+                var el1 = new Element('div', {
+                    'styles': {
+                        'background-color': guidesColor,
+                        'position': 'fixed',
+                        'left': 0,  
+                        'height': '100%',
+                        'width': w + 'px'
+                    }
+                });
+                var el2 = new Element('div', {
+                    'styles': {
+                        'background-color': guidesColor,
+                        'position': 'fixed',
+                        'right': 0,
+                        'height': '100%',
+                        'width': w + 'px'
+                    }
+                });
+                el1.inject(document.body, 'top');
+                el2.inject(document.body, 'top'); 
+
+                window.addEvent('resize', function() {
+                    var w = (window.getSize().x - container.getSize().x) / 2;
+                    el1.setStyle('width', w + 'px');
+                    el2.setStyle('width', w + 'px');
+                });
+            }
         }
 	},
 	
