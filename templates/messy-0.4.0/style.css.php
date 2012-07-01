@@ -84,10 +84,16 @@ a img { border: none; }
 	/*overflow: <? if($isEngineView) echo 'visible'; else echo 'auto' ?>;*/
 }
 
+
+
 #contentContainer {
 	position: relative;
 	width: 100%;
 }
+	#contentContainer.xCentered {
+		margin: 0 auto;
+		width: <? echo $s->get('pageLayout', 'centeredWidth') ?>;
+	}
 
 #contentContainer h1 {
 	padding: 0;
@@ -380,7 +386,7 @@ a img { border: none; }
         width: 31px;
         height: 31px;
         position: absolute;
-        background: url('layout/loader_<? echo $s->get('navigation', 'bgButtonType') ?>.gif') no-repeat;
+        background: url(layout/loader_<? echo $s->get('pageLayout', 'bgButtonType') ?>.gif) no-repeat;
         left: 50%; top: 50%;
         margin-left: -15px; margin-top: -15px;
         display: none;
@@ -421,17 +427,17 @@ a img { border: none; }
     #xBackground #xBackgroundRight {
         right: 0;
         <? if (preg_match('/msie/i',$DEVICE_USER_AGENT)) { ?>
-            cursor: url(templates/messy-0.4.0/layout/arrow_right_<? echo $s->get('navigation', 'bgButtonType') ?>.cur), pointer;
+            cursor: url(templates/messy-0.4.0/layout/arrow_right_<? echo $s->get('pageLayout', 'bgButtonType') ?>.cur), pointer;
         <? } else { ?>
-            cursor: url(layout/arrow_right_<? echo $s->get('navigation', 'bgButtonType') ?>.gif), pointer;
+            cursor: url(layout/arrow_right_<? echo $s->get('pageLayout', 'bgButtonType') ?>.gif), pointer;
         <? } ?>
     }
     #xBackground #xBackgroundLeft {
         left: 0;
         <? if (preg_match('/msie/i',$DEVICE_USER_AGENT)) { ?>
-            cursor: url(templates/messy-0.4.0/layout/arrow_left_<? echo $s->get('navigation', 'bgButtonType') ?>.cur), pointer;
+            cursor: url(templates/messy-0.4.0/layout/arrow_left_<? echo $s->get('pageLayout', 'bgButtonType') ?>.cur), pointer;
         <? } else { ?>
-            cursor: url(layout/arrow_left_<? echo $s->get('navigation', 'bgButtonType') ?>.gif), pointer;
+            cursor: url(layout/arrow_left_<? echo $s->get('pageLayout', 'bgButtonType') ?>.gif), pointer;
         <? } ?>
     }
 
@@ -450,18 +456,18 @@ a img { border: none; }
             position: absolute;
             right: 8px;
             <? if (preg_match('/msie/i',$DEVICE_USER_AGENT)) { ?>
-                cursor: url(templates/messy-0.4.0/layout/arrow_right_<? echo $s->get('navigation', 'bgButtonType') ?>.cur), pointer;
+                cursor: url(templates/messy-0.4.0/layout/arrow_right_<? echo $s->get('pageLayout', 'bgButtonType') ?>.cur), pointer;
             <? } else { ?>
-                cursor: url(layout/arrow_right_<? echo $s->get('navigation', 'bgButtonType') ?>.gif), pointer;
+                cursor: url(layout/arrow_right_<? echo $s->get('pageLayout', 'bgButtonType') ?>.gif), pointer;
             <? } ?>
         }
         #xBackground #xBackgroundLeftCounter .counterContent {
             position: absolute;
             left: 26px;
             <? if (preg_match('/msie/i',$DEVICE_USER_AGENT)) { ?>
-                cursor: url(templates/messy-0.4.0/layout/arrow_left_<? echo $s->get('navigation', 'bgButtonType') ?>.cur), pointer;
+                cursor: url(templates/messy-0.4.0/layout/arrow_left_<? echo $s->get('pageLayout', 'bgButtonType') ?>.cur), pointer;
             <? } else { ?>
-                cursor: url(layout/arrow_left_<? echo $s->get('navigation', 'bgButtonType') ?>.gif), pointer;
+                cursor: url(layout/arrow_left_<? echo $s->get('pageLayout', 'bgButtonType') ?>.gif), pointer;
             <? } ?>
         }
 
@@ -478,7 +484,7 @@ a img { border: none; }
 #xBackgroundContainer #xBackgroundPrevious { left: 20px; }
 	#xBackgroundNext a,
 	#xBackgroundPrevious a {
-		background: url('layout/bg_nav_buttons_<? echo $s->get('navigation', 'bgButtonType') ?>.png');
+		background: url(layout/bg_nav_buttons_<? echo $s->get('pageLayout', 'bgButtonType') ?>.png);
 		width: 24px;
 		height: 24px;
 		display: block;
@@ -512,7 +518,7 @@ a img { border: none; }
 	#xGridViewTriggerContainer a {
 		width: 24px;
 		height: 24px;
-		background: url('layout/bg_nav_buttons_<? echo $s->get('navigation', 'bgButtonType') ?>.png');
+		background: url('layout/bg_nav_buttons_<? echo $s->get('pageLayout', 'bgButtonType') ?>.png');
 		background-position: -48px 0px;
 		display: block;
 	}

@@ -665,9 +665,13 @@ var BertaEditor = new Class({
 			if (mainColumn) {
 				mainColumn_margin_padding = parseInt(mainColumn.getStyle('padding-left')) + parseInt(mainColumn.getStyle('margin-left'));
 			}
-		
-			var dropdownBoxLeftPos = dropdownPos.x - dropdownBoxSize.width + parseInt(dropdownSize.x/2+1)  - mainColumn_margin_padding - entryPos;
-		
+
+            if(this.container.hasClass('xCentered')) {
+                var dropdownBoxLeftPos = dropdownPos.x - dropdownBoxSize.width + parseInt(dropdownSize.x/2+1) - mainColumn_margin_padding - entryPos - ((window.getSize().x - this.container.getSize().x) / 2);
+            } else {
+                var dropdownBoxLeftPos = dropdownPos.x - dropdownBoxSize.width + parseInt(dropdownSize.x/2+1) - mainColumn_margin_padding - entryPos;
+            }
+
 			dropdownBox.setStyle('left', dropdownBoxLeftPos + 'px');
 		}else{
 			dropdown.removeClass('xEntryDropdowHover');
