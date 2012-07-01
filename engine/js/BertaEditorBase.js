@@ -395,7 +395,7 @@ var BertaEditorBase = new Class({
 						});								
 						
 						xGuideLineX.inject(document.body);
-						if(document.body.getElement('#contentContainer.xCentered')) {				
+						if(document.body.getElement('#contentContainer.xCentered') && !(el.hasClass('xFixed'))) {				
 							xGuideLineY.inject(document.body.getElement('#contentContainer'));
 						} else {
 							xGuideLineY.inject(document.body);
@@ -492,7 +492,12 @@ var BertaEditorBase = new Class({
 							});				       	
 				       		
 					    }else{
-							var value = parseInt(el.getStyle('left')) + ',' + parseInt(el.getStyle('top'));
+					    	if(this.container.hasClass('xCentered') && el.hasClass('xFixed')) {
+					    		var left = parseInt(el.getStyle('left')) - (window.getSize().x - this.container.getSize().x) / 2;
+					    	} else {
+					    		var left = parseInt(el.getStyle('left'));
+					    	}
+							var value = left + ',' + parseInt(el.getStyle('top'));
 							this.elementEdit_save(null, el, null, null, value, value);
 						}
 						dragAll = false;
@@ -562,8 +567,16 @@ var BertaEditorBase = new Class({
 				var entry = el.getParent('.xEntry');
 				if (value=="1"){
 					entry.addClass('xFixed');
+					if(this.container.hasClass('xCentered')) {
+						var left = parseInt(entry.getStyle('left')) + (window.getSize().x - this.container.getSize().x) / 2;
+		                entry.setStyle('left', left + 'px');
+		            }
 				}else{
 					entry.removeClass('xFixed');
+					if(this.container.hasClass('xCentered')) {
+						var left = parseInt(entry.getStyle('left')) - (window.getSize().x - this.container.getSize().x) / 2;
+		                entry.setStyle('left', left + 'px');
+		            }
 				}
 			}
 			

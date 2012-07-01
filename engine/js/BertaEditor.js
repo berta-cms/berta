@@ -666,7 +666,7 @@ var BertaEditor = new Class({
 				mainColumn_margin_padding = parseInt(mainColumn.getStyle('padding-left')) + parseInt(mainColumn.getStyle('margin-left'));
 			}
 
-            if(this.container.hasClass('xCentered')) {
+            if(this.container.hasClass('xCentered') && !(entry.getParent().hasClass('xFixed'))) {
                 var dropdownBoxLeftPos = dropdownPos.x - dropdownBoxSize.width + parseInt(dropdownSize.x/2+1) - mainColumn_margin_padding - entryPos - ((window.getSize().x - this.container.getSize().x) / 2);
             } else {
                 var dropdownBoxLeftPos = dropdownPos.x - dropdownBoxSize.width + parseInt(dropdownSize.x/2+1) - mainColumn_margin_padding - entryPos;
