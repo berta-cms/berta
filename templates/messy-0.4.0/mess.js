@@ -111,10 +111,10 @@ var MessyMess = new Class({
         var container = $('contentContainer');
         var centeredLayout = container.hasClass('xCentered') ? true : false;
         
-        if(centeredLayout) {
+        if(centeredLayout && bertaGlobalOptions.environment == 'engine') {
             document.body.setStyle('overflow-y', 'scroll');
 
-            var guidesColor = container.getClassStoredValue('xCenteringGuides') == 'dark' ? 'rgba(0,0,0,0.3)' : 'rgba(255,255,255,0.3)';
+            var guidesColor = container.getClassStoredValue('xCenteringGuides') == 'dark' ? 'rgba(0,0,0,0.5)' : 'rgba(255,255,255,0.5)';
             var w = (window.getSize().x - container.getSize().x) / 2;
             var el1 = new Element('div', {
                 'styles': {
@@ -138,7 +138,7 @@ var MessyMess = new Class({
             el2.inject(document.body, 'top'); 
 
             window.addEvent('resize', function() {
-                var w1 = (window.getSize().x - container.getSize().x) / 2;
+                var w = (window.getSize().x - container.getSize().x) / 2;
                 el1.setStyle('width', w + 'px');
                 el2.setStyle('width', w + 'px');
             });
