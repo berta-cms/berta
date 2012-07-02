@@ -203,7 +203,7 @@
                 { /if }
             { /if }
 
-            <div id="contentContainer" { if $berta.settings.pageLayout.centered=='yes' }class="xCentered xCenteringGuides-{ $berta.settings.pageLayout.centeringGuidesColor }"{ /if }>
+            <div id="contentContainer" { if $berta.settings.pageLayout.centered=='yes' }class="xCentered"{ /if }>
             
                 { if $berta.environment == 'engine' && $berta.sections }
                 <div id="xBgEditorPanelContainer"></div>

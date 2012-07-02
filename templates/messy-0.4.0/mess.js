@@ -107,50 +107,66 @@ var MessyMess = new Class({
 		}
 
 
-        // Centering guides
+        // Centering
         var container = $('contentContainer');
         var centeredLayout = container.hasClass('xCentered') ? true : false;
         
         if(centeredLayout) {
-            var fixedItems = container.getElements('.xFixed');
+            var bottom = $('bottom');
+            var bottomRight = parseInt(bottom.getStyle('right'));
+            var fixedItems = container.getParent().getElements('.xFixed, .floating-banner');
+            var guidesWidth = ((window.getSize().x - container.getSize().x) / 2) >= 0 ? ((window.getSize().x - container.getSize().x) / 2) : 0;
+
             if(fixedItems.length > 0) {
-                var guidesWidth = (window.getSize().x - container.getSize().x) / 2;
                 fixedItems.each(function(item) {
-                    var wF = guidesWidth + parseInt(item.getStyle('left'));
-                    item.setStyle('left', wF + 'px');
+                    var left = parseInt(item.getStyle('left'))
+                    var w = guidesWidth + left;
+                    console.log(guidesWidth);
+                    item.store('initLeft', left);
+                    item.setStyle('left', w + 'px');
                 });
             }
+
+            bottom.setStyle('right', guidesWidth + bottomRight + 'px');
+
+            window.addEvent('resize', function() {
+                var guidesWidth = ((window.getSize().x - container.getSize().x) / 2) >= 0 ? ((window.getSize().x - container.getSize().x) / 2) : 0;
+
+                if(fixedItems.length > 0) {
+                    fixedItems.each(function(item) {
+                        var w = guidesWidth + item.retrieve('initLeft');
+                        item.setStyle('left', w + 'px');
+                    });
+                }
+
+                bottom.setStyle('right', guidesWidth + bottomRight + 'px');
+            });
 
             if(bertaGlobalOptions.environment == 'engine') {
                 document.body.setStyle('overflow-y', 'scroll');
 
-                var guidesColor = container.getClassStoredValue('xCenteringGuides') == 'dark' ? 'rgba(0,0,0,0.5)' : 'rgba(255,255,255,0.5)';
-                var w = (window.getSize().x - container.getSize().x) / 2;
                 var el1 = new Element('div', {
+                    'class': 'xCenteringGuide',
                     'styles': {
-                        'background-color': guidesColor,
-                        'position': 'fixed',
                         'left': 0,  
-                        'height': '100%',
-                        'width': w + 'px'
+                        'width': guidesWidth + 'px'
                     }
                 });
                 var el2 = new Element('div', {
+                    'class': 'xCenteringGuide',
                     'styles': {
-                        'background-color': guidesColor,
-                        'position': 'fixed',
                         'right': 0,
-                        'height': '100%',
-                        'width': w + 'px'
+                        'width': guidesWidth + 'px'
                     }
                 });
+
                 el1.inject(document.body, 'top');
                 el2.inject(document.body, 'top'); 
 
                 window.addEvent('resize', function() {
-                    var w = (window.getSize().x - container.getSize().x) / 2;
-                    el1.setStyle('width', w + 'px');
-                    el2.setStyle('width', w + 'px');
+                    var guidesWidth = (window.getSize().x - container.getSize().x) / 2;
+                    el1.setStyle('width', guidesWidth + 'px');
+                    el2.setStyle('width', guidesWidth + 'px');
                 });
             }
         }

@@ -77,6 +77,18 @@ a img { border: none; }
 
 
 
+.xCenteringGuide {
+	<? if($s->get('pageLayout', 'centeringGuidesColor') == 'dark') { ?>
+		background-color: rgba(0,0,0,0.5);
+	<? } else { ?>
+		background-color: rgba(255,255,255,0.5);
+	<? } ?>
+	width: <? echo $s->get('pageLayout', 'centeredWidth') ?>;
+	position: fixed;
+	height: 100%;
+}
+
+
 #allContainer {
 	position: relative;
 	margin: 0;
