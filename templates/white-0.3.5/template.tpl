@@ -61,7 +61,11 @@
 						{ assign var="sName" value=$berta.sectionName }
 						{ foreach from=$berta.publishedSections item="section" name="sectionsMenuLoop" }
 							{ if $berta.sectionName == $section.name }<li class="selected">{ else }<li>{ /if }
-								<a href="{ bertaLink section=$section.name }" target="{ bertaTarget section=$section.name }">{ $section.title }</a>
+								{ if $berta.sectionName == $section.name && $berta.settings.navigation.alwaysSelectTag == 'yes' && !empty($berta.tags.$sName) }
+									<span>{ $section.title }</span>
+								{ else }
+									<a href="{ bertaLink section=$section.name }" target="{ bertaTarget section=$section.name }">{ $section.title }</a>
+								{ /if }
 							
 								{ if $sName == $section.name and !empty($berta.tags.$sName) }
 									<ul class="subMenu xSection-{ $sName }{ if $berta.tags.$sName|@count > 1 && $berta.environment == 'engine' } xAllowOrdering{ /if }">

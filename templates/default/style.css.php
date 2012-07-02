@@ -64,7 +64,8 @@ a:hover {
 	text-decoration: <? echo $s->get('links', 'textDecorationHover') ?>;
 	/*border: <? echo $s->get('links', 'border:hover') ?>;*/
 }
-a:active { 
+a:active,
+div#siteTopMenu ul li.selected span { 
 	color: <? echo $s->get('links', 'colorActive') ?>;
 	text-decoration: <? echo $s->get('links', 'textDecorationActive') ?>;
 	/*border: <? echo $s->get('links', 'border:active') ?>;*/
@@ -138,7 +139,8 @@ h1 {
 					display: block;
 					float: left;
 				}
-				div#siteTopMenu ul li.selected a {
+				div#siteTopMenu ul li.selected a,
+				div#siteTopMenu ul li.selected span {
 					font-weight: bold;
 				}
 		

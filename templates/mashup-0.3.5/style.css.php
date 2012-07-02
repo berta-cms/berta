@@ -149,7 +149,7 @@ a img { border: none; }
 				text-decoration: <? echo $s->get('menu', 'textDecorationHover') ?>;
 				/*border: <? echo $s->get('links', 'border:hover') ?>;*/
 			}
-			#sideColumnTop li a:active, #sideColumnTop li.selected>a { 
+			#sideColumnTop li a:active, #sideColumnTop li.selected>a, #sideColumnTop li.selected>span { 
 				color: <? echo $s->get('menu', 'colorActive') ?>;
 				text-decoration: <? echo $s->get('menu', 'textDecorationActive') ?>;
 				/*border: <? echo $s->get('links', 'border:active') ?>;*/

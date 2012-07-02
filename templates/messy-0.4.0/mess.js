@@ -121,7 +121,6 @@ var MessyMess = new Class({
                 fixedItems.each(function(item) {
                     var left = parseInt(item.getStyle('left'))
                     var w = guidesWidth + left;
-                    console.log(guidesWidth);
                     item.store('initLeft', left);
                     item.setStyle('left', w + 'px');
                 });
