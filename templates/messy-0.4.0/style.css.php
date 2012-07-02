@@ -146,9 +146,13 @@ a img { border: none; }
 		color: <? echo $s->get('menu', 'colorHover') ?>;
 		text-decoration: <? echo $s->get('menu', 'textDecorationHover') ?>;
 	}
-	.menuItemSelected>a { 
+	.menuItemSelected>a,
+	.menuItemSelected>span { 
 		color: <? echo $s->get('menu', 'colorActive') ?> !important;
 		text-decoration: <? echo $s->get('menu', 'textDecorationActive') ?> !important;
+	}
+	.menuItemSelected>span {
+		cursor: text;
 	}
 	
 	.menuItem ul {
