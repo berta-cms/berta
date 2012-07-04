@@ -395,8 +395,10 @@ var BertaEditorBase = new Class({
 						});								
 						
 						xGuideLineX.inject(document.body);
-						if(document.body.getElement('#contentContainer.xCentered') && el.hasClass('xFixed') == false && el.hasClass('floating-banner') == false) {				
+						if(document.body.getElement('#contentContainer.xCentered') && el.hasClass('xFixed') == false && el.hasClass('floating-banner') == false) {	
 							xGuideLineY.inject(document.body.getElement('#contentContainer'));
+						} else if(document.body.getElement('#allContainer.xCentered') && el.hasClass('xFixed') == false && el.hasClass('floating-banner') == false) {
+							xGuideLineY.inject(document.body.getElement('#allContainer'));
 						} else {
 							xGuideLineY.inject(document.body);
 						}

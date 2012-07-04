@@ -32,12 +32,12 @@
 <body>
 	
 	{* all templates must include allContainer *}
-	<div id="allContainer">
+	<div id="allContainer"{ if $berta.settings.pageLayout.centered == 'yes' }class="xCentered"{ /if }>
 		
 		{* engine panel lives in pageHeader - don't leave it out *}
 		{ pageHeader }
 		
-		<div id="sideColumn">
+		<div id="sideColumn"{ if $berta.settings.pageLayout.centered == 'yes' }class="xCentered"{ /if }>
 			<div id="sideColumnTop">
 
                 { if ($berta.environment == 'site' && $berta.settings.navigation.landingSectionMenuVisible=='yes') || $berta.environment == 'engine' || ($berta.environment == 'site' && $berta.settings.navigation.landingSectionMenuVisible=='no' && $berta.sectionName != $berta.sections|@key) }
@@ -97,7 +97,7 @@
 		
 		<div id="contentContainer">
 	
-			<div id="mainColumn">
+			<div id="mainColumn"{ if $berta.settings.pageLayout.centered == 'yes' }class="xCentered"{ /if }>
 		
 				<ol id="pageEntries" class="{ entriesListClasses }">
 			
@@ -153,6 +153,30 @@
 		{/section}
 
 	</div>
+
+	<script type="text/javascript">
+	{literal}
+		var sideCol = $('sideColumn');
+		var centeredLayout = sideCol.hasClass('xCentered') ? true : false;
+
+		if(centeredLayout) {
+			var container = $('contentContainer');
+			var sideColInitStyles = sideCol.getStyles('left', 'margin-left');
+
+			if( window.getSize().x < container.getSize().x ) {
+				sideCol.setStyles( { 'left': 0, 'margin-left': 0 } );
+			}
+
+			window.addEvent('resize', function() {
+				if( window.getSize().x < container.getSize().x ) {
+					sideCol.setStyles( { 'left': 0, 'margin-left': 0 } );
+				} else {
+					sideCol.setStyles( {'left': sideColInitStyles['left'], 'margin-left': sideColInitStyles['margin-left']} );
+				}
+			});
+		}
+	{/literal}
+	</script>
 
 	{ include file="../_includes/inc.js_include.tpl" }
 

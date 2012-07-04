@@ -5,7 +5,7 @@ var SuperWhite = new Class({
 	shoppingCart: null,
 	reservation: null,
 	pageScroller: null,
-	
+
 	initialize: function() {
 		window.addEvent('domready', this.onDOMReady.bind(this));
 	},
@@ -28,6 +28,27 @@ var SuperWhite = new Class({
 			if(loc) window.location = loc;
 		});
 		
+
+		// Centering
+		var sideCol = $('sideColumn');
+		var centeredLayout = sideCol.hasClass('xCentered') ? true : false;
+
+		if(centeredLayout) {
+			var container = $('contentContainer');
+			var sideColInitStyles = sideCol.getStyles('left', 'margin-left');
+
+			if( window.getSize().x < container.getSize().x ) {
+				sideCol.setStyles( { 'left': 0, 'margin-left': 0 } );
+			}
+
+			window.addEvent('resize', function() {
+				if( window.getSize().x < container.getSize().x ) {
+					sideCol.setStyles( { 'left': 0, 'margin-left': 0 } );
+				} else {
+					sideCol.setStyles( {'left': sideColInitStyles['left'], 'margin-left': sideColInitStyles['margin-left']} );
+				}
+			});
+		}
 		
 	},
 	
