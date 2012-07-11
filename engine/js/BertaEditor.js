@@ -139,6 +139,23 @@ var BertaEditor = new Class({
 				
 					this.currentSection = this.entriesList.getClassStoredValue('xSection');
 					this.currentTag = this.entriesList.getClassStoredValue('xTag');
+
+					var bertaVideosWrapper = new Element('div', {
+						id: 'bertaVideosWrapper'
+					});
+
+					var bertaVideos = new Element('div', {
+						id: 'bertaVideos'
+					});
+
+					var videoFrame = new IFrame({
+						src: 'http://player.vimeo.com/video/29761450?title=0&amp;byline=0&amp;portrait=0',
+						id: 'videoFrame'
+					});
+
+					bertaVideosWrapper.inject(document.body);
+					bertaVideos.inject(document.body);
+					videoFrame.inject(bertaVideos);
 					
 					if(this.currentSection) {
 						this.entriesList.getElements('.xEntry .xEntryEditWrap').addEvent('mouseenter', this.entryOnHover.bindWithEvent(this));
