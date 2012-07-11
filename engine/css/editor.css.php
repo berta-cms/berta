@@ -24,7 +24,42 @@ if(!1) { ?><style type="text/css"><? } ?>
 }
 body.xEditorEnabled { }
 
+#bertaVideosWrapper {
+	background-color: #000;
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=60)";
+	filter: alpha(opacity=60);
+	-webkit-opacity: 0.6;
+	-moz-opacity: 0.6;
+	opacity: 0.6;
+	position: fixed;
+	height: 100%;
+	width: 100%;
+	z-index: 60000;
+}
 
+#bertaVideos {
+	background-color: #e0e0e0;
+	-moz-box-shadow: 0 0 30px 10px #bdbdbd;
+	-webkit-box-shadow: 0 0 30px 10px #bdbdbd;
+	box-shadow: 0 0 30px 10px #bdbdbd;
+	margin: -232px 0 0 -279px;
+	padding: 15px;
+	position: fixed;
+	top: 50%; left: 50%;
+	height: 435px;
+	width: 528px;
+	z-index: 60000;
+}
+
+	#bertaVideos #videoFrame {
+		border: none;
+		height: 300px;
+		width: 528px;
+	}
+
+#bertaVideosFrame html {
+	background-color: red;
+}
 
 
 /* middle-align containers ------------------------------------------------------------------------------------------- */	
