@@ -25,7 +25,7 @@ if(!1) { ?><style type="text/css"><? } ?>
 body.xEditorEnabled { }
 
 #bertaVideosBackground {
-	background-color: #000;
+	background-color: #fff;
 	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=60)";
 	filter: alpha(opacity=60);
 	-webkit-opacity: 0.6;
@@ -39,9 +39,9 @@ body.xEditorEnabled { }
 
 #bertaVideosWrapper {
 	background-color: #eee;
-	-moz-box-shadow: 0 0 30px 10px #bdbdbd;
-	-webkit-box-shadow: 0 0 30px 10px #bdbdbd;
-	box-shadow: 0 0 30px 10px #bdbdbd;
+	-moz-box-shadow: 0 0 10px 5px #bdbdbd;
+	-webkit-box-shadow: 0 0 10px 5px #bdbdbd;
+	box-shadow: 0 0 10px 5px #bdbdbd;
 	margin: -232px 0 0 -279px;
 	padding: 15px;
 	position: fixed;
