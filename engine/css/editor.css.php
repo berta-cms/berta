@@ -38,7 +38,7 @@ body.xEditorEnabled { }
 }
 
 #bertaVideos {
-	background-color: #e0e0e0;
+	background-color: #eee;
 	-moz-box-shadow: 0 0 30px 10px #bdbdbd;
 	-webkit-box-shadow: 0 0 30px 10px #bdbdbd;
 	box-shadow: 0 0 30px 10px #bdbdbd;
@@ -53,13 +53,31 @@ body.xEditorEnabled { }
 
 	#bertaVideos #videoFrame {
 		border: none;
+		margin-bottom: 12px;
 		height: 300px;
 		width: 528px;
 	}
-
-#bertaVideosFrame html {
-	background-color: red;
-}
+	
+	#bertaVideos #videoLinks .title {
+		font-weight: bold;
+		margin-bottom: 3px;
+	}
+	
+	#bertaVideos #videoLinks .links a {
+		color: #212121;
+		display: block;
+		float: left;
+		margin-right: 15px;
+		height: 22px;
+		width: 166px;
+	}
+		#bertaVideos #videoLinks .links a.selected {
+			color: #999;
+			text-decoration: underline;
+		}
+		#bertaVideos #videoLinks .links a.row-last {
+			margin-right: 0;
+		}
 
 
 /* middle-align containers ------------------------------------------------------------------------------------------- */	
