@@ -144,18 +144,48 @@ var BertaEditor = new Class({
 						id: 'bertaVideosWrapper'
 					});
 
+					var links = new Array();
+					
+					links.push('<a class="switchVideo selected" href="http://player.vimeo.com/video/29761450">Start making a website</a>'); 
+					links.push('<a class="switchVideo" href="http://player.vimeo.com/video/29761450">Adding video</a>');
+					links.push('<a class="switchVideo row-last" href="http://player.vimeo.com/video/29761450">Add Google analytics</a>');
+					links.push('<a class="switchVideo" href="http://player.vimeo.com/video/29761450">Edit CSS</a>');
+					links.push('<a class="switchVideo" href="http://player.vimeo.com/video/29761450">Add social media buttons</a>');
+					links.push('<a class="switchVideo row-last" href="http://player.vimeo.com/video/29761450">Add social media buttons</a>');
+				
+					linksHtml = '<div id="videoLinks"><div class="title"><span>More videos</span></div><div class="links">';
+					linksHtml += links.join('');
+					linksHtml += '<br class="clear" /></div></div>';
+				
 					var bertaVideos = new Element('div', {
-						id: 'bertaVideos'
+						html: linksHtml,
+						id: 'bertaVideos',
+						events: {
+							'click:relay(a.switchVideo)': function(event) {
+								event.stop();
+								var iframeEl = $('videoFrame');
+								var videoLinks = $('videoLinks').getElements('a.switchVideo');
+								iframeEl.set('src', this.get('href'));
+								videoLinks.removeClass('selected');
+								event.target.addClass('selected');
+							}
+						}
 					});
 
 					var videoFrame = new IFrame({
-						src: 'http://player.vimeo.com/video/29761450?title=0&amp;byline=0&amp;portrait=0',
+						src: 'http://player.vimeo.com/video/29761450',
 						id: 'videoFrame'
 					});
 
+/*
+					$('suu').addEvent('click', function() {
+						console.log('aa');
+					});
+*/
+
 					bertaVideosWrapper.inject(document.body);
 					bertaVideos.inject(document.body);
-					videoFrame.inject(bertaVideos);
+					videoFrame.inject(bertaVideos, 'top');
 					
 					if(this.currentSection) {
 						this.entriesList.getElements('.xEntry .xEntryEditWrap').addEvent('mouseenter', this.entryOnHover.bindWithEvent(this));
