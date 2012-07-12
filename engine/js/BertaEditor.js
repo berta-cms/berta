@@ -140,26 +140,27 @@ var BertaEditor = new Class({
 					this.currentSection = this.entriesList.getClassStoredValue('xSection');
 					this.currentTag = this.entriesList.getClassStoredValue('xTag');
 
-					var bertaVideosWrapper = new Element('div', {
-						id: 'bertaVideosWrapper'
+					var bertaVideosBackground = new Element('div', {
+						id: 'bertaVideosBackground'
 					});
 
 					var links = new Array();
 					
+					links.push('<div id="bertaVideos"><div id="videoLinks"><div class="title"><span>More videos</span></div><div class="links">');
 					links.push('<a class="switchVideo selected" href="http://player.vimeo.com/video/29761450">Start making a website</a>'); 
 					links.push('<a class="switchVideo" href="http://player.vimeo.com/video/29761450">Adding video</a>');
 					links.push('<a class="switchVideo row-last" href="http://player.vimeo.com/video/29761450">Add Google analytics</a>');
 					links.push('<a class="switchVideo" href="http://player.vimeo.com/video/29761450">Edit CSS</a>');
 					links.push('<a class="switchVideo" href="http://player.vimeo.com/video/29761450">Add social media buttons</a>');
 					links.push('<a class="switchVideo row-last" href="http://player.vimeo.com/video/29761450">Add social media buttons</a>');
-				
-					linksHtml = '<div id="videoLinks"><div class="title"><span>More videos</span></div><div class="links">';
-					linksHtml += links.join('');
-					linksHtml += '<br class="clear" /></div></div>';
-				
-					var bertaVideos = new Element('div', {
+					links.push('<br class="clear" /></div></div>');
+					links.push('<div id="frameSettings"><a class="closeFrame" href="#">Let\'s go!</a></div></div>');
+
+					linksHtml = links.join('');
+
+					var bertaVideosWrapper = new Element('div', {
 						html: linksHtml,
-						id: 'bertaVideos',
+						id: 'bertaVideosWrapper',
 						events: {
 							'click:relay(a.switchVideo)': function(event) {
 								event.stop();
@@ -168,6 +169,11 @@ var BertaEditor = new Class({
 								iframeEl.set('src', this.get('href'));
 								videoLinks.removeClass('selected');
 								event.target.addClass('selected');
+							},
+							'click:relay(a.closeFrame)': function(event) {
+								event.stop();
+								$('bertaVideosWrapper').destroy();
+								$('bertaVideosBackground').destroy();
 							}
 						}
 					});
@@ -177,15 +183,10 @@ var BertaEditor = new Class({
 						id: 'videoFrame'
 					});
 
-/*
-					$('suu').addEvent('click', function() {
-						console.log('aa');
-					});
-*/
 
+					bertaVideosBackground.inject(document.body);
 					bertaVideosWrapper.inject(document.body);
-					bertaVideos.inject(document.body);
-					videoFrame.inject(bertaVideos, 'top');
+					videoFrame.inject(bertaVideosWrapper.getElementById('bertaVideos'), 'top');
 					
 					if(this.currentSection) {
 						this.entriesList.getElements('.xEntry .xEntryEditWrap').addEvent('mouseenter', this.entryOnHover.bindWithEvent(this));
