@@ -32,12 +32,12 @@
 <body>
 	
 	{* all templates must include allContainer *}
-	<div id="allContainer">
+	<div id="allContainer"{ if $berta.settings.pageLayout.centered == 'yes' }class="xCentered"{ /if }>
 		
 		{* engine panel lives in pageHeader - don't leave it out *}
 		{ pageHeader }
 		
-		<div id="sideColumn">
+		<div id="sideColumn"{ if $berta.settings.pageLayout.centered == 'yes' }class="xCentered"{ /if }>
 			<div id="sideColumnTop">
 
                 { if ($berta.environment == 'site' && $berta.settings.navigation.landingSectionMenuVisible=='yes') || $berta.environment == 'engine' || ($berta.environment == 'site' && $berta.settings.navigation.landingSectionMenuVisible=='no' && $berta.sectionName != $berta.sections|@key) }
@@ -61,7 +61,11 @@
 						{ assign var="sName" value=$berta.sectionName }
 						{ foreach from=$berta.publishedSections item="section" name="sectionsMenuLoop" }
 							{ if $berta.sectionName == $section.name }<li class="selected">{ else }<li>{ /if }
-								<a href="{ bertaLink section=$section.name }" target="{ bertaTarget section=$section.name }">{ $section.title }</a>
+								{ if $berta.sectionName == $section.name && $berta.settings.navigation.alwaysSelectTag == 'yes' && !empty($berta.tags.$sName) }
+									<span>{ $section.title }</span>
+								{ else }
+									<a href="{ bertaLink section=$section.name }" target="{ bertaTarget section=$section.name }">{ $section.title }</a>
+								{ /if }
 							
 								{ if $sName == $section.name and !empty($berta.tags.$sName) }
 									<ul class="subMenu xSection-{ $sName }{ if $berta.tags.$sName|@count > 1 && $berta.environment == 'engine' } xAllowOrdering{ /if }">
@@ -93,23 +97,23 @@
 		
 		<div id="contentContainer">
 	
-			<div id="mainColumn">
+			<div id="mainColumn"{ if $berta.settings.pageLayout.centered == 'yes' }class="xCentered"{ /if }>
 		
 				<ol id="pageEntries" class="{ entriesListClasses }">
 			
 					{* now loop through all entries and print them out *}
 					{ foreach from=$entries key="entryId" item="entry" name="entriesLoop" }
 						<li class="entry { entryClasses entry=$entry }">
-							
+
 							{* the entry settings and delete and move buttons live in the entryHeader - don't leave it out! *}
 							{ entryHeader entry=$entry }
-				
+
 							{* entryGallery prints the image gallery for the entry *}
 							{ entryGallery entry=$entry }
-				
+
 							{ if $berta.environment == 'engine' || !empty($entry.description) }
 							<div class="entryText xEditableMCE xProperty-description">{ $entry.description }</div>
-							{ /if }					
+							{ /if }
 				
 							{* entry footer wraps the entry including the header - don't leave it out! *}
 							{ entryFooter entry=$entry }
@@ -149,6 +153,32 @@
 		{/section}
 
 	</div>
+
+	<script type="text/javascript">
+	{literal}
+		var sideCol = $('sideColumn');
+		var centeredLayout = sideCol.hasClass('xCentered') ? true : false;
+
+		if(centeredLayout) {
+			var container = $('contentContainer');
+			var sideColInitStyles = sideCol.getStyles('left', 'margin-left');
+
+			if( window.getSize().x < container.getSize().x ) {
+				sideCol.setStyles( { 'left': 0, 'margin-left': 0 } );
+			}
+
+			window.addEvent('resize', function() {
+				if( window.getSize().x < container.getSize().x ) {
+					sideCol.setStyles( { 'left': 0, 'margin-left': 0 } );
+				} else {
+					sideCol.setStyles( {'left': sideColInitStyles['left'], 'margin-left': sideColInitStyles['margin-left']} );
+				}
+			});
+		}
+	{/literal}
+	</script>
+
+	{ if $berta.settings.settings.showTutorialVideos == 'yes' && !$smarty.cookies._berta_videos_hidden }{ videoTutorials }{ /if }
 
 	{ include file="../_includes/inc.js_include.tpl" }
 

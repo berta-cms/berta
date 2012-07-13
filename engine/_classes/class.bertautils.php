@@ -71,22 +71,25 @@ class BertaUtils extends BertaBase {
 	}
 	
 	
-	public static function getRemoteFile($url, $timeout = 7, $redirects = 2) {
+	public static function getRemoteFile($url, $type, $timeout = 7, $redirects = 2) {
 	    $o = self::$options;
 		$streamOptions = array( 'http' => array(
 	        //'user_agent'    => "Berta {$o['version']}",    // who am i
-			'header' => "Berta-User-Agent: {$_SERVER['HTTP_USER_AGENT']}\r\n" .
+			'header' => "Content-Type: text/xml\r\n" .
+						"Berta-User-Agent: {$_SERVER['HTTP_USER_AGENT']}\r\n" .
 			            "Berta-Version: Berta {$o['version']}\r\n" .
-						"Berta-URI: {$o['SITE_HOST_ADDRESS']}{$o['SITE_ABS_ROOT']}\r\n",
+						"Berta-URI: {$o['SITE_HOST_ADDRESS']}{$o['SITE_ABS_ROOT']}\r\n" .
+						"Berta-Content: {$type}\r\n",
 	        'max_redirects' => $redirects, // stop after X redirects
 	        'timeout'       => $timeout,   // timeout on response
 	    ));
 	    $context = stream_context_create($streamOptions);
 	    $page    = @file_get_contents($url, false, $context);
 
-	    $result  = array( );
-	    if ( $page != false ) {
-			$pContent = Array_XML::xml2array($page, 'messages');
+	    $result = array();
+	    if ( $page && $type == 'newsticker' ) {
+			$pContent = Array_XML::xml2array($page);
+			$pContent = $pContent['messages'];
 			
 			if(self::updateBertaVersion($pContent['version'], $o['version'])) {
 	        	$result['content'] = $pContent['update'];
@@ -96,10 +99,13 @@ class BertaUtils extends BertaBase {
 			} else {
 				$result['content'] = $pContent['tips']['tip'][rand(0, sizeof($pContent['tips']['tip']) - 1)];
 			}
+		} else if ( $page && $type == 'videos' ) {
+			$pContent = Array_XML::xml2array($page);
+			$result['content'] = $pContent['videos'];
 		}
-	    else if ( !isset( $http_response_header ) )
+	    elseif ( !isset( $http_response_header ) )
 	        return null;    // Bad url, timeout
-
+	        	    
 	    // Save the header
 	    $result['header'] = $http_response_header;
 

@@ -38,12 +38,12 @@
 	{/if}
 	
 	{* all templates must include allContainer *}
-	<div id="allContainer">
+	<div id="allContainer"{ if $berta.settings.pageLayout.centered == 'yes' }class="xCentered"{ /if }>
 		
 		{* engine panel lives in pageHeader - don't leave it out *}
 		{ pageHeader }
 		
-		<div id="sideColumn">
+		<div id="sideColumn"{ if $berta.settings.pageLayout.centered == 'yes' }class="xCentered"{ /if }>
 			<div id="sideColumnTop">
 
                 { if ($berta.environment == 'site' && $berta.settings.navigation.landingSectionMenuVisible=='yes') || $berta.environment == 'engine' || ($berta.environment == 'site' && $berta.settings.navigation.landingSectionMenuVisible=='no' && $berta.sectionName != $berta.sections|@key) }
@@ -65,7 +65,11 @@
 						{ assign var="currnetSectionName" value=$berta.sectionName }
 						{ foreach from=$berta.publishedSections item="section" key="sName" name="sectionsMenuLoop" }
 							{ if $currnetSectionName == $section.name }<li class="selected">{ else }<li>{ /if }
-								<a href="{ bertaLink section=$sName }" target="{ bertaTarget section=$sName }">{ $section.title }</a>
+								{ if $currnetSectionName == $section.name && $berta.settings.navigation.alwaysSelectTag == 'yes' && !empty($berta.tags.$sName) }
+									<span>{ $section.title }</span>
+								{ else }
+									<a href="{ bertaLink section=$sName }" target="{ bertaTarget section=$sName }">{ $section.title }</a>
+								{ /if }
 						
 								{ if !empty($berta.tags.$sName) }
 									<ul class="subMenu xSection-{ $sName }{ if $berta.tags.$sName|@count > 1 && $berta.environment == 'engine' } xAllowOrdering{ /if }">
@@ -113,7 +117,7 @@
 
 			<div id="contentContainer">
 				<div id="mainColumnContainer">
-					<div id="mainColumn">
+					<div id="mainColumn"{ if $berta.settings.pageLayout.centered == 'yes' }class="xCentered"{ /if }>
 						<ol id="pageEntries" class="{ entriesListClasses }">
 
 							{* now loop through all entries and print them out *}
@@ -171,6 +175,8 @@
 			
 	</div>
 	
+	{ if $berta.settings.settings.showTutorialVideos == 'yes' && !$smarty.cookies._berta_videos_hidden }{ videoTutorials }{ /if }
+
 	{ include file="../_includes/inc.js_include.tpl" }
 
 	{ include file="../_includes/inc.counter.tpl"  }

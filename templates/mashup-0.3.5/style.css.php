@@ -91,6 +91,10 @@ a img { border: none; }
 	margin: 0;
 	padding: 0;
 }
+	#allContainer.xCentered {
+		margin: 0 auto;
+		width: <? echo $s->get('pageLayout', 'contentWidth') + $s->get('pageLayout', 'paddingLeft') + $s->get('sideBar', 'width') ?>px;
+	}
 .ie6 #allContainer {
 	width: 100%;
 	height: 100%;
@@ -107,6 +111,10 @@ a img { border: none; }
 		background-color: <? echo $s->get('sideBar', 'backgroundColor') ?>;
 		<? } ?>
 	}
+		#sideColumn.xCentered {
+			left: 50%;
+			margin-left: -<? echo ($s->get('pageLayout', 'contentWidth') + $s->get('pageLayout', 'paddingLeft') + $s->get('sideBar', 'width')) / 2 ?>px;
+		}
 	.ie6 #sideColumn {
 		position: absolute;
 		height: 100%;
@@ -149,7 +157,7 @@ a img { border: none; }
 				text-decoration: <? echo $s->get('menu', 'textDecorationHover') ?>;
 				/*border: <? echo $s->get('links', 'border:hover') ?>;*/
 			}
-			#sideColumnTop li a:active, #sideColumnTop li.selected>a { 
+			#sideColumnTop li a:active, #sideColumnTop li.selected>a, #sideColumnTop li.selected>span { 
 				color: <? echo $s->get('menu', 'colorActive') ?>;
 				text-decoration: <? echo $s->get('menu', 'textDecorationActive') ?>;
 				/*border: <? echo $s->get('links', 'border:active') ?>;*/
@@ -239,8 +247,11 @@ a img { border: none; }
 
 	#contentContainer {
 		position: relative;
-		z-index: 1000;
+		z-index: 1000;	
 	}
+		#allContainer.xCentered #contentContainer {
+			width: 100%;
+		}
 	.ie6 #contentContainer {
 		left: 0;
 		top: 0;
@@ -302,6 +313,10 @@ a img { border: none; }
 			/*width: 800px;*/
 			width: <? echo $s->get('pageLayout', 'contentWidth') ?>;
 		}
+			#mainColumn.xCentered {
+				left: 50%;
+				margin-left: -<? echo ($s->get('pageLayout', 'contentWidth') + $s->get('pageLayout', 'paddingLeft') + $s->get('sideBar', 'width')) / 2 - $s->get('sideBar', 'width') ?>px;
+			}
 
 
 		ol#pageEntries {

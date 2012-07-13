@@ -69,6 +69,7 @@
 			<div id="siteTopMenu">
 				
 				{* *** sections menu ***************************************************************** *}
+				{ assign var="sName" value=$berta.sectionName }
 				{ if count($berta.publishedSections) > 0 && (($berta.environment == 'site' && $berta.settings.navigation.landingSectionMenuVisible=='yes') || $berta.environment == 'engine' || ($berta.environment == 'site' && $berta.settings.navigation.landingSectionMenuVisible=='no' && $berta.sectionName != $berta.sections|@key))  }
 					<ul id="mainMenu">
 						{ assign var="firstSection" value="1" }
@@ -77,7 +78,11 @@
 								{ if !$firstSection }
 									<span class="separator">{ $berta.settings.menu.separator }</span>
 								{ /if }
-								<a href="{ bertaLink section=$section.name }" target="{ bertaTarget section=$section.name }">{ $section.title }</a>
+								{ if $berta.sectionName == $section.name && $berta.settings.navigation.alwaysSelectTag == 'yes' && !empty($berta.tags.$sName) }
+									<span>{ $section.title }</span>
+								{ else }
+									<a href="{ bertaLink section=$section.name }" target="{ bertaTarget section=$section.name }">{ $section.title }</a>
+								{ /if }
 							</li>
 							{ assign var="firstSection" value="0" }
 						{ /foreach }
@@ -85,7 +90,6 @@
 				{ /if }
 				
 				{* *** sub menu ********************************************************************* *}
-				{ assign var="sName" value=$berta.sectionName }
 				{ if !empty($berta.tags.$sName) }
 						<ul id="subMenu" class="subMenu xSection-{ $sName }{ if $berta.tags.$sName|@count > 1 && $berta.environment == 'engine' } xAllowOrdering{ /if }">
 							{ assign var="firstSection" value="1" }
@@ -183,6 +187,10 @@
 		{/section}
 
 	</div>
+
+    { if $berta.settings.settings.showTutorialVideos == 'yes' && !$smarty.cookies._berta_videos_hidden }{ videoTutorials }{ /if }
+
+
 	{ include file="../_includes/inc.js_include.tpl" }
 
 	{ include file="../_includes/inc.counter.tpl"  }
