@@ -667,8 +667,12 @@ class BertaEditor extends BertaContent {
 				$links .= '<a class="switchVideo' . (($k+1)%3 == 0 ? ' row-last' : '') . ($k == 0 ? ' selected' : '') . '" href="' . $v['uri'] . '">' . $v['name'] . '</a>';
 			}
 			
-			$checked = isset($_COOKIE['_berta_viedeos_hidden']) ? '' : 'checked="checked"';
-			
+			global $berta;
+			$showVideos = isset($berta->settings->settings['settings']['showTutorialVideos']) ? $berta->settings->settings['settings']['showTutorialVideos'] : $berta->settings->settingsDefinition['settings']['showTutorialVideos']['default'];
+
+			// $checked = isset($_COOKIE['_berta_viedeos_hidden']) ? '' : 'checked="checked"';
+			$checked = $showVideos == 'yes' ? 'checked="checked"' : '';
+						
 			$str = <<<DOC
 				<div id="bertaVideosBackground"></div>
 				<div id="bertaVideosWrapper">
@@ -683,7 +687,7 @@ class BertaEditor extends BertaContent {
 						</div>
 						<div id="frameSettings">
 							<div class="togglePopupWrapper">
-								<input type="checkbox" class="togglePopup" id="togglePopup" $checked  />
+								<input type="checkbox" class="togglePopup xProperty-settings/showTutorialVideos" id="togglePopup" $checked  />
 								<label for="togglePopup">Show this window on startup</label>
 							</div>
 							<div class="closeFrameWrapper">
@@ -694,10 +698,7 @@ class BertaEditor extends BertaContent {
 				</div>
 DOC;
 
-/* 			return $str; */
-/* 			echo '<pre>'; print_r($_COOKIE); echo '</pre>'; */
-global $berta;
-echo '<pre>'; print_r($berta->settings); echo '</pre>';
+ 			return $str;
 		}
 	}
 	

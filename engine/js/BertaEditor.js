@@ -155,11 +155,12 @@ var BertaEditor = new Class({
 								$('bertaVideosWrapper').destroy();
 								$('bertaVideosBackground').destroy();
 							},
-							'click:relay(.togglePopup)': function() {
-								console.log(this.get('checked'));
-/* 								Cookie.write('_berta_videos_hidden', 1); */
-							}
+							'click:relay(.togglePopup)': function(event) {
+								this.toggleVideos(event);
+							}.bind(this)
 						});
+
+						Cookie.write('_berta_videos_hidden', 1);
 					}
 					
 					if(this.currentSection) {
@@ -747,7 +748,43 @@ var BertaEditor = new Class({
                 subMenu.removeClass('xSaving');
             }.bind(this)
         }).post();
-    }
+    },
+
+    toggleVideos: function(event) {
+		if(this.processHandler.isIdleOrWarnIfBusy()) {
+			event.stop();
+			var el = event.target;
+
+			var value = el.get('checked') == true ? 'yes' : 'no';
+			var property = el.getClassStoredValue('xProperty');
+
+			var elParent = el.getParent();
+			elParent.addClass('xSavingAtLarge');
+			
+			var processId = this.unlinearProcess_getId('toggle-videos');
+			this.unlinearProcess_start(processId, 'Toggling tutorial videos');
+			
+			new Request.JSON({
+				url: this.options.updateUrl, 
+				data: "json=" + JSON.encode({
+					value: value, property: property
+				}),
+				onComplete: function(resp, entryInfo, deleteLink, eText) { 
+					if(!resp) {
+						alert('Berta says, there was a server error while deleting this entry! Something has gone sooooo wrong...');
+					
+					} else if(resp && !resp.error_message) {
+						this.unlinearProcess_stop(processId);
+						value == 'yes' ? el.set('checked', true) : el.set('checked', false);
+						elParent.removeClass('xSavingAtLarge');
+					} else {
+						alert(resp.error_message);
+						elParent.removeClass('xSavingAtLarge');
+					}
+				}.bindWithEvent(this)
+			}).post();
+		}
+	},
 
 
 });
