@@ -100,11 +100,12 @@ $options['hip_ipaddr'] = array();
 
 
 // external
-$options['newsticker_update_uri'] = array(
-	'http://www.berta.me/news_ticker_new.php'
+$options['remote_update_uri'] = array(
+	'http://www.berta.me/news_ticker_videos_update.php'
 );
 foreach($options['hip_ipaddr'] as $ip)
-	$options['newsticker_update_uri'][] = 'http://' . $ip . '/berta-remote/news_ticker_new.php';
+	$options['remote_update_uri'][] = 'http://' . $ip . '/berta-remote/news_ticker_videos_update.php';
+	
 
 
 // thumbnail size for editor layout

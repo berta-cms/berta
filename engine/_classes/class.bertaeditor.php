@@ -650,6 +650,57 @@ class BertaEditor extends BertaContent {
 		return parent::getXEmpty($property);
 	}
 	
+	public static function getBertaVideoLinks() {
+		if(!empty(self::$options['remote_update_uri']) && ini_get('allow_url_fopen')) {
+			$remoteResult = false;
+			reset(self::$options['remote_update_uri']);
+			while((!$remoteResult || empty($remoteResult['content'])) && (list(, $remoteURL) = each(self::$options['remote_update_uri']))) {
+				$remoteResult = BertaUtils::getRemoteFile($remoteURL, 'videos', 5);
+			}
+			
+			if($remoteResult || isset($remoteResult['content'])) {
+				$videosList = $remoteResult['content'];
+			}
+			
+			$links = '';
+			foreach ($videosList['video'] as $k => $v) {
+				$links .= '<a class="switchVideo' . (($k+1)%3 == 0 ? ' row-last' : '') . ($k == 0 ? ' selected' : '') . '" href="' . $v['uri'] . '">' . $v['name'] . '</a>';
+			}
+			
+			$checked = isset($_COOKIE['_berta_viedeos_hidden']) ? '' : 'checked="checked"';
+			
+			$str = <<<DOC
+				<div id="bertaVideosBackground"></div>
+				<div id="bertaVideosWrapper">
+					<div id="bertaVideos">
+						<iframe id="videoFrame" src="http://player.vimeo.com/video/29761450" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
+						<div id="videoLinks">
+							<div class="title"><span>More videos</span></div>
+							<div class="links">
+								$links
+								<br class="clear" />
+							</div>
+						</div>
+						<div id="frameSettings">
+							<div class="togglePopupWrapper">
+								<input type="checkbox" class="togglePopup" id="togglePopup" $checked  />
+								<label for="togglePopup">Show this window on startup</label>
+							</div>
+							<div class="closeFrameWrapper">
+								<a class="closeFrame" href="#">Let's go!</a>
+							</div>
+						</div>
+					</div>
+				</div>
+DOC;
+
+/* 			return $str; */
+/* 			echo '<pre>'; print_r($_COOKIE); echo '</pre>'; */
+global $berta;
+echo '<pre>'; print_r($berta->settings); echo '</pre>';
+		}
+	}
+	
 	public static function getTopPanelHTML($selectedSection = 'site') {
 		$tickerClass = !empty($_COOKIE['_berta_newsticker_hidden']) ? 'xHidden' : '';
 
@@ -659,14 +710,14 @@ class BertaEditor extends BertaContent {
 		//$_SESSION['_berta_newsticker_numtries'] = 0;		// for testing...
 		
 		
-		if(!empty(self::$options['newsticker_update_uri'])) {
+		if(!empty(self::$options['remote_update_uri'])) {
 			if(!empty($_SESSION['_berta_newsticker'])) {
 				$newsTickerContent = $_SESSION['_berta_newsticker'];
 			} elseif((empty($_SESSION['_berta_newsticker_numtries']) || $_SESSION['_berta_newsticker_numtries'] < 5) && ini_get('allow_url_fopen')) {
 				$remoteResult = false;
-				reset(self::$options['newsticker_update_uri']);
-				while((!$remoteResult || empty($remoteResult['content'])) && (list(, $remoteURL) = each(self::$options['newsticker_update_uri']))) {
-					$remoteResult = BertaUtils::getRemoteFile($remoteURL, 5);
+				reset(self::$options['remote_update_uri']);
+				while((!$remoteResult || empty($remoteResult['content'])) && (list(, $remoteURL) = each(self::$options['remote_update_uri']))) {
+					$remoteResult = BertaUtils::getRemoteFile($remoteURL, 'newsticker', 5);
 				}
 				//var_dump($remoteResult ); //$options['newsticker_update_uri_alt']);
 				if($remoteResult && isset($remoteResult['content'])) {
@@ -711,7 +762,6 @@ class BertaEditor extends BertaContent {
 						<li><a href="logout.php">$m6</a></li>
 					</ul>
 					<div id="xNewsTickerContainer" class="$tickerClass">
-						
 						<div class="news-ticker-content">$newsTickerContent</div>
 						<a href="#" class="close">X</a>
 						<br class="clear" />

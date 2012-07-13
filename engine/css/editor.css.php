@@ -88,27 +88,39 @@ body.xEditorEnabled { }
 			margin-right: 0;
 		}
 
-	#bertaVideos #frameSettings a.closeFrame {
-		background-color: #000;
-		color: #fff;
-		display: block;
-		-webkit-border-radius: 4px;
-		-moz-border-radius: 4px;
-		border-radius: 4px;
-		font-size: 14px;
-		font-weight: bold;
-		padding: 2px 0;
+	#bertaVideos #frameSettings .closeFrameWrapper {
 		position: absolute;
 		right: 0; bottom: 0;
-		text-align: center;
-		/*height: 16px;*/
-		width: 100px;
 	}
-		#bertaVideos #frameSettings a.closeFrame:hover {
-			text-decoration: none;
-			-moz-box-shadow: 0 0 8px #000;
-  			-webkit-box-shadow: 0 0 8px #000;
-  			box-shadow: 0 0 8px #000;
+		#bertaVideos #frameSettings .closeFrameWrapper a.closeFrame {
+			background-color: #000;
+			color: #fff;
+			display: block;
+			-webkit-border-radius: 4px;
+			-moz-border-radius: 4px;
+			border-radius: 4px;
+			font-size: 14px;
+			font-weight: bold;
+			padding: 2px 0;
+			text-align: center;
+			/*height: 16px;*/
+			width: 100px;
+		}
+			#bertaVideos #frameSettings a.closeFrame:hover {
+				text-decoration: none;
+				-moz-box-shadow: 0 0 8px #000;
+	  			-webkit-box-shadow: 0 0 8px #000;
+	  			box-shadow: 0 0 8px #000;
+			}
+			
+	#bertaVideos #frameSettings .togglePopupWrapper {
+		color: #999;
+		position: absolute;
+		left: 0; bottom: 0;
+	}
+		#bertaVideos #frameSettings .togglePopupWrapper input,
+		#bertaVideos #frameSettings .togglePopupWrapper label {
+			cursor: pointer;
 		}
 
 

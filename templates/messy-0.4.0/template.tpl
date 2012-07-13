@@ -370,6 +370,8 @@
             <p id="userCopyright" class="xEditableTA xProperty-siteFooter">{ $siteFooter }</p>
             <p id="bertaCopyright">{ bertaCopyright }</p>
         </div>
+        
+        { videoTutorials }
                 
         { include file="../_includes/inc.js_include.tpl" }
         
