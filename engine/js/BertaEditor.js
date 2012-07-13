@@ -140,28 +140,8 @@ var BertaEditor = new Class({
 					this.currentSection = this.entriesList.getClassStoredValue('xSection');
 					this.currentTag = this.entriesList.getClassStoredValue('xTag');
 
-					var bertaVideosBackground = new Element('div', {
-						id: 'bertaVideosBackground'
-					});
-
-					var links = new Array();
-					
-					links.push('<div id="bertaVideos"><div id="videoLinks"><div class="title"><span>More videos</span></div><div class="links">');
-					links.push('<a class="switchVideo selected" href="http://player.vimeo.com/video/29761450">Start making a website</a>'); 
-					links.push('<a class="switchVideo" href="http://player.vimeo.com/video/29761450">Adding video</a>');
-					links.push('<a class="switchVideo row-last" href="http://player.vimeo.com/video/29761450">Add Google analytics</a>');
-					links.push('<a class="switchVideo" href="http://player.vimeo.com/video/29761450">Edit CSS</a>');
-					links.push('<a class="switchVideo" href="http://player.vimeo.com/video/29761450">Add social media buttons</a>');
-					links.push('<a class="switchVideo row-last" href="http://player.vimeo.com/video/29761450">Add social media buttons</a>');
-					links.push('<br class="clear" /></div></div>');
-					links.push('<div id="frameSettings"><a class="closeFrame" href="#">Let\'s go!</a></div></div>');
-
-					linksHtml = links.join('');
-
-					var bertaVideosWrapper = new Element('div', {
-						html: linksHtml,
-						id: 'bertaVideosWrapper',
-						events: {
+					if($('bertaVideosWrapper')) {
+						$('bertaVideosWrapper').addEvents({
 							'click:relay(a.switchVideo)': function(event) {
 								event.stop();
 								var iframeEl = $('videoFrame');
@@ -174,19 +154,13 @@ var BertaEditor = new Class({
 								event.stop();
 								$('bertaVideosWrapper').destroy();
 								$('bertaVideosBackground').destroy();
+							},
+							'click:relay(.togglePopup)': function() {
+								console.log(this.get('checked'));
+/* 								Cookie.write('_berta_videos_hidden', 1); */
 							}
-						}
-					});
-
-					var videoFrame = new IFrame({
-						src: 'http://player.vimeo.com/video/29761450',
-						id: 'videoFrame'
-					});
-
-
-					bertaVideosBackground.inject(document.body);
-					bertaVideosWrapper.inject(document.body);
-					videoFrame.inject(bertaVideosWrapper.getElementById('bertaVideos'), 'top');
+						});
+					}
 					
 					if(this.currentSection) {
 						this.entriesList.getElements('.xEntry .xEntryEditWrap').addEvent('mouseenter', this.entryOnHover.bindWithEvent(this));
