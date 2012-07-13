@@ -50,7 +50,7 @@ function smarty_function_customEntryHeader($params, &$smarty) {
 					</li>						
 					<li>
 						<div class="customWidth">
-							<div title="$customWidth" class="xEditableRC xProperty-width">$customWidth</div>
+							<div title="$customWidth" class="xEditableRC xCSSUnits-1 xProperty-width">$customWidth</div>
 						</div>	
 					</li>								
 					<li>

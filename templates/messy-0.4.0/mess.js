@@ -105,6 +105,70 @@ var MessyMess = new Class({
 				}
 			});
 		}
+
+
+        // Centering
+        var container = $('contentContainer');
+        var centeredLayout = container.hasClass('xCentered') ? true : false;
+        
+        if(centeredLayout) {
+            var bottom = $('bottom');
+            var bottomRight = parseInt(bottom.getStyle('right'));
+            var fixedItems = container.getParent().getElements('.xFixed, .floating-banner');
+            var guidesWidth = ((window.getSize().x - container.getSize().x) / 2) >= 0 ? ((window.getSize().x - container.getSize().x) / 2) : 0;
+
+            if(fixedItems.length > 0) {
+                fixedItems.each(function(item) {
+                    var left = parseInt(item.getStyle('left'))
+                    var w = guidesWidth + left;
+                    item.store('initLeft', left);
+                    item.setStyle('left', w + 'px');
+                });
+            }
+
+            bottom.setStyle('right', guidesWidth + bottomRight + 'px');
+
+            window.addEvent('resize', function() {
+                var guidesWidth = ((window.getSize().x - container.getSize().x) / 2) >= 0 ? ((window.getSize().x - container.getSize().x) / 2) : 0;
+
+                if(fixedItems.length > 0) {
+                    fixedItems.each(function(item) {
+                        var w = guidesWidth + item.retrieve('initLeft');
+                        item.setStyle('left', w + 'px');
+                    });
+                }
+
+                bottom.setStyle('right', guidesWidth + bottomRight + 'px');
+            });
+
+            if(bertaGlobalOptions.environment == 'engine') {
+                document.body.setStyle('overflow-y', 'scroll');
+
+                var el1 = new Element('div', {
+                    'class': 'xCenteringGuide',
+                    'styles': {
+                        'left': 0,  
+                        'width': guidesWidth + 'px'
+                    }
+                });
+                var el2 = new Element('div', {
+                    'class': 'xCenteringGuide',
+                    'styles': {
+                        'right': 0,
+                        'width': guidesWidth + 'px'
+                    }
+                });
+
+                el1.inject(document.body, 'top');
+                el2.inject(document.body, 'top'); 
+
+                window.addEvent('resize', function() {
+                    var guidesWidth = (window.getSize().x - container.getSize().x) / 2;
+                    el1.setStyle('width', guidesWidth + 'px');
+                    el2.setStyle('width', guidesWidth + 'px');
+                });
+            }
+        }
 	},
 	
 	onLoad: function() {
@@ -169,7 +233,6 @@ var MessyMess = new Class({
     	    	itemSelector: '.box'
 		    });
 		}
-
 	},
 	
 	stickToBottom: function(){

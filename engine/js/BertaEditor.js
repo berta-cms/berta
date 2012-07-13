@@ -139,6 +139,29 @@ var BertaEditor = new Class({
 				
 					this.currentSection = this.entriesList.getClassStoredValue('xSection');
 					this.currentTag = this.entriesList.getClassStoredValue('xTag');
+
+					if($('bertaVideosWrapper')) {
+						$('bertaVideosWrapper').addEvents({
+							'click:relay(a.switchVideo)': function(event) {
+								event.stop();
+								var iframeEl = $('videoFrame');
+								var videoLinks = $('videoLinks').getElements('a.switchVideo');
+								iframeEl.set('src', this.get('href'));
+								videoLinks.removeClass('selected');
+								event.target.addClass('selected');
+							},
+							'click:relay(a.closeFrame)': function(event) {
+								event.stop();
+								$('bertaVideosWrapper').destroy();
+								$('bertaVideosBackground').destroy();
+							},
+							'click:relay(.togglePopup)': function(event) {
+								this.toggleVideos(event);
+							}.bind(this)
+						});
+
+						Cookie.write('_berta_videos_hidden', 1);
+					}
 					
 					if(this.currentSection) {
 						this.entriesList.getElements('.xEntry .xEntryEditWrap').addEvent('mouseenter', this.entryOnHover.bindWithEvent(this));
@@ -665,9 +688,13 @@ var BertaEditor = new Class({
 			if (mainColumn) {
 				mainColumn_margin_padding = parseInt(mainColumn.getStyle('padding-left')) + parseInt(mainColumn.getStyle('margin-left'));
 			}
-		
-			var dropdownBoxLeftPos = dropdownPos.x - dropdownBoxSize.width + parseInt(dropdownSize.x/2+1)  - mainColumn_margin_padding - entryPos;
-		
+
+            if(this.container.hasClass('xCentered') && !(entry.getParent().hasClass('xFixed'))) {
+                var dropdownBoxLeftPos = dropdownPos.x - dropdownBoxSize.width + parseInt(dropdownSize.x/2+1) - mainColumn_margin_padding - entryPos - ((window.getSize().x - this.container.getSize().x) / 2);
+            } else {
+                var dropdownBoxLeftPos = dropdownPos.x - dropdownBoxSize.width + parseInt(dropdownSize.x/2+1) - mainColumn_margin_padding - entryPos;
+            }
+
 			dropdownBox.setStyle('left', dropdownBoxLeftPos + 'px');
 		}else{
 			dropdown.removeClass('xEntryDropdowHover');
@@ -721,7 +748,43 @@ var BertaEditor = new Class({
                 subMenu.removeClass('xSaving');
             }.bind(this)
         }).post();
-    }
+    },
+
+    toggleVideos: function(event) {
+		if(this.processHandler.isIdleOrWarnIfBusy()) {
+			event.stop();
+			var el = event.target;
+
+			var value = el.get('checked') == true ? 'yes' : 'no';
+			var property = el.getClassStoredValue('xProperty');
+
+			var elParent = el.getParent();
+			elParent.addClass('xSavingAtLarge');
+			
+			var processId = this.unlinearProcess_getId('toggle-videos');
+			this.unlinearProcess_start(processId, 'Toggling tutorial videos');
+			
+			new Request.JSON({
+				url: this.options.updateUrl, 
+				data: "json=" + JSON.encode({
+					value: value, property: property
+				}),
+				onComplete: function(resp, entryInfo, deleteLink, eText) { 
+					if(!resp) {
+						alert('Berta says, there was a server error while deleting this entry! Something has gone sooooo wrong...');
+					
+					} else if(resp && !resp.error_message) {
+						this.unlinearProcess_stop(processId);
+						value == 'yes' ? el.set('checked', true) : el.set('checked', false);
+						elParent.removeClass('xSavingAtLarge');
+					} else {
+						alert(resp.error_message);
+						elParent.removeClass('xSavingAtLarge');
+					}
+				}.bindWithEvent(this)
+			}).post();
+		}
+	},
 
 
 });
