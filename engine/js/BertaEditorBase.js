@@ -394,8 +394,14 @@ var BertaEditorBase = new Class({
 						    }					
 						});								
 						
-						xGuideLineX.inject(document.body);				
-						xGuideLineY.inject(document.body);
+						xGuideLineX.inject(document.body);
+						if(document.body.getElement('#contentContainer.xCentered') && el.hasClass('xFixed') == false && el.hasClass('floating-banner') == false) {	
+							xGuideLineY.inject(document.body.getElement('#contentContainer'));
+						} else if(document.body.getElement('#allContainer.xCentered') && el.hasClass('xFixed') == false && el.hasClass('floating-banner') == false) {
+							xGuideLineY.inject(document.body.getElement('#allContainer'));
+						} else {
+							xGuideLineY.inject(document.body);
+						}
 						self.drawGuideLines(el, xGuideLineX, xGuideLineY);	
 					},
 					mouseleave: function(event){
@@ -482,13 +488,23 @@ var BertaEditorBase = new Class({
 				       	var editor = this;
 
 				       	if (dragAll){			       	
-							allEntries.each(function(entry){
-								var value = parseInt(entry.getStyle('left')) + ',' + parseInt(entry.getStyle('top'));
+							allEntries.each(function(entry) {
+								if(this.container.hasClass('xCentered') && (entry.hasClass('xFixed') || entry.hasClass('floating-banner'))) {
+						    		var left = parseInt(entry.getStyle('left')) - (window.getSize().x - this.container.getSize().x) / 2;
+						    	} else {
+						    		var left = parseInt(entry.getStyle('left'));
+						    	}
+								var value = left + ',' + parseInt(entry.getStyle('top'));
 								editor.elementEdit_save(null, entry, null, null, value, value);							
-							});				       	
+							}.bind(this));				       	
 				       		
 					    }else{
-							var value = parseInt(el.getStyle('left')) + ',' + parseInt(el.getStyle('top'));
+					    	if(this.container.hasClass('xCentered') && (el.hasClass('xFixed') || el.hasClass('floating-banner'))) {
+					    		var left = parseInt(el.getStyle('left')) - (window.getSize().x - this.container.getSize().x) / 2;
+					    	} else {
+					    		var left = parseInt(el.getStyle('left'));
+					    	}
+							var value = left + ',' + parseInt(el.getStyle('top'));
 							this.elementEdit_save(null, el, null, null, value, value);
 						}
 						dragAll = false;
@@ -558,8 +574,16 @@ var BertaEditorBase = new Class({
 				var entry = el.getParent('.xEntry');
 				if (value=="1"){
 					entry.addClass('xFixed');
+					if(this.container.hasClass('xCentered')) {
+						var left = parseInt(entry.getStyle('left')) + (window.getSize().x - this.container.getSize().x) / 2;
+		                entry.setStyle('left', left + 'px');
+		            }
 				}else{
 					entry.removeClass('xFixed');
+					if(this.container.hasClass('xCentered')) {
+						var left = parseInt(entry.getStyle('left')) - (window.getSize().x - this.container.getSize().x) / 2;
+		                entry.setStyle('left', left + 'px');
+		            }
 				}
 			}
 			

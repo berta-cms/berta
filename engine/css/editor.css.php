@@ -24,7 +24,104 @@ if(!1) { ?><style type="text/css"><? } ?>
 }
 body.xEditorEnabled { }
 
+#bertaVideosBackground {
+	background-color: #fff;
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=60)";
+	filter: alpha(opacity=60);
+	-webkit-opacity: 0.6;
+	-moz-opacity: 0.6;
+	opacity: 0.6;
+	position: fixed;
+	height: 100%;
+	width: 100%;
+	z-index: 60000;
+}
 
+#bertaVideosWrapper {
+	background-color: #eee;
+	-moz-box-shadow: 0 0 10px 5px #bdbdbd;
+	-webkit-box-shadow: 0 0 10px 5px #bdbdbd;
+	box-shadow: 0 0 10px 5px #bdbdbd;
+	margin: -232px 0 0 -279px;
+	padding: 15px;
+	position: fixed;
+	top: 50%; left: 50%;
+	height: 435px;
+	width: 528px;
+	z-index: 60000;
+}
+
+#bertaVideos {
+	position: relative;
+	height: 100%;
+	width: 100%;
+}
+
+	#bertaVideos #videoFrame {
+		border: none;
+		margin-bottom: 12px;
+		height: 300px;
+		width: 528px;
+	}
+	
+	#bertaVideos #videoLinks .title {
+		font-weight: bold;
+		margin-bottom: 3px;
+	}
+	
+	#bertaVideos #videoLinks .links a {
+		background: url('../layout/berta_video_button_normal.png') no-repeat 0 4px;
+		color: #212121;
+		display: block;
+		float: left;
+		padding-left: 22px;
+		margin-right: 15px;
+		height: 22px;
+		width: 144px;
+	}
+		#bertaVideos #videoLinks .links a.selected {
+			background-image: url('../layout/berta_video_button_active.png');
+			color: #999;
+			text-decoration: underline;
+		}
+		#bertaVideos #videoLinks .links a.row-last {
+			margin-right: 0;
+		}
+
+	#bertaVideos #frameSettings .closeFrameWrapper {
+		position: absolute;
+		right: 0; bottom: 0;
+	}
+		#bertaVideos #frameSettings .closeFrameWrapper a.closeFrame {
+			background-color: #000;
+			color: #fff;
+			display: block;
+			-webkit-border-radius: 4px;
+			-moz-border-radius: 4px;
+			border-radius: 4px;
+			font-size: 14px;
+			font-weight: bold;
+			padding: 2px 0;
+			text-align: center;
+			/*height: 16px;*/
+			width: 100px;
+		}
+			#bertaVideos #frameSettings a.closeFrame:hover {
+				text-decoration: none;
+				-moz-box-shadow: 0 0 8px #000;
+	  			-webkit-box-shadow: 0 0 8px #000;
+	  			box-shadow: 0 0 8px #000;
+			}
+			
+	#bertaVideos #frameSettings .togglePopupWrapper {
+		color: #999;
+		position: absolute;
+		left: 0; bottom: 0;
+	}
+		#bertaVideos #frameSettings .togglePopupWrapper input,
+		#bertaVideos #frameSettings .togglePopupWrapper label {
+			cursor: pointer;
+		}
 
 
 /* middle-align containers ------------------------------------------------------------------------------------------- */	
