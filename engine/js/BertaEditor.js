@@ -159,9 +159,8 @@ var BertaEditor = new Class({
 								this.toggleVideos(event);
 							}.bind(this)
 						});
-
-						Cookie.write('_berta_videos_hidden', 1);
 					}
+					Cookie.write('_berta_videos_hidden', 1);
 					
 					if(this.currentSection) {
 						this.entriesList.getElements('.xEntry .xEntryEditWrap').addEvent('mouseenter', this.entryOnHover.bindWithEvent(this));
