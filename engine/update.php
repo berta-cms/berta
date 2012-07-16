@@ -344,8 +344,8 @@ if($jsonRequest) {
 				if(!$returnError) {
 					if($propPath[0] == 'siteTexts' || !empty($settings->settingsDefinition[$propPath[0]][$propPath[1]])) {
 						$decoded['value'] = trim($decoded['value']);
-						
-						if($decoded['params'] == 'delete') {
+
+						if(isset($decoded['params']) && $decoded['params'] == 'delete') {
 							$decoded['value'] = '';
 							$format = $settings->getDefinitionParam($propPath[0], $propPath[1], 'format');
 							if($propPath[0] == 'siteTexts' && !$format) $format = 'image';
