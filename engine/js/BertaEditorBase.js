@@ -117,8 +117,7 @@ var BertaEditorBase = new Class({
 			totalWidth += parseInt(editorMenu.getStyle('padding-left')) + parseInt(editorMenu.getStyle('padding-right')) + 1;
 
 			new Fx.Slide(this.newsTickerContainer, { duration: 800, transition: Fx.Transitions.Quint.easeInOut }).show().slideOut();
-			topPanel.set('tween', {duration: 800, transition: Fx.Transitions.Quint.easeInOut });
-			topPanel.tween('width', totalWidth + 'px');
+			topPanel.set('tween', {duration: 800, transition: Fx.Transitions.Quint.easeInOut }).tween('width', topPanel.getSize().x + 1 + 'px', totalWidth + 'px');
 
 			Cookie.write('_berta_newsticker_hidden', 1 /*,{ domain: window.location.host, path: window.location.pathname }*/);
 		}
