@@ -114,7 +114,7 @@ var BertaEditorBase = new Class({
 			editorMenu.getElements('li').each(function(el) {
 				totalWidth += el.getSize().x;
 			});
-			totalWidth += parseInt(editorMenu.getStyle('padding-left')) + parseInt(editorMenu.getStyle('padding-right'));
+			totalWidth += parseInt(editorMenu.getStyle('padding-left')) + parseInt(editorMenu.getStyle('padding-right')) + 1;
 
 			new Fx.Slide(this.newsTickerContainer, { duration: 800, transition: Fx.Transitions.Quint.easeInOut }).show().slideOut();
 			topPanel.set('tween', {duration: 800, transition: Fx.Transitions.Quint.easeInOut });
