@@ -99,6 +99,9 @@ var BertaEditor = new Class({
 		this.edittingMode = $$('body')[0].get('x_mode');
 		if(!this.edittingMode) this.edittingMode = 'entries';
 		
+		// init news ticker
+		this.initNewsTicker();
+
 		switch(this.edittingMode) {
 						
 			case 'settings':
@@ -134,33 +137,18 @@ var BertaEditor = new Class({
 				
 				// section background editing
 				if($('xBgEditorPanelTrig')) $('xBgEditorPanelTrig').addEvent('click', this.onBgEditClick.bindWithEvent(this));
+
+				if(this.newsTickerContainer) {
+					this.hideNewsTicker.delay(7000);
+				}
+
+				// Tutorial videos
+				this.bertaVideosInit();	
 				
 				if(this.entriesList) {
 				
 					this.currentSection = this.entriesList.getClassStoredValue('xSection');
-					this.currentTag = this.entriesList.getClassStoredValue('xTag');
-
-					if($('bertaVideosWrapper')) {
-						$('bertaVideosWrapper').addEvents({
-							'click:relay(a.switchVideo)': function(event) {
-								event.stop();
-								var iframeEl = $('videoFrame');
-								var videoLinks = $('videoLinks').getElements('a.switchVideo');
-								iframeEl.set('src', this.get('href'));
-								videoLinks.removeClass('selected');
-								event.target.addClass('selected');
-							},
-							'click:relay(a.closeFrame)': function(event) {
-								event.stop();
-								$('bertaVideosWrapper').destroy();
-								$('bertaVideosBackground').destroy();
-							},
-							'click:relay(.togglePopup)': function(event) {
-								this.toggleVideos(event);
-							}.bind(this)
-						});
-					}
-					Cookie.write('_berta_videos_hidden', 1);
+					this.currentTag = this.entriesList.getClassStoredValue('xTag');								
 					
 					if(this.currentSection) {
 						this.entriesList.getElements('.xEntry .xEntryEditWrap').addEvent('mouseenter', this.entryOnHover.bindWithEvent(this));
@@ -234,19 +222,7 @@ var BertaEditor = new Class({
 				}
 				break;
 		} 
-		
-		// init news ticker
-		this.newsTickerContainer = $('xNewsTickerContainer');
-		if(this.newsTickerContainer) {
-			this.newsTickerContainer.getElement('a.close').addEvent('click', function(event) {
-				event.stop();
-				new Fx.Slide(this.newsTickerContainer, { duration: 800, transition: Fx.Transitions.Quint.easeInOut }).show().slideOut();
-				this.newsTickerContainer.addClass('xNewsTickerHidden');
-				Cookie.write('_berta_newsticker_hidden', 1);
-			}.bind(this));
-			
-			this.hideNewsTicker.delay(7000);
-		}
+
 	},
 	
 	
@@ -255,15 +231,7 @@ var BertaEditor = new Class({
 	},
 	
 	
-	// Hide news ticker function
-	hideNewsTicker: function() {
-		this.newsTickerContainer = $('xNewsTickerContainer');
-		if(!this.newsTickerContainer.hasClass('xNewsTickerHidden')) {
-			new Fx.Slide(this.newsTickerContainer, { duration: 800, transition: Fx.Transitions.Quint.easeInOut }).show().slideOut();
-			this.newsTickerContainer.addClass('xNewsTickerHidden');
-			Cookie.write('_berta_newsticker_hidden', 1);
-		}
-	},
+	
 	  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	 ///|  INIT  |/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -749,7 +717,45 @@ var BertaEditor = new Class({
         }).post();
     },
 
-    toggleVideos: function(event) {
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ///|  Tutorial videos  |//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    bertaVideosInit: function(event) {
+		if($('bertaVideosWrapper')) {
+			var videosContainer = $('bertaVideosWrapper');
+			var videosBackground = $('bertaVideosBackground');
+			var videoFrame = $('videoFrame');
+			var videoLinks = $('videoLinks').getElements('a.switchVideo');
+
+			videosContainer.addEvents({
+				'click:relay(a.switchVideo)': function(event) {
+					event.stop();
+					videoFrame.set('src', this.get('href'));
+					videoLinks.removeClass('selected');
+					event.target.addClass('selected');
+				},
+				'click:relay(a.closeFrame)': function(event) {
+					event.stop();
+					videosContainer.destroy();
+					videosBackground.destroy();
+				},
+				'click:relay(.togglePopup)': function(event) {
+					this.toggleVideos(event);
+				}.bind(this)
+			});
+			window.addEvent('keydown', function(event) {
+				if(event.key == 'esc') {
+					videosContainer.destroy();
+					videosBackground.destroy();
+				}
+			});
+		}
+		Cookie.write('_berta_videos_hidden', 1);
+	},
+
+	toggleVideos: function(event) {
 		if(this.processHandler.isIdleOrWarnIfBusy()) {
 			event.stop();
 			var el = event.target;
@@ -768,10 +774,9 @@ var BertaEditor = new Class({
 				data: "json=" + JSON.encode({
 					value: value, property: property
 				}),
-				onComplete: function(resp, entryInfo, deleteLink, eText) { 
+				onComplete: function(resp) { 
 					if(!resp) {
-						alert('Berta says, there was a server error while deleting this entry! Something has gone sooooo wrong...');
-					
+						alert('An error occured while toggling the tutorial video window state. Something has gone wrong!');
 					} else if(resp && !resp.error_message) {
 						this.unlinearProcess_stop(processId);
 						value == 'yes' ? el.set('checked', true) : el.set('checked', false);
@@ -783,7 +788,7 @@ var BertaEditor = new Class({
 				}.bindWithEvent(this)
 			}).post();
 		}
-	},
+	}
 
 
 });

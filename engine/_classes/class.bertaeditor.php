@@ -703,7 +703,7 @@ DOC;
 	}
 	
 	public static function getTopPanelHTML($selectedSection = 'site') {
-		$tickerClass = !empty($_COOKIE['_berta_newsticker_hidden']) ? 'xHidden' : '';
+		// $tickerClass = !empty($_COOKIE['_berta_newsticker_hidden']) ? 'xHidden' : '';
 
 		$newsTickerContent = false;
 		
@@ -730,9 +730,9 @@ DOC;
 			}
 		}
 
-		if(!$newsTickerContent) {
-			$tickerClass = 'xHidden';
-		}
+		// if(!$newsTickerContent) {
+		// 	$tickerClass = 'xHidden';
+		// }
 
 		$m1 = I18n::_('my site');
 		$m2 = I18n::_('sections');
@@ -749,7 +749,7 @@ DOC;
 
 		$m5_link=self::$options['HOSTING_PROFILE']?self::$options['HOSTING_PROFILE']:'profile.php';
 
-		$str = <<<DOC
+		$str_start = <<<DOC
 			<div id="xTopPanelContainer" class="xPanel">
 				<div id="xTopPanelSlideIn"><span title="show menu">▼</span></div>
 				<div id="xTopPanel">	
@@ -762,15 +762,24 @@ DOC;
 						<li$m5Class><a href="$m5_link">$m5</a></li><li>|</li>
 						<li><a href="logout.php">$m6</a></li>
 					</ul>
-					<div id="xNewsTickerContainer" class="$tickerClass">
+DOC;
+
+		$str_ticker = <<<DOC
+					<div id="xNewsTickerContainer">
 						<div class="news-ticker-content">$newsTickerContent</div>
 						<a href="#" class="close">X</a>
 						<br class="clear" />
 					</div>
+DOC;
+
+		$str_end = <<<DOC
 				</div>
 			</div>
 DOC;
 		
+
+		$str = $str_start . (empty($_COOKIE['_berta_newsticker_hidden']) ? $str_ticker : '') . $str_end;
+
 		return $str;
 	}
 	
