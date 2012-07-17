@@ -122,6 +122,10 @@ body.xEditorEnabled { }
 		#bertaVideos #frameSettings .togglePopupWrapper label {
 			cursor: pointer;
 		}
+		
+	#bertaVideos #videosError {
+		text-align: center;
+	}
 
 
 /* middle-align containers ------------------------------------------------------------------------------------------- */	
