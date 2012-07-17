@@ -675,12 +675,13 @@ class BertaEditor extends BertaContent {
 				foreach ($videosList['video'] as $k => $v) {
 					$links .= '<a class="switchVideo' . (($k+1)%3 == 0 ? ' row-last' : '') . ($k == 0 ? ' selected' : '') . '" href="' . $v['uri'] . '">' . $v['name'] . '</a>';
 				}
+				$firstLink = $videosList['video'][0]['uri'];
 							
 				$str = <<<DOC
 					<div id="bertaVideosBackground"></div>
 					<div id="bertaVideosWrapper">
 						<div id="bertaVideos">
-							<iframe id="videoFrame" src="http://player.vimeo.com/video/29761450" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
+							<iframe id="videoFrame" src="$firstLink" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
 							<div id="videoLinks">
 								<div class="title"><span>More videos</span></div>
 								<div class="links">
