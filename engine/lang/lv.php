@@ -332,6 +332,7 @@ return array(
 	'mobile_device_detected' => 'Labot lapas saturu ar šo mobilo ierīci nav iespējams!',
 	'javascript_include' => 'Javascript kods, kurš tiks iekļauts tieši pirms &lt;/body&gt; elementa. Uzzini vairāk kā <a href="https://github.com/berta-cms/berta/wiki/Include-JavaScript-code" target="_blank" title="How to include JavaScript code">iekļaut JavaScript kodu.</a>',
     'description_custom_css' => 'Ievietojiet savu CSS kodu šeit. Iepriekš eksistējošas CSS definīcijas tiks pārrakstītas. Vairāk informācijai apskatiet mūsu <a href="https://github.com/berta-cms/berta/wiki/Add-custom-CSS" target="_blank">WIKI</a>.',
+/*
     '' => '',
 	'' => '',
 	'' => '',
@@ -350,6 +351,15 @@ return array(
 	'' => '',
 	'' => '',
 	'' => ''
+*/
+
+	// Videos panel & newsticker
+	'To enable Berta\'s tutorial videos, your computer needs to be connected to the internet!<br />When the internet access is enabled, sign out of engine panel and log in again to view the videos.' => 'Lai skatītu Bertas pamācību video, Jūsu datoram nepieciešama interneta pieeja.<br />Kad dators pieslēgts pie interneta, izlogojieties no <em>engine</em> paneļa un ielogojieties no jauna.',
+	'Show this window on startup' => 'Vienmēr rādīt šo logu pēc ielogošanās',
+	'Let\'s go!' => 'Aiziet!',
+	
+	'To enable Berta\'s news ticker, your computer needs to be connected to the internet!' => 'Lai redzētu Bertas jaunumus, Jūsu datoram nepieciešama interneta pieeja!',
+
 
 )
 
