@@ -727,7 +727,7 @@ var BertaEditor = new Class({
 			var videosContainer = $('bertaVideosWrapper');
 			var videosBackground = $('bertaVideosBackground');
 			var videoFrame = $('videoFrame');
-			var videoLinks = $('videoLinks').getElements('a.switchVideo');
+			var videoLinks = $('videoLinks') ? $('videoLinks').getElements('a.switchVideo') : new Array();
 
 			videosContainer.addEvents({
 				'click:relay(a.switchVideo)': function(event) {

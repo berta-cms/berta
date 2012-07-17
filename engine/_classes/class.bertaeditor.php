@@ -658,46 +658,75 @@ class BertaEditor extends BertaContent {
 				$remoteResult = BertaUtils::getRemoteFile($remoteURL, 'videos', 5);
 			}
 			
-			if($remoteResult || isset($remoteResult['content'])) {
-				$videosList = $remoteResult['content'];
-			}
-			
-			$links = '';
-			foreach ($videosList['video'] as $k => $v) {
-				$links .= '<a class="switchVideo' . (($k+1)%3 == 0 ? ' row-last' : '') . ($k == 0 ? ' selected' : '') . '" href="' . $v['uri'] . '">' . $v['name'] . '</a>';
-			}
-			
 			global $berta;
 			$showVideos = isset($berta->settings->settings['settings']['showTutorialVideos']) ? $berta->settings->settings['settings']['showTutorialVideos'] : $berta->settings->settingsDefinition['settings']['showTutorialVideos']['default'];
-
+	
 			// $checked = isset($_COOKIE['_berta_viedeos_hidden']) ? '' : 'checked="checked"';
 			$checked = $showVideos == 'yes' ? 'checked="checked"' : '';
-						
-			$str = <<<DOC
-				<div id="bertaVideosBackground"></div>
-				<div id="bertaVideosWrapper">
-					<div id="bertaVideos">
-						<iframe id="videoFrame" src="http://player.vimeo.com/video/29761450" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
-						<div id="videoLinks">
-							<div class="title"><span>More videos</span></div>
-							<div class="links">
-								$links
-								<br class="clear" />
+			
+			$toggleFrame_msg = I18n::_('Show this window on startup');
+			$closeFrame_msg = I18n::_('Let\'s go!');
+			
+			if($remoteResult || isset($remoteResult['content'])) {
+			
+				$videosList = $remoteResult['content'];
+			
+				$links = '';
+				foreach ($videosList['video'] as $k => $v) {
+					$links .= '<a class="switchVideo' . (($k+1)%3 == 0 ? ' row-last' : '') . ($k == 0 ? ' selected' : '') . '" href="' . $v['uri'] . '">' . $v['name'] . '</a>';
+				}
+							
+				$str = <<<DOC
+					<div id="bertaVideosBackground"></div>
+					<div id="bertaVideosWrapper">
+						<div id="bertaVideos">
+							<iframe id="videoFrame" src="http://player.vimeo.com/video/29761450" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
+							<div id="videoLinks">
+								<div class="title"><span>More videos</span></div>
+								<div class="links">
+									$links
+									<br class="clear" />
+								</div>
 							</div>
-						</div>
-						<div id="frameSettings">
-							<div class="togglePopupWrapper">
-								<input type="checkbox" class="togglePopup xProperty-settings/showTutorialVideos" id="togglePopup" $checked  />
-								<label for="togglePopup">Show this window on startup</label>
-							</div>
-							<div class="closeFrameWrapper">
-								<a class="closeFrame" href="#">Let's go!</a>
+							<div id="frameSettings">
+								<div class="togglePopupWrapper">
+									<input type="checkbox" class="togglePopup xProperty-settings/showTutorialVideos" id="togglePopup" $checked  />
+									<label for="togglePopup">$toggleFrame_msg</label>
+								</div>
+								<div class="closeFrameWrapper">
+									<a class="closeFrame" href="#">$closeFrame_msg</a>
+								</div>
 							</div>
 						</div>
 					</div>
-				</div>
 DOC;
 
+			} else {
+			
+				$error_msg = I18n::_('To enable Berta\'s tutorial videos, your computer needs to be connected to the internet!<br />When the internet access is enabled, sign out of engine panel and log in again to view the videos.');
+			
+				$str = <<<DOC
+					<div id="bertaVideosBackground"></div>
+					<div id="bertaVideosWrapper">
+						<div id="bertaVideos">
+							<div id="videosError">
+								$error_msg
+							</div>
+							<div id="frameSettings">
+								<div class="togglePopupWrapper">
+									<input type="checkbox" class="togglePopup xProperty-settings/showTutorialVideos" id="togglePopup" $checked  />
+									<label for="togglePopup">$toggleFrame_msg</label>
+								</div>
+								<div class="closeFrameWrapper">
+									<a class="closeFrame" href="#">$closeFrame_msg</a>
+								</div>
+							</div>
+						</div>
+					</div>			
+DOC;
+
+			}
+			
  			return $str;
 		}
 	}
@@ -724,6 +753,9 @@ DOC;
 				if($remoteResult && isset($remoteResult['content'])) {
 					$newsTickerContent = $_SESSION['_berta_newsticker'] = $remoteResult['content'];
 					setcookie('_berta_newsticker', $remoteResult['content']);
+				} else {
+					$newsTickerContent = $_SESSION['_berta_newsticker'] = I18n::_('To enable Berta\'s news ticker, your computer needs to be connected to the internet!');
+					setcookie('_berta_newsticker', $newsTickerContent);
 				}
 				
 				$_SESSION['_berta_newsticker_numtries'] = !empty($_SESSION['_berta_newsticker_numtries']) ? ++$_SESSION['_berta_newsticker_numtries'] : 1;
