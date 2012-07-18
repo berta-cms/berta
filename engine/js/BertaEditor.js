@@ -752,7 +752,7 @@ var BertaEditor = new Class({
 				}
 			});
 		}
-		Cookie.write('_berta_videos_hidden', 1);
+		// Cookie.write('_berta_videos_hidden', 1);
 	},
 
 	toggleVideos: function(event) {
