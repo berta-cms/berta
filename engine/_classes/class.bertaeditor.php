@@ -665,7 +665,7 @@ class BertaEditor extends BertaContent {
 			$checked = $showVideos == 'yes' ? 'checked="checked"' : '';
 			
 			$toggleFrame_msg = I18n::_('Show this window on startup');
-			$closeFrame_msg = I18n::_('Let\'s go!');
+			$closeFrame_msg = I18n::_('Close');
 			
 			if($remoteResult || isset($remoteResult['content'])) {
 			
@@ -676,12 +676,15 @@ class BertaEditor extends BertaContent {
 					$links .= '<a class="switchVideo' . (($k+1)%3 == 0 ? ' row-last' : '') . ($k == 0 ? ' selected' : '') . '" href="' . $v['uri'] . '">' . $v['name'] . '</a>';
 				}
 				$firstLink = $videosList['video'][0]['uri'];
-							
+					// <img id="videoLoader" src="layout/loader.gif" alt="Loading..." />	
 				$str = <<<DOC
 					<div id="bertaVideosBackground"></div>
 					<div id="bertaVideosWrapper">
 						<div id="bertaVideos">
-							<iframe id="videoFrame" src="$firstLink" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
+							<div id="videoFrameWrapper">
+								
+								<iframe id="videoFrame" src="$firstLink?api=1" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
+							</div>
 							<div id="videoLinks">
 								<div class="title"><span>More videos</span></div>
 								<div class="links">
