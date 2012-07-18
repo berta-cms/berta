@@ -57,13 +57,18 @@ body.xEditorEnabled { }
 	width: 100%;
 }
 
-	#bertaVideos #videoFrame {
-		border: none;
+	#bertaVideos #videoFrameWrapper {
+		background: url('../layout/loader.gif') no-repeat center;
 		margin-bottom: 12px;
-		height: 300px;
-		width: 528px;
 	}
-	
+
+		#bertaVideos #videoFrameWrapper iframe#videoFrame {
+			border: none;
+			height: 300px;
+			width: 528px;
+		}
+			
+
 	#bertaVideos #videoLinks .title {
 		font-weight: bold;
 		margin-bottom: 3px;
