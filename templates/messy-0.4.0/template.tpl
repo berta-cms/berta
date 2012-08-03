@@ -368,7 +368,9 @@
         
         <div id="bottom">
             <p id="userCopyright" class="xEditableTA xProperty-siteFooter">{ $siteFooter }</p>
-            <p id="bertaCopyright">{ bertaCopyright }</p>
+            { if !($berta.settings.settings.hideBertaCopyright=='yes' && $berta.hostingPlan>1) }
+                <p id="bertaCopyright">{ bertaCopyright }</p>
+            { /if }
         </div>
         
         { if $berta.settings.settings.showTutorialVideos == 'yes' && !$smarty.cookies._berta_videos_hidden }{ videoTutorials }{ /if }
