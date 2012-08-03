@@ -122,4 +122,18 @@ if(@file_exists($SITE_ROOT .'_plugin_shop/inc.settings.php')) {
 	include($SITE_ROOT .'_plugin_shop/inc.settings.php');
 }
 
+//special settings for hosted sites (nothing special)
+if(@file_exists($ENGINE_ROOT .'plan')) {
+	$hostingPlan = file_get_contents($ENGINE_ROOT . 'plan');
+
+	//settings for PRO and SHOP hosting plans
+	if ($hostingPlan>1){
+		$settingsDefinition['settings']['hideBertaCopyright'] =	array('format' => 'select', 'default' => 'no', 'values' => array('yes', 'no'), 'title' => I18n::_('Hide copyrights'), 'description' => I18n::_('Hides Berta\'s copyrights'));
+	}
+
+	
+	
+}
+
+
 ?>

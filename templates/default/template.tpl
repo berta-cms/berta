@@ -163,7 +163,9 @@
 			</ol>
 
 			<div class="footer xEditableTA xProperty-siteFooter">{ $siteFooter }</div>
-			<div class="bertaCopyright">{ bertaCopyright }</div>
+			{ if !($berta.settings.settings.hideBertaCopyright=='yes' && $berta.hostingPlan>1) }
+				<div class="bertaCopyright">{ bertaCopyright }</div>
+			{ /if }
 		</div>
 
 		{section name=foo loop=10}

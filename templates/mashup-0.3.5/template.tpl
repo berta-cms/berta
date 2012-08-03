@@ -96,7 +96,9 @@
 			</div>
 			<div id="sideColumnBottom">
 				<p id="userCopyright" class="xEditableTA xProperty-siteFooter">{ $siteFooter }</p>
-				<p id="bertaCopyright">{ bertaCopyright }</p>
+				{ if !($berta.settings.settings.hideBertaCopyright=='yes' && $berta.hostingPlan>1) }
+					<p id="bertaCopyright">{ bertaCopyright }</p>
+				{ /if }			
 			</div>
 		</div>
 

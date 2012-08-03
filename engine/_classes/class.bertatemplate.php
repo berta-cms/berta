@@ -229,6 +229,13 @@ class BertaTemplate extends BertaBase {
 		$vars['berta']['templateName'] = $this->name;
 		$vars['berta']['options'] =& self::$options;
 
+		$hostingPlan = false;
+		if(@file_exists(self::$options['ENGINE_ROOT'] .'plan')) {
+			$hostingPlan = file_get_contents(self::$options['ENGINE_ROOT'] . 'plan');
+		}
+		$vars['berta']['hostingPlan'] = $hostingPlan;
+
+
 		if ( isset($_SESSION['_berta_msg']) ){
 			$vars['berta']['msg'] = $_SESSION['_berta_msg'];
 			unset( $_SESSION['_berta_msg'] );
