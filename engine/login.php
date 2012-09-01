@@ -1,4 +1,4 @@
-<?
+<?php
 define('AUTH_AUTHREQUIRED', false);
 define('SETTINGS_INSTALLREQUIRED', false);
 define('BERTA_ENVIRONMENT', 'engine');
@@ -53,11 +53,11 @@ if($auth_action == "login" && !$errStr) {
 <!--[if (gt IE 9)|!(IE)]><!--> <html> <!--<![endif]-->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title><? echo $berta->settings->get('texts', 'page-title') ?> / login</title>
-<link href="<? echo $ENGINE_ABS_ROOT ?>css/default.css" rel="stylesheet" type="text/css" />
-<link href="<? echo $ENGINE_ABS_ROOT ?>css/login.css" rel="stylesheet" type="text/css" />
-<link href="<? echo $ENGINE_ABS_ROOT ?>css/editor.css.php" rel="stylesheet" type="text/css" />
-<? include 'inc.header_default_scripts.php' ?>
+<title><?php echo $berta->settings->get('texts', 'page-title') ?> / login</title>
+<link href="<?php echo $ENGINE_ABS_ROOT ?>css/default.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo $ENGINE_ABS_ROOT ?>css/login.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo $ENGINE_ABS_ROOT ?>css/editor.css.php" rel="stylesheet" type="text/css" />
+<?php include 'inc.header_default_scripts.php' ?>
 <script type="text/javascript">
 	window.addEvent('domready', function() {
 		$('auth_user').focus();
@@ -71,21 +71,21 @@ if($auth_action == "login" && !$errStr) {
 	<div class="xMAlign-container xPanel">
 		<div class="xMAlign-outer">
 			<div class="xMAlign-inner">
-				<form name="xLoginForm" action="<? echo $ENGINE_ABS_ROOT ?>login.php" method="post">
+				<form name="xLoginForm" action="<?php echo $ENGINE_ABS_ROOT ?>login.php" method="post">
                     <div class="xLoginLogo">
-                        <img src="<? echo $ENGINE_ABS_ROOT ?>layout/berta.png" alt="berta v <? echo BertaBase::$options['version'] ?>" />
+                        <img src="<?php echo $ENGINE_ABS_ROOT ?>layout/berta.png" alt="berta v <?php echo BertaBase::$options['version'] ?>" />
                     </div>
-					<? if($errStr) { ?>
-					 	<div class="xLoginError"><? echo $errStr ?></div>
-					<? } ?>
+					<?php if($errStr) { ?>
+					 	<div class="xLoginError"><?php echo $errStr ?></div>
+					<?php } ?>
 					<input type="hidden" name="auth_action" value="login" />
 					<!--[if IE ]> <input type="hidden" name="auth_browser" value="invalid" /> <![endif]-->
 					<!--[if (gte IE 9)|!(IE)]><!--> <input type="hidden" name="auth_browser" value="supported" /> <!--<![endif]-->
 					<input type="text" name="auth_user" id="auth_user" class="xLoginField" />
 					<input type="password" name="auth_pass" id="auth_pass" class="xLoginField" />
-					<input type="submit" name="auth_subm" id="auth_subm" class="xLoginSubmit" value="<?= I18n::_('Log in') ?>" />
+					<input type="submit" name="auth_subm" id="auth_subm" class="xLoginSubmit" value="<?php echo I18n::_('Log in') ?>" />
 					<p>
-                        berta v <? echo BertaBase::$options['version'] ?> 2008-<? echo date('Y') ?>
+                        berta v <?php echo BertaBase::$options['version'] ?> 2008-<?php echo date('Y') ?>
                     </p>
 				</form>
 			</div>

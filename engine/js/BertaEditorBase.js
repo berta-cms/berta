@@ -949,7 +949,7 @@ var BertaEditorBase = new Class({
 				mode : "exact",
 				theme : "advanced",
 				width : "600px", height : "300px",
-				//content_css : "<? echo $ENGINE_ABS_ROOT ?>css/mce.css.php",
+				//content_css : "<?php echo $ENGINE_ABS_ROOT ?>css/mce.css.php",
 				theme_advanced_buttons1 : "save,|,pasteword,|,undo,redo,|,bold,italic,removeformat,cleanup,styleprops,|,bullist,numlist,outdent,indent,|,justifyleft,justifycenter,justifyright,justifyfull,|,formatselect,link,unlink,insertanything,|,code",
 				theme_advanced_buttons2 : "",
 				theme_advanced_buttons3 : "",

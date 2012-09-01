@@ -1,4 +1,4 @@
-<?
+<?php
 
 $conf_file=$ENGINE_ROOT.'config/inc.conf.php';
 

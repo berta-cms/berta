@@ -1,4 +1,4 @@
-<?
+<?php
 
 if(empty($INDEX_INCLUDED)) $INDEX_INCLUDED = false;
 if(!$INDEX_INCLUDED) {

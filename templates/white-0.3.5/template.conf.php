@@ -1,4 +1,4 @@
-<?
+<?php
 
 $fontOptions = array(
 	'Arial, sans-serif' => 'Arial, sans-serif',

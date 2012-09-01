@@ -1,4 +1,4 @@
-<?
+<?php
 
 $SITE_ROOT = '../../';
 $ENGINE_ROOT = '../../engine/';
