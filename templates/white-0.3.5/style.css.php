@@ -1,4 +1,4 @@
-<?
+<?php
 
 header("Content-Type: text/css");
 
@@ -9,7 +9,7 @@ $s =& $berta->template->settings;
 $isEngineView = $berta->security->userLoggedIn;
 
 
-if(!1) { ?><style type="text/css"><? } ?>
+if(!1) { ?><style type="text/css"><?php } ?>
 
 
 html, body {
@@ -24,23 +24,23 @@ html, body {
 
 body {
 	background-color: #fff;
-	color: <? echo $s->get('generalFontSettings', 'color') ?>;
-	font-family: <? echo $s->getFont('generalFontSettings') ?>;
-	font-size: <? echo $s->get('generalFontSettings', 'fontSize') ?>;
-	font-weight: <? echo $s->get('generalFontSettings', 'fontWeight') ?>;
-	font-style: <? echo $s->get('generalFontSettings', 'fontStyle') ?>;
-	font-variant: <? echo $s->get('generalFontSettings', 'fontVariant') ?>;
-	line-height: <? echo $s->get('generalFontSettings', 'lineHeight') ?>;
+	color: <?php echo $s->get('generalFontSettings', 'color') ?>;
+	font-family: <?php echo $s->getFont('generalFontSettings') ?>;
+	font-size: <?php echo $s->get('generalFontSettings', 'fontSize') ?>;
+	font-weight: <?php echo $s->get('generalFontSettings', 'fontWeight') ?>;
+	font-style: <?php echo $s->get('generalFontSettings', 'fontStyle') ?>;
+	font-variant: <?php echo $s->get('generalFontSettings', 'fontVariant') ?>;
+	line-height: <?php echo $s->get('generalFontSettings', 'lineHeight') ?>;
 	
-	background-color: <? echo $s->get('background', 'backgroundColor') ?>;
-	<? if($s->get('background', 'backgroundImageEnabled') == 'yes') { ?>
-		<? if($s->get('background', 'backgroundImage')) { ?>
-			background-image:url(<? echo Berta::$options['MEDIA_ABS_ROOT'] . $s->get('background', 'backgroundImage') ?>);
-		<? } ?>
-		background-repeat: <? echo $s->get('background', 'backgroundRepeat') ?>;
-		background-position: <? echo $s->get('background', 'backgroundPosition') ?>;
-		background-attachment: <? echo $s->get('background', 'backgroundAttachment') ?>;
-	<? } ?>
+	background-color: <?php echo $s->get('background', 'backgroundColor') ?>;
+	<?php if($s->get('background', 'backgroundImageEnabled') == 'yes') { ?>
+		<?php if($s->get('background', 'backgroundImage')) { ?>
+			background-image:url(<?php echo Berta::$options['MEDIA_ABS_ROOT'] . $s->get('background', 'backgroundImage') ?>);
+		<?php } ?>
+		background-repeat: <?php echo $s->get('background', 'backgroundRepeat') ?>;
+		background-position: <?php echo $s->get('background', 'backgroundPosition') ?>;
+		background-attachment: <?php echo $s->get('background', 'backgroundAttachment') ?>;
+	<?php } ?>
 	
 	text-align: left;
 	
@@ -50,24 +50,24 @@ body {
 }
 
 a:link { 
-	color: <? echo $s->get('links', 'colorLink') ?>;
-	text-decoration: <? echo $s->get('links', 'textDecorationLink') ?>;
-	/*border: <? echo $s->get('links', 'border:link') ?>;*/
+	color: <?php echo $s->get('links', 'colorLink') ?>;
+	text-decoration: <?php echo $s->get('links', 'textDecorationLink') ?>;
+	/*border: <?php echo $s->get('links', 'border:link') ?>;*/
 }
 a:visited { 
-	color: <? echo $s->get('links', 'colorVisited') ?>;
-	text-decoration: <? echo $s->get('links', 'textDecorationVisited') ?>;
-	/*border: <? echo $s->get('links', 'border:visited') ?>;*/
+	color: <?php echo $s->get('links', 'colorVisited') ?>;
+	text-decoration: <?php echo $s->get('links', 'textDecorationVisited') ?>;
+	/*border: <?php echo $s->get('links', 'border:visited') ?>;*/
 }
 a:hover { 
-	color: <? echo $s->get('links', 'colorHover') ?>;
-	text-decoration: <? echo $s->get('links', 'textDecorationHover') ?>;
-	/*border: <? echo $s->get('links', 'border:hover') ?>;*/
+	color: <?php echo $s->get('links', 'colorHover') ?>;
+	text-decoration: <?php echo $s->get('links', 'textDecorationHover') ?>;
+	/*border: <?php echo $s->get('links', 'border:hover') ?>;*/
 }
 a:active { 
-	color: <? echo $s->get('links', 'colorActive') ?>;
-	text-decoration: <? echo $s->get('links', 'textDecorationActive') ?>;
-	/*border: <? echo $s->get('links', 'border:active') ?>;*/
+	color: <?php echo $s->get('links', 'colorActive') ?>;
+	text-decoration: <?php echo $s->get('links', 'textDecorationActive') ?>;
+	/*border: <?php echo $s->get('links', 'border:active') ?>;*/
 }
 
 a img { border: none; }
@@ -86,7 +86,7 @@ a img { border: none; }
 }
 	#allContainer.xCentered {
 		margin: 0 auto;
-		width: <? echo $s->get('pageLayout', 'leftColumnWidth') + $s->get('pageLayout', 'contentWidth') + $s->get('pageLayout', 'paddingLeft') ?>px;
+		width: <?php echo $s->get('pageLayout', 'leftColumnWidth') + $s->get('pageLayout', 'contentWidth') + $s->get('pageLayout', 'paddingLeft') ?>px;
 	}
 .ie6 #allContainer {
 	width: 100%;
@@ -98,14 +98,14 @@ a img { border: none; }
 	#sideColumn {
 		position: fixed;
 		z-index: 2000;
-		width: <? echo $s->get('pageLayout', 'leftColumnWidth') ?>;
+		width: <?php echo $s->get('pageLayout', 'leftColumnWidth') ?>;
 		top: 0; bottom: 0;
 		left: 25px;
 		background-color: #fff;
 	}
 		#sideColumn.xCentered {
 			left: 50%;
-			margin-left: -<? echo ($s->get('pageLayout', 'leftColumnWidth') + $s->get('pageLayout', 'contentWidth') + $s->get('pageLayout', 'paddingLeft')) / 2 ?>px;
+			margin-left: -<?php echo ($s->get('pageLayout', 'leftColumnWidth') + $s->get('pageLayout', 'contentWidth') + $s->get('pageLayout', 'paddingLeft')) / 2 ?>px;
 		}
 	.ie6 #sideColumn {
 		position: absolute;
@@ -122,35 +122,35 @@ a img { border: none; }
 				float: none;
 				padding: 0;
 				margin: 0;
-				color: <? echo $s->get('pageHeading', 'color') ?>;
-				font-family: <? echo $s->getFont('pageHeading') ?>;
-				font-size: <? echo $s->get('pageHeading', 'fontSize') ?>;
-				font-weight: <? echo $s->get('pageHeading', 'fontWeight') ?>;
-				font-style: <? echo $s->get('pageHeading', 'fontStyle') ?>;
-				font-variant: <? echo $s->get('pageHeading', 'fontVariant') ?>;
-				line-height: <? echo $s->get('pageHeading', 'lineHeight') ?>;
+				color: <?php echo $s->get('pageHeading', 'color') ?>;
+				font-family: <?php echo $s->getFont('pageHeading') ?>;
+				font-size: <?php echo $s->get('pageHeading', 'fontSize') ?>;
+				font-weight: <?php echo $s->get('pageHeading', 'fontWeight') ?>;
+				font-style: <?php echo $s->get('pageHeading', 'fontStyle') ?>;
+				font-variant: <?php echo $s->get('pageHeading', 'fontVariant') ?>;
+				line-height: <?php echo $s->get('pageHeading', 'lineHeight') ?>;
 
-				margin-top: <? echo $s->get('pageHeading', 'marginTop') ?>;
-				margin-bottom: <? echo $s->get('pageHeading', 'marginBottom') ?>;
+				margin-top: <?php echo $s->get('pageHeading', 'marginTop') ?>;
+				margin-bottom: <?php echo $s->get('pageHeading', 'marginBottom') ?>;
 			}
 				#sideColumnTop h1 a {
-					color: <? echo $s->get('pageHeading', 'color') ?> !important;
+					color: <?php echo $s->get('pageHeading', 'color') ?> !important;
 					text-decoration: none;
 				}
 		
 			#sideColumnTop a:link, #sideColumnTop a:visited { 
-				color: <? echo $s->get('menu', 'colorLink') ?>;
-				text-decoration: <? echo $s->get('menu', 'textDecorationLink') ?>;
+				color: <?php echo $s->get('menu', 'colorLink') ?>;
+				text-decoration: <?php echo $s->get('menu', 'textDecorationLink') ?>;
 			}
 			#sideColumnTop a:hover { 
-				color: <? echo $s->get('menu', 'colorHover') ?>;
-				text-decoration: <? echo $s->get('menu', 'textDecorationHover') ?>;
-				/*border: <? echo $s->get('links', 'border:hover') ?>;*/
+				color: <?php echo $s->get('menu', 'colorHover') ?>;
+				text-decoration: <?php echo $s->get('menu', 'textDecorationHover') ?>;
+				/*border: <?php echo $s->get('links', 'border:hover') ?>;*/
 			}
 			#sideColumnTop a:active, #sideColumnTop li.selected>a, #sideColumnTop li.selected>span { 
-				color: <? echo $s->get('menu', 'colorActive') ?>;
-				text-decoration: <? echo $s->get('menu', 'textDecorationActive') ?>;
-				/*border: <? echo $s->get('links', 'border:active') ?>;*/
+				color: <?php echo $s->get('menu', 'colorActive') ?>;
+				text-decoration: <?php echo $s->get('menu', 'textDecorationActive') ?>;
+				/*border: <?php echo $s->get('links', 'border:active') ?>;*/
 			}
 			
 
@@ -221,16 +221,16 @@ a img { border: none; }
 	
 		#mainColumn {
 			position: relative;
-			margin-top: <? echo $s->get('pageLayout', 'paddingTop') ?>;
-			margin-left: <? echo $s->get('pageLayout', 'leftColumnWidth') ?>;
+			margin-top: <?php echo $s->get('pageLayout', 'paddingTop') ?>;
+			margin-left: <?php echo $s->get('pageLayout', 'leftColumnWidth') ?>;
 			padding-bottom: 20px;
-			padding-left: <? echo $s->get('pageLayout', 'paddingLeft') ?>;
+			padding-left: <?php echo $s->get('pageLayout', 'paddingLeft') ?>;
 			/*width: 800px;*/
-			width: <? echo $s->get('pageLayout', 'contentWidth') ?>;
+			width: <?php echo $s->get('pageLayout', 'contentWidth') ?>;
 		}
 			#mainColumn.xCentered {
 				left: 50%;
-				margin-left: -<? echo ($s->get('pageLayout', 'leftColumnWidth') + $s->get('pageLayout', 'contentWidth') + $s->get('pageLayout', 'paddingLeft')) / 2 - $s->get('pageLayout', 'leftColumnWidth') ?>px;
+				margin-left: -<?php echo ($s->get('pageLayout', 'leftColumnWidth') + $s->get('pageLayout', 'contentWidth') + $s->get('pageLayout', 'paddingLeft')) / 2 - $s->get('pageLayout', 'leftColumnWidth') ?>px;
 			}
 
 
@@ -244,7 +244,7 @@ a img { border: none; }
 				position: relative;
 				clear: both;
 				list-style:none;
-				margin-bottom: <? echo $s->get('entryLayout', 'spaceBetween') ?>;
+				margin-bottom: <?php echo $s->get('entryLayout', 'spaceBetween') ?>;
 				padding: 0;
 			}
 	
@@ -258,7 +258,7 @@ a img { border: none; }
 					position: relative;
 					clear: both;
 					padding: 0;
-					margin-bottom: <? echo $s->get('entryLayout', 'galleryMargin') ?>;
+					margin-bottom: <?php echo $s->get('entryLayout', 'galleryMargin') ?>;
 				}
 				ol#pageEntries li.xEntry .xGalleryType-slideshow {
 
@@ -277,17 +277,17 @@ a img { border: none; }
 						position: relative; 
 					}
 					ol#pageEntries li.xEntry .xGalleryType-slideshow .xGallery {
-						margin-bottom: <? echo $s->get('entryLayout', 'galleryNavMargin') ?>;
+						margin-bottom: <?php echo $s->get('entryLayout', 'galleryNavMargin') ?>;
 					}
 					
 						ol#pageEntries li.xEntry .xGalleryContainer .xGallery div.xGalleryItem { display: block; }
 						ol#pageEntries li.xEntry .xGalleryType-column div.xGalleryItem {
-							padding-bottom: <? echo $s->get('entryLayout', 'spaceBetweenImages') ?>;
+							padding-bottom: <?php echo $s->get('entryLayout', 'spaceBetweenImages') ?>;
 						}
                         ol#pageEntries li.xEntry .xGalleryType-row div.xGalleryItem {
                             position: relative;
                             float: left;
-                            padding-right: <? echo $s->get('entryLayout', 'spaceBetweenImages') ?>;
+                            padding-right: <?php echo $s->get('entryLayout', 'spaceBetweenImages') ?>;
                         }
 						ol#pageEntries li.xEntry .xGalleryType-slideshow .xGalleryImageCaption { display: none; }
 		
@@ -312,17 +312,17 @@ a img { border: none; }
 							display: block;
 							float: left;
 							padding: 1px 5px 1px;
-							color: <? echo $s->get('menu', 'colorLink') ?>;
-							text-decoration: <? echo $s->get('menu', 'textDecorationLink') ?>;
+							color: <?php echo $s->get('menu', 'colorLink') ?>;
+							text-decoration: <?php echo $s->get('menu', 'textDecorationLink') ?>;
 							outline: none;
 						}
 						ol#pageEntries .xGalleryContainer ul.xGalleryNav li a:hover {
-							color: <? echo $s->get('menu', 'colorHover') ?>;
-							text-decoration: <? echo $s->get('menu', 'textDecorationHover') ?>;
+							color: <?php echo $s->get('menu', 'colorHover') ?>;
+							text-decoration: <?php echo $s->get('menu', 'textDecorationHover') ?>;
 						}
 						ol#pageEntries .xGalleryContainer ul.xGalleryNav li.selected a {
-							color: <? echo $s->get('menu', 'colorActive') ?>;
-							text-decoration: <? echo $s->get('menu', 'textDecorationActive') ?>;
+							color: <?php echo $s->get('menu', 'colorActive') ?>;
+							text-decoration: <?php echo $s->get('menu', 'textDecorationActive') ?>;
 						}
 			
 			
@@ -383,4 +383,4 @@ a img { border: none; }
 
 
 
-<? if(!1) { ?></style><? } ?>
+<?php if(!1) { ?></style><?php } ?>

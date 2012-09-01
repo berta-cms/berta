@@ -1,4 +1,4 @@
-<?
+<?php
 define('AUTH_AUTHREQUIRED', true);
 define('BERTA_ENVIRONMENT', 'engine');
 include('inc.page.php');
@@ -23,52 +23,52 @@ $topPanelHTML = BertaEditor::getTopPanelHTML($mode);
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title><? echo $berta->settings->get('texts', 'pageTitle') ?> / settings</title>
+<title><?php echo $berta->settings->get('texts', 'pageTitle') ?> / settings</title>
 <link rel="SHORTCUT ICON" href="favicon.ico"/>
-<link rel="stylesheet" href="<? echo $ENGINE_ABS_ROOT ?>css/default.css" type="text/css"  charset="utf-8" />
-<link rel="stylesheet" href="<? echo $ENGINE_ABS_ROOT ?>css/editor.css.php" type="text/css"  charset="utf-8" />
-<!--<link rel="stylesheet" href="<? echo $ENGINE_ABS_ROOT ?>_lib/colorpicker/plugin.css" type="text/css" charset="utf-8" />-->
-<link rel="stylesheet" href="<? echo $ENGINE_ABS_ROOT ?>_lib/moorainbow/mooRainbow.css" type="text/css" charset="utf-8" />
-<? include 'inc.header_default_scripts.php' ?>
+<link rel="stylesheet" href="<?php echo $ENGINE_ABS_ROOT ?>css/default.css" type="text/css"  charset="utf-8" />
+<link rel="stylesheet" href="<?php echo $ENGINE_ABS_ROOT ?>css/editor.css.php" type="text/css"  charset="utf-8" />
+<!--<link rel="stylesheet" href="<?php echo $ENGINE_ABS_ROOT ?>_lib/colorpicker/plugin.css" type="text/css" charset="utf-8" />-->
+<link rel="stylesheet" href="<?php echo $ENGINE_ABS_ROOT ?>_lib/moorainbow/mooRainbow.css" type="text/css" charset="utf-8" />
+<?php include 'inc.header_default_scripts.php' ?>
 <script type="text/javascript">
 	var bertaGlobalOptions = {
 		"paths":{
-			"engineRoot":"<? echo BertaEditor::$options['ENGINE_ROOT'] ?>",
-			"engineABSRoot":"<? echo BertaEditor::$options['ENGINE_ABS_ROOT'] ?>",
-			"siteABSRoot" : "<? echo BertaEditor::$options['SITE_ABS_ROOT'] ?>",
-			"template" : "<? echo BertaEditor::$options['SITE_ABS_ROOT'] . 'templates/' . $berta->template->name . '/' ?>"
+			"engineRoot":"<?php echo BertaEditor::$options['ENGINE_ROOT'] ?>",
+			"engineABSRoot":"<?php echo BertaEditor::$options['ENGINE_ABS_ROOT'] ?>",
+			"siteABSRoot" : "<?php echo BertaEditor::$options['SITE_ABS_ROOT'] ?>",
+			"template" : "<?php echo BertaEditor::$options['SITE_ABS_ROOT'] . 'templates/' . $berta->template->name . '/' ?>"
 		}
 	};
 </script>
-<script type="text/javascript" src="<? echo $ENGINE_ABS_ROOT ?>js/Assets.js" charset="utf-8"></script>
-<script type="text/javascript" src="<? echo $ENGINE_ABS_ROOT ?>_lib/moorainbow/mooRainbow.1.2b2.js" charset="utf-8"></script>
-<!--<script type="text/javascript" src="<? echo $ENGINE_ABS_ROOT ?>_lib/colorpicker/colorpicker.js" charset="utf-8"></script>-->
-<script type="text/javascript" src="<? echo $ENGINE_ABS_ROOT ?>_lib/mgfx/rotater.js" charset="utf-8"></script>
-<script type="text/javascript" src="<? echo $ENGINE_ABS_ROOT ?>_lib/mgfx/tabs.js" charset="utf-8"></script>
-<script type="text/javascript" src="<? echo $ENGINE_ABS_ROOT ?>_lib/tiny_mce/tiny_mce_gzip.js"></script>
-<script type="text/javascript" src="<? echo $ENGINE_ABS_ROOT ?>js/BertaEditorBase.js"></script>
-<script type="text/javascript" src="<? echo $ENGINE_ABS_ROOT ?>js/swiff/Swiff.Uploader.js" charset="utf-8"></script>
-<script type="text/javascript" src="<? echo $ENGINE_ABS_ROOT ?>js/BertaGalleryEditorAssets.js"></script>
-<script type="text/javascript" src="<? echo $ENGINE_ABS_ROOT ?>js/inline_edit.js" charset="utf-8"></script>
-<script type="text/javascript" src="<? echo $ENGINE_ABS_ROOT ?>js/BertaEditor.js" charset="utf-8"></script>
+<script type="text/javascript" src="<?php echo $ENGINE_ABS_ROOT ?>js/Assets.js" charset="utf-8"></script>
+<script type="text/javascript" src="<?php echo $ENGINE_ABS_ROOT ?>_lib/moorainbow/mooRainbow.1.2b2.js" charset="utf-8"></script>
+<!--<script type="text/javascript" src="<?php echo $ENGINE_ABS_ROOT ?>_lib/colorpicker/colorpicker.js" charset="utf-8"></script>-->
+<script type="text/javascript" src="<?php echo $ENGINE_ABS_ROOT ?>_lib/mgfx/rotater.js" charset="utf-8"></script>
+<script type="text/javascript" src="<?php echo $ENGINE_ABS_ROOT ?>_lib/mgfx/tabs.js" charset="utf-8"></script>
+<script type="text/javascript" src="<?php echo $ENGINE_ABS_ROOT ?>_lib/tiny_mce/tiny_mce_gzip.js"></script>
+<script type="text/javascript" src="<?php echo $ENGINE_ABS_ROOT ?>js/BertaEditorBase.js"></script>
+<script type="text/javascript" src="<?php echo $ENGINE_ABS_ROOT ?>js/swiff/Swiff.Uploader.js" charset="utf-8"></script>
+<script type="text/javascript" src="<?php echo $ENGINE_ABS_ROOT ?>js/BertaGalleryEditorAssets.js"></script>
+<script type="text/javascript" src="<?php echo $ENGINE_ABS_ROOT ?>js/inline_edit.js" charset="utf-8"></script>
+<script type="text/javascript" src="<?php echo $ENGINE_ABS_ROOT ?>js/BertaEditor.js" charset="utf-8"></script>
 </head>
 
 <body class="xSettingsPageBody" x_mode="settings">
 	<form name="infoForm" id="infoForm">
-		<input type="hidden" name="ENGINE_ROOT" id="ENGINE_ROOT" value="<? echo htmlspecialchars($ENGINE_ROOT) ?>" />
+		<input type="hidden" name="ENGINE_ROOT" id="ENGINE_ROOT" value="<?php echo htmlspecialchars($ENGINE_ROOT) ?>" />
 	</form>
-	<? echo $topPanelHTML ?>
+	<?php echo $topPanelHTML ?>
 	<div id="allContainer">
 		<div id="contentContainer">
 			
-			<h1 id="allPageTitle"><? echo $mode == 'template' ? I18n::_('Template design') : I18n::_('Settings') ?></h1>
-			<? if($mode == 'template') { ?>
+			<h1 id="allPageTitle"><?php echo $mode == 'template' ? I18n::_('Template design') : I18n::_('Settings') ?></h1>
+			<?php if($mode == 'template') { ?>
 				<div class="entry" difficulty="0">
-					<div><?= I18n::_('These are settings for template') ?> &quot;<?= $berta->template->name ?>&quot;.</div>
+					<div><?php echo I18n::_('These are settings for template') ?> &quot;<?php echo $berta->template->name ?>&quot;.</div>
 				</div>
-			<? } ?>
+			<?php } ?>
 			
-			<?
+			<?php
 
 			$settings = $mode == 'template' ? $berta->template->settings : $berta->settings;
 			$propertyPrefix = $settings->templateName ? ($settings->templateFullName . '/') : '';
@@ -117,16 +117,16 @@ $topPanelHTML = BertaEditor::getTopPanelHTML($mode);
 			?>
 			<br class="clear" />
 			<hr />
-			<h2><?= I18n::_('Some help with CSS values') ?></h2>
+			<h2><?php echo I18n::_('Some help with CSS values') ?></h2>
 
 			<div class="entry">
-				<div class="caption" style="width: 60px"><?= I18n::_('Units') ?></div>
+				<div class="caption" style="width: 60px"><?php echo I18n::_('Units') ?></div>
 				<div class="value" style="width: 300px; padding-right: 30px">
-					<?= I18n::_('units_help_text') ?>
+					<?php echo I18n::_('units_help_text') ?>
 				</div>
-				<div class="caption" style="width: 60px"><?= I18n::_('Margins') ?></div>
+				<div class="caption" style="width: 60px"><?php echo I18n::_('Margins') ?></div>
 				<div class="value" style="width: 300px;">
-					<?= I18n::_('margins_help_text') ?>
+					<?php echo I18n::_('margins_help_text') ?>
 				</div>
 			</div>
 			<br class="clear" />

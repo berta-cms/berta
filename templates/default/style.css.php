@@ -1,4 +1,4 @@
-<?
+<?php
 
 $SITE_ROOT = '../../';
 $IS_CSS_FILE = true;
@@ -22,53 +22,53 @@ $contentFloatOpposite = $contentFloat == 'left' ? 'right' : 'left';
 $contentTextAlign = strpos($s->get('pageLayout', 'contentAlign'), 'justify') === 0 ? 'justify' : $s->get('pageLayout', 'contentAlign');
 $contentTextAlignOpposite = $contentTextAlign == 'justify' ? 'justify' : ($contentTextAlign == 'left' ? 'right' : 'left');
 
-if(!1) { ?><style type="text/css"><? } ?>
+if(!1) { ?><style type="text/css"><?php } ?>
 
 body {
-	color: <? echo $s->get('generalFontSettings', 'color') ?>;
-	font-family: <? echo $s->getFont('generalFontSettings') ?>;
-	font-size: <? echo $s->get('generalFontSettings', 'fontSize') ?>;
-	font-weight: <? echo $s->get('generalFontSettings', 'fontWeight') ?>;
-	font-style: <? echo $s->get('generalFontSettings', 'fontStyle') ?>;
-	font-variant: <? echo $s->get('generalFontSettings', 'fontVariant') ?>;
-	line-height: <? echo $s->get('generalFontSettings', 'lineHeight') ?>;
+	color: <?php echo $s->get('generalFontSettings', 'color') ?>;
+	font-family: <?php echo $s->getFont('generalFontSettings') ?>;
+	font-size: <?php echo $s->get('generalFontSettings', 'fontSize') ?>;
+	font-weight: <?php echo $s->get('generalFontSettings', 'fontWeight') ?>;
+	font-style: <?php echo $s->get('generalFontSettings', 'fontStyle') ?>;
+	font-variant: <?php echo $s->get('generalFontSettings', 'fontVariant') ?>;
+	line-height: <?php echo $s->get('generalFontSettings', 'lineHeight') ?>;
 	
-	text-align: <? echo $contentFloat ?>;
+	text-align: <?php echo $contentFloat ?>;
 
-	background-color: <? echo $s->get('background', 'backgroundColor') ?>;
-	<? if($s->get('background', 'backgroundImageEnabled') == 'yes' && ($bgAttachment = $s->get('background', 'backgroundAttachment')) != 'fill') { ?>
-		<? if($s->get('background', 'backgroundImage')) { ?>
-			background-image:url(<? echo Berta::$options['MEDIA_ABS_ROOT'] . $s->get('background', 'backgroundImage') ?>);
-		<? } ?>
-		background-repeat: <? echo $s->get('background', 'backgroundRepeat') ?>;
-		background-position: <? echo $s->get('background', 'backgroundPosition') ?>;
-		background-attachment: <? echo $bgAttachment ?>;
-	<? } ?>
+	background-color: <?php echo $s->get('background', 'backgroundColor') ?>;
+	<?php if($s->get('background', 'backgroundImageEnabled') == 'yes' && ($bgAttachment = $s->get('background', 'backgroundAttachment')) != 'fill') { ?>
+		<?php if($s->get('background', 'backgroundImage')) { ?>
+			background-image:url(<?php echo Berta::$options['MEDIA_ABS_ROOT'] . $s->get('background', 'backgroundImage') ?>);
+		<?php } ?>
+		background-repeat: <?php echo $s->get('background', 'backgroundRepeat') ?>;
+		background-position: <?php echo $s->get('background', 'backgroundPosition') ?>;
+		background-attachment: <?php echo $bgAttachment ?>;
+	<?php } ?>
 	
 	min-height: 100%;
 }
 
 
 a:link { 
-	color: <? echo $s->get('links', 'colorLink') ?>;
-	text-decoration: <? echo $s->get('links', 'textDecorationLink') ?>;
-	/*border: <? echo $s->get('links', 'border:link') ?>;*/
+	color: <?php echo $s->get('links', 'colorLink') ?>;
+	text-decoration: <?php echo $s->get('links', 'textDecorationLink') ?>;
+	/*border: <?php echo $s->get('links', 'border:link') ?>;*/
 }
 a:visited { 
-	color: <? echo $s->get('links', 'colorVisited') ?>;
-	text-decoration: <? echo $s->get('links', 'textDecorationVisited') ?>;
-	/*border: <? echo $s->get('links', 'border:visited') ?>;*/
+	color: <?php echo $s->get('links', 'colorVisited') ?>;
+	text-decoration: <?php echo $s->get('links', 'textDecorationVisited') ?>;
+	/*border: <?php echo $s->get('links', 'border:visited') ?>;*/
 }
 a:hover { 
-	color: <? echo $s->get('links', 'colorHover') ?>;
-	text-decoration: <? echo $s->get('links', 'textDecorationHover') ?>;
-	/*border: <? echo $s->get('links', 'border:hover') ?>;*/
+	color: <?php echo $s->get('links', 'colorHover') ?>;
+	text-decoration: <?php echo $s->get('links', 'textDecorationHover') ?>;
+	/*border: <?php echo $s->get('links', 'border:hover') ?>;*/
 }
 a:active,
 div#siteTopMenu ul li.selected span { 
-	color: <? echo $s->get('links', 'colorActive') ?>;
-	text-decoration: <? echo $s->get('links', 'textDecorationActive') ?>;
-	/*border: <? echo $s->get('links', 'border:active') ?>;*/
+	color: <?php echo $s->get('links', 'colorActive') ?>;
+	text-decoration: <?php echo $s->get('links', 'textDecorationActive') ?>;
+	/*border: <?php echo $s->get('links', 'border:active') ?>;*/
 }
 
 a img { border: none; }
@@ -76,21 +76,21 @@ a img { border: none; }
 
 
 h1 { 
-	color: <? echo $s->get('pageHeading', 'color') ?>;
-	font-family: <? echo $s->getFont('pageHeading') ?>;
-	font-size: <? echo $s->get('pageHeading', 'fontSize') ?>;
-	font-weight: <? echo $s->get('pageHeading', 'fontWeight') ?>;
-	font-style: <? echo $s->get('pageHeading', 'fontStyle') ?>;
-	font-variant: <? echo $s->get('pageHeading', 'fontVariant') ?>;
-	line-height: <? echo $s->get('pageHeading', 'lineHeight') ?>;
+	color: <?php echo $s->get('pageHeading', 'color') ?>;
+	font-family: <?php echo $s->getFont('pageHeading') ?>;
+	font-size: <?php echo $s->get('pageHeading', 'fontSize') ?>;
+	font-weight: <?php echo $s->get('pageHeading', 'fontWeight') ?>;
+	font-style: <?php echo $s->get('pageHeading', 'fontStyle') ?>;
+	font-variant: <?php echo $s->get('pageHeading', 'fontVariant') ?>;
+	line-height: <?php echo $s->get('pageHeading', 'lineHeight') ?>;
 	
-	float: <? echo $contentFloat ?>;
-	margin: <? echo $s->get('pageHeading', 'margin') ?>;
+	float: <?php echo $contentFloat ?>;
+	margin: <?php echo $s->get('pageHeading', 'margin') ?>;
 	padding: 0;
 }
 
 	#contentContainer h1 a {
-		color: <? echo $s->get('pageHeading', 'color') ?>;
+		color: <?php echo $s->get('pageHeading', 'color') ?>;
 	} 
 
 #allContainer {
@@ -101,19 +101,19 @@ h1 {
 
 
 #contentContainer {
-	width: <? echo $s->get('pageLayout', 'contentWidth') ?>;
-	padding: <? echo $s->get('pageLayout', 'bodyMargin') ?>;
+	width: <?php echo $s->get('pageLayout', 'contentWidth') ?>;
+	padding: <?php echo $s->get('pageLayout', 'bodyMargin') ?>;
 	margin-top: 0;
 	margin-bottom: 0;
-	margin-left: <? echo $s->get('pageLayout', 'contentPosition') == 'left' ? 0 : 'auto' ?>;
-	margin-right: <? echo $s->get('pageLayout', 'contentPosition') == 'right' ? 0 : 'auto' ?>;
+	margin-left: <?php echo $s->get('pageLayout', 'contentPosition') == 'left' ? 0 : 'auto' ?>;
+	margin-right: <?php echo $s->get('pageLayout', 'contentPosition') == 'right' ? 0 : 'auto' ?>;
 }
 
 
 
 	div#siteTopMenu {
 		clear: both;
-		padding: <? echo $s->get('pageLayout', 'siteMenuMargin') ?>;
+		padding: <?php echo $s->get('pageLayout', 'siteMenuMargin') ?>;
 	}
 	
 		div#siteTopMenu ul {
@@ -121,7 +121,7 @@ h1 {
 			padding: 0;
 			display: block;
 			clear: both;
-			float: <? echo $contentFloat ?>;
+			float: <?php echo $contentFloat ?>;
 			list-style: none;
 		}
 			div#siteTopMenu ul li {
@@ -146,38 +146,38 @@ h1 {
 		
 		
 		div#siteTopMenu ul#mainMenu {
-			padding: <? echo $s->get('menu', 'margin') ?>;
+			padding: <?php echo $s->get('menu', 'margin') ?>;
 		}
 		
 			div#siteTopMenu ul#mainMenu li {
-				font-family: <? echo $s->getFont('menu') ?>;
-				font-size: <? echo $s->get('menu', 'fontSize') ?>;
-				font-weight: <? echo $s->get('menu', 'fontWeight') ?>;
-				font-style: <? echo $s->get('menu', 'fontStyle') ?>;
-				font-variant: <? echo $s->get('menu', 'fontVariant') ?>;
-				line-height: <? echo $s->get('menu', 'lineHeight') ?>;
+				font-family: <?php echo $s->getFont('menu') ?>;
+				font-size: <?php echo $s->get('menu', 'fontSize') ?>;
+				font-weight: <?php echo $s->get('menu', 'fontWeight') ?>;
+				font-style: <?php echo $s->get('menu', 'fontStyle') ?>;
+				font-variant: <?php echo $s->get('menu', 'fontVariant') ?>;
+				line-height: <?php echo $s->get('menu', 'lineHeight') ?>;
 			}
 				div#siteTopMenu ul#mainMenu li .separator { 
-					padding-left: <? echo $s->get('menu', 'separatorDistance') ?>;
-				 	padding-right: <? echo $s->get('menu', 'separatorDistance') ?>;
+					padding-left: <?php echo $s->get('menu', 'separatorDistance') ?>;
+				 	padding-right: <?php echo $s->get('menu', 'separatorDistance') ?>;
 				}
 				
 		div#siteTopMenu ul#subMenu {
-			clear: <? echo $contentFloat ?>;
-			padding: <? echo $s->get('subMenu', 'margin') ?>;
+			clear: <?php echo $contentFloat ?>;
+			padding: <?php echo $s->get('subMenu', 'margin') ?>;
 		}
 
 			div#siteTopMenu ul#subMenu li {
-				font-family: <? echo $s->getFont('subMenu') ?>;
-				font-size: <? echo $s->get('subMenu', 'fontSize') ?>;
-				font-weight: <? echo $s->get('subMenu', 'fontWeight') ?>;
-				font-style: <? echo $s->get('subMenu', 'fontStyle') ?>;
-				font-variant: <? echo $s->get('subMenu', 'fontVariant') ?>;
-				line-height: <? echo $s->get('subMenu', 'lineHeight') ?>;
+				font-family: <?php echo $s->getFont('subMenu') ?>;
+				font-size: <?php echo $s->get('subMenu', 'fontSize') ?>;
+				font-weight: <?php echo $s->get('subMenu', 'fontWeight') ?>;
+				font-style: <?php echo $s->get('subMenu', 'fontStyle') ?>;
+				font-variant: <?php echo $s->get('subMenu', 'fontVariant') ?>;
+				line-height: <?php echo $s->get('subMenu', 'lineHeight') ?>;
 			}
 				div#siteTopMenu ul#subMenu li .separator { 
-					padding-left: <? echo $s->get('subMenu', 'separatorDistance') ?>;
-				 	padding-right: <? echo $s->get('subMenu', 'separatorDistance') ?>;
+					padding-left: <?php echo $s->get('subMenu', 'separatorDistance') ?>;
+				 	padding-right: <?php echo $s->get('subMenu', 'separatorDistance') ?>;
 				}
 
 		#additionalText {
@@ -200,38 +200,38 @@ h1 {
 
 	ol#pageEntries {
 		list-style: none;
-		margin: <? echo $contentFloat == 'left' ? '0' : '0 0 0 auto' ?>;
+		margin: <?php echo $contentFloat == 'left' ? '0' : '0 0 0 auto' ?>;
 		padding: 2em 0 0;
 		clear: both;
 		width: 100%;
 	}
 		ol#pageEntries li.xEntry {
 			list-style:none;
-			margin: <? echo $s->get('entryLayout', 'margin') ?>;
+			margin: <?php echo $s->get('entryLayout', 'margin') ?>;
 			padding: 0;
 		}
 	
 			ol#pageEntries li.xEntry .entryTitleContainer { 
 				width: 480px; 
-				margin: <? echo $contentFloat ? '0' : '0 0 0 auto' ?>;
+				margin: <?php echo $contentFloat ? '0' : '0 0 0 auto' ?>;
 			}
 			ol#pageEntries li.xEntry h2 {
 				display: block;
 				width: 100%;
-				float: <? echo $contentFloat ?>;
-				color: <? echo $s->get('entryHeading', 'color') ?>;
-				font-family: <? echo $s->getFont('entryHeading') ?>;
-				font-size: <? echo $s->get('entryHeading', 'fontSize') ?>;
-				font-weight: <? echo $s->get('entryHeading', 'fontWeight') ?>;
-				font-style: <? echo $s->get('entryHeading', 'fontStyle') ?>;
-				font-variant: <? echo $s->get('entryHeading', 'fontVariant') ?>;
-				line-height: <? echo $s->get('entryHeading', 'lineHeight') ?>;
-				margin: <? echo $s->get('entryHeading', 'margin') ?>;
+				float: <?php echo $contentFloat ?>;
+				color: <?php echo $s->get('entryHeading', 'color') ?>;
+				font-family: <?php echo $s->getFont('entryHeading') ?>;
+				font-size: <?php echo $s->get('entryHeading', 'fontSize') ?>;
+				font-weight: <?php echo $s->get('entryHeading', 'fontWeight') ?>;
+				font-style: <?php echo $s->get('entryHeading', 'fontStyle') ?>;
+				font-variant: <?php echo $s->get('entryHeading', 'fontVariant') ?>;
+				line-height: <?php echo $s->get('entryHeading', 'lineHeight') ?>;
+				margin: <?php echo $s->get('entryHeading', 'margin') ?>;
 				padding: 0;
 			}
 				/*ol#pageEntries li.xEntry h2 span { display: block; float: left; }*/
 			ol#pageEntries li.xEntry p.shortDesc {
-				clear: <? echo $contentFloat ?>;
+				clear: <?php echo $contentFloat ?>;
 				margin: 0 0 5px;
 				padding: 0;
 			}
@@ -242,14 +242,14 @@ h1 {
 		
 			ol#pageEntries li.xEntry .xGalleryContainer {
 				position: relative;
-				clear: <? echo $contentFloat ?>;
-				margin: <? echo $contentFloat ? '0' : '0 0 0 auto' ?>;
+				clear: <?php echo $contentFloat ?>;
+				margin: <?php echo $contentFloat ? '0' : '0 0 0 auto' ?>;
 				padding: 0;
 				/*border: 2px solid #fff;*/
 				margin: 0 0 2px;
 			}
 			ol#pageEntries li.xEntry .xGalleryType-slideshow {
-				float: <? echo $contentFloat ?>;
+				float: <?php echo $contentFloat ?>;
 			}
 			ol#pageEntries li.xEntry .xGalleryType-row {
 				
@@ -263,15 +263,15 @@ h1 {
 				
 				ol#pageEntries li.xEntry .xGalleryContainer .xGallery { 
 					position: relative; 
-					margin: <? echo $s->get('entryLayout', 'galleryMargin') ?>;
+					margin: <?php echo $s->get('entryLayout', 'galleryMargin') ?>;
 				}
 					ol#pageEntries li.xEntry .xGalleryContainer .xGallery div.xGalleryItem { display: block; }
                     ol#pageEntries li.xEntry .xGalleryType-column div.xGalleryItem {
-                        padding-bottom: <? echo $s->get('entryLayout', 'spaceBetweenImages') ?>;
+                        padding-bottom: <?php echo $s->get('entryLayout', 'spaceBetweenImages') ?>;
                     }
 					ol#pageEntries li.xEntry .xGalleryType-row div.xGalleryItem {
 						float: left;
-						padding-right: <? echo $s->get('entryLayout', 'spaceBetweenImages') ?>;
+						padding-right: <?php echo $s->get('entryLayout', 'spaceBetweenImages') ?>;
 						padding-bottom: 5px;
 					}
 					ol#pageEntries li.xEntry .xGalleryType-slideshow .xGalleryImageCaption { display: none; }
@@ -292,11 +292,11 @@ h1 {
 				}
 					ol#pageEntries .xGalleryContainer ul.xGalleryNav li {
 						display: block;
-						float: <? echo $contentFloat ?>;
+						float: <?php echo $contentFloat ?>;
 						list-style: none;
 						line-height: 96%;
 						margin: 0;
-						padding: <? echo $contentFloat ? '0 5px 0 0' : '0 0 0 5px' ?>;
+						padding: <?php echo $contentFloat ? '0 5px 0 0' : '0 0 0 5px' ?>;
 					}
 					ol#pageEntries .xGalleryContainer ul.xGalleryNav li .xGalleryImageCaption { display: none; }
 					ol#pageEntries .xGalleryContainer ul.xGalleryNav li a {
@@ -314,8 +314,8 @@ h1 {
 				width: 100%;
 				position: relative;
 				clear: both;
-				float: <? echo $contentFloat ?>;
-				text-align: <? echo $contentTextAlign ?>;
+				float: <?php echo $contentFloat ?>;
+				text-align: <?php echo $contentTextAlign ?>;
 				margin: 4px 0 8px;
 			}
 				ol#pageEntries li.xEntry .entryText p {
@@ -360,23 +360,23 @@ h1 {
 			ol#pageEntries li.xEntry .entryContent {
 				clear: both;
 				padding: 0;
-				color: <? echo $s->get('entryFooter', 'color') ?>;
-				font-family: <? echo $s->getFont('entryFooter') ?>;
-				font-size: <? echo $s->get('entryFooter', 'fontSize') ?>;
-				font-weight: <? echo $s->get('entryFooter', 'fontWeight') ?>;
-				font-style: <? echo $s->get('entryFooter', 'fontStyle') ?>;
-				font-variant: <? echo $s->get('entryFooter', 'fontVariant') ?>;
-				line-height: <? echo $s->get('entryFooter', 'lineHeight') ?>;
+				color: <?php echo $s->get('entryFooter', 'color') ?>;
+				font-family: <?php echo $s->getFont('entryFooter') ?>;
+				font-size: <?php echo $s->get('entryFooter', 'fontSize') ?>;
+				font-weight: <?php echo $s->get('entryFooter', 'fontWeight') ?>;
+				font-style: <?php echo $s->get('entryFooter', 'fontStyle') ?>;
+				font-variant: <?php echo $s->get('entryFooter', 'fontVariant') ?>;
+				line-height: <?php echo $s->get('entryFooter', 'lineHeight') ?>;
 			}
 				ol#pageEntries li.xEntry .entryContent table {
-					float: <? echo $contentFloat ?>;
+					float: <?php echo $contentFloat ?>;
 				}
 				ol#pageEntries li.xEntry .entryContent .items {
-					float: <? echo $contentFloat ?>;
+					float: <?php echo $contentFloat ?>;
 				}
 				ol#pageEntries li.xEntry .entryContent p.itm {
-					float: <? echo $contentFloat ?>;
-					clear: both; /*<? echo $s->get('pageLayout', 'contentAlign') ?>;*/
+					float: <?php echo $contentFloat ?>;
+					clear: both; /*<?php echo $s->get('pageLayout', 'contentAlign') ?>;*/
 					margin: 0 0 2px;
 					padding: 0;
 				}
@@ -384,7 +384,7 @@ h1 {
 					clear: both;
 				}
 					ol#pageEntries li.xEntry .entryContent div.tagsList div {
-						float: <? echo $contentFloat ?> !important;
+						float: <?php echo $contentFloat ?> !important;
 						clear: none;
 					}
 				
@@ -412,7 +412,7 @@ h1 {
 			lineHeight: normal !important;*/
 		clear: left;
 		font-size: 80%;
-		color: <? echo $s->get('generalFontSettings', 'color') ?> !important;
+		color: <?php echo $s->get('generalFontSettings', 'color') ?> !important;
 	}
 	
 	
@@ -423,4 +423,4 @@ h1 {
 
 
 
-<? if(!1) { ?></style><? } ?>
+<?php if(!1) { ?></style><?php } ?>

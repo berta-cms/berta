@@ -1,4 +1,4 @@
-<?
+<?php
 /**
  * make a recursive copy of an array
  *

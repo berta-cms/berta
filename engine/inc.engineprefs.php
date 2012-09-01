@@ -1,4 +1,4 @@
-<?
+<?php
 
 if(empty($options)) $options = array();
 include_once $ENGINE_ROOT . '_classes/class.bertabase.php';

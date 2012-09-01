@@ -1,4 +1,4 @@
-<?
+<?php
 
 $IS_CSS_FILE = true;
 $SITE_ROOT = '../../';
@@ -16,7 +16,7 @@ header("Content-Type: text/css");
 
 $settings =& $berta->template->settings;
 
-if(!1) { ?><style type="text/css"><? } ?>
+if(!1) { ?><style type="text/css"><?php } ?>
 
 
 #allContainer {
@@ -166,7 +166,7 @@ body.xEditorEnabled { }
 /* visuals ---------------------------------------------------------------------------------------------- */
 
 .xSaving, .xSavingAtLarge {	/* classs is added to the element, when the contents are being saved */
-	background-image: url(<? echo $ENGINE_ABS_ROOT ?>layout/saving.gif) !important;
+	background-image: url(<?php echo $ENGINE_ABS_ROOT ?>layout/saving.gif) !important;
 	background-repeat: repeat !important;
 }
 	.xSavingAtLarge * {
@@ -183,7 +183,7 @@ body.xEditorEnabled { }
 
 .xEmpty {	/* class of the span that is placed inside empty editable elements */
 	display: inline-block;
-	background: url('<? echo $ENGINE_ABS_ROOT ?>layout/editable-back.png') repeat;
+	background: url('<?php echo $ENGINE_ABS_ROOT ?>layout/editable-back.png') repeat;
 	font-style: italic;
 	-moz-border-radius: 5px;
 	-webkit-border-radius: 5px;
@@ -346,12 +346,12 @@ body.xEditorEnabled { }
 	margin: 2px 4px 0 0;
 	font-size: 1px; line-height: 1px;
 }
-.xMoveImNavLink { background: url(<? echo $ENGINE_ROOT ?>layout/grab-small.png) no-repeat; cursor: move; }
-.xMoveTopLink { background: url(<? echo $ENGINE_ROOT ?>layout/grab-small.png) no-repeat; cursor: move; }
-.xDeleteTopLink { background: url(<? echo $ENGINE_ROOT ?>layout/delete-small.png) no-repeat; cursor: pointer; }
-.xAddTopLink { background: url(<? echo $ENGINE_ROOT ?>layout/add-small.png) no-repeat; cursor: pointer; margin-left: 20px; }
-.xSelectTopLinkOn { background: url(<? echo $ENGINE_ROOT ?>layout/select-small-on.gif) no-repeat; cursor: default; }
-.xSelectTopLinkOff { background: url(<? echo $ENGINE_ROOT ?>layout/select-small-off.gif) no-repeat; cursor: default; }
+.xMoveImNavLink { background: url(<?php echo $ENGINE_ROOT ?>layout/grab-small.png) no-repeat; cursor: move; }
+.xMoveTopLink { background: url(<?php echo $ENGINE_ROOT ?>layout/grab-small.png) no-repeat; cursor: move; }
+.xDeleteTopLink { background: url(<?php echo $ENGINE_ROOT ?>layout/delete-small.png) no-repeat; cursor: pointer; }
+.xAddTopLink { background: url(<?php echo $ENGINE_ROOT ?>layout/add-small.png) no-repeat; cursor: pointer; margin-left: 20px; }
+.xSelectTopLinkOn { background: url(<?php echo $ENGINE_ROOT ?>layout/select-small-on.gif) no-repeat; cursor: default; }
+.xSelectTopLinkOff { background: url(<?php echo $ENGINE_ROOT ?>layout/select-small-off.gif) no-repeat; cursor: default; }
 
 
 
@@ -768,7 +768,7 @@ body.xEditorEnabled { }
 		margin: 0;
 		overflow-x:scroll;
 		overflow-y:hidden;
-		height: <? echo BertaBase::$options['images']['small_thumb_height'] ? ((BertaBase::$options['images']['small_thumb_height'] + 160) . 'px') : 'auto' ?>;
+		height: <?php echo BertaBase::$options['images']['small_thumb_height'] ? ((BertaBase::$options['images']['small_thumb_height'] + 160) . 'px') : 'auto' ?>;
 	}
 		#xBgEditorPanel .images ul {
 			position: relative;
@@ -788,7 +788,7 @@ body.xEditorEnabled { }
 				margin: 0 5px 0 0;
 				/*margin: 0;*/
 				min-width: 140px;
-				height: <? echo ((int) BertaBase::$options['images']['small_thumb_height'] + 140) . 'px' ?>;
+				height: <?php echo ((int) BertaBase::$options['images']['small_thumb_height'] + 140) . 'px' ?>;
 				background: #efefef; 
 			}
 			#xBgEditorPanel .images ul li.video {
@@ -829,7 +829,7 @@ body.xEditorEnabled { }
 					position: absolute;
 					top: 0; left: 0;
 					width: 100%; 
-					height: <? echo BertaBase::$options['images']['small_thumb_height'] . 'px' ?>;
+					height: <?php echo BertaBase::$options['images']['small_thumb_height'] . 'px' ?>;
 					margin: 0; padding: 0;
 				}
 					#xBgEditorPanel .images ul li .grabHandle .xMAlign-inner { 
@@ -857,7 +857,7 @@ body.xEditorEnabled { }
 				/* video placeholder and dimensions form */
 				#xBgEditorPanel .images li .placeholderContainer {
 					min-width: 100px;
-					height: <? echo BertaBase::$options['images']['small_thumb_height'] . 'px' ?>;
+					height: <?php echo BertaBase::$options['images']['small_thumb_height'] . 'px' ?>;
 					background-position: center center;
 					background-repeat: no-repeat;
 					background-color: #000;
@@ -869,7 +869,7 @@ body.xEditorEnabled { }
 					}
 				#xBgEditorPanel .images li .dimsForm {
 					position: absolute;
-					top: <? echo ((int) BertaBase::$options['images']['small_thumb_height'] - 27) . 'px' ?>;
+					top: <?php echo ((int) BertaBase::$options['images']['small_thumb_height'] - 27) . 'px' ?>;
 					/*bottom: 7px;*/
 					width: 100%;
 					padding: 2px 0;
@@ -1122,7 +1122,7 @@ ul#pageEntries {
 					width: 100%; height: 100%;
 					left: 0; top: 0;
 					/*z-index: 100;*/
-					background: url('<? echo $ENGINE_ABS_ROOT ?>layout/editable-back.png') repeat;
+					background: url('<?php echo $ENGINE_ABS_ROOT ?>layout/editable-back.png') repeat;
 					-moz-opacity: 0; opacity: 0;
 				}
 				.xGalleryHasImages a.xGalleryEditButton:hover {
@@ -1409,7 +1409,7 @@ a.xCreateNewEntry.xSaving {
 		margin: 0;
 		overflow-x:scroll;
 		overflow-y:hidden;
-		height: <? echo BertaBase::$options['images']['small_thumb_height'] ? ((BertaBase::$options['images']['small_thumb_height'] + 160) . 'px') : 'auto' ?>;
+		height: <?php echo BertaBase::$options['images']['small_thumb_height'] ? ((BertaBase::$options['images']['small_thumb_height'] + 160) . 'px') : 'auto' ?>;
 	}
 		.xEntryGalleryEditor .images ul {
 			position: relative;
@@ -1429,7 +1429,7 @@ a.xCreateNewEntry.xSaving {
 				margin: 0 5px 0 0;
 				/*margin: 0;*/
 				min-width: 140px;
-				height: <? echo ((int) BertaBase::$options['images']['small_thumb_height'] + 140) . 'px' ?>;
+				height: <?php echo ((int) BertaBase::$options['images']['small_thumb_height'] + 140) . 'px' ?>;
 				background: #efefef; 
 			}
 			.xEntryGalleryEditor .images ul li.video {
@@ -1470,7 +1470,7 @@ a.xCreateNewEntry.xSaving {
 					position: absolute;
 					top: 0; left: 0;
 					width: 100%; 
-					height: <? echo BertaBase::$options['images']['small_thumb_height'] . 'px' ?>;
+					height: <?php echo BertaBase::$options['images']['small_thumb_height'] . 'px' ?>;
 					margin: 0; padding: 0;
 				}
 					.xEntryGalleryEditor .images ul li .grabHandle .xMAlign-inner { 
@@ -1498,7 +1498,7 @@ a.xCreateNewEntry.xSaving {
 				/* video placeholder and dimensions form */
 				.xEntryGalleryEditor .images li .placeholderContainer {
 					min-width: 100px;
-					height: <? echo BertaBase::$options['images']['small_thumb_height'] . 'px' ?>;
+					height: <?php echo BertaBase::$options['images']['small_thumb_height'] . 'px' ?>;
 					background-position: center center;
 					background-repeat: no-repeat;
 					background-color: #000;
@@ -1510,7 +1510,7 @@ a.xCreateNewEntry.xSaving {
 					}
 				.xEntryGalleryEditor .images li .dimsForm {
 					position: absolute;
-					top: <? echo ((int) BertaBase::$options['images']['small_thumb_height'] - 27) . 'px' ?>;
+					top: <?php echo ((int) BertaBase::$options['images']['small_thumb_height'] - 27) . 'px' ?>;
 					/*bottom: 7px;*/
 					width: 100%;
 					padding: 2px 0;
@@ -1614,7 +1614,7 @@ a.xCreateNewEntry.xSaving {
 
 
 .xImageContainer { 
-	float: <? echo ($berta->settings->get('page-layout', 'content-align')) ?>;
+	float: <?php echo ($berta->settings->get('page-layout', 'content-align')) ?>;
 	margin-right: 20px;
 }
 
@@ -1890,18 +1890,18 @@ body.xSettingsPageBody {
 	body.xSettingsPageBody #editorInfo {
 		/*margin: 10px 0 0;*/
 		clear: both;
-		/*float: <? echo ($berta->settings->get('page-layout', 'content-align')) ?>;*/
-		margin: <? echo $berta->settings->get('page-layout', 'content-align') == 'left' ? '10px 0 0' : '10px 0 0 auto' ?>;
+		/*float: <?php echo ($berta->settings->get('page-layout', 'content-align')) ?>;*/
+		margin: <?php echo $berta->settings->get('page-layout', 'content-align') == 'left' ? '10px 0 0' : '10px 0 0 auto' ?>;
 		padding-bottom: 0;
 	}
 	
 		body.xSettingsPageBody #editorInfo #diffSlider {
-			background: url(<? echo $ENGINE_ROOT ?>layout/slider-back.gif) no-repeat;
+			background: url(<?php echo $ENGINE_ROOT ?>layout/slider-back.gif) no-repeat;
 			height: 8px;
 			width: 300px;
 		}
 			body.xSettingsPageBody #editorInfo #diffKnob {
-				background: url(<? echo $ENGINE_ROOT ?>layout/slider-knob.gif) no-repeat;
+				background: url(<?php echo $ENGINE_ROOT ?>layout/slider-knob.gif) no-repeat;
 				height: 8px;
 				width: 90px;
 				cursor: col-resize;
@@ -2017,4 +2017,4 @@ body.xSettingsPageBody {
 }	
 
 		
-<? if(!1) { ?></style><? } ?>
+<?php if(!1) { ?></style><?php } ?>

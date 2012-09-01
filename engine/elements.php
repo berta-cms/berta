@@ -1,4 +1,4 @@
-<?
+<?php
 
 define('AUTH_AUTHREQUIRED', true);
 define('BERTA_ENVIRONMENT', 'engine');

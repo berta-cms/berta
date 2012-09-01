@@ -1,4 +1,4 @@
-<?
+<?php
 define('AUTH_AUTHREQUIRED', false);
 define('SETTINGS_INSTALLREQUIRED', false);
 define('BERTA_ENVIRONMENT', 'engine');
@@ -12,11 +12,11 @@ require 'inc.page.php';
 <!--[if (gt IE 9)|!(IE)]><!--> <htm> <!--<![endif]-->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title><? echo $berta->settings->get('texts', 'page-title') ?> / unsupported browser</title>
-<link href="<? echo $ENGINE_ABS_ROOT ?>css/default.css" rel="stylesheet" type="text/css" />
-<link href="<? echo $ENGINE_ABS_ROOT ?>css/login.css" rel="stylesheet" type="text/css" />
-<link href="<? echo $ENGINE_ABS_ROOT ?>css/editor.css.php" rel="stylesheet" type="text/css" />
-<? include 'inc.header_default_scripts.php' ?>
+<title><?php echo $berta->settings->get('texts', 'page-title') ?> / unsupported browser</title>
+<link href="<?php echo $ENGINE_ABS_ROOT ?>css/default.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo $ENGINE_ABS_ROOT ?>css/login.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo $ENGINE_ABS_ROOT ?>css/editor.css.php" rel="stylesheet" type="text/css" />
+<?php include 'inc.header_default_scripts.php' ?>
 <script type="text/javascript">
 	window.addEvent('domready', function() {
 		

@@ -1,4 +1,4 @@
-<?
+<?php
 
 if(empty($CHECK_INCLUDED)) {
 	$SITE_ROOT = '../../';
@@ -12,16 +12,16 @@ if(empty($CHECK_INCLUDED)) {
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title><? echo $berta->settings->get('texts', 'pageTitle') ?> / <?= I18n::_('welcome') ?></title>
-<link href="<? echo $ENGINE_ABS_ROOT ?>css/default.css" rel="stylesheet" type="text/css" />
-<link href="<? echo $ENGINE_ABS_ROOT ?>css/login.css" rel="stylesheet" type="text/css" />
-<link href="<? echo $ENGINE_ABS_ROOT ?>css/editor.css.php" rel="stylesheet" type="text/css" />
+<title><?php echo $berta->settings->get('texts', 'pageTitle') ?> / <?php echo I18n::_('welcome') ?></title>
+<link href="<?php echo $ENGINE_ABS_ROOT ?>css/default.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo $ENGINE_ABS_ROOT ?>css/login.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo $ENGINE_ABS_ROOT ?>css/editor.css.php" rel="stylesheet" type="text/css" />
 </head>
 <body class="xLoginPageBody">
 	<div class="xMAlign-container xPanel">
 		<div class="xMAlign-outer">
 			<div class="xMAlign-inner">
-				<?= I18n::_('welcome_text__not_installed') ?>
+				<?php echo I18n::_('welcome_text__not_installed') ?>
 			</div>
 		</div>
 	</div>

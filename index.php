@@ -1,4 +1,4 @@
-<?
+<?php
 
 $INDEX_INCLUDED = true;
 

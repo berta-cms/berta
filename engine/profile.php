@@ -1,4 +1,4 @@
-<?
+<?php
 define('AUTH_AUTHREQUIRED', true);
 define('BERTA_ENVIRONMENT', 'engine');
 include('inc.page.php');
@@ -15,36 +15,36 @@ $topPanelHTML = BertaEditor::getTopPanelHTML('profile');
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title><? echo $berta->settings->get('texts', 'pageTitle') ?> / <?= I18n::_('Profile') ?></title>
+<title><?php echo $berta->settings->get('texts', 'pageTitle') ?> / <?php echo I18n::_('Profile') ?></title>
 <link rel="SHORTCUT ICON" href="favicon.ico"/>
-<link rel="stylesheet" href="<? echo $ENGINE_ABS_ROOT ?>css/default.css" type="text/css"  charset="utf-8" />
-<link rel="stylesheet" href="<? echo $ENGINE_ABS_ROOT ?>css/editor.css.php" type="text/css"  charset="utf-8" />
-<? include 'inc.header_default_scripts.php' ?>
-<script type="text/javascript" src="<? echo $ENGINE_ABS_ROOT ?>js/Assets.js" charset="utf-8"></script>
-<script type="text/javascript" src="<? echo $ENGINE_ABS_ROOT ?>js/BertaEditorBase.js"></script>
-<script type="text/javascript" src="<? echo $ENGINE_ABS_ROOT ?>js/inline_edit.js" charset="utf-8"></script>
-<script type="text/javascript" src="<? echo $ENGINE_ABS_ROOT ?>js/BertaEditor_ChangePassword.js" charset="utf-8"></script>
+<link rel="stylesheet" href="<?php echo $ENGINE_ABS_ROOT ?>css/default.css" type="text/css"  charset="utf-8" />
+<link rel="stylesheet" href="<?php echo $ENGINE_ABS_ROOT ?>css/editor.css.php" type="text/css"  charset="utf-8" />
+<?php include 'inc.header_default_scripts.php' ?>
+<script type="text/javascript" src="<?php echo $ENGINE_ABS_ROOT ?>js/Assets.js" charset="utf-8"></script>
+<script type="text/javascript" src="<?php echo $ENGINE_ABS_ROOT ?>js/BertaEditorBase.js"></script>
+<script type="text/javascript" src="<?php echo $ENGINE_ABS_ROOT ?>js/inline_edit.js" charset="utf-8"></script>
+<script type="text/javascript" src="<?php echo $ENGINE_ABS_ROOT ?>js/BertaEditor_ChangePassword.js" charset="utf-8"></script>
 </head>
 
 <body class="xSettingsPageBody" x_mode="profile">
 	<form name="infoForm" id="infoForm">
-		<input type="hidden" name="ENGINE_ROOT" id="ENGINE_ROOT" value="<? echo htmlspecialchars($ENGINE_ROOT) ?>" />
+		<input type="hidden" name="ENGINE_ROOT" id="ENGINE_ROOT" value="<?php echo htmlspecialchars($ENGINE_ROOT) ?>" />
 	</form>
-	<? echo $topPanelHTML ?>
+	<?php echo $topPanelHTML ?>
 	<div id="allContainer">
 		<div id="contentContainer">
-			<h1 id="allPageTitle"><?= I18n::_('Profile') ?></h1>
+			<h1 id="allPageTitle"><?php echo I18n::_('Profile') ?></h1>
 
 			<div id="xSectionsEditor">
 						
-				<form name="password_form" id="password_form" method="get" action="<? echo htmlspecialchars($ENGINE_ROOT) ?>update.php" >
-					<label for="old_password"><?= I18n::_('Old password') ?></label><br />
+				<form name="password_form" id="password_form" method="get" action="<?php echo htmlspecialchars($ENGINE_ROOT) ?>update.php" >
+					<label for="old_password"><?php echo I18n::_('Old password') ?></label><br />
 					<input type="password" name="old_password" id="old_password" value="" /><br />
-					<label for="new_password"><?= I18n::_('New password') ?></label><br />
+					<label for="new_password"><?php echo I18n::_('New password') ?></label><br />
 					<input type="password" name="new_password" id="new_password" value="" /><br />
-					<label for="retype_password"><?= I18n::_('Retype new password') ?></label><br />
+					<label for="retype_password"><?php echo I18n::_('Retype new password') ?></label><br />
 					<input type="password" name="retype_password" id="retype_password" value="" /><br />
-					<input type="submit" name="xBertaEditorChangePassword" id="xBertaEditorChangePassword" value="<?= I18n::_('Change password') ?>" />
+					<input type="submit" name="xBertaEditorChangePassword" id="xBertaEditorChangePassword" value="<?php echo I18n::_('Change password') ?>" />
 				</form>				
 			
 				<br class="clear" />
@@ -52,7 +52,7 @@ $topPanelHTML = BertaEditor::getTopPanelHTML('profile');
 		
 				<div class="entry">
 					<div class="value value-long">
-						<?= I18n::_('password_help_text') ?>
+						<?php echo I18n::_('password_help_text') ?>
 					</div>
 				</div>
 				<p>&nbsp; </p>

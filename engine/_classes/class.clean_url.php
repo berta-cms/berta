@@ -59,7 +59,7 @@
 **  EXAMPLES:
 **  To create clean URL
 **  original: <a href="news.php?id=<?=$id?>&page=<?=$page?>">;
-**  convert:  <a href="<? CleanURL::makeClean("news.php?id=$id&page=$page")?>">
+**  convert:  <a href="<?php CleanURL::makeClean("news.php?id=$id&page=$page")?>">
 **  result on browser: <a href="news/120/2">;
 **
 **  To parse clean URL as above

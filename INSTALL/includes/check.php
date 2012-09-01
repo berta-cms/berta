@@ -1,4 +1,4 @@
-<?
+<?php
 
 if(empty($CHECK_INCLUDED)) {
 	$SITE_ROOT = '../../';
@@ -84,22 +84,22 @@ if(empty($settings['berta']['installed'])) {
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title><? echo $berta->settings->get('texts', 'pageTitle') ?> / welcome</title>
-<link href="<? echo $ENGINE_ABS_ROOT ?>css/default.css" rel="stylesheet" type="text/css" />
-<link href="<? echo $ENGINE_ABS_ROOT ?>css/login.css" rel="stylesheet" type="text/css" />
-<link href="<? echo $ENGINE_ABS_ROOT ?>css/editor.css.php" rel="stylesheet" type="text/css" />
-</head><?
+<title><?php echo $berta->settings->get('texts', 'pageTitle') ?> / welcome</title>
+<link href="<?php echo $ENGINE_ABS_ROOT ?>css/default.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo $ENGINE_ABS_ROOT ?>css/login.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo $ENGINE_ABS_ROOT ?>css/editor.css.php" rel="stylesheet" type="text/css" />
+</head><?php
 
 if(!empty($settings['berta']['installed'])) {
 	?><body class="xLoginPageBody">
 		<div class="xMAlign-container xPanel">
 			<div class="xMAlign-outer">
 				<div class="xMAlign-inner">
-					<p>Berta is already installed.<br />Please delete folder named <strong><code>INSTALL</code></strong> in your Berta's root folder! <br />&nbsp;<br /><input type="button" value="  OK  " onclick="window.location='<? echo $SITE_ABS_ROOT ?>';"></p>
+					<p>Berta is already installed.<br />Please delete folder named <strong><code>INSTALL</code></strong> in your Berta's root folder! <br />&nbsp;<br /><input type="button" value="  OK  " onclick="window.location='<?php echo $SITE_ABS_ROOT ?>';"></p>
 				</div>
 			</div>
 		</div>
-	</body><?
+	</body><?php
 
 } else {
 	
@@ -107,7 +107,7 @@ if(!empty($settings['berta']['installed'])) {
 		<div class="xMAlign-container xPanel">
 			<div class="xMAlign-outer">
 				<div class="xMAlign-inner justify">
-					<?
+					<?php
 					
 					if($listOk) {
 						$bottomNote = '<p class="xBottomNote">Note: This check-list is displayed only once. To re-enable it you will need to manually edit settings.xml file in your storage folder and delete the row that looks like <strong><code>' . htmlspecialchars('<installed><![CDATA[1]]></installed>') . '</code></strong>.</p>';
@@ -167,14 +167,14 @@ if(!empty($settings['berta']['installed'])) {
 				?></div>
 			</div>
 		</div>
-	</body><?
+	</body><?php
 	
 
 }
 
 
 
-?></html><?
+?></html><?php
 
 
 

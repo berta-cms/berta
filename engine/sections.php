@@ -1,4 +1,4 @@
-<?
+<?php
 define('AUTH_AUTHREQUIRED', true);
 define('BERTA_ENVIRONMENT', 'engine');
 include('inc.page.php');
@@ -13,38 +13,38 @@ $topPanelHTML = BertaEditor::getTopPanelHTML('sections');
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title><? echo $berta->settings->get('texts', 'pageTitle') ?> / <?= I18n::_('Sections') ?></title>
+<title><?php echo $berta->settings->get('texts', 'pageTitle') ?> / <?php echo I18n::_('Sections') ?></title>
 <link rel="SHORTCUT ICON" href="favicon.ico"/>
-<link rel="stylesheet" href="<? echo $ENGINE_ABS_ROOT ?>css/default.css" type="text/css"  charset="utf-8" />
-<link rel="stylesheet" href="<? echo $ENGINE_ABS_ROOT ?>css/editor.css.php" type="text/css"  charset="utf-8" />
-<? include 'inc.header_default_scripts.php' ?>
-<script type="text/javascript" src="<? echo $ENGINE_ABS_ROOT ?>js/Assets.js" charset="utf-8"></script>
-<script type="text/javascript" src="<? echo $ENGINE_ABS_ROOT ?>js/BertaEditorBase.js"></script>
-<script type="text/javascript" src="<? echo $ENGINE_ABS_ROOT ?>js/inline_edit.js" charset="utf-8"></script>
-<script type="text/javascript" src="<? echo $ENGINE_ABS_ROOT ?>js/BertaEditor_Sections.js" charset="utf-8"></script>
+<link rel="stylesheet" href="<?php echo $ENGINE_ABS_ROOT ?>css/default.css" type="text/css"  charset="utf-8" />
+<link rel="stylesheet" href="<?php echo $ENGINE_ABS_ROOT ?>css/editor.css.php" type="text/css"  charset="utf-8" />
+<?php include 'inc.header_default_scripts.php' ?>
+<script type="text/javascript" src="<?php echo $ENGINE_ABS_ROOT ?>js/Assets.js" charset="utf-8"></script>
+<script type="text/javascript" src="<?php echo $ENGINE_ABS_ROOT ?>js/BertaEditorBase.js"></script>
+<script type="text/javascript" src="<?php echo $ENGINE_ABS_ROOT ?>js/inline_edit.js" charset="utf-8"></script>
+<script type="text/javascript" src="<?php echo $ENGINE_ABS_ROOT ?>js/BertaEditor_Sections.js" charset="utf-8"></script>
 </head>
 
 <body class="xSettingsPageBody" x_mode="sections">
 	<form name="infoForm" id="infoForm">
-		<input type="hidden" name="ENGINE_ROOT" id="ENGINE_ROOT" value="<? echo htmlspecialchars($ENGINE_ROOT) ?>" />
+		<input type="hidden" name="ENGINE_ROOT" id="ENGINE_ROOT" value="<?php echo htmlspecialchars($ENGINE_ROOT) ?>" />
 	</form>
-	<? echo $topPanelHTML ?>
+	<?php echo $topPanelHTML ?>
 	<div id="allContainer">
 		<div id="contentContainer">
 			
-			<h1 id="allPageTitle"><?= I18n::_('Sections') ?></h1>
+			<h1 id="allPageTitle"><?php echo I18n::_('Sections') ?></h1>
 
 			<div id="xSectionsEditor">
 				<div class="listHead">
 					<div class="csHandle">&nbsp;</div>
-					<div class="csTitle"><?= I18n::_('Title as displayed in main menu') ?></div>
-					<div class="csBehaviour"><?= I18n::_('Type') ?></div>
-					<div class="csDetails"><?= I18n::_('Details') ?></div>
-					<div class="csPub"><?= I18n::_('Is published?') ?></div>
-					<div class="csDelete"><?= I18n::_('Delete') ?></div>
+					<div class="csTitle"><?php echo I18n::_('Title as displayed in main menu') ?></div>
+					<div class="csBehaviour"><?php echo I18n::_('Type') ?></div>
+					<div class="csDetails"><?php echo I18n::_('Details') ?></div>
+					<div class="csPub"><?php echo I18n::_('Is published?') ?></div>
+					<div class="csDelete"><?php echo I18n::_('Delete') ?></div>
 					<br class="clear" />
 				</div>
-				<ul><?
+				<ul><?php
 				$possibleTypes = 'default|Default';
 				$typeValues = array('default' => 'Default');
 				$typeParams = array();
@@ -88,7 +88,7 @@ $topPanelHTML = BertaEditor::getTopPanelHTML('sections');
 				
 				?></ul><br class="clear" />
 				
-				<a id="xCreateNewSection" class="xPanel" href="#" class="xAction-sectionCreateNew"><span><?= I18n::_('create new section') ?></span></a>
+				<a id="xCreateNewSection" class="xPanel" href="#" class="xAction-sectionCreateNew"><span><?php echo I18n::_('create new section') ?></span></a>
 			
 			
 				<br class="clear" />
@@ -96,15 +96,15 @@ $topPanelHTML = BertaEditor::getTopPanelHTML('sections');
 				<h2></h2>
 
 				<div class="entry">
-					<div class="caption"><?= I18n::_('What are sections?') ?></div>
+					<div class="caption"><?php echo I18n::_('What are sections?') ?></div>
 					<div class="value value-long">
-						<?= I18n::_('sections_help_text') ?>
+						<?php echo I18n::_('sections_help_text') ?>
 					</div>
 				</div>
 				<div class="entry">
-					<div class="caption"><?= I18n::_('What is the "external link"?') ?></div>
+					<div class="caption"><?php echo I18n::_('What is the "external link"?') ?></div>
 					<div class="value value-long">
-						<?= I18n::_('external_link_help_text') ?>
+						<?php echo I18n::_('external_link_help_text') ?>
 					</div>
 				</div>
 				<br class="clear" />

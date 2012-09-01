@@ -1,4 +1,4 @@
-<?
+<?php
 
 //echo 'memlimit: ', ini_get('memory_limit'), ' filesize: ',  ini_get('upload_max_filesize'), ' postsize: ', ini_get('post_max_size');
 @ini_set('memory_limit', '300M');

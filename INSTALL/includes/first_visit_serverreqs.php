@@ -1,4 +1,4 @@
-<?
+<?php
 
 if(empty($CHECK_INCLUDED)) {
 	$SITE_ROOT = '../../';
@@ -65,7 +65,7 @@ body {
 	<div class="xMAlign-container xPanel">
 		<div class="xMAlign-outer">
 			<div class="xMAlign-inner">
-				<?= I18n::_('welcome_text__not_supported') ?>
+				<?php echo I18n::_('welcome_text__not_supported') ?>
 			</div>
 		</div>
 	</div>
