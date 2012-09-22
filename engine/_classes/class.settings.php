@@ -240,7 +240,7 @@ class Settings {
 
 function array_merge_replace_recursive() {
 	// Holds all the arrays passed
-	$params = & func_get_args ();
+	$params = func_get_args ();
 
 	// First array is used as the base, everything else overwrites on it
 	$return = array_shift($params);
