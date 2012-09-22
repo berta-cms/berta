@@ -14,11 +14,11 @@
 $megaByte = 1024*1024;
 
 if(!function_exists('str_split')) {
-	function str_split($str, $nr = 1){ 
+	function str_split($str, $nr = 1){
 		return array_slice(split("-l-", chunk_split($str, $nr, '-l-')), 0, -1);
 	}
 }
-	
+
 $phpsess = !empty($_GET['session_id']) ? $_GET['session_id'] : false;
 if($phpsess) {
 	//error_log("$phpsess\n", 3, dirname(__FILE__) . "/my-errors.log");
@@ -80,10 +80,10 @@ if($settingsProperty) {
 		$settingsPropertyTemplate = array_shift($settingsProperty);
 		$settings = $berta->template->settings;
 	}
-	
+
 	if(count($settingsProperty) != 2 || $settingsProperty[0] != 'siteTexts' && !$settings->definitionExists($settingsProperty[0], $settingsProperty[1])) {
 		$settingsProperty = false;
-	
+
 	} else {
 		$conProps = array('min_width', 'min_height', 'max_width', 'max_height');
 		foreach($conProps as $cp) {
@@ -97,7 +97,7 @@ if($settingsProperty) {
 			}
 		}
 	}
-    
+
 } elseif($sectionName) {
 
 	$sections = BertaContent::getSections();
@@ -113,7 +113,8 @@ if($settingsProperty) {
 	}
 }
 
-$badChars = array_push(str_split('#$%^&*\\/.,><~`@'), '--');
+$badChars = str_split('#$%^&*\\/.,><~`@');
+$badChars = array_push($badChars, '--');
 $videoExtensions = array('flv', 'f4v', 'mp4');
 $iconExtensions = array('ico');
 
@@ -133,7 +134,7 @@ if(($entryId && $mediaFolder || $settingsProperty || $sectionName && $mediaFolde
 	$fileType = '';
 
 	if(!is_uploaded_file($file) || ($_FILES['Filedata']['size'] > 256 * 1024 * 1024))	$error = 'Please upload only files smaller than 256Mb!';
-	
+
 	if(!$error) {
 		$ext = strtolower(substr(strrchr($_FILES['Filedata']['name'], '.'), 1));
 		if(in_array($ext, $videoExtensions)) {
@@ -144,12 +145,12 @@ if(($entryId && $mediaFolder || $settingsProperty || $sectionName && $mediaFolde
 			$fileType = 'icon';
 		} else {
 			if(!($imInfo = @getimagesize($file)))								$error = 'Only JPG, GIF, PNG images and FLV (F4V) videos are supported.';
-			if(!$error && !in_array($imInfo[2], 
+			if(!$error && !in_array($imInfo[2],
 				array(IMAGETYPE_GIF, IMAGETYPE_JPEG, IMAGETYPE_PNG)))			$error = 'Only JPG, GIF, PNG images and FLV (F4V) videos are supported.';
 			//if(!$error && (($imInfo[0] < $constraints['min_width']) ||
 			//			  ($imInfo[1] < $constraints['min_height'])))			$error = 'Please don\'t upload super-small images!';
 			if(!$error && (($imInfo[0] > $constraints['max_orig_width']) ||
-						  ($imInfo[1] > $constraints['max_orig_height'])))		$error = 'Please don\'t upload images larger than '.$constraints['max_orig_width'].'x'.$constraints['max_orig_height'].'px !';		
+						  ($imInfo[1] > $constraints['max_orig_height'])))		$error = 'Please don\'t upload images larger than '.$constraints['max_orig_width'].'x'.$constraints['max_orig_height'].'px !';
 			$fileType = 'image';
 		}
 	}
@@ -189,7 +190,7 @@ if(($entryId && $mediaFolder || $settingsProperty || $sectionName && $mediaFolde
 				$ext = $videoExt;
 				$fName = strtolower(BertaUtils::canonizeString($_FILES['Filedata']['name'], '_', '\.-'));
 				if(substr($fName, 0, 1) == '_') $fName = rand(1, 100) . $fName; // only derivatives start with "_"
-			} 
+			}
 			elseif($fileExt) {
 				$ext = $fileExt;
 				$fName = strtolower(BertaUtils::canonizeString($_FILES['Filedata']['name'], '_', '\.-'));
@@ -205,8 +206,8 @@ if(($entryId && $mediaFolder || $settingsProperty || $sectionName && $mediaFolde
 						$result['result'] = 'failed';
 						$result['error'] = 'Cannot delete the current poster frame file!';
 					}
-				} 	
-			} 
+				}
+			}
 			else {
 				$fName = $fRealName = strtolower(BertaUtils::canonizeString($_FILES['Filedata']['name'], '_', '\.-')); //str_replace(' ', '', str_replace($badChars, '_', strtolower($_FILES['Filedata']['name'])));
 				if(substr($fName, 0, 1) == '_') $fName = rand(1, 100) . $fName; // only derivatives start with "_"
@@ -226,7 +227,7 @@ if(($entryId && $mediaFolder || $settingsProperty || $sectionName && $mediaFolde
 				} else {
 					chmod($fileFolder . $fName, 0666);
 					BertaEditor::images_deleteDerivatives($fileFolder, $fName);
-					
+
 					// in case of video, all is done
 					if($videoExt || $fileExt) {
 						if($settingsProperty) { // update setings value
@@ -243,7 +244,7 @@ if(($entryId && $mediaFolder || $settingsProperty || $sectionName && $mediaFolde
 							BertaEditor::updateImageCacheFor($blog, $entryId);
 							BertaEditor::saveBlog($sectionName, $blog);
 						}
-					
+
 						// write response
 						$result['status'] = 1;
 						$return['hash'] = md5_file($fileFolder . $fName);
@@ -255,8 +256,8 @@ if(($entryId && $mediaFolder || $settingsProperty || $sectionName && $mediaFolde
 						$result['width'] = null;
 						$result['height'] = null;
 					}
-				
-				
+
+
 					// in case of image - check the dimensions, create small thumb etc.
 					else {
 
@@ -266,25 +267,25 @@ if(($entryId && $mediaFolder || $settingsProperty || $sectionName && $mediaFolde
                         //error_log(print_r($constraints, true), 3, dirname(__FILE__) . "/my-errors.log");
 
                         $resampleOk = TRUE; //BertaEditor::images_resampleIfNeeded($fileFolder . $fTempName, $constraints, $imInfo[0], $imInfo[1]);
-						
-						
+
+
 						// if image could not be resampled, it is not a valid image
 						if($resampleOk) {
 
 							//$origVersionPath = $bSaveOriginal ? BertaEditor::images_getOrigVersionFor($fileFolder . $fName, $constraints['max_orig_width'], $constraints['max_orig_height'], true) : '';
 							//unlink($fileFolder . $fName);
 							//rename($fileFolder . $fTempName, $fileFolder . $fName);
-						
+
 							// create the small thumb
 							$smallThumbPath = BertaEditor::images_getSmallThumbFor($fileFolder . $fName);
 							$smallThumbInfo = getimagesize($smallThumbPath);
-							
+
 							// if uploaded for background, create lighter image & create an image for grid
 							if($sectionBackground) {
 								$bgImagePath = BertaEditor::images_getBgImageFor($fileFolder . $fName);
 								$bgImageInfo = getimagesize($bgImagePath);
-								
-								$gridImageSrc = BertaGallery::images_getGridImageFor($fileFolder . $fName);					
+
+								$gridImageSrc = BertaGallery::images_getGridImageFor($fileFolder . $fName);
 								if($gridImageSrc) $gridImageInfo = getimagesize($fileFolder . $gridImageSrc);
 							}
 
@@ -300,10 +301,10 @@ if(($entryId && $mediaFolder || $settingsProperty || $sectionName && $mediaFolde
 							}
 							elseif($sectionBackground) {
 								$sectionsToEdit = BertaEditor::getSections();
-								
+
 								if(empty($sectionsToEdit[$sectionName]['mediafolder'])) $sectionsToEdit[$sectionName]['mediafolder'] = array();
 								if(empty($sectionsToEdit[$sectionName]['mediafolder']['value'])) $sectionsToEdit[$sectionName]['mediafolder']['value'] = $mediaFolder;
-								
+
 								BertaEditor::updateImageCacheForSection($sectionsToEdit[$sectionName]);
 								BertaEditor::saveSections($sectionsToEdit);
 							}
@@ -313,7 +314,7 @@ if(($entryId && $mediaFolder || $settingsProperty || $sectionName && $mediaFolde
 								BertaEditor::updateImageCacheFor($blog, $entryId);
 								BertaEditor::saveBlog($sectionName, $blog);
 							}
-						
+
 							// write response
 							$result['status'] = 1;
 							$result['hash'] = md5_file($fileFolder . $fName);
@@ -335,7 +336,7 @@ if(($entryId && $mediaFolder || $settingsProperty || $sectionName && $mediaFolde
 									$result['grid_image_height'] = $gridImageInfo[1];
 								}
 							}
-					
+
 						} else {
 							$result['status'] = 0;
 							$result['error'] = 'Unsupported image dimensions!';
@@ -366,17 +367,17 @@ if (isset($_REQUEST['response']) && $_REQUEST['response'] == 'xml') {
 		header('Content-type: application/json');
 
 
-    
+
 	echo Zend_Json::encode($result);
 
 }
 
-	
+
 
 //error_log($outStr);
 //echo $outStr;
 
 
 
-	
+
 ?>

@@ -5,7 +5,7 @@
  * File:     function.bertaLink.php
  * Type:     function
  * Name:     bertaLink
- * Purpose:  
+ * Purpose:
  * -------------------------------------------------------------
  */
 function smarty_function_bertaLink($params, &$smarty) {
@@ -16,25 +16,33 @@ function smarty_function_bertaLink($params, &$smarty) {
 
 	if(!empty($params['section']) && empty($berta->sections[$params['section']]))
 		$params['section'] = reset(array_keys($berta->sections));
-	
+
 	// return external link, if one specified
 	if($berta->sections[$params['section']]['@attributes']['type'] == 'external_link' && !empty($berta->sections[$params['section']]['link'])) {
 		return $berta->sections[$params['section']]['link']['value'];
 	}
-	
+
 	$hasSSComponent = !empty($params['tag']) && !empty($berta->tags[$params['section']]);
-	$sectionIsFirst = $params['section'] == reset(array_keys($berta->sections));
+	$sectionKeys = array_keys($berta->sections);
+	$sectionIsFirst = $params['section'] == reset($sectionKeys);
 	$sectionHasDirectContent = !empty($berta->sections[$params['section']]['@attributes']['has_direct_content']);
-	$subSectionIsFirst = $hasSSComponent ? ($alwaysSelectTag && $params['tag'] == reset(array_keys($berta->tags[$params['section']]))) : true;
-	
+
+	//$subSectionIsFirst = $hasSSComponent ? ($alwaysSelectTag && $params['tag'] == reset(array_keys($berta->tags[$params['section']]))) : true;
+
+	$subSectionIsFirst = true;
+	if ($hasSSComponent) {
+		$sectionTagsKeys = array_keys($berta->tags[$params['section']]);
+		$subSectionIsFirst = $alwaysSelectTag && $params['tag'] == reset($sectionTagsKeys);
+	}
+
 	$link = array();
 	if(!empty($params['section'])) {
-		if(!$sectionIsFirst || $berta->environment == 'engine' 
-			|| $sectionHasDirectContent && count($berta->tags[$params['section']]) > 0 
+		if(!$sectionIsFirst || $berta->environment == 'engine'
+			|| $sectionHasDirectContent && count($berta->tags[$params['section']]) > 0
 			|| !$subSectionIsFirst)
 			$link[] = !$constructPrettyLink ? ('section=' . $params['section']) : $params['section'];
 	}
-	
+
 	if($hasSSComponent) {
 		if($berta->environment == 'engine' || $sectionHasDirectContent || !$subSectionIsFirst) {
 			$link[] = !$constructPrettyLink ? ('tag=' . $params['tag']) : $params['tag'];

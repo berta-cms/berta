@@ -1,35 +1,35 @@
 <?php
 
 class BertaUtils extends BertaBase {
-	
-	
+
+
 	public static function paragraphize($text, $pClass = false, $pStyle = false, $escapeSpecialChars = true, $convertLinks = true) {
 		$pAttrs = $pClass ? " class=\"$pClass\"" : "";
 		$pAttrs .= $pStyle ? " class=\"$pStyle\"" : "";
 		$text = $escapeSpecialChars ? htmlspecialchars($text) : $text;
 		if($convertLinks) {
-			$search = array("/(?<![=\"]|:\/{2})\b((\w+:\/{2}|www\.).+?)"."(?=\W*([<>\s]|$))/mie", 
+			$search = array("/(?<![=\"]|:\/{2})\b((\w+:\/{2}|www\.).+?)"."(?=\W*([<>\s]|$))/mie",
 							"/\b(^|\s)(([\w\.]+)(@)([\w\.-]+))\b/mi");
-			$replace = array("'<a href=\"$1\" target=\"_blank\">' . /*siteTools::smartStrMiddleCut(*/'$1'/*, 31)*/ . '</a>'", 
+			$replace = array("'<a href=\"$1\" target=\"_blank\">' . /*siteTools::smartStrMiddleCut(*/'$1'/*, 31)*/ . '</a>'",
 							 "$1<a href=\"mailto:$2\">$2</a>");
 			$text = preg_replace("/href=\"(?!http:|ftp:|mailto:)/i", "href=\"http://", preg_replace ($search, $replace, $text));
 
 		}
-		return "<p$pAttrs>" . 
-			   str_replace("\n", "</p><p$pAttrs>", 
-			   		preg_replace("/\n+/", "\n", 
+		return "<p$pAttrs>" .
+			   str_replace("\n", "</p><p$pAttrs>",
+			   		preg_replace("/\n+/", "\n",
 						$text
 					)
-			   ) . 
+			   ) .
 			   "</p>";
 	}
-	
-	
+
+
 	// MULTIBYTE STRING TRANSLITERATOR / CANONIZER
-	public function canonizeString($tagTitle, $replacementStr = '-', $allowNonWordChars = '') {		// TODO - add more characters
+	public static function canonizeString($tagTitle, $replacementStr = '-', $allowNonWordChars = '') {		// TODO - add more characters
 		$strSpec = 'ĀČĒĢĪĶĻŅŌŖŠŪŽāčēģīķļņŗšūžŒšœžŸ¥µÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýÿАБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЫЭЮЯабвгдеёжзийклмнопрстуфхцчшщ' . 'ъ' .             'ы' . 'ь' .             'эюя';
 		$strRepl = 'ACEGIKLNORSUZacegiklnrsuzOsozYYuAAAAAAACEEEEIIIIDNOOOOOOUUUUYsaaaaaaaceeeeiiiionoooooouuuuyyABVGDEEZZIIKLMNOPRSTUFHCCSSIEUAabvgdeezziiklmnoprstufxccss' . $replacementStr . 'i' . $replacementStr . 'eua';
-		
+
 		// create transliteration search and replacement arrays
 		$srch = array();
 		$repl = array();
@@ -41,36 +41,36 @@ class BertaUtils extends BertaBase {
 			$strRepl = mb_substr($strRepl,1,$strlen,"UTF-8");
 	        $strlen = mb_strlen($strSpec);
 	    }
-	
+
 		// transliterate
 		for ($i=0; $i < sizeof($srch); $i++) {
 			$tagTitle = mb_ereg_replace($srch[$i], $repl[$i], $tagTitle);
 	    }
-	
+
 		// replace all other characters with the replacement string
 		$tagTitle = mb_ereg_replace("[^\w$allowNonWordChars]", $replacementStr, $tagTitle);
-		
+
 		// convert multiple replacements to one
         //$tagTitle='a';
 
         //echo $replacementStr.'a';
-		$tagTitle = mb_ereg_replace("$replacementStr{2,}", $replacementStr, $tagTitle);
-		
+		$tagTitle = mb_ereg_replace("[$replacementStr]{2,}", $replacementStr, $tagTitle);
+
 		// convert .- to .
 		$tagTitle = str_replace('.' . $replacementStr, '.', $tagTitle);
-		
+
 		// remove . from the beinning and the end
 		if(mb_substr($tagTitle, 0, 1) == '.') $tagTitle = mb_substr($tagTitle, 1);
 		if(mb_substr($tagTitle, mb_strlen($tagTitle) - 1, 1) == '.') $tagTitle = mb_substr($tagTitle, 0, mb_strlen($tagTitle) - 1);
-		
+
 		// remove replacement strings from the beginning and the end
 		if(mb_substr($tagTitle, 0, 1) == $replacementStr) $tagTitle = mb_substr($tagTitle, 1);
 		if(mb_substr($tagTitle, mb_strlen($tagTitle) - 1, 1) == $replacementStr) $tagTitle = mb_substr($tagTitle, 0, mb_strlen($tagTitle) - 1);
-		
+
 		return $tagTitle;
 	}
-	
-	
+
+
 	public static function getRemoteFile($url, $type, $timeout = 7, $redirects = 2) {
 	    $o = self::$options;
 		$streamOptions = array( 'http' => array(
@@ -90,7 +90,7 @@ class BertaUtils extends BertaBase {
 	    if ( $page && $type == 'newsticker' ) {
 			$pContent = Array_XML::xml2array($page);
 			$pContent = $pContent['messages'];
-			
+
 			if(self::updateBertaVersion($pContent['version'], $o['version'])) {
 	        	$result['content'] = $pContent['update'];
 	        } elseif (!isset($_COOKIE['_berta_newsticker_news']) || $pContent['news'] != $_COOKIE['_berta_newsticker_news']) {
@@ -105,7 +105,7 @@ class BertaUtils extends BertaBase {
 		}
 	    elseif ( !isset( $http_response_header ) )
 	        return null;    // Bad url, timeout
-	        	    
+
 	    // Save the header
 	    $result['header'] = $http_response_header;
 
@@ -121,23 +121,23 @@ class BertaUtils extends BertaBase {
 	            break;
 	        }
 	    }
-	    
+
 	    return $result;
 	}
 
-	private function updateBertaVersion($v1, $v2) {	
+	private static function updateBertaVersion($v1, $v2) {
 		$ver1 = str_replace(array('.', 'b'), array('', ''), $v1);
 		$ver2 = str_replace(array('.', 'b'), array('', ''), $v2);
-		
+
 		if((int)$ver1 > (int)$ver2)
 			return true;
 	}
-	
+
 
 
 	// TODO: write a separate class for validation
 	public static function validate(&$value, &$errorMsg, $validator) {
-		
+
 		switch($validator) {
 			case "GoogleAnalytics":
 				if(preg_match("/(\w{2}-\d+-\d{1,3})/", $value, $regs))
@@ -149,15 +149,15 @@ class BertaUtils extends BertaBase {
 				break;
 		}
 	}
-	
-	
+
+
 	public static function validateEmailAddress($email) {
 		// First, we check that there's one @ symbol, and that the lengths are right
 		if (!ereg("^[^@]{1,64}@[^@]{1,255}$", $email)) {
 			// Email invalid because wrong number of characters in one section, or wrong number of @ symbols.
 			return false;
 		}
-	
+
 		// Split it into sections to make life easier
 		$email_array = explode("@", $email);
 		$local_array = explode(".", $email_array[0]);
@@ -166,7 +166,7 @@ class BertaUtils extends BertaBase {
 				return false;
 			}
 		}
-	
+
 		if (!ereg("^\[?[0-9\.]+\]?$", $email_array[1])) { // Check if domain is IP. If not, it should be valid domain name
 			$domain_array = explode(".", $email_array[1]);
 			if (sizeof($domain_array) < 2) {
@@ -180,18 +180,18 @@ class BertaUtils extends BertaBase {
 		}
 		return true;
 	}
-	
-	
-	
-	
+
+
+
+
 	// credit to Maxim Chernyak
 	// http://mediumexposure.com/techblog/smart-image-resizing-while-preserving-transparency-php-and-gd-library
 	public static function smart_resize_image($file,
-	                              $width              = 0, 
-	                              $height             = 0, 
-	                              $proportional       = false, 
-	                              $output             = 'file', 
-	                              $delete_original    = true, 
+	                              $width              = 0,
+	                              $height             = 0,
+	                              $proportional       = false,
+	                              $output             = 'file',
+	                              $delete_original    = true,
 	                              $use_linux_commands = false ) {
 
 	    if ( $height <= 0 && $width <= 0 ) return false;
@@ -279,9 +279,9 @@ class BertaUtils extends BertaBase {
 
 	    return true;
 	}
-	
-	
-	
+
+
+
 }
 
 
