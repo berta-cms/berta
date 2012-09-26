@@ -8,7 +8,7 @@
     <meta name="description" content="{ $berta.settings.texts.metaDescription }" />
     <meta name="author" content="{ $berta.settings.texts.ownerName }" />
     {$berta.settings.settings.googleSiteVerification|@html_entity_decode}
-    
+
     { if $berta.settings.pageLayout.favicon }
     <link rel="SHORTCUT ICON" href="{ $berta.options.MEDIA_ABS_ROOT }{ $berta.settings.pageLayout.favicon }" />
     { else }
@@ -22,20 +22,20 @@
         {$berta.settings.css.customCSS|@html_entity_decode|replace:'<br />':"\n"}
         </style>
     {/if}
-    { googleWebFontsAPI }   
+    { googleWebFontsAPI }
     { /if }
     <script type="text/javascript" src="{ $berta.options.TEMPLATES_ABS_ROOT }{ $berta.templateName }/mess.js"></script>
     <script type="text/javascript" src="{ $berta.options.TEMPLATES_ABS_ROOT }{ $berta.templateName }/mooMasonry.js"></script>
 
     { if $berta.shop_enabled == true }
-    <script type="text/javascript" src="{ $berta.options.SITE_ABS_ROOT }_plugin_shop/js/shop.js"></script>  
+    <script type="text/javascript" src="{ $berta.options.SITE_ABS_ROOT }_plugin_shop/js/shop.js"></script>
     <link rel="stylesheet" href="{ $berta.options.SITE_ABS_ROOT }_plugin_shop/css/shop.css.php?{$smarty.now}" type="text/css" />
     { /if }
 </head>
 
 <body>
     { if ($berta.section.type == 'shopping_cart' &&  $berta.environment == 'engine') || $berta.section.type != 'shopping_cart'  }
-        
+
         {* *** section background ************************************************* *}
         { $bgAttr = $berta.section.mediaCacheData['@attributes'] }
         { $bgFileAttr = $berta.section.mediaCacheData.file['@attributes'] }
@@ -44,7 +44,7 @@
                 <div id="xBackgroundLoader"></div>
                 {* if only one image *}
                 { if $bgFileAttr && $bgFileAttr.type == 'image' && !($smarty.cookies._berta_grid_view && $berta.section.type == 'grid') }
-                   
+
                     <div class="visual-list">
                     { if  $bgFileAttr.type == 'image' }
                         { if $berta.section.mediaCacheData.file.value }
@@ -55,7 +55,7 @@
                         { /if }
                     { /if }
                     </div>
-                    
+
                     { if $berta.section.mediaCacheData.file.value }
                         <div class="visual-image">
                         </div>
@@ -69,10 +69,10 @@
                         <div class="visual-caption" style="{ if $bgAttr.caption_bg_color }background: rgb({ $bgAttr.caption_bg_color }); background: rgba({ $bgAttr.caption_bg_color },0.5);{ /if }{ if $bgAttr.caption_color } color: { $bgAttr.caption_color }{ /if }">
                         </div>
                     { /if }
-                
+
                 {* if two or more images *}
                 { elseif $berta.section.mediaCacheData.file && !$bgFileAttr && !($smarty.cookies._berta_grid_view && $berta.section.type == 'grid') }
-                    
+
                     {* if thumbnail cookie has been created *}
                     { if $smarty.cookies._berta_grid_img_link }
                         <div class="visual-list">
@@ -87,7 +87,7 @@
                             { /if }
                         { /foreach }
                         </div>
-                    
+
                         { foreach $berta.section.mediaCacheData.file as $fKey => $fVal }
                             { if $smarty.cookies._berta_grid_img_link == $fVal['@attributes'].src }
                                 <div class="visual-image">
@@ -97,7 +97,7 @@
                                 </div>
                             { /if }
                         { /foreach }
-                    
+
                     {* if no thumbnail cookie *}
                     { else }
                         <div class="visual-list">
@@ -112,7 +112,7 @@
                         { /if }
                         { /foreach }
                         </div>
-                    
+
                         { foreach $berta.section.mediaCacheData.file as $fKey => $fVal }
                             { if $fVal@first && $fVal['@attributes'].type == 'image' }
                                 { if $fVal['value'] }
@@ -150,7 +150,7 @@
             { /if }
         </div>
 
-        
+
         {if $berta.settings.background.backgroundAttachment=='fill' AND $berta.settings.background.backgroundImageEnabled=='yes' AND $berta.settings.background.backgroundImage!=''}
             <div id="xFilledBackground" class="xPosition-{' '|str_replace:'_':$berta.settings.background.backgroundPosition}">
                 <img src="{ $berta.options.MEDIA_ABS_ROOT }{ $berta.settings.background.backgroundImage }" />
@@ -166,14 +166,14 @@
                 { /if }
             { /foreach }
         { /if }
-        
+
         {* all templates must include allContainer *}
         <div id="allContainer">
 
         {* engine panel lives in pageHeader - don't leave it out *}
         { pageHeader }
     { /if }
-    
+
     {* F awesome hack. Dont do it in future *}
     { if $berta.section.type == 'shopping_cart' }
         { if $berta.environment == 'engine' }
@@ -182,11 +182,11 @@
         { include file="../../_plugin_shop/_includes/inc.shopping_cart.tpl"  }
         </div> {* allContainer *}
     { else }
-        
-        
+
+
             {* *** shopping ********************************************************************* *}
             { if $berta.shop_enabled == true }
-                
+
                 { if $shoppingCartSection }
                 <div id="shoppingCart" { if $berta.environment == 'engine' } style="margin-top: 40px;" { /if } > {* class="hidden" *}
                 {if $berta.environment == 'engine' }
@@ -204,14 +204,14 @@
             { /if }
 
             <div id="contentContainer" { if $berta.settings.pageLayout.centered=='yes' }class="xCentered"{ /if }>
-            
+
                 { if $berta.environment == 'engine' && $berta.sections }
                 <div id="xBgEditorPanelContainer"></div>
                 <div id="xBgEditorPanelTrigContainer">
                     <a href="#" id="xBgEditorPanelTrig" title="edit background gallery"><span>background settings</span></a>
                 </div>
                 { /if }
-                
+
                 <!-- PAGE HEADING -->
                 { if ($berta.environment == 'site' && $berta.settings.navigation.landingSectionMenuVisible=='yes') || $berta.environment == 'engine' || ($berta.environment == 'site' && $berta.settings.navigation.landingSectionMenuVisible=='no' && $berta.sectionName != $berta.sections|@key) }
                     { if $berta.settings.heading.image }
@@ -228,7 +228,7 @@
                     </h1>
                     { /if }
                 { /if }
-            
+
                 <!-- MENU -->
                 { if count($berta.publishedSections) > 0 && (($berta.environment == 'site' && $berta.settings.navigation.landingSectionMenuVisible=='yes') || $berta.environment == 'engine' || ($berta.environment == 'site' && $berta.settings.navigation.landingSectionMenuVisible=='no' && $berta.sectionName != $berta.sections|@key)) }
                     { assign var="currentSectionName" value=$berta.sectionName }
@@ -240,7 +240,7 @@
                             { else }
                                 <a href="{ bertaLink section=$sName }" target="{ bertaTarget section=$sName }">{ $section.title }</a>
                             { /if }
-                
+
                             { if $berta.settings.tagsMenu.hidden=='no' && (!empty($berta.tags.$sName) && ($berta.settings.tagsMenu.alwaysOpen=='yes' || $berta.sectionName==$sName)) }
                                 <ul class="subMenu xSection-{ $sName }{ if $berta.tags.$sName|@count > 1 && $berta.environment == 'engine' } xAllowOrdering{ /if }">
                                     { foreach $berta.tags.$sName as $tName => $tag }
@@ -254,8 +254,8 @@
                         { /if }
                     { /foreach }
                 { /if }
-                
-                
+
+
                 {* If not grid view *}
                 { if !($smarty.cookies._berta_grid_view && $berta.section.type == 'grid') }
                 <div id="pageEntries" class="{ entriesListClasses } xNoEntryOrdering">
@@ -265,7 +265,7 @@
 
                         <div class="{ entryClasses entry=$entry } { messClasses property='positionXY' } xShopMessyEntry" style="{ messStyles xy=$entry.positionXY entry=$entry } {if $entry.width} width:{$entry.width};{elseif strlen(trim($berta.settings.shop.entryWidth)) > 0  && $berta.section.type == 'shop'} width: { $berta.settings.shop.entryWidth }px{ /if }">
 
-        
+
                             {* the entry settings and delete and move buttons live in the entryHeader - don't leave it out! *}
                             { $isshopentry=0 }
                             { if $berta.section.type == 'shop' and $berta.shop_enabled == true }
@@ -285,12 +285,12 @@
                             { if $berta.environment == 'engine' || !empty($entry.description) }
                                 <div class="entryText xEditableMCE xProperty-description">{ $entry.description }</div>
                             { /if }
-        
-                            
+
+
 
                             { if $berta.section.type == 'shop' and $berta.shop_enabled == true }
                                 <div class="addToCart">
-                                
+
                                 { if $berta.environment == 'engine' }
                                     <div class="cartPrice xEditableRC xProperty-cartPrice xCaption-price xFormatModifier-toPrice" title="{ $entry.cartPrice }">{ $entry.cartPrice|@toPrice }</div>
                                     {* <br class="clear" /> *}
@@ -301,10 +301,10 @@
                                     <div class="cartAttributes">{ $entry.cartAttributes|@toCartAttributes }</div>
                                     {/if}
                                     <span class="aele"><span>{ $berta.settings.shop.addToBasket }</span></span>
-                                    <span class="addedToCart hidden"></span>    
+                                    <span class="addedToCart hidden"></span>
                                 { /if }
                                 </div>
-                                
+
 
                             { /if }
 
@@ -319,23 +319,24 @@
                     { /foreach }
                 </div>
                 { /if }
-                
-                
-                <div id="additionalText" class="{ messClasses property='additionalTextXY' }" style="{ messStyles xy=$additionalTextXY }"> 
-                    <div class="xEditableMCESimple xProperty-additionalText xCaption-additional-text">
-                    { $additionalText }
+
+                { if ($berta.environment == 'site' && $berta.settings.navigation.landingSectionMenuVisible=='yes') || $berta.environment == 'engine' || ($berta.environment == 'site' && $berta.settings.navigation.landingSectionMenuVisible=='no' && $berta.sectionName != $berta.sections|@key) }
+                    <div id="additionalText" class="{ messClasses property='additionalTextXY' }" style="{ messStyles xy=$additionalTextXY }">
+                        <div class="xEditableMCESimple xProperty-additionalText xCaption-additional-text">
+                        { $additionalText }
+                        </div>
                     </div>
-                </div>
+                {/if}
 
             </div>
-            
-            {section name=foo loop=10} 
+
+            {section name=foo loop=10}
                 { assign var="setting_name_image" value="banner`$smarty.section.foo.iteration`_image" }
                 { assign var="setting_name_link" value="banner`$smarty.section.foo.iteration`_link" }
                 { assign var="setting_pos_name" value="banner`$smarty.section.foo.iteration`XY" }
-                
+
                 { if $berta.settings.banners.$setting_name_image }
-                    <div class="floating-banner xEditableDragXY xProperty-{ $setting_pos_name }" style="{ bannerPos xy_name=$setting_pos_name }"> 
+                    <div class="floating-banner xEditableDragXY xProperty-{ $setting_pos_name }" style="{ bannerPos xy_name=$setting_pos_name }">
                         <div class="xHandle"></div>
                         { if $berta.settings.banners.$setting_name_link }
                             <a href="{ $berta.settings.banners.$setting_name_link }" target="_blank">
@@ -345,38 +346,38 @@
                         <img src="{ $berta.options.MEDIA_ABS_ROOT }{ $berta.settings.banners.$setting_name_image }" />
                         { /if }
                     </div>
-                
+
                 { /if }
             {/section}
-            
+
             {* grid trigger *}
             { if $berta.section.type == 'grid' && $berta.section.mediaCacheData.file && !$berta.section.mediaCacheData.file['@attributes'] && !$smarty.cookies._berta_grid_view }
             <div id="xGridViewTriggerContainer" { if $berta.environment == 'engine' }style="right: 44px"{ else if $berta.environment == 'site' && $shoppingCartSection } style="top: 20px;"{ /if }>
                 <a id="xGridViewTrigger" href="{ bertaLink section=$berta.sectionName tag=$berta.tagName }"><span>thumbnails</span></a>
             </div>
             { /if }
-                
+
         </div>
-        
+
         {* *** grid view ********************************************************** *}
         { if ($berta.section.type == 'grid' && $smarty.cookies._berta_grid_view) }
         <div id="xGridView">
             { gridView section=$berta.section tag=$berta.tagName }
         </div>
         { /if }
-        
-        
+
+
         <div id="bottom">
             <p id="userCopyright" class="xEditableTA xProperty-siteFooter">{ $siteFooter }</p>
             { if !($berta.settings.settings.hideBertaCopyright=='yes' && $berta.hostingPlan>1) }
                 <p id="bertaCopyright">{ bertaCopyright }</p>
             { /if }
         </div>
-        
+
         { if $berta.settings.settings.showTutorialVideos == 'yes' && !$smarty.cookies._berta_videos_hidden }{ videoTutorials }{ /if }
-                
+
         { include file="../_includes/inc.js_include.tpl" }
-        
+
         { include file="../_includes/inc.counter.tpl"  }
     { /if }
 

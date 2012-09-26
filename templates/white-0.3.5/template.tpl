@@ -11,13 +11,13 @@
 	<meta name="description" content="{ $berta.settings.texts.metaDescription }" />
 	<meta name="author" content="{ $berta.settings.texts.ownerName }" />
 	{$berta.settings.settings.googleSiteVerification|@html_entity_decode}
-	
+
 	{ if $berta.settings.pageLayout.favicon }
 	<link rel="SHORTCUT ICON" href="{ $berta.options.MEDIA_ABS_ROOT }{ $berta.settings.pageLayout.favicon }" />
 	{ else }
 	<link rel="SHORTCUT ICON" href="{ $berta.options.TEMPLATES_ABS_ROOT }{ $berta.templateName }/favicon.ico" />
 	{ /if }
-	
+
 	{ $berta.scripts }
 	{ $berta.css }
     {if $berta.settings.css.customCSS}
@@ -30,13 +30,13 @@
 </head>
 
 <body>
-	
+
 	{* all templates must include allContainer *}
 	<div id="allContainer"{ if $berta.settings.pageLayout.centered == 'yes' }class="xCentered"{ /if }>
-		
+
 		{* engine panel lives in pageHeader - don't leave it out *}
 		{ pageHeader }
-		
+
 		<div id="sideColumn"{ if $berta.settings.pageLayout.centered == 'yes' }class="xCentered"{ /if }>
 			<div id="sideColumnTop">
 
@@ -53,9 +53,9 @@
                     </h1>
                     { /if }
                 { /if }
-				
-					
-					
+
+
+
 				{ if count($berta.publishedSections) > 0 && (($berta.environment == 'site' && $berta.settings.navigation.landingSectionMenuVisible=='yes') || $berta.environment == 'engine' || ($berta.environment == 'site' && $berta.settings.navigation.landingSectionMenuVisible=='no' && $berta.sectionName != $berta.sections|@key)) }
 					<ul>
 						{ assign var="sName" value=$berta.sectionName }
@@ -66,28 +66,30 @@
 								{ else }
 									<a href="{ bertaLink section=$section.name }" target="{ bertaTarget section=$section.name }">{ $section.title }</a>
 								{ /if }
-							
+
 								{ if $sName == $section.name and !empty($berta.tags.$sName) }
 									<ul class="subMenu xSection-{ $sName }{ if $berta.tags.$sName|@count > 1 && $berta.environment == 'engine' } xAllowOrdering{ /if }">
 										{ foreach from=$berta.tags.$sName key="tName" item="tag" name="subSectionsMenuLoop" }
 											{ if $berta.tagName == $tName }<li class="selected xTag-{ $tName }">{ else }<li class="xTag-{ $tName }">{ /if }
 												<a class="handle" href="{ bertaLink section=$berta.sectionName tag=$tName }" target="{ bertaTarget section=$berta.sectionName tag=$tName }">{ $tag.title }</a>
                                             </li>
-										{ /foreach }	
+										{ /foreach }
 									</ul>
 								{ /if }
-							
+
 							</li>
 						{ /foreach }
 					</ul>
 				{ /if }
-				
-				<div id="additionalText" class="xEditableDragXY xProperty-additionalTextXY" style="{ additionalTextPos xy=$additionalTextXY }"> 
-					<div class="xHandle"></div>
-					<div class="xEditableMCESimple xProperty-additionalText xCaption-additional-text">
-					{ $additionalText }
+
+              	{ if ($berta.environment == 'site' && $berta.settings.navigation.landingSectionMenuVisible=='yes') || $berta.environment == 'engine' || ($berta.environment == 'site' && $berta.settings.navigation.landingSectionMenuVisible=='no' && $berta.sectionName != $berta.sections|@key) }
+					<div id="additionalText" class="xEditableDragXY xProperty-additionalTextXY" style="{ additionalTextPos xy=$additionalTextXY }">
+						<div class="xHandle"></div>
+						<div class="xEditableMCESimple xProperty-additionalText xCaption-additional-text">
+						{ $additionalText }
+						</div>
 					</div>
-				</div>
+				{/if}
 			</div>
 			<div id="sideColumnBottom">
 				<p id="userCopyright" class="xEditableTA xProperty-siteFooter">{ $siteFooter }</p>
@@ -96,13 +98,13 @@
 				{ /if }
 			</div>
 		</div>
-		
+
 		<div id="contentContainer">
-	
+
 			<div id="mainColumn"{ if $berta.settings.pageLayout.centered == 'yes' }class="xCentered"{ /if }>
-		
+
 				<ol id="pageEntries" class="{ entriesListClasses }">
-			
+
 					{* now loop through all entries and print them out *}
 					{ foreach from=$entries key="entryId" item="entry" name="entriesLoop" }
 						<li class="entry { entryClasses entry=$entry }">
@@ -116,19 +118,19 @@
 							{ if $berta.environment == 'engine' || !empty($entry.description) }
 							<div class="entryText xEditableMCE xProperty-description">{ $entry.description }</div>
 							{ /if }
-				
+
 							{* entry footer wraps the entry including the header - don't leave it out! *}
 							{ entryFooter entry=$entry }
 						</li>
-					
+
 					{ foreachelse }
 						{* the template can be modified in a way that here goes content the is displayed when there are no entries in the section *}
-			
+
 					{ /foreach }
 				</ol>
-			
+
 				<br class="clear" />
-				
+
 			</div>
 
 

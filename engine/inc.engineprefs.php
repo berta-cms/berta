@@ -14,7 +14,7 @@ require 'config/inc.conf.php';
 /**
  * Berta's release version
  */
-$options['version'] = '0.8.3b';
+$options['version'] = '0.8.4b';
 $options['int_version'] = '1083';
 
 
@@ -105,7 +105,7 @@ $options['remote_update_uri'] = array(
 );
 foreach($options['hip_ipaddr'] as $ip)
 	$options['remote_update_uri'][] = 'http://' . $ip . '/berta-remote/news_ticker_videos_update.php';
-	
+
 
 
 // thumbnail size for editor layout

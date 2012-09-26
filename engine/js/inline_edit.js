@@ -11,8 +11,8 @@ var inlineEdit = new Class({
 			dontHideOnBlur: false
 		};
 	},
-	
-	
+
+
 	addHTMLEntities: function(str) {
 		var s = [new RegExp("&", "g"), new RegExp('"', "g"), new RegExp("<", "g"), new RegExp(">", "g")];
 		var r = ['&amp;', '&quot;', '&lt;', '&gt;'];
@@ -28,12 +28,12 @@ var inlineEdit = new Class({
 		ta.destroy();
 		return returnValue;
 	},
-	
+
 	initialize: function(element,options){
 		this.setOptions(this.getOptions(), options);
 		if(!element.innerHTML.toLowerCase().match('<'+this.options.type)){
 			this.editting = element;
-			
+
 			// get element's content
 			this.oldContent = this.oldContentText = element.innerHTML;
 			var content = this.oldContent.trim();
@@ -42,7 +42,7 @@ var inlineEdit = new Class({
 				content = this.removeHTMLEntities(content);
 			}
 			//var content = this.removeHTMLEntities(this.oldContent.trim());
-			
+
 			var inputBoxId = '_replacement' + $random(0, 9999) + $random(0, 9999) + $random(0, 9999);
 
 			// create the replacement element and set it's value
@@ -64,26 +64,26 @@ var inlineEdit = new Class({
 
 			//set height for longtext - textarea
 			if (this.options.type=='textarea'){
-				var height = element.getSize().y; 
+				var height = element.getSize().y;
 				this.inputBox.setStyles({
 					'height': height+'px'
 				});
 			}
 
-			if(!this.inputBox.value) { 
+			if(!this.inputBox.value) {
 				try {
 					this.inputBox.set('html', content);
 				} catch(e) { }
 			}
 			this.setAllStyles(element,this.inputBox);
-			
+
 			// for selects create options and select the right one
 			var curOption;
 			if(this.options.type == 'select') {
 				for(var i = 0; i < this.options.selectOptions.length; i++) {
 					curOption = this.options.selectOptions[i].split('|');
 					if(curOption.length == 1) curOption[1] = this.options.selectOptions[i];
-					
+
 					new Element('option', {
 							'style': this.options.subtype == 'font' ? ('font-family: ' + curOption[0] + '; font-size: 16px') : ''
 						})
@@ -92,35 +92,37 @@ var inlineEdit = new Class({
 					    .setProperty('selected', (this.options.subtype == 'rc' || this.options.subtype == 'font') ? (curOption[1] == this.oldContentText) : (curOption[0] == this.oldContent))
 						.set('html', curOption[1])
 					    .injectInside(this.inputBox);
-					
+
 					// for RC selects we have to save the current selected value because the editable element contains text which is not the real value
 					if((this.options.subtype == 'rc' || this.options.subtype == 'font') && curOption[1] == this.oldContentText) this.oldContent = curOption[0]
 				}
 			}
-			
+
 			// inject the replacement into the DOM and give it focus
 			this.editting.set('html', '');
 			this.inputBox.injectInside(this.editting);
 			(function() {
 				try { this.inputBox.focus(); } catch(e) { }
-				if(this.inputBox.select) this.inputBox.select(); 
+				if(this.inputBox.select) this.inputBox.select();
 			}.bind(this)).delay(300);
-			
+
 			if(this.options.WYSIWYGSettings) {
+				var WYSIWYGSettings = this;
 				//console.debug(this.options.WYSIWYGSettings);
 				var ed = new tinymce.Editor(inputBoxId, this.options.WYSIWYGSettings);
 				tinymce.EditorManager.add(ed);
 				ed.render();
-				
-				// update editor height - this is needed, if desired height is below 100. 
+
+				// update editor height - this is needed, if desired height is below 100.
 				// tinymce wouldn't allow heights smaller than 100
-				var e = $(ed.id + '_tbl'), ifr = $(ed.id + '_ifr');
-	            e.setStyle('height', this.options.WYSIWYGSettings.height);
-				ifr.setStyle('height', this.options.WYSIWYGSettings.height);
-	
-				// set styles for the tinymce body element
-				this.setAllStylesMCE(element, ed);
-			
+				(function(){
+					var e = $(ed.id + '_tbl'), ifr = $(ed.id + '_ifr');
+		            e.setStyle('height', WYSIWYGSettings.options.WYSIWYGSettings.height);
+					ifr.setStyle('height', WYSIWYGSettings.options.WYSIWYGSettings.height);
+					// set styles for the tinymce body element
+					WYSIWYGSettings.setAllStylesMCE(element, ed);
+				}).delay(1000);
+
 			} else {
 				// add events
 				this.inputBox.addEvent('change',this.onSave.bind(this));
@@ -128,12 +130,12 @@ var inlineEdit = new Class({
 			}
 		}
 	},
-	
+
 	onSave: function(){
 		this.inputBox.removeEvents();
-		
-		this.newContent = this.options.WYSIWYGSettings ? 
-							this.inputBox.get('value').trim() : 
+
+		this.newContent = this.options.WYSIWYGSettings ?
+							this.inputBox.get('value').trim() :
 							this.addHTMLEntities(this.inputBox.get('value').trim()).replace(new RegExp("\n", "gi"), "<br />");
 		//this.newContent = this.inputBox.get('value').trim();
 		this.newContentText = this.newContent;
@@ -143,10 +145,10 @@ var inlineEdit = new Class({
 		} else {
 			this.editting.set('html', this.newContent);
 		}
-			
+
 		this.fireEvent('onComplete', [this, this.editting, this.oldContent, this.oldContentText, this.newContent, this.newContentText]);
 	},
-	
+
 	setAllStyles: function(prevel, el){
         /**/
 		var stylesToCopy = [ 'font-family', 'font-weight', 'font-style', 'text-transform', 'line-height', 'letter-spacing', 'font' ];
@@ -172,7 +174,7 @@ Element.implement({
 		return new inlineEdit(this, options);
 	},
 	inlineIsEmpty: function() {
-		return this.innerHTML.indexOf('<span class="xEmpty">') == 0;	
+		return this.innerHTML.indexOf('<span class="xEmpty">') == 0;
 	}
 });
 
