@@ -11,38 +11,38 @@
 	<meta name="description" content="{ $berta.settings.texts.metaDescription }" />
 	<meta name="author" content="{ $berta.settings.texts.ownerName }" />
 	{$berta.settings.settings.googleSiteVerification|@html_entity_decode}
-	
+
 	{ if $berta.settings.pageLayout.favicon }
 	<link rel="SHORTCUT ICON" href="{ $berta.options.MEDIA_ABS_ROOT }{ $berta.settings.pageLayout.favicon }" />
 	{ else }
 	<link rel="SHORTCUT ICON" href="{ $berta.options.TEMPLATES_ABS_ROOT }{ $berta.templateName }/favicon.ico" />
 	{ /if }
-	
+
 	{ $berta.scripts }
 	{ $berta.css }
     {if $berta.settings.css.customCSS}
         <style type="text/css">
         {$berta.settings.css.customCSS|@html_entity_decode|replace:'<br />':"\n"}
         </style>
-    {/if}	
-	{ googleWebFontsAPI }		
+    {/if}
+	{ googleWebFontsAPI }
 	<script type="text/javascript" src="{ $berta.options.TEMPLATES_ABS_ROOT }{ $berta.templateName }/superwhite.js"></script>
 </head>
 
 <body>
-	
+
 	{if $berta.settings.background.backgroundAttachment=='fill' AND $berta.settings.background.backgroundImageEnabled=='yes' AND $berta.settings.background.backgroundImage!=''}
 		<div id="xFilledBackground" class="xPosition-{' '|str_replace:'_':$berta.settings.background.backgroundPosition}">
 			<img src="{ $berta.options.MEDIA_ABS_ROOT }{ $berta.settings.background.backgroundImage }" />
 		</div>
 	{/if}
-	
+
 	{* all templates must include allContainer *}
 	<div id="allContainer"{ if $berta.settings.pageLayout.centered == 'yes' }class="xCentered"{ /if }>
-		
+
 		{* engine panel lives in pageHeader - don't leave it out *}
 		{ pageHeader }
-		
+
 		<div id="sideColumn"{ if $berta.settings.pageLayout.centered == 'yes' }class="xCentered"{ /if }>
 			<div id="sideColumnTop">
 
@@ -70,41 +70,44 @@
 								{ else }
 									<a href="{ bertaLink section=$sName }" target="{ bertaTarget section=$sName }">{ $section.title }</a>
 								{ /if }
-						
+
 								{ if !empty($berta.tags.$sName) }
 									<ul class="subMenu xSection-{ $sName }{ if $berta.tags.$sName|@count > 1 && $berta.environment == 'engine' } xAllowOrdering{ /if }">
 										{ foreach from=$berta.tags.$sName key="tName" item="tag" name="subSectionsMenuLoop" }
 											{ if $berta.tagName == $tName and $currnetSectionName == $section.name }<li class="selected xTag-{ $tName }">{ else }<li class="xTag-{ $tName }">{ /if }
 												<a class="handle" href="{ bertaLink section=$sName tag=$tName }" target="{ bertaTarget section=$sName tag=$tName }">{ $tag.title }</a>
 											</li>
-								 		{ /foreach }	
+								 		{ /foreach }
 									</ul>
 								{ /if }
-						
+
 							</li>
 						{ /foreach }
 					</ul>
 				{ /if }
-				
-				<div id="additionalText" class="xEditableDragXY xProperty-additionalTextXY" style="{ additionalTextPos xy=$additionalTextXY }"> 
-					<div class="xHandle"></div>
-					<div class="xEditableMCESimple xProperty-additionalText xCaption-additional-text">
-					{ $additionalText }
+
+
+				{ if ($berta.environment == 'site' && $berta.settings.navigation.landingSectionMenuVisible=='yes') || $berta.environment == 'engine' || ($berta.environment == 'site' && $berta.settings.navigation.landingSectionMenuVisible=='no' && $berta.sectionName != $berta.sections|@key) }
+					<div id="additionalText" class="xEditableDragXY xProperty-additionalTextXY" style="{ additionalTextPos xy=$additionalTextXY }">
+						<div class="xHandle"></div>
+						<div class="xEditableMCESimple xProperty-additionalText xCaption-additional-text">
+						{ $additionalText }
+						</div>
 					</div>
-				</div>
-				
+				{/if}
+
 			</div>
 			<div id="sideColumnBottom">
 				<p id="userCopyright" class="xEditableTA xProperty-siteFooter">{ $siteFooter }</p>
 				{ if !($berta.settings.settings.hideBertaCopyright=='yes' && $berta.hostingPlan>1) }
 					<p id="bertaCopyright">{ bertaCopyright }</p>
-				{ /if }			
+				{ /if }
 			</div>
 		</div>
 
-	
+
 		{ if $berta.section.type == 'mash_up' }
-	
+
 			<div id="contentContainer" class="noEntries">
 				<div id="firstPageMarkedEntries" class="{ entriesListClasses } xNoEntryOrdering">
 				{ selectMarkedEntries assign="markedEntries" count=$berta.section.marked_items_count }
@@ -114,7 +117,7 @@
 				<br class="clear" />
 				</div>
 			</div>
-	
+
 		{ else }
 
 			<div id="contentContainer">
@@ -125,42 +128,42 @@
 							{* now loop through all entries and print them out *}
 							{ foreach from=$entries item="entry" name="entriesLoop" }
 								<li class="entry { entryClasses entry=$entry }">
-					
+
 									{* the entry settings and delete and move buttons live in the entryHeader - don't leave it out! *}
 									{ entryHeader entry=$entry }
-		
+
 									{* entryGallery prints the image gallery for the entry *}
 									{ entryGallery entry=$entry }
-		
+
 									{ if $berta.environment == 'engine' || !empty($entry.description) }
 									<div class="entryText xEditableMCE xProperty-description">{ $entry.description }</div>
 									{ /if }
-														
+
 									{* entry footer wraps the entry including the header - don't leave it out! *}
 									{ entryFooter entry=$entry }
 								</li>
-			
+
 							{ foreachelse }
 								{* the template can be modified in a way that here goes content the is displayed when there are no entries in the section *}
-	
+
 							{ /foreach }
 						</ol>
-	
+
 						<br class="clear" />
 					</div>
 				</div>
 			</div>
-	
+
 		{ /if }
-		
-		
-		{section name=foo loop=10} 
+
+
+		{section name=foo loop=10}
 		    { assign var="setting_name_image" value="banner`$smarty.section.foo.iteration`_image" }
 			{ assign var="setting_name_link" value="banner`$smarty.section.foo.iteration`_link" }
 			{ assign var="setting_pos_name" value="banner`$smarty.section.foo.iteration`XY" }
-			
+
 			{ if $berta.settings.banners.$setting_name_image }
-				<div class="floating-banner xEditableDragXY xProperty-{ $setting_pos_name }" style="{ bannerPos xy_name=$setting_pos_name }"> 
+				<div class="floating-banner xEditableDragXY xProperty-{ $setting_pos_name }" style="{ bannerPos xy_name=$setting_pos_name }">
 					<div class="xHandle"></div>
 					{ if $berta.settings.banners.$setting_name_link }
 						<a href="{ $berta.settings.banners.$setting_name_link }" target="_blank">
@@ -170,13 +173,13 @@
 					<img src="{ $berta.options.MEDIA_ABS_ROOT }{ $berta.settings.banners.$setting_name_image }" />
 					{ /if }
 				</div>
-			
+
 			{ /if }
 		{/section}
 
-			
+
 	</div>
-	
+
 	{ if $berta.settings.settings.showTutorialVideos == 'yes' && !$smarty.cookies._berta_videos_hidden }{ videoTutorials }{ /if }
 
 	{ include file="../_includes/inc.js_include.tpl" }

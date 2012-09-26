@@ -948,10 +948,10 @@ var BertaEditorBase = new Class({
 			options: {
 				mode : "exact",
 				theme : "advanced",
-				width : "600px", height : "300px",
+				width : "610px", height : "300px",
 				//content_css : "<?php echo $ENGINE_ABS_ROOT ?>css/mce.css.php",
-				theme_advanced_buttons1 : "save,|,pasteword,|,undo,redo,|,bold,italic,removeformat,cleanup,styleprops,|,bullist,numlist,outdent,indent,|,justifyleft,justifycenter,justifyright,justifyfull,|,formatselect,link,unlink,insertanything,|,code",
-				theme_advanced_buttons2 : "",
+				theme_advanced_buttons1 : "save,|,pasteword,|,undo,redo,|,bold,italic,removeformat,cleanup,styleprops,|,bullist,numlist,outdent,indent,|,justifyleft,justifycenter,justifyright,justifyfull,|,formatselect,link,unlink,insertanything,|,pdw_toggle,code",
+				theme_advanced_buttons2 : "tablecontrols",
 				theme_advanced_buttons3 : "",
 				theme_advanced_path : true,
 				theme_advanced_toolbar_location : "top",
@@ -962,17 +962,16 @@ var BertaEditorBase = new Class({
 				save_enablewhendirty : false,
 				save_onsavecallback: this.tinyMCE_onSave.bind(this),
 
-				plugins: "save,insertanything,paste",
+				plugins: "save,insertanything,paste,table,pdw",
 
-				/* TEST */
-
-				/* /TEST */
+				pdw_toggle_on : 1,
+            	pdw_toggle_toolbars : "2",
 
 				theme_advanced_blockformats : "p,h2",
 
 				valid_elements : "iframe[*],object[*],embed[*],param[*],form[*],input[*],textarea[*],select[*],option[*]," +
 								 "p[class|style],b[class],i[class],span[class],strong[class],em[class],a[href|target|class|style|title],br[*],u[class]," +
-								 "ul,li,ol,img[*],hr[class],h2,div[*]",
+								 "ul,li,ol,img[*],hr[class],h2,div[*],table[*],thead[*],tbody[*],tr[*],td[*]",
 				custom_elements : '',
 				extended_valid_elements : '',
 				convert_urls: false,
@@ -989,6 +988,7 @@ var BertaEditorBase = new Class({
 		this.tinyMCESettings.simple = new this.tinyMCESettings.Base({
 			mode : "exact",
 			theme_advanced_buttons1 : "save,bold,italic,removeformat,link,code",
+			theme_advanced_buttons2 : "",
 			valid_elements : "p[*],b,i,strong,em,a[href|target|class|style],br[*],u,img[*],div[*],iframe[*]",
 			width : "100%", height: "60px",
 			theme_advanced_statusbar_location : null,

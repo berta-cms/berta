@@ -9,23 +9,23 @@ $templatePath = Berta::$options['TEMPLATES_ABS_ROOT'] . $berta->template->name .
 
 if(!1) { ?><style type="text/css"><?php } ?>
 
-	
+
 	#xTopPanelContainer {
 		position:fixed;
 		left: 0; top: 0;
 	}
-	
+
 	.xEntry.xEditableDragXY { cursor: default; }
 	.xEntry.xSaving * {
 		opacity: 0.7;
 		-moz-opacity: 0.7;
 	}
-	
+
 	.xEntryGalleryEditor {
 		width: 430px;
 	}
-	
-	
+
+
 	.xEntryEditWrap {
 		padding: 0;
 		margin: 0;
@@ -37,7 +37,7 @@ if(!1) { ?><style type="text/css"><?php } ?>
 	.xEntryCheck {
 		/*float: right !important;*/
 	}
-	.xEntryEditWrapButtons { 
+	.xEntryEditWrapButtons {
 		border-bottom: none;
 		/*visibility: visible !important;*/
 		margin-bottom: 0;
@@ -68,43 +68,44 @@ if(!1) { ?><style type="text/css"><?php } ?>
 		.xEntryDropdownBox div.xEntryBoxParams {
 			margin: 0px 18px 0px 18px;
 			font-size: 12px;
-		}	
-		
-		.xEntryEditWrapButtons a.xEntryMove{ 
+		}
+
+		.xEntryEditWrapButtons a.xEntryMove{
 			display: block;
-			background-image: url('<?php echo $templatePath ?>layout/icon-move.png'); 
-			cursor: move; 
+			background-image: url('<?php echo $templatePath ?>layout/icon-move.png');
+			cursor: move;
 			text-decoration:none !important;
 	  	}
 			.xEntryEditWrapButtons a.xEntryMove span { display: none; }
-		
-			.xEntryEditWrapButtons a.xEntryToBack { 
+
+			.xEntryEditWrapButtons a.xEntryToBack {
 				display: block;
-				background-image: url('<?php echo $templatePath ?>layout/icon-send-to-back.png'); 
+				background-image: url('<?php echo $templatePath ?>layout/icon-send-to-back.png');
 				text-decoration:none !important;
 		  	}
 				.xEntryEditWrapButtons a.xEntryToBack span { display: none; }
 		.xEntryEditWrapButtons a.xEntryDelete { background-image: url('<?php echo $templatePath ?>layout/icon-delete.png'); }
 		.xEntryEditWrapButtons a.xEntryDelete:hover { background-color: none; }
 			.xEntryEditWrapButtons a.xEntryDelete span { display: none; }
-	
+
 		.xEntryCheck span { /*display: inline-block; float: right; margin-left: 3px;*/ }
-	
+
 			.xEntrySetGalType>span { display: none !important; }
-	
-	
+
+
 	#contentContainer>.xCreateNewEntry {
 		position: absolute;
 		width: 200px;
 		right: 50%;
 		margin-right: -100px;
 		top: 30px;
+		z-index: 60000;
 	}
 	.xEntry .xCreateNewEntry {
 		display: none;
 	}
-	
-	
+
+
 	.mess>.xHandle {
 		position: absolute;
 		left: 0;
@@ -119,7 +120,7 @@ if(!1) { ?><style type="text/css"><?php } ?>
 	.mess:hover>.xHandle {
 		visibility: visible;
 	}
-	
+
 	#xCoords {
 		z-index: 1;
 		background-color: #FFFFB7;
@@ -129,23 +130,23 @@ if(!1) { ?><style type="text/css"><?php } ?>
 		white-space: nowrap;
 		line-height: 1em;
 	}
-	
+
 	/*.menuItem.mess {
 		background: url('<?php echo $templatePath ?>layout/icon-move.png') no-repeat 100% 0%;
 		padding-right: 20px;
 	}*/
-	
-	
-	
-	
-	
+
+
+
+
+
 	.noEntries .xCreateNewEntry {
 		display: none;
 	}
-	
-	
-	
-	
+
+
+
+
 	.floating-banner .xHandle {
 		position: absolute;
 		left: 0;
