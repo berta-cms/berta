@@ -685,6 +685,16 @@ var BertaEditor = new Class({
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     submenuSortingInit: function() {
+
+    	var subMenuAnchors = this.subMenu.getElements('a');
+		subMenuAnchors.each(function(item, index) {
+			item.addEvent('click', function(event){
+				if (this.getParent('ul').hasClass('xSortNotClick')) {
+					event.preventDefault();
+				}
+			});
+		});
+
         this.subMenu.each(function(item, index) {
             if(item.hasClass('xAllowOrdering')) {
                 this.submenuSortables[index] = new Sortables(item, {
