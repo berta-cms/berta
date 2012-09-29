@@ -67,13 +67,13 @@ body.xEditorEnabled { }
 			height: 300px;
 			width: 528px;
 		}
-			
+
 
 	#bertaVideos #videoLinks .title {
 		font-weight: bold;
 		margin-bottom: 3px;
 	}
-	
+
 	#bertaVideos #videoLinks .links a {
 		background: url('../layout/berta_video_button_normal.png') no-repeat 0 4px;
 		color: #212121;
@@ -117,7 +117,7 @@ body.xEditorEnabled { }
 	  			-webkit-box-shadow: 0 0 8px #000;
 	  			box-shadow: 0 0 8px #000;
 			}
-			
+
 	#bertaVideos #frameSettings .togglePopupWrapper {
 		color: #999;
 		position: absolute;
@@ -127,14 +127,14 @@ body.xEditorEnabled { }
 		#bertaVideos #frameSettings .togglePopupWrapper label {
 			cursor: pointer;
 		}
-		
+
 	#bertaVideos #videosError {
 		text-align: center;
 	}
 
 
-/* middle-align containers ------------------------------------------------------------------------------------------- */	
-	
+/* middle-align containers ------------------------------------------------------------------------------------------- */
+
 .xMAlign-container {
 	display: table;
 }
@@ -149,12 +149,12 @@ body.xEditorEnabled { }
 			top: -50%;
 			text-align: center;
 		}
-		
+
 .ie6 .xMAlign-container {
 	display: block !important;
 	top: 0 !important;
 }
-	.ie6 .xMAlign-outer { 
+	.ie6 .xMAlign-outer {
 		display: block !important;
 		top: 0 !important;
 		position: static;
@@ -216,7 +216,7 @@ body.xEditorEnabled { }
 /* editables ---------------------------------------------------------------------------------------------- */
 
 .xEditable,
-.xEditableColor 
+.xEditableColor
 .xEditableSelect,
 .xEditableSelectRC,
 .xEditableFontSelect,
@@ -262,7 +262,7 @@ body.xEditorEnabled { }
 }
 
 .xEditableRealCheck {
-	
+
 }
 	.xEditableRealCheck input {
 		width: 18px;
@@ -331,7 +331,7 @@ body.xEditorEnabled { }
 	.xPanel .xGreyBack a:hover { color: #666; }
 
 
-	
+
 
 
 
@@ -380,6 +380,7 @@ body.xEditorEnabled { }
 	position: fixed;
 	left: 0; top: 0;
 	background-color: transparent !important;
+	z-index: 2001;
 }
 .xSettingsPageBody #xTopPanelContainer {
 	position: absolute;
@@ -393,7 +394,7 @@ body.xEditorEnabled { }
 		background: rgb(54, 54, 54);
 		background: rgba(54, 54, 54, 0.8);
 	}
-	
+
 		#xNewsTickerContainer {
 			position: relative;
 			padding: 16px 8px;
@@ -402,12 +403,12 @@ body.xEditorEnabled { }
 			background: rgb(255, 255, 255);
 			background: rgba(255, 255, 255, 0.8);
 		}
-		
+
 			#xNewsTickerContainer * {
 				color: #333;
 			}
 			#xNewsTickerContainer>* { z-index: 10; position: relative; }
-			
+
 			#xNewsTickerContainer .news-ticker-content {
 				float: left;
 				color: #333;
@@ -415,7 +416,7 @@ body.xEditorEnabled { }
 				#xNewsTickerContainer .news-ticker-content .run-in {
 					font-weight: bold;
 				}
-				
+
 			#xNewsTickerContainer a.close {
 				color: #666666;
 				font-size: 100%;
@@ -423,7 +424,7 @@ body.xEditorEnabled { }
 				text-decoration: none !important;
 				font-weight: bold;
 			}
-	
+
 		ul#xEditorMenu {
 			position: relative;
 			display: block;
@@ -439,18 +440,18 @@ body.xEditorEnabled { }
 				z-index: 10;
 				color: #E9E9E9;
 			}
-				ul#xEditorMenu li a { 
+				ul#xEditorMenu li a {
 					text-decoration: none !important;
 					color: #E9E9E9;
 				}
-				
+
 				ul#xEditorMenu li a:hover { color: #000; }
-			
+
 			ul#xEditorMenu li.selected, ul#xEditorMenu li.selected a {
 				font-weight: bold;
 			}
 
-	
+
 	#xTopPanelSlideIn {
 		position: relative;
 		z-index: 2;
@@ -464,13 +465,13 @@ body.xEditorEnabled { }
 		background: rgb(074, 074, 074);
 		background: rgba(074, 074, 074, 0.9);
 	}
-		
+
 		#xTopPanelSlideIn span,
 		#xTopPanelSlideOut span {
 			color: #E9E9E9;
 			cursor: pointer;
 		}
-		
+
 		#xTopPanelSlideIn span:hover,
 		#xTopPanelSlideOut span:hover {
 			color: #000;
@@ -504,7 +505,7 @@ body.xEditorEnabled { }
     	#xBgEditorPanelTrigContainer a:hover {
     		background-position: -280px -80px;
     	}
-			
+
 		#xBgEditorPanelTrigContainer a span {
 			display: block;
 			height: 40px;
@@ -538,25 +539,25 @@ body.xEditorEnabled { }
 	#xBgEditorPanel .xBgImgSizeSettings {
 		padding: 6px;
 	}
-	
+
 		.xBgAddMedia .xBgAddImagesFallback {
 		    display: block;
 		}
 		    .xBgUploadFrame {
 		    	display: none;
 		    }
-		
+
 		.xBgAddMedia a.xBgAddImagesLink {
 		    padding-top: 6px;
 		    display: block;
     	    width: 70px;
     	    text-decoration: none !important;
 		}
-		
+
 		    .xBgAddMedia a.xBgAddImagesLink span {
 		    	color: #000;
 		    }
-		    
+
 		    .xBgAddMedia a.xBgAddImagesLink.hover span {
     	        text-decoration: underline !important;
     	    }
@@ -564,12 +565,12 @@ body.xEditorEnabled { }
 		.xBgSettings {
 			margin: 6px 0;
 		}
-			
+
 			.xBgFadingSettings .caption {
 				width: 200px;
 				float: left;
 			}
-			
+
 				.xBgFadingSettings .xBgFading,
 				.xBgColorSettings .xBgFading select,
 				.xBgButtonTypeSettings .xBgButtonType,
@@ -577,13 +578,13 @@ body.xEditorEnabled { }
 					float: left;
 					width: 100px;
 				}
-				
+
 				.xBgButtonTypeSettings .xBgButtonType,
 				.xBgButtonTypeSettings .xBgButtonType select {
 					margin-top: 6px;
 				}
-			
-			.xBgButtonTypeSettings .caption,	
+
+			.xBgButtonTypeSettings .caption,
 			.xBgColorSettings .caption {
 				width: 200px;
 				float: left;
@@ -595,7 +596,7 @@ body.xEditorEnabled { }
 					margin-top: 6px;
 					width: 100px;
 				}
-			
+
 				.xBgColor span.colorPreview {
 					display: block;
 					float: left;
@@ -605,7 +606,7 @@ body.xEditorEnabled { }
 					cursor: pointer;
 					border: 1px solid #000;
 				}
-				
+
 				.xBgColorReset {
 					float: left;
 					margin-top: 6px;
@@ -618,42 +619,42 @@ body.xEditorEnabled { }
 					.xBgColorReset a span:hover {
 						text-decoration: underline;
 					}
-		
+
 		.xBgImgSizeSettings,
 		.xBgSlideshowSettings {
 			margin: 6px 0;
 		}
-			
+
 			.xBgImgSizeSettings .caption,
 			.xBgSlideshowSettings .caption {
 				width: 200px;
 				float: left;
 			}
-			
+
 			.xBgImgSizeSettings .xBgImgSize,
 			.xBgImgSizeSettings .xBgImgSize select {
 				width: 100px;
 			}
-			
+
 			.xBgSlideshowSettings .xBgAutoPlay,
 			.xBgSlideshowSettings .xBgAutoPlay input {
 				width: 50px;
 			}
-			
+
 			.xBgImgSizeSettings .xBgImgSize,
 			.xBgImgSizeSettings .xBgImgSize select,
 			.xBgSlideshowSettings .xBgAutoPlay,
 			.xBgSlideshowSettings .xBgAutoPlay input {
 				float: left;
 			}
-		
+
 	/* tabs */
 	#xBgEditorPanel .xBgEditorTabs {
 		padding: 6px 6px 0;
 		min-height: 40px;
 		background-color: #4a4a4a;
 	}
-	
+
 		.xBgEditorTabs .xBgMediaTab,
 		.xBgEditorTabs .xBgSettingsTab,
 		.xBgEditorTabs .xBgImgSizeSettingsTab,
@@ -662,7 +663,7 @@ body.xEditorEnabled { }
 			display: block;
 			height: 40px;
 		}
-		
+
 		.xBgEditorTabs .xBgMediaTab a,
 		.xBgEditorTabs .xBgSettingsTab a,
 		.xBgEditorTabs .xBgImgSizeSettingsTab a,
@@ -674,7 +675,7 @@ body.xEditorEnabled { }
 			width: 40px;
 			background-repeat: no-repeat;
 		}
-		
+
 		.xBgEditorTabs .xBgMedia a span,
 		.xBgEditorTabs .xBgMediaSettings a span,
 		.xBgEditorTabs .xBgImgSizeSettings a span,
@@ -693,67 +694,67 @@ body.xEditorEnabled { }
 		    	color: #e9e9e9;
 		    	font-weight: bold;
 		    }
-		    
+
 		    .xBgEditorTabs a.xBgEditorCloseLink span:hover {
 		    	color: #000;
 		    }
-	
+
 		.xBgEditorTabs .xBgMediaTab a {
 			background: url('../layout/gallery_icons_sprite.png') no-repeat;
 			background-position: 0px -40px;
-			
+
 		}
-		
+
 			.xBgEditorTabs .xBgMediaTab a:hover {
 				background-position: 0px -80px;
 			}
-		
+
 			.xBgEditorTabs .xBgMediaTab a.selected {
 				background-position: 0px 0px;
 			}
-		
+
 		.xBgEditorTabs .xBgSettingsTab a {
 			background: url('../layout/gallery_icons_sprite.png') no-repeat;
 			background-position: -160px -40px;
-			
+
 		}
-		
-			.xBgEditorTabs .xBgSettingsTab a:hover {	
+
+			.xBgEditorTabs .xBgSettingsTab a:hover {
 				background-position: -160px -80px;
 			}
-		
+
 			.xBgEditorTabs .xBgSettingsTab a.selected {
 				background-position: -160px 0px;
 			}
-		
+
 		.xBgEditorTabs .xBgImgSizeSettingsTab a {
 			background: url('../layout/gallery_icons_sprite.png') no-repeat;
 			background-position: -120px -40px;
-			
+
 		}
-		
-			.xBgEditorTabs .xBgImgSizeSettingsTab a:hover {	
+
+			.xBgEditorTabs .xBgImgSizeSettingsTab a:hover {
 				background-position: -120px -80px;
 			}
-		
+
 			.xBgEditorTabs .xBgImgSizeSettingsTab a.selected {
 				background-position: -120px 0px;
 			}
-		
+
 		.xBgEditorTabs .xBgSlideshowSettingsTab a {
 			background: url('../layout/gallery_icons_sprite.png') no-repeat;
 			background-position: -40px -40px;
-			
+
 		}
-		
-			.xBgEditorTabs .xBgSlideshowSettingsTab a:hover {	
+
+			.xBgEditorTabs .xBgSlideshowSettingsTab a:hover {
 				background-position: -40px -80px;
 			}
-		
+
 			.xBgEditorTabs .xBgSlideshowSettingsTab a.selected {
 				background-position: -40px 0px;
 			}
-			
+
 		.xBgEditorTabs .xBgMediaTab a span,
 		.xBgEditorTabs .xBgSettingsTab a span,
 		.xBgEditorTabs .xBgImgSizeSettingsTab a span,
@@ -780,7 +781,7 @@ body.xEditorEnabled { }
 		#xBgEditorPanel .images ul.processing { }
 		#xBgEditorPanel .images ul.sorting,
 		#xBgEditorPanel .images ul.sorting * { cursor: -moz-grabbing !important; }
-		
+
 			#xBgEditorPanel .images ul li {
 				display: block;
 				position: relative;
@@ -789,22 +790,22 @@ body.xEditorEnabled { }
 				/*margin: 0;*/
 				min-width: 140px;
 				height: <?php echo ((int) BertaBase::$options['images']['small_thumb_height'] + 140) . 'px' ?>;
-				background: #efefef; 
+				background: #efefef;
 			}
 			#xBgEditorPanel .images ul li.video {
-				
+
 			}
 				#xBgEditorPanel .images ul li img {
 					margin: 0 auto 0;
 					display: block;
 				}
-			
+
 			#xBgEditorPanel .images ul li.selected { }
 				#xBgEditorPanel .images ul li.selected img {
 					opacity: 0.7;
 					-moz-opacity: 0.7;
 				}
-			
+
 				/* delete button - trashcan */
 				#xBgEditorPanel .images ul li .delete {
 					display: block;
@@ -822,28 +823,28 @@ body.xEditorEnabled { }
 				}
 				#xBgEditorPanel .images ul li.hover .delete { visibility: visible; }
 				#xBgEditorPanel .images ul.processing li .delete { visibility: hidden !important; }
-			
+
 				/* grab handle */
 				#xBgEditorPanel .images ul li .grabHandle {
 					visibility: hidden;
 					position: absolute;
 					top: 0; left: 0;
-					width: 100%; 
+					width: 100%;
 					height: <?php echo BertaBase::$options['images']['small_thumb_height'] . 'px' ?>;
 					margin: 0; padding: 0;
 				}
-					#xBgEditorPanel .images ul li .grabHandle .xMAlign-inner { 
-						width: 25px; height: 25px; 
+					#xBgEditorPanel .images ul li .grabHandle .xMAlign-inner {
+						width: 25px; height: 25px;
 						margin: 0 auto 0;
 						cursor: move;
 						border-radius: 5px;
 						-moz-border-radius: 5px;
 					}
 					#xBgEditorPanel .images ul li.video .grabHandle .xMAlign-inner { margin-bottom: 20px; }
-						#xBgEditorPanel .images ul li .grabHandle .xMAlign-inner span { 
+						#xBgEditorPanel .images ul li .grabHandle .xMAlign-inner span {
 							display: block;
 							width: 100%; height: 100%;
-							background: transparent url('../layout/grab.gif') no-repeat center center; 
+							background: transparent url('../layout/grab.gif') no-repeat center center;
 						}
 					#xBgEditorPanel .images ul li .grabHandle .xMAlign-inner:hover,
 					#xBgEditorPanel .images ul li.grabbing .grabHandle .xMAlign-inner {
@@ -853,7 +854,7 @@ body.xEditorEnabled { }
 				#xBgEditorPanel .images ul li.hover .grabHandle { visibility: visible; }
 				#xBgEditorPanel .images ul.processing li .grabHandle { visibility: hidden; }
 				#xBgEditorPanel .images ul.processing li.grabbing .grabHandle { visibility: visible !important; }
-			
+
 				/* video placeholder and dimensions form */
 				#xBgEditorPanel .images li .placeholderContainer {
 					min-width: 100px;
@@ -879,25 +880,25 @@ body.xEditorEnabled { }
 					#xBgEditorPanel .images li .dimsForm .posterContainer {
 						position: relative;
 					}
-					#xBgEditorPanel .images li .dimsForm a.poster { 
-						display: block; 
+					#xBgEditorPanel .images li .dimsForm a.poster {
+						display: block;
 						width: 100%;
 						height: 16px;
-						margin: 0 0 2px; 
-						text-align:center; 
+						margin: 0 0 2px;
+						text-align:center;
 						font-size: 10px;
-						color: #333; 
+						color: #333;
 					}
 					#xBgEditorPanel .images li .dimsForm a.poster:hover { color: #666; }
-					#xBgEditorPanel .images li .dimsForm span.dim { 
-						display: inline-block; 
+					#xBgEditorPanel .images li .dimsForm span.dim {
+						display: inline-block;
 						min-width: 25px;
-						margin: 0 2px; 
-						font-size: 10px; 
+						margin: 0 2px;
+						font-size: 10px;
 					}
 						#xBgEditorPanel .images li .dimsForm span.dim * { font-size: 10px; }
 						#xBgEditorPanel .images li .dimsForm span.dim input { width: 30px !important; padding: 0 !important; border: 1px solid #666; }
-				
+
 				#xBgEditorPanel .images li .xEGEImageCaption {
 					width: 150px;
 					height: 135px;
@@ -908,7 +909,7 @@ body.xEditorEnabled { }
 					#xBgEditorPanel .images li .xEGEImageCaption * {
 						font-size: 90%;
 					}
-				
+
 			#xBgEditorPanel .images ul li.file {
 				width: 160px;
 				height: 80px;
@@ -933,9 +934,9 @@ body.xEditorEnabled { }
 			}
 				#xBgEditorPanel .images ul li.file-failed .file-info { display: block; margin: 5px; }
 			#xBgEditorPanel .images ul li.file-uploading {
-				
+
 			}
-			
+
 
 
 
@@ -947,19 +948,19 @@ body.xEditorEnabled { }
 /* entries --------------------------------------------------------------------------------------------------- */
 
 ul#pageEntries {
-	
+
 }
 	.xEntry {	}
 	.xEntryHover { }
-	
+
 		.xEntryEditWrap {
 
 		}
 		.xEntryHover .xEntryEditWrap {
 
 		}
-		
-		.xEntryEditWrapButtons { 
+
+		.xEntryEditWrapButtons {
 			visibility: hidden;
 			height: 20px;
 			margin: -26px 0 0 0;
@@ -969,10 +970,10 @@ ul#pageEntries {
 			-webkit-border-radius: 8px;
 			border-radius: 8px;
 		}
-		.xEntryHover .xEntryEditWrapButtons { 
-			visibility: visible; 
+		.xEntryHover .xEntryEditWrapButtons {
+			visibility: visible;
 		}
-		
+
 			.xEntryEditWrapButtons a {
 				float: left;
 				width: 18px;
@@ -990,14 +991,14 @@ ul#pageEntries {
 				background-color: #fff;
 				padding: 0px;
 			}
-			
+
 			.xEntryEditWrapButtons a.xEntryDelete { background-image: url('../layout/icon-delete.png'); }
 
 			.xEntryEditWrapButtons a.xEntryMove { background-image: url('../layout/icon-move-vertical.png'); cursor: grab; }
 			.xEntryEditWrapButtons a.xEntryMoveForbidden { background-image: url('../layout/icon-move-vertical.png'); cursor: default; opacity: 0.4; -moz-opacity: 0.4; }
 			.xNoEntryOrdering a.xEntryMove { display: none; }
 			.xNoEntryOrdering a.xEntryMoveForbidden { display: none; }
-		
+
 			.xEntryEditWrapButtons .xEntryCheck {
 				float: right;
 				margin-top: 1px;
@@ -1014,7 +1015,7 @@ ul#pageEntries {
 			.xEntryEditWrapButtons .xEntryDropdowHover {
 				background-position: center -20px;
 			}
-			
+
 			.xEntryDropdownBox {
 				position: absolute;
 				border: 1px solid #666666;
@@ -1023,16 +1024,16 @@ ul#pageEntries {
 				display: none;
 				background: rgba(255, 255, 255, 0.96);
 			}
-			
+
 			.xEntryDropdownBox ul {
 				padding:0;
 				margin:0;
 				list-style: none;
 				white-space: nowrap;
 			}
-			
-			.xEntryDropdownBox ul li .customWidth, 			
-			.xEntryDropdownBox ul li a {		
+
+			.xEntryDropdownBox ul li .customWidth,
+			.xEntryDropdownBox ul li a {
 				color: #000;
 				text-decoration: none;
 				display: block;
@@ -1042,24 +1043,24 @@ ul#pageEntries {
 
 			.xEntryDropdownBox .customWidth {
 				height: 22px;
-				
+
 			}
 
 			.xEntryDropdownBox .customWidth input {
 				display: block;
 				width: 100%;
 			}
-			
+
 			.xEntryDropdownBox ul li:hover {
 				background-color: #666666;
 				color: #fff;
 			}
-			
-			.xEntryDropdownBox ul li:hover div, 
+
+			.xEntryDropdownBox ul li:hover div,
 			.xEntryDropdownBox ul li:hover a {
-				color: #fff;			
+				color: #fff;
 			}
-			
+
 			.xEntryDropdownBox ul li .xEntryCheck {
 				position: relative;
 				left: -18px;
@@ -1081,7 +1082,7 @@ ul#pageEntries {
 			.xEntryDropdownBox ul li:hover input.checked {
 				background: url('../layout/check.png') no-repeat center -22px;
 			}
-						
+
 			.tagsList {
 			    float: left;
 			    padding-top: 3px;
@@ -1089,18 +1090,18 @@ ul#pageEntries {
 			    height: 18px;
 				overflow: hidden;
 				white-space: nowrap;
-				
+
 			}
 
 			.tagsList .xEmpty{
-				background: none;				
+				background: none;
 			}
 
 			.xPanel .tagsList {
 				font-style: italic;
 			}
 
-		
+
 		.xGalleryContainer  {
 			/*width: 100%;*/
 			clear: left;
@@ -1115,7 +1116,7 @@ ul#pageEntries {
 				height: 20px;
 			}
 				.xGalleryContainer a.xGalleryEditButton {
-					
+
 				}
 				.xGalleryHasImages a.xGalleryEditButton {
 					position: absolute;
@@ -1128,8 +1129,8 @@ ul#pageEntries {
 				.xGalleryHasImages a.xGalleryEditButton:hover {
 					-moz-opacity: 1; opacity: 1;
 				}
-					
-				.xGalleryContainer .entryGallery div.item { 
+
+				.xGalleryContainer .entryGallery div.item {
 					display: block;
 					z-index: 1;
 				}
@@ -1157,12 +1158,12 @@ a.xCreateNewEntry {
 		width: 100%;
 		height: 20px;
 		padding: 3px 0 1px;
-		
+
 		background: transparent url('../layout/clickable-back.png') repeat;
 		-moz-border-radius: 8px;
 		-webkit-border-radius: 8px;
 		border-radius: 8px;
-		
+
 		text-align: center;
 		color: #333 !important;
 		text-decoration: none !important;
@@ -1197,7 +1198,7 @@ a.xCreateNewEntry.xSaving {
 	width: 700px;
 	height: 327px;
     position: relative;
-    z-index: 55000;	
+    z-index: 55000;
 }
 
 	.xEntryGalleryEditor .xEntryGallerySettings,
@@ -1205,11 +1206,11 @@ a.xCreateNewEntry.xSaving {
 	.xEntryGalleryEditor .xEntryGalleryImageSize {
 		padding: 6px;
 	}
-	
+
 		.xEntryGalleryEditor .xEntryGalleryAddMedia {
 			padding: 6px;
 		}
-	
+
 		.xEntryGalleryAddMedia .xEntryAddImagesFallback {
 			display: block;
 		}
@@ -1218,28 +1219,28 @@ a.xCreateNewEntry.xSaving {
 			.xEntryUploadFrame {
 				display: none;
 			}
-		
+
 		.xEntryGalleryAddMedia a.xEntryAddImagesLink {
 			padding-top: 6px;
 			display: block;
             width: 70px;
             text-decoration: none !important;
 		}
-		
+
 			.xEntryGalleryAddMedia a.xEntryAddImagesLink span {
 				color: #000;
 			}
-			
+
 			.xEntryGalleryAddMedia a.xEntryAddImagesLink.hover span {
                 text-decoration: underline !important;
             }
-       
+
 		.xEntryGalleryEditor .xEntryGalleryMenu {
 			padding: 6px 6px 0;
 			min-height: 40px;
 			background-color: #4a4a4a;
 		}
-		
+
 		.xEntryGalleryMenu .xEntryMedia,
 		.xEntryGalleryMenu .xEntryMediaSettings,
 		.xEntryGalleryMenu .xEntryFullScreenSettings,
@@ -1248,7 +1249,7 @@ a.xCreateNewEntry.xSaving {
 			display: block;
 			height: 40px;
 		}
-		
+
 		.xEntryGalleryMenu .xEntryMedia a,
 		.xEntryGalleryMenu .xEntryMediaSettings a,
 		.xEntryGalleryMenu .xEntryFullScreenSettings a,
@@ -1260,7 +1261,7 @@ a.xCreateNewEntry.xSaving {
 			width: 40px;
 			background-repeat: no-repeat;
 		}
-		
+
 		.xEntryGalleryMenu .xEntryMedia a span,
 		.xEntryGalleryMenu .xEntryMediaSettings a span,
 		.xEntryGalleryMenu .xEntryFullScreenSettings a span,
@@ -1269,69 +1270,69 @@ a.xCreateNewEntry.xSaving {
 			float: left;
 			height: 40px;
 		}
-		
+
 		.xEntryGalleryMenu .xEntryMedia a {
 			background: url('../layout/gallery_icons_sprite.png') no-repeat;
 			background-position: 0px -40px;
-			
+
 		}
-		
+
 			.xEntryGalleryMenu .xEntryMedia a:hover {
 				background-position: 0px -80px;
 			}
-		
+
 			.xEntryGalleryMenu .xEntryMedia a.selected {
 				background-position: 0px 0px;
 			}
-		
+
 		.xEntryGalleryMenu .xEntryMediaSettings a {
 			background: url('../layout/gallery_icons_sprite.png') no-repeat;
 			background-position: -40px -40px;
-			
+
 		}
-		
-			.xEntryGalleryMenu .xEntryMediaSettings a:hover {	
+
+			.xEntryGalleryMenu .xEntryMediaSettings a:hover {
 				background-position: -40px -80px;
 			}
-		
+
 			.xEntryGalleryMenu .xEntryMediaSettings a.selected {
 				background-position: -40px 0px;
 			}
-		
+
 		.xEntryGalleryMenu .xEntryFullScreenSettings a {
 			background: url('../layout/gallery_icons_sprite.png') no-repeat;
 			background-position: -80px -40px;
 		}
-		
+
 			.xEntryGalleryMenu .xEntryFullScreenSettings a:hover {
 				background-position: -80px -80px;
 			}
-		
+
 			.xEntryGalleryMenu .xEntryFullScreenSettings a.selected {
 				background-position: -80px 0px;
 			}
-			
+
 		.xEntryGalleryMenu .xEntryImageSizeSettings a {
 			background: url('../layout/gallery_icons_sprite.png') no-repeat;
 			background-position: -120px -40px;
 		}
-		
+
 			.xEntryGalleryMenu .xEntryImageSizeSettings a:hover {
 				background-position: -120px -80px;
 			}
-		
+
 			.xEntryGalleryMenu .xEntryImageSizeSettings a.selected {
 				background-position: -120px 0px;
 			}
-		
-		
+
+
 		.xEntryGalleryMenu .xEntryMedia a span,
 		.xEntryGalleryMenu .xEntryMediaSettings a span,
 		.xEntryGalleryMenu .xEntryFullScreenSettings a span,
 		.xEntryGalleryMenu .xEntryImageSizeSettings a span {
 				display: none;
 		}
-		
+
 		.xEntryGallerySettings .xEntrySlideshowSettings,
 		.xEntryGallerySettings .xEntryLinkSettings {
 			margin: 16px 0;
@@ -1350,7 +1351,7 @@ a.xCreateNewEntry.xSaving {
 			.xEntryGalleryImageSize .caption {
 				padding: 6px 0;
 			}
-			
+
 			.xEntryGallerySettings .xEntrySetGalType,
 			.xEntryGallerySettings .xEntrySetGalType input,
 			.xEntrySlideshowSettings .xEntryAutoPlay,
@@ -1371,15 +1372,15 @@ a.xCreateNewEntry.xSaving {
 			.xEntryGalleryImageSize .xEntrySetImageSize input {
 				margin: 6px 0;
 			}
-			
+
 			.xEntrySlideshowSettings .xEntryAutoPlay {
 				width: 50px;
 			}
-			
+
 			.xEntryLinkSettings .xEntryLinkAddress {
 				width: 200px;
 			}
-			
+
 			.xEntryGalleryFullScreen .xEntrySetFullScreen,
 			.xEntryGalleryImageSize .xEntrySetImageSize {
 				width: 80px;
@@ -1397,7 +1398,7 @@ a.xCreateNewEntry.xSaving {
 				color: #e9e9e9;
 				font-weight: bold;
 			}
-			
+
 			.xEntryGalleryMenu a.xEntryGalCloseLink span:hover {
 				color: #000;
 			}
@@ -1421,7 +1422,7 @@ a.xCreateNewEntry.xSaving {
 		.xEntryGalleryEditor .images ul.processing { }
 		.xEntryGalleryEditor .images ul.sorting,
 		.xEntryGalleryEditor .images ul.sorting * { cursor: -moz-grabbing !important; }
-		
+
 			.xEntryGalleryEditor .images ul li {
 				display: block;
 				position: relative;
@@ -1430,22 +1431,22 @@ a.xCreateNewEntry.xSaving {
 				/*margin: 0;*/
 				min-width: 140px;
 				height: <?php echo ((int) BertaBase::$options['images']['small_thumb_height'] + 140) . 'px' ?>;
-				background: #efefef; 
+				background: #efefef;
 			}
 			.xEntryGalleryEditor .images ul li.video {
-				
+
 			}
 				.xEntryGalleryEditor .images ul li img {
 					margin: 0 auto 0;
 					display: block;
 				}
-			
+
 			.xEntryGalleryEditor .images ul li.selected { }
 				.xEntryGalleryEditor .images ul li.selected img {
 					opacity: 0.7;
 					-moz-opacity: 0.7;
 				}
-			
+
 				/* delete button - trashcan */
 				.xEntryGalleryEditor .images ul li .delete {
 					display: block;
@@ -1463,28 +1464,28 @@ a.xCreateNewEntry.xSaving {
 				}
 				.xEntryGalleryEditor .images ul li.hover .delete { visibility: visible; }
 				.xEntryGalleryEditor .images ul.processing li .delete { visibility: hidden !important; }
-			
+
 				/* grab handle */
 				.xEntryGalleryEditor .images ul li .grabHandle {
 					visibility: hidden;
 					position: absolute;
 					top: 0; left: 0;
-					width: 100%; 
+					width: 100%;
 					height: <?php echo BertaBase::$options['images']['small_thumb_height'] . 'px' ?>;
 					margin: 0; padding: 0;
 				}
-					.xEntryGalleryEditor .images ul li .grabHandle .xMAlign-inner { 
-						width: 25px; height: 25px; 
+					.xEntryGalleryEditor .images ul li .grabHandle .xMAlign-inner {
+						width: 25px; height: 25px;
 						margin: 0 auto 0;
 						cursor: move;
 						border-radius: 5px;
 						-moz-border-radius: 5px;
 					}
 					.xEntryGalleryEditor .images ul li.video .grabHandle .xMAlign-inner { margin-bottom: 20px; }
-						.xEntryGalleryEditor .images ul li .grabHandle .xMAlign-inner span { 
+						.xEntryGalleryEditor .images ul li .grabHandle .xMAlign-inner span {
 							display: block;
 							width: 100%; height: 100%;
-							background: transparent url('../layout/grab.gif') no-repeat center center; 
+							background: transparent url('../layout/grab.gif') no-repeat center center;
 						}
 					.xEntryGalleryEditor .images ul li .grabHandle .xMAlign-inner:hover,
 					.xEntryGalleryEditor .images ul li.grabbing .grabHandle .xMAlign-inner {
@@ -1494,7 +1495,7 @@ a.xCreateNewEntry.xSaving {
 				.xEntryGalleryEditor .images ul li.hover .grabHandle { visibility: visible; }
 				.xEntryGalleryEditor .images ul.processing li .grabHandle { visibility: hidden; }
 				.xEntryGalleryEditor .images ul.processing li.grabbing .grabHandle { visibility: visible !important; }
-			
+
 				/* video placeholder and dimensions form */
 				.xEntryGalleryEditor .images li .placeholderContainer {
 					min-width: 100px;
@@ -1520,25 +1521,25 @@ a.xCreateNewEntry.xSaving {
 					.xEntryGalleryEditor .images li .dimsForm .posterContainer {
 						position: relative;
 					}
-					.xEntryGalleryEditor .images li .dimsForm a.poster { 
-						display: block; 
+					.xEntryGalleryEditor .images li .dimsForm a.poster {
+						display: block;
 						width: 100%;
 						height: 16px;
-						margin: 0 0 2px; 
-						text-align:center; 
+						margin: 0 0 2px;
+						text-align:center;
 						font-size: 10px;
-						color: #333; 
+						color: #333;
 					}
 					.xEntryGalleryEditor .images li .dimsForm a.poster:hover { color: #666; }
-					.xEntryGalleryEditor .images li .dimsForm span.dim { 
-						display: inline-block; 
+					.xEntryGalleryEditor .images li .dimsForm span.dim {
+						display: inline-block;
 						min-width: 25px;
-						margin: 0 2px; 
-						font-size: 10px; 
+						margin: 0 2px;
+						font-size: 10px;
 					}
 						.xEntryGalleryEditor .images li .dimsForm span.dim * { font-size: 10px; }
 						.xEntryGalleryEditor .images li .dimsForm span.dim input { width: 30px !important; padding: 0 !important; border: 1px solid #666; }
-				
+
 				.xEntryGalleryEditor .images li .xEGEImageCaption {
 					width: 150px;
 					height: 135px;
@@ -1549,7 +1550,7 @@ a.xCreateNewEntry.xSaving {
 					.xEntryGalleryEditor .images li .xEGEImageCaption * {
 						font-size: 90%;
 					}
-				
+
 			.xEntryGalleryEditor .images ul li.file {
 				width: 160px;
 				height: 80px;
@@ -1574,9 +1575,9 @@ a.xCreateNewEntry.xSaving {
 			}
 				.xEntryGalleryEditor .images ul li.file-failed .file-info { display: block; margin: 5px; }
 			.xEntryGalleryEditor .images ul li.file-uploading {
-				
+
 			}
-			
+
 	.xEntryGalleryProps {
 		clear: both;
 		padding: 0;
@@ -1596,7 +1597,7 @@ a.xCreateNewEntry.xSaving {
 				overflow: hidden;
 			}
 				.xEntryGalleryProps .info-container .fsize { color: #999999; }
-				
+
 			.xEntryGalleryProps .caption-container {
 				float: left;
 				width: auto;
@@ -1613,7 +1614,7 @@ a.xCreateNewEntry.xSaving {
 
 
 
-.xImageContainer { 
+.xImageContainer {
 	float: <?php echo ($berta->settings->get('page-layout', 'content-align')) ?>;
 	margin-right: 20px;
 }
@@ -1624,8 +1625,8 @@ a.xCreateNewEntry.xSaving {
 }
 
 
-	
-	
+
+
 
 
 
@@ -1657,24 +1658,24 @@ body.xLoginPageBody {
 				font-size: 24px;
 				line-height: 120%;
 			}
-			
+
 			body.xLoginPageBody .emphasis {
 				font-weight: bold;
 			}
-		
+
 			body.xLoginPageBody .justify { text-align: justify; }
 			body.xLoginPageBody form {
 				display: block;
 				width: 220px;
 				margin: 0 auto 0;
 			}
-			
+
 			body.xLoginPageBody form p {
                 clear: both;
                 color: #000000;
                 padding-top: 30px;
             }
-			
+
 			body.xLoginPageBody .xLogout {
 				display: block;
 				width: 220px;
@@ -1687,7 +1688,7 @@ body.xLoginPageBody {
                 width: 205px;
                 margin-bottom: 30px;
             }
-			
+
 			body.xLoginPageBody .xLoginError {
 				display: block;
 				float: right;
@@ -1711,7 +1712,7 @@ body.xLoginPageBody {
 				width: 110px;
 				margin: 0 0 5px;
 			}
-			
+
 			body.xLoginPageBody .xBottomNote {
 				clear: both;
 				padding-top: 20px;
@@ -1772,12 +1773,12 @@ input#xFirstTimeCheckContinue {
 }
 
 #xFirstTimeWizzard {
-	
+
 }
 	#xFirstTimeWizzard p.subInfo { color: #999; margin-top: -6px; font-size: 90%; }
 	#xFirstTimeWizzard p.xEditable {
-		padding: 5px !important; 
-		margin-bottom: 20px !important; 
+		padding: 5px !important;
+		margin-bottom: 20px !important;
 	}
 	#xFirstTimeWizzard p.xEditable:before {
 		content: "› ";
@@ -1801,9 +1802,9 @@ body.xSettingsPageBody {
 
 	body.xSettingsPageBody a { color: #666; text-decoration: underline !important; }
 	body.xSettingsPageBody a:hover, body.xSettingsPageBody a.hover { color: #999; }
-	
+
 	body.xSettingsPageBody h1 { float: left; }
-	
+
 	body.xSettingsPageBody .settingsContentContainer {
 		position: relative;
 		clear: both;
@@ -1822,7 +1823,7 @@ body.xSettingsPageBody {
 				float: left;
 				padding: 0;
 				margin: 0 5px 0 0;
-				
+
 			}
 				body.xSettingsPageBody .settingsTabs li a {
 					display: block;
@@ -1838,7 +1839,7 @@ body.xSettingsPageBody {
 				body.xSettingsPageBody .settingsTabs li a.active {
 					border-bottom: 1px solid #fff;
 				}
-			
+
 		body.xSettingsPageBody .settingsContent {
 			position: absolute;
 			left: 0; top: 0;
@@ -1855,7 +1856,7 @@ body.xSettingsPageBody {
 		padding-top: 5px;
 		padding-bottom: 5px;
 	}
-		body.xSettingsPageBody div.entry div.caption { 
+		body.xSettingsPageBody div.entry div.caption {
 			float: left;
 			width: 200px;
 			height: auto;
@@ -1894,7 +1895,7 @@ body.xSettingsPageBody {
 		margin: <?php echo $berta->settings->get('page-layout', 'content-align') == 'left' ? '10px 0 0' : '10px 0 0 auto' ?>;
 		padding-bottom: 0;
 	}
-	
+
 		body.xSettingsPageBody #editorInfo #diffSlider {
 			background: url(<?php echo $ENGINE_ROOT ?>layout/slider-back.gif) no-repeat;
 			height: 8px;
@@ -1917,7 +1918,7 @@ body.xSettingsPageBody {
 		width: 960px;
 		clear: both;
 	}
-	
+
 		#xSectionsEditor ul {
 			list-style: none;
 			margin: 0;
@@ -1930,24 +1931,24 @@ body.xSettingsPageBody {
 				#xSectionsEditor ul li > div {
 					min-height: 1px;
 				}
-			
+
 		#xSectionsEditor .listHead {
 			font-weight: bold;
 			padding: 0 0 3px;
 			margin: 0 0 0px;
 			border-bottom: 1px solid #ccc;
 		}
-		
+
 		#xSectionsEditor ul, #xSectionsEditor .listHead {
 			width: 100%;
 		}
-			#xSectionsEditor li div, #xSectionsEditor .listHead div { 
+			#xSectionsEditor li div, #xSectionsEditor .listHead div {
 				float: left;
 				margin-right: 10px;
-			}	
-		
+			}
+
 		#xSectionsEditor ul>li:first-child { font-weight: bold; }
-		
+
 		#xSectionsEditor .csHandle { width: 30px; }
 			#xSectionsEditor .csHandle .handle {
 				display: block;
@@ -1966,9 +1967,9 @@ body.xSettingsPageBody {
 			#xSectionsEditor ul.xSaving .csDelete a { visibility: hidden !important; }
 
 
-		
 
-	
+
+
 		a#xCreateNewSection {
 			display: block;
 			clear: both;
@@ -1993,28 +1994,28 @@ body.xSettingsPageBody {
 		a#xCreateNewSection:hover {
 			-moz-opacity: 1;
 		}
-	
+
 .xGuideLine {
 	position: absolute;
-	background-color: #4affff;	
+	background-color: #4affff;
 	z-index: 10000000;
 }
 
 #xGuideLineX {
-	height: 1px;	
+	height: 1px;
 }
 
 #xGuideLineY {
-	width: 1px;	
+	width: 1px;
 	top: 0px;
 }
 
 
-/* some helpers */	
-	
+/* some helpers */
+
 .xVisible {
 	display: block;
-}	
+}
 
-		
+
 <?php if(!1) { ?></style><?php } ?>

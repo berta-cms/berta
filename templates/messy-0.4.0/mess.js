@@ -1,38 +1,38 @@
 
 
 var MessyMess = new Class({
-	
+
 	shoppingCart: null,
 	reservation: null,
 	pageScroller: null,
-    
+
     fadeContent: null,
     bgContainer: null,
     bgImage: null,
     bgCaption: null,
     bgLoader: null,
-	
+
 	bgGridViewTrigger: null,
 	bgNext: null,
 	bgPrevious: null,
 	bgRightCounter: null,
 	bgLeftCounter: null,
-	
-	
+
+
 	initialize: function() {
 		window.addEvent('domready', this.onDOMReady.bind(this));
 		window.addEvent('load', this.onLoad.bind(this));
 	},
-	
+
 	onDOMReady: function() {
 		// Berta Background
 		this.bgContainer = $('xBackground');
         this.bgLoader = $('xBackgroundLoader');
-        
+
 		if(this.bgContainer)  {
             this.bgImage = this.bgContainer.getElement('.visual-image img');
             this.bgCaption = this.bgContainer.getElement('.visual-caption');
-			
+
 			this.bgGridViewTrigger = $('xGridViewTrigger');
 			this.bgNext = $('xBackgroundNext');
 			this.bgPrevious = $('xBackgroundPrevious');
@@ -49,7 +49,7 @@ var MessyMess = new Class({
                 this.bgLoader.setStyle('display', 'block');
             }
         }
-		
+
         // Grid view
 		if($('xGridView')) {
 			$$('.xGridItem').addEvent('click', function() {
@@ -63,14 +63,14 @@ var MessyMess = new Class({
 			this.bgGridViewTrigger.addEvent('click', function() {
 				Cookie.write('_berta_grid_view', 'berta_grid_view', {duration: 0});
 			});
-            
+
             // Key events
             window.addEvent('keydown', function(event) {
                 if(event.key == 'up') {
                     this.bgGridViewTrigger.fireEvent('click');
                     window.location.href = this.bgGridViewTrigger.get('href');
                 }
-            }.bind(this)); 
+            }.bind(this));
         }
 
         if(Cookie.read('_berta_grid_img_link'))
@@ -83,10 +83,13 @@ var MessyMess = new Class({
         if(!navigator.userAgent.match(/OS 5_\d like Mac OS X/i) && /iphone|ipad|ipod|android|blackberry|mini|windows\sce|palm/i.test(navigator.userAgent.toLowerCase())) {
             window.addEvent('resize',this.stickToBottom.bindWithEvent(this));
             window.addEvent('scroll',this.stickToBottom.bindWithEvent(this));
+        }else{
+            this.copyrightStickToBottom();
+            window.addEvent('resize', this.copyrightStickToBottom.bindWithEvent(this));
         }
 
 		var messyItems = $$('.mess');
-		
+
 		if(bertaGlobalOptions.environment == 'engine') {
 			messyItems.each(function(el) {
 				if(!el.hasClass('xEntry')) el.adopt(new Element('div', { 'class': 'xHandle' }));
@@ -110,7 +113,7 @@ var MessyMess = new Class({
         // Centering
         var container = $('contentContainer');
         var centeredLayout = container.hasClass('xCentered') ? true : false;
-        
+
         if(centeredLayout) {
             var bottom = $('bottom');
             var bottomRight = parseInt(bottom.getStyle('right'));
@@ -147,7 +150,7 @@ var MessyMess = new Class({
                 var el1 = new Element('div', {
                     'class': 'xCenteringGuide',
                     'styles': {
-                        'left': 0,  
+                        'left': 0,
                         'width': guidesWidth + 'px'
                     }
                 });
@@ -160,7 +163,7 @@ var MessyMess = new Class({
                 });
 
                 el1.inject(document.body, 'top');
-                el2.inject(document.body, 'top'); 
+                el2.inject(document.body, 'top');
 
                 window.addEvent('resize', function() {
                     var guidesWidth = (window.getSize().x - container.getSize().x) / 2;
@@ -170,7 +173,7 @@ var MessyMess = new Class({
             }
         }
 	},
-	
+
 	onLoad: function() {
         if(this.bgContainer && this.bgImage) {
             this.bgLoader.setStyle('display', 'none');
@@ -180,7 +183,7 @@ var MessyMess = new Class({
         // Fade content
         if(this.fadeContent == 'enabled' && this.bgContainer.getElement('.visual-image')) {
             var hideContent, lastX, lastY;
-            window.addEvent('mousemove', function(event) {       
+            window.addEvent('mousemove', function(event) {
                 if(!lastX && !lastY) {
                     lastX = event.page.x;
                     lastY = event.page.y;
@@ -191,7 +194,7 @@ var MessyMess = new Class({
                         clearTimeout(hideContent);
                         hideContent = 0;
                     }
-                    
+
                     $('allContainer').setStyle('opacity', '1');
                     $('bottom').setStyle('opacity', '1');
 					if(this.bgLeftCounter && this.bgRightCounter) {
@@ -214,10 +217,10 @@ var MessyMess = new Class({
                             this.bgPrevious.tween('opacity', '0');
                         }
                     }.bind(this), 3000);
-                    
+
                     lastX = event.page.x;
                     lastY = event.page.y;
-                }           
+                }
             }.bind(this));
         }
 
@@ -227,55 +230,77 @@ var MessyMess = new Class({
                 setTimeout(function() {$('xGridView').setStyle('visibility', 'visible');}, 100);
             else
                 $('xGridView').setStyle('visibility', 'visible');
-		   
+
             $('xGridView').masonry({
 		    	singleMode: true,
     	    	itemSelector: '.box'
 		    });
 		}
 	},
-	
+
 	stickToBottom: function(){
         bottomWidth = $('bottom').getSize().x
 		$('bottom').setStyles({
 			'position': 'absolute',
 			'top': (window.pageYOffset + window.innerHeight - 45) + 'px'
-		});		
+		});
 	},
+
+    copyrightStickToBottom: function(){
+
+        var bottom = $('bottom');
+        var allDraggables = $$('.xEditableDragXY:not(.xFixed)');
+        var maxY = y = 0;
+        var windowH = window.getSize().y;
+        var userCopyrightH = $('userCopyright').getSize().y;
+        var bertaCopyrightH = $('bertaCopyright') ? $('bertaCopyright').getSize().y : 0;
+        var bottomH = userCopyrightH > bertaCopyrightH ? userCopyrightH : bertaCopyrightH;
+
+        allDraggables.each(function(item){
+            y = parseInt(item.getStyle('top')) + parseInt(item.getSize().y)
+            if(maxY < y) {
+                maxY = y;
+            }
+        });
+
+        if(maxY < windowH - bottomH) {
+            maxY = windowH - bottomH;
+        }
+
+        bottom.setStyle('top', maxY + 'px');
+    },
 
 	editor_saveOrder: function(event) {
 		event.stop();
-		
-		
-		
+
 		var target = $(event.target);
 		target = target.getParent('.xEntry');
 		var entriesList = target.getParent('.xEntriesList');
 		var nextEntry = entriesList.getFirst('.xEntry');
 		target.inject(entriesList, 'top');
-		
+
 		/*var newOrder = new Array();
 		entriesList.getElements('.xEntry').each(function(el) {
 			newOrder.push(el.getClassStoredValue('xEntryId'));
 		});*/
-		
+
 		new Request.JSON({
 			url: bertaEditor.options.updateUrl,
 			data: "json=" + JSON.encode({
-				section: bertaEditor.currentSection, entry: target.getClassStoredValue('xEntryId'), entryNum: null, 
+				section: bertaEditor.currentSection, entry: target.getClassStoredValue('xEntryId'), entryNum: null,
 				action: 'PUT_BEFORE', property: '', value: nextEntry.getClassStoredValue('xEntryId')
 			}),
-			onComplete: function(resp) { 
+			onComplete: function(resp) {
 
 			}.bind(this)
 		}).post();
 	},
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
 	firstPageInit:function() {
 		this.entriesContainer = $('firstPageMarkedEntries');
 		if(this.entriesContainer && bertaGlobalOptions.environment == 'site') {
@@ -289,63 +314,63 @@ var MessyMess = new Class({
 			}.bind(this));
 		}
 	},
-	
+
 	onFirstPagePicMouseEnter: function(event) {
 		var target = $(event.target);
 		if(!target.hasClass('firstPagePic')) {
 			target = target.getParent('.firstPagePic');
 		}
-		
+
 		target.store('mouseMoveOn', true);
-		
+
 		target.store('prevMouseX', event.page.x);
 		target.store('prevMouseY', event.page.y);
 		target.store('initPosX', target.getStyle('left'));
 		target.store('initPosY', target.getStyle('top'));
-		
+
 	},
-	
+
 	onFirstPagePicMouseLeave: function(event) {
 		var target = $(event.target);
 		if(!target.hasClass('firstPagePic')) {
 			target = target.getParent('.firstPagePic');
 		}
-		
+
 		target.setStyle('left', target.retrieve('initPosX'));
-		target.setStyle('top', target.retrieve('initPosY'));		
+		target.setStyle('top', target.retrieve('initPosY'));
 	},
-	
+
 	onFirstPagePicMouseMove: function(event) {
 		var target = $(event.target);
 		if(!target.hasClass('firstPagePic')) {
 			target = target.getParent('.firstPagePic');
-		}		
+		}
 		if(target.retrieve('mouseMoveOn')) {
-			
+
 			//console.debug(event.page.x, target.retrieve('prevMouseX'), event.page.y, target.retrieve('prevMouseY'));
-			
+
 			var xDiff = event.page.x > target.retrieve('prevMouseX') ? 1 : (event.page.x == target.retrieve('prevMouseX') ? 0 : -1);
 			var yDiff = event.page.y > target.retrieve('prevMouseY') ? 1 : (event.page.y == target.retrieve('prevMouseY') ? 0 : -1);
-		
+
 			target.store('prevMouseX', event.page.x);
 			target.store('prevMouseY', event.page.y);
 			target.store('mouseMoveOn', !xDiff && !yDiff);
-			
+
 			if(target.hasClass('firstPageWiggle')) {
 				target.setStyle('left', parseInt(target.getStyle('left')) + xDiff * 5);
 				target.setStyle('top', parseInt(target.getStyle('top')) + yDiff * 5);
 
-			}		
+			}
 		}
 	}
-	
+
 });
 
 
 
 var BertaBackground = new Class({
 	Implements: Options,
-	
+
 	options: {
 		type: 'image',
 		image_size: 'medium',
@@ -374,18 +399,18 @@ var BertaBackground = new Class({
     leftCounter: null,
     rightCounterContent: null,
     leftCounterContent: null,
-    
+
     autoplayInterval: null,
     data: null,
 
     fadeElements: null,
     fadeOutFx: null,
     fadeInFx: null,
-    
-    
+
+
 	initialize: function(options) {
 		this.setOptions(options);
-		
+
         this._init();
 
         // If not mobile device
@@ -605,7 +630,7 @@ var BertaBackground = new Class({
             this._getNewBgCaptionFinish();
         }
 	},
-    
+
     _getNewBgImageFinish: function() {
         this.loader.setStyle('display', 'none');
         this.imageContainer.adopt(this.image);
@@ -631,26 +656,26 @@ var BertaBackground = new Class({
 		window.addEvent('resize', function() { this._onResize() }.bind(this));
 		this._onResize();
 	},
-	
+
 	_onResize: function() {
 		var wnd = window,
 			w = wnd.getSize().x,
 			h = wnd.getSize().y;
-		
+
 		var posX, posY;
-       
+
 		// scale
 		var scaleX = w / this.data.width, scaleY = h / this.data.height;
-        
+
 		if(this.data.width>=this.data.height && this.data.options.image_scale == 1)
 			if(scaleX > scaleY) scaleY = scaleX; else scaleX = scaleY;
 		else
 			if(scaleX > scaleY) scaleX = scaleY; else scaleY = scaleX;
-		
+
         // scale based on background image size
         scaleX = scaleX*this.data.options.image_scale;
         scaleY = scaleY*this.data.options.image_scale;
-		
+
 		// position X
 		posX = Math.round((w - this.data.width * scaleX) / 2);
 
@@ -677,14 +702,14 @@ var messyMess = new MessyMess();
 		    case 'camera':
 
 		    break;
- 
+
 		    case 'video':
- 
+
 		    	el.setStyle('width', 'auto')
 		    	   .setStyle('height', 'auto');
- 
+
 		    	//backgroundElement = $('#background .visualVideoContainer');
- 
+
 		    break;
 		}
 */

@@ -37,7 +37,7 @@ br.clear { clear: both; }
 		position: absolute;
 	}
 
-.bertaCopyright { 
+.bertaCopyright {
 	clear: left;
 	font-size: 10px;
 	color: #333333;
@@ -60,7 +60,7 @@ br.clear { clear: both; }
 /* video background */
 
 div.xGalleryItem {
-	position: relative; 
+	position: relative;
 }
 	div.xGalleryItem object { position: relative;  }
 	div.xGalleryItem .xGalleryImageVideoBack { position: absolute; 	}
@@ -72,3 +72,10 @@ div.xGalleryItem {
 * {
 	-webkit-text-size-adjust: none;
 }
+
+/* helpers */
+
+.clearfix { zoom: 1; }
+.clearfix:before,
+.clearfix:after { content: ""; display: table; }
+.clearfix:after { clear: both; }
