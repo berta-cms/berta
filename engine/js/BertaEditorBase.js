@@ -509,6 +509,10 @@ var BertaEditorBase = new Class({
 
 				       	var editor = this;
 
+				       	if (typeof(messyMess)=='object') {
+							messyMess.copyrightStickToBottom();
+				       	}
+
 				       	if (dragAll){
 							allEntries.each(function(entry) {
 								if(this.container.hasClass('xCentered') && (entry.hasClass('xFixed') || entry.hasClass('floating-banner'))) {
@@ -1082,7 +1086,9 @@ window.addEvent('domready', function(){
 		slideOutEl.getElement('span').addEvent('click', function(event) {
 			event.stop();
 
-			$('xNewsTickerContainer').hide();
+			if ($('xNewsTickerContainer')){
+				$('xNewsTickerContainer').hide();
+			}
 
 			fxOut.start('top', -19).chain(function() {
 				fxIn.start('top', 0);

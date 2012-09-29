@@ -366,8 +366,7 @@
         </div>
         { /if }
 
-
-        <div id="bottom">
+        <div id="bottom" class="clearfix">
             <p id="userCopyright" class="xEditableTA xProperty-siteFooter">{ $siteFooter }</p>
             { if !($berta.settings.settings.hideBertaCopyright=='yes' && $berta.hostingPlan>1) }
                 <p id="bertaCopyright">{ bertaCopyright }</p>

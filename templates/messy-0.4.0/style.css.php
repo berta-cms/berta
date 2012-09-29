@@ -33,9 +33,9 @@ body {
 	font-style: <?php echo $s->get('generalFontSettings', 'fontStyle') ?>;
 	font-variant: <?php echo $s->get('generalFontSettings', 'fontVariant') ?>;
 	line-height: <?php echo $s->get('generalFontSettings', 'lineHeight') ?>;
-	
+
 	text-align: left;
-	
+
 	background-color: <?php echo $s->get('background', 'backgroundColor') ?>;
 	<?php if($s->get('background', 'backgroundImageEnabled') == 'yes') { ?>
 		<?php if($s->get('background', 'backgroundImage')) { ?>
@@ -47,22 +47,22 @@ body {
 	<?php } ?>
 }
 
-a:link { 
+a:link {
 	color: <?php echo $s->get('links', 'colorLink') ?>;
 	text-decoration: <?php echo $s->get('links', 'textDecorationLink') ?>;
 	/*border: <?php echo $s->get('links', 'border:link') ?>;*/
 }
-a:visited { 
+a:visited {
 	color: <?php echo $s->get('links', 'colorVisited') ?>;
 	text-decoration: <?php echo $s->get('links', 'textDecorationVisited') ?>;
 	/*border: <?php echo $s->get('links', 'border:visited') ?>;*/
 }
-a:hover { 
+a:hover {
 	color: <?php echo $s->get('links', 'colorHover') ?>;
 	text-decoration: <?php echo $s->get('links', 'textDecorationHover') ?>;
 	/*border: <?php echo $s->get('links', 'border:hover') ?>;*/
 }
-a:active { 
+a:active {
 	color: <?php echo $s->get('links', 'colorActive') ?>;
 	text-decoration: <?php echo $s->get('links', 'textDecorationActive') ?>;
 	/*border: <?php echo $s->get('links', 'border:active') ?>;*/
@@ -138,30 +138,30 @@ a img { border: none; }
 	line-height: <?php echo $s->get('menu', 'lineHeight') ?>;
 	position: <?php echo $s->get('menu', 'position') ?> !important;
 }
-	.menuItem a:link, .menuItem a:visited { 
+	.menuItem a:link, .menuItem a:visited {
 		color: <?php echo $s->get('menu', 'colorLink') ?>;
 		text-decoration: <?php echo $s->get('menu', 'textDecorationLink') ?>;
 	}
-	.menuItem a:hover, .menuItem a:active { 
+	.menuItem a:hover, .menuItem a:active {
 		color: <?php echo $s->get('menu', 'colorHover') ?>;
 		text-decoration: <?php echo $s->get('menu', 'textDecorationHover') ?>;
 	}
 	.menuItemSelected>a,
-	.menuItemSelected>span { 
+	.menuItemSelected>span {
 		color: <?php echo $s->get('menu', 'colorActive') ?> !important;
 		text-decoration: <?php echo $s->get('menu', 'textDecorationActive') ?> !important;
 	}
 	.menuItemSelected>span {
 		cursor: text;
 	}
-	
+
 	.menuItem ul {
 		list-style: none;
 		margin: 0;
 		padding: 0;
 		position: relative;
 		left: <?php echo $s->get('tagsMenu', 'x') ?>;
-		top: <?php echo $s->get('tagsMenu', 'y') ?>;		
+		top: <?php echo $s->get('tagsMenu', 'y') ?>;
 	}
 		.menuItem li {
 			margin: 0;
@@ -173,24 +173,24 @@ a img { border: none; }
 			font-variant: <?php echo $s->get('tagsMenu', 'fontVariant') ?>;
 			line-height: <?php echo $s->get('tagsMenu', 'lineHeight') ?>;
 		}
-			.menuItem li a:link, .menuItem li a:visited { 
+			.menuItem li a:link, .menuItem li a:visited {
 				color: <?php echo $s->get('tagsMenu', 'colorLink') ?>;
 				text-decoration: <?php echo $s->get('tagsMenu', 'textDecorationLink') ?>;
 			}
-			.menuItem li a:hover, .menuItem li a:active { 
+			.menuItem li a:hover, .menuItem li a:active {
 				color: <?php echo $s->get('tagsMenu', 'colorHover') ?>;
 				text-decoration: <?php echo $s->get('tagsMenu', 'textDecorationHover') ?>;
 			}
-			.menuItem li.selected>a { 
+			.menuItem li.selected>a {
 				color: <?php echo $s->get('tagsMenu', 'colorActive') ?> !important;
 				text-decoration: <?php echo $s->get('tagsMenu', 'textDecorationActive') ?> !important;
 			}
 
 
-			
 
-	
-	
+
+
+
 
 
 #pageEntries {
@@ -206,10 +206,10 @@ a img { border: none; }
 		clear: both;
 		list-style:none;
 		margin-bottom: <?php echo $s->get('entryLayout', 'spaceBetween') ?>;
-		
+
 		padding: 0;
 	}
-	
+
 	#pageEntries .xEntry h2 {
 				color: <?php echo $s->get('entryHeading', 'color') ?>;
 				font-family: <?php echo $s->getFont('entryHeading') ?>;
@@ -231,9 +231,9 @@ a img { border: none; }
 	#pageEntries .xEntry .xGalleryType-row {}
     #pageEntries .xEntry .xGalleryType-pile {}
     #pageEntries .xEntry .xGalleryType-column {}
-				
-		#pageEntries .xEntry .xGalleryContainer .xGallery { 
-			position: relative; 
+
+		#pageEntries .xEntry .xGalleryContainer .xGallery {
+			position: relative;
 			display: block;
 		}
 		#pageEntries .xEntry .xGalleryType-slideshow .xGallery {
@@ -249,7 +249,7 @@ a img { border: none; }
 				float: left;
 				padding-right: <?php echo $s->get('entryLayout', 'spaceBetweenImages') ?>;
 			}
-			
+
 		#pageEntries .xEntry .xGalleryContainer ul.xGalleryNav {
 			display: block;
 			position: relative;
@@ -275,9 +275,9 @@ a img { border: none; }
 					text-decoration: <?php echo $s->get('menu', 'textDecorationLink') ?>;
 					outline: none;
 				}
-				
+
 				.xGalleryImageCaption { display: none; }
-				
+
 			#pageEntries .xGalleryContainer ul.xGalleryNav li a:hover {
 				color: <?php echo $s->get('menu', 'colorHover') ?>;
 				text-decoration: <?php echo $s->get('menu', 'textDecorationHover') ?>;
@@ -286,16 +286,16 @@ a img { border: none; }
 				color: <?php echo $s->get('menu', 'colorActive') ?>;
 				text-decoration: <?php echo $s->get('menu', 'textDecorationActive') ?>;
 			}
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
+
+
+
+
+
+
+
+
+
+
 	#pageEntries .xEntry .entryText {
 		position: relative;
 		clear: both;
@@ -312,7 +312,7 @@ a img { border: none; }
 		    margin: 0;
 		    padding: 0;
 		}
-		
+
 		#pageEntries .xEntry .entryText ul {
 			margin: 0 0 6px;
 			padding: 0 0 0 15px;
@@ -338,9 +338,9 @@ a img { border: none; }
 		clear: both;
 	}
 
-	
-				
-				
+
+
+
 
 	#additionalText {
 		z-index: 49000;
@@ -348,33 +348,32 @@ a img { border: none; }
 	}
 		#additionalText p { margin: 0; padding: 0; }
 
-					
+
 	.floating-banner {
 		position: absolute;
 		z-index: 3000;
 	}
 
-				
-				
+
+
 #bottom {
-	position: fixed;
-	bottom: 20px;
+	position: absolute;
+	bottom: 0;
 	font-size: 10px;
 	right: 20px;
 	z-index: 10000000;
-	
-}	
+}
 	#bottom p {
 		float: left;
-		margin-right: 10px;
-		margin-bottom: 0;
+		margin: 0 10px 0 0;
+		padding: 30px 0 10px 0;
 	}
-		
+
 ::-moz-selection {
    background:#000000;
    color:#ffffff;
 }
-    
+
 ::selection{
    background:#000000;
    color:#ffffff;
@@ -509,7 +508,7 @@ a img { border: none; }
 	#xBackgroundPrevious a { background-position: 0px 0px; }
 	#xBackgroundNext a span,
 	#xBackgroundPrevious a span { display: none; }
-		
+
 #xGridView {
 	top: 100px;
 	padding-bottom: 100px;
@@ -522,7 +521,7 @@ a img { border: none; }
 		float: left;
 		margin: 5px;
 	}
-	
+
 #xGridViewTriggerContainer {
 	width: 22px;
 	position: absolute;
@@ -538,11 +537,11 @@ a img { border: none; }
 		background-position: -48px 0px;
 		display: block;
 	}
-	
-		#xGridViewTriggerContainer a:hover { 
+
+		#xGridViewTriggerContainer a:hover {
 			background-position: -48px -24px;
 		}
-	
+
 		#xGridViewTriggerContainer a span {
 			display: none;
 		}
