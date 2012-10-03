@@ -137,6 +137,7 @@ a img { border: none; }
 	font-variant: <?php echo $s->get('menu', 'fontVariant') ?>;
 	line-height: <?php echo $s->get('menu', 'lineHeight') ?>;
 	position: <?php echo $s->get('menu', 'position') ?> !important;
+	white-space: nowrap;
 }
 	.menuItem a:link, .menuItem a:visited {
 		color: <?php echo $s->get('menu', 'colorLink') ?>;
@@ -173,6 +174,7 @@ a img { border: none; }
 			font-variant: <?php echo $s->get('tagsMenu', 'fontVariant') ?>;
 			line-height: <?php echo $s->get('tagsMenu', 'lineHeight') ?>;
 		}
+
 			.menuItem li a:link, .menuItem li a:visited {
 				color: <?php echo $s->get('tagsMenu', 'colorLink') ?>;
 				text-decoration: <?php echo $s->get('tagsMenu', 'textDecorationLink') ?>;
@@ -358,16 +360,25 @@ a img { border: none; }
 
 #bottom {
 	position: absolute;
+	padding-top: 20px;
 	bottom: 0;
 	font-size: 10px;
 	right: 20px;
+	left: 20px;
 	z-index: 10000000;
 }
-	#bottom p {
+
+	#additionalFooterText {
 		float: left;
-		margin: 0 10px 0 0;
-		padding: 30px 0 10px 0;
+		margin-left: 10px;
 	}
+
+	#bertaCopyright, #userCopyright {
+		float: right;
+		margin: 0 10px 0 0;
+		padding: 10px 0 10px 0;
+	}
+
 
 ::-moz-selection {
    background:#000000;
