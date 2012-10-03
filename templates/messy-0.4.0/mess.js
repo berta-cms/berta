@@ -120,6 +120,17 @@ var MessyMess = new Class({
             var fixedItems = container.getParent().getElements('.xFixed, .floating-banner');
             var guidesWidth = ((window.getSize().x - container.getSize().x) / 2) >= 0 ? ((window.getSize().x - container.getSize().x) / 2) : 0;
 
+            var containerW =  container.getSize().x;
+
+            if ( window.getSize().x < containerW ) {
+                var bottomW = window.getSize().x - parseInt(bottom.getStyle('right'));
+            }else{
+                var bottomW = containerW - parseInt(bottom.getStyle('right'));
+            }
+
+            bottom.setStyle('width', bottomW - bottomRight + 'px');
+            bottom.setStyle('left', 'auto');
+
             if(fixedItems.length > 0) {
                 fixedItems.each(function(item) {
                     var left = parseInt(item.getStyle('left'))
@@ -142,6 +153,14 @@ var MessyMess = new Class({
                 }
 
                 bottom.setStyle('right', guidesWidth + bottomRight + 'px');
+
+                if ( window.getSize().x < containerW ) {
+                    bottomW = window.getSize().x - parseInt(bottom.getStyle('right'));
+                }else{
+                    bottomW = containerW - bottomRight;
+                }
+
+                bottom.setStyle('width', bottomW - bottomRight + 'px');
             });
 
             if(bertaGlobalOptions.environment == 'engine') {
@@ -249,12 +268,18 @@ var MessyMess = new Class({
     copyrightStickToBottom: function(){
 
         var bottom = $('bottom');
+        var bottomPaddingTop = parseInt(bottom.getStyle('padding-top'));
         var allDraggables = $$('.xEditableDragXY:not(.xFixed)');
         var maxY = y = 0;
         var windowH = window.getSize().y;
-        var userCopyrightH = $('userCopyright').getSize().y;
-        var bertaCopyrightH = $('bertaCopyright') ? $('bertaCopyright').getSize().y : 0;
-        var bottomH = userCopyrightH > bertaCopyrightH ? userCopyrightH : bertaCopyrightH;
+        var bottomH = 0;
+
+        bottom.getChildren().each(function(item){
+            var bottomElH = item.getSize().y;
+            if (bottomElH > bottomH) {
+                bottomH = bottomElH;
+            }
+        });
 
         allDraggables.each(function(item){
             y = parseInt(item.getStyle('top')) + parseInt(item.getSize().y)
@@ -264,7 +289,7 @@ var MessyMess = new Class({
         });
 
         if(maxY < windowH - bottomH) {
-            maxY = windowH - bottomH;
+            maxY = windowH - bottomH - bottomPaddingTop;
         }
 
         bottom.setStyle('top', maxY + 'px');
