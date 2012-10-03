@@ -854,6 +854,11 @@ var BertaEditorBase = new Class({
 					if(onSave) onSave(el, resp.update, resp.real, resp.error_message, resp.params);
 					this.fireEvent(BertaEditorBase.EDITABLE_FINISH, [el]);
 
+					//correct footer position
+					if (typeof(messyMess)=='object') {
+  			  			messyMess.copyrightStickToBottom();
+           			}
+
 				 }.bind(this)
 			}).post();
 

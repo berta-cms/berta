@@ -121,6 +121,11 @@ var inlineEdit = new Class({
 					ifr.setStyle('height', WYSIWYGSettings.options.WYSIWYGSettings.height);
 					// set styles for the tinymce body element
 					WYSIWYGSettings.setAllStylesMCE(element, ed);
+
+					//correct footer position
+					if (typeof(messyMess)=='object') {
+  			  			messyMess.copyrightStickToBottom();
+           			}
 				}).delay(1000);
 
 			} else {

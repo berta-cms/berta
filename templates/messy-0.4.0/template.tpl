@@ -367,10 +367,14 @@
         { /if }
 
         <div id="bottom" class="clearfix">
-            <p id="userCopyright" class="xEditableTA xProperty-siteFooter">{ $siteFooter }</p>
+            <div id="additionalFooterText" class="xEditableMCESimple xProperty-additionalFooterText xCaption-additional-footer-text clearfix">
+                { $additionalFooterText }
+            </div>
+
             { if !($berta.settings.settings.hideBertaCopyright=='yes' && $berta.hostingPlan>1) }
                 <p id="bertaCopyright">{ bertaCopyright }</p>
             { /if }
+            <p id="userCopyright" class="xEditableTA xProperty-siteFooter">{ $siteFooter }</p>
         </div>
 
         { if $berta.settings.settings.showTutorialVideos == 'yes' && !$smarty.cookies._berta_videos_hidden }{ videoTutorials }{ /if }
