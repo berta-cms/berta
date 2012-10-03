@@ -19,6 +19,7 @@ class BertaGallery extends BertaBase {
     }
     
     public static function getHTMLForEntry($entry, $isAdminMode = false) {
+    	global $berta;
         $imgs = BertaGallery::getImagesArray($entry);
         $galleryType = !empty($entry['mediaCacheData']['@attributes']['type']) ? $entry['mediaCacheData']['@attributes']['type'] : 'slideshow';
         $imageSize = !empty($entry['mediaCacheData']['@attributes']['size']) ? $entry['mediaCacheData']['@attributes']['size'] : 'large';
@@ -28,12 +29,13 @@ class BertaGallery extends BertaBase {
 
         
         $galleryAutoPlay = !empty($entry['mediaCacheData']['@attributes']['autoplay']) ? $entry['mediaCacheData']['@attributes']['autoplay'] : '0';
-        $galleryLinkAddress = !empty($entry['mediaCacheData']['@attributes']['link_address']) ? 'xGalleryLinkAddress-' . $entry['mediaCacheData']['@attributes']['link_address'] : 'xGalleryLinkAddress-http://';
+        $gallerySlideNumbersVisible = !empty($entry['mediaCacheData']['@attributes']['slide_numbers_visible']) ? $entry['mediaCacheData']['@attributes']['slide_numbers_visible'] : $berta->settings->get('entryLayout', 'gallerySlideNumberVisibilityDefault');
+        $galleryLinkAddress = !empty($entry['mediaCacheData']['@attributes']['link_address']) ? $entry['mediaCacheData']['@attributes']['link_address'] : '';
 
-        return BertaGallery::getHTML($imgs, $entry['mediafolder']['value'], $galleryType, $isAdminMode, false, 1, $galleryFullScreen, $imageSize, $galleryAutoPlay, $galleryLinkAddress);
+        return BertaGallery::getHTML($imgs, $entry['mediafolder']['value'], $galleryType, $isAdminMode, false, 1, $galleryFullScreen, $imageSize, $galleryAutoPlay, $gallerySlideNumbersVisible, $galleryLinkAddress);
     }
     
-    public static function getHTML($imgs, $mediaFolderName, $galleryType, $isAdminMode = false, $bReturnFullInfo = false, $sizeRatio = 1, $galleryFullScreen = false, $imageSize = 'large', $galleryAutoPlay = '0', $galleryLinkAddress = '') {
+    public static function getHTML($imgs, $mediaFolderName, $galleryType, $isAdminMode = false, $bReturnFullInfo = false, $sizeRatio = 1, $galleryFullScreen = false, $imageSize = 'large', $galleryAutoPlay = '0', $gallerySlideNumbersVisible = 'yes', $galleryLinkAddress = '') {
         global $berta;
         $strOut = '';
         
@@ -48,7 +50,18 @@ class BertaGallery extends BertaBase {
         if($imgs && count($imgs) > 0) {
             list($firstImageHTML, $firstImageWidth, $firstImageHeight) = BertaGallery::getImageHTML($imgs[0], $mediaFolderName, $isAdminMode, $sizeRatio, $imageTargetWidth, $imageTargetHeight);
             
-            $strOut = '<div class="xGalleryContainer xGalleryHasImages xGalleryType-' . $galleryType . ' xGalleryAutoPlay-' . $galleryAutoPlay . ' ' . ($galleryType == 'link' ? $galleryLinkAddress : '') . '">';
+            $specificClasses = '';
+            switch($galleryType) {
+	            case 'link':
+	            	$specificClasses = ' xGalleryLinkAddress-' . $galleryLinkAddress;
+	            break;
+	            
+	            case 'slideshow':
+	            	$specificClasses = ' xGalleryAutoPlay-' . $galleryAutoPlay . ' xSlideNumbersVisible-' . $gallerySlideNumbersVisible; 
+	            break;
+            }
+            
+            $strOut = '<div class="xGalleryContainer xGalleryHasImages xGalleryType-' . $galleryType . $specificClasses . '">';
             $strOut .= "<div class=\"xGallery\" style=\"width: {$firstImageWidth}px; height: {$firstImageHeight}px;\">";
             $strOut .= $firstImageHTML;
             if($isAdminMode) $strOut .= '<a href="#" class="xGalleryEditButton xEditorLink xSysCaption xMAlign-container"><span class="xMAlign-outer"><span class="xMAlign-inner">edit gallery</span></span></a>';

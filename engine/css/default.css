@@ -16,6 +16,7 @@ body {
 	text-align: left;
 }
 
+div.clear,
 br.clear { clear: both; }
 
 
@@ -56,6 +57,8 @@ br.clear { clear: both; }
 		position: absolute;
 	}
 
+
+div.xGalleryContainer.xSlideNumbersVisible-no>ul.xGalleryNav { display: none !important; }
 
 /* video background */
 

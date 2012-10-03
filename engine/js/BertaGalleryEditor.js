@@ -106,6 +106,9 @@ var BertaGalleryEditor = new Class({
 		// autoplay handle
 		this.elementEdit_init(this.container.getElement('.xEntryAutoPlay'), this.options.xBertaEditorClassRC);
 		
+		// autoplay handle
+		this.elementEdit_init(this.container.getElement('.xEntrySlideNumberVisibility'), this.options.xBertaEditorClassSelectRC);
+		
 		// link address handle
 		this.elementEdit_init(this.container.getElement('.xEntryLinkAddress'), this.options.xBertaEditorClassRC);
 

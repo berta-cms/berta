@@ -137,6 +137,8 @@ return array(
 	/* setting subcategory */ 'Image gallery appearance:' => '<strong>Attēlu galerijas izskats:</strong>',
 	/* setting name */ 'Auto-rewind gallery slideshow' => 'Atgriezties galerijas uz sākumu',
 	/* help text */    'Display the first image after clicking on the last image in galleries that are in slideshow mode.' => 'Slaidrādes režīmā pirmais attēls seko pēdējam.',
+	/* setting name */	'Show slideshow image numbers' => 'Rādīt slaidrādes attēlu nummurus',
+	/* help text */		'Set the default state of image number visibility in slideshow galleries.' =>  'Nosaka, vai pēc noklusējuma rādīt attēlu nummurus slaidrādes galerijām, vai nē.',
 	/* setting name */ 'Video player' => 'Video player izskats',
 	/* help text */    'Choose between the two visually different players for your video files.' => 'Izvēlies starp diviem dažādiem video player veidiem.',
 

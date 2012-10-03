@@ -1338,32 +1338,22 @@ a.xCreateNewEntry.xSaving {
 			margin: 16px 0;
 		}
 
-			.xEntryGallerySettings .caption,
-			.xEntrySlideshowSettings .caption,
-			.xEntryGallerySettings .caption,
-			.xEntryGalleryFullScreen .caption,
-			.xEntryGalleryImageSize .caption {
+			.xEntryGalleryEditor .caption {
 				width: 200px;
 				float: left;
 			}
-			.xEntryGallerySettings>.caption,
-			.xEntryGalleryFullScreen .caption,
-			.xEntryGalleryImageSize .caption {
-				padding: 6px 0;
-			}
-
-			.xEntryGallerySettings .xEntrySetGalType,
-			.xEntryGallerySettings .xEntrySetGalType input,
-			.xEntrySlideshowSettings .xEntryAutoPlay,
-			.xEntrySlideshowSettings .xEntryAutoPlay input,
-			.xEntryLinkSettings .xEntryLinkAddress,
-			.xEntryLinkSettings .xEntryLinkAddress input,
-			.xEntryGalleryFullScreen .xEntrySetFullScreen,
-			.xEntryGalleryFullScreen .xEntrySetFullScreen input,
-			.xEntryGalleryImageSize .xEntrySetImageSize,
-			.xEntryGalleryImageSize .xEntrySetImageSize input {
+			
+			.xEntryGalleryEditor .xFloatLeft,
+			.xEntryGalleryEditor .xFloatLeft input {
 				float: left;
 			}
+			
+			.xEntryGallerySettings>.caption,
+			.xEntryGalleryFullScreen>.caption,
+			.xEntryGalleryImageSize>.caption {
+				padding: 6px 0;
+			}
+			
 			.xEntryGallerySettings .xEntrySetGalType,
 			.xEntryGallerySettings .xEntrySetGalType input,
 			.xEntryGalleryFullScreen .xEntrySetFullScreen,
@@ -1382,7 +1372,8 @@ a.xCreateNewEntry.xSaving {
 			}
 
 			.xEntryGalleryFullScreen .xEntrySetFullScreen,
-			.xEntryGalleryImageSize .xEntrySetImageSize {
+			.xEntryGalleryImageSize .xEntrySetImageSize,
+			.xEntrySlideshowSettings .xEntrySlideNumberVisibility {
 				width: 80px;
 			}
 			.xEntryGallerySettings .xEntrySetGalType {

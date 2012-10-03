@@ -219,6 +219,10 @@ if($jsonRequest) {
 								$e['mediaCacheData']['@attributes']['autoplay'] = 0;
 							}
 							break;
+						case 'SET_SLIDE_NUMBER_VISIBILITY':
+							if(empty($e['mediaCacheData']['@attributes'])) $e['mediaCacheData']['@attributes'] = array();
+							$e['mediaCacheData']['@attributes']['slide_numbers_visible'] = $decoded['params'];
+							break;
 						case 'SET_LINK_ADDRESS':
 							if(empty($e['mediaCacheData']['@attributes'])) $e['mediaCacheData']['@attributes'] = array();
 								if(!empty($decoded['params'])) {
