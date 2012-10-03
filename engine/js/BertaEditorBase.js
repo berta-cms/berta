@@ -782,9 +782,17 @@ var BertaEditorBase = new Class({
 
 							case el.hasClass(this.options.xBertaEditorClassSelectRC.substr(1)):
 							case el.hasClass(this.options.xBertaEditorClassFontSelect.substr(1)):
+								var editInitializer = this.elementEdit_instances[this.elementEdit_instances.length-1].editting,
+									oldValue;
+								if(editInitializer.hasClass('xEntrySlideNumberVisibility')) {
+									if(resp.update == 'no') oldValue = 'yes';
+									else oldValue = 'no';
+									
+									editInitializer.getParent('.xGalleryContainer').removeClass('xSlideNumbersVisible-' + oldValue).addClass('xSlideNumbersVisible-' + resp.update);
+								}
+							
 								// for the RC selects we check:
 								// 1) either the returned update equals the newly set content, which means that the saving was successful
-
 								if(resp.update == newContent) {
 									el.set('html', newContentText);
 

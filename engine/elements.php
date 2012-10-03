@@ -26,8 +26,6 @@ if($jsonRequest) {
 				$entry = BertaContent::getEntry($decoded['entry'], $blog);
 				
 				echo BertaGallery::getHTMLForEntry($entry, true);
-				
-				
 			}
 			
 			break;
@@ -40,16 +38,22 @@ if($jsonRequest) {
 				$entry = BertaEditor::getEntry($decoded['entry'], $blog);
 				
 				if($entry) {
+					$galType 		= !empty($entry['mediaCacheData']['@attributes']['type']) 
+										? $entry['mediaCacheData']['@attributes']['type'] : 'slideshow';
+					$imageSize 		= !empty($entry['mediaCacheData']['@attributes']['size']) 
+										? $entry['mediaCacheData']['@attributes']['size'] : 'large';
+					$FullScreen 	= !empty($entry['mediaCacheData']['@attributes']['fullscreen']) 
+										? $entry['mediaCacheData']['@attributes']['fullscreen'] 
+										: $berta->settings->get('entryLayout', 'galleryFullScreenDefault');
+					$autoPlay 		= !empty($entry['mediaCacheData']['@attributes']['autoplay']) 
+											? $entry['mediaCacheData']['@attributes']['autoplay'] : '0';
+					$numberVisibility = !empty($entry['mediaCacheData']['@attributes']['slide_numbers_visible']) 
+										? $entry['mediaCacheData']['@attributes']['slide_numbers_visible']
+										: $berta->settings->get('entryLayout', 'gallerySlideNumberVisibilityDefault');
+					$linkAddress 	= !empty($entry['mediaCacheData']['@attributes']['link_address']) 
+										? $entry['mediaCacheData']['@attributes']['link_address'] : '';
 
-					$galType = !empty($entry['mediaCacheData']['@attributes']['type']) ? $entry['mediaCacheData']['@attributes']['type'] : 'slideshow';
-					$imageSize = !empty($entry['mediaCacheData']['@attributes']['size']) ? $entry['mediaCacheData']['@attributes']['size'] : 'large';
-					$FullScreen=!empty($entry['mediaCacheData']['@attributes']['fullscreen']) ? $entry['mediaCacheData']['@attributes']['fullscreen'] : $berta->settings->get('entryLayout', 'galleryFullScreenDefault');
-					$autoPlay = !empty($entry['mediaCacheData']['@attributes']['autoplay']) ? $entry['mediaCacheData']['@attributes']['autoplay'] : '0';
-					$linkAddress = !empty($entry['mediaCacheData']['@attributes']['link_address']) ? $entry['mediaCacheData']['@attributes']['link_address'] : '';
-					
 					echo '<div class="xEntryGalleryEditor-wrap"><div class="xEntryGalleryEditor xPanel">';
-						//echo ';
-
 						echo '<div class="xEntryGalleryMenu">';
 							echo '<div class="xEntryMedia tab">',
 									'<a href="#" class="xParams-media selected" title="add images and videos"><span>media</span></a>',	
@@ -57,15 +61,12 @@ if($jsonRequest) {
 							echo '<div class="xEntryMediaSettings tab">',
 									'<a href="#" class="xParams-media_settings" title="gallery settings"><span>settings</span></a>',	
 								 '</div>';
-
 							echo '<div class="xEntryFullScreenSettings tab ">',
 									'<a href="#" class="xParams-fullscreen" title="lightbox on/off"><span>lightbox</span></a>',
 								 '</div>';
-
 							echo '<div class="xEntryImageSizeSettings tab ">',
 									'<a href="#" class="xParams-image_size" title="large/small image size"><span>image size</span></a>',
 								 '</div>';
-
 							echo '<a class="xEntryGalCloseLink xEditorLink" href="#" title="close image editor"><span>X</span></a>';
 						echo '</div>';
 						
@@ -84,25 +85,29 @@ if($jsonRequest) {
 
 						echo '<div class="xEntryGallerySettings xGreyBack xHidden">';
 							echo '<div class="caption">gallery type</div>',
-								 '<div class="xEntrySetGalType xEditableSelectRC xCommand-SET_GALLERY_TYPE" x_options="slideshow||row||column||pile||link">' . $galType . '</div><br class="clear" />';
+								 '<div class="xEntrySetGalType xFloatLeft xEditableSelectRC xCommand-SET_GALLERY_TYPE" x_options="slideshow||row||column||pile||link">' . $galType . '</div>',
+								 '<div class="clear"></div>';
 							echo '<div class="xEntrySlideshowSettings' . ($galType == 'slideshow' ? '' : ' xHidden') . '">',
 									'<div class="caption">autoplay seconds</div>',
-								 	'<div class="xEntryAutoPlay xEditableRC xCommand-SET_AUTOPLAY xCaption-0" title="' . $autoPlay . '">' . $autoPlay . '</div>',
+								 	'<div class="xEntryAutoPlay xFloatLeft xEditableRC xCommand-SET_AUTOPLAY xCaption-0" title="' . $autoPlay . '">' . $autoPlay . '</div>',
+								 	'<div class="clear"></div>',
+								 	'<div class="caption">show image numbers</div>',
+								 	'<div class="xEntrySlideNumberVisibility xFloatLeft xEditableSelectRC xCommand-SET_SLIDE_NUMBER_VISIBILITY" x_options="yes||no">' . $numberVisibility . '</div>',
 								 '</div>';
 							echo '<div class="xEntryLinkSettings' . ($galType == 'link' ? '' : ' xHidden') . ' ">',
 									'<div class="caption">link address</div>',
-									'<div class="xEntryLinkAddress xEditableRC xCommand-SET_LINK_ADDRESS" title="' . ($linkAddress ? $linkAddress : 'http://') . '">' . ($linkAddress ? $linkAddress : 'http://') . '</div>',
+									'<div class="xEntryLinkAddress xFloatLeft xEditableRC xCommand-SET_LINK_ADDRESS" title="' . ($linkAddress ? $linkAddress : 'http://') . '">' . ($linkAddress ? $linkAddress : 'http://') . '</div>',
 								 '</div>';
 						echo '</div>';
 						
 						echo '<div class="xEntryGalleryFullScreen xHidden">';
 							echo '<div class="caption">fullscreen</div>',
-								 '<div class="xEntrySetFullScreen xEditableSelectRC xCommand-SET_FULLSCREEN" x_options="yes||no">' . $FullScreen . '</div><br class="clear" />';
+								 '<div class="xEntrySetFullScreen xFloatLeft xEditableSelectRC xCommand-SET_FULLSCREEN" x_options="yes||no">' . $FullScreen . '</div><div class="clear"></div>';
 						echo '</div>';
 						
 						echo '<div class="xEntryGalleryImageSize xHidden">';
 							echo '<div class="caption">image size</div>',
-								 '<div class="xEntrySetImageSize xEditableSelectRC xCommand-SET_GALLERY_SIZE" x_options="large||small">' . $imageSize . '</div><br class="clear" />';
+								 '<div class="xEntrySetImageSize xFloatLeft xEditableSelectRC xCommand-SET_GALLERY_SIZE" x_options="large||small">' . $imageSize . '</div><div class="clear"></div>';
 						echo '</div>';
 						
 						echo '<div class="images"><ul>';
@@ -147,22 +152,16 @@ if($jsonRequest) {
 											echo '<div class="xEGEImageCaption ' . $xEditSelectorMCESimple . ' xProperty-galleryImageCaption xCaption-image-caption xParam-' . $im['@attributes']['src'] . '">', !empty($im['value']) ? $im['value'] : '', '</div>';
 											echo '</li>';
 										}
-									
 									}
-
 								}
 							} else {
 								//echo '<li class="placeholder"><img src="' . $ENGINE_ROOT . 'layout/gallery-placeholder.gif" /></li>';
 							}
 						echo "</ul></div>\n";
-						//echo '</form>';
 					echo "</div></div>\n";
 				}
-				
-				
 			}
-		
-		
+
 			break;
 		
 		
@@ -173,25 +172,33 @@ if($jsonRequest) {
 				$sections = BertaEditor::getSections();
 				$section = $sections[$decoded['section']];
 
-				if(!empty($section['mediafolder']['value']))
+				if(!empty($section['mediafolder']['value'])) {
 					$sectionMF = $section['mediafolder']['value'];
-				else
+				} else {
 					$sectionMF = BertaEditor::getSectionMediafolder($section['name']['value']);
+				}
 				
-				$autoPlay = !empty($section['mediaCacheData']['@attributes']['autoplay']) ? $section['mediaCacheData']['@attributes']['autoplay'] : '0';
-				$bgSize = !empty($section['mediaCacheData']['@attributes']['image_size']) ? $section['mediaCacheData']['@attributes']['image_size'] : 'medium';
-				$bgFading = !empty($section['mediaCacheData']['@attributes']['fade_content']) ? $section['mediaCacheData']['@attributes']['fade_content'] : 'disabled';
-				
-				$bgColor = !empty($section['sectionBgColor']['value']) ? $section['sectionBgColor']['value'] : '#ffffff';
-				$bgColorText = !empty($section['sectionBgColor']['value']) ? $section['sectionBgColor']['value'] : 'none';
-				
-				$bgCaptionColor = !empty($section['mediaCacheData']['@attributes']['caption_color']) ? $section['mediaCacheData']['@attributes']['caption_color'] : '#ffffff';
-				$bgCaptionColorText = !empty($section['mediaCacheData']['@attributes']['caption_color']) ? $section['mediaCacheData']['@attributes']['caption_color'] : 'none';
-				
-				$bgCaptionBackColorTmp = !empty($section['mediaCacheData']['@attributes']['caption_bg_color']) ? explode(',', $section['mediaCacheData']['@attributes']['caption_bg_color']) : explode(',', '255,255,255');			
+				$autoPlay 			= !empty($section['mediaCacheData']['@attributes']['autoplay']) 
+										? $section['mediaCacheData']['@attributes']['autoplay'] : '0';
+				$bgSize 			= !empty($section['mediaCacheData']['@attributes']['image_size']) 
+										? $section['mediaCacheData']['@attributes']['image_size'] : 'medium';
+				$bgFading 			= !empty($section['mediaCacheData']['@attributes']['fade_content']) 
+										? $section['mediaCacheData']['@attributes']['fade_content'] : 'disabled';
+				$bgColor 			= !empty($section['sectionBgColor']['value']) 
+										? $section['sectionBgColor']['value'] : '#ffffff';
+				$bgColorText 		= !empty($section['sectionBgColor']['value']) 
+										? $section['sectionBgColor']['value'] : 'none';
+				$bgCaptionColor		= !empty($section['mediaCacheData']['@attributes']['caption_color']) 
+										? $section['mediaCacheData']['@attributes']['caption_color'] : '#ffffff';
+				$bgCaptionColorText	= !empty($section['mediaCacheData']['@attributes']['caption_color']) 
+										? $section['mediaCacheData']['@attributes']['caption_color'] : 'none';
+				$bgCaptionBackColorTmp = !empty($section['mediaCacheData']['@attributes']['caption_bg_color']) 
+											? explode(',', $section['mediaCacheData']['@attributes']['caption_bg_color']) : explode(',', '255,255,255');			
 				$bgCaptionBackColor = '#';
-				foreach($bgCaptionBackColorTmp as $val)
+				
+				foreach($bgCaptionBackColorTmp as $val) {
 					$bgCaptionBackColor .= dechex($val);
+				}
 					
 				$bgCaptionBackColorTextTmp = !empty($section['mediaCacheData']['@attributes']['caption_bg_color']) ? explode(',', $section['mediaCacheData']['@attributes']['caption_bg_color']) : 'none';
 				if($bgCaptionBackColorTextTmp != 'none') {
@@ -236,34 +243,34 @@ if($jsonRequest) {
 					   	echo '<div class="xBgFadingSettings">',
 					    		'<div class="caption">fade content</div>',
 					    	 	'<div class="xBgFading xEditableSelectRC xCommand-SET_BG_FADE_CONTENT" x_options="enabled||disabled">' . $bgFading . '</div>',
-								'<br class="clear" />',
+								'<div class="clear"></div>',
 							 '</div>';
 						echo '<div class="xBgColorSettings">',
 					    		'<div class="caption">background color</div>',
 					    	 	'<div class="xBgColor xEditableColor xProperty-sectionBgColor xNoHTMLEntities xCSSUnits-0 xRequired-1 " title="' . $bgColor . '">' . $bgColorText . '</div>',
 								'<div class="xBgColorReset xReset xCommand-sectionBgColorReset xParams-sectionBgColor"><a href="#"><span>remove</span></a></div>',
-								'<br class="clear" />',
+								'<div class="clear"></div>',
 								'<div class="caption">caption text color</div>',
 					    	 	'<div class="xBgColor xEditableColor xCommand-SET_BG_CAPTION_COLOR xNoHTMLEntities xCSSUnits-0 xRequired-1 " title="' . $bgCaptionColor . '">' . $bgCaptionColorText . '</div>',
 								'<div class="xBgColorReset xReset xCommand-RESET_BG_CAPTION_COLOR xParams-SET_BG_CAPTION_COLOR"><a href="#"><span>remove</span></a></div>',
-								'<br class="clear" />',
+								'<div class="clear"></div>',
 								'<div class="caption">caption background color</div>',
 					    	 	'<div class="xBgColor xEditableColor xCommand-SET_BG_CAPTION_BACK_COLOR xNoHTMLEntities xCSSUnits-0 xRequired-1 " title="' . $bgCaptionBackColor . '">' . $bgCaptionBackColorText . '</div>',
 								'<div class="xBgColorReset xReset xCommand-RESET_BG_CAPTION_BACK_COLOR xParams-SET_BG_CAPTION_BACK_COLOR"><a href="#"><span>remove</span></a></div>',
-								'<br class="clear" />',
+								'<div class="clear"></div>',
 							 '</div>';
 					echo '</div>';
 					
 					echo '<div class="xBgImgSizeSettings xHidden">';
 					    echo '<div class="caption">background image size</div>',
 							 '<div class="xBgImgSize xEditableSelectRC xCommand-SET_BG_IMG_SIZE" x_options="large||medium||small">' . $bgSize . '</div>',
-							 '<br class="clear" />';
+							 '<div class="clear"></div>';
 					echo '</div>';
 					
 					echo '<div class="xBgSlideshowSettings xHidden">';
 					    echo '<div class="caption">autoplay seconds</div>',
 							 '<div class="xBgAutoPlay xEditableRC xCommand-SET_AUTOPLAY xCaption-0" title="' . $autoPlay . '">' . $autoPlay . '</div>',
-							 '<br class="clear" />';
+							 '<div class="clear"></div>';
 					echo '</div>';
 							 
 					echo '<div class="images"><ul>';
