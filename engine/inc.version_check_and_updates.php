@@ -5,6 +5,13 @@ include_once($ENGINE_ROOT . '_classes/class.bertaeditor.php');
 if( !empty($berta->content['entry']) ) {
     $tplName = $berta->template->settings->templateName;
 
+    //remove tiny_mce *.GZ file, if current version is different - to prevent errors if tiny_mce has changed
+    if( empty($berta->content['@attributes']['last_upd_ver']) || !isset($options['int_version']) || (isset($options['int_version']) && $berta->content['@attributes']['last_upd_ver'] != $options['int_version']) ) {
+        foreach (glob($ENGINE_ROOT.'_lib/tiny_mce/*.gz') as $filename) {
+           @unlink($filename);
+        }
+    }
+
     // Updates for 0.8.2
     if( empty($berta->content['@attributes']['last_upd_ver']) || ($berta->content['@attributes']['last_upd_ver'] < 1082) ) {
         switch($tplName) {
