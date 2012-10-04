@@ -7,8 +7,11 @@ if( !empty($berta->content['entry']) ) {
 
     //remove tiny_mce *.GZ file, if current version is different - to prevent errors if tiny_mce has changed
     if( empty($berta->content['@attributes']['last_upd_ver']) || !isset($options['int_version']) || (isset($options['int_version']) && $berta->content['@attributes']['last_upd_ver'] != $options['int_version']) ) {
-        foreach (glob($ENGINE_ROOT.'_lib/tiny_mce/*.gz') as $filename) {
-           @unlink($filename);
+        $old_gz_files = glob($ENGINE_ROOT.'_lib/tiny_mce/*.gz');
+        if ($old_gz_files){
+            foreach ($old_gz_files as $filename) {
+               @unlink($filename);
+            }
         }
     }
 
