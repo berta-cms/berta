@@ -163,6 +163,10 @@
 
 			</ol>
 
+            <div id="additionalFooterText" class="xEditableMCESimple xProperty-additionalFooterText xCaption-additional-footer-text clearfix">
+                { $additionalFooterText }
+            </div>
+
 			<div class="footer xEditableTA xProperty-siteFooter">{ $siteFooter }</div>
 			{ if !($berta.settings.settings.hideBertaCopyright=='yes' && $berta.hostingPlan>1) }
 				<div class="bertaCopyright">{ bertaCopyright }</div>
