@@ -787,10 +787,10 @@ var BertaEditorBase = new Class({
 								if(editInitializer.hasClass('xEntrySlideNumberVisibility')) {
 									if(resp.update == 'no') oldValue = 'yes';
 									else oldValue = 'no';
-									
+
 									editInitializer.getParent('.xGalleryContainer').removeClass('xSlideNumbersVisible-' + oldValue).addClass('xSlideNumbersVisible-' + resp.update);
 								}
-							
+
 								// for the RC selects we check:
 								// 1) either the returned update equals the newly set content, which means that the saving was successful
 								if(resp.update == newContent) {
@@ -987,8 +987,8 @@ var BertaEditorBase = new Class({
 				theme_advanced_blockformats : "p,h2",
 
 				valid_elements : "iframe[*],object[*],embed[*],param[*],form[*],input[*],textarea[*],select[*],option[*]," +
-								 "p[class|style],b[class],i[class],span[class],strong[class],em[class],a[href|target|class|style|title],br[*],u[class]," +
-								 "ul,li,ol,img[*],hr[class],h2[class|style],div[*],table[*],thead[*],tbody[*],tr[*],td[*]",
+								 "p[class|style],b[class],i[class],span[class],strong[class],em[class],a[*],br[*],u[class]," +
+								 "ul,li,ol,img[*],hr[class],h2[class|style],div[*],table[*],thead[*],tbody[*],tr[*],td[*],span[*]",
 				custom_elements : '',
 				extended_valid_elements : '',
 				convert_urls: false,
@@ -1006,7 +1006,7 @@ var BertaEditorBase = new Class({
 			mode : "exact",
 			theme_advanced_buttons1 : "save,bold,italic,removeformat,link,code",
 			theme_advanced_buttons2 : "",
-			valid_elements : "p[*],b,i,strong,em,a[href|target|class|style],br[*],u,img[*],div[*],iframe[*]",
+			valid_elements : "p[*],b,i,strong,em,a[*],br[*],u,img[*],div[*],iframe[*],span[*]",
 			width : "100%", height: "60px",
 			theme_advanced_statusbar_location : null,
 			plugins: "save,insertanything"
