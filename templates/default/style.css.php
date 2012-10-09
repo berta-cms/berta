@@ -32,7 +32,7 @@ body {
 	font-style: <?php echo $s->get('generalFontSettings', 'fontStyle') ?>;
 	font-variant: <?php echo $s->get('generalFontSettings', 'fontVariant') ?>;
 	line-height: <?php echo $s->get('generalFontSettings', 'lineHeight') ?>;
-	
+
 	text-align: <?php echo $contentFloat ?>;
 
 	background-color: <?php echo $s->get('background', 'backgroundColor') ?>;
@@ -44,28 +44,28 @@ body {
 		background-position: <?php echo $s->get('background', 'backgroundPosition') ?>;
 		background-attachment: <?php echo $bgAttachment ?>;
 	<?php } ?>
-	
+
 	min-height: 100%;
 }
 
 
-a:link { 
+a:link {
 	color: <?php echo $s->get('links', 'colorLink') ?>;
 	text-decoration: <?php echo $s->get('links', 'textDecorationLink') ?>;
 	/*border: <?php echo $s->get('links', 'border:link') ?>;*/
 }
-a:visited { 
+a:visited {
 	color: <?php echo $s->get('links', 'colorVisited') ?>;
 	text-decoration: <?php echo $s->get('links', 'textDecorationVisited') ?>;
 	/*border: <?php echo $s->get('links', 'border:visited') ?>;*/
 }
-a:hover { 
+a:hover {
 	color: <?php echo $s->get('links', 'colorHover') ?>;
 	text-decoration: <?php echo $s->get('links', 'textDecorationHover') ?>;
 	/*border: <?php echo $s->get('links', 'border:hover') ?>;*/
 }
 a:active,
-div#siteTopMenu ul li.selected span { 
+div#siteTopMenu ul li.selected span {
 	color: <?php echo $s->get('links', 'colorActive') ?>;
 	text-decoration: <?php echo $s->get('links', 'textDecorationActive') ?>;
 	/*border: <?php echo $s->get('links', 'border:active') ?>;*/
@@ -75,7 +75,7 @@ a img { border: none; }
 
 
 
-h1 { 
+h1 {
 	color: <?php echo $s->get('pageHeading', 'color') ?>;
 	font-family: <?php echo $s->getFont('pageHeading') ?>;
 	font-size: <?php echo $s->get('pageHeading', 'fontSize') ?>;
@@ -83,7 +83,7 @@ h1 {
 	font-style: <?php echo $s->get('pageHeading', 'fontStyle') ?>;
 	font-variant: <?php echo $s->get('pageHeading', 'fontVariant') ?>;
 	line-height: <?php echo $s->get('pageHeading', 'lineHeight') ?>;
-	
+
 	float: <?php echo $contentFloat ?>;
 	margin: <?php echo $s->get('pageHeading', 'margin') ?>;
 	padding: 0;
@@ -91,7 +91,7 @@ h1 {
 
 	#contentContainer h1 a {
 		color: <?php echo $s->get('pageHeading', 'color') ?>;
-	} 
+	}
 
 #allContainer {
 	position: relative;
@@ -115,7 +115,7 @@ h1 {
 		clear: both;
 		padding: <?php echo $s->get('pageLayout', 'siteMenuMargin') ?>;
 	}
-	
+
 		div#siteTopMenu ul {
 			margin: 0 0 0;
 			padding: 0;
@@ -129,8 +129,8 @@ h1 {
 				float: left;
 				margin: 0;
 			}
-				div#siteTopMenu ul li .separator { 
-					display: block; 
+				div#siteTopMenu ul li .separator {
+					display: block;
 					float: left;
 					padding: 0;
 				}
@@ -143,12 +143,12 @@ h1 {
 				div#siteTopMenu ul li.selected span {
 					font-weight: bold;
 				}
-		
-		
+
+
 		div#siteTopMenu ul#mainMenu {
 			padding: <?php echo $s->get('menu', 'margin') ?>;
 		}
-		
+
 			div#siteTopMenu ul#mainMenu li {
 				font-family: <?php echo $s->getFont('menu') ?>;
 				font-size: <?php echo $s->get('menu', 'fontSize') ?>;
@@ -157,11 +157,11 @@ h1 {
 				font-variant: <?php echo $s->get('menu', 'fontVariant') ?>;
 				line-height: <?php echo $s->get('menu', 'lineHeight') ?>;
 			}
-				div#siteTopMenu ul#mainMenu li .separator { 
+				div#siteTopMenu ul#mainMenu li .separator {
 					padding-left: <?php echo $s->get('menu', 'separatorDistance') ?>;
 				 	padding-right: <?php echo $s->get('menu', 'separatorDistance') ?>;
 				}
-				
+
 		div#siteTopMenu ul#subMenu {
 			clear: <?php echo $contentFloat ?>;
 			padding: <?php echo $s->get('subMenu', 'margin') ?>;
@@ -175,7 +175,7 @@ h1 {
 				font-variant: <?php echo $s->get('subMenu', 'fontVariant') ?>;
 				line-height: <?php echo $s->get('subMenu', 'lineHeight') ?>;
 			}
-				div#siteTopMenu ul#subMenu li .separator { 
+				div#siteTopMenu ul#subMenu li .separator {
 					padding-left: <?php echo $s->get('subMenu', 'separatorDistance') ?>;
 				 	padding-right: <?php echo $s->get('subMenu', 'separatorDistance') ?>;
 				}
@@ -188,7 +188,7 @@ h1 {
 		.ie #additionalText {
 			width: 500px;
 		}
-			#additionalText p { 
+			#additionalText p {
 				margin: 0; padding: 0;
 			}
 
@@ -210,9 +210,9 @@ h1 {
 			margin: <?php echo $s->get('entryLayout', 'margin') ?>;
 			padding: 0;
 		}
-	
-			ol#pageEntries li.xEntry .entryTitleContainer { 
-				width: 480px; 
+
+			ol#pageEntries li.xEntry .entryTitleContainer {
+				width: 480px;
 				margin: <?php echo $contentFloat ? '0' : '0 0 0 auto' ?>;
 			}
 			ol#pageEntries li.xEntry h2 {
@@ -235,11 +235,11 @@ h1 {
 				margin: 0 0 5px;
 				padding: 0;
 			}
-		
-		
-		
-		
-		
+
+
+
+
+
 			ol#pageEntries li.xEntry .xGalleryContainer {
 				position: relative;
 				clear: <?php echo $contentFloat ?>;
@@ -252,7 +252,7 @@ h1 {
 				float: <?php echo $contentFloat ?>;
 			}
 			ol#pageEntries li.xEntry .xGalleryType-row {
-				
+
 			}
             ol#pageEntries li.xEntry .xGalleryType-pile {
 
@@ -260,9 +260,9 @@ h1 {
             ol#pageEntries li.xEntry .xGalleryType-column {
 
             }
-				
-				ol#pageEntries li.xEntry .xGalleryContainer .xGallery { 
-					position: relative; 
+
+				ol#pageEntries li.xEntry .xGalleryContainer .xGallery {
+					position: relative;
 					margin: <?php echo $s->get('entryLayout', 'galleryMargin') ?>;
 				}
 					ol#pageEntries li.xEntry .xGalleryContainer .xGallery div.xGalleryItem { display: block; }
@@ -275,10 +275,10 @@ h1 {
 						padding-bottom: 5px;
 					}
 					ol#pageEntries li.xEntry .xGalleryType-slideshow .xGalleryImageCaption { display: none; }
-					ol#pageEntries li.xEntry .xGalleryType-row .xGalleryImageCaption p { 
+					ol#pageEntries li.xEntry .xGalleryType-row .xGalleryImageCaption p {
 						margin: 5px 0 0;
 					}
-		
+
 				ol#pageEntries .xGalleryContainer ul.xGalleryNav {
 					display: block;
 					position: relative;
@@ -308,8 +308,8 @@ h1 {
 						background-color: #535353;
 						color: #FFFFFF;
 					}
-			
-			
+
+
 			ol#pageEntries li.xEntry .entryText {
 				width: 100%;
 				position: relative;
@@ -329,7 +329,7 @@ h1 {
 				    margin: 0;
 				    padding: 0;
 				}
-				
+
 				ol#pageEntries li.xEntry .entryText ul {
 					margin: 0 0 6px;
 					padding: 0 0 0 15px;
@@ -354,9 +354,9 @@ h1 {
 						/*counter-increment: term;
 						content: counter(term) ") ";*/
 					}
-			
-		
-		
+
+
+
 			ol#pageEntries li.xEntry .entryContent {
 				clear: both;
 				padding: 0;
@@ -387,10 +387,17 @@ h1 {
 						float: <?php echo $contentFloat ?> !important;
 						clear: none;
 					}
-				
-				
-	.footer {
+
+	#additionalFooterText {
 		margin: 50px 0 0;
+	}
+
+	#additionalFooterText p {
+		margin: 0;
+	}
+
+	.footer {
+		margin: 10px 0 0;
 		font-size: 80%;
 	}
 
@@ -399,7 +406,7 @@ h1 {
 	}
 
 
-	.bottomCopy { 
+	.bottomCopy {
 		position: relative;
 		bottom: 0;
 	}
@@ -414,8 +421,8 @@ h1 {
 		font-size: 80%;
 		color: <?php echo $s->get('generalFontSettings', 'color') ?> !important;
 	}
-	
-	
+
+
 	.floating-banner {
 		position: absolute;
 		z-index: 3000;
