@@ -15,7 +15,7 @@ require 'config/inc.conf.php';
  * Berta's release version
  */
 $options['version'] = '0.8.4a';
-$options['int_version'] = '1084';
+$options['int_version'] = '1085';
 
 
 /**
@@ -74,7 +74,11 @@ $options['CACHE_ABS_ROOT'] = $options['SITE_ABS_ROOT'] . 'storage/cache/';
  * Account link - if hosted
  */
 
-$options['HOSTING_PROFILE'] = file_exists($ENGINE_ROOT.'hosting')?file_get_contents($ENGINE_ROOT.'hosting'):false;
+if (file_exists($ENGINE_ROOT.'hosting')){
+	$hostingConfig = parse_ini_file($ENGINE_ROOT.'hosting');
+}
+$options['HOSTING_PROFILE'] = isset($hostingConfig['login']) ? $hostingConfig['login'] : false;
+$options['HOSTING_FORGOTPASSWORD'] = isset($hostingConfig['forgotPassword']) ? $hostingConfig['forgotPassword'] : false;
 
 
 
