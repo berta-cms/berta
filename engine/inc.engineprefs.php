@@ -75,7 +75,7 @@ $options['CACHE_ABS_ROOT'] = $options['SITE_ABS_ROOT'] . 'storage/cache/';
  */
 
 if (file_exists($ENGINE_ROOT.'hosting')){
-	$hostingConfig = parse_ini_file($ENGINE_ROOT.'hosting');
+	$hostingConfig = parse_ini_string( file_get_contents($ENGINE_ROOT.'hosting') );
 }
 $options['HOSTING_PROFILE'] = isset($hostingConfig['login']) ? $hostingConfig['login'] : false;
 $options['HOSTING_FORGOTPASSWORD'] = isset($hostingConfig['forgotPassword']) ? $hostingConfig['forgotPassword'] : false;
