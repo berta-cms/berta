@@ -156,6 +156,7 @@ h1 {
 				font-style: <?php echo $s->get('menu', 'fontStyle') ?>;
 				font-variant: <?php echo $s->get('menu', 'fontVariant') ?>;
 				line-height: <?php echo $s->get('menu', 'lineHeight') ?>;
+				white-space: nowrap;
 			}
 				div#siteTopMenu ul#mainMenu li .separator {
 					padding-left: <?php echo $s->get('menu', 'separatorDistance') ?>;
