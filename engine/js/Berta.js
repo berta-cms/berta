@@ -18,7 +18,7 @@ Element.implement({
 		}
 		return null;
 	},
-	
+
 	setClassStoredValue: function(varName, varValue) {
 		var c = this.get('class').split(' ');
 		var curValue = this.getClassStoredValue(varName);
@@ -32,49 +32,50 @@ Element.implement({
 
 
 var Berta = new Class({
-	
+
 	Implements: Options,
-	
+
 	options: {
 		paths: null,
 		playerType: 'JWPlayer'
 	},
-	
+
 	entriesList: null,
 	galleries: new Array(),
-	
+
 	initialize: function(options) {
 		this.setOptions(options);
 		window.addEvent('domready', this.onDOMReady.bindWithEvent(this));
 		window.addEvent('load', this.onLoad.bindWithEvent(this));
-		
+
 		if(!window.console) {
 			window.console = { debug: function() { }, log: function() { } };
 		}
 	},
-	
+
 	onDOMReady: function(event) {
 		//console.debug('Berta: dom_ready');
 		this.entriesList = $$('.xEntriesList');
 		if(this.entriesList) this.entriesList = this.entriesList[0];
 		this.bgImageInit();
+		this.windowResizeEvents();
 	},
-	
+
 	onLoad: function(event) {
 		//console.debug('Berta: load');
-		
+
 		// init entry galleries only in "load" event because otherwise in some browsers
 		// (eg. safari), the CSS sometimes is not loaded in time to get the styles from
 		// the elements with javascript
 		this.initEntriesList();
 	},
-	
+
 	initEntriesList: function() {
 		$$('.xEntriesList .xGalleryContainer').each(function(item) {
-			var g = new BertaGallery(item, { 
+			var g = new BertaGallery(item, {
 				environment: this.options.environment,
-				engineRoot: this.options.paths.engineRoot, 
-				engineABSRoot: this.options.paths.engineABSRoot, 
+				engineRoot: this.options.paths.engineRoot,
+				engineABSRoot: this.options.paths.engineABSRoot,
 				playerType: this.options.videoPlayerType,
 				slideshowAutoRewind: this.options.slideshowAutoRewind,
 				galleryFullScreenImageBorders: this.options.galleryFullScreenImageBorders
@@ -82,7 +83,7 @@ var Berta = new Class({
 			this.galleries.push(g);
 		}.bind(this));
 	},
-	
+
 	bgImageInit: function() {
 		var imContainer = $('xFilledBackground');
 		if(imContainer) {
@@ -101,23 +102,23 @@ var Berta = new Class({
 	bgImageInit_do_do: function() {
 		var imContainer = $('xFilledBackground');
 		imContainer.setStyle('display', 'block')
-		
+
 		var im = imContainer.getElement('img');
 		var wOrig = im.width, hOrig = im.height;
-		
+
 		var imAlignment = imContainer.getClassStoredValue('xPosition');
-		
-		
+
+
 		var fnOnResize = function() {
 			var wndSize = $(window).getSize();
 			var w  = wndSize.x, h = wndSize.y;
 			var posX, posY;
-		
+
 			// scale
 			var scaleX = w / wOrig, scaleY = h / hOrig;
 			if(scaleX > scaleY)
 				scaleY = scaleX;
-			else 
+			else
 				scaleX = scaleY;
 
 			// position X
@@ -128,7 +129,7 @@ var Berta = new Class({
 			} else {
 				posX = Math.round((w - wOrig * scaleX) / 2);
 			}
-		
+
 			// position Y
 			if(imAlignment == 'top_left' || imAlignment == 'top_center' || imAlignment == 'top_right') {
 				posY = 0;
@@ -144,13 +145,37 @@ var Berta = new Class({
 			im.setStyle('left', posX + 'px');
 			im.setStyle('top', posY + 'px');
 		}
-		
+
 		$(window).addEvent('resize', fnOnResize);
 		fnOnResize();
+	},
+
+	windowResizeEvents: function(){
+		var templateName = this.options.templateName.split('-');
+		templateName = templateName[0];
+
+		var footerOverlayFix = function() {
+			var windowHeight = window.getSize().y;
+			var sideColumnTop = $('sideColumnTop');
+			var sideColumnBottom = $('sideColumnBottom');
+
+			if (sideColumnBottom && sideColumnBottom) {
+				var sideColumnTopHeight = sideColumnTop.getSize().y;
+				var sideColumnBottomHeight = sideColumnBottom.getSize().y;
+				if (windowHeight < sideColumnTopHeight + sideColumnBottomHeight){
+					sideColumnBottom.setStyle('position', 'static');
+				}else{
+					sideColumnBottom.setStyle('position', 'absolute');
+				}
+			}
+		}
+
+		if (templateName=='mashup' || templateName=='white'){
+			footerOverlayFix();
+			$(window).addEvent('resize', footerOverlayFix);
+		}
 	}
 
-	
-	
 });
 
 var berta = new Berta(window.bertaGlobalOptions);
