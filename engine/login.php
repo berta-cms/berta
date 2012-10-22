@@ -13,29 +13,52 @@ if($berta->security->user) {
 	header("Location: login.php?" . uniqid());
 	exit;
 }
-	
+
+if ($options['HOSTING_PROFILE']) {
+
+	// if key, cURL check if autorized on auth_server
+	if (isset($_GET['auth_key'])){
+
+		$isLoggedIn = $berta->security->isLoggedIn($options['HOSTING_PROFILE'].'?auth_key='.$_GET['auth_key'], $_GET['auth_key']);
+
+		if ($isLoggedIn) {
+			$_POST['auth_action'] = 'login';
+			$_REQUEST['auth_browser'] = 'supported';
+			$_REQUEST['auth_user'] = $options['AUTH_user'];
+			$_REQUEST['auth_pass'] = $options['AUTH_password'];
+		}else{
+			header("Location: login.php?autherror=1");
+			exit;
+		}
+	}
+
+	$login_action = $options['HOSTING_PROFILE'];
+}else{
+	$login_action = $ENGINE_ABS_ROOT . 'login.php';
+}
 
 $auth_action = isset($_POST["auth_action"]) ? $_POST["auth_action"] : false;
 
 $errStr = "";
 $authErr = isset($_GET["autherror"]) ? $_GET["autherror"] : false;
 if($authErr)
-    $errStr = $berta->security->getError("auth", $authErr);
+    //$errStr = $berta->security->getError("auth", $authErr);
+	$errStr = $berta->security->getError("login", 5);
 
 if($auth_action == "login" && !$errStr) {
-	
+
 	if(empty($_REQUEST['auth_browser']) || $_REQUEST['auth_browser'] == 'invalid') {
 		header('Location: ./ie.php');exit;
 	} else {
-	
+
     	if($berta->security->login($_REQUEST['auth_user'], $_REQUEST['auth_pass'], $options['AUTH_user'], $options['AUTH_password'])) {
-		
+
 			// update media cache for all sections ...
-		
+
 			include 'inc.cleanup_and_update.php';
-		
+
 			// redirect to main page ...
-		
+
 			header("Location: $ENGINE_ABS_ROOT");
 	        exit;
 
@@ -71,7 +94,7 @@ if($auth_action == "login" && !$errStr) {
 	<div class="xMAlign-container xPanel">
 		<div class="xMAlign-outer">
 			<div class="xMAlign-inner">
-				<form name="xLoginForm" action="<?php echo $ENGINE_ABS_ROOT ?>login.php" method="post">
+				<form name="xLoginForm" action="<?php echo $login_action ?>" method="post">
                     <div class="xLoginLogo">
                         <img src="<?php echo $ENGINE_ABS_ROOT ?>layout/berta.png" alt="berta v <?php echo BertaBase::$options['version'] ?>" />
                     </div>
@@ -84,6 +107,9 @@ if($auth_action == "login" && !$errStr) {
 					<input type="text" name="auth_user" id="auth_user" class="xLoginField" />
 					<input type="password" name="auth_pass" id="auth_pass" class="xLoginField" />
 					<input type="submit" name="auth_subm" id="auth_subm" class="xLoginSubmit" value="<?php echo I18n::_('Log in') ?>" />
+					<?php if ($options['HOSTING_FORGOTPASSWORD']){ ?>
+						<p><a href="<?php echo $options['HOSTING_FORGOTPASSWORD']?>" target="_blank"><?php echo I18n::_('Forgot password?') ?></a></p>
+					<?php } ?>
 					<p>
                         berta v <?php echo BertaBase::$options['version'] ?> 2008-<?php echo date('Y') ?>
                     </p>
