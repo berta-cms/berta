@@ -2,7 +2,7 @@
 
 if(empty($INDEX_INCLUDED)) $INDEX_INCLUDED = false;
 if(!$INDEX_INCLUDED) {
-	define('AUTH_AUTHREQUIRED', true); // require authentification if inside engine folder 
+	define('AUTH_AUTHREQUIRED', true); // require authentification if inside engine folder
 	define('BERTA_ENVIRONMENT', 'engine');
 } else {
 	define('SETTINGS_INSTALLREQUIRED', true);	// don't require INSTALL if just watching the site
@@ -32,7 +32,7 @@ $sectionName = $subSectionName = $tagName = $urlStr = false;
 if($berta->apacheRewriteUsed) {
 	include $ENGINE_ROOT . '_classes/class.clean_url.php';
 	$cU = new CleanURL();
-	
+
 	$urlStr = $_SERVER['REQUEST_URI'];
 	if(strpos($urlStr, $SITE_ABS_ROOT) === 0) $urlStr = substr($urlStr, strlen($SITE_ABS_ROOT) - 1);
 	$cU->parseURL($urlStr);
@@ -41,8 +41,8 @@ if($berta->apacheRewriteUsed) {
 	$querySectionName = $sectionName;
 } else {
 	$urlStr = $_SERVER['REQUEST_URI'];
-	
-	$sectionName = $querySectionName = !empty($_REQUEST['section']) ? strtolower($_REQUEST['section']) : false;	
+
+	$sectionName = $querySectionName = !empty($_REQUEST['section']) ? strtolower($_REQUEST['section']) : false;
 	//$subSectionName = !empty($_REQUEST['subsection']) ? strtolower($_REQUEST['subsection']) : false;
 	$tagName = !empty($_REQUEST['tag']) ? strtolower($_REQUEST['tag']) : false;
 }
