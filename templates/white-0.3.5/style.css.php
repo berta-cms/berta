@@ -220,7 +220,7 @@ a img { border: none; }
 
 		#mainColumn {
 			position: relative;
-			margin-top: <?php echo $s->get('pageLayout', 'paddingTop') ?>;
+			padding-top: <?php echo $s->get('pageLayout', 'paddingTop') ?>;
 			margin-left: <?php echo $s->get('pageLayout', 'leftColumnWidth') ?>;
 			padding-bottom: 20px;
 			padding-left: <?php echo $s->get('pageLayout', 'paddingLeft') ?>;

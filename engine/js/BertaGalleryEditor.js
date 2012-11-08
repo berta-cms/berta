@@ -111,12 +111,15 @@ var BertaGalleryEditor = new Class({
 
 		// autoplay handle
 		this.elementEdit_init(this.container.getElement('.xEntryAutoPlay'), this.options.xBertaEditorClassRC);
-		
+
 		// slide number visibility handle
 		this.elementEdit_init(this.container.getElement('.xEntrySlideNumberVisibility'), this.options.xBertaEditorClassSelectRC);
 
 		// link address handle
 		this.elementEdit_init(this.container.getElement('.xEntryLinkAddress'), this.options.xBertaEditorClassRC);
+
+		// link address target handle
+		this.elementEdit_init(this.container.getElement('.xEntryLinkTarget'), this.options.xBertaEditorClassSelectRC);
 
 		// close link
 		this.container.getElement('a.xEntryGalCloseLink').addEvent('click', this.onCloseClick.bindWithEvent(this));
