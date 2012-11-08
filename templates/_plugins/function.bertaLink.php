@@ -52,7 +52,7 @@ function smarty_function_bertaLink($params, &$smarty) {
 	if($constructPrettyLink) {
 		return $SITE_ABS_ROOT . implode('/', $link) . ($link ? '/' : '');
 	} else {
-		return '.' . ($link ? ('?' . implode('&', $link)) : '');
+		return (isset($params['absRoot']) ? $SITE_ABS_ROOT : '.') . ($link ? ('?' . implode('&', $link)) : '');
 	}
 }
 ?>
