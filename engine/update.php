@@ -229,11 +229,15 @@ if($jsonRequest) {
 						case 'SET_LINK_ADDRESS':
 							if(empty($e['mediaCacheData']['@attributes'])) $e['mediaCacheData']['@attributes'] = array();
 								if(!empty($decoded['params'])) {
-									$e['mediaCacheData']['@attributes']['link_address'] = str_replace(' ', '', $decoded['params']);
+									$e['mediaCacheData']['@attributes']['linkTarget'] = str_replace(' ', '', $decoded['params']);
 								} else {
-									$e['mediaCacheData']['@attributes']['link_address'] = 'http://';
+									$e['mediaCacheData']['@attributes']['linkTarget'] = 'http://';
 									$returnUpdate = 'http://';
 								}
+							break;
+						case 'SET_LINK_TARGET':
+							if(empty($e['mediaCacheData']['@attributes'])) $e['mediaCacheData']['@attributes'] = array();
+							$e['mediaCacheData']['@attributes']['linkTarget'] = $decoded['value'];
 							break;
 						case 'PUT_BEFORE':
 							$newEntriesList = array(); $entryPut = false; $hasEntries = false;
