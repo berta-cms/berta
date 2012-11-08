@@ -229,9 +229,9 @@ if($jsonRequest) {
 						case 'SET_LINK_ADDRESS':
 							if(empty($e['mediaCacheData']['@attributes'])) $e['mediaCacheData']['@attributes'] = array();
 								if(!empty($decoded['params'])) {
-									$e['mediaCacheData']['@attributes']['linkTarget'] = str_replace(' ', '', $decoded['params']);
+									$e['mediaCacheData']['@attributes']['link_address'] = str_replace(' ', '', $decoded['params']);
 								} else {
-									$e['mediaCacheData']['@attributes']['linkTarget'] = 'http://';
+									$e['mediaCacheData']['@attributes']['link_address'] = 'http://';
 									$returnUpdate = 'http://';
 								}
 							break;
