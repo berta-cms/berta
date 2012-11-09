@@ -79,7 +79,7 @@ var MessyMess = new Class({
         if(Cookie.read('_berta_grid_view'))
             Cookie.dispose('_berta_grid_view');
 
-        this.copyrightStickToBottom();
+        this.copyrightStickToBottom.delay(1000);
         window.addEvent('resize', this.copyrightStickToBottom.bindWithEvent(this));
 
 		var messyItems = $$('.mess');

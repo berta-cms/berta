@@ -46,9 +46,13 @@
 			{ if ($berta.environment == 'site' && $berta.settings.navigation.landingSectionMenuVisible=='yes') || $berta.environment == 'engine' || ($berta.environment == 'site' && $berta.settings.navigation.landingSectionMenuVisible=='no' && $berta.sectionName != $berta.sections|@key) }
 				<div id="additionalText" class="xEditableDragXY xProperty-additionalTextXY" style="{ additionalTextPos xy=$additionalTextXY }">
 					<div class="xHandle"></div>
-					<div class="xEditableMCESimple xProperty-additionalText xCaption-additional-text">
-					{ $additionalText }
-					</div>
+					{if $berta.settings.socialMediaButtons.socialMediaLocation == 'additionalText' && $berta.settings.socialMediaButtons.socialMediaHTML}
+                    	{ $berta.settings.socialMediaButtons.socialMediaHTML|@html_entity_decode|replace:'<br />':"\n" }
+                    {else}
+						<div class="xEditableMCESimple xProperty-additionalText xCaption-additional-text">
+						{ $additionalText }
+						</div>
+					{/if}
 				</div>
 			{/if}
 
@@ -163,8 +167,12 @@
 
 			</ol>
 
-            <div id="additionalFooterText" class="xEditableMCESimple xProperty-additionalFooterText xCaption-additional-footer-text clearfix">
-                { $additionalFooterText }
+			<div id="additionalFooterText" class="{if !($berta.settings.socialMediaButtons.socialMediaLocation == 'footer' && $berta.settings.socialMediaButtons.socialMediaHTML)}xEditableMCESimple {/if}xProperty-additionalFooterText xCaption-additional-footer-text clearfix">
+                {if $berta.settings.socialMediaButtons.socialMediaLocation == 'footer' && $berta.settings.socialMediaButtons.socialMediaHTML}
+                    { $berta.settings.socialMediaButtons.socialMediaHTML|@html_entity_decode|replace:'<br />':"\n" }
+                {else}
+                    { $additionalFooterText }
+                {/if}
             </div>
 
 			<div class="footer xEditableTA xProperty-siteFooter">{ $siteFooter }</div>
