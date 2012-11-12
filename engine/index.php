@@ -53,15 +53,13 @@ if($berta->apacheRewriteUsed) {
 // ------------------------------------------------------------------------------------------------------------------------------
 
 $berta->initContent($urlStr, $sectionName, $tagName);
-if($querySectionName && ($berta->sectionName != $querySectionName)) {
+if( $querySectionName && $querySectionName !='sitemap.xml' && $berta->sectionName != $querySectionName ) {
 	header("HTTP/1.1 301 Moved Permanently");
 	header("Location: " . ($berta->environment == 'engine' ? $ENGINE_ABS_ROOT : $SITE_ABS_ROOT));
-	//include 'error/404.php';
+	include 'error/404.php';
 	exit;
 }
 //$t->point("content init");
-
-
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //  CHECK VERSIONS   ------------------------------------------------------------------------------------------------------------

@@ -64,7 +64,7 @@ class Berta extends BertaBase
 		// seciton ...
 
 		$this->sections = BertaContent::getSections();
-		if(!$sectionName || empty($this->sections[$sectionName]))
+		if(!$sectionName || empty($this->sections[$sectionName]) && $sectionName!='sitemap.xml')
 		{
 			if($this->environment == 'engine')
 				list($sectionName, ) = each($this->sections);
@@ -81,7 +81,6 @@ class Berta extends BertaBase
 			}
 		}
 		$this->sectionName = $sectionName;
-
 
 		// content ...
 		$this->content = BertaContent::loadBlog($sectionName);
@@ -132,11 +131,6 @@ class Berta extends BertaBase
 			$this->tagName = reset($this->tagName);
 		}
 
-
-
-
-
-
 		// tags ....
 
 		/*$this->tags = BertaContent::getTags($sectionName);
@@ -144,25 +138,14 @@ class Berta extends BertaBase
 		$this->tagName = $tagName;
 		if(!isset($this->tags[$this->tagName])) $this->tagName = false;*/
 
-
-
-
 		// template ...
-
 		$this->template->addContent($this->requestURI, $this->sectionName, $this->sections, $this->tagName, $this->tags, $this->content, $this->allContent);
 	}
 
-
 	public function output()
 	{
-
 		return $this->template->output();
 	}
-
-
-
 }
-
-
 
 ?>

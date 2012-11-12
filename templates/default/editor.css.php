@@ -8,7 +8,7 @@ $s =& $berta->template->settings;
 
 if(!1) { ?><style type="text/css"><?php } ?>
 
-#additionalText { 
+#additionalText {
 	width: auto;
 	max-width: 500px;
 }

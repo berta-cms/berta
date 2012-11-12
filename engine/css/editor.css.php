@@ -1342,18 +1342,18 @@ a.xCreateNewEntry.xSaving {
 				width: 200px;
 				float: left;
 			}
-			
+
 			.xEntryGalleryEditor .xFloatLeft,
 			.xEntryGalleryEditor .xFloatLeft input {
 				float: left;
 			}
-			
+
 			.xEntryGallerySettings>.caption,
 			.xEntryGalleryFullScreen>.caption,
 			.xEntryGalleryImageSize>.caption {
 				padding: 6px 0;
 			}
-			
+
 			.xEntryGallerySettings .xEntrySetGalType,
 			.xEntryGallerySettings .xEntrySetGalType input,
 			.xEntryGalleryFullScreen .xEntrySetFullScreen,
@@ -1376,7 +1376,8 @@ a.xCreateNewEntry.xSaving {
 			.xEntrySlideshowSettings .xEntrySlideNumberVisibility {
 				width: 80px;
 			}
-			.xEntryGallerySettings .xEntrySetGalType {
+			.xEntryGallerySettings .xEntrySetGalType,
+			.xEntryGallerySettings .xEntryLinkTarget {
 				width: 140px;
 			}
 
