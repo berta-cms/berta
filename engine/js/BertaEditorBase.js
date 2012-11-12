@@ -81,12 +81,31 @@ var BertaEditorBase = new Class({
 
 		var editor=this;
 		$(document).addEvent('keydown', function(event){
-		    if (event.shift){
+		    if (event.code == 16){
 				editor.shiftPressed=true;
 		    }
 		}).addEvent('keyup', function() {
 			editor.shiftPressed=false;
 		});
+	},
+
+	fixDragHandlePos: function() {
+
+		$$(this.options.xBertaEditorClassDragXY).each(function(el) {
+			if (!el.hasClass('xEntry')){
+
+				handle = el.getElement('.xHandle');
+				handlePad = Math.abs(parseInt(handle.getStyle('margin-left')));
+				left = parseInt(el.getStyle('left'));
+
+				if (left<handlePad) {
+					handle.setStyle('left', (handlePad-left)+'px');
+				}else{
+					handle.setStyle('left', 0);
+				}
+			}
+		});
+
 	},
 
 	// News ticker functions
@@ -532,6 +551,8 @@ var BertaEditorBase = new Class({
 					    	}
 							var value = left + ',' + parseInt(el.getStyle('top'));
 							this.elementEdit_save(null, el, null, null, value, value);
+
+							editor.fixDragHandlePos();
 						}
 						dragAll = false;
 

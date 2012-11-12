@@ -79,14 +79,8 @@ var MessyMess = new Class({
         if(Cookie.read('_berta_grid_view'))
             Cookie.dispose('_berta_grid_view');
 
-		//scroll fix (iphone viewport workaround)
-        if(!navigator.userAgent.match(/OS 5_\d like Mac OS X/i) && /iphone|ipad|ipod|android|blackberry|mini|windows\sce|palm/i.test(navigator.userAgent.toLowerCase())) {
-            window.addEvent('resize',this.stickToBottom.bindWithEvent(this));
-            window.addEvent('scroll',this.stickToBottom.bindWithEvent(this));
-        }else{
-            this.copyrightStickToBottom();
-            window.addEvent('resize', this.copyrightStickToBottom.bindWithEvent(this));
-        }
+        this.copyrightStickToBottom.delay(1000);
+        window.addEvent('resize', this.copyrightStickToBottom.bindWithEvent(this));
 
 		var messyItems = $$('.mess');
 
@@ -107,6 +101,8 @@ var MessyMess = new Class({
 					if($('xBgEditorPanelTrigContainer')) $('xBgEditorPanelTrigContainer').show();
 				}
 			});
+
+            bertaEditor.fixDragHandlePos();
 		}
 
 

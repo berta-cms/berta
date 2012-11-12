@@ -171,7 +171,7 @@ var Berta = new Class({
 		}
 
 		if (templateName=='mashup' || templateName=='white'){
-			footerOverlayFix();
+			footerOverlayFix.delay(1000);
 			$(window).addEvent('resize', footerOverlayFix);
 		}
 	}
