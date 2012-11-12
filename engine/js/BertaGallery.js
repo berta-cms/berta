@@ -135,13 +135,18 @@ var BertaGallery = new Class({
 					if(!this.getNext()) {
 						var topImg = this.imageContainer.getFirst('.xGalleryItem');
 						var linkHref = this.container.getClassStoredValue('xGalleryLinkAddress');
+						var linkTarget = this.container.getClassStoredValue('xGalleryLinkTarget');
 						//var patt = /http:\/\//i;
 						//if(!patt.test(linkHref)) linkHref = 'http://' + linkHref;
 
 						topImg.getElements('img').setStyle('cursor', 'pointer');
 						topImg.addEvent('click', function(event) {
 							event.stop();
-							window.location = linkHref;
+							if (linkTarget=='_blank'){
+								window.open(linkHref);
+							}else{
+								window.location = linkHref;
+							}
 						});
 					} else {
 						this.loadNext();
@@ -550,8 +555,7 @@ var BertaGallery = new Class({
 				var bottomImg = this.imageContainer.getLast('.xGalleryItem');
 
 				var linkHref = this.container.getClassStoredValue('xGalleryLinkAddress');
-				//var patt = /http:\/\//i;
-				//if(!patt.test(linkHref)) linkHref = 'http://' + linkHref;
+				var linkTarget = this.container.getClassStoredValue('xGalleryLinkTarget');
 
 				bottomImg.setStyle('display', 'none');
 				bottomImg.getElements('img').setStyle('cursor', 'pointer');
@@ -568,7 +572,11 @@ var BertaGallery = new Class({
 
 				bottomImg.addEvent('click', function(event) {
 					event.stop();
-					window.location = linkHref;
+					if (linkTarget=='_blank'){
+						window.open(linkHref);
+					}else{
+						window.location = linkHref;
+					}
 				});
 			}
 			else {

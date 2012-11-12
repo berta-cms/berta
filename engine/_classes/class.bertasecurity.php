@@ -142,6 +142,9 @@ class BertaSecurity {
 				session_start();
 				$this->updateUserSettings(array('name' => $realName));
 
+				//log login event
+				BertaUtils::logEvent('login');
+
 				return $this->userLoggedIn = true;
 
 			} else {

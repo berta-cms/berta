@@ -281,9 +281,50 @@ class BertaUtils extends BertaBase {
 	}
 
 
+	public static function db(){
+		$db = false;
+		$options = self::$options;
+		$dbName = 'site.db';
+		$dbPath = $options['XML_ROOT'].$dbName;
+		touch($dbPath);
+		try {
+		  $db = new PDO("sqlite:".$dbPath);
+		}
+		catch(PDOException $e) {
+		    echo $e->getMessage();
+		    die();
+		}
+		return $db;
+	}
+
+
+	//log events in sqlite
+	public static function logEvent($action=''){
+		$options = self::$options;
+
+		if ($options['HOSTING_PROFILE']){
+			$db = BertaUtils::db();
+			$db->exec("
+				CREATE TABLE IF NOT EXISTS `log` (
+				  `id` INTEGER PRIMARY KEY,
+				  `created_at` datetime NOT NULL,
+				  `action` varchar(20) NOT NULL,
+				  `get` text NOT NULL,
+				  `post` text NOT NULL
+				)
+			");
+
+			$q = $db->prepare("INSERT INTO log VALUES (NULL, :created_at, :action, :get, :post)") or die(print_r($db->errorInfo(), true));
+			$q->execute(
+				array(
+					':created_at'=> date("Y-m-d H:i:s"),
+					':action' => $action,
+					':get' => serialize($_GET),
+					':post' => serialize($_POST)
+				)
+			);
+		}
+	}
 
 }
-
-
-
 ?>

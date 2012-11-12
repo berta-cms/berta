@@ -31,7 +31,7 @@ body {
 	font-style: <?php echo $s->get('generalFontSettings', 'fontStyle') ?>;
 	font-variant: <?php echo $s->get('generalFontSettings', 'fontVariant') ?>;
 	line-height: <?php echo $s->get('generalFontSettings', 'lineHeight') ?>;
-	
+
 	background-color: <?php echo $s->get('background', 'backgroundColor') ?>;
 	<?php if($s->get('background', 'backgroundImageEnabled') == 'yes') { ?>
 		<?php if($s->get('background', 'backgroundImage')) { ?>
@@ -41,30 +41,30 @@ body {
 		background-position: <?php echo $s->get('background', 'backgroundPosition') ?>;
 		background-attachment: <?php echo $s->get('background', 'backgroundAttachment') ?>;
 	<?php } ?>
-	
+
 	text-align: left;
-	
+
 }
 .ie6 {
 	overflow-y: hidden;
 }
 
-a:link { 
+a:link {
 	color: <?php echo $s->get('links', 'colorLink') ?>;
 	text-decoration: <?php echo $s->get('links', 'textDecorationLink') ?>;
 	/*border: <?php echo $s->get('links', 'border:link') ?>;*/
 }
-a:visited { 
+a:visited {
 	color: <?php echo $s->get('links', 'colorVisited') ?>;
 	text-decoration: <?php echo $s->get('links', 'textDecorationVisited') ?>;
 	/*border: <?php echo $s->get('links', 'border:visited') ?>;*/
 }
-a:hover { 
+a:hover {
 	color: <?php echo $s->get('links', 'colorHover') ?>;
 	text-decoration: <?php echo $s->get('links', 'textDecorationHover') ?>;
 	/*border: <?php echo $s->get('links', 'border:hover') ?>;*/
 }
-a:active { 
+a:active {
 	color: <?php echo $s->get('links', 'colorActive') ?>;
 	text-decoration: <?php echo $s->get('links', 'textDecorationActive') ?>;
 	/*border: <?php echo $s->get('links', 'border:active') ?>;*/
@@ -111,13 +111,13 @@ a img { border: none; }
 		position: absolute;
 		height: 100%;
 	}
-	
+
 		#sideColumnTop {
 			padding: 30px 20px 20px;
 			/*width: 140px;*/
 		}
-	
-			#sideColumnTop h1 { 
+
+			#sideColumnTop h1 {
 				min-height: 40px;
 				float: none;
 				padding: 0;
@@ -137,22 +137,22 @@ a img { border: none; }
 					color: <?php echo $s->get('pageHeading', 'color') ?> !important;
 					text-decoration: none;
 				}
-		
-			#sideColumnTop a:link, #sideColumnTop a:visited { 
+
+			#sideColumnTop a:link, #sideColumnTop a:visited {
 				color: <?php echo $s->get('menu', 'colorLink') ?>;
 				text-decoration: <?php echo $s->get('menu', 'textDecorationLink') ?>;
 			}
-			#sideColumnTop a:hover { 
+			#sideColumnTop a:hover {
 				color: <?php echo $s->get('menu', 'colorHover') ?>;
 				text-decoration: <?php echo $s->get('menu', 'textDecorationHover') ?>;
 				/*border: <?php echo $s->get('links', 'border:hover') ?>;*/
 			}
-			#sideColumnTop a:active, #sideColumnTop li.selected>a, #sideColumnTop li.selected>span { 
+			#sideColumnTop a:active, #sideColumnTop li.selected>a, #sideColumnTop li.selected>span {
 				color: <?php echo $s->get('menu', 'colorActive') ?>;
 				text-decoration: <?php echo $s->get('menu', 'textDecorationActive') ?>;
 				/*border: <?php echo $s->get('links', 'border:active') ?>;*/
 			}
-			
+
 
 			#sideColumnTop ul {
 				list-style: none;
@@ -162,7 +162,6 @@ a img { border: none; }
 				#sideColumnTop ul li {
 					padding-bottom: 6px;
 					font-weight: bold;
-					text-transform: uppercase;
 				}
 					#sideColumnTop ul li.selected>a {
 						/*font-weight: bold;
@@ -176,13 +175,13 @@ a img { border: none; }
 						font-weight: normal;
 						text-transform: none;
 					}
-					
+
 		#additionalText {
 			position: absolute;
 			min-width: 140px;
 		}
-			
-				
+
+
 		#sideColumnBottom {
 			position: absolute;
 			bottom: 0;
@@ -196,12 +195,12 @@ a img { border: none; }
 				padding: 0;
 			}
 			#sideColumnBottom #userCopyright {
-				
+
 			}
 			#sideColumnBottom #bertaCopyright {
-				
+
 			}
-			
+
 
 
 	#contentContainer {
@@ -218,10 +217,10 @@ a img { border: none; }
 		height: 100%;
 		overflow: auto !important;
 	}
-	
+
 		#mainColumn {
 			position: relative;
-			margin-top: <?php echo $s->get('pageLayout', 'paddingTop') ?>;
+			padding-top: <?php echo $s->get('pageLayout', 'paddingTop') ?>;
 			margin-left: <?php echo $s->get('pageLayout', 'leftColumnWidth') ?>;
 			padding-bottom: 20px;
 			padding-left: <?php echo $s->get('pageLayout', 'paddingLeft') ?>;
@@ -247,7 +246,7 @@ a img { border: none; }
 				margin-bottom: <?php echo $s->get('entryLayout', 'spaceBetween') ?>;
 				padding: 0;
 			}
-	
+
 				ol#pageEntries li.xEntry h2 {
 					padding: 0;
 					margin: 0;
@@ -272,14 +271,14 @@ a img { border: none; }
                 ol#pageEntries li.xEntry .xGalleryType-column {
 
                 }
-				
-					ol#pageEntries li.xEntry .xGalleryContainer .xGallery { 
-						position: relative; 
+
+					ol#pageEntries li.xEntry .xGalleryContainer .xGallery {
+						position: relative;
 					}
 					ol#pageEntries li.xEntry .xGalleryType-slideshow .xGallery {
 						margin-bottom: <?php echo $s->get('entryLayout', 'galleryNavMargin') ?>;
 					}
-					
+
 						ol#pageEntries li.xEntry .xGalleryContainer .xGallery div.xGalleryItem { display: block; }
 						ol#pageEntries li.xEntry .xGalleryType-column div.xGalleryItem {
 							padding-bottom: <?php echo $s->get('entryLayout', 'spaceBetweenImages') ?>;
@@ -290,7 +289,7 @@ a img { border: none; }
                             padding-right: <?php echo $s->get('entryLayout', 'spaceBetweenImages') ?>;
                         }
 						ol#pageEntries li.xEntry .xGalleryType-slideshow .xGalleryImageCaption { display: none; }
-		
+
 					ol#pageEntries .xGalleryContainer ul.xGalleryNav {
 						display: block;
 						position: relative;
@@ -324,8 +323,8 @@ a img { border: none; }
 							color: <?php echo $s->get('menu', 'colorActive') ?>;
 							text-decoration: <?php echo $s->get('menu', 'textDecorationActive') ?>;
 						}
-			
-			
+
+
 				ol#pageEntries li.xEntry .entryText {
 					position: relative;
 					clear: both;
@@ -361,25 +360,25 @@ a img { border: none; }
 							padding: 0;
 							list-style-type: decimal;
 						}
-			
-		 
+
+
 				ol#pageEntries li.xEntry .entryTags {
 					position: relative;
 					clear: both;
 				}
-				
-				
-				
+
+
+
 				.floating-banner {
 					position: absolute;
 					z-index: 3000;
-				}		
-				
-				
-				
-		
+				}
 
-	
+
+
+
+
+
 
 
 

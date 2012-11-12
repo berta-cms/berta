@@ -371,6 +371,7 @@ a img { border: none; }
 	#additionalFooterText {
 		float: left;
 		margin-left: 10px;
+		width: 45%;
 	}
 
 	#bertaCopyright, #userCopyright {
