@@ -756,6 +756,8 @@ DOC;
 	}
 
 	public static function getTopPanelHTML($selectedSection = 'site') {
+		global $shopEnabled;
+
 		// $tickerClass = !empty($_COOKIE['_berta_newsticker_hidden']) ? 'xHidden' : '';
 
 		$newsTickerContent = false;
@@ -797,6 +799,15 @@ DOC;
 		$m5 = I18n::_('profile');
 		$m6 = I18n::_('sign out');
 
+		if ($shopEnabled) {
+			$m7 = I18n::_('inventory');
+			$m7Class = $selectedSection == 'inventory' ? ' class="selected"' : '';
+
+			$shopItem = '<li'.$m7Class.' id="xSections"><a href="inventory.php">'.$m7.'</a></li><li>|</li>';
+		}else{
+			$shopItem = '';
+		}
+
 		$m1Class = $selectedSection == 'site' ? ' class="selected"' : '';
 		$m2Class = $selectedSection == 'sections' ? ' class="selected"' : '';
 		$m3Class = $selectedSection == 'settings' ? ' class="selected"' : '';
@@ -813,6 +824,7 @@ DOC;
 						<li id="xTopPanelSlideOut"><span title="hide menu">▲</span></li>
 						<li$m1Class id="xMySite"><a href=".">$m1</a></li><li>|</li>
 						<li$m2Class id="xSections"><a href="sections.php">$m2</a></li><li>|</li>
+						$shopItem
 						<li$m3Class id="xSettings"><a href="settings.php">$m3</a></li><li>|</li>
 						<li$m4Class id="xTemplateDesign"><a href="settings.php?mode=template">$m4</a></li><li>|</li>
 						<li$m5Class><a href="$m5_link">$m5</a></li><li>|</li>
