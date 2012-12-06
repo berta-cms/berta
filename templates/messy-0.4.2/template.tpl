@@ -289,7 +289,7 @@
 
 
                             { if $berta.section.type == 'shop' and $berta.shop_enabled == true }
-                                <div class="addToCart">
+                                <div class="addToCart" data-uniqid="{$entry.uniqid}">
 
                                 { if $berta.environment == 'engine' }
                                     <div class="cartPrice xEditableRC xProperty-cartPrice xCaption-price xFormatModifier-toPrice" title="{ $entry.cartPrice }">{ $entry.cartPrice|@toPrice }</div>
@@ -302,6 +302,7 @@
                                     {/if}
                                     <span class="aele"><span>{ $berta.settings.shop.addToBasket }</span></span>
                                     <span class="addedToCart hidden"></span>
+                                    <span class="outOfStock hidden">Out of stock!</span>
                                 { /if }
                                 </div>
 
