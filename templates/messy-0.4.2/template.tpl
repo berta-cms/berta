@@ -302,7 +302,7 @@
                                     {/if}
                                     <span class="aele"><span>{ $berta.settings.shop.addToBasket }</span></span>
                                     <span class="addedToCart hidden"></span>
-                                    <span class="outOfStock hidden">Out of stock!</span>
+                                    <span class="outOfStock hidden">{ $berta.settings.shop.outOfStock }</span>
                                 { /if }
                                 </div>
 
