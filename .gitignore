@@ -1,7 +1,7 @@
 storage/*
 .idea/*
 .DS_Store
-_plugin_shop/*
+_plugin_shop/
 engine/_lib/tiny_mce/*.gz
 .buildpath
 .dropbox

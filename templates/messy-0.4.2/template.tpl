@@ -293,7 +293,6 @@
 
                                 { if $berta.environment == 'engine' }
                                     <div class="cartPrice xEditableRC xProperty-cartPrice xCaption-price xFormatModifier-toPrice" title="{ $entry.cartPrice }">{ $entry.cartPrice|@toPrice }</div>
-                                    {* <br class="clear" /> *}
                                 { elseif !empty($entry.cartPrice)}
                                     <div class="cartPrice" title="{ $entry.cartPrice }">{ $entry.cartPrice|@toPrice }</div>
                                     <br class="clear">
