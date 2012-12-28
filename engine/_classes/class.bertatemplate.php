@@ -344,17 +344,17 @@ class BertaTemplate extends BertaBase {
 
 		$sttingsJS = Zend_Json::encode($jsSettings);
 
-		//
-		$now = time();
+		$int_version = self::$options['int_version'];
+
 		$vars['berta']['css'] = <<<DOC
-	<link rel="stylesheet" href="{$engineAbsRoot}css/default.css" type="text/css" charset="utf-8" />
-	<link rel="stylesheet" href="{$templatesAbsRoot}{$this->name}/style.css.php?{$now}" type="text/css" />
+	<link rel="stylesheet" href="{$engineAbsRoot}css/default.css?{$int_version}" type="text/css" charset="utf-8" />
+	<link rel="stylesheet" href="{$templatesAbsRoot}{$this->name}/style.css.php?{$int_version}" type="text/css" />
 
 DOC;
 		if($this->loggedIn) {
 			$vars['berta']['css'] .= <<<DOC
-	<link rel="stylesheet" href="{$engineAbsRoot}css/editor.css.php" type="text/css" />
-	<link rel="stylesheet" href="{$templatesAbsRoot}{$this->name}/editor.css.php" type="text/css" />
+	<link rel="stylesheet" href="{$engineAbsRoot}css/editor.css.php?{$int_version}" type="text/css" />
+	<link rel="stylesheet" href="{$templatesAbsRoot}{$this->name}/editor.css.php?{$int_version}" type="text/css" />
 	<link rel="stylesheet" href="{$engineAbsRoot}_lib/moorainbow/mooRainbow.css" type="text/css" charset="utf-8" />
 DOC;
 		}else{
@@ -370,27 +370,27 @@ DOC;
 	<script type="text/javascript">
 		var bertaGlobalOptions = $sttingsJS;
 	</script>
-	<script src="{$engineAbsRoot}js/BertaGallery.js" type="text/javascript" charset="utf-8"></script>
+	<script src="{$engineAbsRoot}js/BertaGallery.js?{$int_version}" type="text/javascript" charset="utf-8"></script>
 DOC;
 		if($this->loggedIn) {
 			$vars['berta']['scripts'] .= <<<DOC
-	<script type="text/javascript" src="{$engineAbsRoot}js/Assets.js" charset="utf-8"></script>
-	<script type="text/javascript" src="{$engineAbsRoot}js/BertaEditorBase.js" charset="utf-8"></script>
-	<script type="text/javascript" src="{$engineAbsRoot}js/inline_edit.js" charset="utf-8"></script>
+	<script type="text/javascript" src="{$engineAbsRoot}js/Assets.js?{$int_version}" charset="utf-8"></script>
+	<script type="text/javascript" src="{$engineAbsRoot}js/BertaEditorBase.js?{$int_version}" charset="utf-8"></script>
+	<script type="text/javascript" src="{$engineAbsRoot}js/inline_edit.js?{$int_version}" charset="utf-8"></script>
 
 	<script type="text/javascript" src="{$engineAbsRoot}js/swiff/Swiff.Uploader.js" charset="utf-8"></script>
 	<script type="text/javascript" src="{$engineAbsRoot}js/BertaGalleryEditorAssets.js" charset="utf-8"></script>
-	<script type="text/javascript" src="{$engineAbsRoot}js/BertaGalleryEditor.js" charset="utf-8"></script>
-	<script type="text/javascript" src="{$engineAbsRoot}js/BertaBgEditor.js" charset="utf-8"></script>
+	<script type="text/javascript" src="{$engineAbsRoot}js/BertaGalleryEditor.js?{$int_version}" charset="utf-8"></script>
+	<script type="text/javascript" src="{$engineAbsRoot}js/BertaBgEditor.js?{$int_version}" charset="utf-8"></script>
 
-	<script type="text/javascript" src="{$engineAbsRoot}js/BertaEditor.js" charset="utf-8"></script>
+	<script type="text/javascript" src="{$engineAbsRoot}js/BertaEditor.js?{$int_version}" charset="utf-8"></script>
 
 	<script type="text/javascript" src="{$engineAbsRoot}_lib/tiny_mce/tiny_mce_gzip.js"></script>
 	<script type="text/javascript" src="{$engineAbsRoot}_lib/moorainbow/mooRainbow.1.2b2.js" charset="utf-8"></script>
 DOC;
 		} else {
 			$vars['berta']['scripts'] .= <<<DOC
-	<script type="text/javascript" src="{$engineAbsRoot}js/Berta.js"></script>
+	<script type="text/javascript" src="{$engineAbsRoot}js/Berta.js?{$int_version}"></script>
 	<script type="text/javascript" src="{$engineAbsRoot}_lib/milkbox/js/milkbox.js"></script>
 DOC;
 		}

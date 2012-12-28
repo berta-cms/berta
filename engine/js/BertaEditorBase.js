@@ -709,6 +709,8 @@ var BertaEditorBase = new Class({
 		} else if(oldContent != newContent || el.hasClass('xBgColor')) {
 			var property = el.getClassStoredValue('xProperty');
 			var useCSSUnits = el.getClassStoredValue('xCSSUnits') > 0;
+			var isToPrice = el.getClassStoredValue('xFormatModifier') == 'toPrice';
+			var isCartAttributes = property == 'cartAttributes';
 			var noHTMLEntities = el.hasClass('xNoHTMLEntities');
 			var editorParams = el.getClassStoredValue('xParam');
 			var entryInfo = this.getEntryInfoForElement(el);
@@ -738,6 +740,49 @@ var BertaEditorBase = new Class({
 				else {
 					newContent = String(newContent) + 'px';
 				}
+			}
+
+			if ( isToPrice ) {
+				//add "add to cart" button
+				var aele = el.getNext('.aele');
+				var cartAttributes = el.getNext('.cartAttributes');
+				if (aele) {
+					newContent = parseInt(newContent);
+
+					if (newContent){
+						aele.removeClass('hidden');
+						cartAttributes.removeClass('hidden');
+					}else{
+						aele.addClass('hidden');
+						cartAttributes.addClass('hidden');
+					}
+				}
+			}
+
+			if (isCartAttributes) {
+
+				var cartAttributes = el.getParent('.xEntry').getElement('.cartAttributes');
+				var cartPrice = el.getParent('.xEntry').getElement('.cartPrice').get('text');
+    			var values = newContent.split(",");
+				var isList = !(values.length == 1 && values[0]=='');
+
+				cartAttributes.set('text','').addClass('hidden');
+
+				//generate select box on the fly - is price is > 0
+				if ( isList ){
+					var selectBox = new Element('select', {class:'cart_attributes'});
+					for (var i = 0; i < values.length; i++) {
+						var val = values[i].trim();
+						var selectBoxOption = new Element('option', {value: val});
+						selectBoxOption.set('text', val);
+						selectBoxOption.inject(selectBox);
+					};
+					selectBox.inject(cartAttributes);
+					if( parseInt(cartPrice) > 0 ){
+						cartAttributes.removeClass('hidden');
+					}
+				}
+
 			}
 
 			if (el.hasClass('xProperty-width')){
