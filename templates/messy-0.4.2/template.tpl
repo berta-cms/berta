@@ -24,12 +24,12 @@
     {/if}
     { googleWebFontsAPI }
     { /if }
-    <script type="text/javascript" src="{ $berta.options.TEMPLATES_ABS_ROOT }{ $berta.templateName }/mess.js"></script>
+    <script type="text/javascript" src="{ $berta.options.TEMPLATES_ABS_ROOT }{ $berta.templateName }/mess.js?{$berta.options.int_version}"></script>
     <script type="text/javascript" src="{ $berta.options.TEMPLATES_ABS_ROOT }{ $berta.templateName }/mooMasonry.js"></script>
 
     { if $berta.shop_enabled == true }
-    <script type="text/javascript" src="{ $berta.options.SITE_ABS_ROOT }_plugin_shop/js/shop.js"></script>
-    <link rel="stylesheet" href="{ $berta.options.SITE_ABS_ROOT }_plugin_shop/css/shop.css.php?{$smarty.now}" type="text/css" />
+    <script type="text/javascript" src="{ $berta.options.SITE_ABS_ROOT }_plugin_shop/js/shop.js?{$berta.options.int_version}"></script>
+    <link rel="stylesheet" href="{ $berta.options.SITE_ABS_ROOT }_plugin_shop/css/shop.css.php?{$berta.options.int_version}" type="text/css" />
     { /if }
 </head>
 
@@ -290,22 +290,20 @@
 
                             { if $berta.section.type == 'shop' and $berta.shop_enabled == true }
                                 <div class="addToCart" data-uniqid="{$entry.uniqid}">
-
-                                { if $berta.environment == 'engine' }
-                                    <div class="cartPrice xEditableRC xProperty-cartPrice xCaption-price xFormatModifier-toPrice" title="{ $entry.cartPrice }">{ $entry.cartPrice|@toPrice }</div>
-                                { elseif !empty($entry.cartPrice)}
-                                    <div class="cartPrice" title="{ $entry.cartPrice }">{ $entry.cartPrice|@toPrice }</div>
-                                    <br class="clear">
-                                    {if $entry.cartAttributes}
-                                    <div class="cartAttributes">{ $entry.cartAttributes|@toCartAttributes }</div>
+                                    { if $berta.environment == 'engine' }
+                                        <div class="cartPrice xEditableRC xProperty-cartPrice xCaption-price xFormatModifier-toPrice" title="{ $entry.cartPrice }">{ $entry.cartPrice|@toPrice }</div>
+                                    {else}
+                                        <div class="cartPrice" title="{ $entry.cartPrice }">{ $entry.cartPrice|@toPrice }</div>
                                     {/if}
-                                    <span class="aele"><span>{ $berta.settings.shop.addToBasket }</span></span>
+
+                                    <br class="clear">
+
+                                    <div class="cartAttributes{if !$entry.cartAttributes} hidden{/if}">{ $entry.cartAttributes|@toCartAttributes }</div>
+                                    <span class="aele{ if empty($entry.cartPrice)} hidden{/if}"><span>{ $berta.settings.shop.addToBasket }</span></span>
                                     <span class="addedToCart hidden"></span>
                                     <span class="outOfStock hidden">{ $berta.settings.shop.outOfStock }</span>
-                                { /if }
+
                                 </div>
-
-
                             { /if }
 
 
