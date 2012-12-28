@@ -2003,6 +2003,37 @@ body.xSettingsPageBody {
 }
 
 
+/*------------------------- inventory page --------------------------------*/
+
+table.inventory {
+	border-collapse: collapse;
+}
+
+table.inventory tr {
+	border-bottom: 1px dotted black;
+}
+
+table.inventory tr td {
+	padding: 5px;
+}
+
+table.inventory tr td .add,
+table.inventory tr td .remove {
+	text-decoration: none !important;
+}
+
+#shoppingCartOuter {
+	width: 655px;
+}
+
+#shoppingCartOuter .fr {
+	float: none;
+}
+
+
+
+
+
 /* some helpers */
 
 .xVisible {
