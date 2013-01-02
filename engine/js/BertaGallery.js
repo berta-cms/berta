@@ -103,7 +103,7 @@ var BertaGallery = new Class({
 			var fistItemType = aEl.getClassStoredValue('xType');
 			this.autoplay = parseInt(this.container.getClassStoredValue('xGalleryAutoPlay'));
 
-			if(fistItemType != 'image') {
+			if(fistItemType != 'image' || ( fistItemType == 'image' && this.type == 'row' ) ) {
 				// load only if not image, because if that's image, it's already written in the HTML
 				this.load(aEl.get('href'), aEl.getClassStoredValue('xType'), aEl.getClassStoredValue('xW'), aEl.getClassStoredValue('xH'), aEl.getClassStoredValue('xVideoHref'), li.getElement('.xGalleryImageCaption').get('html'), true);
 			} else {
