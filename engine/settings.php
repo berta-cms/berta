@@ -15,7 +15,7 @@ $mode = !empty($_GET['mode']) ? $_GET['mode'] : 'settings';
 
 include($ENGINE_ROOT . 'inc.settings.php');
 $berta->settings = new Settings($settingsDefinition);
-						  
+
 $menuSeparator = $berta->settings->get('menu', 'separator');
 $topPanelHTML = BertaEditor::getTopPanelHTML($mode);
 
@@ -60,21 +60,24 @@ $topPanelHTML = BertaEditor::getTopPanelHTML($mode);
 	<?php echo $topPanelHTML ?>
 	<div id="allContainer">
 		<div id="contentContainer">
-			
+
 			<h1 id="allPageTitle"><?php echo $mode == 'template' ? I18n::_('Template design') : I18n::_('Settings') ?></h1>
 			<?php if($mode == 'template') { ?>
 				<div class="entry" difficulty="0">
 					<div><?php echo I18n::_('These are settings for template') ?> &quot;<?php echo $berta->template->name ?>&quot;.</div>
 				</div>
 			<?php } ?>
-			
+
 			<?php
 
 			$settings = $mode == 'template' ? $berta->template->settings : $berta->settings;
 			$propertyPrefix = $settings->templateName ? ($settings->templateFullName . '/') : '';
-			
+
 			$tabsHTML = '';
 			$contentHTML = '';
+
+			//remove shop settings from this page - moved to shop page
+			unset($settings->settingsDefinition['shop']);
 
 			foreach($settings->settingsDefinition as $sSectionKey => $sSection) {
 
@@ -108,7 +111,7 @@ $topPanelHTML = BertaEditor::getTopPanelHTML($mode);
 					$contentHTML .= "</div>\n";
 				}
 			}
-			
+
 			echo "<div id=\"settingsContentContainer\" class=\"settingsContentContainer\">
 				$contentHTML\n
 				<ul id=\"settingsTabs\" class=\"settingsTabs\">$tabsHTML<br class=\"clear\" /></ul>\n

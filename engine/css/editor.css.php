@@ -2013,8 +2013,16 @@ table.inventory tr {
 	border-bottom: 1px dotted black;
 }
 
+table.inventory tr.heading {
+	border-bottom: 0;
+}
+
 table.inventory tr td {
 	padding: 5px;
+}
+
+table.inventory tr:first-child td h2 {
+	margin-top: 0;
 }
 
 table.inventory tr td .add,
