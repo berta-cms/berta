@@ -22,27 +22,27 @@ $fontOptionsWithInherit = array_merge(array('inherit' => '(inherit from general-
 $sectionTypes = array(
 	'default' => array('title' => 'Default'),
 	'external_link' => array('title' => 'External link', 'params' => array(
-		'link' => array('format' => 'text',	'default' => ''), 
+		'link' => array('format' => 'text',	'default' => ''),
 		'target' => array('format' => 'select', 'values' => array('_self' => 'Same window', '_blank' => 'New window'), 'default' => '_blank')
 	)),
 	'grid' => array('title' => 'Thumbnails enabled'),
-	
+
 );
 
 $templateConf = array(
-	
+
 	'generalFontSettings' => array(
 		'_' => array('title' => I18n::_('General font settings')),
 		'color' => 				array('format' => 'color',		'default' => '#363636', 							                'title' => I18n::_('Color'),         'description' => ''),
 		'fontFamily' => 		array('format' => 'fontselect',	'values' => $fontOptions, 'default' => 'Arial, sans-serif', 		'title' => I18n::_('Font face'),     'description' => ''),
-		'googleFont' => 			array('format' => 'text',		'default' => '', 															'title' => 'Google web fonts',         'description' => I18n::_('googleFont_description')),
+		'googleFont' => 		array('format' => 'text',		'default' => '',	'html_entities'	=> true,						'title' => 'Google web fonts',       'description' => I18n::_('googleFont_description')),
 		'fontSize' => 			array('format' => 'text',		'default' => '12px', 								                'title' => I18n::_('Font size'),     'description' => ''),
 		'fontWeight' => 		array('format' => 'select',		'values' => array('normal', 'bold'), 'default' => 'normal', 		'title' => I18n::_('Font weight'),   'description' => ''),
 		'fontStyle' => 			array('format' => 'select',		'values' => array('normal', 'italic'), 'default' => 'normal', 		'title' => I18n::_('Font style'),    'description' => ''),
 		'fontVariant' => 		array('format' => 'select',		'values' => array('normal', 'small-caps'), 'default' => 'normal', 	'title' => I18n::_('Font variant'),  'description' => ''),
 		'lineHeight' => 		array('format' => 'text',		'default' => '18px', 								                'title' => I18n::_('Line height'),   'description' => I18n::_('Height of text line. Use em, px or % values or the default value "normal"'))
 	),
-	
+
 	'background' => array(
 		'_' => array('title' => I18n::_('Background')),
 		'backgroundColor' =>		array('format' => 'color',		'default' => '#FFFFFF',									                                                                                                                                    'title' => I18n::_('Background color'),                      'description' => I18n::_('IMPORTANT! These settings will be overwritten, if you are using background gallery feature. You access it by clicking "edit background gallery" button in each section.')),
@@ -52,7 +52,7 @@ $templateConf = array(
 		'backgroundPosition' => 	array('format' => 'select',		'values' => array('top left', 'top center', 'top right', 'center left', 'center', 'center right', 'bottom left', 'bottom center', 'bottom right'), 'default' => 'top left', 	            'title' => I18n::_('Background alignment'),                  'description' => I18n::_('Where the background image is positioned?')),
 		'backgroundAttachment' => 	array('format' => 'select',		'values' => array('fixed' => 'Fixed to browser window', 'fill' => 'Filled in browser window', 'scroll' => 'No stretch, scroll along with content'), 'default' => 'scroll', 		            'title' => I18n::_('Background position'),                   'description' => I18n::_('Sets how background behaves in relation with the browser window.'))
 	),
-	
+
 	'pageLayout' => array(
 		'_' => array('title' => I18n::_('Page layout')),
 		'bgButtonType' =>	array('format' => 'select', 'default' => 'dark', 'values' => array('dark', 'bright'),	'title' => I18n::_('Background button type'),	'description' => I18n::_('Select type for background gallery buttons.')),
@@ -60,12 +60,12 @@ $templateConf = array(
 		'centeredWidth' =>	array('format' => 'text',	'default' => '960px',	'css_units' => true,	'title' => I18n::_('Centered content width'),	'description' => I18n::_('Content width if layout is centered.')),
 		'centeringGuidesColor' =>	array('format' => 'select', 'default' => 'dark', 'values' => array('dark', 'bright'),	'title' => I18n::_('Centering guides color tone'),	'description' => I18n::_('Color tone for centering guides (dark for bright background colors, bright for dark background colors).')),
 	),
-	
+
 	'entryHeading' => array(
 		'_' => array('title' => I18n::_('Entry heading')),
 		'color' => 				array('format' => 'color',		'default' => '#363636', 					                                    'title' => I18n::_('Color'),             'description' => ''),
 		'fontFamily' => 		array('format' => 'fontselect',	'values' => $fontOptions, 'default' => 'Arial, sans-serif', 			        'title' => I18n::_('Font face'),         'description' => ''),
-		'googleFont' => 			array('format' => 'text',		'default' => '', 															'title' => 'Google web fonts',         'description' => I18n::_('googleFont_description')),
+		'googleFont' => 		array('format' => 'text',		'default' => '', 	'html_entities'	=> true,									'title' => 'Google web fonts',         'description' => I18n::_('googleFont_description')),
 		'fontSize' => 			array('format' => 'text',		'default' => '1.8em', 					                                        'title' => I18n::_('Font size'),         'description' => ''),
 		'fontWeight' => 		array('format' => 'select',		'values' => array('normal', 'bold'), 'default' => 'normal', 			        'title' => I18n::_('Font weight'),       'description' => ''),
 		'fontStyle' => 			array('format' => 'select',		'values' => array('normal', 'italic'), 'default' => 'normal', 			        'title' => I18n::_('Font style'),        'description' => ''),
@@ -73,7 +73,7 @@ $templateConf = array(
 		'lineHeight' => 		array('format' => 'text',		'default' => 'normal', 					                                        'title' => I18n::_('Line height'),       'description' => I18n::_('Height of text line. Use em, px or % values or the default value "normal"')),
 		'margin' => 			array('format' => 'text',		'default' => '0', 						                                        'title' => I18n::_('Margins'),           'description' => I18n::_('How far the entry heading is form other elements in page. Please see the short CSS guide at the bottom of this page.')),
 	),
-		
+
 	'entryLayout' => array(
 		'_' => array('title' => I18n::_('Entry layout')),
 		'contentWidth' => 		array('format' => 'text',	'default' => '400px',	'css_units' => true,                                'title' => I18n::_('Entry text max width'),                             'description' => ''),
@@ -83,26 +83,26 @@ $templateConf = array(
 		'galleryMargin' => 		 array('format' => 'text',		'default' => '0', 'css_units' => true,				                    'title' => I18n::_('Empty space below gallery'), 	                'description' => I18n::_('Distance between the gallery and the content below')),
 		'displayTags' =>  		 array('format' => 'select',	'values' => array('yes', 'no'), 'default' => 'no', 	                    'title' => I18n::_('Display tags by each entry'),                   'description' => I18n::_('This determines whether people will see tags you set for each entry. Regardless of this settting, tags still will make up the main menu.'))
 	),
-	
+
 	'heading' => array(
 		'_' => array('title' => I18n::_('Page heading')),
 		'position' => 				array('format' => 'select',		'values' => array('fixed', 'absolute'), 'default' => 'absolute', 		                        'title' => I18n::_('Heading position'),           'description' => I18n::_('description_heading_position')),
 		'image' => 				array('format' => 'image',		'default' => '', 'min_width' => 1, 'min_height' => 1, 'max_width' => 140, 'max_height' => 400, 	 	'title' => I18n::_('Logo image'),    'description' => I18n::_('Picture to use instead of header text. Max size: 140 x 400 pixels. If the image is larger, it will be reduced.')),
 		'color' => 				array('format' => 'color',		'default' => '#000000',                                                                             'title' => I18n::_('Color'),         'description' => ''),
 		'fontFamily' => 		array('format' => 'fontselect',	'values' => $fontOptionsWithInherit, 'default' => '"Arial black", Gadget', 			    'title' => I18n::_('Font face'),     'description' => ''),
-		'googleFont' => 			array('format' => 'text',		'default' => '', 															'title' => 'Google web fonts',         'description' => I18n::_('googleFont_description')),
+		'googleFont' => 		array('format' => 'text',		'default' => '', 'html_entities'	=> true,														'title' => 'Google web fonts',         'description' => I18n::_('googleFont_description')),
 		'fontSize' => 			array('format' => 'text',		'default' => '30px',                                                                                'title' => I18n::_('Font size'),     'description' => ''),
 		'fontWeight' => 		array('format' => 'select',		'values' => array('normal', 'bold'), 'default' => 'bold',                                           'title' => I18n::_('Font weight'),   'description' => ''),
 		'fontStyle' => 			array('format' => 'select',		'values' => array('normal', 'italic'), 'default' => 'normal',                                       'title' => I18n::_('Font style'),    'description' => ''),
 		'fontVariant' => 		array('format' => 'select',		'values' => array('normal', 'small-caps'), 'default' => 'normal',                                   'title' => I18n::_('Font variant'),  'description' => ''),
 		'lineHeight' => 		array('format' => 'text',		'default' => '1em',                                                                                 'title' => I18n::_('Line height'),   'description' => I18n::_('Height of text line. Use em, px or % values or the default value "normal"'))
 	),
-	
+
 	'menu' => array(
 		'_' => array('title' => I18n::_('Main menu')),
 		'position' => 				array('format' => 'select',		'values' => array('fixed', 'absolute'), 'default' => 'absolute', 		                        'title' => I18n::_('Menu position'),           'description' => I18n::_('description_menu_position')),
 		'fontFamily' => 			array('format' => 'fontselect',	'values' => $fontOptionsWithInherit, 'default' => '"Arial black", Gadget',  'title' => I18n::_('Font face'),             'description' => ''),
-		'googleFont' => 			array('format' => 'text',		'default' => '', 															'title' => 'Google web fonts',         'description' => I18n::_('googleFont_description')),
+		'googleFont' => 			array('format' => 'text',		'default' => '', 'html_entities'	=> true,											'title' => 'Google web fonts',         'description' => I18n::_('googleFont_description')),
 		'fontSize' => 				array('format' => 'text',		'default' => '20px', 								                                    'title' => I18n::_('Font size'),             'description' => ''),
 		'fontWeight' => 			array('format' => 'select',		'values' => array('normal', 'bold'), 'default' => 'bold', 		                        'title' => I18n::_('Font weight'),           'description' => ''),
 		'fontStyle' => 				array('format' => 'select',		'values' => array('normal', 'italic'), 'default' => 'normal', 		                    'title' => I18n::_('Font style'),            'description' => ''),
@@ -114,11 +114,11 @@ $templateConf = array(
 		'textDecorationHover' => 	array('format' => 'select',		'values' => array('none', 'underline', 'overline', 'line-through'),		'default' => 'underline', 		'title' => I18n::_('Decoration when hovered'),   'description' => ''),
 		'textDecorationActive' => 	array('format' => 'select',		'values' => array('none', 'underline', 'overline', 'line-through'),		'default' => 'line-through',    'title' => I18n::_('Decoration when selected'),    'description' => '')
 	),
-	
+
 	'tagsMenu' => array(
 		'_' => array('title' => I18n::_('Submenu')),
 		'fontFamily' => 			array('format' => 'fontselect',	'values' => $fontOptionsWithInherit, 'default' => '"Arial black", Gadget',  'title' => I18n::_('Font face'),             'description' => ''),
-		'googleFont' => 			array('format' => 'text',		'default' => '', 															'title' => 'Google web fonts',         'description' => I18n::_('googleFont_description')),
+		'googleFont' => 			array('format' => 'text',		'default' => '', 'html_entities'	=> true,											'title' => 'Google web fonts',         'description' => I18n::_('googleFont_description')),
 		'fontSize' => 				array('format' => 'text',		'default' => '16px', 								                                    'title' => I18n::_('Font size'),             'description' => ''),
 		'fontWeight' => 			array('format' => 'select',		'values' => array('normal', 'bold'), 'default' => 'normal',                             'title' => I18n::_('Font weight'),           'description' => ''),
 		'fontStyle' => 				array('format' => 'select',		'values' => array('normal', 'italic'), 'default' => 'normal',                           'title' => I18n::_('Font style'),            'description' => ''),
@@ -129,12 +129,12 @@ $templateConf = array(
 		'textDecorationLink' => 	array('format' => 'select',		'values' => array('none', 'underline', 'overline', 'line-through'), 	'default' => 'none', 		'title' => I18n::_('Decoration'),                'description' => ''),
 		'textDecorationHover' => 	array('format' => 'select',		'values' => array('none', 'underline', 'overline', 'line-through'),		'default' => 'underline', 	'title' => I18n::_('Decoration when hovered'),   'description' => ''),
 		'textDecorationActive' => 	array('format' => 'select',		'values' => array('none', 'underline', 'overline', 'line-through'),		'default' => 'underline', 	'title' => I18n::_('Decoration when selected'),    'description' => ''),
-		'x' => 				array('format' => 'text',		'default' => '0', 								                                    'title' => I18n::_('Positon X'),             'description' => I18n::_('description_tagsMenu_x')),		
+		'x' => 				array('format' => 'text',		'default' => '0', 								                                    'title' => I18n::_('Positon X'),             'description' => I18n::_('description_tagsMenu_x')),
 		'y' => 				array('format' => 'text',		'default' => '0', 								                                    'title' => I18n::_('Positon Y'),             'description' => I18n::_('description_tagsMenu_y')),
-		'alwaysOpen' =>  		 array('format' => 'select',	'values' => array('yes', 'no'), 'default' => 'yes', 	                    'title' => I18n::_('Submenu is allways open'),                   'description' => I18n::_('description_submenu_alwaysopen')),				
+		'alwaysOpen' =>  		 array('format' => 'select',	'values' => array('yes', 'no'), 'default' => 'yes', 	                    'title' => I18n::_('Submenu is allways open'),                   'description' => I18n::_('description_submenu_alwaysopen')),
 		'hidden' =>                 array('format' => 'select',     'values' => array('yes', 'no'), 'default' => 'no',                         'title' => I18n::_('Submenu is hidden'),        'description' => ''),
 	),
-	
+
 	'links' => array(
 		'_' => array('title' => I18n::_('Hyperlinks')),
 		'colorLink' => 			array('format' => 'color',		'default' => '#000000', 	    'title' => I18n::_('Link color'),                'description' => ''),
@@ -146,7 +146,7 @@ $templateConf = array(
 		'textDecorationHover' => 	array('format' => 'select',		'values' => array('none', 'underline', 'overline', 'line-through'),		'default' => 'underline', 	'title' => I18n::_('Link decoration when hovered'),  'description' => ''),
 		'textDecorationActive' => array('format' => 'select',		'values' => array('none', 'underline', 'overline', 'line-through'),		'default' => 'underline', 	'title' => I18n::_('Link decoration when clicked'),  'description' => '')
 	),
-	
+
 	'grid' => array(
 		'_' => array('title' => I18n::_('Thumbnails')),
         'whatAreThumbnails' => array('format' => '', 'default' => '', 'title' => I18n::_('Thumbnails can be turned on by setting the section type to "Thumbnails enabled" & adding more than 1 images to background gallery.') . '<br/><br/>'),

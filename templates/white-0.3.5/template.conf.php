@@ -22,7 +22,7 @@ $fontOptionsWithInherit = array_merge(array('inherit' => '(inherit from general-
 $sectionTypes = array(
 	'default' => array('title' => 'Default'),
 	'external_link' => array('title' => 'External link', 'params' => array(
-		'link' => array('format' => 'text',	'default' => ''), 
+		'link' => array('format' => 'text',	'default' => ''),
 		'target' => array('format' => 'select', 'values' => array('_self' => 'Same window', '_blank' => 'New window'), 'default' => '_blank')
 	))
 );
@@ -33,7 +33,7 @@ $templateConf = array(
 		'_' => array('title' => I18n::_('General font settings')),
 		'color' => 				array('format' => 'color',		'default' => '#000000', 							                'title' => I18n::_('Color'),         'description' => ''),
 		'fontFamily' => 		array('format' => 'fontselect',	'values' => $fontOptions, 'default' => 'Arial, sans-serif', 		'title' => I18n::_('Font face'),     'description' => ''),
-		'googleFont' => 			array('format' => 'text',		'default' => '', 															'title' => 'Google web fonts',         'description' => I18n::_('googleFont_description')),
+		'googleFont' => 		array('format' => 'text',		'default' => '', 'html_entities'	=> true,						'title' => 'Google web fonts',		 'description' => I18n::_('googleFont_description')),
 		'fontSize' => 			array('format' => 'text',		'default' => '11px', 								                'title' => I18n::_('Font size'),     'description' => ''),
 		'fontWeight' => 		array('format' => 'select',		'values' => array('normal', 'bold'), 'default' => 'normal', 		'title' => I18n::_('Font weight'),   'description' => ''),
 		'fontStyle' => 			array('format' => 'select',		'values' => array('normal', 'italic'), 'default' => 'normal', 		'title' => I18n::_('Font style'),    'description' => ''),
@@ -79,7 +79,7 @@ $templateConf = array(
 		'image' => 					array('format' => 'image',		'default' => '', 'min_width' => 1, 'min_height' => 1, 'max_width' => 140, 'max_height' => 400, 	'title' => I18n::_('Header image'),  'description' => I18n::_('Picture to use instead of header text. Max size: 140 x 400 pixels. If the image is larger, it will be reduced.')),
 		'color' => 					array('format' => 'color',		'default' => '#000000', 					                                                        'title' => I18n::_('Color'),         'description' => ''),
 		'fontFamily' => 			array('format' => 'fontselect',		'values' => $fontOptionsWithInherit, 'default' => 'inherit', 			                        'title' => I18n::_('Font face'),     'description' => ''),
-		'googleFont' => 			array('format' => 'text',		'default' => '', 															'title' => 'Google web fonts',         'description' => I18n::_('googleFont_description')),
+		'googleFont' => 			array('format' => 'text',		'default' => '', 'html_entities' => true, 															'title' => 'Google web fonts',         'description' => I18n::_('googleFont_description')),
 		'fontSize' => 				array('format' => 'text',		'default' => '20px', 					                                                            'title' => I18n::_('Font size'),     'description' => ''),
 		'fontWeight' => 			array('format' => 'select',		'values' => array('normal', 'bold'), 'default' => 'normal',                                         'title' => I18n::_('Font weight'),   'description' => ''),
 		'fontStyle' => 				array('format' => 'select',		'values' => array('normal', 'italic'), 'default' => 'normal', 			                            'title' => I18n::_('Font style'),    'description' => ''),
@@ -88,7 +88,7 @@ $templateConf = array(
 		'marginTop' => 				array('format' => 'text',		'default' => '0', 				'css_units' => true,                    'title' => I18n::_('Empty space on top'),                        'description' => ''),
 		'marginBottom' => 			array('format' => 'text',		'default' => '20px', 				'css_units' => true,                'title' => I18n::_('Empty space on bottom'),                     'description' => '')
 	),
-	
+
 	'pageLayout' => array(
 		'_' => array('title' => I18n::_('Page layout')),
 		'centered' =>	array('format' => 'select', 'default' => 'no', 'values' => array('yes', 'no'), 'title' => I18n::_('Centered layout'), 'description' => I18n::_('Sets whether layout should be centered or not.')),
@@ -97,7 +97,7 @@ $templateConf = array(
 		'paddingLeft' => 			array('format' => 'text',	'default' => '30px',	'css_units' => true, 	'title' => I18n::_('How far content is from menu?'),         'description' => I18n::_('The horizontal distance between the menu and the content area.')),
 		'leftColumnWidth' => 		array('format' => 'text',	'default' => '170px',	'css_units' => true, 	'title' => I18n::_('Width of the left column'),              'description' => '')
 	),
-	
+
 	'entryLayout' => array(
 		'_' => array('title' => I18n::_('Entry layout')),
 		'spaceBetween' => 		 array('format' => 'text',	'default' => '20px', 'css_units' => true,                                   'title' => I18n::_('Space between entries'),                         'description' => I18n::_('Distance from entry to entry. In pixels.')),

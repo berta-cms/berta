@@ -800,10 +800,10 @@ DOC;
 		$m6 = I18n::_('sign out');
 
 		if ($shopEnabled) {
-			$m7 = I18n::_('inventory');
-			$m7Class = $selectedSection == 'inventory' ? ' class="selected"' : '';
+			$m7 = I18n::_('shop');
+			$m7Class = $selectedSection == 'shop' ? ' class="selected"' : '';
 
-			$shopItem = '<li'.$m7Class.' id="xSections"><a href="inventory.php">'.$m7.'</a></li><li>|</li>';
+			$shopItem = '<li'.$m7Class.' id="xSections"><a href="shopsettings.php">'.$m7.'</a></li><li>|</li>';
 		}else{
 			$shopItem = '';
 		}
