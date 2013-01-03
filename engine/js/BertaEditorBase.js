@@ -28,6 +28,7 @@ Element.implement({
 		}
 		this.addClass(varName + '-' + varValue);
 	}
+
 });
 
 var BertaEditorBase = new Class({
@@ -773,6 +774,7 @@ var BertaEditorBase = new Class({
 					var selectBox = new Element('select', {class:'cart_attributes'});
 					for (var i = 0; i < values.length; i++) {
 						var val = values[i].trim();
+						val = this.unescapeHtml(val);
 						var selectBoxOption = new Element('option', {value: val});
 						selectBoxOption.set('text', val);
 						selectBoxOption.inject(selectBox);
@@ -1087,6 +1089,14 @@ var BertaEditorBase = new Class({
 	 ///  Utilities  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+
+	unescapeHtml: function (str) {
+	    var temp = document.createElement("div");
+	    temp.innerHTML = str;
+	    var result = temp.childNodes[0].nodeValue;
+	    temp.removeChild(temp.firstChild);
+	    return result;
+	},
 
 	getEmptyPlaceholder: function(property, caption) {
 		if(caption)
