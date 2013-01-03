@@ -1848,6 +1848,7 @@ body.xSettingsPageBody {
 		padding-top: 5px;
 		padding-bottom: 5px;
 	}
+
 		body.xSettingsPageBody div.entry div.caption {
 			float: left;
 			width: 200px;
@@ -2015,6 +2016,10 @@ table.inventory tr {
 
 table.inventory tr.heading {
 	border-bottom: 0;
+}
+
+table.inventory tr.outOfStock {
+	background-color: #FFA9C5;
 }
 
 table.inventory tr td {

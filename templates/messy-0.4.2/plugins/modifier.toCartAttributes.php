@@ -16,7 +16,7 @@ function smarty_modifier_toCartAttributes($attr) {
 		$attrOutStr = '<select class="cart_attributes">';
 		foreach($attr as $aout) {
 			$aout = trim($aout);
-			$attrOutStr .= '<option value="'.htmlspecialchars($aout).'">'.htmlspecialchars($aout).'</option>';
+			$attrOutStr .= '<option value="'.($aout).'">'.($aout).'</option>';
 		}
 		$attrOutStr .= '</select>';
 		return $attrOutStr;
