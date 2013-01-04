@@ -225,26 +225,43 @@ class BertaUtils extends BertaBase {
 	      default: return false;
 	    }
 
+	    //solution for animated gif
+	    if ( extension_loaded('imagick') && ($info[2] == IMAGETYPE_GIF) ) {
 
-	    # This is the resizing/resampling/transparency-preserving magic
-	    $image_resized = imagecreatetruecolor( $final_width, $final_height );
-	    if ( ($info[2] == IMAGETYPE_GIF) || ($info[2] == IMAGETYPE_PNG) ) {
-	      $transparency = imagecolortransparent($image);
+		    $animation = new Imagick($file);
+		    $animation = $animation->coalesceImages();
+		    foreach ($animation as $frame)
+		    {
+		        $frame->thumbnailImage($final_width, $final_height);
+		        $frame->setImagePage($final_width, $final_height, 0, 0);
+		    }
+		    $animation = $animation->deconstructImages();
+		    $animation->writeImages($file, true);
 
-	      if ($transparency >= 0) {
-	        $transparent_color  = @imagecolorsforindex($image, $transparency); // for animated gifs sometimes error is thrown :(
-	        $transparency       = imagecolorallocate($image_resized, $transparent_color['red'], $transparent_color['green'], $transparent_color['blue']);
-	        imagefill($image_resized, 0, 0, $transparency);
-	        imagecolortransparent($image_resized, $transparency);
-	      }
-	      elseif ($info[2] == IMAGETYPE_PNG) {
-	        imagealphablending($image_resized, false);
-	        $color = imagecolorallocatealpha($image_resized, 0, 0, 0, 127);
-	        imagefill($image_resized, 0, 0, $color);
-	        imagesavealpha($image_resized, true);
-	      }
-	    }
-	    imagecopyresampled($image_resized, $image, 0, 0, 0, 0, $final_width, $final_height, $width_old, $height_old);
+			$image_resized = imagecreatefromgif($file);
+		}else{
+		    # This is the resizing/resampling/transparency-preserving magic
+		    $image_resized = imagecreatetruecolor( $final_width, $final_height );
+		    if ( ($info[2] == IMAGETYPE_GIF) || ($info[2] == IMAGETYPE_PNG) ) {
+		      $transparency = imagecolortransparent($image);
+
+		      if ($transparency >= 0) {
+		        $transparent_color  = @imagecolorsforindex($image, $transparency); // for animated gifs sometimes error is thrown :(
+		        $transparency       = imagecolorallocate($image_resized, $transparent_color['red'], $transparent_color['green'], $transparent_color['blue']);
+		        imagefill($image_resized, 0, 0, $transparency);
+		        imagecolortransparent($image_resized, $transparency);
+		      }
+		      elseif ($info[2] == IMAGETYPE_PNG) {
+		        imagealphablending($image_resized, false);
+		        $color = imagecolorallocatealpha($image_resized, 0, 0, 0, 127);
+		        imagefill($image_resized, 0, 0, $color);
+		        imagesavealpha($image_resized, true);
+		      }
+		    }
+		    imagecopyresampled($image_resized, $image, 0, 0, 0, 0, $final_width, $final_height, $width_old, $height_old);
+		}
+
+
 
 	    # Taking care of original, if needed
 	    if ( $delete_original ) {
