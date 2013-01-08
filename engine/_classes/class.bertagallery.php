@@ -255,7 +255,23 @@ class BertaGallery extends BertaBase {
                 $imageThumb = BertaUtils::smart_resize_image($imagePath, $thumbWidth, $thumbHeight, false, 'return', false);
                 if($imageThumb) {
                     switch ($imageInfo[2]) {
-                      case IMAGETYPE_GIF:   imagegif($imageThumb, $thumbPath);    break;
+                      case IMAGETYPE_GIF:
+                        //solution for animated gif
+                        if ( extension_loaded('imagick') && ($imageInfo[2] == IMAGETYPE_GIF) ) {
+
+                            $animation = new Imagick($imagePath);
+                            $animation = $animation->coalesceImages();
+                            foreach ($animation as $frame)
+                            {
+                                $frame->thumbnailImage($thumbWidth, $thumbHeight);
+                                $frame->setImagePage($thumbWidth, $thumbHeight, 0, 0);
+                            }
+                            $animation = $animation->deconstructImages();
+                            $animation->writeImages($thumbPath, true);
+                        }else{
+                            imagegif($imageThumb, $thumbPath);
+                        }
+                        break;
                       case IMAGETYPE_JPEG:  imagejpeg($imageThumb, $thumbPath, 90);   break;
                       case IMAGETYPE_PNG:   imagepng($imageThumb, $thumbPath);    break;
                       default: return false;

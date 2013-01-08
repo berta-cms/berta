@@ -236,9 +236,11 @@ class BertaUtils extends BertaBase {
 		        $frame->setImagePage($final_width, $final_height, 0, 0);
 		    }
 		    $animation = $animation->deconstructImages();
-		    $animation->writeImages($file, true);
+		    $tmpFile = $file.$final_width.$final_height.'.gif';
+		    $animation->writeImages($tmpFile, true);
 
-			$image_resized = imagecreatefromgif($file);
+			$image_resized = imagecreatefromgif($tmpFile);
+			@unlink($tmpFile);
 		}else{
 		    # This is the resizing/resampling/transparency-preserving magic
 		    $image_resized = imagecreatetruecolor( $final_width, $final_height );
