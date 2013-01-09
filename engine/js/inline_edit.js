@@ -142,10 +142,16 @@ var inlineEdit = new Class({
 		this.newContent = this.options.WYSIWYGSettings ?
 							this.inputBox.get('value').trim() :
 							this.addHTMLEntities(this.inputBox.get('value').trim()).replace(new RegExp("\n", "gi"), "<br />");
-		//this.newContent = this.inputBox.get('value').trim();
+
 		this.newContentText = this.newContent;
 		if(this.options.type == 'select' && this.options.subtype == 'rc' || this.options.subtype == 'font') {
-			this.newContentText = this.inputBox.getElement('option[selected]').get('text');
+
+			this.newContentText = this.inputBox.getSelected().get('text');
+
+			if (this.newContentText instanceof Array) {
+				this.newContentText = this.newContentText[0];
+			}
+
 			this.editting.set('html', this.newContentText);
 		} else {
 			this.editting.set('html', this.newContent);

@@ -7,7 +7,8 @@ Element.implement({
     },
 
 	exists: function() {
-        return (this.getIndex() >= 0);
+		return this;
+        //return (this.getIndex() >= 0);
     },
 
 	getClassStoredValue: function(varName) {
