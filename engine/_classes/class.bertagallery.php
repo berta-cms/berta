@@ -314,8 +314,12 @@ class BertaGallery extends BertaBase {
         $mFolderABS = self::$options['MEDIA_ABS_ROOT'] . $mediaFolder . '/';
 
         $alwaysSelectTag = $berta->settings->get('navigation', 'alwaysSelectTag') == 'yes';
-        $notFirstTag = $tag != reset(array_keys($berta->tags[$section['name']]));
-        $firstSection = $section['name'] == reset(array_keys($berta->sections));
+
+        $tagKeys = array_keys($berta->tags[$section['name']]);
+        $notFirstTag = $tag != reset($tagKeys);
+
+        $sectionKeys = array_keys($berta->sections);
+        $firstSection = $section['name'] == reset($sectionKeys);
 
         if(($berta->environment == 'engine' || ($berta->environment == 'site' && !$berta->apacheRewriteUsed)) && !$firstSection) {
             $linkHref = '?section=' . $section['name'];
