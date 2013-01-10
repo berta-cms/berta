@@ -88,12 +88,14 @@ if($settingsProperty) {
 		$conProps = array('min_width', 'min_height', 'max_width', 'max_height');
 		foreach($conProps as $cp) {
 			$c = $settings->getDefinitionParam($settingsProperty[0], $settingsProperty[1], $cp);
-			if($c) $constraints[$cp] = $c;
-			if(substr($constraints[$cp], 0, 7) == 'setting') {
-				$s = explode(':', $constraints[$cp]);
-				$sInstance = $settings;
-				if($s[1] == 'template') $sInstance = $berta->template->settings;
-				$constraints[$cp] = (int) $sInstance->get($s[2], $s[3]);
+			if($c) {
+				$constraints[$cp] = $c;
+				if(substr($constraints[$cp], 0, 7) == 'setting') {
+					$s = explode(':', $constraints[$cp]);
+					$sInstance = $settings;
+					if($s[1] == 'template') $sInstance = $berta->template->settings;
+					$constraints[$cp] = (int) $sInstance->get($s[2], $s[3]);
+				}
 			}
 		}
 	}
