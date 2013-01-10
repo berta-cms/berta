@@ -13,6 +13,9 @@ var BertaGallery = new Class({
 	},
 
 	type: 'slideshow',
+	time: 0,
+	interval: null,
+
 	container: null,
 	imageContainer: null,
 	navContainer: null,
@@ -122,11 +125,12 @@ var BertaGallery = new Class({
 
                     if(this.autoplay > 0) {
 						var obj=this;
-						var time = this.autoplay * 1000;
+						this.time = this.autoplay * 1000;
+
 						if (li.getParent().getElements('a').length>1){
-							setInterval(function(){
+							this.interval = setTimeout(function(){
 								obj.loadNext(true);
-							}, time);
+							}, this.time);
 						}
 					}
 				}
@@ -354,6 +358,9 @@ var BertaGallery = new Class({
 		if (this.fullscreen){
             this.loadFullscreen();
 		}else{
+			if ( this.interval ){
+				clearTimeout(this.interval);
+			}
             this.loadNext(this.options.slideshowAutoRewind == 'yes');
         }
 	},
@@ -372,8 +379,10 @@ var BertaGallery = new Class({
 
 	nav_onItemClick: function(event) {
 		// implementable in the future
-
 		event.stop();
+		if ( this.interval ){
+			clearTimeout(this.interval);
+		}
 		var linkElement = $(event.target);
 		if(linkElement.tagName != 'A') linkElement = linkElement.getParent('a');
 
@@ -534,6 +543,7 @@ var BertaGallery = new Class({
 	},
 	load_Finish: function(src, mType, mWidth, mHeight, bDeleteExisting) {
 		//console.debug('load_Finish', src);
+		var obj=this;
 		// test if the loaded image's src is the last invoked image's src
 		if(src == this.currentSrc) {
 			if(this.type == 'slideshow') {
@@ -546,6 +556,13 @@ var BertaGallery = new Class({
 					this.phase = "done";
 					if(mType == 'image') this.layout_inject(bDeleteExisting, true);
 					this.layout_finisage(src, mType, mWidth, mHeight);
+
+					if ( this.interval ){
+						this.interval = setTimeout(function(){
+							obj.loadNext(true);
+						}, this.time);
+					}
+
 				}.bind(this));
 			}
 			else if(this.type == 'link') {

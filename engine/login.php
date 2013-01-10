@@ -107,9 +107,8 @@ if($auth_action == "login" && !$errStr) {
 					<input type="text" name="auth_user" id="auth_user" class="xLoginField" />
 					<input type="password" name="auth_pass" id="auth_pass" class="xLoginField" />
 					<input type="submit" name="auth_subm" id="auth_subm" class="xLoginSubmit" value="<?php echo I18n::_('Log in') ?>" />
-					<?php if ($options['HOSTING_FORGOTPASSWORD']){ ?>
-						<p><a href="<?php echo $options['HOSTING_FORGOTPASSWORD']?>" target="_blank"><?php echo I18n::_('Forgot password?') ?></a></p>
-					<?php } ?>
+					<p><a href="<?php echo $options['FORGOTPASSWORD_LINK']?>" target="_blank"><?php echo I18n::_('Forgot password?') ?></a></p>
+
 					<p>
                         berta v <?php echo BertaBase::$options['version'] ?> 2008-<?php echo date('Y') ?>
                     </p>

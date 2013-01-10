@@ -78,7 +78,7 @@ if (file_exists($ENGINE_ROOT.'hosting')){
 	$hostingConfig = parse_ini_string( file_get_contents($ENGINE_ROOT.'hosting') );
 }
 $options['HOSTING_PROFILE'] = isset($hostingConfig['login']) ? $hostingConfig['login'] : false;
-$options['HOSTING_FORGOTPASSWORD'] = isset($hostingConfig['forgotPassword']) ? $hostingConfig['forgotPassword'] : false;
+$options['FORGOTPASSWORD_LINK'] = isset($hostingConfig['forgotPassword']) ? $hostingConfig['forgotPassword'] : 'http://support.berta.me/kb/login-name-and-password/forgot-my-password-for-self-hosted-berta';
 
 
 
