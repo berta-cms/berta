@@ -108,7 +108,10 @@ var MessyMess = new Class({
 
         // Centering
         var container = $('contentContainer');
-        var centeredLayout = container.hasClass('xCentered') ? true : false;
+
+        if (container){
+            var centeredLayout = container.hasClass('xCentered') ? true : false;
+        }
 
         if(centeredLayout) {
             var bottom = $('bottom');
@@ -246,6 +249,7 @@ var MessyMess = new Class({
             else
                 $('xGridView').setStyle('visibility', 'visible');
 
+
             $('xGridView').masonry({
 		    	singleMode: true,
     	    	itemSelector: '.box'
@@ -264,31 +268,34 @@ var MessyMess = new Class({
     copyrightStickToBottom: function(){
 
         var bottom = $('bottom');
-        var bottomPaddingTop = parseInt(bottom.getStyle('padding-top'));
-        var allDraggables = $$('.xEditableDragXY:not(.xFixed)');
-        var maxY = y = 0;
-        var windowH = window.getSize().y;
-        var bottomH = 0;
 
-        bottom.getChildren().each(function(item){
-            var bottomElH = item.getSize().y;
-            if (bottomElH > bottomH) {
-                bottomH = bottomElH;
+        if (bottom){
+            var bottomPaddingTop = parseInt(bottom.getStyle('padding-top'));
+            var allDraggables = $$('.xEditableDragXY:not(.xFixed)');
+            var maxY = y = 0;
+            var windowH = window.getSize().y;
+            var bottomH = 0;
+
+            bottom.getChildren().each(function(item){
+                var bottomElH = item.getSize().y;
+                if (bottomElH > bottomH) {
+                    bottomH = bottomElH;
+                }
+            });
+
+            allDraggables.each(function(item){
+                y = parseInt(item.getStyle('top')) + parseInt(item.getSize().y)
+                if(maxY < y) {
+                    maxY = y;
+                }
+            });
+
+            if(maxY < windowH - bottomH) {
+                maxY = windowH - bottomH - bottomPaddingTop;
             }
-        });
 
-        allDraggables.each(function(item){
-            y = parseInt(item.getStyle('top')) + parseInt(item.getSize().y)
-            if(maxY < y) {
-                maxY = y;
-            }
-        });
-
-        if(maxY < windowH - bottomH) {
-            maxY = windowH - bottomH - bottomPaddingTop;
+            bottom.setStyle('top', maxY + 'px');
         }
-
-        bottom.setStyle('top', maxY + 'px');
     },
 
 	editor_saveOrder: function(event) {
