@@ -8,6 +8,13 @@ For more information, visit http://www.berta.me
 
 Changelog
 ----------
+**v0.8.5a (release date 10 Jan 2013)**
+ * support for animated gif resizing (PHP Imagick extension required)
+ * Gallery slideshow timing improvements
+ * MooTools: the javascript framework upgrade to version 1.4.5
+ * added internal version for js and css files - to prevent loading from browsers cache on update
+ * other minor improvements and bugfixes
+
 **v0.8.4a (release date 27 Sep 2012)**
  * if "Show menu in first section" is set to "no", then "additional-text" also hides from first section
  * "create new entry" button in messy template is now draggable
