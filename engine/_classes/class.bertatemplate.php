@@ -345,10 +345,11 @@ class BertaTemplate extends BertaBase {
 		$sttingsJS = Zend_Json::encode($jsSettings);
 
 		$int_version = self::$options['int_version'];
+		$timestamp = time();
 
 		$vars['berta']['css'] = <<<DOC
 	<link rel="stylesheet" href="{$engineAbsRoot}css/default.css?{$int_version}" type="text/css" charset="utf-8" />
-	<link rel="stylesheet" href="{$templatesAbsRoot}{$this->name}/style.css.php?{$int_version}" type="text/css" />
+	<link rel="stylesheet" href="{$templatesAbsRoot}{$this->name}/style.css.php?{$timestamp}" type="text/css" />
 
 DOC;
 		if($this->loggedIn) {
