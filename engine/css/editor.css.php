@@ -1369,6 +1369,9 @@ a.xCreateNewEntry.xSaving {
 
 			.xEntryLinkSettings .xEntryLinkAddress {
 				width: 200px;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+				overflow: hidden;
 			}
 
 			.xEntryGalleryFullScreen .xEntrySetFullScreen,

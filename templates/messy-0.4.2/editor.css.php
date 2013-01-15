@@ -105,7 +105,6 @@ if(!1) { ?><style type="text/css"><?php } ?>
 		display: none;
 	}
 
-
 	.mess>.xHandle {
 		position: absolute;
 		left: 0;
@@ -129,23 +128,13 @@ if(!1) { ?><style type="text/css"><?php } ?>
 		position: absolute;
 		white-space: nowrap;
 		line-height: 1em;
+		font-family: Arial, Helvetica, sans-serif;
 	}
-
-	/*.menuItem.mess {
-		background: url('<?php echo $templatePath ?>layout/icon-move.png') no-repeat 100% 0%;
-		padding-right: 20px;
-	}*/
-
-
-
 
 
 	.noEntries .xCreateNewEntry {
 		display: none;
 	}
-
-
-
 
 	.floating-banner .xHandle {
 		position: absolute;
