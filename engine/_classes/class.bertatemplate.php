@@ -392,7 +392,7 @@ DOC;
 		} else {
 			$vars['berta']['scripts'] .= <<<DOC
 	<script type="text/javascript" src="{$engineAbsRoot}js/Berta.js?{$int_version}"></script>
-	<script type="text/javascript" src="{$engineAbsRoot}_lib/milkbox/js/milkbox.js"></script>
+	<script type="text/javascript" src="{$engineAbsRoot}_lib/milkbox/js/milkbox.js?{$int_version}"></script>
 DOC;
 		}
 
