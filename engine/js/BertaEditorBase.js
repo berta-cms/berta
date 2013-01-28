@@ -193,6 +193,7 @@ var BertaEditorBase = new Class({
 				//el.addClass(editorClass.substr(1) + 'Applied');
 
 				el.addEvent('click', function(event, editor) {
+					$$('.xEditIcon').destroy();
 					if(!this.hasClass('xSaving') && !this.hasClass('xEditing')) {
 						el.addClass('xEditing');
 						if(this.inlineIsEmpty()) this.innerHTML = '';
@@ -205,6 +206,8 @@ var BertaEditorBase = new Class({
 						editor.fireEvent(BertaEditorBase.EDITABLE_START, [el, editor.elementEdit_instances[editor.elementEdit_instances.length - 1]]);
 					}
 				}.bindWithEvent(el, this));
+
+				self.initEditIcon(el);
 				break;
 
 			case this.options.xBertaEditorClassRC:
@@ -596,6 +599,22 @@ var BertaEditorBase = new Class({
 	  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	 ///  Supporting functions for editables  /////////////////////////////////////////////////////////////////////////////////////////////
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	initEditIcon: function (el){
+		var editButton = new Element('a', {class:'xEditIcon'});
+		console.log(editButton);
+
+		el.addEvents({
+		    mouseenter: function(){
+		    	if (!el.hasClass('xEditing')){
+					editButton.inject(el, 'top');
+		    	}
+		    },
+		    mouseleave: function(){
+		      editButton.destroy();
+		    }
+		});
+	},
 
 
 	drawGuideLines: function (el, xGuideLineX, xGuideLineY){

@@ -304,6 +304,13 @@ body.xEditorEnabled { }
 		text-decoration: none !important;
 	}
 
+.xEditIcon {
+	position: absolute;
+	width: 16px;
+	height: 16px;
+	background-image: url('../layout/edit.png');
+	cursor: pointer;
+}
 
 
 /* panel csss ------------------------------------------------------------------------------------------- */
