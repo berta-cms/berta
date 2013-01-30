@@ -193,7 +193,7 @@ var BertaEditorBase = new Class({
 				//el.addClass(editorClass.substr(1) + 'Applied');
 
 				el.addEvent('click', function(event, editor) {
-					$$('.xEditIcon').destroy();
+					$$('.xEditOwerlay').destroy();
 					if(!this.hasClass('xSaving') && !this.hasClass('xEditing')) {
 						el.addClass('xEditing');
 						if(this.inlineIsEmpty()) this.innerHTML = '';
@@ -207,7 +207,7 @@ var BertaEditorBase = new Class({
 					}
 				}.bindWithEvent(el, this));
 
-				self.initEditIcon(el);
+				self.initEditOwerlay(el);
 				break;
 
 			case this.options.xBertaEditorClassRC:
@@ -600,13 +600,14 @@ var BertaEditorBase = new Class({
 	 ///  Supporting functions for editables  /////////////////////////////////////////////////////////////////////////////////////////////
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	initEditIcon: function (el){
-		var editButton = new Element('a', {class:'xEditIcon'});
-		console.log(editButton);
+	initEditOwerlay: function (el){
+		var editButton = new Element('a', {class:'xEditOwerlay'});
 
 		el.addEvents({
 		    mouseenter: function(){
 		    	if (!el.hasClass('xEditing')){
+		    		editButton.style.width = el.getSize().x + 'px';
+		    		editButton.style.height = el.getSize().y + 'px';
 					editButton.inject(el, 'top');
 		    	}
 		    },
@@ -943,6 +944,8 @@ var BertaEditorBase = new Class({
 						el.removeClass('xSaving');
 						el.removeClass('xEditing');
 						el.removeProperty('old_content');
+
+						this.setWmodeTransparent();
 					}
 
 					// if there is a stored onSave event, execute it
