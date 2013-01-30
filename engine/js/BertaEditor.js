@@ -99,6 +99,9 @@ var BertaEditor = new Class({
 		this.edittingMode = $$('body')[0].get('x_mode');
 		if(!this.edittingMode) this.edittingMode = 'entries';
 
+		//set wmode to transparent
+		this.setWmodeTransparent();
+
 		// init news ticker
 		this.initNewsTicker();
 
@@ -363,6 +366,21 @@ var BertaEditor = new Class({
 
 		$(window).addEvent('resize', fnOnResize);
 		fnOnResize();
+	},
+
+	//sets iframe mode to transparent to allow click and edit in tiny mce
+	setWmodeTransparent: function(){
+		var objects = $$('iframe');
+
+		objects.each(function(obj){
+			var srcAttr = obj.get('src');
+			if (srcAttr){
+				var uri = new URI(srcAttr);
+				uri.setData('wmode', 'transparent');
+				uri = uri.toString();
+				obj.set('src', uri);
+			}
+		});
 	},
 
 
@@ -636,10 +654,10 @@ var BertaEditor = new Class({
 	entryOnUnHover: function(event) {
 		event = new Event(event);
 		var target = $(event.target);
-		//console.debug('out: ', target.get('tag'), target);
 		if(!target.hasClass('xEntry')) target = target.getParent('.xEntry');
-		target.removeClass('xEntryHover');
-
+		if (!target == null){
+			target.removeClass('xEntryHover');
+		}
 	},
 	entryDropdownToggle: function(event) {
 		var dropdown = $(event.target);

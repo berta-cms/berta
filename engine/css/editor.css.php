@@ -304,11 +304,10 @@ body.xEditorEnabled { }
 		text-decoration: none !important;
 	}
 
-.xEditIcon {
+.xEditOwerlay {
 	position: absolute;
-	width: 16px;
-	height: 16px;
-	background-image: url('../layout/edit.png');
+	top: 0;
+	left: 0;
 	cursor: pointer;
 }
 
