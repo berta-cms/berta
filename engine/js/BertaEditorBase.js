@@ -731,6 +731,7 @@ var BertaEditorBase = new Class({
 		} else if(oldContent != newContent || el.hasClass('xBgColor')) {
 			var property = el.getClassStoredValue('xProperty');
 			var useCSSUnits = el.getClassStoredValue('xCSSUnits') > 0;
+			var xUnits = el.getClassStoredValue('xUnits');
 			var isToPrice = el.getClassStoredValue('xFormatModifier') == 'toPrice';
 			var isCartAttributes = property == 'cartAttributes';
 			var noHTMLEntities = el.hasClass('xNoHTMLEntities');
@@ -762,6 +763,13 @@ var BertaEditorBase = new Class({
 				else {
 					newContent = String(newContent) + 'px';
 				}
+			}
+
+			//for integer numbers with custom units
+			if (xUnits && xUnits.length) {
+				newContent = parseInt(newContent);
+				newContent = newContent ? newContent : 0;
+				newContent = String(newContent) + xUnits;
 			}
 
 			if ( isToPrice ) {
