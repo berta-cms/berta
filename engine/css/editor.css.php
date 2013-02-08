@@ -2013,7 +2013,7 @@ body.xSettingsPageBody {
 }
 
 
-/*------------------------- inventory page --------------------------------*/
+/*------------------------- shop inventory page --------------------------------*/
 
 table.inventory {
 	border-collapse: collapse;
@@ -2053,7 +2053,16 @@ table.inventory tr td .remove {
 }
 
 
+/*------------------------- shop regional costs page --------------------------------*/
 
+.regionRow {
+	border-bottom: 1px dotted black;
+	margin-bottom: 20px;
+}
+
+.regionRow p {
+	margin-bottom: 20px;
+}
 
 
 /* some helpers */
