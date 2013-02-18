@@ -293,7 +293,7 @@
                                     { if $berta.environment == 'engine' }
                                         <div class="cartPrice xEditableRC xProperty-cartPrice xCaption-price xFormatModifier-toPrice" title="{ $entry.cartPrice }">{ $entry.cartPrice|@toPrice }</div>
                                     {else}
-                                        <div class="cartPrice" title="{ $entry.cartPrice }">{ $entry.cartPrice|@toPrice }</div>
+                                        <div class="cartPrice" title="{ $entry.cartPrice }" data-weight="{ $entry.weight|intval }">{ $entry.cartPrice|@toPrice }</div>
                                     {/if}
 
                                     <br class="clear">

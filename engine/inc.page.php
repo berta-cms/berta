@@ -10,7 +10,7 @@ $MOBILE_DEVICE = mobile_device_detect($DEVICE_USER_AGENT);
 
 // Set multibyte encoding to UTF-8 for better canonization of strings
 if(function_exists('mb_internal_encoding') && function_exists('mb_regex_encoding')) {
-	@mb_internal_encoding("UTF-8"); 
+	@mb_internal_encoding("UTF-8");
 	@mb_regex_encoding("UTF-8");
 }
 
@@ -44,9 +44,9 @@ if(!$hasPHP5) {
 		die('Berta needs PHP5 support on server.');
 	}
 }
-	
-	
-	
+
+
+
 include 'inc.error_handling.php';
 include_once 'inc.functions.php';
 
@@ -98,7 +98,7 @@ $berta->init($settingsDefinition);
 // settings install management ----------------------------------------
 if(!defined('SETTINGS_INSTALLREQUIRED')) define('SETTINGS_INSTALLREQUIRED', true);
 if(!empty($_REQUEST['_berta_install_done'])) {
-	
+
 	// final installer adjustments
 	if($berta->settings->get('texts', 'ownerName')) {
 		$berta->settings->update('siteTexts', 'siteFooter', $berta->settings->get('texts', 'ownerName') . ' &copy; ');
@@ -106,7 +106,7 @@ if(!empty($_REQUEST['_berta_install_done'])) {
 	if($berta->settings->get('siteTexts', 'siteHeading')) {
 		$berta->settings->update('texts', 'pageTitle', $berta->settings->get('siteTexts', 'siteHeading'));
 	}
-	
+
 	$berta->settings->update('berta', 'installed', 1);
 	$berta->settings->save();
 }
@@ -115,9 +115,9 @@ if(SETTINGS_INSTALLREQUIRED && !$berta->settings->get('berta', 'installed')) {
 		$step = !empty($_REQUEST['_berta_install_step']) ? (int) $_REQUEST['_berta_install_step'] : 1;
 		if($step < 1) $step = 1;
 		if($step > 2) $step = 2;
-	
+
 		switch($step) {
-			case 1: 
+			case 1:
 				if(file_exists($SITE_ROOT . 'INSTALL/includes/check.php')) {
 					$CHECK_INCLUDED = true;
 					include $SITE_ROOT . 'INSTALL/includes/check.php';
@@ -135,13 +135,13 @@ if(SETTINGS_INSTALLREQUIRED && !$berta->settings->get('berta', 'installed')) {
 	} else {
 		if(file_exists($SITE_ROOT . 'INSTALL/includes/first_visit.php')) {
 			$CHECK_INCLUDED = true;
-			include $SITE_ROOT . 'INSTALL/includes/first_visit.php';	
+			include $SITE_ROOT . 'INSTALL/includes/first_visit.php';
 		} else {
 			die('Berta not installed.');
 		}
 		exit;
 	}
-	
+
 }
 
 
