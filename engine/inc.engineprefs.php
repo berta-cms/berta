@@ -24,7 +24,7 @@ $options['int_version'] = '1087';
  */
 
 $options['default_language'] = 'en';
-$options['languages'] = array('en' => 'English', 'lv' => 'Latviešu', 'fr' => 'Français');
+$options['languages'] = array('en' => 'English', 'lv' => 'Latviešu', 'fr' => 'Français', 'ru' => 'Русский');
 
 
 $options['MOBILE_DEVICE'] = $MOBILE_DEVICE;
