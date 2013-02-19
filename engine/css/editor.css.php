@@ -1831,7 +1831,7 @@ body.xSettingsPageBody {
 					padding: 5px;
 					height: 14px;
 					border: 1px dotted #aaa;
-					border-width: 1px 1px 0 1px;
+					border-bottom: 1px dotted rgba(255, 255, 255, 0);
 					font-size: 12px;
 					font-weight: normal;
 					text-decoration: none !important;
@@ -1839,6 +1839,8 @@ body.xSettingsPageBody {
 				}
 				body.xSettingsPageBody .settingsTabs li a.active {
 					border-bottom: 1px solid #fff;
+					font-weight: bold;
+					color: #333;
 				}
 
 		body.xSettingsPageBody .settingsContent {
