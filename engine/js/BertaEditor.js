@@ -122,7 +122,7 @@ var BertaEditor = new Class({
 					$('settingsContentContainer').getElements('.settingsContent').each(function(el) {
 						var dims = el.getSize();
 						maxH = Math.max(maxH, dims.y);
-						el.setStyle('top', (tabsDims.y) + 'px');
+						el.setStyle('top', (tabsDims.y - 1) + 'px');
 					});
 					$('settingsContentContainer').setStyle('height', (maxH + 20) + 'px');
 					this.tabsInit.delay(300);
