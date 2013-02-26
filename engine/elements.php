@@ -75,7 +75,7 @@ if($jsonRequest) {
 						echo '<div class="xEntryGalleryAddMedia">';
 							echo '<div class="xEntryAddImagesFallback">' .
 									'<iframe name="xEntryUploadFrame' . $entry['id']['value'] . '" id="xEntryUploadFrame' . $entry['id']['value'] . '" class="xEntryUploadFrame"></iframe>' .
-									'<form target="xEntryUploadFrame' . $entry['id']['value'] . '" action="' . $ENGINE_ABS_ROOT . 'upload.php?section=' . $decoded['section'] . '&amp;entry=' . $entry['id']['value'] . '&amp;mediafolder=' . $entry['mediafolder']['value'] . '&amp;session_id=' . session_id() . '" class="xEntryGalleryForm" method="post" enctype="multipart/form-data">' .
+									'<form target="xEntryUploadFrame' . $entry['id']['value'] . '" action="' . $ENGINE_ABS_ROOT . 'upload.php?section=' . $decoded['section'] . '&amp;entry=' . $entry['id']['value'] . '&amp;mediafolder=' . $entry['mediafolder']['value'] . '" class="xEntryGalleryForm" method="post" enctype="multipart/form-data">' .
 										'<input type="hidden" name="upload_key" value="" />' .
 										'<input type="hidden" name="upload_type" value="fallback" />' .
 										//'<input type="file" name="Filedata" class="xUploadFile" /> ' .
@@ -234,7 +234,7 @@ if($jsonRequest) {
 					echo '<div class="xBgAddMedia">';
 					    echo '<div class="xBgAddImagesFallback">' .
 					    		'<iframe name="xBgUploadFrame" id="xBgUploadFrame" class="xBgUploadFrame"></iframe>' .
-					    		'<form target="xBgUploadFrame" action="' . $ENGINE_ABS_ROOT . 'upload.php?section=' . $section['name']['value'] . '&amp;mediafolder=' . $sectionMF . '&amp;session_id=' . session_id() . '&amp;section_background=true" class="xBgEditorForm" method="post" enctype="multipart/form-data">' .
+					    		'<form target="xBgUploadFrame" action="' . $ENGINE_ABS_ROOT . 'upload.php?section=' . $section['name']['value'] . '&amp;mediafolder=' . $sectionMF . '&amp;section_background=true" class="xBgEditorForm" method="post" enctype="multipart/form-data">' .
 					    			'<input type="hidden" name="upload_key" value="" />' .
 					    			'<input type="hidden" name="upload_type" value="fallback" />' .
 					    			//'<input type="file" name="Filedata" class="xUploadFile" /> ' .
