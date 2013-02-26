@@ -80,7 +80,7 @@ return array(
 	'units_help_text' => 'Var izmantot sekojošas vienības: <br /><strong>px</strong> – pikseļi<br /><strong>em</strong> - 1 em = viena burta M platums attiecīgajā šriftā<br /><strong>%</strong> - procenti no šrifta izmēra vai arī procenti no konteinera elementa izmēra',
 	'Margins' => 'Malas',
 	'margins_help_text' => 'Ir 4 veidi kā var ievadīt izmēru apmalēm (margins):<br/><strong>1 vērtība</strong> – iestāda augšējo, labo, apakšējo un kreiso apmales platumu vienādā izmērā. Piemēram, <em>10px</em>.<br /><strong>2 vērtības</strong> – pirmais cipars iestāda augšējo un apakšējo apmales platumu, bet otrs kreiso un labo malas platumu. Piemēram: <em>0 5px</em>.<br /><strong>3 vērtības</strong> – pirmā vērtība iestāda augšējās apmales platumu, otra kreiso un labo apmali, bet trešā apakšas apmales platumu. Piemēram: <em>10px 0 20px</em>.<br /><strong>4 vērtības</strong> - iestāda platumus visām apmalēm sekojošā secībā: augša, labā mala, apakša, kreisā apmale. Piemēram: <em>10px 0 20px 2px</em>',
-	
+
 	// Translations from inc.settings.php
 
 	'Texts in the website' => 'Teksti lapā',
@@ -328,42 +328,62 @@ return array(
 	'description_language' => 'Choose language of berta interface. Refresh site to apply.',
 	'Heading position' => 'Galvenes pozīcija',
 	'description_heading_position' => 'Galvenes novietojums, fiksēts vai nefiksēts',
-	'description_submenu_alwaysopen' => 'Apakšizvēlnes ir vienmēr atvērtas.',	
+	'description_submenu_alwaysopen' => 'Apakšizvēlnes ir vienmēr atvērtas.',
 	'Submenu is allways open' => 'Apakšizvēlne vienmēr atvērta',
     'Submenu is hidden' => 'Apakšizvēlnes slēptas',
 	'mobile_device_detected' => 'Labot lapas saturu ar šo mobilo ierīci nav iespējams!',
 	'javascript_include' => 'Javascript kods, kurš tiks iekļauts tieši pirms &lt;/body&gt; elementa. Uzzini vairāk kā <a href="https://github.com/berta-cms/berta/wiki/Include-JavaScript-code" target="_blank" title="How to include JavaScript code">iekļaut JavaScript kodu.</a>',
     'description_custom_css' => 'Ievietojiet savu CSS kodu šeit. Iepriekš eksistējošas CSS definīcijas tiks pārrakstītas. Vairāk informācijai apskatiet mūsu <a href="https://github.com/berta-cms/berta/wiki/Add-custom-CSS" target="_blank">WIKI</a>.',
-/*
-    '' => '',
-	'' => '',
-	'' => '',
-	'' => '',
-	'' => '',
-	'' => '',
-	'' => '',
-	'' => '',
-	'' => '',
-	'' => '',
-	'' => '',
-	'' => '',
-	'' => '',
-	'' => '',
-	'' => '',
-	'' => '',
-	'' => '',
-	'' => ''
-*/
 
 	// Videos panel & newsticker
 	'To enable Berta\'s tutorial videos, your computer needs to be connected to the internet!<br />When the internet access is enabled, sign out of engine panel and log in again to view the videos.' => 'Lai skatītu Bertas pamācību video, Jūsu datoram nepieciešama interneta pieeja.<br />Kad dators pieslēgts pie interneta, izlogojieties no <em>engine</em> paneļa un ielogojieties no jauna.',
 	'Show this window on startup' => 'Vienmēr rādīt šo logu pēc ielogošanās',
 	'Close' => 'Aizvērt',
-	
+
 	'To enable Berta\'s news ticker, your computer needs to be connected to the internet!' => 'Lai redzētu Bertas jaunumus, Jūsu datoram nepieciešama interneta pieeja!',
 
 
+	//shop translations
+    'Shop' => 'Veikals',
+	'shop' => 'veikals',
+	'Inventory' => 'Noliktava',
+	'Regional costs' => 'Reģionālās izmaksas',
+	'Item name' => 'Vienības nosaukums',
+	'Price' => 'Cena',
+	'price' => 'cena',
+	'In stock' => 'Noliktavā',
+	'Reservation' => 'Rezervēts',
+	'if weight is less than' => 'ja svars ir mazāks par',
+	'weight' => 'svars',
+	'then price is' => 'tad cena ir',
+	'region name' => 'reģiona nosaukums',
+	'vat' => 'pvn',
+	'+ add new costs condition' => '+ pievienot jaunu izmaksu nosacījumu',
+	'+ add new region' => '+ pievienot jaunu reģionu',
+	'Save' => 'Saglabāt',
+	'Configuration values' => 'Konfigurācijas vērtības',
+	'Shop currency' => 'Veikala valūta',
+	'Currency abbreviation or symbol displayed by all prices in the site.' => 'Valūtas abreviatūra vai simbols, kurš redzams pie preces cenas.',
+	'Order Email Subject' => 'Tēmas nosaukums e-pastam',
+	'Subject of order email' => 'Tēmas nosaukums e-pastam pie pasūtījuma veikšanas.',
+	'Seller details' => 'Tirgotāja rekvizīti',
+	'Seller details will be included in bill and e-mail message' => 'Tirgotāja rekvizīti tiks iekļauti rēķinā un e-pasta saturā.',
+	'Add to basket' => 'Pievienot grozam',
+	'Add to basket text' => 'Pogas "Pievienot grozam" nosaukums.',
+	'Out of stock' => 'Noliktavā nav',
+	'Out of stock text' => 'Paziņojuma "Noliktavā nav" teksts.',
+	'Email' => 'e-pasts',
+	'Email where send order data' => 'e-pasts, uz kuru sūtīt pasūtījuma datus.',
+	'Payment method' => 'Maksājuma metode',
+	'Payment method.' => 'Maksājuma metode.',
+	'Promo code' => 'Atlaides kods',
+	'If Yes - promo code entry will be displayed.' => 'Ja lauciņš ir aizpildīts, tad pircējam būs iespēja ievadīt atlaides kodu.',
+	'Promo code discount' => 'Atlaides apjoms',
+	'Discount in precents when user enters valid promo code' => 'Atlaides procentuāls apjoms uz precēm, ja pircējs ievadījis pareizu kodu.',
+	'Weight units' => 'Svara mērvienība',
+	'Weight units (g, oz) used for postage cost calculation.' => 'Svara mērvienība (g, oz), kas tie lietota pie pasta izdevumu aprēķina.',
+	'Design' => 'Dizains',
+	'Shop entry width' => 'Veikala ieraksta platums',
 )
-
 
 ?>
