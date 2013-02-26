@@ -1,5 +1,7 @@
 <?php
 
+date_default_timezone_set(@date_default_timezone_get());
+
 if(empty($options)) $options = array();
 include_once $ENGINE_ROOT . '_classes/class.bertabase.php';
 BertaBase::$options = $options;
