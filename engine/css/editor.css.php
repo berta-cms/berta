@@ -2066,6 +2066,12 @@ table.inventory tr td .remove {
 	margin-bottom: 20px;
 }
 
+.regionRow .vatField,
+.regionRow .weightField,
+.regionRow .priceField {
+	width: 50px;
+}
+
 
 /* some helpers */
 
