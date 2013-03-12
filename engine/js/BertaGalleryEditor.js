@@ -270,7 +270,7 @@ var BertaGalleryEditor = new Class({
 		new Element('span', { 'class': 'grabHandle xMAlign-container' })
 				.set('html', '<span class="xMAlign-outer"><a class="xMAlign-inner" title="click and drag to move"><span></span></a></span>')
 				.inject(container);
-		//new Element('div', { 'class' : 'posterContainer'}).inject(container);
+
 		new Element('a', {
 			'href': '#', 'class': 'delete',
 			'events': {
@@ -285,7 +285,6 @@ var BertaGalleryEditor = new Class({
 			}).set('html','<span class="xEmpty">&nbsp;caption&nbsp;</span>'
 			).inject(container);
 
-		//console.log(caption);
 		this.elementEdit_init(caption, this.options.xBertaEditorClassMCE);
 
 
@@ -303,9 +302,6 @@ var BertaGalleryEditor = new Class({
 			).inject(container);
 
 			this.addElementPosterUploader.delay(1000, this, [ posterLink ]);
-
-			/*this.elementEdit_init(container.getElement('span[property="width"]'), this.options.xBertaEditorClassSimple);
-			this.elementEdit_init(container.getElement('span[property="height"]'), this.options.xBertaEditorClassSimple);*/
 		}
 
 		// animate file block to the real dimensions; update image strip when completed
@@ -523,7 +519,7 @@ var BertaGalleryEditor = new Class({
 		event = new Event(event).stop();
 		var target = $(event.target);
 		if(target.tagName != 'LI') target = target.getParent('li');
-		target.removeClass('hover');
+		if (target) target.removeClass('hover');
 	},
 
 	onElementEditClick: function(event) {
