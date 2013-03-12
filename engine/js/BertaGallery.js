@@ -466,40 +466,30 @@ var BertaGallery = new Class({
 				break;
 
 			case 'video':
-				this.preload = new Element('div', { 'class': 'xGalleryItem xGalleryItemType-video', 'style': { 'opacity': 0 } });
-				//this.preload.setStyle('background-image', 'url(\'' + src + '\')');
-				//this.preload.setStyle('background-repeat', 'no-repeat');
+				var containerID = 'video_' + new Date().getTime();
+				this.preload = new Element('div', { 'id': containerID, 'class': 'xGalleryItem xGalleryItemType-video', 'style': { 'opacity': 0 } });
 
 				if(mWidth) this.preload.setStyle('width', mWidth + 'px');
 				this.layout_inject(bDeleteExisting, true);
 
-				if(this.options.playerType == 'JWPlayer' || this.options.playerType == 'JWPlayer_Overlay') {
+				if(this.options.playerType == 'JWPlayer') {
 					if(mHeight) mHeight = parseInt(mHeight) + 25;
 
-					var vars = {
-						'file': videoPath,
-						'image': src,
-						'stretching': 'fill'
-						//'skin': '/' + this.options.engineRoot + 'jwplayer/bekle.swf'
-					};
-					if(this.options.playerType == 'JWPlayer_Overlay') {
-						if(mHeight) mHeight = parseInt(mHeight) - 25;
-						vars.skin = this.options.engineABSRoot + '_lib/jwplayer/bekle/bekle.xml';
-						vars.controlbar = 'over';
-					}
+					var player = jwplayer(containerID);
 
-					if(mHeight) this.preload.setStyle('height', mHeight + 'px');
-
-					new Swiff(this.options.engineABSRoot + '_lib/jwplayer/player.swf', {
-						'container': this.preload,
-						'width': mWidth,
-						'height': mHeight,
-						'params': {
-							'allowFullScreen': true,
-							'menu': false
-						},
-						'vars': vars
-					});
+				    player.setup({
+				        file: videoPath,
+				        image: src,
+				        'stretching': 'fill',
+				        'width': mWidth,
+				        'height': mHeight,
+				        'primary': 'flash',
+						events: {
+			            	onReady: function() {
+			                    this.container.getParent().addClass('xGalleryItem xGalleryItemType-video');
+			                }
+			            }
+				    });
 				}
 				else {
 					if(mHeight) {
