@@ -467,57 +467,20 @@ var BertaGallery = new Class({
 
 			case 'video':
 				var containerID = 'video_' + new Date().getTime();
-				this.preload = new Element('div', { 'id': containerID, 'class': 'xGalleryItem xGalleryItemType-video', 'style': { 'opacity': 0 } });
 
-				if(mWidth) this.preload.setStyle('width', mWidth + 'px');
+				if(mHeight) mHeight = parseInt(mHeight) + 25;
+
+				this.preload = new Element('video', { 'id': containerID, 'width': mWidth, 'height': mHeight, 'class': 'video-js vjs-default-skin xGalleryItem xGalleryItemType-video', 'style': { 'opacity': 0 } });
+				var source = new Element('source', { 'src': videoPath, 'type': 'video/mp4' });
+				source.inject(this.preload, 'top');
+
 				this.layout_inject(bDeleteExisting, true);
 
-				if(this.options.playerType == 'JWPlayer') {
-					if(mHeight) mHeight = parseInt(mHeight) + 25;
-
-					var player = jwplayer(containerID);
-
-				    player.setup({
-				        file: videoPath,
-				        image: src,
-				        'stretching': 'fill',
-				        'width': mWidth,
-				        'height': mHeight,
-				        'primary': 'flash',
-						events: {
-			            	onReady: function() {
-			                    this.container.getParent().addClass('xGalleryItem xGalleryItemType-video');
-			                }
-			            }
-				    });
-				}
-				else {
-					if(mHeight) {
-						mHeight = parseInt(mHeight);
-						this.preload.setStyle('height', mHeight + 'px');
-					}
-					new Swiff(this.options.engineABSRoot + '_lib/nonverblaster/NonverBlaster.swf', {
-						container: this.preload,
-						width: mWidth,
-						height: mHeight,
-						params: {
-							'allowFullScreen': true,
-							'menu': false,
-							'allowScriptAccess': 'always'
-						},
-						vars: {
-							'mediaURL': videoPath,
-							'teaserURL': src,
-							'allowSmoothing': 'true',
-							'autoPlay': 'false',
-							'controlColor': "0xffffff",
-							'crop': "false",
-							'scaleIfFullScreen': 'true',
-							'showScalingButton': 'false'
-
-						}
-					});
-				}
+				_V_(containerID, {
+					"controls": true,
+					"preload": "auto",
+					"poster": src,
+				});
 
 				new Element('img', { 'src': src, 'class' : 'xGalleryImageVideoBack', 'styles': {
 					'width' : mWidth + 'px',
