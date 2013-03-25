@@ -179,9 +179,12 @@ class BertaGallery extends BertaBase {
             $width = round($width * $sizeRatio);
             $height = round($height * $sizeRatio);
 
+            $autoPlay = isset($imgs[$i]['@attributes']['autoplay']) ? $imgs[$i]['@attributes']['autoplay'] : 0;
+
             $navStr .= '<li><a href="' . ($src ? $mFolderABS . $src : '#') . ($isAdminMode ? '?no_cache=' . rand() : '') . '" ' .
                               'class="xType-' . $imgs[$i]['@attributes']['type'] . ' ' .
                                      'xVideoHref-' . $videoLink . ' ' .
+                                     'xAutoPlay-' . $autoPlay . ' ' .
                                      'xOrigHref-' . $origLink . ' ' .
                                      'xW-' . $width . ' ' .
                                      'xH-' . $height . ' ' .

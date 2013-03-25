@@ -132,6 +132,11 @@ var BertaGalleryEditor = new Class({
 		// poster frame uploader
 		this.addElementPosterUploader();
 
+		//video autoplay button
+		this.container.getElements('.xEditableRealCheck').each(function(el) {
+			this.elementEdit_init(el, this.options.xEditableRealCheck);
+		}, this);
+
 		// main uploader
 		this.addMainUploader();
 
@@ -299,6 +304,14 @@ var BertaGalleryEditor = new Class({
 			}).adopt(
 				new Element('div', { 'class': 'posterContainer' }),
 				posterLink
+			).inject(container);
+
+			var autoPlayCheckbox = new Element('span', { 'class': 'xEditableRealCheck xProperty-videoAutoplay xParam-'+uploaResponseJSON.get('filename'), 'text': 0 });
+			this.elementEdit_init(autoPlayCheckbox, this.options.xEditableRealCheck);
+			var autoPlayLabel =  new Element('label', { 'html': 'autoplay' });
+			autoPlayCheckbox.inject(autoPlayLabel, 'top');
+			new Element('div', { 'class': 'xAutoPlay' }).adopt(
+				autoPlayLabel
 			).inject(container);
 
 			this.addElementPosterUploader.delay(1000, this, [ posterLink ]);
