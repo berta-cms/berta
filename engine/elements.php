@@ -142,6 +142,7 @@ if($jsonRequest) {
 												/*'<span class="dim" property="width" x_params="' . $im['value'] . '">' . (!empty($im['@attributes']['width']) ? $im['@attributes']['width'] : BertaEditor::getXEmpty('width')) . '</span> x ' .
 												'<span class="dim" property="height" x_params="' . $im['value'] . '">' . (!empty($im['@attributes']['height']) ? $im['@attributes']['height'] : BertaEditor::getXEmpty('height')) . '</span>' . */
 											 '</div>';
+										echo '<div class="xAutoPlay"><label><span class="xEditableRealCheck xProperty-videoAutoplay xParam-' . $im['@attributes']['src'] . '">'.( isset($im['@attributes']['autoplay']) && $im['@attributes']['autoplay'] ? 1 : 0 ).'</span>autoplay</label></div>';
 										echo '<div class="xEGEImageCaption ' . $xEditSelectorMCESimple . ' xProperty-galleryImageCaption xCaption-caption xParam-' . $im['@attributes']['src'] . '">', !empty($im['value']) ? $im['value'] : '', '</div>';
 										echo '</li>';
 										echo "\n";
