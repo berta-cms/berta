@@ -945,7 +945,11 @@ var BertaEditorBase = new Class({
 						el.removeClass('xEditing');
 						el.removeProperty('old_content');
 
-						this.setWmodeTransparent();
+						try {
+							this.setWmodeTransparent();
+						}catch(e){
+
+						}
 					}
 
 					// if there is a stored onSave event, execute it
