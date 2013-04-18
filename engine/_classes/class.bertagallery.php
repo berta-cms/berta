@@ -198,7 +198,7 @@ class BertaGallery extends BertaBase {
                                 $mFolderABS . self::$options['images']['orig_prefix'] . $imgs[$i]['@attributes']['poster_frame'] :
                                 $mFolderABS . $imgs[$i]['@attributes']['poster_frame'];
                 }
-                $milkbox .= '<a href="'.$origLink.'" rel="milkbox[gallery-'.$galleryFullScreen.']" title="'.htmlspecialchars(strip_tags($imgs[$i]['value'])).'" >#</a>';
+                $milkbox .= '<a href="'.$origLink.'" rel="milkbox[gallery-'.$galleryFullScreen.']" title="'.htmlspecialchars($imgs[$i]['value']).'" >#</a>';
             }
         }
         $navStr .= '</ul>';
