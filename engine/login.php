@@ -8,7 +8,7 @@ if(is_mobile()){
 	header('Location: ./mobile.php');exit;
 }
 
-if($berta->security->user) {
+if( $berta->security->user && !isset($_GET['auth_key']) ) {
 	$berta->security->destroy();
 	header("Location: login.php?" . uniqid());
 	exit;
@@ -19,7 +19,7 @@ if ($options['HOSTING_PROFILE']) {
 	// if key, cURL check if autorized on auth_server
 	if (isset($_GET['auth_key'])){
 
-		$isLoggedIn = $berta->security->isLoggedIn($options['HOSTING_PROFILE'].'?auth_key='.$_GET['auth_key'], $_GET['auth_key']);
+		$isLoggedIn = $berta->security->isLoggedIn($options['HOSTING_PROFILE'].'?auth_key='.$_GET['auth_key'].'&auth_user='.$options['AUTH_user'], $_GET['auth_key']);
 
 		if ($isLoggedIn) {
 			$_POST['auth_action'] = 'login';
