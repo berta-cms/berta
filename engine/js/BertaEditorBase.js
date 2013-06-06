@@ -769,7 +769,7 @@ var BertaEditorBase = new Class({
 				var aele = el.getNext('.aele');
 				var cartAttributes = el.getNext('.cartAttributes');
 				if (aele) {
-					newContent = parseInt(newContent);
+					newContent = parseFloat(newContent);
 
 					if (newContent){
 						aele.removeClass('hidden');
