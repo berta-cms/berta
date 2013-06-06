@@ -825,7 +825,7 @@ var BertaEditorBase = new Class({
 			var action = el.getClassStoredValue('xCommand');
 			if(action) {
 				if(action == 'SET_BG_CAPTION_BACK_COLOR') editorParams = newContentText.hexToRgb(true).join(',');
-				else editorParams = newContentText;
+				else editorParams = this.escapeForJSON(newContentText);
 				//console.debug(editorParams);
 			}
 

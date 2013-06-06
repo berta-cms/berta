@@ -123,6 +123,7 @@ if(!1) { ?><style type="text/css"><?php } ?>
 	#xCoords {
 		z-index: 1;
 		background-color: #FFFFB7;
+		color: #000;
 		font-weight: normal;
 		font-size: 12px;
 		position: absolute;
