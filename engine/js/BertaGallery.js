@@ -472,7 +472,9 @@ var BertaGallery = new Class({
 				if(mHeight) mHeight = parseInt(mHeight) + 25;
 
 				this.preload = new Element('video', { 'id': containerID, 'width': mWidth, 'height': mHeight, 'class': 'video-js vjs-default-skin xGalleryItem xGalleryItemType-video', 'style': { 'opacity': 0 } });
-				var source = new Element('source', { 'src': videoPath, 'type': 'video/mp4' });
+
+				var videoType = videoPath.split('.').pop();
+				var source = new Element('source', { 'src': videoPath, 'type': 'video/'+videoType });
 				source.inject(this.preload, 'top');
 
 				this.layout_inject(bDeleteExisting, true);
