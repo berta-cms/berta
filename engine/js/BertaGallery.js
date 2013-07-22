@@ -108,7 +108,7 @@ var BertaGallery = new Class({
 
 			if(fistItemType != 'image' || ( fistItemType == 'image' && this.type == 'row' ) ) {
 				// load only if not image, because if that's image, it's already written in the HTML
-				this.load(aEl.get('href'), aEl.getClassStoredValue('xType'), aEl.getClassStoredValue('xW'), aEl.getClassStoredValue('xH'), aEl.getClassStoredValue('xVideoHref'), li.getElement('.xGalleryImageCaption').get('html'), true);
+				this.load(aEl.get('href'), aEl.getClassStoredValue('xType'), aEl.getClassStoredValue('xW'), aEl.getClassStoredValue('xH'), aEl.getClassStoredValue('xVideoHref'), aEl.getClassStoredValue('xAutoPlay'), li.getElement('.xGalleryImageCaption').get('html'), true);
 			} else {
 				this.currentSrc = aEl.get('href');
 				this.preload = this.imageContainer.getElement('div.xGalleryItem');
@@ -172,7 +172,7 @@ var BertaGallery = new Class({
 			if(nextLi) {
 				this.nav_highlightItem(nextLi);
 				var aEl = nextLi.getElement('a');
-				this.load(aEl.get('href'), aEl.getClassStoredValue('xType'), aEl.getClassStoredValue('xW'), aEl.getClassStoredValue('xH'), aEl.getClassStoredValue('xVideoHref'), nextLi.getElement('.xGalleryImageCaption').get('html'), false, aEl.getClassStoredValue('xImgIndex'));
+				this.load(aEl.get('href'), aEl.getClassStoredValue('xType'), aEl.getClassStoredValue('xW'), aEl.getClassStoredValue('xH'), aEl.getClassStoredValue('xVideoHref'), aEl.getClassStoredValue('xAutoPlay'), nextLi.getElement('.xGalleryImageCaption').get('html'), false, aEl.getClassStoredValue('xImgIndex'));
             } else {
 				//after everything is loaded - attach fullscreen for gallery row mode
 				if (this.fullscreen && (this.type == 'row' || this.type == 'pile' || this.type == 'column')) {
@@ -390,7 +390,7 @@ var BertaGallery = new Class({
 		this.nav_highlightItem(li);
 		var caption = li.getElement('.xGalleryImageCaption').get('html');
 
-		this.load(linkElement.get('href'), linkElement.getClassStoredValue('xType'), linkElement.getClassStoredValue('xW'), linkElement.getClassStoredValue('xH'), linkElement.getClassStoredValue('xVideoHref'), caption, false, linkElement.getClassStoredValue('xImgIndex'));
+		this.load(linkElement.get('href'), linkElement.getClassStoredValue('xType'), linkElement.getClassStoredValue('xW'), linkElement.getClassStoredValue('xH'), linkElement.getClassStoredValue('xVideoHref'), linkElement.getClassStoredValue('xAutoPlay'), caption, false, linkElement.getClassStoredValue('xImgIndex'));
 	},
 	nav_highlightItem: function(liElement) {
 		// implementable in the future
@@ -411,7 +411,7 @@ var BertaGallery = new Class({
 
 	// load: starts the actual loading of next image/video into the container
 
-	load: function(src, mType, mWidth, mHeight, videoPath, caption, bDeleteExisting, xImgIndex) {
+	load: function(src, mType, mWidth, mHeight, videoPath, autoPlay, caption, bDeleteExisting, xImgIndex) {
 		//console.debug('load', src);
 		switch(this.phase) {
 			case 'fadeout': this.imageFadeOutFx.cancel(); break;
@@ -422,17 +422,18 @@ var BertaGallery = new Class({
 		if(this.currentSrc && this.type == 'slideshow') {
 			this.currentSrc = null;
 			this.phase = "fadeout";
-			this.imageFadeOutFx.start('opacity', 0).chain(this.load_Render.bind(this, [ src, mType, mWidth, mHeight, videoPath, caption, bDeleteExisting, xImgIndex ]));
+			this.imageFadeOutFx.start('opacity', 0).chain(this.load_Render.bind(this, [ src, mType, mWidth, mHeight, videoPath, autoPlay, caption, bDeleteExisting, xImgIndex ]));
 		} else {
 			this.currentSrc = null;
-			this.load_Render(src, mType, mWidth, mHeight, videoPath, caption, bDeleteExisting, xImgIndex);
+			this.load_Render(src, mType, mWidth, mHeight, videoPath, autoPlay, caption, bDeleteExisting, xImgIndex);
 		}
 	},
-	load_Render: function(src, mType, mWidth, mHeight, videoPath, caption, bDeleteExisting, xImgIndex) {
+	load_Render: function(src, mType, mWidth, mHeight, videoPath, autoPlay, caption, bDeleteExisting, xImgIndex) {
 		//console.debug('load_Render', src);
 		this.currentSrc = src;
 		this.currentType = mType;
 		this.currentVideoPath = videoPath;
+		this.currentVideoAutoPlay = autoPlay;
 		this.currentCaption = caption;
 		this.xImgIndex = xImgIndex;
 
@@ -466,68 +467,24 @@ var BertaGallery = new Class({
 				break;
 
 			case 'video':
-				this.preload = new Element('div', { 'class': 'xGalleryItem xGalleryItemType-video', 'style': { 'opacity': 0 } });
-				//this.preload.setStyle('background-image', 'url(\'' + src + '\')');
-				//this.preload.setStyle('background-repeat', 'no-repeat');
+				var containerID = 'video_' + new Date().getTime();
 
-				if(mWidth) this.preload.setStyle('width', mWidth + 'px');
+				if(mHeight) mHeight = parseInt(mHeight) + 25;
+
+				this.preload = new Element('video', { 'id': containerID, 'width': mWidth, 'height': mHeight, 'class': 'video-js vjs-default-skin xGalleryItem xGalleryItemType-video', 'style': { 'opacity': 0 } });
+
+				var videoType = videoPath.split('.').pop();
+				var source = new Element('source', { 'src': videoPath, 'type': 'video/'+videoType });
+				source.inject(this.preload, 'top');
+
 				this.layout_inject(bDeleteExisting, true);
 
-				if(this.options.playerType == 'JWPlayer' || this.options.playerType == 'JWPlayer_Overlay') {
-					if(mHeight) mHeight = parseInt(mHeight) + 25;
-
-					var vars = {
-						'file': videoPath,
-						'image': src,
-						'stretching': 'fill'
-						//'skin': '/' + this.options.engineRoot + 'jwplayer/bekle.swf'
-					};
-					if(this.options.playerType == 'JWPlayer_Overlay') {
-						if(mHeight) mHeight = parseInt(mHeight) - 25;
-						vars.skin = this.options.engineABSRoot + '_lib/jwplayer/bekle/bekle.xml';
-						vars.controlbar = 'over';
-					}
-
-					if(mHeight) this.preload.setStyle('height', mHeight + 'px');
-
-					new Swiff(this.options.engineABSRoot + '_lib/jwplayer/player.swf', {
-						'container': this.preload,
-						'width': mWidth,
-						'height': mHeight,
-						'params': {
-							'allowFullScreen': true,
-							'menu': false
-						},
-						'vars': vars
-					});
-				}
-				else {
-					if(mHeight) {
-						mHeight = parseInt(mHeight);
-						this.preload.setStyle('height', mHeight + 'px');
-					}
-					new Swiff(this.options.engineABSRoot + '_lib/nonverblaster/NonverBlaster.swf', {
-						container: this.preload,
-						width: mWidth,
-						height: mHeight,
-						params: {
-							'allowFullScreen': true,
-							'menu': false,
-							'allowScriptAccess': 'always'
-						},
-						vars: {
-							'mediaURL': videoPath,
-							'teaserURL': src,
-							'allowSmoothing': 'true',
-							'autoPlay': 'false',
-							'controlColor': "0xffffff",
-							'crop': "false",
-							'scaleIfFullScreen': 'true',
-							'showScalingButton': 'false'
-
-						}
-					});
-				}
+				_V_(containerID, {
+					"controls": true,
+					"preload": "auto",
+					"poster": src,
+					"autoplay": autoPlay > 0 ? true : false
+				});
 
 				new Element('img', { 'src': src, 'class' : 'xGalleryImageVideoBack', 'styles': {
 					'width' : mWidth + 'px',

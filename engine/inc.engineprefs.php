@@ -16,8 +16,8 @@ require 'config/inc.conf.php';
 /**
  * Berta's release version
  */
-$options['version'] = '0.8.5a';
-$options['int_version'] = '1087';
+$options['version'] = '0.8.5b';
+$options['int_version'] = '1088';
 
 
 /**
@@ -26,7 +26,7 @@ $options['int_version'] = '1087';
  */
 
 $options['default_language'] = 'en';
-$options['languages'] = array('en' => 'English', 'lv' => 'Latviešu', 'fr' => 'Français', 'ru' => 'Русский');
+$options['languages'] = array('en' => 'English', 'lv' => 'Latviešu', 'fr' => 'Français', 'ru' => 'Русский', 'nl' => 'Nederlands');
 
 
 $options['MOBILE_DEVICE'] = $MOBILE_DEVICE;

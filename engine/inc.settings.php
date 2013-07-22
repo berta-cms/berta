@@ -80,9 +80,7 @@ $settingsDefinition = array(
 	    'space' => array('format' => false, 'default' => false,                 'title' => '&nbsp;'),
 	    'group_gallery' => array('format' => false, 'default' => false,         'title' => I18n::_('Image gallery appearance:')),
         'gallerySlideshowAutoRewind' => array('format' => 'select',	'default' => 'no', 'values' => array('yes', 'no'),	                                                    'title' => I18n::_('Auto-rewind gallery slideshow'),    'description' => I18n::_('Display the first image after clicking on the last image in galleries that are in slideshow mode.')),
-        'gallerySlideNumberVisibilityDefault' => array('format' => 'select', 'default' => 'yes', 'values' => array('yes', 'no'), 'title' => I18n::_('Show slideshow image numbers'),		'description' => I18n::_('Set the default state of image number visibility in slideshow galleries.')),
-		'galleryVideoPlayer' => 	array('format' => 'select',	'default' => 'JWPlayer',  'values' => array('JWPlayer', /*'JWPlayer_Overlay',*/ 'NonverBlaster'),			'title' => I18n::_('Video player'),                     'description' => I18n::_('Choose between the two visually different players for your video files.'))
-        //'galleryFullScreenImgOpacity' => array('format' => 'text',	'default' => '70%', 'css_units' => false, 'title' => 'Gallery image transparency', 'description' => 'Transparency of image, works only if gallery fullscreen is enabled. 100% means no transparency.')
+        'gallerySlideNumberVisibilityDefault' => array('format' => 'select', 'default' => 'yes', 'values' => array('yes', 'no'), 'title' => I18n::_('Show slideshow image numbers'),		'description' => I18n::_('Set the default state of image number visibility in slideshow galleries.'))
 	),
 
 	'banners' => array(

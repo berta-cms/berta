@@ -132,6 +132,11 @@ var BertaGalleryEditor = new Class({
 		// poster frame uploader
 		this.addElementPosterUploader();
 
+		//video autoplay button
+		this.container.getElements('.xEditableRealCheck').each(function(el) {
+			this.elementEdit_init(el, this.options.xEditableRealCheck);
+		}, this);
+
 		// main uploader
 		this.addMainUploader();
 
@@ -270,7 +275,7 @@ var BertaGalleryEditor = new Class({
 		new Element('span', { 'class': 'grabHandle xMAlign-container' })
 				.set('html', '<span class="xMAlign-outer"><a class="xMAlign-inner" title="click and drag to move"><span></span></a></span>')
 				.inject(container);
-		//new Element('div', { 'class' : 'posterContainer'}).inject(container);
+
 		new Element('a', {
 			'href': '#', 'class': 'delete',
 			'events': {
@@ -285,7 +290,6 @@ var BertaGalleryEditor = new Class({
 			}).set('html','<span class="xEmpty">&nbsp;caption&nbsp;</span>'
 			).inject(container);
 
-		//console.log(caption);
 		this.elementEdit_init(caption, this.options.xBertaEditorClassMCE);
 
 
@@ -302,10 +306,15 @@ var BertaGalleryEditor = new Class({
 				posterLink
 			).inject(container);
 
-			this.addElementPosterUploader.delay(1000, this, [ posterLink ]);
+			var autoPlayCheckbox = new Element('span', { 'class': 'xEditableRealCheck xProperty-videoAutoplay xParam-'+uploaResponseJSON.get('filename'), 'text': 0 });
+			this.elementEdit_init(autoPlayCheckbox, this.options.xEditableRealCheck);
+			var autoPlayLabel =  new Element('label', { 'html': 'autoplay' });
+			autoPlayCheckbox.inject(autoPlayLabel, 'top');
+			new Element('div', { 'class': 'xAutoPlay' }).adopt(
+				autoPlayLabel
+			).inject(container);
 
-			/*this.elementEdit_init(container.getElement('span[property="width"]'), this.options.xBertaEditorClassSimple);
-			this.elementEdit_init(container.getElement('span[property="height"]'), this.options.xBertaEditorClassSimple);*/
+			this.addElementPosterUploader.delay(1000, this, [ posterLink ]);
 		}
 
 		// animate file block to the real dimensions; update image strip when completed
@@ -523,7 +532,7 @@ var BertaGalleryEditor = new Class({
 		event = new Event(event).stop();
 		var target = $(event.target);
 		if(target.tagName != 'LI') target = target.getParent('li');
-		target.removeClass('hover');
+		if (target) target.removeClass('hover');
 	},
 
 	onElementEditClick: function(event) {

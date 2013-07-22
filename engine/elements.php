@@ -75,7 +75,7 @@ if($jsonRequest) {
 						echo '<div class="xEntryGalleryAddMedia">';
 							echo '<div class="xEntryAddImagesFallback">' .
 									'<iframe name="xEntryUploadFrame' . $entry['id']['value'] . '" id="xEntryUploadFrame' . $entry['id']['value'] . '" class="xEntryUploadFrame"></iframe>' .
-									'<form target="xEntryUploadFrame' . $entry['id']['value'] . '" action="' . $ENGINE_ABS_ROOT . 'upload.php?section=' . $decoded['section'] . '&amp;entry=' . $entry['id']['value'] . '&amp;mediafolder=' . $entry['mediafolder']['value'] . '&amp;session_id=' . session_id() . '" class="xEntryGalleryForm" method="post" enctype="multipart/form-data">' .
+									'<form target="xEntryUploadFrame' . $entry['id']['value'] . '" action="' . $ENGINE_ABS_ROOT . 'upload.php?section=' . $decoded['section'] . '&amp;entry=' . $entry['id']['value'] . '&amp;mediafolder=' . $entry['mediafolder']['value'] . '" class="xEntryGalleryForm" method="post" enctype="multipart/form-data">' .
 										'<input type="hidden" name="upload_key" value="" />' .
 										'<input type="hidden" name="upload_type" value="fallback" />' .
 										//'<input type="file" name="Filedata" class="xUploadFile" /> ' .
@@ -142,6 +142,7 @@ if($jsonRequest) {
 												/*'<span class="dim" property="width" x_params="' . $im['value'] . '">' . (!empty($im['@attributes']['width']) ? $im['@attributes']['width'] : BertaEditor::getXEmpty('width')) . '</span> x ' .
 												'<span class="dim" property="height" x_params="' . $im['value'] . '">' . (!empty($im['@attributes']['height']) ? $im['@attributes']['height'] : BertaEditor::getXEmpty('height')) . '</span>' . */
 											 '</div>';
+										echo '<div class="xAutoPlay"><label><span class="xEditableRealCheck xProperty-videoAutoplay xParam-' . $im['@attributes']['src'] . '">'.( isset($im['@attributes']['autoplay']) && $im['@attributes']['autoplay'] ? 1 : 0 ).'</span>autoplay</label></div>';
 										echo '<div class="xEGEImageCaption ' . $xEditSelectorMCESimple . ' xProperty-galleryImageCaption xCaption-caption xParam-' . $im['@attributes']['src'] . '">', !empty($im['value']) ? $im['value'] : '', '</div>';
 										echo '</li>';
 										echo "\n";
@@ -234,7 +235,7 @@ if($jsonRequest) {
 					echo '<div class="xBgAddMedia">';
 					    echo '<div class="xBgAddImagesFallback">' .
 					    		'<iframe name="xBgUploadFrame" id="xBgUploadFrame" class="xBgUploadFrame"></iframe>' .
-					    		'<form target="xBgUploadFrame" action="' . $ENGINE_ABS_ROOT . 'upload.php?section=' . $section['name']['value'] . '&amp;mediafolder=' . $sectionMF . '&amp;session_id=' . session_id() . '&amp;section_background=true" class="xBgEditorForm" method="post" enctype="multipart/form-data">' .
+					    		'<form target="xBgUploadFrame" action="' . $ENGINE_ABS_ROOT . 'upload.php?section=' . $section['name']['value'] . '&amp;mediafolder=' . $sectionMF . '&amp;section_background=true" class="xBgEditorForm" method="post" enctype="multipart/form-data">' .
 					    			'<input type="hidden" name="upload_key" value="" />' .
 					    			'<input type="hidden" name="upload_type" value="fallback" />' .
 					    			//'<input type="file" name="Filedata" class="xUploadFile" /> ' .

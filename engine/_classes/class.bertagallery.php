@@ -179,9 +179,12 @@ class BertaGallery extends BertaBase {
             $width = round($width * $sizeRatio);
             $height = round($height * $sizeRatio);
 
+            $autoPlay = isset($imgs[$i]['@attributes']['autoplay']) ? $imgs[$i]['@attributes']['autoplay'] : 0;
+
             $navStr .= '<li><a href="' . ($src ? $mFolderABS . $src : '#') . ($isAdminMode ? '?no_cache=' . rand() : '') . '" ' .
                               'class="xType-' . $imgs[$i]['@attributes']['type'] . ' ' .
                                      'xVideoHref-' . $videoLink . ' ' .
+                                     'xAutoPlay-' . $autoPlay . ' ' .
                                      'xOrigHref-' . $origLink . ' ' .
                                      'xW-' . $width . ' ' .
                                      'xH-' . $height . ' ' .
@@ -198,7 +201,7 @@ class BertaGallery extends BertaBase {
                                 $mFolderABS . self::$options['images']['orig_prefix'] . $imgs[$i]['@attributes']['poster_frame'] :
                                 $mFolderABS . $imgs[$i]['@attributes']['poster_frame'];
                 }
-                $milkbox .= '<a href="'.$origLink.'" rel="milkbox[gallery-'.$galleryFullScreen.']" title="'.htmlspecialchars(strip_tags($imgs[$i]['value'])).'" >#</a>';
+                $milkbox .= '<a href="'.$origLink.'" rel="milkbox[gallery-'.$galleryFullScreen.']" title="'.htmlspecialchars($imgs[$i]['value']).'" >#</a>';
             }
         }
         $navStr .= '</ul>';

@@ -1541,6 +1541,19 @@ a.xCreateNewEntry.xSaving {
 						.xEntryGalleryEditor .images li .dimsForm span.dim * { font-size: 10px; }
 						.xEntryGalleryEditor .images li .dimsForm span.dim input { width: 30px !important; padding: 0 !important; border: 1px solid #666; }
 
+					.xEntryGalleryEditor .images li .xAutoPlay {
+						float: left;
+						top: 0;
+						position: absolute;
+						padding: 2px 0;
+   						background-image: url("../layout/semi-transparent-white.png");
+    				}
+
+    				.xEntryGalleryEditor .images li .xAutoPlay label {
+    					font-size: 10px;
+						color: #333;
+    				}
+
 				.xEntryGalleryEditor .images li .xEGEImageCaption {
 					width: 150px;
 					height: 135px;
