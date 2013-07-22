@@ -241,7 +241,9 @@ var BertaGallery = new Class({
 		if(this.type == 'row') {
 			var totalWidth = 0, maxHeight = 0, itmSize, numImages = 0;
 			this.imageContainer.getChildren('.xGalleryItem').each(function(item) {
-				item.setStyle('height', 'auto');
+				if ( item.getClassStoredValue('xGalleryItemType') != 'video' ) {
+					item.setStyle('height', 'auto');
+				}
 				itmSize = item.getSize();
 				totalWidth += itmSize.x;
 				if(itmSize.y > maxHeight) maxHeight = itmSize.y;
@@ -474,7 +476,9 @@ var BertaGallery = new Class({
 				this.preload = new Element('video', { 'id': containerID, 'width': mWidth, 'height': mHeight, 'class': 'video-js vjs-default-skin xGalleryItem xGalleryItemType-video', 'style': { 'opacity': 0 } });
 
 				var videoType = videoPath.split('.').pop();
+
 				var source = new Element('source', { 'src': videoPath, 'type': 'video/'+videoType });
+
 				source.inject(this.preload, 'top');
 
 				this.layout_inject(bDeleteExisting, true);
@@ -492,6 +496,7 @@ var BertaGallery = new Class({
 				} }).inject(this.preload, 'top');
 
 				new Element('div', { 'class': 'xGalleryImageCaption' }).set('html', caption).inject(this.preload);
+
 				this.load_Finish(src, mType, mWidth, mHeight, bDeleteExisting);
 
 				break;
