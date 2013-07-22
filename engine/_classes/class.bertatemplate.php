@@ -320,7 +320,6 @@ class BertaTemplate extends BertaBase {
 			'templateName' => $this->name,
 			'environment' => $this->environment,
 			'flashUploadEnabled' => $this->settings->get('settings', 'flashUploadEnabled') == 'yes' ? 'true' : 'false',
-			'videoPlayerType' => $this->settings->get('entryLayout', 'galleryVideoPlayer'),
 			'slideshowAutoRewind' => $this->settings->get('entryLayout', 'gallerySlideshowAutoRewind'),
 			'sectionType' => $vars['berta']['section']['type'],
 			'gridStep' => $this->settings->get('pageLayout', 'gridStep'),
@@ -349,6 +348,7 @@ class BertaTemplate extends BertaBase {
 		$timestamp = time();
 
 		$vars['berta']['css'] = <<<DOC
+	<link rel="stylesheet" href="{$engineAbsRoot}_lib/video-js/video-js.min.css" type="text/css" charset="utf-8" />
 	<link rel="stylesheet" href="{$engineAbsRoot}css/default.css?{$int_version}" type="text/css" charset="utf-8" />
 	<link rel="stylesheet" href="{$templatesAbsRoot}{$this->name}/style.css.php?{$timestamp}" type="text/css" />
 
@@ -369,7 +369,9 @@ DOC;
 	<script src="{$engineAbsRoot}_lib/mootools/mootools-core-1.4.5-full-compat-yc.js" type="text/javascript" charset="utf-8"></script>
 	<script src="{$engineAbsRoot}_lib/mootools/mootools-1.2.5.1-more.js" type="text/javascript" charset="utf-8"></script>
 	<script src="{$engineAbsRoot}_lib/mootools/mootools-1.2.5.1-more-delegation.js" type="text/javascript" charset="utf-8"></script>
+	<script src="{$engineAbsRoot}_lib/video-js/video.min.js" type="text/javascript" charset="utf-8"></script>
 	<script type="text/javascript">
+	 	_V_.options.flash.swf = "{$engineAbsRoot}_lib/video-js/video-js.swf";
 		var bertaGlobalOptions = $sttingsJS;
 	</script>
 	<script src="{$engineAbsRoot}js/BertaGallery.js?{$int_version}" type="text/javascript" charset="utf-8"></script>

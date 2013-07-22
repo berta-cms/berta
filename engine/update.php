@@ -148,7 +148,17 @@ if($jsonRequest) {
 
 					$e['mediaCacheData']['file'] = $newImagesArray;
 				}
-
+				elseif($decoded['property'] == 'videoAutoplay') {	// video autoplay
+					$imageCache =& $e['mediaCacheData']['file'];
+					Array_XML::makeListIfNotList($imageCache);
+					foreach($imageCache as $cacheIndex => $im) {
+						if($im['@attributes']['src'] == $decoded['params']) {
+							$imageCache[$cacheIndex]['@attributes']['autoplay'] = $decoded['value'];
+							break;
+						}
+					}
+					BertaEditor::updateImageCacheFor($blog, $decoded['entry']);
+				}
 				elseif($decoded['property'] == 'galleryImageCaption') {	// image / video caption
 					$imageCache =& $e['mediaCacheData']['file'];
 					Array_XML::makeListIfNotList($imageCache);

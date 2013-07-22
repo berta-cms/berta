@@ -374,11 +374,13 @@ var BertaEditor = new Class({
 
 		objects.each(function(obj){
 			var srcAttr = obj.get('src');
-			if (srcAttr){
+			if (srcAttr && !srcAttr.match(/javascript:/gi) ){
 				var uri = new URI(srcAttr);
-				uri.setData('wmode', 'transparent');
-				uri = uri.toString();
-				obj.set('src', uri);
+				try {
+					uri.setData('wmode', 'transparent');
+					uri = uri.toString();
+					obj.set('src', uri);
+				}catch(err){}
 			}
 		});
 	},

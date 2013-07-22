@@ -6,7 +6,7 @@
 <!--[if (gt IE 9)|!(IE)]><!--> <html> <!--<![endif]-->
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-	<title>{ $berta.settings.texts.pageTitle }</title>
+	<title>{ $berta.pageTitle }</title>
 	<meta name="keywords" content="{ $berta.settings.texts.metaKeywords }" />
 	<meta name="description" content="{ $berta.settings.texts.metaDescription }" />
 	<meta name="author" content="{ $berta.settings.texts.ownerName }" />
