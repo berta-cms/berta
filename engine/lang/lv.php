@@ -113,9 +113,13 @@ return array(
 	/* help text */    'Distance in pixels for snap-to-grid dragging.' => 'Režģa rūtiņas izmērs pikseļos. Ja lielāks par 1, tad elementi pielips pie šī neredzamā režģa (snap to grid).',
 
 	/* setting tab */  'Entry layout' => 'Ieraksta izskats',
+
 	/* setting name */ 'Small image width' => 'Mazā attēla platums',
 	/* setting name */ 'Small image height' => 'Mazā attēla augstums',
 	/* help text */    'Maximum size of a small image (visible if \'Small images\' are switched on in the gallery editor). These settings don\'t affect original image.' => 'Maksimālais mazā attēla izmērs. Tas būs redzams, kad galerijas redaktorā tiks ieslēgts "Mazās bildes"',
+	/* setting name */ 'Medium image width' => 'Vidējā attēla platums',
+	/* setting name */ 'Medium image height' => 'Vidējā attēla augstums',
+	/* help text */    'Maximum size of a medium image (visible if \'Medium images\' are switched on in the gallery editor). These settings don\'t affect original image.' => 'Maksimālais vidējā attēla izmērs. Tas būs redzams, kad galerijas redaktorā tiks ieslēgts "Vidējās bildes"',
 	/* setting name */ 'Large image width' => 'Lielā attēla platums',
 	/* setting name */ 'Large image height' => 'Lielā attēla augstums',
 	/* help text */    'Maximum size of a large image (visible if \'Large images\' are switched on in the gallery editor). These settings don\'t affect original image.' => 'Maksimālais mazā attēla izmērs. Tas būs redzams, kad galerijas redaktorā tiks ieslēgts "Lielās bildes"',
