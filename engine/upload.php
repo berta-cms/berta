@@ -117,7 +117,7 @@ if($settingsProperty) {
 
 $badChars = str_split('#$%^&*\\/.,><~`@');
 $badChars = array_push($badChars, '--');
-$videoExtensions = array('flv', 'f4v', 'mp4');
+$videoExtensions = array('flv', 'mp4');
 $iconExtensions = array('ico');
 
 $result = array();
@@ -146,9 +146,9 @@ if(($entryId && $mediaFolder || $settingsProperty || $sectionName && $mediaFolde
 			$fileExt = $ext;
 			$fileType = 'icon';
 		} else {
-			if(!($imInfo = @getimagesize($file)))								$error = 'Only JPG, GIF, PNG images and FLV (F4V) videos are supported.';
+			if(!($imInfo = @getimagesize($file)))								$error = 'Only JPG, GIF, PNG images and MP4, FLV videos are supported.';
 			if(!$error && !in_array($imInfo[2],
-				array(IMAGETYPE_GIF, IMAGETYPE_JPEG, IMAGETYPE_PNG)))			$error = 'Only JPG, GIF, PNG images and FLV (F4V) videos are supported.';
+				array(IMAGETYPE_GIF, IMAGETYPE_JPEG, IMAGETYPE_PNG)))			$error = 'Only JPG, GIF, PNG images and MP4, FLV videos are supported.';
 			//if(!$error && (($imInfo[0] < $constraints['min_width']) ||
 			//			  ($imInfo[1] < $constraints['min_height'])))			$error = 'Please don\'t upload super-small images!';
 			if(!$error && (($imInfo[0] > $constraints['max_orig_width']) ||

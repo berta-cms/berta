@@ -16,8 +16,8 @@ require 'config/inc.conf.php';
 /**
  * Berta's release version
  */
-$options['version'] = '0.8.5b';
-$options['int_version'] = '1088';
+$options['version'] = '0.8.6a';
+$options['int_version'] = '1089';
 
 
 /**
@@ -128,6 +128,9 @@ $options['images']['preview_prefix'] = '_preview_';	// MUST start with an unders
 
 $options['images']['small_width'] = 200;
 $options['images']['small_height'] = 200;
+
+$options['images']['medium_width'] = 400;
+$options['images']['medium_height'] = 400;
 
 $options['images']['large_width'] = 600;
 $options['images']['large_height'] = 600;

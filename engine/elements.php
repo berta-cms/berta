@@ -67,7 +67,7 @@ if($jsonRequest) {
 									'<a href="#" class="xParams-fullscreen" title="lightbox on/off"><span>lightbox</span></a>',
 								 '</div>';
 							echo '<div class="xEntryImageSizeSettings tab ">',
-									'<a href="#" class="xParams-image_size" title="large/small image size"><span>image size</span></a>',
+									'<a href="#" class="xParams-image_size" title="large/medium/small image size"><span>image size</span></a>',
 								 '</div>';
 							echo '<a class="xEntryGalCloseLink xEditorLink" href="#" title="close image editor"><span>X</span></a>';
 						echo '</div>';
@@ -112,7 +112,7 @@ if($jsonRequest) {
 
 						echo '<div class="xEntryGalleryImageSize xHidden">';
 							echo '<div class="caption">image size</div>',
-								 '<div class="xEntrySetImageSize xFloatLeft xEditableSelectRC xCommand-SET_GALLERY_SIZE" x_options="large||small">' . $imageSize . '</div><div class="clear"></div>';
+								 '<div class="xEntrySetImageSize xFloatLeft xEditableSelectRC xCommand-SET_GALLERY_SIZE" x_options="large||medium||small">' . $imageSize . '</div><div class="clear"></div>';
 						echo '</div>';
 
 						echo '<div class="images"><ul>';

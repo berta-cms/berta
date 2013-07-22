@@ -63,6 +63,8 @@ $settingsDefinition = array(
 		'_' =>                      array('title' => I18n::_('Media')),
 		'imagesSmallWidth' => 		array('format' => 'text',	'default' => $options['images']['small_width'], 		'css_units' => false, 'title' => I18n::_('Small image width'),  'description' => I18n::_('Maximum size of a small image (visible if \'Small images\' are switched on in the gallery editor). These settings don\'t affect original image.')),
 		'imagesSmallHeight' => 		array('format' => 'text',	'default' => $options['images']['small_height'], 		'css_units' => false, 'title' => I18n::_('Small image height'), 'description' => ''),
+		'imagesMediumWidth' => 		array('format' => 'text',	'default' => $options['images']['medium_width'], 		'css_units' => false, 'title' => I18n::_('Medium image width'),  'description' => I18n::_('Maximum size of a medium image (visible if \'Medium images\' are switched on in the gallery editor). These settings don\'t affect original image.')),
+		'imagesMediumHeight' => 	array('format' => 'text',	'default' => $options['images']['medium_height'], 		'css_units' => false, 'title' => I18n::_('Medium image height'), 'description' => ''),
 		'imagesLargeWidth' => 		array('format' => 'text',	'default' => $options['images']['large_width'], 		'css_units' => false, 'title' => I18n::_('Large image width'),  'description' => I18n::_('Maximum size of a large image (visible if \'Large images\' are switched on in the gallery editor). These settings don\'t affect original image.')),
 		'imagesLargeHeight' => 		array('format' => 'text',	'default' => $options['images']['large_height'], 		'css_units' => false, 'title' => I18n::_('Large image height'), 'description' => '')
 	),
