@@ -38,11 +38,11 @@ $templateConf = array(
 		'color' => 				array('format' => 'color',		'default' => '#1a1a1a', 							'title' => I18n::_('Color'), 'description' => ''),
 		'fontFamily' => 		array('format' => 'fontselect',	'values' => $fontOptions, 'default' => '"Times New Roman", Times, serif', 			'title' => I18n::_('Font face'), 'description' => ''),
 		'googleFont' => 		array('format' => 'text',		'default' => '', 'html_entities' => true,			'title' => I18n::_('Google web fonts'),         'description' => I18n::_('googleFont_description')),
-		'fontSize' => 			array('format' => 'text',		'default' => '11px', 								'title' => I18n::_('Font size'), 'description' => ''),
+		'fontSize' => 			array('format' => 'text', 'css_units' => true, 'default' => '11px', 								'title' => I18n::_('Font size'), 'description' => ''),
 		'fontWeight' => 		array('format' => 'select',		'values' => array('normal', 'bold'), 'default' => 'normal', 		'title' => I18n::_('Font weight'), 'description' => ''),
 		'fontStyle' => 			array('format' => 'select',		'values' => array('normal', 'italic'), 'default' => 'normal', 		'title' => I18n::_('Font style'), 'description' => ''),
 		'fontVariant' => 		array('format' => 'select',		'values' => array('normal', 'small-caps'), 'default' => 'normal', 	'title' => I18n::_('Font variant'), 'description' => ''),
-		'lineHeight' => 		array('format' => 'text',		'default' => 'normal', 								'title' => I18n::_('Line height'), 'description' => I18n::_('Height of text line. Use em, px or % values or the default value "normal"'))
+		'lineHeight' => 		array('format' => 'text', 'css_units' => true, 'default' => 'normal', 								'title' => I18n::_('Line height'), 'description' => I18n::_('Height of text line. Use em, px or % values or the default value "normal"'))
 	),
 
 	'background' => array(
@@ -87,13 +87,11 @@ $templateConf = array(
 		'color' => 				array('format' => 'color',		'default' => '#1a1a1a', 					'title' => I18n::_('Heading text color'), 'description' => ''),
 		'fontFamily' => 		array('format' => 'fontselect',	'values' => $fontOptionsWithInherit, 'default' => 'Georgia, "Times New Roman", Times, serif', 			'title' => I18n::_('Heading font'), 'description' => ''),
 		'googleFont' => 		array('format' => 'text',		'default' => '', 'html_entities' => true, 'title' => I18n::_('Google web fonts'),         'description' => I18n::_('googleFont_description')),
-		'fontSize' => 			array('format' => 'text',		'default' => '10px', 					'title' => I18n::_('Heading font size'), 'description' => ''),
+		'fontSize' => 			array('format' => 'text', 'css_units' => true, 'default' => '10px', 					'title' => I18n::_('Heading font size'), 'description' => ''),
 		'fontWeight' => 		array('format' => 'select',		'values' => array('normal', 'bold'), 'default' => 'normal', 				'title' => I18n::_('Heading font weight'), 'description' => ''),
 		'fontStyle' => 			array('format' => 'select',		'values' => array('normal', 'italic'), 'default' => 'normal', 			'title' => I18n::_('Heading font style'), 'description' => ''),
 		'fontVariant' => 		array('format' => 'select',		'values' => array('normal', 'small-caps'), 'default' => 'normal', 		'title' => I18n::_('Heading font variant'), 'description' => ''),
-		'lineHeight' => 		array('format' => 'text',		'default' => '1em', 					'title' => I18n::_('Heading line height'), 'description' => I18n::_('Height of text line. Use em, px or % values or the default value "normal"'))
-
-
+		'lineHeight' => 		array('format' => 'text', 'css_units' => true, 'default' => '1em', 					'title' => I18n::_('Heading line height'), 'description' => I18n::_('Height of text line. Use em, px or % values or the default value "normal"'))
 	),
 
 	'firstPage' => array(
@@ -108,10 +106,10 @@ $templateConf = array(
         '_' => array('title' => I18n::_('Main menu')),
 		'fontFamily' => 			array('format' => 'fontselect',	'values' => $fontOptionsWithInherit, 'default' => 'inherit', 			'title' => I18n::_('Font face'), 'description' => ''),
 		'googleFont' => 			array('format' => 'text',		'default' => '', 'html_entities' => true,								'title' => I18n::_('Google web fonts'),         'description' => I18n::_('googleFont_description')),
-		'fontSize' => 				array('format' => 'text',		'default' => '10px', 								'title' => I18n::_('Font size'), 'description' => ''),
+		'fontSize' => 				array('format' => 'text', 'css_units' => true, 'default' => '10px', 								'title' => I18n::_('Font size'), 'description' => ''),
 		'fontWeight' => 			array('format' => 'select',		'values' => array('normal', 'bold'), 'default' => 'normal', 		'title' => I18n::_('Font weight'), 'description' => ''),
 		'fontStyle' => 				array('format' => 'select',		'values' => array('normal', 'italic'), 'default' => 'normal', 		'title' => I18n::_('Font style'), 'description' => ''),
-		'lineHeight' => 			array('format' => 'text',		'default' => '16px', 								'title' => I18n::_('Line height'), 'description' => I18n::_('Height of text line. Use em, px or % values or the default value "normal"')),
+		'lineHeight' => 			array('format' => 'text', 'css_units' => true, 'default' => '16px', 								'title' => I18n::_('Line height'), 'description' => I18n::_('Height of text line. Use em, px or % values or the default value "normal"')),
 		'colorLink' => 				array('format' => 'color',		'default' => '#1a1a1a', 	'title' => I18n::_('Color'), 'description' => ''),
 		'colorHover' => 			array('format' => 'color',		'default' => '#0000ff', 	'title' => I18n::_('Color when hovered'), 'description' => ''),
 		'colorActive' => 			array('format' => 'color',		'default' => '#1a1a1a', 	'title' => I18n::_('Color when opened'), 'description' => ''),
@@ -124,10 +122,10 @@ $templateConf = array(
         '_' => array('title' => I18n::_('Submenu')),
 		'fontFamily' => 			array('format' => 'fontselect',	'values' => $fontOptionsWithInherit, 'default' => 'inherit', 			'title' => I18n::_('Font face'), 'description' => ''),
 		'googleFont' => 			array('format' => 'text',		'default' => '', 'html_entities' => true,								'title' => I18n::_('Google web fonts'),         'description' => I18n::_('googleFont_description')),
-		'fontSize' => 				array('format' => 'text',		'default' => '11px', 								'title' => I18n::_('Font size'), 'description' => ''),
+		'fontSize' => 				array('format' => 'text', 'css_units' => true, 'default' => '11px', 								'title' => I18n::_('Font size'), 'description' => ''),
 		'fontWeight' => 			array('format' => 'select',		'values' => array('normal', 'bold'), 'default' => 'normal', 		'title' => I18n::_('Font weight'), 'description' => ''),
 		'fontStyle' => 				array('format' => 'select',		'values' => array('normal', 'italic'), 'default' => 'normal', 		'title' => I18n::_('Font style'), 'description' => ''),
-		'lineHeight' => 			array('format' => 'text',		'default' => '16px', 								'title' => I18n::_('Line height'), 'description' => I18n::_('Height of text line. Use em, px or % values or the default value "normal"')),
+		'lineHeight' => 			array('format' => 'text', 'css_units' => true, 'default' => '16px', 								'title' => I18n::_('Line height'), 'description' => I18n::_('Height of text line. Use em, px or % values or the default value "normal"')),
 		'colorLink' => 				array('format' => 'color',			'default' => '#1a1a1a', 	'title' => I18n::_('Color'), 'description' => ''),
 		'colorHover' => 			array('format' => 'color',		'default' => '#0000ff', 	'title' => I18n::_('Color when hovered'), 'description' => ''),
 		'colorActive' => 			array('format' => 'color',		'default' => '#1a1a1a', 	'title' => I18n::_('Color when selected'), 'description' => ''),

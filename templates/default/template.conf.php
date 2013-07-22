@@ -35,11 +35,11 @@ $templateConf = array(
 		'color' => 					array('format' => 'color',		'default' => '#333333', 							                            'title' => I18n::_('Color'),             'description' => ''),
 		'fontFamily' => 			array('format' => 'fontselect',	'values' => $fontOptions, 'default' => reset($fontOptions), 	'title' => I18n::_('Font face'),         'description' => ''),
 		'googleFont' => 			array('format' => 'text',		'default' => '', 'html_entities' => true,										'title' => 'Google web fonts',         'description' => I18n::_('googleFont_description')),
-		'fontSize' => 				array('format' => 'text',		'default' => '9pt', 								                            'title' => I18n::_('Font size'),         'description' => ''),
+		'fontSize' => 				array('format' => 'text', 'css_units' => true, 'default' => '9pt', 								                            'title' => I18n::_('Font size'),         'description' => ''),
 		'fontWeight' => 			array('format' => 'select',		'values' => array('normal', 'bold'), 'default' => 'normal', 		            'title' => I18n::_('Font weight'),       'description' => ''),
 		'fontStyle' => 				array('format' => 'select',		'values' => array('normal', 'italic'), 'default' => 'normal', 		                'title' => I18n::_('Font style'),        'description' => ''),
 		'fontVariant' => 			array('format' => 'select',		'values' => array('normal', 'small-caps'), 'default' => 'normal', 	            'title' => I18n::_('Font variant'),      'description' => ''),
-		'lineHeight' => 			array('format' => 'text',		'default' => 'normal', 								                            'title' => I18n::_('Line height'),       'description' => I18n::_('Height of text line. Use em, px or % values or the default value "normal"'))
+		'lineHeight' => 			array('format' => 'text', 'css_units' => true, 'default' => 'normal', 								                            'title' => I18n::_('Line height'),       'description' => I18n::_('Height of text line. Use em, px or % values or the default value "normal"'))
 	),
 
 	'links' => array(
@@ -70,7 +70,7 @@ $templateConf = array(
 		'contentAlign' => 			array('format' => 'select',		'values' => array('left', 'right', 'justify-left', 'justify-right'), 	'default' => 'left',        'title' => I18n::_('Text alignment'),           'description' => ''),
 		'contentWidth' => 			array('format' => 'text',		'default' => '500px', 'css_units' => true,			                                                'title' => I18n::_('Width of content area'),    'description' => ''),
 		'bodyMargin' => 			array('format' => 'text',		'default' => '20px 40px 40px', 'css_units' => true,	                                                'title' => I18n::_('Page margins'),             'description' => I18n::_('How far the content is from browser edges. Please see the short CSS guide at the bottom of this page.')),
-		'siteMenuMargin' => 		array('format' => 'text',		'default' => '0px', 'css_units' => true,			                                                'title' => I18n::_('Top menu margins'),         'description' => I18n::_('How big is the distance from the top menu to the other page elements'))
+		'siteMenuMargin' => 		array('format' => 'text',		'default' => '0', 'css_units' => true,			                                                'title' => I18n::_('Top menu margins'),         'description' => I18n::_('How big is the distance from the top menu to the other page elements'))
 	),
 
 	'pageHeading' => array(
@@ -79,50 +79,50 @@ $templateConf = array(
 		'color' => 					array('format' => 'color',		'default' => '#333333', 					                                                        'title' => I18n::_('Color'),         'description' => ''),
 		'fontFamily' => 			array('format' => 'fontselect',	'values' => $fontOptionsWithInherit, 'default' => 'inherit', 			                        'title' => I18n::_('Font face'),     'description' => ''),
 		'googleFont' => 			array('format' => 'text',		'default' => '', 'html_entities' => true,															'title' => 'Google web fonts',         'description' => I18n::_('googleFont_description')),
-		'fontSize' => 				array('format' => 'text',		'default' => '1.2em', 					                                                            'title' => I18n::_('Font size'),     'description' => ''),
+		'fontSize' => 				array('format' => 'text', 'css_units' => true, 'default' => '1.2em', 					                                                            'title' => I18n::_('Font size'),     'description' => ''),
 		'fontWeight' => 			array('format' => 'select',		'values' => array('normal', 'bold'), 'default' => 'bold', 				                            'title' => I18n::_('Font weight'),   'description' => ''),
 		'fontStyle' => 				array('format' => 'select',		'values' => array('normal', 'italic'), 'default' => 'normal', 			                            'title' => I18n::_('Font style'),    'description' => ''),
 		'fontVariant' => 			array('format' => 'select',		'values' => array('normal', 'small-caps'), 'default' => 'normal', 		                            'title' => I18n::_('Font variant'),  'description' => ''),
-		'lineHeight' => 			array('format' => 'text',		'default' => '0.8em', 					                                                            'title' => I18n::_('Line height'),   'description' => I18n::_('Height of text line. Use em, px or % values or the default value "normal"')),
-		'margin' => 				array('format' => 'text',		'default' => '10px 0 15px', 			                                                            'title' => I18n::_('Margins'),       'description' => I18n::_('How far the heading is form other elements in page. Please see the short CSS guide at the bottom of this page.')),
+		'lineHeight' => 			array('format' => 'text', 'css_units' => true, 'default' => '0.8em', 					                                                            'title' => I18n::_('Line height'),   'description' => I18n::_('Height of text line. Use em, px or % values or the default value "normal"')),
+		'margin' => 				array('format' => 'text', 'css_units' => true, 'default' => '10px 0 15px', 			                                                            'title' => I18n::_('Margins'),       'description' => I18n::_('How far the heading is form other elements in page. Please see the short CSS guide at the bottom of this page.')),
 	),
 
 	'menu' => array(
 		'_' => array('title' => I18n::_('Main menu')),
 		'separator' => 				array('format' => 'text',		'default' => '|', 						                                    'title' => I18n::_('Menu items separator'),              'description' => ''),
-		'separatorDistance' => 	array('format' => 'text',		'default' => '0.5em', 					                                        'title' => I18n::_('Space width around separator'),      'description' => I18n::_('The distance from the separator to the menu item on both sides')),
-		'fontSize' => 				array('format' => 'text',		'default' => 'inherit', 				                                    'title' => I18n::_('Font size'),                         'description' => ''),
+		'separatorDistance' => 	array('format' => 'text', 'css_units' => true, 'default' => '0.5em', 					                                        'title' => I18n::_('Space width around separator'),      'description' => I18n::_('The distance from the separator to the menu item on both sides')),
+		'fontSize' => 				array('format' => 'text', 'css_units' => true, 'default' => 'inherit', 				                                    'title' => I18n::_('Font size'),                         'description' => ''),
 		'fontFamily' => 			array('format' => 'fontselect',		'values' => $fontOptionsWithInherit, 'default' => 'inherit', 	        'title' => I18n::_('Font face'),                         'description' => ''),
 		'googleFont' => 			array('format' => 'text',		'default' => '', 'html_entities' => true,									'title' => 'Google web fonts',         'description' => I18n::_('googleFont_description')),
 		'fontWeight' => 			array('format' => 'select',		'values' => array('inherit', 'normal', 'bold'), 'default' => 'inherit',     'title' => I18n::_('Font weight'),                       'description' => ''),
 		'fontStyle' => 			array('format' => 'select',		'values' => array('inherit', 'normal', 'italic'), 'default' => 'inherit', 	    'title' => I18n::_('Font style'),                        'description' => ''),
 		'fontVariant' => 			array('format' => 'select',		'values' => array('inherit', 'normal', 'small-caps'), 'default' => 'inherit','title' => I18n::_('Font variant'),                     'description' => ''),
-		'lineHeight' =>			array('format' => 'text',		'default' => 'inherit', 				                                        'title' => I18n::_('Line height'),                       'description' => I18n::_('Height of text line. Use em, px or % values or the default value "normal"')),
-		'margin' => 				array('format' => 'text',		'default' => '0', 				                                            'title' => I18n::_('Margins'),                           'description' => I18n::_('How far the menu is form other elements in page. Please see the short CSS guide at the bottom of this page.'))
+		'lineHeight' =>			array('format' => 'text', 'css_units' => true, 'default' => 'inherit', 				                                        'title' => I18n::_('Line height'),                       'description' => I18n::_('Height of text line. Use em, px or % values or the default value "normal"')),
+		'margin' => 				array('format' => 'text', 'css_units' => true, 'default' => '0', 				                                            'title' => I18n::_('Margins'),                           'description' => I18n::_('How far the menu is form other elements in page. Please see the short CSS guide at the bottom of this page.'))
 	),
 
 	'subMenu' => array(
 		'_' => array('title' => I18n::_('Submenu')),
 		'separator' => 				array('format' => 'text',		'default' => '|', 						                                    'title' => I18n::_('Menu items separator'),                      'description' => ''),
-		'separatorDistance' => 	array('format' => 'text',		'default' => '0.5em', 					                                        'title' => I18n::_('Space width around separator'),              'description' => I18n::_('The distance from the separator to the menu item on both sides')),
-		'fontSize' => 				array('format' => 'text',		'default' => 'inherit', 				                                    'title' => I18n::_('Font size'),                                 'description' => ''),
+		'separatorDistance' => 	array('format' => 'text', 'css_units' => true, 'default' => '0.5em', 					                                        'title' => I18n::_('Space width around separator'),              'description' => I18n::_('The distance from the separator to the menu item on both sides')),
+		'fontSize' => 				array('format' => 'text', 'css_units' => true, 'default' => 'inherit', 				                                    'title' => I18n::_('Font size'),                                 'description' => ''),
 		'fontFamily' => 			array('format' => 'fontselect',		'values' => $fontOptionsWithInherit, 'default' => 'inherit', 			'title' => I18n::_('Font face'),                                 'description' => ''),
 		'googleFont' => 			array('format' => 'text',		'default' => '', 'html_entities' => true,									'title' => 'Google web fonts',         'description' => I18n::_('googleFont_description')),
 		'fontWeight' => 			array('format' => 'select',		'values' => array('inherit', 'normal', 'bold'), 'default' => 'inherit', 	'title' => I18n::_('Font weight'),                               'description' => ''),
 		'fontStyle' => 			array('format' => 'select',		'values' => array('inherit', 'normal', 'italic'), 'default' => 'inherit', 		'title' => I18n::_('Font style'),                                'description' => ''),
 		'fontVariant' => 			array('format' => 'select',		'values' => array('inherit', 'normal', 'small-caps'), 'default' => 'inherit','title' => I18n::_('Font variant'),                             'description' => ''),
-		'lineHeight' =>			array('format' => 'text',		'default' => 'inherit', 				                                        'title' => I18n::_('Line height'),                               'description' => I18n::_('Height of text line. Use em, px or % values or the default value "normal"')),
-		'margin' => 				array('format' => 'text',		'default' => '0 0 10px', 				                                    'title' => I18n::_('Margins'),                                   'description' => I18n::_('How far the menu is form other elements in page. Please see the short CSS guide at the bottom of this page.'))
+		'lineHeight' =>			array('format' => 'text', 'css_units' => true, 'default' => 'inherit', 				                                        'title' => I18n::_('Line height'),                               'description' => I18n::_('Height of text line. Use em, px or % values or the default value "normal"')),
+		'margin' => 				array('format' => 'text', 'css_units' => true,	'default' => '0 0 10px', 				                                    'title' => I18n::_('Margins'),                                   'description' => I18n::_('How far the menu is form other elements in page. Please see the short CSS guide at the bottom of this page.'))
 	),
 
 
 	'entryLayout' => array(
 		'_' => array('title' => I18n::_('Entry layout')),
-		'margin' => 			 array('format' => 'text',		'default' => '0 0 4em', 							                                                                                'title' => I18n::_('Entry margins'), 	            'description' => I18n::_('Margins around entries. Please see the short CSS guide at the bottom of this page.')),
+		'margin' => 			 array('format' => 'text', 'css_units' => true, 'default' => '0 0 4em', 							                                                                                'title' => I18n::_('Entry margins'), 	            'description' => I18n::_('Margins around entries. Please see the short CSS guide at the bottom of this page.')),
 		'galleryPosition' => 	 array('format' => 'select',	'values' => array('between title/description', 'above title', 'below description'), 'default' => 'between title/description',       'title' => I18n::_('Gallery position'),             'description' => ''),
 		'defaultGalleryType' =>  array('format' => 'select',	'values' => array('slideshow', 'row'), 'default' => 'slideshow',                                                                    'title' => I18n::_('Default gallery type'),         'description' => I18n::_('Slideshow means that an image menu plus only one image is visible at a time. Row means that all images are visible.')),
         'spaceBetweenImages' =>  array('format' => 'text',		'default' => '1em', 'css_units' => true,                                                                                            'title' => I18n::_('Space between images in row and column'),       'description' => I18n::_('Horizontal/vertical space between images when gallery is in "row"/"column" mode')),
-		'galleryMargin' => 		 array('format' => 'text',		'default' => '0',                                                                                                                   'title' => I18n::_('Gallery margins'), 	            'description' => I18n::_('Margin around gallery block')),
+		'galleryMargin' => 		 array('format' => 'text', 'css_units' => true, 'default' => '0',                                                                                                                   'title' => I18n::_('Gallery margins'), 	            'description' => I18n::_('Margin around gallery block')),
 		'displayTags' =>  		 array('format' => 'select',	'values' => array('yes', 'no'), 'default' => 'yes',                                                                                 'title' => I18n::_('Display tags by each entry'),   'description' => I18n::_('This determines whether people will see tags you set for each entry. Regardless of this settting, tags still will make up the main menu.')),
 		'dateFormat' => 		 array('format' => 'select',	'values' => array('year', 'month and year', 'day, month and year', 'full', 'hidden'), 'default' => 'hidden',                        'title' => I18n::_('Date format in entries'),       'description' => ''),
 		'dateSeparator1' => 	 array('format' => 'text',		'allow_blank' => false,	'default' => '/',                                                                                           'title' => I18n::_('Date separator'),               'description' => I18n::_('Separator symbol that divides year, month and day')),
@@ -134,12 +134,12 @@ $templateConf = array(
 		'color' => 				array('format' => 'color',		'default' => '#333333', 					                                    'title' => I18n::_('Color'),             'description' => ''),
 		'fontFamily' => 		array('format' => 'fontselect',	'values' => $fontOptionsWithInherit, 'default' => 'inherit', 			        'title' => I18n::_('Font face'),         'description' => ''),
 		'googleFont' => 			array('format' => 'text',		'default' => '', 'html_entities' => true,									'title' => 'Google web fonts',         'description' => I18n::_('googleFont_description')),
-		'fontSize' => 			array('format' => 'text',		'default' => '1.8em', 					                                        'title' => I18n::_('Font size'),         'description' => ''),
+		'fontSize' => 			array('format' => 'text', 'css_units' => true, 'default' => '1.8em', 					                                        'title' => I18n::_('Font size'),         'description' => ''),
 		'fontWeight' => 		array('format' => 'select',		'values' => array('normal', 'bold'), 'default' => 'normal', 			        'title' => I18n::_('Font weight'),       'description' => ''),
 		'fontStyle' => 			array('format' => 'select',		'values' => array('normal', 'italic'), 'default' => 'normal', 			        'title' => I18n::_('Font style'),        'description' => ''),
 		'fontVariant' => 		array('format' => 'select',		'values' => array('normal', 'small-caps'), 'default' => 'normal', 		        'title' => I18n::_('Font variant'),      'description' => ''),
-		'lineHeight' => 		array('format' => 'text',		'default' => 'normal', 					                                        'title' => I18n::_('Line height'),       'description' => I18n::_('Height of text line. Use em, px or % values or the default value "normal"')),
-		'margin' => 			array('format' => 'text',		'default' => '0', 						                                        'title' => I18n::_('Margins'),           'description' => I18n::_('How far the entry heading is form other elements in page. Please see the short CSS guide at the bottom of this page.')),
+		'lineHeight' => 		array('format' => 'text', 'css_units' => true, 'default' => 'normal', 					                                        'title' => I18n::_('Line height'),       'description' => I18n::_('Height of text line. Use em, px or % values or the default value "normal"')),
+		'margin' => 			array('format' => 'text', 'css_units' => true, 'default' => '0', 						                                        'title' => I18n::_('Margins'),           'description' => I18n::_('How far the entry heading is form other elements in page. Please see the short CSS guide at the bottom of this page.')),
 	),
 
 	'entryFooter' => array(
@@ -147,11 +147,11 @@ $templateConf = array(
 		'color' => 					array('format' => 'color',		'default' => '#333333', 					                                'title' => I18n::_('Color'),             'description' => ''),
 		'fontFamily' => 			array('format' => 'fontselect',		'values' => $fontOptionsWithInherit, 'default' => 'inherit', 			'title' => I18n::_('Font face'),         'description' => ''),
 		'googleFont' => 			array('format' => 'text',		'default' => '', 'html_entities' => true,									'title' => 'Google web fonts',         'description' => I18n::_('googleFont_description')),
-		'fontSize' => 				array('format' => 'text',		'default' => 'inherit', 					                                'title' => I18n::_('Font size'),         'description' => ''),
+		'fontSize' => 				array('format' => 'text',  'css_units' => true, 'default' => 'inherit', 					                                'title' => I18n::_('Font size'),         'description' => ''),
 		'fontWeight' => 			array('format' => 'select',		'values' => array('inherit', 'normal', 'bold'), 'default' => 'inherit', 	'title' => I18n::_('Font weight'),       'description' => ''),
 		'fontStyle' => 			array('format' => 'select',		'values' => array('inherit', 'normal', 'italic'), 'default' => 'inherit', 		'title' => I18n::_('Font style'),        'description' => ''),
 		'fontVariant' => 			array('format' => 'select',		'values' => array('inherit', 'normal', 'small-caps'), 'default' => 'inherit','title' =>I18n::_('Font variant'),      'description' => ''),
-		'lineHeight' => 			array('format' => 'text',		'default' => 'inherit', 					                                'title' => I18n::_('Line height'),       'description' => I18n::_('Height of text line. Use em, px or % values or the default value "normal"')),
+		'lineHeight' => 			array('format' => 'text', 'css_units' => true, 'default' => 'inherit', 					                                'title' => I18n::_('Line height'),       'description' => I18n::_('Height of text line. Use em, px or % values or the default value "normal"')),
 	),
 	'css' => array(
 		'_' => array('title' => I18n::_('Custom CSS')),
