@@ -34,11 +34,11 @@ $templateConf = array(
 		'color' => 				array('format' => 'color',		'default' => '#000000', 							                'title' => I18n::_('Color'),         'description' => ''),
 		'fontFamily' => 		array('format' => 'fontselect',	'values' => $fontOptions, 'default' => 'Arial, sans-serif', 		'title' => I18n::_('Font face'),     'description' => ''),
 		'googleFont' => 		array('format' => 'text',		'default' => '', 'html_entities'	=> true,						'title' => 'Google web fonts',		 'description' => I18n::_('googleFont_description')),
-		'fontSize' => 			array('format' => 'text',		'default' => '11px', 								                'title' => I18n::_('Font size'),     'description' => ''),
+		'fontSize' => 			array('format' => 'text', 'css_units' => true, 'default' => '11px', 								                'title' => I18n::_('Font size'),     'description' => ''),
 		'fontWeight' => 		array('format' => 'select',		'values' => array('normal', 'bold'), 'default' => 'normal', 		'title' => I18n::_('Font weight'),   'description' => ''),
 		'fontStyle' => 			array('format' => 'select',		'values' => array('normal', 'italic'), 'default' => 'normal', 		'title' => I18n::_('Font style'),    'description' => ''),
 		'fontVariant' => 		array('format' => 'select',		'values' => array('normal', 'small-caps'), 'default' => 'normal', 	'title' => I18n::_('Font variant'),  'description' => ''),
-		'lineHeight' => 		array('format' => 'text',		'default' => 'normal', 								                'title' => I18n::_('Line height'),   'description' => I18n::_('Height of text line. Use em, px or % values or the default value "normal"'))
+		'lineHeight' => 		array('format' => 'text', 'css_units' => true, 'default' => 'normal', 								                'title' => I18n::_('Line height'),   'description' => I18n::_('Height of text line. Use em, px or % values or the default value "normal"'))
 	),
 
 	'menu' => array(
@@ -80,11 +80,11 @@ $templateConf = array(
 		'color' => 					array('format' => 'color',		'default' => '#000000', 					                                                        'title' => I18n::_('Color'),         'description' => ''),
 		'fontFamily' => 			array('format' => 'fontselect',		'values' => $fontOptionsWithInherit, 'default' => 'inherit', 			                        'title' => I18n::_('Font face'),     'description' => ''),
 		'googleFont' => 			array('format' => 'text',		'default' => '', 'html_entities' => true, 															'title' => 'Google web fonts',         'description' => I18n::_('googleFont_description')),
-		'fontSize' => 				array('format' => 'text',		'default' => '20px', 					                                                            'title' => I18n::_('Font size'),     'description' => ''),
+		'fontSize' => 				array('format' => 'text', 'css_units' => true, 'default' => '20px', 					                                                            'title' => I18n::_('Font size'),     'description' => ''),
 		'fontWeight' => 			array('format' => 'select',		'values' => array('normal', 'bold'), 'default' => 'normal',                                         'title' => I18n::_('Font weight'),   'description' => ''),
 		'fontStyle' => 				array('format' => 'select',		'values' => array('normal', 'italic'), 'default' => 'normal', 			                            'title' => I18n::_('Font style'),    'description' => ''),
 		'fontVariant' => 			array('format' => 'select',		'values' => array('normal', 'small-caps'), 'default' => 'normal', 		                            'title' => I18n::_('Font variant'),  'description' => ''),
-		'lineHeight' => 			array('format' => 'text',		'default' => '1em', 					                                                            'title' => I18n::_('Line height'),   'description' => I18n::_('Height of text line. Use em, px or % values or the default value "normal"')),
+		'lineHeight' => 			array('format' => 'text', 'css_units' => true, 'default' => '1em', 					                                                            'title' => I18n::_('Line height'),   'description' => I18n::_('Height of text line. Use em, px or % values or the default value "normal"')),
 		'marginTop' => 				array('format' => 'text',		'default' => '0', 				'css_units' => true,                    'title' => I18n::_('Empty space on top'),                        'description' => ''),
 		'marginBottom' => 			array('format' => 'text',		'default' => '20px', 				'css_units' => true,                'title' => I18n::_('Empty space on bottom'),                     'description' => '')
 	),
