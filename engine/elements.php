@@ -154,6 +154,7 @@ if($jsonRequest) {
 											echo '<li filename="' . (string) $im['@attributes']['src'] . '" fileinfo="' . '' . '">';
 											echo '<img class="img" src="' . $imageThumbSrc . '" />';
 											echo '<span class="grabHandle xMAlign-container"><span class="xMAlign-outer"><a class="xMAlign-inner" title="click and drag to move"><span></span></a></span></span>';
+											echo '<a href="#" class="crop" data-src="'.$imSrc.'"></a>';
 											echo '<a href="#" class="delete"></a>';
 											echo '<div class="xEGEImageCaption ' . $xEditSelectorMCESimple . ' xProperty-galleryImageCaption xCaption-image-caption xParam-' . $im['@attributes']['src'] . '">', !empty($im['value']) ? $im['value'] : '', '</div>';
 											echo '</li>';
@@ -164,6 +165,22 @@ if($jsonRequest) {
 								//echo '<li class="placeholder"><img src="' . $ENGINE_ROOT . 'layout/gallery-placeholder.gif" /></li>';
 							}
 						echo "</ul></div>\n";
+
+						echo '<div class="xEntryGalleryCrop xHidden">
+								<img src="" class="cropImage">
+								<section class="cropToolbar">
+									<p>Original size: <span class="widthOrigUI"></span> &times; <span class="heightOrigUI"></span></p>
+									<p>
+										w: <input type="text" name="widthReal" class="widthReal" value=""> &times; h: <input type="text" name="heightReal" class="heightReal">
+									</p>
+									<p class="loader xHidden"><img src="layout/loader.gif"></p>
+									<input type="hidden" name="leftReal" class="leftReal">
+									<input type="hidden" name="topReal" class="topReal">
+									<button class="processCrop">Crop</button>
+									<button class="cancel">Cancel</button>
+								</section>
+							  </div>'."\n";
+
 					echo "</div></div>\n";
 				}
 			}

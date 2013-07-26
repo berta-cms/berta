@@ -391,6 +391,7 @@ DOC;
 
 	<script type="text/javascript" src="{$engineAbsRoot}_lib/tiny_mce/tiny_mce_gzip.js"></script>
 	<script type="text/javascript" src="{$engineAbsRoot}_lib/moorainbow/mooRainbow.1.2b2.js" charset="utf-8"></script>
+	<script type="text/javascript" src="{$engineAbsRoot}_lib/lassocrop/lassocrop.js" charset="utf-8"></script>
 DOC;
 		} else {
 			$vars['berta']['scripts'] .= <<<DOC

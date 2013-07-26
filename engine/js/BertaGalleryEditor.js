@@ -87,6 +87,7 @@ var BertaGalleryEditor = new Class({
 
 		this.sortingInit();
 
+		this.strip.getElements('a.crop').addEvent('click', this.onCropClick.bindWithEvent(this));
 		this.strip.getElements('a.delete').addEvent('click', this.onDeleteClick.bindWithEvent(this));
 		this.strip.getElements('li').addEvent('mouseenter', this.onElementHover.bindWithEvent(this));
 		this.strip.getElements('li').addEvent('mouseleave', this.onElementUnhover.bindWithEvent(this));
@@ -255,7 +256,6 @@ var BertaGalleryEditor = new Class({
 			new Element('img', {
 				'class': 'img',
 				'src': uploaResponseJSON.get('smallthumb_path'),
-				'styles': { 'width': uploaResponseJSON.get('smallthumb_width'), 'height': uploaResponseJSON.get('smallthumb_height') },
 				'events': { 'click': this.onElementEditClick.bindWithEvent(this) }
 			}).inject(container);
 
@@ -275,6 +275,15 @@ var BertaGalleryEditor = new Class({
 		new Element('span', { 'class': 'grabHandle xMAlign-container' })
 				.set('html', '<span class="xMAlign-outer"><a class="xMAlign-inner" title="click and drag to move"><span></span></a></span>')
 				.inject(container);
+
+		new Element('a', {
+			'href': '#',
+			'class': 'crop',
+			'data-src': uploaResponseJSON.get('path_orig'),
+			'events': {
+				'click': this.onCropClick.bindWithEvent(this)
+			}
+		}).inject(container);
 
 		new Element('a', {
 			'href': '#', 'class': 'delete',
@@ -544,8 +553,6 @@ var BertaGalleryEditor = new Class({
 		this.editorOpen(liEl);
 	},
 
-
-
 	onDeleteClick: function(event) {
 		event = new Event(event).stop();
 		var target = $(event.target);
@@ -580,14 +587,152 @@ var BertaGalleryEditor = new Class({
 		}
 	},
 
-/*
-	initTabs: function() {
-		var target = this.container;
-		var settings = target.getChildren('.xEntryGallerySettings');
-		var fullscreen = target.getChildren('.xEntryGalleryFullScreen');
-		var imageSize = target.getChildren('.xEntryGalleryImageSize');
+	onCropClick: function(event) {
+		event = new Event(event).stop();
+		var target = $(event.target);
+
+		var editor = this;
+		var galleryEditor = target.getParent('.xEntryGalleryEditor');
+		var media = galleryEditor.getElement('.xEntryGalleryAddMedia');
+		var swiffEl = galleryEditor.getElement('.swiff-uploader-box');
+		var images = galleryEditor.getElement('.images');
+		var cropToolbox = galleryEditor.getElement('.xEntryGalleryCrop');
+		var cancel = cropToolbox.getElement('.cancel');
+		var cropImage = cropToolbox.getElement('.cropImage');
+		var id = 'el' + new Date().getTime();
+		var imageSrc = target.get('data-src');
+		var imageThumb = target.getPrevious('img');
+		var filename = target.getParent('li').get('filename');
+		var topInput = cropToolbox.getElement('.topReal');
+		var leftInput = cropToolbox.getElement('.leftReal');
+		var widthInput = cropToolbox.getElement('.widthReal');
+		var heightInput = cropToolbox.getElement('.heightReal');
+		var widthOrigUI = cropToolbox.getElement('.widthOrigUI');
+		var heightOrigUI = cropToolbox.getElement('.heightOrigUI');
+		var processCrop = cropToolbox.getElement('.processCrop');
+		var loader = cropToolbox.getElement('.loader');
+		var manualInput = false;
+
+		$$(media, images).addClass('xHidden');
+		swiffEl.setStyle('visibility', 'hidden');
+		cropToolbox.removeClass('xHidden');
+
+		cancel.addEvent('click', function(e){
+			try {e.stop()}catch(err){}
+			cropToolbox.addClass('xHidden');
+			$$(media, images).removeClass('xHidden');
+			swiffEl.setStyle('visibility', 'visible');
+		});
+
+		//delete old lasso
+		var oldLasso = cropImage.getNext('div');
+		if (oldLasso) {
+			oldLasso.destroy();
+		}
+
+		Asset.image(imageSrc, {
+		    onLoad: function(){
+
+		    	cropImage.set('src', imageSrc);
+				cropImage.set('id', id);
+				cropImage.setStyle('display', 'block');
+
+				var origImage = new Image();
+				origImage.src = imageSrc;
+
+				origImage.onload = function(){
+
+					var widthOrig = origImage.width;
+					var heightOrig = origImage.height;
+					widthOrigUI.set('text', widthOrig);
+					heightOrigUI.set('text', heightOrig);
+
+					var diffPercent = 1;
+					var widthReal = 0;
+					var heightReal = 0;
+					var leftReal = 0;
+					var topReal = 0;
+
+					var lasso = new Lasso.Crop(id,{
+						preset : [0,0,120,120],
+						min: [10,10],
+						color : '#000',
+						border : '#000',
+
+						onResize: function(crop){
+
+							var widthContainer = cropImage.getNext().getSize().x;
+							var widthCrop = crop.w;
+							var heightCrop = crop.h;
+							var leftCrop = crop.x;
+							var topCrop = crop.y;
+
+							diffPercent = 100 * widthOrig / widthContainer;
+							widthReal = widthCrop * diffPercent / 100;
+							heightReal = heightCrop * diffPercent / 100;
+							leftReal = Math.round(leftCrop * diffPercent / 100);
+							topReal = Math.round(topCrop * diffPercent / 100);
+
+							widthReal = widthReal > widthOrig ? widthOrig : (parseInt(widthReal));
+							heightReal = heightReal > heightOrig ? heightOrig : Math.round(heightReal);
+
+							topInput.set('value', topReal);
+							leftInput.set('value', leftReal);
+
+							if ( !manualInput || leftReal+widthReal>=widthOrig ) {
+								widthInput.set('value', widthReal);
+							}
+							if ( !manualInput || topReal+heightReal>=heightOrig ) {
+								heightInput.set('value', heightReal);
+							}
+
+							manualInput = false;
+						}
+					});
+
+					$$(widthInput, heightInput).addEvent('keyup',function(event){
+						manualInput = true;
+
+						var x = parseInt(widthInput.get('value')) || 0;
+						var y = parseInt(heightInput.get('value')) || 0;
+						var cropX = Math.round(x * 100 / diffPercent);
+						var cropY = Math.round(y * 100 / diffPercent);
+
+						lasso.options.preset = [lasso.coords.left, lasso.coords.top, lasso.coords.left+cropX, lasso.coords.top+cropY];
+						lasso.resetCoords();
+						lasso.setDefault();
+					});
+
+					processCrop.removeEvents().addEvent('click', function(event){
+						var target = $(event.target);
+
+						$$(processCrop, cancel).addClass('xHidden');
+						loader.removeClass('xHidden');
+
+						new Request.JSON({
+							url: editor.options.updateUrl,
+							data: "json=" + JSON.encode({
+								section: editor.sectionName, entry: editor.entryId,
+								property: 'galleryImageCrop',
+								value: filename,
+								x: leftInput.get('value'),
+								y: topInput.get('value'),
+								w: widthInput.get('value'),
+								h: heightInput.get('value')
+							}),
+							onComplete: function(resp) {
+								imageThumb.src = imageThumb.src;
+								cancel.fireEvent('click');
+								loader.addClass('xHidden');
+								$$(processCrop, cancel).removeClass('xHidden');
+							}
+						}).post();
+
+					});
+				};
+		    }
+		});
 	},
-*/
 
 	onGalTabClick: function(event) {
 		event.stop();
@@ -596,27 +741,31 @@ var BertaGalleryEditor = new Class({
 
 		var media = tabsContainer.getSiblings('.images');
 		var addMedia = tabsContainer.getSiblings('.xEntryGalleryAddMedia');
+		var cropToolbox = tabsContainer.getSiblings('.xEntryGalleryCrop');
 		var settings = tabsContainer.getSiblings('.xEntryGallerySettings');
 		var swiffEl = tabsContainer.getSiblings('.swiff-uploader-box');
 		var fullscreen = tabsContainer.getSiblings('.xEntryGalleryFullScreen');
 		var imageSize = tabsContainer.getSiblings('.xEntryGalleryImageSize');
 
 		var tab = target.getClassStoredValue('xParams');
-		//console.debug(tab);
+
+		cropToolbox.addClass('xHidden');
 
 		if(tab == 'media') {
 			tabsContainer.getElements('.tab a').removeClass('selected');
 			target.addClass('selected');
 
 			$$(settings, fullscreen, imageSize).addClass('xHidden');
-			$$(media, addMedia, swiffEl).removeClass('xHidden');
+			$$(media, addMedia).removeClass('xHidden');
+			swiffEl.setStyle('visibility', 'visible');
 		}
 
 		if(tab == 'media_settings') {
 			tabsContainer.getElements('.tab a').removeClass('selected');
 			target.addClass('selected');
 
-			$$(media, swiffEl, addMedia, fullscreen, imageSize).addClass('xHidden');
+			$$(media,  addMedia, fullscreen, imageSize).addClass('xHidden');
+			swiffEl.setStyle('visibility', 'hidden');
 			settings.removeClass('xHidden');
 		}
 
@@ -624,7 +773,8 @@ var BertaGalleryEditor = new Class({
 			tabsContainer.getElements('.tab a').removeClass('selected');
 			target.addClass('selected');
 
-			$$(media, swiffEl, addMedia, settings, imageSize).addClass('xHidden');
+			$$(media, addMedia, settings, imageSize).addClass('xHidden');
+			swiffEl.setStyle('visibility', 'hidden');
 			fullscreen.removeClass('xHidden');
 		}
 
@@ -632,7 +782,8 @@ var BertaGalleryEditor = new Class({
 			tabsContainer.getElements('.tab a').removeClass('selected');
 			target.addClass('selected');
 
-			$$(media, swiffEl, addMedia, settings, fullscreen).addClass('xHidden');
+			$$(media, addMedia, settings, fullscreen).addClass('xHidden');
+			swiffEl.setStyle('visibility', 'hidden');
 			imageSize.removeClass('xHidden');
 		}
 	},

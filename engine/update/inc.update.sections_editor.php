@@ -6,35 +6,35 @@ $property = $decoded['property'];
 
 
 
-	
+
 if($property == 'title') {	// section title
 	$sectionsList = BertaEditor::getSections();
 	$sName = $decoded['section'];
 	$returnUpdate = $sNewTitle = $decoded['value'];
 	$returnReal = $sNewName = strtolower(BertaUtils::canonizeString($sNewTitle, '-', '-'));
-	
-	
+
+
 	$fName = $options['XML_ROOT'] . str_replace('%', $sName, $options['blog.%.xml']);
 	$fNewName = $options['XML_ROOT'] . str_replace('%', $sNewName, $options['blog.%.xml']);
 	//echo $fName, ' ', $fNewName;
-	
-	
+
+
 	if(!file_exists($fName)) {
 		$returnError = 'current section storage file does not exist! you\'ll have to delete this section!';
 		$returnUpdate = !empty($sectionsList[$sName]['title']) ? $sectionsList[$sName]['title']['value'] : '';
 		$returnReal = $sName;
-	} 
+	}
 	elseif(file_exists($fNewName)) {
 		$returnError = 'section cannot be created! another section with the same (or too similar name) exists.';
 		$returnUpdate = !empty($sectionsList[$sName]['title']) ? $sectionsList[$sName]['title']['value'] : '';
 		$returnReal = $sName;
-	} 
+	}
 	else {
 		if(!@rename($fName, $fNewName)) {
 			$returnError = 'section storage file cannot be renamed! check permissions and be sure the name of the section is not TOO fancy.';
 		} else {
 			@chmod($fNewName, 0666);
-			
+
 			// update title...
 			$sectionsListNew = array();
 			foreach($sectionsList as $sN => $s) {
@@ -45,13 +45,13 @@ if($property == 'title') {	// section title
 				} else
 					$sectionsListNew[$sN] = $s;
 			}
-			
+
 			// save...
 			BertaEditor::saveSections($sectionsListNew);
-			
+
 			// update subsections and tags caches...
 			$newBlog = BertaEditor::loadBlog($sNewName);
-			
+
 			$ssArr = BertaEditor::getTags();
 			if(isset($ssArr[$sName])) {
 				$ssArr[$sNewName] = $ssArr[$sName];
@@ -61,18 +61,18 @@ if($property == 'title') {	// section title
 			BertaEditor::populateTags($sNewName, $newBlog);
 		}
 	}
-	
-			
+
+
 }
 else if($property == 'type') {	// section external link
 	$sectionsList = BertaEditor::getSections();
 	$returnUpdate = $returnReal = trim($decoded['value']);
 	$sName = $decoded['section'];
-	
+
 	foreach($sectionsList as $sN => $s) {
 		if($sN == $sName) {
 			$sectionsList[$sN]['@attributes']['type'] = $returnUpdate;
-			
+
 			if(!empty($berta->template->sectionTypes)) {
 				foreach($berta->template->sectionTypes as $sT => $sTParams) {
 					if($returnUpdate == $sT) {
@@ -91,14 +91,14 @@ else if($property == 'type') {	// section external link
 		}
 	}
 	BertaEditor::saveSections($sectionsList);
-	
-	
+
+
 }
 else if($property == 'published') {	// attributes
 	$sectionsList = BertaEditor::getSections();
 	$returnUpdate = $returnReal = trim($decoded['value']) == '1' ? '1' : '0';
 	$sName = $decoded['section'];
-	
+
 	foreach($sectionsList as $sN => $s) {
 		if($sN == $sName) {
 			$sectionsList[$sN]['@attributes'][$property] = $returnUpdate;
@@ -110,10 +110,10 @@ else if($property == 'published') {	// attributes
 else if($property == 'galleryOrder') {
 	$sectionsList = BertaEditor::getSections();
 	$sName = $decoded['section'];
-	
+
 	Array_XML::makeListIfNotList($sectionsList[$sName]['mediaCacheData']['file']);
 	$returnUpdate = 'ok';
-	
+
 	$newImagesArray = array();
 	foreach($decoded['value'] as $path) {
 	    $foundIndex = false;
@@ -123,12 +123,12 @@ else if($property == 'galleryOrder') {
 	    		break;
 	    	}
 	    }
-	    
+
 	    if($foundIndex !== false) {
 	    	array_push($newImagesArray, $sectionsList[$sName]['mediaCacheData']['file'][$cacheIndex]);
 	    }
 	}
-	
+
 	$sectionsList[$sName]['mediaCacheData']['file'] = $newImagesArray;
 	BertaEditor::updateImageCacheForSection($sectionsList[$sName]);
 	BertaEditor::saveSections($sectionsList);
@@ -153,12 +153,12 @@ else if($property == 'galleryImageDelete') {
 	if($imgToDelete && file_exists($options['MEDIA_ROOT'] . $sectionsList[$sName]['mediafolder']['value'] . '/' . $imgToDelete)) {
 	    if(@unlink($options['MEDIA_ROOT'] . $sectionsList[$sName]['mediafolder']['value'] . '/' . $imgToDelete)) {
 	    	BertaEditor::images_deleteDerivatives($options['MEDIA_ROOT'] . $sectionsList[$sName]['mediafolder']['value'] . '/', $imgToDelete);
-	    	
+
 	    	if($posterToDelete) {
 	    		@unlink($options['MEDIA_ROOT'] . $sectionsList[$sName]['mediafolder']['value'] . '/' . $posterToDelete);
 	    		BertaEditor::images_deleteDerivatives($options['MEDIA_ROOT'] . $sectionsList[$sName]['mediafolder']['value'] . '/', $posterToDelete);
 	    	}
-	    	
+
 	    	$returnUpdate = 'ok';
 	    } else
 	    	$returnError = 'delete failed! check permissions.';
@@ -246,7 +246,7 @@ else if($decoded['action'] == 'ORDER_SECTIONS') {	// apply the new order
 	$oldSectionsList = BertaEditor::getSections();
 	$newSectionsList = array();
 	foreach($decoded['value'] as $s) $newSectionsList[$s] = $oldSectionsList[$s];
-	BertaEditor::saveSections($newSectionsList);			
+	BertaEditor::saveSections($newSectionsList);
 }
 else if($decoded['action'] == 'CREATE_NEW_SECTION') {
 	$sTitle = 'untitled' . uniqid();
@@ -290,20 +290,20 @@ else if($decoded['action'] == 'CREATE_NEW_SECTION') {
 			$sectionsList = BertaEditor::getSections();
 			$sectionsList[$sName] = array(
 				'@attributes' => array('tags_behavior' => 'invisible', 'published'=>1),
-				'name' => $sName, 
+				'name' => $sName,
 				'title' => array('value' => '')
 			);
 			BertaEditor::saveSections($sectionsList);
 		}
 	}
-	
+
 }
 else if($decoded['action'] == 'DELETE_SECTION') {	// delete a section
 	if(!BertaEditor::deleteSection($decoded['value']))
 		$returnError = 'Section cannot be deleted! Check permissions.';
 }
 else {
-	
+
 	$returnUpdate = $returnReal = trim($decoded['value']);
 	$sName = trim($decoded['section']);
 
@@ -319,7 +319,7 @@ else {
 	} else {
 		$returnError = 'Template-specific properties cannot override system properties! Check template settings.';
 	}
-	
+
 }
 
 
