@@ -4,6 +4,9 @@ error_reporting(E_ALL);
 @ini_set("display_errors", 1);
 @ini_set("ignore_user_abort", 1);
 
+//detect ajax request
+$IS_AJAX = isset($_SERVER['HTTP_X_REQUESTED_WITH']) && !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest';
+
 // Detects mobile devices
 include_once '_lib/mobile_device_detect/mobile_device_detect.php';
 $MOBILE_DEVICE = mobile_device_detect($DEVICE_USER_AGENT);
@@ -83,7 +86,11 @@ $options['ENVIRONMENT'] = BERTA_ENVIRONMENT;
 
 $berta = new Berta();
 if(AUTH_AUTHREQUIRED && !$berta->security->authentificated) {
-	$berta->security->goToLoginPage($ENGINE_ROOT . 'login.php');
+	if ($IS_AJAX){
+		die("<script>window.location.href='".$ENGINE_ABS_ROOT . 'login.php'."'</script>");
+	}else{
+		$berta->security->goToLoginPage($ENGINE_ROOT . 'login.php');
+	}
 }
 
 
