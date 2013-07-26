@@ -83,7 +83,7 @@ if($jsonRequest) {
 
 		case 'url':	// url should be wrapped with an A tag
 			if($returnReal) $href = strpos(strtolower($returnReal), '://') === false ? "http://$returnReal" : $returnReal;
-			$returnUpdate = $returnReal ? ('<a href="' . $href . '" target="_blank">' . $returnReal . '</a>') : null;
+			$returnUpdate = $returnReal ? $href : null;
 			break;
 
 	}

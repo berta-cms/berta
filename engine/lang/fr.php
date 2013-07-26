@@ -24,7 +24,7 @@ return array(
 		'welcome' => 'Bienvenue !',
 		'welcome_text__not_installed' => '<h2>Merci d\'avoir choisi Berta !</h2>
 		<p>Berta n\'est pas encore installé.<br />Merci de vous <a href="./engine/">connecter</a> et de suivre la procédure d\'installation.</p>',
-		
+
 		'welcome_text__not_supported' => '<h2>Merci d\'avoir choisi Berta !</h2>
 		<p>Ce serveur n\'est pas compatible avec Berta.<br />
 		Merci de vérifier que la version de PHP installée sur le serveur est égale ou supérieure à 5.</p>',
@@ -80,7 +80,7 @@ return array(
 		'units_help_text' => 'Les unités valides pour les valeurs numériques sont : <br /><strong>px</strong> - pixels<br /><strong>em</strong> - 1 em = une longueur de lettre M dans la fonte utilisée<br /><strong>%</strong> - pourcentage en fonction de la taille de la fonte ou de la dimension de l\'élément conteneur (ex. la page).',
 		'Margins' => 'Marges',
 		'margins_help_text' => 'Se servir des marges est un peu délicat. Utilisez les unités px ou em. Vous pouvez déclarer des marges de 4 façons, en écrivant : <br/><strong>1 valeur</strong> - déclarez la marge du haut, droite, bas et gauche en une seule valeur. Exemple : <em>10px</em>.<br /><strong>2 valeurs</strong> - déclarez la marge de haut et bas avec la première valeur, et gauche et droite avec la seconde valeur. Exemple : <em>0 5px</em>.<br /><strong>3 valeurs</strong> - déclarez la marge de haut avec la première valeur, de gauche et droite avec la seconde valeur et la marge de bas avec la troisième valeur. Exemple : <em>10px 0 20px</em>.<br /><strong>4 valeurs</strong> - déclarez toutes les marges selon l\'ordre suivant: haut, droit, bas, gauche. Exemple : <em>10px 0 20px 2px</em>.',
-	
+
 	// Translations from inc.settings.php
 
 		'Texts in the website' => 'Textes dans le site',
@@ -230,12 +230,6 @@ return array(
 		/* help text */    'Horizontal/vertical space between images when gallery is in "row"/"column" mode' => 'Espace entre les images pquand la galerie est en mode « row » ou « column ».',
 		/* setting name */ 'Gallery margins' => 'Marges de la galerie',
 		/* help text */    'Margin around gallery block' => 'Marges autour de la galerie',
-		/* setting name */ 'Display tags by each entry' => 'Afficher les tags pour chaque entrée',
-		/* help text */    'This determines whether people will see tags you set for each entry. Regardless of this settting, tags still will make up the main menu.' => 'Détermine si les tags associés à chaque entrée seront visibles. Indépendammet de ce paramètre, les tags définiront le menu principal.',
-		/* setting name */ 'Date format in entries' => 'Format de date des entrées',
-		/* setting name */ 'Date separator' => 'Séparateur de date',
-		/* help text */    'Separator symbol that divides year, month and day' => 'Symbole qui sépare jour, mois et année.',
-		/* setting name */ 'Time separator' => 'Séparateur horaire',
 
 		/* setting tab */  'Entry heading'=> 'Entête d’entrée',
 		/* help text */    'How far the entry heading is form other elements in page. Please see the short CSS guide at the bottom of this page.' => 'Distance entre l’entête de l’entrée et les autres éléments de la page. Référez-vous au guide CSS en bas de page.',
