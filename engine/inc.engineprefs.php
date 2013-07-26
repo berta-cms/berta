@@ -1,6 +1,7 @@
 <?php
-
 date_default_timezone_set(@date_default_timezone_get());
+
+$options['IS_AJAX'] = $IS_AJAX;
 
 if(empty($options)) $options = array();
 include_once $ENGINE_ROOT . '_classes/class.bertabase.php';
