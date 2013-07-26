@@ -200,7 +200,28 @@ if($jsonRequest) {
 					BertaEditor::updateImageCacheFor($blog, $decoded['entry']);
 
 				}
+				elseif($decoded['property'] == 'galleryImageCrop') {	// image gets cropped
 
+					$path = $options['MEDIA_ROOT'] . $e['mediafolder']['value'] . '/';
+
+					$crop = BertaUtils::smart_crop_image($path.$decoded['value'], $decoded['x'], $decoded['y'], $decoded['w'], $decoded['h']);
+
+					if (count($e['mediaCacheData']['file'])>1) {
+						foreach($e['mediaCacheData']['file'] as $cacheIndex => $im) {
+							if($im['@attributes']['src'] == $decoded['value']) {
+								$e['mediaCacheData']['file'][$cacheIndex]['@attributes']['width'] = $crop['w'];
+								$e['mediaCacheData']['file'][$cacheIndex]['@attributes']['height'] = $crop['h'];
+								break;
+							}
+						}
+					}else{
+						$e['mediaCacheData']['file']['@attributes']['width'] = $crop['w'];
+						$e['mediaCacheData']['file']['@attributes']['height'] = $crop['h'];
+					}
+
+					BertaEditor::images_deleteDerivatives($path, $decoded['value']);
+					BertaEditor::images_getSmallThumbFor($path.$decoded['value']);
+				}
 				elseif($decoded['action'] != 'SAVE') {
 					switch($decoded['action']) {
 						case 'DELETE_ENTRY':

@@ -21,11 +21,6 @@ if(!1) { ?><style type="text/css"><?php } ?>
 		-moz-opacity: 0.7;
 	}
 
-	.xEntryGalleryEditor {
-		width: 430px;
-	}
-
-
 	.xEntryEditWrap {
 		padding: 0;
 		margin: 0;

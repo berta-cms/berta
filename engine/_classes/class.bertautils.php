@@ -346,6 +346,72 @@ class BertaUtils extends BertaBase {
 	}
 
 
+	public static function smart_crop_image($file, $x, $y, $w, $h) {
+
+		$info = getimagesize($file);
+
+	    switch ( $info[2] ) {
+	      case IMAGETYPE_GIF:   $image = imagecreatefromgif($file);   break;
+	      case IMAGETYPE_JPEG:  $image = imagecreatefromjpeg($file);  break;
+	      case IMAGETYPE_PNG:   $image = imagecreatefrompng($file);   break;
+	      default: return false;
+	    }
+
+	    //in case of incorrect params
+	    $imageWidth = imagesx($image);
+	    $imageHeight = imagesy($image);
+	    $w = $x + $w > $imageWidth ? $imageWidth - $x : $w;
+	    $h = $y + $h > $imageHeight ? $imageHeight - $y : $h;
+
+		$image_resized = imagecreatetruecolor( $w, $h );
+
+		//solution for animated gif (imagick extension must be installed and enabled)
+	    if ( extension_loaded('imagick') && ($info[2] == IMAGETYPE_GIF) ) {
+
+			$image = new Imagick($file);
+
+			$image = $image->coalesceImages();
+
+			foreach ($image as $frame) {
+			  $frame->cropImage($w, $h, $x, $y);
+			  $frame->thumbnailImage($w, $h);
+			  $frame->setImagePage($w, $h, 0, 0);
+			}
+
+			$image = $image->deconstructImages();
+			$image->writeImages($file, true);
+
+    	}else{
+		    if ( ($info[2] == IMAGETYPE_GIF) || ($info[2] == IMAGETYPE_PNG) ) {
+		      	$transparency = imagecolortransparent($image);
+
+		      	if ($transparency >= 0) {
+					$transparent_color  = @imagecolorsforindex($image, $transparency); // for animated gifs sometimes error is thrown :(
+			        $transparency       = imagecolorallocate($image_resized, $transparent_color['red'], $transparent_color['green'], $transparent_color['blue']);
+			        imagefill($image_resized, 0, 0, $transparency);
+			        imagecolortransparent($image_resized, $transparency);
+		      	} elseif ($info[2] == IMAGETYPE_PNG) {
+			        imagealphablending($image_resized, false);
+			        $color = imagecolorallocatealpha($image_resized, 0, 0, 0, 127);
+			        imagefill($image_resized, 0, 0, $color);
+			        imagesavealpha($image_resized, true);
+		      	}
+		    }
+
+			imagecopy( $image_resized, $image, 0, 0,  $x, $y, $w, $h );
+
+		    switch ( $info[2] ) {
+		      case IMAGETYPE_GIF:   imagegif($image_resized, $file);    break;
+		      case IMAGETYPE_JPEG:  imagejpeg($image_resized, $file, 97);   break;
+		      case IMAGETYPE_PNG:   imagepng($image_resized, $file);    break;
+		      default: return false;
+		    }
+    	}
+
+		return array('w'=>$w, 'h'=>$h);
+	}
+
+
 	public static function db(){
 		$db = false;
 		$options = self::$options;

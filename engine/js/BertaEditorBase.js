@@ -190,7 +190,6 @@ var BertaEditorBase = new Class({
 			case this.options.xBertaEditorClassMCESimple:
 				el.store('onElementSave', onElementSave);
 				el.addClass(editorClass.substr(1));
-				//el.addClass(editorClass.substr(1) + 'Applied');
 
 				el.addEvent('click', function(event, editor) {
 					$$('.xEditOwerlay').destroy();

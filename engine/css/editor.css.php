@@ -1209,9 +1209,39 @@ a.xCreateNewEntry.xSaving {
 
 	.xEntryGalleryEditor .xEntryGallerySettings,
 	.xEntryGalleryEditor .xEntryGalleryFullScreen,
-	.xEntryGalleryEditor .xEntryGalleryImageSize {
+	.xEntryGalleryEditor .xEntryGalleryImageSize,
+	.xEntryGalleryEditor .xEntryGalleryCrop {
 		padding: 6px;
 	}
+
+
+		.xEntryGalleryEditor .cropImage {
+			max-width: 300px;
+			max-height: 250px;
+		}
+
+		.xEntryGalleryCrop > div {
+			float: left;
+		}
+
+		.xEntryGalleryCrop .cropToolbar {
+			display: block;
+			float: left;
+			width: 150px;
+			padding-left: 6px;
+		}
+
+		.xEntryGalleryCrop .cropToolbar input {
+			width: 30px;
+		}
+
+		.xEntryGalleryCrop .cropToolbar button {
+			width: 100%;
+		}
+
+		.xEntryGalleryCrop .cropToolbar .loader {
+			text-align: center;
+		}
 
 		.xEntryGalleryEditor .xEntryGalleryAddMedia {
 			padding: 6px;
@@ -1466,6 +1496,24 @@ a.xCreateNewEntry.xSaving {
 				.xEntryGalleryEditor .images ul li.hover .delete { visibility: visible; }
 				.xEntryGalleryEditor .images ul.processing li .delete { visibility: hidden !important; }
 
+				/* crop button */
+				.xEntryGalleryEditor .images ul li .crop {
+					display: block;
+					position: absolute;
+					visibility: hidden;
+					top: 0;
+					left: 0; /*5px;*/
+					width: 15px;
+					height: 15px;
+					background: #fff url('../layout/crop.gif') no-repeat center center;
+					border: 1px solid #333;
+				}
+				.xEntryGalleryEditor .images ul li .crop:hover {
+					background-color: #B2BBD0;
+				}
+				.xEntryGalleryEditor .images ul li.hover .crop { visibility: visible; }
+				.xEntryGalleryEditor .images ul.processing li .crop { visibility: hidden !important; }
+
 				/* grab handle */
 				.xEntryGalleryEditor .images ul li .grabHandle {
 					visibility: hidden;
@@ -1555,6 +1603,7 @@ a.xCreateNewEntry.xSaving {
     				}
 
 				.xEntryGalleryEditor .images li .xEGEImageCaption {
+					position: relative;
 					width: 150px;
 					height: 135px;
 					overflow-y: hidden;
