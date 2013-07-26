@@ -253,12 +253,6 @@ return array(
 		/* help text */    'Horizontal/vertical space between images when gallery is in "row"/"column" mode' => 'De horizontale/verticale ruimte tussen de images als de gallery in "Row"/"Column" mode staat.',
 		/* setting name */ 'Gallery margins' => 'Gallery margins (marges)',
 		/* help text */    'Margin around gallery block' => 'Margin rond gallery block',
-		/* setting name */ 'Display tags by each entry' => 'Toon tags bij elke entry',
-		/* help text */    'This determines whether people will see tags you set for each entry. Regardless of this settting, tags still will make up the main menu.' => 'Hiermee toon/verberg je de tags die je voor elke entry aanmaakt. Onafhankelijk van deze setting zal het menu uit tags worden samengesteld.',
-		/* setting name */ 'Date format in entries' => 'Datum format in entries',
-		/* setting name */ 'Date separator' => 'Datum separator',
-		/* help text */    'Separator symbol that divides year, month and day' => 'Separator symbool dat jaar, maand en dag scheidt.',
-		/* setting name */ 'Time separator' => 'Tijd separator',
 
 		/* setting tab */  'Entry heading'=> 'Entry heading',
 		/* help text */    'How far the entry heading is form other elements in page. Please see the short CSS guide at the bottom of this page.' => 'Hoe ver is de entry heading van de andere elementen in de pagina verwijderd? Zie ook korte CSS gids onderaan de pagina.',

@@ -236,12 +236,6 @@ return array(
     /* help text */    'Horizontal/vertical space between images when gallery is in "row"/"column" mode' => 'Horizontālais/vertikālais attālums starp attēliem "row"/"column" režīmos',
 	/* setting name */ 'Gallery margins' => 'Galerijas apmales',
 	/* help text */    'Margin around gallery block' => 'Apmales ap galerijas bloku',
-	/* setting name */ 'Display tags by each entry' => 'Rādīt Tagus pie katra ieraksta',
-	/* help text */    'This determines whether people will see tags you set for each entry. Regardless of this settting, tags still will make up the main menu.' => 'Nosaka vai rādīt Tagus pie katra ieraksta vai ne. Neatkarīgi no iestatījuma, Tagi būs redzami galvenajā izvēlnē.',
-	/* setting name */ 'Date format in entries' => 'Datuma formāts ierakstiem',
-	/* setting name */ 'Date separator' => 'Datuma atdalītājs',
-	/* help text */    'Separator symbol that divides year, month and day' => 'Simbols, kas atdala gadu, mēnesi un dienu',
-	/* setting name */ 'Time separator' => 'Laika ciparu atdalītāj-simbols',
 
 	/* setting tab */  'Entry heading'=> 'Iearaksta virsraksts',
 	/* help text */    'How far the entry heading is form other elements in page. Please see the short CSS guide at the bottom of this page.' => 'Cik tālu ieraksta virsraksts atrodas no pārējiem lapas elementiem. Skatiet CSS skaidrojumu lapas apakšā.',

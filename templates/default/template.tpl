@@ -147,12 +147,10 @@
 							{ entryGallery entry=$entry }
 						{ /if }
 
-						{ assign var=hasTags value= $berta.environment == 'engine' or $berta.settings.entryLayout.displayTags == 'yes' and count($entry.tags) > 0 }
-						{ assign var=hasDate value= ($berta.environment == 'engine' || !empty($entry.date)) and $berta.settings.entryLayout.dateFormat != 'hidden' }
 						{ assign var=hasURL value= $berta.environment == 'engine' || !empty($entry.url) }
-						{ if $hasTags || $hasDate || $hasURL }
+						{ if $hasURL }
 						<div class="entryContent">
-							<div class="xEditable xProperty-url">{ $entry.url }</div>
+							<div class="xEditable xProperty-url">{ if $berta.environment == 'site'}<a href="{ $entry.url }" target="_blank">{ $entry.url }</a>{else}{ $entry.url }{/if}</div>
 						</div>
 						{ /if }
 
