@@ -1239,6 +1239,23 @@ a.xCreateNewEntry.xSaving {
 			width: 100%;
 		}
 
+		.xEntryGalleryCrop .cropToolbar .ratio {
+			width: 16px;
+			height: 16px;
+			display: inline-block;
+			border: 1px solid #333;
+			cursor: pointer;
+			background: url('../layout/ratioOff.png') no-repeat center center;
+		}
+
+		.xEntryGalleryCrop .cropToolbar .ratio:hover {
+			background-color: #B2BBD0;
+		}
+
+		.xEntryGalleryCrop .cropToolbar .ratioOn {
+			background: url('../layout/ratioOn.png') no-repeat center center;
+		}
+
 		.xEntryGalleryCrop .cropToolbar .loader {
 			text-align: center;
 		}
