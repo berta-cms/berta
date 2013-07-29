@@ -609,9 +609,12 @@ var BertaGalleryEditor = new Class({
 		var heightInput = cropToolbox.getElement('.heightReal');
 		var widthOrigUI = cropToolbox.getElement('.widthOrigUI');
 		var heightOrigUI = cropToolbox.getElement('.heightOrigUI');
+		var ratio = cropToolbox.getElement('.ratio');
 		var processCrop = cropToolbox.getElement('.processCrop');
 		var loader = cropToolbox.getElement('.loader');
 		var manualInput = false;
+		var manualInputHeight = false;
+		var manualInputWidth = false;
 
 		$$(media, images).addClass('xHidden');
 		swiffEl.setStyle('visibility', 'hidden');
@@ -679,19 +682,37 @@ var BertaGalleryEditor = new Class({
 							topInput.set('value', topReal);
 							leftInput.set('value', leftReal);
 
-							if ( !manualInput || leftReal+widthReal>=widthOrig ) {
+							if ( !manualInputWidth && (!manualInput || leftReal+widthReal>=widthOrig) ) {
 								widthInput.set('value', widthReal);
 							}
-							if ( !manualInput || topReal+heightReal>=heightOrig ) {
+							if ( !manualInputHeight && (!manualInput || topReal+heightReal>=heightOrig) ) {
 								heightInput.set('value', heightReal);
 							}
 
 							manualInput = false;
+							manualInputWidth = false;
+							manualInputHeight = false;
 						}
 					});
 
 					$$(widthInput, heightInput).addEvent('keyup',function(event){
+
 						manualInput = true;
+
+						if ( ratio.hasClass('ratioOn') ) {
+							try {
+								var inputCoord = $(event.target);
+
+								if (inputCoord == widthInput) {
+									manualInputWidth = true;
+									heightInput.set('value', Math.round(parseInt(inputCoord.get('value')) * lasso.options.ratio[1] / 100));
+								}
+								if (inputCoord == heightInput) {
+									manualInputHeight = true;
+									widthInput.set('value', Math.round(parseInt(inputCoord.get('value')) * 100 / lasso.options.ratio[1]));
+								}
+							}catch(err){}
+						}
 
 						var x = parseInt(widthInput.get('value')) || 0;
 						var y = parseInt(heightInput.get('value')) || 0;
@@ -703,8 +724,60 @@ var BertaGalleryEditor = new Class({
 						lasso.setDefault();
 					});
 
+					var _berta_crop_width = Cookie.read('_berta_crop_width');
+					var _berta_crop_height = Cookie.read('_berta_crop_height');
+
+					if (_berta_crop_width && _berta_crop_height){
+						widthInput.set('value', _berta_crop_width);
+						heightInput.set('value', _berta_crop_height);
+						widthInput.fireEvent('keyup');
+					}
+
+					var _berta_crop_ratio = Cookie.read('_berta_crop_ratio');
+
+					if (_berta_crop_ratio){
+						ratio.addClass('ratioOn');
+					}
+
+					ratio.removeEvents().addEvent('setRatio', function(){
+
+						if ( ratio.hasClass('ratioOn') ) {
+
+							if (widthReal && heightReal) {
+								lasso.options.ratio = [100, heightReal * 100 / widthReal];
+							}else if (_berta_crop_width && _berta_crop_height){
+								lasso.options.ratio = [100, _berta_crop_height * 100 / _berta_crop_width];
+							}else{
+								lasso.options.ratio = [1,1];
+							}
+						}else {
+							lasso.options.ratio = false;
+						}
+
+						lasso.options.preset = [lasso.coords.left, lasso.coords.top, lasso.coords.left + lasso.coords.w, lasso.coords.top + lasso.coords.h];
+
+						lasso.resetCoords();
+						lasso.setDefault();
+					});
+
+					ratio.fireEvent('setRatio');
+
+					ratio.addEvent('click', function(event){
+						if ( ratio.hasClass('ratioOn') ) {
+							ratio.removeClass('ratioOn');
+							Cookie.dispose('_berta_crop_ratio');
+						}else{
+							ratio.addClass('ratioOn');
+							Cookie.write('_berta_crop_ratio', 1);
+						}
+						ratio.fireEvent('setRatio');
+					});
+
 					processCrop.removeEvents().addEvent('click', function(event){
 						var target = $(event.target);
+
+						Cookie.write('_berta_crop_width', widthReal);
+						Cookie.write('_berta_crop_height', heightReal);
 
 						$$(processCrop, cancel).addClass('xHidden');
 						loader.removeClass('xHidden');

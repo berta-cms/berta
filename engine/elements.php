@@ -173,6 +173,7 @@ if($jsonRequest) {
 									<p>
 										w: <input type="text" name="widthReal" class="widthReal" value=""> &times; h: <input type="text" name="heightReal" class="heightReal">
 									</p>
+									<span class="ratio"></span>
 									<p class="loader xHidden"><img src="layout/loader.gif"></p>
 									<input type="hidden" name="leftReal" class="leftReal">
 									<input type="hidden" name="topReal" class="topReal">
