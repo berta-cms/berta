@@ -816,6 +816,8 @@ DOC;
 
 		$m5_link=self::$options['HOSTING_PROFILE']?self::$options['HOSTING_PROFILE']:'profile.php';
 
+		$helpdeskItem = $options['HOSTING_PROFILE'] ? '<li><a href="http://support.berta.me" target="_blank">helpdesk</a></li><li>|</li>' : '';
+
 		$str_start = <<<DOC
 			<div id="xTopPanelContainer" class="xPanel">
 				<div id="xTopPanelSlideIn"><span title="show menu">▼</span></div>
@@ -828,6 +830,7 @@ DOC;
 						<li$m3Class id="xSettings"><a href="settings.php">$m3</a></li><li>|</li>
 						<li$m4Class id="xTemplateDesign"><a href="settings.php?mode=template">$m4</a></li><li>|</li>
 						<li$m5Class><a href="$m5_link">$m5</a></li><li>|</li>
+						$helpdeskItem
 						<li><a href="logout.php">$m6</a></li>
 					</ul>
 DOC;
