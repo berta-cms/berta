@@ -597,6 +597,7 @@ var BertaGalleryEditor = new Class({
 		var swiffEl = galleryEditor.getElement('.swiff-uploader-box');
 		var images = galleryEditor.getElement('.images');
 		var cropToolbox = galleryEditor.getElement('.xEntryGalleryCrop');
+		var checkBoard = cropToolbox.getElement('.checkBoard');
 		var cancel = cropToolbox.getElement('.cancel');
 		var cropImage = cropToolbox.getElement('.cropImage');
 		var id = 'el' + new Date().getTime();
@@ -611,10 +612,13 @@ var BertaGalleryEditor = new Class({
 		var heightOrigUI = cropToolbox.getElement('.heightOrigUI');
 		var ratio = cropToolbox.getElement('.ratio');
 		var processCrop = cropToolbox.getElement('.processCrop');
-		var loader = cropToolbox.getElement('.loader');
+		var loader = checkBoard.getElement('.loader');
 		var manualInput = false;
 		var manualInputHeight = false;
 		var manualInputWidth = false;
+
+		loader.addClass('xHidden');
+		$$(cancel, processCrop).removeProperty('disabled');
 
 		$$(media, images).addClass('xHidden');
 		swiffEl.setStyle('visibility', 'hidden');
@@ -661,6 +665,7 @@ var BertaGalleryEditor = new Class({
 						min: [10,10],
 						color : '#000',
 						border : '#000',
+						opacity: .5,
 
 						onResize: function(crop){
 
@@ -693,6 +698,14 @@ var BertaGalleryEditor = new Class({
 							manualInputWidth = false;
 							manualInputHeight = false;
 						}
+					});
+
+					var cropWrapper = cropImage.getNext();
+
+					//align image in middle
+					cropWrapper.setStyles({
+						'margin-left': Math.round((checkBoard.getSize().x - cropWrapper.getSize().x) / 2) + 'px',
+						'margin-top': Math.round((checkBoard.getSize().y - cropWrapper.getSize().y) / 2) + 'px'
 					});
 
 					$$(widthInput, heightInput).addEvent('keyup',function(event){
@@ -779,8 +792,14 @@ var BertaGalleryEditor = new Class({
 						Cookie.write('_berta_crop_width', widthReal);
 						Cookie.write('_berta_crop_height', heightReal);
 
-						$$(processCrop, cancel).addClass('xHidden');
+						$$(cancel, processCrop).set('disabled', 'disabled');
 						loader.removeClass('xHidden');
+
+						//center loader
+						loader.setStyles({
+							'top': Math.round( checkBoard.getSize().y / 2 - loader.getSize().y / 2 ) + 'px',
+							'left': Math.round( checkBoard.getSize().x / 2 - loader.getSize().x / 2 ) + 'px'
+						});
 
 						new Request.JSON({
 							url: editor.options.updateUrl,
@@ -797,7 +816,7 @@ var BertaGalleryEditor = new Class({
 								imageThumb.src = imageThumb.src;
 								cancel.fireEvent('click');
 								loader.addClass('xHidden');
-								$$(processCrop, cancel).removeClass('xHidden');
+								$$(processCrop, cancel).removeProperty('disabled');
 							}
 						}).post();
 

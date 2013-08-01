@@ -19,6 +19,23 @@ $settings =& $berta->template->settings;
 if(!1) { ?><style type="text/css"><?php } ?>
 
 
+button,
+input[type="submit"] {
+	background-color: #999;
+	border: 0;
+	padding: 5px 10px;
+	-moz-border-radius: 8px;
+	-webkit-border-radius: 8px;
+	border-radius: 8px;
+	cursor: pointer;
+}
+
+button:hover,
+input[type="submit"]:hover {
+	background-color: #353535;
+	color: #fff;
+}
+
 #allContainer {
 	/*width: 900px !important;*/
 }
@@ -1216,19 +1233,56 @@ a.xCreateNewEntry.xSaving {
 
 
 		.xEntryGalleryEditor .cropImage {
-			max-width: 300px;
-			max-height: 250px;
+			max-width: 270px;
+			max-height: 270px;
 		}
 
-		.xEntryGalleryCrop > div {
+		.xEntryGalleryCrop .checkBoard {
+			display: block;
+			position: relative;
 			float: left;
+			background: url('../layout/checkboard.png');
+			width: 270px;
+			height: 270px;
+		}
+
+		.xEntryGalleryCrop .checkBoard .loader {
+			position: absolute;
+			z-index: 20000;
+			padding: 15px;
+			background-color: rgba(255,255,255,0.8);
 		}
 
 		.xEntryGalleryCrop .cropToolbar {
+			position: relative;
 			display: block;
 			float: left;
-			width: 150px;
-			padding-left: 6px;
+			width: 100px;
+			height: 270px;
+			padding-left: 12px;
+		}
+
+		.xEntryGalleryCrop .cropToolbar p {
+			line-height: 20px;
+			margin: 0;
+		}
+
+		.xEntryGalleryCrop .cropToolbar .manualSizeBox {
+			float: left;
+			margin-right: 3px;
+		}
+
+		.xEntryGalleryCrop .cropToolbar .widthOrigUI,
+		.xEntryGalleryCrop .cropToolbar .widthRealUI {
+			padding-left: 15px;
+			background: url('../layout/width.png') no-repeat left center;
+		}
+
+		.xEntryGalleryCrop .cropToolbar .heightOrigUI,
+		.xEntryGalleryCrop .cropToolbar .heightRealUI {
+			padding-left: 15px;
+			background: url('../layout/height.png') no-repeat left center;
+			margin-bottom: 15px;
 		}
 
 		.xEntryGalleryCrop .cropToolbar input {
@@ -1256,8 +1310,14 @@ a.xCreateNewEntry.xSaving {
 			background: url('../layout/ratioOn.png') no-repeat center center;
 		}
 
-		.xEntryGalleryCrop .cropToolbar .loader {
-			text-align: center;
+		.xEntryGalleryCrop .cropToolbar .processCrop {
+			position: absolute;
+			bottom: 32px;
+		}
+
+		.xEntryGalleryCrop .cropToolbar .cancel {
+			position: absolute;
+			bottom: 0;
 		}
 
 		.xEntryGalleryEditor .xEntryGalleryAddMedia {
