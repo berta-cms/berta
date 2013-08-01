@@ -167,14 +167,25 @@ if($jsonRequest) {
 						echo "</ul></div>\n";
 
 						echo '<div class="xEntryGalleryCrop xHidden">
-								<img src="" class="cropImage">
-								<section class="cropToolbar">
-									<p>Original size: <span class="widthOrigUI"></span> &times; <span class="heightOrigUI"></span></p>
-									<p>
-										w: <input type="text" name="widthReal" class="widthReal" value=""> &times; h: <input type="text" name="heightReal" class="heightReal">
-									</p>
-									<span class="ratio"></span>
+								<section class="checkBoard">
+									<img src="" class="cropImage">
 									<p class="loader xHidden"><img src="layout/loader.gif"></p>
+								</section>
+								<section class="cropToolbar">
+									<p>original size (px):</p>
+									<p class="widthOrigUI"></p>
+									<p class="heightOrigUI"></p>
+
+									<p class="newSize">new size (px):</p>
+									<div class="clearfix">
+										<div class="manualSizeBox">
+											<p class="widthRealUI"><input type="text" name="widthReal" class="widthReal" value=""></p>
+											<p class="heightRealUI"><input type="text" name="heightReal" class="heightReal"></p>
+										</div>
+										<div class="manualSizeBox">
+											<span class="ratio"></span>
+										</div>
+									</div>
 									<input type="hidden" name="leftReal" class="leftReal">
 									<input type="hidden" name="topReal" class="topReal">
 									<button class="processCrop">Crop</button>

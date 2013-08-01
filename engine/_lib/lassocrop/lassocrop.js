@@ -29,7 +29,7 @@ var Lasso = new Class({
 		}).inject((this.container) ? this.container : document.body);
 
 		this.overlay = new Element('div',{
-			'styles' : { 'position' : 'relative', 'background' : 'url(layout/blank.gif)', 'height' : '100%', 'width' : '100%',   'z-index' : this.options.zindex+1 }
+			'styles' : { 'position' : 'relative', 'background' : 'url(layout/blank.gif)', 'height' : '100%', 'width' : '100%', 'z-index' : this.options.zindex+1, 'cursor': 'move' }
 		}).inject(this.box);
 
 		this.mask = new Element('div',{
