@@ -1294,20 +1294,17 @@ a.xCreateNewEntry.xSaving {
 		}
 
 		.xEntryGalleryCrop .cropToolbar .ratio {
-			width: 16px;
-			height: 16px;
+			width: 12px;
+			height: 36px;
+			margin-top: 7px;
 			display: inline-block;
-			border: 1px solid #333;
 			cursor: pointer;
-			background: url('../layout/ratioOff.png') no-repeat center center;
-		}
-
-		.xEntryGalleryCrop .cropToolbar .ratio:hover {
-			background-color: #B2BBD0;
+			background: url('../layout/ratio.png') no-repeat 0 -36px;
 		}
 
 		.xEntryGalleryCrop .cropToolbar .ratioOn {
-			background: url('../layout/ratioOn.png') no-repeat center center;
+			/*background: url('../layout/ratio.png') no-repeat;*/
+			background-position: 0 0;
 		}
 
 		.xEntryGalleryCrop .cropToolbar .processCrop {

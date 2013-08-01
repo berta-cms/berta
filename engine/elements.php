@@ -183,7 +183,7 @@ if($jsonRequest) {
 											<p class="heightRealUI"><input type="text" name="heightReal" class="heightReal"></p>
 										</div>
 										<div class="manualSizeBox">
-											<span class="ratio"></span>
+											<span class="ratio" title="keep proportions"></span>
 										</div>
 									</div>
 									<input type="hidden" name="leftReal" class="leftReal">
