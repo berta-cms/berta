@@ -182,7 +182,7 @@ var BertaGallery = new Class({
 
 	//gallery row mode - fullscreen
 	attachRowFullscreen: function() {
-        this.container.getParent().getElements('.xGalleryItem').each(function(item) {
+        this.container.getParent().getElements('.xGalleryItem:not(.xGalleryItemType-video)').each(function(item) {
             item.setStyle('cursor', 'pointer');
             item.addEvent('click', function() {
                 var ImgIndex = this.getClassStoredValue('xImgIndex');
