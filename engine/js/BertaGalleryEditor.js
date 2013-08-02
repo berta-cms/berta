@@ -446,7 +446,7 @@ var BertaGalleryEditor = new Class({
 	sortingInit: function() {
 		//console.debug('------------------ sorting init');
 		this.stripSortables = new Sortables(this.strip, {
-		    'handle': '.grabHandle',
+		    'handle': '.grabHandle span a',
 			'revert': { duration: 500, transition: 'elastic:out' },
 			'constrain': true,
 			'opacity': 0.8,
