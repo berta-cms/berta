@@ -205,22 +205,35 @@ if($jsonRequest) {
 					$path = $options['MEDIA_ROOT'] . $e['mediafolder']['value'] . '/';
 
 					$crop = BertaUtils::smart_crop_image($path.$decoded['value'], $decoded['x'], $decoded['y'], $decoded['w'], $decoded['h']);
+					BertaEditor::images_deleteDerivatives($path, $decoded['value']);
+
+					//rename cropped file to prevent caching
+					$fileInfo = pathinfo($path.$decoded['value']);
+					$newFileName = $fileInfo['filename'].time().'.'.$fileInfo['extension'];
+					@rename($path.$decoded['value'], $path.$newFileName);
 
 					if (count($e['mediaCacheData']['file'])>1) {
 						foreach($e['mediaCacheData']['file'] as $cacheIndex => $im) {
 							if($im['@attributes']['src'] == $decoded['value']) {
+								$e['mediaCacheData']['file'][$cacheIndex]['@attributes']['src'] = $newFileName;
 								$e['mediaCacheData']['file'][$cacheIndex]['@attributes']['width'] = $crop['w'];
 								$e['mediaCacheData']['file'][$cacheIndex]['@attributes']['height'] = $crop['h'];
 								break;
 							}
 						}
 					}else{
+						$e['mediaCacheData']['file']['@attributes']['src'] = $newFileName;
 						$e['mediaCacheData']['file']['@attributes']['width'] = $crop['w'];
 						$e['mediaCacheData']['file']['@attributes']['height'] = $crop['h'];
 					}
 
-					BertaEditor::images_deleteDerivatives($path, $decoded['value']);
-					BertaEditor::images_getSmallThumbFor($path.$decoded['value']);
+					$smallThumb = BertaEditor::images_getSmallThumbFor($path.$newFileName);
+
+					$returnUpdate = $newFileName;
+					$returnParams = array(
+						'path'=>$path,
+						'smallThumb' => $smallThumb
+						);
 				}
 				elseif($decoded['action'] != 'SAVE') {
 					switch($decoded['action']) {
