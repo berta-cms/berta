@@ -603,7 +603,8 @@ var BertaGalleryEditor = new Class({
 		var id = 'el' + new Date().getTime();
 		var imageSrc = target.get('data-src');
 		var imageThumb = target.getPrevious('img');
-		var filename = target.getParent('li').get('filename');
+		var liEl = target.getParent('li')
+		var filename = liEl.get('filename');
 		var topInput = cropToolbox.getElement('.topReal');
 		var leftInput = cropToolbox.getElement('.leftReal');
 		var widthInput = cropToolbox.getElement('.widthReal');
@@ -786,8 +787,7 @@ var BertaGalleryEditor = new Class({
 						ratio.fireEvent('setRatio');
 					});
 
-					processCrop.removeEvents().addEvent('click', function(event){
-						var target = $(event.target);
+					processCrop.removeEvents().addEvent('click', function(){
 
 						Cookie.write('_berta_crop_width', widthReal);
 						Cookie.write('_berta_crop_height', heightReal);
@@ -813,7 +813,10 @@ var BertaGalleryEditor = new Class({
 								h: heightInput.get('value')
 							}),
 							onComplete: function(resp) {
-								imageThumb.src = imageThumb.src;
+								imageThumb.src = resp.params.smallThumb;
+								liEl.set('filename', resp.update);
+								target.set('data-src', resp.params.path+resp.update);
+								liEl.getElement('.xEGEImageCaption').removeClass('xParam-'+resp.real).addClass('xParam-'+resp.update);
 								cancel.fireEvent('click');
 								loader.addClass('xHidden');
 								$$(processCrop, cancel).removeProperty('disabled');
