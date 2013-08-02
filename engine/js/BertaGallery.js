@@ -140,8 +140,6 @@ var BertaGallery = new Class({
 						var topImg = this.imageContainer.getFirst('.xGalleryItem');
 						var linkHref = this.container.getClassStoredValue('xGalleryLinkAddress');
 						var linkTarget = this.container.getClassStoredValue('xGalleryLinkTarget');
-						//var patt = /http:\/\//i;
-						//if(!patt.test(linkHref)) linkHref = 'http://' + linkHref;
 
 						topImg.getElements('img').setStyle('cursor', 'pointer');
 						topImg.addEvent('click', function(event) {
@@ -252,7 +250,7 @@ var BertaGallery = new Class({
 
 			this.imageContainer.setStyle('width', (totalWidth + numImages /* for "em" discrepancy */) + 'px');
 			this.imageContainer.getElements('.xGalleryItem').setStyle('position', 'relative');
-			//this.imageContainer.setStyle('height', maxHeight + 'px');
+
 		} else if(this.type == 'pile') {
 			var margin = 0;
 			var totalHeight = 0, totalWidth = 0;
@@ -275,8 +273,7 @@ var BertaGallery = new Class({
 			this.layout_rowTotalHeight = totalHeight;
 			this.layout_rowTotalWidth = totalWidth;
 		} else if(this.type == 'column') {
-            //this.imageContainer.getChildren('.xGalleryItem').setStyle('height', 'auto');
-            //this.imageContainer.setStyle('height', 'auto');
+
             var totalHeight = 0, maxWidth = 0, itmSize;
             this.imageContainer.getChildren('.xGalleryItem').each(function(item) {
                 itmSize = item.getSize();
@@ -308,35 +305,19 @@ var BertaGallery = new Class({
 				if(el == target) { zPlus = -199; zSignChange = true; }
 				z += zPlus;
 
-				// move either to left-top or bottom-right corner
-				/*var margin;
-				if(zPlus > 0 || zSignChange) margin = idx * 30;
-				else margin = -(numElements - 1 - idx) * 30;
-				console.debug(
-					margin
-				);
-				el.setStyles({
-					left: (zPlus > 0 ? margin : this.layout_rowTotalWidth - parseInt(el.getStyle('width')) - margin) + 'px',
-					top: (zPlus > 0 ? margin : this.layout_rowTotalHeight - parseInt(el.getStyle('height')) - margin) + 'px'
-				});*/
-
 			}, this);
 
 		}
 	} : $empty,
 
-/*
-	if(mType == 'image') this.layout_inject(bDeleteExisting, true);
-	this.layout_finisage(src, mType, mWidth, mHeight);
-*/
 
 	layout_inject: function(bDeleteExisting, bDoContainerFade) {
-		//console.debug('inject ', this.preload, ' with bDeleteExisting = ', bDeleteExisting);
+
 		if(bDeleteExisting) this.imageContainer.getChildren('.xGalleryItem').destroy();
 		this.preload.inject(this.newObjectInjectWhere, this.newObjectInjectPosition);
 
 		if(bDoContainerFade) {
-			this.imageShowFx.set('opacity', 0).start('opacity', 1);
+			this.imageShowFx.set('opacity', 1);
 		} else {
 			// just fade in the newly added image
 			new Fx.Tween(this.preload, { duration: 'short', transition: Fx.Transitions.Sine.easeInOut })
@@ -414,7 +395,7 @@ var BertaGallery = new Class({
 	// load: starts the actual loading of next image/video into the container
 
 	load: function(src, mType, mWidth, mHeight, videoPath, autoPlay, caption, bDeleteExisting, xImgIndex) {
-		//console.debug('load', src);
+
 		switch(this.phase) {
 			case 'fadeout': this.imageFadeOutFx.cancel(); break;
 			case 'fadein': this.imageResizeFx.cancel(); this.imageShowFx.cancel(); break;
@@ -431,7 +412,7 @@ var BertaGallery = new Class({
 		}
 	},
 	load_Render: function(src, mType, mWidth, mHeight, videoPath, autoPlay, caption, bDeleteExisting, xImgIndex) {
-		//console.debug('load_Render', src);
+
 		this.currentSrc = src;
 		this.currentType = mType;
 		this.currentVideoPath = videoPath;
@@ -482,6 +463,7 @@ var BertaGallery = new Class({
 				source.inject(this.preload, 'top');
 
 				this.layout_inject(bDeleteExisting, true);
+				this.preload.setStyle('position', 'absolute');
 
 				_V_(containerID, {
 					"controls": true,
@@ -504,12 +486,12 @@ var BertaGallery = new Class({
 
 	},
 	load_Finish: function(src, mType, mWidth, mHeight, bDeleteExisting) {
-		//console.debug('load_Finish', src);
+
 		var obj=this;
 		// test if the loaded image's src is the last invoked image's src
 		if(src == this.currentSrc) {
 			if(this.type == 'slideshow') {
-				//console.debug(this.preload);
+
 				this.phase = "fadein";
 				this.imageResizeFx.start({
 					'width': mWidth,
@@ -560,12 +542,10 @@ var BertaGallery = new Class({
 			}
 			else {
 				this.phase = "done";
-				//console.debug(this.preload);
-				if(mType == 'image') this.layout_inject(bDeleteExisting, false);
-				//this.preload.inject(this.newObjectInjectWhere, this.newObjectInjectPosition);
-				this.layout_update();
 
-				//new Fx.Tween(this.preload, { duration: 'normal', transition: Fx.Transitions.Sine.easeInOut }).set('opacity', 0).start('opacity', 1);
+				if(mType == 'image') this.layout_inject(bDeleteExisting, false);
+
+				this.layout_update();
             	this.loadNext();
 			}
 		}
