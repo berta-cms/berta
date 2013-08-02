@@ -212,7 +212,7 @@ if($jsonRequest) {
 					$newFileName = $fileInfo['filename'].time().'.'.$fileInfo['extension'];
 					@rename($path.$decoded['value'], $path.$newFileName);
 
-					if (count($e['mediaCacheData']['file'])>1) {
+					if ( !isset($e['mediaCacheData']['file']['value']) && count($e['mediaCacheData']['file'])>1 ) {
 						foreach($e['mediaCacheData']['file'] as $cacheIndex => $im) {
 							if($im['@attributes']['src'] == $decoded['value']) {
 								$e['mediaCacheData']['file'][$cacheIndex]['@attributes']['src'] = $newFileName;
