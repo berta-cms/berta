@@ -8,6 +8,16 @@ For more information, visit http://www.berta.me
 
 Changelog
 ----------
+**v0.8.6a (release date 2 Aug 2013)**
+ * crop tool for gallery images
+ * medium size option for gallery images
+ * video player changed to HTML5 Video.js - supports MP4 and FLV
+ * auto play option for video player
+ * section names now can contain special characters (russian, greek, turkish, ukrainian, latvian, czech, polish)
+ * shop plugin upgrade with shipping weight calculator
+ * shop plugin upgrade with input fields for legal person
+ * other minor improvements and bugfixes
+
 **v0.8.5a (release date 10 Jan 2013)**
  * support for animated gif resizing (PHP Imagick extension required)
  * Gallery slideshow timing improvements
