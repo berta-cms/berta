@@ -150,6 +150,10 @@
             { /if }
         </div>
 
+        {* background grid *}
+        {if $berta.environment == 'engine' && $berta.settings.pageLayout.showGrid == 'yes' }
+            <div id="xGridBackground"></div>
+        {/if}
 
         {if $berta.settings.background.backgroundAttachment=='fill' AND $berta.settings.background.backgroundImageEnabled=='yes' AND $berta.settings.background.backgroundImage!=''}
             <div id="xFilledBackground" class="xPosition-{' '|str_replace:'_':$berta.settings.background.backgroundPosition}">
