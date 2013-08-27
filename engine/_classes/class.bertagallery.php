@@ -9,10 +9,7 @@ class BertaGallery extends BertaBase {
             Array_XML::makeListIfNotList($entry['mediaCacheData']['file']);
             foreach($entry['mediaCacheData']['file'] as $idx => $im) {
                 if((string) $idx == '@attributes') continue;
-                if($im['@attributes']['type'] == 'image')
-                    $imgs[] = $im;
-                elseif($im['@attributes']['type'] == 'video' && !empty($im['@attributes']['poster_frame']))
-                    $imgs[] = $im;
+                $imgs[] = $im;
             }
         }
         return $imgs;
@@ -139,8 +136,6 @@ class BertaGallery extends BertaBase {
         //milkbox fullscreen
         $milkbox='';
 
-        //print_R ($imgs);
-
         $navStr = '<ul class="xGalleryNav" ' . ((count($imgs) == 1 || in_array($galleryType, array('row', 'column', 'pile', 'link'))) ? 'style="display:none"' : '') . '>'; // <link/> / added || $galleryType == 'link'
         for($i = 0; $i < count($imgs); $i++) {
             $width = $height = $isPoster = 0;
@@ -170,6 +165,10 @@ class BertaGallery extends BertaBase {
                 $width = $imgSize ? (int) $imgSize[0] : false;
                 $height = $imgSize ? (int) $imgSize[1] : false;
             }
+
+            //default image size (video without poster)
+            $width = $width ? $width : 300;
+            $height = $height ? $height : 150;
 
             if($width && $height && $imageTargetWidth && $imageTargetHeight && ($width > $imageTargetWidth || $height > $imageTargetHeight)) {
                 list($width, $height) = self::fitInBounds($width, $height, $imageTargetWidth, $imageTargetHeight);

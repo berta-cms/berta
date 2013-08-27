@@ -452,7 +452,7 @@ var BertaGallery = new Class({
 			case 'video':
 				var containerID = 'video_' + new Date().getTime();
 
-				if(mHeight) mHeight = parseInt(mHeight) + 25;
+				if(mHeight) mHeight = parseInt(mHeight);
 
 				this.preload = new Element('video', { 'id': containerID, 'width': mWidth, 'height': mHeight, 'class': 'video-js vjs-default-skin xGalleryItem xGalleryItemType-video', 'style': { 'opacity': 0 } });
 
