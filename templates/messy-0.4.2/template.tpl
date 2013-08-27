@@ -138,8 +138,8 @@
                 { if !$berta.options.MOBILE_DEVICE && ($berta.section.mediaCacheData.file|@count > 1 || $berta.section.mediaCacheData.file.value) && !($berta.section.type == 'grid' && $smarty.cookies._berta_grid_view) }
                     <div id="xBackgroundLeft"></div>
                     <div id="xBackgroundRight"></div>
-                    <div id="xBackgroundLeftCounter"><div class="counterContent"></div></div>
-                    <div id="xBackgroundRightCounter"><div class="counterContent"></div></div>
+                    <div id="xBackgroundLeftCounter"{if $bgAttr.hide_navigation=='yes'} class="xHidden"{/if}><div class="counterContent"></div></div>
+                    <div id="xBackgroundRightCounter"{if $bgAttr.hide_navigation=='yes'} class="xHidden"{/if}><div class="counterContent"></div></div>
                 { /if }
             </div>
 

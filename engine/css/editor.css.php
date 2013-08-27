@@ -585,15 +585,16 @@ body.xEditorEnabled { }
     	        text-decoration: underline !important;
     	    }
 
-		.xBgSettings {
+		.xBgSettings, .xBgNavigationSettings {
 			margin: 6px 0;
 		}
 
-			.xBgFadingSettings .caption {
+			.caption {
 				width: 200px;
 				float: left;
 			}
 
+				.xBgNavigationSettings .xBgNavigation,
 				.xBgFadingSettings .xBgFading,
 				.xBgColorSettings .xBgFading select,
 				.xBgButtonTypeSettings .xBgButtonType,
@@ -2213,6 +2214,10 @@ table.inventory tr td .remove {
 
 .xVisible {
 	display: block;
+}
+
+.xFloatLeft {
+	float: left;
 }
 
 

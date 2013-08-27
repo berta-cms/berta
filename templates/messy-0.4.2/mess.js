@@ -489,6 +489,11 @@ var BertaBackground = new Class({
                 }.bind(this)
             });
 
+            //set default cursor if navigation is hidden
+            if ( this.rightCounter.hasClass('xHidden') ) {
+                $$(this.previousClickArea, this.nextClickArea).setStyle('cursor', 'default');
+            }
+
         }
         // If mobile device
         else if (this.nextButton && this.previousButton) {

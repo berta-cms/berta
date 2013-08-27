@@ -82,3 +82,7 @@ div.xGalleryItem {
 .clearfix:before,
 .clearfix:after { content: ""; display: table; }
 .clearfix:after { clear: both; }
+
+.xHidden {
+	display: none !important;
+}
