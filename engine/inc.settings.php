@@ -50,6 +50,7 @@ $settingsDefinition = array(
 	'navigation' => array(
 		'_' =>                          array('title' => I18n::_('Navigation')),
 		'landingSectionVisible' => 	    array('format' => 'select',	'default' => 'yes',	'values' => array('yes', 'no'),		'title' => I18n::_('Is first section visible in menu?'),    'description' => I18n::_('Choose "no" to hide the first section in the main menu. Link from the page title (or header image) will lead to it. NOTE: This setting has no effect, if the section has a submenu; then it is visible at all times.')),
+		'landingSectionPageHeadingVisible' =>  array('format' => 'select',	'default' => 'yes',	'values' => array('yes', 'no'),		'title' => I18n::_('Show page heading in first section?'),    'description' => I18n::_('Choose "no" to hide page heading in first section.')),
 		'landingSectionMenuVisible' =>  array('format' => 'select',	'default' => 'yes',	'values' => array('yes', 'no'),		'title' => I18n::_('Show menu in first section?'),    'description' => I18n::_('Choose "no" to hide the menu in first section.')),
         'alwaysSelectTag' => 		    array('format' => 'select',	'default' => 'yes', 'values' => array('yes', 'no'),		'title' => I18n::_('Always auto-select a submenu item?'),   'description' => I18n::_('Choose "yes" to automatically select the first submenu item when clicking on a menu item. This works only when there is a submenu.'))
 	),
