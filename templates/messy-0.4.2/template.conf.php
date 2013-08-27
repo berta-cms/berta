@@ -59,6 +59,7 @@ $templateConf = array(
 		'centered' =>	array('format' => 'select', 'default' => 'no', 'values' => array('yes', 'no'), 'title' => I18n::_('Centered layout'), 'description' => I18n::_('Sets whether layout should be centered or not.')),
 		'centeredWidth' =>	array('format' => 'text',	'default' => '960px',	'css_units' => true,	'title' => I18n::_('Centered content width'),	'description' => I18n::_('Content width if layout is centered.')),
 		'centeringGuidesColor' =>	array('format' => 'select', 'default' => 'dark', 'values' => array('dark', 'bright'),	'title' => I18n::_('Centering guides color tone'),	'description' => I18n::_('Color tone for centering guides (dark for bright background colors, bright for dark background colors).')),
+		'showGrid' =>  array('format' => 'select',	'default' => 'no',	'values' => array('yes', 'no'),		'title' => I18n::_('Show grid'),    'description' => I18n::_('Choose "yes" to show grid in background.')),
 	),
 
 	'entryHeading' => array(
