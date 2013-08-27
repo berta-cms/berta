@@ -217,6 +217,8 @@ if($jsonRequest) {
 										? $section['mediaCacheData']['@attributes']['autoplay'] : '0';
 				$bgSize 			= !empty($section['mediaCacheData']['@attributes']['image_size'])
 										? $section['mediaCacheData']['@attributes']['image_size'] : 'medium';
+				$bgHideNavigation 	= !empty($section['mediaCacheData']['@attributes']['hide_navigation'])
+										? $section['mediaCacheData']['@attributes']['hide_navigation'] : 'no';
 				$bgFading 			= !empty($section['mediaCacheData']['@attributes']['fade_content'])
 										? $section['mediaCacheData']['@attributes']['fade_content'] : 'disabled';
 				$bgColor 			= !empty($section['sectionBgColor']['value'])
@@ -275,6 +277,11 @@ if($jsonRequest) {
 					echo '</div>';
 
 					echo '<div class="xBgSettings xHidden">';
+						echo '<div class="xBgNavigationSettings">',
+					    		'<div class="caption">hide navigation arrows</div>',
+					    	 	'<div class="xBgNavigation xFloatLeft xEditableSelectRC xCommand-SET_BG_NAVIGATION" x_options="no||yes">' . $bgHideNavigation . '</div>',
+								'<div class="clear"></div>',
+							 '</div>';
 					   	echo '<div class="xBgFadingSettings">',
 					    		'<div class="caption">fade content</div>',
 					    	 	'<div class="xBgFading xEditableSelectRC xCommand-SET_BG_FADE_CONTENT" x_options="enabled||disabled">' . $bgFading . '</div>',
