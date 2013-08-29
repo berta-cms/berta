@@ -192,6 +192,7 @@ var MessyMess = new Class({
         }
 
         setTimeout(this.gridBackgroundPosition.bind(this), 100);
+        window.fireEvent('resize');
         window.addEvents({
             'resize': this.gridBackgroundPosition.bind(this),
             'scroll': this.gridBackgroundPosition.bind(this)
