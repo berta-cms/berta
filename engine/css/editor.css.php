@@ -47,7 +47,7 @@ body.xEditorEnabled { }
 	left: 0;
 	width: 100%;
 	height: 100%;
-	background-image: url('../layout/grid.png');
+	background-image: linear-gradient(rgba(0, 0, 0, 0.2) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 0, 0, 0.2) 1px, transparent 0px);
 }
 
 #bertaVideosBackground {
