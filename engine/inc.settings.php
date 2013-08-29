@@ -59,6 +59,8 @@ $settingsDefinition = array(
 		'_' =>                      array('title' => I18n::_('Page layout')),
 		'favicon' => 				array('format' => 'icon',	'default' => '',  	    'title' => I18n::_('Favicon'),      'description' => I18n::_('Small picture to display in the address bar of the browser. The file must be in .ICO format and 16x16 pixels big.')),
 		'gridStep' =>          		array('format' => 'text',	'default' => 10,         'title' => I18n::_('Grid step'),    'description' => I18n::_('Distance in pixels for snap-to-grid dragging.')),
+		'showGrid' =>  				array('format' => 'select',	'default' => 'no', 'values' => array('yes', 'no'),	'title' => I18n::_('Show gridlines'),    'description' => I18n::_('Choose "yes" to show gridlines in background. Available only in Messy template.')),
+		'gridColor' =>  			array('format' => 'select',	'default' => 'black', 'values' => array('black', 'white'),	'title' => I18n::_('Gridlines color'),    'description' => ''),
 	),
 
 	'media' => array(
