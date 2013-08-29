@@ -190,7 +190,35 @@ var MessyMess = new Class({
                 });
             }
         }
+
+        setTimeout(this.gridBackgroundPosition.bind(this), 100);
+        window.addEvents({
+            'resize': this.gridBackgroundPosition.bind(this),
+            'scroll': this.gridBackgroundPosition.bind(this)
+        });
+
 	},
+
+    gridBackgroundPosition: function() {
+
+        var xGridBackground = $('xGridBackground');
+
+        if (xGridBackground) {
+            var scroll = window.getScroll();
+            var xPos = -scroll.x;
+            var yPos = -scroll.y;
+
+            var xCenteringGuide = $$('.xCenteringGuide');
+
+            if (xCenteringGuide.length) {
+                xPos = xPos + xCenteringGuide[0].getSize().x;
+            }
+
+            xGridBackground.setStyles({
+                'background-position': xPos + 'px ' + yPos + 'px'
+            });
+        }
+    },
 
 	onLoad: function() {
         if(this.bgContainer && this.bgImage) {
@@ -324,11 +352,6 @@ var MessyMess = new Class({
 		}).post();
 	},
 
-
-
-
-
-
 	firstPageInit:function() {
 		this.entriesContainer = $('firstPageMarkedEntries');
 		if(this.entriesContainer && bertaGlobalOptions.environment == 'site') {
@@ -374,8 +397,6 @@ var MessyMess = new Class({
 			target = target.getParent('.firstPagePic');
 		}
 		if(target.retrieve('mouseMoveOn')) {
-
-			//console.debug(event.page.x, target.retrieve('prevMouseX'), event.page.y, target.retrieve('prevMouseY'));
 
 			var xDiff = event.page.x > target.retrieve('prevMouseX') ? 1 : (event.page.x == target.retrieve('prevMouseX') ? 0 : -1);
 			var yDiff = event.page.y > target.retrieve('prevMouseY') ? 1 : (event.page.y == target.retrieve('prevMouseY') ? 0 : -1);
@@ -724,25 +745,4 @@ var BertaBackground = new Class({
 	},
 });
 
-
 var messyMess = new MessyMess();
-
-		// VIDEO for _centerImage();
-/*
-		switch(data.options.type) {
-		    case 'image':
-		    case 'cycle':
-		    case 'camera':
-
-		    break;
-
-		    case 'video':
-
-		    	el.setStyle('width', 'auto')
-		    	   .setStyle('height', 'auto');
-
-		    	//backgroundElement = $('#background .visualVideoContainer');
-
-		    break;
-		}
-*/
