@@ -83,7 +83,7 @@ class Array_XML {
 	static function writeAttributes($attrList) {
 		$strOut = array();
 		foreach($attrList as $a => $v) {
-			array_push($strOut, "$a=\"$v\"");
+			array_push($strOut, "$a=\"".htmlspecialchars($v)."\"");
 		}
 		return implode(' ', $strOut);
 	}
