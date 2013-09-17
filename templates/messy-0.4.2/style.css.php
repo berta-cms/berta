@@ -5,6 +5,8 @@ $IS_CSS_FILE = true;
 include('../../engine/inc.page.php');
 $s =& $berta->template->settings;
 $isEngineView = $berta->security->userLoggedIn;
+$isResponsive = $s->get('pageLayout', 'responsive')=='yes';
+$columns = $s->get('pageLayout', 'columns');
 
 $expires= 60 * 60 * 24 * 1;	// 1 day
 header('Pragma: public');
@@ -70,12 +72,11 @@ a:active {
 
 a img { border: none; }
 
-
 .mess {
-	position: absolute !important;
+	<?php if( !$isResponsive ){ ?>
+		position: absolute !important;
+	<?php } ?>
 }
-
-
 
 .xCenteringGuide {
 	<?php if($s->get('pageLayout', 'centeringGuidesColor') == 'dark') { ?>
@@ -106,6 +107,9 @@ a img { border: none; }
 		margin: 0 auto;
 		width: <?php echo $s->get('pageLayout', 'centeredWidth') ?>;
 	}
+	#contentContainer.xResponsive {
+		width: <?php echo $s->get('pageLayout', 'centeredWidth') ?>;
+	}
 
 #contentContainer h1 {
 	padding: 0;
@@ -118,7 +122,9 @@ a img { border: none; }
 	font-style: <?php echo $s->get('heading', 'fontStyle') ?>;
 	font-variant: <?php echo $s->get('heading', 'fontVariant') ?>;
 	line-height: <?php echo $s->get('heading', 'lineHeight') ?>;
+	<?php if( !$isResponsive ){ ?>
 	position: <?php echo $s->get('heading', 'position') ?> !important;
+	<?php } ?>
 }
 	h1 a {
 		color: <?php echo $s->get('heading', 'color') ?> !important;
@@ -136,8 +142,10 @@ a img { border: none; }
 	font-style: <?php echo $s->get('menu', 'fontStyle') ?>;
 	font-variant: <?php echo $s->get('menu', 'fontVariant') ?>;
 	line-height: <?php echo $s->get('menu', 'lineHeight') ?>;
-	position: <?php echo $s->get('menu', 'position') ?> !important;
 	white-space: nowrap;
+	<?php if( !$isResponsive ){ ?>
+		position: <?php echo $s->get('menu', 'position') ?> !important;
+	<?php } ?>
 }
 	.menuItem a:link, .menuItem a:visited {
 		color: <?php echo $s->get('menu', 'colorLink') ?>;
@@ -203,14 +211,28 @@ a img { border: none; }
 }
 	#pageEntries .xEntry {
 		position: relative;
-		max-width: <?php echo $s->get('entryLayout', 'contentWidth') ?>;
-		min-width: 150px;
-		clear: both;
+		<?php if( $isResponsive ){ ?>
+			float: left;
+			width: 50%;
+			overflow: hidden;
+			white-space: nowrap;
+			text-overflow: ellipsis;
+			min-height: 1px;
+		<?php } else { ?>
+			max-width: <?php echo $s->get('entryLayout', 'contentWidth') ?>;
+			min-width: 150px;
+			clear: both;
+		<?php } ?>
 		list-style:none;
 		margin-bottom: <?php echo $s->get('entryLayout', 'spaceBetween') ?>;
-
 		padding: 0;
 	}
+
+	<?php if( $isResponsive && $columns>1 ){ ?>
+		#pageEntries .xEntry:nth-child(<?php echo $columns ?>n+1) {
+			clear: left;
+		}
+	<?php } ?>
 
 	#pageEntries .xEntry h2 {
 				color: <?php echo $s->get('entryHeading', 'color') ?>;
