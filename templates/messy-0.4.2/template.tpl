@@ -207,7 +207,7 @@
                 { /if }
             { /if }
 
-            <div id="contentContainer" { if $berta.settings.pageLayout.centered=='yes' }class="xCentered"{ /if }>
+            <div id="contentContainer" class="{ if $berta.settings.pageLayout.centered=='yes' }xCentered { /if }{ if $berta.settings.pageLayout.responsive=='yes' }xResponsive{ /if }">
 
                 { if $berta.environment == 'engine' && $berta.sections }
                 <div id="xBgEditorPanelContainer"></div>
@@ -262,12 +262,12 @@
 
                 {* If not grid view *}
                 { if !($smarty.cookies._berta_grid_view && $berta.section.type == 'grid') }
-                <div id="pageEntries" class="{ entriesListClasses } xNoEntryOrdering">
+                <div id="pageEntries" class="{ entriesListClasses } xNoEntryOrdering clearfix">
 
                     {* now loop through all entries and print them out *}
                     { foreach $entries as $entry }
 
-                        <div class="{ entryClasses entry=$entry } { messClasses property='positionXY' } xShopMessyEntry" style="{ messStyles xy=$entry.positionXY entry=$entry } {if $entry.width} width:{$entry.width};{elseif strlen(trim($berta.settings.shop.entryWidth)) > 0  && $berta.section.type == 'shop'} width: { $berta.settings.shop.entryWidth }px{ /if }">
+                        <div class="{ entryClasses entry=$entry } { messClasses property='positionXY' } xShopMessyEntry" style="{ messStyles xy=$entry.positionXY entry=$entry }{ if $berta.settings.pageLayout.responsive != 'yes' }{if $entry.width} width:{$entry.width};{elseif strlen(trim($berta.settings.shop.entryWidth)) > 0  && $berta.section.type == 'shop'}width: { $berta.settings.shop.entryWidth }px;{ /if }{/if}">
 
 
                             {* the entry settings and delete and move buttons live in the entryHeader - don't leave it out! *}
