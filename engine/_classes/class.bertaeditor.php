@@ -879,13 +879,12 @@ DOC;
 			if($sDef['values'] == 'templates') {
 				$values = BertaTemplate::getAllTemplates();
 			} else {
-			//	var_dump($sDef['values']);
 				foreach($sDef['values'] as $vK => $vV) {
 					$values[$vK] = is_string($vK) ? ($vK . '|' . $vV) : $vV;
 				}
 			}
 			$html .= ' x_options="' . htmlspecialchars(implode('||', $values)) . '"';
-			$value = isset($values[$value]) ? $sDef['values'][$value] : $value;
+			$value = isset($values[$value]) && !intval($value)>0 ? $sDef['values'][$value] : $value;
 		}
 
 		$html .= '>';

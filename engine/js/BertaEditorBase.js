@@ -231,17 +231,19 @@ var BertaEditorBase = new Class({
 				el.addClass(editorClass.substr(1));
 				el.addEvent('click', function(event, editor) {
 					if(!this.hasClass('xSaving') && !this.hasClass('xEditing')) {
-											//console.debug(this);
-											this.addClass('xEditing');
+						this.addClass('xEditing');
 
-											if(this.inlineIsEmpty()) this.innerHTML = '';
-											editor.elementEdit_instances.push(this.inlineEdit({ type: 'select',
-																					  subtype: this.hasClass(editor.options.xBertaEditorClassFontSelect.substr(1)) ? 'font' :
-																								(this.hasClass(editor.options.xBertaEditorClassSelectRC.substr(1)) ? 'rc' : ''),
-																					  selectOptions: this.getProperty('x_options').split('||'),
-																					  onComplete: editor.elementEdit_save.bind(editor) }));
-											editor.fireEvent(BertaEditorBase.EDITABLE_START, [el, editor.elementEdit_instances[editor.elementEdit_instances.length - 1]]);
-										}
+						if(this.inlineIsEmpty()) this.innerHTML = '';
+						editor.elementEdit_instances.push(
+							this.inlineEdit({
+								type: 'select',
+								subtype: this.hasClass(editor.options.xBertaEditorClassFontSelect.substr(1)) ? 'font' : (this.hasClass(editor.options.xBertaEditorClassSelectRC.substr(1)) ? 'rc' : ''),
+								selectOptions: this.getProperty('x_options').split('||'),
+								onComplete: editor.elementEdit_save.bind(editor)
+							})
+						);
+						editor.fireEvent(BertaEditorBase.EDITABLE_START, [el, editor.elementEdit_instances[editor.elementEdit_instances.length - 1]]);
+					}
 				}.bindWithEvent(el, this));
 				break;
 
