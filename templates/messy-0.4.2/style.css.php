@@ -24,7 +24,6 @@ html, body {
 	height: 100%;
 }
 
-
 body {
 	background-color: #fff;
 	color: <?php echo $s->get('generalFontSettings', 'color') ?>;
@@ -107,7 +106,8 @@ a img { border: none; }
 		width: <?php echo $s->get('pageLayout', 'centeredWidth') ?>;
 	}
 	#contentContainer.xResponsive {
-		width: <?php echo $s->get('pageLayout', 'centeredWidth') ?>;
+		width: auto;
+		max-width: <?php echo $s->get('pageLayout', 'centeredWidth') ?>;
 	}
 
 #contentContainer h1 {
@@ -201,19 +201,23 @@ a img { border: none; }
 	margin: 0;
 	padding: 0;
 	list-style: none;
+	width: 100%;
 }
 	#pageEntries .xEntry {
 		position: relative;
 		<?php if( $isResponsive ){ ?>
 			min-height: 1px;
+			padding: 10px;
+			padding: <?php echo $s->get('pageLayout', 'entryPadding') ?>;
+			-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;
 		<?php } else { ?>
 			max-width: <?php echo $s->get('entryLayout', 'contentWidth') ?>;
 			min-width: 150px;
+			padding: 0;
 			clear: both;
 		<?php } ?>
 		list-style:none;
 		margin-bottom: <?php echo $s->get('entryLayout', 'spaceBetween') ?>;
-		padding: 0;
 	}
 
 	#pageEntries.columns-2 .xEntry {
@@ -576,5 +580,27 @@ a img { border: none; }
 		#xGridViewTriggerContainer a span {
 			display: none;
 		}
+
+
+
+<?php if( $isResponsive ){ ?>
+	img,
+	#pageEntries .xEntry .xGalleryContainer .xGallery,
+	#pageEntries .xEntry .xGalleryContainer .xGallery .xGalleryItem,
+	#pageEntries .xEntry .xGalleryContainer .xGallery .xGalleryItem .image {
+		max-width: 100% !important;
+		height: auto !important;
+	}
+
+/* small tablet */
+@media (max-width: 767px)  {
+	#pageEntries.columns-2 .xEntry,
+	#pageEntries.columns-3 .xEntry {
+		float: none;
+		width: 100%;
+	}
+}
+
+<?php } ?>
 
 <?php if(!1) { ?></style><?php } ?>
