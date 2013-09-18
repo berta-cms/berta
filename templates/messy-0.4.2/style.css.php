@@ -6,7 +6,6 @@ include('../../engine/inc.page.php');
 $s =& $berta->template->settings;
 $isEngineView = $berta->security->userLoggedIn;
 $isResponsive = $s->get('pageLayout', 'responsive')=='yes';
-$columns = $s->get('pageLayout', 'columns');
 
 $expires= 60 * 60 * 24 * 1;	// 1 day
 header('Pragma: public');
@@ -197,12 +196,6 @@ a img { border: none; }
 			}
 
 
-
-
-
-
-
-
 #pageEntries {
 	position: relative;
 	margin: 0;
@@ -212,11 +205,6 @@ a img { border: none; }
 	#pageEntries .xEntry {
 		position: relative;
 		<?php if( $isResponsive ){ ?>
-			float: left;
-			width: 50%;
-			overflow: hidden;
-			white-space: nowrap;
-			text-overflow: ellipsis;
 			min-height: 1px;
 		<?php } else { ?>
 			max-width: <?php echo $s->get('entryLayout', 'contentWidth') ?>;
@@ -228,11 +216,20 @@ a img { border: none; }
 		padding: 0;
 	}
 
-	<?php if( $isResponsive && $columns>1 ){ ?>
-		#pageEntries .xEntry:nth-child(<?php echo $columns ?>n+1) {
+	#pageEntries.columns-2 .xEntry {
+		float: left;
+		width: 50%;
+	}
+
+	#pageEntries.columns-3 .xEntry {
+		float: left;
+		width: 33.33333%;
+	}
+
+		#pageEntries.columns-2 .xEntry:nth-child(2n+1),
+		#pageEntries.columns-3 .xEntry:nth-child(3n+1) {
 			clear: left;
 		}
-	<?php } ?>
 
 	#pageEntries .xEntry h2 {
 				color: <?php echo $s->get('entryHeading', 'color') ?>;

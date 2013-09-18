@@ -262,7 +262,7 @@
 
                 {* If not grid view *}
                 { if !($smarty.cookies._berta_grid_view && $berta.section.type == 'grid') }
-                <div id="pageEntries" class="{ entriesListClasses } xNoEntryOrdering clearfix">
+                <div id="pageEntries" class="{ entriesListClasses }{ if $berta.settings.pageLayout.responsive != 'yes' } xNoEntryOrdering{else} {if intval($berta.section.columns)>1}columns-{intval($berta.section.columns)}{ /if }{ /if } clearfix">
 
                     {* now loop through all entries and print them out *}
                     { foreach $entries as $entry }
