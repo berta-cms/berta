@@ -1050,6 +1050,7 @@ ul#pageEntries {
 
 			.xEntryDropdownBox {
 				position: absolute;
+				right: 0;
 				border: 1px solid #666666;
 				background-color: #fff;
 				z-index: 56000;

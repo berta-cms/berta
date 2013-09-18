@@ -31,7 +31,7 @@ $topPanelHTML = BertaEditor::getTopPanelHTML('sections');
 	<?php echo $topPanelHTML ?>
 	<div id="allContainer">
 		<div id="contentContainer">
-			
+
 			<h1 id="allPageTitle"><?php echo I18n::_('Sections') ?></h1>
 
 			<div id="xSectionsEditor">
@@ -57,9 +57,7 @@ $topPanelHTML = BertaEditor::getTopPanelHTML('sections');
 					}
 					$possibleTypes = implode('||', $possibleTypes);
 				}
-				
-				//$possibleBehaviors = 
-				
+
 				foreach($allSections as $sN => $s) {
 					$type = !empty($s['@attributes']['type']) ? $s['@attributes']['type'] : 'default';
 					$typeTitle = isset($typeValues[$type]) ? $typeValues[$type] : $type;
@@ -67,30 +65,34 @@ $topPanelHTML = BertaEditor::getTopPanelHTML('sections');
 					echo '<div class="csHandle"><span class="handle"></span></div>';
 					echo '<div class="csTitle"><span class="' . $xEditSelectorSimple . ' xProperty-title xNoHTMLEntities xSection-' . $sN . ' xSectionField">' . (!empty($s['title']['value']) ? htmlspecialchars($s['title']['value']) : '') . '</span></div>';
 					echo '<div class="csBehaviour"><span class="' . $xEditSelectorSelectRC . ' xProperty-type xSection-' . $sN . ' xSectionField" x_options="' . $possibleTypes . '">' . htmlspecialchars($typeTitle) . '</span></div>';
-					
+
 					echo '<div class="csDetails">';
 					if(!empty($typeParams[$type])) {
+
+						//remove responsive section settings
+						if ($berta->template->settings->get('pageLayout', 'responsive') != 'yes') {
+							unset(
+								$typeParams['default']['columns'],
+								$typeParams['shop']['columns']
+							);
+						}
 						foreach($typeParams[$type] as $pName => $p) {
 							$value = !empty($s[$pName]['value']) ? $s[$pName]['value'] : '';
 							if(!$value && $p['default']) $value = $p['default'];
 							echo BertaEditor::getSettingsItemEditHTML($pName, $p, $value, array('xSection' => $sN, 'xSectionField'));
 						}
 					}
-					
-					//if($behaviour == 'external link')
-					//	echo '<span class="' . $xEditSelectorSimple . ' xProperty-sectionsEditor/link xNoHTMLEntities xParam-' . $sN . ' xSectionField" title="">' . (!empty($s['link']['value']) ? htmlspecialchars($s['link']['value']) : '') . '</span>';
 					echo '</div>';
-					
+
 					echo '<div class="csPub"><span class="' . $xEditSelectorYesNo . ' xProperty-published xSection-' . $sN . ' xSectionField">' . (!empty($s['@attributes']['published']) ? '1' : '0') . '</span></div>';
 					echo '<div class="csDelete"><a href="#" class="xSectionDelete">'.I18n::_('delete').'</a></div>';
 					echo '</li>';
 				}
-				
+
 				?></ul><br class="clear" />
-				
+
 				<a id="xCreateNewSection" class="xPanel" href="#" class="xAction-sectionCreateNew"><span><?php echo I18n::_('create new section') ?></span></a>
-			
-			
+
 				<br class="clear" />
 				<hr />
 				<h2></h2>
@@ -110,10 +112,6 @@ $topPanelHTML = BertaEditor::getTopPanelHTML('sections');
 				<br class="clear" />
 				<p>&nbsp; </p>
 			</div>
-
-			
-
-			
 		</div>
 	</div>
 </body>

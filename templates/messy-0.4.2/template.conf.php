@@ -20,7 +20,9 @@ $fontOptions = array(
 $fontOptionsWithInherit = array_merge(array('inherit' => '(inherit from general-font-settings)'), $fontOptions);
 
 $sectionTypes = array(
-	'default' => array('title' => 'Default'),
+	'default' => array('title' => 'Default', 'params' => array(
+		'columns' =>array('format' => 'select', 'default' => '1 column', 'values' => array('1 column','2 columns','3 columns')),
+	)),
 	'external_link' => array('title' => 'External link', 'params' => array(
 		'link' => array('format' => 'text',	'default' => ''),
 		'target' => array('format' => 'select', 'values' => array('_self' => 'Same window', '_blank' => 'New window'), 'default' => '_blank')
@@ -62,7 +64,6 @@ $templateConf = array(
 
 		'group_responsive' => array('format' => false, 'default' => false, 'title' => '<h3>'.I18n::_('Resposive design').'</h3>'),
 		'responsive' =>	array('format' => 'select', 'default' => 'no', 'values' => array('no', 'yes'), 'title' => I18n::_('Enabled'), 'description' => I18n::_('Sets whether layout should be responsive or not.')),
-		'columns' =>	array('format' => 'select', 'default' => 2, 'values' => array(1,2,3), 'title' => I18n::_('Columns'), 'description' => I18n::_('Page entries will be split to columns.')),
 	),
 
 	'entryHeading' => array(
