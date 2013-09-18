@@ -64,6 +64,7 @@ $templateConf = array(
 
 		'group_responsive' => array('format' => false, 'default' => false, 'title' => '<h3>'.I18n::_('Resposive design').'</h3>'),
 		'responsive' =>	array('format' => 'select', 'default' => 'no', 'values' => array('no', 'yes'), 'title' => I18n::_('Enabled'), 'description' => I18n::_('Sets whether layout should be responsive or not.')),
+		'entryPadding' =>	array('format' => 'text', 'default' => '0 10px 20px 10px',	'title' => I18n::_('Entry padding'),	'description' => I18n::_('Padding between each entry.')),
 	),
 
 	'entryHeading' => array(
