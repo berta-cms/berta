@@ -297,6 +297,7 @@ var MessyMess = new Class({
     copyrightStickToBottom: function(){
 
         var bottom = $('bottom');
+        var isResponsive = $$('.xResponsive').length;
 
         if (bottom){
             var bottomPaddingTop = parseInt(bottom.getStyle('padding-top'));
@@ -312,12 +313,16 @@ var MessyMess = new Class({
                 }
             });
 
-            allDraggables.each(function(item){
-                y = parseInt(item.getStyle('top')) + parseInt(item.getSize().y)
-                if(maxY < y) {
-                    maxY = y;
-                }
-            });
+            if (isResponsive){
+                maxY = $('allContainer').getSize().y;
+            }else{
+                allDraggables.each(function(item){
+                    y = parseInt(item.getStyle('top')) + parseInt(item.getSize().y)
+                    if(maxY < y) {
+                        maxY = y;
+                    }
+                });
+            }
 
             if(maxY < windowH - bottomH) {
                 maxY = windowH - bottomH - bottomPaddingTop;
