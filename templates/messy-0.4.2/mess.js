@@ -17,6 +17,7 @@ var MessyMess = new Class({
 	bgPrevious: null,
 	bgRightCounter: null,
 	bgLeftCounter: null,
+    isResponsive: false,
 
 
 	initialize: function() {
@@ -25,6 +26,9 @@ var MessyMess = new Class({
 	},
 
 	onDOMReady: function() {
+
+        this.isResponsive = $$('.xResponsive').length;
+
 		// Berta Background
 		this.bgContainer = $('xBackground');
         this.bgLoader = $('xBackgroundLoader');
@@ -198,7 +202,25 @@ var MessyMess = new Class({
             'scroll': this.gridBackgroundPosition.bind(this)
         });
 
+        if (this.isResponsive) {
+            this.iframeResponsiveFix();
+        }
 	},
+
+    iframeResponsiveFix: function() {
+        $$('iframe').each(function(item) {
+            var width = item.get('width');
+            var height = item.get('height');
+            var wrapper = new Element('div', {'class': 'iframeWrapper'});
+
+            if (width && height){
+
+                wrapper.setStyle('padding-bottom', height*100/width + '%');
+            }
+
+            wrapper.wraps(item);
+        });
+    },
 
     gridBackgroundPosition: function() {
 
@@ -297,7 +319,6 @@ var MessyMess = new Class({
     copyrightStickToBottom: function(){
 
         var bottom = $('bottom');
-        var isResponsive = $$('.xResponsive').length;
 
         if (bottom){
             var bottomPaddingTop = parseInt(bottom.getStyle('padding-top'));
@@ -313,7 +334,7 @@ var MessyMess = new Class({
                 }
             });
 
-            if (isResponsive){
+            if (this.isResponsive){
                 maxY = $('allContainer').getSize().y;
             }else{
                 allDraggables.each(function(item){

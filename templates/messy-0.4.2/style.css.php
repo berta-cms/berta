@@ -585,6 +585,7 @@ a img { border: none; }
 
 <?php if( $isResponsive ){ ?>
 	img,
+	iframe,
 	#pageEntries .xEntry .xGalleryContainer .xGallery,
 	#pageEntries .xEntry .xGalleryContainer .xGallery .xGalleryItem,
 	#pageEntries .xEntry .xGalleryContainer .xGallery .xGalleryItem .image {
@@ -592,14 +593,29 @@ a img { border: none; }
 		height: auto !important;
 	}
 
-/* small tablet */
-@media (max-width: 767px)  {
-	#pageEntries.columns-2 .xEntry,
-	#pageEntries.columns-3 .xEntry {
-		float: none;
-		width: 100%;
+	/* helpers */
+	.vjs-poster {
+		position: absolute;
 	}
-}
+
+	.iframeWrapper  {
+		position: relative;
+		padding-bottom: 56.25%;
+	}
+
+	.iframeWrapper iframe {
+		position: absolute;
+		height: 100% !important;
+	}
+
+	/* small tablet */
+	@media (max-width: 767px)  {
+		#pageEntries.columns-2 .xEntry,
+		#pageEntries.columns-3 .xEntry {
+			float: none;
+			width: 100%;
+		}
+	}
 
 <?php } ?>
 

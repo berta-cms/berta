@@ -36,6 +36,8 @@ var BertaGallery = new Class({
 
 	numFinishedLoading: 0,
 
+	isResponsive: false,
+
 	initialize: function(container, options) {
 		this.setOptions(options);
 		this.attach(container);
@@ -43,6 +45,7 @@ var BertaGallery = new Class({
 	},
 
 	attach: function(container) {
+		isResponsive = $$('.xResponsive').length;
 		this.container = container;
 		this.type = this.container.getClassStoredValue('xGalleryType');
 		//this.container.addClass('galleryType-' + this.type);
@@ -454,7 +457,12 @@ var BertaGallery = new Class({
 
 				if(mHeight) mHeight = parseInt(mHeight);
 
-				this.preload = new Element('video', { 'id': containerID, 'width': mWidth, 'height': mHeight, 'class': 'video-js vjs-default-skin xGalleryItem xGalleryItemType-video', 'style': { 'opacity': 0 } });
+				this.preload = new Element('video', {
+					'id': containerID,
+					'width': mWidth,
+					'height': mHeight,
+					'class': 'video-js vjs-default-skin xGalleryItem xGalleryItemType-video'
+				});
 
 				var videoType = videoPath.split('.').pop();
 
@@ -465,12 +473,16 @@ var BertaGallery = new Class({
 				this.layout_inject(bDeleteExisting, true);
 				this.preload.setStyle('position', 'absolute');
 
-				_V_(containerID, {
+				var player = _V_(containerID, {
 					"controls": true,
 					"preload": "auto",
 					"poster": src,
 					"autoplay": autoPlay > 0 ? true : false
 				});
+
+				if (isResponsive) {
+					player.el.setStyle('padding-bottom', mHeight*100/mWidth + '%' );
+				}
 
 				new Element('img', { 'src': src, 'class' : 'xGalleryImageVideoBack', 'styles': {
 					'width' : mWidth + 'px',
@@ -488,6 +500,7 @@ var BertaGallery = new Class({
 	load_Finish: function(src, mType, mWidth, mHeight, bDeleteExisting) {
 
 		var obj=this;
+
 		// test if the loaded image's src is the last invoked image's src
 		if(src == this.currentSrc) {
 			if(this.type == 'slideshow') {
