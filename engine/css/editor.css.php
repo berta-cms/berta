@@ -164,15 +164,17 @@ body.xEditorEnabled { }
 	display: table;
 }
 	.xMAlign-outer {
-		display: table-cell;
-		vertical-align: middle;
+		display: inline-block;
+		width: 100%;
+		height: 100%;
 		text-align: center;
 		top: 50%;
 	}
 		.xMAlign-inner {
 			display: block;
-			top: -50%;
+			top: 45%;
 			text-align: center;
+			position: relative;
 		}
 
 .ie6 .xMAlign-container {
@@ -1153,6 +1155,7 @@ ul#pageEntries {
 				}
 				.xGalleryHasImages a.xGalleryEditButton {
 					position: absolute;
+					display: inline-block;
 					width: 100%; height: 100%;
 					left: 0; top: 0;
 					/*z-index: 100;*/
