@@ -657,9 +657,7 @@ var BertaEditor = new Class({
 		event = new Event(event);
 		var target = $(event.target);
 		if(!target.hasClass('xEntry')) target = target.getParent('.xEntry');
-		if (!target == null){
-			target.removeClass('xEntryHover');
-		}
+		target.removeClass('xEntryHover');
 	},
 	entryDropdownToggle: function(event) {
 		var dropdown = $(event.target);
