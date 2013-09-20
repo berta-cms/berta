@@ -138,8 +138,8 @@
                 { if !$berta.options.MOBILE_DEVICE && ($berta.section.mediaCacheData.file|@count > 1 || $berta.section.mediaCacheData.file.value) && !($berta.section.type == 'grid' && $smarty.cookies._berta_grid_view) }
                     <div id="xBackgroundLeft"></div>
                     <div id="xBackgroundRight"></div>
-                    <div id="xBackgroundLeftCounter"{if $bgAttr.hide_navigation=='yes'} class="xHidden"{/if}><div class="counterContent"></div></div>
-                    <div id="xBackgroundRightCounter"{if $bgAttr.hide_navigation=='yes'} class="xHidden"{/if}><div class="counterContent"></div></div>
+                    <div id="xBackgroundLeftCounter"{if $bgAttr.hide_navigation=='yes' || $berta.settings.pageLayout.responsive=='yes'} class="xHidden"{/if}><div class="counterContent"></div></div>
+                    <div id="xBackgroundRightCounter"{if $bgAttr.hide_navigation=='yes' || $berta.settings.pageLayout.responsive=='yes'} class="xHidden"{/if}><div class="counterContent"></div></div>
                 { /if }
             </div>
 
@@ -341,27 +341,29 @@
                     </div>
                 {/if}
 
-            </div>
+                {section name=foo loop=10}
+                    { assign var="setting_name_image" value="banner`$smarty.section.foo.iteration`_image" }
+                    { assign var="setting_name_link" value="banner`$smarty.section.foo.iteration`_link" }
+                    { assign var="setting_pos_name" value="banner`$smarty.section.foo.iteration`XY" }
 
-            {section name=foo loop=10}
-                { assign var="setting_name_image" value="banner`$smarty.section.foo.iteration`_image" }
-                { assign var="setting_name_link" value="banner`$smarty.section.foo.iteration`_link" }
-                { assign var="setting_pos_name" value="banner`$smarty.section.foo.iteration`XY" }
-
-                { if $berta.settings.banners.$setting_name_image }
-                    <div class="floating-banner xEditableDragXY xProperty-{ $setting_pos_name }" style="{ bannerPos xy_name=$setting_pos_name }">
-                        <div class="xHandle"></div>
-                        { if $berta.settings.banners.$setting_name_link }
-                            <a href="{ $berta.settings.banners.$setting_name_link }" target="_blank">
+                    { if $berta.settings.banners.$setting_name_image }
+                        <div class="floating-banner{ if $berta.settings.pageLayout.responsive!='yes' } xEditableDragXY xProperty-{ $setting_pos_name }{/if}"{ if $berta.settings.pageLayout.responsive!='yes' } style="{ bannerPos xy_name=$setting_pos_name }"{/if}>
+                            { if $berta.settings.pageLayout.responsive!='yes' }
+                                <div class="xHandle"></div>
+                            {/if}
+                            { if $berta.settings.banners.$setting_name_link }
+                                <a href="{ $berta.settings.banners.$setting_name_link }" target="_blank">
+                                    <img src="{ $berta.options.MEDIA_ABS_ROOT }{ $berta.settings.banners.$setting_name_image }" />
+                                </a>
+                            { else }
                                 <img src="{ $berta.options.MEDIA_ABS_ROOT }{ $berta.settings.banners.$setting_name_image }" />
-                            </a>
-                        { else }
-                        <img src="{ $berta.options.MEDIA_ABS_ROOT }{ $berta.settings.banners.$setting_name_image }" />
-                        { /if }
-                    </div>
+                            { /if }
+                        </div>
 
-                { /if }
-            {/section}
+                    { /if }
+                {/section}
+
+            </div>
 
             {* grid trigger *}
             { if $berta.section.type == 'grid' && $berta.section.mediaCacheData.file && !$berta.section.mediaCacheData.file['@attributes'] && !$smarty.cookies._berta_grid_view }

@@ -677,6 +677,12 @@ nav ul{
 		margin: 0 10px;
 	}
 
+	.floating-banner {
+		position: relative;
+		display: inline-block;
+		margin: 10px;
+	}
+
 	/* helpers */
 	.vjs-poster {
 		position: absolute;
