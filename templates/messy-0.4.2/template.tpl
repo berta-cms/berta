@@ -235,28 +235,35 @@
 
                 <!-- MENU -->
                 { if count($berta.publishedSections) > 0 && (($berta.environment == 'site' && $berta.settings.navigation.landingSectionMenuVisible=='yes') || $berta.environment == 'engine' || ($berta.environment == 'site' && $berta.settings.navigation.landingSectionMenuVisible=='no' && $berta.sectionName != $berta.sections|@key)) }
-                    { assign var="currentSectionName" value=$berta.sectionName }
-                    { foreach $berta.publishedSections as $sName => $section }
-                        { if $section.type != 'shopping_cart' }
-                        <div class="menuItem xSection-{ $sName } { messClasses property='positionXY' } { if $currentSectionName == $section.name }menuItemSelected{ /if }{ if $berta.settings.menu.position == 'fixed' } xFixed{ /if }" style="{ messStyles xy=$section.positionXY }">
-                            { if $berta.sectionName == $section.name && $berta.settings.navigation.alwaysSelectTag == 'yes' && !empty($berta.tags.$sName) }
-                                <span>{ $section.title }</span>
-                            { else }
-                                <a href="{ bertaLink section=$sName }" target="{ bertaTarget section=$sName }">{ $section.title }</a>
-                            { /if }
+                    <nav>
+                        {if $berta.settings.pageLayout.responsive == 'yes'}
+                            <a href="#" id="menuToggle"><span></span></a>
+                        {/if}
+                        <ul>
+                            { assign var="currentSectionName" value=$berta.sectionName }
+                            { foreach $berta.publishedSections as $sName => $section }
+                                { if $section.type != 'shopping_cart' }
+                                <li class="menuItem xSection-{ $sName } { messClasses property='positionXY' } { if $currentSectionName == $section.name }menuItemSelected{ /if }{ if $berta.settings.menu.position == 'fixed' } xFixed{ /if }" style="{ messStyles xy=$section.positionXY }">
+                                    { if $berta.sectionName == $section.name && $berta.settings.navigation.alwaysSelectTag == 'yes' && !empty($berta.tags.$sName) }
+                                        <span>{ $section.title }</span>
+                                    { else }
+                                        <a href="{ bertaLink section=$sName }" target="{ bertaTarget section=$sName }">{ $section.title }</a>
+                                    { /if }
 
-                            { if $berta.settings.tagsMenu.hidden=='no' && (!empty($berta.tags.$sName) && ($berta.settings.tagsMenu.alwaysOpen=='yes' || $berta.sectionName==$sName)) }
-                                <ul class="subMenu xSection-{ $sName }{ if $berta.tags.$sName|@count > 1 && $berta.environment == 'engine' } xAllowOrdering{ /if }">
-                                    { foreach $berta.tags.$sName as $tName => $tag }
-                                        <li class="xTag-{ $tName }{ if $berta.tagName == $tName and $currentSectionName == $section.name } selected{ /if }">
-                                            <a class="handle" href="{ bertaLink section=$sName tag=$tName }" target="{ bertaTarget section=$sName tag=$tName }">{ $tag.title }</a>
-                                        </li>
-                                    { /foreach }
-                                </ul>
-                            { /if }
-                        </div>
-                        { /if }
-                    { /foreach }
+                                    { if $berta.settings.tagsMenu.hidden=='no' && (!empty($berta.tags.$sName) && ($berta.settings.pageLayout.responsive == 'yes' || $berta.settings.tagsMenu.alwaysOpen=='yes' || $berta.sectionName==$sName)) }
+                                        <ul class="subMenu xSection-{ $sName }{ if $berta.tags.$sName|@count > 1 && $berta.environment == 'engine' } xAllowOrdering{ /if }">
+                                            { foreach $berta.tags.$sName as $tName => $tag }
+                                                <li class="xTag-{ $tName }{ if $berta.tagName == $tName and $currentSectionName == $section.name } selected{ /if }">
+                                                    <a class="handle" href="{ bertaLink section=$sName tag=$tName }" target="{ bertaTarget section=$sName tag=$tName }">{ $tag.title }</a>
+                                                </li>
+                                            { /foreach }
+                                        </ul>
+                                    { /if }
+                                </li>
+                                { /if }
+                            { /foreach }
+                        </ul>
+                    </nav>
                 { /if }
 
 
