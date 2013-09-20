@@ -203,7 +203,9 @@ var MessyMess = new Class({
         });
 
         if (this.isResponsive) {
-            this.iframeResponsiveFix();
+            if (bertaGlobalOptions.environment == 'site'){
+                this.iframeResponsiveFix();
+            }
             this.responsiveMenu();
         }
 	},
@@ -233,18 +235,22 @@ var MessyMess = new Class({
     },
 
     iframeResponsiveFix: function() {
-        $$('iframe').each(function(item) {
-            var width = item.get('width');
-            var height = item.get('height');
-            var wrapper = new Element('div', {'class': 'iframeWrapper'});
 
-            if (width && height){
 
-                wrapper.setStyle('padding-bottom', height*100/width + '%');
-            }
+            $$('iframe').each(function(item) {
+                var width = item.get('width');
+                var height = item.get('height');
+                var wrapper = new Element('div', {'class': 'iframeWrapper'});
 
-            wrapper.wraps(item);
-        });
+                if (width && height){
+                    wrapper.setStyle('padding-bottom', height*100/width + '%');
+                }
+
+                if ( !item.getParent().hasClass('iframeWrapper') ) { //if no iframeWrapper already exists
+                    wrapper.wraps(item);
+                }
+            });
+
     },
 
     gridBackgroundPosition: function() {

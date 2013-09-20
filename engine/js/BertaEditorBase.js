@@ -1069,7 +1069,7 @@ var BertaEditorBase = new Class({
 			options: {
 				mode : "exact",
 				theme : "advanced",
-				width : "610px", height : "300px",
+				width : "610px", height : "300px !important",
 				//content_css : "<?php echo $ENGINE_ABS_ROOT ?>css/mce.css.php",
 				theme_advanced_buttons1 : "save,|,pasteword,|,undo,redo,|,bold,italic,removeformat,cleanup,styleprops,|,bullist,numlist,outdent,indent,|,justifyleft,justifycenter,justifyright,justifyfull,formatselect,link,unlink,insertanything,|,pdw_toggle,code",
 				theme_advanced_buttons2 : "tablecontrols",
@@ -1111,7 +1111,7 @@ var BertaEditorBase = new Class({
 			theme_advanced_buttons1 : "save,bold,italic,removeformat,link,code",
 			theme_advanced_buttons2 : "",
 			valid_elements : "p[*],b,i,strong,em,a[*],br[*],u,img[*],div[*],iframe[*],span[*]",
-			width : "100%", height: "60px",
+			width : "100%", height: "60px !important",
 			theme_advanced_statusbar_location : null,
 			plugins: "save,insertanything"
 			//paste_postprocess : function(pl,o) { o.node.innerHTML = TidyEditor("paste_postprocess", o.node.innerHTML); }

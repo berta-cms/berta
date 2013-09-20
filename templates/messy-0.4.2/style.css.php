@@ -673,6 +673,10 @@ nav ul{
 		display: block;
 	}
 
+	#additionalText {
+		margin: 0 10px;
+	}
+
 	/* helpers */
 	.vjs-poster {
 		position: absolute;
@@ -685,6 +689,7 @@ nav ul{
 
 	.iframeWrapper iframe {
 		position: absolute;
+		width: 100%;
 		height: 100% !important;
 	}
 
