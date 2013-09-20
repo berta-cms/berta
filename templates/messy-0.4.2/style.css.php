@@ -131,7 +131,11 @@ a img { border: none; }
 	}
 
 
-
+nav ul{
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
 
 .menuItem {
 	z-index: 45000;
@@ -593,6 +597,82 @@ a img { border: none; }
 		height: auto !important;
 	}
 
+	#contentContainer h1 {
+		margin: 20px 10px;
+	}
+
+	nav {
+		margin: 20px 10px;
+		position: relative;
+		z-index: 1;
+	}
+
+	#menuToggle {
+		display: none;
+		width: 1.5em;
+		height: auto;
+		padding: 1.5em 1em;
+		border: 1px solid black;
+		background-color: black;
+	}
+
+	#menuToggle.active {
+		background-color: white;
+	}
+
+	#menuToggle span {
+		position: relative;
+		display: block;
+	}
+
+	#menuToggle span,
+	#menuToggle span:before,
+	#menuToggle span:after {
+		background-color: white;
+		width: 100%;
+		height: 2px;
+	}
+
+	#menuToggle.active span,
+	#menuToggle.active span:before,
+	#menuToggle.active span:after {
+		background-color: black;
+	}
+
+	#menuToggle span:before,
+	#menuToggle span:after {
+		position: absolute;
+		margin-top: -.6em;
+		content: " ";
+	}
+
+	#menuToggle span:after {
+		margin-top: .6em;
+	}
+
+	nav ul li {
+		display: inline-block;
+		white-space: nowrap;
+		margin-right: 10px;
+	}
+
+	nav ul li a {
+		display: block;
+	}
+
+	nav ul li:hover ul {
+		display: block;
+		position: absolute;
+	}
+
+	nav ul li ul {
+		display: none;
+	}
+
+	nav ul li ul li {
+		display: block;
+	}
+
 	/* helpers */
 	.vjs-poster {
 		position: absolute;
@@ -610,6 +690,25 @@ a img { border: none; }
 
 	/* small tablet */
 	@media (max-width: 767px)  {
+
+		nav {
+			/*display: none;*/
+		}
+
+		#menuToggle {
+			display: inline-block;
+		}
+
+		nav ul li {
+			display: block;
+		}
+
+		nav ul li ul,
+		nav ul li:hover ul {
+			position: relative;
+			display: block;
+		}
+
 		#pageEntries.columns-2 .xEntry,
 		#pageEntries.columns-3 .xEntry {
 			float: none;
