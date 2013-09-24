@@ -63,7 +63,7 @@ class BertaGallery extends BertaBase {
             $strOut = '<div class="xGalleryContainer xGalleryHasImages xGalleryType-' . $galleryType . $specificClasses . '">';
             $strOut .= "<div class=\"xGallery\" style=\"width: {$firstImageWidth}px; height: {$firstImageHeight}px;\">";
             $strOut .= $firstImageHTML;
-            if($isAdminMode) $strOut .= '<a href="#" class="xGalleryEditButton xEditorLink xSysCaption xMAlign-container"><span class="xMAlign-outer"><span class="xMAlign-inner">edit gallery</span></span></a>';
+            if($isAdminMode) $strOut .= '<a href="#" class="xGalleryEditButton xEditorLink xSysCaption xMAlign-container"><span class="xMAlign-outer-gallery"><span class="xMAlign-inner-gallery">edit gallery</span></span></a>';
             $strOut .= '</div>';
             $strOut .= BertaGallery::getNavHTML($imgs, $galleryType, $mFolder, $mFolderABS, $isAdminMode, $sizeRatio, $imageTargetWidth, $imageTargetHeight, $galleryFullScreen);
             $strOut .= '</div>';
