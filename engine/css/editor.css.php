@@ -164,13 +164,25 @@ body.xEditorEnabled { }
 	display: table;
 }
 	.xMAlign-outer {
+		display: table-cell;
+        vertical-align: middle;
+		text-align: center;
+		top: 50%;
+	}
+		.xMAlign-inner {
+			display: block;
+			top: -50%;
+			text-align: center;
+		}
+
+	.xMAlign-outer-gallery {
 		display: inline-block;
 		width: 100%;
 		height: 100%;
 		text-align: center;
 		top: 50%;
 	}
-		.xMAlign-inner {
+		.xMAlign-inner-gallery {
 			display: block;
 			top: 45%;
 			text-align: center;
