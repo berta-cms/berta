@@ -64,7 +64,7 @@ $templateConf = array(
 
 		'group_responsive' => array('format' => false, 'default' => false, 'title' => '<h3>'.I18n::_('Resposive design').'</h3>'),
 		'responsive' =>	array('format' => 'select', 'default' => 'no', 'values' => array('no', 'yes'), 'title' => I18n::_('Enabled'), 'description' => I18n::_('Sets whether layout should be responsive or not.')),
-		'entryPadding' =>	array('format' => 'text', 'default' => '0 10px 20px 10px',	'title' => I18n::_('Entry padding'),	'description' => I18n::_('Padding between each entry.')),
+		'entryPadding' =>	array('format' => 'text', 'default' => '0 10px 20px 10px',	'title' => I18n::_('Entry padding'),	'description' => I18n::_('Padding between each entry. Please see the short CSS guide at the bottom of this page.')),
 	),
 
 	'entryHeading' => array(
@@ -93,7 +93,7 @@ $templateConf = array(
 	'heading' => array(
 		'_' => array('title' => I18n::_('Page heading')),
 		'position' => 				array('format' => 'select',		'values' => array('fixed', 'absolute'), 'default' => 'absolute', 		                        'title' => I18n::_('Heading position'),           'description' => I18n::_('description_heading_position')),
-		'image' => 				array('format' => 'image',		'default' => '', 'min_width' => 1, 'min_height' => 1, 'max_width' => 140, 'max_height' => 400, 	 	'title' => I18n::_('Logo image'),    'description' => I18n::_('Picture to use instead of header text. Max size: 140 x 400 pixels. If the image is larger, it will be reduced.')),
+		'image' => 				array('format' => 'image',		'default' => '', 'min_width' => 1, 'min_height' => 1, 'max_width' => 140, 'max_height' => 400, 	 	'title' => I18n::_('Logo image'),    'description' => I18n::_('Picture to use instead of header text. Recommended max size: 140 x 400 pixels.')),
 		'color' => 				array('format' => 'color',		'default' => '#000000',                                                                             'title' => I18n::_('Color'),         'description' => ''),
 		'fontFamily' => 		array('format' => 'fontselect',	'values' => $fontOptionsWithInherit, 'default' => '"Arial black", Gadget', 			    'title' => I18n::_('Font face'),     'description' => ''),
 		'googleFont' => 		array('format' => 'text',		'default' => '', 'html_entities'	=> true,														'title' => 'Google web fonts',         'description' => I18n::_('googleFont_description')),
