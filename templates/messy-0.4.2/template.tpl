@@ -187,27 +187,21 @@
         </div> {* allContainer *}
     { else }
 
-
-            {* *** shopping ********************************************************************* *}
-            { if $berta.shop_enabled == true }
-
-                { if $shoppingCartSection }
-                <div id="shoppingCart" { if $berta.environment == 'engine' } style="margin-top: 40px;" { /if } > {* class="hidden" *}
-                {if $berta.environment == 'engine' }
-                    <a href="{ bertaLink section=$shoppingCartSection.name }" id="xShoppingCart"><span class="title">{ $shoppingCartSection.title }</span><span class="numItemsContainer hidden"> (<span class="numItems">0</span>)</span></a>
-                {else}
-                    <a href="javascript:openShoppingCart('{ bertaLink section=$shoppingCartSection.name }');"><span class="title">{ $shoppingCartSection.title }</span><span class="numItemsContainer hidden"> (<span class="numItems">0</span>)</span></a>
-                {/if}
-                    {*
-                    { if $berta.environment == "engine" && $checkoutCompleteSection }
-                    | <a href="{ bertaLink section=$checkoutCompleteSection.name }">{ $checkoutCompleteSection.title }</a>
-                    { /if }
-                    *}
-                </div>
-                { /if }
-            { /if }
-
             <div id="contentContainer" class="{ if $berta.settings.pageLayout.centered=='yes' }xCentered { /if }{ if $berta.settings.pageLayout.responsive=='yes' }xResponsive{ /if }">
+
+                {* *** shopping cart link ********************************************************************* *}
+                { if $berta.shop_enabled == true }
+
+                    { if $shoppingCartSection }
+                        <div id="shoppingCart" class="{ messClasses property='shoppingCartXY' }"{if $shoppingCartXY} style="{ messStyles xy=$shoppingCartXY }"{/if}>
+                            {if $berta.environment == 'engine' }
+                                <a href="{ bertaLink section=$shoppingCartSection.name }" id="xShoppingCart"><span class="title">{ $shoppingCartSection.title }</span><span class="numItemsContainer hidden"> (<span class="numItems">0</span>)</span></a>
+                            {else}
+                                <a href="javascript:openShoppingCart('{ bertaLink section=$shoppingCartSection.name }');"><span class="title">{ $shoppingCartSection.title }</span><span class="numItemsContainer hidden"> (<span class="numItems">0</span>)</span></a>
+                            {/if}
+                        </div>
+                    { /if }
+                { /if }
 
                 { if $berta.environment == 'engine' && $berta.sections }
                 <div id="xBgEditorPanelContainer"></div>
