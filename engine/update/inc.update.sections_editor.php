@@ -24,6 +24,11 @@ if($property == 'title') {	// section title
 		$returnUpdate = !empty($sectionsList[$sName]['title']) ? $sectionsList[$sName]['title']['value'] : '';
 		$returnReal = $sName;
 	}
+	elseif(empty($sNewName)) {
+		$returnError = 'section name cannot be empty!';
+		$returnUpdate = !empty($sectionsList[$sName]['title']) ? $sectionsList[$sName]['title']['value'] : '';
+		$returnReal = $sName;
+	}
 	elseif(file_exists($fNewName)) {
 		$returnError = 'section cannot be created! another section with the same (or too similar name) exists.';
 		$returnUpdate = !empty($sectionsList[$sName]['title']) ? $sectionsList[$sName]['title']['value'] : '';
