@@ -8,12 +8,16 @@ For more information, visit http://www.berta.me
 
 Changelog
 ----------
-**v0.8.6a (release date 2 Aug 2013)**
+**v0.8.6b (release date 2 Sep 2013)**
  * crop tool for gallery images
  * medium size option for gallery images
  * video player changed to HTML5 Video.js - supports MP4 and FLV
  * auto play option for video player
  * section names now can contain special characters (russian, greek, turkish, ukrainian, latvian, czech, polish)
+ * option to hide background gallery navigation arrows for Messy template
+ * added background grid for Messy template
+ * option to hide page header from landing page independently from menu
+ * poster for uploaded video is now optional
  * shop plugin upgrade with shipping weight calculator
  * shop plugin upgrade with input fields for legal person
  * other minor improvements and bugfixes
