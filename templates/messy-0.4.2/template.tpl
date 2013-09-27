@@ -304,7 +304,7 @@
                                     <br class="clear">
 
                                     <div class="cartAttributes{if !$entry.cartAttributes} hidden{/if}">{ $entry.cartAttributes|@toCartAttributes }</div>
-                                    <span class="aele{ if empty($entry.cartPrice)} hidden{/if}"><span>{ $berta.settings.shop.addToBasket }</span></span>
+                                    <span class="aele{ if empty($entry.cartPrice) || $berta.environment == 'site'} hidden{/if}"><span>{ $berta.settings.shop.addToBasket }</span></span>
                                     <span class="addedToCart hidden"></span>
                                     <span class="outOfStock hidden">{ $berta.settings.shop.outOfStock }</span>
 
