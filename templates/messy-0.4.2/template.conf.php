@@ -21,13 +21,13 @@ $fontOptionsWithInherit = array_merge(array('inherit' => '(inherit from general-
 
 $sectionTypes = array(
 	'default' => array('title' => 'Default', 'params' => array(
-		'columns' => array('format' => 'select', 'default' => '1 column', 'values' => array('1 column','2 columns','3 columns')),
-		'entryMaxWidth' => array('format' => 'text', 'css_units' => true, 'default' => '', 'html_before' => '<div class="clear">'.I18n::_('Entry max width').':</div>'),
-		'entryPadding' => array('format' => 'text', 'default' => '0 10px 20px 10px', 'html_before' => '<div class="clear">'.I18n::_('Entry padding').':</div>'),
+		'columns' => array('format' => 'select', 'default' => '1', 'values' => array('1','2','3','4'), 'html_before' => '<div class="label">'.I18n::_('Columns').':</div>'),
+		'entryMaxWidth' => array('format' => 'text', 'css_units' => true, 'default' => '', 'html_before' => '<div class="label">'.I18n::_('Entry max width').':</div>'),
+		'entryPadding' => array('format' => 'text', 'default' => '0 10px 20px 10px', 'html_before' => '<div class="label">'.I18n::_('Entry padding').':</div>'),
 	)),
 	'external_link' => array('title' => 'External link', 'params' => array(
-		'link' => array('format' => 'text',	'default' => ''),
-		'target' => array('format' => 'select', 'values' => array('_self' => 'Same window', '_blank' => 'New window'), 'default' => '_blank')
+		'link' => array('format' => 'text',	'default' => '', 'html_before' => '<div class="label">'.I18n::_('Link address').':</div>'),
+		'target' => array('format' => 'select', 'values' => array('_self' => 'Same window', '_blank' => 'New window'), 'default' => '_blank', 'html_before' => '<div class="label">'.I18n::_('Opens in').':</div>')
 	)),
 	'grid' => array('title' => 'Thumbnails enabled'),
 

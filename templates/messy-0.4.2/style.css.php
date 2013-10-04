@@ -222,18 +222,27 @@ nav ul{
 		margin-bottom: <?php echo $s->get('entryLayout', 'spaceBetween') ?>;
 	}
 
-	#pageEntries.columns-2 .xEntry {
+	#pageEntries.columns-2 .xEntry,
+	#pageEntries.columns-3 .xEntry,
+	#pageEntries.columns-4 .xEntry {
 		float: left;
+	}
+
+	#pageEntries.columns-2 .xEntry {
 		width: 50%;
 	}
 
 	#pageEntries.columns-3 .xEntry {
-		float: left;
 		width: 33.33333%;
 	}
 
+	#pageEntries.columns-4 .xEntry {
+		width: 25%;
+	}
+
 		#pageEntries.columns-2 .xEntry:nth-child(2n+1),
-		#pageEntries.columns-3 .xEntry:nth-child(3n+1) {
+		#pageEntries.columns-3 .xEntry:nth-child(3n+1),
+		#pageEntries.columns-4 .xEntry:nth-child(4n+1) {
 			clear: left;
 		}
 
@@ -719,7 +728,8 @@ nav ul{
 		}
 
 		#pageEntries.columns-2 .xEntry,
-		#pageEntries.columns-3 .xEntry {
+		#pageEntries.columns-3 .xEntry,
+		#pageEntries.columns-4 .xEntry {
 			float: none;
 			width: 100%;
 		}
