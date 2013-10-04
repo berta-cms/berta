@@ -17,6 +17,17 @@
     { if ($berta.section.type == 'shopping_cart' &&  $berta.environment == 'engine') || $berta.section.type != 'shopping_cart'  }
     { $berta.scripts }
     { $berta.css }
+    {* section related CSS for responsive layout *}
+    {if $berta.settings.pageLayout.responsive=='yes'}
+        <style type="text/css">
+            #pageEntries .xEntry {literal}{{/literal}
+                padding: {if $berta.section.entryPadding }{ $berta.section.entryPadding }{ else }{ $berta.sectionTypes.default.params.entryPadding.default }{/if};
+                {if $berta.section.entryMaxWidth}
+                    max-width: { $berta.section.entryMaxWidth };
+                {/if}
+            {literal}}{/literal}
+        </style>
+    {/if}
     {if $berta.settings.css.customCSS}
         <style type="text/css">
         {$berta.settings.css.customCSS|@html_entity_decode|replace:'<br />':"\n"}

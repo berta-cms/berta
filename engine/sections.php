@@ -73,7 +73,11 @@ $topPanelHTML = BertaEditor::getTopPanelHTML('sections');
 						if ($berta->template->settings->get('pageLayout', 'responsive') != 'yes') {
 							unset(
 								$typeParams['default']['columns'],
-								$typeParams['shop']['columns']
+								$typeParams['default']['entryMaxWidth'],
+								$typeParams['default']['entryPadding'],
+								$typeParams['shop']['columns'],
+								$typeParams['shop']['entryMaxWidth'],
+								$typeParams['shop']['entryPadding']
 							);
 						}
 						foreach($typeParams[$type] as $pName => $p) {

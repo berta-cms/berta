@@ -211,8 +211,6 @@ nav ul{
 		position: relative;
 		<?php if( $isResponsive ){ ?>
 			min-height: 1px;
-			padding: 10px;
-			padding: <?php echo $s->get('pageLayout', 'entryPadding') ?>;
 			-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;
 		<?php } else { ?>
 			max-width: <?php echo $s->get('entryLayout', 'contentWidth') ?>;
@@ -598,11 +596,11 @@ nav ul{
 	}
 
 	#contentContainer h1 {
-		margin: 20px 10px;
+		margin: <?php echo $s->get('pageLayout', 'headingMargin') ?>;
 	}
 
 	nav {
-		margin: 20px 10px;
+		margin: <?php echo $s->get('pageLayout', 'menuMargin') ?>;
 		position: relative;
 		z-index: 1;
 	}
