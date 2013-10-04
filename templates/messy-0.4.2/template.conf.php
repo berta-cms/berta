@@ -21,7 +21,9 @@ $fontOptionsWithInherit = array_merge(array('inherit' => '(inherit from general-
 
 $sectionTypes = array(
 	'default' => array('title' => 'Default', 'params' => array(
-		'columns' =>array('format' => 'select', 'default' => '1 column', 'values' => array('1 column','2 columns','3 columns')),
+		'columns' => array('format' => 'select', 'default' => '1 column', 'values' => array('1 column','2 columns','3 columns')),
+		'entryMaxWidth' => array('format' => 'text', 'css_units' => true, 'default' => '', 'html_before' => '<div class="clear">'.I18n::_('Entry max width').':</div>'),
+		'entryPadding' => array('format' => 'text', 'default' => '0 10px 20px 10px', 'html_before' => '<div class="clear">'.I18n::_('Entry padding').':</div>'),
 	)),
 	'external_link' => array('title' => 'External link', 'params' => array(
 		'link' => array('format' => 'text',	'default' => ''),
@@ -64,7 +66,8 @@ $templateConf = array(
 
 		'group_responsive' => array('format' => false, 'default' => false, 'title' => '<h3>'.I18n::_('Resposive design').'</h3>'),
 		'responsive' =>	array('format' => 'select', 'default' => 'no', 'values' => array('no', 'yes'), 'title' => I18n::_('Enabled'), 'description' => I18n::_('Sets whether layout should be responsive or not.')),
-		'entryPadding' =>	array('format' => 'text', 'default' => '0 10px 20px 10px',	'title' => I18n::_('Entry padding'),	'description' => I18n::_('Padding between each entry. Please see the short CSS guide at the bottom of this page.')),
+		'headingMargin' =>	array('format' => 'text', 'default' => '20px 10px',	'title' => I18n::_('Heading margin'),	'description' => I18n::_('Margin around page heading or logo. Please see the short CSS guide at the bottom of this page.')),
+		'menuMargin' =>	array('format' => 'text', 'default' => '20px 10px',	'title' => I18n::_('Menu margin'),	'description' => I18n::_('Margin around menu. Please see the short CSS guide at the bottom of this page.')),
 	),
 
 	'entryHeading' => array(
