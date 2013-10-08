@@ -285,16 +285,35 @@ else if($decoded['action'] == 'CREATE_NEW_SECTION') {
 				$possibleTypes = implode('||', $possibleTypes);
 			}
 			$type = 'Default';
+			$defaultType = strtolower($type);
 
 			$returnUpdate = '';
 			$returnUpdate .= '<div class="csHandle"><span class="handle"></span></div>';
 			$returnUpdate .= '<div class="csTitle"><span class="' . $xEditSelectorSimple . ' xProperty-title xNoHTMLEntities xSection-' . $sName . '">' . BertaEditor::getXEmpty('sectionTitle') . '</span></div>';
-			//$returnUpdate .= '<div class="csBehaviour"><span class="' . $xEditSelectorSelect . ' xProperty-sectionsEditor/behaviour xParam-' . $sName . '" x_options="normal||external link">normal</span></div>';
 			$returnUpdate .= '<div class="csBehaviour"><span class="' . $xEditSelectorSelectRC . ' xProperty-type xSection-' . $sName . ' xSectionField" x_options="' . $possibleTypes . '">' . htmlspecialchars($type) . '</span></div>';
 
-			//$returnUpdate .= '<div class="csBehaviour"><a href="#">reload page</a></div>';
-			$returnUpdate .= '<div class="csDetails"></div>';
-			//$returnUpdate .= '<div class="csLink"><span class="' . $xEditSelectorSimple . ' xProperty-sectionLink xParam-' . $sName . '" title="Link of the website where to lead the visitor when s/he navigates to this section">' . BertaEditor::getXEmpty('sectionLink') . '</span></div>';
+			$returnUpdate .= '<div class="csDetails">';
+			if(!empty($typeParams[$defaultType])) {
+
+				//remove responsive section settings
+				if ($berta->template->settings->get('pageLayout', 'responsive') != 'yes') {
+					unset(
+						$typeParams['default']['columns'],
+						$typeParams['default']['entryMaxWidth'],
+						$typeParams['default']['entryPadding'],
+						$typeParams['shop']['columns'],
+						$typeParams['shop']['entryMaxWidth'],
+						$typeParams['shop']['entryPadding']
+					);
+				}
+				foreach($typeParams[$defaultType] as $pName => $p) {
+					$value = !empty($s[$pName]['value']) ? $s[$pName]['value'] : '';
+					if(!$value && $p['default']) $value = $p['default'];
+					$returnUpdate .= BertaEditor::getSettingsItemEditHTML($pName, $p, $value, array('xSection' => $sName, 'xSectionField'));
+				}
+			}
+			$returnUpdate .= '</div>';
+
 			$returnUpdate .= '<div class="csPub"><span class="' . $xEditSelectorYesNo . ' xProperty-published xSection-' . $sName . '">1</span></div>';
 			$returnUpdate .= '<div class="csDelete"><a href="#" class="xSectionDelete">delete</a></div>';
 			$returnReal = $sName;
