@@ -908,18 +908,21 @@ var BertaEditorBase = new Class({
 									el.set('html', resp.update);
 								}
 
+								$$('.galleryTypeSettings').addClass('xHidden');
+
 								//console.debug(newContentText);
 								if(newContentText == 'slideshow') {
 									el.getSiblings('.xEntrySlideshowSettings').removeClass('xHidden');
-									el.getSiblings('.xEntryLinkSettings').addClass('xHidden');
+									// el.getSiblings('.xEntryLinkSettings').addClass('xHidden');
 								}
 								if(newContentText == 'row') {
-									el.getSiblings('.xEntrySlideshowSettings').addClass('xHidden');
-									el.getSiblings('.xEntryLinkSettings').addClass('xHidden');
+									el.getSiblings('.xEntryRowSettings').removeClass('xHidden');
+									// el.getSiblings('.xEntrySlideshowSettings').addClass('xHidden');
+									// el.getSiblings('.xEntryLinkSettings').addClass('xHidden');
 								}
 								if(newContentText == 'link') {
 									el.getSiblings('.xEntryLinkSettings').removeClass('xHidden');
-									el.getSiblings('.xEntrySlideshowSettings').addClass('xHidden');
+									// el.getSiblings('.xEntrySlideshowSettings').addClass('xHidden');
 								}
 								break;
 

@@ -604,6 +604,10 @@ nav ul{
 		height: auto !important;
 	}
 
+	#pageEntries .xEntry .xGalleryType-row .xGalleryItem {
+		-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;
+	}
+
 	#contentContainer h1 {
 		margin: <?php echo $s->get('pageLayout', 'headingMargin') ?>;
 	}

@@ -240,6 +240,15 @@ var BertaGallery = new Class({
 
 		// this is a default implementation that assumes that "row" mode is horizontal
 		if(this.type == 'row') {
+
+			var rowGalleryPadding = this.imageContainer.get('xRowGalleryPadding');
+
+			if (rowGalleryPadding) {
+				this.imageContainer.getChildren().each(function(el){
+					el.setStyle('padding', rowGalleryPadding);
+				});
+			}
+
 			var totalWidth = 0, maxHeight = 0, itmSize, numImages = 0;
 			this.imageContainer.getChildren('.xGalleryItem').each(function(item) {
 				if ( item.getClassStoredValue('xGalleryItemType') != 'video' ) {
