@@ -674,6 +674,8 @@ nav ul{
 	nav ul li:hover ul {
 		display: block;
 		position: absolute;
+		top: auto;
+		left: auto;
 	}
 
 	nav ul li ul {
