@@ -712,6 +712,59 @@ nav ul{
 		height: 100% !important;
 	}
 
+	.pull-right {
+		float: right;
+	}
+
+	/* temporary fix - need better solution in javascript */
+	#bottom {
+		position: relative !important;
+		top: 0 !important;
+		bottom: 0 !important;
+		left: 0 !important;
+		width: auto !important;
+	}
+
+	/* responsive row/column classes */
+	.row {
+		width: 100%;
+		clear: both;
+		vertical-align: baseline;
+		zoom: 1;
+	}
+
+	.row:before,
+	.row:after { content: ""; display: table; }
+	.row:after { clear: both; }
+
+	.row .column {
+		float: left;
+		position: relative;
+		min-height: 1px;
+		vertical-align: baseline;
+		-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;
+	}
+
+	.row .column.pull-right {
+		float: right;
+	}
+
+	.row .column-half {
+		width: 50%;
+	}
+
+	.row .column-third {
+		width: 33.33333%;
+	}
+
+	.row .column-third {
+		width: 33.33333%;
+	}
+
+	.row .column-fourth {
+		width: 25%;
+	}
+
 	/* small tablet */
 	@media (max-width: 767px)  {
 
