@@ -716,6 +716,10 @@ nav ul{
 		float: right;
 	}
 
+	.xFixed {
+		position: relative !important;
+	}
+
 	/* temporary fix - need better solution in javascript */
 	#bottom {
 		position: relative !important;
