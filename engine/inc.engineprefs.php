@@ -82,8 +82,7 @@ if (file_exists($ENGINE_ROOT.'hosting')){
 }
 $options['HOSTING_PROFILE'] = isset($hostingConfig['login']) ? $hostingConfig['login'] : false;
 $options['FORGOTPASSWORD_LINK'] = isset($hostingConfig['forgotPassword']) ? $hostingConfig['forgotPassword'] : 'http://support.berta.me/kb/login-name-and-password/forgot-my-password-for-self-hosted-berta';
-
-
+$options['NOINDEX'] = isset($hostingConfig['noindex']) && ( $hostingConfig['noindex'] === $_SERVER['HTTP_HOST'] || 'www.'.$hostingConfig['noindex'] === $_SERVER['HTTP_HOST'] );
 
 /**
  * File name templates

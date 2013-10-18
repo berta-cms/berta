@@ -10,6 +10,7 @@
 	<meta name="keywords" content="{ $berta.settings.texts.metaKeywords }" />
 	<meta name="description" content="{ $berta.settings.texts.metaDescription }" />
 	<meta name="author" content="{ $berta.settings.texts.ownerName }" />
+	{if $berta.options.NOINDEX}<meta name="robots" content="noindex, nofollow" />{/if}
 	{$berta.settings.settings.googleSiteVerification|@html_entity_decode}
 
 	{ if $berta.settings.pageLayout.favicon }
