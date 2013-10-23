@@ -36,6 +36,8 @@ var BertaGallery = new Class({
 
 	numFinishedLoading: 0,
 
+	isResponsive: false,
+
 	initialize: function(container, options) {
 		this.setOptions(options);
 		this.attach(container);
@@ -43,6 +45,7 @@ var BertaGallery = new Class({
 	},
 
 	attach: function(container) {
+		isResponsive = $$('.xResponsive').length;
 		this.container = container;
 		this.type = this.container.getClassStoredValue('xGalleryType');
 		//this.container.addClass('galleryType-' + this.type);
@@ -237,6 +240,15 @@ var BertaGallery = new Class({
 
 		// this is a default implementation that assumes that "row" mode is horizontal
 		if(this.type == 'row') {
+
+			var rowGalleryPadding = this.imageContainer.get('xRowGalleryPadding');
+
+			if (rowGalleryPadding) {
+				this.imageContainer.getChildren().each(function(el){
+					el.setStyle('padding', rowGalleryPadding);
+				});
+			}
+
 			var totalWidth = 0, maxHeight = 0, itmSize, numImages = 0;
 			this.imageContainer.getChildren('.xGalleryItem').each(function(item) {
 				if ( item.getClassStoredValue('xGalleryItemType') != 'video' ) {
@@ -422,7 +434,12 @@ var BertaGallery = new Class({
 
 		if(this.type == 'slideshow') {
 			var obj;
-			if(obj = this.imageContainer.getElement('div.xGalleryItem')) obj.destroy();
+			if(obj = this.imageContainer.getElement('div.xGalleryItem')) {
+				if (isResponsive){
+					obj.getParent().setAttribute('style', 'height:'+ obj.getSize().y + 'px !important');
+				}
+				obj.destroy();
+			}
 		}
 
 		switch(mType) {
@@ -454,7 +471,12 @@ var BertaGallery = new Class({
 
 				if(mHeight) mHeight = parseInt(mHeight);
 
-				this.preload = new Element('video', { 'id': containerID, 'width': mWidth, 'height': mHeight, 'class': 'video-js vjs-default-skin xGalleryItem xGalleryItemType-video', 'style': { 'opacity': 0 } });
+				this.preload = new Element('video', {
+					'id': containerID,
+					'width': mWidth,
+					'height': mHeight,
+					'class': 'video-js vjs-default-skin xGalleryItem xGalleryItemType-video'
+				});
 
 				var videoType = videoPath.split('.').pop();
 
@@ -465,12 +487,16 @@ var BertaGallery = new Class({
 				this.layout_inject(bDeleteExisting, true);
 				this.preload.setStyle('position', 'absolute');
 
-				_V_(containerID, {
+				var player = _V_(containerID, {
 					"controls": true,
 					"preload": "auto",
 					"poster": src,
 					"autoplay": autoPlay > 0 ? true : false
 				});
+
+				if (isResponsive) {
+					player.el.setStyle('padding-bottom', mHeight*100/mWidth + '%' );
+				}
 
 				new Element('img', { 'src': src, 'class' : 'xGalleryImageVideoBack', 'styles': {
 					'width' : mWidth + 'px',
@@ -488,6 +514,7 @@ var BertaGallery = new Class({
 	load_Finish: function(src, mType, mWidth, mHeight, bDeleteExisting) {
 
 		var obj=this;
+
 		// test if the loaded image's src is the last invoked image's src
 		if(src == this.currentSrc) {
 			if(this.type == 'slideshow') {
@@ -499,6 +526,11 @@ var BertaGallery = new Class({
 				}).chain(function() {
 					this.phase = "done";
 					if(mType == 'image') this.layout_inject(bDeleteExisting, true);
+
+					if (isResponsive) {
+						this.imageContainer.set('style', '');
+					}
+
 					this.layout_finisage(src, mType, mWidth, mHeight);
 
 					if ( this.interval ){
@@ -506,10 +538,9 @@ var BertaGallery = new Class({
 							obj.loadNext(true);
 						}, this.time);
 					}
-
 				}.bind(this));
-			}
-			else if(this.type == 'link') {
+
+			}else if(this.type == 'link') {
 				this.phase = "done";
 				if(mType == 'image') this.layout_inject(bDeleteExisting, false);
 				var topImg = this.imageContainer.getFirst('.xGalleryItem');

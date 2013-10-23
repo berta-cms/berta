@@ -165,7 +165,7 @@ body.xEditorEnabled { }
 }
 	.xMAlign-outer {
 		display: table-cell;
-		vertical-align: middle;
+        vertical-align: middle;
 		text-align: center;
 		top: 50%;
 	}
@@ -173,6 +173,20 @@ body.xEditorEnabled { }
 			display: block;
 			top: -50%;
 			text-align: center;
+		}
+
+	.xMAlign-outer-gallery {
+		display: inline-block;
+		width: 100%;
+		height: 100%;
+		text-align: center;
+		top: 50%;
+	}
+		.xMAlign-inner-gallery {
+			display: block;
+			top: 45%;
+			text-align: center;
+			position: relative;
 		}
 
 .ie6 .xMAlign-container {
@@ -1050,6 +1064,7 @@ ul#pageEntries {
 
 			.xEntryDropdownBox {
 				position: absolute;
+				right: 0;
 				border: 1px solid #666666;
 				background-color: #fff;
 				z-index: 56000;
@@ -1152,6 +1167,7 @@ ul#pageEntries {
 				}
 				.xGalleryHasImages a.xGalleryEditButton {
 					position: absolute;
+					display: inline-block;
 					width: 100%; height: 100%;
 					left: 0; top: 0;
 					/*z-index: 100;*/
@@ -2110,6 +2126,8 @@ body.xSettingsPageBody {
 		#xSectionsEditor .csTitle { width: 200px; }
 		#xSectionsEditor .csBehaviour { width: 130px; }
 		#xSectionsEditor .csDetails { width: 380px; }
+		#xSectionsEditor .csDetails .label { clear: both; width: 95px; margin-bottom: 5px; }
+		#xSectionsEditor .csDetails .value { margin-bottom: 5px; }
 		#xSectionsEditor .csPub { width: 100px; }
 		#xSectionsEditor .csDelete { width: 50px; text-align: right; }
 			#xSectionsEditor .csDelete a { color: #f00; }

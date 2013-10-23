@@ -20,10 +20,14 @@ $fontOptions = array(
 $fontOptionsWithInherit = array_merge(array('inherit' => '(inherit from general-font-settings)'), $fontOptions);
 
 $sectionTypes = array(
-	'default' => array('title' => 'Default'),
+	'default' => array('title' => 'Default', 'params' => array(
+		'columns' => array('format' => 'select', 'default' => '1', 'values' => array('1','2','3','4'), 'html_before' => '<div class="label">'.I18n::_('Columns').':</div>'),
+		'entryMaxWidth' => array('format' => 'text', 'css_units' => true, 'default' => '', 'html_before' => '<div class="label">'.I18n::_('Entry max width').':</div>'),
+		'entryPadding' => array('format' => 'text', 'default' => '0 10px 20px 10px', 'html_before' => '<div class="label">'.I18n::_('Entry padding').':</div>'),
+	)),
 	'external_link' => array('title' => 'External link', 'params' => array(
-		'link' => array('format' => 'text',	'default' => ''),
-		'target' => array('format' => 'select', 'values' => array('_self' => 'Same window', '_blank' => 'New window'), 'default' => '_blank')
+		'link' => array('format' => 'text',	'default' => '', 'html_before' => '<div class="label">'.I18n::_('Link address').':</div>'),
+		'target' => array('format' => 'select', 'values' => array('_self' => 'Same window', '_blank' => 'New window'), 'default' => '_blank', 'html_before' => '<div class="label">'.I18n::_('Opens in').':</div>')
 	)),
 	'grid' => array('title' => 'Thumbnails enabled'),
 
@@ -59,6 +63,11 @@ $templateConf = array(
 		'centered' =>	array('format' => 'select', 'default' => 'no', 'values' => array('yes', 'no'), 'title' => I18n::_('Centered layout'), 'description' => I18n::_('Sets whether layout should be centered or not.')),
 		'centeredWidth' =>	array('format' => 'text',	'default' => '960px',	'css_units' => true,	'title' => I18n::_('Centered content width'),	'description' => I18n::_('Content width if layout is centered.')),
 		'centeringGuidesColor' =>	array('format' => 'select', 'default' => 'dark', 'values' => array('dark', 'bright'),	'title' => I18n::_('Centering guides color tone'),	'description' => I18n::_('Color tone for centering guides (dark for bright background colors, bright for dark background colors).')),
+
+		'group_responsive' => array('format' => false, 'default' => false, 'title' => '<h3>'.I18n::_('Resposive design').'</h3>'),
+		'responsive' =>	array('format' => 'select', 'default' => 'no', 'values' => array('no', 'yes'), 'title' => I18n::_('Enabled'), 'description' => I18n::_('Sets whether layout should be responsive or not.')),
+		'headingMargin' =>	array('format' => 'text', 'default' => '20px 10px',	'title' => I18n::_('Heading margin'),	'description' => I18n::_('Margin around page heading or logo. Please see the short CSS guide at the bottom of this page.')),
+		'menuMargin' =>	array('format' => 'text', 'default' => '20px 10px',	'title' => I18n::_('Menu margin'),	'description' => I18n::_('Margin around menu. Please see the short CSS guide at the bottom of this page.')),
 	),
 
 	'entryHeading' => array(
@@ -87,7 +96,7 @@ $templateConf = array(
 	'heading' => array(
 		'_' => array('title' => I18n::_('Page heading')),
 		'position' => 				array('format' => 'select',		'values' => array('fixed', 'absolute'), 'default' => 'absolute', 		                        'title' => I18n::_('Heading position'),           'description' => I18n::_('description_heading_position')),
-		'image' => 				array('format' => 'image',		'default' => '', 'min_width' => 1, 'min_height' => 1, 'max_width' => 140, 'max_height' => 400, 	 	'title' => I18n::_('Logo image'),    'description' => I18n::_('Picture to use instead of header text. Max size: 140 x 400 pixels. If the image is larger, it will be reduced.')),
+		'image' => 				array('format' => 'image',		'default' => '', 'min_width' => 1, 'min_height' => 1, 'max_width' => 140, 'max_height' => 400, 	 	'title' => I18n::_('Logo image'),    'description' => I18n::_('Picture to use instead of header text. Recommended max size: 140 x 400 pixels.')),
 		'color' => 				array('format' => 'color',		'default' => '#000000',                                                                             'title' => I18n::_('Color'),         'description' => ''),
 		'fontFamily' => 		array('format' => 'fontselect',	'values' => $fontOptionsWithInherit, 'default' => '"Arial black", Gadget', 			    'title' => I18n::_('Font face'),     'description' => ''),
 		'googleFont' => 		array('format' => 'text',		'default' => '', 'html_entities'	=> true,														'title' => 'Google web fonts',         'description' => I18n::_('googleFont_description')),

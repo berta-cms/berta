@@ -231,17 +231,19 @@ var BertaEditorBase = new Class({
 				el.addClass(editorClass.substr(1));
 				el.addEvent('click', function(event, editor) {
 					if(!this.hasClass('xSaving') && !this.hasClass('xEditing')) {
-											//console.debug(this);
-											this.addClass('xEditing');
+						this.addClass('xEditing');
 
-											if(this.inlineIsEmpty()) this.innerHTML = '';
-											editor.elementEdit_instances.push(this.inlineEdit({ type: 'select',
-																					  subtype: this.hasClass(editor.options.xBertaEditorClassFontSelect.substr(1)) ? 'font' :
-																								(this.hasClass(editor.options.xBertaEditorClassSelectRC.substr(1)) ? 'rc' : ''),
-																					  selectOptions: this.getProperty('x_options').split('||'),
-																					  onComplete: editor.elementEdit_save.bind(editor) }));
-											editor.fireEvent(BertaEditorBase.EDITABLE_START, [el, editor.elementEdit_instances[editor.elementEdit_instances.length - 1]]);
-										}
+						if(this.inlineIsEmpty()) this.innerHTML = '';
+						editor.elementEdit_instances.push(
+							this.inlineEdit({
+								type: 'select',
+								subtype: this.hasClass(editor.options.xBertaEditorClassFontSelect.substr(1)) ? 'font' : (this.hasClass(editor.options.xBertaEditorClassSelectRC.substr(1)) ? 'rc' : ''),
+								selectOptions: this.getProperty('x_options').split('||'),
+								onComplete: editor.elementEdit_save.bind(editor)
+							})
+						);
+						editor.fireEvent(BertaEditorBase.EDITABLE_START, [el, editor.elementEdit_instances[editor.elementEdit_instances.length - 1]]);
+					}
 				}.bindWithEvent(el, this));
 				break;
 
@@ -906,18 +908,21 @@ var BertaEditorBase = new Class({
 									el.set('html', resp.update);
 								}
 
+								$$('.galleryTypeSettings').addClass('xHidden');
+
 								//console.debug(newContentText);
 								if(newContentText == 'slideshow') {
 									el.getSiblings('.xEntrySlideshowSettings').removeClass('xHidden');
-									el.getSiblings('.xEntryLinkSettings').addClass('xHidden');
+									// el.getSiblings('.xEntryLinkSettings').addClass('xHidden');
 								}
 								if(newContentText == 'row') {
-									el.getSiblings('.xEntrySlideshowSettings').addClass('xHidden');
-									el.getSiblings('.xEntryLinkSettings').addClass('xHidden');
+									el.getSiblings('.xEntryRowSettings').removeClass('xHidden');
+									// el.getSiblings('.xEntrySlideshowSettings').addClass('xHidden');
+									// el.getSiblings('.xEntryLinkSettings').addClass('xHidden');
 								}
 								if(newContentText == 'link') {
 									el.getSiblings('.xEntryLinkSettings').removeClass('xHidden');
-									el.getSiblings('.xEntrySlideshowSettings').addClass('xHidden');
+									// el.getSiblings('.xEntrySlideshowSettings').addClass('xHidden');
 								}
 								break;
 
@@ -1067,7 +1072,7 @@ var BertaEditorBase = new Class({
 			options: {
 				mode : "exact",
 				theme : "advanced",
-				width : "610px", height : "300px",
+				width : "610px", height : "300px !important",
 				//content_css : "<?php echo $ENGINE_ABS_ROOT ?>css/mce.css.php",
 				theme_advanced_buttons1 : "save,|,pasteword,|,undo,redo,|,bold,italic,removeformat,cleanup,styleprops,|,bullist,numlist,outdent,indent,|,justifyleft,justifycenter,justifyright,justifyfull,formatselect,link,unlink,insertanything,|,pdw_toggle,code",
 				theme_advanced_buttons2 : "tablecontrols",
@@ -1109,7 +1114,7 @@ var BertaEditorBase = new Class({
 			theme_advanced_buttons1 : "save,bold,italic,removeformat,link,code",
 			theme_advanced_buttons2 : "",
 			valid_elements : "p[*],b,i,strong,em,a[*],br[*],u,img[*],div[*],iframe[*],span[*]",
-			width : "100%", height: "60px",
+			width : "100%", height: "60px !important",
 			theme_advanced_statusbar_location : null,
 			plugins: "save,insertanything"
 			//paste_postprocess : function(pl,o) { o.node.innerHTML = TidyEditor("paste_postprocess", o.node.innerHTML); }

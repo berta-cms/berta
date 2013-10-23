@@ -316,26 +316,28 @@ class BertaEditor extends BertaContent {
 			    		foreach($mediaFiles as $i => $im) {
 
 			    			// *** compatibility with versions <= 0.5.5b
-			    			$isFromOldVersion = empty($cacheIm['@attributes']['src']);
-			    			$srcFromCache = $isFromOldVersion ? $cacheIm['value'] : $cacheIm['@attributes']['src'];
+			    			if (isset($cacheIm)) {
+				    			$isFromOldVersion = empty($cacheIm['@attributes']['src']);
+				    			$srcFromCache = $isFromOldVersion  ? $cacheIm['value'] : $cacheIm['@attributes']['src'];
 
-			    			// if image found in cache, update cache entry
-			    			if($srcFromCache == $im['src']) {
-			    				$foundIndex = true;
-			    				$_section = array('@attributes' => array());
-			    				if(!$isFromOldVersion) $_section['value'] = !empty($cacheIm['value']) ? $cacheIm['value'] : '';
-			    				if(!empty($cacheIm['@attributes'])) $_section['@attributes'] = $cacheIm['@attributes'];
-			    				$_section['@attributes']['src'] = $im['src'];
+				    			// if image found in cache, update cache entry
+				    			if($srcFromCache == $im['src']) {
+				    				$foundIndex = true;
+				    				$_section = array('@attributes' => array());
+				    				if(!$isFromOldVersion) $_section['value'] = !empty($cacheIm['value']) ? $cacheIm['value'] : '';
+				    				if(!empty($cacheIm['@attributes'])) $_section['@attributes'] = $cacheIm['@attributes'];
+				    				$_section['@attributes']['src'] = $im['src'];
 
-			    				$_section['@attributes']['type'] = $im['type'];
-			    				if(!empty($im['poster_frame'])) $_section['@attributes']['poster_frame'] = $im['poster_frame'];
-			    				if(!empty($im['width'])) $_section['@attributes']['width'] = $im['width'];
-			    				if(!empty($im['height'])) $_section['@attributes']['height'] = $im['height'];
+				    				$_section['@attributes']['type'] = $im['type'];
+				    				if(!empty($im['poster_frame'])) $_section['@attributes']['poster_frame'] = $im['poster_frame'];
+				    				if(!empty($im['width'])) $_section['@attributes']['width'] = $im['width'];
+				    				if(!empty($im['height'])) $_section['@attributes']['height'] = $im['height'];
 
-			    				$sectionCache['file'][$cacheIndex] = $_section;
+				    				$sectionCache['file'][$cacheIndex] = $_section;
 
-			    				unset($mediaFiles[$i]);
-			    				break;
+				    				unset($mediaFiles[$i]);
+				    				break;
+				    			}
 			    			}
 			    		}
 
@@ -879,13 +881,12 @@ DOC;
 			if($sDef['values'] == 'templates') {
 				$values = BertaTemplate::getAllTemplates();
 			} else {
-			//	var_dump($sDef['values']);
 				foreach($sDef['values'] as $vK => $vV) {
 					$values[$vK] = is_string($vK) ? ($vK . '|' . $vV) : $vV;
 				}
 			}
 			$html .= ' x_options="' . htmlspecialchars(implode('||', $values)) . '"';
-			$value = isset($values[$value]) ? $sDef['values'][$value] : $value;
+			$value = isset($values[$value]) && !intval($value)>0 ? $sDef['values'][$value] : $value;
 		}
 
 		$html .= '>';

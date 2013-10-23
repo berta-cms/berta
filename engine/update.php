@@ -283,6 +283,10 @@ if($jsonRequest) {
 							if(empty($e['mediaCacheData']['@attributes'])) $e['mediaCacheData']['@attributes'] = array();
 							$e['mediaCacheData']['@attributes']['linkTarget'] = $decoded['value'];
 							break;
+						case 'SET_ROW_GALLERY_PADDING':
+							if(empty($e['mediaCacheData']['@attributes'])) $e['mediaCacheData']['@attributes'] = array();
+							$e['mediaCacheData']['@attributes']['row_gallery_padding'] = $decoded['params'];
+							break;
 						case 'PUT_BEFORE':
 							$newEntriesList = array(); $entryPut = false; $hasEntries = false;
 							if(!empty($blog['entry']['@attributes'])) $newEntriesList['@attributes'] = $blog['entry']['@attributes'];

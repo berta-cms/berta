@@ -127,7 +127,7 @@ $topPanelHTML = BertaEditor::getTopPanelHTML($mode);
 				<div class="value" style="width: 300px; padding-right: 30px">
 					<?php echo I18n::_('units_help_text') ?>
 				</div>
-				<div class="caption" style="width: 60px"><?php echo I18n::_('Margins') ?></div>
+				<div class="caption" style="width: 60px"><?php echo I18n::_('Margins') ?>, <?php echo I18n::_('Paddings') ?></div>
 				<div class="value" style="width: 300px;">
 					<?php echo I18n::_('margins_help_text') ?>
 				</div>
