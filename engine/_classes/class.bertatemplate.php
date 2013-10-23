@@ -89,12 +89,8 @@ class BertaTemplate extends BertaBase {
 		if(file_exists($tPath) && file_exists($tPath . '/template.conf.php')) {
 			$this->smarty->template_dir = $tPath;
 			$this->smarty->plugins_dir = array('plugins', self::$options['TEMPLATES_FULL_SERVER_PATH'] . '_plugins', $tPath . '/plugins');
-			//var_dump($this->smarty->plugins_dir);
 
 			list($this->sectionTypes, $this->settingsDefinition) = include($tPath . '/template.conf.php');
-
-			//$firstType = reset(array_keys($this->sectionTypes));
-			//if($firstType != 'default') array_unshift()
 
 			$this->templateHTML = @file_get_contents($tPath . '/template.tpl');
 			$this->templateFile = $tPath . '/template.tpl';
@@ -113,13 +109,9 @@ class BertaTemplate extends BertaBase {
 		return false;
 	}
 
-
-
 	public function addVariable($varName, $varValue) {
-		//$this->smarty->assign('aaa', 'TEST TEST');
 		$this->smarty->assign($varName, $varValue);
 	}
-
 
 	public function addContent($requestURI, $sectionName, &$sections, $tagName, &$tags, &$content, &$allContent) {
 		// set variables for later processing in function addEngineVariables
@@ -256,6 +248,9 @@ class BertaTemplate extends BertaBase {
 			$BertaShop = new BertaShop($db, $this->loggedIn);
 			$vars['berta']['shopData'] = $BertaShop->getTemplateData();
 		}
+
+		// add sectionTypes default settings;
+		$vars['berta']['sectionTypes'] = $this->sectionTypes;
 
 		// add sections ...
 		$vars['berta']['requestURI'] = $this->requestURI;

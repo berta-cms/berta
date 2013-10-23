@@ -3,6 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    {if $berta.settings.pageLayout.responsive=='yes'}<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">{/if}
     <title>{ $berta.pageTitle }</title>
     <meta name="keywords" content="{ $berta.settings.texts.metaKeywords }" />
     <meta name="description" content="{ $berta.settings.texts.metaDescription }" />
@@ -18,6 +19,17 @@
     { if ($berta.section.type == 'shopping_cart' &&  $berta.environment == 'engine') || $berta.section.type != 'shopping_cart'  }
     { $berta.scripts }
     { $berta.css }
+    {* section related CSS for responsive layout *}
+    {if $berta.settings.pageLayout.responsive=='yes'}
+        <style type="text/css">
+            #pageEntries .xEntry {literal}{{/literal}
+                padding: {if $berta.section.entryPadding }{ $berta.section.entryPadding }{ else }{ $berta.sectionTypes.default.params.entryPadding.default }{/if};
+                {if $berta.section.entryMaxWidth}
+                    max-width: { $berta.section.entryMaxWidth };
+                {/if}
+            {literal}}{/literal}
+        </style>
+    {/if}
     {if $berta.settings.css.customCSS}
         <style type="text/css">
         {$berta.settings.css.customCSS|@html_entity_decode|replace:'<br />':"\n"}
@@ -139,8 +151,8 @@
                 { if !$berta.options.MOBILE_DEVICE && ($berta.section.mediaCacheData.file|@count > 1 || $berta.section.mediaCacheData.file.value) && !($berta.section.type == 'grid' && $smarty.cookies._berta_grid_view) }
                     <div id="xBackgroundLeft"></div>
                     <div id="xBackgroundRight"></div>
-                    <div id="xBackgroundLeftCounter"{if $bgAttr.hide_navigation=='yes'} class="xHidden"{/if}><div class="counterContent"></div></div>
-                    <div id="xBackgroundRightCounter"{if $bgAttr.hide_navigation=='yes'} class="xHidden"{/if}><div class="counterContent"></div></div>
+                    <div id="xBackgroundLeftCounter"{if $bgAttr.hide_navigation=='yes' || $berta.settings.pageLayout.responsive=='yes'} class="xHidden"{/if}><div class="counterContent"></div></div>
+                    <div id="xBackgroundRightCounter"{if $bgAttr.hide_navigation=='yes' || $berta.settings.pageLayout.responsive=='yes'} class="xHidden"{/if}><div class="counterContent"></div></div>
                 { /if }
             </div>
 
@@ -188,27 +200,21 @@
         </div> {* allContainer *}
     { else }
 
+            <div id="contentContainer" class="{ if $berta.settings.pageLayout.centered=='yes' }xCentered { /if }{ if $berta.settings.pageLayout.responsive=='yes' }xResponsive{ /if }">
 
-            {* *** shopping ********************************************************************* *}
-            { if $berta.shop_enabled == true }
+                {* *** shopping cart link ********************************************************************* *}
+                { if $berta.shop_enabled == true }
 
-                { if $shoppingCartSection }
-                <div id="shoppingCart" { if $berta.environment == 'engine' } style="margin-top: 40px;" { /if } > {* class="hidden" *}
-                {if $berta.environment == 'engine' }
-                    <a href="{ bertaLink section=$shoppingCartSection.name }" id="xShoppingCart"><span class="title">{ $shoppingCartSection.title }</span><span class="numItemsContainer hidden"> (<span class="numItems">0</span>)</span></a>
-                {else}
-                    <a href="javascript:openShoppingCart('{ bertaLink section=$shoppingCartSection.name }');"><span class="title">{ $shoppingCartSection.title }</span><span class="numItemsContainer hidden"> (<span class="numItems">0</span>)</span></a>
-                {/if}
-                    {*
-                    { if $berta.environment == "engine" && $checkoutCompleteSection }
-                    | <a href="{ bertaLink section=$checkoutCompleteSection.name }">{ $checkoutCompleteSection.title }</a>
+                    { if $shoppingCartSection }
+                        <div id="shoppingCart" class="{ messClasses property='shoppingCartXY' }"{if $shoppingCartXY} style="{ messStyles xy=$shoppingCartXY }"{/if}>
+                            {if $berta.environment == 'engine' }
+                                <a href="{ bertaLink section=$shoppingCartSection.name }" id="xShoppingCart"><span class="title">{ if $berta.settings.shop.cartImage }<img src="{ $berta.options.MEDIA_ABS_ROOT }{ $berta.settings.shop.cartImage }" alt="{ $shoppingCartSection.title }" title="{ $shoppingCartSection.title }" />{else}{ $shoppingCartSection.title }{/if}</span><span class="numItemsContainer hidden"> (<span class="numItems">0</span>)</span></a>
+                            {else}
+                                <a href="javascript:openShoppingCart('{ bertaLink section=$shoppingCartSection.name }');"><span class="title">{ if $berta.settings.shop.cartImage }<img src="{ $berta.options.MEDIA_ABS_ROOT }{ $berta.settings.shop.cartImage }" alt="{ $shoppingCartSection.title }" title="{ $shoppingCartSection.title }" />{else}{ $shoppingCartSection.title }{/if}</span><span class="numItemsContainer hidden"> (<span class="numItems">0</span>)</span></a>
+                            {/if}
+                        </div>
                     { /if }
-                    *}
-                </div>
                 { /if }
-            { /if }
-
-            <div id="contentContainer" { if $berta.settings.pageLayout.centered=='yes' }class="xCentered"{ /if }>
 
                 { if $berta.environment == 'engine' && $berta.sections }
                 <div id="xBgEditorPanelContainer"></div>
@@ -236,39 +242,46 @@
 
                 <!-- MENU -->
                 { if count($berta.publishedSections) > 0 && (($berta.environment == 'site' && $berta.settings.navigation.landingSectionMenuVisible=='yes') || $berta.environment == 'engine' || ($berta.environment == 'site' && $berta.settings.navigation.landingSectionMenuVisible=='no' && $berta.sectionName != $berta.sections|@key)) }
-                    { assign var="currentSectionName" value=$berta.sectionName }
-                    { foreach $berta.publishedSections as $sName => $section }
-                        { if $section.type != 'shopping_cart' }
-                        <div class="menuItem xSection-{ $sName } { messClasses property='positionXY' } { if $currentSectionName == $section.name }menuItemSelected{ /if }{ if $berta.settings.menu.position == 'fixed' } xFixed{ /if }" style="{ messStyles xy=$section.positionXY }">
-                            { if $berta.sectionName == $section.name && $berta.settings.navigation.alwaysSelectTag == 'yes' && !empty($berta.tags.$sName) }
-                                <span>{ $section.title }</span>
-                            { else }
-                                <a href="{ bertaLink section=$sName }" target="{ bertaTarget section=$sName }">{ $section.title }</a>
-                            { /if }
+                    <nav>
+                        {if $berta.settings.pageLayout.responsive == 'yes'}
+                            <a href="#" id="menuToggle"><span></span></a>
+                        {/if}
+                        <ul>
+                            { assign var="currentSectionName" value=$berta.sectionName }
+                            { foreach $berta.publishedSections as $sName => $section }
+                                { if $section.type != 'shopping_cart' }
+                                <li class="menuItem xSection-{ $sName } { messClasses property='positionXY' } { if $currentSectionName == $section.name }menuItemSelected{ /if }{ if $berta.settings.menu.position == 'fixed' } xFixed{ /if }" style="{ messStyles xy=$section.positionXY }">
+                                    { if $berta.sectionName == $section.name && $berta.settings.navigation.alwaysSelectTag == 'yes' && !empty($berta.tags.$sName) }
+                                        <span>{ $section.title }</span>
+                                    { else }
+                                        <a href="{ bertaLink section=$sName }" target="{ bertaTarget section=$sName }">{ $section.title }</a>
+                                    { /if }
 
-                            { if $berta.settings.tagsMenu.hidden=='no' && (!empty($berta.tags.$sName) && ($berta.settings.tagsMenu.alwaysOpen=='yes' || $berta.sectionName==$sName)) }
-                                <ul class="subMenu xSection-{ $sName }{ if $berta.tags.$sName|@count > 1 && $berta.environment == 'engine' } xAllowOrdering{ /if }">
-                                    { foreach $berta.tags.$sName as $tName => $tag }
-                                        <li class="xTag-{ $tName }{ if $berta.tagName == $tName and $currentSectionName == $section.name } selected{ /if }">
-                                            <a class="handle" href="{ bertaLink section=$sName tag=$tName }" target="{ bertaTarget section=$sName tag=$tName }">{ $tag.title }</a>
-                                        </li>
-                                    { /foreach }
-                                </ul>
-                            { /if }
-                        </div>
-                        { /if }
-                    { /foreach }
+                                    { if $berta.settings.tagsMenu.hidden=='no' && (!empty($berta.tags.$sName) && ($berta.settings.pageLayout.responsive == 'yes' || $berta.settings.tagsMenu.alwaysOpen=='yes' || $berta.sectionName==$sName)) }
+                                        <ul class="subMenu xSection-{ $sName }{ if $berta.tags.$sName|@count > 1 && $berta.environment == 'engine' } xAllowOrdering{ /if }">
+                                            { foreach $berta.tags.$sName as $tName => $tag }
+                                                <li class="xTag-{ $tName }{ if $berta.tagName == $tName and $currentSectionName == $section.name } selected{ /if }">
+                                                    <a class="handle" href="{ bertaLink section=$sName tag=$tName }" target="{ bertaTarget section=$sName tag=$tName }">{ $tag.title }</a>
+                                                </li>
+                                            { /foreach }
+                                        </ul>
+                                    { /if }
+                                </li>
+                                { /if }
+                            { /foreach }
+                        </ul>
+                    </nav>
                 { /if }
 
 
                 {* If not grid view *}
                 { if !($smarty.cookies._berta_grid_view && $berta.section.type == 'grid') }
-                <div id="pageEntries" class="{ entriesListClasses } xNoEntryOrdering">
+                <div id="pageEntries" class="{ entriesListClasses }{ if $berta.settings.pageLayout.responsive != 'yes' } xNoEntryOrdering{else} {if intval($berta.section.columns)>1}columns-{intval($berta.section.columns)}{ /if }{ /if } clearfix">
 
                     {* now loop through all entries and print them out *}
                     { foreach $entries as $entry }
 
-                        <div class="{ entryClasses entry=$entry } { messClasses property='positionXY' } xShopMessyEntry" style="{ messStyles xy=$entry.positionXY entry=$entry } {if $entry.width} width:{$entry.width};{elseif strlen(trim($berta.settings.shop.entryWidth)) > 0  && $berta.section.type == 'shop'} width: { $berta.settings.shop.entryWidth }px{ /if }">
+                        <div class="{ entryClasses entry=$entry } { messClasses property='positionXY' } xShopMessyEntry" style="{ messStyles xy=$entry.positionXY entry=$entry }{ if $berta.settings.pageLayout.responsive != 'yes' }{if $entry.width} width:{$entry.width};{elseif strlen(trim($berta.settings.shop.entryWidth)) > 0  && $berta.section.type == 'shop'}width: { $berta.settings.shop.entryWidth }px;{ /if }{/if}">
 
 
                             {* the entry settings and delete and move buttons live in the entryHeader - don't leave it out! *}
@@ -304,7 +317,7 @@
                                     <br class="clear">
 
                                     <div class="cartAttributes{if !$entry.cartAttributes} hidden{/if}">{ $entry.cartAttributes|@toCartAttributes }</div>
-                                    <span class="aele{ if empty($entry.cartPrice)} hidden{/if}"><span>{ $berta.settings.shop.addToBasket }</span></span>
+                                    <span class="aele{ if empty($entry.cartPrice) || $berta.environment == 'site'} hidden{/if}"><span>{ $berta.settings.shop.addToBasket }</span></span>
                                     <span class="addedToCart hidden"></span>
                                     <span class="outOfStock hidden">{ $berta.settings.shop.outOfStock }</span>
 
@@ -335,27 +348,29 @@
                     </div>
                 {/if}
 
-            </div>
+                {section name=foo loop=10}
+                    { assign var="setting_name_image" value="banner`$smarty.section.foo.iteration`_image" }
+                    { assign var="setting_name_link" value="banner`$smarty.section.foo.iteration`_link" }
+                    { assign var="setting_pos_name" value="banner`$smarty.section.foo.iteration`XY" }
 
-            {section name=foo loop=10}
-                { assign var="setting_name_image" value="banner`$smarty.section.foo.iteration`_image" }
-                { assign var="setting_name_link" value="banner`$smarty.section.foo.iteration`_link" }
-                { assign var="setting_pos_name" value="banner`$smarty.section.foo.iteration`XY" }
-
-                { if $berta.settings.banners.$setting_name_image }
-                    <div class="floating-banner xEditableDragXY xProperty-{ $setting_pos_name }" style="{ bannerPos xy_name=$setting_pos_name }">
-                        <div class="xHandle"></div>
-                        { if $berta.settings.banners.$setting_name_link }
-                            <a href="{ $berta.settings.banners.$setting_name_link }" target="_blank">
+                    { if $berta.settings.banners.$setting_name_image }
+                        <div class="floating-banner{ if $berta.settings.pageLayout.responsive!='yes' } xEditableDragXY xProperty-{ $setting_pos_name }{/if}"{ if $berta.settings.pageLayout.responsive!='yes' } style="{ bannerPos xy_name=$setting_pos_name }"{/if}>
+                            { if $berta.settings.pageLayout.responsive!='yes' }
+                                <div class="xHandle"></div>
+                            {/if}
+                            { if $berta.settings.banners.$setting_name_link }
+                                <a href="{ $berta.settings.banners.$setting_name_link }" target="_blank">
+                                    <img src="{ $berta.options.MEDIA_ABS_ROOT }{ $berta.settings.banners.$setting_name_image }" />
+                                </a>
+                            { else }
                                 <img src="{ $berta.options.MEDIA_ABS_ROOT }{ $berta.settings.banners.$setting_name_image }" />
-                            </a>
-                        { else }
-                        <img src="{ $berta.options.MEDIA_ABS_ROOT }{ $berta.settings.banners.$setting_name_image }" />
-                        { /if }
-                    </div>
+                            { /if }
+                        </div>
 
-                { /if }
-            {/section}
+                    { /if }
+                {/section}
+
+            </div>
 
             {* grid trigger *}
             { if $berta.section.type == 'grid' && $berta.section.mediaCacheData.file && !$berta.section.mediaCacheData.file['@attributes'] && !$smarty.cookies._berta_grid_view }

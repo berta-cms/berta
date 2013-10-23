@@ -55,6 +55,9 @@ if($jsonRequest) {
 					$linkTarget 	= !empty($entry['mediaCacheData']['@attributes']['linkTarget'])
 										? $entry['mediaCacheData']['@attributes']['linkTarget'] : '_self';
 
+					$rowGalleryPadding 		= !empty($entry['mediaCacheData']['@attributes']['row_gallery_padding'])
+											? $entry['mediaCacheData']['@attributes']['row_gallery_padding'] : '0';
+
 					echo '<div class="xEntryGalleryEditor-wrap"><div class="xEntryGalleryEditor xPanel">';
 						echo '<div class="xEntryGalleryMenu">';
 							echo '<div class="xEntryMedia tab">',
@@ -89,19 +92,23 @@ if($jsonRequest) {
 							echo '<div class="caption">gallery type</div>',
 								 '<div class="xEntrySetGalType xFloatLeft xEditableSelectRC xCommand-SET_GALLERY_TYPE" x_options="slideshow||row||column||pile||link">' . $galType . '</div>',
 								 '<div class="clear"></div>';
-							echo '<div class="xEntrySlideshowSettings' . ($galType == 'slideshow' ? '' : ' xHidden') . '">',
+							echo '<div class="xEntrySlideshowSettings galleryTypeSettings' . ($galType == 'slideshow' ? '' : ' xHidden') . '">',
 									'<div class="caption">autoplay seconds</div>',
 								 	'<div class="xEntryAutoPlay xFloatLeft xEditableRC xCommand-SET_AUTOPLAY xCaption-0" title="' . $autoPlay . '">' . $autoPlay . '</div>',
 								 	'<div class="clear"></div>',
 								 	'<div class="caption">show image numbers</div>',
 								 	'<div class="xEntrySlideNumberVisibility xFloatLeft xEditableSelectRC xCommand-SET_SLIDE_NUMBER_VISIBILITY" x_options="yes||no">' . $numberVisibility . '</div>',
 								 '</div>';
-							echo '<div class="xEntryLinkSettings' . ($galType == 'link' ? '' : ' xHidden') . ' ">',
+							echo '<div class="xEntryLinkSettings galleryTypeSettings' . ($galType == 'link' ? '' : ' xHidden') . ' ">',
 									'<div class="caption">link address</div>',
 									'<div class="xEntryLinkAddress xFloatLeft xEditableRC xCommand-SET_LINK_ADDRESS" title="' . ($linkAddress ? $linkAddress : 'http://') . '">' . ($linkAddress ? $linkAddress : 'http://') . '</div>',
 									'<div class="clear"></div>',
 									'<div class="caption">link target</div>',
 									'<div class="xEntryLinkTarget xFloatLeft xEditableSelectRC xCommand-SET_LINK_TARGET" x_options="_self||_blank">' . $linkTarget . '</div>',
+								 '</div>';
+							echo '<div class="xEntryRowSettings galleryTypeSettings' . ($galType == 'row' ? '' : ' xHidden') . ' ">',
+									'<div class="caption">image padding</div>',
+								 	'<div class="xRowGalleryPadding xFloatLeft xEditableRC xCommand-SET_ROW_GALLERY_PADDING xCaption-0" title="' . $rowGalleryPadding . '">' . $rowGalleryPadding . '</div>',
 								 '</div>';
 						echo '</div>';
 

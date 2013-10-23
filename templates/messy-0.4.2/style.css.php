@@ -5,6 +5,7 @@ $IS_CSS_FILE = true;
 include('../../engine/inc.page.php');
 $s =& $berta->template->settings;
 $isEngineView = $berta->security->userLoggedIn;
+$isResponsive = $s->get('pageLayout', 'responsive')=='yes';
 
 $expires= 60 * 60 * 24 * 1;	// 1 day
 header('Pragma: public');
@@ -22,7 +23,6 @@ html, body {
 	width: 100%;
 	height: 100%;
 }
-
 
 body {
 	background-color: #fff;
@@ -70,12 +70,11 @@ a:active {
 
 a img { border: none; }
 
-
 .mess {
-	position: absolute !important;
+	<?php if( !$isResponsive ){ ?>
+		position: absolute !important;
+	<?php } ?>
 }
-
-
 
 .xCenteringGuide {
 	<?php if($s->get('pageLayout', 'centeringGuidesColor') == 'dark') { ?>
@@ -106,6 +105,10 @@ a img { border: none; }
 		margin: 0 auto;
 		width: <?php echo $s->get('pageLayout', 'centeredWidth') ?>;
 	}
+	#contentContainer.xResponsive {
+		width: auto;
+		max-width: <?php echo $s->get('pageLayout', 'centeredWidth') ?>;
+	}
 
 #contentContainer h1 {
 	padding: 0;
@@ -118,7 +121,9 @@ a img { border: none; }
 	font-style: <?php echo $s->get('heading', 'fontStyle') ?>;
 	font-variant: <?php echo $s->get('heading', 'fontVariant') ?>;
 	line-height: <?php echo $s->get('heading', 'lineHeight') ?>;
+	<?php if( !$isResponsive ){ ?>
 	position: <?php echo $s->get('heading', 'position') ?> !important;
+	<?php } ?>
 }
 	h1 a {
 		color: <?php echo $s->get('heading', 'color') ?> !important;
@@ -126,7 +131,11 @@ a img { border: none; }
 	}
 
 
-
+nav ul{
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
 
 .menuItem {
 	z-index: 45000;
@@ -136,8 +145,10 @@ a img { border: none; }
 	font-style: <?php echo $s->get('menu', 'fontStyle') ?>;
 	font-variant: <?php echo $s->get('menu', 'fontVariant') ?>;
 	line-height: <?php echo $s->get('menu', 'lineHeight') ?>;
-	position: <?php echo $s->get('menu', 'position') ?> !important;
 	white-space: nowrap;
+	<?php if( !$isResponsive ){ ?>
+		position: <?php echo $s->get('menu', 'position') ?> !important;
+	<?php } ?>
 }
 	.menuItem a:link, .menuItem a:visited {
 		color: <?php echo $s->get('menu', 'colorLink') ?>;
@@ -189,28 +200,51 @@ a img { border: none; }
 			}
 
 
-
-
-
-
-
-
 #pageEntries {
 	position: relative;
 	margin: 0;
 	padding: 0;
 	list-style: none;
+	width: 100%;
 }
 	#pageEntries .xEntry {
 		position: relative;
-		max-width: <?php echo $s->get('entryLayout', 'contentWidth') ?>;
-		min-width: 150px;
-		clear: both;
+		<?php if( $isResponsive ){ ?>
+			min-height: 1px;
+			-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;
+		<?php } else { ?>
+			max-width: <?php echo $s->get('entryLayout', 'contentWidth') ?>;
+			min-width: 150px;
+			padding: 0;
+			clear: both;
+		<?php } ?>
 		list-style:none;
 		margin-bottom: <?php echo $s->get('entryLayout', 'spaceBetween') ?>;
-
-		padding: 0;
 	}
+
+	#pageEntries.columns-2 .xEntry,
+	#pageEntries.columns-3 .xEntry,
+	#pageEntries.columns-4 .xEntry {
+		float: left;
+	}
+
+	#pageEntries.columns-2 .xEntry {
+		width: 50%;
+	}
+
+	#pageEntries.columns-3 .xEntry {
+		width: 33.33333%;
+	}
+
+	#pageEntries.columns-4 .xEntry {
+		width: 25%;
+	}
+
+		#pageEntries.columns-2 .xEntry:nth-child(2n+1),
+		#pageEntries.columns-3 .xEntry:nth-child(3n+1),
+		#pageEntries.columns-4 .xEntry:nth-child(4n+1) {
+			clear: left;
+		}
 
 	#pageEntries .xEntry h2 {
 				color: <?php echo $s->get('entryHeading', 'color') ?>;
@@ -557,5 +591,213 @@ a img { border: none; }
 		#xGridViewTriggerContainer a span {
 			display: none;
 		}
+
+
+
+<?php if( $isResponsive ){ ?>
+	img,
+	iframe,
+	#pageEntries .xEntry .xGalleryContainer .xGallery,
+	#pageEntries .xEntry .xGalleryContainer .xGallery .xGalleryItem,
+	#pageEntries .xEntry .xGalleryContainer .xGallery .xGalleryItem .image {
+		max-width: 100% !important;
+		height: auto !important;
+	}
+
+	#pageEntries .xEntry .xGalleryType-row .xGalleryItem {
+		-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;
+	}
+
+	#contentContainer h1 {
+		margin: <?php echo $s->get('pageLayout', 'headingMargin') ?>;
+	}
+
+	nav {
+		margin: <?php echo $s->get('pageLayout', 'menuMargin') ?>;
+		position: relative;
+		z-index: 1;
+	}
+
+	#menuToggle {
+		display: none;
+		width: 1.5em;
+		height: auto;
+		padding: 1.5em 1em;
+		border: 1px solid black;
+		background-color: black;
+	}
+
+	#menuToggle.active {
+		background-color: white;
+	}
+
+	#menuToggle span {
+		position: relative;
+		display: block;
+	}
+
+	#menuToggle span,
+	#menuToggle span:before,
+	#menuToggle span:after {
+		background-color: white;
+		width: 100%;
+		height: 2px;
+	}
+
+	#menuToggle.active span,
+	#menuToggle.active span:before,
+	#menuToggle.active span:after {
+		background-color: black;
+	}
+
+	#menuToggle span:before,
+	#menuToggle span:after {
+		position: absolute;
+		margin-top: -.6em;
+		content: " ";
+	}
+
+	#menuToggle span:after {
+		margin-top: .6em;
+	}
+
+	nav ul li {
+		display: inline-block;
+		white-space: nowrap;
+		margin-right: 10px;
+	}
+
+	nav ul li a {
+		display: block;
+	}
+
+	nav ul li:hover ul {
+		display: block;
+		position: absolute;
+		top: auto;
+		left: auto;
+	}
+
+	nav ul li ul {
+		display: none;
+	}
+
+	nav ul li ul li {
+		display: block;
+	}
+
+	#additionalText {
+		margin: 0 10px;
+	}
+
+	.floating-banner {
+		position: relative;
+		display: inline-block;
+		margin: 10px;
+	}
+
+	/* helpers */
+	.vjs-poster {
+		position: absolute;
+	}
+
+	.iframeWrapper  {
+		position: relative;
+		padding-bottom: 56.25%;
+	}
+
+	.iframeWrapper iframe {
+		position: absolute;
+		width: 100%;
+		height: 100% !important;
+	}
+
+	.pull-right {
+		float: right;
+	}
+
+	.xFixed {
+		position: relative !important;
+	}
+
+	/* temporary fix - need better solution in javascript */
+	#bottom {
+		position: relative !important;
+		top: 0 !important;
+		bottom: 0 !important;
+		left: 0 !important;
+		width: auto !important;
+	}
+
+	/* responsive row/column classes */
+	.row {
+		width: 100%;
+		clear: both;
+		vertical-align: baseline;
+		zoom: 1;
+	}
+
+	.row:before,
+	.row:after { content: ""; display: table; }
+	.row:after { clear: both; }
+
+	.row .column {
+		float: left;
+		position: relative;
+		min-height: 1px;
+		vertical-align: baseline;
+		-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;
+	}
+
+	.row .column.pull-right {
+		float: right;
+	}
+
+	.row .column-half {
+		width: 50%;
+	}
+
+	.row .column-third {
+		width: 33.33333%;
+	}
+
+	.row .column-third {
+		width: 33.33333%;
+	}
+
+	.row .column-fourth {
+		width: 25%;
+	}
+
+	/* small tablet */
+	@media (max-width: 767px)  {
+
+		nav {
+			/*display: none;*/
+		}
+
+		#menuToggle {
+			display: inline-block;
+		}
+
+		nav ul li {
+			display: block;
+		}
+
+		nav ul li ul,
+		nav ul li:hover ul {
+			position: relative;
+			display: block;
+		}
+
+		#pageEntries.columns-2 .xEntry,
+		#pageEntries.columns-3 .xEntry,
+		#pageEntries.columns-4 .xEntry {
+			float: none;
+			width: 100%;
+		}
+	}
+
+<?php } ?>
 
 <?php if(!1) { ?></style><?php } ?>

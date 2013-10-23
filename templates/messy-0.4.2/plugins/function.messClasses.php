@@ -5,12 +5,17 @@
  * File:     function.messClasses.php
  * Type:     function
  * Name:     messClasses
- * Purpose:  
+ * Purpose:
  * -------------------------------------------------------------
  */
 function smarty_function_messClasses($params, &$smarty) {
 	global $berta;
-	
+
+	$s =& $berta->template->settings;
+	$isResponsive = $s->get('pageLayout', 'responsive')=='yes';
+
+	if ($isResponsive) return;
+
 	return 'mess xEditableDragXY xProperty-' . $params['property'];
 }
 

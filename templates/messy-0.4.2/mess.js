@@ -17,6 +17,7 @@ var MessyMess = new Class({
 	bgPrevious: null,
 	bgRightCounter: null,
 	bgLeftCounter: null,
+    isResponsive: false,
 
 
 	initialize: function() {
@@ -25,6 +26,9 @@ var MessyMess = new Class({
 	},
 
 	onDOMReady: function() {
+
+        this.isResponsive = $$('.xResponsive').length;
+
 		// Berta Background
 		this.bgContainer = $('xBackground');
         this.bgLoader = $('xBackgroundLoader');
@@ -79,8 +83,13 @@ var MessyMess = new Class({
         if(Cookie.read('_berta_grid_view'))
             Cookie.dispose('_berta_grid_view');
 
+
+        var el = document.getElementById('allContainer');
+
+
         this.copyrightStickToBottom.delay(1000);
         window.addEvent('resize', this.copyrightStickToBottom.bindWithEvent(this));
+
 
 		var messyItems = $$('.mess');
 
@@ -198,7 +207,56 @@ var MessyMess = new Class({
             'scroll': this.gridBackgroundPosition.bind(this)
         });
 
+        if (this.isResponsive) {
+            if (bertaGlobalOptions.environment == 'site'){
+                this.iframeResponsiveFix();
+            }
+            this.responsiveMenu();
+        }
 	},
+
+    responsiveMenu: function() {
+        var menuToggle = $('menuToggle');
+        var objSlide = menuToggle.getNext();
+        var breakPointWidth = 767;
+
+        menuToggle.addEvent('click', function(e){
+            e.preventDefault();
+            objSlide.toggle();
+            this.toggleClass('active');
+        });
+
+        window.addEvent('resize', function(){
+
+            if (breakPointWidth < this.getSize().x+15){
+                objSlide.show();
+            // small tablet
+            }else{
+                menuToggle.removeClass('active');
+                objSlide.hide();
+            }
+        });
+        window.fireEvent('resize');
+    },
+
+    iframeResponsiveFix: function() {
+
+
+            $$('iframe').each(function(item) {
+                var width = item.get('width');
+                var height = item.get('height');
+                var wrapper = new Element('div', {'class': 'iframeWrapper'});
+
+                if (width && height){
+                    wrapper.setStyle('padding-bottom', height*100/width + '%');
+                }
+
+                if ( !item.getParent().hasClass('iframeWrapper') ) { //if no iframeWrapper already exists
+                    wrapper.wraps(item);
+                }
+            });
+
+    },
 
     gridBackgroundPosition: function() {
 
@@ -312,12 +370,16 @@ var MessyMess = new Class({
                 }
             });
 
-            allDraggables.each(function(item){
-                y = parseInt(item.getStyle('top')) + parseInt(item.getSize().y)
-                if(maxY < y) {
-                    maxY = y;
-                }
-            });
+            if (this.isResponsive){
+                maxY = $('allContainer').getSize().y;
+            }else{
+                allDraggables.each(function(item){
+                    y = parseInt(item.getStyle('top')) + parseInt(item.getSize().y)
+                    if(maxY < y) {
+                        maxY = y;
+                    }
+                });
+            }
 
             if(maxY < windowH - bottomH) {
                 maxY = windowH - bottomH - bottomPaddingTop;

@@ -122,6 +122,9 @@ var BertaGalleryEditor = new Class({
 		// link address target handle
 		this.elementEdit_init(this.container.getElement('.xEntryLinkTarget'), this.options.xBertaEditorClassSelectRC);
 
+		// row gallery padding
+		this.elementEdit_init(this.container.getElement('.xRowGalleryPadding'), this.options.xBertaEditorClassRC);
+
 		// close link
 		this.container.getElement('a.xEntryGalCloseLink').addEvent('click', this.onCloseClick.bindWithEvent(this));
 
