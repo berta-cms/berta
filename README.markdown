@@ -8,6 +8,15 @@ For more information, visit http://www.berta.me
 
 Changelog
 ----------
+**v0.8.7a (release date 23 Oct 2013)**
+ * option to enable responsive layout for Messy template (experimental, alpha version)
+ * image padding setting for each row gallery
+ * shopping cart link is movable
+ * option to add an image for shopping cart link
+ * message for out of stock products added in shop sections
+ * shopping cart redesign, supports responsive layout
+ * added option to pay with credit card in shop plugin
+
 **v0.8.6b (release date 2 Sep 2013)**
  * crop tool for gallery images
  * medium size option for gallery images
