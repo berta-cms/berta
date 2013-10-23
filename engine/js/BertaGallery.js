@@ -434,7 +434,12 @@ var BertaGallery = new Class({
 
 		if(this.type == 'slideshow') {
 			var obj;
-			if(obj = this.imageContainer.getElement('div.xGalleryItem')) obj.destroy();
+			if(obj = this.imageContainer.getElement('div.xGalleryItem')) {
+				if (isResponsive){
+					obj.getParent().setAttribute('style', 'height:'+ obj.getSize().y + 'px !important');
+				}
+				obj.destroy();
+			}
 		}
 
 		switch(mType) {
@@ -521,6 +526,11 @@ var BertaGallery = new Class({
 				}).chain(function() {
 					this.phase = "done";
 					if(mType == 'image') this.layout_inject(bDeleteExisting, true);
+
+					if (isResponsive) {
+						this.imageContainer.set('style', '');
+					}
+
 					this.layout_finisage(src, mType, mWidth, mHeight);
 
 					if ( this.interval ){
@@ -528,10 +538,9 @@ var BertaGallery = new Class({
 							obj.loadNext(true);
 						}, this.time);
 					}
-
 				}.bind(this));
-			}
-			else if(this.type == 'link') {
+
+			}else if(this.type == 'link') {
 				this.phase = "done";
 				if(mType == 'image') this.layout_inject(bDeleteExisting, false);
 				var topImg = this.imageContainer.getFirst('.xGalleryItem');
