@@ -87,15 +87,12 @@ a img { border: none; }
 	height: 100%;
 }
 
-
 #allContainer {
 	position: relative;
 	margin: 0;
 	padding: 0;
-	/*overflow: <?php if($isEngineView) echo 'visible'; else echo 'auto' ?>;*/
+	min-height: 20px;
 }
-
-
 
 #contentContainer {
 	position: relative;
