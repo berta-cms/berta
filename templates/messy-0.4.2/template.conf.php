@@ -80,7 +80,7 @@ $templateConf = array(
 		'fontStyle' => 			array('format' => 'select',		'values' => array('normal', 'italic'), 'default' => 'normal', 			        'title' => I18n::_('Font style'),        'description' => ''),
 		'fontVariant' => 		array('format' => 'select',		'values' => array('normal', 'small-caps'), 'default' => 'normal', 		        'title' => I18n::_('Font variant'),      'description' => ''),
 		'lineHeight' => 		array('format' => 'text', 'css_units' => true, 'default' => 'normal', 					                                        'title' => I18n::_('Line height'),       'description' => I18n::_('Height of text line. Use em, px or % values or the default value "normal"')),
-		'margin' => 			array('format' => 'text',		'default' => '0', 						                                        'title' => I18n::_('Margins'),           'description' => I18n::_('How far the entry heading is form other elements in page. Please see the short CSS guide at the bottom of this page.')),
+		'margin' => 			array('format' => 'text',		'default' => '15px 0 15px 0',													'title' => I18n::_('Margins'),           'description' => I18n::_('How far the entry heading is form other elements in page. Please see the short CSS guide at the bottom of this page.')),
 	),
 
 	'entryLayout' => array(
@@ -115,7 +115,7 @@ $templateConf = array(
 		'fontSize' => 				array('format' => 'text', 'css_units' => true, 'default' => '20px', 								                                    'title' => I18n::_('Font size'),             'description' => ''),
 		'fontWeight' => 			array('format' => 'select',		'values' => array('normal', 'bold'), 'default' => 'bold', 		                        'title' => I18n::_('Font weight'),           'description' => ''),
 		'fontStyle' => 				array('format' => 'select',		'values' => array('normal', 'italic'), 'default' => 'normal', 		                    'title' => I18n::_('Font style'),            'description' => ''),
-		'lineHeight' => 			array('format' => 'text', 'css_units' => true, 'default' => '16px', 								                                    'title' => I18n::_('Line height'),           'description' => I18n::_('Height of text line. Use em, px or % values or the default value "normal"')),
+		'lineHeight' => 			array('format' => 'text', 'css_units' => true, 'default' => '1em', 								                                    'title' => I18n::_('Line height'),           'description' => I18n::_('Height of text line. Use em, px or % values or the default value "normal"')),
 		'colorLink' => 				array('format' => 'color',		'default' => '#000000', 	                                                            'title' => I18n::_('Color'),                 'description' => ''),
 		'colorHover' => 			array('format' => 'color',		'default' => '#000000', 	                                                            'title' => I18n::_('Color when hovered'),    'description' => I18n::_('Color of the element under mouse cursor')),
 		'colorActive' => 			array('format' => 'color',		'default' => '#000000', 	                                                            'title' =>I18n::_( 'Color when selected'),   'description' => I18n::_('Color of the element of the currently opened section')),
@@ -131,7 +131,7 @@ $templateConf = array(
 		'fontSize' => 				array('format' => 'text', 'css_units' => true, 'default' => '16px', 								                                    'title' => I18n::_('Font size'),             'description' => ''),
 		'fontWeight' => 			array('format' => 'select',		'values' => array('normal', 'bold'), 'default' => 'normal',                             'title' => I18n::_('Font weight'),           'description' => ''),
 		'fontStyle' => 				array('format' => 'select',		'values' => array('normal', 'italic'), 'default' => 'normal',                           'title' => I18n::_('Font style'),            'description' => ''),
-		'lineHeight' => 			array('format' => 'text', 'css_units' => true, 'default' => '16px',                                                                    'title' => I18n::_('Line height'),           'description' => I18n::_('Height of text line. Use em, px or % values or the default value "normal"')),
+		'lineHeight' => 			array('format' => 'text', 'css_units' => true, 'default' => '1.5em',                                                                    'title' => I18n::_('Line height'),           'description' => I18n::_('Height of text line. Use em, px or % values or the default value "normal"')),
 		'colorLink' => 				array('format' => 'color',			'default' => '#000000',                                                             'title' => I18n::_('Color'),                 'description' => ''),
 		'colorHover' => 			array('format' => 'color',		'default' => '#000000',                                                                 'title' => I18n::_('Color when hovered'),    'description' => ''),
 		'colorActive' => 			array('format' => 'color',		'default' => '#000000',                                                                 'title' => I18n::_('Color when selected'),   'description' => ''),
