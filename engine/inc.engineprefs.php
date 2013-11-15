@@ -77,12 +77,18 @@ $options['CACHE_ABS_ROOT'] = $options['SITE_ABS_ROOT'] . 'storage/cache/';
  * Account link - if hosted
  */
 
+//common hosting config file for all bertas
 if (file_exists($ENGINE_ROOT.'hosting')){
 	$hostingConfig = parse_ini_string( file_get_contents($ENGINE_ROOT.'hosting') );
 }
 $options['HOSTING_PROFILE'] = isset($hostingConfig['login']) ? $hostingConfig['login'] : false;
 $options['FORGOTPASSWORD_LINK'] = isset($hostingConfig['forgotPassword']) ? $hostingConfig['forgotPassword'] : 'http://support.berta.me/kb/login-name-and-password/forgot-my-password-for-self-hosted-berta';
-$options['NOINDEX'] = isset($hostingConfig['noindex']) && ( $hostingConfig['noindex'] === $_SERVER['HTTP_HOST'] || 'www.'.$hostingConfig['noindex'] === $_SERVER['HTTP_HOST'] );
+
+//individual hosting config file for berta
+if (file_exists($ENGINE_ROOT.'hosting_config')){
+	$hostingConfigBerta = parse_ini_string( file_get_contents($ENGINE_ROOT.'hosting_config') );
+}
+$options['NOINDEX'] = isset($hostingConfigBerta['noindex']) && ( $hostingConfigBerta['noindex'] === $_SERVER['HTTP_HOST'] || 'www.'.$hostingConfigBerta['noindex'] === $_SERVER['HTTP_HOST'] );
 
 /**
  * File name templates
