@@ -1,4 +1,3 @@
-
 #
 #	HOW TO USE THIS FILE?
 #
@@ -59,3 +58,6 @@ RewriteRule ^.*$  index.php?__rewrite=1   [L]
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - /
 
 </IfModule>
+
+# Change this link http://localhost/berta/ the url of your website
+ErrorDocument 404 http://localhost/berta/engine/error/404.html
