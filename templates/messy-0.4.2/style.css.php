@@ -647,6 +647,11 @@ nav ul{
 		height: auto !important;
 	}
 
+	#xBackground img,
+	#xFilledBackground img {
+	    max-width: none !important;
+	}
+
 	#pageEntries .xEntry .xGalleryType-row .xGalleryItem {
 		-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;
 	}
