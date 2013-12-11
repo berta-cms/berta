@@ -590,6 +590,32 @@ nav ul{
 		}
 
 
+.iframeWrapper  {
+	position: relative;
+	padding-bottom: 56.25%;
+}
+
+.iframeWrapper iframe {
+	position: absolute;
+	width: 100%;
+	height: 100% !important;
+}
+
+#xBackgroundVideoEmbed {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+}
+
+#xBackgroundVideoEmbed.fillWindow .iframeWrapper {
+	padding-bottom: 0 !important;
+}
+
+#xBackgroundVideoEmbed.fillWindow .iframeWrapper iframe {
+	max-width: none !important;
+}
+
 
 /* responsive row/column classes */
 .row {
@@ -747,17 +773,6 @@ nav ul{
 	/* helpers */
 	.vjs-poster {
 		position: absolute;
-	}
-
-	.iframeWrapper  {
-		position: relative;
-		padding-bottom: 56.25%;
-	}
-
-	.iframeWrapper iframe {
-		position: absolute;
-		width: 100%;
-		height: 100% !important;
 	}
 
 	.xFixed {
