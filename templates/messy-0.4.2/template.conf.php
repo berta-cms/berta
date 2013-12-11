@@ -24,6 +24,8 @@ $sectionTypes = array(
 		'columns' => array('format' => 'select', 'default' => '1', 'values' => array('1','2','3','4'), 'html_before' => '<div class="label">'.I18n::_('Columns').':</div>'),
 		'entryMaxWidth' => array('format' => 'text', 'css_units' => true, 'default' => '', 'html_before' => '<div class="label">'.I18n::_('Entry max width').':</div>'),
 		'entryPadding' => array('format' => 'text', 'default' => '0 10px 20px 10px', 'html_before' => '<div class="label">'.I18n::_('Entry padding').':</div>'),
+		'backgroundVideoEmbed' => array('format' => 'text', 'default' => '', 'html_entities' => true, 'html_before' => '<div class="label">'.I18n::_('Background video (embed)').':</div>'),
+		'backgroundVideoRatio' => array('format' => 'select', 'default' => 'fillWindow', 'values' => array('fillWindow' => I18n::_('Fill window'), 'keepRatio' => I18n::_('Keep ratio')), 'html_before' => '<div class="label">'.I18n::_('Background video ratio').':</div>'),
 	)),
 	'external_link' => array('title' => 'External link', 'params' => array(
 		'link' => array('format' => 'text',	'default' => '', 'html_before' => '<div class="label">'.I18n::_('Link address').':</div>'),

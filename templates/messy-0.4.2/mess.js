@@ -12,6 +12,8 @@ var MessyMess = new Class({
     bgCaption: null,
     bgLoader: null,
 
+    xBackgroundVideoEmbed: null,
+
 	bgGridViewTrigger: null,
 	bgNext: null,
 	bgPrevious: null,
@@ -32,6 +34,11 @@ var MessyMess = new Class({
 		// Berta Background
 		this.bgContainer = $('xBackground');
         this.bgLoader = $('xBackgroundLoader');
+        this.xBackgroundVideoEmbed = $('xBackgroundVideoEmbed');
+
+        if ( this.xBackgroundVideoEmbed ) {
+            this.xBackgroundVideoEmbed = this.xBackgroundVideoEmbed.getElement('iframe');
+        }
 
 		if(this.bgContainer)  {
             this.bgImage = this.bgContainer.getElement('.visual-image img');
@@ -201,7 +208,7 @@ var MessyMess = new Class({
         }
 
         setTimeout(this.gridBackgroundPosition.bind(this), 100);
-        window.fireEvent('resize');
+
         window.addEvents({
             'resize': this.gridBackgroundPosition.bind(this),
             'scroll': this.gridBackgroundPosition.bind(this)
@@ -209,11 +216,52 @@ var MessyMess = new Class({
 
         if (this.isResponsive) {
             if (bertaGlobalOptions.environment == 'site'){
-                this.iframeResponsiveFix();
+                this.iframeResponsiveFix($$('iframe'));
             }
             this.responsiveMenu();
         }
-	},
+
+        if( this.xBackgroundVideoEmbed && !(this.isResponsive && bertaGlobalOptions.environment == 'site') ){
+            this.iframeResponsiveFix($$(this.xBackgroundVideoEmbed));
+        }
+
+        if( this.xBackgroundVideoEmbed && !$('xBackgroundVideoEmbed').hasClass('keepRatio') ) {
+
+            window.addEvents({
+                'resize': this.xBackgroundVideoFill.bind(this)
+            });
+        }
+
+        window.fireEvent('resize');
+    },
+
+    xBackgroundVideoFill: function(){
+
+        var iframeWrapper = this.xBackgroundVideoEmbed.getParent();
+        var windowWidth = window.getSize().x;
+        var windowHeight = window.getSize().y;
+        var windowRatio = windowHeight * 100 / windowWidth;
+        var videoRatio = parseFloat(iframeWrapper.getStyle('padding-bottom'));
+        var videoLeft = 0;
+        var videoTop = 0;
+
+        if ( videoRatio > windowRatio ) {
+            var videoWidth = windowWidth;
+            var videoHeight = parseInt(videoWidth * (videoRatio/100));
+            var videoTop = -parseInt((videoHeight - windowHeight) / 2 );
+        }else{
+            var videoHeight = windowHeight;
+            var videoWidth = parseInt(videoHeight / (videoRatio/100));
+            var videoLeft = -parseInt((videoWidth - windowWidth) / 2 );
+        }
+
+        iframeWrapper.setStyles({
+            'width': windowWidth,
+            'height': windowHeight
+        });
+
+        $$(this.xBackgroundVideoEmbed)[0].setAttribute('style', 'top: ' + videoTop + 'px; left:' + videoLeft + 'px; width: '+ videoWidth + 'px; height:' + videoHeight + 'px !important;');
+    },
 
     responsiveMenu: function() {
         var menuToggle = $('menuToggle');
@@ -239,23 +287,21 @@ var MessyMess = new Class({
         window.fireEvent('resize');
     },
 
-    iframeResponsiveFix: function() {
+    iframeResponsiveFix: function(el) {
 
+        el.each(function(item) {
+            var width = item.get('width');
+            var height = item.get('height');
+            var wrapper = new Element('div', {'class': 'iframeWrapper'});
 
-            $$('iframe').each(function(item) {
-                var width = item.get('width');
-                var height = item.get('height');
-                var wrapper = new Element('div', {'class': 'iframeWrapper'});
+            if (width && height){
+                wrapper.setStyle('padding-bottom', height*100/width + '%');
+            }
 
-                if (width && height){
-                    wrapper.setStyle('padding-bottom', height*100/width + '%');
-                }
-
-                if ( !item.getParent().hasClass('iframeWrapper') ) { //if no iframeWrapper already exists
-                    wrapper.wraps(item);
-                }
-            });
-
+            if ( !item.getParent().hasClass('iframeWrapper') ) { //if no iframeWrapper already exists
+                wrapper.wraps(item);
+            }
+        });
     },
 
     gridBackgroundPosition: function() {
