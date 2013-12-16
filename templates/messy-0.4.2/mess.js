@@ -265,26 +265,29 @@ var MessyMess = new Class({
 
     responsiveMenu: function() {
         var menuToggle = $('menuToggle');
-        var objSlide = menuToggle.getNext();
-        var breakPointWidth = 767;
 
-        menuToggle.addEvent('click', function(e){
-            e.preventDefault();
-            objSlide.toggle();
-            this.toggleClass('active');
-        });
+        if ( menuToggle ) {
+            var objSlide = menuToggle.getNext();
+            var breakPointWidth = 767;
 
-        window.addEvent('resize', function(){
+            menuToggle.addEvent('click', function(e){
+                e.preventDefault();
+                objSlide.toggle();
+                this.toggleClass('active');
+            });
 
-            if (breakPointWidth < this.getSize().x+15){
-                objSlide.show();
-            // small tablet
-            }else{
-                menuToggle.removeClass('active');
-                objSlide.hide();
-            }
-        });
-        window.fireEvent('resize');
+            window.addEvent('resize', function(){
+
+                if (breakPointWidth < this.getSize().x+15){
+                    objSlide.show();
+                // small tablet
+                }else{
+                    menuToggle.removeClass('active');
+                    objSlide.hide();
+                }
+            });
+            window.fireEvent('resize');
+        }
     },
 
     iframeResponsiveFix: function(el) {
