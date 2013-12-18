@@ -29,6 +29,7 @@ var BertaGallery = new Class({
 	currentVideoPath: null,
 	preload: null,
 	phase: null,
+	loadTimer: null,
 
 	imageFadeOutFx: null,
 	imageResizeFx: null,
@@ -115,7 +116,6 @@ var BertaGallery = new Class({
 			} else {
 				this.currentSrc = aEl.get('href');
 				this.preload = this.imageContainer.getElement('div.xGalleryItem');
-				//console.debug(this.preload);
 
 				if( (this.fullscreen || this.getNext()) && this.type == 'slideshow' ) {
 					this.preload.setStyle('cursor', 'pointer');
@@ -326,6 +326,7 @@ var BertaGallery = new Class({
 	layout_inject: function(bDeleteExisting, bDoContainerFade) {
 
 		if(bDeleteExisting) this.imageContainer.getChildren('.xGalleryItem').destroy();
+
 		this.preload.inject(this.newObjectInjectWhere, this.newObjectInjectPosition);
 
 		if(bDoContainerFade) {
@@ -334,7 +335,6 @@ var BertaGallery = new Class({
 			// just fade in the newly added image
 			new Fx.Tween(this.preload, { duration: 'short', transition: Fx.Transitions.Sine.easeInOut })
 					.set('opacity', 0).start('opacity', 1);
-
 		}
 
 		this.layout_update();
@@ -423,6 +423,7 @@ var BertaGallery = new Class({
 			this.load_Render(src, mType, mWidth, mHeight, videoPath, autoPlay, caption, bDeleteExisting, xImgIndex);
 		}
 	},
+
 	load_Render: function(src, mType, mWidth, mHeight, videoPath, autoPlay, caption, bDeleteExisting, xImgIndex) {
 
 		this.currentSrc = src;
@@ -444,6 +445,15 @@ var BertaGallery = new Class({
 
 		switch(mType) {
 			case 'image':
+
+				var loader = this.imageContainer.getNext('.loader');
+
+				if (loader){
+					this.loadTimer = setTimeout(function(){
+						loader.removeClass('xHidden');
+					}, 500);
+				}
+
 				this.phase = "preload";
 				this.preload = new Asset.image(src, this.type == 'slideshow' ? {
 					'onload': this.load_Finish.bind(this, [ src, mType, mWidth, mHeight, bDeleteExisting ])
@@ -464,6 +474,7 @@ var BertaGallery = new Class({
 				new Element('div', { 'class': 'xGalleryImageCaption' }).set('html', caption).inject(this.preload);
 
 				if(this.type != 'slideshow') this.load_Finish(src, mType, mWidth, mHeight, bDeleteExisting);
+
 				break;
 
 			case 'video':
@@ -518,6 +529,13 @@ var BertaGallery = new Class({
 		// test if the loaded image's src is the last invoked image's src
 		if(src == this.currentSrc) {
 			if(this.type == 'slideshow') {
+
+				clearTimeout(this.loadTimer);
+
+				var loader = obj.imageContainer.getNext('.loader');
+				if (loader){
+					loader.addClass('xHidden');
+				}
 
 				this.phase = "fadein";
 				this.imageResizeFx.start({

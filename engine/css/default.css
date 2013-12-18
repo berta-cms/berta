@@ -60,6 +60,17 @@ br.clear { clear: both; }
 
 div.xGalleryContainer.xSlideNumbersVisible-no>ul.xGalleryNav { display: none !important; }
 
+div.xGalleryContainer .loader {
+	position: absolute;
+	top: 45%;
+	left: 0;
+	right: 0;
+	margin: 0 auto;
+	background: rgba(255,255,255,0.8) url('../layout/loader.gif') no-repeat center center;
+	width: 40px;
+	height: 40px;
+}
+
 /* video background */
 
 div.xGalleryItem {
