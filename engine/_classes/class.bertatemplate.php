@@ -356,7 +356,7 @@ DOC;
 DOC;
 		}else{
 			$vars['berta']['css'] .= <<<DOC
-	<link rel="stylesheet" href="{$engineAbsRoot}_lib/milkbox/css/milkbox/milkbox.css" type="text/css" />
+	<link rel="stylesheet" href="{$engineAbsRoot}_lib/milkbox/css/milkbox/milkbox.css?{$int_version}" type="text/css" />
 DOC;
         }
 
