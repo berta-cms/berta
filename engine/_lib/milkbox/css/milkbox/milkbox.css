@@ -16,7 +16,7 @@
 	overflow:hidden;
 	left: 50%;
 	top:10%;/* overwritten in the js options to properly position the milkbox when activated in a scrolled window */
-	background-color: #fff;/* set the Milkbox background color */
+	/*background-color: #fff;*//* set the Milkbox background color */
 	/*border: 5px solid #fff; set the Milkbox border */
 	margin:0;
 	/*padding: 5px 20px 20px 20px;*/
@@ -29,7 +29,7 @@
 }
 
 
-.mbLoading{ background: #fff url(loading.gif) no-repeat center; }/* IMAGE: loading gif */
+.mbLoading{ background: rgba(255,255,255,0.8) url(../../../../layout/loader.gif) no-repeat center; }/* IMAGE: loading gif */
 
 #mbCanvas{ margin:0; padding:0; height:0; border:none; font-size:0; overflow:hidden; }
 #mbCanvas img{ cursor: pointer; }

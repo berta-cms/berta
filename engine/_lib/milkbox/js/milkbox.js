@@ -727,8 +727,6 @@ var Milkbox = new Class({
 		}
 		this.center = new Element('div', {'id':'mbCenter', 'styles':{'width':this.options.initialWidth,'height':this.options.initialHeight,'marginLeft':-(this.options.initialWidth/2),'opacity':0, 'visibility': 'hidden' }}).inject($(document.body));
 		if (bertaGlobalOptions.galleryFullScreenFrame=='no'){
-			this.center.setStyle('background','none');
-
 			if (bertaGlobalOptions.galleryFullScreenBackground=='black'){
 				this.center.addClass('milkbox_theme_white');
 			}

@@ -68,7 +68,7 @@ class BertaGallery extends BertaBase {
             if($isAdminMode) $strOut .= '<a href="#" class="xGalleryEditButton xEditorLink xSysCaption xMAlign-container"><span class="xMAlign-outer-gallery"><span class="xMAlign-inner-gallery">edit gallery</span></span></a>';
             $strOut .= '</div>';
             $strOut .= BertaGallery::getNavHTML($imgs, $galleryType, $mFolder, $mFolderABS, $isAdminMode, $sizeRatio, $imageTargetWidth, $imageTargetHeight, $galleryFullScreen);
-            $strOut .= '<div class="loader xHidden"></div>';
+            if($galleryType == 'slideshow') $strOut .= '<div class="loader xHidden"></div>';
             $strOut .= '</div>';
 
         } elseif($isAdminMode) {
