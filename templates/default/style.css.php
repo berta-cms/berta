@@ -4,6 +4,7 @@ $SITE_ROOT = '../../';
 $IS_CSS_FILE = true;
 include('../../engine/inc.page.php');
 $s =& $berta->template->settings;
+$isResponsive = $s->get('pageLayout', 'responsive')=='yes';
 
 $expires= 60 * 60 * 24 * 1;	// 1 day
 header('Pragma: public');
@@ -13,8 +14,6 @@ if($lastMod = $berta->settings->get('berta', 'lastUpdated')) {
 	header('Last-Modified: ' . $lastMod);
 }
 header("Content-Type: text/css");
-
-
 
 $contentFloat = substr($s->get('pageLayout', 'contentAlign'), -4) == 'left' ? 'left' : 'right';
 $contentFloatOpposite = $contentFloat == 'left' ? 'right' : 'left';
@@ -144,6 +143,11 @@ h1 {
 					font-weight: bold;
 				}
 
+				div#siteTopMenu ul li.selected span.separator {
+					font-weight: normal;
+					text-decoration: none;
+					color: <?php echo $s->get('generalFontSettings', 'color') ?>;
+				}
 
 		div#siteTopMenu ul#mainMenu {
 			padding: <?php echo $s->get('menu', 'margin') ?>;
@@ -212,10 +216,6 @@ h1 {
 			padding: 0;
 		}
 
-			ol#pageEntries li.xEntry .entryTitleContainer {
-				width: 480px;
-				margin: <?php echo $contentFloat ? '0' : '0 0 0 auto' ?>;
-			}
 			ol#pageEntries li.xEntry h2 {
 				display: block;
 				width: 100%;
@@ -237,10 +237,6 @@ h1 {
 				padding: 0;
 			}
 
-
-
-
-
 			ol#pageEntries li.xEntry .xGalleryContainer {
 				position: relative;
 				clear: <?php echo $contentFloat ?>;
@@ -250,7 +246,7 @@ h1 {
 				margin: 0 0 2px;
 			}
 			ol#pageEntries li.xEntry .xGalleryType-slideshow {
-				float: <?php echo $contentFloat ?>;
+				/*float: <?php echo $contentFloat ?>;*/
 			}
 			ol#pageEntries li.xEntry .xGalleryType-row {
 
@@ -429,6 +425,105 @@ h1 {
 		z-index: 3000;
 	}
 
+<?php if( $isResponsive ){ ?>
 
+	img,
+	iframe,
+	ol#pageEntries li.xEntry .xGalleryContainer .xGallery,
+	ol#pageEntries li.xEntry .xGalleryContainer .xGallery div.xGalleryItem,
+	ol#pageEntries li.xEntry .xGalleryContainer .xGallery div.xGalleryItem .image {
+		max-width: 100% !important;
+		height: auto !important;
+	}
+
+	#xFilledBackground img {
+	    max-width: none !important;
+	}
+
+	#contentContainer {
+		width: auto;
+		max-width: <?php echo $s->get('pageLayout', 'contentWidth') ?>;
+	}
+
+	#menuToggle {
+		display: none;
+		width: 1.5em;
+		height: auto;
+		padding: 1.5em 1em;
+		border: 1px solid black;
+		background-color: black;
+	}
+
+	#menuToggle.active {
+		background-color: white;
+	}
+
+	#menuToggle span {
+		position: relative;
+		display: block;
+	}
+
+	#menuToggle span,
+	#menuToggle span:before,
+	#menuToggle span:after {
+		background-color: white;
+		width: 100%;
+		height: 2px;
+	}
+
+	#menuToggle.active span,
+	#menuToggle.active span:before,
+	#menuToggle.active span:after {
+		background-color: black;
+	}
+
+	#menuToggle span:before,
+	#menuToggle span:after {
+		position: absolute;
+		margin-top: -.6em;
+		content: " ";
+	}
+
+	#menuToggle span:after {
+		margin-top: .6em;
+	}
+
+	h1 {
+		float: none;
+	}
+
+	#additionalText {
+		position: static;
+		margin-bottom: 1em;
+	}
+
+	.floating-banner {
+		position: static;
+		display: inline-block;
+		margin: 10px;
+	}
+
+	.vjs-poster {
+		position: absolute;
+		top: 0;
+		left: 0;
+	}
+
+	ol#pageEntries li.xEntry,
+	ol#pageEntries li.xEntry .xGalleryContainer .xGallery div.xGalleryItem,
+	.row .column {
+		-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;
+	}
+
+
+	/* small tablet */
+	@media (max-width: 767px)  {
+		#menuToggle {
+			display: inline-block;
+		}
+	}
+}
+
+<?php } ?>
 
 <?php if(!1) { ?></style><?php } ?>

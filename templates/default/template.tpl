@@ -6,6 +6,7 @@
 <!--[if (gt IE 9)|!(IE)]><!--> <html> <!--<![endif]-->
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	{if $berta.settings.pageLayout.responsive=='yes'}<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">{/if}
 	<title>{ $berta.pageTitle }</title>
 	<meta name="keywords" content="{ $berta.settings.texts.metaKeywords }" />
 	<meta name="description" content="{ $berta.settings.texts.metaDescription }" />
@@ -42,20 +43,7 @@
 		{* engine panel lives in pageHeader - don't leave it out *}
 		{ pageHeader }
 
-		<div id="contentContainer">
-
-			{ if ($berta.environment == 'site' && $berta.settings.navigation.landingSectionMenuVisible=='yes') || $berta.environment == 'engine' || ($berta.environment == 'site' && $berta.settings.navigation.landingSectionMenuVisible=='no' && $berta.sectionName != $berta.sections|@key) }
-				<div id="additionalText" class="xEditableDragXY xProperty-additionalTextXY" style="{ additionalTextPos xy=$additionalTextXY }">
-					<div class="xHandle"></div>
-					{if $berta.settings.socialMediaButtons.socialMediaLocation == 'additionalText' && $berta.settings.socialMediaButtons.socialMediaHTML}
-                    	{ $berta.settings.socialMediaButtons.socialMediaHTML|@html_entity_decode|replace:'<br />':"\n" }
-                    {else}
-						<div class="xEditableMCESimple xProperty-additionalText xCaption-additional-text">
-						{ $additionalText }
-						</div>
-					{/if}
-				</div>
-			{/if}
+		<div id="contentContainer"{if $berta.settings.pageLayout.responsive=='yes' } class="xResponsive"{/if}>
 
             { if ($berta.environment == 'site' && $berta.settings.navigation.landingSectionPageHeadingVisible=='yes') || $berta.environment == 'engine' || ($berta.environment == 'site' && $berta.settings.navigation.landingSectionPageHeadingVisible=='no' && $berta.sectionName != $berta.sections|@key) }
                 { if $berta.settings.pageHeading.image }
@@ -71,8 +59,23 @@
                 { /if }
 			{ /if }
 
+			{if ($berta.environment == 'site' && $berta.settings.navigation.landingSectionMenuVisible=='yes') || $berta.environment == 'engine' || ($berta.environment == 'site' && $berta.settings.navigation.landingSectionMenuVisible=='no' && $berta.sectionName != $berta.sections|@key) }
+				<div id="additionalText"{if $berta.settings.pageLayout.responsive!='yes'} class="xEditableDragXY xProperty-additionalTextXY" style="{ additionalTextPos xy=$additionalTextXY }"{/if}>
+					<div class="xHandle"></div>
+					{if $berta.settings.socialMediaButtons.socialMediaLocation == 'additionalText' && $berta.settings.socialMediaButtons.socialMediaHTML}
+                    	{ $berta.settings.socialMediaButtons.socialMediaHTML|@html_entity_decode|replace:'<br />':"\n" }
+                    {else}
+						<div class="xEditableMCESimple xProperty-additionalText xCaption-additional-text">
+						{ $additionalText }
+						</div>
+					{/if}
+				</div>
+			{/if}
 
 			<div id="siteTopMenu">
+				{if $berta.settings.pageLayout.responsive == 'yes'}
+                    <a href="#" id="menuToggle"><span></span></a>
+                {/if}
 
 				{* *** sections menu ***************************************************************** *}
 				{ assign var="sName" value=$berta.sectionName }
@@ -160,7 +163,7 @@
 						<br class="clear" />
 					</li>
 				{ foreachelse }
-					{* the template can be modified in a way that here goes content the is displayed when there are no entries in the section *}
+					{* the template can be modified in a way that here goes content that is displayed when there are no entries in the section *}
 
 				{ /foreach }
 
@@ -180,14 +183,16 @@
 			{ /if }
 		</div>
 
-		{section name=foo loop=10}
-		    { assign var="setting_name_image" value="banner`$smarty.section.foo.iteration`_image" }
-			{ assign var="setting_name_link" value="banner`$smarty.section.foo.iteration`_link" }
-			{ assign var="setting_pos_name" value="banner`$smarty.section.foo.iteration`XY" }
+		{section name=banners loop=10}
+		    { assign var="setting_name_image" value="banner`$smarty.section.banners.iteration`_image" }
+			{ assign var="setting_name_link" value="banner`$smarty.section.banners.iteration`_link" }
+			{ assign var="setting_pos_name" value="banner`$smarty.section.banners.iteration`XY" }
 
 			{ if $berta.settings.banners.$setting_name_image }
-				<div class="floating-banner xEditableDragXY xProperty-{ $setting_pos_name }" style="{ bannerPos xy_name=$setting_pos_name }">
-					<div class="xHandle"></div>
+				<div class="floating-banner banner-{$smarty.section.banners.iteration}{if $berta.settings.pageLayout.responsive!='yes' } xEditableDragXY xProperty-{ $setting_pos_name }{/if}"{ if $berta.settings.pageLayout.responsive!='yes' } style="{ bannerPos xy_name=$setting_pos_name }"{/if}>
+                    { if $berta.settings.pageLayout.responsive!='yes' }
+                        <div class="xHandle"></div>
+                    {/if}
 					{ if $berta.settings.banners.$setting_name_link }
 						<a href="{ $berta.settings.banners.$setting_name_link }" target="_blank">
 							<img src="{ $berta.options.MEDIA_ABS_ROOT }{ $berta.settings.banners.$setting_name_image }" />
