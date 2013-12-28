@@ -352,13 +352,13 @@
                     </div>
                 {/if}
 
-                {section name=foo loop=10}
-                    { assign var="setting_name_image" value="banner`$smarty.section.foo.iteration`_image" }
-                    { assign var="setting_name_link" value="banner`$smarty.section.foo.iteration`_link" }
-                    { assign var="setting_pos_name" value="banner`$smarty.section.foo.iteration`XY" }
+                {section name=banners loop=10}
+                    { assign var="setting_name_image" value="banner`$smarty.section.banners.iteration`_image" }
+                    { assign var="setting_name_link" value="banner`$smarty.section.banners.iteration`_link" }
+                    { assign var="setting_pos_name" value="banner`$smarty.section.banners.iteration`XY" }
 
                     { if $berta.settings.banners.$setting_name_image }
-                        <div class="floating-banner{ if $berta.settings.pageLayout.responsive!='yes' } xEditableDragXY xProperty-{ $setting_pos_name }{/if}"{ if $berta.settings.pageLayout.responsive!='yes' } style="{ bannerPos xy_name=$setting_pos_name }"{/if}>
+                        <div class="floating-banner banner-{$smarty.section.banners.iteration}{ if $berta.settings.pageLayout.responsive!='yes' } xEditableDragXY xProperty-{ $setting_pos_name }{/if}"{ if $berta.settings.pageLayout.responsive!='yes' } style="{ bannerPos xy_name=$setting_pos_name }"{/if}>
                             { if $berta.settings.pageLayout.responsive!='yes' }
                                 <div class="xHandle"></div>
                             {/if}
