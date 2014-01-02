@@ -167,6 +167,10 @@ h1 {
 				 	padding-right: <?php echo $s->get('menu', 'separatorDistance') ?>;
 				}
 
+		div#siteTopMenu ul li ul.subMenu {
+			display: none;
+		}
+
 		div#siteTopMenu ul#subMenu {
 			clear: <?php echo $contentFloat ?>;
 			padding: <?php echo $s->get('subMenu', 'margin') ?>;
@@ -520,6 +524,38 @@ h1 {
 	@media (max-width: 767px)  {
 		#menuToggle {
 			display: inline-block;
+		}
+
+		div#siteTopMenu,
+		div#siteTopMenu ul,
+		div#siteTopMenu ul li,
+		div#siteTopMenu ul li a {
+			float: none;
+		}
+
+		div#siteTopMenu > ul > li {
+			margin-bottom: 0.5em;
+		}
+
+		div#siteTopMenu ul li ul.subMenu {
+			display: block;
+			margin-left: 1em;
+		}
+
+		div#siteTopMenu ul li.selected ul.subMenu li a {
+			font-weight: normal;
+		}
+
+		div#siteTopMenu ul li ul.subMenu li.selected a {
+			font-weight: bold;
+		}
+
+		div#siteTopMenu ul#mainMenu li .separator {
+			display: none;
+		}
+
+		div#siteTopMenu ul#subMenu {
+			display: none;
 		}
 	}
 }

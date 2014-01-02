@@ -79,7 +79,15 @@
 
 				{* *** sections menu ***************************************************************** *}
 				{ assign var="sName" value=$berta.sectionName }
-				{ if count($berta.publishedSections) > 0 && (($berta.environment == 'site' && $berta.settings.navigation.landingSectionMenuVisible=='yes') || $berta.environment == 'engine' || ($berta.environment == 'site' && $berta.settings.navigation.landingSectionMenuVisible=='no' && $berta.sectionName != $berta.sections|@key))  }
+				{
+
+				if count($berta.publishedSections) > 0 &&
+					(
+						($berta.environment == 'site' && $berta.settings.navigation.landingSectionMenuVisible=='yes') ||
+						$berta.environment == 'engine' ||
+						($berta.environment == 'site' && $berta.settings.navigation.landingSectionMenuVisible=='no' && $berta.sectionName != $berta.sections|@key)
+					)
+				}
 					<ul id="mainMenu">
 						{ assign var="firstSection" value="1" }
 						{ foreach from=$berta.publishedSections item="section" name="sectionsMenuLoop" }
@@ -92,6 +100,18 @@
 								{ else }
 									<a href="{ bertaLink section=$section.name }" target="{ bertaTarget section=$section.name }">{ $section.title }</a>
 								{ /if }
+
+								{ assign var="subName" value=$section.name }
+								{ if $berta.settings.pageLayout.responsive == 'yes' && !empty($berta.tags.$subName) }
+                                    <ul class="subMenu xSection-{ $subName }">
+                                        { foreach $berta.tags.$subName as $tName => $tag }
+                                            <li class="xTag-{ $tName }{ if $berta.tagName == $tName and $subName == $section.name } selected{ /if }">
+                                                <a class="handle" href="{ bertaLink section=$subName tag=$tName }" target="{ bertaTarget section=$subName tag=$tName }">{ $tag.title }</a>
+                                            </li>
+                                        { /foreach }
+                                    </ul>
+                                { /if }
+
 							</li>
 							{ assign var="firstSection" value="0" }
 						{ /foreach }
@@ -116,8 +136,6 @@
 
 				<br class="clear" />
 			</div>
-
-
 
 			<ol id="pageEntries" class="{ entriesListClasses }">
 
@@ -208,7 +226,6 @@
 	</div>
 
     { if $berta.settings.settings.showTutorialVideos == 'yes' && !$smarty.cookies._berta_videos_hidden }{ videoTutorials }{ /if }
-
 
 	{ include file="../_includes/inc.js_include.tpl" }
 
