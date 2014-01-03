@@ -537,6 +537,10 @@ h1 {
 			margin-bottom: 0.5em;
 		}
 
+		div#siteTopMenu ul#mainMenu li {
+			line-height: 2em;
+		}
+
 		div#siteTopMenu ul li ul.subMenu {
 			display: block;
 			margin-left: 1em;

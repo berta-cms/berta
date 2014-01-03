@@ -1000,7 +1000,7 @@ ul#pageEntries {
 	.xEntryHover { }
 
 		.xEntryEditWrap {
-
+			position: relative;
 		}
 		.xEntryHover .xEntryEditWrap {
 
