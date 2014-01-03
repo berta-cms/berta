@@ -779,23 +779,10 @@ nav ul{
 		position: relative !important;
 	}
 
-	/* temporary fix - need better solution in javascript */
-	#bottom {
-		position: relative !important;
-		top: 0 !important;
-		bottom: 0 !important;
-		left: 0 !important;
-		width: auto !important;
-	}
-
 
 
 	/* small tablet */
 	@media (max-width: 767px)  {
-
-		nav {
-			/*display: none;*/
-		}
 
 		#menuToggle {
 			display: inline-block;

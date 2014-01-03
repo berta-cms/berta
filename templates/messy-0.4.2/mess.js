@@ -29,6 +29,8 @@ var MessyMess = new Class({
 
 	onDOMReady: function() {
 
+        var that = this;
+
         this.isResponsive = $$('.xResponsive').length;
 
 		// Berta Background
@@ -90,13 +92,9 @@ var MessyMess = new Class({
         if(Cookie.read('_berta_grid_view'))
             Cookie.dispose('_berta_grid_view');
 
-
         var el = document.getElementById('allContainer');
 
-
-        this.copyrightStickToBottom.delay(1000);
-        window.addEvent('resize', this.copyrightStickToBottom.bindWithEvent(this));
-
+        setInterval(function(){that.copyrightStickToBottom()},1000);
 
 		var messyItems = $$('.mess');
 
