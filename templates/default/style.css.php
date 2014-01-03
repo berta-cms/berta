@@ -454,6 +454,7 @@ h1 {
 		width: 1.5em;
 		height: auto;
 		padding: 1.5em 1em;
+		margin-bottom: 0.5em;
 		border: 1px solid black;
 		background-color: black;
 	}
