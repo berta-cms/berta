@@ -429,6 +429,17 @@ h1 {
 		z-index: 3000;
 	}
 
+	.iframeWrapper  {
+		position: relative;
+		padding-bottom: 56.25%;
+	}
+
+	.iframeWrapper iframe {
+		position: absolute;
+		width: 100%;
+		height: 100% !important;
+	}
+
 <?php if( $isResponsive ){ ?>
 
 	img,

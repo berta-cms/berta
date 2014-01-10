@@ -27,6 +27,7 @@
         </style>
     {/if}
 	{ googleWebFontsAPI }
+	<script type="text/javascript" src="{ $berta.options.TEMPLATES_ABS_ROOT }{ $berta.templateName }/default.js?{$berta.options.int_version}"></script>
 </head>
 
 <body>
