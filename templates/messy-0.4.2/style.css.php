@@ -771,6 +771,32 @@ nav ul{
 		margin: 10px;
 	}
 
+	<?php if($s->get('pageLayout', 'centeredContents') == 'yes') { ?>
+
+		#allContainer {
+			text-align: center;
+		}
+
+		nav {
+			text-align: center;
+		}
+
+		nav ul li {
+			margin-left: 5px;
+			margin-right: 5px;
+		}
+
+		#menuToggle span, #menuToggle span:before, #menuToggle span:after {
+			text-align: left;
+		}
+
+		#pageEntries .xEntry,
+		#pageEntries .xEntry .xGalleryType-slideshow .xGallery {
+			margin: 0 auto;
+		}
+
+	<?php } ?>
+
 	/* helpers */
 	.vjs-poster {
 		position: absolute;

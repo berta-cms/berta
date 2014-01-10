@@ -68,6 +68,7 @@ $templateConf = array(
 
 		'group_responsive' => array('format' => false, 'default' => false, 'title' => '<h3>'.I18n::_('Resposive design').'</h3>'),
 		'responsive' =>	array('format' => 'select', 'default' => 'no', 'values' => array('no', 'yes'), 'title' => I18n::_('Enabled'), 'description' => I18n::_('Sets whether layout should be responsive or not.')),
+		'centeredContents' => array('format' => 'select', 'default' => 'no', 'values' => array('no', 'yes'), 'title' => I18n::_('Centered contents'), 'description' => I18n::_('Page heading, menu items and section entries is horizontally centered to window.')),
 		'headingMargin' =>	array('format' => 'text', 'default' => '20px 10px',	'title' => I18n::_('Heading margin'),	'description' => I18n::_('Margin around page heading or logo. Please see the short CSS guide at the bottom of this page.')),
 		'menuMargin' =>	array('format' => 'text', 'default' => '20px 10px',	'title' => I18n::_('Menu margin'),	'description' => I18n::_('Margin around menu. Please see the short CSS guide at the bottom of this page.')),
 	),
