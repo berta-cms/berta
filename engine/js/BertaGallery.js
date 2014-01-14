@@ -37,6 +37,7 @@ var BertaGallery = new Class({
 
 	numFinishedLoading: 0,
 
+	is_touch_device: 'ontouchstart' in document.documentElement,
 	isResponsive: false,
 
 	initialize: function(container, options) {
@@ -139,7 +140,7 @@ var BertaGallery = new Class({
 				}
 
 				if(this.type == 'link') {
-					if(!this.getNext()) {
+					if(!this.getNext() || this.is_touch_device) {
 						var topImg = this.imageContainer.getFirst('.xGalleryItem');
 						var linkHref = this.container.getClassStoredValue('xGalleryLinkAddress');
 						var linkTarget = this.container.getClassStoredValue('xGalleryLinkTarget');
