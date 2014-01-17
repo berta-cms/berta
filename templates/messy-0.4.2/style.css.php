@@ -798,7 +798,8 @@ nav ul{
 
 		#pageEntries .xEntry,
 		#pageEntries .xEntry .xGalleryContainer .xGallery,
-		#pageEntries .xEntry .xGalleryType-slideshow .xGallery {
+		#pageEntries .xEntry .xGalleryType-slideshow .xGallery,
+		#pageEntries .xEntry .xGalleryContainer .xGallery .xGalleryItem {
 			margin: 0 auto;
 		}
 
