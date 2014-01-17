@@ -597,6 +597,8 @@ nav ul{
 
 .iframeWrapper iframe {
 	position: absolute;
+	top: 0;
+	left: 0;
 	width: 100%;
 	height: 100% !important;
 }
@@ -790,9 +792,18 @@ nav ul{
 			text-align: left;
 		}
 
+		.menuItem li {
+			text-align: left;
+		}
+
 		#pageEntries .xEntry,
 		#pageEntries .xEntry .xGalleryType-slideshow .xGallery {
 			margin: 0 auto;
+		}
+
+		#pageEntries .xEntry .xGalleryContainer ul.xGalleryNav li {
+			float: none;
+			display: inline-block;
 		}
 
 	<?php } ?>
