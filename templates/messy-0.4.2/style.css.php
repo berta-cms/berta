@@ -844,6 +844,12 @@ nav ul{
 			float: none;
 			width: 100%;
 		}
+
+		<?php if($s->get('pageLayout', 'centeredContents') == 'yes') { ?>
+			.menuItem li {
+				text-align: center;
+			}
+		<?php } ?>
 	}
 
 <?php } ?>
