@@ -810,6 +810,8 @@ DOC;
 			$shopItem = '';
 		}
 
+		$m8 = I18n::_('multisite');
+
 		$m1Class = $selectedSection == 'site' ? ' class="selected"' : '';
 		$m2Class = $selectedSection == 'sections' ? ' class="selected"' : '';
 		$m3Class = $selectedSection == 'settings' ? ' class="selected"' : '';
@@ -818,6 +820,8 @@ DOC;
 
 		$m5_link=self::$options['HOSTING_PROFILE'] ? self::$options['HOSTING_PROFILE'] : 'profile.php';
 		$m5_target=self::$options['HOSTING_PROFILE'] ? '_blank' : '_self';
+
+		$m8Class = $selectedSection == 'multisite' ? ' class="selected"' : '';
 
 		$helpdeskItem = self::$options['HOSTING_PROFILE'] ? '<li><a href="http://support.berta.me" target="_blank">helpdesk</a></li><li>|</li>' : '';
 
@@ -828,6 +832,7 @@ DOC;
 					<ul id="xEditorMenu">
 						<li id="xTopPanelSlideOut"><span title="hide menu">▲</span></li>
 						<li$m1Class id="xMySite"><a href=".">$m1</a></li><li>|</li>
+						<li$m8Class id="xMultisite"><a href="multisite.php">$m8</a></li><li>|</li>
 						<li$m2Class id="xSections"><a href="sections.php">$m2</a></li><li>|</li>
 						$shopItem
 						<li$m3Class id="xSettings"><a href="settings.php">$m3</a></li><li>|</li>

@@ -2162,6 +2162,12 @@ body.xSettingsPageBody {
 			-moz-opacity: 1;
 		}
 
+
+#xMultisiteEditor {
+	width: 960px;
+	clear: both;
+}
+
 .xGuideLine {
 	position: absolute;
 	background-color: #4affff;
