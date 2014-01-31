@@ -62,6 +62,8 @@ $options['TEMPLATES_FULL_SERVER_PATH'] = realpath($SITE_ROOT . 'templates') . '/
  * Writable folders
  */
 
+$options['XML_MAIN_ROOT'] = $SITE_ROOT . 'storage/';
+
 $options['XML_ROOT'] = $SITE_ROOT . 'storage/';
 $options['MEDIA_FOLDER_NAME'] = 'media';
 $options['MEDIA_ROOT'] = $SITE_ROOT . 'storage/' . $options['MEDIA_FOLDER_NAME'] . '/';
@@ -94,6 +96,7 @@ $options['NOINDEX'] = isset($hostingConfigBerta['noindex']) && ( $hostingConfigB
  * File name templates
  */
 
+$options['sites.xml'] = 'sites.xml';
 $options['settings.xml'] = 'settings.xml';
 $options['settings.%.xml'] = 'settings.%.xml';
 $options['sections.xml'] = 'sections.xml';
