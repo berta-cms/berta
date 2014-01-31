@@ -5,7 +5,10 @@ include('inc.page.php');
 $loggedIn = $berta->security->userLoggedIn;
 include_once $ENGINE_ROOT . '_classes/class.bertaeditor.php';
 
-// $allSections = BertaContent::getSections();
+$allSites = BertaContent::getSites();
+
+// var_dump($allSites);
+
 $topPanelHTML = BertaEditor::getTopPanelHTML('multisite');
 
 ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -32,7 +35,33 @@ $topPanelHTML = BertaEditor::getTopPanelHTML('multisite');
 		<div id="contentContainer">
 			<h1><?php echo I18n::_('Multisite') ?></h1>
 			<div id="xMultisiteEditor">
-				<p>...</p>
+				<div class="listHead">
+					<div class="csHandle">&nbsp;</div>
+					<div class="csName"><?php echo I18n::_('Site name') ?></div>
+					<div class="csLinkAddress"><?php echo I18n::_('Link address') ?></div>
+					<div class="csPub"><?php echo I18n::_('Is published?') ?></div>
+					<div class="csClone"><?php echo I18n::_('Clone') ?></div>
+					<div class="csDelete"><?php echo I18n::_('Delete') ?></div>
+					<br class="clear" />
+				</div>
+				<ul>
+					<li>1</li>
+					<li>2</li>
+					<li>3</li>
+				</ul>
+				<br class="clear" />
+				<a id="xCreateNewSite" class="xPanel" href="#" class="xAction-siteCreateNew"><span><?php echo I18n::_('create new site') ?></span></a>
+				<br class="clear" />
+				<hr />
+
+				<div class="entry">
+					<div class="caption"><?php echo I18n::_('What are multisites?') ?></div>
+					<div class="value value-long">
+						<?php echo I18n::_('sites_help_text') ?>
+					</div>
+				</div>
+				<br class="clear" />
+				<p>&nbsp;</p>
 			</div>
 		</div>
 	</div>

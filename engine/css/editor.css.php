@@ -2163,10 +2163,89 @@ body.xSettingsPageBody {
 		}
 
 
-#xMultisiteEditor {
-	width: 960px;
-	clear: both;
-}
+
+	#xMultisiteEditor {
+		width: 960px;
+		clear: both;
+	}
+
+		#xMultisiteEditor ul {
+			list-style: none;
+			margin: 0;
+			padding: 0;
+		}
+			#xMultisiteEditor ul li {
+				clear: both;
+				padding: 10px 0 0;
+			}
+				#xMultisiteEditor ul li > div {
+					min-height: 1px;
+				}
+
+		#xMultisiteEditor .listHead {
+			font-weight: bold;
+			padding: 0 0 3px;
+			margin: 0 0 0px;
+			border-bottom: 1px solid #ccc;
+		}
+
+		#xMultisiteEditor ul, #xMultisiteEditor .listHead {
+			width: 100%;
+		}
+			#xMultisiteEditor li div, #xMultisiteEditor .listHead div {
+				float: left;
+				margin-right: 10px;
+			}
+
+		#xMultisiteEditor ul>li:first-child { font-weight: bold; }
+
+		#xMultisiteEditor .csHandle { width: 30px; }
+			#xMultisiteEditor .csHandle .handle {
+				display: block;
+				width: 18px;
+				height: 18px;
+				background: url('../layout/grab.gif') no-repeat;
+				cursor: move;
+			}
+			#xMultisiteEditor ul.xSaving .csHandle .handle { visibility: hidden !important; }
+			#xMultisiteEditor .csName { width: 200px; }
+			#xMultisiteEditor .csLinkAddress { width: 380px; }
+			#xMultisiteEditor .csPub { width: 100px; }
+			#xMultisiteEditor .csClone { width: 50px; text-align: right; }
+			#xMultisiteEditor .csClone a { color: blue; }
+
+			#xMultisiteEditor .csDelete { width: 50px; text-align: right; }
+			#xMultisiteEditor .csDelete a { color: #f00; }
+
+			#xMultisiteEditor ul.xSaving .csClone a,
+			#xMultisiteEditor ul.xSaving .csDelete a { visibility: hidden !important; }
+
+		a#xCreateNewSite {
+			display: block;
+			clear: both;
+			height: 18px;
+			margin: 15px 0 0;
+			padding: 3px 3px 3px 0;
+			background: url('../layout/dashed-line.gif') repeat-x 50% 55%;
+			-moz-border-radius: 5px;
+			-webkit-border-radius: 5px;
+			border-radius: 5px;
+			-moz-opacity: 0.4;
+		}
+			a#xCreateNewSite span {
+				display: block;
+				/*float: left;*/
+				width: 120px;
+				padding: 0 3px 0;
+				margin: 0 auto 0;
+				background-color: #fff;
+				text-align: center;
+			}
+		a#xCreateNewSite:hover {
+			-moz-opacity: 1;
+		}
+
+
 
 .xGuideLine {
 	position: absolute;

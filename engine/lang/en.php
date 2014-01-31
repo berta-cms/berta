@@ -8,10 +8,11 @@ return array(
 	'units_help_text' => 'Valid units for any numerical value are:<br /><strong>px</strong> - pixels. Example: <em>10px</em>. By using just numbers value WILL NOT change.<br /><strong>em</strong> - 1em = one length of letter M in the font used. Example: <em>1em</em><br /><strong>%</strong> - percent of the font size or percent of the dimensions of the container element (e.g. the page etc.)',
 
 	'sections_help_text' => 'Sections are main divisions in your site. Think of them as containers for your content. They appear as menu items in the main menu. ',
+	'sites_help_text' => 'Multisites are fully functional and independent websites. You can use multiple sites to create your Berta website multilingual.',
 	'external_link_help_text' => 'If you want any of the items in your main menu to lead the visitor somewhere else than your site, specify the external link. It can be an email link (e.g., <em>mailto:sombeody@someplace.net</em>) or a link to another website (e.g. <em>http://www.example.com</em>).',
 
 	'password_help_text' => 'Password must be at least 6 characters long<br /> and containing alphanumeric (A-Z, a-z, 0-9) characters.',
-	
+
 	'welcome_text__not_installed' => '<h2>Thank you for choosing Berta!</h2>
 		   <p>Berta is not set up.<br />Please <a href="./engine/">log in</a> and follow the set up procedure.</p>',
 
