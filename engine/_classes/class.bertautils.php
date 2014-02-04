@@ -461,5 +461,32 @@ class BertaUtils extends BertaBase {
 		}
 	}
 
+	//deletes dir recursively
+	public static function delFolder($dir) {
+		$files = array_diff(scandir($dir), array('.','..'));
+		foreach ($files as $file) {
+			(is_dir("$dir/$file") && !is_link($dir)) ? self::delFolder("$dir/$file") : unlink("$dir/$file");
+		}
+		return rmdir($dir);
+	}
+
+	//copy dir recursively
+	public static function copyFolder($src, $dst) {
+	    $dir = opendir($src);
+	    @mkdir($dst);
+	    while(false !== ( $file = readdir($dir)) ) {
+	        if (( $file != '.' ) && ( $file != '..' )) {
+	            if ( is_dir($src . '/' . $file) ) {
+	            	if ($file != '-sites') {
+	                	self::copyFolder($src . '/' . $file, $dst . '/' . $file);
+	                }
+	            } else {
+	                copy($src . '/' . $file,$dst . '/' . $file);
+	            }
+	        }
+	    }
+	    closedir($dir);
+	}
+
 }
 ?>

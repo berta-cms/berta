@@ -10,6 +10,7 @@ include_once('_classes/Zend/Json.php');
 include_once('_classes/class.array_xml.php');
 include_once('_classes/class.bertaeditor.php');
 
+$site = !empty($_REQUEST['site']) ? $_REQUEST['site'] : false;
 $section = !empty($_REQUEST['section']) ? $_REQUEST['section'] : false;
 $entry = !empty($_REQUEST['entry']) ? $_REQUEST['entry'] : false;
 $property = !empty($_REQUEST['property']) ? $_REQUEST['property'] : false;
@@ -104,8 +105,11 @@ if($jsonRequest) {
 	// update the blog or settings ---------------------------------------------------------------------------------
 	if(!$returnError) {
 		$allowFormatModifier = false;
-		if(!empty($decoded['section'])) {	// the property is for for the blog
 
+		if(!empty($decoded['site']) || $decoded['site']!==null) {	// for multisite
+			include 'update/inc.update.sites_editor.php';
+		}
+		elseif(!empty($decoded['section'])) {	// the property is for for the blog
 
 			if(!empty($decoded['entry'])) {	// the property belongs to an entry
 				$blog = BertaEditor::loadBlog($decoded['section']);

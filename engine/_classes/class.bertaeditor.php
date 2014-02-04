@@ -1,8 +1,39 @@
 <?php
-
-
-
 class BertaEditor extends BertaContent {
+
+	public static function saveSites($sites) {
+		if(!file_exists(self::$options['XML_SITES_ROOT'])) {
+			@mkdir(self::$options['XML_SITES_ROOT'], 0777);
+			@chmod(self::$options['XML_SITES_ROOT'], 0777);
+		}
+		$sitesToSave = array('site' => array());
+		foreach($sites as $s) $sitesToSave['site'][] = $s;
+
+		Array_XML::addCDATA($sitesToSave);
+		if($xml = Array_XML::array2xml($sitesToSave, 'sites')) {
+			$fileName = self::$options['XML_SITES_ROOT'] . self::$options['sites.xml'];
+			file_put_contents($fileName, $xml);
+			@chmod($fileName, 0666);
+			return true;
+		}
+	}
+
+
+	public static function deleteSite($siteName) {
+
+		//delete storage files and folders
+		$dir = self::$options['XML_SITES_ROOT'] . $siteName;
+		BertaUtils::delFolder($dir);
+
+		// delete from XML
+		$sitesList = BertaEditor::getSites();
+
+		if(isset($sitesList[$siteName])) unset($sitesList[$siteName]);
+
+		BertaEditor::saveSites($sitesList);
+
+		return true;
+	}
 
 	public static function getSectionMediafolder($sName) {
 		$mediaRoot = self::$options['MEDIA_ROOT'];

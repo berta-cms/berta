@@ -37,17 +37,37 @@ $topPanelHTML = BertaEditor::getTopPanelHTML('multisite');
 			<div id="xMultisiteEditor">
 				<div class="listHead">
 					<div class="csHandle">&nbsp;</div>
-					<div class="csName"><?php echo I18n::_('Site name') ?></div>
-					<div class="csLinkAddress"><?php echo I18n::_('Link address') ?></div>
+					<div class="csTitle"><?php echo I18n::_('Site title') ?></div>
+					<div class="csName"><?php echo I18n::_('Link address') ?></div>
 					<div class="csPub"><?php echo I18n::_('Is published?') ?></div>
 					<div class="csClone"><?php echo I18n::_('Clone') ?></div>
 					<div class="csDelete"><?php echo I18n::_('Delete') ?></div>
 					<br class="clear" />
 				</div>
 				<ul>
-					<li>1</li>
-					<li>2</li>
-					<li>3</li>
+					<?php
+					foreach($allSites as $sN => $s) {
+						echo '<li class="xSite-' . $sN . '">';
+						echo '<div class="csHandle"><span class="handle"></span></div>';
+						echo '<div class="csTitle"><span class="' . $xEditSelectorSimple . ' xProperty-title xNoHTMLEntities xSite-' . $sN . ' xSiteField">' . (!empty($s['title']['value']) ? htmlspecialchars($s['title']['value']) : '') . '</span></div>';
+						if ($sN) {
+							echo '<div class="csName">'.$options['SITE_HOST_ADDRESS'].$options['SITE_ABS_ROOT'].'<span class="' . $xEditSelectorSimple . ' xProperty-name xNoHTMLEntities xSite-' . $sN . ' xSiteField">' . (!empty($s['name']['value']) ? htmlspecialchars($s['name']['value']) : '') . '</span></div>';
+							echo '<div class="csPub"><span class="' . $xEditSelectorYesNo . ' xProperty-published xSite-' . $sN . ' xSiteField">' . (!empty($s['@attributes']['published']) ? '1' : '0') . '</span></div>';
+						}else{
+							echo '<div class="csName"><span>'.$options['SITE_HOST_ADDRESS'].$options['SITE_ABS_ROOT'].'</span></div>';
+							echo '<div class="csPub"><span>-</span></div>';
+						}
+
+						echo '<div class="csClone"><a href="#" class="xSiteClone">'.I18n::_('clone').'</a></div>';
+
+						if ($sN) {
+							echo '<div class="csDelete"><a href="#" class="xSiteDelete">'.I18n::_('delete').'</a></div>';
+						}else{
+							echo '<div class="csDelete">-</div>';
+						}
+						echo '</li>';
+					}
+					?>
 				</ul>
 				<br class="clear" />
 				<a id="xCreateNewSite" class="xPanel" href="#" class="xAction-siteCreateNew"><span><?php echo I18n::_('create new site') ?></span></a>

@@ -2197,8 +2197,6 @@ body.xSettingsPageBody {
 				margin-right: 10px;
 			}
 
-		#xMultisiteEditor ul>li:first-child { font-weight: bold; }
-
 		#xMultisiteEditor .csHandle { width: 30px; }
 			#xMultisiteEditor .csHandle .handle {
 				display: block;
@@ -2208,8 +2206,9 @@ body.xSettingsPageBody {
 				cursor: move;
 			}
 			#xMultisiteEditor ul.xSaving .csHandle .handle { visibility: hidden !important; }
-			#xMultisiteEditor .csName { width: 200px; }
-			#xMultisiteEditor .csLinkAddress { width: 380px; }
+			#xMultisiteEditor .csTitle { width: 200px; }
+			#xMultisiteEditor .csName { width: 380px; }
+			#xMultisiteEditor .csName input { width: 50% !important }
 			#xMultisiteEditor .csPub { width: 100px; }
 			#xMultisiteEditor .csClone { width: 50px; text-align: right; }
 			#xMultisiteEditor .csClone a { color: blue; }
