@@ -841,7 +841,12 @@ var BertaEditorBase = new Class({
 			new Request.JSON({
 				url: this.options.updateUrl,
 				data: "json=" + JSON.encode({
-					section: entryInfo.section, entry: entryInfo.entryId, property: property, params: editorParams, value: newContent ? this.escapeForJSON(newContent) : null,
+					site: entryInfo.site,
+					section: entryInfo.section,
+					entry: entryInfo.entryId,
+					property: property,
+					params: editorParams,
+					value: newContent ? this.escapeForJSON(newContent) : null,
 					action: action,
 					before: this.escapeForJSON(el.get('old_content') ? el.get('old_content') : oldContent),
 					before_real: this.escapeForJSON(el.get('title') ? el.get('title') : oldContent),
@@ -1171,6 +1176,8 @@ var BertaEditorBase = new Class({
 
 	getEntryInfoForElement:function(el) {
 		var retObj = {};
+
+		retObj.site = el.getClassStoredValue('xSite');
 
 		retObj.entryObj = el.getClassStoredValue('xEntryId') ? el : el.getParent('.xEntry');
 		retObj.listObj = el.getClassStoredValue('xSection') ? el : el.getParent('.xEntriesList');

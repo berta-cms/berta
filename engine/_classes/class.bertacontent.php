@@ -6,7 +6,7 @@ class BertaContent extends BertaBase {
 	public static function getSites() {
 		$sArr = array();
 
-		$xmlFile = self::$options['XML_MAIN_ROOT'] . self::$options['sites.xml'];
+		$xmlFile = self::$options['XML_SITES_ROOT'] . self::$options['sites.xml'];
 
 		if (file_exists($xmlFile)) {
 			$xmlStr = file_get_contents($xmlFile);
@@ -16,11 +16,23 @@ class BertaContent extends BertaBase {
 				if(isset($xmlFeed['site']) && is_array($xmlFeed['site'])) {
 					Array_XML::makeListIfNotList($xmlFeed['site']);
 					foreach($xmlFeed['site'] as $s) {
-						if(!empty($s['name']['value']) && trim($s['name']['value']) != '')
+						if(!empty($s['name']['value']) && trim($s['name']['value']) != '') {
 							$sArr[trim($s['name']['value'])] = $s;
+						}else{
+							$sArr[] = $s;
+						}
 					}
 				}
 			}
+		//create main site element if no XML exists
+		}else{
+
+			$sArr[] = array(
+				'@attributes' => array('published'=>1),
+				'name' => NULL,
+				'title' => array('value' => 'Main site')
+			);
+
 		}
 		return $sArr;
 	}

@@ -63,6 +63,8 @@ $options['TEMPLATES_FULL_SERVER_PATH'] = realpath($SITE_ROOT . 'templates') . '/
  */
 
 $options['XML_MAIN_ROOT'] = $SITE_ROOT . 'storage/';
+$options['XML_SITES_ROOT'] = $SITE_ROOT . 'storage/-sites/';
+
 
 $options['XML_ROOT'] = $SITE_ROOT . 'storage/';
 $options['MEDIA_FOLDER_NAME'] = 'media';
