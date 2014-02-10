@@ -22,8 +22,6 @@ if($berta->security->userLoggedIn) {
 
 
 
-
-
 // ------------------------------------------------------------------------------------------------------------------------------
 //  GPC variables   -------------------------------------------------------------------------------------------------------------
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -36,8 +34,12 @@ if($berta->apacheRewriteUsed) {
 	$urlStr = $_SERVER['REQUEST_URI'];
 	if(strpos($urlStr, $SITE_ABS_ROOT) === 0) $urlStr = substr($urlStr, strlen($SITE_ABS_ROOT) - 1);
 	$cU->parseURL($urlStr);
-	//print_r($cU->getParts());
-	$cU->setParts('sectionName', 'tagName');
+
+	if (!empty($options['MULTISITE'])) {
+		$cU->setParts('site', 'sectionName', 'tagName');
+	}else{
+		$cU->setParts('sectionName', 'tagName');
+	}
 	$querySectionName = $sectionName;
 } else {
 	$urlStr = $_SERVER['REQUEST_URI'];
@@ -81,9 +83,3 @@ echo $html;
 
 //$t->point("html written");
 //echo '<br class="clear" />'; $t->report();
-
-
-
-
-
-

@@ -45,6 +45,20 @@ $options['SITE_ABS_ROOT'] = $SITE_ABS_ROOT;	// $SITE_ABS_ROOT is defined in inc.
 $options['SITE_HOST_ADDRESS'] = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 'https' : 'http') .
                                     '://' . $_SERVER['HTTP_HOST'];
 
+/**
+ * File name templates
+ */
+$options['sites.xml'] = 'sites.xml';
+$options['settings.xml'] = 'settings.xml';
+$options['settings.%.xml'] = 'settings.%.xml';
+$options['sections.xml'] = 'sections.xml';
+$options['tags.xml'] = 'tags.xml';
+$options['cache.tags.%.xml'] = 'cache.tags.%.xml';
+$options['blog.%.xml'] = 'blog.%.xml';
+
+$options['tags'] = array();
+$options['tags']['all_value'] = 'a181a603769c1f98ad927e7367c7aa51';
+
 
 /**
  * System folders
@@ -65,16 +79,28 @@ $options['TEMPLATES_FULL_SERVER_PATH'] = realpath($SITE_ROOT . 'templates') . '/
 $options['XML_MAIN_ROOT'] = $SITE_ROOT . 'storage/';
 $options['XML_SITES_ROOT'] = $SITE_ROOT . 'storage/-sites/';
 
+$options['MULTISITES'] = BertaContent::getSites(!$INDEX_INCLUDED);
+$options['MULTISITE'] = BertaContent::getSite($options);
 
-$options['XML_ROOT'] = $SITE_ROOT . 'storage/';
 $options['MEDIA_FOLDER_NAME'] = 'media';
-$options['MEDIA_ROOT'] = $SITE_ROOT . 'storage/' . $options['MEDIA_FOLDER_NAME'] . '/';
-$options['MEDIA_TEMP_ROOT'] = $SITE_ROOT . 'storage/media/';
-$options['CACHE_ROOT'] = $SITE_ROOT . 'storage/cache/';
+
+if( !empty($options['MULTISITE']) ) {
+	$options['XML_ROOT'] = $options['XML_SITES_ROOT'] . $options['MULTISITE'] . '/';
+	$options['MEDIA_ROOT'] = $options['XML_ROOT'] . $options['MEDIA_FOLDER_NAME'] . '/';
+	$options['MEDIA_TEMP_ROOT'] = $options['MEDIA_ROOT'];
+	$options['CACHE_ROOT'] = $options['XML_ROOT'] . 'cache/';
+	$options['MEDIA_ABS_ROOT'] = $options['SITE_ABS_ROOT'] . 'storage/-sites/' . $options['MULTISITE'] . '/media/';
+	$options['CACHE_ABS_ROOT'] = $options['SITE_ABS_ROOT'] . 'storage/-sites/' . $options['MULTISITE'] . '/cache/';
+}else{
+	$options['XML_ROOT'] = $SITE_ROOT . 'storage/';
+	$options['MEDIA_ROOT'] = $SITE_ROOT . 'storage/' . $options['MEDIA_FOLDER_NAME'] . '/';
+	$options['MEDIA_TEMP_ROOT'] = $options['MEDIA_ROOT'];
+	$options['CACHE_ROOT'] = $SITE_ROOT . 'storage/cache/';
+	$options['MEDIA_ABS_ROOT'] = $options['SITE_ABS_ROOT'] . 'storage/media/';
+	$options['CACHE_ABS_ROOT'] = $options['SITE_ABS_ROOT'] . 'storage/cache/';
+}
 
 $options['ENGINE_ABS_ROOT'] = $ENGINE_ABS_ROOT; // this is defined in inc.page.php that includes this preferences file
-$options['MEDIA_ABS_ROOT'] = $options['SITE_ABS_ROOT'] . 'storage/media/';
-$options['CACHE_ABS_ROOT'] = $options['SITE_ABS_ROOT'] . 'storage/cache/';
 
 
 /**
@@ -94,22 +120,6 @@ if (file_exists($ENGINE_ROOT.'hosting_config')){
 }
 $options['NOINDEX'] = isset($hostingConfigBerta['noindex']) && ( $hostingConfigBerta['noindex'] === $_SERVER['HTTP_HOST'] || 'www.'.$hostingConfigBerta['noindex'] === $_SERVER['HTTP_HOST'] );
 
-/**
- * File name templates
- */
-
-$options['sites.xml'] = 'sites.xml';
-$options['settings.xml'] = 'settings.xml';
-$options['settings.%.xml'] = 'settings.%.xml';
-$options['sections.xml'] = 'sections.xml';
-$options['tags.xml'] = 'tags.xml';
-$options['cache.tags.%.xml'] = 'cache.tags.%.xml';
-$options['blog.%.xml'] = 'blog.%.xml';
-
-$options['tags'] = array();
-$options['tags']['all_value'] = 'a181a603769c1f98ad927e7367c7aa51';
-
-
 
 // if hosted on HIP, need to show "hosted on HIP"
 //$options['hip_ipaddr'] = array('85.31.99.218', '85.31.102.201');
@@ -122,7 +132,6 @@ $options['remote_update_uri'] = array(
 );
 foreach($options['hip_ipaddr'] as $ip)
 	$options['remote_update_uri'][] = 'http://' . $ip . '/berta-remote/news_ticker_videos_update.php';
-
 
 
 // thumbnail size for editor layout
@@ -145,10 +154,6 @@ $options['images']['medium_height'] = 400;
 
 $options['images']['large_width'] = 600;
 $options['images']['large_height'] = 600;
-
-
-
-
 
 
 /**
@@ -177,15 +182,4 @@ $editsForSettings = array('text' => $xEditSelectorSimple,
 						  'icon' => $xEditSelectorICO,
 						  'select' => $xEditSelectorSelectRC,
 					 	  'fontselect' => $xEditSelectorFontSelect);
-
-
-
-
-
-
-
-
-
-
-
 ?>

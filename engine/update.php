@@ -106,7 +106,7 @@ if($jsonRequest) {
 	if(!$returnError) {
 		$allowFormatModifier = false;
 
-		if(!empty($decoded['site']) || $decoded['site']!==null) {	// for multisite
+		if( isset($decoded['site']) && (!empty($decoded['site']) || $decoded['site']!==null) ) {	// for multisite
 			include 'update/inc.update.sites_editor.php';
 		}
 		elseif(!empty($decoded['section'])) {	// the property is for for the blog
