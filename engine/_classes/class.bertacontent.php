@@ -3,7 +3,7 @@
 
 class BertaContent extends BertaBase {
 
-	public static function getSites() {
+	public static function getSites($published = true) {
 		$sArr = array();
 
 		$xmlFile = self::$options['XML_SITES_ROOT'] . self::$options['sites.xml'];
@@ -16,10 +16,12 @@ class BertaContent extends BertaBase {
 				if(isset($xmlFeed['site']) && is_array($xmlFeed['site'])) {
 					Array_XML::makeListIfNotList($xmlFeed['site']);
 					foreach($xmlFeed['site'] as $s) {
-						if(!empty($s['name']['value']) && trim($s['name']['value']) != '') {
-							$sArr[trim($s['name']['value'])] = $s;
-						}else{
-							$sArr[] = $s;
+						if( $published || (isset($s['@attributes']['published']) && $s['@attributes']['published']) ) {
+							if(!empty($s['name']['value']) && trim($s['name']['value']) != '') {
+								$sArr[trim($s['name']['value'])] = $s;
+							}else{
+								$sArr[] = $s;
+							}
 						}
 					}
 				}
@@ -37,6 +39,24 @@ class BertaContent extends BertaBase {
 		return $sArr;
 	}
 
+	public static function getSite($options) {
+		$site = '';
+		$apacheRewriteUsed = !empty($_REQUEST['__rewrite']);
+
+		if ($apacheRewriteUsed){
+			$urlStr = $_SERVER['REQUEST_URI'];
+			if(strpos($urlStr, $options['SITE_ABS_ROOT']) === 0) $urlStr = substr($urlStr, strlen($options['SITE_ABS_ROOT']) - 1);
+			$urlArr = explode('/', $urlStr);
+
+			if( isset($urlArr[1]) && array_key_exists($urlArr[1], $options['MULTISITES']) ) {
+				$site = $urlArr[1];
+			}
+		}elseif ( !empty($_REQUEST['site']) && array_key_exists($_REQUEST['site'], $options['MULTISITES']) ) {
+			$site = $_REQUEST['site'];
+		}
+
+		return $site;
+	}
 
 	public static function getSections() {
 		$sArr = array();

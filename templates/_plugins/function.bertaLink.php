@@ -9,7 +9,8 @@
  * -------------------------------------------------------------
  */
 function smarty_function_bertaLink($params, &$smarty) {
-	global $berta, $SITE_ABS_ROOT;
+	global $berta, $SITE_ABS_ROOT, $options;
+
 	$settings = $berta->template->settings;
 	$constructPrettyLink = $berta->apacheRewriteUsed && $berta->environment == 'site';
 	$alwaysSelectTag = $berta->settings->get('navigation', 'alwaysSelectTag') == 'yes';
@@ -27,8 +28,6 @@ function smarty_function_bertaLink($params, &$smarty) {
 	$sectionIsFirst = $params['section'] == reset($sectionKeys);
 	$sectionHasDirectContent = !empty($berta->sections[$params['section']]['@attributes']['has_direct_content']);
 
-	//$subSectionIsFirst = $hasSSComponent ? ($alwaysSelectTag && $params['tag'] == reset(array_keys($berta->tags[$params['section']]))) : true;
-
 	$subSectionIsFirst = true;
 	if ($hasSSComponent) {
 		$sectionTagsKeys = array_keys($berta->tags[$params['section']]);
@@ -36,6 +35,11 @@ function smarty_function_bertaLink($params, &$smarty) {
 	}
 
 	$link = array();
+
+	if (!empty($options['MULTISITE'])) {
+		$link[] = !$constructPrettyLink ? ('site=' . $options['MULTISITE']) : $options['MULTISITE'];
+	}
+
 	if(!empty($params['section'])) {
 		if(!$sectionIsFirst || $berta->environment == 'engine'
 			|| $sectionHasDirectContent && count($berta->tags[$params['section']]) > 0
@@ -48,7 +52,7 @@ function smarty_function_bertaLink($params, &$smarty) {
 			$link[] = !$constructPrettyLink ? ('tag=' . $params['tag']) : $params['tag'];
 		}
 	}
-	//if(!empty($params['tag'])) $link[] = 'tag=' . $params['tag'];
+
 	if($constructPrettyLink) {
 		return $SITE_ABS_ROOT . implode('/', $link) . ($link ? '/' : '');
 	} else {
