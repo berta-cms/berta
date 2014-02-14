@@ -10,7 +10,7 @@ class I18n extends BertaBase
 	{
 		$this->default_lang = self::$options['default_language'];
 	}
-	
+
 	public static function load_language($lang = null)
 	{
 		if($lang && file_exists(self::$options['ENGINE_ROOT'].'lang/'.$lang.'.php'))

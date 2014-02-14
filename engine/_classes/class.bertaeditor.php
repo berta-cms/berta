@@ -115,13 +115,7 @@ class BertaEditor extends BertaContent {
 	}
 
 
-
-
 	public static function saveBlog($sName, &$blog) {
-
-
-
-
 		if(empty($blog['@attributes'])) $blog['@attributes'] = array();
 		if(empty($blog['@attributes']['section'])) $blog['@attributes']['section'] = $sName;
 
@@ -137,11 +131,6 @@ class BertaEditor extends BertaContent {
 			return true;
 		}
 	}
-
-
-
-
-
 
 
 	public static function deleteEntry($entryId, &$blog) {
@@ -183,8 +172,6 @@ class BertaEditor extends BertaContent {
 			}
 		}
 	}
-
-
 
 
 	public static function saveTags($tags, $sectionsList = false) {
@@ -288,6 +275,7 @@ class BertaEditor extends BertaContent {
 		BertaEditor::saveSections($sectionsList);
 	}
 
+
 	public static function setUpdateTimesForAll(&$blog) {
 		if(!empty($blog['entry'])) {
 			foreach($blog['entry'] as $eId => $e) {
@@ -296,7 +284,6 @@ class BertaEditor extends BertaContent {
 			}
 		}
 	}
-
 
 
 	public static function updateImageCacheForSection(&$section) {
@@ -410,7 +397,6 @@ class BertaEditor extends BertaContent {
 
 		}
 	}
-
 
 
 	public static function updateImageCacheFor(&$blog, $entryId = false) {
@@ -530,6 +516,7 @@ class BertaEditor extends BertaContent {
 		}
 	}
 
+
 	public static function gatherMediaFilesIn($folderName) {
 
 		$imageExtensions = array('jpg', 'jpeg', 'jpe', 'gif', 'giff', 'png');
@@ -609,8 +596,6 @@ class BertaEditor extends BertaContent {
 	}
 
 
-
-
 	public static function images_getSmallThumbFor($imagePath) {
 		$fileName = basename($imagePath);
 		$dirName = dirname($imagePath);
@@ -626,6 +611,7 @@ class BertaEditor extends BertaContent {
 
 		return false;
 	}
+
 
 	public static function images_getBgImageFor($imagePath) {
 		$fileName = basename($imagePath);
@@ -645,37 +631,6 @@ class BertaEditor extends BertaContent {
 		return false;
 	}
 
-	/*public static function images_resampleIfNeeded($imagePath, $constraints, $widthOrig = null, $heightOrig = null) {
-		if(is_null($widthOrig) || is_null($heightOrig)) {
-			$imInfo = getimagesize($imagePath);
-			list($widthOrig, $heightOrig) = $imInfo;
-		}
-
-		$needsToBeResampled = !((!$constraints['max_width'] || $widthOrig <= $constraints['max_width']) &&
-		  					  (!$constraints['max_height'] || $heightOrig <= $constraints['max_height']));
-		if($needsToBeResampled) {
-			// Get new dimensions
-			$ratioOrig = $widthOrig/$heightOrig;
-
-			$width = $constraints['max_width'] ? $constraints['max_width'] : $widthOrig;
-			$height = $constraints['max_height'] ? $constraints['max_height'] : $heightOrig;
-			if ($width/$height > $ratioOrig) {
-			   $width = round($height*$ratioOrig);
-			} else {
-			   $height = round($width/$ratioOrig);
-			}
-
-			// check if needs resizing...
-			if((!$constraints['min_width'] || $width >= $constraints['min_width']) &&
-			   (!$constraints['min_height'] || $height >= $constraints['min_height'])) {
-
-				$needsToBeResampled = !BertaUtils::smart_resize_image($imagePath, $width, $height);
-				if(file_exists($imagePath)) chmod($imagePath, 0666);
-			}
-		}
-
-		return !$needsToBeResampled;
-	}*/
 
 	public static function images_deleteDerivatives($folder, $file = '') {
 		if($handle = opendir($folder)) {
@@ -696,12 +651,10 @@ class BertaEditor extends BertaContent {
 	}
 
 
-
-
-
 	public static function getXEmpty($property) {
 		return parent::getXEmpty($property);
 	}
+
 
 	public static function getBertaVideoLinks() {
 		if(!empty(self::$options['remote_update_uri']) && ini_get('allow_url_fopen')) {
@@ -788,16 +741,12 @@ DOC;
 		}
 	}
 
+
 	public static function getTopPanelHTML($selectedSection = 'site') {
 		global $shopEnabled;
 
-		// $tickerClass = !empty($_COOKIE['_berta_newsticker_hidden']) ? 'xHidden' : '';
-
+		$site = !empty($_REQUEST['site']) ? $_REQUEST['site'] : false;
 		$newsTickerContent = false;
-
-	//	$_SESSION['_berta_newsticker'] = false;				// for testing...
-		//$_SESSION['_berta_newsticker_numtries'] = 0;		// for testing...
-
 
 		if(!empty(self::$options['remote_update_uri'])) {
 			if(!empty($_SESSION['_berta_newsticker'])) {
@@ -821,10 +770,6 @@ DOC;
 			}
 		}
 
-		// if(!$newsTickerContent) {
-		// 	$tickerClass = 'xHidden';
-		// }
-
 		$m1 = I18n::_('my site');
 		$m2 = I18n::_('sections');
 		$m3 = I18n::_('settings');
@@ -836,7 +781,7 @@ DOC;
 			$m7 = I18n::_('shop');
 			$m7Class = $selectedSection == 'shop' ? ' class="selected"' : '';
 
-			$shopItem = '<li'.$m7Class.' id="xSections"><a href="shopsettings.php">'.$m7.'</a></li><li>|</li>';
+			$shopItem = '<li'.$m7Class.' id="xSections"><a href="shopsettings.php' . ($site ? '?site='.$site : '') . '">'.$m7.'</a></li><li>|</li>';
 		}else{
 			$shopItem = '';
 		}
@@ -848,6 +793,11 @@ DOC;
 		$m3Class = $selectedSection == 'settings' ? ' class="selected"' : '';
 		$m4Class = $selectedSection == 'template' ? ' class="selected"' : '';
 		$m5Class = $selectedSection == 'profile' ? ' class="selected"' : '';
+
+		$m1_link = $site ? '.?site='.$site : '.';
+		$m2_link = 'sections.php' . ($site ? '?site='.$site : '');
+		$m3_link = 'settings.php' . ($site ? '?site='.$site : '');
+		$m4_link = 'settings.php?mode=template' . ($site ? '&amp;site='.$site : '');
 
 		$m5_link=self::$options['HOSTING_PROFILE'] ? self::$options['HOSTING_PROFILE'] : 'profile.php';
 		$m5_target=self::$options['HOSTING_PROFILE'] ? '_blank' : '_self';
@@ -862,12 +812,12 @@ DOC;
 				<div id="xTopPanel">
 					<ul id="xEditorMenu">
 						<li id="xTopPanelSlideOut"><span title="hide menu">▲</span></li>
-						<li$m1Class id="xMySite"><a href=".">$m1</a></li><li>|</li>
+						<li$m1Class id="xMySite"><a href="$m1_link">$m1</a></li><li>|</li>
 						<li$m8Class id="xMultisite"><a href="multisite.php">$m8</a></li><li>|</li>
-						<li$m2Class id="xSections"><a href="sections.php">$m2</a></li><li>|</li>
+						<li$m2Class id="xSections"><a href="$m2_link">$m2</a></li><li>|</li>
 						$shopItem
-						<li$m3Class id="xSettings"><a href="settings.php">$m3</a></li><li>|</li>
-						<li$m4Class id="xTemplateDesign"><a href="settings.php?mode=template">$m4</a></li><li>|</li>
+						<li$m3Class id="xSettings"><a href="$m3_link">$m3</a></li><li>|</li>
+						<li$m4Class id="xTemplateDesign"><a href="$m4_link">$m4</a></li><li>|</li>
 						<li$m5Class><a href="$m5_link" target="$m5_target">$m5</a></li><li>|</li>
 						$helpdeskItem
 						<li><a href="logout.php">$m6</a></li>
@@ -892,6 +842,7 @@ DOC;
 
 		return $str;
 	}
+
 
 	public static function getSettingsItemEditHTML($property, $sDef, $value, $additionalParams = null, $tag = 'div') {
 		global $editsForSettings;
@@ -936,10 +887,5 @@ DOC;
 
 
 }
-
-
-
-
-
 
 ?>

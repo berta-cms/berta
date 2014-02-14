@@ -35,9 +35,16 @@ function smarty_function_bertaLink($params, &$smarty) {
 	}
 
 	$link = array();
+	$site = '';
 
-	if (!empty($options['MULTISITE'])) {
-		$link[] = !$constructPrettyLink ? ('site=' . $options['MULTISITE']) : $options['MULTISITE'];
+	if ( isset($params['site']) && $params['site']!=='0' ) {
+		$site = $params['site'];
+	}elseif( !empty($options['MULTISITE']) ){
+		$site = $options['MULTISITE'];
+	}
+
+	if ( !empty($site) ) {
+		$link[] = !$constructPrettyLink ? ('site=' . $site) : $site;
 	}
 
 	if(!empty($params['section'])) {

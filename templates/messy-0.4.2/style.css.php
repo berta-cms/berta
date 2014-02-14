@@ -127,6 +127,18 @@ a img { border: none; }
 		text-decoration: none;
 	}
 
+#multisites {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	float: right;
+}
+
+#multisites li {
+	display: inline-block;
+	margin: 0 10px 10px 10px;
+}
+
 
 nav ul{
 	list-style: none;

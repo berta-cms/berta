@@ -14,7 +14,7 @@ return array(
 	'password_help_text' => 'Password must be at least 6 characters long<br /> and containing alphanumeric (A-Z, a-z, 0-9) characters.',
 
 	'welcome_text__not_installed' => '<h2>Thank you for choosing Berta!</h2>
-		   <p>Berta is not set up.<br />Please <a href="./engine/">log in</a> and follow the set up procedure.</p>',
+		   <p>Berta is not set up.<br />Please <a href="%s">log in</a> and follow the set up procedure.</p>',
 
 	'welcome_text__not_supported' => '<h2>Thank you for choosing Berta!</h2>
 										<p>This server does not meet Berta\'s requirements.<br />

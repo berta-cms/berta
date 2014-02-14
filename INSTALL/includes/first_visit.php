@@ -21,7 +21,7 @@ if(empty($CHECK_INCLUDED)) {
 	<div class="xMAlign-container xPanel">
 		<div class="xMAlign-outer">
 			<div class="xMAlign-inner">
-				<?php echo I18n::_('welcome_text__not_installed') ?>
+				<?php echo sprintf(I18n::_('welcome_text__not_installed'), $ENGINE_ABS_ROOT . (!empty($options['MULTISITE']) ? '?site='.$options['MULTISITE'] : '')) ?>
 			</div>
 		</div>
 	</div>

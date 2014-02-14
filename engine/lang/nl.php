@@ -23,7 +23,7 @@ return array(
 
 		'welcome' => 'Welkom!',
 		'welcome_text__not_installed' => '<h2>Goed dat je Berta gebruikt!</h2>
-		<p>Berta is nog niet geconfigureerd.<br /><a href="./engine/">Log in</a> en volg de set up procedure.</p>',
+		<p>Berta is nog niet geconfigureerd.<br /><a href="%s">Log in</a> en volg de set up procedure.</p>',
 
 		'welcome_text__not_supported' => '<h2>Goed dat je Berta gebruikt!</h2>
 		<p>Deze server voldoet helaas niet aan Berta\'s minimum eisen.<br />
