@@ -16,16 +16,19 @@ class BertaTemplate extends BertaBase {
 	public $settingsDefinition;
 	public $settings;
 
+	public $apacheRewriteUsed;
+
 	private $requestURI;
 	private $sectionName;
 	private $sections;
 	private $tagName;
 	private $tags;
 
-	public function BertaTemplate($templateName, $generalSettingsInstance = false, $loggedIn = false) {
+	public function BertaTemplate($templateName, $generalSettingsInstance = false, $loggedIn = false, $apacheRewriteUsed=false) {
 		$this->name = $templateName;
 		$this->loggedIn = $loggedIn;
 		$this->environment = !empty(self::$options['ENVIRONMENT']) ? self::$options['ENVIRONMENT'] : 'site';
+		$this->apacheRewriteUsed = $apacheRewriteUsed;
 
 		$this->smarty = new Smarty();
 		$this->smarty->auto_literal = false;	// to allow space aroun
@@ -160,16 +163,6 @@ class BertaTemplate extends BertaBase {
 					$id = $p['id']['value'];
 					$entries[$id] = BertaTemplate::entryForTemplate($p, array('section' => $this->sections[$sName]));
 
-					//var_dump($entries[$id]['tags'], $tagName);
-
-
-					//I'm not sure what I'm doing here - this can make a bug in sorting order
-					/*
-					if(!$tagName && ($this->environment == 'engine' || !$entries[$id]['tags'])
-							|| $tagName && isset($entries[$id]['tags'][$tagName])) {
-						$entriesForTag[$id] = $entries[$id];
-					}
-					*/
 					if(!$tagName && !$entries[$id]['tags']
 							|| $tagName && isset($entries[$id]['tags'][$tagName])) {
 						$entriesForTag[$id] = $entries[$id];
@@ -183,8 +176,6 @@ class BertaTemplate extends BertaBase {
 		}
 
 		if($haveToSave && class_exists('BertaEditor')) {
-			//echo dirname(__FILE__) . '/class.bertaeditor.php';
-			//include_once dirname(__FILE__) . 'class.bertaeditor.php';
 			BertaEditor::saveBlog($this->sectionName, $this->content);
 		}
 
@@ -292,25 +283,25 @@ class BertaTemplate extends BertaBase {
 			}
 		}
 
-	//	var_dump($vars['berta']['publishedSections']);
-
 		// add subsections...
 		$vars['berta']['tagName'] = $this->tagName;
 		$vars['berta']['tags'] = $this->tags;
 		if($this->tagName) $vars['berta']['pageTitle'] .= ' / ' . $this->tags[$this->sectionName][$this->tagName]['title'];
 
-		// add tags ...
-		//$vars['berta']['tagName'] = $this->tagName;
-		//$vars['berta']['tags'] = $this->tags;
-
 		// add siteTexts ...
-
 		$texts = $this->settings->base->getAll('siteTexts');
 		foreach($texts as $tVar => $t) if(!isset($vars[$tVar])) $vars[$tVar] = $t;
 
 		// berta scripts ...
 		$engineAbsRoot = self::$options['ENGINE_ABS_ROOT'];
 		$templatesAbsRoot = self::$options['TEMPLATES_ABS_ROOT'];
+
+		if ($this->apacheRewriteUsed) {
+			$site = !empty(self::$options['MULTISITE']) ? self::$options['MULTISITE'].'/' : '';
+		}else{
+			$site = !empty(self::$options['MULTISITE']) ? '?site='.self::$options['MULTISITE'] : '' ;
+		}
+
 		$jsSettings = array(
 			'templateName' => $this->name,
 			'environment' => $this->environment,
@@ -326,8 +317,10 @@ class BertaTemplate extends BertaBase {
 			'paths' => array(
 				'engineRoot' => htmlspecialchars(self::$options['ENGINE_ROOT']),
 				'engineABSRoot' => htmlspecialchars($engineAbsRoot),
-				'siteABSRoot' => htmlspecialchars(self::$options['SITE_ABS_ROOT']),
-				'template' => htmlspecialchars(self::$options['SITE_ABS_ROOT'] . 'templates/' . $this->name . '/')
+				'siteABSMainRoot' => htmlspecialchars(self::$options['SITE_ABS_ROOT']),
+				'siteABSRoot' => htmlspecialchars(self::$options['SITE_ABS_ROOT']) . $site,
+				'template' => htmlspecialchars(self::$options['SITE_ABS_ROOT'] . 'templates/' . $this->name . '/'),
+				'site' => htmlspecialchars(self::$options['MULTISITE'])
 			),
 
 			'i18n' => array(

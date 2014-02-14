@@ -52,7 +52,7 @@ class Berta extends BertaBase
 
 		$templateName = $this->settings->get('template', 'template', true);
 
-		$this->template = new BertaTemplate($templateName, $this->settings, $this->security->userLoggedIn);
+		$this->template = new BertaTemplate($templateName, $this->settings, $this->security->userLoggedIn, $this->apacheRewriteUsed);
 	}
 
 	// finally: init content

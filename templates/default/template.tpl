@@ -46,6 +46,17 @@
 
 		<div id="contentContainer"{if $berta.settings.pageLayout.responsive=='yes' } class="xResponsive"{/if}>
 
+            {* multisites menu ********************************************************************* *}
+            {if $berta.options.MULTISITES|count > 1}
+                <ul id="multisites">
+                    {foreach $berta.options.MULTISITES AS $siteName => $site }
+                        {if $berta.options.MULTISITE != $siteName || ($siteName=='0' && $berta.options.MULTISITE !='' ) }
+                            <li><a href="{ bertaLink site=$siteName }">{if $site['title']['value']!=''}{$site['title']['value']}{else}{if $siteName=='0'}Main site{else}{$siteName}{/if}{/if}</a></li>
+                        {/if}
+                    {/foreach}
+                </ul>
+            {/if}
+
             { if ($berta.environment == 'site' && $berta.settings.navigation.landingSectionPageHeadingVisible=='yes') || $berta.environment == 'engine' || ($berta.environment == 'site' && $berta.settings.navigation.landingSectionPageHeadingVisible=='no' && $berta.sectionName != $berta.sections|@key) }
                 { if $berta.settings.pageHeading.image }
                 <h1><a href="{ bertaLink }"><img src="{ $berta.options.MEDIA_ABS_ROOT }{ $berta.settings.pageHeading.image }" /></a></h1>

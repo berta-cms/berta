@@ -314,21 +314,16 @@ var BertaEditorBase = new Class({
 					onStart: function() {
 						el.removeClass('xEditing');
 						el.addClass('xSaving');
-						//this.unlinearProcess_start(this.uploadQueueProcessId, 'Uploading file for ' + prop);
 					}.bind(this),
 					onComplete: function() {
 						el.removeClass('xSaving');
 						el.addClass('xEditing');
-						//this.unlinearProcess_stop(this.uploadQueueProcessId);
 					}.bind(this),
 
 					onFileComplete: function(file) {
-						//console.debug('onFileCompelte: ', file.response);
 						var json = $H(JSON.decode(file.response.text, true) || {});
 						if(json.get('status') > 0) {
 							fileNameContainer.empty();
-							/*(new Element('img', { 'src': self.options.paths.siteABSRoot + 'storage/media/' + json.get('filename') }))
-								.inject(fileNameContainer);*/
 							fileNameContainer.set('html', json.get('filename'));
 							aDelete.setStyle('display', 'block');
 						} else {
@@ -409,7 +404,6 @@ var BertaEditorBase = new Class({
 
 				el.empty();
 				var checkEl = new Element('input', { 'type': 'button', 'class': value == 1 ? 'checked' : '', 'value': '' }).inject(el);
-				//var checkEl = new Element('input', { 'type': 'checkbox', 'checked': value == 1 ? true : false }).inject(el);
 
 				el.addEvent('click', this.eSup_onRealCheckClick.bindWithEvent(this, [el, checkEl]));
 				break;
@@ -428,8 +422,6 @@ var BertaEditorBase = new Class({
 					mouseenter: function(event){
 						//create guidelines
 						winSize=document.getScrollSize();
-
-						//console.log(winSize);
 
 						xGuideLineX = new Element('div', {
 						    'id': 'xGuideLineX',
