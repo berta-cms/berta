@@ -108,7 +108,17 @@ h1 {
 	margin-right: <?php echo $s->get('pageLayout', 'contentPosition') == 'right' ? 0 : 'auto' ?>;
 }
 
+	#multisites {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		float: right;
+	}
 
+	#multisites li {
+		display: inline-block;
+		margin: 0 10px 10px 10px;
+	}
 
 	div#siteTopMenu {
 		clear: both;

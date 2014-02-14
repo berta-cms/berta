@@ -125,8 +125,19 @@ a img { border: none; }
 			padding-right: 20px;
 			padding-top: <?php echo $s->get('sideBar', 'marginTop') ?>;
 			padding-bottom: 20px;
-			/*width: 140px;*/
 		}
+
+			#sideColumnTop #multisites {
+				list-style: none;
+				padding: 0;
+				margin: 0;
+			}
+
+			#sideColumnTop #multisites li {
+				display: inline-block;
+				margin: 0 10px 10px 0;
+				padding: 0;
+			}
 
 			#sideColumnTop h1 {
 				min-height: 40px;

@@ -42,7 +42,7 @@
 
     { if $berta.shop_enabled == true }
     <script type="text/javascript" src="{ $berta.options.SITE_ABS_ROOT }_plugin_shop/js/shop.js?{$berta.options.int_version}"></script>
-    <link rel="stylesheet" href="{ $berta.options.SITE_ABS_ROOT }_plugin_shop/css/shop.css.php?{$berta.options.int_version}" type="text/css" />
+    <link rel="stylesheet" href="{ $berta.options.SITE_ABS_ROOT }_plugin_shop/css/shop.css.php?{$berta.options.int_version}{if $berta.options.MULTISITE}&amp;site={$berta.options.MULTISITE}{/if}" type="text/css" />
     { /if }
 </head>
 
