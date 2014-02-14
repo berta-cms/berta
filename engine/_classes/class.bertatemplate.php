@@ -341,11 +341,12 @@ class BertaTemplate extends BertaBase {
 
 		$int_version = self::$options['int_version'];
 		$timestamp = time();
+		$site = !empty(self::$options['MULTISITE']) ? '&amp;site='.self::$options['MULTISITE'] : '';
 
 		$vars['berta']['css'] = <<<DOC
 	<link rel="stylesheet" href="{$engineAbsRoot}_lib/video-js/video-js.min.css" type="text/css" charset="utf-8" />
 	<link rel="stylesheet" href="{$engineAbsRoot}css/default.css?{$int_version}" type="text/css" charset="utf-8" />
-	<link rel="stylesheet" href="{$templatesAbsRoot}{$this->name}/style.css.php?{$timestamp}" type="text/css" />
+	<link rel="stylesheet" href="{$templatesAbsRoot}{$this->name}/style.css.php?{$timestamp}{$site}" type="text/css" />
 
 DOC;
 		if($this->loggedIn) {
