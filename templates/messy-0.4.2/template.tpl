@@ -220,6 +220,17 @@
                     { /if }
                 { /if }
 
+                {* multisites menu ********************************************************************* *}
+                {if $berta.options.MULTISITES|count > 1}
+                    <ul id="multisites" class="{ messClasses property='multisitesXY' }"{if $multisitesXY} style="{ messStyles xy=$multisitesXY }"{/if}>
+                        {foreach $berta.options.MULTISITES AS $siteName => $site }
+                            {if $berta.options.MULTISITE != $siteName || ($siteName=='0' && $berta.options.MULTISITE !='' ) }
+                                <li><a href="{ bertaLink site=$siteName }">{if $site['title']['value']!=''}{$site['title']['value']}{else}{if $siteName=='0'}Main site{else}{$siteName}{/if}{/if}</a></li>
+                            {/if}
+                        {/foreach}
+                    </ul>
+                {/if}
+
                 { if $berta.environment == 'engine' && $berta.sections }
                 <div id="xBgEditorPanelContainer"></div>
                 <div id="xBgEditorPanelTrigContainer">

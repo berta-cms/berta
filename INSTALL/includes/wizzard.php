@@ -41,7 +41,7 @@ if(!empty($settings['berta']['installed'])) {
 	</body><?php
 
 } else {
-	
+
 	?><body class="xLoginPageBody" x_mode="settings">
 		<div class="xMAlign-container xPanel">
 			<div class="xMAlign-outer">
@@ -50,7 +50,7 @@ if(!empty($settings['berta']['installed'])) {
 						<h2><?php echo I18n::_('Setup your site') ?></h2>
 
 						<p class="emphasis"><?php echo I18n::_('setup_info_text') ?></p>
-						
+
 
 						<p>1. <?php echo I18n::_('What is the title of your site?') ?></p>
 						<p class="subInfo"><?php echo I18n::_('Site title will be visible in all sections of your site.') ?></p>
@@ -81,7 +81,7 @@ if(!empty($settings['berta']['installed'])) {
 						<p class="subInfo"><?php echo I18n::_('Note: the fields that already have value appear yellow only when you roll over them with your mouse. Click on the text below to edit.') ?></p>
 						<p class="xFirstTimeField <?php echo $xEditSelectorSimple ?> xProperty-texts/metaDescription xRequired-<?php echo $berta->settings->isRequired('texts', 'metaDescription') ? '1': '0' ?>"><?php echo $berta->settings->get('texts', 'metaDescription', true) ?></p>
 
-						<p><input type="button" value=" <?php echo I18n::_('Done!') ?> " id="xFirstTimeCheckContinue" onclick="window.location='<?php echo $ENGINE_ABS_ROOT ?>?_berta_install_done=1'" /></p>
+						<p><input type="button" value=" <?php echo I18n::_('Done!') ?> " id="xFirstTimeCheckContinue" onclick="window.location='<?php echo $ENGINE_ABS_ROOT ?>?_berta_install_done=1<?php echo !empty($options['MULTISITE']) ? '&site='.$options['MULTISITE'] : '' ?>'" /></p>
 
 					</div>
 					<?php
@@ -90,7 +90,7 @@ if(!empty($settings['berta']['installed'])) {
 			</div>
 		</div>
 	</body><?php
-	
+
 
 }
 

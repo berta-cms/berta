@@ -77,6 +77,11 @@ var BertaEditorBase = new Class({
 	},
 
 	initConsoleReplacement: function() {
+		var query = window.location.search.replace('?', '').parseQueryString();
+		if (query.site) {
+			this.options.updateUrl = this.options.updateUrl + "?site=" + query.site;
+			this.options.elementsUrl = this.options.elementsUrl + "?site=" + query.site;
+		}
 		if(!window.console) window.console = {};
 		if(!window.console.debug) window.console.debug = function() { };
 		if(!window.console.log) window.console.log = function() { };

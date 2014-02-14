@@ -36,6 +36,11 @@ var BertaBgEditor = new Class({
 
 
 	initialize: function(bgEditorContainerElement, options) {
+		var query = window.location.search.replace('?', '').parseQueryString();
+		if (query.site) {
+			this.options.updateUrl = this.options.updateUrl + "?site=" + query.site;
+			this.options.elementsUrl = this.options.elementsUrl + "?site=" + query.site;
+		}
 		this.setOptions(options);
 		this.tinyMCE_ConfigurationsInit();
 		this.allContainer = bgEditorContainerElement;

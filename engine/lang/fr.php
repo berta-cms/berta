@@ -23,7 +23,7 @@ return array(
 
 		'welcome' => 'Bienvenue !',
 		'welcome_text__not_installed' => '<h2>Merci d\'avoir choisi Berta !</h2>
-		<p>Berta n\'est pas encore installé.<br />Merci de vous <a href="./engine/">connecter</a> et de suivre la procédure d\'installation.</p>',
+		<p>Berta n\'est pas encore installé.<br />Merci de vous <a href="%s">connecter</a> et de suivre la procédure d\'installation.</p>',
 
 		'welcome_text__not_supported' => '<h2>Merci d\'avoir choisi Berta !</h2>
 		<p>Ce serveur n\'est pas compatible avec Berta.<br />
