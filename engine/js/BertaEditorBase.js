@@ -72,15 +72,17 @@ var BertaEditorBase = new Class({
 
 	shiftPressed: false,
 
+	query: null,
+
 	intialize: function() {
 		this.initConsoleReplacement();
 	},
 
 	initConsoleReplacement: function() {
-		var query = window.location.search.replace('?', '').parseQueryString();
-		if (query.site) {
-			this.options.updateUrl = this.options.updateUrl + "?site=" + query.site;
-			this.options.elementsUrl = this.options.elementsUrl + "?site=" + query.site;
+		this.query = window.location.search.replace('?', '').parseQueryString();
+		if (this.query.site) {
+			this.options.updateUrl = this.options.updateUrl + "?site=" + this.query.site;
+			this.options.elementsUrl = this.options.elementsUrl + "?site=" + this.query.site;
 		}
 		if(!window.console) window.console = {};
 		if(!window.console.debug) window.console.debug = function() { };
@@ -289,6 +291,9 @@ var BertaEditorBase = new Class({
 				for(var i = 0; i < paramNames.length; i++) {
 					p = el.getClassStoredValue(paramNames[i]);
 					if(p) params.push(urlParamNames[i] + '=' + p);
+				}
+				if( this.query.site ) {
+					params.push('site=' + this.query.site);
 				}
 
 				// instantiate fancy upload

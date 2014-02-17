@@ -5,6 +5,11 @@ include('inc.page.php');
 $loggedIn = $berta->security->userLoggedIn;
 include_once $ENGINE_ROOT . '_classes/class.bertaeditor.php';
 
+if ($options['MULTISITE_DISABLED']) {
+	header("Location: ./");
+   	exit;
+}
+
 $allSites = BertaContent::getSites();
 
 // var_dump($allSites);

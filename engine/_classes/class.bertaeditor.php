@@ -804,6 +804,12 @@ DOC;
 
 		$m8Class = $selectedSection == 'multisite' ? ' class="selected"' : '';
 
+		if (!self::$options['MULTISITE_DISABLED']) {
+			$multisiteItem = '<li'.$m8Class.' id="xMultisite"><a href="multisite.php">'.$m8.'</a></li><li>|</li>';
+		}else{
+			$multisiteItem = '';
+		}
+
 		$helpdeskItem = self::$options['HOSTING_PROFILE'] ? '<li><a href="http://support.berta.me" target="_blank">helpdesk</a></li><li>|</li>' : '';
 
 		$str_start = <<<DOC
@@ -813,7 +819,7 @@ DOC;
 					<ul id="xEditorMenu">
 						<li id="xTopPanelSlideOut"><span title="hide menu">▲</span></li>
 						<li$m1Class id="xMySite"><a href="$m1_link">$m1</a></li><li>|</li>
-						<li$m8Class id="xMultisite"><a href="multisite.php">$m8</a></li><li>|</li>
+						$multisiteItem
 						<li$m2Class id="xSections"><a href="$m2_link">$m2</a></li><li>|</li>
 						$shopItem
 						<li$m3Class id="xSettings"><a href="$m3_link">$m3</a></li><li>|</li>

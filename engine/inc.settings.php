@@ -141,11 +141,18 @@ if(@file_exists($ENGINE_ROOT .'plan')) {
 	//settings for PRO and SHOP hosting plans
 	if ($hostingPlan>1){
 		$settingsDefinition['settings']['hideBertaCopyright'] =	array('format' => 'select', 'default' => 'no', 'values' => array('yes', 'no'), 'title' => I18n::_('Hide copyrights'), 'description' => I18n::_('Hides Berta\'s copyrights'));
+	}else{
 	}
-
-
 
 }
 
+//disable multisites for basic plan or no-plan
+if ( !isset($hostingPlan) || $hostingPlan==1 ) {
+	$options['MULTISITES'] = array();
+	$options['MULTISITE'] = '';
+	$options['MULTISITE_DISABLED'] = true;
+}else{
+	$options['MULTISITE_DISABLED'] = false;
+}
 
 ?>
