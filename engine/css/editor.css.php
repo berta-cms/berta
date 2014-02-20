@@ -431,7 +431,7 @@ body.xEditorEnabled { }
 	position: absolute;
 }
 	#xTopPanel {
-		max-width: 600px;
+		max-width: 800px;
 		z-index: 60000;
 		position: relative;
 		text-align: left !important;
