@@ -442,9 +442,9 @@ var BertaEditorBase = new Class({
 						});
 
 						xGuideLineX.inject(document.body);
-						if(document.body.getElement('#contentContainer.xCentered') && el.hasClass('xFixed') == false && el.hasClass('floating-banner') == false) {
+						if(document.body.getElement('#contentContainer.xCentered') && el.hasClass('xFixed') == false) {
 							xGuideLineY.inject(document.body.getElement('#contentContainer'));
-						} else if(document.body.getElement('#allContainer.xCentered') && el.hasClass('xFixed') == false && el.hasClass('floating-banner') == false) {
+						} else if(document.body.getElement('#allContainer.xCentered') && el.hasClass('xFixed') == false) {
 							xGuideLineY.inject(document.body.getElement('#allContainer'));
 						} else {
 							xGuideLineY.inject(document.body);
@@ -540,7 +540,7 @@ var BertaEditorBase = new Class({
 
 				       	if (dragAll){
 							allEntries.each(function(entry) {
-								if(this.container.hasClass('xCentered') && (entry.hasClass('xFixed') || entry.hasClass('floating-banner'))) {
+								if(this.container.hasClass('xCentered') && (entry.hasClass('xFixed'))) {
 						    		var left = parseInt(entry.getStyle('left')) - (window.getSize().x - this.container.getSize().x) / 2;
 						    	} else {
 						    		var left = parseInt(entry.getStyle('left'));
@@ -550,7 +550,7 @@ var BertaEditorBase = new Class({
 							}.bind(this));
 
 					    }else{
-					    	if(this.container.hasClass('xCentered') && (el.hasClass('xFixed') || el.hasClass('floating-banner'))) {
+					    	if(this.container.hasClass('xCentered') && (el.hasClass('xFixed'))) {
 					    		var left = parseInt(el.getStyle('left')) - (window.getSize().x - this.container.getSize().x) / 2;
 					    	} else {
 					    		var left = parseInt(el.getStyle('left'));
