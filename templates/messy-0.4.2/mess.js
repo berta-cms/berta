@@ -1,5 +1,3 @@
-
-
 var MessyMess = new Class({
 
 	shoppingCart: null,
@@ -130,9 +128,8 @@ var MessyMess = new Class({
         if(centeredLayout) {
             var bottom = $('bottom');
             var bottomRight = parseInt(bottom.getStyle('right'));
-            var fixedItems = container.getParent().getElements('.xFixed, .floating-banner');
+            var fixedItems = container.getParent().getElements('.xFixed');
             var guidesWidth = ((window.getSize().x - container.getSize().x) / 2) >= 0 ? ((window.getSize().x - container.getSize().x) / 2) : 0;
-
             var containerW =  container.getSize().x;
 
             if ( window.getSize().x < containerW ) {
@@ -146,8 +143,9 @@ var MessyMess = new Class({
 
             if(fixedItems.length > 0) {
                 fixedItems.each(function(item) {
-                    var left = parseInt(item.getStyle('left'))
+                    var left = parseInt(item.getStyle('left'));
                     var w = guidesWidth + left;
+
                     item.store('initLeft', left);
                     item.setStyle('left', w + 'px');
                 });
