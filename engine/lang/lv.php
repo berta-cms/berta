@@ -237,7 +237,7 @@ return array(
 	/* setting name */ 'Gallery margins' => 'Galerijas apmales',
 	/* help text */    'Margin around gallery block' => 'Apmales ap galerijas bloku',
 
-	/* setting tab */  'Entry heading'=> 'Iearaksta virsraksts',
+	/* setting tab */  'Entry heading'=> 'Ieraksta virsraksts',
 	/* help text */    'How far the entry heading is form other elements in page. Please see the short CSS guide at the bottom of this page.' => 'Cik tālu ieraksta virsraksts atrodas no pārējiem lapas elementiem. Skatiet CSS skaidrojumu lapas apakšā.',
 
 	/* setting tab */ 'Entry footer' =>  'Ieraksta apakša',
