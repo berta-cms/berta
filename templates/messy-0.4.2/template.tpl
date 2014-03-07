@@ -158,8 +158,8 @@
 
             {* show arrows if on mobile device & background has more than one element & grid view is not active *}
             { if $berta.options.MOBILE_DEVICE && ($berta.section.mediaCacheData.file|@count > 1 || $berta.section.mediaCacheData.file.value) && !($berta.section.type == 'grid' && $smarty.cookies._berta_grid_view) }
-                <div id="xBackgroundPrevious"><a href="#"><span>previous</span></a></div>
-                <div id="xBackgroundNext"><a href="#"><span>next</span></a></div>
+                <div id="xBackgroundPrevious"{if $bgAttr.hide_navigation=='yes'} class="xHidden"{/if}><a href="#"><span>previous</span></a></div>
+                <div id="xBackgroundNext"{if $bgAttr.hide_navigation=='yes'} class="xHidden"{/if}><a href="#"><span>next</span></a></div>
             { /if }
         </div>
 
@@ -333,7 +333,7 @@
 
                                     <div class="cartAttributes{if !$entry.cartAttributes} hidden{/if}">{ $entry.cartAttributes|@toCartAttributes }</div>
                                     <span class="aele{ if empty($entry.cartPrice) || $berta.environment == 'site'} hidden{/if}"><span>{ $berta.settings.shop.addToBasket }</span></span>
-                                    <span class="addedToCart hidden"></span>
+                                    <span class="addedToCart hidden"><span></span> { $berta.settings.shop.addedToBasket }</span>
                                     <span class="outOfStock hidden">{ $berta.settings.shop.outOfStock }</span>
 
                                 </div>
