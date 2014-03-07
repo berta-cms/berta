@@ -249,11 +249,11 @@ nav ul{
 		width: 25%;
 	}
 
-		#pageEntries.columns-2 .xEntry:nth-child(2n+1),
-		#pageEntries.columns-3 .xEntry:nth-child(3n+1),
-		#pageEntries.columns-4 .xEntry:nth-child(4n+1) {
-			clear: left;
-		}
+	#pageEntries.columns-2 .xEntry:nth-child(2n+1),
+	#pageEntries.columns-3 .xEntry:nth-child(3n+1),
+	#pageEntries.columns-4 .xEntry:nth-child(4n+1) {
+		clear: left;
+	}
 
 	#pageEntries .xEntry h2 {
 				color: <?php echo $s->get('entryHeading', 'color') ?>;
@@ -795,6 +795,10 @@ nav ul{
 			margin-top: 20px;
 		}
 
+		#contentContainer h1 {
+			clear: both;
+		}
+
 		nav {
 			text-align: center;
 		}
@@ -835,8 +839,6 @@ nav ul{
 		position: relative !important;
 	}
 
-
-
 	/* small tablet */
 	@media (max-width: 767px)  {
 
@@ -854,11 +856,21 @@ nav ul{
 			display: block;
 		}
 
-		#pageEntries.columns-2 .xEntry,
-		#pageEntries.columns-3 .xEntry,
+		#pageEntries.columns-3 .xEntry {
+			width: 50%;
+		}
+
 		#pageEntries.columns-4 .xEntry {
-			float: none;
-			width: 100%;
+			width: 50%;
+		}
+
+		#pageEntries.columns-3 .xEntry:nth-child(3n+1) {
+			clear: none;
+		}
+
+		#pageEntries.columns-3 .xEntry:nth-child(2n+1),
+		#pageEntries.columns-4 .xEntry:nth-child(2n+1) {
+			clear: left;
 		}
 
 		<?php if($s->get('pageLayout', 'centeredContents') == 'yes') { ?>
@@ -866,6 +878,15 @@ nav ul{
 				text-align: center;
 			}
 		<?php } ?>
+	}
+
+	@media (max-width: 480px) {
+		#pageEntries.columns-2 .xEntry,
+		#pageEntries.columns-3 .xEntry,
+		#pageEntries.columns-4 .xEntry {
+			float: none;
+			width: 100%;
+		}
 	}
 
 <?php } ?>
