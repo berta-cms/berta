@@ -779,6 +779,10 @@ nav ul{
 			text-align: center;
 		}
 
+		#contentContainer h1 {
+			clear: both;
+		}
+
 		nav {
 			text-align: center;
 		}
