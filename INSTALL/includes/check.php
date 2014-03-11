@@ -69,7 +69,7 @@ if(empty($settings['berta']['installed'])) {
 
 	// if the test was ok without any warnings then redirect to the next step
 	if($listOk && !$listHasErrors) {
-		header('Location: .?_berta_install_step=2');
+		header('Location: .?_berta_install_step=2' . (!empty($options['MULTISITE']) ? '&site='.$options['MULTISITE'] : '') );
 		exit;
 	}
 }
