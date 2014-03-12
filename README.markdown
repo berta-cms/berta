@@ -8,6 +8,11 @@ For more information, visit http://www.berta.me
 
 Changelog
 ----------
+**v0.8.8b (release date 12 Mar 2014)**
+ * multisite feature added (available only for berta.me hosted Pro and Shop plans)
+ * added more breakpoints for responsive Messy template
+ * other minor improvements and bugfixes
+
 **v0.8.7b (release date 23 Oct 2013)**
  * option to enable responsive layout for Messy and Default templates (experimental, alpha version)
  * option to set all elements centered to window for responsive Messy template
