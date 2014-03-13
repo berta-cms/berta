@@ -132,6 +132,7 @@ a img { border: none; }
 	padding: 0;
 	margin: 0;
 	float: right;
+	z-index: 100000;
 }
 
 #multisites li {
