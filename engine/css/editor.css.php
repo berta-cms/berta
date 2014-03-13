@@ -2249,7 +2249,6 @@ body.xSettingsPageBody {
 .xGuideLine {
 	position: absolute;
 	background-color: #4affff;
-	z-index: 10000000;
 }
 
 #xGuideLineX {
