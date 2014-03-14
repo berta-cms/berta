@@ -229,7 +229,14 @@ var BertaEditor = new Class({
 						this.highlightNewEntry.delay(100, this);
 
 					} else if(!this.currentSection) {
-                        this.container.getElement('h1').hide();
+                        var h1 = this.container.getElement('h1');
+                        if (h1) {
+                        	h1.hide();
+                        }
+                        //show speach bubble to create some sections
+                        var xSections = $('xSections');
+                        var xCreateSomeSections = $('xCreateSomeSections');
+                        xCreateSomeSections.inject(xSections, 'bottom').removeClass('xHidden');
 					}
 				} else {
 					this.editablesInit();
