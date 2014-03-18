@@ -505,6 +505,10 @@ a img { border: none; }
 			min-height: initial;
 		}
 
+		#sideColumnTop ul li {
+			margin-top: 1em;
+		}
+
 		#menuToggle {
 			display: inline-block;
 		}
