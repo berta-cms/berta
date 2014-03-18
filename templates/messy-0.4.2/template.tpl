@@ -30,6 +30,10 @@
             {literal}}{/literal}
         </style>
     {/if}
+    { if $berta.shop_enabled == true }
+        <link rel="stylesheet" href="{ $berta.options.SITE_ABS_ROOT }_plugin_shop/css/shop.css.php?{$berta.options.int_version}{if $berta.options.MULTISITE}&amp;site={$berta.options.MULTISITE}{/if}" type="text/css" />
+    { /if }
+
     {if $berta.settings.css.customCSS}
         <style type="text/css">
         {$berta.settings.css.customCSS|@html_entity_decode|replace:'<br />':"\n"}
@@ -41,8 +45,7 @@
     <script type="text/javascript" src="{ $berta.options.TEMPLATES_ABS_ROOT }{ $berta.templateName }/mooMasonry.js"></script>
 
     { if $berta.shop_enabled == true }
-    <script type="text/javascript" src="{ $berta.options.SITE_ABS_ROOT }_plugin_shop/js/shop.js?{$berta.options.int_version}"></script>
-    <link rel="stylesheet" href="{ $berta.options.SITE_ABS_ROOT }_plugin_shop/css/shop.css.php?{$berta.options.int_version}{if $berta.options.MULTISITE}&amp;site={$berta.options.MULTISITE}{/if}" type="text/css" />
+        <script type="text/javascript" src="{ $berta.options.SITE_ABS_ROOT }_plugin_shop/js/shop.js?{$berta.options.int_version}"></script>
     { /if }
 </head>
 

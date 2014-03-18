@@ -95,7 +95,9 @@ $templateConf = array(
 		'contentWidth' => 			array('format' => 'text',	'default' => '600px',	'css_units' => true, 	'title' => I18n::_('Entry text max width'),                  'description' => I18n::_('Width of texts in the entries. This does not apply to the width of images.')),
 		'paddingTop' => 			array('format' => 'text',	'default' => '90px',	'css_units' => true, 	'title' => I18n::_('How far content is from page top?'),     'description' => I18n::_('The vertical distance between the top of the page and the content area.')),
 		'paddingLeft' => 			array('format' => 'text',	'default' => '30px',	'css_units' => true, 	'title' => I18n::_('How far content is from menu?'),         'description' => I18n::_('The horizontal distance between the menu and the content area.')),
-		'leftColumnWidth' => 		array('format' => 'text',	'default' => '170px',	'css_units' => true, 	'title' => I18n::_('Width of the left column'),              'description' => '')
+		'leftColumnWidth' => 		array('format' => 'text',	'default' => '170px',	'css_units' => true, 	'title' => I18n::_('Width of the left column'),              'description' => ''),
+		'group_responsive' => array('format' => false, 'default' => false, 'title' => '<h3>'.I18n::_('Resposive design').'</h3>'),
+		'responsive' =>	array('format' => 'select', 'default' => 'no', 'values' => array('no', 'yes'), 'title' => I18n::_('Enabled'), 'description' => I18n::_('Sets whether layout should be responsive or not.')),
 	),
 
 	'entryLayout' => array(
