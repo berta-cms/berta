@@ -77,8 +77,9 @@ a img { border: none; }
 }
 	#allContainer.xCentered {
 		margin: 0 auto;
-		width: <?php echo $s->get('pageLayout', 'leftColumnWidth') + $s->get('pageLayout', 'contentWidth') + $s->get('pageLayout', 'paddingLeft') ?>px;
+		max-width: <?php echo $s->get('pageLayout', 'leftColumnWidth') + $s->get('pageLayout', 'contentWidth') + $s->get('pageLayout', 'paddingLeft') ?>px;
 	}
+
 .ie6 #allContainer {
 	width: 100%;
 	height: 100%;
@@ -396,6 +397,11 @@ a img { border: none; }
 
 <?php if( $isResponsive ){ ?>
 
+	#sideColumn.xCentered {
+		left: initial;
+		margin-left: 0;
+	}
+
 	img,
 	iframe,
 	ol#pageEntries li.xEntry .xGalleryContainer .xGallery,
@@ -504,6 +510,11 @@ a img { border: none; }
 		}
 
 		#mainColumn {
+			margin-left: 0;
+		}
+
+		#mainColumn.xCentered {
+			left: initial;
 			margin-left: 0;
 		}
 
