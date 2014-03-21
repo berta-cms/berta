@@ -487,7 +487,13 @@ a img { border: none; }
 
 	.firstPagePic {
 		position: relative;
+		margin-bottom: <?php echo $s->get('pageLayout', 'paddingLeft') ?>;
 	}
+
+	#firstPageMarkedEntries .xEntry {
+		max-width: <?php echo $s->get('firstPage', 'imageSizeRatio')*100 ?>%;
+	}
+
 
 	#firstPageMarkedEntries .xEntry .xGalleryContainer .xGallery div.xGalleryItem {
 		font-size: 0;
@@ -593,6 +599,7 @@ a img { border: none; }
 			bottom: initial;
 			left: 0;
 			padding-left: <?php echo $s->get('pageLayout', 'paddingLeft') ?>;
+			width: 100%;
 		}
 
 		#sideColumnTop {
