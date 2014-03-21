@@ -124,7 +124,7 @@
 		</div>
 
 		<div id="contentContainer"{if $berta.settings.pageLayout.responsive=='yes' } class="xResponsive"{/if}>
-			<div id="mainColumn"{ if $berta.settings.pageLayout.centered == 'yes' }class="xCentered"{ /if }{if $berta.settings.pageLayout.responsive=='yes' } data-paddingtop="{$berta.settings.pageLayout.paddingTop}"{/if}>
+			<div id="mainColumn"{if $berta.settings.pageLayout.centered == 'yes' } class="xCentered"{ /if }{if $berta.settings.pageLayout.responsive=='yes' } data-paddingtop="{$berta.settings.pageLayout.paddingTop}"{/if}>
 				<ol id="pageEntries" class="{ entriesListClasses }">
 
 					{* now loop through all entries and print them out *}
