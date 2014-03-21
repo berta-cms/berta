@@ -6,6 +6,7 @@
 <!--[if (gt IE 9)|!(IE)]><!--> <html> <!--<![endif]-->
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	{if $berta.settings.pageLayout.responsive=='yes'}<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">{/if}
 	<title>{ $berta.pageTitle }</title>
 	<meta name="keywords" content="{ $berta.settings.texts.metaKeywords }" />
 	<meta name="description" content="{ $berta.settings.texts.metaDescription }" />
@@ -27,7 +28,7 @@
         </style>
     {/if}
 	{ googleWebFontsAPI }
-	<script type="text/javascript" src="{ $berta.options.TEMPLATES_ABS_ROOT }{ $berta.templateName }/superwhite.js"></script>
+	<script type="text/javascript" src="{ $berta.options.TEMPLATES_ABS_ROOT }{ $berta.templateName }/mashup.js?{$berta.options.int_version}"></script>
 </head>
 
 <body>
@@ -44,7 +45,7 @@
 		{* engine panel lives in pageHeader - don't leave it out *}
 		{ pageHeader }
 
-		<div id="sideColumn"{ if $berta.settings.pageLayout.centered == 'yes' }class="xCentered"{ /if }>
+		<div id="sideColumn" class="{ if $berta.settings.pageLayout.centered == 'yes' }xCentered{ /if }{if $berta.settings.pageLayout.responsive=='yes'} xResponsive{/if}">
 			<div id="sideColumnTop">
 
 	            {* multisites menu ********************************************************************* *}
@@ -72,7 +73,24 @@
                     { /if }
                 { /if }
 
+				{ if ($berta.environment == 'site' && $berta.settings.navigation.landingSectionMenuVisible=='yes') || $berta.environment == 'engine' || ($berta.environment == 'site' && $berta.settings.navigation.landingSectionMenuVisible=='no' && $berta.sectionName != $berta.sections|@key) }
+					<div id="additionalText"{if $berta.settings.pageLayout.responsive!='yes'} class="xEditableDragXY xProperty-additionalTextXY" style="{ additionalTextPos xy=$additionalTextXY }"{/if}>
+						<div class="xHandle"></div>
+						{if $berta.settings.socialMediaButtons.socialMediaLocation == 'additionalText' && $berta.settings.socialMediaButtons.socialMediaHTML}
+                            { $berta.settings.socialMediaButtons.socialMediaHTML|@html_entity_decode|replace:'<br />':"\n" }
+                        {else}
+							<div class="xEditableMCESimple xProperty-additionalText xCaption-additional-text">
+							{ $additionalText }
+							</div>
+						{/if}
+					</div>
+				{/if}
+
 				{ if count($berta.publishedSections) > 0 && (($berta.environment == 'site' && $berta.settings.navigation.landingSectionMenuVisible=='yes') || $berta.environment == 'engine' || ($berta.environment == 'site' && $berta.settings.navigation.landingSectionMenuVisible=='no' && $berta.sectionName != $berta.sections|@key)) }
+
+					{if $berta.settings.pageLayout.responsive == 'yes'}
+	                    <a href="#" id="menuToggle"><span></span></a>
+	                {/if}
 					<ul>
 						{ assign var="currnetSectionName" value=$berta.sectionName }
 						{ foreach from=$berta.publishedSections item="section" key="sName" name="sectionsMenuLoop" }
@@ -98,20 +116,6 @@
 					</ul>
 				{ /if }
 
-
-				{ if ($berta.environment == 'site' && $berta.settings.navigation.landingSectionMenuVisible=='yes') || $berta.environment == 'engine' || ($berta.environment == 'site' && $berta.settings.navigation.landingSectionMenuVisible=='no' && $berta.sectionName != $berta.sections|@key) }
-					<div id="additionalText" class="xEditableDragXY xProperty-additionalTextXY" style="{ additionalTextPos xy=$additionalTextXY }">
-						<div class="xHandle"></div>
-						{if $berta.settings.socialMediaButtons.socialMediaLocation == 'additionalText' && $berta.settings.socialMediaButtons.socialMediaHTML}
-                            { $berta.settings.socialMediaButtons.socialMediaHTML|@html_entity_decode|replace:'<br />':"\n" }
-                        {else}
-							<div class="xEditableMCESimple xProperty-additionalText xCaption-additional-text">
-							{ $additionalText }
-							</div>
-						{/if}
-					</div>
-				{/if}
-
 			</div>
 			<div id="sideColumnBottom">
                 {if $berta.settings.socialMediaButtons.socialMediaLocation == 'footer' && $berta.settings.socialMediaButtons.socialMediaHTML}
@@ -127,21 +131,31 @@
 
 		{ if $berta.section.type == 'mash_up' }
 
-			<div id="contentContainer" class="noEntries">
+			<div id="contentContainer" class="noEntries{if $berta.settings.pageLayout.responsive=='yes' } xResponsive{/if}">
+				{if $berta.settings.pageLayout.responsive=='yes' }
+					<div id="mainColumnContainer">
+					<div id="mainColumn"{if $berta.settings.pageLayout.centered == 'yes' } class="xCentered"{ /if } data-paddingtop="{$berta.settings.pageLayout.paddingTop}">
+				{/if}
+
 				<div id="firstPageMarkedEntries" class="{ entriesListClasses } xNoEntryOrdering">
-				{ selectMarkedEntries assign="markedEntries" count=$berta.section.marked_items_count }
-				{ foreach from=$markedEntries item="entry" name="markedEntriesLoop" }
-					{ white_firstPageMarkedEntry entry=$entry imageselect=$berta.section.marked_items_imageselect }
-				{ /foreach }
-				<br class="clear" />
+					{ selectMarkedEntries assign="markedEntries" count=$berta.section.marked_items_count }
+					{ foreach from=$markedEntries item="entry" name="markedEntriesLoop" }
+						{ white_firstPageMarkedEntry entry=$entry imageselect=$berta.section.marked_items_imageselect }
+					{ /foreach }
+					<br class="clear" />
 				</div>
+
+				{if $berta.settings.pageLayout.responsive=='yes' }
+					</div>
+					</div>
+				{/if}
 			</div>
 
 		{ else }
 
-			<div id="contentContainer">
+			<div id="contentContainer"{if $berta.settings.pageLayout.responsive=='yes' } class="xResponsive"{/if}>
 				<div id="mainColumnContainer">
-					<div id="mainColumn"{ if $berta.settings.pageLayout.centered == 'yes' }class="xCentered"{ /if }>
+					<div id="mainColumn"{if $berta.settings.pageLayout.centered == 'yes' } class="xCentered"{ /if }{if $berta.settings.pageLayout.responsive=='yes' } data-paddingtop="{$berta.settings.pageLayout.paddingTop}"{/if}>
 						<ol id="pageEntries" class="{ entriesListClasses }">
 
 							{* now loop through all entries and print them out *}
@@ -175,14 +189,14 @@
 
 		{ /if }
 
-
-		{section name=foo loop=10}
-		    { assign var="setting_name_image" value="banner`$smarty.section.foo.iteration`_image" }
-			{ assign var="setting_name_link" value="banner`$smarty.section.foo.iteration`_link" }
-			{ assign var="setting_pos_name" value="banner`$smarty.section.foo.iteration`XY" }
+		<div class="floating-banners">
+		{section name=banners loop=10}
+		    { assign var="setting_name_image" value="banner`$smarty.section.banners.iteration`_image" }
+			{ assign var="setting_name_link" value="banner`$smarty.section.banners.iteration`_link" }
+			{ assign var="setting_pos_name" value="banner`$smarty.section.banners.iteration`XY" }
 
 			{ if $berta.settings.banners.$setting_name_image }
-				<div class="floating-banner xEditableDragXY xProperty-{ $setting_pos_name }" style="{ bannerPos xy_name=$setting_pos_name }">
+				<div class="floating-banner banner-{$smarty.section.banners.iteration}{if $berta.settings.pageLayout.responsive!='yes' } xEditableDragXY xProperty-{ $setting_pos_name }{/if}"{if $berta.settings.pageLayout.responsive!='yes' } style="{ bannerPos xy_name=$setting_pos_name }"{/if}>
 					<div class="xHandle"></div>
 					{ if $berta.settings.banners.$setting_name_link }
 						<a href="{ $berta.settings.banners.$setting_name_link }" target="_blank">
@@ -195,7 +209,7 @@
 
 			{ /if }
 		{/section}
-
+		</div>
 
 	</div>
 

@@ -19,13 +19,9 @@ function smarty_function_white_firstPageMarkedEntry($params, &$smarty) {
 		$entry = $params['entry'];
 		$imageSelect = !empty($params['imageselect']) ? $params['imageselect'] : 'random';
 		$wiggleClass = $berta->template->settings->get('firstPage', 'hoverWiggle') == 'yes' ? 'firstPageWiggle' : '';
+		$isResponsive = $berta->template->settings->get('pageLayout', 'responsive')=='yes';
 
 		$imgs = BertaGallery::getImagesArray($params['entry']['__raw']);
-
-		//var_dump($entry['tags']);
-		//var_dump($berta->tags);
-
-	//	var_dump($entry);
 
 		if($imgs) {
 			$img = $imageSelect == 'first' ? reset($imgs) : $imgs[array_rand($imgs)];
@@ -33,7 +29,6 @@ function smarty_function_white_firstPageMarkedEntry($params, &$smarty) {
 			if($sizeRatio <= 0) $sizeRatio = 1;
 
 			list($html, $w, $h) = BertaGallery::getHTML(array(0 => $img), $params['entry']['__raw']['mediafolder']['value'], 'slideshow', false, true, $sizeRatio);
-			//BertaGallery::getHTML($img, $params['entry']['__raw']['mediafolder']['value']);
 
 			$link = '';
 			if($berta->environment != 'engine' && $img['@attributes']['type'] == 'image') {
@@ -45,12 +40,12 @@ function smarty_function_white_firstPageMarkedEntry($params, &$smarty) {
 					'section' => $params['entry']['section']['name']['value'],
 					'tag' => !empty($params['entry']['tags']) ? reset( $tagKeys ) : null
 				), $smarty);
-				$link = "<a class=\"firstPagePicLink\" href=\"$link\" style=\"width:{$w}px;height:{$h}px;\"></a>";
+				$link = "<a class=\"firstPagePicLink\" href=\"$link\"".($isResponsive ?: "style=\"left:{$pos[0]}px;top:{$pos[1]}px;\"")."></a>";
 			}
 
 			$pos = !empty($entry['positionXY']) ? explode(',', $entry['positionXY']) : array(rand(0, $viewportWidth - $w), rand(0, $viewportHeight - $h));
 			$entryClasses = smarty_function_entryClasses(array('entry' => $params['entry']), $smarty);
-			$html = "<div class=\"firstPagePic $wiggleClass $entryClasses xEditableDragXY xProperty-positionXY \" style=\"left:{$pos[0]}px;top:{$pos[1]}px;\">" .
+			$html = "<div class=\"firstPagePic $wiggleClass $entryClasses xEditableDragXY xProperty-positionXY \"".($isResponsive ?: "style=\"left:{$pos[0]}px;top:{$pos[1]}px;\"").">" .
 						$html .
 						($berta->environment == 'engine' ? "<div class=\"xHandle\" style=\"width:{$w}px;height:{$h}px;\"></div>" : '') .
 						$link .
