@@ -55,13 +55,13 @@ var WhiteTemplate = new Class({
     },
 
     sidebarPositionFix: function(){
-		var contentContainerWidth = this.contentContainer.getSize().x;
+		var allContainerWidth = parseInt(this.allContainer.getStyle('max-width'));
 
 		window.addEvent('resize', function() {
-			if( window.getSize().x < contentContainerWidth ) {
-				this.sideColumn.addClass('xNarrow');
+			if( window.getSize().x < allContainerWidth ) {
+				this.allContainer.addClass('xNarrow');
 			}else{
-				this.sideColumn.removeClass('xNarrow');
+				this.allContainer.removeClass('xNarrow');
 			}
 		}).fireEvent('resize');
     },
