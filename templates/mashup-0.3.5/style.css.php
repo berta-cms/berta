@@ -108,7 +108,7 @@ a img { border: none; }
 			left: 50%;
 			margin-left: -<?php echo ($s->get('pageLayout', 'contentWidth') + $s->get('pageLayout', 'paddingLeft') + $s->get('sideBar', 'width')) / 2 ?>px;
 		}
-		#sideColumn.xNarrow {
+		.xNarrow #sideColumn {
 			left: 0;
 			margin-left: 0;
 		}
@@ -252,6 +252,7 @@ a img { border: none; }
 	#contentContainer {
 		position: relative;
 		z-index: 1000;
+		width: 100%;
 	}
 		#allContainer.xCentered #contentContainer {
 			width: 100%;
@@ -296,6 +297,8 @@ a img { border: none; }
 					top: 0;
 					z-index: 1000;
 					outline: none;
+					width: 100%;
+					height: 100%;
 				}
 
 
@@ -303,7 +306,7 @@ a img { border: none; }
 
 		#mainColumnContainer {
 			position: relative;
-			padding-left: <?php echo $s->get('sideBar', 'marginLeft') ?>;;
+			padding-left: <?php echo $s->get('sideBar', 'marginLeft') ?>;
 		}
 
 		#mainColumn {
@@ -319,6 +322,11 @@ a img { border: none; }
 			#mainColumn.xCentered {
 				left: 50%;
 				margin-left: -<?php echo ($s->get('pageLayout', 'contentWidth') + $s->get('pageLayout', 'paddingLeft') + $s->get('sideBar', 'width')) / 2 - $s->get('sideBar', 'width') ?>px;
+			}
+
+			.xNarrow #mainColumn.xCentered {
+				left: 0;
+				margin-left: <?php echo $s->get('sideBar', 'width') ?>;
 			}
 
 
@@ -499,11 +507,6 @@ a img { border: none; }
 		font-size: 0;
 	}
 
-	.firstPagePicLink {
-		width: 100%;
-		height: 100%;
-	}
-
 	img,
 	iframe,
 	ol#pageEntries li.xEntry .xGalleryContainer .xGallery,
@@ -519,8 +522,41 @@ a img { border: none; }
 
 	ol#pageEntries li.xEntry,
 	ol#pageEntries li.xEntry .xGalleryContainer .xGallery div.xGalleryItem,
+	#firstPageMarkedEntries .xEntry,
+	#firstPageMarkedEntries .xEntry .xGalleryContainer .xGallery div.xGalleryItem,
 	.row .column {
 		-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;
+	}
+
+	#firstPageMarkedEntries.columns-2 .xEntry,
+	#firstPageMarkedEntries.columns-3 .xEntry,
+	#firstPageMarkedEntries.columns-4 .xEntry {
+		float: left;
+		padding-right: 15px;
+	}
+
+	#firstPageMarkedEntries.columns-2 .xEntry {
+		width: 50%;
+	}
+
+	#firstPageMarkedEntries.columns-3 .xEntry {
+		width: 33.33333%;
+	}
+
+	#firstPageMarkedEntries.columns-4 .xEntry {
+		width: 25%;
+	}
+
+	#firstPageMarkedEntries.columns-2 .xEntry:nth-child(2n),
+	#firstPageMarkedEntries.columns-3 .xEntry:nth-child(3n),
+	#firstPageMarkedEntries.columns-4 .xEntry:nth-child(4n) {
+		padding-right: 0;
+	}
+
+	#firstPageMarkedEntries.columns-2 .xEntry:nth-child(2n+1),
+	#firstPageMarkedEntries.columns-3 .xEntry:nth-child(3n+1),
+	#firstPageMarkedEntries.columns-4 .xEntry:nth-child(4n+1) {
+		clear: left;
 	}
 
 	.vjs-poster {
@@ -581,6 +617,11 @@ a img { border: none; }
 		margin-bottom: 0;
 	}
 
+	.xNarrow #mainColumn.xCentered {
+		margin-left: 0;
+	}
+
+
 	#additionalText {
 		position: static;
 	}
@@ -598,12 +639,11 @@ a img { border: none; }
 			position: absolute;
 			bottom: initial;
 			left: 0;
-			padding-left: <?php echo $s->get('pageLayout', 'paddingLeft') ?>;
 			width: 100%;
 		}
 
 		#sideColumnTop {
-			padding-left: 0;
+			padding-left: <?php echo $s->get('pageLayout', 'paddingLeft') ?>;
 		}
 
 		#sideColumnTop h1 {
@@ -633,6 +673,45 @@ a img { border: none; }
 
 		#sideColumnBottom {
 			padding-left: <?php echo $s->get('pageLayout', 'paddingLeft') ?>;
+		}
+
+
+		#firstPageMarkedEntries.columns-3 .xEntry {
+			width: 50%;
+		}
+
+		#firstPageMarkedEntries.columns-4 .xEntry {
+			width: 50%;
+		}
+
+		#firstPageMarkedEntries.columns-3 .xEntry:nth-child(3n+1) {
+			clear: none;
+		}
+
+		#firstPageMarkedEntries.columns-3 .xEntry:nth-child(2n+1),
+		#firstPageMarkedEntries.columns-4 .xEntry:nth-child(2n+1) {
+			clear: left;
+		}
+
+		#firstPageMarkedEntries.columns-3 .xEntry:nth-child(2n),
+		#firstPageMarkedEntries.columns-4 .xEntry:nth-child(2n) {
+			padding-right: 0;
+		}
+
+		#firstPageMarkedEntries.columns-3 .xEntry:nth-child(3n) {
+			padding-right: 15px;
+		}
+
+
+	}
+
+	@media (max-width: 480px) {
+		#firstPageMarkedEntries.columns-2 .xEntry,
+		#firstPageMarkedEntries.columns-3 .xEntry,
+		#firstPageMarkedEntries.columns-4 .xEntry {
+			float: none;
+			width: 100%;
+			padding-right: 0;
 		}
 	}
 

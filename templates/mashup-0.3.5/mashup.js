@@ -50,7 +50,6 @@ var MashupTemplate = new Class({
         }
 	},
 
-
     iframeResponsiveFix: function(el) {
         el.each(function(item) {
             var width = item.get('width');
@@ -68,13 +67,13 @@ var MashupTemplate = new Class({
     },
 
     sidebarPositionFix: function(){
-		var contentContainerWidth = this.contentContainer.getSize().x;
+		var allContainerWidth = parseInt( this.allContainer.getStyle('max-width') );
 
 		window.addEvent('resize', function() {
-			if( window.getSize().x < contentContainerWidth ) {
-				this.sideColumn.addClass('xNarrow');
+			if( window.getSize().x < allContainerWidth ) {
+				this.allContainer.addClass('xNarrow');
 			}else{
-				this.sideColumn.removeClass('xNarrow');
+				this.allContainer.removeClass('xNarrow');
 			}
 		}).fireEvent('resize');
     },
@@ -90,7 +89,7 @@ var MashupTemplate = new Class({
             	this.mainColumn.setStyle('padding-top', mainColumnPaddingTop);
             // small tablet
             }else{
-            	this.mainColumn.setStyle('padding-top', sideColumnHeight + 'px');
+            	this.mainColumn.setStyle('padding-top', parseInt(mainColumnPaddingTop) + sideColumnHeight + 'px');
             }
         });
 

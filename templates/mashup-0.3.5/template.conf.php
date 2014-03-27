@@ -63,6 +63,7 @@ $templateConf = array(
 		'paddingLeft' => 		array('format' => 'text',	'default' => '30px',	'css_units' => true, 	'title' => I18n::_('How far content is from sidebar?'), 'description' => I18n::_('The horizontal distance between the menu and the content area.')),
 		'group_responsive' => array('format' => false, 'default' => false, 'title' => '<h3>'.I18n::_('Resposive design').'</h3>'),
 		'responsive' =>	array('format' => 'select', 'default' => 'no', 'values' => array('no', 'yes'), 'title' => I18n::_('Enabled'), 'description' => I18n::_('Sets whether layout should be responsive or not.')),
+		'mashUpColumns' => array('format' => 'select', 'default' => '1', 'values' => array('1','2','3','4'), 'title' => I18n::_('Mashu-up columns'), 'description' => I18n::_('Column count for Mashu-up section.')),
 	),
 
 	'entryLayout' => array(

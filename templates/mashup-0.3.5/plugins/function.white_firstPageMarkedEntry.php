@@ -45,7 +45,7 @@ function smarty_function_white_firstPageMarkedEntry($params, &$smarty) {
 
 			$pos = !empty($entry['positionXY']) ? explode(',', $entry['positionXY']) : array(rand(0, $viewportWidth - $w), rand(0, $viewportHeight - $h));
 			$entryClasses = smarty_function_entryClasses(array('entry' => $params['entry']), $smarty);
-			$html = "<div class=\"firstPagePic $wiggleClass $entryClasses xEditableDragXY xProperty-positionXY \"".($isResponsive ?: "style=\"left:{$pos[0]}px;top:{$pos[1]}px;\"").">" .
+			$html = "<div class=\"firstPagePic $wiggleClass $entryClasses".($isResponsive?: ' xEditableDragXY xProperty-positionXY ')." \"".($isResponsive ?: "style=\"left:{$pos[0]}px;top:{$pos[1]}px;\"").">" .
 						$html .
 						($berta->environment == 'engine' ? "<div class=\"xHandle\" style=\"width:{$w}px;height:{$h}px;\"></div>" : '') .
 						$link .
@@ -59,7 +59,7 @@ function smarty_function_white_firstPageMarkedEntry($params, &$smarty) {
 			if($html) {
 				$pos = !empty($entry['positionXY']) ? explode(',', $entry['positionXY']) : array(rand(0, $viewportWidth - $w), rand(0, $viewportHeight - $h));
 				$entryClasses = smarty_function_entryClasses(array('entry' => $params['entry']), $smarty);
-				$html = "<div class=\"firstPagePic $wiggleClass $entryClasses xEditableDragXY xProperty-positionXY \" style=\"left:{$pos[0]}px;top:{$pos[1]}px;\">" .
+				$html = "<div class=\"firstPagePic $wiggleClass $entryClasses".($isResponsive?: ' xEditableDragXY xProperty-positionXY ')." \"".($isResponsive ?: "style=\"left:{$pos[0]}px;top:{$pos[1]}px;\"").">" .
 							$html .
 							($berta->environment == 'engine' ? "<div class=\"xHandle\" style=\"width:100%;height:100%;\"></div>" : '') .
 						'</div>';
