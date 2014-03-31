@@ -96,6 +96,9 @@ $templateConf = array(
 		'fontSize' => 				array('format' => 'text', 'css_units' => true, 'default' => 'inherit', 				                                    'title' => I18n::_('Font size'),                         'description' => ''),
 		'fontFamily' => 			array('format' => 'fontselect',		'values' => $fontOptionsWithInherit, 'default' => 'inherit', 	        'title' => I18n::_('Font face'),                         'description' => ''),
 		'googleFont' => 			array('format' => 'text',		'default' => '', 'html_entities' => true,									'title' => 'Google web fonts',         'description' => I18n::_('googleFont_description')),
+		'colorLink' => 				array('format' => 'color',		'default' => '#888888', 	                                                'title' => I18n::_('Color'),                 'description' => ''),
+		'colorHover' => 			array('format' => 'color',		'default' => '#888888', 	                                                'title' => I18n::_('Color when hovered'),    'description' => I18n::_('Color of the element under mouse cursor')),
+		'colorActive' => 			array('format' => 'color',		'default' => '#888888', 	                                                'title' =>I18n::_( 'Color when selected'),   'description' => I18n::_('Color of the element of the currently opened section')),
 		'fontWeight' => 			array('format' => 'select',		'values' => array('inherit', 'normal', 'bold'), 'default' => 'inherit',     'title' => I18n::_('Font weight'),                       'description' => ''),
 		'fontStyle' => 			array('format' => 'select',		'values' => array('inherit', 'normal', 'italic'), 'default' => 'inherit', 	    'title' => I18n::_('Font style'),                        'description' => ''),
 		'fontVariant' => 			array('format' => 'select',		'values' => array('inherit', 'normal', 'small-caps'), 'default' => 'inherit','title' => I18n::_('Font variant'),                     'description' => ''),
@@ -116,7 +119,6 @@ $templateConf = array(
 		'lineHeight' =>			array('format' => 'text', 'css_units' => true, 'default' => 'inherit', 				                                        'title' => I18n::_('Line height'),                               'description' => I18n::_('Height of text line. Use em, px or % values or the default value "normal"')),
 		'margin' => 				array('format' => 'text', 'css_units' => true,	'default' => '0 0 10px', 				                                    'title' => I18n::_('Margins'),                                   'description' => I18n::_('How far the menu is form other elements in page. Please see the short CSS guide at the bottom of this page.'))
 	),
-
 
 	'entryLayout' => array(
 		'_' => array('title' => I18n::_('Entry layout')),
@@ -151,14 +153,12 @@ $templateConf = array(
 		'fontVariant' => 			array('format' => 'select',		'values' => array('inherit', 'normal', 'small-caps'), 'default' => 'inherit','title' =>I18n::_('Font variant'),      'description' => ''),
 		'lineHeight' => 			array('format' => 'text', 'css_units' => true, 'default' => 'inherit', 					                                'title' => I18n::_('Line height'),       'description' => I18n::_('Height of text line. Use em, px or % values or the default value "normal"')),
 	),
+
 	'css' => array(
 		'_' => array('title' => I18n::_('Custom CSS')),
 		'customCSS' =>	array('format' => 'longtext',	'allow_blank' => true,	'default' => '',	'html_entities'	=> true,	'title' => I18n::_('Custom CSS'), 'description' => I18n::_('description_custom_css'))
 	)
-
-
 );
 
 return array($sectionTypes, $templateConf);
-
 ?>

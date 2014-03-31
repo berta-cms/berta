@@ -144,10 +144,24 @@ h1 {
 					padding: 0;
 				}
 				div#siteTopMenu ul li:first-child .separator { display: none; }
-				div#siteTopMenu ul li a {
+
+				div#siteTopMenu ul li a:link,
+				div#siteTopMenu ul li a:visited {
 					display: block;
 					float: left;
+					color: <?php echo $s->get('menu', 'colorLink') ?>;
 				}
+
+				div#siteTopMenu ul li a:active,
+				div#siteTopMenu ul li.selected>span,
+				div#siteTopMenu ul li.selected>a {
+					color: <?php echo $s->get('menu', 'colorActive') ?>;
+				}
+
+				div#siteTopMenu ul li a:hover {
+					color: <?php echo $s->get('menu', 'colorHover') ?>;
+				}
+
 				div#siteTopMenu ul li.selected a,
 				div#siteTopMenu ul li.selected span {
 					font-weight: bold;
