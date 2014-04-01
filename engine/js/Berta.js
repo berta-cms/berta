@@ -155,6 +155,7 @@ var Berta = new Class({
 		templateName = templateName[0];
 
 		var footerOverlayFix = function() {
+			var windowWidth = window.getSize().x;
 			var windowHeight = window.getSize().y;
 			var sideColumnTop = $('sideColumnTop');
 			var sideColumnBottom = $('sideColumnBottom');
@@ -162,7 +163,7 @@ var Berta = new Class({
 			if (sideColumnBottom && sideColumnBottom) {
 				var sideColumnTopHeight = sideColumnTop.getSize().y;
 				var sideColumnBottomHeight = sideColumnBottom.getSize().y;
-				if (windowHeight < sideColumnTopHeight + sideColumnBottomHeight){
+				if ( (isResponsive && breakPointWidth > windowWidth) || (windowHeight < sideColumnTopHeight + sideColumnBottomHeight) ){
 					sideColumnBottom.setStyle('position', 'static');
 				}else{
 					sideColumnBottom.setStyle('position', 'absolute');
@@ -171,6 +172,10 @@ var Berta = new Class({
 		}
 
 		if (templateName=='mashup' || templateName=='white'){
+
+			var isResponsive = $$('.xResponsive').length;
+			var breakPointWidth = 767;
+
 			footerOverlayFix.delay(1000);
 			$(window).addEvent('resize', footerOverlayFix);
 		}
@@ -190,7 +195,7 @@ var Berta = new Class({
 
 	            window.addEvent('resize', function(){
 
-	                if (breakPointWidth < this.getSize().x+15){
+	                if (breakPointWidth < this.getSize().x){
 	                    objSlide.show();
 	                // small tablet
 	                }else{

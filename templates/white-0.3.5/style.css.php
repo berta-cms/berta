@@ -7,6 +7,7 @@ $IS_CSS_FILE = true;
 include('../../engine/inc.page.php');
 $s =& $berta->template->settings;
 $isEngineView = $berta->security->userLoggedIn;
+$isResponsive = $s->get('pageLayout', 'responsive')=='yes';
 
 
 if(!1) { ?><style type="text/css"><?php } ?>
@@ -19,7 +20,6 @@ html, body {
 .ie6 html {
 	overflow-y: hidden;
 }
-
 
 
 body {
@@ -52,30 +52,21 @@ body {
 a:link {
 	color: <?php echo $s->get('links', 'colorLink') ?>;
 	text-decoration: <?php echo $s->get('links', 'textDecorationLink') ?>;
-	/*border: <?php echo $s->get('links', 'border:link') ?>;*/
 }
 a:visited {
 	color: <?php echo $s->get('links', 'colorVisited') ?>;
 	text-decoration: <?php echo $s->get('links', 'textDecorationVisited') ?>;
-	/*border: <?php echo $s->get('links', 'border:visited') ?>;*/
 }
 a:hover {
 	color: <?php echo $s->get('links', 'colorHover') ?>;
 	text-decoration: <?php echo $s->get('links', 'textDecorationHover') ?>;
-	/*border: <?php echo $s->get('links', 'border:hover') ?>;*/
 }
 a:active {
 	color: <?php echo $s->get('links', 'colorActive') ?>;
 	text-decoration: <?php echo $s->get('links', 'textDecorationActive') ?>;
-	/*border: <?php echo $s->get('links', 'border:active') ?>;*/
 }
 
 a img { border: none; }
-
-
-
-
-
 
 
 
@@ -86,8 +77,9 @@ a img { border: none; }
 }
 	#allContainer.xCentered {
 		margin: 0 auto;
-		width: <?php echo $s->get('pageLayout', 'leftColumnWidth') + $s->get('pageLayout', 'contentWidth') + $s->get('pageLayout', 'paddingLeft') ?>px;
+		max-width: <?php echo $s->get('pageLayout', 'leftColumnWidth') + $s->get('pageLayout', 'contentWidth') + $s->get('pageLayout', 'paddingLeft') ?>px;
 	}
+
 .ie6 #allContainer {
 	width: 100%;
 	height: 100%;
@@ -107,6 +99,10 @@ a img { border: none; }
 			left: 50%;
 			margin-left: -<?php echo ($s->get('pageLayout', 'leftColumnWidth') + $s->get('pageLayout', 'contentWidth') + $s->get('pageLayout', 'paddingLeft')) / 2 ?>px;
 		}
+		#sideColumn.xNarrow {
+			left: 0;
+			margin-left: 0;
+		}
 	.ie6 #sideColumn {
 		position: absolute;
 		height: 100%;
@@ -114,7 +110,6 @@ a img { border: none; }
 
 		#sideColumnTop {
 			padding: 30px 20px 20px;
-			/*width: 140px;*/
 		}
 
 
@@ -159,12 +154,10 @@ a img { border: none; }
 			#sideColumnTop a:hover {
 				color: <?php echo $s->get('menu', 'colorHover') ?>;
 				text-decoration: <?php echo $s->get('menu', 'textDecorationHover') ?>;
-				/*border: <?php echo $s->get('links', 'border:hover') ?>;*/
 			}
 			#sideColumnTop a:active, #sideColumnTop li.selected>a, #sideColumnTop li.selected>span {
 				color: <?php echo $s->get('menu', 'colorActive') ?>;
 				text-decoration: <?php echo $s->get('menu', 'textDecorationActive') ?>;
-				/*border: <?php echo $s->get('links', 'border:active') ?>;*/
 			}
 
 
@@ -178,8 +171,7 @@ a img { border: none; }
 					font-weight: bold;
 				}
 					#sideColumnTop ul li.selected>a {
-						/*font-weight: bold;
-						color: #000;*/
+
 					}
 				#sideColumnTop ul ul {
 					margin: 0 0 0 10px;
@@ -215,8 +207,6 @@ a img { border: none; }
 
 			}
 
-
-
 	#contentContainer {
 		position: relative;
 		z-index: 1000;
@@ -238,8 +228,10 @@ a img { border: none; }
 			margin-left: <?php echo $s->get('pageLayout', 'leftColumnWidth') ?>;
 			padding-bottom: 20px;
 			padding-left: <?php echo $s->get('pageLayout', 'paddingLeft') ?>;
-			/*width: 800px;*/
-			width: <?php echo $s->get('pageLayout', 'contentWidth') ?>;
+			padding-right: <?php echo $s->get('pageLayout', 'paddingLeft') ?>;
+
+			width: auto;
+			max-width: <?php echo $s->get('pageLayout', 'contentWidth') ?>;
 		}
 			#mainColumn.xCentered {
 				left: 50%;
@@ -381,19 +373,164 @@ a img { border: none; }
 					clear: both;
 				}
 
-
+				.floating-banners {
+					margin-left: <?php echo $s->get('pageLayout', 'leftColumnWidth') ?>;
+					padding-left: <?php echo $s->get('pageLayout', 'paddingLeft') ?>;
+				}
 
 				.floating-banner {
 					position: absolute;
 					z-index: 3000;
 				}
 
+	.iframeWrapper  {
+		position: relative;
+		padding-bottom: 56.25%;
+	}
+
+	.iframeWrapper iframe {
+		position: absolute;
+		width: 100%;
+		height: 100% !important;
+	}
 
 
+<?php if( $isResponsive ){ ?>
 
+	#sideColumn.xCentered {
+		left: initial;
+		margin-left: 0;
+	}
 
+	img,
+	iframe,
+	ol#pageEntries li.xEntry .xGalleryContainer .xGallery,
+	ol#pageEntries li.xEntry .xGalleryContainer .xGallery div.xGalleryItem,
+	ol#pageEntries li.xEntry .xGalleryContainer .xGallery div.xGalleryItem .image {
+		max-width: 100% !important;
+		height: auto !important;
+	}
 
+	ol#pageEntries li.xEntry,
+	ol#pageEntries li.xEntry .xGalleryContainer .xGallery div.xGalleryItem,
+	.row .column {
+		-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;
+	}
 
+	.vjs-poster {
+		position: absolute;
+		top: 0;
+		left: 0;
+	}
 
+	#contentContainer {
+		width: auto;
+		max-width: 900px;
+	}
+
+	#menuToggle {
+		display: none;
+		width: 1.5em;
+		height: auto;
+		padding: 1.5em 1em;
+		margin-bottom: 0.5em;
+		border: 1px solid black;
+		background-color: black;
+	}
+
+	#menuToggle.active {
+		background-color: white;
+	}
+
+	#menuToggle span {
+		position: relative;
+		display: block;
+	}
+
+	#menuToggle span,
+	#menuToggle span:before,
+	#menuToggle span:after {
+		background-color: white;
+		width: 100%;
+		height: 2px;
+	}
+
+	#menuToggle.active span,
+	#menuToggle.active span:before,
+	#menuToggle.active span:after {
+		background-color: black;
+	}
+
+	#menuToggle span:before,
+	#menuToggle span:after {
+		position: absolute;
+		margin-top: -.6em;
+		content: " ";
+	}
+
+	#menuToggle span:after {
+		margin-top: .6em;
+	}
+
+	#sideColumnTop ul {
+		margin-bottom: 0;
+	}
+
+	#additionalText {
+		position: static;
+
+	}
+
+	.floating-banner {
+		position: static;
+		display: inline-block;
+		margin: 10px 10px 10px 0;
+	}
+
+	/* small tablet */
+	@media (max-width: 767px)  {
+
+		#sideColumn {
+			position: absolute;
+			bottom: initial;
+			left: 0;
+			padding-left: <?php echo $s->get('pageLayout', 'paddingLeft') ?>;
+		}
+
+		#sideColumnTop {
+			padding-left: 0;
+		}
+
+		#sideColumnTop h1 {
+			min-height: initial;
+		}
+
+		#sideColumnTop ul li {
+			margin-top: 1em;
+		}
+
+		#menuToggle {
+			display: inline-block;
+		}
+
+		#mainColumn {
+			margin-left: 0;
+		}
+
+		#mainColumn.xCentered {
+			left: initial;
+			margin-left: 0;
+		}
+
+		.floating-banners {
+			margin-left: 0;
+		}
+
+		#sideColumnBottom {
+			padding-left: <?php echo $s->get('pageLayout', 'paddingLeft') ?>;
+		}
+	}
+
+<?php } ?>
 
 <?php if(!1) { ?></style><?php } ?>
