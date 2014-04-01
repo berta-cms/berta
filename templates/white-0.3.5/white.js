@@ -81,6 +81,16 @@ var WhiteTemplate = new Class({
             }
         });
 
+        var headerImage = this.sideColumn.getElement('img');
+
+        if (headerImage) {
+            Asset.image(headerImage.get('src'), {
+                onLoad: function(){
+                    window.fireEvent('resize');
+                }
+            });
+        }
+
         setTimeout(
         	function(){
         		window.fireEvent('resize');
