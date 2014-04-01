@@ -99,7 +99,7 @@ a img { border: none; }
 			left: 50%;
 			margin-left: -<?php echo ($s->get('pageLayout', 'leftColumnWidth') + $s->get('pageLayout', 'contentWidth') + $s->get('pageLayout', 'paddingLeft')) / 2 ?>px;
 		}
-		#sideColumn.xNarrow {
+		#allContainer.xNarrow #sideColumn {
 			left: 0;
 			margin-left: 0;
 		}
@@ -210,10 +210,9 @@ a img { border: none; }
 	#contentContainer {
 		position: relative;
 		z-index: 1000;
+		width: 100%;
 	}
-		#allContainer.xCentered #contentContainer {
-			width: 100%;
-		}
+
 	.ie6 #contentContainer {
 		left: 0;
 		top: 0;
@@ -237,7 +236,10 @@ a img { border: none; }
 				left: 50%;
 				margin-left: -<?php echo ($s->get('pageLayout', 'leftColumnWidth') + $s->get('pageLayout', 'contentWidth') + $s->get('pageLayout', 'paddingLeft')) / 2 - $s->get('pageLayout', 'leftColumnWidth') ?>px;
 			}
-
+			.xNarrow #mainColumn.xCentered {
+				left: 0;
+				margin-left: <?php echo $s->get('pageLayout', 'leftColumnWidth') ?>;
+			}
 
 		ol#pageEntries {
 			position: relative;
@@ -425,7 +427,6 @@ a img { border: none; }
 
 	#contentContainer {
 		width: auto;
-		max-width: 900px;
 	}
 
 	#menuToggle {
@@ -519,6 +520,10 @@ a img { border: none; }
 
 		#mainColumn.xCentered {
 			left: initial;
+			margin-left: 0;
+		}
+
+		.xNarrow #mainColumn.xCentered {
 			margin-left: 0;
 		}
 
