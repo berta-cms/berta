@@ -5,16 +5,15 @@ header("Content-Type: text/css");
 $SITE_ROOT = '../../';
 include('../../engine/inc.page.php');
 $s =& $berta->template->settings;
+$isResponsive = $s->get('pageLayout', 'responsive')=='yes';
 
 if(!1) { ?><style type="text/css"><?php } ?>
-
 
 	#xTopPanelContainer {
 		position:fixed;
 		left: 0; top: 0;
 	}
-	
-	
+
 	.xEntry .xHandle {
 		position: absolute;
 		display: block;
@@ -22,11 +21,11 @@ if(!1) { ?><style type="text/css"><?php } ?>
 		top: 0;
 		z-index: 1000;
 	}
-	
+
 	.noEntries .xCreateNewEntry {
 		display: none;
 	}
-	
+
 	#additionalText .xHandle {
 		position: absolute;
 		left: 0;
@@ -41,7 +40,7 @@ if(!1) { ?><style type="text/css"><?php } ?>
 	#additionalText:hover .xHandle  {
 		visibility: visible;
 	}
-	
+
 	.floating-banner .xHandle {
 		position: absolute;
 		left: 0;
@@ -56,7 +55,12 @@ if(!1) { ?><style type="text/css"><?php } ?>
 	.floating-banner:hover .xHandle  {
 		visibility: visible;
 	}
-	
 
+	<?php if($isResponsive){ ?>
+		#additionalText:hover .xHandle,
+		.floating-banner:hover .xHandle {
+			visibility: hidden;
+		}
+	<?php } ?>
 
 <?php if(!1) { ?></style><?php } ?>

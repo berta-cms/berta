@@ -117,8 +117,11 @@ var inlineEdit = new Class({
 				// tinymce wouldn't allow heights smaller than 100
 				(function(){
 					var e = $(ed.id + '_tbl'), ifr = $(ed.id + '_ifr');
-		            e.setStyle('height', WYSIWYGSettings.options.WYSIWYGSettings.height);
-					ifr.setStyle('height', WYSIWYGSettings.options.WYSIWYGSettings.height);
+					if (e) {
+						e.setStyle('height', WYSIWYGSettings.options.WYSIWYGSettings.height);
+						ifr.setStyle('height', WYSIWYGSettings.options.WYSIWYGSettings.height);
+					}
+
 					// set styles for the tinymce body element
 					WYSIWYGSettings.setAllStylesMCE(element, ed);
 

@@ -5,6 +5,7 @@ header("Content-Type: text/css");
 $SITE_ROOT = '../../';
 include('../../engine/inc.page.php');
 $s =& $berta->template->settings;
+$isResponsive = $s->get('pageLayout', 'responsive')=='yes';
 
 if(!1) { ?><style type="text/css"><?php } ?>
 
@@ -16,7 +17,7 @@ if(!1) { ?><style type="text/css"><?php } ?>
 	#contentContainer {
 		overflow: visible !important;
 	}
-	
+
 	#additionalText .xHandle {
 		position: absolute;
 		left: 0;
@@ -31,7 +32,7 @@ if(!1) { ?><style type="text/css"><?php } ?>
 	#additionalText:hover .xHandle  {
 		visibility: visible;
 	}
-	
+
 	.floating-banner .xHandle {
 		position: absolute;
 		left: 0;
@@ -47,5 +48,11 @@ if(!1) { ?><style type="text/css"><?php } ?>
 		visibility: visible;
 	}
 
+	<?php if($isResponsive){ ?>
+		#additionalText:hover .xHandle,
+		.floating-banner:hover .xHandle {
+			visibility: hidden;
+		}
+	<?php } ?>
 
 <?php if(!1) { ?></style><?php } ?>

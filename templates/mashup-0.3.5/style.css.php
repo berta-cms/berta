@@ -5,6 +5,7 @@ $IS_CSS_FILE = true;
 include('../../engine/inc.page.php');
 $s =& $berta->template->settings;
 $isEngineView = $berta->security->userLoggedIn;
+$isResponsive = $s->get('pageLayout', 'responsive')=='yes';
 
 $expires= 60 * 60 * 24 * 1;	// 1 day
 header('Pragma: public');
@@ -57,22 +58,18 @@ body {
 a:link {
 	color: <?php echo $s->get('links', 'colorLink') ?>;
 	text-decoration: <?php echo $s->get('links', 'textDecorationLink') ?>;
-	/*border: <?php echo $s->get('links', 'border:link') ?>;*/
 }
 a:visited {
 	color: <?php echo $s->get('links', 'colorVisited') ?>;
 	text-decoration: <?php echo $s->get('links', 'textDecorationVisited') ?>;
-	/*border: <?php echo $s->get('links', 'border:visited') ?>;*/
 }
 a:hover {
 	color: <?php echo $s->get('links', 'colorHover') ?>;
 	text-decoration: <?php echo $s->get('links', 'textDecorationHover') ?>;
-	/*border: <?php echo $s->get('links', 'border:hover') ?>;*/
 }
 a:active {
 	color: <?php echo $s->get('links', 'colorActive') ?>;
 	text-decoration: <?php echo $s->get('links', 'textDecorationActive') ?>;
-	/*border: <?php echo $s->get('links', 'border:active') ?>;*/
 }
 
 a img { border: none; }
@@ -82,10 +79,6 @@ a img { border: none; }
 }
 
 
-
-
-
-
 #allContainer {
 	position: relative;
 	margin: 0;
@@ -93,7 +86,7 @@ a img { border: none; }
 }
 	#allContainer.xCentered {
 		margin: 0 auto;
-		width: <?php echo $s->get('pageLayout', 'contentWidth') + $s->get('pageLayout', 'paddingLeft') + $s->get('sideBar', 'width') ?>px;
+		max-width: <?php echo $s->get('pageLayout', 'contentWidth') + $s->get('pageLayout', 'paddingLeft') + $s->get('sideBar', 'width') ?>px;
 	}
 .ie6 #allContainer {
 	width: 100%;
@@ -115,6 +108,11 @@ a img { border: none; }
 			left: 50%;
 			margin-left: -<?php echo ($s->get('pageLayout', 'contentWidth') + $s->get('pageLayout', 'paddingLeft') + $s->get('sideBar', 'width')) / 2 ?>px;
 		}
+		.xNarrow #sideColumn {
+			left: 0;
+			margin-left: 0;
+		}
+
 	.ie6 #sideColumn {
 		position: absolute;
 		height: 100%;
@@ -166,12 +164,10 @@ a img { border: none; }
 			#sideColumnTop li a:hover {
 				color: <?php echo $s->get('menu', 'colorHover') ?>;
 				text-decoration: <?php echo $s->get('menu', 'textDecorationHover') ?>;
-				/*border: <?php echo $s->get('links', 'border:hover') ?>;*/
 			}
 			#sideColumnTop li a:active, #sideColumnTop li.selected>a, #sideColumnTop li.selected>span {
 				color: <?php echo $s->get('menu', 'colorActive') ?>;
 				text-decoration: <?php echo $s->get('menu', 'textDecorationActive') ?>;
-				/*border: <?php echo $s->get('links', 'border:active') ?>;*/
 			}
 
 			#sideColumnTop li li a:link, #sideColumnTop li li a:visited {
@@ -181,12 +177,10 @@ a img { border: none; }
 			#sideColumnTop li li a:hover {
 				color: <?php echo $s->get('tagsMenu', 'colorHover') ?>;
 				text-decoration: <?php echo $s->get('tagsMenu', 'textDecorationHover') ?>;
-				/*border: <?php echo $s->get('links', 'border:hover') ?>;*/
 			}
 			#sideColumnTop li li a:active, #sideColumnTop li li.selected>a {
 				color: <?php echo $s->get('tagsMenu', 'colorActive') ?>;
 				text-decoration: <?php echo $s->get('tagsMenu', 'textDecorationActive') ?>;
-				/*border: <?php echo $s->get('links', 'border:active') ?>;*/
 			}
 
 
@@ -206,8 +200,7 @@ a img { border: none; }
 
 				}
 					#sideColumnTop ul li.selected>a {
-						/*font-weight: bold;
-						color: #000;*/
+
 					}
 				#sideColumnTop ul ul {
 					margin: 0 0 0 0px;
@@ -232,7 +225,7 @@ a img { border: none; }
 			position: absolute;
 			min-width: 140px;
 		}
-			#additionalText p { margin: 0; padding: 0; }
+			#additionalText p { margin-top: 0; padding: 0; }
 
 
 		#sideColumnBottom {
@@ -259,6 +252,7 @@ a img { border: none; }
 	#contentContainer {
 		position: relative;
 		z-index: 1000;
+		width: 100%;
 	}
 		#allContainer.xCentered #contentContainer {
 			width: 100%;
@@ -275,7 +269,7 @@ a img { border: none; }
 			position: relative;
 		}
 			#firstPageMarkedEntries .xEntry {
-				width: <?php echo $s->get('pageLayout', 'contentWidth') ?>;
+				max-width: <?php echo $s->get('pageLayout', 'contentWidth') ?>;
 			}
 			.firstPagePic {
 				position: absolute;
@@ -288,15 +282,13 @@ a img { border: none; }
 					}
 				.firstPagePic .xGallery {
 					<?php if($s->get('firstPage', 'imageHaveShadows') == 'yes') { ?>
-					background: url('layout/shadow.png') right bottom;
+					-webkit-box-shadow: 5px 5px 2px #ccc;
+					-moz-box-shadow: 5px 5px 2px #ccc;
+					box-shadow: 5px 5px 2px #ccc;
 					<?php } ?>
 				}
 					.firstPagePic .xGalleryItem {
-						position: absolute;
-						<?php if($s->get('firstPage', 'imageHaveShadows') == 'yes') { ?>
-						left: -5px;
-						top: -5px;
-						<?php } ?>
+
 					}
 				.firstPagePicLink {
 					display: block;
@@ -305,6 +297,8 @@ a img { border: none; }
 					top: 0;
 					z-index: 1000;
 					outline: none;
+					width: 100%;
+					height: 100%;
 				}
 
 
@@ -312,21 +306,27 @@ a img { border: none; }
 
 		#mainColumnContainer {
 			position: relative;
-			padding-left: <?php echo $s->get('sideBar', 'marginLeft') ?>;;
+			padding-left: <?php echo $s->get('sideBar', 'marginLeft') ?>;
 		}
 
 		#mainColumn {
 			position: relative;
-			padding-top: <?php echo $s->get('pageLayout', 'paddingTop') ?>;
 			margin-left: <?php echo $s->get('sideBar', 'width') ?>;
-			padding-bottom: 20px;
+			padding-top: <?php echo $s->get('pageLayout', 'paddingTop') ?>;
 			padding-left: <?php echo $s->get('pageLayout', 'paddingLeft') ?>;
-			/*width: 800px;*/
-			width: <?php echo $s->get('pageLayout', 'contentWidth') ?>;
+			padding-bottom: 20px;
+			padding-right: <?php echo $s->get('pageLayout', 'paddingLeft') ?>;
+			width: auto;
+			max-width: <?php echo $s->get('pageLayout', 'contentWidth') ?>;
 		}
 			#mainColumn.xCentered {
 				left: 50%;
 				margin-left: -<?php echo ($s->get('pageLayout', 'contentWidth') + $s->get('pageLayout', 'paddingLeft') + $s->get('sideBar', 'width')) / 2 - $s->get('sideBar', 'width') ?>px;
+			}
+
+			.xNarrow #mainColumn.xCentered {
+				left: 0;
+				margin-left: <?php echo $s->get('sideBar', 'width') ?>;
 			}
 
 
@@ -459,25 +459,262 @@ a img { border: none; }
 							list-style-type: decimal;
 						}
 
-
 				ol#pageEntries li.xEntry .entryTags {
 					position: relative;
 					clear: both;
 				}
 
+				.floating-banners {
+					margin-left: <?php echo $s->get('sideBar', 'width') ?>;
+					padding-left: <?php echo $s->get('pageLayout', 'paddingLeft') ?>;
+				}
 
+				.floating-banner {
+					position: absolute;
+					z-index: 3000;
+				}
 
+	.iframeWrapper  {
+		position: relative;
+		padding-bottom: 56.25%;
+	}
 
-	.floating-banner {
+	.iframeWrapper iframe {
 		position: absolute;
-		z-index: 3000;
+		width: 100%;
+		height: 100% !important;
 	}
 
 
+<?php if( $isResponsive ){ ?>
+
+	#sideColumn.xCentered {
+		left: initial;
+		margin-left: 0;
+	}
+
+	.firstPagePic {
+		position: relative;
+		margin-bottom: <?php echo $s->get('pageLayout', 'paddingLeft') ?>;
+	}
+
+	#firstPageMarkedEntries .xEntry {
+		max-width: <?php echo $s->get('firstPage', 'imageSizeRatio')*100 ?>%;
+	}
 
 
+	#firstPageMarkedEntries .xEntry .xGalleryContainer .xGallery div.xGalleryItem {
+		font-size: 0;
+	}
+
+	img,
+	iframe,
+	ol#pageEntries li.xEntry .xGalleryContainer .xGallery,
+	ol#pageEntries li.xEntry .xGalleryContainer .xGallery div.xGalleryItem,
+	ol#pageEntries li.xEntry .xGalleryContainer .xGallery div.xGalleryItem .image,
+	#firstPageMarkedEntries .xEntry .xGalleryContainer .xGallery,
+	#firstPageMarkedEntries .xEntry .xGalleryContainer .xGallery div.xGalleryItem,
+	#firstPageMarkedEntries .xEntry .xGalleryContainer .xGallery div.xGalleryItem .image
+	{
+		max-width: 100% !important;
+		height: auto !important;
+	}
+
+	ol#pageEntries li.xEntry,
+	ol#pageEntries li.xEntry .xGalleryContainer .xGallery div.xGalleryItem,
+	#firstPageMarkedEntries .xEntry,
+	#firstPageMarkedEntries .xEntry .xGalleryContainer .xGallery div.xGalleryItem,
+	.row .column {
+		-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;
+	}
+
+	#firstPageMarkedEntries.columns-2 .xEntry,
+	#firstPageMarkedEntries.columns-3 .xEntry,
+	#firstPageMarkedEntries.columns-4 .xEntry {
+		float: left;
+		padding-right: 15px;
+	}
+
+	#firstPageMarkedEntries.columns-2 .xEntry {
+		width: 50%;
+	}
+
+	#firstPageMarkedEntries.columns-3 .xEntry {
+		width: 33.33333%;
+	}
+
+	#firstPageMarkedEntries.columns-4 .xEntry {
+		width: 25%;
+	}
+
+	#firstPageMarkedEntries.columns-2 .xEntry:nth-child(2n),
+	#firstPageMarkedEntries.columns-3 .xEntry:nth-child(3n),
+	#firstPageMarkedEntries.columns-4 .xEntry:nth-child(4n) {
+		padding-right: 0;
+	}
+
+	#firstPageMarkedEntries.columns-2 .xEntry:nth-child(2n+1),
+	#firstPageMarkedEntries.columns-3 .xEntry:nth-child(3n+1),
+	#firstPageMarkedEntries.columns-4 .xEntry:nth-child(4n+1) {
+		clear: left;
+	}
+
+	.vjs-poster {
+		position: absolute;
+		top: 0;
+		left: 0;
+	}
+
+	#contentContainer {
+		width: auto;
+	}
+
+	#menuToggle {
+		display: none;
+		width: 1.5em;
+		height: auto;
+		padding: 1.5em 1em;
+		margin-bottom: 0.5em;
+		border: 1px solid black;
+		background-color: black;
+	}
+
+	#menuToggle.active {
+		background-color: white;
+	}
+
+	#menuToggle span {
+		position: relative;
+		display: block;
+	}
+
+	#menuToggle span,
+	#menuToggle span:before,
+	#menuToggle span:after {
+		background-color: white;
+		width: 100%;
+		height: 2px;
+	}
+
+	#menuToggle.active span,
+	#menuToggle.active span:before,
+	#menuToggle.active span:after {
+		background-color: black;
+	}
+
+	#menuToggle span:before,
+	#menuToggle span:after {
+		position: absolute;
+		margin-top: -.6em;
+		content: " ";
+	}
+
+	#menuToggle span:after {
+		margin-top: .6em;
+	}
+
+	#sideColumnTop ul {
+		margin-bottom: 0;
+	}
+
+	.xNarrow #mainColumn.xCentered {
+		margin-left: 0;
+	}
 
 
+	#additionalText {
+		position: static;
+	}
 
+	.floating-banner {
+		position: static;
+		display: inline-block;
+		margin: 10px 10px 10px 0;
+	}
+
+	/* small tablet */
+	@media (max-width: 767px)  {
+
+		#sideColumn {
+			position: absolute;
+			bottom: initial;
+			left: 0;
+			width: 100%;
+		}
+
+		#sideColumnTop {
+			padding-left: <?php echo $s->get('pageLayout', 'paddingLeft') ?>;
+		}
+
+		#sideColumnTop h1 {
+			min-height: initial;
+		}
+
+		#sideColumnTop ul li {
+			margin-top: 1em;
+		}
+
+		#menuToggle {
+			display: inline-block;
+		}
+
+		#mainColumn {
+			margin-left: 0;
+		}
+
+		#mainColumn.xCentered {
+			left: initial;
+			margin-left: 0;
+		}
+
+		.floating-banners {
+			margin-left: 0;
+		}
+
+		#sideColumnBottom {
+			padding-left: <?php echo $s->get('pageLayout', 'paddingLeft') ?>;
+		}
+
+
+		#firstPageMarkedEntries.columns-3 .xEntry {
+			width: 50%;
+		}
+
+		#firstPageMarkedEntries.columns-4 .xEntry {
+			width: 50%;
+		}
+
+		#firstPageMarkedEntries.columns-3 .xEntry:nth-child(3n+1) {
+			clear: none;
+		}
+
+		#firstPageMarkedEntries.columns-3 .xEntry:nth-child(2n+1),
+		#firstPageMarkedEntries.columns-4 .xEntry:nth-child(2n+1) {
+			clear: left;
+		}
+
+		#firstPageMarkedEntries.columns-3 .xEntry:nth-child(2n),
+		#firstPageMarkedEntries.columns-4 .xEntry:nth-child(2n) {
+			padding-right: 0;
+		}
+
+		#firstPageMarkedEntries.columns-3 .xEntry:nth-child(3n) {
+			padding-right: 15px;
+		}
+
+
+	}
+
+	@media (max-width: 480px) {
+		#firstPageMarkedEntries.columns-2 .xEntry,
+		#firstPageMarkedEntries.columns-3 .xEntry,
+		#firstPageMarkedEntries.columns-4 .xEntry {
+			float: none;
+			width: 100%;
+			padding-right: 0;
+		}
+	}
+
+<?php } ?>
 
 <?php if(!1) { ?></style><?php } ?>
