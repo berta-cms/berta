@@ -41,6 +41,7 @@ $topPanelHTML = BertaEditor::getTopPanelHTML('sections');
 					<div class="csBehaviour"><?php echo I18n::_('Type') ?></div>
 					<div class="csDetails"><?php echo I18n::_('Details') ?></div>
 					<div class="csPub"><?php echo I18n::_('Is published?') ?></div>
+					<div class="csClone"><?php echo I18n::_('Clone') ?></div>
 					<div class="csDelete"><?php echo I18n::_('Delete') ?></div>
 					<br class="clear" />
 				</div>
@@ -89,6 +90,7 @@ $topPanelHTML = BertaEditor::getTopPanelHTML('sections');
 					echo '</div>';
 
 					echo '<div class="csPub"><span class="' . $xEditSelectorYesNo . ' xProperty-published xSection-' . $sN . ' xSectionField">' . (!empty($s['@attributes']['published']) ? '1' : '0') . '</span></div>';
+					echo '<div class="csClone"><a href="#" class="xSectionClone">'.I18n::_('clone').'</a></div>';
 					echo '<div class="csDelete"><a href="#" class="xSectionDelete">'.I18n::_('delete').'</a></div>';
 					echo '</li>';
 				}

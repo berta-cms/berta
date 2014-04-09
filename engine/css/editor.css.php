@@ -1999,7 +1999,7 @@ body.xSettingsPageBody {
 	body.xSettingsPageBody #contentContainer {
 		margin-left: 0;
 		margin-right: auto;
-		width: 980px;
+		width: 1010px;
 	}
 
 	body.xSettingsPageBody a { color: #666; text-decoration: underline !important; }
@@ -2120,7 +2120,7 @@ body.xSettingsPageBody {
 
 
 	#xSectionsEditor {
-		width: 960px;
+		width: 1010px;
 		clear: both;
 	}
 
@@ -2250,13 +2250,16 @@ body.xSettingsPageBody {
 			#xMultisiteEditor .csName { width: 380px; }
 			#xMultisiteEditor .csName input { width: 50% !important }
 			#xMultisiteEditor .csPub { width: 100px; }
-			#xMultisiteEditor .csClone { width: 50px; text-align: right; }
-			#xMultisiteEditor .csClone a { color: blue; }
+			#xMultisiteEditor .csClone,
+			#xSectionsEditor .csClone { width: 50px; text-align: right; }
+			#xMultisiteEditor .csClone a,
+			#xSectionsEditor .csClone a { color: blue; }
 
 			#xMultisiteEditor .csDelete { width: 50px; text-align: right; }
 			#xMultisiteEditor .csDelete a { color: #f00; }
 
 			#xMultisiteEditor ul.xSaving .csClone a,
+			#xSectionsEditor ul.xSaving .csClone a,
 			#xMultisiteEditor ul.xSaving .csDelete a { visibility: hidden !important; }
 
 		a#xCreateNewSite {

@@ -15,6 +15,9 @@ var BertaEditor_Sections = new Class({
 	edittingMode: 'sections',
 	processHandler: null, 			// an instance of UnlinearProcessHandler
 
+	cloneSection: null,
+	cloneSectionTitle: null,
+
 	/* DOM elements */
 	newsTickerContainer: null,
 
@@ -83,8 +86,9 @@ var BertaEditor_Sections = new Class({
 		});
 		this.sectionsSortables.addEvent('onComplete', this.sectionOrderSave.bind(this));
 
-		// create new and delete
+		// create new, clone and delete events
 		$('xCreateNewSection').addEvent('click', this.sectionCreateNew.bindWithEvent(this));
+		this.sectionsMenu.getElements('a.xSectionClone').addEvent('click', this.sectionOnCloneClick.bindWithEvent(this));
 		this.sectionsMenu.getElements('a.xSectionDelete').addEvent('click', this.sectionOnDeleteClick.bindWithEvent(this));
 
 		// editables: titles, links etc.
@@ -164,14 +168,19 @@ var BertaEditor_Sections = new Class({
 		}
 	},
 
-	sectionCreateNew: function() {
+	sectionCreateNew: function(event) {
+		if (event) event.preventDefault();
 		this.sectionsEditor.addClass('xSaving');
 		new Request.JSON({
 			url: this.options.updateUrl,
 			data: "json=" + JSON.encode({
-				section: 'null', entry: null, entryNum: null,
+				section: 'null',
+				entry: null,
+				entryNum: null,
 				action: 'CREATE_NEW_SECTION',
-				property: '', value: ''
+				property: '', value: '',
+				cloneSection: this.cloneSection,
+				cloneSectionTitle: this.cloneSectionTitle
 			}),
 			onComplete: function(resp) {
 				if(!resp) {
@@ -180,6 +189,7 @@ var BertaEditor_Sections = new Class({
 					var li = new Element('li', { 'class': 'xSection-'+resp.real, 'html': resp.update }).inject(this.sectionsMenu);
 					this.sectionsSortables.addItems(li);
 					this.editablesInit();
+					li.getElement('a.xSectionClone').addEvent('click', this.sectionOnCloneClick.bindWithEvent(this));
 					li.getElement('a.xSectionDelete').addEvent('click', this.sectionOnDeleteClick.bindWithEvent(this));
 				} else {
 					alert(resp.error_message);
@@ -187,8 +197,27 @@ var BertaEditor_Sections = new Class({
 				this.sectionsEditor.removeClass('xSaving');
 			}.bind(this)
 		}).post();
-	}
+	},
 
+	sectionOnCloneClick: function(event) {
+		event.preventDefault();
+		var li = $(event.target).getParent('li');
+		this.sectionClone(li);
+	},
+
+	sectionClone: function(sectionRow) {
+		if(confirm('Berta asks:\n\nAre you sure you want to clone this section to new one?')) {
+			this.cloneSection = sectionRow.getClassStoredValue('xSection');
+			this.cloneSectionTitle = sectionRow.getElement('.xProperty-title');
+
+			if (this.cloneSectionTitle.getElement('.xEmpty')) {
+				this.cloneSectionTitle = null;
+			}else{
+				this.cloneSectionTitle = this.cloneSectionTitle.get('text');
+			}
+			this.sectionCreateNew();
+		}
+	}
 });
 
 var editor = new BertaEditor_Sections(window.bertaGlobalOptions);
