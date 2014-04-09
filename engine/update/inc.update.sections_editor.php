@@ -315,6 +315,7 @@ else if($decoded['action'] == 'CREATE_NEW_SECTION') {
 			$returnUpdate .= '</div>';
 
 			$returnUpdate .= '<div class="csPub"><span class="' . $xEditSelectorYesNo . ' xProperty-published xSection-' . $sName . '">1</span></div>';
+			$returnUpdate .= '<div class="csClone"><a href="#" class="xSectionClone">clone</a></div>';
 			$returnUpdate .= '<div class="csDelete"><a href="#" class="xSectionDelete">delete</a></div>';
 			$returnReal = $sName;
 
