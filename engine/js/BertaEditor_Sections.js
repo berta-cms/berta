@@ -216,6 +216,8 @@ var BertaEditor_Sections = new Class({
 				this.cloneSectionTitle = this.cloneSectionTitle.get('text');
 			}
 			this.sectionCreateNew();
+			this.cloneSection = null;
+			this.cloneSectionTitle = null;
 		}
 	}
 });
