@@ -204,10 +204,9 @@ class BertaEditor extends BertaContent {
 
 		$newCache = array();
 		$allHaveTags = true;
-		if(!empty($blog['entry'])) {
+		if (isset($blog['entry']) && !empty($blog['entry'])) {
 			foreach($blog['entry'] as $eId => $e) {
 				if($eId === '@attributes') continue;
-				//echo '<p>'; print_r($e['subsections']);
 				$hasTags = false;
 				if(isset($e['tags'])) {
 
