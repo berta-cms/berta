@@ -283,6 +283,8 @@ else if($decoded['action'] == 'CREATE_NEW_SECTION') {
 				$cloneSection['@attributes']['published'] = 0;
 				$cloneSection['name'] = $sName;
 				$cloneSection['title'] = $sTitle;
+				unset($cloneSection['positionXY']);
+
 				$sectionsList[$sName] = $cloneSection;
 				$cloneContent = BertaContent::loadBlog( $decoded['cloneSection'] );
 
