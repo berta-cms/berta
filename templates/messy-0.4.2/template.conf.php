@@ -28,7 +28,7 @@ $sectionTypes = array(
 		'backgroundVideoRatio' => array('format' => 'select', 'default' => 'fillWindow', 'values' => array('fillWindow' => I18n::_('Fill window'), 'keepRatio' => I18n::_('Keep ratio')), 'html_before' => '<div class="label">'.I18n::_('Background video ratio').':</div>'),
 	)),
 	'external_link' => array('title' => 'External link', 'params' => array(
-		'link' => array('format' => 'text',	'default' => '', 'html_before' => '<div class="label">'.I18n::_('Link address').':</div>'),
+		'link' => array('format' => 'text',	'default' => '', 'link'=>true , 'html_before' => '<div class="label">'.I18n::_('Link address').':</div>'),
 		'target' => array('format' => 'select', 'values' => array('_self' => 'Same window', '_blank' => 'New window'), 'default' => '_blank', 'html_before' => '<div class="label">'.I18n::_('Opens in').':</div>')
 	)),
 	'grid' => array('title' => 'Thumbnails enabled'),

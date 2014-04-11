@@ -863,6 +863,7 @@ DOC;
 				   		  'xProperty-' . $property . ' ' .
 						  (empty($sDef['html_entities']) ? 'xNoHTMLEntities' : '') . ' ' .
 						  'xCSSUnits-' . (empty($sDef['css_units']) ? '0' : '1') . ' ' .
+						  (empty($sDef['link']) ? '' : 'xLink') . ' ' .
 						  'xRequired-' . (!empty($sDef['allow_blank']) ? '0' : '1') . ' ' .
 						  (!empty($sDef['validator']) ? 'xValidator-' . $sDef['validator'] . ' ' : '') .
 						  $pStr .

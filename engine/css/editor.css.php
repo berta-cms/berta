@@ -2168,6 +2168,7 @@ body.xSettingsPageBody {
 		#xSectionsEditor .csDetails { width: 380px; }
 		#xSectionsEditor .csDetails .label { clear: both; width: 95px; margin-bottom: 5px; }
 		#xSectionsEditor .csDetails .value { margin-bottom: 5px; }
+		#xSectionsEditor .xProperty-marked_items_count { font-weight: bold; }
 		#xSectionsEditor .csPub { width: 100px; }
 		#xSectionsEditor .csDelete { width: 50px; text-align: right; }
 			#xSectionsEditor .csDelete a { color: #f00; }
