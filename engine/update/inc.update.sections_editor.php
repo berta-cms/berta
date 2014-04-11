@@ -1,11 +1,6 @@
 <?php
 
-//$propSplit = explode('/', $decoded['property']);
-//$property = $propSplit[1];
 $property = $decoded['property'];
-
-
-
 
 if($property == 'title') {	// section title
 	$sectionsList = BertaEditor::getSections();
@@ -13,11 +8,8 @@ if($property == 'title') {	// section title
 	$returnUpdate = $sNewTitle = $decoded['value'];
 	$returnReal = $sNewName = strtolower(BertaUtils::canonizeString($sNewTitle, '-', '-'));
 
-
 	$fName = $options['XML_ROOT'] . str_replace('%', $sName, $options['blog.%.xml']);
 	$fNewName = $options['XML_ROOT'] . str_replace('%', $sNewName, $options['blog.%.xml']);
-	//echo $fName, ' ', $fNewName;
-
 
 	if(!file_exists($fName)) {
 		$returnError = 'current section storage file does not exist! you\'ll have to delete this section!';
@@ -147,7 +139,6 @@ else if($property == 'galleryImageDelete') {
 	Array_XML::makeListIfNotList($sectionsList[$sName]['mediaCacheData']['file']);
 	foreach($sectionsList[$sName]['mediaCacheData']['file'] as $idx => $im)  {	// check if the passed image is really in mediaCache (a security measure)
 	    if((string) $idx == '@attributes') continue;
-	    //echo $im['value'], ' ', $decoded['value'],  " \n";
 	    if($im['@attributes']['src'] == $decoded['value']) {
 	    	$imgToDelete = $im['@attributes']['src'];
 	    	$posterToDelete = !empty($im['@attributes']['poster_frame']) ? $im['@attributes']['poster_frame'] : false;
@@ -263,128 +254,139 @@ else if($decoded['action'] == 'ORDER_SECTIONS') {	// apply the new order
 else if($decoded['action'] == 'CREATE_NEW_SECTION') {
 
 	$isClone = $decoded['cloneSection'];
-	$sTitle = $decoded['cloneSectionTitle'] ? 'clone of '.$decoded['cloneSectionTitle'] : 'untitled' . uniqid();
-	$sName = strtolower(BertaUtils::canonizeString($sTitle, '-', '-'));
+
+	//loop until section is not found - add numbers at the end
+	$i = 0;
+	do {
+		if ($i) {
+			if (preg_match('/(?P<name>.*) (?P<digit>\d+)$/', $sTitle, $matches)) {
+				$sTitle = $matches['name'] . ' ' . ($matches['digit'] + 1);
+			}else{
+				$sTitle .= ' 2';
+			}
+		}else{
+			$sTitle = $decoded['cloneSectionTitle'] ? 'clone of '.$decoded['cloneSectionTitle'] : 'untitled' . uniqid();
+		}
+		$sName = strtolower(BertaUtils::canonizeString($sTitle, '-', '-'));
+		$fName = $options['XML_ROOT'] . str_replace('%', $sName, $options['blog.%.xml']);
+		$i++;
+	} while ( file_exists($fName) );
+
 	$emptyXML = '<?xml version="1.0" encoding="utf-8"?><blog></blog>';
-	$fName = $options['XML_ROOT'] . str_replace('%', $sName, $options['blog.%.xml']);
 
-	if(file_exists($fName)) {
-		$returnError = 'section cannot be created! another section with the same (or too similar name) exists.';
+	if(!@file_put_contents($fName, $emptyXML)) {
+		$returnError = 'section cannot be created! the storage file cannot be created. check permissions and be sure the name of the section is not TOO fancy.';
 	} else {
-		if(!@file_put_contents($fName, $emptyXML)) {
-			$returnError = 'section cannot be created! the storage file cannot be created. check permissions and be sure the name of the section is not TOO fancy.';
-		} else {
-			@chmod($fName, 0666);
+		@chmod($fName, 0666);
 
-			$sectionsList = BertaEditor::getSections();
+		$published = 1;
+		$sectionsList = BertaEditor::getSections();
 
-			if ($isClone) {
-				$cloneSection = $sectionsList[$decoded['cloneSection']];
-				$cloneSection['@attributes']['published'] = 0;
-				$cloneSection['name'] = $sName;
-				$cloneSection['title'] = $sTitle;
-				unset($cloneSection['positionXY']);
+		if ($isClone) {
+			$cloneSection = $sectionsList[$decoded['cloneSection']];
+			$published = $cloneSection['@attributes']['published'];
+			$cloneSection['name'] = $sName;
+			$cloneSection['title'] = $sTitle;
+			unset($cloneSection['positionXY']);
 
-				$sectionsList[$sName] = $cloneSection;
-				$cloneContent = BertaContent::loadBlog( $decoded['cloneSection'] );
+			$sectionsList[$sName] = $cloneSection;
+			$cloneContent = BertaContent::loadBlog( $decoded['cloneSection'] );
 
-				if ($cloneContent) {
-					$cloneSectionName = isset($cloneContent['@attributes']['section']) ? $cloneContent['@attributes']['section'] : $sName;
-					$cloneContent['@attributes']['section'] = $sName;
+			if ($cloneContent) {
+				$cloneSectionName = isset($cloneContent['@attributes']['section']) ? $cloneContent['@attributes']['section'] : $sName;
+				$cloneContent['@attributes']['section'] = $sName;
 
-					if ( isset($cloneContent['entry']) ) {
-						foreach ($cloneContent['entry'] as $k => $entry) {
-							$cloneContent['entry'][$k]['uniqid'] = uniqid();
-							$cloneContent['entry'][$k]['date'] = date('d.m.Y H:i:s');
-							$cloneContent['entry'][$k]['updated'] = date('d.m.Y H:i:s');
+				if ( isset($cloneContent['entry']) ) {
+					foreach ($cloneContent['entry'] as $k => $entry) {
+						$cloneContent['entry'][$k]['uniqid'] = uniqid();
+						$cloneContent['entry'][$k]['date'] = date('d.m.Y H:i:s');
+						$cloneContent['entry'][$k]['updated'] = date('d.m.Y H:i:s');
 
-							if ( isset($entry['mediafolder']) ) {
-								$cloneMediafolder = $entry['mediafolder']['value'];
+						if ( isset($entry['mediafolder']) ) {
+							$cloneMediafolder = $entry['mediafolder']['value'];
 
-								$cloneContent['entry'][$k]['mediafolder'] = str_replace($cloneSectionName, $sName, $cloneMediafolder);
+							$cloneContent['entry'][$k]['mediafolder'] = str_replace($cloneSectionName, $sName, $cloneMediafolder);
 
-								//clone media folder
-								BertaUtils::copyFolder(
-									realpath($options['MEDIA_ROOT']) .'/'. $cloneMediafolder,
-									realpath($options['MEDIA_ROOT']) .'/'. $cloneContent['entry'][$k]['mediafolder']
-									);
-							}
+							//clone media folder
+							BertaUtils::copyFolder(
+								realpath($options['MEDIA_ROOT']) .'/'. $cloneMediafolder,
+								realpath($options['MEDIA_ROOT']) .'/'. $cloneContent['entry'][$k]['mediafolder']
+								);
 						}
 					}
-					BertaEditor::saveBlog($sName, $cloneContent);
 				}
-			}
-
-			$possibleTypes = 'default|Default';
-			$typeParams = array();
-
-			if(!empty($berta->template->sectionTypes)) {
-				$possibleTypes = array();
-				foreach($berta->template->sectionTypes as $sT => $sTParams) {
-					$possibleTypes[] = "$sT|{$sTParams['title']}";
-					if(!empty($sTParams['params'])) $typeParams[$sT] = $sTParams['params'];
-				}
-				$possibleTypes = implode('||', $possibleTypes);
-			}
-
-			$allTypes = array();
-			foreach (explode('||', $possibleTypes) as $t) {
-				list($k, $v) = explode('|', $t);
-				$allTypes[$k] = $v;
-			}
-
-			$type = isset($cloneSection['@attributes']['type']) ? $allTypes[$cloneSection['@attributes']['type']] : 'Default';
-			$defaultType = strtolower($type);
-
-			$published = $isClone ? 0 : 1;
-
-			$returnUpdate = '';
-			$returnUpdate .= '<div class="csHandle"><span class="handle"></span></div>';
-			$returnUpdate .= '<div class="csTitle"><span class="' . $xEditSelectorSimple . ' xProperty-title xNoHTMLEntities xSection-' . $sName . '">' . ($isClone ? htmlspecialchars($sTitle) : BertaEditor::getXEmpty('sectionTitle')) . '</span></div>';
-			$returnUpdate .= '<div class="csBehaviour"><span class="' . $xEditSelectorSelectRC . ' xProperty-type xSection-' . $sName . ' xSectionField" x_options="' . $possibleTypes . '">' . htmlspecialchars($type) . '</span></div>';
-
-			$returnUpdate .= '<div class="csDetails">';
-			if(!empty($typeParams[$defaultType])) {
-
-				//remove responsive section settings
-				if ($berta->template->settings->get('pageLayout', 'responsive') != 'yes') {
-					unset(
-						$typeParams['default']['columns'],
-						$typeParams['default']['entryMaxWidth'],
-						$typeParams['default']['entryPadding'],
-						$typeParams['shop']['columns'],
-						$typeParams['shop']['entryMaxWidth'],
-						$typeParams['shop']['entryPadding']
-					);
-				}
-				foreach($typeParams[$defaultType] as $pName => $p) {
-					$value = !empty($s[$pName]['value']) ? $s[$pName]['value'] : '';
-					if(!$value && $p['default']) $value = $p['default'];
-					$returnUpdate .= BertaEditor::getSettingsItemEditHTML($pName, $p, $value, array('xSection' => $sName, 'xSectionField'));
-				}
-			}
-			$returnUpdate .= '</div>';
-
-			$returnUpdate .= '<div class="csPub"><span class="' . $xEditSelectorYesNo . ' xProperty-published xSection-' . $sName . '">'.$published.'</span></div>';
-			$returnUpdate .= '<div class="csClone"><a href="#" class="xSectionClone">clone</a></div>';
-			$returnUpdate .= '<div class="csDelete"><a href="#" class="xSectionDelete">delete</a></div>';
-			$returnReal = $sName;
-
-			if (!$isClone) {
-				$sectionsList[$sName] = array(
-					'@attributes' => array('tags_behavior' => 'invisible', 'published'=>1),
-					'name' => $sName,
-					'title' => array('value' => '')
-				);
-			}
-
-			BertaEditor::saveSections($sectionsList);
-
-			if ($isClone) {
-				BertaEditor::populateTags($sName, $cloneContent);
+				BertaEditor::saveBlog($sName, $cloneContent);
 			}
 		}
+
+		$possibleTypes = 'default|Default';
+		$typeParams = array();
+
+		if(!empty($berta->template->sectionTypes)) {
+			$possibleTypes = array();
+			foreach($berta->template->sectionTypes as $sT => $sTParams) {
+				$possibleTypes[] = "$sT|{$sTParams['title']}";
+				if(!empty($sTParams['params'])) $typeParams[$sT] = $sTParams['params'];
+			}
+			$possibleTypes = implode('||', $possibleTypes);
+		}
+
+		$allTypes = array();
+		foreach (explode('||', $possibleTypes) as $t) {
+			list($k, $v) = explode('|', $t);
+			$allTypes[$k] = $v;
+		}
+
+		$type = isset($cloneSection['@attributes']['type']) ? $allTypes[$cloneSection['@attributes']['type']] : 'Default';
+		$defaultType = strtolower($type);
+
+		$returnUpdate = '';
+		$returnUpdate .= '<div class="csHandle"><span class="handle"></span></div>';
+		$returnUpdate .= '<div class="csTitle"><span class="' . $xEditSelectorSimple . ' xProperty-title xNoHTMLEntities xSection-' . $sName . '">' . ($isClone ? htmlspecialchars($sTitle) : BertaEditor::getXEmpty('sectionTitle')) . '</span></div>';
+		$returnUpdate .= '<div class="csBehaviour"><span class="' . $xEditSelectorSelectRC . ' xProperty-type xSection-' . $sName . ' xSectionField" x_options="' . $possibleTypes . '">' . htmlspecialchars($type) . '</span></div>';
+
+		$returnUpdate .= '<div class="csDetails">';
+		if(!empty($typeParams[$defaultType])) {
+
+			//remove responsive section settings
+			if ($berta->template->settings->get('pageLayout', 'responsive') != 'yes') {
+				unset(
+					$typeParams['default']['columns'],
+					$typeParams['default']['entryMaxWidth'],
+					$typeParams['default']['entryPadding'],
+					$typeParams['shop']['columns'],
+					$typeParams['shop']['entryMaxWidth'],
+					$typeParams['shop']['entryPadding']
+				);
+			}
+			foreach($typeParams[$defaultType] as $pName => $p) {
+				$value = !empty($s[$pName]['value']) ? $s[$pName]['value'] : '';
+				if(!$value && $p['default']) $value = $p['default'];
+				$returnUpdate .= BertaEditor::getSettingsItemEditHTML($pName, $p, $value, array('xSection' => $sName, 'xSectionField'));
+			}
+		}
+		$returnUpdate .= '</div>';
+
+		$returnUpdate .= '<div class="csPub"><span class="' . $xEditSelectorYesNo . ' xProperty-published xSection-' . $sName . '">'.$published.'</span></div>';
+		$returnUpdate .= '<div class="csClone"><a href="#" class="xSectionClone">clone</a></div>';
+		$returnUpdate .= '<div class="csDelete"><a href="#" class="xSectionDelete">delete</a></div>';
+		$returnReal = $sName;
+
+		if (!$isClone) {
+			$sectionsList[$sName] = array(
+				'@attributes' => array('tags_behavior' => 'invisible', 'published'=>1),
+				'name' => $sName,
+				'title' => array('value' => '')
+			);
+		}
+
+		BertaEditor::saveSections($sectionsList);
+
+		if ($isClone) {
+			BertaEditor::populateTags($sName, $cloneContent);
+		}
 	}
+
 
 }
 else if($decoded['action'] == 'DELETE_SECTION') {	// delete a section
