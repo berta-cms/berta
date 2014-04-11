@@ -22,7 +22,7 @@ $fontOptionsWithInherit = array_merge(array('inherit' => '(inherit from general-
 $sectionTypes = array(
 	'default' => array('title' => 'Default'),
 	'external_link' => array('title' => 'External link', 'params' => array(
-		'link' => array('format' => 'text',	'default' => ''),
+		'link' => array('format' => 'text',	'default' => '', 'link'=>true),
 		'target' => array('format' => 'select', 'values' => array('_self' => 'Same window', '_blank' => 'New window'), 'default' => '_blank')
 	))
 );

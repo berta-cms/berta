@@ -738,6 +738,7 @@ var BertaEditorBase = new Class({
 			var isToPrice = el.getClassStoredValue('xFormatModifier') == 'toPrice';
 			var isCartAttributes = property == 'cartAttributes';
 			var noHTMLEntities = el.hasClass('xNoHTMLEntities');
+			var isLink = el.hasClass('xLink');
 			var editorParams = el.getClassStoredValue('xParam');
 			var entryInfo = this.getEntryInfoForElement(el);
 			if(entryInfo.section == '') entryInfo.section = this.sectionName;
@@ -773,6 +774,13 @@ var BertaEditorBase = new Class({
 				newContent = parseInt(newContent);
 				newContent = newContent ? newContent : 0;
 				newContent = String(newContent) + xUnits;
+			}
+
+			//create prefix for links
+			if ( isLink ) {
+				if (newContent.length && newContent.search(":") < 0 ) {
+					newContent = 'http://' + newContent;
+				}
 			}
 
 			if ( isToPrice ) {
