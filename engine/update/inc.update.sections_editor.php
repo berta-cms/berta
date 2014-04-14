@@ -337,15 +337,17 @@ else if($decoded['action'] == 'CREATE_NEW_SECTION') {
 			$allTypes[$k] = $v;
 		}
 
-		$type = isset($cloneSection['@attributes']['type']) ? $allTypes[$cloneSection['@attributes']['type']] : 'Default';
+		$type = isset($cloneSection['@attributes']['type']) ? $cloneSection['@attributes']['type'] : 'Default';
+		$typeValue = isset($allTypes[$type]) ? $allTypes[$type] : 'Default';
 		$defaultType = strtolower($type);
 
 		$returnUpdate = '';
 		$returnUpdate .= '<div class="csHandle"><span class="handle"></span></div>';
 		$returnUpdate .= '<div class="csTitle"><span class="' . $xEditSelectorSimple . ' xProperty-title xNoHTMLEntities xSection-' . $sName . '">' . ($isClone ? htmlspecialchars($sTitle) : BertaEditor::getXEmpty('sectionTitle')) . '</span></div>';
-		$returnUpdate .= '<div class="csBehaviour"><span class="' . $xEditSelectorSelectRC . ' xProperty-type xSection-' . $sName . ' xSectionField" x_options="' . $possibleTypes . '">' . htmlspecialchars($type) . '</span></div>';
+		$returnUpdate .= '<div class="csBehaviour"><span class="' . $xEditSelectorSelectRC . ' xProperty-type xSection-' . $sName . ' xSectionField" x_options="' . $possibleTypes . '">' . htmlspecialchars($typeValue) . '</span></div>';
 
 		$returnUpdate .= '<div class="csDetails">';
+
 		if(!empty($typeParams[$defaultType])) {
 
 			//remove responsive section settings
@@ -359,12 +361,16 @@ else if($decoded['action'] == 'CREATE_NEW_SECTION') {
 					$typeParams['shop']['entryPadding']
 				);
 			}
+
 			foreach($typeParams[$defaultType] as $pName => $p) {
-				$value = !empty($s[$pName]['value']) ? $s[$pName]['value'] : '';
-				if(!$value && $p['default']) $value = $p['default'];
+				$value = isset($cloneSection[$pName]['value']) && !empty($cloneSection[$pName]['value']) ? $cloneSection[$pName]['value'] : '';
+				if(!$value && $p['default']) {
+					$value = $p['default'];
+				}
 				$returnUpdate .= BertaEditor::getSettingsItemEditHTML($pName, $p, $value, array('xSection' => $sName, 'xSectionField'));
 			}
 		}
+
 		$returnUpdate .= '</div>';
 
 		$returnUpdate .= '<div class="csPub"><span class="' . $xEditSelectorYesNo . ' xProperty-published xSection-' . $sName . '">'.$published.'</span></div>';
