@@ -632,6 +632,13 @@ a img { border: none; }
 		margin: 10px 10px 10px 0;
 	}
 
+	/* larger than tablet */
+	@media (min-width: 768px) {
+		ol#pageEntries li.xEntry .xGalleryType-row .xGallery {
+			max-width: inherit !important;
+		}
+	}
+
 	/* small tablet */
 	@media (max-width: 767px)  {
 

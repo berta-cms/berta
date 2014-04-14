@@ -555,6 +555,12 @@ h1 {
 		-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;
 	}
 
+	/* larger than tablet */
+	@media (min-width: 768px) {
+		ol#pageEntries li.xEntry .xGalleryType-row .xGallery {
+			max-width: inherit !important;
+		}
+	}
 
 	/* small tablet */
 	@media (max-width: 767px)  {

@@ -840,6 +840,13 @@ nav ul{
 		position: relative !important;
 	}
 
+	/* larger than tablet */
+	@media (min-width: 768px) {
+		#pageEntries .xEntry .xGalleryType-row .xGallery {
+			max-width: inherit !important;
+		}
+	}
+
 	/* small tablet */
 	@media (max-width: 767px)  {
 
