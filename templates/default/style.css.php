@@ -603,6 +603,11 @@ h1 {
 		div#siteTopMenu ul#subMenu {
 			display: none;
 		}
+
+		ol#pageEntries li.xEntry .xGalleryType-row .xGallery .xGalleryItem {
+			padding-bottom: <?php echo $s->get('entryLayout', 'spaceBetweenImages') ?>;
+			padding-right: 0;
+		}
 	}
 }
 

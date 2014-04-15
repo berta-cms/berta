@@ -709,7 +709,10 @@ a img { border: none; }
 			padding-right: 15px;
 		}
 
-
+		ol#pageEntries li.xEntry .xGalleryType-row .xGallery .xGalleryItem {
+			padding-bottom: <?php echo $s->get('entryLayout', 'spaceBetweenImages') ?>;
+			padding-right: 0;
+		}
 	}
 
 	@media (max-width: 480px) {

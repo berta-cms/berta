@@ -541,6 +541,11 @@ a img { border: none; }
 		#sideColumnBottom {
 			padding-left: <?php echo $s->get('pageLayout', 'paddingLeft') ?>;
 		}
+
+		ol#pageEntries li.xEntry .xGalleryType-row .xGallery .xGalleryItem {
+			padding-bottom: <?php echo $s->get('entryLayout', 'spaceBetweenImages') ?>;
+			padding-right: 0;
+		}
 	}
 
 <?php } ?>

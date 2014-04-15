@@ -881,6 +881,11 @@ nav ul{
 			clear: left;
 		}
 
+		#pageEntries .xEntry .xGalleryType-row .xGallery .xGalleryItem {
+			padding-bottom: <?php echo $s->get('entryLayout', 'spaceBetweenImages') ?>;
+			padding-right: 0;
+		}
+
 		<?php if($s->get('pageLayout', 'centeredContents') == 'yes') { ?>
 			.menuItem li {
 				text-align: center;
