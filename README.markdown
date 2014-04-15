@@ -8,6 +8,15 @@ For more information, visit http://www.berta.me
 
 Changelog
 ----------
+**v0.8.9b (release date 15 Apr 2014)**
+ * option to clone sections
+ * responsive layout option for White and Mashup templates
+ * columns option (1-4) for Mash-up section in responsive layout for Mashup template
+ * menu color option in Default template
+ * user onboarding call-to-action message
+ * http:// prefix for URL fields
+ * other minor improvements and bugfixes
+
 **v0.8.8b (release date 12 Mar 2014)**
  * multisite feature added (available only for berta.me hosted Pro and Shop plans)
  * added more breakpoints for responsive Messy template
