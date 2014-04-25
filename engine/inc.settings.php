@@ -143,11 +143,10 @@ if(@file_exists($ENGINE_ROOT .'plan')) {
 		$settingsDefinition['settings']['hideBertaCopyright'] =	array('format' => 'select', 'default' => 'no', 'values' => array('yes', 'no'), 'title' => I18n::_('Hide copyrights'), 'description' => I18n::_('Hides Berta\'s copyrights'));
 	}else{
 	}
-
 }
 
-//disable multisites for basic plan or no-plan
-if ( !isset($hostingPlan) || $hostingPlan==1 ) {
+//disable multisites for basic plan
+if ( (isset($hostingPlan) && $hostingPlan==1) || !$options['HOSTING_PROFILE'] ) {
 	$options['MULTISITES'] = array();
 	$options['MULTISITE'] = '';
 	$options['MULTISITE_DISABLED'] = true;
