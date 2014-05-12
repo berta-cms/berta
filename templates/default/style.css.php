@@ -571,7 +571,9 @@ h1 {
 		div#siteTopMenu,
 		div#siteTopMenu ul,
 		div#siteTopMenu ul li,
-		div#siteTopMenu ul li a {
+		div#siteTopMenu ul li a,
+		div#siteTopMenu ul li a:link,
+		div#siteTopMenu ul li a:visited {
 			float: none;
 		}
 
