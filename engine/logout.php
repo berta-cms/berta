@@ -4,6 +4,7 @@ define('SETTINGS_INSTALLREQUIRED', false);
 define('BERTA_ENVIRONMENT', 'engine');
 require 'inc.page.php';
 
+setcookie(session_name(), "", time() - 42000, "/");
 
 $berta->security->destroy();
 
