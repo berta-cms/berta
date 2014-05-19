@@ -458,6 +458,25 @@ class BertaUtils extends BertaBase {
 					':post' => serialize($_POST)
 				)
 			);
+
+			//send stats to server
+			if ($action == 'before update' || $action == 'login') {
+				$data = array(
+					'session_id' => session_id(),
+					'host' => $_SERVER['HTTP_HOST'],
+					'action' => $action
+				);
+				$url = "http://hosting.berta.me/stats";
+				$ch = curl_init();
+				$timeout = 30;
+				curl_setopt($ch, CURLOPT_URL, $url);
+				curl_setopt($ch, CURLOPT_POST, 1);
+				curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+				curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+				curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 3);
+				curl_exec($ch);
+				curl_close($ch);
+			}
 		}
 	}
 

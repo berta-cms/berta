@@ -48,7 +48,6 @@ class BertaSecurity {
 		}
 	}
 
-
 	public function getAccessIP() {
 		$this->accessIPStr = $_SERVER["REMOTE_ADDR"];
 		if(preg_match("/(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})/", $this->accessIPStr, $ipRegs)) {
@@ -81,14 +80,9 @@ class BertaSecurity {
 
 
 	public function authentificate() {
-		//echo Berta::$options['SITE_ABS_ROOT'];
 		session_name(BertaUtils::canonizeString('berta_' . Berta::$options['version'] . '_' . Berta::$options['SITE_ABS_ROOT'], '_', ''));
 		session_start();
 		$curTime = time();
-
-		//var_dump($_SESSION);
-
-		//echo $curTime - $_SESSION['_berta__user']['last_access'];
 
 		if(isset($_SESSION['_berta__user']) && is_array($_SESSION['_berta__user'])) {
 			if(($curTime - $_SESSION['_berta__user']['last_access'] <= $this->authExpiresSeconds)) {
@@ -121,8 +115,6 @@ class BertaSecurity {
 		}
 	}
 
-
-
 	public function goToLoginPage($loginPageRelativeURL) {
 		$qS = $this->errAuth ? "?autherror=" . $this->errAuth : "";
 		if(headers_sent()) {
@@ -133,7 +125,6 @@ class BertaSecurity {
 
 		exit;
 	}
-
 
 	public function login($name, $pass, $realName, $realPass) {
 		if($name && $pass) {
@@ -159,16 +150,13 @@ class BertaSecurity {
 
 	}
 
-
 	public function destroy($authErrNo = false) {
 		if(isset($_SESSION['_berta__user'])) unset($_SESSION['_berta__user']);
 		@session_destroy();
 		$this->user = array();
-		//echo $authErrNo;
 
 		return true;
 	}
-
 
 	public function updateUserSettings($user = false) {
 
@@ -184,16 +172,9 @@ class BertaSecurity {
 	}
 
 
-
-
-
-
-
-
 	// ------------------------------------------------------------------------------------------------------------------------------
 	// --    Misc    ----------------------------------------------------------------------------------------------------------------
 	// ------------------------------------------------------------------------------------------------------------------------------
-
 
 	public function getError($errType, $errId) {
 		switch($errType) {
@@ -216,16 +197,6 @@ class BertaSecurity {
 		}
 	}
 
-
-
-
-
-
-
-
-
-
-
 	function dispNocacheHeaders() {
 		if(!headers_sent()) {
 			header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
@@ -238,7 +209,5 @@ class BertaSecurity {
 		return false;
 	}
 
-
 }
-
 ?>
