@@ -854,6 +854,10 @@ nav ul{
 			display: inline-block;
 		}
 
+		nav > ul {
+			display: none;
+		}
+
 		nav ul li {
 			display: block;
 		}

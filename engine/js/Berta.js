@@ -194,15 +194,18 @@ var Berta = new Class({
 	            });
 
 	            window.addEvent('resize', function(){
-
-	                if (breakPointWidth < this.getSize().x){
-	                    objSlide.show();
-	                // small tablet
-	                }else{
-	                    menuToggle.removeClass('active');
-	                    objSlide.hide();
-	                }
+	            	if (win_width != window.getSize().x) {
+		            	win_width = window.getSize().x;
+		                if (breakPointWidth < this.getSize().x){
+		                    objSlide.show();
+		                // small tablet
+		                }else{
+		                    menuToggle.removeClass('active');
+		                    objSlide.hide();
+		                }
+	            	}
 	            });
+	            var win_width = window.getSize().x;
 	            window.fireEvent('resize');
 	        }
 	    }

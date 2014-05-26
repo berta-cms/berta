@@ -436,12 +436,6 @@ h1 {
 		bottom: 0;
 	}
 	.bottomCopy {
-		/*fontFamily: Verdana, Arial, sans-serif !important;
-			fontSize: 10px !important;
-			fontWeight: normal !important;
-			fontStyle: normal !important;
-			fontVariant: normal !important;
-			lineHeight: normal !important;*/
 		clear: left;
 		font-size: 80%;
 		color: <?php echo $s->get('generalFontSettings', 'color') ?> !important;
@@ -566,6 +560,11 @@ h1 {
 	@media (max-width: 767px)  {
 		#menuToggle {
 			display: inline-block;
+		}
+
+
+		div#siteTopMenu > ul {
+			display: none;
 		}
 
 		div#siteTopMenu,

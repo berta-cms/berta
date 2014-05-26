@@ -653,6 +653,10 @@ a img { border: none; }
 			padding-left: <?php echo $s->get('pageLayout', 'paddingLeft') ?>;
 		}
 
+		#sideColumnTop > ul {
+			display: none;
+		}
+
 		#sideColumnTop h1 {
 			min-height: initial;
 		}

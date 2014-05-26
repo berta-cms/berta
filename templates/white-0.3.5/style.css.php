@@ -513,6 +513,10 @@ a img { border: none; }
 			min-height: initial;
 		}
 
+		#sideColumnTop  > ul {
+			display: none;
+		}
+
 		#sideColumnTop ul li {
 			margin-top: 1em;
 		}
