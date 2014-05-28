@@ -157,6 +157,7 @@ var Berta = new Class({
 		var footerOverlayFix = function() {
 			var windowWidth = window.getSize().x;
 			var windowHeight = window.getSize().y;
+			var sideColumn = $('sideColumn');
 			var sideColumnTop = $('sideColumnTop');
 			var sideColumnBottom = $('sideColumnBottom');
 
@@ -164,8 +165,10 @@ var Berta = new Class({
 				var sideColumnTopHeight = sideColumnTop.getSize().y;
 				var sideColumnBottomHeight = sideColumnBottom.getSize().y;
 				if ( (isResponsive && breakPointWidth > windowWidth) || (windowHeight < sideColumnTopHeight + sideColumnBottomHeight) ){
+					sideColumn.setStyle('position', 'absolute');
 					sideColumnBottom.setStyle('position', 'static');
 				}else{
+					sideColumn.setStyle('position', 'fixed');
 					sideColumnBottom.setStyle('position', 'absolute');
 				}
 			}
