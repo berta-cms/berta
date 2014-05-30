@@ -262,8 +262,14 @@ class BertaGallery extends BertaBase {
                     switch ($imageInfo[2]) {
                       case IMAGETYPE_GIF:
                         //solution for animated gif
-                        if ( extension_loaded('imagick') && ($imageInfo[2] == IMAGETYPE_GIF) ) {
-
+                        if ( self::$options['HOSTING_PROFILE'] && ($imageInfo[2] == IMAGETYPE_GIF) ) {
+                            $file_path = realpath($imagePath);
+                            $file_info = pathinfo($file_path);
+                            $thumb_info = pathinfo($thumbPath);
+                            $thumbPath = $file_info['dirname'] . '/' . $thumb_info['basename'];
+                            $command = "/usr/bin/convert {$file_path} -coalesce -bordercolor LightSteelBlue -border 0 -resize {$thumbWidth}x{$thumbHeight} -layers Optimize {$thumbPath}";
+                            exec($command);
+                        }elseif ( extension_loaded('imagick') && ($imageInfo[2] == IMAGETYPE_GIF) ) {
                             $animation = new Imagick($imagePath);
                             $animation = $animation->coalesceImages();
                             foreach ($animation as $frame)
