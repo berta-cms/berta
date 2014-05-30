@@ -276,8 +276,15 @@ class BertaUtils extends BertaBase {
 	    }
 
 	    //solution for animated gif
-	    if ( extension_loaded('imagick') && ($info[2] == IMAGETYPE_GIF) ) {
-
+		if ( self::$options['HOSTING_PROFILE'] && ($info[2] == IMAGETYPE_GIF) ) {
+			$file_path = realpath($file);
+			$file_info = pathinfo($file_path);
+			$tmpFile = $file_info['dirname'] . '/' . $file_info['filename'] . $final_width . $final_height . '.gif';
+			$command = "/usr/bin/convert {$file_path} -coalesce -bordercolor LightSteelBlue -border 0 -resize {$final_width}x{$final_height} -layers Optimize {$tmpFile}";
+			exec($command);
+			$image_resized = imagecreatefromgif($tmpFile);
+			@unlink($tmpFile);
+	    }elseif ( extension_loaded('imagick') && ($info[2] == IMAGETYPE_GIF) ) {
 		    $animation = new Imagick($file);
 		    $animation = $animation->coalesceImages();
 		    foreach ($animation as $frame)
