@@ -657,6 +657,10 @@ a img { border: none; }
 			display: none;
 		}
 
+		#sideColumnTop #multisites {
+			display: block;
+		}
+
 		#sideColumnTop h1 {
 			min-height: initial;
 		}
