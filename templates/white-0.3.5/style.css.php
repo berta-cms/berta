@@ -517,10 +517,6 @@ a img { border: none; }
 			display: none;
 		}
 
-		#sideColumnTop #multisites {
-			display: block;
-		}
-
 		#sideColumnTop ul li {
 			margin-top: 1em;
 		}
