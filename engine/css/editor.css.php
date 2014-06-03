@@ -442,6 +442,7 @@ body.xEditorEnabled { }
 
 		#xNewsTickerContainer {
 			position: relative;
+			z-index: 1;
 			padding: 16px 8px;
 			border-right: 1px solid #4a4a4a;
 			border-bottom: 1px solid #4a4a4a;
@@ -574,7 +575,7 @@ body.xEditorEnabled { }
 #xBgEditorPanelTrigContainer {
 	margin: 0;
  	padding: 0;
-	position: fixed;
+	position: absolute;
 	right: 0; top: 0;
 	background-color: transparent !important;
     display: block;
@@ -604,14 +605,14 @@ body.xEditorEnabled { }
 }
 
 #xBgEditorPanelContainer #xBgEditorPanel {
-    position: fixed;
+    position: absolute;
     display: block;
     right: 0;
     top: 0;
     padding: 0;
     margin: 0;
-    width: 430px;
-    height: 327px;
+	width: 626px;
+	min-height: 255px;
     z-index: 55000;
 	background-color: #e9e9e9;
 	color: #333;
@@ -849,14 +850,7 @@ body.xEditorEnabled { }
 		}
 
 	/* images / videos */
-	#xBgEditorPanel .images {
-		clear: both;
-		padding: 8px 6px 0;
-		margin: 0;
-		overflow-x:scroll;
-		overflow-y:hidden;
-		height: <?php echo BertaBase::$options['images']['small_thumb_height'] ? ((BertaBase::$options['images']['small_thumb_height'] + 160) . 'px') : 'auto' ?>;
-	}
+
 		#xBgEditorPanel .images ul {
 			position: relative;
 			width: auto;
@@ -868,16 +862,7 @@ body.xEditorEnabled { }
 		#xBgEditorPanel .images ul.sorting,
 		#xBgEditorPanel .images ul.sorting * { cursor: -moz-grabbing !important; }
 
-			#xBgEditorPanel .images ul li {
-				display: block;
-				position: relative;
-				float: left;
-				margin: 0 5px 0 0;
-				/*margin: 0;*/
-				min-width: 140px;
-				height: <?php echo ((int) BertaBase::$options['images']['small_thumb_height'] + 140) . 'px' ?>;
-				background: #efefef;
-			}
+
 			#xBgEditorPanel .images ul li.video {
 
 			}
@@ -985,24 +970,13 @@ body.xEditorEnabled { }
 						#xBgEditorPanel .images li .dimsForm span.dim * { font-size: 10px; }
 						#xBgEditorPanel .images li .dimsForm span.dim input { width: 30px !important; padding: 0 !important; border: 1px solid #666; }
 
-				#xBgEditorPanel .images li .xEGEImageCaption {
-					width: 150px;
-					height: 135px;
-					overflow-y: hidden;
-					margin-top: 3px;
-					font-size: 90%;
-				}
 					#xBgEditorPanel .images li .xEGEImageCaption * {
 						font-size: 90%;
 					}
 
 			#xBgEditorPanel .images ul li.file {
-				width: 160px;
-				height: 80px;
-				padding: 0;
-				margin: 0 5px 0 0;
 				background-color: #666;
-				background-image: url('../layout/gallery-loader.gif');
+				background-image: url('../layout/gallery-loading.gif');
 				background-position: 100% 0%;
 				background-repeat: no-repeat;
 				overflow: hidden;
@@ -1276,15 +1250,15 @@ a.xCreateNewEntry.xSaving {
 
 .xEntryGalleryEditor-wrap {
 	clear: both;
-	margin: 5px 0 5px -3px;
+	margin: 5px 0;
 	min-width: 580px;
 }
 .xEntryGalleryEditor {
 	padding: 0;
 	background-color: #e9e9e9;
 	color: #333;
-	width: 700px;
-	height: 327px;
+	width: 626px;
+	min-height: 255px;
     position: relative;
     z-index: 55000;
 }
@@ -1574,13 +1548,11 @@ a.xCreateNewEntry.xSaving {
 			}
 
 
-	.xEntryGalleryEditor .images {
+	.xEntryGalleryEditor .images,
+	#xBgEditorPanel .images {
 		clear: both;
-		padding: 8px 6px 0;
+		padding: 6px 0 6px 6px;
 		margin: 0;
-		overflow-x:scroll;
-		overflow-y:hidden;
-		height: <?php echo BertaBase::$options['images']['small_thumb_height'] ? ((BertaBase::$options['images']['small_thumb_height'] + 160) . 'px') : 'auto' ?>;
 	}
 		.xEntryGalleryEditor .images ul {
 			position: relative;
@@ -1593,18 +1565,19 @@ a.xCreateNewEntry.xSaving {
 		.xEntryGalleryEditor .images ul.sorting,
 		.xEntryGalleryEditor .images ul.sorting * { cursor: -moz-grabbing !important; }
 
-			.xEntryGalleryEditor .images ul li {
+
+			.xEntryGalleryEditor .images ul li,
+			#xBgEditorPanel .images ul li {
 				display: block;
 				position: relative;
 				float: left;
-				margin: 0 5px 0 0;
-				/*margin: 0;*/
-				min-width: 140px;
-				height: <?php echo ((int) BertaBase::$options['images']['small_thumb_height'] + 140) . 'px' ?>;
-				background: #efefef;
+				margin: 0 5px 5px 0;
+				width: 150px;
+				height: 163px;
 			}
+			.xEntryGalleryEditor .images ul li.image,
 			.xEntryGalleryEditor .images ul li.video {
-
+				background: #efefef;
 			}
 				.xEntryGalleryEditor .images ul li img {
 					margin: 0 auto 0;
@@ -1741,11 +1714,12 @@ a.xCreateNewEntry.xSaving {
 						color: #333;
     				}
 
-				.xEntryGalleryEditor .images li .xEGEImageCaption {
+				.xEntryGalleryEditor .images li .xEGEImageCaption,
+				#xBgEditorPanel .images li .xEGEImageCaption {
 					position: relative;
 					width: 150px;
-					height: 135px;
-					overflow-y: hidden;
+					height: 80px;
+					overflow: hidden;
 					margin-top: 3px;
 					font-size: 90%;
 				}
@@ -1753,13 +1727,14 @@ a.xCreateNewEntry.xSaving {
 						font-size: 90%;
 					}
 
+					.xEntryGalleryEditor .images li .xEGEImageCaption iframe,
+					#xBgEditorPanel .images li .xEGEImageCaption iframe {
+						height: 50px;
+					}
+
 			.xEntryGalleryEditor .images ul li.file {
-				width: 160px;
-				height: 80px;
-				padding: 0;
-				margin: 0 5px 0 0;
 				background-color: #666;
-				background-image: url('../layout/gallery-loader.gif');
+				background-image: url('../layout/gallery-loading.gif');
 				background-position: 100% 0%;
 				background-repeat: no-repeat;
 				overflow: hidden;
