@@ -427,8 +427,10 @@ var BertaEditor = new Class({
 
 	onGalleryEditClick: function(event) {	// replaces the gallery with gallery editor
 		event.stop();
-
-		var galleryContainer = $(event.target).getParent('.xGalleryContainer');
+		var galleryContainers = $(event.target).getParents('.xGalleryContainer');
+		var galleryContainer = galleryContainers[0];
+		var galleryContainerLast = galleryContainers.getLast();
+		galleryContainer.replaces(galleryContainerLast);
 
 		var galleryInstance, galleryInstanceIndex;
 		if(this.galleries.some(function(item, index) {

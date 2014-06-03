@@ -72,13 +72,6 @@ var BertaBgEditor = new Class({
 
 		this.container = this.allContainer.getElement('#xBgEditorPanel');
 		this.strip = this.container.getElement('.images ul');
-		//this.editorContainer = this.container.getElement('.xEntryGalleryProps');
-
-/* 		this.initTabs(); */
-
-		this.stripUpdate();
-		$clear(this.stripUpdatePeriod);
-		this.stripUpdatePeriod = this.stripUpdate.periodical(300, this);
 
 		this.sortingInit();
 
@@ -136,9 +129,8 @@ var BertaBgEditor = new Class({
 
 
 	detach: function() {
-		$clear(this.stripUpdatePeriod);
+
 		this.uploader.detatch();
-/* 		this.container.getElement('.xBgAutoPlay').removeEvents(); */
 		this.sortingDeactivate();
 		this.processHandler.removeObservable(this);
 
@@ -190,7 +182,6 @@ var BertaBgEditor = new Class({
 						this.sortingRemoveElement(placeholder);
 						placeholder.destroy();
 					}
-					this.stripUpdate();
 				}
 			}.bind(this),
 
@@ -222,7 +213,6 @@ var BertaBgEditor = new Class({
 				var json = $H(JSON.decode(responseString, true) || {});
 				if(json.get('status') > 0) {
 					var el = new Element('li', {'class': 'file'}).inject(this.strip);
-					this.stripUpdate();
 					this.addUploadedElement(el, json);
 
 				} else {
@@ -230,7 +220,6 @@ var BertaBgEditor = new Class({
 								.inject(this.strip)
 								.addClass('file-failed');
 					el.destroy.delay(5000, el);
-					this.stripUpdate();
 				}
 
 			}.bind(this)
@@ -299,28 +288,14 @@ var BertaBgEditor = new Class({
 			).inject(container);
 
 			this.addElementPosterUploader.delay(1000, this, [ posterLink ]);
-
-			/*this.elementEdit_init(container.getElement('span[property="width"]'), this.options.xBertaEditorClassSimple);
-			this.elementEdit_init(container.getElement('span[property="height"]'), this.options.xBertaEditorClassSimple);*/
 		}
 
-		// animate file block to the real dimensions; update image strip when completed
-		new Fx.Morph(container, {
-			duration: 500,
-			transition: Fx.Transitions.Sine.easeInOut,
-			onComplete: function() {
-				container.removeClass('file').removeClass('file-success');
-				//container.set('class', '');
-				this.stripUpdate();
-			}.bind(this)
-		}).start({
-			'width' : targetElDims.w,
-			'height' : targetElDims.h
-		});
+		container.removeClass('file').removeClass('file-success');
 
 		// add common properties, events, and add to sortables
 		container.set('filename', uploaResponseJSON.get('filename'));
 		container.set('filetype', uploaResponseJSON.get('type'));
+		container.set('class', uploaResponseJSON.get('type'));
 		container.addEvent('mouseenter', this.onElementHover.bindWithEvent(this));
 		container.addEvent('mouseleave', this.onElementUnhover.bindWithEvent(this));
 		this.sortingAddElement(container);
@@ -379,11 +354,8 @@ var BertaBgEditor = new Class({
 							placeHolder.setStyle('width', json.get('smallthumb_width'));
 							posterLink.set('html', 'replace poster frame');
 
-							this.stripUpdate();
-
 							// enable sorting
 							if(!this.isUploading) this.sortingActivate();
-						//}.bind(this));
 					} else {
 						alert(json.get('error'));
 					}
@@ -395,26 +367,6 @@ var BertaBgEditor = new Class({
 
 		}, this);
 	},
-
-
-	stripUpdate: function() {
-		var strip = this.strip;
-		var totalWidth = 0;
-		var itemWidth, hasZeroWidth = false;
-		strip.getElements('li').each(function(el) {
-			//console.debug('strip update ', el.getSize().x);
-			itemWidth = el.getSize().x + el.getStyle('margin-right').toInt() + el.getStyle('padding-right').toInt();
-			totalWidth += itemWidth;
-			hasZeroWidth |= !itemWidth
-		});
-
-		if(!hasZeroWidth) {
-			$clear(this.stripUpdatePeriod);
-		}
-
-		strip.setStyle('width', totalWidth + 'px');
-	},
-
 
 
 

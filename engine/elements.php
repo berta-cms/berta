@@ -60,7 +60,7 @@ if($jsonRequest) {
 					$rowGalleryPadding 		= !empty($entry['mediaCacheData']['@attributes']['row_gallery_padding'])
 											? $entry['mediaCacheData']['@attributes']['row_gallery_padding'] : '0';
 
-					echo '<div class="xEntryGalleryEditor-wrap"><div class="xEntryGalleryEditor xPanel">';
+					echo '<div class="xEntryGalleryEditor-wrap"><div class="xEntryGalleryEditor xPanel clearfix">';
 						echo '<div class="xEntryGalleryMenu">';
 							echo '<div class="xEntryMedia tab">',
 									'<a href="#" class="xParams-media selected" title="add images and videos"><span>media</span></a>',
@@ -160,7 +160,7 @@ if($jsonRequest) {
 										$imSrc = $options['MEDIA_ROOT'] . $entry['mediafolder']['value'] . '/' . (string) $im['@attributes']['src'];
 										$imageThumbSrc = BertaEditor::images_getSmallThumbFor($imSrc);
 										if($imageThumbSrc) {
-											echo '<li filename="' . (string) $im['@attributes']['src'] . '" fileinfo="' . '' . '">';
+											echo '<li class="image" filename="' . (string) $im['@attributes']['src'] . '" fileinfo="' . '' . '">';
 											echo '<img class="img" src="' . $imageThumbSrc . '" />';
 											echo '<span class="grabHandle xMAlign-container"><span class="xMAlign-outer"><a class="xMAlign-inner" title="click and drag to move"><span></span></a></span></span>';
 											echo '<a href="#" class="crop" data-src="'.$imSrc.'"></a>';
@@ -359,7 +359,7 @@ if($jsonRequest) {
 					    			$imSrc = $options['MEDIA_ROOT'] . $section['mediafolder']['value'] . '/' . (string) $im['@attributes']['src'];
 					    			$imageThumbSrc = BertaEditor::images_getSmallThumbFor($imSrc);
 					    			if($imageThumbSrc) {
-					    				echo '<li filename="' . (string) $im['@attributes']['src'] . '" fileinfo="' . '' . '">';
+					    				echo '<li class="image" filename="' . (string) $im['@attributes']['src'] . '" fileinfo="' . '' . '">';
 					    				echo '<img class="img" src="' . $imageThumbSrc . '" />';
 					    				echo '<span class="grabHandle xMAlign-container"><span class="xMAlign-outer"><a class="xMAlign-inner" title="click and drag to move"><span></span></a></span></span>';
 					    				echo '<a href="#" class="delete"></a>';
