@@ -498,7 +498,7 @@ nav ul{
     #xBackground #xBackgroundRight {
         right: 0;
         <?php if (preg_match('/msie/i',$DEVICE_USER_AGENT)) { ?>
-            cursor: url(templates/messy-0.4.2/layout/arrow_right_<?php echo $s->get('pageLayout', 'bgButtonType') ?>.cur), pointer;
+            cursor: url(layout/arrow_right_<?php echo $s->get('pageLayout', 'bgButtonType') ?>.cur), pointer;
         <?php } else { ?>
             cursor: url(layout/arrow_right_<?php echo $s->get('pageLayout', 'bgButtonType') ?>.gif), pointer;
         <?php } ?>
@@ -506,7 +506,7 @@ nav ul{
     #xBackground #xBackgroundLeft {
         left: 0;
         <?php if (preg_match('/msie/i',$DEVICE_USER_AGENT)) { ?>
-            cursor: url(templates/messy-0.4.2/layout/arrow_left_<?php echo $s->get('pageLayout', 'bgButtonType') ?>.cur), pointer;
+            cursor: url(layout/arrow_left_<?php echo $s->get('pageLayout', 'bgButtonType') ?>.cur), pointer;
         <?php } else { ?>
             cursor: url(layout/arrow_left_<?php echo $s->get('pageLayout', 'bgButtonType') ?>.gif), pointer;
         <?php } ?>
@@ -527,7 +527,7 @@ nav ul{
             position: absolute;
             right: 8px;
             <?php if (preg_match('/msie/i',$DEVICE_USER_AGENT)) { ?>
-                cursor: url(templates/messy-0.4.2/layout/arrow_right_<?php echo $s->get('pageLayout', 'bgButtonType') ?>.cur), pointer;
+                cursor: url(layout/arrow_right_<?php echo $s->get('pageLayout', 'bgButtonType') ?>.cur), pointer;
             <?php } else { ?>
                 cursor: url(layout/arrow_right_<?php echo $s->get('pageLayout', 'bgButtonType') ?>.gif), pointer;
             <?php } ?>
@@ -536,7 +536,7 @@ nav ul{
             position: absolute;
             left: 26px;
             <?php if (preg_match('/msie/i',$DEVICE_USER_AGENT)) { ?>
-                cursor: url(templates/messy-0.4.2/layout/arrow_left_<?php echo $s->get('pageLayout', 'bgButtonType') ?>.cur), pointer;
+                cursor: url(layout/arrow_left_<?php echo $s->get('pageLayout', 'bgButtonType') ?>.cur), pointer;
             <?php } else { ?>
                 cursor: url(layout/arrow_left_<?php echo $s->get('pageLayout', 'bgButtonType') ?>.gif), pointer;
             <?php } ?>
