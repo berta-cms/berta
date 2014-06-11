@@ -2,7 +2,7 @@
 #
 #	HOW TO USE THIS FILE?
 #
-#	1.	After uploading all files to the server, renam this file on the server 
+#	1.	After uploading all files to the server, renam this file on the server
 #		to ".htaccess" (excluding the quotes).
 #
 #	2.	Modify the .htaccess file if you have installed berta in a subfolder
@@ -27,14 +27,14 @@ RewriteEngine on
 RewriteBase /
 
 # ***	In the following RewriteCond statements, change the part "^/" to include
-#		the name of the foler you uploaded berta to. 
+#		the name of the foler you uploaded berta to.
 #		E.g.: "^/berta/" (without quotes), if you uploaded berta to the
 #		subfolder berta of the www root of your web server.
 
 # If you have folders or files inside berta's folder you wish to access directly,
 # then modify and uncomment the following line
 # RewriteCond %{REQUEST_URI} ^/(my_folder_name1|my_folder_name1|my_file.html).*$	[OR]
-RewriteCond %{REQUEST_URI} ^/(_plugin_shop|engine|INSTALL|storage|templates).*$	[OR]
+RewriteCond %{REQUEST_URI} ^/(_plugin_shop|engine|INSTALL|storage|-templates).*$	[OR]
 RewriteCond %{REQUEST_URI} ^/(index\.php|sitemap\.xml\.php|robots\.txt|crossdomain\.xml|favicon\.ico).*$
 
 RewriteRule .* - [L]

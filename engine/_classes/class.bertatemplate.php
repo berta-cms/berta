@@ -319,7 +319,7 @@ class BertaTemplate extends BertaBase {
 				'engineABSRoot' => htmlspecialchars($engineAbsRoot),
 				'siteABSMainRoot' => htmlspecialchars(self::$options['SITE_ABS_ROOT']),
 				'siteABSRoot' => htmlspecialchars(self::$options['SITE_ABS_ROOT']) . $site,
-				'template' => htmlspecialchars(self::$options['SITE_ABS_ROOT'] . 'templates/' . $this->name . '/'),
+				'template' => htmlspecialchars(self::$options['SITE_ABS_ROOT'] . '-templates/' . $this->name . '/'),
 				'site' => htmlspecialchars(self::$options['MULTISITE'])
 			),
 

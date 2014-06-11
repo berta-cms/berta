@@ -67,9 +67,9 @@ $options['tags']['all_value'] = 'a181a603769c1f98ad927e7367c7aa51';
 $options['ENGINE_ROOT'] = $ENGINE_ROOT;
 $options['SITE_ROOT'] = $SITE_ROOT;
 
-$options['TEMPLATES_ROOT'] = $SITE_ROOT . 'templates/';
-$options['TEMPLATES_ABS_ROOT'] = $options['SITE_ABS_ROOT'] . 'templates/';
-$options['TEMPLATES_FULL_SERVER_PATH'] = realpath($SITE_ROOT . 'templates') . '/';
+$options['TEMPLATES_ROOT'] = $SITE_ROOT . '-templates/';
+$options['TEMPLATES_ABS_ROOT'] = $options['SITE_ABS_ROOT'] . '-templates/';
+$options['TEMPLATES_FULL_SERVER_PATH'] = realpath($SITE_ROOT . '-templates') . '/';
 
 
 /**

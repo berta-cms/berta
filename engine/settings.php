@@ -36,7 +36,7 @@ $topPanelHTML = BertaEditor::getTopPanelHTML($mode);
 			"engineRoot":"<?php echo BertaEditor::$options['ENGINE_ROOT'] ?>",
 			"engineABSRoot":"<?php echo BertaEditor::$options['ENGINE_ABS_ROOT'] ?>",
 			"siteABSRoot" : "<?php echo BertaEditor::$options['SITE_ABS_ROOT'] ?>",
-			"template" : "<?php echo BertaEditor::$options['SITE_ABS_ROOT'] . 'templates/' . $berta->template->name . '/' ?>"
+			"template" : "<?php echo BertaEditor::$options['SITE_ABS_ROOT'] . '-templates/' . $berta->template->name . '/' ?>"
 		}
 	};
 </script>
