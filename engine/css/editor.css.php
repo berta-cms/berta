@@ -254,6 +254,10 @@ body.xEditorEnabled { }
 
 /* editables ---------------------------------------------------------------------------------------------- */
 
+.xEditableMCE {
+	min-height: 1em;
+}
+
 .xEditable,
 .xEditableColor
 .xEditableSelect,
