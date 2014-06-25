@@ -283,7 +283,7 @@ class BertaGallery extends BertaBase {
                             imagegif($imageThumb, $thumbPath);
                         }
                         break;
-                      case IMAGETYPE_JPEG:  imagejpeg($imageThumb, $thumbPath, 90);   break;
+                      case IMAGETYPE_JPEG:  imagejpeg($imageThumb, $thumbPath, 97);   break;
                       case IMAGETYPE_PNG:   imagepng($imageThumb, $thumbPath);    break;
                       default: return false;
                     }
