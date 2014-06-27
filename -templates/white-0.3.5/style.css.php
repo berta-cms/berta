@@ -400,7 +400,7 @@ a img { border: none; }
 <?php if( $isResponsive ){ ?>
 
 	#sideColumn.xCentered {
-		left: initial;
+		left: auto;
 		margin-left: 0;
 	}
 
@@ -500,7 +500,7 @@ a img { border: none; }
 
 		#sideColumn {
 			position: absolute;
-			bottom: initial;
+			bottom: auto;
 			left: 0;
 			padding-left: <?php echo $s->get('pageLayout', 'paddingLeft') ?>;
 		}
@@ -534,7 +534,7 @@ a img { border: none; }
 		}
 
 		#mainColumn.xCentered {
-			left: initial;
+			left: auto;
 			margin-left: 0;
 		}
 
