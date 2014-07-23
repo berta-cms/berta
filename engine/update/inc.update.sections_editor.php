@@ -21,7 +21,7 @@ if($property == 'title') {	// section title
 		$returnUpdate = !empty($sectionsList[$sName]['title']) ? $sectionsList[$sName]['title']['value'] : '';
 		$returnReal = $sName;
 	}
-	elseif(file_exists($fNewName)) {
+	elseif( file_exists($fNewName) && $sNewName != $sName ) {
 		$returnError = 'section cannot be created! another section with the same (or too similar name) exists.';
 		$returnUpdate = !empty($sectionsList[$sName]['title']) ? $sectionsList[$sName]['title']['value'] : '';
 		$returnReal = $sName;
