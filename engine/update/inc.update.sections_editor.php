@@ -43,11 +43,27 @@ if($property == 'title') {	// section title
 					$sectionsListNew[$sN] = $s;
 			}
 
-			// save...
+			// save sections
 			BertaEditor::saveSections($sectionsListNew);
 
 			// update subsections and tags caches...
 			$newBlog = BertaEditor::loadBlog($sNewName);
+
+			//rename mediafolders and attributes
+			if ($newBlog) {
+				$newBlog['@attributes']['section'] = $sNewName;
+
+				if ( isset($newBlog['entry']) ) {
+					foreach ($newBlog['entry'] as $k => $entry) {
+						if (isset($entry['mediafolder']['value'])) {
+							if( @rename($options['MEDIA_ROOT'] .'/'. $entry['mediafolder']['value'], $options['MEDIA_ROOT'] .'/'. $sNewName . $entry['id']['value']) ) {
+								$newBlog['entry'][$k]['mediafolder'] = $sNewName . $entry['id']['value'];
+							}
+						}
+					}
+				}
+			}
+			BertaEditor::saveBlog($sNewName, $newBlog);
 
 			$ssArr = BertaEditor::getTags();
 			if(isset($ssArr[$sName])) {
@@ -58,8 +74,6 @@ if($property == 'title') {	// section title
 			BertaEditor::populateTags($sNewName, $newBlog);
 		}
 	}
-
-
 }
 else if($property == 'type') {	// section external link
 	$sectionsList = BertaEditor::getSections();
@@ -88,8 +102,6 @@ else if($property == 'type') {	// section external link
 		}
 	}
 	BertaEditor::saveSections($sectionsList);
-
-
 }
 else if($property == 'published') {	// attributes
 	$sectionsList = BertaEditor::getSections();
