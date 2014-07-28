@@ -36,6 +36,7 @@ return array(
 	'mobile_device_detected' => 'You can\'t use mobile device to edit your site!',
 	'javascript_include' => 'Javascript code included right before closing &lt;/body&gt; element. Learn more how to <a href="https://github.com/berta-cms/berta/wiki/Include-JavaScript-code" target="_blank" title="How to include JavaScript code">include JavaScript code</a>.',
 	'description_custom_css' => 'Place your custom CSS code here. Any existing CSS definitions will be overwritten. For more information visit our <a href="https://github.com/berta-cms/berta/wiki/Add-custom-CSS" target="_blank">WIKI</a>.',
+	'seo_help_text' => 'Search engine optimization (SEO) will help Google find your website and show it to others.',
 )
 
 ?>

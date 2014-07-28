@@ -382,6 +382,11 @@ return array(
 	'Weight units (g, oz) used for postage cost calculation.' => 'Svara mērvienība (g, oz), kas tie lietota pie pasta izdevumu aprēķina.',
 	'Design' => 'Dizains',
 	'Shop entry width' => 'Veikala ieraksta platums',
+	'Title' => 'Virsraksts',
+	'What is SEO?' => 'Kas ir SEO?',
+	'seo_help_text' => 'Search engine optimization (SEO) palīdzēs atrast un parādīt tavu mājaslapu citiem Google meklētājā.',
+	'Keywords' => 'Atslēgvārdi',
+	'Content description' => 'Satura apraksts',
 )
 
 ?>
