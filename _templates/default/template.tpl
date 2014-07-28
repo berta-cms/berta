@@ -7,9 +7,9 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 	{if $berta.settings.pageLayout.responsive=='yes'}<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">{/if}
-	<title>{ $berta.pageTitle }</title>
-	<meta name="keywords" content="{ $berta.settings.texts.metaKeywords }" />
-	<meta name="description" content="{ $berta.settings.texts.metaDescription }" />
+	<title>{if $berta.section.seoTitle}{ $berta.section.seoTitle|strip_tags|escape }{else}{ $berta.pageTitle|strip_tags|escape }{/if}</title>
+	<meta name="keywords" content="{if $berta.section.seoKeywords}{ $berta.section.seoKeywords|strip_tags|escape }{else}{ $berta.settings.texts.metaKeywords|strip_tags|escape }{/if}" />
+	<meta name="description" content="{if $berta.section.seoDescription}{ $berta.section.seoDescription|strip_tags|escape }{else}{ $berta.settings.texts.metaDescription|strip_tags|escape }{/if}" />
 	<meta name="author" content="{ $berta.settings.texts.ownerName }" />
 	{if $berta.options.NOINDEX}<meta name="robots" content="noindex, nofollow" />{/if}
 	{$berta.settings.settings.googleSiteVerification|@html_entity_decode}
@@ -30,7 +30,7 @@
 	<script type="text/javascript" src="{ $berta.options.TEMPLATES_ABS_ROOT }{ $berta.templateName }/default.js?{$berta.options.int_version}"></script>
 </head>
 
-<body>
+<body class="xContent-{ $berta.section.name }">
 
 	{if $berta.settings.background.backgroundAttachment=='fill' AND $berta.settings.background.backgroundImageEnabled=='yes' AND $berta.settings.background.backgroundImage!=''}
 		<div id="xFilledBackground" class="xPosition-{' '|str_replace:'_':$berta.settings.background.backgroundPosition}">

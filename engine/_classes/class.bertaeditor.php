@@ -786,6 +786,7 @@ DOC;
 		}
 
 		$m8 = I18n::_('multisite');
+		$m9 = I18n::_('seo');
 
 		$m1Class = $selectedSection == 'site' ? ' class="selected"' : '';
 		$m2Class = $selectedSection == 'sections' ? ' class="selected"' : '';
@@ -800,8 +801,10 @@ DOC;
 
 		$m5_link=self::$options['HOSTING_PROFILE'] ? self::$options['HOSTING_PROFILE'] : 'profile.php';
 		$m5_target=self::$options['HOSTING_PROFILE'] ? '_blank' : '_self';
+		$m9_link = 'seo.php' . ($site ? '?site='.$site : '');
 
 		$m8Class = $selectedSection == 'multisite' ? ' class="selected"' : '';
+		$m9Class = $selectedSection == 'seo' ? ' class="selected"' : '';
 
 		if (!self::$options['MULTISITE_DISABLED']) {
 			$multisiteItem = '<li'.$m8Class.' id="xMultisite"><a href="multisite.php">'.$m8.'</a></li><li>|</li>';
@@ -823,6 +826,7 @@ DOC;
 						$shopItem
 						<li$m3Class id="xSettings"><a href="$m3_link">$m3</a></li><li>|</li>
 						<li$m4Class id="xTemplateDesign"><a href="$m4_link">$m4</a></li><li>|</li>
+						<li$m9Class id="xSeo"><a href="$m9_link">$m9</a></li><li>|</li>
 						<li$m5Class><a href="$m5_link" target="$m5_target">$m5</a></li><li>|</li>
 						$helpdeskItem
 						<li><a href="logout.php">$m6</a></li>

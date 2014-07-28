@@ -435,7 +435,7 @@ body.xEditorEnabled { }
 	position: absolute;
 }
 	#xTopPanel {
-		max-width: 800px;
+		max-width: 845px;
 		z-index: 60000;
 		position: relative;
 		text-align: left !important;
@@ -2182,6 +2182,49 @@ body.xSettingsPageBody {
 			-moz-opacity: 1;
 		}
 
+
+
+	#xSeoEditor {
+		width: 1010px;
+		clear: both;
+	}
+		#xSeoEditor ul {
+			list-style: none;
+			margin: 0 0 2em 0;
+			padding: 0;
+		}
+			#xSeoEditor ul li {
+				clear: both;
+				padding: 10px 0 0;
+			}
+				#xSeoEditor ul li > div {
+					min-height: 1px;
+				}
+
+		#xSeoEditor .listHead {
+			font-weight: bold;
+			padding: 0 0 3px;
+			margin: 0 0 0px;
+			border-bottom: 1px solid #ccc;
+		}
+
+		#xSeoEditor ul, #xSeoEditor .listHead {
+			width: 100%;
+		}
+			#xSeoEditor li div, #xSeoEditor .listHead div {
+				float: left;
+				margin-right: 10px;
+			}
+
+		#xSeoEditor .csTitle,
+		#xSeoEditor .csSeoTitle,
+		#xSeoEditor .csSeoKeywords {
+			width: 200px;
+		}
+
+		#xSeoEditor .csSeoDescription {
+			width: 370px;
+		}
 
 
 	#xMultisiteEditor {
