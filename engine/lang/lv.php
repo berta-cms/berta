@@ -384,7 +384,7 @@ return array(
 	'Shop entry width' => 'Veikala ieraksta platums',
 	'Title' => 'Virsraksts',
 	'What is SEO?' => 'Kas ir SEO?',
-	'seo_help_text' => 'Search engine optimization (SEO) palīdzēs atrast un parādīt tavu mājaslapu citiem Google meklētājā.',
+	'seo_help_text' => 'Search Engine Optimization (SEO) palīdz uzlabot mājaslapas reitingu Google meklēšanas rezultātos. <a href="https://support.google.com/webmasters/answer/35624" target="_blank">Uzzini vairāk, kā tas strādā</a>.',
 	'Keywords' => 'Atslēgvārdi',
 	'Content description' => 'Satura apraksts',
 )
