@@ -17,7 +17,7 @@ function smarty_function_white_firstPageMarkedEntry($params, &$smarty) {
 
 	if(!empty($params['entry'])) {
 		$entry = $params['entry'];
-		$imageSelect = !empty($params['imageselect']) ? $params['imageselect'] : 'random';
+		$imageSelect = !empty($params['imageselect']) ? $params['imageselect'] : 'first';
 		$wiggleClass = $berta->template->settings->get('firstPage', 'hoverWiggle') == 'yes' ? 'firstPageWiggle' : '';
 		$isResponsive = $berta->template->settings->get('pageLayout', 'responsive')=='yes';
 
