@@ -20,6 +20,8 @@ function smarty_function_customEntryHeader($params, &$smarty) {
 	$tags=isset($params['entry']['tags'])?implode(', ',$params['entry']['tags']):'';
 	$customWidth=isset($params['entry']['width']['value']) ? $params['entry']['width'] : '';
 
+	$contentLayout=isset($params['entry']['layout']) ? $params['entry']['layout'] : 'gallery-top-description-bottom';
+
 	$shopMenuEntry = null;
 	if(isset($params['ishopentry']) && $params['ishopentry'] == 1) {
 
@@ -49,6 +51,11 @@ function smarty_function_customEntryHeader($params, &$smarty) {
 			</div>
 			<div class="xEntryDropdownBox">
 				<ul>
+					<li>
+						<a>
+							<div class="value xEditableSelectRC xProperty-layout xNoHTMLEntities" title="" x_options="gallery-top-description-bottom||gallery-left-description-right||gallery-right-description-left">$contentLayout</div>
+						</a>
+					</li>
 					<li>
 						<a href="#" class="xEntryToBack" title="send to back behind others"><span>Send to back</span></a>
 					</li>

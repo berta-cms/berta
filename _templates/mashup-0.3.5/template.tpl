@@ -156,7 +156,7 @@
 			<div id="contentContainer"{if $berta.settings.pageLayout.responsive=='yes' } class="xResponsive"{/if}>
 				<div id="mainColumnContainer">
 					<div id="mainColumn"{if $berta.settings.pageLayout.centered == 'yes' } class="xCentered"{ /if }{if $berta.settings.pageLayout.responsive=='yes' } data-paddingtop="{$berta.settings.pageLayout.paddingTop}"{/if}>
-						<ol id="pageEntries" class="{ entriesListClasses }">
+						<ol id="pageEntries" class="{ entriesListClasses } clearfix">
 
 							{* now loop through all entries and print them out *}
 							{ foreach from=$entries item="entry" name="entriesLoop" }

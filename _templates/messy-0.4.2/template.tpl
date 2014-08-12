@@ -299,7 +299,7 @@
                     {* now loop through all entries and print them out *}
                     { foreach $entries as $entry }
 
-                        <div class="{ entryClasses entry=$entry } { messClasses property='positionXY' } xShopMessyEntry" style="{ messStyles xy=$entry.positionXY entry=$entry }{ if $berta.settings.pageLayout.responsive != 'yes' }{if $entry.width} width:{$entry.width};{elseif strlen(trim($berta.settings.shop.entryWidth)) > 0  && $berta.section.type == 'shop'}width: { $berta.settings.shop.entryWidth }px;{ /if }{/if}">
+                        <div class="{ entryClasses entry=$entry } { messClasses property='positionXY' } xShopMessyEntry clearfix" style="{ messStyles xy=$entry.positionXY entry=$entry }{ if $berta.settings.pageLayout.responsive != 'yes' }{if $entry.width} width:{$entry.width};{elseif strlen(trim($berta.settings.shop.entryWidth)) > 0  && $berta.section.type == 'shop'}width: { $berta.settings.shop.entryWidth }px;{ /if }{/if}">
 
 
                             {* the entry settings and delete and move buttons live in the entryHeader - don't leave it out! *}

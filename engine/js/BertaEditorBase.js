@@ -923,6 +923,18 @@ var BertaEditorBase = new Class({
 									el.set('html', resp.update);
 								}
 
+								//set entry layout class
+								if (el.hasClass('xProperty-layout')){
+									var entry = el.getParent('.xEntry');
+									var classes = entry.getProperty('class').split(" ");
+									for (var i = classes.length - 1; i >= 0; i--) {
+										if ( classes[i].substring(0,8) === 'xgallery' ) {
+											entry.removeClass(classes[i]);
+										}
+									};
+									entry.addClass('x'+resp.update);
+								}
+
 								$$('.galleryTypeSettings').addClass('xHidden');
 
 								//console.debug(newContentText);

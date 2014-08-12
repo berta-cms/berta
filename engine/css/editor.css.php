@@ -1108,12 +1108,15 @@ ul#pageEntries {
 
 			.xEntryDropdownBox .customWidth {
 				height: 22px;
-
 			}
 
 			.xEntryDropdownBox .customWidth input {
 				display: block;
 				width: 100%;
+			}
+
+			.xEntryDropdownBox select {
+				width: 100% !important;
 			}
 
 			.xEntryDropdownBox ul li:hover {

@@ -47,10 +47,13 @@ var BertaGallery = new Class({
 	},
 
 	attach: function(container) {
+		var parent = container.getParent();
+		if (parent.hasClass('xGalleryContainer')){
+			container.replaces(parent);
+		}
 		isResponsive = $$('.xResponsive').length;
 		this.container = container;
 		this.type = this.container.getClassStoredValue('xGalleryType');
-		//this.container.addClass('galleryType-' + this.type);
 
 		this.fullscreen=this.container.getElement('div.xFullscreen');
 		this.imageContainer = this.container.getElement('div.xGallery');
