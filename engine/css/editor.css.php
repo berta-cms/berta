@@ -1098,6 +1098,7 @@ ul#pageEntries {
 			}
 
 			.xEntryDropdownBox ul li .customWidth,
+			.xEntryDropdownBox ul li .leftColWidth,
 			.xEntryDropdownBox ul li a {
 				color: #000;
 				text-decoration: none;
@@ -1106,11 +1107,13 @@ ul#pageEntries {
 				line-height: 22px;
 			}
 
-			.xEntryDropdownBox .customWidth {
+			.xEntryDropdownBox .customWidth,
+			.xEntryDropdownBox .leftColWidth {
 				height: 22px;
 			}
 
-			.xEntryDropdownBox .customWidth input {
+			.xEntryDropdownBox .customWidth input,
+			.xEntryDropdownBox .leftColWidth input {
 				display: block;
 				width: 100%;
 			}

@@ -21,6 +21,7 @@ function smarty_function_customEntryHeader($params, &$smarty) {
 	$customWidth=isset($params['entry']['width']['value']) ? $params['entry']['width'] : '';
 
 	$contentLayout=isset($params['entry']['layout']) ? $params['entry']['layout'] : 'gallery-top-description-bottom';
+	$leftColWidth=isset($params['entry']['leftColWidth']) && intval($params['entry']['leftColWidth']) > 0 ? $params['entry']['leftColWidth'] : '';
 
 	$shopMenuEntry = null;
 	if(isset($params['ishopentry']) && $params['ishopentry'] == 1) {
@@ -55,6 +56,11 @@ function smarty_function_customEntryHeader($params, &$smarty) {
 						<a>
 							<div class="value xEditableSelectRC xProperty-layout xNoHTMLEntities" title="" x_options="gallery-top-description-bottom||gallery-left-description-right||gallery-right-description-left">$contentLayout</div>
 						</a>
+					</li>
+					<li>
+						<div class="leftColWidth">
+							<div title="leftColWidth" class="xEditable xUnits-% xProperty-leftColWidth">$leftColWidth</div>
+						</div>
 					</li>
 					<li>
 						<a href="#" class="xEntryToBack" title="send to back behind others"><span>Send to back</span></a>

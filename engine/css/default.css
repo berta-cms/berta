@@ -151,6 +151,7 @@ div.xGalleryItem {
 	#pageEntries .xEntry.xgallery-right-description-left .xGalleryContainer,
 	#pageEntries .xEntry.xgallery-left-description-right .entryText {
 		width: 100%;
+		min-width: 100%;
 		float: none;
 		clear: both;
 		padding: 0;

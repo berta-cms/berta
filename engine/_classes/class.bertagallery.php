@@ -32,10 +32,10 @@ class BertaGallery extends BertaBase {
 
         $rowGalleryPadding = !empty($entry['mediaCacheData']['@attributes']['row_gallery_padding']) ? $entry['mediaCacheData']['@attributes']['row_gallery_padding'] : false;
 
-        return BertaGallery::getHTML($imgs, $entry['mediafolder']['value'], $galleryType, $isAdminMode, false, 1, $galleryFullScreen, $imageSize, $galleryAutoPlay, $gallerySlideNumbersVisible, $galleryLinkAddress, $galleryLinkTarget, $rowGalleryPadding);
+        return BertaGallery::getHTML($imgs, $entry['mediafolder']['value'], $galleryType, $isAdminMode, false, 1, $galleryFullScreen, $imageSize, $galleryAutoPlay, $gallerySlideNumbersVisible, $galleryLinkAddress, $galleryLinkTarget, $rowGalleryPadding, $entry);
     }
 
-    public static function getHTML($imgs, $mediaFolderName, $galleryType, $isAdminMode = false, $bReturnFullInfo = false, $sizeRatio = 1, $galleryFullScreen = false, $imageSize = 'large', $galleryAutoPlay = '0', $gallerySlideNumbersVisible = 'yes', $galleryLinkAddress = '', $galleryLinkTarget = '', $rowGalleryPadding = false) {
+    public static function getHTML($imgs, $mediaFolderName, $galleryType, $isAdminMode = false, $bReturnFullInfo = false, $sizeRatio = 1, $galleryFullScreen = false, $imageSize = 'large', $galleryAutoPlay = '0', $gallerySlideNumbersVisible = 'yes', $galleryLinkAddress = '', $galleryLinkTarget = '', $rowGalleryPadding = false, $entry = null) {
         global $berta;
         $strOut = '';
 
@@ -44,6 +44,8 @@ class BertaGallery extends BertaBase {
 
         $imageTargetWidth = $berta->template->settings->get('media', 'images' . ucfirst($imageSize) . 'Width', false, true);
         $imageTargetHeight = $berta->template->settings->get('media', 'images' . ucfirst($imageSize) . 'Height', false, true);
+
+        $xGalleryContainerStyles = BertaGallery::getGalleryContainerStyles($entry);
 
         // print output ...
 
@@ -62,7 +64,7 @@ class BertaGallery extends BertaBase {
 	            break;
             }
 
-            $strOut = '<div class="xGalleryContainer xGalleryHasImages xGalleryType-' . $galleryType . $specificClasses . '">';
+            $strOut = '<div class="xGalleryContainer xGalleryHasImages xGalleryType-' . $galleryType . $specificClasses . '"'.$xGalleryContainerStyles.'>';
             $strOut .= "<div class=\"xGallery\" style=\"width: {$firstImageWidth}px; height: {$firstImageHeight}px;\"".($rowGalleryPadding ? ' xRowGalleryPadding="'.$rowGalleryPadding.'"':'').">";
             $strOut .= $firstImageHTML;
             if($isAdminMode) $strOut .= '<a href="#" class="xGalleryEditButton xEditorLink xSysCaption xMAlign-container"><span class="xMAlign-outer-gallery"><span class="xMAlign-inner-gallery">edit gallery</span></span></a>';
@@ -72,7 +74,7 @@ class BertaGallery extends BertaBase {
             $strOut .= '</div>';
 
         } elseif($isAdminMode) {
-            $strOut = '<div class="xGalleryContainer">'; //.
+            $strOut = '<div class="xGalleryContainer"'.$xGalleryContainerStyles.'>'; //.
                         //'<img src="' . $options['MEDIA_ROOT'] . $p['mediafolder']['value'] . '/' . $imgs[0] . '" alt="' . (!empty($p['title']['value']) ? htmlspecialchars($p['title']['value']) : '') . '" />' .
                       //'</div>';
 
@@ -88,6 +90,33 @@ class BertaGallery extends BertaBase {
                $strOut;
     }
 
+    public static function getGalleryContainerStyles($entry) {
+        $styles = array();
+        $leftColWidth = isset($entry['content']['leftColWidth']['value']) && intval($entry['content']['leftColWidth']['value']) > 0 ? intval($entry['content']['leftColWidth']['value']) : false;
+        $layout = isset($entry['content']['layout']['value']) ? $entry['content']['layout']['value'] : false;
+
+        if ( $leftColWidth && $layout ) {
+            if ($layout == 'gallery-right-description-left'){
+                $styles[] = array(
+                    'property' => 'width',
+                    'value' => (100 - $leftColWidth) . '%'
+                );
+            }elseif($layout == 'gallery-left-description-right'){
+                $styles[] = array(
+                    'property' => 'width',
+                    'value' => $leftColWidth . '%'
+                );
+            }
+        }
+
+        if (count($styles)) {
+            $style_attr = ' style="';
+            foreach ($styles as $style) {
+                $style_attr .= $style['property'].':'.$style['value'].';';
+            }
+            return $style_attr . '"';
+        }
+    }
 
     public static function getImageHTML($img, $mediaFolder, $isAdminMode = false, $sizeRatio = 1, $imageTargetWidth = 0, $imageTargetHeight = 0) {
         $mFolder = self::$options['MEDIA_ROOT'] . $mediaFolder . '/';

@@ -1,5 +1,3 @@
-
-
 Element.implement({
 	getIndex: function(type) {
         type = (type) ? type : '';
@@ -8,7 +6,6 @@ Element.implement({
 
 	exists: function() {
 		return this;
-        //return (this.getIndex() >= 0);
     },
 
 	getClassStoredValue: function(varName) {
@@ -699,6 +696,30 @@ var BertaEditorBase = new Class({
 		}
 	},
 
+	entryLayoutStyles: function(el, response) {
+		var entry = el.getParent('.xEntry');
+		var entryText = entry.getElement('.entryText');
+		var galleryContainer = entry.getElement('.xGalleryContainer');
+		var layout = entry.getElement('.xProperty-layout').get('text');
+		var leftColWidth = parseInt(entry.getElement('.xProperty-leftColWidth').get('text'));
+
+		var entryTextWidth = null;
+		var galleryContainerWidth = null;
+
+		if (leftColWidth > 0) {
+			if (layout == 'gallery-right-description-left') {
+				entryTextWidth = leftColWidth + '%';
+				galleryContainerWidth = (100 - leftColWidth) + '%';
+			}else if( layout == 'gallery-left-description-right' ){
+				entryTextWidth = (100 - leftColWidth) + '%';
+				galleryContainerWidth = leftColWidth + '%';
+			}
+		}
+
+		entryText.setStyle('width', entryTextWidth);
+		galleryContainer.setStyle('width', galleryContainerWidth);
+	},
+
 
 	  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	 ///|  Saving edited element  |////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -933,6 +954,7 @@ var BertaEditorBase = new Class({
 										}
 									};
 									entry.addClass('x'+resp.update);
+									this.entryLayoutStyles(el, resp.update);
 								}
 
 								$$('.galleryTypeSettings').addClass('xHidden');
@@ -968,7 +990,12 @@ var BertaEditorBase = new Class({
 								}
 								break;
 
+
 							default:
+								if ( el.hasClass('xProperty-leftColWidth') ){
+									this.entryLayoutStyles(el, resp.update);
+								}
+
 								// for all other cases just update the HTML, if the editor instance is present
 								// (editor instance is not present, for instance, in real input fields (checkbox, etc..))
 								if(elEditor) {

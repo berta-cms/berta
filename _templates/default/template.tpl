@@ -173,7 +173,7 @@
 						{ /if }
 
 						{ if $berta.environment == 'engine' || !empty($entry.description) }
-						<div class="entryText xEditableMCE xProperty-description">{ $entry.description }</div>
+						<div class="entryText xEditableMCE xProperty-description"{ entryTextStyles entry=$entry }>{ $entry.description }</div>
 						{ /if }
 
 						{ if $berta.settings.entryLayout.galleryPosition == 'below description' }
