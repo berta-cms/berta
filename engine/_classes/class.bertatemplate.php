@@ -131,6 +131,7 @@ class BertaTemplate extends BertaBase {
 		list($entries, $entriesForTag) = $this->getEntriesLists($this->sectionName, $this->tagName, $this->content);
 		$this->addVariable('allentries', $entries);
 		$this->addVariable('entries', $entriesForTag);
+		$this->addVariable('covers', $this->getCoversList($this->tagName, $this->content));
 
 		if($allContent) {
 			$allEntries = array();
@@ -182,7 +183,37 @@ class BertaTemplate extends BertaBase {
 		return array($entries, $entriesForTag);
 	}
 
+	private function getCoversList($tagName, &$content){
+		$covers = array();
+		//don't show on subsections
+		if(!$tagName) {
+			if( isset($content['cover']) && !empty($content['cover'])) {
 
+				foreach($content['cover'] as $cover) {
+					$id = $cover['id']['value'];
+
+					// preset variables..
+					$e['__raw'] = $cover;
+					$cover['id'] = $cover['id']['value'];
+					$cover['uniqid'] = $cover['uniqid']['value'];
+					$cover['date'] = !empty($cover['date']) && !empty($cover['date']['value']) ? $cover['date']['value'] : '';
+					$cover['mediafolder'] = $cover['mediafolder']['value'];
+
+					// cover content..
+					if(!empty($cover['content'])) {
+						foreach($cover['content'] as $key => $value) {
+							if(!isset($cover[$key]))	// don't overwrite
+								$cover[$key] = !empty($value['value']) ? $value['value'] : '';
+						}
+					}
+
+					$covers[$id] = $cover;
+				}
+			}
+
+		}
+		return $covers;
+	}
 
 
 	public function output() {
@@ -326,6 +357,9 @@ class BertaTemplate extends BertaBase {
 			'i18n' => array(
 				'create new entry here' => I18n::_('create new entry here'),
 				'create new entry' => I18n::_('create new entry'),
+				'create new' => I18n::_('create new ...'),
+				'entry' => I18n::_('entry'),
+				'cover' => I18n::_('cover'),
 			),
 			//'settings' => $vars['berta']['settings']
 		);

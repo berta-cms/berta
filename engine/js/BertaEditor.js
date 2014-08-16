@@ -137,6 +137,8 @@ var BertaEditor = new Class({
 
 				this.container = document.getElementById('contentContainer');
 				this.entriesList = $$('.xEntriesList')[0];
+				this.coversList = $$('.covers')[0];
+				this.currentSection = this.container.getParent('body').getClassStoredValue('xContent');
 
 				// section background editing
 				if($('xBgEditorPanelTrig')) $('xBgEditorPanelTrig').addEvent('click', this.onBgEditClick.bindWithEvent(this));
@@ -148,9 +150,53 @@ var BertaEditor = new Class({
 				// Tutorial videos
 				this.bertaVideosInit();
 
+				if (this.coversList){
+
+					this.coversList.getElements('.cover .xEntryEditWrap').addEvent('mouseenter', this.coverOnHover.bindWithEvent(this));
+					this.coversList.getElements('.cover .xEntryEditWrap').addEvent('mouseleave', this.coverOnUnHover.bindWithEvent(this));
+
+					this.coversList.getElements('.cover .xEntryDropdown').addEvent('mouseenter', this.entryDropdownToggle.bindWithEvent(this));
+					this.coversList.getElements('.cover .xEntryDropdown').addEvent('click', this.entryDropdownToggle.bindWithEvent(this));
+
+					this.coversList.getElements('.cover .xEntryDropdownBox').addEvents({
+					 	mouseleave: function(event){
+					 		this.removeClass('xVisible');
+							var dropdown = this.getParent().getElement('.xEntryDropdown');
+							dropdown.removeClass('xEntryDropdowHover');
+					    }
+					});
+
+					$$('.xCoverDelete').addEvent('click', this.coverDelete.bindWithEvent(this));
+
+					// galleries
+					// this.entriesList.getElements('.xGalleryContainer').each(function(item) {
+					// 	var g = new BertaGallery(item, {
+					// 		environment: this.options.environment,
+					// 		engineRoot: this.options.paths.engineRoot,
+					// 		engineABSRoot: this.options.paths.engineABSRoot,
+					// 		playerType: this.options.videoPlayerType,
+					// 		slideshowAutoRewind: this.options.slideshowAutoRewind });
+					// 	this.galleries.push(g);
+					// }.bind(this));
+					// this.entriesList.getElements('.xGalleryEditButton').addEvent('click', this.onGalleryEditClick.bindWithEvent(this));
+
+					// cover sorting
+					this.orderSortablesCover = new Sortables(this.coversList, {
+					    handle: '.xEntryMove',
+						constrain: true,
+					    clone: true,
+						opacity: 0.3,
+					    revert: true,
+						onComplete: function(el) {
+							this.coverOrderSave(el);
+						}.bind(this)
+					});
+
+					this.highlightNewCover.delay(100, this);
+				}
+
 				if(this.entriesList) {
 
-					this.currentSection = this.entriesList.getClassStoredValue('xSection');
 					this.currentTag = this.entriesList.getClassStoredValue('xTag');
 
 					if(this.currentSection) {
@@ -171,27 +217,37 @@ var BertaEditor = new Class({
 						    }
 						});
 
-						// entry deleting and creating
-						if(this.options.templateName.substr(0,5) != 'messy')
-							createNewEntryText = this.options.i18n['create new entry here'];
-						else
-							createNewEntryText = this.options.i18n['create new entry'];
-						new Element('A', { 'class': 'xCreateNewEntry xPanel xAction-entryCreateNew', 'href': '#'}).adopt(
-							new Element('span', { 'html': createNewEntryText })
-						).inject(this.entriesList, 'after');
-						$$('.xEntryDelete').addEvent('click', this.entryDelete.bindWithEvent(this));
-						$$('.xCreateNewEntry').addEvent('click', this.entryCreate.bindWithEvent(this));
-
+						// messy: create widget
 						if(this.options.templateName.substr(0,5) == 'messy') {
 
-							$$('.xCreateNewEntry').addClass('mess');
-							$$('.xCreateNewEntry').adopt(new Element('div', { 'class': 'xHandle', events: { click: function(){return false;} } }));
+							var xCreateWidget = new Element('div', { 'class': 'xCreateWidget mess', 'text': this.options.i18n['create new'] });
+							var xCreateNewEntry = new Element('a', { 'class': 'xCreateNewEntry xAction-entryCreateNew', 'href': '#', 'text': this.options.i18n['entry'] });
+							var xCreateNewCover = new Element('a', { 'class': 'xCreateNewCover xAction-coverCreateNew', 'href': '#', 'text': this.options.i18n['cover'] });
 
-							var $xCreateNewEntry = $$('.xCreateNewEntry');
-							$xCreateNewEntry.makeDraggable({
-								handle: $xCreateNewEntry.getElement('.xHandle')
+							xCreateWidget.adopt(new Element('div', { 'class': 'xHandle' }));
+							xCreateWidget.adopt(
+								new Element('ul').adopt(
+									new Element('li').adopt(xCreateNewEntry),
+									new Element('li').adopt(xCreateNewCover)
+								)
+							);
+							xCreateWidget.inject($('allContainer'), 'after');
+
+							xCreateWidget.makeDraggable({
+								handle: xCreateWidget.getElement('.xHandle')
 							});
+
+							xCreateNewCover.addEvent('click', this.coverCreate.bindWithEvent(this));
+
+						}else{
+
+							new Element('A', { 'class': 'xCreateNewEntry xPanel xAction-entryCreateNew', 'href': '#'}).adopt(
+								new Element('span', { 'html': this.options.i18n['create new entry here'] })
+							).inject(this.entriesList, 'after');
 						}
+
+						$$('.xEntryDelete').addEvent('click', this.entryDelete.bindWithEvent(this));
+						$$('.xCreateNewEntry').addEvent('click', this.entryCreate.bindWithEvent(this));
 
 						// galleries
 						this.entriesList.getElements('.xGalleryContainer').each(function(item) {
@@ -301,6 +357,18 @@ var BertaEditor = new Class({
 			var entry = this.entriesList.getElement('.xEntryId-' + idToHighlight);
 			if(entry) {
 				var pos = entry.getPosition();
+				window.scrollTo(pos.x, pos.y);
+			}
+		}
+	},
+
+	highlightNewCover: function() {
+		var idToHighlight = Cookie.read('_berta__cover_highlight');
+		Cookie.dispose('_berta__cover_highlight', { path: this.options.paths.engineABSRoot });
+		if(idToHighlight) {
+			var cover = this.coversList.getElement('.xCoverId-' + idToHighlight);
+			if(cover) {
+				var pos = cover.getPosition();
 				window.scrollTo(pos.x, pos.y);
 			}
 		}
@@ -539,10 +607,102 @@ var BertaEditor = new Class({
 
 
 
+	  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	 ///|  Cover Management  |/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+	coverCreate: function(event) {
+		event = new Event(event).stop();
+		var target = $(event.target);
 
+		if(this.processHandler.isIdleOrWarnIfBusy()) {
+			target.addClass('xSaving');
 
+			new Request.JSON({
+				url: this.options.updateUrl,
+				data: "json=" + JSON.encode({
+					section: this.currentSection, action: 'CREATE_NEW_COVER', value: null
+				}),
+				onComplete: function(resp) {
+					if(!resp.error_message) {
+						Cookie.write('_berta__cover_highlight', resp.update.coverid, { path: this.options.paths.engineABSRoot });
+						window.location.reload();
+					} else {
+						alert(resp.error_message);
+						target.removeClass('xSaving');
+					}
+				}.bindWithEvent(this)
+			}).post();
+		}
+	},
 
+	coverOnHover: function(event) {
+		event = new Event(event);
+		var target = $(event.target);
+		if(!target.hasClass('cover')) target = target.getParent('.cover');
+		target.addClass('xEntryHover');
+	},
+
+	coverOnUnHover: function(event) {
+		event = new Event(event);
+		var target = $(event.target);
+		if(!target.hasClass('cover')) target = target.getParent('.cover');
+		target.removeClass('xEntryHover');
+	},
+
+	coverOrderSave: function(elJustMoved) {
+		var elId = elJustMoved.getClassStoredValue('xCoverId')
+		var next = elJustMoved.getNext('.cover');
+		var nextId = next ? next.getClassStoredValue('xCoverId') : null;
+
+		new Request.JSON({
+			url: this.options.updateUrl,
+			data: "json=" + JSON.encode({
+				section: this.currentSection, cover: elId, entryNum: null,
+				action: 'PUT_BEFORE', property: '', value: nextId
+			}),
+			onComplete: function(resp) {
+
+			}.bind(this)
+		}).post();
+	},
+
+	coverDelete: function(event) {
+		event = new Event(event).stop();
+
+		if(this.processHandler.isIdleOrWarnIfBusy()) {
+			if(confirm("Berta asks:\n\nAre you sure you want to delete this cover along with all the images and other stuff it has attached and never have it back and never regret it afterwards?")) {
+				var btn = $(event.target);
+				var coverObj = $(event.target).getParent('.cover');
+
+				btn.setProperty('display', 'none');
+				coverObj.addClass('xSavingAtLarge');
+
+				var deleteProcessId = this.unlinearProcess_getId('delete-cover');
+				this.unlinearProcess_start(deleteProcessId, 'Deleting cover');
+
+				new Request.JSON({
+					url: this.options.updateUrl,
+					data: "json=" + JSON.encode({
+						section: this.currentSection, cover: coverObj.getClassStoredValue('xCoverId'), action: 'DELETE_COVER', value: coverObj.getClassStoredValue('xCoverId')
+					}),
+					onComplete: function(resp) {
+						if(!resp) {
+							alert('Berta says, there was a server error while deleting this cover! Something has gone sooooo wrong...');
+
+						} else if(resp && !resp.error_message) {
+							this.unlinearProcess_stop(deleteProcessId);
+							coverObj.destroy();
+						} else {
+							alert(resp.error_message);
+							btn.setProperty('display', 'inline');
+							entryObj.removeClass('xSavingAtLarge');
+						}
+					}.bindWithEvent(this)
+				}).post();
+			}
+		}
+	},
 
 
 	  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -564,13 +724,9 @@ var BertaEditor = new Class({
 					mediafolder: '', before_entry: entryInfo.entryId
 				}),
 				onComplete: function(resp) {
-					//console.debug(resp);
 					if(!resp.error_message && resp.update && resp.update.entryid) {
 						Cookie.write('_berta__entry_highlight', resp.update.entryid, { path: this.options.paths.engineABSRoot });
 						window.location.reload();
-						/*var li = new Element('li', { class: 'entry', entryid: resp.entryid, entrynum: resp.entryNum });
-						li.set('html', resp.update);
-						li.injectBefore($$('.blogroll .entry')[0]);*/
 					} else {
 						alert(resp.error_message);
 						target.removeClass('xSaving');
@@ -633,41 +789,24 @@ var BertaEditor = new Class({
 
 			}.bind(this)
 		}).post();
-
-		/*var newOrder = this.orderSortables.serialize(1, function(element, index) {
-			var eId = element.getClassStoredValue('xEntryId');
-			if(eId) return eId;
-		});
-
-		new Request.JSON({
-			url: this.options.updateUrl,
-			data: "json=" + JSON.encode({
-				section: this.currentSection, entry: null, entryNum: null,
-				action: 'ORDER_ENTRIES', property: '', value: newOrder
-			}),
-			onComplete: function(resp) {
-
-			}.bind(this)
-		}).post();*/
 	},
-
 
 
 
 	entryOnHover: function(event) {
 		event = new Event(event);
 		var target = $(event.target);
-		//console.debug('in: ', target.get('tag'), target);
 		if(!target.hasClass('xEntry')) target = target.getParent('.xEntry');
 		target.addClass('xEntryHover');
-
 	},
+
 	entryOnUnHover: function(event) {
 		event = new Event(event);
 		var target = $(event.target);
 		if(!target.hasClass('xEntry')) target = target.getParent('.xEntry');
 		target.removeClass('xEntryHover');
 	},
+
 	entryDropdownToggle: function(event) {
 		var dropdown = $(event.target);
 		var entry=dropdown.getParent().getParent();

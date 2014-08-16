@@ -67,10 +67,27 @@ class BertaEditor extends BertaContent {
 
 	public static function deleteSection($sectionName) {
 
-		// delete all media
+		// delete all entry media
 		$dirsDeleted = true;
 		$blog = BertaEditor::loadBlog($sectionName);
+
 		if(!empty($blog['entry'])) foreach($blog['entry'] as $e) {
+			if(!empty($e['mediafolder']['value'])) {
+				$mediaFolder = self::$options['MEDIA_ROOT'] . $e['mediafolder']['value'];
+				if(file_exists($mediaFolder)) {
+					$dir = opendir($mediaFolder);
+					while($fItem = readdir($dir)) {
+						if($fItem != '.' && $fItem != '..') {
+							@unlink($mediaFolder . '/' . $fItem);
+						}
+					}
+					$dirsDeleted &= @rmdir($mediaFolder);
+				}
+			}
+		}
+
+		// delete all cover media
+		if(!empty($blog['cover'])) foreach($blog['cover'] as $e) {
 			if(!empty($e['mediafolder']['value'])) {
 				$mediaFolder = self::$options['MEDIA_ROOT'] . $e['mediafolder']['value'];
 				if(file_exists($mediaFolder)) {
@@ -173,6 +190,23 @@ class BertaEditor extends BertaContent {
 		}
 	}
 
+	public static function deleteCover($coverId, &$blog) {
+		$coverNum = false;
+		for($i = 0; $i < count($blog['cover']); $i++)
+			if(!empty($blog['cover'][$i]) && $blog['cover'][$i]['id']['value'] == $coverId) {
+				$coverNum = $i;
+				break;
+			}
+
+		if($coverNum !== false) {
+			$cover = $blog['cover'][$coverNum];
+			array_splice($blog['cover'], $coverNum, 1);
+			if(count($blog['cover']) < 1 || (!empty($blog['cover']['@attributes']) && count($blog['cover']) == 1)) {
+				unset($blog['cover']);
+			}
+			return true;
+		}
+	}
 
 	public static function saveTags($tags, $sectionsList = false) {
 		$arrayToSave = array('section' => array());

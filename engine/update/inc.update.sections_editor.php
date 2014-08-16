@@ -36,6 +36,14 @@ if($property == 'title') {	// section title
 			$sectionsListNew = array();
 			foreach($sectionsList as $sN => $s) {
 				if($sN == $sName) {
+
+					//rename background mediafolder
+					if (isset($s['mediafolder']['value'])) {
+						if( @rename($options['MEDIA_ROOT'] .'/'. $s['mediafolder']['value'], $options['MEDIA_ROOT'] .'/'. $sNewName . '-background') ) {
+							$s['mediafolder']['value'] = $sNewName . '-background';
+						}
+					}
+
 					$s['title']['value'] = $sNewTitle;
 					$s['name']['value'] = $sNewName;
 					$sectionsListNew[$sNewName] = $s;
@@ -58,6 +66,16 @@ if($property == 'title') {	// section title
 						if (isset($entry['mediafolder']['value'])) {
 							if( @rename($options['MEDIA_ROOT'] .'/'. $entry['mediafolder']['value'], $options['MEDIA_ROOT'] .'/'. $sNewName . $entry['id']['value']) ) {
 								$newBlog['entry'][$k]['mediafolder'] = $sNewName . $entry['id']['value'];
+							}
+						}
+					}
+				}
+
+				if ( isset($newBlog['cover']) ) {
+					foreach ($newBlog['cover'] as $k => $cover) {
+						if (isset($cover['mediafolder']['value'])) {
+							if( @rename($options['MEDIA_ROOT'] .'/'. $cover['mediafolder']['value'], $options['MEDIA_ROOT'] .'/'. $sNewName . '-cover' . $cover['id']['value']) ) {
+								$newBlog['cover'][$k]['mediafolder'] = $sNewName . '-cover' . $cover['id']['value'];
 							}
 						}
 					}

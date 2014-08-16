@@ -94,20 +94,25 @@ a img { border: none; }
 	min-height: 20px;
 }
 
-#contentContainer {
+
+#contentContainer,
+.contentContainer {
 	position: relative;
 	width: 100%;
 }
-	#contentContainer.xCentered {
+	#contentContainer.xCentered,
+	.contentContainer.xCentered {
 		margin: 0 auto;
 		width: <?php echo $s->get('pageLayout', 'centeredWidth') ?>;
 	}
-	#contentContainer.xResponsive {
+	#contentContainer.xResponsive,
+	.contentContainer.xResponsive {
 		width: auto;
 		max-width: <?php echo $s->get('pageLayout', 'centeredWidth') ?>;
 	}
 
-#contentContainer h1 {
+#contentContainer h1,
+.contentContainer h1 {
 	padding: 0;
 	margin: 0;
 	z-index: 50000;
@@ -209,6 +214,12 @@ nav ul{
 				text-decoration: <?php echo $s->get('tagsMenu', 'textDecorationActive') ?> !important;
 			}
 
+
+
+
+.cover .contentContainer {
+	-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;
+}
 
 #pageEntries {
 	position: relative;
@@ -697,7 +708,8 @@ nav ul{
 		-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;
 	}
 
-	#contentContainer h1 {
+	#contentContainer h1,
+	.contentContainer h1 {
 		margin: <?php echo $s->get('pageLayout', 'headingMargin') ?>;
 	}
 
@@ -796,7 +808,8 @@ nav ul{
 			margin-top: 20px;
 		}
 
-		#contentContainer h1 {
+		#contentContainer h1,
+		.contentContainer h1 {
 			clear: both;
 		}
 

@@ -94,6 +94,7 @@ class BertaContent extends BertaBase {
 				if($xmlStr) {
 					$xmlFeed = Array_XML::xml2array($xmlStr, 'blog', true);
 					if(!empty($xmlFeed['entry']) && is_array($xmlFeed['entry']) && empty($xmlFeed['entry'][0])) $xmlFeed['entry'] = array(0 => $xmlFeed['entry']);
+					if(!empty($xmlFeed['cover']) && is_array($xmlFeed['cover']) && empty($xmlFeed['cover'][0])) $xmlFeed['cover'] = array(0 => $xmlFeed['cover']);
 				}
 				return $xmlFeed;
 			}
@@ -107,6 +108,18 @@ class BertaContent extends BertaBase {
 			if($eId === '@attributes') continue;
 			if($e['id']['value'] == $entryId) {
 				return $blog['entry'][$eId];
+			}
+		}
+
+		$retVal = false;
+		return $retVal;
+	}
+
+	public static function &getCover($coverId, &$blog) {
+		foreach($blog['cover'] as $eId => $e) {
+			if($eId === '@attributes') continue;
+			if($e['id']['value'] == $coverId) {
+				return $blog['cover'][$eId];
 			}
 		}
 

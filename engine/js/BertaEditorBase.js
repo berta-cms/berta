@@ -854,6 +854,7 @@ var BertaEditorBase = new Class({
 					site: entryInfo.site,
 					section: entryInfo.section,
 					entry: entryInfo.entryId,
+					cover: entryInfo.coverId,
 					property: property,
 					params: editorParams,
 					value: newContent ? this.escapeForJSON(newContent) : null,
@@ -1195,10 +1196,10 @@ var BertaEditorBase = new Class({
 		retObj.entryId = retObj.entryObj ? retObj.entryObj.getClassStoredValue('xEntryId') : '';
 		retObj.entryNum = retObj.entryObj ? retObj.entryObj.getClassStoredValue('xEntryNum') : '';
 
-		// try to get section from entryObj, and if not successful — then from listObj
-		retObj.section = retObj.entryObj ? retObj.entryObj.getClassStoredValue('xSection') : '';
-		if(!retObj.section)
-			retObj.section = retObj.listObj ? retObj.listObj.getClassStoredValue('xSection') : '';
+		coverObj = el.getParent('.cover');
+		retObj.coverId = coverObj ? coverObj.getClassStoredValue('xCoverId') : '';
+
+		retObj.section = el.getParent('body').getClassStoredValue('xContent');
 
 		return retObj;
 	},

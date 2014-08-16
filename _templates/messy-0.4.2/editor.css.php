@@ -88,14 +88,48 @@ if(!1) { ?><style type="text/css"><?php } ?>
 			.xEntrySetGalType>span { display: none !important; }
 
 
-	#contentContainer>.xCreateNewEntry {
+	.xCreateWidget {
 		position: absolute;
-		width: 200px;
-		right: 50%;
-		margin-right: -100px;
-		top: 30px;
 		z-index: 60000;
+		top: 30px;
+		left: 50%;
+		width: 100px;
+		background: transparent url('<?php echo $ENGINE_ROOT ?>layout/clickable-back.png') repeat;
+		-moz-border-radius: 8px;
+		-webkit-border-radius: 8px;
+		border-radius: 8px;
+		padding: 0.3em 0.7em;
+		white-space: nowrap;
+		cursor: default;
 	}
+
+	.xCreateWidget a.xCreateNewEntry {
+		margin: 0;
+		height: auto;
+		border-radius: 0;
+	}
+
+	.xCreateWidget a.xCreateNewEntry:hover{
+		background: none;
+	}
+
+	.xCreateWidget ul {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+		max-height: 0;
+		overflow: hidden;
+		transition: max-height .2s;
+	}
+
+	.xCreateWidget ul a {
+		display: block;
+	}
+
+	.xCreateWidget:hover ul {
+		max-height: 40em;
+	}
+
 	.xEntry .xCreateNewEntry {
 		display: none;
 	}
@@ -113,6 +147,7 @@ if(!1) { ?><style type="text/css"><?php } ?>
 	}
 	.mess:hover>.xHandle {
 		visibility: visible;
+		cursor: move;
 	}
 
 	#xCoords {
@@ -127,8 +162,7 @@ if(!1) { ?><style type="text/css"><?php } ?>
 		font-family: Arial, Helvetica, sans-serif;
 	}
 
-
-	.noEntries .xCreateNewEntry {
+	.noEntries .xCreateWidget {
 		display: none;
 	}
 

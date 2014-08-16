@@ -96,6 +96,9 @@ if($jsonRequest) {
 		case 'CREATE_NEW_ENTRY':
 			include 'update/inc.update.createnewentry.php';
 			break;
+		case 'CREATE_NEW_COVER':
+			include 'update/inc.update.createnewcover.php';
+			break;
 		case 'CHANGE_PASSWORD':
 			include 'update/inc.update.changepassword.php';
 			break;
@@ -111,7 +114,8 @@ if($jsonRequest) {
 		}
 		elseif(!empty($decoded['section'])) {	// the property is for for the blog
 
-			if(!empty($decoded['entry'])) {	// the property belongs to an entry
+			if(!empty($decoded['entry'])) {
+				// the property belongs to an entry
 				$blog = BertaEditor::loadBlog($decoded['section']);
 				$e =& BertaEditor::getEntry($decoded['entry'], $blog);
 
@@ -309,7 +313,7 @@ if($jsonRequest) {
 							}
 							if($hasEntries && !$entryPut) $newEntriesList[] = $e;
 							$blog['entry'] = $newEntriesList;
-						//	var_dump($blog['entry']);
+
 					}
 				}
 				else {													// all other properties go straight forward into the xml
@@ -324,8 +328,57 @@ if($jsonRequest) {
 					BertaEditor::populateTags($decoded['section'], $blog);
 
 			}
+			elseif(!empty($decoded['cover'])) {	// property belongs to cover
+				$blog = BertaEditor::loadBlog($decoded['section']);
+				$e =& BertaEditor::getCover($decoded['cover'], $blog);
+
+				//elseif
+				//elseif
+				//elseif
+				if($decoded['action'] != 'SAVE') {
+
+					switch($decoded['action']) {
+						case 'DELETE_COVER':
+							if(!BertaEditor::deleteCover($decoded['value'], $blog))
+								$returnError = 'cover cannot be deleted! check permissions.';
+
+							// BertaEditor::updateImageCacheFor($blog);
+							break;
+
+						case 'PUT_BEFORE':
+							$newCoversList = array(); $coverPut = false; $hasCovers = false;
+							if(!empty($blog['cover']['@attributes'])) $newCoversList['@attributes'] = $blog['cover']['@attributes'];
+							foreach($blog['cover'] as $key => $ie) {
+								if($key === '@attributes') continue;
+								$hasCovers = true;
+
+								if($ie['id']['value'] == $decoded['value']) {
+									$newCoversList[] = $e;
+									$coverPut = true;
+								}
+
+								if($ie['id']['value'] != $e['id']['value']) {
+									$newCoversList[] = $ie;
+								}
+							}
+							if($hasCovers && !$coverPut) $newCoversList[] = $e;
+							$blog['cover'] = $newCoversList;
+
+					}
+
+				}else{ // all other properties go straight forward into the xml
+					if(empty($e['content'])) $e['content'] = array();
+					$e['content'][$decoded['property']] = trim($returnReal) ? array('value' => $returnReal) : NULL;
+					$allowFormatModifier = true;
+				}
+
+				$e['updated'] = array('value' => date('d.m.Y H:i:s'));
+				BertaEditor::saveBlog($decoded['section'], $blog);
+			}
 			else if($decoded['action'] == 'CREATE_NEW_ENTRY') {	// create new entry on the spot
 				$returnUpdate['entrynum'] = count($blog['entry']) + (isset($blog['@attributes']) ? -1 : 0);
+			}
+			else if($decoded['action'] == 'CREATE_NEW_COVER') {	// create new cover on the spot
 
 			}
 			else if($decoded['action'] == 'ORDER_ENTRIES') {	// apply the new order
