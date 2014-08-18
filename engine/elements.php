@@ -209,6 +209,75 @@ if($jsonRequest) {
 			break;
 
 
+
+		case 'coverGalleryEditor':
+
+			if($decoded['section'] && $decoded['cover']) {
+				$blog = BertaEditor::loadBlog($decoded['section']);
+				$cover = BertaEditor::getCover($decoded['cover'], $blog);
+
+				if($cover) {
+
+					$autoPlay = !empty($cover['mediaCacheData']['@attributes']['autoplay']) ? (int) $cover['mediaCacheData']['@attributes']['autoplay'] : 5;
+
+					echo '<div class="xEntryGalleryEditor-wrap"><div class="xEntryGalleryEditor clearfix">';
+						echo '<div class="xEntryGalleryMenu">';
+							echo '<div class="xEntryMedia tab">',
+									'<a href="#" class="xParams-media selected" title="add images"><span>media</span></a>',
+								 '</div>';
+							echo '<div class="xEntryMediaSettings tab">',
+									'<a href="#" class="xParams-media_settings" title="gallery settings"><span>settings</span></a>',
+								 '</div>';
+							echo '<a class="xEntryGalCloseLink xEditorLink" href="#" title="close image editor"><span>X</span></a>';
+						echo '</div>';
+						echo '<div class="xEntryGalleryAddMedia">';
+							echo '<div class="xCoverAddImagesFallback">' .
+									'<iframe name="xCoverUploadFrame' . $cover['id']['value'] . '" id="xCoverUploadFrame' . $cover['id']['value'] . '" class="xCoverUploadFrame"></iframe>' .
+									'<form target="xCoverUploadFrame' . $cover['id']['value'] . '" action="' . $ENGINE_ABS_ROOT . 'upload.php?' . ($site ? 'site='.$site.'&amp;' : '') . 'section=' . $decoded['section'] . '&amp;cover=' . $cover['id']['value'] . '&amp;mediafolder=' . $cover['mediafolder']['value'] . '" class="xCoverGalleryForm" method="post" enctype="multipart/form-data">' .
+										'<input type="hidden" name="upload_key" value="" />' .
+										'<input type="hidden" name="upload_type" value="fallback" />' .
+										'<input type="submit" value="Upload" class="xUploadButton" />' .
+									'</form>' .
+								 '</div>';
+							echo '<a class="xCoverAddImagesLink xEditorLink xHidden" href="#"><span>+ add media</span></a>';
+						echo '</div>';
+						echo '<div class="xEntryGallerySettings xGreyBack xHidden">';
+							echo '<div class="xEntrySlideshowSettings galleryTypeSettings">',
+									'<div class="caption">autoplay seconds</div>',
+								 	'<div class="xEntryAutoPlay xFloatLeft xEditableRC xCommand-SET_AUTOPLAY xCaption-5" title="' . $autoPlay . '">' . $autoPlay . '</div>',
+								 '</div>';
+						echo '</div>';
+
+						echo '<div class="images"><ul>';
+							if(!empty($cover['mediaCacheData']['file']) && count($cover['mediaCacheData']['file']) > 0) {
+								// if the xml tag is not a list tag, convert it.
+								Array_XML::makeListIfNotList($cover['mediaCacheData']['file']);
+
+								// print out images
+								foreach($cover['mediaCacheData']['file'] as $idx => $im) {
+									if((string) $idx == '@attributes') continue;
+									$imageThumbSrc = false;
+									$imageWidth = 'auto';
+
+									$imSrc = $options['MEDIA_ROOT'] . $cover['mediafolder']['value'] . '/' . (string) $im['@attributes']['src'];
+									$imageThumbSrc = BertaEditor::images_getSmallThumbFor($imSrc);
+									if($imageThumbSrc) {
+										echo '<li class="image" filename="' . (string) $im['@attributes']['src'] . '" fileinfo="' . '' . '">';
+										echo '<img class="img" src="' . $imageThumbSrc . '" />';
+										echo '<span class="grabHandle xMAlign-container"><span class="xMAlign-outer"><a class="xMAlign-inner" title="click and drag to move"><span></span></a></span></span>';
+										echo '<a href="#" class="delete"></a>';
+										echo '</li>';
+									}
+								}
+							}
+						echo "</ul></div>\n";
+
+					echo "</div></div>\n";
+				}
+			}
+			break;
+
+
 		case 'bgEditor':
 
 			if($decoded['section']) {

@@ -550,6 +550,113 @@ class BertaEditor extends BertaContent {
 	}
 
 
+	public static function updateImageCacheForCover(&$blog, $coverId = false) {
+		if(!empty($blog['cover'])) {
+			foreach($blog['cover'] as $eId => $e) {
+				if((string) $eId == '@attributes') continue;
+				if(!$coverId || (!empty($e['id']['value']) && $coverId == $e['id']['value'])) {
+
+					$mediaFiles = array();
+					if(!empty($e['mediafolder']['value']))
+						$mediaFiles = BertaEditor::gatherMediaFilesIn($e['mediafolder']['value']);
+
+					if($mediaFiles) {
+
+						$entryCache =& $blog['cover'][$eId]['mediaCacheData'];
+
+						if(!count($entryCache) || empty($entryCache['file'])) {
+							// if the media cache is empty, create a fresh array
+                            $mediaCacheData=array('file' => array());
+                            if (isset($blog['cover'][$eId]['mediaCacheData'])){
+                                  $mediaCacheData=array_merge($blog['cover'][$eId]['mediaCacheData'], $mediaCacheData);
+                            }
+                            $blog['cover'][$eId]['mediaCacheData']=$mediaCacheData;
+
+							$entryCache =& $blog['cover'][$eId]['mediaCacheData'];
+							foreach($mediaFiles as $im) {
+								$attr = array('type' => $im['type'], 'src' => $im['src']);
+								if(!empty($im['poster_frame'])) $attr['poster_frame'] = $im['poster_frame'];
+								if(!empty($im['width'])) $attr['width'] = $im['width'];
+								if(!empty($im['height'])) $attr['height'] = $im['height'];
+								$entryCache['file'][] = array('value' => '', '@attributes' => $attr);
+							}
+
+							// if moving from an older version of XML
+							unset($entryCache['images']);
+							unset($entryCache['videos']);
+
+						} else {
+
+							Array_XML::makeListIfNotList($entryCache['file']);
+
+							// first check if all items in cache are still inside the folder
+							foreach($entryCache['file'] as $cacheIndex => $cacheIm) {
+
+								// try to find the cover among the files in the folder
+								$foundIndex = false;
+								foreach($mediaFiles as $i => $im) {
+
+									// *** compatibility with versions <= 0.5.5b
+									$isFromOldVersion = empty($cacheIm['@attributes']['src']);
+									$srcFromCache = $isFromOldVersion ? $cacheIm['value'] : $cacheIm['@attributes']['src'];
+
+									// if image found in cache, update cache cover
+									if($srcFromCache == $im['src']) {
+										$foundIndex = true;
+										$cover = array('@attributes' => array());
+										if(!$isFromOldVersion) $cover['value'] = !empty($cacheIm['value']) ? $cacheIm['value'] : '';
+										if(!empty($cacheIm['@attributes'])) $cover['@attributes'] = $cacheIm['@attributes'];
+										$cover['@attributes']['src'] = $im['src'];
+
+										$cover['@attributes']['type'] = $im['type'];
+										if(!empty($im['poster_frame'])) $cover['@attributes']['poster_frame'] = $im['poster_frame'];
+										if(!empty($im['width'])) $cover['@attributes']['width'] = $im['width'];
+										if(!empty($im['height'])) $cover['@attributes']['height'] = $im['height'];
+
+										$entryCache['file'][$cacheIndex] = $cover;
+
+										unset($mediaFiles[$i]);
+										break;
+									}
+								}
+
+								// if the file was not found in the folder, delete the cover
+								if(!$foundIndex) unset($entryCache['file'][$cacheIndex]);
+							}
+
+							// loop through the rest of real files and add them to cache
+							foreach($mediaFiles as $im) {
+								$attr = array('type' => $im['type'], 'src' => $im['src']);
+								if(!empty($im['poster_frame'])) $attr['poster_frame'] = $im['poster_frame'];
+								if(!empty($im['width'])) $attr['width'] = $im['width'];
+								if(!empty($im['height'])) $attr['height'] = $im['height'];
+								$entryCache['file'][] = array('value' => '', '@attributes' => $attr);
+							}
+
+							// compact arrays
+							$entryCache['file'] = array_values($entryCache['file']);
+
+							// if moving from an older version of XML
+							unset($entryCache['images']);
+							unset($entryCache['videos']);
+						}
+
+					} else {
+
+                        $mediaCacheData=array('file' => array());
+                        if (isset($blog['cover'][$eId]['mediaCacheData'])){
+                            $mediaCacheData=array_merge($blog['cover'][$eId]['mediaCacheData'], $mediaCacheData);
+                        }
+                        $blog['cover'][$eId]['mediaCacheData']=$mediaCacheData;
+
+					}
+				}
+			}
+
+		}
+	}
+
+
 	public static function gatherMediaFilesIn($folderName) {
 
 		$imageExtensions = array('jpg', 'jpeg', 'jpe', 'gif', 'giff', 'png');

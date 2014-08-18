@@ -18,7 +18,7 @@ var MessyMess = new Class({
 	bgRightCounter: null,
 	bgLeftCounter: null,
     isResponsive: false,
-
+    breakPointWidth: 767,
 
 	initialize: function() {
 		window.addEvent('domready', this.onDOMReady.bind(this));
@@ -207,6 +207,7 @@ var MessyMess = new Class({
 
         window.addEvents({
             'resize': this.gridBackgroundPosition.bind(this),
+            'resize': this.setCoverHeight.bind(this),
             'scroll': this.gridBackgroundPosition.bind(this)
         });
 
@@ -292,6 +293,19 @@ var MessyMess = new Class({
 
             xGridBackground.setStyles({
                 'background-position': xPos + 'px ' + yPos + 'px'
+            });
+        }
+    },
+
+    setCoverHeight: function() {
+        var covers = $$('.cover');
+        var navigation = $$('.navigation');
+
+        if (covers.length){
+            var winSizeY = window.getSize().y;
+            var navigationSizeY = navigation[0].getSize().y;
+            covers.each(function(cover){
+                cover.setStyle('height', winSizeY-navigationSizeY);
             });
         }
     },

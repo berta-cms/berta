@@ -408,6 +408,7 @@ DOC;
 	<script type="text/javascript" src="{$engineAbsRoot}js/swiff/Swiff.Uploader.js" charset="utf-8"></script>
 	<script type="text/javascript" src="{$engineAbsRoot}js/BertaGalleryEditorAssets.js" charset="utf-8"></script>
 	<script type="text/javascript" src="{$engineAbsRoot}js/BertaGalleryEditor.js?{$int_version}" charset="utf-8"></script>
+	<script type="text/javascript" src="{$engineAbsRoot}js/BertaCoverGalleryEditor.js?{$int_version}" charset="utf-8"></script>
 	<script type="text/javascript" src="{$engineAbsRoot}js/BertaBgEditor.js?{$int_version}" charset="utf-8"></script>
 
 	<script type="text/javascript" src="{$engineAbsRoot}js/BertaEditor.js?{$int_version}" charset="utf-8"></script>

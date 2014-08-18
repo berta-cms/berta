@@ -168,17 +168,8 @@ var BertaEditor = new Class({
 
 					$$('.xCoverDelete').addEvent('click', this.coverDelete.bindWithEvent(this));
 
-					// galleries
-					// this.entriesList.getElements('.xGalleryContainer').each(function(item) {
-					// 	var g = new BertaGallery(item, {
-					// 		environment: this.options.environment,
-					// 		engineRoot: this.options.paths.engineRoot,
-					// 		engineABSRoot: this.options.paths.engineABSRoot,
-					// 		playerType: this.options.videoPlayerType,
-					// 		slideshowAutoRewind: this.options.slideshowAutoRewind });
-					// 	this.galleries.push(g);
-					// }.bind(this));
-					// this.entriesList.getElements('.xGalleryEditButton').addEvent('click', this.onGalleryEditClick.bindWithEvent(this));
+					// cover galleries
+					this.coversList.getElements('.xCoverGalleryEditor').addEvent('click', this.onCoverGalleryEditClick.bindWithEvent(this));
 
 					// cover sorting
 					this.orderSortablesCover = new Sortables(this.coversList, {
@@ -548,6 +539,32 @@ var BertaEditor = new Class({
 
 			}.bind(this));
 		}
+	},
+
+	onCoverGalleryEditClick: function(event) {	// replaces the gallery with cover gallery editor
+		event.stop();
+
+		var coverEditorPanel = null;
+		var coverEditorContainer = $(event.target).getParent('.xCoverGalleryEditorContainer');
+
+		var coverEditor = new BertaCoverGalleryEditor(coverEditorContainer, {
+			engineRoot: this.options.paths.engineRoot,
+		    flashUploadEnabled: this.options.flashUploadEnabled
+		});
+
+		coverEditor.addEvent('load', function() {
+			this.fireEvent(BertaEditorBase.EDITABLE_START, [coverEditorContainer, coverEditor]);
+			event.target.hide();
+		}.bind(this));
+
+		coverEditor.addEvent('close', function() {
+			var coverEditorPanel = coverEditorContainer.getChildren();
+		    coverEditorPanel.destroy(); coverEditorPanel.dispose();
+		    coverEditor = null;
+		    event.target.show();
+		    this.fireEvent(BertaEditorBase.EDITABLE_FINISH, [coverEditorContainer, coverEditor]);
+		}.bind(this));
+
 	},
 
 	galleryLoad: function(container) { // load the gallery HTML into the container

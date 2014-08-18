@@ -216,6 +216,9 @@ nav ul{
 
 
 
+.cover {
+	position: relative;
+}
 
 .cover .contentContainer {
 	-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;

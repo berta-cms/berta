@@ -27,6 +27,7 @@ if($phpsess) {
 $settingsProperty = !empty($_GET['property']) ? $_GET['property'] : false;
 $sectionName = !empty($_GET['section']) ? $_GET['section'] : false;
 $entryId = !empty($_GET['entry']) ? $_GET['entry'] : false;
+$coverId = !empty($_GET['cover']) ? $_GET['cover'] : false;
 $mediaFolder = !empty($_GET['mediafolder']) ? $_GET['mediafolder'] : false;
 $posterFor = !empty($_GET['poster_for']) ? $_GET['poster_for'] : false;
 $uplosadType = !empty($_REQUEST['upload_type']) ? $_REQUEST['upload_type'] : 'fancy';
@@ -126,7 +127,7 @@ $result = array();
 //$result['addr'] = substr_replace(gethostbyaddr($_SERVER['REMOTE_ADDR']), '******', 0, 6);
 //$result['agent'] = $_SERVER['HTTP_USER_AGENT'];
 
-if(($entryId && $mediaFolder || $settingsProperty || $sectionName && $mediaFolder) && isset($_FILES['Filedata'])) {
+if(($entryId && $mediaFolder || $coverId && $mediaFolder ||  $settingsProperty || $sectionName && $mediaFolder) && isset($_FILES['Filedata'])) {
 
 	$file = $_FILES['Filedata']['tmp_name'];
 	$error = false;
@@ -309,6 +310,12 @@ if(($entryId && $mediaFolder || $settingsProperty || $sectionName && $mediaFolde
 
 								BertaEditor::updateImageCacheForSection($sectionsToEdit[$sectionName]);
 								BertaEditor::saveSections($sectionsToEdit);
+							}
+							elseif ($coverId) { // update cover image cache
+								$blog = BertaEditor::loadBlog($sectionName);
+
+								BertaEditor::updateImageCacheForCover($blog, $coverId);
+								BertaEditor::saveBlog($sectionName, $blog);
 							}
 							else { // update image cache
 								$blog = BertaEditor::loadBlog($sectionName);

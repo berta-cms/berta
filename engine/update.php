@@ -332,10 +332,58 @@ if($jsonRequest) {
 				$blog = BertaEditor::loadBlog($decoded['section']);
 				$e =& BertaEditor::getCover($decoded['cover'], $blog);
 
-				//elseif
-				//elseif
-				//elseif
-				if($decoded['action'] != 'SAVE') {
+
+				if($decoded['property'] == 'coverGalleryOrder') { // update the order of images in the gallery
+					Array_XML::makeListIfNotList($e['mediaCacheData']['file']);
+					$returnUpdate = 'ok';
+
+					$newImagesArray = array();
+					foreach($decoded['value'] as $path) {
+						$foundIndex = false;
+						foreach($e['mediaCacheData']['file'] as $cacheIndex => $im) {
+							if($im['@attributes']['src'] == $path) {
+								$foundIndex = $cacheIndex;
+								break;
+							}
+						}
+
+						if($foundIndex !== false) {
+							array_push($newImagesArray, $e['mediaCacheData']['file'][$cacheIndex]);
+						}
+					}
+
+					$e['mediaCacheData']['file'] = $newImagesArray;
+				}
+				elseif($decoded['property'] == 'coverGalleryImageDelete') {	// image gets deleted
+					$imgToDelete = $posterToDelete = '';
+					$returnUpdate = 'failed';
+					Array_XML::makeListIfNotList($e['mediaCacheData']['file']);
+					foreach($e['mediaCacheData']['file'] as $idx => $im)  {	// check if the passed image is really in mediaCache (a security measure)
+						if((string) $idx == '@attributes') continue;
+						if($im['@attributes']['src'] == $decoded['value']) {
+							$imgToDelete = $im['@attributes']['src'];
+							$posterToDelete = !empty($im['@attributes']['poster_frame']) ? $im['@attributes']['poster_frame'] : false;
+							break;
+						}
+					}
+					if($imgToDelete && file_exists($options['MEDIA_ROOT'] . $e['mediafolder']['value'] . '/' . $imgToDelete)) {
+						if(@unlink($options['MEDIA_ROOT'] . $e['mediafolder']['value'] . '/' . $imgToDelete)) {
+							BertaEditor::images_deleteDerivatives($options['MEDIA_ROOT'] . $e['mediafolder']['value'] . '/', $imgToDelete);
+
+							if($posterToDelete) {
+								@unlink($options['MEDIA_ROOT'] . $e['mediafolder']['value'] . '/' . $posterToDelete);
+								BertaEditor::images_deleteDerivatives($options['MEDIA_ROOT'] . $e['mediafolder']['value'] . '/', $posterToDelete);
+							}
+
+							$returnUpdate = 'ok';
+						} else
+							$returnError = 'delete failed! check permissions.';
+					} else
+						$returnError = 'file does not exist! media cache updated.';
+					BertaEditor::updateImageCacheForCover($blog, $decoded['cover']);
+
+				}
+				elseif($decoded['action'] != 'SAVE') {
 
 					switch($decoded['action']) {
 						case 'DELETE_COVER':
@@ -363,6 +411,17 @@ if($jsonRequest) {
 							}
 							if($hasCovers && !$coverPut) $newCoversList[] = $e;
 							$blog['cover'] = $newCoversList;
+
+						case 'SET_AUTOPLAY':
+							if(empty($e['mediaCacheData']['@attributes'])) $e['mediaCacheData']['@attributes'] = array();
+							if(preg_match('/^\d+$/', $decoded['params'])) {
+								if(preg_match('/^[0]+.[1-9]+/', $decoded['params'])) $decoded['params'] = preg_replace('/^[0]+/', '', $decoded['params']);
+								$e['mediaCacheData']['@attributes']['autoplay'] = $decoded['params'];
+							} else {
+								$e['mediaCacheData']['@attributes']['autoplay'] = 0;
+							}
+							break;
+
 
 					}
 

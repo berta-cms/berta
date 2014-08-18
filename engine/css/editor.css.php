@@ -576,7 +576,8 @@ body.xEditorEnabled { }
 
 /* background editor ----------------------------------------------------------------------------------------------- */
 
-#xBgEditorPanelTrigContainer {
+#xBgEditorPanelTrigContainer,
+.xCoverGalleryEditorContainer {
 	margin: 0;
  	padding: 0;
 	position: absolute;
@@ -585,22 +586,33 @@ body.xEditorEnabled { }
     display: block;
     height: 40px;
 }
-    #xBgEditorPanelTrigContainer a {
+
+    #xBgEditorPanelTrigContainer a,
+    .xCoverGalleryEditorContainer > a {
     	background: url('../layout/gallery_icons_sprite.png') no-repeat;
     	background-position: -280px 0px;
     	width: 40px;
     	height: 40px;
     	display: block;
     }
+
+    .xCoverGalleryEditorContainer > a {
+    	background-position: 0px 0px;
+    }
     	#xBgEditorPanelTrigContainer a:hover {
     		background-position: -280px -80px;
     	}
 
-		#xBgEditorPanelTrigContainer a span {
+    	.xCoverGalleryEditorContainer > a:hover {
+    		background-position: 0px -80px;
+    	}
+
+		#xBgEditorPanelTrigContainer a span
+		.xCoverGalleryEditorContainer > a span {
 			display: block;
 			height: 40px;
 		}
-			#xBgEditorPanelTrigContainer a span { display: none; }
+			#xBgEditorPanelTrigContainer a span, .xCoverGalleryEditorContainer > a span { display: none; }
 
 #xBgEditorPanelContainer {
  	margin: 0;

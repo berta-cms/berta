@@ -716,10 +716,6 @@ var BertaEditorBase = new Class({
 	},
 
 	elementEdit_save: function(elEditor, el, oldContent, oldContentText, newContent, newContentText) {
-		// console.log(oldContent);
-		// console.log(newContent);
-		// console.log(oldContentText);
-		// console.log(newContentText);
 
 		if(oldContent == newContent && !el.hasClass('xBgColor')) {
 			var content = oldContent;
@@ -1199,7 +1195,13 @@ var BertaEditorBase = new Class({
 		coverObj = el.getParent('.cover');
 		retObj.coverId = coverObj ? coverObj.getClassStoredValue('xCoverId') : '';
 
-		retObj.section = el.getParent('body').getClassStoredValue('xContent');
+        // try to get section from entryObj, and if not successful — then from listObj
+        retObj.section = retObj.entryObj ? retObj.entryObj.getClassStoredValue('xSection') : '';
+        if(!retObj.section)
+            retObj.section = retObj.listObj ? retObj.listObj.getClassStoredValue('xSection') : '';
+
+		if(!retObj.section)
+			retObj.section = el.getParent('body').getClassStoredValue('xContent');
 
 		return retObj;
 	},

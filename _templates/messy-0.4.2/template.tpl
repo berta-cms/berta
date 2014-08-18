@@ -222,7 +222,6 @@
                         <div class="cover xCoverId-{ $cover.id } clearfix">
                             <div class="contentContainer{ if $berta.settings.pageLayout.centered=='yes' } xCentered{ /if }{ if $berta.settings.pageLayout.responsive=='yes' } xResponsive{ /if }">
                                 { customCoverHeader entry=$cover }
-                                [gallery ?] <br>
 
                                 { if $berta.environment == 'engine' || !empty($cover.description) }
                                     <div class="entryText xEditableMCE xProperty-description">{ $cover.description }</div>
@@ -230,6 +229,12 @@
 
                                 { entryFooter entry=$entry }
                             </div>
+
+                            { if $berta.environment == 'engine' }
+                                <div class="xCoverGalleryEditorContainer">
+                                    <a href="#" class="xCoverGalleryEditor" title="edit cover gallery"><span>cover gallery</span></a>
+                                </div>
+                            { /if }
                         </div>
                     {/foreach}
                 </div>
