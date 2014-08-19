@@ -57,6 +57,52 @@ br.clear { clear: both; }
 		position: absolute;
 	}
 
+/* entry layouts */
+#pageEntries .xEntry.xgallery-left-description-right,
+#pageEntries .xEntry.xgallery-left-description-right .xGalleryContainer,
+#pageEntries .xEntry.xgallery-left-description-right .entryText,
+
+#pageEntries .xEntry.xgallery-right-description-left,
+#pageEntries .xEntry.xgallery-right-description-left .xGalleryContainer,
+#pageEntries .xEntry.xgallery-right-description-left .entryText {
+	-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;
+}
+
+
+#pageEntries .xEntry.xgallery-left-description-right .video-js,
+#pageEntries .xEntry.xgallery-right-description-left .video-js {
+	padding-bottom: 56%;
+}
+
+#pageEntries .xEntry.xgallery-left-description-right .xGalleryContainer,
+#pageEntries .xEntry.xgallery-right-description-left .entryText {
+	width: 50%;
+	float: left;
+	clear: none;
+	padding-right: 10px;
+}
+
+#pageEntries .xEntry.xgallery-right-description-left .xGalleryContainer,
+#pageEntries .xEntry.xgallery-left-description-right .entryText {
+	width: 50%;
+	float: right;
+	clear: none;
+	padding-left: 10px;
+}
+
+#pageEntries .xEntry.xgallery-left-description-right .xGallery,
+#pageEntries .xEntry.xgallery-left-description-right .xGalleryItem,
+#pageEntries .xEntry.xgallery-left-description-right .xGalleryItem img,
+#pageEntries .entry.xgallery-left-description-right .entryText iframe,
+
+#pageEntries .xEntry.xgallery-right-description-left .xGallery,
+#pageEntries .xEntry.xgallery-right-description-left .xGalleryItem,
+#pageEntries .xEntry.xgallery-right-description-left .xGalleryItem img,
+#pageEntries .xEntry.xgallery-right-description-left .entryText iframe {
+	max-width: 100%;
+	height: auto !important;
+}
+
 
 div.xGalleryContainer.xSlideNumbersVisible-no>ul.xGalleryNav { display: none !important; }
 
@@ -96,4 +142,18 @@ div.xGalleryItem {
 
 .xHidden {
 	display: none !important;
+}
+
+/* small tablet */
+@media (max-width: 767px)  {
+	#pageEntries .xEntry.xgallery-left-description-right .xGalleryContainer,
+	#pageEntries .xEntry.xgallery-right-description-left .entryText,
+	#pageEntries .xEntry.xgallery-right-description-left .xGalleryContainer,
+	#pageEntries .xEntry.xgallery-left-description-right .entryText {
+		width: 100%;
+		min-width: 100%;
+		float: none;
+		clear: both;
+		padding: 0;
+	}
 }

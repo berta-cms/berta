@@ -125,7 +125,7 @@
 
 		<div id="contentContainer"{if $berta.settings.pageLayout.responsive=='yes' } class="xResponsive"{/if}>
 			<div id="mainColumn"{if $berta.settings.pageLayout.centered == 'yes' } class="xCentered"{ /if }{if $berta.settings.pageLayout.responsive=='yes' } data-paddingtop="{$berta.settings.pageLayout.paddingTop}"{/if}>
-				<ol id="pageEntries" class="{ entriesListClasses }">
+				<ol id="pageEntries" class="{ entriesListClasses } clearfix">
 
 					{* now loop through all entries and print them out *}
 					{ foreach from=$entries key="entryId" item="entry" name="entriesLoop" }
@@ -138,7 +138,7 @@
 							{ entryGallery entry=$entry }
 
 							{ if $berta.environment == 'engine' || !empty($entry.description) }
-							<div class="entryText xEditableMCE xProperty-description">{ $entry.description }</div>
+							<div class="entryText xEditableMCE xProperty-description"{ entryTextStyles entry=$entry }>{ $entry.description }</div>
 							{ /if }
 
 							{* entry footer wraps the entry including the header - don't leave it out! *}

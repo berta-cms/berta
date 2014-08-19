@@ -22,6 +22,8 @@ function smarty_function_entryHeader($params, &$smarty) {
 	$subSections = '';
 	$markedValue = isset($params['entry']['marked']) && $params['entry']['marked'] ? 1 : 0;
 	$tags=isset($params['entry']['tags'])?implode(', ',$params['entry']['tags']):'';
+	$contentLayout=isset($params['entry']['layout']) ? $params['entry']['layout'] : 'gallery-top-description-bottom';
+	$leftColWidth=isset($params['entry']['leftColWidth']) && intval($params['entry']['leftColWidth']) > 0 ? $params['entry']['leftColWidth'] : '';
 
 	return <<<DOC
 		<a class="xCreateNewEntry xPanel xAction-entryCreateNew" href="#"><span>create new entry here</span></a>
@@ -41,6 +43,16 @@ function smarty_function_entryHeader($params, &$smarty) {
 			</div>
 			<div class="xEntryDropdownBox">
 				<ul>
+					<li>
+						<a>
+							<div class="value xEditableSelectRC xProperty-layout xNoHTMLEntities" title="" x_options="gallery-top-description-bottom||gallery-left-description-right||gallery-right-description-left">$contentLayout</div>
+						</a>
+					</li>
+					<li>
+						<div class="leftColWidth">
+							<div title="leftColWidth" class="xEditable xUnits-% xProperty-leftColWidth">$leftColWidth</div>
+						</div>
+					</li>
 					<li>
 						<a><div class="xEntryCheck"><label><span class="xEditableRealCheck xProperty-marked">$markedValue</span>Marked</label></div></a>
 					</li>

@@ -79,7 +79,6 @@ var BertaGalleryEditor = new Class({
 	},
 
 	attach: function() {
-
 		this.container = this.allContainer.getElement('.xEntryGalleryEditor');
 		this.strip = this.container.getElement('.images ul');
 		this.editorContainer = this.container.getElement('.xEntryGalleryProps');
