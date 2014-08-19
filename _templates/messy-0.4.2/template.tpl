@@ -211,10 +211,10 @@
     { else }
 
             { if ($covers) }
-                <div class="navigation">
-                    <div class="contentContainer{ if $berta.settings.pageLayout.centered=='yes' } xCentered{ /if }{ if $berta.settings.pageLayout.responsive=='yes' } xResponsive{ /if } clearfix">
+                <div class="navigation clearfix">
+                    {*<div class="contentContainer{ if $berta.settings.pageLayout.centered=='yes' } xCentered{ /if }{ if $berta.settings.pageLayout.responsive=='yes' } xResponsive{ /if } clearfix">*}
                         { include file="includes/navigation.tpl" }
-                    </div>
+                    {*</div>*}
                 </div>
 
                 <div class="covers">

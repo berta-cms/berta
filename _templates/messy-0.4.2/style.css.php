@@ -132,6 +132,28 @@ a img { border: none; }
 		text-decoration: none;
 	}
 
+.navigation {
+	padding: 1em;
+}
+
+	.navigation h1 {
+		position: absolute;
+		margin: 0;
+	}
+
+	.navigation nav {
+		margin: 1em;
+		text-align: center;
+	}
+
+		.navigation nav #menuToggle {
+			margin-bottom: 0;
+		}
+
+		.navigation nav #menuToggle span, .navigation nav #menuToggle span:before, .navigation nav #menuToggle span:after {
+			text-align: left;
+		}
+
 #multisites {
 	list-style: none;
 	padding: 0;

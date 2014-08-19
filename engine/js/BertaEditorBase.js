@@ -1200,7 +1200,7 @@ var BertaEditorBase = new Class({
         if(!retObj.section)
             retObj.section = retObj.listObj ? retObj.listObj.getClassStoredValue('xSection') : '';
 
-		if(!retObj.section)
+		if(!retObj.section && coverObj)
 			retObj.section = el.getParent('body').getClassStoredValue('xContent');
 
 		return retObj;
