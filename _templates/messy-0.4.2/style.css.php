@@ -222,6 +222,25 @@ nav ul{
 
 .cover .contentContainer {
 	-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;
+	position: relative;
+	top: 50%;
+	transform: translateY(-50%);
+}
+
+.coverGallery {
+	position: absolute;
+	height: 100%;
+	width: 100%;
+}
+
+.coverGallery .slide {
+	position: absolute;
+	height: 100%;
+	width: 100%;
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: cover;
+	opacity: 0;
 }
 
 #pageEntries {

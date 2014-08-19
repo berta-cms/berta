@@ -220,6 +220,15 @@
                 <div class="covers">
                     {foreach $covers as $cover }
                         <div class="cover xCoverId-{ $cover.id } clearfix">
+
+                            { if $cover.mediaCacheData.file }
+                                <div class="coverGallery" data-autoplay="{ if isset($cover.mediaCacheData["@attributes"].autoplay) }{ $cover.mediaCacheData["@attributes"].autoplay }{else}5{/if}">
+                                { foreach ($cover.mediaCacheData.file) as $coverImage }
+                                    <div class="slide" data-image="{ $berta.options.MEDIA_ABS_ROOT }{ $cover.mediafolder }/{ if $coverImage.src }{ $coverImage.src }{else}{ $coverImage["@attributes"].src }{/if}"></div>
+                                { /foreach }
+                                </div>
+                            { /if }
+
                             <div class="contentContainer{ if $berta.settings.pageLayout.centered=='yes' } xCentered{ /if }{ if $berta.settings.pageLayout.responsive=='yes' } xResponsive{ /if }">
                                 { customCoverHeader entry=$cover }
 

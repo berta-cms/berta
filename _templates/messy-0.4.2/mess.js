@@ -228,6 +228,8 @@ var MessyMess = new Class({
             });
         }
 
+        this.initCoverGalleries();
+
         window.fireEvent('resize');
     },
 
@@ -308,6 +310,64 @@ var MessyMess = new Class({
                 cover.setStyle('height', winSizeY-navigationSizeY);
             });
         }
+    },
+
+    initCoverGalleries: function() {
+        var that = this;
+        var covers = $$('.cover');
+        if (covers.length){
+            covers.each(function(cover){
+                var coverGallery = cover.getElement('.coverGallery');
+                if (coverGallery) {
+                    var slides = coverGallery.getElements('.slide');
+                    that.showCoverGallery(coverGallery, slides);
+                }
+            });
+        }
+    },
+
+    showCoverGallery: function(coverGallery, slides) {
+        var slidesCount = slides.length;
+        var autoplay = coverGallery.get('data-autoplay');
+        var animationDuration = 200;
+
+        var showCover = function(slide, prevSlide){
+            var backgroundImgSrc = slide.get('data-image');
+            var backgroundImgObj = new Element('img', {src: backgroundImgSrc});
+
+            backgroundImgObj.addEventListener('load', function() {
+
+                slide.setStyles({
+                    'background-image': 'url('+ backgroundImgSrc +')'
+                });
+
+                new Fx.Tween(slide, {
+                    duration: animationDuration
+                }).start('opacity', 1).chain(
+                    function () {
+                        if(slidesCount > 1 && autoplay > 0){
+                            if (prevSlide) {
+                                prevSlide.setStyle('opacity', 0);
+                            }
+                            setTimeout(function(){
+                                var nextSlide = slide.getPrevious();
+                                slide.inject(coverGallery, 'top');
+                                showCover(nextSlide, slide);
+                            },autoplay*1000);
+                        }
+                    }
+                );
+            });
+        }
+
+        // reverse slides order
+        if(slidesCount > 1) {
+            for (var i = slides.length - 1; i >= 0; i--) {
+                slides[i].inject(coverGallery);
+            };
+        }
+
+        showCover(slides[0], null);
     },
 
 	onLoad: function() {
