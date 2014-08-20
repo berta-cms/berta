@@ -139,6 +139,7 @@ a img { border: none; }
 	.navigation h1 {
 		position: absolute;
 		margin: 0;
+		z-index: 2;
 	}
 
 	.navigation nav {
@@ -237,6 +238,9 @@ nav ul{
 			}
 
 
+.covers {
+	margin-bottom: 2em;
+}
 
 .cover {
 	position: relative;
