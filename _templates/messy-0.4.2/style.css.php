@@ -269,6 +269,13 @@ nav ul{
 	opacity: 0;
 }
 
+.coverGallery .slide .coverCaption{
+	position: absolute;
+	bottom: 0;
+	right: 0;
+	padding: 0 1em;
+}
+
 #pageEntries {
 	position: relative;
 	margin: 0;

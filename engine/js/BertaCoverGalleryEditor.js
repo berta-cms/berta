@@ -43,6 +43,7 @@ var BertaCoverGalleryEditor = new Class({
 			this.options.elementsUrl = this.options.elementsUrl + "?site=" + query.site;
 		}
 		this.setOptions(options);
+		this.tinyMCE_ConfigurationsInit();
 		this.allContainer = galleryEditorContainerElement;
 
 		var entryInfo = this.getEntryInfoForElement(this.allContainer);
@@ -93,6 +94,11 @@ var BertaCoverGalleryEditor = new Class({
 
 		// close link
 		this.container.getElement('a.xEntryGalCloseLink').addEvent('click', this.onCloseClick.bindWithEvent(this));
+
+		// caption fields
+		this.container.getElements('div.xEGEImageCaption').each(function(item) {
+			this.elementEdit_init(item, this.options.xBertaEditorClassMCE);
+		}, this);
 
 		// main uploader
 		this.addMainUploader();
@@ -220,6 +226,15 @@ var BertaCoverGalleryEditor = new Class({
 				'click': this.onDeleteClick.bindWithEvent(this)
 			}
 		}).inject(container);
+
+		//add caption editor
+		var caption = new Element('div',
+			{
+			'class': 'xEGEImageCaption xEditableMCESimple xProperty-galleryImageCaption xCaption-caption xParam-'+uploaResponseJSON.get('filename')+' xEditableMCE'
+			}).set('html','<span class="xEmpty">&nbsp;caption&nbsp;</span>'
+			).inject(container);
+
+		this.elementEdit_init(caption, this.options.xBertaEditorClassMCE);
 
 		container.removeClass('file').removeClass('file-success');
 

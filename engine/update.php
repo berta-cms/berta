@@ -383,6 +383,17 @@ if($jsonRequest) {
 					BertaEditor::updateImageCacheForCover($blog, $decoded['cover']);
 
 				}
+				elseif($decoded['property'] == 'galleryImageCaption') {	// image caption
+					$imageCache =& $e['mediaCacheData']['file'];
+					Array_XML::makeListIfNotList($imageCache);
+					foreach($imageCache as $cacheIndex => $im) {
+						if($im['@attributes']['src'] == $decoded['params']) {
+							$imageCache[$cacheIndex]['value'] = $decoded['value'];
+							break;
+						}
+					}
+					BertaEditor::updateImageCacheFor($blog, $decoded['entry']);
+				}
 				elseif($decoded['action'] != 'SAVE') {
 
 					switch($decoded['action']) {

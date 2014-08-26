@@ -223,8 +223,13 @@
 
                             { if $cover.mediaCacheData.file }
                                 <div class="coverGallery" data-autoplay="{ if isset($cover.mediaCacheData["@attributes"].autoplay) }{ $cover.mediaCacheData["@attributes"].autoplay }{else}5{/if}">
-                                { foreach ($cover.mediaCacheData.file) as $coverImage }
-                                    <div class="slide" data-image="{ $berta.options.MEDIA_ABS_ROOT }{ $cover.mediafolder }/{ if $coverImage.src }{ $coverImage.src }{else}{ $coverImage["@attributes"].src }{/if}"></div>
+                                {if isset($cover.mediaCacheData.file["@attributes"]) }
+                                    {assign var=coverImages value=array($cover.mediaCacheData.file)}
+                                {else}
+                                    {assign var=coverImages value=$cover.mediaCacheData.file}
+                                {/if}
+                                { foreach ($coverImages) as $coverImage }
+                                    <div class="slide" data-image="{ $berta.options.MEDIA_ABS_ROOT }{ $cover.mediafolder }/{ $coverImage["@attributes"].src }"><div class="coverCaption">{ $coverImage.value }</div></div>
                                 { /foreach }
                                 </div>
                             { /if }
