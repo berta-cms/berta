@@ -562,9 +562,14 @@ h1 {
 			display: inline-block;
 		}
 
-
 		div#siteTopMenu > ul {
-			display: none;
+			max-height: 0;
+			overflow: hidden;
+			transition: max-height .25s ease;
+		}
+
+		div#siteTopMenu > ul.active {
+			max-height: 1000px;
 		}
 
 		div#siteTopMenu,

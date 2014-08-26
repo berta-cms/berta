@@ -654,7 +654,13 @@ a img { border: none; }
 		}
 
 		#sideColumnTop > ul {
-			display: none;
+			max-height: 0;
+			overflow: hidden;
+			transition: max-height .25s ease;
+		}
+
+		#sideColumnTop > ul.active {
+			max-height: 1000px;
 		}
 
 		#sideColumnTop #multisites {

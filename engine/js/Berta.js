@@ -192,7 +192,7 @@ var Berta = new Class({
 
 	            menuToggle.addEvent('click', function(e){
 	                e.preventDefault();
-	                objSlide.toggle();
+	                objSlide.toggleClass('active');
 	                this.toggleClass('active');
 	            });
 
@@ -204,7 +204,7 @@ var Berta = new Class({
 		                // small tablet
 		                }else{
 		                    menuToggle.removeClass('active');
-		                    objSlide.hide();
+		                    objSlide.removeClass('active');
 		                }
 	            	}
 	            });

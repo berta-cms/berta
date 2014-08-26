@@ -916,7 +916,13 @@ nav ul{
 		}
 
 		nav > ul {
-			display: none;
+			max-height: 0;
+			overflow: hidden;
+			transition: max-height .25s ease;
+		}
+
+		nav > ul.active {
+			max-height: 1000px;
 		}
 
 		nav ul li {
@@ -927,6 +933,10 @@ nav ul{
 		nav ul li:hover ul {
 			position: relative;
 			display: block;
+		}
+
+		.navigation nav ul li {
+			margin-right: 0;
 		}
 
 		#pageEntries.columns-3 .xEntry {
