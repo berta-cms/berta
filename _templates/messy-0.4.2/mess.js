@@ -329,7 +329,7 @@ var MessyMess = new Class({
     showCoverGallery: function(coverGallery, slides) {
         var slidesCount = slides.length;
         var autoplay = coverGallery.get('data-autoplay');
-        var animationDuration = 200;
+        var animationDuration = 400;
 
         var showCover = function(slide, prevSlide){
             var backgroundImgSrc = slide.get('data-image');

@@ -587,6 +587,10 @@ body.xEditorEnabled { }
     height: 40px;
 }
 
+.xCoverGalleryEditorContainer {
+	left: 0;
+}
+
     #xBgEditorPanelTrigContainer a,
     .xCoverGalleryEditorContainer > a {
     	background: url('../layout/gallery_icons_sprite.png') no-repeat;

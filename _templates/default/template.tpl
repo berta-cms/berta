@@ -5,6 +5,7 @@
 <!--[if IE 9 ]>    <html class="ie ie9"> <![endif]-->
 <!--[if (gt IE 9)|!(IE)]><!--> <html> <!--<![endif]-->
 <head>
+    { include file="../_includes/inc.js_include_head_top.tpl" }
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 	{if $berta.settings.pageLayout.responsive=='yes'}<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">{/if}
 	<title>{if $berta.section.seoTitle}{ $berta.section.seoTitle|strip_tags|escape }{else}{ $berta.pageTitle|strip_tags|escape }{/if}</title>

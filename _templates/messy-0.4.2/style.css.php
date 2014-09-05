@@ -273,7 +273,7 @@ nav ul{
 	position: absolute;
 	bottom: 0;
 	right: 0;
-	padding: 0 1em;
+	padding: 0.5em 1em;
 }
 
 #pageEntries {

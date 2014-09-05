@@ -331,6 +331,7 @@ return array(
     'Submenu is hidden' => 'Apakšizvēlnes slēptas',
 	'mobile_device_detected' => 'Labot lapas saturu ar šo mobilo ierīci nav iespējams!',
 	'javascript_include' => 'Javascript kods, kurš tiks iekļauts tieši pirms &lt;/body&gt; elementa. Uzzini vairāk kā <a href="https://github.com/berta-cms/berta/wiki/Include-JavaScript-code" target="_blank" title="How to include JavaScript code">iekļaut JavaScript kodu.</a>',
+	'javascript_include_head_top' => 'Javascript kods, kurš tiks iekļauts tieši pēc &lt;head&gt; elementa.',
     'description_custom_css' => 'Ievietojiet savu CSS kodu šeit. Iepriekš eksistējošas CSS definīcijas tiks pārrakstītas. Vairāk informācijai apskatiet mūsu <a href="https://github.com/berta-cms/berta/wiki/Add-custom-CSS" target="_blank">WIKI</a>.',
 
 	// Videos panel & newsticker
