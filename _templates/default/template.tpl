@@ -107,11 +107,7 @@
 								{ if !$firstSection }
 									<span class="separator">{ $berta.settings.menu.separator }</span>
 								{ /if }
-								{ if $berta.sectionName == $section.name && $berta.settings.navigation.alwaysSelectTag == 'yes' && !empty($berta.tags.$sName) }
-									<span>{ $section.title }</span>
-								{ else }
-									<a href="{ bertaLink section=$section.name }" target="{ bertaTarget section=$section.name }">{ $section.title }</a>
-								{ /if }
+								<a href="{ bertaLink section=$section.name }" target="{ bertaTarget section=$section.name }">{ $section.title }</a>
 
 								{ assign var="subName" value=$section.name }
 								{ if $berta.settings.pageLayout.responsive == 'yes' && !empty($berta.tags.$subName) }
