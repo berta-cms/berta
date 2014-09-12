@@ -96,11 +96,7 @@
 						{ assign var="currnetSectionName" value=$berta.sectionName }
 						{ foreach from=$berta.publishedSections item="section" key="sName" name="sectionsMenuLoop" }
 							{ if $currnetSectionName == $section.name }<li class="selected">{ else }<li>{ /if }
-								{ if $currnetSectionName == $section.name && $berta.settings.navigation.alwaysSelectTag == 'yes' && !empty($berta.tags.$sName) }
-									<span>{ $section.title }</span>
-								{ else }
-									<a href="{ bertaLink section=$sName }" target="{ bertaTarget section=$sName }">{ $section.title }</a>
-								{ /if }
+								<a href="{ bertaLink section=$sName }" target="{ bertaTarget section=$sName }">{ $section.title }</a>
 
 								{ if !empty($berta.tags.$sName) }
 									<ul class="subMenu xSection-{ $sName }{ if $berta.tags.$sName|@count > 1 && $berta.environment == 'engine' } xAllowOrdering{ /if }">

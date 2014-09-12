@@ -278,8 +278,6 @@
                     { /if }
                 { /if }
 
-
-
                 { if (!$covers) }
                     { include file="includes/navigation.tpl" }
                 {/if}
