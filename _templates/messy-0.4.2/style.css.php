@@ -250,7 +250,11 @@ nav ul{
 	-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;
 	position: relative;
 	top: 50%;
-	transform: translateY(-50%);
+	-webkit-transform:translateY(-50%);
+	-moz-transform:translateY(-50%);
+	-ms-transform:translateY(-50%);
+	-o-transform:translateY(-50%);
+	transform:translateY(-50%);
 }
 
 .coverGallery {
