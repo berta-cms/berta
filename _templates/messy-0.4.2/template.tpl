@@ -211,13 +211,13 @@
         </div> {* allContainer *}
     { else }
 
-            { if ($covers) }
-                <div class="navigation clearfix">
-                    {*<div class="contentContainer{ if $berta.settings.pageLayout.centered=='yes' } xCentered{ /if }{ if $berta.settings.pageLayout.responsive=='yes' } xResponsive{ /if } clearfix">*}
-                        { include file="includes/navigation.tpl" }
-                    {*</div>*}
+            <div class="navigation clearfix">
+                <div class="contentContainer{ if $berta.settings.pageLayout.centered=='yes' } xCentered{ /if }{ if $berta.settings.pageLayout.responsive=='yes' } xResponsive{ /if } clearfix">
+                    { include file="includes/navigation.tpl" }
                 </div>
+            </div>
 
+            { if ($covers) }
                 <div class="covers">
                     {foreach $covers as $cover }
                         <div class="cover xCoverId-{ $cover.id } clearfix">
@@ -277,10 +277,6 @@
                         </div>
                     { /if }
                 { /if }
-
-                { if (!$covers) }
-                    { include file="includes/navigation.tpl" }
-                {/if}
 
                 {* If not grid view *}
                 { if !($smarty.cookies._berta_grid_view && $berta.section.type == 'grid') }

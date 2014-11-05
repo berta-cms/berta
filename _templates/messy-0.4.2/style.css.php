@@ -132,10 +132,6 @@ a img { border: none; }
 		text-decoration: none;
 	}
 
-.navigation {
-	padding: 1em;
-}
-
 	.navigation h1 {
 		position: absolute;
 		margin: 0;
@@ -143,7 +139,6 @@ a img { border: none; }
 	}
 
 	.navigation nav {
-		margin: 1em;
 		text-align: center;
 	}
 
@@ -770,6 +765,19 @@ nav ul{
 	#contentContainer h1,
 	.contentContainer h1 {
 		margin: <?php echo $s->get('pageLayout', 'headingMargin') ?>;
+	}
+
+	.navigation {
+		padding: 1em;
+	}
+
+	.navigation h1 {
+		position: relative;
+		float: left;
+	}
+
+	.navigation nav {
+		margin: 1em;
 	}
 
 	nav {
