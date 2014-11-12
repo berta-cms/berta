@@ -230,6 +230,13 @@ else if($decoded['action'] == 'SET_BG_NAVIGATION') {
 	$sectionsList[$sName]['mediaCacheData']['@attributes']['hide_navigation'] = $decoded['params'];
 	BertaEditor::saveSections($sectionsList);
 }
+else if($decoded['action'] == 'SET_BG_ANIMATION') {
+	$sectionsList = BertaEditor::getSections();
+	$sName = $decoded['section'];
+	if(empty($sectionsList[$sName]['mediaCacheData']['@attributes'])) $sectionsList[$sName]['mediaCacheData']['@attributes'] = array();
+	$sectionsList[$sName]['mediaCacheData']['@attributes']['animation'] = $decoded['params'];
+	BertaEditor::saveSections($sectionsList);
+}
 else if($decoded['action'] == 'SET_BG_FADE_CONTENT') {
 	$sectionsList = BertaEditor::getSections();
 	$sName = $decoded['section'];

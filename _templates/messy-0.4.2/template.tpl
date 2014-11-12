@@ -56,7 +56,7 @@
         { $bgAttr = $berta.section.mediaCacheData['@attributes'] }
         { $bgFileAttr = $berta.section.mediaCacheData.file['@attributes'] }
         <div id="xBackgroundContainer">
-            <div id="xBackground" class="xBgDataAutoplay-{ $bgAttr.autoplay } xBgDataImageSize-{ $bgAttr.image_size } xBgDataFading-{ if $berta.environment == 'site' }{ $bgAttr.fade_content }{ /if }" { if $berta.section.sectionBgColor }style="background-color: { $berta.section.sectionBgColor }"{ /if }>
+            <div id="xBackground" class="xBgDataAutoplay-{ $bgAttr.autoplay } xBgDataImageSize-{ $bgAttr.image_size } xBgDataFading-{ if $berta.environment == 'site' }{ $bgAttr.fade_content }{ /if } xBgDataAnimation-{ $bgAttr.animation }" { if $berta.section.sectionBgColor }style="background-color: { $berta.section.sectionBgColor }"{ /if }>
                 <div id="xBackgroundLoader"></div>
                 {* if only one image *}
                 { if $bgFileAttr && $bgFileAttr.type == 'image' && !($smarty.cookies._berta_grid_view && $berta.section.type == 'grid') }

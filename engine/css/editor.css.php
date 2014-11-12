@@ -652,7 +652,7 @@ body.xEditorEnabled { }
     	        text-decoration: underline !important;
     	    }
 
-		.xBgSettings, .xBgNavigationSettings {
+		.xBgSettings, .xBgNavigationSettings, .xBgAnimationSettings  {
 			margin: 6px 0;
 		}
 
@@ -662,6 +662,7 @@ body.xEditorEnabled { }
 			}
 
 				.xBgNavigationSettings .xBgNavigation,
+				.xBgAnimationSettings .xBgAnimation,
 				.xBgFadingSettings .xBgFading,
 				.xBgColorSettings .xBgFading select,
 				.xBgButtonTypeSettings .xBgButtonType,
