@@ -688,9 +688,13 @@ var BertaBackground = new Class({
 
             if(this.rightCounter && this.leftCounter) this._getCounter();
 
-            this.fadeOutFx.start({ '0': { 'opacity': 0 }, '1': { 'opacity': 0 } }).chain(
-                function() { this._getNewBgContent(newBgContent); }.bind(this)
-            );
+            if (this.bgAnimationEnabled) {
+                this.fadeOutFx.start({ '0': { 'opacity': 0 }, '1': { 'opacity': 0 } }).chain(
+                    function() { this._getNewBgContent(newBgContent); }.bind(this)
+                );
+            }else{
+                this._getNewBgContent(newBgContent);
+            }
         }.bind(this), time);
     },
 
