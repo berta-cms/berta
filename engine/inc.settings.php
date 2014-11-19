@@ -105,6 +105,12 @@ $settingsDefinition = array(
 		'banner6_link'  => 			array('format' => 'text',		'allow_blank' => true,	'default' => null, 'link'=>true, 	'title' => I18n::_('Banner link').' (6)', 'description' => ''),
 		'banner7_image' => 			array('format' => 'image',		'default' => '', 'min_width' => 1, 'min_height' => 1, 'max_width' => 3000, 'max_height' => 3000, 	 	'title' => I18n::_('Banner image').' (7)', 'description' => ''),
 		'banner7_link'  => 			array('format' => 'text',		'allow_blank' => true,	'default' => null, 'link'=>true, 	'title' => I18n::_('Banner link').' (7)', 'description' => ''),
+		'banner8_image' => 			array('format' => 'image',		'default' => '', 'min_width' => 1, 'min_height' => 1, 'max_width' => 3000, 'max_height' => 3000, 	 	'title' => I18n::_('Banner image').' (8)', 'description' => ''),
+		'banner8_link'  => 			array('format' => 'text',		'allow_blank' => true,	'default' => null, 'link'=>true, 	'title' => I18n::_('Banner link').' (8)', 'description' => ''),
+		'banner9_image' => 			array('format' => 'image',		'default' => '', 'min_width' => 1, 'min_height' => 1, 'max_width' => 3000, 'max_height' => 3000, 	 	'title' => I18n::_('Banner image').' (9)', 'description' => ''),
+		'banner9_link'  => 			array('format' => 'text',		'allow_blank' => true,	'default' => null, 'link'=>true, 	'title' => I18n::_('Banner link').' (9)', 'description' => ''),
+		'banner10_image' => 			array('format' => 'image',		'default' => '', 'min_width' => 1, 'min_height' => 1, 'max_width' => 3000, 'max_height' => 3000, 	 	'title' => I18n::_('Banner image').' (10)', 'description' => ''),
+		'banner10_link'  => 			array('format' => 'text',		'allow_blank' => true,	'default' => null, 'link'=>true, 	'title' => I18n::_('Banner link').' (10)', 'description' => ''),
 	),
 
 	'socialMediaButtons' => array(
