@@ -127,7 +127,7 @@ class BertaGallery extends BertaBase {
                     if($width_original && $height_original && $imageTargetWidth_2x && $imageTargetHeight_2x && ($width_original > $imageTargetWidth_2x || $height_original > $imageTargetHeight_2x)) {
                         list($width_2x, $height_2x) = self::fitInBounds($width_original, $height_original, $imageTargetWidth_2x, $imageTargetHeight_2x);
                         $imgSrc_2x = self::getResizedSrc($mFolder, $imgSrc_original, $width_2x, $height_2x);
-                        $srcset = ' srcset="' . $mFolderABS . $imgSrc_2x . ' 2x"';
+                        $srcset = ' srcset="' . $mFolderABS . $imgSrc . ' 1x, ' . $mFolderABS . $imgSrc_2x . ' 2x"';
                     }
                     // end generate image for @2x displays
                 }
@@ -201,7 +201,7 @@ class BertaGallery extends BertaBase {
                 if($width_original && $height_original && $imageTargetWidth_2x && $imageTargetHeight_2x && ($width_original > $imageTargetWidth_2x || $height_original > $imageTargetHeight_2x)) {
                     list($width_2x, $height_2x) = self::fitInBounds($width_original, $height_original, $imageTargetWidth_2x, $imageTargetHeight_2x);
                     $src_2x = self::getResizedSrc($mFolder, $src_original, $width_2x, $height_2x);
-                    $srcset = ' data-srcset="' . $mFolderABS . $src_2x . ' 2x"';
+                    $srcset = ' data-srcset="' . $mFolderABS . $src . ' 1x, ' . $mFolderABS . $src_2x . ' 2x"';
                 }
                 // end generate image for @2x displays
             }
