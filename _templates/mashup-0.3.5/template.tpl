@@ -61,7 +61,7 @@
 
                 { if ($berta.environment == 'site' && $berta.settings.navigation.landingSectionPageHeadingVisible=='yes') || $berta.environment == 'engine' || ($berta.environment == 'site' && $berta.settings.navigation.landingSectionPageHeadingVisible=='no' && $berta.sectionName != $berta.sections|@key) }
                     { if $berta.settings.sideBar.image }
-                    <h1><a href="{ bertaLink }"><img src="{ $berta.options.MEDIA_ABS_ROOT }{ $berta.settings.sideBar.image }" /></a></h1>
+                    <h1><a href="{ bertaLink }">{ responsiveImage image = $berta.settings.sideBar prefix=image path = $berta.options.MEDIA_ABS_ROOT }</a></h1>
                     { else }
                     <h1 class="xEditable xProperty-siteHeading">
                         { if $berta.environment == "engine" }
@@ -196,10 +196,10 @@
 					<div class="xHandle"></div>
 					{ if $berta.settings.banners.$setting_name_link }
 						<a href="{ $berta.settings.banners.$setting_name_link }" target="_blank">
-							<img src="{ $berta.options.MEDIA_ABS_ROOT }{ $berta.settings.banners.$setting_name_image }" />
+							{ responsiveImage image = $berta.settings.banners prefix=$setting_name_image path = $berta.options.MEDIA_ABS_ROOT }
 						</a>
 					{ else }
-					<img src="{ $berta.options.MEDIA_ABS_ROOT }{ $berta.settings.banners.$setting_name_image }" />
+						{ responsiveImage image = $berta.settings.banners prefix=$setting_name_image path = $berta.options.MEDIA_ABS_ROOT }
 					{ /if }
 				</div>
 
