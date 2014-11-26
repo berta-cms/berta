@@ -297,8 +297,15 @@ if(($entryId && $mediaFolder || $settingsProperty || $sectionName && $mediaFolde
 									@unlink($fileFolder . $oldF);
 									BertaEditor::images_deleteDerivatives($fileFolder, $oldF);
 								}
-								//echo $settingsProperty[0], ' ', $settingsProperty[1],  ' ', $fName;
+
+								//generate 2x smaller image here, original will be for retina displays @2x
+								$imInfo[0] = round($imInfo[0]/2);
+								$imInfo[1] = round($imInfo[1]/2);
+								BertaGallery::getResizedSrc($fileFolder, $fName, $imInfo[0], $imInfo[1]);
+
 								$settings->update($settingsProperty[0], $settingsProperty[1], $fName);
+								$settings->update($settingsProperty[0], $settingsProperty[1].'_width', $imInfo[0]);
+								$settings->update($settingsProperty[0], $settingsProperty[1].'_height', $imInfo[1]);
 								$settings->save();
 							}
 							elseif($sectionBackground) {

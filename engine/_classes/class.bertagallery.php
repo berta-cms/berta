@@ -259,7 +259,7 @@ class BertaGallery extends BertaBase {
         return array($newW, $newH);
     }
 
-    private static function getResizedSrc($folder, $src, $w, $h) {
+    public static function getResizedSrc($folder, $src, $w, $h) {
         $newSrc = '_'.$w.'x'.$h.'_'.$src;
         if(file_exists($folder.$newSrc) || self::createThumbnail($folder . $src, $folder . $newSrc, $w, $h)) {
             return $newSrc;
