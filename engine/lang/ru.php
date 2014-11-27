@@ -295,7 +295,6 @@ return array(
         /* help text */    'Distance between the gallery and the content below' => 'Расстояние между галереей и содержанием под ней',
 
         /* setting name */ 'Logo image' => 'Изображение логотипа',
-        /* help text */    'Picture to use instead of header text. Max size: 140 x 400 pixels. If the image is larger, it will be reduced.' => 'Изображение, которое используется в шапке сайта вместо заголовка. Максимальный размер: 140x400 px. Если изображение превышает максимальный размер, оно автоматически уменьшается.',
 
         /* setting name */ 'Color when hovered' => 'Цвет элемента при наведении курсора мыши',
         /* help text */    'Color of the element under mouse cursor' => 'Цвет элемента, который находится под стрелкой курсора',
@@ -317,7 +316,7 @@ return array(
         'description_tagsMenu_x' => 'Положение подменю на оси X в пикселях (например: 50px)',
         'description_tagsMenu_y' => 'Положение подменю на оси Y в пикселях (например: 50px)',
         'description_menu_position' => 'Позиционирование меню',
-        'description_banner' => 'Баннеры – это изображения, выводимые во всех разделах, например, иконки twitter или кнопки. Возможно добавлять до 7 разных элементов.',
+        'description_banner' => 'Banners are images which are visible in all sections. Use it for buttons or social icons in your site. Displayed image will be half of the original size, full size will be used for hi-res displays.',
         'description_banner_link' => 'Ссылка баннера. Добавьте http:// перед адресом ссылки (например: http://www.berta.me)',
         'description_language' => 'Выберите язык интерфейса berta. Обновите страницу, чтобы активировать изменения.',
         'Heading position' => 'Положение заголовка',

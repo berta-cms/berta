@@ -91,7 +91,7 @@ $settingsDefinition = array(
 
 	'banners' => array(
 		'_' =>                      array('title' => I18n::_('Banners')),
-		'banner1_image' => 			array('format' => 'image',		'default' => '', 'min_width' => 1, 'min_height' => 1, 'max_width' => 3000, 'max_height' => 3000, 	 	'title' => I18n::_('Banner image').' (1)',  'description' => I18n::_('description_banner')),
+		'banner1_image' => 			array('format' => 'image',		'default' => '', 'min_width' => 1, 'min_height' => 1, 'max_width' => 3000, 'max_height' => 3000, 	 	'title' => I18n::_('Banner image').' (1)',  'description' => '<span class="warning">' . I18n::_('description_banner') . '</span>'),
 		'banner1_link'  => 			array('format' => 'text',		'allow_blank' => true,	'default' => null, 'link'=>true, 	'title' => I18n::_('Banner link').' (1)', 'description' => I18n::_('description_banner_link')),
 		'banner2_image' => 			array('format' => 'image',		'default' => '', 'min_width' => 1, 'min_height' => 1, 'max_width' => 3000, 'max_height' => 3000, 	 	'title' => I18n::_('Banner image').' (2)', 'description' => ''),
 		'banner2_link'  => 			array('format' => 'text',		'allow_blank' => true,	'default' => null, 'link'=>true, 	'title' => I18n::_('Banner link').' (2)', 'description' => ''),

@@ -18,6 +18,9 @@ $settings =& $berta->template->settings;
 
 if(!1) { ?><style type="text/css"><?php } ?>
 
+.warning {
+	color: #BB0000;
+}
 
 button,
 input[type="submit"] {

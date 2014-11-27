@@ -300,7 +300,6 @@ return array(
     /* help text */    'Distance between the gallery and the content below' => 'Odległość pomiędzy galerią i treścią pod nią',
 
     /* setting name */ 'Logo image' => 'Obraz logo',
-    /* help text */    'Picture to use instead of header text. Max size: 140 x 400 pixels. If the image is larger, it will be reduced.' => 'Obraz, który będzie wykorzystany w miejscu tekstu w nagłówku. Maksymalny rozmiar 140 x 400 piksele. Jeżeli obraz jest większy, będzie on zmniejszony.',
 
     /* setting name */ 'Color when hovered' => 'Kolor rozświetlonego elementu',
     /* help text */    'Color of the element under mouse cursor' => 'Kolor elementu, który znajduje się aktualnie pod strzałką myszki',
@@ -322,7 +321,7 @@ return array(
     'description_tagsMenu_x' => 'Pozycja X w menu podrzędnym w pikselach (np.: 50px)',
     'description_tagsMenu_y' => 'Pozycja Y w menu podrzędnym w pikselach (np.: 50px)',
     'description_menu_position' => 'Pozycjonowanie menu',
-    'description_banner' => 'Banery są zdjęcia, które są widoczne we wszystkich działach, na przykład, ikony lub przyciski twitter. Można dodać do 7 różnych elementów.',
+    'description_banner' => 'Banners are images which are visible in all sections. Use it for buttons or social icons in your site. Displayed image will be half of the original size, full size will be used for hi-res displays.',
     'description_banner_link' => 'Link banera. Przed adresem nie zapomnij dodać http:// (piem.: http://www.berta.me)',
     'description_language' => 'Choose language of berta interface. Refresh site to apply.',
     'Heading position' => 'Pozycja nagłówka',

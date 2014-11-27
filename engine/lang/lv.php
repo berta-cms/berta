@@ -299,7 +299,6 @@ return array(
 	/* help text */    'Distance between the gallery and the content below' => 'Attālums starp galeriju un saturu zem tā',
 
 	/* setting name */ 'Logo image' => 'Logo attēls',
-	/* help text */    'Picture to use instead of header text. Max size: 140 x 400 pixels. If the image is larger, it will be reduced.' => 'Attēls, kas tiek izmantots lapas galvenes teksta vietā. Max izmērs 140 x 400 pikseļi. Ja attēls ir lielāks, tas tiks samazināts.',
 
 	/* setting name */ 'Color when hovered' => 'Izgaismotā elementa krāsa',
 	/* help text */    'Color of the element under mouse cursor' => 'Krāsa elementam, kas atrodas zem peles kursora bultiņas',
@@ -321,7 +320,7 @@ return array(
 	'description_tagsMenu_x' => 'Apakšizvēlnes X pozīcija pikseļos (piem.: 50px)',
 	'description_tagsMenu_y' => 'Apakšizvēlnes Y pozīcija pikseļos (piem.: 50px)',
 	'description_menu_position' => 'Izvēlnes pozicionēšana',
-	'description_banner' => 'Banneri ir bildes, kuras redzamas visās sadaļās, pimēram, twitter ikonas vai pogas. Var pievienot līdz 7 dažādiem elementiem.',
+	'description_banner' => 'Banners are images which are visible in all sections. Use it for buttons or social icons in your site. Displayed image will be half of the original size, full size will be used for hi-res displays.',
 	'description_banner_link' => 'Bannera saite. Adreses priekšā neaizmirsti pievienot http:// (piem.: http://www.berta.me)',
 	'description_language' => 'Choose language of berta interface. Refresh site to apply.',
 	'Heading position' => 'Galvenes pozīcija',
