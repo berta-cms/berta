@@ -26,7 +26,7 @@ return array(
 	'description_tagsMenu_x' => 'Submenu X posición en píxeles (es decir, 10px)',
 	'description_tagsMenu_y' => 'Submenu Y posición en píxeles (es decir, 10px)',
 	'description_menu_position' => 'Posición de menú',
-	'description_banner' => 'Los banners son imágenes que son visibles en todas las secciones. Úsalo para botones o iconos sociales en su sitio',
+	'description_banner' => 'Banners are images which are visible in all sections. Use it for buttons or social icons in your site. Displayed image will be half of the original size, full size will be used for hi-res displays.',
 	'description_banner_link' => 'Enlace banner \'http://\' debe estar al frente de la dirección',
 	'description_language' => 'Elija el idioma de la interfaz de Berta. Actualiza sitio, para aplicar.',
 	'Heading position' => 'Fija o absoluta la posición de la cabecera. Fijo siempre se queda en un solo lugar, absoluta se mueve junto con el contenido.',

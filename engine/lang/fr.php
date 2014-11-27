@@ -293,7 +293,6 @@ return array(
 		/* help text */    'Distance between the gallery and the content below' => 'Distance entre la galerie et le contenu',
 
 		/* setting name */ 'Logo image' => 'Image d’entête',
-		/* help text */    'Picture to use instead of header text. Max size: 140 x 400 pixels. If the image is larger, it will be reduced.' => 'Image à utiliser au lieu du texte. Sa taille maximale est de 140 x 400 pixels. Si elle est plus grande, elle sera redimensionnée.',
 
 		/* setting name */ 'Color when hovered' => 'Couleur au survol',
 		/* help text */    'Color of the element under mouse cursor' => 'Couleur de l’élément survolé par la souris.',
@@ -316,7 +315,7 @@ return array(
 		'description_tagsMenu_y' => 'Position Y du sous-menu en pixels (ex. 50px)',
 
 		'description_menu_position' => 'Position du menu',
-		'description_banner' => 'Les bannières sont des images visibles sur toutes les sections. Vous pouvez les utiliser comme boutons ou icônes de réseaux sociaux sur votre site.',
+		'description_banner' => 'Banners are images which are visible in all sections. Use it for buttons or social icons in your site. Displayed image will be half of the original size, full size will be used for hi-res displays.',
 		'description_banner_link' => 'N’oubliez pas « http:// » devant les liens de bannière.',
 		'description_language' => 'Choisissez votre langue pour l’interface de Berta. Rafraîchissez la page pour pour appliquer les modifications.',
 		'Heading position' => 'Position de l’entête',

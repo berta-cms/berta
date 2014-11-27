@@ -316,7 +316,6 @@ return array(
 		/* help text */    'Distance between the gallery and the content below' => 'Afstand tussen de gallery en de content er onder',
 
 		/* setting name */ 'Logo image' => 'Logo image',
-		/* help text */    'Picture to use instead of header text. Max size: 140 x 400 pixels. If the image is larger, it will be reduced.' => 'Afbeelding die je gebruikt in plaats van de header tekst. Maximale afmeting is 140 x 400 pixels. Als de afbeelding groter is wordt deze kleiner gemaakt.',
 
 		/* setting name */ 'Color when hovered' => 'Color bij mouse-over',
 		/* help text */    'Color of the element under mouse cursor' => 'Color van het element onder de cursor.',
@@ -338,7 +337,7 @@ return array(
 		'description_tagsMenu_x' => 'Submenu X positie in pixels (bijv. 10px)',
 		'description_tagsMenu_y' => 'Submenu Y positie in pixels (bijv. 10px)',
 		'description_menu_position' => 'Menu positie',
-		'description_banner' => 'Banners zijn images die in alle Sections zichtbaar zijn. Gebruik deze voor buttons of social icons in jouw site',
+		'description_banner' => 'Banners are images which are visible in all sections. Use it for buttons or social icons in your site. Displayed image will be half of the original size, full size will be used for hi-res displays.',
 		'description_banner_link' => 'Banner link \'http://\' moet zich voor het adres bevinden',
 		'description_language' => 'Kies hier de taal van de Berta interface. Refresh site om toe te passen.',
 		'Heading position' => 'Heading positie fixed of absolute. Fixed blijft altijd op dezelfde plaats, absolute beweegt mee met de content.',
