@@ -724,8 +724,6 @@ var BertaBackground = new Class({
         newBgContent.addClass('sel');
         this.selected = newBgContent;
 
-        console.log(this.bgAnimationEnabled);
-
         if (this.bgAnimationEnabled) {
             this.fadeOutFx.start({ '0': { 'opacity': 0 }, '1': { 'opacity': 0 } }).chain(
                 function() { this._getNewBgContent(newBgContent); }.bind(this)
