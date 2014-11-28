@@ -76,7 +76,7 @@ $templateConf = array(
 
 	'pageHeading' => array(
 		'_' => array('title' => I18n::_('Page heading')),
-		'image' => 					array('format' => 'image',		'default' => '', 'min_width' => 1, 'min_height' => 1, 'max_width' => 140, 'max_height' => 400, 	'title' => I18n::_('Header image'),  'description' => I18n::_('Picture to use instead of header text. Max size: 140 x 400 pixels. If the image is larger, it will be reduced.')),
+		'image' => 					array('format' => 'image',		'default' => '', 'min_width' => 1, 'min_height' => 1, 'max_width' => 140, 'max_height' => 400, 	'title' => I18n::_('Header image'),  'description' => '<span class="warning">' . I18n::_('Displayed image will be half of the original size, full size will be used for hi-res displays.') . '</span>'),
 		'color' => 					array('format' => 'color',		'default' => '#000000', 					                                                        'title' => I18n::_('Color'),         'description' => ''),
 		'fontFamily' => 			array('format' => 'fontselect',		'values' => $fontOptionsWithInherit, 'default' => 'inherit', 			                        'title' => I18n::_('Font face'),     'description' => ''),
 		'googleFont' => 			array('format' => 'text',		'default' => '', 'html_entities' => true, 															'title' => 'Google web fonts',         'description' => I18n::_('googleFont_description')),

@@ -86,7 +86,7 @@ $templateConf = array(
 		'transparent'=>			array('format' => 'select',	'values' => array('yes', 'no'), 'default' => 'no','title' => I18n::_('Is transparent?'), 'description' => ''),
 		'backgroundColor' =>	array('format' => 'color',	'default' => '#ffffff',				'title' => I18n::_('Background color'), 'description' => ''),
 
-		'image' => 				array('format' => 'image',		'default' => '', 'min_width' => 1, 'min_height' => 1, 'max_width' => 'setting:template:sideBar:width', 'max_height' => 1600, 	 	'title' => I18n::_('Logo image'), 'description' => I18n::_('Picture to use instead of header text. Max size: 140 x 400 pixels. If the image is larger, it will be reduced.')),
+		'image' => 				array('format' => 'image',		'default' => '', 'min_width' => 1, 'min_height' => 1, 'max_width' => 'setting:template:sideBar:width', 'max_height' => 1600, 	 	'title' => I18n::_('Logo image'), 'description' => '<span class="warning">' . I18n::_('Displayed image will be half of the original size, full size will be used for hi-res displays.') . '</span>'),
 		'color' => 				array('format' => 'color',		'default' => '#1a1a1a', 					'title' => I18n::_('Heading text color'), 'description' => ''),
 		'fontFamily' => 		array('format' => 'fontselect',	'values' => $fontOptionsWithInherit, 'default' => 'Georgia, "Times New Roman", Times, serif', 			'title' => I18n::_('Heading font'), 'description' => ''),
 		'googleFont' => 		array('format' => 'text',		'default' => '', 'html_entities' => true, 'title' => I18n::_('Google web fonts'),         'description' => I18n::_('googleFont_description')),

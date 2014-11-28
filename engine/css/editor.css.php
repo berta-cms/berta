@@ -18,6 +18,9 @@ $settings =& $berta->template->settings;
 
 if(!1) { ?><style type="text/css"><?php } ?>
 
+.warning {
+	color: #BB0000;
+}
 
 button,
 input[type="submit"] {
@@ -668,7 +671,7 @@ body.xEditorEnabled { }
     	        text-decoration: underline !important;
     	    }
 
-		.xBgSettings, .xBgNavigationSettings {
+		.xBgSettings, .xBgNavigationSettings, .xBgAnimationSettings  {
 			margin: 6px 0;
 		}
 
@@ -678,6 +681,7 @@ body.xEditorEnabled { }
 			}
 
 				.xBgNavigationSettings .xBgNavigation,
+				.xBgAnimationSettings .xBgAnimation,
 				.xBgFadingSettings .xBgFading,
 				.xBgColorSettings .xBgFading select,
 				.xBgButtonTypeSettings .xBgButtonType,

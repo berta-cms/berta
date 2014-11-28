@@ -606,6 +606,7 @@ var BertaBackground = new Class({
     fadeElements: null,
     fadeOutFx: null,
     fadeInFx: null,
+    bgAnimationEnabled: null,
 
 
 	initialize: function(options) {
@@ -713,6 +714,7 @@ var BertaBackground = new Class({
         this.captionContainer = this.container.getElement('.visual-caption');
         this.image = this.imageContainer.getElement('img');
         this.caption = this.captionContainer.getElement('.caption-content');
+        this.bgAnimationEnabled = this.container.getClassStoredValue('xBgDataAnimation') !== 'disabled';
 
         this.selected = this.imagesList.getElement('.sel');
         if (this.rightCounter && this.leftCounter) {
@@ -760,9 +762,13 @@ var BertaBackground = new Class({
 
             if(this.rightCounter && this.leftCounter) this._getCounter();
 
-            this.fadeOutFx.start({ '0': { 'opacity': 0 }, '1': { 'opacity': 0 } }).chain(
-                function() { this._getNewBgContent(newBgContent); }.bind(this)
-            );
+            if (this.bgAnimationEnabled) {
+                this.fadeOutFx.start({ '0': { 'opacity': 0 }, '1': { 'opacity': 0 } }).chain(
+                    function() { this._getNewBgContent(newBgContent); }.bind(this)
+                );
+            }else{
+                this._getNewBgContent(newBgContent);
+            }
         }.bind(this), time);
     },
 
@@ -792,9 +798,13 @@ var BertaBackground = new Class({
         newBgContent.addClass('sel');
         this.selected = newBgContent;
 
-        this.fadeOutFx.start({ '0': { 'opacity': 0 }, '1': { 'opacity': 0 } }).chain(
-            function() { this._getNewBgContent(newBgContent); }.bind(this)
-        );
+        if (this.bgAnimationEnabled) {
+            this.fadeOutFx.start({ '0': { 'opacity': 0 }, '1': { 'opacity': 0 } }).chain(
+                function() { this._getNewBgContent(newBgContent); }.bind(this)
+            );
+        }else{
+            this._getNewBgContent(newBgContent);
+        }
     },
 
     _getPrevious: function() {
@@ -812,9 +822,13 @@ var BertaBackground = new Class({
         newBgContent.addClass('sel');
         this.selected = newBgContent;
 
-        this.fadeOutFx.start({ '0': { 'opacity': 0 }, '1': { 'opacity': 0 } }).chain(
-            function() { this._getNewBgContent(newBgContent); }.bind(this)
-        );
+        if (this.bgAnimationEnabled) {
+            this.fadeOutFx.start({ '0': { 'opacity': 0 }, '1': { 'opacity': 0 } }).chain(
+                function() { this._getNewBgContent(newBgContent); }.bind(this)
+            );
+        }else{
+            this._getNewBgContent(newBgContent);
+        }
     },
 
 	_getNewBgContent: function(newContent) {
@@ -840,13 +854,23 @@ var BertaBackground = new Class({
         this.loader.setStyle('display', 'none');
         this.imageContainer.adopt(this.image);
         this._centerImage();
-        this.fadeInFx.set({ '0': { 'opacity': 0 }, '1': { 'opacity': 0 } }).start({ '0': { 'opacity': 1 }, '1': { 'opacity': 1 } });
+
+        if (this.bgAnimationEnabled) {
+            this.fadeInFx.set({ '0': { 'opacity': 0 }, '1': { 'opacity': 0 } }).start({ '0': { 'opacity': 1 }, '1': { 'opacity': 1 } });
+        }else{
+            this.fadeElements.setStyle('opacity', 1);
+        }
     },
 
     _getNewBgCaptionFinish: function() {
         this.captionContainer.adopt(this.caption);
         this._centerCaption();
-        this.fadeInFx.set({ '0': { 'opacity': 0 }, '1': { 'opacity': 0 } }).start({ '0': { 'opacity': 1 }, '1': { 'opacity': 1 } });
+
+        if (this.bgAnimationEnabled) {
+            this.fadeInFx.set({ '0': { 'opacity': 0 }, '1': { 'opacity': 0 } }).start({ '0': { 'opacity': 1 }, '1': { 'opacity': 1 } });
+        }else{
+            this.fadeElements.setStyle('opacity', 1);
+        }
     },
 
     _centerCaption: function() {

@@ -116,7 +116,7 @@ var BertaGallery = new Class({
 
 			if(fistItemType != 'image' || ( fistItemType == 'image' && this.type == 'row' ) ) {
 				// load only if not image, because if that's image, it's already written in the HTML
-				this.load(aEl.get('href'), aEl.getClassStoredValue('xType'), aEl.getClassStoredValue('xW'), aEl.getClassStoredValue('xH'), aEl.getClassStoredValue('xVideoHref'), aEl.getClassStoredValue('xAutoPlay'), li.getElement('.xGalleryImageCaption').get('html'), true);
+				this.load(aEl.get('href'), aEl.getClassStoredValue('xType'), aEl.getClassStoredValue('xW'), aEl.getClassStoredValue('xH'), aEl.getClassStoredValue('xVideoHref'), aEl.getClassStoredValue('xAutoPlay'), li.getElement('.xGalleryImageCaption').get('html'), true, '', aEl.get('data-srcset'));
 			} else {
 				this.currentSrc = aEl.get('href');
 				this.preload = this.imageContainer.getElement('div.xGalleryItem');
@@ -177,7 +177,7 @@ var BertaGallery = new Class({
 			if(nextLi) {
 				this.nav_highlightItem(nextLi);
 				var aEl = nextLi.getElement('a');
-				this.load(aEl.get('href'), aEl.getClassStoredValue('xType'), aEl.getClassStoredValue('xW'), aEl.getClassStoredValue('xH'), aEl.getClassStoredValue('xVideoHref'), aEl.getClassStoredValue('xAutoPlay'), nextLi.getElement('.xGalleryImageCaption').get('html'), false, aEl.getClassStoredValue('xImgIndex'));
+				this.load(aEl.get('href'), aEl.getClassStoredValue('xType'), aEl.getClassStoredValue('xW'), aEl.getClassStoredValue('xH'), aEl.getClassStoredValue('xVideoHref'), aEl.getClassStoredValue('xAutoPlay'), nextLi.getElement('.xGalleryImageCaption').get('html'), false, aEl.getClassStoredValue('xImgIndex'), aEl.get('data-srcset'));
             } else {
 				//after everything is loaded - attach fullscreen for gallery row mode
 				if (this.fullscreen && (this.type == 'row' || this.type == 'pile' || this.type == 'column')) {
@@ -333,6 +333,8 @@ var BertaGallery = new Class({
 
 		this.preload.inject(this.newObjectInjectWhere, this.newObjectInjectPosition);
 
+		picturefill(this.preload.getElement('img'));
+
 		if(bDoContainerFade) {
 			this.imageShowFx.set('opacity', 1);
 		} else {
@@ -389,7 +391,7 @@ var BertaGallery = new Class({
 		this.nav_highlightItem(li);
 		var caption = li.getElement('.xGalleryImageCaption').get('html');
 
-		this.load(linkElement.get('href'), linkElement.getClassStoredValue('xType'), linkElement.getClassStoredValue('xW'), linkElement.getClassStoredValue('xH'), linkElement.getClassStoredValue('xVideoHref'), linkElement.getClassStoredValue('xAutoPlay'), caption, false, linkElement.getClassStoredValue('xImgIndex'));
+		this.load(linkElement.get('href'), linkElement.getClassStoredValue('xType'), linkElement.getClassStoredValue('xW'), linkElement.getClassStoredValue('xH'), linkElement.getClassStoredValue('xVideoHref'), linkElement.getClassStoredValue('xAutoPlay'), caption, false, linkElement.getClassStoredValue('xImgIndex'), linkElement.get('data-srcset'));
 	},
 	nav_highlightItem: function(liElement) {
 		// implementable in the future
@@ -410,7 +412,7 @@ var BertaGallery = new Class({
 
 	// load: starts the actual loading of next image/video into the container
 
-	load: function(src, mType, mWidth, mHeight, videoPath, autoPlay, caption, bDeleteExisting, xImgIndex) {
+	load: function(src, mType, mWidth, mHeight, videoPath, autoPlay, caption, bDeleteExisting, xImgIndex, srcset) {
 
 		switch(this.phase) {
 			case 'fadeout': this.imageFadeOutFx.cancel(); break;
@@ -421,14 +423,14 @@ var BertaGallery = new Class({
 		if(this.currentSrc && this.type == 'slideshow') {
 			this.currentSrc = null;
 			this.phase = "fadeout";
-			this.imageFadeOutFx.start('opacity', 0).chain(this.load_Render.bind(this, [ src, mType, mWidth, mHeight, videoPath, autoPlay, caption, bDeleteExisting, xImgIndex ]));
+			this.imageFadeOutFx.start('opacity', 0).chain(this.load_Render.bind(this, [ src, mType, mWidth, mHeight, videoPath, autoPlay, caption, bDeleteExisting, xImgIndex, srcset ]));
 		} else {
 			this.currentSrc = null;
-			this.load_Render(src, mType, mWidth, mHeight, videoPath, autoPlay, caption, bDeleteExisting, xImgIndex);
+			this.load_Render(src, mType, mWidth, mHeight, videoPath, autoPlay, caption, bDeleteExisting, xImgIndex, srcset);
 		}
 	},
 
-	load_Render: function(src, mType, mWidth, mHeight, videoPath, autoPlay, caption, bDeleteExisting, xImgIndex) {
+	load_Render: function(src, mType, mWidth, mHeight, videoPath, autoPlay, caption, bDeleteExisting, xImgIndex, srcset) {
 
 		this.currentSrc = src;
 		this.currentType = mType;
@@ -436,6 +438,7 @@ var BertaGallery = new Class({
 		this.currentVideoAutoPlay = autoPlay;
 		this.currentCaption = caption;
 		this.xImgIndex = xImgIndex;
+		this.srcset = srcset ? srcset : null;
 
 		if(this.type == 'slideshow') {
 			var obj;
@@ -460,8 +463,11 @@ var BertaGallery = new Class({
 
 				this.phase = "preload";
 				this.preload = new Asset.image(src, this.type == 'slideshow' ? {
+					'width': mWidth,
+					'height': mHeight,
+					'srcset': this.srcset,
 					'onload': this.load_Finish.bind(this, [ src, mType, mWidth, mHeight, bDeleteExisting ])
-				} : {});
+				} : {'srcset': this.srcset});
 
 				this.preload = new Element('div', { 'class': 'image' }).adopt(this.preload);
 				if(this.type == 'row' || this.type == 'pile' || this.type == 'column') {
@@ -513,7 +519,7 @@ var BertaGallery = new Class({
 					player.el.setStyle('padding-bottom', mHeight*100/mWidth + '%' );
 				}
 
-				new Element('img', { 'src': src, 'class' : 'xGalleryImageVideoBack', 'styles': {
+				new Element('img', { 'src': src, 'class' : 'xGalleryImageVideoBack', 'width': mWidth, 'height': mHeight, 'srcset': this.srcset, 'styles': {
 					'width' : mWidth + 'px',
 					'height' : mHeight + 'px'
 				} }).inject(this.preload, 'top');

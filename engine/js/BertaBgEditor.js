@@ -102,6 +102,9 @@ var BertaBgEditor = new Class({
 		// bg Navigation handle
 		this.elementEdit_init(this.container.getElement('.xBgNavigation'), this.options.xBertaEditorClassSelectRC);
 
+		// bg animation handle
+		this.elementEdit_init(this.container.getElement('.xBgAnimation'), this.options.xBertaEditorClassSelectRC);
+
 		// bg fade content handle
 		this.elementEdit_init(this.container.getElement('.xBgFading'), this.options.xBertaEditorClassSelectRC);
 

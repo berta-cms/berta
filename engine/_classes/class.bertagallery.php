@@ -129,6 +129,7 @@ class BertaGallery extends BertaBase {
 
                 $isPoster = !empty($img['@attributes']['poster_frame']);
                 $imgSrc = $isPoster ? $img['@attributes']['poster_frame'] : $img['@attributes']['src'];
+                $srcset = '';
 
                 if(!empty($img['@attributes']['width']) && !empty($img['@attributes']['height'])) {
                     $width = (int) $img['@attributes']['width'];
@@ -141,18 +142,30 @@ class BertaGallery extends BertaBase {
                     $height = $imgSize ? (int) $imgSize[1] : false;
                 }
 
-
+                $width_original = $width;
+                $height_original = $height;
+                $imgSrc_original = $imgSrc;
 
                 if($width && $height && $imageTargetWidth && $imageTargetHeight && ($width > $imageTargetWidth || $height > $imageTargetHeight)) {
                     list($width, $height) = self::fitInBounds($width, $height, $imageTargetWidth, $imageTargetHeight);
                     $imgSrc = self::getResizedSrc($mFolder, $imgSrc, $width, $height);
+
+                    // start generate image for @2x displays
+                    $imageTargetWidth_2x = $width * 2;
+                    $imageTargetHeight_2x = $height * 2;
+                    if($width_original && $height_original && $imageTargetWidth_2x && $imageTargetHeight_2x && ($width_original > $imageTargetWidth_2x || $height_original > $imageTargetHeight_2x)) {
+                        list($width_2x, $height_2x) = self::fitInBounds($width_original, $height_original, $imageTargetWidth_2x, $imageTargetHeight_2x);
+                        $imgSrc_2x = self::getResizedSrc($mFolder, $imgSrc_original, $width_2x, $height_2x);
+                        $srcset = ' srcset="' . $mFolderABS . $imgSrc . ' 1x, ' . $mFolderABS . $imgSrc_2x . ' 2x"';
+                    }
+                    // end generate image for @2x displays
                 }
 
                 $width = round($width * $sizeRatio);
                 $height = round($height * $sizeRatio);
 
                 $firstImageHTML = '<div class="xGalleryItem xGalleryItemType-image xImgIndex-1" style="' . ($width ? "width:{$width}px;" : '') . '' . ($height ? "height:{$height}px;" : '') . '">' .
-                                    '<img src="' . $mFolderABS . $imgSrc . '" ' . ($width ? "width=\"$width\"" : '') . ' ' . ($height ? "height=\"$height\"" : '') . ' />' .
+                                    '<img src="' . $mFolderABS . $imgSrc . '" ' . ($width ? "width=\"$width\"" : '') . ' ' . ($height ? "height=\"$height\"" : '') . $srcset . ' />' .
                                     '<div class="xGalleryImageCaption">' . (!empty($img['value']) ? $img['value'] : '') . '</div>' .
                                   '</div>';
             }
@@ -171,6 +184,7 @@ class BertaGallery extends BertaBase {
         $navStr = '<ul class="xGalleryNav" ' . ((count($imgs) == 1 || in_array($galleryType, array('row', 'column', 'pile', 'link'))) ? 'style="display:none"' : '') . '>'; // <link/> / added || $galleryType == 'link'
         for($i = 0; $i < count($imgs); $i++) {
             $width = $height = $isPoster = 0;
+            $srcset = '';
 
             if($imgs[$i]['@attributes']['type'] == 'video') {
                 $src = !empty($imgs[$i]['@attributes']['poster_frame']) ? $imgs[$i]['@attributes']['poster_frame'] : '';
@@ -202,9 +216,23 @@ class BertaGallery extends BertaBase {
             $width = $width ? $width : 300;
             $height = $height ? $height : 150;
 
+            $width_original = $width;
+            $height_original = $height;
+            $src_original = $src;
+
             if($width && $height && $imageTargetWidth && $imageTargetHeight && ($width > $imageTargetWidth || $height > $imageTargetHeight)) {
                 list($width, $height) = self::fitInBounds($width, $height, $imageTargetWidth, $imageTargetHeight);
                 $src = self::getResizedSrc($mFolder, $src, $width, $height);
+
+                // start generate image for @2x displays
+                $imageTargetWidth_2x = $width * 2;
+                $imageTargetHeight_2x = $height * 2;
+                if($width_original && $height_original && $imageTargetWidth_2x && $imageTargetHeight_2x && ($width_original > $imageTargetWidth_2x || $height_original > $imageTargetHeight_2x)) {
+                    list($width_2x, $height_2x) = self::fitInBounds($width_original, $height_original, $imageTargetWidth_2x, $imageTargetHeight_2x);
+                    $src_2x = self::getResizedSrc($mFolder, $src_original, $width_2x, $height_2x);
+                    $srcset = ' data-srcset="' . $mFolderABS . $src . ' 1x, ' . $mFolderABS . $src_2x . ' 2x"';
+                }
+                // end generate image for @2x displays
             }
 
             $width = round($width * $sizeRatio);
@@ -220,7 +248,7 @@ class BertaGallery extends BertaBase {
                                      'xW-' . $width . ' ' .
                                      'xH-' . $height . ' ' .
                                      'xImgIndex-' . ($i+1) . ' ' .
-                              '" target="_blank"><span>' .
+                              '"' . $srcset . ' target="_blank"><span>' .
                  ($i + 1) .
                  '</span></a><div class="xGalleryImageCaption">' . (!empty($imgs[$i]['value']) ? $imgs[$i]['value'] : '') . '</div></li>' . "\n";
 
@@ -260,7 +288,7 @@ class BertaGallery extends BertaBase {
         return array($newW, $newH);
     }
 
-    private static function getResizedSrc($folder, $src, $w, $h) {
+    public static function getResizedSrc($folder, $src, $w, $h) {
         $newSrc = '_'.$w.'x'.$h.'_'.$src;
         if(file_exists($folder.$newSrc) || self::createThumbnail($folder . $src, $folder . $newSrc, $w, $h)) {
             return $newSrc;
@@ -270,7 +298,7 @@ class BertaGallery extends BertaBase {
     }
 
     public static function createThumbnail($imagePath, $thumbPath, $thumbWidth, $thumbHeight) {
-        if(file_exists($imagePath)) {
+        if(is_file($imagePath)) {
             $imageInfo = getimagesize($imagePath);
 
             $canMakeThumb = function_exists('imagejpeg') &&
