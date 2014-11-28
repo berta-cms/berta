@@ -8,6 +8,14 @@ For more information, visit http://www.berta.me
 
 Changelog
 ----------
+**v0.8.10b (release date 28 Nov 2014)**
+ * image optimization for High-Resolution displays
+ * option to disable fade animation for background galleries
+ * SEO Title, Keywords and Content description for each section
+ * easier image sorting in the gallery editor view
+ * option to customize text color, background color and size in the text editor
+ * other minor but useful improvements and bugfixes
+
 **v0.8.9b (release date 15 Apr 2014)**
  * option to clone sections
  * responsive layout option for White and Mashup templates
