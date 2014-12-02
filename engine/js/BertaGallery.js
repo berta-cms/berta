@@ -47,13 +47,10 @@ var BertaGallery = new Class({
 	},
 
 	attach: function(container) {
-		var parent = container.getParent();
-		if (parent.hasClass('xGalleryContainer')){
-			container.replaces(parent);
-		}
 		isResponsive = $$('.xResponsive').length;
 		this.container = container;
 		this.type = this.container.getClassStoredValue('xGalleryType');
+		//this.container.addClass('galleryType-' + this.type);
 
 		this.fullscreen=this.container.getElement('div.xFullscreen');
 		this.imageContainer = this.container.getElement('div.xGallery');
@@ -116,7 +113,7 @@ var BertaGallery = new Class({
 
 			if(fistItemType != 'image' || ( fistItemType == 'image' && this.type == 'row' ) ) {
 				// load only if not image, because if that's image, it's already written in the HTML
-				this.load(aEl.get('href'), aEl.getClassStoredValue('xType'), aEl.getClassStoredValue('xW'), aEl.getClassStoredValue('xH'), aEl.getClassStoredValue('xVideoHref'), aEl.getClassStoredValue('xAutoPlay'), li.getElement('.xGalleryImageCaption').get('html'), true, '', aEl.get('data-srcset'));
+				this.load(aEl.get('href'), aEl.getClassStoredValue('xType'), aEl.getClassStoredValue('xW'), aEl.getClassStoredValue('xH'), aEl.getClassStoredValue('xVideoHref'), aEl.getClassStoredValue('xAutoPlay'), li.getElement('.xGalleryImageCaption').get('html'), true, 1, aEl.get('data-srcset'));
 			} else {
 				this.currentSrc = aEl.get('href');
 				this.preload = this.imageContainer.getElement('div.xGalleryItem');

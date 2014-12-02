@@ -300,6 +300,9 @@ var MessyMess = new Class({
     },
 
     setCoverHeight: function() {
+
+        return; // temporary disabled function
+
         var covers = $$('.cover');
         var navigation = $$('.navigation');
 

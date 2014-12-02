@@ -43,6 +43,10 @@
         {$berta.settings.css.customCSS|@html_entity_decode|replace:'<br />':"\n"}
         </style>
     {/if}
+
+    {* custom CSS file, move code to settings field, when ready *}
+    <link rel="stylesheet" href="{ $berta.options.TEMPLATES_ABS_ROOT }{ $berta.templateName }/custom.css?{$berta.options.int_version}" type="text/css" />
+
     { googleWebFontsAPI }
     { /if }
     <script type="text/javascript" src="{ $berta.options.TEMPLATES_ABS_ROOT }{ $berta.templateName }/mess.js?{$berta.options.int_version}"></script>
@@ -223,15 +227,20 @@
                         <div class="cover xCoverId-{ $cover.id } clearfix">
 
                             { if $cover.mediaCacheData.file }
-                                <div class="coverGallery" data-autoplay="{ if isset($cover.mediaCacheData["@attributes"].autoplay) }{ $cover.mediaCacheData["@attributes"].autoplay }{else}5{/if}">
-                                {if isset($cover.mediaCacheData.file["@attributes"]) }
-                                    {assign var=coverImages value=array($cover.mediaCacheData.file)}
-                                {else}
-                                    {assign var=coverImages value=$cover.mediaCacheData.file}
-                                {/if}
-                                { foreach ($coverImages) as $coverImage }
-                                    <div class="slide" data-image="{ $berta.options.MEDIA_ABS_ROOT }{ $cover.mediafolder }/{ $coverImage["@attributes"].src }"><div class="coverCaption">{ $coverImage.value }</div></div>
-                                { /foreach }
+                                <div class="coverGalleryWrapper">
+                                    <div class="coverGallery" data-autoplay="{ if isset($cover.mediaCacheData["@attributes"].autoplay) }{ $cover.mediaCacheData["@attributes"].autoplay }{else}5{/if}">
+                                    {if isset($cover.mediaCacheData.file["@attributes"]) }
+                                        {assign var=coverImages value=array($cover.mediaCacheData.file)}
+                                    {else}
+                                        {assign var=coverImages value=$cover.mediaCacheData.file}
+                                    {/if}
+                                    { foreach ($coverImages) as $coverImage }
+                                        <div class="slide" data-image="{ $berta.options.MEDIA_ABS_ROOT }{ $cover.mediafolder }/{ $coverImage["@attributes"].src }"><div class="coverCaption">{ $coverImage.value }</div></div>
+                                    { /foreach }
+                                    </div>
+                                    <div class="bottom">
+                                        <img src="/storage/media/mac_bottom.png">
+                                    </div>
                                 </div>
                             { /if }
 
@@ -410,6 +419,9 @@
         { if $berta.settings.settings.showTutorialVideos == 'yes' && !$smarty.cookies._berta_videos_hidden }{ videoTutorials }{ /if }
 
         { include file="../_includes/inc.shared.tpl" }
+
+        {* custom js from file, move to settings field when ready *}
+        <script type="text/javascript" src="{ $berta.options.TEMPLATES_ABS_ROOT }{ $berta.templateName }/custom.js?{$berta.options.int_version}"></script>
 
         { include file="../_includes/inc.js_include.tpl" }
 
