@@ -12,6 +12,7 @@ body {
 
 h1,
 h2,
+h3,
 #pageEntries .xEntry h2 {
 	font-weight: 600;
 }
@@ -261,104 +262,94 @@ a:visited {
 	padding-right: 3em;
 }
 
-#contentContainer.xResponsive {
+.xContent-home #contentContainer.xResponsive {
 	max-width: 640px;
-}
-
-.xContent-happy-websites #pageEntries .xEntry h2 {
-font-size: 2em;
 }
 
 .xContent-happy-websites .xEntryId-5 h2,
 .xContent-happy-websites .xEntryId-6 h2,
 .xContent-happy-websites .xEntryId-19 h2  {
-padding-top: 2.5em;
-}
-
-
-.xContent-happy-websites  .xGallery img,
-.xContent-shop-plugin .xGallery img {
-box-shadow: 0 0 4px #ccc;
+	padding-top: 2.5em;
 }
 
 .xContent-happy-websites #pageEntries .xEntryId-19,
 .xContent-happy-websites #pageEntries .xEntryId-20,
 .xContent-happy-websites #pageEntries .xEntryId-22,
 .xContent-happy-websites #pageEntries .xEntryId-24 {
- width: 100%;
- text-align: center;
+	width: 100%;
+	text-align: center;
 }
 
 .xContent-happy-websites #pageEntries .xEntryId-21,
 .xContent-happy-websites #pageEntries .xEntryId-23,
 .xContent-happy-websites #pageEntries .xEntryId-25 {
- padding: 0;
+	padding: 0;
 }
 
 .xContent-happy-websites .button.secondary {
- margin-top: 2.5em;
+	margin-top: 2.5em;
 }
 
 #pageEntries #more-happy-websites {
- padding: 0;
- margin: 0 auto;
- width: 90%;
+	padding: 0;
+	margin: 0 auto;
+	width: 90%;
 }
 
 #pageEntries #more-happy-websites li {
- display: inline-block;
- vertical-align: top;
- list-style: none;
- margin: 0 2em;
- text-align: left;
- width: 25%;
+	display: inline-block;
+	vertical-align: top;
+	list-style: none;
+	margin: 0 2em;
+	text-align: left;
+	width: 25%;
 }
 
 #pageEntries #more-happy-websites li a:link,
 #pageEntries #more-happy-websites li a:visited {
- color: #333333;
- text-decoration: none;
- border: 0;
+	color: #333333;
+	text-decoration: none;
+	border: 0;
 }
 
 #pageEntries #more-happy-websites li a:hover {
- border-bottom: 1px solid #333;
+	border-bottom: 1px solid #333;
 }
 
 .xContent-shop-plugin #pageEntries .xEntryId-5 {
-width: 100%;
+	width: 100%;
 }
 
 .xContent-shop-plugin #pageEntries .xEntryId-9 {
-display: none;
+	display: none;
 }
 
 .xContent-plans #pageEntries .xEntryId-2 p {
-font-size: 1.3em;
-margin: 1em 0;
+	font-size: 1.3em;
+	margin: 1em 0;
 }
 
 .xContent-plans #pageEntries .xEntryId-2 span {
-color: #d6390e;
-position: relative;
-top: 2px;
+	color: #b7460c;
+	position: relative;
+	top: 2px;
 }
 
 .xContent-plans #pageEntries .xEntryId-2 .icon-backup {
-font-size: 1.3em;
-top: 4px;
+	font-size: 1.3em;
+	top: 4px;
 }
 
 .xContent-plans #pageEntries .xEntryId-4 {
- text-align: center;
+	text-align: center;
 }
 
 .xContent-plans form {
- display: inline-block;
- background-color: #f5f5f5;
- padding: 1em 1.5em;
- border-radius: 3px;
- margin-bottom: 1em;
+	display: inline-block;
+	background-color: #ddd;
+	padding: 1em 1.5em;
+	border-radius: 3px;
+	margin-bottom: 1em;
 }
 
 .xContent-plans form input {
@@ -368,19 +359,18 @@ top: 4px;
 }
 
 .xContent-plans form #fieldEmail {
- width: 90%;
- text-align: center;
- border: 1px solid #f5f5f5;
- border-radius: 3px;
- padding: .7em;
- font-size: .9em;
- font-weight: 300;
- color: #333;
+	width: 90%;
+	text-align: center;
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: .7em;
+	font-size: .9em;
+	color: #333;
 }
 
 .xContent-plans form .button.secondary {
- background-color: #f5f5f5;
- font-size: .9em;
+	background-color: #ddd;
+	font-size: .9em;
 }
 
 #contentContainer.xResponsive {
@@ -407,87 +397,86 @@ top: 4px;
 }
 
 .pricing {
-text-align: center;
+	text-align: center;
 }
 
 .pricing .plan {
-display: inline-block;
-margin: 0 .5em;
-min-width: 322px;
+	display: inline-block;
+	margin: 0 .5em;
+	min-width: 290px;
 }
 
 .pricing .plan.basic {
-margin-bottom: 2.5em;
+	margin-bottom: 2.5em;
 }
 
 .plan .notes {
-text-transform: uppercase;
-color: #d6390e;
-padding: .3em .5em;
-font-size: .9em;
-border: 1px solid #d6390e;
-border-radius: 3px;
-font-weight: normal;
-margin-bottom: .7em;
+	text-transform: uppercase;
+	color: #b7460c;
+	padding: .3em .5em;
+	font-size: .9em;
+	border: 1px solid #b7460c;
+	border-radius: 3px;
+	font-weight: normal;
+	margin-bottom: .7em;
 }
 
 .plan .notes.empty {
- border: 0;
+	border: 0;
 }
 
 .plan .header {
- background-color: #363636;
- color: #fff;
- padding: .5em;
- border-radius: 3px 3px 0 0;
- font-size: 1.3em;
+	background-color: #363636;
+	color: #fff;
+	padding: .5em;
+	border-radius: 3px 3px 0 0;
+	font-size: 1.3em;
 }
 
 .plan .price {
-font-size: 4em;
-padding: 0.7em .25em 0.5em;
-border-right: 1px solid #ccc;
-border-left: 1px solid #ccc;
-background-color: #f5f5f5;
-font-weight: normal;
+	font-size: 3em;
+	padding: 0.7em .25em 0.5em;
+	border-right: 1px solid #ccc;
+	border-left: 1px solid #ccc;
+	background-color: #eee;
+	font-weight: normal;
 }
 
 .plan .price span {
-font-size: .3em;
-color: #999;
+	font-size: .3em;
+	color: #999;
 }
 
 .plan .price div {
-font-size: .2em;
-margin-top: 1em;
-color: #999;
-font-weight: 300;
+	font-size: .3em;
+	margin-top: 1em;
+	color: #999;
 }
 
 .plan .features {
- min-height: 9em;
- border-right: 1px solid #ccc;
- border-left: 1px solid #ccc;
-padding: 1.8em .5em 0.1em;
+	min-height: 9em;
+	border-right: 1px solid #ccc;
+	border-left: 1px solid #ccc;
+	padding: 1.8em .5em 0.1em;
 }
 
 .plan .features p {
- margin-top: 0;
+	margin-top: 0;
 }
 
 .plan .features p.strike {
-text-decoration: line-through;
+	text-decoration: line-through;
 }
 
 .plan .buttons {
-border: 1px solid #ccc;
-border-top: 0;
-border-radius: 0 0 3px 3px;
-padding: 0 1em 1em 1em;
+	border: 1px solid #ccc;
+	border-top: 0;
+	border-radius: 0 0 3px 3px;
+	padding: 0 1em 1em 1em;
 }
 
 .plan .buttons p {
-margin-top: .7em !important;
+	margin-top: .7em !important;
 }
 
 #bottom {
@@ -687,28 +676,28 @@ margin-top: .7em !important;
 	}
 
 	#pageEntries #more-happy-websites li {
-	width: 100%;
-	display: block;
-	margin: 0;
+		width: 100%;
+		display: block;
+		margin: 0;
 	}
 
 	.xContent-plans #pageEntries .xEntryId-2 p {
-	font-size: 1em;
+		font-size: 1em;
 	}
 
 	.xContent-plans #pageEntries .xEntryId-2 span {
-	top: 1px;
+		top: 1px;
 	}
 
 	.xContent-plans #pageEntries .xEntryId-2 .icon-backup {
-	top: 2px;
+		top: 2px;
 	}
 
 	.pricing .plan {
-	width: 281px;
-	min-width:281px;
-	margin: 0 auto;
-	display: block;
+		width: 280px;
+		min-width:280px;
+		margin: 0 auto;
+		display: block;
 	}
 
 	#additionalFooterText {
