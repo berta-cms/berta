@@ -46,6 +46,9 @@
 
     {* custom CSS file, move code to settings field, when ready *}
     <link rel="stylesheet" href="{ $berta.options.TEMPLATES_ABS_ROOT }{ $berta.templateName }/custom.css?{$berta.options.int_version}" type="text/css" />
+    <!--[if lt IE 9]>
+    <link rel="stylesheet" href="{ $berta.options.TEMPLATES_ABS_ROOT }{ $berta.templateName }/custom_ie8.css?{$berta.options.int_version}" type="text/css" />
+    <![endif]-->
 
     { googleWebFontsAPI }
     { /if }
@@ -237,9 +240,6 @@
                                     { foreach ($coverImages) as $coverImage }
                                         <div class="slide" data-image="{ $berta.options.MEDIA_ABS_ROOT }{ $cover.mediafolder }/{ $coverImage["@attributes"].src }"><div class="coverCaption">{ $coverImage.value }</div></div>
                                     { /foreach }
-                                    </div>
-                                    <div class="bottom">
-                                        <img src="/storage/media/mac_bottom.png">
                                     </div>
                                 </div>
                             { /if }

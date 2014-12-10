@@ -1,0 +1,29 @@
+.xContent-home .xCoverId-1 .coverGalleryWrapper {
+	display: none;
+}
+
+.navigation h1 img {
+	max-width: 55px !important;
+}
+
+.navigation ul {
+	text-align: right;
+}
+
+.navigation ul li {
+	display: inline-block;
+	white-space: nowrap;
+	margin-right: 10px;
+}
+
+#additionalText a {
+	border: 0;
+}
+
+#pageEntries .xEntryId-4,
+#pageEntries .xEntryId-6,
+#pageEntries .xEntryId-13,
+#pageEntries .xEntryId-5,
+#pageEntries .xEntryId-18 {
+	clear: left;
+}

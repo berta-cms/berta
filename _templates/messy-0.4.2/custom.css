@@ -219,32 +219,33 @@ a:visited {
 	float: right;
 	width: 60%;
 	box-sizing: border-box;
+	background: url('/storage/media/macbook.png') no-repeat;
+	background-size: 100%;
 }
 
 .xContent-home .xCoverId-1 .coverGallery {
 	position: relative;
-	width: 82%;
-	margin: 0 auto;
-	height: 300px;
+	display: block;
+	height: 0;
+	padding: 0;
 	overflow: hidden;
-	border: 2px solid #747474;
-	border-bottom: 0;
-	border-radius: 18px 18px 0 0;
+	padding-bottom: 47.5%;
+	margin: 3.7% auto 8% auto;
 	background-color: #000;
 	box-sizing: border-box;
-}
-
-.xContent-home .xCoverId-1 .coverGalleryWrapper .bottom {
-	text-align: center;
+	width: 76%;
 }
 
 .xContent-home .xCoverId-1 .coverGallery .slide {
-	border-top: 18px solid #000;
-	border-right: 13px solid #000;
-	border-bottom: 10px solid #000;
-	border-left: 13px solid #000;
 	background-position: top left;
 	box-sizing: border-box;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	border: 0;
 }
 
 .xContent-home #pageEntries .xEntry.xgallery-right-description-left .entryText {
