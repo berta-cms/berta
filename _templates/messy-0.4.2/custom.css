@@ -580,6 +580,10 @@ a:visited {
 		border-top: 1px solid #ccc;
 	}
 
+	.navigation nav ul li:last-child {
+		border-bottom: 1px solid #ccc;
+	}
+
 	.navigation nav ul li a {
 		display: block;
 		padding: 0.7em;
