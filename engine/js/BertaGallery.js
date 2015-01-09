@@ -464,7 +464,11 @@ var BertaGallery = new Class({
 					'height': mHeight,
 					'srcset': this.srcset,
 					'onload': this.load_Finish.bind(this, [ src, mType, mWidth, mHeight, bDeleteExisting ])
-				} : {'srcset': this.srcset});
+				} : {
+					'width': mWidth,
+					'height': mHeight,
+					'srcset': this.srcset
+				});
 
 				this.preload = new Element('div', { 'class': 'image' }).adopt(this.preload);
 				if(this.type == 'row' || this.type == 'pile' || this.type == 'column') {
