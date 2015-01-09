@@ -4,7 +4,7 @@
     { foreach $berta.publishedSections as $sName => $section }
         { if $section.type != 'shopping_cart' }
         	{capture name="link"}
-        		{ $berta.options.SITE_HOST_ADDRESS }{ bertaLink section=$sName absRoot=1 }
+        		{ if $section.type != 'external_link' }{ $berta.options.SITE_HOST_ADDRESS }{/if}{ bertaLink section=$sName absRoot=1 }
         	{/capture}
         	<url>
         		<loc>{ $smarty.capture.link|replace:'&':'&amp;' }</loc>
