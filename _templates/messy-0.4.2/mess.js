@@ -330,9 +330,12 @@ var MessyMess = new Class({
     },
 
     showCoverGallery: function(coverGallery, slides) {
+    	var navigation = $$('.navigation');
+    	var navigationBackgroundColor = navigation[0].getStyle('background-color');
         var slidesCount = slides.length;
         var autoplay = coverGallery.get('data-autoplay');
         var animationDuration = 400;
+        var cover = coverGallery.getParent('.cover');
 
         var showCover = function(slide, prevSlide){
             var backgroundImgSrc = slide.get('data-image');
@@ -340,28 +343,74 @@ var MessyMess = new Class({
 
             backgroundImgObj.addEventListener('load', function() {
 
-                slide.setStyles({
-                    'background-image': 'url('+ backgroundImgSrc +')'
-                });
+            	var coverImgSrc = getCoverImgSrc(backgroundImgSrc);
 
-                new Fx.Tween(slide, {
-                    duration: animationDuration
-                }).start('opacity', 1).chain(
-                    function () {
-                        if(slidesCount > 1 && autoplay > 0){
-                            if (prevSlide) {
-                                prevSlide.setStyle('opacity', 0);
-                            }
-                            setTimeout(function(){
-                                var nextSlide = slide.getPrevious();
-                                slide.inject(coverGallery, 'top');
-                                showCover(nextSlide, slide);
-                            },autoplay*1000);
-                        }
-                    }
-                );
+				new Request({
+					url: coverImgSrc,
+					method: 'get',
+					onSuccess: function(){
+
+						var coverImgObj = new Element('img', {src: coverImgSrc});
+
+						coverImgObj.addEventListener('load', function() {
+
+			                slide.setStyles({
+			                    'background-image': 'url('+ backgroundImgSrc +')'
+			                });
+
+			                new Fx.Tween(slide, {
+			                    duration: animationDuration
+			                }).start('opacity', 1).chain(
+			                    function () {
+									var coversBackground = new Element('div', {'class': 'coversBackground'}).setStyles({
+										'opacity': 0,
+										'background-image': 'url('+ coverImgSrc +')'
+									});
+
+        							coversBackground.inject(cover, 'before');
+
+		  							new Fx.Tween(coversBackground, {
+					                    duration: animationDuration
+					                }).start('opacity', 1).chain(
+					                    function () {
+					                    	var previousBackground = coversBackground.getPrevious('.coversBackground');
+
+					                    	if (previousBackground) {
+												previousBackground.destroy();
+					                    	}
+					                	}
+					                );
+
+			                        if(slidesCount > 1 && autoplay > 0){
+			                            if (prevSlide) {
+			                                prevSlide.setStyle('opacity', 0);
+			                            }
+			                            setTimeout(function(){
+			                                var nextSlide = slide.getPrevious();
+			                                slide.inject(coverGallery, 'top');
+			                                showCover(nextSlide, slide);
+			                            },autoplay*1000);
+			                        }
+			                    }
+			                );
+						});
+				    },
+				    onFailure: function(){
+				        return;
+				    }
+				}).send();
             });
         }
+
+        var getCoverImgSrc = function(src) {
+        	var fileName = src.split("/");
+        	fileName = fileName[fileName.length-1];
+
+        	var filePath = src.substring(0, src.lastIndexOf('/'));
+        	var coverImgSrc = filePath + '/cover/' + fileName;
+
+			return coverImgSrc;
+        };
 
         // reverse slides order
         if(slidesCount > 1) {
@@ -371,6 +420,16 @@ var MessyMess = new Class({
         }
 
         showCover(slides[0], null);
+
+        $(window).addEvent('scroll', function() {
+        	var scrollY = this.getScroll().y;
+
+        	if (scrollY > 20) {
+				navigation.removeClass('noBackground');
+        	}else{
+        		navigation.addClass('noBackground');
+        	}
+        }).fireEvent('scroll');
     },
 
 	onLoad: function() {

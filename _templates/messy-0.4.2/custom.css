@@ -110,6 +110,12 @@ a:visited {
 	right: 0;
 	z-index: 1;
 	background-color: #44928c;
+	-webkit-transition: .4s;
+	transition: .4s;
+}
+
+.navigation.noBackground {
+	background-color: rgba(0,0,0,0);
 }
 
 .navigation h1 {
@@ -153,7 +159,19 @@ a:visited {
 }
 
 .xContent-home .covers {
+	position: relative;
 	background-color: #44928c;
+}
+
+.xContent-home .coversBackground {
+	position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+	background-repeat: no-repeat;
+	background-position: center center;
+	background-size: cover;
 }
 
 .xContent-home .xCoverId-1 {
@@ -379,7 +397,7 @@ a:visited {
 }
 
 .covers {
-	margin-top: 55px;
+	padding-top: 55px;
 }
 
 .coverGallery .slide .coverCaption {
