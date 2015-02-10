@@ -26,7 +26,7 @@ class BertaUtils extends BertaBase {
 
 
 	// MULTIBYTE STRING TRANSLITERATOR / CANONIZER
-	public static function canonizeString($tagTitle, $replacementStr = '-', $allowNonWordChars = '') {
+	public static function canonizeString($tagTitle, $replacementStr = '-', $allowNonWordChars = '', $reallyRemoveOtherChars = false) {
 
 		$char_map = array(
 			// Latin
@@ -102,7 +102,11 @@ class BertaUtils extends BertaBase {
 		$tagTitle = str_replace(array_keys($char_map), $char_map, $tagTitle);
 
 		// replace all other characters with the replacement string
-		$tagTitle = mb_ereg_replace("[^\w$allowNonWordChars]", $replacementStr, $tagTitle);
+		if ($reallyRemoveOtherChars) {
+			$tagTitle = preg_replace('/([^a-z0-9'.$allowNonWordChars.'])+/', $replacementStr, $tagTitle);
+		}else{
+			$tagTitle = mb_ereg_replace("[^\w$allowNonWordChars]", $replacementStr, $tagTitle);
+		}
 
 		//no duplicates
 		$tagTitle = mb_ereg_replace("[$replacementStr]{2,}", $replacementStr, $tagTitle);

@@ -6,7 +6,7 @@ if($property == 'title') {	// section title
 	$sectionsList = BertaEditor::getSections();
 	$sName = $decoded['section'];
 	$returnUpdate = $sNewTitle = $decoded['value'];
-	$returnReal = $sNewName = strtolower(BertaUtils::canonizeString($sNewTitle, '-', '-'));
+	$returnReal = $sNewName = BertaEditor::getUniqueSectionSlug($sName, $sNewTitle, $sectionsList);
 
 	$fName = $options['XML_ROOT'] . str_replace('%', $sName, $options['blog.%.xml']);
 	$fNewName = $options['XML_ROOT'] . str_replace('%', $sNewName, $options['blog.%.xml']);
@@ -35,7 +35,7 @@ if($property == 'title') {	// section title
 			// update title...
 			$sectionsListNew = array();
 			foreach($sectionsList as $sN => $s) {
-				if($sN == $sName) {
+				if((string)$sN === $sName) {
 					$s['title']['value'] = $sNewTitle;
 					$s['name']['value'] = $sNewName;
 					$sectionsListNew[$sNewName] = $s;
@@ -81,7 +81,7 @@ else if($property == 'type') {	// section external link
 	$sName = $decoded['section'];
 
 	foreach($sectionsList as $sN => $s) {
-		if($sN == $sName) {
+		if((string)$sN === $sName) {
 			$sectionsList[$sN]['@attributes']['type'] = $returnUpdate;
 
 			if(!empty($berta->template->sectionTypes)) {
@@ -109,7 +109,7 @@ else if($property == 'published') {	// attributes
 	$sName = $decoded['section'];
 
 	foreach($sectionsList as $sN => $s) {
-		if($sN == $sName) {
+		if((string)$sN === $sName) {
 			$sectionsList[$sN]['@attributes'][$property] = $returnUpdate;
 			break;
 		}
@@ -426,7 +426,7 @@ else {
 	if(strtolower($sName) != 'title' && strtolower($sName) != 'name') {
 		$sectionsList = BertaEditor::getSections();
 		foreach($sectionsList as $sN => $s) {
-			if($sN == $sName) {
+			if((string)$sN === $sName) {
 				$sectionsList[$sN][$property] = array('value' => $returnUpdate);
 				break;
 			}
