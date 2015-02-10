@@ -346,6 +346,10 @@
                         {* the template can be modified in a way that here goes content the is displayed when there are no entries in the section *}
 
                     { /foreach }
+
+					{if $berta.section.type == 'sitelist'}
+						{ siteList }
+                    {/if}
                 </div>
                 { /if }
 

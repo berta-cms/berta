@@ -498,6 +498,20 @@ a:visited {
 	margin-top: .7em !important;
 }
 
+.xContent-site-list #pageEntries h2 {
+	text-transform: uppercase;
+	margin-top: 2em;
+}
+
+.xContent-site-list #pageEntries a {
+	color: #999;
+	border-bottom: 0;
+}
+
+.xContent-site-list #pageEntries a:hover {
+	color: #333333;
+}
+
 #bottom {
 	border-top: 1px solid #ccc;
 	font-size: 1em;
