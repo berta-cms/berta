@@ -103,7 +103,7 @@ class BertaUtils extends BertaBase {
 
 		// replace all other characters with the replacement string
 		if ($reallyRemoveOtherChars) {
-			$tagTitle = preg_replace('/([^a-z0-9'.$allowNonWordChars.'])+/', $replacementStr, $tagTitle);
+			$tagTitle = preg_replace('/([^a-zA-Z0-9'.$allowNonWordChars.'])+/', $replacementStr, $tagTitle);
 		}else{
 			$tagTitle = mb_ereg_replace("[^\w$allowNonWordChars]", $replacementStr, $tagTitle);
 		}
