@@ -459,15 +459,19 @@ var BertaGallery = new Class({
 				}
 
 				this.phase = "preload";
+                var altText = caption.replace(/(<([^>]+)>)/ig," ").replace(/(\r\n|\n|\r)/gm," ").replace(/\s{2,}/g, ' ').trim();
 				this.preload = new Asset.image(src, this.type == 'slideshow' ? {
+                    'width': mWidth,
+                    'height': mHeight,
+                    'srcset': this.srcset,
+                    'alt': altText,
+					'onload': this.load_Finish.bind(this, [ src, mType, mWidth, mHeight, bDeleteExisting ])
+				} : {
+                    'alt': altText,
 					'width': mWidth,
 					'height': mHeight,
 					'srcset': this.srcset,
-					'onload': this.load_Finish.bind(this, [ src, mType, mWidth, mHeight, bDeleteExisting ])
-				} : {
-					'width': mWidth,
-					'height': mHeight,
-					'srcset': this.srcset
+                    'alt': altText
 				});
 
 				this.preload = new Element('div', { 'class': 'image' }).adopt(this.preload);
