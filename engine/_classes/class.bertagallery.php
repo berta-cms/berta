@@ -101,6 +101,8 @@ class BertaGallery extends BertaBase {
                 $isPoster = !empty($img['@attributes']['poster_frame']);
                 $imgSrc = $isPoster ? $img['@attributes']['poster_frame'] : $img['@attributes']['src'];
                 $srcset = '';
+                $alt = str_replace(array("\r\n", "\n"), " ", $img['value']);
+                $alt = trim(preg_replace('/\s\s+/', ' ', htmlspecialchars(strip_tags($alt))));
 
                 if(!empty($img['@attributes']['width']) && !empty($img['@attributes']['height'])) {
                     $width = (int) $img['@attributes']['width'];
@@ -136,7 +138,7 @@ class BertaGallery extends BertaBase {
                 $height = round($height * $sizeRatio);
 
                 $firstImageHTML = '<div class="xGalleryItem xGalleryItemType-image xImgIndex-1" style="' . ($width ? "width:{$width}px;" : '') . '' . ($height ? "height:{$height}px;" : '') . '">' .
-                                    '<img src="' . $mFolderABS . $imgSrc . '" ' . ($width ? "width=\"$width\"" : '') . ' ' . ($height ? "height=\"$height\"" : '') . $srcset . ' />' .
+                                    '<img src="' . $mFolderABS . $imgSrc . '" ' . ($width ? "width=\"$width\"" : '') . ' ' . ($height ? "height=\"$height\"" : '') . $srcset . ' alt="'.$alt.'" />' .
                                     '<div class="xGalleryImageCaption">' . (!empty($img['value']) ? $img['value'] : '') . '</div>' .
                                   '</div>';
             }
