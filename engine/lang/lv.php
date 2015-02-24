@@ -10,9 +10,9 @@ return array(
 	/* menu item */ 'my site' => 'mana berta',
 	/* menu item */ 'sections' => 'sadaļas',
 	/* menu item */ 'settings' => 'uzstādījumi',
-	/* menu item */ 'template design' => 'veidnes izskats',
-	/* menu item */ 'profile' => 'mans profils',
-	/* menu item */ 'sign out' => 'izlogoties',
+	/* menu item */ 'design' => 'dizains',
+	/* menu item */ 'profile' => 'konts',
+	/* menu item */ 'log out' => 'izlogoties',
 
 	// Translatins from login / logout window
 

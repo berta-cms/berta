@@ -10,9 +10,9 @@ return array(
         /* menu item */ 'my site' => 'мой сайт',
         /* menu item */ 'sections' => 'разделы',
         /* menu item */ 'settings' => 'настройки',
-        /* menu item */ 'template design' => 'дизайн шаблона',
+        /* menu item */ 'design' => 'дизайн',
         /* menu item */ 'profile' => 'профиль',
-        /* menu item */ 'sign out' => 'выйти',
+        /* menu item */ 'log out' => 'выйти',
 
         // Translatins from login / logout window
 

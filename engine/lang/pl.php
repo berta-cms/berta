@@ -10,9 +10,9 @@ return array(
     /* menu item */ 'my site' => 'moja berta',
     /* menu item */ 'sections' => 'działy',
     /* menu item */ 'settings' => 'ustawienia',
-    /* menu item */ 'template design' => 'wygląd projektu',
+    /* menu item */ 'design' => 'wygląd',
     /* menu item */ 'profile' => 'mój profil',
-    /* menu item */ 'sign out' => 'wylogować się',
+    /* menu item */ 'log out' => 'wylogować się',
 
     // Translatins from login / logout window
 
