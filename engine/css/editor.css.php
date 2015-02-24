@@ -500,6 +500,10 @@ body.xEditorEnabled { }
 
 				ul#xEditorMenu li a:hover { color: #000; }
 
+                ul#xEditorMenu li#xUpgrade a {
+                    color: #FFB800;
+                }
+
 			ul#xEditorMenu li.selected, ul#xEditorMenu li.selected a {
 				font-weight: bold;
 			}

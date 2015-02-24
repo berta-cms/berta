@@ -10,9 +10,9 @@ return array(
 		/* menu item */ 'my site' => 'mon site',
 		/* menu item */ 'sections' => 'sections',
 		/* menu item */ 'settings' => 'paramètres',
-		/* menu item */ 'template design' => 'design des templates',
+		/* menu item */ 'design' => 'design',
 		/* menu item */ 'profile' => 'profil',
-		/* menu item */ 'sign out' => 'se déconnecter',
+		/* menu item */ 'log out' => 'se déconnecter',
 
 	// Translatins from login / logout window
 
