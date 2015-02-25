@@ -160,6 +160,13 @@ body.xEditorEnabled { }
 		text-align: center;
 	}
 
+.introjs-exit {
+    float: left;
+}
+
+.page-xTemplate .introjs-skipbutton {
+    display: none;
+}
 
 /* middle-align containers ------------------------------------------------------------------------------------------- */
 
@@ -489,7 +496,7 @@ body.xEditorEnabled { }
 			ul#xEditorMenu li {
 				position: relative;
 				float: left;
-				padding-right: 10px;
+				padding: 0 5px;
 				z-index: 10;
 				color: #E9E9E9;
 			}
@@ -502,6 +509,10 @@ body.xEditorEnabled { }
 
                 ul#xEditorMenu li#xUpgrade a {
                     color: #FFB800;
+                }
+
+                ul#xEditorMenu li.introjs-showElement a {
+                    color: #000;
                 }
 
 			ul#xEditorMenu li.selected, ul#xEditorMenu li.selected a {
@@ -533,52 +544,6 @@ body.xEditorEnabled { }
 		#xTopPanelSlideOut span:hover {
 			color: #000;
 		}
-
-
-#xCreateSomeSections {
-	top: 30px;
-}
-
-.speech-bubble {
-	position: absolute;
-	min-width: 100px;
-	padding: 5px 5px 4px 5px;
-	background-color: #fff;
-	color: #000;
-	border: 1px solid #000;
-	-moz-border-radius: 5px;
-	-webkit-border-radius: 5px;
-	border-radius: 5px;
-	text-align: center;
-}
-
-.speech-bubble:before {
-	content: "";
-	border: solid 8px transparent;
-	border-bottom-color: #000;
-	border-top: 0;
-	width: 0;
-	height: 0;
-	overflow: hidden;
-	display: block;
-	position: absolute;
-	top: -8px;
-	left: 10px;
-}
-
-.speech-bubble:after {
-	content: "";
-	border: solid 8px transparent;
-	border-bottom-color: #fff;
-	border-top: 0;
-	width: 0;
-	height: 0;
-	overflow: hidden;
-	display: block;
-	position: absolute;
-	top: -7px;
-	left: 10px;
-}
 
 
 /* background editor ----------------------------------------------------------------------------------------------- */
