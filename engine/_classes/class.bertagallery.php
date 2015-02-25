@@ -101,8 +101,13 @@ class BertaGallery extends BertaBase {
                 $isPoster = !empty($img['@attributes']['poster_frame']);
                 $imgSrc = $isPoster ? $img['@attributes']['poster_frame'] : $img['@attributes']['src'];
                 $srcset = '';
-                $alt = str_replace(array("\r\n", "\n"), " ", $img['value']);
-                $alt = trim(preg_replace('/\s\s+/', ' ', htmlspecialchars(strip_tags($alt))));
+
+                if (isset($img['value'])){
+                    $alt = str_replace(array("\r\n", "\n"), " ", $img['value']);
+                    $alt = trim(preg_replace('/\s\s+/', ' ', htmlspecialchars(strip_tags($alt))));
+                }else{
+                    $alt = '';
+                }
 
                 if(!empty($img['@attributes']['width']) && !empty($img['@attributes']['height'])) {
                     $width = (int) $img['@attributes']['width'];
