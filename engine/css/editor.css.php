@@ -160,6 +160,15 @@ body.xEditorEnabled { }
 		text-align: center;
 	}
 
+
+body.xSettingsPageBody a.introjs-button {
+    text-decoration: none !important;
+}
+
+.introjs-button {
+    padding: .5em .8em .4em !important;
+}
+
 .introjs-exit {
     float: left;
 }
