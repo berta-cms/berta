@@ -1289,7 +1289,7 @@ window.addEvent('domready', function(){
             steps.push(
                 {
                     element: document.querySelector('#xMySite'),
-                    intro: "Add, drag & drop text and images",
+                    intro: "Site editing view. Add, drag & drop text and images",
                     position: 'right'
                 }
             );
@@ -1327,7 +1327,7 @@ window.addEvent('domready', function(){
             steps = [
                 {
                     element: document.querySelector('#xTopPanelContainer'),
-                    intro: "Hey! This is your editor's menu, your profile and helpdesk.",
+                    intro: "Hey! This is a control panel.",
                     position: 'right'
                 }
             ];
