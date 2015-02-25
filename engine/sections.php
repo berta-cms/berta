@@ -17,14 +17,27 @@ $topPanelHTML = BertaEditor::getTopPanelHTML('sections');
 <link rel="SHORTCUT ICON" href="favicon.ico"/>
 <link rel="stylesheet" href="<?php echo $ENGINE_ABS_ROOT ?>css/default.css" type="text/css"  charset="utf-8" />
 <link rel="stylesheet" href="<?php echo $ENGINE_ABS_ROOT ?>css/editor.css.php" type="text/css"  charset="utf-8" />
+<link rel="stylesheet" href="<?php echo $ENGINE_ABS_ROOT ?>_lib/introjs/introjs.min.css" type="text/css"  charset="utf-8" />
 <?php include 'inc.header_default_scripts.php' ?>
+<script type="text/javascript">
+    var bertaGlobalOptions = {
+        "paths":{
+            "engineRoot":"<?php echo BertaEditor::$options['ENGINE_ROOT'] ?>",
+            "engineABSRoot":"<?php echo BertaEditor::$options['ENGINE_ABS_ROOT'] ?>",
+            "siteABSRoot" : "<?php echo BertaEditor::$options['SITE_ABS_ROOT'] ?>",
+            "template" : "<?php echo BertaEditor::$options['SITE_ABS_ROOT'] . '_templates/' . $berta->template->name . '/' ?>"
+        },
+        "skipTour": <?php echo count($sections) || $berta->settings->get('siteTexts', 'tourComplete') ? 'true' : 'false' ?>
+    };
+</script>
 <script type="text/javascript" src="<?php echo $ENGINE_ABS_ROOT ?>js/Assets.js" charset="utf-8"></script>
 <script type="text/javascript" src="<?php echo $ENGINE_ABS_ROOT ?>js/BertaEditorBase.js"></script>
 <script type="text/javascript" src="<?php echo $ENGINE_ABS_ROOT ?>js/inline_edit.js" charset="utf-8"></script>
 <script type="text/javascript" src="<?php echo $ENGINE_ABS_ROOT ?>js/BertaEditor_Sections.js" charset="utf-8"></script>
+<script type="text/javascript" src="<?php echo $ENGINE_ABS_ROOT ?>_lib/introjs/intro.min.js" charset="utf-8"></script>
 </head>
 
-<body class="xSettingsPageBody" x_mode="sections">
+<body class="xSettingsPageBody page-xSections" x_mode="sections">
 	<form name="infoForm" id="infoForm">
 		<input type="hidden" name="ENGINE_ROOT" id="ENGINE_ROOT" value="<?php echo htmlspecialchars($ENGINE_ROOT) ?>" />
 	</form>

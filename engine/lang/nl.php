@@ -72,7 +72,7 @@ return array(
 	// Translations from settings page (settings.php)
 
 		/* title */ 'Settings' => 'Instellingen',
-		/* title */ 'Template design' => 'Template Design',
+		/* title */ 'Design' => 'Design',
 		'These are settings for template' => 'Dit zijn de instellingen voor de Template',
 
 		'Some help with CSS values' => 'Hulp met CSS waarden (units)',

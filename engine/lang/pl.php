@@ -72,7 +72,7 @@ return array(
     // Translations from settings page (settings.php)
 
     /* title */ 'Settings' => 'Ustawienia',
-    /* title */ 'Template design' => 'Projekt',
+    /* title */ 'Design' => 'Projekt',
     'These are settings for template' => 'Te są ustawienia projektu',
 
     'Some help with CSS values' => 'Objaśnienia wartości CSS',

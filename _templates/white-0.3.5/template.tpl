@@ -33,7 +33,7 @@
 	<script type="text/javascript" src="{ $berta.options.TEMPLATES_ABS_ROOT }{ $berta.templateName }/white.js?{$berta.options.int_version}"></script>
 </head>
 
-<body class="xContent-{ $berta.section.name }">
+<body class="xContent-{ $berta.section.name }{if $berta.environment == 'engine'} page-xMySite{/if}">
 
 	{* all templates must include allContainer *}
 	<div id="allContainer"{ if $berta.settings.pageLayout.centered == 'yes' }class="xCentered"{ /if }>
@@ -176,8 +176,6 @@
 	</div>
 
 	{ if $berta.settings.settings.showTutorialVideos == 'yes' && !$smarty.cookies._berta_videos_hidden }{ videoTutorials }{ /if }
-
-	{ include file="../_includes/inc.shared.tpl" }
 
 	{ include file="../_includes/inc.js_include.tpl" }
 

@@ -31,7 +31,7 @@
 	<script type="text/javascript" src="{ $berta.options.TEMPLATES_ABS_ROOT }{ $berta.templateName }/mashup.js?{$berta.options.int_version}"></script>
 </head>
 
-<body class="xContent-{ $berta.section.name }">
+<body class="xContent-{ $berta.section.name }{if $berta.environment == 'engine'} page-xMySite{/if}">
 
 	{if $berta.settings.background.backgroundAttachment=='fill' AND $berta.settings.background.backgroundImageEnabled=='yes' AND $berta.settings.background.backgroundImage!=''}
 		<div id="xFilledBackground" class="xPosition-{' '|str_replace:'_':$berta.settings.background.backgroundPosition}">
@@ -210,8 +210,6 @@
 	</div>
 
 	{ if $berta.settings.settings.showTutorialVideos == 'yes' && !$smarty.cookies._berta_videos_hidden }{ videoTutorials }{ /if }
-
-    { include file="../_includes/inc.shared.tpl" }
 
 	{ include file="../_includes/inc.js_include.tpl" }
 

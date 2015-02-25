@@ -233,10 +233,6 @@ var BertaEditor = new Class({
                         if (h1) {
                         	h1.hide();
                         }
-                        //show speach bubble to create some sections
-                        var xSections = $('xSections');
-                        var xCreateSomeSections = $('xCreateSomeSections');
-                        xCreateSomeSections.inject(xSections, 'bottom').removeClass('xHidden');
 					}
 				} else {
 					this.editablesInit();
