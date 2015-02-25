@@ -72,7 +72,7 @@ return array(
 	// Translations from settings page (settings.php)
 
 	/* title */ 'Settings' => 'Uzstādījumi',
-	/* title */ 'Template design' => 'Izskats',
+	/* title */ 'Design' => 'Dizains',
 	'These are settings for template' => 'Šie ir uzstādījumi veidnei',
 
 	'Some help with CSS values' => 'CSS vērtību skaidrojums',

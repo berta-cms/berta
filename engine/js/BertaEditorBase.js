@@ -75,7 +75,7 @@ var BertaEditorBase = new Class({
 	query: null,
 
 	intialize: function() {
-		this.initConsoleReplacement();
+        this.initConsoleReplacement();
 	},
 
 	initConsoleReplacement: function() {
@@ -1247,12 +1247,169 @@ window.addEvent('domready', function(){
 			});
 		});
 	}
-})
+
+    tourInit = function(){
+
+        if (typeof(bertaGlobalOptions)=='undefined' || bertaGlobalOptions.skipTour) {
+            return;
+        }
+
+        var steps = [];
+        var engine_path = window.location.pathname.split( '/' );
+        engine_path.pop();
+        engine_path = engine_path.join('/') + '/';
+        var next = null;
+        var doneLabel = null;
+        var query = window.location.search.replace('?', '').parseQueryString();
+        var query_site = '';
+        if (query.site) {
+            query_site = "?site=" + query.site;
+        }
+
+        if ($$('.page-xSections').length) {
+            steps = [
+                {
+                    element: document.querySelector('#xSections'),
+                    intro: "Add, copy, hide or delete your sections here.",
+                    position: 'right'
+                }
+            ];
+            next = engine_path + 'settings.php' + query_site;
+        }else if($$('.page-xSettings').length){
+            steps = [
+                {
+                    element: document.querySelector('#xSettings'),
+                    intro: "Choose your template and edit general settings.",
+                    position: 'right'
+                }
+            ];
+            next = engine_path + 'settings.php?mode=template' + (query.site ? '&site=' + query.site : '');
+        }else if($$('.page-xTemplate').length){
+
+            steps.push(
+                {
+                    element: document.querySelector('#xMySite'),
+                    intro: "Site editing view. Add, drag & drop text and images",
+                    position: 'right'
+                }
+            );
+
+            steps.push(
+                {
+                    element: document.querySelector('#xTemplateDesign'),
+                    intro: "Customize web design: font, size, colors, spacing and other. You can even add your custom CSS code.",
+                    position: 'right'
+                }
+            );
+
+            var xHelpDesk = document.querySelector('#xHelpDesk');
+            if (xHelpDesk){
+                steps.push(
+                    {
+                        element: document.querySelector('#xHelpDesk'),
+                        intro: "Find help here - videos, tutorials, FAQs and a discussion board.",
+                        position: 'left'
+                    }
+                );
+            }
+
+            steps.push(
+                {
+                    element: document.querySelector('#xSections'),
+                    intro: "Start your website!",
+                    position: 'right'
+                }
+            );
+
+            doneLabel = 'Done';
+
+        }else if($$('.page-xMySite').length){
+            steps = [
+                {
+                    element: document.querySelector('#xTopPanelContainer'),
+                    intro: "Hey! This is a control panel.",
+                    position: 'right'
+                }
+            ];
+            next = engine_path + 'sections.php' + query_site;
+        }
+
+        if (steps.length) {
+
+            var tour = introJs();
+
+            tour.setOptions({
+                steps: steps,
+                'doneLabel': doneLabel ? doneLabel : 'Next',
+                'nextLabel': 'Next',
+                'prevLabel': 'Back',
+                showBullets: false,
+                showStepNumbers: false,
+                exitOnOverlayClick: false
+            });
+
+            tour.start().onafterchange(function(){
+                var skipbutton = $$('.introjs-skipbutton');
+                if (skipbutton.length){
+                    if (skipbutton[0].get('text') == 'Done'){
+                        skipbutton[0].setStyle('display', 'inline');
+                    }else{
+                        skipbutton[0].setStyle('display', 'none');
+                    }
+                }
+            }).oncomplete(function() {
+                if (next) {
+                    window.location.href = next;
+                }else{
+                    exitTour();
+                }
+            }).onexit(function() {
+                exitTour();
+            });
+
+            //add exit button
+            setTimeout(function(){
+                var tooltipbuttons = $$('.introjs-tooltipbuttons');
+                var exitButton =  new Element('a', {
+                    'href': '#',
+                    'class': 'introjs-button introjs-exit'
+                }).set('html', 'Exit');
+                exitButton.addEvent('click', function(e){
+                    e.preventDefault();
+                    tour.exit();
+                    exitTour();
+                });
+                exitButton.inject( tooltipbuttons[0] , 'top' );
+            }, 200);
+
+            var exitTour = function(){
+                var editor = new BertaEditorBase;
+                var updateUrl = editor.options.updateUrl;
+
+                if (query.site) {
+                    updateUrl = updateUrl + query_site;
+                }
+
+                new Request.JSON({
+                    url: updateUrl,
+                    data: "json=" + JSON.encode({
+                        property: 'tourComplete', value: 1
+                    }),
+                    onComplete: function(resp) {
+                        window.location.href = engine_path + 'sections.php' + query_site;
+                    }.bind(this)
+                }).post();
+            }
+        }
+    }
+    tourInit();
+
+});
 
 
 function TidyEditor(t, v){
     alert(v);
-switch (t)
+    switch (t)
     {
         case "paste_postprocess":
             var p4 = /<div id="_mcePaste[^>]*>(?!<div>)([\s\S]*)<\/div>([\s\S]*)$/i;
