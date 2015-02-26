@@ -760,6 +760,7 @@ var BertaEditor = new Class({
 					event.stop();
 					videosContainer.destroy();
 					videosBackground.destroy();
+                    tourInit();
 				},
 				'click:relay(.togglePopup)': function(event) {
 					this.toggleVideos(event);
@@ -769,6 +770,7 @@ var BertaEditor = new Class({
 				if(event.key == 'esc') {
 					videosContainer.destroy();
 					videosBackground.destroy();
+                    tourInit();
 				}
 			});
 		}

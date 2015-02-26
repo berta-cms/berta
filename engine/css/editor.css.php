@@ -53,7 +53,11 @@ body.xEditorEnabled { }
 }
 
 #bertaVideosBackground {
-	background-color: #fff;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+	background-color: #000;
 	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=60)";
 	filter: alpha(opacity=60);
 	-webkit-opacity: 0.6;
@@ -62,21 +66,20 @@ body.xEditorEnabled { }
 	position: fixed;
 	height: 100%;
 	width: 100%;
-	z-index: 60000;
+	z-index: 110000;
 }
 
 #bertaVideosWrapper {
-	background-color: #eee;
-	-moz-box-shadow: 0 0 10px 5px #bdbdbd;
-	-webkit-box-shadow: 0 0 10px 5px #bdbdbd;
-	box-shadow: 0 0 10px 5px #bdbdbd;
-	margin: -232px 0 0 -279px;
-	padding: 15px;
 	position: fixed;
-	top: 50%; left: 50%;
-	height: 435px;
-	width: 528px;
-	z-index: 60000;
+	z-index: 110000;
+    width: 1000px;
+    height: 600px;
+    margin: -315px 0 0 -515px;
+    padding: 15px;
+    top: 50%; left: 50%;
+    background-color: #eee;
+    border-radius: 3px;
+    box-shadow: 0 1px 10px rgba(0,0,0,.4);
 }
 
 #bertaVideos {
@@ -86,14 +89,19 @@ body.xEditorEnabled { }
 }
 
 	#bertaVideos #videoFrameWrapper {
-		background: url('../layout/loader.gif') no-repeat center;
-		margin-bottom: 12px;
+		position: relative;
+        padding-bottom: 51.77%; /* 16:9 */
+        height: 0;
+        background: url('../layout/loader.gif') no-repeat center;
 	}
 
 		#bertaVideos #videoFrameWrapper iframe#videoFrame {
-			border: none;
-			height: 300px;
-			width: 528px;
+            border: 0;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
 		}
 
 
