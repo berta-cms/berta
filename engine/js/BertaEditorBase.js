@@ -1250,7 +1250,7 @@ window.addEvent('domready', function(){
 
     tourInit = function(){
 
-        if (typeof(bertaGlobalOptions)=='undefined' || bertaGlobalOptions.skipTour) {
+        if (!Cookie.read('_berta_videos_hidden') || typeof(bertaGlobalOptions)=='undefined' || bertaGlobalOptions.skipTour) {
             return;
         }
 
