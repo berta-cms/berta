@@ -1337,6 +1337,10 @@ window.addEvent('domready', function(){
         if (steps.length) {
 
             var tour = introJs();
+            var exitButton =  new Element('a', {
+                    'href': '#',
+                    'class': 'introjs-button introjs-exit'
+                }).set('html', 'Exit');
 
             tour.setOptions({
                 steps: steps,
@@ -1352,9 +1356,11 @@ window.addEvent('domready', function(){
                 var skipbutton = $$('.introjs-skipbutton');
                 if (skipbutton.length){
                     if (skipbutton[0].get('text') == 'Done'){
-                        skipbutton[0].setStyle('display', 'inline');
+                        exitButton.hide();
+                        skipbutton[0].setStyles({'display': 'inline', 'float': 'left'});
                     }else{
-                        skipbutton[0].setStyle('display', 'none');
+                        exitButton.show();
+                        skipbutton[0].setStyles({'display': 'none', 'float':'none'});
                     }
                 }
             }).oncomplete(function() {
@@ -1370,10 +1376,7 @@ window.addEvent('domready', function(){
             //add exit button
             setTimeout(function(){
                 var tooltipbuttons = $$('.introjs-tooltipbuttons');
-                var exitButton =  new Element('a', {
-                    'href': '#',
-                    'class': 'introjs-button introjs-exit'
-                }).set('html', 'Exit');
+
                 exitButton.addEvent('click', function(e){
                     e.preventDefault();
                     tour.exit();
