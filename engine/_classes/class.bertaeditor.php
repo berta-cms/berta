@@ -841,13 +841,16 @@ DOC;
 					</ul>
 DOC;
 
-		$str_ticker = <<<DOC
-					<div id="xNewsTickerContainer">
-						<div class="news-ticker-content">$newsTickerContent</div>
-						<a href="#" class="close">X</a>
-						<br class="clear" />
-					</div>
+        $str_ticker = '';
+        if ($newsTickerContent){
+            $str_ticker = <<<DOC
+				<div id="xNewsTickerContainer">
+					<div class="news-ticker-content">$newsTickerContent</div>
+					<a href="#" class="close">X</a>
+					<br class="clear" />
+				</div>
 DOC;
+        }
 
 		$str_end = <<<DOC
 				</div>

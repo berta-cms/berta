@@ -65,7 +65,7 @@ if(!empty($settings['berta']['installed'])) {
 
 
 						<p>2. <?php echo I18n::_('What is your name?') ?></p>
-						<p class="subInfo"><?php echo I18n::_('Your name will be put in the copyright notice in the footer of yout site. You can leave it blank.') ?></p>
+						<p class="subInfo"><?php echo I18n::_('It will appear in the copyright notice in the footer. You may leave it blank.') ?></p>
 
 						<?php /* OLD: <p class="xFirstTimeField <?php echo $xEditSelectorSimple ?> xProperty-texts/ownerName xRequired-<?php echo $berta->settings->isRequired('texts', 'ownerName') ? '1': '0' ?>"><?php echo $berta->settings->get('texts', 'ownerName', true) ?></p>*/ ?>
 						<?php echo BertaEditor::getSettingsItemEditHTML(
@@ -76,8 +76,8 @@ if(!empty($settings['berta']['installed'])) {
 								"p") ?>
 
 
-						<p>3. <?php echo I18n::_('How would you — in one sentence — describe your site?') ?></p>
-						<p class="subInfo"><?php echo I18n::_('This will appear under your site name as an excerpt in search engine results.') ?></p>
+						<p>3. <?php echo I18n::_('What is this website about?') ?></p>
+						<p class="subInfo"><?php echo I18n::_('It will appear under your site name in search engine results.') ?></p>
 						<p class="subInfo"><?php echo I18n::_('Note: the fields that already have value appear yellow only when you roll over them with your mouse. Click on the text below to edit.') ?></p>
 						<p class="xFirstTimeField <?php echo $xEditSelectorSimple ?> xProperty-texts/metaDescription xRequired-<?php echo $berta->settings->isRequired('texts', 'metaDescription') ? '1': '0' ?>"><?php echo $berta->settings->get('texts', 'metaDescription', true) ?></p>
 

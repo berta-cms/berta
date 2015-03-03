@@ -19,9 +19,7 @@ return array(
 	'welcome_text__not_supported' => '<h2>Thank you for choosing Berta!</h2>
 										<p>This server does not meet Berta\'s requirements.<br />
 										Please check that PHP version 5 or above is installed on the server.</p>',
-	'setup_info_text' => 'Click on the fields with yellow background to edit them.
-							Then press Enter or click anywhere outside the field to save.
-							This way it will be throughout your site — all that has a yellow background is editable. You will also be able to change these settings later.',
+	'setup_info_text' => 'Click on yellow fields to edit. Press ENTER or click outside a yellow field to save your entry. This way you can edit content in Berta.me.',
 
 	'googleFont_description' => 'Type in any google font name. To check available fonts go to <a href="http://www.google.com/webfonts" target="_blank">Google web fonts</a>. Remember – google font overrides system font. Leave empty if you want to use system font. Example: <em>Marvel</em>, <em>Marvel:700italic</em> or <em>Josefin Slab:700italic</em>',
 	'description_tagsMenu_x' => 'Submenu X position in pixels (i.e. 10px)',

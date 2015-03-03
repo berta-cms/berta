@@ -30,15 +30,13 @@ return array(
 										Please check that PHP version 5 or above is installed on the server.</p>',
 
 	'Setup your site' => 'Setup your site',
-	'setup_info_text' => 'Click on the fields with yellow background to edit them.
-							Then press Enter or click anywhere outside the field to save.
-							This way it will be throughout your site — all that has a yellow background is editable. You will also be able to change these settings later.',
+	'setup_info_text' => 'Dzeltenās krāsas lauki ir labojami. Lai saglabātu ierakstu, nospied ENTER vai klikšķini ārpus datu lauka. Šādi iespējams ievadīt vai labot saturu Berta.me rīkā.',
 	'What is the title of your site?' => 'Kāds ir tavas lapas virsraksts?',
 	'Site title will be visible in all sections of your site.' => 'Lapas virsraksts būs redzams visās sadaļās',
 	'What is your name?' => 'Ievadi savu vārdu',
-	'Your name will be put in the copyright notice in the footer of yout site. You can leave it blank.' => 'Vārds tiks pievienots pie (c) simbola lapas apakšā. Lauku var atstāt arī tukšu.',
-	'How would you — in one sentence — describe your site?' => 'Kā tu aprakstītu savu lapu vienā teikumā?',
-	'This will appear under your site name as an excerpt in search engine results.' => 'Meklētāj-programmās tas parādīsies zem tavas lapas nosaukuma kā apraksts.',
+	'It will appear in the copyright notice in the footer. You may leave it blank.' => 'Vārds tiks pievienots pie (c) simbola lapas apakšā. Lauku var atstāt arī tukšu.',
+	'What is this website about?' => 'Lapas apraksts.',
+	'It will appear under your site name in search engine results.' => 'Meklētāj-programmās tas parādīsies zem tavas lapas nosaukuma kā apraksts.',
 	'Note: the fields that already have value appear yellow only when you roll over them with your mouse. Click on the text below to edit.' => 'Piezīme: aizpildītie lauki kļūst dzelteni tiem uzbraucot ar peles kursoru. Klikšķini uz teksta zemāk, lai labotu.',
 	'Done!' => 'Darīts!',
 
@@ -84,7 +82,7 @@ return array(
 	// Translations from inc.settings.php
 
 	'Texts in the website' => 'Teksti lapā',
-	'Main heading' => 'Lapas galvenais virsraksts',
+	'Site heading' => 'Lapas virsraksts',
 
 	/* setting tab & setting name */ 'Template' => 'Veidne',
 	/* help text */    'Templates are like skins or themes for your site. You can choose one template from the ones installed in your templates folder. To add a new template to this list, upload it to the templates folder via FTP.' => 'Veidnes ir "ādiņas" jeb tēmas, kuras izmaina lapas elementu izvietojumu un izskatu.',
