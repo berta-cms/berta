@@ -36,9 +36,9 @@ return array(
 		'What is the title of your site?' => 'Quel est le titre de votre site ,',
 		'Site title will be visible in all sections of your site.' => 'Le titre du site est visible dans toutes les sections du site',
 		'What is your name?' => 'Quel est votre nom ?',
-		'Your name will be put in the copyright notice in the footer of yout site. You can leave it blank.' => 'Votre nom sera affiché dans la note de copyright en bas de site. Vous pouvez laisser le champ vide.',
-		'How would you — in one sentence — describe your site?' => 'En une phrase, décrivez votre site.',
-		'This will appear under your site name as an excerpt in search engine results.' => 'Cela aparaitra en dessous du titre de votre site dans les moteurs de recherche.',
+		'It will appear in the copyright notice in the footer. You may leave it blank.' => 'Votre nom sera affiché dans la note de copyright en bas de site. Vous pouvez laisser le champ vide.',
+		'What is this website about?' => 'En une phrase, décrivez votre site.',
+		'It will appear under your site name in search engine results.' => 'Cela aparaitra en dessous du titre de votre site dans les moteurs de recherche.',
 		'Note: the fields that already have value appear yellow only when you roll over them with your mouse. Click on the text below to edit.' => 'À noter : Les champs déjà saisis n’aparaissent en jaune qu’au survol. Cliquez sur le texte survolé pour l’éditer.',
 		'Done!' => 'Fait !',
 
@@ -84,7 +84,7 @@ return array(
 	// Translations from inc.settings.php
 
 		'Texts in the website' => 'Textes dans le site',
-		'Main heading' => 'Titre principal',
+		'Site heading' => 'Titre principal',
 
 		/* setting tab & setting name */ 'Template' => 'Template',
 		/* help text */    'Templates are like skins or themes for your site. You can choose one template from the ones installed in your templates folder. To add a new template to this list, upload it to the templates folder via FTP.' => 'Les templates définissent l’apparence de votre site. Vous pouvez choisir un jeu de templates parmi ceux installés dans votre dossier de templates. Pour ajouter un nouveau jeu à cette liste, téléchargez-le dans ce dossier via FTP.',
