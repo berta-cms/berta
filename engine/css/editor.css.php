@@ -1878,6 +1878,7 @@ body.xLoginPageBody {
                 clear: both;
                 color: #000000;
                 padding-top: 30px;
+                text-align: left;
             }
 
 			body.xLoginPageBody .xLogout {
@@ -1887,9 +1888,7 @@ body.xLoginPageBody {
 			}
 
             body.xLoginPageBody .xLoginLogo {
-                float: right;
                 text-align: left;
-                width: 205px;
                 margin-bottom: 30px;
             }
 
@@ -1904,7 +1903,6 @@ body.xLoginPageBody {
 			body.xLoginPageBody .error { }
 
             a.social_button {
-                float: right;
                 display: block;
                 padding: .4em 1em;
                 border-radius: 4px;
@@ -1913,7 +1911,6 @@ body.xLoginPageBody {
                 text-decoration: none !important;
                 letter-spacing: .05em;
                 vertical-align: top;
-                width: 182px;
                 transition: .4s;
             }
 
@@ -1947,23 +1944,19 @@ body.xLoginPageBody {
             }
 
             body.xLoginPageBody p.social_or {
-                width: 200px;
                 text-align: center;
                 margin: 10px 0;
                 padding: 0;
-                float: right;
             }
 
 			body.xLoginPageBody input.xLoginField {
 				display: block;
-				float: right;
 				clear: both;
-				width: 200px;
+				width: 214px;
 				margin: 0 0 5px;
 			}
 			body.xLoginPageBody input.xLoginSubmit {
 				display: block;
-				float: right;
 				clear: both;
 				width: 110px;
 				margin: 0 0 5px;
