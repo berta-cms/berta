@@ -18,6 +18,39 @@ $settings =& $berta->template->settings;
 
 if(!1) { ?><style type="text/css"><?php } ?>
 
+@font-face {
+    font-family: 'icomoon';
+    src:url('fonts/icomoon.eot?-tyueo3');
+    src:url('fonts/icomoon.eot?#iefix-tyueo3') format('embedded-opentype'),
+        url('fonts/icomoon.woff?-tyueo3') format('woff'),
+        url('fonts/icomoon.ttf?-tyueo3') format('truetype'),
+        url('fonts/icomoon.svg?-tyueo3#icomoon') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+    font-family: 'icomoon' !important;
+    speak: none;
+    font-style: normal;
+    font-weight: normal !important;
+    font-variant: normal;
+    text-transform: none !important;
+    line-height: 1 !important;
+
+    /* Better Font Rendering =========== */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-facebook:before {
+    content: "\f09a";
+}
+
+.icon-google-plus:before {
+    content: "\f0d5";
+}
+
 .warning {
 	color: #BB0000;
 }
@@ -1869,6 +1902,58 @@ body.xLoginPageBody {
 				text-align: right;
 			}
 			body.xLoginPageBody .error { }
+
+            a.social_button {
+                float: right;
+                display: block;
+                padding: .4em 1em;
+                border-radius: 4px;
+                color: #fff;
+                text-align: center;
+                text-decoration: none !important;
+                letter-spacing: .05em;
+                vertical-align: top;
+                width: 182px;
+                transition: .4s;
+            }
+
+            a.social_button:hover {
+                color: #fff;
+            }
+
+            a.social_button span {
+                font-size: 16px;
+                font-weight: normal;
+                display: inline-block;
+                margin-right: 0.5em;
+                vertical-align: middle;
+            }
+
+            .social_button_facebook {
+                background-color: #4e69a2;
+                margin-bottom: 5px;
+            }
+
+            .social_button_facebook:hover {
+                background-color: #324877;
+            }
+
+            .social_button_google {
+                background-color: #dd4b39;
+            }
+
+            .social_button_google:hover {
+                background-color: #A63426;
+            }
+
+            body.xLoginPageBody p.social_or {
+                width: 200px;
+                text-align: center;
+                margin: 10px 0;
+                padding: 0;
+                float: right;
+            }
+
 			body.xLoginPageBody input.xLoginField {
 				display: block;
 				float: right;
