@@ -104,7 +104,12 @@ if($auth_action == "login" && !$errStr) {
 					<input type="hidden" name="auth_action" value="login" />
 					<!--[if IE ]> <input type="hidden" name="auth_browser" value="invalid" /> <![endif]-->
 					<!--[if (gte IE 9)|!(IE)]><!--> <input type="hidden" name="auth_browser" value="supported" /> <!--<![endif]-->
-					<input type="text" name="auth_user" id="auth_user" class="xLoginField" />
+                    <?php if ($options['HOSTING_PROFILE']) { ?>
+                        <a href="<?php echo $login_action . '?provider=facebook&amp;remote_redirect=' . urlencode($options['SITE_HOST_ADDRESS'] . $ENGINE_ABS_ROOT . 'login.php') ?>" class="social_button social_button_facebook"><span class="icon-facebook"></span>Log in with Facebook</a>
+                        <a href="<?php echo $login_action . '?provider=google&amp;remote_redirect=' . urlencode($options['SITE_HOST_ADDRESS'] . $ENGINE_ABS_ROOT . 'login.php')  ?>" class="social_button social_button_google"><span class="icon-google-plus"></span>Log in with Google</a>
+                        <p class="social_or">or</p>
+                    <?php } ?>
+                    <input type="text" name="auth_user" id="auth_user" class="xLoginField" />
 					<input type="password" name="auth_pass" id="auth_pass" class="xLoginField" />
 					<input type="submit" name="auth_subm" id="auth_subm" class="xLoginSubmit" value="<?php echo I18n::_('Log in') ?>" />
 					<p><a href="<?php echo $options['FORGOTPASSWORD_LINK']?>" target="_blank"><?php echo I18n::_('Forgot password?') ?></a></p>
