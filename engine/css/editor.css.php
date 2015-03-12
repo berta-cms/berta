@@ -1893,10 +1893,7 @@ body.xLoginPageBody {
             }
 
 			body.xLoginPageBody .xLoginError {
-				display: block;
-				float: right;
 				clear: both;
-				width: 200px;
 				margin: 0 0 20px;
 				text-align: right;
 			}
