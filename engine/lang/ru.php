@@ -22,10 +22,10 @@ return array(
         // First visit
 
         'welcome' => 'Добро пожаловать!',
-        'welcome_text__not_installed' => '<h2>Благодарим,<br/>что выбрали Berta!</h2>
+        'welcome_text__not_installed' => '<h2>Благодарим,<br/>что выбрали Berta.me!</h2>
                                                                           <p>Berta не установлена.<br />Пожалуйста <a href="%s">войдите</a> и следуйте процедуре установки.</p>',
 
-        'welcome_text__not_supported' => '<h2>Благодарим,<br/>что выбрали Berta!</h2>
+        'welcome_text__not_supported' => '<h2>Благодарим,<br/>что выбрали Berta.me!</h2>
                                                                                 <p>Этот сервер не соответствует требованиями Berta.<br />
                                                                                 Пожалуйста, проверьте, чтобы на сервере была установлена версия PHP 5 или выше.</p>',
 

@@ -13,10 +13,10 @@ return array(
 
 	'password_help_text' => 'Password must be at least 6 characters long<br /> and containing alphanumeric (A-Z, a-z, 0-9) characters.',
 
-	'welcome_text__not_installed' => '<h2>Thank you for choosing Berta!</h2>
-		   <p>Berta is not set up.<br />Please <a href="%s">log in</a> and follow the set up procedure.</p>',
+	'welcome_text__not_installed' => '<h2>Thank you for choosing Berta.me!</h2>
+		   <p>Your site is not yet set up.<br />Please <a href="%s">log in</a> to create your website.</p>',
 
-	'welcome_text__not_supported' => '<h2>Thank you for choosing Berta!</h2>
+	'welcome_text__not_supported' => '<h2>Thank you for choosing Berta.me!</h2>
 										<p>This server does not meet Berta\'s requirements.<br />
 										Please check that PHP version 5 or above is installed on the server.</p>',
 	'setup_info_text' => 'Click on yellow fields to edit. Press ENTER or click outside a yellow field to save your entry. This way you can edit content in Berta.me.',
