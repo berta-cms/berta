@@ -12,10 +12,10 @@ return array(
 
 	'password_help_text' => 'La contraseña debe tener como mínimo 6 caracteres<br /> y que contiene alfanuméricos (A-Z, a-z, 0-9) caracteres.',
 
-	'welcome_text__not_installed' => '<h2>¡Gracias por elegir Berta!</h2>
+	'welcome_text__not_installed' => '<h2>¡Gracias por elegir Berta.me!</h2>
 		   <p>Berta no esta instalado.<br />Por favor, <a href="%s">iniciar sesion</a> y siga el procedimiento de instalación.</p>',
 
-	'welcome_text__not_supported' => '<h2>¡Gracias por elegir Berta!</h2>
+	'welcome_text__not_supported' => '<h2>¡Gracias por elegir Berta.me!</h2>
 										<p>Este servidor no cumple los requisitos Berta\'s.<br />
 										Compruebe que PHP versión 5 o superior este instalado en el servidor.</p>',
 	'setup_info_text' => 'Haga clic en los campos con fondo amarillo para modificarlas.

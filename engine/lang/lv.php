@@ -22,10 +22,10 @@ return array(
 	// First visit
 
 	'welcome' => 'Esi sveicināts!',
-	'welcome_text__not_installed' => '<h2>Paldies,<br/>ka izvēlējies Bertu!</h2>
+	'welcome_text__not_installed' => '<h2>Paldies,<br/>ka izvēlējies Berta.me!</h2>
 		   							  <p>Berta nav uzstādīta.<br />Lūdzu <a href="%s">ielogojies</a> un seko uzstādīšanas procedūrai.</p>',
 
-	'welcome_text__not_supported' => '<h2>Paldies,<br/>ka izvēlējies Bertu!</h2>
+	'welcome_text__not_supported' => '<h2>Paldies,<br/>ka izvēlējies Berta.me!</h2>
 										<p>This server does not meet Berta\'s requirements.<br />
 										Please check that PHP version 5 or above is installed on the server.</p>',
 
