@@ -2,7 +2,7 @@
 
 return array(
 
-	'berta_copyright_text' => '<a href="http://www.berta.me/" target="_blank" title="Create your own portfolio with Berta in minutes!">berta</a>',
+	'berta_copyright_text' => '<a href="http://www.berta.me/" target="_blank" title="Create your own portfolio with Berta.me in minutes!">Berta.me</a>',
 
 	// Translations from the top "admin" menu
 

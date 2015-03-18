@@ -2,7 +2,7 @@
 
 return array(
 
-    'berta_copyright_text' => '<a href="http://www.berta.me/" target="_blank" title="Stwórz swój własny portfel z Berta w kilka minut!">berta</a>',
+    'berta_copyright_text' => '<a href="http://www.berta.me/" target="_blank" title="Stwórz swój własny portfel z Berta.me w kilka minut!">Berta.me</a>',
 
     // Translations from the top "admin" menu
 

@@ -2,7 +2,7 @@
 
 return array(
 
-	'berta_copyright_text' => 'Gemaakt met <a href="http://www.berta.me/" target="_blank" title="Maak snel jouw eigen site met">Berta</a>',
+	'berta_copyright_text' => 'Gemaakt met <a href="http://www.berta.me/" target="_blank" title="Maak snel jouw eigen site met">Berta.me</a>',
 
 	// Translations from the top "admin" menu
 
