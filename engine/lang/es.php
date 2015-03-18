@@ -2,7 +2,7 @@
 
 return array(
 
-	'berta_copyright_text' => 'Construido con <a href="http://www.berta.me/" target="_blank" title="¡Crea tu propio sitio web con Berta en minutos!">Berta</a>',
+	'berta_copyright_text' => 'Construido con <a href="http://www.berta.me/" target="_blank" title="¡Crea tu propio sitio web con Berta.me en minutos!">Berta.me</a>',
 
 	'margins_help_text' => 'Los márgenes son difíciles. Usa px o em como unidades. Puede establecer los márgenes de 4 maneras, by entering:<br/><strong>1 value</strong> - Establece la parte superior, los márgenes derecho, inferior e izquierdo con el mismo valor. Ejemplo: <em>10px</em>.<br /><strong>2 valores</strong> - establece los márgenes superior e inferior al primer valor, izquierda y derecha - a la segunda. Ejemplo: <em>0 5px</em>.<br /><strong>3 values</strong> - establecer el margen superior al primer valor, izquierda y derecha - a la segunda, parte inferior - al tercer valor. Ejemplo: <em>10px 0 20px</em>.<br /><strong>4 valores</strong> - establece los márgenes en el siguiente orden: arriba, derecha, abajo, izquierda. Ejemplo: <em>10px 0 20px 2px</em>.',
 	'units_help_text' => 'Las unidades válidas para cualquier valor numérico son:<br /><strong>px</strong> - pixels. Ejemplo: <em>10px</em>. Mediante el uso de sólo los valores de los números, NO VA A CAMBIAR.<br /><strong>em</strong> - 1em = un tramo de la letra M en la fuente utilizada. Ejemlo: <em>1em</em><br /><strong>%</strong> - un porcentaje del tamaño de la fuente o un porcentaje de las dimensiones del elemento de contenedor (por ejemplo: la página, etc)',
