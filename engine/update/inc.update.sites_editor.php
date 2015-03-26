@@ -135,7 +135,7 @@ else if($decoded['action'] == 'DELETE_SITE') {	// delete a section
 else {
 
 	$returnUpdate = $returnReal = trim($decoded['value']);
-	$sName = $decoded['site'];
+	$sName = (string)$decoded['site'];
 
 	if(strtolower($sName) != 'title') {
 		$sitesList = BertaEditor::getSites();
