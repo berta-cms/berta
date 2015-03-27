@@ -82,12 +82,23 @@ if(!@get_magic_quotes_gpc()) {
 
 if(!defined('AUTH_AUTHREQUIRED')) define('AUTH_AUTHREQUIRED', false);
 if(!defined('BERTA_ENVIRONMENT')) define('BERTA_ENVIRONMENT', 'site');
+if(!defined('DO_UPLOAD')) define('DO_UPLOAD', false);
 $options['ENVIRONMENT'] = BERTA_ENVIRONMENT;
 
 $berta = new Berta();
+
+if (DO_UPLOAD && isset($_GET['session_id'])) {
+    session_write_close();
+    session_id($_GET['session_id']);
+    session_start();
+}
+
 if(AUTH_AUTHREQUIRED && !$berta->security->authentificated) {
 	if ($IS_AJAX){
 		die("<script>window.location.href='".$ENGINE_ABS_ROOT . 'login.php'."'</script>");
+    }elseif (DO_UPLOAD) {
+        http_response_code(401);
+        die();
 	}else{
 		$berta->security->goToLoginPage($ENGINE_ROOT . 'login.php');
 	}
