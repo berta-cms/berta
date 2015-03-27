@@ -206,9 +206,11 @@ var BertaGalleryEditor = new Class({
 
 
 			onFileComplete: function(file) {
-				//console.debug('onFileCompelte: ', file, file.response);
-				var json = $H(JSON.decode(file.response.text, true) || {});
-				if(json.get('status') > 0) {
+                var json = $H(JSON.decode(file.response.text, true) || {});
+
+                if(file.response.code == 401) {
+                    window.location.href = this.options.engineRoot;
+                } else if(json.get('status') > 0) {
 					file.element.retrieve('FXProgressBar').start(100).chain(function() {
 						var el = file.element;
 
@@ -377,10 +379,12 @@ var BertaGalleryEditor = new Class({
 				}.bind(this),
 
 				onFileComplete: function(file) {
-					//console.debug('onFileCompelte: ', file.response);
 					var json = $H(JSON.decode(file.response.text, true) || {});
-					if(json.get('status') > 0) {
-						//file.element.retrieve('FXProgressBar').start(100).chain(function() {
+
+                    if(file.response.code == 401) {
+                        window.location.href = this.options.engineRoot;
+                    } else if(json.get('status') > 0) {
+
 							liElement.setStyle('width', 'auto');
 							var placeHolder = liElement.getElement('div.placeholderContainer');
 							placeHolder.setStyle('background-image', 'url(' + json.get('smallthumb_path') + '?no_cache=' + Math.random() + ')')

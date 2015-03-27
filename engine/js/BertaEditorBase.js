@@ -296,6 +296,8 @@ var BertaEditorBase = new Class({
 					params.push('site=' + this.query.site);
 				}
 
+                params.push('session_id=' + this.options.session_id);
+
 				// instantiate fancy upload
 				var filesFilter = {'Images (*.jpg, *.jpeg, *.gif, *.png)': '*.jpg; *.jpeg; *.gif; *.png'};
 				if(editorClass == this.options.xBertaEditorClassICO) filesFilter = {'Icons (*.ico)': '*.ico'};
@@ -327,7 +329,9 @@ var BertaEditorBase = new Class({
 
 					onFileComplete: function(file) {
 						var json = $H(JSON.decode(file.response.text, true) || {});
-						if(json.get('status') > 0) {
+                        if(file.response.code == 401) {
+                            window.location.href = this.options.paths.engineRoot;
+                        } else if(json.get('status') > 0) {
 							fileNameContainer.empty();
 							fileNameContainer.set('html', json.get('filename'));
 							aDelete.setStyle('display', 'block');
