@@ -557,7 +557,7 @@ body.xSettingsPageBody a.introjs-button {
 
 				ul#xEditorMenu li a:hover { color: #000; }
 
-                ul#xEditorMenu li#xUpgrade a {
+                ul#xEditorMenu li#xHelpDesk a {
                     color: #FFB800;
                 }
 
