@@ -29,6 +29,7 @@ $topPanelHTML = BertaEditor::getTopPanelHTML($mode);
 <link rel="stylesheet" href="<?php echo $ENGINE_ABS_ROOT ?>css/editor.css.php" type="text/css"  charset="utf-8" />
 <!--<link rel="stylesheet" href="<?php echo $ENGINE_ABS_ROOT ?>_lib/colorpicker/plugin.css" type="text/css" charset="utf-8" />-->
 <link rel="stylesheet" href="<?php echo $ENGINE_ABS_ROOT ?>_lib/moorainbow/mooRainbow.css" type="text/css" charset="utf-8" />
+<link rel="stylesheet" href="<?php echo $ENGINE_ABS_ROOT ?>_lib/introjs/introjs.min.css" type="text/css"  charset="utf-8" />
 <?php include 'inc.header_default_scripts.php' ?>
 <script type="text/javascript">
 	var bertaGlobalOptions = {
@@ -37,7 +38,9 @@ $topPanelHTML = BertaEditor::getTopPanelHTML($mode);
 			"engineABSRoot":"<?php echo BertaEditor::$options['ENGINE_ABS_ROOT'] ?>",
 			"siteABSRoot" : "<?php echo BertaEditor::$options['SITE_ABS_ROOT'] ?>",
 			"template" : "<?php echo BertaEditor::$options['SITE_ABS_ROOT'] . '_templates/' . $berta->template->name . '/' ?>"
-		}
+		},
+        "skipTour": <?php echo count($sections) || $berta->settings->get('siteTexts', 'tourComplete') ? 'true' : 'false' ?>,
+        "session_id" : "<?php echo session_id() ?>"
 	};
 </script>
 <script type="text/javascript" src="<?php echo $ENGINE_ABS_ROOT ?>js/Assets.js" charset="utf-8"></script>
@@ -51,9 +54,10 @@ $topPanelHTML = BertaEditor::getTopPanelHTML($mode);
 <script type="text/javascript" src="<?php echo $ENGINE_ABS_ROOT ?>js/BertaGalleryEditorAssets.js"></script>
 <script type="text/javascript" src="<?php echo $ENGINE_ABS_ROOT ?>js/inline_edit.js" charset="utf-8"></script>
 <script type="text/javascript" src="<?php echo $ENGINE_ABS_ROOT ?>js/BertaEditor.js" charset="utf-8"></script>
+<script type="text/javascript" src="<?php echo $ENGINE_ABS_ROOT ?>_lib/introjs/intro.min.js" charset="utf-8"></script>
 </head>
 
-<body class="xSettingsPageBody" x_mode="settings">
+<body class="xSettingsPageBody page-<?php if ($mode == 'template'){ ?>xTemplate<?php }else{ ?>xSettings<?php } ?>" x_mode="settings">
 	<form name="infoForm" id="infoForm">
 		<input type="hidden" name="ENGINE_ROOT" id="ENGINE_ROOT" value="<?php echo htmlspecialchars($ENGINE_ROOT) ?>" />
 	</form>
@@ -61,7 +65,7 @@ $topPanelHTML = BertaEditor::getTopPanelHTML($mode);
 	<div id="allContainer">
 		<div id="contentContainer">
 
-			<h1 id="allPageTitle"><?php echo $mode == 'template' ? I18n::_('Template design') : I18n::_('Settings') ?></h1>
+			<h1 id="allPageTitle"><?php echo $mode == 'template' ? I18n::_('Design') : I18n::_('Settings') ?></h1>
 			<?php if($mode == 'template') { ?>
 				<div class="entry" difficulty="0">
 					<div><?php echo I18n::_('These are settings for template') ?> &quot;<?php echo $berta->template->name ?>&quot;.</div>

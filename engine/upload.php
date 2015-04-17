@@ -43,9 +43,10 @@ $paramSmallHeight = !empty($_REQUEST['small_height']) ? $_REQUEST['small_height'
 $paramLargeWidth = !empty($_REQUEST['large_width']) ? $_REQUEST['large_width'] : false;
 $paramLargeHeight = !empty($_REQUEST['large_height']) ? $_REQUEST['large_height'] : false;
 
-
+define('AUTH_AUTHREQUIRED', true);
+define('DO_UPLOAD', true);
 define('BERTA_ENVIRONMENT', 'engine');
-require 'inc.page.php';
+include_once('inc.page.php');
 include_once('_classes/Zend/Json.php');
 include_once('_classes/class.bertaeditor.php');
 

@@ -38,7 +38,7 @@ if($property == 'name') {	// site name/slug
 			// update title...
 			$sitesListNew = array();
 			foreach($sitesList as $sN => $s) {
-				if($sN === $sName) {
+				if((string)$sN === $sName) {
 					$s['name']['value'] = $sNewName;
 					$sitesListNew[$sNewName] = $s;
 				} else
@@ -60,7 +60,7 @@ else if($property == 'published') {	// attributes
 	$sName = $decoded['site'];
 
 	foreach($sitesList as $sN => $s) {
-		if($sN === $sName) {
+		if((string)$sN === $sName) {
 			$sitesList[$sN]['@attributes'][$property] = $returnUpdate;
 			break;
 		}
@@ -135,13 +135,13 @@ else if($decoded['action'] == 'DELETE_SITE') {	// delete a section
 else {
 
 	$returnUpdate = $returnReal = trim($decoded['value']);
-	$sName = $decoded['site'];
+	$sName = (string)$decoded['site'];
 
 	if(strtolower($sName) != 'title') {
 		$sitesList = BertaEditor::getSites();
 
 		foreach($sitesList as $sN => $s) {
-			if($sN === $sName) {
+			if((string)$sN === $sName) {
 				$sitesList[$sN][$property] = array('value' => $returnUpdate);
 				break;
 			}

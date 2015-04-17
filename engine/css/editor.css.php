@@ -18,6 +18,39 @@ $settings =& $berta->template->settings;
 
 if(!1) { ?><style type="text/css"><?php } ?>
 
+@font-face {
+    font-family: 'icomoon';
+    src:url('fonts/icomoon.eot?-tyueo3');
+    src:url('fonts/icomoon.eot?#iefix-tyueo3') format('embedded-opentype'),
+        url('fonts/icomoon.woff?-tyueo3') format('woff'),
+        url('fonts/icomoon.ttf?-tyueo3') format('truetype'),
+        url('fonts/icomoon.svg?-tyueo3#icomoon') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+    font-family: 'icomoon' !important;
+    speak: none;
+    font-style: normal;
+    font-weight: normal !important;
+    font-variant: normal;
+    text-transform: none !important;
+    line-height: 1 !important;
+
+    /* Better Font Rendering =========== */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-facebook:before {
+    content: "\f09a";
+}
+
+.icon-google-plus:before {
+    content: "\f0d5";
+}
+
 .warning {
 	color: #BB0000;
 }
@@ -53,7 +86,11 @@ body.xEditorEnabled { }
 }
 
 #bertaVideosBackground {
-	background-color: #fff;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+	background-color: #000;
 	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=60)";
 	filter: alpha(opacity=60);
 	-webkit-opacity: 0.6;
@@ -62,21 +99,20 @@ body.xEditorEnabled { }
 	position: fixed;
 	height: 100%;
 	width: 100%;
-	z-index: 60000;
+	z-index: 110000;
 }
 
 #bertaVideosWrapper {
-	background-color: #eee;
-	-moz-box-shadow: 0 0 10px 5px #bdbdbd;
-	-webkit-box-shadow: 0 0 10px 5px #bdbdbd;
-	box-shadow: 0 0 10px 5px #bdbdbd;
-	margin: -232px 0 0 -279px;
-	padding: 15px;
 	position: fixed;
-	top: 50%; left: 50%;
-	height: 435px;
-	width: 528px;
-	z-index: 60000;
+	z-index: 110000;
+    width: 1000px;
+    height: 600px;
+    margin: -315px 0 0 -515px;
+    padding: 15px;
+    top: 50%; left: 50%;
+    background-color: #eee;
+    border-radius: 3px;
+    box-shadow: 0 1px 10px rgba(0,0,0,.4);
 }
 
 #bertaVideos {
@@ -86,14 +122,19 @@ body.xEditorEnabled { }
 }
 
 	#bertaVideos #videoFrameWrapper {
-		background: url('../layout/loader.gif') no-repeat center;
-		margin-bottom: 12px;
+		position: relative;
+        padding-bottom: 51.77%; /* 16:9 */
+        height: 0;
+        background: url('../layout/loader.gif') no-repeat center;
 	}
 
 		#bertaVideos #videoFrameWrapper iframe#videoFrame {
-			border: none;
-			height: 300px;
-			width: 528px;
+            border: 0;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
 		}
 
 
@@ -160,6 +201,22 @@ body.xEditorEnabled { }
 		text-align: center;
 	}
 
+
+body.xSettingsPageBody a.introjs-button {
+    text-decoration: none !important;
+}
+
+.introjs-button {
+    padding: .5em .8em .4em !important;
+}
+
+.introjs-exit {
+    float: left;
+}
+
+.page-xTemplate .introjs-skipbutton {
+    display: none;
+}
 
 /* middle-align containers ------------------------------------------------------------------------------------------- */
 
@@ -489,7 +546,7 @@ body.xEditorEnabled { }
 			ul#xEditorMenu li {
 				position: relative;
 				float: left;
-				padding-right: 10px;
+				padding: 0 5px;
 				z-index: 10;
 				color: #E9E9E9;
 			}
@@ -499,6 +556,14 @@ body.xEditorEnabled { }
 				}
 
 				ul#xEditorMenu li a:hover { color: #000; }
+
+                ul#xEditorMenu li#xHelpDesk a {
+                    color: #FFB800;
+                }
+
+                ul#xEditorMenu li.introjs-showElement a {
+                    color: #000;
+                }
 
 			ul#xEditorMenu li.selected, ul#xEditorMenu li.selected a {
 				font-weight: bold;
@@ -529,52 +594,6 @@ body.xEditorEnabled { }
 		#xTopPanelSlideOut span:hover {
 			color: #000;
 		}
-
-
-#xCreateSomeSections {
-	top: 30px;
-}
-
-.speech-bubble {
-	position: absolute;
-	min-width: 100px;
-	padding: 5px 5px 4px 5px;
-	background-color: #fff;
-	color: #000;
-	border: 1px solid #000;
-	-moz-border-radius: 5px;
-	-webkit-border-radius: 5px;
-	border-radius: 5px;
-	text-align: center;
-}
-
-.speech-bubble:before {
-	content: "";
-	border: solid 8px transparent;
-	border-bottom-color: #000;
-	border-top: 0;
-	width: 0;
-	height: 0;
-	overflow: hidden;
-	display: block;
-	position: absolute;
-	top: -8px;
-	left: 10px;
-}
-
-.speech-bubble:after {
-	content: "";
-	border: solid 8px transparent;
-	border-bottom-color: #fff;
-	border-top: 0;
-	width: 0;
-	height: 0;
-	overflow: hidden;
-	display: block;
-	position: absolute;
-	top: -7px;
-	left: 10px;
-}
 
 
 /* background editor ----------------------------------------------------------------------------------------------- */
@@ -1881,6 +1900,7 @@ body.xLoginPageBody {
                 clear: both;
                 color: #000000;
                 padding-top: 30px;
+                text-align: left;
             }
 
 			body.xLoginPageBody .xLogout {
@@ -1890,31 +1910,72 @@ body.xLoginPageBody {
 			}
 
             body.xLoginPageBody .xLoginLogo {
-                float: right;
                 text-align: left;
-                width: 205px;
                 margin-bottom: 30px;
             }
 
 			body.xLoginPageBody .xLoginError {
-				display: block;
-				float: right;
 				clear: both;
-				width: 200px;
 				margin: 0 0 20px;
 				text-align: right;
 			}
 			body.xLoginPageBody .error { }
+
+            a.social_button {
+                display: block;
+                padding: .4em 1em;
+                border-radius: 4px;
+                color: #fff;
+                text-align: center;
+                text-decoration: none !important;
+                letter-spacing: .05em;
+                vertical-align: top;
+                transition: .4s;
+            }
+
+            a.social_button:hover {
+                color: #fff;
+            }
+
+            a.social_button span {
+                font-size: 16px;
+                font-weight: normal;
+                display: inline-block;
+                margin-right: 0.5em;
+                vertical-align: middle;
+            }
+
+            .social_button_facebook {
+                background-color: #4e69a2;
+                margin-bottom: 5px;
+            }
+
+            .social_button_facebook:hover {
+                background-color: #324877;
+            }
+
+            .social_button_google {
+                background-color: #dd4b39;
+            }
+
+            .social_button_google:hover {
+                background-color: #A63426;
+            }
+
+            body.xLoginPageBody p.social_or {
+                text-align: center;
+                margin: 10px 0;
+                padding: 0;
+            }
+
 			body.xLoginPageBody input.xLoginField {
 				display: block;
-				float: right;
 				clear: both;
-				width: 200px;
+				width: 214px;
 				margin: 0 0 5px;
 			}
 			body.xLoginPageBody input.xLoginSubmit {
 				display: block;
-				float: right;
 				clear: both;
 				width: 110px;
 				margin: 0 0 5px;

@@ -78,10 +78,36 @@ class BertaContent extends BertaBase {
 		return $sArr;
 	}
 
+	public static function getUniqueSectionSlug($oldSlug, $title, $sectionsList){
 
+		$notUnique = true;
+		$title = trim($title);
 
+		if (strlen($title) < 1) {
+			return '';
+		}
 
+		$slug = strtolower(BertaUtils::canonizeString($title, '-', '\._-', true));
 
+		unset($sectionsList[$oldSlug]);
+		$existingSections = array_map('strval', array_keys($sectionsList));
+
+		$slug = $slug ? $slug : '_';
+
+		$i = 1;
+		while ( $notUnique  ) {
+			if ( in_array($slug, $existingSections) ) {
+				$slug = preg_replace('/(^.*?)+([\-])+([0-9])+$/', '$1', $slug);
+				$slug .= '-' . $i;
+
+				$i++;
+			}else{
+				$notUnique = false;
+			}
+		}
+
+		return $slug;
+	}
 
 	public static function loadBlog($sName) {
 

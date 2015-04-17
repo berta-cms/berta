@@ -913,9 +913,9 @@ DOC;
 		$m1 = I18n::_('my site');
 		$m2 = I18n::_('sections');
 		$m3 = I18n::_('settings');
-		$m4 = I18n::_('template design');
-		$m5 = I18n::_('profile');
-		$m6 = I18n::_('sign out');
+		$m4 = I18n::_('design');
+		$m5 = I18n::_('account');
+		$m6 = I18n::_('log out');
 
 		if ($shopEnabled) {
 			$m7 = I18n::_('shop');
@@ -928,6 +928,7 @@ DOC;
 
 		$m8 = I18n::_('multisite');
 		$m9 = I18n::_('seo');
+        $m10 = I18n::_('upgrade');
 
 		$m1Class = $selectedSection == 'site' ? ' class="selected"' : '';
 		$m2Class = $selectedSection == 'sections' ? ' class="selected"' : '';
@@ -947,13 +948,19 @@ DOC;
 		$m8Class = $selectedSection == 'multisite' ? ' class="selected"' : '';
 		$m9Class = $selectedSection == 'seo' ? ' class="selected"' : '';
 
+        if (self::$options['HOSTING_PROFILE'] && !self::$options['HOSTING_PLAN']){ //trial user
+            $upgradeItem = '<li id="xUpgrade"><a href="' . self::$options['HOSTING_PROFILE'] . '" target="_blank">'.$m10.'</a></li><li>|</li>';
+        }else{
+            $upgradeItem = '';
+        }
+
 		if (!self::$options['MULTISITE_DISABLED']) {
 			$multisiteItem = '<li'.$m8Class.' id="xMultisite"><a href="multisite.php">'.$m8.'</a></li><li>|</li>';
 		}else{
 			$multisiteItem = '';
 		}
 
-		$helpdeskItem = self::$options['HOSTING_PROFILE'] ? '<li><a href="http://support.berta.me" target="_blank">helpdesk</a></li><li>|</li>' : '';
+		$helpdeskItem = self::$options['HOSTING_PROFILE'] ? '<li id="xHelpDesk"><a href="http://support.berta.me" target="_blank">helpdesk</a></li><li>|</li>' : '';
 
 		$str_start = <<<DOC
 			<div id="xTopPanelContainer" class="xPanel">
@@ -962,25 +969,29 @@ DOC;
 					<ul id="xEditorMenu">
 						<li id="xTopPanelSlideOut"><span title="hide menu">▲</span></li>
 						<li$m1Class id="xMySite"><a href="$m1_link">$m1</a></li><li>|</li>
-						$multisiteItem
 						<li$m2Class id="xSections"><a href="$m2_link">$m2</a></li><li>|</li>
-						$shopItem
-						<li$m3Class id="xSettings"><a href="$m3_link">$m3</a></li><li>|</li>
 						<li$m4Class id="xTemplateDesign"><a href="$m4_link">$m4</a></li><li>|</li>
+                        <li$m3Class id="xSettings"><a href="$m3_link">$m3</a></li><li>|</li>
+                        $multisiteItem
+                        $shopItem
 						<li$m9Class id="xSeo"><a href="$m9_link">$m9</a></li><li>|</li>
-						<li$m5Class><a href="$m5_link" target="$m5_target">$m5</a></li><li>|</li>
 						$helpdeskItem
+                        <li$m5Class><a href="$m5_link" target="$m5_target">$m5</a></li><li>|</li>
+                        $upgradeItem
 						<li><a href="logout.php">$m6</a></li>
 					</ul>
 DOC;
 
-		$str_ticker = <<<DOC
-					<div id="xNewsTickerContainer">
-						<div class="news-ticker-content">$newsTickerContent</div>
-						<a href="#" class="close">X</a>
-						<br class="clear" />
-					</div>
+        $str_ticker = '';
+        if ($newsTickerContent){
+            $str_ticker = <<<DOC
+				<div id="xNewsTickerContainer">
+					<div class="news-ticker-content">$newsTickerContent</div>
+					<a href="#" class="close">X</a>
+					<br class="clear" />
+				</div>
 DOC;
+        }
 
 		$str_end = <<<DOC
 				</div>

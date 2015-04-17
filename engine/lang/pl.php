@@ -2,7 +2,7 @@
 
 return array(
 
-    'berta_copyright_text' => '<a href="http://www.berta.me/" target="_blank" title="Stwórz swój własny portfel z Berta w kilka minut!">berta</a>',
+    'berta_copyright_text' => '<a href="http://www.berta.me/" target="_blank" title="Stwórz swój własny portfel z Berta.me w kilka minut!">Berta.me</a>',
 
     // Translations from the top "admin" menu
 
@@ -10,9 +10,9 @@ return array(
     /* menu item */ 'my site' => 'moja berta',
     /* menu item */ 'sections' => 'działy',
     /* menu item */ 'settings' => 'ustawienia',
-    /* menu item */ 'template design' => 'wygląd projektu',
+    /* menu item */ 'design' => 'wygląd',
     /* menu item */ 'profile' => 'mój profil',
-    /* menu item */ 'sign out' => 'wylogować się',
+    /* menu item */ 'log out' => 'wylogować się',
 
     // Translatins from login / logout window
 
@@ -22,10 +22,10 @@ return array(
     // First visit
 
     'welcome' => 'Witamy!',
-    'welcome_text__not_installed' => '<h2>Dziękujemy,<br/>że wybrałeś Berta!</h2>
+    'welcome_text__not_installed' => '<h2>Dziękujemy,<br/>że wybrałeś Berta.me!</h2>
                                                           <p>Berta nie jest zainstalowana.<br />Proszę <a href="%s">zaloguj się</a> i przejdź proces instalacji.</p>',
 
-    'welcome_text__not_supported' => '<h2>Dziękujemy,<br/>że wybrałeś Berta!</h2>
+    'welcome_text__not_supported' => '<h2>Dziękujemy,<br/>że wybrałeś Berta.me!</h2>
                                                                 <p>This server does not meet Berta\'s requirements.<br />
                                                                    Please check that PHP version 5 or above is installed on the server.</p>',
 
@@ -36,9 +36,9 @@ return array(
     'What is the title of your site?' => 'Jaki jest tytuł twojej strony?',
     'Site title will be visible in all sections of your site.' => 'Tytuł strony będzie widoczny w każdym dziale',
     'What is your name?' => 'Wprowadź swoje imię',
-    'Your name will be put in the copyright notice in the footer of yout site. You can leave it blank.' => 'Imię będzie dodane do symbolu (c) na dole strony. Pole można również zostawić puste.',
-    'How would you — in one sentence — describe your site?' => 'Jak byś opisał swoją stronę w jednym zdaniu?',
-    'This will appear under your site name as an excerpt in search engine results.' => 'To pojawi się w wyszukiwarce pod tytułem twojej strony jako opis.',
+    'It will appear in the copyright notice in the footer. You may leave it blank.' => 'Imię będzie dodane do symbolu (c) na dole strony. Pole można również zostawić puste.',
+    'What is this website about?' => 'Jak byś opisał swoją stronę w jednym zdaniu?',
+    'It will appear under your site name in search engine results.' => 'To pojawi się w wyszukiwarce pod tytułem twojej strony jako opis.',
     'Note: the fields that already have value appear yellow only when you roll over them with your mouse. Click on the text below to edit.' => 'Uwaga: wypełnione pole stają się żółte przy najechaniu na nich kursorem myszki. Klikaj na tekście poniżej, aby poprawiać.',
     'Done!' => 'Wykonane!',
 
@@ -72,7 +72,7 @@ return array(
     // Translations from settings page (settings.php)
 
     /* title */ 'Settings' => 'Ustawienia',
-    /* title */ 'Template design' => 'Projekt',
+    /* title */ 'Design' => 'Projekt',
     'These are settings for template' => 'Te są ustawienia projektu',
 
     'Some help with CSS values' => 'Objaśnienia wartości CSS',
@@ -84,7 +84,7 @@ return array(
     // Translations from inc.settings.php
 
     'Texts in the website' => 'Teksty na stronie',
-    'Main heading' => 'Główny tytuł strony',
+    'Site heading' => 'Główny tytuł strony',
 
     /* setting tab & setting name */ 'Template' => 'Projekt',
     /* help text */    'Templates are like skins or themes for your site. You can choose one template from the ones installed in your templates folder. To add a new template to this list, upload it to the templates folder via FTP.' => 'Projekty są "skórki" lub tematy, które zmieniają umiejscowienie elementów strony lub wygląd.',

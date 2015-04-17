@@ -2,7 +2,7 @@
 
 return array(
 
-	'berta_copyright_text' => 'Développé avec <a href="http://www.berta.me/" target="_blank" title="Créez votre portfolio avec Berta en quelques minutes !">Berta</a>',
+	'berta_copyright_text' => 'Développé avec <a href="http://www.berta.me/" target="_blank" title="Créez votre portfolio avec Berta.me en quelques minutes !">Berta.me</a>',
 
 	// Translations from the top "admin" menu
 
@@ -10,9 +10,9 @@ return array(
 		/* menu item */ 'my site' => 'mon site',
 		/* menu item */ 'sections' => 'sections',
 		/* menu item */ 'settings' => 'paramètres',
-		/* menu item */ 'template design' => 'design des templates',
+		/* menu item */ 'design' => 'design',
 		/* menu item */ 'profile' => 'profil',
-		/* menu item */ 'sign out' => 'se déconnecter',
+		/* menu item */ 'log out' => 'se déconnecter',
 
 	// Translatins from login / logout window
 
@@ -22,10 +22,10 @@ return array(
 	// First visit
 
 		'welcome' => 'Bienvenue !',
-		'welcome_text__not_installed' => '<h2>Merci d\'avoir choisi Berta !</h2>
+		'welcome_text__not_installed' => '<h2>Merci d\'avoir choisi Berta.me!</h2>
 		<p>Berta n\'est pas encore installé.<br />Merci de vous <a href="%s">connecter</a> et de suivre la procédure d\'installation.</p>',
 
-		'welcome_text__not_supported' => '<h2>Merci d\'avoir choisi Berta !</h2>
+		'welcome_text__not_supported' => '<h2>Merci d\'avoir choisi Berta.me!</h2>
 		<p>Ce serveur n\'est pas compatible avec Berta.<br />
 		Merci de vérifier que la version de PHP installée sur le serveur est égale ou supérieure à 5.</p>',
 
@@ -36,9 +36,9 @@ return array(
 		'What is the title of your site?' => 'Quel est le titre de votre site ,',
 		'Site title will be visible in all sections of your site.' => 'Le titre du site est visible dans toutes les sections du site',
 		'What is your name?' => 'Quel est votre nom ?',
-		'Your name will be put in the copyright notice in the footer of yout site. You can leave it blank.' => 'Votre nom sera affiché dans la note de copyright en bas de site. Vous pouvez laisser le champ vide.',
-		'How would you — in one sentence — describe your site?' => 'En une phrase, décrivez votre site.',
-		'This will appear under your site name as an excerpt in search engine results.' => 'Cela aparaitra en dessous du titre de votre site dans les moteurs de recherche.',
+		'It will appear in the copyright notice in the footer. You may leave it blank.' => 'Votre nom sera affiché dans la note de copyright en bas de site. Vous pouvez laisser le champ vide.',
+		'What is this website about?' => 'En une phrase, décrivez votre site.',
+		'It will appear under your site name in search engine results.' => 'Cela aparaitra en dessous du titre de votre site dans les moteurs de recherche.',
 		'Note: the fields that already have value appear yellow only when you roll over them with your mouse. Click on the text below to edit.' => 'À noter : Les champs déjà saisis n’aparaissent en jaune qu’au survol. Cliquez sur le texte survolé pour l’éditer.',
 		'Done!' => 'Fait !',
 
@@ -72,7 +72,7 @@ return array(
 	// Translations from settings page (settings.php)
 
 		/* title */ 'Settings' => 'Paramètres',
-		/* title */ 'Template design' => 'Design des templates',
+		/* title */ 'Design' => 'Design',
 		'These are settings for template' => 'Voici les paramètres des templates',
 
 		'Some help with CSS values' => 'Un peu d’aide avec les propriétés CSS',
@@ -84,7 +84,7 @@ return array(
 	// Translations from inc.settings.php
 
 		'Texts in the website' => 'Textes dans le site',
-		'Main heading' => 'Titre principal',
+		'Site heading' => 'Titre principal',
 
 		/* setting tab & setting name */ 'Template' => 'Template',
 		/* help text */    'Templates are like skins or themes for your site. You can choose one template from the ones installed in your templates folder. To add a new template to this list, upload it to the templates folder via FTP.' => 'Les templates définissent l’apparence de votre site. Vous pouvez choisir un jeu de templates parmi ceux installés dans votre dossier de templates. Pour ajouter un nouveau jeu à cette liste, téléchargez-le dans ce dossier via FTP.',

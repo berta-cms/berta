@@ -280,10 +280,6 @@ var BertaEditor = new Class({
                         if (h1) {
                         	h1.hide();
                         }
-                        //show speach bubble to create some sections
-                        var xSections = $('xSections');
-                        var xCreateSomeSections = $('xCreateSomeSections');
-                        xCreateSomeSections.inject(xSections, 'bottom').removeClass('xHidden');
 					}
 				} else {
 					this.editablesInit();
@@ -920,6 +916,7 @@ var BertaEditor = new Class({
 					event.stop();
 					videosContainer.destroy();
 					videosBackground.destroy();
+                    tourInit();
 				},
 				'click:relay(.togglePopup)': function(event) {
 					this.toggleVideos(event);
@@ -929,6 +926,7 @@ var BertaEditor = new Class({
 				if(event.key == 'esc') {
 					videosContainer.destroy();
 					videosBackground.destroy();
+                    tourInit();
 				}
 			});
 		}

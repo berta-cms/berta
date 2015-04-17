@@ -2,7 +2,7 @@
 
 return array(
 
-        'berta_copyright_text' => '<a href="http://www.berta.me/" target="_blank" title="Создайте собственное портфолио за считанные минуты с Berta!">berta</a>',
+        'berta_copyright_text' => '<a href="http://www.berta.me/" target="_blank" title="Создайте собственное портфолио за считанные минуты с Berta.me!">Berta.me</a>',
 
         // Translations from the top "admin" menu
 
@@ -10,9 +10,9 @@ return array(
         /* menu item */ 'my site' => 'мой сайт',
         /* menu item */ 'sections' => 'разделы',
         /* menu item */ 'settings' => 'настройки',
-        /* menu item */ 'template design' => 'дизайн шаблона',
+        /* menu item */ 'design' => 'дизайн',
         /* menu item */ 'profile' => 'профиль',
-        /* menu item */ 'sign out' => 'выйти',
+        /* menu item */ 'log out' => 'выйти',
 
         // Translatins from login / logout window
 
@@ -22,10 +22,10 @@ return array(
         // First visit
 
         'welcome' => 'Добро пожаловать!',
-        'welcome_text__not_installed' => '<h2>Благодарим,<br/>что выбрали Berta!</h2>
+        'welcome_text__not_installed' => '<h2>Благодарим,<br/>что выбрали Berta.me!</h2>
                                                                           <p>Berta не установлена.<br />Пожалуйста <a href="%s">войдите</a> и следуйте процедуре установки.</p>',
 
-        'welcome_text__not_supported' => '<h2>Благодарим,<br/>что выбрали Berta!</h2>
+        'welcome_text__not_supported' => '<h2>Благодарим,<br/>что выбрали Berta.me!</h2>
                                                                                 <p>Этот сервер не соответствует требованиями Berta.<br />
                                                                                 Пожалуйста, проверьте, чтобы на сервере была установлена версия PHP 5 или выше.</p>',
 
@@ -36,9 +36,9 @@ return array(
         'What is the title of your site?' => 'Как будет называться сайт?',
         'Site title will be visible in all sections of your site.' => 'Название сайта будет отображаться во всех разделах',
         'What is your name?' => 'Как ваше имя?',
-        'Your name will be put in the copyright notice in the footer of yout site. You can leave it blank.' => 'Ваше имя будет отображаться с символом(c) внизу сайта. Можете оставить это поле пустым.',
-        'How would you — in one sentence — describe your site?' => 'Опишите ваш сайт одним предложением',
-        'This will appear under your site name as an excerpt in search engine results.' => 'Описание будет отображаться в поисковых системах под названием сайта.',
+        'It will appear in the copyright notice in the footer. You may leave it blank.' => 'Ваше имя будет отображаться с символом(c) внизу сайта. Можете оставить это поле пустым.',
+        'What is this website about?' => 'Опишите ваш сайт одним предложением',
+        'It will appear under your site name in search engine results.' => 'Описание будет отображаться в поисковых системах под названием сайта.',
         'Note: the fields that already have value appear yellow only when you roll over them with your mouse. Click on the text below to edit.' => 'Примечание: заполненные поля становятся желтыми, только при наведении курсора мыши. Нажмите на текст ниже, чтобы редактировать.',
         'Done!' => 'Готово!',
 
@@ -72,7 +72,7 @@ return array(
         // Translations from settings page (settings.php)
 
         /* title */ 'Settings' => 'Настройки',
-        /* title */ 'Template design' => 'Шаблон',
+        /* title */ 'Design' => 'Шаблон',
         'These are settings for template' => 'Это настройки шаблона',
 
         'Some help with CSS values' => 'Объяснение значений CSS',
@@ -84,7 +84,7 @@ return array(
         // Translations from inc.settings.php
 
         'Texts in the website' => 'Текст на сайте',
-        'Main heading' => 'Главный заголовок страницы',
+        'Site heading' => 'Главный заголовок страницы',
 
         /* setting tab & setting name */ 'Template' => 'Шаблон',
         /* help text */    'Шаблоны – это "скины" или темы вашего сайта. Вы можете выбрать один шаблон из установленных в вашей папке шаблонов. Чтобы добавить новый шаблон в этот список, загрузите его в папку шаблонов через FTP клиент.' => 'Шаблоны – это "скины" или темы, которые меняют расположение и вид элементов сайта.',

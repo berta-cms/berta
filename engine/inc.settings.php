@@ -30,7 +30,7 @@ $settingsDefinition = array(
 	// siteTexts block is NOT editable in the settings page. It is reserved for texts appearing only on the page
 	'siteTexts' => array(
 		'_' =>                      array('title' => I18n::_('Texts in the website'), 'invisible' => true),
-		'siteHeading' => 			array('format' => 'text',	'allow_blank' => true,	'default' => null, 				'title' => I18n::_('Main heading'), 'description' => ''),
+		'siteHeading' => 			array('format' => 'text',	'allow_blank' => true,	'default' => null, 				'title' => I18n::_('Site heading'), 'description' => ''),
 	),
 
 
@@ -147,8 +147,10 @@ if(@file_exists($ENGINE_ROOT .'plan')) {
 	//settings for PRO and SHOP hosting plans
 	if ($hostingPlan>1){
 		$settingsDefinition['settings']['hideBertaCopyright'] =	array('format' => 'select', 'default' => 'no', 'values' => array('yes', 'no'), 'title' => I18n::_('Hide copyrights'), 'description' => I18n::_('Hides Berta\'s copyrights'));
-	}else{
 	}
+    $options['HOSTING_PLAN'] = $hostingPlan;
+}else{
+    $options['HOSTING_PLAN'] = null;
 }
 
 //disable multisites for basic plan

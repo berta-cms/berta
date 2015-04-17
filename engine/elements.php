@@ -80,7 +80,7 @@ if($jsonRequest) {
 						echo '<div class="xEntryGalleryAddMedia">';
 							echo '<div class="xEntryAddImagesFallback">' .
 									'<iframe name="xEntryUploadFrame' . $entry['id']['value'] . '" id="xEntryUploadFrame' . $entry['id']['value'] . '" class="xEntryUploadFrame"></iframe>' .
-									'<form target="xEntryUploadFrame' . $entry['id']['value'] . '" action="' . $ENGINE_ABS_ROOT . 'upload.php?' . ($site ? 'site='.$site.'&amp;' : '') . 'section=' . $decoded['section'] . '&amp;entry=' . $entry['id']['value'] . '&amp;mediafolder=' . $entry['mediafolder']['value'] . '" class="xEntryGalleryForm" method="post" enctype="multipart/form-data">' .
+									'<form target="xEntryUploadFrame' . $entry['id']['value'] . '" action="' . $ENGINE_ABS_ROOT . 'upload.php?' . ($site ? 'site='.$site.'&amp;' : '') . 'section=' . $decoded['section'] . '&amp;entry=' . $entry['id']['value'] . '&amp;mediafolder=' . $entry['mediafolder']['value'] . '&amp;session_id=' . session_id() . '" class="xEntryGalleryForm" method="post" enctype="multipart/form-data">' .
 										'<input type="hidden" name="upload_key" value="" />' .
 										'<input type="hidden" name="upload_type" value="fallback" />' .
 										//'<input type="file" name="Filedata" class="xUploadFile" /> ' .

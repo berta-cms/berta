@@ -2,7 +2,7 @@
 
 return array(
 
-	'berta_copyright_text' => 'Gemaakt met <a href="http://www.berta.me/" target="_blank" title="Maak snel jouw eigen site met">Berta</a>',
+	'berta_copyright_text' => 'Gemaakt met <a href="http://www.berta.me/" target="_blank" title="Maak snel jouw eigen site met">Berta.me</a>',
 
 	// Translations from the top "admin" menu
 
@@ -10,9 +10,9 @@ return array(
 		/* menu item */ 'my site' => 'mijn site',
 		/* menu item */ 'sections' => 'sections',
 		/* menu item */ 'settings' => 'instellingen',
-		/* menu item */ 'template design' => 'template design',
+		/* menu item */ 'design' => 'design',
 		/* menu item */ 'profile' => 'profiel',
-		/* menu item */ 'sign out' => 'uitloggen',
+		/* menu item */ 'log out' => 'uitloggen',
 
 	// Translatins from login / logout window
 
@@ -22,10 +22,10 @@ return array(
 	// First visit
 
 		'welcome' => 'Welkom!',
-		'welcome_text__not_installed' => '<h2>Goed dat je Berta gebruikt!</h2>
+		'welcome_text__not_installed' => '<h2>Goed dat je Berta.me gebruikt!</h2>
 		<p>Berta is nog niet geconfigureerd.<br /><a href="%s">Log in</a> en volg de set up procedure.</p>',
 
-		'welcome_text__not_supported' => '<h2>Goed dat je Berta gebruikt!</h2>
+		'welcome_text__not_supported' => '<h2>Goed dat je Berta.me gebruikt!</h2>
 		<p>Deze server voldoet helaas niet aan Berta\'s minimum eisen.<br />
 										PHP versie 5 of hoger moet op de server geinstalleerd zijn.</p>',
 
@@ -36,9 +36,9 @@ return array(
 		'What is the title of your site?' => 'Wat is de titel (naam) van jouw site?',
 		'Site title will be visible in all sections of your site.' => 'De titel (naam) van jouw site is zichtbaar in alle Sections van jouw site.',
 		'What is your name?' => 'Wat is jouw naam?',
-		'Your name will be put in the copyright notice in the footer of yout site. You can leave it blank.' => 'Jouw naam wordt in de copyright-notice onderin (in de footer) het beeld gezet. Je mag dit ook leeg laten.',
-		'How would you — in one sentence — describe your site?' => 'Hoe zou je -in één zin- jouw site beschrijven?',
-		'This will appear under your site name as an excerpt in search engine results.' => 'Dit zal verschijnen als samenvatting onder de sitenaam in de (Google) zoekresultaten.',
+		'It will appear in the copyright notice in the footer. You may leave it blank.' => 'Jouw naam wordt in de copyright-notice onderin (in de footer) het beeld gezet. Je mag dit ook leeg laten.',
+		'What is this website about?' => 'Hoe zou je -in één zin- jouw site beschrijven?',
+		'It will appear under your site name in search engine results.' => 'Dit zal verschijnen als samenvatting onder de sitenaam in de (Google) zoekresultaten.',
 		'Note: the fields that already have value appear yellow only when you roll over them with your mouse. Click on the text below to edit.' => 'Tip: de velden die al een waarde hebben verschijnen alleen als gele velden als je eroverheen gaat met je cursor . Klik op[ onderstaande tekst om deze aan te passen.',
 		'Done!' => 'Klaar!',
 
@@ -72,7 +72,7 @@ return array(
 	// Translations from settings page (settings.php)
 
 		/* title */ 'Settings' => 'Instellingen',
-		/* title */ 'Template design' => 'Template Design',
+		/* title */ 'Design' => 'Design',
 		'These are settings for template' => 'Dit zijn de instellingen voor de Template',
 
 		'Some help with CSS values' => 'Hulp met CSS waarden (units)',
@@ -84,7 +84,7 @@ return array(
 	// Translations from inc.settings.php
 
 		'Texts in the website' => 'Tekst in de website',
-		'Main heading' => 'Heading titel',
+		'Site heading' => 'Heading titel',
 
 		/* setting tab & setting name */ 'Template' => 'Template',
 		/* help text */    'Templates are like skins or themes for your site. You can choose one template from the ones installed in your templates folder. To add a new template to this list, upload it to the templates folder via FTP.' => 'Templates zijn als een Theme of Skin voor jouw site. Je kan een Template kiezen uit degene die in jouw Templates folder zijn geinstalleerd (Settings>Templates). Om zelf een nieuwe Template toe te voegen aan deze lijst moet je die uploaden via FTP.',
