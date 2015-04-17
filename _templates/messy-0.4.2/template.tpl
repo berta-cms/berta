@@ -1,20 +1,19 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<!DOCTYPE html>
+<html>
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta charset="UTF-8">
     {if $berta.settings.pageLayout.responsive=='yes'}<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">{/if}
-    <title>{if $berta.section.seoTitle}{ $berta.section.seoTitle|strip_tags|escape }{else}{ $berta.pageTitle|strip_tags|escape }{/if}</title>
-    <meta name="keywords" content="{if $berta.section.seoKeywords}{ $berta.section.seoKeywords|strip_tags|escape }{else}{ $berta.settings.texts.metaKeywords|strip_tags|escape }{/if}" />
-    <meta name="description" content="{if $berta.section.seoDescription}{ $berta.section.seoDescription|strip_tags|escape }{else}{ $berta.settings.texts.metaDescription|strip_tags|escape }{/if}" />
-    <meta name="author" content="{ $berta.settings.texts.ownerName }" />
-    {if $berta.options.NOINDEX}<meta name="robots" content="noindex, nofollow" />{/if}
+    <meta name="keywords" content="{if $berta.section.seoKeywords}{ $berta.section.seoKeywords|strip_tags|escape }{else}{ $berta.settings.texts.metaKeywords|strip_tags|escape }{/if}">
+    <meta name="description" content="{if $berta.section.seoDescription}{ $berta.section.seoDescription|strip_tags|escape }{else}{ $berta.settings.texts.metaDescription|strip_tags|escape }{/if}">
+    <meta name="author" content="{ $berta.settings.texts.ownerName }">
+    {if $berta.options.NOINDEX}<meta name="robots" content="noindex, nofollow">{/if}
     {$berta.settings.settings.googleSiteVerification|@html_entity_decode}
+    <title>{if $berta.section.seoTitle}{ $berta.section.seoTitle|strip_tags|escape }{else}{ $berta.pageTitle|strip_tags|escape }{/if}</title>
 
     { if $berta.settings.pageLayout.favicon }
-    <link rel="SHORTCUT ICON" href="{ $berta.options.MEDIA_ABS_ROOT }{ $berta.settings.pageLayout.favicon }" />
+    <link rel="SHORTCUT ICON" href="{ $berta.options.MEDIA_ABS_ROOT }{ $berta.settings.pageLayout.favicon }">
     { else }
-    <link rel="SHORTCUT ICON" href="{ $berta.options.TEMPLATES_ABS_ROOT }{ $berta.templateName }/favicon.ico" />
+    <link rel="SHORTCUT ICON" href="{ $berta.options.TEMPLATES_ABS_ROOT }{ $berta.templateName }/favicon.ico">
     { /if }
     { if ($berta.section.type == 'shopping_cart' &&  $berta.environment == 'engine') || $berta.section.type != 'shopping_cart'  }
     { $berta.scripts }
@@ -31,7 +30,7 @@
         </style>
     {/if}
     { if $berta.shop_enabled == true }
-        <link rel="stylesheet" href="{ $berta.options.SITE_ABS_ROOT }_plugin_shop/css/shop.css.php?{$berta.options.int_version}{if $berta.options.MULTISITE}&amp;site={$berta.options.MULTISITE}{/if}" type="text/css" />
+        <link rel="stylesheet" href="{ $berta.options.SITE_ABS_ROOT }_plugin_shop/css/shop.css.php?{$berta.options.int_version}{if $berta.options.MULTISITE}&amp;site={$berta.options.MULTISITE}{/if}" type="text/css">
     { /if }
 
     {if $berta.settings.css.customCSS}
