@@ -43,6 +43,10 @@
         </style>
     {/if}
 
+    { if count($berta.publishedSections) > 0 && $berta.environment == 'site' && $berta.sectionName == $berta.sections|@key }
+        { include file="../_includes/inc.js_include_head_first_section.tpl" }
+    {/if}
+
     {* custom CSS file, move code to settings field, when ready *}
     <link rel="stylesheet" href="{ $berta.options.TEMPLATES_ABS_ROOT }{ $berta.templateName }/custom.css?{$berta.options.int_version}" type="text/css" />
     <!--[if lt IE 9]>

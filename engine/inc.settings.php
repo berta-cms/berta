@@ -133,6 +133,7 @@ $settingsDefinition = array(
 		'showTutorialVideos' =>		array('format' => 'select', 'default' => 'yes', 'values' => array('yes', 'no'), 'title' => I18n::_('Show videos on startup'), 'description' => I18n::_('Show or hide Berta\'s tutorial videos on startup. To view the videos, set this to \'Yes\' and they will appear next time you log in.')),
 		'jsInclude' => 		array('format' => 'longtext',	'allow_blank' => true, 	'default' => '', 			'html_entities'	=> true,			'title' => I18n::_('Javascript include'), 'description' => I18n::_('javascript_include')),
 		'jsIncludeHeadTop' => 		array('format' => 'longtext',	'allow_blank' => true, 	'default' => '', 			'html_entities'	=> true,			'title' => I18n::_('Javascript include &lt;head&gt;'), 'description' => I18n::_('javascript_include_head_top')),
+        'jsIncludeHeadLandingPage' =>       array('format' => 'longtext',   'allow_blank' => true,  'default' => '',            'html_entities' => true,            'title' => I18n::_('Javascript include &lt;head&gt; first section'), 'description' => I18n::_('javascript_include_head_first_section')),
  	)
 );
 

@@ -1,0 +1,1 @@
+{$berta.settings.settings.jsIncludeHeadLandingPage|@html_entity_decode|replace:'<br />':"\n"}
