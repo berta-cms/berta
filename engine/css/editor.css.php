@@ -2291,6 +2291,9 @@ body.xSettingsPageBody {
 			width: 370px;
 		}
 
+    #multisites li.selected {
+        font-weight: bold;
+    }
 
 	#xMultisiteEditor {
 		width: 960px;
