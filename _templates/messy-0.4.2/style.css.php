@@ -680,7 +680,6 @@ nav ul{
 
 <?php if( $isResponsive ){ ?>
 	img,
-	iframe,
 	#pageEntries .xEntry .xGalleryContainer .xGallery,
 	#pageEntries .xEntry .xGalleryContainer .xGallery .xGalleryItem,
 	#pageEntries .xEntry .xGalleryContainer .xGallery .xGalleryItem .image {

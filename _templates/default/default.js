@@ -18,17 +18,23 @@ var DefaultTemplate = new Class({
 
     iframeResponsiveFix: function(el) {
         el.each(function(item) {
-            var width = item.get('width');
-            var height = item.get('height');
-            var wrapper = new Element('div', {'class': 'iframeWrapper'});
+            var source = item.get('src');
 
-            if (width && height){
-                wrapper.setStyle('padding-bottom', height*100/width + '%');
-            }
+            berta.options.iframeWrapperWhiteList.each(function(whiteList){
+                if (source.indexOf(whiteList) > -1) {
+                    var width = item.get('width');
+                    var height = item.get('height');
+                    var wrapper = new Element('div', {'class': 'iframeWrapper'});
 
-            if ( !item.getParent().hasClass('iframeWrapper') ) { //if no iframeWrapper already exists
-                wrapper.wraps(item);
-            }
+                    if (width && height){
+                        wrapper.setStyle('padding-bottom', height*100/width + '%');
+                    }
+
+                    if ( !item.getParent().hasClass('iframeWrapper') ) { //if no iframeWrapper already exists
+                        wrapper.wraps(item);
+                    }
+                }
+            });
         });
     }
 });
