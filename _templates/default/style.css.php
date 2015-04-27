@@ -461,7 +461,6 @@ h1 {
 <?php if( $isResponsive ){ ?>
 
 	img,
-	iframe,
 	ol#pageEntries li.xEntry .xGalleryContainer .xGallery,
 	ol#pageEntries li.xEntry .xGalleryContainer .xGallery div.xGalleryItem,
 	ol#pageEntries li.xEntry .xGalleryContainer .xGallery div.xGalleryItem .image {
