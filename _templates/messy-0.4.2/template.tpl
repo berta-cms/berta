@@ -64,6 +64,8 @@
 </head>
 
 <body class="xContent-{ $berta.section.name }{if $berta.environment == 'engine'} page-xMySite{/if}">
+    { include file="../_includes/inc.js_include_after_body.tpl" }
+
     { if ($berta.section.type == 'shopping_cart' &&  $berta.environment == 'engine') || $berta.section.type != 'shopping_cart'  }
 
         {* *** section background ************************************************* *}

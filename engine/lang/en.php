@@ -34,6 +34,7 @@ return array(
 	'mobile_device_detected' => 'You can\'t use mobile device to edit your site!',
 	'javascript_include' => 'Javascript code included right before closing &lt;/body&gt; element. Learn more how to <a href="https://github.com/berta-cms/berta/wiki/Include-JavaScript-code" target="_blank" title="How to include JavaScript code">include JavaScript code</a>.',
 	'javascript_include_head_top' => 'Javascript code included immediately after opening &lt;head&gt; element.',
+    'javascript_include_body_top' => 'Javascript code included immediately after opening &lt;body&gt; element.',
     'javascript_include_head_first_section' => 'Javascript code included in &lt;head&gt; element on first section.',
 	'description_custom_css' => 'Place your custom CSS code here. Any existing CSS definitions will be overwritten. For more information visit our <a href="https://github.com/berta-cms/berta/wiki/Add-custom-CSS" target="_blank">WIKI</a>.',
 	'seo_help_text' => 'Search Engine Optimization (SEO) helps Google to find your website and improves its rank in search results. <a href="https://support.google.com/webmasters/answer/35624" target="_blank">Learn more how it works</a>.'

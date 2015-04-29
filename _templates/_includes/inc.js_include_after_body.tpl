@@ -1,0 +1,1 @@
+{$berta.settings.settings.jsIncludeBodyTop|@html_entity_decode|replace:'<br />':"\n"}
