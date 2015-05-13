@@ -48,7 +48,7 @@
     { /if }
 </head>
 
-<body class="xContent-{ $berta.section.name }{if $berta.environment == 'engine'} page-xMySite{/if}">
+<body class="xContent-{ $berta.section.name }{if $berta.tagName} xSubmenu-{$berta.tagName}{/if}{if $berta.environment == 'engine'} page-xMySite{/if}">
     { if ($berta.section.type == 'shopping_cart' &&  $berta.environment == 'engine') || $berta.section.type != 'shopping_cart'  }
 
         {* *** section background ************************************************* *}
