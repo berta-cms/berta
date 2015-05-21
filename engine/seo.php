@@ -71,5 +71,6 @@ $topPanelHTML = BertaEditor::getTopPanelHTML('seo');
 			</div>
 		</div>
 	</div>
+    <?php echo BertaEditor::intercomScript() ?>
 </body>
 </html>

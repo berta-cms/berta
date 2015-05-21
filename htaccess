@@ -37,6 +37,7 @@ RewriteBase /
 RewriteCond %{REQUEST_URI} ^/(_plugin_shop|engine|INSTALL|storage|_templates).*$	[OR]
 RewriteCond %{REQUEST_URI} ^/(index\.php|sitemap\.xml\.php|robots\.txt|crossdomain\.xml|favicon\.ico).*$
 
+RewriteRule engine/hosting$ - [F]
 RewriteRule .* - [L]
 
 # END OF CHANGABLE PART - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - /

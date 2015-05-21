@@ -90,5 +90,6 @@ $topPanelHTML = BertaEditor::getTopPanelHTML('multisite');
 			</div>
 		</div>
 	</div>
+    <?php echo BertaEditor::intercomScript() ?>
 </body>
 </html>

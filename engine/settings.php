@@ -140,5 +140,6 @@ $topPanelHTML = BertaEditor::getTopPanelHTML($mode);
 			<p>&nbsp; </p>
 		</div>
 	</div>
+    <?php echo BertaEditor::intercomScript() ?>
 </body>
 </html>
