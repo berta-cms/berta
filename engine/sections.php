@@ -5,7 +5,6 @@ include('inc.page.php');
 $loggedIn = $berta->security->userLoggedIn;
 include_once $ENGINE_ROOT . '_classes/class.bertaeditor.php';
 
-
 $allSections = BertaContent::getSections();
 $topPanelHTML = BertaEditor::getTopPanelHTML('sections');
 
@@ -133,5 +132,6 @@ $topPanelHTML = BertaEditor::getTopPanelHTML('sections');
 			</div>
 		</div>
 	</div>
+    <?php echo BertaEditor::intercomScript() ?>
 </body>
 </html>
