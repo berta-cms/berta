@@ -26,18 +26,20 @@ RewriteEngine on
 #		subfolder berta of the www root of your web server.
 RewriteBase /
 
-# ***	In the following RewriteCond statements, change the part "^/" to include
-#		the name of the foler you uploaded berta to.
-#		E.g.: "^/berta/" (without quotes), if you uploaded berta to the
-#		subfolder berta of the www root of your web server.
+# ***   In the following RewriteCond statements, change the part "^/" to include
+#       the name of the foler you uploaded berta to.
+#       E.g.: "^/berta/" (without quotes), if you uploaded berta to the
+#       subfolder berta of the www root of your web server.
+
+RewriteCond %{REQUEST_URI} !^(.*)/$
+RewriteRule engine/hosting$ - [F,L]
 
 # If you have folders or files inside berta's folder you wish to access directly,
 # then modify and uncomment the following line
-# RewriteCond %{REQUEST_URI} ^/(my_folder_name1|my_folder_name1|my_file.html).*$	[OR]
-RewriteCond %{REQUEST_URI} ^/(_plugin_shop|engine|INSTALL|storage|_templates).*$	[OR]
+# RewriteCond %{REQUEST_URI} ^/(my_folder_name1|my_folder_name1|my_file.html).*$    [OR]
+RewriteCond %{REQUEST_URI} ^/(_plugin_shop|engine|INSTALL|storage|_templates).*$    [OR]
 RewriteCond %{REQUEST_URI} ^/(index\.php|sitemap\.xml\.php|robots\.txt|crossdomain\.xml|favicon\.ico).*$
 
-RewriteRule engine/hosting$ - [F]
 RewriteRule .* - [L]
 
 # END OF CHANGABLE PART - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - /
