@@ -29,6 +29,7 @@ $sectionTypes = array(
 		'marked_items_imageselect' => array('format' => 'select', 'values' => array('random' => 'random image', 'first' => 'first image'), 'default' => 'first', 'html_before' => '<div>show </div>'),
 		'marked_items_count' => array('format' => 'text', 'html_before' => '<br class="clear" /><div>from each of </div>', 'html_after' => '<div> marked entries</div><br class="clear" /><div>from all sections except this one</div>', 'default' => '5')
 	)),
+    'portfolio' => array('title' => 'Portfolio')
 );
 
 $templateConf = array(
