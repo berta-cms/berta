@@ -616,3 +616,39 @@ var BertaGallery = new Class({
 	}
 
 });
+
+
+var BertaPortfolio = new Class({
+
+    initialize: function(options) {
+        window.addEvent('domready', this.onDOMReady.bindWithEvent(this));
+    },
+
+    onDOMReady: function() {
+        this.portfolioThumbnails();
+    },
+
+    portfolioThumbnails: function(){
+        var container = $$('.portfolioThumbnails');
+        var entries = $$('.xEntry');
+
+        if (container.length){
+            var links = container.getElements('a');
+
+            $$(links).addEvent('click', function(event) {
+                var target = $$(this.get('href'));
+                entries.addClass('xHidden');
+                target.removeClass('xHidden');
+            });
+        }
+
+        var hash = window.location.hash;
+        if (hash.length) {
+            var link = $$(hash);
+            if (link.length) {
+                link.removeClass('xHidden');
+            }
+        }
+    }
+});
+var bertaPortfolio = new BertaPortfolio();
