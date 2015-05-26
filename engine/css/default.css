@@ -87,6 +87,36 @@ div.xGalleryItem {
 	-webkit-text-size-adjust: none;
 }
 
+.portfolioThumbnail {
+    width: 33%;
+    padding: 0 0 20px 20px;
+    box-sizing: border-box;
+    display: inline-block;
+    transition: .2s;
+}
+
+.portfolioThumbnail:hover {
+    opacity: .8;
+}
+
+.portfolioThumbnail:nth-child(3n+1) {
+    clear: left;
+    padding: 0 0 20px 0;
+}
+
+.portfolioThumbnail a:hover {
+    text-decoration: none;
+}
+
+.portfolioThumbnail img {
+    display: inline-block;
+    max-width: 100%;
+}
+
+.portfolioThumbnail span {
+    display: block;
+}
+
 /* helpers */
 
 .clearfix { zoom: 1; }

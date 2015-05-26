@@ -149,7 +149,7 @@
 
 				{* now loop through all entries and print them out *}
 				{ foreach from=$entries key="entryId" item="entry" name="entriesLoop" }
- 					<li class="entry { entryClasses entry=$entry }" id="{ entrySlug entry=$entry }">
+ 					<li class="entry {if $berta.section.type == 'portfolio'}xHidden {/if}{ entryClasses entry=$entry }" id="{ entrySlug entry=$entry }">
 
 						{* the entry settings and delete and move buttons live in the entryHeader - don't leave it out! *}
 						{ entryHeader entry=$entry }
