@@ -91,7 +91,7 @@ div.xGalleryItem {
     width: 33%;
     padding: 0 0 20px 20px;
     box-sizing: border-box;
-    display: inline-block;
+    float: left;
     transition: .2s;
 }
 
@@ -126,4 +126,39 @@ div.xGalleryItem {
 
 .xHidden {
 	display: none !important;
+}
+
+/* small tablet */
+@media (max-width: 767px)  {
+
+    .portfolioThumbnail {
+        width: 49%;
+    }
+
+    .portfolioThumbnail:nth-child(3n+1) {
+        clear: none;
+        padding: 0 0 20px 20px;
+    }
+
+    .portfolioThumbnail:nth-child(2n+1) {
+        clear: left;
+        padding: 0 0 20px 0;
+    }
+
+}
+
+/* phone */
+@media (max-width: 480px) {
+
+    .portfolioThumbnail {
+        width: 100%;
+        padding: 0 0 20px 0;
+    }
+
+    .portfolioThumbnail:nth-child(3n+1),
+    .portfolioThumbnail:nth-child(2n+1) {
+        clear: none;
+        padding: 0 0 20px 0;
+    }
+
 }
