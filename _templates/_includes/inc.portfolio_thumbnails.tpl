@@ -1,5 +1,5 @@
 {if ($entries)}
-    <div class="portfolioThumbnails">
+    <div class="portfolioThumbnails clearfix">
         {foreach from=$entries key="entryId" item="entry" name="entriesLoop"}
             <div class="portfolioThumbnail">
                 <a href="#{ entrySlug entry=$entry }">
