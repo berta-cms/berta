@@ -41,6 +41,10 @@ var BertaGallery = new Class({
 	isResponsive: false,
 
 	initialize: function(container, options) {
+        if (container.hasClass('xInitialized')) {
+            return;
+        }
+        container.addClass('xInitialized');
 		this.setOptions(options);
 		this.attach(container);
 		this.loadFirst();
@@ -620,7 +624,10 @@ var BertaGallery = new Class({
 
 var BertaPortfolio = new Class({
 
+    Implements: Options,
+
     initialize: function(options) {
+        this.setOptions(options);
         window.addEvent('domready', this.onDOMReady.bindWithEvent(this));
     },
 
@@ -628,9 +635,23 @@ var BertaPortfolio = new Class({
         this.portfolioThumbnails();
     },
 
+    showEntry: function(entry) {
+        entry.removeClass('xHidden');
+        var gallery = entry.getElement('.xGalleryContainer');
+
+        setTimeout(function(){
+            if (bertaGlobalOptions.environment == 'site'){
+                berta.initGallery(gallery[0]);
+            }else{
+                bertaEditor.initGallery(gallery[0]);
+            }
+        }, 500);
+    },
+
     portfolioThumbnails: function(){
         var container = $$('.portfolioThumbnails');
         var entries = $$('.xEntry');
+        that = this;
 
         if (container.length){
             var links = container.getElements('a');
@@ -638,7 +659,7 @@ var BertaPortfolio = new Class({
             $$(links).addEvent('click', function(event) {
                 var target = $$(this.get('href'));
                 entries.addClass('xHidden');
-                target.removeClass('xHidden');
+                that.showEntry(target);
             });
         }
 
@@ -646,7 +667,7 @@ var BertaPortfolio = new Class({
         if (hash.length) {
             var link = $$(hash);
             if (link.length) {
-                link.removeClass('xHidden');
+                this.showEntry(link);
             }
         }
     }

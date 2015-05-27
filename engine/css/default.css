@@ -92,16 +92,20 @@ div.xGalleryItem {
     padding: 0 0 20px 20px;
     box-sizing: border-box;
     float: left;
-    transition: .2s;
-}
-
-.portfolioThumbnail:hover {
-    opacity: .8;
 }
 
 .portfolioThumbnail:nth-child(3n+1) {
     clear: left;
     padding: 0 0 20px 0;
+}
+
+.portfolioThumbnail .wrap {
+    position: relative;
+    transition: .2s;
+}
+
+.portfolioThumbnail .wrap:hover {
+    opacity: .8;
 }
 
 .portfolioThumbnail a:hover {
