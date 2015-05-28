@@ -87,6 +87,31 @@ div.xGalleryItem {
 	-webkit-text-size-adjust: none;
 }
 
+.xSectionType-portfolio .xGalleryContainer {
+    width: 50%;
+    float: left;
+    box-sizing: border-box;
+}
+
+.xSectionType-portfolio .xGalleryContainer.xGalleryType-row {
+    width: 100%;
+    float: none;
+}
+
+
+.xSectionType-portfolio .entryTextWrap {
+    width: 50%;
+    float: left;
+    box-sizing: border-box;
+    padding-left: 20px;
+}
+
+.xSectionType-portfolio .entryTextWrap.galleryType-row {
+    width: 100%;
+    float: none;
+    padding-left: 0;
+}
+
 .portfolioThumbnail {
     width: 33%;
     padding: 0 0 20px 20px;
@@ -134,6 +159,17 @@ div.xGalleryItem {
 
 /* small tablet */
 @media (max-width: 767px)  {
+
+    .xSectionType-portfolio .xGalleryContainer {
+        width: 100%;
+        float: none;
+    }
+
+    .xSectionType-portfolio .entryTextWrap {
+        width: 100%;
+        float: none;
+        padding-left: 0;
+    }
 
     .portfolioThumbnail {
         width: 49%;
