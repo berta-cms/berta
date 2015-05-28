@@ -485,6 +485,23 @@ a img { border: none; }
 		height: 100% !important;
 	}
 
+    .xSectionType-portfolio img,
+    .xSectionType-portfolio ol#pageEntries li.xEntry .xGalleryContainer .xGallery,
+    .xSectionType-portfolio ol#pageEntries li.xEntry .xGalleryContainer .xGallery div.xGalleryItem,
+    .xSectionType-portfolio ol#pageEntries li.xEntry .xGalleryContainer .xGallery div.xGalleryItem .image {
+        max-width: 100% !important;
+        height: auto !important;
+    }
+
+    .xSectionType-portfolio ol#pageEntries li.xEntry .xGalleryType-row .xGallery {
+        max-width: inherit !important;
+    }
+
+    .xSectionType-portfolio ol#pageEntries li.xEntry .xGalleryType-row .xGallery .xGalleryItem {
+        padding-bottom: <?php echo $s->get('entryLayout', 'spaceBetweenImages') ?>;
+        padding-right: 0;
+    }
+
 
 <?php if( $isResponsive ){ ?>
 

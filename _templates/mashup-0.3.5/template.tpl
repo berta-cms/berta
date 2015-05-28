@@ -156,17 +156,22 @@
 
 							{* now loop through all entries and print them out *}
 							{ foreach from=$entries item="entry" name="entriesLoop" }
-								<li class="entry { entryClasses entry=$entry }">
-
+                                <li class="entry clearfix {if $berta.section.type == 'portfolio'}xHidden {/if}{ entryClasses entry=$entry }" id="{ entrySlug entry=$entry }">
 									{* the entry settings and delete and move buttons live in the entryHeader - don't leave it out! *}
 									{ entryHeader entry=$entry }
 
 									{* entryGallery prints the image gallery for the entry *}
 									{ entryGallery entry=$entry }
 
-									{ if $berta.environment == 'engine' || !empty($entry.description) }
-									<div class="entryText xEditableMCE xProperty-description">{ $entry.description }</div>
-									{ /if }
+                                    <div class="entryTextWrap galleryType-{ $entry.__raw.mediaCacheData['@attributes'].type }">
+                                        { if ($berta.environment == 'engine' && $berta.section.type == 'portfolio') || !empty($entry.title) }
+                                            <h2><span class="xEditable xProperty-title xCaption-entry&nbsp;title">{ $entry.title }</span></h2>
+                                        { /if }
+
+                                        { if $berta.environment == 'engine' || !empty($entry.description) }
+                                            <div class="entryText xEditableMCE xProperty-description">{ $entry.description }</div>
+                                        { /if }
+                                    </div>
 
 									{* entry footer wraps the entry including the header - don't leave it out! *}
 									{ entryFooter entry=$entry }
@@ -179,6 +184,10 @@
 						</ol>
 
 						<br class="clear" />
+
+                        {if $berta.section.type == 'portfolio'}
+                            { include file="../_includes/inc.portfolio_thumbnails.tpl"  }
+                        {/if}
 					</div>
 				</div>
 			</div>
