@@ -19,7 +19,6 @@
 	{ else }
 	<link rel="SHORTCUT ICON" href="{ $berta.options.TEMPLATES_ABS_ROOT }{ $berta.templateName }/favicon.ico">
 	{ /if }
-
 	{ $berta.scripts }
 	{ $berta.css }
     {if $berta.settings.css.customCSS}
@@ -27,9 +26,7 @@
         {$berta.settings.css.customCSS|@html_entity_decode|replace:'<br />':"\n"}
         </style>
     {/if}
-
 	{ googleWebFontsAPI }
-
 	<script type="text/javascript" src="{ $berta.options.TEMPLATES_ABS_ROOT }{ $berta.templateName }/white.js?{$berta.options.int_version}"></script>
 </head>
 
@@ -125,8 +122,7 @@
 
 					{* now loop through all entries and print them out *}
 					{ foreach from=$entries key="entryId" item="entry" name="entriesLoop" }
-						<li class="entry { entryClasses entry=$entry }">
-
+						<li class="entry {if $berta.section.type == 'portfolio'}xHidden {/if}{ entryClasses entry=$entry }" id="{ entrySlug entry=$entry }">
 							{* the entry settings and delete and move buttons live in the entryHeader - don't leave it out! *}
 							{ entryHeader entry=$entry }
 
@@ -140,14 +136,16 @@
 							{* entry footer wraps the entry including the header - don't leave it out! *}
 							{ entryFooter entry=$entry }
 						</li>
-
 					{ foreachelse }
 						{* the template can be modified in a way that here goes content the is displayed when there are no entries in the section *}
-
 					{ /foreach }
 				</ol>
 
 				<br class="clear" />
+
+                {if $berta.section.type == 'portfolio'}
+                    { include file="../_includes/inc.portfolio_thumbnails.tpl"  }
+                {/if}
 			</div>
 		</div>
 
