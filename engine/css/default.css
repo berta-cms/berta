@@ -90,7 +90,7 @@ div.xGalleryItem {
 .xSectionType-portfolio .xGalleryContainer {
     width: 50%;
     float: left;
-    box-sizing: border-box;
+    -webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;
 }
 
 .xSectionType-portfolio .xGalleryContainer.xGalleryType-row {
@@ -102,8 +102,8 @@ div.xGalleryItem {
 .xSectionType-portfolio .entryTextWrap {
     width: 50%;
     float: left;
-    box-sizing: border-box;
     padding-left: 20px;
+    -webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;
 }
 
 .xSectionType-portfolio .entryTextWrap.galleryType-row {
@@ -115,8 +115,8 @@ div.xGalleryItem {
 .portfolioThumbnail {
     width: 33%;
     padding: 0 0 20px 20px;
-    box-sizing: border-box;
     float: left;
+    -webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;
 }
 
 .portfolioThumbnail:nth-child(3n+1) {

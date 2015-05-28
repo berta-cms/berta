@@ -129,8 +129,6 @@
 							{* entryGallery prints the image gallery for the entry *}
 							{ entryGallery entry=$entry }
 
-
-
                             <div class="entryTextWrap galleryType-{ $entry.__raw.mediaCacheData['@attributes'].type }">
                                 { if ($berta.environment == 'engine' && $berta.section.type == 'portfolio') || !empty($entry.title) }
                                     <h2><span class="xEditable xProperty-title xCaption-entry&nbsp;title">{ $entry.title }</span></h2>
