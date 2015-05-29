@@ -5,7 +5,7 @@ $IS_CSS_FILE = true;
 include('../../engine/inc.page.php');
 $s =& $berta->template->settings;
 $isEngineView = $berta->security->userLoggedIn;
-$isResponsive = $s->get('pageLayout', 'responsive')=='yes';
+$isResponsive = $s->get('pageLayout', 'responsive')=='yes' || isset($_GET['responsive']);
 
 $expires= 60 * 60 * 24 * 1;	// 1 day
 header('Pragma: public');

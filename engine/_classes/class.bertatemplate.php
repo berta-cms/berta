@@ -336,10 +336,11 @@ class BertaTemplate extends BertaBase {
 		$timestamp = time();
 		$site = !empty(self::$options['MULTISITE']) ? '&amp;site='.self::$options['MULTISITE'] : '';
 
+        $forceResponsiveStyleParam = $jsSettings['sectionType'] == 'portfolio' ? '&amp;responsive=1' : '';
 		$vars['berta']['css'] = <<<DOC
 	<link rel="stylesheet" href="{$engineAbsRoot}_lib/video-js/video-js.min.css" type="text/css">
 	<link rel="stylesheet" href="{$engineAbsRoot}css/default.css?{$int_version}" type="text/css">
-	<link rel="stylesheet" href="{$templatesAbsRoot}{$this->name}/style.css.php?{$timestamp}{$site}" type="text/css">
+	<link rel="stylesheet" href="{$templatesAbsRoot}{$this->name}/style.css.php?{$timestamp}{$site}{$forceResponsiveStyleParam}" type="text/css">
 
 DOC;
 		if($this->loggedIn) {
