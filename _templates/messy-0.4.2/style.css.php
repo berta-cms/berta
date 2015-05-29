@@ -631,6 +631,9 @@ nav ul{
 	max-width: none !important;
 }
 
+.portfolioThumbnails {
+    margin: <?php echo $s->get('pageLayout', 'menuMargin') ?>;
+}
 
 /* responsive row/column classes */
 .row {

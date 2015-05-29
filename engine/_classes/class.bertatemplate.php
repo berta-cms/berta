@@ -49,7 +49,7 @@ class BertaTemplate extends BertaBase {
 
 	public function load($templateName, $generalSettingsInstance = false) {
 
-		//set default temaplte as messy
+		//set default template as messy
 		if (!$templateName){
             foreach ( $this->getAllTemplates() AS $tpl ){
                 list($template_all)=explode('-',$tpl);
