@@ -9,10 +9,19 @@
  * -------------------------------------------------------------
  */
 function smarty_function_entrySlug($params, &$smarty) {
+    global $berta;
 
     if(!empty($params['entry'])) {
-        $title = isset($params['entry']['title']) && $params['entry']['title'] ? $params['entry']['title'] : 'entry-'.$params['entry']['id'];
+        $section_type = isset($berta->sections[$berta->sectionName]['@attributes']['type']) ? $berta->sections[$berta->sectionName]['@attributes']['type'] : null;
+
+        if ( $section_type == 'portfolio' && isset($params['entry']['title']) && $params['entry']['title'] ) {
+            $title = $params['entry']['title'];
+        } else {
+            $title = 'entry-'.$params['entry']['id'];
+        }
+
         $slug = strtolower(BertaUtils::canonizeString($title, '-', '-'));
+
         return $slug;
     }
 

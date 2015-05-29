@@ -294,49 +294,46 @@
                     {* now loop through all entries and print them out *}
                     { foreach $entries as $entry }
 
-                        <div class="{ entryClasses entry=$entry } { messClasses property='positionXY' } xShopMessyEntry" style="{ messStyles xy=$entry.positionXY entry=$entry }{ if $berta.settings.pageLayout.responsive != 'yes' }{if $entry.width} width:{$entry.width};{elseif strlen(trim($berta.settings.shop.entryWidth)) > 0  && $berta.section.type == 'shop'}width: { $berta.settings.shop.entryWidth }px;{ /if }{/if}">
+                        <div class="entry clearfix {if $berta.section.type == 'portfolio'}xHidden {/if}{ entryClasses entry=$entry } { messClasses property='positionXY' } xShopMessyEntry" style="{ messStyles xy=$entry.positionXY entry=$entry }{ if $berta.settings.pageLayout.responsive != 'yes' }{if $entry.width} width:{$entry.width};{elseif strlen(trim($berta.settings.shop.entryWidth)) > 0  && $berta.section.type == 'shop'}width: { $berta.settings.shop.entryWidth }px;{ /if }{/if}" id="{ entrySlug entry=$entry }">
 
-
-                            {* the entry settings and delete and move buttons live in the entryHeader - don't leave it out! *}
                             { $isshopentry=0 }
                             { if $berta.section.type == 'shop' and $berta.shop_enabled == true }
                                 { $isshopentry=1 }
                             { /if }
+                            {* the entry settings and delete and move buttons live in the entryHeader - don't leave it out! *}
                             { customEntryHeader entry=$entry ishopentry=$isshopentry }
 
                             {* entryGallery prints the image gallery for the entry *}
                             { entryGallery entry=$entry }
 
+                            <div class="entryTextWrap galleryType-{ $entry.__raw.mediaCacheData['@attributes'].type }">
+                                { if ($berta.environment == 'engine' || !empty($entry.cartTitle)) and $berta.section.type == 'shop' and $berta.shop_enabled == true }
+                                    <h2><span class="xEditable xProperty-cartTitle xCaption-item-name cCartTitle">{ $entry.cartTitle }</span></h2>
+                                { elseif $berta.section.type == 'portfolio' && ($berta.environment == 'engine' || !empty($entry.title)) }
+                                    <h2><span class="xEditable xProperty-title xCaption-entry&nbsp;title">{ $entry.title }</span></h2>
+                                { /if }
 
-                            { if ($berta.environment == 'engine' || !empty($entry.cartTitle)) and $berta.section.type == 'shop' and $berta.shop_enabled == true }
-                                <h2><span class="xEditable xProperty-cartTitle xCaption-item-name cCartTitle">{ $entry.cartTitle }</span></h2>
-                            { /if }
+                                { if $berta.environment == 'engine' || !empty($entry.description) }
+                                    <div class="entryText xEditableMCE xProperty-description">{ $entry.description }</div>
+                                { /if }
 
+                                { if $berta.section.type == 'shop' and $berta.shop_enabled == true }
+                                    <div class="addToCart" data-uniqid="{$entry.uniqid}">
+                                        { if $berta.environment == 'engine' }
+                                            <div class="cartPrice xEditableRC xProperty-cartPrice xCaption-price xFormatModifier-toPrice" title="{ $entry.cartPrice }">{ $entry.cartPrice|@toPrice }</div>
+                                        {else}
+                                            <div class="cartPrice" title="{ $entry.cartPrice }" data-weight="{ $entry.weight|intval }">{ $entry.cartPrice|@toPrice }</div>
+                                        {/if}
 
-                            { if $berta.environment == 'engine' || !empty($entry.description) }
-                                <div class="entryText xEditableMCE xProperty-description">{ $entry.description }</div>
-                            { /if }
+                                        <br class="clear">
 
-
-
-                            { if $berta.section.type == 'shop' and $berta.shop_enabled == true }
-                                <div class="addToCart" data-uniqid="{$entry.uniqid}">
-                                    { if $berta.environment == 'engine' }
-                                        <div class="cartPrice xEditableRC xProperty-cartPrice xCaption-price xFormatModifier-toPrice" title="{ $entry.cartPrice }">{ $entry.cartPrice|@toPrice }</div>
-                                    {else}
-                                        <div class="cartPrice" title="{ $entry.cartPrice }" data-weight="{ $entry.weight|intval }">{ $entry.cartPrice|@toPrice }</div>
-                                    {/if}
-
-                                    <br class="clear">
-
-                                    <div class="cartAttributes{if !$entry.cartAttributes} hidden{/if}">{ $entry.cartAttributes|@toCartAttributes }</div>
-                                    <span class="aele{ if empty($entry.cartPrice) || $berta.environment == 'site'} hidden{/if}"><span>{ $berta.settings.shop.addToBasket }</span></span>
-                                    <span class="addedToCart hidden"><span></span> { $berta.settings.shop.addedToBasket }</span>
-                                    <span class="outOfStock hidden">{ $berta.settings.shop.outOfStock }</span>
-
-                                </div>
-                            { /if }
-
+                                        <div class="cartAttributes{if !$entry.cartAttributes} hidden{/if}">{ $entry.cartAttributes|@toCartAttributes }</div>
+                                        <span class="aele{ if empty($entry.cartPrice) || $berta.environment == 'site'} hidden{/if}"><span>{ $berta.settings.shop.addToBasket }</span></span>
+                                        <span class="addedToCart hidden"><span></span> { $berta.settings.shop.addedToBasket }</span>
+                                        <span class="outOfStock hidden">{ $berta.settings.shop.outOfStock }</span>
+                                    </div>
+                                { /if }
+                            </div>
 
                             {* entry footer wraps the entry including the header - don't leave it out! *}
                             { entryFooter entry=$entry }
@@ -348,6 +345,10 @@
                     { /foreach }
                 </div>
                 { /if }
+
+                {if $berta.section.type == 'portfolio'}
+                    { include file="../_includes/inc.portfolio_thumbnails.tpl"  }
+                {/if}
 
                 { if ($berta.environment == 'site' && $berta.settings.navigation.landingSectionMenuVisible=='yes') || $berta.environment == 'engine' || ($berta.environment == 'site' && $berta.settings.navigation.landingSectionMenuVisible=='no' && $berta.sectionName != $berta.sections|@key) }
                     <div id="additionalText" class="{ messClasses property='additionalTextXY' }" style="{ messStyles xy=$additionalTextXY }">
