@@ -2,7 +2,12 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    {if $berta.settings.pageLayout.responsive=='yes'}<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">{/if}
+    {if $berta.section.type == 'portfolio'}
+        {assign var=isResponsive value='yes'}
+    {else}
+        {assign var=isResponsive value=$berta.settings.pageLayout.responsive}
+    {/if}
+    {if $isResponsive=='yes'}<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">{/if}
     <meta name="keywords" content="{if $berta.section.seoKeywords}{ $berta.section.seoKeywords|strip_tags|escape }{else}{ $berta.settings.texts.metaKeywords|strip_tags|escape }{/if}">
     <meta name="description" content="{if $berta.section.seoDescription}{ $berta.section.seoDescription|strip_tags|escape }{else}{ $berta.settings.texts.metaDescription|strip_tags|escape }{/if}">
     <meta name="author" content="{ $berta.settings.texts.ownerName }">
@@ -19,7 +24,7 @@
     { $berta.scripts }
     { $berta.css }
     {* section related CSS for responsive layout *}
-    {if $berta.settings.pageLayout.responsive=='yes'}
+    {if $isResponsive=='yes'}
         <style type="text/css">
             #pageEntries .xEntry {literal}{{/literal}
                 padding: {if $berta.section.entryPadding }{ $berta.section.entryPadding }{ else }{ $berta.sectionTypes.default.params.entryPadding.default }{/if};
@@ -153,8 +158,8 @@
                 { if !$berta.options.MOBILE_DEVICE && ($berta.section.mediaCacheData.file|@count > 1 || $berta.section.mediaCacheData.file.value) && !($berta.section.type == 'grid' && $smarty.cookies._berta_grid_view) }
                     <div id="xBackgroundLeft"></div>
                     <div id="xBackgroundRight"></div>
-                    <div id="xBackgroundLeftCounter"{if $bgAttr.hide_navigation=='yes' || $berta.settings.pageLayout.responsive=='yes'} class="xHidden"{/if}><div class="counterContent"></div></div>
-                    <div id="xBackgroundRightCounter"{if $bgAttr.hide_navigation=='yes' || $berta.settings.pageLayout.responsive=='yes'} class="xHidden"{/if}><div class="counterContent"></div></div>
+                    <div id="xBackgroundLeftCounter"{if $bgAttr.hide_navigation=='yes' || $isResponsive=='yes'} class="xHidden"{/if}><div class="counterContent"></div></div>
+                    <div id="xBackgroundRightCounter"{if $bgAttr.hide_navigation=='yes' || $isResponsive=='yes'} class="xHidden"{/if}><div class="counterContent"></div></div>
                 { /if }
             </div>
 
@@ -206,13 +211,13 @@
         </div> {* allContainer *}
     { else }
 
-            <div id="contentContainer" class="{ if $berta.settings.pageLayout.centered=='yes' }xCentered { /if }{ if $berta.settings.pageLayout.responsive=='yes' }xResponsive{ /if }">
+            <div id="contentContainer" class="{ if $berta.settings.pageLayout.centered=='yes' }xCentered { /if }{ if $isResponsive=='yes' }xResponsive{ /if }">
 
                 {* *** shopping cart link ********************************************************************* *}
                 { if $berta.shop_enabled == true }
 
                     { if $shoppingCartSection }
-                        <div id="shoppingCart" class="{ messClasses property='shoppingCartXY' }"{if $shoppingCartXY} style="{ messStyles xy=$shoppingCartXY }"{/if}>
+                        <div id="shoppingCart" class="{ messClasses property='shoppingCartXY' isResponsive=$isResponsive }"{if $shoppingCartXY} style="{ messStyles xy=$shoppingCartXY isResponsive=$isResponsive }"{/if}>
                             {if $berta.environment == 'engine' }
                                 <a href="{ bertaLink section=$shoppingCartSection.name }" id="xShoppingCart"><span class="title">{ if $berta.settings.shop.cartImage }<img src="{ $berta.options.MEDIA_ABS_ROOT }{ $berta.settings.shop.cartImage }" alt="{ $shoppingCartSection.title }" title="{ $shoppingCartSection.title }" />{else}{ $shoppingCartSection.title }{/if}</span><span class="numItemsContainer hidden"> (<span class="numItems">0</span>)</span></a>
                             {else}
@@ -224,7 +229,7 @@
 
                 {* multisites menu ********************************************************************* *}
                 {if $berta.options.MULTISITES|count > 1}
-                    <ul id="multisites" class="{ messClasses property='multisitesXY' }" style="{ messStyles xy=$multisitesXY }">
+                    <ul id="multisites" class="{ messClasses property='multisitesXY' isResponsive=$isResponsive }" style="{ messStyles xy=$multisitesXY isResponsive=$isResponsive }">
                         {foreach $berta.options.MULTISITES AS $siteName => $site }
                             {if $berta.environment == 'engine' || $berta.options.MULTISITE != $siteName || ($siteName=='0' && $berta.options.MULTISITE !='' ) }
                                 <li{if $berta.options.MULTISITE === $siteName || ($siteName=='0' && $berta.options.MULTISITE =='')} class="selected"{/if}><a href="{ bertaLink site=$siteName }">{if $site['title']['value']!=''}{$site['title']['value']}{else}{if $siteName=='0'}Main site{else}{$siteName}{/if}{/if}</a></li>
@@ -243,9 +248,9 @@
                 <!-- PAGE HEADING -->
                 { if ($berta.environment == 'site' && $berta.settings.navigation.landingSectionPageHeadingVisible=='yes') || $berta.environment == 'engine' || ($berta.environment == 'site' && $berta.settings.navigation.landingSectionPageHeadingVisible=='no' && $berta.sectionName != $berta.sections|@key) }
                     { if $berta.settings.heading.image }
-                        <h1 class="{ messClasses property='siteHeadingXY' }{ if $berta.settings.heading.position == 'fixed' } xFixed{ /if }" style="{ messStyles xy=$siteHeadingXY }"><a href="{ bertaLink }">{ responsiveImage image = $berta.settings.heading prefix=image path = $berta.options.MEDIA_ABS_ROOT alt=$berta.settings.texts.pageTitle }</a></h1>
+                        <h1 class="{ messClasses property='siteHeadingXY' isResponsive=$isResponsive }{ if $berta.settings.heading.position == 'fixed' } xFixed{ /if }" style="{ messStyles xy=$siteHeadingXY isResponsive=$isResponsive }"><a href="{ bertaLink }">{ responsiveImage image = $berta.settings.heading prefix=image path = $berta.options.MEDIA_ABS_ROOT alt=$berta.settings.texts.pageTitle }</a></h1>
                     { else }
-                        <h1 class="{ messClasses property='siteHeadingXY' }{ if $berta.settings.heading.position == 'fixed' } xFixed{ /if }" style="{ messStyles xy=$siteHeadingXY }">
+                        <h1 class="{ messClasses property='siteHeadingXY' isResponsive=$isResponsive }{ if $berta.settings.heading.position == 'fixed' } xFixed{ /if }" style="{ messStyles xy=$siteHeadingXY isResponsive=$isResponsive }">
                             <span class="xEditable xProperty-siteHeading">
                             { if $berta.environment == "engine" }
                                 { $siteHeading }
@@ -260,17 +265,17 @@
                 <!-- MENU -->
                 { if count($berta.publishedSections) > 0 && (($berta.environment == 'site' && $berta.settings.navigation.landingSectionMenuVisible=='yes') || $berta.environment == 'engine' || ($berta.environment == 'site' && $berta.settings.navigation.landingSectionMenuVisible=='no' && $berta.sectionName != $berta.sections|@key)) }
                     <nav>
-                        {if $berta.settings.pageLayout.responsive == 'yes'}
+                        {if $isResponsive == 'yes'}
                             <a href="#" id="menuToggle"><span></span></a>
                         {/if}
                         <ul>
                             { assign var="currentSectionName" value=$berta.sectionName }
                             { foreach $berta.publishedSections as $sName => $section }
                                 { if $section.type != 'shopping_cart' }
-                                <li class="menuItem xSection-{ $sName } { messClasses property='positionXY' } { if $currentSectionName == $section.name }menuItemSelected{ /if }{ if $berta.settings.menu.position == 'fixed' } xFixed{ /if }" style="{ messStyles xy=$section.positionXY }">
+                                <li class="menuItem xSection-{ $sName } { messClasses property='positionXY' isResponsive=$isResponsive } { if $currentSectionName == $section.name }menuItemSelected{ /if }{ if $berta.settings.menu.position == 'fixed' } xFixed{ /if }" style="{ messStyles xy=$section.positionXY isResponsive=$isResponsive }">
                                     <a href="{ bertaLink section=$sName }" target="{ bertaTarget section=$sName }">{ $section.title }</a>
 
-                                    { if $berta.settings.tagsMenu.hidden=='no' && (!empty($berta.tags.$sName) && ($berta.settings.pageLayout.responsive == 'yes' || $berta.settings.tagsMenu.alwaysOpen=='yes' || $berta.sectionName==$sName)) }
+                                    { if $berta.settings.tagsMenu.hidden=='no' && (!empty($berta.tags.$sName) && ($isResponsive == 'yes' || $berta.settings.tagsMenu.alwaysOpen=='yes' || $berta.sectionName==$sName)) }
                                         <ul class="subMenu xSection-{ $sName }{ if $berta.tags.$sName|@count > 1 && $berta.environment == 'engine' } xAllowOrdering{ /if }">
                                             { foreach $berta.tags.$sName as $tName => $tag }
                                                 <li class="xTag-{ $tName }{ if $berta.tagName == $tName and $currentSectionName == $section.name } selected{ /if }">
@@ -289,12 +294,12 @@
 
                 {* If not grid view *}
                 { if !($smarty.cookies._berta_grid_view && $berta.section.type == 'grid') }
-                <div id="pageEntries" class="{ entriesListClasses }{ if $berta.settings.pageLayout.responsive != 'yes' } xNoEntryOrdering{else} {if intval($berta.section.columns)>1}columns-{intval($berta.section.columns)}{ /if }{ /if } clearfix">
+                <div id="pageEntries" class="{ entriesListClasses }{ if $isResponsive != 'yes' } xNoEntryOrdering{else} {if intval($berta.section.columns)>1}columns-{intval($berta.section.columns)}{ /if }{ /if } clearfix">
 
                     {* now loop through all entries and print them out *}
                     { foreach $entries as $entry }
 
-                        <div class="entry clearfix {if $berta.section.type == 'portfolio'}xHidden {/if}{ entryClasses entry=$entry } { messClasses property='positionXY' } xShopMessyEntry" style="{ messStyles xy=$entry.positionXY entry=$entry }{ if $berta.settings.pageLayout.responsive != 'yes' }{if $entry.width} width:{$entry.width};{elseif strlen(trim($berta.settings.shop.entryWidth)) > 0  && $berta.section.type == 'shop'}width: { $berta.settings.shop.entryWidth }px;{ /if }{/if}" id="{ entrySlug entry=$entry }">
+                        <div class="entry clearfix {if $berta.section.type == 'portfolio'}xHidden {/if}{ entryClasses entry=$entry } { messClasses property='positionXY' isResponsive=$isResponsive } xShopMessyEntry" style="{ messStyles xy=$entry.positionXY entry=$entry  isResponsive=$isResponsive }{ if $isResponsive != 'yes' }{if $entry.width} width:{$entry.width};{elseif strlen(trim($berta.settings.shop.entryWidth)) > 0  && $berta.section.type == 'shop'}width: { $berta.settings.shop.entryWidth }px;{ /if }{/if}" id="{ entrySlug entry=$entry }">
 
                             { $isshopentry=0 }
                             { if $berta.section.type == 'shop' and $berta.shop_enabled == true }
@@ -351,7 +356,7 @@
                 {/if}
 
                 { if ($berta.environment == 'site' && $berta.settings.navigation.landingSectionMenuVisible=='yes') || $berta.environment == 'engine' || ($berta.environment == 'site' && $berta.settings.navigation.landingSectionMenuVisible=='no' && $berta.sectionName != $berta.sections|@key) }
-                    <div id="additionalText" class="{ messClasses property='additionalTextXY' }" style="{ messStyles xy=$additionalTextXY }">
+                    <div id="additionalText" class="{ messClasses property='additionalTextXY' isResponsive=$isResponsive }" style="{ messStyles xy=$additionalTextXY isResponsive=$isResponsive }">
                         {if $berta.settings.socialMediaButtons.socialMediaLocation == 'additionalText' && $berta.settings.socialMediaButtons.socialMediaHTML}
                             { $berta.settings.socialMediaButtons.socialMediaHTML|@html_entity_decode|replace:'<br />':"\n" }
                         {else}
@@ -368,8 +373,8 @@
                     { assign var="setting_pos_name" value="banner`$smarty.section.banners.iteration`XY" }
 
                     { if $berta.settings.banners.$setting_name_image }
-                        <div class="floating-banner banner-{$smarty.section.banners.iteration}{ if $berta.settings.pageLayout.responsive!='yes' } xEditableDragXY xProperty-{ $setting_pos_name }{/if}"{ if $berta.settings.pageLayout.responsive!='yes' } style="{ bannerPos xy_name=$setting_pos_name }"{/if}>
-                            { if $berta.settings.pageLayout.responsive!='yes' }
+                        <div class="floating-banner banner-{$smarty.section.banners.iteration}{ if $isResponsive!='yes' } xEditableDragXY xProperty-{ $setting_pos_name }{/if}"{ if $isResponsive!='yes' } style="{ bannerPos xy_name=$setting_pos_name }"{/if}>
+                            { if $isResponsive!='yes' }
                                 <div class="xHandle"></div>
                             {/if}
                             { if $berta.settings.banners.$setting_name_link }
