@@ -112,6 +112,10 @@ div.xGalleryItem {
     padding-left: 0;
 }
 
+.portfolioThumbnails {
+    margin-left: -20px;
+}
+
 .portfolioThumbnail {
     width: 33%;
     padding: 0 0 20px 20px;
@@ -121,7 +125,6 @@ div.xGalleryItem {
 
 .portfolioThumbnail:nth-child(3n+1) {
     clear: left;
-    padding: 0 0 20px 0;
 }
 
 .portfolioThumbnail .wrap {
@@ -175,16 +178,11 @@ div.xGalleryItem {
         width: 49%;
     }
 
-    .portfolioThumbnail:nth-child(3n+1) {
-        clear: none;
-        padding: 0 0 20px 20px;
-    }
-
+    .portfolioThumbnail:nth-child(3n+1),
     .portfolioThumbnail:nth-child(2n+1) {
-        clear: left;
-        padding: 0 0 20px 0;
-    }
+        clear: none;
 
+    }
 }
 
 /* phone */
@@ -192,13 +190,11 @@ div.xGalleryItem {
 
     .portfolioThumbnail {
         width: 100%;
-        padding: 0 0 20px 0;
     }
 
     .portfolioThumbnail:nth-child(3n+1),
     .portfolioThumbnail:nth-child(2n+1) {
         clear: none;
-        padding: 0 0 20px 0;
     }
 
 }
