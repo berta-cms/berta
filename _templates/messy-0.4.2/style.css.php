@@ -631,7 +631,7 @@ nav ul{
 	max-width: none !important;
 }
 
-.portfolioThumbnails {
+.portfolioThumbnailsWrap {
     margin: <?php echo $s->get('pageLayout', 'menuMargin') ?>;
 }
 
