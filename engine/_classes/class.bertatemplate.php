@@ -336,24 +336,21 @@ class BertaTemplate extends BertaBase {
 		$timestamp = time();
 		$site = !empty(self::$options['MULTISITE']) ? '&amp;site='.self::$options['MULTISITE'] : '';
 
-		$vars['berta']['css'] = <<<DOC
-	<link rel="stylesheet" href="{$engineAbsRoot}_lib/video-js/video-js.min.css" type="text/css">
-	<link rel="stylesheet" href="{$engineAbsRoot}css/default.css?{$int_version}" type="text/css">
-	<link rel="stylesheet" href="{$templatesAbsRoot}{$this->name}/style.css.php?{$timestamp}{$site}" type="text/css">
-
+        if($this->loggedIn) {
+            $vars['berta']['css'] = <<<DOC
+    <link rel="stylesheet" href="{$engineAbsRoot}css/backend.min.css?{$int_version}" type="text/css">
+    <link rel="stylesheet" href="{$engineAbsRoot}css/editor.css.php?{$int_version}" type="text/css">
+    <link rel="stylesheet" href="{$templatesAbsRoot}{$this->name}/editor.css.php?{$int_version}" type="text/css">
 DOC;
-		if($this->loggedIn) {
-			$vars['berta']['css'] .= <<<DOC
-	<link rel="stylesheet" href="{$engineAbsRoot}css/editor.css.php?{$int_version}" type="text/css">
-	<link rel="stylesheet" href="{$templatesAbsRoot}{$this->name}/editor.css.php?{$int_version}" type="text/css">
-	<link rel="stylesheet" href="{$engineAbsRoot}_lib/moorainbow/mooRainbow.css" type="text/css">
-    <link rel="stylesheet" href="{$engineAbsRoot}_lib/introjs/introjs.min.css" type="text/css">
-DOC;
-		}else{
-			$vars['berta']['css'] .= <<<DOC
-	<link rel="stylesheet" href="{$engineAbsRoot}_lib/milkbox/css/milkbox/milkbox.css?{$int_version}" type="text/css">
+        }else{
+            $vars['berta']['css'] = <<<DOC
+    <link rel="stylesheet" href="{$engineAbsRoot}css/frontend.min.css?{$int_version}" type="text/css">
 DOC;
         }
+
+        $vars['berta']['css'] .= <<<DOC
+    <link rel="stylesheet" href="{$templatesAbsRoot}{$this->name}/style.css.php?{$timestamp}{$site}" type="text/css">
+DOC;
 
 		$vars['berta']['scripts'] = <<<DOC
 	<script src="{$engineAbsRoot}_lib/mootools/mootools-core-1.4.5-full-compat-yc.js" type="text/javascript" charset="utf-8"></script>
