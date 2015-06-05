@@ -1,5 +1,4 @@
 <?php
-
 header("Content-Type: text/css");
 
 $SITE_ROOT = '../../';
@@ -12,7 +11,6 @@ if(!1) { ?><style type="text/css"><?php } ?>
 	width: auto;
 	max-width: 500px;
 }
-
 
 #additionalText .xHandle {
 	position: absolute;
@@ -43,6 +41,5 @@ if(!1) { ?><style type="text/css"><?php } ?>
 .floating-banner:hover .xHandle  {
 	visibility: visible;
 }
-
 
 <?php if(!1) { ?></style><?php } ?>

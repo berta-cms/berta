@@ -1,5 +1,3 @@
-
-
 html { width: 100%; }
 
 body {
@@ -18,9 +16,6 @@ body {
 
 div.clear,
 br.clear { clear: both; }
-
-
-
 
 #allContainer {
     margin: 20px 40px 40px;
