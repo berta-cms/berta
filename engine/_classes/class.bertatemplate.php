@@ -352,42 +352,22 @@ DOC;
     <link rel="stylesheet" href="{$templatesAbsRoot}{$this->name}/style.css.php?{$timestamp}{$site}" type="text/css">
 DOC;
 
-		$vars['berta']['scripts'] = <<<DOC
-	<script src="{$engineAbsRoot}_lib/mootools/mootools-core-1.4.5-full-compat-yc.js" type="text/javascript" charset="utf-8"></script>
-	<script src="{$engineAbsRoot}_lib/mootools/mootools-1.2.5.1-more.js" type="text/javascript" charset="utf-8"></script>
-	<script src="{$engineAbsRoot}_lib/mootools/mootools-1.2.5.1-more-delegation.js" type="text/javascript" charset="utf-8"></script>
-	<script src="{$engineAbsRoot}_lib/picturefill/picturefill.min.js" async></script>
-	<script src="{$engineAbsRoot}_lib/video-js/video.min.js" type="text/javascript" charset="utf-8"></script>
-	<script type="text/javascript">
-	 	_V_.options.flash.swf = "{$engineAbsRoot}_lib/video-js/video-js.swf";
-		var bertaGlobalOptions = $sttingsJS;
-	</script>
-	<script src="{$engineAbsRoot}js/BertaGallery.js?{$int_version}" type="text/javascript" charset="utf-8"></script>
+
+        $vars['berta']['scripts'] = <<<DOC
+    <script>
+        var bertaGlobalOptions = $sttingsJS;
+    </script>
 DOC;
-		if($this->loggedIn) {
+        if($this->loggedIn) {
             $vars['berta']['scripts'] .= <<<DOC
-    <script type="text/javascript" src="{$engineAbsRoot}_lib/introjs/intro.min.js" charset="utf-8"></script>
-    <script type="text/javascript" src="{$engineAbsRoot}js/Assets.js?{$int_version}" charset="utf-8"></script>
-    <script type="text/javascript" src="{$engineAbsRoot}js/BertaEditorBase.js?{$int_version}" charset="utf-8"></script>
-    <script type="text/javascript" src="{$engineAbsRoot}js/inline_edit.js?{$int_version}" charset="utf-8"></script>
-
-    <script type="text/javascript" src="{$engineAbsRoot}js/swiff/Swiff.Uploader.js" charset="utf-8"></script>
-    <script type="text/javascript" src="{$engineAbsRoot}js/BertaGalleryEditorAssets.js" charset="utf-8"></script>
-    <script type="text/javascript" src="{$engineAbsRoot}js/BertaGalleryEditor.js?{$int_version}" charset="utf-8"></script>
-    <script type="text/javascript" src="{$engineAbsRoot}js/BertaBgEditor.js?{$int_version}" charset="utf-8"></script>
-
-    <script type="text/javascript" src="{$engineAbsRoot}js/BertaEditor.js?{$int_version}" charset="utf-8"></script>
-
-    <script type="text/javascript" src="{$engineAbsRoot}_lib/tiny_mce/tiny_mce_gzip.js"></script>
-    <script type="text/javascript" src="{$engineAbsRoot}_lib/moorainbow/mooRainbow.1.2b2.js" charset="utf-8"></script>
-    <script type="text/javascript" src="{$engineAbsRoot}_lib/lassocrop/lassocrop.js" charset="utf-8"></script>
+    <script src="{$engineAbsRoot}js/backend.min.js?{$int_version}"></script>
 DOC;
-		} else {
-			$vars['berta']['scripts'] .= <<<DOC
-	<script type="text/javascript" src="{$engineAbsRoot}js/Berta.js?{$int_version}"></script>
-	<script type="text/javascript" src="{$engineAbsRoot}_lib/milkbox/js/milkbox.js?{$int_version}"></script>
+        } else {
+            $vars['berta']['scripts'] .= <<<DOC
+    <script src="{$engineAbsRoot}js/frontend.min.js?{$int_version}"></script>
 DOC;
-		}
+        }
+
 
 
 		// counter ...
