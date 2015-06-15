@@ -66,4 +66,4 @@ var BertaEditor_Seo = new Class({
 
 });
 
-var editor = new BertaEditor_Seo(window.bertaGlobalOptions);
+var editor_seo = new BertaEditor_Seo(window.bertaGlobalOptions);

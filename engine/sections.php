@@ -7,6 +7,7 @@ include_once $ENGINE_ROOT . '_classes/class.bertaeditor.php';
 
 $allSections = BertaContent::getSections();
 $topPanelHTML = BertaEditor::getTopPanelHTML('sections');
+$int_version = BertaEditor::$options['int_version'];
 
 ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -14,10 +15,8 @@ $topPanelHTML = BertaEditor::getTopPanelHTML('sections');
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <title><?php echo $berta->settings->get('texts', 'pageTitle') ?> / <?php echo I18n::_('Sections') ?></title>
 <link rel="SHORTCUT ICON" href="favicon.ico"/>
-<link rel="stylesheet" href="<?php echo $ENGINE_ABS_ROOT ?>css/default.css" type="text/css"  charset="utf-8" />
-<link rel="stylesheet" href="<?php echo $ENGINE_ABS_ROOT ?>css/editor.css.php" type="text/css"  charset="utf-8" />
-<link rel="stylesheet" href="<?php echo $ENGINE_ABS_ROOT ?>_lib/introjs/introjs.min.css" type="text/css"  charset="utf-8" />
-<?php include 'inc.header_default_scripts.php' ?>
+<link rel="stylesheet" href="<?php echo $ENGINE_ABS_ROOT ?>css/backend.min.css?<?php echo $int_version ?>" type="text/css" charset="utf-8" />
+<link rel="stylesheet" href="<?php echo $ENGINE_ABS_ROOT ?>css/editor.css.php?<?php echo $int_version ?>" type="text/css" charset="utf-8" />
 <script type="text/javascript">
     var bertaGlobalOptions = {
         "paths":{
@@ -29,11 +28,7 @@ $topPanelHTML = BertaEditor::getTopPanelHTML('sections');
         "skipTour": <?php echo count($sections) || $berta->settings->get('siteTexts', 'tourComplete') ? 'true' : 'false' ?>
     };
 </script>
-<script type="text/javascript" src="<?php echo $ENGINE_ABS_ROOT ?>js/Assets.js" charset="utf-8"></script>
-<script type="text/javascript" src="<?php echo $ENGINE_ABS_ROOT ?>js/BertaEditorBase.js"></script>
-<script type="text/javascript" src="<?php echo $ENGINE_ABS_ROOT ?>js/inline_edit.js" charset="utf-8"></script>
-<script type="text/javascript" src="<?php echo $ENGINE_ABS_ROOT ?>js/BertaEditor_Sections.js" charset="utf-8"></script>
-<script type="text/javascript" src="<?php echo $ENGINE_ABS_ROOT ?>_lib/introjs/intro.min.js" charset="utf-8"></script>
+<script src="<?php echo $ENGINE_ABS_ROOT ?>js/backend.min.js?<?php echo $int_version ?>"></script>
 </head>
 
 <body class="xSettingsPageBody page-xSections" x_mode="sections">
