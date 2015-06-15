@@ -24,6 +24,8 @@ var js_backend_files = [
     'engine/_lib/mootools/mootools-core-1.4.5-full-compat-yc.js',
     'engine/_lib/mootools/mootools-1.2.5.1-more.js',
     'engine/_lib/mootools/mootools-1.2.5.1-more-delegation.js',
+    'engine/_lib/mgfx/rotater.js',
+    'engine/_lib/mgfx/tabs.js',
     'engine/_lib/picturefill/picturefill.min.js',
     'engine/_lib/video-js/video.min.js',
     'engine/js/BertaGallery.js',
@@ -38,7 +40,11 @@ var js_backend_files = [
     'engine/js/BertaEditor.js',
     'engine/_lib/tiny_mce/tiny_mce_gzip.js',
     'engine/_lib/moorainbow/mooRainbow.1.2b2.js',
-    'engine/_lib/lassocrop/lassocrop.js'
+    'engine/_lib/lassocrop/lassocrop.js',
+    'engine/js/BertaEditor_Sections.js',
+    'engine/js/BertaEditor_Seo.js',
+    'engine/js/BertaEditor_ChangePassword.js',
+    'engine/js/BertaEditor_Multisite.js'
 ];
 
 var js_frontend_files = [

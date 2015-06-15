@@ -74,6 +74,8 @@ var BertaEditor_Sections = new Class({
 
 	sectionsEditorInit: function() {
 		this.sectionsEditor = $('xSectionsEditor');
+        var xCreateNewSection = $('xCreateNewSection');
+        if (!xCreateNewSection) return;
 		this.sectionsMenu = this.sectionsEditor.getElement('ul');
 
 		// ordering
@@ -87,7 +89,7 @@ var BertaEditor_Sections = new Class({
 		this.sectionsSortables.addEvent('onComplete', this.sectionOrderSave.bind(this));
 
 		// create new, clone and delete events
-		$('xCreateNewSection').addEvent('click', this.sectionCreateNew.bindWithEvent(this));
+		xCreateNewSection.addEvent('click', this.sectionCreateNew.bindWithEvent(this));
 		this.sectionsMenu.getElements('a.xSectionClone').addEvent('click', this.sectionOnCloneClick.bindWithEvent(this));
 		this.sectionsMenu.getElements('a.xSectionDelete').addEvent('click', this.sectionOnDeleteClick.bindWithEvent(this));
 
@@ -222,4 +224,4 @@ var BertaEditor_Sections = new Class({
 	}
 });
 
-var editor = new BertaEditor_Sections(window.bertaGlobalOptions);
+var editor_sections = new BertaEditor_Sections(window.bertaGlobalOptions);
