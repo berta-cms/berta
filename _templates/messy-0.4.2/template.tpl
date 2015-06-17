@@ -63,7 +63,7 @@
     { /if }
 </head>
 
-<body class="xContent-{ $berta.section.name }{if $berta.environment == 'engine'} page-xMySite{/if}">
+<body class="xContent-{ $berta.section.name }{if $berta.tagName} xSubmenu-{$berta.tagName}{/if}{if $berta.environment == 'engine'} page-xMySite{/if}">
     { include file="../_includes/inc.js_include_after_body.tpl" }
 
     { if ($berta.section.type == 'shopping_cart' &&  $berta.environment == 'engine') || $berta.section.type != 'shopping_cart'  }
@@ -429,6 +429,8 @@
 
         {* custom js from file, move to settings field when ready *}
         <script type="text/javascript" src="{ $berta.options.TEMPLATES_ABS_ROOT }{ $berta.templateName }/custom.js?{$berta.options.int_version}"></script>
+
+        { intercomScript }
 
         { include file="../_includes/inc.js_include.tpl" }
 

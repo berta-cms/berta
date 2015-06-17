@@ -6,19 +6,19 @@
 <!--[if (gt IE 9)|!(IE)]><!--> <html> <!--<![endif]-->
 <head>
     { include file="../_includes/inc.js_include_head_top.tpl" }
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<meta charset="UTF-8">
 	{if $berta.settings.pageLayout.responsive=='yes'}<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">{/if}
 	<title>{if $berta.section.seoTitle}{ $berta.section.seoTitle|strip_tags|escape }{else}{ $berta.pageTitle|strip_tags|escape }{/if}</title>
-	<meta name="keywords" content="{if $berta.section.seoKeywords}{ $berta.section.seoKeywords|strip_tags|escape }{else}{ $berta.settings.texts.metaKeywords|strip_tags|escape }{/if}" />
-	<meta name="description" content="{if $berta.section.seoDescription}{ $berta.section.seoDescription|strip_tags|escape }{else}{ $berta.settings.texts.metaDescription|strip_tags|escape }{/if}" />
-	<meta name="author" content="{ $berta.settings.texts.ownerName }" />
-	{if $berta.options.NOINDEX}<meta name="robots" content="noindex, nofollow" />{/if}
+	<meta name="keywords" content="{if $berta.section.seoKeywords}{ $berta.section.seoKeywords|strip_tags|escape }{else}{ $berta.settings.texts.metaKeywords|strip_tags|escape }{/if}">
+	<meta name="description" content="{if $berta.section.seoDescription}{ $berta.section.seoDescription|strip_tags|escape }{else}{ $berta.settings.texts.metaDescription|strip_tags|escape }{/if}">
+	<meta name="author" content="{ $berta.settings.texts.ownerName }">
+	{if $berta.options.NOINDEX}<meta name="robots" content="noindex, nofollow">{/if}
 	{$berta.settings.settings.googleSiteVerification|@html_entity_decode}
 
 	{ if $berta.settings.pageLayout.favicon }
-	<link rel="SHORTCUT ICON" href="{ $berta.options.MEDIA_ABS_ROOT }{ $berta.settings.pageLayout.favicon }" />
+	<link rel="SHORTCUT ICON" href="{ $berta.options.MEDIA_ABS_ROOT }{ $berta.settings.pageLayout.favicon }">
 	{ else }
-	<link rel="SHORTCUT ICON" href="{ $berta.options.TEMPLATES_ABS_ROOT }{ $berta.templateName }/favicon.ico" />
+	<link rel="SHORTCUT ICON" href="{ $berta.options.TEMPLATES_ABS_ROOT }{ $berta.templateName }/favicon.ico">
 	{ /if }
 
 	{ $berta.scripts }
@@ -32,7 +32,7 @@
 	<script type="text/javascript" src="{ $berta.options.TEMPLATES_ABS_ROOT }{ $berta.templateName }/mashup.js?{$berta.options.int_version}"></script>
 </head>
 
-<body class="xContent-{ $berta.section.name }{if $berta.environment == 'engine'} page-xMySite{/if}">
+<body class="xContent-{ $berta.section.name }{if $berta.tagName} xSubmenu-{$berta.tagName}{/if}{if $berta.environment == 'engine'} page-xMySite{/if}">
 
 	{if $berta.settings.background.backgroundAttachment=='fill' AND $berta.settings.background.backgroundImageEnabled=='yes' AND $berta.settings.background.backgroundImage!=''}
 		<div id="xFilledBackground" class="xPosition-{' '|str_replace:'_':$berta.settings.background.backgroundPosition}">
@@ -53,8 +53,8 @@
 	            {if $berta.options.MULTISITES|count > 1}
 	                <ul id="multisites">
 	                    {foreach $berta.options.MULTISITES AS $siteName => $site }
-	                        {if $berta.options.MULTISITE != $siteName || ($siteName=='0' && $berta.options.MULTISITE !='' ) }
-	                            <li><a href="{ bertaLink site=$siteName }">{if $site['title']['value']!=''}{$site['title']['value']}{else}{if $siteName=='0'}Main site{else}{$siteName}{/if}{/if}</a></li>
+	                        {if $berta.environment == 'engine' || $berta.options.MULTISITE != $siteName || ($siteName=='0' && $berta.options.MULTISITE !='' ) }
+	                            <li{if $berta.options.MULTISITE === $siteName || ($siteName=='0' && $berta.options.MULTISITE =='')} class="selected"{/if}><a href="{ bertaLink site=$siteName }">{if $site['title']['value']!=''}{$site['title']['value']}{else}{if $siteName=='0'}Main site{else}{$siteName}{/if}{/if}</a></li>
 	                        {/if}
 	                    {/foreach}
 	                </ul>
@@ -62,7 +62,7 @@
 
                 { if ($berta.environment == 'site' && $berta.settings.navigation.landingSectionPageHeadingVisible=='yes') || $berta.environment == 'engine' || ($berta.environment == 'site' && $berta.settings.navigation.landingSectionPageHeadingVisible=='no' && $berta.sectionName != $berta.sections|@key) }
                     { if $berta.settings.sideBar.image }
-                    <h1><a href="{ bertaLink }">{ responsiveImage image = $berta.settings.sideBar prefix=image path = $berta.options.MEDIA_ABS_ROOT }</a></h1>
+                    <h1><a href="{ bertaLink }">{ responsiveImage image = $berta.settings.sideBar prefix=image path = $berta.options.MEDIA_ABS_ROOT alt=$berta.settings.texts.pageTitle }</a></h1>
                     { else }
                     <h1 class="xEditable xProperty-siteHeading">
                         { if $berta.environment == "engine" }
@@ -212,7 +212,9 @@
 
 	{ if $berta.settings.settings.showTutorialVideos == 'yes' && !$smarty.cookies._berta_videos_hidden }{ videoTutorials }{ /if }
 
-	{ include file="../_includes/inc.js_include.tpl" }
+	{ intercomScript }
+
+    { include file="../_includes/inc.js_include.tpl" }
 
 	{ include file="../_includes/inc.counter.tpl"  }
 </body>

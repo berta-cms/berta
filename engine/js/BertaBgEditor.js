@@ -190,7 +190,6 @@ var BertaBgEditor = new Class({
 
 
 			onFileComplete: function(file) {
-				//console.debug('onFileCompelte: ', file, file.response);
 				var json = $H(JSON.decode(file.response.text, true) || {});
                 if(file.response.code == 401) {
                     window.location.href = this.options.engineRoot;

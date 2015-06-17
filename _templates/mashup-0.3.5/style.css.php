@@ -508,7 +508,6 @@ a img { border: none; }
 	}
 
 	img,
-	iframe,
 	ol#pageEntries li.xEntry .xGalleryContainer .xGallery,
 	ol#pageEntries li.xEntry .xGalleryContainer .xGallery div.xGalleryItem,
 	ol#pageEntries li.xEntry .xGalleryContainer .xGallery div.xGalleryItem .image,

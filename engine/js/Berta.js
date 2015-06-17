@@ -37,7 +37,8 @@ var Berta = new Class({
 
 	options: {
 		paths: null,
-		playerType: 'JWPlayer'
+		playerType: 'JWPlayer',
+        iframeWrapperWhiteList: ['youtube', 'vimeo']
 	},
 
 	entriesList: null,

@@ -1,4 +1,4 @@
-Berta is a free, open source web app for building websites. You can also call it a CMS if you like.
+Berta.me is a free, open source web app for building websites. You can also call it a CMS if you like.
 ==========
 
 It will run on any webserver with common settings (Apache, PHP5 with GD and multi-byte support).

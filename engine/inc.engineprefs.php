@@ -18,7 +18,7 @@ require 'config/inc.conf.php';
  * Berta's release version
  */
 $options['version'] = '0.8.10b';
-$options['int_version'] = '1111';
+$options['int_version'] = '1116';
 
 
 /**
@@ -113,6 +113,8 @@ if (file_exists($ENGINE_ROOT.'hosting')){
 }
 $options['HOSTING_PROFILE'] = isset($hostingConfig['login']) ? $hostingConfig['login'] : false;
 $options['FORGOTPASSWORD_LINK'] = isset($hostingConfig['forgotPassword']) ? $hostingConfig['forgotPassword'] : 'http://support.berta.me/kb/login-name-and-password/forgot-my-password-for-self-hosted-berta';
+$options['INTERCOM_APP_ID'] = isset($hostingConfig['intercomAppId']) ? $hostingConfig['intercomAppId'] : false;
+$options['INTERCOM_SECRET_KEY'] = isset($hostingConfig['intercomSecretKey']) ? $hostingConfig['intercomSecretKey'] : false;
 
 //individual hosting config file for berta
 if (file_exists($ENGINE_ROOT.'hosting_config')){

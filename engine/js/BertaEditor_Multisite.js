@@ -68,6 +68,7 @@ var BertaEditor_Multisite = new Class({
 
 	sitesEditorInit: function() {
 		this.sitesEditor = $('xMultisiteEditor');
+        if (!this.sitesEditor) return;
 		this.sitesMenu = this.sitesEditor.getElement('ul');
 
 		// ordering
@@ -200,4 +201,4 @@ var BertaEditor_Multisite = new Class({
 	}
 });
 
-var editor = new BertaEditor_Multisite(window.bertaGlobalOptions);
+var editor_multisite = new BertaEditor_Multisite(window.bertaGlobalOptions);

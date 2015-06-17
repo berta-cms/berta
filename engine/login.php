@@ -68,6 +68,8 @@ if($auth_action == "login" && !$errStr) {
 	}
 }
 
+$int_version = $options['int_version'];
+
 ?><!DOCTYPE html>
 <!--[if lt IE 7 ]> <html class="ie6 ie-old"> <![endif]-->
 <!--[if IE 7 ]>    <html class="ie7 ie-old"> <![endif]-->
@@ -77,9 +79,9 @@ if($auth_action == "login" && !$errStr) {
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title><?php echo $berta->settings->get('texts', 'page-title') ?> / login</title>
-<link href="<?php echo $ENGINE_ABS_ROOT ?>css/default.css" rel="stylesheet" type="text/css" />
-<link href="<?php echo $ENGINE_ABS_ROOT ?>css/login.css" rel="stylesheet" type="text/css" />
-<link href="<?php echo $ENGINE_ABS_ROOT ?>css/editor.css.php" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="<?php echo $ENGINE_ABS_ROOT ?>css/backend.min.css?<?php echo $int_version ?>" type="text/css" charset="utf-8" />
+<link rel="stylesheet" href="<?php echo $ENGINE_ABS_ROOT ?>css/editor.css.php?<?php echo $int_version ?>" type="text/css" charset="utf-8" />
+<link rel="stylesheet" href="<?php echo $ENGINE_ABS_ROOT ?>css/login.css?<?php echo $int_version ?>" type="text/css" />
 <?php include 'inc.header_default_scripts.php' ?>
 <script type="text/javascript">
 	window.addEvent('domready', function() {

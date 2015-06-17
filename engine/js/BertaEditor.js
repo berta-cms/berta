@@ -82,7 +82,8 @@ var BertaEditor = new Class({
 		// delay onDOMReady processing to allow all elements on page properly initialize
 		this.onDOMReadyDo.delay(1000, this);
 
-		if(window.tinyMCE_GZ) {
+        if(window.tinyMCE_GZ) {
+            tinyMCE_GZ.baseURL = this.options.paths.engineABSRoot + "_lib/tiny_mce";
 			tinyMCE_GZ.init({
 				themes : "advanced",
 				plugins : "save,paste,insertanything",

@@ -24,6 +24,6 @@ function smarty_function_responsiveImage($params, &$smarty) {
 
     $alt = isset($alt) ? htmlspecialchars(strip_tags($alt)) : '';
 
-	return '<img src="' . $path . $imageName . '"' . $img_attr . ' alt="' . $alt . '">';
+    return '<img src="' . $path . $imageName . '"' . $img_attr . ' alt="' . $alt . '">';
 }
 ?>
