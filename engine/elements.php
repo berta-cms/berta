@@ -277,8 +277,8 @@ if($jsonRequest) {
 					echo '<div class="xBgAddMedia">';
 					    echo '<div class="xBgAddImagesFallback">' .
 					    		'<iframe name="xBgUploadFrame" id="xBgUploadFrame" class="xBgUploadFrame"></iframe>' .
-					    		'<form target="xBgUploadFrame" action="' . $ENGINE_ABS_ROOT . 'upload.php?' . ($site ? 'site='.$site.'&amp;' : '') . 'section=' . $section['name']['value'] . '&amp;mediafolder=' . $sectionMF . '&amp;section_background=true" class="xBgEditorForm" method="post" enctype="multipart/form-data">' .
-					    			'<input type="hidden" name="upload_key" value="" />' .
+					    		'<form target="xBgUploadFrame" action="' . $ENGINE_ABS_ROOT . 'upload.php?' . ($site ? 'site='.$site.'&amp;' : '') . 'section=' . $section['name']['value'] . '&amp;mediafolder=' . $sectionMF . '&amp;section_background=true&amp;session_id=' . session_id() . '" class="xBgEditorForm" method="post" enctype="multipart/form-data">' .
+                                	'<input type="hidden" name="upload_key" value="" />' .
 					    			'<input type="hidden" name="upload_type" value="fallback" />' .
 					    			//'<input type="file" name="Filedata" class="xUploadFile" /> ' .
 					    			'<input type="submit" value="Upload" class="xUploadButton" />' .

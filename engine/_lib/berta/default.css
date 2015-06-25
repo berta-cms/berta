@@ -1,91 +1,87 @@
-
-
 html { width: 100%; }
 
 body {
-	margin: 0;
-	padding: 0;
-	color: #333333;
-	font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
-	font-size: 12px;
-	font-weight: normal;
-	font-style: normal;
-	font-variant: normal;
-	line-height: normal;
-	background-color: #FFFFFF;
-	text-align: left;
+    margin: 0;
+    padding: 0;
+    color: #333333;
+    font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+    font-size: 12px;
+    font-weight: normal;
+    font-style: normal;
+    font-variant: normal;
+    line-height: normal;
+    background-color: #FFFFFF;
+    text-align: left;
 }
 
 div.clear,
 br.clear { clear: both; }
 
-
-
-
 #allContainer {
-	margin: 20px 40px 40px;
-	padding: 0;
+    margin: 20px 40px 40px;
+    padding: 0;
 }
 
 #contentContainer {
-	width: 900px;
-	margin-top: 0;
-	margin-bottom: 0;
-	margin-left: 0;
-	margin-right: auto;
+    width: 900px;
+    margin-top: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    margin-right: auto;
 }
-	#pageEntries .xEntry .xGalleryType-pile .xGalleryItem {
-		position: absolute;
-	}
+    #pageEntries .xEntry .xGalleryType-pile .xGalleryItem {
+        position: absolute;
+    }
 
 .bertaCopyright {
-	clear: left;
-	font-size: 10px;
-	color: #333333;
-	margin: 0 0 0;
+    clear: left;
+    font-size: 10px;
+    color: #333333;
+    margin: 0 0 0;
 }
 
 
 /* filled background */
 #xFilledBackground {
-	position: fixed;
-	z-index: 0;
-	left: 0; top: 0; bottom: 0; right: 0;
-	display: none;
+    position: fixed;
+    z-index: 0;
+    left: 0; top: 0; bottom: 0; right: 0;
+    display: none;
 }
-	#xFilledBackground img {
-		position: absolute;
-	}
+    #xFilledBackground img {
+        position: absolute;
+    }
 
 
 div.xGalleryContainer.xSlideNumbersVisible-no>ul.xGalleryNav { display: none !important; }
 
 div.xGalleryContainer .loader {
-	position: absolute;
-	top: 45%;
-	left: 0;
-	right: 0;
-	margin: 0 auto;
-	background: rgba(255,255,255,0.8) url('../layout/loader.gif') no-repeat center center;
-	width: 40px;
-	height: 40px;
+    position: absolute;
+    top: 45%;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    background: rgba(255,255,255,0.8) url("../../layout/loader.gif") no-repeat center center;
+    width: 40px;
+    height: 40px;
 }
 
 /* video background */
 
 div.xGalleryItem {
-	position: relative;
+    position: relative;
 }
-	div.xGalleryItem object { position: relative;  }
-	div.xGalleryItem .xGalleryImageVideoBack { position: absolute; 	}
+    div.xGalleryItem object { position: relative;  }
+    div.xGalleryItem .xGalleryImageVideoBack { position: absolute;  }
 
 .xFullscreen {
-	display: none;
+    display: none;
 }
 
 * {
-	-webkit-text-size-adjust: none;
+    -webkit-text-size-adjust: none;
 }
+
 
 .xSectionType-portfolio .xGalleryContainer {
     width: 50%;
@@ -97,7 +93,6 @@ div.xGalleryItem {
     width: 100%;
     float: none;
 }
-
 
 .xSectionType-portfolio .entryTextWrap {
     width: 50%;
@@ -157,7 +152,7 @@ div.xGalleryItem {
 .clearfix:after { clear: both; }
 
 .xHidden {
-	display: none !important;
+    display: none !important;
 }
 
 /* small tablet */

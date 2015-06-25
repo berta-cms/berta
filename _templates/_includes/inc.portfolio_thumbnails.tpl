@@ -7,7 +7,7 @@
                         <div class="xHandle"></div>
                         <a href="#{ entrySlug entry=$entry }">
                             { entryGalleryFirstImage entry=$entry }
-                            <span> {if $entry.title}{ $entry.title }{else}entry-{ $entryId }{/if}</span>
+                            <span> {if $entry.title}{ $entry.title }{elseif $berta.environment == 'engine'}entry-{ $entryId }{/if}</span>
                         </a>
                     </div>
                 </div>
