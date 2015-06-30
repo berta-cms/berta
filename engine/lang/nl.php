@@ -234,7 +234,7 @@ return array(
 		/* setting tab */ 'Page heading' => 'Page heading',
 		/* setting name */ 'Header image' => 'Header image',
 		/* help text */    'Picture to use instead of text.' => 'Image Die je wilt gebruiken in plaats van tekst.',
-		/* help text */    'How far the heading is form other elements in page. Please see the short CSS guide at the bottom of this page.' => 'Hoe ver is de heading van de andere elementen verwijderd? Zie ook korte CSS gids onderaan de pagina.',
+		/* help text */    'How far the heading is from other elements in page. Please see the short CSS guide at the bottom of this page.' => 'Hoe ver is de heading van de andere elementen verwijderd? Zie ook korte CSS gids onderaan de pagina.',
 		/* help text */    'How far the menu is form other elements in page. Please see the short CSS guide at the bottom of this page.' => 'Hoe ver is het menu van de andere elementen verwijderd? Zie ook korte CSS gids onderaan de pagina.',
 
 		/* setting tab */ 'Main menu' => 'Main menu',

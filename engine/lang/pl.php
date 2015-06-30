@@ -213,7 +213,7 @@ return array(
     /* setting tab */ 'Page heading' => 'Tytuł strony',
     /* setting name */ 'Header image' => 'Obraz nagłówka strony',
     /* help text */    'Picture to use instead of text.' => 'Obraz, który będzie wykorzystany zamiast tekstu w nagłówku strony.',
-    /* help text */    'How far the heading is form other elements in page. Please see the short CSS guide at the bottom of this page.' => 'Jak daleko nagłówek strony znajduje się od innych elementów. Patrz opis wartości CSS na dole strony.',
+    /* help text */    'How far the heading is from other elements in page. Please see the short CSS guide at the bottom of this page.' => 'Jak daleko nagłówek strony znajduje się od innych elementów. Patrz opis wartości CSS na dole strony.',
     /* help text */    'How far the menu is form other elements in page. Please see the short CSS guide at the bottom of this page.' => 'Jak daleko menu strony znajduje się od innych elementów strony. Patrz opis wartości CSS na dole strony.',
 
     /* setting tab */ 'Main menu' => 'Główne menu',
