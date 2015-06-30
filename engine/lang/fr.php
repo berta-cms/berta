@@ -211,7 +211,7 @@ return array(
 		/* setting tab */ 'Page heading' => 'Entête de page',
 		/* setting name */ 'Header image' => 'Image d’entête',
 		/* help text */    'Picture to use instead of text.' => 'Image à utiliser au lieu du texte',
-		/* help text */    'How far the heading is form other elements in page. Please see the short CSS guide at the bottom of this page.' => 'Distance entre l’entête et les autres éléments de la page. Référez-vous au guide CSS en bas de page.',
+		/* help text */    'How far the heading is from other elements in page. Please see the short CSS guide at the bottom of this page.' => 'Distance entre l’entête et les autres éléments de la page. Référez-vous au guide CSS en bas de page.',
 		/* help text */    'How far the menu is form other elements in page. Please see the short CSS guide at the bottom of this page.' => 'Distance entre le menu  et les autres éléments de la page. Référez-vous au guide CSS en bas de page.',
 
 		/* setting tab */ 'Main menu' => 'Menu principal',

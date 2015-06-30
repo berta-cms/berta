@@ -213,7 +213,7 @@ return array(
         /* setting tab */ 'Page heading' => 'Заголовок страницы',
         /* setting name */ 'Header image' => 'Изображение шапки сайта',
         /* help text */    'Picture to use instead of text.' => 'Изображение, которое будет использовано вместо заголовка в шапке страницы.',
-        /* help text */    'How far the heading is form other elements in page. Please see the short CSS guide at the bottom of this page.' => 'Расстояние между шапкой страницы и другими элементами. Информацию о значениях CSS найдете в конце страницы.',
+        /* help text */    'How far the heading is from other elements in page. Please see the short CSS guide at the bottom of this page.' => 'Расстояние между шапкой страницы и другими элементами. Информацию о значениях CSS найдете в конце страницы.',
         /* help text */    'How far the menu is form other elements in page. Please see the short CSS guide at the bottom of this page.' => 'Расстояние между меню и другими элементами страницы. Информацию о значениях CSS найдете в конце страницы.',
 
         /* setting tab */ 'Main menu' => 'Главное меню',

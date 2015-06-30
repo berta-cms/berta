@@ -215,7 +215,7 @@ return array(
 	/* setting tab */ 'Page heading' => 'Lapas virsraksts',
 	/* setting name */ 'Header image' => 'Lapas galvenes attēls',
 	/* help text */    'Picture to use instead of text.' => 'Attēls, kas tiks izmantots teksta vietā lapas galvenē (header).',
-	/* help text */    'How far the heading is form other elements in page. Please see the short CSS guide at the bottom of this page.' => 'Cik tālu lapas galvene (header) atrodas no citiem elementiem. Skaties CSS vērtību skaidrojumu lapas apakšā.',
+	/* help text */    'How far the heading is from other elements in page. Please see the short CSS guide at the bottom of this page.' => 'Cik tālu lapas galvene (header) atrodas no citiem elementiem. Skaties CSS vērtību skaidrojumu lapas apakšā.',
 	/* help text */    'How far the menu is form other elements in page. Please see the short CSS guide at the bottom of this page.' => 'Cik tālu lapas izvēlne atrodas no citiem lapas elementiem. Skaties CSS vērtību skaidrojumu lapas apakšā.',
 
 	/* setting tab */ 'Main menu' => 'Galvenā izvēlne',
