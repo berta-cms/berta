@@ -98,6 +98,7 @@ div.xGalleryItem {
     width: 50%;
     float: right;
     padding-left: 20px;
+    margin-bottom: 2em;
     -webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;
 }
 
@@ -176,20 +177,5 @@ div.xGalleryItem {
     .portfolioThumbnail:nth-child(3n+1),
     .portfolioThumbnail:nth-child(2n+1) {
         clear: none;
-
     }
-}
-
-/* phone */
-@media (max-width: 480px) {
-
-    .portfolioThumbnail {
-        width: 100%;
-    }
-
-    .portfolioThumbnail:nth-child(3n+1),
-    .portfolioThumbnail:nth-child(2n+1) {
-        clear: none;
-    }
-
 }
