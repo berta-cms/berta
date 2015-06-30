@@ -309,7 +309,10 @@
                             { customEntryHeader entry=$entry ishopentry=$isshopentry }
 
                             {* entryGallery prints the image gallery for the entry *}
-                            { entryGallery entry=$entry }
+
+                            {if $berta.section.type != 'portfolio'}
+                                { entryGallery entry=$entry }
+                            {/if}
 
                             <div class="entryTextWrap galleryType-{ $entry.__raw.mediaCacheData['@attributes'].type }">
                                 { if ($berta.environment == 'engine' || !empty($entry.cartTitle)) and $berta.section.type == 'shop' and $berta.shop_enabled == true }
@@ -339,6 +342,10 @@
                                     </div>
                                 { /if }
                             </div>
+
+                            {if $berta.section.type == 'portfolio'}
+                                { entryGallery entry=$entry }
+                            {/if}
 
                             {* entry footer wraps the entry including the header - don't leave it out! *}
                             { entryFooter entry=$entry }

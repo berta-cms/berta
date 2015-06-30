@@ -127,7 +127,9 @@
 							{ entryHeader entry=$entry }
 
 							{* entryGallery prints the image gallery for the entry *}
-							{ entryGallery entry=$entry }
+                            {if $berta.section.type != 'portfolio'}
+                               { entryGallery entry=$entry }
+                            {/if}
 
                             <div class="entryTextWrap galleryType-{ $entry.__raw.mediaCacheData['@attributes'].type }">
                                 { if $berta.section.type == 'portfolio' && ($berta.environment == 'engine' || !empty($entry.title)) }
@@ -138,6 +140,11 @@
                                     <div class="entryText xEditableMCE xProperty-description">{ $entry.description }</div>
     							{ /if }
                             </div>
+
+                            {* entryGallery prints the image gallery for the entry *}
+                            {if $berta.section.type == 'portfolio'}
+                               { entryGallery entry=$entry }
+                            {/if}
 
 							{* entry footer wraps the entry including the header - don't leave it out! *}
 							{ entryFooter entry=$entry }
