@@ -441,7 +441,6 @@ h1 {
 		color: <?php echo $s->get('generalFontSettings', 'color') ?> !important;
 	}
 
-
 	.floating-banner {
 		position: absolute;
 		z-index: 3000;
@@ -457,6 +456,11 @@ h1 {
 		width: 100%;
 		height: 100% !important;
 	}
+
+    .xSectionType-portfolio .xGalleryContainer {
+        width: 100%;
+        float: none;
+    }
 
 <?php if( $isResponsive ){ ?>
 

@@ -24,7 +24,8 @@ $sectionTypes = array(
 	'external_link' => array('title' => 'External link', 'params' => array(
 		'link' => array('format' => 'text',	'default' => '', 'link'=>true),
 		'target' => array('format' => 'select', 'values' => array('_self' => 'Same window', '_blank' => 'New window'), 'default' => '_blank')
-	))
+	)),
+    'portfolio' => array('title' => 'Portfolio')
 );
 
 $templateConf = array(

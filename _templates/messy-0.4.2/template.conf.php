@@ -32,7 +32,7 @@ $sectionTypes = array(
 		'target' => array('format' => 'select', 'values' => array('_self' => 'Same window', '_blank' => 'New window'), 'default' => '_blank', 'html_before' => '<div class="label">'.I18n::_('Opens in').':</div>')
 	)),
 	'grid' => array('title' => 'Thumbnails enabled'),
-
+    'portfolio' => array('title' => 'Portfolio')
 );
 
 $templateConf = array(

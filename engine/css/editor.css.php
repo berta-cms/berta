@@ -2452,6 +2452,35 @@ table.inventory tr td .remove {
 	width: 50px;
 }
 
+/*------------------------- portfolio page --------------------------------*/
+
+.xSectionType-portfolio .xEntry .xCreateNewEntry,
+.xSectionType-portfolio .xEntry .xEntryMove {
+    display: none;
+}
+
+.portfolioThumbnail .xHandle {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    border: 1px solid transparent;
+    margin: -9px 0 0 -13px;
+
+    width: 25px;
+    height: 25px;
+    background: url('../layout/grab.gif') no-repeat center center;
+    visibility: hidden;
+}
+.portfolioThumbnail:hover .xHandle  {
+    visibility: visible;
+}
+
+.portfolioThumbnail:hover .xHandle:hover {
+    border: 1px solid #666;
+    background-color: rgba(0, 0, 0, .7);
+    cursor: move;
+    border-radius: 5px;
+}
 
 /* some helpers */
 
