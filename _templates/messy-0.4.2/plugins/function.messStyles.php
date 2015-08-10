@@ -12,7 +12,7 @@ function smarty_function_messStyles($params, &$smarty) {
 	global $berta;
 
 	$s =& $berta->template->settings;
-	$isResponsive = $s->get('pageLayout', 'responsive')=='yes';
+	$isResponsive = $s->get('pageLayout', 'responsive')=='yes' || (isset($params['isResponsive']) && $params['isResponsive'] == 'yes');;
 
 	if ($isResponsive) return;
 

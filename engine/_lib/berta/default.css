@@ -82,6 +82,69 @@ div.xGalleryItem {
     -webkit-text-size-adjust: none;
 }
 
+.xSectionType-portfolio #pageEntries .xEntry .xGalleryContainer {
+    width: 50%;
+    float: left;
+    clear: none;
+    -webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;
+}
+
+.xSectionType-portfolio .xGalleryContainer.xGalleryType-row {
+    width: 100%;
+    float: none;
+}
+
+.xSectionType-portfolio .entryTextWrap {
+    width: 50%;
+    float: right;
+    padding-left: 20px;
+    margin-bottom: 2em;
+    -webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;
+}
+
+.xSectionType-portfolio .entryTextWrap.galleryType-row {
+    width: 100%;
+    float: none;
+    padding-left: 0;
+}
+
+.portfolioThumbnails {
+    margin-left: -20px;
+}
+
+.portfolioThumbnail {
+    width: 33%;
+    padding: 0 0 20px 20px;
+    float: left;
+    -webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;
+}
+
+.portfolioThumbnail:nth-child(3n+1) {
+    clear: left;
+}
+
+.portfolioThumbnail .wrap {
+    position: relative;
+    transition: .2s;
+}
+
+.portfolioThumbnail .wrap:hover {
+    opacity: .8;
+}
+
+.portfolioThumbnail a:hover {
+    text-decoration: none;
+}
+
+.portfolioThumbnail img {
+    display: inline-block;
+    max-width: 100%;
+}
+
+.portfolioThumbnail span {
+    display: block;
+}
+
 /* helpers */
 
 .clearfix { zoom: 1; }
@@ -91,4 +154,28 @@ div.xGalleryItem {
 
 .xHidden {
     display: none !important;
+}
+
+/* small tablet */
+@media (max-width: 767px)  {
+
+    .xSectionType-portfolio  #pageEntries .xEntry .xGalleryContainer {
+        width: 100%;
+        float: none;
+    }
+
+    .xSectionType-portfolio .entryTextWrap {
+        width: 100%;
+        float: none;
+        padding-left: 0;
+    }
+
+    .portfolioThumbnail {
+        width: 49%;
+    }
+
+    .portfolioThumbnail:nth-child(3n+1),
+    .portfolioThumbnail:nth-child(2n+1) {
+        clear: none;
+    }
 }

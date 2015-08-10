@@ -49,7 +49,7 @@ class BertaTemplate extends BertaBase {
 
 	public function load($templateName, $generalSettingsInstance = false) {
 
-		//set default temaplte as messy
+		//set default template as messy
 		if (!$templateName){
             foreach ( $this->getAllTemplates() AS $tpl ){
                 list($template_all)=explode('-',$tpl);
@@ -335,6 +335,7 @@ class BertaTemplate extends BertaBase {
 		$int_version = self::$options['int_version'];
 		$timestamp = time();
 		$site = !empty(self::$options['MULTISITE']) ? '&amp;site='.self::$options['MULTISITE'] : '';
+        $forceResponsiveStyleParam = $jsSettings['sectionType'] == 'portfolio' ? '&amp;responsive=1' : '';
 
         if($this->loggedIn) {
             $vars['berta']['css'] = <<<DOC
@@ -349,7 +350,7 @@ DOC;
         }
 
         $vars['berta']['css'] .= <<<DOC
-    <link rel="stylesheet" href="{$templatesAbsRoot}{$this->name}/style.css.php?{$timestamp}{$site}" type="text/css">
+    <link rel="stylesheet" href="{$templatesAbsRoot}{$this->name}/style.css.php?{$timestamp}{$site}{$forceResponsiveStyleParam}" type="text/css">
 DOC;
 
 
