@@ -315,7 +315,7 @@ class BertaGallery extends BertaBase {
                     switch ($imageInfo[2]) {
                       case IMAGETYPE_GIF:
                         //solution for animated gif
-                        if ( self::$options['HOSTING_PROFILE'] && ($imageInfo[2] == IMAGETYPE_GIF) ) {
+                        if ( 0 && self::$options['HOSTING_PROFILE'] && ($imageInfo[2] == IMAGETYPE_GIF) ) {
                             $file_path = realpath($imagePath);
                             $file_info = pathinfo($file_path);
                             $thumb_info = pathinfo($thumbPath);
