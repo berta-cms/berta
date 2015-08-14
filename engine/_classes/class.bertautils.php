@@ -280,7 +280,7 @@ class BertaUtils extends BertaBase {
 	    }
 
 	    //solution for animated gif
-		if ( self::$options['HOSTING_PROFILE'] && ($info[2] == IMAGETYPE_GIF) ) {
+		if ( 0 && self::$options['HOSTING_PROFILE'] && ($info[2] == IMAGETYPE_GIF) ) {
 			$file_path = realpath($file);
 			$file_info = pathinfo($file_path);
 			$tmpFile = $file_info['dirname'] . '/' . $file_info['filename'] . $final_width . $final_height . '.gif';
