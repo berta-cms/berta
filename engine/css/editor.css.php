@@ -55,6 +55,7 @@ if(!1) { ?><style type="text/css"><?php } ?>
 	color: #BB0000;
 }
 
+.button,
 button,
 input[type="submit"] {
 	background-color: #999;
@@ -66,6 +67,7 @@ input[type="submit"] {
 	cursor: pointer;
 }
 
+.button:hover,
 button:hover,
 input[type="submit"]:hover {
 	background-color: #353535;
@@ -2049,6 +2051,9 @@ body.xSettingsPageBody {
 	body.xSettingsPageBody a { color: #666; text-decoration: underline !important; }
 	body.xSettingsPageBody a:hover, body.xSettingsPageBody a.hover { color: #999; }
 
+    body.xSettingsPageBody a.button { color: #fff; text-decoration: none !important; }
+    body.xSettingsPageBody a.button:hover { color: #fff; }
+
 	body.xSettingsPageBody h1 { float: left; }
 
 	body.xSettingsPageBody .settingsContentContainer {
@@ -2097,6 +2102,14 @@ body.xSettingsPageBody {
 			-moz-opacity: 0;
 			opacity: 0;
 		}
+
+        body.xSettingsPageBody .settingsContent.orders td {
+            vertical-align: top;
+        }
+
+        body.xSettingsPageBody .settingsContent.orders hr {
+            margin: 2em 0;
+        }
 
 	body.xSettingsPageBody div.entry {
 		clear: both;
