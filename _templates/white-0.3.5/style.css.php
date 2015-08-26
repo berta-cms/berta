@@ -294,7 +294,7 @@ a img { border: none; }
                         ol#pageEntries li.xEntry .xGalleryType-row div.xGalleryItem {
                             position: relative;
                             float: left;
-                            padding-right: <?php echo $s->get('entryLayout', 'spaceBetweenImages') ?>;
+                            margin-right: <?php echo $s->get('entryLayout', 'spaceBetweenImages') ?>;
                         }
 						ol#pageEntries li.xEntry .xGalleryType-slideshow .xGalleryImageCaption { display: none; }
 

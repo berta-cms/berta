@@ -383,7 +383,7 @@ a img { border: none; }
                         .xGalleryType-row .xGalleryItem {
                             position: relative;
                             float: left;
-                            padding-right: <?php echo $s->get('entryLayout', 'spaceBetweenImages') ?>;
+                            margin-right: <?php echo $s->get('entryLayout', 'spaceBetweenImages') ?>;
                         }
 						.xGalleryImageCaption { position: relative; }
 						.xGalleryType-slideshow .xGalleryImageCaption { display: none; }

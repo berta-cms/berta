@@ -293,7 +293,7 @@ nav ul{
 			#pageEntries .xEntry .xGalleryType-row .xGalleryItem {
 				position: relative;
 				float: left;
-				padding-right: <?php echo $s->get('entryLayout', 'spaceBetweenImages') ?>;
+                margin-right: <?php echo $s->get('entryLayout', 'spaceBetweenImages') ?>;
 			}
 
 		#pageEntries .xEntry .xGalleryContainer ul.xGalleryNav {
