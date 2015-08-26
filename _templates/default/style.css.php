@@ -296,7 +296,7 @@ h1 {
                     }
 					ol#pageEntries li.xEntry .xGalleryType-row div.xGalleryItem {
 						float: left;
-						padding-right: <?php echo $s->get('entryLayout', 'spaceBetweenImages') ?>;
+						margin-right: <?php echo $s->get('entryLayout', 'spaceBetweenImages') ?>;
 						padding-bottom: 5px;
 					}
 					ol#pageEntries li.xEntry .xGalleryType-slideshow .xGalleryImageCaption { display: none; }
