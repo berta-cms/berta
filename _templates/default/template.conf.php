@@ -23,7 +23,8 @@ $sectionTypes = array(
 	'external_link' => array('title' => 'External link', 'params' => array(
 		'link' => array('format' => 'text',	'default' => '', 'link'=>true),
 		'target' => array('format' => 'select', 'values' => array('_self' => 'Same window', '_blank' => 'New window'), 'default' => '_blank')
-	))
+	)),
+    'portfolio' => array('title' => 'Portfolio')
 );
 
 $fontOptions = array_keys($fontOptions);
@@ -86,7 +87,7 @@ $templateConf = array(
 		'fontStyle' => 				array('format' => 'select',		'values' => array('normal', 'italic'), 'default' => 'normal', 			                            'title' => I18n::_('Font style'),    'description' => ''),
 		'fontVariant' => 			array('format' => 'select',		'values' => array('normal', 'small-caps'), 'default' => 'normal', 		                            'title' => I18n::_('Font variant'),  'description' => ''),
 		'lineHeight' => 			array('format' => 'text', 'css_units' => true, 'default' => '0.8em', 					                                                            'title' => I18n::_('Line height'),   'description' => I18n::_('Height of text line. Use em, px or % values or the default value "normal"')),
-		'margin' => 				array('format' => 'text', 'css_units' => true, 'default' => '10px 0 15px', 			                                                            'title' => I18n::_('Margins'),       'description' => I18n::_('How far the heading is form other elements in page. Please see the short CSS guide at the bottom of this page.')),
+		'margin' => 				array('format' => 'text', 'css_units' => true, 'default' => '10px 0 15px', 			                                                            'title' => I18n::_('Margins'),       'description' => I18n::_('How far the heading is from other elements in page. Please see the short CSS guide at the bottom of this page.')),
 	),
 
 	'menu' => array(

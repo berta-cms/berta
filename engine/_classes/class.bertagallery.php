@@ -15,6 +15,24 @@ class BertaGallery extends BertaBase {
         return $imgs;
     }
 
+    public static function getFirstImage($entry) {
+        global $berta;
+        $img = '';
+        $imgs = BertaGallery::getImagesArray($entry);
+
+        if($imgs && count($imgs) > 0) {
+            $imageTargetWidth = $berta->template->settings->get('media', 'imagesMediumWidth', false, true);
+            $imageTargetHeight = $berta->template->settings->get('media', 'imagesMediumHeight', false, true);
+            list($firstImageHTML, $firstImageWidth, $firstImageHeight) = BertaGallery::getImageHTML($imgs[0], $entry['mediafolder']['value'], null, null, $imageTargetWidth, $imageTargetHeight);
+            preg_match('/<img.*?>/', $firstImageHTML, $img);
+
+            if ($img) {
+                $img = current($img);
+            }
+        }
+        return $img;
+    }
+
     public static function getHTMLForEntry($entry, $isAdminMode = false) {
     	global $berta;
         $imgs = BertaGallery::getImagesArray($entry);
@@ -326,7 +344,7 @@ class BertaGallery extends BertaBase {
                     switch ($imageInfo[2]) {
                       case IMAGETYPE_GIF:
                         //solution for animated gif
-                        if ( self::$options['HOSTING_PROFILE'] && ($imageInfo[2] == IMAGETYPE_GIF) ) {
+                        if ( 0 && self::$options['HOSTING_PROFILE'] && ($imageInfo[2] == IMAGETYPE_GIF) ) {
                             $file_path = realpath($imagePath);
                             $file_info = pathinfo($file_path);
                             $thumb_info = pathinfo($thumbPath);

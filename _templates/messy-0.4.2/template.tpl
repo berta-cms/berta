@@ -3,7 +3,12 @@
 <head>
     { include file="../_includes/inc.js_include_head_top.tpl" }
     <meta charset="UTF-8">
-    {if $berta.settings.pageLayout.responsive=='yes'}<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">{/if}
+    {if $berta.section.type == 'portfolio'}
+        {assign var=isResponsive value='yes'}
+    {else}
+        {assign var=isResponsive value=$berta.settings.pageLayout.responsive}
+    {/if}
+    {if $isResponsive=='yes'}<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">{/if}
     <meta name="keywords" content="{if $berta.section.seoKeywords}{ $berta.section.seoKeywords|strip_tags|escape }{else}{ $berta.settings.texts.metaKeywords|strip_tags|escape }{/if}">
     <meta name="description" content="{if $berta.section.seoDescription}{ $berta.section.seoDescription|strip_tags|escape }{else}{ $berta.settings.texts.metaDescription|strip_tags|escape }{/if}">
     <meta name="author" content="{ $berta.settings.texts.ownerName }">
@@ -20,7 +25,7 @@
     { $berta.scripts }
     { $berta.css }
     {* section related CSS for responsive layout *}
-    {if $berta.settings.pageLayout.responsive=='yes'}
+    {if $isResponsive=='yes'}
         <style type="text/css">
             #pageEntries .xEntry {literal}{{/literal}
                 padding: {if $berta.section.entryPadding }{ $berta.section.entryPadding }{ else }{ $berta.sectionTypes.default.params.entryPadding.default }{/if};
@@ -63,7 +68,7 @@
     { /if }
 </head>
 
-<body class="xContent-{ $berta.section.name }{if $berta.tagName} xSubmenu-{$berta.tagName}{/if}{if $berta.environment == 'engine'} page-xMySite{/if}">
+<body class="xContent-{ $berta.section.name }{if $berta.tagName} xSubmenu-{$berta.tagName}{/if}{if $berta.environment == 'engine'} page-xMySite{/if}{if $berta.section.type} xSectionType-{ $berta.section.type }{/if}">
     { include file="../_includes/inc.js_include_after_body.tpl" }
 
     { if ($berta.section.type == 'shopping_cart' &&  $berta.environment == 'engine') || $berta.section.type != 'shopping_cart'  }
@@ -170,8 +175,8 @@
                 { if !$berta.options.MOBILE_DEVICE && ($berta.section.mediaCacheData.file|@count > 1 || $berta.section.mediaCacheData.file.value) && !($berta.section.type == 'grid' && $smarty.cookies._berta_grid_view) }
                     <div id="xBackgroundLeft"></div>
                     <div id="xBackgroundRight"></div>
-                    <div id="xBackgroundLeftCounter"{if $bgAttr.hide_navigation=='yes' || $berta.settings.pageLayout.responsive=='yes'} class="xHidden"{/if}><div class="counterContent"></div></div>
-                    <div id="xBackgroundRightCounter"{if $bgAttr.hide_navigation=='yes' || $berta.settings.pageLayout.responsive=='yes'} class="xHidden"{/if}><div class="counterContent"></div></div>
+                    <div id="xBackgroundLeftCounter"{if $bgAttr.hide_navigation=='yes' || $isResponsive=='yes'} class="xHidden"{/if}><div class="counterContent"></div></div>
+                    <div id="xBackgroundRightCounter"{if $bgAttr.hide_navigation=='yes' || $isResponsive=='yes'} class="xHidden"{/if}><div class="counterContent"></div></div>
                 { /if }
             </div>
 
@@ -276,13 +281,13 @@
                 </div>
             { /if }
 
-            <div id="contentContainer" class="{ if $berta.settings.pageLayout.centered=='yes' }xCentered { /if }{ if $berta.settings.pageLayout.responsive=='yes' }xResponsive{ /if }">
+            <div id="contentContainer" class="{ if $berta.settings.pageLayout.centered=='yes' }xCentered { /if }{ if $isResponsive=='yes' }xResponsive{ /if }">
 
                 {* *** shopping cart link ********************************************************************* *}
                 { if $berta.shop_enabled == true }
 
                     { if $shoppingCartSection }
-                        <div id="shoppingCart" class="{ messClasses property='shoppingCartXY' }"{if $shoppingCartXY} style="{ messStyles xy=$shoppingCartXY }"{/if}>
+                        <div id="shoppingCart" class="{ messClasses property='shoppingCartXY' isResponsive=$isResponsive }"{if $shoppingCartXY} style="{ messStyles xy=$shoppingCartXY isResponsive=$isResponsive }"{/if}>
                             {if $berta.environment == 'engine' }
                                 <a href="{ bertaLink section=$shoppingCartSection.name }" id="xShoppingCart"><span class="title">{ if $berta.settings.shop.cartImage }<img src="{ $berta.options.MEDIA_ABS_ROOT }{ $berta.settings.shop.cartImage }" alt="{ $shoppingCartSection.title }" title="{ $shoppingCartSection.title }" />{else}{ $shoppingCartSection.title }{/if}</span><span class="numItemsContainer hidden"> (<span class="numItems">0</span>)</span></a>
                             {else}
@@ -294,54 +299,58 @@
 
                 {* If not grid view *}
                 { if !($smarty.cookies._berta_grid_view && $berta.section.type == 'grid') }
-                <div id="pageEntries" class="{ entriesListClasses }{ if $berta.settings.pageLayout.responsive != 'yes' } xNoEntryOrdering{else} {if intval($berta.section.columns)>1}columns-{intval($berta.section.columns)}{ /if }{ /if } clearfix">
+                <div id="pageEntries" class="{ entriesListClasses }{ if $isResponsive != 'yes' } xNoEntryOrdering{else} {if intval($berta.section.columns)>1}columns-{intval($berta.section.columns)}{ /if }{ /if } clearfix">
 
                     {* now loop through all entries and print them out *}
                     { foreach $entries as $entry }
 
-                        <div class="{ entryClasses entry=$entry } { messClasses property='positionXY' } xShopMessyEntry clearfix" style="{ messStyles xy=$entry.positionXY entry=$entry }{ if $berta.settings.pageLayout.responsive != 'yes' }{if $entry.width} width:{$entry.width};{elseif strlen(trim($berta.settings.shop.entryWidth)) > 0  && $berta.section.type == 'shop'}width: { $berta.settings.shop.entryWidth }px;{ /if }{/if}">
+                        <div class="entry clearfix {if $berta.section.type == 'portfolio'}xHidden {/if}{ entryClasses entry=$entry } { messClasses property='positionXY' isResponsive=$isResponsive } xShopMessyEntry" style="{ messStyles xy=$entry.positionXY entry=$entry  isResponsive=$isResponsive }{ if $isResponsive != 'yes' }{if $entry.width} width:{$entry.width};{elseif strlen(trim($berta.settings.shop.entryWidth)) > 0  && $berta.section.type == 'shop'}width: { $berta.settings.shop.entryWidth }px;{ /if }{/if}" id="{ entrySlug entry=$entry }">
 
-
-                            {* the entry settings and delete and move buttons live in the entryHeader - don't leave it out! *}
                             { $isshopentry=0 }
                             { if $berta.section.type == 'shop' and $berta.shop_enabled == true }
                                 { $isshopentry=1 }
                             { /if }
+                            {* the entry settings and delete and move buttons live in the entryHeader - don't leave it out! *}
                             { customEntryHeader entry=$entry ishopentry=$isshopentry }
 
                             {* entryGallery prints the image gallery for the entry *}
-                            { entryGallery entry=$entry }
 
+                            {if $berta.section.type != 'portfolio'}
+                                { entryGallery entry=$entry }
+                            {/if}
 
-                            { if ($berta.environment == 'engine' || !empty($entry.cartTitle)) and $berta.section.type == 'shop' and $berta.shop_enabled == true }
-                                <h2><span class="xEditable xProperty-cartTitle xCaption-item-name cCartTitle">{ $entry.cartTitle }</span></h2>
-                            { /if }
+                            <div class="entryTextWrap galleryType-{ $entry.__raw.mediaCacheData['@attributes'].type }">
+                                { if ($berta.environment == 'engine' || !empty($entry.cartTitle)) and $berta.section.type == 'shop' and $berta.shop_enabled == true }
+                                    <h2><span class="xEditable xProperty-cartTitle xCaption-item-name cCartTitle">{ $entry.cartTitle }</span></h2>
+                                { elseif $berta.section.type == 'portfolio' && ($berta.environment == 'engine' || !empty($entry.title)) }
+                                    <h2><span class="xEditable xProperty-title xCaption-entry&nbsp;title">{ $entry.title }</span></h2>
+                                { /if }
 
+                                { if $berta.environment == 'engine' || !empty($entry.description) }
+                                    <div class="entryText xEditableMCE xProperty-description">{ $entry.description }</div>
+                                { /if }
 
-                            { if $berta.environment == 'engine' || !empty($entry.description) }
-                                <div class="entryText xEditableMCE xProperty-description"{ entryTextStyles entry=$entry }>{ $entry.description }</div>
-                            { /if }
+                                { if $berta.section.type == 'shop' and $berta.shop_enabled == true }
+                                    <div class="addToCart" data-uniqid="{$entry.uniqid}">
+                                        { if $berta.environment == 'engine' }
+                                            <div class="cartPrice xEditableRC xProperty-cartPrice xCaption-price xFormatModifier-toPrice" title="{ $entry.cartPrice }">{ $entry.cartPrice|@toPrice }</div>
+                                        {else}
+                                            <div class="cartPrice" title="{ $entry.cartPrice }" data-weight="{ $entry.weight|intval }">{ $entry.cartPrice|@toPrice }</div>
+                                        {/if}
 
+                                        <br class="clear">
 
+                                        <div class="cartAttributes{if !$entry.cartAttributes} hidden{/if}">{ $entry.cartAttributes|@toCartAttributes }</div>
+                                        <span class="aele{ if empty($entry.cartPrice) || $berta.environment == 'site'} hidden{/if}"><span>{ $berta.settings.shop.addToBasket }</span></span>
+                                        <span class="addedToCart hidden"><span></span> { $berta.settings.shop.addedToBasket }</span>
+                                        <span class="outOfStock hidden">{ $berta.settings.shop.outOfStock }</span>
+                                    </div>
+                                { /if }
+                            </div>
 
-                            { if $berta.section.type == 'shop' and $berta.shop_enabled == true }
-                                <div class="addToCart" data-uniqid="{$entry.uniqid}">
-                                    { if $berta.environment == 'engine' }
-                                        <div class="cartPrice xEditableRC xProperty-cartPrice xCaption-price xFormatModifier-toPrice" title="{ $entry.cartPrice }">{ $entry.cartPrice|@toPrice }</div>
-                                    {else}
-                                        <div class="cartPrice" title="{ $entry.cartPrice }" data-weight="{ $entry.weight|intval }">{ $entry.cartPrice|@toPrice }</div>
-                                    {/if}
-
-                                    <br class="clear">
-
-                                    <div class="cartAttributes{if !$entry.cartAttributes} hidden{/if}">{ $entry.cartAttributes|@toCartAttributes }</div>
-                                    <span class="aele{ if empty($entry.cartPrice) || $berta.environment == 'site'} hidden{/if}"><span>{ $berta.settings.shop.addToBasket }</span></span>
-                                    <span class="addedToCart hidden"><span></span> { $berta.settings.shop.addedToBasket }</span>
-                                    <span class="outOfStock hidden">{ $berta.settings.shop.outOfStock }</span>
-
-                                </div>
-                            { /if }
-
+                            {if $berta.section.type == 'portfolio'}
+                                { entryGallery entry=$entry }
+                            {/if}
 
                             {* entry footer wraps the entry including the header - don't leave it out! *}
                             { entryFooter entry=$entry }
@@ -358,8 +367,12 @@
                 </div>
                 { /if }
 
+                {if $berta.section.type == 'portfolio'}
+                    { include file="../_includes/inc.portfolio_thumbnails.tpl"  }
+                {/if}
+
                 { if ($berta.environment == 'site' && $berta.settings.navigation.landingSectionMenuVisible=='yes') || $berta.environment == 'engine' || ($berta.environment == 'site' && $berta.settings.navigation.landingSectionMenuVisible=='no' && $berta.sectionName != $berta.sections|@key) }
-                    <div id="additionalText" class="{ messClasses property='additionalTextXY' }" style="{ messStyles xy=$additionalTextXY }">
+                    <div id="additionalText" class="{ messClasses property='additionalTextXY' isResponsive=$isResponsive }" style="{ messStyles xy=$additionalTextXY isResponsive=$isResponsive }">
                         {if $berta.settings.socialMediaButtons.socialMediaLocation == 'additionalText' && $berta.settings.socialMediaButtons.socialMediaHTML}
                             { $berta.settings.socialMediaButtons.socialMediaHTML|@html_entity_decode|replace:'<br />':"\n" }
                         {else}
@@ -376,8 +389,8 @@
                     { assign var="setting_pos_name" value="banner`$smarty.section.banners.iteration`XY" }
 
                     { if $berta.settings.banners.$setting_name_image }
-                        <div class="floating-banner banner-{$smarty.section.banners.iteration}{ if $berta.settings.pageLayout.responsive!='yes' } xEditableDragXY xProperty-{ $setting_pos_name }{/if}"{ if $berta.settings.pageLayout.responsive!='yes' } style="{ bannerPos xy_name=$setting_pos_name }"{/if}>
-                            { if $berta.settings.pageLayout.responsive!='yes' }
+                        <div class="floating-banner banner-{$smarty.section.banners.iteration}{ if $isResponsive!='yes' } xEditableDragXY xProperty-{ $setting_pos_name }{/if}"{ if $isResponsive!='yes' } style="{ bannerPos xy_name=$setting_pos_name }"{/if}>
+                            { if $isResponsive!='yes' }
                                 <div class="xHandle"></div>
                             {/if}
                             { if $berta.settings.banners.$setting_name_link }

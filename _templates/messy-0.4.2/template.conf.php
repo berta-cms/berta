@@ -33,7 +33,7 @@ $sectionTypes = array(
 	)),
 	'grid' => array('title' => 'Thumbnails enabled'),
 	'sitelist' => array('title' => 'Site list'),
-
+    'portfolio' => array('title' => 'Portfolio')
 );
 
 $templateConf = array(

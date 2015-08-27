@@ -31,7 +31,7 @@
 	<script type="text/javascript" src="{ $berta.options.TEMPLATES_ABS_ROOT }{ $berta.templateName }/default.js?{$berta.options.int_version}"></script>
 </head>
 
-<body class="xContent-{ $berta.section.name }{if $berta.tagName} xSubmenu-{$berta.tagName}{/if}{if $berta.environment == 'engine'} page-xMySite{/if}">
+<body class="xContent-{ $berta.section.name }{if $berta.tagName} xSubmenu-{$berta.tagName}{/if}{if $berta.environment == 'engine'} page-xMySite{/if}{if $berta.section.type} xSectionType-{ $berta.section.type }{/if}">
 
 	{if $berta.settings.background.backgroundAttachment=='fill' AND $berta.settings.background.backgroundImageEnabled=='yes' AND $berta.settings.background.backgroundImage!=''}
 		<div id="xFilledBackground" class="xPosition-{' '|str_replace:'_':$berta.settings.background.backgroundPosition}">
@@ -150,7 +150,7 @@
 
 				{* now loop through all entries and print them out *}
 				{ foreach from=$entries key="entryId" item="entry" name="entriesLoop" }
- 					<li class="entry { entryClasses entry=$entry }">
+ 					<li class="entry {if $berta.section.type == 'portfolio'}xHidden {/if}{ entryClasses entry=$entry }" id="{ entrySlug entry=$entry }">
 
 						{* the entry settings and delete and move buttons live in the entryHeader - don't leave it out! *}
 						{ entryHeader entry=$entry }
@@ -195,6 +195,10 @@
 				{ /foreach }
 
 			</ol>
+
+            {if $berta.section.type == 'portfolio'}
+                { include file="../_includes/inc.portfolio_thumbnails.tpl"  }
+            {/if}
 
 			<div id="additionalFooterText" class="{if !($berta.settings.socialMediaButtons.socialMediaLocation == 'footer' && $berta.settings.socialMediaButtons.socialMediaHTML)}xEditableMCESimple {/if}xProperty-additionalFooterText xCaption-additional-footer-text clearfix">
                 {if $berta.settings.socialMediaButtons.socialMediaLocation == 'footer' && $berta.settings.socialMediaButtons.socialMediaHTML}

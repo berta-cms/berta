@@ -294,7 +294,7 @@ a img { border: none; }
                         ol#pageEntries li.xEntry .xGalleryType-row div.xGalleryItem {
                             position: relative;
                             float: left;
-                            padding-right: <?php echo $s->get('entryLayout', 'spaceBetweenImages') ?>;
+                            margin-right: <?php echo $s->get('entryLayout', 'spaceBetweenImages') ?>;
                         }
 						ol#pageEntries li.xEntry .xGalleryType-slideshow .xGalleryImageCaption { display: none; }
 
@@ -395,6 +395,18 @@ a img { border: none; }
 		width: 100%;
 		height: 100% !important;
 	}
+
+    .xSectionType-portfolio img,
+    .xSectionType-portfolio ol#pageEntries li.xEntry .xGalleryContainer .xGallery,
+    .xSectionType-portfolio ol#pageEntries li.xEntry .xGalleryContainer .xGallery div.xGalleryItem,
+    .xSectionType-portfolio ol#pageEntries li.xEntry .xGalleryContainer .xGallery div.xGalleryItem .image {
+        max-width: 100% !important;
+        height: auto !important;
+    }
+
+    .xSectionType-portfolio ol#pageEntries li.xEntry .xGalleryType-row .xGallery {
+        max-width: inherit !important;
+    }
 
 
 <?php if( $isResponsive ){ ?>

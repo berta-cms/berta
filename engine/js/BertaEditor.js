@@ -4,11 +4,9 @@ if(window.FancyUpload2) {
 	var myFancyUpload2 = new Class({
     	Extends: FancyUpload2,
 		showProgressBars: function() {
-		//	console.log('show progres bars');
 			this.status.getElements('.xFUProgress').setStyle('display', 'block').fade('hide').fade('in');
 		},
 		hideProgressBars: function() {
-			//console.log('hide progres bars');
 			this.status.getElements('.xFUProgress').each(function(el) {
 				el.fade('out').retrieve('tween').chain(Element.setStyle.bind(Element, [el, 'display', 'none']));
 			});
@@ -47,6 +45,7 @@ var BertaEditor = new Class({
 
 	/* DOM elements */
 	entriesList: null,				// the OL element thad contains the entries
+    portfolioThumbnails: null,
 	newsTickerContainer: null,
     subMenu: null,
 
@@ -89,7 +88,7 @@ var BertaEditor = new Class({
 				plugins : "save,paste,insertanything",
 				languages : "en",
 				disk_cache : true
-			}/*, this.tinyMCE_init.bind(this)*/);
+			});
 		}
 
 		this.bgImageInit();
@@ -140,6 +139,7 @@ var BertaEditor = new Class({
 				this.entriesList = $$('.xEntriesList')[0];
 				this.coversList = $$('.covers')[0];
 				this.currentSection = this.container.getParent('body').getClassStoredValue('xContent');
+                this.portfolioThumbnails = $$('.portfolioThumbnails');
 
 				// section background editing
 				if($('xBgEditorPanelTrig')) $('xBgEditorPanelTrig').addEvent('click', this.onBgEditClick.bindWithEvent(this));
@@ -209,7 +209,17 @@ var BertaEditor = new Class({
 						    }
 						});
 
-						// messy: create widget
+						// entry deleting and creating
+						if(this.options.templateName.substr(0,5) != 'messy' && this.options.sectionType != 'portfolio')
+							createNewEntryText = this.options.i18n['create new entry here'];
+						else
+							createNewEntryText = this.options.i18n['create new entry'];
+						new Element('A', { 'class': 'xCreateNewEntry xPanel xAction-entryCreateNew', 'href': '#'}).adopt(
+							new Element('span', { 'html': createNewEntryText })
+						).inject(this.entriesList, 'after');
+						$$('.xEntryDelete').addEvent('click', this.entryDelete.bindWithEvent(this));
+						$$('.xCreateNewEntry').addEvent('click', this.entryCreate.bindWithEvent(this));
+
 						if(this.options.templateName.substr(0,5) == 'messy') {
 
 							var xCreateWidget = new Element('div', { 'class': 'xCreateWidget mess', 'text': this.options.i18n['create new'] });
@@ -243,13 +253,9 @@ var BertaEditor = new Class({
 
 						// galleries
 						this.entriesList.getElements('.xGalleryContainer').each(function(item) {
-							var g = new BertaGallery(item, {
-								environment: this.options.environment,
-								engineRoot: this.options.paths.engineRoot,
-								engineABSRoot: this.options.paths.engineABSRoot,
-								playerType: this.options.videoPlayerType,
-								slideshowAutoRewind: this.options.slideshowAutoRewind });
-							this.galleries.push(g);
+                            if (!item.getParent('.xEntry').hasClass('xHidden')) {
+                                this.initGallery(item);
+                            }
 						}.bind(this));
 						this.entriesList.getElements('.xGalleryEditButton').addEvent('click', this.onGalleryEditClick.bindWithEvent(this));
 
@@ -272,6 +278,19 @@ var BertaEditor = new Class({
 									this.entriesList.getElements('.xCreateNewEntry').setStyle('visibility', 'hidden');
 								}.bind(this)
 							});
+
+                            if (this.portfolioThumbnails.length) {
+                                new Sortables(this.portfolioThumbnails, {
+                                    handle: '.xHandle',
+                                    constrain: true,
+                                    clone: true,
+                                    opacity: 0.3,
+                                    revert: true,
+                                    onComplete: function(el) {
+                                        this.portfolioThumbnailsOrderSave(el);
+                                    }.bind(this)
+                                });
+                            }
 						}
 
 						this.highlightNewEntry.delay(100, this);
@@ -289,6 +308,18 @@ var BertaEditor = new Class({
 		}
 
 	},
+
+
+    initGallery: function(item){
+        var g = new BertaGallery(item, {
+            environment: this.options.environment,
+            engineRoot: this.options.paths.engineRoot,
+            engineABSRoot: this.options.paths.engineABSRoot,
+            playerType: this.options.videoPlayerType,
+            slideshowAutoRewind: this.options.slideshowAutoRewind
+        });
+        this.galleries.push(g);
+    },
 
 
 	onLoad: function() {
@@ -422,7 +453,6 @@ var BertaEditor = new Class({
 
 			im.setStyle('width', wOrig * scaleX + 'px');
 			im.setStyle('height', hOrig * scaleY + 'px');
-			//console.debug(Math.round((w - wOrig * scaleX) / 2), Math.round((h - hOrig * scaleY) / 2));
 			im.setStyle('left', posX + 'px');
 			im.setStyle('top', posY + 'px');
 		}
@@ -478,7 +508,6 @@ var BertaEditor = new Class({
 		    this.fireEvent(BertaEditorBase.EDITABLE_FINISH, [bgEditorContainer, bBgEditor]);
 		}.bind(this));
 
-		//console.debug(this);
 	},
 
 	onGalleryEditClick: function(event) {	// replaces the gallery with gallery editor
@@ -490,7 +519,6 @@ var BertaEditor = new Class({
 
 		var galleryInstance, galleryInstanceIndex;
 		if(this.galleries.some(function(item, index) {
-			//console.debug(item.container, galleryContainer, $(item.container) == $(galleryContainer));
 			// if the containers match then this is the right gallery instance
 			if($(item.container) == $(galleryContainer)) {
 				galleryInstance = item;
@@ -576,13 +604,7 @@ var BertaEditor = new Class({
 				container = container.getElement('.xGalleryEditButton').getParent('.xGalleryContainer');
 
 				// instantiate the gallery for the container
-				var g = new BertaGallery(container, {
-					environment: this.options.environment,
-					engineRoot: this.options.paths.engineRoot,
-					engineABSRoot: this.options.paths.engineABSRoot,
-					playerType: this.options.videoPlayerType,
-					slideshowAutoRewind: this.options.slideshowAutoRewind });
-				this.galleries.push(g);
+                this.initGallery(container);
 
 				// add the "edit gallery" link event
 				container.getElement('.xGalleryEditButton').addEvent('click', this.onGalleryEditClick.bindWithEvent(this));
@@ -740,7 +762,8 @@ var BertaEditor = new Class({
 				onComplete: function(resp) {
 					if(!resp.error_message && resp.update && resp.update.entryid) {
 						Cookie.write('_berta__entry_highlight', resp.update.entryid, { path: this.options.paths.engineABSRoot });
-						window.location.reload();
+                        window.location.hash = 'entry-' + resp.update.entryid;
+                        window.location.reload();
 					} else {
 						alert(resp.error_message);
 						target.removeClass('xSaving');
@@ -757,6 +780,8 @@ var BertaEditor = new Class({
 			if(confirm("Berta asks:\n\nAre you sure you want to delete this entry along with all the images and other stuff it has attached and never have it back and never regret it afterwards?")) {
 				var btn = $(event.target);
 				var entryObj = $(event.target).getParent('.xEntry');
+                var entryId = entryObj.getClassStoredValue('xEntryId');
+                var entryThumbnail = $$('.portfolioThumbnail[data-id="' + entryId + '"]');
 
 				btn.setProperty('display', 'none');
 				entryObj.addClass('xSavingAtLarge');
@@ -768,7 +793,7 @@ var BertaEditor = new Class({
 				new Request.JSON({
 					url: this.options.updateUrl,
 					data: "json=" + JSON.encode({
-						section: this.currentSection, entry: entryObj.getClassStoredValue('xEntryId'), action: 'DELETE_ENTRY', value: entryObj.getClassStoredValue('xEntryId')
+						section: this.currentSection, entry: entryId, action: 'DELETE_ENTRY', value: entryId
 					}),
 					onComplete: function(resp, entryInfo, deleteLink, eText) {
 						if(!resp) {
@@ -777,6 +802,7 @@ var BertaEditor = new Class({
 						} else if(resp && !resp.error_message) {
 							this.unlinearProcess_stop(deleteProcessId);
 							entryObj.destroy();
+                            entryThumbnail.destroy();
 						} else {
 							alert(resp.error_message);
 							btn.setProperty('display', 'inline');
@@ -805,7 +831,22 @@ var BertaEditor = new Class({
 		}).post();
 	},
 
+    portfolioThumbnailsOrderSave: function(elJustMoved) {
+        var elId = elJustMoved.get('data-id');
+        var next = elJustMoved.getNext('.portfolioThumbnail');
+        var nextId = next ? next.get('data-id') : null;
 
+        new Request.JSON({
+            url: this.options.updateUrl,
+            data: "json=" + JSON.encode({
+                section: this.currentSection, entry: elId, entryNum: null,
+                action: 'PUT_BEFORE', property: '', value: nextId
+            }),
+            onComplete: function(resp) {
+
+            }.bind(this)
+        }).post();
+    },
 
 	entryOnHover: function(event) {
 		event = new Event(event);
@@ -861,13 +902,11 @@ var BertaEditor = new Class({
                     revert: true,
                     onComplete: function(el) {
                         if(item.hasClass('xSortNotClick')) {
-                        	//console.log('Submenu order finish');
                         	this.submenuOrderSave(el, item);
                         	item.removeClass('xSortNotClick');
                         }
                     }.bind(this),
                     onStart: function(el, clone) {
-                        //console.log('Submenu order start');
                         item.addClass('xSortNotClick');
                     }.bind(this)
                 });

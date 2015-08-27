@@ -32,7 +32,7 @@
 	<script type="text/javascript" src="{ $berta.options.TEMPLATES_ABS_ROOT }{ $berta.templateName }/mashup.js?{$berta.options.int_version}"></script>
 </head>
 
-<body class="xContent-{ $berta.section.name }{if $berta.tagName} xSubmenu-{$berta.tagName}{/if}{if $berta.environment == 'engine'} page-xMySite{/if}">
+<body class="xContent-{ $berta.section.name }{if $berta.tagName} xSubmenu-{$berta.tagName}{/if}{if $berta.environment == 'engine'} page-xMySite{/if}{if $berta.section.type} xSectionType-{ $berta.section.type }{/if}">
 
 	{if $berta.settings.background.backgroundAttachment=='fill' AND $berta.settings.background.backgroundImageEnabled=='yes' AND $berta.settings.background.backgroundImage!=''}
 		<div id="xFilledBackground" class="xPosition-{' '|str_replace:'_':$berta.settings.background.backgroundPosition}">
@@ -157,17 +157,29 @@
 
 							{* now loop through all entries and print them out *}
 							{ foreach from=$entries item="entry" name="entriesLoop" }
-								<li class="entry { entryClasses entry=$entry }">
-
+                                <li class="entry clearfix {if $berta.section.type == 'portfolio'}xHidden {/if}{ entryClasses entry=$entry }" id="{ entrySlug entry=$entry }">
 									{* the entry settings and delete and move buttons live in the entryHeader - don't leave it out! *}
 									{ entryHeader entry=$entry }
 
 									{* entryGallery prints the image gallery for the entry *}
-									{ entryGallery entry=$entry }
+                                    {if $berta.section.type != 'portfolio'}
+									   { entryGallery entry=$entry }
+                                    {/if}
 
-									{ if $berta.environment == 'engine' || !empty($entry.description) }
-									<div class="entryText xEditableMCE xProperty-description"{ entryTextStyles entry=$entry }>{ $entry.description }</div>
-									{ /if }
+                                    <div class="entryTextWrap galleryType-{ $entry.__raw.mediaCacheData['@attributes'].type }">
+                                        { if $berta.section.type == 'portfolio' && ($berta.environment == 'engine' || !empty($entry.title)) }
+                                            <h2><span class="xEditable xProperty-title xCaption-entry&nbsp;title">{ $entry.title }</span></h2>
+                                        { /if }
+
+                                        { if $berta.environment == 'engine' || !empty($entry.description) }
+                                            <div class="entryText xEditableMCE xProperty-description">{ $entry.description }</div>
+                                        { /if }
+                                    </div>
+
+                                    {* entryGallery prints the image gallery for the entry *}
+                                    {if $berta.section.type == 'portfolio'}
+                                       { entryGallery entry=$entry }
+                                    {/if}
 
 									{* entry footer wraps the entry including the header - don't leave it out! *}
 									{ entryFooter entry=$entry }
@@ -180,6 +192,10 @@
 						</ol>
 
 						<br class="clear" />
+
+                        {if $berta.section.type == 'portfolio'}
+                            { include file="../_includes/inc.portfolio_thumbnails.tpl"  }
+                        {/if}
 					</div>
 				</div>
 			</div>

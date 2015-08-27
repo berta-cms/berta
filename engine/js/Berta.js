@@ -73,17 +73,23 @@ var Berta = new Class({
 
 	initEntriesList: function() {
 		$$('.xEntriesList .xGalleryContainer').each(function(item) {
-			var g = new BertaGallery(item, {
-				environment: this.options.environment,
-				engineRoot: this.options.paths.engineRoot,
-				engineABSRoot: this.options.paths.engineABSRoot,
-				playerType: this.options.videoPlayerType,
-				slideshowAutoRewind: this.options.slideshowAutoRewind,
-				galleryFullScreenImageBorders: this.options.galleryFullScreenImageBorders
-			});
-			this.galleries.push(g);
+            if (!item.getParent('.xEntry').hasClass('xHidden')) {
+                this.initGallery(item);
+            }
 		}.bind(this));
 	},
+
+    initGallery: function(item) {
+        var g = new BertaGallery(item, {
+            environment: this.options.environment,
+            engineRoot: this.options.paths.engineRoot,
+            engineABSRoot: this.options.paths.engineABSRoot,
+            playerType: this.options.videoPlayerType,
+            slideshowAutoRewind: this.options.slideshowAutoRewind,
+            galleryFullScreenImageBorders: this.options.galleryFullScreenImageBorders
+        });
+        this.galleries.push(g);
+    },
 
 	bgImageInit: function() {
 		var imContainer = $('xFilledBackground');
