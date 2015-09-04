@@ -2439,6 +2439,10 @@ table.inventory tr td .remove {
 	text-decoration: none !important;
 }
 
+.xProperty-cartManualTransfer {
+    display: inline-block;
+}
+
 #shoppingCartOuter {
 	width: 655px;
 }
