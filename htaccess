@@ -14,6 +14,9 @@
 #		your hosting service and ask them to "allow mod_rewrite in .htaccess files".
 #
 
+# Disable directory listing
+Options -Indexes
+
 <IfModule mod_rewrite.c>
 
 RewriteEngine on
