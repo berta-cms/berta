@@ -96,7 +96,12 @@ class BertaUtils extends BertaBase {
 
 			//Lithuanian
 			'Ą' => 'A', 'Ę' => 'E', 'Ė' => 'E', 'Į'=> 'I', 'Ų'=> 'U',
-			'ą' => 'a', 'ę' => 'e', 'ė' => 'e', 'į'=> 'i', 'ų'=> 'u'
+			'ą' => 'a', 'ę' => 'e', 'ė' => 'e', 'į'=> 'i', 'ų'=> 'u',
+
+      //Other
+      'ɗ'=> 'd', 'ə' => 'e', 'ʍ' => 'm', 'ş' => 's', 'ţ' => 't',
+      'Ɗ' => 'D', 'Ə' => 'E', 'Ş' => 'S', 'Ţ'=> 'T'
+
 		);
 
 		$tagTitle = str_replace(array_keys($char_map), $char_map, $tagTitle);
