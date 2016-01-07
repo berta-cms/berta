@@ -533,12 +533,14 @@ var BertaEditor = new Class({
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	tagsSetDefault: function(tag) {
-		new Request.JSON({
-			url: this.options.updateUrl,
-			data: "json=" + JSON.encode({
+		var data = {
 				section: $$('ol.blogroll')[0].getProperty('section'), entry: null, entryNum: null,
 				property: 'tagsSetDefault', value: tag
-			}),
+			};
+		console.log('BertaEditor.tagsSetDefault:', data);
+		new Request.JSON({
+			url: this.options.updateUrl,
+			data: "json=" + JSON.encode(data),
 			onComplete: function(resp) {
 
 			}.bind(this)
@@ -566,12 +568,14 @@ var BertaEditor = new Class({
 		if(this.processHandler.isIdleOrWarnIfBusy()) {
 			target.addClass('xSaving');
 			var entryInfo = this.getEntryInfoForElement(target);
-			new Request.JSON({
-				url: this.options.updateUrl,
-				data: "json=" + JSON.encode({
+			var data = {
 					section: this.currentSection, tag: this.currentTag, entry: null, action: 'CREATE_NEW_ENTRY', value: null,
 					mediafolder: '', before_entry: entryInfo.entryId
-				}),
+				};
+			console.log('BertaEditor.entryCreate:', data);
+			new Request.JSON({
+				url: this.options.updateUrl,
+				data: "json=" + JSON.encode(data),
 				onComplete: function(resp) {
 					if(!resp.error_message && resp.update && resp.update.entryid) {
 						Cookie.write('_berta__entry_highlight', resp.update.entryid, { path: this.options.paths.engineABSRoot });
@@ -603,11 +607,14 @@ var BertaEditor = new Class({
 				//var entryTitleEl = entryObj.getElement('h2');
 				this.unlinearProcess_start(deleteProcessId, 'Deleting entry');
 
+				var data = {
+						section: this.currentSection, entry: entryId, action: 'DELETE_ENTRY', value: entryId
+					};
+
+				console.log('BertaEditor.entryDelete:', data);
 				new Request.JSON({
 					url: this.options.updateUrl,
-					data: "json=" + JSON.encode({
-						section: this.currentSection, entry: entryId, action: 'DELETE_ENTRY', value: entryId
-					}),
+					data: "json=" + JSON.encode(data),
 					onComplete: function(resp, entryInfo, deleteLink, eText) {
 						if(!resp) {
 							alert('Berta says, there was a server error while deleting this entry! Something has gone sooooo wrong...');
@@ -631,13 +638,15 @@ var BertaEditor = new Class({
 		var elId = elJustMoved.getClassStoredValue('xEntryId')
 		var next = elJustMoved.getNext('.xEntry');
 		var nextId = next ? next.getClassStoredValue('xEntryId') : null;
-
-		new Request.JSON({
-			url: this.options.updateUrl,
-			data: "json=" + JSON.encode({
+		var data = {
 				section: this.currentSection, entry: elId, entryNum: null,
 				action: 'PUT_BEFORE', property: '', value: nextId
-			}),
+			};
+
+		console.log('BertaEditor.entryOrderSave:', data);
+		new Request.JSON({
+			url: this.options.updateUrl,
+			data: "json=" + JSON.encode(data),
 			onComplete: function(resp) {
 
 			}.bind(this)
@@ -648,13 +657,15 @@ var BertaEditor = new Class({
         var elId = elJustMoved.get('data-id');
         var next = elJustMoved.getNext('.portfolioThumbnail');
         var nextId = next ? next.get('data-id') : null;
-
-        new Request.JSON({
-            url: this.options.updateUrl,
-            data: "json=" + JSON.encode({
+        var data = {
                 section: this.currentSection, entry: elId, entryNum: null,
                 action: 'PUT_BEFORE', property: '', value: nextId
-            }),
+            };
+
+        console.log('BertaEditor.portfolioThumbnailsOrderSave:', data);
+        new Request.JSON({
+            url: this.options.updateUrl,
+            data: "json=" + JSON.encode(data),
             onComplete: function(resp) {
 
             }.bind(this)
@@ -732,13 +743,15 @@ var BertaEditor = new Class({
         var tag = elJustMoved.getClassStoredValue('xTag');
         var next = elJustMoved.getNext('li');
         var nextTag = next ? next.getClassStoredValue('xTag') : null;
-
-        new Request.JSON({
-            url: this.options.updateUrl,
-            data: "json=" + JSON.encode({
+        var data = {
                 section: section, tag: tag, value: nextTag,
                 action: 'ORDER_SUBMENUS', property: ''
-            }),
+            };
+
+        console.log('BertaEditor.submenuOrderSave:', data);
+        new Request.JSON({
+            url: this.options.updateUrl,
+            data: "json=" + JSON.encode(data),
             onComplete: function(resp) {
                 subMenu.removeClass('xSaving');
             }.bind(this)
@@ -798,12 +811,14 @@ var BertaEditor = new Class({
 
 			var processId = this.unlinearProcess_getId('toggle-videos');
 			this.unlinearProcess_start(processId, 'Toggling tutorial videos');
+			var data = {
+					value: value, property: property
+				};
 
+			console.log('BertaEditor.toggleVideos:', data);
 			new Request.JSON({
 				url: this.options.updateUrl,
-				data: "json=" + JSON.encode({
-					value: value, property: property
-				}),
+				data: "json=" + JSON.encode(data),
 				onComplete: function(resp) {
 					if(!resp) {
 						alert('An error occured while toggling the tutorial video window state. Something has gone wrong!');

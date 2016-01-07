@@ -125,12 +125,14 @@ var BertaEditor_Sections = new Class({
 			return element.getClassStoredValue('xSection');
 		});
 
-		new Request.JSON({
-			url: this.options.updateUrl,
-			data: "json=" + JSON.encode({
+		var data = {
 				section: this.sectionsMenu.getElement('li').getClassStoredValue('xSection'), entry: null, entryNum: null,
 				action: 'ORDER_SECTIONS', property: '', value: newOrder
-			}),
+			};
+		console.log('BertaEditor_Sections.sectionOrderSave:', data);
+		new Request.JSON({
+			url: this.options.updateUrl,
+			data: "json=" + JSON.encode(data),
 			onComplete: function(resp) {
 
 			}.bind(this)
@@ -146,13 +148,15 @@ var BertaEditor_Sections = new Class({
 		if(confirm('Berta asks:\n\nAre you sure you want to delete this section? All its content will be lost... FOREVAAA!')) {
 			if(confirm('Berta asks again:\n\nAre you really sure?')) {
 				this.sectionsEditor.addClass('xSaving');
-				new Request.JSON({
-					url: this.options.updateUrl,
-					data: "json=" + JSON.encode({
+				var data = {
 						section: 'null', entry: null, entryNum: null,
 						action: 'DELETE_SECTION',
 						property: '', value: sectionName
-					}),
+					};
+				console.log('BertaEditor_Sections.sectionDelete:', data);
+				new Request.JSON({
+					url: this.options.updateUrl,
+					data: "json=" + JSON.encode(data),
 					onComplete: function(resp) {
 						if(!resp) {
 							alert('Berta says:\n\nServer produced an error while deleting this section! Something went sooooo wrong...');
@@ -173,9 +177,7 @@ var BertaEditor_Sections = new Class({
 	sectionCreateNew: function(event) {
 		if (event) event.preventDefault();
 		this.sectionsEditor.addClass('xSaving');
-		new Request.JSON({
-			url: this.options.updateUrl,
-			data: "json=" + JSON.encode({
+		var data = {
 				section: 'null',
 				entry: null,
 				entryNum: null,
@@ -183,7 +185,11 @@ var BertaEditor_Sections = new Class({
 				property: '', value: '',
 				cloneSection: this.cloneSection,
 				cloneSectionTitle: this.cloneSectionTitle
-			}),
+			};
+		console.log('BertaEditor_Sections.sectionCreateNew:', data);
+		new Request.JSON({
+			url: this.options.updateUrl,
+			data: "json=" + JSON.encode(data),
 			onComplete: function(resp) {
 				if(!resp) {
 					alert('Berta says:\n\nServer produced an error while adding new section! Something went sooooo wrong...');

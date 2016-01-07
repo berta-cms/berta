@@ -483,12 +483,14 @@ var BertaGalleryEditor = new Class({
 
 		this.unlinearProcess_start(this.sortingProcessId, "Saving images order");
 
-		new Request.JSON({
-			url: this.options.updateUrl,
-			data: "json=" + JSON.encode({
+		var data = {
 				section: this.sectionName, entry: this.entryId,
 				property: 'galleryOrder', value: newOrder
-			}),
+			};
+		console.log('BertaGalleryEditor.sortingSaveDo:', data);
+		new Request.JSON({
+			url: this.options.updateUrl,
+			data: "json=" + JSON.encode(data),
 			onComplete: function(resp) {
 				this.unlinearProcess_stop(this.sortingProcessId);
 			}.bind(this)
@@ -536,12 +538,14 @@ var BertaGalleryEditor = new Class({
 
 			var deleteProcessId = this.unlinearProcess_getId('delete-image');
 			this.unlinearProcess_start(deleteProcessId, "Deleting image");
-			new Request.JSON({
-				url: this.options.updateUrl,
-				data: "json=" + JSON.encode({
+			var data = {
 					section: this.sectionName, entry: this.entryId,
 					property: 'galleryImageDelete', value: liElement.get('filename')
-				}),
+				};
+			console.log('BertaGalleryEditor.onDeleteClick:', data);
+			new Request.JSON({
+				url: this.options.updateUrl,
+				data: "json=" + JSON.encode(data),
 				onComplete: function(resp) {
 					this.unlinearProcess_stop(deleteProcessId);
 					if(resp.update == 'ok') {
@@ -772,9 +776,7 @@ var BertaGalleryEditor = new Class({
 							'left': Math.round( checkBoard.getSize().x / 2 - loader.getSize().x / 2 ) + 'px'
 						});
 
-						new Request.JSON({
-							url: editor.options.updateUrl,
-							data: "json=" + JSON.encode({
+						var data = {
 								section: editor.sectionName, entry: editor.entryId,
 								property: 'galleryImageCrop',
 								value: filename,
@@ -782,7 +784,11 @@ var BertaGalleryEditor = new Class({
 								y: topInput.get('value'),
 								w: widthInput.get('value'),
 								h: heightInput.get('value')
-							}),
+							};
+						console.log('BertaGalleryEditor.onCropClick:', data);
+						new Request.JSON({
+							url: editor.options.updateUrl,
+							data: "json=" + JSON.encode(data),
 							onComplete: function(resp) {
 								imageThumb.src = resp.params.smallThumb;
 								liEl.set('filename', resp.update);

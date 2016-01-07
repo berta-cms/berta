@@ -21,6 +21,7 @@ var css_frontend_files = [
     ];
 
 var js_backend_files = [
+    'engine/_lib/redux/redux.min.js',
     'engine/_lib/mootools/mootools-core-1.4.5-full-compat-yc.js',
     'engine/_lib/mootools/mootools-1.2.5.1-more.js',
     'engine/_lib/mootools/mootools-1.2.5.1-more-delegation.js',

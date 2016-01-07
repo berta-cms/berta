@@ -447,11 +447,13 @@ var BertaBgEditor = new Class({
 
 		this.unlinearProcess_start(this.sortingProcessId, "Saving images order");
 
+		var data = {
+				section: this.sectionName, property: 'galleryOrder', value: newOrder
+			};
+		console.log('BertaBgEditor.sortingSaveDo:', data);
 		new Request.JSON({
 			url: this.options.updateUrl,
-			data: "json=" + JSON.encode({
-				section: this.sectionName, property: 'galleryOrder', value: newOrder
-			}),
+			data: "json=" + JSON.encode(data),
 			onComplete: function(resp) {
 				this.unlinearProcess_stop(this.sortingProcessId);
 			}.bind(this)
@@ -501,11 +503,13 @@ var BertaBgEditor = new Class({
 
 			var deleteProcessId = this.unlinearProcess_getId('delete-image');
 			this.unlinearProcess_start(deleteProcessId, "Deleting image");
+			var data = {
+					section: this.sectionName, property: 'galleryImageDelete', value: liElement.get('filename')
+				};
+			console.log('BertaBgEditor.sortingSaveDo:', data);
 			new Request.JSON({
 				url: this.options.updateUrl,
-				data: "json=" + JSON.encode({
-					section: this.sectionName, property: 'galleryImageDelete', value: liElement.get('filename')
-				}),
+				data: "json=" + JSON.encode(data),
 				onComplete: function(resp) {
 					this.unlinearProcess_stop(deleteProcessId);
 					if(resp.update == 'ok') {
