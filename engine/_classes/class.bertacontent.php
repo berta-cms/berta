@@ -39,6 +39,60 @@ class BertaContent extends BertaBase {
 		return $sArr;
 	}
 
+	/****************************************************
+	 * BEGIN: functions for setting initial redux state
+	 ****************************************************/
+	public static function getSectionsBySite($site) {
+		if (empty($site)) {
+			$xml_root = self::$options['XML_MAIN_ROOT'];
+		} else {
+			$xml_root = self::$options['XML_SITES_ROOT'] . $site . '/';
+		}
+
+		if(file_exists($xml_root . self::$options['sections.xml'])) {
+			$xmlStr = file_get_contents($xml_root . self::$options['sections.xml']);
+
+			if($xmlStr) {
+				$xmlFeed = Array_XML::xml2array($xmlStr, 'sections', true);
+				if(isset($xmlFeed['section']) && is_array($xmlFeed['section'])) {
+					Array_XML::makeListIfNotList($xmlFeed['section']);
+					foreach($xmlFeed['section'] as $s) {
+						if(!empty($s['name']['value']) && trim($s['name']['value']) != '')
+							$sArr[trim($s['name']['value'])] = $s;
+					}
+				}
+			}
+		}
+		return $sArr;
+	}
+
+	public static function getEntriesBySiteSection($site, $sName) {
+		if (empty($site)) {
+			$xml_root = self::$options['XML_MAIN_ROOT'];
+		} else {
+			$xml_root = self::$options['XML_SITES_ROOT'] . $site . '/';
+		}
+
+		if($sName) {
+			$fileName = $xml_root . str_replace('%', $sName, self::$options['blog.%.xml']);
+			if(file_exists($fileName)) {
+				$xmlStr = file_get_contents($fileName);
+				$xmlFeed = array();
+
+				if($xmlStr) {
+					$xmlFeed = Array_XML::xml2array($xmlStr, 'blog', true);
+					if(!empty($xmlFeed['entry']) && is_array($xmlFeed['entry']) && empty($xmlFeed['entry'][0])) $xmlFeed['entry'] = array(0 => $xmlFeed['entry']);
+				}
+				return $xmlFeed;
+			}
+		}
+
+		return false;
+	}
+	/****************************************************
+	 * END: functions for setting initial redux state
+	 ****************************************************/
+
 	public static function getSite($options) {
 		$site = '';
 		$apacheRewriteUsed = !empty($_REQUEST['__rewrite']);
