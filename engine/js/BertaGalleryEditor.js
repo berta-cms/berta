@@ -57,6 +57,13 @@ var BertaGalleryEditor = new Class({
 
 		// load the editor html from the server
 		this.allContainer.addClass('xSavingAtLarge');
+		var data = function(obj) {
+			var _data = {
+				'section': obj.sectionName, 'entry': obj.entryId, 'property': 'galleryEditor'
+			};
+			console.log('BertaGalleryEditor.initialize:', _data);
+			return _data;
+		};
 		new Request.HTML({
 			url: this.options.elementsUrl,
 			update: this.allContainer,
@@ -72,9 +79,7 @@ var BertaGalleryEditor = new Class({
        			}
 
 			}.bind(this)
-		}).post({"json": JSON.encode({
-				'section': this.sectionName, 'entry': this.entryId, 'property': 'galleryEditor'
-			})
+		}).post({"json": JSON.encode(data(this))
 		});
 	},
 
@@ -192,6 +197,7 @@ var BertaGalleryEditor = new Class({
 				this.strip.removeClass('processing');
 				this.unlinearProcess_stop(this.uploadQueueProcessId);
 				this.sortingActivate();
+				console.log('BertaGalleryEditor.addMainUploader: BertaGalleryUploader.onComplete');
 			}.bind(this),
 
 			onSelectSuccess: function(files) {
@@ -227,6 +233,7 @@ var BertaGalleryEditor = new Class({
 						file.remove.delay(5000, file);
 					}.bind(this.uploader));
 				}
+				console.log('BertaGalleryEditor.addMainUploader: BertaGalleryUploader.onFileComplete');
 			}.bind(this),
 
 			onFallbackFileComplete: function(responseString) {
@@ -376,6 +383,7 @@ var BertaGalleryEditor = new Class({
 					this.strip.removeClass('processing');
 					this.unlinearProcess_stop(this.uploadQueueProcessId);
 					this.sortingActivate();
+					console.log('BertaGalleryEditor.addElementPosterUploader: BertaGalleryUploader.onComplete');
 				}.bind(this),
 
 				onFileComplete: function(file) {
@@ -399,7 +407,7 @@ var BertaGalleryEditor = new Class({
 					}
 
 					uploader.fileRemove(file);
-
+					console.log('BertaGalleryEditor.addElementPosterUploader: BertaGalleryUploader.onFileComplete');
 				}.bind(this)
 			});
 

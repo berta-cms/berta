@@ -325,6 +325,7 @@ var BertaEditorBase = new Class({
 					onComplete: function() {
 						el.removeClass('xSaving');
 						el.addClass('xEditing');
+						console.log('BertaEditorBase.elementEdit_init: BertaGalleryUploader.onComplete');
 					}.bind(this),
 
 					onFileComplete: function(file) {
@@ -340,7 +341,7 @@ var BertaEditorBase = new Class({
 						}
 
 						uploader.fileRemove(file);
-
+						console.log('BertaEditorBase.elementEdit_init: BertaGalleryUploader.onFileComplete');
 					}.bind(this)
 				});
 				break;
