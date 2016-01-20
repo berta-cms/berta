@@ -18,17 +18,34 @@ class Controller extends BaseController
      * Protected methods
      ************************************************************/
 
+    /**
+    * Returns all sites as an array
+    *
+    * @return array Array of sites
+    */
     protected function getSites() {
     	$xml_file = $this->XML_SITES_ROOT . '/sites.xml';
     	return $this->xmlFile2array($xml_file);
     }
 
+    /**
+    * Returns all sections of a given site as an array
+    *
+    * @param string $site name of the site
+    * @return array Array of sections
+    */
     protected function getSectionsBySite($site) {
 		$xml_root = $his->getSiteXmlRoot($site);
 		$xml_file = $xml_root . '/sections.xml';
 		return $this->xmlFile2array($xml_file);
 	}
 
+    /**
+    * Returns all tags of a given site as an array
+    *
+    * @param string $site name of the site
+    * @return array Array of tags
+    */
     protected function getTagsBySite($site) {
         $xml_root = $this->getSiteXmlRoot($site);
         $xml_file = $xml_root . '/tags.xml';
@@ -39,17 +56,34 @@ class Controller extends BaseController
      * Private methods
      ************************************************************/
 
+    /**
+    * Returns path to XML folder of a given site
+    *
+    * @param string $site name of the site
+    * @return string
+    */
     private function getSiteXmlRoot($site) {
     	return empty($site) ? $this->XML_MAIN_ROOT : $this->XML_SITES_ROOT . '/' .$site;
     }
 
+    /**
+    * Saves an array to XML file
+    *
+    * @param array $arr
+    * @param string $root root element of XML file
+    */
     private function array2xmlFile($arr, $root) {
     	$xml = new \DOMDocument('1.0', 'utf-8');
 
     	$this->_array2xml($xml, $root, $arr);
-    	return $xml;
     }
 
+    /**
+    * Reads XML file into an array
+    *
+    * @param string $xml_file Path to XML file
+    * @return array
+    */
     private function xmlFile2array($xml_file) {
     	if(file_exists($xml_file)) {
             $xml_str = file_get_contents($xml_file);
@@ -67,8 +101,12 @@ class Controller extends BaseController
     	return array();
     }
 
-    private $level = 0;
-
+    /**
+    * Converts XML document to an array
+    *
+    * @param string $node XML document node
+    * @return array
+    */
     private function xml2array($node) {
         $output = array();
 
