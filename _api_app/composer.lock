@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "200f59f0b6c7491981974704a2fef389",
-    "content-hash": "a77557543926915f6eef466c05019a51",
+    "hash": "5b45079b4a62e7d9fb2e64bf35c2ce89",
+    "content-hash": "d258506ffc312220ac2777012695a69a",
     "packages": [
         {
             "name": "doctrine/inflector",
@@ -1617,16 +1617,16 @@
         },
         {
             "name": "soapbox/laravel-formatter",
-            "version": "2.0",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/SoapBox/laravel-formatter.git",
-                "reference": "9149adcf6f14a563ccd5b81579e802b1f402aef9"
+                "reference": "8cdc4a6849bcd9b840692a967c7611ce42e41135"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/SoapBox/laravel-formatter/zipball/9149adcf6f14a563ccd5b81579e802b1f402aef9",
-                "reference": "9149adcf6f14a563ccd5b81579e802b1f402aef9",
+                "url": "https://api.github.com/repos/SoapBox/laravel-formatter/zipball/8cdc4a6849bcd9b840692a967c7611ce42e41135",
+                "reference": "8cdc4a6849bcd9b840692a967c7611ce42e41135",
                 "shasum": ""
             },
             "require": {
@@ -1641,7 +1641,6 @@
                     "SoapBox\\Formatter": "src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1668,7 +1667,11 @@
                 "xml",
                 "yaml"
             ],
-            "time": "2014-10-20 15:15:48"
+            "support": {
+                "source": "https://github.com/SoapBox/laravel-formatter/tree/2.2",
+                "issues": "https://github.com/SoapBox/laravel-formatter/issues"
+            },
+            "time": "2014-12-04 18:25:30"
         },
         {
             "name": "symfony/console",
@@ -3261,7 +3264,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "soapbox/laravel-formatter": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {

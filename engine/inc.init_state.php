@@ -11,6 +11,7 @@
   };
   /*
   <?php
+  /*
   	foreach(BertaContent::getSites() as $site) {
   		$site_name = empty($site['name']) ? 0 : $site['name']['value'];
 		$sections = BertaContent::getSectionsBySite($site_name);
@@ -24,6 +25,7 @@
 			var_dump($entries);
 		}
    	}
+   	*/
   ?>
   */
 </script>

@@ -1,15 +1,23 @@
 <?php
 
 namespace App\Http\Controllers;
-use SoapBox\Formatter\Formatter;
 
 class StateController extends Controller
 {
     public function getState() {
-        $xml_str = file_get_contents('/srv/http/berta/storage/settings.xml');
-        $formatter = Formatter::make($xml_str, Formatter::XML);
-        $xml = $formatter->toArray();
+        // $state = array();
+        // $sites = $this->getSites();
 
-        return response()->json($xml);
+        // foreach($sites['site'] as $site) {
+        //     $site_name = $site['name'];
+        //     $sections = $this->getSectionsBySite($site_name);
+            
+        //     foreach ($sections['section'] as $section) {
+        //         die(var_export($section));
+        //     }
+        // }
+
+
+        return response()->json($this->getTagsBySite(''));
     }
 }
