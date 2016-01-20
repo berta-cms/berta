@@ -82,22 +82,23 @@ class Controller extends BaseController
  
 			case XML_ELEMENT_NODE: 
 				// for each child node, call the covert function recursively
-				for ($i=0, $m=$node->childNodes->length; $i<$m; $i++) {
+				for ($i=0; $i<$node->childNodes->length; $i++) {
 					$child = $node->childNodes->item($i);
-					$v = $this->xml2array($child);
+					$subtree = $this->xml2array($child);
+					
 					if(isset($child->tagName)) {
-						$t = $child->tagName;
+						$tag_name = $child->tagName;
  
 						// assume more nodes of same kind are coming
-						if(!isset($output[$t])) {
-							$output[$t] = array();
+						if(!isset($output[$tag_name])) {
+							$output[$tag_name] = array();
 						}
 						
-						$output[$t][] = $v;
+						$output[$tag_name][] = $subtree;
 					} else {
 						//check if it is not an empty text node
-						if($v !== '') {
-							$output = $v;
+						if($subtree !== '') {
+							$output = $subtree;
 						}
 					}
 				}
@@ -109,10 +110,10 @@ class Controller extends BaseController
  
 				// loop through the attributes and collect them
 				if($node->attributes->length) {
-					$a = array();
+					$attrs = array();
 					
 					foreach($node->attributes as $attrName => $attrNode) {
-						$a[$attrName] = (string) $attrNode->value;
+						$attrs[$attrName] = (string) $attrNode->value;
 					}
 					
 					// if its an leaf node, store the value in @value instead of directly storing it.
@@ -120,7 +121,7 @@ class Controller extends BaseController
 						$output = array('@value' => $output);
 					}
 					
-					$output['@attributes'] = $a;
+					$output['@attributes'] = $attrs;
 				}
 				break;
 		}
