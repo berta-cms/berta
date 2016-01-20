@@ -61,8 +61,7 @@ class Controller extends BaseController
     			throw new Exception('Error parsing the XML string!');
     		}
 
-    		$array[$xml->documentElement->tagName] = $this->xml2array($xml->documentElement);
-    		die(var_export($array));
+    		return $this->xml2array($xml->documentElement);
     	}
 
     	return array();
