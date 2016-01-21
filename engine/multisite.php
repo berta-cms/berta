@@ -22,8 +22,7 @@ $int_version = BertaEditor::$options['int_version'];
 <link rel="SHORTCUT ICON" href="favicon.ico"/>
 <link rel="stylesheet" href="<?php echo $ENGINE_ABS_ROOT ?>css/backend.min.css?<?php echo $int_version ?>" type="text/css" charset="utf-8" />
 <link rel="stylesheet" href="<?php echo $ENGINE_ABS_ROOT ?>css/editor.css.php?<?php echo $int_version ?>" type="text/css" charset="utf-8" />
-<?php include('inc.init_state.php'); ?>
-<script src="<?php echo $ENGINE_ABS_ROOT ?>js/backend.min.js?<?php echo $int_version ?>"></script>
+<?php include('inc.head.php'); ?>
 </head>
 
 <body class="xSettingsPageBody" x_mode="multisite">

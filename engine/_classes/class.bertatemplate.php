@@ -362,6 +362,7 @@ DOC;
         if($this->loggedIn) {
             $vars['berta']['scripts'] .= <<<DOC
     <script src="{$engineAbsRoot}js/backend.min.js?{$int_version}"></script>
+    <script src="{$engineAbsRoot}js/ng-backend.min.js?{$int_version}"></script>
 DOC;
         } else {
             $vars['berta']['scripts'] .= <<<DOC

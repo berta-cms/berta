@@ -9,23 +9,6 @@
     "skipTour": <?php echo count($sections) || $berta->settings->get('siteTexts', 'tourComplete') ? 'true' : 'false' ?>,
     "session_id" : "<?php echo session_id() ?>"
   };
-  /*
-  <?php
-  /*
-  	foreach(BertaContent::getSites() as $site) {
-  		$site_name = empty($site['name']) ? 0 : $site['name']['value'];
-		$sections = BertaContent::getSectionsBySite($site_name);
-
-		echo "\n===> SITE: ". $site_name . "\n";
-		var_dump($sections);
-
-		foreach ($sections as $section_name => $section) {
-			$entries = BertaContent::getEntriesBySiteSection($site_name, $section_name);
-			echo "\n===> SECTION: ". $section_name . "\n";
-			var_dump($entries);
-		}
-   	}
-   	*/
-  ?>
-  */
 </script>
+<script src="<?php echo $ENGINE_ABS_ROOT ?>js/backend.min.js?<?php echo $int_version ?>"></script>
+<script src="<?php echo $ENGINE_ABS_ROOT ?>js/ng-backend.min.js?<?php echo $int_version ?>"></script>
