@@ -10,8 +10,14 @@ class Sections Extends Storage {
     * @return array Array of sections
     */
     public function getSectionsBySite($site) {
-        $xml_root = $his->getSiteXmlRoot($site);
+        $xml_root = $this->getSiteXmlRoot($site);
         $xml_file = $xml_root . '/sections.xml';
+        return $this->xmlFile2array($xml_file);
+    }
+
+    public function getSiteSectionEntries($site, $section) {
+        $xml_root = $this->getSiteXmlRoot($site);
+        $xml_file = $xml_root . '/blog.'.$section.'.xml';
         return $this->xmlFile2array($xml_file);
     }
 }

@@ -163,6 +163,8 @@ class Storage {
                 break;
 
             case XML_ELEMENT_NODE:
+                $subtree = '';
+                $is_leaf = array();
                 // for each child node, call the covert function recursively
                 for ($i=0; $i<$node->childNodes->length; $i++) {
                     $child = $node->childNodes->item($i);
@@ -170,6 +172,16 @@ class Storage {
 
                     if(isset($child->tagName)) {
                         $tag_name = $child->tagName;
+                        $grandchildren = $child->childNodes;
+
+                        // @@@:TODO: Would be nice to rewrite $is_leaf[$tag_name] = ... in a more readable form
+                        $is_leaf[$tag_name] = (
+                            $child->childNodes->length < 2 &&
+                            (
+                                $grandchildren->length == 1 ? !isset($grandchildren->item[0]->tagName) : true ||
+                                $grandchildren->length == 0
+                            )
+                        );
 
                         // assume more nodes of same kind are coming
                         if(!isset($output[$tag_name])) {
@@ -186,9 +198,9 @@ class Storage {
                 }
 
                 if(is_array($output)) {
-                    // if only one node of its kind, assign it directly instead if array($value);
+                    // if only one node of its kind and is leaf node, assign it directly instead if array($value);
                     foreach ($output as $tag => $val) {
-                        if(is_array($val) && count($val)==1) {
+                        if(is_array($val) && count($val)==1 && $is_leaf[$tag]) {
                             $output[$tag] = $val[0];
                         }
                     }
