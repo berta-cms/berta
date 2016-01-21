@@ -4,10 +4,10 @@ namespace App;
 
 class Settings Extends Storage {
     /**
-    * Returns all sections of a given site as an array
+    * Returns all settings of a given site as an array
     *
     * @param string $site name of the site
-    * @return array Array of sections
+    * @return array Array of settings
     */
     public function getSettingsBySite($site) {
         $xml_root = $this->getSiteXmlRoot($site);
