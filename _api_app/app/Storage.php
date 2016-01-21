@@ -128,6 +128,9 @@ class Storage {
                     foreach($value as $k=>$v){
                         $node->appendChild($this->array2xml($xml, $key, $v));
                     }
+                } else {
+                    // ONLY ONE NODE OF ITS KIND
+                    $node->appendChild($this->array2xml($xml, $key, $value));
                 }
 
                 unset($arr[$key]); //remove the key from the array once done.
@@ -182,9 +185,18 @@ class Storage {
                     }
                 }
 
-                if(is_array($output) and empty($output)) {
-                    //for empty nodes
-                    $output = '';
+                if(is_array($output)) {
+                    // if only one node of its kind, assign it directly instead if array($value);
+                    foreach ($output as $tag => $val) {
+                        if(is_array($val) && count($val)==1) {
+                            $output[$tag] = $val[0];
+                        }
+                    }
+
+                    if(empty($output)) {
+                        //for empty nodes
+                        $output = '';
+                    }
                 }
 
                 // loop through the attributes and collect them
