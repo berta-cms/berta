@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Tags;
+
 class StateController extends Controller
 {
     public function getState() {
@@ -17,6 +19,7 @@ class StateController extends Controller
         //     }
         // }
 
-        return response()->json($this->getTagsBySite(''));
+        $tags = new Tags();
+        return response()->json($tags->getTagsBySite(''));
     }
 }
