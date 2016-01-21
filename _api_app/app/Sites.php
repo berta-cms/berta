@@ -10,6 +10,12 @@ class Sites Extends Storage {
     */
     public function getSites() {
         $xml_file = $this->XML_SITES_ROOT . '/sites.xml';
-        return $this->xmlFile2array($xml_file);
+        $sites = $this->xmlFile2array($xml_file);
+
+        if (empty($sites)) {
+            $sites = array('site' => array(0 => array('name' => '')));
+        }
+
+        return $sites;
     }
 }

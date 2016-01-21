@@ -23,18 +23,18 @@ class StateController extends Controller
 
         foreach($state['site'] as $site) {
             $site_name = $site['name'] ? $site['name'] : 0;
-            $state['settings'][$site_name] = $settings->getSettingsBySite($site['name']);
-            $state['sections'][$site_name] = $sections->getSectionsBySite($site['name']);
+            $state['settings'][$site_name] = $settings->getSettingsBySite($site_name);
+            $state['sections'][$site_name] = $sections->getSectionsBySite($site_name);
 
             foreach($state['sections'][$site_name]['section'] as $section) {
                 $section_name = $section['name'];
                 $state['entries'][$site_name][$section_name] = $sections->getSiteSectionEntries(
-                    $site['name'],
+                    $site_name,
                     $section_name
                 );
             }
 
-            $state['tags'][$site_name] = $tags->getTagsBySite($site['name']);
+            $state['tags'][$site_name] = $tags->getTagsBySite($site_name);
         }
 
         return response()->json($state);
