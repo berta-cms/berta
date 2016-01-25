@@ -52,7 +52,11 @@ var js_backend_files = [
 ];
 
 var js_ng_backend_files = [
-    'engine/js/ng/**/*.js'
+  'engine/js/ng/constants/ActionTypes.js',
+  'engine/js/ng/actions/StateActions.js',
+  'engine/js/ng/middleware.js',
+  'engine/js/ng/reducer.js',
+  'engine/js/ng/index.js'
 ];
 
 var js_frontend_files = [
