@@ -260,8 +260,8 @@ var BertaGallery = new Class({
 					item.setStyle('height', 'auto');
 				}
 				itmSize = item.getSize();
-                itmMarginLeft = parseInt(item.getStyle('margin-left'));
-                itmMarginRight = parseInt(item.getStyle('margin-right'));
+        itmMarginLeft = parseInt(0 + item.getStyle('margin-left'));
+        itmMarginRight = parseInt(0 + item.getStyle('margin-right'));
 				totalWidth += itmSize.x + itmMarginLeft + itmMarginRight;
 				if(itmSize.y > maxHeight) maxHeight = itmSize.y;
 				numImages++;
