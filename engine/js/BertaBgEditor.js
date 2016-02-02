@@ -53,6 +53,13 @@ var BertaBgEditor = new Class({
 
 		// load the editor html from the server
 		this.allContainer.addClass('xSavingAtLarge');
+		var data = function(obj) {
+			var _data = {
+				'section': obj.sectionName, 'property': 'bgEditor'
+			};
+			console.log('BertaBgEditor.initialize:', _data);
+			return _data;
+		};
 		new Request.HTML({
 			url: this.options.elementsUrl,
 			update: this.allContainer,
@@ -62,9 +69,7 @@ var BertaBgEditor = new Class({
 				this.attach.delay(10, this);
 				this.fireEvent('load');
 			}.bind(this)
-		}).post({"json": JSON.encode({
-				'section': this.sectionName, 'property': 'bgEditor'
-			})
+		}).post({"json": JSON.encode(data(this))
 		});
 	},
 
@@ -176,6 +181,7 @@ var BertaBgEditor = new Class({
 				this.strip.removeClass('processing');
 				this.unlinearProcess_stop(this.uploadQueueProcessId);
 				this.sortingActivate();
+				console.log('BertaBgEditor.addMainUploader: BertaGalleryUploader.onComplete');
 			}.bind(this),
 
 			onSelectSuccess: function(files) {
@@ -210,6 +216,7 @@ var BertaBgEditor = new Class({
 						file.remove.delay(5000, file);
 					}.bind(this.uploader));
 				}
+				console.log('BertaBgEditor.addMainUploader: BertaGalleryUploader.onFileComplete');
 			}.bind(this),
 
 			onFallbackFileComplete: function(responseString) {
@@ -345,6 +352,7 @@ var BertaBgEditor = new Class({
 					this.strip.removeClass('processing');
 					this.unlinearProcess_stop(this.uploadQueueProcessId);
 					this.sortingActivate();
+					console.log('BertaBgEditor.addElementPosterUploader: BertaGalleryUploader.onComplete');
 				}.bind(this),
 
 				onFileComplete: function(file) {
@@ -366,7 +374,7 @@ var BertaBgEditor = new Class({
 					}
 
 					uploader.fileRemove(file);
-
+					console.log('BertaBgEditor.addElementPosterUploader: BertaGalleryUploader.onFileComplete');
 				}.bind(this)
 			});
 
@@ -447,11 +455,13 @@ var BertaBgEditor = new Class({
 
 		this.unlinearProcess_start(this.sortingProcessId, "Saving images order");
 
+		var data = {
+				section: this.sectionName, property: 'galleryOrder', value: newOrder
+			};
+		console.log('BertaBgEditor.sortingSaveDo:', data);
 		new Request.JSON({
 			url: this.options.updateUrl,
-			data: "json=" + JSON.encode({
-				section: this.sectionName, property: 'galleryOrder', value: newOrder
-			}),
+			data: "json=" + JSON.encode(data),
 			onComplete: function(resp) {
 				this.unlinearProcess_stop(this.sortingProcessId);
 			}.bind(this)
@@ -501,11 +511,13 @@ var BertaBgEditor = new Class({
 
 			var deleteProcessId = this.unlinearProcess_getId('delete-image');
 			this.unlinearProcess_start(deleteProcessId, "Deleting image");
+			var data = {
+					section: this.sectionName, property: 'galleryImageDelete', value: liElement.get('filename')
+				};
+			console.log('BertaBgEditor.sortingSaveDo:', data);
 			new Request.JSON({
 				url: this.options.updateUrl,
-				data: "json=" + JSON.encode({
-					section: this.sectionName, property: 'galleryImageDelete', value: liElement.get('filename')
-				}),
+				data: "json=" + JSON.encode(data),
 				onComplete: function(resp) {
 					this.unlinearProcess_stop(deleteProcessId);
 					if(resp.update == 'ok') {

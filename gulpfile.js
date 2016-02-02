@@ -1,11 +1,13 @@
 var gulp = require('gulp'),
+    gulp_sourcemaps = require('gulp-sourcemaps'),
     gulp_concat = require('gulp-concat'),
     gulp_rebase_css_urls = require('gulp-rebase-css-urls'),
     gulp_minify_css = require('gulp-minify-css'),
     gulp_uglify_js = require('gulp-uglify'),
     watch = require('gulp-watch'),
     livereload = require('gulp-livereload'),
-    notify = require('gulp-notify');
+    notify = require('gulp-notify'),
+    jshint = require('gulp-jshint');
 
 var css_backend_files = [
     'engine/_lib/video-js/video-js.min.css',
@@ -44,7 +46,17 @@ var js_backend_files = [
     'engine/js/BertaEditor_Sections.js',
     'engine/js/BertaEditor_Seo.js',
     'engine/js/BertaEditor_ChangePassword.js',
-    'engine/js/BertaEditor_Multisite.js'
+    'engine/js/BertaEditor_Multisite.js',
+    'engine/_lib/redux/redux.min.js',
+    'engine/_lib/immutable/immutable.min.js'
+];
+
+var js_ng_backend_files = [
+  'engine/js/ng/constants/ActionTypes.js',
+  'engine/js/ng/actions/StateActions.js',
+  'engine/js/ng/middleware.js',
+  'engine/js/ng/reducer.js',
+  'engine/js/ng/index.js'
 ];
 
 var js_frontend_files = [
@@ -80,23 +92,44 @@ gulp.task('css_frontend', function() {
 
 gulp.task('js_backend', function() {
     return gulp.src(js_backend_files)
+        .pipe(gulp_sourcemaps.init())
         .pipe(gulp_concat('backend.min.js'))
         .pipe(gulp_uglify_js())
+        .pipe(gulp_sourcemaps.write('/maps'))
         .pipe(gulp.dest('engine/js'))
         .pipe(livereload())
         .pipe(notify('JS: backend compiled!'));
 });
 
+gulp.task('js_ng_backend', function() {
+    return gulp.src(js_ng_backend_files)
+        .pipe(gulp_sourcemaps.init())
+        .pipe(gulp_concat('ng-backend.min.js'))
+        .pipe(gulp_uglify_js())
+        .pipe(gulp_sourcemaps.write('/maps'))
+        .pipe(gulp.dest('engine/js'))
+        .pipe(livereload())
+        .pipe(notify('JS: NG backend compiled!'));
+});
+
 gulp.task('js_frontend', function() {
     return gulp.src(js_frontend_files)
+        .pipe(gulp_sourcemaps.init())
         .pipe(gulp_concat('frontend.min.js'))
         .pipe(gulp_uglify_js())
+        .pipe(gulp_sourcemaps.write('/maps'))
         .pipe(gulp.dest('engine/js'))
         .pipe(livereload())
         .pipe(notify('JS: frontend compiled!'));
 });
 
-gulp.task('default', ['css_backend', 'css_frontend', 'js_backend', 'js_frontend'], function() {
+gulp.task('ng_lint', function() {
+  return gulp.src(js_ng_backend_files)
+    .pipe(jshint())
+    .pipe(jshint.reporter('default'));
+});
+
+gulp.task('default', ['css_backend', 'css_frontend', 'js_backend', 'ng_lint', 'js_ng_backend', 'js_frontend'], function() {
 
     livereload.listen();
 
@@ -110,6 +143,10 @@ gulp.task('default', ['css_backend', 'css_frontend', 'js_backend', 'js_frontend'
 
     gulp.watch(js_backend_files, function(event) {
         gulp.start('js_backend');
+    });
+
+    gulp.watch(js_ng_backend_files, function(event) {
+        gulp.start('js_ng_backend');
     });
 
     gulp.watch(js_frontend_files, function(event) {

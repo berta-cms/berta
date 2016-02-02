@@ -325,6 +325,7 @@ var BertaEditorBase = new Class({
 					onComplete: function() {
 						el.removeClass('xSaving');
 						el.addClass('xEditing');
+						console.log('BertaEditorBase.elementEdit_init: BertaGalleryUploader.onComplete');
 					}.bind(this),
 
 					onFileComplete: function(file) {
@@ -340,7 +341,7 @@ var BertaEditorBase = new Class({
 						}
 
 						uploader.fileRemove(file);
-
+						console.log('BertaEditorBase.elementEdit_init: BertaGalleryUploader.onFileComplete');
 					}.bind(this)
 				});
 				break;
@@ -672,13 +673,16 @@ var BertaEditorBase = new Class({
 		var target = $(event.target);
 		var el = target.getParent();
 		var prop = el.getClassStoredValue('xProperty');
+		var data = { property: prop, params: 'delete', value: '' };
 
 		el.removeClass('xEditing');
 		el.addClass('xSaving');
 
+		console.log('BertaEditorBase.eSup_onImageDeleteClick:', data);
+
 		new Request.JSON({
 			url: this.options.updateUrl,
-			data: "json=" + JSON.encode({ property: prop, params: 'delete', value: '' }),
+			data: "json=" + JSON.encode(data),
 			onComplete: function(resp, respRaw) {
 				if(resp.error_message)
 					alert(resp.error_message);
@@ -852,9 +856,7 @@ var BertaEditorBase = new Class({
 				//console.debug(editorParams);
 			}
 
-			new Request.JSON({
-				url: this.options.updateUrl,
-				data: "json=" + JSON.encode({
+			var data = {
 					site: entryInfo.site,
 					section: entryInfo.section,
 					entry: entryInfo.entryId,
@@ -866,7 +868,11 @@ var BertaEditorBase = new Class({
 					before_real: this.escapeForJSON(el.get('title') ? el.get('title') : oldContent),
 					format_modifier: el.getClassStoredValue('xFormatModifier')
 					/*use_css_units: useCSSUnits*/
-				}),
+				};
+			console.log('BertaEditorBase.elementEdit_save:', data);
+			new Request.JSON({
+				url: this.options.updateUrl,
+				data: "json=" + JSON.encode(data),
 				onComplete: function(resp, respRaw) {
 					var elIsStillInDOM = el ? el.exists() : false;
 
@@ -1005,13 +1011,15 @@ var BertaEditorBase = new Class({
 		el.addClass('xSaving');
 		var entryInfo = this.getEntryInfoForElement(el);
 		if(entryInfo.section == '') entryInfo.section = this.sectionName;
-
-		new Request.JSON({
-			url: this.options.updateUrl,
-			data: "json=" + JSON.encode({
+		var data = {
 				section: entryInfo.section, entry: entryInfo.entryId,
 				action: action, property: null, value: null, params: params
-			}),
+			};
+
+		console.log('BertaEditorBase.elementEdit_action:', data);
+		new Request.JSON({
+			url: this.options.updateUrl,
+			data: "json=" + JSON.encode(data),
 			onComplete: function(resp) {
 				if(!resp) {
 					alert('server produced an error while performing the requested action! something went sooooo wrong...');
@@ -1036,11 +1044,13 @@ var BertaEditorBase = new Class({
 			var entryInfo = this.getEntryInfoForElement(el);
 			if(entryInfo.section == '') entryInfo.section = this.sectionName;
 
+			var data = {
+					section: entryInfo.section,	action: action, property: null, value: null
+				};
+			console.log('BertaEditorBase.elementEdit_reset:', data);
 			new Request.JSON({
 				url: this.options.updateUrl,
-				data: "json=" + JSON.encode({
-					section: entryInfo.section,	action: action, property: null, value: null
-				}),
+				data: "json=" + JSON.encode(data),
 				onComplete: function(resp) {
 					if(!resp) {
 						alert('server produced an error while performing the requested action! something went sooooo wrong...');
@@ -1397,11 +1407,13 @@ window.addEvent('domready', function(){
                     updateUrl = updateUrl + query_site;
                 }
 
+                var data = {
+                        property: 'tourComplete', value: 1
+                    };
+                console.log('BertaEditorBase.tourInit:', data);
                 new Request.JSON({
                     url: updateUrl,
-                    data: "json=" + JSON.encode({
-                        property: 'tourComplete', value: 1
-                    }),
+                    data: "json=" + JSON.encode(data),
                     onComplete: function(resp) {
                         window.location.href = engine_path + 'sections.php' + query_site;
                     }.bind(this)
