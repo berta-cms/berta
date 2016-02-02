@@ -728,6 +728,15 @@ var BertaEditorBase = new Class({
 		// console.log(newContent);
 		// console.log(oldContentText);
 		// console.log(newContentText);
+    var args = arguments;
+    var params = ['elEditor', 'el', 'oldContent', 'oldContentText', 'newContent', 'newContentText'];
+    console.log(
+      'BertaEditorBase.elementEdit_save ARGS:',
+      params.reduce(function(prevVal, currVal, currIdx, origArr) {
+        prevVal[params[currIdx]] = args[currIdx];
+        return prevVal;
+      }, {})
+    );
 
 		if(oldContent == newContent && !el.hasClass('xBgColor')) {
 			var content = oldContent;
@@ -856,156 +865,169 @@ var BertaEditorBase = new Class({
 				//console.debug(editorParams);
 			}
 
+      var path = el.data('path');
+      var value = newContent ? this.escapeForJSON(newContent) : null;
 			var data = {
 					site: entryInfo.site,
 					section: entryInfo.section,
 					entry: entryInfo.entryId,
 					property: property,
 					params: editorParams,
-					value: newContent ? this.escapeForJSON(newContent) : null,
+					value: value,
 					action: action,
 					before: this.escapeForJSON(el.get('old_content') ? el.get('old_content') : oldContent),
 					before_real: this.escapeForJSON(el.get('title') ? el.get('title') : oldContent),
 					format_modifier: el.getClassStoredValue('xFormatModifier')
 					/*use_css_units: useCSSUnits*/
 				};
-			console.log('BertaEditorBase.elementEdit_save:', data);
-			new Request.JSON({
-				url: this.options.updateUrl,
-				data: "json=" + JSON.encode(data),
-				onComplete: function(resp, respRaw) {
-					var elIsStillInDOM = el ? el.exists() : false;
+			console.log('BertaEditorBase.elementEdit_save:', el, data);
 
-					// perform any element updates only if the element is still in DOM
-					// otherwise the update is not necessary
-					if(elIsStillInDOM) {
-						switch(true) {
-
-							case !resp.update:
-								// update with the placeholder
-								this.makePlaceholder(el);
-								break;
-
-							case el.hasClass(this.options.xBertaEditorClassYesNo.substr(1)):
-								el.getElements('a').removeClass('active');
-								el.getElement('a.xValue-' + resp.update).addClass('active');
-								break;
-
-							case el.hasClass(this.options.xBertaEditorClassColor.substr(1)):
-								// for color select we need to inject the color block
-								el.set('html', resp.update);
-								new Element('SPAN', {
-									'class': 'colorPreview',
-									'styles': {
-								        'background-color': resp.update
-								    }
-								}).inject(el, 'top');
-
-								break;
-
-							case el.hasClass(this.options.xBertaEditorClassSelectRC.substr(1)):
-							case el.hasClass(this.options.xBertaEditorClassFontSelect.substr(1)):
-								var editInitializer = this.elementEdit_instances[this.elementEdit_instances.length-1].editting,
-									oldValue;
-								if(editInitializer.hasClass('xEntrySlideNumberVisibility')) {
-									if(resp.update == 'no') oldValue = 'yes';
-									else oldValue = 'no';
-
-									editInitializer.getParent('.xGalleryContainer').removeClass('xSlideNumbersVisible-' + oldValue).addClass('xSlideNumbersVisible-' + resp.update);
-								}
-
-								// for the RC selects we check:
-								// 1) either the returned update equals the newly set content, which means that the saving was successful
-								if(resp.update == newContent) {
-									el.set('html', newContentText);
-
-								// 2) the returned update differs from the newly set content
-								//      => look for the returned "real" value in the select's options
-								} else {
-									var curOption; newContentText = false;
-									for(var i = 0; i < this.options.selectOptions.length; i++) {
-										curOption = this.options.selectOptions[i].split('|');
-										if(curOption[0] == resp.real) {
-											resp.update = curOption[1];
-											break;
-										}
-									}
-									el.set('html', resp.update);
-								}
-
-								$$('.galleryTypeSettings').addClass('xHidden');
-
-								//console.debug(newContentText);
-								if(newContentText == 'slideshow') {
-									el.getSiblings('.xEntrySlideshowSettings').removeClass('xHidden');
-									// el.getSiblings('.xEntryLinkSettings').addClass('xHidden');
-								}
-								if(newContentText == 'row') {
-									el.getSiblings('.xEntryRowSettings').removeClass('xHidden');
-									// el.getSiblings('.xEntrySlideshowSettings').addClass('xHidden');
-									// el.getSiblings('.xEntryLinkSettings').addClass('xHidden');
-								}
-								if(newContentText == 'link') {
-									el.getSiblings('.xEntryLinkSettings').removeClass('xHidden');
-									// el.getSiblings('.xEntrySlideshowSettings').addClass('xHidden');
-								}
-								break;
-
-
-							case el.hasClass(this.options.xBertaEditorClassRC.substr(1)):
-								// for simple RC textfields we additionally set the real_content property
-								if( (el.hasClass('xEntryAutoPlay') || el.hasClass('xBgAutoPlay')) && !(/^\d+$/.test(newContentText)) ) {
-									el.set('title', 0);
-									el.set('text', 0);
-								} else if( el.hasClass('xEntryLinkAddress') && !newContentText ) {
-									el.set('title', 'http://');
-									el.set('html', 'http://');
-								} else {
-									el.set('title', elEditor.removeHTMLEntities(resp.real));
-									el.set('html', resp.update);
-								}
-								break;
-
-							default:
-								// for all other cases just update the HTML, if the editor instance is present
-								// (editor instance is not present, for instance, in real input fields (checkbox, etc..))
-								if(elEditor) {
-									el.empty();
-									el.set('html', resp.update);
-								}
-
-						}
-
-						if(resp.error_message) alert(resp.error_message);
-
-						el.removeClass('xSaving');
-						el.removeClass('xEditing');
-						el.removeProperty('old_content');
-
-						try	{
-							this.setWmodeTransparent();
-						} catch(e) {
-
-						}
-					}
-
-					// if there is a stored onSave event, execute it
-					onSave = el.retrieve('onElementSave');
-					if(onSave) onSave(el, resp.update, resp.real, resp.error_message, resp.params);
-					this.fireEvent(BertaEditorBase.EDITABLE_FINISH, [el]);
-
-					//correct footer position
-					if (typeof(messyMess)=='object') {
-  			  			messyMess.copyrightStickToBottom();
-           			}
-
-				 }.bind(this)
-			}).post();
-
+      if (path) {
+        redux_store.dispatch(Actions.updateSite(
+          path,
+          value,
+          this.onElementEditComplete(elEditor, el)
+        ));
+      }
+      else {
+        // @@@:TODO: Remove this when migration to redux is done
+  			new Request.JSON({
+  				url: this.options.updateUrl,
+  				data: "json=" + JSON.encode(data),
+  				onComplete: this.onElementEditComplete(elEditor, el)
+  			}).post();
+      }
 		}
 	},
 
+  onElementEditComplete: function(elEditor, el) {
+    return function(resp, respRaw) {
+      var elIsStillInDOM = el ? el.exists() : false;
 
+      // perform any element updates only if the element is still in DOM
+      // otherwise the update is not necessary
+      if(elIsStillInDOM) {
+        switch(true) {
+
+          case !resp.update:
+            // update with the placeholder
+            this.makePlaceholder(el);
+            break;
+
+          case el.hasClass(this.options.xBertaEditorClassYesNo.substr(1)):
+            el.getElements('a').removeClass('active');
+            el.getElement('a.xValue-' + resp.update).addClass('active');
+            break;
+
+          case el.hasClass(this.options.xBertaEditorClassColor.substr(1)):
+            // for color select we need to inject the color block
+            el.set('html', resp.update);
+            new Element('SPAN', {
+              'class': 'colorPreview',
+              'styles': {
+                    'background-color': resp.update
+                }
+            }).inject(el, 'top');
+
+            break;
+
+          case el.hasClass(this.options.xBertaEditorClassSelectRC.substr(1)):
+          case el.hasClass(this.options.xBertaEditorClassFontSelect.substr(1)):
+            var editInitializer = this.elementEdit_instances[this.elementEdit_instances.length-1].editting,
+              oldValue;
+            if(editInitializer.hasClass('xEntrySlideNumberVisibility')) {
+              if(resp.update == 'no') oldValue = 'yes';
+              else oldValue = 'no';
+
+              editInitializer.getParent('.xGalleryContainer').removeClass('xSlideNumbersVisible-' + oldValue).addClass('xSlideNumbersVisible-' + resp.update);
+            }
+
+            // for the RC selects we check:
+            // 1) either the returned update equals the newly set content, which means that the saving was successful
+            if(resp.update == newContent) {
+              el.set('html', newContentText);
+
+            // 2) the returned update differs from the newly set content
+            //      => look for the returned "real" value in the select's options
+            } else {
+              var curOption; newContentText = false;
+              for(var i = 0; i < this.options.selectOptions.length; i++) {
+                curOption = this.options.selectOptions[i].split('|');
+                if(curOption[0] == resp.real) {
+                  resp.update = curOption[1];
+                  break;
+                }
+              }
+              el.set('html', resp.update);
+            }
+
+            $$('.galleryTypeSettings').addClass('xHidden');
+
+            //console.debug(newContentText);
+            if(newContentText == 'slideshow') {
+              el.getSiblings('.xEntrySlideshowSettings').removeClass('xHidden');
+              // el.getSiblings('.xEntryLinkSettings').addClass('xHidden');
+            }
+            if(newContentText == 'row') {
+              el.getSiblings('.xEntryRowSettings').removeClass('xHidden');
+              // el.getSiblings('.xEntrySlideshowSettings').addClass('xHidden');
+              // el.getSiblings('.xEntryLinkSettings').addClass('xHidden');
+            }
+            if(newContentText == 'link') {
+              el.getSiblings('.xEntryLinkSettings').removeClass('xHidden');
+              // el.getSiblings('.xEntrySlideshowSettings').addClass('xHidden');
+            }
+            break;
+
+
+          case el.hasClass(this.options.xBertaEditorClassRC.substr(1)):
+            // for simple RC textfields we additionally set the real_content property
+            if( (el.hasClass('xEntryAutoPlay') || el.hasClass('xBgAutoPlay')) && !(/^\d+$/.test(newContentText)) ) {
+              el.set('title', 0);
+              el.set('text', 0);
+            } else if( el.hasClass('xEntryLinkAddress') && !newContentText ) {
+              el.set('title', 'http://');
+              el.set('html', 'http://');
+            } else {
+              el.set('title', elEditor.removeHTMLEntities(resp.real));
+              el.set('html', resp.update);
+            }
+            break;
+
+          default:
+            // for all other cases just update the HTML, if the editor instance is present
+            // (editor instance is not present, for instance, in real input fields (checkbox, etc..))
+            if(elEditor) {
+              el.empty();
+              el.set('html', resp.update);
+            }
+
+        }
+
+        if(resp.error_message) alert(resp.error_message);
+
+        el.removeClass('xSaving');
+        el.removeClass('xEditing');
+        el.removeProperty('old_content');
+
+        try {
+          this.setWmodeTransparent();
+        } catch(e) {
+
+        }
+      }
+
+      // if there is a stored onSave event, execute it
+      onSave = el.retrieve('onElementSave');
+      if(onSave) onSave(el, resp.update, resp.real, resp.error_message, resp.params);
+      this.fireEvent(BertaEditorBase.EDITABLE_FINISH, [el]);
+
+      //correct footer position
+      if (typeof(messyMess)=='object') {
+            messyMess.copyrightStickToBottom();
+            }
+    }.bind(this);
+   },
 
 	elementEdit_action: function(el, action, params) {
 		el.addClass('xSaving');
@@ -1224,7 +1246,6 @@ var BertaEditorBase = new Class({
 
 		return retString;
 	}
-
 });
 
 BertaEditorBase.EDITABLE_START = 'editable_start';

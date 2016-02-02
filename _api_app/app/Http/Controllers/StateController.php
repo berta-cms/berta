@@ -26,12 +26,14 @@ class StateController extends Controller
             $state['settings'][$site_name] = $settings->getSettingsBySite($site_name);
             $state['sections'][$site_name] = $sections->getSectionsBySite($site_name);
 
-            foreach($state['sections'][$site_name]['section'] as $section) {
-                $section_name = $section['name'];
-                $state['entries'][$site_name][$section_name] = $sections->getSiteSectionEntries(
-                    $site_name,
-                    $section_name
-                );
+            if (!empty($state['sections'][$site_name])) {
+                foreach($state['sections'][$site_name]['section'] as $section) {
+                    $section_name = $section['name'];
+                    $state['entries'][$site_name][$section_name] = $sections->getSiteSectionEntries(
+                        $site_name,
+                        $section_name
+                    );
+                }
             }
 
             $state['tags'][$site_name] = $tags->getTagsBySite($site_name);

@@ -1,22 +1,24 @@
 (function(window, document) {
   'use strict';
 
-  window.StateActions = {
+  window.Actions = window.Actions || {};
+
+  Object.assign(window.Actions, {
     getState: function() {
-      console.log('getState');
       return {
         type: ActionTypes.GET_STATE,
-        meta: {remote: true},
-        url: '/_api/v1/state',
-        trigger: 'setState'
+        meta: {
+          remote: true,
+          url: '/_api/v1/state',
+          dispatch: 'setState'
+        }
       };
     },
-    setState: function(data) {
-      console.log('setState');
+    setState: function(state) {
       return {
         type: ActionTypes.SET_STATE,
-        data: data
+        state: state
       };
     }
-  };
+  });
 })(window, document);
