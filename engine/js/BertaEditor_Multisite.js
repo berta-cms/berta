@@ -205,25 +205,6 @@ var BertaEditor_Multisite = new Class({
       }.bind(this)
     ));
 
-		// new Request.JSON({
-		// 	url: this.options.updateUrl,
-		// 	data: "json=" + JSON.encode(data),
-		// 	onComplete: function(resp) {
-		// 		if(!resp) {
-		// 			alert('Berta says:\n\nServer produced an error while adding new site! Something went sooooo wrong...');
-		// 		} else if(resp && !resp.error_message) {
-		// 			var li = new Element('li', { 'class': 'xSite-'+resp.real, 'html': resp.update }).inject(this.sitesMenu);
-		// 			this.sitesSortables.addItems(li);
-		// 			this.editablesInit();
-		// 			li.getElement('a.xSiteClone').addEvent('click', this.siteOnCloneClick.bindWithEvent(this));
-		// 			li.getElement('a.xSiteDelete').addEvent('click', this.siteOnDeleteClick.bindWithEvent(this));
-		// 		} else {
-		// 			alert(resp.error_message);
-		// 		}
-		// 		this.sitesEditor.removeClass('xSaving');
-		// 	}.bind(this)
-		// }).post();
-
 		this.cloneSite = -1;
 	}
 });
