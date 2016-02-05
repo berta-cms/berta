@@ -74,13 +74,13 @@ class Sites Extends Storage {
             return $ret;
         }
 
-        if (empty($value)) {
-            $ret['value'] = $site_name;
-            $ret['error_message'] = 'Site name cannot be empty!';
-            return $ret;
-        }
-
         if ($prop == 'name') {
+            if (empty($value)) {
+                $ret['value'] = $site_name;
+                $ret['error_message'] = 'Site name cannot be empty!';
+                return $ret;
+            }
+
             $value = $this->slugify($value);
             $new_root = $this->XML_SITES_ROOT . '/' . $value;
 
@@ -99,7 +99,7 @@ class Sites Extends Storage {
 
         $this->setValueByPath($sites, $path, $value);
         $this->array2xmlFile($sites, $this->XML_FILE, $this->ROOT_ELEMENT);
-
+file_put_contents($this->XML_SITES_ROOT.'/debug.log', $value);
         $ret['value'] = $value;
         return $ret;
     }
