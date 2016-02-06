@@ -867,20 +867,6 @@ var BertaEditorBase = new Class({
 
       var path = el.data('path');
       var value = newContent ? this.escapeForJSON(newContent) : null;
-			var data = {
-					site: entryInfo.site,
-					section: entryInfo.section,
-					entry: entryInfo.entryId,
-					property: property,
-					params: editorParams,
-					value: value,
-					action: action,
-					before: this.escapeForJSON(el.get('old_content') ? el.get('old_content') : oldContent),
-					before_real: this.escapeForJSON(el.get('title') ? el.get('title') : oldContent),
-					format_modifier: el.getClassStoredValue('xFormatModifier')
-					/*use_css_units: useCSSUnits*/
-				};
-			console.log('BertaEditorBase.elementEdit_save:', el, data);
 
       if (path) {
         redux_store.dispatch(Actions.updateSite(
@@ -890,6 +876,20 @@ var BertaEditorBase = new Class({
         ));
       }
       else {
+        var data = {
+          site: entryInfo.site,
+          section: entryInfo.section,
+          entry: entryInfo.entryId,
+          property: property,
+          params: editorParams,
+          value: value,
+          action: action,
+          before: this.escapeForJSON(el.get('old_content') ? el.get('old_content') : oldContent),
+          before_real: this.escapeForJSON(el.get('title') ? el.get('title') : oldContent),
+          format_modifier: el.getClassStoredValue('xFormatModifier')
+          /*use_css_units: useCSSUnits*/
+        };
+        console.log('BertaEditorBase.elementEdit_save:', el, data);
         // @@@:TODO: Remove this when migration to redux is done
   			new Request.JSON({
   				url: this.options.updateUrl,

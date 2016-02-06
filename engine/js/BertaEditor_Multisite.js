@@ -110,11 +110,6 @@ var BertaEditor_Multisite = new Class({
 		var newOrder = this.sitesSortables.serialize(false, function(element, index) {
 			return element.getClassStoredValue('xSite');
 		});
-		var data = {
-				site: this.sitesMenu.getElement('li').getClassStoredValue('xSite'), entry: null, entryNum: null,
-				action: 'ORDER_SITES', property: '', value: newOrder
-			};
-		console.log('BertaEditor_Multisite.siteOrderSave:', this.sitesMenu, data);
 
     redux_store.dispatch(Actions.orderSites(newOrder));
 	},
@@ -142,12 +137,6 @@ var BertaEditor_Multisite = new Class({
 		if(confirm('Berta asks:\n\nAre you sure you want to delete this site? All its content will be lost... FOREVAAA!')) {
 			if(confirm('Berta asks again:\n\nAre you really sure?')) {
 				this.sitesEditor.addClass('xSaving');
-				var data = {
-						site: 'null', entry: null, entryNum: null,
-						action: 'DELETE_SITE',
-						property: '', value: siteName
-					};
-				console.log('BertaEditor_Multisite.siteDelete:', data);
         redux_store.dispatch(Actions.deleteSite(
           siteName,
           function(resp) {
@@ -163,37 +152,12 @@ var BertaEditor_Multisite = new Class({
             this.sitesEditor.removeClass('xSaving');
           }.bind(this)
         ));
-				// new Request.JSON({
-				// 	url: this.options.updateUrl,
-				// 	data: "json=" + JSON.encode(data),
-				// 	onComplete: function(resp) {
-				// 		if(!resp) {
-				// 			alert('Berta says:\n\nServer produced an error while deleting this site! Something went sooooo wrong...');
-				// 		} else if(resp && !resp.error_message) {
-				// 			var element = this.sitesMenu.getElement('li.xSite-' + resp.real);
-				// 			this.sitesSortables.removeItems(element);
-				// 			element.destroy();
-				// 		} else {
-				// 			alert(resp.error_message);
-				// 		}
-				// 		this.sitesEditor.removeClass('xSaving');
-				// 	}.bind(this)
-				// }).post();
 			}
 		}
 	},
 
 	siteCreateNew: function(site) {
 		this.sitesEditor.addClass('xSaving');
-		var data = {
-				site: this.cloneSite,
-				entry: null,
-				entryNum: null,
-				action: 'CREATE_NEW_SITE',
-				property: '', value: ''
-			};
-		console.log('BertaEditor_Multisite.siteCreateNew:', data);
-
     redux_store.dispatch(Actions.createSite(
       this.cloneSite,
       // @@@:TODO: Remove this callback, when migration to ReactJS is complete
