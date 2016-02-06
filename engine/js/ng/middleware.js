@@ -33,15 +33,16 @@
               return resp.json();
             })
             .then(function(json) {
-              if (action.meta.dispatch) {
+              if (action.meta && action.meta.dispatch && !json.error_message) {
                 store.dispatch(Actions[action.meta.dispatch](json));
-                if (action.meta.onComplete) {
-                  action.meta.onComplete(json);
-                }
+              }
+
+              if (action.meta && action.meta.onComplete) {
+                action.meta.onComplete(json);
               }
             })
             .catch(function(error) {
-              console.log('request failed', error);
+              console.log('Request failed:', error);
             });
         }
 

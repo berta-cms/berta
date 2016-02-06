@@ -99,9 +99,26 @@ class Sites Extends Storage {
 
         $this->setValueByPath($sites, $path, $value);
         $this->array2xmlFile($sites, $this->XML_FILE, $this->ROOT_ELEMENT);
-file_put_contents($this->XML_SITES_ROOT.'/debug.log', $value);
+
         $ret['value'] = $value;
         return $ret;
+    }
+
+    /**
+    */
+    public function deleteSite($name) {
+        $sites = $this->getSites();
+        $site_idx = array_search($name, array_column($sites['site'], 'name'));
+
+        if ($site_idx != False) {
+            $dir = $this->XML_SITES_ROOT . '/' . $name;
+            $this->delFolder($dir);
+            $site = array_splice($sites['site'], $site_idx, 1);
+            $this->array2xmlFile($sites, $this->XML_FILE, $this->ROOT_ELEMENT);
+            return $site[0];
+        }
+
+        return array('error_message' => 'Site "'.$name.'" not found!');
     }
 
     /**

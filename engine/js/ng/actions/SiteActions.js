@@ -6,7 +6,7 @@
   var API_ROOT = '/_api/v1/';
 
   Object.assign(window.Actions, {
-    createSite: function(data, onComplete) {
+    createSite: function(site, onComplete) {
       return {
         type: ActionTypes.CREATE_SITE,
         meta: {
@@ -16,7 +16,7 @@
           dispatch: 'siteCreated',
           // @@@:TODO: Remove this callback when migration to ReactJS is completed
           onComplete: onComplete,
-          data: data
+          data: {site: site}
         }
       };
     },
@@ -42,20 +42,30 @@
         value: value
       };
     },
-    siteUpdated: function(resp, callback) {
+    siteUpdated: function(resp) {
       return {
         type: ActionTypes.SITE_UPDATED,
         resp: resp
       };
     },
-    deleteSite: function() {
+    deleteSite: function(site, onComplete) {
       return {
         type: ActionTypes.DELETE_SITE,
         meta: {
-          remote: true
-          // url: '',
-          // dispatch: ''
-        }
+          remote: true,
+          url: API_ROOT + 'delete-site/' + encodeURIComponent(site),
+          method: 'DELETE',
+          dispatch: 'siteDeleted',
+          // @@@:TODO: Remove this callback when migration to ReactJS is completed
+          onComplete: onComplete
+        },
+        site: site
+      };
+    },
+    siteDeleted: function(resp) {
+      return {
+        type: ActionTypes.SITE_DELETED,
+        resp: resp
       };
     },
     orderSites: function(sites) {

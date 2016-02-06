@@ -113,6 +113,16 @@ class Storage {
 
     /**
     */
+    protected function delFolder($dir) {
+        $files = array_diff(scandir($dir), array('.','..'));
+        foreach ($files as $file) {
+            (is_dir("$dir/$file") && !is_link($dir)) ? $this->delFolder("$dir/$file") : unlink("$dir/$file");
+        }
+        return rmdir($dir);
+    }
+
+    /**
+    */
     protected function slugify($tagTitle, $replacementStr='-', $allowNonWordChars='', $reallyRemoveOtherChars=false) {
         $char_map = array(
             // Latin

@@ -148,22 +148,37 @@ var BertaEditor_Multisite = new Class({
 						property: '', value: siteName
 					};
 				console.log('BertaEditor_Multisite.siteDelete:', data);
-				new Request.JSON({
-					url: this.options.updateUrl,
-					data: "json=" + JSON.encode(data),
-					onComplete: function(resp) {
-						if(!resp) {
-							alert('Berta says:\n\nServer produced an error while deleting this site! Something went sooooo wrong...');
-						} else if(resp && !resp.error_message) {
-							var element = this.sitesMenu.getElement('li.xSite-' + resp.real);
-							this.sitesSortables.removeItems(element);
-							element.destroy();
-						} else {
-							alert(resp.error_message);
-						}
-						this.sitesEditor.removeClass('xSaving');
-					}.bind(this)
-				}).post();
+        redux_store.dispatch(Actions.deleteSite(
+          siteName,
+          function(resp) {
+            if(!resp) {
+              alert('Berta says:\n\nServer produced an error while deleting this site! Something went sooooo wrong...');
+            } else if(resp && !resp.error_message) {
+              var element = this.sitesMenu.getElement('li.xSite-' + resp.name);
+              this.sitesSortables.removeItems(element);
+              element.destroy();
+            } else {
+              alert(resp.error_message);
+            }
+            this.sitesEditor.removeClass('xSaving');
+          }.bind(this)
+        ));
+				// new Request.JSON({
+				// 	url: this.options.updateUrl,
+				// 	data: "json=" + JSON.encode(data),
+				// 	onComplete: function(resp) {
+				// 		if(!resp) {
+				// 			alert('Berta says:\n\nServer produced an error while deleting this site! Something went sooooo wrong...');
+				// 		} else if(resp && !resp.error_message) {
+				// 			var element = this.sitesMenu.getElement('li.xSite-' + resp.real);
+				// 			this.sitesSortables.removeItems(element);
+				// 			element.destroy();
+				// 		} else {
+				// 			alert(resp.error_message);
+				// 		}
+				// 		this.sitesEditor.removeClass('xSaving');
+				// 	}.bind(this)
+				// }).post();
 			}
 		}
 	},
@@ -180,7 +195,8 @@ var BertaEditor_Multisite = new Class({
 		console.log('BertaEditor_Multisite.siteCreateNew:', data);
 
     redux_store.dispatch(Actions.createSite(
-      data,
+      this.cloneSite,
+      // @@@:TODO: Remove this callback, when migration to ReactJS is complete
       function(resp) {
         console.log(resp);
         if(!resp) {
@@ -189,7 +205,7 @@ var BertaEditor_Multisite = new Class({
           var html = '<div class="csHandle"><span class="handle"></span></div>' +
                      '<div class="csTitle"><span class="xEditable xProperty-title xNoHTMLEntities xSite-' + resp.name + '">' +
                      '<span class="xEmpty">&nbsp;title&nbsp;</span></span></div>' +
-                     '<div class="csName">' + location.protocol + '//' + location.host + '/<span class="xEditable xProperty-name xNoHTMLEntities xSite-' + resp.site + '">' + resp.site + '</span></div>' +
+                     '<div class="csName">' + location.protocol + '//' + location.host + '/<span class="xEditable xProperty-name xNoHTMLEntities xSite-' + resp.name + '">' + resp.name + '</span></div>' +
                      '<div class="csPub"><span class="xEditableYesNo xProperty-published xSite-' + resp.name + '">0</span></div>' +
                      '<div class="csClone"><a href="#" class="xSiteClone">clone</a></div>' +
                      '<div class="csDelete"><a href="#" class="xSiteDelete">delete</a></div>';

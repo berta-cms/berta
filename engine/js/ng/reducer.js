@@ -2,7 +2,7 @@
   'use strict';
 
   window.reducer = function(state, action) {
-    var path, value, site, sites = [];
+    var path, value, site, site_name, site_idx, sites = [];
 
     console.log(action);
 
@@ -23,7 +23,7 @@
       case ActionTypes.SITE_CREATED:
         sites = state.getIn(['site']).toJSON();
         sites.push(action.site);
-        return state.setIn(['site', sites]);
+        return state.setIn(['site'], Immutable.List(sites));
 
       case ActionTypes.UPDATE_SITE:
         path = action.path.split('/');
@@ -31,14 +31,28 @@
 
         return state.setIn(path, value);
 
-      case ActionTypes.DELETE_SITE:
-        return state;
-
       case ActionTypes.SITE_UPDATED:
         path = action.resp.path.split('/');
         value = action.resp.value;
 
         return state.setIn(path, value);
+
+      case ActionTypes.DELETE_SITE:
+        return state;
+
+      case ActionTypes.SITE_DELETED:
+        sites = state.getIn(['site']).toJSON();
+        site_name = action.resp.name === '0' ? '' : action.resp.name;
+        site_idx = sites.findIndex(function (site, idx) {
+          return site.name === site_name;
+        });
+
+        if (site_idx > -1) {
+          sites.splice(site_idx, 1);
+          return state.setIn(['site'], Immutable.List(sites));
+        }
+
+        return state;
 
       case ActionTypes.ORDER_SITES:
         action.sites.forEach(function(site, new_idx) {
@@ -57,10 +71,9 @@
 
         if (sites.length > 0) {
           return state.setIn(['site'], Immutable.List(sites));
-        } else {
-          return state;
         }
-        break;
+
+        return state;
 
       default:
         return state;

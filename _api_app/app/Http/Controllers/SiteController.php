@@ -32,6 +32,16 @@ class SiteController extends Controller
         return response()->json($json);
     }
 
+    public function deleteSite($site) {
+        $sites = new Sites();
+        $json = array();
+        $json['name'] = $site;
+
+        $res = $sites->deleteSite($site);
+
+        return response()->json($res);
+    }
+
     public function orderSites(Request $request) {
         $sites = new Sites();
         $json = $request->json()->all();
