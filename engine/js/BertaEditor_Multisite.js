@@ -111,7 +111,22 @@ var BertaEditor_Multisite = new Class({
 			return element.getClassStoredValue('xSite');
 		});
 
-    redux_store.dispatch(Actions.orderSites(newOrder));
+    redux_store.dispatch(Actions.orderSites(
+      newOrder,
+      function(resp) {
+        for (var i=0; i< resp.length; i++) {
+          $$('.xSite-' + resp[i] + ' .xProperty-title')
+            .set('data-path', 'site/' + i + '/title')
+            .data('path', true);
+          $$('.xSite-' + resp[i] + ' .xProperty-name')
+            .set('data-path', 'site/' + i + '/name')
+            .data('path', true);
+          $$('.xSite-' + resp[i] + ' .xProperty-published')
+            .set('data-path', 'site/' + i + '/@attributes/published')
+            .data('path', true);
+        }
+      }
+    ));
 	},
 
 	siteOnCloneClick: function(event) {

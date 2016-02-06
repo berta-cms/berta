@@ -15,13 +15,12 @@
 
       switch (action.type) {
         case ActionTypes.SET_STATE:
-          var _state = Immutable.fromJS({site: action.state.site});
-          return _state;
+          return Immutable.fromJS({site: action.state.site});
 
         case ActionTypes.SITE_CREATED:
           sites = state.getIn(['site']).toJSON();
           sites.push(action.site);
-          return state.setIn(['site'], Immutable.List(sites));
+          return state.setIn(['site'], Immutable.fromJS(sites));
 
         case ActionTypes.UPDATE_SITE:
           path = action.path.split('/');
@@ -44,7 +43,7 @@
 
           if (site_idx > -1) {
             sites.splice(site_idx, 1);
-            return state.setIn(['site'], Immutable.List(sites));
+            return state.setIn(['site'], Immutable.fromJS(sites));
           }
 
           return state;
@@ -53,19 +52,17 @@
           action.sites.forEach(function(site, new_idx) {
             var site_name = site === '0' ? '' : site;
 
-            site = state.getIn(['site']).find(function(site, old_idx) {
-              var _site = site.toJSON();
-
-              return _site.name === site_name;
+            site = state.getIn(['site']).toJSON().find(function(site, old_idx) {
+              return site.name === site_name;
             });
 
             if (site) {
-              sites.push(site.toJSON());
+              sites.push(site);
             }
           });
 
           if (sites.length > 0) {
-            return state.setIn(['site'], Immutable.List(sites));
+            return state.setIn(['site'], Immutable.fromJS(sites));
           }
 
           return state;

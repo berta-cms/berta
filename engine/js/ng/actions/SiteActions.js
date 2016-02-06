@@ -68,14 +68,15 @@
         resp: resp
       };
     },
-    orderSites: function(sites) {
+    orderSites: function(sites, onComplete) {
       return {
         type: ActionTypes.ORDER_SITES,
         meta: {
           remote: true,
           method: 'PUT',
           url: API_ROOT + 'order-sites',
-          data: sites
+          data: sites,
+          onComplete: onComplete
         },
         sites: sites
       };
