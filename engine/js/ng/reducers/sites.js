@@ -18,9 +18,6 @@
           var _state = Immutable.fromJS({site: action.state.site});
           return _state;
 
-        case ActionTypes.CREATE_SITE:
-          return state;
-
         case ActionTypes.SITE_CREATED:
           sites = state.getIn(['site']).toJSON();
           sites.push(action.site);
@@ -37,9 +34,6 @@
           value = action.resp.value;
 
           return state.setIn(path, value);
-
-        case ActionTypes.DELETE_SITE:
-          return state;
 
         case ActionTypes.SITE_DELETED:
           sites = state.getIn(['site']).toJSON();
