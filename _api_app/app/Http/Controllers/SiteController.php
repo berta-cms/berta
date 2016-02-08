@@ -12,6 +12,7 @@ class SiteController extends Controller
         $json = $request->json()->all();
         $cloneFrom = $json['site'] == -1 ? null : $json['site'];
         $site = $sites->createSite($cloneFrom);
+        $site['idx'] = count($sites->getSites()['site']);
 
 
         return response()->json($site);
