@@ -26,6 +26,7 @@ var js_backend_files = [
     'engine/_lib/mootools/mootools-core-1.4.5-full-compat-yc.js',
     'engine/_lib/mootools/mootools-1.2.5.1-more.js',
     'engine/_lib/mootools/mootools-1.2.5.1-more-delegation.js',
+    'engine/_lib/mootools/Element.Data.js',
     'engine/_lib/mgfx/rotater.js',
     'engine/_lib/mgfx/tabs.js',
     'engine/_lib/picturefill/picturefill.min.js',
@@ -47,6 +48,8 @@ var js_backend_files = [
     'engine/js/BertaEditor_Seo.js',
     'engine/js/BertaEditor_ChangePassword.js',
     'engine/js/BertaEditor_Multisite.js',
+    'engine/_lib/fetch/promise.js',
+    'engine/_lib/fetch/fetch.js',
     'engine/_lib/redux/redux.min.js',
     'engine/_lib/immutable/immutable.min.js'
 ];
@@ -54,8 +57,10 @@ var js_backend_files = [
 var js_ng_backend_files = [
   'engine/js/ng/constants/ActionTypes.js',
   'engine/js/ng/actions/StateActions.js',
+  'engine/js/ng/actions/SiteActions.js',
   'engine/js/ng/middleware.js',
-  'engine/js/ng/reducer.js',
+  'engine/js/ng/reducers/sites.js',
+  'engine/js/ng/reducers/index.js',
   'engine/js/ng/index.js'
 ];
 

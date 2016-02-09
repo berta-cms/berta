@@ -110,18 +110,23 @@ var BertaEditor_Multisite = new Class({
 		var newOrder = this.sitesSortables.serialize(false, function(element, index) {
 			return element.getClassStoredValue('xSite');
 		});
-		var data = {
-				site: this.sitesMenu.getElement('li').getClassStoredValue('xSite'), entry: null, entryNum: null,
-				action: 'ORDER_SITES', property: '', value: newOrder
-			};
-		console.log('BertaEditor_Multisite.siteOrderSave:', data);
-		new Request.JSON({
-			url: this.options.updateUrl,
-			data: "json=" + JSON.encode(data),
-			onComplete: function(resp) {
 
-			}.bind(this)
-		}).post();
+    redux_store.dispatch(Actions.orderSites(
+      newOrder,
+      function(resp) {
+        for (var i=0; i< resp.length; i++) {
+          $$('.xSite-' + resp[i] + ' .xProperty-title')
+            .set('data-path', 'site/' + i + '/title')
+            .data('path', true);
+          $$('.xSite-' + resp[i] + ' .xProperty-name')
+            .set('data-path', 'site/' + i + '/name')
+            .data('path', true);
+          $$('.xSite-' + resp[i] + ' .xProperty-published')
+            .set('data-path', 'site/' + i + '/@attributes/published')
+            .data('path', true);
+        }
+      }
+    ));
 	},
 
 	siteOnCloneClick: function(event) {
@@ -147,60 +152,53 @@ var BertaEditor_Multisite = new Class({
 		if(confirm('Berta asks:\n\nAre you sure you want to delete this site? All its content will be lost... FOREVAAA!')) {
 			if(confirm('Berta asks again:\n\nAre you really sure?')) {
 				this.sitesEditor.addClass('xSaving');
-				var data = {
-						site: 'null', entry: null, entryNum: null,
-						action: 'DELETE_SITE',
-						property: '', value: siteName
-					};
-				console.log('BertaEditor_Multisite.siteDelete:', data);
-				new Request.JSON({
-					url: this.options.updateUrl,
-					data: "json=" + JSON.encode(data),
-					onComplete: function(resp) {
-						if(!resp) {
-							alert('Berta says:\n\nServer produced an error while deleting this site! Something went sooooo wrong...');
-						} else if(resp && !resp.error_message) {
-							var element = this.sitesMenu.getElement('li.xSite-' + resp.real);
-							this.sitesSortables.removeItems(element);
-							element.destroy();
-						} else {
-							alert(resp.error_message);
-						}
-						this.sitesEditor.removeClass('xSaving');
-					}.bind(this)
-				}).post();
+        redux_store.dispatch(Actions.deleteSite(
+          siteName,
+          function(resp) {
+            if(!resp) {
+              alert('Berta says:\n\nServer produced an error while deleting this site! Something went sooooo wrong...');
+            } else if(resp && !resp.error_message) {
+              var element = this.sitesMenu.getElement('li.xSite-' + resp.name);
+              this.sitesSortables.removeItems(element);
+              element.destroy();
+            } else {
+              alert(resp.error_message);
+            }
+            this.sitesEditor.removeClass('xSaving');
+          }.bind(this)
+        ));
 			}
 		}
 	},
 
 	siteCreateNew: function(site) {
 		this.sitesEditor.addClass('xSaving');
-		var data = {
-				site: this.cloneSite,
-				entry: null,
-				entryNum: null,
-				action: 'CREATE_NEW_SITE',
-				property: '', value: ''
-			};
-		console.log('BertaEditor_Multisite.siteCreateNew:', data);
-		new Request.JSON({
-			url: this.options.updateUrl,
-			data: "json=" + JSON.encode(data),
-			onComplete: function(resp) {
-				if(!resp) {
-					alert('Berta says:\n\nServer produced an error while adding new site! Something went sooooo wrong...');
-				} else if(resp && !resp.error_message) {
-					var li = new Element('li', { 'class': 'xSite-'+resp.real, 'html': resp.update }).inject(this.sitesMenu);
-					this.sitesSortables.addItems(li);
-					this.editablesInit();
-					li.getElement('a.xSiteClone').addEvent('click', this.siteOnCloneClick.bindWithEvent(this));
-					li.getElement('a.xSiteDelete').addEvent('click', this.siteOnDeleteClick.bindWithEvent(this));
-				} else {
-					alert(resp.error_message);
-				}
-				this.sitesEditor.removeClass('xSaving');
-			}.bind(this)
-		}).post();
+    redux_store.dispatch(Actions.createSite(
+      this.cloneSite,
+      // @@@:TODO: Remove this callback, when migration to ReactJS is complete
+      function(resp) {
+        console.log(resp);
+        if(!resp) {
+          alert('Berta says:\n\nServer produced an error while adding new site! Something went sooooo wrong...');
+        } else if(resp && !resp.error_message) {
+          var html = '<div class="csHandle"><span class="handle"></span></div>' +
+                     '<div class="csTitle"><span class="xEditable xProperty-title xNoHTMLEntities xSite-' + resp.name + '" data-path="site/' + resp.idx + '/title">' +
+                     '<span class="xEmpty">&nbsp;title&nbsp;</span></span></div>' +
+                     '<div class="csName">' + location.protocol + '//' + location.host + '/<span class="xEditable xProperty-name xNoHTMLEntities xSite-' + resp.name + '" data-path="site/' + resp.idx + '/name">' + resp.name + '</span></div>' +
+                     '<div class="csPub"><span class="xEditableYesNo xProperty-published xSite-' + resp.name + '" data-path="site/' + resp.idx + '/@attributes/published">0</span></div>' +
+                     '<div class="csClone"><a href="#" class="xSiteClone">clone</a></div>' +
+                     '<div class="csDelete"><a href="#" class="xSiteDelete">delete</a></div>';
+          var li = new Element('li', { 'class': 'xSite-'+resp.name, 'html': html }).inject(this.sitesMenu);
+          this.sitesSortables.addItems(li);
+          this.editablesInit();
+          li.getElement('a.xSiteClone').addEvent('click', this.siteOnCloneClick.bindWithEvent(this));
+          li.getElement('a.xSiteDelete').addEvent('click', this.siteOnDeleteClick.bindWithEvent(this));
+        } else {
+          alert(resp.error_message);
+        }
+        this.sitesEditor.removeClass('xSaving');
+      }.bind(this)
+    ));
 
 		this.cloneSite = -1;
 	}
