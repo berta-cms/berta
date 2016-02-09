@@ -12,8 +12,6 @@ class SiteController extends Controller
         $json = $request->json()->all();
         $cloneFrom = $json['site'] == -1 ? null : $json['site'];
         $site = $sites->createSite($cloneFrom);
-        $site['idx'] = count($sites->getSites()['site']);
-
 
         return response()->json($site);
     }
@@ -23,8 +21,10 @@ class SiteController extends Controller
         $json = $request->json()->all();
 
         $res = $sites->saveValueByPath($json['path'], $json['value']);
+        // @@@:TODO: Replace this with something sensible, when migration to redux is done
         $json['update'] = $res['value'];
         $json['real'] = $res['value'];
+        // @@@:TODO:END
 
         if (array_key_exists('error_message', $res)) {
             $json['error_message'] = $res['error_message'];

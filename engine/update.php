@@ -107,7 +107,7 @@ if($jsonRequest) {
 		$allowFormatModifier = false;
 
 		if( isset($decoded['site']) && (!empty($decoded['site']) || $decoded['site']!==null) ) {	// for multisite
-            throw new Exception('Deprecated function called for multisite CRUD function!');
+            throw new Exception('Deprecated branch of code called for multisite CRUD function!');
 		}
 		elseif(!empty($decoded['section'])) {	// the property is for for the blog
 

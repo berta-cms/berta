@@ -124,19 +124,12 @@ var BertaEditor_Sections = new Class({
 		var newOrder = this.sectionsSortables.serialize(false, function(element, index) {
 			return element.getClassStoredValue('xSection');
 		});
+    var site = getQueryParams().site;
 
-		var data = {
-				section: this.sectionsMenu.getElement('li').getClassStoredValue('xSection'), entry: null, entryNum: null,
-				action: 'ORDER_SECTIONS', property: '', value: newOrder
-			};
-		console.log('BertaEditor_Sections.sectionOrderSave:', data);
-		new Request.JSON({
-			url: this.options.updateUrl,
-			data: "json=" + JSON.encode(data),
-			onComplete: function(resp) {
-
-			}.bind(this)
-		}).post();
+    redux_store.dispatch(Actions.orderSections(
+      site ? site : '0',
+      newOrder
+    ));
 	},
 
 	sectionOnDeleteClick: function(event) {

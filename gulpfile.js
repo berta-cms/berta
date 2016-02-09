@@ -55,11 +55,21 @@ var js_backend_files = [
 ];
 
 var js_ng_backend_files = [
+  'engine/js/ng/utils.js',
+  'engine/js/ng/constants/constants.js',
   'engine/js/ng/constants/ActionTypes.js',
   'engine/js/ng/actions/StateActions.js',
   'engine/js/ng/actions/SiteActions.js',
+  'engine/js/ng/actions/SettingsActions.js',
+  'engine/js/ng/actions/SectionActions.js',
+  'engine/js/ng/actions/EntryActions.js',
+  'engine/js/ng/actions/TagActions.js',
   'engine/js/ng/middleware.js',
   'engine/js/ng/reducers/sites.js',
+  'engine/js/ng/reducers/settings.js',
+  'engine/js/ng/reducers/sections.js',
+  'engine/js/ng/reducers/entries.js',
+  'engine/js/ng/reducers/tags.js',
   'engine/js/ng/reducers/index.js',
   'engine/js/ng/index.js'
 ];

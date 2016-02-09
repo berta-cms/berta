@@ -3,14 +3,14 @@
 namespace App;
 
 class Storage {
+    protected $SITE='';
     protected $XML_MAIN_ROOT;
     protected $XML_SITES_ROOT;
-    protected $XML_FILE;
 
-    public function __construct($xml_file='') {
+    public function __construct($site='') {
+        $this->SITE = $site;
         $this->XML_MAIN_ROOT = realpath(__DIR__ . '/../../storage');
         $this->XML_SITES_ROOT = $this->XML_MAIN_ROOT . '/-sites';
-        $this->XML_FILE = $this->XML_SITES_ROOT . '/' . $xml_file;
     }
 
     /************************************************************

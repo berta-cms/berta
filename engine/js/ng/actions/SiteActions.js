@@ -3,8 +3,6 @@
 
   window.Actions = window.Actions || {};
 
-  var API_ROOT = '/_api/v1/';
-
   Object.assign(window.Actions, {
     createSite: function(site, onComplete) {
       return {
@@ -76,6 +74,7 @@
           method: 'PUT',
           url: API_ROOT + 'order-sites',
           data: sites,
+          // @@@:TODO: Remove this callback when migration to ReactJS is completed
           onComplete: onComplete
         },
         sites: sites

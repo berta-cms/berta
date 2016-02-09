@@ -3,11 +3,13 @@
 namespace App;
 
 class Sites Extends Storage {
+    private $XML_FILE;
     private $SITES = array();
     private $ROOT_ELEMENT = 'sites';
 
     public function __construct() {
-        parent::__construct('sites.xml');
+        parent::__construct();
+        $this->XML_FILE = $this->XML_SITES_ROOT . '/sites.xml';
     }
 
     /**
@@ -48,6 +50,7 @@ class Sites Extends Storage {
         $sites['site'][] = $site;
 
         $this->array2xmlFile($sites, $this->XML_FILE, $this->ROOT_ELEMENT);
+        $site['idx'] = count($sites['site']) - 1;
 
         return $site;
     }
@@ -132,10 +135,10 @@ class Sites Extends Storage {
 
         foreach($names as $name) {
             $site_name = ($name == '0') ? '' : $name;
-            $site = array_filter($sites['site'], $this->getSiteByNameFilter($site_name));
+            $site_idx = array_search($site_name, array_column($sites['site'], 'name'));
 
-            if (count($site) == 1) {
-                $new_order[] = array_pop($site);
+            if ($site_idx !== false) {
+                $new_order[] = $sites['site'][$site_idx];
             }
         }
 
@@ -143,16 +146,5 @@ class Sites Extends Storage {
             $sites['site'] = $new_order;
             $this->array2xmlFile($sites, $this->XML_FILE, $this->ROOT_ELEMENT);
         }
-    }
-
-    /**
-    * Returns function to use in array_filter to get site by its name
-    *
-    * @param string $site_name Name of site to search for
-    */
-    private function getSiteByNameFilter($site_name) {
-        return function($val) use ($site_name) {
-            return $val['name'] == $site_name;
-        };
     }
 }
