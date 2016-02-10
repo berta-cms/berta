@@ -829,7 +829,7 @@ DOC;
     }
 
 
-    public static function getSettingsItemEditHTML($property, $sDef, $value, $additionalParams = null, $tag = 'div') {
+    public static function getSettingsItemEditHTML($property, $sDef, $value, $additionalParams = null, $tag='div', $path='') {
         global $editsForSettings;
 
         $pStr = '';
@@ -848,6 +848,10 @@ DOC;
                           (!empty($sDef['validator']) ? 'xValidator-' . $sDef['validator'] . ' ' : '') .
                           $pStr .
                    '" title="' . htmlspecialchars($sDef['default']) . '"';
+
+        if (!empty($path)) {
+            $html .= ' data-path="' . $path . '"';
+        }
 
         if($sDef['format'] == 'select' || $sDef['format'] == 'fontselect') {
             $values = array();

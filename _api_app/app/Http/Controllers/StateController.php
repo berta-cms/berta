@@ -16,7 +16,7 @@ class StateController extends Controller
         $entries = new Entries();
         $tags = new Tags();
 
-        $state = $sites->getSites();
+        $state = $sites->get();
         $state['settings'] = array();
         $state['sections'] = array();
         $state['entries'] = array();

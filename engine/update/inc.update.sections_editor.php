@@ -91,7 +91,12 @@ else if($property == 'type') {	// section external link
 							foreach($sTParams['params'] as $pName => $p) {
 								$value = !empty($s[$pName]['value']) ? $s[$pName]['value'] : '';
 								if(!$value && $p['default']) $value = $p['default'];
-								$returnParams .= BertaEditor::getSettingsItemEditHTML($pName, $p, $value, array('xSection' => $sN, 'xSectionField'));
+								$returnParams .= BertaEditor::getSettingsItemEditHTML(
+                                    $pName,
+                                    $p,
+                                    $value,
+                                    array('xSection' => $sN, 'xSectionField')
+                                );
 							}
 						}
 						break;
@@ -290,7 +295,6 @@ else if($decoded['action'] == 'CREATE_NEW_SECTION') {
 		$fName = $options['XML_ROOT'] . str_replace('%', $sName, $options['blog.%.xml']);
 		$i++;
 	} while ( file_exists($fName) );
-
 	$emptyXML = '<?xml version="1.0" encoding="utf-8"?><blog></blog>';
 
 	if(!@file_put_contents($fName, $emptyXML)) {
@@ -307,6 +311,8 @@ else if($decoded['action'] == 'CREATE_NEW_SECTION') {
 			$cloneSection['name'] = $sName;
 			$cloneSection['title'] = $sTitle;
 			unset($cloneSection['positionXY']);
+            $site = empty($options['MULTISITE']) ? '0' : $options['MULTISITE'];
+            $basePath = $site . '/section/' . count($sectionsList);
 
 			$sectionsList[$sName] = $cloneSection;
 			$cloneContent = BertaContent::loadBlog( $decoded['cloneSection'] );
@@ -362,8 +368,8 @@ else if($decoded['action'] == 'CREATE_NEW_SECTION') {
 
 		$returnUpdate = '';
 		$returnUpdate .= '<div class="csHandle"><span class="handle"></span></div>';
-		$returnUpdate .= '<div class="csTitle"><span class="' . $xEditSelectorSimple . ' xProperty-title xNoHTMLEntities xSection-' . $sName . '">' . ($isClone ? htmlspecialchars($sTitle) : BertaEditor::getXEmpty('sectionTitle')) . '</span></div>';
-		$returnUpdate .= '<div class="csBehaviour"><span class="' . $xEditSelectorSelectRC . ' xProperty-type xSection-' . $sName . ' xSectionField" x_options="' . $possibleTypes . '">' . htmlspecialchars($typeValue) . '</span></div>';
+		$returnUpdate .= '<div class="csTitle"><span class="' . $xEditSelectorSimple . ' xProperty-title xNoHTMLEntities xSection-' . $sName . '" data-path="' . $basePath . '/title">' . ($isClone ? htmlspecialchars($sTitle) : BertaEditor::getXEmpty('sectionTitle')) . '</span></div>';
+		$returnUpdate .= '<div class="csBehaviour"><span class="' . $xEditSelectorSelectRC . ' xProperty-type xSection-' . $sName . ' xSectionField" data-path="' . $basePath . '/@attributes/type" x_options="' . $possibleTypes . '">' . htmlspecialchars($typeValue) . '</span></div>';
 
 		$returnUpdate .= '<div class="csDetails">';
 
@@ -386,13 +392,20 @@ else if($decoded['action'] == 'CREATE_NEW_SECTION') {
 				if(!$value && $p['default']) {
 					$value = $p['default'];
 				}
-				$returnUpdate .= BertaEditor::getSettingsItemEditHTML($pName, $p, $value, array('xSection' => $sName, 'xSectionField'));
+				$returnUpdate .= BertaEditor::getSettingsItemEditHTML(
+                    $pName,
+                    $p,
+                    $value,
+                    array('xSection' => $sName, 'xSectionField'),
+                    'div',
+                    $basePath . '/' . $pName
+                );
 			}
 		}
 
 		$returnUpdate .= '</div>';
 
-		$returnUpdate .= '<div class="csPub"><span class="' . $xEditSelectorYesNo . ' xProperty-published xSection-' . $sName . '">'.$published.'</span></div>';
+		$returnUpdate .= '<div class="csPub"><span class="' . $xEditSelectorYesNo . ' xProperty-published xSection-' . $sName . '" data-path="' . $basePath . '/@attributes/published">'.$published.'</span></div>';
 		$returnUpdate .= '<div class="csClone"><a href="#" class="xSectionClone">clone</a></div>';
 		$returnUpdate .= '<div class="csDelete"><a href="#" class="xSectionDelete">delete</a></div>';
 		$returnReal = $sName;

@@ -18,7 +18,7 @@
         }
       };
     },
-    siteCreated: function(site, callback) {
+    siteCreated: function(site) {
       return {
         type: ActionTypes.SITE_CREATED,
         site: site

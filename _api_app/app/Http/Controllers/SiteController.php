@@ -7,16 +7,16 @@ use Illuminate\Http\Request;
 
 class SiteController extends Controller
 {
-    public function createSite(Request $request) {
+    public function create(Request $request) {
         $sites = new Sites();
         $json = $request->json()->all();
         $cloneFrom = $json['site'] == -1 ? null : $json['site'];
-        $site = $sites->createSite($cloneFrom);
+        $site = $sites->create($cloneFrom);
 
         return response()->json($site);
     }
 
-    public function updateSite(Request $request) {
+    public function update(Request $request) {
         $sites = new Sites();
         $json = $request->json()->all();
 
@@ -33,20 +33,20 @@ class SiteController extends Controller
         return response()->json($json);
     }
 
-    public function deleteSite($site) {
+    public function delete($site) {
         $sites = new Sites();
         $json = array();
         $json['name'] = $site;
 
-        $res = $sites->deleteSite($site);
+        $res = $sites->delete($site);
 
         return response()->json($res);
     }
 
-    public function orderSites(Request $request) {
+    public function order(Request $request) {
         $sites = new Sites();
         $json = $request->json()->all();
-        $sites->orderSites($json);
+        $sites->order($json);
         return response()->json($json);
     }
 }

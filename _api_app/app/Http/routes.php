@@ -19,10 +19,11 @@
 $app->group(['prefix' => 'v1','namespace' => 'App\Http\Controllers'], function($app) {
 	$app->get('state','StateController@getState');
 
-    $app->patch('update-site','SiteController@updateSite');
-    $app->post('create-site','SiteController@createSite');
-    $app->delete('delete-site/{site}','SiteController@deleteSite');
-    $app->put('order-sites','SiteController@orderSites');
+    $app->patch('update-site','SiteController@update');
+    $app->post('create-site','SiteController@create');
+    $app->delete('delete-site/{site}','SiteController@delete');
+    $app->put('order-sites','SiteController@order');
 
-    $app->put('order-sections','SectionController@orderSections');
+    $app->post('create-section','SectionController@create');
+    $app->put('order-sections','SectionController@order');
 });

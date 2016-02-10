@@ -21,12 +21,37 @@ class Sections Extends Storage {
         return $this->xmlFile2array($this->XML_FILE);
     }
 
+    public function create($cloneFrom=null) {
+        // $sites = $this->getSites();
+        // $name = 'untitled-' . uniqid();
+        // $dir = $this->XML_SITES_ROOT . '/' . $name;
+
+        // @mkdir($dir, 0777);
+
+        // if ($cloneFrom != null) {
+        //     $src = $cloneFrom == '0' ? $this->XML_MAIN_ROOT : $this->XML_SITES_ROOT . '/' . $cloneFrom;
+        //     $this->copyFolder($src, $dir);
+        // }
+
+        // $site = array(
+        //     'name' => $name,
+        //     'title' => '',
+        //     '@attributes' => array('published' => 0)
+        // );
+        // $sites['site'][] = $site;
+
+        // $this->array2xmlFile($sites, $this->XML_FILE, $this->ROOT_ELEMENT);
+        // $site['idx'] = count($sites['site']) - 1;
+
+        // return $site;
+    }
+
     /**
     * Reorder sections and save to XML file
     *
     * @param array $names Array of section names in a new order
     */
-    public function orderSections($site, $names) {
+    public function order($site, $names) {
         $site = $site == '0' ? 0 : $site;
         $sections = $this->getSectionsBySite($site);
         $new_order = array();

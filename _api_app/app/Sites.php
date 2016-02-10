@@ -17,7 +17,7 @@ class Sites Extends Storage {
     *
     * @return array Array of sites
     */
-    public function getSites() {
+    public function get() {
         if (empty($this->SITES)) {
             $this->SITES = $this->xmlFile2array($this->XML_FILE);
 
@@ -30,8 +30,8 @@ class Sites Extends Storage {
         return $this->SITES;
     }
 
-    public function createSite($cloneFrom=null) {
-        $sites = $this->getSites();
+    public function create($cloneFrom=null) {
+        $sites = $this->get();
         $name = 'untitled-' . uniqid();
         $dir = $this->XML_SITES_ROOT . '/' . $name;
 
@@ -63,7 +63,7 @@ class Sites Extends Storage {
     * @return array Array of changed value and/or error messages
     */
     public function saveValueByPath($path, $value) {
-        $sites = $this->getSites();
+        $sites = $this->get();
         $path_arr = explode('/', $path);
         $site_name = $sites['site'][$path_arr[1]]['name'];
         $site_root = $this->XML_SITES_ROOT . '/' . $site_name;
@@ -109,8 +109,8 @@ class Sites Extends Storage {
 
     /**
     */
-    public function deleteSite($name) {
-        $sites = $this->getSites();
+    public function delete($name) {
+        $sites = $this->get();
         $site_idx = array_search($name, array_column($sites['site'], 'name'));
 
         if ($site_idx != False) {
@@ -129,8 +129,8 @@ class Sites Extends Storage {
     *
     * @param array $names Array of site names in a new order
     */
-    public function orderSites($names) {
-        $sites = $this->getSites();
+    public function order($names) {
+        $sites = $this->get();
         $new_order = array();
 
         foreach($names as $name) {

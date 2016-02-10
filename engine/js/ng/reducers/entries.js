@@ -5,7 +5,6 @@
 
   Object.assign(window.reducers, {
     entries: function(state, action) {
-      console.log(action);
 
       if (state === undefined) {
         state = Immutable.Map();
@@ -13,6 +12,7 @@
 
       switch (action.type) {
         case ActionTypes.SET_STATE:
+          console.log(action);
           return Immutable.fromJS(action.state.entries);
 
         default:
