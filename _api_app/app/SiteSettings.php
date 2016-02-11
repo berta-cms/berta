@@ -2,7 +2,7 @@
 
 namespace App;
 
-class Settings Extends Storage {
+class SiteSettings Extends Storage {
     /**
     * Returns all settings of a given site as an array
     *

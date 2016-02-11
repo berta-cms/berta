@@ -17,7 +17,7 @@
 
 // @@@:TODO: Require login for API endpoints
 $app->group(['prefix' => 'v1','namespace' => 'App\Http\Controllers'], function($app) {
-	$app->get('state','StateController@getState');
+	$app->get('state/{site}','StateController@get');
 
     $app->patch('update-site','SiteController@update');
     $app->post('create-site','SiteController@create');

@@ -4,12 +4,12 @@
   window.Actions = window.Actions || {};
 
   Object.assign(window.Actions, {
-    getState: function() {
+    getState: function(site) {
       return {
         type: ActionTypes.GET_STATE,
         meta: {
           remote: true,
-          url: '/_api/v1/state',
+          url: '/_api/v1/state/' + site,
           dispatch: 'setState'
         }
       };
