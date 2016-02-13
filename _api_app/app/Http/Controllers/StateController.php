@@ -15,7 +15,6 @@ class StateController extends Controller
         $sites = new Sites();
         $siteSettings = new SiteSettings();
         $templateSettings = new TemplateSettings();
-        $entries = new Entries();
         $tags = new Tags();
 
         $state = $sites->get();
@@ -28,15 +27,14 @@ class StateController extends Controller
             $site_name = $_site['name'] ? $_site['name'] : 0;
             $sections = new Sections($site_name);
             $state['site_settings'][$site_name] = $siteSettings->getSettingsBySite($site_name);
-            $state['sections'][$site_name] = $sections->getSectionsBySite();
+            $state['sections'][$site_name] = $sections->get();
 
             if (!empty($state['sections'][$site_name])) {
                 foreach($state['sections'][$site_name]['section'] as $section) {
                     $section_name = $section['name'];
-                    $state['entries'][$site_name][$section_name] = $entries->getSiteSectionEntries(
-                        $site_name,
-                        $section_name
-                    );
+                    $entries = new Entries($site_name, $section_name);
+                    $state['entries'][$site_name][$section_name] = $entries->get();
+                    unset($entries);
                 }
             }
 
@@ -46,6 +44,7 @@ class StateController extends Controller
 
         $lang = $state['site_settings'][$site]['language'][0]['language'];
         $state['template_settings'] = $templateSettings->get($lang);
+        unset($sites);
 
         return response()->json($state);
     }

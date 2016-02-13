@@ -15,6 +15,13 @@ class SectionController extends Controller
         return response()->json($section);
     }
 
+    public function delete($site, $section) {
+        $sections = new Sections($site);
+        $res = $sections->delete($section);
+
+        return response()->json($res);
+    }
+
     public function order(Request $request) {
         $sections = new Sections();
         $json = $request->json()->all();

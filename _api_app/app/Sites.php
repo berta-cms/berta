@@ -113,7 +113,7 @@ class Sites Extends Storage {
         $sites = $this->get();
         $site_idx = array_search($name, array_column($sites['site'], 'name'));
 
-        if ($site_idx != False) {
+        if ($site_idx !== False) {
             $dir = $this->XML_SITES_ROOT . '/' . $name;
             $this->delFolder($dir);
             $site = array_splice($sites['site'], $site_idx, 1);

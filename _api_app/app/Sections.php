@@ -2,8 +2,11 @@
 
 namespace App;
 
+use App\Entries;
+
 class Sections Extends Storage {
     private $ROOT_ELEMENT = 'sections';
+    private $SECTIONS = array();
 
     public function __construct($site='') {
         parent::__construct($site);
@@ -12,13 +15,16 @@ class Sections Extends Storage {
     }
 
     /**
-    * Returns all sections of a given site as an array
+    * Returns all sections of site as an array
     *
-    * @param string $site name of the site
     * @return array Array of sections
     */
-    public function getSectionsBySite() {
-        return $this->xmlFile2array($this->XML_FILE);
+    public function get() {
+        if (empty($this->SECTIONS)) {
+            $this->SECTIONS = $this->xmlFile2array($this->XML_FILE);
+        }
+
+        return $this->SECTIONS;
     }
 
     public function create($cloneFrom=null) {
@@ -44,6 +50,56 @@ class Sections Extends Storage {
         // $site['idx'] = count($sites['site']) - 1;
 
         // return $site;
+    }
+
+    /**
+    */
+    public function delete($name) {
+        $sections = $this->get();
+        $section_idx = array_search($name, array_column($sections['section'], 'name'));
+
+        if ($section_idx !== False) {
+            // delete all entries
+            $entries = new Entries($this->SITE, $name);
+            $res = $entries->delete();
+
+            if (!$res['success']) {
+                return $res;
+            }
+
+            // delete section media
+            $section = $sections['section'][$section_idx];
+
+            if(array_key_exists('mediafolder', $section) and !empty($section['mediafolder'])) {
+                $mediaFolder = $this->MEDIA_ROOT . '/' . $section['mediafolder'];
+
+                if(file_exists($mediaFolder)) {
+                    $dir = opendir($mediaFolder);
+
+                    while($fItem = readdir($dir)) {
+                        if($fItem != '.' && $fItem != '..') {
+                            @unlink($mediaFolder . '/' . $fItem);
+                        }
+                    }
+
+                    if (!@rmdir($mediaFolder)) {
+                        return array(
+                            'success' => false,
+                            'error_message' => 'Unable to remove folder "' . $mediaFolder . '"!'
+                        );
+                    }
+                }
+            }
+
+            // delete section
+            $section = array_splice($sections['section'], $section_idx, 1);
+            $this->array2xmlFile($sections, $this->XML_FILE, $this->ROOT_ELEMENT);
+            $ret = $section[0];
+            $ret['site'] = $this->SITE;
+            return $ret;
+        }
+
+        return array('error_message' => 'Section "'.$name.'" not found!');
     }
 
     /**

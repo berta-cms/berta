@@ -14,4 +14,10 @@
 
     return result;
   };
+
+  window.getCurrentSite = function getCurrentSite() {
+    var q = getQueryParams();
+    return q.site === undefined ?  '0' : q.site;
+  };
+
 })(window, document);

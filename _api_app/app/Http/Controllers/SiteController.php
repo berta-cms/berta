@@ -35,9 +35,6 @@ class SiteController extends Controller
 
     public function delete($site) {
         $sites = new Sites();
-        $json = array();
-        $json['name'] = $site;
-
         $res = $sites->delete($site);
 
         return response()->json($res);

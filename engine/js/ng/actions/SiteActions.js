@@ -56,8 +56,7 @@
           dispatch: 'siteDeleted',
           // @@@:TODO: Remove this callback when migration to ReactJS is completed
           onComplete: onComplete
-        },
-        site: site
+        }
       };
     },
     siteDeleted: function(resp) {

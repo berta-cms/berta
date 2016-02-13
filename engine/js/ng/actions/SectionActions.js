@@ -24,6 +24,25 @@
         section: section
       };
     },
+    deleteSection: function(site, section, onComplete) {
+      return {
+        type: ActionTypes.DELETE_SECTION,
+        meta: {
+          remote: true,
+          url: API_ROOT + 'delete-section/' + encodeURIComponent(site) + '/' + encodeURIComponent(section),
+          method: 'DELETE',
+          dispatch: 'sectionDeleted',
+          onComplete: onComplete
+        },
+        section: section
+      };
+    },
+    sectionDeleted: function(resp) {
+      return {
+        type: ActionTypes.SECTION_DELETED,
+        resp: resp
+      };
+    },
     orderSections: function(site, sections) {
       return {
         type: ActionTypes.ORDER_SECTIONS,

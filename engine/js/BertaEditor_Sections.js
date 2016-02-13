@@ -124,10 +124,10 @@ var BertaEditor_Sections = new Class({
 		var newOrder = this.sectionsSortables.serialize(false, function(element, index) {
 			return element.getClassStoredValue('xSection');
 		});
-    var site = getQueryParams().site;
+    var site = getCurrentSite();
 
     redux_store.dispatch(Actions.orderSections(
-      site ? site : '0',
+      site,
       newOrder
     ));
 	},
@@ -141,28 +141,48 @@ var BertaEditor_Sections = new Class({
 		if(confirm('Berta asks:\n\nAre you sure you want to delete this section? All its content will be lost... FOREVAAA!')) {
 			if(confirm('Berta asks again:\n\nAre you really sure?')) {
 				this.sectionsEditor.addClass('xSaving');
-				var data = {
-						section: 'null', entry: null, entryNum: null,
-						action: 'DELETE_SECTION',
-						property: '', value: sectionName
-					};
-				console.log('BertaEditor_Sections.sectionDelete:', data);
-				new Request.JSON({
-					url: this.options.updateUrl,
-					data: "json=" + JSON.encode(data),
-					onComplete: function(resp) {
-						if(!resp) {
-							alert('Berta says:\n\nServer produced an error while deleting this section! Something went sooooo wrong...');
-						} else if(resp && !resp.error_message) {
-							var element = this.sectionsMenu.getElement('li.xSection-' + resp.real);
-							this.sectionsSortables.removeItems(element);
-							element.destroy();
-						} else {
-							alert(resp.error_message);
-						}
-						this.sectionsEditor.removeClass('xSaving');
-					}.bind(this)
-				}).post();
+    var site = getCurrentSite();
+
+    redux_store.dispatch(Actions.deleteSection(
+      site,
+      sectionName,
+      // @@@:TODO: Remove this callback, when migration to ReactJS is complete
+      function(resp) {
+        if(!resp) {
+          alert('Berta says:\n\nServer produced an error while deleting this section! Something went sooooo wrong...');
+        } else if(resp && !resp.error_message) {
+          var element = this.sectionsMenu.getElement('li.xSection-' + resp.name);
+          this.sectionsSortables.removeItems(element);
+          element.destroy();
+        } else {
+          alert(resp.error_message);
+        }
+        this.sectionsEditor.removeClass('xSaving');
+      }.bind(this)
+    ));
+
+				// var data = {
+				// 		section: 'null', entry: null, entryNum: null,
+				// 		action: 'DELETE_SECTION',
+				// 		property: '', value: sectionName
+				// 	};
+				// console.log('BertaEditor_Sections.sectionDelete:', data);
+				// new Request.JSON({
+				// 	url: this.options.updateUrl,
+				// 	data: "json=" + JSON.encode(data),
+				// 	onComplete: function(resp) {
+				// 		if(!resp) {
+				// 			alert('Berta says:\n\nServer produced an error while deleting this section! Something went sooooo wrong...');
+				// 		} else if(resp && !resp.error_message) {
+				// 			var element = this.sectionsMenu.getElement('li.xSection-' + resp.real);
+				// 			this.sectionsSortables.removeItems(element);
+				// 			element.destroy();
+				// 		} else {
+				// 			alert(resp.error_message);
+				// 		}
+				// 		this.sectionsEditor.removeClass('xSaving');
+				// 	}.bind(this)
+				// }).post();
 			}
 		}
 	},
@@ -170,11 +190,11 @@ var BertaEditor_Sections = new Class({
 	sectionCreateNew: function(event) {
 		if (event) event.preventDefault();
 		this.sectionsEditor.addClass('xSaving');
-    var site = getQueryParams().site;
+    var site = getCurrentSite();
 
     // redux_store.dispatch(Actions.createSection(
     //   {
-    //     site: site ? site : '0',
+    //     site: site,
     //     name: this.cloneSection,
     //     title: this.cloneSectionTitle
     //   },
