@@ -160,29 +160,6 @@ var BertaEditor_Sections = new Class({
         this.sectionsEditor.removeClass('xSaving');
       }.bind(this)
     ));
-
-				// var data = {
-				// 		section: 'null', entry: null, entryNum: null,
-				// 		action: 'DELETE_SECTION',
-				// 		property: '', value: sectionName
-				// 	};
-				// console.log('BertaEditor_Sections.sectionDelete:', data);
-				// new Request.JSON({
-				// 	url: this.options.updateUrl,
-				// 	data: "json=" + JSON.encode(data),
-				// 	onComplete: function(resp) {
-				// 		if(!resp) {
-				// 			alert('Berta says:\n\nServer produced an error while deleting this section! Something went sooooo wrong...');
-				// 		} else if(resp && !resp.error_message) {
-				// 			var element = this.sectionsMenu.getElement('li.xSection-' + resp.real);
-				// 			this.sectionsSortables.removeItems(element);
-				// 			element.destroy();
-				// 		} else {
-				// 			alert(resp.error_message);
-				// 		}
-				// 		this.sectionsEditor.removeClass('xSaving');
-				// 	}.bind(this)
-				// }).post();
 			}
 		}
 	},
