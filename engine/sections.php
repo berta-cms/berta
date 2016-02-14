@@ -136,5 +136,8 @@ $site = empty($options['MULTISITE']) ? '0' : $options['MULTISITE'];
         </div>
     </div>
     <?php echo BertaEditor::intercomScript() ?>
+    <div id="templateList">
+        <?php include $options['ENGINE_ROOT'] . 'js/ng/templates/sections.html'; ?>
+    </div>
 </body>
 </html>

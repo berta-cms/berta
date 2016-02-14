@@ -20,4 +20,31 @@
     return q.site === undefined ?  '0' : q.site;
   };
 
+  window.Templates = {
+    templates: {},
+
+    loadTemplates: function() {
+      var templateList = document.getElementById('templateList');
+
+      if (templateList) {
+        var templates = templateList.querySelectorAll('script');
+        templates.forEach(function(template, index){
+          if(template.getAttribute('type') === 'text/template'){
+            this.templates[template.getAttribute('id')] = template.innerHtml;
+          }
+        }.bind(this));
+      }
+    },
+
+    // Get template by name from hash of preloaded templates
+    get: function(name) {
+      return this.templates[name];
+    }
+  };
+
+  String.prototype.replaceTokens = function replaceTokens(replacement) {
+    return this.replace(/<\%=([^%>]+)\%>/g, function(str, match) {
+      return replacement[match];
+    });
+  }
 })(window, document);
