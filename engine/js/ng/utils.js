@@ -25,8 +25,7 @@
       };
 
   Templates.load = function load() {
-    var self = this,
-        templateList = document.getElementById('templateList');
+    var templateList = document.getElementById('templateList');
 
     if (templateList) {
       var templates = Array.prototype.slice.call(

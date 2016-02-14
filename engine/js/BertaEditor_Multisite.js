@@ -181,13 +181,14 @@ var BertaEditor_Multisite = new Class({
         if(!resp) {
           alert('Berta says:\n\nServer produced an error while adding new site! Something went sooooo wrong...');
         } else if(resp && !resp.error_message) {
-          var html = '<div class="csHandle"><span class="handle"></span></div>' +
-                     '<div class="csTitle"><span class="xEditable xProperty-title xNoHTMLEntities xSite-' + resp.name + '" data-path="site/' + resp.idx + '/title">' +
-                     '<span class="xEmpty">&nbsp;title&nbsp;</span></span></div>' +
-                     '<div class="csName">' + location.protocol + '//' + location.host + '/<span class="xEditable xProperty-name xNoHTMLEntities xSite-' + resp.name + '" data-path="site/' + resp.idx + '/name">' + resp.name + '</span></div>' +
-                     '<div class="csPub"><span class="xEditableYesNo xProperty-published xSite-' + resp.name + '" data-path="site/' + resp.idx + '/@attributes/published">0</span></div>' +
-                     '<div class="csClone"><a href="#" class="xSiteClone">clone</a></div>' +
-                     '<div class="csDelete"><a href="#" class="xSiteDelete">delete</a></div>';
+          var html = Templates.get(
+                'multisite',
+                {
+                  name: resp.name,
+                  idx: resp.idx,
+                  address: location.protocol + '//' + location.host
+                }
+              );
           var li = new Element('li', { 'class': 'xSite-'+resp.name, 'html': html }).inject(this.sitesMenu);
           this.sitesSortables.addItems(li);
           this.editablesInit();
