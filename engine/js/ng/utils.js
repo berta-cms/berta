@@ -42,17 +42,15 @@
     }
   }.bind(Templates);
 
-  Templates.get = function get(name) {
-    return this.templates[name];
+  Templates.get = function get(name, ctx) {
+    var tpl = this.templates[name];
+
+    return tpl.replace(/<\%=([^%>]+)\%>/g, function(str, match) {
+      return ctx[match];
+    });
   }.bind(Templates);
 
   window.Templates = Templates;
-
-  String.prototype.replaceTokens = function replaceTokens(replacement) {
-    return this.replace(/<\%=([^%>]+)\%>/g, function(str, match) {
-      return replacement[match];
-    });
-  };
 
   window.domReady = function(callback) {
     var ready = false,
