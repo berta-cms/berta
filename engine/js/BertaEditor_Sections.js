@@ -169,57 +169,55 @@ var BertaEditor_Sections = new Class({
 		this.sectionsEditor.addClass('xSaving');
     var site = getCurrentSite();
 
-    // redux_store.dispatch(Actions.createSection(
-    //   {
-    //     site: site,
-    //     name: this.cloneSection,
-    //     title: this.cloneSectionTitle
-    //   },
-    //   // @@@:TODO: Remove this callback, when migration to ReactJS is complete
-    //   function(resp) {
-    //     if(!resp) {
-    //       alert('Berta says:\n\nServer produced an error while adding new section! Something went sooooo wrong...');
-    //     } else if(resp && !resp.error_message) {
-    //       var li = new Element('li', { 'class': 'xSection-'+resp.real, 'html': resp.update }).inject(this.sectionsMenu);
-    //       this.sectionsSortables.addItems(li);
-    //       this.editablesInit();
-    //       li.getElement('a.xSectionClone').addEvent('click', this.sectionOnCloneClick.bindWithEvent(this));
-    //       li.getElement('a.xSectionDelete').addEvent('click', this.sectionOnDeleteClick.bindWithEvent(this));
-    //     } else {
-    //       alert(resp.error_message);
-    //     }
-    //     this.sectionsEditor.removeClass('xSaving');
-    //   }.bind(this)
-    // ));
+    redux_store.dispatch(Actions.createSection(
+      site,
+      this.cloneSection,
+      this.cloneSectionTitle,
+      // @@@:TODO: Remove this callback, when migration to ReactJS is complete
+      function(resp) {
+        if(!resp) {
+          alert('Berta says:\n\nServer produced an error while adding new section! Something went sooooo wrong...');
+        } else if(resp && !resp.error_message) {
+          var li = new Element('li', { 'class': 'xSection-'+resp.real, 'html': resp.update }).inject(this.sectionsMenu);
+          this.sectionsSortables.addItems(li);
+          this.editablesInit();
+          li.getElement('a.xSectionClone').addEvent('click', this.sectionOnCloneClick.bindWithEvent(this));
+          li.getElement('a.xSectionDelete').addEvent('click', this.sectionOnDeleteClick.bindWithEvent(this));
+        } else {
+          alert(resp.error_message);
+        }
+        this.sectionsEditor.removeClass('xSaving');
+      }.bind(this)
+    ));
 
-		var data = {
-				section: 'null',
-				entry: null,
-				entryNum: null,
-				action: 'CREATE_NEW_SECTION',
-				property: '', value: '',
-				cloneSection: this.cloneSection,
-				cloneSectionTitle: this.cloneSectionTitle
-			};
-		console.log('BertaEditor_Sections.sectionCreateNew:', data);
-		new Request.JSON({
-			url: this.options.updateUrl,
-			data: "json=" + JSON.encode(data),
-			onComplete: function(resp) {
-				if(!resp) {
-					alert('Berta says:\n\nServer produced an error while adding new section! Something went sooooo wrong...');
-				} else if(resp && !resp.error_message) {
-					var li = new Element('li', { 'class': 'xSection-'+resp.real, 'html': resp.update }).inject(this.sectionsMenu);
-					this.sectionsSortables.addItems(li);
-					this.editablesInit();
-					li.getElement('a.xSectionClone').addEvent('click', this.sectionOnCloneClick.bindWithEvent(this));
-					li.getElement('a.xSectionDelete').addEvent('click', this.sectionOnDeleteClick.bindWithEvent(this));
-				} else {
-					alert(resp.error_message);
-				}
-				this.sectionsEditor.removeClass('xSaving');
-			}.bind(this)
-		}).post();
+		// var data = {
+		// 		section: 'null',
+		// 		entry: null,
+		// 		entryNum: null,
+		// 		action: 'CREATE_NEW_SECTION',
+		// 		property: '', value: '',
+		// 		cloneSection: this.cloneSection,
+		// 		cloneSectionTitle: this.cloneSectionTitle
+		// 	};
+		// console.log('BertaEditor_Sections.sectionCreateNew:', data);
+		// new Request.JSON({
+		// 	url: this.options.updateUrl,
+		// 	data: "json=" + JSON.encode(data),
+		// 	onComplete: function(resp) {
+		// 		if(!resp) {
+		// 			alert('Berta says:\n\nServer produced an error while adding new section! Something went sooooo wrong...');
+		// 		} else if(resp && !resp.error_message) {
+		// 			var li = new Element('li', { 'class': 'xSection-'+resp.real, 'html': resp.update }).inject(this.sectionsMenu);
+		// 			this.sectionsSortables.addItems(li);
+		// 			this.editablesInit();
+		// 			li.getElement('a.xSectionClone').addEvent('click', this.sectionOnCloneClick.bindWithEvent(this));
+		// 			li.getElement('a.xSectionDelete').addEvent('click', this.sectionOnDeleteClick.bindWithEvent(this));
+		// 		} else {
+		// 			alert(resp.error_message);
+		// 		}
+		// 		this.sectionsEditor.removeClass('xSaving');
+		// 	}.bind(this)
+		// }).post();
 	},
 
 	sectionOnCloneClick: function(event) {

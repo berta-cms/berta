@@ -4,7 +4,7 @@
   window.Actions = window.Actions || {};
 
   Object.assign(window.Actions, {
-    createSection: function(section, onComplete) {
+    createSection: function(site, name, title, onComplete) {
       return {
         type: ActionTypes.CREATE_SECTION,
         meta: {
@@ -14,14 +14,18 @@
           dispatch: 'sectionCreated',
           // @@@:TODO: Remove this callback when migration to ReactJS is completed
           onComplete: onComplete,
-          data: section
+          data: {
+            site: site,
+            name: name,
+            title: title
+          }
         }
       };
     },
-    sectionCreated: function(section) {
+    sectionCreated: function(resp) {
       return {
         type: ActionTypes.SECTION_CREATED,
-        section: section
+        resp: resp
       };
     },
     deleteSection: function(site, section, onComplete) {

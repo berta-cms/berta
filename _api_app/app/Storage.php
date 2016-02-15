@@ -73,6 +73,7 @@ class Storage {
         $xml->formatOutput = true;
         $xml->appendChild($this->array2xml($xml, $root, $arr));
         $xml->save($xml_file);
+        @chmod($xml_file, 0666);
     }
 
     /**

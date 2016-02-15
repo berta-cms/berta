@@ -27,29 +27,38 @@ class Sections Extends Storage {
         return $this->SECTIONS;
     }
 
-    public function create($cloneFrom=null) {
-        // $sites = $this->getSites();
-        // $name = 'untitled-' . uniqid();
-        // $dir = $this->XML_SITES_ROOT . '/' . $name;
+    public function create($name=null, $title=null) {
+        if ($name !== null) {
+            $sections = $this->get();
+            $clone_idx = array_search($name, array_column($sections['section'], 'name'));
 
-        // @mkdir($dir, 0777);
+            if ($clone_idx === false) {
+                return array('error_message' => 'Section "'.$name.'" not found!');
+            }
 
-        // if ($cloneFrom != null) {
-        //     $src = $cloneFrom == '0' ? $this->XML_MAIN_ROOT : $this->XML_SITES_ROOT . '/' . $cloneFrom;
-        //     $this->copyFolder($src, $dir);
-        // }
+            $entries = new Entries($this->SITE, 'clone-of-'.$name, 'clone of '.$title);
+            $section = $entries->create($name, $title, true);
 
-        // $site = array(
-        //     'name' => $name,
-        //     'title' => '',
-        //     '@attributes' => array('published' => 0)
-        // );
-        // $sites['site'][] = $site;
+            $clone = $sections['section'][$clone_idx];
+            $clone['name'] = $section['name'];
+            $clone['title'] = $section['title'];
+            unset($clone['positionXY']);
+            $sections['section'][] = $clone;
+        } else {
+            $entries = new Entries($this->SITE, 'untitled' . uniqid(), $title);
+            $section = $entries->create();
 
-        // $this->array2xmlFile($sites, $this->XML_FILE, $this->ROOT_ELEMENT);
-        // $site['idx'] = count($sites['site']) - 1;
+            $sections['section'][] = array(
+                '@attributes' => array('tags_behavior' => 'invisible', 'published'=>1),
+                'name' => $section['name'],
+                'title' => array('value' => '')
+            );
+        }
 
-        // return $site;
+        $this->array2xmlFile($sections, $this->XML_FILE, $this->ROOT_ELEMENT);
+        $clone['idx'] = count($sections['section']) - 1;
+
+        return $clone;
     }
 
     /**
