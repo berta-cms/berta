@@ -34,7 +34,7 @@ class Entries Extends Storage {
         return $this->ENTRIES;
     }
 
-    public function create($name, $title, $cloneSection=false) {
+    public function create($name=null) {
         while (file_exists($this->XML_FILE)) {
             if (preg_match('/(?P<name>.*)-(?P<digit>\d+)$/', $this->SECTION_NAME, $matches)) {
                 $this->SECTION_NAME = $matches['name'] . '-' . ((int)$matches['digit'] + 1);
@@ -47,7 +47,7 @@ class Entries Extends Storage {
             $this->XML_FILE = $this->XML_ROOT . '/blog.' . $this->SECTION_NAME . '.xml';
         }
 
-        if ($cloneSection === false) {
+        if ($name === null) {
             $blog = array();
         } else {
             $entries = new Entries($this->SITE, $name);

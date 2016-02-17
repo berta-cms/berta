@@ -38,7 +38,7 @@ class Sections Extends Storage {
             }
 
             $entries = new Entries($this->SITE, 'clone-of-'.$name, 'clone of '.$title);
-            $section_entries = $entries->create($name, $title, true);
+            $section_entries = $entries->create($name);
 
             $section = $sections['section'][$section_idx];
             $section['name'] = $section_entries['name'];

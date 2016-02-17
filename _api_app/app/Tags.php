@@ -37,10 +37,9 @@ class Tags Extends Storage {
 
         $newCache = array();
         $allHaveTags = true;
+        $section_entry_count = 0;
 
         if (isset($blog['entry']) && !empty($blog['entry'])) {
-            $section_entry_count = 0;
-
             foreach($blog['entry'] as $key => $entry) {
                 if($key === '@attributes') { continue; }
 
