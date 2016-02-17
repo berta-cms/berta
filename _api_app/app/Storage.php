@@ -26,6 +26,20 @@ class Storage {
      ************************************************************/
 
     /**
+    */
+    protected function asList($val) {
+        if (is_array($val)){
+            if (array_values($val) !== $val) {
+                return array(0 => $val);
+            }
+        } else {
+            return array(0 => $val);
+        }
+
+        return $val;
+    }
+
+    /**
     * Sets a value in array by key path
     *
     * @param array $array Array where to set the value
@@ -90,7 +104,7 @@ class Storage {
             $parsed = $xml->loadXML($xml_str);
 
             if(!$parsed) {
-                throw new Exception('Error parsing the XML string!');
+                throw new \Exception('Error parsing the XML string!');
             }
 
             return $this->xml2array($xml->documentElement);
@@ -265,7 +279,7 @@ class Storage {
             if(isset($arr['@attributes'])) {
                 foreach($arr['@attributes'] as $key => $value) {
                     if(!$this->isValidTagName($key)) {
-                        throw new Exception('Illegal character in attribute name. attribute: '.$key.' in node: '.$node_name);
+                        throw new \Exception('Illegal character in attribute name. attribute: '.$key.' in node: '.$node_name);
                     }
 
                     $node->setAttribute($key, $value);
@@ -290,7 +304,7 @@ class Storage {
             // recurse to get the node for that key
             foreach($arr as $key=>$value){
                 if(!$this->isValidTagName($key)) {
-                    throw new Exception('Illegal character in tag name. tag: '.$key.' in node: '.$node_name);
+                    throw new \Exception('Illegal character in tag name. tag: '.$key.' in node: '.$node_name);
                 }
 
                 if(is_array($value) && is_numeric(key($value))) {
@@ -347,13 +361,13 @@ class Storage {
                         $grandchildren = $child->childNodes;
 
                         // @@@:TODO: Would be nice to rewrite $is_leaf[$tag_name] = ... in a more readable form
-                        $is_leaf[$tag_name] = (
-                            $child->childNodes->length < 2 &&
-                            (
-                                $grandchildren->length == 1 ? !isset($grandchildren->item[0]->tagName) : true ||
-                                $grandchildren->length == 0
-                            )
-                        );
+                        // $is_leaf[$tag_name] = (
+                        //     $child->childNodes->length < 2 &&
+                        //     (
+                        //         $grandchildren->length == 1 ? !isset($grandchildren->item[0]->tagName) : true ||
+                        //         $grandchildren->length == 0
+                        //     )
+                        // );
 
                         // assume more nodes of same kind are coming
                         if(!isset($output[$tag_name])) {
@@ -372,7 +386,7 @@ class Storage {
                 if(is_array($output)) {
                     // if only one node of its kind and is leaf node, assign it directly instead if array($value);
                     foreach ($output as $tag => $val) {
-                        if(is_array($val) && count($val)==1 && $is_leaf[$tag]) {
+                        if(is_array($val) && count($val)==1) {
                             $output[$tag] = $val[0];
                         }
                     }

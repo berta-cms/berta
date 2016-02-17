@@ -84,7 +84,7 @@ class Sites Extends Storage {
                 return $ret;
             }
 
-            $value = $this->slugify($value);
+            $value = $this->slugify($value, '-', '-');
             $new_root = $this->XML_SITES_ROOT . '/' . $value;
 
             if(file_exists($new_root)) {

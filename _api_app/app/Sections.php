@@ -28,37 +28,51 @@ class Sections Extends Storage {
     }
 
     public function create($name=null, $title=null) {
-        if ($name !== null) {
-            $sections = $this->get();
-            $clone_idx = array_search($name, array_column($sections['section'], 'name'));
+        $sections = $this->get();
 
-            if ($clone_idx === false) {
+        if ($name !== null) {
+            $section_idx = array_search($name, array_column($sections['section'], 'name'));
+
+            if ($section_idx === false) {
                 return array('error_message' => 'Section "'.$name.'" not found!');
             }
 
             $entries = new Entries($this->SITE, 'clone-of-'.$name, 'clone of '.$title);
-            $section = $entries->create($name, $title, true);
+            $section_entries = $entries->create($name, $title, true);
 
-            $clone = $sections['section'][$clone_idx];
-            $clone['name'] = $section['name'];
-            $clone['title'] = $section['title'];
-            unset($clone['positionXY']);
-            $sections['section'][] = $clone;
+            $section = $sections['section'][$section_idx];
+            $section['name'] = $section_entries['name'];
+            $section['title'] = $section_entries['title'];
+            unset($section['positionXY']);
+            $section_idx = count($sections);
+            $sections['section'][] = $section;
         } else {
+            $section_idx = count($sections);
             $entries = new Entries($this->SITE, 'untitled' . uniqid(), $title);
-            $section = $entries->create();
+            $section_entries = $entries->create();
 
-            $sections['section'][] = array(
+            $section = array(
                 '@attributes' => array('tags_behavior' => 'invisible', 'published'=>1),
-                'name' => $section['name'],
+                'name' => $section_entries['name'],
                 'title' => array('value' => '')
             );
+            $sections['section'][] = $section;
         }
 
-        $this->array2xmlFile($sections, $this->XML_FILE, $this->ROOT_ELEMENT);
-        $clone['idx'] = count($sections['section']) - 1;
+        $tags = new Tags($this->SITE, $section['name']);
+        $section_tags = $tags->populateTags();
+        $allHaveTags = $section_tags['allHaveTags'];
 
-        return $clone;
+        // update direct content property
+        $sections['section'][$section_idx]['@attributes']['has_direct_content'] = !$allHaveTags ? '1' : '0';
+
+        $this->array2xmlFile($sections, $this->XML_FILE, $this->ROOT_ELEMENT);
+
+        return array(
+            'section' => $section,
+            'entries' => $section_entries['entries'],
+            'tags' => $section_tags['tags']
+        );
     }
 
     /**

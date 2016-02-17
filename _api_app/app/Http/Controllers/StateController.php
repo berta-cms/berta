@@ -15,7 +15,6 @@ class StateController extends Controller
         $sites = new Sites();
         $siteSettings = new SiteSettings();
         $templateSettings = new TemplateSettings();
-        $tags = new Tags();
 
         $state = $sites->get();
         $state['site_settings'] = array();
@@ -38,11 +37,13 @@ class StateController extends Controller
                 }
             }
 
-            $state['tags'][$site_name] = $tags->getTagsBySite($site_name);
+            $tags = new Tags($site_name);
+            $state['tags'][$site_name] = $tags->get();
             unset($sections);
+            unset($tags);
         }
 
-        $lang = $state['site_settings'][$site]['language'][0]['language'];
+        $lang = $state['site_settings'][$site]['language']['language'];
         $state['template_settings'] = $templateSettings->get($lang);
         unset($sites);
 

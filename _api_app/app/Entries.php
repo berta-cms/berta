@@ -77,9 +77,11 @@ class Entries Extends Storage {
         }
 
         $this->array2xmlFile($blog, $this->XML_FILE, $this->ROOT_ELEMENT);
+
         return array(
             'name' => $this->SECTION_NAME,
-            'title' => $this->SECTION_TITLE
+            'title' => $this->SECTION_TITLE,
+            'entries' => $blog
         );
     }
 
