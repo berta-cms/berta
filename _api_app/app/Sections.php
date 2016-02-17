@@ -44,6 +44,21 @@ class Sections Extends Storage {
             $section['name'] = $section_entries['name'];
             $section['title'] = $section_entries['title'];
             unset($section['positionXY']);
+
+            // copy mediafolder
+            if (isset($section['mediafolder'])) {
+                $section['mediafolder'] =str_replace(
+                    $name,
+                    $section_entries['name'],
+                    $section['mediafolder']
+                );
+
+                $this->copyFolder(
+                    realpath($this->MEDIA_ROOT) .'/'. $sections['section'][$section_idx]['mediafolder'],
+                    realpath($this->MEDIA_ROOT) .'/'. $section['mediafolder']
+                );
+            }
+
             $section_idx = count($sections);
             $sections['section'][] = $section;
         } else {
