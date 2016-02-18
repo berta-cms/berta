@@ -46,7 +46,7 @@ var BertaEditor_Multisite = new Class({
 
 	editablesInit: function(inElement) {	// instantiate all xEditable elements in the page
 		var f = inElement ? $(inElement).getElements.bind($(inElement)) : $$;
-
+    console.log('BertaEditor_Multisite.editablesInit:', f(this.options.xBertaEditorClassSimple));
 		// simple text fields ///////////////////////////////////////////////////////////////////////////////////////////////////////
 		f(this.options.xBertaEditorClassSimple).each(function(el) { this.elementEdit_init(el, this.options.xBertaEditorClassSimple, this.siteOnSave.bind(this)) }.bind(this));
 
@@ -91,6 +91,15 @@ var BertaEditor_Multisite = new Class({
 	},
 
 	siteOnSave: function(el, returnUpdate, returnReal, returnError, returnParams) {
+    var args = arguments;
+    var params = ['el', 'returnUpdate', 'returnReal', 'returnError', 'returnParams'];
+    console.log(
+      'BertaEditor_Multisite.siteOnSave ARGS:',
+      params.reduce(function(prevVal, currVal, currIdx, origArr) {
+        prevVal[params[currIdx]] = args[currIdx];
+        return prevVal;
+      }, {})
+    );
 		// update the properties of the site list item and title editable
 		var prop = el.getClassStoredValue('xProperty');
 		if(prop == 'name') {
@@ -183,11 +192,11 @@ var BertaEditor_Multisite = new Class({
         } else if(resp && !resp.error_message) {
           var html = Templates.get(
                 'multisite',
-                {
+                Object.assign({}, editables, {
                   name: resp.name,
                   idx: resp.idx,
                   address: location.protocol + '//' + location.host
-                }
+                })
               );
           var li = new Element('li', { 'class': 'xSite-'+resp.name, 'html': html }).inject(this.sitesMenu);
           this.sitesSortables.addItems(li);
