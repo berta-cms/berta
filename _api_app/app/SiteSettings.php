@@ -3,6 +3,8 @@
 namespace App;
 
 class SiteSettings Extends Storage {
+    private $XML_FILE;
+
     /**
     * Returns all settings of a given site as an array
     *

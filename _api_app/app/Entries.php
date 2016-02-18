@@ -8,6 +8,7 @@ class Entries Extends Storage {
     private $SECTION_TITLE;
     private $ENTRIES = array();
     private $XML_ROOT;
+    private $XML_FILE;
 
     public function __construct($site='', $sectionName='', $sectionTitle='') {
         parent::__construct($site);

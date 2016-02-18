@@ -7,6 +7,7 @@ use App\Entries;
 class Sections Extends Storage {
     private $ROOT_ELEMENT = 'sections';
     private $SECTIONS = array();
+    private $XML_FILE;
 
     public function __construct($site='') {
         parent::__construct($site);
@@ -84,6 +85,7 @@ class Sections Extends Storage {
         $this->array2xmlFile($sections, $this->XML_FILE, $this->ROOT_ELEMENT);
 
         return array(
+            'idx' => $section_idx,
             'section' => $section,
             'entries' => $section_entries['entries'],
             'tags' => $section_tags['tags']

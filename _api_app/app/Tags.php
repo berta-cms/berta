@@ -8,6 +8,7 @@ class Tags Extends Storage {
     private $ROOT_ELEMENT = 'sections';
     private $SECTION_NAME;
     private $XML_ROOT;
+    private $XML_FILE;
 
     public function __construct($site='', $sectionName='') {
         parent::__construct($site);
@@ -87,7 +88,7 @@ class Tags Extends Storage {
         $tempCache = array();
 
         if ($section_idx !== false) {
-            foreach ($tags[$this->SITE]['section'][$section_idx]['tag'] as $tag) {
+            foreach ($tags['section'][$section_idx]['tag'] as $tag) {
                 $tag_name = $tag['@attributes']['name'];
                 if (isset($newCache[$tag_name])){
                     $tempCache[$tag_name] = $newCache[$tag_name];

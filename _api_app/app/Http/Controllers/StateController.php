@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Sites;
 use App\SiteSettings;
+use App\SiteTemplateSettings;
 use App\TemplateSettings;
 use App\Sections;
 use App\Entries;
@@ -25,8 +26,17 @@ class StateController extends Controller
         foreach($state['site'] as $_site) {
             $site_name = $_site['name'] ? $_site['name'] : 0;
             $sections = new Sections($site_name);
-            $state['site_settings'][$site_name] = $siteSettings->getSettingsBySite($site_name);
+            $site_settings = $siteSettings->getSettingsBySite($site_name);
+            $state['site_settings'][$site_name] = $site_settings;
             $state['sections'][$site_name] = $sections->get();
+
+            if (isset($site_settings['template'])) {
+                $site_template_settings = new SiteTemplateSettings(
+                    $site_name,
+                    $site_settings['template']['template']
+                );
+                $state['site_template_settings'][$site_name] = $site_template_settings->get();
+            }
 
             if (!empty($state['sections'][$site_name])) {
                 foreach($state['sections'][$site_name]['section'] as $section) {
@@ -41,6 +51,10 @@ class StateController extends Controller
             $state['tags'][$site_name] = $tags->get();
             unset($sections);
             unset($tags);
+
+            if (isset($site_template_settings)){
+                unset($site_template_settings);
+            }
         }
 
         $lang = $state['site_settings'][$site]['language']['language'];
