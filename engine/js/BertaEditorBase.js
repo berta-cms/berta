@@ -869,7 +869,7 @@ var BertaEditorBase = new Class({
       var path_arr = [];
       var value = newContent ? this.escapeForJSON(newContent) : null;
 
-      if (path) {
+      if (path && path.split('/')[1] !== 'section') {
         path_arr = path.split('/');
 
         if (path_arr[0] === 'site') {
@@ -1250,6 +1250,74 @@ var BertaEditorBase = new Class({
     retString = el.getClassStoredValue('xSection') ? el.getClassStoredValue('xSection') : null;
 
     return retString;
+  },
+
+  getTypeHTML: function(site, section_idx, section, settings, type_params, params) {
+    var basePath = site + '/section/' + section_idx + '/';
+    var params, html = '';
+
+    if (type_params) {
+      //remove responsive section settings if needed
+      if (settings['pageLayout']['responsive'] !== 'yes') {
+          if (type_params.columns) { delete type_params.columns; }
+          if (type_params.entryMaxWidth) { delete type_params.entryMaxWidth; }
+          if (type_params.entryPadding) { delete type_params.entryPadding };
+      }
+
+      params = Object.getOwnPropertyNames(type_params);
+      params.forEach(function(param_name) {
+        var param = type_params[param_name];
+        var values= [];
+        var ctx = {
+              html_before: param.html_before ? param.html_before : '',
+              format: formats[param.format] ? formats[param.format] : '',
+              property: param_name,
+              html_entities: param.html_entities ? '' : 'xNoHTMLEntities',
+              css_units: param.css_units ? '1' : '0',
+              link: param.link ? 'xLink' : '',
+              allow_blank: 'xRequired-' + (param.allow_blank ? '0': '1'),
+              validation: param.validator ? ('xValidator-' + param.validator) : '',
+              additional_params: params ? params : '',
+              title: escapeHTML(param.default),
+              path: basePath + param_name,
+              x_options: '',
+              value: section[param_name] ? section[param_name] : '',
+              html_after: param.html_after ? param.html_after : ''
+            };
+
+        ctx.value = (ctx.value &&
+                     settings[param_name] &&
+                     settings[param_name].default) ? settings[param_name].default : ctx.value;
+
+        if (param.format === 'select' || param.format === 'fontselect') {
+          if (param.values === 'templates') {
+            values = getAllTemplates();
+          } else {
+            if (!Array.isArray(param.values)) {
+              Object.getOwnPropertyNames(param.values).forEach(function(value_name) {
+                values.push(value_name + '|' + param.values[value_name]);
+
+                if (value_name === param_name) {
+                  ctx.value = param.values[value_name];
+                }
+              });
+            } else {
+              values = param.values;
+
+              if (values[ctx.value] && !(parseInt(ctx.value, 10) > 0)) {
+                ctx.value = param.values[value_name];
+              }
+            }
+          }
+
+          ctx.x_options = escapeHTML(values.join('||'));
+        }
+
+        html += Templates.get('type_params', Object.assign({}, editables, ctx));
+      });
+    }
+
+    return html;
   }
 });
 

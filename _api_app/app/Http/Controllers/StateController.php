@@ -31,11 +31,12 @@ class StateController extends Controller
             $state['sections'][$site_name] = $sections->get();
 
             if (isset($site_settings['template'])) {
+                $template = $site_settings['template']['template'];
                 $site_template_settings = new SiteTemplateSettings(
                     $site_name,
-                    $site_settings['template']['template']
+                    $template
                 );
-                $state['site_template_settings'][$site_name] = $site_template_settings->get();
+                $state['site_template_settings'][$site_name][$template] = $site_template_settings->get();
             }
 
             if (!empty($state['sections'][$site_name])) {

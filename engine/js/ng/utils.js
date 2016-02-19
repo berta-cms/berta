@@ -20,6 +20,19 @@
     return q.site === undefined ?  '0' : q.site;
   };
 
+  window.escapeHTML = function escapeHTML(str) {
+    var div = document.createElement('div');
+    var text = document.createTextNode(str);
+    div.appendChild(text);
+    return div.innerHTML;
+  };
+
+  window.getAllTemplates = function getAllTemplates() {
+    var templates = redux_store.getState().template_settings.toJSON();
+
+    return Object.getOwnPropertyNames(templates);
+  };
+
   var Templates = {
         templates: {}
       };

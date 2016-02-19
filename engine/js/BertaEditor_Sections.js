@@ -178,7 +178,41 @@ var BertaEditor_Sections = new Class({
         if(!resp) {
           alert('Berta says:\n\nServer produced an error while adding new section! Something went sooooo wrong...');
         } else if(resp && !resp.error_message) {
-          var li = new Element('li', { 'class': 'xSection-'+resp.real, 'html': resp.update }).inject(this.sectionsMenu);
+          var state = redux_store.getState();
+          var template = state.site_settings.toJSON()[site].template.template;
+          var sectionTypes = state.template_settings
+                .toJSON()[template]
+                .sectionTypes;
+          var type = resp.section['@attributes'].type ? resp.section['@attributes'].type : 'default';
+          var type_value = sectionTypes[type].title;
+          var type_params = sectionTypes[type].params;
+          var possible_types = Object
+                .getOwnPropertyNames(sectionTypes)
+                .map(function(_type) {
+                  return _type + '|' + sectionTypes[_type].title;
+                }).join('||');
+          var type_html = this.getTypeHTML(
+                site,
+                resp.idx,
+                resp.section,
+                state.site_template_settings.toJSON()[site][template],
+                type_params,
+                'xSection-' + resp.section['name'] + ' xSectionField'
+              );
+          var html = Templates.get(
+                'section',
+                Object.assign({}, editables, {
+                  name: resp.section.name,
+                  site: site,
+                  idx: resp.idx,
+                  title: resp.section.title,
+                  possible_types: possible_types,
+                  type_value: type_value,
+                  type_html: type_html,
+                  published: resp.section['@attributes'].published
+                })
+              );
+          var li = new Element('li', { 'class': 'xSection-'+resp.section.name, 'html': html }).inject(this.sectionsMenu);
           this.sectionsSortables.addItems(li);
           this.editablesInit();
           li.getElement('a.xSectionClone').addEvent('click', this.sectionOnCloneClick.bindWithEvent(this));
@@ -189,35 +223,6 @@ var BertaEditor_Sections = new Class({
         this.sectionsEditor.removeClass('xSaving');
       }.bind(this)
     ));
-
-		// var data = {
-		// 		section: 'null',
-		// 		entry: null,
-		// 		entryNum: null,
-		// 		action: 'CREATE_NEW_SECTION',
-		// 		property: '', value: '',
-		// 		cloneSection: this.cloneSection,
-		// 		cloneSectionTitle: this.cloneSectionTitle
-		// 	};
-		// console.log('BertaEditor_Sections.sectionCreateNew:', data);
-		// new Request.JSON({
-		// 	url: this.options.updateUrl,
-		// 	data: "json=" + JSON.encode(data),
-		// 	onComplete: function(resp) {
-		// 		if(!resp) {
-		// 			alert('Berta says:\n\nServer produced an error while adding new section! Something went sooooo wrong...');
-		// 		} else if(resp && !resp.error_message) {
-		// 			var li = new Element('li', { 'class': 'xSection-'+resp.real, 'html': resp.update }).inject(this.sectionsMenu);
-		// 			this.sectionsSortables.addItems(li);
-		// 			this.editablesInit();
-		// 			li.getElement('a.xSectionClone').addEvent('click', this.sectionOnCloneClick.bindWithEvent(this));
-		// 			li.getElement('a.xSectionDelete').addEvent('click', this.sectionOnDeleteClick.bindWithEvent(this));
-		// 		} else {
-		// 			alert(resp.error_message);
-		// 		}
-		// 		this.sectionsEditor.removeClass('xSaving');
-		// 	}.bind(this)
-		// }).post();
 	},
 
 	sectionOnCloneClick: function(event) {

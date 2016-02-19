@@ -19,4 +19,15 @@
     xEmpty: 'xEmpty'
   };
 
+  window.formats = {
+    text: editables.xEditable,
+    longtext: editables.xEditableTA,
+    richtext: editables.xEditableMCESimple,
+    color: editables.xEditableColor,
+    image: editables.xEditableImage,
+    icon: editables.xEditableICO,
+    select: editables.xEditableSelectRC,
+    fontselect: editables.xEditableFontSelect
+  };
+
 })(window, document);
