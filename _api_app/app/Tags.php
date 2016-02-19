@@ -122,7 +122,7 @@ class Tags Extends Storage {
             $new_tags = array_values($tempCache);
             $tags['section'][$section_idx]['tag'] = $new_tags;
         } else {
-            $section_idx = count($tags);
+            $section_idx = count($tags['section']);
             $new_tags = array(
                 'tag' => array_values($tempCache),
                 '@attributes' => array(
@@ -136,7 +136,7 @@ class Tags Extends Storage {
         $this->array2xmlFile($tags, $this->XML_FILE, $this->ROOT_ELEMENT);
 
         return array(
-            'tags' => $new_tags,
+            'tags' => $tags['section'][$section_idx],
             'allHaveTags' => $allHaveTags
         );
     }

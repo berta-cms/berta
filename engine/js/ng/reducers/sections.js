@@ -16,6 +16,15 @@
           console.log(action);
           return Immutable.fromJS(action.state.sections);
 
+        case ActionTypes.SECTION_CREATED:
+          console.log(action);
+          sections = state.getIn([action.resp.site, 'section']).toJSON();
+          sections.push(action.resp.section);
+          return state.setIn(
+            [action.resp.site, 'section'],
+            Immutable.fromJS(sections)
+          );
+
         case ActionTypes.SECTION_DELETED:
           console.log(action);
           sections = state.getIn([action.resp.site, 'section']).toJSON();
@@ -25,7 +34,10 @@
 
           if (section_idx > -1) {
             sections.splice(section_idx, 1);
-            return state.setIn([action.resp.site, 'section'], Immutable.fromJS(sections));
+            return state.setIn(
+              [action.resp.site, 'section'],
+              Immutable.fromJS(sections)
+            );
           }
 
           return state;
@@ -44,7 +56,10 @@
           });
 
           if (sections.length > 0) {
-            return state.setIn([action.site, 'section'], Immutable.fromJS(sections));
+            return state.setIn(
+              [action.site, 'section'],
+              Immutable.fromJS(sections)
+            );
           }
 
           return state;

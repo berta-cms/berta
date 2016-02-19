@@ -89,6 +89,7 @@ class Sections Extends Storage {
         $this->array2xmlFile($sections, $this->XML_FILE, $this->ROOT_ELEMENT);
 
         return array(
+            'site' => $this->SITE,
             'idx' => $section_idx,
             'section' => $section,
             'entries' => $section_entries['entries'],

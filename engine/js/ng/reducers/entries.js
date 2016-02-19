@@ -5,6 +5,7 @@
 
   Object.assign(window.reducers, {
     entries: function(state, action) {
+      var entries = [];
 
       if (state === undefined) {
         state = Immutable.Map();
@@ -14,6 +15,13 @@
         case ActionTypes.SET_STATE:
           console.log(action);
           return Immutable.fromJS(action.state.entries);
+
+        case ActionTypes.SECTION_CREATED:
+          console.log(action);
+          entries = state.getIn([action.resp.site]).toJSON();
+          entries[action.resp.section.name] = {};
+          entries[action.resp.section.name]['entry'] = action.resp.entries.entry;
+          return state.setIn([action.resp.site], Immutable.fromJS(entries));
 
         default:
           return state;
