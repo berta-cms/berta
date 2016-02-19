@@ -34,8 +34,6 @@ var BertaEditor_Seo = new Class({
 	},
 	onDOMReadyDo: function() {
 		this.edittingMode = $$('body')[0].get('x_mode');
-		this.seoEditorInit();
-
 		if($('xNewsTickerContainer')) this.hideNewsTicker();
 	},
 
@@ -50,18 +48,6 @@ var BertaEditor_Seo = new Class({
 		// simple text fields ///////////////////////////////////////////////////////////////////////////////////////////////////////
 		f(this.options.xBertaEditorClassSimple).each(function(el) { this.elementEdit_init(el, this.options.xBertaEditorClassSimple) }.bind(this));
   		f(this.options.xBertaEditorClassTA).each(function(el) { this.elementEdit_init(el, this.options.xBertaEditorClassTA) }.bind(this));
-	},
-
-
-	  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	 ///|  Seo management  |//////////////////////////////////////////////////////////////////////////////////////////////////////
-	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-	seoEditor: null,
-
-	seoEditorInit: function() {
-		this.seoEditor = $('xSeoEditor');
-		this.editablesInit();
 	}
 
 });
