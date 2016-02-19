@@ -75,12 +75,16 @@ class Sections Extends Storage {
             $sections['section'][] = $section;
         }
 
-        $tags = new Tags($this->SITE, $section['name']);
-        $section_tags = $tags->populateTags();
-        $allHaveTags = $section_tags['allHaveTags'];
+        $section_tags = array('tags' => array());
 
-        // update direct content property
-        $sections['section'][$section_idx]['@attributes']['has_direct_content'] = !$allHaveTags ? '1' : '0';
+        if ($name !== null) {
+            $tags = new Tags($this->SITE, $section['name']);
+            $section_tags = $tags->populateTags();
+            $allHaveTags = $section_tags['allHaveTags'];
+
+            // update direct content property
+            $sections['section'][$section_idx]['@attributes']['has_direct_content'] = !$allHaveTags ? '1' : '0';
+        }
 
         $this->array2xmlFile($sections, $this->XML_FILE, $this->ROOT_ELEMENT);
 
