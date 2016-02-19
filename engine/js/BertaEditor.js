@@ -107,6 +107,9 @@ var BertaEditor = new Class({
 
 		switch(this.edittingMode) {
 
+      case 'multipage':
+        break;
+
 			case 'settings':
 
 				this.editablesInit();
