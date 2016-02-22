@@ -876,7 +876,7 @@ var BertaEditorBase = new Class({
           redux_store.dispatch(Actions.updateSite(
             path,
             value,
-            this.onElementEditComplete(elEditor, el)
+            this.onElementEditComplete(elEditor, el, newContent, newContentText)
           ));
         }
       }
@@ -899,13 +899,13 @@ var BertaEditorBase = new Class({
         new Request.JSON({
           url: this.options.updateUrl,
           data: "json=" + JSON.encode(data),
-          onComplete: this.onElementEditComplete(elEditor, el)
+          onComplete: this.onElementEditComplete(elEditor, el, newContent, newContentText)
         }).post();
       }
     }
   },
 
-  onElementEditComplete: function(elEditor, el) {
+  onElementEditComplete: function(elEditor, el, newContent, newContentText) {
     return function(resp, respRaw) {
       var elIsStillInDOM = el ? el.exists() : false;
 
