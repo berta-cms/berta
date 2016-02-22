@@ -29,6 +29,30 @@ class Tags Extends Storage {
 
     /**
     */
+    public function delete() {
+        $tags = $this->get();
+        $tags_idx = array_search(
+            $this->SECTION_NAME,
+            array_column(
+                array_column(
+                    $tags['section'],
+                    '@attributes'
+                ),
+                'name'
+            )
+        );
+
+        if ($tags_idx !== False) {
+            $section_tags = array_splice($tags['section'], $tags_idx, 1);
+            $this->array2xmlFile($tags, $this->XML_FILE, $this->ROOT_ELEMENT);
+            return $section_tags;
+        }
+
+        return array();
+    }
+
+    /**
+    */
     public function populateTags() {
         // @@@:TODO: Maybe it's possibe to write this method
         //           in a shorter and/or more efficient way

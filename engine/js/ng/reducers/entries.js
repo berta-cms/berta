@@ -19,8 +19,13 @@
         case ActionTypes.SECTION_CREATED:
           console.log(action);
           entries = state.getIn([action.resp.site]).toJSON();
-          entries[action.resp.section.name] = {};
-          entries[action.resp.section.name]['entry'] = action.resp.entries.entry;
+          entries[action.resp.section.name] = action.resp.entries;
+          return state.setIn([action.resp.site], Immutable.fromJS(entries));
+
+        case ActionTypes.SECTION_DELETED:
+          console.log(action);
+          entries = state.getIn([action.resp.site]).toJSON();
+          delete entries[action.resp.name];
           return state.setIn([action.resp.site], Immutable.fromJS(entries));
 
         default:

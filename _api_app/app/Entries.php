@@ -49,7 +49,10 @@ class Entries Extends Storage {
         }
 
         if ($name === null) {
-            $blog = array();
+            $blog = array(
+                '@attributes' => array('section' => $this->SECTION_NAME),
+                'entry' => array()
+            );
         } else {
             $entries = new Entries($this->SITE, $name);
             $blog = $entries->get();

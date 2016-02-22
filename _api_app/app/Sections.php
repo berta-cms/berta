@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Entries;
+use App\Tags;
 
 class Sections Extends Storage {
     private $ROOT_ELEMENT = 'sections';
@@ -70,7 +71,7 @@ class Sections Extends Storage {
             $section = array(
                 '@attributes' => array('tags_behavior' => 'invisible', 'published'=>1),
                 'name' => $section_entries['name'],
-                'title' => array('value' => '')
+                'title' => ''
             );
             $sections['section'][] = $section;
         }
@@ -136,6 +137,10 @@ class Sections Extends Storage {
                 }
             }
 
+            // delete tags
+            $tags = new Tags($this->SITE, $name);
+            $section_tags = $tags->delete();
+
             // delete section
             $section = array_splice($sections['section'], $section_idx, 1);
             $this->array2xmlFile($sections, $this->XML_FILE, $this->ROOT_ELEMENT);
@@ -152,9 +157,8 @@ class Sections Extends Storage {
     *
     * @param array $names Array of section names in a new order
     */
-    public function order($site, $names) {
-        $site = $site == '0' ? 0 : $site;
-        $sections = $this->getSectionsBySite($site);
+    public function order($names) {
+        $sections = $this->get();
         $new_order = array();
 
         foreach($names as $section_name) {

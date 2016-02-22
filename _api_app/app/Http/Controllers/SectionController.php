@@ -26,9 +26,9 @@ class SectionController extends Controller
     }
 
     public function order(Request $request) {
-        $sections = new Sections();
         $json = $request->json()->all();
-        $sections->order($json['site'], $json['sections']);
+        $sections = new Sections($json['site']);
+        $sections->order($json['sections']);
         return response()->json($json);
     }
 }
