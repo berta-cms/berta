@@ -1325,7 +1325,7 @@ var BertaEditorBase = new Class({
               html_after: param.html_after ? param.html_after : ''
             };
 
-        ctx.value = (ctx.value &&
+        ctx.value = (!ctx.value &&
                      settings[param_name] &&
                      settings[param_name].default) ? settings[param_name].default : ctx.value;
 
