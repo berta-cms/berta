@@ -99,6 +99,68 @@ class Sections Extends Storage {
     }
 
     /**
+    * Saves a value with a given path and saves the change to XML file
+    *
+    * @param string $path Slash delimited path to the value
+    * @param mixed $value Value to be saved
+    * @return array Array of changed value and/or error messages
+    */
+    public function saveValueByPath($path, $value) {
+        $sections = $this->get();
+        $path_arr = explode('/', $path);
+        $prop = array_pop($path_arr);
+        $section_idx = array_pop($path_arr);
+        $value = trim(urldecode($value));
+        $ret = array(
+            'site' => $this->SITE,
+            'section_idx' => $section_idx,
+            'old_name' => null,
+            'path' => $path,
+            'value' => $value
+        );
+
+        if ($prop === 'title') {
+            $old_name = $sections['section'][$section_idx]['name'];
+            $old_title = $sections['section'][$section_idx]['title'];
+            $new_name = $this->getUniqueSlug($old_name, $value);
+
+            if(empty($value)) {
+                $ret['value'] = $old_title;
+                $ret['error_message'] = 'Section name cannot be empty!';
+                return $ret;
+            }
+
+            $this->setValueByPath(
+                $sections,
+                'section/' . $section_idx . '/name',
+                $new_name
+            );
+
+            $entries = new Entries($this->SITE, $old_name, $old_title);
+            $ret = array_merge($ret, $entries->rename($new_name, $value));
+
+            if (!$ret['success']) {
+                $ret['value'] = $old_title;
+                return $ret;
+            }
+
+            $tags = new Tags($this->SITE, $old_name);
+            $tags->renameSection($new_name);
+        }
+
+        $this->setValueByPath(
+            $sections,
+            'section/' . $section_idx . '/' . $prop,
+            $value
+        );
+        $this->array2xmlFile($sections, $this->XML_FILE, $this->ROOT_ELEMENT);
+
+        $ret['old_name'] = $old_name;
+        $ret['section'] = $sections['section'][$section_idx];
+        return $ret;
+    }
+
+    /**
     */
     public function delete($name) {
         $sections = $this->get();
@@ -173,5 +235,39 @@ class Sections Extends Storage {
             $sections['section'] = $new_order;
             $this->array2xmlFile($sections, $this->XML_FILE, $this->ROOT_ELEMENT);
         }
+    }
+
+    /**
+    */
+    private function getUniqueSlug($old_name, $new_title){
+        $sections = $this->get();
+        $title = trim($new_title);
+
+        if (strlen($title) < 1) {
+            return '';
+        }
+
+        $slug = $this->slugify($new_title, '-', '\._-', true);
+        $slug = $slug ? $slug : '_';
+
+        $names = array_values(array_column($sections['section'], 'name'));
+        $old_title_idx = array_search($old_name, $names);
+        $_ = array_splice($names, $old_title_idx, 1);
+
+        $notUnique = true;
+        $i = 1;
+
+        while ($notUnique) {
+            if (in_array($slug, $names)) {
+                $slug = preg_replace('/(^.*?)+([\-])+([0-9])+$/', '$1', $slug);
+                $slug .= '-' . $i;
+
+                $i++;
+            }else{
+                $notUnique = false;
+            }
+        }
+
+        return $slug;
     }
 }

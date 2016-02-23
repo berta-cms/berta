@@ -18,6 +18,22 @@ class SectionController extends Controller
         return response()->json($section);
     }
 
+    public function update(Request $request) {
+        $json = $request->json()->all();
+        $path_arr = explode('/', $json['path']);
+        $site = $path_arr[0];
+        $sections = new Sections($site);
+        $path_arr = array_slice($path_arr, 1);
+
+        $res = $sections->saveValueByPath($json['path'], $json['value']);
+        // @@@:TODO: Replace this with something sensible, when migration to redux is done
+        $res['update'] = $res['value'];
+        $res['real'] = $res['value'];
+        // @@@:TODO:END
+
+        return response()->json($res);
+    }
+
     public function delete($site, $section) {
         $sections = new Sections($site);
         $res = $sections->delete($section);

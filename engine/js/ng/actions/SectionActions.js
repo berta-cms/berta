@@ -28,6 +28,28 @@
         resp: resp
       };
     },
+    updateSection: function(path, value, onComplete) {
+      return {
+        type: ActionTypes.UPDATE_SECTION,
+        meta: {
+          remote: true,
+          url: API_ROOT + 'update-section',
+          method: 'PATCH',
+          data: {path: path, value: value},
+          dispatch: 'sectionUpdated',
+          // @@@:TODO: Remove this callback when migration to ReactJS is completed
+          onComplete: onComplete
+        },
+        path: path,
+        value: value
+      };
+    },
+    sectionUpdated: function(resp) {
+      return {
+        type: ActionTypes.SECTION_UPDATED,
+        resp: resp
+      };
+    },
     deleteSection: function(site, section, onComplete) {
       return {
         type: ActionTypes.DELETE_SECTION,

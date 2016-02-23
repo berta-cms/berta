@@ -22,15 +22,11 @@ class SiteController extends Controller
 
         $res = $sites->saveValueByPath($json['path'], $json['value']);
         // @@@:TODO: Replace this with something sensible, when migration to redux is done
-        $json['update'] = $res['value'];
-        $json['real'] = $res['value'];
+        $res['update'] = $res['value'];
+        $res['real'] = $res['value'];
         // @@@:TODO:END
 
-        if (array_key_exists('error_message', $res)) {
-            $json['error_message'] = $res['error_message'];
-        }
-
-        return response()->json($json);
+        return response()->json($res);
     }
 
     public function delete($site) {

@@ -12,7 +12,7 @@
 
       switch (action.type) {
         case ActionTypes.SET_STATE:
-          console.log(action);
+          console.log('Template settings reducer:', action);
           return Immutable.fromJS(action.state.template_settings);
 
         default:

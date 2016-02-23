@@ -12,7 +12,7 @@
 
       switch (action.type) {
         case ActionTypes.SET_STATE:
-          console.log(action);
+          console.log('Site settings reducer:', action);
           return Immutable.fromJS(action.state.site_settings);
 
         default:

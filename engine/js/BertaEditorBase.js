@@ -868,16 +868,29 @@ var BertaEditorBase = new Class({
       var path = el.data('path');
       var path_arr = [];
       var value = newContent ? this.escapeForJSON(newContent) : null;
+      var callback = this.onElementEditComplete(elEditor, el, newContent, newContentText);
+      var updateAction;
 
-      if (path && path.split('/')[1] !== 'section') {
+      //  && path.split('/')[1] !== 'section'
+      if (path) {
         path_arr = path.split('/');
 
         if (path_arr[0] === 'site') {
-          redux_store.dispatch(Actions.updateSite(
+          updateAction = Actions.updateSite;
+        }
+
+        if (path_arr[1] === 'section') {
+          updateAction = Actions.updateSection;
+        }
+
+        if (typeof updateAction === 'function') {
+          redux_store.dispatch(updateAction(
             path,
             value,
-            this.onElementEditComplete(elEditor, el, newContent, newContentText)
+            callback
           ));
+        } else {
+          console.log('BertaEditorBase.elementEdit_save: Undefined updateAction!');
         }
       }
       else {
@@ -899,7 +912,7 @@ var BertaEditorBase = new Class({
         new Request.JSON({
           url: this.options.updateUrl,
           data: "json=" + JSON.encode(data),
-          onComplete: this.onElementEditComplete(elEditor, el, newContent, newContentText)
+          onComplete: callback
         }).post();
       }
     }

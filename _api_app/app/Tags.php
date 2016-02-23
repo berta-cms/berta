@@ -164,4 +164,23 @@ class Tags Extends Storage {
             'allHaveTags' => $allHaveTags
         );
     }
+
+    public function renameSection($new_name) {
+        $tags = $this->get();
+        $section_idx = array_search(
+            $this->SECTION_NAME,
+            array_column(
+                array_column(
+                    $tags['section'],
+                    '@attributes'
+                ),
+                'name'
+            )
+        );
+
+        if ($section_idx !== false) {
+            $tags['section'][$section_idx]['@attributes']['name'] = $new_name;
+            $this->array2xmlFile($tags, $this->XML_FILE, $this->ROOT_ELEMENT);
+        }
+    }
 }

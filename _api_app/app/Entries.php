@@ -89,6 +89,58 @@ class Entries Extends Storage {
         );
     }
 
+    public function rename($new_name, $new_title) {
+        $ret = array('success' => true);
+
+        if(!file_exists($this->XML_FILE)) {
+            $ret['success'] = false;
+            $ret['value'] = $this->SECTION_TITLE;
+            $ret['error_message'] = 'Current section storage file does not exist! you\'ll have to delete this section!';
+            return $ret;
+        }
+
+        $xml_file = $this->XML_ROOT . '/blog.' . $new_name . '.xml';
+
+        if(file_exists($xml_file)) {
+            $ret['success'] = false;
+            $ret['value'] = $this->SECTION_TITLE;
+            $ret['error_message'] = 'Section cannot be created! another section with the same (or too similar name) exists!';
+            return $ret;
+        }
+
+        if(!@rename($this->XML_FILE, $xml_file)) {
+            $ret['success'] = false;
+            $ret['value'] = $this->SECTION_TITLE;
+            $ret['error_message'] = 'Section storage file cannot be renamed! check permissions and be sure the name of the section is not TOO fancy!';
+            return $ret;
+        }
+
+        @chmod($xml_file, 0666);
+        $this->XML_FILE = $xml_file;
+        $this->SECTION_NAME = $new_name;
+        $this->SECTION_TITLE = $new_title;
+
+        $entries = $this->get();
+        $entries['@attributes']['section'] = $new_name;
+
+        if (isset($entries['entry'])) {
+            foreach ($entries['entry'] as $key => $entry) {
+                if (isset($entry['mediafolder'])) {
+                    $old_media = realpath($this->MEDIA_ROOT) .'/'. $entry['mediafolder'];
+                    $new_media = realpath($this->MEDIA_ROOT) .'/'. $new_name . $entry['id'];
+
+                    if(@rename($old_media, $new_media)) {
+                        $entries['entry'][$key]['mediafolder'] = $new_media;
+                    }
+                }
+            }
+        }
+
+        $this->array2xmlFile($entries, $this->XML_FILE, $this->ROOT_ELEMENT);
+
+        return $ret;
+    }
+
     public function delete() {
         $entries = $this->get();
 

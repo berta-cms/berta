@@ -13,31 +13,30 @@
 
       switch (action.type) {
         case ActionTypes.SET_STATE:
-          console.log(action);
+          console.log('Sites reducer:', action);
           return Immutable.fromJS({site: action.state.site});
 
         case ActionTypes.SITE_CREATED:
-          console.log(action);
+          console.log('Sites reducer:', action);
           sites = state.getIn(['site']).toJSON();
           sites.push(action.site);
           return state.setIn(['site'], Immutable.fromJS(sites));
 
         case ActionTypes.UPDATE_SITE:
-          console.log(action);
+          console.log('Sites reducer:', action);
           path = action.path.split('/');
           value = action.value;
 
           return state.setIn(path, value);
 
         case ActionTypes.SITE_UPDATED:
-          console.log(action);
+          console.log('Sites reducer:', action);
           path = action.resp.path.split('/');
           value = action.resp.value;
 
           return state.setIn(path, value);
 
         case ActionTypes.SITE_DELETED:
-          console.log(action);
           sites = state.getIn(['site']).toJSON();
           site_name = action.resp.name === '0' ? '' : action.resp.name;
           site_idx = sites.findIndex(function (site, idx) {
@@ -45,6 +44,7 @@
           });
 
           if (site_idx > -1) {
+            console.log('Sites reducer:', action);
             sites.splice(site_idx, 1);
             return state.setIn(['site'], Immutable.fromJS(sites));
           }
@@ -52,7 +52,6 @@
           return state;
 
         case ActionTypes.ORDER_SITES:
-          console.log(action);
           action.sites.forEach(function(site, new_idx) {
             var site_name = site === '0' ? '' : site;
 
@@ -66,6 +65,7 @@
           });
 
           if (sites.length > 0) {
+            console.log('Sites reducer:', action);
             return state.setIn(['site'], Immutable.fromJS(sites));
           }
 
