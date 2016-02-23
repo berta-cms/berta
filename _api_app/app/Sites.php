@@ -69,7 +69,10 @@ class Sites Extends Storage {
         $site_root = $this->XML_SITES_ROOT . '/' . $site_name;
         $prop = array_pop($path_arr);
         $value = trim(urldecode($value));
-        $ret = array();
+        $ret = array(
+            'path' => $path,
+            'value' => $value
+        );
 
         if(!file_exists($site_root)) {
             $ret['value'] = $site_name;
@@ -103,7 +106,6 @@ class Sites Extends Storage {
         $this->setValueByPath($sites, $path, $value);
         $this->array2xmlFile($sites, $this->XML_FILE, $this->ROOT_ELEMENT);
 
-        $ret['value'] = $value;
         return $ret;
     }
 
