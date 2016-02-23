@@ -54,13 +54,22 @@ var BertaEditor_Sections = new Class({
 		var f = inElement ? $(inElement).getElements.bind($(inElement)) : $$;
 
 		// simple text fields ///////////////////////////////////////////////////////////////////////////////////////////////////////
-		f(this.options.xBertaEditorClassSimple).each(function(el) { this.elementEdit_init(el, this.options.xBertaEditorClassSimple, this.sectionOnSave.bind(this)) }.bind(this));
+		f(this.options.xBertaEditorClassSimple).each(function(el) {
+      this.elementEdit_init(el, this.options.xBertaEditorClassSimple, this.sectionOnSave.bind(this));
+    }.bind(this));
 
 		// yes/no fields ///////////////////////////////////////////////////////////////////////////////////////////////////////
-		f(this.options.xBertaEditorClassYesNo).each(function(el) { this.elementEdit_init(el, this.options.xBertaEditorClassYesNo, this.sectionOnSave.bind(this)) }.bind(this));
+		f(this.options.xBertaEditorClassYesNo).each(function(el) {
+      this.elementEdit_init(el, this.options.xBertaEditorClassYesNo, this.sectionOnSave.bind(this));
+    }.bind(this));
 
-		f(this.options.xBertaEditorClassSelect).each(function(el) { this.elementEdit_init(el, this.options.xBertaEditorClassSelect, this.sectionOnSave.bind(this)) }.bind(this));
-		f(this.options.xBertaEditorClassSelectRC).each(function(el) { this.elementEdit_init(el, this.options.xBertaEditorClassSelectRC, this.sectionOnSave.bind(this)) }.bind(this));
+		f(this.options.xBertaEditorClassSelect).each(function(el) {
+      this.elementEdit_init(el, this.options.xBertaEditorClassSelect, this.sectionOnSave.bind(this));
+    }.bind(this));
+
+    f(this.options.xBertaEditorClassSelectRC).each(function(el) {
+      this.elementEdit_init(el, this.options.xBertaEditorClassSelectRC, this.sectionOnSave.bind(this));
+    }.bind(this));
 	},
 
 

@@ -906,6 +906,11 @@ var BertaEditorBase = new Class({
               );
 
               callback(resp, respRaw);
+              // @@@:HACK: Original shit in the above callback doesn't work :(
+              var detailsElement = el.getParent('li').getElement('.csDetails');
+              detailsElement.empty();
+              detailsElement.set('html', resp['params']);
+              this.editablesInit(detailsElement);
             }.bind(this);
           }
         }
@@ -1326,18 +1331,19 @@ var BertaEditorBase = new Class({
             };
 
         ctx.value = (!ctx.value &&
-                     settings[param_name] &&
-                     settings[param_name].default) ? settings[param_name].default : ctx.value;
+                     param &&
+                     param.default) ? param.default : ctx.value;
 
         if (param.format === 'select' || param.format === 'fontselect') {
           if (param.values === 'templates') {
             values = getAllTemplates();
           } else {
             if (!Array.isArray(param.values)) {
+
               Object.getOwnPropertyNames(param.values).forEach(function(value_name) {
                 values.push(value_name + '|' + param.values[value_name]);
 
-                if (value_name === param_name) {
+                if (ctx.value === value_name) {
                   ctx.value = param.values[value_name];
                 }
               });
@@ -1345,7 +1351,7 @@ var BertaEditorBase = new Class({
               values = param.values;
 
               if (values[ctx.value] && !(parseInt(ctx.value, 10) > 0)) {
-                ctx.value = param.values[value_name];
+                ctx.value = values[ctx.value];
               }
             }
           }
