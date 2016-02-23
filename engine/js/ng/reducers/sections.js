@@ -29,7 +29,7 @@
           console.log('Sections reducer:', action);
           return state.setIn(
             [action.resp.site, 'section', action.resp.section_idx],
-            action.resp.section
+            Immutable.fromJS(action.resp.section)
           );
 
         case ActionTypes.SECTION_DELETED:

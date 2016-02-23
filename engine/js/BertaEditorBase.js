@@ -867,12 +867,14 @@ var BertaEditorBase = new Class({
 
       var path = el.data('path');
       var path_arr = [];
+      var prop;
       var value = newContent ? this.escapeForJSON(newContent) : null;
       var callback = this.onElementEditComplete(elEditor, el, newContent, newContentText);
       var updateAction;
 
       //  && path.split('/')[1] !== 'section'
       if (path) {
+        var new_callback = callback;
         path_arr = path.split('/');
 
         if (path_arr[0] === 'site') {
@@ -880,14 +882,39 @@ var BertaEditorBase = new Class({
         }
 
         if (path_arr[1] === 'section') {
+          prop = path_arr.pop();
           updateAction = Actions.updateSection;
+
+          if (prop === 'type') {
+            new_callback = function(resp, respRaw) {
+              var site = getCurrentSite();
+              var state = redux_store.getState();
+              var template = state.site_settings.toJSON()[site].template.template;
+              var sectionTypes = state.template_settings
+                    .toJSON()[template]
+                    .sectionTypes;
+              var type = resp.section['@attributes'].type ? resp.section['@attributes'].type : 'default';
+              var type_params = sectionTypes[type].params;
+
+              resp['params'] = this.getTypeHTML(
+                site,
+                resp.section_idx,
+                resp.section,
+                state.site_template_settings.toJSON()[site][template],
+                type_params,
+                'xSection-' + resp.section['name'] + ' xSectionField'
+              );
+
+              callback(resp, respRaw);
+            }.bind(this);
+          }
         }
 
         if (typeof updateAction === 'function') {
           redux_store.dispatch(updateAction(
             path,
             value,
-            callback
+            new_callback
           ));
         } else {
           console.log('BertaEditorBase.elementEdit_save: Undefined updateAction!');

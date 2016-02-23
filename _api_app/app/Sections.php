@@ -107,9 +107,9 @@ class Sections Extends Storage {
     */
     public function saveValueByPath($path, $value) {
         $sections = $this->get();
-        $path_arr = explode('/', $path);
-        $prop = array_pop($path_arr);
-        $section_idx = array_pop($path_arr);
+        $path_arr = array_slice(explode('/', $path), 1);
+        $prop = $path_arr[count($path_arr) - 1];
+        $section_idx = $path_arr[1];
         $value = trim(urldecode($value));
         $ret = array(
             'site' => $this->SITE,
@@ -146,17 +146,18 @@ class Sections Extends Storage {
 
             $tags = new Tags($this->SITE, $old_name);
             $tags->renameSection($new_name);
+            $ret['old_name'] = $old_name;
         }
 
         $this->setValueByPath(
             $sections,
-            'section/' . $section_idx . '/' . $prop,
+            implode('/', $path_arr),
             $value
         );
-        $this->array2xmlFile($sections, $this->XML_FILE, $this->ROOT_ELEMENT);
 
-        $ret['old_name'] = $old_name;
+        $this->array2xmlFile($sections, $this->XML_FILE, $this->ROOT_ELEMENT);
         $ret['section'] = $sections['section'][$section_idx];
+
         return $ret;
     }
 

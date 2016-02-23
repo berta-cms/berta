@@ -44,9 +44,9 @@
               tags[tag_idx]['@attributes'].name = action.resp.section.name;
 
               return state.setIn(
-              [action.resp.site, 'section'],
-              Immutable.fromJS(tags)
-            );
+                [action.resp.site, 'section'],
+                Immutable.fromJS(tags)
+              );
             }
           }
 
