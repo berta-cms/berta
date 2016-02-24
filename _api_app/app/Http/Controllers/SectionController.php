@@ -47,4 +47,11 @@ class SectionController extends Controller
         $sections->order($json['sections']);
         return response()->json($json);
     }
+
+    public function galleryOrder(Request $request) {
+        $json = $request->json()->all();
+        $sections = new Sections($json['site']);
+        $ret = $sections->galleryOrder($json['section'], $json['files']);
+        return response()->json($ret);
+    }
 }

@@ -5,7 +5,13 @@
 
   Object.assign(window.reducers, {
     sections: function(state, action) {
-      var path, value, section, section_idx, sections = [];
+      var path,
+          value,
+          section,
+          section_idx,
+          sections = [],
+          files = [],
+          new_files = [];
 
       if (state === undefined) {
         state = Immutable.Map();
@@ -63,6 +69,37 @@
 
           if (sections.length > 0) {
             console.log('Sections reducer:', action);
+            return state.setIn(
+              [action.site, 'section'],
+              Immutable.fromJS(sections)
+            );
+          }
+
+          return state;
+
+        case ActionTypes.SECTION_BG_ORDER:
+          console.log('Sections reducer:', action);
+          sections = state.getIn([action.site, 'section']).toJSON();
+          section_idx = sections.findIndex(function (section, idx) {
+            return section.name === action.section;
+          });
+
+          if (section_idx > -1) {
+            files = sections[section_idx]['mediaCacheData']['file'];
+            files = Array.isArray(files) ? files : [files];
+
+            action.files.forEach(function(new_file) {
+              var file = files.find(function(f) {
+                    return f['@attributes']['src'] === new_file;
+                  });
+
+              if (file) {
+                new_files.push(file);
+              }
+            });
+
+            sections[section_idx]['mediaCacheData']['file'] = new_files;
+
             return state.setIn(
               [action.site, 'section'],
               Immutable.fromJS(sections)

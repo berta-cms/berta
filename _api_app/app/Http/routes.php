@@ -28,4 +28,5 @@ $app->group(['prefix' => 'v1','namespace' => 'App\Http\Controllers'], function($
     $app->post('create-section','SectionController@create');
     $app->delete('delete-section/{site}/{section}','SectionController@delete');
     $app->put('order-sections','SectionController@order');
+    $app->put('section-bg-order','SectionController@galleryOrder');
 });

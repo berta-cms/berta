@@ -240,6 +240,51 @@ class Sections Extends Storage {
 
     /**
     */
+    public function galleryOrder($name, $new_files) {
+        $sections = $this->get();
+        $section_idx = array_search($name, array_column($sections['section'], 'name'));
+
+        if ($section_idx !== false) {
+            $section =& $sections['section'][$section_idx];
+            $files = $this->asList($section['mediaCacheData']['file']);
+            $reordered = array();
+
+            foreach($new_files as $file) {
+                $file_idx = array_search(
+                    $file,
+                    array_column(
+                        array_column(
+                            $files,
+                            '@attributes'
+                        ),
+                        'src'
+                    )
+                );
+
+                if ($file_idx !== false) {
+                    array_push($reordered, $files[$file_idx]);
+                }
+            }
+
+            $section['mediaCacheData']['file'] = $reordered;
+            $this->array2xmlFile($sections, $this->XML_FILE, $this->ROOT_ELEMENT);
+
+            return array(
+                'site' => $this->SITE,
+                'section' => $name,
+                'files' => $reordered
+            );
+        }
+
+        return array('error_message' => 'Section "'.$name.'" not found!');
+    }
+
+    /************************************************************
+     * Private methods
+     ************************************************************/
+
+    /**
+    */
     private function getUniqueSlug($old_name, $new_title){
         $sections = $this->get();
         $title = trim($new_title);

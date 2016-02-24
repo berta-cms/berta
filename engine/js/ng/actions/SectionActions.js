@@ -84,6 +84,25 @@
         site: site,
         sections: sections
       };
+    },
+    sectionBgOrder: function(site, section, files, onComplete) {
+      return {
+        type: ActionTypes.SECTION_BG_ORDER,
+        meta: {
+          remote: true,
+          method: 'PUT',
+          url: API_ROOT + 'section-bg-order',
+          data: {
+            site: site,
+            section: section,
+            files: files
+          },
+          onComplete: onComplete
+        },
+        site: site,
+        section: section,
+        files: files
+      };
     }
   });
 

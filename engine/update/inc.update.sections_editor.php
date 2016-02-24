@@ -12,30 +12,7 @@ else if($property == 'published') { // attributes
     throw new Exception('Deprecated branch of code called for section editor function: Edit published!');
 }
 else if($property == 'galleryOrder') {
-    $sectionsList = BertaEditor::getSections();
-    $sName = $decoded['section'];
-
-    Array_XML::makeListIfNotList($sectionsList[$sName]['mediaCacheData']['file']);
-    $returnUpdate = 'ok';
-
-    $newImagesArray = array();
-    foreach($decoded['value'] as $path) {
-        $foundIndex = false;
-        foreach($sectionsList[$sName]['mediaCacheData']['file'] as $cacheIndex => $im) {
-            if($im['@attributes']['src'] == $path) {
-                $foundIndex = $cacheIndex;
-                break;
-            }
-        }
-
-        if($foundIndex !== false) {
-            array_push($newImagesArray, $sectionsList[$sName]['mediaCacheData']['file'][$cacheIndex]);
-        }
-    }
-
-    $sectionsList[$sName]['mediaCacheData']['file'] = $newImagesArray;
-    BertaEditor::updateImageCacheForSection($sectionsList[$sName]);
-    BertaEditor::saveSections($sectionsList);
+    throw new Exception('Deprecated branch of code called for section editor function: Background gallery order!');
 }
 else if($property == 'galleryImageDelete') {
     $sectionsList = BertaEditor::getSections();
