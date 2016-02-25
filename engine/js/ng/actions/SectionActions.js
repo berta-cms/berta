@@ -97,11 +97,18 @@
             section: section,
             files: files
           },
+          dispatch: 'sectionBgOrdered',
           onComplete: onComplete
         },
         site: site,
         section: section,
         files: files
+      };
+    },
+    sectionBgOrdered: function(resp) {
+      return {
+        type: ActionTypes.SECTION_BG_ORDERED,
+        resp: resp
       };
     }
   });

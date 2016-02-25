@@ -77,31 +77,20 @@
 
           return state;
 
-        case ActionTypes.SECTION_BG_ORDER:
-          console.log('Sections reducer:', action);
-          sections = state.getIn([action.site, 'section']).toJSON();
+        case ActionTypes.SECTION_BG_ORDERED:
+          sections = state.getIn([action.resp.site, 'section']).toJSON();
           section_idx = sections.findIndex(function (section, idx) {
-            return section.name === action.section;
+            return section.name === action.resp.section;
           });
 
           if (section_idx > -1) {
-            files = sections[section_idx]['mediaCacheData']['file'];
-            files = Array.isArray(files) ? files : [files];
-
-            action.files.forEach(function(new_file) {
-              var file = files.find(function(f) {
-                    return f['@attributes']['src'] === new_file;
-                  });
-
-              if (file) {
-                new_files.push(file);
-              }
-            });
-
-            sections[section_idx]['mediaCacheData']['file'] = new_files;
+            console.log('Sections reducer:', action);
+            sections[section_idx].mediaCacheData = {
+              file: action.resp.files
+            };
 
             return state.setIn(
-              [action.site, 'section'],
+              [action.resp.site, 'section'],
               Immutable.fromJS(sections)
             );
           }
