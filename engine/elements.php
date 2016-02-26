@@ -303,7 +303,7 @@ if($jsonRequest) {
                              '</div>';
                         echo '<div class="xBgFadingSettings">',
                                 '<div class="caption">fade content</div>',
-                                '<div class="xBgFading xEditableSelectRC xCommand-SET_BG_FADE_CONTENT" x_options="enabled||disabled">' . $bgFading . '</div>',
+                                '<div class="xBgFading xEditableSelectRC xCommand-SET_BG_FADE_CONTENT" x_options="enabled||disabled" data-path="' . $basePath . 'mediaCacheData/@attributes/fade_content">' . $bgFading . '</div>',
                                 '<div class="clear"></div>',
                              '</div>';
                         echo '<div class="xBgColorSettings">',
