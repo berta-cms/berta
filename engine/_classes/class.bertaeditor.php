@@ -30,55 +30,6 @@ class BertaEditor extends BertaContent {
         }
     }
 
-    public static function deleteSection($sectionName) {
-
-        // delete all media
-        $dirsDeleted = true;
-        $blog = BertaEditor::loadBlog($sectionName);
-        if(!empty($blog['entry'])) foreach($blog['entry'] as $e) {
-            if(!empty($e['mediafolder']['value'])) {
-                $mediaFolder = self::$options['MEDIA_ROOT'] . $e['mediafolder']['value'];
-                if(file_exists($mediaFolder)) {
-                    $dir = opendir($mediaFolder);
-                    while($fItem = readdir($dir)) {
-                        if($fItem != '.' && $fItem != '..') {
-                            @unlink($mediaFolder . '/' . $fItem);
-                        }
-                    }
-                    $dirsDeleted &= @rmdir($mediaFolder);
-                }
-            }
-        }
-
-        // delete content
-        if($dirsDeleted) {
-            $xmlPath = realpath(self::$options['XML_ROOT'] . str_replace('%', $sectionName, self::$options['blog.%.xml']));
-            if(!$xmlPath || @unlink($xmlPath)) {
-                $oldSectionsList = BertaEditor::getSections();
-                // delete all section background media
-                if(!empty($oldSectionsList[$sectionName]['mediafolder']['value'])) {
-                    $sectionMediaFolder = self::$options['MEDIA_ROOT'] . $oldSectionsList[$sectionName]['mediafolder']['value'];
-                    if(file_exists($sectionMediaFolder)) {
-                        $dir = opendir($sectionMediaFolder);
-                        while($fItem = readdir($dir)) {
-                            if($fItem != '.' && $fItem != '..') {
-                                @unlink($sectionMediaFolder . '/' . $fItem);
-                            }
-                        }
-                        $dirsDeleted &= @rmdir($sectionMediaFolder);
-                    }
-                }
-                if(isset($oldSectionsList[$sectionName])) unset($oldSectionsList[$sectionName]);
-                BertaEditor::saveSections($oldSectionsList);
-
-                return true;
-
-            } else
-                return false;
-        } else
-            return false;
-    }
-
 
     public static function saveBlog($sName, &$blog) {
         if(empty($blog['@attributes'])) $blog['@attributes'] = array();

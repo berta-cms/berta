@@ -48,6 +48,12 @@ class SectionController extends Controller
         return response()->json($json);
     }
 
+    public function galleryDelete($site, $section, $file) {
+        $sections = new Sections($site);
+        $res = $sections->galleryDelete($section, $file);
+        return response()->json($res);
+    }
+
     public function galleryOrder(Request $request) {
         $json = $request->json()->all();
         $sections = new Sections($json['site']);

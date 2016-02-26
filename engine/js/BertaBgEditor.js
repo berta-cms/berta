@@ -507,16 +507,16 @@ var BertaBgEditor = new Class({
 
       var deleteProcessId = this.unlinearProcess_getId('delete-image');
       this.unlinearProcess_start(deleteProcessId, "Deleting image");
-      var data = {
-          section: this.sectionName, property: 'galleryImageDelete', value: liElement.get('filename')
-        };
-      console.log('BertaBgEditor.onDeleteClick:', data);
-      new Request.JSON({
-        url: this.options.updateUrl,
-        data: "json=" + JSON.encode(data),
-        onComplete: function(resp) {
+
+      var site = getCurrentSite();
+
+      redux_store.dispatch(Actions.sectionBgDelete(
+        site,
+        this.sectionName,
+        liElement.get('filename'),
+        function(resp) {
           this.unlinearProcess_stop(deleteProcessId);
-          if(resp.update == 'ok') {
+          if(!resp.error_message) {
             liElement.destroy();
           } else {
             liElement.setStyle('display', 'block');
@@ -525,7 +525,7 @@ var BertaBgEditor = new Class({
           }
           this.sortingSave();
         }.bind(this)
-      }).post();
+      ));
 
     }
   },

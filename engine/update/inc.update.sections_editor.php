@@ -15,37 +15,7 @@ else if($property == 'galleryOrder') {
     throw new Exception('Deprecated branch of code called for section editor function: Background gallery order!');
 }
 else if($property == 'galleryImageDelete') {
-    $sectionsList = BertaEditor::getSections();
-    $sName = $decoded['section'];
-
-    $imgToDelete = $posterToDelete = '';
-    $returnUpdate = 'failed';
-    Array_XML::makeListIfNotList($sectionsList[$sName]['mediaCacheData']['file']);
-    foreach($sectionsList[$sName]['mediaCacheData']['file'] as $idx => $im)  {  // check if the passed image is really in mediaCache (a security measure)
-        if((string) $idx == '@attributes') continue;
-        if($im['@attributes']['src'] == $decoded['value']) {
-            $imgToDelete = $im['@attributes']['src'];
-            $posterToDelete = !empty($im['@attributes']['poster_frame']) ? $im['@attributes']['poster_frame'] : false;
-            unset($sectionsList[$sName]['mediaCacheData']['file'][$idx]);
-            break;
-        }
-    }
-    if($imgToDelete && file_exists($options['MEDIA_ROOT'] . $sectionsList[$sName]['mediafolder']['value'] . '/' . $imgToDelete)) {
-        if(@unlink($options['MEDIA_ROOT'] . $sectionsList[$sName]['mediafolder']['value'] . '/' . $imgToDelete)) {
-            BertaEditor::images_deleteDerivatives($options['MEDIA_ROOT'] . $sectionsList[$sName]['mediafolder']['value'] . '/', $imgToDelete);
-
-            if($posterToDelete) {
-                @unlink($options['MEDIA_ROOT'] . $sectionsList[$sName]['mediafolder']['value'] . '/' . $posterToDelete);
-                BertaEditor::images_deleteDerivatives($options['MEDIA_ROOT'] . $sectionsList[$sName]['mediafolder']['value'] . '/', $posterToDelete);
-            }
-
-            $returnUpdate = 'ok';
-        } else
-            $returnError = 'delete failed! check permissions.';
-    } else
-        $returnError = 'file does not exist! media cache updated.';
-    BertaEditor::updateImageCacheForSection($sectionsList[$sName]);
-    BertaEditor::saveSections($sectionsList);
+    throw new Exception('Deprecated branch of code called for section editor function: Background gallery delete!');
 }
 else if($decoded['property'] == 'galleryImageCaption') {    // image / video caption
     $sectionsList = BertaEditor::getSections();

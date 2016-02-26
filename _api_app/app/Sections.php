@@ -240,12 +240,59 @@ class Sections Extends Storage {
 
     /**
     */
+    public function galleryDelete($name, $file) {
+        $sections = $this->get();
+        $section_idx = array_search($name, array_column($sections['section'], 'name'));
+
+        if ($section_idx !== false) {
+            $section =& $sections['section'][$section_idx];
+
+            if (!isset($section['mediaCacheData'])) {
+                return array('error_message' => 'File "'.$file.'" not found!');
+            }
+
+            $files = $this->asList($section['mediaCacheData']['file']);
+            $file_idx = array_search(
+                $file,
+                array_column(
+                    array_column(
+                        $files,
+                        '@attributes'
+                    ),
+                    'src'
+                )
+            );
+
+            if ($file_idx === false) {
+                return array('error_message' => 'File "'.$file.'" not found!');
+            }
+
+            $mediafolder = $this->MEDIA_ROOT . '/' . $section['mediafolder'] . '/';
+            $this->deleteMedia($mediafolder, $file);
+
+            $file = array_splice($section['mediaCacheData']['file'], $file_idx, 1);
+            $this->array2xmlFile($sections, $this->XML_FILE, $this->ROOT_ELEMENT);
+
+            return array(
+                'site' => $this->SITE,
+                'section_idx' => $section_idx,
+                'file_idx' => $file_idx,
+                'sections' => $sections
+            );
+        }
+
+        return array('error_message' => 'Section "'.$name.'" not found!');
+    }
+
+    /**
+    */
     public function galleryOrder($name, $new_files) {
         $sections = $this->get();
         $section_idx = array_search($name, array_column($sections['section'], 'name'));
 
         if ($section_idx !== false) {
             $section =& $sections['section'][$section_idx];
+            $section['mediaCacheData'] = isset($section['mediaCacheData']) ? $section['mediaCacheData'] : array('file' => array());
             $files = $this->asList($section['mediaCacheData']['file']);
             $reordered = array();
 
@@ -315,5 +362,23 @@ class Sections Extends Storage {
         }
 
         return $slug;
+    }
+
+    /**
+    */
+    private function deleteMedia($folder, $file='') {
+        @unlink($folder . $file);
+
+        if($handle = opendir($folder)) {
+            while (false !== ($f = readdir($handle))) {
+                if(!$file || strpos($f, $file) !== false) {
+                    if(substr($f, 0, 1) == '_') {
+                        @unlink($folder . $f);
+                    }
+                }
+            }
+
+            closedir($handle);
+        }
     }
 }

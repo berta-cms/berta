@@ -85,6 +85,20 @@
         sections: sections
       };
     },
+    sectionBgDelete: function(site, section, file, onComplete) {
+      var url = encodeURIComponent(site) +
+            '/' + encodeURIComponent(section) +
+            '/' + encodeURIComponent(file);
+      return {
+        type: ActionTypes.SECTION_BG_DELETE,
+        meta: {
+          remote: true,
+          url: API_ROOT + 'section-bg-delete/' + url,
+          method: 'DELETE',
+          onComplete: onComplete
+        }
+      };
+    },
     sectionBgOrder: function(site, section, files, onComplete) {
       return {
         type: ActionTypes.SECTION_BG_ORDER,

@@ -141,6 +141,10 @@ if(($entryId && $mediaFolder || $settingsProperty || $sectionName && $mediaFolde
 	if(!$error) {
 		$ext = strtolower(substr(strrchr($_FILES['Filedata']['name'], '.'), 1));
 		if(in_array($ext, $videoExtensions)) {
+            if ($sectionBackground) {
+                $error = 'Videos not supported in background gallery!';
+            }
+
 			$videoExt = $ext;
 			$fileType = 'video';
 		} else if(in_array($ext, $iconExtensions)) {
