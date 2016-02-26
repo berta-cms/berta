@@ -293,7 +293,7 @@ if($jsonRequest) {
                     echo '<div class="xBgSettings xHidden">';
                         echo '<div class="xBgNavigationSettings">',
                                 '<div class="caption">hide navigation arrows</div>',
-                                '<div class="xBgNavigation xFloatLeft xEditableSelectRC xCommand-SET_BG_NAVIGATION" x_options="no||yes">' . $bgHideNavigation . '</div>',
+                                '<div class="xBgNavigation xFloatLeft xEditableSelectRC xCommand-SET_BG_NAVIGATION" x_options="no||yes" data-path="' . $basePath . 'mediaCacheData/@attributes/hide_navigation">' . $bgHideNavigation . '</div>',
                                 '<div class="clear"></div>',
                              '</div>';
                         echo '<div class="xBgAnimationSettings">',

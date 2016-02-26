@@ -33,11 +33,7 @@ else if($decoded['action'] == 'SET_BG_CAPTION_BACK_COLOR') {
     throw new Exception('Deprecated branch of code called for section editor function: Background gallery image caption background color!');
 }
 else if($decoded['action'] == 'SET_BG_NAVIGATION') {
-    $sectionsList = BertaEditor::getSections();
-    $sName = $decoded['section'];
-    if(empty($sectionsList[$sName]['mediaCacheData']['@attributes'])) $sectionsList[$sName]['mediaCacheData']['@attributes'] = array();
-    $sectionsList[$sName]['mediaCacheData']['@attributes']['hide_navigation'] = $decoded['params'];
-    BertaEditor::saveSections($sectionsList);
+    throw new Exception('Deprecated branch of code called for section editor function: Background gallery navigation!');
 }
 else if($decoded['action'] == 'SET_BG_ANIMATION') {
     $sectionsList = BertaEditor::getSections();
