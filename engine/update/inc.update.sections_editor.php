@@ -24,11 +24,7 @@ else if($decoded['action'] == 'SET_AUTOPLAY') {
     throw new Exception('Deprecated branch of code called for section editor function: Background gallery autoplay!');
 }
 else if($decoded['action'] == 'SET_BG_IMG_SIZE') {
-    $sectionsList = BertaEditor::getSections();
-    $sName = $decoded['section'];
-    if(empty($sectionsList[$sName]['mediaCacheData']['@attributes'])) $sectionsList[$sName]['mediaCacheData']['@attributes'] = array();
-    $sectionsList[$sName]['mediaCacheData']['@attributes']['image_size'] = $decoded['params'];
-    BertaEditor::saveSections($sectionsList);
+    throw new Exception('Deprecated branch of code called for section editor function: Background gallery image size!');
 }
 else if($decoded['action'] == 'SET_BG_CAPTION_COLOR') {
     $sectionsList = BertaEditor::getSections();

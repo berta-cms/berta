@@ -324,7 +324,7 @@ if($jsonRequest) {
 
                     echo '<div class="xBgImgSizeSettings xHidden">';
                         echo '<div class="caption">background image size</div>',
-                             '<div class="xBgImgSize xEditableSelectRC xCommand-SET_BG_IMG_SIZE" x_options="large||medium||small">' . $bgSize . '</div>',
+                             '<div class="xBgImgSize xEditableSelectRC xCommand-SET_BG_IMG_SIZE" x_options="large||medium||small" data-path="' . $basePath . 'mediaCacheData/@attributes/image_size">' . $bgSize . '</div>',
                              '<div class="clear"></div>';
                     echo '</div>';
 
