@@ -298,7 +298,7 @@ if($jsonRequest) {
                              '</div>';
                         echo '<div class="xBgAnimationSettings">',
                                 '<div class="caption">animation</div>',
-                                '<div class="xBgAnimation xEditableSelectRC xCommand-SET_BG_ANIMATION" x_options="enabled||disabled">' . $bgAnimation . '</div>',
+                                '<div class="xBgAnimation xEditableSelectRC xCommand-SET_BG_ANIMATION" x_options="enabled||disabled" data-path="' . $basePath . 'mediaCacheData/@attributes/animation">' . $bgAnimation . '</div>',
                                 '<div class="clear"></div>',
                              '</div>';
                         echo '<div class="xBgFadingSettings">',

@@ -36,11 +36,7 @@ else if($decoded['action'] == 'SET_BG_NAVIGATION') {
     throw new Exception('Deprecated branch of code called for section editor function: Background gallery navigation!');
 }
 else if($decoded['action'] == 'SET_BG_ANIMATION') {
-    $sectionsList = BertaEditor::getSections();
-    $sName = $decoded['section'];
-    if(empty($sectionsList[$sName]['mediaCacheData']['@attributes'])) $sectionsList[$sName]['mediaCacheData']['@attributes'] = array();
-    $sectionsList[$sName]['mediaCacheData']['@attributes']['animation'] = $decoded['params'];
-    BertaEditor::saveSections($sectionsList);
+    throw new Exception('Deprecated branch of code called for section editor function: Background gallery animation!');
 }
 else if($decoded['action'] == 'SET_BG_FADE_CONTENT') {
     $sectionsList = BertaEditor::getSections();
