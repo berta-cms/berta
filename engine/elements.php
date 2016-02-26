@@ -330,7 +330,7 @@ if($jsonRequest) {
 
                     echo '<div class="xBgSlideshowSettings xHidden">';
                         echo '<div class="caption">autoplay seconds</div>',
-                             '<div class="xBgAutoPlay xEditableRC xCommand-SET_AUTOPLAY xCaption-0" title="' . $autoPlay . '">' . $autoPlay . '</div>',
+                             '<div class="xBgAutoPlay xEditableRC xCommand-SET_AUTOPLAY xCaption-0" title="' . $autoPlay . '" data-path="' . $basePath . 'mediaCacheData/@attributes/autoplay">' . $autoPlay . '</div>',
                              '<div class="clear"></div>';
                     echo '</div>';
 
