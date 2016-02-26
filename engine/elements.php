@@ -316,7 +316,7 @@ if($jsonRequest) {
                                 '<div class="xBgColorReset xReset xCommand-RESET_BG_CAPTION_COLOR xParams-SET_BG_CAPTION_COLOR"><a href="#"><span>remove</span></a></div>',
                                 '<div class="clear"></div>',
                                 '<div class="caption">caption background color</div>',
-                                '<div class="xBgColor xEditableColor xCommand-SET_BG_CAPTION_BACK_COLOR xNoHTMLEntities xCSSUnits-0 xRequired-1 " title="' . $bgCaptionBackColor . '">' . $bgCaptionBackColorText . '</div>',
+                                '<div class="xBgColor xEditableColor xCommand-SET_BG_CAPTION_BACK_COLOR xNoHTMLEntities xCSSUnits-0 xRequired-1 " title="' . $bgCaptionBackColor . '" data-path="' . $basePath . 'mediaCacheData/@attributes/caption_bg_color">' . $bgCaptionBackColorText . '</div>',
                                 '<div class="xBgColorReset xReset xCommand-RESET_BG_CAPTION_BACK_COLOR xParams-SET_BG_CAPTION_BACK_COLOR"><a href="#"><span>remove</span></a></div>',
                                 '<div class="clear"></div>',
                              '</div>';
