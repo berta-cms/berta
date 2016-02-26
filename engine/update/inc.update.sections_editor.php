@@ -18,19 +18,7 @@ else if($property == 'galleryImageDelete') {
     throw new Exception('Deprecated branch of code called for section editor function: Background gallery delete!');
 }
 else if($decoded['property'] == 'galleryImageCaption') {    // image / video caption
-    $sectionsList = BertaEditor::getSections();
-    $sName = $decoded['section'];
-
-    $imageCache =& $sectionsList[$sName]['mediaCacheData']['file'];
-    Array_XML::makeListIfNotList($imageCache);
-    foreach($imageCache as $cacheIndex => $im) {
-        if($im['@attributes']['src'] == $decoded['params']) {
-            $imageCache[$cacheIndex]['value'] = $decoded['value'];
-            break;
-        }
-    }
-    BertaEditor::updateImageCacheForSection($sectionsList[$sName]);
-    BertaEditor::saveSections($sectionsList);
+    throw new Exception('Deprecated branch of code called for section editor function: Background gallery image caption!');
 }
 else if($decoded['action'] == 'SET_AUTOPLAY') {
     $sectionsList = BertaEditor::getSections();

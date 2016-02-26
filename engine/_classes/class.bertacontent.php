@@ -58,7 +58,7 @@ class BertaContent extends BertaBase {
         return $site;
     }
 
-    public static function getSections() {
+    public static function getSections($with_index=false) {
         $sArr = array();
 
         if(file_exists(self::$options['XML_ROOT'] . self::$options['sections.xml'])) {
@@ -68,13 +68,24 @@ class BertaContent extends BertaBase {
                 $xmlFeed = Array_XML::xml2array($xmlStr, 'sections', true);
                 if(isset($xmlFeed['section']) && is_array($xmlFeed['section'])) {
                     Array_XML::makeListIfNotList($xmlFeed['section']);
+                    $indexes = array();
+                    $idx = 0;
                     foreach($xmlFeed['section'] as $s) {
-                        if(!empty($s['name']['value']) && trim($s['name']['value']) != '')
-                            $sArr[trim($s['name']['value'])] = $s;
+                        if(!empty($s['name']['value']) && trim($s['name']['value']) != '') {
+                            $name = trim($s['name']['value']);
+                            $sArr[$name] = $s;
+                            $indexes[$name] = $idx;
+                        }
+                        $idx++;
                     }
                 }
             }
         }
+
+        if ($with_index) {
+            return array($indexes, $sArr);
+        }
+
         return $sArr;
     }
 
