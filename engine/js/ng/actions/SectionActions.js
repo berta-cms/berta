@@ -50,6 +50,20 @@
         resp: resp
       };
     },
+    resetSection: function(path, onComplete) {
+      return {
+        type: ActionTypes.RESET_SECTION,
+        meta: {
+          remote: true,
+          url: API_ROOT + 'reset-section',
+          method: 'PATCH',
+          data: {path: path},
+          // @@@:TODO: Remove this callback when migration to ReactJS is completed
+          onComplete: onComplete
+        },
+        path: path
+      };
+    },
     deleteSection: function(site, section, onComplete) {
       return {
         type: ActionTypes.DELETE_SECTION,
@@ -58,6 +72,7 @@
           url: API_ROOT + 'delete-section/' + encodeURIComponent(site) + '/' + encodeURIComponent(section),
           method: 'DELETE',
           dispatch: 'sectionDeleted',
+          // @@@:TODO: Remove this callback when migration to ReactJS is completed
           onComplete: onComplete
         },
         section: section
@@ -95,6 +110,7 @@
           remote: true,
           url: API_ROOT + 'section-bg-delete/' + url,
           method: 'DELETE',
+          // @@@:TODO: Remove this callback when migration to ReactJS is completed
           onComplete: onComplete
         }
       };
@@ -112,6 +128,7 @@
             files: files
           },
           dispatch: 'sectionBgOrdered',
+          // @@@:TODO: Remove this callback when migration to ReactJS is completed
           onComplete: onComplete
         },
         site: site,

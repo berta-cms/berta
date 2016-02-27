@@ -25,6 +25,7 @@ $app->group(['prefix' => 'v1','namespace' => 'App\Http\Controllers'], function($
     $app->put('order-sites','SiteController@order');
 
     $app->patch('update-section','SectionController@update');
+    $app->patch('reset-section','SectionController@reset');
     $app->post('create-section','SectionController@create');
     $app->delete('delete-section/{site}/{section}','SectionController@delete');
     $app->put('order-sections','SectionController@order');

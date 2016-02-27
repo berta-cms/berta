@@ -41,6 +41,16 @@ class SectionController extends Controller
         return response()->json($res);
     }
 
+    public function reset(Request $request) {
+        $json = $request->json()->all();
+        $path_arr = explode('/', $json['path']);
+        $site = $path_arr[0];
+        $sections = new Sections($site);
+        $res = $sections->deleteValueByPath($json['path']);
+
+        return response()->json($res);
+    }
+
     public function order(Request $request) {
         $json = $request->json()->all();
         $sections = new Sections($json['site']);

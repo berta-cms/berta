@@ -309,15 +309,15 @@ if($jsonRequest) {
                         echo '<div class="xBgColorSettings">',
                                 '<div class="caption">background color</div>',
                                 '<div class="xBgColor xEditableColor xProperty-sectionBgColor xNoHTMLEntities xCSSUnits-0 xRequired-1 " title="' . $bgColor . '" data-path="'. $basePath . 'sectionBgColor">' . $bgColorText . '</div>',
-                                '<div class="xBgColorReset xReset xCommand-sectionBgColorReset xParams-sectionBgColor"><a href="#"><span>remove</span></a></div>',
+                                '<div class="xBgColorReset xReset xCommand-sectionBgColorReset xParams-sectionBgColor" data-path="' . $basePath . 'sectionBgColor"><a href="#"><span>remove</span></a></div>',
                                 '<div class="clear"></div>',
                                 '<div class="caption">caption text color</div>',
                                 '<div class="xBgColor xEditableColor xCommand-SET_BG_CAPTION_COLOR xNoHTMLEntities xCSSUnits-0 xRequired-1 " title="' . $bgCaptionColor . '" data-path="' . $basePath . 'mediaCacheData/@attributes/caption_color">' . $bgCaptionColorText . '</div>',
-                                '<div class="xBgColorReset xReset xCommand-RESET_BG_CAPTION_COLOR xParams-SET_BG_CAPTION_COLOR"><a href="#"><span>remove</span></a></div>',
+                                '<div class="xBgColorReset xReset xCommand-RESET_BG_CAPTION_COLOR xParams-SET_BG_CAPTION_COLOR" data-path="' . $basePath . 'mediaCacheData/@attributes/caption_color"><a href="#"><span>remove</span></a></div>',
                                 '<div class="clear"></div>',
                                 '<div class="caption">caption background color</div>',
                                 '<div class="xBgColor xEditableColor xCommand-SET_BG_CAPTION_BACK_COLOR xNoHTMLEntities xCSSUnits-0 xRequired-1 " title="' . $bgCaptionBackColor . '" data-path="' . $basePath . 'mediaCacheData/@attributes/caption_bg_color">' . $bgCaptionBackColorText . '</div>',
-                                '<div class="xBgColorReset xReset xCommand-RESET_BG_CAPTION_BACK_COLOR xParams-SET_BG_CAPTION_BACK_COLOR"><a href="#"><span>remove</span></a></div>',
+                                '<div class="xBgColorReset xReset xCommand-RESET_BG_CAPTION_BACK_COLOR xParams-SET_BG_CAPTION_BACK_COLOR" data-path="' . $basePath . 'mediaCacheData/@attributes/caption_bg_color"><a href="#"><span>remove</span></a></div>',
                                 '<div class="clear"></div>',
                              '</div>';
                     echo '</div>';

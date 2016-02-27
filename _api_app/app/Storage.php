@@ -60,6 +60,21 @@ class Storage {
     }
 
     /**
+    */
+    protected function unsetValueByPath(&$array, $path) {
+        $temp = &$array;
+        $_path = explode('/', $path);
+        $prop = array_pop($_path);
+
+        // @@@:TODO: Implement error checking
+        foreach($_path as $key) {
+            $temp = &$temp[$key];
+        }
+
+        unset($temp[$prop]);
+    }
+
+    /**
     * Returns path to XML folder of a given site
     *
     * @param string $site name of the site

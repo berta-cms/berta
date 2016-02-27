@@ -149,6 +149,10 @@ class Sections Extends Storage {
             $ret['old_name'] = $old_name;
         }
 
+        if ($prop === 'caption_bg_color') {
+            $value = implode(',', sscanf($value, '#%02x%02x%02x'));
+        }
+
         $this->setValueByPath(
             $sections,
             implode('/', $path_arr),
@@ -158,6 +162,22 @@ class Sections Extends Storage {
         $this->array2xmlFile($sections, $this->XML_FILE, $this->ROOT_ELEMENT);
         $ret['section'] = $sections['section'][$section_idx];
 
+        return $ret;
+    }
+
+    /**
+    */
+    public function deleteValueByPath($path) {
+        $sections = $this->get();
+        $path_arr = array_slice(explode('/', $path), 1);
+        $section_idx = $path_arr[1];
+        $this->unsetValueByPath($sections, implode('/', $path_arr));
+        $this->array2xmlFile($sections, $this->XML_FILE, $this->ROOT_ELEMENT);
+        $ret = array(
+            'site' => $this->SITE,
+            'section_idx' => $section_idx,
+            'path' => $path
+        );
         return $ret;
     }
 

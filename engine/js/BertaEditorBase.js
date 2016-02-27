@@ -860,8 +860,11 @@ var BertaEditorBase = new Class({
       // Get action for Gallery type, Autoplay, Full screen & Image size
       var action = el.getClassStoredValue('xCommand');
       if(action) {
-        if(action == 'SET_BG_CAPTION_BACK_COLOR') editorParams = newContentText.hexToRgb(true).join(',');
-        else editorParams = this.escapeForJSON(newContentText);
+        if(action == 'SET_BG_CAPTION_BACK_COLOR') {
+          editorParams = newContentText.hexToRgb(true).join(',');
+        } else {
+          editorParams = this.escapeForJSON(newContentText);
+        };
         //console.debug(editorParams);
       }
 
@@ -1116,14 +1119,11 @@ var BertaEditorBase = new Class({
       var entryInfo = this.getEntryInfoForElement(el);
       if(entryInfo.section == '') entryInfo.section = this.sectionName;
 
-      var data = {
-          section: entryInfo.section, action: action, property: null, value: null
-        };
-      console.log('BertaEditorBase.elementEdit_reset:', data);
-      new Request.JSON({
-        url: this.options.updateUrl,
-        data: "json=" + JSON.encode(data),
-        onComplete: function(resp) {
+      var path = el.data('path');
+
+      redux_store.dispatch(Actions.resetSection(
+        path,
+        function(resp) {
           if(!resp) {
             alert('server produced an error while performing the requested action! something went sooooo wrong...');
           } else if(resp && !resp.error_message) {
@@ -1136,16 +1136,41 @@ var BertaEditorBase = new Class({
             if(elem.length == 0) elem = el.getSiblings('.xProperty-' + params);
             elem.each(function(item) {
               item.set('title', '#ffffff').set('text', 'none');
-              //new Element('SPAN', {
-              //  'class': 'colorPreview',
-              //  'styles': {
-              //    'background-color': 'rgb(255, 255, 255)'
-              //  }
-              //}).inject(item, 'top');
             });
           }
         }.bind(this)
-      }).post();
+      ));
+
+      // var data = {
+      //     section: entryInfo.section, action: action, property: null, value: null
+      //   };
+      // console.log('BertaEditorBase.elementEdit_reset:', data);
+      // new Request.JSON({
+      //   url: this.options.updateUrl,
+      //   data: "json=" + JSON.encode(data),
+      //   onComplete: function(resp) {
+      //     if(!resp) {
+      //       alert('server produced an error while performing the requested action! something went sooooo wrong...');
+      //     } else if(resp && !resp.error_message) {
+      //     } else {
+      //       alert(resp.error_message);
+      //     }
+      //     if(el) {
+      //       el.removeClass.delay(500, el, 'xSaving');
+      //       elem = el.getSiblings('.xCommand-' + params);
+      //       if(elem.length == 0) elem = el.getSiblings('.xProperty-' + params);
+      //       elem.each(function(item) {
+      //         item.set('title', '#ffffff').set('text', 'none');
+      //         //new Element('SPAN', {
+      //         //  'class': 'colorPreview',
+      //         //  'styles': {
+      //         //    'background-color': 'rgb(255, 255, 255)'
+      //         //  }
+      //         //}).inject(item, 'top');
+      //       });
+      //     }
+      //   }.bind(this)
+      // }).post();
     }
   },
 

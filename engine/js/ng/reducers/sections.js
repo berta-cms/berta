@@ -38,6 +38,11 @@
             Immutable.fromJS(action.resp.section)
           );
 
+        case ActionTypes.RESET_SECTION:
+          console.log('Sections reducer:', action);
+          path = action.path.split('/');
+          return state.deleteIn(path);
+
         case ActionTypes.SECTION_DELETED:
           sections = state.getIn([action.resp.site, 'section']).toJSON();
           section_idx = sections.findIndex(function (section, idx) {

@@ -366,9 +366,7 @@ if($jsonRequest) {
                 BertaEditor::saveTags($tags);
             }
             else {  // section property
-                // throw new Exception('Deprecated branch of code called for section editor function!');
-                include 'update/inc.update.sections_editor.php';
-
+                throw new Exception('Deprecated branch of code called for section editor function!');
             }
         }
 
