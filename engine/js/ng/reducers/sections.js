@@ -26,6 +26,7 @@
           console.log('Sections reducer:', action);
           sections = state.getIn([action.resp.site, 'section']).toJSON();
           sections.push(action.resp.section);
+
           return state.setIn(
             [action.resp.site, 'section'],
             Immutable.fromJS(sections)

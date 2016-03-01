@@ -1328,10 +1328,12 @@ var BertaEditorBase = new Class({
 
     if (type_params) {
       //remove responsive section settings if needed
-      if (settings['pageLayout']['responsive'] !== 'yes') {
-          if (type_params.columns) { delete type_params.columns; }
-          if (type_params.entryMaxWidth) { delete type_params.entryMaxWidth; }
-          if (type_params.entryPadding) { delete type_params.entryPadding };
+      if (settings['pageLayout'] && settings['pageLayout']['responsive']) {
+        if (settings['pageLayout']['responsive'] !== 'yes') {
+            if (type_params.columns) { delete type_params.columns; }
+            if (type_params.entryMaxWidth) { delete type_params.entryMaxWidth; }
+            if (type_params.entryPadding) { delete type_params.entryPadding };
+        }
       }
 
       params = Object.getOwnPropertyNames(type_params);

@@ -39,13 +39,15 @@ class StateController extends Controller
                 $state['site_template_settings'][$site_name][$template] = $site_template_settings->get();
             }
 
-            if (!empty($state['sections'][$site_name])) {
+            if (!empty($state['sections'][$site_name]['section'])) {
                 foreach($state['sections'][$site_name]['section'] as $section) {
                     $section_name = $section['name'];
                     $entries = new Entries($site_name, $section_name);
                     $state['entries'][$site_name][$section_name] = $entries->get();
                     unset($entries);
                 }
+            } else {
+                $state['entries'][$site_name] = array();
             }
 
             $tags = new Tags($site_name);
@@ -58,7 +60,12 @@ class StateController extends Controller
             }
         }
 
-        $lang = $state['site_settings'][$site]['language']['language'];
+        $lang = 'en';
+
+        if (isset($state['site_settings'][$site]['language'])) {
+            $lang = $state['site_settings'][$site]['language']['language'];
+        }
+
         $state['template_settings'] = $templateSettings->get($lang);
         unset($sites);
 

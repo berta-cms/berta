@@ -9,6 +9,7 @@ class Tags Extends Storage {
     private $SECTION_NAME;
     private $XML_ROOT;
     private $XML_FILE;
+    private $TAGS;
 
     public function __construct($site='', $sectionName='') {
         parent::__construct($site);
@@ -24,7 +25,17 @@ class Tags Extends Storage {
     * @return array Array of tags
     */
     public function get() {
-        return $this->xmlFile2array($this->XML_FILE);
+        if (empty($this->TAGS)) {
+            $this->TAGS = $this->xmlFile2array($this->XML_FILE);
+
+            if (empty($this->TAGS)) {
+                $this->TAGS = array(
+                    'section' => array()
+                );
+            }
+        }
+
+        return $this->TAGS;
     }
 
     /**

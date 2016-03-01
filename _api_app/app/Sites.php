@@ -23,7 +23,11 @@ class Sites Extends Storage {
 
             if (empty($this->SITES)) {
                 // case for a single site (when storage/-sites does not exist)
-                $this->SITES = array('site' => array(0 => array('name' => '')));
+                $this->SITES = array(
+                    'site' => array(
+                        0 => array('name' => '', 'title' => '')
+                    )
+                );
             }
         }
 

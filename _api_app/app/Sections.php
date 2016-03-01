@@ -24,6 +24,12 @@ class Sections Extends Storage {
     public function get() {
         if (empty($this->SECTIONS)) {
             $this->SECTIONS = $this->xmlFile2array($this->XML_FILE);
+
+            if (empty($this->SECTIONS)) {
+                $this->SECTIONS = array(
+                    'section' => array()
+                );
+            }
         }
 
         return $this->SECTIONS;
