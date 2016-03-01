@@ -29,6 +29,8 @@ class Sections Extends Storage {
                 $this->SECTIONS = array(
                     'section' => array()
                 );
+            } else {
+                $this->SECTIONS['section'] = isset($this->SECTIONS['section']) ? $this->asList($this->SECTIONS['section']) : array();
             }
         }
 
@@ -39,6 +41,7 @@ class Sections Extends Storage {
         $sections = $this->get();
 
         if ($name !== null) {
+            $title = empty($title) ? $name : $title;
             $section_idx = array_search($name, array_column($sections['section'], 'name'));
 
             if ($section_idx === false) {
@@ -343,6 +346,7 @@ class Sections Extends Storage {
             $this->array2xmlFile($sections, $this->XML_FILE, $this->ROOT_ELEMENT);
 
             return array(
+                // @@@:TODO: mediafilder
                 'site' => $this->SITE,
                 'section' => $name,
                 'files' => $reordered

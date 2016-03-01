@@ -28,7 +28,9 @@ class Entries Extends Storage {
             $this->ENTRIES = $this->xmlFile2array($this->XML_FILE);
 
             if (empty($this->ENTRIES)) {
-                $this->ENTRIES = array();
+                $this->ENTRIES = array('entry' => array());
+            } else {
+                $this->ENTRIES['entry'] = isset($this->ENTRIES['entry']) ? $this->asList($this->ENTRIES['entry']) : array();
             }
         }
 
