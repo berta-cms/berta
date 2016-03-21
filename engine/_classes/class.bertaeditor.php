@@ -819,7 +819,7 @@ DOC;
 			$multisiteItem = '';
 		}
 
-		$helpdeskItem = self::$options['HOSTING_PROFILE'] ? '<li id="xHelpDesk"><a href="http://support.berta.me" target="_blank">helpdesk</a></li><li>|</li>' : '';
+		$helpdeskItem = self::$options['HOSTING_PROFILE'] ? '<li id="xHelpDesk"><a href="http://support.berta.me/kb" target="_blank">knowledge base</a></li><li>|</li>' : '';
 
 		$str_start = <<<DOC
 			<div id="xTopPanelContainer" class="xPanel">
