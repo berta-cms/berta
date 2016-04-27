@@ -1112,7 +1112,7 @@ var BertaEditorBase = new Class({
 				theme_advanced_blockformats : "p,h2,h3",
 
 				valid_elements : "iframe[*],object[*],embed[*],param[*],form[*],input[*],textarea[*],select[*],option[*]," +
-								 "p[class|style|id],b[class],i[class],strong[class],em[class],a[*],br[*],u[class]," +
+								 "p[class|style|id],b[class],i[class],strong[class],em[class],a[*],br[*],u[class],sup[*],sub[*]," +
 								 "ul[*],li,ol[*],img[*],hr[class],h2[class|style|id],h3[class|style|id],div[*],table[*],thead[*],tbody[*],tr[*],td[*],span[*],ins[*],blockquote[*],time[*]",
 				custom_elements : '',
 				extended_valid_elements : '',
@@ -1131,7 +1131,7 @@ var BertaEditorBase = new Class({
 			mode : "exact",
 			theme_advanced_buttons1 : "save,bold,italic,removeformat,link,code",
 			theme_advanced_buttons2 : "",
-			valid_elements : "p[*],b,i,strong,em,a[*],br[*],u,img[*],div[*],iframe[*],span[*],ins[*]",
+			valid_elements : "p[*],b,i,strong,em,a[*],br[*],u,img[*],div[*],iframe[*],span[*],ins[*],sup[*],sub[*]",
 			width : "100%", height: "60px !important",
 			theme_advanced_statusbar_location : null,
 			plugins: "save,insertanything"
