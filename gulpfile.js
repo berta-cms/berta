@@ -1,4 +1,5 @@
 var gulp = require('gulp'),
+    gulp_sourcemaps = require('gulp-sourcemaps'),
     gulp_concat = require('gulp-concat'),
     gulp_rebase_css_urls = require('gulp-rebase-css-urls'),
     gulp_minify_css = require('gulp-minify-css'),
@@ -80,8 +81,10 @@ gulp.task('css_frontend', function() {
 
 gulp.task('js_backend', function() {
     return gulp.src(js_backend_files)
+        .pipe(gulp_sourcemaps.init())
         .pipe(gulp_concat('backend.min.js'))
         .pipe(gulp_uglify_js())
+        .pipe(gulp_sourcemaps.write('/maps'))
         .pipe(gulp.dest('engine/js'))
         .pipe(livereload())
         .pipe(notify('JS: backend compiled!'));
@@ -89,8 +92,10 @@ gulp.task('js_backend', function() {
 
 gulp.task('js_frontend', function() {
     return gulp.src(js_frontend_files)
+        .pipe(gulp_sourcemaps.init())
         .pipe(gulp_concat('frontend.min.js'))
         .pipe(gulp_uglify_js())
+        .pipe(gulp_sourcemaps.write('/maps'))
         .pipe(gulp.dest('engine/js'))
         .pipe(livereload())
         .pipe(notify('JS: frontend compiled!'));

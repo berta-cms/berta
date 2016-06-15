@@ -353,7 +353,7 @@ var BertaEditor = new Class({
 		var wOrig = im.width, hOrig = im.height;
 
 		var imAlignment = imContainer.getClassStoredValue('xPosition');
-		imContainer.setStyle('display', 'block')
+		imContainer.setStyle('display', 'block');
 
 		var fnOnResize = function() {
 			var wndSize = $(window).getSize();
@@ -389,7 +389,7 @@ var BertaEditor = new Class({
 			im.setStyle('height', hOrig * scaleY + 'px');
 			im.setStyle('left', posX + 'px');
 			im.setStyle('top', posY + 'px');
-		}
+		};
 
 		$(window).addEvent('resize', fnOnResize);
 		fnOnResize();
@@ -397,10 +397,10 @@ var BertaEditor = new Class({
 
 	//sets iframe mode to transparent to allow click and edit in tiny mce
 	setWmodeTransparent: function(){
-		var objects = $$('iframe');
+		var objects = document.getElements('iframe');
 
 		objects.each(function(obj){
-			var srcAttr = obj.get('src');
+      var srcAttr = obj.src;
 			if (srcAttr && !srcAttr.match(/javascript:/gi) ){
 				var uri = new URI(srcAttr);
 				try {
