@@ -122,7 +122,11 @@ a img { border: none; }
 	position: <?php echo $s->get('heading', 'position') ?> !important;
 	<?php } ?>
 }
-	h1 a {
+	h1 a,
+  h1 a:link,
+  h1 a:visited,
+  h1 a:hover,
+  h1 a:active {
 		color: <?php echo $s->get('heading', 'color') ?> !important;
 		text-decoration: none;
 	}

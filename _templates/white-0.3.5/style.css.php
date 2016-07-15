@@ -142,7 +142,11 @@ a img { border: none; }
 				margin-top: <?php echo $s->get('pageHeading', 'marginTop') ?>;
 				margin-bottom: <?php echo $s->get('pageHeading', 'marginBottom') ?>;
 			}
-				#sideColumnTop h1 a {
+				#sideColumnTop h1 a,
+        #sideColumnTop h1 a:link,
+        #sideColumnTop h1 a:visited,
+        #sideColumnTop h1 a:hover,
+        #sideColumnTop h1 a:active {
 					color: <?php echo $s->get('pageHeading', 'color') ?> !important;
 					text-decoration: none;
 				}
