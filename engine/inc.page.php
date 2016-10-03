@@ -61,6 +61,7 @@ include_once 'inc.functions.php';
 include_once $ENGINE_ROOT . '_classes/class.berta.php';
 include_once $ENGINE_ROOT . '_classes/class.bertagallery.php';
 include_once $ENGINE_ROOT . 'inc.engineprefs.php';			// since this include $options refer to BertaBase::$options
+include_once $ENGINE_ROOT . 'inc.sentry_error_handling.php';
 if(empty($SITE_ABS_ROOT)) $SITE_ABS_ROOT = $options['SITE_ABS_ROOT'];
 if(empty($ENGINE_ABS_ROOT)) $ENGINE_ABS_ROOT = $options['ENGINE_ABS_ROOT'];
 
