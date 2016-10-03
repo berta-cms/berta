@@ -27,6 +27,7 @@ $int_version = BertaEditor::$options['int_version'];
 <link rel="SHORTCUT ICON" href="favicon.ico"/>
 <link rel="stylesheet" href="<?php echo $ENGINE_ABS_ROOT ?>css/backend.min.css?<?php echo $int_version ?>" type="text/css" charset="utf-8" />
 <link rel="stylesheet" href="<?php echo $ENGINE_ABS_ROOT ?>css/editor.css.php?<?php echo $int_version ?>" type="text/css" charset="utf-8" />
+<?php echo BertaTemplate::sentryScripts(); ?>
 <script type="text/javascript">
 	var bertaGlobalOptions = {
 		"paths":{

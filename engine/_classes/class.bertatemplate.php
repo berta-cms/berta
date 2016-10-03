@@ -353,8 +353,9 @@ DOC;
     <link rel="stylesheet" href="{$templatesAbsRoot}{$this->name}/style.css.php?{$timestamp}{$site}{$forceResponsiveStyleParam}" type="text/css">
 DOC;
 
-
+        $sentryScripts = self::sentryScripts();
         $vars['berta']['scripts'] = <<<DOC
+    {$sentryScripts}
     <script>
         var bertaGlobalOptions = $sttingsJS;
     </script>
@@ -464,9 +465,14 @@ DOC;
 		return $e;
 	}
 
+  public static function sentryScripts() {
+    $scripts = '';
+    $file = self::$options['TEMPLATES_FULL_SERVER_PATH'] . '../../../includes/sentry_template.html';
+    if (self::$options['HOSTING_PROFILE'] && file_exists($file)) {
+      $scripts = file_get_contents($file);
+    }
+    return $scripts;
+  }
+
 }
-
-
-
-
 ?>
