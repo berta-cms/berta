@@ -54,6 +54,7 @@ var js_frontend_files = [
     'engine/_lib/mootools/mootools-1.2.5.1-more-delegation.js',
     'engine/_lib/picturefill/picturefill.min.js',
     'engine/_lib/video-js/video.min.js',
+    'engine/_lib/js-cookie/js.cookie.js',
     'engine/js/BertaGallery.js',
     'engine/js/Berta.js',
     'engine/_lib/milkbox/js/milkbox.js'
