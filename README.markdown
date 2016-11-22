@@ -6,8 +6,18 @@ Berta does NOT require a database. All content is stored in files.
 
 For more information, visit http://www.berta.me
 
+Installation
+---------
+- Requires PHP >= 5.5.9
+- Read the file: `INSTALL/HOW-TO-INSTALL-OR-UPDATE.html`
+- Create empty `storage` folder in the app root and make sure it's writeable.
+- Install Node dependencies `npm install`.
+- Assets are managed by Gulp: http://gulpjs.com/. Run `gulp` to generate and listen for asset changes.
+- Backend API uses https://lumen.laravel.com/ PHP micro-framework. `cd _api_app` and run `composer install`. Composer is a Dependency Manager for PHP – https://getcomposer.org/ make sure it's installed.
+- Open app in browser and navigate to `/engine`. Default username `admin` password `xxx`.
+
 Changelog
-----------
+---------
 **v0.8.10b (release date 28 Nov 2014)**
  * image optimization for High-Resolution displays
  * option to disable fade animation for background galleries
