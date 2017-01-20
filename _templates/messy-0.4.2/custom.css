@@ -426,7 +426,7 @@ a:visited {
 }
 
 .pricing .plan.basic {
-	margin-bottom: 2.5em;
+	margin-bottom: 1em;
 }
 
 .plan .notes {
@@ -496,6 +496,11 @@ a:visited {
 
 .plan .buttons p {
 	margin-top: .7em !important;
+}
+
+#pageEntries .xEntry .entryText p.vat_note {
+  text-align: left;
+  margin: 0 1.5em;
 }
 
 .xContent-site-list #pageEntries h2 {
