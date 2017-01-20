@@ -383,7 +383,9 @@ var BertaGallery = new Class({
 
 	nav_onItemClick: function(event) {
 		// implementable in the future
-		event.stop();
+    if (event.event) {
+		  event.stop();
+    }
 		if ( this.interval ){
 			clearTimeout(this.interval);
 		}
