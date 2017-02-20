@@ -15,7 +15,7 @@ class Settings {
 	public $templateVersion;		// version of the template (derived from folder name)
 	public $fileName;				// the actual template file name
 	
-	public function Settings($settingsDefinition, $settingsBaseInstance = false, $templateName = false, $settings = false) {
+	public function __construct($settingsDefinition, $settingsBaseInstance = false, $templateName = false, $settings = false) {
 		$this->settingsDefinition = $settingsDefinition;
 		$this->base = $settingsBaseInstance;
 		$this->templateFullName = $templateName;
