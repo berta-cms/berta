@@ -24,7 +24,7 @@ class BertaTemplate extends BertaBase {
 	private $tagName;
 	private $tags;
 
-	public function BertaTemplate($templateName, $generalSettingsInstance = false, $loggedIn = false, $apacheRewriteUsed=false) {
+	public function __construct($templateName, $generalSettingsInstance = false, $loggedIn = false, $apacheRewriteUsed=false) {
 		$this->name = $templateName;
 		$this->loggedIn = $loggedIn;
 		$this->environment = !empty(self::$options['ENVIRONMENT']) ? self::$options['ENVIRONMENT'] : 'site';
