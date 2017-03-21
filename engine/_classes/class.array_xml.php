@@ -115,7 +115,7 @@ class Array_XML {
         if ($key !== '@attributes' && is_array($arrayElement)) {
           Array_XML::recursiveAddValueArray($arrayElement, $get_attributes);
         } else {
-          if ($key !== '@attributes' && $get_attributes) {
+          if ($key !== '@attributes' && $key !== 'value' && $get_attributes) {
             $array[$key] = array('value'=> $array[$key]);
           }
         }
@@ -150,7 +150,7 @@ class Array_XML {
         }
 
         if ($node->attributes->length && !is_array($output)) { //Has attributes but isn't an array
-          $output = array('@content'=>$output); //Change output into an array.
+          $output = array('value'=>$output); //Change output into an array.
         }
 
         if (is_array($output)) {
