@@ -8,6 +8,14 @@ For more information, visit http://www.berta.me
 
 Changelog
 ----------
+**v0.8.11b (release date 21 Mar 2017)**
+ * PHP 7 support
+ * portfolio page type
+ * guided tour
+ * localization improvements
+ * security improvements
+ * other minor improvements and bugfixes
+
 **v0.8.10b (release date 28 Nov 2014)**
  * image optimization for High-Resolution displays
  * option to disable fade animation for background galleries
