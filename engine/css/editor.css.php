@@ -397,6 +397,9 @@ body.xSettingsPageBody a.introjs-button {
 		float: left;
 		margin-right: 10px;
 	}
+  .xEditableImage input[type="file"], .xEditableICO input[type="file"] {
+    display: none;
+  }
 
 .xEditableYesNo {}
 	.xEditableYesNo a {

@@ -363,6 +363,10 @@ if(($entryId && $mediaFolder || $settingsProperty || $sectionName && $mediaFolde
 	$result['error'] = 'Wrong file type or size too big!';
 }
 
+if ($result['status'] == 0) {
+  http_response_code(400);
+}
+
 if (isset($_REQUEST['response']) && $_REQUEST['response'] == 'xml') {
 	// header('Content-type: text/xml');
 
@@ -376,18 +380,6 @@ if (isset($_REQUEST['response']) && $_REQUEST['response'] == 'xml') {
 	if($uplosadType == 'fancy')
 		header('Content-type: application/json');
 
-
-
 	echo Zend_Json::encode($result);
-
 }
-
-
-
-//error_log($outStr);
-//echo $outStr;
-
-
-
-
 ?>
