@@ -1,23 +1,3 @@
-
-
-if(window.FancyUpload2) {
-	var myFancyUpload2 = new Class({
-    	Extends: FancyUpload2,
-		showProgressBars: function() {
-			this.status.getElements('.xFUProgress').setStyle('display', 'block').fade('hide').fade('in');
-		},
-		hideProgressBars: function() {
-			this.status.getElements('.xFUProgress').each(function(el) {
-				el.fade('out').retrieve('tween').chain(Element.setStyle.bind(Element, [el, 'display', 'none']));
-			});
-		},
-		changeUploadURL: function(url) {
-			this.options.url = url;
-		}
-	});
-}
-
-
 var BertaEditor = new Class({
 
 	Extends: BertaEditorBase,

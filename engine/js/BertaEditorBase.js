@@ -282,7 +282,8 @@ var BertaEditorBase = new Class({
 				var aDelete = new Element('a', { 'href': '#' }).set('html', 'delete').inject(el);
         var fileInput = new Element('input', {'type': 'file'}).inject(el);
 
-        aNew.addEvent('click', function(){
+        aNew.addEvent('click', function(e){
+          e.preventDefault();
           fileInput.click();
         });
 
