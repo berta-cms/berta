@@ -448,9 +448,6 @@ var BertaGallery = new Class({
 		if(this.type == 'slideshow') {
 			var obj;
 			if(obj = this.imageContainer.getElement('div.xGalleryItem')) {
-				if (isResponsive){
-					obj.getParent().setAttribute('style', 'height:'+ obj.getSize().y + 'px !important');
-				}
 				obj.destroy();
 			}
 		}
