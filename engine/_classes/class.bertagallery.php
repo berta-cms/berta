@@ -379,7 +379,7 @@ class BertaGallery extends BertaBase {
 
         $alwaysSelectTag = $berta->settings->get('navigation', 'alwaysSelectTag') == 'yes';
 
-        $tagKeys = array_keys($berta->tags[$section['name']]);
+        $tagKeys = $berta->tags[$section['name']] ? array_keys($berta->tags[$section['name']]) : array();
         $notFirstTag = $tag != reset($tagKeys);
 
         $sectionKeys = array_keys($berta->sections);
