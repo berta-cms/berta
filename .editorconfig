@@ -9,7 +9,7 @@ charset = utf-8
 trim_trailing_whitespace = true
 insert_final_newline = true
 
-# Use 4 spaces for the Python files
+# Use 4 spaces for the PHP files
 [*.php]
 indent_size = 4
 max_line_length = 120
