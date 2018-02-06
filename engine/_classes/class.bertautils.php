@@ -284,29 +284,11 @@ class BertaUtils extends BertaBase {
 	      default: return false;
 	    }
 
-	    //solution for animated gif
-		if ( 0 && self::$options['HOSTING_PROFILE'] && ($info[2] == IMAGETYPE_GIF) ) {
-			$file_path = realpath($file);
-			$file_info = pathinfo($file_path);
-			$tmpFile = $file_info['dirname'] . '/' . $file_info['filename'] . $final_width . $final_height . '.gif';
-			$command = "/usr/bin/convert {$file_path} -coalesce -bordercolor LightSteelBlue -border 0 -resize {$final_width}x{$final_height} -layers Optimize {$tmpFile}";
-			exec($command);
-			$image_resized = imagecreatefromgif($tmpFile);
-			@unlink($tmpFile);
-	    }elseif ( extension_loaded('imagick') && ($info[2] == IMAGETYPE_GIF) ) {
-		    $animation = new Imagick($file);
-		    $animation = $animation->coalesceImages();
-		    foreach ($animation as $frame)
-		    {
-		        $frame->thumbnailImage($final_width, $final_height);
-		        $frame->setImagePage($final_width, $final_height, 0, 0);
-		    }
-		    $animation = $animation->deconstructImages();
-		    $tmpFile = $file.$final_width.$final_height.'.gif';
-		    $animation->writeImages($tmpFile, true);
+	  // Don't resize animated gifs
+		if ( $info[2] == IMAGETYPE_GIF && BertaUtils::is_animated($file) ) {
 
-			$image_resized = imagecreatefromgif($tmpFile);
-			@unlink($tmpFile);
+			$image_resized = imagecreatefromgif($file);
+
 		}else{
 		    # This is the resizing/resampling/transparency-preserving magic
 		    $image_resized = imagecreatetruecolor( $final_width, $final_height );
@@ -366,6 +348,30 @@ class BertaUtils extends BertaBase {
 	}
 
 
+	public static function is_animated($filename) {
+
+    if(!($fh = @fopen($filename, 'rb'))) {
+			return false;
+		}
+    $count = 0;
+    //an animated gif contains multiple "frames", with each frame having a
+    //header made up of:
+    // * a static 4-byte sequence (\x00\x21\xF9\x04)
+    // * 4 variable bytes
+    // * a static 2-byte sequence (\x00\x2C) (some variants may use \x00\x21 ?)
+
+    // We read through the file til we reach the end of the file, or we've found
+    // at least 2 frame headers
+    while(!feof($fh) && $count < 2) {
+			$chunk = fread($fh, 1024 * 100); //read 100kb at a time
+			$count += preg_match_all('#\x00\x21\xF9\x04.{4}\x00(\x2C|\x21)#s', $chunk, $matches);
+   	}
+		fclose($fh);
+
+    return $count > 1;
+	}
+
+
 	public static function smart_crop_image($file, $x, $y, $w, $h) {
 
 		$info = getimagesize($file);
@@ -385,28 +391,17 @@ class BertaUtils extends BertaBase {
 
 		$image_resized = imagecreatetruecolor( $w, $h );
 
-		//solution for animated gif (imagick extension must be installed and enabled)
-	    if ( extension_loaded('imagick') && ($info[2] == IMAGETYPE_GIF) ) {
-
-			$image = new Imagick($file);
-
-			$image = $image->coalesceImages();
-
-			foreach ($image as $frame) {
-			  $frame->cropImage($w, $h, $x, $y);
-			  $frame->thumbnailImage($w, $h);
-			  $frame->setImagePage($w, $h, 0, 0);
-			}
-
-			$image = $image->deconstructImages();
-			$image->writeImages($file, true);
+			// Don't resize or crop animated gifs
+			if ( $info[2] == IMAGETYPE_GIF && BertaUtils::is_animated($file) ) {
+				$w = $imageWidth;
+				$h = $imageHeight;
 
     	}else{
 		    if ( ($info[2] == IMAGETYPE_GIF) || ($info[2] == IMAGETYPE_PNG) ) {
 		      	$transparency = imagecolortransparent($image);
 
 		      	if ($transparency >= 0) {
-					$transparent_color  = @imagecolorsforindex($image, $transparency); // for animated gifs sometimes error is thrown :(
+							$transparent_color  = @imagecolorsforindex($image, $transparency); // for animated gifs sometimes error is thrown :(
 			        $transparency       = imagecolorallocate($image_resized, $transparent_color['red'], $transparent_color['green'], $transparent_color['blue']);
 			        imagefill($image_resized, 0, 0, $transparency);
 			        imagecolortransparent($image_resized, $transparency);
@@ -418,7 +413,7 @@ class BertaUtils extends BertaBase {
 		      	}
 		    }
 
-			imagecopy( $image_resized, $image, 0, 0,  $x, $y, $w, $h );
+				imagecopy( $image_resized, $image, 0, 0,  $x, $y, $w, $h );
 
 		    switch ( $info[2] ) {
 		      case IMAGETYPE_GIF:   imagegif($image_resized, $file);    break;

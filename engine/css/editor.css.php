@@ -1596,6 +1596,7 @@ a.xCreateNewEntry.xSaving {
 					margin: 0 auto 0;
 					display: block;
           max-width: 100%;
+					max-height: 80px;
 				}
 
 			.xEntryGalleryEditor .images ul li.selected { }
