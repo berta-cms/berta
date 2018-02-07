@@ -47,10 +47,10 @@ var js_backend_files = [
     'engine/js/BertaEditor_Seo.js',
     'engine/js/BertaEditor_ChangePassword.js',
     'engine/js/BertaEditor_Multisite.js',
-    'engine/_lib/fetch/promise.js',
-    'engine/_lib/fetch/fetch.js',
-    'engine/_lib/redux/redux.min.js',
-    'engine/_lib/immutable/immutable.min.js'
+    'node_modules/promise-polyfill/dist/polyfill.min.js',
+    'node_modules/whatwg-fetch/fetch.js',
+    'node_modules/immutable/dist/immutable.min.js',
+    'node_modules/redux/dist/redux.min.js'
 ];
 
 var js_ng_backend_files = [
