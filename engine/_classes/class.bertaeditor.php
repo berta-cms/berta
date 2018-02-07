@@ -778,23 +778,23 @@ DOC;
             $upgradeItem = '';
         }
 
-        if (!self::$options['MULTISITE_DISABLED']) {
-            $multisiteItem = '<li'.$m8Class.' id="xMultisite"><a href="multisite.php">'.$m8.'</a></li><li>|</li>';
-        }else{
-            $multisiteItem = '';
-        }
+		if (!self::$options['MULTISITE_DISABLED']) {
+			$multisiteItem = '<li'.$m8Class.' id="xMultisite"><a href="multisite.php">'.$m8.'</a></li><li>|</li>';
+		}else{
+			$multisiteItem = '';
+		}
 
-        $helpdeskItem = self::$options['HOSTING_PROFILE'] ? '<li id="xHelpDesk"><a href="http://support.berta.me" target="_blank">helpdesk</a></li><li>|</li>' : '';
+		$helpdeskItem = self::$options['HOSTING_PROFILE'] ? '<li id="xHelpDesk"><a href="http://support.berta.me/kb" target="_blank">knowledge base</a></li><li>|</li>' : '';
 
-        $str_start = <<<DOC
-            <div id="xTopPanelContainer" class="xPanel">
-                <div id="xTopPanelSlideIn"><span title="show menu">▼</span></div>
-                <div id="xTopPanel">
-                    <ul id="xEditorMenu">
-                        <li id="xTopPanelSlideOut"><span title="hide menu">▲</span></li>
-                        <li$m1Class id="xMySite"><a href="$m1_link">$m1</a></li><li>|</li>
-                        <li$m2Class id="xSections"><a href="$m2_link">$m2</a></li><li>|</li>
-                        <li$m4Class id="xTemplateDesign"><a href="$m4_link">$m4</a></li><li>|</li>
+		$str_start = <<<DOC
+			<div id="xTopPanelContainer" class="xPanel">
+				<div id="xTopPanelSlideIn"><span title="show menu">▼</span></div>
+				<div id="xTopPanel">
+					<ul id="xEditorMenu">
+						<li id="xTopPanelSlideOut"><span title="hide menu">▲</span></li>
+						<li$m1Class id="xMySite"><a href="$m1_link">$m1</a></li><li>|</li>
+						<li$m2Class id="xSections"><a href="$m2_link">$m2</a></li><li>|</li>
+						<li$m4Class id="xTemplateDesign"><a href="$m4_link">$m4</a></li><li>|</li>
                         <li$m3Class id="xSettings"><a href="$m3_link">$m3</a></li><li>|</li>
                         $multisiteItem
                         $shopItem

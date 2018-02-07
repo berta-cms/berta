@@ -11,7 +11,7 @@
     <meta name="keywords" content="{if $berta.section.seoKeywords}{ $berta.section.seoKeywords|strip_tags|escape }{else}{ $berta.settings.texts.metaKeywords|strip_tags|escape }{/if}">
     <meta name="description" content="{if $berta.section.seoDescription}{ $berta.section.seoDescription|strip_tags|escape }{else}{ $berta.settings.texts.metaDescription|strip_tags|escape }{/if}">
     <meta name="author" content="{ $berta.settings.texts.ownerName }">
-    {if $berta.options.NOINDEX}<meta name="robots" content="noindex, nofollow">{/if}
+    {if $berta.options.NOINDEX || !$berta.section.published}<meta name="robots" content="noindex, nofollow">{/if}
     {$berta.settings.settings.googleSiteVerification|@html_entity_decode}
     <title>{if $berta.section.seoTitle}{ $berta.section.seoTitle|strip_tags|escape }{else}{ $berta.pageTitle|strip_tags|escape }{/if}</title>
 

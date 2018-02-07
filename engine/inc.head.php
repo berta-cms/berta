@@ -1,3 +1,5 @@
+<?php echo BertaTemplate::sentryScripts(); ?>
+
 <script type="text/javascript">
   var bertaGlobalOptions = {
     "paths":{

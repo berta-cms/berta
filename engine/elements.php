@@ -78,16 +78,8 @@ if($jsonRequest) {
 						echo '</div>';
 
 						echo '<div class="xEntryGalleryAddMedia">';
-							echo '<div class="xEntryAddImagesFallback">' .
-									'<iframe name="xEntryUploadFrame' . $entry['id']['value'] . '" id="xEntryUploadFrame' . $entry['id']['value'] . '" class="xEntryUploadFrame"></iframe>' .
-									'<form target="xEntryUploadFrame' . $entry['id']['value'] . '" action="' . $ENGINE_ABS_ROOT . 'upload.php?' . ($site ? 'site='.$site.'&amp;' : '') . 'section=' . $decoded['section'] . '&amp;entry=' . $entry['id']['value'] . '&amp;mediafolder=' . $entry['mediafolder']['value'] . '&amp;session_id=' . session_id() . '" class="xEntryGalleryForm" method="post" enctype="multipart/form-data">' .
-										'<input type="hidden" name="upload_key" value="" />' .
-										'<input type="hidden" name="upload_type" value="fallback" />' .
-										//'<input type="file" name="Filedata" class="xUploadFile" /> ' .
-										'<input type="submit" value="Upload" class="xUploadButton" />' .
-									'</form>' .
-								 '</div>';
-							echo '<a class="xEntryAddImagesLink xEditorLink xHidden" href="#"><span>+ add media</span></a>';
+							echo '<input type="file" name="Filedata" class="xHidden" multiple>';
+							echo '<a class="xEntryAddImagesLink xEditorLink" href="' . $ENGINE_ABS_ROOT . 'upload.php?' . ($site ? 'site='.$site.'&amp;' : '') . 'section=' . $decoded['section'] . '&amp;entry=' . $entry['id']['value'] . '&amp;mediafolder=' . $entry['mediafolder']['value'] . '&amp;session_id=' . session_id() . '">+ add media</a>';
 						echo '</div>';
 
 						echo '<div class="xEntryGallerySettings xGreyBack xHidden">';
@@ -147,9 +139,7 @@ if($jsonRequest) {
 										echo '<span class="grabHandle xMAlign-container"><span class="xMAlign-outer"><a class="xMAlign-inner" title="click and drag to move"><span></span></a></span></span>';
 										echo '<a href="#" class="delete"></a>';
 										echo '<div class="dimsForm">' .
-												'<div class="posterContainer"></div><a class="poster" href="#">' . ($imageThumbSrc ? 'change' : 'upload') . ' poster frame</a>' .
-												/*'<span class="dim" property="width" x_params="' . $im['value'] . '">' . (!empty($im['@attributes']['width']) ? $im['@attributes']['width'] : BertaEditor::getXEmpty('width')) . '</span> x ' .
-												'<span class="dim" property="height" x_params="' . $im['value'] . '">' . (!empty($im['@attributes']['height']) ? $im['@attributes']['height'] : BertaEditor::getXEmpty('height')) . '</span>' . */
+												'<div class="posterContainer"></div><input type="file"><a class="poster" href="#">' . ($imageThumbSrc ? 'change' : 'upload') . ' poster frame</a>' .
 											 '</div>';
 										echo '<div class="xAutoPlay"><label><span class="xEditableRealCheck xProperty-videoAutoplay xParam-' . $im['@attributes']['src'] . '">'.( isset($im['@attributes']['autoplay']) && $im['@attributes']['autoplay'] ? 1 : 0 ).'</span>autoplay</label></div>';
 										echo '<div class="xEGEImageCaption ' . $xEditSelectorMCESimple . ' xProperty-galleryImageCaption xCaption-caption xParam-' . $im['@attributes']['src'] . '">', !empty($im['value']) ? $im['value'] : '', '</div>';
@@ -275,16 +265,8 @@ if($jsonRequest) {
 					echo '</div>';
 
 					echo '<div class="xBgAddMedia">';
-					    echo '<div class="xBgAddImagesFallback">' .
-					    		'<iframe name="xBgUploadFrame" id="xBgUploadFrame" class="xBgUploadFrame"></iframe>' .
-					    		'<form target="xBgUploadFrame" action="' . $ENGINE_ABS_ROOT . 'upload.php?' . ($site ? 'site='.$site.'&amp;' : '') . 'section=' . $section['name']['value'] . '&amp;mediafolder=' . $sectionMF . '&amp;section_background=true&amp;session_id=' . session_id() . '" class="xBgEditorForm" method="post" enctype="multipart/form-data">' .
-                                	'<input type="hidden" name="upload_key" value="" />' .
-					    			'<input type="hidden" name="upload_type" value="fallback" />' .
-					    			//'<input type="file" name="Filedata" class="xUploadFile" /> ' .
-					    			'<input type="submit" value="Upload" class="xUploadButton" />' .
-					    		'</form>' .
-					    	 '</div>';
-					    echo '<a class="xBgAddImagesLink xHidden" href="#"><span>+ add media</span></a>';
+              echo '<input type="file" name="Filedata" class="xHidden" multiple>';
+              echo '<a class="xEntryAddImagesLink" href="' . $ENGINE_ABS_ROOT . 'upload.php?' . ($site ? 'site='.$site.'&amp;' : '') . 'section=' . $section['name']['value'] . '&amp;mediafolder=' . $sectionMF . '&amp;section_background=true&amp;session_id=' . session_id() . '">+ add media</a>';
 					echo '</div>';
 
 					echo '<div class="xBgSettings xHidden">';
@@ -340,55 +322,24 @@ if($jsonRequest) {
 					    	foreach($section['mediaCacheData']['file'] as $idx => $im) {
 					    		if((string) $idx == '@attributes') continue;
 					    		$imageThumbSrc = false;
-					    		$imageWidth = 'auto';
-					    		if($im['@attributes']['type'] == 'video') {
-					    			if(!empty($im['@attributes']['poster_frame'])) {
-	 				    				$imSrc = $options['MEDIA_ROOT'] . $section['mediafolder']['value'] . '/' . (string) $im['@attributes']['poster_frame'];
-					    				$imageThumbSrc = BertaEditor::images_getSmallThumbFor($imSrc);
-					    				$imageSize = getimagesize($imageThumbSrc);
-					    				$imageWidth = $imageSize[0] + 'px';
-					    			}
 
-					    			echo '<li class="video" filename="' . (string) $im['@attributes']['src'] . '" fileinfo="' . '' . '">';
-					    			echo '<div class="placeholderContainer" style="background-image: ' . ($imageThumbSrc ? ('url(' . $imageThumbSrc . '?no_cache=' . rand() . ')') : 'none') . '; width: ' . $imageWidth . ';"><div class="placeholder"></div></div>';
-					    			echo '<span class="grabHandle xMAlign-container"><span class="xMAlign-outer"><a class="xMAlign-inner" title="click and drag to move"><span></span></a></span></span>';
-					    			echo '<a href="#" class="delete"></a>';
-					    			echo '<div class="dimsForm">' .
-					    					'<div class="posterContainer"></div><a class="poster" href="#">' . ($imageThumbSrc ? 'change' : 'upload') . ' poster frame</a>' .
-					    					/*'<span class="dim" property="width" x_params="' . $im['value'] . '">' . (!empty($im['@attributes']['width']) ? $im['@attributes']['width'] : BertaEditor::getXEmpty('width')) . '</span> x ' .
-					    					'<span class="dim" property="height" x_params="' . $im['value'] . '">' . (!empty($im['@attributes']['height']) ? $im['@attributes']['height'] : BertaEditor::getXEmpty('height')) . '</span>' . */
-					    				 '</div>';
-					    			echo '<div class="xEGEImageCaption ' . $xEditSelectorMCESimple . ' xProperty-galleryImageCaption xCaption-caption xParam-' . $im['@attributes']['src'] . '">', !empty($im['value']) ? $im['value'] : '', '</div>';
-					    			echo '</li>';
-					    			echo "\n";
-
-					    		} else {
-					    			$imSrc = $options['MEDIA_ROOT'] . $section['mediafolder']['value'] . '/' . (string) $im['@attributes']['src'];
-					    			$imageThumbSrc = BertaEditor::images_getSmallThumbFor($imSrc);
-					    			if($imageThumbSrc) {
-					    				echo '<li class="image" filename="' . (string) $im['@attributes']['src'] . '" fileinfo="' . '' . '">';
-					    				echo '<img class="img" src="' . $imageThumbSrc . '" />';
-					    				echo '<span class="grabHandle xMAlign-container"><span class="xMAlign-outer"><a class="xMAlign-inner" title="click and drag to move"><span></span></a></span></span>';
-					    				echo '<a href="#" class="delete"></a>';
-					    				echo '<div class="xEGEImageCaption ' . $xEditSelectorMCESimple . ' xProperty-galleryImageCaption xCaption-image-caption xParam-' . $im['@attributes']['src'] . '">', !empty($im['value']) ? $im['value'] : '', '</div>';
-					    				echo '</li>';
-					    			}
-
-					    		}
-
+				    			$imSrc = $options['MEDIA_ROOT'] . $section['mediafolder']['value'] . '/' . (string) $im['@attributes']['src'];
+				    			$imageThumbSrc = BertaEditor::images_getSmallThumbFor($imSrc);
+				    			if($imageThumbSrc) {
+				    				echo '<li class="image" filename="' . (string) $im['@attributes']['src'] . '" fileinfo="' . '' . '">';
+				    				echo '<img class="img" src="' . $imageThumbSrc . '" />';
+				    				echo '<span class="grabHandle xMAlign-container"><span class="xMAlign-outer"><a class="xMAlign-inner" title="click and drag to move"><span></span></a></span></span>';
+				    				echo '<a href="#" class="delete"></a>';
+				    				echo '<div class="xEGEImageCaption ' . $xEditSelectorMCESimple . ' xProperty-galleryImageCaption xCaption-image-caption xParam-' . $im['@attributes']['src'] . '">', !empty($im['value']) ? $im['value'] : '', '</div>';
+				    				echo '</li>';
+				    			}
 					    	}
-					    } else {
-					    	//echo '<li class="placeholder"><img src="' . $ENGINE_ROOT . 'layout/gallery-placeholder.gif" /></li>';
 					    }
 					echo "</ul></div>\n";
 				echo '</div>';
 			}
 			break;
 	}
-
-
-
 }
-
 
 ?>

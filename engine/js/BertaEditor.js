@@ -1,23 +1,3 @@
-
-
-if(window.FancyUpload2) {
-	var myFancyUpload2 = new Class({
-    	Extends: FancyUpload2,
-		showProgressBars: function() {
-			this.status.getElements('.xFUProgress').setStyle('display', 'block').fade('hide').fade('in');
-		},
-		hideProgressBars: function() {
-			this.status.getElements('.xFUProgress').each(function(el) {
-				el.fade('out').retrieve('tween').chain(Element.setStyle.bind(Element, [el, 'display', 'none']));
-			});
-		},
-		changeUploadURL: function(url) {
-			this.options.url = url;
-		}
-	});
-}
-
-
 var BertaEditor = new Class({
 
 	Extends: BertaEditorBase,
@@ -353,7 +333,7 @@ var BertaEditor = new Class({
 		var wOrig = im.width, hOrig = im.height;
 
 		var imAlignment = imContainer.getClassStoredValue('xPosition');
-		imContainer.setStyle('display', 'block')
+		imContainer.setStyle('display', 'block');
 
 		var fnOnResize = function() {
 			var wndSize = $(window).getSize();
@@ -389,7 +369,7 @@ var BertaEditor = new Class({
 			im.setStyle('height', hOrig * scaleY + 'px');
 			im.setStyle('left', posX + 'px');
 			im.setStyle('top', posY + 'px');
-		}
+		};
 
 		$(window).addEvent('resize', fnOnResize);
 		fnOnResize();
@@ -397,10 +377,10 @@ var BertaEditor = new Class({
 
 	//sets iframe mode to transparent to allow click and edit in tiny mce
 	setWmodeTransparent: function(){
-		var objects = $$('iframe');
+		var objects = document.getElements('iframe');
 
 		objects.each(function(obj){
-			var srcAttr = obj.get('src');
+      var srcAttr = obj.src;
 			if (srcAttr && !srcAttr.match(/javascript:/gi) ){
 				var uri = new URI(srcAttr);
 				try {

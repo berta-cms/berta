@@ -5,34 +5,34 @@ include_once('class.array_xml.php');
 define('SETTINGS_EMPTY', '$$$emptysettingsvalue$$$');
 
 class Settings {
-	
+
 	public $settings = array();
 	public $settingsDefinition;
-	
+
 	public $base;					// the super-settings, that propogate to these settings, if there's not value
 	public $templateName;			// name of the template (without version info)
 	public $templateFullName;		// full name of the template (the actual folder name with version)
 	public $templateVersion;		// version of the template (derived from folder name)
 	public $fileName;				// the actual template file name
-	
-	public function Settings($settingsDefinition, $settingsBaseInstance = false, $templateName = false, $settings = false) {
+
+	public function __construct($settingsDefinition, $settingsBaseInstance = false, $templateName = false, $settings = false) {
 		$this->settingsDefinition = $settingsDefinition;
 		$this->base = $settingsBaseInstance;
 		$this->templateFullName = $templateName;
-		
+
 		$tParts = explode('-', $templateName);
 		$this->templateName = $tParts[0];
 		$this->templateVersion = !empty($tParts[1]) ? $tParts[1] : 0;
-		
+
 		$this->fileName = $this->templateName ? str_replace('%', $this->templateName, BertaBase::$options['settings.%.xml']) : BertaBase::$options['settings.xml'];
-		
+
 		if($settings) {
 			$this->settings = $settings;
 		} else {
 			$this->load();
 		}
 	}
-	
+
 
 	function load() {
 		if(file_exists(BertaBase::$options['XML_ROOT'] . $this->fileName)) {
@@ -43,8 +43,8 @@ class Settings {
 		}
 		return false;
 	}
-	
-	
+
+
 	public function save() {
 		return $this->saveDo($this->settings);
 	}
@@ -56,7 +56,7 @@ class Settings {
 				return true;
 			}
 		}
-		
+
 		return false;
 	}
 	private function addCDATA(&$array, $depth = 0) {
@@ -69,15 +69,15 @@ class Settings {
 			if(is_array($array[$aId])) $this->addCDATA($array[$aId], $depth + 1);
 		}
 	}
-	
-	
-	
+
+
+
 	public function update($collection, $prop, $value) {
 		if(empty($this->settings[$collection])) $this->settings[$collection] = array();
 		$this->settings[$collection][$prop] = $value;
 		return true;
 	}
-	
+
 	public function delete($collection, $prop) {
 		if(isset($this->settings[$collection][$prop])) unset($this->settings[$collection][$prop]);
 		return true;
@@ -93,44 +93,44 @@ class Settings {
 				return $googleFont[0];
 			}else{
 				return $this->get('shop',$collection.'fontFamily');
-			}		
+			}
 		}else{
 			return $this->get($collection,'fontFamily');
 		}
 	}
-	
+
 	public function get($collection, $prop, $useEmptyIfEmpty = false, $inheritBase = true) {
 		//echo $collection, $prop, $this->settingsDefinition[$collection][$prop]['default'];
 		if(isset($this->settings[$collection][$prop])) {
 			$s = trim($this->settings[$collection][$prop]);
 			if(!$s && $this->base) $s = trim($this->base->get($collection, $prop, $useEmptyIfEmpty));
-			if(!$s && $useEmptyIfEmpty) 
+			if(!$s && $useEmptyIfEmpty)
 				return $this->getEmpty($prop);
 			else
 				return $s;
 		}
-		
+
 		elseif($inheritBase && $this->base && $this->base->exists($collection, $prop)) {
 			return trim($this->base->get($collection, $prop, $useEmptyIfEmpty));
 		}
-	
+
 		elseif(isset($this->settingsDefinition[$collection][$prop]['default'])) {
 			return $this->settingsDefinition[$collection][$prop]['default'];
 		}
-		
+
 		elseif($inheritBase && $this->base && isset($this->base->settingsDefinition[$collection][$prop]['default'])) {
 			return $this->base->settingsDefinition[$collection][$prop]['default'];
-		}	
-		
+		}
+
 		elseif($useEmptyIfEmpty) {
 			return $this->getEmpty($prop);
 		}
-			
+
 		else {
 			return NULL;
 		}
 	}
-	
+
 	public function getAll($collection, $useEmptyIfEmpty = false) {
 		$retArr = array();
 		if($collection != 'siteTexts') {
@@ -146,8 +146,8 @@ class Settings {
 		}
 		return $retArr;
 	}
-	
-	
+
+
 	public function getApplied() {
 		$defArray = array();
 		foreach($this->settingsDefinition as $col => $arr) {
@@ -157,19 +157,19 @@ class Settings {
 			}
 		}
 		$workingArray = array_merge_replace_recursive($defArray, $this->settings);
-		
+
 		//if($this->base) print_r($workingArray);
-		
+
 		if($this->base) {
 			$baseArr = $this->base->getApplied();
 			$workingArray = array_merge_replace_recursive($baseArr, $workingArray);
 		}
-		
+
 		//if($this->base) print_r($workingArray);
-		
+
 		return $workingArray;
 	}
-	
+
 	public function getDefinition($collection, $prop) {
 		if(isset($this->settingsDefinition[$collection][$prop])) {
 			return $this->settingsDefinition[$collection][$prop];
@@ -186,41 +186,41 @@ class Settings {
 	}
 
 
-	
+
 	public function getEmpty($property = false) {
 		return BertaContent::getXEmpty($property);
 	}
-	
+
 	public function exists($collection, $prop) {
 		if(isset($this->settings[$collection][$prop]))
 			return true;
-		
+
 		return false;
 	}
-	
+
 	public function definitionExists($collection, $prop) {
 		if(isset($this->settingsDefinition[$collection][$prop]))
 			return true;
-		
+
 		return false;
 	}
-	
+
 	public function isRequired($collection, $prop) {
 		if(!isset($this->settingsDefinition[$collection][$prop]))
 			return false;
 		elseif(!empty($this->settingsDefinition[$collection][$prop]['allow_blank']))
 			return false;
-		
+
 		return true;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
+
+
 	public function oppositeAlign($align) {
 		switch($align) {
 			case 'left': return 'right';

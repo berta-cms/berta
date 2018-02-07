@@ -88,8 +88,13 @@ h1 {
 	padding: 0;
 }
 
-	#contentContainer h1 a {
+	#contentContainer h1 a,
+  #contentContainer h1 a:link,
+  #contentContainer h1 a:visited,
+  #contentContainer h1 a:hover,
+  #contentContainer h1 a:active {
 		color: <?php echo $s->get('pageHeading', 'color') ?>;
+    text-decoration: none;
 	}
 
 #allContainer {

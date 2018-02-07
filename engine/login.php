@@ -83,6 +83,7 @@ $int_version = $options['int_version'];
 <link rel="stylesheet" href="<?php echo $ENGINE_ABS_ROOT ?>css/editor.css.php?<?php echo $int_version ?>" type="text/css" charset="utf-8" />
 <link rel="stylesheet" href="<?php echo $ENGINE_ABS_ROOT ?>css/login.css?<?php echo $int_version ?>" type="text/css" />
 <?php include 'inc.header_default_scripts.php' ?>
+<?php echo BertaTemplate::sentryScripts(); ?>
 <script type="text/javascript">
 	window.addEvent('domready', function() {
 		$('auth_user').focus();
@@ -105,7 +106,7 @@ $int_version = $options['int_version'];
 					<?php } ?>
 					<input type="hidden" name="auth_action" value="login" />
 					<!--[if IE ]> <input type="hidden" name="auth_browser" value="invalid" /> <![endif]-->
-					<!--[if (gte IE 9)|!(IE)]><!--> <input type="hidden" name="auth_browser" value="supported" /> <!--<![endif]-->
+					<!--[if !(IE)]><!--> <input type="hidden" name="auth_browser" value="supported" /> <!--<![endif]-->
                     <?php if ($options['HOSTING_PROFILE']) { ?>
                         <a href="<?php echo $login_action . '?provider=facebook&amp;remote_redirect=' . urlencode($options['SITE_HOST_ADDRESS'] . $ENGINE_ABS_ROOT . 'login.php') ?>" class="social_button social_button_facebook"><span class="icon-facebook"></span>Log in with Facebook</a>
                         <a href="<?php echo $login_action . '?provider=google&amp;remote_redirect=' . urlencode($options['SITE_HOST_ADDRESS'] . $ENGINE_ABS_ROOT . 'login.php')  ?>" class="social_button social_button_google"><span class="icon-google-plus"></span>Log in with Google</a>

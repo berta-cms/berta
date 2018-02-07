@@ -36,7 +36,6 @@ var js_backend_files = [
     'engine/js/Assets.js',
     'engine/js/BertaEditorBase.js',
     'engine/js/inline_edit.js',
-    'engine/js/swiff/Swiff.Uploader.js',
     'engine/js/BertaGalleryEditorAssets.js',
     'engine/js/BertaGalleryEditor.js',
     'engine/js/BertaBgEditor.js',

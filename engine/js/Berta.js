@@ -108,7 +108,7 @@ var Berta = new Class({
 	},
 	bgImageInit_do_do: function() {
 		var imContainer = $('xFilledBackground');
-		imContainer.setStyle('display', 'block')
+		imContainer.setStyle('display', 'block');
 
 		var im = imContainer.getElement('img');
 		var wOrig = im.width, hOrig = im.height;
@@ -151,7 +151,7 @@ var Berta = new Class({
 			//console.debug(Math.round((w - wOrig * scaleX) / 2), Math.round((h - hOrig * scaleY) / 2));
 			im.setStyle('left', posX + 'px');
 			im.setStyle('top', posY + 'px');
-		}
+		};
 
 		$(window).addEvent('resize', fnOnResize);
 		fnOnResize();
@@ -179,7 +179,7 @@ var Berta = new Class({
 					sideColumnBottom.setStyle('position', 'absolute');
 				}
 			}
-		}
+		};
 
 		if (templateName=='mashup' || templateName=='white'){
 
@@ -218,7 +218,7 @@ var Berta = new Class({
 	            var win_width = window.getSize().x;
 	            window.fireEvent('resize');
 	        }
-	    }
+	    };
 		responsiveMenu();
 	}
 

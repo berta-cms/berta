@@ -278,9 +278,14 @@ var BertaEditorBase = new Class({
 
 				// construct uploader
 				var fileNameContainer = new Element('span', { 'class': 'name' }).set('html', currentFile).inject(el);
-				var aNew = 				new Element('a', { 'href': '#' }).set('html', 'choose file').inject(el);
-				var aDelete = 			new Element('a', { 'href': '#' }).set('html', 'delete').inject(el);
-										new Element('br', { 'class': 'clear' }).inject(el);
+				var aNew = new Element('a', { 'href': '#' }).set('html', 'choose file').inject(el);
+				var aDelete = new Element('a', { 'href': '#' }).set('html', 'delete').inject(el);
+        var fileInput = new Element('input', {'type': 'file'}).inject(el);
+
+        aNew.addEvent('click', function(e){
+          e.preventDefault();
+          fileInput.click();
+        });
 
 				if(!currentFile) aDelete.setStyle('display', 'none');
 				aDelete.addEvent('click', this.eSup_onImageDeleteClick.bindWithEvent(this));
@@ -288,7 +293,7 @@ var BertaEditorBase = new Class({
 				params = [];
 				var paramNames = ['xMinWidth', 'xMinHeight', 'xMaxWidth', 'xMaxHeight'],
 					urlParamNames = ['min_width', 'min_height', 'max_width', 'max_height'], p;
-				for(var i = 0; i < paramNames.length; i++) {
+				for (var i = 0; i < paramNames.length; i++) {
 					p = el.getClassStoredValue(paramNames[i]);
 					if(p) params.push(urlParamNames[i] + '=' + p);
 				}
@@ -296,54 +301,56 @@ var BertaEditorBase = new Class({
 					params.push('site=' + this.query.site);
 				}
 
-                params.push('session_id=' + this.options.session_id);
+        params.push('session_id=' + this.options.session_id);
 
-				// instantiate fancy upload
-				var filesFilter = {'Images (*.jpg, *.jpeg, *.gif, *.png)': '*.jpg; *.jpeg; *.gif; *.png'};
-				if(editorClass == this.options.xBertaEditorClassICO) filesFilter = {'Icons (*.ico)': '*.ico'};
-				var uploader = new BertaGalleryUploader(false, this, {
-					verbose: false,
-					flashEnabled: true,
-					url: this.options.paths.engineRoot + 'upload.php?property=' + prop + '&' + params.join('&'),
-					path: this.options.paths.engineRoot + 'js/swiff/Swiff.Uploader.swf',
-					fileClass: Swiff.Uploader.File,
+				var allowedExtensions = ['jpg', 'jpeg', 'gif', 'png'];
 
-					imitSize: 10 * 1024 * 1024,
-					limitFiles: 1,
-					typeFilter: filesFilter,
-					instantStart: true,
+        if (editorClass == this.options.xBertaEditorClassICO) {
+          allowedExtensions = ['ico'];
+        }
 
-					// this is our browse button, *target* is overlayed with the Flash movie
-					container: el,
-					target: aNew,
-					fallback: null,
+        var xhr = new XMLHttpRequest();
 
-					onStart: function() {
-						el.removeClass('xEditing');
-						el.addClass('xSaving');
-					}.bind(this),
-					onComplete: function() {
-						el.removeClass('xSaving');
-						el.addClass('xEditing');
-						console.log('BertaEditorBase.elementEdit_init: BertaGalleryUploader.onComplete');
-					}.bind(this),
+        xhr.addEventListener('load', function() {
+          var data = JSON.decode(xhr.responseText);
 
-					onFileComplete: function(file) {
-						var json = $H(JSON.decode(file.response.text, true) || {});
-                        if(file.response.code == 401) {
-                            window.location.href = this.options.paths.engineRoot;
-                        } else if(json.get('status') > 0) {
-							fileNameContainer.empty();
-							fileNameContainer.set('html', json.get('filename'));
-							aDelete.setStyle('display', 'block');
-						} else {
-							alert(json.get('error'));
-						}
+          if (xhr.status == 401) {
+            window.location.href = this.options.paths.engineRoot;
+          } else if (data.status > 0) {
+            fileNameContainer.empty();
+            fileNameContainer.set('html', data.filename);
+            aDelete.setStyle('display', 'block');
+          } else {
+            alert(data.error);
+          }
+          el.removeClass('xSaving').addClass('xEditing');
+        }.bindWithEvent(this), false);
 
-						uploader.fileRemove(file);
-						console.log('BertaEditorBase.elementEdit_init: BertaGalleryUploader.onFileComplete');
-					}.bind(this)
-				});
+        xhr.addEventListener('error', function() {
+          el.removeClass('xSaving').addClass('xEditing');
+        }, false);
+
+        fileInput.addEvent('change', function() {
+          var inputFile = $$(fileInput);
+
+          if (inputFile.length) {
+            var formData = new FormData();
+            var fileName = inputFile[0].files[0].name;
+            var fileExtension = fileName.split('.').pop();
+
+            if (allowedExtensions.indexOf(fileExtension) === -1) {
+              alert('Allowed file extensions: ' + allowedExtensions.join(', '));
+              return false;
+            }
+
+            formData.append('Filedata', inputFile[0].files[0], fileName);
+            var url = this.options.paths.engineRoot + 'upload.php?property=' + prop + '&' + params.join('&');
+            el.removeClass('xEditing').addClass('xSaving');
+            xhr.open('POST', url, true);
+            xhr.send(formData);
+          }
+        }.bindWithEvent(this));
+
 				break;
 
 			case this.options.xBertaEditorClassColor:
@@ -1144,8 +1151,8 @@ var BertaEditorBase = new Class({
 				theme_advanced_blockformats : "p,h2,h3",
 
 				valid_elements : "iframe[*],object[*],embed[*],param[*],form[*],input[*],textarea[*],select[*],option[*]," +
-								 "p[class|style|id],b[class],i[class],strong[class],em[class],a[*],br[*],u[class]," +
-								 "ul[*],li,ol[*],img[*],hr[class],h2[class|style|id],h3[class|style|id],div[*],table[*],thead[*],tbody[*],tr[*],td[*],span[*],ins[*],blockquote[*],time[*]",
+								 "p[class|style|id],b[class],i[class],strong[class],em[class],a[*],br[*],u[class],sup[*],sub[*]," +
+								 "ul[*],li,ol[*],img[*],hr[class],h2[class|style|id],h3[class|style|id],div[*],blockquote[*],table[*],thead[*],tbody[*],tr[*],td[*],span[*],ins[*],blockquote[*],time[*]",
 				custom_elements : '',
 				extended_valid_elements : '',
 				convert_urls: false,
@@ -1163,7 +1170,7 @@ var BertaEditorBase = new Class({
 			mode : "exact",
 			theme_advanced_buttons1 : "save,bold,italic,removeformat,link,code",
 			theme_advanced_buttons2 : "",
-			valid_elements : "p[*],b,i,strong,em,a[*],br[*],u,img[*],div[*],iframe[*],span[*],ins[*]",
+			valid_elements : "p[*],b,i,strong,em,a[*],br[*],u,img[*],div[*],blockquote[*],iframe[*],span[*],ins[*],sup[*],sub[*]",
 			width : "100%", height: "60px !important",
 			theme_advanced_statusbar_location : null,
 			plugins: "save,insertanything"

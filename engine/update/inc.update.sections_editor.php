@@ -308,6 +308,18 @@ else if($decoded['action'] == 'CREATE_NEW_SECTION') {
 			$cloneSection['title'] = $sTitle;
 			unset($cloneSection['positionXY']);
 
+      // clone background gallery
+      if (isset($cloneSection['mediafolder'])) {
+        $cloneBackgroundMediafolder = $sName.'-background';
+
+        //clone background media folder
+        BertaUtils::copyFolder(
+          realpath($options['MEDIA_ROOT']) .'/'. $cloneSection['mediafolder']['value'],
+          realpath($options['MEDIA_ROOT']) .'/'. $cloneBackgroundMediafolder
+        );
+        $cloneSection['mediafolder'] = $cloneBackgroundMediafolder;
+      }
+
 			$sectionsList[$sName] = $cloneSection;
 			$cloneContent = BertaContent::loadBlog( $decoded['cloneSection'] );
 

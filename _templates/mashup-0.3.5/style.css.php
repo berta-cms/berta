@@ -113,6 +113,7 @@ a img { border: none; }
 			margin-left: 0;
 		}
 
+  .page-xMySite #sideColumn,
 	.ie6 #sideColumn {
 		position: absolute;
 		height: 100%;
@@ -234,6 +235,11 @@ a img { border: none; }
 			width: 140px;
 			padding: 20px 20px 30px;
 		}
+
+    .page-xMySite #sideColumnBottom {
+      position: static;
+    }
+
 			#sideColumnBottom p {
 				width: 100%;
 				font-size: 10px;
