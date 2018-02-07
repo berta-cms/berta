@@ -383,7 +383,9 @@ var BertaGallery = new Class({
 
 	nav_onItemClick: function(event) {
 		// implementable in the future
-		event.stop();
+    if (event.event) {
+		  event.stop();
+    }
 		if ( this.interval ){
 			clearTimeout(this.interval);
 		}
@@ -446,9 +448,6 @@ var BertaGallery = new Class({
 		if(this.type == 'slideshow') {
 			var obj;
 			if(obj = this.imageContainer.getElement('div.xGalleryItem')) {
-				if (isResponsive){
-					obj.getParent().setAttribute('style', 'height:'+ obj.getSize().y + 'px !important');
-				}
 				obj.destroy();
 			}
 		}

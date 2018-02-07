@@ -397,6 +397,9 @@ body.xSettingsPageBody a.introjs-button {
 		float: left;
 		margin-right: 10px;
 	}
+  .xEditableImage input[type="file"], .xEditableICO input[type="file"] {
+    display: none;
+  }
 
 .xEditableYesNo {}
 	.xEditableYesNo a {
@@ -559,10 +562,6 @@ body.xSettingsPageBody a.introjs-button {
 
 				ul#xEditorMenu li a:hover { color: #000; }
 
-                ul#xEditorMenu li#xHelpDesk a {
-                    color: #FFB800;
-                }
-
                 ul#xEditorMenu li.introjs-showElement a {
                     color: #000;
                 }
@@ -661,20 +660,12 @@ body.xSettingsPageBody a.introjs-button {
 		    	display: none;
 		    }
 
-		.xBgAddMedia a.xBgAddImagesLink {
+		.xBgAddMedia a.xEntryAddImagesLink {
 		    padding-top: 6px;
 		    display: block;
     	    width: 70px;
     	    text-decoration: none !important;
 		}
-
-		    .xBgAddMedia a.xBgAddImagesLink span {
-		    	color: #000;
-		    }
-
-		    .xBgAddMedia a.xBgAddImagesLink.hover span {
-    	        text-decoration: underline !important;
-    	    }
 
 		.xBgSettings, .xBgNavigationSettings, .xBgAnimationSettings  {
 			margin: 6px 0;
@@ -898,6 +889,7 @@ body.xSettingsPageBody a.introjs-button {
 				#xBgEditorPanel .images ul li img {
 					margin: 0 auto 0;
 					display: block;
+          max-width: 100%;
 				}
 
 			#xBgEditorPanel .images ul li.selected { }
@@ -1405,14 +1397,6 @@ a.xCreateNewEntry.xSaving {
             text-decoration: none !important;
 		}
 
-			.xEntryGalleryAddMedia a.xEntryAddImagesLink span {
-				color: #000;
-			}
-
-			.xEntryGalleryAddMedia a.xEntryAddImagesLink.hover span {
-                text-decoration: underline !important;
-            }
-
 		.xEntryGalleryEditor .xEntryGalleryMenu {
 			padding: 6px 6px 0;
 			min-height: 40px;
@@ -1611,6 +1595,8 @@ a.xCreateNewEntry.xSaving {
 				.xEntryGalleryEditor .images ul li img {
 					margin: 0 auto 0;
 					display: block;
+          max-width: 100%;
+					max-height: 80px;
 				}
 
 			.xEntryGalleryEditor .images ul li.selected { }
@@ -1711,6 +1697,11 @@ a.xCreateNewEntry.xSaving {
 					.xEntryGalleryEditor .images li .dimsForm .posterContainer {
 						position: relative;
 					}
+
+          .xEntryGalleryEditor .images li .dimsForm input[type="file"] {
+            display: none;
+          }
+
 					.xEntryGalleryEditor .images li .dimsForm a.poster {
 						display: block;
 						width: 100%;
@@ -1740,7 +1731,8 @@ a.xCreateNewEntry.xSaving {
 
     				.xEntryGalleryEditor .images li .xAutoPlay label {
     					font-size: 10px;
-						color: #333;
+						  color: #333;
+              vertical-align: top;
     				}
 
 				.xEntryGalleryEditor .images li .xEGEImageCaption,

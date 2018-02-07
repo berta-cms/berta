@@ -76,434 +76,441 @@ var BertaEditorBase = new Class({
 
   intialize: function() {
         this.initConsoleReplacement();
-  },
+      },
 
-  initConsoleReplacement: function() {
-    this.query = window.location.search.replace('?', '').parseQueryString();
-    if (this.query.site) {
-      this.options.updateUrl = this.options.updateUrl + "?site=" + this.query.site;
-      this.options.elementsUrl = this.options.elementsUrl + "?site=" + this.query.site;
-    }
-    if(!window.console) window.console = {};
-    if(!window.console.debug) window.console.debug = function() { };
-    if(!window.console.log) window.console.log = function() { };
-
-    var editor=this;
-    $(document).addEvent('keydown', function(event){
-        if (event.code == 16){
-        editor.shiftPressed=true;
+      initConsoleReplacement: function() {
+        this.query = window.location.search.replace('?', '').parseQueryString();
+        if (this.query.site) {
+          this.options.updateUrl = this.options.updateUrl + "?site=" + this.query.site;
+          this.options.elementsUrl = this.options.elementsUrl + "?site=" + this.query.site;
         }
-    }).addEvent('keyup', function() {
-      editor.shiftPressed=false;
-    });
-  },
+        if(!window.console) window.console = {};
+        if(!window.console.debug) window.console.debug = function() { };
+        if(!window.console.log) window.console.log = function() { };
 
-  fixDragHandlePos: function() {
-
-    $$(this.options.xBertaEditorClassDragXY).each(function(el) {
-      if (!el.hasClass('xEntry')){
-
-        handle = el.getElement('.xHandle');
-        handlePad = Math.abs(parseInt(handle.getStyle('margin-left')));
-        left = parseInt(el.getStyle('left'));
-
-        if (left<handlePad) {
-          handle.setStyle('left', (handlePad-left)+'px');
-        }else{
-          handle.setStyle('left', 0);
-        }
-      }
-    });
-
-  },
-
-  // News ticker functions
-  initNewsTicker: function() {
-    // init news ticker for all pages
-    this.newsTickerContainer = $('xNewsTickerContainer');
-    if(this.newsTickerContainer) {
-      this.newsTickerContainer.getElement('a.close').addEvent('click', function(event) {
-        event.stop();
-        this.hideNewsTicker();
-      }.bind(this));
-    }
-  },
-
-  hideNewsTicker: function(event) {
-    this.newsTickerContainer = $('xNewsTickerContainer');
-
-    if(!this.newsTickerContainer.hasClass('xNewsTickerHidden')) {
-      this.newsTickerContainer.addClass('xNewsTickerHidden');
-
-      var topPanel = $('xTopPanel');
-      var editorMenu = $('xEditorMenu');
-      var totalWidth = 0;
-
-      editorMenu.getElements('li').each(function(el) {
-        totalWidth += el.getSize().x;
-      });
-      totalWidth += parseInt(editorMenu.getStyle('padding-left')) + parseInt(editorMenu.getStyle('padding-right')) + 1;
-
-      new Fx.Slide(this.newsTickerContainer, { duration: 800, transition: Fx.Transitions.Quint.easeInOut }).show().slideOut();
-      topPanel.set('tween', {duration: 800, transition: Fx.Transitions.Quint.easeInOut }).tween('width', topPanel.getSize().x + 1 + 'px', totalWidth + 'px');
-
-      Cookie.write('_berta_newsticker_hidden', 1 /*,{ domain: window.location.host, path: window.location.pathname }*/);
-    }
-  },
-
-
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-   ///|  Element initialization  |///////////////////////////////////////////////////////////////////////////////////////////////////////
-  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-  elementEdit_init: function(el, editorClass, onElementSave) {
-
-    if(el.retrieve('elementEdit_init')) return false; // already initialized
-    el.store('elementEdit_init', true);
-
-    var bPlaceholderSet = this.makePlaceholderIfEmpty(el),
-      self = this;
-
-
-    switch(editorClass) {
-      case this.options.xBertaEditorClassSimple:
-        el.store('onElementSave', onElementSave);
-        el.addClass(editorClass.substr(1));
-        el.addEvent('click', function(event, editor) {
-          if(!this.hasClass('xSaving') && !this.hasClass('xEditing')) {
-            this.addClass('xEditing');
-            editor.makeEmptyIfEmpty(this);
-            editor.elementEdit_instances.push(this.inlineEdit({ onComplete: editor.elementEdit_save.bind(editor) }));
-            editor.fireEvent(BertaEditorBase.EDITABLE_START, [el, editor.elementEdit_instances[editor.elementEdit_instances.length - 1]]);
-          }
-        }.bindWithEvent(el, this));
-        //this.makePlaceholderIfEmpty(el);
-        break;
-
-      case this.options.xBertaEditorClassTA:
-        el.store('onElementSave', onElementSave);
-        el.addClass(editorClass.substr(1));
-        el.addEvent('click', function(event, editor) {
-          if(!this.hasClass('xSaving') && !this.hasClass('xEditing')) {
-            this.addClass('xEditing');
-            if(this.inlineIsEmpty()) this.innerHTML = '&nbsp;';
-            editor.elementEdit_instances.push(this.inlineEdit({ type: 'textarea', onComplete: editor.elementEdit_save.bind(editor)  }));
-            editor.fireEvent(BertaEditorBase.EDITABLE_START, [el, editor.elementEdit_instances[editor.elementEdit_instances.length - 1]]);
-          }
-        }.bindWithEvent(el, this));
-        break;
-
-      case this.options.xBertaEditorClassMCE:
-      case this.options.xBertaEditorClassMCESimple:
-        el.store('onElementSave', onElementSave);
-        el.addClass(editorClass.substr(1));
-
-        el.addEvent('click', function(event, editor) {
-          $$('.xEditOwerlay').destroy();
-          if(!this.hasClass('xSaving') && !this.hasClass('xEditing')) {
-            el.addClass('xEditing');
-            if(this.inlineIsEmpty()) this.innerHTML = '';
-            editor.elementEdit_instances.push(this.inlineEdit({
-              type: 'textarea',
-              WYSIWYGSettings: el.hasClass(editor.options.xBertaEditorClassMCESimple.substr(1)) ?
-                        editor.tinyMCESettings.simple.options :
-                        editor.tinyMCESettings.full.options,
-              onComplete: editor.elementEdit_save.bind(editor) }));
-            editor.fireEvent(BertaEditorBase.EDITABLE_START, [el, editor.elementEdit_instances[editor.elementEdit_instances.length - 1]]);
-          }
-        }.bindWithEvent(el, this));
-
-        self.initEditOwerlay(el);
-        break;
-
-      case this.options.xBertaEditorClassRC:
-        el.store('onElementSave', onElementSave);
-        el.addClass(editorClass.substr(1));
-        el.addEvent('click', function(event, editor) {
-          if(!this.hasClass('xSaving') && !this.hasClass('xEditing')) {
-            el.addClass('xEditing');
-            if(this.inlineIsEmpty()) this.innerHTML = '';
-            this.set('old_content', this.innerHTML);
-            this.set('text', this.get('title'));
-            editor.elementEdit_instances.push(this.inlineEdit({ onComplete: editor.elementEdit_save.bind(editor) }));
-            editor.fireEvent(BertaEditorBase.EDITABLE_START, [el, editor.elementEdit_instances[editor.elementEdit_instances.length - 1]]);
-          }
-        }.bindWithEvent(el, this));
-        break;
-
-      case this.options.xBertaEditorClassSelect:
-      case this.options.xBertaEditorClassSelectRC:
-      case this.options.xBertaEditorClassFontSelect:
-        el.store('onElementSave', onElementSave);
-        el.addClass(editorClass.substr(1));
-        el.addEvent('click', function(event, editor) {
-          if(!this.hasClass('xSaving') && !this.hasClass('xEditing')) {
-            this.addClass('xEditing');
-
-            if(this.inlineIsEmpty()) this.innerHTML = '';
-            editor.elementEdit_instances.push(
-              this.inlineEdit({
-                type: 'select',
-                subtype: this.hasClass(editor.options.xBertaEditorClassFontSelect.substr(1)) ? 'font' : (this.hasClass(editor.options.xBertaEditorClassSelectRC.substr(1)) ? 'rc' : ''),
-                selectOptions: this.getProperty('x_options').split('||'),
-                onComplete: editor.elementEdit_save.bind(editor)
-              })
-            );
-            editor.fireEvent(BertaEditorBase.EDITABLE_START, [el, editor.elementEdit_instances[editor.elementEdit_instances.length - 1]]);
-          }
-        }.bindWithEvent(el, this));
-        break;
-
-      case this.options.xBertaEditorClassYesNo:
-        el.store('onElementSave', onElementSave);
-        el.addClass(editorClass.substr(1));
-        var isSetToYes = bPlaceholderSet ? false : (el.get('html') == '1' ? true : false);
-        el.empty();
-        var prop = el.getClassStoredValue('xProperty');
-
-        var aYes =  new Element('a', { 'href': '#', 'class': (isSetToYes ? 'active' : '') + ' xValue-1' }).set('html', 'yes');
-        var aNo =   new Element('a', { 'href': '#', 'class': (isSetToYes ? '' : 'active') + ' xValue-0' }).set('html', 'no');
-        el.grab(aYes).appendText(' / ').grab(aNo);
-        aNo.addEvent('click', this.eSup_onYesNoClick.bindWithEvent(this));
-        aYes.addEvent('click', this.eSup_onYesNoClick.bindWithEvent(this));
-        break;
-
-      case this.options.xBertaEditorClassImage:
-      case this.options.xBertaEditorClassICO:
-        el.store('onElementSave', onElementSave);
-        el.addClass(editorClass.substr(1));
-        var currentFile = bPlaceholderSet ? '' : el.get('html');
-        el.empty();
-        var prop = el.getClassStoredValue('xProperty');
-
-        // construct uploader
-        var fileNameContainer = new Element('span', { 'class': 'name' }).set('html', currentFile).inject(el);
-        var aNew =        new Element('a', { 'href': '#' }).set('html', 'choose file').inject(el);
-        var aDelete =       new Element('a', { 'href': '#' }).set('html', 'delete').inject(el);
-                    new Element('br', { 'class': 'clear' }).inject(el);
-
-        if(!currentFile) aDelete.setStyle('display', 'none');
-        aDelete.addEvent('click', this.eSup_onImageDeleteClick.bindWithEvent(this));
-
-        params = [];
-        var paramNames = ['xMinWidth', 'xMinHeight', 'xMaxWidth', 'xMaxHeight'],
-          urlParamNames = ['min_width', 'min_height', 'max_width', 'max_height'], p;
-        for(var i = 0; i < paramNames.length; i++) {
-          p = el.getClassStoredValue(paramNames[i]);
-          if(p) params.push(urlParamNames[i] + '=' + p);
-        }
-        if( this.query.site ) {
-          params.push('site=' + this.query.site);
-        }
-
-                params.push('session_id=' + this.options.session_id);
-
-        // instantiate fancy upload
-        var filesFilter = {'Images (*.jpg, *.jpeg, *.gif, *.png)': '*.jpg; *.jpeg; *.gif; *.png'};
-        if(editorClass == this.options.xBertaEditorClassICO) filesFilter = {'Icons (*.ico)': '*.ico'};
-        var uploader = new BertaGalleryUploader(false, this, {
-          verbose: false,
-          flashEnabled: true,
-          url: this.options.paths.engineRoot + 'upload.php?property=' + prop + '&' + params.join('&'),
-          path: this.options.paths.engineRoot + 'js/swiff/Swiff.Uploader.swf',
-          fileClass: Swiff.Uploader.File,
-
-          imitSize: 10 * 1024 * 1024,
-          limitFiles: 1,
-          typeFilter: filesFilter,
-          instantStart: true,
-
-          // this is our browse button, *target* is overlayed with the Flash movie
-          container: el,
-          target: aNew,
-          fallback: null,
-
-          onStart: function() {
-            el.removeClass('xEditing');
-            el.addClass('xSaving');
-          }.bind(this),
-          onComplete: function() {
-            el.removeClass('xSaving');
-            el.addClass('xEditing');
-            console.log('BertaEditorBase.elementEdit_init: BertaGalleryUploader.onComplete');
-          }.bind(this),
-
-          onFileComplete: function(file) {
-            var json = $H(JSON.decode(file.response.text, true) || {});
-                        if(file.response.code == 401) {
-                            window.location.href = this.options.paths.engineRoot;
-                        } else if(json.get('status') > 0) {
-              fileNameContainer.empty();
-              fileNameContainer.set('html', json.get('filename'));
-              aDelete.setStyle('display', 'block');
-            } else {
-              alert(json.get('error'));
+        var editor=this;
+        $(document).addEvent('keydown', function(event){
+            if (event.code == 16){
+            editor.shiftPressed=true;
             }
-
-            uploader.fileRemove(file);
-            console.log('BertaEditorBase.elementEdit_init: BertaGalleryUploader.onFileComplete');
-          }.bind(this)
+        }).addEvent('keyup', function() {
+          editor.shiftPressed=false;
         });
-        break;
+      },
 
-      case this.options.xBertaEditorClassColor:
-        el.store('onElementSave', onElementSave);
-        el.addClass(editorClass.substr(1));
+      fixDragHandlePos: function() {
 
-        if(results = el.get('html').match(/\#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/)) {
-          new Element('SPAN', {
-            'class': 'colorPreview',
-            'styles': {
-                  'background-color': results[0]
+        $$(this.options.xBertaEditorClassDragXY).each(function(el) {
+          if (!el.hasClass('xEntry')){
+
+            handle = el.getElement('.xHandle');
+            handlePad = Math.abs(parseInt(handle.getStyle('margin-left')));
+            left = parseInt(el.getStyle('left'));
+
+            if (left<handlePad) {
+              handle.setStyle('left', (handlePad-left)+'px');
+            }else{
+              handle.setStyle('left', 0);
+            }
+          }
+        });
+
+      },
+
+      // News ticker functions
+      initNewsTicker: function() {
+        // init news ticker for all pages
+        this.newsTickerContainer = $('xNewsTickerContainer');
+        if(this.newsTickerContainer) {
+          this.newsTickerContainer.getElement('a.close').addEvent('click', function(event) {
+            event.stop();
+            this.hideNewsTicker();
+          }.bind(this));
+        }
+      },
+
+      hideNewsTicker: function(event) {
+        this.newsTickerContainer = $('xNewsTickerContainer');
+
+        if(!this.newsTickerContainer.hasClass('xNewsTickerHidden')) {
+          this.newsTickerContainer.addClass('xNewsTickerHidden');
+
+          var topPanel = $('xTopPanel');
+          var editorMenu = $('xEditorMenu');
+          var totalWidth = 0;
+
+          editorMenu.getElements('li').each(function(el) {
+            totalWidth += el.getSize().x;
+          });
+          totalWidth += parseInt(editorMenu.getStyle('padding-left')) + parseInt(editorMenu.getStyle('padding-right')) + 1;
+
+          new Fx.Slide(this.newsTickerContainer, { duration: 800, transition: Fx.Transitions.Quint.easeInOut }).show().slideOut();
+          topPanel.set('tween', {duration: 800, transition: Fx.Transitions.Quint.easeInOut }).tween('width', topPanel.getSize().x + 1 + 'px', totalWidth + 'px');
+
+          Cookie.write('_berta_newsticker_hidden', 1 /*,{ domain: window.location.host, path: window.location.pathname }*/);
+        }
+      },
+
+
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+       ///|  Element initialization  |///////////////////////////////////////////////////////////////////////////////////////////////////////
+      //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+      elementEdit_init: function(el, editorClass, onElementSave) {
+
+        if(el.retrieve('elementEdit_init')) return false;	// already initialized
+        el.store('elementEdit_init', true);
+
+        var bPlaceholderSet = this.makePlaceholderIfEmpty(el),
+          self = this;
+
+
+        switch(editorClass) {
+          case this.options.xBertaEditorClassSimple:
+            el.store('onElementSave', onElementSave);
+            el.addClass(editorClass.substr(1));
+            el.addEvent('click', function(event, editor) {
+              if(!this.hasClass('xSaving') && !this.hasClass('xEditing')) {
+                this.addClass('xEditing');
+                editor.makeEmptyIfEmpty(this);
+                editor.elementEdit_instances.push(this.inlineEdit({ onComplete: editor.elementEdit_save.bind(editor) }));
+                editor.fireEvent(BertaEditorBase.EDITABLE_START, [el, editor.elementEdit_instances[editor.elementEdit_instances.length - 1]]);
               }
-          }).inject(el, 'top');
-        }
+            }.bindWithEvent(el, this));
+            //this.makePlaceholderIfEmpty(el);
+            break;
 
-        el.addEvent('click', function(event, editor) {
-          if(!this.hasClass('xSaving') && !this.hasClass('xEditing')) {
-            this.addClass('xEditing');
-            this.set('old_content', el.get('html'));
+          case this.options.xBertaEditorClassTA:
+            el.store('onElementSave', onElementSave);
+            el.addClass(editorClass.substr(1));
+            el.addEvent('click', function(event, editor) {
+              if(!this.hasClass('xSaving') && !this.hasClass('xEditing')) {
+                this.addClass('xEditing');
+                if(this.inlineIsEmpty()) this.innerHTML = '&nbsp;';
+                editor.elementEdit_instances.push(this.inlineEdit({ type: 'textarea', onComplete: editor.elementEdit_save.bind(editor)  }));
+                editor.fireEvent(BertaEditorBase.EDITABLE_START, [el, editor.elementEdit_instances[editor.elementEdit_instances.length - 1]]);
+              }
+            }.bindWithEvent(el, this));
+            break;
 
-            var tempValue;
-            if(results = this.get('html').match(/\#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/))
-              tempValue = results[0];     // set to the matched color value
-            else
-              tempValue = el.get('title');  // set to default value
+          case this.options.xBertaEditorClassMCE:
+          case this.options.xBertaEditorClassMCESimple:
+            el.store('onElementSave', onElementSave);
+            el.addClass(editorClass.substr(1));
 
-            if(!editor.mooRainbow)
-              editor.mooRainbow = new MooRainbow(null, {
-                id: 'xMooRainbow',
-                wheel: true,
-                imgPath: '_lib/moorainbow/images/'
-              });
-            editor.mooRainbow.element = this;
+            el.addEvent('click', function(event, editor) {
+              $$('.xEditOwerlay').destroy();
+              if(!this.hasClass('xSaving') && !this.hasClass('xEditing')) {
+                el.addClass('xEditing');
+                if(this.inlineIsEmpty()) this.innerHTML = '';
+                editor.elementEdit_instances.push(this.inlineEdit({
+                  type: 'textarea',
+                  WYSIWYGSettings: el.hasClass(editor.options.xBertaEditorClassMCESimple.substr(1)) ?
+                            editor.tinyMCESettings.simple.options :
+                            editor.tinyMCESettings.full.options,
+                  onComplete: editor.elementEdit_save.bind(editor) }));
+                editor.fireEvent(BertaEditorBase.EDITABLE_START, [el, editor.elementEdit_instances[editor.elementEdit_instances.length - 1]]);
+              }
+            }.bindWithEvent(el, this));
 
-            editor.mooRainbow.removeEvents('change');
-            editor.mooRainbow.removeEvents('complete');
-            editor.mooRainbow.removeEvents('abort');
-            editor.mooRainbow.addEvent('change', function(color) {
-              //inlineBertaEditor.inputBox.set('value', color.hex);
+            self.initEditOwerlay(el);
+            break;
+
+          case this.options.xBertaEditorClassRC:
+            el.store('onElementSave', onElementSave);
+            el.addClass(editorClass.substr(1));
+            el.addEvent('click', function(event, editor) {
+              if(!this.hasClass('xSaving') && !this.hasClass('xEditing')) {
+                el.addClass('xEditing');
+                if(this.inlineIsEmpty()) this.innerHTML = '';
+                this.set('old_content', this.innerHTML);
+                this.set('text', this.get('title'));
+                editor.elementEdit_instances.push(this.inlineEdit({ onComplete: editor.elementEdit_save.bind(editor) }));
+                editor.fireEvent(BertaEditorBase.EDITABLE_START, [el, editor.elementEdit_instances[editor.elementEdit_instances.length - 1]]);
+              }
+            }.bindWithEvent(el, this));
+            break;
+
+          case this.options.xBertaEditorClassSelect:
+          case this.options.xBertaEditorClassSelectRC:
+          case this.options.xBertaEditorClassFontSelect:
+            el.store('onElementSave', onElementSave);
+            el.addClass(editorClass.substr(1));
+            el.addEvent('click', function(event, editor) {
+              if(!this.hasClass('xSaving') && !this.hasClass('xEditing')) {
+                this.addClass('xEditing');
+
+                if(this.inlineIsEmpty()) this.innerHTML = '';
+                editor.elementEdit_instances.push(
+                  this.inlineEdit({
+                    type: 'select',
+                    subtype: this.hasClass(editor.options.xBertaEditorClassFontSelect.substr(1)) ? 'font' : (this.hasClass(editor.options.xBertaEditorClassSelectRC.substr(1)) ? 'rc' : ''),
+                    selectOptions: this.getProperty('x_options').split('||'),
+                    onComplete: editor.elementEdit_save.bind(editor)
+                  })
+                );
+                editor.fireEvent(BertaEditorBase.EDITABLE_START, [el, editor.elementEdit_instances[editor.elementEdit_instances.length - 1]]);
+              }
+            }.bindWithEvent(el, this));
+            break;
+
+          case this.options.xBertaEditorClassYesNo:
+            el.store('onElementSave', onElementSave);
+            el.addClass(editorClass.substr(1));
+            var isSetToYes = bPlaceholderSet ? false : (el.get('html') == '1' ? true : false);
+            el.empty();
+            var prop = el.getClassStoredValue('xProperty');
+
+            var aYes = 	new Element('a', { 'href': '#', 'class': (isSetToYes ? 'active' : '') + ' xValue-1' }).set('html', 'yes');
+            var aNo = 	new Element('a', { 'href': '#', 'class': (isSetToYes ? '' : 'active') + ' xValue-0' }).set('html', 'no');
+            el.grab(aYes).appendText(' / ').grab(aNo);
+            aNo.addEvent('click', this.eSup_onYesNoClick.bindWithEvent(this));
+            aYes.addEvent('click', this.eSup_onYesNoClick.bindWithEvent(this));
+            break;
+
+          case this.options.xBertaEditorClassImage:
+          case this.options.xBertaEditorClassICO:
+            el.store('onElementSave', onElementSave);
+            el.addClass(editorClass.substr(1));
+            var currentFile = bPlaceholderSet ? '' : el.get('html');
+            el.empty();
+            var prop = el.getClassStoredValue('xProperty');
+
+            // construct uploader
+            var fileNameContainer = new Element('span', { 'class': 'name' }).set('html', currentFile).inject(el);
+            var aNew = new Element('a', { 'href': '#' }).set('html', 'choose file').inject(el);
+            var aDelete = new Element('a', { 'href': '#' }).set('html', 'delete').inject(el);
+            var fileInput = new Element('input', {'type': 'file'}).inject(el);
+
+            aNew.addEvent('click', function(e){
+              e.preventDefault();
+              fileInput.click();
             });
-            editor.mooRainbow.addEvent('complete', function(color) {
-              editor.elementEdit_save(editor, el, tempValue, tempValue, color.hex, color.hex);
-              //inlineBertaEditor.onSave();
-            });
-            editor.mooRainbow.addEvent('abort', function(color) {
-              editor.elementEdit_save(editor, el, tempValue, tempValue, color.hex, color.hex);
-              //inlineBertaEditor.inputBox.set('value', tempValue);
-              //inlineBertaEditor.onSave();
-            });
 
-            var currentColor = new Color(tempValue, 'RGB');
-            editor.mooRainbow.show.delay(10, editor.mooRainbow);
-            editor.mooRainbow.backupColor = currentColor;
-            editor.mooRainbow.layout.backup.setStyle('background-color', editor.mooRainbow.backupColor.rgbToHex());
-            editor.mooRainbow.manualSet(currentColor);
+            if(!currentFile) aDelete.setStyle('display', 'none');
+            aDelete.addEvent('click', this.eSup_onImageDeleteClick.bindWithEvent(this));
 
-            editor.fireEvent(BertaEditorBase.EDITABLE_START, [el, null]);
-          }
-        }.bindWithEvent(el, this));
-        break;
-
-      case this.options.xEditableRealCheck:
-
-        el.store('onElementSave', onElementSave);
-        el.addClass(editorClass.substr(1));
-
-        var value = String(el.get('html'));
-
-        el.empty();
-        var checkEl = new Element('input', { 'type': 'button', 'class': value == 1 ? 'checked' : '', 'value': '' }).inject(el);
-
-        el.addEvent('click', this.eSup_onRealCheckClick.bindWithEvent(this, [el, checkEl]));
-        break;
-
-      case this.options.xBertaEditorClassDragXY:
-        el.store('onElementSave', onElementSave);
-        el.addClass(editorClass.substr(1));
-
-        var xGuideLineX;
-        var xGuideLineY;
-
-        el.getElement('.xHandle').addEvents({
-          click: function(event) {
-            event.preventDefault();
-          },
-          mouseenter: function(event){
-            //create guidelines
-            winSize=document.getScrollSize();
-
-            xGuideLineX = new Element('div', {
-                'id': 'xGuideLineX',
-                'class': 'xGuideLine',
-              styles: {
-                  width: winSize.x +'px'
-                }
-            });
-            xGuideLineY = new Element('div', {
-                'id': 'xGuideLineY',
-                'class': 'xGuideLine',
-              styles: {
-                  height: winSize.y +'px'
-                }
-            });
-
-            xGuideLineX.inject(document.body);
-            if(document.body.getElement('#contentContainer.xCentered') && el.hasClass('xFixed') == false) {
-              xGuideLineY.inject(document.body.getElement('#contentContainer'));
-            } else if(document.body.getElement('#allContainer.xCentered') && el.hasClass('xFixed') == false) {
-              xGuideLineY.inject(document.body.getElement('#allContainer'));
-            } else {
-              xGuideLineY.inject(document.body);
+            params = [];
+            var paramNames = ['xMinWidth', 'xMinHeight', 'xMaxWidth', 'xMaxHeight'],
+              urlParamNames = ['min_width', 'min_height', 'max_width', 'max_height'], p;
+            for (var i = 0; i < paramNames.length; i++) {
+              p = el.getClassStoredValue(paramNames[i]);
+              if(p) params.push(urlParamNames[i] + '=' + p);
             }
-            self.drawGuideLines(el, xGuideLineX, xGuideLineY);
-          },
-          mouseleave: function(event){
-            xGuideLineX.destroy();
-            xGuideLineY.destroy();
-          }
-        });
-
-        var gridStep=parseInt(bertaGlobalOptions.gridStep);
-        gridStep=isNaN(gridStep)||gridStep<1?1:gridStep;
-
-        if( $('pageEntries') ) var allEntries = $('pageEntries').getElements('.mess');
-
-        var dragAll = false;
-
-        el.makeDraggable({
-            snap: 0,
-            grid: gridStep,
-          handle: el.getElement('.xHandle'),
-            onSnap: function(el) {
-            el.addClass('xEditing');
-            var xCoords = new Element('div', {
-              id: 'xCoords'
-            });
-            el.grab(xCoords , 'top');
-            dragAll = self.shiftPressed && el.hasClass('xEntry');
-            if(dragAll){
-              el.startTop = parseInt(el.getStyle('top'));
-              el.startLeft = parseInt(el.getStyle('left'));
-
-              i=0;
-              var entriesStartTop = new Array();
-              var entriesStartLeft = new Array();
-
-              allEntries.each(function(entry){
-                if (el != entry){
-                  entriesStartTop[i]=parseInt(entry.getStyle('top'));
-                  entriesStartLeft[i]=parseInt(entry.getStyle('left'));
-                  i++;
-                }
-              });
-
-              el.entriesStartTop = entriesStartTop;
-              el.entriesStartLeft = entriesStartLeft;
+            if( this.query.site ) {
+              params.push('site=' + this.query.site);
             }
-            },
-          onDrag: function(){
-            $('xTopPanelContainer').hide();
+
+            params.push('session_id=' + this.options.session_id);
+
+            var allowedExtensions = ['jpg', 'jpeg', 'gif', 'png'];
+
+            if (editorClass == this.options.xBertaEditorClassICO) {
+              allowedExtensions = ['ico'];
+            }
+
+            var xhr = new XMLHttpRequest();
+
+            xhr.addEventListener('load', function() {
+              var data = JSON.decode(xhr.responseText);
+
+              if (xhr.status == 401) {
+                window.location.href = this.options.paths.engineRoot;
+              } else if (data.status > 0) {
+                fileNameContainer.empty();
+                fileNameContainer.set('html', data.filename);
+                aDelete.setStyle('display', 'block');
+              } else {
+                alert(data.error);
+              }
+              el.removeClass('xSaving').addClass('xEditing');
+            }.bindWithEvent(this), false);
+
+            xhr.addEventListener('error', function() {
+              el.removeClass('xSaving').addClass('xEditing');
+            }, false);
+
+            fileInput.addEvent('change', function() {
+              var inputFile = $$(fileInput);
+
+              if (inputFile.length) {
+                var formData = new FormData();
+                var fileName = inputFile[0].files[0].name;
+                var fileExtension = fileName.split('.').pop();
+
+                if (allowedExtensions.indexOf(fileExtension) === -1) {
+                  alert('Allowed file extensions: ' + allowedExtensions.join(', '));
+                  return false;
+                }
+
+                formData.append('Filedata', inputFile[0].files[0], fileName);
+                var url = this.options.paths.engineRoot + 'upload.php?property=' + prop + '&' + params.join('&');
+                el.removeClass('xEditing').addClass('xSaving');
+                xhr.open('POST', url, true);
+                xhr.send(formData);
+              }
+            }.bindWithEvent(this));
+
+            break;
+
+          case this.options.xBertaEditorClassColor:
+            el.store('onElementSave', onElementSave);
+            el.addClass(editorClass.substr(1));
+
+            if(results = el.get('html').match(/\#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/)) {
+              new Element('SPAN', {
+                'class': 'colorPreview',
+                'styles': {
+                      'background-color': results[0]
+                  }
+              }).inject(el, 'top');
+            }
+
+            el.addEvent('click', function(event, editor) {
+              if(!this.hasClass('xSaving') && !this.hasClass('xEditing')) {
+                this.addClass('xEditing');
+                this.set('old_content', el.get('html'));
+
+                var tempValue;
+                if(results = this.get('html').match(/\#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/))
+                  tempValue = results[0];			// set to the matched color value
+                else
+                  tempValue = el.get('title');	// set to default value
+
+                if(!editor.mooRainbow)
+                  editor.mooRainbow = new MooRainbow(null, {
+                    id: 'xMooRainbow',
+                    wheel: true,
+                    imgPath: '_lib/moorainbow/images/'
+                  });
+                editor.mooRainbow.element = this;
+
+                editor.mooRainbow.removeEvents('change');
+                editor.mooRainbow.removeEvents('complete');
+                editor.mooRainbow.removeEvents('abort');
+                editor.mooRainbow.addEvent('change', function(color) {
+                  //inlineBertaEditor.inputBox.set('value', color.hex);
+                });
+                editor.mooRainbow.addEvent('complete', function(color) {
+                  editor.elementEdit_save(editor, el, tempValue, tempValue, color.hex, color.hex);
+                  //inlineBertaEditor.onSave();
+                });
+                editor.mooRainbow.addEvent('abort', function(color) {
+                  editor.elementEdit_save(editor, el, tempValue, tempValue, color.hex, color.hex);
+                  //inlineBertaEditor.inputBox.set('value', tempValue);
+                  //inlineBertaEditor.onSave();
+                });
+
+                var currentColor = new Color(tempValue, 'RGB');
+                editor.mooRainbow.show.delay(10, editor.mooRainbow);
+                editor.mooRainbow.backupColor = currentColor;
+                editor.mooRainbow.layout.backup.setStyle('background-color', editor.mooRainbow.backupColor.rgbToHex());
+                editor.mooRainbow.manualSet(currentColor);
+
+                editor.fireEvent(BertaEditorBase.EDITABLE_START, [el, null]);
+              }
+            }.bindWithEvent(el, this));
+            break;
+
+          case this.options.xEditableRealCheck:
+
+            el.store('onElementSave', onElementSave);
+            el.addClass(editorClass.substr(1));
+
+            var value = String(el.get('html'));
+
+            el.empty();
+            var checkEl = new Element('input', { 'type': 'button', 'class': value == 1 ? 'checked' : '', 'value': '' }).inject(el);
+
+            el.addEvent('click', this.eSup_onRealCheckClick.bindWithEvent(this, [el, checkEl]));
+            break;
+
+          case this.options.xBertaEditorClassDragXY:
+            el.store('onElementSave', onElementSave);
+            el.addClass(editorClass.substr(1));
+
+            var xGuideLineX;
+            var xGuideLineY;
+
+            el.getElement('.xHandle').addEvents({
+              click: function(event) {
+                event.preventDefault();
+              },
+              mouseenter: function(event){
+                //create guidelines
+                winSize=document.getScrollSize();
+
+                xGuideLineX = new Element('div', {
+                    'id': 'xGuideLineX',
+                    'class': 'xGuideLine',
+                  styles: {
+                      width: winSize.x +'px'
+                    }
+                });
+                xGuideLineY = new Element('div', {
+                    'id': 'xGuideLineY',
+                    'class': 'xGuideLine',
+                  styles: {
+                      height: winSize.y +'px'
+                    }
+                });
+
+                xGuideLineX.inject(document.body);
+                if(document.body.getElement('#contentContainer.xCentered') && el.hasClass('xFixed') == false) {
+                  xGuideLineY.inject(document.body.getElement('#contentContainer'));
+                } else if(document.body.getElement('#allContainer.xCentered') && el.hasClass('xFixed') == false) {
+                  xGuideLineY.inject(document.body.getElement('#allContainer'));
+                } else {
+                  xGuideLineY.inject(document.body);
+                }
+                self.drawGuideLines(el, xGuideLineX, xGuideLineY);
+              },
+              mouseleave: function(event){
+                xGuideLineX.destroy();
+                xGuideLineY.destroy();
+              }
+            });
+
+            var gridStep=parseInt(bertaGlobalOptions.gridStep);
+            gridStep=isNaN(gridStep)||gridStep<1?1:gridStep;
+
+            if( $('pageEntries') ) var allEntries = $('pageEntries').getElements('.mess');
+
+            var dragAll = false;
+
+            el.makeDraggable({
+                snap: 0,
+                grid: gridStep,
+              handle: el.getElement('.xHandle'),
+                onSnap: function(el) {
+                el.addClass('xEditing');
+                var xCoords = new Element('div', {
+                  id: 'xCoords'
+                });
+                el.grab(xCoords , 'top');
+                dragAll = self.shiftPressed && el.hasClass('xEntry');
+                if(dragAll){
+                  el.startTop = parseInt(el.getStyle('top'));
+                  el.startLeft = parseInt(el.getStyle('left'));
+
+                  i=0;
+                  var entriesStartTop = new Array();
+                  var entriesStartLeft = new Array();
+
+                  allEntries.each(function(entry){
+                    if (el != entry){
+                      entriesStartTop[i]=parseInt(entry.getStyle('top'));
+                      entriesStartLeft[i]=parseInt(entry.getStyle('left'));
+                      i++;
+                    }
+                  });
+
+                  el.entriesStartTop = entriesStartTop;
+                  el.entriesStartLeft = entriesStartLeft;
+                }
+                },
+              onDrag: function(){
+                $('xTopPanelContainer').hide();
                         if (parseInt(el.getStyle('left'))<0){
                             el.setStyle('left', '0');
                         }
@@ -1082,7 +1089,7 @@ var BertaEditorBase = new Class({
     }.bind(this);
    },
 
-  elementEdit_action: function(el, action, params) {
+   elementEdit_action: function(el, action, params) {
     el.addClass('xSaving');
     var entryInfo = this.getEntryInfoForElement(el);
     if(entryInfo.section == '') entryInfo.section = this.sectionName;
@@ -1140,37 +1147,6 @@ var BertaEditorBase = new Class({
           }
         }.bind(this)
       ));
-
-      // var data = {
-      //     section: entryInfo.section, action: action, property: null, value: null
-      //   };
-      // console.log('BertaEditorBase.elementEdit_reset:', data);
-      // new Request.JSON({
-      //   url: this.options.updateUrl,
-      //   data: "json=" + JSON.encode(data),
-      //   onComplete: function(resp) {
-      //     if(!resp) {
-      //       alert('server produced an error while performing the requested action! something went sooooo wrong...');
-      //     } else if(resp && !resp.error_message) {
-      //     } else {
-      //       alert(resp.error_message);
-      //     }
-      //     if(el) {
-      //       el.removeClass.delay(500, el, 'xSaving');
-      //       elem = el.getSiblings('.xCommand-' + params);
-      //       if(elem.length == 0) elem = el.getSiblings('.xProperty-' + params);
-      //       elem.each(function(item) {
-      //         item.set('title', '#ffffff').set('text', 'none');
-      //         //new Element('SPAN', {
-      //         //  'class': 'colorPreview',
-      //         //  'styles': {
-      //         //    'background-color': 'rgb(255, 255, 255)'
-      //         //  }
-      //         //}).inject(item, 'top');
-      //       });
-      //     }
-      //   }.bind(this)
-      // }).post();
     }
   },
 
@@ -1219,8 +1195,8 @@ var BertaEditorBase = new Class({
         theme_advanced_blockformats : "p,h2,h3",
 
         valid_elements : "iframe[*],object[*],embed[*],param[*],form[*],input[*],textarea[*],select[*],option[*]," +
-                 "p[class|style|id],b[class],i[class],strong[class],em[class],a[*],br[*],u[class]," +
-                 "ul[*],li,ol[*],img[*],hr[class],h2[class|style|id],h3[class|style|id],div[*],table[*],thead[*],tbody[*],tr[*],td[*],span[*],ins[*],blockquote[*],time[*]",
+                 "p[class|style|id],b[class],i[class],strong[class],em[class],a[*],br[*],u[class],sup[*],sub[*]," +
+                 "ul[*],li,ol[*],img[*],hr[class],h2[class|style|id],h3[class|style|id],div[*],blockquote[*],table[*],thead[*],tbody[*],tr[*],td[*],span[*],ins[*],blockquote[*],time[*]",
         custom_elements : '',
         extended_valid_elements : '',
         convert_urls: false,
@@ -1238,7 +1214,7 @@ var BertaEditorBase = new Class({
       mode : "exact",
       theme_advanced_buttons1 : "save,bold,italic,removeformat,link,code",
       theme_advanced_buttons2 : "",
-      valid_elements : "p[*],b,i,strong,em,a[*],br[*],u,img[*],div[*],iframe[*],span[*],ins[*]",
+      valid_elements : "p[*],b,i,strong,em,a[*],br[*],u,img[*],div[*],blockquote[*],iframe[*],span[*],ins[*],sup[*],sub[*]",
       width : "100%", height: "60px !important",
       theme_advanced_statusbar_location : null,
       plugins: "save,insertanything"

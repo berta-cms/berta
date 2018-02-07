@@ -46,6 +46,22 @@ function is_mobile(){
     return isset($_SERVER['HTTP_X_WAP_PROFILE']) or isset($_SERVER['HTTP_PROFILE']) or preg_match($regex_match, strtolower($_SERVER['HTTP_USER_AGENT']));
 }
 
+// For 4.3.0 <= PHP <= 5.4.0
+if (!function_exists('http_response_code'))
+{
+    function http_response_code($newcode = NULL)
+    {
+        static $code = 200;
+        if($newcode !== NULL)
+        {
+            header('X-PHP-Response-Code: '.$newcode, true, $newcode);
+            if(!headers_sent())
+                $code = $newcode;
+        }
+        return $code;
+    }
+}
+
 function d($var){
     echo '<div style="text-align:left;"><pre>';
     print_r($var);

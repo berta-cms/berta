@@ -1,4 +1,3 @@
-
 var BertaGalleryEditor = new Class({
 
 	Extends: BertaEditorBase,
@@ -68,7 +67,6 @@ var BertaGalleryEditor = new Class({
 			url: this.options.elementsUrl,
 			update: this.allContainer,
 			onComplete: function(resp) {
-				//console.debug(resp);
 				this.allContainer.removeClass('xSavingAtLarge');
 				this.attach.delay(10, this);
 				this.fireEvent('load');
@@ -153,7 +151,6 @@ var BertaGalleryEditor = new Class({
 
 
 	detach: function() {
-		this.uploader.detatch();
 		this.container.getElements('.xEntrySetGalType a').removeEvents();
 		this.sortingDeactivate();
 		this.processHandler.removeObservable(this);
@@ -168,90 +165,7 @@ var BertaGalleryEditor = new Class({
 	////  APPEARANCE  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	addMainUploader: function() {
-		var uploader = this.uploader = new BertaGalleryUploader(this.strip, this, {
-			verbose: false,
-			flashEnabled: this.options.flashUploadEnabled,
-			url: this.container.getElement('.xEntryGalleryForm').get('action'),
-			path: this.options.engineRoot + 'js/swiff/Swiff.Uploader.swf',
-			fileClass: BertaGalleryUploader.File,
-
-			limitSize: 300 * 1024 * 1024,
-			//typeFilter: {'Images (*.jpg, *.jpeg, *.gif, *.png)': '*.jpg; *.jpeg; *.gif; *.png'},
-			instantStart: true,
-
-			// this is our browse button, *target* is overlayed with the Flash movie
-			container: this.container,
-			target: this.container.getElement('.xEntryAddImagesLink'),
-			fallback: this.container.getElement('.xEntryAddImagesFallback'),
-
-			onStart: function() {
-				this.isUploading = true;
-				this.strip.addClass('processing');
-				this.sortingDeactivate();
-				this.sortingChanged = true;
-				this.unlinearProcess_start(this.uploadQueueProcessId, 'Uploading files');
-			}.bind(this),
-
-			onComplete: function() {
-				this.isUploading = false;
-				this.strip.removeClass('processing');
-				this.unlinearProcess_stop(this.uploadQueueProcessId);
-				this.sortingActivate();
-				console.log('BertaGalleryEditor.addMainUploader: BertaGalleryUploader.onComplete');
-			}.bind(this),
-
-			onSelectSuccess: function(files) {
-				if(files.length > 0) {
-					var placeholder = this.strip.getElement('li.placeholder');
-					if(placeholder) {
-						this.sortingRemoveElement(placeholder);
-						placeholder.destroy();
-					}
-				}
-			}.bind(this),
-
-
-			onFileComplete: function(file) {
-                var json = $H(JSON.decode(file.response.text, true) || {});
-
-                if(file.response.code == 401) {
-                    window.location.href = this.options.engineRoot;
-                } else if(json.get('status') > 0) {
-					file.element.retrieve('FXProgressBar').start(100).chain(function() {
-						var el = file.element;
-
-						// clear the LI element
-						el.getChildren().each(function(child) { child.destroy(); });
-
-						// render
-						this.addUploadedElement(el, json);
-					}.bind(this));
-				} else {
-					file.element.retrieve('FXProgressBar').start(100).chain(function() {
-						file.element.addClass('file-failed');
-						file.info.set('html', json.get('error'));
-						file.remove.delay(5000, file);
-					}.bind(this.uploader));
-				}
-				console.log('BertaGalleryEditor.addMainUploader: BertaGalleryUploader.onFileComplete');
-			}.bind(this),
-
-			onFallbackFileComplete: function(responseString) {
-				//console.debug('onFallbackFileComplete: ', responseString);
-				var json = $H(JSON.decode(responseString, true) || {});
-				if(json.get('status') > 0) {
-					var el = new Element('li', {'class': 'file'}).inject(this.strip);
-					this.addUploadedElement(el, json);
-
-				} else {
-					var el = new Element('li', {'class': 'file', 'html': json.get('error') })
-								.inject(this.strip)
-								.addClass('file-failed');
-					el.destroy.delay(5000, el);
-				}
-
-			}.bind(this)
-		});
+    this.uploader = new BertaGalleryUploader(this);
 	},
 
 	addUploadedElement: function(container, uploaResponseJSON) {
@@ -313,11 +227,13 @@ var BertaGalleryEditor = new Class({
 			targetElDims.w = 150;
 			targetElDims.h = 80;
 
-			var posterLink = new Element('a', { 'class': 'poster', 'href': '#', 'html': 'upload poster image' });
+			var fileInput = new Element('input', {'type': 'file'});
+      var posterLink = new Element('a', { 'class': 'poster', 'href': '#', 'html': 'upload poster image' });
 			new Element('DIV', {
 				'class': 'dimsForm'
 			}).adopt(
 				new Element('div', { 'class': 'posterContainer' }),
+        fileInput,
 				posterLink
 			).inject(container);
 
@@ -344,78 +260,16 @@ var BertaGalleryEditor = new Class({
 	},
 
 
-
-
 	addElementPosterUploader: function(uploadLinkElement) {
 		var links = uploadLinkElement ? [ uploadLinkElement ] : this.allContainer.getElements('a.poster');
-		links.each(function(posterLink) {
 
+		links.each(function(posterLink) {
 			var liElement = posterLink.getParent('li.video');
 			var videoSrc = liElement.get('filename');
 
-			var uploader = new BertaGalleryUploader(false, this, {
-				verbose: false,
-				flashEnabled: true,
-				url: this.container.getElement('.xEntryGalleryForm').get('action') + '&poster_for=' + videoSrc,
-				path: this.options.engineRoot + 'js/swiff/Swiff.Uploader.swf',
-				fileClass: Swiff.Uploader.File,
-
-				imitSize: 10 * 1024 * 1024,
-				limitFiles: 1,
-				typeFilter: {'Images (*.jpg, *.jpeg, *.gif, *.png)': '*.jpg; *.jpeg; *.gif; *.png'},
-				instantStart: true,
-
-				// this is our browse button, *target* is overlayed with the Flash movie
-				container: liElement.getElement('div.posterContainer'),
-				target: posterLink,
-				fallback: null,
-
-				onStart: function() {
-					this.isUploading = true;
-					this.strip.addClass('processing');
-					this.sortingDeactivate();
-					this.sortingChanged = true;
-					this.unlinearProcess_start(this.uploadQueueProcessId, 'Uploading poster frame for ' + videoSrc);
-				}.bind(this),
-
-				onComplete: function() {
-					this.isUploading = false;
-					this.strip.removeClass('processing');
-					this.unlinearProcess_stop(this.uploadQueueProcessId);
-					this.sortingActivate();
-					console.log('BertaGalleryEditor.addElementPosterUploader: BertaGalleryUploader.onComplete');
-				}.bind(this),
-
-				onFileComplete: function(file) {
-					var json = $H(JSON.decode(file.response.text, true) || {});
-
-                    if(file.response.code == 401) {
-                        window.location.href = this.options.engineRoot;
-                    } else if(json.get('status') > 0) {
-
-							liElement.setStyle('width', 'auto');
-							var placeHolder = liElement.getElement('div.placeholderContainer');
-							placeHolder.setStyle('background-image', 'url(' + json.get('smallthumb_path') + '?no_cache=' + Math.random() + ')')
-							placeHolder.setStyle('width', json.get('smallthumb_width'));
-							posterLink.set('html', 'replace poster frame');
-
-							// enable sorting
-							if(!this.isUploading) this.sortingActivate();
-						//}.bind(this));
-					} else {
-						alert(json.get('error'));
-					}
-
-					uploader.fileRemove(file);
-					console.log('BertaGalleryEditor.addElementPosterUploader: BertaGalleryUploader.onFileComplete');
-				}.bind(this)
-			});
-
+      var uploader = new BertaPosterUploader(this, posterLink, videoSrc);
 		}, this);
 	},
-
-
-
 
 
 
@@ -423,7 +277,6 @@ var BertaGalleryEditor = new Class({
 	////  SORTING  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	sortingInit: function() {
-		//console.debug('------------------ sorting init');
 		this.stripSortables = new Sortables(this.strip, {
 		    'handle': '.grabHandle span a',
 			'revert': { duration: 500, transition: 'elastic:out' },
@@ -447,26 +300,21 @@ var BertaGalleryEditor = new Class({
 	},
 
 	sortingAddElement: function(el) {
-		//console.debug('------------------ sorting add ', el);
 		this.stripSortables.addItems(el); this.sortingChanged = true;
 	},
 	sortingRemoveElement: function(el) {
-		//console.debug('------------------ sorting remove ', el);
 		this.stripSortables.removeItems(el); this.sortingChanged = true;
 	},
 	sortingActivate: function(el) {
-		//console.debug('------------------ sorting activate');
 		this.stripSortables.attach();
 		if(this.sortingChanged) this.sortingSave();			// do a quick save - just in case
 	},
 	sortingDeactivate: function() {
-		//console.debug('------------------ sorting deactivate');
 		this.stripSortables.detach();
 		this.sortingSaveCancel();			// cancel any saving
 	},
 
 	sortingSave: function() {
-		//console.debug('------------------ sorting save (isUploading: ' + this.isUploading + ')');
 		this.unlinearProcess_start(this.sortingProcessId, "Saving images order");
 		if(!this.isUploading) {
 			$clear(this.sortingSaveTimeout);
@@ -479,13 +327,11 @@ var BertaGalleryEditor = new Class({
 		this.sortingSaveTimeout = 0;
 	},
 	sortingSaveDo: function() {
-		//console.debug('------------------ sorting save do');
 		$clear(this.sortingSaveTimeout);
 		this.sortingSaveTimeout = 0;
 		this.sortingChanged = false;
 
 		var newOrder = this.stripSortables.serialize(0, function(element, index){
-		    //console.debug(index, element);
 			return element.getProperty('filename');
 		});
 
@@ -573,22 +419,20 @@ var BertaGalleryEditor = new Class({
 	onCropClick: function(event) {
 		event = new Event(event).stop();
 		var target = $(event.target);
-
 		var editor = this;
 		var galleryEditor = target.getParent('.xEntryGalleryEditor');
 		var media = galleryEditor.getElement('.xEntryGalleryAddMedia');
-		var swiffEl = galleryEditor.getElement('.swiff-uploader-box');
 		var images = galleryEditor.getElement('.images');
 		var cropToolbox = galleryEditor.getElement('.xEntryGalleryCrop');
 		var checkBoard = cropToolbox.getElement('.checkBoard');
 		var cancel = cropToolbox.getElement('.cancel');
 		var cropImage = cropToolbox.getElement('.cropImage');
-		var id = 'el' + new Date().getTime();
-		var imageSrc = target.get('data-src');
-		var imageThumb = target.getPrevious('img');
-		var liEl = target.getParent('li')
-		var filename = liEl.get('filename');
-		var topInput = cropToolbox.getElement('.topReal');
+    var id = 'el' + new Date().getTime();
+    var imageSrc = target.get('data-src');
+    var imageThumb = target.getPrevious('img');
+    var liEl = target.getParent('li');
+    var filename = liEl.get('filename');
+    var topInput = cropToolbox.getElement('.topReal');
 		var leftInput = cropToolbox.getElement('.leftReal');
 		var widthInput = cropToolbox.getElement('.widthReal');
 		var heightInput = cropToolbox.getElement('.heightReal');
@@ -605,14 +449,15 @@ var BertaGalleryEditor = new Class({
 		$$(cancel, processCrop).removeProperty('disabled');
 
 		$$(media, images).addClass('xHidden');
-		swiffEl.setStyle('visibility', 'hidden');
 		cropToolbox.removeClass('xHidden');
 
 		cancel.addEvent('click', function(e){
-			try {e.stop()}catch(err){}
+			try {
+        e.stop();
+      } catch(err){
+      }
 			cropToolbox.addClass('xHidden');
 			$$(media, images).removeClass('xHidden');
-			swiffEl.setStyle('visibility', 'visible');
 		});
 
 		//delete old lasso
@@ -622,9 +467,9 @@ var BertaGalleryEditor = new Class({
 		}
 
 		Asset.image(imageSrc, {
-		    onLoad: function(){
+		    onLoad: function() {
 
-		    	cropImage.set('src', imageSrc);
+		    cropImage.set('src', imageSrc);
 				cropImage.set('id', id);
 				cropImage.setStyle('display', 'block');
 
@@ -647,11 +492,10 @@ var BertaGalleryEditor = new Class({
 					var lasso = new Lasso.Crop(id,{
 						preset : [0,0,120,120],
 						min: [10,10],
-						color : '#000',
-						border : '#000',
-						opacity: .5,
-
-						onResize: function(crop){
+						color: '#000',
+						border: '#000',
+						opacity: 0.5,
+						onResize: function(crop) {
 
 							var widthContainer = cropImage.getNext().getSize().x;
 							var widthCrop = crop.w;
@@ -823,7 +667,6 @@ var BertaGalleryEditor = new Class({
 		var addMedia = tabsContainer.getSiblings('.xEntryGalleryAddMedia');
 		var cropToolbox = tabsContainer.getSiblings('.xEntryGalleryCrop');
 		var settings = tabsContainer.getSiblings('.xEntryGallerySettings');
-		var swiffEl = tabsContainer.getSiblings('.swiff-uploader-box');
 		var fullscreen = tabsContainer.getSiblings('.xEntryGalleryFullScreen');
 		var imageSize = tabsContainer.getSiblings('.xEntryGalleryImageSize');
 
@@ -837,7 +680,6 @@ var BertaGalleryEditor = new Class({
 
 			$$(settings, fullscreen, imageSize).addClass('xHidden');
 			$$(media, addMedia).removeClass('xHidden');
-			swiffEl.setStyle('visibility', 'visible');
 		}
 
 		if(tab == 'media_settings') {
@@ -845,7 +687,6 @@ var BertaGalleryEditor = new Class({
 			target.addClass('selected');
 
 			$$(media,  addMedia, fullscreen, imageSize).addClass('xHidden');
-			swiffEl.setStyle('visibility', 'hidden');
 			settings.removeClass('xHidden');
 		}
 
@@ -854,7 +695,6 @@ var BertaGalleryEditor = new Class({
 			target.addClass('selected');
 
 			$$(media, addMedia, settings, imageSize).addClass('xHidden');
-			swiffEl.setStyle('visibility', 'hidden');
 			fullscreen.removeClass('xHidden');
 		}
 
@@ -863,7 +703,6 @@ var BertaGalleryEditor = new Class({
 			target.addClass('selected');
 
 			$$(media, addMedia, settings, fullscreen).addClass('xHidden');
-			swiffEl.setStyle('visibility', 'hidden');
 			imageSize.removeClass('xHidden');
 		}
 	},

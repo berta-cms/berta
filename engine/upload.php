@@ -147,15 +147,19 @@ if(($entryId && $mediaFolder || $settingsProperty || $sectionName && $mediaFolde
 
 			$videoExt = $ext;
 			$fileType = 'video';
-		} else if(in_array($ext, $iconExtensions)) {
+		} else if(!$sectionBackground && in_array($ext, $iconExtensions)) {
 			$fileExt = $ext;
 			$fileType = 'icon';
 		} else {
-			if(!($imInfo = @getimagesize($file)))								$error = 'Only JPG, GIF, PNG images and MP4, FLV videos are supported.';
-			if(!$error && !in_array($imInfo[2],
-				array(IMAGETYPE_GIF, IMAGETYPE_JPEG, IMAGETYPE_PNG)))			$error = 'Only JPG, GIF, PNG images and MP4, FLV videos are supported.';
-			//if(!$error && (($imInfo[0] < $constraints['min_width']) ||
-			//			  ($imInfo[1] < $constraints['min_height'])))			$error = 'Please don\'t upload super-small images!';
+
+			if (!($imInfo = @getimagesize($file)) || (!$error && !in_array($imInfo[2], array(IMAGETYPE_GIF, IMAGETYPE_JPEG, IMAGETYPE_PNG))))	{
+        if ($sectionBackground) {
+          $error = 'Only JPG, GIF, PNG images are supported.';
+        } else {
+          $error = 'Only JPG, GIF, PNG images and MP4, FLV videos are supported.';
+        }
+      }
+
 			if(!$error && (($imInfo[0] > $constraints['max_orig_width']) ||
 						  ($imInfo[1] > $constraints['max_orig_height'])))		$error = 'Please don\'t upload images larger than '.$constraints['max_orig_width'].'x'.$constraints['max_orig_height'].'px !';
 			$fileType = 'image';
@@ -367,6 +371,10 @@ if(($entryId && $mediaFolder || $settingsProperty || $sectionName && $mediaFolde
 	$result['error'] = 'Wrong file type or size too big!';
 }
 
+if ($result['status'] == 0) {
+  http_response_code(400);
+}
+
 if (isset($_REQUEST['response']) && $_REQUEST['response'] == 'xml') {
 	// header('Content-type: text/xml');
 
@@ -380,18 +388,7 @@ if (isset($_REQUEST['response']) && $_REQUEST['response'] == 'xml') {
 	if($uplosadType == 'fancy')
 		header('Content-type: application/json');
 
-
-
 	echo Zend_Json::encode($result);
-
 }
-
-
-
-//error_log($outStr);
-//echo $outStr;
-
-
-
 
 ?>
