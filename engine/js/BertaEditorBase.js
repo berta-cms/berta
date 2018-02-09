@@ -891,6 +891,10 @@ var BertaEditorBase = new Class({
           updateAction = Actions.updateSite;
         }
 
+        if (path_arr[1] === 'settings') {
+          updateAction = Actions.updateSettings;
+        }
+
         if (path_arr[1] === 'section') {
           prop = path_arr.pop();
           updateAction = Actions.updateSection;
