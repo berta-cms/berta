@@ -26,6 +26,8 @@ $app->group(['prefix' => 'v1','namespace' => 'App\Http\Controllers'], function($
 
     $app->patch('update-settings','SettingsController@update');
 
+    $app->patch('update-site-template-settings','SiteTemplateSettingsController@update');
+
     $app->patch('update-section','SectionController@update');
     $app->patch('reset-section','SectionController@reset');
     $app->post('create-section','SectionController@create');
