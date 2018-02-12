@@ -17,6 +17,11 @@ class SettingsController extends Controller
 
         $res = $settings->saveValueByPath($json['path'], $json['value']);
         // @@@:TODO: Replace this with something sensible, when migration to redux is done
+        // `real` returns the user input value
+        // `update` returns formatted value for frontend special cases:
+        // Tags - eliminate duplicates, divide tags with "/"
+        // date input format
+        // url prefix with "http://"
         $res['update'] = $res['value'];
         $res['real'] = $res['value'];
         // @@@:TODO:END
