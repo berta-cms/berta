@@ -27,10 +27,13 @@
           if (action.resp.old_name) {
             console.log('Entries reducer:', action);
             entries = state.getIn([action.resp.site]).toJSON();
-            entry = entries[action.resp.old_name];
-            entry['@attributes'].section = action.resp.section.name;
-            entries[action.resp.section.name] = entry;
-            delete entries[action.resp.old_name];
+
+            if (entries.length) {
+              entry = entries[action.resp.old_name];
+              entry['@attributes'].section = action.resp.section.name;
+              entries[action.resp.section.name] = entry;
+              delete entries[action.resp.old_name];
+            }
 
             return state.setIn([action.resp.site], Immutable.fromJS(entries));
           }

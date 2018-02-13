@@ -72,8 +72,9 @@ class Sections Extends Storage {
 
             $section_idx = count($sections);
             $sections['section'][] = $section;
+
         } else {
-            $section_idx = count($sections);
+            $section_idx = count($sections['section']) ? count($sections) : 0;
             $entries = new Entries($this->SITE, 'untitled' . uniqid(), $title);
             $section_entries = $entries->create();
 
