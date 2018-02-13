@@ -336,6 +336,10 @@ var BertaEditorBase = new Class({
                     updateAction = Actions.updateSettings;
                   }
 
+                  if (path_arr[1] === 'site_template_settings') {
+                    updateAction = Actions.updateSiteTemplateSettings;
+                  }
+
                   if (typeof updateAction === 'function') {
                     // @TODO Handle file upload in API endpoint,
                     // currently we are updating only state here
@@ -724,6 +728,10 @@ var BertaEditorBase = new Class({
 
       if (path_arr[1] === 'settings') {
         updateAction = Actions.updateSettings;
+      }
+
+      if (path_arr[1] === 'site_template_settings') {
+        updateAction = Actions.updateSiteTemplateSettings;
       }
 
       var onComplete = function () {
@@ -1333,7 +1341,7 @@ var BertaEditorBase = new Class({
 
 
   escapeForJSON: function(str) {
-    return encodeURIComponent(String(str).replace(/\"/g, '\\"'));
+    return encodeURIComponent(String(str));
   },
 
   getEntryInfoForElement:function(el) {
