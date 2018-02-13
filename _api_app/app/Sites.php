@@ -31,6 +31,11 @@ class Sites Extends Storage {
             }
         }
 
+        // In case there is one site, convert it as sites array
+        if (isset($this->SITES['site']['name'])) {
+            $this->SITES['site'] = [0 => $this->SITES['site']];
+        }
+
         return $this->SITES;
     }
 
@@ -39,7 +44,7 @@ class Sites Extends Storage {
         $name = 'untitled-' . uniqid();
         $dir = $this->XML_SITES_ROOT . '/' . $name;
 
-        @mkdir($dir, 0777);
+        @mkdir($dir, 0777, true);
 
         if ($cloneFrom != null) {
             $src = $cloneFrom == '0' ? $this->XML_MAIN_ROOT : $this->XML_SITES_ROOT . '/' . $cloneFrom;
@@ -77,6 +82,10 @@ class Sites Extends Storage {
             'path' => $path,
             'value' => $value
         );
+
+        if (!file_exists($this->XML_SITES_ROOT)) {
+            @mkdir($this->XML_SITES_ROOT, 0777);
+        }
 
         if(!file_exists($site_root)) {
             $ret['value'] = $site_name;

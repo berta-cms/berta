@@ -311,19 +311,49 @@ var BertaEditorBase = new Class({
 
             var xhr = new XMLHttpRequest();
 
+            var updateComplete = function (data) {
+              fileNameContainer.empty();
+              fileNameContainer.set('html', data.value);
+              aDelete.setStyle('display', 'block');
+              el.removeClass('xSaving').addClass('xEditing');
+            }
+
             xhr.addEventListener('load', function() {
               var data = JSON.decode(xhr.responseText);
 
               if (xhr.status == 401) {
                 window.location.href = this.options.paths.engineRoot;
+
               } else if (data.status > 0) {
-                fileNameContainer.empty();
-                fileNameContainer.set('html', data.filename);
-                aDelete.setStyle('display', 'block');
+
+                var path = el.data('path');
+                var path_arr = [];
+
+                if (path) {
+                  path_arr = path.split('/');
+
+                  if (path_arr[1] === 'settings') {
+                    updateAction = Actions.updateSettings;
+                  }
+
+                  if (typeof updateAction === 'function') {
+                    // @TODO Handle file upload in API endpoint,
+                    // currently we are updating only state here
+                    // which calls endpoint and saves value again
+                    redux_store.dispatch(updateAction(
+                      path,
+                      data.filename,
+                      updateComplete
+                    ));
+                  } else {
+                    console.log('BertaEditorBase.elementEdit_init xBertaEditorClassImage/xBertaEditorClassICO: Undefined updateAction!');
+                  }
+                } else{
+                  updateComplete({value: data.filename});
+                }
               } else {
                 alert(data.error);
               }
-              el.removeClass('xSaving').addClass('xEditing');
             }.bindWithEvent(this), false);
 
             xhr.addEventListener('error', function() {
@@ -681,26 +711,54 @@ var BertaEditorBase = new Class({
     var el = target.getParent();
     var prop = el.getClassStoredValue('xProperty');
     var data = { property: prop, params: 'delete', value: '' };
+    var path = el.data('path');
+    var path_arr = [];
 
     el.removeClass('xEditing');
     el.addClass('xSaving');
 
     console.log('BertaEditorBase.eSup_onImageDeleteClick:', data);
 
-    new Request.JSON({
-      url: this.options.updateUrl,
-      data: "json=" + JSON.encode(data),
-      onComplete: function(resp, respRaw) {
-        if(resp.error_message)
-          alert(resp.error_message);
-        else {
-          el.getElement('span.name').set('html', '');
-          target.setStyle('display', 'none');
-        }
+    if (path) {
+      path_arr = path.split('/');
+
+      if (path_arr[1] === 'settings') {
+        updateAction = Actions.updateSettings;
+      }
+
+      var onComplete = function () {
+        el.getElement('span.name').set('html', '');
+        target.setStyle('display', 'none');
         el.removeClass('xSaving');
         el.addClass('xEditing');
       }
-    }).post();
+
+      if (typeof updateAction === 'function') {
+        redux_store.dispatch(updateAction(
+          path,
+          '',
+          onComplete
+        ));
+      } else {
+        console.log('BertaEditorBase.eSup_onImageDeleteClick: Undefined updateAction!');
+      }
+
+    } else {
+      new Request.JSON({
+        url: this.options.updateUrl,
+        data: "json=" + JSON.encode(data),
+        onComplete: function(resp, respRaw) {
+          if(resp.error_message)
+            alert(resp.error_message);
+          else {
+            el.getElement('span.name').set('html', '');
+            target.setStyle('display', 'none');
+          }
+          el.removeClass('xSaving');
+          el.addClass('xEditing');
+        }
+      }).post();
+    }
   },
 
   hideControlPanel: function(el) {
