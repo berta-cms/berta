@@ -8,6 +8,7 @@ include_once $ENGINE_ROOT . '_classes/class.bertaeditor.php';
 $allSections = BertaContent::getSections();
 $topPanelHTML = BertaEditor::getTopPanelHTML('seo');
 $int_version = BertaEditor::$options['int_version'];
+$site = empty($options['MULTISITE']) ? '0' : $options['MULTISITE'];
 
 ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -39,17 +40,21 @@ $int_version = BertaEditor::$options['int_version'];
 					<br class="clear" />
 				</div>
 				<ul><?php
+                $i = 0;
 				foreach($allSections as $sN => $s) {
+                    $basePath = $site . '/section/' . $i;
+
 					echo '<li class="xSection-' . $sN . '">';
 					echo '<div class="csTitle">' . (!empty($s['title']['value']) ? htmlspecialchars($s['title']['value']) : htmlspecialchars($s['name']['value'])) . '</div>';
 
-					echo '<div class="csSeoTitle"><span class="' . $xEditSelectorSimple . ' xProperty-seoTitle xNoHTMLEntities xSection-' . $sN . ' xSectionField">' . (!empty($s['seoTitle']['value']) ? htmlspecialchars(strip_tags($s['seoTitle']['value'])) : '') . '</span></div>';
+					echo '<div class="csSeoTitle"><span class="' . $xEditSelectorSimple . ' xProperty-seoTitle xNoHTMLEntities xSection-' . $sN . ' xSectionField" data-path="' . $basePath . '/seoTitle">' . (!empty($s['seoTitle']['value']) ? htmlspecialchars(strip_tags($s['seoTitle']['value'])) : '') . '</span></div>';
 
-					echo '<div class="csSeoKeywords"><span class="' . $xEditSelectorSimple . ' xProperty-seoKeywords xNoHTMLEntities xSection-' . $sN . ' xSectionField">' . (!empty($s['seoKeywords']['value']) ? htmlspecialchars(strip_tags($s['seoKeywords']['value'])) : '') . '</span></div>';
+					echo '<div class="csSeoKeywords"><span class="' . $xEditSelectorSimple . ' xProperty-seoKeywords xNoHTMLEntities xSection-' . $sN . ' xSectionField" data-path="' . $basePath . '/seoKeywords">' . (!empty($s['seoKeywords']['value']) ? htmlspecialchars(strip_tags($s['seoKeywords']['value'])) : '') . '</span></div>';
 
-					echo '<div class="csSeoDescription"><span class="' . $xEditSelectorTA . ' xProperty-seoDescription xNoHTMLEntities xSection-' . $sN . ' xSectionField">' . (!empty($s['seoDescription']['value']) ? htmlspecialchars(strip_tags($s['seoDescription']['value'])) : '') . '</span></div>';
+					echo '<div class="csSeoDescription"><span class="' . $xEditSelectorTA . ' xProperty-seoDescription xNoHTMLEntities xSection-' . $sN . ' xSectionField" data-path="' . $basePath . '/seoDescription">' . (!empty($s['seoDescription']['value']) ? htmlspecialchars(strip_tags($s['seoDescription']['value'])) : '') . '</span></div>';
 
-					echo '</li>';
+                    echo '</li>';
+                    $i++;
 				}
 
 				?></ul><br class="clear" />
