@@ -18,7 +18,13 @@ class SiteTemplateSettings extends Storage
 
     public function get()
     {
-        return $this->xmlFile2array($this->XML_FILE);
+        $template_settings = $this->xmlFile2array($this->XML_FILE);
+
+        if (!($template_settings)) {
+            $template_settings = (object) null;
+        }
+
+        return $template_settings;
     }
 
     /**
