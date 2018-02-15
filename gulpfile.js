@@ -50,7 +50,8 @@ var js_backend_files = [
     'node_modules/promise-polyfill/dist/polyfill.min.js',
     'node_modules/whatwg-fetch/fetch.js',
     'node_modules/immutable/dist/immutable.min.js',
-    'node_modules/redux/dist/redux.min.js'
+    'node_modules/redux/dist/redux.min.js',
+    'node_modules/redux-thunk/dist/redux-thunk.min.js'
 ];
 
 var js_ng_backend_files = [

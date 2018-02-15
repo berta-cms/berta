@@ -16,6 +16,7 @@
     "immutable": "^3.8.2",
     "promise-polyfill": "^7.0.2",
     "redux": "^3.7.2",
+    "redux-thunk": "^2.2.0",
     "whatwg-fetch": "^2.0.3"
   }
 }
