@@ -2,25 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\SiteSettings;
+use App\SiteTemplateSettings;
 use Illuminate\Http\Request;
 
-class SettingsController extends Controller
+class SiteTemplateSettingsController extends Controller
 {
 
     public function update(Request $request) {
         $json = $request->json()->all();
         $path_arr = explode('/', $json['path']);
         $site = $path_arr[0];
-        $settings = new SiteSettings($site);
+        $template = $path_arr[2];
+        $site_template_settings = new SiteTemplateSettings($site, $template);
 
-        $res = $settings->saveValueByPath($json['path'], $json['value']);
+        $res = $site_template_settings->saveValueByPath($json['path'], $json['value']);
         // @@@:TODO: Replace this with something sensible, when migration to redux is done
-        // `real` returns the user input value
-        // `update` returns formatted value for frontend special cases:
-        // Tags - eliminate duplicates, divide tags with "/"
-        // date input format
-        // url prefix with "http://"
         $res['update'] = $res['value'];
         $res['real'] = $res['value'];
         // @@@:TODO:END

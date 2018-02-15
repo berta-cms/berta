@@ -60,6 +60,7 @@ var js_ng_backend_files = [
   'engine/js/ng/actions/StateActions.js',
   'engine/js/ng/actions/SiteActions.js',
   'engine/js/ng/actions/SettingsActions.js',
+  'engine/js/ng/actions/SiteTemplateSettingsActions.js',
   'engine/js/ng/actions/SectionActions.js',
   'engine/js/ng/actions/EntryActions.js',
   'engine/js/ng/actions/TagActions.js',

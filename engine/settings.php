@@ -52,7 +52,7 @@ $site = empty($options['MULTISITE']) ? '0' : $options['MULTISITE'];
 			$propertyPrefix = $settings->templateName ? ($settings->templateFullName . '/') : '';
 
             if ($mode == 'template') {
-                $basePath = $site . '/template_settings';
+                $basePath = $site . '/site_template_settings/' . $propertyPrefix;
             } else {
                 $basePath = $site . '/settings';
             }
@@ -82,9 +82,16 @@ $site = empty($options['MULTISITE']) ? '0' : $options['MULTISITE'];
 							// value
                             $value = $settings->get($sSectionKey, $sKey, false, false);	// don't use empty + don't inherit from base
 
-                            // @TODO Enable path parameter for Redux for template settings
+                            // Template settings
                             if ($mode == 'template') {
-                                $contentHTML .= BertaEditor::getSettingsItemEditHTML($propertyPrefix . $sSectionKey . '/' . $sKey, $s, $value) . "\n";
+                                $contentHTML .= BertaEditor::getSettingsItemEditHTML(
+                                    $propertyPrefix . $sSectionKey . '/' . $sKey,
+                                    $s,
+                                    $value,
+                                    null,
+                                    'div',
+                                    $basePath . $sSectionKey . '/' . $sKey
+                                ) . "\n";
 
                             // General Site Settings
                             } else {
