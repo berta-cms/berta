@@ -5,71 +5,83 @@
 
   Object.assign(window.reducers, {
     sites: function(state, action) {
-      var path, value, site, site_name, site_idx, sites = [];
+      var path, value, site, order, sites = [];
 
       if (state === undefined) {
         state = Immutable.Map();
       }
 
       switch (action.type) {
+
         case ActionTypes.SET_STATE:
-          console.log('Sites reducer:', action);
-          return Immutable.fromJS({site: action.state.site});
+          console.log('Sites SET_STATE reducer:', action);
+
+          // Add sites order
+          action.state.sites.map(function (site, i) {
+            site.order = i;
+          });
+
+          return Immutable.fromJS(action.state.sites);
+
 
         case ActionTypes.SITE_CREATED:
           console.log('Sites reducer:', action);
-          sites = state.getIn(['site']).toJSON();
-          sites.push(action.site);
-          return state.setIn(['site'], Immutable.fromJS(sites));
 
-        case ActionTypes.UPDATE_SITE:
-          console.log('Sites reducer:', action);
-          path = action.path.split('/');
-          value = action.value;
+          // @TODO when created site is a clone we need to clone
+          // related sections, entries, tags, settings, template settings
 
-          return state.setIn(path, value);
+          return state.set(state.size, Immutable.fromJS(action.site));
+
 
         case ActionTypes.SITE_UPDATED:
           console.log('Sites reducer:', action);
           path = action.resp.path.split('/');
+          order = parseInt(path[1], 10);
           value = action.resp.value;
+          var prop = path.slice(2);  // "title" or "@attributes/published"
 
-          return state.setIn(path, value);
+          // @TODO also update sections relations if name changed
+
+          return state.map(function (site) {
+            if (site.get('order') === order && site.getIn(prop) !== value) {
+              return site.setIn(prop, value);
+            }
+            return site;
+          });
+
 
         case ActionTypes.SITE_DELETED:
-          sites = state.getIn(['site']).toJSON();
-          site_name = action.resp.name === '0' ? '' : action.resp.name;
-          site_idx = sites.findIndex(function (site, idx) {
-            return site.name === site_name;
+          console.log('Sites reducer:', action);
+
+          // @TODO also delete related sections, entries, tags, settings, template settings
+
+          // Filter out deleted site
+          return state.filter(function (site) {
+            return site.get('name') !== action.resp.name;
+
+          // Update order
+          }).map(function (site, order) {
+            if (site.get('order') !== order) {
+              return site.set('order', order);
+            }
+            return site;
           });
 
-          if (site_idx > -1) {
-            console.log('Sites reducer:', action);
-            sites.splice(site_idx, 1);
-            return state.setIn(['site'], Immutable.fromJS(sites));
-          }
-
-          return state;
 
         case ActionTypes.ORDER_SITES:
-          action.sites.forEach(function(site, new_idx) {
-            var site_name = site === '0' ? '' : site;
-
-            site = state.getIn(['site']).toJSON().find(function(site, old_idx) {
-              return site.name === site_name;
-            });
-
-            if (site) {
-              sites.push(site);
+          return state.map(function (site) {
+            var name = site.get('name');
+            if (name === '') {
+              name = '0';
             }
+            var new_order = action.sites.indexOf(name);
+
+            if (site.get('order') !== new_order) {
+              return site.set('order', new_order);
+            }
+            return site;
           });
 
-          if (sites.length > 0) {
-            console.log('Sites reducer:', action);
-            return state.setIn(['site'], Immutable.fromJS(sites));
-          }
-
-          return state;
 
         default:
           return state;

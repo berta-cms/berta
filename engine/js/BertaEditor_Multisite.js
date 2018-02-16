@@ -122,21 +122,25 @@ var BertaEditor_Multisite = new Class({
 
     redux_store.dispatch(Actions.orderSites(
       newOrder,
-      function(resp) {
-        for (var i=0; i< resp.length; i++) {
-          $$('.xSite-' + resp[i] + ' .xProperty-title')
-            .set('data-path', 'site/' + i + '/title')
-            .data('path', true);
-          $$('.xSite-' + resp[i] + ' .xProperty-name')
-            .set('data-path', 'site/' + i + '/name')
-            .data('path', true);
-          $$('.xSite-' + resp[i] + ' .xProperty-published')
-            .set('data-path', 'site/' + i + '/@attributes/published')
-            .data('path', true);
-        }
-      }
+      function (resp) {
+        this.updatePathParams(resp);
+      }.bind(this)
     ));
-	},
+  },
+
+  updatePathParams: function(sites_order) {
+    for (var i=0; i< sites_order.length; i++) {
+      $$('.xSite-' + sites_order[i] + ' .xProperty-title')
+        .set('data-path', 'site/' + i + '/title')
+        .data('path', true);
+      $$('.xSite-' + sites_order[i] + ' .xProperty-name')
+        .set('data-path', 'site/' + i + '/name')
+        .data('path', true);
+      $$('.xSite-' + sites_order[i] + ' .xProperty-published')
+        .set('data-path', 'site/' + i + '/@attributes/published')
+        .data('path', true);
+    }
+  },
 
 	siteOnCloneClick: function(event) {
 		event = new Event(event).stop();
@@ -170,6 +174,12 @@ var BertaEditor_Multisite = new Class({
               var element = this.sitesMenu.getElement('li.xSite-' + resp.name);
               this.sitesSortables.removeItems(element);
               element.destroy();
+
+              var sites_order = this.sitesMenu.getElements('li').map(function (site) {
+                return site.getClassStoredValue('xSite');
+              });
+              this.updatePathParams(sites_order);
+
             } else {
               alert(resp.error_message);
             }
@@ -186,7 +196,6 @@ var BertaEditor_Multisite = new Class({
       this.cloneSite,
       // @@@:TODO: Remove this callback, when migration to ReactJS is complete
       function(resp) {
-        console.log(resp);
         if(!resp) {
           alert('Berta says:\n\nServer produced an error while adding new site! Something went sooooo wrong...');
         } else if(resp && !resp.error_message) {
@@ -194,7 +203,7 @@ var BertaEditor_Multisite = new Class({
                 'multisite',
                 Object.assign({}, editables, {
                   name: resp.name,
-                  idx: resp.idx,
+                  order: resp.order,
                   address: location.protocol + '//' + location.host
                 })
               );
@@ -210,7 +219,7 @@ var BertaEditor_Multisite = new Class({
       }.bind(this)
     ));
 
-		this.cloneSite = -1;
+    this.cloneSite = -1;
 	}
 });
 

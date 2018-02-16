@@ -18,22 +18,19 @@ class Sites Extends Storage {
     * @return array Array of sites
     */
     public function get() {
-        if (empty($this->SITES)) {
+        if (!($this->SITES)) {
             $this->SITES = $this->xmlFile2array($this->XML_FILE);
 
-            if (empty($this->SITES)) {
-                // case for a single site (when storage/-sites does not exist)
-                $this->SITES = array(
-                    'site' => array(
-                        0 => array('name' => '', 'title' => '')
-                    )
-                );
+            if (!($this->SITES)) {
+                // Return only main site when storage/-sites does not exist
+                $this->SITES[] = [
+                    'name' => null,
+                    'title' => 'Main site',
+                    '@attributes' => ['published' => 1]
+                ];
+            } else {
+                $this->SITES = $this->SITES['site'];
             }
-        }
-
-        // In case there is one site, convert it as sites array
-        if (isset($this->SITES['site']['name'])) {
-            $this->SITES['site'] = [0 => $this->SITES['site']];
         }
 
         return $this->SITES;
@@ -51,15 +48,15 @@ class Sites Extends Storage {
             $this->copyFolder($src, $dir);
         }
 
-        $site = array(
+        $site = [
             'name' => $name,
             'title' => '',
             '@attributes' => array('published' => 0)
-        );
-        $sites['site'][] = $site;
+        ];
+        array_push($sites, $site);
 
-        $this->array2xmlFile($sites, $this->XML_FILE, $this->ROOT_ELEMENT);
-        $site['idx'] = count($sites['site']) - 1;
+        $this->array2xmlFile(['site' => $sites], $this->XML_FILE, $this->ROOT_ELEMENT);
+        $site['order'] = count($sites) - 1;
 
         return $site;
     }
@@ -72,7 +69,7 @@ class Sites Extends Storage {
     * @return array Array of changed value and/or error messages
     */
     public function saveValueByPath($path, $value) {
-        $sites = $this->get();
+        $sites['site'] = $this->get();
         $path_arr = explode('/', $path);
         $site_name = $sites['site'][$path_arr[1]]['name'];
         $site_root = $this->XML_SITES_ROOT . '/' . $site_name;
@@ -125,13 +122,13 @@ class Sites Extends Storage {
     /**
     */
     public function delete($name) {
-        $sites = $this->get();
-        $site_idx = array_search($name, array_column($sites['site'], 'name'));
+        $sites['site'] = $this->get();
+        $order = array_search($name, array_column($sites['site'], 'name'));
 
-        if ($site_idx !== False) {
+        if ($order !== False) {
             $dir = $this->XML_SITES_ROOT . '/' . $name;
             $this->delFolder($dir);
-            $site = array_splice($sites['site'], $site_idx, 1);
+            $site = array_splice($sites['site'], $order, 1);
             $this->array2xmlFile($sites, $this->XML_FILE, $this->ROOT_ELEMENT);
             return $site[0];
         }
@@ -145,15 +142,15 @@ class Sites Extends Storage {
     * @param array $names Array of site names in a new order
     */
     public function order($names) {
-        $sites = $this->get();
+        $sites['site'] = $this->get();
         $new_order = array();
 
         foreach($names as $name) {
             $site_name = ($name == '0') ? '' : $name;
-            $site_idx = array_search($site_name, array_column($sites['site'], 'name'));
+            $order = array_search($site_name, array_column($sites['site'], 'name'));
 
-            if ($site_idx !== false) {
-                $new_order[] = $sites['site'][$site_idx];
+            if ($order !== false) {
+                $new_order[] = $sites['site'][$order];
             }
         }
 

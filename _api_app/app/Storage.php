@@ -52,7 +52,6 @@ class Storage {
 
         // @@@:TODO: Implement error checking
         foreach($_path as $key) {
-            $temp = is_object($temp) ? [] : $temp;
             $temp = &$temp[$key];
         }
 

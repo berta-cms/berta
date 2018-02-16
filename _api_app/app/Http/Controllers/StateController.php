@@ -17,13 +17,13 @@ class StateController extends Controller
         $siteSettings = new SiteSettings();
         $templateSettings = new TemplateSettings();
 
-        $state = $sites->get();
+        $state['sites'] = $sites->get();
         $state['site_settings'] = array();
         $state['sections'] = array();
         $state['entries'] = array();
         $state['tags'] = array();
 
-        foreach($state['site'] as $_site) {
+        foreach($state['sites'] as $_site) {
             $site_name = $_site['name'] ? $_site['name'] : 0;
             $sections = new Sections($site_name);
             $site_settings = $siteSettings->getSettingsBySite($site_name);
