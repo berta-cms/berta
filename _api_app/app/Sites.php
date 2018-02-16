@@ -26,10 +26,15 @@ class Sites Extends Storage {
                 $this->SITES[] = [
                     'name' => null,
                     'title' => 'Main site',
-                    '@attributes' => ['published' => 1]
+                    '@attributes' => ['published' => 1],
+                    'order' => 0
                 ];
             } else {
                 $this->SITES = $this->SITES['site'];
+
+                foreach ($this->SITES as $order => $site) {
+                    $this->SITES[$order]['order'] = $order;
+                }
             }
         }
 

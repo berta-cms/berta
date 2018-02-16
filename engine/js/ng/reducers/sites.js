@@ -15,12 +15,6 @@
 
         case ActionTypes.SET_STATE:
           console.log('Sites SET_STATE reducer:', action);
-
-          // Add sites order
-          action.state.sites.map(function (site, i) {
-            site.order = i;
-          });
-
           return Immutable.fromJS(action.state.sites);
 
 
