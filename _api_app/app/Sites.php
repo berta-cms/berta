@@ -26,19 +26,26 @@ class Sites Extends Storage {
                 $this->SITES[] = [
                     'name' => null,
                     'title' => 'Main site',
-                    '@attributes' => ['published' => 1],
-                    'order' => 0
+                    '@attributes' => ['published' => 1]
                 ];
             } else {
                 $this->SITES = $this->SITES['site'];
-
-                foreach ($this->SITES as $order => $site) {
-                    $this->SITES[$order]['order'] = $order;
-                }
             }
         }
 
         return $this->SITES;
+    }
+
+    /**
+     * Returns all sites transformed for frontend needs
+     */
+    public function state() {
+        $sites = $this->get();
+        foreach ($sites as $order => $site) {
+            $sites[$order]['order'] = $order;
+        }
+
+        return $sites;
     }
 
     public function create($cloneFrom=null) {

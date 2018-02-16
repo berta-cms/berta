@@ -17,7 +17,7 @@ class StateController extends Controller
         $siteSettings = new SiteSettings();
         $templateSettings = new TemplateSettings();
 
-        $state['sites'] = $sites->get();
+        $state['sites'] = $sites->state();
         $state['site_settings'] = array();
         $state['sections'] = array();
         $state['entries'] = array();
