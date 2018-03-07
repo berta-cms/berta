@@ -9,9 +9,11 @@ class Sections Extends Storage {
     private $ROOT_ELEMENT = 'sections';
     private $SECTIONS = array();
     private $XML_FILE;
+    private $site_name;
 
     public function __construct($site='') {
         parent::__construct($site);
+        $this->site_name = $site;
         $xml_root = $this->getSiteXmlRoot($site);
         $this->XML_FILE = $xml_root . '/sections.xml';
     }
@@ -22,90 +24,112 @@ class Sections Extends Storage {
     * @return array Array of sections
     */
     public function get() {
-        if (empty($this->SECTIONS)) {
+        if (!$this->SECTIONS) {
             $this->SECTIONS = $this->xmlFile2array($this->XML_FILE);
 
-            if (empty($this->SECTIONS)) {
-                $this->SECTIONS = array(
-                    'section' => array()
-                );
-            } else {
-                $this->SECTIONS['section'] = isset($this->SECTIONS['section']) ? $this->asList($this->SECTIONS['section']) : array();
+            if ($this->SECTIONS) {
+                $this->SECTIONS = $this->asList($this->SECTIONS['section']);
             }
         }
 
         return $this->SECTIONS;
     }
 
+    /**
+     * Returns all site sections transformed for frontend needs
+     *
+     * @return array Array of sections
+     */
+    public function state() {
+        $sections = $this->get();
+        foreach ($sections as $order => $section) {
+            $sections[$order]['site_name'] = $this->site_name;
+            $sections[$order]['order'] = $order;
+        }
+
+        return $sections;
+    }
+
     public function create($name=null, $title=null) {
         $sections = $this->get();
 
+        // Clone section
         if ($name !== null) {
-            $title = empty($title) ? $name : $title;
-            $section_idx = array_search($name, array_column($sections['section'], 'name'));
+            // $title = empty($title) ? $name : $title;
+            // $section_idx = array_search($name, array_column($sections['section'], 'name'));
 
-            if ($section_idx === false) {
-                return array('error_message' => 'Section "'.$name.'" not found!');
-            }
+            // if ($section_idx === false) {
+            //     return array('error_message' => 'Section "'.$name.'" not found!');
+            // }
 
-            $entries = new Entries($this->SITE, 'clone-of-'.$name, 'clone of '.$title);
-            $section_entries = $entries->create($name);
+            // $entries = new Entries($this->SITE, 'clone-of-'.$name, 'clone of '.$title);
+            // $section_entries = $entries->create($name);
 
-            $section = $sections['section'][$section_idx];
-            $section['name'] = $section_entries['name'];
-            $section['title'] = $section_entries['title'];
-            unset($section['positionXY']);
+            // $section = $sections['section'][$section_idx];
+            // $section['name'] = $section_entries['name'];
+            // $section['title'] = $section_entries['title'];
+            // unset($section['positionXY']);
 
-            // copy mediafolder
-            if (isset($section['mediafolder'])) {
-                $section['mediafolder'] =str_replace(
-                    $name,
-                    $section_entries['name'],
-                    $section['mediafolder']
-                );
+            // // copy mediafolder
+            // if (isset($section['mediafolder'])) {
+            //     $section['mediafolder'] =str_replace(
+            //         $name,
+            //         $section_entries['name'],
+            //         $section['mediafolder']
+            //     );
 
-                $this->copyFolder(
-                    realpath($this->MEDIA_ROOT) .'/'. $sections['section'][$section_idx]['mediafolder'],
-                    realpath($this->MEDIA_ROOT) .'/'. $section['mediafolder']
-                );
-            }
+            //     $this->copyFolder(
+            //         realpath($this->MEDIA_ROOT) .'/'. $sections['section'][$section_idx]['mediafolder'],
+            //         realpath($this->MEDIA_ROOT) .'/'. $section['mediafolder']
+            //     );
+            // }
 
-            $section_idx = count($sections);
-            $sections['section'][] = $section;
+            // $section_idx = count($sections);
+            // $sections['section'][] = $section;
 
         } else {
-            $section_idx = count($sections['section']) ? count($sections) : 0;
-            $entries = new Entries($this->SITE, 'untitled' . uniqid(), $title);
+            $name = 'untitled-' . uniqid();
+
+            // Berta requires existing section file for entries
+            $entries = new Entries($this->SITE, $name, $title);
             $section_entries = $entries->create();
 
-            $section = array(
+            $section = [
                 '@attributes' => array('tags_behavior' => 'invisible', 'published'=>1),
-                'name' => $section_entries['name'],
+                'name' => $name,
                 'title' => ''
-            );
-            $sections['section'][] = $section;
+            ];
         }
 
-        $section_tags = array('tags' => array());
+        array_push($sections, $section);
 
+        // $section_tags = array('tags' => array());
+
+        // Clone section
         if ($name !== null) {
-            $tags = new Tags($this->SITE, $section['name']);
-            $section_tags = $tags->populateTags();
-            $allHaveTags = $section_tags['allHaveTags'];
+            // $tags = new Tags($this->SITE, $section['name']);
+            // $section_tags = $tags->populateTags();
+            // $allHaveTags = $section_tags['allHaveTags'];
 
-            // update direct content property
-            $sections['section'][$section_idx]['@attributes']['has_direct_content'] = !$allHaveTags ? '1' : '0';
+            // // update direct content property
+            // $sections['section'][$section_idx]['@attributes']['has_direct_content'] = !$allHaveTags ? '1' : '0';
         }
 
-        $this->array2xmlFile($sections, $this->XML_FILE, $this->ROOT_ELEMENT);
+        $this->array2xmlFile(['section' => $sections], $this->XML_FILE, $this->ROOT_ELEMENT);
 
-        return array(
-            'site' => $this->SITE,
-            'idx' => $section_idx,
-            'section' => $section,
-            'entries' => $section_entries['entries'],
-            'tags' => $section_tags['tags']
-        );
+        $section['order'] = count($sections) - 1;
+        $section['site_name'] = $this->site_name;
+
+        return $section;
+
+        // return array(
+            // 'site' => $this->SITE,
+            // 'order' => $order,
+            // 'section' => $section
+            // ,
+            // 'entries' => $section_entries['entries'],
+            // 'tags' => $section_tags['tags']
+        // );
     }
 
     /**
@@ -116,22 +140,23 @@ class Sections Extends Storage {
     * @return array Array of changed value and/or error messages
     */
     public function saveValueByPath($path, $value) {
-        $sections = $this->get();
+        $sections['section'] = $this->get();
         $path_arr = array_slice(explode('/', $path), 1);
         $prop = $path_arr[count($path_arr) - 1];
-        $section_idx = $path_arr[1];
+        $order = $path_arr[1];
         $value = trim(urldecode($value));
         $ret = array(
-            'site' => $this->SITE,
-            'section_idx' => $section_idx,
+            'site' => $this->site_name,
+            'order' => $order,
             'old_name' => null,
             'path' => $path,
-            'value' => $value
+            'value' => $value,
+            'real' => $value
         );
 
         if ($prop === 'title') {
-            $old_name = $sections['section'][$section_idx]['name'];
-            $old_title = $sections['section'][$section_idx]['title'];
+            $old_name = $sections['section'][$order]['name'];
+            $old_title = $sections['section'][$order]['title'];
             $new_name = $this->getUniqueSlug($old_name, $value);
 
             if(empty($value)) {
@@ -142,7 +167,7 @@ class Sections Extends Storage {
 
             $this->setValueByPath(
                 $sections,
-                'section/' . $section_idx . '/name',
+                'section/' . $order . '/name',
                 $new_name
             );
 
@@ -157,6 +182,7 @@ class Sections Extends Storage {
             $tags = new Tags($this->SITE, $old_name);
             $tags->renameSection($new_name);
             $ret['old_name'] = $old_name;
+            $ret['real'] = $new_name;
         }
 
         if ($prop === 'caption_bg_color') {
@@ -170,7 +196,7 @@ class Sections Extends Storage {
         );
 
         $this->array2xmlFile($sections, $this->XML_FILE, $this->ROOT_ELEMENT);
-        $ret['section'] = $sections['section'][$section_idx];
+        $ret['section'] = $sections['section'][$order];
 
         return $ret;
     }
@@ -178,7 +204,7 @@ class Sections Extends Storage {
     /**
     */
     public function deleteValueByPath($path) {
-        $sections = $this->get();
+        $sections['section'] = $this->get();
         $path_arr = array_slice(explode('/', $path), 1);
         $section_idx = $path_arr[1];
         $this->unsetValueByPath($sections, implode('/', $path_arr));
@@ -194,7 +220,7 @@ class Sections Extends Storage {
     /**
     */
     public function delete($name) {
-        $sections = $this->get();
+        $sections['section'] = $this->get();
         $section_idx = array_search($name, array_column($sections['section'], 'name'));
 
         if ($section_idx !== False) {
@@ -251,7 +277,7 @@ class Sections Extends Storage {
     * @param array $names Array of section names in a new order
     */
     public function order($names) {
-        $sections = $this->get();
+        $sections['section'] = $this->get();
         $new_order = array();
 
         foreach($names as $section_name) {
@@ -271,18 +297,18 @@ class Sections Extends Storage {
     /**
     */
     public function galleryDelete($name, $file) {
-        $sections = $this->get();
-        $section_idx = array_search($name, array_column($sections['section'], 'name'));
+        $sections['section'] = $this->get();
+        $section_order = array_search($name, array_column($sections['section'], 'name'));
 
-        if ($section_idx !== false) {
-            $section =& $sections['section'][$section_idx];
+        if ($section_order !== false) {
+            $section =& $sections['section'][$section_order];
 
             if (!isset($section['mediaCacheData'])) {
                 return array('error_message' => 'File "'.$file.'" not found!');
             }
 
             $files = $this->asList($section['mediaCacheData']['file']);
-            $file_idx = array_search(
+            $file_order = array_search(
                 $file,
                 array_column(
                     array_column(
@@ -293,20 +319,20 @@ class Sections Extends Storage {
                 )
             );
 
-            if ($file_idx === false) {
+            if ($file_order === false) {
                 return array('error_message' => 'File "'.$file.'" not found!');
             }
 
             $mediafolder = $this->MEDIA_ROOT . '/' . $section['mediafolder'] . '/';
             $this->deleteMedia($mediafolder, $file);
 
-            $file = array_splice($section['mediaCacheData']['file'], $file_idx, 1);
+            $file = array_splice($section['mediaCacheData']['file'], $file_order, 1);
             $this->array2xmlFile($sections, $this->XML_FILE, $this->ROOT_ELEMENT);
 
             return array(
                 'site' => $this->SITE,
-                'section_idx' => $section_idx,
-                'file_idx' => $file_idx,
+                'section_order' => $section_order,
+                'file_order' => $file_order,
                 'sections' => $sections
             );
         }
@@ -317,17 +343,17 @@ class Sections Extends Storage {
     /**
     */
     public function galleryOrder($name, $new_files) {
-        $sections = $this->get();
-        $section_idx = array_search($name, array_column($sections['section'], 'name'));
+        $sections['section'] = $this->get();
+        $section_order = array_search($name, array_column($sections['section'], 'name'));
 
-        if ($section_idx !== false) {
-            $section =& $sections['section'][$section_idx];
+        if ($section_order !== false) {
+            $section =& $sections['section'][$section_order];
             $section['mediaCacheData'] = isset($section['mediaCacheData']) ? $section['mediaCacheData'] : array('file' => array());
             $files = $this->asList($section['mediaCacheData']['file']);
             $reordered = array();
 
             foreach($new_files as $file) {
-                $file_idx = array_search(
+                $file_order = array_search(
                     $file,
                     array_column(
                         array_column(
@@ -335,21 +361,21 @@ class Sections Extends Storage {
                             '@attributes'
                         ),
                         'src'
-                    )
-                );
+                        )
+                    );
 
-                if ($file_idx !== false) {
-                    array_push($reordered, $files[$file_idx]);
+                    if ($file_order !== false) {
+                        array_push($reordered, $files[$file_order]);
+                    }
                 }
-            }
 
-            $section['mediaCacheData']['file'] = $reordered;
-            $this->array2xmlFile($sections, $this->XML_FILE, $this->ROOT_ELEMENT);
+                $section['mediaCacheData']['file'] = $reordered;
+                $this->array2xmlFile($sections, $this->XML_FILE, $this->ROOT_ELEMENT);
 
             return array(
-                // @@@:TODO: mediafilder
                 'site' => $this->SITE,
                 'section' => $name,
+                'mediafolder' => $section['mediafolder'],
                 'files' => $reordered
             );
         }
@@ -364,7 +390,7 @@ class Sections Extends Storage {
     /**
     */
     private function getUniqueSlug($old_name, $new_title){
-        $sections = $this->get();
+        $sections['section'] = $this->get();
         $title = trim($new_title);
 
         if (strlen($title) < 1) {

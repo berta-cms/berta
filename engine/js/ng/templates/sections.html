@@ -2,13 +2,13 @@
   <div class="csHandle"><span class="handle"></span></div>
   <div class="csTitle">
     <span class="<%=xEditable%> xProperty-title xNoHTMLEntities xSection-<%=name%>"
-          data-path="<%=site%>/section/<%=idx%>/title">
+          data-path="<%=site%>/section/<%=order%>/title">
       <%=title%>
     </span>
   </div>
   <div class="csBehaviour">
     <span class="<%=xEditableSelectRC%> xProperty-type xSection-<%=name%> xSectionField"
-          data-path="<%=site%>/section/<%=idx%>/@attributes/type" x_options="<%=possible_types%>">
+          data-path="<%=site%>/section/<%=order%>/@attributes/type" x_options="<%=possible_types%>">
           <%=type_value%>
     </span>
   </div>
@@ -17,9 +17,7 @@
   </div>
   <div class="csPub">
     <span class="<%=xEditableYesNo%> xProperty-published xSection-<%=name%>"
-          data-path="<%=site%>/section/<%=idx%>/@attributes/published">
-      <%=published%>
-    </span>
+          data-path="<%=site%>/section/<%=order%>/@attributes/published"><%=published%></span>
   </div>
   <div class="csClone"><a href="#" class="xSectionClone">clone</a></div>
   <div class="csDelete"><a href="#" class="xSectionDelete">delete</a></div>

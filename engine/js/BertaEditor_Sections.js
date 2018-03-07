@@ -109,7 +109,7 @@ var BertaEditor_Sections = new Class({
 	sectionOnSave: function(el, returnUpdate, returnReal, returnError, returnParams) {
 		// update the properties of the section list item and title editable
 		var prop = el.getClassStoredValue('xProperty');
-		if(prop == 'title') {
+		if (prop === 'title') {
 			var li = el.getParent('li');
 			el.setClassStoredValue('xSection', returnReal);
 			li.setClassStoredValue('xSection', returnReal);
@@ -119,12 +119,11 @@ var BertaEditor_Sections = new Class({
 				.combine(li.getElements(this.options.xBertaEditorClassSelect))
 				.combine(li.getElements(this.options.xBertaEditorClassSelectRC));
 			arr.each(function(editable) { editable.setClassStoredValue('xSection', returnReal); });
-		}
 
-		else if(prop == 'type') {
+    } else if (prop === 'type') {
 			var detailsElement = el.getParent('li').getElement('.csDetails');
 			detailsElement.empty();
-			detailsElement.set('html', returnParams);
+      detailsElement.set('html', returnParams);
 			this.editablesInit(detailsElement);
 		}
 	},
@@ -137,7 +136,10 @@ var BertaEditor_Sections = new Class({
 
     redux_store.dispatch(Actions.orderSections(
       site,
-      newOrder
+      newOrder,
+      function (resp) {
+        this.updatePathParams();
+      }.bind(this)
     ));
 	},
 
@@ -150,7 +152,7 @@ var BertaEditor_Sections = new Class({
 		if(confirm('Berta asks:\n\nAre you sure you want to delete this section? All its content will be lost... FOREVAAA!')) {
 			if(confirm('Berta asks again:\n\nAre you really sure?')) {
 				this.sectionsEditor.addClass('xSaving');
-    var site = getCurrentSite();
+    var site = getCurrentSite() || '0';
 
     redux_store.dispatch(Actions.deleteSection(
       site,
@@ -163,6 +165,7 @@ var BertaEditor_Sections = new Class({
           var element = this.sectionsMenu.getElement('li.xSection-' + resp.name);
           this.sectionsSortables.removeItems(element);
           element.destroy();
+          this.updatePathParams();
         } else {
           alert(resp.error_message);
         }
@@ -172,6 +175,19 @@ var BertaEditor_Sections = new Class({
 			}
 		}
 	},
+
+
+  updatePathParams: function() {
+    var path;
+    this.sectionsMenu.getElements('li').each(function (section, i) {
+      section.getElements('[data-path]').each(function (editable) {
+        path = editable.data('path').split('/');
+        path[2] = i;
+        editable.set('data-path', path.join('/')).data('path', true);
+      });
+    });
+  },
+
 
 	sectionCreateNew: function(event) {
 		if (event) event.preventDefault();
@@ -192,7 +208,7 @@ var BertaEditor_Sections = new Class({
           var sectionTypes = state.template_settings
                 .toJSON()[template]
                 .sectionTypes;
-          var type = resp.section['@attributes'].type ? resp.section['@attributes'].type : 'default';
+          var type = resp['@attributes'].type ? resp['@attributes'].type : 'default';
           var type_value = sectionTypes[type].title;
           var type_params = sectionTypes[type].params;
           var possible_types = Object
@@ -202,26 +218,27 @@ var BertaEditor_Sections = new Class({
                 }).join('||');
           var type_html = this.getTypeHTML(
                 site,
-                resp.idx,
-                resp.section,
+                resp.order,
+                resp,
                 state.site_template_settings.toJSON()[site][template],
                 type_params,
-                'xSection-' + resp.section['name'] + ' xSectionField'
+                'xSection-' + resp['name'] + ' xSectionField'
               );
+
           var html = Templates.get(
                 'section',
                 Object.assign({}, editables, {
-                  name: resp.section.name,
+                  name: resp.name,
                   site: site,
-                  idx: resp.idx,
-                  title: resp.section.title,
+                  order: resp.order,
+                  title: resp.title,
                   possible_types: possible_types,
                   type_value: type_value,
                   type_html: type_html,
-                  published: resp.section['@attributes'].published
+                  published: resp['@attributes'].published
                 })
               );
-          var li = new Element('li', { 'class': 'xSection-'+resp.section.name, 'html': html }).inject(this.sectionsMenu);
+          var li = new Element('li', { 'class': 'xSection-'+resp.name, 'html': html }).inject(this.sectionsMenu);
           this.sectionsSortables.addItems(li);
           this.editablesInit();
           li.getElement('a.xSectionClone').addEvent('click', this.sectionOnCloneClick.bindWithEvent(this));

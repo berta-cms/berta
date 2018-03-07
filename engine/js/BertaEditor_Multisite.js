@@ -123,23 +123,20 @@ var BertaEditor_Multisite = new Class({
     redux_store.dispatch(Actions.orderSites(
       newOrder,
       function (resp) {
-        this.updatePathParams(resp);
+        this.updatePathParams();
       }.bind(this)
     ));
   },
 
-  updatePathParams: function(sites_order) {
-    for (var i=0; i< sites_order.length; i++) {
-      $$('.xSite-' + sites_order[i] + ' .xProperty-title')
-        .set('data-path', 'site/' + i + '/title')
-        .data('path', true);
-      $$('.xSite-' + sites_order[i] + ' .xProperty-name')
-        .set('data-path', 'site/' + i + '/name')
-        .data('path', true);
-      $$('.xSite-' + sites_order[i] + ' .xProperty-published')
-        .set('data-path', 'site/' + i + '/@attributes/published')
-        .data('path', true);
-    }
+  updatePathParams: function() {
+    var path;
+    this.sitesMenu.getElements('li').each(function (site, i) {
+      site.getElements('[data-path]').each(function (editable) {
+        path = editable.data('path').split('/');
+        path[1] = i;
+        editable.set('data-path', path.join('/')).data('path', true);
+      });
+    });
   },
 
 	siteOnCloneClick: function(event) {
@@ -174,12 +171,7 @@ var BertaEditor_Multisite = new Class({
               var element = this.sitesMenu.getElement('li.xSite-' + resp.name);
               this.sitesSortables.removeItems(element);
               element.destroy();
-
-              var sites_order = this.sitesMenu.getElements('li').map(function (site) {
-                return site.getClassStoredValue('xSite');
-              });
-              this.updatePathParams(sites_order);
-
+              this.updatePathParams();
             } else {
               alert(resp.error_message);
             }

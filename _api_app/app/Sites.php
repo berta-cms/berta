@@ -38,6 +38,8 @@ class Sites Extends Storage {
 
     /**
      * Returns all sites transformed for frontend needs
+     *
+     * @return array Array of sites
      */
     public function state() {
         $sites = $this->get();
@@ -123,6 +125,8 @@ class Sites Extends Storage {
                 $ret['error_message'] = 'Storage dir cannot be renamed! check permissions and be sure the name of the site is not TOO fancy.';
                 return $ret;
             }
+
+            $ret['value'] = $value;
         }
 
         $this->setValueByPath($sites, $path, $value);

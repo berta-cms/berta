@@ -32,7 +32,7 @@
           path = action.resp.path.split('/');
           order = parseInt(path[1], 10);
           value = action.resp.value;
-          var prop = path.slice(2);  // "title" or "@attributes/published"
+          var prop = path.slice(2);  // example "title" or "@attributes/published"
 
           // @TODO also update sections relations if name changed
 

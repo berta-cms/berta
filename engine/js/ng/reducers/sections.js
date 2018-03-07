@@ -6,6 +6,9 @@
   Object.assign(window.reducers, {
     sections: function(state, action) {
       var path,
+          site_name,
+          order,
+          prop,
           value,
           section,
           section_idx,
@@ -18,90 +21,101 @@
       }
 
       switch (action.type) {
+
         case ActionTypes.SET_STATE:
           console.log('Sections reducer:', action);
           return Immutable.fromJS(action.state.sections);
 
-        case ActionTypes.SECTION_CREATED:
-          console.log('Sections reducer:', action);
-          sections = state.getIn([action.resp.site, 'section']).toJSON();
-          sections.push(action.resp.section);
 
-          return state.setIn(
-            [action.resp.site, 'section'],
-            Immutable.fromJS(sections)
-          );
+        case ActionTypes.SECTION_CREATED:
+          return state.set(state.size, Immutable.fromJS(action.resp));
+
 
         case ActionTypes.SECTION_UPDATED:
           console.log('Sections reducer:', action);
-          return state.setIn(
-            [action.resp.site, 'section', action.resp.section_idx],
-            Immutable.fromJS(action.resp.section)
-          );
+          path = action.resp.path.split('/');
+          site_name = path[0] === '0' ? '' : path[0];
+          order = parseInt(path[2], 10);
+          value = action.resp.value;
+          prop = path.slice(3);  // "title" or "@attributes/published"
+
+          // @TODO also update section relations if name changed
+
+          return state.map(function (section) {
+            if (section.get('site_name') === site_name && section.get('order') === order && section.getIn(prop) !== value) {
+              return section.merge(action.resp.section);
+            }
+            return section;
+          });
+
 
         case ActionTypes.RESET_SECTION:
           console.log('Sections reducer:', action);
           path = action.path.split('/');
-          return state.deleteIn(path);
+          site_name = path[0] === '0' ? '' : path[0];
+          order = parseInt(path[2], 10);
+          prop = path.slice(3);
+
+          return state.map(function (section) {
+            if (section.get('site_name') === site_name && section.get('order') === order) {
+              return section.deleteIn(prop);
+            }
+            return section;
+          });
+
 
         case ActionTypes.SECTION_DELETED:
-          sections = state.getIn([action.resp.site, 'section']).toJSON();
-          section_idx = sections.findIndex(function (section, idx) {
-            return section.name === action.resp.name;
+          console.log('Sections reducer:', action, state);
+
+          // @TODO delete related data from state
+
+          site_name = action.resp.site === '0' ? '' : action.resp.site;
+          order = -1;
+
+          return state.filter(function (section) {
+            return !(section.get('name') === action.resp.name && section.get('site_name') === site_name);
+
+          // Update order
+          }).map(function (section) {
+            if (section.get('site_name') === site_name) {
+              order++;
+
+              if (section.get('order') !== order) {
+                return section.set('order', order);
+              }
+            }
+            return section;
           });
 
-          if (section_idx > -1) {
-            console.log('Sections reducer:', action);
-            sections.splice(section_idx, 1);
-            return state.setIn(
-              [action.resp.site, 'section'],
-              Immutable.fromJS(sections)
-            );
-          }
-
-          return state;
 
         case ActionTypes.ORDER_SECTIONS:
-          action.sections.forEach(function(section_name, new_idx) {
-            section = state.getIn([action.site, 'section']).toJSON()
-              .find(function(section, old_idx) {
-                return section.name === section_name;
-              });
+          console.log('Sections reducer:', action);
 
-            if (section) {
-              sections.push(section);
+          return state.map(function (section) {
+            if (section.get('site_name') === action.site) {
+              var order = action.sections.indexOf(section.get('name'));
+
+              if (section.get('order') !== order) {
+                return section.set('order', order);
+              }
             }
+            return section;
           });
 
-          if (sections.length > 0) {
-            console.log('Sections reducer:', action);
-            return state.setIn(
-              [action.site, 'section'],
-              Immutable.fromJS(sections)
-            );
-          }
-
-          return state;
 
         case ActionTypes.SECTION_BG_ORDERED:
-          sections = state.getIn([action.resp.site, 'section']).toJSON();
-          section_idx = sections.findIndex(function (section, idx) {
-            return section.name === action.resp.section;
+          console.log('Sections reducer:', action);
+
+          return state.map(function (section) {
+            if (section.get('site_name') === action.resp.site && section.get('name') === action.resp.section) {
+
+              return section
+                .set('mediafolder', action.resp.mediafolder)
+                .setIn(['mediaCacheData', 'file'], action.resp.files);
+            }
+            return section;
           });
 
-          if (section_idx > -1) {
-            console.log('Sections reducer:', action);
-            sections[section_idx].mediaCacheData = {
-              file: action.resp.files
-            };
-
-            return state.setIn(
-              [action.resp.site, 'section'],
-              Immutable.fromJS(sections)
-            );
-          }
-
-          return state;
 
         default:
           return state;

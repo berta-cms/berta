@@ -84,7 +84,7 @@
         resp: resp
       };
     },
-    orderSections: function(site, sections) {
+    orderSections: function(site, sections, onComplete) {
       return {
         type: ActionTypes.ORDER_SECTIONS,
         meta: {
@@ -94,7 +94,9 @@
           data: {
             site: site,
             sections: sections
-          }
+          },
+          // @@@:TODO: Remove this callback when migration to ReactJS is completed
+          onComplete: onComplete
         },
         site: site,
         sections: sections
@@ -104,6 +106,9 @@
       var url = encodeURIComponent(site) +
             '/' + encodeURIComponent(section) +
             '/' + encodeURIComponent(file);
+
+      console.log(url, site, section, file);
+
       return {
         type: ActionTypes.SECTION_BG_DELETE,
         meta: {

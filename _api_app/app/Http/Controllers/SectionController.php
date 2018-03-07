@@ -28,7 +28,6 @@ class SectionController extends Controller
         $res = $sections->saveValueByPath($json['path'], $json['value']);
         // @@@:TODO: Replace this with something sensible, when migration to redux is done
         $res['update'] = $res['value'];
-        $res['real'] = $res['value'];
         // @@@:TODO:END
 
         return response()->json($res);

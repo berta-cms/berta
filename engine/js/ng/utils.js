@@ -17,7 +17,7 @@
 
   window.getCurrentSite = function getCurrentSite() {
     var q = getQueryParams();
-    return q.site === undefined ?  '0' : q.site;
+    return q.site === undefined ? '' : q.site;
   };
 
   window.escapeHTML = function escapeHTML(str) {

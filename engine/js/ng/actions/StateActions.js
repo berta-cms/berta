@@ -5,6 +5,7 @@
 
   Object.assign(window.Actions, {
     getState: function(site) {
+      site = site ? site : '0';
       return {
         type: ActionTypes.GET_STATE,
         meta: {

@@ -150,7 +150,7 @@ var BertaBgEditor = new Class({
 	},
 
 	addUploadedElement: function(container, uploaResponseJSON) {
-    var file_idx = $(this.container).getElements('div.images>ul>li.image').length;
+    var image_order = $(this.container).getElements('div.images>ul>li.image').length;
 		var targetElDims = { w: null, h: null };
 
 		if(uploaResponseJSON.get('type') == 'image') {
@@ -187,12 +187,12 @@ var BertaBgEditor = new Class({
 
     //add caption editor
     var site = getCurrentSite();
-    var section_idx = redux_store.getState()
-          .sections.getIn([site, 'section']).toJSON()
-          .findIndex(function(section) {
-            return section.name === this.sectionName;
-          }.bind(this));
-    var path = site + '/section/' + section_idx + '/mediaCacheData/file/' + file_idx + '/@value';
+
+    var section_order = redux_store.getState().sections.find(function (section) {
+      return section.get('site_name') === site && section.get('name') === this.sectionName;
+    }.bind(this)).get('order');
+
+    var path = site + '/section/' + section_order + '/mediaCacheData/file/' + image_order + '/@value';
 		var caption = new Element('div',
 			{
 			'class': 'xEGEImageCaption xEditableMCESimple xProperty-galleryImageCaption xCaption-caption xParam-'+uploaResponseJSON.get('filename')+' xEditableMCE'
@@ -205,7 +205,7 @@ var BertaBgEditor = new Class({
 
 		container.removeClass('file').removeClass('file-success');
 
-		// add common properties, events, and add to sortables
+    // add common properties, events, and add to sortables
 		container.set('filename', uploaResponseJSON.get('filename'));
 		container.set('filetype', uploaResponseJSON.get('type'));
 		container.set('class', uploaResponseJSON.get('type'));
@@ -277,7 +277,7 @@ var BertaBgEditor = new Class({
 
 		var newOrder = this.stripSortables.serialize(0, function(element, index){
 			return element.getProperty('filename');
-		});
+    });
 
 		this.unlinearProcess_start(this.sortingProcessId, "Saving images order");
 
@@ -290,15 +290,14 @@ var BertaBgEditor = new Class({
       function(resp) {
         var captions = $(this.container).getElements('.xProperty-galleryImageCaption');
         var site = getCurrentSite();
-        var section_idx = redux_store.getState()
-              .sections.getIn([site, 'section']).toJSON()
-              .findIndex(function(section) {
-                return section.name === this.sectionName;
-              }.bind(this));
-        var basePath = site + '/section/' + section_idx + '/mediaCacheData/file/';
+        var section_order = redux_store.getState().sections.find(function (section) {
+          return section.get('site_name') === site && section.get('name') === this.sectionName;
+        }.bind(this)).get('order');
 
-        captions.forEach(function(caption, idx) {
-          var path = basePath + idx + '/@value';
+        var basePath = site + '/section/' + section_order + '/mediaCacheData/file/';
+
+        captions.forEach(function(caption, order) {
+          var path = basePath + order + '/@value';
           caption.set('data-path', path).data('data-path', true);
         });
 
@@ -350,7 +349,7 @@ var BertaBgEditor = new Class({
 			var deleteProcessId = this.unlinearProcess_getId('delete-image');
       this.unlinearProcess_start(deleteProcessId, "Deleting image");
 
-      var site = getCurrentSite();
+      var site = getCurrentSite() || '0';
 
       redux_store.dispatch(Actions.sectionBgDelete(
         site,

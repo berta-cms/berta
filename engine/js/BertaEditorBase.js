@@ -982,7 +982,7 @@ var BertaEditorBase = new Class({
 
               resp['params'] = this.getTypeHTML(
                 site,
-                resp.section_idx,
+                resp.order,
                 resp.section,
                 state.site_template_settings.toJSON()[site][template],
                 type_params,
@@ -1372,18 +1372,18 @@ var BertaEditorBase = new Class({
     return retString;
   },
 
-  getTypeHTML: function(site, section_idx, section, settings, type_params, params) {
-    var basePath = site + '/section/' + section_idx + '/';
+  getTypeHTML: function(site, order, section, settings, type_params, params) {
+    var basePath = site + '/section/' + order + '/';
     var params, html = '';
 
     if (type_params) {
       //remove responsive section settings if needed
-      if (settings['pageLayout'] && settings['pageLayout']['responsive']) {
-        if (settings['pageLayout']['responsive'] !== 'yes') {
-            if (type_params.columns) { delete type_params.columns; }
-            if (type_params.entryMaxWidth) { delete type_params.entryMaxWidth; }
-            if (type_params.entryPadding) { delete type_params.entryPadding };
-        }
+      var isResponsive = settings['pageLayout'] && settings['pageLayout']['responsive'] && settings['pageLayout']['responsive'] === 'yes';
+
+      if (!isResponsive) {
+          if (type_params.columns) { delete type_params.columns; }
+          if (type_params.entryMaxWidth) { delete type_params.entryMaxWidth; }
+          if (type_params.entryPadding) { delete type_params.entryPadding };
       }
 
       params = Object.getOwnPropertyNames(type_params);

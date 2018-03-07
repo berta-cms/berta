@@ -24,11 +24,11 @@ class StateController extends Controller
         $state['tags'] = array();
 
         foreach($state['sites'] as $_site) {
-            $site_name = $_site['name'] ? $_site['name'] : 0;
+            $site_name = $_site['name'];
             $sections = new Sections($site_name);
             $site_settings = $siteSettings->getSettingsBySite($site_name);
             $state['site_settings'][$site_name] = $site_settings;
-            $state['sections'][$site_name] = $sections->get();
+            $state['sections'] = array_merge($state['sections'], $sections->state());
 
             if (isset($site_settings['template'])) {
                 $template = $site_settings['template']['template'];
