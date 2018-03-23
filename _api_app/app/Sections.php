@@ -61,37 +61,33 @@ class Sections Extends Storage {
 
         // Clone section
         if ($name !== null) {
-            // $title = empty($title) ? $name : $title;
-            // $section_idx = array_search($name, array_column($sections['section'], 'name'));
+            $title = empty($title) ? $name : $title;
+            $section_order = array_search($name, array_column($sections, 'name'));
 
-            // if ($section_idx === false) {
-            //     return array('error_message' => 'Section "'.$name.'" not found!');
-            // }
+            if ($section_order === false) {
+                return array('error_message' => 'Section "'.$name.'" not found!');
+            }
 
-            // $entries = new Entries($this->SITE, 'clone-of-'.$name, 'clone of '.$title);
-            // $section_entries = $entries->create($name);
+            // Berta requires existing section file for entries
+            $entries = new Entries($this->SITE, 'clone-of-'.$name, 'clone of '.$title);
+            $section_entries = $entries->create($name);
 
-            // $section = $sections['section'][$section_idx];
-            // $section['name'] = $section_entries['name'];
-            // $section['title'] = $section_entries['title'];
-            // unset($section['positionXY']);
+            $section = $sections[$section_order];
+            $section['name'] = $section_entries['name'];
+            $section['title'] = $section_entries['title'];
+            unset($section['positionXY']);
 
-            // // copy mediafolder
-            // if (isset($section['mediafolder'])) {
-            //     $section['mediafolder'] =str_replace(
-            //         $name,
-            //         $section_entries['name'],
-            //         $section['mediafolder']
-            //     );
+            // copy mediafolder
+            if (isset($section['mediafolder'])) {
+                $section['mediafolder'] = $section_entries['name'];
 
-            //     $this->copyFolder(
-            //         realpath($this->MEDIA_ROOT) .'/'. $sections['section'][$section_idx]['mediafolder'],
-            //         realpath($this->MEDIA_ROOT) .'/'. $section['mediafolder']
-            //     );
-            // }
+                $this->copyFolder(
+                    realpath($this->MEDIA_ROOT) .'/'. $sections[$section_order]['mediafolder'],
+                    realpath($this->MEDIA_ROOT) .'/'. $section['mediafolder']
+                );
+            }
 
-            // $section_idx = count($sections);
-            // $sections['section'][] = $section;
+            $section_order = count($sections);
 
         } else {
             $name = 'untitled-' . uniqid();
@@ -117,8 +113,8 @@ class Sections Extends Storage {
             // $section_tags = $tags->populateTags();
             // $allHaveTags = $section_tags['allHaveTags'];
 
-            // // update direct content property
-            // $sections['section'][$section_idx]['@attributes']['has_direct_content'] = !$allHaveTags ? '1' : '0';
+            // update direct content property
+            // $sections[$section_order]['@attributes']['has_direct_content'] = !$allHaveTags ? '1' : '0';
         }
 
         $this->array2xmlFile(['section' => $sections], $this->XML_FILE, $this->ROOT_ELEMENT);
@@ -126,16 +122,8 @@ class Sections Extends Storage {
         $section['order'] = count($sections) - 1;
         $section['site_name'] = $this->site_name;
 
+        // @TODO Also return cloned entries and tags
         return $section;
-
-        // return array(
-            // 'site' => $this->SITE,
-            // 'order' => $order,
-            // 'section' => $section
-            // ,
-            // 'entries' => $section_entries['entries'],
-            // 'tags' => $section_tags['tags']
-        // );
     }
 
     /**
