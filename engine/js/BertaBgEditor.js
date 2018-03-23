@@ -200,7 +200,6 @@ var BertaBgEditor = new Class({
 			).inject(container);
       caption.set('data-path', path).data('data-path', true);
 
-		//console.log(caption);
 		this.elementEdit_init(caption, this.options.xBertaEditorClassMCE);
 
 		container.removeClass('file').removeClass('file-success');

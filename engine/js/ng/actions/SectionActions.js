@@ -107,8 +107,6 @@
             '/' + encodeURIComponent(section) +
             '/' + encodeURIComponent(file);
 
-      console.log(url, site, section, file);
-
       return {
         type: ActionTypes.SECTION_BG_DELETE,
         meta: {

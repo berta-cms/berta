@@ -29,6 +29,12 @@ class Sections Extends Storage {
 
             if ($this->SECTIONS) {
                 $this->SECTIONS = $this->asList($this->SECTIONS['section']);
+
+                foreach ($this->SECTIONS as $order => $section) {
+                    if (isset($section['mediaCacheData']['file'])) {
+                        $this->SECTIONS[$order]['mediaCacheData']['file'] = $this->asList($section['mediaCacheData']['file']);
+                    }
+                }
             }
         }
 
