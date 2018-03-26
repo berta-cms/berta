@@ -79,7 +79,7 @@ class Sections Extends Storage {
 
             // copy mediafolder
             if (isset($section['mediafolder'])) {
-                $section['mediafolder'] = $section_entries['name'];
+                $section['mediafolder'] = $section_entries['name'] . '-background';
 
                 $this->copyFolder(
                     realpath($this->MEDIA_ROOT) .'/'. $sections[$section_order]['mediafolder'],
@@ -159,11 +159,28 @@ class Sections Extends Storage {
                 return $ret;
             }
 
+            // Rename section name
             $this->setValueByPath(
                 $sections,
                 'section/' . $order . '/name',
                 $new_name
             );
+
+            // Rename section background path
+            if (isset($sections['section'][$order]['mediafolder'])) {
+                $mediafolder = $new_name . '-background';
+
+                @rename(
+                    realpath($this->MEDIA_ROOT) .'/'. $sections['section'][$order]['mediafolder'],
+                    realpath($this->MEDIA_ROOT) .'/'. $mediafolder
+                );
+
+                $this->setValueByPath(
+                    $sections,
+                    'section/' . $order . '/mediafolder',
+                    $mediafolder
+                );
+            }
 
             $entries = new Entries($this->SITE, $old_name, $old_title);
             $ret = array_merge($ret, $entries->rename($new_name, $value));

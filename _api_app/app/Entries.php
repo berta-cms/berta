@@ -129,10 +129,11 @@ class Entries Extends Storage {
             foreach ($entries['entry'] as $key => $entry) {
                 if (isset($entry['mediafolder'])) {
                     $old_media = realpath($this->MEDIA_ROOT) .'/'. $entry['mediafolder'];
-                    $new_media = realpath($this->MEDIA_ROOT) .'/'. $new_name . $entry['id'];
+                    $new_name = $new_name . $entry['id'];
+                    $new_media = realpath($this->MEDIA_ROOT) .'/'. $new_name;
 
                     if(@rename($old_media, $new_media)) {
-                        $entries['entry'][$key]['mediafolder'] = $new_media;
+                        $entries['entry'][$key]['mediafolder'] = $new_name;
                     }
                 }
             }
