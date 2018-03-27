@@ -26,7 +26,7 @@ class SiteController extends Controller
         $res['real'] = $res['value'];
         // @@@:TODO:END
 
-        return response()->json($res);
+        return response()->json($res, $res['status_code']);
     }
 
     public function delete($site) {

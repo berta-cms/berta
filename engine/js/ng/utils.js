@@ -1,6 +1,27 @@
 (function(window, document) {
   'use strict';
 
+  window.sync = function (url, data, method) {
+    method = method || 'PATCH';
+    return fetch(
+      url,
+      {
+        method: method,
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: method === 'GET' ? undefined : JSON.stringify(data)
+      }
+    )
+      .then(function (response) {
+        return response.json();
+      })
+      .catch(function (error) {
+        console.log('Request failed:', error.message);
+      });
+  };
+
   window.getQueryParams = function getQueryParams() {
     var pairs = location.search.slice(1).split('&');
     var result = {};

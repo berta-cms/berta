@@ -50,6 +50,14 @@
         resp: resp
       };
     },
+
+    renameSectionsSitename: function (data) {
+      return {
+        type: ActionTypes.RENAME_SECTIONS_SITENAME,
+        data: data
+      }
+    },
+
     resetSection: function(path, onComplete) {
       return {
         type: ActionTypes.RESET_SECTION,

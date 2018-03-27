@@ -954,7 +954,12 @@ var BertaEditorBase = new Class({
         path_arr = path.split('/');
 
         if (path_arr[0] === 'site') {
-          updateAction = Actions.updateSite;
+          prop = path_arr[2];
+          if (prop === 'name') {
+            updateAction = Actions.renameSite;
+          } else {
+            updateAction = Actions.updateSite;
+          }
         }
 
         if (path_arr[1] === 'settings') {

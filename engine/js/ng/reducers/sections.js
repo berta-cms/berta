@@ -31,6 +31,18 @@
           return state.set(state.size, Immutable.fromJS(action.resp));
 
 
+        case ActionTypes.RENAME_SECTIONS_SITENAME:
+          var old_name = action.data.site.get('name');
+          value = action.data.site_name;
+
+          return state.map(function (section) {
+            if (section.get('site_name') === old_name) {
+              return section.set('site_name', value);
+            }
+            return section;
+          });
+
+
         case ActionTypes.SECTION_UPDATED:
           console.log('Sections reducer:', action);
           path = action.resp.path.split('/');

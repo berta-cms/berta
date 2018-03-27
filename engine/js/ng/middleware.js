@@ -11,10 +11,11 @@
     }
   }
 
+  // @TODO Remove this middleware, use `window.sync` from `utils.js` instead
   window.redux_middleware = function (store) {
     return function (next) {
       return function (action) {
-        if (action.meta && action.meta.remote) {
+        if (action && action.meta && action.meta.remote) {
           var method =  action.meta.method ? action.meta.method : 'GET';
 
           fetch(

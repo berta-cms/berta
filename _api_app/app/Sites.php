@@ -91,7 +91,8 @@ class Sites Extends Storage {
         $value = trim(urldecode($value));
         $ret = array(
             'path' => $path,
-            'value' => $value
+            'value' => $value,
+            'status_code' => 200
         );
 
         if (!file_exists($this->XML_SITES_ROOT)) {
@@ -101,6 +102,7 @@ class Sites Extends Storage {
         if(!file_exists($site_root)) {
             $ret['value'] = $site_name;
             $ret['error_message'] = 'Current site storage dir does not exist! you\'ll have to delete this site!';
+            $ret['status_code'] = 400;
             return $ret;
         }
 
@@ -108,6 +110,7 @@ class Sites Extends Storage {
             if (empty($value)) {
                 $ret['value'] = $site_name;
                 $ret['error_message'] = 'Site name cannot be empty!';
+                $ret['status_code'] = 400;
                 return $ret;
             }
 
@@ -117,12 +120,14 @@ class Sites Extends Storage {
             if(file_exists($new_root)) {
                 $ret['value'] = $site_name;
                 $ret['error_message'] = 'Site cannot be created! another site with the same (or too similar name) exists.';
+                $ret['status_code'] = 400;
                 return $ret;
             }
 
             if(!@rename($site_root, $new_root)) {
                 $ret['value'] = $site_name;
                 $ret['error_message'] = 'Storage dir cannot be renamed! check permissions and be sure the name of the site is not TOO fancy.';
+                $ret['status_code'] = 500;
                 return $ret;
             }
 

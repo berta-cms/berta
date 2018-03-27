@@ -24,6 +24,34 @@
         site: site
       };
     },
+
+    renameSite: function (path, value, onComplete) {
+      return function (dispatch, getStore) {
+        dispatch({ type: ActionTypes.UPDATE_SITE });
+        dispatch({ type: ActionTypes.UPDATE_SECTION });
+
+        sync(API_ROOT + 'update-site', { path: path, value: value })
+          .then(function (response) {
+            if (response.error_message) {
+              // @TODO dispatch error message
+            } else {
+              path = path.split('/');
+              var order = parseInt(path[1], 10);
+              var site = getStore().sites.find(function (site) {
+                return site.get('order') === order;
+              });
+
+              dispatch(Actions.siteUpdated(response));
+              dispatch(Actions.renameSectionsSitename({
+                site: site,
+                site_name: response.value
+              }));
+            }
+            onComplete(response);
+          });
+      }
+    },
+
     updateSite: function(path, value, onComplete) {
       return {
         type: ActionTypes.UPDATE_SITE,
