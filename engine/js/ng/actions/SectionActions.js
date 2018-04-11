@@ -55,7 +55,14 @@
       return {
         type: ActionTypes.RENAME_SECTIONS_SITENAME,
         data: data
-      }
+      };
+    },
+
+    deleteSiteSections: function (data) {
+      return {
+        type: ActionTypes.DELETE_SITE_SECTIONS,
+        data: data
+      };
     },
 
     resetSection: function(path, onComplete) {

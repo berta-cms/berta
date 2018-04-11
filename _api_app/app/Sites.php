@@ -29,7 +29,7 @@ class Sites Extends Storage {
                     '@attributes' => ['published' => 1]
                 ];
             } else {
-                $this->SITES = $this->SITES['site'];
+                $this->SITES = $this->asList($this->SITES['site']);
             }
         }
 

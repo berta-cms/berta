@@ -49,7 +49,7 @@
             }
             onComplete(response);
           });
-      }
+      };
     },
 
     updateSite: function(path, value, onComplete) {
@@ -68,31 +68,44 @@
         value: value
       };
     },
+
     siteUpdated: function(resp) {
       return {
         type: ActionTypes.SITE_UPDATED,
         resp: resp
       };
     },
+
     deleteSite: function(site, onComplete) {
-      return {
-        type: ActionTypes.DELETE_SITE,
-        meta: {
-          remote: true,
-          url: API_ROOT + 'delete-site/' + encodeURIComponent(site),
-          method: 'DELETE',
-          dispatch: 'siteDeleted',
-          // @@@:TODO: Remove this callback when migration to ReactJS is completed
-          onComplete: onComplete
-        }
+      return function (dispatch, getStore) {
+
+        // @TODO also delete related: entries, tags, settings, template settings
+
+        dispatch({ type: ActionTypes.DELETE_SITE });
+        dispatch({ type: ActionTypes.DELETE_SECTION });
+
+        sync(API_ROOT + 'delete-site/' + encodeURIComponent(site), {}, 'DELETE')
+          .then(function (response) {
+            if (response.error_message) {
+              // @TODO dispatch error message
+            } else {
+              dispatch(Actions.siteDeleted(response));
+              dispatch(Actions.deleteSiteSections({
+                site_name: response.name
+              }));
+            }
+            onComplete(response);
+          });
       };
     },
+
     siteDeleted: function(resp) {
       return {
         type: ActionTypes.SITE_DELETED,
         resp: resp
       };
     },
+
     orderSites: function(sites, onComplete) {
       return {
         type: ActionTypes.ORDER_SITES,

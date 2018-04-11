@@ -100,6 +100,12 @@
           });
 
 
+        case ActionTypes.DELETE_SITE_SECTIONS:
+          return state.filter(function (section) {
+            return section.get('site_name') !== action.data.site_name;
+          });
+
+
         case ActionTypes.ORDER_SECTIONS:
           console.log('Sections reducer:', action);
 

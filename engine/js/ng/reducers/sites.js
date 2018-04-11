@@ -34,8 +34,6 @@
           value = action.resp.value;
           var prop = path.slice(2);  // example "title" or "@attributes/published"
 
-          // @TODO also update sections relations if name changed
-
           return state.map(function (site) {
             if (site.get('order') === order && site.getIn(prop) !== value) {
               return site.setIn(prop, value);
@@ -46,8 +44,6 @@
 
         case ActionTypes.SITE_DELETED:
           console.log('Sites reducer:', action);
-
-          // @TODO also delete related sections, entries, tags, settings, template settings
 
           // Filter out deleted site
           return state.filter(function (site) {
