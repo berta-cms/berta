@@ -27,6 +27,13 @@
         resp: resp
       };
     },
+
+    deleteSiteSettings: function (data) {
+      return {
+        type: ActionTypes.SITE_SETTINGS_DELETED,
+        data: data
+      };
+    },
   });
 
 })(window, document);

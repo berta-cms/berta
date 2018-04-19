@@ -26,6 +26,11 @@
             value
           );
 
+        case ActionTypes.SITE_SETTINGS_DELETED:
+          return state.filter(function (settings, site_name) {
+            return site_name !== action.data.site_name;
+          });
+
         default:
           return state;
       }
