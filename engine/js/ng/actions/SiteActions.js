@@ -84,6 +84,7 @@
         dispatch({ type: ActionTypes.DELETE_SITE });
         dispatch({ type: ActionTypes.DELETE_SECTION });
         dispatch({ type: ActionTypes.DELETE_SITE_SETTINGS });
+        dispatch({ type: ActionTypes.DELETE_SITE_TEMPLATE_SETTINGS });
 
         sync(API_ROOT + 'delete-site/' + encodeURIComponent(site), {}, 'DELETE')
           .then(function (response) {
@@ -95,6 +96,9 @@
                 site_name: response.name
               }));
               dispatch(Actions.deleteSiteSettings({
+                site_name: response.name
+              }));
+              dispatch(Actions.deleteSiteTemplateSettings({
                 site_name: response.name
               }));
             }
