@@ -79,7 +79,7 @@
     deleteSite: function(site, onComplete) {
       return function (dispatch, getStore) {
 
-        // @TODO also delete related: entries, tags, settings, template settings
+        // @TODO also delete related: entries and tags
 
         dispatch({ type: ActionTypes.DELETE_SITE });
         dispatch({ type: ActionTypes.DELETE_SECTION });
