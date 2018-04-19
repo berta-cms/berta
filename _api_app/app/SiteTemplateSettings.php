@@ -20,10 +20,6 @@ class SiteTemplateSettings extends Storage
     {
         $template_settings = $this->xmlFile2array($this->XML_FILE);
 
-        if (!($template_settings)) {
-            $template_settings = (object) null;
-        }
-
         return $template_settings;
     }
 
@@ -41,7 +37,7 @@ class SiteTemplateSettings extends Storage
         $value = trim(urldecode($value));
 
         $ret = array(
-            'site' => $this->SITE,
+            'site' => $this->SITE == '0' ? '' : $this->SITE,
             'path' => $path,
             'value' => $value,
         );

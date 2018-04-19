@@ -16,6 +16,7 @@ class StateController extends Controller
         $sites = new Sites();
         $siteSettings = new SiteSettings();
         $templateSettings = new TemplateSettings();
+        $allTemplates = $templateSettings->getAllTemplates();
 
         $state['sites'] = $sites->state();
         $state['site_settings'] = array();
@@ -30,13 +31,18 @@ class StateController extends Controller
             $state['site_settings'][$site_name] = $site_settings;
             $state['sections'] = array_merge($state['sections'], $sections->state());
 
-            if (isset($site_settings['template'])) {
-                $template = $site_settings['template']['template'];
-                $site_template_settings = new SiteTemplateSettings(
+            foreach ($allTemplates as $template) {
+                $template_settings = new SiteTemplateSettings(
                     $site_name,
                     $template
                 );
-                $state['site_template_settings'][$site_name][$template] = $site_template_settings->get();
+                $template_settings = $template_settings->get();
+
+                if (!($template_settings)) {
+                    $template_settings = (object) null;
+                }
+
+                $state['site_template_settings'][$site_name][$template] = $template_settings;
             }
 
             if (!empty($state['sections'][$site_name]['section'])) {

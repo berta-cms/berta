@@ -74,7 +74,7 @@ class TemplateSettings {
         return $ret;
     }
 
-    private function getAllTemplates() {
+    public function getAllTemplates() {
         $returnArr = array();
         $d = dir($this->TEMPLATE_ROOT);
 
