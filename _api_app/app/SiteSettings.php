@@ -51,7 +51,7 @@ class SiteSettings extends Storage
         $value = trim(urldecode($value));
 
         $ret = array(
-            'site' => $this->SITE,
+            'site' => $this->SITE == '0' ? '' : $this->SITE,
             'path' => $path,
             'value' => $value,
         );
