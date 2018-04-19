@@ -72,7 +72,12 @@ class Sites Extends Storage {
         $this->array2xmlFile(['site' => $sites], $this->XML_FILE, $this->ROOT_ELEMENT);
         $site['order'] = count($sites) - 1;
 
-        return $site;
+        // @TODO return related sections, entries, tags, settings, template settings
+        // for redux to update in frontend
+
+        return [
+            'site' => $site
+        ];
     }
 
     /**

@@ -4,24 +4,32 @@
   window.Actions = window.Actions || {};
 
   Object.assign(window.Actions, {
-    createSite: function(site, onComplete) {
-      return {
-        type: ActionTypes.CREATE_SITE,
-        meta: {
-          remote: true,
-          url: API_ROOT + 'create-site',
-          method: 'POST',
-          dispatch: 'siteCreated',
-          // @@@:TODO: Remove this callback when migration to ReactJS is completed
-          onComplete: onComplete,
-          data: {site: site}
-        }
+
+    createSite: function (site, onComplete) {
+      return function (dispatch, getStore) {
+
+        dispatch({ type: ActionTypes.CREATE_SITE });
+
+        sync(API_ROOT + 'create-site', {site: site}, 'POST')
+          .then(function (response) {
+            if (response.error_message) {
+              // @TODO dispatch error message
+            } else {
+
+              // @TODO when created site is a clone we need to clone
+              // related sections, entries, tags, settings, template settings
+
+              dispatch(Actions.siteCreated(response.site));
+            }
+            onComplete(response.site);
+          });
       };
     },
-    siteCreated: function(site) {
+
+    siteCreated: function(data) {
       return {
         type: ActionTypes.SITE_CREATED,
-        site: site
+        data: data
       };
     },
 

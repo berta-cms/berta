@@ -21,10 +21,7 @@
         case ActionTypes.SITE_CREATED:
           console.log('Sites reducer:', action);
 
-          // @TODO when created site is a clone we need to clone
-          // related sections, entries, tags, settings, template settings
-
-          return state.set(state.size, Immutable.fromJS(action.site));
+          return state.set(state.size, Immutable.fromJS(action.data));
 
 
         case ActionTypes.SITE_UPDATED:
