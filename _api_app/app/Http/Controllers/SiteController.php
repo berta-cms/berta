@@ -3,7 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Sites;
+use App\SiteSettings;
+use App\Sections;
+use App\Entries;
+use App\Tags;
+use App\SiteTemplateSettings;
+
 use Illuminate\Http\Request;
+
 
 class SiteController extends Controller
 {
@@ -13,7 +20,36 @@ class SiteController extends Controller
         $cloneFrom = $json['site'] == -1 ? null : $json['site'];
         $site = $sites->create($cloneFrom);
 
-        return response()->json($site);
+        /**
+         * @todo refactor code
+         * @todo think about improving Storage classes
+         */
+        $settings = new SiteSettings($site['name']);
+        $settings = $cloneFrom ? $settings->get() : $settings->getDefaultSettings();
+        $sections = $cloneFrom ? new Sections($site['name']) : null;
+        $entries = [];
+        if ($sections) {
+            foreach ($sections as $section) {
+                $sectionEntries = new Entries($site['name'], $section['name']);
+                $entries = array_merge($entries, $sectionEntries['entry']);
+            }
+        }
+        $tags = $cloneFrom ? new Tags($site['name']) : null;
+        $templateSettings = null;
+        if ($cloneFrom) {
+            $templateSettings = new SiteTemplateSettings($site['name'], $settings['template']['template']);
+        }
+
+        $resp = [
+            'site' => $site,
+            'settings' => $settings,
+            'sections' => $sections ? $sections->get() : [],
+            'entries' => $entries ? ['entry' => $entries] : [],  // See if we need that wrap
+            'tags' => $tags ? $tags->get() : [],
+            'templateSettings' => $templateSettings ? $templateSettings->get() : []
+        ];
+
+        return response()->json($resp);
     }
 
     public function update(Request $request) {
