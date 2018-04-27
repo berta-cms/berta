@@ -150,7 +150,7 @@ class Sections Extends Storage {
 
         if ($prop === 'title') {
             $old_name = $sections['section'][$order]['name'];
-            $old_title = $sections['section'][$order]['title'];
+            $old_title = isset($sections['section'][$order]['title']) ? $sections['section'][$order]['title'] : '';
             $new_name = $this->getUniqueSlug($old_name, $value);
 
             if(empty($value)) {
