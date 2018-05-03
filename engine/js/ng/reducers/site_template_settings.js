@@ -26,6 +26,9 @@
             value
           );
 
+        case ActionTypes.TEMPLATE_SETTINGS_CREATED:
+          return state.setIn([action.site_name], Immutable.fromJS(action.data));
+
         case ActionTypes.SITE_TEMPLATE_SETTINGS_DELETED:
           return state.filter(function (site_template_settings, site_name) {
             return site_name !== action.data.site_name;

@@ -46,7 +46,7 @@ class SiteController extends Controller
             'sections' => $sections ? $sections->get() : [],
             'entries' => $entries ? ['entry' => $entries] : [],  // See if we need that wrap
             'tags' => $tags ? $tags->get() : [],
-            'templateSettings' => $templateSettings ? $templateSettings->get() : []
+            'siteTemplateSettings' => $templateSettings ? $templateSettings->get() : new \stdClass
         ];
 
         return response()->json($resp);
