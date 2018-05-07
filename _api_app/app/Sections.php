@@ -6,10 +6,51 @@ use App\Entries;
 use App\Tags;
 
 class Sections Extends Storage {
+    /*
+
+     */
+    private $JSON_SCHEME = [
+        '$schema' => "http://json-schema.org/draft-06/schema#",
+        'type' => 'array',
+        'items' => [
+            'type' => 'object',
+            'properties' => [
+                'name' => 'string',
+                'title' => 'string',
+                'backgroundVideoEmbed' => 'string',
+                '@attributes' => [
+                    'type' => 'object',
+                    'properties' => [
+                        'tags_behavior' => 'string',
+                        'entry_count' => 'integer',
+                        'published' => [
+                            'type' => 'integer',
+                            'minimum' => 0,
+                            'maximum' => 1
+                        ],
+                        'has_direct_content' => [
+                            'type' => 'integer',
+                            'minimum' => 0,
+                            'maximum' => 1
+                        ]
+                    ]
+                ]
+            ],
+            'required' => ['name']
+        ]
+    ];
     private $ROOT_ELEMENT = 'sections';
     private $SECTIONS = array();
     private $XML_FILE;
     private $site_name;
+    private static $DEFAULT_VALUES = [
+        'name' => '',
+        '@attributes' => [
+            'tags_behavior' => 'invisible',
+            'published' => 0,
+            'has_direct_content' => 0
+        ]
+    ];
 
     public function __construct($site='') {
         parent::__construct($site);
