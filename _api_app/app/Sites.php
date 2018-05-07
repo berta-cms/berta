@@ -1,7 +1,31 @@
 <?php
-
 namespace App;
 
+/**
+ * @class Sites
+ *
+ * This model handles storing, updating, deleting multi site data in Berta.
+ *
+ * When there is only one site, the model will always return the same hard-coded data. Otherwise will read/write the
+ * the data in `storage/-sites/sites.xml`
+ *
+ * File example:
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<sites>
+    <!-- This is the first and main site, that exists always even when there is just one site -->
+    <site published="1">
+        <name><![CDATA[]]></name>
+        <title><![CDATA[Main site]]></title>
+    </site>
+    <!-- This is an example of additional site data. -->
+    <site published="0">
+        <name><![CDATA[other-site]]></name>
+        <title><![CDATA[Other site]]></title>
+    </site>
+</sites>
+```
+ */
 class Sites Extends Storage {
     private $XML_FILE;
     private $SITES = array();
@@ -72,12 +96,7 @@ class Sites Extends Storage {
         $this->array2xmlFile(['site' => $sites], $this->XML_FILE, $this->ROOT_ELEMENT);
         $site['order'] = count($sites) - 1;
 
-        // @TODO return related sections, entries, tags, settings, template settings
-        // for redux to update in frontend
-
-        return [
-            'site' => $site
-        ];
+        return $site;
     }
 
     /**

@@ -20,6 +20,30 @@
               // related sections, entries, tags, settings, template settings
 
               dispatch(Actions.siteCreated(response.site));
+              if (response.settings) {
+                dispatch(Actions.settingsCreated(response.site.name, response.settings));
+              }
+              if (response.sections && response.sections.length) {
+                for (var i = 0; i < response.sections.length; i++) {
+                  dispatch(Actions.sectionCreated(response.sections[i]));
+                }
+              }
+              /** @todo: handle entries in frontend
+              if (response.entries && response.entries.length) {
+                for (var i = 0; i < response.entries.length; i++) {
+                  dispatch(Actions.sectionCreated(response.entries[i]));
+                }
+              } */
+              /** @todo: handle tags in frontend
+              if (response.tags && response.tags.length) {
+                for (var i = 0; i < response.tags.length; i++) {
+                  dispatch(Actions.tagsCreated(response.tags[i]));
+                }
+              }
+              */
+              if (response.siteTemplateSettings) {
+                dispatch(Actions.templateSettingsCreated(response.site.name, response.siteTemplateSettings));
+              }
             }
             onComplete(response.site);
           });
