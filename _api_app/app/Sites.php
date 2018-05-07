@@ -6,6 +6,35 @@ class Sites Extends Storage {
     private $XML_FILE;
     private $SITES = array();
     private $ROOT_ELEMENT = 'sites';
+    private $JSON_SCHEME = [
+        '$schema' => "http://json-schema.org/draft-06/schema#",
+        'type' => 'array',
+        'items' => [
+            'type' => 'object',
+            'properties' => [
+                'name' => 'string',
+                'title' => 'string',
+                '@attributes' => [
+                    'type' => 'object',
+                    'properties' => [
+                        'published' => [
+                            'type' => 'integer',
+                            'minimum' => 0,
+                            'maximum' => 1
+                        ]
+                    ]
+                ]
+            ],
+            'required' => ['name']
+        ]
+    ];
+
+    private static $DEFAULT_VALUES = [
+        'name' => '',
+        '@attributes' => [
+            'published' => 0
+        ]
+    ];
 
     public function __construct() {
         parent::__construct();
