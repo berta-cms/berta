@@ -6,12 +6,31 @@ class SiteSettings extends Storage
 {
     private $ROOT_ELEMENT = 'settings';
     private $XML_FILE;
+    private $SITE_SETTINGS = [];
+    private static $DEFAULT_SITE_SETTINGS = [
+        'template/template' => 'messy-0.4.2',
+        'berta/lastUpdated' => 'D, d M Y H:i:s',
+        'berta/installed' => 1
+    ];
 
     public function __construct($site = '')
     {
         parent::__construct($site);
         $xml_root = $this->getSiteXmlRoot($site);
         $this->XML_FILE = $xml_root . '/settings.xml';
+    }
+
+    public function getDefaultSettings() {
+        foreach (self::$DEFAULT_SITE_SETTINGS as $path => $value) {
+            if (strpos($path, 'lastUpdated') !== false) {
+                $this->setValueByPath($this->SITE_SETTINGS, $path, gmdate($value, time()). ' GMT');
+            }
+            else {
+                $this->setValueByPath($this->SITE_SETTINGS, $path, $value);
+            }
+        }
+
+        return $this->SITE_SETTINGS;
     }
 
     /**
@@ -21,7 +40,10 @@ class SiteSettings extends Storage
     */
     public function get()
     {
-        return $this->xmlFile2array($this->XML_FILE);
+        if (empty($this->SITE_SETTINGS)) {
+            $this->SITE_SETTINGS = $this->xmlFile2array($this->XML_FILE);
+        }
+        return $this->SITE_SETTINGS;
     }
 
     /**

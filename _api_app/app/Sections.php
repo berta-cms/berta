@@ -5,7 +5,105 @@ namespace App;
 use App\Entries;
 use App\Tags;
 
+
+/**
+ * This class is a service that handles site section data for Berta CMS.
+ * Sections are stored in `sections.xml` file for the corresponding site.
+ *
+ * The root site has its sections stored in `storage/sections.xml`,
+ * any other site has it's sections in `storage/-sites/[site name]/sections.xml`
+ *
+ * @example an example of XML file:
+ * ```xml
+ * <?xml version="1.0" encoding="utf-8"?>
+ * <sections>
+ *   <section tags_behavior="invisible" published="1" entry_count="2" has_direct_content="0">
+ *     <name><![CDATA[first section]]></name>
+ *     <title><![CDATA[First Section]]></title>
+ *     <backgroundVideoEmbed><![CDATA[https://youtu.be/video]]></backgroundVideoEmbed>
+ *     <mediafolder><![CDATA[media-folder]]></mediafolder>
+ *     <mediaCacheData hide_navigation="yes" caption_bg_color="235,73,73" autoplay="0" image_size="small">
+ *       <file type="image" src="some-image.jpg" width="1200" height="640"><![CDATA[<p>A caption for this image</p>]]></file>
+ *     </mediaCacheData>
+ *   </section>
+ *   <section tags_behavior="invisible" published="1" has_direct_content="0">
+ *     <name><![CDATA[second section]]></name>
+ *   </section>
+ * </sections>
+ * ```
+ */
 class Sections Extends Storage {
+    /**
+     * @var array $JSON_SCHEMA
+     * Associative array representing data structure handled by this service.
+     */
+    public static $JSON_SCHEMA = [
+        '$schema' => "http://json-schema.org/draft-06/schema#",
+        'type' => 'array',
+        'items' => [
+            'type' => 'object',
+            'properties' => [
+                'name' => ['type' => 'string'],
+                'title' => ['type' => 'string'],
+                'backgroundVideoEmbed' => ['type' => 'string'],
+                'mediafolder' => ['type' => 'string'],
+                'mediaCacheData' => [
+                    'type' => 'object',
+                    'properties' => [
+                        'file' => [
+                            'type' => 'object',
+                            '@value' => ['type' => 'string'],
+                            '@attributes' => [
+                                'type' => 'object',
+                                'properties' => [
+                                    'type' => ['type' => 'string'],
+                                    'src' => ['type' => 'string'],
+                                    'width' => ['type' => 'integer'],
+                                    'height' => ['type' => 'integer'],
+                                ]
+                            ]
+                        ],
+                        '@attributes' => [
+                            'type' => 'object',
+                            'properties' => [
+                                'hide_navigation' => ['type' => 'string'],
+                                'caption_bg_color' => ['type' => 'string'],
+                                'autoplay' => ['type' => 'string'],
+                                'image_size' => ['type' => 'string'],
+                            ]
+                        ]
+                    ]
+                ],
+                '@attributes' => [
+                    'type' => 'object',
+                    'properties' => [
+                        'tags_behavior' => ['type' => 'string'],
+                        'entry_count' => ['type' => 'integer'],
+                        'published' => [
+                            'type' => 'integer',
+                            'minimum' => 0,
+                            'maximum' => 1
+                        ],
+                        'has_direct_content' => [
+                            'type' => 'integer',
+                            'minimum' => 0,
+                            'maximum' => 1
+                        ]
+                    ]
+                ]
+            ],
+            'required' => ['name']
+        ]
+    ];
+    protected static $DEFAULT_VALUES = [
+        'name' => '',
+        '@attributes' => [
+            'tags_behavior' => 'invisible',
+            'published' => 0,
+            'has_direct_content' => 0
+        ]
+    ];
+
     private $ROOT_ELEMENT = 'sections';
     private $SECTIONS = array();
     private $XML_FILE;
@@ -150,7 +248,7 @@ class Sections Extends Storage {
 
         if ($prop === 'title') {
             $old_name = $sections['section'][$order]['name'];
-            $old_title = $sections['section'][$order]['title'];
+            $old_title = isset($sections['section'][$order]['title']) ? $sections['section'][$order]['title'] : '';
             $new_name = $this->getUniqueSlug($old_name, $value);
 
             if(empty($value)) {

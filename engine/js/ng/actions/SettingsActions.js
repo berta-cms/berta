@@ -28,6 +28,14 @@
       };
     },
 
+    settingsCreated: function (site_name, data) {
+      return {
+        type: ActionTypes.SETTINGS_CREATED,
+        site_name: site_name,
+        data: data
+      };
+    },
+
     deleteSiteSettings: function (data) {
       return {
         type: ActionTypes.SITE_SETTINGS_DELETED,
