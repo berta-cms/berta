@@ -2,11 +2,21 @@
 
 namespace App;
 
+use Swaggest\JsonSchema\Schema;
+use App\Shared\Helpers;
+
 class Storage {
+    /** @var array $JSON_SCHEMA
+     * Associative array representing data structure handled by this service.
+     */
+    public static $JSON_SCHEMA = [];
+
     protected $SITE='';
     protected $XML_MAIN_ROOT;
     protected $XML_SITES_ROOT;
     protected $MEDIA_ROOT;
+    protected static $DEFAULT_VALUES = [];
+
     private $MEDIA_FOLDER = 'media';
 
     public function __construct($site='') {
@@ -422,5 +432,24 @@ class Storage {
         }
 
         return $output;
+    }
+
+    /**
+     * Test if data structure validation works correctly, by validating the default data structure.
+     *
+     * @return boolean
+     */
+    public function validationTest() {
+        $class = get_class($this);
+        try {
+            $json_object = Helpers::arrayToJsonObject($class::$JSON_SCHEMA);
+            $schema = Schema::import($json_object);
+            $result = $schema->in(
+                [  // Wrap default structure in array, because sections.xml represents Section array.
+                    Helpers::arrayToJsonObject($class::$DEFAULT_VALUES)]);
+        } catch (Exception $e) {
+            return false;
+        }
+        return true;
     }
 }

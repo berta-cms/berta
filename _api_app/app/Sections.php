@@ -6,23 +6,23 @@ use App\Entries;
 use App\Tags;
 
 class Sections Extends Storage {
-    /*
-
+    /** @var array $JSON_SCHEMA
+     * Associative array representing data structure handled by this service.
      */
-    private $JSON_SCHEME = [
+    public static $JSON_SCHEMA = [
         '$schema' => "http://json-schema.org/draft-06/schema#",
         'type' => 'array',
         'items' => [
             'type' => 'object',
             'properties' => [
-                'name' => 'string',
-                'title' => 'string',
-                'backgroundVideoEmbed' => 'string',
+                'name' => ['type' => 'string'],
+                'title' => ['type' => 'string'],
+                'backgroundVideoEmbed' => ['type' => 'string'],
                 '@attributes' => [
                     'type' => 'object',
                     'properties' => [
-                        'tags_behavior' => 'string',
-                        'entry_count' => 'integer',
+                        'tags_behavior' => ['type' => 'string'],
+                        'entry_count' => ['type' => 'integer'],
                         'published' => [
                             'type' => 'integer',
                             'minimum' => 0,
@@ -39,11 +39,7 @@ class Sections Extends Storage {
             'required' => ['name']
         ]
     ];
-    private $ROOT_ELEMENT = 'sections';
-    private $SECTIONS = array();
-    private $XML_FILE;
-    private $site_name;
-    private static $DEFAULT_VALUES = [
+    protected static $DEFAULT_VALUES = [
         'name' => '',
         '@attributes' => [
             'tags_behavior' => 'invisible',
@@ -51,6 +47,11 @@ class Sections Extends Storage {
             'has_direct_content' => 0
         ]
     ];
+
+    private $ROOT_ELEMENT = 'sections';
+    private $SECTIONS = array();
+    private $XML_FILE;
+    private $site_name;
 
     public function __construct($site='') {
         parent::__construct($site);
