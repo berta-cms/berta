@@ -18,6 +18,34 @@ class Sections Extends Storage {
                 'name' => ['type' => 'string'],
                 'title' => ['type' => 'string'],
                 'backgroundVideoEmbed' => ['type' => 'string'],
+                'mediafolder' => ['type' => 'string'],
+                'mediaCacheData' => [
+                    'type' => 'object',
+                    'properties' => [
+                        'file' => [
+                            'type' => 'object',
+                            '@value' => ['type' => 'string'],
+                            '@attributes' => [
+                                'type' => 'object',
+                                'properties' => [
+                                    'type' => ['type' => 'string'],
+                                    'src' => ['type' => 'string'],
+                                    'width' => ['type' => 'integer'],
+                                    'height' => ['type' => 'integer'],
+                                ]
+                            ]
+                        ],
+                        '@attributes' => [
+                            'type' => 'object',
+                            'properties' => [
+                                'hide_navigation' => ['type' => 'string'],
+                                'caption_bg_color' => ['type' => 'string'],
+                                'autoplay' => ['type' => 'string'],
+                                'image_size' => ['type' => 'string'],
+                            ]
+                        ]
+                    ]
+                ],
                 '@attributes' => [
                     'type' => 'object',
                     'properties' => [
