@@ -2,6 +2,21 @@
 
 namespace App;
 
+/**
+ * XML file example
+ *
+ * <sites>
+ *   <site published="1">
+ *     <name><![CDATA[]]></name>
+ *     <title><![CDATA[Main site]]></title>
+ *   </site>
+ *   <site published="0">
+ *     <name><![CDATA[my-site]]></name>
+ *     <title><![CDATA[My site]]></title>
+ *   </site>
+ *   ...
+ * </sites>
+ */
 class Sites Extends Storage {
     private $XML_FILE;
     private $SITES = array();
