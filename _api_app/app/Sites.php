@@ -27,10 +27,7 @@ namespace App;
 ```
  */
 class Sites Extends Storage {
-    private $XML_FILE;
-    private $SITES = array();
-    private $ROOT_ELEMENT = 'sites';
-    private $JSON_SCHEME = [
+    public static $JSON_SCHEME = [
         '$schema' => "http://json-schema.org/draft-06/schema#",
         'type' => 'array',
         'items' => [
@@ -52,13 +49,16 @@ class Sites Extends Storage {
             'required' => ['name']
         ]
     ];
-
-    private static $DEFAULT_VALUES = [
+    protected static $DEFAULT_VALUES = [
         'name' => '',
         '@attributes' => [
             'published' => 0
         ]
     ];
+
+    private $ROOT_ELEMENT = 'sites';
+    private $SITES = array();
+    private $XML_FILE;
 
     public function __construct() {
         parent::__construct();
