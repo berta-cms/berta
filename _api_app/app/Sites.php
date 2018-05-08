@@ -36,8 +36,8 @@ class Sites Extends Storage {
         'items' => [
             'type' => 'object',
             'properties' => [
-                'name' => 'string',
-                'title' => 'string',
+                'name' => ['type' => 'string'],
+                'title' => ['type' => 'string'],
                 '@attributes' => [
                     'type' => 'object',
                     'properties' => [
