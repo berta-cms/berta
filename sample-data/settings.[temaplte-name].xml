@@ -29,6 +29,11 @@
     <centeredContents><![CDATA[yes]]></centeredContents>
     <headingMargin><![CDATA[20px 10px]]></headingMargin>
     <menuMargin><![CDATA[20px 10px]]></menuMargin>
+    <contentPosition><![CDATA[center]]></contentPosition>
+    <contentAlign><![CDATA[right]]></contentAlign>
+    <contentWidth><![CDATA[501px]]></contentWidth>
+    <bodyMargin><![CDATA[21px 40px 40px]]></bodyMargin>
+    <siteMenuMargin><![CDATA[1px]]></siteMenuMargin>
   </pageLayout>
   <entryHeading>
     <color><![CDATA[#000000]]></color>
@@ -48,7 +53,19 @@
     <galleryNavMargin><![CDATA[0]]></galleryNavMargin>
     <galleryMargin><![CDATA[0]]></galleryMargin>
     <displayTags><![CDATA[no]]></displayTags>
+    <margin><![CDATA[0 0 5em]]></margin>
+    <galleryPosition><![CDATA[between title/description]]></galleryPosition>
   </entryLayout>
+  <entryFooter>
+    <color><![CDATA[#a1a1a1]]></color>
+    <fontFamily><![CDATA[Helvetica, Arial, sans-serif]]></fontFamily>
+    <googleFont><![CDATA[Marvel]]></googleFont>
+    <fontSize><![CDATA[inherit]]></fontSize>
+    <lineHeight><![CDATA[inherit]]></lineHeight>
+    <fontWeight><![CDATA[normal]]></fontWeight>
+    <fontStyle><![CDATA[normal]]></fontStyle>
+    <fontVariant><![CDATA[normal]]></fontVariant>
+  </entryFooter>
   <heading>
     <position><![CDATA[absolute]]></position>
     <image><![CDATA[square11.jpg]]></image>
@@ -63,6 +80,20 @@
     <fontVariant><![CDATA[normal]]></fontVariant>
     <lineHeight><![CDATA[1em]]></lineHeight>
   </heading>
+  <pageHeading>
+    <image><![CDATA[square71.jpg]]></image>
+    <image_width><![CDATA[421]]></image_width>
+    <image_height><![CDATA[421]]></image_height>
+    <color><![CDATA[#f5c9c9]]></color>
+    <fontFamily><![CDATA[Helvetica, Arial, sans-serif]]></fontFamily>
+    <googleFont><![CDATA[Marvel]]></googleFont>
+    <fontSize><![CDATA[1.3em]]></fontSize>
+    <fontWeight><![CDATA[normal]]></fontWeight>
+    <fontStyle><![CDATA[italic]]></fontStyle>
+    <fontVariant><![CDATA[small-caps]]></fontVariant>
+    <lineHeight><![CDATA[0.9em]]></lineHeight>
+    <margin><![CDATA[11px 0 15px]]></margin>
+  </pageHeading>
   <menu>
     <position><![CDATA[absolute]]></position>
     <fontFamily><![CDATA[Arial, sans-serif]]></fontFamily>
@@ -77,6 +108,10 @@
     <textDecorationLink><![CDATA[none]]></textDecorationLink>
     <textDecorationHover><![CDATA[underline]]></textDecorationHover>
     <textDecorationActive><![CDATA[line-through]]></textDecorationActive>
+    <separator><![CDATA[|]]></separator>
+    <separatorDistance><![CDATA[0.6em]]></separatorDistance>
+    <fontVariant><![CDATA[normal]]></fontVariant>
+    <margin><![CDATA[0]]></margin>
   </menu>
   <tagsMenu>
     <fontFamily><![CDATA[Arial, sans-serif]]></fontFamily>
@@ -96,6 +131,18 @@
     <alwaysOpen><![CDATA[yes]]></alwaysOpen>
     <hidden><![CDATA[no]]></hidden>
   </tagsMenu>
+  <subMenu>
+    <separator><![CDATA[|]]></separator>
+    <separatorDistance><![CDATA[0.6em]]></separatorDistance>
+    <fontSize><![CDATA[inherit]]></fontSize>
+    <fontFamily><![CDATA[Helvetica, Arial, sans-serif]]></fontFamily>
+    <googleFont><![CDATA[Marvel]]></googleFont>
+    <fontWeight><![CDATA[normal]]></fontWeight>
+    <fontStyle><![CDATA[normal]]></fontStyle>
+    <fontVariant><![CDATA[normal]]></fontVariant>
+    <lineHeight><![CDATA[inherit]]></lineHeight>
+    <margin><![CDATA[0 0 11px]]></margin>
+  </subMenu>
   <links>
     <colorLink><![CDATA[#696969]]></colorLink>
     <colorVisited><![CDATA[#696969]]></colorVisited>
