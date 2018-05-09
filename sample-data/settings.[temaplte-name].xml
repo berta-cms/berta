@@ -34,6 +34,9 @@
     <contentWidth><![CDATA[501px]]></contentWidth>
     <bodyMargin><![CDATA[21px 40px 40px]]></bodyMargin>
     <siteMenuMargin><![CDATA[1px]]></siteMenuMargin>
+    <paddingTop><![CDATA[31px]]></paddingTop>
+    <paddingLeft><![CDATA[31px]]></paddingLeft>
+    <mashUpColumns><![CDATA[2]]></mashUpColumns>
   </pageLayout>
   <entryHeading>
     <color><![CDATA[#000000]]></color>
@@ -55,6 +58,7 @@
     <displayTags><![CDATA[no]]></displayTags>
     <margin><![CDATA[0 0 5em]]></margin>
     <galleryPosition><![CDATA[between title/description]]></galleryPosition>
+    <spaceBetween><![CDATA[21px]]></spaceBetween>
   </entryLayout>
   <entryFooter>
     <color><![CDATA[#a1a1a1]]></color>
@@ -143,6 +147,30 @@
     <lineHeight><![CDATA[inherit]]></lineHeight>
     <margin><![CDATA[0 0 11px]]></margin>
   </subMenu>
+  <sideBar>
+    <width><![CDATA[200px]]></width>
+    <marginLeft><![CDATA[0]]></marginLeft>
+    <marginTop><![CDATA[31px]]></marginTop>
+    <marginBottom><![CDATA[21px]]></marginBottom>
+    <transparent><![CDATA[yes]]></transparent>
+    <backgroundColor><![CDATA[#e38181]]></backgroundColor>
+    <image><![CDATA[square68.jpg]]></image>
+    <image_width><![CDATA[421]]></image_width>
+    <image_height><![CDATA[421]]></image_height>
+    <color><![CDATA[#e39a9a]]></color>
+    <fontFamily><![CDATA[Impact, Charcoal, sans-serif]]></fontFamily>
+    <googleFont><![CDATA[Marvel]]></googleFont>
+    <fontSize><![CDATA[12px]]></fontSize>
+    <fontWeight><![CDATA[normal]]></fontWeight>
+    <fontStyle><![CDATA[normal]]></fontStyle>
+    <fontVariant><![CDATA[normal]]></fontVariant>
+    <lineHeight><![CDATA[1.3em]]></lineHeight>
+  </sideBar>
+  <firstPage>
+    <imageSizeRatio><![CDATA[0.5]]></imageSizeRatio>
+    <imageHaveShadows><![CDATA[yes]]></imageHaveShadows>
+    <hoverWiggle><![CDATA[no]]></hoverWiggle>
+  </firstPage>
   <links>
     <colorLink><![CDATA[#696969]]></colorLink>
     <colorVisited><![CDATA[#696969]]></colorVisited>
