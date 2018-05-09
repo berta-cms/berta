@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<sections>
+    <section tags_behavior="invisible" published="1" has_direct_content="1" type="default" entry_count="4">
+        <name><![CDATA[section-one]]></name>
+        <title><![CDATA[Section one]]></title>
+        <positionXY><![CDATA[200,190]]></positionXY>
+        <mediafolder><![CDATA[section-one-background]]></mediafolder>
+        <mediaCacheData hide_navigation="yes" caption_bg_color="227,61,61" autoplay="5" image_size="medium" animation="disabled" fade_content="disabled" caption_color="#eaff2b">
+            <file type="image" src="buildings_v1_1001.jpg" width="1200" height="640"><![CDATA[<p>Caption 1</p>]]></file>
+            <file type="image" src="square.jpg" width="842" height="842"><![CDATA[<p><span style="font-size: 10.8px;">Caption 2</span></p>]]></file>
+        </mediaCacheData>
+        <backgroundVideoEmbed><![CDATA[&lt;iframe width=&quot;560&quot; height=&quot;315&quot; src=&quot;https://www.youtube.com/embed/SjYw_LaJxfA&quot; frameborder=&quot;0&quot; allow=&quot;autoplay; encrypted-media&quot; allowfullscreen&gt;&lt;/iframe&gt;]]></backgroundVideoEmbed>
+        <backgroundVideoRatio><![CDATA[keepRatio]]></backgroundVideoRatio>
+        <link><![CDATA[http://example.com]]></link>
+        <target><![CDATA[_blank]]></target>
+        <sectionBgColor><![CDATA[#ffffff]]></sectionBgColor>
+        <marked_items_imageselect><![CDATA[random]]></marked_items_imageselect>
+        <marked_items_count><![CDATA[4]]></marked_items_count>
+    </section>
+    <section tags_behavior="invisible" published="1" has_direct_content="0" entry_count="1">
+        <name><![CDATA[section-two]]></name>
+        <title><![CDATA[Section two]]></title>
+    </section>
+</sections>
