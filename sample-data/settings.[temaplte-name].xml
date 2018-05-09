@@ -37,6 +37,7 @@
     <paddingTop><![CDATA[31px]]></paddingTop>
     <paddingLeft><![CDATA[31px]]></paddingLeft>
     <mashUpColumns><![CDATA[2]]></mashUpColumns>
+    <leftColumnWidth><![CDATA[171px]]></leftColumnWidth>
   </pageLayout>
   <entryHeading>
     <color><![CDATA[#000000]]></color>
@@ -97,6 +98,8 @@
     <fontVariant><![CDATA[small-caps]]></fontVariant>
     <lineHeight><![CDATA[0.9em]]></lineHeight>
     <margin><![CDATA[11px 0 15px]]></margin>
+    <marginTop><![CDATA[1px]]></marginTop>
+    <marginBottom><![CDATA[22px]]></marginBottom>
   </pageHeading>
   <menu>
     <position><![CDATA[absolute]]></position>
