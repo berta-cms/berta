@@ -38,9 +38,9 @@ class Sections Extends Storage {
      * Associative array representing data structure handled by this service.
      */
     public static $JSON_SCHEMA = [
-        '$schema' => "http://json-schema.org/draft-06/schema#",
+        '$schema' => "http://json-schema.org/draft-07/schema#",
         'type' => 'array',
-        'items' => [
+        'items' => [ // <section>
             'type' => 'object',
             'properties' => [
                 'name' => ['type' => 'string'],
@@ -51,24 +51,35 @@ class Sections Extends Storage {
                     'type' => 'object',
                     'properties' => [
                         'file' => [
-                            'type' => 'object',
-                            '@value' => ['type' => 'string'],
-                            '@attributes' => [
+                            '$comment' => 'This field is a result of all <file> tags existing inside of <mediaCacheData> conversion to JSON',
+                            'type' => 'array',
+                            'items' => [
                                 'type' => 'object',
-                                'properties' => [
-                                    'type' => ['type' => 'string'],
-                                    'src' => ['type' => 'string'],
-                                    'width' => ['type' => 'integer'],
-                                    'height' => ['type' => 'integer'],
+                                '@value' => ['type' => 'string'],
+                                '@attributes' => [
+                                    'type' => 'object',
+                                    'properties' => [
+                                        'type' => ['type' => 'string'],
+                                        'src' => ['type' => 'string'],
+                                        'width' => ['type' => 'integer'],
+                                        'height' => ['type' => 'integer'],
+                                    ]
                                 ]
                             ]
                         ],
                         '@attributes' => [
                             'type' => 'object',
                             'properties' => [
-                                'hide_navigation' => ['type' => 'string'],
+                                'hide_navigation' => [
+                                    'type' => 'string',
+                                    'enum' => ['yes', 'no'],
+                                    'format' => 'bt-select'
+                                ],
                                 'caption_bg_color' => ['type' => 'string'],
-                                'autoplay' => ['type' => 'string'],
+                                'autoplay' => [
+                                    'type' => 'integer',
+                                    'enum' => [0, 1]
+                                ],
                                 'image_size' => ['type' => 'string'],
                             ]
                         ]
@@ -78,16 +89,17 @@ class Sections Extends Storage {
                     'type' => 'object',
                     'properties' => [
                         'tags_behavior' => ['type' => 'string'],
-                        'entry_count' => ['type' => 'integer'],
+                        'entry_count' => [
+                            'type' => 'integer',
+                            'minimum' => 0
+                        ],
                         'published' => [
                             'type' => 'integer',
-                            'minimum' => 0,
-                            'maximum' => 1
+                            'enum' => [0, 1]
                         ],
                         'has_direct_content' => [
                             'type' => 'integer',
-                            'minimum' => 0,
-                            'maximum' => 1
+                            'enum' => [0, 1]
                         ]
                     ]
                 ]
