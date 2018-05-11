@@ -5,7 +5,7 @@
 
   Object.assign(window.reducers, {
     tags: function(state, action) {
-      var tag_idx, tags = [];
+      var tag_idx, tags, site_name = [];
 
       if (state === undefined) {
         state = Immutable.Map();
@@ -16,6 +16,29 @@
           console.log('Tags reducer:', action);
 
           return Immutable.fromJS(action.state.tags);
+
+
+        case ActionTypes.RENAME_SECTION_TAGS:
+          site_name = action.data.site_name === '0' ? '' : action.data.site_name;
+
+          return state.map(function (site, k) {
+            if (site_name === k) {
+              return site.map(function (sections) {
+                return sections.map(function (section) {
+
+                  if (section.getIn(['@attributes', 'name']) === action.data.section_old_name) {
+
+                    return section.setIn(
+                      ['@attributes', 'name'],
+                      action.data.section_name
+                    );
+                  }
+                  return section;
+                });
+              });
+            }
+            return site;
+          });
 
         // case ActionTypes.SECTION_CREATED:
         //   tags = state.getIn([action.resp.site, 'section']).toJSON();

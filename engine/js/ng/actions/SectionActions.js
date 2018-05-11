@@ -28,6 +28,29 @@
         resp: resp
       };
     },
+
+    renameSection: function (path, value, onComplete) {
+      return function (dispatch, getStore) {
+        dispatch({ type: ActionTypes.UPDATE_SECTION });
+        dispatch({ type: ActionTypes.UPDATE_TAGS });
+
+        sync(API_ROOT + 'update-section', { path: path, value: value })
+          .then(function (response) {
+            if (response.error_message) {
+              // @TODO dispatch error message
+            } else {
+              dispatch(Actions.sectionUpdated(response));
+              dispatch(Actions.renameSectionTags({
+                site_name: response.site,
+                section_name: response.section.name,
+                section_old_name: response.old_name
+              }));
+            }
+            onComplete(response);
+          });
+      };
+    },
+
     updateSection: function(path, value, onComplete) {
       return {
         type: ActionTypes.UPDATE_SECTION,
