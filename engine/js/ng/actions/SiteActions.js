@@ -61,6 +61,7 @@
       return function (dispatch, getStore) {
         dispatch({ type: ActionTypes.UPDATE_SITE });
         dispatch({ type: ActionTypes.UPDATE_SECTION });
+        dispatch({ type: ActionTypes.UPDATE_TAGS });
 
         sync(API_ROOT + 'update-site', { path: path, value: value })
           .then(function (response) {
@@ -75,6 +76,10 @@
 
               dispatch(Actions.siteUpdated(response));
               dispatch(Actions.renameSectionsSitename({
+                site: site,
+                site_name: response.value
+              }));
+              dispatch(Actions.renameTagsSitename({
                 site: site,
                 site_name: response.value
               }));

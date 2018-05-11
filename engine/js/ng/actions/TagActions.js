@@ -12,6 +12,13 @@
       };
     },
 
+    renameTagsSitename: function (data) {
+      return {
+        type: ActionTypes.RENAME_TAGS_SITENAME,
+        data: data
+      };
+    },
+
     deleteSectionTags: function (data) {
       return {
         type: ActionTypes.DELETE_SECTION_TAGS,

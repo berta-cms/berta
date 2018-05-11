@@ -56,6 +56,17 @@
           });
 
 
+        case ActionTypes.RENAME_TAGS_SITENAME:
+          var section_old_name = action.data.site.get('name');
+
+          return state.mapKeys(function (k) {
+            if (k === section_old_name) {
+              return action.data.site_name;
+            }
+            return k;
+          });
+
+
         // case ActionTypes.SECTION_CREATED:
         //   tags = state.getIn([action.resp.site, 'section']).toJSON();
 

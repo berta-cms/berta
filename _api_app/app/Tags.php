@@ -32,6 +32,8 @@ class Tags Extends Storage {
                 $this->TAGS = array(
                     'section' => array()
                 );
+            } else {
+                $this->TAGS['section'] = $this->asList($this->TAGS['section']);
             }
         }
 
