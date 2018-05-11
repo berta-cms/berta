@@ -41,6 +41,37 @@ class Tags Extends Storage {
     }
 
     /**
+     * Returns all tags of a given section
+     *
+     * @return array Array of tags
+     */
+    public function getSectionTags() {
+        $tags = $this->get();
+
+        if (empty($this->SECTION_NAME)) {
+            return null;
+        }
+
+
+        $key = array_search(
+            $this->SECTION_NAME,
+            array_column(
+                array_column(
+                    $tags['section'],
+                    '@attributes'
+                ),
+                'name'
+                )
+        );
+
+        if ($key === false) {
+            return null;
+        }
+
+        return $tags['section'][$key];
+    }
+
+    /**
     */
     public function delete() {
         $tags = $this->get();

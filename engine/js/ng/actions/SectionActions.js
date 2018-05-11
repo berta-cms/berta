@@ -5,29 +5,29 @@
 
   Object.assign(window.Actions, {
     createSection: function(site, name, title, onComplete) {
-      return {
-        type: ActionTypes.CREATE_SECTION,
-        meta: {
-          remote: true,
-          url: API_ROOT + 'create-section',
-          method: 'POST',
-          dispatch: 'sectionCreated',
-          // @@@:TODO: Remove this callback when migration to ReactJS is completed
-          onComplete: onComplete,
-          data: {
-            site: site,
-            name: name,
-            title: title
-          }
-        }
+      return function (dispatch, getStore) {
+        dispatch({ type: ActionTypes.CREATE_SECTION });
+
+        sync(API_ROOT + 'create-section', { site: site, name: name, title: title }, 'POST')
+          .then(function (response) {
+            if (response.error_message) {
+              // @TODO dispatch error message
+            } else {
+              dispatch(Actions.sectionCreated(response.section));
+            }
+            onComplete(response.section);
+          });
       };
     },
+
+
     sectionCreated: function(resp) {
       return {
         type: ActionTypes.SECTION_CREATED,
         resp: resp
       };
     },
+
 
     renameSection: function (path, value, onComplete) {
       return function (dispatch, getStore) {
