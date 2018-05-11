@@ -62,6 +62,7 @@
         dispatch({ type: ActionTypes.UPDATE_SITE });
         dispatch({ type: ActionTypes.UPDATE_SECTION });
         dispatch({ type: ActionTypes.UPDATE_SETTINGS });
+        dispatch({ type: ActionTypes.UPDATE_SITE_TEMPLATE_SETTINGS });
         dispatch({ type: ActionTypes.UPDATE_TAGS });
 
         sync(API_ROOT + 'update-site', { path: path, value: value })
@@ -81,6 +82,10 @@
                 site_name: response.value
               }));
               dispatch(Actions.renameSettingsSitename({
+                site: site,
+                site_name: response.value
+              }));
+              dispatch(Actions.renameSiteTemplateSettingsSitename({
                 site: site,
                 site_name: response.value
               }));

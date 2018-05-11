@@ -36,6 +36,13 @@
       };
     },
 
+    renameSiteTemplateSettingsSitename: function (data) {
+      return {
+        type: ActionTypes.RENAME_SITE_TEMPLATE_SETTINGS_SITENAME,
+        data: data
+      };
+    },
+
     deleteSiteTemplateSettings: function (data) {
       return {
         type: ActionTypes.SITE_TEMPLATE_SETTINGS_DELETED,
