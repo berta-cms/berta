@@ -24,6 +24,13 @@
         type: ActionTypes.DELETE_SECTION_TAGS,
         data: data
       };
+    },
+
+    deleteSiteTags: function (data) {
+      return {
+        type: ActionTypes.SITE_TAGS_DELETED,
+        data: data
+      };
     }
 
   });

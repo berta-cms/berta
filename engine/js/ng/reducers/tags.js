@@ -67,6 +67,12 @@
           });
 
 
+        case ActionTypes.SITE_TAGS_DELETED:
+          return state.filter(function (tags, site_name) {
+            return site_name !== action.data.site_name;
+          });
+
+
         // case ActionTypes.SECTION_CREATED:
         //   tags = state.getIn([action.resp.site, 'section']).toJSON();
 
