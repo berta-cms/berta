@@ -32,10 +32,11 @@ use App\Tags;
  * </sections>
  * ```
  */
-class Sections Extends Storage {
+class SiteSectionsDataService Extends Storage {
     /**
      * @var array $JSON_SCHEMA
      * Associative array representing data structure handled by this service.
+     *
      */
     public static $JSON_SCHEMA = [
         '$schema' => "http://json-schema.org/draft-07/schema#",
