@@ -15,6 +15,7 @@
           console.log('Site settings reducer:', action);
           return Immutable.fromJS(action.state.site_settings);
 
+
         case ActionTypes.SETTINGS_UPDATED:
           console.log('Settings reducer:', action);
 
@@ -26,13 +27,27 @@
             value
           );
 
+
         case ActionTypes.SETTINGS_CREATED:
           return state.setIn([action.site_name], Immutable.fromJS(action.data));
+
+
+        case ActionTypes.RENAME_SETTINGS_SITENAME:
+          var section_old_name = action.data.site.get('name');
+
+          return state.mapKeys(function (k) {
+            if (k === section_old_name) {
+              return action.data.site_name;
+            }
+            return k;
+          });
+
 
         case ActionTypes.SITE_SETTINGS_DELETED:
           return state.filter(function (settings, site_name) {
             return site_name !== action.data.site_name;
           });
+
 
         default:
           return state;
