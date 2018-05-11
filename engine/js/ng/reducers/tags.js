@@ -40,6 +40,22 @@
             return site;
           });
 
+
+        case ActionTypes.DELETE_SECTION_TAGS:
+          site_name = action.data.site_name === '0' ? '' : action.data.site_name;
+
+          return state.map(function (site, k) {
+            if (site_name === k) {
+              return site.map(function (sections) {
+                return sections.filter(function (section) {
+                  return section.getIn(['@attributes', 'name']) !== action.data.section_name;
+                });
+              });
+            }
+            return site;
+          });
+
+
         // case ActionTypes.SECTION_CREATED:
         //   tags = state.getIn([action.resp.site, 'section']).toJSON();
 

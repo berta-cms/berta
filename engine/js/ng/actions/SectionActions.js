@@ -102,26 +102,36 @@
         path: path
       };
     },
+
     deleteSection: function(site, section, onComplete) {
-      return {
-        type: ActionTypes.DELETE_SECTION,
-        meta: {
-          remote: true,
-          url: API_ROOT + 'delete-section/' + encodeURIComponent(site) + '/' + encodeURIComponent(section),
-          method: 'DELETE',
-          dispatch: 'sectionDeleted',
-          // @@@:TODO: Remove this callback when migration to ReactJS is completed
-          onComplete: onComplete
-        },
-        section: section
+      return function (dispatch, getStore) {
+        dispatch({ type: ActionTypes.DELETE_SECTION });
+        dispatch({ type: ActionTypes.UPDATE_TAGS });
+
+        sync(API_ROOT + 'delete-section/' + encodeURIComponent(site) + '/' + encodeURIComponent(section), {}, 'DELETE')
+          .then(function (response) {
+            if (response.error_message) {
+              // @TODO dispatch error message
+            } else {
+              dispatch(Actions.sectionDeleted(response));
+
+              dispatch(Actions.deleteSectionTags({
+                site_name: response.site,
+                section_name: response.name
+              }));
+            }
+            onComplete(response);
+          });
       };
     },
+
     sectionDeleted: function(resp) {
       return {
         type: ActionTypes.SECTION_DELETED,
         resp: resp
       };
     },
+
     orderSections: function(site, sections, onComplete) {
       return {
         type: ActionTypes.ORDER_SECTIONS,
