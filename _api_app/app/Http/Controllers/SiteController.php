@@ -43,7 +43,7 @@ class SiteController extends Controller
         $resp = [
             'site' => $site,
             'settings' => $settings,
-            'sections' => $sections ? $sections->get() : [],
+            'sections' => $sections ? $sections->state() : [],
             'entries' => $entries ? ['entry' => $entries] : [],  // See if we need that wrap
             'tags' => $tags ? $tags->get() : [],
             'siteTemplateSettings' => $templateSettings ? $templateSettings->get() : new \stdClass
