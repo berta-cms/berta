@@ -452,4 +452,24 @@ class Storage {
         }
         return true;
     }
+
+    /**
+     * Validate data passed or existing in this service against it's JSON_SCHEMA.
+     *
+     * @param array|object $data    Array or stdClass object containing data for this service
+     * @return bool
+     */
+    public function validate($data=null) {
+        $data = $data ? $data : Helpers::arrayToJsonObject($this->get());
+        $class = get_class($this);
+        try {
+            $json_schema = Helpers::arrayToJsonObject($class::$JSON_SCHEMA);
+            $schema = Schema::import($json_schema);
+            $schema->in($data);
+        } catch (\Exception $e) {
+            \Log::warning(print_r($e, true));
+            return false;
+        }
+        return true;
+    }
 }
