@@ -15,6 +15,7 @@
           console.log('Site template settings reducer:', action);
           return Immutable.fromJS(action.state.site_template_settings);
 
+
         case ActionTypes.SITE_TEMPLATE_SETTINGS_UPDATED:
           console.log('Template settings reducer:', action);
 
@@ -26,13 +27,27 @@
             value
           );
 
+
         case ActionTypes.TEMPLATE_SETTINGS_CREATED:
           return state.setIn([action.site_name], Immutable.fromJS(action.data));
+
+
+        case ActionTypes.RENAME_SITE_TEMPLATE_SETTINGS_SITENAME:
+          var section_old_name = action.data.site.get('name');
+
+          return state.mapKeys(function (k) {
+            if (k === section_old_name) {
+              return action.data.site_name;
+            }
+            return k;
+          });
+
 
         case ActionTypes.SITE_TEMPLATE_SETTINGS_DELETED:
           return state.filter(function (site_template_settings, site_name) {
             return site_name !== action.data.site_name;
           });
+
 
         default:
           return state;

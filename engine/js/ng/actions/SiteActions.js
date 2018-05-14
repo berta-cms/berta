@@ -34,13 +34,14 @@
                   dispatch(Actions.sectionCreated(response.entries[i]));
                 }
               } */
-              /** @todo: handle tags in frontend
-              if (response.tags && response.tags.length) {
-                for (var i = 0; i < response.tags.length; i++) {
-                  dispatch(Actions.tagsCreated(response.tags[i]));
-                }
+
+              if (response.tags && response.tags.section) {
+                dispatch(Actions.addSiteTags({
+                  site_name: response.site.name,
+                  tags: response.tags
+                }));
               }
-              */
+
               if (response.siteTemplateSettings) {
                 dispatch(Actions.templateSettingsCreated(response.site.name, response.siteTemplateSettings));
               }
@@ -61,6 +62,9 @@
       return function (dispatch, getStore) {
         dispatch({ type: ActionTypes.UPDATE_SITE });
         dispatch({ type: ActionTypes.UPDATE_SECTION });
+        dispatch({ type: ActionTypes.UPDATE_SETTINGS });
+        dispatch({ type: ActionTypes.UPDATE_SITE_TEMPLATE_SETTINGS });
+        dispatch({ type: ActionTypes.UPDATE_TAGS });
 
         sync(API_ROOT + 'update-site', { path: path, value: value })
           .then(function (response) {
@@ -75,6 +79,18 @@
 
               dispatch(Actions.siteUpdated(response));
               dispatch(Actions.renameSectionsSitename({
+                site: site,
+                site_name: response.value
+              }));
+              dispatch(Actions.renameSettingsSitename({
+                site: site,
+                site_name: response.value
+              }));
+              dispatch(Actions.renameSiteTemplateSettingsSitename({
+                site: site,
+                site_name: response.value
+              }));
+              dispatch(Actions.renameTagsSitename({
                 site: site,
                 site_name: response.value
               }));
@@ -117,6 +133,7 @@
         dispatch({ type: ActionTypes.DELETE_SECTION });
         dispatch({ type: ActionTypes.DELETE_SITE_SETTINGS });
         dispatch({ type: ActionTypes.DELETE_SITE_TEMPLATE_SETTINGS });
+        dispatch({ type: ActionTypes.DELETE_SITE_TAGS });
 
         sync(API_ROOT + 'delete-site/' + encodeURIComponent(site), {}, 'DELETE')
           .then(function (response) {
@@ -131,6 +148,9 @@
                 site_name: response.name
               }));
               dispatch(Actions.deleteSiteTemplateSettings({
+                site_name: response.name
+              }));
+              dispatch(Actions.deleteSiteTags({
                 site_name: response.name
               }));
             }

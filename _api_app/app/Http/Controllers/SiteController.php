@@ -18,6 +18,7 @@ class SiteController extends Controller
         $sites = new Sites();
         $json = $request->json()->all();
         $cloneFrom = $json['site'] == -1 ? null : $json['site'];
+        $isClone = $cloneFrom !== null;
         $site = $sites->create($cloneFrom);
 
         /**
@@ -26,25 +27,27 @@ class SiteController extends Controller
          * @todo review this controller, sections
          */
         $settings = new SiteSettings($site['name']);
-        $settings = $cloneFrom ? $settings->get() : $settings->getDefaultSettings();
-        $sections = $cloneFrom ? new SiteSectionsDataService($site['name']) : null;
+        $settings = $isClone ? $settings->get() : $settings->getDefaultSettings();
+        $sections = $isClone ? new SiteSectionsDataService($site['name']) : null;
         $entries = [];
         if ($sections) {
             foreach ($sections->get() as $section) {
                 $sectionEntries = new Entries($site['name'], $section['name']);
-                $entries = array_merge($entries, $sectionEntries['entry']);
+                $entries = array_merge($entries, $sectionEntries->get());
             }
         }
-        $tags = $cloneFrom ? new Tags($site['name']) : null;
+
+        $tags = $isClone ? new Tags($site['name']) : null;
+
         $templateSettings = null;
-        if ($cloneFrom) {
+        if ($isClone && isset($settings['template']['template'])) {
             $templateSettings = new SiteTemplateSettings($site['name'], $settings['template']['template']);
         }
 
         $resp = [
             'site' => $site,
             'settings' => $settings,
-            'sections' => $sections ? $sections->get() : [],
+            'sections' => $sections ? $sections->state() : [],
             'entries' => $entries ? ['entry' => $entries] : [],  // See if we need that wrap
             'tags' => $tags ? $tags->get() : [],
             'siteTemplateSettings' => $templateSettings ? $templateSettings->get() : new \stdClass

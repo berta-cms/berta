@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\SiteSectionsDataService;
 use Illuminate\Http\Request;
+
+use App\SiteSectionsDataService;
+use App\Sections;
+use App\Tags;
 
 class SectionController extends Controller
 {
@@ -15,13 +18,22 @@ class SectionController extends Controller
 
     public function create(Request $request) {
         $json = $request->json()->all();
+        $cloneFrom = $json['name'];
         $sectionsDataService = new SiteSectionsDataService($json['site']);
         $section = $sectionsDataService->create(
             $json['name'],
             $json['title']
         );
 
-        return response()->json($section);
+        $tags = $cloneFrom ? new Tags($json['site'], $section['name']) : null;
+
+        $resp = [
+            'section' => $section,
+            'tags' => $tags ? $tags->getSectionTags() : null,
+            'entries' => [], // @TODO implement entries
+        ];
+
+        return response()->json($resp);
     }
 
     public function update(Request $request) {

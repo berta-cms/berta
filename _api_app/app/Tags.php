@@ -129,10 +129,43 @@ class Tags Extends Storage {
                 $this->TAGS = array(
                     'section' => array()
                 );
+            } else {
+                $this->TAGS['section'] = $this->asList($this->TAGS['section']);
             }
         }
 
         return $this->TAGS;
+    }
+
+    /**
+     * Returns all tags of a given section
+     *
+     * @return array Array of tags
+     */
+    public function getSectionTags() {
+        $tags = $this->get();
+
+        if (empty($this->SECTION_NAME)) {
+            return null;
+        }
+
+
+        $key = array_search(
+            $this->SECTION_NAME,
+            array_column(
+                array_column(
+                    $tags['section'],
+                    '@attributes'
+                ),
+                'name'
+                )
+        );
+
+        if ($key === false) {
+            return null;
+        }
+
+        return $tags['section'][$key];
     }
 
     /**
@@ -212,8 +245,8 @@ class Tags Extends Storage {
                     '@attributes'
                 ),
                 'name'
-            )
-        );
+                )
+            );
 
         //to keep sorting order, we need to check old and new tag arrays
         //loop through old and check if exists and update, else do not add
@@ -253,7 +286,7 @@ class Tags Extends Storage {
         if ($section_idx !== false) {
             $new_tags = array_values($tempCache);
             $tags['section'][$section_idx]['tag'] = $new_tags;
-        } else {
+        } elseif (count($tempCache)) {
             $section_idx = count($tags['section']);
             $new_tags = array(
                 'tag' => array_values($tempCache),
@@ -268,7 +301,7 @@ class Tags Extends Storage {
         $this->array2xmlFile($tags, $this->XML_FILE, $this->ROOT_ELEMENT);
 
         return array(
-            'tags' => $tags['section'][$section_idx],
+            'tags' => isset($tags['section'][$section_idx]) ? $tags['section'][$section_idx] : [],
             'allHaveTags' => $allHaveTags
         );
     }

@@ -168,10 +168,11 @@ class SiteSectionsDataService Extends Storage {
     }
 
     public function create($name=null, $title=null) {
+        $isClone = $name !== null;
         $sections = $this->get();
 
         // Clone section
-        if ($name !== null) {
+        if ($isClone) {
             $title = empty($title) ? $name : $title;
             $section_order = array_search($name, array_column($sections, 'name'));
 
@@ -216,16 +217,15 @@ class SiteSectionsDataService Extends Storage {
 
         array_push($sections, $section);
 
-        // $section_tags = array('tags' => array());
-
         // Clone section
-        if ($name !== null) {
-            // $tags = new Tags($this->SITE, $section['name']);
-            // $section_tags = $tags->populateTags();
-            // $allHaveTags = $section_tags['allHaveTags'];
+        if ($isClone) {
+            $tags = new Tags($this->SITE, $section['name']);
+            $section_tags = $tags->populateTags();
+            $allHaveTags = $section_tags['allHaveTags'];
 
             // update direct content property
-            // $sections[$section_order]['@attributes']['has_direct_content'] = !$allHaveTags ? '1' : '0';
+            // @TODO redux also should know about this attribute change!
+            $sections[$section_order]['@attributes']['has_direct_content'] = !$allHaveTags ? '1' : '0';
         }
 
         $this->array2xmlFile(['section' => $sections], $this->XML_FILE, $this->ROOT_ELEMENT);

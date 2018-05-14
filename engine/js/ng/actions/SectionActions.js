@@ -5,29 +5,60 @@
 
   Object.assign(window.Actions, {
     createSection: function(site, name, title, onComplete) {
-      return {
-        type: ActionTypes.CREATE_SECTION,
-        meta: {
-          remote: true,
-          url: API_ROOT + 'create-section',
-          method: 'POST',
-          dispatch: 'sectionCreated',
-          // @@@:TODO: Remove this callback when migration to ReactJS is completed
-          onComplete: onComplete,
-          data: {
-            site: site,
-            name: name,
-            title: title
-          }
-        }
+      return function (dispatch, getStore) {
+        dispatch({ type: ActionTypes.CREATE_SECTION });
+        dispatch({ type: ActionTypes.UPDATE_TAGS });
+
+        sync(API_ROOT + 'create-section', { site: site, name: name, title: title }, 'POST')
+          .then(function (response) {
+            if (response.error_message) {
+              // @TODO dispatch error message
+            } else {
+              dispatch(Actions.sectionCreated(response.section));
+
+              if (response.tags) {
+                dispatch(Actions.addSectionTags({
+                  site_name: site,
+                  tags: response.tags
+                }));
+              }
+            }
+            onComplete(response.section);
+          });
       };
     },
+
+
     sectionCreated: function(resp) {
       return {
         type: ActionTypes.SECTION_CREATED,
         resp: resp
       };
     },
+
+
+    renameSection: function (path, value, onComplete) {
+      return function (dispatch, getStore) {
+        dispatch({ type: ActionTypes.UPDATE_SECTION });
+        dispatch({ type: ActionTypes.UPDATE_TAGS });
+
+        sync(API_ROOT + 'update-section', { path: path, value: value })
+          .then(function (response) {
+            if (response.error_message) {
+              // @TODO dispatch error message
+            } else {
+              dispatch(Actions.sectionUpdated(response));
+              dispatch(Actions.renameSectionTags({
+                site_name: response.site,
+                section_name: response.section.name,
+                section_old_name: response.old_name
+              }));
+            }
+            onComplete(response);
+          });
+      };
+    },
+
     updateSection: function(path, value, onComplete) {
       return {
         type: ActionTypes.UPDATE_SECTION,
@@ -79,26 +110,36 @@
         path: path
       };
     },
+
     deleteSection: function(site, section, onComplete) {
-      return {
-        type: ActionTypes.DELETE_SECTION,
-        meta: {
-          remote: true,
-          url: API_ROOT + 'delete-section/' + encodeURIComponent(site) + '/' + encodeURIComponent(section),
-          method: 'DELETE',
-          dispatch: 'sectionDeleted',
-          // @@@:TODO: Remove this callback when migration to ReactJS is completed
-          onComplete: onComplete
-        },
-        section: section
+      return function (dispatch, getStore) {
+        dispatch({ type: ActionTypes.DELETE_SECTION });
+        dispatch({ type: ActionTypes.UPDATE_TAGS });
+
+        sync(API_ROOT + 'delete-section/' + encodeURIComponent(site) + '/' + encodeURIComponent(section), {}, 'DELETE')
+          .then(function (response) {
+            if (response.error_message) {
+              // @TODO dispatch error message
+            } else {
+              dispatch(Actions.sectionDeleted(response));
+
+              dispatch(Actions.deleteSectionTags({
+                site_name: response.site,
+                section_name: response.name
+              }));
+            }
+            onComplete(response);
+          });
       };
     },
+
     sectionDeleted: function(resp) {
       return {
         type: ActionTypes.SECTION_DELETED,
         resp: resp
       };
     },
+
     orderSections: function(site, sections, onComplete) {
       return {
         type: ActionTypes.ORDER_SECTIONS,

@@ -938,7 +938,6 @@ var BertaEditorBase = new Class({
         } else {
           editorParams = this.escapeForJSON(newContentText);
         };
-        //console.debug(editorParams);
       }
 
       var path = el.data('path');
@@ -948,7 +947,6 @@ var BertaEditorBase = new Class({
       var callback = this.onElementEditComplete(elEditor, el, newContent, newContentText);
       var updateAction;
 
-      //  && path.split('/')[1] !== 'section'
       if (path) {
         var new_callback = callback;
         path_arr = path.split('/');
@@ -972,7 +970,12 @@ var BertaEditorBase = new Class({
 
         if (path_arr[1] === 'section') {
           prop = path_arr.pop();
-          updateAction = Actions.updateSection;
+
+          if (prop === 'title') {
+            updateAction = Actions.renameSection;
+          } else {
+            updateAction = Actions.updateSection;
+          }
 
           if (prop === 'type') {
             new_callback = function(resp, respRaw) {
