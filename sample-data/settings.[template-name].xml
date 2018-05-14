@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<settings>
+  <generalFontSettings>
+    <googleFont><![CDATA[Marvel]]></googleFont>
+    <fontSize><![CDATA[18px]]></fontSize>
+    <color><![CDATA[#0d0d0d]]></color>
+    <fontFamily><![CDATA[Helvetica, Arial, sans-serif]]></fontFamily>
+    <fontWeight><![CDATA[normal]]></fontWeight>
+    <fontStyle><![CDATA[normal]]></fontStyle>
+    <fontVariant><![CDATA[normal]]></fontVariant>
+    <lineHeight><![CDATA[20px]]></lineHeight>
+  </generalFontSettings>
+  <background>
+    <backgroundColor><![CDATA[#edcaca]]></backgroundColor>
+    <backgroundImageEnabled><![CDATA[yes]]></backgroundImageEnabled>
+    <backgroundImage><![CDATA[metal_v1_1044.jpg]]></backgroundImage>
+    <backgroundImage_width><![CDATA[750]]></backgroundImage_width>
+    <backgroundImage_height><![CDATA[500]]></backgroundImage_height>
+    <backgroundRepeat><![CDATA[repeat]]></backgroundRepeat>
+    <backgroundPosition><![CDATA[center]]></backgroundPosition>
+    <backgroundAttachment><![CDATA[fill]]></backgroundAttachment>
+  </background>
+  <pageLayout>
+    <bgButtonType><![CDATA[dark]]></bgButtonType>
+    <centered><![CDATA[no]]></centered>
+    <centeredWidth><![CDATA[960px]]></centeredWidth>
+    <centeringGuidesColor><![CDATA[dark]]></centeringGuidesColor>
+    <responsive><![CDATA[yes]]></responsive>
+    <centeredContents><![CDATA[yes]]></centeredContents>
+    <headingMargin><![CDATA[20px 10px]]></headingMargin>
+    <menuMargin><![CDATA[20px 10px]]></menuMargin>
+    <contentPosition><![CDATA[center]]></contentPosition>
+    <contentAlign><![CDATA[right]]></contentAlign>
+    <contentWidth><![CDATA[501px]]></contentWidth>
+    <bodyMargin><![CDATA[21px 40px 40px]]></bodyMargin>
+    <siteMenuMargin><![CDATA[1px]]></siteMenuMargin>
+    <paddingTop><![CDATA[31px]]></paddingTop>
+    <paddingLeft><![CDATA[31px]]></paddingLeft>
+    <mashUpColumns><![CDATA[2]]></mashUpColumns>
+    <leftColumnWidth><![CDATA[171px]]></leftColumnWidth>
+  </pageLayout>
+  <entryHeading>
+    <color><![CDATA[#000000]]></color>
+    <fontFamily><![CDATA[Arial, sans-serif]]></fontFamily>
+    <googleFont><![CDATA[Pangolin]]></googleFont>
+    <fontSize><![CDATA[1.8em]]></fontSize>
+    <fontWeight><![CDATA[normal]]></fontWeight>
+    <fontStyle><![CDATA[normal]]></fontStyle>
+    <fontVariant><![CDATA[normal]]></fontVariant>
+    <lineHeight><![CDATA[normal]]></lineHeight>
+    <margin><![CDATA[15px 0 15px 0]]></margin>
+  </entryHeading>
+  <entryLayout>
+    <contentWidth><![CDATA[400px]]></contentWidth>
+    <defaultGalleryType><![CDATA[slideshow]]></defaultGalleryType>
+    <spaceBetweenImages><![CDATA[1em]]></spaceBetweenImages>
+    <galleryNavMargin><![CDATA[0]]></galleryNavMargin>
+    <galleryMargin><![CDATA[0]]></galleryMargin>
+    <displayTags><![CDATA[no]]></displayTags>
+    <margin><![CDATA[0 0 5em]]></margin>
+    <galleryPosition><![CDATA[between title/description]]></galleryPosition>
+    <spaceBetween><![CDATA[21px]]></spaceBetween>
+  </entryLayout>
+  <entryFooter>
+    <color><![CDATA[#a1a1a1]]></color>
+    <fontFamily><![CDATA[Helvetica, Arial, sans-serif]]></fontFamily>
+    <googleFont><![CDATA[Marvel]]></googleFont>
+    <fontSize><![CDATA[inherit]]></fontSize>
+    <lineHeight><![CDATA[inherit]]></lineHeight>
+    <fontWeight><![CDATA[normal]]></fontWeight>
+    <fontStyle><![CDATA[normal]]></fontStyle>
+    <fontVariant><![CDATA[normal]]></fontVariant>
+  </entryFooter>
+  <heading>
+    <position><![CDATA[absolute]]></position>
+    <image><![CDATA[square11.jpg]]></image>
+    <image_width><![CDATA[421]]></image_width>
+    <image_height><![CDATA[421]]></image_height>
+    <color><![CDATA[#ff0000]]></color>
+    <fontFamily><![CDATA[Arial, sans-serif]]></fontFamily>
+    <googleFont><![CDATA[Pangolin]]></googleFont>
+    <fontSize><![CDATA[30px]]></fontSize>
+    <fontWeight><![CDATA[bold]]></fontWeight>
+    <fontStyle><![CDATA[normal]]></fontStyle>
+    <fontVariant><![CDATA[normal]]></fontVariant>
+    <lineHeight><![CDATA[1em]]></lineHeight>
+  </heading>
+  <pageHeading>
+    <image><![CDATA[square71.jpg]]></image>
+    <image_width><![CDATA[421]]></image_width>
+    <image_height><![CDATA[421]]></image_height>
+    <color><![CDATA[#f5c9c9]]></color>
+    <fontFamily><![CDATA[Helvetica, Arial, sans-serif]]></fontFamily>
+    <googleFont><![CDATA[Marvel]]></googleFont>
+    <fontSize><![CDATA[1.3em]]></fontSize>
+    <fontWeight><![CDATA[normal]]></fontWeight>
+    <fontStyle><![CDATA[italic]]></fontStyle>
+    <fontVariant><![CDATA[small-caps]]></fontVariant>
+    <lineHeight><![CDATA[0.9em]]></lineHeight>
+    <margin><![CDATA[11px 0 15px]]></margin>
+    <marginTop><![CDATA[1px]]></marginTop>
+    <marginBottom><![CDATA[22px]]></marginBottom>
+  </pageHeading>
+  <menu>
+    <position><![CDATA[absolute]]></position>
+    <fontFamily><![CDATA[Arial, sans-serif]]></fontFamily>
+    <googleFont><![CDATA[Marvel]]></googleFont>
+    <fontSize><![CDATA[20px]]></fontSize>
+    <fontWeight><![CDATA[bold]]></fontWeight>
+    <fontStyle><![CDATA[normal]]></fontStyle>
+    <lineHeight><![CDATA[1em]]></lineHeight>
+    <colorLink><![CDATA[#3d3d3d]]></colorLink>
+    <colorHover><![CDATA[#787878]]></colorHover>
+    <colorActive><![CDATA[#858585]]></colorActive>
+    <textDecorationLink><![CDATA[none]]></textDecorationLink>
+    <textDecorationHover><![CDATA[underline]]></textDecorationHover>
+    <textDecorationActive><![CDATA[line-through]]></textDecorationActive>
+    <separator><![CDATA[|]]></separator>
+    <separatorDistance><![CDATA[0.6em]]></separatorDistance>
+    <fontVariant><![CDATA[normal]]></fontVariant>
+    <margin><![CDATA[0]]></margin>
+  </menu>
+  <tagsMenu>
+    <fontFamily><![CDATA[Arial, sans-serif]]></fontFamily>
+    <googleFont><![CDATA[Marvel]]></googleFont>
+    <fontSize><![CDATA[16x]]></fontSize>
+    <fontWeight><![CDATA[normal]]></fontWeight>
+    <fontStyle><![CDATA[normal]]></fontStyle>
+    <lineHeight><![CDATA[1.5em]]></lineHeight>
+    <colorLink><![CDATA[#969696]]></colorLink>
+    <colorHover><![CDATA[#808080]]></colorHover>
+    <colorActive><![CDATA[#616161]]></colorActive>
+    <textDecorationLink><![CDATA[none]]></textDecorationLink>
+    <textDecorationHover><![CDATA[none]]></textDecorationHover>
+    <textDecorationActive><![CDATA[none]]></textDecorationActive>
+    <x><![CDATA[0]]></x>
+    <y><![CDATA[0]]></y>
+    <alwaysOpen><![CDATA[yes]]></alwaysOpen>
+    <hidden><![CDATA[no]]></hidden>
+  </tagsMenu>
+  <subMenu>
+    <separator><![CDATA[|]]></separator>
+    <separatorDistance><![CDATA[0.6em]]></separatorDistance>
+    <fontSize><![CDATA[inherit]]></fontSize>
+    <fontFamily><![CDATA[Helvetica, Arial, sans-serif]]></fontFamily>
+    <googleFont><![CDATA[Marvel]]></googleFont>
+    <fontWeight><![CDATA[normal]]></fontWeight>
+    <fontStyle><![CDATA[normal]]></fontStyle>
+    <fontVariant><![CDATA[normal]]></fontVariant>
+    <lineHeight><![CDATA[inherit]]></lineHeight>
+    <margin><![CDATA[0 0 11px]]></margin>
+  </subMenu>
+  <sideBar>
+    <width><![CDATA[200px]]></width>
+    <marginLeft><![CDATA[0]]></marginLeft>
+    <marginTop><![CDATA[31px]]></marginTop>
+    <marginBottom><![CDATA[21px]]></marginBottom>
+    <transparent><![CDATA[yes]]></transparent>
+    <backgroundColor><![CDATA[#e38181]]></backgroundColor>
+    <image><![CDATA[square68.jpg]]></image>
+    <image_width><![CDATA[421]]></image_width>
+    <image_height><![CDATA[421]]></image_height>
+    <color><![CDATA[#e39a9a]]></color>
+    <fontFamily><![CDATA[Impact, Charcoal, sans-serif]]></fontFamily>
+    <googleFont><![CDATA[Marvel]]></googleFont>
+    <fontSize><![CDATA[12px]]></fontSize>
+    <fontWeight><![CDATA[normal]]></fontWeight>
+    <fontStyle><![CDATA[normal]]></fontStyle>
+    <fontVariant><![CDATA[normal]]></fontVariant>
+    <lineHeight><![CDATA[1.3em]]></lineHeight>
+  </sideBar>
+  <firstPage>
+    <imageSizeRatio><![CDATA[0.5]]></imageSizeRatio>
+    <imageHaveShadows><![CDATA[yes]]></imageHaveShadows>
+    <hoverWiggle><![CDATA[no]]></hoverWiggle>
+  </firstPage>
+  <links>
+    <colorLink><![CDATA[#696969]]></colorLink>
+    <colorVisited><![CDATA[#696969]]></colorVisited>
+    <colorHover><![CDATA[#737373]]></colorHover>
+    <colorActive><![CDATA[#4f4f4f]]></colorActive>
+    <textDecorationLink><![CDATA[underline]]></textDecorationLink>
+    <textDecorationVisited><![CDATA[underline]]></textDecorationVisited>
+    <textDecorationHover><![CDATA[none]]></textDecorationHover>
+    <textDecorationActive><![CDATA[none]]></textDecorationActive>
+  </links>
+  <grid>
+    <contentWidth><![CDATA[60%]]></contentWidth>
+  </grid>
+  <css>
+    <customCSS><![CDATA[.example {<br />color: red;<br />}]]></customCSS>
+  </css>
+</settings>
