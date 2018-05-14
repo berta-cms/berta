@@ -40,7 +40,7 @@ class Helpers {
     public static function arrayToJsonObject(array $array) {
         $ret = [];
         foreach ($array as $key => $value) {
-            if (is_array($value) && self::isAssociativeArray($array)) {
+            if (is_array($value)) {
                 $ret[$key] = self::arrayToJsonObject($value);
             } else {
                 $ret[$key] = $value;
