@@ -27,7 +27,7 @@ namespace App;
  * ```
  */
 class Sites Extends Storage {
-    public static $JSON_SCHEME = [
+    public static $JSON_SCHEMA = [
         '$schema' => "http://json-schema.org/draft-06/schema#",
         'type' => 'array',
         'items' => [
@@ -51,6 +51,7 @@ class Sites Extends Storage {
     protected static $DEFAULT_VALUES = [
         'name' => '',
         '@attributes' => [
+            'name' => '',
             'published' => 0
         ]
     ];
