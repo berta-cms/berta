@@ -42,6 +42,8 @@ class Helpers {
         foreach ($array as $key => $value) {
             if (is_array($value)) {
                 $ret[$key] = self::arrayToJsonObject($value);
+            } else if(\is_string($value) && \is_numeric($value)) {
+                $ret[$key] = strpos($value, '.') === false ? (int)$value : (float)$value;
             } else {
                 $ret[$key] = $value;
             }
