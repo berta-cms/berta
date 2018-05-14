@@ -33,27 +33,67 @@ class Tags Extends Storage {
      */
     public static $JSON_SCHEMA = [
         '$schema' => "http://json-schema.org/draft-06/schema#",
-        'type' => 'array',
-        'items' => [
-            'type' => 'object',
-            'items' => [
-                'type' => 'object',
-                'properties' => [
-                    'tag' => ['type' => 'string']
-                ],
-                '@attributes' => [
+        'type' => 'object',
+        'properties' => [
+            'section' => [  // <section>
+                'type' => 'array',
+                '$comment' => 'A list of <section> tags',
+                'items' => [
+
                     'type' => 'object',
+                    '$comment' => 'Object representing single <section> tag',
                     'properties' => [
-                        'name' => ['type' => 'string'],
-                        'entry_count' => ['type' => 'integer']
-                    ]
+                        'tag' => [
+
+                            'type' => 'array',
+                            '$comment' => 'A list of <tag> tags',
+                            'items' => [
+
+                                'type' => 'object',
+                                '$comment' => 'Object representing single <tag> tag',
+                                'properties' => [
+
+                                    '@value' => ['type' => 'string'],
+                                    '@attributes' => [
+                                        'type' => 'object',
+                                        'properties' => [
+                                            'name' => ['type' => 'string'],
+                                            'entry_count' => [
+                                                'type' => 'integer',
+                                                'minimum' => 0
+                                            ]
+                                        ]
+                                    ]
+                                ],
+                                'required' => ['name', 'entry_count']
+                            ]
+                        ],
+                        '@attributes' => [
+                            'type' => 'object',
+                            'properties' => [
+                                'name' => ['type' => 'string'],
+                                'entry_count' => [
+                                    'type' => 'integer',
+                                    'minimum' => 0
+                                ]
+                            ]
+                        ]
+                    ],
+                    'required' => ['name', 'entry_count']
                 ]
             ],
-            '@attributes' => [
-                'type' => 'object',
-                'properties' => [
-                    'name' => ['type' => 'string'],
-                    'entry_count' => ['type' => 'integer']
+        ]
+    ];
+    protected static $DEFAULT_VALUES = [
+        'section' => [
+            [
+                'name' => '',
+                'entry_count' => '',
+                'tag' => [
+                    [
+                        'name' => '',
+                        'entry_count' => 0
+                    ]
                 ]
             ]
         ]
