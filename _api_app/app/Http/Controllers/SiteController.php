@@ -18,6 +18,7 @@ class SiteController extends Controller
         $sites = new Sites();
         $json = $request->json()->all();
         $cloneFrom = $json['site'] == -1 ? null : $json['site'];
+        $isClone = $cloneFrom !== null;
         $site = $sites->create($cloneFrom);
 
         /**
@@ -25,8 +26,8 @@ class SiteController extends Controller
          * @todo think about improving Storage classes
          */
         $settings = new SiteSettings($site['name']);
-        $settings = $cloneFrom ? $settings->get() : $settings->getDefaultSettings();
-        $sections = $cloneFrom ? new Sections($site['name']) : null;
+        $settings = $isClone ? $settings->get() : $settings->getDefaultSettings();
+        $sections = $isClone ? new Sections($site['name']) : null;
         $entries = [];
         if ($sections) {
             foreach ($sections as $section) {
@@ -34,9 +35,11 @@ class SiteController extends Controller
                 $entries = array_merge($entries, $sectionEntries['entry']);
             }
         }
-        $tags = $cloneFrom ? new Tags($site['name']) : null;
+
+        $tags = $isClone ? new Tags($site['name']) : null;
+
         $templateSettings = null;
-        if ($cloneFrom) {
+        if ($isClone) {
             $templateSettings = new SiteTemplateSettings($site['name'], $settings['template']['template']);
         }
 
