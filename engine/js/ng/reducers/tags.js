@@ -18,6 +18,19 @@
           return Immutable.fromJS(action.state.tags);
 
 
+        case ActionTypes.ADD_SECTION_TAGS:
+          site_name = action.data.site_name
+
+          return state.map(function (site, k) {
+            if (site_name === k) {
+              return site.map(function (sections) {
+                return sections.set(sections.size, Immutable.fromJS(action.data.tags));
+              });
+            }
+            return site;
+          });
+
+
         case ActionTypes.RENAME_SECTION_TAGS:
           site_name = action.data.site_name === '0' ? '' : action.data.site_name;
 

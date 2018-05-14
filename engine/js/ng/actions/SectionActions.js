@@ -7,6 +7,7 @@
     createSection: function(site, name, title, onComplete) {
       return function (dispatch, getStore) {
         dispatch({ type: ActionTypes.CREATE_SECTION });
+        dispatch({ type: ActionTypes.UPDATE_TAGS });
 
         sync(API_ROOT + 'create-section', { site: site, name: name, title: title }, 'POST')
           .then(function (response) {
@@ -14,6 +15,13 @@
               // @TODO dispatch error message
             } else {
               dispatch(Actions.sectionCreated(response.section));
+
+              if (response.tags) {
+                dispatch(Actions.addSectionTags({
+                  site_name: site,
+                  tags: response.tags
+                }));
+              }
             }
             onComplete(response.section);
           });

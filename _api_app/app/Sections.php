@@ -57,10 +57,11 @@ class Sections Extends Storage {
     }
 
     public function create($name=null, $title=null) {
+        $isClone = $name !== null;
         $sections = $this->get();
 
         // Clone section
-        if ($name !== null) {
+        if ($isClone) {
             $title = empty($title) ? $name : $title;
             $section_order = array_search($name, array_column($sections, 'name'));
 
@@ -106,7 +107,7 @@ class Sections Extends Storage {
         array_push($sections, $section);
 
         // Clone section
-        if ($name !== null) {
+        if ($isClone) {
             $tags = new Tags($this->SITE, $section['name']);
             $section_tags = $tags->populateTags();
             $allHaveTags = $section_tags['allHaveTags'];
