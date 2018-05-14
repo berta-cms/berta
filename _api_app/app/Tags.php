@@ -62,10 +62,10 @@ class Tags Extends Storage {
                                                 'type' => 'integer',
                                                 'minimum' => 0
                                             ]
-                                        ]
+                                        ],
+                                        'required' => ['name', 'entry_count']
                                     ]
-                                ],
-                                'required' => ['name', 'entry_count']
+                                ]
                             ]
                         ],
                         '@attributes' => [
@@ -76,10 +76,10 @@ class Tags Extends Storage {
                                     'type' => 'integer',
                                     'minimum' => 0
                                 ]
-                            ]
+                            ],
+                            'required' => ['name', 'entry_count']
                         ]
-                    ],
-                    'required' => ['name', 'entry_count']
+                    ]
                 ]
             ],
         ]
@@ -87,13 +87,17 @@ class Tags Extends Storage {
     protected static $DEFAULT_VALUES = [
         'section' => [
             [
-                'name' => '',
-                'entry_count' => '',
                 'tag' => [
                     [
-                        'name' => '',
-                        'entry_count' => 0
+                        '@attributes' => [
+                            'name' => '',
+                            'entry_count' => 0
+                        ]
                     ]
+                ],
+                '@attributes' => [
+                    'name' => '',
+                    'entry_count' => 0,
                 ]
             ]
         ]
