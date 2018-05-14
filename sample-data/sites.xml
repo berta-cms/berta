@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<sites>
+  <site published="1">
+    <name><![CDATA[]]></name>
+    <title><![CDATA[Main site]]></title>
+  </site>
+  <site published="0">
+    <name><![CDATA[other-site]]></name>
+    <title><![CDATA[Other site]]></title>
+  </site>
+</sites>

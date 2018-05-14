@@ -4,16 +4,23 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use App\SiteSectionsDataService;
 use App\Sections;
 use App\Tags;
 
 class SectionController extends Controller
 {
+
+    public function test(Request $request) {
+        $sectionsData = new SiteSectionsDataService();
+        return $sectionsData->validationTest() ? 'true':'false';
+    }
+
     public function create(Request $request) {
         $json = $request->json()->all();
         $cloneFrom = $json['name'];
-        $sections = new Sections($json['site']);
-        $section = $sections->create(
+        $sectionsDataService = new SiteSectionsDataService($json['site']);
+        $section = $sectionsDataService->create(
             $json['name'],
             $json['title']
         );
@@ -33,10 +40,10 @@ class SectionController extends Controller
         $json = $request->json()->all();
         $path_arr = explode('/', $json['path']);
         $site = $path_arr[0];
-        $sections = new Sections($site);
+        $sectionsDataService = new SiteSectionsDataService($site);
         $path_arr = array_slice($path_arr, 1);
 
-        $res = $sections->saveValueByPath($json['path'], $json['value']);
+        $res = $sectionsDataService->saveValueByPath($json['path'], $json['value']);
         // @@@:TODO: Replace this with something sensible, when migration to redux is done
         $res['update'] = $res['value'];
         // @@@:TODO:END
@@ -45,8 +52,8 @@ class SectionController extends Controller
     }
 
     public function delete($site, $section) {
-        $sections = new Sections($site);
-        $res = $sections->delete($section);
+        $sectionsDataService = new SiteSectionsDataService($site);
+        $res = $sectionsDataService->delete($section);
 
         return response()->json($res);
     }
@@ -55,29 +62,29 @@ class SectionController extends Controller
         $json = $request->json()->all();
         $path_arr = explode('/', $json['path']);
         $site = $path_arr[0];
-        $sections = new Sections($site);
-        $res = $sections->deleteValueByPath($json['path']);
+        $sectionsDataService = new SiteSectionsDataService($site);
+        $res = $sectionsDataService->deleteValueByPath($json['path']);
 
         return response()->json($res);
     }
 
     public function order(Request $request) {
         $json = $request->json()->all();
-        $sections = new Sections($json['site']);
-        $sections->order($json['sections']);
+        $sectionsDataService = new SiteSectionsDataService($json['site']);
+        $sectionsDataService->order($json['sections']);
         return response()->json($json);
     }
 
     public function galleryDelete($site, $section, $file) {
-        $sections = new Sections($site);
-        $res = $sections->galleryDelete($section, $file);
+        $sectionsDataService = new SiteSectionsDataService($site);
+        $res = $sectionsDataService->galleryDelete($section, $file);
         return response()->json($res);
     }
 
     public function galleryOrder(Request $request) {
         $json = $request->json()->all();
-        $sections = new Sections($json['site']);
-        $ret = $sections->galleryOrder($json['section'], $json['files']);
+        $sectionsDataService = new SiteSectionsDataService($json['site']);
+        $ret = $sectionsDataService->galleryOrder($json['section'], $json['files']);
         return response()->json($ret);
     }
 }

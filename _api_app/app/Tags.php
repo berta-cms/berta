@@ -4,7 +4,104 @@ namespace App;
 
 use App\Entries;
 
+
+/**
+ * This class is a service that handles site tags (subsections) data for Berta CMS.
+ * Tags are stored in `tags.xml` file for the corresponding site.
+ *
+ * The root site has its tags stored in `storage/tags.xml`,
+ * any other site has it's tags in `storage/-sites/[site name]/tags.xml`
+ *
+ * @example an example of XML file:
+ * ```xml
+ * <?xml version="1.0" encoding="utf-8"?>
+ * <sections>
+ *     <section name="section-1" entry_count="3">
+ *         <tag name="one" entry_count="2"><![CDATA[One]]></tag>
+ *         <tag name="two" entry_count="1"><![CDATA[Two]]></tag>
+ *     </section>
+ *     <section name="section-2" entry_count="1">
+ *         <tag name="three" entry_count="1"><![CDATA[Three]]></tag>
+ *     </section>
+ * </sections>
+ * ```
+ */
 class Tags Extends Storage {
+    /**
+     * @var array $JSON_SCHEMA
+     * Associative array representing data structure handled by this service.
+     */
+    public static $JSON_SCHEMA = [
+        '$schema' => "http://json-schema.org/draft-06/schema#",
+        'type' => 'object',
+        'properties' => [
+            'section' => [  // <section>
+                'type' => 'array',
+                '$comment' => 'A list of <section> tags',
+                'items' => [
+
+                    'type' => 'object',
+                    '$comment' => 'Object representing single <section> tag',
+                    'properties' => [
+                        'tag' => [
+
+                            'type' => 'array',
+                            '$comment' => 'A list of <tag> tags',
+                            'items' => [
+
+                                'type' => 'object',
+                                '$comment' => 'Object representing single <tag> tag',
+                                'properties' => [
+
+                                    '@value' => ['type' => 'string'],
+                                    '@attributes' => [
+                                        'type' => 'object',
+                                        'properties' => [
+                                            'name' => ['type' => 'string'],
+                                            'entry_count' => [
+                                                'type' => 'integer',
+                                                'minimum' => 0
+                                            ]
+                                        ],
+                                        'required' => ['name', 'entry_count']
+                                    ]
+                                ]
+                            ]
+                        ],
+                        '@attributes' => [
+                            'type' => 'object',
+                            'properties' => [
+                                'name' => ['type' => 'string'],
+                                'entry_count' => [
+                                    'type' => 'integer',
+                                    'minimum' => 0
+                                ]
+                            ],
+                            'required' => ['name', 'entry_count']
+                        ]
+                    ]
+                ]
+            ],
+        ]
+    ];
+    protected static $DEFAULT_VALUES = [
+        'section' => [
+            [
+                'tag' => [
+                    [
+                        '@attributes' => [
+                            'name' => '',
+                            'entry_count' => 0
+                        ]
+                    ]
+                ],
+                '@attributes' => [
+                    'name' => '',
+                    'entry_count' => 0,
+                ]
+            ]
+        ]
+    ];
     private $ROOT_ELEMENT = 'sections';
     private $SECTION_NAME;
     private $XML_ROOT;

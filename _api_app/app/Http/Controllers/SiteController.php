@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Sites;
 use App\SiteSettings;
-use App\Sections;
+use App\SiteSectionsDataService;
 use App\Entries;
 use App\Tags;
 use App\SiteTemplateSettings;
@@ -24,15 +24,16 @@ class SiteController extends Controller
         /**
          * @todo refactor code
          * @todo think about improving Storage classes
+         * @todo review this controller, sections
          */
         $settings = new SiteSettings($site['name']);
         $settings = $isClone ? $settings->get() : $settings->getDefaultSettings();
-        $sections = $isClone ? new Sections($site['name']) : null;
+        $sections = $isClone ? new SiteSectionsDataService($site['name']) : null;
         $entries = [];
         if ($sections) {
-            foreach ($sections as $section) {
+            foreach ($sections->get() as $section) {
                 $sectionEntries = new Entries($site['name'], $section['name']);
-                $entries = array_merge($entries, $sectionEntries['entry']);
+                $entries = array_merge($entries, $sectionEntries->get());
             }
         }
 

@@ -10,26 +10,55 @@ namespace App;
  * the data in `storage/-sites/sites.xml`
  *
  * File example:
-```xml
-<?xml version="1.0" encoding="utf-8"?>
-<sites>
-    <!-- This is the first and main site, that exists always even when there is just one site -->
-    <site published="1">
-        <name><![CDATA[]]></name>
-        <title><![CDATA[Main site]]></title>
-    </site>
-    <!-- This is an example of additional site data. -->
-    <site published="0">
-        <name><![CDATA[other-site]]></name>
-        <title><![CDATA[Other site]]></title>
-    </site>
-</sites>
-```
+ * ```xml
+ * <?xml version="1.0" encoding="utf-8"?>
+ * <sites>
+ *     <!-- This is the first and main site, that exists always even when there is just one site -->
+ *     <site published="1">
+ *         <name><![CDATA[]]></name>
+ *         <title><![CDATA[Main site]]></title>
+ *     </site>
+ *     <!-- This is an example of additional site data. -->
+ *     <site published="0">
+ *         <name><![CDATA[other-site]]></name>
+ *         <title><![CDATA[Other site]]></title>
+ *     </site>
+ * </sites>
+ * ```
  */
 class Sites Extends Storage {
-    private $XML_FILE;
-    private $SITES = array();
+    public static $JSON_SCHEMA = [
+        '$schema' => "http://json-schema.org/draft-06/schema#",
+        'type' => 'array',
+        'items' => [
+            'type' => 'object',
+            'properties' => [
+                'name' => ['type' => 'string'],
+                'title' => ['type' => 'string'],
+                '@attributes' => [
+                    'type' => 'object',
+                    'properties' => [
+                        'published' => [
+                            'type' => 'integer',
+                            'enum' => [0, 1]
+                        ]
+                    ]
+                ]
+            ],
+            'required' => ['name']
+        ]
+    ];
+    protected static $DEFAULT_VALUES = [
+        'name' => '',
+        '@attributes' => [
+            'name' => '',
+            'published' => 0
+        ]
+    ];
+
     private $ROOT_ELEMENT = 'sites';
+    private $SITES = array();
+    private $XML_FILE;
 
     public function __construct() {
         parent::__construct();

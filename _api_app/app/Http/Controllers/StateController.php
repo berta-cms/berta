@@ -6,7 +6,7 @@ use App\Sites;
 use App\SiteSettings;
 use App\SiteTemplateSettings;
 use App\TemplateSettings;
-use App\Sections;
+use App\SiteSectionsDataService;
 use App\Entries;
 use App\Tags;
 
@@ -26,10 +26,10 @@ class StateController extends Controller
 
         foreach($state['sites'] as $_site) {
             $site_name = $_site['name'];
-            $sections = new Sections($site_name);
+            $sectionsDataService = new SiteSectionsDataService($site_name);
             $site_settings = $siteSettings->getSettingsBySite($site_name);
             $state['site_settings'][$site_name] = $site_settings;
-            $state['sections'] = array_merge($state['sections'], $sections->state());
+            $state['sections'] = array_merge($state['sections'], $sectionsDataService->state());
 
             foreach ($allTemplates as $template) {
                 $template_settings = new SiteTemplateSettings(
