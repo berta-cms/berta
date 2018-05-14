@@ -10,21 +10,21 @@ namespace App;
  * the data in `storage/-sites/sites.xml`
  *
  * File example:
-```xml
-<?xml version="1.0" encoding="utf-8"?>
-<sites>
-    <!-- This is the first and main site, that exists always even when there is just one site -->
-    <site published="1">
-        <name><![CDATA[]]></name>
-        <title><![CDATA[Main site]]></title>
-    </site>
-    <!-- This is an example of additional site data. -->
-    <site published="0">
-        <name><![CDATA[other-site]]></name>
-        <title><![CDATA[Other site]]></title>
-    </site>
-</sites>
-```
+ * ```xml
+ * <?xml version="1.0" encoding="utf-8"?>
+ * <sites>
+ *     <!-- This is the first and main site, that exists always even when there is just one site -->
+ *     <site published="1">
+ *         <name><![CDATA[]]></name>
+ *         <title><![CDATA[Main site]]></title>
+ *     </site>
+ *     <!-- This is an example of additional site data. -->
+ *     <site published="0">
+ *         <name><![CDATA[other-site]]></name>
+ *         <title><![CDATA[Other site]]></title>
+ *     </site>
+ * </sites>
+ * ```
  */
 class Sites Extends Storage {
     public static $JSON_SCHEME = [
@@ -40,8 +40,7 @@ class Sites Extends Storage {
                     'properties' => [
                         'published' => [
                             'type' => 'integer',
-                            'minimum' => 0,
-                            'maximum' => 1
+                            'enum' => [0, 1]
                         ]
                     ]
                 ]
