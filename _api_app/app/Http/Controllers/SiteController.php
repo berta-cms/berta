@@ -39,7 +39,7 @@ class SiteController extends Controller
         $tags = $isClone ? new Tags($site['name']) : null;
 
         $templateSettings = null;
-        if ($isClone) {
+        if ($isClone && isset($settings['template']['template'])) {
             $templateSettings = new SiteTemplateSettings($site['name'], $settings['template']['template']);
         }
 

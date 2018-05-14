@@ -18,6 +18,10 @@
           return Immutable.fromJS(action.state.tags);
 
 
+        case ActionTypes.ADD_SITE_TAGS:
+          return state.set(action.data.site_name, action.data.tags);
+
+
         case ActionTypes.ADD_SECTION_TAGS:
           site_name = action.data.site_name
 

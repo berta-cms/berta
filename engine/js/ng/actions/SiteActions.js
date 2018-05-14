@@ -34,13 +34,14 @@
                   dispatch(Actions.sectionCreated(response.entries[i]));
                 }
               } */
-              /** @todo: handle tags in frontend
-              if (response.tags && response.tags.length) {
-                for (var i = 0; i < response.tags.length; i++) {
-                  dispatch(Actions.tagsCreated(response.tags[i]));
-                }
+
+              if (response.tags && response.tags.section) {
+                dispatch(Actions.addSiteTags({
+                  site_name: response.site.name,
+                  tags: response.tags
+                }));
               }
-              */
+
               if (response.siteTemplateSettings) {
                 dispatch(Actions.templateSettingsCreated(response.site.name, response.siteTemplateSettings));
               }

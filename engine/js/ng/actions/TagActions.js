@@ -5,6 +5,13 @@
 
   Object.assign(window.Actions, {
 
+    addSiteTags: function (data) {
+      return {
+        type: ActionTypes.ADD_SITE_TAGS,
+        data: data
+      };
+    },
+
     addSectionTags: function (data) {
       return {
         type: ActionTypes.ADD_SECTION_TAGS,
