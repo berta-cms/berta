@@ -10,87 +10,87 @@ namespace App;
  * any other site has it's settings in `storage/-sites/[site name]/settings.xml`
  *
  * @example an example of XML file:
-<?xml version="1.0" encoding="utf-8"?>
-<settings>
-  <template>
-    <template><![CDATA[messy-0.4.2]]></template>
-  </template>
-  <siteTexts>
-    <siteHeading><![CDATA[My heading]]></siteHeading>
-    <siteFooter><![CDATA[© John Doe]]></siteFooter>
-    <tourComplete><![CDATA[1]]></tourComplete>
-    <multisitesXY><![CDATA[120,90]]></multisitesXY>
-    <additionalTextXY><![CDATA[130,150]]></additionalTextXY>
-    <additionalText><![CDATA[<p>Some text</p>]]></additionalText>
-    <siteHeadingXY><![CDATA[520,190]]></siteHeadingXY>
-  </siteTexts>
-  <berta>
-    <lastUpdated><![CDATA[Mon, 26 Mar 2018 08:12:20 GMT]]></lastUpdated>
-    <installed><![CDATA[1]]></installed>
-  </berta>
-  <texts>
-    <ownerName><![CDATA[John Doe]]></ownerName>
-    <pageTitle><![CDATA[My site]]></pageTitle>
-    <metaKeywords><![CDATA[john, doe, portfolio]]></metaKeywords>
-    <metaDescription><![CDATA[My personal website]]></metaDescription>
-  </texts>
-  <settings>
-    <showTutorialVideos><![CDATA[no]]></showTutorialVideos>
-    <hideBertaCopyright><![CDATA[yes]]></hideBertaCopyright>
-    <googleAnalyticsId><![CDATA[123]]></googleAnalyticsId>
-    <googleSiteVerification><![CDATA[&lt;meta name=&quot;google-site-verification&quot; content=&quot;xyz&quot; /&gt;]]></googleSiteVerification>
-    <flashUploadEnabled><![CDATA[yes]]></flashUploadEnabled>
-    <jsInclude><![CDATA[&lt;script&gt;<br />var b = 2;<br />&lt;/script&gt;]]></jsInclude>
-  </settings>
-  <entryLayout>
-    <galleryFullScreenCaptionAlign><![CDATA[left]]></galleryFullScreenCaptionAlign>
-    <galleryFullScreenDefault><![CDATA[yes]]></galleryFullScreenDefault>
-    <galleryFullScreenBackground><![CDATA[black]]></galleryFullScreenBackground>
-    <galleryFullScreenFrame><![CDATA[no]]></galleryFullScreenFrame>
-    <galleryFullScreenCloseText><![CDATA[x]]></galleryFullScreenCloseText>
-    <galleryFullScreenImageNumbers><![CDATA[yes]]></galleryFullScreenImageNumbers>
-    <gallerySlideshowAutoRewind><![CDATA[no]]></gallerySlideshowAutoRewind>
-    <gallerySlideNumberVisibilityDefault><![CDATA[yes]]></gallerySlideNumberVisibilityDefault>
-  </entryLayout>
-  <media>
-    <imagesSmallWidth><![CDATA[200]]></imagesSmallWidth>
-    <imagesSmallHeight><![CDATA[200]]></imagesSmallHeight>
-    <imagesMediumWidth><![CDATA[400]]></imagesMediumWidth>
-    <imagesMediumHeight><![CDATA[400]]></imagesMediumHeight>
-    <imagesLargeWidth><![CDATA[600]]></imagesLargeWidth>
-    <imagesLargeHeight><![CDATA[600]]></imagesLargeHeight>
-  </media>
-  <banners>
-    <banner1_image><![CDATA[image-1080x1080_10_.png]]></banner1_image>
-    <banner1_image_width><![CDATA[540]]></banner1_image_width>
-    <banner1_image_height><![CDATA[540]]></banner1_image_height>
-    <banner1_link><![CDATA[http://example.com]]></banner1_link>
-    <banner2_image><![CDATA[250web.png]]></banner2_image>
-    <banner2_image_width><![CDATA[123]]></banner2_image_width>
-    <banner2_image_height><![CDATA[163]]></banner2_image_height>
-    <banner2_link><![CDATA[http://example2.com]]></banner2_link>
-  </banners>
-  <navigation>
-    <landingSectionVisible><![CDATA[yes]]></landingSectionVisible>
-    <landingSectionPageHeadingVisible><![CDATA[yes]]></landingSectionPageHeadingVisible>
-    <landingSectionMenuVisible><![CDATA[yes]]></landingSectionMenuVisible>
-    <alwaysSelectTag><![CDATA[no]]></alwaysSelectTag>
-  </navigation>
-  <pageLayout>
-    <favicon><![CDATA[favicon.ico]]></favicon>
-    <gridStep><![CDATA[10]]></gridStep>
-    <showGrid><![CDATA[no]]></showGrid>
-    <gridColor><![CDATA[black]]></gridColor>
-  </pageLayout>
-  <socialMediaButtons>
-    <socialMediaHTML><![CDATA[&lt;div class=&quot;social&quot;&gt;&lt;/div&gt;]]></socialMediaHTML>
-    <socialMediaJS><![CDATA[&lt;script&gt;var a = 1;&lt;/script&gt;]]></socialMediaJS>
-    <socialMediaLocation><![CDATA[footer]]></socialMediaLocation>
-  </socialMediaButtons>
-  <language>
-    <language><![CDATA[en]]></language>
-  </language>
-</settings>
+ * <?xml version="1.0" encoding="utf-8"?>
+ * <settings>
+ *   <template>
+ *     <template><![CDATA[messy-0.4.2]]></template>
+ *   </template>
+ *   <siteTexts>
+ *     <siteHeading><![CDATA[My heading]]></siteHeading>
+ *     <siteFooter><![CDATA[© John Doe]]></siteFooter>
+ *     <tourComplete><![CDATA[1]]></tourComplete>
+ *     <multisitesXY><![CDATA[120,90]]></multisitesXY>
+ *     <additionalTextXY><![CDATA[130,150]]></additionalTextXY>
+ *     <additionalText><![CDATA[<p>Some text</p>]]></additionalText>
+ *     <siteHeadingXY><![CDATA[520,190]]></siteHeadingXY>
+ *   </siteTexts>
+ *   <berta>
+ *     <lastUpdated><![CDATA[Mon, 26 Mar 2018 08:12:20 GMT]]></lastUpdated>
+ *     <installed><![CDATA[1]]></installed>
+ *   </berta>
+ *   <texts>
+ *     <ownerName><![CDATA[John Doe]]></ownerName>
+ *     <pageTitle><![CDATA[My site]]></pageTitle>
+ *     <metaKeywords><![CDATA[john, doe, portfolio]]></metaKeywords>
+ *     <metaDescription><![CDATA[My personal website]]></metaDescription>
+ *   </texts>
+ *   <settings>
+ *     <showTutorialVideos><![CDATA[no]]></showTutorialVideos>
+ *     <hideBertaCopyright><![CDATA[yes]]></hideBertaCopyright>
+ *     <googleAnalyticsId><![CDATA[123]]></googleAnalyticsId>
+ *     <googleSiteVerification><![CDATA[&lt;meta name=&quot;google-site-verification&quot; content=&quot;xyz&quot; /&gt;]]></googleSiteVerification>
+ *     <flashUploadEnabled><![CDATA[yes]]></flashUploadEnabled>
+ *     <jsInclude><![CDATA[&lt;script&gt;<br />var b = 2;<br />&lt;/script&gt;]]></jsInclude>
+ *   </settings>
+ *   <entryLayout>
+ *     <galleryFullScreenCaptionAlign><![CDATA[left]]></galleryFullScreenCaptionAlign>
+ *     <galleryFullScreenDefault><![CDATA[yes]]></galleryFullScreenDefault>
+ *     <galleryFullScreenBackground><![CDATA[black]]></galleryFullScreenBackground>
+ *     <galleryFullScreenFrame><![CDATA[no]]></galleryFullScreenFrame>
+ *     <galleryFullScreenCloseText><![CDATA[x]]></galleryFullScreenCloseText>
+ *     <galleryFullScreenImageNumbers><![CDATA[yes]]></galleryFullScreenImageNumbers>
+ *     <gallerySlideshowAutoRewind><![CDATA[no]]></gallerySlideshowAutoRewind>
+ *     <gallerySlideNumberVisibilityDefault><![CDATA[yes]]></gallerySlideNumberVisibilityDefault>
+ *   </entryLayout>
+ *   <media>
+ *     <imagesSmallWidth><![CDATA[200]]></imagesSmallWidth>
+ *     <imagesSmallHeight><![CDATA[200]]></imagesSmallHeight>
+ *     <imagesMediumWidth><![CDATA[400]]></imagesMediumWidth>
+ *     <imagesMediumHeight><![CDATA[400]]></imagesMediumHeight>
+ *     <imagesLargeWidth><![CDATA[600]]></imagesLargeWidth>
+ *     <imagesLargeHeight><![CDATA[600]]></imagesLargeHeight>
+ *   </media>
+ *   <banners>
+ *     <banner1_image><![CDATA[image-1080x1080_10_.png]]></banner1_image>
+ *     <banner1_image_width><![CDATA[540]]></banner1_image_width>
+ *     <banner1_image_height><![CDATA[540]]></banner1_image_height>
+ *     <banner1_link><![CDATA[http://example.com]]></banner1_link>
+ *     <banner2_image><![CDATA[250web.png]]></banner2_image>
+ *     <banner2_image_width><![CDATA[123]]></banner2_image_width>
+ *     <banner2_image_height><![CDATA[163]]></banner2_image_height>
+ *     <banner2_link><![CDATA[http://example2.com]]></banner2_link>
+ *   </banners>
+ *   <navigation>
+ *     <landingSectionVisible><![CDATA[yes]]></landingSectionVisible>
+ *     <landingSectionPageHeadingVisible><![CDATA[yes]]></landingSectionPageHeadingVisible>
+ *     <landingSectionMenuVisible><![CDATA[yes]]></landingSectionMenuVisible>
+ *     <alwaysSelectTag><![CDATA[no]]></alwaysSelectTag>
+ *   </navigation>
+ *   <pageLayout>
+ *     <favicon><![CDATA[favicon.ico]]></favicon>
+ *     <gridStep><![CDATA[10]]></gridStep>
+ *     <showGrid><![CDATA[no]]></showGrid>
+ *     <gridColor><![CDATA[black]]></gridColor>
+ *   </pageLayout>
+ *   <socialMediaButtons>
+ *     <socialMediaHTML><![CDATA[&lt;div class=&quot;social&quot;&gt;&lt;/div&gt;]]></socialMediaHTML>
+ *     <socialMediaJS><![CDATA[&lt;script&gt;var a = 1;&lt;/script&gt;]]></socialMediaJS>
+ *     <socialMediaLocation><![CDATA[footer]]></socialMediaLocation>
+ *   </socialMediaButtons>
+ *   <language>
+ *     <language><![CDATA[en]]></language>
+ *   </language>
+ * </settings>
  */
 class SiteSettings extends Storage
 {
