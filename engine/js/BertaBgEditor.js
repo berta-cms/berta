@@ -282,7 +282,7 @@ var BertaBgEditor = new Class({
 
     var site = getCurrentSite();
 
-    redux_store.dispatch(Actions.sectionBgOrder(
+    redux_store.dispatch(Actions.sectionBackgroundOrder(
       site,
       this.sectionName,
       newOrder,
@@ -350,7 +350,7 @@ var BertaBgEditor = new Class({
 
       var site = getCurrentSite() || '0';
 
-      redux_store.dispatch(Actions.sectionBgDelete(
+      redux_store.dispatch(Actions.sectionBackgroundDelete(
         site,
         this.sectionName,
         liElement.get('filename'),

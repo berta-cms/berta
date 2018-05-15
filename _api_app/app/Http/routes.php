@@ -16,7 +16,7 @@
 // });
 
 // @@@:TODO: Require login for API endpoints
-$app->group(['prefix' => 'v1','namespace' => 'App\Http\Controllers'], function($app) {
+$app->group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers'], function ($app) {
     $app->get('state/{site}', 'StateController@get');
 
     $app->post('site', ['as' => 'site', 'uses' => 'SiteController@create']);
@@ -28,12 +28,12 @@ $app->group(['prefix' => 'v1','namespace' => 'App\Http\Controllers'], function($
 
     $app->patch('site-template-settings', ['as' => 'site_template_settings', 'uses' => 'SiteTemplateSettingsController@update']);
 
-    $app->patch('update-section','SectionController@update');
-    $app->patch('reset-section','SectionController@reset');
-    $app->post('create-section','SectionController@create');
-    $app->delete('delete-section/{site}/{section}','SectionController@delete');
-    $app->put('order-sections','SectionController@order');
+    $app->post('section', ['as' => 'section', 'uses' => 'SectionController@create']);
+    $app->patch('section', 'SectionController@update');
+    $app->patch('section-reset', ['as' => 'section_reset', 'uses' => 'SectionController@reset']);
+    $app->put('section', 'SectionController@order');
+    $app->delete('section', 'SectionController@delete');
 
-    $app->delete('section-bg-delete/{site}/{section}/{file}','SectionController@galleryDelete');
-    $app->put('section-bg-order','SectionController@galleryOrder');
+    $app->put('section-background', ['as' => 'section_background', 'uses' => 'SectionController@galleryOrder']);
+    $app->delete('section-background', 'SectionController@galleryDelete');
 });

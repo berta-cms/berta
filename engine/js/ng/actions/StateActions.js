@@ -17,7 +17,7 @@
       };
     },
     setState: function(state) {
-      window.Berta['urls'] = state.urls;
+      window.Berta.urls = state.urls;
 
       return {
         type: ActionTypes.SET_STATE,
