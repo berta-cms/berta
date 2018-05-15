@@ -19,7 +19,9 @@ class StateController extends Controller
         $allTemplates = $templateSettings->getAllTemplates();
 
         $state['urls'] = [
-            'site' => route('site')
+            'site' => route('site'),
+            'site_settings' => route('site_settings'),
+            'site_template_settings' => route('site_template_settings')
         ];
         $state['sites'] = $sites->state();
         $state['site_settings'] = array();

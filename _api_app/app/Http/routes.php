@@ -24,9 +24,9 @@ $app->group(['prefix' => 'v1','namespace' => 'App\Http\Controllers'], function($
     $app->put('site', 'SiteController@order');
     $app->delete('site', 'SiteController@delete');
 
-    $app->patch('update-settings','SettingsController@update');
+    $app->patch('site-settings', ['as' => 'site_settings', 'uses' => 'SettingsController@update']);
 
-    $app->patch('update-site-template-settings','SiteTemplateSettingsController@update');
+    $app->patch('site-template-settings', ['as' => 'site_template_settings', 'uses' => 'SiteTemplateSettingsController@update']);
 
     $app->patch('update-section','SectionController@update');
     $app->patch('reset-section','SectionController@reset');
