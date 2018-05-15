@@ -69,9 +69,10 @@ class SiteController extends Controller
         return response()->json($res, $res['status_code']);
     }
 
-    public function delete($site) {
+    public function delete(Request $request) {
         $sites = new Sites();
-        $res = $sites->delete($site);
+        $json = $request->json()->all();
+        $res = $sites->delete($json['site']);
 
         return response()->json($res);
     }

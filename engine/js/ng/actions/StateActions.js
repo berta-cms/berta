@@ -2,6 +2,7 @@
   'use strict';
 
   window.Actions = window.Actions || {};
+  window.Berta = window.Berta || {};
 
   Object.assign(window.Actions, {
     getState: function(site) {
@@ -16,6 +17,8 @@
       };
     },
     setState: function(state) {
+      window.Berta['urls'] = state.urls;
+
       return {
         type: ActionTypes.SET_STATE,
         state: state

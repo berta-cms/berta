@@ -17,12 +17,12 @@
 
 // @@@:TODO: Require login for API endpoints
 $app->group(['prefix' => 'v1','namespace' => 'App\Http\Controllers'], function($app) {
-	$app->get('state/{site}','StateController@get');
+    $app->get('state/{site}', 'StateController@get');
 
-    $app->patch('update-site','SiteController@update');
-    $app->post('create-site','SiteController@create');
-    $app->delete('delete-site/{site}','SiteController@delete');
-    $app->put('order-sites','SiteController@order');
+    $app->post('site', ['as' => 'site', 'uses' => 'SiteController@create']);
+    $app->patch('site', 'SiteController@update');
+    $app->put('site', 'SiteController@order');
+    $app->delete('site', 'SiteController@delete');
 
     $app->patch('update-settings','SettingsController@update');
 
