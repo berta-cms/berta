@@ -496,6 +496,7 @@ class SiteSectionsDataService Extends Storage {
             return array(
                 'site' => $this->SITE,
                 'section' => $name,
+                'mediafolder' => $section['mediafolder'],
                 'files' => $reordered
             );
         }

@@ -122,7 +122,9 @@
         case ActionTypes.SECTION_BACKGROUND_ORDERED:
           return state.map(function (section) {
             if (section.get('site_name') === action.resp.site && section.get('name') === action.resp.section) {
-              return section.setIn(['mediaCacheData', 'file'], action.resp.files);
+              return section
+                .set('mediafolder', action.resp.mediafolder)
+                .setIn(['mediaCacheData', 'file'], action.resp.files);
             }
             return section;
           });

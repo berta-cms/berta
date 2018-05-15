@@ -175,18 +175,6 @@
     },
 
 
-    // @TODO
-    sectionBackgroundCreate: function (params) {
-      // ...
-    },
-
-
-    // @TODO
-    sectionBackgroundCreated: function (params) {
-      // ...
-    },
-
-
     sectionBackgroundDelete: function(site, section, file, onComplete) {
       return function (dispatch, getStore) {
         dispatch({ type: ActionTypes.SECTION_BACKGROUND_DELETE });
