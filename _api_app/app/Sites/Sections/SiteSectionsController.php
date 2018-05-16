@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 use App\Sites\Sections\SiteSectionsDataService;
-use App\Tags;
+use App\Sites\Sections\SiteSectionTagsDataService;
 
 class SiteSectionsController extends Controller
 {
@@ -25,7 +25,7 @@ class SiteSectionsController extends Controller
             $json['title']
         );
 
-        $tags = $cloneFrom ? new Tags($json['site'], $section['name']) : null;
+        $tags = $cloneFrom ? new SiteSectionTagsDataService($json['site'], $section['name']) : null;
 
         $resp = [
             'section' => $section,

@@ -3,8 +3,8 @@
 namespace App\Sites\Sections;
 
 use App\Shared\Storage;
+use App\Sites\Sections\SiteSectionTagsDataService;
 use App\Sites\Sections\Entries\SectionEntriesDataService;
-use App\Tags;
 
 
 /**
@@ -220,7 +220,7 @@ class SiteSectionsDataService Extends Storage {
 
         // Clone section
         if ($isClone) {
-            $tags = new Tags($this->SITE, $section['name']);
+            $tags = new SiteSectionTagsDataService($this->SITE, $section['name']);
             $section_tags = $tags->populateTags();
             $allHaveTags = $section_tags['allHaveTags'];
 
@@ -302,7 +302,7 @@ class SiteSectionsDataService Extends Storage {
                 return $ret;
             }
 
-            $tags = new Tags($this->SITE, $old_name);
+            $tags = new SiteSectionTagsDataService($this->SITE, $old_name);
             $tags->renameSection($new_name);
             $ret['old_name'] = $old_name;
             $ret['real'] = $new_name;
@@ -380,7 +380,7 @@ class SiteSectionsDataService Extends Storage {
             }
 
             // delete tags
-            $tags = new Tags($this->SITE, $name);
+            $tags = new SiteSectionTagsDataService($this->SITE, $name);
             $section_tags = $tags->delete();
 
             // delete section

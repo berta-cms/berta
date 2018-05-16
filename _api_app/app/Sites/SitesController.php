@@ -6,8 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Sites\SitesDataService;
 use App\Sites\SiteSettings\SiteSettingsDataService;
 use App\Sites\Sections\SiteSectionsDataService;
+use App\Sites\Sections\SiteSectionTagsDataService;
 use App\Sites\Sections\Entries\SectionEntriesDataService;
-use App\Tags;
 use App\Sites\SiteTemplateSettings\SiteTemplateSettingsDataService;
 
 use Illuminate\Http\Request;
@@ -38,7 +38,7 @@ class SitesController extends Controller
             }
         }
 
-        $tags = $isClone ? new Tags($site['name']) : null;
+        $tags = $isClone ? new SiteSectionTagsDataService($site['name']) : null;
 
         $templateSettings = null;
         if ($isClone && isset($settings['template']['template'])) {

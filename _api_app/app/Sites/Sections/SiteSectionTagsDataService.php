@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Sites\Sections;
 
 use App\Shared\Storage;
 use App\Sites\Sections\Entries\SectionEntriesDataService;
@@ -27,7 +27,7 @@ use App\Sites\Sections\Entries\SectionEntriesDataService;
  * </sections>
  * ```
  */
-class Tags Extends Storage {
+class SiteSectionTagsDataService Extends Storage {
     /**
      * @var array $JSON_SCHEMA
      * Associative array representing data structure handled by this service.
