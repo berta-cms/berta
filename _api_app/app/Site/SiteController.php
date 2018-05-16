@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Site;
 
-use App\Sites;
+use App\Http\Controllers\Controller;
+use App\Site\SiteDataService;
 use App\SiteSettings;
 use App\SiteSectionsDataService;
 use App\Entries;
@@ -15,7 +16,7 @@ use Illuminate\Http\Request;
 class SiteController extends Controller
 {
     public function create(Request $request) {
-        $sites = new Sites();
+        $sites = new SiteDataService();
         $json = $request->json()->all();
         $cloneFrom = $json['site'] == -1 ? null : $json['site'];
         $isClone = $cloneFrom !== null;
@@ -57,7 +58,7 @@ class SiteController extends Controller
     }
 
     public function update(Request $request) {
-        $sites = new Sites();
+        $sites = new SiteDataService();
         $json = $request->json()->all();
 
         $res = $sites->saveValueByPath($json['path'], $json['value']);
@@ -70,7 +71,7 @@ class SiteController extends Controller
     }
 
     public function delete(Request $request) {
-        $sites = new Sites();
+        $sites = new SiteDataService();
         $json = $request->json()->all();
         $res = $sites->delete($json['site']);
 
@@ -78,7 +79,7 @@ class SiteController extends Controller
     }
 
     public function order(Request $request) {
-        $sites = new Sites();
+        $sites = new SiteDataService();
         $json = $request->json()->all();
         $sites->order($json);
         return response()->json($json);

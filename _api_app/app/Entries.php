@@ -2,6 +2,8 @@
 
 namespace App;
 
+use App\Shared\Storage;
+
 class Entries Extends Storage {
     private $ROOT_ELEMENT = 'blog';
     private $SECTION_NAME;

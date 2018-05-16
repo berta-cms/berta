@@ -2,6 +2,8 @@
 
 namespace App;
 
+use App\Shared\Storage;
+
 /**
  * This class is a service that handles site settings data for Berta CMS.
  * Settings are stored in `settings.xml` file for the corresponding site.

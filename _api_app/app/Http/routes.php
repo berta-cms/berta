@@ -16,13 +16,15 @@
 // });
 
 // @@@:TODO: Require login for API endpoints
-$app->group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers'], function ($app) {
-    $app->get('state/{site}', 'StateController@get');
+$app->group(['prefix' => 'v1', 'namespace' => 'App'], function() use ($app) {
+    $app->get('state/{site}', 'Http\Controllers\StateController@get');
 
-    $app->post('site', ['as' => 'site', 'uses' => 'SiteController@create']);
-    $app->patch('site', 'SiteController@update');
-    $app->put('site', 'SiteController@order');
-    $app->delete('site', 'SiteController@delete');
+    $app->group(['prefix' => 'v1', 'namespace' => 'App\Site'], function() use ($app) {
+        $app->post('site', ['as' => 'site', 'uses' => 'SiteController@create']);
+        $app->patch('site', 'SiteController@update');
+        $app->put('site', 'SiteController@order');
+        $app->delete('site', 'SiteController@delete');
+    });
 
     $app->patch('site-settings', ['as' => 'site_settings', 'uses' => 'SettingsController@update']);
 

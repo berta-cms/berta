@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Shared\Storage;
 use App\Entries;
 
 

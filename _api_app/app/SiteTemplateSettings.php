@@ -2,6 +2,8 @@
 
 namespace App;
 
+use App\Shared\Storage;
+
 class SiteTemplateSettings extends Storage
 {
     private $ROOT_ELEMENT = 'settings';

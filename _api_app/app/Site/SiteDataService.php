@@ -1,5 +1,7 @@
 <?php
-namespace App;
+namespace App\Site;
+
+use App\Shared\Storage;
 
 /**
  * @class Sites
@@ -26,7 +28,7 @@ namespace App;
  * </sites>
  * ```
  */
-class Sites Extends Storage {
+class SiteDataService Extends Storage {
     public static $JSON_SCHEMA = [
         '$schema' => "http://json-schema.org/draft-06/schema#",
         'type' => 'array',

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Sites;
+use App\Site\SiteDataService;
 use App\SiteSettings;
 use App\SiteTemplateSettings;
 use App\TemplateSettings;
@@ -13,7 +13,7 @@ use App\Tags;
 class StateController extends Controller
 {
     public function get($site) {
-        $sites = new Sites();
+        $sites = new SiteDataService();
         $siteSettings = new SiteSettings();
         $templateSettings = new TemplateSettings();
         $allTemplates = $templateSettings->getAllTemplates();
