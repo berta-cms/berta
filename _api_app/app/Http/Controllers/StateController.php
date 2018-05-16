@@ -6,8 +6,8 @@ use App\Sites\SitesDataService;
 use App\Sites\SiteSettings\SiteSettingsDataService;
 use App\Sites\SiteTemplateSettings\SiteTemplateSettingsDataService;
 use App\Sites\Sections\SiteSectionsDataService;
+use App\Sites\Sections\Entries\SectionEntriesDataService;
 use App\TemplateSettings;
-use App\Entries;
 use App\Tags;
 
 class StateController extends Controller
@@ -56,7 +56,7 @@ class StateController extends Controller
             if (!empty($state['sections'][$site_name]['section'])) {
                 foreach($state['sections'][$site_name]['section'] as $section) {
                     $section_name = $section['name'];
-                    $entries = new Entries($site_name, $section_name);
+                    $entries = new SectionEntriesDataService($site_name, $section_name);
                     $state['entries'][$site_name][$section_name] = $entries->get();
                     unset($entries);
                 }

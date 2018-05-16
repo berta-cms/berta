@@ -3,7 +3,7 @@
 namespace App;
 
 use App\Shared\Storage;
-use App\Entries;
+use App\Sites\Sections\Entries\SectionEntriesDataService;
 
 
 /**
@@ -199,7 +199,7 @@ class Tags Extends Storage {
         // @@@:TODO: Maybe it's possibe to write this method
         //           in a shorter and/or more efficient way
         $tags = $this->get();
-        $entries = new Entries($this->SITE, $this->SECTION_NAME);
+        $entries = new SectionEntriesDataService($this->SITE, $this->SECTION_NAME);
         $blog = $entries->get();
 
         $newCache = array();

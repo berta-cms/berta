@@ -1,10 +1,10 @@
 <?php
 
-namespace App;
+namespace App\Sites\Sections\Entries;
 
 use App\Shared\Storage;
 
-class Entries Extends Storage {
+class SectionEntriesDataService Extends Storage {
     private $ROOT_ELEMENT = 'blog';
     private $SECTION_NAME;
     private $SECTION_TITLE;
@@ -58,7 +58,7 @@ class Entries Extends Storage {
                 'entry' => array()
             );
         } else {
-            $entries = new Entries($this->SITE, $name);
+            $entries = new SectionEntriesDataService($this->SITE, $name);
             $blog = $entries->get();
             $blog['@attributes']['section'] = $this->SECTION_NAME;
 

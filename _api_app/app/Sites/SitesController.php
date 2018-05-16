@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Sites\SitesDataService;
 use App\Sites\SiteSettings\SiteSettingsDataService;
 use App\Sites\Sections\SiteSectionsDataService;
-use App\Entries;
+use App\Sites\Sections\Entries\SectionEntriesDataService;
 use App\Tags;
 use App\Sites\SiteTemplateSettings\SiteTemplateSettingsDataService;
 
@@ -33,7 +33,7 @@ class SitesController extends Controller
         $entries = [];
         if ($sections) {
             foreach ($sections->get() as $section) {
-                $sectionEntries = new Entries($site['name'], $section['name']);
+                $sectionEntries = new SectionEntriesDataService($site['name'], $section['name']);
                 $entries = array_merge($entries, $sectionEntries->get());
             }
         }

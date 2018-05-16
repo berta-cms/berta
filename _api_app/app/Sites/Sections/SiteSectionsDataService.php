@@ -3,7 +3,7 @@
 namespace App\Sites\Sections;
 
 use App\Shared\Storage;
-use App\Entries;
+use App\Sites\Sections\Entries\SectionEntriesDataService;
 use App\Tags;
 
 
@@ -182,7 +182,7 @@ class SiteSectionsDataService Extends Storage {
             }
 
             // Berta requires existing section file for entries
-            $entries = new Entries($this->SITE, 'clone-of-'.$name, 'clone of '.$title);
+            $entries = new SectionEntriesDataService($this->SITE, 'clone-of-'.$name, 'clone of '.$title);
             $section_entries = $entries->create($name);
 
             $section = $sections[$section_order];
@@ -206,7 +206,7 @@ class SiteSectionsDataService Extends Storage {
             $name = 'untitled-' . uniqid();
 
             // Berta requires existing section file for entries
-            $entries = new Entries($this->SITE, $name, $title);
+            $entries = new SectionEntriesDataService($this->SITE, $name, $title);
             $section_entries = $entries->create();
 
             $section = [
@@ -294,7 +294,7 @@ class SiteSectionsDataService Extends Storage {
                 );
             }
 
-            $entries = new Entries($this->SITE, $old_name, $old_title);
+            $entries = new SectionEntriesDataService($this->SITE, $old_name, $old_title);
             $ret = array_merge($ret, $entries->rename($new_name, $value));
 
             if (!$ret['success']) {
@@ -348,7 +348,7 @@ class SiteSectionsDataService Extends Storage {
 
         if ($section_idx !== False) {
             // delete all entries
-            $entries = new Entries($this->SITE, $name);
+            $entries = new SectionEntriesDataService($this->SITE, $name);
             $res = $entries->delete();
 
             if (!$res['success']) {
