@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Site;
+namespace App\Sites;
 
 use App\Http\Controllers\Controller;
-use App\Site\SiteDataService;
-use App\Site\SiteSettings\SiteSettingsDataService;
+use App\Sites\SitesDataService;
+use App\Sites\SiteSettings\SiteSettingsDataService;
 use App\SiteSectionsDataService;
 use App\Entries;
 use App\Tags;
@@ -13,10 +13,10 @@ use App\SiteTemplateSettings;
 use Illuminate\Http\Request;
 
 
-class SiteController extends Controller
+class SitesController extends Controller
 {
     public function create(Request $request) {
-        $sites = new SiteDataService();
+        $sites = new SitesDataService();
         $json = $request->json()->all();
         $cloneFrom = $json['site'] == -1 ? null : $json['site'];
         $isClone = $cloneFrom !== null;
@@ -58,7 +58,7 @@ class SiteController extends Controller
     }
 
     public function update(Request $request) {
-        $sites = new SiteDataService();
+        $sites = new SitesDataService();
         $json = $request->json()->all();
 
         $res = $sites->saveValueByPath($json['path'], $json['value']);
@@ -71,7 +71,7 @@ class SiteController extends Controller
     }
 
     public function delete(Request $request) {
-        $sites = new SiteDataService();
+        $sites = new SitesDataService();
         $json = $request->json()->all();
         $res = $sites->delete($json['site']);
 
@@ -79,7 +79,7 @@ class SiteController extends Controller
     }
 
     public function order(Request $request) {
-        $sites = new SiteDataService();
+        $sites = new SitesDataService();
         $json = $request->json()->all();
         $sites->order($json);
         return response()->json($json);

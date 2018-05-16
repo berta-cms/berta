@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Site\SiteSettings;
+namespace App\Sites\SiteSettings;
 
 use App\Shared\Storage;
 

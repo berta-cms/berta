@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Site\SiteDataService;
-use App\Site\SiteSettings\SiteSettingsDataService;
+use App\Sites\SitesDataService;
+use App\Sites\SiteSettings\SiteSettingsDataService;
 use App\SiteTemplateSettings;
 use App\TemplateSettings;
 use App\SiteSectionsDataService;
@@ -13,13 +13,13 @@ use App\Tags;
 class StateController extends Controller
 {
     public function get($site) {
-        $sites = new SiteDataService();
+        $sites = new SitesDataService();
         $siteSettings = new SiteSettingsDataService();
         $templateSettings = new TemplateSettings();
         $allTemplates = $templateSettings->getAllTemplates();
 
         $state['urls'] = [
-            'site' => route('site'),
+            'sites' => route('sites'),
             'site_settings' => route('site_settings'),
             'site_template_settings' => route('site_template_settings'),
             'section' => route('section'),

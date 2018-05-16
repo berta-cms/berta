@@ -19,11 +19,11 @@
 $app->group(['prefix' => 'v1', 'namespace' => 'App'], function() use ($app) {
     $app->get('state/{site}', 'Http\Controllers\StateController@get');
 
-    $app->group(['prefix' => 'v1', 'namespace' => 'App\Site'], function() use ($app) {
-        $app->post('site', ['as' => 'site', 'uses' => 'SiteController@create']);
-        $app->patch('site', 'SiteController@update');
-        $app->put('site', 'SiteController@order');
-        $app->delete('site', 'SiteController@delete');
+    $app->group(['prefix' => 'v1', 'namespace' => 'App\Sites'], function() use ($app) {
+        $app->post('sites', ['as' => 'sites', 'uses' => 'SitesController@create']);
+        $app->patch('sites', 'SitesController@update');
+        $app->put('sites', 'SitesController@order');
+        $app->delete('sites', 'SitesController@delete');
     });
 
     $app->patch('site-settings', ['as' => 'site_settings', 'uses' => 'Site\SiteSettings\SiteSettingsController@update']);
