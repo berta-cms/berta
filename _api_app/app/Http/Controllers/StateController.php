@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Site\SiteDataService;
-use App\SiteSettings;
+use App\Site\SiteSettings\SiteSettingsDataService;
 use App\SiteTemplateSettings;
 use App\TemplateSettings;
 use App\SiteSectionsDataService;
@@ -14,7 +14,7 @@ class StateController extends Controller
 {
     public function get($site) {
         $sites = new SiteDataService();
-        $siteSettings = new SiteSettings();
+        $siteSettings = new SiteSettingsDataService();
         $templateSettings = new TemplateSettings();
         $allTemplates = $templateSettings->getAllTemplates();
 

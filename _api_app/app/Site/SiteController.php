@@ -4,7 +4,7 @@ namespace App\Site;
 
 use App\Http\Controllers\Controller;
 use App\Site\SiteDataService;
-use App\SiteSettings;
+use App\Site\SiteSettings\SiteSettingsDataService;
 use App\SiteSectionsDataService;
 use App\Entries;
 use App\Tags;
@@ -27,7 +27,7 @@ class SiteController extends Controller
          * @todo think about improving Storage classes
          * @todo review this controller, sections
          */
-        $settings = new SiteSettings($site['name']);
+        $settings = new SiteSettingsDataService($site['name']);
         $settings = $isClone ? $settings->get() : $settings->getDefaultSettings();
         $sections = $isClone ? new SiteSectionsDataService($site['name']) : null;
         $entries = [];

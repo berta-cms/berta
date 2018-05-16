@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Site\SiteSettings;
 
 use App\Shared\Storage;
 
@@ -94,7 +94,7 @@ use App\Shared\Storage;
  *   </language>
  * </settings>
  */
-class SiteSettings extends Storage
+class SiteSettingsDataService extends Storage
 {
     /**
      * @var array $JSON_SCHEMA
