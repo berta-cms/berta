@@ -6,7 +6,7 @@ use App\Sites\SitesDataService;
 use App\Sites\SiteSettings\SiteSettingsDataService;
 use App\Sites\SiteTemplateSettings\SiteTemplateSettingsDataService;
 use App\Sites\Sections\SiteSectionsDataService;
-use App\Sites\Sections\SiteSectionTagsDataService;
+use App\Sites\Sections\Tags\SectionTagsDataService;
 use App\Sites\Sections\Entries\SectionEntriesDataService;
 use App\TemplateSettings;
 
@@ -64,7 +64,7 @@ class StateController extends Controller
                 $state['entries'][$site_name] = array();
             }
 
-            $tags = new SiteSectionTagsDataService($site_name);
+            $tags = new SectionTagsDataService($site_name);
             $state['tags'][$site_name] = $tags->get();
             unset($sections);
             unset($tags);
