@@ -1,48 +1,14 @@
 <?php
 
-namespace App;
+namespace App\SiteTemplates;
 
-class I18n
-{
-    static $translations;
-    public static $default_lang = 'en';
+use App\Shared\I18n;
 
-    public static function load_language($lang = null)
-    {
-        $ENGINE_ROOT = realpath(__DIR__ . '/../../engine');
-
-        if($lang && file_exists($ENGINE_ROOT.'/lang/'.$lang.'.php'))
-        {
-            self::$translations = include($ENGINE_ROOT.'/lang/'.$lang.'.php');
-        }
-        elseif(file_exists($ENGINE_ROOT.'/lang/'. self::$default_lang.'.php'))
-        {
-            self::$translations = include($ENGINE_ROOT.'/lang/'.self::$default_lang.'.php');
-        }
-    }
-
-    /**
-     * @param   string  $key
-     * @return  string
-     *
-     *
-     */
-    public static function _($key)
-    {
-        if(!empty(self::$translations) && isset(self::$translations[$key]))
-        {
-            return self::$translations[$key];
-        }
-
-        return $key;
-    }
-}
-
-class TemplateSettings {
+class SiteTemplatesDataService {
     private $TEMPLATE_ROOT;
 
     public function __construct() {
-        $this->TEMPLATE_ROOT = realpath(__DIR__ . '/../../_templates');
+        $this->TEMPLATE_ROOT = realpath(__DIR__ . '/../../../_templates');
     }
 
     public function get($lang='en') {
@@ -57,9 +23,9 @@ class TemplateSettings {
                 $this->TEMPLATE_ROOT . '/' . $tpl . '/template.conf.php'
             );
 
-            // @@@:HACK: read in template config ans set up namespace
+            // @@@:HACK: read in template config and set up namespace
             //           so that I18n would be visible there
-            $conf = str_replace('<?php', 'namespace App;', $conf);
+            $conf = str_replace('<?php', 'namespace App\Shared;', $conf);
             $conf = str_replace(
                 '../_plugin_shop/template.conf.php',
                 '../_plugin_shop/ng.template.conf.php',

@@ -49,7 +49,7 @@
   };
 
   window.getAllTemplates = function getAllTemplates() {
-    var templates = redux_store.getState().template_settings.toJSON();
+    var templates = redux_store.getState().site_templates.toJSON();
 
     return Object.getOwnPropertyNames(templates);
   };
