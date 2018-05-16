@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Sites\SitesDataService;
 use App\Sites\SiteSettings\SiteSettingsDataService;
-use App\SiteTemplateSettings;
+use App\Sites\SiteTemplateSettings\SiteTemplateSettingsDataService;
 use App\TemplateSettings;
 use App\SiteSectionsDataService;
 use App\Entries;
@@ -40,7 +40,7 @@ class StateController extends Controller
             $state['sections'] = array_merge($state['sections'], $sectionsDataService->state());
 
             foreach ($allTemplates as $template) {
-                $template_settings = new SiteTemplateSettings(
+                $template_settings = new SiteTemplateSettingsDataService(
                     $site_name,
                     $template
                 );

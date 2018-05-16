@@ -1,10 +1,10 @@
 <?php
 
-namespace App;
+namespace App\Sites\SiteTemplateSettings;
 
 use App\Shared\Storage;
 
-class SiteTemplateSettings extends Storage
+class SiteTemplateSettingsDataService extends Storage
 {
     private $ROOT_ELEMENT = 'settings';
     private $TEMPLATE;

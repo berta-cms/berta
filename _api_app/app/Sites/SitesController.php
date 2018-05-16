@@ -8,7 +8,7 @@ use App\Sites\SiteSettings\SiteSettingsDataService;
 use App\SiteSectionsDataService;
 use App\Entries;
 use App\Tags;
-use App\SiteTemplateSettings;
+use App\Sites\SiteTemplateSettings\SiteTemplateSettingsDataService;
 
 use Illuminate\Http\Request;
 
@@ -42,7 +42,7 @@ class SitesController extends Controller
 
         $templateSettings = null;
         if ($isClone && isset($settings['template']['template'])) {
-            $templateSettings = new SiteTemplateSettings($site['name'], $settings['template']['template']);
+            $templateSettings = new SiteTemplateSettingsDataService($site['name'], $settings['template']['template']);
         }
 
         $resp = [

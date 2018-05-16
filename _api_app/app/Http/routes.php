@@ -26,9 +26,9 @@ $app->group(['prefix' => 'v1', 'namespace' => 'App'], function() use ($app) {
         $app->delete('sites', 'SitesController@delete');
     });
 
-    $app->patch('site-settings', ['as' => 'site_settings', 'uses' => 'Site\SiteSettings\SiteSettingsController@update']);
+    $app->patch('site-settings', ['as' => 'site_settings', 'uses' => 'Sites\SiteSettings\SiteSettingsController@update']);
 
-    $app->patch('site-template-settings', ['as' => 'site_template_settings', 'uses' => 'SiteTemplateSettingsController@update']);
+    $app->patch('site-template-settings', ['as' => 'site_template_settings', 'uses' => 'Sites\SiteTemplateSettings\SiteTemplateSettingsController@update']);
 
     $app->post('section', ['as' => 'section', 'uses' => 'SectionController@create']);
     $app->patch('section', 'SectionController@update');
