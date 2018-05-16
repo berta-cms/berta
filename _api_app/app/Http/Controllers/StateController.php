@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use App\Sites\SitesDataService;
 use App\Sites\SiteSettings\SiteSettingsDataService;
 use App\Sites\SiteTemplateSettings\SiteTemplateSettingsDataService;
+use App\Sites\Sections\SiteSectionsDataService;
 use App\TemplateSettings;
-use App\SiteSectionsDataService;
 use App\Entries;
 use App\Tags;
 
@@ -22,9 +22,9 @@ class StateController extends Controller
             'sites' => route('sites'),
             'site_settings' => route('site_settings'),
             'site_template_settings' => route('site_template_settings'),
-            'section' => route('section'),
-            'section_reset' => route('section_reset'),
-            'section_background' => route('section_background')
+            'sections' => route('sections'),
+            'sections_reset' => route('sections_reset'),
+            'section_backgrounds' => route('section_backgrounds')
         ];
         $state['sites'] = $sites->state();
         $state['site_settings'] = array();

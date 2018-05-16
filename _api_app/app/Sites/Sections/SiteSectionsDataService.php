@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Sites\Sections;
 
 use App\Shared\Storage;
 use App\Entries;

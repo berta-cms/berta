@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Sites\Sections;
 
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
-use App\SiteSectionsDataService;
-use App\Sections;
+use App\Sites\Sections\SiteSectionsDataService;
 use App\Tags;
 
-class SectionController extends Controller
+class SiteSectionsController extends Controller
 {
 
     public function test(Request $request) {

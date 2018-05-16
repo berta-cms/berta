@@ -5,7 +5,7 @@ namespace App\Sites;
 use App\Http\Controllers\Controller;
 use App\Sites\SitesDataService;
 use App\Sites\SiteSettings\SiteSettingsDataService;
-use App\SiteSectionsDataService;
+use App\Sites\Sections\SiteSectionsDataService;
 use App\Entries;
 use App\Tags;
 use App\Sites\SiteTemplateSettings\SiteTemplateSettingsDataService;

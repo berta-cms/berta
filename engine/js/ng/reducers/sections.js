@@ -136,6 +136,8 @@
           return state.map(function (section) {
             if (section.get('site_name') === site_name && section.get('name') === action.resp.section) {
               return section.setIn(['mediaCacheData', 'file'], section.getIn(['mediaCacheData', 'file']).filter(function (file) {
+                  // @TODO Fix error when there is two images in gallery and one gets deleted
+                  // Uncaught (in promise) TypeError: e.getIn is not a function
                   return file.getIn(['@attributes', 'src']) !== action.resp.file;
                 })
               );
