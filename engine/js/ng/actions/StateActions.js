@@ -1,8 +1,7 @@
-(function(window, document) {
+(function(window, Berta) {
   'use strict';
 
   window.Actions = window.Actions || {};
-  window.Berta = window.Berta || {};
 
   Object.assign(window.Actions, {
 
@@ -26,7 +25,7 @@
 
 
     setState: function(state) {
-      window.Berta.urls = state.urls;
+      Berta.urls = state.urls;
 
       return {
         type: ActionTypes.SET_STATE,
@@ -34,4 +33,4 @@
       };
     }
   });
-})(window, document);
+})(window, Berta);

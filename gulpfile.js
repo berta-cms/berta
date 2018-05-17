@@ -55,9 +55,10 @@ var js_backend_files = [
 ];
 
 var js_ng_backend_files = [
-  'engine/js/ng/utils.js',
-  'engine/js/ng/constants/constants.js',
-  'engine/js/ng/constants/ActionTypes.js',
+  'engine/js/ng/shared/namespace.js',
+  'engine/js/ng/shared/utils.js',
+  'engine/js/ng/shared/constants.js',
+  'engine/js/ng/shared/ActionTypes.js',
   'engine/js/ng/actions/StateActions.js',
   'engine/js/ng/actions/SiteActions.js',
   'engine/js/ng/actions/SettingsActions.js',
