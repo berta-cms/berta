@@ -65,7 +65,6 @@ var js_ng_backend_files = [
   'engine/js/ng/actions/SectionActions.js',
   'engine/js/ng/actions/EntryActions.js',
   'engine/js/ng/actions/TagActions.js',
-  'engine/js/ng/middleware.js',
   'engine/js/ng/reducers/sites.js',
   'engine/js/ng/reducers/site_settings.js',
   'engine/js/ng/reducers/site_template_settings.js',
