@@ -55,13 +55,13 @@
           });
 
 
-        case ActionTypes.ORDER_SITES:
+        case ActionTypes.SITES_ORDERED:
           return state.map(function (site) {
             var name = site.get('name');
             if (name === '') {
               name = '0';
             }
-            var new_order = action.sites.indexOf(name);
+            var new_order = action.resp.indexOf(name);
 
             if (site.get('order') !== new_order) {
               return site.set('order', new_order);

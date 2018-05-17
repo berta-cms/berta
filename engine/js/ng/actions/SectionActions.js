@@ -9,7 +9,7 @@
         dispatch({ type: ActionTypes.CREATE_SECTION });
         dispatch({ type: ActionTypes.UPDATE_TAGS });
 
-        sync(API_ROOT + 'create-section', { site: site, name: name, title: title }, 'POST')
+        sync(window.Berta.urls.section, { site: site, name: name, title: title }, 'POST')
           .then(function (response) {
             if (response.error_message) {
               // @TODO dispatch error message
@@ -42,7 +42,7 @@
         dispatch({ type: ActionTypes.UPDATE_SECTION });
         dispatch({ type: ActionTypes.UPDATE_TAGS });
 
-        sync(API_ROOT + 'update-section', { path: path, value: value })
+        sync(window.Berta.urls.section, { path: path, value: value })
           .then(function (response) {
             if (response.error_message) {
               // @TODO dispatch error message
@@ -59,28 +59,31 @@
       };
     },
 
+
     updateSection: function(path, value, onComplete) {
-      return {
-        type: ActionTypes.UPDATE_SECTION,
-        meta: {
-          remote: true,
-          url: API_ROOT + 'update-section',
-          method: 'PATCH',
-          data: {path: path, value: value},
-          dispatch: 'sectionUpdated',
-          // @@@:TODO: Remove this callback when migration to ReactJS is completed
-          onComplete: onComplete
-        },
-        path: path,
-        value: value
+      return function (dispatch, getStore) {
+        dispatch({ type: ActionTypes.UPDATE_SECTION });
+
+        sync(window.Berta.urls.section, { path: path, value: value })
+          .then(function (response) {
+            if (response.error_message) {
+              // @TODO dispatch error message
+            } else {
+              dispatch(Actions.sectionUpdated(response));
+            }
+            onComplete(response);
+          });
       };
     },
+
+
     sectionUpdated: function(resp) {
       return {
         type: ActionTypes.SECTION_UPDATED,
         resp: resp
       };
     },
+
 
     renameSectionsSitename: function (data) {
       return {
@@ -89,6 +92,7 @@
       };
     },
 
+
     deleteSiteSections: function (data) {
       return {
         type: ActionTypes.DELETE_SITE_SECTIONS,
@@ -96,27 +100,31 @@
       };
     },
 
+
     resetSection: function(path, onComplete) {
-      return {
-        type: ActionTypes.RESET_SECTION,
-        meta: {
-          remote: true,
-          url: API_ROOT + 'reset-section',
-          method: 'PATCH',
-          data: {path: path},
-          // @@@:TODO: Remove this callback when migration to ReactJS is completed
-          onComplete: onComplete
-        },
-        path: path
+      return function (dispatch, getStore) {
+        dispatch({
+          type: ActionTypes.RESET_SECTION,
+          path: path
+        });
+
+        sync(window.Berta.urls.section_reset, { path: path })
+          .then(function (response) {
+            if (response.error_message) {
+              // @TODO dispatch error message
+            }
+            onComplete(response);
+          });
       };
     },
+
 
     deleteSection: function(site, section, onComplete) {
       return function (dispatch, getStore) {
         dispatch({ type: ActionTypes.DELETE_SECTION });
         dispatch({ type: ActionTypes.UPDATE_TAGS });
 
-        sync(API_ROOT + 'delete-section/' + encodeURIComponent(site) + '/' + encodeURIComponent(section), {}, 'DELETE')
+        sync(window.Berta.urls.section, {site: site, section: section}, 'DELETE')
           .then(function (response) {
             if (response.error_message) {
               // @TODO dispatch error message
@@ -133,6 +141,7 @@
       };
     },
 
+
     sectionDeleted: function(resp) {
       return {
         type: ActionTypes.SECTION_DELETED,
@@ -140,64 +149,77 @@
       };
     },
 
-    orderSections: function(site, sections, onComplete) {
-      return {
-        type: ActionTypes.ORDER_SECTIONS,
-        meta: {
-          remote: true,
-          method: 'PUT',
-          url: API_ROOT + 'order-sections',
-          data: {
-            site: site,
-            sections: sections
-          },
-          // @@@:TODO: Remove this callback when migration to ReactJS is completed
-          onComplete: onComplete
-        },
-        site: site,
-        sections: sections
-      };
-    },
-    sectionBgDelete: function(site, section, file, onComplete) {
-      var url = encodeURIComponent(site) +
-            '/' + encodeURIComponent(section) +
-            '/' + encodeURIComponent(file);
 
-      return {
-        type: ActionTypes.SECTION_BG_DELETE,
-        meta: {
-          remote: true,
-          url: API_ROOT + 'section-bg-delete/' + url,
-          method: 'DELETE',
-          // @@@:TODO: Remove this callback when migration to ReactJS is completed
-          onComplete: onComplete
-        }
+    orderSections: function(site, sections, onComplete) {
+      return function (dispatch, getStore) {
+        dispatch({ type: ActionTypes.ORDER_SECTIONS });
+
+        sync(window.Berta.urls.section, {site: site, sections: sections}, 'PUT')
+          .then(function (response) {
+            if (response.error_message) {
+              // @TODO dispatch error message
+            } else {
+              dispatch(Actions.sectionsOrdered({site: site, sections: sections}));
+            }
+            onComplete(response);
+          });
       };
     },
-    sectionBgOrder: function(site, section, files, onComplete) {
+
+
+    sectionsOrdered: function(resp) {
       return {
-        type: ActionTypes.SECTION_BG_ORDER,
-        meta: {
-          remote: true,
-          method: 'PUT',
-          url: API_ROOT + 'section-bg-order',
-          data: {
-            site: site,
-            section: section,
-            files: files
-          },
-          dispatch: 'sectionBgOrdered',
-          // @@@:TODO: Remove this callback when migration to ReactJS is completed
-          onComplete: onComplete
-        },
-        site: site,
-        section: section,
-        files: files
+        type: ActionTypes.SECTIONS_ORDERED,
+        resp: resp
       };
     },
-    sectionBgOrdered: function(resp) {
+
+
+    sectionBackgroundDelete: function(site, section, file, onComplete) {
+      return function (dispatch, getStore) {
+        dispatch({ type: ActionTypes.SECTION_BACKGROUND_DELETE });
+
+        sync(window.Berta.urls.section_background, {site: site, section: section, file: file}, 'DELETE')
+          .then(function (response) {
+            if (response.error_message) {
+              // @TODO dispatch error message
+            } else {
+              dispatch(Actions.sectionBackgroundDeleted(response));
+            }
+            onComplete(response);
+          });
+      };
+    },
+
+
+    sectionBackgroundDeleted: function (resp) {
       return {
-        type: ActionTypes.SECTION_BG_ORDERED,
+        type: ActionTypes.SECTION_BACKGROUND_DELETED,
+        resp: resp
+      };
+    },
+
+
+    sectionBackgroundOrder: function(site, section, files, onComplete) {
+      return function (dispatch, getStore) {
+        dispatch({ type: ActionTypes.SECTION_BACKGROUND_ORDER });
+
+        sync(window.Berta.urls.section_background, {site: site, section: section, files: files}, 'PUT')
+          .then(function (response) {
+            if (response.error_message) {
+              // @TODO dispatch error message
+            } else {
+              dispatch(Actions.sectionBackgroundOrdered(response));
+            }
+            onComplete(response);
+          });
+      };
+    },
+
+
+    sectionBackgroundOrdered: function(resp) {
+      return {
+        type: ActionTypes.SECTION_BACKGROUND_ORDERED,
         resp: resp
       };
     }

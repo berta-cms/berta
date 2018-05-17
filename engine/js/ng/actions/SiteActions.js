@@ -10,7 +10,7 @@
 
         dispatch({ type: ActionTypes.CREATE_SITE });
 
-        sync(API_ROOT + 'create-site', {site: site}, 'POST')
+        sync(window.Berta.urls.site, {site: site}, 'POST')
           .then(function (response) {
             if (response.error_message) {
               // @TODO dispatch error message
@@ -66,7 +66,7 @@
         dispatch({ type: ActionTypes.UPDATE_SITE_TEMPLATE_SETTINGS });
         dispatch({ type: ActionTypes.UPDATE_TAGS });
 
-        sync(API_ROOT + 'update-site', { path: path, value: value })
+        sync(window.Berta.urls.site, { path: path, value: value })
           .then(function (response) {
             if (response.error_message) {
               // @TODO dispatch error message
@@ -101,19 +101,18 @@
     },
 
     updateSite: function(path, value, onComplete) {
-      return {
-        type: ActionTypes.UPDATE_SITE,
-        meta: {
-          remote: true,
-          url: API_ROOT + 'update-site',
-          method: 'PATCH',
-          data: {path: path, value: value},
-          dispatch: 'siteUpdated',
-          // @@@:TODO: Remove this callback when migration to ReactJS is completed
-          onComplete: onComplete
-        },
-        path: path,
-        value: value
+      return function (dispatch, getStore) {
+        dispatch({ type: ActionTypes.UPDATE_SITE });
+
+        sync(window.Berta.urls.site, { path: path, value: value })
+          .then(function (response) {
+            if (response.error_message) {
+              // @TODO dispatch error message
+            } else {
+              dispatch(Actions.siteUpdated(response));
+            }
+            onComplete(response);
+          });
       };
     },
 
@@ -127,7 +126,7 @@
     deleteSite: function(site, onComplete) {
       return function (dispatch, getStore) {
 
-        // @TODO also delete related: entries and tags
+        // @TODO also delete related: entries
 
         dispatch({ type: ActionTypes.DELETE_SITE });
         dispatch({ type: ActionTypes.DELETE_SECTION });
@@ -135,7 +134,7 @@
         dispatch({ type: ActionTypes.DELETE_SITE_TEMPLATE_SETTINGS });
         dispatch({ type: ActionTypes.DELETE_SITE_TAGS });
 
-        sync(API_ROOT + 'delete-site/' + encodeURIComponent(site), {}, 'DELETE')
+        sync(window.Berta.urls.site, {site: site}, 'DELETE')
           .then(function (response) {
             if (response.error_message) {
               // @TODO dispatch error message
@@ -167,18 +166,27 @@
     },
 
     orderSites: function(sites, onComplete) {
+      return function (dispatch, getStore) {
+        dispatch({ type: ActionTypes.ORDER_SITES });
+
+        sync(window.Berta.urls.site, sites, 'PUT')
+          .then(function (response) {
+            if (response.error_message) {
+              // @TODO dispatch error message
+            } else {
+              dispatch(Actions.sitesOrdered(sites));
+            }
+            onComplete(response);
+          });
+      };
+    },
+
+    sitesOrdered: function(resp) {
       return {
-        type: ActionTypes.ORDER_SITES,
-        meta: {
-          remote: true,
-          method: 'PUT',
-          url: API_ROOT + 'order-sites',
-          data: sites,
-          // @@@:TODO: Remove this callback when migration to ReactJS is completed
-          onComplete: onComplete
-        },
-        sites: sites
+        type: ActionTypes.SITES_ORDERED,
+        resp: resp
       };
     }
+
   });
 })(window, document);

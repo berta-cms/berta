@@ -23,7 +23,7 @@
 
 
         case ActionTypes.ADD_SECTION_TAGS:
-          site_name = action.data.site_name
+          site_name = action.data.site_name;
 
           return state.map(function (site, k) {
             if (site_name === k) {

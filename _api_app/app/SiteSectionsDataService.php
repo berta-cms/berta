@@ -426,7 +426,7 @@ class SiteSectionsDataService Extends Storage {
             $section =& $sections['section'][$section_order];
 
             if (!isset($section['mediaCacheData'])) {
-                return array('error_message' => 'File "'.$file.'" not found!');
+                return ['error_message' => 'File "'.$file.'" not found!'];
             }
 
             $files = $this->asList($section['mediaCacheData']['file']);
@@ -442,24 +442,23 @@ class SiteSectionsDataService Extends Storage {
             );
 
             if ($file_order === false) {
-                return array('error_message' => 'File "'.$file.'" not found!');
+                return ['error_message' => 'File "'.$file.'" not found!'];
             }
 
             $mediafolder = $this->MEDIA_ROOT . '/' . $section['mediafolder'] . '/';
             $this->deleteMedia($mediafolder, $file);
 
-            $file = array_splice($section['mediaCacheData']['file'], $file_order, 1);
+            $file = current(array_splice($section['mediaCacheData']['file'], $file_order, 1));
             $this->array2xmlFile($sections, $this->XML_FILE, $this->ROOT_ELEMENT);
 
-            return array(
+            return [
                 'site' => $this->SITE,
-                'section_order' => $section_order,
-                'file_order' => $file_order,
-                'sections' => $sections
-            );
+                'section' => $section['name'],
+                'file' => $file['@attributes']['src']
+            ];
         }
 
-        return array('error_message' => 'Section "'.$name.'" not found!');
+        return ['error_message' => 'Section "'.$name.'" not found!'];
     }
 
     /**

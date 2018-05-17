@@ -18,6 +18,14 @@ class StateController extends Controller
         $templateSettings = new TemplateSettings();
         $allTemplates = $templateSettings->getAllTemplates();
 
+        $state['urls'] = [
+            'site' => route('site'),
+            'site_settings' => route('site_settings'),
+            'site_template_settings' => route('site_template_settings'),
+            'section' => route('section'),
+            'section_reset' => route('section_reset'),
+            'section_background' => route('section_background')
+        ];
         $state['sites'] = $sites->state();
         $state['site_settings'] = array();
         $state['sections'] = array();

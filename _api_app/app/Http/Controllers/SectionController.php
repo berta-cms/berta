@@ -51,9 +51,10 @@ class SectionController extends Controller
         return response()->json($res);
     }
 
-    public function delete($site, $section) {
-        $sectionsDataService = new SiteSectionsDataService($site);
-        $res = $sectionsDataService->delete($section);
+    public function delete(Request $request) {
+        $json = $request->json()->all();
+        $sectionsDataService = new SiteSectionsDataService($json['site']);
+        $res = $sectionsDataService->delete($json['section']);
 
         return response()->json($res);
     }
@@ -75,9 +76,10 @@ class SectionController extends Controller
         return response()->json($json);
     }
 
-    public function galleryDelete($site, $section, $file) {
-        $sectionsDataService = new SiteSectionsDataService($site);
-        $res = $sectionsDataService->galleryDelete($section, $file);
+    public function galleryDelete(Request $request) {
+        $json = $request->json()->all();
+        $sectionsDataService = new SiteSectionsDataService($json['site']);
+        $res = $sectionsDataService->galleryDelete($json['section'], $json['file']);
         return response()->json($res);
     }
 

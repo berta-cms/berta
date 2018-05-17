@@ -106,12 +106,10 @@
           });
 
 
-        case ActionTypes.ORDER_SECTIONS:
-          console.log('Sections reducer:', action);
-
+        case ActionTypes.SECTIONS_ORDERED:
           return state.map(function (section) {
-            if (section.get('site_name') === action.site) {
-              var order = action.sections.indexOf(section.get('name'));
+            if (section.get('site_name') === action.resp.site) {
+              var order = action.resp.sections.indexOf(section.get('name'));
 
               if (section.get('order') !== order) {
                 return section.set('order', order);
@@ -121,15 +119,26 @@
           });
 
 
-        case ActionTypes.SECTION_BG_ORDERED:
-          console.log('Sections reducer:', action);
-
+        case ActionTypes.SECTION_BACKGROUND_ORDERED:
           return state.map(function (section) {
             if (section.get('site_name') === action.resp.site && section.get('name') === action.resp.section) {
-
               return section
                 .set('mediafolder', action.resp.mediafolder)
                 .setIn(['mediaCacheData', 'file'], action.resp.files);
+            }
+            return section;
+          });
+
+
+        case ActionTypes.SECTION_BACKGROUND_DELETED:
+          site_name = action.resp.site === '0' ? '' : action.resp.site;
+
+          return state.map(function (section) {
+            if (section.get('site_name') === site_name && section.get('name') === action.resp.section) {
+              return section.setIn(['mediaCacheData', 'file'], section.getIn(['mediaCacheData', 'file']).filter(function (file) {
+                  return file.getIn(['@attributes', 'src']) !== action.resp.file;
+                })
+              );
             }
             return section;
           });
