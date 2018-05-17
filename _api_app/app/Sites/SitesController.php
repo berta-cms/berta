@@ -8,7 +8,7 @@ use App\Sites\Settings\SiteSettingsDataService;
 use App\Sites\Sections\SiteSectionsDataService;
 use App\Sites\Sections\Tags\SectionTagsDataService;
 use App\Sites\Sections\Entries\SectionEntriesDataService;
-use App\Sites\SiteTemplateSettings\SiteTemplateSettingsDataService;
+use App\Sites\TemplateSettings\SiteTemplateSettingsDataService;
 
 use Illuminate\Http\Request;
 
