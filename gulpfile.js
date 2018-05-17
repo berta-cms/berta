@@ -65,11 +65,11 @@ var js_ng_backend_files = [
   'engine/js/ng/sites/sites.actions.js',
   'engine/js/ng/sites/sites.reducer.js',
 
-  'engine/js/ng/sites/site-settings/site-settings.actions.js',
-  'engine/js/ng/sites/site-settings/site-settings.reducer.js',
+  'engine/js/ng/sites/settings/site-settings.actions.js',
+  'engine/js/ng/sites/settings/site-settings.reducer.js',
 
-  'engine/js/ng/sites/site-template-settings/site-template-settings.actions.js',
-  'engine/js/ng/sites/site-template-settings/site-template-settings.reducer.js',
+  'engine/js/ng/sites/template-settings/site-template-settings.actions.js',
+  'engine/js/ng/sites/template-settings/site-template-settings.reducer.js',
 
   'engine/js/ng/sites/sections/site-sections.actions.js',
   'engine/js/ng/sites/sections/site-sections.reducer.js',
