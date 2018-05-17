@@ -21,7 +21,7 @@
 
               dispatch(Actions.siteCreated(response.site));
               if (response.settings) {
-                dispatch(Actions.settingsCreated(response.site.name, response.settings));
+                dispatch(Actions.siteSettingsCreated(response.site.name, response.settings));
               }
               if (response.sections && response.sections.length) {
                 for (var i = 0; i < response.sections.length; i++) {
@@ -62,7 +62,7 @@
       return function (dispatch, getStore) {
         dispatch({ type: ActionTypes.UPDATE_SITE });
         dispatch({ type: ActionTypes.UPDATE_SECTION });
-        dispatch({ type: ActionTypes.UPDATE_SETTINGS });
+        dispatch({ type: ActionTypes.UPDATE_SITE_SETTINGS });
         dispatch({ type: ActionTypes.UPDATE_SITE_TEMPLATE_SETTINGS });
         dispatch({ type: ActionTypes.UPDATE_TAGS });
 
@@ -82,7 +82,7 @@
                 site: site,
                 site_name: response.value
               }));
-              dispatch(Actions.renameSettingsSitename({
+              dispatch(Actions.renameSiteSettingsSitename({
                 site: site,
                 site_name: response.value
               }));

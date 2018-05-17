@@ -5,40 +5,40 @@
 
   Object.assign(window.Actions, {
 
-    updateSettings: function(path, value, onComplete) {
+    updateSiteSettings: function(path, value, onComplete) {
       return function (dispatch, getStore) {
-        dispatch({ type: ActionTypes.UPDATE_SETTINGS });
+        dispatch({ type: ActionTypes.UPDATE_SITE_SETTINGS });
 
         sync(window.Berta.urls.site_settings, { path: path, value: value })
           .then(function (response) {
             if (response.error_message) {
               // @TODO dispatch error message
             } else {
-              dispatch(Actions.settingsUpdated(response));
+              dispatch(Actions.siteSettingsUpdated(response));
             }
             onComplete(response);
           });
       };
     },
 
-    settingsUpdated: function (resp) {
+    siteSettingsUpdated: function (resp) {
       return {
-        type: ActionTypes.SETTINGS_UPDATED,
+        type: ActionTypes.SITE_SETTINGS_UPDATED,
         resp: resp
       };
     },
 
-    settingsCreated: function (site_name, data) {
+    siteSettingsCreated: function (site_name, data) {
       return {
-        type: ActionTypes.SETTINGS_CREATED,
+        type: ActionTypes.SITE_SETTINGS_CREATED,
         site_name: site_name,
         data: data
       };
     },
 
-    renameSettingsSitename: function (data) {
+    renameSiteSettingsSitename: function (data) {
       return {
-        type: ActionTypes.RENAME_SETTINGS_SITENAME,
+        type: ActionTypes.RENAME_SITE_SETTINGS_SITENAME,
         data: data
       };
     },

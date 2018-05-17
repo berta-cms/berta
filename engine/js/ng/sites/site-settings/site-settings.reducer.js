@@ -16,7 +16,7 @@
           return Immutable.fromJS(action.state.site_settings);
 
 
-        case ActionTypes.SETTINGS_UPDATED:
+        case ActionTypes.SITE_SETTINGS_UPDATED:
           console.log('Settings reducer:', action);
 
           var path = action.resp.path.split('/').slice(2);
@@ -28,11 +28,11 @@
           );
 
 
-        case ActionTypes.SETTINGS_CREATED:
+        case ActionTypes.SITE_SETTINGS_CREATED:
           return state.setIn([action.site_name], Immutable.fromJS(action.data));
 
 
-        case ActionTypes.RENAME_SETTINGS_SITENAME:
+        case ActionTypes.RENAME_SITE_SETTINGS_SITENAME:
           var section_old_name = action.data.site.get('name');
 
           return state.mapKeys(function (k) {
