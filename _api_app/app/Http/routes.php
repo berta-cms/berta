@@ -26,7 +26,7 @@ $app->group(['prefix' => 'v1', 'namespace' => 'App'], function() use ($app) {
         $app->delete('sites', 'SitesController@delete');
     });
 
-    $app->patch('site-settings', ['as' => 'site_settings', 'uses' => 'Sites\SiteSettings\SiteSettingsController@update']);
+    $app->patch('site-settings', ['as' => 'site_settings', 'uses' => 'Sites\Settings\SiteSettingsController@update']);
 
     $app->patch('site-template-settings', ['as' => 'site_template_settings', 'uses' => 'Sites\SiteTemplateSettings\SiteTemplateSettingsController@update']);
 
