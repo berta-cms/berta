@@ -28,7 +28,7 @@
           );
 
 
-        case ActionTypes.TEMPLATE_SETTINGS_CREATED:
+        case ActionTypes.SITE_TEMPLATE_SETTINGS_CREATED:
           return state.setIn([action.site_name], Immutable.fromJS(action.data));
 
 

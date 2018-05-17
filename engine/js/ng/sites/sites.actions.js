@@ -43,7 +43,7 @@
               }
 
               if (response.siteTemplateSettings) {
-                dispatch(Actions.templateSettingsCreated(response.site.name, response.siteTemplateSettings));
+                dispatch(Actions.siteTemplateSettingsCreated(response.site.name, response.siteTemplateSettings));
               }
             }
             onComplete(response.site);

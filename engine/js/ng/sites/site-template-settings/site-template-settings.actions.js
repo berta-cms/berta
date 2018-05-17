@@ -28,9 +28,9 @@
       };
     },
 
-    templateSettingsCreated: function(site_name, data) {
+    siteTemplateSettingsCreated: function(site_name, data) {
       return {
-        type: ActionTypes.TEMPLATE_SETTINGS_CREATED,
+        type: ActionTypes.SITE_TEMPLATE_SETTINGS_CREATED,
         site_name: site_name,
         data: data
       };
