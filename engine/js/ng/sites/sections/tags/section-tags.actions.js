@@ -5,9 +5,9 @@
 
   Object.assign(window.Actions, {
 
-    addSiteTags: function (data) {
+    addSiteSectionsTags: function (data) {
       return {
-        type: ActionTypes.ADD_SITE_TAGS,
+        type: ActionTypes.ADD_SITE_SECTIONS_TAGS,
         data: data
       };
     },
@@ -26,9 +26,9 @@
       };
     },
 
-    renameTagsSitename: function (data) {
+    renameSectionTagsSitename: function (data) {
       return {
-        type: ActionTypes.RENAME_TAGS_SITENAME,
+        type: ActionTypes.RENAME_SECTION_TAGS_SITENAME,
         data: data
       };
     },
@@ -40,9 +40,9 @@
       };
     },
 
-    deleteSiteTags: function (data) {
+    deleteSiteSectionsTags: function (data) {
       return {
-        type: ActionTypes.SITE_TAGS_DELETED,
+        type: ActionTypes.SITE_SECTIONS_TAGS_DELETED,
         data: data
       };
     }

@@ -188,7 +188,7 @@ var BertaBgEditor = new Class({
     //add caption editor
     var site = getCurrentSite();
 
-    var section_order = redux_store.getState().sections.find(function (section) {
+    var section_order = redux_store.getState().site_sections.find(function (section) {
       return section.get('site_name') === site && section.get('name') === this.sectionName;
     }.bind(this)).get('order');
 
@@ -282,14 +282,14 @@ var BertaBgEditor = new Class({
 
     var site = getCurrentSite();
 
-    redux_store.dispatch(Actions.sectionBackgroundOrder(
+    redux_store.dispatch(Actions.siteSectionBackgroundOrder(
       site,
       this.sectionName,
       newOrder,
       function(resp) {
         var captions = $(this.container).getElements('.xProperty-galleryImageCaption');
         var site = getCurrentSite();
-        var section_order = redux_store.getState().sections.find(function (section) {
+        var section_order = redux_store.getState().site_sections.find(function (section) {
           return section.get('site_name') === site && section.get('name') === this.sectionName;
         }.bind(this)).get('order');
 
@@ -350,7 +350,7 @@ var BertaBgEditor = new Class({
 
       var site = getCurrentSite() || '0';
 
-      redux_store.dispatch(Actions.sectionBackgroundDelete(
+      redux_store.dispatch(Actions.siteSectionBackgroundDelete(
         site,
         this.sectionName,
         liElement.get('filename'),

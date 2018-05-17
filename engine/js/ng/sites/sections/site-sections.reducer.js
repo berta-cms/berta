@@ -4,7 +4,7 @@
   window.reducers = window.reducers || {};
 
   Object.assign(window.reducers, {
-    sections: function(state, action) {
+    site_sections: function(state, action) {
       var path,
           site_name,
           order,
@@ -24,14 +24,14 @@
 
         case ActionTypes.SET_STATE:
           console.log('Sections reducer:', action);
-          return Immutable.fromJS(action.state.sections);
+          return Immutable.fromJS(action.state.site_sections);
 
 
-        case ActionTypes.SECTION_CREATED:
+        case ActionTypes.SITE_SECTION_CREATED:
           return state.set(state.size, Immutable.fromJS(action.resp));
 
 
-        case ActionTypes.RENAME_SECTIONS_SITENAME:
+        case ActionTypes.RENAME_SITE_SECTIONS_SITENAME:
           var old_name = action.data.site.get('name');
           value = action.data.site_name;
 
@@ -43,7 +43,7 @@
           });
 
 
-        case ActionTypes.SECTION_UPDATED:
+        case ActionTypes.SITE_SECTION_UPDATED:
           console.log('Sections reducer:', action);
           path = action.resp.path.split('/');
           site_name = path[0] === '0' ? '' : path[0];
@@ -61,7 +61,7 @@
           });
 
 
-        case ActionTypes.RESET_SECTION:
+        case ActionTypes.RESET_SITE_SECTION:
           console.log('Sections reducer:', action);
           path = action.path.split('/');
           site_name = path[0] === '0' ? '' : path[0];
@@ -76,7 +76,13 @@
           });
 
 
-        case ActionTypes.SECTION_DELETED:
+        case ActionTypes.SITE_SECTIONS_DELETED:
+          return state.filter(function (section) {
+            return section.get('site_name') !== action.data.site_name;
+          });
+
+
+        case ActionTypes.SITE_SECTION_DELETED:
           console.log('Sections reducer:', action, state);
 
           // @TODO delete related data from state
@@ -100,13 +106,7 @@
           });
 
 
-        case ActionTypes.DELETE_SITE_SECTIONS:
-          return state.filter(function (section) {
-            return section.get('site_name') !== action.data.site_name;
-          });
-
-
-        case ActionTypes.SECTIONS_ORDERED:
+        case ActionTypes.SITE_SECTIONS_ORDERED:
           return state.map(function (section) {
             if (section.get('site_name') === action.resp.site) {
               var order = action.resp.sections.indexOf(section.get('name'));
@@ -119,7 +119,7 @@
           });
 
 
-        case ActionTypes.SECTION_BACKGROUND_ORDERED:
+        case ActionTypes.SITE_SECTION_BACKGROUND_ORDERED:
           return state.map(function (section) {
             if (section.get('site_name') === action.resp.site && section.get('name') === action.resp.section) {
               return section
@@ -130,7 +130,7 @@
           });
 
 
-        case ActionTypes.SECTION_BACKGROUND_DELETED:
+        case ActionTypes.SITE_SECTION_BACKGROUND_DELETED:
           site_name = action.resp.site === '0' ? '' : action.resp.site;
 
           return state.map(function (section) {

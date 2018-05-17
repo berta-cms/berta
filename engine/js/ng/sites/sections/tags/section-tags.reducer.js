@@ -4,7 +4,7 @@
   window.reducers = window.reducers || {};
 
   Object.assign(window.reducers, {
-    tags: function(state, action) {
+    section_tags: function(state, action) {
       var tag_idx, tags, site_name = [];
 
       if (state === undefined) {
@@ -15,10 +15,10 @@
         case ActionTypes.SET_STATE:
           console.log('Tags reducer:', action);
 
-          return Immutable.fromJS(action.state.tags);
+          return Immutable.fromJS(action.state.section_tags);
 
 
-        case ActionTypes.ADD_SITE_TAGS:
+        case ActionTypes.ADD_SITE_SECTIONS_TAGS:
           return state.set(action.data.site_name, action.data.tags);
 
 
@@ -73,7 +73,7 @@
           });
 
 
-        case ActionTypes.RENAME_TAGS_SITENAME:
+        case ActionTypes.RENAME_SECTION_TAGS_SITENAME:
           var section_old_name = action.data.site.get('name');
 
           return state.mapKeys(function (k) {
@@ -84,7 +84,7 @@
           });
 
 
-        case ActionTypes.SITE_TAGS_DELETED:
+        case ActionTypes.SITE_SECTIONS_TAGS_DELETED:
           return state.filter(function (tags, site_name) {
             return site_name !== action.data.site_name;
           });

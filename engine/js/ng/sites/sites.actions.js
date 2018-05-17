@@ -25,7 +25,7 @@
               }
               if (response.sections && response.sections.length) {
                 for (var i = 0; i < response.sections.length; i++) {
-                  dispatch(Actions.sectionCreated(response.sections[i]));
+                  dispatch(Actions.siteSectionCreated(response.sections[i]));
                 }
               }
               /** @todo: handle entries in frontend
@@ -36,7 +36,7 @@
               } */
 
               if (response.tags && response.tags.section) {
-                dispatch(Actions.addSiteTags({
+                dispatch(Actions.addSiteSectionsTags({
                   site_name: response.site.name,
                   tags: response.tags
                 }));
@@ -61,10 +61,10 @@
     renameSite: function (path, value, onComplete) {
       return function (dispatch, getStore) {
         dispatch({ type: ActionTypes.UPDATE_SITE });
-        dispatch({ type: ActionTypes.UPDATE_SECTION });
+        dispatch({ type: ActionTypes.UPDATE_SITE_SECTION });
         dispatch({ type: ActionTypes.UPDATE_SITE_SETTINGS });
         dispatch({ type: ActionTypes.UPDATE_SITE_TEMPLATE_SETTINGS });
-        dispatch({ type: ActionTypes.UPDATE_TAGS });
+        dispatch({ type: ActionTypes.UPDATE_SECTION_TAGS });
 
         sync(window.Berta.urls.sites, { path: path, value: value })
           .then(function (response) {
@@ -78,7 +78,7 @@
               });
 
               dispatch(Actions.siteUpdated(response));
-              dispatch(Actions.renameSectionsSitename({
+              dispatch(Actions.renameSiteSectionsSitename({
                 site: site,
                 site_name: response.value
               }));
@@ -90,7 +90,7 @@
                 site: site,
                 site_name: response.value
               }));
-              dispatch(Actions.renameTagsSitename({
+              dispatch(Actions.renameSectionTagsSitename({
                 site: site,
                 site_name: response.value
               }));
@@ -129,10 +129,10 @@
         // @TODO also delete related: entries
 
         dispatch({ type: ActionTypes.DELETE_SITE });
-        dispatch({ type: ActionTypes.DELETE_SECTION });
+        dispatch({ type: ActionTypes.DELETE_SITE_SECTIONS });
         dispatch({ type: ActionTypes.DELETE_SITE_SETTINGS });
         dispatch({ type: ActionTypes.DELETE_SITE_TEMPLATE_SETTINGS });
-        dispatch({ type: ActionTypes.DELETE_SITE_TAGS });
+        dispatch({ type: ActionTypes.DELETE_SITE_SECTIONS_TAGS });
 
         sync(window.Berta.urls.sites, {site: site}, 'DELETE')
           .then(function (response) {
@@ -149,7 +149,7 @@
               dispatch(Actions.deleteSiteTemplateSettings({
                 site_name: response.name
               }));
-              dispatch(Actions.deleteSiteTags({
+              dispatch(Actions.deleteSiteSectionsTags({
                 site_name: response.name
               }));
             }

@@ -972,9 +972,9 @@ var BertaEditorBase = new Class({
           prop = path_arr.pop();
 
           if (prop === 'title') {
-            updateAction = Actions.renameSection;
+            updateAction = Actions.renameSiteSection;
           } else {
-            updateAction = Actions.updateSection;
+            updateAction = Actions.updateSiteSection;
           }
 
           if (prop === 'type') {
@@ -1210,7 +1210,7 @@ var BertaEditorBase = new Class({
 
       var path = el.data('path');
 
-      redux_store.dispatch(Actions.resetSection(
+      redux_store.dispatch(Actions.resetSiteSection(
         path,
         function(resp) {
           if(!resp) {
