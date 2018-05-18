@@ -128,6 +128,29 @@ class SectionEntriesDataService Extends Storage {
             ]
         ]
     ];
+
+    /* This is created for documentation: */
+    public static $ROOT_ELEMENT_SCHEMA = [
+        'type' => 'object',
+        'properties' => [
+            'entry' => [
+                'type' => 'array',
+                '$comment' => 'See self::$JSON_SCHEMA'
+            ],
+            '@attributes' => [
+                'section' => [
+                    'type' => 'string',
+                    '$comment' => 'name of section these entries belong to. See $this->SECTION_NAME'
+                ],
+                'version' => [
+                    'type' => 'string',
+                    '$comment' => 'Version of berta, this was created in'
+                ],
+                'last_upd_ver' => ['type' => 'string']
+            ]
+
+        ]
+    ];
     protected static $DEFAULT_VALUES = [];
     private $ROOT_ELEMENT = 'blog';  // The XML document element - the one that wraps all the content in file
     private $ROOT_LIST_ELEMENT = 'entry';  // XML element that wraps each element in the top level list - child of ROOT_ELEMENT
