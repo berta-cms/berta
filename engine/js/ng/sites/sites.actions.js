@@ -61,10 +61,10 @@
     renameSite: function (path, value, onComplete) {
       return function (dispatch, getStore) {
         dispatch({ type: ActionTypes.UPDATE_SITE });
-        dispatch({ type: ActionTypes.UPDATE_SITE_SECTION });
+        dispatch({ type: ActionTypes.INIT_UPDATE_SITE_SECTION });
         dispatch({ type: ActionTypes.UPDATE_SITE_SETTINGS });
         dispatch({ type: ActionTypes.UPDATE_SITE_TEMPLATE_SETTINGS });
-        dispatch({ type: ActionTypes.UPDATE_SECTION_TAGS });
+        dispatch({ type: ActionTypes.INIT_UPDATE_SECTION_TAGS });
 
         sync(window.Berta.urls.sites, { path: path, value: value })
           .then(function (response) {

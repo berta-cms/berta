@@ -5,17 +5,17 @@
 
   Object.assign(window.Actions, {
 
-    createSiteSection: function(site, name, title, onComplete) {
+    initCreateSiteSection: function(site, name, title, onComplete) {
       return function (dispatch, getStore) {
-        dispatch({ type: ActionTypes.CREATE_SITE_SECTION });
-        dispatch({ type: ActionTypes.UPDATE_SECTION_TAGS });
+        dispatch({ type: ActionTypes.INIT_CREATE_SITE_SECTION });
+        dispatch({ type: ActionTypes.INIT_UPDATE_SECTION_TAGS });
 
         sync(window.Berta.urls.site_sections, { site: site, name: name, title: title }, 'POST')
           .then(function (response) {
             if (response.error_message) {
               // @TODO dispatch error message
             } else {
-              dispatch(Actions.siteSectionCreated(response.section));
+              dispatch(Actions.createSiteSection(response.section));
 
               if (response.tags) {
                 dispatch(Actions.addSectionTags({
@@ -30,25 +30,25 @@
     },
 
 
-    siteSectionCreated: function(resp) {
+    createSiteSection: function(resp) {
       return {
-        type: ActionTypes.SITE_SECTION_CREATED,
+        type: ActionTypes.CREATE_SITE_SECTION,
         resp: resp
       };
     },
 
 
-    renameSiteSection: function (path, value, onComplete) {
+    initRenameSiteSection: function (path, value, onComplete) {
       return function (dispatch, getStore) {
-        dispatch({ type: ActionTypes.UPDATE_SITE_SECTION });
-        dispatch({ type: ActionTypes.UPDATE_SECTION_TAGS });
+        dispatch({ type: ActionTypes.INIT_UPDATE_SITE_SECTION });
+        dispatch({ type: ActionTypes.INIT_UPDATE_SECTION_TAGS });
 
         sync(window.Berta.urls.site_sections, { path: path, value: value })
           .then(function (response) {
             if (response.error_message) {
               // @TODO dispatch error message
             } else {
-              dispatch(Actions.siteSectionUpdated(response));
+              dispatch(Actions.updateSiteSection(response));
               dispatch(Actions.renameSectionTags({
                 site_name: response.site,
                 section_name: response.section.name,
@@ -61,16 +61,16 @@
     },
 
 
-    updateSiteSection: function(path, value, onComplete) {
+    initUpdateSiteSection: function(path, value, onComplete) {
       return function (dispatch, getStore) {
-        dispatch({ type: ActionTypes.UPDATE_SITE_SECTION });
+        dispatch({ type: ActionTypes.INIT_UPDATE_SITE_SECTION });
 
         sync(window.Berta.urls.site_sections, { path: path, value: value })
           .then(function (response) {
             if (response.error_message) {
               // @TODO dispatch error message
             } else {
-              dispatch(Actions.siteSectionUpdated(response));
+              dispatch(Actions.updateSiteSection(response));
             }
             onComplete(response);
           });
@@ -78,9 +78,9 @@
     },
 
 
-    siteSectionUpdated: function(resp) {
+    updateSiteSection: function(resp) {
       return {
-        type: ActionTypes.SITE_SECTION_UPDATED,
+        type: ActionTypes.UPDATE_SITE_SECTION,
         resp: resp
       };
     },
@@ -114,23 +114,23 @@
 
     deleteSiteSections: function (data) {
       return {
-        type: ActionTypes.SITE_SECTIONS_DELETED,
+        type: ActionTypes.DELETE_SITE_SECTIONS,
         data: data
       };
     },
 
 
-    deleteSiteSection: function(site, section, onComplete) {
+    initDeleteSiteSection: function(site, section, onComplete) {
       return function (dispatch, getStore) {
-        dispatch({ type: ActionTypes.DELETE_SITE_SECTION });
-        dispatch({ type: ActionTypes.UPDATE_SECTION_TAGS });
+        dispatch({ type: ActionTypes.INIT_DELETE_SITE_SECTION });
+        dispatch({ type: ActionTypes.INIT_UPDATE_SECTION_TAGS });
 
         sync(window.Berta.urls.site_sections, {site: site, section: section}, 'DELETE')
           .then(function (response) {
             if (response.error_message) {
               // @TODO dispatch error message
             } else {
-              dispatch(Actions.siteSectionDeleted(response));
+              dispatch(Actions.deleteSiteSection(response));
 
               dispatch(Actions.deleteSectionTags({
                 site_name: response.site,
@@ -143,24 +143,24 @@
     },
 
 
-    siteSectionDeleted: function(resp) {
+    deleteSiteSection: function(resp) {
       return {
-        type: ActionTypes.SITE_SECTION_DELETED,
+        type: ActionTypes.DELETE_SITE_SECTION,
         resp: resp
       };
     },
 
 
-    orderSiteSections: function(site, sections, onComplete) {
+    initOrderSiteSections: function(site, sections, onComplete) {
       return function (dispatch, getStore) {
-        dispatch({ type: ActionTypes.ORDER_SITE_SECTIONS });
+        dispatch({ type: ActionTypes.INIT_ORDER_SITE_SECTIONS });
 
         sync(window.Berta.urls.site_sections, {site: site, sections: sections}, 'PUT')
           .then(function (response) {
             if (response.error_message) {
               // @TODO dispatch error message
             } else {
-              dispatch(Actions.siteSectionsOrdered({site: site, sections: sections}));
+              dispatch(Actions.orderSiteSections({site: site, sections: sections}));
             }
             onComplete(response);
           });
@@ -168,24 +168,24 @@
     },
 
 
-    siteSectionsOrdered: function(resp) {
+    orderSiteSections: function(resp) {
       return {
-        type: ActionTypes.SITE_SECTIONS_ORDERED,
+        type: ActionTypes.ORDER_SITE_SECTIONS,
         resp: resp
       };
     },
 
 
-    siteSectionBackgroundDelete: function(site, section, file, onComplete) {
+    initDeleteSiteSectionBackground: function(site, section, file, onComplete) {
       return function (dispatch, getStore) {
-        dispatch({ type: ActionTypes.SITE_SECTION_BACKGROUND_DELETE });
+        dispatch({ type: ActionTypes.INIT_DELETE_SITE_SECTION_BACKGROUND });
 
         sync(window.Berta.urls.site_section_backgrounds, {site: site, section: section, file: file}, 'DELETE')
           .then(function (response) {
             if (response.error_message) {
               // @TODO dispatch error message
             } else {
-              dispatch(Actions.siteSectionBackgroundDeleted(response));
+              dispatch(Actions.deleteSiteSectionBackground(response));
             }
             onComplete(response);
           });
@@ -193,24 +193,24 @@
     },
 
 
-    siteSectionBackgroundDeleted: function (resp) {
+    deleteSiteSectionBackground: function (resp) {
       return {
-        type: ActionTypes.SITE_SECTION_BACKGROUND_DELETED,
+        type: ActionTypes.DELETE_SITE_SECTION_BACKGROUND,
         resp: resp
       };
     },
 
 
-    siteSectionBackgroundOrder: function(site, section, files, onComplete) {
+    initOrderSiteSectionBackgrounds: function(site, section, files, onComplete) {
       return function (dispatch, getStore) {
-        dispatch({ type: ActionTypes.SITE_SECTION_BACKGROUND_ORDER });
+        dispatch({ type: ActionTypes.INIT_ORDER_SITE_SECTION_BACKGROUNDS });
 
         sync(window.Berta.urls.site_section_backgrounds, {site: site, section: section, files: files}, 'PUT')
           .then(function (response) {
             if (response.error_message) {
               // @TODO dispatch error message
             } else {
-              dispatch(Actions.siteSectionBackgroundOrdered(response));
+              dispatch(Actions.orderSiteSectionBackgrounds(response));
             }
             onComplete(response);
           });
@@ -218,9 +218,9 @@
     },
 
 
-    siteSectionBackgroundOrdered: function(resp) {
+    orderSiteSectionBackgrounds: function(resp) {
       return {
-        type: ActionTypes.SITE_SECTION_BACKGROUND_ORDERED,
+        type: ActionTypes.ORDER_SITE_SECTION_BACKGROUNDS,
         resp: resp
       };
     }

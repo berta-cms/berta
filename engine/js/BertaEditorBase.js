@@ -972,9 +972,9 @@ var BertaEditorBase = new Class({
           prop = path_arr.pop();
 
           if (prop === 'title') {
-            updateAction = Actions.renameSiteSection;
+            updateAction = Actions.initRenameSiteSection;
           } else {
-            updateAction = Actions.updateSiteSection;
+            updateAction = Actions.initUpdateSiteSection;
           }
 
           if (prop === 'type') {

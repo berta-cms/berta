@@ -27,7 +27,7 @@
           return Immutable.fromJS(action.state.site_sections);
 
 
-        case ActionTypes.SITE_SECTION_CREATED:
+        case ActionTypes.CREATE_SITE_SECTION:
           return state.set(state.size, Immutable.fromJS(action.resp));
 
 
@@ -43,7 +43,7 @@
           });
 
 
-        case ActionTypes.SITE_SECTION_UPDATED:
+        case ActionTypes.UPDATE_SITE_SECTION:
           console.log('Sections reducer:', action);
           path = action.resp.path.split('/');
           site_name = path[0] === '0' ? '' : path[0];
@@ -76,13 +76,13 @@
           });
 
 
-        case ActionTypes.SITE_SECTIONS_DELETED:
+        case ActionTypes.DELETE_SITE_SECTIONS:
           return state.filter(function (section) {
             return section.get('site_name') !== action.data.site_name;
           });
 
 
-        case ActionTypes.SITE_SECTION_DELETED:
+        case ActionTypes.DELETE_SITE_SECTION:
           console.log('Sections reducer:', action, state);
 
           // @TODO delete related data from state
@@ -106,7 +106,7 @@
           });
 
 
-        case ActionTypes.SITE_SECTIONS_ORDERED:
+        case ActionTypes.ORDER_SITE_SECTIONS:
           return state.map(function (section) {
             if (section.get('site_name') === action.resp.site) {
               var order = action.resp.sections.indexOf(section.get('name'));
@@ -119,7 +119,7 @@
           });
 
 
-        case ActionTypes.SITE_SECTION_BACKGROUND_ORDERED:
+        case ActionTypes.ORDER_SITE_SECTION_BACKGROUNDS:
           return state.map(function (section) {
             if (section.get('site_name') === action.resp.site && section.get('name') === action.resp.section) {
               return section

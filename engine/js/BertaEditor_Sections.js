@@ -134,7 +134,7 @@ var BertaEditor_Sections = new Class({
 		});
     var site = getCurrentSite();
 
-    redux_store.dispatch(Actions.orderSiteSections(
+    redux_store.dispatch(Actions.initOrderSiteSections(
       site,
       newOrder,
       function (resp) {
@@ -154,7 +154,7 @@ var BertaEditor_Sections = new Class({
 				this.sectionsEditor.addClass('xSaving');
     var site = getCurrentSite() || '0';
 
-    redux_store.dispatch(Actions.deleteSiteSection(
+    redux_store.dispatch(Actions.initDeleteSiteSection(
       site,
       sectionName,
       // @@@:TODO: Remove this callback, when migration to ReactJS is complete
@@ -194,7 +194,7 @@ var BertaEditor_Sections = new Class({
 		this.sectionsEditor.addClass('xSaving');
     var site = getCurrentSite();
 
-    redux_store.dispatch(Actions.createSiteSection(
+    redux_store.dispatch(Actions.initCreateSiteSection(
       site,
       this.cloneSection,
       this.cloneSectionTitle,
