@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Sites\SiteSettings;
+namespace App\Sites\Settings;
 
 use App\Http\Controllers\Controller;
-use App\Sites\SiteSettings\SiteSettingsDataService;
+use App\Sites\Settings\SiteSettingsDataService;
 use Illuminate\Http\Request;
 
 class SiteSettingsController extends Controller

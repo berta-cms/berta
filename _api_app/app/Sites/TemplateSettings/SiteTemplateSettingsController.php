@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Sites\SiteTemplateSettings;
+namespace App\Sites\TemplateSettings;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Sites\SiteTemplateSettings\SiteTemplateSettingsDataService;
+use App\Sites\TemplateSettings\SiteTemplateSettingsDataService;
 
 class SiteTemplateSettingsController extends Controller
 {

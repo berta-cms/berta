@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Sites\SitesDataService;
-use App\Sites\SiteSettings\SiteSettingsDataService;
-use App\Sites\SiteTemplateSettings\SiteTemplateSettingsDataService;
+use App\Sites\Settings\SiteSettingsDataService;
+use App\Sites\TemplateSettings\SiteTemplateSettingsDataService;
 use App\Sites\Sections\SiteSectionsDataService;
 use App\Sites\Sections\Tags\SectionTagsDataService;
 use App\Sites\Sections\Entries\SectionEntriesDataService;
