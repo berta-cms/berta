@@ -4,8 +4,133 @@ namespace App\Sites\Sections\Entries;
 
 use App\Shared\Storage;
 
+/**
+ * @class SectionEntriesDataService
+ *
+ * This service handles storing, updating, deleting section entry data in Berta.
+ *
+ * The data is stored in XML files like this: `blog.[section name].xml`
+ * The data files are located in the given sites data folder.
+ * For the root site it's: `storage/blog.[section name].xml`
+ * For other sites it's: `storage/-sites/[site name]/blog.[section name].xml`
+ *
+ * @example file: sample-data/blog.[section-name].xml
+ *
+ * @example XML:
+ * ```xml
+ * <?xml version="1.0" encoding="utf-8"?>
+ * <blog section="section-two" version="0.8.11b" last_upd_ver="1130">
+ *     <entry>
+ *         <id><![CDATA[1]]></id>
+ *         <uniqid><![CDATA[5af2bc3d80e13]]></uniqid>
+ *         <date><![CDATA[09.05.2018 12:15:41]]></date>
+ *         <mediafolder><![CDATA[section-two1]]></mediafolder>
+ *         <mediaCacheData type="slideshow" fullscreen="yes" autoplay="5" slide_numbers_visible="yes" link_address="http://example.com" linkTarget="_blank" row_gallery_padding="10px" size="medium">
+ *             <file type="video" src="small.mp4" autoplay="1" poster_frame="small.jpg" width="842" height="842"><![CDATA[<p>Video caption</p>]]></file>
+ *             <file type="image" src="square11525866927.jpg" width="383" height="655"><![CDATA[<p>Image caption 1</p>]]></file>
+ *             <file type="image" src="square6.jpg" width="842" height="842"><![CDATA[<p>Image caption 2</p>]]></file>
+ *         </mediaCacheData>
+ *         <content>
+ *             <description><![CDATA[<p><span>Animals</span></p>]]></description>
+ *             <positionXY><![CDATA[330,240]]></positionXY>
+ *             <fixed><![CDATA[1]]></fixed>
+ *             <width><![CDATA[400px]]></width>
+ *             <title><![CDATA[Lorem ipsum]]></title>
+ *             <url><![CDATA[http://example.com]]></url>
+ *         </content>
+ *         <updated><![CDATA[09.05.2018 16:03:33]]></updated>
+ *         <tags>
+ *             <tag><![CDATA[Cats]]></tag>
+ *             <tag><![CDATA[Dogs]]></tag>
+ *         </tags>
+ *         <marked><![CDATA[1]]></marked>
+ *     </entry>
+ *     <entry>
+ *         <id><![CDATA[2]]></id>
+ *         <uniqid><![CDATA[5af2dd4ead80f]]></uniqid>
+ *         <date><![CDATA[09.05.2018 14:36:46]]></date>
+ *         <mediafolder><![CDATA[section-two2]]></mediafolder>
+ *         <mediaCacheData type="slideshow" fullscreen="yes" />
+ *     </entry>
+ * </blog>
+ * ```
+ */
 class SectionEntriesDataService Extends Storage {
-    private $ROOT_ELEMENT = 'blog';
+    public static $JSON_SCHEMA = [
+        'type' => 'array',
+        'items' => [
+            'type' => 'object',
+            '$comment' => 'This represents the <entry> elements in a list. They can only be <entry> in this list',
+            'properties' => [
+                'id' => ['type' => 'integer', 'minimum' => '0'],  // Maybe it's 1 (see xml files)
+                'uniqid' => ['type' => 'string'],
+                'date' => ['type' => 'string', 'format' => 'berta-date'],  // think about how to standardize date format through berta
+                'mediafolder' => ['type' => 'string'],
+                'mediaCacheData' => [
+                    'type' => 'object',
+                    'properties' => [
+                        'file' => [
+                            'type' => 'array',
+                            '$comment' => 'This is a list of <file> elements. This element can only contain <file> elements',
+                            'items' => [
+                                'type' => 'object',
+                                'properties' => [
+                                    '@value' => 'string',
+                                    '@attributes' => [
+                                        'type' => 'object',
+                                        'properties' => [
+                                            'autoplay' => ['type' => 'integer'],
+                                            'height' => ['type' => 'integer', 'minimum' => 0],
+                                            'poster_frame' => ['type' => 'string'],
+                                            'src' => ['type' => 'string'],
+                                            'type' => ['type' => 'string'],
+                                            'width' => ['type' => 'integer', 'minimum' => 0]
+                                        ],
+                                        'required' => ['src', 'type']
+                                    ]
+                                ]
+                            ]
+                        ],
+                        '@attributes' => [
+                            'type' => 'object',
+                            'properties' => [
+                                'autoplay' => ['type' => 'integer'],
+                                'fullscreen' => ['type' => 'string', 'enum' => ['yes', 'no']],
+                                'link_address' => ['type' => 'string'],
+                                'linkTarget' => ['type' => 'string'],
+                                'row_gallery_padding' => ['type' => 'string', 'format' => 'css-unit'],
+                                'size' => ['type' => 'string'],
+                                'slide_numbers_visible' => ['type' => 'string', 'enum' => ['yes', 'no']],
+                                'type' => ['type' => 'string'],  /** @todo: figure out what types can there be */
+                            ]
+                        ]
+                    ]
+                ],
+                'content' => [
+                    'type' => 'object',
+                    'properties' => [
+                        'description' => ['type' => 'string'],
+                        'fixed' => ['type' => 'integer'],
+                        'positionXY' => ['type' => 'string', 'pattern' => '^[0-9]+,[0-9]+$'],
+                        'title' => ['type' => 'string'],
+                        'url' => ['type' => 'string', 'format' => 'URI'],
+                        'width' => ['type' => 'string', 'format' => 'css-unit']
+                    ]
+                ],
+                'updated' => ['type' => 'string', 'format' => 'berta-date-time'],
+                'tags' => [
+                    'type' => 'object',
+                    'properties' => [
+                        'tag' => ['type' => 'array', 'items' => 'string']
+                    ]
+                ],
+                'marked' => ['type' => 'integer']
+            ]
+        ]
+    ];
+    protected static $DEFAULT_VALUES = [];
+    private $ROOT_ELEMENT = 'blog';  // The XML document element - the one that wraps all the content in file
+    private $ROOT_LIST_ELEMENT = 'entry';  // XML element that wraps each element in the top level list - child of ROOT_ELEMENT
     private $SECTION_NAME;
     private $SECTION_TITLE;
     private $ENTRIES = array();
