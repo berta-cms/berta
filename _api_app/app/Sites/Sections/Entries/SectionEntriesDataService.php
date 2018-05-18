@@ -153,10 +153,10 @@ class SectionEntriesDataService Extends Storage {
     ];
     protected static $DEFAULT_VALUES = [];
     private $ROOT_ELEMENT = 'blog';  // The XML document element - the one that wraps all the content in file
-    private $ROOT_LIST_ELEMENT = 'entry';  // XML element that wraps each element in the top level list - child of ROOT_ELEMENT
+    private static $ROOT_LIST_ELEMENT = 'entry';  // XML element that wraps each element in the top level list - child of ROOT_ELEMENT
     private $SECTION_NAME;
     private $SECTION_TITLE;
-    private $ENTRIES = array();
+    private $ENTRIES = [];
     private $XML_ROOT;
     private $XML_FILE;
 
@@ -178,9 +178,9 @@ class SectionEntriesDataService Extends Storage {
             $this->ENTRIES = $this->xmlFile2array($this->XML_FILE);
 
             if (empty($this->ENTRIES)) {
-                $this->ENTRIES = array('entry' => array());
+                $this->ENTRIES = [self::$ROOT_LIST_ELEMENT => []];
             } else {
-                $this->ENTRIES['entry'] = isset($this->ENTRIES['entry']) ? $this->asList($this->ENTRIES['entry']) : array();
+                $this->ENTRIES[self::$ROOT_LIST_ELEMENT] = isset($this->ENTRIES[self::$ROOT_LIST_ELEMENT]) ? $this->asList($this->ENTRIES[self::$ROOT_LIST_ELEMENT]) : [];
             }
         }
 
@@ -201,23 +201,23 @@ class SectionEntriesDataService Extends Storage {
         }
 
         if ($name === null) {
-            $blog = array(
-                '@attributes' => array('section' => $this->SECTION_NAME),
-                'entry' => array()
-            );
+            $blog = [
+                '@attributes' => ['section' => $this->SECTION_NAME],
+                self::$ROOT_LIST_ELEMENT => []
+            ];
         } else {
             $entries = new SectionEntriesDataService($this->SITE, $name);
             $blog = $entries->get();
             $blog['@attributes']['section'] = $this->SECTION_NAME;
 
-            if (isset($blog['entry'])) {
-                foreach ($blog['entry'] as $idx => $entry) {
-                    $blog['entry'][$idx]['uniqid'] = uniqid();
-                    $blog['entry'][$idx]['date'] = date('d.m.Y H:i:s');
-                    $blog['entry'][$idx]['updated'] = date('d.m.Y H:i:s');
+            if (isset($blog[self::$ROOT_LIST_ELEMENT])) {
+                foreach ($blog[self::$ROOT_LIST_ELEMENT] as $idx => $entry) {
+                    $blog[self::$ROOT_LIST_ELEMENT][$idx]['uniqid'] = uniqid();
+                    $blog[self::$ROOT_LIST_ELEMENT][$idx]['date'] = date('d.m.Y H:i:s');
+                    $blog[self::$ROOT_LIST_ELEMENT][$idx]['updated'] = date('d.m.Y H:i:s');
 
                     if (isset($entry['mediafolder'])) {
-                        $blog['entry'][$idx]['mediafolder'] = str_replace(
+                        $blog[self::$ROOT_LIST_ELEMENT][$idx]['mediafolder'] = str_replace(
                             $name,
                             $this->SECTION_NAME,
                             $entry['mediafolder']
@@ -225,7 +225,7 @@ class SectionEntriesDataService Extends Storage {
 
                         $this->copyFolder(
                             realpath($this->MEDIA_ROOT) .'/'. $entry['mediafolder'],
-                            realpath($this->MEDIA_ROOT) .'/'. $blog['entry'][$idx]['mediafolder']
+                            realpath($this->MEDIA_ROOT) .'/'. $blog[self::$ROOT_LIST_ELEMENT][$idx]['mediafolder']
                         );
                     }
                 }
@@ -234,11 +234,11 @@ class SectionEntriesDataService Extends Storage {
 
         $this->array2xmlFile($blog, $this->XML_FILE, $this->ROOT_ELEMENT);
 
-        return array(
+        return [
             'name' => $this->SECTION_NAME,
             'title' => $this->SECTION_TITLE,
-            'entries' => $blog
-        );
+            self::$ROOT_LIST_ELEMENT => $blog
+        ];
     }
 
     public function rename($new_name, $new_title) {
@@ -275,15 +275,15 @@ class SectionEntriesDataService Extends Storage {
         $entries = $this->get();
         $entries['@attributes']['section'] = $new_name;
 
-        if (isset($entries['entry'])) {
-            foreach ($entries['entry'] as $key => $entry) {
+        if (isset($entries[self::$ROOT_LIST_ELEMENT])) {
+            foreach ($entries[self::$ROOT_LIST_ELEMENT] as $key => $entry) {
                 if (isset($entry['mediafolder'])) {
                     $old_media = realpath($this->MEDIA_ROOT) .'/'. $entry['mediafolder'];
                     $new_name = $new_name . $entry['id'];
                     $new_media = realpath($this->MEDIA_ROOT) .'/'. $new_name;
 
                     if(@rename($old_media, $new_media)) {
-                        $entries['entry'][$key]['mediafolder'] = $new_name;
+                        $entries[self::$ROOT_LIST_ELEMENT][$key]['mediafolder'] = $new_name;
                     }
                 }
             }
@@ -298,8 +298,8 @@ class SectionEntriesDataService Extends Storage {
         $entries = $this->get();
 
         // delete media files
-        if(array_key_exists('entry', $entries) and !empty($entries['entry'])) {
-            foreach($entries['entry'] as $entry) {
+        if(array_key_exists(self::$ROOT_LIST_ELEMENT, $entries) and !empty($entries[self::$ROOT_LIST_ELEMENT])) {
+            foreach($entries[self::$ROOT_LIST_ELEMENT] as $entry) {
                 if(!empty($entry['mediafolder'])) {
                     $mediaFolder = $this->MEDIA_ROOT . '/' . $entry['mediafolder'];
 
