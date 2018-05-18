@@ -125,7 +125,7 @@ class SiteTemplateSettingsDataService extends Storage
                 'properties' => [
                     'hoverWiggle' => ['type' => 'string', 'enum' => ['yes', 'no']],
                     'imageHaveShadows' => ['type' => 'string', 'enum' => ['yes', 'no']],
-                    'imageSizeRatio' => ['type' => 'float']
+                    'imageSizeRatio' => ['type' => 'number']
                 ]
             ],
             'generalFontSettings' => [
