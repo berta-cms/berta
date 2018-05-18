@@ -42,7 +42,7 @@
 
     deleteSiteSectionsTags: function (data) {
       return {
-        type: ActionTypes.SITE_SECTIONS_TAGS_DELETED,
+        type: ActionTypes.DELETE_SITE_SECTIONS_TAGS,
         data: data
       };
     }

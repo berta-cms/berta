@@ -18,13 +18,13 @@
           return Immutable.fromJS(action.state.sites);
 
 
-        case ActionTypes.SITE_CREATED:
+        case ActionTypes.CREATE_SITE:
           console.log('Sites reducer:', action);
 
           return state.set(state.size, Immutable.fromJS(action.data));
 
 
-        case ActionTypes.SITE_UPDATED:
+        case ActionTypes.UPDATE_SITE:
           console.log('Sites reducer:', action);
           path = action.resp.path.split('/');
           order = parseInt(path[1], 10);
@@ -39,7 +39,7 @@
           });
 
 
-        case ActionTypes.SITE_DELETED:
+        case ActionTypes.DELETE_SITE:
           console.log('Sites reducer:', action);
 
           // Filter out deleted site
@@ -55,7 +55,7 @@
           });
 
 
-        case ActionTypes.SITES_ORDERED:
+        case ActionTypes.ORDER_SITES:
           return state.map(function (site) {
             var name = site.get('name');
             if (name === '') {

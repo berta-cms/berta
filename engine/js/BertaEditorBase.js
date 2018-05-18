@@ -956,7 +956,7 @@ var BertaEditorBase = new Class({
           if (prop === 'name') {
             updateAction = Actions.renameSite;
           } else {
-            updateAction = Actions.updateSite;
+            updateAction = Actions.initUpdateSite;
           }
         }
 

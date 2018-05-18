@@ -84,7 +84,7 @@
           });
 
 
-        case ActionTypes.SITE_SECTIONS_TAGS_DELETED:
+        case ActionTypes.DELETE_SITE_SECTIONS_TAGS:
           return state.filter(function (tags, site_name) {
             return site_name !== action.data.site_name;
           });
