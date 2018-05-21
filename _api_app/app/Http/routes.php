@@ -19,6 +19,10 @@
 $app->group(['prefix' => 'v1', 'namespace' => 'App'], function() use ($app) {
     $app->get('state/{site}', 'Http\Controllers\StateController@get');
 
+    $app->get('test-twig', function() {
+        return view('i-am-a-twig-template', ['name' => 'James']);
+    });
+
     $app->group(['prefix' => 'v1', 'namespace' => 'App\Sites'], function() use ($app) {
         $app->post('sites', ['as' => 'sites', 'uses' => 'SitesController@create']);
         $app->patch('sites', 'SitesController@update');

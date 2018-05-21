@@ -25,6 +25,11 @@ $app = new Laravel\Lumen\Application(
 
 $app->withFacades();
 
+if (!class_exists('Twig')) {
+    class_alias(TwigBridge\Facade\Twig::class, 'Twig');
+    $app->configure('twigbridge');
+}
+
 // $app->withEloquent();
 
 /*
@@ -81,6 +86,7 @@ $app->singleton(
 // $app->register(App\Providers\AppServiceProvider::class);
 // $app->register(App\Providers\AuthServiceProvider::class);
 // $app->register(App\Providers\EventServiceProvider::class);
+$app->register(TwigBridge\ServiceProvider::class);
 
 /*
 |--------------------------------------------------------------------------
