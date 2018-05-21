@@ -5,34 +5,34 @@
 
   Object.assign(window.Actions, {
 
-    updateSiteSettings: function(path, value, onComplete) {
+    initUpdateSiteSettings: function(path, value, onComplete) {
       return function (dispatch, getStore) {
-        dispatch({ type: ActionTypes.UPDATE_SITE_SETTINGS });
+        dispatch({ type: ActionTypes.INIT_UPDATE_SITE_SETTINGS });
 
         sync(window.Berta.urls.site_settings, { path: path, value: value })
           .then(function (response) {
             if (response.error_message) {
               // @TODO dispatch error message
             } else {
-              dispatch(Actions.siteSettingsUpdated(response));
+              dispatch(Actions.updateSiteSettings(response));
             }
             onComplete(response);
           });
       };
     },
 
-    siteSettingsUpdated: function (resp) {
+    createSiteSettings: function (site_name, data) {
       return {
-        type: ActionTypes.SITE_SETTINGS_UPDATED,
-        resp: resp
+        type: ActionTypes.CREATE_SITE_SETTINGS,
+        site_name: site_name,
+        data: data
       };
     },
 
-    siteSettingsCreated: function (site_name, data) {
+    updateSiteSettings: function (resp) {
       return {
-        type: ActionTypes.SITE_SETTINGS_CREATED,
-        site_name: site_name,
-        data: data
+        type: ActionTypes.UPDATE_SITE_SETTINGS,
+        resp: resp
       };
     },
 
@@ -45,7 +45,7 @@
 
     deleteSiteSettings: function (data) {
       return {
-        type: ActionTypes.SITE_SETTINGS_DELETED,
+        type: ActionTypes.DELETE_SITE_SETTINGS,
         data: data
       };
     },

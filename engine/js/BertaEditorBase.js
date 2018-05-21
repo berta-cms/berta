@@ -333,7 +333,7 @@ var BertaEditorBase = new Class({
                   path_arr = path.split('/');
 
                   if (path_arr[1] === 'settings') {
-                    updateAction = Actions.updateSiteSettings;
+                    updateAction = Actions.initUpdateSiteSettings;
                   }
 
                   if (path_arr[1] === 'site_template_settings') {
@@ -727,7 +727,7 @@ var BertaEditorBase = new Class({
       path_arr = path.split('/');
 
       if (path_arr[1] === 'settings') {
-        updateAction = Actions.updateSiteSettings;
+        updateAction = Actions.initUpdateSiteSettings;
       }
 
       if (path_arr[1] === 'site_template_settings') {
@@ -961,7 +961,7 @@ var BertaEditorBase = new Class({
         }
 
         if (path_arr[1] === 'settings') {
-          updateAction = Actions.updateSiteSettings;
+          updateAction = Actions.initUpdateSiteSettings;
         }
 
         if (path_arr[1] === 'site_template_settings') {
