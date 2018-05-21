@@ -981,7 +981,7 @@ var BertaEditorBase = new Class({
             new_callback = function(resp, respRaw) {
               var site = getCurrentSite();
               var state = redux_store.getState();
-              var template = state.site_settings.toJSON()[site].template.template;
+              var template = state.siteSettings.toJSON()[site].template.template;
               var sectionTypes = state.site_templates
                     .toJSON()[template]
                     .sectionTypes;
@@ -992,7 +992,7 @@ var BertaEditorBase = new Class({
                 site,
                 resp.order,
                 resp.section,
-                state.site_template_settings.toJSON()[site][template],
+                state.siteTemplateSettings.toJSON()[site][template],
                 type_params,
                 'xSection-' + resp.section['name'] + ' xSectionField'
               );

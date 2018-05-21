@@ -4,7 +4,7 @@
   window.reducers = window.reducers || {};
 
   Object.assign(window.reducers, {
-    site_template_settings: function (state, action) {
+    siteTemplateSettings: function (state, action) {
 
       if (state === undefined) {
         state = Immutable.Map();

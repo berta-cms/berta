@@ -204,7 +204,7 @@ var BertaEditor_Sections = new Class({
           alert('Berta says:\n\nServer produced an error while adding new section! Something went sooooo wrong...');
         } else if(resp && !resp.error_message) {
           var state = redux_store.getState();
-          var template = state.site_settings.toJSON()[site].template.template;
+          var template = state.siteSettings.toJSON()[site].template.template;
           var sectionTypes = state.site_templates
                 .toJSON()[template]
                 .sectionTypes;
@@ -220,7 +220,7 @@ var BertaEditor_Sections = new Class({
                 site,
                 resp.order,
                 resp,
-                state.site_template_settings.toJSON()[site][template],
+                state.siteTemplateSettings.toJSON()[site][template],
                 type_params,
                 'xSection-' + resp['name'] + ' xSectionField'
               );
