@@ -4,7 +4,7 @@
   window.reducers = window.reducers || {};
 
   Object.assign(window.reducers, {
-    section_entries: function(state, action) {
+    sectionEntries: function(state, action) {
       var entry, entries = [];
 
       if (state === undefined) {

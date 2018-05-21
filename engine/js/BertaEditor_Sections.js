@@ -205,7 +205,7 @@ var BertaEditor_Sections = new Class({
         } else if(resp && !resp.error_message) {
           var state = redux_store.getState();
           var template = state.siteSettings.toJSON()[site].template.template;
-          var sectionTypes = state.site_templates
+          var sectionTypes = state.siteTemplates
                 .toJSON()[template]
                 .sectionTypes;
           var type = resp['@attributes'].type ? resp['@attributes'].type : 'default';

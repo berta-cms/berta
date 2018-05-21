@@ -4,7 +4,7 @@
   window.reducers = window.reducers || {};
 
   Object.assign(window.reducers, {
-    section_tags: function(state, action) {
+    sectionTags: function(state, action) {
       var tag_idx, tags, site_name = [];
 
       if (state === undefined) {

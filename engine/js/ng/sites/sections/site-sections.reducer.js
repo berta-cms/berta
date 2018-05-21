@@ -4,7 +4,7 @@
   window.reducers = window.reducers || {};
 
   Object.assign(window.reducers, {
-    site_sections: function(state, action) {
+    siteSections: function(state, action) {
       var path,
           site_name,
           order,
