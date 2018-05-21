@@ -21,11 +21,11 @@ class StateController extends Controller
 
         $state['urls'] = [
             'sites' => route('sites'),
-            'site_settings' => route('site_settings'),
-            'site_template_settings' => route('site_template_settings'),
-            'site_sections' => route('site_sections'),
-            'site_sections_reset' => route('site_sections_reset'),
-            'site_section_backgrounds' => route('site_section_backgrounds')
+            'siteSettings' => route('site_settings'),
+            'siteTemplateSettings' => route('site_template_settings'),
+            'siteSections' => route('site_sections'),
+            'siteSectionsReset' => route('site_sections_reset'),
+            'siteSectionBackgrounds' => route('site_section_backgrounds')
         ];
         $state['sites'] = $sites->state();
         $state['site_settings'] = array();

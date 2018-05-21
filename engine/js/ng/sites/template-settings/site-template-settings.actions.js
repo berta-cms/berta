@@ -17,7 +17,7 @@
       return function (dispatch, getStore) {
         dispatch({ type: ActionTypes.INIT_UPDATE_SITE_TEMPLATE_SETTINGS });
 
-        sync(window.Berta.urls.site_template_settings, { path: path, value: value })
+        sync(window.Berta.urls.siteTemplateSettings, { path: path, value: value })
           .then(function (response) {
             if (response.error_message) {
               // @TODO dispatch error message

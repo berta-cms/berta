@@ -10,7 +10,7 @@
         dispatch({ type: ActionTypes.INIT_CREATE_SITE_SECTION });
         dispatch({ type: ActionTypes.INIT_UPDATE_SECTION_TAGS });
 
-        sync(window.Berta.urls.site_sections, { site: site, name: name, title: title }, 'POST')
+        sync(window.Berta.urls.siteSections, { site: site, name: name, title: title }, 'POST')
           .then(function (response) {
             if (response.error_message) {
               // @TODO dispatch error message
@@ -42,7 +42,7 @@
       return function (dispatch, getStore) {
         dispatch({ type: ActionTypes.INIT_UPDATE_SITE_SECTION });
 
-        sync(window.Berta.urls.site_sections, { path: path, value: value })
+        sync(window.Berta.urls.siteSections, { path: path, value: value })
         .then(function (response) {
           if (response.error_message) {
             // @TODO dispatch error message
@@ -68,7 +68,7 @@
         dispatch({ type: ActionTypes.INIT_UPDATE_SITE_SECTION });
         dispatch({ type: ActionTypes.INIT_UPDATE_SECTION_TAGS });
 
-        sync(window.Berta.urls.site_sections, { path: path, value: value })
+        sync(window.Berta.urls.siteSections, { path: path, value: value })
           .then(function (response) {
             if (response.error_message) {
               // @TODO dispatch error message
@@ -101,7 +101,7 @@
           path: path
         });
 
-        sync(window.Berta.urls.site_sections_reset, { path: path })
+        sync(window.Berta.urls.siteSectionsReset, { path: path })
           .then(function (response) {
             if (response.error_message) {
               // @TODO dispatch error message
@@ -116,7 +116,7 @@
       return function (dispatch, getStore) {
         dispatch({ type: ActionTypes.INIT_ORDER_SITE_SECTIONS });
 
-        sync(window.Berta.urls.site_sections, {site: site, sections: sections}, 'PUT')
+        sync(window.Berta.urls.siteSections, {site: site, sections: sections}, 'PUT')
           .then(function (response) {
             if (response.error_message) {
               // @TODO dispatch error message
@@ -142,7 +142,7 @@
         dispatch({ type: ActionTypes.INIT_DELETE_SITE_SECTION });
         dispatch({ type: ActionTypes.INIT_UPDATE_SECTION_TAGS });
 
-        sync(window.Berta.urls.site_sections, {site: site, section: section}, 'DELETE')
+        sync(window.Berta.urls.siteSections, {site: site, section: section}, 'DELETE')
           .then(function (response) {
             if (response.error_message) {
               // @TODO dispatch error message
@@ -180,7 +180,7 @@
       return function (dispatch, getStore) {
         dispatch({ type: ActionTypes.INIT_ORDER_SITE_SECTION_BACKGROUNDS });
 
-        sync(window.Berta.urls.site_section_backgrounds, {site: site, section: section, files: files}, 'PUT')
+        sync(window.Berta.urls.siteSectionBackgrounds, {site: site, section: section, files: files}, 'PUT')
           .then(function (response) {
             if (response.error_message) {
               // @TODO dispatch error message
@@ -205,7 +205,7 @@
       return function (dispatch, getStore) {
         dispatch({ type: ActionTypes.INIT_DELETE_SITE_SECTION_BACKGROUND });
 
-        sync(window.Berta.urls.site_section_backgrounds, {site: site, section: section, file: file}, 'DELETE')
+        sync(window.Berta.urls.siteSectionBackgrounds, {site: site, section: section, file: file}, 'DELETE')
           .then(function (response) {
             if (response.error_message) {
               // @TODO dispatch error message
