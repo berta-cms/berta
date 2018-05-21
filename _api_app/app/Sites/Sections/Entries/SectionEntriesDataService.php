@@ -57,100 +57,98 @@ use App\Shared\Storage;
  */
 class SectionEntriesDataService Extends Storage {
     public static $JSON_SCHEMA = [
-        'type' => 'array',
-        'items' => [
-            'type' => 'object',
-            '$comment' => 'This represents the <entry> elements in a list. They can only be <entry> in this list',
-            'properties' => [
-                'id' => ['type' => 'integer', 'minimum' => '0'],  // Maybe it's 1 (see xml files)
-                'uniqid' => ['type' => 'string'],
-                'date' => ['type' => 'string', 'format' => 'berta-date'],  // think about how to standardize date format through berta
-                'mediafolder' => ['type' => 'string'],
-                'mediaCacheData' => [
-                    'type' => 'object',
-                    'properties' => [
-                        'file' => [
-                            'type' => 'array',
-                            '$comment' => 'This is a list of <file> elements. This element can only contain <file> elements',
-                            'items' => [
-                                'type' => 'object',
-                                'properties' => [
-                                    '@value' => 'string',
-                                    '@attributes' => [
-                                        'type' => 'object',
-                                        'properties' => [
-                                            'autoplay' => ['type' => 'integer'],
-                                            'height' => ['type' => 'integer', 'minimum' => 0],
-                                            'poster_frame' => ['type' => 'string'],
-                                            'src' => ['type' => 'string'],
-                                            'type' => ['type' => 'string'],
-                                            'width' => ['type' => 'integer', 'minimum' => 0]
-                                        ],
-                                        'required' => ['src', 'type']
-                                    ]
-                                ]
-                            ]
-                        ],
-                        '@attributes' => [
-                            'type' => 'object',
-                            'properties' => [
-                                'autoplay' => ['type' => 'integer'],
-                                'fullscreen' => ['type' => 'string', 'enum' => ['yes', 'no']],
-                                'link_address' => ['type' => 'string'],
-                                'linkTarget' => ['type' => 'string'],
-                                'row_gallery_padding' => ['type' => 'string', 'format' => 'css-unit'],
-                                'size' => ['type' => 'string'],
-                                'slide_numbers_visible' => ['type' => 'string', 'enum' => ['yes', 'no']],
-                                'type' => ['type' => 'string'],  /** @todo: figure out what types can there be */
-                            ]
-                        ]
-                    ]
-                ],
-                'content' => [
-                    'type' => 'object',
-                    'properties' => [
-                        'description' => ['type' => 'string'],
-                        'fixed' => ['type' => 'integer'],
-                        'positionXY' => ['type' => 'string', 'pattern' => '^[0-9]+,[0-9]+$'],
-                        'title' => ['type' => 'string'],
-                        'url' => ['type' => 'string', 'format' => 'URI'],
-                        'width' => ['type' => 'string', 'format' => 'css-unit']
-                    ]
-                ],
-                'updated' => ['type' => 'string', 'format' => 'berta-date-time'],
-                'tags' => [
-                    'type' => 'object',
-                    'properties' => [
-                        'tag' => ['type' => 'array', 'items' => 'string']
-                    ]
-                ],
-                'marked' => ['type' => 'integer']
-            ]
-        ]
-    ];
-
-    /* This is created for documentation: */
-    public static $ROOT_ELEMENT_SCHEMA = [
         'type' => 'object',
         'properties' => [
             'entry' => [
                 'type' => 'array',
-                '$comment' => 'See self::$JSON_SCHEMA'
+                '$comment' => 'A list of <entry> elements in XML',
+                'items' => [
+                    'type' => 'object',
+                    '$comment' => 'This represents the <entry> elements in a list. They can only be <entry> in this list',
+                    'properties' => [
+                        'id' => ['type' => 'integer', 'minimum' => '0'],  // Maybe it's 1 (see xml files)
+                        'uniqid' => ['type' => 'string'],
+                        'date' => ['type' => 'string', 'format' => 'berta-date'],  // think about how to standardize date format through berta
+                        'mediafolder' => ['type' => 'string'],
+                        'mediaCacheData' => [
+                            'type' => 'object',
+                            'properties' => [
+                                'file' => [  /** @todo: FIX: We're getting error here, because converter can't distinguish single item array from an object */
+                                    'type' => 'array',
+                                    '$comment' => 'This is a list of <file> elements. This element can only contain <file> elements',
+                                    'items' => [
+                                        'type' => 'object',
+                                        'properties' => [
+                                            '@value' => ['type' => 'string'],
+                                            '@attributes' => [
+                                                'type' => 'object',
+                                                'properties' => [
+                                                    'autoplay' => ['type' => 'integer'],
+                                                    'height' => ['type' => 'integer', 'minimum' => 0],
+                                                    'poster_frame' => ['type' => 'string'],
+                                                    'src' => ['type' => 'string'],
+                                                    'type' => ['type' => 'string'],
+                                                    'width' => ['type' => 'integer', 'minimum' => 0]
+                                                ],
+                                                'required' => ['src', 'type']
+                                            ]
+                                        ]
+                                    ]
+                                ],
+                                '@attributes' => [
+                                    'type' => 'object',
+                                    'properties' => [
+                                        'autoplay' => ['type' => 'integer'],
+                                        'fullscreen' => ['type' => 'string', 'enum' => ['yes', 'no']],
+                                        'link_address' => ['type' => 'string'],
+                                        'linkTarget' => ['type' => 'string'],
+                                        'row_gallery_padding' => ['type' => 'string', 'format' => 'css-unit'],
+                                        'size' => ['type' => 'string'],
+                                        'slide_numbers_visible' => ['type' => 'string', 'enum' => ['yes', 'no']],
+                                        'type' => ['type' => 'string'],  /** @todo: figure out what types can there be */
+                                    ]
+                                ]
+                            ]
+                        ],
+                        'content' => [
+                            'type' => 'object',
+                            'properties' => [
+                                'description' => ['type' => 'string'],
+                                'fixed' => ['type' => 'integer'],
+                                'positionXY' => ['type' => 'string', 'pattern' => '^[0-9]+,[0-9]+$'],
+                                'title' => ['type' => 'string'],
+                                'url' => ['type' => 'string', 'format' => 'URI'],
+                                'width' => ['type' => 'string', 'format' => 'css-unit']
+                            ]
+                        ],
+                        'updated' => ['type' => 'string', 'format' => 'berta-date-time'],
+                        'tags' => [
+                            'type' => 'object',
+                            'properties' => [
+                                'tag' => ['type' => 'array', 'items' => ['type' => 'string']]
+                            ]
+                        ],
+                        'marked' => ['type' => 'integer']
+                    ]
+                ]
             ],
             '@attributes' => [
-                'section' => [
-                    'type' => 'string',
-                    '$comment' => 'name of section these entries belong to. See $this->SECTION_NAME'
-                ],
-                'version' => [
-                    'type' => 'string',
-                    '$comment' => 'Version of berta, this was created in'
-                ],
-                'last_upd_ver' => ['type' => 'string']
+                'type' => 'object',
+                'properties' => [
+                    'section' => [
+                        'type' => 'string',
+                        '$comment' => 'name of section these entries belong to. See $this->SECTION_NAME'
+                    ],
+                    'version' => [
+                        'type' => 'string',
+                        '$comment' => 'Version of berta, this was created in'
+                    ],
+                    'last_upd_ver' => ['type' => 'string']
+                ]
             ]
-
         ]
     ];
+
     protected static $DEFAULT_VALUES = [];
     private $ROOT_ELEMENT = 'blog';  // The XML document element - the one that wraps all the content in file
     private static $ROOT_LIST_ELEMENT = 'entry';  // XML element that wraps each element in the top level list - child of ROOT_ELEMENT
