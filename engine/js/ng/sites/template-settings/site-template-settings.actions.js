@@ -5,34 +5,34 @@
 
   Object.assign(window.Actions, {
 
-    updateSiteTemplateSettings: function(path, value, onComplete) {
+    createSiteTemplateSettings: function(site_name, data) {
+      return {
+        type: ActionTypes.CREATE_SITE_TEMPLATE_SETTINGS,
+        site_name: site_name,
+        data: data
+      };
+    },
+
+    initUpdateSiteTemplateSettings: function(path, value, onComplete) {
       return function (dispatch, getStore) {
-        dispatch({ type: ActionTypes.UPDATE_SITE_TEMPLATE_SETTINGS });
+        dispatch({ type: ActionTypes.INIT_UPDATE_SITE_TEMPLATE_SETTINGS });
 
         sync(window.Berta.urls.site_template_settings, { path: path, value: value })
           .then(function (response) {
             if (response.error_message) {
               // @TODO dispatch error message
             } else {
-              dispatch(Actions.siteTemplateSettingsUpdated(response));
+              dispatch(Actions.updateSiteTemplateSettings(response));
             }
             onComplete(response);
           });
       };
     },
 
-    siteTemplateSettingsUpdated: function (resp) {
+    updateSiteTemplateSettings: function (resp) {
       return {
-        type: ActionTypes.SITE_TEMPLATE_SETTINGS_UPDATED,
+        type: ActionTypes.UPDATE_SITE_TEMPLATE_SETTINGS,
         resp: resp
-      };
-    },
-
-    siteTemplateSettingsCreated: function(site_name, data) {
-      return {
-        type: ActionTypes.SITE_TEMPLATE_SETTINGS_CREATED,
-        site_name: site_name,
-        data: data
       };
     },
 
@@ -45,7 +45,7 @@
 
     deleteSiteTemplateSettings: function (data) {
       return {
-        type: ActionTypes.SITE_TEMPLATE_SETTINGS_DELETED,
+        type: ActionTypes.DELETE_SITE_TEMPLATE_SETTINGS,
         data: data
       };
     }

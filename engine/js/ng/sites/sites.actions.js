@@ -43,7 +43,7 @@
               }
 
               if (response.siteTemplateSettings) {
-                dispatch(Actions.siteTemplateSettingsCreated(response.site.name, response.siteTemplateSettings));
+                dispatch(Actions.createSiteTemplateSettings(response.site.name, response.siteTemplateSettings));
               }
             }
             onComplete(response.site);
@@ -63,7 +63,7 @@
         dispatch({ type: ActionTypes.INIT_UPDATE_SITE });
         dispatch({ type: ActionTypes.INIT_UPDATE_SITE_SECTION });
         dispatch({ type: ActionTypes.INIT_UPDATE_SITE_SETTINGS });
-        dispatch({ type: ActionTypes.UPDATE_SITE_TEMPLATE_SETTINGS });
+        dispatch({ type: ActionTypes.INIT_UPDATE_SITE_TEMPLATE_SETTINGS });
         dispatch({ type: ActionTypes.INIT_UPDATE_SECTION_TAGS });
 
         sync(window.Berta.urls.sites, { path: path, value: value })
@@ -131,7 +131,7 @@
         dispatch({ type: ActionTypes.INIT_DELETE_SITE });
         dispatch({ type: ActionTypes.INIT_DELETE_SITE_SECTIONS });
         dispatch({ type: ActionTypes.INIT_DELETE_SITE_SETTINGS });
-        dispatch({ type: ActionTypes.DELETE_SITE_TEMPLATE_SETTINGS });
+        dispatch({ type: ActionTypes.INIT_DELETE_SITE_TEMPLATE_SETTINGS });
         dispatch({ type: ActionTypes.INIT_DELETE_SITE_SECTIONS_TAGS });
 
         sync(window.Berta.urls.sites, {site: site}, 'DELETE')
