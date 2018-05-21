@@ -16,8 +16,7 @@
               // @TODO dispatch error message
             } else {
 
-              // @TODO when created site is a clone we need to clone
-              // related sections, entries, tags, settings, template settings
+              // @TODO when created site is a clone we need to clone related entries
 
               dispatch(Actions.createSite(response.site));
               if (response.settings) {
@@ -55,6 +54,29 @@
       return {
         type: ActionTypes.CREATE_SITE,
         data: data
+      };
+    },
+
+    initUpdateSite: function(path, value, onComplete) {
+      return function (dispatch, getStore) {
+        dispatch({ type: ActionTypes.INIT_UPDATE_SITE });
+
+        sync(window.Berta.urls.sites, { path: path, value: value })
+          .then(function (response) {
+            if (response.error_message) {
+              // @TODO dispatch error message
+            } else {
+              dispatch(Actions.updateSite(response));
+            }
+            onComplete(response);
+          });
+      };
+    },
+
+    updateSite: function(resp) {
+      return {
+        type: ActionTypes.UPDATE_SITE,
+        resp: resp
       };
     },
 
@@ -100,25 +122,25 @@
       };
     },
 
-    initUpdateSite: function(path, value, onComplete) {
+    initOrderSites: function(sites, onComplete) {
       return function (dispatch, getStore) {
-        dispatch({ type: ActionTypes.INIT_UPDATE_SITE });
+        dispatch({ type: ActionTypes.INIT_ORDER_SITES });
 
-        sync(window.Berta.urls.sites, { path: path, value: value })
+        sync(window.Berta.urls.sites, sites, 'PUT')
           .then(function (response) {
             if (response.error_message) {
               // @TODO dispatch error message
             } else {
-              dispatch(Actions.updateSite(response));
+              dispatch(Actions.orderSites(sites));
             }
             onComplete(response);
           });
       };
     },
 
-    updateSite: function(resp) {
+    orderSites: function(resp) {
       return {
-        type: ActionTypes.UPDATE_SITE,
+        type: ActionTypes.ORDER_SITES,
         resp: resp
       };
     },
@@ -163,30 +185,6 @@
         type: ActionTypes.DELETE_SITE,
         resp: resp
       };
-    },
-
-    initOrderSites: function(sites, onComplete) {
-      return function (dispatch, getStore) {
-        dispatch({ type: ActionTypes.INIT_ORDER_SITES });
-
-        sync(window.Berta.urls.sites, sites, 'PUT')
-          .then(function (response) {
-            if (response.error_message) {
-              // @TODO dispatch error message
-            } else {
-              dispatch(Actions.orderSites(sites));
-            }
-            onComplete(response);
-          });
-      };
-    },
-
-    orderSites: function(resp) {
-      return {
-        type: ActionTypes.ORDER_SITES,
-        resp: resp
-      };
     }
-
   });
 })(window, document);

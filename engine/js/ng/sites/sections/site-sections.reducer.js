@@ -31,18 +31,6 @@
           return state.set(state.size, Immutable.fromJS(action.resp));
 
 
-        case ActionTypes.RENAME_SITE_SECTIONS_SITENAME:
-          var old_name = action.data.site.get('name');
-          value = action.data.site_name;
-
-          return state.map(function (section) {
-            if (section.get('site_name') === old_name) {
-              return section.set('site_name', value);
-            }
-            return section;
-          });
-
-
         case ActionTypes.UPDATE_SITE_SECTION:
           console.log('Sections reducer:', action);
           path = action.resp.path.split('/');
@@ -56,6 +44,18 @@
           return state.map(function (section) {
             if (section.get('site_name') === site_name && section.get('order') === order && section.getIn(prop) !== value) {
               return section.merge(action.resp.section);
+            }
+            return section;
+          });
+
+
+        case ActionTypes.RENAME_SITE_SECTIONS_SITENAME:
+          var old_name = action.data.site.get('name');
+          value = action.data.site_name;
+
+          return state.map(function (section) {
+            if (section.get('site_name') === old_name) {
+              return section.set('site_name', value);
             }
             return section;
           });
@@ -76,9 +76,16 @@
           });
 
 
-        case ActionTypes.DELETE_SITE_SECTIONS:
-          return state.filter(function (section) {
-            return section.get('site_name') !== action.data.site_name;
+        case ActionTypes.ORDER_SITE_SECTIONS:
+          return state.map(function (section) {
+            if (section.get('site_name') === action.resp.site) {
+              var order = action.resp.sections.indexOf(section.get('name'));
+
+              if (section.get('order') !== order) {
+                return section.set('order', order);
+              }
+            }
+            return section;
           });
 
 
@@ -106,16 +113,9 @@
           });
 
 
-        case ActionTypes.ORDER_SITE_SECTIONS:
-          return state.map(function (section) {
-            if (section.get('site_name') === action.resp.site) {
-              var order = action.resp.sections.indexOf(section.get('name'));
-
-              if (section.get('order') !== order) {
-                return section.set('order', order);
-              }
-            }
-            return section;
+        case ActionTypes.DELETE_SITE_SECTIONS:
+          return state.filter(function (section) {
+            return section.get('site_name') !== action.data.site_name;
           });
 
 

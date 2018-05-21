@@ -38,6 +38,31 @@
     },
 
 
+    initUpdateSiteSection: function(path, value, onComplete) {
+      return function (dispatch, getStore) {
+        dispatch({ type: ActionTypes.INIT_UPDATE_SITE_SECTION });
+
+        sync(window.Berta.urls.site_sections, { path: path, value: value })
+        .then(function (response) {
+          if (response.error_message) {
+            // @TODO dispatch error message
+          } else {
+            dispatch(Actions.updateSiteSection(response));
+          }
+          onComplete(response);
+        });
+      };
+    },
+
+
+    updateSiteSection: function(resp) {
+      return {
+        type: ActionTypes.UPDATE_SITE_SECTION,
+        resp: resp
+      };
+    },
+
+
     initRenameSiteSection: function (path, value, onComplete) {
       return function (dispatch, getStore) {
         dispatch({ type: ActionTypes.INIT_UPDATE_SITE_SECTION });
@@ -57,31 +82,6 @@
             }
             onComplete(response);
           });
-      };
-    },
-
-
-    initUpdateSiteSection: function(path, value, onComplete) {
-      return function (dispatch, getStore) {
-        dispatch({ type: ActionTypes.INIT_UPDATE_SITE_SECTION });
-
-        sync(window.Berta.urls.site_sections, { path: path, value: value })
-          .then(function (response) {
-            if (response.error_message) {
-              // @TODO dispatch error message
-            } else {
-              dispatch(Actions.updateSiteSection(response));
-            }
-            onComplete(response);
-          });
-      };
-    },
-
-
-    updateSiteSection: function(resp) {
-      return {
-        type: ActionTypes.UPDATE_SITE_SECTION,
-        resp: resp
       };
     },
 
@@ -112,10 +112,27 @@
     },
 
 
-    deleteSiteSections: function (data) {
+    initOrderSiteSections: function(site, sections, onComplete) {
+      return function (dispatch, getStore) {
+        dispatch({ type: ActionTypes.INIT_ORDER_SITE_SECTIONS });
+
+        sync(window.Berta.urls.site_sections, {site: site, sections: sections}, 'PUT')
+          .then(function (response) {
+            if (response.error_message) {
+              // @TODO dispatch error message
+            } else {
+              dispatch(Actions.orderSiteSections({site: site, sections: sections}));
+            }
+            onComplete(response);
+          });
+      };
+    },
+
+
+    orderSiteSections: function(resp) {
       return {
-        type: ActionTypes.DELETE_SITE_SECTIONS,
-        data: data
+        type: ActionTypes.ORDER_SITE_SECTIONS,
+        resp: resp
       };
     },
 
@@ -151,16 +168,24 @@
     },
 
 
-    initOrderSiteSections: function(site, sections, onComplete) {
-      return function (dispatch, getStore) {
-        dispatch({ type: ActionTypes.INIT_ORDER_SITE_SECTIONS });
+    deleteSiteSections: function (data) {
+      return {
+        type: ActionTypes.DELETE_SITE_SECTIONS,
+        data: data
+      };
+    },
 
-        sync(window.Berta.urls.site_sections, {site: site, sections: sections}, 'PUT')
+
+    initOrderSiteSectionBackgrounds: function(site, section, files, onComplete) {
+      return function (dispatch, getStore) {
+        dispatch({ type: ActionTypes.INIT_ORDER_SITE_SECTION_BACKGROUNDS });
+
+        sync(window.Berta.urls.site_section_backgrounds, {site: site, section: section, files: files}, 'PUT')
           .then(function (response) {
             if (response.error_message) {
               // @TODO dispatch error message
             } else {
-              dispatch(Actions.orderSiteSections({site: site, sections: sections}));
+              dispatch(Actions.orderSiteSectionBackgrounds(response));
             }
             onComplete(response);
           });
@@ -168,9 +193,9 @@
     },
 
 
-    orderSiteSections: function(resp) {
+    orderSiteSectionBackgrounds: function(resp) {
       return {
-        type: ActionTypes.ORDER_SITE_SECTIONS,
+        type: ActionTypes.ORDER_SITE_SECTION_BACKGROUNDS,
         resp: resp
       };
     },
@@ -196,31 +221,6 @@
     deleteSiteSectionBackground: function (resp) {
       return {
         type: ActionTypes.DELETE_SITE_SECTION_BACKGROUND,
-        resp: resp
-      };
-    },
-
-
-    initOrderSiteSectionBackgrounds: function(site, section, files, onComplete) {
-      return function (dispatch, getStore) {
-        dispatch({ type: ActionTypes.INIT_ORDER_SITE_SECTION_BACKGROUNDS });
-
-        sync(window.Berta.urls.site_section_backgrounds, {site: site, section: section, files: files}, 'PUT')
-          .then(function (response) {
-            if (response.error_message) {
-              // @TODO dispatch error message
-            } else {
-              dispatch(Actions.orderSiteSectionBackgrounds(response));
-            }
-            onComplete(response);
-          });
-      };
-    },
-
-
-    orderSiteSectionBackgrounds: function(resp) {
-      return {
-        type: ActionTypes.ORDER_SITE_SECTION_BACKGROUNDS,
         resp: resp
       };
     }

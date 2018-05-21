@@ -39,6 +39,21 @@
           });
 
 
+          case ActionTypes.ORDER_SITES:
+          return state.map(function (site) {
+            var name = site.get('name');
+            if (name === '') {
+              name = '0';
+            }
+            var new_order = action.resp.indexOf(name);
+
+            if (site.get('order') !== new_order) {
+              return site.set('order', new_order);
+            }
+            return site;
+          });
+
+
         case ActionTypes.DELETE_SITE:
           console.log('Sites reducer:', action);
 
@@ -50,21 +65,6 @@
           }).map(function (site, order) {
             if (site.get('order') !== order) {
               return site.set('order', order);
-            }
-            return site;
-          });
-
-
-        case ActionTypes.ORDER_SITES:
-          return state.map(function (site) {
-            var name = site.get('name');
-            if (name === '') {
-              name = '0';
-            }
-            var new_order = action.resp.indexOf(name);
-
-            if (site.get('order') !== new_order) {
-              return site.set('order', new_order);
             }
             return site;
           });

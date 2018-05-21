@@ -5,6 +5,14 @@
 
   Object.assign(window.Actions, {
 
+    createSiteSettings: function (site_name, data) {
+      return {
+        type: ActionTypes.CREATE_SITE_SETTINGS,
+        site_name: site_name,
+        data: data
+      };
+    },
+
     initUpdateSiteSettings: function(path, value, onComplete) {
       return function (dispatch, getStore) {
         dispatch({ type: ActionTypes.INIT_UPDATE_SITE_SETTINGS });
@@ -18,14 +26,6 @@
             }
             onComplete(response);
           });
-      };
-    },
-
-    createSiteSettings: function (site_name, data) {
-      return {
-        type: ActionTypes.CREATE_SITE_SETTINGS,
-        site_name: site_name,
-        data: data
       };
     },
 
