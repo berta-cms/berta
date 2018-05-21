@@ -105,7 +105,7 @@ class SectionEntriesDataService Extends Storage {
                                         'row_gallery_padding' => ['type' => 'string', 'format' => 'css-unit'],
                                         'size' => ['type' => 'string'],
                                         'slide_numbers_visible' => ['type' => 'string', 'enum' => ['yes', 'no']],
-                                        'type' => ['type' => 'string'],  /** @todo: figure out what types can there be */
+                                        'type' => ['type' => 'string', 'enum' => ['image', 'video']],
                                     ]
                                 ]
                             ]
@@ -143,7 +143,10 @@ class SectionEntriesDataService Extends Storage {
                         'type' => 'string',
                         '$comment' => 'Version of berta, this was created in'
                     ],
-                    'last_upd_ver' => ['type' => 'string']
+                    'last_upd_ver' => [
+                        'type' => 'string',
+                        '$comment' => 'internal berta version entry is created/updated with (used for migrations)'
+                    ]
                 ]
             ]
         ]
