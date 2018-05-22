@@ -57,14 +57,20 @@ class SiteTemplateSettingsDataService extends Storage
             'background' => [
                 'type' => 'object',
                 'properties' => [
-                    'backgroundAttachment' => ['type' => 'string'],
+                    'backgroundAttachment' => ['type' => 'string', 'enum' => ['fixed', 'fill', 'scroll']],
                     'backgroundColor' => ['type' => 'string', 'format' => 'color'],
                     'backgroundImage_height' => ['type' => 'integer', 'minimum' => 0],
                     'backgroundImage_width' => ['type' => 'integer', 'minimum' => 0],
                     'backgroundImage' => ['type' => 'string'],
                     'backgroundImageEnabled' => ['type' => 'string', 'enum' => ['yes', 'no']],
-                    'backgroundPosition' => ['type' => 'string'],
-                    'backgroundRepeat' => ['type' => 'string']
+                    'backgroundPosition' => [
+                        'type' => 'string',
+                        'enum' => ['top left', 'top center', 'top right', 'center left', 'center', 'center right',
+                                   'bottom left', 'bottom center', 'bottom right']
+                    ],
+                    'backgroundRepeat' => [
+                        'type' => 'string', 'enum' => [ 'repeat', 'repeat-x', 'repeat-y', 'no-repeat']
+                    ]
                 ]
             ],
             'css' => [
@@ -77,47 +83,43 @@ class SiteTemplateSettingsDataService extends Storage
                 'type' => 'object',
                 'properties' => [
                     'color' => ['type' => 'string', 'format' => 'color'],
-                    'fontFamily' => ['type' => 'string'],
-                    'fontSize' => ['type' => 'string', 'format' => 'css-unit'],
-                    'fontStyle' => ['type' => 'string', 'enum' => ['normal', 'italic', 'oblique']],
-                    'fontVariant' => ['type' => 'string', 'enum' => [
-                            'small-caps', 'common-ligatures small-caps', 'inherit', 'initial', 'unset'
-                        ]
-                    ],
-                    'fontWeight' => ['type' => 'string'],  // Possibly add font-weight type definition
+                    'fontFamily' => ['$ref' => '#/definitions/fontFamily.df'],
+                    'fontSize' => ['$ref' => '#/definitions/cssUnit.df'],
+                    'fontStyle' => ['$ref' => '#/definitions/fontStyle.df'],
+                    'fontVariant' => ['$ref' => '#/definitions/fontVariant.df'],
+                    'fontWeight' => ['$ref' => '#/definitions/fontWeight.df'],
                     'googleFont' => ['type' => 'string'],
-                    'lineHeight' => ['type' => 'string', 'format' => 'css-unit'],
+                    'lineHeight' => ['$ref' => '#/definitions/cssUnit.df'],
                 ]
             ],
             'entryHeading' => [
                 'type' => 'object',
                 'properties' => [
                     'color' => ['type' => 'string', 'format' => 'color'],
-                    'fontFamily' => ['type' => 'string'],
-                    'fontSize' => ['type' => 'string', 'format' => 'css-unit'],
-                    'fontStyle' => ['type' => 'string', 'enum' => ['normal', 'italic', 'oblique']],
-                    'fontVariant' => ['type' => 'string', 'enum' => [
-                            'small-caps', 'common-ligatures small-caps', 'inherit', 'initial', 'unset'
-                        ]
-                    ],
-                    'fontWeight' => ['type' => 'string'],  // Possibly add font-weight type definition
+                    'fontFamily' => ['$ref' => '#/definitions/fontFamily.df'],
+                    'fontSize' => ['$ref' => '#/definitions/cssUnit.df'],
+                    'fontStyle' => ['$ref' => '#/definitions/fontStyle.df'],
+                    'fontVariant' => ['$ref' => '#/definitions/fontVariant.df'],
+                    'fontWeight' => ['$ref' => '#/definitions/fontWeight.df'],
                     'googleFont' => ['type' => 'string'],
-                    'lineHeight' => ['type' => 'string', 'format' => 'css-unit'],
-                    'margin' => ['type' => 'string'],
+                    'lineHeight' => ['$ref' => '#/definitions/cssUnit.df'],
+                    'margin' => ['$ref' => '#/definitions/cssUnit.df'],
                 ]
             ],
             'entryLayout' => [
                 'type' => 'object',
                 'properties' => [
-                    'contentWidth' => ['type' => 'string', 'format' => 'css-unit'],
-                    'defaultGalleryType' => ['type' => 'string'],
+                    'contentWidth' => ['$ref' => '#/definitions/cssUnit.df'],
+                    'defaultGalleryType' => ['type' => 'string', 'enum' => ['slideshow', 'row']],
                     'displayTags' => ['type' => 'string', 'enum' => ['yes', 'no']],
-                    'galleryMargin' => ['type' => 'string'],
-                    'galleryNavMargin' => ['type' => 'string'],
-                    'galleryPosition' => ['type' => 'string'],
-                    'margin' => ['type' => 'string'],
-                    'spaceBetween' => ['type' => 'string', 'format' => 'css-unit'],
-                    'spaceBetweenImages' => ['type' => 'string', 'format' => 'css-unit']
+                    'galleryMargin' => ['type' => ['string', 'integer']],
+                    'galleryNavMargin' => ['type' => ['string', 'integer']],
+                    'galleryPosition' => [
+                        'type' => 'string', 'enum' => ['between title/description', 'above title', 'below description']
+                    ],
+                    'margin' => ['$ref' => '#/definitions/cssUnit.df'],
+                    'spaceBetween' => ['$ref' => '#/definitions/cssUnit.df'],
+                    'spaceBetweenImages' => ['$ref' => '#/definitions/cssUnit.df']
                 ]
             ],
             'firstPage' => [
@@ -132,51 +134,35 @@ class SiteTemplateSettingsDataService extends Storage
                 'type' => 'object',
                 'properties' => [
                     'color' => ['type' => 'string', 'format' => 'color'],
-                    'fontFamily' => ['type' => 'string'],
-                    'fontSize' => ['type' => 'string', 'format' => 'css-unit-value'],
-                    'fontStyle' => [
-                        'type' => 'string', 'enum' => [  // https://developer.mozilla.org/en-US/docs/Web/CSS/font-style
-                            'normal', 'italic', 'oblique'
-                        ]
-                    ],
-                    'fontVariant' => [
-                        'type' => 'string', 'enum' => [  // https://developer.mozilla.org/en-US/docs/Web/CSS/font-variant
-                            'small-caps', 'common-ligatures small-caps', 'inherit', 'initial', 'unset'
-                        ]
-                    ],
-                    'fontWeight' => [
-                        'type' => 'string', 'enum' => [  // https://developer.mozilla.org/en-US/docs/Web/CSS/font-weight
-                            'normal', 'bold', 'bolder', 'light', 'lighter', '100', '200', '300', '400', '500', '600',
-                            '700', '800', '900', 'inherit', 'initial', 'unset'
-                        ]
-                    ],
+                    'fontFamily' => ['$ref' => '#/definitions/fontFamily.df'],
+                    'fontSize' => ['$ref' => '#/definitions/cssUnit.df'],
+                    'fontStyle' => ['$ref' => '#/definitions/fontStyle.df'],
+                    'fontVariant' => ['$ref' => '#/definitions/fontVariant.df'],
+                    'fontWeight' => ['$ref' => '#/definitions/fontWeight.df'],
                     'googleFont' => ['type' => 'string'],
-                    'lineHeight' => ['type' => 'string', 'format' => 'css-unit']
+                    'lineHeight' => ['$ref' => '#/definitions/cssUnit.df']
                 ]
             ],
             'grid' => [
                 'type' => 'object',
                 'properties' => [
-                    'contentWidth' => ['type' => 'string', 'format' => 'css-unit']
+                    'contentWidth' => ['$ref' => '#/definitions/cssUnit.df']
                 ]
             ],
             'heading' => [
                 'type' => 'object',
                 'properties' => [
                     'color' => ['type' => 'string', 'format' => 'color'],
-                    'fontFamily' => ['type' => 'string'],
-                    'fontSize' => ['type' => 'string', 'format' => 'css-unit'],
-                    'fontStyle' => ['type' => 'string', 'enum' => ['normal', 'italic', 'oblique']],
-                    'fontVariant' => ['type' => 'string', 'enum' => [
-                            'small-caps', 'common-ligatures small-caps', 'inherit', 'initial', 'unset'
-                        ]
-                    ],
-                    'fontWeight' => ['type' => 'string'],  // Possibly add font-weight type definition
+                    'fontFamily' => ['$ref' => '#/definitions/fontFamily.df'],
+                    'fontSize' => ['$ref' => '#/definitions/cssUnit.df'],
+                    'fontStyle' => ['$ref' => '#/definitions/fontStyle.df'],
+                    'fontVariant' => ['$ref' => '#/definitions/fontVariant.df'],
+                    'fontWeight' => ['$ref' => '#/definitions/fontWeight.df'],
                     'googleFont' => ['type' => 'string'],
                     'image_height' => ['type' => 'integer', 'minimum' => 0],
                     'image_width' => ['type' => 'integer', 'minimum' => 0],
                     'image' => ['type' => 'string'],
-                    'lineHeight' => ['type' => 'string', 'format' => 'css-unit'],
+                    'lineHeight' => ['$ref' => '#/definitions/cssUnit.df'],
                     'position' => [
                         'type' => 'string',
                         'enum' => ['static', 'relative', 'absolute', 'fixed', 'sticky']
@@ -190,10 +176,10 @@ class SiteTemplateSettingsDataService extends Storage
                     'colorVisited' => ['type' => 'string', 'format' => 'color'],
                     'colorHover' => ['type' => 'string', 'format' => 'color'],
                     'colorActive' => ['type' => 'string', 'format' => 'color'],
-                    'textDecorationLink' => ['type' => 'string'],
-                    'textDecorationVisited' => ['type' => 'string'],
-                    'textDecorationHover' => ['type' => 'string'],
-                    'textDecorationActive' => ['type' => 'string']
+                    'textDecorationLink' => ['$ref' => '#/definitions/textDecoration.df'],
+                    'textDecorationVisited' => ['$ref' => '#/definitions/textDecoration.df'],
+                    'textDecorationHover' => ['$ref' => '#/definitions/textDecoration.df'],
+                    'textDecorationActive' => ['$ref' => '#/definitions/textDecoration.df']
                 ]
             ],
             'menu' => [
@@ -202,43 +188,37 @@ class SiteTemplateSettingsDataService extends Storage
                     'colorActive' => ['type' => 'string', 'format' => 'color'],
                     'colorHover' => ['type' => 'string', 'format' => 'color'],
                     'colorLink' => ['type' => 'string', 'format' => 'color'],
-                    'fontFamily' => ['type' => 'string'],
-                    'fontSize' => ['type' => 'string', 'format' => 'css-unit'],
-                    'fontStyle' => ['type' => 'string', 'enum' => ['normal', 'italic', 'oblique']],
-                    'fontVariant' => ['type' => 'string', 'enum' => [
-                            'small-caps', 'common-ligatures small-caps', 'inherit', 'initial', 'unset'
-                        ]
-                    ],
-                    'fontWeight' => ['type' => 'string'],  // Possibly add font-weight type definition
+                    'fontFamily' =>['$ref' => '#/definitions/fontFamily.df'],
+                    'fontSize' => ['$ref' => '#/definitions/cssUnit.df'],
+                    'fontStyle' => ['$ref' => '#/definitions/fontStyle.df'],
+                    'fontVariant' => ['$ref' => '#/definitions/fontVariant.df'],
+                    'fontWeight' => ['$ref' => '#/definitions/fontWeight.df'],
                     'googleFont' => ['type' => 'string'],
-                    'lineHeight' => ['type' => 'string', 'format' => 'css-unit'],
-                    'margin' => ['type' => 'string'],
-                    'position' => ['type' => 'string'],
+                    'lineHeight' => ['$ref' => '#/definitions/cssUnit.df'],
+                    'margin' => ['$ref' => '#/definitions/cssUnit.df'],
+                    'position' => ['$ref' => '#/definitions/cssUnit.df'],
                     'separator' => ['type' => 'string'],
-                    'separatorDistance' => ['type' => 'string', 'format' => 'css-unit'],
-                    'textDecorationActive' => ['type' => 'string'],
-                    'textDecorationHover' => ['type' => 'string'],
-                    'textDecorationLink' => ['type' => 'string']
+                    'separatorDistance' => ['$ref' => '#/definitions/cssUnit.df'],
+                    'textDecorationActive' => ['$ref' => '#/definitions/textDecoration.df'],
+                    'textDecorationHover' => ['$ref' => '#/definitions/textDecoration.df'],
+                    'textDecorationLink' => ['$ref' => '#/definitions/textDecoration.df']
                 ]
             ],
             'pageHeading' => [
                 'type' => 'object',
                 'properties' => [
                     'color' => ['type' => 'string', 'format' => 'color'],
-                    'fontFamily' => ['type' => 'string'],
-                    'fontSize' => ['type' => 'string', 'format' => 'css-unit'],
-                    'fontStyle' => ['type' => 'string', 'enum' => ['normal', 'italic', 'oblique']],
-                    'fontVariant' => ['type' => 'string', 'enum' => [
-                            'small-caps', 'common-ligatures small-caps', 'inherit', 'initial', 'unset'
-                        ]
-                    ],
-                    'fontWeight' => ['type' => 'string'],  // Possibly add font-weight type definition
+                    'fontFamily' => ['$ref' => '#/definitions/fontFamily.df'],
+                    'fontSize' => ['$ref' => '#/definitions/cssUnit.df'],
+                    'fontStyle' => ['$ref' => '#/definitions/fontStyle.df'],
+                    'fontVariant' => ['$ref' => '#/definitions/fontVariant.df'],
+                    'fontWeight' => ['$ref' => '#/definitions/fontWeight.df'],
                     'googleFont' => ['type' => 'string'],
                     'image' => ['type' => 'string'],
                     'image_height' => ['type' => 'integer'],
                     'image_width' => ['type' => 'integer'],
                     'lineHeight' => ['type' => 'string'],
-                    'margin' => ['type' => 'string', 'format' => 'css-unit'],
+                    'margin' => ['$ref' => '#/definitions/cssUnit.df'],
                     'marginBottom' => ['type' => 'string'],
                     'marginTop' => ['type' => 'string']
                 ]
@@ -250,19 +230,19 @@ class SiteTemplateSettingsDataService extends Storage
                     'bodyMargin' => ['type' => 'string'],
                     'centered' => ['type' => 'string'],
                     'centeredContents' => ['type' => 'string'],
-                    'centeredWidth' => ['type' => 'string', 'format' => 'css-unit'],
+                    'centeredWidth' => ['$ref' => '#/definitions/cssUnit.df'],
                     'centeringGuidesColor' => ['type' => 'string'],
-                    'contentAlign' => ['type' => 'string'],
-                    'contentPosition' => ['type' => 'string'],
-                    'contentWidth' => ['type' => 'string', 'format' => 'css-unit'],
+                    'contentAlign' => ['type' => 'string', 'enum' => ['left', 'right', 'justify-left', 'justify-right']],
+                    'contentPosition' => ['type' => 'string', 'enum' => ['left', 'center', 'right']],
+                    'contentWidth' => ['$ref' => '#/definitions/cssUnit.df'],
                     'headingMargin' => ['type' => 'string'],
-                    'leftColumnWidth' => ['type' => 'string', 'format' => 'css-unit'],
+                    'leftColumnWidth' => ['$ref' => '#/definitions/cssUnit.df'],
                     'mashUpColumns' => ['type' => 'integer', 'minimum' => 0],
                     'menuMargin' => ['type' => 'string'],
-                    'paddingLeft' => ['type' => 'string', 'format' => 'css-unit'],
-                    'paddingTop' => ['type' => 'string', 'format' => 'css-unit'],
-                    'responsive' => ['type' => 'string'],
-                    'siteMenuMargin' => ['type' => 'string', 'format' => 'css-unit']
+                    'paddingLeft' => ['$ref' => '#/definitions/cssUnit.df'],
+                    'paddingTop' => ['$ref' => '#/definitions/cssUnit.df'],
+                    'responsive' => ['type' => 'string', 'enum' => ['no', 'yes']],
+                    'siteMenuMargin' => ['$ref' => '#/definitions/cssUnit.df']
                 ]
             ],
             'sideBar' => [
@@ -270,64 +250,103 @@ class SiteTemplateSettingsDataService extends Storage
                     'properties' => [
                     'backgroundColor' => ['type' => 'string', 'format' => 'color'],
                     'color' => ['type' => 'string', 'format' => 'color'],
-                    'fontFamily' => ['type' => 'string'],
-                    'fontSize' => ['type' => 'string', 'format' => 'css-unit'],
-                    'fontStyle' => ['type' => 'string', 'enum' => ['normal', 'italic', 'oblique']],
-                    'fontVariant' => ['type' => 'string', 'enum' => [
-                            'small-caps', 'common-ligatures small-caps', 'inherit', 'initial', 'unset'
-                        ]
-                    ],
-                    'fontWeight' => ['type' => 'string'],  // Possibly add font-weight type definition
+                    'fontFamily' => ['$ref' => '#/definitions/fontFamily.df'],
+                    'fontSize' => ['$ref' => '#/definitions/cssUnit.df'],
+                    'fontStyle' => ['$ref' => '#/definitions/fontStyle.df'],
+                    'fontVariant' => ['$ref' => '#/definitions/fontVariant.df'],
+                    'fontWeight' => ['$ref' => '#/definitions/fontWeight.df'],
                     'googleFont' => ['type' => 'string'],
                     'image' => ['type' => 'string'],
                     'image_height' => ['type' => 'integer'],
                     'image_width' => ['type' => 'integer'],
-                    'lineHeight' => ['type' => 'string', 'format' => 'css-unit'],
-                    'marginBottom' => ['type' => 'string', 'format' => 'css-unit'],
-                    'marginLeft' => ['type' => 'string', 'format' => 'css-unit'],
-                    'marginTop' => ['type' => 'string', 'format' => 'css-unit'],
+                    'lineHeight' => ['$ref' => '#/definitions/cssUnit.df'],
+                    'marginBottom' => ['$ref' => '#/definitions/cssUnit.df'],
+                    'marginLeft' => ['$ref' => '#/definitions/cssUnit.df'],
+                    'marginTop' => ['$ref' => '#/definitions/cssUnit.df'],
                     'transparent' => ['type' => 'string', 'enum' => ['yes', 'no']],
-                    'width' => ['type' => 'string', 'format' => 'css-unit']
+                    'width' => ['$ref' => '#/definitions/cssUnit.df']
                 ]
             ],
             'subMenu' => [
                 'type' => 'object',
                 'properties' => [
-                    'fontFamily' => ['type' => 'string'],
-                    'fontSize' => ['type' => 'string', 'format' => 'css-unit'],
-                    'fontStyle' => ['type' => 'string', 'enum' => ['normal', 'italic', 'oblique']],
-                    'fontVariant' => ['type' => 'string', 'enum' => [
-                            'small-caps', 'common-ligatures small-caps', 'inherit', 'initial', 'unset'
-                        ]
-                    ],
-                    'fontWeight' => ['type' => 'string'],  // Possibly add font-weight type definition
+                    'fontFamily' => ['$ref' => '#/definitions/fontFamily.df'],
+                    'fontSize' => ['$ref' => '#/definitions/cssUnit.df'],
+                    'fontStyle' => ['$ref' => '#/definitions/fontStyle.df'],
+                    'fontVariant' => ['$ref' => '#/definitions/fontVariant.df'],
+                    'fontWeight' => ['$ref' => '#/definitions/fontWeight.df'],
                     'googleFont' => ['type' => 'string'],
-                    'lineHeight' => ['type' => 'string', 'format' => 'css-unit'],
-                    'margin' => ['type' => 'string'],
+                    'lineHeight' => ['$ref' => '#/definitions/cssUnit.df'],
+                    'margin' => ['$ref' => '#/definitions/cssUnit.df'],
                     'separator' => ['type' => 'string'],
-                    'separatorDistance' => ['type' => 'string', 'format' => 'css-unit']
+                    'separatorDistance' => ['$ref' => '#/definitions/cssUnit.df']
                 ]
             ],
             'tagsMenu' => [
                 'type' => 'object',
                 'properties' => [
-                    'fontFamily' => ['type' => 'string'],
+                    'fontFamily' => ['$ref' => '#/definitions/fontFamily.df'],
                     'googleFont' => ['type' => 'string'],
-                    'fontSize' => ['type' => 'string', 'format' => 'css-unit'],
-                    'fontWeight' => ['type' => 'string'],  // Possibly add font-weight type definition
-                    'fontStyle' => ['type' => 'string', 'enum' => ['normal', 'italic', 'oblique']],
-                    'lineHeight' => ['type' => 'string', 'format' => 'css-unit'],
+                    'fontSize' => ['$ref' => '#/definitions/cssUnit.df'],
+                    'fontWeight' => ['$ref' => '#/definitions/fontWeight.df'],
+                    'fontStyle' => ['$ref' => '#/definitions/fontStyle.df'],
+                    'lineHeight' => ['$ref' => '#/definitions/cssUnit.df'],
                     'colorLink' => ['type' => 'string', 'format' => 'color'],
                     'colorHover' => ['type' => 'string', 'format' => 'color'],
                     'colorActive' => ['type' => 'string', 'format' => 'color'],
-                    'textDecorationLink' => ['type' => 'string'],
-                    'textDecorationHover' => ['type' => 'string'],
-                    'textDecorationActive' => ['type' => 'string'],
+                    'textDecorationLink' => ['$ref' => '#/definitions/textDecoration.df'],
+                    'textDecorationHover' => ['$ref' => '#/definitions/textDecoration.df'],
+                    'textDecorationActive' => ['$ref' => '#/definitions/textDecoration.df'],
                     'x' => ['type' => 'integer'],
                     'y' => ['type' => 'integer'],
                     'alwaysOpen' => ['type' => 'string', 'enum' => ['yes', 'no']],
                     'hidden' => ['type' => 'string', 'enum' => ['yes', 'no']]
                 ]
+            ]
+        ],
+        'definitions' => [
+            /**
+             * Define these types only once, and reuse them, because they are used many times.
+             * - The ".df" suffix is for easier searching, it is not required by the json schema.
+             * - Enum values are extracted from "template.conf.php"
+             */
+            'fontWeight.df' => [
+                'type' => 'string',
+                'enum' => ['normal', 'bold', 'bolder', 'light', 'lighter', 'inherit']
+            ],
+            'fontFamily.df' => [
+                'type' => 'string',
+                'enum' => [
+                    'Arial, sans-serif',
+                    'Helvetica, Arial, sans-serif',
+                    '"Helvetica Neue", Helvetica, Arial, sans-serif',
+                    '"Arial Black", Gadget, sans-serif',
+                    '"Comic Sans MS", cursive',
+                    '"Courier New", Courier, monospace',
+                    'Georgia, "Times New Roman", Times, serif',
+                    'Impact, Charcoal, sans-serif',
+                    '"Lucida Console", Monaco, monospace',
+                    '"Lucida Sans Unicode", "Lucida Grande", sans-serif',
+                    '"Palatino Linotype", "Book Antiqua", Palatino, serif',
+                    'Tahoma, Geneva, sans-serif',
+                    '"Times New Roman", Times, serif',
+                    '"Trebuchet MS", Helvetica, sans-serif',
+                    'Verdana, Geneva, sans-serif'
+                ]
+            ],
+            'fontStyle.df' => [  // https://developer.mozilla.org/en-US/docs/Web/CSS/font-style
+                'type' => 'string', 'enum' => ['normal', 'italic', 'oblique', 'inherit']
+            ],
+            'fontVariant.df' => [
+                'type' => 'string', 'enum' => ['small-caps', 'inherit', 'normal']
+            ],
+            'textDecoration.df' => [
+                'type' => 'string',
+                'enum' => ['none', 'underline', 'overline', 'line-through']
+            ],
+            'cssUnit.df' => [
+                'type' => ['string', 'integer'],
+                'format' => 'css-unit'
             ]
         ]
     ];
