@@ -87,7 +87,9 @@ class SectionEntriesDataService Extends Storage {
                                                     'height' => ['type' => 'integer', 'minimum' => 0],
                                                     'poster_frame' => ['type' => 'string'],
                                                     'src' => ['type' => 'string'],
-                                                    'type' => ['type' => 'string'],
+                                                    'type' => [
+                                                        'type' => ['type' => 'string', 'enum' => ['image', 'video']],
+                                                    ],
                                                     'width' => ['type' => 'integer', 'minimum' => 0]
                                                 ],
                                                 'required' => ['src', 'type']
@@ -101,11 +103,20 @@ class SectionEntriesDataService Extends Storage {
                                         'autoplay' => ['type' => 'integer'],
                                         'fullscreen' => ['type' => 'string', 'enum' => ['yes', 'no']],
                                         'link_address' => ['type' => 'string'],
-                                        'linkTarget' => ['type' => 'string'],
+                                        'linkTarget' => [
+                                            'type' => 'string',
+                                            'enum' => ['_self', '_blank']
+                                        ],
                                         'row_gallery_padding' => ['type' => 'string', 'format' => 'css-unit'],
-                                        'size' => ['type' => 'string'],
+                                        'size' => [
+                                            'type' => 'string',
+                                            'enum' => ['large', 'medium', 'small']
+                                        ],
                                         'slide_numbers_visible' => ['type' => 'string', 'enum' => ['yes', 'no']],
-                                        'type' => ['type' => 'string', 'enum' => ['image', 'video']],
+                                        'type' => [
+                                            'type' => 'string',
+                                            'enum' => ['slideshow', 'row', 'column', 'pile', 'link']
+                                        ]
                                     ]
                                 ]
                             ]
