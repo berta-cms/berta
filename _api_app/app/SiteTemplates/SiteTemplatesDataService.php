@@ -4,6 +4,17 @@ namespace App\SiteTemplates;
 
 use App\Shared\I18n;
 
+/**
+ * @class SiteTemplatesDataService
+ *
+ * This class provides templates from which Berta sites are built. Templates are readonly data structures
+ * representing \App\Site\SiteTemplateSettings. SiteTemplateSettings for any specific site are generated according
+ * to it's template.
+ *
+ * Template configurations can be found at `berta/_templates/[template name]/template.conf.php`.
+ * @todo: Templates should be moved to this folder.
+ * @todo: Template settings should be moved to XML so we have everything in a standardized way.
+ */
 class SiteTemplatesDataService {
     private $TEMPLATE_ROOT;
 
