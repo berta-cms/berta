@@ -110,7 +110,23 @@ class SiteTemplatesDataService
             'css' => [
                 'type' => 'object',
                 'properties' => [
-                    'customCSS' => ['type' => 'string']
+                    '_' => [
+                        'type' => 'object',
+                        'properties' => [
+                            'title' => ['type' => 'string']
+                        ]
+                    ],
+                    'customCSS' => [
+                        'type' => 'object',
+                        'properties' => [
+                            "format" => ['type' => 'string'],
+                            "allow_blank" => ['type' => 'boolean'],
+                            "default" => ['type' => 'string'],
+                            "html_entities" => ['type' => 'boolean'],
+                            "title" => ['type' => 'string'],
+                            "description" => ['type' => 'string']
+                        ]
+                    ]
                 ]
             ],
             'entryFooter' => [
