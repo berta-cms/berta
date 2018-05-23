@@ -19,10 +19,8 @@
 $app->group(['prefix' => 'v1', 'namespace' => 'App'], function() use ($app) {
     $app->get('state/{site}', 'Http\Controllers\StateController@get');
 
-    // @TODO remove this route later, user for testing only
+    // @TODO remove this route later, used for testing only
     $app->get('render-entry', function() {
-
-
         $entriesDataService = new App\Sites\Sections\Entries\SectionEntriesDataService('', 'section-one');
         $entry = current($entriesDataService->get()['entry']);
 
