@@ -15,14 +15,17 @@ use App\Shared\I18n;
  * @todo: Templates should be moved to this folder.
  * @todo: Template settings should be moved to XML so we have everything in a standardized way.
  */
-class SiteTemplatesDataService {
+class SiteTemplatesDataService
+{
     private $TEMPLATE_ROOT;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->TEMPLATE_ROOT = realpath(__DIR__ . '/../../../_templates');
     }
 
-    public function get($lang = 'en') {
+    public function get($lang = 'en')
+    {
         $ret = [];
         $sectionTypes = [];
         $templateConf = [];
@@ -51,7 +54,8 @@ class SiteTemplatesDataService {
         return $ret;
     }
 
-    public function getAllTemplates() {
+    public function getAllTemplates()
+    {
         $returnArr = [];
         $d = dir($this->TEMPLATE_ROOT);
 
