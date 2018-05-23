@@ -182,4 +182,19 @@ class Helpers
         return strtolower($text);
     }
 
+    /**
+     * Return list of tags as string
+     */
+    public static function createEntryTagList($tags)
+    {
+        if (!$tags) {
+            return '';
+        }
+        if (is_array($tags)) {
+            return implode(', ', $tags);
+        }
+
+        return $tags;
+    }
+
 }

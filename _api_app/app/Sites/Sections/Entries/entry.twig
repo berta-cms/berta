@@ -1,3 +1,16 @@
 <div id="{{ entryId }}" class="{{ classList }}"{% if styleList %} style="{{ styleList }}"{% endif %}>
+
+  {% if isEditMode %}
+		<a class="xCreateNewEntry xPanel xAction-entryCreateNew" href="#"><span>create new entry here</span></a>
+      {# Editor wrapper element #}
+		  <div class="xEntryEditWrap">
+        {% include 'Sites/Sections/Entries/_entryEditorHeader' %}
+  {% endif %}
+
   {{ content.description|raw }}
+
+  {# Close editor wrapper element #}
+  {% if isEditMode %}
+    </div>
+  {% endif %}
 </div>

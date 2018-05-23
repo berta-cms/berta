@@ -36,6 +36,8 @@ $app->group(['prefix' => 'v1', 'namespace' => 'App'], function() use ($app) {
             'section' => $section,
             'siteSettings' => $siteSettingsDataService->get(),
             'siteTemplateSettings' => $siteTemplateSettingsDataService->get(),
+            'isEditMode' => true,
+            'isShopAvailable' => true,
         ]);
 
         return $entryRenderService->render();
