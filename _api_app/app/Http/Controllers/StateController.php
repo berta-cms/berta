@@ -41,11 +41,11 @@ class StateController extends Controller
             $state['site_sections'] = array_merge($state['site_sections'], $sectionsDataService->state());
 
             foreach ($allTemplates as $template) {
-                $templateSettings = new SiteTemplateSettingsDataService(
+                $templateSettingsDataService = new SiteTemplateSettingsDataService(
                     $siteName,
                     $template
                 );
-                $templateSettings = $templateSettings->get();
+                $templateSettings = $templateSettingsDataService->get();
 
                 if (!($templateSettings)) {
                     $templateSettings = (object) null;
