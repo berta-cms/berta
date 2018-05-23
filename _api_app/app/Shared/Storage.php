@@ -466,6 +466,7 @@ class Storage {
             $json_schema = Helpers::arrayToJsonObject($class::$JSON_SCHEMA);
             $schema = Schema::import($json_schema);
             $schema->in($data);
+        /** @todo: Catch exeption while validating  */
         } catch (\Exception $e) {
             \Log::warning(print_r($e, true));
             return false;
