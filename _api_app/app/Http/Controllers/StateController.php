@@ -57,21 +57,17 @@ class StateController extends Controller
             if (!empty($state['site_sections'][$siteName]['section'])) {
                 foreach ($state['site_sections'][$siteName]['section'] as $section) {
                     $templateSettings = $section['name'];
-                    $entries = new SectionEntriesDataService($siteName, $templateSettings);
-                    $state['section_entries'][$siteName][$templateSettings] = $entries->get();
-                    unset($entries);
+                    $entriesDataService = new SectionEntriesDataService($siteName, $templateSettings);
+                    $state['section_entries'][$siteName][$templateSettings] = $entriesDataService->get();
+                    unset($entriesDataService);
                 }
             } else {
                 $state['section_entries'][$siteName] = [];
             }
 
-            $tags = new SectionTagsDataService($siteName);
-            $state['section_tags'][$siteName] = $tags->get();
-            unset($sections, $tags);
-
-            if (isset($site_template_settings)) {
-                unset($site_template_settings);
-            }
+            $tagsDataService = new SectionTagsDataService($siteName);
+            $state['section_tags'][$siteName] = $tagsDataService->get();
+            unset($tagsDataService, $templateSettingsDataService);
         }
 
         $lang = 'en';
