@@ -19,25 +19,91 @@ class SiteTemplatesDataService
 {
     /** @todo update schema to reflect input types etc. */
     public static $JSON_SCHEMA = [
-        '$schema' => "http://json-schema.org/draft-06/schema#",
+        '$schema' => 'http://json-schema.org/draft-06/schema#',
         'type' => 'object',
         'properties' => [
             'background' => [
                 'type' => 'object',
                 'properties' => [
-                    'backgroundAttachment' => ['type' => 'string', 'enum' => ['fixed', 'fill', 'scroll']],
-                    'backgroundColor' => ['type' => 'string', 'format' => 'color'],
-                    'backgroundImage_height' => ['type' => 'integer', 'minimum' => 0],
-                    'backgroundImage_width' => ['type' => 'integer', 'minimum' => 0],
-                    'backgroundImage' => ['type' => 'string'],
-                    'backgroundImageEnabled' => ['type' => 'string', 'enum' => ['yes', 'no']],
+                    '_' => [
+                        'type' => 'object',
+                        'properties' => [
+                            'title' => ['type' => 'string']
+                        ]
+                    ],
+                    'backgroundAttachment' => [
+                        'type' => 'object',
+                        'properties' => [
+                            'format' => ['type' => 'string'],
+                            'value' => [
+                                'type' => 'object',
+                                'additionalProperties' => ['type' => 'string']
+                            ],  /** @todo maybe add the properties */
+                            'default' => ['type' => 'string'],
+                            'title' => ['type' => 'string'],
+                            'description' => ['type' => 'string']
+                        ],
+                    ],
+                    'backgroundColor' => [
+                        'type' => 'object',
+                        'properties' => [
+                            'format' => ['type' => 'string'],
+                            'default' => ['type' => 'string', 'format' => 'color'],
+                            'title' => ['type' => 'string'],
+                            'description' => ''
+                        ]
+                    ],
+                    'backgroundImage' => [
+                        'type' => 'object',
+                        'properties' => [
+                            'format' => ['type' => 'string'],
+                            'default' => ['type' => 'string'],
+                            'min_width' => ['type' => 'number'],
+                            'min_height' => ['type' => 'number'],
+                            'max_width' => ['type' => 'number'],
+                            'max_height' => ['type' => 'number'],
+                            'title' => ['type' => 'string'],
+                            'description' => ['type' => 'string']
+                        ]
+                    ],
+                    'backgroundImageEnabled' => [
+                        'type' => 'object',
+                        'properties' => [
+                            'format' => ['type' => 'string'],
+                            'values' => [
+                                'type' => 'array',
+                                'items' => ['type' => 'string']
+                            ],
+                            'default' => ['type' => 'string'],
+                            'title' => ['type' => 'string'],
+                            'description' => ['type' => 'string']
+                        ]
+                    ],
                     'backgroundPosition' => [
-                        'type' => 'string',
-                        'enum' => ['top left', 'top center', 'top right', 'center left', 'center', 'center right',
-                                   'bottom left', 'bottom center', 'bottom right']
+                        'type' => 'object',
+                        'properties' => [
+                            'format' => ['type' => 'string'],
+                            'values' => [
+                                'type' => 'array',
+                                'items' => ['type' => 'string']
+                            ],
+                            'default' => ['type' => 'string'],
+                            'title' => ['type' => 'string'],
+                            'description' => ['type' => 'string']
+                        ]
                     ],
                     'backgroundRepeat' => [
-                        'type' => 'string', 'enum' => [ 'repeat', 'repeat-x', 'repeat-y', 'no-repeat']
+                        'type' => 'object',
+                        'properties' => [
+                            'format' => ['type' => 'string'],
+                            'values' => [
+                                'type' => 'object',
+                                'additionalProperties' => ['type' => 'string']
+                            ],
+                            'default' => ['type' => 'string'],
+                            'title' => ['type' => 'string'],
+                            'description' => ['type' => 'string']
+                        ]
                     ]
                 ]
             ],
@@ -156,7 +222,7 @@ class SiteTemplatesDataService
                     'colorActive' => ['type' => 'string', 'format' => 'color'],
                     'colorHover' => ['type' => 'string', 'format' => 'color'],
                     'colorLink' => ['type' => 'string', 'format' => 'color'],
-                    'fontFamily' =>['$ref' => '#/definitions/fontFamily.df'],
+                    'fontFamily' => ['$ref' => '#/definitions/fontFamily.df'],
                     'fontSize' => ['$ref' => '#/definitions/cssUnit.df'],
                     'fontStyle' => ['$ref' => '#/definitions/fontStyle.df'],
                     'fontVariant' => ['$ref' => '#/definitions/fontVariant.df'],
