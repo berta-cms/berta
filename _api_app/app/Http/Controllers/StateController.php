@@ -14,10 +14,10 @@ class StateController extends Controller
 {
     public function get($site) {
         $site = $site === '0' ? '' : $site;
-        $sites = new SitesDataService();
-        $siteSettings = new SiteSettingsDataService();
-        $siteTemplates = new SiteTemplatesDataService();
-        $allTemplates = $siteTemplates->getAllTemplates();
+        $sitesDataService = new SitesDataService();
+        $siteSettingsDataService = new SiteSettingsDataService();
+        $siteTemplatesDataService = new SiteTemplatesDataService();
+        $allTemplates = $siteTemplatesDataService->getAllTemplates();
 
         $state['urls'] = [
             'sites' => route('sites'),
@@ -27,7 +27,7 @@ class StateController extends Controller
             'siteSectionsReset' => route('site_sections_reset'),
             'siteSectionBackgrounds' => route('site_section_backgrounds')
         ];
-        $state['sites'] = $sites->state();
+        $state['sites'] = $sitesDataService->state();
         $state['site_settings'] = array();
         $state['site_sections'] = array();
         $state['section_entries'] = array();
@@ -36,7 +36,7 @@ class StateController extends Controller
         foreach($state['sites'] as $_site) {
             $site_name = $_site['name'];
             $sectionsDataService = new SiteSectionsDataService($site_name);
-            $site_settings = $siteSettings->getSettingsBySite($site_name);
+            $site_settings = $siteSettingsDataService->getSettingsBySite($site_name);
             $state['site_settings'][$site_name] = $site_settings;
             $state['site_sections'] = array_merge($state['site_sections'], $sectionsDataService->state());
 
@@ -81,8 +81,8 @@ class StateController extends Controller
             $lang = $state['site_settings'][$site]['language']['language'];
         }
 
-        $state['site_templates'] = $siteTemplates->get($lang);
-        unset($sites);
+        $state['site_templates'] = $siteTemplatesDataService->get($lang);
+        unset($sitesDataService);
 
         return response()->json($state);
     }
