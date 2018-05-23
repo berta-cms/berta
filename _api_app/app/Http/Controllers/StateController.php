@@ -34,39 +34,39 @@ class StateController extends Controller
         $state['section_tags'] = [];
 
         foreach ($state['sites'] as $_site) {
-            $site_name = $_site['name'];
-            $sectionsDataService = new SiteSectionsDataService($site_name);
-            $site_settings = $siteSettingsDataService->getSettingsBySite($site_name);
-            $state['site_settings'][$site_name] = $site_settings;
+            $siteName = $_site['name'];
+            $sectionsDataService = new SiteSectionsDataService($siteName);
+            $siteSettings = $siteSettingsDataService->getSettingsBySite($siteName);
+            $state['site_settings'][$siteName] = $siteSettings;
             $state['site_sections'] = array_merge($state['site_sections'], $sectionsDataService->state());
 
             foreach ($allTemplates as $template) {
-                $template_settings = new SiteTemplateSettingsDataService(
-                    $site_name,
+                $templateSettings = new SiteTemplateSettingsDataService(
+                    $siteName,
                     $template
                 );
-                $template_settings = $template_settings->get();
+                $templateSettings = $templateSettings->get();
 
-                if (!($template_settings)) {
-                    $template_settings = (object) null;
+                if (!($templateSettings)) {
+                    $templateSettings = (object) null;
                 }
 
-                $state['site_template_settings'][$site_name][$template] = $template_settings;
+                $state['site_template_settings'][$siteName][$template] = $templateSettings;
             }
 
-            if (!empty($state['site_sections'][$site_name]['section'])) {
-                foreach ($state['site_sections'][$site_name]['section'] as $section) {
-                    $section_name = $section['name'];
-                    $entries = new SectionEntriesDataService($site_name, $section_name);
-                    $state['section_entries'][$site_name][$section_name] = $entries->get();
+            if (!empty($state['site_sections'][$siteName]['section'])) {
+                foreach ($state['site_sections'][$siteName]['section'] as $section) {
+                    $templateSettings = $section['name'];
+                    $entries = new SectionEntriesDataService($siteName, $templateSettings);
+                    $state['section_entries'][$siteName][$templateSettings] = $entries->get();
                     unset($entries);
                 }
             } else {
-                $state['section_entries'][$site_name] = [];
+                $state['section_entries'][$siteName] = [];
             }
 
-            $tags = new SectionTagsDataService($site_name);
-            $state['section_tags'][$site_name] = $tags->get();
+            $tags = new SectionTagsDataService($siteName);
+            $state['section_tags'][$siteName] = $tags->get();
             unset($sections, $tags);
 
             if (isset($site_template_settings)) {
