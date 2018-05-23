@@ -4,7 +4,7 @@
   window.reducers = window.reducers || {};
 
   Object.assign(window.reducers, {
-    tags: function(state, action) {
+    sectionTags: function(state, action) {
       var tag_idx, tags, site_name = [];
 
       if (state === undefined) {
@@ -15,10 +15,10 @@
         case ActionTypes.SET_STATE:
           console.log('Tags reducer:', action);
 
-          return Immutable.fromJS(action.state.tags);
+          return Immutable.fromJS(action.state.section_tags);
 
 
-        case ActionTypes.ADD_SITE_TAGS:
+        case ActionTypes.ADD_SITE_SECTIONS_TAGS:
           return state.set(action.data.site_name, action.data.tags);
 
 
@@ -58,6 +58,17 @@
           });
 
 
+        case ActionTypes.RENAME_SECTION_TAGS_SITENAME:
+          var section_old_name = action.data.site.get('name');
+
+          return state.mapKeys(function (k) {
+            if (k === section_old_name) {
+              return action.data.site_name;
+            }
+            return k;
+          });
+
+
         case ActionTypes.DELETE_SECTION_TAGS:
           site_name = action.data.site_name === '0' ? '' : action.data.site_name;
 
@@ -73,75 +84,11 @@
           });
 
 
-        case ActionTypes.RENAME_TAGS_SITENAME:
-          var section_old_name = action.data.site.get('name');
-
-          return state.mapKeys(function (k) {
-            if (k === section_old_name) {
-              return action.data.site_name;
-            }
-            return k;
-          });
-
-
-        case ActionTypes.SITE_TAGS_DELETED:
+        case ActionTypes.DELETE_SITE_SECTIONS_TAGS:
           return state.filter(function (tags, site_name) {
             return site_name !== action.data.site_name;
           });
 
-
-        // case ActionTypes.SECTION_CREATED:
-        //   tags = state.getIn([action.resp.site, 'section']).toJSON();
-
-        //   if (action.resp.tags.len > 0) {
-        //     console.log('Tags reducer:', action);
-        //     tags.push(action.resp.tags);
-
-        //     return state.setIn(
-        //       [action.resp.site, 'section'],
-        //       Immutable.fromJS(tags)
-        //     );
-        //   }
-
-        //   return state;
-
-        // case ActionTypes.SECTION_UPDATED:
-        //   if (action.resp.old_name) {
-        //     tags = state.getIn([action.resp.site, 'section']).toJSON();
-        //     tag_idx = tags.findIndex(function (tag, idx) {
-        //       return tag['@attributes'].name === action.resp.old_name;
-        //     });
-
-        //     if (tag_idx > -1) {
-        //       console.log('Tags reducer:', action);
-        //       tags[tag_idx]['@attributes'].name = action.resp.section.name;
-
-        //       return state.setIn(
-        //         [action.resp.site, 'section'],
-        //         Immutable.fromJS(tags)
-        //       );
-        //     }
-        //   }
-
-        //   return state;
-
-        // case ActionTypes.SECTION_DELETED:
-        //   tags = state.getIn([action.resp.site, 'section']).toJSON();
-        //   tag_idx = tags.findIndex(function (tag, idx) {
-        //     return tag['@attributes'].name === action.resp.name;
-        //   });
-
-        //   if (tag_idx > -1) {
-        //     console.log('Tags reducer:', action);
-        //     tags.splice(tag_idx, 1);
-
-        //     return state.setIn(
-        //       [action.resp.site, 'section'],
-        //       Immutable.fromJS(tags)
-        //     );
-        //   }
-
-        //   return state;
 
         default:
           return state;

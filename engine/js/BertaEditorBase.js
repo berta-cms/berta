@@ -333,11 +333,11 @@ var BertaEditorBase = new Class({
                   path_arr = path.split('/');
 
                   if (path_arr[1] === 'settings') {
-                    updateAction = Actions.updateSettings;
+                    updateAction = Actions.initUpdateSiteSettings;
                   }
 
                   if (path_arr[1] === 'site_template_settings') {
-                    updateAction = Actions.updateSiteTemplateSettings;
+                    updateAction = Actions.initUpdateSiteTemplateSettings;
                   }
 
                   if (typeof updateAction === 'function') {
@@ -727,11 +727,11 @@ var BertaEditorBase = new Class({
       path_arr = path.split('/');
 
       if (path_arr[1] === 'settings') {
-        updateAction = Actions.updateSettings;
+        updateAction = Actions.initUpdateSiteSettings;
       }
 
       if (path_arr[1] === 'site_template_settings') {
-        updateAction = Actions.updateSiteTemplateSettings;
+        updateAction = Actions.initUpdateSiteTemplateSettings;
       }
 
       var onComplete = function () {
@@ -956,33 +956,33 @@ var BertaEditorBase = new Class({
           if (prop === 'name') {
             updateAction = Actions.renameSite;
           } else {
-            updateAction = Actions.updateSite;
+            updateAction = Actions.initUpdateSite;
           }
         }
 
         if (path_arr[1] === 'settings') {
-          updateAction = Actions.updateSettings;
+          updateAction = Actions.initUpdateSiteSettings;
         }
 
         if (path_arr[1] === 'site_template_settings') {
-          updateAction = Actions.updateSiteTemplateSettings;
+          updateAction = Actions.initUpdateSiteTemplateSettings;
         }
 
         if (path_arr[1] === 'section') {
           prop = path_arr.pop();
 
           if (prop === 'title') {
-            updateAction = Actions.renameSection;
+            updateAction = Actions.initRenameSiteSection;
           } else {
-            updateAction = Actions.updateSection;
+            updateAction = Actions.initUpdateSiteSection;
           }
 
           if (prop === 'type') {
             new_callback = function(resp, respRaw) {
               var site = getCurrentSite();
               var state = redux_store.getState();
-              var template = state.site_settings.toJSON()[site].template.template;
-              var sectionTypes = state.site_templates
+              var template = state.siteSettings.toJSON()[site].template.template;
+              var sectionTypes = state.siteTemplates
                     .toJSON()[template]
                     .sectionTypes;
               var type = resp.section['@attributes'].type ? resp.section['@attributes'].type : 'default';
@@ -992,7 +992,7 @@ var BertaEditorBase = new Class({
                 site,
                 resp.order,
                 resp.section,
-                state.site_template_settings.toJSON()[site][template],
+                state.siteTemplateSettings.toJSON()[site][template],
                 type_params,
                 'xSection-' + resp.section['name'] + ' xSectionField'
               );
@@ -1210,7 +1210,7 @@ var BertaEditorBase = new Class({
 
       var path = el.data('path');
 
-      redux_store.dispatch(Actions.resetSection(
+      redux_store.dispatch(Actions.resetSiteSection(
         path,
         function(resp) {
           if(!resp) {

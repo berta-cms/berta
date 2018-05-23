@@ -18,13 +18,13 @@
           return Immutable.fromJS(action.state.sites);
 
 
-        case ActionTypes.SITE_CREATED:
+        case ActionTypes.CREATE_SITE:
           console.log('Sites reducer:', action);
 
           return state.set(state.size, Immutable.fromJS(action.data));
 
 
-        case ActionTypes.SITE_UPDATED:
+        case ActionTypes.UPDATE_SITE:
           console.log('Sites reducer:', action);
           path = action.resp.path.split('/');
           order = parseInt(path[1], 10);
@@ -39,7 +39,22 @@
           });
 
 
-        case ActionTypes.SITE_DELETED:
+          case ActionTypes.ORDER_SITES:
+          return state.map(function (site) {
+            var name = site.get('name');
+            if (name === '') {
+              name = '0';
+            }
+            var new_order = action.resp.indexOf(name);
+
+            if (site.get('order') !== new_order) {
+              return site.set('order', new_order);
+            }
+            return site;
+          });
+
+
+        case ActionTypes.DELETE_SITE:
           console.log('Sites reducer:', action);
 
           // Filter out deleted site
@@ -50,21 +65,6 @@
           }).map(function (site, order) {
             if (site.get('order') !== order) {
               return site.set('order', order);
-            }
-            return site;
-          });
-
-
-        case ActionTypes.SITES_ORDERED:
-          return state.map(function (site) {
-            var name = site.get('name');
-            if (name === '') {
-              name = '0';
-            }
-            var new_order = action.resp.indexOf(name);
-
-            if (site.get('order') !== new_order) {
-              return site.set('order', new_order);
             }
             return site;
           });

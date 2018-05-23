@@ -120,7 +120,7 @@ var BertaEditor_Multisite = new Class({
 			return element.getClassStoredValue('xSite');
 		});
 
-    redux_store.dispatch(Actions.orderSites(
+    redux_store.dispatch(Actions.initOrderSites(
       newOrder,
       function (resp) {
         this.updatePathParams();
@@ -162,7 +162,7 @@ var BertaEditor_Multisite = new Class({
 		if(confirm('Berta asks:\n\nAre you sure you want to delete this site? All its content will be lost... FOREVAAA!')) {
 			if(confirm('Berta asks again:\n\nAre you really sure?')) {
 				this.sitesEditor.addClass('xSaving');
-        redux_store.dispatch(Actions.deleteSite(
+        redux_store.dispatch(Actions.initdeleteSite(
           siteName,
           function(resp) {
             if(!resp) {
@@ -184,7 +184,7 @@ var BertaEditor_Multisite = new Class({
 
 	siteCreateNew: function(site) {
 		this.sitesEditor.addClass('xSaving');
-    redux_store.dispatch(Actions.createSite(
+    redux_store.dispatch(Actions.initCreateSite(
       this.cloneSite,
       // @@@:TODO: Remove this callback, when migration to ReactJS is complete
       function(resp) {

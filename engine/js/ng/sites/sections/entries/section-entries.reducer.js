@@ -4,7 +4,7 @@
   window.reducers = window.reducers || {};
 
   Object.assign(window.reducers, {
-    entries: function(state, action) {
+    sectionEntries: function(state, action) {
       var entry, entries = [];
 
       if (state === undefined) {
@@ -15,7 +15,7 @@
 
         case ActionTypes.SET_STATE:
           console.log('Entries reducer:', action);
-          return Immutable.fromJS(action.state.entries);
+          return Immutable.fromJS(action.state.section_entries);
 
         // case ActionTypes.SECTION_CREATED:
         //   console.log('Entries reducer:', action);

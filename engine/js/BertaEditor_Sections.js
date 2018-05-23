@@ -134,7 +134,7 @@ var BertaEditor_Sections = new Class({
 		});
     var site = getCurrentSite();
 
-    redux_store.dispatch(Actions.orderSections(
+    redux_store.dispatch(Actions.initOrderSiteSections(
       site,
       newOrder,
       function (resp) {
@@ -154,7 +154,7 @@ var BertaEditor_Sections = new Class({
 				this.sectionsEditor.addClass('xSaving');
     var site = getCurrentSite() || '0';
 
-    redux_store.dispatch(Actions.deleteSection(
+    redux_store.dispatch(Actions.initDeleteSiteSection(
       site,
       sectionName,
       // @@@:TODO: Remove this callback, when migration to ReactJS is complete
@@ -194,7 +194,7 @@ var BertaEditor_Sections = new Class({
 		this.sectionsEditor.addClass('xSaving');
     var site = getCurrentSite();
 
-    redux_store.dispatch(Actions.createSection(
+    redux_store.dispatch(Actions.initCreateSiteSection(
       site,
       this.cloneSection,
       this.cloneSectionTitle,
@@ -204,8 +204,8 @@ var BertaEditor_Sections = new Class({
           alert('Berta says:\n\nServer produced an error while adding new section! Something went sooooo wrong...');
         } else if(resp && !resp.error_message) {
           var state = redux_store.getState();
-          var template = state.site_settings.toJSON()[site].template.template;
-          var sectionTypes = state.site_templates
+          var template = state.siteSettings.toJSON()[site].template.template;
+          var sectionTypes = state.siteTemplates
                 .toJSON()[template]
                 .sectionTypes;
           var type = resp['@attributes'].type ? resp['@attributes'].type : 'default';
@@ -220,7 +220,7 @@ var BertaEditor_Sections = new Class({
                 site,
                 resp.order,
                 resp,
-                state.site_template_settings.toJSON()[site][template],
+                state.siteTemplateSettings.toJSON()[site][template],
                 type_params,
                 'xSection-' + resp['name'] + ' xSectionField'
               );

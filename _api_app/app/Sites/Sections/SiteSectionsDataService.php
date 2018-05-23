@@ -472,7 +472,8 @@ class SiteSectionsDataService Extends Storage {
             $section =& $sections['section'][$section_order];
             $section['mediaCacheData'] = isset($section['mediaCacheData']) ? $section['mediaCacheData'] : array('file' => array());
             $files = $this->asList($section['mediaCacheData']['file']);
-            $reordered = array();
+
+            $reordered = [];
 
             foreach($new_files as $file) {
                 $file_order = array_search(
@@ -483,26 +484,31 @@ class SiteSectionsDataService Extends Storage {
                             '@attributes'
                         ),
                         'src'
-                        )
-                    );
+                    )
+                );
 
-                    if ($file_order !== false) {
-                        array_push($reordered, $files[$file_order]);
-                    }
+                if ($file_order !== false) {
+                    array_push($reordered, $files[$file_order]);
                 }
+            }
 
+            if ($new_files) {
                 $section['mediaCacheData']['file'] = $reordered;
-                $this->array2xmlFile($sections, $this->XML_FILE, $this->ROOT_ELEMENT);
+            } else {
+                unset($section['mediaCacheData']);
+            }
 
-            return array(
+            $this->array2xmlFile($sections, $this->XML_FILE, $this->ROOT_ELEMENT);
+
+            return [
                 'site' => $this->SITE,
                 'section' => $name,
                 'mediafolder' => $section['mediafolder'],
                 'files' => $reordered
-            );
+            ];
         }
 
-        return array('error_message' => 'Section "'.$name.'" not found!');
+        return ['error_message' => 'Section "'.$name.'" not found!'];
     }
 
     /************************************************************

@@ -1,8 +1,6 @@
 (function(window, document) {
   'use strict';
 
-  window.API_ROOT = '/_api/v1/';
-
   window.editables = {
     xEditable: 'xEditable',                     // simple input
     xEditableColor: 'xEditableColor',           // simple input

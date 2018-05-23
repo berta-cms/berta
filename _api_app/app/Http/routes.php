@@ -24,20 +24,20 @@ $app->group(['prefix' => 'v1', 'namespace' => 'App'], function() use ($app) {
         $app->patch('sites', 'SitesController@update');
         $app->put('sites', 'SitesController@order');
         $app->delete('sites', 'SitesController@delete');
-    });
 
-    $app->patch('site-settings', ['as' => 'site_settings', 'uses' => 'Sites\Settings\SiteSettingsController@update']);
+        $app->patch('sites/settings', ['as' => 'site_settings', 'uses' => 'Settings\SiteSettingsController@update']);
 
-    $app->patch('site-template-settings', ['as' => 'site_template_settings', 'uses' => 'Sites\TemplateSettings\SiteTemplateSettingsController@update']);
+        $app->patch('sites/template-settings', ['as' => 'site_template_settings', 'uses' => 'TemplateSettings\SiteTemplateSettingsController@update']);
 
-    $app->group(['prefix' => 'v1', 'namespace' => 'App\Sites\Sections'], function() use ($app) {
-        $app->post('sections', ['as' => 'sections', 'uses' => 'SiteSectionsController@create']);
-        $app->patch('sections', 'SiteSectionsController@update');
-        $app->patch('sections-reset', ['as' => 'sections_reset', 'uses' => 'SiteSectionsController@reset']);
-        $app->put('sections', 'SiteSectionsController@order');
-        $app->delete('sections', 'SiteSectionsController@delete');
+        $app->group(['prefix' => 'v1/sites', 'namespace' => 'App\Sites\Sections'], function() use ($app) {
+            $app->post('sections', ['as' => 'site_sections', 'uses' => 'SiteSectionsController@create']);
+            $app->patch('sections', 'SiteSectionsController@update');
+            $app->patch('sections/reset', ['as' => 'site_sections_reset', 'uses' => 'SiteSectionsController@reset']);
+            $app->put('sections', 'SiteSectionsController@order');
+            $app->delete('sections', 'SiteSectionsController@delete');
 
-        $app->put('section-backgrounds', ['as' => 'section_backgrounds', 'uses' => 'SiteSectionsController@galleryOrder']);
-        $app->delete('section-backgrounds', 'SiteSectionsController@galleryDelete');
+            $app->put('sections/backgrounds', ['as' => 'site_section_backgrounds', 'uses' => 'SiteSectionsController@galleryOrder']);
+            $app->delete('sections/backgrounds', 'SiteSectionsController@galleryDelete');
+        });
     });
 });
