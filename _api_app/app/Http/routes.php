@@ -19,7 +19,29 @@
 $app->group(['prefix' => 'v1', 'namespace' => 'App'], function() use ($app) {
     $app->get('state/{site}', 'Http\Controllers\StateController@get');
 
-    $app->get('test-twig-entry', 'Sites\Sections\Entries\SectionEntriesRenderService@render');
+    // @TODO remove this route later, user for testing only
+    $app->get('render-entry', function() {
+
+
+        $entries = new App\Sites\Sections\Entries\SectionEntriesDataService('', 'section-one');
+        $entry = current($entries->get()['entry']);
+
+        $sections = new App\Sites\Sections\SiteSectionsDataService('');
+        $section = current($sections->get());
+
+        $site_settings = new App\Sites\Settings\SiteSettingsDataService('');
+
+        $site_template_settings = new App\Sites\TemplateSettings\SiteTemplateSettingsDataService('', 'messy-0.4.2');
+
+        $entry_render_service = new App\Sites\Sections\Entries\SectionEntryRenderService([
+            'entry' => $entry,
+            'section' => $section,
+            'site_settings' => $site_settings->get(),
+            'site_template_settings' => $site_template_settings->get(),
+        ]);
+
+        return $entry_render_service->render();
+    });
 
     $app->group(['prefix' => 'v1', 'namespace' => 'App\Sites'], function() use ($app) {
         $app->post('sites', ['as' => 'sites', 'uses' => 'SitesController@create']);

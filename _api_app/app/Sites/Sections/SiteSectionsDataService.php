@@ -2,6 +2,7 @@
 
 namespace App\Sites\Sections;
 
+use App\Shared\Helpers;
 use App\Shared\Storage;
 use App\Sites\Sections\Tags\SectionTagsDataService;
 use App\Sites\Sections\Entries\SectionEntriesDataService;
@@ -525,7 +526,7 @@ class SiteSectionsDataService Extends Storage {
             return '';
         }
 
-        $slug = $this->slugify($new_title, '-', '\._-', true);
+        $slug = Helpers::slugify($new_title, '-', '\._-', true);
         $slug = $slug ? $slug : '_';
 
         $names = array_values(array_column($sections['section'], 'name'));

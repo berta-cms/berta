@@ -1,6 +1,7 @@
 <?php
 namespace App\Sites;
 
+use App\Shared\Helpers;
 use App\Shared\Storage;
 
 /**
@@ -169,7 +170,7 @@ class SitesDataService Extends Storage {
                 return $ret;
             }
 
-            $value = $this->slugify($value, '-', '-');
+            $value = Helpers::slugify($value, '-', '-');
             $new_root = $this->XML_SITES_ROOT . '/' . $value;
 
             if(file_exists($new_root)) {
