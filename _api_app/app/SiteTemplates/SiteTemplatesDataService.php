@@ -22,14 +22,14 @@ class SiteTemplatesDataService {
         $this->TEMPLATE_ROOT = realpath(__DIR__ . '/../../../_templates');
     }
 
-    public function get($lang='en') {
-        $ret = array();
-        $sectionTypes = array();
-        $templateConf = array();
+    public function get($lang = 'en') {
+        $ret = [];
+        $sectionTypes = [];
+        $templateConf = [];
         I18n::load_language($lang);
 
-        foreach($this->getAllTemplates() as $tpl) {
-            $ret[$tpl] = array();
+        foreach ($this->getAllTemplates() as $tpl) {
+            $ret[$tpl] = [];
             $conf = file_get_contents(
                 $this->TEMPLATE_ROOT . '/' . $tpl . '/template.conf.php'
             );
@@ -52,11 +52,11 @@ class SiteTemplatesDataService {
     }
 
     public function getAllTemplates() {
-        $returnArr = array();
+        $returnArr = [];
         $d = dir($this->TEMPLATE_ROOT);
 
-        while(false !== ($entry = $d->read())) {
-            if($entry != '.' &&
+        while (false !== ($entry = $d->read())) {
+            if ($entry != '.' &&
                $entry != '..' &&
                substr($entry, 0, 1) != '_'
                && is_dir($this->TEMPLATE_ROOT . '/' . $entry)) {
