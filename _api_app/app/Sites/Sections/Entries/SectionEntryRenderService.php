@@ -8,8 +8,8 @@ class SectionEntryRenderService
 {
     private $entry;
     private $section;
-    private $site_settings;
-    private $site_template_settings;
+    private $siteSettings;
+    private $siteTemplateSettings;
 
     public function __construct($options)
     {
@@ -17,16 +17,16 @@ class SectionEntryRenderService
             [
                 'entry' => null,
                 'section' => null,
-                'site_settings' => null,
-                'site_template_settings' => null,
+                'siteSettings' => null,
+                'siteTemplateSettings' => null,
             ],
             $options
         );
 
         $this->entry = $options['entry'];
         $this->section = $options['section'];
-        $this->site_settings = $options['site_settings'];
-        $this->site_template_settings = $options['site_template_settings'];
+        $this->siteSettings = $options['siteSettings'];
+        $this->siteTemplateSettings = $options['siteTemplateSettings'];
     }
 
     /**
@@ -44,9 +44,9 @@ class SectionEntryRenderService
     }
 
     private function getEntryId() {
-        $section_type = isset($this->section['@attributes']['type']) ? $this->section['@attributes']['type'] : null;
+        $sectionType = isset($this->section['@attributes']['type']) ? $this->section['@attributes']['type'] : null;
 
-        if ($section_type == 'portfolio' && isset($this->entry['content']['title']) && $this->entry['content']['title']) {
+        if ($sectionType == 'portfolio' && isset($this->entry['content']['title']) && $this->entry['content']['title']) {
             $title = $this->entry['content']['title'];
         } else {
             $title = 'entry-'.$this->entry['id'];
@@ -62,15 +62,15 @@ class SectionEntryRenderService
         $classes[] = 'xEntryId-' . $this->entry['id'];
         $classes[] = 'xSection-' . $this->section['name'];
 
-        $template_name = explode('-', $this->site_settings['template']['template'])[0];
-        $section_type = isset($this->section['@attributes']['type']) ? $this->section['@attributes']['type'] : null;
+        $templateName = explode('-', $this->siteSettings['template']['template'])[0];
+        $sectionType = isset($this->section['@attributes']['type']) ? $this->section['@attributes']['type'] : null;
 
-        $isResponsive = isset($this->site_template_settings['pageLayout']['responsive']) ? $this->site_template_settings['pageLayout']['responsive'] : 'no';
+        $isResponsive = isset($this->siteTemplateSettings['pageLayout']['responsive']) ? $this->siteTemplateSettings['pageLayout']['responsive'] : 'no';
 
-        if ($template_name == 'messy') {
+        if ($templateName == 'messy') {
             $classes[] = 'xShopMessyEntry';
 
-            if ($section_type == 'portfolio') {
+            if ($sectionType == 'portfolio') {
                 $isResponsive = 'yes';
             }
 
@@ -83,7 +83,7 @@ class SectionEntryRenderService
             $classes[] = 'xFixed';
         }
 
-        if ($section_type == 'portfolio') {
+        if ($sectionType == 'portfolio') {
             $classes[] = 'xHidden';
         }
 
@@ -92,12 +92,12 @@ class SectionEntryRenderService
 
     private function getStyleList() {
         $styles = [];
-        $template_name = explode('-', $this->site_settings['template']['template'])[0];
-        $section_type = isset($this->section['@attributes']['type']) ? $this->section['@attributes']['type'] : null;
-        $isResponsive = isset($this->site_template_settings['pageLayout']['responsive']) ? $this->site_template_settings['pageLayout']['responsive'] : 'no';
+        $templateName = explode('-', $this->siteSettings['template']['template'])[0];
+        $sectionType = isset($this->section['@attributes']['type']) ? $this->section['@attributes']['type'] : null;
+        $isResponsive = isset($this->siteTemplateSettings['pageLayout']['responsive']) ? $this->siteTemplateSettings['pageLayout']['responsive'] : 'no';
 
-        if ($template_name == 'messy') {
-            if ($section_type == 'portfolio') {
+        if ($templateName == 'messy') {
+            if ($sectionType == 'portfolio') {
                 $isResponsive = 'yes';
             }
 
@@ -121,8 +121,8 @@ class SectionEntryRenderService
 
             if (isset($this->entry['content']['width']) && $this->entry['content']['width']) {
                 $styles[] = ['width' => $this->entry['content']['width']];
-            } elseif ($section_type == 'shop' && isset($this->site_settings['shop']['entryWidth'])) {
-                $width = intval($this->site_settings['shop']['entryWidth']);
+            } elseif ($sectionType == 'shop' && isset($this->siteSettings['shop']['entryWidth'])) {
+                $width = intval($this->siteSettings['shop']['entryWidth']);
 
                 if ($width > 0) {
                     $styles[] = ['width' => $width . 'px'];
