@@ -23,21 +23,21 @@ $app->group(['prefix' => 'v1', 'namespace' => 'App'], function() use ($app) {
     $app->get('render-entry', function() {
 
 
-        $entries = new App\Sites\Sections\Entries\SectionEntriesDataService('', 'section-one');
-        $entry = current($entries->get()['entry']);
+        $entriesDataService = new App\Sites\Sections\Entries\SectionEntriesDataService('', 'section-one');
+        $entry = current($entriesDataService->get()['entry']);
 
-        $sections = new App\Sites\Sections\SiteSectionsDataService('');
-        $section = current($sections->get());
+        $sectionsDataService = new App\Sites\Sections\SiteSectionsDataService('');
+        $section = current($sectionsDataService->get());
 
-        $siteSettings = new App\Sites\Settings\SiteSettingsDataService('');
+        $siteSettingsDataService = new App\Sites\Settings\SiteSettingsDataService('');
 
-        $siteTemplateSettings = new App\Sites\TemplateSettings\SiteTemplateSettingsDataService('', 'messy-0.4.2');
+        $siteTemplateSettingsDataService = new App\Sites\TemplateSettings\SiteTemplateSettingsDataService('', 'messy-0.4.2');
 
         $entryRenderService = new App\Sites\Sections\Entries\SectionEntryRenderService([
             'entry' => $entry,
             'section' => $section,
-            'siteSettings' => $siteSettings->get(),
-            'siteTemplateSettings' => $siteTemplateSettings->get(),
+            'siteSettings' => $siteSettingsDataService->get(),
+            'siteTemplateSettings' => $siteTemplateSettingsDataService->get(),
         ]);
 
         return $entryRenderService->render();
