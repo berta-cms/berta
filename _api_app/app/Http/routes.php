@@ -16,24 +16,28 @@
 // });
 
 // @@@:TODO: Require login for API endpoints
-$app->group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers'], function ($app) {
-    $app->get('state/{site}', 'StateController@get');
+$app->group(['prefix' => 'v1', 'namespace' => 'App'], function() use ($app) {
+    $app->get('state/{site}', 'Http\Controllers\StateController@get');
 
-    $app->post('site', ['as' => 'site', 'uses' => 'SiteController@create']);
-    $app->patch('site', 'SiteController@update');
-    $app->put('site', 'SiteController@order');
-    $app->delete('site', 'SiteController@delete');
+    $app->group(['prefix' => 'v1', 'namespace' => 'App\Sites'], function() use ($app) {
+        $app->post('sites', ['as' => 'sites', 'uses' => 'SitesController@create']);
+        $app->patch('sites', 'SitesController@update');
+        $app->put('sites', 'SitesController@order');
+        $app->delete('sites', 'SitesController@delete');
 
-    $app->patch('site-settings', ['as' => 'site_settings', 'uses' => 'SettingsController@update']);
+        $app->patch('sites/settings', ['as' => 'site_settings', 'uses' => 'Settings\SiteSettingsController@update']);
 
-    $app->patch('site-template-settings', ['as' => 'site_template_settings', 'uses' => 'SiteTemplateSettingsController@update']);
+        $app->patch('sites/template-settings', ['as' => 'site_template_settings', 'uses' => 'TemplateSettings\SiteTemplateSettingsController@update']);
 
-    $app->post('section', ['as' => 'section', 'uses' => 'SectionController@create']);
-    $app->patch('section', 'SectionController@update');
-    $app->patch('section-reset', ['as' => 'section_reset', 'uses' => 'SectionController@reset']);
-    $app->put('section', 'SectionController@order');
-    $app->delete('section', 'SectionController@delete');
+        $app->group(['prefix' => 'v1/sites', 'namespace' => 'App\Sites\Sections'], function() use ($app) {
+            $app->post('sections', ['as' => 'site_sections', 'uses' => 'SiteSectionsController@create']);
+            $app->patch('sections', 'SiteSectionsController@update');
+            $app->patch('sections/reset', ['as' => 'site_sections_reset', 'uses' => 'SiteSectionsController@reset']);
+            $app->put('sections', 'SiteSectionsController@order');
+            $app->delete('sections', 'SiteSectionsController@delete');
 
-    $app->put('section-background', ['as' => 'section_background', 'uses' => 'SectionController@galleryOrder']);
-    $app->delete('section-background', 'SectionController@galleryDelete');
+            $app->put('sections/backgrounds', ['as' => 'site_section_backgrounds', 'uses' => 'SiteSectionsController@galleryOrder']);
+            $app->delete('sections/backgrounds', 'SiteSectionsController@galleryDelete');
+        });
+    });
 });

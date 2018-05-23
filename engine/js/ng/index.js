@@ -8,7 +8,7 @@
     root_reducer,
     {},
     composeEnhancers(
-      Redux.applyMiddleware(redux_middleware, ReduxThunk.default)
+      Redux.applyMiddleware(ReduxThunk.default)
     )
   );
 
