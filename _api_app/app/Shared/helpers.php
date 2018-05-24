@@ -197,4 +197,28 @@ class Helpers
         return $tags;
     }
 
+    public static function formatPrice($price, $currency)
+    {
+        $price = (float) $price;
+        if ($price) {
+            return sprintf("%01.2f", $price) . ' ' . $currency;
+        }
+
+        return '';
+    }
+
+    /**
+     * Converts cart attributes comma separated string to array
+     */
+    public static function toCartAttributes($attributes)
+    {
+        $attributes = trim($attributes);
+        $attributes = explode(',', $attributes);
+        $attributes = array_map('trim', $attributes);
+        $attributes = array_filter($attributes, function($attribute) {
+            return strlen($attribute);
+        });
+
+        return $attributes;
+    }
 }

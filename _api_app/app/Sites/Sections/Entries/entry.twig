@@ -11,7 +11,40 @@
     <div class="entryTextWrap galleryType-{{ galleryType }}">
   {% endif %}
 
-    {{ content.description|raw }}
+  {% if showCartTitle %}
+    <h2><span class="xEditable xProperty-cartTitle xCaption-item-name cCartTitle">{{ content.cartTitle }}</span></h2>
+  {% elseif showTitle %}
+    <h2><span class="xEditable xProperty-title xCaption-entry&nbsp;title">{{ content.title }}</span></h2>
+  {% endif %}
+
+  {% if showDescription %}
+    <div class="entryText xEditableMCE xProperty-description">{{ content.description|raw }}</div>
+  {% endif %}
+
+  {% if showAddToCart %}
+    <div class="addToCart" data-uniqid="{{ uniqid }}">
+        {% if isEditMode %}
+          <div class="cartPrice xEditableRC xProperty-cartPrice xCaption-price xFormatModifier-toPrice" title="{{ content.cartPrice }}">{{ cartPriceFormatted }}</div>
+        {% else %}
+          <div class="cartPrice" title="{{ content.cartPrice }}" data-weight="{{ content.weight }}">{{ cartPriceFormatted }}</div>
+        {% endif %}
+
+        <br class="clear">
+
+        <div class="cartAttributes{% if not cartAttributes %} hidden{% endif %}">
+          {% if cartAttributes %}
+            <select class="cart_attributes">
+              {% for cartAttribute in cartAttributes %}
+                <option value="{{ cartAttribute }}">{{ cartAttribute }}</option>
+              {% endfor %}
+            </select>
+          {% endif %}
+        </div>
+        <span class="aele{% if not content.cartPrice or not isEditMode %} hidden{% endif %}"><span>{{ addToBasketLabel }}</span></span>
+        <span class="addedToCart hidden"><span></span> {{ addedToBasketText }}</span>
+        <span class="outOfStock hidden">{{ outOfStockText }}</span>
+    </div>
+  {% endif %}
 
   {# Close entryTextWrap element #}
   {% if templateName != 'default' %}

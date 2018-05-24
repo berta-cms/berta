@@ -45,6 +45,11 @@ class SectionEntryRenderService
     private function getViewData()
     {
         $entry = $this->entry;
+        //@TODO create a method to get shop settings default values, currently default values are hardcoded here
+        $currency = isset($this->siteSettings['shop']['currency']) && !empty($this->siteSettings['shop']['currency']) ? $this->siteSettings['shop']['currency'] : 'EUR';
+        $addToBasketLabel = isset($this->siteSettings['shop']['addToBasket']) && !empty($this->siteSettings['shop']['addToBasket']) ? $this->siteSettings['shop']['addToBasket'] : 'add to basket';
+        $addedToBasketText = isset($this->siteSettings['shop']['addedToBasket']) && !empty($this->siteSettings['shop']['addedToBasket']) ? $this->siteSettings['shop']['addedToBasket'] : 'added!';
+        $outOfStockText = isset($this->siteSettings['shop']['outOfStock']) && !empty($this->siteSettings['shop']['outOfStock']) ? $this->siteSettings['shop']['outOfStock'] : 'Out of stock!';
 
         $entry['entryId'] = $this->getEntryId();
         $entry['classList'] = $this->getClassList();
@@ -57,13 +62,21 @@ class SectionEntryRenderService
         $entry['entryWidth'] = isset($entry['content']['width']) ? $entry['content']['width'] : '';
         $entry['isShopAvailable'] = $this->isShopAvailable;
         $entry['entryHTMLTag'] = $this->templateName == 'messy' ? 'div' : 'li';
+        $entry['galleryType'] = isset($entry['mediaCacheData']['@attributes']['type']) ? $entry['mediaCacheData']['@attributes']['type'] : $this->siteTemplateSettings['entryLayout']['defaultGalleryType'];
+        $entry['showCartTitle'] = $this->isShopAvailable && $this->sectionType == 'shop' && ($this->isEditMode || (isset($entry['content']['cartTitle']) && !empty($entry['content']['cartTitle'])));
+        $entry['showTitle'] = ($this->sectionType == 'portfolio' || $this->templateName == 'default') && ($this->isEditMode || (isset($entry['content']['title']) && !empty($entry['content']['title'])));
+        $entry['showDescription'] = $this->isEditMode || (isset($entry['content']['description']) && !empty($entry['content']['description']));
+        $entry['showAddToCart'] = $this->isShopAvailable && $this->sectionType == 'shop';
+        $entry['cartPriceFormatted'] = isset($entry['content']['cartPrice']) ? Helpers::formatPrice($entry['content']['cartPrice'], $currency) : '';
+        $entry['cartAttributes'] = isset($entry['content']['cartAttributes']) ? Helpers::toCartAttributes($entry['content']['cartAttributes']) : '';
+        $entry['addToBasketLabel'] = $addToBasketLabel;
+        $entry['addedToBasketText'] = $addedToBasketText;
+        $entry['outOfStockText'] = $outOfStockText;
 
         return $entry;
     }
 
     private function getEntryId() {
-
-
         if ($this->sectionType == 'portfolio' && isset($this->entry['content']['title']) && $this->entry['content']['title']) {
             $title = $this->entry['content']['title'];
         } else {
