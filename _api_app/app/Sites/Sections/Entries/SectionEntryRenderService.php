@@ -56,6 +56,7 @@ class SectionEntryRenderService
         $entry['entryFixed'] = isset($entry['content']['fixed']) && $entry['content']['fixed'] ? 1 : 0;
         $entry['entryWidth'] = isset($entry['content']['width']) ? $entry['content']['width'] : '';
         $entry['isShopAvailable'] = $this->isShopAvailable;
+        $entry['entryHTMLTag'] = $this->templateName == 'messy' ? 'div' : 'li';
 
         return $entry;
     }

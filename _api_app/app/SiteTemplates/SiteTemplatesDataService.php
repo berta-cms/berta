@@ -40,6 +40,37 @@ class SiteTemplatesDataService {
         return $ret;
     }
 
+    /**
+     * Returns template default values for each template
+     */
+    public function getDefaults() {
+        $defaults = [];
+        $data = $this->get();
+
+        foreach ($data as $templateName => $config) {
+            foreach ($config['templateConf'] as $group => $groupSettings) {
+                foreach ($groupSettings as $key => $settings) {
+                    if ($key == '_') {
+                        continue;
+                    }
+
+                    $defaults[$templateName]['templateConf'][$group][$key] = $settings['default'];
+                }
+            }
+            foreach ($config['sectionTypes'] as $group => $groupSettings) {
+                if (!isset($groupSettings['params'])) {
+                    continue;
+                }
+
+                foreach ($groupSettings['params'] as $key => $settings) {
+                    $defaults[$templateName]['sectionTypes'][$group][$key] = $settings['default'];
+                }
+            }
+        }
+
+        return $defaults;
+    }
+
     public function getAllTemplates() {
         $returnArr = array();
         $d = dir($this->TEMPLATE_ROOT);

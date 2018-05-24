@@ -1,4 +1,4 @@
-<div id="{{ entryId }}" class="{{ classList }}"{% if styleList %} style="{{ styleList }}"{% endif %}>
+<{{ entryHTMLTag }} id="{{ entryId }}" class="{{ classList }}"{% if styleList %} style="{{ styleList }}"{% endif %}>
 
   {% if isEditMode %}
 		<a class="xCreateNewEntry xPanel xAction-entryCreateNew" href="#"><span>create new entry here</span></a>
@@ -7,10 +7,19 @@
         {% include 'Sites/Sections/Entries/_entryEditorHeader' %}
   {% endif %}
 
-  {{ content.description|raw }}
+  {% if templateName != 'default' %}
+    <div class="entryTextWrap galleryType-{{ galleryType }}">
+  {% endif %}
+
+    {{ content.description|raw }}
+
+  {# Close entryTextWrap element #}
+  {% if templateName != 'default' %}
+    </div>
+  {% endif %}
 
   {# Close editor wrapper element #}
   {% if isEditMode %}
     </div>
   {% endif %}
-</div>
+</{{ entryHTMLTag }}>
