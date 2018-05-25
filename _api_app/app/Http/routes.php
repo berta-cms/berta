@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\Storage;
+
 /*
 |--------------------------------------------------------------------------
 | Application Routes
@@ -31,11 +33,14 @@ $app->group(['prefix' => 'v1', 'namespace' => 'App'], function() use ($app) {
 
         $siteTemplateSettingsDataService = new App\Sites\TemplateSettings\SiteTemplateSettingsDataService('', 'messy-0.4.2');
 
+        $storageService = new App\Shared\Storage('');
+
         $entryRenderService = new App\Sites\Sections\Entries\SectionEntryRenderService([
             'entry' => $entry,
             'section' => $section,
             'siteSettings' => $siteSettingsDataService->get(),
             'siteTemplateSettings' => $siteTemplateSettingsDataService->get(),
+            'storageService' => $storageService,
             'isEditMode' => true,
             'isShopAvailable' => true,
         ]);

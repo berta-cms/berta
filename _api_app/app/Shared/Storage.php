@@ -14,7 +14,8 @@ class Storage {
     protected $SITE='';
     protected $XML_MAIN_ROOT;
     protected $XML_SITES_ROOT;
-    protected $MEDIA_ROOT;
+    public $MEDIA_ROOT;
+    public $MEDIA_URL;
     protected static $DEFAULT_VALUES = [];
 
     private $MEDIA_FOLDER = 'media';
@@ -22,12 +23,15 @@ class Storage {
     public function __construct($site='') {
         $this->SITE = $site;
         $this->XML_MAIN_ROOT = realpath(__DIR__ . '/../../../storage');
+        $this->STORAGE_URL =
         $this->XML_SITES_ROOT = $this->XML_MAIN_ROOT . '/-sites';
 
         if (!empty($site) and $site !== '0') {
             $this->MEDIA_ROOT = $this->XML_SITES_ROOT . '/' . $site . '/' . $this->MEDIA_FOLDER;
+            $this->MEDIA_URL = '/storage/' . $site . '/'. $this->MEDIA_FOLDER;
         } else {
             $this->MEDIA_ROOT = $this->XML_MAIN_ROOT . '/' . $this->MEDIA_FOLDER;
+            $this->MEDIA_URL = '/storage/'. $this->MEDIA_FOLDER;
         }
     }
 

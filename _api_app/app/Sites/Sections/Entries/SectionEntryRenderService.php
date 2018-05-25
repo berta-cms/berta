@@ -11,6 +11,7 @@ class SectionEntryRenderService
     private $section;
     private $siteSettings;
     private $siteTemplateSettings;
+    private $storageService;
     private $isEditMode;
     private $templateName;
     private $sectionType;
@@ -24,6 +25,7 @@ class SectionEntryRenderService
                 'section' => null,
                 'siteSettings' => null,
                 'siteTemplateSettings' => null,
+                'storageService' => null,
                 'isEditMode' => false,
                 'isShopAvailable' => false,
             ],
@@ -35,6 +37,7 @@ class SectionEntryRenderService
         $this->section = $options['section'];
         $this->siteSettings = $options['siteSettings'];
         $this->siteTemplateSettings = $options['siteTemplateSettings'];
+        $this->storageService = $options['storageService'];
         $this->isEditMode = $options['isEditMode'];
         $this->templateName = explode('-', $this->siteSettings['template']['template'])[0];
         $this->sectionType = isset($this->section['@attributes']['type']) ? $this->section['@attributes']['type'] : null;
@@ -79,6 +82,7 @@ class SectionEntryRenderService
 
         $entry['galleryPosition'] = $galleryPosition ? $galleryPosition : ($this->sectionType == 'portfolio' ? 'below description' : 'above title');
         $entry['galleryImages'] = $this->images;
+        $entry['galleryFirstImage'] = $this->getGalleryFirstImage();
         $entry['galleryClassList'] = $this->getGalleryClassList();
         $entry['galleryStyleList'] = $this->getGalleryStyleList();
         $entry['rowGalleryPadding'] = isset($entry['mediaCacheData']['@attributes']['row_gallery_padding']) && !empty($entry['mediaCacheData']['@attributes']['row_gallery_padding']) ? $entry['mediaCacheData']['@attributes']['row_gallery_padding'] : null;
@@ -188,6 +192,60 @@ class SectionEntryRenderService
         }
 
         return $images;
+    }
+
+    private function getGalleryFirstImage()
+    {
+        if (!$this->images) {
+            return null;
+        }
+
+        $image = current($this->images);
+        $isImage = isset($image['@attributes']['type']) && $image['@attributes']['type'] == 'image';
+        $isPoster = isset($image['@attributes']['poster_frame']);
+        $imageName = $isPoster ? $image['@attributes']['poster_frame'] : $image['@attributes']['src'];
+
+        if (!$isImage && !$isPoster) {
+            return null;
+        }
+
+        $alt = '';
+        $width = null;
+        $height = null;
+        $imagePath = $this->storageService->MEDIA_ROOT . '/' . $this->entry['mediafolder'] . '/' . $imageName;
+        $imageUrl = $this->storageService->MEDIA_URL . '/' . $this->entry['mediafolder'] . '/' . $imageName;
+
+        if (isset($image['@value'])) {
+            $alt = str_replace(array("\r\n", "\n"), " ", $image['@value']);
+            $alt = trim(preg_replace('/\s\s+/', ' ', htmlspecialchars(strip_tags($alt))));
+        }
+
+        if (isset($image['@attributes']['width']) && isset($image['@attributes']['height'])) {
+            $width = (int) $image['@attributes']['width'];
+            $height = (int) $image['@attributes']['height'];
+        }
+
+        if ($isPoster || !$width || !$height) {
+            $imageSize = getimagesize($imagePath);
+            if ($imageSize) {
+                $width = (int) $imageSize[0];
+                $height = (int) $imageSize[1];
+            }
+        }
+
+        $imageSize = isset($this->entry['mediaCacheData']['@attributes']['size']) ? $this->entry['mediaCacheData']['@attributes']['size'] : 'large';
+
+        /**
+         * @todo get image width and height based on user defined settings or default settings for image width and height
+         */
+
+        return [
+            'src' => '',
+            'width' => '',
+            'height' => '',
+            'srcset' => '',
+            'alt' => $alt,
+        ];
     }
 
     public function getGalleryClassList() {
