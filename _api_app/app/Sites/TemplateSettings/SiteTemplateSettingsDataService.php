@@ -51,7 +51,7 @@ use App\Shared\Storage;
 class SiteTemplateSettingsDataService extends Storage
 {
     public static $JSON_SCHEMA = [
-        '$schema' => "http://json-schema.org/draft-06/schema#",
+        '$schema' => 'http://json-schema.org/draft-06/schema#',
         'type' => 'object',
         'properties' => [
             'background' => [
