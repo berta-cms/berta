@@ -10,3 +10,5 @@ engine/_lib/tiny_mce/*.gz
 .settings
 Icon
 *.esproj/
+.vscode/settings.json
+.htaccess
