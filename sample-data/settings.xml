@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<settings>
+    <template>
+        <template><![CDATA[messy-0.4.2]]></template>
+    </template>
+    <siteTexts>
+        <siteHeading><![CDATA[My heading]]></siteHeading>
+        <siteFooter><![CDATA[© John Doe]]></siteFooter>
+        <tourComplete><![CDATA[1]]></tourComplete>
+        <multisitesXY><![CDATA[110,350]]></multisitesXY>
+        <additionalTextXY><![CDATA[130,150]]></additionalTextXY>
+        <additionalText><![CDATA[<p>Some text</p>]]></additionalText>
+        <siteHeadingXY><![CDATA[520,190]]></siteHeadingXY>
+        <banner1XY><![CDATA[1210,640]]></banner1XY>
+        <banner2XY><![CDATA[1220,640]]></banner2XY>
+        <banner3XY><![CDATA[1200,640]]></banner3XY>
+        <banner4XY><![CDATA[1180,760]]></banner4XY>
+        <banner5XY><![CDATA[1190,790]]></banner5XY>
+        <banner6XY><![CDATA[1220,650]]></banner6XY>
+        <banner7XY><![CDATA[1220,680]]></banner7XY>
+        <banner8XY><![CDATA[1240,730]]></banner8XY>
+        <banner9XY><![CDATA[1180,640]]></banner9XY>
+        <banner10XY><![CDATA[1240,800]]></banner10XY>
+    </siteTexts>
+    <berta>
+        <lastUpdated><![CDATA[Wed, 09 May 2018 09:32:30 GMT]]></lastUpdated>
+        <installed><![CDATA[1]]></installed>
+    </berta>
+    <texts>
+        <ownerName><![CDATA[John Doe]]></ownerName>
+        <pageTitle><![CDATA[My site]]></pageTitle>
+        <metaKeywords><![CDATA[john, doe, portfolio]]></metaKeywords>
+        <metaDescription><![CDATA[My personal website]]></metaDescription>
+    </texts>
+    <settings>
+        <showTutorialVideos><![CDATA[no]]></showTutorialVideos>
+        <hideBertaCopyright><![CDATA[yes]]></hideBertaCopyright>
+        <googleAnalyticsId><![CDATA[123]]></googleAnalyticsId>
+        <googleSiteVerification><![CDATA[&lt;meta name=&quot;google-site-verification&quot; content=&quot;xyz&quot; /&gt;]]></googleSiteVerification>
+        <flashUploadEnabled><![CDATA[yes]]></flashUploadEnabled>
+        <jsInclude><![CDATA[&lt;script&gt;<br />var b = 2;<br />&lt;/script&gt;]]></jsInclude>
+    </settings>
+    <entryLayout>
+        <galleryFullScreenCaptionAlign><![CDATA[left]]></galleryFullScreenCaptionAlign>
+        <galleryFullScreenDefault><![CDATA[yes]]></galleryFullScreenDefault>
+        <galleryFullScreenBackground><![CDATA[black]]></galleryFullScreenBackground>
+        <galleryFullScreenFrame><![CDATA[no]]></galleryFullScreenFrame>
+        <galleryFullScreenCloseText><![CDATA[x]]></galleryFullScreenCloseText>
+        <galleryFullScreenImageNumbers><![CDATA[yes]]></galleryFullScreenImageNumbers>
+        <gallerySlideshowAutoRewind><![CDATA[no]]></gallerySlideshowAutoRewind>
+        <gallerySlideNumberVisibilityDefault><![CDATA[yes]]></gallerySlideNumberVisibilityDefault>
+    </entryLayout>
+    <media>
+        <imagesSmallWidth><![CDATA[200]]></imagesSmallWidth>
+        <imagesSmallHeight><![CDATA[200]]></imagesSmallHeight>
+        <imagesMediumWidth><![CDATA[400]]></imagesMediumWidth>
+        <imagesMediumHeight><![CDATA[400]]></imagesMediumHeight>
+        <imagesLargeWidth><![CDATA[600]]></imagesLargeWidth>
+        <imagesLargeHeight><![CDATA[600]]></imagesLargeHeight>
+    </media>
+    <banners>
+        <banner1_image_width><![CDATA[421]]></banner1_image_width>
+        <banner1_image_height><![CDATA[421]]></banner1_image_height>
+        <banner1_link><![CDATA[http://example1.com]]></banner1_link>
+        <banner2_image><![CDATA[square2.jpg]]></banner2_image>
+        <banner2_image_width><![CDATA[421]]></banner2_image_width>
+        <banner2_image_height><![CDATA[421]]></banner2_image_height>
+        <banner2_link><![CDATA[http://example2.com]]></banner2_link>
+        <banner1_image><![CDATA[square1.jpg]]></banner1_image>
+        <banner3_image><![CDATA[square3.jpg]]></banner3_image>
+        <banner3_image_width><![CDATA[421]]></banner3_image_width>
+        <banner3_image_height><![CDATA[421]]></banner3_image_height>
+        <banner3_link><![CDATA[http://example2.com]]></banner3_link>
+        <banner4_image><![CDATA[square4.jpg]]></banner4_image>
+        <banner4_image_width><![CDATA[421]]></banner4_image_width>
+        <banner4_image_height><![CDATA[421]]></banner4_image_height>
+        <banner4_link><![CDATA[http://example4.com]]></banner4_link>
+        <banner5_image><![CDATA[square5.jpg]]></banner5_image>
+        <banner5_image_width><![CDATA[421]]></banner5_image_width>
+        <banner5_image_height><![CDATA[421]]></banner5_image_height>
+        <banner5_link><![CDATA[http://example5.com]]></banner5_link>
+        <banner6_image><![CDATA[square6.jpg]]></banner6_image>
+        <banner6_image_width><![CDATA[421]]></banner6_image_width>
+        <banner6_image_height><![CDATA[421]]></banner6_image_height>
+        <banner6_link><![CDATA[http://example6.com]]></banner6_link>
+        <banner7_image><![CDATA[square7.jpg]]></banner7_image>
+        <banner7_image_width><![CDATA[421]]></banner7_image_width>
+        <banner7_image_height><![CDATA[421]]></banner7_image_height>
+        <banner7_link><![CDATA[http://example7.com]]></banner7_link>
+        <banner8_image><![CDATA[square8.jpg]]></banner8_image>
+        <banner8_image_width><![CDATA[421]]></banner8_image_width>
+        <banner8_image_height><![CDATA[421]]></banner8_image_height>
+        <banner8_link><![CDATA[http://example8.com]]></banner8_link>
+        <banner9_image><![CDATA[square9.jpg]]></banner9_image>
+        <banner9_image_width><![CDATA[421]]></banner9_image_width>
+        <banner9_image_height><![CDATA[421]]></banner9_image_height>
+        <banner9_link><![CDATA[http://example9.com]]></banner9_link>
+        <banner10_image><![CDATA[square10.jpg]]></banner10_image>
+        <banner10_image_width><![CDATA[421]]></banner10_image_width>
+        <banner10_image_height><![CDATA[421]]></banner10_image_height>
+        <banner10_link><![CDATA[http://example10.com]]></banner10_link>
+    </banners>
+    <navigation>
+        <landingSectionVisible><![CDATA[yes]]></landingSectionVisible>
+        <landingSectionPageHeadingVisible><![CDATA[yes]]></landingSectionPageHeadingVisible>
+        <landingSectionMenuVisible><![CDATA[yes]]></landingSectionMenuVisible>
+        <alwaysSelectTag><![CDATA[no]]></alwaysSelectTag>
+    </navigation>
+    <pageLayout>
+        <favicon><![CDATA[favicon.ico]]></favicon>
+        <gridStep><![CDATA[10]]></gridStep>
+        <showGrid><![CDATA[no]]></showGrid>
+        <gridColor><![CDATA[black]]></gridColor>
+    </pageLayout>
+    <socialMediaButtons>
+        <socialMediaHTML><![CDATA[&lt;div class=&quot;social&quot;&gt;&lt;/div&gt;]]></socialMediaHTML>
+        <socialMediaJS><![CDATA[&lt;script&gt;var a = 1;&lt;/script&gt;]]></socialMediaJS>
+        <socialMediaLocation><![CDATA[footer]]></socialMediaLocation>
+    </socialMediaButtons>
+    <language>
+        <language><![CDATA[en]]></language>
+    </language>
+</settings>

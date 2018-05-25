@@ -46,7 +46,7 @@ var BertaEditor_Multisite = new Class({
 
 	editablesInit: function(inElement) {	// instantiate all xEditable elements in the page
 		var f = inElement ? $(inElement).getElements.bind($(inElement)) : $$;
-
+    console.log('BertaEditor_Multisite.editablesInit:', f(this.options.xBertaEditorClassSimple));
 		// simple text fields ///////////////////////////////////////////////////////////////////////////////////////////////////////
 		f(this.options.xBertaEditorClassSimple).each(function(el) { this.elementEdit_init(el, this.options.xBertaEditorClassSimple, this.siteOnSave.bind(this)) }.bind(this));
 
@@ -91,6 +91,15 @@ var BertaEditor_Multisite = new Class({
 	},
 
 	siteOnSave: function(el, returnUpdate, returnReal, returnError, returnParams) {
+    var args = arguments;
+    var params = ['el', 'returnUpdate', 'returnReal', 'returnError', 'returnParams'];
+    console.log(
+      'BertaEditor_Multisite.siteOnSave ARGS:',
+      params.reduce(function(prevVal, currVal, currIdx, origArr) {
+        prevVal[params[currIdx]] = args[currIdx];
+        return prevVal;
+      }, {})
+    );
 		// update the properties of the site list item and title editable
 		var prop = el.getClassStoredValue('xProperty');
 		if(prop == 'name') {
@@ -111,23 +120,24 @@ var BertaEditor_Multisite = new Class({
 			return element.getClassStoredValue('xSite');
 		});
 
-    redux_store.dispatch(Actions.orderSites(
+    redux_store.dispatch(Actions.initOrderSites(
       newOrder,
-      function(resp) {
-        for (var i=0; i< resp.length; i++) {
-          $$('.xSite-' + resp[i] + ' .xProperty-title')
-            .set('data-path', 'site/' + i + '/title')
-            .data('path', true);
-          $$('.xSite-' + resp[i] + ' .xProperty-name')
-            .set('data-path', 'site/' + i + '/name')
-            .data('path', true);
-          $$('.xSite-' + resp[i] + ' .xProperty-published')
-            .set('data-path', 'site/' + i + '/@attributes/published')
-            .data('path', true);
-        }
-      }
+      function (resp) {
+        this.updatePathParams();
+      }.bind(this)
     ));
-	},
+  },
+
+  updatePathParams: function() {
+    var path;
+    this.sitesMenu.getElements('li').each(function (site, i) {
+      site.getElements('[data-path]').each(function (editable) {
+        path = editable.data('path').split('/');
+        path[1] = i;
+        editable.set('data-path', path.join('/')).data('path', true);
+      });
+    });
+  },
 
 	siteOnCloneClick: function(event) {
 		event = new Event(event).stop();
@@ -152,7 +162,7 @@ var BertaEditor_Multisite = new Class({
 		if(confirm('Berta asks:\n\nAre you sure you want to delete this site? All its content will be lost... FOREVAAA!')) {
 			if(confirm('Berta asks again:\n\nAre you really sure?')) {
 				this.sitesEditor.addClass('xSaving');
-        redux_store.dispatch(Actions.deleteSite(
+        redux_store.dispatch(Actions.initdeleteSite(
           siteName,
           function(resp) {
             if(!resp) {
@@ -161,6 +171,7 @@ var BertaEditor_Multisite = new Class({
               var element = this.sitesMenu.getElement('li.xSite-' + resp.name);
               this.sitesSortables.removeItems(element);
               element.destroy();
+              this.updatePathParams();
             } else {
               alert(resp.error_message);
             }
@@ -173,21 +184,21 @@ var BertaEditor_Multisite = new Class({
 
 	siteCreateNew: function(site) {
 		this.sitesEditor.addClass('xSaving');
-    redux_store.dispatch(Actions.createSite(
+    redux_store.dispatch(Actions.initCreateSite(
       this.cloneSite,
       // @@@:TODO: Remove this callback, when migration to ReactJS is complete
       function(resp) {
-        console.log(resp);
         if(!resp) {
           alert('Berta says:\n\nServer produced an error while adding new site! Something went sooooo wrong...');
         } else if(resp && !resp.error_message) {
-          var html = '<div class="csHandle"><span class="handle"></span></div>' +
-                     '<div class="csTitle"><span class="xEditable xProperty-title xNoHTMLEntities xSite-' + resp.name + '" data-path="site/' + resp.idx + '/title">' +
-                     '<span class="xEmpty">&nbsp;title&nbsp;</span></span></div>' +
-                     '<div class="csName">' + location.protocol + '//' + location.host + '/<span class="xEditable xProperty-name xNoHTMLEntities xSite-' + resp.name + '" data-path="site/' + resp.idx + '/name">' + resp.name + '</span></div>' +
-                     '<div class="csPub"><span class="xEditableYesNo xProperty-published xSite-' + resp.name + '" data-path="site/' + resp.idx + '/@attributes/published">0</span></div>' +
-                     '<div class="csClone"><a href="#" class="xSiteClone">clone</a></div>' +
-                     '<div class="csDelete"><a href="#" class="xSiteDelete">delete</a></div>';
+          var html = Templates.get(
+                'multisite',
+                Object.assign({}, editables, {
+                  name: resp.name,
+                  order: resp.order,
+                  address: location.protocol + '//' + location.host
+                })
+              );
           var li = new Element('li', { 'class': 'xSite-'+resp.name, 'html': html }).inject(this.sitesMenu);
           this.sitesSortables.addItems(li);
           this.editablesInit();
@@ -200,7 +211,7 @@ var BertaEditor_Multisite = new Class({
       }.bind(this)
     ));
 
-		this.cloneSite = -1;
+    this.cloneSite = -1;
 	}
 });
 

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<sections>
+    <section name="section-one" entry_count="5">
+        <tag name="one" entry_count="2"><![CDATA[one]]></tag>
+        <tag name="two" entry_count="2"><![CDATA[two]]></tag>
+        <tag name="three" entry_count="1"><![CDATA[three]]></tag>
+    </section>
+    <section name="section-two" entry_count="1">
+        <tag name="cats" entry_count="1"><![CDATA[Cats]]></tag>
+    </section>
+</sections>

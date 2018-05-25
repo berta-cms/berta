@@ -1,8 +1,18 @@
-(function(window, document) {
+(function (window, document) {
   'use strict';
 
-  var createStoreWithMiddleware = Redux.applyMiddleware(redux_middleware)(Redux.createStore);
+  domReady(Templates.load);
 
-  window.redux_store = createStoreWithMiddleware(root_reducer);
-  redux_store.dispatch(Actions.getState());
+  var composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || Redux.compose;
+  window.redux_store = Redux.createStore(
+    root_reducer,
+    {},
+    composeEnhancers(
+      Redux.applyMiddleware(ReduxThunk.default)
+    )
+  );
+
+  var site = getCurrentSite();
+  redux_store.dispatch(Actions.getState(site));
+
 })(window, document);

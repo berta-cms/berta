@@ -1,0 +1,26 @@
+<script type="text/template" id="multisite">
+  <div class="csHandle"><span class="handle"></span></div>
+  <div class="csTitle">
+    <span class="<%=xEditable%> xProperty-title xNoHTMLEntities xSite-<%=name%>"
+          data-path="site/<%=order%>/title"><span class="<%=xEmpty%>">&nbsp;title&nbsp;
+      </span>
+    </span>
+  </div>
+  <div class="csName">
+    <%=address%>/<span class="<%=xEditable%> xProperty-name xNoHTMLEntities xSite-<%=name%>"
+          data-path="site/<%=order%>/name"><%=name%>
+    </span>
+  </div>
+  <div class="csPub">
+    <span class="<%=xEditableYesNo%> xProperty-published xSite-<%=name%>"
+          data-path="site/<%=order%>/@attributes/published">
+      0
+    </span>
+  </div>
+  <div class="csClone">
+    <a href="#" class="xSiteClone">clone</a>
+  </div>
+  <div class="csDelete">
+    <a href="#" class="xSiteDelete">delete</a>
+  </div>
+</script>

@@ -47,19 +47,40 @@ var js_backend_files = [
     'engine/js/BertaEditor_Seo.js',
     'engine/js/BertaEditor_ChangePassword.js',
     'engine/js/BertaEditor_Multisite.js',
-    'engine/_lib/fetch/promise.js',
-    'engine/_lib/fetch/fetch.js',
-    'engine/_lib/redux/redux.min.js',
-    'engine/_lib/immutable/immutable.min.js'
+    'node_modules/promise-polyfill/dist/polyfill.min.js',
+    'node_modules/whatwg-fetch/fetch.js',
+    'node_modules/immutable/dist/immutable.min.js',
+    'node_modules/redux/dist/redux.min.js',
+    'node_modules/redux-thunk/dist/redux-thunk.min.js'
 ];
 
 var js_ng_backend_files = [
-  'engine/js/ng/constants/ActionTypes.js',
-  'engine/js/ng/actions/StateActions.js',
-  'engine/js/ng/actions/SiteActions.js',
-  'engine/js/ng/middleware.js',
-  'engine/js/ng/reducers/sites.js',
-  'engine/js/ng/reducers/index.js',
+  'engine/js/ng/shared/namespace.js',
+  'engine/js/ng/shared/utils.js',
+  'engine/js/ng/shared/constants.js',
+  'engine/js/ng/shared/action-types.js',
+
+  'engine/js/ng/state.actions.js',
+
+  'engine/js/ng/sites/sites.actions.js',
+  'engine/js/ng/sites/sites.reducer.js',
+
+  'engine/js/ng/sites/settings/site-settings.actions.js',
+  'engine/js/ng/sites/settings/site-settings.reducer.js',
+
+  'engine/js/ng/sites/template-settings/site-template-settings.actions.js',
+  'engine/js/ng/sites/template-settings/site-template-settings.reducer.js',
+
+  'engine/js/ng/sites/sections/site-sections.actions.js',
+  'engine/js/ng/sites/sections/site-sections.reducer.js',
+  'engine/js/ng/sites/sections/tags/section-tags.actions.js',
+  'engine/js/ng/sites/sections/tags/section-tags.reducer.js',
+  'engine/js/ng/sites/sections/entries/section-entries.actions.js',
+  'engine/js/ng/sites/sections/entries/section-entries.reducer.js',
+
+  'engine/js/ng/site-templates/site-templates.reducer.js',
+
+  'engine/js/ng/reducers.js',
   'engine/js/ng/index.js'
 ];
 

@@ -16,10 +16,36 @@
 // });
 
 // @@@:TODO: Require login for API endpoints
-$app->group(['prefix' => 'v1','namespace' => 'App\Http\Controllers'], function($app) {
-	$app->get('state','StateController@getState');
-    $app->patch('update-site','SiteController@updateSite');
-    $app->post('create-site','SiteController@createSite');
-    $app->delete('delete-site/{site}','SiteController@deleteSite');
-    $app->put('order-sites','SiteController@orderSites');
+$app->group(['prefix' => 'v1', 'namespace' => 'App'], function() use ($app) {
+    $app->get('state/{site}', 'Http\Controllers\StateController@get');
+
+    $app->group(['prefix' => 'v1', 'namespace' => 'App\Sites'], function() use ($app) {
+        $app->post('sites', ['as' => 'sites', 'uses' => 'SitesController@create']);
+        $app->patch('sites', 'SitesController@update');
+        $app->put('sites', 'SitesController@order');
+        $app->delete('sites', 'SitesController@delete');
+
+        $app->patch('sites/settings', ['as' => 'site_settings', 'uses' => 'Settings\SiteSettingsController@update']);
+
+        $app->patch('sites/template-settings', ['as' => 'site_template_settings', 'uses' => 'TemplateSettings\SiteTemplateSettingsController@update']);
+
+        $app->group(['prefix' => 'v1/sites', 'namespace' => 'App\Sites\Sections'], function() use ($app) {
+            $app->post('sections', ['as' => 'site_sections', 'uses' => 'SiteSectionsController@create']);
+            $app->patch('sections', 'SiteSectionsController@update');
+            $app->patch('sections/reset', ['as' => 'site_sections_reset', 'uses' => 'SiteSectionsController@reset']);
+            $app->put('sections', 'SiteSectionsController@order');
+            $app->delete('sections', 'SiteSectionsController@delete');
+
+            $app->put('sections/backgrounds', ['as' => 'site_section_backgrounds', 'uses' => 'SiteSectionsController@galleryOrder']);
+            $app->delete('sections/backgrounds', 'SiteSectionsController@galleryDelete');
+        });
+    });
+
+    /**
+     * This includes test controller for easier development
+     * @todo: replace this with automated tests
+     */
+    if (app()->environment('local', 'stage')) {
+        require __DIR__.'/../Dev/testRoutes.php';
+    }
 });

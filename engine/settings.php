@@ -18,6 +18,7 @@ $berta->settings = new Settings($settingsDefinition);
 $menuSeparator = $berta->settings->get('menu', 'separator');
 $topPanelHTML = BertaEditor::getTopPanelHTML($mode);
 $int_version = BertaEditor::$options['int_version'];
+$site = empty($options['MULTISITE']) ? '0' : $options['MULTISITE'];
 
 ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -50,6 +51,12 @@ $int_version = BertaEditor::$options['int_version'];
 			$settings = $mode == 'template' ? $berta->template->settings : $berta->settings;
 			$propertyPrefix = $settings->templateName ? ($settings->templateFullName . '/') : '';
 
+            if ($mode == 'template') {
+                $basePath = $site . '/site_template_settings/' . $propertyPrefix;
+            } else {
+                $basePath = $site . '/settings';
+            }
+
 			$tabsHTML = '';
 			$contentHTML = '';
 
@@ -73,8 +80,30 @@ $int_version = BertaEditor::$options['int_version'];
 							$contentHTML .= '	<div class="caption">' . ($s['title'] ? ($s['title']) : "<em>$sKey</em>") . '</div>';
 
 							// value
-							$value = $settings->get($sSectionKey, $sKey, false, false);	// don't use empty + don't inherit from base
-							$contentHTML .= BertaEditor::getSettingsItemEditHTML($propertyPrefix . $sSectionKey . '/' . $sKey, $s, $value) . "\n";
+                            $value = $settings->get($sSectionKey, $sKey, false, false);	// don't use empty + don't inherit from base
+
+                            // Template settings
+                            if ($mode == 'template') {
+                                $contentHTML .= BertaEditor::getSettingsItemEditHTML(
+                                    $propertyPrefix . $sSectionKey . '/' . $sKey,
+                                    $s,
+                                    $value,
+                                    null,
+                                    'div',
+                                    $basePath . $sSectionKey . '/' . $sKey
+                                ) . "\n";
+
+                            // General Site Settings
+                            } else {
+                                $contentHTML .= BertaEditor::getSettingsItemEditHTML(
+                                    $sSectionKey . '/' . $sKey,
+                                    $s,
+                                    $value,
+                                    null,
+                                    'div',
+                                    $basePath . '/' . $sSectionKey . '/' . $sKey
+                                ) . "\n";
+                            }
 
 							// description
 							if(!empty($s['description'])) {

@@ -483,14 +483,14 @@ class BertaUtils extends BertaBase
         if ($options['HOSTING_PROFILE']) {
             $db = BertaUtils::db();
             $db->exec("
-				CREATE TABLE IF NOT EXISTS `log` (
-				  `id` INTEGER PRIMARY KEY,
-				  `created_at` datetime NOT NULL,
-				  `action` varchar(20) NOT NULL,
-				  `get` text NOT NULL,
-				  `post` text NOT NULL
-				)
-			");
+                CREATE TABLE IF NOT EXISTS `log` (
+                  `id` INTEGER PRIMARY KEY,
+                  `created_at` datetime NOT NULL,
+                  `action` varchar(20) NOT NULL,
+                  `get` text NOT NULL,
+                  `post` text NOT NULL
+                )
+            ");
 
             $q = $db->prepare("INSERT INTO log VALUES (NULL, :created_at, :action, :get, :post)") or die(print_r($db->errorInfo(), true));
             $q->execute(
