@@ -72,6 +72,7 @@ class SectionEntryRenderService
         $entry['addToBasketLabel'] = $addToBasketLabel;
         $entry['addedToBasketText'] = $addedToBasketText;
         $entry['outOfStockText'] = $outOfStockText;
+        $entry['showUrl'] = $this->isEditMode || (isset($entry['content']['url']) && !empty($entry['content']['url']));
 
         return $entry;
     }

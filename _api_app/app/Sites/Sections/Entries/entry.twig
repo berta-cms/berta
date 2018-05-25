@@ -21,6 +21,16 @@
     <div class="entryText xEditableMCE xProperty-description">{{ content.description|raw }}</div>
   {% endif %}
 
+  {% if showUrl %}
+    <div class="entryContent">
+      {% if isEditMode %}
+        <div class="xEditable xProperty-url">{{ content.url }}</div>
+      {% else %}
+        <div class="xEditable xProperty-url"><a href="{{ content.url }}" target="_blank">{{ content.url }}</a></div>
+      {% endif %}
+    </div>
+  {% endif %}
+
   {% if showAddToCart %}
     <div class="addToCart" data-uniqid="{{ uniqid }}">
         {% if isEditMode %}
