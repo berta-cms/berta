@@ -11,6 +11,8 @@
     "HookyQR.beautify",  // Formatter for JS files
     "mrmlnc.vscode-apache",
     "IBM.xmllanguagesupport",
-    "DotJoshJohnson.xml"
+    "DotJoshJohnson.xml",
+    "mblode.twig-language-2",
+    "imperez.smarty"
   ]
 }
