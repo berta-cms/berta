@@ -7,6 +7,10 @@
         {% include 'Sites/Sections/Entries/_entryEditorHeader' %}
   {% endif %}
 
+  {% if galleryPosition == 'above title' %}
+    {% include 'Sites/Sections/Entries/_entryGallery' %}
+  {% endif %}
+
   {% if templateName != 'default' %}
     <div class="entryTextWrap galleryType-{{ galleryType }}">
   {% endif %}
@@ -17,8 +21,16 @@
     <h2><span class="xEditable xProperty-title xCaption-entry&nbsp;title">{{ content.title }}</span></h2>
   {% endif %}
 
+  {% if galleryPosition == 'between title/description' %}
+    {% include 'Sites/Sections/Entries/_entryGallery' %}
+  {% endif %}
+
   {% if showDescription %}
     <div class="entryText xEditableMCE xProperty-description">{{ content.description|raw }}</div>
+  {% endif %}
+
+  {% if galleryPosition == 'below description' %}
+    {% include 'Sites/Sections/Entries/_entryGallery' %}
   {% endif %}
 
   {% if showUrl %}

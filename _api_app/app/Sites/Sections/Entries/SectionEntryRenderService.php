@@ -50,6 +50,7 @@ class SectionEntryRenderService
         $addToBasketLabel = isset($this->siteSettings['shop']['addToBasket']) && !empty($this->siteSettings['shop']['addToBasket']) ? $this->siteSettings['shop']['addToBasket'] : 'add to basket';
         $addedToBasketText = isset($this->siteSettings['shop']['addedToBasket']) && !empty($this->siteSettings['shop']['addedToBasket']) ? $this->siteSettings['shop']['addedToBasket'] : 'added!';
         $outOfStockText = isset($this->siteSettings['shop']['outOfStock']) && !empty($this->siteSettings['shop']['outOfStock']) ? $this->siteSettings['shop']['outOfStock'] : 'Out of stock!';
+        $galleryPosition = isset($this->siteTemplateSettings['entryLayout']['galleryPosition']) ? $this->siteTemplateSettings['entryLayout']['galleryPosition'] : null;
 
         $entry['entryId'] = $this->getEntryId();
         $entry['classList'] = $this->getClassList();
@@ -72,7 +73,8 @@ class SectionEntryRenderService
         $entry['addToBasketLabel'] = $addToBasketLabel;
         $entry['addedToBasketText'] = $addedToBasketText;
         $entry['outOfStockText'] = $outOfStockText;
-        $entry['showUrl'] = $this->isEditMode || (isset($entry['content']['url']) && !empty($entry['content']['url']));
+        $entry['showUrl'] = $this->templateName == 'default' && ($this->isEditMode || (isset($entry['content']['url']) && !empty($entry['content']['url'])));
+        $entry['galleryPosition'] = $galleryPosition ? $galleryPosition : ($this->sectionType == 'portfolio' ? 'below description' : 'above title');
 
         return $entry;
     }
