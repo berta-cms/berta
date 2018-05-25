@@ -1,10 +1,10 @@
 <?php
 
-namespace App\SiteTemplates;
+namespace App\Config;
 
 use App\Shared\I18n;
 
-class SiteTemplatesDataService {
+class SiteTemplatesConfigService {
     private $TEMPLATE_ROOT;
 
     public function __construct() {

@@ -3,7 +3,7 @@
 namespace App\Sites\TemplateSettings;
 
 use App\Shared\Storage;
-use App\SiteTemplates\SiteTemplatesDataService;
+use App\Config\SiteTemplatesConfigService;
 
 class SiteTemplateSettingsDataService extends Storage
 {
@@ -19,8 +19,8 @@ class SiteTemplateSettingsDataService extends Storage
         $this->TEMPLATE = explode('-', $template)[0];
         $this->XML_FILE = $xml_root . '/settings.' . $this->TEMPLATE . '.xml';
 
-        $siteTemplatesDataService = new SiteTemplatesDataService();
-        $this->siteTemplateDefaults = $siteTemplatesDataService->getDefaults()[$template]['templateConf'];
+        $siteTemplatesConfigService = new SiteTemplatesConfigService();
+        $this->siteTemplateDefaults = $siteTemplatesConfigService->getDefaults()[$template]['templateConf'];
     }
 
     public function get()

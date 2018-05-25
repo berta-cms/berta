@@ -8,7 +8,7 @@ use App\Sites\TemplateSettings\SiteTemplateSettingsDataService;
 use App\Sites\Sections\SiteSectionsDataService;
 use App\Sites\Sections\Tags\SectionTagsDataService;
 use App\Sites\Sections\Entries\SectionEntriesDataService;
-use App\SiteTemplates\SiteTemplatesDataService;
+use App\Config\SiteTemplatesConfigService;
 
 class StateController extends Controller
 {
@@ -16,8 +16,8 @@ class StateController extends Controller
         $site = $site === '0' ? '' : $site;
         $sites = new SitesDataService();
         $siteSettings = new SiteSettingsDataService();
-        $siteTemplates = new SiteTemplatesDataService();
-        $allTemplates = $siteTemplates->getAllTemplates();
+        $siteTemplatesConfigService = new SiteTemplatesConfigService();
+        $allTemplates = $siteTemplatesConfigService->getAllTemplates();
 
         $state['urls'] = [
             'sites' => route('sites'),
@@ -81,7 +81,7 @@ class StateController extends Controller
             $lang = $state['site_settings'][$site]['language']['language'];
         }
 
-        $state['site_templates'] = $siteTemplates->get($lang);
+        $state['siteTemplates'] = $siteTemplatesConfigService->get($lang);
         unset($sites);
 
         return response()->json($state);
