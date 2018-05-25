@@ -120,23 +120,24 @@ var BertaEditor_Multisite = new Class({
 			return element.getClassStoredValue('xSite');
 		});
 
-    redux_store.dispatch(Actions.orderSites(
+    redux_store.dispatch(Actions.initOrderSites(
       newOrder,
-      function(resp) {
-        for (var i=0; i< resp.length; i++) {
-          $$('.xSite-' + resp[i] + ' .xProperty-title')
-            .set('data-path', 'site/' + i + '/title')
-            .data('path', true);
-          $$('.xSite-' + resp[i] + ' .xProperty-name')
-            .set('data-path', 'site/' + i + '/name')
-            .data('path', true);
-          $$('.xSite-' + resp[i] + ' .xProperty-published')
-            .set('data-path', 'site/' + i + '/@attributes/published')
-            .data('path', true);
-        }
-      }
+      function (resp) {
+        this.updatePathParams();
+      }.bind(this)
     ));
-	},
+  },
+
+  updatePathParams: function() {
+    var path;
+    this.sitesMenu.getElements('li').each(function (site, i) {
+      site.getElements('[data-path]').each(function (editable) {
+        path = editable.data('path').split('/');
+        path[1] = i;
+        editable.set('data-path', path.join('/')).data('path', true);
+      });
+    });
+  },
 
 	siteOnCloneClick: function(event) {
 		event = new Event(event).stop();
@@ -161,7 +162,7 @@ var BertaEditor_Multisite = new Class({
 		if(confirm('Berta asks:\n\nAre you sure you want to delete this site? All its content will be lost... FOREVAAA!')) {
 			if(confirm('Berta asks again:\n\nAre you really sure?')) {
 				this.sitesEditor.addClass('xSaving');
-        redux_store.dispatch(Actions.deleteSite(
+        redux_store.dispatch(Actions.initdeleteSite(
           siteName,
           function(resp) {
             if(!resp) {
@@ -170,6 +171,7 @@ var BertaEditor_Multisite = new Class({
               var element = this.sitesMenu.getElement('li.xSite-' + resp.name);
               this.sitesSortables.removeItems(element);
               element.destroy();
+              this.updatePathParams();
             } else {
               alert(resp.error_message);
             }
@@ -182,11 +184,10 @@ var BertaEditor_Multisite = new Class({
 
 	siteCreateNew: function(site) {
 		this.sitesEditor.addClass('xSaving');
-    redux_store.dispatch(Actions.createSite(
+    redux_store.dispatch(Actions.initCreateSite(
       this.cloneSite,
       // @@@:TODO: Remove this callback, when migration to ReactJS is complete
       function(resp) {
-        console.log(resp);
         if(!resp) {
           alert('Berta says:\n\nServer produced an error while adding new site! Something went sooooo wrong...');
         } else if(resp && !resp.error_message) {
@@ -194,7 +195,7 @@ var BertaEditor_Multisite = new Class({
                 'multisite',
                 Object.assign({}, editables, {
                   name: resp.name,
-                  idx: resp.idx,
+                  order: resp.order,
                   address: location.protocol + '//' + location.host
                 })
               );
@@ -210,7 +211,7 @@ var BertaEditor_Multisite = new Class({
       }.bind(this)
     ));
 
-		this.cloneSite = -1;
+    this.cloneSite = -1;
 	}
 });
 

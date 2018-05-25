@@ -16,24 +16,36 @@
 // });
 
 // @@@:TODO: Require login for API endpoints
-$app->group(['prefix' => 'v1','namespace' => 'App\Http\Controllers'], function($app) {
-	$app->get('state/{site}','StateController@get');
+$app->group(['prefix' => 'v1', 'namespace' => 'App'], function() use ($app) {
+    $app->get('state/{site}', 'Http\Controllers\StateController@get');
 
-    $app->patch('update-site','SiteController@update');
-    $app->post('create-site','SiteController@create');
-    $app->delete('delete-site/{site}','SiteController@delete');
-    $app->put('order-sites','SiteController@order');
+    $app->group(['prefix' => 'v1', 'namespace' => 'App\Sites'], function() use ($app) {
+        $app->post('sites', ['as' => 'sites', 'uses' => 'SitesController@create']);
+        $app->patch('sites', 'SitesController@update');
+        $app->put('sites', 'SitesController@order');
+        $app->delete('sites', 'SitesController@delete');
 
-    $app->patch('update-settings','SettingsController@update');
+        $app->patch('sites/settings', ['as' => 'site_settings', 'uses' => 'Settings\SiteSettingsController@update']);
 
-    $app->patch('update-site-template-settings','SiteTemplateSettingsController@update');
+        $app->patch('sites/template-settings', ['as' => 'site_template_settings', 'uses' => 'TemplateSettings\SiteTemplateSettingsController@update']);
 
-    $app->patch('update-section','SectionController@update');
-    $app->patch('reset-section','SectionController@reset');
-    $app->post('create-section','SectionController@create');
-    $app->delete('delete-section/{site}/{section}','SectionController@delete');
-    $app->put('order-sections','SectionController@order');
+        $app->group(['prefix' => 'v1/sites', 'namespace' => 'App\Sites\Sections'], function() use ($app) {
+            $app->post('sections', ['as' => 'site_sections', 'uses' => 'SiteSectionsController@create']);
+            $app->patch('sections', 'SiteSectionsController@update');
+            $app->patch('sections/reset', ['as' => 'site_sections_reset', 'uses' => 'SiteSectionsController@reset']);
+            $app->put('sections', 'SiteSectionsController@order');
+            $app->delete('sections', 'SiteSectionsController@delete');
 
-    $app->delete('section-bg-delete/{site}/{section}/{file}','SectionController@galleryDelete');
-    $app->put('section-bg-order','SectionController@galleryOrder');
+            $app->put('sections/backgrounds', ['as' => 'site_section_backgrounds', 'uses' => 'SiteSectionsController@galleryOrder']);
+            $app->delete('sections/backgrounds', 'SiteSectionsController@galleryDelete');
+        });
+    });
+
+    /**
+     * This includes test controller for easier development
+     * @todo: replace this with automated tests
+     */
+    if (app()->environment('local', 'stage')) {
+        require __DIR__.'/../Dev/testRoutes.php';
+    }
 });

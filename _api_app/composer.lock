@@ -1,11 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "hash": "5b45079b4a62e7d9fb2e64bf35c2ce89",
-    "content-hash": "d258506ffc312220ac2777012695a69a",
+    "content-hash": "cff95a5cbae2af680a0cd4f5cc0944aa",
     "packages": [
         {
             "name": "doctrine/inflector",
@@ -72,7 +71,7 @@
                 "singularize",
                 "string"
             ],
-            "time": "2015-11-06 14:35:42"
+            "time": "2015-11-06T14:35:42+00:00"
         },
         {
             "name": "illuminate/auth",
@@ -122,7 +121,7 @@
             ],
             "description": "The Illuminate Auth package.",
             "homepage": "http://laravel.com",
-            "time": "2016-01-03 17:22:49"
+            "time": "2016-01-03T17:22:49+00:00"
         },
         {
             "name": "illuminate/broadcasting",
@@ -169,7 +168,7 @@
             ],
             "description": "The Illuminate Broadcasting package.",
             "homepage": "http://laravel.com",
-            "time": "2015-12-24 14:23:14"
+            "time": "2015-12-24T14:23:14+00:00"
         },
         {
             "name": "illuminate/bus",
@@ -214,7 +213,7 @@
             ],
             "description": "The Illuminate Bus package.",
             "homepage": "http://laravel.com",
-            "time": "2015-12-05 22:11:33"
+            "time": "2015-12-05T22:11:33+00:00"
         },
         {
             "name": "illuminate/cache",
@@ -264,7 +263,7 @@
             ],
             "description": "The Illuminate Cache package.",
             "homepage": "http://laravel.com",
-            "time": "2015-12-30 13:36:12"
+            "time": "2015-12-30T13:36:12+00:00"
         },
         {
             "name": "illuminate/config",
@@ -309,7 +308,7 @@
             ],
             "description": "The Illuminate Config package.",
             "homepage": "http://laravel.com",
-            "time": "2015-06-22 20:36:58"
+            "time": "2015-06-22T20:36:58+00:00"
         },
         {
             "name": "illuminate/console",
@@ -360,7 +359,7 @@
             ],
             "description": "The Illuminate Console package.",
             "homepage": "http://laravel.com",
-            "time": "2016-01-05 16:02:40"
+            "time": "2016-01-05T16:02:40+00:00"
         },
         {
             "name": "illuminate/container",
@@ -403,7 +402,7 @@
             ],
             "description": "The Illuminate Container package.",
             "homepage": "http://laravel.com",
-            "time": "2016-01-06 14:42:17"
+            "time": "2016-01-06T14:42:17+00:00"
         },
         {
             "name": "illuminate/contracts",
@@ -445,7 +444,7 @@
             ],
             "description": "The Illuminate Contracts package.",
             "homepage": "http://laravel.com",
-            "time": "2015-12-19 14:25:38"
+            "time": "2015-12-19T14:25:38+00:00"
         },
         {
             "name": "illuminate/database",
@@ -505,7 +504,7 @@
                 "orm",
                 "sql"
             ],
-            "time": "2016-01-06 16:20:30"
+            "time": "2016-01-06T16:20:30+00:00"
         },
         {
             "name": "illuminate/encryption",
@@ -554,7 +553,7 @@
             ],
             "description": "The Illuminate Encryption package.",
             "homepage": "http://laravel.com",
-            "time": "2015-12-02 22:01:41"
+            "time": "2015-12-02T22:01:41+00:00"
         },
         {
             "name": "illuminate/events",
@@ -599,7 +598,7 @@
             ],
             "description": "The Illuminate Events package.",
             "homepage": "http://laravel.com",
-            "time": "2016-01-01 01:00:19"
+            "time": "2016-01-01T01:00:19+00:00"
         },
         {
             "name": "illuminate/filesystem",
@@ -649,7 +648,7 @@
             ],
             "description": "The Illuminate Filesystem package.",
             "homepage": "http://laravel.com",
-            "time": "2016-01-02 15:21:57"
+            "time": "2016-01-02T15:21:57+00:00"
         },
         {
             "name": "illuminate/hashing",
@@ -693,7 +692,7 @@
             ],
             "description": "The Illuminate Hashing package.",
             "homepage": "http://laravel.com",
-            "time": "2015-11-30 19:26:21"
+            "time": "2015-11-30T19:26:21+00:00"
         },
         {
             "name": "illuminate/http",
@@ -739,7 +738,7 @@
             ],
             "description": "The Illuminate Http package.",
             "homepage": "http://laravel.com",
-            "time": "2016-01-04 16:32:54"
+            "time": "2016-01-04T16:32:54+00:00"
         },
         {
             "name": "illuminate/pagination",
@@ -783,7 +782,7 @@
             ],
             "description": "The Illuminate Pagination package.",
             "homepage": "http://laravel.com",
-            "time": "2016-01-04 22:33:02"
+            "time": "2016-01-04T22:33:02+00:00"
         },
         {
             "name": "illuminate/pipeline",
@@ -827,7 +826,7 @@
             ],
             "description": "The Illuminate Pipeline package.",
             "homepage": "http://laravel.com",
-            "time": "2015-12-10 18:01:38"
+            "time": "2015-12-10T18:01:38+00:00"
         },
         {
             "name": "illuminate/queue",
@@ -883,7 +882,7 @@
             ],
             "description": "The Illuminate Queue package.",
             "homepage": "http://laravel.com",
-            "time": "2016-01-04 02:04:12"
+            "time": "2016-01-04T02:04:12+00:00"
         },
         {
             "name": "illuminate/session",
@@ -933,7 +932,7 @@
             ],
             "description": "The Illuminate Session package.",
             "homepage": "http://laravel.com",
-            "time": "2015-12-26 15:22:31"
+            "time": "2015-12-26T15:22:31+00:00"
         },
         {
             "name": "illuminate/support",
@@ -989,7 +988,7 @@
             ],
             "description": "The Illuminate Support package.",
             "homepage": "http://laravel.com",
-            "time": "2016-01-07 11:02:28"
+            "time": "2016-01-07T11:02:28+00:00"
         },
         {
             "name": "illuminate/translation",
@@ -1034,7 +1033,7 @@
             ],
             "description": "The Illuminate Translation package.",
             "homepage": "http://laravel.com",
-            "time": "2016-01-07 11:06:05"
+            "time": "2016-01-07T11:06:05+00:00"
         },
         {
             "name": "illuminate/validation",
@@ -1084,7 +1083,7 @@
             ],
             "description": "The Illuminate Validation package.",
             "homepage": "http://laravel.com",
-            "time": "2016-01-07 13:50:56"
+            "time": "2016-01-07T13:50:56+00:00"
         },
         {
             "name": "illuminate/view",
@@ -1131,7 +1130,7 @@
             ],
             "description": "The Illuminate View package.",
             "homepage": "http://laravel.com",
-            "time": "2016-01-07 13:30:59"
+            "time": "2016-01-07T13:30:59+00:00"
         },
         {
             "name": "laravel/lumen-framework",
@@ -1214,62 +1213,7 @@
                 "laravel",
                 "lumen"
             ],
-            "time": "2016-01-14 19:52:28"
-        },
-        {
-            "name": "league/csv",
-            "version": "6.3.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/thephpleague/csv.git",
-                "reference": "5ffb2b42ed5d7ae20d80d4480b34743f5086d4a8"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/csv/zipball/5ffb2b42ed5d7ae20d80d4480b34743f5086d4a8",
-                "reference": "5ffb2b42ed5d7ae20d80d4480b34743f5086d4a8",
-                "shasum": ""
-            },
-            "require": {
-                "ext-mbstring": "*",
-                "php": ">=5.4.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "~4.0"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "6.3-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "League\\Csv\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Ignace Nyamagana Butera",
-                    "email": "nyamsprod@gmail.com",
-                    "homepage": "https://github.com/nyamsprod/",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Csv data manipulation made easy in PHP",
-            "keywords": [
-                "csv",
-                "export",
-                "filter",
-                "import",
-                "read",
-                "write"
-            ],
-            "time": "2015-01-21 12:06:27"
+            "time": "2016-01-14T19:52:28+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -1346,7 +1290,7 @@
                 "logging",
                 "psr-3"
             ],
-            "time": "2015-10-14 12:51:02"
+            "time": "2015-10-14T12:51:02+00:00"
         },
         {
             "name": "mtdowling/cron-expression",
@@ -1390,54 +1334,7 @@
                 "cron",
                 "schedule"
             ],
-            "time": "2015-01-11 23:07:46"
-        },
-        {
-            "name": "mustangostang/spyc",
-            "version": "0.5.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/mustangostang/spyc.git",
-                "reference": "dc4785b4d7227fd9905e086d499fb8abfadf9977"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/mustangostang/spyc/zipball/dc4785b4d7227fd9905e086d499fb8abfadf9977",
-                "reference": "dc4785b4d7227fd9905e086d499fb8abfadf9977",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.1"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "0.5.x-dev"
-                }
-            },
-            "autoload": {
-                "files": [
-                    "Spyc.php"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT License"
-            ],
-            "authors": [
-                {
-                    "name": "mustangostang",
-                    "email": "vlad.andersen@gmail.com"
-                }
-            ],
-            "description": "A simple YAML loader/dumper class for PHP",
-            "homepage": "https://github.com/mustangostang/spyc/",
-            "keywords": [
-                "spyc",
-                "yaml",
-                "yml"
-            ],
-            "time": "2013-02-21 10:52:01"
+            "time": "2015-01-11T23:07:46+00:00"
         },
         {
             "name": "nesbot/carbon",
@@ -1484,7 +1381,7 @@
                 "datetime",
                 "time"
             ],
-            "time": "2015-11-04 20:07:17"
+            "time": "2015-11-04T20:07:17+00:00"
         },
         {
             "name": "nikic/fast-route",
@@ -1527,7 +1424,7 @@
                 "router",
                 "routing"
             ],
-            "time": "2015-12-20 19:50:12"
+            "time": "2015-12-20T19:50:12+00:00"
         },
         {
             "name": "paragonie/random_compat",
@@ -1575,7 +1472,51 @@
                 "pseudorandom",
                 "random"
             ],
-            "time": "2016-01-06 13:31:20"
+            "time": "2016-01-06T13:31:20+00:00"
+        },
+        {
+            "name": "phplang/scope-exit",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/phplang/scope-exit.git",
+                "reference": "239b73abe89f9414aa85a7ca075ec9445629192b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/phplang/scope-exit/zipball/239b73abe89f9414aa85a7ca075ec9445629192b",
+                "reference": "239b73abe89f9414aa85a7ca075ec9445629192b",
+                "shasum": ""
+            },
+            "require-dev": {
+                "phpunit/phpunit": "*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "PhpLang\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD"
+            ],
+            "authors": [
+                {
+                    "name": "Sara Golemon",
+                    "email": "pollita@php.net",
+                    "homepage": "https://twitter.com/SaraMG",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Emulation of SCOPE_EXIT construct from C++",
+            "homepage": "https://github.com/phplang/scope-exit",
+            "keywords": [
+                "cleanup",
+                "exit",
+                "scope"
+            ],
+            "time": "2016-09-17T00:15:18+00:00"
         },
         {
             "name": "psr/log",
@@ -1613,65 +1554,90 @@
                 "psr",
                 "psr-3"
             ],
-            "time": "2012-12-21 11:40:51"
+            "time": "2012-12-21T11:40:51+00:00"
         },
         {
-            "name": "soapbox/laravel-formatter",
-            "version": "dev-master",
+            "name": "swaggest/json-diff",
+            "version": "v3.4.2",
             "source": {
                 "type": "git",
-                "url": "https://github.com/SoapBox/laravel-formatter.git",
-                "reference": "8cdc4a6849bcd9b840692a967c7611ce42e41135"
+                "url": "https://github.com/swaggest/json-diff.git",
+                "reference": "05e61270ef2c8ed4af517ff70cf42ba559cf8bc1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/SoapBox/laravel-formatter/zipball/8cdc4a6849bcd9b840692a967c7611ce42e41135",
-                "reference": "8cdc4a6849bcd9b840692a967c7611ce42e41135",
+                "url": "https://api.github.com/repos/swaggest/json-diff/zipball/05e61270ef2c8ed4af517ff70cf42ba559cf8bc1",
+                "reference": "05e61270ef2c8ed4af517ff70cf42ba559cf8bc1",
                 "shasum": ""
             },
-            "require": {
-                "illuminate/support": ">=4.0",
-                "league/csv": "~6.0",
-                "mustangostang/spyc": "0.5.*@dev",
-                "php": ">=5.4.0"
+            "require-dev": {
+                "codeclimate/php-test-reporter": "^0.4.0",
+                "phpunit/php-code-coverage": "2.2.4",
+                "phpunit/phpunit": "^4.8.23"
             },
             "type": "library",
             "autoload": {
-                "psr-0": {
-                    "SoapBox\\Formatter": "src/"
+                "psr-4": {
+                    "Swaggest\\JsonDiff\\": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
             "authors": [
                 {
-                    "name": "Graham McCarthy",
-                    "email": "graham@soapboxhq.com",
-                    "homepage": "http://grahammccarthy.com"
-                },
-                {
-                    "name": "Jaspaul Bola",
-                    "email": "jaspaul.b@gamil.com",
-                    "homepage": "http://jaspaulbola.com"
+                    "name": "Viacheslav Poturaev",
+                    "email": "vearutop@gmail.com"
                 }
             ],
-            "description": "A formatting library that converts data output between XML, CSV, JSON, TXT, YAML and a few others.",
-            "homepage": "http://github.com/SoapBox/laravel-formatter",
-            "keywords": [
-                "convert",
-                "csv",
-                "data",
-                "formatter",
-                "laravel",
-                "xml",
-                "yaml"
-            ],
-            "support": {
-                "source": "https://github.com/SoapBox/laravel-formatter/tree/2.2",
-                "issues": "https://github.com/SoapBox/laravel-formatter/issues"
+            "description": "JSON diff/rearrange/patch/pointer library for PHP",
+            "time": "2018-04-28T04:44:06+00:00"
+        },
+        {
+            "name": "swaggest/json-schema",
+            "version": "v0.11.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/swaggest/php-json-schema.git",
+                "reference": "aa438e22f521970b7e10c811345b7169febb3dfd"
             },
-            "time": "2014-12-04 18:25:30"
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/swaggest/php-json-schema/zipball/aa438e22f521970b7e10c811345b7169febb3dfd",
+                "reference": "aa438e22f521970b7e10c811345b7169febb3dfd",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4",
+                "phplang/scope-exit": "^1.0",
+                "swaggest/json-diff": "^3.4.2"
+            },
+            "require-dev": {
+                "codeclimate/php-test-reporter": "^0.4.0",
+                "phpunit/php-code-coverage": "2.2.4",
+                "phpunit/phpunit": "4.8.35",
+                "swaggest/code-builder": "dev-master#e0c5c0612fd241d2d120e5ddef91cda9edc208ee",
+                "swaggest/php-code-builder": "dev-master#3e643924445eb0f8d13dd011a57a42ce75629892"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Swaggest\\JsonSchema\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Viacheslav Poturaev",
+                    "email": "vearutop@gmail.com"
+                }
+            ],
+            "description": "High definition PHP structures with JSON-schema based validation",
+            "time": "2018-05-02T06:06:16+00:00"
         },
         {
             "name": "symfony/console",
@@ -1731,7 +1697,7 @@
             ],
             "description": "Symfony Console Component",
             "homepage": "https://symfony.com",
-            "time": "2015-12-22 10:39:06"
+            "time": "2015-12-22T10:39:06+00:00"
         },
         {
             "name": "symfony/debug",
@@ -1788,7 +1754,7 @@
             ],
             "description": "Symfony Debug Component",
             "homepage": "https://symfony.com",
-            "time": "2015-12-26 13:39:53"
+            "time": "2015-12-26T13:39:53+00:00"
         },
         {
             "name": "symfony/event-dispatcher",
@@ -1848,7 +1814,7 @@
             ],
             "description": "Symfony EventDispatcher Component",
             "homepage": "https://symfony.com",
-            "time": "2015-10-30 23:35:59"
+            "time": "2015-10-30T23:35:59+00:00"
         },
         {
             "name": "symfony/finder",
@@ -1897,7 +1863,7 @@
             ],
             "description": "Symfony Finder Component",
             "homepage": "https://symfony.com",
-            "time": "2015-12-05 11:13:14"
+            "time": "2015-12-05T11:13:14+00:00"
         },
         {
             "name": "symfony/http-foundation",
@@ -1949,7 +1915,7 @@
             ],
             "description": "Symfony HttpFoundation Component",
             "homepage": "https://symfony.com",
-            "time": "2015-12-18 15:43:53"
+            "time": "2015-12-18T15:43:53+00:00"
         },
         {
             "name": "symfony/http-kernel",
@@ -2031,7 +1997,7 @@
             ],
             "description": "Symfony HttpKernel Component",
             "homepage": "https://symfony.com",
-            "time": "2015-12-26 16:46:13"
+            "time": "2015-12-26T16:46:13+00:00"
         },
         {
             "name": "symfony/polyfill-mbstring",
@@ -2090,7 +2056,7 @@
                 "portable",
                 "shim"
             ],
-            "time": "2015-11-20 09:19:13"
+            "time": "2015-11-20T09:19:13+00:00"
         },
         {
             "name": "symfony/process",
@@ -2139,7 +2105,7 @@
             ],
             "description": "Symfony Process Component",
             "homepage": "https://symfony.com",
-            "time": "2015-12-23 11:04:02"
+            "time": "2015-12-23T11:04:02+00:00"
         },
         {
             "name": "symfony/translation",
@@ -2203,7 +2169,7 @@
             ],
             "description": "Symfony Translation Component",
             "homepage": "https://symfony.com",
-            "time": "2015-12-05 17:45:07"
+            "time": "2015-12-05T17:45:07+00:00"
         },
         {
             "name": "vlucas/phpdotenv",
@@ -2254,7 +2220,7 @@
                 "env",
                 "environment"
             ],
-            "time": "2015-12-29 15:10:30"
+            "time": "2015-12-29T15:10:30+00:00"
         }
     ],
     "packages-dev": [
@@ -2310,7 +2276,7 @@
                 "constructor",
                 "instantiate"
             ],
-            "time": "2015-06-14 21:17:01"
+            "time": "2015-06-14T21:17:01+00:00"
         },
         {
             "name": "fzaninotto/faker",
@@ -2362,7 +2328,109 @@
                 "faker",
                 "fixtures"
             ],
-            "time": "2015-05-29 06:29:14"
+            "time": "2015-05-29T06:29:14+00:00"
+        },
+        {
+            "name": "league/csv",
+            "version": "6.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/thephpleague/csv.git",
+                "reference": "5ffb2b42ed5d7ae20d80d4480b34743f5086d4a8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/thephpleague/csv/zipball/5ffb2b42ed5d7ae20d80d4480b34743f5086d4a8",
+                "reference": "5ffb2b42ed5d7ae20d80d4480b34743f5086d4a8",
+                "shasum": ""
+            },
+            "require": {
+                "ext-mbstring": "*",
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "6.3-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "League\\Csv\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Ignace Nyamagana Butera",
+                    "email": "nyamsprod@gmail.com",
+                    "homepage": "https://github.com/nyamsprod/",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Csv data manipulation made easy in PHP",
+            "keywords": [
+                "csv",
+                "export",
+                "filter",
+                "import",
+                "read",
+                "write"
+            ],
+            "time": "2015-01-21T12:06:27+00:00"
+        },
+        {
+            "name": "mustangostang/spyc",
+            "version": "0.5.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mustangostang/spyc.git",
+                "reference": "dc4785b4d7227fd9905e086d499fb8abfadf9977"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mustangostang/spyc/zipball/dc4785b4d7227fd9905e086d499fb8abfadf9977",
+                "reference": "dc4785b4d7227fd9905e086d499fb8abfadf9977",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.1"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.5.x-dev"
+                }
+            },
+            "autoload": {
+                "files": [
+                    "Spyc.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT License"
+            ],
+            "authors": [
+                {
+                    "name": "mustangostang",
+                    "email": "vlad.andersen@gmail.com"
+                }
+            ],
+            "description": "A simple YAML loader/dumper class for PHP",
+            "homepage": "https://github.com/mustangostang/spyc/",
+            "keywords": [
+                "spyc",
+                "yaml",
+                "yml"
+            ],
+            "time": "2013-02-21T10:52:01+00:00"
         },
         {
             "name": "phpdocumentor/reflection-docblock",
@@ -2411,7 +2479,7 @@
                     "email": "mike.vanriel@naenius.com"
                 }
             ],
-            "time": "2015-02-03 12:10:50"
+            "time": "2015-02-03T12:10:50+00:00"
         },
         {
             "name": "phpspec/prophecy",
@@ -2471,7 +2539,7 @@
                 "spy",
                 "stub"
             ],
-            "time": "2015-08-13 10:07:40"
+            "time": "2015-08-13T10:07:40+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -2533,7 +2601,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2015-10-06 15:47:00"
+            "time": "2015-10-06T15:47:00+00:00"
         },
         {
             "name": "phpunit/php-file-iterator",
@@ -2580,7 +2648,7 @@
                 "filesystem",
                 "iterator"
             ],
-            "time": "2015-06-21 13:08:43"
+            "time": "2015-06-21T13:08:43+00:00"
         },
         {
             "name": "phpunit/php-text-template",
@@ -2621,7 +2689,7 @@
             "keywords": [
                 "template"
             ],
-            "time": "2015-06-21 13:50:34"
+            "time": "2015-06-21T13:50:34+00:00"
         },
         {
             "name": "phpunit/php-timer",
@@ -2662,7 +2730,7 @@
             "keywords": [
                 "timer"
             ],
-            "time": "2015-06-21 08:01:12"
+            "time": "2015-06-21T08:01:12+00:00"
         },
         {
             "name": "phpunit/php-token-stream",
@@ -2711,7 +2779,7 @@
             "keywords": [
                 "tokenizer"
             ],
-            "time": "2015-09-15 10:49:45"
+            "time": "2015-09-15T10:49:45+00:00"
         },
         {
             "name": "phpunit/phpunit",
@@ -2783,7 +2851,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2015-12-12 07:45:58"
+            "time": "2015-12-12T07:45:58+00:00"
         },
         {
             "name": "phpunit/phpunit-mock-objects",
@@ -2839,7 +2907,7 @@
                 "mock",
                 "xunit"
             ],
-            "time": "2015-10-02 06:51:40"
+            "time": "2015-10-02T06:51:40+00:00"
         },
         {
             "name": "sebastian/comparator",
@@ -2903,7 +2971,7 @@
                 "compare",
                 "equality"
             ],
-            "time": "2015-07-26 15:48:44"
+            "time": "2015-07-26T15:48:44+00:00"
         },
         {
             "name": "sebastian/diff",
@@ -2955,7 +3023,7 @@
             "keywords": [
                 "diff"
             ],
-            "time": "2015-12-08 07:14:41"
+            "time": "2015-12-08T07:14:41+00:00"
         },
         {
             "name": "sebastian/environment",
@@ -3005,7 +3073,7 @@
                 "environment",
                 "hhvm"
             ],
-            "time": "2015-12-02 08:37:27"
+            "time": "2015-12-02T08:37:27+00:00"
         },
         {
             "name": "sebastian/exporter",
@@ -3071,7 +3139,7 @@
                 "export",
                 "exporter"
             ],
-            "time": "2015-06-21 07:55:53"
+            "time": "2015-06-21T07:55:53+00:00"
         },
         {
             "name": "sebastian/global-state",
@@ -3122,7 +3190,7 @@
             "keywords": [
                 "global state"
             ],
-            "time": "2015-10-12 03:26:01"
+            "time": "2015-10-12T03:26:01+00:00"
         },
         {
             "name": "sebastian/recursion-context",
@@ -3175,7 +3243,7 @@
             ],
             "description": "Provides functionality to recursively process PHP variables",
             "homepage": "http://www.github.com/sebastianbergmann/recursion-context",
-            "time": "2015-11-11 19:50:13"
+            "time": "2015-11-11T19:50:13+00:00"
         },
         {
             "name": "sebastian/version",
@@ -3210,7 +3278,7 @@
             ],
             "description": "Library that helps with managing the version number of Git-hosted PHP projects",
             "homepage": "https://github.com/sebastianbergmann/version",
-            "time": "2015-06-21 13:59:46"
+            "time": "2015-06-21T13:59:46+00:00"
         },
         {
             "name": "symfony/yaml",
@@ -3259,14 +3327,12 @@
             ],
             "description": "Symfony Yaml Component",
             "homepage": "https://symfony.com",
-            "time": "2015-12-26 13:39:53"
+            "time": "2015-12-26T13:39:53+00:00"
         }
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "soapbox/laravel-formatter": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
