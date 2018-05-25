@@ -7,6 +7,7 @@ use App\Shared\Helpers;
 class SectionEntryRenderService
 {
     private $entry;
+    private $images;
     private $section;
     private $siteSettings;
     private $siteTemplateSettings;
@@ -30,6 +31,7 @@ class SectionEntryRenderService
         );
 
         $this->entry = $options['entry'];
+        $this->images = $this->getGalleryImages();
         $this->section = $options['section'];
         $this->siteSettings = $options['siteSettings'];
         $this->siteTemplateSettings = $options['siteTemplateSettings'];
@@ -74,7 +76,12 @@ class SectionEntryRenderService
         $entry['addedToBasketText'] = $addedToBasketText;
         $entry['outOfStockText'] = $outOfStockText;
         $entry['showUrl'] = $this->templateName == 'default' && ($this->isEditMode || (isset($entry['content']['url']) && !empty($entry['content']['url'])));
+
         $entry['galleryPosition'] = $galleryPosition ? $galleryPosition : ($this->sectionType == 'portfolio' ? 'below description' : 'above title');
+        $entry['galleryImages'] = $this->images;
+        $entry['galleryClassList'] = $this->getGalleryClassList();
+        $entry['galleryStyleList'] = $this->getGalleryStyleList();
+        $entry['rowGalleryPadding'] = isset($entry['mediaCacheData']['@attributes']['row_gallery_padding']) && !empty($entry['mediaCacheData']['@attributes']['row_gallery_padding']) ? $entry['mediaCacheData']['@attributes']['row_gallery_padding'] : null;
 
         return $entry;
     }
@@ -121,6 +128,7 @@ class SectionEntryRenderService
         return implode(' ', $classes);
     }
 
+
     private function getStyleList() {
         $styles = [];
         $isResponsive = isset($this->siteTemplateSettings['pageLayout']['responsive']) ? $this->siteTemplateSettings['pageLayout']['responsive'] : 'no';
@@ -166,6 +174,60 @@ class SectionEntryRenderService
 
                 return implode(';', $styles);
             }
+        }
+
+        return null;
+    }
+
+    // @TODO Move gallery related code to helpers and/or own render class
+    private function getGalleryImages()
+    {
+        $images = [];
+        if (isset($this->entry['mediaCacheData']['file'])) {
+            $images = Helpers::asList($this->entry['mediaCacheData']['file']);
+        }
+
+        return $images;
+    }
+
+    public function getGalleryClassList() {
+        $entry = $this->entry;
+        $classes = ['xGalleryContainer'];
+        $galleryType = isset($entry['mediaCacheData']['@attributes']['type']) ? $entry['mediaCacheData']['@attributes']['type'] : $this->siteTemplateSettings['entryLayout']['defaultGalleryType'];
+        $galleryLinkAddress = isset($entry['mediaCacheData']['@attributes']['link_address']) ? $entry['mediaCacheData']['@attributes']['link_address'] : '';
+        $galleryLinkTarget = isset($entry['mediaCacheData']['@attributes']['linkTarget']) ? $entry['mediaCacheData']['@attributes']['linkTarget'] : '';
+
+        if ($this->images) {
+            $classes[] = 'xGalleryHasImages';
+            $classes[] = 'xGalleryType-' . $galleryType;
+
+            if ($galleryType == 'link') {
+                $classes[] = 'xGalleryLinkAddress-' . $galleryLinkAddress;
+                $classes[] = 'xGalleryLinkTarget-' . $galleryLinkTarget;
+            }
+        }
+
+        return implode(' ', $classes);
+    }
+
+    private function getGalleryStyleList() {
+        $styles = [];
+
+        if ($this->images) {
+            $image = current($this->images);
+
+            // @TODO Calculate image width and height
+            // $styles[] = ['width' => $width . 'px'];
+            // $styles[] = ['height' => $height . 'px'];
+        }
+
+        if (!empty($styles)) {
+            $styles = array_map(function($style){
+                $key = key($style);
+                return $key . ': ' . ($style[$key]);
+            }, $styles);
+
+            return implode(';', $styles);
         }
 
         return null;

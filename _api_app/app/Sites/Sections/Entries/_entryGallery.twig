@@ -1,3 +1,13 @@
 <div class="{{ galleryClassList }}">
-  [gallery]
+  {% if galleryImages %}
+
+    <div class="xGallery" style="{{ galleryStyleList }}"{% if rowGalleryPadding %} xRowGalleryPadding="{{ rowGalleryPadding }}"{% endif %}>
+
+    </div>
+
+  {% elseif isEditMode %}
+    <div class="imageEmpty">
+      <a href="#" class="xGalleryEditButton"><span class="xEmpty">&nbsp;gallery&nbsp;</span></a>
+    </div>
+  {% endif %}
 </div>

@@ -221,4 +221,23 @@ class Helpers
 
         return $attributes;
     }
+
+    /**
+     * Converts array as list or arrays
+     */
+    public static function asList($val) {
+        if (!$val) {
+            return [];
+        }
+
+        if (is_array($val)){
+            if (array_values($val) !== $val) {
+                return array(0 => $val);
+            }
+        } else {
+            return array(0 => $val);
+        }
+
+        return $val;
+    }
 }
