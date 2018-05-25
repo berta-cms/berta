@@ -186,8 +186,6 @@ class SiteTemplatesDataService
                                         'type' => 'object',
                                         'properties' => [
                                             'default' => ['type' => ['string', 'number']],
-                                            'description' => ['type' => 'string'],
-                                            'title' => ['type' => 'string'],
                                             'format' => ['type' => 'string'],
                                             'values' => [
                                                 'anyOf' => [
@@ -197,10 +195,6 @@ class SiteTemplatesDataService
                                             ],
                                             'html_entities' => ['type' => 'boolean'],
                                             'css_units' => ['type' => 'boolean'],
-                                            'min_width' => ['type' => ['number', 'string']],
-                                            'min_height' => ['type' => ['number', 'string']],
-                                            'max_width' => ['type' => ['number', 'string']],
-                                            'max_height' => ['type' => ['number', 'string']],
                                             'allow_blank' => ['type' => 'boolean'],
                                             'html_before' => ['type' => 'string'],
                                             'html_after' => ['type' => 'string']
