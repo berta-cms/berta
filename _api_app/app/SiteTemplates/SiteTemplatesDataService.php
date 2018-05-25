@@ -2,7 +2,10 @@
 
 namespace App\SiteTemplates;
 
+use Swaggest\JsonSchema\Schema;
+
 use App\Shared\I18n;
+use App\Shared\Helpers;
 
 /**
  * @class SiteTemplatesDataService
@@ -146,20 +149,23 @@ class SiteTemplatesDataService
                             'type' => 'object',
                             'properties' => [
                                 "_" => [
-                                    'title' => ['type' => 'string']
+                                    'type' => 'object',
+                                    'properties' => [
+                                        'title' => ['type' => 'string']
+                                    ]
                                 ]
                             ],
                             'additionalProperties' => [  // _, color, fontFamily, backgroundRepeat, ...
                                 'type' => 'object',
                                 'properties' => [
-                                    'default' => ['type' => ['string', 'number']],
+                                    'default' => ['type' => ['string', 'number', 'boolean']],
                                     'description' => ['type' => 'string'],
                                     'title' => ['type' => 'string'],
-                                    'format' => ['type' => 'string'],
+                                    'format' => ['type' => ['string', 'boolean']],
                                     'values' => [
-                                        'anyOf' => [
-                                            ['type' => 'array', 'items' => ['string', 'number']],
-                                            ['type' => 'object', 'additionalProperties' => ['type' => 'string', 'number']]
+                                        'oneOf' => [
+                                            ['type' => 'array', 'items' => ['type' => ['string', 'number']]],
+                                            ['type' => 'object', 'additionalProperties' => ['type' => ['string', 'number']]]
                                         ]
                                     ],
                                     'html_entities' => ['type' => 'boolean'],
@@ -188,9 +194,9 @@ class SiteTemplatesDataService
                                             'default' => ['type' => ['string', 'number']],
                                             'format' => ['type' => 'string'],
                                             'values' => [
-                                                'anyOf' => [
-                                                    ['type' => 'array', 'items' => ['string', 'number']],
-                                                    ['type' => 'object', 'additionalProperties' => ['type' => 'string', 'number']]
+                                                'oneOf' => [
+                                                    ['type' => 'array', 'items' => ['type' => ['string', 'number']]],
+                                                    ['type' => 'object', 'additionalProperties' => ['type' => ['string', 'number']]]
                                                 ]
                                             ],
                                             'html_entities' => ['type' => 'boolean'],
@@ -263,5 +269,13 @@ class SiteTemplatesDataService
         $d->close();
 
         return $returnArr;
+    }
+
+    public function validationTest() {
+        $json_object = Helpers::arrayToJsonObject(self::$JSON_SCHEMA);
+        $schema = Schema::import($json_object);
+        $templates = $this->get();
+        $result = $schema->in(Helpers::arrayToJsonObject($templates));
+        return true;
     }
 }
