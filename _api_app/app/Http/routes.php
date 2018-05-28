@@ -69,4 +69,12 @@ $app->group(['prefix' => 'v1', 'namespace' => 'App'], function () use ($app) {
             $app->delete('sections/backgrounds', 'SiteSectionsController@galleryDelete');
         });
     });
+
+    /**
+     * This includes test controller for easier development
+     * @todo: replace this with automated tests
+     */
+    if (app()->environment('local', 'stage')) {
+        require __DIR__.'/../Dev/testRoutes.php';
+    }
 });

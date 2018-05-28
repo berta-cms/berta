@@ -53,47 +53,6 @@ class Storage
         return $this->get();
     }
 
-    /**
-     * Test if data structure validation works correctly, by validating the default data structure.
-     *
-     * @return boolean
-     */
-    public function validationTest()
-    {
-        $class = get_class($this);
-        try {
-            $json_object = Helpers::arrayToJsonObject($class::$JSON_SCHEMA);
-            $schema = Schema::import($json_object);
-            $result = $schema->in(
-                [ // Wrap default structure in array, because sections.xml represents Section array.
-                    Helpers::arrayToJsonObject($class::$DEFAULT_VALUES)]);
-        } catch (Exception $e) {
-            return false;
-        }
-        return true;
-    }
-
-    /**
-     * Validate data passed or existing in this service against it's JSON_SCHEMA.
-     *
-     * @param array|object $data    Array or stdClass object containing data for this service
-     * @return bool
-     */
-    public function validate($data = null)
-    {
-        $data = $data ? $data : Helpers::arrayToJsonObject($this->get());
-        $class = get_class($this);
-        try {
-            $json_schema = Helpers::arrayToJsonObject($class::$JSON_SCHEMA);
-            $schema = Schema::import($json_schema);
-            $schema->in($data);
-        } catch (\Exception $e) {
-            \Log::warning(print_r($e, true));
-            return false;
-        }
-        return true;
-    }
-
     /************************************************************
      * Protected methods
      ************************************************************/
@@ -402,5 +361,45 @@ class Storage
         }
 
         return $output;
+    }
+
+    /**
+     * Test if data structure validation works correctly, by validating the default data structure.
+     *
+     * @return boolean
+     */
+    public function validationTest() {
+        $class = get_class($this);
+        try {
+            $json_object = Helpers::arrayToJsonObject($class::$JSON_SCHEMA);
+            $schema = Schema::import($json_object);
+            $result = $schema->in(
+                [  // Wrap default structure in array, because sections.xml represents Section array.
+                    Helpers::arrayToJsonObject($class::$DEFAULT_VALUES)]);
+        } catch (Exception $e) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Validate data passed or existing in this service against it's JSON_SCHEMA.
+     *
+     * @param array|object $data    Array or stdClass object containing data for this service
+     * @return bool
+     */
+    public function validate($data=null) {
+        $data = $data ? $data : Helpers::arrayToJsonObject($this->get());
+        $class = get_class($this);
+        try {
+            $json_schema = Helpers::arrayToJsonObject($class::$JSON_SCHEMA);
+            $schema = Schema::import($json_schema);
+            $schema->in($data);
+        /** @todo: Catch exeption while validating  */
+        } catch (\Exception $e) {
+            \Log::warning(print_r($e, true));
+            return false;
+        }
+        return true;
     }
 }

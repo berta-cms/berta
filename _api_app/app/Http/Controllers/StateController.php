@@ -16,7 +16,7 @@ class StateController extends Controller
     public function get($site)
     {
         $site = $site === '0' ? '' : $site;
-        $sites = new SitesDataService();
+        $sitesDataService = new SitesDataService();
         $siteSettingsConfigService = new SiteSettingsConfigService();
         $siteTemplatesConfigService = new SiteTemplatesConfigService();
         $allTemplates = $siteTemplatesConfigService->getAllTemplates();
@@ -29,53 +29,47 @@ class StateController extends Controller
             'siteSectionsReset' => route('site_sections_reset'),
             'siteSectionBackgrounds' => route('site_section_backgrounds'),
         ];
-        $state['sites'] = $sites->getState();
-        $state['site_settings'] = array();
-        $state['site_sections'] = array();
-        $state['section_entries'] = array();
-        $state['section_tags'] = array();
+        $state['sites'] = $sitesDataService->getState();
+        $state['site_settings'] = [];
+        $state['site_sections'] = [];
+        $state['section_entries'] = [];
+        $state['section_tags'] = [];
 
         foreach ($state['sites'] as $_site) {
-            $site_name = $_site['name'];
-            $sectionsDataService = new SiteSectionsDataService($site_name);
-            $siteSettingsDataService = new SiteSettingsDataService($site_name);
-            $site_settings = $siteSettingsDataService->getState();
-            $state['site_settings'][$site_name] = $site_settings;
+            $siteName = $_site['name'];
+
+            $siteSettingsDataService = new SiteSettingsDataService($siteName);
+            $siteSettings = $siteSettingsDataService->getState();
+            $state['site_settings'][$siteName] = $siteSettings;
+            $sectionsDataService = new SiteSectionsDataService($siteName);
             $state['site_sections'] = array_merge($state['site_sections'], $sectionsDataService->getState());
 
             foreach ($allTemplates as $template) {
-                $template_settings = new SiteTemplateSettingsDataService(
-                    $site_name,
+                $templateSettingsDataService = new SiteTemplateSettingsDataService(
+                    $siteName,
                     $template
                 );
-                $template_settings = $template_settings->getState();
+                $templateSettings = $templateSettingsDataService->getState();
 
-                if (!($template_settings)) {
-                    $template_settings = (object) null;
+                if (!($templateSettings)) {
+                    $templateSettings = (object) null;
                 }
 
-                $state['site_template_settings'][$site_name][$template] = $template_settings;
+                $state['site_template_settings'][$siteName][$template] = $templateSettings;
             }
 
-            if (!empty($state['site_sections'][$site_name]['section'])) {
-                foreach ($state['site_sections'][$site_name]['section'] as $section) {
-                    $section_name = $section['name'];
-                    $entries = new SectionEntriesDataService($site_name, $section_name);
-                    $state['section_entries'][$site_name][$section_name] = $entries->get();
-                    unset($entries);
+            if (!empty($state['site_sections'][$siteName]['section'])) {
+                foreach ($state['site_sections'][$siteName]['section'] as $section) {
+                    $sectionName = $section['name'];
+                    $entriesDataService = new SectionEntriesDataService($siteName, $sectionName);
+                    $state['section_entries'][$siteName][$sectionName] = $entriesDataService->get();
                 }
             } else {
-                $state['section_entries'][$site_name] = array();
+                $state['section_entries'][$siteName] = [];
             }
 
-            $tags = new SectionTagsDataService($site_name);
-            $state['section_tags'][$site_name] = $tags->get();
-            unset($sections);
-            unset($tags);
-
-            if (isset($site_template_settings)) {
-                unset($site_template_settings);
-            }
+            $tagsDataService = new SectionTagsDataService($siteName);
+            $state['section_tags'][$siteName] = $tagsDataService->get();
         }
 
         $lang = 'en';
@@ -90,7 +84,6 @@ class StateController extends Controller
          * @todo Add siteSettingsConfig in redux store
          */
         $state['siteSettingsConfig'] = $siteSettingsConfigService->get($lang);
-        unset($sites);
 
         return response()->json($state);
     }
