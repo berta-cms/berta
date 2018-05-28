@@ -2,8 +2,8 @@
 
 namespace App\Sites\TemplateSettings;
 
-use App\Shared\Storage;
 use App\Config\SiteTemplatesConfigService;
+use App\Shared\Storage;
 
 class SiteTemplateSettingsDataService extends Storage
 {
@@ -41,9 +41,10 @@ class SiteTemplateSettingsDataService extends Storage
     /**
      * Merge site template settings with site template default values
      */
-    private static function mergeSiteTemplateDefaults($siteTemplatesDefaults, $siteTemplateSettings) {
+    private static function mergeSiteTemplateDefaults($siteTemplatesDefaults, $siteTemplateSettings)
+    {
         $data = [];
-        foreach($siteTemplatesDefaults as $group => $settings){
+        foreach ($siteTemplatesDefaults as $group => $settings) {
             if (isset($siteTemplateSettings[$group])) {
                 $data[$group] = array_merge($settings, $siteTemplateSettings[$group]);
             } else {

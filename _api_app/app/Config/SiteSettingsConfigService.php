@@ -41,7 +41,8 @@ class SiteSettingsConfigService
     /**
      * Returns site settings default values
      */
-    public function getDefaults() {
+    public function getDefaults()
+    {
         $defaults = [];
         $data = $this->get();
 

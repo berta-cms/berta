@@ -2,18 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Sites\SitesDataService;
-use App\Sites\Settings\SiteSettingsDataService;
-use App\Sites\TemplateSettings\SiteTemplateSettingsDataService;
+use App\Config\SiteSettingsConfigService;
+use App\Config\SiteTemplatesConfigService;
+use App\Sites\Sections\Entries\SectionEntriesDataService;
 use App\Sites\Sections\SiteSectionsDataService;
 use App\Sites\Sections\Tags\SectionTagsDataService;
-use App\Sites\Sections\Entries\SectionEntriesDataService;
-use App\Config\SiteTemplatesConfigService;
-use App\Config\SiteSettingsConfigService;
+use App\Sites\Settings\SiteSettingsDataService;
+use App\Sites\SitesDataService;
+use App\Sites\TemplateSettings\SiteTemplateSettingsDataService;
 
 class StateController extends Controller
 {
-    public function get($site) {
+    public function get($site)
+    {
         $site = $site === '0' ? '' : $site;
         $sites = new SitesDataService();
         $siteSettingsConfigService = new SiteSettingsConfigService();
@@ -26,7 +27,7 @@ class StateController extends Controller
             'siteTemplateSettings' => route('site_template_settings'),
             'siteSections' => route('site_sections'),
             'siteSectionsReset' => route('site_sections_reset'),
-            'siteSectionBackgrounds' => route('site_section_backgrounds')
+            'siteSectionBackgrounds' => route('site_section_backgrounds'),
         ];
         $state['sites'] = $sites->getState();
         $state['site_settings'] = array();
@@ -34,7 +35,7 @@ class StateController extends Controller
         $state['section_entries'] = array();
         $state['section_tags'] = array();
 
-        foreach($state['sites'] as $_site) {
+        foreach ($state['sites'] as $_site) {
             $site_name = $_site['name'];
             $sectionsDataService = new SiteSectionsDataService($site_name);
             $siteSettingsDataService = new SiteSettingsDataService($site_name);
@@ -57,7 +58,7 @@ class StateController extends Controller
             }
 
             if (!empty($state['site_sections'][$site_name]['section'])) {
-                foreach($state['site_sections'][$site_name]['section'] as $section) {
+                foreach ($state['site_sections'][$site_name]['section'] as $section) {
                     $section_name = $section['name'];
                     $entries = new SectionEntriesDataService($site_name, $section_name);
                     $state['section_entries'][$site_name][$section_name] = $entries->get();
@@ -72,7 +73,7 @@ class StateController extends Controller
             unset($sections);
             unset($tags);
 
-            if (isset($site_template_settings)){
+            if (isset($site_template_settings)) {
                 unset($site_template_settings);
             }
         }

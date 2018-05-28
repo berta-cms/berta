@@ -4,9 +4,8 @@ namespace App\Sites\Sections;
 
 use App\Shared\Helpers;
 use App\Shared\Storage;
-use App\Sites\Sections\Tags\SectionTagsDataService;
 use App\Sites\Sections\Entries\SectionEntriesDataService;
-
+use App\Sites\Sections\Tags\SectionTagsDataService;
 
 /**
  * This class is a service that handles site section data for Berta CMS.
@@ -34,7 +33,8 @@ use App\Sites\Sections\Entries\SectionEntriesDataService;
  * </sections>
  * ```
  */
-class SiteSectionsDataService Extends Storage {
+class SiteSectionsDataService extends Storage
+{
     /**
      * @var array $JSON_SCHEMA
      * Associative array representing data structure handled by this service.
@@ -66,9 +66,9 @@ class SiteSectionsDataService Extends Storage {
                                         'src' => ['type' => 'string'],
                                         'width' => ['type' => 'integer'],
                                         'height' => ['type' => 'integer'],
-                                    ]
-                                ]
-                            ]
+                                    ],
+                                ],
+                            ],
                         ],
                         '@attributes' => [
                             'type' => 'object',
@@ -76,17 +76,17 @@ class SiteSectionsDataService Extends Storage {
                                 'hide_navigation' => [
                                     'type' => 'string',
                                     'enum' => ['yes', 'no'],
-                                    'format' => 'bt-select'
+                                    'format' => 'bt-select',
                                 ],
                                 'caption_bg_color' => ['type' => 'string'],
                                 'autoplay' => [
                                     'type' => 'integer',
-                                    'enum' => [0, 1]
+                                    'enum' => [0, 1],
                                 ],
                                 'image_size' => ['type' => 'string'],
-                            ]
-                        ]
-                    ]
+                            ],
+                        ],
+                    ],
                 ],
                 '@attributes' => [
                     'type' => 'object',
@@ -94,29 +94,29 @@ class SiteSectionsDataService Extends Storage {
                         'tags_behavior' => ['type' => 'string'],
                         'entry_count' => [
                             'type' => 'integer',
-                            'minimum' => 0
+                            'minimum' => 0,
                         ],
                         'published' => [
                             'type' => 'integer',
-                            'enum' => [0, 1]
+                            'enum' => [0, 1],
                         ],
                         'has_direct_content' => [
                             'type' => 'integer',
-                            'enum' => [0, 1]
-                        ]
-                    ]
-                ]
+                            'enum' => [0, 1],
+                        ],
+                    ],
+                ],
             ],
-            'required' => ['name']
-        ]
+            'required' => ['name'],
+        ],
     ];
     protected static $DEFAULT_VALUES = [
         'name' => '',
         '@attributes' => [
             'tags_behavior' => 'invisible',
             'published' => 0,
-            'has_direct_content' => 0
-        ]
+            'has_direct_content' => 0,
+        ],
     ];
 
     private $ROOT_ELEMENT = 'sections';
@@ -124,7 +124,8 @@ class SiteSectionsDataService Extends Storage {
     private $XML_FILE;
     private $site_name;
 
-    public function __construct($site='') {
+    public function __construct($site = '')
+    {
         parent::__construct($site);
         $this->site_name = $site;
         $xml_root = $this->getSiteXmlRoot($site);
@@ -132,11 +133,12 @@ class SiteSectionsDataService Extends Storage {
     }
 
     /**
-    * Returns all sections of site as an array
-    *
-    * @return array Array of sections
-    */
-    public function get() {
+     * Returns all sections of site as an array
+     *
+     * @return array Array of sections
+     */
+    public function get()
+    {
         if (!$this->SECTIONS) {
             $this->SECTIONS = $this->xmlFile2array($this->XML_FILE);
 
@@ -159,7 +161,8 @@ class SiteSectionsDataService Extends Storage {
      *
      * @return array Array of sections
      */
-    public function getState() {
+    public function getState()
+    {
         $sections = $this->get();
         foreach ($sections as $order => $section) {
             $sections[$order]['site_name'] = $this->site_name;
@@ -169,7 +172,8 @@ class SiteSectionsDataService Extends Storage {
         return $sections;
     }
 
-    public function create($name=null, $title=null) {
+    public function create($name = null, $title = null)
+    {
         $isClone = $name !== null;
         $sections = $this->get();
 
@@ -179,11 +183,11 @@ class SiteSectionsDataService Extends Storage {
             $section_order = array_search($name, array_column($sections, 'name'));
 
             if ($section_order === false) {
-                return array('error_message' => 'Section "'.$name.'" not found!');
+                return array('error_message' => 'Section "' . $name . '" not found!');
             }
 
             // Berta requires existing section file for entries
-            $entries = new SectionEntriesDataService($this->SITE, 'clone-of-'.$name, 'clone of '.$title);
+            $entries = new SectionEntriesDataService($this->SITE, 'clone-of-' . $name, 'clone of ' . $title);
             $section_entries = $entries->create($name);
 
             $section = $sections[$section_order];
@@ -196,8 +200,8 @@ class SiteSectionsDataService Extends Storage {
                 $section['mediafolder'] = $section_entries['name'] . '-background';
 
                 $this->copyFolder(
-                    realpath($this->MEDIA_ROOT) .'/'. $sections[$section_order]['mediafolder'],
-                    realpath($this->MEDIA_ROOT) .'/'. $section['mediafolder']
+                    realpath($this->MEDIA_ROOT) . '/' . $sections[$section_order]['mediafolder'],
+                    realpath($this->MEDIA_ROOT) . '/' . $section['mediafolder']
                 );
             }
 
@@ -211,9 +215,9 @@ class SiteSectionsDataService Extends Storage {
             $section_entries = $entries->create();
 
             $section = [
-                '@attributes' => array('tags_behavior' => 'invisible', 'published'=>1),
+                '@attributes' => array('tags_behavior' => 'invisible', 'published' => 1),
                 'name' => $name,
-                'title' => ''
+                'title' => '',
             ];
         }
 
@@ -240,13 +244,14 @@ class SiteSectionsDataService Extends Storage {
     }
 
     /**
-    * Saves a value with a given path and saves the change to XML file
-    *
-    * @param string $path Slash delimited path to the value
-    * @param mixed $value Value to be saved
-    * @return array Array of changed value and/or error messages
-    */
-    public function saveValueByPath($path, $value) {
+     * Saves a value with a given path and saves the change to XML file
+     *
+     * @param string $path Slash delimited path to the value
+     * @param mixed $value Value to be saved
+     * @return array Array of changed value and/or error messages
+     */
+    public function saveValueByPath($path, $value)
+    {
         $sections['section'] = $this->get();
         $path_arr = array_slice(explode('/', $path), 1);
         $prop = $path_arr[count($path_arr) - 1];
@@ -258,7 +263,7 @@ class SiteSectionsDataService Extends Storage {
             'old_name' => null,
             'path' => $path,
             'value' => $value,
-            'real' => $value
+            'real' => $value,
         );
 
         if ($prop === 'title') {
@@ -266,7 +271,7 @@ class SiteSectionsDataService Extends Storage {
             $old_title = isset($sections['section'][$order]['title']) ? $sections['section'][$order]['title'] : '';
             $new_name = $this->getUniqueSlug($old_name, $value);
 
-            if(empty($value)) {
+            if (empty($value)) {
                 $ret['value'] = $old_title;
                 $ret['error_message'] = 'Section name cannot be empty!';
                 return $ret;
@@ -284,8 +289,8 @@ class SiteSectionsDataService Extends Storage {
                 $mediafolder = $new_name . '-background';
 
                 @rename(
-                    realpath($this->MEDIA_ROOT) .'/'. $sections['section'][$order]['mediafolder'],
-                    realpath($this->MEDIA_ROOT) .'/'. $mediafolder
+                    realpath($this->MEDIA_ROOT) . '/' . $sections['section'][$order]['mediafolder'],
+                    realpath($this->MEDIA_ROOT) . '/' . $mediafolder
                 );
 
                 $this->setValueByPath(
@@ -326,8 +331,9 @@ class SiteSectionsDataService Extends Storage {
     }
 
     /**
-    */
-    public function deleteValueByPath($path) {
+     */
+    public function deleteValueByPath($path)
+    {
         $sections['section'] = $this->get();
         $path_arr = array_slice(explode('/', $path), 1);
         $section_idx = $path_arr[1];
@@ -336,18 +342,19 @@ class SiteSectionsDataService Extends Storage {
         $ret = array(
             'site' => $this->SITE,
             'section_idx' => $section_idx,
-            'path' => $path
+            'path' => $path,
         );
         return $ret;
     }
 
     /**
-    */
-    public function delete($name) {
+     */
+    public function delete($name)
+    {
         $sections['section'] = $this->get();
         $section_idx = array_search($name, array_column($sections['section'], 'name'));
 
-        if ($section_idx !== False) {
+        if ($section_idx !== false) {
             // delete all entries
             $entries = new SectionEntriesDataService($this->SITE, $name);
             $res = $entries->delete();
@@ -359,14 +366,14 @@ class SiteSectionsDataService Extends Storage {
             // delete section media
             $section = $sections['section'][$section_idx];
 
-            if(array_key_exists('mediafolder', $section) and !empty($section['mediafolder'])) {
+            if (array_key_exists('mediafolder', $section) and !empty($section['mediafolder'])) {
                 $mediaFolder = $this->MEDIA_ROOT . '/' . $section['mediafolder'];
 
-                if(file_exists($mediaFolder)) {
+                if (file_exists($mediaFolder)) {
                     $dir = opendir($mediaFolder);
 
-                    while($fItem = readdir($dir)) {
-                        if($fItem != '.' && $fItem != '..') {
+                    while ($fItem = readdir($dir)) {
+                        if ($fItem != '.' && $fItem != '..') {
                             @unlink($mediaFolder . '/' . $fItem);
                         }
                     }
@@ -374,7 +381,7 @@ class SiteSectionsDataService Extends Storage {
                     if (!@rmdir($mediaFolder)) {
                         return array(
                             'success' => false,
-                            'error_message' => 'Unable to remove folder "' . $mediaFolder . '"!'
+                            'error_message' => 'Unable to remove folder "' . $mediaFolder . '"!',
                         );
                     }
                 }
@@ -392,19 +399,20 @@ class SiteSectionsDataService Extends Storage {
             return $ret;
         }
 
-        return array('error_message' => 'Section "'.$name.'" not found!');
+        return array('error_message' => 'Section "' . $name . '" not found!');
     }
 
     /**
-    * Reorder sections and save to XML file
-    *
-    * @param array $names Array of section names in a new order
-    */
-    public function order($names) {
+     * Reorder sections and save to XML file
+     *
+     * @param array $names Array of section names in a new order
+     */
+    public function order($names)
+    {
         $sections['section'] = $this->get();
         $new_order = array();
 
-        foreach($names as $section_name) {
+        foreach ($names as $section_name) {
             $section_idx = array_search($section_name, array_column($sections['section'], 'name'));
 
             if ($section_idx !== false) {
@@ -419,16 +427,17 @@ class SiteSectionsDataService Extends Storage {
     }
 
     /**
-    */
-    public function galleryDelete($name, $file) {
+     */
+    public function galleryDelete($name, $file)
+    {
         $sections['section'] = $this->get();
         $section_order = array_search($name, array_column($sections['section'], 'name'));
 
         if ($section_order !== false) {
-            $section =& $sections['section'][$section_order];
+            $section = &$sections['section'][$section_order];
 
             if (!isset($section['mediaCacheData'])) {
-                return ['error_message' => 'File "'.$file.'" not found!'];
+                return ['error_message' => 'File "' . $file . '" not found!'];
             }
 
             $files = $this->asList($section['mediaCacheData']['file']);
@@ -444,7 +453,7 @@ class SiteSectionsDataService Extends Storage {
             );
 
             if ($file_order === false) {
-                return ['error_message' => 'File "'.$file.'" not found!'];
+                return ['error_message' => 'File "' . $file . '" not found!'];
             }
 
             $mediafolder = $this->MEDIA_ROOT . '/' . $section['mediafolder'] . '/';
@@ -456,27 +465,28 @@ class SiteSectionsDataService Extends Storage {
             return [
                 'site' => $this->SITE,
                 'section' => $section['name'],
-                'file' => $file['@attributes']['src']
+                'file' => $file['@attributes']['src'],
             ];
         }
 
-        return ['error_message' => 'Section "'.$name.'" not found!'];
+        return ['error_message' => 'Section "' . $name . '" not found!'];
     }
 
     /**
-    */
-    public function galleryOrder($name, $new_files) {
+     */
+    public function galleryOrder($name, $new_files)
+    {
         $sections['section'] = $this->get();
         $section_order = array_search($name, array_column($sections['section'], 'name'));
 
         if ($section_order !== false) {
-            $section =& $sections['section'][$section_order];
+            $section = &$sections['section'][$section_order];
             $section['mediaCacheData'] = isset($section['mediaCacheData']) ? $section['mediaCacheData'] : array('file' => array());
             $files = $this->asList($section['mediaCacheData']['file']);
 
             $reordered = [];
 
-            foreach($new_files as $file) {
+            foreach ($new_files as $file) {
                 $file_order = array_search(
                     $file,
                     array_column(
@@ -505,11 +515,11 @@ class SiteSectionsDataService Extends Storage {
                 'site' => $this->SITE,
                 'section' => $name,
                 'mediafolder' => $section['mediafolder'],
-                'files' => $reordered
+                'files' => $reordered,
             ];
         }
 
-        return ['error_message' => 'Section "'.$name.'" not found!'];
+        return ['error_message' => 'Section "' . $name . '" not found!'];
     }
 
     /************************************************************
@@ -517,8 +527,9 @@ class SiteSectionsDataService Extends Storage {
      ************************************************************/
 
     /**
-    */
-    private function getUniqueSlug($old_name, $new_title){
+     */
+    private function getUniqueSlug($old_name, $new_title)
+    {
         $sections['section'] = $this->get();
         $title = trim($new_title);
 
@@ -542,7 +553,7 @@ class SiteSectionsDataService Extends Storage {
                 $slug .= '-' . $i;
 
                 $i++;
-            }else{
+            } else {
                 $notUnique = false;
             }
         }
@@ -551,14 +562,15 @@ class SiteSectionsDataService Extends Storage {
     }
 
     /**
-    */
-    private function deleteMedia($folder, $file='') {
+     */
+    private function deleteMedia($folder, $file = '')
+    {
         @unlink($folder . $file);
 
-        if($handle = opendir($folder)) {
+        if ($handle = opendir($folder)) {
             while (false !== ($f = readdir($handle))) {
-                if(!$file || strpos($f, $file) !== false) {
-                    if(substr($f, 0, 1) == '_') {
+                if (!$file || strpos($f, $file) !== false) {
+                    if (substr($f, 0, 1) == '_') {
                         @unlink($folder . $f);
                     }
                 }
