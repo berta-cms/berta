@@ -23,6 +23,9 @@ class SiteTemplatesConfigService {
                 $this->TEMPLATE_ROOT . '/' . $tpl . '/template.conf.php'
             );
 
+            /**
+             * @todo Fix this HACK, also read template definitions from shop plugin
+             */
             // @@@:HACK: read in template config and set up namespace
             //           so that I18n would be visible there
             $conf = str_replace('<?php', 'namespace App\Shared;', $conf);

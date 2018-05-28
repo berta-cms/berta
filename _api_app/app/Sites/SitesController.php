@@ -9,6 +9,7 @@ use App\Sites\Sections\SiteSectionsDataService;
 use App\Sites\Sections\Tags\SectionTagsDataService;
 use App\Sites\Sections\Entries\SectionEntriesDataService;
 use App\Sites\TemplateSettings\SiteTemplateSettingsDataService;
+use App\Config\SiteTemplatesConfigService;
 
 use Illuminate\Http\Request;
 
@@ -21,14 +22,17 @@ class SitesController extends Controller
         $cloneFrom = $json['site'] == -1 ? null : $json['site'];
         $isClone = $cloneFrom !== null;
         $site = $sites->create($cloneFrom);
+        $siteTemplatesConfigService = new SiteTemplatesConfigService();
+        $allTemplates = $siteTemplatesConfigService->getAllTemplates();
 
         /**
          * @todo refactor code
          * @todo think about improving Storage classes
          * @todo review this controller, sections
          */
-        $settings = new SiteSettingsDataService($site['name']);
-        $settings = $isClone ? $settings->get() : $settings->getDefaultSettings();
+
+        $siteSettingsDataService = new SiteSettingsDataService($site['name']);
+        $settings = $isClone ? $siteSettingsDataService->getWithDefaults() : $siteSettingsDataService->getDefaultSettings();
         $sections = $isClone ? new SiteSectionsDataService($site['name']) : null;
         $entries = [];
         if ($sections) {
@@ -40,9 +44,13 @@ class SitesController extends Controller
 
         $tags = $isClone ? new SectionTagsDataService($site['name']) : null;
 
-        $templateSettings = null;
-        if ($isClone && isset($settings['template']['template'])) {
-            $templateSettings = new SiteTemplateSettingsDataService($site['name'], $settings['template']['template']);
+        $siteTemplateSettings = [];
+        foreach ($allTemplates as $template) {
+            $siteTemplateSettingsDataService = new SiteTemplateSettingsDataService(
+                $site['name'],
+                $template
+            );
+            $siteTemplateSettings[$template] = $siteTemplateSettingsDataService->getWithDefaults();
         }
 
         $resp = [
@@ -51,7 +59,7 @@ class SitesController extends Controller
             'sections' => $sections ? $sections->state() : [],
             'entries' => $entries ? ['entry' => $entries] : [],  // See if we need that wrap
             'tags' => $tags ? $tags->get() : [],
-            'siteTemplateSettings' => $templateSettings ? $templateSettings->get() : new \stdClass
+            'siteTemplateSettings' => $siteTemplateSettings
         ];
 
         return response()->json($resp);

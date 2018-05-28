@@ -3,6 +3,7 @@
 namespace App\Sites\Settings;
 
 use App\Shared\Storage;
+use App\Config\SiteSettingsConfigService;
 
 /**
  * This class is a service that handles site settings data for Berta CMS.
@@ -280,12 +281,16 @@ class SiteSettingsDataService extends Storage
         'berta/lastUpdated' => 'D, d M Y H:i:s',
         'berta/installed' => 1
     ];
+    private $siteSettingsDefaults;
 
     public function __construct($site = '')
     {
         parent::__construct($site);
         $xml_root = $this->getSiteXmlRoot($site);
         $this->XML_FILE = $xml_root . '/settings.xml';
+
+        $siteSettingsConfigService = new SiteSettingsConfigService();
+        $this->siteSettingsDefaults = $siteSettingsConfigService->getDefaults();
     }
 
     public function getDefaultSettings() {
@@ -297,6 +302,8 @@ class SiteSettingsDataService extends Storage
                 $this->setValueByPath($this->SITE_SETTINGS, $path, $value);
             }
         }
+
+        $this->SITE_SETTINGS = self::mergeSiteSettingsDefaults($this->siteSettingsDefaults, $this->SITE_SETTINGS);
 
         return $this->SITE_SETTINGS;
     }
@@ -311,7 +318,37 @@ class SiteSettingsDataService extends Storage
         if (empty($this->SITE_SETTINGS)) {
             $this->SITE_SETTINGS = $this->xmlFile2array($this->XML_FILE);
         }
+
         return $this->SITE_SETTINGS;
+    }
+
+
+    public function getWithDefaults()
+    {
+        if (empty($this->SITE_SETTINGS)) {
+            $this->SITE_SETTINGS = $this->xmlFile2array($this->XML_FILE);
+        }
+
+        $siteSettings = self::mergeSiteSettingsDefaults($this->siteSettingsDefaults, $this->SITE_SETTINGS);
+
+        return $siteSettings;
+    }
+
+
+    /**
+     * Merge site  settings with site settings default values
+     */
+    private static function mergeSiteSettingsDefaults($siteSettingsDefaults, $siteSettings) {
+        $data = [];
+        foreach($siteSettingsDefaults as $group => $settings){
+            if (isset($siteSettings[$group])) {
+                $data[$group] = array_merge($settings, $siteSettings[$group]);
+            } else {
+                $data[$group] = $settings;
+            }
+        }
+
+        return $data;
     }
 
     /**

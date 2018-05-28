@@ -9,13 +9,14 @@ use App\Sites\Sections\SiteSectionsDataService;
 use App\Sites\Sections\Tags\SectionTagsDataService;
 use App\Sites\Sections\Entries\SectionEntriesDataService;
 use App\Config\SiteTemplatesConfigService;
+use App\Config\SiteSettingsConfigService;
 
 class StateController extends Controller
 {
     public function get($site) {
         $site = $site === '0' ? '' : $site;
         $sites = new SitesDataService();
-        $siteSettings = new SiteSettingsDataService();
+        $siteSettingsConfigService = new SiteSettingsConfigService();
         $siteTemplatesConfigService = new SiteTemplatesConfigService();
         $allTemplates = $siteTemplatesConfigService->getAllTemplates();
 
@@ -36,7 +37,8 @@ class StateController extends Controller
         foreach($state['sites'] as $_site) {
             $site_name = $_site['name'];
             $sectionsDataService = new SiteSectionsDataService($site_name);
-            $site_settings = $siteSettings->getSettingsBySite($site_name);
+            $siteSettingsDataService = new SiteSettingsDataService($site_name);
+            $site_settings = $siteSettingsDataService->getWithDefaults();
             $state['site_settings'][$site_name] = $site_settings;
             $state['site_sections'] = array_merge($state['site_sections'], $sectionsDataService->state());
 
@@ -45,7 +47,7 @@ class StateController extends Controller
                     $site_name,
                     $template
                 );
-                $template_settings = $template_settings->get();
+                $template_settings = $template_settings->getWithDefaults();
 
                 if (!($template_settings)) {
                     $template_settings = (object) null;
@@ -82,6 +84,11 @@ class StateController extends Controller
         }
 
         $state['siteTemplates'] = $siteTemplatesConfigService->get($lang);
+
+        /**
+         * @todo Add siteSettingsConfig in redux store
+         */
+        $state['siteSettingsConfig'] = $siteSettingsConfigService->get($lang);
         unset($sites);
 
         return response()->json($state);

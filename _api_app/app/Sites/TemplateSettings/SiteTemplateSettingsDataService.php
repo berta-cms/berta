@@ -26,6 +26,13 @@ class SiteTemplateSettingsDataService extends Storage
     public function get()
     {
         $siteTemplateSettings = $this->xmlFile2array($this->XML_FILE);
+
+        return $siteTemplateSettings;
+    }
+
+    public function getWithDefaults()
+    {
+        $siteTemplateSettings = $this->xmlFile2array($this->XML_FILE);
         $siteTemplateSettings = self::mergeSiteTemplateDefaults($this->siteTemplateDefaults, $siteTemplateSettings);
 
         return $siteTemplateSettings;

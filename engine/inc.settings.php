@@ -1,7 +1,16 @@
 <?php
 
+$options['default_language'] = 'en';
+$options['languages'] = array('en' => 'English', 'lv' => 'Latviešu', 'fr' => 'Français', 'ru' => 'Русский', 'nl' => 'Nederlands', 'pl' => 'Polski', 'es' => 'Spanish');
 
+$options['images']['small_width'] = 200;
+$options['images']['small_height'] = 200;
 
+$options['images']['medium_width'] = 400;
+$options['images']['medium_height'] = 400;
+
+$options['images']['large_width'] = 600;
+$options['images']['large_height'] = 600;
 
 $settingsFontSelectGeneral = array(
 	'"Helvetica Neue", Helvetica, Arial, sans-serif' => 'Helvetica Neue, Helvetica, Arial, sans-serif',
@@ -154,12 +163,10 @@ if(@file_exists($ENGINE_ROOT .'plan')) {
 }
 
 //disable multisites for basic plan
-if ( (isset($hostingPlan) && $hostingPlan==1) || !$options['HOSTING_PROFILE'] ) {
+if ( (isset($hostingPlan) && $hostingPlan==1) || ( isset($options['HOSTING_PROFILE']) && !$options['HOSTING_PROFILE'] )) {
 	$options['MULTISITES'] = array();
 	$options['MULTISITE'] = '';
 	$options['MULTISITE_DISABLED'] = true;
 }else{
 	$options['MULTISITE_DISABLED'] = false;
 }
-
-?>
