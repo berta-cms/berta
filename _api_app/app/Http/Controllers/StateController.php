@@ -28,7 +28,7 @@ class StateController extends Controller
             'siteSectionsReset' => route('site_sections_reset'),
             'siteSectionBackgrounds' => route('site_section_backgrounds')
         ];
-        $state['sites'] = $sites->state();
+        $state['sites'] = $sites->getState();
         $state['site_settings'] = array();
         $state['site_sections'] = array();
         $state['section_entries'] = array();
@@ -38,16 +38,16 @@ class StateController extends Controller
             $site_name = $_site['name'];
             $sectionsDataService = new SiteSectionsDataService($site_name);
             $siteSettingsDataService = new SiteSettingsDataService($site_name);
-            $site_settings = $siteSettingsDataService->getWithDefaults();
+            $site_settings = $siteSettingsDataService->getState();
             $state['site_settings'][$site_name] = $site_settings;
-            $state['site_sections'] = array_merge($state['site_sections'], $sectionsDataService->state());
+            $state['site_sections'] = array_merge($state['site_sections'], $sectionsDataService->getState());
 
             foreach ($allTemplates as $template) {
                 $template_settings = new SiteTemplateSettingsDataService(
                     $site_name,
                     $template
                 );
-                $template_settings = $template_settings->getWithDefaults();
+                $template_settings = $template_settings->getState();
 
                 if (!($template_settings)) {
                     $template_settings = (object) null;

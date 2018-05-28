@@ -323,7 +323,7 @@ class SiteSettingsDataService extends Storage
     }
 
 
-    public function getWithDefaults()
+    public function getState()
     {
         if (empty($this->SITE_SETTINGS)) {
             $this->SITE_SETTINGS = $this->xmlFile2array($this->XML_FILE);

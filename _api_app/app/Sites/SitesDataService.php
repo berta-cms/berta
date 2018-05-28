@@ -97,7 +97,7 @@ class SitesDataService Extends Storage {
      *
      * @return array Array of sites
      */
-    public function state() {
+    public function getState() {
         $sites = $this->get();
         foreach ($sites as $order => $site) {
             $sites[$order]['order'] = $order;

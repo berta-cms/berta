@@ -159,7 +159,7 @@ class SiteSectionsDataService Extends Storage {
      *
      * @return array Array of sections
      */
-    public function state() {
+    public function getState() {
         $sections = $this->get();
         foreach ($sections as $order => $section) {
             $sections[$order]['site_name'] = $this->site_name;

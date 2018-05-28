@@ -38,8 +38,8 @@ $app->group(['prefix' => 'v1', 'namespace' => 'App'], function() use ($app) {
         $entryRenderService = new App\Sites\Sections\Entries\SectionEntryRenderService([
             'entry' => $entry,
             'section' => $section,
-            'siteSettings' => $siteSettingsDataService->getWithDefaults(),
-            'siteTemplateSettings' => $siteTemplateSettingsDataService->getWithDefaults(),
+            'siteSettings' => $siteSettingsDataService->getState(),
+            'siteTemplateSettings' => $siteTemplateSettingsDataService->getState(),
             'storageService' => $storageService,
             'isEditMode' => true,
             'isShopAvailable' => true,

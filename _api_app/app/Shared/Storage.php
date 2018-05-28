@@ -36,6 +36,152 @@ class Storage {
     }
 
     /************************************************************
+     * Private methods
+     ************************************************************/
+
+    /**
+     * Return model data from XML file
+     */
+    public function get() {
+        return [];
+    }
+
+    /**
+     * Return modified model data used for frontend state
+     */
+    public function getState() {
+        return $this->get();
+    }
+
+    /**
+    * Checks if a given XML tag is valid
+    *
+    * @param string $tag Tag name
+    * @return bool
+    */
+    private function isValidTagName($tag){
+        $pattern = '/^[a-z_]+[a-z0-9\:\-\.\_]*[^:]*$/i';
+        return preg_match($pattern, $tag, $matches) && $matches[0] == $tag;
+    }
+
+    /**
+    * Converts XML document to an array
+    *
+    * @param string $node XML document node
+    * @return array
+    */
+    private function xml2array($node) {
+        $output = array();
+
+        switch ($node->nodeType) {
+            case XML_CDATA_SECTION_NODE:
+
+            case XML_TEXT_NODE:
+                $output = trim($node->textContent);
+                break;
+
+            case XML_ELEMENT_NODE:
+                $subtree = '';
+
+                // for each child node, call the covert function recursively
+                for ($i=0; $i<$node->childNodes->length; $i++) {
+                    $child = $node->childNodes->item($i);
+                    $subtree = $this->xml2array($child);
+
+                    if(isset($child->tagName)) {
+                        $tag_name = $child->tagName;
+                        $grandchildren = $child->childNodes;
+
+                        // assume more nodes of same kind are coming
+                        if(!isset($output[$tag_name])) {
+                            $output[$tag_name] = array();
+                        }
+
+                        $output[$tag_name][] = $subtree;
+                    } else {
+                        //check if it is not an empty text node
+                        if($subtree !== '') {
+                            $output = $subtree;
+                        }
+                    }
+                }
+
+                if(is_array($output)) {
+                    // if only one node of its kind and is leaf node, assign it directly instead if array($value);
+                    foreach ($output as $tag => $val) {
+                        if(is_array($val) && count($val)==1) {
+                            $output[$tag] = $val[0];
+                        }
+                    }
+
+                    if(empty($output)) {
+                        //for empty nodes
+                        $output = '';
+                    }
+                }
+
+                // loop through the attributes and collect them
+                if($node->attributes->length) {
+                    $attrs = array();
+
+                    foreach($node->attributes as $attrName => $attrNode) {
+                        $attrs[$attrName] = (string) $attrNode->value;
+                    }
+
+                    // if its an leaf node, store the value in @value instead of directly storing it.
+                    if(!is_array($output)) {
+                        $output = array('@value' => $output);
+                    }
+
+                    $output['@attributes'] = $attrs;
+                }
+                break;
+        }
+
+        return $output;
+    }
+
+    /**
+     * Test if data structure validation works correctly, by validating the default data structure.
+     *
+     * @return boolean
+     */
+    public function validationTest() {
+        $class = get_class($this);
+        try {
+            $json_object = Helpers::arrayToJsonObject($class::$JSON_SCHEMA);
+            $schema = Schema::import($json_object);
+            $result = $schema->in(
+                [  // Wrap default structure in array, because sections.xml represents Section array.
+                    Helpers::arrayToJsonObject($class::$DEFAULT_VALUES)]);
+        } catch (Exception $e) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Validate data passed or existing in this service against it's JSON_SCHEMA.
+     *
+     * @param array|object $data    Array or stdClass object containing data for this service
+     * @return bool
+     */
+    public function validate($data=null) {
+        $data = $data ? $data : Helpers::arrayToJsonObject($this->get());
+        $class = get_class($this);
+        try {
+            $json_schema = Helpers::arrayToJsonObject($class::$JSON_SCHEMA);
+            $schema = Schema::import($json_schema);
+            $schema->in($data);
+        } catch (\Exception $e) {
+            \Log::warning(print_r($e, true));
+            return false;
+        }
+        return true;
+    }
+
+
+    /************************************************************
      * Protected methods
      ************************************************************/
 
@@ -173,21 +319,6 @@ class Storage {
         return rmdir($dir);
     }
 
-    /************************************************************
-     * Private methods
-     ************************************************************/
-
-    /**
-    * Checks if a given XML tag is valid
-    *
-    * @param string $tag Tag name
-    * @return bool
-    */
-    private function isValidTagName($tag){
-        $pattern = '/^[a-z_]+[a-z0-9\:\-\.\_]*[^:]*$/i';
-        return preg_match($pattern, $tag, $matches) && $matches[0] == $tag;
-    }
-
     /**
     * Converts an array to XML document
     *
@@ -255,121 +386,5 @@ class Storage {
         }
 
         return $node;
-    }
-
-    /**
-    * Converts XML document to an array
-    *
-    * @param string $node XML document node
-    * @return array
-    */
-    private function xml2array($node) {
-        $output = array();
-
-        switch ($node->nodeType) {
-            case XML_CDATA_SECTION_NODE:
-
-            case XML_TEXT_NODE:
-                $output = trim($node->textContent);
-                break;
-
-            case XML_ELEMENT_NODE:
-                $subtree = '';
-
-                // for each child node, call the covert function recursively
-                for ($i=0; $i<$node->childNodes->length; $i++) {
-                    $child = $node->childNodes->item($i);
-                    $subtree = $this->xml2array($child);
-
-                    if(isset($child->tagName)) {
-                        $tag_name = $child->tagName;
-                        $grandchildren = $child->childNodes;
-
-                        // assume more nodes of same kind are coming
-                        if(!isset($output[$tag_name])) {
-                            $output[$tag_name] = array();
-                        }
-
-                        $output[$tag_name][] = $subtree;
-                    } else {
-                        //check if it is not an empty text node
-                        if($subtree !== '') {
-                            $output = $subtree;
-                        }
-                    }
-                }
-
-                if(is_array($output)) {
-                    // if only one node of its kind and is leaf node, assign it directly instead if array($value);
-                    foreach ($output as $tag => $val) {
-                        if(is_array($val) && count($val)==1) {
-                            $output[$tag] = $val[0];
-                        }
-                    }
-
-                    if(empty($output)) {
-                        //for empty nodes
-                        $output = '';
-                    }
-                }
-
-                // loop through the attributes and collect them
-                if($node->attributes->length) {
-                    $attrs = array();
-
-                    foreach($node->attributes as $attrName => $attrNode) {
-                        $attrs[$attrName] = (string) $attrNode->value;
-                    }
-
-                    // if its an leaf node, store the value in @value instead of directly storing it.
-                    if(!is_array($output)) {
-                        $output = array('@value' => $output);
-                    }
-
-                    $output['@attributes'] = $attrs;
-                }
-                break;
-        }
-
-        return $output;
-    }
-
-    /**
-     * Test if data structure validation works correctly, by validating the default data structure.
-     *
-     * @return boolean
-     */
-    public function validationTest() {
-        $class = get_class($this);
-        try {
-            $json_object = Helpers::arrayToJsonObject($class::$JSON_SCHEMA);
-            $schema = Schema::import($json_object);
-            $result = $schema->in(
-                [  // Wrap default structure in array, because sections.xml represents Section array.
-                    Helpers::arrayToJsonObject($class::$DEFAULT_VALUES)]);
-        } catch (Exception $e) {
-            return false;
-        }
-        return true;
-    }
-
-    /**
-     * Validate data passed or existing in this service against it's JSON_SCHEMA.
-     *
-     * @param array|object $data    Array or stdClass object containing data for this service
-     * @return bool
-     */
-    public function validate($data=null) {
-        $data = $data ? $data : Helpers::arrayToJsonObject($this->get());
-        $class = get_class($this);
-        try {
-            $json_schema = Helpers::arrayToJsonObject($class::$JSON_SCHEMA);
-            $schema = Schema::import($json_schema);
-            $schema->in($data);
-        } catch (\Exception $e) {
-            \Log::warning(print_r($e, true));
-            return false;
-        }
-        return true;
     }
 }

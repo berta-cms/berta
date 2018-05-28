@@ -32,7 +32,7 @@ class SitesController extends Controller
          */
 
         $siteSettingsDataService = new SiteSettingsDataService($site['name']);
-        $settings = $isClone ? $siteSettingsDataService->getWithDefaults() : $siteSettingsDataService->getDefaultSettings();
+        $settings = $isClone ? $siteSettingsDataService->getState() : $siteSettingsDataService->getDefaultSettings();
         $sections = $isClone ? new SiteSectionsDataService($site['name']) : null;
         $entries = [];
         if ($sections) {
@@ -50,13 +50,13 @@ class SitesController extends Controller
                 $site['name'],
                 $template
             );
-            $siteTemplateSettings[$template] = $siteTemplateSettingsDataService->getWithDefaults();
+            $siteTemplateSettings[$template] = $siteTemplateSettingsDataService->getState();
         }
 
         $resp = [
             'site' => $site,
             'settings' => $settings,
-            'sections' => $sections ? $sections->state() : [],
+            'sections' => $sections ? $sections->getState() : [],
             'entries' => $entries ? ['entry' => $entries] : [],  // See if we need that wrap
             'tags' => $tags ? $tags->get() : [],
             'siteTemplateSettings' => $siteTemplateSettings
