@@ -1,16 +1,24 @@
 <?php
 
 $options['default_language'] = 'en';
-$options['languages'] = array('en' => 'English', 'lv' => 'Latviešu', 'fr' => 'Français', 'ru' => 'Русский', 'nl' => 'Nederlands', 'pl' => 'Polski', 'es' => 'Spanish');
-
-$options['images']['small_width'] = 200;
-$options['images']['small_height'] = 200;
-
-$options['images']['medium_width'] = 400;
-$options['images']['medium_height'] = 400;
-
-$options['images']['large_width'] = 600;
-$options['images']['large_height'] = 600;
+$options['languages'] = [
+    'en' => 'English',
+    'lv' => 'Latviešu',
+    'fr' => 'Français',
+    'ru' => 'Русский',
+    'nl' => 'Nederlands',
+    'pl' => 'Polski',
+    'es' => 'Spanish'
+];
+$options['images'] = isset($options['images']) ? $options['images'] : [];
+$options['images'] = array_merge($options['images'], [
+    'small_width' => 200,
+    'small_height' => 200,
+    'medium_width' => 400,
+    'medium_height' => 400,
+    'large_width' => 600,
+    'large_height' => 600,
+]);
 
 $settingsFontSelectGeneral = array(
 	'"Helvetica Neue", Helvetica, Arial, sans-serif' => 'Helvetica Neue, Helvetica, Arial, sans-serif',
