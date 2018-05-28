@@ -11,18 +11,18 @@ use Illuminate\Support\Facades\Storage;
 | It is a breeze. Simply tell Lumen the URIs it should respond to
 | and give it the Closure to call when that URI is requested.
 |
-*/
+ */
 
 // $app->get('/', function () use ($app) {
 //     return 'Nothing here. Go away!';
 // });
 
 // @@@:TODO: Require login for API endpoints
-$app->group(['prefix' => 'v1', 'namespace' => 'App'], function() use ($app) {
+$app->group(['prefix' => 'v1', 'namespace' => 'App'], function () use ($app) {
     $app->get('state/{site}', 'Http\Controllers\StateController@get');
 
     // @TODO remove this route later, used for testing only
-    $app->get('render-entry', function() {
+    $app->get('render-entry', function () {
         $entriesDataService = new App\Sites\Sections\Entries\SectionEntriesDataService('', 'section-one');
         $entry = current($entriesDataService->get()['entry']);
 
@@ -38,8 +38,8 @@ $app->group(['prefix' => 'v1', 'namespace' => 'App'], function() use ($app) {
         $entryRenderService = new App\Sites\Sections\Entries\SectionEntryRenderService([
             'entry' => $entry,
             'section' => $section,
-            'siteSettings' => $siteSettingsDataService->get(),
-            'siteTemplateSettings' => $siteTemplateSettingsDataService->get(),
+            'siteSettings' => $siteSettingsDataService->getState(),
+            'siteTemplateSettings' => $siteTemplateSettingsDataService->getState(),
             'storageService' => $storageService,
             'isEditMode' => true,
             'isShopAvailable' => true,
@@ -48,7 +48,7 @@ $app->group(['prefix' => 'v1', 'namespace' => 'App'], function() use ($app) {
         return $entryRenderService->render();
     });
 
-    $app->group(['prefix' => 'v1', 'namespace' => 'App\Sites'], function() use ($app) {
+    $app->group(['prefix' => 'v1', 'namespace' => 'App\Sites'], function () use ($app) {
         $app->post('sites', ['as' => 'sites', 'uses' => 'SitesController@create']);
         $app->patch('sites', 'SitesController@update');
         $app->put('sites', 'SitesController@order');
@@ -58,7 +58,7 @@ $app->group(['prefix' => 'v1', 'namespace' => 'App'], function() use ($app) {
 
         $app->patch('sites/template-settings', ['as' => 'site_template_settings', 'uses' => 'TemplateSettings\SiteTemplateSettingsController@update']);
 
-        $app->group(['prefix' => 'v1/sites', 'namespace' => 'App\Sites\Sections'], function() use ($app) {
+        $app->group(['prefix' => 'v1/sites', 'namespace' => 'App\Sites\Sections'], function () use ($app) {
             $app->post('sections', ['as' => 'site_sections', 'uses' => 'SiteSectionsController@create']);
             $app->patch('sections', 'SiteSectionsController@update');
             $app->patch('sections/reset', ['as' => 'site_sections_reset', 'uses' => 'SiteSectionsController@reset']);

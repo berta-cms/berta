@@ -2,8 +2,8 @@
 
 namespace App\Sites\TemplateSettings;
 
+use App\Config\SiteTemplatesConfigService;
 use App\Shared\Storage;
-use App\SiteTemplates\SiteTemplatesDataService;
 
 class SiteTemplateSettingsDataService extends Storage
 {
@@ -19,11 +19,18 @@ class SiteTemplateSettingsDataService extends Storage
         $this->TEMPLATE = explode('-', $template)[0];
         $this->XML_FILE = $xml_root . '/settings.' . $this->TEMPLATE . '.xml';
 
-        $siteTemplatesDataService = new SiteTemplatesDataService();
-        $this->siteTemplateDefaults = $siteTemplatesDataService->getDefaults()[$template]['templateConf'];
+        $siteTemplatesConfigService = new SiteTemplatesConfigService();
+        $this->siteTemplateDefaults = $siteTemplatesConfigService->getDefaults()[$template]['templateConf'];
     }
 
     public function get()
+    {
+        $siteTemplateSettings = $this->xmlFile2array($this->XML_FILE);
+
+        return $siteTemplateSettings;
+    }
+
+    public function getState()
     {
         $siteTemplateSettings = $this->xmlFile2array($this->XML_FILE);
         $siteTemplateSettings = self::mergeSiteTemplateDefaults($this->siteTemplateDefaults, $siteTemplateSettings);
@@ -34,9 +41,10 @@ class SiteTemplateSettingsDataService extends Storage
     /**
      * Merge site template settings with site template default values
      */
-    private static function mergeSiteTemplateDefaults($siteTemplatesDefaults, $siteTemplateSettings) {
+    private static function mergeSiteTemplateDefaults($siteTemplatesDefaults, $siteTemplateSettings)
+    {
         $data = [];
-        foreach($siteTemplatesDefaults as $group => $settings){
+        foreach ($siteTemplatesDefaults as $group => $settings) {
             if (isset($siteTemplateSettings[$group])) {
                 $data[$group] = array_merge($settings, $siteTemplateSettings[$group]);
             } else {
