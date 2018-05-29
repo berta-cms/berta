@@ -3,7 +3,7 @@ namespace App\Shared;
 
 class ImageHelpers
 {
-    public static function getGalleryImage($options=[])
+    public static function getGalleryImage($options = [])
     {
         $image = $options['image'];
 
@@ -163,7 +163,6 @@ class ImageHelpers
 
         return false;
     }
-
 
     // credit to Maxim Chernyak
     // http://mediumexposure.com/techblog/smart-image-resizing-while-preserving-transparency-php-and-gd-library

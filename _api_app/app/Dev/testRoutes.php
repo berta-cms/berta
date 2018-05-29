@@ -1,6 +1,6 @@
 <?php
 
-$app->group(['prefix' => 'v1', 'namespace' => 'App\Dev'], function() use ($app) {
+$app->group(['prefix' => 'v1', 'namespace' => 'App\Dev'], function () use ($app) {
     $app->get('test', 'TestController@get');
 
     $app->get('render-entry', function () {
@@ -29,4 +29,3 @@ $app->group(['prefix' => 'v1', 'namespace' => 'App\Dev'], function() use ($app) 
         return $entryRenderService->render();
     });
 });
-

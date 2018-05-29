@@ -65,7 +65,7 @@ class SectionEntryRenderService
         $entry['styleList'] = $this->getStyleList();
         $entry['isEditMode'] = $this->isEditMode;
         $entry['templateName'] = $this->templateName;
-        $entry['tagList'] = isset($entry['tags']['tag']) ? Helpers::createEntryTagList($entry['tags']['tag'])  : '';
+        $entry['tagList'] = isset($entry['tags']['tag']) ? Helpers::createEntryTagList($entry['tags']['tag']) : '';
         $entry['entryMarked'] = isset($entry['marked']) && $entry['marked'] ? 1 : 0;
         $entry['entryFixed'] = isset($entry['content']['fixed']) && $entry['content']['fixed'] ? 1 : 0;
         $entry['entryWidth'] = isset($entry['content']['width']) ? $entry['content']['width'] : '';
@@ -93,18 +93,20 @@ class SectionEntryRenderService
         return $entry;
     }
 
-    private function getEntryId() {
+    private function getEntryId()
+    {
         if ($this->sectionType == 'portfolio' && isset($this->entry['content']['title']) && $this->entry['content']['title']) {
             $title = $this->entry['content']['title'];
         } else {
-            $title = 'entry-'.$this->entry['id'];
+            $title = 'entry-' . $this->entry['id'];
         }
         $slug = Helpers::slugify($title, '-', '-');
 
         return $slug;
     }
 
-    private function getClassList() {
+    private function getClassList()
+    {
         $classes = ['entry', 'xEntry', 'clearfix'];
 
         $classes[] = 'xEntryId-' . $this->entry['id'];
@@ -135,8 +137,8 @@ class SectionEntryRenderService
         return implode(' ', $classes);
     }
 
-
-    private function getStyleList() {
+    private function getStyleList()
+    {
         $styles = [];
         $isResponsive = isset($this->siteTemplateSettings['pageLayout']['responsive']) ? $this->siteTemplateSettings['pageLayout']['responsive'] : 'no';
 
@@ -156,7 +158,7 @@ class SectionEntryRenderService
                 $placeInFullScreen = isset($this->entry['updated']);
                 list($left, $top) = [
                     rand($placeInFullScreen ? 0 : 900, 960),
-                    rand($placeInFullScreen ? 0 : 30, $placeInFullScreen ? 600 : 200)
+                    rand($placeInFullScreen ? 0 : 30, $placeInFullScreen ? 600 : 200),
                 ];
             }
 
@@ -174,7 +176,7 @@ class SectionEntryRenderService
             }
 
             if (!empty($styles)) {
-                $styles = array_map(function($style){
+                $styles = array_map(function ($style) {
                     $key = key($style);
                     return $key . ': ' . ($style[$key]);
                 }, $styles);
@@ -205,8 +207,8 @@ class SectionEntryRenderService
 
         $image = ImageHelpers::getGalleryImage([
             'image' => current($this->images),
-            'sizeRatio'=> 1,
-            'entry'=> $this->entry,
+            'sizeRatio' => 1,
+            'entry' => $this->entry,
             'storageService' => $this->storageService,
             'siteSettings' => $this->siteSettings,
         ]);
@@ -229,8 +231,8 @@ class SectionEntryRenderService
         foreach ($images as $i => $image) {
             $navigationImage = ImageHelpers::getGalleryImage([
                 'image' => $image,
-                'sizeRatio'=> 1,
-                'entry'=> $this->entry,
+                'sizeRatio' => 1,
+                'entry' => $this->entry,
                 'storageService' => $this->storageService,
                 'siteSettings' => $this->siteSettings,
             ]);
@@ -243,7 +245,7 @@ class SectionEntryRenderService
 
             if ($navigationImage['type'] == 'video') {
                 $navigationImage['src'] = '#';
-                $navigationImage['videoLink'] = $imageUrlPath .  $navigationImage['@attributes']['src'];
+                $navigationImage['videoLink'] = $imageUrlPath . $navigationImage['@attributes']['src'];
 
                 //default image size (video without poster)
                 if (!isset($navigationImage['width'])) {
@@ -260,7 +262,7 @@ class SectionEntryRenderService
                     $navigationImage['origLink'] = $imageUrlPath . $navigationImage['@attributes']['poster_frame'];
                 }
 
-            // type = Image
+                // type = Image
             } else {
                 $navigationImage['origLink'] = file_exists($imagePath . '_orig_' . $navigationImage['@attributes']['src']) ? $imageUrlPath . '_orig_' . $navigationImage['@attributes']['src'] : $imageUrlPath . $navigationImage['@attributes']['src'];
             }
@@ -281,7 +283,8 @@ class SectionEntryRenderService
         ];
     }
 
-    public function getGalleryClassList() {
+    public function getGalleryClassList()
+    {
         $entry = $this->entry;
         $classes = ['xGalleryContainer'];
         $galleryType = $this->galleryType;

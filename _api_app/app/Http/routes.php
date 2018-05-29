@@ -1,7 +1,5 @@
 <?php
 
-use Illuminate\Support\Facades\Storage;
-
 /*
 |--------------------------------------------------------------------------
 | Application Routes
@@ -48,6 +46,6 @@ $app->group(['prefix' => 'v1', 'namespace' => 'App'], function () use ($app) {
      * @todo: replace this with automated tests
      */
     if (app()->environment('local', 'stage')) {
-        require __DIR__.'/../Dev/testRoutes.php';
+        require __DIR__ . '/../Dev/testRoutes.php';
     }
 });

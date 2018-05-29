@@ -77,10 +77,10 @@ class Helpers
         return true;
     }
 
-
     /**
-    */
-    public static function slugify($text, $replacementStr='-', $allowNonWordChars='', $reallyRemoveOtherChars=false) {
+     */
+    public static function slugify($text, $replacementStr = '-', $allowNonWordChars = '', $reallyRemoveOtherChars = false)
+    {
         $char_map = array(
             // Latin
             'À' => 'A', 'Á' => 'A', 'Â' => 'A', 'Ã' => 'A', 'Ä' => 'A', 'Å' => 'A', 'Æ' => 'AE', 'Ç' => 'C',
@@ -148,20 +148,20 @@ class Helpers
             'š' => 's', 'ū' => 'u', 'ž' => 'z',
 
             //Lithuanian
-            'Ą' => 'A', 'Ę' => 'E', 'Ė' => 'E', 'Į'=> 'I', 'Ų'=> 'U',
-            'ą' => 'a', 'ę' => 'e', 'ė' => 'e', 'į'=> 'i', 'ų'=> 'u',
+            'Ą' => 'A', 'Ę' => 'E', 'Ė' => 'E', 'Į' => 'I', 'Ų' => 'U',
+            'ą' => 'a', 'ę' => 'e', 'ė' => 'e', 'į' => 'i', 'ų' => 'u',
 
             //Other
-            'ɗ'=> 'd', 'ə' => 'e', 'ʍ' => 'm', 'ş' => 's', 'ţ' => 't',
-            'Ɗ' => 'D', 'Ə' => 'E', 'Ş' => 'S', 'Ţ'=> 'T'
+            'ɗ' => 'd', 'ə' => 'e', 'ʍ' => 'm', 'ş' => 's', 'ţ' => 't',
+            'Ɗ' => 'D', 'Ə' => 'E', 'Ş' => 'S', 'Ţ' => 'T',
         );
 
         $text = str_replace(array_keys($char_map), $char_map, $text);
 
         // replace all other characters with the replacement string
         if ($reallyRemoveOtherChars) {
-            $text = preg_replace('/([^a-zA-Z0-9'.$allowNonWordChars.'])+/', $replacementStr, $text);
-        }else{
+            $text = preg_replace('/([^a-zA-Z0-9' . $allowNonWordChars . '])+/', $replacementStr, $text);
+        } else {
             $text = mb_ereg_replace("[^\w$allowNonWordChars]", $replacementStr, $text);
         }
 
@@ -172,12 +172,22 @@ class Helpers
         $text = str_replace('.' . $replacementStr, '.', $text);
 
         // remove . from the beinning and the end
-        if(mb_substr($text, 0, 1) == '.') $text = mb_substr($text, 1);
-        if(mb_substr($text, mb_strlen($text) - 1, 1) == '.') $text = mb_substr($text, 0, mb_strlen($text) - 1);
+        if (mb_substr($text, 0, 1) == '.') {
+            $text = mb_substr($text, 1);
+        }
+
+        if (mb_substr($text, mb_strlen($text) - 1, 1) == '.') {
+            $text = mb_substr($text, 0, mb_strlen($text) - 1);
+        }
 
         // remove replacement strings from the beginning and the end
-        if(mb_substr($text, 0, 1) == $replacementStr) $text = mb_substr($text, 1);
-        if(mb_substr($text, mb_strlen($text) - 1, 1) == $replacementStr) $text = mb_substr($text, 0, mb_strlen($text) - 1);
+        if (mb_substr($text, 0, 1) == $replacementStr) {
+            $text = mb_substr($text, 1);
+        }
+
+        if (mb_substr($text, mb_strlen($text) - 1, 1) == $replacementStr) {
+            $text = mb_substr($text, 0, mb_strlen($text) - 1);
+        }
 
         return strtolower($text);
     }
@@ -215,7 +225,7 @@ class Helpers
         $attributes = trim($attributes);
         $attributes = explode(',', $attributes);
         $attributes = array_map('trim', $attributes);
-        $attributes = array_filter($attributes, function($attribute) {
+        $attributes = array_filter($attributes, function ($attribute) {
             return strlen($attribute);
         });
 
@@ -225,12 +235,13 @@ class Helpers
     /**
      * Converts array as list or arrays
      */
-    public static function asList($val) {
+    public static function asList($val)
+    {
         if (!$val) {
             return [];
         }
 
-        if (is_array($val)){
+        if (is_array($val)) {
             if (array_values($val) !== $val) {
                 return array(0 => $val);
             }
