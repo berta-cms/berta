@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Providers;
+namespace App\User;
 
 use App\User;
 use Illuminate\Support\Facades\Auth;
@@ -19,7 +19,7 @@ require_once(realpath(__DIR__.'/../../../engine/_classes/class.berta.php'));
 require_once(realpath(__DIR__.'/../../../engine/_classes/class.bertasecurity.php'));
 
 
-class AuthServiceProvider extends ServiceProvider
+class UserAuthServiceProvider extends ServiceProvider
 {
     private $bertaSecurity;
     /**
