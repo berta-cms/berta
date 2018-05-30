@@ -4,31 +4,35 @@ namespace App;
 
 use Illuminate\Auth\Authenticatable;
 use Laravel\Lumen\Auth\Authorizable;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 
-class User extends Model implements
+class User implements
     AuthenticatableContract,
     AuthorizableContract
 {
     use Authenticatable, Authorizable;
+    public $name = 'admin';
+    public $password = 'xxx';
+
 
     /**
-     * The attributes that are mass assignable.
+     * Get the name of the unique identifier for the user.
      *
-     * @var array
+     * @return string
      */
-    protected $fillable = [
-        'name', 'email',
-    ];
+    public function getAuthIdentifierName()
+    {
+        'name';
+    }
 
     /**
-     * The attributes excluded from the model's JSON form.
+     * Get the unique identifier for the user.
      *
-     * @var array
+     * @return mixed
      */
-    protected $hidden = [
-        'password',
-    ];
+    public function getAuthIdentifier()
+    {
+        return $this->name;
+    }
 }
