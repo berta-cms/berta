@@ -199,6 +199,24 @@ class SectionEntriesDataService Extends Storage {
         return $this->ENTRIES;
     }
 
+    /**
+     * Returns all entries transformed for frontend needs
+     *
+     * @return array Array of entries
+     */
+    public function getState()
+    {
+        $entries = $this->get();
+        $entries = $entries[self::$ROOT_LIST_ELEMENT];
+
+        foreach ($entries as $order => $entry) {
+            $entries[$order]['sectionName'] = $this->SECTION_NAME;
+            $entries[$order]['order'] = $order;
+        }
+
+        return $entries;
+    }
+
     public function create($name=null) {
         while (file_exists($this->XML_FILE)) {
             if (preg_match('/(?P<name>.*)-(?P<digit>\d+)$/', $this->SECTION_NAME, $matches)) {

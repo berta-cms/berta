@@ -32,7 +32,7 @@ class StateController extends Controller
         $state['sites'] = $sitesDataService->getState();
         $state['site_settings'] = [];
         $state['site_sections'] = [];
-        $state['section_entries'] = [];
+        $state['sectionEntries'] = [];
         $state['section_tags'] = [];
 
         foreach ($state['sites'] as $_site) {
@@ -42,7 +42,8 @@ class StateController extends Controller
             $siteSettings = $siteSettingsDataService->getState();
             $state['site_settings'][$siteName] = $siteSettings;
             $sectionsDataService = new SiteSectionsDataService($siteName);
-            $state['site_sections'] = array_merge($state['site_sections'], $sectionsDataService->getState());
+            $siteSections = $sectionsDataService->getState();
+            $state['site_sections'] = array_merge($state['site_sections'], $siteSections);
 
             foreach ($allTemplates as $template) {
                 $templateSettingsDataService = new SiteTemplateSettingsDataService(
@@ -58,14 +59,11 @@ class StateController extends Controller
                 $state['site_template_settings'][$siteName][$template] = $templateSettings;
             }
 
-            if (!empty($state['site_sections'][$siteName]['section'])) {
-                foreach ($state['site_sections'][$siteName]['section'] as $section) {
-                    $sectionName = $section['name'];
-                    $entriesDataService = new SectionEntriesDataService($siteName, $sectionName);
-                    $state['section_entries'][$siteName][$sectionName] = $entriesDataService->get();
-                }
-            } else {
-                $state['section_entries'][$siteName] = [];
+            $state['sectionEntries'][$siteName] = [];
+            foreach ($siteSections as $section) {
+                $sectionName = $section['name'];
+                $sectionEntriesDataService = new SectionEntriesDataService($siteName, $sectionName);
+                $state['sectionEntries'][$siteName] = array_merge($state['sectionEntries'][$siteName], $sectionEntriesDataService->getState());
             }
 
             $tagsDataService = new SectionTagsDataService($siteName);

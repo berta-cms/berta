@@ -15,7 +15,7 @@
 
         case ActionTypes.SET_STATE:
           console.log('Entries reducer:', action);
-          return Immutable.fromJS(action.state.section_entries);
+          return Immutable.fromJS(action.state.sectionEntries);
 
         // case ActionTypes.SECTION_CREATED:
         //   console.log('Entries reducer:', action);
