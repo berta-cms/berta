@@ -4,6 +4,7 @@ namespace App\Sites\Sections\Entries;
 
 use App\Shared\Helpers;
 use App\Shared\ImageHelpers;
+use App\Shared\Storage;
 
 class SectionEntryRenderService
 {
@@ -19,31 +20,37 @@ class SectionEntryRenderService
     private $galleryType;
     private $isShopAvailable;
 
-    public function __construct($options)
+    /**
+     * Construct SectionEntryRenderService instance
+     *
+     * @param array $entry Single entry
+     * @param array $section Single section
+     * @param array $siteSettings
+     * @param array $siteTemplateSettings
+     * @param Storage $storageService
+     * @param bool $isEditMode
+     * @param bool $isShopAvailable
+     */
+    public function __construct(
+        array $entry,
+        array $section,
+        array $siteSettings,
+        array $siteTemplateSettings,
+        Storage $storageService,
+        bool $isEditMode,
+        bool $isShopAvailable
+    )
     {
-        $options = array_merge(
-            [
-                'entry' => null,
-                'section' => null,
-                'siteSettings' => null,
-                'siteTemplateSettings' => null,
-                'storageService' => null,
-                'isEditMode' => false,
-                'isShopAvailable' => false,
-            ],
-            $options
-        );
-
-        $this->entry = $options['entry'];
+        $this->entry = $entry;
         $this->images = $this->getGalleryImages();
-        $this->section = $options['section'];
-        $this->siteSettings = $options['siteSettings'];
-        $this->siteTemplateSettings = $options['siteTemplateSettings'];
-        $this->storageService = $options['storageService'];
-        $this->isEditMode = $options['isEditMode'];
+        $this->section = $section;
+        $this->siteSettings = $siteSettings;
+        $this->siteTemplateSettings = $siteTemplateSettings;
+        $this->storageService = $storageService;
+        $this->isEditMode = $isEditMode;
         $this->templateName = explode('-', $this->siteSettings['template']['template'])[0];
         $this->sectionType = isset($this->section['@attributes']['type']) ? $this->section['@attributes']['type'] : null;
-        $this->isShopAvailable = $options['isShopAvailable'] && $this->sectionType == 'shop';
+        $this->isShopAvailable = $isShopAvailable && $this->sectionType == 'shop';
         $this->galleryType = isset($this->entry['mediaCacheData']['@attributes']['type']) ? $this->entry['mediaCacheData']['@attributes']['type'] : $this->siteTemplateSettings['entryLayout']['defaultGalleryType'];
     }
 
@@ -205,13 +212,13 @@ class SectionEntryRenderService
             return null;
         }
 
-        $image = ImageHelpers::getGalleryImage([
-            'image' => current($this->images),
-            'sizeRatio' => 1,
-            'entry' => $this->entry,
-            'storageService' => $this->storageService,
-            'siteSettings' => $this->siteSettings,
-        ]);
+        $image = ImageHelpers::getGalleryImage(
+            current($this->images),
+            1,
+            $this->entry,
+            $this->storageService,
+            $this->siteSettings
+        );
 
         return $image;
     }
@@ -229,13 +236,13 @@ class SectionEntryRenderService
         $imageUrlPath = $this->storageService->MEDIA_URL . '/' . $this->entry['mediafolder'] . '/';
 
         foreach ($images as $i => $image) {
-            $navigationImage = ImageHelpers::getGalleryImage([
-                'image' => $image,
-                'sizeRatio' => 1,
-                'entry' => $this->entry,
-                'storageService' => $this->storageService,
-                'siteSettings' => $this->siteSettings,
-            ]);
+            $navigationImage = ImageHelpers::getGalleryImage(
+                $image,
+                1,
+                $this->entry,
+                $this->storageService,
+                $this->siteSettings
+            );
 
             $navigationImage = array_merge($image, $navigationImage ? $navigationImage : []);
 

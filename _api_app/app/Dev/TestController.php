@@ -39,15 +39,15 @@ class TestController extends Controller
 
         $storageService = new Storage('');
 
-        $entryRenderService = new SectionEntryRenderService([
-            'entry' => $entry,
-            'section' => $section,
-            'siteSettings' => $siteSettings,
-            'siteTemplateSettings' => $siteTemplateSettings,
-            'storageService' => $storageService,
-            'isEditMode' => true,
-            'isShopAvailable' => true,
-        ]);
+        $entryRenderService = new SectionEntryRenderService(
+            $entry,
+            $section,
+            $siteSettings,
+            $siteTemplateSettings,
+            $storageService,
+            true,
+            true
+        );
 
         return $entryRenderService->render();
     }

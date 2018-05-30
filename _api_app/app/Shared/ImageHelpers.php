@@ -1,21 +1,33 @@
 <?php
 namespace App\Shared;
 
+use App\Shared\Storage;
+
 class ImageHelpers
 {
-    public static function getGalleryImage($options = [])
+    /**
+     * Returns single gallery image with additional options for frontend
+     *
+     * @param array $image Single image
+     * @param float $sizeRatio Range 0 - 1
+     * @param array $entry Single entry
+     * @param Storage $storageService
+     * @param array $siteSettings
+     * @return null|array
+     */
+    public static function getGalleryImage(
+        array $image,
+        float $sizeRatio,
+        array $entry,
+        Storage $storageService,
+        array $siteSettings
+    )
     {
-        $image = $options['image'];
-
         // Ratio is calculated only for mashup template first page marked entries
         // isset($this->siteTemplateSettings['firstPage']['imageSizeRatio']) ? $this->siteTemplateSettings['firstPage']['imageSizeRatio'] : 1;
-        $sizeRatio = $options['sizeRatio'];
         if ($sizeRatio <= 0) {
             $sizeRatio = 1;
         }
-        $entry = $options['entry'];
-        $storageService = $options['storageService'];
-        $siteSettings = $options['siteSettings'];
 
         $isImage = isset($image['@attributes']['type']) && $image['@attributes']['type'] == 'image';
         $isPoster = isset($image['@attributes']['poster_frame']);
@@ -166,7 +178,8 @@ class ImageHelpers
 
     // credit to Maxim Chernyak
     // http://mediumexposure.com/techblog/smart-image-resizing-while-preserving-transparency-php-and-gd-library
-    private static function smart_resize_image($file,
+    private static function smart_resize_image(
+        $file,
         $width = 0,
         $height = 0,
         $proportional = false,
