@@ -49,9 +49,7 @@ class AuthServiceProvider extends ServiceProvider
         // the User instance via an API token or any other method necessary.
 
         Auth::viaRequest('api', function ($request) {
-            if(!defined('BERTA_ENVIRONMENT')) define('BERTA_ENVIRONMENT', 'site');
             if(!defined('DO_UPLOAD')) define('DO_UPLOAD', false);
-            $options['ENVIRONMENT'] = BERTA_ENVIRONMENT;
 
 
             if (DO_UPLOAD && isset($_GET['session_id'])) {
