@@ -32,7 +32,7 @@ class UserModel implements
      */
     public function getAuthIdentifierName()
     {
-        'name';
+        return 'name';
     }
 
     /**
