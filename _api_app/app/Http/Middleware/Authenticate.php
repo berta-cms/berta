@@ -41,7 +41,7 @@ class Authenticate
      */
     public function handle(Request $request, Closure $next, $guard = null)
     {
-        $apiPrefix = env('API_PREFIX', '_api');
+        $apiPrefix = config('app.api_prefix');
         $isAPIRequest = strpos($request->getRequestUri(), '/'. $apiPrefix) === 0;
 
         if ($this->auth->guard($guard)->guest()) {
