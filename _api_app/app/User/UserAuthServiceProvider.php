@@ -2,21 +2,11 @@
 
 namespace App\User;
 
-use App\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
-/**
- * For `\BertaSecurity` to work, we need other Berta classes, because there many configuration options that are
- * defined there. All of these includes are only used to make `\BertaSecurity` work.
- */
-require_once(realpath(__DIR__.'/../../../engine/_classes/class.bertabase.php'));
-require_once(realpath(__DIR__.'/../../../engine/_classes/class.bertautils.php'));
-/** @var {\Berta} \Berta - Old berta app class */
-require_once(realpath(__DIR__.'/../../../engine/_classes/class.berta.php'));
-/** @var {\BertaSecurity} \BertaSecurity - Old berta security class, so the old login system would work  */
-require_once(realpath(__DIR__.'/../../../engine/_classes/class.bertasecurity.php'));
+use App\User\UserModel;
 
 
 class UserAuthServiceProvider extends ServiceProvider
@@ -29,11 +19,24 @@ class UserAuthServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        /**
+         * For `\BertaSecurity` to work, we need other Berta classes, because there many configuration options that are
+         * defined there. All of these includes are only used to make `\BertaSecurity` work.
+         */
+        require_once(realpath(config('app.old_berta_root'). '/engine/_classes/class.bertabase.php'));
+        require_once(realpath(config('app.old_berta_root'). '/engine/_classes/class.bertautils.php'));
+        /** @var {\Berta} \Berta - Old berta app class */
+        require_once(realpath(config('app.old_berta_root'). '/engine/_classes/class.berta.php'));
+        /** @var {\BertaSecurity} \BertaSecurity - Old berta security class, so the old login system would work  */
+        require_once(realpath(config('app.old_berta_root'). '/engine/_classes/class.bertasecurity.php'));
+
         /** @var {array} $options - this gets the berta version */
-        include realpath(__DIR__.'/../../../engine/inc.version.php');
+        include realpath(config('app.old_berta_root'). '/engine/inc.version.php');
         \Berta::$options['version'] = $options['version'];
         /** @! This may not work with berta deep in subdirectories */
         \Berta::$options['SITE_ABS_ROOT'] = str_replace('\\', '/', dirname(dirname($_SERVER['PHP_SELF'])));
+
+        $this->bertaSecurity = new \BertaSecurity();
     }
 
     /**
@@ -59,13 +62,11 @@ class UserAuthServiceProvider extends ServiceProvider
                 return true;
             }
 
-            $bertaSecurity = new \BertaSecurity();
-
-            if(!$bertaSecurity->authentificated) {
+            if(!$this->bertaSecurity->authentificated) {
                 return null;
             }
 
-            return true;
+            return new UserModel();
         });
     }
 }
