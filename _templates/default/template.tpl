@@ -180,7 +180,7 @@
 						{ assign var=hasURL value= $berta.environment == 'engine' || !empty($entry.url) }
 						{ if $hasURL }
 						<div class="entryContent">
-							<div class="xEditable xProperty-url">{ if $berta.environment == 'site'}<a href="{ $entry.url }" target="_blank">{ $entry.url }</a>{else}{ $entry.url }{/if}</div>
+							<div class="xEditable xProperty-url"{if $berta.environment == 'engine'} data-path="{ $berta.options.MULTISITE }/entry/{ $berta.section.name }/{ $entry.id }/content/url"{ /if }>{ if $berta.environment == 'site'}<a href="{ $entry.url }" target="_blank">{ $entry.url }</a>{else}{ $entry.url }{/if}</div>
 						</div>
 						{ /if }
 

@@ -986,7 +986,7 @@ var BertaEditorBase = new Class({
                     .toJSON()[template]
                     .sectionTypes;
               var type = resp.section['@attributes'].type ? resp.section['@attributes'].type : 'default';
-              var type_params = sectionTypes[type].params;
+              var type_params = sectionTypes[type] ? sectionTypes[type].params : sectionTypes['default'].params;
 
               resp['params'] = this.getTypeHTML(
                 site,
