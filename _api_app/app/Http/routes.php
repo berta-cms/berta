@@ -15,7 +15,6 @@
 //     return 'Nothing here. Go away!';
 // });
 
-// @@@:TODO: Require login for API endpoints
 $app->group(['prefix' => 'v1', 'namespace' => 'App', 'middleware' => 'auth'], function() use ($app) {
     $app->get('state/{site}', 'Http\Controllers\StateController@get');
 
