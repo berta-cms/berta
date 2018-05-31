@@ -186,13 +186,16 @@ class SectionEntriesDataService Extends Storage {
     * @return array Array of entries
     */
     public function get() {
-        if (empty($this->ENTRIES)) {
+        if (!$this->ENTRIES) {
             $this->ENTRIES = $this->xmlFile2array($this->XML_FILE);
 
-            if (empty($this->ENTRIES)) {
-                $this->ENTRIES = [self::$ROOT_LIST_ELEMENT => []];
+            if (!$this->ENTRIES) {
+                $this->ENTRIES[self::$ROOT_LIST_ELEMENT] = [];
             } else {
-                $this->ENTRIES[self::$ROOT_LIST_ELEMENT] = isset($this->ENTRIES[self::$ROOT_LIST_ELEMENT]) ? $this->asList($this->ENTRIES[self::$ROOT_LIST_ELEMENT]) : [];
+                if (!$this->ENTRIES[self::$ROOT_LIST_ELEMENT]) {
+                    $this->ENTRIES[self::$ROOT_LIST_ELEMENT] = [];
+                }
+                $this->ENTRIES[self::$ROOT_LIST_ELEMENT] = $this->asList($this->ENTRIES[self::$ROOT_LIST_ELEMENT]);
             }
         }
 

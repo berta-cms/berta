@@ -322,7 +322,7 @@
                                 { /if }
 
                                 { if $berta.environment == 'engine' || !empty($entry.description) }
-                                    <div class="entryText xEditableMCE xProperty-description">{ $entry.description }</div>
+                                    <div class="entryText xEditableMCE xProperty-description"{if $berta.environment == 'engine'} data-path="{ $berta.options.MULTISITE }/entry/{ $berta.section.name }/{ $entry.id }/content/description"{ /if }>{ $entry.description }</div>
                                 { /if }
 
                                 { if $berta.section.type == 'shop' and $berta.shop_enabled == true }
