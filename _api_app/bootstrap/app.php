@@ -24,6 +24,8 @@ $app = new Laravel\Lumen\Application(
 );
 
 $app->withFacades();
+// Initialize `app` configuration file stored in `config/app.php`
+$app->configure('app');
 
 // $app->withEloquent();
 
