@@ -51,7 +51,7 @@ class UserAuthServiceProvider extends ServiceProvider
         // should return either a User instance or null. You're free to obtain
         // the User instance via an API token or any other method necessary.
 
-        Auth::viaRequest('api', function ($request) {
+        Auth::viaRequest('old_berta_session', function ($request) {
 
             if(!$this->bertaSecurity->authentificated) {
                 return null;
