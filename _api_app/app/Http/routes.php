@@ -38,6 +38,10 @@ $app->group(['prefix' => 'v1', 'namespace' => 'App'], function () use ($app) {
 
             $app->put('sections/backgrounds', ['as' => 'site_section_backgrounds', 'uses' => 'SiteSectionsController@galleryOrder']);
             $app->delete('sections/backgrounds', 'SiteSectionsController@galleryDelete');
+
+            $app->group(['prefix' => 'v1/sites/sections', 'namespace' => 'App\Sites\Sections\Entries'], function () use ($app) {
+                $app->patch('entries', ['as' => 'section_entries', 'uses' => 'SectionEntriesController@update']);
+            });
         });
     });
 

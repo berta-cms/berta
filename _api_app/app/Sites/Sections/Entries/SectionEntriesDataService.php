@@ -217,6 +217,60 @@ class SectionEntriesDataService Extends Storage {
         return $entries;
     }
 
+    /**
+     * Saves a value with a given path and saves the change to XML file
+     *
+     * @param string $path Slash delimited path to the value
+     * @param mixed $value Value to be saved
+     * @return array Array of changed value and/or error messages
+     */
+    public function saveValueByPath($path, $value)
+    {
+        $entries = $this->get();
+        $path_arr = array_slice(explode('/', $path), 3);
+        $value = trim(urldecode($value));
+        $prop = $path_arr[1];
+        $entryId = $path_arr[0];
+        $index = null;
+
+        // Find entry index
+        foreach ($entries[self::$ROOT_LIST_ELEMENT] as $i => $entry) {
+            if ($entry['id'] == $entryId) {
+                $index = $i;
+                break;
+            }
+        }
+
+        $ret = [
+            //     'site' => $this->site_name,
+            //     'order' => $order,
+            //     'old_name' => null,
+            //     'path' => $path,
+            //     'value' => $value,
+            //     'real' => $value,
+            'path' => $path,
+            'value' => $value,
+            'real' => $value,
+        ];
+
+        if (is_null($index)) {
+            return $ret;
+        }
+
+        $path_arr[0] = $index;
+
+        array_unshift($path_arr, self::$ROOT_LIST_ELEMENT);
+        $this->setValueByPath(
+            $entries,
+            implode('/', $path_arr),
+            $value
+        );
+
+        $this->array2xmlFile($entries, $this->XML_FILE, $this->ROOT_ELEMENT);
+
+        return $ret;
+    }
+
     public function create($name=null) {
         while (file_exists($this->XML_FILE)) {
             if (preg_match('/(?P<name>.*)-(?P<digit>\d+)$/', $this->SECTION_NAME, $matches)) {

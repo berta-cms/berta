@@ -133,7 +133,7 @@
 
                             <div class="entryTextWrap galleryType-{ $entry.__raw.mediaCacheData['@attributes'].type }">
                                 { if $berta.section.type == 'portfolio' && ($berta.environment == 'engine' || !empty($entry.title)) }
-                                    <h2><span class="xEditable xProperty-title xCaption-entry&nbsp;title">{ $entry.title }</span></h2>
+                                    <h2><span class="xEditable xProperty-title xCaption-entry&nbsp;title"{if $berta.environment == 'engine'} data-path="{ $berta.options.MULTISITE }/entry/{ $berta.section.name }/{ $entry.id }/content/title"{ /if }>{ $entry.title }</span></h2>
                                 { /if }
 
     							{ if $berta.environment == 'engine' || !empty($entry.description) }

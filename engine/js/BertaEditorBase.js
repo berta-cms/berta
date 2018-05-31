@@ -1007,6 +1007,10 @@ var BertaEditorBase = new Class({
           }
         }
 
+        if (path_arr[1] === 'entry') {
+          updateAction = Actions.initUpdateSectionEntry;
+        }
+
         if (typeof updateAction === 'function') {
           redux_store.dispatch(updateAction(
             path,
