@@ -7,6 +7,7 @@
       url,
       {
         method: method,
+        credentials: 'include',
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json'
