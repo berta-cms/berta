@@ -52,15 +52,6 @@ class UserAuthServiceProvider extends ServiceProvider
         // the User instance via an API token or any other method necessary.
 
         Auth::viaRequest('api', function ($request) {
-            if(!defined('DO_UPLOAD')) define('DO_UPLOAD', false);
-
-
-            if (DO_UPLOAD && isset($_GET['session_id'])) {
-                session_write_close();
-                session_id($_GET['session_id']);
-                session_start();
-                return true;
-            }
 
             if(!$this->bertaSecurity->authentificated) {
                 return null;
