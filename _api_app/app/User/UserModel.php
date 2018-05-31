@@ -12,8 +12,17 @@ class UserModel implements
     AuthorizableContract
 {
     use Authenticatable, Authorizable;
-    public $name = 'admin';
-    public $password = 'xxx';
+    public $name;
+    public $password;
+
+    public function __construct() {
+        /** @var {array} $options - Gets the old berta user from PHP file. */
+        /** @todo: Fix this, make user storage safer! */
+        include realpath(config('app.old_berta_root'). '/engine/config/inc.conf.php');
+
+        $this->name = $options['AUTH_user'];
+        $this->password = $options['AUTH_password'];
+    }
 
 
     /**
