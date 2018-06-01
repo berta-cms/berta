@@ -24,6 +24,8 @@ $app = new Laravel\Lumen\Application(
 );
 
 $app->withFacades();
+// Initialize `app` configuration file stored in `config/app.php`
+$app->configure('app');
 
 // $app->withEloquent();
 
@@ -63,9 +65,9 @@ $app->singleton(
 //    App\Http\Middleware\ExampleMiddleware::class
 // ]);
 
-// $app->routeMiddleware([
-//     'auth' => App\Http\Middleware\Authenticate::class,
-// ]);
+$app->routeMiddleware([
+    'auth' => App\Http\Middleware\Authenticate::class,
+]);
 
 /*
 |--------------------------------------------------------------------------
@@ -79,7 +81,7 @@ $app->singleton(
 */
 
 // $app->register(App\Providers\AppServiceProvider::class);
-// $app->register(App\Providers\AuthServiceProvider::class);
+$app->register(App\User\UserAuthServiceProvider::class);
 // $app->register(App\Providers\EventServiceProvider::class);
 
 /*
