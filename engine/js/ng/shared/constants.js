@@ -1,4 +1,4 @@
-(function(window, document) {
+(function(window) {
   'use strict';
 
   window.editables = {
@@ -28,4 +28,4 @@
     fontselect: editables.xEditableFontSelect
   };
 
-})(window, document);
+})(window);

@@ -1,4 +1,4 @@
-(function(window, document) {
+(function(window) {
   'use strict';
 
   window.reducers = window.reducers || {};
@@ -19,4 +19,4 @@
       }
     }
   });
-})(window, document);
+})(window);
