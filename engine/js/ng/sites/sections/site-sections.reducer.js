@@ -1,4 +1,4 @@
-(function(window) {
+(function(window, Immutable, ActionTypes) {
   'use strict';
 
   window.reducers = window.reducers || {};
@@ -9,12 +9,7 @@
           site_name,
           order,
           prop,
-          value,
-          section,
-          section_idx,
-          sections = [],
-          files = [],
-          new_files = [];
+          value;
 
       if (state === undefined) {
         state = Immutable.Map();
@@ -128,4 +123,4 @@
       }
     }
   });
-})(window);
+})(window, window.Immutable, window.ActionTypes);

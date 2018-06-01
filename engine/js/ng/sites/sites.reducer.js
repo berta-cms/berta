@@ -1,11 +1,11 @@
-(function(window) {
+(function(window, Immutable, ActionTypes) {
   'use strict';
 
   window.reducers = window.reducers || {};
 
   Object.assign(window.reducers, {
     sites: function(state, action) {
-      var path, value, site, order, sites = [];
+      var path, value, order;
 
       if (state === undefined) {
         state = Immutable.Map();
@@ -35,7 +35,7 @@
           });
 
 
-          case ActionTypes.ORDER_SITES:
+        case ActionTypes.ORDER_SITES:
           return state.map(function (site) {
             var name = site.get('name');
             if (name === '') {
@@ -69,4 +69,4 @@
       }
     }
   });
-})(window);
+})(window, window.Immutable, window.ActionTypes);

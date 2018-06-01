@@ -1,11 +1,11 @@
-(function(window) {
+(function(window, Immutable, ActionTypes) {
   'use strict';
 
   window.reducers = window.reducers || {};
 
   Object.assign(window.reducers, {
     sectionTags: function(state, action) {
-      var tag_idx, tags, site_name = [];
+      var site_name = [];
 
       if (state === undefined) {
         state = Immutable.Map();
@@ -93,4 +93,4 @@
       }
     }
   });
-})(window);
+})(window, window.Immutable, window.ActionTypes);

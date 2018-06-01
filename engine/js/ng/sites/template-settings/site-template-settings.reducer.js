@@ -1,4 +1,4 @@
-(function (window) {
+(function (window, Immutable, ActionTypes) {
   'use strict';
 
   window.reducers = window.reducers || {};
@@ -51,4 +51,4 @@
       }
     }
   });
-})(window);
+})(window, window.Immutable, window.ActionTypes);

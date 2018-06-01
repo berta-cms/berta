@@ -1,4 +1,4 @@
-(function(window, Berta) {
+(function(window, Berta, ActionTypes, sync) {
   'use strict';
 
   window.Actions = window.Actions || {};
@@ -9,7 +9,7 @@
       site = site ? site : '0';
       var url = '/_api/v1/state/' + site;
 
-      return function (dispatch, getStore) {
+      return function (dispatch) {
         dispatch({ type: ActionTypes.GET_STATE });
 
         sync(url, {}, 'GET')
@@ -17,7 +17,7 @@
             if (response.error_message) {
               // @TODO dispatch error message
             } else {
-              dispatch(Actions.setState(response));
+              dispatch(window.Actions.setState(response));
             }
           });
       };
@@ -33,4 +33,4 @@
       };
     }
   });
-})(window, Berta);
+})(window, window.Berta, window.ActionTypes, window.sync);

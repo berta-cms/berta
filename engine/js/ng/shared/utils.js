@@ -1,4 +1,4 @@
-(function(window, document) {
+(function(window, document, redux_store) {
   'use strict';
   /** @todo: move helpers to Berta namespace */
 
@@ -40,7 +40,7 @@
   };
 
   window.getCurrentSite = function getCurrentSite() {
-    var q = getQueryParams();
+    var q = window.getQueryParams();
     return q.site === undefined ? '' : q.site;
   };
 
@@ -58,19 +58,19 @@
   };
 
   var Templates = {
-        templates: {}
-      };
+    templates: {}
+  };
 
   Templates.load = function load() {
     var templateList = document.getElementById('templateList');
 
     if (templateList) {
       var templates = Array.prototype.slice.call(
-            templateList.querySelectorAll('script'),
-            0
-          );
+        templateList.querySelectorAll('script'),
+        0
+      );
 
-      templates.forEach(function(template, index){
+      templates.forEach(function(template){
         if(template.getAttribute('type') === 'text/template'){
           this.templates[template.getAttribute('id')] = template.innerHTML;
         }
@@ -81,7 +81,7 @@
   Templates.get = function get(name, ctx) {
     var tpl = this.templates[name];
 
-    return tpl.replace(/<\%=([^%>]+)\%>/g, function(str, match) {
+    return tpl.replace(/<%=([^%>]+)%>/g, function(str, match) {
       return ctx[match];
     });
   }.bind(Templates);
@@ -92,44 +92,44 @@
     var ready = false,
         detach = function() {
           if(document.addEventListener) {
-            document.removeEventListener("DOMContentLoaded", completed);
-            window.removeEventListener("load", completed);
+            document.removeEventListener('DOMContentLoaded', completed);
+            window.removeEventListener('load', completed);
           } else {
-            document.detachEvent("onreadystatechange", completed);
-            window.detachEvent("onload", completed);
+            document.detachEvent('onreadystatechange', completed);
+            window.detachEvent('onload', completed);
           }
         },
         completed = function() {
-          if(!ready && (document.addEventListener || event.type === "load" || document.readyState === "complete")) {
+          if(!ready && (document.addEventListener || event.type === 'load' || document.readyState === 'complete')) {
             ready = true;
             detach();
             callback();
           }
         };
 
-    if(document.readyState === "complete") {
+    if(document.readyState === 'complete') {
       callback();
     } else if(document.addEventListener) {
-      document.addEventListener("DOMContentLoaded", completed);
-      window.addEventListener("load", completed);
+      document.addEventListener('DOMContentLoaded', completed);
+      window.addEventListener('load', completed);
     } else {
-      document.attachEvent("onreadystatechange", completed);
-      window.attachEvent("onload", completed);
+      document.attachEvent('onreadystatechange', completed);
+      window.attachEvent('onload', completed);
 
       var top = false;
 
       try {
         top = window.frameElement === null && document.documentElement;
-      } catch(e) {}
+      } catch(e) { /* skip */}
 
       if(top && top.doScroll) {
         (function scrollCheck() {
           if(ready) return;
 
           try {
-              top.doScroll("left");
+            top.doScroll('left');
           } catch(e) {
-              return setTimeout(scrollCheck, 50);
+            return setTimeout(scrollCheck, 50);
           }
 
           ready = true;
@@ -139,4 +139,4 @@
       }
     }
   };
-})(window, document);
+})(window, document, window.redux_store);

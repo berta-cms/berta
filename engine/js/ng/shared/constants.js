@@ -18,14 +18,14 @@
   };
 
   window.formats = {
-    text: editables.xEditable,
-    longtext: editables.xEditableTA,
-    richtext: editables.xEditableMCESimple,
-    color: editables.xEditableColor,
-    image: editables.xEditableImage,
-    icon: editables.xEditableICO,
-    select: editables.xEditableSelectRC,
-    fontselect: editables.xEditableFontSelect
+    text: window.editables.xEditable,
+    longtext: window.editables.xEditableTA,
+    richtext: window.editables.xEditableMCESimple,
+    color: window.editables.xEditableColor,
+    image: window.editables.xEditableImage,
+    icon: window.editables.xEditableICO,
+    select: window.editables.xEditableSelectRC,
+    fontselect: window.editables.xEditableFontSelect
   };
 
 })(window);
