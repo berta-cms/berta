@@ -1,5 +1,6 @@
 (function(window, document) {
   'use strict';
+  /** @todo: move helpers to Berta namespace */
 
   window.sync = function (url, data, method) {
     method = method || 'PATCH';
@@ -19,7 +20,8 @@
         return response.json();
       })
       .catch(function (error) {
-        console.log('Request failed:', error.message);
+        /** @todo: create error state/reducer to manage failed requests and other app errors */
+        console.error('Request failed:', error.message);
       });
   };
 

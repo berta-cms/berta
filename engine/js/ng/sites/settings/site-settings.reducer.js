@@ -12,7 +12,6 @@
 
       switch (action.type) {
         case ActionTypes.SET_STATE:
-          console.log('Site settings reducer:', action);
           return Immutable.fromJS(action.state.site_settings);
 
 
@@ -21,8 +20,6 @@
 
 
         case ActionTypes.UPDATE_SITE_SETTINGS:
-          console.log('Settings reducer:', action);
-
           var path = action.resp.path.split('/').slice(2);
           var value = action.resp.value;
 

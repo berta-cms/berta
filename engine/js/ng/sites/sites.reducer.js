@@ -14,18 +14,14 @@
       switch (action.type) {
 
         case ActionTypes.SET_STATE:
-          console.log('Sites SET_STATE reducer:', action);
           return Immutable.fromJS(action.state.sites);
 
 
         case ActionTypes.CREATE_SITE:
-          console.log('Sites reducer:', action);
-
           return state.set(state.size, Immutable.fromJS(action.data));
 
 
         case ActionTypes.UPDATE_SITE:
-          console.log('Sites reducer:', action);
           path = action.resp.path.split('/');
           order = parseInt(path[1], 10);
           value = action.resp.value;
@@ -55,8 +51,6 @@
 
 
         case ActionTypes.DELETE_SITE:
-          console.log('Sites reducer:', action);
-
           // Filter out deleted site
           return state.filter(function (site) {
             return site.get('name') !== action.resp.name;

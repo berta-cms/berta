@@ -13,8 +13,6 @@
 
       switch (action.type) {
         case ActionTypes.SET_STATE:
-          console.log('Tags reducer:', action);
-
           return Immutable.fromJS(action.state.section_tags);
 
 
