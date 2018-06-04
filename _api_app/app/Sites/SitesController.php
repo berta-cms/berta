@@ -2,7 +2,7 @@
 
 namespace App\Sites;
 
-use App\Config\SiteTemplatesConfigService;
+use App\Configuration\SiteTemplatesConfigService;
 use App\Http\Controllers\Controller;
 use App\Sites\Sections\Entries\SectionEntriesDataService;
 use App\Sites\Sections\SiteSectionsDataService;

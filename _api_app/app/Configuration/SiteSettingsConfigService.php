@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Config;
+namespace App\Configuration;
 
 use App\Shared\I18n;
 
