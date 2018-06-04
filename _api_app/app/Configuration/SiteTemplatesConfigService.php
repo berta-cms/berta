@@ -236,20 +236,15 @@ class SiteTemplatesConfigService
             );
 
             /**
-             * @todo Fix this HACK, also read template definitions from shop plugin
+             * @todo Fix this HACK
              */
             // @@@:HACK: read in template config and set up namespace
             //           so that I18n would be visible there
             $conf = str_replace('<?php', 'namespace App\Shared;', $conf);
-            $conf = str_replace(
-                '../_plugin_shop/template.conf.php',
-                '../_plugin_shop/ng.template.conf.php',
-                $conf
-            );
             list(
                 $ret[$tpl]['sectionTypes'],
                 $ret[$tpl]['templateConf']
-            ) = eval($conf);
+                ) = eval($conf);
         }
 
         return $ret;
