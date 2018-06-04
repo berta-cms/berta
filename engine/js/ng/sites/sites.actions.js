@@ -1,12 +1,12 @@
-(function(window, document) {
+(function(window, ActionTypes, sync) {
   'use strict';
 
-  window.Actions = window.Actions || {};
+  var Actions = window.Actions = window.Actions || {};
 
   Object.assign(window.Actions, {
 
     initCreateSite: function (site, onComplete) {
-      return function (dispatch, getStore) {
+      return function (dispatch) {
 
         dispatch({ type: ActionTypes.INIT_CREATE_SITE });
 
@@ -58,7 +58,7 @@
     },
 
     initUpdateSite: function(path, value, onComplete) {
-      return function (dispatch, getStore) {
+      return function (dispatch) {
         dispatch({ type: ActionTypes.INIT_UPDATE_SITE });
 
         sync(window.Berta.urls.sites, { path: path, value: value })
@@ -123,7 +123,7 @@
     },
 
     initOrderSites: function(sites, onComplete) {
-      return function (dispatch, getStore) {
+      return function (dispatch) {
         dispatch({ type: ActionTypes.INIT_ORDER_SITES });
 
         sync(window.Berta.urls.sites, sites, 'PUT')
@@ -146,7 +146,7 @@
     },
 
     initdeleteSite: function(site, onComplete) {
-      return function (dispatch, getStore) {
+      return function (dispatch) {
 
         // @TODO also delete related: entries
 
@@ -187,4 +187,4 @@
       };
     }
   });
-})(window, document);
+})(window, window.ActionTypes, window.sync);

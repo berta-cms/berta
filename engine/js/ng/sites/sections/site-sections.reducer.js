@@ -1,4 +1,4 @@
-(function(window, document) {
+(function(window, Immutable, ActionTypes) {
   'use strict';
 
   window.reducers = window.reducers || {};
@@ -9,12 +9,7 @@
           site_name,
           order,
           prop,
-          value,
-          section,
-          section_idx,
-          sections = [],
-          files = [],
-          new_files = [];
+          value;
 
       if (state === undefined) {
         state = Immutable.Map();
@@ -23,7 +18,6 @@
       switch (action.type) {
 
         case ActionTypes.SET_STATE:
-          console.log('Sections reducer:', action);
           return Immutable.fromJS(action.state.site_sections);
 
 
@@ -32,7 +26,6 @@
 
 
         case ActionTypes.UPDATE_SITE_SECTION:
-          console.log('Sections reducer:', action);
           path = action.resp.path.split('/');
           site_name = path[0] === '0' ? '' : path[0];
           order = parseInt(path[2], 10);
@@ -62,7 +55,6 @@
 
 
         case ActionTypes.RESET_SITE_SECTION:
-          console.log('Sections reducer:', action);
           path = action.path.split('/');
           site_name = path[0] === '0' ? '' : path[0];
           order = parseInt(path[2], 10);
@@ -90,10 +82,6 @@
 
 
         case ActionTypes.DELETE_SITE_SECTION:
-          console.log('Sections reducer:', action, state);
-
-          // @TODO delete related data from state
-
           site_name = action.resp.site === '0' ? '' : action.resp.site;
           order = -1;
 
@@ -135,4 +123,4 @@
       }
     }
   });
-})(window, document);
+})(window, window.Immutable, window.ActionTypes);
