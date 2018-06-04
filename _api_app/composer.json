@@ -1,6 +1,6 @@
 {
-    "name": "berta.me",
-    "description": "Berta.me CMS",
+    "name": "berta",
+    "description": "Berta CMS",
     "version": "0.9.0b",
     "keywords": ["berta", "cms", "lumen"],
     "license": "GPL-3.0",
