@@ -245,9 +245,9 @@ class SiteTemplatesConfigService
                 $ret[$tpl]['sectionTypes'],
                 $ret[$tpl]['templateConf']
                 ) = eval($conf);
-            }
+        }
 
-            return $ret;
+        return $ret;
     }
 
     /**
