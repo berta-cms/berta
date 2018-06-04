@@ -1,4 +1,4 @@
-(function(window, document) {
+(function(window) {
   'use strict';
 
   window.ActionTypes = {
@@ -55,4 +55,4 @@
     INIT_DELETE_SITE_SECTIONS_TAGS: 'INIT_DELETE_SITE_SECTIONS_TAGS',
     DELETE_SITE_SECTIONS_TAGS: 'DELETE_SITE_SECTIONS_TAGS'
   };
-})(window, document);
+})(window);

@@ -1,11 +1,11 @@
-(function(window, document) {
+(function(window, Immutable, ActionTypes) {
   'use strict';
 
   window.reducers = window.reducers || {};
 
   Object.assign(window.reducers, {
     sectionTags: function(state, action) {
-      var tag_idx, tags, site_name = [];
+      var site_name = [];
 
       if (state === undefined) {
         state = Immutable.Map();
@@ -13,8 +13,6 @@
 
       switch (action.type) {
         case ActionTypes.SET_STATE:
-          console.log('Tags reducer:', action);
-
           return Immutable.fromJS(action.state.section_tags);
 
 
@@ -95,4 +93,4 @@
       }
     }
   });
-})(window, document);
+})(window, window.Immutable, window.ActionTypes);

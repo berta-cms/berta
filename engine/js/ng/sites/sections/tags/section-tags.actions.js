@@ -1,4 +1,4 @@
-(function(window, document) {
+(function(window, ActionTypes) {
   'use strict';
 
   window.Actions = window.Actions || {};
@@ -49,4 +49,4 @@
 
   });
 
-})(window, document);
+})(window, window.ActionTypes);
