@@ -1,14 +1,14 @@
 <?php
 
-namespace App\SiteTemplates;
+namespace App\Configuration;
 
 use Swaggest\JsonSchema\Schema;
 
-use App\Shared\I18n;
 use App\Shared\Helpers;
+use App\Shared\I18n;
 
 /**
- * @class SiteTemplatesDataService
+ * @class SiteTemplatesConfigService
  *
  * This class provides templates from which Berta sites are built. Templates are readonly data structures
  * representing \App\Site\SiteTemplateSettings. SiteTemplateSettings for any specific site are generated according
@@ -127,7 +127,7 @@ use App\Shared\Helpers;
  * @todo: Templates should be moved to this folder.
  * @todo: Template settings should be moved to XML so we have everything in a standardized way.
  */
-class SiteTemplatesDataService
+class SiteTemplatesConfigService
 {
     /** @todo update schema to reflect input types etc. */
     public static $JSON_SCHEMA = [
@@ -145,17 +145,17 @@ class SiteTemplatesDataService
                 'properties' => [
                     'templateConf' => [
                         'type' => 'object',
-                        'additionalProperties' => [  // generalFontSettings, links, background, ...
+                        'additionalProperties' => [ // generalFontSettings, links, background, ...
                             'type' => 'object',
                             'properties' => [
                                 "_" => [
                                     'type' => 'object',
                                     'properties' => [
-                                        'title' => ['type' => 'string']
-                                    ]
-                                ]
+                                        'title' => ['type' => 'string'],
+                                    ],
+                                ],
                             ],
-                            'additionalProperties' => [  // _, color, fontFamily, backgroundRepeat, ...
+                            'additionalProperties' => [ // _, color, fontFamily, backgroundRepeat, ...
                                 'type' => 'object',
                                 'properties' => [
                                     'default' => ['type' => ['string', 'number', 'boolean']],
@@ -165,8 +165,8 @@ class SiteTemplatesDataService
                                     'values' => [
                                         'oneOf' => [
                                             ['type' => 'array', 'items' => ['type' => ['string', 'number']]],
-                                            ['type' => 'object', 'additionalProperties' => ['type' => ['string', 'number']]]
-                                        ]
+                                            ['type' => 'object', 'additionalProperties' => ['type' => ['string', 'number']]],
+                                        ],
                                     ],
                                     'html_entities' => ['type' => 'boolean'],
                                     'css_units' => ['type' => 'boolean'],
@@ -175,20 +175,20 @@ class SiteTemplatesDataService
                                     'max_width' => ['type' => ['number', 'string']],
                                     'max_height' => ['type' => ['number', 'string']],
                                     'allow_blank' => ['type' => 'boolean'],
-                                ]
-                            ]
-                        ]
+                                ],
+                            ],
+                        ],
                     ],
                     'sectionTypes' => [
                         'type' => 'object',
                         'required' => ['default'],
-                        'additionalProperties' => [  // default, external_links, portfolio, ...
+                        'additionalProperties' => [ // default, external_links, portfolio, ...
                             'type' => 'object',
                             'properties' => [
                                 'title' => ['type' => 'string'],
                                 'params' => [
                                     'type' => 'object',
-                                    'additionalProperties' => [  // columns, backgroundVideoRatio, link, target, ...
+                                    'additionalProperties' => [ // columns, backgroundVideoRatio, link, target, ...
                                         'type' => 'object',
                                         'properties' => [
                                             'default' => ['type' => ['string', 'number']],
@@ -196,23 +196,23 @@ class SiteTemplatesDataService
                                             'values' => [
                                                 'oneOf' => [
                                                     ['type' => 'array', 'items' => ['type' => ['string', 'number']]],
-                                                    ['type' => 'object', 'additionalProperties' => ['type' => ['string', 'number']]]
-                                                ]
+                                                    ['type' => 'object', 'additionalProperties' => ['type' => ['string', 'number']]],
+                                                ],
                                             ],
                                             'html_entities' => ['type' => 'boolean'],
                                             'css_units' => ['type' => 'boolean'],
                                             'allow_blank' => ['type' => 'boolean'],
                                             'html_before' => ['type' => 'string'],
-                                            'html_after' => ['type' => 'string']
-                                        ]
-                                    ]
-                                ]
-                            ]
-                        ]
-                    ]
-                ]
-            ]
-        ]
+                                            'html_after' => ['type' => 'string'],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ],
     ];
 
     private $TEMPLATE_ROOT;
@@ -235,6 +235,9 @@ class SiteTemplatesDataService
                 $this->TEMPLATE_ROOT . '/' . $tpl . '/template.conf.php'
             );
 
+            /**
+             * @todo Fix this HACK, also read template definitions from shop plugin
+             */
             // @@@:HACK: read in template config and set up namespace
             //           so that I18n would be visible there
             $conf = str_replace('<?php', 'namespace App\Shared;', $conf);
@@ -252,6 +255,38 @@ class SiteTemplatesDataService
         return $ret;
     }
 
+    /**
+     * Returns template default values for each template
+     */
+    public function getDefaults()
+    {
+        $defaults = [];
+        $data = $this->get();
+
+        foreach ($data as $templateName => $config) {
+            foreach ($config['templateConf'] as $group => $groupSettings) {
+                foreach ($groupSettings as $key => $settings) {
+                    if ($key == '_') {
+                        continue;
+                    }
+
+                    $defaults[$templateName]['templateConf'][$group][$key] = $settings['default'];
+                }
+            }
+            foreach ($config['sectionTypes'] as $group => $groupSettings) {
+                if (!isset($groupSettings['params'])) {
+                    continue;
+                }
+
+                foreach ($groupSettings['params'] as $key => $settings) {
+                    $defaults[$templateName]['sectionTypes'][$group][$key] = $settings['default'];
+                }
+            }
+        }
+
+        return $defaults;
+    }
+
     public function getAllTemplates()
     {
         $returnArr = [];
@@ -259,9 +294,9 @@ class SiteTemplatesDataService
 
         while (false !== ($entry = $d->read())) {
             if ($entry != '.' &&
-               $entry != '..' &&
-               substr($entry, 0, 1) != '_'
-               && is_dir($this->TEMPLATE_ROOT . '/' . $entry)) {
+                $entry != '..' &&
+                substr($entry, 0, 1) != '_'
+                && is_dir($this->TEMPLATE_ROOT . '/' . $entry)) {
                 $returnArr[] = $entry;
             }
         }
@@ -271,7 +306,8 @@ class SiteTemplatesDataService
         return $returnArr;
     }
 
-    public function validationTest() {
+    public function validationTest()
+    {
         $json_object = Helpers::arrayToJsonObject(self::$JSON_SCHEMA);
         $schema = Schema::import($json_object);
         $templates = $this->get();

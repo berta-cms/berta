@@ -1,0 +1,45 @@
+<div class="{{ galleryClassList }}">
+  {% if galleryImages %}
+    <div class="xGallery"{% if galleryFirstImage %} style="width: {{  galleryFirstImage.width }}px; height: {{  galleryFirstImage.height }}px"{% endif %}{% if rowGalleryPadding %} xRowGalleryPadding="{{ rowGalleryPadding }}"{% endif %}>
+      {% if galleryFirstImage %}
+        <div class="xGalleryItem xGalleryItemType-image xImgIndex-1" style="width: {{ galleryFirstImage.width }}px; height: {{ galleryFirstImage.height }}px">
+          <img src="{{ galleryFirstImage.src }}" width="{{ galleryFirstImage.width }}" height="{{ galleryFirstImage.height }}"{% if galleryFirstImage.srcset %} srcset="{{ galleryFirstImage.srcset }}"{% endif %} alt="{{ galleryFirstImage.alt }}">
+          <div class="xGalleryImageCaption">{{ galleryFirstImage.caption|raw }}</div>
+        </div>
+      {% endif %}
+
+      {% if isEditMode %}
+        <a href="#" class="xGalleryEditButton xEditorLink xSysCaption xMAlign-container"><span class="xMAlign-outer-gallery"><span class="xMAlign-inner-gallery">edit gallery</span></span></a>
+      {% endif %}
+    </div>
+
+    {% if galleryNavigation %}
+      <ul class="xGalleryNav"{% if not galleryNavigation.showNavigation %} style="display:none"{% endif %}>
+        {% for image in galleryNavigation.images %}
+          <li>
+            <a href="{{ image.src }}" class="xType-{{ image.type }} xVideoHref-{{ image.videoLink }} xAutoPlay-{{ image.autoPlay }} xOrigHref-{% if image.type == 'image' %}{{ image.origLink }}{% endif %} xW-{{ image.width }} xH-{{ image.height }} xImgIndex-{{ image.index }}"{% if image.srcset %} data-srcset="{{ image.srcset }}"{% endif %} target="_blank">
+              <span>{{ image.index }}</span>
+            </a>
+            <div class="xGalleryImageCaption">{{ image.caption|raw }}</div>
+          </li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+
+    {% if galleryNavigation.showFullScreen %}
+      <div class="xFullscreen">
+        {% for image in galleryNavigation.images %}
+          <a href="{{ image.origLink }}" rel="milkbox[gallery-{{ id }}]" title="{{ image.alt }}">#</a>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    {% if galleryType == 'slideshow' %}
+      <div class="loader xHidden"></div>
+    {% endif %}
+  {% elseif isEditMode %}
+    <div class="imageEmpty">
+      <a href="#" class="xGalleryEditButton"><span class="xEmpty">&nbsp;gallery&nbsp;</span></a>
+    </div>
+  {% endif %}
+</div>

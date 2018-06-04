@@ -326,7 +326,7 @@ var BertaEditorBase = new Class({
 
               } else if (data.status > 0) {
 
-                var path = el.data('path');
+                var path = el.dataset.path;
                 var path_arr = [];
 
                 if (path) {
@@ -715,7 +715,7 @@ var BertaEditorBase = new Class({
     var el = target.getParent();
     var prop = el.getClassStoredValue('xProperty');
     var data = { property: prop, params: 'delete', value: '' };
-    var path = el.data('path');
+    var path = el.dataset.path;
     var path_arr = [];
 
     el.removeClass('xEditing');
@@ -940,7 +940,7 @@ var BertaEditorBase = new Class({
         };
       }
 
-      var path = el.data('path');
+      var path = el.dataset.path;
       var path_arr = [];
       var prop;
       var value = newContent ? this.escapeForJSON(newContent) : null;
@@ -1208,7 +1208,7 @@ var BertaEditorBase = new Class({
       var entryInfo = this.getEntryInfoForElement(el);
       if(entryInfo.section == '') entryInfo.section = this.sectionName;
 
-      var path = el.data('path');
+      var path = el.dataset.path;
 
       redux_store.dispatch(Actions.resetSiteSection(
         path,

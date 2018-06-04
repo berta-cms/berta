@@ -2,6 +2,7 @@
 
 namespace App\Sites\Sections\Tags;
 
+use App\Shared\Helpers;
 use App\Shared\Storage;
 use App\Sites\Sections\Entries\SectionEntriesDataService;
 
@@ -219,7 +220,7 @@ class SectionTagsDataService Extends Storage {
                         $tag_name = trim((string) $tag);
 
                         if ($tag_name) {
-                            $tag_name = $this->slugify($tag_name, '-', '-');
+                            $tag_name = Helpers::slugify($tag_name, '-', '-');
                             $c = isset($newCache[$tag_name]) ? $newCache[$tag_name]['@attributes']['entry_count'] : 0;
                             $newCache[$tag_name] = array(
                                 '@value' => $tag,

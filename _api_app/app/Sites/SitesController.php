@@ -2,33 +2,36 @@
 
 namespace App\Sites;
 
+use App\Configuration\SiteTemplatesConfigService;
 use App\Http\Controllers\Controller;
-use App\Sites\SitesDataService;
-use App\Sites\Settings\SiteSettingsDataService;
+use App\Sites\Sections\Entries\SectionEntriesDataService;
 use App\Sites\Sections\SiteSectionsDataService;
 use App\Sites\Sections\Tags\SectionTagsDataService;
-use App\Sites\Sections\Entries\SectionEntriesDataService;
+use App\Sites\Settings\SiteSettingsDataService;
+use App\Sites\SitesDataService;
 use App\Sites\TemplateSettings\SiteTemplateSettingsDataService;
-
 use Illuminate\Http\Request;
-
 
 class SitesController extends Controller
 {
-    public function create(Request $request) {
+    public function create(Request $request)
+    {
         $sites = new SitesDataService();
         $json = $request->json()->all();
         $cloneFrom = $json['site'] == -1 ? null : $json['site'];
         $isClone = $cloneFrom !== null;
         $site = $sites->create($cloneFrom);
+        $siteTemplatesConfigService = new SiteTemplatesConfigService();
+        $allTemplates = $siteTemplatesConfigService->getAllTemplates();
 
         /**
          * @todo refactor code
          * @todo think about improving Storage classes
          * @todo review this controller, sections
          */
-        $settings = new SiteSettingsDataService($site['name']);
-        $settings = $isClone ? $settings->get() : $settings->getDefaultSettings();
+
+        $siteSettingsDataService = new SiteSettingsDataService($site['name']);
+        $settings = $isClone ? $siteSettingsDataService->getState() : $siteSettingsDataService->getDefaultSettings();
         $sections = $isClone ? new SiteSectionsDataService($site['name']) : null;
         $entries = [];
         if ($sections) {
@@ -40,24 +43,29 @@ class SitesController extends Controller
 
         $tags = $isClone ? new SectionTagsDataService($site['name']) : null;
 
-        $templateSettings = null;
-        if ($isClone && isset($settings['template']['template'])) {
-            $templateSettings = new SiteTemplateSettingsDataService($site['name'], $settings['template']['template']);
+        $siteTemplateSettings = [];
+        foreach ($allTemplates as $template) {
+            $siteTemplateSettingsDataService = new SiteTemplateSettingsDataService(
+                $site['name'],
+                $template
+            );
+            $siteTemplateSettings[$template] = $siteTemplateSettingsDataService->getState();
         }
 
         $resp = [
             'site' => $site,
             'settings' => $settings,
-            'sections' => $sections ? $sections->state() : [],
-            'entries' => $entries ? ['entry' => $entries] : [],  // See if we need that wrap
+            'sections' => $sections ? $sections->getState() : [],
+            'entries' => $entries ? ['entry' => $entries] : [], // See if we need that wrap
             'tags' => $tags ? $tags->get() : [],
-            'siteTemplateSettings' => $templateSettings ? $templateSettings->get() : new \stdClass
+            'siteTemplateSettings' => $siteTemplateSettings,
         ];
 
         return response()->json($resp);
     }
 
-    public function update(Request $request) {
+    public function update(Request $request)
+    {
         $sites = new SitesDataService();
         $json = $request->json()->all();
 
@@ -70,7 +78,8 @@ class SitesController extends Controller
         return response()->json($res, $res['status_code']);
     }
 
-    public function delete(Request $request) {
+    public function delete(Request $request)
+    {
         $sites = new SitesDataService();
         $json = $request->json()->all();
         $res = $sites->delete($json['site']);
@@ -78,7 +87,8 @@ class SitesController extends Controller
         return response()->json($res);
     }
 
-    public function order(Request $request) {
+    public function order(Request $request)
+    {
         $sites = new SitesDataService();
         $json = $request->json()->all();
         $sites->order($json);

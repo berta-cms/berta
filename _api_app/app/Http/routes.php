@@ -9,7 +9,7 @@
 | It is a breeze. Simply tell Lumen the URIs it should respond to
 | and give it the Closure to call when that URI is requested.
 |
-*/
+ */
 
 // $app->get('/', function () use ($app) {
 //     return 'Nothing here. Go away!';
@@ -18,7 +18,7 @@
 $app->group(['prefix' => 'v1', 'namespace' => 'App', 'middleware' => 'auth'], function() use ($app) {
     $app->get('state/{site}', 'Http\Controllers\StateController@get');
 
-    $app->group(['prefix' => 'v1', 'namespace' => 'App\Sites'], function() use ($app) {
+    $app->group(['prefix' => 'v1', 'namespace' => 'App\Sites'], function () use ($app) {
         $app->post('sites', ['as' => 'sites', 'uses' => 'SitesController@create']);
         $app->patch('sites', 'SitesController@update');
         $app->put('sites', 'SitesController@order');
@@ -28,7 +28,7 @@ $app->group(['prefix' => 'v1', 'namespace' => 'App', 'middleware' => 'auth'], fu
 
         $app->patch('sites/template-settings', ['as' => 'site_template_settings', 'uses' => 'TemplateSettings\SiteTemplateSettingsController@update']);
 
-        $app->group(['prefix' => 'v1/sites', 'namespace' => 'App\Sites\Sections'], function() use ($app) {
+        $app->group(['prefix' => 'v1/sites', 'namespace' => 'App\Sites\Sections'], function () use ($app) {
             $app->post('sections', ['as' => 'site_sections', 'uses' => 'SiteSectionsController@create']);
             $app->patch('sections', 'SiteSectionsController@update');
             $app->patch('sections/reset', ['as' => 'site_sections_reset', 'uses' => 'SiteSectionsController@reset']);
@@ -45,6 +45,6 @@ $app->group(['prefix' => 'v1', 'namespace' => 'App', 'middleware' => 'auth'], fu
      * @todo: replace this with automated tests
      */
     if (app()->environment('local', 'stage')) {
-        require __DIR__.'/../Dev/testRoutes.php';
+        require __DIR__ . '/../Dev/testRoutes.php';
     }
 });

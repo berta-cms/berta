@@ -2,6 +2,7 @@
 
 namespace App\Sites\Settings;
 
+use App\Configuration\SiteSettingsConfigService;
 use App\Shared\Storage;
 
 /**
@@ -108,7 +109,7 @@ class SiteSettingsDataService extends Storage
                 'type' => 'object',
                 'properties' => [
                     'template' => ['type' => 'string'],
-                ]
+                ],
             ],
             'siteTexts' => [
                 'type' => 'object',
@@ -129,15 +130,15 @@ class SiteSettingsDataService extends Storage
                     'banner7XY' => ['type' => 'string'],
                     'banner8XY' => ['type' => 'string'],
                     'banner9XY' => ['type' => 'string'],
-                    'banner10XY' => ['type' => 'string']
-                ]
+                    'banner10XY' => ['type' => 'string'],
+                ],
             ],
             'berta' => [
                 'type' => 'object',
                 'properties' => [
                     'lastUpdated' => ['type' => 'string'],
-                    'installed' => ['type' => 'integer']
-                ]
+                    'installed' => ['type' => 'integer'],
+                ],
             ],
             'texts' => [
                 'type' => 'object',
@@ -145,8 +146,8 @@ class SiteSettingsDataService extends Storage
                     'ownerName' => ['type' => 'string'],
                     'pageTitle' => ['type' => 'string'],
                     'metaKeywords' => ['type' => 'string'],
-                    'metaDescription' => ['type' => 'string']
-                ]
+                    'metaDescription' => ['type' => 'string'],
+                ],
             ],
             'settings' => [
                 'type' => 'object',
@@ -156,8 +157,8 @@ class SiteSettingsDataService extends Storage
                     'googleAnalyticsId' => ['type' => 'string'],
                     'googleSiteVerification' => ['type' => 'string'],
                     'flashUploadEnabled' => ['type' => 'string'],
-                    'jsInclude' => ['type' => 'string']
-                ]
+                    'jsInclude' => ['type' => 'string'],
+                ],
             ],
             'entryLayout' => [
                 'type' => 'object',
@@ -169,8 +170,8 @@ class SiteSettingsDataService extends Storage
                     'galleryFullScreenCloseText' => ['type' => 'string'],
                     'galleryFullScreenImageNumbers' => ['type' => 'string'],
                     'gallerySlideshowAutoRewind' => ['type' => 'string'],
-                    'gallerySlideNumberVisibilityDefault' => ['type' => 'string']
-                ]
+                    'gallerySlideNumberVisibilityDefault' => ['type' => 'string'],
+                ],
             ],
             'media' => [
                 'type' => 'object',
@@ -180,8 +181,8 @@ class SiteSettingsDataService extends Storage
                     'imagesMediumWidth' => ['type' => 'integer'],
                     'imagesMediumHeight' => ['type' => 'integer'],
                     'imagesLargeWidth' => ['type' => 'integer'],
-                    'imagesLargeHeight' => ['type' => 'integer']
-                ]
+                    'imagesLargeHeight' => ['type' => 'integer'],
+                ],
             ],
             'banners' => [
                 'type' => 'object',
@@ -235,8 +236,8 @@ class SiteSettingsDataService extends Storage
                     'banner10_image_width' => ['type' => 'integer'],
                     'banner10_image_height' => ['type' => 'integer'],
                     'banner10_link' => ['type' => 'string'],
-                    'banner10_link' => ['type' => 'string']
-                ]
+                    'banner10_link' => ['type' => 'string'],
+                ],
             ],
             'navigation' => [
                 'type' => 'object',
@@ -244,8 +245,8 @@ class SiteSettingsDataService extends Storage
                     'landingSectionVisible' => ['type' => 'string'],
                     'landingSectionPageHeadingVisible' => ['type' => 'string'],
                     'landingSectionMenuVisible' => ['type' => 'string'],
-                    'alwaysSelectTag' => ['type' => 'string']
-                ]
+                    'alwaysSelectTag' => ['type' => 'string'],
+                ],
             ],
             'pageLayout' => [
                 'type' => 'object',
@@ -253,24 +254,24 @@ class SiteSettingsDataService extends Storage
                     'favicon' => ['type' => 'string'],
                     'gridStep' => ['type' => 'integer'],
                     'showGrid' => ['type' => 'string'],
-                    'gridColor' => ['type' => 'string']
-                ]
+                    'gridColor' => ['type' => 'string'],
+                ],
             ],
             'socialMediaButtons' => [
                 'type' => 'object',
                 'properties' => [
                     'socialMediaHTML' => ['type' => 'string'],
                     'socialMediaJS' => ['type' => 'string'],
-                    'socialMediaLocation' => ['type' => 'string']
-                ]
+                    'socialMediaLocation' => ['type' => 'string'],
+                ],
             ],
             'language' => [
                 'type' => 'object',
                 'properties' => [
-                    'language' => ['type' => 'string']
-                ]
-            ]
-        ]
+                    'language' => ['type' => 'string'],
+                ],
+            ],
+        ],
     ];
     private $ROOT_ELEMENT = 'settings';
     private $XML_FILE;
@@ -278,40 +279,75 @@ class SiteSettingsDataService extends Storage
     private static $DEFAULT_SITE_SETTINGS = [
         'template/template' => 'messy-0.4.2',
         'berta/lastUpdated' => 'D, d M Y H:i:s',
-        'berta/installed' => 1
+        'berta/installed' => 1,
     ];
+    private $siteSettingsDefaults;
 
     public function __construct($site = '')
     {
         parent::__construct($site);
         $xml_root = $this->getSiteXmlRoot($site);
         $this->XML_FILE = $xml_root . '/settings.xml';
+
+        $siteSettingsConfigService = new SiteSettingsConfigService();
+        $this->siteSettingsDefaults = $siteSettingsConfigService->getDefaults();
     }
 
-    public function getDefaultSettings() {
+    public function getDefaultSettings()
+    {
         foreach (self::$DEFAULT_SITE_SETTINGS as $path => $value) {
             if (strpos($path, 'lastUpdated') !== false) {
-                $this->setValueByPath($this->SITE_SETTINGS, $path, gmdate($value, time()). ' GMT');
-            }
-            else {
+                $this->setValueByPath($this->SITE_SETTINGS, $path, gmdate($value, time()) . ' GMT');
+            } else {
                 $this->setValueByPath($this->SITE_SETTINGS, $path, $value);
             }
         }
+
+        $this->SITE_SETTINGS = self::mergeSiteSettingsDefaults($this->siteSettingsDefaults, $this->SITE_SETTINGS);
 
         return $this->SITE_SETTINGS;
     }
 
     /**
-    * Returns settings of site as an array
-    *
-    * @return array Array of sections
-    */
+     * Returns settings of site as an array
+     *
+     * @return array Array of sections
+     */
     public function get()
     {
         if (empty($this->SITE_SETTINGS)) {
             $this->SITE_SETTINGS = $this->xmlFile2array($this->XML_FILE);
         }
+
         return $this->SITE_SETTINGS;
+    }
+
+    public function getState()
+    {
+        if (empty($this->SITE_SETTINGS)) {
+            $this->SITE_SETTINGS = $this->xmlFile2array($this->XML_FILE);
+        }
+
+        $siteSettings = self::mergeSiteSettingsDefaults($this->siteSettingsDefaults, $this->SITE_SETTINGS);
+
+        return $siteSettings;
+    }
+
+    /**
+     * Merge site  settings with site settings default values
+     */
+    private static function mergeSiteSettingsDefaults($siteSettingsDefaults, $siteSettings)
+    {
+        $data = [];
+        foreach ($siteSettingsDefaults as $group => $settings) {
+            if (isset($siteSettings[$group])) {
+                $data[$group] = array_merge($settings, $siteSettings[$group]);
+            } else {
+                $data[$group] = $settings;
+            }
+        }
+
+        return $data;
     }
 
     /**

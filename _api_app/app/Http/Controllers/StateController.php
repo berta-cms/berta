@@ -2,22 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use App\Sites\SitesDataService;
-use App\Sites\Settings\SiteSettingsDataService;
-use App\Sites\TemplateSettings\SiteTemplateSettingsDataService;
+use App\Configuration\SiteSettingsConfigService;
+use App\Configuration\SiteTemplatesConfigService;
+use App\Sites\Sections\Entries\SectionEntriesDataService;
 use App\Sites\Sections\SiteSectionsDataService;
 use App\Sites\Sections\Tags\SectionTagsDataService;
-use App\Sites\Sections\Entries\SectionEntriesDataService;
-use App\SiteTemplates\SiteTemplatesDataService;
+use App\Sites\Settings\SiteSettingsDataService;
+use App\Sites\SitesDataService;
+use App\Sites\TemplateSettings\SiteTemplateSettingsDataService;
 
 class StateController extends Controller
 {
-    public function get($site) {
+    public function get($site)
+    {
         $site = $site === '0' ? '' : $site;
         $sitesDataService = new SitesDataService();
-        $siteSettingsDataService = new SiteSettingsDataService();
-        $siteTemplatesDataService = new SiteTemplatesDataService();
-        $allTemplates = $siteTemplatesDataService->getAllTemplates();
+        $siteSettingsConfigService = new SiteSettingsConfigService();
+        $siteTemplatesConfigService = new SiteTemplatesConfigService();
+        $allTemplates = $siteTemplatesConfigService->getAllTemplates();
 
         $state['urls'] = [
             'sites' => route('sites'),
@@ -25,9 +27,9 @@ class StateController extends Controller
             'siteTemplateSettings' => route('site_template_settings'),
             'siteSections' => route('site_sections'),
             'siteSectionsReset' => route('site_sections_reset'),
-            'siteSectionBackgrounds' => route('site_section_backgrounds')
+            'siteSectionBackgrounds' => route('site_section_backgrounds'),
         ];
-        $state['sites'] = $sitesDataService->state();
+        $state['sites'] = $sitesDataService->getState();
         $state['site_settings'] = [];
         $state['site_sections'] = [];
         $state['section_entries'] = [];
@@ -35,17 +37,19 @@ class StateController extends Controller
 
         foreach ($state['sites'] as $_site) {
             $siteName = $_site['name'];
-            $sectionsDataService = new SiteSectionsDataService($siteName);
-            $siteSettings = $siteSettingsDataService->getSettingsBySite($siteName);
+
+            $siteSettingsDataService = new SiteSettingsDataService($siteName);
+            $siteSettings = $siteSettingsDataService->getState();
             $state['site_settings'][$siteName] = $siteSettings;
-            $state['site_sections'] = array_merge($state['site_sections'], $sectionsDataService->state());
+            $sectionsDataService = new SiteSectionsDataService($siteName);
+            $state['site_sections'] = array_merge($state['site_sections'], $sectionsDataService->getState());
 
             foreach ($allTemplates as $template) {
                 $templateSettingsDataService = new SiteTemplateSettingsDataService(
                     $siteName,
                     $template
                 );
-                $templateSettings = $templateSettingsDataService->get();
+                $templateSettings = $templateSettingsDataService->getState();
 
                 if (!($templateSettings)) {
                     $templateSettings = (object) null;
@@ -56,10 +60,9 @@ class StateController extends Controller
 
             if (!empty($state['site_sections'][$siteName]['section'])) {
                 foreach ($state['site_sections'][$siteName]['section'] as $section) {
-                    $templateSettings = $section['name'];
-                    $entriesDataService = new SectionEntriesDataService($siteName, $templateSettings);
-                    $state['section_entries'][$siteName][$templateSettings] = $entriesDataService->get();
-                    unset($entriesDataService);
+                    $sectionName = $section['name'];
+                    $entriesDataService = new SectionEntriesDataService($siteName, $sectionName);
+                    $state['section_entries'][$siteName][$sectionName] = $entriesDataService->get();
                 }
             } else {
                 $state['section_entries'][$siteName] = [];
@@ -67,7 +70,6 @@ class StateController extends Controller
 
             $tagsDataService = new SectionTagsDataService($siteName);
             $state['section_tags'][$siteName] = $tagsDataService->get();
-            unset($tagsDataService, $templateSettingsDataService);
         }
 
         $lang = 'en';
@@ -76,8 +78,12 @@ class StateController extends Controller
             $lang = $state['site_settings'][$site]['language']['language'];
         }
 
-        $state['site_templates'] = $siteTemplatesDataService->get($lang);
-        unset($sitesDataService);
+        $state['siteTemplates'] = $siteTemplatesConfigService->get($lang);
+
+        /**
+         * @todo Add siteSettingsConfig in redux store
+         */
+        $state['siteSettingsConfig'] = $siteSettingsConfigService->get($lang);
 
         return response()->json($state);
     }

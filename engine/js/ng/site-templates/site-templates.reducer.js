@@ -12,7 +12,7 @@
 
       switch (action.type) {
         case ActionTypes.SET_STATE:
-          return Immutable.fromJS(action.state.site_templates);
+          return Immutable.fromJS(action.state.siteTemplates);
 
         default:
           return state;
