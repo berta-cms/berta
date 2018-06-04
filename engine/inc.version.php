@@ -2,5 +2,5 @@
 /**
  * Berta's release version
  */
-$options['version'] = '0.8.11b';
-$options['int_version'] = '1130';
+$options['version'] = '0.9.0b';
+$options['int_version'] = '1131';
