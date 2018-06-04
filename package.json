@@ -1,6 +1,8 @@
 {
-  "name": "berta",
-  "version": "1.0.0",
+  "name": "berta.me",
+  "description": "Berta.me CMS",
+  "license": "GPL-3.0",
+  "version": "0.9.0b",
   "devDependencies": {
     "gulp": "^3.9.0",
     "gulp-concat": "^2.5.2",
