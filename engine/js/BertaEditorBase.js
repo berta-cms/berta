@@ -1140,10 +1140,7 @@ var BertaEditorBase = new Class({
 
         }
 
-        if (resp.status !== 200) {
-          console.error(resp);
-        }
-        // if(resp.error_message) alert(resp.error_message);
+        if(resp.error_message) alert(resp.error_message);
 
         el.removeClass('xSaving');
         el.removeClass('xEditing');
