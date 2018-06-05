@@ -1036,8 +1036,11 @@ var BertaEditorBase = new Class({
         new Request.JSON({
           url: this.options.updateUrl,
           data: "json=" + JSON.encode(data),
+          /* Called when on JSON conversion error:
+             Will use this as error handler how, because server only returns non-JSON on exception */
+          onError: function(responseBody){ console.error(responseBody); },
           onComplete: callback
-        }).post();
+         }).post();
       }
     }
   },
@@ -1146,7 +1149,10 @@ var BertaEditorBase = new Class({
 
         }
 
-        if(resp.error_message) alert(resp.error_message);
+        if (resp.status !== 200) {
+          console.error(resp);
+        }
+        // if(resp.error_message) alert(resp.error_message);
 
         el.removeClass('xSaving');
         el.removeClass('xEditing');
