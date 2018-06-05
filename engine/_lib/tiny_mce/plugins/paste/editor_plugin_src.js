@@ -291,7 +291,7 @@
 				}
 			}
 
-			// Check if we should use the new auto process method			
+			// Check if we should use the new auto process method
 			if (getParam(ed, "paste_auto_cleanup_on_paste")) {
 				// Is it's Opera or older FF use key handler
 				if (tinymce.isOpera || /Firefox\/2/.test(navigator.userAgent)) {
@@ -343,7 +343,6 @@
 				trim = tinymce.trim,
 				len, stripClass;
 
-			//console.log('Before preprocess:' + o.content);
 
 			function process(items) {
 				each(items, function(v) {
@@ -354,7 +353,7 @@
 						h = h.replace(v[0], v[1]);
 				});
 			}
-			
+
 			if (ed.settings.paste_enable_default_filters == false) {
 				return;
 			}
@@ -375,7 +374,6 @@
 			// Detect Word content and process it more aggressive
 			if (/class="?Mso|style="[^"]*\bmso-|w:WordDocument/i.test(h) || o.wordContent) {
 				o.wordContent = true;			// Mark the pasted contents as word specific content
-				//console.log('Word contents detected.');
 
 				// Process away some basic content
 				process([
@@ -575,8 +573,6 @@
 				h = h.replace(/<\/?span[^>]*>/gi, "");
 			}
 
-			//console.log('After preprocess:' + h);
-
 			o.content = h;
 		},
 
@@ -589,7 +585,7 @@
 			if (ed.settings.paste_enable_default_filters == false) {
 				return;
 			}
-			
+
 			if (o.wordContent) {
 				// Remove named anchors or TOC links
 				each(dom.select('a', o.node), function(a) {

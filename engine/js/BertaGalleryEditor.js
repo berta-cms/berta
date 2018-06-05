@@ -60,7 +60,6 @@ var BertaGalleryEditor = new Class({
 			var _data = {
 				'section': obj.sectionName, 'entry': obj.entryId, 'property': 'galleryEditor'
 			};
-			console.log('BertaGalleryEditor.initialize:', _data);
 			return _data;
 		};
 		new Request.HTML({
@@ -341,7 +340,6 @@ var BertaGalleryEditor = new Class({
 				section: this.sectionName, entry: this.entryId,
 				property: 'galleryOrder', value: newOrder
 			};
-		console.log('BertaGalleryEditor.sortingSaveDo:', data);
 		new Request.JSON({
 			url: this.options.updateUrl,
 			data: "json=" + JSON.encode(data),
@@ -396,7 +394,7 @@ var BertaGalleryEditor = new Class({
 					section: this.sectionName, entry: this.entryId,
 					property: 'galleryImageDelete', value: liElement.get('filename')
 				};
-			console.log('BertaGalleryEditor.onDeleteClick:', data);
+
 			new Request.JSON({
 				url: this.options.updateUrl,
 				data: "json=" + JSON.encode(data),
@@ -637,7 +635,7 @@ var BertaGalleryEditor = new Class({
 								w: widthInput.get('value'),
 								h: heightInput.get('value')
 							};
-						console.log('BertaGalleryEditor.onCropClick:', data);
+
 						new Request.JSON({
 							url: editor.options.updateUrl,
 							data: "json=" + JSON.encode(data),

@@ -56,7 +56,7 @@ var BertaBgEditor = new Class({
 			var _data = {
 				'section': obj.sectionName, 'property': 'bgEditor'
 			};
-			console.log('BertaBgEditor.initialize:', _data);
+
 			return _data;
 		};
 		new Request.HTML({

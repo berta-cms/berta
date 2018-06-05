@@ -49,7 +49,6 @@ var BertaEditor_ChangePassword = new Class({
 				property: '', value: ''
 			};
 
-		console.log('BertaEditor_ChangePassword.changePassword:', data);
 		new Request.JSON({
 			url: this.options.updateUrl,
 			data: "json=" + JSON.encode(data),
