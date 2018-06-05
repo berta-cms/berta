@@ -1,57 +1,64 @@
 var BertaBgEditor = new Class({
 
-	Extends: BertaEditorBase,
-	Implements: [Options, Events, UnlinearProcessDispatcher],
+  Extends: BertaEditorBase,
+  Implements: [Options, Events, UnlinearProcessDispatcher],
 
-	options: {
-		updateUrl: 'update.php',
-		engineRoot: './',
-		flashUploadEnabled: true
-	},
+  options: {
+    updateUrl: 'update.php',
+    engineRoot: './',
+    flashUploadEnabled: true
+  },
 
-	// DOM elements
-	allContainer: null,
-	container: null,
-	editorContainer: null,
-	curSelectedImage: null,
-	strip: null,
-	stripSortables: null,
+  // DOM elements
+  allContainer: null,
+  container: null,
+  editorContainer: null,
+  curSelectedImage: null,
+  strip: null,
+  stripSortables: null,
 
-	// content context settings
-	sectionName: null,
+  // content context settings
+  sectionName: null,
 
-	// uploadiung stuff
-	uploader: null,
-	isUploading: false,
+  // uploadiung stuff
+  uploader: null,
+  isUploading: false,
 
-	// sorting stuff
-	sortingSaveTimeout: 0,
-	sortingChanged: false,
+  // sorting stuff
+  sortingSaveTimeout: 0,
+  sortingChanged: false,
 
-	// process identifiers
-	uploadQueueProcessId: null,
-	sortingProcessId: null,
-	processHandler: null,
+  // process identifiers
+  uploadQueueProcessId: null,
+  sortingProcessId: null,
+  processHandler: null,
 
 
-	initialize: function(bgEditorContainerElement, options) {
-		var query = window.location.search.replace('?', '').parseQueryString();
-		if (query.site) {
-			this.options.updateUrl = this.options.updateUrl + "?site=" + query.site;
-			this.options.elementsUrl = this.options.elementsUrl + "?site=" + query.site;
-		}
-		this.setOptions(options);
-		this.tinyMCE_ConfigurationsInit();
-		this.allContainer = bgEditorContainerElement;
+  initialize: function(bgEditorContainerElement, options) {
+    var query = window.location.search.replace('?', '').parseQueryString();
+    if (query.site) {
+      this.options.updateUrl = this.options.updateUrl + "?site=" + query.site;
+      this.options.elementsUrl = this.options.elementsUrl + "?site=" + query.site;
+    }
+    this.setOptions(options);
+    this.tinyMCE_ConfigurationsInit();
+    this.allContainer = bgEditorContainerElement;
 
-		var selectedSection = this.allContainer.getParent().getElement('.menuItemSelected');
-		this.sectionName = this.getSectionNameForElement(selectedSection);
+    var selectedSection = this.allContainer.getParent().getElement('.menuItemSelected');
+    this.sectionName = this.getSectionNameForElement(selectedSection);
 
-		this.processHandler = new UnlinearProcessHandler(); // singleton process handler
-		this.processHandler.addObservable(this);
+    this.processHandler = new UnlinearProcessHandler(); // singleton process handler
+    this.processHandler.addObservable(this);
 
-		// load the editor html from the server
+    // load the editor html from the server
 		this.allContainer.addClass('xSavingAtLarge');
+		var data = function(obj) {
+			var _data = {
+				'section': obj.sectionName, 'property': 'bgEditor'
+			};
+
+			return _data;
+		};
 		new Request.HTML({
 			url: this.options.elementsUrl,
 			update: this.allContainer,
@@ -61,9 +68,7 @@ var BertaBgEditor = new Class({
 				this.attach.delay(10, this);
 				this.fireEvent('load');
 			}.bind(this)
-		}).post({"json": JSON.encode({
-				'section': this.sectionName, 'property': 'bgEditor'
-			})
+		}).post({"json": JSON.encode(data(this))
 		});
 	},
 
@@ -145,7 +150,7 @@ var BertaBgEditor = new Class({
 	},
 
 	addUploadedElement: function(container, uploaResponseJSON) {
-
+    var image_order = $(this.container).getElements('div.images>ul>li.image').length;
 		var targetElDims = { w: null, h: null };
 
 		if(uploaResponseJSON.get('type') == 'image') {
@@ -180,19 +185,26 @@ var BertaBgEditor = new Class({
 			}
 		}).inject(container);
 
-		//add caption editor
+    //add caption editor
+    var site = getCurrentSite();
+
+    var section_order = redux_store.getState().siteSections.find(function (section) {
+      return section.get('site_name') === site && section.get('name') === this.sectionName;
+    }.bind(this)).get('order');
+
+    var path = site + '/section/' + section_order + '/mediaCacheData/file/' + image_order + '/@value';
 		var caption = new Element('div',
 			{
 			'class': 'xEGEImageCaption xEditableMCESimple xProperty-galleryImageCaption xCaption-caption xParam-'+uploaResponseJSON.get('filename')+' xEditableMCE'
 			}).set('html','<span class="xEmpty">&nbsp;caption&nbsp;</span>'
 			).inject(container);
+      caption.set('data-path', path).data('data-path', true);
 
-		//console.log(caption);
 		this.elementEdit_init(caption, this.options.xBertaEditorClassMCE);
 
 		container.removeClass('file').removeClass('file-success');
 
-		// add common properties, events, and add to sortables
+    // add common properties, events, and add to sortables
 		container.set('filename', uploaResponseJSON.get('filename'));
 		container.set('filetype', uploaResponseJSON.get('type'));
 		container.set('class', uploaResponseJSON.get('type'));
@@ -264,21 +276,34 @@ var BertaBgEditor = new Class({
 
 		var newOrder = this.stripSortables.serialize(0, function(element, index){
 			return element.getProperty('filename');
-		});
+    });
 
 		this.unlinearProcess_start(this.sortingProcessId, "Saving images order");
 
-		new Request.JSON({
-			url: this.options.updateUrl,
-			data: "json=" + JSON.encode({
-				section: this.sectionName, property: 'galleryOrder', value: newOrder
-			}),
-			onComplete: function(resp) {
-				this.unlinearProcess_stop(this.sortingProcessId);
-			}.bind(this)
-		}).post();
-	},
+    var site = getCurrentSite();
 
+    redux_store.dispatch(Actions.initOrderSiteSectionBackgrounds(
+      site,
+      this.sectionName,
+      newOrder,
+      function(resp) {
+        var captions = $(this.container).getElements('.xProperty-galleryImageCaption');
+        var site = getCurrentSite();
+        var section_order = redux_store.getState().siteSections.find(function (section) {
+          return section.get('site_name') === site && section.get('name') === this.sectionName;
+        }.bind(this)).get('order');
+
+        var basePath = site + '/section/' + section_order + '/mediaCacheData/file/';
+
+        captions.forEach(function(caption, order) {
+          var path = basePath + order + '/@value';
+          caption.set('data-path', path).data('data-path', true);
+        });
+
+        this.unlinearProcess_stop(this.sortingProcessId);
+      }.bind(this)
+    ));
+  },
 
 
 
@@ -321,28 +346,37 @@ var BertaBgEditor = new Class({
 			liElement.setStyle('display', 'none');
 
 			var deleteProcessId = this.unlinearProcess_getId('delete-image');
-			this.unlinearProcess_start(deleteProcessId, "Deleting image");
-			new Request.JSON({
-				url: this.options.updateUrl,
-				data: "json=" + JSON.encode({
-					section: this.sectionName, property: 'galleryImageDelete', value: liElement.get('filename')
-				}),
-				onComplete: function(resp) {
-					this.unlinearProcess_stop(deleteProcessId);
-					if(resp.update == 'ok') {
-						liElement.destroy();
-					} else {
-						liElement.setStyle('display', 'block');
-						this.sortingAddElement(liElement);
-						alert(resp.error_message);
-					}
-					this.sortingSave();
-				}.bind(this)
-			}).post();
+      this.unlinearProcess_start(deleteProcessId, "Deleting image");
 
-		}
-	},
+      var site = getCurrentSite() || '0';
 
+      redux_store.dispatch(Actions.initDeleteSiteSectionBackground(
+        site,
+        this.sectionName,
+        liElement.get('filename'),
+        function(resp) {
+          this.unlinearProcess_stop(deleteProcessId);
+          if(!resp.error_message) {
+            liElement.destroy();
+          } else {
+            liElement.setStyle('display', 'block');
+            this.sortingAddElement(liElement);
+            alert(resp.error_message);
+          }
+          this.sortingSave();
+        }.bind(this)
+      ));
+
+    }
+  },
+
+/*
+  initTabs: function() {
+    var target = this.container;
+    var addMedia = target.getChildren('.xBgMedia')
+    var settings = target.getChildren('.xBgMediaSettings');
+  },
+*/
 
 	onGalTabClick: function(event) {
 		event.stop();
@@ -394,6 +428,6 @@ var BertaBgEditor = new Class({
 			this.removeEvents();
 			location.reload();
 		}
-	}
+  }
 
 });

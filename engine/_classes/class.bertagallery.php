@@ -439,3 +439,5 @@ class BertaGallery extends BertaBase
     }
 
 }
+
+?>

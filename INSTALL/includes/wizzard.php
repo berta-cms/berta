@@ -23,13 +23,7 @@ $int_version = $options['int_version'];
 <link rel="stylesheet" href="<?php echo $ENGINE_ABS_ROOT ?>css/backend.min.css?<?php echo $int_version ?>" type="text/css" charset="utf-8" />
 <link rel="stylesheet" href="<?php echo $ENGINE_ABS_ROOT ?>css/editor.css.php?<?php echo $int_version ?>" type="text/css" charset="utf-8" />
 <link rel="stylesheet" href="<?php echo $ENGINE_ABS_ROOT ?>css/login.css?<?php echo $int_version ?>" type="text/css" />
-<?php include $ENGINE_ROOT . 'inc.header_default_scripts.php' ?>
-<?php echo BertaTemplate::sentryScripts(); ?>
-<script type="text/javascript" src="<?php echo $ENGINE_ABS_ROOT ?>js/Assets.js" charset="utf-8"></script>
-<script type="text/javascript" src="<?php echo $ENGINE_ABS_ROOT ?>_lib/moorainbow/mooRainbow.1.2b2.js" charset="utf-8"></script>
-<script type="text/javascript" src="<?php echo $ENGINE_ABS_ROOT ?>js/BertaEditorBase.js"></script>
-<script type="text/javascript" src="<?php echo $ENGINE_ABS_ROOT ?>js/inline_edit.js" charset="utf-8"></script>
-<script type="text/javascript" src="<?php echo $ENGINE_ABS_ROOT ?>js/BertaEditor.js" charset="utf-8"></script>
+<?php include('inc.head.php'); ?>
 </head><?php
 
 if(!empty($settings['berta']['installed'])) {
@@ -92,19 +86,10 @@ if(!empty($settings['berta']['installed'])) {
 				?></div>
 			</div>
 		</div>
-	</body><?php
+    </body>
 
-
+<?php
 }
-
-
-
-?></html><?php
-
-
-
-
-
-
-
 ?>
+
+</html>

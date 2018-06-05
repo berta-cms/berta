@@ -179,7 +179,7 @@ var BertaPosterUploader = new Class({
           resolve();
 
         } else {
-          console.log(data.get('error'));
+          console.error(data.get('error'));
           resolve();
         }
 

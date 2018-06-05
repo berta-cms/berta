@@ -18,6 +18,7 @@ $berta->settings = new Settings($settingsDefinition);
 $menuSeparator = $berta->settings->get('menu', 'separator');
 $topPanelHTML = BertaEditor::getTopPanelHTML($mode);
 $int_version = BertaEditor::$options['int_version'];
+$site = empty($options['MULTISITE']) ? '0' : $options['MULTISITE'];
 
 ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -27,20 +28,7 @@ $int_version = BertaEditor::$options['int_version'];
 <link rel="SHORTCUT ICON" href="favicon.ico"/>
 <link rel="stylesheet" href="<?php echo $ENGINE_ABS_ROOT ?>css/backend.min.css?<?php echo $int_version ?>" type="text/css" charset="utf-8" />
 <link rel="stylesheet" href="<?php echo $ENGINE_ABS_ROOT ?>css/editor.css.php?<?php echo $int_version ?>" type="text/css" charset="utf-8" />
-<?php echo BertaTemplate::sentryScripts(); ?>
-<script type="text/javascript">
-	var bertaGlobalOptions = {
-		"paths":{
-			"engineRoot":"<?php echo BertaEditor::$options['ENGINE_ROOT'] ?>",
-			"engineABSRoot":"<?php echo BertaEditor::$options['ENGINE_ABS_ROOT'] ?>",
-			"siteABSRoot" : "<?php echo BertaEditor::$options['SITE_ABS_ROOT'] ?>",
-			"template" : "<?php echo BertaEditor::$options['SITE_ABS_ROOT'] . '_templates/' . $berta->template->name . '/' ?>"
-		},
-        "skipTour": <?php echo count($sections) || $berta->settings->get('siteTexts', 'tourComplete') ? 'true' : 'false' ?>,
-        "session_id" : "<?php echo session_id() ?>"
-	};
-</script>
-<script src="<?php echo $ENGINE_ABS_ROOT ?>js/backend.min.js?<?php echo $int_version ?>"></script>
+<?php include('inc.head.php'); ?>
 </head>
 
 <body class="xSettingsPageBody page-<?php if ($mode == 'template'){ ?>xTemplate<?php }else{ ?>xSettings<?php } ?>" x_mode="settings">
@@ -62,6 +50,12 @@ $int_version = BertaEditor::$options['int_version'];
 
 			$settings = $mode == 'template' ? $berta->template->settings : $berta->settings;
 			$propertyPrefix = $settings->templateName ? ($settings->templateFullName . '/') : '';
+
+            if ($mode == 'template') {
+                $basePath = $site . '/site_template_settings/' . $propertyPrefix;
+            } else {
+                $basePath = $site . '/settings';
+            }
 
 			$tabsHTML = '';
 			$contentHTML = '';
@@ -86,8 +80,30 @@ $int_version = BertaEditor::$options['int_version'];
 							$contentHTML .= '	<div class="caption">' . ($s['title'] ? ($s['title']) : "<em>$sKey</em>") . '</div>';
 
 							// value
-							$value = $settings->get($sSectionKey, $sKey, false, false);	// don't use empty + don't inherit from base
-							$contentHTML .= BertaEditor::getSettingsItemEditHTML($propertyPrefix . $sSectionKey . '/' . $sKey, $s, $value) . "\n";
+                            $value = $settings->get($sSectionKey, $sKey, false, false);	// don't use empty + don't inherit from base
+
+                            // Template settings
+                            if ($mode == 'template') {
+                                $contentHTML .= BertaEditor::getSettingsItemEditHTML(
+                                    $propertyPrefix . $sSectionKey . '/' . $sKey,
+                                    $s,
+                                    $value,
+                                    null,
+                                    'div',
+                                    $basePath . $sSectionKey . '/' . $sKey
+                                ) . "\n";
+
+                            // General Site Settings
+                            } else {
+                                $contentHTML .= BertaEditor::getSettingsItemEditHTML(
+                                    $sSectionKey . '/' . $sKey,
+                                    $s,
+                                    $value,
+                                    null,
+                                    'div',
+                                    $basePath . '/' . $sSectionKey . '/' . $sKey
+                                ) . "\n";
+                            }
 
 							// description
 							if(!empty($s['description'])) {

@@ -41,16 +41,17 @@ var BertaEditor_ChangePassword = new Class({
 		var old_password=$('old_password').value;
 		var new_password=$('new_password').value;
 		var retype_password=$('retype_password').value;
-
-		new Request.JSON({
-			url: this.options.updateUrl,
-			data: "json=" + JSON.encode({
+		var data = {
 				action: 'CHANGE_PASSWORD',
 				old_password: old_password,
 				new_password: new_password,
 				retype_password: retype_password,
 				property: '', value: ''
-			}),
+			};
+
+		new Request.JSON({
+			url: this.options.updateUrl,
+			data: "json=" + JSON.encode(data),
 			onComplete: function(resp) {
 				if(!resp) {
                     password_form.reset();

@@ -1,0 +1,18 @@
+{
+  // See http://go.microsoft.com/fwlink/?LinkId=827846
+  // for the documentation about the extensions.json format
+  "recommendations": [
+    // Extension identifier format: ${publisher}.${name}. Example: vscode.csharp
+    "junstyle.php-cs-fixer",  // PHP file formatting
+    "felixfbecker.php-intellisense",  // Intellisense for PHP
+    "mikestead.dotenv",  // .env syntax highlight for lumen
+    "EditorConfig.editorconfig",  // Common editor configuration
+    "dbaeumer.vscode-eslint",  // Linting for JS files
+    "HookyQR.beautify",  // Formatter for JS files
+    "mrmlnc.vscode-apache",
+    "IBM.xmllanguagesupport",
+    "DotJoshJohnson.xml",
+    "mblode.twig-language-2",
+    "imperez.smarty"
+  ]
+}

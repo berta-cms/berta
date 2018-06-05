@@ -1,0 +1,29 @@
+{
+    "env": {
+        "browser": true
+    },
+    "extends": "eslint:recommended",
+    "rules": {
+        "indent": [
+            "warn",
+            2,
+            {
+              "SwitchCase": 1,
+              "VariableDeclarator": { "var": 2, "let": 2, "const": 3 }
+            }
+        ],
+        "linebreak-style": [
+            "error",
+            "unix"
+        ],
+        "quotes": [
+            "error",
+            "single"
+        ],
+        "semi": [
+            "error",
+            "always"
+        ],
+        "no-console": ["error", { "allow": ["warn", "error", "info"] }]
+    }
+}

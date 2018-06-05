@@ -54,13 +54,22 @@ var BertaEditor_Sections = new Class({
 		var f = inElement ? $(inElement).getElements.bind($(inElement)) : $$;
 
 		// simple text fields ///////////////////////////////////////////////////////////////////////////////////////////////////////
-		f(this.options.xBertaEditorClassSimple).each(function(el) { this.elementEdit_init(el, this.options.xBertaEditorClassSimple, this.sectionOnSave.bind(this)) }.bind(this));
+		f(this.options.xBertaEditorClassSimple).each(function(el) {
+      this.elementEdit_init(el, this.options.xBertaEditorClassSimple, this.sectionOnSave.bind(this));
+    }.bind(this));
 
 		// yes/no fields ///////////////////////////////////////////////////////////////////////////////////////////////////////
-		f(this.options.xBertaEditorClassYesNo).each(function(el) { this.elementEdit_init(el, this.options.xBertaEditorClassYesNo, this.sectionOnSave.bind(this)) }.bind(this));
+		f(this.options.xBertaEditorClassYesNo).each(function(el) {
+      this.elementEdit_init(el, this.options.xBertaEditorClassYesNo, this.sectionOnSave.bind(this));
+    }.bind(this));
 
-		f(this.options.xBertaEditorClassSelect).each(function(el) { this.elementEdit_init(el, this.options.xBertaEditorClassSelect, this.sectionOnSave.bind(this)) }.bind(this));
-		f(this.options.xBertaEditorClassSelectRC).each(function(el) { this.elementEdit_init(el, this.options.xBertaEditorClassSelectRC, this.sectionOnSave.bind(this)) }.bind(this));
+		f(this.options.xBertaEditorClassSelect).each(function(el) {
+      this.elementEdit_init(el, this.options.xBertaEditorClassSelect, this.sectionOnSave.bind(this));
+    }.bind(this));
+
+    f(this.options.xBertaEditorClassSelectRC).each(function(el) {
+      this.elementEdit_init(el, this.options.xBertaEditorClassSelectRC, this.sectionOnSave.bind(this));
+    }.bind(this));
 	},
 
 
@@ -100,7 +109,7 @@ var BertaEditor_Sections = new Class({
 	sectionOnSave: function(el, returnUpdate, returnReal, returnError, returnParams) {
 		// update the properties of the section list item and title editable
 		var prop = el.getClassStoredValue('xProperty');
-		if(prop == 'title') {
+		if (prop === 'title') {
 			var li = el.getParent('li');
 			el.setClassStoredValue('xSection', returnReal);
 			li.setClassStoredValue('xSection', returnReal);
@@ -110,12 +119,11 @@ var BertaEditor_Sections = new Class({
 				.combine(li.getElements(this.options.xBertaEditorClassSelect))
 				.combine(li.getElements(this.options.xBertaEditorClassSelectRC));
 			arr.each(function(editable) { editable.setClassStoredValue('xSection', returnReal); });
-		}
 
-		else if(prop == 'type') {
+    } else if (prop === 'type') {
 			var detailsElement = el.getParent('li').getElement('.csDetails');
 			detailsElement.empty();
-			detailsElement.set('html', returnParams);
+      detailsElement.set('html', returnParams);
 			this.editablesInit(detailsElement);
 		}
 	},
@@ -124,17 +132,15 @@ var BertaEditor_Sections = new Class({
 		var newOrder = this.sectionsSortables.serialize(false, function(element, index) {
 			return element.getClassStoredValue('xSection');
 		});
+    var site = getCurrentSite();
 
-		new Request.JSON({
-			url: this.options.updateUrl,
-			data: "json=" + JSON.encode({
-				section: this.sectionsMenu.getElement('li').getClassStoredValue('xSection'), entry: null, entryNum: null,
-				action: 'ORDER_SECTIONS', property: '', value: newOrder
-			}),
-			onComplete: function(resp) {
-
-			}.bind(this)
-		}).post();
+    redux_store.dispatch(Actions.initOrderSiteSections(
+      site,
+      newOrder,
+      function (resp) {
+        this.updatePathParams();
+      }.bind(this)
+    ));
 	},
 
 	sectionOnDeleteClick: function(event) {
@@ -146,59 +152,103 @@ var BertaEditor_Sections = new Class({
 		if(confirm('Berta asks:\n\nAre you sure you want to delete this section? All its content will be lost... FOREVAAA!')) {
 			if(confirm('Berta asks again:\n\nAre you really sure?')) {
 				this.sectionsEditor.addClass('xSaving');
-				new Request.JSON({
-					url: this.options.updateUrl,
-					data: "json=" + JSON.encode({
-						section: 'null', entry: null, entryNum: null,
-						action: 'DELETE_SECTION',
-						property: '', value: sectionName
-					}),
-					onComplete: function(resp) {
-						if(!resp) {
-							alert('Berta says:\n\nServer produced an error while deleting this section! Something went sooooo wrong...');
-						} else if(resp && !resp.error_message) {
-							var element = this.sectionsMenu.getElement('li.xSection-' + resp.real);
-							this.sectionsSortables.removeItems(element);
-							element.destroy();
-						} else {
-							alert(resp.error_message);
-						}
-						this.sectionsEditor.removeClass('xSaving');
-					}.bind(this)
-				}).post();
+    var site = getCurrentSite() || '0';
+
+    redux_store.dispatch(Actions.initDeleteSiteSection(
+      site,
+      sectionName,
+      // @@@:TODO: Remove this callback, when migration to ReactJS is complete
+      function(resp) {
+        if(!resp) {
+          alert('Berta says:\n\nServer produced an error while deleting this section! Something went sooooo wrong...');
+        } else if(resp && !resp.error_message) {
+          var element = this.sectionsMenu.getElement('li.xSection-' + resp.name);
+          this.sectionsSortables.removeItems(element);
+          element.destroy();
+          this.updatePathParams();
+        } else {
+          alert(resp.error_message);
+        }
+        this.sectionsEditor.removeClass('xSaving');
+      }.bind(this)
+    ));
 			}
 		}
 	},
 
+
+  updatePathParams: function() {
+    var path;
+    this.sectionsMenu.getElements('li').each(function (section, i) {
+      section.getElements('[data-path]').each(function (editable) {
+        path = editable.data('path').split('/');
+        path[2] = i;
+        editable.set('data-path', path.join('/')).data('path', true);
+      });
+    });
+  },
+
+
 	sectionCreateNew: function(event) {
 		if (event) event.preventDefault();
 		this.sectionsEditor.addClass('xSaving');
-		new Request.JSON({
-			url: this.options.updateUrl,
-			data: "json=" + JSON.encode({
-				section: 'null',
-				entry: null,
-				entryNum: null,
-				action: 'CREATE_NEW_SECTION',
-				property: '', value: '',
-				cloneSection: this.cloneSection,
-				cloneSectionTitle: this.cloneSectionTitle
-			}),
-			onComplete: function(resp) {
-				if(!resp) {
-					alert('Berta says:\n\nServer produced an error while adding new section! Something went sooooo wrong...');
-				} else if(resp && !resp.error_message) {
-					var li = new Element('li', { 'class': 'xSection-'+resp.real, 'html': resp.update }).inject(this.sectionsMenu);
-					this.sectionsSortables.addItems(li);
-					this.editablesInit();
-					li.getElement('a.xSectionClone').addEvent('click', this.sectionOnCloneClick.bindWithEvent(this));
-					li.getElement('a.xSectionDelete').addEvent('click', this.sectionOnDeleteClick.bindWithEvent(this));
-				} else {
-					alert(resp.error_message);
-				}
-				this.sectionsEditor.removeClass('xSaving');
-			}.bind(this)
-		}).post();
+    var site = getCurrentSite();
+
+    redux_store.dispatch(Actions.initCreateSiteSection(
+      site,
+      this.cloneSection,
+      this.cloneSectionTitle,
+      // @@@:TODO: Remove this callback, when migration to ReactJS is complete
+      function(resp) {
+        if(!resp) {
+          alert('Berta says:\n\nServer produced an error while adding new section! Something went sooooo wrong...');
+        } else if(resp && !resp.error_message) {
+          var state = redux_store.getState();
+          var template = state.siteSettings.toJSON()[site].template.template;
+          var sectionTypes = state.siteTemplates
+                .toJSON()[template]
+                .sectionTypes;
+          var type = resp['@attributes'].type ? resp['@attributes'].type : 'default';
+          var type_value = sectionTypes[type].title;
+          var type_params = sectionTypes[type].params;
+          var possible_types = Object
+                .getOwnPropertyNames(sectionTypes)
+                .map(function(_type) {
+                  return _type + '|' + sectionTypes[_type].title;
+                }).join('||');
+          var type_html = this.getTypeHTML(
+                site,
+                resp.order,
+                resp,
+                state.siteTemplateSettings.toJSON()[site][template],
+                type_params,
+                'xSection-' + resp['name'] + ' xSectionField'
+              );
+
+          var html = Templates.get(
+                'section',
+                Object.assign({}, editables, {
+                  name: resp.name,
+                  site: site,
+                  order: resp.order,
+                  title: resp.title,
+                  possible_types: possible_types,
+                  type_value: type_value,
+                  type_html: type_html,
+                  published: resp['@attributes'].published
+                })
+              );
+          var li = new Element('li', { 'class': 'xSection-'+resp.name, 'html': html }).inject(this.sectionsMenu);
+          this.sectionsSortables.addItems(li);
+          this.editablesInit();
+          li.getElement('a.xSectionClone').addEvent('click', this.sectionOnCloneClick.bindWithEvent(this));
+          li.getElement('a.xSectionDelete').addEvent('click', this.sectionOnDeleteClick.bindWithEvent(this));
+        } else {
+          alert(resp.error_message);
+        }
+        this.sectionsEditor.removeClass('xSaving');
+      }.bind(this)
+    ));
 	},
 
 	sectionOnCloneClick: function(event) {

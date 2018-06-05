@@ -423,12 +423,14 @@ var MessyMess = new Class({
 			newOrder.push(el.getClassStoredValue('xEntryId'));
 		});*/
 
+        var data = {
+                section: bertaEditor.currentSection, entry: target.getClassStoredValue('xEntryId'), entryNum: null,
+                action: 'PUT_BEFORE', property: '', value: nextEntry.getClassStoredValue('xEntryId')
+            };
+
 		new Request.JSON({
 			url: bertaEditor.options.updateUrl,
-			data: "json=" + JSON.encode({
-				section: bertaEditor.currentSection, entry: target.getClassStoredValue('xEntryId'), entryNum: null,
-				action: 'PUT_BEFORE', property: '', value: nextEntry.getClassStoredValue('xEntryId')
-			}),
+			data: "json=" + JSON.encode(data),
 			onComplete: function(resp) {
 
 			}.bind(this)

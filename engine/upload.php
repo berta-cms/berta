@@ -140,7 +140,11 @@ if(($entryId && $mediaFolder || $settingsProperty || $sectionName && $mediaFolde
 
 	if(!$error) {
 		$ext = strtolower(substr(strrchr($_FILES['Filedata']['name'], '.'), 1));
-		if(!$sectionBackground && in_array($ext, $videoExtensions)) {
+		if(in_array($ext, $videoExtensions)) {
+            if ($sectionBackground) {
+                $error = 'Videos not supported in background gallery!';
+            }
+
 			$videoExt = $ext;
 			$fileType = 'video';
 		} else if(!$sectionBackground && in_array($ext, $iconExtensions)) {
@@ -386,4 +390,5 @@ if (isset($_REQUEST['response']) && $_REQUEST['response'] == 'xml') {
 
 	echo Zend_Json::encode($result);
 }
+
 ?>
