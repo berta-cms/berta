@@ -766,7 +766,7 @@ var BertaEditorBase = new Class({
           el.addClass('xEditing');
         },
         /* Called when on JSON conversion error:
-        * Will use this as error handler how, because server only returns non-JSON on exception */
+        * Will use this as error handler for now, because server only returns non-JSON on exception */
         onError: function(responseBody){ console.error(responseBody); },
       }).post();
     }
@@ -1028,7 +1028,7 @@ var BertaEditorBase = new Class({
           url: this.options.updateUrl,
           data: 'json=' + JSON.encode(data),
           /* Called when on JSON conversion error:
-             Will use this as error handler how, because server only returns non-JSON on exception */
+             Will use this as error handler for now, because server only returns non-JSON on exception */
           onError: function(responseBody){ console.error(responseBody); },
           onComplete: callback
         }).post();
@@ -1191,7 +1191,7 @@ var BertaEditorBase = new Class({
         }
       }.bind(this),
       /* Called when on JSON conversion error:
-       * Will use this as error handler how, because server only returns non-JSON on exception */
+       * Will use this as error handler for now, because server only returns non-JSON on exception */
       onError: function(responseBody){ console.error(responseBody); },
     }).post();
   },
@@ -1639,7 +1639,7 @@ window.addEvent('domready', function(){
             window.location.href = engine_path + 'sections.php' + query_site;
           }.bind(this),
           /* Called when on JSON conversion error:
-                    * Will use this as error handler how, because server only returns non-JSON on exception */
+                    * Will use this as error handler for now, because server only returns non-JSON on exception */
           onError: function(responseBody){ console.error(responseBody); }
         }).post();
       };
