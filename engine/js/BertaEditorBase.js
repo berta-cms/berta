@@ -86,7 +86,9 @@ var BertaEditorBase = new Class({
         }
         if(!window.console) window.console = {};
         if(!window.console.debug) window.console.debug = function() { };
+        if(!window.console.error) window.console.error = function() { };
         if(!window.console.log) window.console.log = function() { };
+        if(!window.console.info) window.console.info = function() { };
 
         var editor=this;
         $(document).addEvent('keydown', function(event){
@@ -316,7 +318,7 @@ var BertaEditorBase = new Class({
               fileNameContainer.set('html', data.value);
               aDelete.setStyle('display', 'block');
               el.removeClass('xSaving').addClass('xEditing');
-            }
+            };
 
             xhr.addEventListener('load', function() {
               var data = JSON.decode(xhr.responseText);
@@ -350,7 +352,7 @@ var BertaEditorBase = new Class({
                       updateComplete
                     ));
                   } else {
-                    console.log('BertaEditorBase.elementEdit_init xBertaEditorClassImage/xBertaEditorClassICO: Undefined updateAction!');
+                    console.error('BertaEditorBase.elementEdit_init xBertaEditorClassImage/xBertaEditorClassICO: Undefined updateAction!');
                   }
                 } else{
                   updateComplete({value: data.filename});
@@ -721,8 +723,6 @@ var BertaEditorBase = new Class({
     el.removeClass('xEditing');
     el.addClass('xSaving');
 
-    console.log('BertaEditorBase.eSup_onImageDeleteClick:', data);
-
     if (path) {
       path_arr = path.split('/');
 
@@ -748,7 +748,7 @@ var BertaEditorBase = new Class({
           onComplete
         ));
       } else {
-        console.log('BertaEditorBase.eSup_onImageDeleteClick: Undefined updateAction!');
+        console.error('BertaEditorBase.eSup_onImageDeleteClick: Undefined updateAction!');
       }
 
     } else {
@@ -797,19 +797,8 @@ var BertaEditorBase = new Class({
   },
 
   elementEdit_save: function(elEditor, el, oldContent, oldContentText, newContent, newContentText) {
-    // console.log(oldContent);
-    // console.log(newContent);
-    // console.log(oldContentText);
-    // console.log(newContentText);
     var args = arguments;
     var params = ['elEditor', 'el', 'oldContent', 'oldContentText', 'newContent', 'newContentText'];
-    console.log(
-      'BertaEditorBase.elementEdit_save ARGS:',
-      params.reduce(function(prevVal, currVal, currIdx, origArr) {
-        prevVal[params[currIdx]] = args[currIdx];
-        return prevVal;
-      }, {})
-    );
 
     if(oldContent == newContent && !el.hasClass('xBgColor')) {
       var content = oldContent;
@@ -1014,7 +1003,7 @@ var BertaEditorBase = new Class({
             new_callback
           ));
         } else {
-          console.log('BertaEditorBase.elementEdit_save: Undefined updateAction!');
+          console.error('BertaEditorBase.elementEdit_save: Undefined updateAction!');
         }
       }
       else {
@@ -1031,7 +1020,6 @@ var BertaEditorBase = new Class({
           format_modifier: el.getClassStoredValue('xFormatModifier')
           /*use_css_units: useCSSUnits*/
         };
-        console.log('BertaEditorBase.elementEdit_save:', el, data);
         // @@@:TODO: Remove this when migration to redux is done
         new Request.JSON({
           url: this.options.updateUrl,
@@ -1186,7 +1174,6 @@ var BertaEditorBase = new Class({
         action: action, property: null, value: null, params: params
       };
 
-    console.log('BertaEditorBase.elementEdit_action:', data);
     new Request.JSON({
       url: this.options.updateUrl,
       data: "json=" + JSON.encode(data),
@@ -1641,7 +1628,7 @@ window.addEvent('domready', function(){
                 var data = {
                         property: 'tourComplete', value: 1
                     };
-                console.log('BertaEditorBase.tourInit:', data);
+
                 new Request.JSON({
                     url: updateUrl,
                     data: "json=" + JSON.encode(data),
