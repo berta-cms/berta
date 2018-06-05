@@ -739,7 +739,7 @@ var BertaEditorBase = new Class({
         target.setStyle('display', 'none');
         el.removeClass('xSaving');
         el.addClass('xEditing');
-      }
+      };
 
       if (typeof updateAction === 'function') {
         redux_store.dispatch(updateAction(
@@ -1244,7 +1244,7 @@ var BertaEditorBase = new Class({
       mceInstance.remove();
       tAElement.setStyle('visibility', 'hidden');
 
-      var elInlineEdit = this.findEditByReplacement(tAElement)
+      var elInlineEdit = this.findEditByReplacement(tAElement);
       elInlineEdit.onSave.delay(100, elInlineEdit);
     }
   },
@@ -1390,7 +1390,7 @@ var BertaEditorBase = new Class({
       if (!isResponsive) {
           if (type_params.columns) { delete type_params.columns; }
           if (type_params.entryMaxWidth) { delete type_params.entryMaxWidth; }
-          if (type_params.entryPadding) { delete type_params.entryPadding };
+          if (type_params.entryPadding) { delete type_params.entryPadding; };
       }
 
       params = Object.getOwnPropertyNames(type_params);
@@ -1645,9 +1645,9 @@ window.addEvent('domready', function(){
                     * Will use this as error handler how, because server only returns non-JSON on exception */
                     onError: function(responseBody){ console.error(responseBody); }
                 }).post();
-            }
+            };
         }
-    }
+    };
     tourInit();
 
 });
