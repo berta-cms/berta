@@ -764,7 +764,10 @@ var BertaEditorBase = new Class({
           }
           el.removeClass('xSaving');
           el.addClass('xEditing');
-        }
+        },
+        /* Called when on JSON conversion error:
+        * Will use this as error handler how, because server only returns non-JSON on exception */
+        onError: function(responseBody){ console.error(responseBody); },
       }).post();
     }
   },
@@ -1189,7 +1192,10 @@ var BertaEditorBase = new Class({
           onComplete = el.retrieve('onActionComplete');
           if(onComplete) onComplete(el, action, params, resp);
         }
-      }.bind(this)
+      }.bind(this),
+      /* Called when on JSON conversion error:
+       * Will use this as error handler how, because server only returns non-JSON on exception */
+      onError: function(responseBody){ console.error(responseBody); },
     }).post();
   },
 
@@ -1634,7 +1640,10 @@ window.addEvent('domready', function(){
                     data: "json=" + JSON.encode(data),
                     onComplete: function(resp) {
                         window.location.href = engine_path + 'sections.php' + query_site;
-                    }.bind(this)
+                    }.bind(this),
+                    /* Called when on JSON conversion error:
+                    * Will use this as error handler how, because server only returns non-JSON on exception */
+                    onError: function(responseBody){ console.error(responseBody); }
                 }).post();
             }
         }
