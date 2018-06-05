@@ -81,8 +81,8 @@ var BertaEditorBase = new Class({
       initConsoleReplacement: function() {
         this.query = window.location.search.replace('?', '').parseQueryString();
         if (this.query.site) {
-          this.options.updateUrl = this.options.updateUrl + "?site=" + this.query.site;
-          this.options.elementsUrl = this.options.elementsUrl + "?site=" + this.query.site;
+          this.options.updateUrl = this.options.updateUrl + '?site=' + this.query.site;
+          this.options.elementsUrl = this.options.elementsUrl + '?site=' + this.query.site;
         }
         if(!window.console) window.console = {};
         if(!window.console.debug) window.console.debug = function() { };
@@ -688,11 +688,11 @@ var BertaEditorBase = new Class({
   eSup_onRealCheckClick: function(event, el, checkBoxEl) {
     if(!el.hasClass('xSaving')) {
       checkBoxEl.toggleClass('checked');
-      var value = checkBoxEl.hasClass('checked') ? "1" : "0";
+      var value = checkBoxEl.hasClass('checked') ? '1' : '0';
 
       if (el.hasClass('xProperty-fixed')){
         var entry = el.getParent('.xEntry');
-        if (value=="1"){
+        if (value=='1'){
           entry.addClass('xFixed');
           if(this.container.hasClass('xCentered')) {
             var left = parseInt(entry.getStyle('left')) + (window.getSize().x - this.container.getSize().x) / 2;
@@ -754,7 +754,7 @@ var BertaEditorBase = new Class({
     } else {
       new Request.JSON({
         url: this.options.updateUrl,
-        data: "json=" + JSON.encode(data),
+        data: 'json=' + JSON.encode(data),
         onComplete: function(resp, respRaw) {
           if(resp.error_message)
             alert(resp.error_message);
@@ -860,7 +860,7 @@ var BertaEditorBase = new Class({
 
       //create prefix for links
       if ( isLink ) {
-        if (newContent.length && newContent.search(":") < 0 ) {
+        if (newContent.length && newContent.search(':') < 0 ) {
           newContent = 'http://' + newContent;
         }
       }
@@ -886,7 +886,7 @@ var BertaEditorBase = new Class({
 
         var cartAttributes = el.getParent('.xEntry').getElement('.cartAttributes');
         var cartPrice = el.getParent('.xEntry').getElement('.cartPrice').get('text');
-          var values = newContent.split(",");
+          var values = newContent.split(',');
         var isList = !(values.length == 1 && values[0]=='');
 
         cartAttributes.set('text','').addClass('hidden');
@@ -1026,7 +1026,7 @@ var BertaEditorBase = new Class({
         // @@@:TODO: Remove this when migration to redux is done
         new Request.JSON({
           url: this.options.updateUrl,
-          data: "json=" + JSON.encode(data),
+          data: 'json=' + JSON.encode(data),
           /* Called when on JSON conversion error:
              Will use this as error handler how, because server only returns non-JSON on exception */
           onError: function(responseBody){ console.error(responseBody); },
@@ -1179,7 +1179,7 @@ var BertaEditorBase = new Class({
 
     new Request.JSON({
       url: this.options.updateUrl,
-      data: "json=" + JSON.encode(data),
+      data: 'json=' + JSON.encode(data),
       onComplete: function(resp) {
         if(!resp) {
           alert('server produced an error while performing the requested action! something went sooooo wrong...');
@@ -1253,31 +1253,31 @@ var BertaEditorBase = new Class({
     this.tinyMCESettings.Base = new Class({
       Implements: Options,
       options: {
-        mode : "exact",
-        theme : "advanced",
-        width : "563px", height : "300px !important",
-        theme_advanced_buttons1 : "save,|,pasteword,|,undo,redo,|,bold,italic,forecolor,backcolor,fontsizeselect,formatselect,bullist,numlist,|,link,unlink,insertanything,|,code,pdw_toggle",
-        theme_advanced_buttons2 : "justifyleft,justifycenter,justifyright,justifyfull,|,outdent,indent,|,tablecontrols,|,removeformat,cleanup",
-        theme_advanced_buttons3 : "",
+        mode : 'exact',
+        theme : 'advanced',
+        width : '563px', height : '300px !important',
+        theme_advanced_buttons1 : 'save,|,pasteword,|,undo,redo,|,bold,italic,forecolor,backcolor,fontsizeselect,formatselect,bullist,numlist,|,link,unlink,insertanything,|,code,pdw_toggle',
+        theme_advanced_buttons2 : 'justifyleft,justifycenter,justifyright,justifyfull,|,outdent,indent,|,tablecontrols,|,removeformat,cleanup',
+        theme_advanced_buttons3 : '',
         theme_advanced_path : true,
-        theme_advanced_toolbar_location : "top",
-        theme_advanced_toolbar_align : "left",
-        theme_advanced_statusbar_location : "bottom",
+        theme_advanced_toolbar_location : 'top',
+        theme_advanced_toolbar_align : 'left',
+        theme_advanced_statusbar_location : 'bottom',
         theme_advanced_resizing : true,
 
         save_enablewhendirty : false,
         save_onsavecallback: this.tinyMCE_onSave.bind(this),
 
-        plugins: "save,insertanything,paste,table,pdw",
+        plugins: 'save,insertanything,paste,table,pdw',
 
         pdw_toggle_on : 1,
-              pdw_toggle_toolbars : "2",
+              pdw_toggle_toolbars : '2',
 
-        theme_advanced_blockformats : "p,h2,h3",
+        theme_advanced_blockformats : 'p,h2,h3',
 
-        valid_elements : "iframe[*],object[*],embed[*],param[*],form[*],input[*],textarea[*],select[*],option[*]," +
-                 "p[class|style|id],b[class],i[class],strong[class],em[class],a[*],br[*],u[class],sup[*],sub[*]," +
-                 "ul[*],li,ol[*],img[*],hr[class],h2[class|style|id],h3[class|style|id],div[*],blockquote[*],table[*],thead[*],tbody[*],tr[*],td[*],span[*],ins[*],blockquote[*],time[*]",
+        valid_elements : 'iframe[*],object[*],embed[*],param[*],form[*],input[*],textarea[*],select[*],option[*],' +
+                 'p[class|style|id],b[class],i[class],strong[class],em[class],a[*],br[*],u[class],sup[*],sub[*],' +
+                 'ul[*],li,ol[*],img[*],hr[class],h2[class|style|id],h3[class|style|id],div[*],blockquote[*],table[*],thead[*],tbody[*],tr[*],td[*],span[*],ins[*],blockquote[*],time[*]',
         custom_elements : '',
         extended_valid_elements : '',
         convert_urls: false,
@@ -1292,13 +1292,13 @@ var BertaEditorBase = new Class({
 
     this.tinyMCESettings.full = new this.tinyMCESettings.Base();
     this.tinyMCESettings.simple = new this.tinyMCESettings.Base({
-      mode : "exact",
-      theme_advanced_buttons1 : "save,bold,italic,removeformat,link,code",
-      theme_advanced_buttons2 : "",
-      valid_elements : "p[*],b,i,strong,em,a[*],br[*],u,img[*],div[*],blockquote[*],iframe[*],span[*],ins[*],sup[*],sub[*]",
-      width : "100%", height: "60px !important",
+      mode : 'exact',
+      theme_advanced_buttons1 : 'save,bold,italic,removeformat,link,code',
+      theme_advanced_buttons2 : '',
+      valid_elements : 'p[*],b,i,strong,em,a[*],br[*],u,img[*],div[*],blockquote[*],iframe[*],span[*],ins[*],sup[*],sub[*]',
+      width : '100%', height: '60px !important',
       theme_advanced_statusbar_location : null,
-      plugins: "save,insertanything"
+      plugins: 'save,insertanything'
       //paste_postprocess : function(pl,o) { o.node.innerHTML = TidyEditor("paste_postprocess", o.node.innerHTML); }
     });
   },
@@ -1312,7 +1312,7 @@ var BertaEditorBase = new Class({
 
 
   unescapeHtml: function (str) {
-      var temp = document.createElement("div");
+      var temp = document.createElement('div');
       temp.innerHTML = str;
       var result = temp.childNodes[0].nodeValue;
       temp.removeChild(temp.firstChild);
@@ -1501,14 +1501,14 @@ window.addEvent('domready', function(){
         var query = window.location.search.replace('?', '').parseQueryString();
         var query_site = '';
         if (query.site) {
-            query_site = "?site=" + query.site;
+            query_site = '?site=' + query.site;
         }
 
         if ($$('.page-xSections').length) {
             steps = [
                 {
                     element: document.querySelector('#xSections'),
-                    intro: "Add, copy, hide or delete your sections here.",
+                    intro: 'Add, copy, hide or delete your sections here.',
                     position: 'right'
                 }
             ];
@@ -1517,7 +1517,7 @@ window.addEvent('domready', function(){
             steps = [
                 {
                     element: document.querySelector('#xSettings'),
-                    intro: "Choose your template and edit general settings.",
+                    intro: 'Choose your template and edit general settings.',
                     position: 'right'
                 }
             ];
@@ -1527,7 +1527,7 @@ window.addEvent('domready', function(){
             steps.push(
                 {
                     element: document.querySelector('#xMySite'),
-                    intro: "Site editing view. Add, drag & drop text and images",
+                    intro: 'Site editing view. Add, drag & drop text and images',
                     position: 'right'
                 }
             );
@@ -1535,7 +1535,7 @@ window.addEvent('domready', function(){
             steps.push(
                 {
                     element: document.querySelector('#xTemplateDesign'),
-                    intro: "Customize web design: font, size, colors, spacing and other. You can even add your custom CSS code.",
+                    intro: 'Customize web design: font, size, colors, spacing and other. You can even add your custom CSS code.',
                     position: 'right'
                 }
             );
@@ -1545,7 +1545,7 @@ window.addEvent('domready', function(){
                 steps.push(
                     {
                         element: document.querySelector('#xHelpDesk'),
-                        intro: "Find help here - videos, tutorials, FAQs and a discussion board.",
+                        intro: 'Find help here - videos, tutorials, FAQs and a discussion board.',
                         position: 'left'
                     }
                 );
@@ -1554,7 +1554,7 @@ window.addEvent('domready', function(){
             steps.push(
                 {
                     element: document.querySelector('#xSections'),
-                    intro: "Start your website!",
+                    intro: 'Start your website!',
                     position: 'right'
                 }
             );
@@ -1565,7 +1565,7 @@ window.addEvent('domready', function(){
             steps = [
                 {
                     element: document.querySelector('#xTopPanelContainer'),
-                    intro: "Hey! This is a control panel.",
+                    intro: 'Hey! This is a control panel.',
                     position: 'right'
                 }
             ];
@@ -1637,7 +1637,7 @@ window.addEvent('domready', function(){
 
                 new Request.JSON({
                     url: updateUrl,
-                    data: "json=" + JSON.encode(data),
+                    data: 'json=' + JSON.encode(data),
                     onComplete: function(resp) {
                         window.location.href = engine_path + 'sections.php' + query_site;
                     }.bind(this),
@@ -1657,7 +1657,7 @@ function TidyEditor(t, v){
     alert(v);
     switch (t)
     {
-        case "paste_postprocess":
+        case 'paste_postprocess':
             var p4 = /<div id="_mcePaste[^>]*>(?!<div>)([\s\S]*)<\/div>([\s\S]*)$/i;
             v = v.replace(p4, '<div>$1</div>');
             var p5 = /<div id="_mcePaste[^>]*>/gi;
