@@ -1026,7 +1026,7 @@ var BertaEditorBase = new Class({
         // @@@:TODO: Remove this when migration to redux is done
         new Request.JSON({
           url: this.options.updateUrl,
-          data: 'json=' + JSON.encode(data),
+          data: 'json=' + JSON.stringify(data),
           /* Called when on JSON conversion error:
              Will use this as error handler for now, because server only returns non-JSON on exception */
           onError: function(responseBody){ console.error(responseBody); },
@@ -1345,7 +1345,8 @@ var BertaEditorBase = new Class({
 
 
   escapeForJSON: function(str) {
-    return encodeURIComponent(String(str));
+    // Replace &quot: xBertaEditorClassSimple editor reads value from element html instead of text
+    return String(str).replace(/\&quot;/g, '"');
   },
 
   getEntryInfoForElement:function(el) {

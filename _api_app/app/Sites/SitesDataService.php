@@ -89,6 +89,13 @@ class SitesDataService extends Storage
                 ];
             } else {
                 $this->SITES = $this->asList($this->SITES['site']);
+
+                // Add site name if not defined in XML
+                foreach ($this->SITES as $i => $site) {
+                    if (!isset($site['name'])) {
+                        $this->SITES[$i]['name'] = '';
+                    }
+                }
             }
         }
 
