@@ -528,7 +528,8 @@ var BertaEditor = new Class({
 
 		new Request.JSON({
 			url: this.options.updateUrl,
-			data: "json=" + JSON.encode(data),
+      data: JSON.stringify(data),
+      urlEncoded: false,
 			onComplete: function(resp) {
 
 			}.bind(this)
@@ -563,7 +564,8 @@ var BertaEditor = new Class({
 
 			new Request.JSON({
 				url: this.options.updateUrl,
-				data: "json=" + JSON.encode(data),
+        data: JSON.stringify(data),
+        urlEncoded: false,
 				onComplete: function(resp) {
 					if(!resp.error_message && resp.update && resp.update.entryid) {
 						Cookie.write('_berta__entry_highlight', resp.update.entryid, { path: this.options.paths.engineABSRoot });
@@ -601,7 +603,8 @@ var BertaEditor = new Class({
 
 				new Request.JSON({
 					url: this.options.updateUrl,
-					data: "json=" + JSON.encode(data),
+          data: JSON.stringify(data),
+          urlEncoded: false,
 					onComplete: function(resp, entryInfo, deleteLink, eText) {
 						if(!resp) {
 							alert('Berta says, there was a server error while deleting this entry! Something has gone sooooo wrong...');
@@ -632,7 +635,8 @@ var BertaEditor = new Class({
 
 		new Request.JSON({
 			url: this.options.updateUrl,
-			data: "json=" + JSON.encode(data),
+      data: JSON.stringify(data),
+      urlEncoded: false,
 			onComplete: function(resp) {
 
 			}.bind(this)
@@ -650,7 +654,8 @@ var BertaEditor = new Class({
 
         new Request.JSON({
             url: this.options.updateUrl,
-            data: "json=" + JSON.encode(data),
+            data: JSON.stringify(data),
+            urlEncoded: false,
             onComplete: function(resp) {
 
             }.bind(this)
@@ -735,7 +740,8 @@ var BertaEditor = new Class({
 
         new Request.JSON({
             url: this.options.updateUrl,
-            data: "json=" + JSON.encode(data),
+            data: JSON.stringify(data),
+            urlEncoded: false,
             onComplete: function(resp) {
                 subMenu.removeClass('xSaving');
             }.bind(this)
@@ -801,7 +807,8 @@ var BertaEditor = new Class({
 
 			new Request.JSON({
 				url: this.options.updateUrl,
-				data: "json=" + JSON.encode(data),
+        data: JSON.stringify(data),
+        urlEncoded: false,
 				onComplete: function(resp) {
 					if(!resp) {
 						alert('An error occured while toggling the tutorial video window state. Something has gone wrong!');

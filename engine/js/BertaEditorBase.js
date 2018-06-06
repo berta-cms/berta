@@ -754,7 +754,8 @@ var BertaEditorBase = new Class({
     } else {
       new Request.JSON({
         url: this.options.updateUrl,
-        data: 'json=' + JSON.encode(data),
+        data: JSON.stringify(data),
+        urlEncoded: false,
         onComplete: function(resp, respRaw) {
           if(resp.error_message)
             alert(resp.error_message);
@@ -1026,7 +1027,8 @@ var BertaEditorBase = new Class({
         // @@@:TODO: Remove this when migration to redux is done
         new Request.JSON({
           url: this.options.updateUrl,
-          data: 'json=' + JSON.stringify(data),
+          data: JSON.stringify(data),
+          urlEncoded: false,
           /* Called when on JSON conversion error:
              Will use this as error handler for now, because server only returns non-JSON on exception */
           onError: function(responseBody){ console.error(responseBody); },
@@ -1176,7 +1178,8 @@ var BertaEditorBase = new Class({
 
     new Request.JSON({
       url: this.options.updateUrl,
-      data: 'json=' + JSON.encode(data),
+      data: JSON.stringify(data),
+      urlEncoded: false,
       onComplete: function(resp) {
         if(!resp) {
           alert('server produced an error while performing the requested action! something went sooooo wrong...');
@@ -1635,7 +1638,8 @@ window.addEvent('domready', function(){
 
         new Request.JSON({
           url: updateUrl,
-          data: 'json=' + JSON.encode(data),
+          data: JSON.stringify(data),
+          urlEncoded: false,
           onComplete: function(resp) {
             window.location.href = engine_path + 'sections.php' + query_site;
           }.bind(this),
