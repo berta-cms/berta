@@ -27,7 +27,7 @@ if($jsonRequest) {
     //echo str_replace(array("\n", "\r"), array('\n', ''), $jsonRequest) . "\n\n";
 
     // decode the json string into an array
-    $decoded = $result = Zend_Json::decode($jsonRequest);
+    $decoded = $result = json_decode($jsonRequest, true);
     if(empty($decoded['action'])) $decoded['action'] = 'SAVE';  // default action = save
     if(!isset($decoded['property'])) $decoded['property'] = '';
 
