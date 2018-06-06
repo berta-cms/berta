@@ -124,13 +124,13 @@ class SectionTagsDataService Extends Storage {
     * @return array Array of tags
     */
     public function get() {
-        if (empty($this->TAGS)) {
+        if (!$this->TAGS) {
             $this->TAGS = $this->xmlFile2array($this->XML_FILE);
 
-            if (empty($this->TAGS)) {
-                $this->TAGS = array(
-                    'section' => array()
-                );
+            if (!$this->TAGS || !$this->TAGS['section']) {
+                $this->TAGS = [
+                    'section' => []
+                ];
             } else {
                 $this->TAGS['section'] = $this->asList($this->TAGS['section']);
             }

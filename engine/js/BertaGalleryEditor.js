@@ -342,7 +342,8 @@ var BertaGalleryEditor = new Class({
 			};
 		new Request.JSON({
 			url: this.options.updateUrl,
-			data: "json=" + JSON.encode(data),
+      data: JSON.stringify(data),
+      urlEncoded: false,
 			onComplete: function(resp) {
 				this.unlinearProcess_stop(this.sortingProcessId);
 			}.bind(this)
@@ -397,7 +398,8 @@ var BertaGalleryEditor = new Class({
 
 			new Request.JSON({
 				url: this.options.updateUrl,
-				data: "json=" + JSON.encode(data),
+        data: JSON.stringify(data),
+        urlEncoded: false,
 				onComplete: function(resp) {
 					this.unlinearProcess_stop(deleteProcessId);
 					if(resp.update == 'ok') {
@@ -638,7 +640,8 @@ var BertaGalleryEditor = new Class({
 
 						new Request.JSON({
 							url: editor.options.updateUrl,
-							data: "json=" + JSON.encode(data),
+              data: JSON.stringify(data),
+              urlEncoded: false,
 							onComplete: function(resp) {
 								imageThumb.src = resp.params.smallThumb;
 								liEl.set('filename', resp.update);

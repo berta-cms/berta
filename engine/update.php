@@ -10,17 +10,13 @@ include_once('_classes/Zend/Json.php');
 include_once('_classes/class.array_xml.php');
 include_once('_classes/class.bertaeditor.php');
 
-$site = !empty($_REQUEST['site']) ? $_REQUEST['site'] : false;
-$section = !empty($_REQUEST['section']) ? $_REQUEST['section'] : false;
-$entry = !empty($_REQUEST['entry']) ? $_REQUEST['entry'] : false;
-$property = !empty($_REQUEST['property']) ? $_REQUEST['property'] : false;
-$value = !empty($_REQUEST['value']) ? $_REQUEST['value'] : false;
+if (empty($_POST) && isset($HTTP_RAW_POST_DATA)) {
+    $_POST = $HTTP_RAW_POST_DATA;
+}
 
-$jsonRequest = !empty($_REQUEST['json']) ? stripslashes($_REQUEST['json']) : false;
+$jsonRequest = !empty($_POST) ? $_POST : false;
 
 if($jsonRequest) {
-
-    //var_dump($jsonRequest);
     // convert bad characters to their escaped equivalents
     $jsonRequest = str_replace(array("\n", "\r", "\t"), array('\n', '', ' '), $jsonRequest);
     //var_dump($jsonRequest);
@@ -488,8 +484,4 @@ if($jsonRequest) {
 
 } else {
     echo Zend_Json::encode(array('update' => false, 'real' => false, 'eval_script' => false, 'error_message' => 'NO DATA!'));
-
 }
-
-
-?>

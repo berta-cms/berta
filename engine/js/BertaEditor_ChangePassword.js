@@ -51,7 +51,8 @@ var BertaEditor_ChangePassword = new Class({
 
 		new Request.JSON({
 			url: this.options.updateUrl,
-			data: "json=" + JSON.encode(data),
+      data: JSON.stringify(data),
+      urlEncoded: false,
 			onComplete: function(resp) {
 				if(!resp) {
                     password_form.reset();

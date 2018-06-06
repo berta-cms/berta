@@ -430,7 +430,8 @@ var MessyMess = new Class({
 
 		new Request.JSON({
 			url: bertaEditor.options.updateUrl,
-			data: "json=" + JSON.encode(data),
+      data: JSON.stringify(data),
+      urlEncoded: false,
 			onComplete: function(resp) {
 
 			}.bind(this)
