@@ -83,7 +83,7 @@ class SitesDataService extends Storage
             if (!($this->SITES)) {
                 // Return only main site when storage/-sites does not exist
                 $this->SITES[] = [
-                    'name' => null,
+                    'name' => '',
                     'title' => 'Main site',
                     '@attributes' => ['published' => 1],
                 ];
