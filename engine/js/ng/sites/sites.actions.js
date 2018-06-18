@@ -155,6 +155,7 @@
         dispatch({ type: ActionTypes.INIT_DELETE_SITE_SETTINGS });
         dispatch({ type: ActionTypes.INIT_DELETE_SITE_TEMPLATE_SETTINGS });
         dispatch({ type: ActionTypes.INIT_DELETE_SITE_SECTIONS_TAGS });
+        dispatch({ type: ActionTypes.INIT_DELETE_SITE_SECTIONS_ENTRIES });
 
         sync(window.Berta.urls.sites, {site: site}, 'DELETE')
           .then(function (response) {
@@ -172,6 +173,9 @@
                 site_name: response.name
               }));
               dispatch(Actions.deleteSiteSectionsTags({
+                site_name: response.name
+              }));
+              dispatch(Actions.deleteSiteSectionsEntries({
                 site_name: response.name
               }));
             }

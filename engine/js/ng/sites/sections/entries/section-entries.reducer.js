@@ -39,6 +39,12 @@
           );
 
 
+        case ActionTypes.DELETE_SITE_SECTIONS_ENTRIES:
+          return state.filter(function (entries, site_name) {
+            return site_name !== action.data.site_name;
+          });
+
+
         // case ActionTypes.SECTION_CREATED:
         //   entries = state.getIn([action.resp.site]).toJSON();
         //   entries[action.resp.section.name] = action.resp.entries;
