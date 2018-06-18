@@ -10,24 +10,20 @@ include_once('_classes/Zend/Json.php');
 include_once('_classes/class.array_xml.php');
 include_once('_classes/class.bertaeditor.php');
 
-$site = !empty($_REQUEST['site']) ? $_REQUEST['site'] : false;
-$section = !empty($_REQUEST['section']) ? $_REQUEST['section'] : false;
-$entry = !empty($_REQUEST['entry']) ? $_REQUEST['entry'] : false;
-$property = !empty($_REQUEST['property']) ? $_REQUEST['property'] : false;
-$value = !empty($_REQUEST['value']) ? $_REQUEST['value'] : false;
+if (empty($_POST) && isset($HTTP_RAW_POST_DATA)) {
+    $_POST = $HTTP_RAW_POST_DATA;
+}
 
-$jsonRequest = !empty($_REQUEST['json']) ? stripslashes($_REQUEST['json']) : false;
+$jsonRequest = !empty($_POST) ? $_POST : false;
 
 if($jsonRequest) {
-
-    //var_dump($jsonRequest);
     // convert bad characters to their escaped equivalents
     $jsonRequest = str_replace(array("\n", "\r", "\t"), array('\n', '', ' '), $jsonRequest);
     //var_dump($jsonRequest);
     //echo str_replace(array("\n", "\r"), array('\n', ''), $jsonRequest) . "\n\n";
 
     // decode the json string into an array
-    $decoded = $result = Zend_Json::decode($jsonRequest);
+    $decoded = $result = json_decode($jsonRequest, true);
     if(empty($decoded['action'])) $decoded['action'] = 'SAVE';  // default action = save
     if(!isset($decoded['property'])) $decoded['property'] = '';
 
@@ -366,7 +362,7 @@ if($jsonRequest) {
                 BertaEditor::saveTags($tags);
             }
             else {  // section property
-                throw new Exception('Deprecated branch of code called for section editor function!');
+                include 'update/inc.update.sections_editor.php';
             }
         }
 
@@ -488,8 +484,4 @@ if($jsonRequest) {
 
 } else {
     echo Zend_Json::encode(array('update' => false, 'real' => false, 'eval_script' => false, 'error_message' => 'NO DATA!'));
-
 }
-
-
-?>

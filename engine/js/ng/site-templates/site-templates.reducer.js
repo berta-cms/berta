@@ -1,4 +1,4 @@
-(function(window, document) {
+(function(window, Immutable, ActionTypes) {
   'use strict';
 
   window.reducers = window.reducers || {};
@@ -12,7 +12,6 @@
 
       switch (action.type) {
         case ActionTypes.SET_STATE:
-          console.log('Template settings reducer:', action);
           return Immutable.fromJS(action.state.siteTemplates);
 
         default:
@@ -20,4 +19,4 @@
       }
     }
   });
-})(window, document);
+})(window, window.Immutable, window.ActionTypes);

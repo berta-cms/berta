@@ -60,7 +60,6 @@ var BertaGalleryEditor = new Class({
 			var _data = {
 				'section': obj.sectionName, 'entry': obj.entryId, 'property': 'galleryEditor'
 			};
-			console.log('BertaGalleryEditor.initialize:', _data);
 			return _data;
 		};
 		new Request.HTML({
@@ -341,10 +340,10 @@ var BertaGalleryEditor = new Class({
 				section: this.sectionName, entry: this.entryId,
 				property: 'galleryOrder', value: newOrder
 			};
-		console.log('BertaGalleryEditor.sortingSaveDo:', data);
 		new Request.JSON({
 			url: this.options.updateUrl,
-			data: "json=" + JSON.encode(data),
+      data: JSON.stringify(data),
+      urlEncoded: false,
 			onComplete: function(resp) {
 				this.unlinearProcess_stop(this.sortingProcessId);
 			}.bind(this)
@@ -396,10 +395,11 @@ var BertaGalleryEditor = new Class({
 					section: this.sectionName, entry: this.entryId,
 					property: 'galleryImageDelete', value: liElement.get('filename')
 				};
-			console.log('BertaGalleryEditor.onDeleteClick:', data);
+
 			new Request.JSON({
 				url: this.options.updateUrl,
-				data: "json=" + JSON.encode(data),
+        data: JSON.stringify(data),
+        urlEncoded: false,
 				onComplete: function(resp) {
 					this.unlinearProcess_stop(deleteProcessId);
 					if(resp.update == 'ok') {
@@ -637,10 +637,11 @@ var BertaGalleryEditor = new Class({
 								w: widthInput.get('value'),
 								h: heightInput.get('value')
 							};
-						console.log('BertaGalleryEditor.onCropClick:', data);
+
 						new Request.JSON({
 							url: editor.options.updateUrl,
-							data: "json=" + JSON.encode(data),
+              data: JSON.stringify(data),
+              urlEncoded: false,
 							onComplete: function(resp) {
 								imageThumb.src = resp.params.smallThumb;
 								liEl.set('filename', resp.update);

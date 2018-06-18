@@ -192,7 +192,7 @@ class SectionEntriesDataService Extends Storage {
             if (!$this->ENTRIES) {
                 $this->ENTRIES[self::$ROOT_LIST_ELEMENT] = [];
             } else {
-                if (!$this->ENTRIES[self::$ROOT_LIST_ELEMENT]) {
+                if (!isset($this->ENTRIES[self::$ROOT_LIST_ELEMENT]) || !$this->ENTRIES[self::$ROOT_LIST_ELEMENT]) {
                     $this->ENTRIES[self::$ROOT_LIST_ELEMENT] = [];
                 }
                 $this->ENTRIES[self::$ROOT_LIST_ELEMENT] = $this->asList($this->ENTRIES[self::$ROOT_LIST_ELEMENT]);

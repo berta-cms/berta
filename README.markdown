@@ -18,6 +18,13 @@ Installation
 
 Changelog
 ----------
+**v0.9.0b (release date 18 Jun 2018)**
+ * Redux integration (sites, sections, template settings, general settings)
+ * Lumen based API
+ * JSON schemas for XML files
+ * Data model services
+ * Code cleanup (linter, CS formatting)
+
 **v0.8.11b (release date 21 Mar 2017)**
  * PHP 7 support
  * portfolio page type

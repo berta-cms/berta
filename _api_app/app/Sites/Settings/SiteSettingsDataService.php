@@ -2,7 +2,7 @@
 
 namespace App\Sites\Settings;
 
-use App\Config\SiteSettingsConfigService;
+use App\Configuration\SiteSettingsConfigService;
 use App\Shared\Storage;
 
 /**

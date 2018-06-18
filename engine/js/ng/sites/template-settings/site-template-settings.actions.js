@@ -1,7 +1,7 @@
-(function (window, document) {
+(function (window, ActionTypes, sync) {
   'use strict';
 
-  window.Actions = window.Actions || {};
+  var Actions = window.Actions = window.Actions || {};
 
   Object.assign(window.Actions, {
 
@@ -14,7 +14,7 @@
     },
 
     initUpdateSiteTemplateSettings: function(path, value, onComplete) {
-      return function (dispatch, getStore) {
+      return function (dispatch) {
         dispatch({ type: ActionTypes.INIT_UPDATE_SITE_TEMPLATE_SETTINGS });
 
         sync(window.Berta.urls.siteTemplateSettings, { path: path, value: value })
@@ -51,4 +51,4 @@
     }
   });
 
-})(window, document);
+})(window, window.ActionTypes, window.sync);

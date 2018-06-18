@@ -1,11 +1,11 @@
-(function(window, document) {
+(function(window, Immutable, ActionTypes) {
   'use strict';
 
   window.reducers = window.reducers || {};
 
   Object.assign(window.reducers, {
     sectionEntries: function(state, action) {
-      var entry, entries = [];
+      // var entry, entries = [];
 
       if (state === undefined) {
         state = Immutable.Map();
@@ -40,7 +40,6 @@
 
 
         // case ActionTypes.SECTION_CREATED:
-        //   console.log('Entries reducer:', action);
         //   entries = state.getIn([action.resp.site]).toJSON();
         //   entries[action.resp.section.name] = action.resp.entries;
 
@@ -48,7 +47,6 @@
 
         // case ActionTypes.SECTION_UPDATED:
         //   if (action.resp.old_name) {
-        //     console.log('Entries reducer:', action);
         //     entries = state.getIn([action.resp.site]).toJSON();
 
         //     if (entries.length) {
@@ -64,7 +62,6 @@
         //   return state;
 
         // case ActionTypes.SECTION_DELETED:
-        //   console.log('Entries reducer:', action);
         //   entries = state.getIn([action.resp.site]).toJSON();
         //   delete entries[action.resp.name];
 
@@ -75,4 +72,4 @@
       }
     }
   });
-})(window, document);
+})(window, window.Immutable, window.ActionTypes);

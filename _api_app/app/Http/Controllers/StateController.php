@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Config\SiteSettingsConfigService;
-use App\Config\SiteTemplatesConfigService;
+use App\Configuration\SiteSettingsConfigService;
+use App\Configuration\SiteTemplatesConfigService;
 use App\Sites\Sections\Entries\SectionEntriesDataService;
 use App\Sites\Sections\SiteSectionsDataService;
 use App\Sites\Sections\Tags\SectionTagsDataService;

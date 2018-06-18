@@ -46,7 +46,7 @@ var BertaEditor_Multisite = new Class({
 
 	editablesInit: function(inElement) {	// instantiate all xEditable elements in the page
 		var f = inElement ? $(inElement).getElements.bind($(inElement)) : $$;
-    console.log('BertaEditor_Multisite.editablesInit:', f(this.options.xBertaEditorClassSimple));
+
 		// simple text fields ///////////////////////////////////////////////////////////////////////////////////////////////////////
 		f(this.options.xBertaEditorClassSimple).each(function(el) { this.elementEdit_init(el, this.options.xBertaEditorClassSimple, this.siteOnSave.bind(this)) }.bind(this));
 
@@ -91,15 +91,8 @@ var BertaEditor_Multisite = new Class({
 	},
 
 	siteOnSave: function(el, returnUpdate, returnReal, returnError, returnParams) {
-    var args = arguments;
-    var params = ['el', 'returnUpdate', 'returnReal', 'returnError', 'returnParams'];
-    console.log(
-      'BertaEditor_Multisite.siteOnSave ARGS:',
-      params.reduce(function(prevVal, currVal, currIdx, origArr) {
-        prevVal[params[currIdx]] = args[currIdx];
-        return prevVal;
-      }, {})
-    );
+		var args = arguments;
+		var params = ['el', 'returnUpdate', 'returnReal', 'returnError', 'returnParams'];
 		// update the properties of the site list item and title editable
 		var prop = el.getClassStoredValue('xProperty');
 		if(prop == 'name') {

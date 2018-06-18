@@ -2,14 +2,14 @@
 
 Element.implement({
   getIndex: function(type) {
-        type = (type) ? type : '';
-        return $$(type).indexOf(this);
-    },
+    type = (type) ? type : '';
+    return $$(type).indexOf(this);
+  },
 
   exists: function() {
     return this;
-        //return (this.getIndex() >= 0);
-    },
+    //return (this.getIndex() >= 0);
+  },
 
   getClassStoredValue: function(varName) {
     var c = this.get('class').split(' ');
@@ -75,485 +75,487 @@ var BertaEditorBase = new Class({
   query: null,
 
   intialize: function() {
-        this.initConsoleReplacement();
-      },
+    this.initConsoleReplacement();
+  },
 
-      initConsoleReplacement: function() {
-        this.query = window.location.search.replace('?', '').parseQueryString();
-        if (this.query.site) {
-          this.options.updateUrl = this.options.updateUrl + "?site=" + this.query.site;
-          this.options.elementsUrl = this.options.elementsUrl + "?site=" + this.query.site;
+  initConsoleReplacement: function() {
+    this.query = window.location.search.replace('?', '').parseQueryString();
+    if (this.query.site) {
+      this.options.updateUrl = this.options.updateUrl + '?site=' + this.query.site;
+      this.options.elementsUrl = this.options.elementsUrl + '?site=' + this.query.site;
+    }
+    if(!window.console) window.console = {};
+    if(!window.console.debug) window.console.debug = function() { };
+    if(!window.console.error) window.console.error = function() { };
+    if(!window.console.log) window.console.log = function() { };
+    if(!window.console.info) window.console.info = function() { };
+
+    var editor=this;
+    $(document).addEvent('keydown', function(event){
+      if (event.code == 16){
+        editor.shiftPressed=true;
+      }
+    }).addEvent('keyup', function() {
+      editor.shiftPressed=false;
+    });
+  },
+
+  fixDragHandlePos: function() {
+
+    $$(this.options.xBertaEditorClassDragXY).each(function(el) {
+      if (!el.hasClass('xEntry')){
+
+        handle = el.getElement('.xHandle');
+        handlePad = Math.abs(parseInt(handle.getStyle('margin-left')));
+        left = parseInt(el.getStyle('left'));
+
+        if (left<handlePad) {
+          handle.setStyle('left', (handlePad-left)+'px');
+        }else{
+          handle.setStyle('left', 0);
         }
-        if(!window.console) window.console = {};
-        if(!window.console.debug) window.console.debug = function() { };
-        if(!window.console.log) window.console.log = function() { };
+      }
+    });
 
-        var editor=this;
-        $(document).addEvent('keydown', function(event){
-            if (event.code == 16){
-            editor.shiftPressed=true;
-            }
-        }).addEvent('keyup', function() {
-          editor.shiftPressed=false;
+  },
+
+  // News ticker functions
+  initNewsTicker: function() {
+    // init news ticker for all pages
+    this.newsTickerContainer = $('xNewsTickerContainer');
+    if(this.newsTickerContainer) {
+      this.newsTickerContainer.getElement('a.close').addEvent('click', function(event) {
+        event.stop();
+        this.hideNewsTicker();
+      }.bind(this));
+    }
+  },
+
+  hideNewsTicker: function(event) {
+    this.newsTickerContainer = $('xNewsTickerContainer');
+
+    if(!this.newsTickerContainer.hasClass('xNewsTickerHidden')) {
+      this.newsTickerContainer.addClass('xNewsTickerHidden');
+
+      var topPanel = $('xTopPanel');
+      var editorMenu = $('xEditorMenu');
+      var totalWidth = 0;
+
+      editorMenu.getElements('li').each(function(el) {
+        totalWidth += el.getSize().x;
+      });
+      totalWidth += parseInt(editorMenu.getStyle('padding-left')) + parseInt(editorMenu.getStyle('padding-right')) + 1;
+
+      new Fx.Slide(this.newsTickerContainer, { duration: 800, transition: Fx.Transitions.Quint.easeInOut }).show().slideOut();
+      topPanel.set('tween', {duration: 800, transition: Fx.Transitions.Quint.easeInOut }).tween('width', topPanel.getSize().x + 1 + 'px', totalWidth + 'px');
+
+      Cookie.write('_berta_newsticker_hidden', 1 /*,{ domain: window.location.host, path: window.location.pathname }*/);
+    }
+  },
+
+
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ///|  Element initialization  |///////////////////////////////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+  elementEdit_init: function(el, editorClass, onElementSave) {
+
+    if(el.retrieve('elementEdit_init')) return false;	// already initialized
+    el.store('elementEdit_init', true);
+
+    var bPlaceholderSet = this.makePlaceholderIfEmpty(el),
+        self = this;
+
+
+    switch(editorClass) {
+      case this.options.xBertaEditorClassSimple:
+        el.store('onElementSave', onElementSave);
+        el.addClass(editorClass.substr(1));
+        el.addEvent('click', function(event, editor) {
+          if(!this.hasClass('xSaving') && !this.hasClass('xEditing')) {
+            this.addClass('xEditing');
+            editor.makeEmptyIfEmpty(this);
+            editor.elementEdit_instances.push(this.inlineEdit({ onComplete: editor.elementEdit_save.bind(editor) }));
+            editor.fireEvent(BertaEditorBase.EDITABLE_START, [el, editor.elementEdit_instances[editor.elementEdit_instances.length - 1]]);
+          }
+        }.bindWithEvent(el, this));
+        //this.makePlaceholderIfEmpty(el);
+        break;
+
+      case this.options.xBertaEditorClassTA:
+        el.store('onElementSave', onElementSave);
+        el.addClass(editorClass.substr(1));
+        el.addEvent('click', function(event, editor) {
+          if(!this.hasClass('xSaving') && !this.hasClass('xEditing')) {
+            this.addClass('xEditing');
+            if(this.inlineIsEmpty()) this.innerHTML = '&nbsp;';
+            editor.elementEdit_instances.push(this.inlineEdit({ type: 'textarea', onComplete: editor.elementEdit_save.bind(editor)  }));
+            editor.fireEvent(BertaEditorBase.EDITABLE_START, [el, editor.elementEdit_instances[editor.elementEdit_instances.length - 1]]);
+          }
+        }.bindWithEvent(el, this));
+        break;
+
+      case this.options.xBertaEditorClassMCE:
+      case this.options.xBertaEditorClassMCESimple:
+        el.store('onElementSave', onElementSave);
+        el.addClass(editorClass.substr(1));
+
+        el.addEvent('click', function(event, editor) {
+          $$('.xEditOwerlay').destroy();
+          if(!this.hasClass('xSaving') && !this.hasClass('xEditing')) {
+            el.addClass('xEditing');
+            if(this.inlineIsEmpty()) this.innerHTML = '';
+            editor.elementEdit_instances.push(this.inlineEdit({
+              type: 'textarea',
+              WYSIWYGSettings: el.hasClass(editor.options.xBertaEditorClassMCESimple.substr(1)) ?
+                editor.tinyMCESettings.simple.options :
+                editor.tinyMCESettings.full.options,
+              onComplete: editor.elementEdit_save.bind(editor) }));
+            editor.fireEvent(BertaEditorBase.EDITABLE_START, [el, editor.elementEdit_instances[editor.elementEdit_instances.length - 1]]);
+          }
+        }.bindWithEvent(el, this));
+
+        self.initEditOwerlay(el);
+        break;
+
+      case this.options.xBertaEditorClassRC:
+        el.store('onElementSave', onElementSave);
+        el.addClass(editorClass.substr(1));
+        el.addEvent('click', function(event, editor) {
+          if(!this.hasClass('xSaving') && !this.hasClass('xEditing')) {
+            el.addClass('xEditing');
+            if(this.inlineIsEmpty()) this.innerHTML = '';
+            this.set('old_content', this.innerHTML);
+            this.set('text', this.get('title'));
+            editor.elementEdit_instances.push(this.inlineEdit({ onComplete: editor.elementEdit_save.bind(editor) }));
+            editor.fireEvent(BertaEditorBase.EDITABLE_START, [el, editor.elementEdit_instances[editor.elementEdit_instances.length - 1]]);
+          }
+        }.bindWithEvent(el, this));
+        break;
+
+      case this.options.xBertaEditorClassSelect:
+      case this.options.xBertaEditorClassSelectRC:
+      case this.options.xBertaEditorClassFontSelect:
+        el.store('onElementSave', onElementSave);
+        el.addClass(editorClass.substr(1));
+        el.addEvent('click', function(event, editor) {
+          if(!this.hasClass('xSaving') && !this.hasClass('xEditing')) {
+            this.addClass('xEditing');
+
+            if(this.inlineIsEmpty()) this.innerHTML = '';
+            editor.elementEdit_instances.push(
+              this.inlineEdit({
+                type: 'select',
+                subtype: this.hasClass(editor.options.xBertaEditorClassFontSelect.substr(1)) ? 'font' : (this.hasClass(editor.options.xBertaEditorClassSelectRC.substr(1)) ? 'rc' : ''),
+                selectOptions: this.getProperty('x_options').split('||'),
+                onComplete: editor.elementEdit_save.bind(editor)
+              })
+            );
+            editor.fireEvent(BertaEditorBase.EDITABLE_START, [el, editor.elementEdit_instances[editor.elementEdit_instances.length - 1]]);
+          }
+        }.bindWithEvent(el, this));
+        break;
+
+      case this.options.xBertaEditorClassYesNo:
+        el.store('onElementSave', onElementSave);
+        el.addClass(editorClass.substr(1));
+        var isSetToYes = bPlaceholderSet ? false : (el.get('html') == '1' ? true : false);
+        el.empty();
+        var prop = el.getClassStoredValue('xProperty');
+
+        var aYes = 	new Element('a', { 'href': '#', 'class': (isSetToYes ? 'active' : '') + ' xValue-1' }).set('html', 'yes');
+        var aNo = 	new Element('a', { 'href': '#', 'class': (isSetToYes ? '' : 'active') + ' xValue-0' }).set('html', 'no');
+        el.grab(aYes).appendText(' / ').grab(aNo);
+        aNo.addEvent('click', this.eSup_onYesNoClick.bindWithEvent(this));
+        aYes.addEvent('click', this.eSup_onYesNoClick.bindWithEvent(this));
+        break;
+
+      case this.options.xBertaEditorClassImage:
+      case this.options.xBertaEditorClassICO:
+        el.store('onElementSave', onElementSave);
+        el.addClass(editorClass.substr(1));
+        var currentFile = bPlaceholderSet ? '' : el.get('html');
+        el.empty();
+        var prop = el.getClassStoredValue('xProperty');
+
+        // construct uploader
+        var fileNameContainer = new Element('span', { 'class': 'name' }).set('html', currentFile).inject(el);
+        var aNew = new Element('a', { 'href': '#' }).set('html', 'choose file').inject(el);
+        var aDelete = new Element('a', { 'href': '#' }).set('html', 'delete').inject(el);
+        var fileInput = new Element('input', {'type': 'file'}).inject(el);
+
+        aNew.addEvent('click', function(e){
+          e.preventDefault();
+          fileInput.click();
         });
-      },
 
-      fixDragHandlePos: function() {
+        if(!currentFile) aDelete.setStyle('display', 'none');
+        aDelete.addEvent('click', this.eSup_onImageDeleteClick.bindWithEvent(this));
 
-        $$(this.options.xBertaEditorClassDragXY).each(function(el) {
-          if (!el.hasClass('xEntry')){
+        params = [];
+        var paramNames = ['xMinWidth', 'xMinHeight', 'xMaxWidth', 'xMaxHeight'],
+            urlParamNames = ['min_width', 'min_height', 'max_width', 'max_height'], p;
+        for (var i = 0; i < paramNames.length; i++) {
+          p = el.getClassStoredValue(paramNames[i]);
+          if(p) params.push(urlParamNames[i] + '=' + p);
+        }
+        if( this.query.site ) {
+          params.push('site=' + this.query.site);
+        }
 
-            handle = el.getElement('.xHandle');
-            handlePad = Math.abs(parseInt(handle.getStyle('margin-left')));
-            left = parseInt(el.getStyle('left'));
+        params.push('session_id=' + this.options.session_id);
 
-            if (left<handlePad) {
-              handle.setStyle('left', (handlePad-left)+'px');
-            }else{
-              handle.setStyle('left', 0);
+        var allowedExtensions = ['jpg', 'jpeg', 'gif', 'png'];
+
+        if (editorClass == this.options.xBertaEditorClassICO) {
+          allowedExtensions = ['ico'];
+        }
+
+        var xhr = new XMLHttpRequest();
+
+        var updateComplete = function (data) {
+          fileNameContainer.empty();
+          fileNameContainer.set('html', data.value);
+          aDelete.setStyle('display', 'block');
+          el.removeClass('xSaving').addClass('xEditing');
+        };
+
+        xhr.addEventListener('load', function() {
+          var data = JSON.decode(xhr.responseText);
+
+          if (xhr.status == 401) {
+            window.location.href = this.options.paths.engineRoot;
+
+          } else if (data.status > 0) {
+
+            var path = el.dataset.path;
+            var path_arr = [];
+
+            if (path) {
+              path_arr = path.split('/');
+
+              if (path_arr[1] === 'settings') {
+                updateAction = Actions.initUpdateSiteSettings;
+              }
+
+              if (path_arr[1] === 'site_template_settings') {
+                updateAction = Actions.initUpdateSiteTemplateSettings;
+              }
+
+              if (typeof updateAction === 'function') {
+                // @TODO Handle file upload in API endpoint,
+                // currently we are updating only state here
+                // which calls endpoint and saves value again
+                redux_store.dispatch(updateAction(
+                  path,
+                  data.filename,
+                  updateComplete
+                ));
+              } else {
+                console.error('BertaEditorBase.elementEdit_init xBertaEditorClassImage/xBertaEditorClassICO: Undefined updateAction!');
+              }
+            } else{
+              updateComplete({value: data.filename});
             }
+          } else {
+            alert(data.error);
+          }
+        }.bindWithEvent(this), false);
+
+        xhr.addEventListener('error', function() {
+          el.removeClass('xSaving').addClass('xEditing');
+        }, false);
+
+        fileInput.addEvent('change', function() {
+          var inputFile = $$(fileInput);
+
+          if (inputFile.length) {
+            var formData = new FormData();
+            var fileName = inputFile[0].files[0].name;
+            var fileExtension = fileName.split('.').pop();
+
+            if (allowedExtensions.indexOf(fileExtension) === -1) {
+              alert('Allowed file extensions: ' + allowedExtensions.join(', '));
+              return false;
+            }
+
+            formData.append('Filedata', inputFile[0].files[0], fileName);
+            var url = this.options.paths.engineRoot + 'upload.php?property=' + prop + '&' + params.join('&');
+            el.removeClass('xEditing').addClass('xSaving');
+            xhr.open('POST', url, true);
+            xhr.send(formData);
+          }
+        }.bindWithEvent(this));
+
+        break;
+
+      case this.options.xBertaEditorClassColor:
+        el.store('onElementSave', onElementSave);
+        el.addClass(editorClass.substr(1));
+
+        if(results = el.get('html').match(/\#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/)) {
+          new Element('SPAN', {
+            'class': 'colorPreview',
+            'styles': {
+              'background-color': results[0]
+            }
+          }).inject(el, 'top');
+        }
+
+        el.addEvent('click', function(event, editor) {
+          if(!this.hasClass('xSaving') && !this.hasClass('xEditing')) {
+            this.addClass('xEditing');
+            this.set('old_content', el.get('html'));
+
+            var tempValue;
+            if(results = this.get('html').match(/\#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/))
+              tempValue = results[0];			// set to the matched color value
+            else
+              tempValue = el.get('title');	// set to default value
+
+            if(!editor.mooRainbow)
+              editor.mooRainbow = new MooRainbow(null, {
+                id: 'xMooRainbow',
+                wheel: true,
+                imgPath: '_lib/moorainbow/images/'
+              });
+            editor.mooRainbow.element = this;
+
+            editor.mooRainbow.removeEvents('change');
+            editor.mooRainbow.removeEvents('complete');
+            editor.mooRainbow.removeEvents('abort');
+            editor.mooRainbow.addEvent('change', function(color) {
+              //inlineBertaEditor.inputBox.set('value', color.hex);
+            });
+            editor.mooRainbow.addEvent('complete', function(color) {
+              editor.elementEdit_save(editor, el, tempValue, tempValue, color.hex, color.hex);
+              //inlineBertaEditor.onSave();
+            });
+            editor.mooRainbow.addEvent('abort', function(color) {
+              editor.elementEdit_save(editor, el, tempValue, tempValue, color.hex, color.hex);
+              //inlineBertaEditor.inputBox.set('value', tempValue);
+              //inlineBertaEditor.onSave();
+            });
+
+            var currentColor = new Color(tempValue, 'RGB');
+            editor.mooRainbow.show.delay(10, editor.mooRainbow);
+            editor.mooRainbow.backupColor = currentColor;
+            editor.mooRainbow.layout.backup.setStyle('background-color', editor.mooRainbow.backupColor.rgbToHex());
+            editor.mooRainbow.manualSet(currentColor);
+
+            editor.fireEvent(BertaEditorBase.EDITABLE_START, [el, null]);
+          }
+        }.bindWithEvent(el, this));
+        break;
+
+      case this.options.xEditableRealCheck:
+
+        el.store('onElementSave', onElementSave);
+        el.addClass(editorClass.substr(1));
+
+        var value = String(el.get('html'));
+
+        el.empty();
+        var checkEl = new Element('input', { 'type': 'button', 'class': value == 1 ? 'checked' : '', 'value': '' }).inject(el);
+
+        el.addEvent('click', this.eSup_onRealCheckClick.bindWithEvent(this, [el, checkEl]));
+        break;
+
+      case this.options.xBertaEditorClassDragXY:
+        el.store('onElementSave', onElementSave);
+        el.addClass(editorClass.substr(1));
+
+        var xGuideLineX;
+        var xGuideLineY;
+
+        el.getElement('.xHandle').addEvents({
+          click: function(event) {
+            event.preventDefault();
+          },
+          mouseenter: function(event){
+            //create guidelines
+            winSize=document.getScrollSize();
+
+            xGuideLineX = new Element('div', {
+              'id': 'xGuideLineX',
+              'class': 'xGuideLine',
+              styles: {
+                width: winSize.x +'px'
+              }
+            });
+            xGuideLineY = new Element('div', {
+              'id': 'xGuideLineY',
+              'class': 'xGuideLine',
+              styles: {
+                height: winSize.y +'px'
+              }
+            });
+
+            xGuideLineX.inject(document.body);
+            if(document.body.getElement('#contentContainer.xCentered') && el.hasClass('xFixed') == false) {
+              xGuideLineY.inject(document.body.getElement('#contentContainer'));
+            } else if(document.body.getElement('#allContainer.xCentered') && el.hasClass('xFixed') == false) {
+              xGuideLineY.inject(document.body.getElement('#allContainer'));
+            } else {
+              xGuideLineY.inject(document.body);
+            }
+            self.drawGuideLines(el, xGuideLineX, xGuideLineY);
+          },
+          mouseleave: function(event){
+            xGuideLineX.destroy();
+            xGuideLineY.destroy();
           }
         });
 
-      },
+        var gridStep=parseInt(bertaGlobalOptions.gridStep);
+        gridStep=isNaN(gridStep)||gridStep<1?1:gridStep;
 
-      // News ticker functions
-      initNewsTicker: function() {
-        // init news ticker for all pages
-        this.newsTickerContainer = $('xNewsTickerContainer');
-        if(this.newsTickerContainer) {
-          this.newsTickerContainer.getElement('a.close').addEvent('click', function(event) {
-            event.stop();
-            this.hideNewsTicker();
-          }.bind(this));
-        }
-      },
+        if( $('pageEntries') ) var allEntries = $('pageEntries').getElements('.mess');
 
-      hideNewsTicker: function(event) {
-        this.newsTickerContainer = $('xNewsTickerContainer');
+        var dragAll = false;
 
-        if(!this.newsTickerContainer.hasClass('xNewsTickerHidden')) {
-          this.newsTickerContainer.addClass('xNewsTickerHidden');
-
-          var topPanel = $('xTopPanel');
-          var editorMenu = $('xEditorMenu');
-          var totalWidth = 0;
-
-          editorMenu.getElements('li').each(function(el) {
-            totalWidth += el.getSize().x;
-          });
-          totalWidth += parseInt(editorMenu.getStyle('padding-left')) + parseInt(editorMenu.getStyle('padding-right')) + 1;
-
-          new Fx.Slide(this.newsTickerContainer, { duration: 800, transition: Fx.Transitions.Quint.easeInOut }).show().slideOut();
-          topPanel.set('tween', {duration: 800, transition: Fx.Transitions.Quint.easeInOut }).tween('width', topPanel.getSize().x + 1 + 'px', totalWidth + 'px');
-
-          Cookie.write('_berta_newsticker_hidden', 1 /*,{ domain: window.location.host, path: window.location.pathname }*/);
-        }
-      },
-
-
-        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-       ///|  Element initialization  |///////////////////////////////////////////////////////////////////////////////////////////////////////
-      //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-      elementEdit_init: function(el, editorClass, onElementSave) {
-
-        if(el.retrieve('elementEdit_init')) return false;	// already initialized
-        el.store('elementEdit_init', true);
-
-        var bPlaceholderSet = this.makePlaceholderIfEmpty(el),
-          self = this;
-
-
-        switch(editorClass) {
-          case this.options.xBertaEditorClassSimple:
-            el.store('onElementSave', onElementSave);
-            el.addClass(editorClass.substr(1));
-            el.addEvent('click', function(event, editor) {
-              if(!this.hasClass('xSaving') && !this.hasClass('xEditing')) {
-                this.addClass('xEditing');
-                editor.makeEmptyIfEmpty(this);
-                editor.elementEdit_instances.push(this.inlineEdit({ onComplete: editor.elementEdit_save.bind(editor) }));
-                editor.fireEvent(BertaEditorBase.EDITABLE_START, [el, editor.elementEdit_instances[editor.elementEdit_instances.length - 1]]);
-              }
-            }.bindWithEvent(el, this));
-            //this.makePlaceholderIfEmpty(el);
-            break;
-
-          case this.options.xBertaEditorClassTA:
-            el.store('onElementSave', onElementSave);
-            el.addClass(editorClass.substr(1));
-            el.addEvent('click', function(event, editor) {
-              if(!this.hasClass('xSaving') && !this.hasClass('xEditing')) {
-                this.addClass('xEditing');
-                if(this.inlineIsEmpty()) this.innerHTML = '&nbsp;';
-                editor.elementEdit_instances.push(this.inlineEdit({ type: 'textarea', onComplete: editor.elementEdit_save.bind(editor)  }));
-                editor.fireEvent(BertaEditorBase.EDITABLE_START, [el, editor.elementEdit_instances[editor.elementEdit_instances.length - 1]]);
-              }
-            }.bindWithEvent(el, this));
-            break;
-
-          case this.options.xBertaEditorClassMCE:
-          case this.options.xBertaEditorClassMCESimple:
-            el.store('onElementSave', onElementSave);
-            el.addClass(editorClass.substr(1));
-
-            el.addEvent('click', function(event, editor) {
-              $$('.xEditOwerlay').destroy();
-              if(!this.hasClass('xSaving') && !this.hasClass('xEditing')) {
-                el.addClass('xEditing');
-                if(this.inlineIsEmpty()) this.innerHTML = '';
-                editor.elementEdit_instances.push(this.inlineEdit({
-                  type: 'textarea',
-                  WYSIWYGSettings: el.hasClass(editor.options.xBertaEditorClassMCESimple.substr(1)) ?
-                            editor.tinyMCESettings.simple.options :
-                            editor.tinyMCESettings.full.options,
-                  onComplete: editor.elementEdit_save.bind(editor) }));
-                editor.fireEvent(BertaEditorBase.EDITABLE_START, [el, editor.elementEdit_instances[editor.elementEdit_instances.length - 1]]);
-              }
-            }.bindWithEvent(el, this));
-
-            self.initEditOwerlay(el);
-            break;
-
-          case this.options.xBertaEditorClassRC:
-            el.store('onElementSave', onElementSave);
-            el.addClass(editorClass.substr(1));
-            el.addEvent('click', function(event, editor) {
-              if(!this.hasClass('xSaving') && !this.hasClass('xEditing')) {
-                el.addClass('xEditing');
-                if(this.inlineIsEmpty()) this.innerHTML = '';
-                this.set('old_content', this.innerHTML);
-                this.set('text', this.get('title'));
-                editor.elementEdit_instances.push(this.inlineEdit({ onComplete: editor.elementEdit_save.bind(editor) }));
-                editor.fireEvent(BertaEditorBase.EDITABLE_START, [el, editor.elementEdit_instances[editor.elementEdit_instances.length - 1]]);
-              }
-            }.bindWithEvent(el, this));
-            break;
-
-          case this.options.xBertaEditorClassSelect:
-          case this.options.xBertaEditorClassSelectRC:
-          case this.options.xBertaEditorClassFontSelect:
-            el.store('onElementSave', onElementSave);
-            el.addClass(editorClass.substr(1));
-            el.addEvent('click', function(event, editor) {
-              if(!this.hasClass('xSaving') && !this.hasClass('xEditing')) {
-                this.addClass('xEditing');
-
-                if(this.inlineIsEmpty()) this.innerHTML = '';
-                editor.elementEdit_instances.push(
-                  this.inlineEdit({
-                    type: 'select',
-                    subtype: this.hasClass(editor.options.xBertaEditorClassFontSelect.substr(1)) ? 'font' : (this.hasClass(editor.options.xBertaEditorClassSelectRC.substr(1)) ? 'rc' : ''),
-                    selectOptions: this.getProperty('x_options').split('||'),
-                    onComplete: editor.elementEdit_save.bind(editor)
-                  })
-                );
-                editor.fireEvent(BertaEditorBase.EDITABLE_START, [el, editor.elementEdit_instances[editor.elementEdit_instances.length - 1]]);
-              }
-            }.bindWithEvent(el, this));
-            break;
-
-          case this.options.xBertaEditorClassYesNo:
-            el.store('onElementSave', onElementSave);
-            el.addClass(editorClass.substr(1));
-            var isSetToYes = bPlaceholderSet ? false : (el.get('html') == '1' ? true : false);
-            el.empty();
-            var prop = el.getClassStoredValue('xProperty');
-
-            var aYes = 	new Element('a', { 'href': '#', 'class': (isSetToYes ? 'active' : '') + ' xValue-1' }).set('html', 'yes');
-            var aNo = 	new Element('a', { 'href': '#', 'class': (isSetToYes ? '' : 'active') + ' xValue-0' }).set('html', 'no');
-            el.grab(aYes).appendText(' / ').grab(aNo);
-            aNo.addEvent('click', this.eSup_onYesNoClick.bindWithEvent(this));
-            aYes.addEvent('click', this.eSup_onYesNoClick.bindWithEvent(this));
-            break;
-
-          case this.options.xBertaEditorClassImage:
-          case this.options.xBertaEditorClassICO:
-            el.store('onElementSave', onElementSave);
-            el.addClass(editorClass.substr(1));
-            var currentFile = bPlaceholderSet ? '' : el.get('html');
-            el.empty();
-            var prop = el.getClassStoredValue('xProperty');
-
-            // construct uploader
-            var fileNameContainer = new Element('span', { 'class': 'name' }).set('html', currentFile).inject(el);
-            var aNew = new Element('a', { 'href': '#' }).set('html', 'choose file').inject(el);
-            var aDelete = new Element('a', { 'href': '#' }).set('html', 'delete').inject(el);
-            var fileInput = new Element('input', {'type': 'file'}).inject(el);
-
-            aNew.addEvent('click', function(e){
-              e.preventDefault();
-              fileInput.click();
+        el.makeDraggable({
+          snap: 0,
+          grid: gridStep,
+          handle: el.getElement('.xHandle'),
+          onSnap: function(el) {
+            el.addClass('xEditing');
+            var xCoords = new Element('div', {
+              id: 'xCoords'
             });
+            el.grab(xCoords , 'top');
+            dragAll = self.shiftPressed && el.hasClass('xEntry');
+            if(dragAll){
+              el.startTop = parseInt(el.getStyle('top'));
+              el.startLeft = parseInt(el.getStyle('left'));
 
-            if(!currentFile) aDelete.setStyle('display', 'none');
-            aDelete.addEvent('click', this.eSup_onImageDeleteClick.bindWithEvent(this));
+              i=0;
+              var entriesStartTop = new Array();
+              var entriesStartLeft = new Array();
 
-            params = [];
-            var paramNames = ['xMinWidth', 'xMinHeight', 'xMaxWidth', 'xMaxHeight'],
-              urlParamNames = ['min_width', 'min_height', 'max_width', 'max_height'], p;
-            for (var i = 0; i < paramNames.length; i++) {
-              p = el.getClassStoredValue(paramNames[i]);
-              if(p) params.push(urlParamNames[i] + '=' + p);
-            }
-            if( this.query.site ) {
-              params.push('site=' + this.query.site);
-            }
-
-            params.push('session_id=' + this.options.session_id);
-
-            var allowedExtensions = ['jpg', 'jpeg', 'gif', 'png'];
-
-            if (editorClass == this.options.xBertaEditorClassICO) {
-              allowedExtensions = ['ico'];
-            }
-
-            var xhr = new XMLHttpRequest();
-
-            var updateComplete = function (data) {
-              fileNameContainer.empty();
-              fileNameContainer.set('html', data.value);
-              aDelete.setStyle('display', 'block');
-              el.removeClass('xSaving').addClass('xEditing');
-            }
-
-            xhr.addEventListener('load', function() {
-              var data = JSON.decode(xhr.responseText);
-
-              if (xhr.status == 401) {
-                window.location.href = this.options.paths.engineRoot;
-
-              } else if (data.status > 0) {
-
-                var path = el.data('path');
-                var path_arr = [];
-
-                if (path) {
-                  path_arr = path.split('/');
-
-                  if (path_arr[1] === 'settings') {
-                    updateAction = Actions.initUpdateSiteSettings;
-                  }
-
-                  if (path_arr[1] === 'site_template_settings') {
-                    updateAction = Actions.initUpdateSiteTemplateSettings;
-                  }
-
-                  if (typeof updateAction === 'function') {
-                    // @TODO Handle file upload in API endpoint,
-                    // currently we are updating only state here
-                    // which calls endpoint and saves value again
-                    redux_store.dispatch(updateAction(
-                      path,
-                      data.filename,
-                      updateComplete
-                    ));
-                  } else {
-                    console.log('BertaEditorBase.elementEdit_init xBertaEditorClassImage/xBertaEditorClassICO: Undefined updateAction!');
-                  }
-                } else{
-                  updateComplete({value: data.filename});
+              allEntries.each(function(entry){
+                if (el != entry){
+                  entriesStartTop[i]=parseInt(entry.getStyle('top'));
+                  entriesStartLeft[i]=parseInt(entry.getStyle('left'));
+                  i++;
                 }
-              } else {
-                alert(data.error);
-              }
-            }.bindWithEvent(this), false);
+              });
 
-            xhr.addEventListener('error', function() {
-              el.removeClass('xSaving').addClass('xEditing');
-            }, false);
-
-            fileInput.addEvent('change', function() {
-              var inputFile = $$(fileInput);
-
-              if (inputFile.length) {
-                var formData = new FormData();
-                var fileName = inputFile[0].files[0].name;
-                var fileExtension = fileName.split('.').pop();
-
-                if (allowedExtensions.indexOf(fileExtension) === -1) {
-                  alert('Allowed file extensions: ' + allowedExtensions.join(', '));
-                  return false;
-                }
-
-                formData.append('Filedata', inputFile[0].files[0], fileName);
-                var url = this.options.paths.engineRoot + 'upload.php?property=' + prop + '&' + params.join('&');
-                el.removeClass('xEditing').addClass('xSaving');
-                xhr.open('POST', url, true);
-                xhr.send(formData);
-              }
-            }.bindWithEvent(this));
-
-            break;
-
-          case this.options.xBertaEditorClassColor:
-            el.store('onElementSave', onElementSave);
-            el.addClass(editorClass.substr(1));
-
-            if(results = el.get('html').match(/\#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/)) {
-              new Element('SPAN', {
-                'class': 'colorPreview',
-                'styles': {
-                      'background-color': results[0]
-                  }
-              }).inject(el, 'top');
+              el.entriesStartTop = entriesStartTop;
+              el.entriesStartLeft = entriesStartLeft;
+            }
+          },
+          onDrag: function(){
+            $('xTopPanelContainer').hide();
+            if (parseInt(el.getStyle('left'))<0){
+              el.setStyle('left', '0');
             }
 
-            el.addEvent('click', function(event, editor) {
-              if(!this.hasClass('xSaving') && !this.hasClass('xEditing')) {
-                this.addClass('xEditing');
-                this.set('old_content', el.get('html'));
-
-                var tempValue;
-                if(results = this.get('html').match(/\#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/))
-                  tempValue = results[0];			// set to the matched color value
-                else
-                  tempValue = el.get('title');	// set to default value
-
-                if(!editor.mooRainbow)
-                  editor.mooRainbow = new MooRainbow(null, {
-                    id: 'xMooRainbow',
-                    wheel: true,
-                    imgPath: '_lib/moorainbow/images/'
-                  });
-                editor.mooRainbow.element = this;
-
-                editor.mooRainbow.removeEvents('change');
-                editor.mooRainbow.removeEvents('complete');
-                editor.mooRainbow.removeEvents('abort');
-                editor.mooRainbow.addEvent('change', function(color) {
-                  //inlineBertaEditor.inputBox.set('value', color.hex);
-                });
-                editor.mooRainbow.addEvent('complete', function(color) {
-                  editor.elementEdit_save(editor, el, tempValue, tempValue, color.hex, color.hex);
-                  //inlineBertaEditor.onSave();
-                });
-                editor.mooRainbow.addEvent('abort', function(color) {
-                  editor.elementEdit_save(editor, el, tempValue, tempValue, color.hex, color.hex);
-                  //inlineBertaEditor.inputBox.set('value', tempValue);
-                  //inlineBertaEditor.onSave();
-                });
-
-                var currentColor = new Color(tempValue, 'RGB');
-                editor.mooRainbow.show.delay(10, editor.mooRainbow);
-                editor.mooRainbow.backupColor = currentColor;
-                editor.mooRainbow.layout.backup.setStyle('background-color', editor.mooRainbow.backupColor.rgbToHex());
-                editor.mooRainbow.manualSet(currentColor);
-
-                editor.fireEvent(BertaEditorBase.EDITABLE_START, [el, null]);
-              }
-            }.bindWithEvent(el, this));
-            break;
-
-          case this.options.xEditableRealCheck:
-
-            el.store('onElementSave', onElementSave);
-            el.addClass(editorClass.substr(1));
-
-            var value = String(el.get('html'));
-
-            el.empty();
-            var checkEl = new Element('input', { 'type': 'button', 'class': value == 1 ? 'checked' : '', 'value': '' }).inject(el);
-
-            el.addEvent('click', this.eSup_onRealCheckClick.bindWithEvent(this, [el, checkEl]));
-            break;
-
-          case this.options.xBertaEditorClassDragXY:
-            el.store('onElementSave', onElementSave);
-            el.addClass(editorClass.substr(1));
-
-            var xGuideLineX;
-            var xGuideLineY;
-
-            el.getElement('.xHandle').addEvents({
-              click: function(event) {
-                event.preventDefault();
-              },
-              mouseenter: function(event){
-                //create guidelines
-                winSize=document.getScrollSize();
-
-                xGuideLineX = new Element('div', {
-                    'id': 'xGuideLineX',
-                    'class': 'xGuideLine',
-                  styles: {
-                      width: winSize.x +'px'
-                    }
-                });
-                xGuideLineY = new Element('div', {
-                    'id': 'xGuideLineY',
-                    'class': 'xGuideLine',
-                  styles: {
-                      height: winSize.y +'px'
-                    }
-                });
-
-                xGuideLineX.inject(document.body);
-                if(document.body.getElement('#contentContainer.xCentered') && el.hasClass('xFixed') == false) {
-                  xGuideLineY.inject(document.body.getElement('#contentContainer'));
-                } else if(document.body.getElement('#allContainer.xCentered') && el.hasClass('xFixed') == false) {
-                  xGuideLineY.inject(document.body.getElement('#allContainer'));
-                } else {
-                  xGuideLineY.inject(document.body);
-                }
-                self.drawGuideLines(el, xGuideLineX, xGuideLineY);
-              },
-              mouseleave: function(event){
-                xGuideLineX.destroy();
-                xGuideLineY.destroy();
-              }
-            });
-
-            var gridStep=parseInt(bertaGlobalOptions.gridStep);
-            gridStep=isNaN(gridStep)||gridStep<1?1:gridStep;
-
-            if( $('pageEntries') ) var allEntries = $('pageEntries').getElements('.mess');
-
-            var dragAll = false;
-
-            el.makeDraggable({
-                snap: 0,
-                grid: gridStep,
-              handle: el.getElement('.xHandle'),
-                onSnap: function(el) {
-                el.addClass('xEditing');
-                var xCoords = new Element('div', {
-                  id: 'xCoords'
-                });
-                el.grab(xCoords , 'top');
-                dragAll = self.shiftPressed && el.hasClass('xEntry');
-                if(dragAll){
-                  el.startTop = parseInt(el.getStyle('top'));
-                  el.startLeft = parseInt(el.getStyle('left'));
-
-                  i=0;
-                  var entriesStartTop = new Array();
-                  var entriesStartLeft = new Array();
-
-                  allEntries.each(function(entry){
-                    if (el != entry){
-                      entriesStartTop[i]=parseInt(entry.getStyle('top'));
-                      entriesStartLeft[i]=parseInt(entry.getStyle('left'));
-                      i++;
-                    }
-                  });
-
-                  el.entriesStartTop = entriesStartTop;
-                  el.entriesStartLeft = entriesStartLeft;
-                }
-                },
-              onDrag: function(){
-                $('xTopPanelContainer').hide();
-                        if (parseInt(el.getStyle('left'))<0){
-                            el.setStyle('left', '0');
-                        }
-
-                        if (el.hasClass('xEntry') && parseInt(el.getStyle('top'))<20 ){
-                          el.setStyle('top', '20px');
-                        }else if (parseInt(el.getStyle('top'))<0){
-                            el.setStyle('top', '0');
-                        }
+            if (el.hasClass('xEntry') && parseInt(el.getStyle('top'))<20 ){
+              el.setStyle('top', '20px');
+            }else if (parseInt(el.getStyle('top'))<0){
+              el.setStyle('top', '0');
+            }
             $('xCoords').set('html', 'X:'+parseInt(el.getStyle('left'))+' Y:'+parseInt(el.getStyle('top')));
             self.drawGuideLines(el, xGuideLineX, xGuideLineY);
 
@@ -573,36 +575,36 @@ var BertaEditorBase = new Class({
               });
             }
           },
-            onComplete: function(el) {
+          onComplete: function(el) {
 
             $('xTopPanelContainer').show();
             this.hideControlPanel(el);
-              $('xCoords').destroy();
-                el.removeClass('xEditing');
+            $('xCoords').destroy();
+            el.removeClass('xEditing');
 
-                var editor = this;
+            var editor = this;
 
-                if (typeof(messyMess)=='object') {
+            if (typeof(messyMess)=='object') {
               messyMess.copyrightStickToBottom();
-                }
+            }
 
-                if (dragAll){
+            if (dragAll){
               allEntries.each(function(entry) {
                 if(this.container.hasClass('xCentered') && (entry.hasClass('xFixed'))) {
-                    var left = parseInt(entry.getStyle('left')) - (window.getSize().x - this.container.getSize().x) / 2;
-                  } else {
-                    var left = parseInt(entry.getStyle('left'));
-                  }
+                  var left = parseInt(entry.getStyle('left')) - (window.getSize().x - this.container.getSize().x) / 2;
+                } else {
+                  var left = parseInt(entry.getStyle('left'));
+                }
                 var value = left + ',' + parseInt(entry.getStyle('top'));
                 editor.elementEdit_save(null, entry, null, null, value, value);
               }.bind(this));
 
-              }else{
-                if(this.container.hasClass('xCentered') && (el.hasClass('xFixed'))) {
-                  var left = parseInt(el.getStyle('left')) - (window.getSize().x - this.container.getSize().x) / 2;
-                } else {
-                  var left = parseInt(el.getStyle('left'));
-                }
+            }else{
+              if(this.container.hasClass('xCentered') && (el.hasClass('xFixed'))) {
+                var left = parseInt(el.getStyle('left')) - (window.getSize().x - this.container.getSize().x) / 2;
+              } else {
+                var left = parseInt(el.getStyle('left'));
+              }
               var value = left + ',' + parseInt(el.getStyle('top'));
               this.elementEdit_save(null, el, null, null, value, value);
 
@@ -610,7 +612,7 @@ var BertaEditorBase = new Class({
             }
             dragAll = false;
 
-            }.bind(this)
+          }.bind(this)
         });
         this.hideControlPanel(el);
         break;
@@ -645,24 +647,24 @@ var BertaEditorBase = new Class({
 
 
 
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-   ///  Supporting functions for editables  /////////////////////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ///  Supporting functions for editables  /////////////////////////////////////////////////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   initEditOwerlay: function (el){
     var editButton = new Element('a', {class:'xEditOwerlay'});
 
     el.addEvents({
-        mouseenter: function(){
-          if (!el.hasClass('xEditing')){
-            editButton.style.width = el.getSize().x + 'px';
-            editButton.style.height = el.getSize().y + 'px';
+      mouseenter: function(){
+        if (!el.hasClass('xEditing')){
+          editButton.style.width = el.getSize().x + 'px';
+          editButton.style.height = el.getSize().y + 'px';
           editButton.inject(el, 'top');
-          }
-        },
-        mouseleave: function(){
-          editButton.destroy();
         }
+      },
+      mouseleave: function(){
+        editButton.destroy();
+      }
     });
   },
 
@@ -686,22 +688,22 @@ var BertaEditorBase = new Class({
   eSup_onRealCheckClick: function(event, el, checkBoxEl) {
     if(!el.hasClass('xSaving')) {
       checkBoxEl.toggleClass('checked');
-      var value = checkBoxEl.hasClass('checked') ? "1" : "0";
+      var value = checkBoxEl.hasClass('checked') ? '1' : '0';
 
       if (el.hasClass('xProperty-fixed')){
         var entry = el.getParent('.xEntry');
-        if (value=="1"){
+        if (value=='1'){
           entry.addClass('xFixed');
           if(this.container.hasClass('xCentered')) {
             var left = parseInt(entry.getStyle('left')) + (window.getSize().x - this.container.getSize().x) / 2;
-                    entry.setStyle('left', left + 'px');
-                }
+            entry.setStyle('left', left + 'px');
+          }
         }else{
           entry.removeClass('xFixed');
           if(this.container.hasClass('xCentered')) {
             var left = parseInt(entry.getStyle('left')) - (window.getSize().x - this.container.getSize().x) / 2;
-                    entry.setStyle('left', left + 'px');
-                }
+            entry.setStyle('left', left + 'px');
+          }
         }
       }
 
@@ -715,13 +717,11 @@ var BertaEditorBase = new Class({
     var el = target.getParent();
     var prop = el.getClassStoredValue('xProperty');
     var data = { property: prop, params: 'delete', value: '' };
-    var path = el.data('path');
+    var path = el.dataset.path;
     var path_arr = [];
 
     el.removeClass('xEditing');
     el.addClass('xSaving');
-
-    console.log('BertaEditorBase.eSup_onImageDeleteClick:', data);
 
     if (path) {
       path_arr = path.split('/');
@@ -739,7 +739,7 @@ var BertaEditorBase = new Class({
         target.setStyle('display', 'none');
         el.removeClass('xSaving');
         el.addClass('xEditing');
-      }
+      };
 
       if (typeof updateAction === 'function') {
         redux_store.dispatch(updateAction(
@@ -748,13 +748,14 @@ var BertaEditorBase = new Class({
           onComplete
         ));
       } else {
-        console.log('BertaEditorBase.eSup_onImageDeleteClick: Undefined updateAction!');
+        console.error('BertaEditorBase.eSup_onImageDeleteClick: Undefined updateAction!');
       }
 
     } else {
       new Request.JSON({
         url: this.options.updateUrl,
-        data: "json=" + JSON.encode(data),
+        data: JSON.stringify(data),
+        urlEncoded: false,
         onComplete: function(resp, respRaw) {
           if(resp.error_message)
             alert(resp.error_message);
@@ -764,7 +765,10 @@ var BertaEditorBase = new Class({
           }
           el.removeClass('xSaving');
           el.addClass('xEditing');
-        }
+        },
+        /* Called when on JSON conversion error:
+        * Will use this as error handler for now, because server only returns non-JSON on exception */
+        onError: function(responseBody){ console.error(responseBody); },
       }).post();
     }
   },
@@ -781,8 +785,8 @@ var BertaEditorBase = new Class({
   },
 
 
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-   ///|  Saving edited element  |////////////////////////////////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ///|  Saving edited element  |////////////////////////////////////////////////////////////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   findEditByReplacement: function(replacementElement) {
@@ -797,19 +801,8 @@ var BertaEditorBase = new Class({
   },
 
   elementEdit_save: function(elEditor, el, oldContent, oldContentText, newContent, newContentText) {
-    // console.log(oldContent);
-    // console.log(newContent);
-    // console.log(oldContentText);
-    // console.log(newContentText);
     var args = arguments;
     var params = ['elEditor', 'el', 'oldContent', 'oldContentText', 'newContent', 'newContentText'];
-    console.log(
-      'BertaEditorBase.elementEdit_save ARGS:',
-      params.reduce(function(prevVal, currVal, currIdx, origArr) {
-        prevVal[params[currIdx]] = args[currIdx];
-        return prevVal;
-      }, {})
-    );
 
     if(oldContent == newContent && !el.hasClass('xBgColor')) {
       var content = oldContent;
@@ -868,7 +861,7 @@ var BertaEditorBase = new Class({
 
       //create prefix for links
       if ( isLink ) {
-        if (newContent.length && newContent.search(":") < 0 ) {
+        if (newContent.length && newContent.search(':') < 0 ) {
           newContent = 'http://' + newContent;
         }
       }
@@ -894,7 +887,7 @@ var BertaEditorBase = new Class({
 
         var cartAttributes = el.getParent('.xEntry').getElement('.cartAttributes');
         var cartPrice = el.getParent('.xEntry').getElement('.cartPrice').get('text');
-          var values = newContent.split(",");
+        var values = newContent.split(',');
         var isList = !(values.length == 1 && values[0]=='');
 
         cartAttributes.set('text','').addClass('hidden');
@@ -940,7 +933,7 @@ var BertaEditorBase = new Class({
         };
       }
 
-      var path = el.data('path');
+      var path = el.dataset.path;
       var path_arr = [];
       var prop;
       var value = newContent ? this.escapeForJSON(newContent) : null;
@@ -983,8 +976,8 @@ var BertaEditorBase = new Class({
               var state = redux_store.getState();
               var template = state.siteSettings.toJSON()[site].template.template;
               var sectionTypes = state.siteTemplates
-                    .toJSON()[template]
-                    .sectionTypes;
+                .toJSON()[template]
+                .sectionTypes;
               var type = resp.section['@attributes'].type ? resp.section['@attributes'].type : 'default';
               var type_params = sectionTypes[type] ? sectionTypes[type].params : sectionTypes['default'].params;
 
@@ -1018,7 +1011,7 @@ var BertaEditorBase = new Class({
             new_callback
           ));
         } else {
-          console.log('BertaEditorBase.elementEdit_save: Undefined updateAction!');
+          console.error('BertaEditorBase.elementEdit_save: Undefined updateAction!');
         }
       }
       else {
@@ -1035,11 +1028,14 @@ var BertaEditorBase = new Class({
           format_modifier: el.getClassStoredValue('xFormatModifier')
           /*use_css_units: useCSSUnits*/
         };
-        console.log('BertaEditorBase.elementEdit_save:', el, data);
         // @@@:TODO: Remove this when migration to redux is done
         new Request.JSON({
           url: this.options.updateUrl,
-          data: "json=" + JSON.encode(data),
+          data: JSON.stringify(data),
+          urlEncoded: false,
+          /* Called when on JSON conversion error:
+             Will use this as error handler for now, because server only returns non-JSON on exception */
+          onError: function(responseBody){ console.error(responseBody); },
           onComplete: callback
         }).post();
       }
@@ -1071,8 +1067,8 @@ var BertaEditorBase = new Class({
             new Element('SPAN', {
               'class': 'colorPreview',
               'styles': {
-                    'background-color': resp.update
-                }
+                'background-color': resp.update
+              }
             }).inject(el, 'top');
 
             break;
@@ -1080,7 +1076,7 @@ var BertaEditorBase = new Class({
           case el.hasClass(this.options.xBertaEditorClassSelectRC.substr(1)):
           case el.hasClass(this.options.xBertaEditorClassFontSelect.substr(1)):
             var editInitializer = this.elementEdit_instances[this.elementEdit_instances.length-1].editting,
-              oldValue;
+                oldValue;
             if(editInitializer.hasClass('xEntrySlideNumberVisibility')) {
               if(resp.update == 'no') oldValue = 'yes';
               else oldValue = 'no';
@@ -1170,24 +1166,24 @@ var BertaEditorBase = new Class({
 
       //correct footer position
       if (typeof(messyMess)=='object') {
-            messyMess.copyrightStickToBottom();
-            }
+        messyMess.copyrightStickToBottom();
+      }
     }.bind(this);
-   },
+  },
 
-   elementEdit_action: function(el, action, params) {
+  elementEdit_action: function(el, action, params) {
     el.addClass('xSaving');
     var entryInfo = this.getEntryInfoForElement(el);
     if(entryInfo.section == '') entryInfo.section = this.sectionName;
     var data = {
-        section: entryInfo.section, entry: entryInfo.entryId,
-        action: action, property: null, value: null, params: params
-      };
+      section: entryInfo.section, entry: entryInfo.entryId,
+      action: action, property: null, value: null, params: params
+    };
 
-    console.log('BertaEditorBase.elementEdit_action:', data);
     new Request.JSON({
       url: this.options.updateUrl,
-      data: "json=" + JSON.encode(data),
+      data: JSON.stringify(data),
+      urlEncoded: false,
       onComplete: function(resp) {
         if(!resp) {
           alert('server produced an error while performing the requested action! something went sooooo wrong...');
@@ -1200,7 +1196,10 @@ var BertaEditorBase = new Class({
           onComplete = el.retrieve('onActionComplete');
           if(onComplete) onComplete(el, action, params, resp);
         }
-      }.bind(this)
+      }.bind(this),
+      /* Called when on JSON conversion error:
+       * Will use this as error handler for now, because server only returns non-JSON on exception */
+      onError: function(responseBody){ console.error(responseBody); },
     }).post();
   },
 
@@ -1212,7 +1211,7 @@ var BertaEditorBase = new Class({
       var entryInfo = this.getEntryInfoForElement(el);
       if(entryInfo.section == '') entryInfo.section = this.sectionName;
 
-      var path = el.data('path');
+      var path = el.dataset.path;
 
       redux_store.dispatch(Actions.resetSiteSection(
         path,
@@ -1238,8 +1237,8 @@ var BertaEditorBase = new Class({
 
 
 
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-   ///  tinyMCE  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ///  tinyMCE  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -1249,7 +1248,7 @@ var BertaEditorBase = new Class({
       mceInstance.remove();
       tAElement.setStyle('visibility', 'hidden');
 
-      var elInlineEdit = this.findEditByReplacement(tAElement)
+      var elInlineEdit = this.findEditByReplacement(tAElement);
       elInlineEdit.onSave.delay(100, elInlineEdit);
     }
   },
@@ -1258,31 +1257,31 @@ var BertaEditorBase = new Class({
     this.tinyMCESettings.Base = new Class({
       Implements: Options,
       options: {
-        mode : "exact",
-        theme : "advanced",
-        width : "563px", height : "300px !important",
-        theme_advanced_buttons1 : "save,|,pasteword,|,undo,redo,|,bold,italic,forecolor,backcolor,fontsizeselect,formatselect,bullist,numlist,|,link,unlink,insertanything,|,code,pdw_toggle",
-        theme_advanced_buttons2 : "justifyleft,justifycenter,justifyright,justifyfull,|,outdent,indent,|,tablecontrols,|,removeformat,cleanup",
-        theme_advanced_buttons3 : "",
+        mode : 'exact',
+        theme : 'advanced',
+        width : '563px', height : '300px !important',
+        theme_advanced_buttons1 : 'save,|,pasteword,|,undo,redo,|,bold,italic,forecolor,backcolor,fontsizeselect,formatselect,bullist,numlist,|,link,unlink,insertanything,|,code,pdw_toggle',
+        theme_advanced_buttons2 : 'justifyleft,justifycenter,justifyright,justifyfull,|,outdent,indent,|,tablecontrols,|,removeformat,cleanup',
+        theme_advanced_buttons3 : '',
         theme_advanced_path : true,
-        theme_advanced_toolbar_location : "top",
-        theme_advanced_toolbar_align : "left",
-        theme_advanced_statusbar_location : "bottom",
+        theme_advanced_toolbar_location : 'top',
+        theme_advanced_toolbar_align : 'left',
+        theme_advanced_statusbar_location : 'bottom',
         theme_advanced_resizing : true,
 
         save_enablewhendirty : false,
         save_onsavecallback: this.tinyMCE_onSave.bind(this),
 
-        plugins: "save,insertanything,paste,table,pdw",
+        plugins: 'save,insertanything,paste,table,pdw',
 
         pdw_toggle_on : 1,
-              pdw_toggle_toolbars : "2",
+        pdw_toggle_toolbars : '2',
 
-        theme_advanced_blockformats : "p,h2,h3",
+        theme_advanced_blockformats : 'p,h2,h3',
 
-        valid_elements : "iframe[*],object[*],embed[*],param[*],form[*],input[*],textarea[*],select[*],option[*]," +
-                 "p[class|style|id],b[class],i[class],strong[class],em[class],a[*],br[*],u[class],sup[*],sub[*]," +
-                 "ul[*],li,ol[*],img[*],hr[class],h2[class|style|id],h3[class|style|id],div[*],blockquote[*],table[*],thead[*],tbody[*],tr[*],td[*],span[*],ins[*],blockquote[*],time[*]",
+        valid_elements : 'iframe[*],object[*],embed[*],param[*],form[*],input[*],textarea[*],select[*],option[*],' +
+                 'p[class|style|id],b[class],i[class],strong[class],em[class],a[*],br[*],u[class],sup[*],sub[*],' +
+                 'ul[*],li,ol[*],img[*],hr[class],h2[class|style|id],h3[class|style|id],div[*],blockquote[*],table[*],thead[*],tbody[*],tr[*],td[*],span[*],ins[*],blockquote[*],time[*]',
         custom_elements : '',
         extended_valid_elements : '',
         convert_urls: false,
@@ -1297,13 +1296,13 @@ var BertaEditorBase = new Class({
 
     this.tinyMCESettings.full = new this.tinyMCESettings.Base();
     this.tinyMCESettings.simple = new this.tinyMCESettings.Base({
-      mode : "exact",
-      theme_advanced_buttons1 : "save,bold,italic,removeformat,link,code",
-      theme_advanced_buttons2 : "",
-      valid_elements : "p[*],b,i,strong,em,a[*],br[*],u,img[*],div[*],blockquote[*],iframe[*],span[*],ins[*],sup[*],sub[*]",
-      width : "100%", height: "60px !important",
+      mode : 'exact',
+      theme_advanced_buttons1 : 'save,bold,italic,removeformat,link,code',
+      theme_advanced_buttons2 : '',
+      valid_elements : 'p[*],b,i,strong,em,a[*],br[*],u,img[*],div[*],blockquote[*],iframe[*],span[*],ins[*],sup[*],sub[*]',
+      width : '100%', height: '60px !important',
       theme_advanced_statusbar_location : null,
-      plugins: "save,insertanything"
+      plugins: 'save,insertanything'
       //paste_postprocess : function(pl,o) { o.node.innerHTML = TidyEditor("paste_postprocess", o.node.innerHTML); }
     });
   },
@@ -1311,17 +1310,17 @@ var BertaEditorBase = new Class({
 
 
 
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-   ///  Utilities  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ///  Utilities  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
   unescapeHtml: function (str) {
-      var temp = document.createElement("div");
-      temp.innerHTML = str;
-      var result = temp.childNodes[0].nodeValue;
-      temp.removeChild(temp.firstChild);
-      return result;
+    var temp = document.createElement('div');
+    temp.innerHTML = str;
+    var result = temp.childNodes[0].nodeValue;
+    temp.removeChild(temp.firstChild);
+    return result;
   },
 
   getEmptyPlaceholder: function(property, caption) {
@@ -1353,7 +1352,8 @@ var BertaEditorBase = new Class({
 
 
   escapeForJSON: function(str) {
-    return encodeURIComponent(String(str));
+    // Replace &quot: xBertaEditorClassSimple editor reads value from element html instead of text
+    return String(str).replace(/\&quot;/g, '"');
   },
 
   getEntryInfoForElement:function(el) {
@@ -1393,9 +1393,9 @@ var BertaEditorBase = new Class({
       var isResponsive = settings['pageLayout'] && settings['pageLayout']['responsive'] && settings['pageLayout']['responsive'] === 'yes';
 
       if (!isResponsive) {
-          if (type_params.columns) { delete type_params.columns; }
-          if (type_params.entryMaxWidth) { delete type_params.entryMaxWidth; }
-          if (type_params.entryPadding) { delete type_params.entryPadding };
+        if (type_params.columns) { delete type_params.columns; }
+        if (type_params.entryMaxWidth) { delete type_params.entryMaxWidth; }
+        if (type_params.entryPadding) { delete type_params.entryPadding; };
       }
 
       params = Object.getOwnPropertyNames(type_params);
@@ -1403,21 +1403,21 @@ var BertaEditorBase = new Class({
         var param = type_params[param_name];
         var values= [];
         var ctx = {
-              html_before: param.html_before ? param.html_before : '',
-              format: formats[param.format] ? formats[param.format] : '',
-              property: param_name,
-              html_entities: param.html_entities ? '' : 'xNoHTMLEntities',
-              css_units: param.css_units ? '1' : '0',
-              link: param.link ? 'xLink' : '',
-              allow_blank: 'xRequired-' + (param.allow_blank ? '0': '1'),
-              validation: param.validator ? ('xValidator-' + param.validator) : '',
-              additional_params: params ? params : '',
-              title: escapeHTML(param.default),
-              path: basePath + param_name,
-              x_options: '',
-              value: section[param_name] ? section[param_name] : '',
-              html_after: param.html_after ? param.html_after : ''
-            };
+          html_before: param.html_before ? param.html_before : '',
+          format: formats[param.format] ? formats[param.format] : '',
+          property: param_name,
+          html_entities: param.html_entities ? '' : 'xNoHTMLEntities',
+          css_units: param.css_units ? '1' : '0',
+          link: param.link ? 'xLink' : '',
+          allow_blank: 'xRequired-' + (param.allow_blank ? '0': '1'),
+          validation: param.validator ? ('xValidator-' + param.validator) : '',
+          additional_params: params ? params : '',
+          title: escapeHTML(param.default),
+          path: basePath + param_name,
+          x_options: '',
+          value: section[param_name] ? section[param_name] : '',
+          html_after: param.html_after ? param.html_after : ''
+        };
 
         ctx.value = (!ctx.value &&
                      param &&
@@ -1491,179 +1491,183 @@ window.addEvent('domready', function(){
     });
   }
 
-    tourInit = function(){
+  tourInit = function(){
 
-        if (!Cookie.read('_berta_videos_hidden') || typeof(bertaGlobalOptions)=='undefined' || bertaGlobalOptions.skipTour) {
-            return;
-        }
-
-        var steps = [];
-        var engine_path = window.location.pathname.split( '/' );
-        engine_path.pop();
-        engine_path = engine_path.join('/') + '/';
-        var next = null;
-        var doneLabel = null;
-        var query = window.location.search.replace('?', '').parseQueryString();
-        var query_site = '';
-        if (query.site) {
-            query_site = "?site=" + query.site;
-        }
-
-        if ($$('.page-xSections').length) {
-            steps = [
-                {
-                    element: document.querySelector('#xSections'),
-                    intro: "Add, copy, hide or delete your sections here.",
-                    position: 'right'
-                }
-            ];
-            next = engine_path + 'settings.php' + query_site;
-        }else if($$('.page-xSettings').length){
-            steps = [
-                {
-                    element: document.querySelector('#xSettings'),
-                    intro: "Choose your template and edit general settings.",
-                    position: 'right'
-                }
-            ];
-            next = engine_path + 'settings.php?mode=template' + (query.site ? '&site=' + query.site : '');
-        }else if($$('.page-xTemplate').length){
-
-            steps.push(
-                {
-                    element: document.querySelector('#xMySite'),
-                    intro: "Site editing view. Add, drag & drop text and images",
-                    position: 'right'
-                }
-            );
-
-            steps.push(
-                {
-                    element: document.querySelector('#xTemplateDesign'),
-                    intro: "Customize web design: font, size, colors, spacing and other. You can even add your custom CSS code.",
-                    position: 'right'
-                }
-            );
-
-            var xHelpDesk = document.querySelector('#xHelpDesk');
-            if (xHelpDesk){
-                steps.push(
-                    {
-                        element: document.querySelector('#xHelpDesk'),
-                        intro: "Find help here - videos, tutorials, FAQs and a discussion board.",
-                        position: 'left'
-                    }
-                );
-            }
-
-            steps.push(
-                {
-                    element: document.querySelector('#xSections'),
-                    intro: "Start your website!",
-                    position: 'right'
-                }
-            );
-
-            doneLabel = 'Done';
-
-        }else if($$('.page-xMySite').length){
-            steps = [
-                {
-                    element: document.querySelector('#xTopPanelContainer'),
-                    intro: "Hey! This is a control panel.",
-                    position: 'right'
-                }
-            ];
-            next = engine_path + 'sections.php' + query_site;
-        }
-
-        if (steps.length) {
-
-            var tour = introJs();
-            var exitButton =  new Element('a', {
-                    'href': '#',
-                    'class': 'introjs-button introjs-exit'
-                }).set('html', 'Exit');
-
-            tour.setOptions({
-                steps: steps,
-                'doneLabel': doneLabel ? doneLabel : 'Next',
-                'nextLabel': 'Next',
-                'prevLabel': 'Back',
-                showBullets: false,
-                showStepNumbers: false,
-                exitOnOverlayClick: false
-            });
-
-            tour.start().onafterchange(function(){
-                var skipbutton = $$('.introjs-skipbutton');
-                if (skipbutton.length){
-                    if (skipbutton[0].get('text') == 'Done'){
-                        exitButton.hide();
-                        skipbutton[0].setStyles({'display': 'inline', 'float': 'left'});
-                    }else{
-                        exitButton.show();
-                        skipbutton[0].setStyles({'display': 'none', 'float':'none'});
-                    }
-                }
-            }).oncomplete(function() {
-                if (next) {
-                    window.location.href = next;
-                }else{
-                    exitTour();
-                }
-            }).onexit(function() {
-                exitTour();
-            });
-
-            //add exit button
-            setTimeout(function(){
-                var tooltipbuttons = $$('.introjs-tooltipbuttons');
-
-                exitButton.addEvent('click', function(e){
-                    e.preventDefault();
-                    tour.exit();
-                    exitTour();
-                });
-                exitButton.inject( tooltipbuttons[0] , 'top' );
-            }, 200);
-
-            var exitTour = function(){
-                var editor = new BertaEditorBase;
-                var updateUrl = editor.options.updateUrl;
-
-                if (query.site) {
-                    updateUrl = updateUrl + query_site;
-                }
-
-                var data = {
-                        property: 'tourComplete', value: 1
-                    };
-                console.log('BertaEditorBase.tourInit:', data);
-                new Request.JSON({
-                    url: updateUrl,
-                    data: "json=" + JSON.encode(data),
-                    onComplete: function(resp) {
-                        window.location.href = engine_path + 'sections.php' + query_site;
-                    }.bind(this)
-                }).post();
-            }
-        }
+    if (!Cookie.read('_berta_videos_hidden') || typeof(bertaGlobalOptions)=='undefined' || bertaGlobalOptions.skipTour) {
+      return;
     }
-    tourInit();
+
+    var steps = [];
+    var engine_path = window.location.pathname.split( '/' );
+    engine_path.pop();
+    engine_path = engine_path.join('/') + '/';
+    var next = null;
+    var doneLabel = null;
+    var query = window.location.search.replace('?', '').parseQueryString();
+    var query_site = '';
+    if (query.site) {
+      query_site = '?site=' + query.site;
+    }
+
+    if ($$('.page-xSections').length) {
+      steps = [
+        {
+          element: document.querySelector('#xSections'),
+          intro: 'Add, copy, hide or delete your sections here.',
+          position: 'right'
+        }
+      ];
+      next = engine_path + 'settings.php' + query_site;
+    }else if($$('.page-xSettings').length){
+      steps = [
+        {
+          element: document.querySelector('#xSettings'),
+          intro: 'Choose your template and edit general settings.',
+          position: 'right'
+        }
+      ];
+      next = engine_path + 'settings.php?mode=template' + (query.site ? '&site=' + query.site : '');
+    }else if($$('.page-xTemplate').length){
+
+      steps.push(
+        {
+          element: document.querySelector('#xMySite'),
+          intro: 'Site editing view. Add, drag & drop text and images',
+          position: 'right'
+        }
+      );
+
+      steps.push(
+        {
+          element: document.querySelector('#xTemplateDesign'),
+          intro: 'Customize web design: font, size, colors, spacing and other. You can even add your custom CSS code.',
+          position: 'right'
+        }
+      );
+
+      var xHelpDesk = document.querySelector('#xHelpDesk');
+      if (xHelpDesk){
+        steps.push(
+          {
+            element: document.querySelector('#xHelpDesk'),
+            intro: 'Find help here - videos, tutorials, FAQs and a discussion board.',
+            position: 'left'
+          }
+        );
+      }
+
+      steps.push(
+        {
+          element: document.querySelector('#xSections'),
+          intro: 'Start your website!',
+          position: 'right'
+        }
+      );
+
+      doneLabel = 'Done';
+
+    }else if($$('.page-xMySite').length){
+      steps = [
+        {
+          element: document.querySelector('#xTopPanelContainer'),
+          intro: 'Hey! This is a control panel.',
+          position: 'right'
+        }
+      ];
+      next = engine_path + 'sections.php' + query_site;
+    }
+
+    if (steps.length) {
+
+      var tour = introJs();
+      var exitButton =  new Element('a', {
+        'href': '#',
+        'class': 'introjs-button introjs-exit'
+      }).set('html', 'Exit');
+
+      tour.setOptions({
+        steps: steps,
+        'doneLabel': doneLabel ? doneLabel : 'Next',
+        'nextLabel': 'Next',
+        'prevLabel': 'Back',
+        showBullets: false,
+        showStepNumbers: false,
+        exitOnOverlayClick: false
+      });
+
+      tour.start().onafterchange(function(){
+        var skipbutton = $$('.introjs-skipbutton');
+        if (skipbutton.length){
+          if (skipbutton[0].get('text') == 'Done'){
+            exitButton.hide();
+            skipbutton[0].setStyles({'display': 'inline', 'float': 'left'});
+          }else{
+            exitButton.show();
+            skipbutton[0].setStyles({'display': 'none', 'float':'none'});
+          }
+        }
+      }).oncomplete(function() {
+        if (next) {
+          window.location.href = next;
+        }else{
+          exitTour();
+        }
+      }).onexit(function() {
+        exitTour();
+      });
+
+      //add exit button
+      setTimeout(function(){
+        var tooltipbuttons = $$('.introjs-tooltipbuttons');
+
+        exitButton.addEvent('click', function(e){
+          e.preventDefault();
+          tour.exit();
+          exitTour();
+        });
+        exitButton.inject( tooltipbuttons[0] , 'top' );
+      }, 200);
+
+      var exitTour = function(){
+        var editor = new BertaEditorBase;
+        var updateUrl = editor.options.updateUrl;
+
+        if (query.site) {
+          updateUrl = updateUrl + query_site;
+        }
+
+        var data = {
+          property: 'tourComplete', value: 1
+        };
+
+        new Request.JSON({
+          url: updateUrl,
+          data: JSON.stringify(data),
+          urlEncoded: false,
+          onComplete: function(resp) {
+            window.location.href = engine_path + 'sections.php' + query_site;
+          }.bind(this),
+          /* Called when on JSON conversion error:
+           * Will use this as error handler for now, because server only returns non-JSON on exception */
+          onError: function(responseBody){ console.error(responseBody); }
+        }).post();
+      };
+    }
+  };
+  tourInit();
 
 });
 
 
 function TidyEditor(t, v){
-    alert(v);
-    switch (t)
-    {
-        case "paste_postprocess":
-            var p4 = /<div id="_mcePaste[^>]*>(?!<div>)([\s\S]*)<\/div>([\s\S]*)$/i;
-            v = v.replace(p4, '<div>$1</div>');
-            var p5 = /<div id="_mcePaste[^>]*>/gi;
-            v = v.replace(p5, '<div>');
-    }
-    return v;
+  alert(v);
+  switch (t)
+  {
+    case 'paste_postprocess':
+      var p4 = /<div id="_mcePaste[^>]*>(?!<div>)([\s\S]*)<\/div>([\s\S]*)$/i;
+      v = v.replace(p4, '<div>$1</div>');
+      var p5 = /<div id="_mcePaste[^>]*>/gi;
+      v = v.replace(p5, '<div>');
+  }
+  return v;
 }

@@ -427,10 +427,11 @@ var MessyMess = new Class({
                 section: bertaEditor.currentSection, entry: target.getClassStoredValue('xEntryId'), entryNum: null,
                 action: 'PUT_BEFORE', property: '', value: nextEntry.getClassStoredValue('xEntryId')
             };
-        console.log('Messy-0.4.2.editor_saveOrder:', data);
+
 		new Request.JSON({
 			url: bertaEditor.options.updateUrl,
-			data: "json=" + JSON.encode(data),
+      data: JSON.stringify(data),
+      urlEncoded: false,
 			onComplete: function(resp) {
 
 			}.bind(this)

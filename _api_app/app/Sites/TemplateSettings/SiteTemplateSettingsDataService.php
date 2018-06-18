@@ -2,7 +2,7 @@
 
 namespace App\Sites\TemplateSettings;
 
-use App\Config\SiteTemplatesConfigService;
+use App\Configuration\SiteTemplatesConfigService;
 use App\Shared\Storage;
 
 /**

@@ -1,4 +1,4 @@
-(function(window, document) {
+(function(window) {
   'use strict';
 
   window.ActionTypes = {
@@ -58,4 +58,4 @@
     INIT_UPDATE_SECTION_ENTRY: 'INIT_UPDATE_SECTION_ENTRY',
     UPDATE_SECTION_ENTRY: 'UPDATE_SECTION_ENTRY'
   };
-})(window, document);
+})(window);
