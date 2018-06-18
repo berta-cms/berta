@@ -219,7 +219,7 @@ class SiteTemplatesConfigService
 
     public function __construct()
     {
-        $this->TEMPLATE_ROOT = realpath(__DIR__ . '/../../../_templates');
+        $this->TEMPLATE_ROOT = realpath(config('app.old_berta_root'). '/_templates');
     }
 
     public function get($lang = 'en')

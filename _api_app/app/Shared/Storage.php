@@ -24,8 +24,7 @@ class Storage
     public function __construct($site = '')
     {
         $this->SITE = $site;
-        $this->XML_MAIN_ROOT = realpath(__DIR__ . '/../../../storage');
-        $this->STORAGE_URL =
+        $this->XML_MAIN_ROOT = realpath(config('app.old_berta_root') . '/storage');
         $this->XML_SITES_ROOT = $this->XML_MAIN_ROOT . '/-sites';
 
         if (!empty($site) and $site !== '0') {
