@@ -36,8 +36,8 @@ class SitesController extends Controller
         $entries = [];
         if ($sections) {
             foreach ($sections->get() as $section) {
-                $sectionEntries = new SectionEntriesDataService($site['name'], $section['name']);
-                $entries = array_merge($entries, $sectionEntries->get());
+                $sectionEntriesDataService = new SectionEntriesDataService($site['name'], $section['name']);
+                $entries = array_merge($entries, $sectionEntriesDataService->getState());
             }
         }
 
@@ -56,7 +56,7 @@ class SitesController extends Controller
             'site' => $site,
             'settings' => $settings,
             'sections' => $sections ? $sections->getState() : [],
-            'entries' => $entries ? ['entry' => $entries] : [], // See if we need that wrap
+            'entries' => $entries,
             'tags' => $tags ? $tags->get() : [],
             'siteTemplateSettings' => $siteTemplateSettings,
         ];

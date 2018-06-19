@@ -15,24 +15,24 @@
             if (response.error_message) {
               // @TODO dispatch error message
             } else {
-
-              // @TODO when created site is a clone we need to clone related entries
-
               dispatch(Actions.createSite(response.site));
+
               if (response.settings) {
                 dispatch(Actions.createSiteSettings(response.site.name, response.settings));
               }
+
               if (response.sections && response.sections.length) {
                 for (var i = 0; i < response.sections.length; i++) {
                   dispatch(Actions.createSiteSection(response.sections[i]));
                 }
               }
-              /** @todo: handle entries in frontend
+
               if (response.entries && response.entries.length) {
-                for (var i = 0; i < response.entries.length; i++) {
-                  dispatch(Actions.sectionCreated(response.entries[i]));
-                }
-              } */
+                dispatch(Actions.addSiteSectionsEntries({
+                  site_name: response.site.name,
+                  entries: response.entries
+                }));
+              }
 
               if (response.tags && response.tags.section) {
                 dispatch(Actions.addSiteSectionsTags({

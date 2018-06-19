@@ -17,6 +17,10 @@
           return Immutable.fromJS(action.state.sectionEntries);
 
 
+        case ActionTypes.ADD_SITE_SECTIONS_ENTRIES:
+          return state.set(action.data.site_name, action.data.entries);
+
+
         case ActionTypes.ADD_SECTION_ENTRIES:
           return state.map(function (site, site_name) {
             if (site_name === action.data.site_name) {
@@ -93,34 +97,6 @@
             return site;
           });
 
-
-        // case ActionTypes.SECTION_CREATED:
-        //   entries = state.getIn([action.resp.site]).toJSON();
-        //   entries[action.resp.section.name] = action.resp.entries;
-
-        //   return state.setIn([action.resp.site], Immutable.fromJS(entries));
-
-        // case ActionTypes.SECTION_UPDATED:
-        //   if (action.resp.old_name) {
-        //     entries = state.getIn([action.resp.site]).toJSON();
-
-        //     if (entries.length) {
-        //       entry = entries[action.resp.old_name];
-        //       entry['@attributes'].section = action.resp.section.name;
-        //       entries[action.resp.section.name] = entry;
-        //       delete entries[action.resp.old_name];
-        //     }
-
-        //     return state.setIn([action.resp.site], Immutable.fromJS(entries));
-        //   }
-
-        //   return state;
-
-        // case ActionTypes.SECTION_DELETED:
-        //   entries = state.getIn([action.resp.site]).toJSON();
-        //   delete entries[action.resp.name];
-
-        //   return state.setIn([action.resp.site], Immutable.fromJS(entries));
 
         default:
           return state;

@@ -5,6 +5,14 @@
 
   Object.assign(window.Actions, {
 
+    addSiteSectionsEntries: function (data) {
+      return {
+        type: ActionTypes.ADD_SITE_SECTIONS_ENTRIES,
+        data: data
+      };
+    },
+
+
     addSectionEntries: function (data) {
       return {
         type: ActionTypes.ADD_SECTION_ENTRIES,
