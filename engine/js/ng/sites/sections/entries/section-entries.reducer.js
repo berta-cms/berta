@@ -39,6 +39,22 @@
           );
 
 
+        case ActionTypes.RENAME_SECTION_ENTRIES:
+          site_name = action.data.site_name === '0' ? '' : action.data.site_name;
+
+          return state.map(function (site, k) {
+            if (site_name === k) {
+              return site.map(function (entry) {
+                if (entry.get('sectionName') === action.data.section_old_name) {
+                  return entry.set('sectionName', action.data.section_name);
+                }
+                return entry;
+              });
+            }
+            return site;
+          });
+
+
         case ActionTypes.DELETE_SITE_SECTIONS_ENTRIES:
           return state.filter(function (entries, site_name) {
             return site_name !== action.data.site_name;

@@ -30,6 +30,14 @@
     },
 
 
+    renameSectionEntries: function (data) {
+      return {
+        type: ActionTypes.RENAME_SECTION_ENTRIES,
+        data: data
+      };
+    },
+
+
     deleteSiteSectionsEntries: function (data) {
       return {
         type: ActionTypes.DELETE_SITE_SECTIONS_ENTRIES,

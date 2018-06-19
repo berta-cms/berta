@@ -67,6 +67,7 @@
       return function (dispatch) {
         dispatch({ type: ActionTypes.INIT_UPDATE_SITE_SECTION });
         dispatch({ type: ActionTypes.INIT_UPDATE_SECTION_TAGS });
+        dispatch({ type: ActionTypes.INIT_UPDATE_SECTION_ENTRIES });
 
         sync(window.Berta.urls.siteSections, { path: path, value: value })
           .then(function (response) {
@@ -75,6 +76,11 @@
             } else {
               dispatch(Actions.updateSiteSection(response));
               dispatch(Actions.renameSectionTags({
+                site_name: response.site,
+                section_name: response.section.name,
+                section_old_name: response.old_name
+              }));
+              dispatch(Actions.renameSectionEntries({
                 site_name: response.site,
                 section_name: response.section.name,
                 section_old_name: response.old_name
