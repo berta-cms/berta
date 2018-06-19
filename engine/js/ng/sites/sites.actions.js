@@ -87,6 +87,7 @@
         dispatch({ type: ActionTypes.INIT_UPDATE_SITE_SETTINGS });
         dispatch({ type: ActionTypes.INIT_UPDATE_SITE_TEMPLATE_SETTINGS });
         dispatch({ type: ActionTypes.INIT_UPDATE_SECTION_TAGS });
+        dispatch({ type: ActionTypes.INIT_UPDATE_SECTION_ENTRIES });
 
         sync(window.Berta.urls.sites, { path: path, value: value })
           .then(function (response) {
@@ -113,6 +114,10 @@
                 site_name: response.value
               }));
               dispatch(Actions.renameSectionTagsSitename({
+                site: site,
+                site_name: response.value
+              }));
+              dispatch(Actions.renameSectionEntriesSitename({
                 site: site,
                 site_name: response.value
               }));

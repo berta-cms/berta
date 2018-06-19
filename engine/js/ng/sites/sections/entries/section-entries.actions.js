@@ -30,6 +30,14 @@
     },
 
 
+    renameSectionEntriesSitename: function (data) {
+      return {
+        type: ActionTypes.RENAME_SECTION_ENTRIES_SITENAME,
+        data: data
+      };
+    },
+
+
     renameSectionEntries: function (data) {
       return {
         type: ActionTypes.RENAME_SECTION_ENTRIES,

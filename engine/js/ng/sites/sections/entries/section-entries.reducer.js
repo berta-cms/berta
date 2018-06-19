@@ -39,6 +39,17 @@
           );
 
 
+        case ActionTypes.RENAME_SECTION_ENTRIES_SITENAME:
+          var site_old_name = action.data.site.get('name');
+
+          return state.mapKeys(function (site_name) {
+            if (site_name === site_old_name) {
+              return action.data.site_name;
+            }
+            return site_name;
+          });
+
+
         case ActionTypes.RENAME_SECTION_ENTRIES:
           site_name = action.data.site_name === '0' ? '' : action.data.site_name;
 

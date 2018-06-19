@@ -57,13 +57,13 @@
 
 
         case ActionTypes.RENAME_SECTION_TAGS_SITENAME:
-          var section_old_name = action.data.site.get('name');
+          var site_old_name = action.data.site.get('name');
 
-          return state.mapKeys(function (k) {
-            if (k === section_old_name) {
+          return state.mapKeys(function (site_name) {
+            if (site_name === site_old_name) {
               return action.data.site_name;
             }
-            return k;
+            return site_name;
           });
 
 
