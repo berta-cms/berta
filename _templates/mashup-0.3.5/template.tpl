@@ -63,7 +63,7 @@
                     { if $berta.settings.sideBar.image }
                     <h1><a href="{ bertaLink }">{ responsiveImage image = $berta.settings.sideBar prefix=image path = $berta.options.MEDIA_ABS_ROOT alt=$berta.settings.texts.pageTitle }</a></h1>
                     { else }
-                    <h1 class="xEditable xProperty-siteHeading">
+                    <h1 class="xEditable xProperty-siteHeading"{if $berta.environment == 'engine'} data-path="{ $berta.options.MULTISITE }/settings/siteTexts/siteHeading"{ /if }>
                         { if $berta.environment == "engine" }
                             { $siteHeading }
                         { else }
@@ -79,8 +79,8 @@
 						{if $berta.settings.socialMediaButtons.socialMediaLocation == 'additionalText' && $berta.settings.socialMediaButtons.socialMediaHTML}
                             { $berta.settings.socialMediaButtons.socialMediaHTML|@html_entity_decode|replace:'<br />':"\n" }
                         {else}
-							<div class="xEditableMCESimple xProperty-additionalText xCaption-additional-text">
-							{ $additionalText }
+							<div class="xEditableMCESimple xProperty-additionalText xCaption-additional-text"{if $berta.environment == 'engine'} data-path="{ $berta.options.MULTISITE }/settings/siteTexts/additionalText"{ /if }>
+							  { $additionalText }
 							</div>
 						{/if}
 					</div>
@@ -117,7 +117,9 @@
                 {if $berta.settings.socialMediaButtons.socialMediaLocation == 'footer' && $berta.settings.socialMediaButtons.socialMediaHTML}
                     { $berta.settings.socialMediaButtons.socialMediaHTML|@html_entity_decode|replace:'<br />':"\n" }
                 {/if}
-				<p id="userCopyright" class="xEditableTA xProperty-siteFooter">{ $siteFooter }</p>
+				<p id="userCopyright" class="xEditableTA xProperty-siteFooter"{if $berta.environment == 'engine'} data-path="{ $berta.options.MULTISITE }/settings/siteTexts/siteFooter"{ /if }>
+          { $siteFooter }
+        </p>
 				{ if !($berta.settings.settings.hideBertaCopyright=='yes' && $berta.hostingPlan>1) }
 					<p id="bertaCopyright">{ bertaCopyright }</p>
 				{ /if }
