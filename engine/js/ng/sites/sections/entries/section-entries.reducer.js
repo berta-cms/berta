@@ -5,7 +5,7 @@
 
   Object.assign(window.reducers, {
     sectionEntries: function(state, action) {
-      // var entry, entries = [];
+      var site_name;
 
       if (state === undefined) {
         state = Immutable.Map();
@@ -42,6 +42,19 @@
         case ActionTypes.DELETE_SITE_SECTIONS_ENTRIES:
           return state.filter(function (entries, site_name) {
             return site_name !== action.data.site_name;
+          });
+
+
+        case ActionTypes.DELETE_SECTION_ENTRIES:
+          site_name = action.data.site_name === '0' ? '' : action.data.site_name;
+
+          return state.map(function (site, s) {
+            if (site_name === s) {
+              return site.filter(function (entry) {
+                return entry.get('sectionName') !== action.data.section_name;
+              });
+            }
+            return site;
           });
 
 
