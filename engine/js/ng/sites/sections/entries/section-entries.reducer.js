@@ -17,6 +17,15 @@
           return Immutable.fromJS(action.state.sectionEntries);
 
 
+        case ActionTypes.ADD_SECTION_ENTRIES:
+          return state.map(function (site, site_name) {
+            if (site_name === action.data.site_name) {
+              return site.concat(Immutable.fromJS(action.data.entries));
+            }
+            return site;
+          });
+
+
         case ActionTypes.UPDATE_SECTION_ENTRY:
           var path = action.resp.path.split('/');
           var prop = action.resp.path.split('/').slice(4);

@@ -21,10 +21,8 @@
 
 
         case ActionTypes.ADD_SECTION_TAGS:
-          site_name = action.data.site_name;
-
-          return state.map(function (site, k) {
-            if (site_name === k) {
+          return state.map(function (site, site_name) {
+            if (action.data.site_name === site_name) {
               return site.map(function (sections) {
                 return sections.set(sections.size, Immutable.fromJS(action.data.tags));
               });

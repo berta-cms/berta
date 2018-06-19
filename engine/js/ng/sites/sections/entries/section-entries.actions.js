@@ -5,6 +5,14 @@
 
   Object.assign(window.Actions, {
 
+    addSectionEntries: function (data) {
+      return {
+        type: ActionTypes.ADD_SECTION_ENTRIES,
+        data: data
+      };
+    },
+
+
     initUpdateSectionEntry: function(path, value, onComplete) {
       return function (dispatch) {
         dispatch({ type: ActionTypes.INIT_UPDATE_SECTION_ENTRY });

@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 
 use App\Sites\Sections\SiteSectionsDataService;
 use App\Sites\Sections\Tags\SectionTagsDataService;
+use App\Sites\Sections\Entries\SectionEntriesDataService;
 
 class SiteSectionsController extends Controller
 {
@@ -26,11 +27,12 @@ class SiteSectionsController extends Controller
         );
 
         $tags = $cloneFrom ? new SectionTagsDataService($json['site'], $section['name']) : null;
+        $entries = $cloneFrom ? new SectionEntriesDataService($json['site'], $section['name']) : null;
 
         $resp = [
             'section' => $section,
             'tags' => $tags ? $tags->getSectionTags() : null,
-            'entries' => [], // @TODO implement entries
+            'entries' => $entries ? $entries->getState() : null,
         ];
 
         return response()->json($resp);

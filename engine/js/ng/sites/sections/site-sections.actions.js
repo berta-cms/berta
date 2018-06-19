@@ -23,6 +23,13 @@
                   tags: response.tags
                 }));
               }
+
+              if (response.entries) {
+                dispatch(Actions.addSectionEntries({
+                  site_name: site,
+                  entries: response.entries
+                }));
+              }
             }
             onComplete(response.section);
           });
