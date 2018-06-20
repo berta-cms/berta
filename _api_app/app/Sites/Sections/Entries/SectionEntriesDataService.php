@@ -426,4 +426,14 @@ class SectionEntriesDataService Extends Storage {
             $this->SECTION_TITLE = $title;
         }
     }
+
+    public function galleryOrder()
+    {
+
+    }
+
+    public function galleryDelete()
+    {
+
+    }
 }
