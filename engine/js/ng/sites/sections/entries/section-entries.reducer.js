@@ -32,11 +32,9 @@
 
         case ActionTypes.UPDATE_SECTION_ENTRY:
           var path = action.resp.path.split('/');
-          var prop = action.resp.path.split('/').slice(4);
-          var siteName = path[0];
+          var siteName = path[0] === '0' ? '' : path[0];
           var sectionName = path[2];
           var entryId = path[3];
-          var value = action.resp.value;
 
           var index = state.get(siteName).findIndex(function (entry) {
             return entry.get('id') === entryId && entry.get('sectionName') === sectionName;
@@ -47,8 +45,8 @@
           }
 
           return state.setIn(
-            [siteName, index].concat(prop),
-            value
+            [siteName, index],
+            state.getIn([siteName, index]).merge(action.resp.entry)
           );
 
 
@@ -92,6 +90,22 @@
             if (site_name === s) {
               return site.filter(function (entry) {
                 return entry.get('sectionName') !== action.data.section_name;
+              });
+            }
+            return site;
+          });
+
+
+        case ActionTypes.ORDER_SECTION_ENTRY_GALLERY:
+          return state.map(function (site, site_name) {
+            if (site_name === action.resp.site) {
+              return site.map(function (entry) {
+                if (entry.get('sectionName') === action.resp.section && entry.get('id') === action.resp.entry_id) {
+                  return entry
+                    .set('mediafolder', action.resp.mediafolder)
+                    .setIn(['mediaCacheData', 'file'], action.resp.files);
+                }
+                return entry;
               });
             }
             return site;

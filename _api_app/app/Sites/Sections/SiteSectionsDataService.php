@@ -459,7 +459,7 @@ class SiteSectionsDataService extends Storage
             $mediafolder = $this->MEDIA_ROOT . '/' . $section['mediafolder'] . '/';
             $this->deleteMedia($mediafolder, $file);
 
-            $file = current(array_splice($section['mediaCacheData']['file'], $file_order, 1));
+            $file = current(array_splice($files, $file_order, 1));
             $this->array2xmlFile($sections, $this->XML_FILE, $this->ROOT_ELEMENT);
 
             return [

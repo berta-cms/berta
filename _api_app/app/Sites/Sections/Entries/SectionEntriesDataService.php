@@ -271,6 +271,8 @@ class SectionEntriesDataService Extends Storage {
 
         $this->array2xmlFile($entries, $this->XML_FILE, $this->ROOT_ELEMENT);
 
+        $ret['entry'] = $entries[self::$ROOT_LIST_ELEMENT][$index];
+
         return $ret;
     }
 
@@ -427,13 +429,114 @@ class SectionEntriesDataService Extends Storage {
         }
     }
 
-    public function galleryOrder()
+    public function galleryOrder($section_name, $entry_id, $new_files)
     {
+        $entries = $this->get();
+        $entry_order = array_search($entry_id, array_column($entries['entry'], 'id'));
 
+        if ($entry_order !== false) {
+            $entry = &$entries['entry'][$entry_order];
+            $entry['mediaCacheData'] = isset($entry['mediaCacheData']) ? $entry['mediaCacheData'] : array('file' => []);
+            $files = $this->asList($entry['mediaCacheData']['file']);
+
+            $reordered = [];
+
+            foreach ($new_files as $file) {
+                $file_order = array_search(
+                    $file,
+                    array_column(
+                        array_column(
+                            $files,
+                            '@attributes'
+                        ),
+                        'src'
+                    )
+                );
+
+                if ($file_order !== false) {
+                    array_push($reordered, $files[$file_order]);
+                }
+            }
+
+            if ($new_files) {
+                $entry['mediaCacheData']['file'] = $reordered;
+            } else {
+                unset($entry['mediaCacheData']);
+            }
+
+            $this->array2xmlFile($entries, $this->XML_FILE, $this->ROOT_ELEMENT);
+
+            return [
+                'site' => $this->SITE,
+                'section' => $section_name,
+                'entry_id' => $entry_id,
+                'mediafolder' => $entry['mediafolder'],
+                'files' => $reordered,
+            ];
+        }
+
+        return ['error_message' => 'Entry with ID "' . $entry_id . '" not found!'];
     }
 
-    public function galleryDelete()
+    public function galleryDelete($section_name, $entry_id, $file)
     {
+        $entries = $this->get();
+        $entry_order = array_search($entry_id, array_column($entries['entry'], 'id'));
 
+        if ($entry_order !== false) {
+            $entry = &$entries['entry'][$entry_order];
+
+            if (!isset($entry['mediaCacheData'])) {
+                return ['error_message' => 'File "' . $file . '" not found!'];
+            }
+
+            $files = $this->asList($entry['mediaCacheData']['file']);
+            $file_order = array_search(
+                $file,
+                array_column(
+                    array_column(
+                        $files,
+                        '@attributes'
+                    ),
+                    'src'
+                )
+            );
+
+            if ($file_order === false) {
+                return ['error_message' => 'File "' . $file . '" not found!'];
+            }
+
+            $mediafolder = $this->MEDIA_ROOT . '/' . $entry['mediafolder'] . '/';
+            $this->deleteMedia($mediafolder, $file);
+
+            $file = current(array_splice($files, $file_order, 1));
+            $this->array2xmlFile($entries, $this->XML_FILE, $this->ROOT_ELEMENT);
+
+            return [
+                'site' => $this->SITE,
+                'section' => $section_name,
+                'entry_id' => $entry_id,
+                'file' => $file['@attributes']['src'],
+            ];
+        }
+
+        return ['error_message' => 'Entry with ID "' . $entry_id . '" not found!'];
+    }
+
+    private function deleteMedia($folder, $file = '')
+    {
+        @unlink($folder . $file);
+
+        if ($handle = opendir($folder)) {
+            while (false !== ($f = readdir($handle))) {
+                if (!$file || strpos($f, $file) !== false) {
+                    if (substr($f, 0, 1) == '_') {
+                        @unlink($folder . $f);
+                    }
+                }
+            }
+
+            closedir($handle);
+        }
     }
 }

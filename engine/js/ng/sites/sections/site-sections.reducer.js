@@ -32,8 +32,6 @@
           value = action.resp.value;
           prop = path.slice(3);  // "title" or "@attributes/published"
 
-          // @TODO also update section relations if name changed
-
           return state.map(function (section) {
             if (section.get('site_name') === site_name && section.get('order') === order && section.getIn(prop) !== value) {
               return section.merge(action.resp.section);

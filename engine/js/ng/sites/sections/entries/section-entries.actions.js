@@ -75,6 +75,58 @@
         type: ActionTypes.DELETE_SECTION_ENTRIES,
         data: data
       };
+    },
+
+
+    initOrderSectionEntryGallery: function(site, section, entryId, files, onComplete) {
+      return function (dispatch) {
+        dispatch({ type: ActionTypes.INIT_ORDER_SECTION_ENTRY_GALLERY });
+
+        sync(window.Berta.urls.entryGallery, {site: site, section: section, entryId: entryId, files: files}, 'PUT')
+          .then(function (response) {
+            if (response.error_message) {
+              // @TODO dispatch error message
+            } else {
+              dispatch(Actions.orderSectionEntryGallery(response));
+            }
+            onComplete(response);
+          });
+      };
+    },
+
+
+    orderSectionEntryGallery: function(resp) {
+      return {
+        type: ActionTypes.ORDER_SECTION_ENTRY_GALLERY,
+        resp: resp
+      };
+    },
+
+
+    initDeleteEntryGalleryImage: function(site, section, entryId, file, onComplete) {
+      return function (dispatch) {
+        dispatch({ type: ActionTypes.INIT_DELETE_ENTRY_GALLERY_IMAGE });
+
+        sync(window.Berta.urls.entryGallery, {site: site, section: section, entryId: entryId, file: file}, 'DELETE')
+          .then(function (response) {
+            if (response.error_message) {
+              // @TODO dispatch error message
+            } else {
+              dispatch(Actions.deleteEntryGalleryImage(response));
+            }
+            onComplete(response);
+          });
+      };
+    },
+
+
+    // There is no reducer for this action at the moment
+    // `orderSectionEntryGallery` is called after delete which updates state
+    deleteEntryGalleryImage: function(resp) {
+      return {
+        type: ActionTypes.DELETE_ENTRY_GALLERY_IMAGE,
+        resp: resp
+      };
     }
   });
 

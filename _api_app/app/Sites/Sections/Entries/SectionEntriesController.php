@@ -29,18 +29,16 @@ class SectionEntriesController extends Controller
     public function galleryOrder(Request $request)
     {
         $json = $request->json()->all();
-        // $sectionEntriesDataService = new SectionEntriesDataService($json['site']);
-        // $ret = $sectionEntriesDataService->galleryOrder($json['section'], $json['files']);
-        $ret = $json;
+        $sectionEntriesDataService = new SectionEntriesDataService($json['site'], $json['section']);
+        $ret = $sectionEntriesDataService->galleryOrder($json['section'], $json['entryId'], $json['files']);
         return response()->json($ret);
     }
 
     public function galleryDelete(Request $request) {
         $json = $request->json()->all();
-        // $sectionEntriesDataService = new SectionEntriesDataService($json['site']);
-        // $res = $sectionEntriesDataService->galleryDelete($json['section'], $json['file']);
-        $ret = $json;
-        return response()->json($res);
+        $sectionEntriesDataService = new SectionEntriesDataService($json['site'], $json['section']);
+        $ret = $sectionEntriesDataService->galleryDelete($json['section'], $json['entryId'], $json['file']);
+        return response()->json($ret);
     }
 
 }

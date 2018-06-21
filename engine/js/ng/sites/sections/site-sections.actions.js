@@ -237,6 +237,8 @@
     },
 
 
+    // There is no reducer for this action at the moment
+    // `orderSiteSectionBackgrounds` is called after delete which updates state
     deleteSiteSectionBackground: function (resp) {
       return {
         type: ActionTypes.DELETE_SITE_SECTION_BACKGROUND,
