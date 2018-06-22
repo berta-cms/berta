@@ -64,6 +64,35 @@
     },
 
 
+    initDeleteSectionEntry: function(site, section, entryId, onComplete) {
+      return function (dispatch) {
+        dispatch({ type: ActionTypes.INIT_DELETE_SECTION_ENTRY });
+
+        sync(window.Berta.urls.sectionEntries, {site: site, section: section, entryId: entryId}, 'DELETE')
+          .then(function (response) {
+            if (response.error_message) {
+              // @TODO dispatch error message
+            } else {
+              dispatch(Actions.deleteSectionEntry(response));
+
+              // @todo update populated tags
+
+              // @todo update section - has_direct_content, SectionEntryCount
+            }
+            onComplete(response);
+          });
+      };
+    },
+
+
+    deleteSectionEntry: function(resp) {
+      return {
+        type: ActionTypes.DELETE_SECTION_ENTRY,
+        resp: resp
+      };
+    },
+
+
     deleteSiteSectionsEntries: function (data) {
       return {
         type: ActionTypes.DELETE_SITE_SECTIONS_ENTRIES,

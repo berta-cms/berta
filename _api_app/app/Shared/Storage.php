@@ -192,6 +192,10 @@ class Storage
      */
     protected function delFolder($dir)
     {
+        if (!is_dir($dir)) {
+            return;
+        }
+
         $files = array_diff(scandir($dir), array('.', '..'));
         foreach ($files as $file) {
             (is_dir("$dir/$file") && !is_link($dir)) ? $this->delFolder("$dir/$file") : unlink("$dir/$file");

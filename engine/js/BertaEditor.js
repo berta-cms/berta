@@ -594,32 +594,30 @@ var BertaEditor = new Class({
 				entryObj.addClass('xSavingAtLarge');
 
 				var deleteProcessId = this.unlinearProcess_getId('delete-entry');
-				//var entryTitleEl = entryObj.getElement('h2');
 				this.unlinearProcess_start(deleteProcessId, 'Deleting entry');
 
-				var data = {
-						section: this.currentSection, entry: entryId, action: 'DELETE_ENTRY', value: entryId
-					};
+        var site = getCurrentSite();
 
-				new Request.JSON({
-					url: this.options.updateUrl,
-          data: JSON.stringify(data),
-          urlEncoded: false,
-					onComplete: function(resp, entryInfo, deleteLink, eText) {
+        redux_store.dispatch(Actions.initDeleteSectionEntry(
+          site,
+          this.currentSection,
+          entryId,
+          function(resp) {
 						if(!resp) {
 							alert('Berta says, there was a server error while deleting this entry! Something has gone sooooo wrong...');
 
 						} else if(resp && !resp.error_message) {
 							this.unlinearProcess_stop(deleteProcessId);
 							entryObj.destroy();
-                            entryThumbnail.destroy();
+              entryThumbnail.destroy();
+
 						} else {
 							alert(resp.error_message);
 							btn.setProperty('display', 'inline');
 							entryObj.removeClass('xSavingAtLarge');
 						}
 					}.bindWithEvent(this)
-				}).post();
+        ));
 			}
 		}
 	},

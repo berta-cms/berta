@@ -3,6 +3,8 @@
 namespace App\Sites\Sections\Entries;
 
 use App\Shared\Storage;
+use App\Sites\Sections\SiteSectionsDataService;
+use App\Sites\Sections\Tags\SectionTagsDataService;
 
 /**
  * @class SectionEntriesDataService
@@ -433,6 +435,60 @@ class SectionEntriesDataService Extends Storage {
         }
 
         return array('success' => true);
+    }
+
+    public function deleteEntry($entry_id)
+    {
+        $entries = $this->get();
+        $entry_order = array_search($entry_id, array_column($entries['entry'], 'id'));
+
+        if ($entry_order === false) {
+            return[
+                'error_message' => 'Entry with ID "' . $entry_id . '" not found!'
+            ];
+        }
+
+        $entry = $entries['entry'][$entry_order];
+
+        // Delete entry media folder
+        if (isset($entry['mediafolder']) && !empty($entry['mediafolder'])) {
+            $this->delFolder($this->MEDIA_ROOT . '/' . $entry['mediafolder']);
+        }
+
+        // Delete entry
+        array_splice($entries['entry'], $entry_order, 1);
+        $this->array2xmlFile($entries, $this->XML_FILE, $this->ROOT_ELEMENT);
+
+        // Update section entry count
+        $siteSectionsDataService = new SiteSectionsDataService($this->SITE);
+        $sections = $siteSectionsDataService->get();
+        $section_order = array_search($this->SECTION_NAME, array_column($sections, 'name'));
+        $section_entry_count = count($entries['entry']);
+        $siteSectionsDataService->saveValueByPath(
+            implode('/', [
+                $this->SITE,
+                'section',
+                $section_order,
+                '@attributes',
+                'entry_count'
+            ]),
+            $section_entry_count
+        );
+
+        // update direct content property
+        $sectionTagsDataService = new SectionTagsDataService($this->SITE, $this->SECTION_NAME);
+        $section_tags = $sectionTagsDataService->populateTags();
+
+        return [
+            'site' => $this->SITE,
+            'section' => $this->SECTION_NAME,
+            'entry_id' => $entry['id'],
+            'tags' => $section_tags,
+
+            // @todo Fix has_direct_content bug - return wrong value
+            'has_direct_content' => $section_tags['allHaveTags'],
+            'entry_count' => $section_entry_count
+        ];
     }
 
     private function setTitle($title) {

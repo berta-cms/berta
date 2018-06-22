@@ -26,6 +26,14 @@ class SectionEntriesController extends Controller
         return response()->json($res);
     }
 
+    public function delete(Request $request)
+    {
+        $json = $request->json()->all();
+        $sectionEntriesDataService = new SectionEntriesDataService($json['site'], $json['section']);
+        $res = $sectionEntriesDataService->deleteEntry($json['entryId']);
+        return response()->json($res);
+    }
+
     public function galleryOrder(Request $request)
     {
         $json = $request->json()->all();

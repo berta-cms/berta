@@ -133,6 +133,17 @@ class SectionTagsDataService Extends Storage {
                 ];
             } else {
                 $this->TAGS['section'] = $this->asList($this->TAGS['section']);
+
+                // Make tags list as list
+                foreach ($this->TAGS['section'] as $order => $section) {
+                    if (isset($section['tag'])) {
+                        $this->TAGS['section'][$order]['tag'] = $this->asList($section['tag']);
+
+                        if (!$this->TAGS['section'][$order]['tag'][0]) {
+                            $this->TAGS['section'][$order]['tag'] = [];
+                        }
+                    }
+                }
             }
         }
 
