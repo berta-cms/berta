@@ -202,6 +202,10 @@ class SectionEntriesDataService Extends Storage {
                 foreach ($this->ENTRIES[self::$ROOT_LIST_ELEMENT] as $order => $entry) {
                     if (isset($entry['mediaCacheData']['file'])) {
                         $this->ENTRIES[self::$ROOT_LIST_ELEMENT][$order]['mediaCacheData']['file'] = $this->asList($entry['mediaCacheData']['file']);
+
+                        if (!$this->ENTRIES[self::$ROOT_LIST_ELEMENT][$order]['mediaCacheData']['file'][0]) {
+                            $this->ENTRIES[self::$ROOT_LIST_ELEMENT][$order]['mediaCacheData']['file'] = [];
+                        }
                     }
                 }
             }
@@ -466,11 +470,7 @@ class SectionEntriesDataService Extends Storage {
                 }
             }
 
-            if ($new_files) {
-                $entry['mediaCacheData']['file'] = $reordered;
-            } else {
-                unset($entry['mediaCacheData']);
-            }
+            $entry['mediaCacheData']['file'] = $new_files ? $reordered : [];
 
             $this->array2xmlFile($entries, $this->XML_FILE, $this->ROOT_ELEMENT);
 
