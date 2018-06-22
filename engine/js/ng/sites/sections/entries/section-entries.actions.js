@@ -32,7 +32,9 @@
             } else {
               dispatch(Actions.updateSectionEntry(response));
             }
-            onComplete(response);
+            if (onComplete) {
+              onComplete(response);
+            }
           });
       };
     },

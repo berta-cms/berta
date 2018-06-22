@@ -185,7 +185,8 @@ class SectionEntriesDataService Extends Storage {
     *
     * @return array Array of entries
     */
-    public function get() {
+    public function get()
+    {
         if (!$this->ENTRIES) {
             $this->ENTRIES = $this->xmlFile2array($this->XML_FILE);
 
@@ -196,6 +197,13 @@ class SectionEntriesDataService Extends Storage {
                     $this->ENTRIES[self::$ROOT_LIST_ELEMENT] = [];
                 }
                 $this->ENTRIES[self::$ROOT_LIST_ELEMENT] = $this->asList($this->ENTRIES[self::$ROOT_LIST_ELEMENT]);
+
+                // Make gallery file list as list
+                foreach ($this->ENTRIES[self::$ROOT_LIST_ELEMENT] as $order => $entry) {
+                    if (isset($entry['mediaCacheData']['file'])) {
+                        $this->ENTRIES[self::$ROOT_LIST_ELEMENT][$order]['mediaCacheData']['file'] = $this->asList($entry['mediaCacheData']['file']);
+                    }
+                }
             }
         }
 

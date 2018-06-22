@@ -460,12 +460,7 @@ var BertaGalleryEditor = new Class({
     $$(media, images).addClass('xHidden');
     cropToolbox.removeClass('xHidden');
 
-    cancel.addEvent('click', function(e){
-      try {
-        e.stop();
-      } catch(err){
-        console.error(err);
-      }
+    cancel.addEvent('click', function() {
       cropToolbox.addClass('xHidden');
       $$(media, images).removeClass('xHidden');
     });
@@ -486,7 +481,7 @@ var BertaGalleryEditor = new Class({
         var origImage = new Image();
         origImage.src = imageSrc;
 
-        origImage.onload = function(){
+        origImage.onload = function() {
 
           var widthOrig = origImage.width;
           var heightOrig = origImage.height;
@@ -624,7 +619,7 @@ var BertaGalleryEditor = new Class({
             ratio.fireEvent('setRatio');
           });
 
-          processCrop.removeEvents().addEvent('click', function(){
+          processCrop.removeEvents().addEvent('click', function() {
 
             Cookie.write('_berta_crop_width', widthReal);
             Cookie.write('_berta_crop_height', heightReal);
@@ -648,6 +643,10 @@ var BertaGalleryEditor = new Class({
               h: heightInput.get('value')
             };
 
+            var site = getCurrentSite();
+            var image_order = liEl.getParent('ul').getChildren('li').indexOf(liEl);
+            var path = site + '/entry/' + this.sectionName + '/' + this.entryId + '/mediaCacheData/file/' + image_order + '/@attributes/src';
+
             new Request.JSON({
               url: editor.options.updateUrl,
               data: JSON.stringify(data),
@@ -660,12 +659,17 @@ var BertaGalleryEditor = new Class({
                 cancel.fireEvent('click');
                 loader.addClass('xHidden');
                 $$(processCrop, cancel).removeProperty('disabled');
+
+                redux_store.dispatch(Actions.initUpdateSectionEntry(
+                  path,
+                  resp.update
+                ));
               }
             }).post();
 
-          });
-        };
-      }
+          }.bind(this));
+        }.bind(this);
+      }.bind(this)
     });
   },
 
