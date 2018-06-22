@@ -11,7 +11,8 @@
 function smarty_function_entryHeader($params, &$smarty) {
 	global $berta;
 
-	$settings = $berta->template->settings;
+    $settings = $berta->template->settings;
+    $basePath = $berta::$options['MULTISITE'] . '/entry/' . $params['section'] . '/' .  $params['entry']['id'] . '/';
 
 	if($berta->environment != 'engine') return '';
 
@@ -42,7 +43,7 @@ function smarty_function_entryHeader($params, &$smarty) {
 			<div class="xEntryDropdownBox">
 				<ul>
 					<li>
-						<a><div class="xEntryCheck"><label><span class="xEditableRealCheck xProperty-marked">$markedValue</span>Marked</label></div></a>
+						<a><div class="xEntryCheck"><label><span class="xEditableRealCheck xProperty-marked" data-path="{$basePath}marked">$markedValue</span>Marked</label></div></a>
 					</li>
 					<li>
 						<a href="#" class="xEntryDelete xAction-entryDelete" title="delete"><span>Delete</span></a>

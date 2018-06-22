@@ -306,7 +306,7 @@
                                 { $isshopentry=1 }
                             { /if }
                             {* the entry settings and delete and move buttons live in the entryHeader - don't leave it out! *}
-                            { customEntryHeader entry=$entry ishopentry=$isshopentry }
+                            { customEntryHeader entry=$entry section=$berta.section.name ishopentry=$isshopentry }
 
                             {* entryGallery prints the image gallery for the entry *}
 

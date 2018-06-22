@@ -152,7 +152,7 @@
  					<li class="entry {if $berta.section.type == 'portfolio'}xHidden {/if}{ entryClasses entry=$entry }" id="{ entrySlug entry=$entry }">
 
 						{* the entry settings and delete and move buttons live in the entryHeader - don't leave it out! *}
-						{ entryHeader entry=$entry }
+						{ entryHeader section=$berta.section.name entry=$entry }
 
 						{ if $berta.settings.entryLayout.galleryPosition == 'above title' }
 							{* entryGallery prints the image gallery for the entry *}
