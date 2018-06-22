@@ -214,14 +214,13 @@ var BertaGalleryEditor = new Class({
 
     //add caption editor
     var site = getCurrentSite();
-    var path = site + '/entry/' + this.sectionName + '/' + this.entryId + '/mediaCacheData/file/' + image_order + '/@value';
+    var basePath = site + '/entry/' + this.sectionName + '/' + this.entryId + '/mediaCacheData/file/' + image_order + '/';
     var caption = new Element('div',
       {
-        'class': 'xEGEImageCaption xEditableMCESimple xProperty-galleryImageCaption xCaption-caption xParam-'+uploadResponseJSON.get('filename')+' xEditableMCE'
+        'class': 'xEGEImageCaption xEditableMCESimple xProperty-galleryImageCaption xCaption-caption xParam-'+uploadResponseJSON.get('filename')+' xEditableMCE',
+        'data-path': basePath + '@value'
       }).set('html','<span class="xEmpty">&nbsp;caption&nbsp;</span>'
     ).inject(container);
-
-    caption.set('data-path', path).data('data-path', true);
 
     this.elementEdit_init(caption, this.options.xBertaEditorClassMCE);
 
@@ -240,7 +239,14 @@ var BertaGalleryEditor = new Class({
         posterLink
       ).inject(container);
 
-      var autoPlayCheckbox = new Element('span', { 'class': 'xEditableRealCheck xProperty-videoAutoplay xParam-'+uploadResponseJSON.get('filename'), 'text': 0 });
+      var autoPlayCheckbox = new Element(
+        'span',
+        {
+          'class': 'xEditableRealCheck xProperty-videoAutoplay xParam-'+uploadResponseJSON.get('filename'),
+          'text': 0,
+          'data-path': basePath + '@attributes/autoplay'
+        }
+      );
       this.elementEdit_init(autoPlayCheckbox, this.options.xEditableRealCheck);
       var autoPlayLabel =  new Element('label', { 'html': 'autoplay' });
       autoPlayCheckbox.inject(autoPlayLabel, 'top');

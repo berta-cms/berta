@@ -531,6 +531,7 @@ class SectionEntriesDataService Extends Storage {
         return ['error_message' => 'Entry with ID "' . $entry_id . '" not found!'];
     }
 
+    // @todo video poster should also be removed
     private function deleteMedia($folder, $file = '')
     {
         @unlink($folder . $file);
