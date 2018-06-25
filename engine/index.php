@@ -31,7 +31,7 @@ $int_version = BertaEditor::$options['int_version'];
     <script type="text/javascript">
     var bertaGlobalOptions = {
         "paths":{
-        "engineRoot":"<?php echo BertaEditor::$options['ENGINE_BASE_URL'] ?>",
+        "engineRoot":"<?php echo BertaEditor::$options['ENGINE_ROOT_URL'] ?>",
         "engineABSRoot":"<?php echo BertaEditor::$options['ENGINE_ABS_ROOT'] ?>",
         "siteABSRoot" : "<?php echo BertaEditor::$options['SITE_ABS_ROOT'] ?>",
         "template" : "<?php echo BertaEditor::$options['SITE_ABS_ROOT'] . '_templates/' . $berta->template->name . '/' ?>"

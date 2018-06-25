@@ -25,7 +25,7 @@ $int_version = BertaEditor::$options['int_version'];
 
 <body class="xSettingsPageBody" x_mode="profile">
 	<form name="infoForm" id="infoForm">
-		<input type="hidden" name="ENGINE_ROOT" id="ENGINE_ROOT" value="<?php echo htmlspecialchars($ENGINE_BASE_URL) ?>" />
+		<input type="hidden" name="ENGINE_ROOT" id="ENGINE_ROOT" value="<?php echo htmlspecialchars($ENGINE_ROOT_URL) ?>" />
 	</form>
 	<?php echo $topPanelHTML ?>
 	<div id="allContainer">
@@ -34,7 +34,7 @@ $int_version = BertaEditor::$options['int_version'];
 
 			<div id="xSectionsEditor">
 
-				<form name="password_form" id="password_form" method="get" action="<?php echo htmlspecialchars($ENGINE_BASE_URL) ?>update.php" >
+				<form name="password_form" id="password_form" method="get" action="<?php echo htmlspecialchars($ENGINE_ROOT_URL) ?>update.php" >
 					<label for="old_password"><?php echo I18n::_('Old password') ?></label><br />
 					<input type="password" name="old_password" id="old_password" value="" /><br />
 					<label for="new_password"><?php echo I18n::_('New password') ?></label><br />

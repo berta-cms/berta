@@ -33,13 +33,13 @@ if(function_exists('mb_internal_encoding') && function_exists('mb_regex_encoding
 // basic paths...
 
 if(empty($INDEX_INCLUDED)) $INDEX_INCLUDED = false;
-if(empty($SITE_ROOT)) $SITE_ROOT = dirname(__dir__). '/';
-if(empty($SITE_BASE_PATH)) $SITE_BASE_PATH = dirname(__dir__). '/';
-if(empty($SITE_BASE_URL)) $SITE_BASE_URL = '/';
+if(empty($SITE_ROOT_PATH)) $SITE_ROOT_PATH = dirname(__dir__). '/';
+if(empty($SITE_ROOT)) $SITE_ROOT = $SITE_ROOT_PATH;
+if(empty($SITE_ROOT_URL)) $SITE_ROOT_URL = '/';
 
 if(empty($ENGINE_ROOT)) $ENGINE_ROOT = $SITE_ROOT . 'engine/';
-if(empty($ENGINE_BASE_PATH)) $ENGINE_BASE_PATH = $SITE_BASE_PATH . 'engine/';
-if(empty($ENGINE_BASE_URL)) $ENGINE_BASE_URL = $SITE_BASE_URL . 'engine/';
+if(empty($ENGINE_ROOT_PATH)) $ENGINE_ROOT_PATH = $SITE_ROOT_PATH . 'engine/';
+if(empty($ENGINE_ROOT_URL)) $ENGINE_ROOT_URL = $SITE_ROOT_URL . 'engine/';
 
 $SITE_ABS_ROOT = str_replace('\\', '/', dirname($_SERVER['PHP_SELF']));
 
