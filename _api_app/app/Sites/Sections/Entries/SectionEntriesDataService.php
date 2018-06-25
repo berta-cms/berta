@@ -476,17 +476,27 @@ class SectionEntriesDataService Extends Storage {
         );
 
         // update direct content property
+        $siteSectionsDataService = new SiteSectionsDataService($this->SITE);
         $sectionTagsDataService = new SectionTagsDataService($this->SITE, $this->SECTION_NAME);
         $section_tags = $sectionTagsDataService->populateTags();
+        $has_direct_content = !$section_tags['allHaveTags'] ? 1 : 0;
+        $siteSectionsDataService->saveValueByPath(
+            implode('/', [
+                $this->SITE,
+                'section',
+                $section_order,
+                '@attributes',
+                'has_direct_content'
+            ]),
+            $has_direct_content
+        );
 
         return [
             'site' => $this->SITE,
             'section' => $this->SECTION_NAME,
             'entry_id' => $entry['id'],
             'tags' => $section_tags,
-
-            // @todo Fix has_direct_content bug - return wrong value
-            'has_direct_content' => $section_tags['allHaveTags'],
+            'has_direct_content' => $has_direct_content,
             'entry_count' => $section_entry_count
         ];
     }

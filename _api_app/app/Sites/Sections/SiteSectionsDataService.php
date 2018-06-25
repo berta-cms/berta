@@ -143,6 +143,10 @@ class SiteSectionsDataService extends Storage
             $this->SECTIONS = $this->xmlFile2array($this->XML_FILE);
 
             if ($this->SECTIONS) {
+                if (!isset($this->SECTIONS['section']) || !$this->SECTIONS['section']) {
+                    $this->SECTIONS['section'] = [];
+                }
+
                 $this->SECTIONS = $this->asList($this->SECTIONS['section']);
 
                 foreach ($this->SECTIONS as $order => $section) {
