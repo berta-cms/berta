@@ -26,6 +26,13 @@
       };
     },
 
+    updateSectionTags: function (data) {
+      return {
+        type: ActionTypes.UPDATE_SECTION_TAGS,
+        data: data
+      };
+    },
+
     renameSectionTagsSitename: function (data) {
       return {
         type: ActionTypes.RENAME_SECTION_TAGS_SITENAME,

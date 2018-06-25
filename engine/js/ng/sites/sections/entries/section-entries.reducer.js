@@ -77,6 +77,24 @@
           });
 
 
+        case ActionTypes.DELETE_SECTION_ENTRY:
+          site_name = action.resp.site_name === '0' ? '' : action.resp.site_name;
+
+          return state.map(function (site, k) {
+            if (site_name === k) {
+              return site.filter(function (entry) {
+                return !(entry.get('sectionName') === action.resp.section_name && entry.get('id') === action.resp.entry_id);
+              }).map(function (entry) {
+                if (entry.get('sectionName') === action.resp.section_name && entry.get('order') > action.resp.entry_order ) {
+                  return entry.set('order', entry.get('order') - 1);
+                }
+                return entry;
+              });
+            }
+            return site;
+          });
+
+
         case ActionTypes.DELETE_SITE_SECTIONS_ENTRIES:
           return state.filter(function (entries, site_name) {
             return site_name !== action.data.site_name;

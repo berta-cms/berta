@@ -31,6 +31,25 @@
           });
 
 
+        case ActionTypes.UPDATE_SECTION_TAGS:
+          site_name = action.data.site_name === '0' ? '' : action.data.site_name;
+
+          return state.map(function (site, k) {
+            if (site_name === k) {
+              return site.map(function (sections) {
+                return sections.map(function (section) {
+
+                  if (section.getIn(['@attributes', 'name']) === action.data.section_name) {
+                    return section.merge(action.data.tags.tags);
+                  }
+                  return section;
+                });
+              });
+            }
+            return site;
+          });
+
+
         case ActionTypes.RENAME_SECTION_TAGS:
           site_name = action.data.site_name === '0' ? '' : action.data.site_name;
 

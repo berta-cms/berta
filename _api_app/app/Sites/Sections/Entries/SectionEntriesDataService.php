@@ -491,10 +491,20 @@ class SectionEntriesDataService Extends Storage {
             $has_direct_content
         );
 
+        // @todo SiteSectionsDataService method saveValueByPath should update instance state as well
+        // currently it's updating only xml file
+        // that is why we are calling new SiteSectionsDataService third time in one method here :(
+        $siteSectionsDataService = new SiteSectionsDataService($this->SITE);
+        $sections = $siteSectionsDataService->get();
+        $section = $sections[$section_order];
+
         return [
-            'site' => $this->SITE,
-            'section' => $this->SECTION_NAME,
+            'site_name' => $this->SITE,
+            'section_name' => $this->SECTION_NAME,
+            'section' => $section,
+            'section_order' => $section_order,
             'entry_id' => $entry['id'],
+            'entry_order' => $entry_order,
             'tags' => $section_tags,
             'has_direct_content' => $has_direct_content,
             'entry_count' => $section_entry_count

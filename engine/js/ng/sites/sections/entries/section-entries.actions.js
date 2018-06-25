@@ -67,6 +67,7 @@
     initDeleteSectionEntry: function(site, section, entryId, onComplete) {
       return function (dispatch) {
         dispatch({ type: ActionTypes.INIT_DELETE_SECTION_ENTRY });
+        dispatch({ type: ActionTypes.INIT_UPDATE_SITE_SECTION });
 
         sync(window.Berta.urls.sectionEntries, {site: site, section: section, entryId: entryId}, 'DELETE')
           .then(function (response) {
@@ -75,9 +76,19 @@
             } else {
               dispatch(Actions.deleteSectionEntry(response));
 
-              // @todo update populated tags
+              dispatch(Actions.updateSiteSection({
+                'path': response.site_name + '/section/' + response.section_order + '/@attributes/entry_count',
+                'section': response.section,
+                'value': response.entry_count
+              }));
 
-              // @todo update section - has_direct_content, SectionEntryCount
+              dispatch(Actions.updateSiteSection({
+                'path': response.site_name + '/section/' + response.section_order + '/@attributes/has_direct_content',
+                'section': response.section,
+                'value': response.has_direct_content
+              }));
+
+              dispatch(Actions.updateSectionTags(response));
             }
             onComplete(response);
           });
