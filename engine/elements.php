@@ -118,7 +118,7 @@ if($jsonRequest) {
                         echo '</div>';
 
                         echo '<div class="images"><ul>';
-                            if(!empty($entry['mediaCacheData']['file']) && count($entry['mediaCacheData']['file']) > 0) {
+                        if(!empty($entry['mediaCacheData']['file']) && count($entry['mediaCacheData']['file']) > 0) {
                                 // if the xml tag is not a list tag, convert it.
                                 Array_XML::makeListIfNotList($entry['mediaCacheData']['file']);
 
@@ -129,9 +129,10 @@ if($jsonRequest) {
                                     $imageWidth = 'auto';
                                     if($im['@attributes']['type'] == 'video') {
                                         if(!empty($im['@attributes']['poster_frame'])) {
-                                            $imSrc = $options['MEDIA_ROOT'] . $entry['mediafolder']['value'] . '/' . (string) $im['@attributes']['poster_frame'];
-                                            $imageThumbSrc = BertaEditor::images_getSmallThumbFor($imSrc);
-                                            $imageSize = getimagesize($imageThumbSrc);
+                                            $entryImageSrc = $entry['mediafolder']['value'] . '/' . (string) $im['@attributes']['poster_frame'];
+                                            $imageThumbSrc = BertaEditor::images_getSmallThumbFor($entryImageSrc);
+                                            $thumbName = basename($imageThumbSrc);
+                                            $imageSize = getimagesize($options['MEDIA_ROOT']. $entry['mediafolder']['value']. '/' . $thumbName);
                                             $imageWidth = $imageSize[0] + 'px';
                                         }
 
@@ -148,8 +149,10 @@ if($jsonRequest) {
                                         echo "\n";
 
                                     } else {
-                                        $imSrc = $options['MEDIA_ROOT'] . $entry['mediafolder']['value'] . '/' . (string) $im['@attributes']['src'];
-                                        $imageThumbSrc = BertaEditor::images_getSmallThumbFor($imSrc);
+                                        $imSrc = $options['MEDIA_URL'] . $entry['mediafolder']['value'] . '/' . (string) $im['@attributes']['src'];
+                                        $entryImageSrc = $entry['mediafolder']['value'] . '/' . (string) $im['@attributes']['src'];
+                                        $imageThumbSrc = BertaEditor::images_getSmallThumbFor($entryImageSrc);
+
                                         if($imageThumbSrc) {
                                             echo '<li class="image" filename="' . (string) $im['@attributes']['src'] . '" fileinfo="' . '' . '">';
                                             echo '<img class="img" src="' . $imageThumbSrc . '" />';
@@ -169,7 +172,7 @@ if($jsonRequest) {
                         echo '<div class="xEntryGalleryCrop xHidden">
                                 <section class="checkBoard">
                                     <img src="" class="cropImage">
-                                    <p class="loader xHidden"><img src="layout/loader.gif"></p>
+                                    <p class="loader xHidden"><img src="/engine/layout/loader.gif"></p>
                                 </section>
                                 <section class="cropToolbar">
                                     <p>original size (px):</p>
@@ -271,6 +274,7 @@ if($jsonRequest) {
 
                     echo '<div class="xBgAddMedia">';
             echo '<input type="file" name="Filedata" class="xHidden" multiple>';
+            $logger->debug('ENGINE_ABS_ROOT: '. $ENGINE_ABS_ROOT);
             echo '<a class="xEntryAddImagesLink" href="' . $ENGINE_ABS_ROOT . 'upload.php?' . ($site ? 'site='.$site.'&amp;' : '') . 'section=' . $section['name']['value'] . '&amp;mediafolder=' . $sectionMF . '&amp;section_background=true&amp;session_id=' . session_id() . '">+ add media</a>';
                     echo '</div>';
 
@@ -328,8 +332,9 @@ if($jsonRequest) {
                                 if((string) $idx == '@attributes') continue;
                                 $imageThumbSrc = false;
 
-                                $imSrc = $options['MEDIA_ROOT'] . $section['mediafolder']['value'] . '/' . (string) $im['@attributes']['src'];
-                                $imageThumbSrc = BertaEditor::images_getSmallThumbFor($imSrc);
+                                $entryImageSrc = $section['mediafolder']['value'] . '/' . (string) $im['@attributes']['src'];
+                                $imageThumbSrc = BertaEditor::images_getSmallThumbFor($entryImageSrc);
+
                                 if($imageThumbSrc) {
                                     echo '<li class="image" filename="' . (string) $im['@attributes']['src'] . '" fileinfo="' . '' . '">';
                                     echo '<img class="img" src="' . $imageThumbSrc . '" />';

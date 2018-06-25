@@ -315,7 +315,7 @@ class BertaTemplate extends BertaBase {
 			'galleryFullScreenImageNumbers' => $this->settings->get('entryLayout', 'galleryFullScreenImageNumbers'),
 			'galleryFullScreenCaptionAlign' => $this->settings->get('entryLayout', 'galleryFullScreenCaptionAlign'),
 			'paths' => array(
-				'engineRoot' => htmlspecialchars(self::$options['ENGINE_ROOT']),
+				'engineRoot' => htmlspecialchars(self::$options['ENGINE_BASE_URL']),
 				'engineABSRoot' => htmlspecialchars($engineAbsRoot),
 				'siteABSMainRoot' => htmlspecialchars(self::$options['SITE_ABS_ROOT']),
 				'siteABSRoot' => htmlspecialchars(self::$options['SITE_ABS_ROOT']) . $site,

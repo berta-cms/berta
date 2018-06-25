@@ -61,7 +61,7 @@ div.xGalleryContainer .loader {
     left: 0;
     right: 0;
     margin: 0 auto;
-    background: rgba(255,255,255,0.8) url("../../layout/loader.gif") no-repeat center center;
+    background: rgba(255,255,255,0.8) url("/engine/layout/loader.gif") no-repeat center center;
     width: 40px;
     height: 40px;
 }

@@ -58,8 +58,8 @@ var BertaEditorBase = new Class({
     xBertaEditorClassGallery: '.xEntryGalleryEditor',
 
     xEmptyClass: '.xEmpty',
-    updateUrl: 'update.php',
-    elementsUrl: 'elements.php'
+    updateUrl: '/engine/update.php',
+    elementsUrl: '/engine/elements.php'
   },
 
   tinyMCESettings: {

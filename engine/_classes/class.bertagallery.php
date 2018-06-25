@@ -104,7 +104,7 @@ class BertaGallery extends BertaBase
 
         } elseif ($isAdminMode) {
             $strOut = '<div class="xGalleryContainer">'; //.
-            //'<img src="' . $options['MEDIA_ROOT'] . $p['mediafolder']['value'] . '/' . $imgs[0] . '" alt="' . (!empty($p['title']['value']) ? htmlspecialchars($p['title']['value']) : '') . '" />' .
+            //'<img src="' . $options['MEDIA_URL'] . $p['mediafolder']['value'] . '/' . $imgs[0] . '" alt="' . (!empty($p['title']['value']) ? htmlspecialchars($p['title']['value']) : '') . '" />' .
             //'</div>';
 
             $strOut .= '<div class="imageEmpty">';
@@ -124,7 +124,7 @@ class BertaGallery extends BertaBase
 
     public static function getImageHTML($img, $mediaFolder, $isAdminMode = false, $sizeRatio = 1, $imageTargetWidth = 0, $imageTargetHeight = 0)
     {
-        $mFolder = self::$options['MEDIA_ROOT'] . $mediaFolder . '/';
+        $mFolder = self::$options['MEDIA_URL'] . $mediaFolder . '/';
         $mFolderABS = self::$options['MEDIA_ABS_ROOT'] . $mediaFolder . '/';
         $realWidth = $width = $realHeight = $height = 0;
 
@@ -388,7 +388,7 @@ class BertaGallery extends BertaBase
 
         $imgs = BertaGallery::getImagesArray($section);
         $mediaFolder = $section['mediafolder'];
-        $mFolder = self::$options['MEDIA_ROOT'] . $mediaFolder . '/';
+        $mFolder = self::$options['MEDIA_URL'] . $mediaFolder . '/';
         $mFolderABS = self::$options['MEDIA_ABS_ROOT'] . $mediaFolder . '/';
 
         $alwaysSelectTag = $berta->settings->get('navigation', 'alwaysSelectTag') == 'yes';

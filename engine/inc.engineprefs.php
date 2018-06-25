@@ -64,19 +64,22 @@ $options['tags']['all_value'] = 'a181a603769c1f98ad927e7367c7aa51';
  */
 
 $options['ENGINE_ROOT'] = $ENGINE_ROOT;
+$options['ENGINE_BASE_URL'] = $ENGINE_BASE_URL;
 $options['SITE_ROOT'] = $SITE_ROOT;
+$options['SITE_BASE_PATH'] = $SITE_BASE_PATH;
+$options['SITE_BASE_URL'] = $SITE_BASE_URL;
 
-$options['TEMPLATES_ROOT'] = $SITE_ROOT . '_templates/';
+$options['TEMPLATES_ROOT'] = $SITE_BASE_PATH . '_templates/';
 $options['TEMPLATES_ABS_ROOT'] = $options['SITE_ABS_ROOT'] . '_templates/';
-$options['TEMPLATES_FULL_SERVER_PATH'] = realpath($SITE_ROOT . '_templates') . '/';
+$options['TEMPLATES_FULL_SERVER_PATH'] = $SITE_BASE_PATH . '_templates' . '/';
 
 
 /**
  * Writable folders
  */
 
-$options['XML_MAIN_ROOT'] = $SITE_ROOT . 'storage/';
-$options['XML_SITES_ROOT'] = $SITE_ROOT . 'storage/-sites/';
+$options['XML_MAIN_ROOT'] = $SITE_BASE_PATH . 'storage/';
+$options['XML_SITES_ROOT'] = $options['XML_MAIN_ROOT'] . '-sites/';
 
 $options['MULTISITES'] = BertaContent::getSites(!$INDEX_INCLUDED);
 $options['MULTISITE'] = BertaContent::getSite($options);
@@ -84,16 +87,22 @@ $options['MULTISITE'] = BertaContent::getSite($options);
 $options['MEDIA_FOLDER_NAME'] = 'media';
 
 if( !empty($options['MULTISITE']) ) {
-	$options['XML_ROOT'] = $options['XML_SITES_ROOT'] . $options['MULTISITE'] . '/';
-	$options['MEDIA_ROOT'] = $options['XML_ROOT'] . $options['MEDIA_FOLDER_NAME'] . '/';
-	$options['MEDIA_TEMP_ROOT'] = $options['MEDIA_ROOT'];
+    $options['XML_ROOT'] = $options['XML_SITES_ROOT'] . $options['MULTISITE'] . '/';
+
+    $options['MEDIA_ROOT'] = $options['XML_ROOT'] . $options['MEDIA_FOLDER_NAME'] . '/';
+	$options['MEDIA_URL'] = '/storage/-sites/' . $options['MEDIA_FOLDER_NAME'] . '/';
+    $options['MEDIA_TEMP_ROOT'] = $options['MEDIA_ROOT'];
+
 	$options['CACHE_ROOT'] = $options['XML_ROOT'] . 'cache/';
 	$options['MEDIA_ABS_ROOT'] = $options['SITE_ABS_ROOT'] . 'storage/-sites/' . $options['MULTISITE'] . '/media/';
 	$options['CACHE_ABS_ROOT'] = $options['SITE_ABS_ROOT'] . 'storage/-sites/' . $options['MULTISITE'] . '/cache/';
 }else{
-	$options['XML_ROOT'] = $SITE_ROOT . 'storage/';
-	$options['MEDIA_ROOT'] = $SITE_ROOT . 'storage/' . $options['MEDIA_FOLDER_NAME'] . '/';
-	$options['MEDIA_TEMP_ROOT'] = $options['MEDIA_ROOT'];
+    $options['XML_ROOT'] = $SITE_ROOT . 'storage/';
+
+    $options['MEDIA_ROOT'] = $SITE_ROOT . 'storage/' . $options['MEDIA_FOLDER_NAME'] . '/';
+    $options['MEDIA_URL'] = $SITE_BASE_URL . 'storage/' . $options['MEDIA_FOLDER_NAME'] . '/';
+    $options['MEDIA_TEMP_ROOT'] = $options['MEDIA_ROOT'];
+
 	$options['CACHE_ROOT'] = $SITE_ROOT . 'storage/cache/';
 	$options['MEDIA_ABS_ROOT'] = $options['SITE_ABS_ROOT'] . 'storage/media/';
 	$options['CACHE_ABS_ROOT'] = $options['SITE_ABS_ROOT'] . 'storage/cache/';

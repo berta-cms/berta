@@ -511,17 +511,20 @@ class BertaEditor extends BertaContent {
     }
 
 
-    public static function images_getSmallThumbFor($imagePath) {
-        $fileName = basename($imagePath);
-        $dirName = dirname($imagePath);
+    public static function images_getSmallThumbFor($imgPathInMediaFolder) {
+        $imagePath = self::$options['MEDIA_ROOT'] . $imgPathInMediaFolder;
+        $fileName = basename($imgPathInMediaFolder);
+
+        $dirName = dirname($imgPathInMediaFolder);
         if($dirName) $dirName .= '/';
 
-        $thumbPath = $dirName . self::$options['images']['small_thumb_prefix'] . $fileName;
+        $thumbPath = self::$options['MEDIA_ROOT'] . $dirName . self::$options['images']['small_thumb_prefix'] . $fileName;
+        $thumbnailURL = self::$options['MEDIA_URL'] . $dirName . self::$options['images']['small_thumb_prefix'] . $fileName;
 
         if(file_exists($thumbPath)) {
-            return $thumbPath;
+            return $thumbnailURL;
         } elseif(BertaGallery::createThumbnail($imagePath, $thumbPath, self::$options['images']['small_thumb_width'], self::$options['images']['small_thumb_height'])) {
-            return $thumbPath;
+            return $thumbnailURL;
         }
 
         return false;
@@ -597,7 +600,7 @@ class BertaEditor extends BertaContent {
                     $links .= '<a class="switchVideo' . (($k+1)%3 == 0 ? ' row-last' : '') . ($k == 0 ? ' selected' : '') . '" href="' . $v['uri'] . '">' . $v['name'] . '</a>';
                 }
                 $firstLink = $videosList['video'][0]['uri'];
-                    // <img id="videoLoader" src="layout/loader.gif" alt="Loading..." />
+                    // <img id="videoLoader" src="/engine/layout/loader.gif" alt="Loading..." />
                 $str = <<<DOC
                     <div id="bertaVideosBackground"></div>
                     <div id="bertaVideosWrapper">

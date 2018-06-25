@@ -4,6 +4,19 @@ error_reporting(E_ALL);
 @ini_set("display_errors", 1);
 @ini_set("ignore_user_abort", 1);
 
+try {
+    /**
+     * Here are included everything that needs to be autoloaded. So we can use it through `Use` keyword.
+     * @var {Symfony\Component\ClassLoader\ClassLoader} $loader
+     * @var {Monolog\Logger} $logger
+     */
+    include_once 'loader.helper.php';
+
+} catch (Exception $e) {}
+
+// You can now use your logger
+// $logger->info('My logger is now ready');
+
 //detect ajax request
 $IS_AJAX = isset($_SERVER['HTTP_X_REQUESTED_WITH']) && !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest';
 
@@ -20,8 +33,14 @@ if(function_exists('mb_internal_encoding') && function_exists('mb_regex_encoding
 // basic paths...
 
 if(empty($INDEX_INCLUDED)) $INDEX_INCLUDED = false;
-if(empty($SITE_ROOT)) $SITE_ROOT = $INDEX_INCLUDED ? './' : '../';
+if(empty($SITE_ROOT)) $SITE_ROOT = dirname(__dir__). '/';
+if(empty($SITE_BASE_PATH)) $SITE_BASE_PATH = dirname(__dir__). '/';
+if(empty($SITE_BASE_URL)) $SITE_BASE_URL = '/';
+
 if(empty($ENGINE_ROOT)) $ENGINE_ROOT = $SITE_ROOT . 'engine/';
+if(empty($ENGINE_BASE_PATH)) $ENGINE_BASE_PATH = $SITE_BASE_PATH . 'engine/';
+if(empty($ENGINE_BASE_URL)) $ENGINE_BASE_URL = $SITE_BASE_URL . 'engine/';
+
 $SITE_ABS_ROOT = str_replace('\\', '/', dirname($_SERVER['PHP_SELF']));
 
 if(strlen($SITE_ROOT) > 2) {	// if SITE_ROOT is "../" or "../../" etc., but not "./"
