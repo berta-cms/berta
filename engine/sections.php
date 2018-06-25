@@ -3,7 +3,7 @@ define('AUTH_AUTHREQUIRED', true);
 define('BERTA_ENVIRONMENT', 'engine');
 include('inc.page.php');
 $loggedIn = $berta->security->userLoggedIn;
-include_once $ENGINE_ROOT . '_classes/class.bertaeditor.php';
+include_once $ENGINE_ROOT_PATH . '_classes/class.bertaeditor.php';
 
 $allSections = BertaContent::getSections();
 $topPanelHTML = BertaEditor::getTopPanelHTML('sections');
@@ -23,7 +23,7 @@ $site = empty($options['MULTISITE']) ? '0' : $options['MULTISITE'];
 
 <body class="xSettingsPageBody page-xSections" x_mode="sections">
     <form name="infoForm" id="infoForm">
-        <input type="hidden" name="ENGINE_ROOT" id="ENGINE_ROOT" value="<?php echo htmlspecialchars($ENGINE_ROOT) ?>" />
+        <input type="hidden" name="ENGINE_ROOT" id="ENGINE_ROOT" value="<?php echo htmlspecialchars($ENGINE_ROOT_URL) ?>" />
     </form>
     <?php echo $topPanelHTML ?>
     <div id="allContainer">

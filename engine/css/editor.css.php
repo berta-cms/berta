@@ -459,12 +459,12 @@ body.xSettingsPageBody a.introjs-button {
 	margin: 2px 4px 0 0;
 	font-size: 1px; line-height: 1px;
 }
-.xMoveImNavLink { background: url(<?php echo $ENGINE_ROOT ?>layout/grab-small.png) no-repeat; cursor: move; }
-.xMoveTopLink { background: url(<?php echo $ENGINE_ROOT ?>layout/grab-small.png) no-repeat; cursor: move; }
-.xDeleteTopLink { background: url(<?php echo $ENGINE_ROOT ?>layout/delete-small.png) no-repeat; cursor: pointer; }
-.xAddTopLink { background: url(<?php echo $ENGINE_ROOT ?>layout/add-small.png) no-repeat; cursor: pointer; margin-left: 20px; }
-.xSelectTopLinkOn { background: url(<?php echo $ENGINE_ROOT ?>layout/select-small-on.gif) no-repeat; cursor: default; }
-.xSelectTopLinkOff { background: url(<?php echo $ENGINE_ROOT ?>layout/select-small-off.gif) no-repeat; cursor: default; }
+.xMoveImNavLink { background: url(<?php echo $ENGINE_ROOT_URL ?>layout/grab-small.png) no-repeat; cursor: move; }
+.xMoveTopLink { background: url(<?php echo $ENGINE_ROOT_URL ?>layout/grab-small.png) no-repeat; cursor: move; }
+.xDeleteTopLink { background: url(<?php echo $ENGINE_ROOT_URL ?>layout/delete-small.png) no-repeat; cursor: pointer; }
+.xAddTopLink { background: url(<?php echo $ENGINE_ROOT_URL ?>layout/add-small.png) no-repeat; cursor: pointer; margin-left: 20px; }
+.xSelectTopLinkOn { background: url(<?php echo $ENGINE_ROOT_URL ?>layout/select-small-on.gif) no-repeat; cursor: default; }
+.xSelectTopLinkOff { background: url(<?php echo $ENGINE_ROOT_URL ?>layout/select-small-off.gif) no-repeat; cursor: default; }
 
 
 
@@ -2150,12 +2150,12 @@ body.xSettingsPageBody {
 	}
 
 		body.xSettingsPageBody #editorInfo #diffSlider {
-			background: url(<?php echo $ENGINE_ROOT ?>layout/slider-back.gif) no-repeat;
+			background: url(<?php echo $ENGINE_ROOT_URL ?>layout/slider-back.gif) no-repeat;
 			height: 8px;
 			width: 300px;
 		}
 			body.xSettingsPageBody #editorInfo #diffKnob {
-				background: url(<?php echo $ENGINE_ROOT ?>layout/slider-knob.gif) no-repeat;
+				background: url(<?php echo $ENGINE_ROOT_URL ?>layout/slider-knob.gif) no-repeat;
 				height: 8px;
 				width: 90px;
 				cursor: col-resize;

@@ -165,7 +165,7 @@ if($jsonRequest) {
                                     }
                                 }
                             } else {
-                                //echo '<li class="placeholder"><img src="' . $ENGINE_ROOT . 'layout/gallery-placeholder.gif" /></li>';
+                                //echo '<li class="placeholder"><img src="' . $ENGINE_ROOT_URL . 'layout/gallery-placeholder.gif" /></li>';
                             }
                         echo "</ul></div>\n";
 

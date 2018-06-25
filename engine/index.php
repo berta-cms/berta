@@ -1,6 +1,6 @@
 <?php
 if (!$berta->security->userLoggedIn) {
-    include_once $ENGINE_ROOT . 'editor/index.php';
+    include_once $ENGINE_ROOT_PATH . 'editor/index.php';
     exit;
 }
 

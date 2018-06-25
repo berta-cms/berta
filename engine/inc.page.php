@@ -77,10 +77,10 @@ include_once 'inc.functions.php';
 
 // prefs and basic variables -------------------------------------------------------------------------------------------------------------------------
 
-include_once $ENGINE_ROOT . '_classes/class.berta.php';
-include_once $ENGINE_ROOT . '_classes/class.bertagallery.php';
-include_once $ENGINE_ROOT . 'inc.engineprefs.php';			// since this include $options refer to BertaBase::$options
-include_once $ENGINE_ROOT . 'inc.sentry_error_handling.php';
+include_once $ENGINE_ROOT_PATH . '_classes/class.berta.php';
+include_once $ENGINE_ROOT_PATH . '_classes/class.bertagallery.php';
+include_once $ENGINE_ROOT_PATH . 'inc.engineprefs.php';			// since this include $options refer to BertaBase::$options
+include_once $ENGINE_ROOT_PATH . 'inc.sentry_error_handling.php';
 if(empty($SITE_ABS_ROOT)) $SITE_ABS_ROOT = $options['SITE_ABS_ROOT'];
 if(empty($ENGINE_ABS_ROOT)) $ENGINE_ABS_ROOT = $options['ENGINE_ABS_ROOT'];
 
@@ -120,7 +120,7 @@ if(AUTH_AUTHREQUIRED && !$berta->security->authentificated) {
         http_response_code(401);
         die();
 	}else{
-		$berta->security->goToLoginPage($ENGINE_ROOT . 'login.php');
+		$berta->security->goToLoginPage($ENGINE_ROOT_PATH . 'login.php');
 	}
 }
 
@@ -129,7 +129,7 @@ if(AUTH_AUTHREQUIRED && !$berta->security->authentificated) {
 
 // settings ------------------------------------------------------------------------------------------------------------------------------------------
 
-include($ENGINE_ROOT . 'inc.settings.php');
+include($ENGINE_ROOT_PATH . 'inc.settings.php');
 
 $berta->init($settingsDefinition);
 

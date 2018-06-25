@@ -4,7 +4,7 @@ define('BERTA_ENVIRONMENT', 'engine');
 include('inc.page.php');
 $loggedIn = $berta->security->userLoggedIn;
 if($loggedIn) {
-	include_once $ENGINE_ROOT . '_classes/class.bertaeditor.php';
+	include_once $ENGINE_ROOT_PATH . '_classes/class.bertaeditor.php';
 } else {
 	header("Location: ./login.php");
 	exit;
@@ -12,7 +12,7 @@ if($loggedIn) {
 
 $mode = !empty($_GET['mode']) ? $_GET['mode'] : 'settings';
 
-include($ENGINE_ROOT . 'inc.settings.php');
+include($ENGINE_ROOT_PATH . 'inc.settings.php');
 $berta->settings = new Settings($settingsDefinition);
 
 $menuSeparator = $berta->settings->get('menu', 'separator');
@@ -33,7 +33,7 @@ $site = empty($options['MULTISITE']) ? '0' : $options['MULTISITE'];
 
 <body class="xSettingsPageBody page-<?php if ($mode == 'template'){ ?>xTemplate<?php }else{ ?>xSettings<?php } ?>" x_mode="settings">
 	<form name="infoForm" id="infoForm">
-		<input type="hidden" name="ENGINE_ROOT" id="ENGINE_ROOT" value="<?php echo htmlspecialchars($ENGINE_ROOT) ?>" />
+		<input type="hidden" name="ENGINE_ROOT" id="ENGINE_ROOT" value="<?php echo htmlspecialchars($ENGINE_ROOT_URL) ?>" />
 	</form>
 	<?php echo $topPanelHTML ?>
 	<div id="allContainer">

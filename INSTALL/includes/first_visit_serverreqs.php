@@ -1,11 +1,11 @@
 <?php
 
 if(empty($CHECK_INCLUDED)) {
-	$SITE_ROOT = '../../';
-	$ENGINE_ROOT = '../../engine/';
+    /** @todo fix this path: */
+	// $SITE_ROOT = '../../';
 	define('AUTH_AUTHREQUIRED', true);
 	define('SETTINGS_INSTALLREQUIRED', false);
-	include $ENGINE_ROOT . 'inc.page.php';
+	include '../../engine/inc.page.php';
 }
 
 ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">

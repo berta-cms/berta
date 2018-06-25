@@ -1,11 +1,13 @@
 <?php
 
 if(empty($CHECK_INCLUDED)) {
-	$SITE_ROOT = '../../';
-	$ENGINE_ROOT = '../../engine/';
+    /** @todo
+     * - Check why is the 'inc.page.php' included here if this file is included in it
+     * - fix this path:  */
+	// $SITE_ROOT = '../../';
 	define('AUTH_AUTHREQUIRED', true);
 	define('SETTINGS_INSTALLREQUIRED', false);
-	include $ENGINE_ROOT . 'inc.page.php';
+	include '../../engine/inc.page.php';
 }
 
 $int_version = $options['int_version'];

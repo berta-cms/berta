@@ -16,7 +16,7 @@ if (!$INDEX_INCLUDED) {
 
 include dirname(__dir__) . '/inc.page.php';
 if ($berta->security->userLoggedIn) {
-    include_once $ENGINE_ROOT . '_classes/class.bertaeditor.php';
+    include_once $ENGINE_ROOT_PATH . '_classes/class.bertaeditor.php';
 }
 //$t->point("page");
 
@@ -26,7 +26,7 @@ if ($berta->security->userLoggedIn) {
 
 $sectionName = $subSectionName = $tagName = $urlStr = false;
 if ($berta->apacheRewriteUsed) {
-    include $ENGINE_ROOT . '_classes/class.clean_url.php';
+    include $ENGINE_ROOT_PATH . '_classes/class.clean_url.php';
     $cU = new CleanURL();
 
     $urlStr = $_SERVER['REQUEST_URI'];
@@ -67,7 +67,7 @@ if ($querySectionName && $querySectionName != 'sitemap.xml' && $berta->sectionNa
 // ------------------------------------------------------------------------------------------------------------------------------
 
 if (empty($berta->content['@attributes']['last_upd_ver']) || ($berta->content['@attributes']['last_upd_ver'] < $options['int_version'])) {
-    include_once $ENGINE_ROOT . 'inc.version_check_and_updates.php';
+    include_once $ENGINE_ROOT_PATH . 'inc.version_check_and_updates.php';
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
