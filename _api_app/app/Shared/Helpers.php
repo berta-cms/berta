@@ -232,6 +232,23 @@ class Helpers
         return $attributes;
     }
 
+
+    /**
+     * Converts tags comma separated string to array
+     */
+    public static function toTags($tags)
+    {
+        $tags = trim($tags);
+        $tags = explode(',', $tags);
+        $tags = array_map('trim', $tags);
+        $tags = array_filter($tags, function ($tag) {
+            return strlen($tag);
+        });
+
+        return array_unique($tags);
+    }
+
+
     /**
      * Converts array as list or arrays
      */

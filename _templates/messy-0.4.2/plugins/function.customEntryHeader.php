@@ -42,7 +42,7 @@ function smarty_function_customEntryHeader($params, &$smarty) {
 				<a href="#" class="xEntryMove xHandle" title="Drag + Shift to move all"><span>move entry</span></a>
 
 				<div class="tagsList">
-					<div title="$tags" class="xEditableRC xProperty-submenu xFormatModifier-toTags">$tags</div>
+					<div title="$tags" class="xEditableRC xProperty-submenu xFormatModifier-toTags" data-path="{$basePath}tags/tag">$tags</div>
 				</div>
 
 				<div class="xEntryDropdown"></div>

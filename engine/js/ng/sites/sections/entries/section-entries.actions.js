@@ -31,6 +31,20 @@
               // @TODO dispatch error message
             } else {
               dispatch(Actions.updateSectionEntry(response));
+
+              if (response.section) {
+                dispatch({ type: ActionTypes.INIT_UPDATE_SITE_SECTION });
+
+                dispatch(Actions.updateSiteSection({
+                  'path': response.site_name + '/section/' + response.section_order + '/@attributes/has_direct_content',
+                  'section': response.section,
+                  'value': response.has_direct_content
+                }));
+              }
+
+              if (response.tags) {
+                dispatch(Actions.updateSectionTags(response));
+              }
             }
             if (onComplete) {
               onComplete(response);

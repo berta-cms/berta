@@ -5,6 +5,7 @@ namespace App\Sites\Sections\Entries;
 use App\Shared\Storage;
 use App\Sites\Sections\SiteSectionsDataService;
 use App\Sites\Sections\Tags\SectionTagsDataService;
+use App\Shared\Helpers;
 
 /**
  * @class SectionEntriesDataService
@@ -209,6 +210,13 @@ class SectionEntriesDataService Extends Storage {
                             $this->ENTRIES[self::$ROOT_LIST_ELEMENT][$order]['mediaCacheData']['file'] = [];
                         }
                     }
+                    if (isset($entry['tags']['tag'])) {
+                        $this->ENTRIES[self::$ROOT_LIST_ELEMENT][$order]['tags']['tag'] = $this->asList($entry['tags']['tag']);
+
+                        if (!$this->ENTRIES[self::$ROOT_LIST_ELEMENT][$order]['tags']['tag'][0]) {
+                            $this->ENTRIES[self::$ROOT_LIST_ELEMENT][$order]['tags']['tag'] = [];
+                        }
+                    }
                 }
             }
         }
@@ -259,12 +267,6 @@ class SectionEntriesDataService Extends Storage {
         }
 
         $ret = [
-            //     'site' => $this->site_name,
-            //     'order' => $order,
-            //     'old_name' => null,
-            //     'path' => $path,
-            //     'value' => $value,
-            //     'real' => $value,
             'path' => $path,
             'value' => $value,
             'real' => $value,
@@ -272,6 +274,12 @@ class SectionEntriesDataService Extends Storage {
 
         if (is_null($index)) {
             return $ret;
+        }
+
+        if ($prop === 'tags') {
+            $value = Helpers::toTags($value);
+            $ret['value'] = implode(' / ', $value);
+            $ret['real'] = implode(', ', $value);
         }
 
         $path_arr[0] = $index;
@@ -286,6 +294,39 @@ class SectionEntriesDataService Extends Storage {
         $this->array2xmlFile($entries, $this->XML_FILE, $this->ROOT_ELEMENT);
 
         $ret['entry'] = $entries[self::$ROOT_LIST_ELEMENT][$index];
+
+        if ($prop === 'tags') {
+            // update direct content property
+            $siteSectionsDataService = new SiteSectionsDataService($this->SITE);
+            $sections = $siteSectionsDataService->get();
+            $section_order = array_search($this->SECTION_NAME, array_column($sections, 'name'));
+            $sectionTagsDataService = new SectionTagsDataService($this->SITE, $this->SECTION_NAME);
+            $section_tags = $sectionTagsDataService->populateTags();
+            $has_direct_content = !$section_tags['allHaveTags'] ? 1 : 0;
+            $siteSectionsDataService->saveValueByPath(
+                implode('/', [
+                    $this->SITE,
+                    'section',
+                    $section_order,
+                    '@attributes',
+                    'has_direct_content'
+                ]),
+                $has_direct_content
+            );
+
+            $siteSectionsDataService = new SiteSectionsDataService($this->SITE);
+            $sections = $siteSectionsDataService->get();
+            $section = $sections[$section_order];
+
+            $ret = array_merge($ret, [
+                'site_name' => $this->SITE,
+                'section_name' => $this->SECTION_NAME,
+                'section' => $section,
+                'section_order' => $section_order,
+                'tags' => $section_tags,
+                'has_direct_content' => $has_direct_content
+            ]);
+        }
 
         return $ret;
     }

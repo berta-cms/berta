@@ -33,7 +33,7 @@ function smarty_function_entryHeader($params, &$smarty) {
 				$moveButton
 
 				<div class="tagsList">
-					<div title="$tags" class="xEditableRC xProperty-submenu xFormatModifier-toTags">$tags</div>
+					<div title="$tags" class="xEditableRC xProperty-submenu xFormatModifier-toTags" data-path="{$basePath}tags/tag">$tags</div>
 				</div>
 
 				<div class="xEntryDropdown"></div>
