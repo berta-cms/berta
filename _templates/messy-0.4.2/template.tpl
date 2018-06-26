@@ -299,7 +299,7 @@
                     {* now loop through all entries and print them out *}
                     { foreach $entries as $entry }
 
-                        <div class="entry clearfix {if $berta.section.type == 'portfolio'}xHidden {/if}{ entryClasses entry=$entry } { messClasses property='positionXY' isResponsive=$isResponsive } xShopMessyEntry" style="{ messStyles xy=$entry.positionXY entry=$entry  isResponsive=$isResponsive }{ if $isResponsive != 'yes' }{if $entry.width} width:{$entry.width};{elseif strlen(trim($berta.settings.shop.entryWidth)) > 0  && $berta.section.type == 'shop'}width: { $berta.settings.shop.entryWidth }px;{ /if }{/if}" id="{ entrySlug entry=$entry }">
+                        <div class="entry clearfix {if $berta.section.type == 'portfolio'}xHidden {/if}{ entryClasses entry=$entry } { messClasses property='positionXY' isResponsive=$isResponsive } xShopMessyEntry" style="{ messStyles xy=$entry.positionXY entry=$entry  isResponsive=$isResponsive }{ if $isResponsive != 'yes' }{if $entry.width} width:{$entry.width};{elseif strlen(trim($berta.settings.shop.entryWidth)) > 0  && $berta.section.type == 'shop'}width: { $berta.settings.shop.entryWidth }px;{ /if }{/if}" id="{ entrySlug entry=$entry }"{if $berta.environment == 'engine' && $isResponsive != 'yes'} data-path="{ $berta.options.MULTISITE }/entry/{ $berta.section.name }/{ $entry.id }/content/positionXY"{ /if }>
 
                             { $isshopentry=0 }
                             { if $berta.section.type == 'shop' and $berta.shop_enabled == true }
