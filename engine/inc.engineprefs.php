@@ -107,8 +107,6 @@ if( !empty($options['MULTISITE']) ) {
 	$options['CACHE_ABS_ROOT'] = $options['SITE_ROOT_URL'] . 'storage/cache/';
 }
 
-$options['ENGINE_ABS_ROOT'] = $ENGINE_ABS_ROOT; // this is defined in inc.page.php that includes this preferences file
-
 
 /**
  * Account link - if hosted

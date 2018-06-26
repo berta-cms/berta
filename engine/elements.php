@@ -80,7 +80,7 @@ if($jsonRequest) {
 
                         echo '<div class="xEntryGalleryAddMedia">';
                             echo '<input type="file" name="Filedata" class="xHidden" multiple>';
-                            echo '<a class="xEntryAddImagesLink xEditorLink" href="' . $ENGINE_ABS_ROOT . 'upload.php?' . ($site ? 'site='.$site.'&amp;' : '') . 'section=' . $decoded['section'] . '&amp;entry=' . $entry['id']['value'] . '&amp;mediafolder=' . $entry['mediafolder']['value'] . '&amp;session_id=' . session_id() . '">+ add media</a>';
+                            echo '<a class="xEntryAddImagesLink xEditorLink" href="' . $ENGINE_ROOT_URL . 'upload.php?' . ($site ? 'site='.$site.'&amp;' : '') . 'section=' . $decoded['section'] . '&amp;entry=' . $entry['id']['value'] . '&amp;mediafolder=' . $entry['mediafolder']['value'] . '&amp;session_id=' . session_id() . '">+ add media</a>';
                         echo '</div>';
 
                         echo '<div class="xEntryGallerySettings xGreyBack xHidden">';
@@ -274,8 +274,7 @@ if($jsonRequest) {
 
                     echo '<div class="xBgAddMedia">';
             echo '<input type="file" name="Filedata" class="xHidden" multiple>';
-            $logger->debug('ENGINE_ABS_ROOT: '. $ENGINE_ABS_ROOT);
-            echo '<a class="xEntryAddImagesLink" href="' . $ENGINE_ABS_ROOT . 'upload.php?' . ($site ? 'site='.$site.'&amp;' : '') . 'section=' . $section['name']['value'] . '&amp;mediafolder=' . $sectionMF . '&amp;section_background=true&amp;session_id=' . session_id() . '">+ add media</a>';
+            echo '<a class="xEntryAddImagesLink" href="' . $ENGINE_ROOT_URL . 'upload.php?' . ($site ? 'site='.$site.'&amp;' : '') . 'section=' . $section['name']['value'] . '&amp;mediafolder=' . $sectionMF . '&amp;section_background=true&amp;session_id=' . session_id() . '">+ add media</a>';
                     echo '</div>';
 
                     echo '<div class="xBgSettings xHidden">';

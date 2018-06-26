@@ -42,7 +42,6 @@ if(empty($ENGINE_ROOT)) $ENGINE_ROOT = $SITE_ROOT_PATH . 'engine/';
 if(empty($ENGINE_ROOT_PATH)) $ENGINE_ROOT_PATH = $SITE_ROOT_PATH . 'engine/';
 if(empty($ENGINE_ROOT_URL)) $ENGINE_ROOT_URL = $SITE_ROOT_URL . 'engine/';
 
-$ENGINE_ABS_ROOT = $SITE_ROOT_URL . 'engine/';
 
 
 $hasPHP5 = floatval(phpversion()) >= 5;
@@ -70,7 +69,6 @@ include_once $ENGINE_ROOT_PATH . '_classes/class.bertagallery.php';
 include_once $ENGINE_ROOT_PATH . 'inc.engineprefs.php';			// since this include $options refer to BertaBase::$options
 include_once $ENGINE_ROOT_PATH . 'inc.sentry_error_handling.php';
 if(empty($SITE_ROOT_URL)) $SITE_ROOT_URL = $options['SITE_ROOT_URL'];
-if(empty($ENGINE_ABS_ROOT)) $ENGINE_ABS_ROOT = $options['ENGINE_ABS_ROOT'];
 
 
 // magic quotes --------------------------------------------------------------------------------------------------------------------------------------
@@ -103,7 +101,7 @@ if (DO_UPLOAD && isset($_GET['session_id'])) {
 
 if(AUTH_AUTHREQUIRED && !$berta->security->authentificated) {
 	if ($IS_AJAX){
-		die("<script>window.location.href='".$ENGINE_ABS_ROOT . 'login.php'."'</script>");
+		die("<script>window.location.href='".$ENGINE_ROOT_URL . 'login.php'."'</script>");
     }elseif (DO_UPLOAD) {
         http_response_code(401);
         die();

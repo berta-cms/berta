@@ -79,9 +79,9 @@ $int_version = $options['int_version'];
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title><?php echo $berta->settings->get('texts', 'pageTitle') ?> / welcome</title>
-<link rel="stylesheet" href="<?php echo $ENGINE_ABS_ROOT ?>css/backend.min.css?<?php echo $int_version ?>" type="text/css" charset="utf-8" />
-<link rel="stylesheet" href="<?php echo $ENGINE_ABS_ROOT ?>css/editor.css.php?<?php echo $int_version ?>" type="text/css" charset="utf-8" />
-<link rel="stylesheet" href="<?php echo $ENGINE_ABS_ROOT ?>css/login.css?<?php echo $int_version ?>" type="text/css" />
+<link rel="stylesheet" href="<?php echo $ENGINE_ROOT_URL ?>css/backend.min.css?<?php echo $int_version ?>" type="text/css" charset="utf-8" />
+<link rel="stylesheet" href="<?php echo $ENGINE_ROOT_URL ?>css/editor.css.php?<?php echo $int_version ?>" type="text/css" charset="utf-8" />
+<link rel="stylesheet" href="<?php echo $ENGINE_ROOT_URL ?>css/login.css?<?php echo $int_version ?>" type="text/css" />
 </head><?php
 
 if(!empty($settings['berta']['installed'])) {
@@ -113,7 +113,7 @@ if(!empty($settings['berta']['installed'])) {
 							echo '<div id="xFirstTimeCheckResult">';
 							echo '<h2>Welcome!</h2>';
 							echo '<p class="emphasis">Berta has completed a small test to see if it has everything it needs. It turns out that everything is just perfect.</p>';
-							echo '<p><input type="button" value=" Start building your site! " id="xFirstTimeCheckContinue" onclick="window.location=\'' . $ENGINE_ABS_ROOT . '?_berta_install_step=2'.(!empty($options['MULTISITE']) ? '&site='.$options['MULTISITE'] : '').'\'" /></p>';
+							echo '<p><input type="button" value=" Start building your site! " id="xFirstTimeCheckContinue" onclick="window.location=\'' . $ENGINE_ROOT_URL . '?_berta_install_step=2'.(!empty($options['MULTISITE']) ? '&site='.$options['MULTISITE'] : '').'\'" /></p>';
 							echo '<br class="clear" /></div>';
 
 							echo '<p>Test results:</p>';
@@ -132,7 +132,7 @@ if(!empty($settings['berta']['installed'])) {
 
 							echo $testOutput;
 
-							echo '<p><br />If you like to, you can ignore the errors and: <input type="button" value=" Start with Berta! " class="xCheckListContinue" onclick="window.location=\'' . $ENGINE_ABS_ROOT . '?_berta_install_step=2'.(!empty($options['MULTISITE']) ? '&site='.$options['MULTISITE'] : '').'\'" /></p>';
+							echo '<p><br />If you like to, you can ignore the errors and: <input type="button" value=" Start with Berta! " class="xCheckListContinue" onclick="window.location=\'' . $ENGINE_ROOT_URL . '?_berta_install_step=2'.(!empty($options['MULTISITE']) ? '&site='.$options['MULTISITE'] : '').'\'" /></p>';
 
 							echo $bottomNote;
 						}

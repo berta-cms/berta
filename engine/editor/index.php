@@ -56,7 +56,7 @@ if ($berta->apacheRewriteUsed) {
 $berta->initContent($urlStr, $sectionName, $tagName);
 if ($querySectionName && $querySectionName != 'sitemap.xml' && $berta->sectionName != $querySectionName) {
     header('HTTP/1.1 301 Moved Permanently');
-    header('Location: ' . ($berta->environment == 'engine' ? $ENGINE_ABS_ROOT : $SITE_ROOT_URL));
+    header('Location: ' . ($berta->environment == 'engine' ? $ENGINE_ROOT_URL : $SITE_ROOT_URL));
     include '../error/404.php';
     exit;
 }

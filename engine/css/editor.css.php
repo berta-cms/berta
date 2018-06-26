@@ -266,7 +266,7 @@ body.xSettingsPageBody a.introjs-button {
 /* visuals ---------------------------------------------------------------------------------------------- */
 
 .xSaving, .xSavingAtLarge {	/* classs is added to the element, when the contents are being saved */
-	background-image: url(<?php echo $ENGINE_ABS_ROOT ?>layout/saving.gif) !important;
+	background-image: url(<?php echo $ENGINE_ROOT_URL ?>layout/saving.gif) !important;
 	background-repeat: repeat !important;
 }
 	.xSavingAtLarge * {
@@ -283,7 +283,7 @@ body.xSettingsPageBody a.introjs-button {
 
 .xEmpty {	/* class of the span that is placed inside empty editable elements */
 	display: inline-block;
-	background: url('<?php echo $ENGINE_ABS_ROOT ?>layout/editable-back.png') repeat;
+	background: url('<?php echo $ENGINE_ROOT_URL ?>layout/editable-back.png') repeat;
 	font-style: italic;
 	-moz-border-radius: 5px;
 	-webkit-border-radius: 5px;
@@ -1205,7 +1205,7 @@ ul#pageEntries {
 					width: 100%; height: 100%;
 					left: 0; top: 0;
 					/*z-index: 100;*/
-					background: url('<?php echo $ENGINE_ABS_ROOT ?>layout/editable-back.png') repeat;
+					background: url('<?php echo $ENGINE_ROOT_URL ?>layout/editable-back.png') repeat;
 					-moz-opacity: 0; opacity: 0;
 				}
 				.xGalleryHasImages a.xGalleryEditButton:hover {

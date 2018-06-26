@@ -293,7 +293,7 @@ class BertaTemplate extends BertaBase {
 		foreach($texts as $tVar => $t) if(!isset($vars[$tVar])) $vars[$tVar] = $t;
 
 		// berta scripts ...
-		$engineAbsRoot = self::$options['ENGINE_ABS_ROOT'];
+		$engineAbsRoot = self::$options['ENGINE_ROOT_URL'];
 		$templatesAbsRoot = self::$options['TEMPLATES_ABS_ROOT'];
 
 		if ($this->apacheRewriteUsed) {

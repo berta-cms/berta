@@ -24,15 +24,15 @@ $int_version = BertaEditor::$options['int_version'];
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title><?php echo $berta->settings->get('texts', 'pageTitle') ?></title>
     <link rel="SHORTCUT ICON" href="favicon.ico"/>
-    <link rel="stylesheet" href="<?php echo $ENGINE_ABS_ROOT ?>css/backend.min.css?<?php echo $int_version ?>" type="text/css" charset="utf-8" />
-    <link rel="stylesheet" href="<?php echo $ENGINE_ABS_ROOT ?>css/editor.css.php?<?php echo $int_version ?>" type="text/css" charset="utf-8" />
+    <link rel="stylesheet" href="<?php echo $ENGINE_ROOT_URL ?>css/backend.min.css?<?php echo $int_version ?>" type="text/css" charset="utf-8" />
+    <link rel="stylesheet" href="<?php echo $ENGINE_ROOT_URL ?>css/editor.css.php?<?php echo $int_version ?>" type="text/css" charset="utf-8" />
 
     <?php echo BertaTemplate::sentryScripts(); ?>
     <script type="text/javascript">
     var bertaGlobalOptions = {
         "paths":{
         "engineRoot":"<?php echo BertaEditor::$options['ENGINE_ROOT_URL'] ?>",
-        "engineABSRoot":"<?php echo BertaEditor::$options['ENGINE_ABS_ROOT'] ?>",
+        "engineABSRoot":"<?php echo BertaEditor::$options['ENGINE_ROOT_URL'] ?>",
         "siteABSRoot" : "<?php echo BertaEditor::$options['SITE_ROOT_URL'] ?>",
         "template" : "<?php echo BertaEditor::$options['SITE_ROOT_URL'] . '_templates/' . $berta->template->name . '/' ?>"
         },
