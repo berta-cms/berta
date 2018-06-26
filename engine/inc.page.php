@@ -39,13 +39,10 @@ if(empty($INDEX_INCLUDED)) $INDEX_INCLUDED = false;
  * Used for PHP file includes and file saving/loading.
  */
 if(empty($SITE_ROOT_PATH)) $SITE_ROOT_PATH = dirname(__dir__). '/';
-if(empty($SITE_ROOT)) $SITE_ROOT = $SITE_ROOT_PATH;
 
 /** @var {string} $SITE_ROOT_URL - The root path of site used in URL generation.
  * Normally '/' (representing 'berta.me/'). */
 if(empty($SITE_ROOT_URL)) $SITE_ROOT_URL = '/';
-
-if(empty($ENGINE_ROOT)) $ENGINE_ROOT = $SITE_ROOT_PATH . 'engine/';
 
 /** @var {string} $ENGINE_ROOT_PATH - Berta engine location on the disc.
  * Used for PHP file includes and file saving/loading. */

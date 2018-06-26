@@ -62,9 +62,8 @@ $options['tags']['all_value'] = 'a181a603769c1f98ad927e7367c7aa51';
  * System folders
  */
 
-$options['ENGINE_ROOT'] = $ENGINE_ROOT;
 $options['ENGINE_ROOT_URL'] = $ENGINE_ROOT_URL;
-$options['SITE_ROOT'] = $SITE_ROOT;
+$options['ENGINE_ROOT_PATH'] = $ENGINE_ROOT_PATH;
 $options['SITE_ROOT_PATH'] = $SITE_ROOT_PATH;
 $options['SITE_ROOT_URL'] = $SITE_ROOT_URL;
 

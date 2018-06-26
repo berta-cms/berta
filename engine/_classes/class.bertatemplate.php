@@ -214,8 +214,8 @@ class BertaTemplate extends BertaBase {
 		$vars['berta']['options'] =& self::$options;
 
 		$hostingPlan = false;
-		if(@file_exists(self::$options['ENGINE_ROOT'] .'plan')) {
-			$hostingPlan = file_get_contents(self::$options['ENGINE_ROOT'] . 'plan');
+		if(@file_exists(self::$options['ENGINE_ROOT_PATH'] .'plan')) {
+			$hostingPlan = file_get_contents(self::$options['ENGINE_ROOT_PATH'] . 'plan');
 		}
 		$vars['berta']['hostingPlan'] = $hostingPlan;
 

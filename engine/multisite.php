@@ -90,7 +90,7 @@ $int_version = BertaEditor::$options['int_version'];
     </div>
     <?php echo BertaEditor::intercomScript() ?>
     <div id="templateList">
-        <?php include $options['ENGINE_ROOT'] . 'js/ng/templates/multisite.html'; ?>
+        <?php include $options['ENGINE_ROOT_PATH'] . 'js/ng/templates/multisite.html'; ?>
     </div>
 </body>
 </html>
