@@ -77,6 +77,27 @@
       };
     },
 
+    initOrderSectionEntries: function (site, section, entryId, value) {
+      return function (dispatch) {
+        dispatch({ type: ActionTypes.INIT_ORDER_SECTION_ENTRIES });
+
+        sync(window.Berta.urls.sectionEntries, {site: site, section: section, entryId: entryId, value: value}, 'PUT')
+          .then(function (response) {
+            if (response.error_message) {
+              // @TODO dispatch error message
+            } else {
+              dispatch(Actions.orderSectionEntries(response));
+            }
+          });
+      };
+    },
+
+    orderSectionEntries: function (data) {
+      return {
+        type: ActionTypes.ORDER_SECTION_ENTRIES,
+        data: data
+      };
+    },
 
     initDeleteSectionEntry: function(site, section, entryId, onComplete) {
       return function (dispatch) {

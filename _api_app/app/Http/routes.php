@@ -40,6 +40,7 @@ $app->group(['prefix' => 'v1', 'namespace' => 'App', 'middleware' => 'auth'], fu
 
             $app->group(['prefix' => 'v1/sites/sections', 'namespace' => 'App\Sites\Sections\Entries'], function () use ($app) {
                 $app->patch('entries', ['as' => 'section_entries', 'uses' => 'SectionEntriesController@update']);
+                $app->put('entries', 'SectionEntriesController@order');
                 $app->delete('entries', 'SectionEntriesController@delete');
                 $app->put('entries/galleries', ['as' => 'entry_gallery', 'uses' => 'SectionEntriesController@galleryOrder']);
                 $app->delete('entries/galleries', 'SectionEntriesController@galleryDelete');

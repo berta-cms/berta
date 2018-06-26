@@ -413,29 +413,21 @@ var MessyMess = new Class({
 		event.stop();
 
 		var target = $(event.target);
-		target = target.getParent('.xEntry');
+    target = target.getParent('.xEntry');
 		var entriesList = target.getParent('.xEntriesList');
 		var nextEntry = entriesList.getFirst('.xEntry');
-		target.inject(entriesList, 'top');
+    target.inject(entriesList, 'top');
 
-		/*var newOrder = new Array();
-		entriesList.getElements('.xEntry').each(function(el) {
-			newOrder.push(el.getClassStoredValue('xEntryId'));
-		});*/
+    var entryId = target.getClassStoredValue('xEntryId');
+    var value = nextEntry.getClassStoredValue('xEntryId');
+    var site = getCurrentSite();
 
-        var data = {
-                section: bertaEditor.currentSection, entry: target.getClassStoredValue('xEntryId'), entryNum: null,
-                action: 'PUT_BEFORE', property: '', value: nextEntry.getClassStoredValue('xEntryId')
-            };
-
-		new Request.JSON({
-			url: bertaEditor.options.updateUrl,
-      data: JSON.stringify(data),
-      urlEncoded: false,
-			onComplete: function(resp) {
-
-			}.bind(this)
-		}).post();
+    redux_store.dispatch(Actions.initOrderSectionEntries(
+      site,
+      bertaEditor.currentSection,
+      entryId,
+      value
+    ));
 	},
 
 	firstPageInit:function() {

@@ -26,6 +26,13 @@ class SectionEntriesController extends Controller
         return response()->json($res);
     }
 
+    public function order(Request $request) {
+        $json = $request->json()->all();
+        $sectionEntriesDataService = new SectionEntriesDataService($json['site'], $json['section']);
+        $res = $sectionEntriesDataService->order($json['entryId'], $json['value']);
+        return response()->json($res);
+    }
+
     public function delete(Request $request)
     {
         $json = $request->json()->all();

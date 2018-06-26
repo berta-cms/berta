@@ -623,42 +623,32 @@ var BertaEditor = new Class({
 	},
 
 	entryOrderSave: function(elJustMoved) {
-		var elId = elJustMoved.getClassStoredValue('xEntryId')
+		var entryId = elJustMoved.getClassStoredValue('xEntryId');
 		var next = elJustMoved.getNext('.xEntry');
-		var nextId = next ? next.getClassStoredValue('xEntryId') : null;
-		var data = {
-				section: this.currentSection, entry: elId, entryNum: null,
-				action: 'PUT_BEFORE', property: '', value: nextId
-			};
+		var value = next ? next.getClassStoredValue('xEntryId') : null;
+    var site = getCurrentSite();
 
-		new Request.JSON({
-			url: this.options.updateUrl,
-      data: JSON.stringify(data),
-      urlEncoded: false,
-			onComplete: function(resp) {
-
-			}.bind(this)
-		}).post();
+    redux_store.dispatch(Actions.initOrderSectionEntries(
+      site,
+      this.currentSection,
+      entryId,
+      value
+    ));
 	},
 
-    portfolioThumbnailsOrderSave: function(elJustMoved) {
-        var elId = elJustMoved.get('data-id');
-        var next = elJustMoved.getNext('.portfolioThumbnail');
-        var nextId = next ? next.get('data-id') : null;
-        var data = {
-                section: this.currentSection, entry: elId, entryNum: null,
-                action: 'PUT_BEFORE', property: '', value: nextId
-            };
+  portfolioThumbnailsOrderSave: function(elJustMoved) {
+    var entryId = elJustMoved.get('data-id');
+    var next = elJustMoved.getNext('.portfolioThumbnail');
+    var value = next ? next.get('data-id') : null;
+    var site = getCurrentSite();
 
-        new Request.JSON({
-            url: this.options.updateUrl,
-            data: JSON.stringify(data),
-            urlEncoded: false,
-            onComplete: function(resp) {
-
-            }.bind(this)
-        }).post();
-    },
+    redux_store.dispatch(Actions.initOrderSectionEntries(
+      site,
+      this.currentSection,
+      entryId,
+      value
+    ));
+  },
 
 	entryOnHover: function(event) {
 		event = new Event(event);

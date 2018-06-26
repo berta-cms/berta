@@ -385,6 +385,28 @@ class SectionEntriesDataService Extends Storage {
         ];
     }
 
+    /**
+     * Reorder entries and save to XML file
+     */
+    public function order($entry_id, $value)
+    {
+        $entries = $this->get();
+        $entry_current_order = array_search($entry_id, array_column($entries['entry'], 'id'));
+        $entry_to_move = array_splice($entries['entry'], $entry_current_order, 1);
+        $entry_new_order = $value ? array_search($value, array_column($entries['entry'], 'id')) : count($entries['entry']);
+
+        array_splice($entries['entry'], $entry_new_order, 0, $entry_to_move);
+        $this->array2xmlFile($entries, $this->XML_FILE, $this->ROOT_ELEMENT);
+
+        $order = array_column($entries['entry'], 'id');
+
+        return [
+            'site_name' => $this->SITE,
+            'section_name' => $this->SECTION_NAME,
+            'order' => $order
+        ];
+    }
+
     public function rename($new_name, $new_title) {
         $ret = array('success' => true);
 

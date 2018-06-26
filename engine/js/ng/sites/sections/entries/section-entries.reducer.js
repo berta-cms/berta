@@ -77,6 +77,22 @@
           });
 
 
+        case ActionTypes.ORDER_SECTION_ENTRIES:
+          site_name = action.data.site_name === '0' ? '' : action.data.site_name;
+
+          return state.map(function (site, k) {
+            if (site_name === k) {
+              return site.map(function (entry) {
+                if (entry.get('sectionName') === action.data.section_name) {
+                  return entry.set('order', action.data.order.indexOf(entry.get('id')));
+                }
+                return entry;
+              });
+            }
+            return site;
+          });
+
+
         case ActionTypes.DELETE_SECTION_ENTRY:
           site_name = action.resp.site_name === '0' ? '' : action.resp.site_name;
 
