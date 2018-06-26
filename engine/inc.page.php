@@ -34,12 +34,25 @@ if(function_exists('mb_internal_encoding') && function_exists('mb_regex_encoding
 // basic paths...
 
 if(empty($INDEX_INCLUDED)) $INDEX_INCLUDED = false;
+
+/** @var {string} $SITE_ROOT_PATH - Berta site source root directory location on the disc.
+ * Used for PHP file includes and file saving/loading.
+ */
 if(empty($SITE_ROOT_PATH)) $SITE_ROOT_PATH = dirname(__dir__). '/';
 if(empty($SITE_ROOT)) $SITE_ROOT = $SITE_ROOT_PATH;
+
+/** @var {string} $SITE_ROOT_URL - The root path of site used in URL generation.
+ * Normally '/' (representing 'berta.me/'). */
 if(empty($SITE_ROOT_URL)) $SITE_ROOT_URL = '/';
 
 if(empty($ENGINE_ROOT)) $ENGINE_ROOT = $SITE_ROOT_PATH . 'engine/';
+
+/** @var {string} $ENGINE_ROOT_PATH - Berta engine location on the disc.
+ * Used for PHP file includes and file saving/loading. */
 if(empty($ENGINE_ROOT_PATH)) $ENGINE_ROOT_PATH = $SITE_ROOT_PATH . 'engine/';
+
+/** @var {string} $ENGINE_ROOT_URL - The root path of berta engine used in URL generation.
+ * Normally '/engine' (representing 'berta.me/engine'). */
 if(empty($ENGINE_ROOT_URL)) $ENGINE_ROOT_URL = $SITE_ROOT_URL . 'engine/';
 
 
