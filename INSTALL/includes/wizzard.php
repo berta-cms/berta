@@ -31,7 +31,7 @@ if(!empty($settings['berta']['installed'])) {
 		<div class="xMAlign-container xPanel">
 			<div class="xMAlign-outer">
 				<div class="xMAlign-inner">
-					<p>Berta is already installed.<br />Please delete folder named <strong><code>INSTALL</code></strong> in your Berta's root folder! <br />&nbsp;<br /><input type="button" value="  OK  " onclick="window.location='<?php echo $SITE_ABS_ROOT ?>';"></p>
+					<p>Berta is already installed.<br />Please delete folder named <strong><code>INSTALL</code></strong> in your Berta's root folder! <br />&nbsp;<br /><input type="button" value="  OK  " onclick="window.location='<?php echo $SITE_ROOT_URL ?>';"></p>
 				</div>
 			</div>
 		</div>

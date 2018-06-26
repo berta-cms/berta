@@ -5,8 +5,8 @@
     "paths":{
 	  "engineRoot":"<?php echo BertaEditor::$options['ENGINE_ROOT_URL'] ?>",
 	  "engineABSRoot":"<?php echo BertaEditor::$options['ENGINE_ABS_ROOT'] ?>",
-	  "siteABSRoot" : "<?php echo BertaEditor::$options['SITE_ABS_ROOT'] ?>",
-	  "template" : "<?php echo BertaEditor::$options['SITE_ABS_ROOT'] . '_templates/' . $berta->template->name . '/' ?>"
+	  "siteABSRoot" : "<?php echo BertaEditor::$options['SITE_ROOT_URL'] ?>",
+	  "template" : "<?php echo BertaEditor::$options['SITE_ROOT_URL'] . '_templates/' . $berta->template->name . '/' ?>"
 	},
     "skipTour": <?php echo (isset($sections) && count($sections)) || $berta->settings->get('siteTexts', 'tourComplete') ? 'true' : 'false' ?>,
     "session_id" : "<?php echo session_id() ?>"

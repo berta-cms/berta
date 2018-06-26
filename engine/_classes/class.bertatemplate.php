@@ -317,9 +317,9 @@ class BertaTemplate extends BertaBase {
 			'paths' => array(
 				'engineRoot' => htmlspecialchars(self::$options['ENGINE_ROOT_URL']),
 				'engineABSRoot' => htmlspecialchars($engineAbsRoot),
-				'siteABSMainRoot' => htmlspecialchars(self::$options['SITE_ABS_ROOT']),
-				'siteABSRoot' => htmlspecialchars(self::$options['SITE_ABS_ROOT']) . $site,
-				'template' => htmlspecialchars(self::$options['SITE_ABS_ROOT'] . '_templates/' . $this->name . '/'),
+				'siteABSMainRoot' => htmlspecialchars(self::$options['SITE_ROOT_URL']),
+				'siteABSRoot' => htmlspecialchars(self::$options['SITE_ROOT_URL']) . $site,
+				'template' => htmlspecialchars(self::$options['SITE_ROOT_URL'] . '_templates/' . $this->name . '/'),
 				'site' => htmlspecialchars(self::$options['MULTISITE'])
 			),
 

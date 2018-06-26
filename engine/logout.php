@@ -29,7 +29,7 @@ $int_version = $options['int_version'];
 <link rel="stylesheet" href="<?php echo $ENGINE_ABS_ROOT ?>css/login.css?<?php echo $int_version ?>" type="text/css" />
 </head>
 
-<body class="xLoginPageBody" onload="setTimeout('window.location=\'<?php echo $SITE_ABS_ROOT ?>\'', 1500)">
+<body class="xLoginPageBody" onload="setTimeout('window.location=\'<?php echo $SITE_ROOT_URL ?>\'', 1500)">
 	<div class="xMAlign-container xPanel">
 		<div class="xMAlign-outer">
 			<div class="xMAlign-inner">

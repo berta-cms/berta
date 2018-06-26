@@ -42,21 +42,7 @@ if(empty($ENGINE_ROOT)) $ENGINE_ROOT = $SITE_ROOT_PATH . 'engine/';
 if(empty($ENGINE_ROOT_PATH)) $ENGINE_ROOT_PATH = $SITE_ROOT_PATH . 'engine/';
 if(empty($ENGINE_ROOT_URL)) $ENGINE_ROOT_URL = $SITE_ROOT_URL . 'engine/';
 
-$SITE_ABS_ROOT = str_replace('\\', '/', dirname($_SERVER['PHP_SELF']));
-
-/** @todo fiture out what does this does when fixing SITE_ABS_ROOT */
-if(strlen($SITE_ROOT) > 2) {	// if SITE_ROOT is "../" or "../../" etc., but not "./"
-	$s = $SITE_ROOT;
-	while($s) {
-		$s = substr($s, 0, strlen($s) - 3);
-		$SITE_ABS_ROOT = str_replace('\\', '/', dirname($SITE_ABS_ROOT));
-	}
-}
-
-//if(empty($INDEX_INCLUDED)) $SITE_ABS_ROOT = str_replace('\\', '/', dirname($SITE_ABS_ROOT));
-//if(!empty($IS_CSS_FILE)) $SITE_ABS_ROOT = str_replace('\\', '/', dirname($SITE_ABS_ROOT));
-if($SITE_ABS_ROOT != '/') $SITE_ABS_ROOT .= '/';
-$ENGINE_ABS_ROOT = $SITE_ABS_ROOT . 'engine/';
+$ENGINE_ABS_ROOT = $SITE_ROOT_URL . 'engine/';
 
 
 $hasPHP5 = floatval(phpversion()) >= 5;
@@ -83,7 +69,7 @@ include_once $ENGINE_ROOT_PATH . '_classes/class.berta.php';
 include_once $ENGINE_ROOT_PATH . '_classes/class.bertagallery.php';
 include_once $ENGINE_ROOT_PATH . 'inc.engineprefs.php';			// since this include $options refer to BertaBase::$options
 include_once $ENGINE_ROOT_PATH . 'inc.sentry_error_handling.php';
-if(empty($SITE_ABS_ROOT)) $SITE_ABS_ROOT = $options['SITE_ABS_ROOT'];
+if(empty($SITE_ROOT_URL)) $SITE_ROOT_URL = $options['SITE_ROOT_URL'];
 if(empty($ENGINE_ABS_ROOT)) $ENGINE_ABS_ROOT = $options['ENGINE_ABS_ROOT'];
 
 

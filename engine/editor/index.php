@@ -30,8 +30,8 @@ if ($berta->apacheRewriteUsed) {
     $cU = new CleanURL();
 
     $urlStr = $_SERVER['REQUEST_URI'];
-    if (strpos($urlStr, $SITE_ABS_ROOT) === 0) {
-        $urlStr = substr($urlStr, strlen($SITE_ABS_ROOT) - 1);
+    if (strpos($urlStr, $SITE_ROOT_URL) === 0) {
+        $urlStr = substr($urlStr, strlen($SITE_ROOT_URL) - 1);
     }
     $cU->parseURL($urlStr);
 
@@ -56,7 +56,7 @@ if ($berta->apacheRewriteUsed) {
 $berta->initContent($urlStr, $sectionName, $tagName);
 if ($querySectionName && $querySectionName != 'sitemap.xml' && $berta->sectionName != $querySectionName) {
     header('HTTP/1.1 301 Moved Permanently');
-    header('Location: ' . ($berta->environment == 'engine' ? $ENGINE_ABS_ROOT : $SITE_ABS_ROOT));
+    header('Location: ' . ($berta->environment == 'engine' ? $ENGINE_ABS_ROOT : $SITE_ROOT_URL));
     include '../error/404.php';
     exit;
 }

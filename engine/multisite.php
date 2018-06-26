@@ -53,10 +53,10 @@ $int_version = BertaEditor::$options['int_version'];
                         echo '<div class="csHandle"><span class="handle"></span></div>';
                         echo '<div class="csTitle"><span class="' . $xEditSelectorSimple . ' xProperty-title xNoHTMLEntities xSite-' . $sN . ' xSiteField"' . ' data-path="' . $base_path . 'title" ' . '>' . (!empty($s['title']['value']) ? htmlspecialchars($s['title']['value']) : '') . '</span></div>';
                         if ($sN) {
-                            echo '<div class="csName">'.$options['SITE_HOST_ADDRESS'].$options['SITE_ABS_ROOT'].'<span class="' . $xEditSelectorSimple . ' xProperty-name xNoHTMLEntities xSite-' . $sN . ' xSiteField"' . ' data-path="' . $base_path . 'name" ' . '>' . (!empty($s['name']['value']) ? htmlspecialchars($s['name']['value']) : '') . '</span></div>';
+                            echo '<div class="csName">'.$options['SITE_HOST_ADDRESS'].$options['SITE_ROOT_URL'].'<span class="' . $xEditSelectorSimple . ' xProperty-name xNoHTMLEntities xSite-' . $sN . ' xSiteField"' . ' data-path="' . $base_path . 'name" ' . '>' . (!empty($s['name']['value']) ? htmlspecialchars($s['name']['value']) : '') . '</span></div>';
                             echo '<div class="csPub"><span class="' . $xEditSelectorYesNo . ' xProperty-published xSite-' . $sN . ' xSiteField"' . ' data-path="' . $base_path . '@attributes/published" ' . '>' . (!empty($s['@attributes']['published']) ? '1' : '0') . '</span></div>';
                         }else{
-                            echo '<div class="csName"><span>'.$options['SITE_HOST_ADDRESS'].$options['SITE_ABS_ROOT'].'</span></div>';
+                            echo '<div class="csName"><span>'.$options['SITE_HOST_ADDRESS'].$options['SITE_ROOT_URL'].'</span></div>';
                             echo '<div class="csPub"><span>-</span></div>';
                         }
 

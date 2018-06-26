@@ -149,7 +149,7 @@ class BertaUtils extends BertaBase
             'header' => "Content-Type: text/xml\r\n" .
             "Berta-User-Agent: {$_SERVER['HTTP_USER_AGENT']}\r\n" .
             "Berta-Version: Berta {$o['version']}\r\n" .
-            "Berta-URI: {$o['SITE_HOST_ADDRESS']}{$o['SITE_ABS_ROOT']}\r\n" .
+            "Berta-URI: {$o['SITE_HOST_ADDRESS']}{$o['SITE_ROOT_URL']}\r\n" .
             "Berta-Content: {$type}\r\n",
             'max_redirects' => $redirects, // stop after X redirects
             'timeout' => $timeout, // timeout on response

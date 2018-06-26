@@ -45,7 +45,7 @@ class BertaContent extends BertaBase {
 
         if ($apacheRewriteUsed){
             $urlStr = $_SERVER['REQUEST_URI'];
-            if(strpos($urlStr, $options['SITE_ABS_ROOT']) === 0) $urlStr = substr($urlStr, strlen($options['SITE_ABS_ROOT']) - 1);
+            if(strpos($urlStr, $options['SITE_ROOT_URL']) === 0) $urlStr = substr($urlStr, strlen($options['SITE_ROOT_URL']) - 1);
             $urlArr = explode('/', $urlStr);
 
             if( isset($urlArr[1]) && array_key_exists($urlArr[1], $options['MULTISITES']) ) {

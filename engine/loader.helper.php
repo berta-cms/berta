@@ -16,9 +16,13 @@ $loader->register();
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
 use Monolog\Handler\FirePHPHandler;
+use Monolog\Processor\IntrospectionProcessor;
+
 
 // Create the logger
 $logger = new Logger('old_berta');
+// Now add line numbers, classNames to output
+$logger->pushProcessor(new IntrospectionProcessor());
 // Now add some handlers
 $logger->pushHandler(new StreamHandler(__DIR__.'/../_api_app/storage/logs/old_berta.log', Logger::DEBUG));
 $logger->pushHandler(new FirePHPHandler());

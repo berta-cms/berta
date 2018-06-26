@@ -9,7 +9,7 @@
  * -------------------------------------------------------------
  */
 function smarty_function_bertaLink($params, &$smarty) {
-	global $berta, $SITE_ABS_ROOT, $options;
+    global $berta, $SITE_ROOT_URL, $options;
 
 	$settings = $berta->template->settings;
 	$constructPrettyLink = $berta->apacheRewriteUsed && $berta->environment == 'site';
@@ -61,9 +61,9 @@ function smarty_function_bertaLink($params, &$smarty) {
 	}
 
 	if($constructPrettyLink) {
-		return $SITE_ABS_ROOT . implode('/', $link) . ($link ? '/' : '');
+		return $SITE_ROOT_URL . implode('/', $link) . ($link ? '/' : '');
 	} else {
-		return (isset($params['absRoot']) ? $SITE_ABS_ROOT : '.') . ($link ? ('?' . implode('&', $link)) : '');
+		return (isset($params['absRoot']) ? $SITE_ROOT_URL : '.') . ($link ? ('?' . implode('&', $link)) : '');
 	}
 }
 ?>

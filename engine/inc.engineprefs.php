@@ -40,7 +40,6 @@ $options['MOBILE_DEVICE'] = $MOBILE_DEVICE;
 /**
  * Base paths - absolute root and host
  */
-$options['SITE_ABS_ROOT'] = $SITE_ABS_ROOT;	// $SITE_ABS_ROOT is defined in inc.page.php that includes this file
 $options['SITE_HOST_ADDRESS'] = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 'https' : 'http') .
                                     '://' . $_SERVER['HTTP_HOST'];
 
@@ -70,7 +69,7 @@ $options['SITE_ROOT_PATH'] = $SITE_ROOT_PATH;
 $options['SITE_ROOT_URL'] = $SITE_ROOT_URL;
 
 $options['TEMPLATES_ROOT'] = $SITE_ROOT_PATH . '_templates/';
-$options['TEMPLATES_ABS_ROOT'] = $options['SITE_ABS_ROOT'] . '_templates/';
+$options['TEMPLATES_ABS_ROOT'] = $options['SITE_ROOT_URL'] . '_templates/';
 $options['TEMPLATES_FULL_SERVER_PATH'] = $SITE_ROOT_PATH . '_templates' . '/';
 
 
@@ -94,8 +93,8 @@ if( !empty($options['MULTISITE']) ) {
     $options['MEDIA_TEMP_ROOT'] = $options['MEDIA_ROOT'];
 
 	$options['CACHE_ROOT'] = $options['XML_ROOT'] . 'cache/';
-	$options['MEDIA_ABS_ROOT'] = $options['SITE_ABS_ROOT'] . 'storage/-sites/' . $options['MULTISITE'] . '/media/';
-	$options['CACHE_ABS_ROOT'] = $options['SITE_ABS_ROOT'] . 'storage/-sites/' . $options['MULTISITE'] . '/cache/';
+	$options['MEDIA_ABS_ROOT'] = $options['SITE_ROOT_URL'] . 'storage/-sites/' . $options['MULTISITE'] . '/media/';
+	$options['CACHE_ABS_ROOT'] = $options['SITE_ROOT_URL'] . 'storage/-sites/' . $options['MULTISITE'] . '/cache/';
 }else{
     $options['XML_ROOT'] = $SITE_ROOT_PATH . 'storage/';
 
@@ -104,8 +103,8 @@ if( !empty($options['MULTISITE']) ) {
     $options['MEDIA_TEMP_ROOT'] = $options['MEDIA_ROOT'];
 
 	$options['CACHE_ROOT'] = $SITE_ROOT_PATH . 'storage/cache/';
-	$options['MEDIA_ABS_ROOT'] = $options['SITE_ABS_ROOT'] . 'storage/media/';
-	$options['CACHE_ABS_ROOT'] = $options['SITE_ABS_ROOT'] . 'storage/cache/';
+	$options['MEDIA_ABS_ROOT'] = $options['SITE_ROOT_URL'] . 'storage/media/';
+	$options['CACHE_ABS_ROOT'] = $options['SITE_ROOT_URL'] . 'storage/cache/';
 }
 
 $options['ENGINE_ABS_ROOT'] = $ENGINE_ABS_ROOT; // this is defined in inc.page.php that includes this preferences file

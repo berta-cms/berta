@@ -406,19 +406,19 @@ class BertaGallery extends BertaBase
             }
 
         } elseif (($berta->environment == 'engine' || ($berta->environment == 'site' && !$berta->apacheRewriteUsed)) && $firstSection) {
-            $linkHref = self::$options['SITE_ABS_ROOT'];
+            $linkHref = self::$options['SITE_ROOT_URL'];
             if ($tag != null && (($alwaysSelectTag && $notFirstTag) || !$alwaysSelectTag)) {
                 $linkHref .= '?section=' . $section['name'] . '&tag=' . $tag;
             }
 
         } elseif ($berta->environment == 'site' && $berta->apacheRewriteUsed && !$firstSection) {
-            $linkHref = self::$options['SITE_ABS_ROOT'] . $section['name'] . '/';
+            $linkHref = self::$options['SITE_ROOT_URL'] . $section['name'] . '/';
             if ($tag != null && (($alwaysSelectTag && $notFirstTag) || !$alwaysSelectTag)) {
                 $linkHref .= $tag . '/';
             }
 
         } elseif ($berta->environment == 'site' && $berta->apacheRewriteUsed && $firstSection) {
-            $linkHref = self::$options['SITE_ABS_ROOT'];
+            $linkHref = self::$options['SITE_ROOT_URL'];
             if ($tag != null && (($alwaysSelectTag && $notFirstTag) || !$alwaysSelectTag)) {
                 $linkHref .= $section['name'] . '/' . $tag . '/';
             }
