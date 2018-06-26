@@ -14,6 +14,7 @@ try {
 
 } catch (Exception $e) {}
 
+
 // You can now use your logger
 // $logger->info('My logger is now ready');
 
@@ -37,12 +38,13 @@ if(empty($SITE_ROOT_PATH)) $SITE_ROOT_PATH = dirname(__dir__). '/';
 if(empty($SITE_ROOT)) $SITE_ROOT = $SITE_ROOT_PATH;
 if(empty($SITE_ROOT_URL)) $SITE_ROOT_URL = '/';
 
-if(empty($ENGINE_ROOT)) $ENGINE_ROOT = $SITE_ROOT . 'engine/';
+if(empty($ENGINE_ROOT)) $ENGINE_ROOT = $SITE_ROOT_PATH . 'engine/';
 if(empty($ENGINE_ROOT_PATH)) $ENGINE_ROOT_PATH = $SITE_ROOT_PATH . 'engine/';
 if(empty($ENGINE_ROOT_URL)) $ENGINE_ROOT_URL = $SITE_ROOT_URL . 'engine/';
 
 $SITE_ABS_ROOT = str_replace('\\', '/', dirname($_SERVER['PHP_SELF']));
 
+/** @todo fiture out what does this does when fixing SITE_ABS_ROOT */
 if(strlen($SITE_ROOT) > 2) {	// if SITE_ROOT is "../" or "../../" etc., but not "./"
 	$s = $SITE_ROOT;
 	while($s) {
@@ -59,9 +61,9 @@ $ENGINE_ABS_ROOT = $SITE_ABS_ROOT . 'engine/';
 
 $hasPHP5 = floatval(phpversion()) >= 5;
 if(!$hasPHP5) {
-	if(file_exists($SITE_ROOT . 'INSTALL/includes/first_visit_serverreqs.php')) {
+	if(file_exists($SITE_ROOT_PATH . 'INSTALL/includes/first_visit_serverreqs.php')) {
 		$CHECK_INCLUDED = true;
-		include $SITE_ROOT . 'INSTALL/includes/first_visit_serverreqs.php';
+		include $SITE_ROOT_PATH . 'INSTALL/includes/first_visit_serverreqs.php';
 	} else {
 		die('Berta needs PHP5 support on server.');
 	}
@@ -156,24 +158,24 @@ if(SETTINGS_INSTALLREQUIRED && !$berta->settings->get('berta', 'installed')) {
 
 		switch($step) {
 			case 1:
-				if(file_exists($SITE_ROOT . 'INSTALL/includes/check.php')) {
+				if(file_exists($SITE_ROOT_PATH . 'INSTALL/includes/check.php')) {
 					$CHECK_INCLUDED = true;
-					include $SITE_ROOT . 'INSTALL/includes/check.php';
+					include $SITE_ROOT_PATH . 'INSTALL/includes/check.php';
 					exit;
 				}
 				break;
 			case 2:
-				if(file_exists($SITE_ROOT . 'INSTALL/includes/wizzard.php')) {
+				if(file_exists($SITE_ROOT_PATH . 'INSTALL/includes/wizzard.php')) {
 					$CHECK_INCLUDED = true;
-					include $SITE_ROOT . 'INSTALL/includes/wizzard.php';
+					include $SITE_ROOT_PATH . 'INSTALL/includes/wizzard.php';
 					exit;
 				}
 				break;
 		}
 	} else {
-		if(file_exists($SITE_ROOT . 'INSTALL/includes/first_visit.php')) {
+		if(file_exists($SITE_ROOT_PATH . 'INSTALL/includes/first_visit.php')) {
 			$CHECK_INCLUDED = true;
-			include $SITE_ROOT . 'INSTALL/includes/first_visit.php';
+			include $SITE_ROOT_PATH . 'INSTALL/includes/first_visit.php';
 		} else {
 			die('Berta not installed.');
 		}

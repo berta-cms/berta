@@ -1,8 +1,6 @@
 <?php
 /** @todo
- * - Check why is the 'inc.page.php' included here if this file is included in it
  * - fix this path:  */
-// $SITE_ROOT = '../../';
 define('AUTH_AUTHREQUIRED', false);
 define('SETTINGS_INSTALLREQUIRED', false);
 include '../../engine/inc.page.php';

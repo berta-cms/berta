@@ -1,8 +1,6 @@
 <?php
 
 if(empty($CHECK_INCLUDED)) {
-    /** @todo fix this path: */
-	// $SITE_ROOT = '../../';
 	define('AUTH_AUTHREQUIRED', true);
 	define('SETTINGS_INSTALLREQUIRED', false);
 	include '../../engine/inc.page.php';

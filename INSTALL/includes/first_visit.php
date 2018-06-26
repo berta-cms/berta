@@ -2,9 +2,7 @@
 
 if(empty($CHECK_INCLUDED)) {
     /** @todo
-     * - Check why is the 'inc.page.php' included here if this file is included in it
-     * - fix this path:  */
-	// $SITE_ROOT = '../../';
+     * - Check why is the 'inc.page.php' included here if this file is included in it */
 	define('AUTH_AUTHREQUIRED', true);
 	define('SETTINGS_INSTALLREQUIRED', false);
 	include '../../engine/inc.page.php';

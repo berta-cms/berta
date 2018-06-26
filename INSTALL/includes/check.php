@@ -1,8 +1,6 @@
 <?php
 
 if(empty($CHECK_INCLUDED)) {
-    /** @todo fix these paths  */
-	// $SITE_ROOT = '../../';
 	define('AUTH_AUTHREQUIRED', true);
 	define('SETTINGS_INSTALLREQUIRED', false);
 	include '../../engine/inc.page.php';
@@ -58,7 +56,7 @@ if(empty($settings['berta']['installed'])) {
 	$testOutput .= '<p><br /><strong>Have you installed your website properly?</strong></p>';
 
 	// storage writable ...
-	$isOk = file_exists($SITE_ROOT . 'storage') && is_writable($SITE_ROOT . 'storage');
+	$isOk = file_exists($SITE_ROOT_PATH . 'storage') && is_writable($SITE_ROOT_PATH . 'storage');
 	$listOk &= $isOk; $listHasErrors |= !$isOk;
 	$testOutput .= getStatus($isOk, 'Storage folder exists and is writable', 'Please make sure the folder called "storage" in your Berta installation exists and is writable. Check step (3) in the installing instructions (located in the INSTALL folder) for details.');
 

@@ -149,8 +149,8 @@ $settingsDefinition = array(
     ),
 );
 
-if (@file_exists($SITE_ROOT . '_plugin_shop/inc.settings.php')) {
-    include $SITE_ROOT . '_plugin_shop/inc.settings.php';
+if (@file_exists($SITE_ROOT_PATH . '_plugin_shop/inc.settings.php')) {
+    include $SITE_ROOT_PATH . '_plugin_shop/inc.settings.php';
 }
 
 //special settings for hosted sites (nothing special)
