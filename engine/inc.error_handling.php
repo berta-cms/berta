@@ -81,8 +81,8 @@ function errorHandler($errno, $errstr, $errfile, $errline, $context = false, $bD
 
             $plain .= "[$i] in" .
                       (!empty($l['class']) ? " method of {$l['class']}" : ' function') .
-                      (!empty($l['type']) ? $l['type'] : '') .
-                      $l['function'] . PHP_EOL;
+                      (!empty($l['type']) ? ' ' . $l['type'] : '') .
+                      ' ' . $l['function'];
 
             if(!empty($l['file'])) $plain .= " in file " . errorHandler_shortFile($l['file']);
 
