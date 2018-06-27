@@ -1,4 +1,4 @@
-(function(window, ActionTypes) {
+(function (window, ActionTypes) {
   'use strict';
 
   window.Actions = window.Actions || {};

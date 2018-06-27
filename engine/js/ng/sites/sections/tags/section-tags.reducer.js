@@ -1,10 +1,10 @@
-(function(window, Immutable, ActionTypes) {
+(function (window, Immutable, ActionTypes) {
   'use strict';
 
   window.reducers = window.reducers || {};
 
   Object.assign(window.reducers, {
-    sectionTags: function(state, action) {
+    sectionTags: function (state, action) {
       var site_name = [];
 
       if (state === undefined) {

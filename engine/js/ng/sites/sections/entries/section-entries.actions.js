@@ -1,4 +1,4 @@
-(function(window, sync, Actions, ActionTypes) {
+(function (window, sync, Actions, ActionTypes) {
   'use strict';
 
   window.Actions = window.Actions || {};
@@ -21,11 +21,16 @@
     },
 
 
-    initUpdateSectionEntry: function(path, value, onComplete) {
+    initUpdateSectionEntry: function (path, value, onComplete) {
       return function (dispatch) {
-        dispatch({ type: ActionTypes.INIT_UPDATE_SECTION_ENTRY });
+        dispatch({
+          type: ActionTypes.INIT_UPDATE_SECTION_ENTRY
+        });
 
-        sync(window.Berta.urls.sectionEntries, { path: path, value: value })
+        sync(window.Berta.urls.sectionEntries, {
+          path: path,
+          value: value
+        })
           .then(function (response) {
             if (response.error_message) {
               // @TODO dispatch error message
@@ -33,7 +38,9 @@
               dispatch(Actions.updateSectionEntry(response));
 
               if (response.section) {
-                dispatch({ type: ActionTypes.INIT_UPDATE_SITE_SECTION });
+                dispatch({
+                  type: ActionTypes.INIT_UPDATE_SITE_SECTION
+                });
 
                 dispatch(Actions.updateSiteSection({
                   'path': response.site_name + '/section/' + response.section_order + '/@attributes/has_direct_content',
@@ -54,7 +61,7 @@
     },
 
 
-    updateSectionEntry: function(resp) {
+    updateSectionEntry: function (resp) {
       return {
         type: ActionTypes.UPDATE_SECTION_ENTRY,
         resp: resp
@@ -79,9 +86,16 @@
 
     initOrderSectionEntries: function (site, section, entryId, value) {
       return function (dispatch) {
-        dispatch({ type: ActionTypes.INIT_ORDER_SECTION_ENTRIES });
+        dispatch({
+          type: ActionTypes.INIT_ORDER_SECTION_ENTRIES
+        });
 
-        sync(window.Berta.urls.sectionEntries, {site: site, section: section, entryId: entryId, value: value}, 'PUT')
+        sync(window.Berta.urls.sectionEntries, {
+          site: site,
+          section: section,
+          entryId: entryId,
+          value: value
+        }, 'PUT')
           .then(function (response) {
             if (response.error_message) {
               // @TODO dispatch error message
@@ -99,12 +113,20 @@
       };
     },
 
-    initDeleteSectionEntry: function(site, section, entryId, onComplete) {
+    initDeleteSectionEntry: function (site, section, entryId, onComplete) {
       return function (dispatch) {
-        dispatch({ type: ActionTypes.INIT_DELETE_SECTION_ENTRY });
-        dispatch({ type: ActionTypes.INIT_UPDATE_SITE_SECTION });
+        dispatch({
+          type: ActionTypes.INIT_DELETE_SECTION_ENTRY
+        });
+        dispatch({
+          type: ActionTypes.INIT_UPDATE_SITE_SECTION
+        });
 
-        sync(window.Berta.urls.sectionEntries, {site: site, section: section, entryId: entryId}, 'DELETE')
+        sync(window.Berta.urls.sectionEntries, {
+          site: site,
+          section: section,
+          entryId: entryId
+        }, 'DELETE')
           .then(function (response) {
             if (response.error_message) {
               // @TODO dispatch error message
@@ -131,7 +153,7 @@
     },
 
 
-    deleteSectionEntry: function(resp) {
+    deleteSectionEntry: function (resp) {
       return {
         type: ActionTypes.DELETE_SECTION_ENTRY,
         resp: resp
@@ -155,11 +177,18 @@
     },
 
 
-    initOrderSectionEntryGallery: function(site, section, entryId, files, onComplete) {
+    initOrderSectionEntryGallery: function (site, section, entryId, files, onComplete) {
       return function (dispatch) {
-        dispatch({ type: ActionTypes.INIT_ORDER_SECTION_ENTRY_GALLERY });
+        dispatch({
+          type: ActionTypes.INIT_ORDER_SECTION_ENTRY_GALLERY
+        });
 
-        sync(window.Berta.urls.entryGallery, {site: site, section: section, entryId: entryId, files: files}, 'PUT')
+        sync(window.Berta.urls.entryGallery, {
+          site: site,
+          section: section,
+          entryId: entryId,
+          files: files
+        }, 'PUT')
           .then(function (response) {
             if (response.error_message) {
               // @TODO dispatch error message
@@ -172,7 +201,7 @@
     },
 
 
-    orderSectionEntryGallery: function(resp) {
+    orderSectionEntryGallery: function (resp) {
       return {
         type: ActionTypes.ORDER_SECTION_ENTRY_GALLERY,
         resp: resp
@@ -180,11 +209,18 @@
     },
 
 
-    initDeleteEntryGalleryImage: function(site, section, entryId, file, onComplete) {
+    initDeleteEntryGalleryImage: function (site, section, entryId, file, onComplete) {
       return function (dispatch) {
-        dispatch({ type: ActionTypes.INIT_DELETE_ENTRY_GALLERY_IMAGE });
+        dispatch({
+          type: ActionTypes.INIT_DELETE_ENTRY_GALLERY_IMAGE
+        });
 
-        sync(window.Berta.urls.entryGallery, {site: site, section: section, entryId: entryId, file: file}, 'DELETE')
+        sync(window.Berta.urls.entryGallery, {
+          site: site,
+          section: section,
+          entryId: entryId,
+          file: file
+        }, 'DELETE')
           .then(function (response) {
             if (response.error_message) {
               // @TODO dispatch error message
@@ -199,7 +235,7 @@
 
     // There is no reducer for this action at the moment
     // `orderSectionEntryGallery` is called after delete which updates state
-    deleteEntryGalleryImage: function(resp) {
+    deleteEntryGalleryImage: function (resp) {
       return {
         type: ActionTypes.DELETE_ENTRY_GALLERY_IMAGE,
         resp: resp

@@ -1,10 +1,10 @@
-(function(window, Immutable, ActionTypes) {
+(function (window, Immutable, ActionTypes) {
   'use strict';
 
   window.reducers = window.reducers || {};
 
   Object.assign(window.reducers, {
-    sectionEntries: function(state, action) {
+    sectionEntries: function (state, action) {
       var site_name;
 
       if (state === undefined) {
@@ -101,7 +101,7 @@
               return site.filter(function (entry) {
                 return !(entry.get('sectionName') === action.resp.section_name && entry.get('id') === action.resp.entry_id);
               }).map(function (entry) {
-                if (entry.get('sectionName') === action.resp.section_name && entry.get('order') > action.resp.entry_order ) {
+                if (entry.get('sectionName') === action.resp.section_name && entry.get('order') > action.resp.entry_order) {
                   return entry.set('order', entry.get('order') - 1);
                 }
                 return entry;
