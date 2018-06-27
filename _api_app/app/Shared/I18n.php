@@ -9,7 +9,7 @@ class I18n
 
     public static function load_language($lang = null)
     {
-        $ENGINE_ROOT = realpath(__DIR__ . '/../../../engine');
+        $ENGINE_ROOT = realpath(config('app.old_berta_root'). '/engine');
 
         if($lang && file_exists($ENGINE_ROOT.'/lang/'.$lang.'.php'))
         {
