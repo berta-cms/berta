@@ -60,5 +60,27 @@ $int_version = BertaEditor::$options['int_version'];
 <body class="bt-content-editor">
     <?php echo BertaEditor::getTopPanelHTML('site') ?>
     <iframe src="/engine/editor" frameborder="0" style="width:100%;height:100%;"></iframe>
+    <script>
+        (function(){
+            var topMenu = document.querySelector('#xTopPanelContainer');
+
+            window.addEventListener('message', function (event) {
+                switch (event.data) {
+                    case 'menu:show':
+
+                        if (topMenu) {
+                            topMenu.style.display = '';
+                        }
+                        break;
+
+                    case 'menu:hide':
+                        if (topMenu) {
+                            topMenu.style.display = 'none';
+                        }
+                        break;
+                }
+            });
+        })();
+    </script>
 </body>
 </html>

@@ -546,7 +546,8 @@ var BertaEditorBase = new Class({
             }
           },
           onDrag: function(){
-            $('xTopPanelContainer').hide();
+            window.BertaHelpers.hideTopMenus();
+
             if (parseInt(el.getStyle('left'))<0){
               el.setStyle('left', '0');
             }
@@ -576,8 +577,8 @@ var BertaEditorBase = new Class({
             }
           },
           onComplete: function(el) {
+            window.BertaHelpers.showTopMenus();
 
-            $('xTopPanelContainer').show();
             this.hideControlPanel(el);
             $('xCoords').destroy();
             el.removeClass('xEditing');
@@ -776,10 +777,10 @@ var BertaEditorBase = new Class({
   hideControlPanel: function(el) {
     if ( (el.hasClass('xEntry') || el.hasClass('xProperty-additionalTextXY')) &&  parseInt(el.getStyle('top'))<40 ){
       el.addEvent('mouseenter', function(){
-        $('xTopPanelContainer').hide();
+        window.BertaHelpers.hideTopMenus();
       });
       el.addEvent('mouseleave', function(){
-        $('xTopPanelContainer').show();
+        window.BertaHelpers.showTopMenus();
       });
     }
   },
@@ -1564,11 +1565,11 @@ window.addEvent('domready', function(){
 
     }else if($$('.page-xMySite').length){
       steps = [
-        {
-          element: document.querySelector('#xTopPanelContainer'),
-          intro: 'Hey! This is a control panel.',
-          position: 'right'
-        }
+        // {
+        //   element: document.querySelector('#xTopPanelContainer'),
+        //   intro: 'Hey! This is a control panel.',
+        //   position: 'right'
+        // }
       ];
       next = engine_path + 'sections.php' + query_site;
     }

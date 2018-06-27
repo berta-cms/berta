@@ -471,8 +471,7 @@ var BertaEditor = new Class({
 
 				if(this.options.templateName.substr(0,5) == 'messy') {
 					$$('.xCreateNewEntry').show();
-					$('xTopPanelContainer').show();
-					$('xBgEditorPanelTrigContainer').show();
+					window.BertaHelpers.showTopMenus();
 					$$('.xEntry .xCreateNewEntry').hide();
 				}
 
@@ -831,4 +830,4 @@ var BertaEditor = new Class({
 BertaEditor.EDITABLES_INIT = 'editables_init';
 
 
-var bertaEditor = new BertaEditor(window.bertaGlobalOptions);
+window.bertaEditor = new BertaEditor(window.bertaGlobalOptions);

@@ -199,7 +199,7 @@
         <div id="allContainer">
 
         {* engine panel lives in pageHeader - don't leave it out *}
-        { pageHeader }
+        {* { pageHeader } *}
     { /if }
 
     {* F awesome hack. Dont do it in future *}
