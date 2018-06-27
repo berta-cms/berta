@@ -164,10 +164,14 @@ class BertaUtils extends BertaBase
 
             if (self::updateBertaVersion($pContent['version'], $o['version'])) {
                 $result['content'] = $pContent['update'];
-            } elseif (!isset($_COOKIE['_berta_newsticker_news']) || $pContent['news'] != $_COOKIE['_berta_newsticker_news']) {
+            }
+            elseif (!empty($pContent['news']) &&
+                (!isset($_COOKIE['_berta_newsticker_news']) || $pContent['news'] != $_COOKIE['_berta_newsticker_news'])
+            ) {
                 setcookie('_berta_newsticker_news', $pContent['news'], time() + 60 * 60 * 12, '/');
                 $result['content'] = $pContent['news'];
-            } else {
+            }
+            else {
                 $result['content'] = $pContent['tips']['tip'][rand(0, sizeof($pContent['tips']['tip']) - 1)];
             }
         } else if ($page && $type == 'videos') {
