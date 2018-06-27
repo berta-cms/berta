@@ -531,6 +531,11 @@ class BertaEditor extends BertaContent {
     }
 
 
+    /**
+     * Generate BG image and return the path.
+     * @param {string} $imagePath - Path to original image
+     * @return {string} - location of generated image on drive
+     */
     public static function images_getBgImageFor($imagePath) {
         $fileName = basename($imagePath);
         $dirName = dirname($imagePath);
@@ -849,6 +854,17 @@ DOC;
         }
 
         return $content;
+    }
+
+    public static function getMediaStaticUrl($pathOnDrive) {
+        $mediaRootOnDrive = self::$options['MEDIA_ROOT'];
+        $mediaRootInUrl = self::$options['MEDIA_URL'];
+
+        if (strstr($pathOnDrive, $mediaRootOnDrive) === false ) {
+            return '';
+        }
+
+        return str_replace($mediaRootOnDrive, $mediaRootInUrl, $pathOnDrive);
     }
 
 }
