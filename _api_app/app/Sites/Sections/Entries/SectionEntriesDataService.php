@@ -58,7 +58,8 @@ use App\Shared\Helpers;
  * </blog>
  * ```
  */
-class SectionEntriesDataService Extends Storage {
+class SectionEntriesDataService extends Storage
+{
     public static $JSON_SCHEMA = [
         'type' => 'object',
         'properties' => [
@@ -76,7 +77,8 @@ class SectionEntriesDataService Extends Storage {
                         'mediaCacheData' => [
                             'type' => 'object',
                             'properties' => [
-                                'file' => [  /** @todo: FIX: We're getting error here, because converter can't distinguish single item array from an object */
+                                'file' => [
+                                /** @todo: FIX: We're getting error here, because converter can't distinguish single item array from an object */
                                     'type' => 'array',
                                     '$comment' => 'This is a list of <file> elements. This element can only contain <file> elements',
                                     'items' => [
@@ -175,7 +177,8 @@ class SectionEntriesDataService Extends Storage {
     private $XML_ROOT;
     private $XML_FILE;
 
-    public function __construct($site='', $sectionName='', $sectionTitle='') {
+    public function __construct($site = '', $sectionName = '', $sectionTitle = '')
+    {
         parent::__construct($site);
         $this->XML_ROOT = $this->getSiteXmlRoot($site);
         $this->SECTION_NAME = $sectionName;
@@ -184,10 +187,10 @@ class SectionEntriesDataService Extends Storage {
     }
 
     /**
-    * Returns all entries of site section as an array
-    *
-    * @return array Array of entries
-    */
+     * Returns all entries of site section as an array
+     *
+     * @return array Array of entries
+     */
     public function get()
     {
         if (!$this->ENTRIES) {
@@ -331,7 +334,8 @@ class SectionEntriesDataService Extends Storage {
         return $ret;
     }
 
-    public function create($name=null) {
+    public function create($name = null)
+    {
         while (file_exists($this->XML_FILE)) {
             if (preg_match('/(?P<name>.*)-(?P<digit>\d+)$/', $this->SECTION_NAME, $matches)) {
                 $this->SECTION_NAME = $matches['name'] . '-' . ((int)$matches['digit'] + 1);
@@ -368,8 +372,8 @@ class SectionEntriesDataService Extends Storage {
                         );
 
                         $this->copyFolder(
-                            realpath($this->MEDIA_ROOT) .'/'. $entry['mediafolder'],
-                            realpath($this->MEDIA_ROOT) .'/'. $blog[self::$ROOT_LIST_ELEMENT][$idx]['mediafolder']
+                            realpath($this->MEDIA_ROOT) . '/' . $entry['mediafolder'],
+                            realpath($this->MEDIA_ROOT) . '/' . $blog[self::$ROOT_LIST_ELEMENT][$idx]['mediafolder']
                         );
                     }
                 }
@@ -407,10 +411,11 @@ class SectionEntriesDataService Extends Storage {
         ];
     }
 
-    public function rename($new_name, $new_title) {
+    public function rename($new_name, $new_title)
+    {
         $ret = array('success' => true);
 
-        if(!file_exists($this->XML_FILE)) {
+        if (!file_exists($this->XML_FILE)) {
             $ret['success'] = false;
             $ret['value'] = $this->SECTION_TITLE;
             $ret['error_message'] = 'Current section storage file does not exist! you\'ll have to delete this section!';
@@ -419,14 +424,14 @@ class SectionEntriesDataService Extends Storage {
 
         $xml_file = $this->XML_ROOT . '/blog.' . $new_name . '.xml';
 
-        if(file_exists($xml_file)) {
+        if (file_exists($xml_file)) {
             $ret['success'] = false;
             $ret['value'] = $this->SECTION_TITLE;
             $ret['error_message'] = 'Section cannot be created! another section with the same (or too similar name) exists!';
             return $ret;
         }
 
-        if(!@rename($this->XML_FILE, $xml_file)) {
+        if (!@rename($this->XML_FILE, $xml_file)) {
             $ret['success'] = false;
             $ret['value'] = $this->SECTION_TITLE;
             $ret['error_message'] = 'Section storage file cannot be renamed! check permissions and be sure the name of the section is not TOO fancy!';
@@ -444,11 +449,11 @@ class SectionEntriesDataService Extends Storage {
         if (isset($entries[self::$ROOT_LIST_ELEMENT])) {
             foreach ($entries[self::$ROOT_LIST_ELEMENT] as $key => $entry) {
                 if (isset($entry['mediafolder'])) {
-                    $old_media = realpath($this->MEDIA_ROOT) .'/'. $entry['mediafolder'];
+                    $old_media = realpath($this->MEDIA_ROOT) . '/' . $entry['mediafolder'];
                     $new_name = $new_name . $entry['id'];
-                    $new_media = realpath($this->MEDIA_ROOT) .'/'. $new_name;
+                    $new_media = realpath($this->MEDIA_ROOT) . '/' . $new_name;
 
-                    if(@rename($old_media, $new_media)) {
+                    if (@rename($old_media, $new_media)) {
                         $entries[self::$ROOT_LIST_ELEMENT][$key]['mediafolder'] = $new_name;
                     }
                 }
@@ -460,20 +465,21 @@ class SectionEntriesDataService Extends Storage {
         return $ret;
     }
 
-    public function delete() {
+    public function delete()
+    {
         $entries = $this->get();
 
         // delete media files
-        if(array_key_exists(self::$ROOT_LIST_ELEMENT, $entries) and !empty($entries[self::$ROOT_LIST_ELEMENT])) {
-            foreach($entries[self::$ROOT_LIST_ELEMENT] as $entry) {
-                if(!empty($entry['mediafolder'])) {
+        if (array_key_exists(self::$ROOT_LIST_ELEMENT, $entries) and !empty($entries[self::$ROOT_LIST_ELEMENT])) {
+            foreach ($entries[self::$ROOT_LIST_ELEMENT] as $entry) {
+                if (!empty($entry['mediafolder'])) {
                     $mediaFolder = $this->MEDIA_ROOT . '/' . $entry['mediafolder'];
 
-                    if(file_exists($mediaFolder)) {
+                    if (file_exists($mediaFolder)) {
                         $dir = opendir($mediaFolder);
 
-                        while($fItem = readdir($dir)) {
-                            if($fItem != '.' && $fItem != '..') {
+                        while ($fItem = readdir($dir)) {
+                            if ($fItem != '.' && $fItem != '..') {
                                 @unlink($mediaFolder . '/' . $fItem);
                             }
                         }
@@ -506,7 +512,7 @@ class SectionEntriesDataService Extends Storage {
         $entry_order = array_search($entry_id, array_column($entries['entry'], 'id'));
 
         if ($entry_order === false) {
-            return[
+            return [
                 'error_message' => 'Entry with ID "' . $entry_id . '" not found!'
             ];
         }
@@ -574,7 +580,8 @@ class SectionEntriesDataService Extends Storage {
         ];
     }
 
-    private function setTitle($title) {
+    private function setTitle($title)
+    {
         if (!empty($this->SECTION_TITLE)) {
             $this->SECTION_TITLE = $title;
         }

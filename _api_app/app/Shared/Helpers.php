@@ -47,14 +47,14 @@ class Helpers
 
                 /** @todo: This should be done by XML conversion function: */
             } else if (is_string($value) && is_numeric($value)) {
-                $ret[$key] = strpos($value, '.') === false ? (int) $value : (float) $value;
+                $ret[$key] = strpos($value, '.') === false ? (int)$value : (float)$value;
 
             } else {
                 $ret[$key] = $value;
             }
         }
         if (self::isAssociativeArray($ret)) {
-            return (object) $ret;
+            return (object)$ret;
         }
         return $ret;
     }
@@ -69,7 +69,9 @@ class Helpers
     {
         /* This might be an issue for JSON conversion:
         - we can not know if an empty array is supposed to be associative */
-        if ($array === array()) {return false;}
+        if ($array === array()) {
+            return false;
+        }
 
         if (array_keys($array) === range(0, count($array) - 1)) {
             return false;
@@ -209,7 +211,7 @@ class Helpers
 
     public static function formatPrice($price, $currency)
     {
-        $price = (float) $price;
+        $price = (float)$price;
         if ($price) {
             return sprintf("%01.2f", $price) . ' ' . $currency;
         }

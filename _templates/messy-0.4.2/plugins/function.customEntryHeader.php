@@ -8,33 +8,34 @@
  * Purpose:
  * -------------------------------------------------------------
  */
-function smarty_function_customEntryHeader($params, &$smarty) {
+function smarty_function_customEntryHeader($params, &$smarty)
+{
     global $berta;
     $settings = $berta->template->settings;
-    $basePath = $berta::$options['MULTISITE'] . '/entry/' . $params['section'] . '/' .  $params['entry']['id'] . '/';
+    $basePath = $berta::$options['MULTISITE'] . '/entry/' . $params['section'] . '/' . $params['entry']['id'] . '/';
 
-	if($berta->environment != 'engine') return '';
+    if ($berta->environment != 'engine') return '';
 
-	$markedValue = !empty($params['entry']['marked']) ? 1 : 0;
+    $markedValue = !empty($params['entry']['marked']) ? 1 : 0;
 
-	$fixedValue = !empty($params['entry']['fixed']) ? 1 : 0;
-	$tags=isset($params['entry']['tags'])?implode(', ',$params['entry']['tags']):'';
-	$customWidth=isset($params['entry']['width']) ? $params['entry']['width'] : '';
+    $fixedValue = !empty($params['entry']['fixed']) ? 1 : 0;
+    $tags = isset($params['entry']['tags']) ? implode(', ', $params['entry']['tags']) : '';
+    $customWidth = isset($params['entry']['width']) ? $params['entry']['width'] : '';
 
-	$shopMenuEntry = null;
-	if(isset($params['ishopentry']) && $params['ishopentry'] == 1) {
+    $shopMenuEntry = null;
+    if (isset($params['ishopentry']) && $params['ishopentry'] == 1) {
 
-		$xUnits = $settings->get('shop', 'weightUnit');
+        $xUnits = $settings->get('shop', 'weightUnit');
 
 		//build shop menu entry...
-		$shopMenuEntry .= '	<div class="xEntrySeperator"></div>
+        $shopMenuEntry .= '	<div class="xEntrySeperator"></div>
 							<div class="xEntryBoxParams"><b>Attribute</b>
-								<div class="xEditable xProperty-cartAttributes xCaption-attribute cCartAttributes" data-path="' . $basePath . 'content/cartAttributes">'.$params['entry']['cartAttributes'].'</div>
-								<div class="xEditable xProperty-weight xCaption-weight xUnits-'.$xUnits.'" data-path="' . $basePath . 'content/weight">'.$params['entry']['weight'].'</div>
+								<div class="xEditable xProperty-cartAttributes xCaption-attribute cCartAttributes" data-path="' . $basePath . 'content/cartAttributes">' . $params['entry']['cartAttributes'] . '</div>
+								<div class="xEditable xProperty-weight xCaption-weight xUnits-' . $xUnits . '" data-path="' . $basePath . 'content/weight">' . $params['entry']['weight'] . '</div>
 							</div>';
-	}
+    }
 
-	return <<<DOC
+    return <<<DOC
 		<a class="xCreateNewEntry xPanel xAction-entryCreateNew" href="#"><span>create new entry here</span></a>
 		<div class="xEntryEditWrap">
 			<div class="xEntryEditWrapButtons xPanel">
@@ -72,4 +73,3 @@ function smarty_function_customEntryHeader($params, &$smarty) {
 			</div>
 DOC;
 }
-?>

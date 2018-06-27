@@ -28,7 +28,8 @@ use App\Sites\Sections\Entries\SectionEntriesDataService;
  * </sections>
  * ```
  */
-class SectionTagsDataService Extends Storage {
+class SectionTagsDataService extends Storage
+{
     /**
      * @var array $JSON_SCHEMA
      * Associative array representing data structure handled by this service.
@@ -110,7 +111,8 @@ class SectionTagsDataService Extends Storage {
     private $XML_FILE;
     private $TAGS;
 
-    public function __construct($site='', $sectionName='') {
+    public function __construct($site = '', $sectionName = '')
+    {
         parent::__construct($site);
         $this->XML_ROOT = $this->getSiteXmlRoot($site);
         $this->SECTION_NAME = $sectionName;
@@ -118,12 +120,13 @@ class SectionTagsDataService Extends Storage {
     }
 
     /**
-    * Returns all tags of a given site as an array
-    *
-    * @param string $site name of the site
-    * @return array Array of tags
-    */
-    public function get() {
+     * Returns all tags of a given site as an array
+     *
+     * @param string $site name of the site
+     * @return array Array of tags
+     */
+    public function get()
+    {
         if (!$this->TAGS) {
             $this->TAGS = $this->xmlFile2array($this->XML_FILE);
 
@@ -155,7 +158,8 @@ class SectionTagsDataService Extends Storage {
      *
      * @return array Array of tags
      */
-    public function getSectionTags() {
+    public function getSectionTags()
+    {
         $tags = $this->get();
 
         if (empty($this->SECTION_NAME)) {
@@ -171,7 +175,7 @@ class SectionTagsDataService Extends Storage {
                     '@attributes'
                 ),
                 'name'
-                )
+            )
         );
 
         if ($key === false) {
@@ -182,8 +186,9 @@ class SectionTagsDataService Extends Storage {
     }
 
     /**
-    */
-    public function delete() {
+     */
+    public function delete()
+    {
         $tags = $this->get();
         $tags_idx = array_search(
             $this->SECTION_NAME,
@@ -196,7 +201,7 @@ class SectionTagsDataService Extends Storage {
             )
         );
 
-        if ($tags_idx !== False) {
+        if ($tags_idx !== false) {
             $section_tags = array_splice($tags['section'], $tags_idx, 1);
             $this->array2xmlFile($tags, $this->XML_FILE, $this->ROOT_ELEMENT);
             return $section_tags;
@@ -206,8 +211,9 @@ class SectionTagsDataService Extends Storage {
     }
 
     /**
-    */
-    public function populateTags() {
+     */
+    public function populateTags()
+    {
         // @@@:TODO: Maybe it's possibe to write this method
         //           in a shorter and/or more efficient way
         $tags = $this->get();
@@ -219,16 +225,18 @@ class SectionTagsDataService Extends Storage {
         $section_entry_count = 0;
 
         if (isset($blog['entry']) && !empty($blog['entry'])) {
-            foreach($blog['entry'] as $key => $entry) {
-                if($key === '@attributes') { continue; }
+            foreach ($blog['entry'] as $key => $entry) {
+                if ($key === '@attributes') {
+                    continue;
+                }
 
                 $hasTags = false;
 
-                if(isset($entry['tags'])) {
+                if (isset($entry['tags'])) {
                     $_tags = $this->asList($entry['tags']['tag']);
 
-                    foreach($_tags as $tag) {
-                        $tag_name = trim((string) $tag);
+                    foreach ($_tags as $tag) {
+                        $tag_name = trim((string)$tag);
 
                         if ($tag_name) {
                             $tag_name = Helpers::slugify($tag_name, '-', '-');
@@ -258,8 +266,8 @@ class SectionTagsDataService Extends Storage {
                     '@attributes'
                 ),
                 'name'
-                )
-            );
+            )
+        );
 
         //to keep sorting order, we need to check old and new tag arrays
         //loop through old and check if exists and update, else do not add
@@ -268,7 +276,7 @@ class SectionTagsDataService Extends Storage {
         if ($section_idx !== false) {
             foreach ($tags['section'][$section_idx]['tag'] as $tag) {
                 $tag_name = $tag['@attributes']['name'];
-                if (isset($newCache[$tag_name])){
+                if (isset($newCache[$tag_name])) {
                     $tempCache[$tag_name] = $newCache[$tag_name];
                 }
             }
@@ -319,7 +327,8 @@ class SectionTagsDataService Extends Storage {
         );
     }
 
-    public function renameSection($new_name) {
+    public function renameSection($new_name)
+    {
         $tags = $this->get();
         $section_idx = array_search(
             $this->SECTION_NAME,

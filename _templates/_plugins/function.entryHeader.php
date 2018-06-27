@@ -8,23 +8,24 @@
  * Purpose:
  * -------------------------------------------------------------
  */
-function smarty_function_entryHeader($params, &$smarty) {
-	global $berta;
+function smarty_function_entryHeader($params, &$smarty)
+{
+    global $berta;
 
     $settings = $berta->template->settings;
-    $basePath = $berta::$options['MULTISITE'] . '/entry/' . $params['section'] . '/' .  $params['entry']['id'] . '/';
+    $basePath = $berta::$options['MULTISITE'] . '/entry/' . $params['section'] . '/' . $params['entry']['id'] . '/';
 
-	if($berta->environment != 'engine') return '';
+    if ($berta->environment != 'engine') return '';
 
-	$moveButton = $berta->subSectionName ?
-		'<a href="#" class="xEntryMoveForbidden" title="entries can be sorted only when you are NOT in subsection!"><span>move entry</span></a>' :
-		'<a href="#" class="xEntryMove" title="drag to move"><span>move entry</span></a>';
+    $moveButton = $berta->subSectionName ?
+        '<a href="#" class="xEntryMoveForbidden" title="entries can be sorted only when you are NOT in subsection!"><span>move entry</span></a>' :
+        '<a href="#" class="xEntryMove" title="drag to move"><span>move entry</span></a>';
 
-	$subSections = '';
-	$markedValue = isset($params['entry']['marked']) && $params['entry']['marked'] ? 1 : 0;
-	$tags=isset($params['entry']['tags'])?implode(', ',$params['entry']['tags']):'';
+    $subSections = '';
+    $markedValue = isset($params['entry']['marked']) && $params['entry']['marked'] ? 1 : 0;
+    $tags = isset($params['entry']['tags']) ? implode(', ', $params['entry']['tags']) : '';
 
-	return <<<DOC
+    return <<<DOC
 		<a class="xCreateNewEntry xPanel xAction-entryCreateNew" href="#"><span>create new entry here</span></a>
 
 		<div class="xEntryEditWrap">
@@ -52,4 +53,3 @@ function smarty_function_entryHeader($params, &$smarty) {
 			</div>
 DOC;
 }
-?>

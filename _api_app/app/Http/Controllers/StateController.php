@@ -55,7 +55,7 @@ class StateController extends Controller
                 $templateSettings = $templateSettingsDataService->getState();
 
                 if (!($templateSettings)) {
-                    $templateSettings = (object) null;
+                    $templateSettings = (object)null;
                 }
 
                 $state['site_template_settings'][$siteName][$template] = $templateSettings;

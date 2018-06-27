@@ -1,43 +1,43 @@
 <?php
 
-if($decoded['section']) {
+if ($decoded['section']) {
 
 	// create media folder name
-	$mediafolder = '';
-	$mFAddNum = false;
-	if($decoded['mediafolder']) $mediafolder = BertaUtils::canonizeString($decoded['mediafolder'], '_');
-	if(!$decoded['mediafolder'] || $mediafolder == str_repeat('_', strlen($decoded['mediafolder']))) {
-		$mediafolder = $decoded['section'];
-		$mFAddNum = true;
-	}
-	$MFTestNum = 1;
-	do {
-		$mFTest = $mediafolder . ($mFAddNum ? $MFTestNum : ($MFTestNum > 1 ? ($MFTestNum - 1) : ''));
-		$MFTestNum++;
-	} while(file_exists($options['MEDIA_ROOT'] . $mFTest));
-	$mediafolder = $mFTest;
+    $mediafolder = '';
+    $mFAddNum = false;
+    if ($decoded['mediafolder']) $mediafolder = BertaUtils::canonizeString($decoded['mediafolder'], '_');
+    if (!$decoded['mediafolder'] || $mediafolder == str_repeat('_', strlen($decoded['mediafolder']))) {
+        $mediafolder = $decoded['section'];
+        $mFAddNum = true;
+    }
+    $MFTestNum = 1;
+    do {
+        $mFTest = $mediafolder . ($mFAddNum ? $MFTestNum : ($MFTestNum > 1 ? ($MFTestNum - 1) : ''));
+        $MFTestNum++;
+    } while (file_exists($options['MEDIA_ROOT'] . $mFTest));
+    $mediafolder = $mFTest;
 
-	$defaultGalleryType = $berta->template->settings->get('entryLayout', 'defaultGalleryType');
-	if(!$defaultGalleryType) $defaultGalleryType = 'slideshow';
+    $defaultGalleryType = $berta->template->settings->get('entryLayout', 'defaultGalleryType');
+    if (!$defaultGalleryType) $defaultGalleryType = 'slideshow';
 
-	$FullScreen=$berta->settings->get('entryLayout', 'galleryFullScreenDefault');
+    $FullScreen = $berta->settings->get('entryLayout', 'galleryFullScreenDefault');
 
 	// try to create media folder
 	//echo realpath($options['MEDIA_ROOT']) . '/' . $mFTest;
-	if(@mkdir(realpath($options['MEDIA_ROOT']) . '/' . $mFTest, 0777)) {
-		@chmod(realpath($options['MEDIA_ROOT']) . '/' . $mFTest, 0777);
+    if (@mkdir(realpath($options['MEDIA_ROOT']) . '/' . $mFTest, 0777)) {
+        @chmod(realpath($options['MEDIA_ROOT']) . '/' . $mFTest, 0777);
 		//echo realpath($options['MEDIA_ROOT']) . $mFTest;
 
 		// update xml...
 
 		// find the max entryId and count the empty entries in the section
         $blog = BertaEditor::loadBlog($decoded['section']);
-		$maxId = 0;
+        $maxId = 0;
         // $numEmptyEntries = 0;
-		if($blog && !empty($blog['entry'])) foreach($blog['entry'] as $idx => $p) {
-            if($p['id']['value'] > $maxId) $maxId = (int) $p['id']['value'];
+        if ($blog && !empty($blog['entry'])) foreach ($blog['entry'] as $idx => $p) {
+            if ($p['id']['value'] > $maxId) $maxId = (int)$p['id']['value'];
 			// if(empty($p['updated']['value'])) $numEmptyEntries++;
-		}
+        }
 
 		// check if the maximum allowed amount of emtpy entries hasnt been reached
 		//$maxEmptyEntriesAllowed = (int) $berta->settings->get('pageLayout', 'numEmptyEntriesAllowed');
@@ -52,9 +52,9 @@ if($decoded['section']) {
         $uniqId = uniqid();
         $date = date('d.m.Y H:i:s');
         $tags = '<tag/>';
-        if(!empty($decoded['tag'])) {
+        if (!empty($decoded['tag'])) {
             $allTags = BertaEditor::getTags();
-            if(!empty($allTags[$decoded['section']][$decoded['tag']])) $tags = '<tag><![CDATA[' . $allTags[$decoded['section']][$decoded['tag']]['title'] . ']]></tag>';
+            if (!empty($allTags[$decoded['section']][$decoded['tag']])) $tags = '<tag><![CDATA[' . $allTags[$decoded['section']][$decoded['tag']]['title'] . ']]></tag>';
         }
 
         // create xml entry
@@ -82,9 +82,9 @@ EOT;
             // insert the new xml fragment into the blog xml
             $xmlStr = file_get_contents($fileName);
 
-            if(!empty($decoded['before_entry'])) {
-                $e =& BertaEditor::getEntry($decoded['before_entry'], $blog);
-                if($e) {
+            if (!empty($decoded['before_entry'])) {
+                $e = &BertaEditor::getEntry($decoded['before_entry'], $blog);
+                if ($e) {
                     $firstEntryStarts = strpos($xmlStr, $e['uniqid']['value']);
                     $firstEntryStarts = strrpos(substr($xmlStr, 0, $firstEntryStarts), '<entry');
                 } else
@@ -92,19 +92,17 @@ EOT;
             } else
                 $firstEntryStarts = strpos($xmlStr, '</blog>');
 
-
-
-            if($firstEntryStarts !== false)	// if an existing entry is found, then insert the new one before it
-                $xmlStr = substr($xmlStr, 0, $firstEntryStarts) . $insertXML . substr($xmlStr, $firstEntryStarts);
+            if ($firstEntryStarts !== false)	// if an existing entry is found, then insert the new one before it
+            $xmlStr = substr($xmlStr, 0, $firstEntryStarts) . $insertXML . substr($xmlStr, $firstEntryStarts);
             else 							// otherwise - assume the new one will be the first entry
-                $xmlStr = '<?xml version="1.0" encoding="utf-8"?>' . "\n" .
-                            "<blog>\n{$insertXML}</blog>";
+            $xmlStr = '<?xml version="1.0" encoding="utf-8"?>' . "\n" .
+                "<blog>\n{$insertXML}</blog>";
 
             file_put_contents($fileName, $xmlStr);
             @chmod($fileName, 0666);
         } else {
             $xmlStr = '<?xml version="1.0" encoding="utf-8"?>' . "\n" .
-                        "<blog>\n{$insertXML}</blog>";
+                "<blog>\n{$insertXML}</blog>";
             file_put_contents($fileName, $xmlStr);
             @chmod($fileName, 0666);
         }
@@ -117,7 +115,7 @@ EOT;
         $returnUpdate['entryid'] = $entryId;
 		// }
 
-	} else {
-		$returnError = 'cannot create media folder! check permissions.';
-	}
+    } else {
+        $returnError = 'cannot create media folder! check permissions.';
+    }
 }

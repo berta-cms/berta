@@ -26,7 +26,8 @@ class SectionEntriesController extends Controller
         return response()->json($res);
     }
 
-    public function order(Request $request) {
+    public function order(Request $request)
+    {
         $json = $request->json()->all();
         $sectionEntriesDataService = new SectionEntriesDataService($json['site'], $json['section']);
         $res = $sectionEntriesDataService->order($json['entryId'], $json['value']);
@@ -49,7 +50,8 @@ class SectionEntriesController extends Controller
         return response()->json($ret);
     }
 
-    public function galleryDelete(Request $request) {
+    public function galleryDelete(Request $request)
+    {
         $json = $request->json()->all();
         $sectionEntriesDataService = new SectionEntriesDataService($json['site'], $json['section']);
         $ret = $sectionEntriesDataService->galleryDelete($json['section'], $json['entryId'], $json['file']);

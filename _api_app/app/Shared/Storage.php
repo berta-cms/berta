@@ -26,7 +26,7 @@ class Storage
         $this->SITE = $site;
         $this->XML_MAIN_ROOT = realpath(__DIR__ . '/../../../storage');
         $this->STORAGE_URL =
-        $this->XML_SITES_ROOT = $this->XML_MAIN_ROOT . '/-sites';
+            $this->XML_SITES_ROOT = $this->XML_MAIN_ROOT . '/-sites';
 
         if (!empty($site) and $site !== '0') {
             $this->MEDIA_ROOT = $this->XML_SITES_ROOT . '/' . $site . '/' . $this->MEDIA_FOLDER;
@@ -351,7 +351,7 @@ class Storage
                     $attrs = array();
 
                     foreach ($node->attributes as $attrName => $attrNode) {
-                        $attrs[$attrName] = (string) $attrNode->value;
+                        $attrs[$attrName] = (string)$attrNode->value;
                     }
 
                     // if its an leaf node, store the value in @value instead of directly storing it.
@@ -372,14 +372,17 @@ class Storage
      *
      * @return boolean
      */
-    public function validationTest() {
+    public function validationTest()
+    {
         $class = get_class($this);
         try {
             $json_object = Helpers::arrayToJsonObject($class::$JSON_SCHEMA);
             $schema = Schema::import($json_object);
             $result = $schema->in(
                 [  // Wrap default structure in array, because sections.xml represents Section array.
-                    Helpers::arrayToJsonObject($class::$DEFAULT_VALUES)]);
+                    Helpers::arrayToJsonObject($class::$DEFAULT_VALUES)
+                ]
+            );
         } catch (Exception $e) {
             return false;
         }
@@ -392,14 +395,15 @@ class Storage
      * @param array|object $data    Array or stdClass object containing data for this service
      * @return bool
      */
-    public function validate($data=null) {
+    public function validate($data = null)
+    {
         $data = $data ? $data : Helpers::arrayToJsonObject($this->get());
         $class = get_class($this);
         try {
             $json_schema = Helpers::arrayToJsonObject($class::$JSON_SCHEMA);
             $schema = Schema::import($json_schema);
             $schema->in($data);
-        /** @todo: Catch exeption while validating  */
+            /** @todo: Catch exeption while validating  */
         } catch (\Exception $e) {
             \Log::warning(print_r($e, true));
             return false;
