@@ -316,7 +316,7 @@
 
                             <div class="entryTextWrap galleryType-{ $entry.__raw.mediaCacheData['@attributes'].type }">
                                 { if ($berta.environment == 'engine' || !empty($entry.cartTitle)) and $berta.section.type == 'shop' and $berta.shop_enabled == true }
-                                    <h2><span class="xEditable xProperty-cartTitle xCaption-item-name cCartTitle">{ $entry.cartTitle }</span></h2>
+                                    <h2><span class="xEditable xProperty-cartTitle xCaption-item-name cCartTitle"{if $berta.environment == 'engine'} data-path="{ $berta.options.MULTISITE }/entry/{ $berta.section.name }/{ $entry.id }/content/cartTitle"{ /if }>{ $entry.cartTitle }</span></h2>
                                 { elseif $berta.section.type == 'portfolio' && ($berta.environment == 'engine' || !empty($entry.title)) }
                                     <h2><span class="xEditable xProperty-title xCaption-entry&nbsp;title"{if $berta.environment == 'engine'} data-path="{ $berta.options.MULTISITE }/entry/{ $berta.section.name }/{ $entry.id }/content/title"{ /if }>{ $entry.title }</span></h2>
                                 { /if }
@@ -328,7 +328,7 @@
                                 { if $berta.section.type == 'shop' and $berta.shop_enabled == true }
                                     <div class="addToCart" data-uniqid="{$entry.uniqid}">
                                         { if $berta.environment == 'engine' }
-                                            <div class="cartPrice xEditableRC xProperty-cartPrice xCaption-price xFormatModifier-toPrice" title="{ $entry.cartPrice }">{ $entry.cartPrice|@toPrice }</div>
+                                            <div class="cartPrice xEditableRC xProperty-cartPrice xCaption-price xFormatModifier-toPrice" title="{ $entry.cartPrice }"{if $berta.environment == 'engine'} data-path="{ $berta.options.MULTISITE }/entry/{ $berta.section.name }/{ $entry.id }/content/cartPrice"{ /if }>{ $entry.cartPrice|@toPrice }</div>
                                         {else}
                                             <div class="cartPrice" title="{ $entry.cartPrice }" data-weight="{ $entry.weight|intval }">{ $entry.cartPrice|@toPrice }</div>
                                         {/if}

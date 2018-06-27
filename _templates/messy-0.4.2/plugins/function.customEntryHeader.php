@@ -29,8 +29,8 @@ function smarty_function_customEntryHeader($params, &$smarty) {
 		//build shop menu entry...
 		$shopMenuEntry .= '	<div class="xEntrySeperator"></div>
 							<div class="xEntryBoxParams"><b>Attribute</b>
-								<div class="xEditable xProperty-cartAttributes xCaption-attribute cCartAttributes">'.$params['entry']['cartAttributes'].'</div>
-								<div class="xEditable xProperty-weight xCaption-weight xUnits-'.$xUnits.'">'.$params['entry']['weight'].'</div>
+								<div class="xEditable xProperty-cartAttributes xCaption-attribute cCartAttributes" data-path="' . $basePath . 'content/cartAttributes">'.$params['entry']['cartAttributes'].'</div>
+								<div class="xEditable xProperty-weight xCaption-weight xUnits-'.$xUnits.'" data-path="' . $basePath . 'content/weight">'.$params['entry']['weight'].'</div>
 							</div>';
 	}
 
