@@ -11,8 +11,14 @@ if (!$INDEX_INCLUDED) {
 include __dir__ . '/inc.page.php';
 
 if (!$berta->security->userLoggedIn) {
-    include_once $ENGINE_ROOT_PATH . 'editor/inc.editor.php';
-    exit;
+    if ($INDEX_INCLUDED) {
+        include_once $ENGINE_ROOT_PATH . 'editor/inc.editor.php';
+        exit;
+    }
+    else {
+        header('Location: /');
+        exit;
+    }
 }
 include_once $ENGINE_ROOT_PATH . '_classes/class.bertaeditor.php';
 
