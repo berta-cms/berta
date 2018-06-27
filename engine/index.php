@@ -32,8 +32,8 @@ $int_version = BertaEditor::$options['int_version'];
     <link rel="SHORTCUT ICON" href="favicon.ico"/>
     <link rel="stylesheet" href="<?php echo $ENGINE_ROOT_URL ?>css/backend.min.css?<?php echo $int_version ?>" type="text/css" charset="utf-8" />
     <link rel="stylesheet" href="<?php echo $ENGINE_ROOT_URL ?>css/editor.css.php?<?php echo $int_version ?>" type="text/css" charset="utf-8" />
-    <script src="/engine/_lib/mootools/mootools-core-1.4.5-full-compat-yc.js"></script>
-    <script src="/engine/_lib/mootools/mootools-1.2.5.1-more.js"></script>
+    <script src="<?php echo $ENGINE_ROOT_URL ?>_lib/mootools/mootools-core-1.4.5-full-compat-yc.js"></script>
+    <script src="<?php echo $ENGINE_ROOT_URL ?>_lib/mootools/mootools-1.2.5.1-more.js"></script>
 
     <?php echo BertaTemplate::sentryScripts(); ?>
     <script type="text/javascript">
@@ -61,7 +61,7 @@ $int_version = BertaEditor::$options['int_version'];
 </head>
 <body class="bt-content-editor">
     <?php echo BertaEditor::getTopPanelHTML('site') ?>
-    <iframe src="/engine/editor" frameborder="0" style="width:100%;height:100%;"></iframe>
+    <iframe src="<?php echo $ENGINE_ROOT_URL ?>editor" frameborder="0" style="width:100%;height:100%;"></iframe>
     <script>
         (function(){
             var topMenu = document.getElementById('xTopPanelContainer'),
