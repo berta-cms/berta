@@ -1,4 +1,6 @@
 <?php
+if (empty($INDEX_INCLUDED)) { $INDEX_INCLUDED = false; }
+
 if (!$INDEX_INCLUDED) {
     define('AUTH_AUTHREQUIRED', true); // require authentification if inside engine folder
     define('BERTA_ENVIRONMENT', 'engine');
@@ -9,14 +11,10 @@ if (!$INDEX_INCLUDED) {
 include __dir__ . '/inc.page.php';
 
 if (!$berta->security->userLoggedIn) {
-    include_once $ENGINE_ROOT_PATH . 'editor/index.php';
+    include_once $ENGINE_ROOT_PATH . 'editor/inc.editor.php';
     exit;
 }
 include_once $ENGINE_ROOT_PATH . '_classes/class.bertaeditor.php';
-
-if (empty($INDEX_INCLUDED)) {
-    $INDEX_INCLUDED = false;
-}
 
 $int_version = BertaEditor::$options['int_version'];
 
