@@ -33,7 +33,7 @@ class SiteSectionsController extends Controller
 
         $resp = [
             'section' => $section,
-            'tags' => $tags ? $tags->getSectionTags() : null,
+            'tags' => $tags ? $tags->getSectionTagsState() : null,
             'entries' => $entries ? $entries->getState() : null,
         ];
 

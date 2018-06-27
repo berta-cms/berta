@@ -154,18 +154,35 @@ class SectionTagsDataService extends Storage
     }
 
     /**
+     * Returns all tags transformed for frontend needs
+     *
+     * @return array Array of tags
+     */
+    public function getState()
+    {
+        $tags = $this->get();
+
+        foreach ($tags['section'] as $section_order => $section) {
+            foreach ($section['tag'] as $tag_order => $tag) {
+                $tags['section'][$section_order]['tag'][$tag_order]['order'] = $tag_order;
+            }
+        }
+
+        return $tags;
+    }
+
+    /**
      * Returns all tags of a given section
      *
      * @return array Array of tags
      */
-    public function getSectionTags()
+    public function getSectionTagsState()
     {
-        $tags = $this->get();
+        $tags = $this->getState();
 
         if (empty($this->SECTION_NAME)) {
             return null;
         }
-
 
         $key = array_search(
             $this->SECTION_NAME,
@@ -183,6 +200,78 @@ class SectionTagsDataService extends Storage
         }
 
         return $tags['section'][$key];
+    }
+
+    /**
+     * Reorder tags and save to XML file
+     */
+    public function order($tag, $value)
+    {
+        $tags = $this->get();
+        $order = [];
+
+        $section_order = array_search(
+            $this->SECTION_NAME,
+            array_column(
+                array_column(
+                    $tags['section'],
+                    '@attributes'
+                ),
+                'name'
+            )
+        );
+
+        if ($section_order !== false) {
+            $section_tags = $tags['section'][$section_order]['tag'];
+
+            $tag_current_order = array_search(
+                $tag,
+                array_column(
+                    array_column(
+                        $section_tags,
+                        '@attributes'
+                    ),
+                    'name'
+                )
+            );
+
+            $tag_to_move = array_splice($section_tags, $tag_current_order, 1);
+
+            if ($value) {
+                $tag_new_order = array_search(
+                    $value,
+                    array_column(
+                        array_column(
+                            $section_tags,
+                            '@attributes'
+                        ),
+                        'name'
+                    )
+                );
+            } else {
+                $tag_new_order = count($section_tags);
+            }
+
+            array_splice($section_tags, $tag_new_order, 0, $tag_to_move);
+
+            $tags['section'][$section_order]['tag'] = $section_tags;
+
+            $this->array2xmlFile($tags, $this->XML_FILE, $this->ROOT_ELEMENT);
+
+            $order = array_column(
+                array_column(
+                    $section_tags,
+                    '@attributes'
+                ),
+                'name'
+            );
+        }
+
+        return [
+            'site_name' => $this->SITE,
+            'section_name' => $this->SECTION_NAME,
+            'order' => $order,
+        ];
     }
 
     /**
