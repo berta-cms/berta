@@ -1,17 +1,28 @@
 <?php
-require_once __dir__. '/../class-loader/ClassLoader.php';
-use Symfony\Component\ClassLoader\ClassLoader;
+/**
+ * First we check if the necessary PHP libraries are available, otherwise will have fatal error.
+ */
+$autoLoaderPath = dirname(__dir__) . '/_api_app/vendor/composer/ClassLoader.php';
+$psrLogPath = dirname(__dir__) . '/_api_app/vendor/psr/log';
+$monologPath = dirname(__dir__) . '/_api_app/vendor/monolog/monolog/src';
 
-$loader = new ClassLoader();
+if (!is_file($autoLoaderPath)) throw new Exception('Autoloader not available!');
+if (!is_dir($psrLogPath)) throw new Exception('Psr log interface not avialable!');
+if (!is_dir($monologPath)) throw new Exception('Monolog logging library not available!');
+
+// Initialize the auto-loader if we have everything we need
+require_once $autoLoaderPath;
+
+$loader = new \Composer\Autoload\ClassLoader();
+
+$loader->add('Psr', $psrLogPath);
+$loader->add('Monolog', $monologPath);
+
+// activate the autoloader
+$loader->register();
 
 // to enable searching the include path (eg. for PEAR packages)
 $loader->setUseIncludePath(true);
-
-$loader->addPrefix('Psr', __DIR__.'/../_api_app/vendor/psr/log');
-$loader->addPrefix('Monolog', __DIR__.'/../_api_app/vendor/monolog/monolog/src');
-
-$loader->register();
-
 
 use Monolog\Logger;
 Use Monolog\Formatter\LineFormatter;
