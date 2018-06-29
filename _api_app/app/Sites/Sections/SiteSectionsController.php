@@ -12,12 +12,6 @@ use App\Sites\Sections\Entries\SectionEntriesDataService;
 class SiteSectionsController extends Controller
 {
 
-    public function test(Request $request)
-    {
-        $sectionsData = new SiteSectionsDataService();
-        return $sectionsData->validationTest() ? 'true' : 'false';
-    }
-
     public function create(Request $request)
     {
         $json = $request->json()->all();
