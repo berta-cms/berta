@@ -272,7 +272,7 @@ class BertaTemplate extends BertaBase {
 				if($this->environment == 'engine' ||
 						$vars['berta']['sections'][$sName]['published'] &&
 						($this->settings->get('navigation', 'landingSectionVisible') == 'yes' || !$isFirstSection || !empty($this->tags[$sName])))
-					$vars['berta']['publishedSections'][$sName] =& $vars['berta']['sections'][$sName];
+                    $vars['berta']['publishedSections'][$sName] =& $vars['berta']['sections'][$sName];
 				if($vars['berta']['sections'][$sName]['published']) $isFirstSection = false;
 
 				// set current section and page title
@@ -476,4 +476,3 @@ DOC;
   }
 
 }
-?>

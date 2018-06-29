@@ -143,11 +143,19 @@ class SiteSectionsDataService extends Storage
             $this->SECTIONS = $this->xmlFile2array($this->XML_FILE);
 
             if ($this->SECTIONS) {
+                if (!isset($this->SECTIONS['section']) || !$this->SECTIONS['section']) {
+                    $this->SECTIONS['section'] = [];
+                }
+
                 $this->SECTIONS = $this->asList($this->SECTIONS['section']);
 
                 foreach ($this->SECTIONS as $order => $section) {
                     if (isset($section['mediaCacheData']['file'])) {
                         $this->SECTIONS[$order]['mediaCacheData']['file'] = $this->asList($section['mediaCacheData']['file']);
+
+                        if (!$this->SECTIONS[$order]['mediaCacheData']['file'][0]) {
+                            $this->SECTIONS[$order]['mediaCacheData']['file'] = [];
+                        }
                     }
                 }
             }
@@ -459,7 +467,7 @@ class SiteSectionsDataService extends Storage
             $mediafolder = $this->MEDIA_ROOT . '/' . $section['mediafolder'] . '/';
             $this->deleteMedia($mediafolder, $file);
 
-            $file = current(array_splice($section['mediaCacheData']['file'], $file_order, 1));
+            $file = current(array_splice($files, $file_order, 1));
             $this->array2xmlFile($sections, $this->XML_FILE, $this->ROOT_ELEMENT);
 
             return [
@@ -481,7 +489,7 @@ class SiteSectionsDataService extends Storage
 
         if ($section_order !== false) {
             $section = &$sections['section'][$section_order];
-            $section['mediaCacheData'] = isset($section['mediaCacheData']) ? $section['mediaCacheData'] : array('file' => array());
+            $section['mediaCacheData'] = isset($section['mediaCacheData']) ? $section['mediaCacheData'] : ['file' => []];
             $files = $this->asList($section['mediaCacheData']['file']);
 
             $reordered = [];
@@ -503,11 +511,7 @@ class SiteSectionsDataService extends Storage
                 }
             }
 
-            if ($new_files) {
-                $section['mediaCacheData']['file'] = $reordered;
-            } else {
-                unset($section['mediaCacheData']);
-            }
+            $section['mediaCacheData']['file'] = $new_files ? $reordered : [];
 
             $this->array2xmlFile($sections, $this->XML_FILE, $this->ROOT_ELEMENT);
 

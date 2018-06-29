@@ -7,16 +7,13 @@ use App\Http\Controllers\Controller;
 
 use App\Sites\Sections\SiteSectionsDataService;
 use App\Sites\Sections\Tags\SectionTagsDataService;
+use App\Sites\Sections\Entries\SectionEntriesDataService;
 
 class SiteSectionsController extends Controller
 {
 
-    public function test(Request $request) {
-        $sectionsData = new SiteSectionsDataService();
-        return $sectionsData->validationTest() ? 'true':'false';
-    }
-
-    public function create(Request $request) {
+    public function create(Request $request)
+    {
         $json = $request->json()->all();
         $cloneFrom = $json['name'];
         $sectionsDataService = new SiteSectionsDataService($json['site']);
@@ -26,17 +23,19 @@ class SiteSectionsController extends Controller
         );
 
         $tags = $cloneFrom ? new SectionTagsDataService($json['site'], $section['name']) : null;
+        $entries = $cloneFrom ? new SectionEntriesDataService($json['site'], $section['name']) : null;
 
         $resp = [
             'section' => $section,
-            'tags' => $tags ? $tags->getSectionTags() : null,
-            'entries' => [], // @TODO implement entries
+            'tags' => $tags ? $tags->getSectionTagsState() : null,
+            'entries' => $entries ? $entries->getState() : null,
         ];
 
         return response()->json($resp);
     }
 
-    public function update(Request $request) {
+    public function update(Request $request)
+    {
         $json = $request->json()->all();
         $path_arr = explode('/', $json['path']);
         $site = $path_arr[0];
@@ -51,7 +50,8 @@ class SiteSectionsController extends Controller
         return response()->json($res);
     }
 
-    public function delete(Request $request) {
+    public function delete(Request $request)
+    {
         $json = $request->json()->all();
         $sectionsDataService = new SiteSectionsDataService($json['site']);
         $res = $sectionsDataService->delete($json['section']);
@@ -59,7 +59,8 @@ class SiteSectionsController extends Controller
         return response()->json($res);
     }
 
-    public function reset(Request $request) {
+    public function reset(Request $request)
+    {
         $json = $request->json()->all();
         $path_arr = explode('/', $json['path']);
         $site = $path_arr[0];
@@ -69,21 +70,24 @@ class SiteSectionsController extends Controller
         return response()->json($res);
     }
 
-    public function order(Request $request) {
+    public function order(Request $request)
+    {
         $json = $request->json()->all();
         $sectionsDataService = new SiteSectionsDataService($json['site']);
         $sectionsDataService->order($json['sections']);
         return response()->json($json);
     }
 
-    public function galleryDelete(Request $request) {
+    public function galleryDelete(Request $request)
+    {
         $json = $request->json()->all();
         $sectionsDataService = new SiteSectionsDataService($json['site']);
         $res = $sectionsDataService->galleryDelete($json['section'], $json['file']);
         return response()->json($res);
     }
 
-    public function galleryOrder(Request $request) {
+    public function galleryOrder(Request $request)
+    {
         $json = $request->json()->all();
         $sectionsDataService = new SiteSectionsDataService($json['site']);
         $ret = $sectionsDataService->galleryOrder($json['section'], $json['files']);

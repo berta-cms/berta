@@ -72,7 +72,7 @@
 			{ /if }
 
 			{if ($berta.environment == 'site' && $berta.settings.navigation.landingSectionMenuVisible=='yes') || $berta.environment == 'engine' || ($berta.environment == 'site' && $berta.settings.navigation.landingSectionMenuVisible=='no' && $berta.sectionName != $berta.sections|@key) }
-				<div id="additionalText"{if $berta.settings.pageLayout.responsive!='yes'} class="xEditableDragXY xProperty-additionalTextXY" style="{ additionalTextPos xy=$additionalTextXY }"{/if}>
+				<div id="additionalText"{if $berta.settings.pageLayout.responsive!='yes'} class="xEditableDragXY xProperty-additionalTextXY" style="{ additionalTextPos xy=$additionalTextXY }"{/if}{if $berta.environment == 'engine' && $berta.settings.pageLayout.responsive != 'yes'} data-path="{ $berta.options.MULTISITE }/settings/siteTexts/additionalTextXY"{ /if }>
 					<div class="xHandle"></div>
 					{if $berta.settings.socialMediaButtons.socialMediaLocation == 'additionalText' && $berta.settings.socialMediaButtons.socialMediaHTML}
                     	{ $berta.settings.socialMediaButtons.socialMediaHTML|@html_entity_decode|replace:'<br />':"\n" }
@@ -152,7 +152,7 @@
  					<li class="entry {if $berta.section.type == 'portfolio'}xHidden {/if}{ entryClasses entry=$entry }" id="{ entrySlug entry=$entry }">
 
 						{* the entry settings and delete and move buttons live in the entryHeader - don't leave it out! *}
-						{ entryHeader entry=$entry }
+						{ entryHeader section=$berta.section.name entry=$entry }
 
 						{ if $berta.settings.entryLayout.galleryPosition == 'above title' }
 							{* entryGallery prints the image gallery for the entry *}
@@ -160,7 +160,7 @@
 						{ /if }
 
 						{ if $berta.environment == 'engine' || !empty($entry.title) }
-						<h2><span class="xEditable xProperty-title xCaption-entry&nbsp;title">{ $entry.title }</span></h2>
+						<h2><span class="xEditable xProperty-title xCaption-entry&nbsp;title"{if $berta.environment == 'engine'} data-path="{ $berta.options.MULTISITE }/entry/{ $berta.section.name }/{ $entry.id }/content/title"{ /if }>{ $entry.title }</span></h2>
 						{ /if }
 
 						{ if $berta.settings.entryLayout.galleryPosition == 'between title/description' }
@@ -169,7 +169,7 @@
 						{ /if }
 
 						{ if $berta.environment == 'engine' || !empty($entry.description) }
-						<div class="entryText xEditableMCE xProperty-description">{ $entry.description }</div>
+						<div class="entryText xEditableMCE xProperty-description"{if $berta.environment == 'engine'} data-path="{ $berta.options.MULTISITE }/entry/{ $berta.section.name }/{ $entry.id }/content/description"{ /if }>{ $entry.description }</div>
 						{ /if }
 
 						{ if $berta.settings.entryLayout.galleryPosition == 'below description' }
@@ -180,7 +180,7 @@
 						{ assign var=hasURL value= $berta.environment == 'engine' || !empty($entry.url) }
 						{ if $hasURL }
 						<div class="entryContent">
-							<div class="xEditable xProperty-url">{ if $berta.environment == 'site'}<a href="{ $entry.url }" target="_blank">{ $entry.url }</a>{else}{ $entry.url }{/if}</div>
+							<div class="xEditable xProperty-url"{if $berta.environment == 'engine'} data-path="{ $berta.options.MULTISITE }/entry/{ $berta.section.name }/{ $entry.id }/content/url"{ /if }>{ if $berta.environment == 'site'}<a href="{ $entry.url }" target="_blank">{ $entry.url }</a>{else}{ $entry.url }{/if}</div>
 						</div>
 						{ /if }
 
@@ -221,7 +221,7 @@
 			{ assign var="setting_pos_name" value="banner`$smarty.section.banners.iteration`XY" }
 
 			{ if $berta.settings.banners.$setting_name_image }
-				<div class="floating-banner banner-{$smarty.section.banners.iteration}{if $berta.settings.pageLayout.responsive!='yes' } xEditableDragXY xProperty-{ $setting_pos_name }{/if}"{ if $berta.settings.pageLayout.responsive!='yes' } style="{ bannerPos xy_name=$setting_pos_name }"{/if}>
+				<div class="floating-banner banner-{$smarty.section.banners.iteration}{if $berta.settings.pageLayout.responsive!='yes' } xEditableDragXY xProperty-{ $setting_pos_name }{/if}"{ if $berta.settings.pageLayout.responsive!='yes' } style="{ bannerPos xy_name=$setting_pos_name }"{/if}{if $berta.environment == 'engine' && $berta.settings.pageLayout.responsive != 'yes'} data-path="{ $berta.options.MULTISITE }/settings/siteTexts/banner{$smarty.section.banners.iteration}XY"{ /if }>
                     { if $berta.settings.pageLayout.responsive!='yes' }
                         <div class="xHandle"></div>
                     {/if}
