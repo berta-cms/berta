@@ -28,6 +28,7 @@ class StateController extends Controller
             'siteSections' => route('site_sections'),
             'siteSectionsReset' => route('site_sections_reset'),
             'siteSectionBackgrounds' => route('site_section_backgrounds'),
+            'sectionTags' => route('section_tags'),
             'sectionEntries' => route('section_entries'),
             'entryGallery' => route('entry_gallery'),
         ];
@@ -69,7 +70,7 @@ class StateController extends Controller
             }
 
             $tagsDataService = new SectionTagsDataService($siteName);
-            $state['section_tags'][$siteName] = $tagsDataService->get();
+            $state['section_tags'][$siteName] = $tagsDataService->getState();
         }
 
         $lang = 'en';

@@ -765,26 +765,21 @@ var BertaEditor = new Class({
 
   submenuOrderSave: function (elJustMoved, subMenu) {
     subMenu.addClass('xSaving');
+    var site = getCurrentSite();
     var section = subMenu.getClassStoredValue('xSection');
     var tag = elJustMoved.getClassStoredValue('xTag');
     var next = elJustMoved.getNext('li');
-    var nextTag = next ? next.getClassStoredValue('xTag') : null;
-    var data = {
-      section: section,
-      tag: tag,
-      value: nextTag,
-      action: 'ORDER_SUBMENUS',
-      property: ''
-    };
+    var value = next ? next.getClassStoredValue('xTag') : null;
 
-    new Request.JSON({
-      url: this.options.updateUrl,
-      data: JSON.stringify(data),
-      urlEncoded: false,
-      onComplete: function (resp) {
+    redux_store.dispatch(Actions.initOrderSectionTags(
+      site,
+      section,
+      tag,
+      value,
+      function () {
         subMenu.removeClass('xSaving');
-      }.bind(this)
-    }).post();
+      }
+    ));
   },
 
 
