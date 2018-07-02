@@ -1,10 +1,16 @@
 <?php
 define('AUTH_AUTHREQUIRED', true);
 define('BERTA_ENVIRONMENT', 'engine');
-include('inc.page.php');
+include 'inc.page.php';
 $loggedIn = $berta->security->userLoggedIn;
-include_once $ENGINE_ROOT_PATH . '_classes/class.bertaeditor.php';
+
+if ($loggedIn) {
+    include_once $ENGINE_ROOT_PATH . '_classes/class.bertaeditor.php';
+} else {
+    header("Location: ./login.php");
+    exit;
+}
 
 if ($shopEnabled) {
-	include($SITE_ROOT_PATH . '_plugin_shop/shopsettings.php');
+    include '../_plugin_shop/shopsettings.php';
 }

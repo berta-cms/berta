@@ -27,7 +27,7 @@ $int_version = BertaEditor::$options['int_version'];
 
 <body class="xSettingsPageBody" x_mode="multisite">
     <form name="infoForm" id="infoForm">
-        <input type="hidden" name="ENGINE_ROOT" id="ENGINE_ROOT" value="<?php echo htmlspecialchars($ENGINE_ROOT_URL) ?>" />
+        <input type="hidden" name="ENGINE_ROOT_URL" id="ENGINE_ROOT_URL" value="<?php echo htmlspecialchars($ENGINE_ROOT_URL) ?>" />
     </form>
     <?php echo $topPanelHTML ?>
     <div id="allContainer">

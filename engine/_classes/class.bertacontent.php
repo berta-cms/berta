@@ -1,6 +1,5 @@
 <?php
 
-
 class BertaContent extends BertaBase {
 
     public static function getSites($published = true) {
@@ -73,6 +72,7 @@ class BertaContent extends BertaBase {
                     foreach($xmlFeed['section'] as $s) {
                         if(!empty($s['name']['value']) && trim($s['name']['value']) != '') {
                             $name = trim($s['name']['value']);
+                            $s['order'] = $idx;
                             $sArr[$name] = $s;
                             $indexes[$name] = $idx;
                         }
@@ -163,8 +163,6 @@ class BertaContent extends BertaBase {
     }
 
 
-
-
     /* ---------------------------------------------------------------------------------------------------------------------- */
     /*  S U B   S E C T I O N S                                                                                                         */
     /* ---------------------------------------------------------------------------------------------------------------------- */
@@ -200,25 +198,10 @@ class BertaContent extends BertaBase {
     }
 
 
-
-
-
-
     // getXEmpty is in fact and editor function, but because of the way it is used, it lives in BertaContent
 
     public static function getXEmpty($property) {
         $xEmpty = 'xEmpty';
         return self::$options['logged_in'] ? ('<span class="' . $xEmpty . '">&nbsp;' . $property . '&nbsp;</span>') : '';
     }
-
-
 }
-
-
-
-
-
-
-
-
-?>

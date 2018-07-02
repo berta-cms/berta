@@ -23,7 +23,7 @@ $site = empty($options['MULTISITE']) ? '0' : $options['MULTISITE'];
 
 <body class="xSettingsPageBody page-xSections" x_mode="sections">
     <form name="infoForm" id="infoForm">
-        <input type="hidden" name="ENGINE_ROOT" id="ENGINE_ROOT" value="<?php echo htmlspecialchars($ENGINE_ROOT_URL) ?>" />
+        <input type="hidden" name="ENGINE_ROOT_URL" id="ENGINE_ROOT_URL" value="<?php echo htmlspecialchars($ENGINE_ROOT_URL) ?>" />
     </form>
     <?php echo $topPanelHTML ?>
     <div id="allContainer">

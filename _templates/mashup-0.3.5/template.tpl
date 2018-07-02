@@ -63,7 +63,7 @@
                     { if $berta.settings.sideBar.image }
                     <h1><a href="{ bertaLink }">{ responsiveImage image = $berta.settings.sideBar prefix=image path = $berta.options.MEDIA_ABS_ROOT alt=$berta.settings.texts.pageTitle }</a></h1>
                     { else }
-                    <h1 class="xEditable xProperty-siteHeading">
+                    <h1 class="xEditable xProperty-siteHeading"{if $berta.environment == 'engine'} data-path="{ $berta.options.MULTISITE }/settings/siteTexts/siteHeading"{ /if }>
                         { if $berta.environment == "engine" }
                             { $siteHeading }
                         { else }
@@ -74,13 +74,13 @@
                 { /if }
 
 				{ if ($berta.environment == 'site' && $berta.settings.navigation.landingSectionMenuVisible=='yes') || $berta.environment == 'engine' || ($berta.environment == 'site' && $berta.settings.navigation.landingSectionMenuVisible=='no' && $berta.sectionName != $berta.sections|@key) }
-					<div id="additionalText"{if $berta.settings.pageLayout.responsive!='yes'} class="xEditableDragXY xProperty-additionalTextXY" style="{ additionalTextPos xy=$additionalTextXY }"{/if}>
+					<div id="additionalText"{if $berta.settings.pageLayout.responsive!='yes'} class="xEditableDragXY xProperty-additionalTextXY" style="{ additionalTextPos xy=$additionalTextXY }"{/if}{if $berta.environment == 'engine' && $berta.settings.pageLayout.responsive != 'yes'} data-path="{ $berta.options.MULTISITE }/settings/siteTexts/additionalTextXY"{ /if }>
 						<div class="xHandle"></div>
 						{if $berta.settings.socialMediaButtons.socialMediaLocation == 'additionalText' && $berta.settings.socialMediaButtons.socialMediaHTML}
                             { $berta.settings.socialMediaButtons.socialMediaHTML|@html_entity_decode|replace:'<br />':"\n" }
                         {else}
-							<div class="xEditableMCESimple xProperty-additionalText xCaption-additional-text">
-							{ $additionalText }
+							<div class="xEditableMCESimple xProperty-additionalText xCaption-additional-text"{if $berta.environment == 'engine'} data-path="{ $berta.options.MULTISITE }/settings/siteTexts/additionalText"{ /if }>
+							  { $additionalText }
 							</div>
 						{/if}
 					</div>
@@ -117,7 +117,9 @@
                 {if $berta.settings.socialMediaButtons.socialMediaLocation == 'footer' && $berta.settings.socialMediaButtons.socialMediaHTML}
                     { $berta.settings.socialMediaButtons.socialMediaHTML|@html_entity_decode|replace:'<br />':"\n" }
                 {/if}
-				<p id="userCopyright" class="xEditableTA xProperty-siteFooter">{ $siteFooter }</p>
+				<p id="userCopyright" class="xEditableTA xProperty-siteFooter"{if $berta.environment == 'engine'} data-path="{ $berta.options.MULTISITE }/settings/siteTexts/siteFooter"{ /if }>
+          { $siteFooter }
+        </p>
 				{ if !($berta.settings.settings.hideBertaCopyright=='yes' && $berta.hostingPlan>1) }
 					<p id="bertaCopyright">{ bertaCopyright }</p>
 				{ /if }
@@ -158,7 +160,7 @@
 							{ foreach from=$entries item="entry" name="entriesLoop" }
                                 <li class="entry clearfix {if $berta.section.type == 'portfolio'}xHidden {/if}{ entryClasses entry=$entry }" id="{ entrySlug entry=$entry }">
 									{* the entry settings and delete and move buttons live in the entryHeader - don't leave it out! *}
-									{ entryHeader entry=$entry }
+									{ entryHeader section=$berta.section.name entry=$entry }
 
 									{* entryGallery prints the image gallery for the entry *}
                                     {if $berta.section.type != 'portfolio'}
@@ -167,11 +169,11 @@
 
                                     <div class="entryTextWrap galleryType-{ $entry.__raw.mediaCacheData['@attributes'].type }">
                                         { if $berta.section.type == 'portfolio' && ($berta.environment == 'engine' || !empty($entry.title)) }
-                                            <h2><span class="xEditable xProperty-title xCaption-entry&nbsp;title">{ $entry.title }</span></h2>
+                                            <h2><span class="xEditable xProperty-title xCaption-entry&nbsp;title"{if $berta.environment == 'engine'} data-path="{ $berta.options.MULTISITE }/entry/{ $berta.section.name }/{ $entry.id }/content/title"{ /if }>{ $entry.title }</span></h2>
                                         { /if }
 
                                         { if $berta.environment == 'engine' || !empty($entry.description) }
-                                            <div class="entryText xEditableMCE xProperty-description">{ $entry.description }</div>
+                                            <div class="entryText xEditableMCE xProperty-description"{if $berta.environment == 'engine'} data-path="{ $berta.options.MULTISITE }/entry/{ $berta.section.name }/{ $entry.id }/content/description"{ /if }>{ $entry.description }</div>
                                         { /if }
                                     </div>
 
@@ -208,7 +210,7 @@
 			{ assign var="setting_pos_name" value="banner`$smarty.section.banners.iteration`XY" }
 
 			{ if $berta.settings.banners.$setting_name_image }
-				<div class="floating-banner banner-{$smarty.section.banners.iteration}{if $berta.settings.pageLayout.responsive!='yes' } xEditableDragXY xProperty-{ $setting_pos_name }{/if}"{if $berta.settings.pageLayout.responsive!='yes' } style="{ bannerPos xy_name=$setting_pos_name }"{/if}>
+				<div class="floating-banner banner-{$smarty.section.banners.iteration}{if $berta.settings.pageLayout.responsive!='yes' } xEditableDragXY xProperty-{ $setting_pos_name }{/if}"{if $berta.settings.pageLayout.responsive!='yes' } style="{ bannerPos xy_name=$setting_pos_name }"{/if}{if $berta.environment == 'engine' && $berta.settings.pageLayout.responsive != 'yes'} data-path="{ $berta.options.MULTISITE }/settings/siteTexts/banner{$smarty.section.banners.iteration}XY"{ /if }>
 					<div class="xHandle"></div>
 					{ if $berta.settings.banners.$setting_name_link }
 						<a href="{ $berta.settings.banners.$setting_name_link }" target="_blank">

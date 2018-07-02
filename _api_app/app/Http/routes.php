@@ -15,7 +15,7 @@
 //     return 'Nothing here. Go away!';
 // });
 
-$app->group(['prefix' => 'v1', 'namespace' => 'App', 'middleware' => 'auth'], function() use ($app) {
+$app->group(['prefix' => 'v1', 'namespace' => 'App', 'middleware' => 'auth'], function () use ($app) {
     $app->get('state/{site}', 'Http\Controllers\StateController@get');
 
     $app->group(['prefix' => 'v1', 'namespace' => 'App\Sites'], function () use ($app) {
@@ -37,6 +37,16 @@ $app->group(['prefix' => 'v1', 'namespace' => 'App', 'middleware' => 'auth'], fu
 
             $app->put('sections/backgrounds', ['as' => 'site_section_backgrounds', 'uses' => 'SiteSectionsController@galleryOrder']);
             $app->delete('sections/backgrounds', 'SiteSectionsController@galleryDelete');
+
+            $app->put('sections/tags', ['as' => 'section_tags', 'uses' => 'Tags\SectionTagsController@order']);
+
+            $app->group(['prefix' => 'v1/sites/sections', 'namespace' => 'App\Sites\Sections\Entries'], function () use ($app) {
+                $app->patch('entries', ['as' => 'section_entries', 'uses' => 'SectionEntriesController@update']);
+                $app->put('entries', 'SectionEntriesController@order');
+                $app->delete('entries', 'SectionEntriesController@delete');
+                $app->put('entries/galleries', ['as' => 'entry_gallery', 'uses' => 'SectionEntriesController@galleryOrder']);
+                $app->delete('entries/galleries', 'SectionEntriesController@galleryDelete');
+            });
         });
     });
 

@@ -1,10 +1,10 @@
-(function(window, Immutable, ActionTypes) {
+(function (window, Immutable, ActionTypes) {
   'use strict';
 
   window.reducers = window.reducers || {};
 
   Object.assign(window.reducers, {
-    siteSections: function(state, action) {
+    siteSections: function (state, action) {
       var path,
           site_name,
           order,
@@ -30,9 +30,7 @@
           site_name = path[0] === '0' ? '' : path[0];
           order = parseInt(path[2], 10);
           value = action.resp.value;
-          prop = path.slice(3);  // "title" or "@attributes/published"
-
-          // @TODO also update section relations if name changed
+          prop = path.slice(3); // "title" or "@attributes/published"
 
           return state.map(function (section) {
             if (section.get('site_name') === site_name && section.get('order') === order && section.getIn(prop) !== value) {
@@ -88,7 +86,7 @@
           return state.filter(function (section) {
             return !(section.get('name') === action.resp.name && section.get('site_name') === site_name);
 
-          // Update order
+            // Update order
           }).map(function (section) {
             if (section.get('site_name') === site_name) {
               order++;

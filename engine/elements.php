@@ -85,36 +85,36 @@ if($jsonRequest) {
 
                         echo '<div class="xEntryGallerySettings xGreyBack xHidden">';
                             echo '<div class="caption">gallery type</div>',
-                                '<div class="xEntrySetGalType xFloatLeft xEditableSelectRC xCommand-SET_GALLERY_TYPE" x_options="slideshow||row||column||pile||link">' . $galType . '</div>',
+                                '<div class="xEntrySetGalType xFloatLeft xEditableSelectRC xCommand-SET_GALLERY_TYPE" x_options="slideshow||row||column||pile||link" data-path="' . $basePath . 'mediaCacheData/@attributes/type">' . $galType . '</div>',
                                 '<div class="clear"></div>';
                             echo '<div class="xEntrySlideshowSettings galleryTypeSettings' . ($galType == 'slideshow' ? '' : ' xHidden') . '">',
                                     '<div class="caption">autoplay seconds</div>',
                                     '<div class="xEntryAutoPlay xFloatLeft xEditableRC xCommand-SET_AUTOPLAY xCaption-0" title="' . $autoPlay . '">' . $autoPlay . '</div>',
                                     '<div class="clear"></div>',
                                     '<div class="caption">show image numbers</div>',
-                                    '<div class="xEntrySlideNumberVisibility xFloatLeft xEditableSelectRC xCommand-SET_SLIDE_NUMBER_VISIBILITY" x_options="yes||no">' . $numberVisibility . '</div>',
+                                    '<div class="xEntrySlideNumberVisibility xFloatLeft xEditableSelectRC xCommand-SET_SLIDE_NUMBER_VISIBILITY" x_options="yes||no" data-path="' . $basePath . 'mediaCacheData/@attributes/slide_numbers_visible">' . $numberVisibility . '</div>',
                                 '</div>';
                             echo '<div class="xEntryLinkSettings galleryTypeSettings' . ($galType == 'link' ? '' : ' xHidden') . ' ">',
                                     '<div class="caption">link address</div>',
-                                    '<div class="xEntryLinkAddress xFloatLeft xEditableRC xCommand-SET_LINK_ADDRESS" title="' . ($linkAddress ? $linkAddress : 'http://') . '">' . ($linkAddress ? $linkAddress : 'http://') . '</div>',
+                                    '<div class="xEntryLinkAddress xFloatLeft xEditableRC xCommand-SET_LINK_ADDRESS" title="' . ($linkAddress ? $linkAddress : 'http://') . '" data-path="' . $basePath . 'mediaCacheData/@attributes/link_address">' . ($linkAddress ? $linkAddress : 'http://') . '</div>',
                                     '<div class="clear"></div>',
                                     '<div class="caption">link target</div>',
-                                    '<div class="xEntryLinkTarget xFloatLeft xEditableSelectRC xCommand-SET_LINK_TARGET" x_options="_self||_blank">' . $linkTarget . '</div>',
+                                    '<div class="xEntryLinkTarget xFloatLeft xEditableSelectRC xCommand-SET_LINK_TARGET" x_options="_self||_blank" data-path="' . $basePath . 'mediaCacheData/@attributes/linkTarget">' . $linkTarget . '</div>',
                                 '</div>';
                             echo '<div class="xEntryRowSettings galleryTypeSettings' . ($galType == 'row' ? '' : ' xHidden') . ' ">',
                                     '<div class="caption">image padding</div>',
-                                    '<div class="xRowGalleryPadding xFloatLeft xEditableRC xCommand-SET_ROW_GALLERY_PADDING xCaption-0" title="' . $rowGalleryPadding . '">' . $rowGalleryPadding . '</div>',
+                                    '<div class="xRowGalleryPadding xFloatLeft xEditableRC xCommand-SET_ROW_GALLERY_PADDING xCaption-0" title="' . $rowGalleryPadding . '" data-path="' . $basePath . 'mediaCacheData/@attributes/row_gallery_padding">' . $rowGalleryPadding . '</div>',
                                 '</div>';
                         echo '</div>';
 
                         echo '<div class="xEntryGalleryFullScreen xHidden">';
                             echo '<div class="caption">fullscreen</div>',
-                                '<div class="xEntrySetFullScreen xFloatLeft xEditableSelectRC xCommand-SET_FULLSCREEN" x_options="yes||no">' . $FullScreen . '</div><div class="clear"></div>';
+                                '<div class="xEntrySetFullScreen xFloatLeft xEditableSelectRC xCommand-SET_FULLSCREEN" x_options="yes||no" data-path="' . $basePath . 'mediaCacheData/@attributes/fullscreen">' . $FullScreen . '</div><div class="clear"></div>';
                         echo '</div>';
 
                         echo '<div class="xEntryGalleryImageSize xHidden">';
                             echo '<div class="caption">image size</div>',
-                                '<div class="xEntrySetImageSize xFloatLeft xEditableSelectRC xCommand-SET_GALLERY_SIZE" x_options="large||medium||small">' . $imageSize . '</div><div class="clear"></div>';
+                                '<div class="xEntrySetImageSize xFloatLeft xEditableSelectRC xCommand-SET_GALLERY_SIZE" x_options="large||medium||small" data-path="' . $basePath . 'mediaCacheData/@attributes/size">' . $imageSize . '</div><div class="clear"></div>';
                         echo '</div>';
 
                         echo '<div class="images"><ul>';
