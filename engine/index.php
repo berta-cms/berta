@@ -114,7 +114,7 @@ $site = !empty($_REQUEST['site']) ? $_REQUEST['site'] : false;
 
             function setSite(site) {
                 var menu = topMenu.querySelector('#xEditorMenu');
-                var i, link, pathParts, locationName;
+                var i, link, pathParts, locationName, windowQuery;
 
                 if (!(menu && menu.children.length)) {
                     return;
@@ -130,20 +130,35 @@ $site = !empty($_REQUEST['site']) ? $_REQUEST['site'] : false;
                         (pathParts[pathParts.length - 2] || '').replace('.php', '');
 
                     if (['engine', 'sections', 'settings', 'shopsettings', 'seo'].indexOf(locationName) !== -1) {
-                        if (site && !link.search) {
-                            link.search = '?site=' + window.encodeURIComponent(site);
-                        }
-                        else if (site && /site=/.test(link.search)) {
-                            link.search = link.search.replace(/site=.*&?/, 'site=' + window.encodeURIComponent(site));
-                        }
-                        else if (!site && /site=/.test(link.search)) {
-                            link.search = link.search.replace(/(\?|&)site=.*&?/, '');
-                        }
-                        else if (site) {
-                            link.search = link.search + '&site=' + window.encodeURIComponent(site);
-                        }
+                        link.search = setSiteInQueryString(site, link.search);
                     }
                 }
+
+                windowQuery = setSiteInQueryString(site, window.location.search);
+                if (windowQuery !== window.location.search) {
+                    window.history.replaceState && window.history.replaceState({}, '',
+                        window.location.origin + window.location.pathname + windowQuery);
+                }
+            }
+
+            function setSiteInQueryString(site, qString) {
+                if (site && !qString) {
+                    return '?site=' + window.encodeURIComponent(site);
+                }
+
+                if (site && /site=/.test(qString)) {
+                    return qString.replace(/site=.*&?/, 'site=' + window.encodeURIComponent(site));
+                }
+
+                if (!site && /site=/.test(qString)) {
+                    return qString.replace(/(\?|&)site=.*&?/, '');
+                }
+
+                if (site) {
+                    return qString + '&site=' + window.encodeURIComponent(site);
+                }
+
+                return qString;
             }
         })();
     </script>
