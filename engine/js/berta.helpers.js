@@ -33,6 +33,26 @@ window.BertaHelpers = (function() {
       if (xBgEditorPanelTrigContainer) {
         xBgEditorPanelTrigContainer.style.display = '';
       }
+    },
+
+    updateTopMenuSite: function (queryString) {
+      var site = [queryString.replace('?', '')]
+        .reduce(function(_, valueString) {
+          return valueString.split('&');
+        }, '')
+        .filter(function(valueArrayItem) {
+          return valueArrayItem.split('=')[0] == 'site';
+        })
+        .reduce(function(_, siteValueStr) {
+          if (!siteValueStr) {
+            return '';
+          }
+          return siteValueStr.split('=')[1];
+        }, '');
+
+      if (window.parent) {
+        window.parent.postMessage('menu:set_site=' + site, '*');
+      }
     }
   };
 })();

@@ -23,6 +23,7 @@ if (!$berta->security->userLoggedIn) {
 include_once $ENGINE_ROOT_PATH . '_classes/class.bertaeditor.php';
 
 $int_version = BertaEditor::$options['int_version'];
+$site = !empty($_REQUEST['site']) ? $_REQUEST['site'] : false;
 
 ?><!DOCTYPE html>
 <html>
@@ -61,7 +62,7 @@ $int_version = BertaEditor::$options['int_version'];
 </head>
 <body class="bt-content-editor">
     <?php echo BertaEditor::getTopPanelHTML('site') ?>
-    <iframe src="<?php echo $ENGINE_ROOT_URL ?>editor" frameborder="0" style="width:100%;height:100%;"></iframe>
+    <iframe src="<?php echo $ENGINE_ROOT_URL ?>editor<?php echo $site ? "?site=$site" : '' ?>" frameborder="0" style="width:100%;height:100%;"></iframe>
     <script>
         (function(){
             var topMenu = document.getElementById('xTopPanelContainer'),
@@ -70,7 +71,9 @@ $int_version = BertaEditor::$options['int_version'];
                 slideInEl = document.getElementById('xTopPanelSlideIn');
 
             window.addEventListener('message', function (event) {
-                switch (event.data) {
+                var eventData = (event.data && event.data.split('=')) || [];
+
+                switch (eventData[0]) {
                     case 'menu:show':
 
                         if (topMenu) {
@@ -82,6 +85,10 @@ $int_version = BertaEditor::$options['int_version'];
                         if (topMenu) {
                             topMenu.style.display = 'none';
                         }
+                        break;
+
+                    case 'menu:set_site':
+                        setSite(eventData[1]);
                         break;
                 }
             });
@@ -104,6 +111,40 @@ $int_version = BertaEditor::$options['int_version'];
                     fxOut.start('top', 0);
                 });
             });
+
+            function setSite(site) {
+                var menu = topMenu.querySelector('#xEditorMenu');
+                var i, link, pathParts, locationName;
+
+                if (!(menu && menu.children.length)) {
+                    return;
+                }
+                for (i = 0; i < menu.children.length; i++) {
+                    link = menu.children[i].querySelector('a');
+                    if (!link) {
+                        continue;
+                    }
+                    pathParts = link.pathname.split('/');
+                    locationName = pathParts[pathParts.length - 1] ?
+                        pathParts[pathParts.length - 1].replace('.php', '') :
+                        (pathParts[pathParts.length - 2] || '').replace('.php', '');
+
+                    if (['engine', 'sections', 'settings', 'shopsettings', 'seo'].indexOf(locationName) !== -1) {
+                        if (site && !link.search) {
+                            link.search = '?site=' + window.encodeURIComponent(site);
+                        }
+                        else if (site && /site=/.test(link.search)) {
+                            link.search = link.search.replace(/site=.*&?/, 'site=' + window.encodeURIComponent(site));
+                        }
+                        else if (!site && /site=/.test(link.search)) {
+                            link.search = link.search.replace(/(\?|&)site=.*&?/, '');
+                        }
+                        else if (site) {
+                            link.search = link.search + '&site=' + window.encodeURIComponent(site);
+                        }
+                    }
+                }
+            }
         })();
     </script>
 </body>
