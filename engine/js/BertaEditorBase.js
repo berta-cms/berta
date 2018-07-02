@@ -1525,6 +1525,8 @@ BertaEditorBase.EDITABLE_FINISH = 'editable_finish';
 // Toggles top panel's visibility
 window.addEvent('domready', function () {
   var slideEl = document.getElementById('xTopPanel');
+  window.BertaHelpers && window.BertaHelpers.showTopMenus();
+
   if (slideEl) {
     var slideOutEl = document.getElementById('xTopPanelSlideOut');
     var slideInEl = document.getElementById('xTopPanelSlideIn');
