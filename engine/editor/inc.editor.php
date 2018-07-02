@@ -3,7 +3,7 @@
 $included_files = get_included_files();
 if (!in_array(__FILE__, get_included_files()) || $included_files[0] == __FILE__) {
     /* IF this file is not included, redirect to root of the page */
-    return header('Location: /');
+    header('Location: /');
     exit;
 }
 
