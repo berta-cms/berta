@@ -34,7 +34,7 @@ if ($options['HOSTING_PROFILE']) {
 
 	$login_action = $options['HOSTING_PROFILE'];
 }else{
-	$login_action = $ENGINE_ABS_ROOT . 'login.php';
+    $login_action = $SITE_ABS_ROOT . '_api/auth/login';
 }
 
 $auth_action = isset($_POST["auth_action"]) ? $_POST["auth_action"] : false;
