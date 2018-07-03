@@ -21,6 +21,8 @@ class SetupMiddleware
         return $next($request);
     }
 
+    // @todo currently env file diff checking happens on every api request,
+    // figure out more effective way for comparison
     protected function updateEnvFile()
     {
         $env_example = $this->parseEnvFile(base_path() . '/.env.example');

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Firebase\JWT\JWT;
+use App\Shared\Helpers;
 
 class AuthController extends Controller
 {
@@ -25,11 +26,18 @@ class AuthController extends Controller
 
     public function authenticate(Request $request)
     {
+        $token = $request->input('auth_key');
+        $valid_token = false;
+
+        if ($token && Helpers::validate_token($token)) {
+            $valid_token = true;
+        }
+
         include realpath(config('app.old_berta_root') . '/engine/config/inc.conf.php');
         $auth_user = $options['AUTH_user'];
         $auth_pass = $options['AUTH_password'];
 
-        if ($request->input('auth_user') !== $auth_user || $request->input('auth_pass') !== $auth_pass) {
+        if (!$valid_token && !($request->input('auth_user') == $auth_user && $request->input('auth_pass') == $auth_pass)) {
             header('Location:' . \Berta::$options['SITE_ABS_ROOT'] . 'engine/login.php?autherror=1');
             exit;
         }
@@ -58,8 +66,10 @@ class AuthController extends Controller
 
         $this->bertaSecurity = new \BertaSecurity();
 
-        $token = $this->generateToken($auth_user);
-        setcookie('token', $token, time() + self::$expiration_time, "/");
+        if (!$valid_token) {
+            $token = $this->generateToken($auth_user);
+            setcookie('token', $token, time() + self::$expiration_time, "/");
+        }
 
         if ($this->bertaSecurity->login($auth_user, $auth_pass, $options['AUTH_user'], $options['AUTH_password'])) {
             header('Location:' . \Berta::$options['SITE_ABS_ROOT'] . 'engine');

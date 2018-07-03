@@ -15,12 +15,13 @@
 //     return 'Nothing here. Go away!';
 // });
 
-$app->post('auth/login', ['uses' => 'AuthController@authenticate', 'middleware' => 'setup'] );
+$app->post('auth/login', ['uses' => 'AuthController@authenticate', 'middleware' => 'setup']);
+$app->get('auth/login', ['uses' => 'AuthController@authenticate', 'middleware' => 'setup']);
 
-$app->group(['prefix' => 'v1', 'namespace' => 'App', 'middleware' => 'auth'], function () use ($app) {
+$app->group(['prefix' => 'v1', 'namespace' => 'App', 'middleware' => ['setup', 'auth']], function () use ($app) {
     $app->get('state/{site}', 'Http\Controllers\StateController@get');
 
-    $app->group(['prefix' => 'v1', 'namespace' => 'App\Sites', 'middleware' => 'auth'], function () use ($app) {
+    $app->group(['prefix' => 'v1', 'namespace' => 'App\Sites', 'middleware' => ['setup', 'auth']], function () use ($app) {
         $app->post('sites', ['as' => 'sites', 'uses' => 'SitesController@create']);
         $app->patch('sites', 'SitesController@update');
         $app->put('sites', 'SitesController@order');
@@ -30,7 +31,7 @@ $app->group(['prefix' => 'v1', 'namespace' => 'App', 'middleware' => 'auth'], fu
 
         $app->patch('sites/template-settings', ['as' => 'site_template_settings', 'uses' => 'TemplateSettings\SiteTemplateSettingsController@update']);
 
-        $app->group(['prefix' => 'v1/sites', 'namespace' => 'App\Sites\Sections', 'middleware' => 'auth'], function () use ($app) {
+        $app->group(['prefix' => 'v1/sites', 'namespace' => 'App\Sites\Sections', 'middleware' => ['setup', 'auth']], function () use ($app) {
             $app->post('sections', ['as' => 'site_sections', 'uses' => 'SiteSectionsController@create']);
             $app->patch('sections', 'SiteSectionsController@update');
             $app->patch('sections/reset', ['as' => 'site_sections_reset', 'uses' => 'SiteSectionsController@reset']);
@@ -42,7 +43,7 @@ $app->group(['prefix' => 'v1', 'namespace' => 'App', 'middleware' => 'auth'], fu
 
             $app->put('sections/tags', ['as' => 'section_tags', 'uses' => 'Tags\SectionTagsController@order']);
 
-            $app->group(['prefix' => 'v1/sites/sections', 'namespace' => 'App\Sites\Sections\Entries', 'middleware' => 'auth'], function () use ($app) {
+            $app->group(['prefix' => 'v1/sites/sections', 'namespace' => 'App\Sites\Sections\Entries', 'middleware' => ['setup', 'auth']], function () use ($app) {
                 $app->patch('entries', ['as' => 'section_entries', 'uses' => 'SectionEntriesController@update']);
                 $app->put('entries', 'SectionEntriesController@order');
                 $app->delete('entries', 'SectionEntriesController@delete');

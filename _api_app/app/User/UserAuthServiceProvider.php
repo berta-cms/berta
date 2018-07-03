@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
-use Firebase\JWT\JWT;
+use App\Shared\Helpers;
 use App\User\UserModel;
 
 
@@ -59,23 +59,11 @@ class UserAuthServiceProvider extends ServiceProvider
                 return null;
             }
 
-            try {
-                $app_key = env('APP_KEY', 'SuperSecretAppKey');
-                $jwt_secret = env('JWT_SECRET', 'SuperSecretJWTSecret') . $app_key;
-                $decoded = JWT::decode($token, $jwt_secret, ['HS256']);
-
-                if ($decoded->sub !== $app_key) {
-                    return null;
-                }
-            } catch (\Throwable $t) {
-                \Log::error($t);
-                return null;
-            } catch (\Excpetion $e) {
-                \Log::error($e);
+            if (Helpers::validate_token($token)) {
+                return new UserModel();
+            } else {
                 return null;
             }
-
-            return new UserModel();
         });
     }
 

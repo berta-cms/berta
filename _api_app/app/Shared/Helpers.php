@@ -1,6 +1,8 @@
 <?php
 namespace App\Shared;
 
+use Firebase\JWT\JWT;
+
 /**
  * Using a class, so we can import the helper functions and use them in
  * PHP versions older then 5.6.
@@ -297,5 +299,25 @@ class Helpers
             mt_rand(0, 0xffff),
             mt_rand(0, 0xffff)
         );
+    }
+
+    public static function validate_token($token)
+    {
+        try {
+            $app_key = env('APP_KEY', 'SuperSecretAppKey');
+            $jwt_secret = env('JWT_SECRET', 'SuperSecretJWTSecret') . $app_key;
+            $decoded = JWT::decode($token, $jwt_secret, ['HS256']);
+
+            if ($decoded->sub !== $app_key) {
+                return null;
+            }
+            return true;
+        } catch (\Throwable $t) {
+            \Log::error($t);
+            return null;
+        } catch (\Excpetion $e) {
+            \Log::error($e);
+            return null;
+        }
     }
 }
