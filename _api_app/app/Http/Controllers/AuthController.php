@@ -68,8 +68,9 @@ class AuthController extends Controller
 
         if (!$valid_token) {
             $token = $this->generateToken($auth_user);
-            setcookie('token', $token, time() + self::$expiration_time, "/");
         }
+
+        setcookie('token', $token, time() + self::$expiration_time, "/");
 
         if ($this->bertaSecurity->login($auth_user, $auth_pass, $options['AUTH_user'], $options['AUTH_password'])) {
             header('Location:' . \Berta::$options['SITE_ABS_ROOT'] . 'engine');
