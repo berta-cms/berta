@@ -133,6 +133,8 @@ $berta->init($settingsDefinition);
 if(!defined('SETTINGS_INSTALLREQUIRED')) define('SETTINGS_INSTALLREQUIRED', true);
 if(!empty($_REQUEST['_berta_install_done'])) {
 
+    /** @todo: auto-create the first section */
+
 	// final installer adjustments
 	if($berta->settings->get('texts', 'ownerName')) {
 		$berta->settings->update('siteTexts', 'siteFooter', $berta->settings->get('texts', 'ownerName') . ' &copy; ');

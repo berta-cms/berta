@@ -15,7 +15,10 @@ if(empty($settings['berta']['installed'])) {
 	}
 
 	$listOk = true;
-	$listHasErrors = false;
+    $listHasErrors = false;
+
+    $uriPath = explode('?', $_SERVER['REQUEST_URI'])[0];
+    $redirectURL = strstr($uriPath, '/editor') ? $ENGINE_ROOT_URL . 'editor/' : $ENGINE_ROOT_URL;
 
 	$testOutput = '<ul id="xFirstTimeCheckList">';
 	$testOutput .= '<p><strong>Is your website hosted on a suitable server?</strong></p>';
@@ -113,7 +116,7 @@ if(!empty($settings['berta']['installed'])) {
 							echo '<div id="xFirstTimeCheckResult">';
 							echo '<h2>Welcome!</h2>';
 							echo '<p class="emphasis">Berta has completed a small test to see if it has everything it needs. It turns out that everything is just perfect.</p>';
-							echo '<p><input type="button" value=" Start building your site! " id="xFirstTimeCheckContinue" onclick="window.location=\'' . $ENGINE_ROOT_URL . '?_berta_install_step=2'.(!empty($options['MULTISITE']) ? '&site='.$options['MULTISITE'] : '').'\'" /></p>';
+							echo '<p><input type="button" value=" Start building your site! " id="xFirstTimeCheckContinue" onclick="window.location=\'' . $redirectURL . '?_berta_install_step=2'.(!empty($options['MULTISITE']) ? '&site='.$options['MULTISITE'] : '').'\'" /></p>';
 							echo '<br class="clear" /></div>';
 
 							echo '<p>Test results:</p>';
@@ -132,7 +135,7 @@ if(!empty($settings['berta']['installed'])) {
 
 							echo $testOutput;
 
-							echo '<p><br />If you like to, you can ignore the errors and: <input type="button" value=" Start with Berta! " class="xCheckListContinue" onclick="window.location=\'' . $ENGINE_ROOT_URL . '?_berta_install_step=2'.(!empty($options['MULTISITE']) ? '&site='.$options['MULTISITE'] : '').'\'" /></p>';
+							echo '<p><br />If you like to, you can ignore the errors and: <input type="button" value=" Start with Berta! " class="xCheckListContinue" onclick="window.location=\'' . $redirectURL . '?_berta_install_step=2'.(!empty($options['MULTISITE']) ? '&site='.$options['MULTISITE'] : '').'\'" /></p>';
 
 							echo $bottomNote;
 						}
