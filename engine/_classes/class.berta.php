@@ -58,7 +58,6 @@ class Berta extends BertaBase
 	// finally: init content
 	public function	initContent($full_url, $sectionName, $tagName)
 	{
-        global $logger;
 		$this->requestURI = $this->apacheRewriteUsed ? $full_url : false;
 
 		// seciton ...
