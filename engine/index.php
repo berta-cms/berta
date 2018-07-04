@@ -66,7 +66,7 @@ $site = !empty($_REQUEST['site']) ? $_REQUEST['site'] : false;
     <script>
         (function(){
             var topMenu = document.getElementById('xTopPanelContainer'),
-                slideEl = document.getElementById('xTopPanel'),
+                topPanel = document.getElementById('xTopPanel'),
                 slideOutEl = document.getElementById('xTopPanelSlideOut'),
                 slideInEl = document.getElementById('xTopPanelSlideIn');
 
@@ -93,7 +93,7 @@ $site = !empty($_REQUEST['site']) ? $_REQUEST['site'] : false;
                 }
             });
 
-            var fxOut = new Fx.Tween(slideEl),
+            var fxOut = new Fx.Tween(topPanel),
                 fxIn = new Fx.Tween(slideInEl);
 
             slideOutEl.addEventListener('click', function(event) {
@@ -159,6 +159,55 @@ $site = !empty($_REQUEST['site']) ? $_REQUEST['site'] : false;
                 }
 
                 return qString;
+            }
+
+            /**
+             * News ticker below the top menu:
+             */
+            function initNewsTicker (newsTickerContainer) {
+                if (!newsTickerContainer) {
+                    return;
+                }
+
+                newsTickerContainer.getElement('a.close').addEvent('click', function (event) {
+                    event.stop();
+                    hideNewsTicker(newsTickerContainer);
+                }.bind(this));
+            }
+
+            function hideNewsTicker (newsTickerContainer) {
+                if (newsTickerContainer.hasClass('xNewsTickerHidden')) {
+                    return;
+                }
+                newsTickerContainer.addClass('xNewsTickerHidden');
+
+                var editorMenu = $('xEditorMenu');
+                var totalWidth = 0;
+
+                editorMenu.getElements('li').each(function (el) {
+                    totalWidth += el.getSize().x;
+                });
+                totalWidth += parseInt(editorMenu.getStyle('padding-left')) + parseInt(editorMenu.getStyle('padding-right')) + 1;
+
+                new Fx.Slide(newsTickerContainer, {
+                    duration: 800,
+                    transition: Fx.Transitions.Quint.easeInOut
+                }).show().slideOut();
+                topPanel.set('tween', {
+                    duration: 800,
+                    transition: Fx.Transitions.Quint.easeInOut
+                }).tween('width', topPanel.getSize().x + 1 + 'px', totalWidth + 'px');
+
+                Cookie.write('_berta_newsticker_hidden', 1 /*,{ domain: window.location.host, path: window.location.pathname }*/ );
+            }
+
+            var newsTickerContainer = $('xNewsTickerContainer');
+            initNewsTicker(newsTickerContainer);
+
+            if (newsTickerContainer) {
+                setTimeout(function() {
+                    hideNewsTicker(newsTickerContainer);
+                }, 7000);
             }
         })();
     </script>
