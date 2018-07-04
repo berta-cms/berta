@@ -16,7 +16,10 @@ if ($berta->security->userLoggedIn) {
 //  GPC variables   -------------------------------------------------------------------------------------------------------------
 // ------------------------------------------------------------------------------------------------------------------------------
 
-$sectionName = $subSectionName = $tagName = $urlStr = false;
+$sectionName = false;
+$subSectionName = false;
+$tagName = false;
+$urlStr = false;
 if ($berta->apacheRewriteUsed) {
     include $ENGINE_ROOT_PATH . '_classes/class.clean_url.php';
     $cU = new CleanURL();
@@ -28,9 +31,14 @@ if ($berta->apacheRewriteUsed) {
     $cU->parseURL($urlStr);
 
     if (!empty($options['MULTISITE'])) {
-        $cU->setParts('site', 'sectionName', 'tagName');
+        $urlParts = $cU->getParts(3);
+        $site = $urlParts[0];
+        $sectionName = $urlParts[1];
+        $tagName = $urlParts[2];
     } else {
-        $cU->setParts('sectionName', 'tagName');
+        $urlParts = $cU->getParts(2);
+        $sectionName = $urlParts[0];
+        $tagName = $urlParts[1];
     }
     $querySectionName = $sectionName;
 } else {
