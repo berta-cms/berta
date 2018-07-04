@@ -58,13 +58,13 @@ class Berta extends BertaBase
 	// finally: init content
 	public function	initContent($full_url, $sectionName, $tagName)
 	{
-
+        global $logger;
 		$this->requestURI = $this->apacheRewriteUsed ? $full_url : false;
 
 		// seciton ...
         $this->sections = BertaContent::getSections();
 
-        if (empty($this->sections)) {
+        if (empty($this->sections) && class_exists('BertaEditor')) {
             /**
              * Auto-create the first section and call it 'home'
              */
