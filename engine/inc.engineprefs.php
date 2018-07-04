@@ -88,7 +88,7 @@ if( !empty($options['MULTISITE']) ) {
     $options['XML_ROOT'] = $options['XML_SITES_ROOT'] . $options['MULTISITE'] . '/';
 
     $options['MEDIA_ROOT'] = $options['XML_ROOT'] . $options['MEDIA_FOLDER_NAME'] . '/';
-	$options['MEDIA_URL'] = '/storage/-sites/' . $options['MEDIA_FOLDER_NAME'] . '/';
+	$options['MEDIA_URL'] = '/storage/-sites/' . $options['MULTISITE'] . '/' . $options['MEDIA_FOLDER_NAME'] . '/';
     $options['MEDIA_TEMP_ROOT'] = $options['MEDIA_ROOT'];
 
 	$options['CACHE_ROOT'] = $options['XML_ROOT'] . 'cache/';
