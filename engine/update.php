@@ -10,17 +10,13 @@ include_once('_classes/Zend/Json.php');
 include_once('_classes/class.array_xml.php');
 include_once('_classes/class.bertaeditor.php');
 
-if (empty($_POST) && isset($HTTP_RAW_POST_DATA)) {
-    $_POST = $HTTP_RAW_POST_DATA;
-}
+/* This is the correct way to access HTTP_RAW_POST_DATA in php. In PHP 7 $HTTP_RAW_POST_DATA variable doesn't exist */
+$jsonRequest = file_get_contents('php://input');
 
-$jsonRequest = !empty($_POST) ? $_POST : false;
 
-if($jsonRequest) {
+if(!empty($jsonRequest)) {
     // convert bad characters to their escaped equivalents
     $jsonRequest = str_replace(array("\n", "\r", "\t"), array('\n', '', ' '), $jsonRequest);
-    //var_dump($jsonRequest);
-    //echo str_replace(array("\n", "\r"), array('\n', ''), $jsonRequest) . "\n\n";
 
     // decode the json string into an array
     $decoded = $result = json_decode($jsonRequest, true);
