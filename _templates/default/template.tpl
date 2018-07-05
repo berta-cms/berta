@@ -41,9 +41,6 @@
 	{* all templates must include div with id=allContainer *}
 	<div id="allContainer">
 
-		{* engine panel lives in pageHeader - don't leave it out *}
-		{ pageHeader }
-
 		<div id="contentContainer"{if $berta.settings.pageLayout.responsive=='yes' } class="xResponsive"{/if}>
 
             {* multisites menu ********************************************************************* *}
