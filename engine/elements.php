@@ -41,6 +41,9 @@ if($jsonRequest) {
                 $entry = BertaEditor::getEntry($decoded['entry'], $blog);
 
                 if($entry) {
+                    $site = empty(BertaEditor::$options['MULTISITE']) ? '0' : BertaEditor::$options['MULTISITE'];
+                    $basePath = $site . '/entry/' . $decoded['section'] . '/' . $entry['id']['value'] . '/';
+
                     $galType 		= !empty($entry['mediaCacheData']['@attributes']['type'])
                                         ? $entry['mediaCacheData']['@attributes']['type'] : 'slideshow';
                     $imageSize 		= !empty($entry['mediaCacheData']['@attributes']['size'])
