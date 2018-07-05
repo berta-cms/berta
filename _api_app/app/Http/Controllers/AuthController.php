@@ -10,7 +10,7 @@ class AuthController extends Controller
 {
     protected static $expiration_time = 86400; // 24 hours = 86400 seconds
 
-    protected function generateToken($user)
+    protected function generateToken()
     {
         $app_key = env('APP_KEY', 'SuperSecretAppKey');
         $jwt_secret = env('JWT_SECRET', 'SuperSecretJWTSecret') . $app_key;
@@ -67,7 +67,7 @@ class AuthController extends Controller
         $this->bertaSecurity = new \BertaSecurity();
 
         if (!$valid_token) {
-            $token = $this->generateToken($auth_user);
+            $token = $this->generateToken();
         }
 
         setcookie('token', $token, time() + self::$expiration_time, "/");

@@ -306,6 +306,7 @@ class Helpers
         try {
             $app_key = env('APP_KEY', 'SuperSecretAppKey');
             $jwt_secret = env('JWT_SECRET', 'SuperSecretJWTSecret') . $app_key;
+            JWT::$leeway = 60;
             $decoded = JWT::decode($token, $jwt_secret, ['HS256']);
 
             if ($decoded->sub !== $app_key) {
