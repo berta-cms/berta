@@ -32,7 +32,7 @@ class SetupMiddleware
         foreach ($env_example as $key => $value) {
             if (isset($env[$key])) {
                 $env_new[$key] = $env[$key];
-            } elseif ($key == 'APP_KEY' || $key == 'JWT_SECRET') {
+            } elseif ($key == 'APP_KEY' || $key == 'APP_ID') {
                 $env_new[$key] = Helpers::uuid_v4();
             } else {
                 $env_new[$key] = $value;

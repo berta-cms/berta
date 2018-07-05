@@ -12,16 +12,16 @@ class AuthController extends Controller
 
     protected function generateToken()
     {
-        $app_key = env('APP_KEY', 'SuperSecretAppKey');
-        $jwt_secret = env('JWT_SECRET', 'SuperSecretJWTSecret') . $app_key;
+        $app_key = config('app.key');
+        $app_id = config('app.id');
         $payload = [
             'iss' => 'berta-jwt', // Issuer of the token
-            'sub' => $app_key, // Subject of the token
+            'sub' => $app_id, // Subject of the token
             'iat' => time(), // Time when JWT was issued.
             'exp' => time() + self::$expiration_time // Expiration time
         ];
 
-        return JWT::encode($payload, $jwt_secret);
+        return JWT::encode($payload, $app_key);
     }
 
     public function authenticate(Request $request)

@@ -304,12 +304,12 @@ class Helpers
     public static function validate_token($token)
     {
         try {
-            $app_key = env('APP_KEY', 'SuperSecretAppKey');
-            $jwt_secret = env('JWT_SECRET', 'SuperSecretJWTSecret') . $app_key;
+            $app_key = config('app.key');
+            $app_id = config('app.id');
             JWT::$leeway = 60;
-            $decoded = JWT::decode($token, $jwt_secret, ['HS256']);
+            $decoded = JWT::decode($token, $app_key, ['HS256']);
 
-            if ($decoded->sub !== $app_key) {
+            if ($decoded->sub !== $app_id) {
                 return null;
             }
             return true;
