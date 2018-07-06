@@ -80,7 +80,7 @@ class BertaSecurity {
 
 
 	public function authentificate() {
-        session_name(BertaUtils::canonizeString('berta_' . Berta::$options['version'] . '_' . Berta::$options['SITE_ABS_ROOT'], '_', ''));
+        session_name(BertaUtils::canonizeString('berta_' . Berta::$options['version'] . '_' . Berta::$options['SITE_ROOT_URL'], '_', ''));
         if(!isset($_SESSION)) {
             session_start();
         }
@@ -212,4 +212,3 @@ class BertaSecurity {
 	}
 
 }
-?>

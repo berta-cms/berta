@@ -1,11 +1,11 @@
 <?php
 
 if(empty($CHECK_INCLUDED)) {
-	$SITE_ROOT = '../../';
-	$ENGINE_ROOT = '../../engine/';
+    /** @todo
+     * - Check why is the 'inc.page.php' included here if this file is included in it */
 	define('AUTH_AUTHREQUIRED', true);
 	define('SETTINGS_INSTALLREQUIRED', false);
-	include $ENGINE_ROOT . 'inc.page.php';
+	include '../../engine/inc.page.php';
 }
 
 $int_version = $options['int_version'];
@@ -15,15 +15,15 @@ $int_version = $options['int_version'];
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title><?php echo $berta->settings->get('texts', 'pageTitle') ?> / <?php echo I18n::_('welcome') ?></title>
-<link rel="stylesheet" href="<?php echo $ENGINE_ABS_ROOT ?>css/backend.min.css?<?php echo $int_version ?>" type="text/css" charset="utf-8" />
-<link rel="stylesheet" href="<?php echo $ENGINE_ABS_ROOT ?>css/editor.css.php?<?php echo $int_version ?>" type="text/css" charset="utf-8" />
-<link rel="stylesheet" href="<?php echo $ENGINE_ABS_ROOT ?>css/login.css?<?php echo $int_version ?>" type="text/css" />
+<link rel="stylesheet" href="<?php echo $ENGINE_ROOT_URL ?>css/backend.min.css?<?php echo $int_version ?>" type="text/css" charset="utf-8" />
+<link rel="stylesheet" href="<?php echo $ENGINE_ROOT_URL ?>css/editor.css.php?<?php echo $int_version ?>" type="text/css" charset="utf-8" />
+<link rel="stylesheet" href="<?php echo $ENGINE_ROOT_URL ?>css/login.css?<?php echo $int_version ?>" type="text/css" />
 </head>
 <body class="xLoginPageBody">
 	<div class="xMAlign-container xPanel">
 		<div class="xMAlign-outer">
 			<div class="xMAlign-inner">
-				<?php echo sprintf(I18n::_('welcome_text__not_installed'), $ENGINE_ABS_ROOT . (!empty($options['MULTISITE']) ? '?site='.$options['MULTISITE'] : '')) ?>
+				<?php echo sprintf(I18n::_('welcome_text__not_installed'), $ENGINE_ROOT_URL . (!empty($options['MULTISITE']) ? '?site='.$options['MULTISITE'] : '')) ?>
 			</div>
 		</div>
 	</div>

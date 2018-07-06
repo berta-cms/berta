@@ -42,9 +42,6 @@
 	{* all templates must include allContainer *}
 	<div id="allContainer"{ if $berta.settings.pageLayout.centered == 'yes' }class="xCentered"{ /if }>
 
-		{* engine panel lives in pageHeader - don't leave it out *}
-		{ pageHeader }
-
 		<div id="sideColumn" class="{ if $berta.settings.pageLayout.centered == 'yes' }xCentered{ /if }{if $berta.settings.pageLayout.responsive=='yes'} xResponsive{/if}">
 			<div id="sideColumnTop">
 

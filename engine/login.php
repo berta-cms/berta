@@ -32,9 +32,9 @@ if ($options['HOSTING_PROFILE']) {
 		}
 	}
 
-	$login_action = $options['HOSTING_PROFILE'] . '?remote_redirect=' . urlencode($options['SITE_HOST_ADDRESS'] . $SITE_ABS_ROOT . '_api/auth/login');
+	$login_action = $options['HOSTING_PROFILE'] . '?remote_redirect=' . urlencode($options['SITE_HOST_ADDRESS'] . $SITE_ROOT_URL . '_api/auth/login');
 }else{
-    $login_action = $SITE_ABS_ROOT . '_api/auth/login';
+    $login_action = $SITE_ROOT_URL . '_api/auth/login';
 }
 
 $auth_action = isset($_POST["auth_action"]) ? $_POST["auth_action"] : false;
@@ -59,7 +59,7 @@ if($auth_action == "login" && !$errStr) {
 
 			// redirect to main page ...
 
-			header("Location: $ENGINE_ABS_ROOT");
+			header("Location: $ENGINE_ROOT_URL");
 	        exit;
 
 
@@ -79,9 +79,9 @@ $int_version = $options['int_version'];
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title><?php echo $berta->settings->get('texts', 'page-title') ?> / login</title>
-<link rel="stylesheet" href="<?php echo $ENGINE_ABS_ROOT ?>css/backend.min.css?<?php echo $int_version ?>" type="text/css" charset="utf-8" />
-<link rel="stylesheet" href="<?php echo $ENGINE_ABS_ROOT ?>css/editor.css.php?<?php echo $int_version ?>" type="text/css" charset="utf-8" />
-<link rel="stylesheet" href="<?php echo $ENGINE_ABS_ROOT ?>css/login.css?<?php echo $int_version ?>" type="text/css" />
+<link rel="stylesheet" href="<?php echo $ENGINE_ROOT_URL ?>css/backend.min.css?<?php echo $int_version ?>" type="text/css" charset="utf-8" />
+<link rel="stylesheet" href="<?php echo $ENGINE_ROOT_URL ?>css/editor.css.php?<?php echo $int_version ?>" type="text/css" charset="utf-8" />
+<link rel="stylesheet" href="<?php echo $ENGINE_ROOT_URL ?>css/login.css?<?php echo $int_version ?>" type="text/css" />
 <?php include 'inc.header_default_scripts.php' ?>
 <?php echo BertaTemplate::sentryScripts(); ?>
 <script type="text/javascript">
@@ -99,7 +99,7 @@ $int_version = $options['int_version'];
 			<div class="xMAlign-inner">
 				<form name="xLoginForm" action="<?php echo $login_action ?>" method="post">
                     <div class="xLoginLogo">
-                        <img src="<?php echo $ENGINE_ABS_ROOT ?>layout/berta.png" alt="berta v <?php echo BertaBase::$options['version'] ?>" />
+                        <img src="<?php echo $ENGINE_ROOT_URL ?>layout/berta.png" alt="berta v <?php echo BertaBase::$options['version'] ?>" />
                     </div>
 					<?php if($errStr) { ?>
 					 	<div class="xLoginError"><?php echo $errStr ?></div>

@@ -149,7 +149,7 @@ class BertaUtils extends BertaBase
             'header' => "Content-Type: text/xml\r\n" .
             "Berta-User-Agent: {$_SERVER['HTTP_USER_AGENT']}\r\n" .
             "Berta-Version: Berta {$o['version']}\r\n" .
-            "Berta-URI: {$o['SITE_HOST_ADDRESS']}{$o['SITE_ABS_ROOT']}\r\n" .
+            "Berta-URI: {$o['SITE_HOST_ADDRESS']}{$o['SITE_ROOT_URL']}\r\n" .
             "Berta-Content: {$type}\r\n",
             'max_redirects' => $redirects, // stop after X redirects
             'timeout' => $timeout, // timeout on response
@@ -164,10 +164,14 @@ class BertaUtils extends BertaBase
 
             if (self::updateBertaVersion($pContent['version'], $o['version'])) {
                 $result['content'] = $pContent['update'];
-            } elseif (!isset($_COOKIE['_berta_newsticker_news']) || $pContent['news'] != $_COOKIE['_berta_newsticker_news']) {
+            }
+            elseif (!empty($pContent['news']) &&
+                (!isset($_COOKIE['_berta_newsticker_news']) || $pContent['news'] != $_COOKIE['_berta_newsticker_news'])
+            ) {
                 setcookie('_berta_newsticker_news', $pContent['news'], time() + 60 * 60 * 12, '/');
                 $result['content'] = $pContent['news'];
-            } else {
+            }
+            else {
                 $result['content'] = $pContent['tips']['tip'][rand(0, sizeof($pContent['tips']['tip']) - 1)];
             }
         } else if ($page && $type == 'videos') {

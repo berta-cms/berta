@@ -6,7 +6,7 @@ include('inc.page.php');
 if ($options['HOSTING_PROFILE']) {header('location:' . $options['HOSTING_PROFILE']); exit;}
 
 $loggedIn = $berta->security->userLoggedIn;
-include_once $ENGINE_ROOT . '_classes/class.bertaeditor.php';
+include_once $ENGINE_ROOT_PATH . '_classes/class.bertaeditor.php';
 
 $allSections = BertaContent::getSections();
 $topPanelHTML = BertaEditor::getTopPanelHTML('profile');
@@ -17,15 +17,15 @@ $int_version = BertaEditor::$options['int_version'];
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <title><?php echo $berta->settings->get('texts', 'pageTitle') ?> / <?php echo I18n::_('Profile') ?></title>
-<link rel="SHORTCUT ICON" href="favicon.ico"/>
-<link rel="stylesheet" href="<?php echo $ENGINE_ABS_ROOT ?>css/backend.min.css?<?php echo $int_version ?>" type="text/css" charset="utf-8" />
-<link rel="stylesheet" href="<?php echo $ENGINE_ABS_ROOT ?>css/editor.css.php?<?php echo $int_version ?>" type="text/css" charset="utf-8" />
+<link rel="SHORTCUT ICON" href="<?php echo $SITE_ROOT_URL ?>favicon.ico"/>
+<link rel="stylesheet" href="<?php echo $ENGINE_ROOT_URL ?>css/backend.min.css?<?php echo $int_version ?>" type="text/css" charset="utf-8" />
+<link rel="stylesheet" href="<?php echo $ENGINE_ROOT_URL ?>css/editor.css.php?<?php echo $int_version ?>" type="text/css" charset="utf-8" />
 <?php include('inc.head.php'); ?>
 </head>
 
 <body class="xSettingsPageBody" x_mode="profile">
 	<form name="infoForm" id="infoForm">
-		<input type="hidden" name="ENGINE_ROOT" id="ENGINE_ROOT" value="<?php echo htmlspecialchars($ENGINE_ROOT) ?>" />
+		<input type="hidden" name="ENGINE_ROOT_URL" id="ENGINE_ROOT_URL" value="<?php echo htmlspecialchars($ENGINE_ROOT_URL) ?>" />
 	</form>
 	<?php echo $topPanelHTML ?>
 	<div id="allContainer">
@@ -34,7 +34,7 @@ $int_version = BertaEditor::$options['int_version'];
 
 			<div id="xSectionsEditor">
 
-				<form name="password_form" id="password_form" method="get" action="<?php echo htmlspecialchars($ENGINE_ROOT) ?>update.php" >
+				<form name="password_form" id="password_form" method="get" action="<?php echo htmlspecialchars($ENGINE_ROOT_URL) ?>update.php" >
 					<label for="old_password"><?php echo I18n::_('Old password') ?></label><br />
 					<input type="password" name="old_password" id="old_password" value="" /><br />
 					<label for="new_password"><?php echo I18n::_('New password') ?></label><br />

@@ -2,7 +2,6 @@
 
 header("Content-Type: text/css");
 
-$SITE_ROOT = '../../';
 include('../../engine/inc.page.php');
 $s =& $berta->template->settings;
 $isResponsive = $s->get('pageLayout', 'responsive')=='yes';
@@ -34,7 +33,7 @@ if(!1) { ?><style type="text/css"><?php } ?>
 		height: 18px;
 		margin-left: -20px;
 		padding-right: 5px;
-		background: url('<?php echo $ENGINE_ROOT ?>layout/icon-move.png') no-repeat 0% 0%;
+		background: url('<?php echo $ENGINE_ROOT_URL ?>layout/icon-move.png') no-repeat 0% 0%;
 		visibility: hidden;
 	}
 	#additionalText:hover .xHandle  {
@@ -49,7 +48,7 @@ if(!1) { ?><style type="text/css"><?php } ?>
 		height: 18px;
 		margin-left: -20px;
 		padding-right: 5px;
-		background: url('<?php echo $ENGINE_ROOT ?>layout/icon-move.png') no-repeat 0% 0%;
+		background: url('<?php echo $ENGINE_ROOT_URL ?>layout/icon-move.png') no-repeat 0% 0%;
 		visibility: hidden;
 	}
 	.floating-banner:hover .xHandle  {

@@ -214,8 +214,8 @@ class BertaTemplate extends BertaBase {
 		$vars['berta']['options'] =& self::$options;
 
 		$hostingPlan = false;
-		if(@file_exists(self::$options['ENGINE_ROOT'] .'plan')) {
-			$hostingPlan = file_get_contents(self::$options['ENGINE_ROOT'] . 'plan');
+		if(@file_exists(self::$options['ENGINE_ROOT_PATH'] .'plan')) {
+			$hostingPlan = file_get_contents(self::$options['ENGINE_ROOT_PATH'] . 'plan');
 		}
 		$vars['berta']['hostingPlan'] = $hostingPlan;
 
@@ -293,7 +293,7 @@ class BertaTemplate extends BertaBase {
 		foreach($texts as $tVar => $t) if(!isset($vars[$tVar])) $vars[$tVar] = $t;
 
 		// berta scripts ...
-		$engineAbsRoot = self::$options['ENGINE_ABS_ROOT'];
+		$engineAbsRoot = self::$options['ENGINE_ROOT_URL'];
 		$templatesAbsRoot = self::$options['TEMPLATES_ABS_ROOT'];
 
 		if ($this->apacheRewriteUsed) {
@@ -315,11 +315,11 @@ class BertaTemplate extends BertaBase {
 			'galleryFullScreenImageNumbers' => $this->settings->get('entryLayout', 'galleryFullScreenImageNumbers'),
 			'galleryFullScreenCaptionAlign' => $this->settings->get('entryLayout', 'galleryFullScreenCaptionAlign'),
 			'paths' => array(
-				'engineRoot' => htmlspecialchars(self::$options['ENGINE_ROOT']),
+				'engineRoot' => htmlspecialchars(self::$options['ENGINE_ROOT_URL']),
 				'engineABSRoot' => htmlspecialchars($engineAbsRoot),
-				'siteABSMainRoot' => htmlspecialchars(self::$options['SITE_ABS_ROOT']),
-				'siteABSRoot' => htmlspecialchars(self::$options['SITE_ABS_ROOT']) . $site,
-				'template' => htmlspecialchars(self::$options['SITE_ABS_ROOT'] . '_templates/' . $this->name . '/'),
+				'siteABSMainRoot' => htmlspecialchars(self::$options['SITE_ROOT_URL']),
+				'siteABSRoot' => htmlspecialchars(self::$options['SITE_ROOT_URL']) . $site,
+				'template' => htmlspecialchars(self::$options['SITE_ROOT_URL'] . '_templates/' . $this->name . '/'),
 				'site' => htmlspecialchars(self::$options['MULTISITE'])
 			),
 

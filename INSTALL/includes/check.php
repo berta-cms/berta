@@ -1,11 +1,9 @@
 <?php
 
 if(empty($CHECK_INCLUDED)) {
-	$SITE_ROOT = '../../';
-	$ENGINE_ROOT = '../../engine/';
 	define('AUTH_AUTHREQUIRED', true);
 	define('SETTINGS_INSTALLREQUIRED', false);
-	include $ENGINE_ROOT . 'inc.page.php';
+	include '../../engine/inc.page.php';
 }
 
 if(empty($settings['berta']['installed'])) {
@@ -17,7 +15,10 @@ if(empty($settings['berta']['installed'])) {
 	}
 
 	$listOk = true;
-	$listHasErrors = false;
+    $listHasErrors = false;
+
+    $uriPath = explode('?', $_SERVER['REQUEST_URI'])[0];
+    $redirectURL = strstr($uriPath, '/editor') ? $ENGINE_ROOT_URL . 'editor/' : $ENGINE_ROOT_URL;
 
 	$testOutput = '<ul id="xFirstTimeCheckList">';
 	$testOutput .= '<p><strong>Is your website hosted on a suitable server?</strong></p>';
@@ -58,7 +59,7 @@ if(empty($settings['berta']['installed'])) {
 	$testOutput .= '<p><br /><strong>Have you installed your website properly?</strong></p>';
 
 	// storage writable ...
-	$isOk = file_exists($SITE_ROOT . 'storage') && is_writable($SITE_ROOT . 'storage');
+	$isOk = file_exists($SITE_ROOT_PATH . 'storage') && is_writable($SITE_ROOT_PATH . 'storage');
 	$listOk &= $isOk; $listHasErrors |= !$isOk;
 	$testOutput .= getStatus($isOk, 'Storage folder exists and is writable', 'Please make sure the folder called "storage" in your Berta installation exists and is writable. Check step (3) in the installing instructions (located in the INSTALL folder) for details.');
 
@@ -81,9 +82,9 @@ $int_version = $options['int_version'];
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title><?php echo $berta->settings->get('texts', 'pageTitle') ?> / welcome</title>
-<link rel="stylesheet" href="<?php echo $ENGINE_ABS_ROOT ?>css/backend.min.css?<?php echo $int_version ?>" type="text/css" charset="utf-8" />
-<link rel="stylesheet" href="<?php echo $ENGINE_ABS_ROOT ?>css/editor.css.php?<?php echo $int_version ?>" type="text/css" charset="utf-8" />
-<link rel="stylesheet" href="<?php echo $ENGINE_ABS_ROOT ?>css/login.css?<?php echo $int_version ?>" type="text/css" />
+<link rel="stylesheet" href="<?php echo $ENGINE_ROOT_URL ?>css/backend.min.css?<?php echo $int_version ?>" type="text/css" charset="utf-8" />
+<link rel="stylesheet" href="<?php echo $ENGINE_ROOT_URL ?>css/editor.css.php?<?php echo $int_version ?>" type="text/css" charset="utf-8" />
+<link rel="stylesheet" href="<?php echo $ENGINE_ROOT_URL ?>css/login.css?<?php echo $int_version ?>" type="text/css" />
 </head><?php
 
 if(!empty($settings['berta']['installed'])) {
@@ -91,7 +92,7 @@ if(!empty($settings['berta']['installed'])) {
 		<div class="xMAlign-container xPanel">
 			<div class="xMAlign-outer">
 				<div class="xMAlign-inner">
-					<p>Berta is already installed.<br />Please delete folder named <strong><code>INSTALL</code></strong> in your Berta's root folder! <br />&nbsp;<br /><input type="button" value="  OK  " onclick="window.location='<?php echo $SITE_ABS_ROOT ?>';"></p>
+					<p>Berta is already installed.<br />Please delete folder named <strong><code>INSTALL</code></strong> in your Berta's root folder! <br />&nbsp;<br /><input type="button" value="  OK  " onclick="window.location='<?php echo $SITE_ROOT_URL ?>';"></p>
 				</div>
 			</div>
 		</div>
@@ -115,7 +116,7 @@ if(!empty($settings['berta']['installed'])) {
 							echo '<div id="xFirstTimeCheckResult">';
 							echo '<h2>Welcome!</h2>';
 							echo '<p class="emphasis">Berta has completed a small test to see if it has everything it needs. It turns out that everything is just perfect.</p>';
-							echo '<p><input type="button" value=" Start building your site! " id="xFirstTimeCheckContinue" onclick="window.location=\'' . $ENGINE_ABS_ROOT . '?_berta_install_step=2'.(!empty($options['MULTISITE']) ? '&site='.$options['MULTISITE'] : '').'\'" /></p>';
+							echo '<p><input type="button" value=" Start building your site! " id="xFirstTimeCheckContinue" onclick="window.location=\'' . $redirectURL . '?_berta_install_step=2'.(!empty($options['MULTISITE']) ? '&site='.$options['MULTISITE'] : '').'\'" /></p>';
 							echo '<br class="clear" /></div>';
 
 							echo '<p>Test results:</p>';
@@ -134,7 +135,7 @@ if(!empty($settings['berta']['installed'])) {
 
 							echo $testOutput;
 
-							echo '<p><br />If you like to, you can ignore the errors and: <input type="button" value=" Start with Berta! " class="xCheckListContinue" onclick="window.location=\'' . $ENGINE_ABS_ROOT . '?_berta_install_step=2'.(!empty($options['MULTISITE']) ? '&site='.$options['MULTISITE'] : '').'\'" /></p>';
+							echo '<p><br />If you like to, you can ignore the errors and: <input type="button" value=" Start with Berta! " class="xCheckListContinue" onclick="window.location=\'' . $redirectURL . '?_berta_install_step=2'.(!empty($options['MULTISITE']) ? '&site='.$options['MULTISITE'] : '').'\'" /></p>';
 
 							echo $bottomNote;
 						}

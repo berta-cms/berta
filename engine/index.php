@@ -1,85 +1,103 @@
 <?php
+if (empty($INDEX_INCLUDED)) { $INDEX_INCLUDED = false; }
 
-if(empty($INDEX_INCLUDED)) $INDEX_INCLUDED = false;
-if(!$INDEX_INCLUDED) {
-	define('AUTH_AUTHREQUIRED', true); // require authentification if inside engine folder
-	define('BERTA_ENVIRONMENT', 'engine');
+if (!$INDEX_INCLUDED) {
+    define('AUTH_AUTHREQUIRED', true); // require authentification if inside engine folder
+    define('BERTA_ENVIRONMENT', 'engine');
 } else {
-	define('SETTINGS_INSTALLREQUIRED', true);	// don't require INSTALL if just watching the site
+    define('SETTINGS_INSTALLREQUIRED', true);	// don't require INSTALL if just watching the site
 }
 
+include __dir__ . '/inc.page.php';
 
-//include_once ($INDEX_INCLUDED ? 'engine/' : '') . '_classes/class.timing.php';
-//$t = new Timing();
-//$t->point("init");
-
-
-include(($INDEX_INCLUDED ? './engine/' : '') . 'inc.page.php');
-if($berta->security->userLoggedIn) {
-	include_once $ENGINE_ROOT . '_classes/class.bertaeditor.php';
+if (!$berta->security->userLoggedIn) {
+    if ($INDEX_INCLUDED) {
+        include_once $ENGINE_ROOT_PATH . 'editor/inc.editor.php';
+        exit;
+    }
+    else {
+        header('Location: /');
+        exit;
+    }
 }
-//$t->point("page");
+include_once $ENGINE_ROOT_PATH . '_classes/class.bertaeditor.php';
 
+$int_version = BertaEditor::$options['int_version'];
+$site = !empty($_REQUEST['site']) ? $_REQUEST['site'] : false;
 
+?><!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title><?php echo $berta->settings->get('texts', 'pageTitle') ?></title>
+    <link rel="SHORTCUT ICON" href="<?php echo $SITE_ROOT_URL ?>favicon.ico"/>
+    <link rel="stylesheet" href="<?php echo $ENGINE_ROOT_URL ?>css/backend.min.css?<?php echo $int_version ?>" type="text/css" charset="utf-8" />
+    <link rel="stylesheet" href="<?php echo $ENGINE_ROOT_URL ?>css/editor.css.php?<?php echo $int_version ?>" type="text/css" charset="utf-8" />
+    <script src="<?php echo $ENGINE_ROOT_URL ?>_lib/mootools/mootools-core-1.4.5-full-compat-yc.js"></script>
+    <script src="<?php echo $ENGINE_ROOT_URL ?>_lib/mootools/mootools-1.2.5.1-more.js"></script>
+    <script src="<?php echo $ENGINE_ROOT_URL ?>_lib/introjs/introjs.min.css"></script>
+    <script src="<?php echo $ENGINE_ROOT_URL ?>_lib/introjs/intro.min.js"></script>
 
-// ------------------------------------------------------------------------------------------------------------------------------
-//  GPC variables   -------------------------------------------------------------------------------------------------------------
-// ------------------------------------------------------------------------------------------------------------------------------
+    <script type="text/javascript">
+    var bertaGlobalOptions = {
+        "paths": {
+            "engineRoot": "<?php echo BertaEditor::$options['ENGINE_ROOT_URL'] ?>",
+            "engineABSRoot": "<?php echo BertaEditor::$options['ENGINE_ROOT_URL'] ?>",
+            "siteABSRoot": "<?php echo BertaEditor::$options['SITE_ROOT_URL'] ?>",
+            "template": "<?php echo BertaEditor::$options['SITE_ROOT_URL'] . '_templates/' . $berta->template->name . '/' ?>",
+            "updateUrl": "<?php echo BertaEditor::$options['ENGINE_ROOT_URL'] ?>/update.php"
+        },
+        "skipTour": <?php echo (isset($sections) && count($sections)) || $berta->settings->get('siteTexts', 'tourComplete') ? 'true' : 'false' ?>,
+        "session_id": "<?php echo session_id() ?>"
+    };
+    </script>
+    <?php echo BertaTemplate::sentryScripts(); ?>
+    <script src="<?php echo $ENGINE_ROOT_URL ?>js/berta.helpers.js"></script>
+    <script src="<?php echo $ENGINE_ROOT_URL ?>js/berta.engine.js"></script>
+    <style>
+        html,body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+        }
+        body {
+            overflow-y: hidden;
+        }
+    </style>
+</head>
+<body class="bt-content-editor page-xMySite">
+    <?php echo BertaEditor::getTopPanelHTML('site') ?>
+    <iframe src="<?php echo $ENGINE_ROOT_URL ?>editor<?php echo $site ? "?site=$site" : '' ?>" frameborder="0" style="width:100%;height:100%;"></iframe>
+    <script>
+        (function(){
+            var topPanelContainer = document.getElementById('xTopPanelContainer');
+            var topMenu = window.Berta.Engine.initTopMenu(topPanelContainer);
+            window.Berta.Engine.initNewsTicker($('xNewsTickerContainer'));
+            window.BertaHelpers.initTour(topPanelContainer, bertaGlobalOptions.updateUrl);
 
-$sectionName = $subSectionName = $tagName = $urlStr = false;
-if($berta->apacheRewriteUsed) {
-	include $ENGINE_ROOT . '_classes/class.clean_url.php';
-	$cU = new CleanURL();
+            window.addEventListener('message', function (event) {
+                var eventData = (event.data && event.data.split('=')) || [];
 
-	$urlStr = $_SERVER['REQUEST_URI'];
-	if(strpos($urlStr, $SITE_ABS_ROOT) === 0) $urlStr = substr($urlStr, strlen($SITE_ABS_ROOT) - 1);
-	$cU->parseURL($urlStr);
+                switch (eventData[0]) {
+                    case 'menu:show':
 
-	if (!empty($options['MULTISITE'])) {
-		$cU->setParts('site', 'sectionName', 'tagName');
-	}else{
-		$cU->setParts('sectionName', 'tagName');
-	}
-	$querySectionName = $sectionName;
-} else {
-	$urlStr = $_SERVER['REQUEST_URI'];
+                        if (topMenu) {
+                            topMenu.show();
+                        }
+                        break;
 
-	$sectionName = $querySectionName = !empty($_REQUEST['section']) ? strtolower($_REQUEST['section']) : false;
-	//$subSectionName = !empty($_REQUEST['subsection']) ? strtolower($_REQUEST['subsection']) : false;
-	$tagName = !empty($_REQUEST['tag']) ? strtolower($_REQUEST['tag']) : false;
-}
+                    case 'menu:hide':
+                        if (topMenu) {
+                            topMenu.hide();
+                        }
+                        break;
 
-
-// ------------------------------------------------------------------------------------------------------------------------------
-//  INIT CONTENT   --------------------------------------------------------------------------------------------------------------
-// ------------------------------------------------------------------------------------------------------------------------------
-
-$berta->initContent($urlStr, $sectionName, $tagName);
-if( $querySectionName && $querySectionName !='sitemap.xml' && $berta->sectionName != $querySectionName ) {
-	header("HTTP/1.1 301 Moved Permanently");
-	header("Location: " . ($berta->environment == 'engine' ? $ENGINE_ABS_ROOT : $SITE_ABS_ROOT));
-	include 'error/404.php';
-	exit;
-}
-//$t->point("content init");
-
-// ------------------------------------------------------------------------------------------------------------------------------
-//  CHECK VERSIONS   ------------------------------------------------------------------------------------------------------------
-// ------------------------------------------------------------------------------------------------------------------------------
-
-if( empty($berta->content['@attributes']['last_upd_ver']) || ($berta->content['@attributes']['last_upd_ver'] < $options['int_version']) ) {
-    include_once $ENGINE_ROOT . 'inc.version_check_and_updates.php';
-}
-
-
-
-// ------------------------------------------------------------------------------------------------------------------------------
-//  HTML OUTPUT   ---------------------------------------------------------------------------------------------------------------
-// ------------------------------------------------------------------------------------------------------------------------------
-
-$html = $berta->output();
-echo $html;
-
-
-//$t->point("html written");
-//echo '<br class="clear" />'; $t->report();
+                    case 'menu:set_site':
+                        topMenu.setSiteInURLs(eventData[1]);
+                        break;
+                }
+            });
+        })();
+    </script>
+</body>
+</html>

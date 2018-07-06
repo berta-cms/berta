@@ -5,14 +5,13 @@
  * File:     function.pageHeader.php
  * Type:     function
  * Name:     pageHeader
- * Purpose:  
+ * Purpose:
  * -------------------------------------------------------------
  */
-function smarty_function_pageHeader($params, &$smarty) {
-	global $berta;
-	
-	return $berta->security->userLoggedIn ?
-				BertaEditor::getTopPanelHTML('site') :
-				'';
+function smarty_function_pageHeader($params, &$smarty)
+{
+    global $berta;
+    return $berta->security->userLoggedIn ?
+                BertaEditor::getTopPanelHTML('site') :
+                '';
 }
-?>

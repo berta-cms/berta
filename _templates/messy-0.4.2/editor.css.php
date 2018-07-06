@@ -2,7 +2,6 @@
 
 header("Content-Type: text/css");
 
-$SITE_ROOT = '../../';
 include('../../engine/inc.page.php');
 $s =& $berta->template->settings;
 $templatePath = Berta::$options['TEMPLATES_ABS_ROOT'] . $berta->template->name . '/';
@@ -67,7 +66,7 @@ if(!1) { ?><style type="text/css"><?php } ?>
 
 		.xEntryEditWrapButtons a.xEntryMove{
 			display: block;
-			background-image: url('<?php echo $ENGINE_ROOT ?>layout/icon-move.png');
+			background-image: url('<?php echo $ENGINE_ROOT_URL ?>layout/icon-move.png');
 			cursor: move;
 			text-decoration:none !important;
 	  	}
@@ -79,7 +78,7 @@ if(!1) { ?><style type="text/css"><?php } ?>
 				text-decoration:none !important;
 		  	}
 				.xEntryEditWrapButtons a.xEntryToBack span { display: none; }
-		.xEntryEditWrapButtons a.xEntryDelete { background-image: url('<?php echo $ENGINE_ROOT ?>layout/icon-delete.png'); }
+		.xEntryEditWrapButtons a.xEntryDelete { background-image: url('<?php echo $ENGINE_ROOT_URL ?>layout/icon-delete.png'); }
 		.xEntryEditWrapButtons a.xEntryDelete:hover { background-color: none; }
 			.xEntryEditWrapButtons a.xEntryDelete span { display: none; }
 
@@ -108,7 +107,7 @@ if(!1) { ?><style type="text/css"><?php } ?>
 		height: 18px;
 		margin-left: -20px;
 		padding-right: 5px;
-		background: url('<?php echo $ENGINE_ROOT ?>layout/icon-move.png') no-repeat 0% 0%;
+		background: url('<?php echo $ENGINE_ROOT_URL ?>layout/icon-move.png') no-repeat 0% 0%;
 		visibility: hidden;
 	}
 	.mess:hover>.xHandle {
@@ -140,7 +139,7 @@ if(!1) { ?><style type="text/css"><?php } ?>
 		height: 18px;
 		margin-left: -20px;
 		padding-right: 5px;
-		background: url('<?php echo $ENGINE_ROOT ?>layout/icon-move.png') no-repeat 0% 0%;
+		background: url('<?php echo $ENGINE_ROOT_URL ?>layout/icon-move.png') no-repeat 0% 0%;
 		visibility: hidden;
 	}
 	.floating-banner:hover .xHandle  {

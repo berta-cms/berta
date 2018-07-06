@@ -1,43 +1,48 @@
 <?php
 
 if(empty($CHECK_INCLUDED)) {
-	$SITE_ROOT = '../../';
-	$ENGINE_ROOT = '../../engine/';
+    /** @todo
+     * - fix this path:  */
 	define('AUTH_AUTHREQUIRED', true);
 	define('SETTINGS_INSTALLREQUIRED', false);
-	include $ENGINE_ROOT . 'inc.page.php';
+	include '../../engine/inc.page.php';
 }
 
-include($ENGINE_ROOT . 'inc.settings.php');
+include $ENGINE_ROOT_PATH . 'inc.settings.php';
 $berta->settings = new Settings($settingsDefinition);
 
-include_once $ENGINE_ROOT . '_classes/class.bertaeditor.php';
+include_once $ENGINE_ROOT_PATH . '_classes/class.bertaeditor.php';
 
 $int_version = $options['int_version'];
+
+$uriPath = explode('?', $_SERVER['REQUEST_URI'])[0];
 
 ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title><?php echo $berta->settings->get('texts', 'pageTitle') ?> / welcome</title>
-<link rel="stylesheet" href="<?php echo $ENGINE_ABS_ROOT ?>css/backend.min.css?<?php echo $int_version ?>" type="text/css" charset="utf-8" />
-<link rel="stylesheet" href="<?php echo $ENGINE_ABS_ROOT ?>css/editor.css.php?<?php echo $int_version ?>" type="text/css" charset="utf-8" />
-<link rel="stylesheet" href="<?php echo $ENGINE_ABS_ROOT ?>css/login.css?<?php echo $int_version ?>" type="text/css" />
-<?php include('inc.head.php'); ?>
+<link rel="stylesheet" href="<?php echo $ENGINE_ROOT_URL ?>css/backend.min.css?<?php echo $int_version ?>" type="text/css" charset="utf-8" />
+<link rel="stylesheet" href="<?php echo $ENGINE_ROOT_URL ?>css/editor.css.php?<?php echo $int_version ?>" type="text/css" charset="utf-8" />
+<link rel="stylesheet" href="<?php echo $ENGINE_ROOT_URL ?>css/login.css?<?php echo $int_version ?>" type="text/css" />
+<?php include $ENGINE_ROOT_PATH . 'inc.head.php'; ?>
 </head><?php
 
 if(!empty($settings['berta']['installed'])) {
+    $redirectURL = strstr($uriPath, '/editor') ? $ENGINE_ROOT_URL . 'editor/' : $SITE_ROOT_URL;
+
 	?><body class="xLoginPageBody">
 		<div class="xMAlign-container xPanel">
 			<div class="xMAlign-outer">
 				<div class="xMAlign-inner">
-					<p>Berta is already installed.<br />Please delete folder named <strong><code>INSTALL</code></strong> in your Berta's root folder! <br />&nbsp;<br /><input type="button" value="  OK  " onclick="window.location='<?php echo $SITE_ABS_ROOT ?>';"></p>
+					<p>Berta is already installed.<br />Please delete folder named <strong><code>INSTALL</code></strong> in your Berta's root folder! <br />&nbsp;<br /><input type="button" value="  OK  " onclick="window.location='<?php echo $SITE_ROOT_URL ?>';"></p>
 				</div>
 			</div>
 		</div>
 	</body><?php
 
 } else {
+    $redirectURL = strstr($uriPath, '/editor') ? $ENGINE_ROOT_URL . 'editor/' : $ENGINE_ROOT_URL;
 
 	?><body class="xLoginPageBody" x_mode="settings">
 		<div class="xMAlign-container xPanel">
@@ -78,7 +83,7 @@ if(!empty($settings['berta']['installed'])) {
 						<p class="subInfo"><?php echo I18n::_('Note: the fields that already have value appear yellow only when you roll over them with your mouse. Click on the text below to edit.') ?></p>
 						<p class="xFirstTimeField <?php echo $xEditSelectorSimple ?> xProperty-texts/metaDescription xRequired-<?php echo $berta->settings->isRequired('texts', 'metaDescription') ? '1': '0' ?>"><?php echo $berta->settings->get('texts', 'metaDescription', true) ?></p>
 
-						<p><input type="button" value=" <?php echo I18n::_('Done!') ?> " id="xFirstTimeCheckContinue" onclick="window.location='<?php echo $ENGINE_ABS_ROOT ?>?_berta_install_done=1<?php echo !empty($options['MULTISITE']) ? '&site='.$options['MULTISITE'] : '' ?>'" /></p>
+						<p><input type="button" value=" <?php echo I18n::_('Done!') ?> " id="xFirstTimeCheckContinue" onclick="window.location='<?php echo $redirectURL ?>?_berta_install_done=1<?php echo !empty($options['MULTISITE']) ? '&site='.$options['MULTISITE'] : '' ?>'" /></p>
 
 					</div>
 					<?php

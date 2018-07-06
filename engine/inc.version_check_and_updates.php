@@ -1,13 +1,13 @@
 <?php
 
-include_once($ENGINE_ROOT . '_classes/class.bertaeditor.php');
+include_once($ENGINE_ROOT_PATH . '_classes/class.bertaeditor.php');
 
 if( !empty($berta->content['entry']) ) {
     $tplName = $berta->template->settings->templateName;
 
     //remove tiny_mce *.GZ file, if current version is different - to prevent errors if tiny_mce has changed
     if( empty($berta->content['@attributes']['last_upd_ver']) || !isset($options['int_version']) || (isset($options['int_version']) && $berta->content['@attributes']['last_upd_ver'] != $options['int_version']) ) {
-        $old_gz_files = glob($ENGINE_ROOT.'_lib/tiny_mce/*.gz');
+        $old_gz_files = glob($ENGINE_ROOT_PATH.'_lib/tiny_mce/*.gz');
         if ($old_gz_files){
             foreach ($old_gz_files as $filename) {
                @unlink($filename);

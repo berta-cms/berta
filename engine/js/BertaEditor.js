@@ -150,13 +150,12 @@ var BertaEditor = new Class({
             this.entriesList.getElements('.xEntry .xEntryDropdownBox').addEvents({
               mouseleave: function (event) {
                 this.removeClass('xVisible');
-                var dropdown = this.getParent().getElement('.xEntryDropdown');
+                dropdown = this.getParent().getElement('.xEntryDropdown');
                 dropdown.removeClass('xEntryDropdowHover');
               }
             });
 
             // entry deleting and creating
-            var createNewEntryText;
             if (this.options.templateName.substr(0, 5) != 'messy' && this.options.sectionType != 'portfolio')
               createNewEntryText = this.options.i18n['create new entry here'];
             else
@@ -349,7 +348,7 @@ var BertaEditor = new Class({
   },
 
   tabsInit: function () {
-    new MGFX.Tabs('.settingsTab', '.settingsContent', {
+    var tabs = new MGFX.Tabs('.settingsTab', '.settingsContent', {
       autoplay: false,
       transitionDuration: 100,
       slideInterval: 6000
@@ -516,8 +515,7 @@ var BertaEditor = new Class({
 
         if (this.options.templateName.substr(0, 5) == 'messy') {
           $$('.xCreateNewEntry').show();
-          $('xTopPanelContainer').show();
-          $('xBgEditorPanelTrigContainer').show();
+          window.BertaHelpers.showTopMenus();
           $$('.xEntry .xCreateNewEntry').hide();
         }
 
@@ -557,7 +555,10 @@ var BertaEditor = new Class({
     }).post({
       'json': JSON.encode(data(this))
     });
+
+
   },
+
 
 
 
@@ -583,6 +584,13 @@ var BertaEditor = new Class({
       }.bind(this)
     }).post();
   },
+
+
+
+
+
+
+
 
 
 
@@ -714,7 +722,7 @@ var BertaEditor = new Class({
   entryDropdownToggle: function (event) {
     var dropdown = $(event.target);
     var entry = dropdown.getParent().getParent();
-    var dropdownBox = entry.getElement('.xEntryDropdownBox');
+    dropdownBox = entry.getElement('.xEntryDropdownBox');
 
     dropdownBox.toggleClass('xVisible', true);
 
@@ -866,4 +874,4 @@ var BertaEditor = new Class({
 BertaEditor.EDITABLES_INIT = 'editables_init';
 
 
-var bertaEditor = new BertaEditor(window.bertaGlobalOptions);
+window.bertaEditor = new BertaEditor(window.bertaGlobalOptions);
