@@ -149,13 +149,13 @@ $settingsDefinition = array(
     ),
 );
 
-if (@file_exists($SITE_ROOT . '_plugin_shop/inc.settings.php')) {
-    include $SITE_ROOT . '_plugin_shop/inc.settings.php';
+if (@file_exists($SITE_ROOT_PATH . '_plugin_shop/inc.settings.php')) {
+    include $SITE_ROOT_PATH . '_plugin_shop/inc.settings.php';
 }
 
 //special settings for hosted sites (nothing special)
-if (@file_exists($ENGINE_ROOT . 'plan')) {
-    $hostingPlan = file_get_contents($ENGINE_ROOT . 'plan');
+if (@file_exists($ENGINE_ROOT_PATH . 'plan')) {
+    $hostingPlan = file_get_contents($ENGINE_ROOT_PATH . 'plan');
 
     //settings for PRO and SHOP hosting plans
     if ($hostingPlan > 1) {

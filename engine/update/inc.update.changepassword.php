@@ -1,14 +1,14 @@
 <?php
 
-$conf_file=$ENGINE_ROOT.'config/inc.conf.php';
+$conf_file=$ENGINE_ROOT_PATH . 'config/inc.conf.php';
 
 if ($options['AUTH_password']!=$decoded['old_password']){
 	$returnError='Current password doesn\'t match!';
 }elseif ($decoded['new_password']!=$decoded['retype_password']){
 	$returnError='New and retyped password doesn\'t match!';
-}elseif (strlen($decoded['new_password'])<6){	
+}elseif (strlen($decoded['new_password'])<6){
 	$returnError='Password must be at least 6 characters long!';
-}elseif (!preg_match('/^[A-Za-z0-9]+$/', $decoded['new_password'])){	
+}elseif (!preg_match('/^[A-Za-z0-9]+$/', $decoded['new_password'])){
 	$returnError='Password must contain only alphanumeric characters!';
 }elseif (!is_writable($conf_file)){
 	$returnError='Config file is not writable!';

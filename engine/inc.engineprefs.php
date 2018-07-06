@@ -4,7 +4,7 @@ date_default_timezone_set(@date_default_timezone_get());
 $options['IS_AJAX'] = $IS_AJAX;
 
 if(empty($options)) $options = array();
-include_once $ENGINE_ROOT . '_classes/class.bertabase.php';
+include_once $ENGINE_ROOT_PATH . '_classes/class.bertabase.php';
 BertaBase::$options = $options;
 $options =& BertaBase::$options;
 
@@ -40,7 +40,6 @@ $options['MOBILE_DEVICE'] = $MOBILE_DEVICE;
 /**
  * Base paths - absolute root and host
  */
-$options['SITE_ABS_ROOT'] = $SITE_ABS_ROOT;	// $SITE_ABS_ROOT is defined in inc.page.php that includes this file
 $options['SITE_HOST_ADDRESS'] = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 'https' : 'http') .
                                     '://' . $_SERVER['HTTP_HOST'];
 
@@ -63,20 +62,22 @@ $options['tags']['all_value'] = 'a181a603769c1f98ad927e7367c7aa51';
  * System folders
  */
 
-$options['ENGINE_ROOT'] = $ENGINE_ROOT;
-$options['SITE_ROOT'] = $SITE_ROOT;
+$options['ENGINE_ROOT_URL'] = $ENGINE_ROOT_URL;
+$options['ENGINE_ROOT_PATH'] = $ENGINE_ROOT_PATH;
+$options['SITE_ROOT_PATH'] = $SITE_ROOT_PATH;
+$options['SITE_ROOT_URL'] = $SITE_ROOT_URL;
 
-$options['TEMPLATES_ROOT'] = $SITE_ROOT . '_templates/';
-$options['TEMPLATES_ABS_ROOT'] = $options['SITE_ABS_ROOT'] . '_templates/';
-$options['TEMPLATES_FULL_SERVER_PATH'] = realpath($SITE_ROOT . '_templates') . '/';
+$options['TEMPLATES_ROOT'] = $SITE_ROOT_PATH . '_templates/';
+$options['TEMPLATES_ABS_ROOT'] = $options['SITE_ROOT_URL'] . '_templates/';
+$options['TEMPLATES_FULL_SERVER_PATH'] = $SITE_ROOT_PATH . '_templates' . '/';
 
 
 /**
  * Writable folders
  */
 
-$options['XML_MAIN_ROOT'] = $SITE_ROOT . 'storage/';
-$options['XML_SITES_ROOT'] = $SITE_ROOT . 'storage/-sites/';
+$options['XML_MAIN_ROOT'] = $SITE_ROOT_PATH . 'storage/';
+$options['XML_SITES_ROOT'] = $options['XML_MAIN_ROOT'] . '-sites/';
 
 $options['MULTISITES'] = BertaContent::getSites(!$INDEX_INCLUDED);
 $options['MULTISITE'] = BertaContent::getSite($options);
@@ -84,22 +85,26 @@ $options['MULTISITE'] = BertaContent::getSite($options);
 $options['MEDIA_FOLDER_NAME'] = 'media';
 
 if( !empty($options['MULTISITE']) ) {
-	$options['XML_ROOT'] = $options['XML_SITES_ROOT'] . $options['MULTISITE'] . '/';
-	$options['MEDIA_ROOT'] = $options['XML_ROOT'] . $options['MEDIA_FOLDER_NAME'] . '/';
-	$options['MEDIA_TEMP_ROOT'] = $options['MEDIA_ROOT'];
-	$options['CACHE_ROOT'] = $options['XML_ROOT'] . 'cache/';
-	$options['MEDIA_ABS_ROOT'] = $options['SITE_ABS_ROOT'] . 'storage/-sites/' . $options['MULTISITE'] . '/media/';
-	$options['CACHE_ABS_ROOT'] = $options['SITE_ABS_ROOT'] . 'storage/-sites/' . $options['MULTISITE'] . '/cache/';
-}else{
-	$options['XML_ROOT'] = $SITE_ROOT . 'storage/';
-	$options['MEDIA_ROOT'] = $SITE_ROOT . 'storage/' . $options['MEDIA_FOLDER_NAME'] . '/';
-	$options['MEDIA_TEMP_ROOT'] = $options['MEDIA_ROOT'];
-	$options['CACHE_ROOT'] = $SITE_ROOT . 'storage/cache/';
-	$options['MEDIA_ABS_ROOT'] = $options['SITE_ABS_ROOT'] . 'storage/media/';
-	$options['CACHE_ABS_ROOT'] = $options['SITE_ABS_ROOT'] . 'storage/cache/';
-}
+    $options['XML_ROOT'] = $options['XML_SITES_ROOT'] . $options['MULTISITE'] . '/';
 
-$options['ENGINE_ABS_ROOT'] = $ENGINE_ABS_ROOT; // this is defined in inc.page.php that includes this preferences file
+    $options['MEDIA_ROOT'] = $options['XML_ROOT'] . $options['MEDIA_FOLDER_NAME'] . '/';
+	$options['MEDIA_URL'] = '/storage/-sites/' . $options['MULTISITE'] . '/' . $options['MEDIA_FOLDER_NAME'] . '/';
+    $options['MEDIA_TEMP_ROOT'] = $options['MEDIA_ROOT'];
+
+	$options['CACHE_ROOT'] = $options['XML_ROOT'] . 'cache/';
+	$options['MEDIA_ABS_ROOT'] = $options['SITE_ROOT_URL'] . 'storage/-sites/' . $options['MULTISITE'] . '/media/';
+	$options['CACHE_ABS_ROOT'] = $options['SITE_ROOT_URL'] . 'storage/-sites/' . $options['MULTISITE'] . '/cache/';
+}else{
+    $options['XML_ROOT'] = $SITE_ROOT_PATH . 'storage/';
+
+    $options['MEDIA_ROOT'] = $SITE_ROOT_PATH . 'storage/' . $options['MEDIA_FOLDER_NAME'] . '/';
+    $options['MEDIA_URL'] = $SITE_ROOT_URL . 'storage/' . $options['MEDIA_FOLDER_NAME'] . '/';
+    $options['MEDIA_TEMP_ROOT'] = $options['MEDIA_ROOT'];
+
+	$options['CACHE_ROOT'] = $SITE_ROOT_PATH . 'storage/cache/';
+	$options['MEDIA_ABS_ROOT'] = $options['SITE_ROOT_URL'] . 'storage/media/';
+	$options['CACHE_ABS_ROOT'] = $options['SITE_ROOT_URL'] . 'storage/cache/';
+}
 
 
 /**
@@ -107,8 +112,8 @@ $options['ENGINE_ABS_ROOT'] = $ENGINE_ABS_ROOT; // this is defined in inc.page.p
  */
 
 //common hosting config file for all bertas
-if (file_exists($ENGINE_ROOT.'hosting')){
-	$hostingConfig = parse_ini_string( file_get_contents($ENGINE_ROOT.'hosting') );
+if (file_exists($ENGINE_ROOT_PATH.'hosting')){
+	$hostingConfig = parse_ini_string( file_get_contents($ENGINE_ROOT_PATH.'hosting') );
 }
 $options['HOSTING_PROFILE'] = isset($hostingConfig['login']) ? $hostingConfig['login'] : false;
 $options['FORGOTPASSWORD_LINK'] = isset($hostingConfig['forgotPassword']) ? $hostingConfig['forgotPassword'] : 'http://support.berta.me/kb/login-name-and-password/forgot-my-password-for-self-hosted-berta';
@@ -116,8 +121,8 @@ $options['INTERCOM_APP_ID'] = isset($hostingConfig['intercomAppId']) ? $hostingC
 $options['INTERCOM_SECRET_KEY'] = isset($hostingConfig['intercomSecretKey']) ? $hostingConfig['intercomSecretKey'] : false;
 
 //individual hosting config file for berta
-if (file_exists($ENGINE_ROOT.'hosting_config')){
-	$hostingConfigBerta = parse_ini_string( file_get_contents($ENGINE_ROOT.'hosting_config') );
+if (file_exists($ENGINE_ROOT_PATH.'hosting_config')){
+	$hostingConfigBerta = parse_ini_string( file_get_contents($ENGINE_ROOT_PATH.'hosting_config') );
 }
 $options['NOINDEX'] = isset($hostingConfigBerta['noindex']) && ( $hostingConfigBerta['noindex'] === $_SERVER['HTTP_HOST'] || 'www.'.$hostingConfigBerta['noindex'] === $_SERVER['HTTP_HOST'] );
 

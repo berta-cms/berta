@@ -3,7 +3,7 @@ define('AUTH_AUTHREQUIRED', true);
 define('BERTA_ENVIRONMENT', 'engine');
 include('inc.page.php');
 $loggedIn = $berta->security->userLoggedIn;
-include_once $ENGINE_ROOT . '_classes/class.bertaeditor.php';
+include_once $ENGINE_ROOT_PATH . '_classes/class.bertaeditor.php';
 
 if ($options['MULTISITE_DISABLED']) {
     header("Location: ./");
@@ -19,15 +19,15 @@ $int_version = BertaEditor::$options['int_version'];
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <title><?php echo $berta->settings->get('texts', 'pageTitle') ?> / <?php echo I18n::_('Multisite') ?></title>
-<link rel="SHORTCUT ICON" href="favicon.ico"/>
-<link rel="stylesheet" href="<?php echo $ENGINE_ABS_ROOT ?>css/backend.min.css?<?php echo $int_version ?>" type="text/css" charset="utf-8" />
-<link rel="stylesheet" href="<?php echo $ENGINE_ABS_ROOT ?>css/editor.css.php?<?php echo $int_version ?>" type="text/css" charset="utf-8" />
+<link rel="SHORTCUT ICON" href="<?php echo $SITE_ROOT_URL ?>favicon.ico"/>
+<link rel="stylesheet" href="<?php echo $ENGINE_ROOT_URL ?>css/backend.min.css?<?php echo $int_version ?>" type="text/css" charset="utf-8" />
+<link rel="stylesheet" href="<?php echo $ENGINE_ROOT_URL ?>css/editor.css.php?<?php echo $int_version ?>" type="text/css" charset="utf-8" />
 <?php include('inc.head.php'); ?>
 </head>
 
 <body class="xSettingsPageBody" x_mode="multisite">
     <form name="infoForm" id="infoForm">
-        <input type="hidden" name="ENGINE_ROOT" id="ENGINE_ROOT" value="<?php echo htmlspecialchars($ENGINE_ROOT) ?>" />
+        <input type="hidden" name="ENGINE_ROOT_URL" id="ENGINE_ROOT_URL" value="<?php echo htmlspecialchars($ENGINE_ROOT_URL) ?>" />
     </form>
     <?php echo $topPanelHTML ?>
     <div id="allContainer">
@@ -53,10 +53,10 @@ $int_version = BertaEditor::$options['int_version'];
                         echo '<div class="csHandle"><span class="handle"></span></div>';
                         echo '<div class="csTitle"><span class="' . $xEditSelectorSimple . ' xProperty-title xNoHTMLEntities xSite-' . $sN . ' xSiteField"' . ' data-path="' . $base_path . 'title" ' . '>' . (!empty($s['title']['value']) ? htmlspecialchars($s['title']['value']) : '') . '</span></div>';
                         if ($sN) {
-                            echo '<div class="csName">'.$options['SITE_HOST_ADDRESS'].$options['SITE_ABS_ROOT'].'<span class="' . $xEditSelectorSimple . ' xProperty-name xNoHTMLEntities xSite-' . $sN . ' xSiteField"' . ' data-path="' . $base_path . 'name" ' . '>' . (!empty($s['name']['value']) ? htmlspecialchars($s['name']['value']) : '') . '</span></div>';
+                            echo '<div class="csName">'.$options['SITE_HOST_ADDRESS'].$options['SITE_ROOT_URL'].'<span class="' . $xEditSelectorSimple . ' xProperty-name xNoHTMLEntities xSite-' . $sN . ' xSiteField"' . ' data-path="' . $base_path . 'name" ' . '>' . (!empty($s['name']['value']) ? htmlspecialchars($s['name']['value']) : '') . '</span></div>';
                             echo '<div class="csPub"><span class="' . $xEditSelectorYesNo . ' xProperty-published xSite-' . $sN . ' xSiteField"' . ' data-path="' . $base_path . '@attributes/published" ' . '>' . (!empty($s['@attributes']['published']) ? '1' : '0') . '</span></div>';
                         }else{
-                            echo '<div class="csName"><span>'.$options['SITE_HOST_ADDRESS'].$options['SITE_ABS_ROOT'].'</span></div>';
+                            echo '<div class="csName"><span>'.$options['SITE_HOST_ADDRESS'].$options['SITE_ROOT_URL'].'</span></div>';
                             echo '<div class="csPub"><span>-</span></div>';
                         }
 
@@ -90,7 +90,7 @@ $int_version = BertaEditor::$options['int_version'];
     </div>
     <?php echo BertaEditor::intercomScript() ?>
     <div id="templateList">
-        <?php include $options['ENGINE_ROOT'] . 'js/ng/templates/multisite.html'; ?>
+        <?php include $options['ENGINE_ROOT_PATH'] . 'js/ng/templates/multisite.html'; ?>
     </div>
 </body>
 </html>

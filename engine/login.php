@@ -34,7 +34,7 @@ if ($options['HOSTING_PROFILE']) {
 
 	$login_action = $options['HOSTING_PROFILE'];
 }else{
-	$login_action = $ENGINE_ABS_ROOT . 'login.php';
+	$login_action = $ENGINE_ROOT_URL . 'login.php';
 }
 
 $auth_action = isset($_POST["auth_action"]) ? $_POST["auth_action"] : false;
@@ -59,7 +59,7 @@ if($auth_action == "login" && !$errStr) {
 
 			// redirect to main page ...
 
-			header("Location: $ENGINE_ABS_ROOT");
+			header("Location: $ENGINE_ROOT_URL");
 	        exit;
 
 
@@ -79,9 +79,9 @@ $int_version = $options['int_version'];
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title><?php echo $berta->settings->get('texts', 'page-title') ?> / login</title>
-<link rel="stylesheet" href="<?php echo $ENGINE_ABS_ROOT ?>css/backend.min.css?<?php echo $int_version ?>" type="text/css" charset="utf-8" />
-<link rel="stylesheet" href="<?php echo $ENGINE_ABS_ROOT ?>css/editor.css.php?<?php echo $int_version ?>" type="text/css" charset="utf-8" />
-<link rel="stylesheet" href="<?php echo $ENGINE_ABS_ROOT ?>css/login.css?<?php echo $int_version ?>" type="text/css" />
+<link rel="stylesheet" href="<?php echo $ENGINE_ROOT_URL ?>css/backend.min.css?<?php echo $int_version ?>" type="text/css" charset="utf-8" />
+<link rel="stylesheet" href="<?php echo $ENGINE_ROOT_URL ?>css/editor.css.php?<?php echo $int_version ?>" type="text/css" charset="utf-8" />
+<link rel="stylesheet" href="<?php echo $ENGINE_ROOT_URL ?>css/login.css?<?php echo $int_version ?>" type="text/css" />
 <?php include 'inc.header_default_scripts.php' ?>
 <?php echo BertaTemplate::sentryScripts(); ?>
 <script type="text/javascript">
@@ -99,7 +99,7 @@ $int_version = $options['int_version'];
 			<div class="xMAlign-inner">
 				<form name="xLoginForm" action="<?php echo $login_action ?>" method="post">
                     <div class="xLoginLogo">
-                        <img src="<?php echo $ENGINE_ABS_ROOT ?>layout/berta.png" alt="berta v <?php echo BertaBase::$options['version'] ?>" />
+                        <img src="<?php echo $ENGINE_ROOT_URL ?>layout/berta.png" alt="berta v <?php echo BertaBase::$options['version'] ?>" />
                     </div>
 					<?php if($errStr) { ?>
 					 	<div class="xLoginError"><?php echo $errStr ?></div>
@@ -108,8 +108,8 @@ $int_version = $options['int_version'];
 					<!--[if IE ]> <input type="hidden" name="auth_browser" value="invalid" /> <![endif]-->
 					<!--[if !(IE)]><!--> <input type="hidden" name="auth_browser" value="supported" /> <!--<![endif]-->
                     <?php if ($options['HOSTING_PROFILE']) { ?>
-                        <a href="<?php echo $login_action . '?provider=facebook&amp;remote_redirect=' . urlencode($options['SITE_HOST_ADDRESS'] . $ENGINE_ABS_ROOT . 'login.php') ?>" class="social_button social_button_facebook"><span class="icon-facebook"></span>Log in with Facebook</a>
-                        <a href="<?php echo $login_action . '?provider=google&amp;remote_redirect=' . urlencode($options['SITE_HOST_ADDRESS'] . $ENGINE_ABS_ROOT . 'login.php')  ?>" class="social_button social_button_google"><span class="icon-google-plus"></span>Log in with Google</a>
+                        <a href="<?php echo $login_action . '?provider=facebook&amp;remote_redirect=' . urlencode($options['SITE_HOST_ADDRESS'] . $ENGINE_ROOT_URL . 'login.php') ?>" class="social_button social_button_facebook"><span class="icon-facebook"></span>Log in with Facebook</a>
+                        <a href="<?php echo $login_action . '?provider=google&amp;remote_redirect=' . urlencode($options['SITE_HOST_ADDRESS'] . $ENGINE_ROOT_URL . 'login.php')  ?>" class="social_button social_button_google"><span class="icon-google-plus"></span>Log in with Google</a>
                         <p class="social_or">or</p>
                     <?php } ?>
                     <input type="text" name="auth_user" id="auth_user" class="xLoginField" />

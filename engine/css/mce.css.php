@@ -1,7 +1,6 @@
 <?php
 header("Content-Type: text/css");
 
-$SITE_ROOT = '../../';
 define('SETTINGS_INSTALLREQUIRED', false);
 define('SETTINGS_INSTALLCHECKREQUIRED', false);
 include('../inc.page.php');

@@ -58,12 +58,29 @@ class Berta extends BertaBase
 	// finally: init content
 	public function	initContent($full_url, $sectionName, $tagName)
 	{
-
 		$this->requestURI = $this->apacheRewriteUsed ? $full_url : false;
 
 		// seciton ...
+        $this->sections = BertaContent::getSections();
 
-		$this->sections = BertaContent::getSections();
+        if (empty($this->sections) && class_exists('BertaEditor')) {
+            /**
+             * Auto-create the first section and call it 'home'
+             */
+            $firstSectionName = 'home';
+            $blog = [];
+            $fSections = [
+                $firstSectionName => [
+                    'title' => ['value' => 'Home'],
+                    'name' => ['value' => $firstSectionName]
+                ]
+            ];
+            BertaEditor::saveSections($fSections);
+            BertaEditor::saveBlog($firstSectionName, $blog);
+
+            $this->sections = BertaContent::getSections();
+        }
+
 		if(!$sectionName || empty($this->sections[$sectionName]) && $sectionName!='sitemap.xml')
 		{
 			if($this->environment == 'engine')

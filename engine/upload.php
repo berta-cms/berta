@@ -288,8 +288,9 @@ if(($entryId && $mediaFolder || $settingsProperty || $sectionName && $mediaFolde
 							//rename($fileFolder . $fTempName, $fileFolder . $fName);
 
 							// create the small thumb
-							$smallThumbPath = BertaEditor::images_getSmallThumbFor($fileFolder . $fName);
-							$smallThumbInfo = getimagesize($smallThumbPath);
+                            $smallThumbPath = BertaEditor::images_getSmallThumbFor($mediaFolder . (substr($mediaFolder, -1) == '/' ? '' : '/') . $fName);
+                            $thumbName = basename($smallThumbPath);
+							$smallThumbInfo = getimagesize($fileFolder . $thumbName);
 
 							// if uploaded for background, create lighter image & create an image for grid
 							if($sectionBackground) {

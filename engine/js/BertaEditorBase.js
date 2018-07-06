@@ -55,8 +55,8 @@ var BertaEditorBase = new Class({
     xBertaEditorClassGallery: '.xEntryGalleryEditor',
 
     xEmptyClass: '.xEmpty',
-    updateUrl: 'update.php',
-    elementsUrl: 'elements.php'
+    updateUrl: '/engine/update.php',
+    elementsUrl: '/engine/elements.php'
   },
 
   tinyMCESettings: {
@@ -578,7 +578,7 @@ var BertaEditorBase = new Class({
             }
           },
           onDrag: function () {
-            $('xTopPanelContainer').hide();
+            window.BertaHelpers.hideTopMenus();
             if (parseInt(el.getStyle('left')) < 0) {
               el.setStyle('left', '0');
             }
@@ -608,8 +608,8 @@ var BertaEditorBase = new Class({
             }
           },
           onComplete: function (el) {
+            window.BertaHelpers.showTopMenus();
 
-            $('xTopPanelContainer').show();
             this.hideControlPanel(el);
             $('xCoords').destroy();
             el.removeClass('xEditing');
@@ -816,13 +816,13 @@ var BertaEditorBase = new Class({
     }
   },
 
-  hideControlPanel: function (el) {
-    if ((el.hasClass('xEntry') || el.hasClass('xProperty-additionalTextXY')) && parseInt(el.getStyle('top')) < 40) {
-      el.addEvent('mouseenter', function () {
-        $('xTopPanelContainer').hide();
+  hideControlPanel: function(el) {
+    if ( (el.hasClass('xEntry') || el.hasClass('xProperty-additionalTextXY')) &&  parseInt(el.getStyle('top'))<40 ){
+      el.addEvent('mouseenter', function(){
+        window.BertaHelpers.hideTopMenus();
       });
-      el.addEvent('mouseleave', function () {
-        $('xTopPanelContainer').show();
+      el.addEvent('mouseleave', function(){
+        window.BertaHelpers.showTopMenus();
       });
     }
   },
@@ -1525,6 +1525,11 @@ BertaEditorBase.EDITABLE_FINISH = 'editable_finish';
 // Toggles top panel's visibility
 window.addEvent('domready', function () {
   var slideEl = document.getElementById('xTopPanel');
+  if (window.BertaHelpers) {
+    window.BertaHelpers.showTopMenus();
+    window.BertaHelpers.updateTopMenuSite(document.location.search);
+  }
+
   if (slideEl) {
     var slideOutEl = document.getElementById('xTopPanelSlideOut');
     var slideInEl = document.getElementById('xTopPanelSlideIn');
@@ -1554,162 +1559,8 @@ window.addEvent('domready', function () {
   }
 
   tourInit = function () {
-
-    if (!Cookie.read('_berta_videos_hidden') || typeof (bertaGlobalOptions) == 'undefined' || bertaGlobalOptions.skipTour) {
-      return;
-    }
-
-    var steps = [];
-    var engine_path = window.location.pathname.split('/');
-    engine_path.pop();
-    engine_path = engine_path.join('/') + '/';
-    var next = null;
-    var doneLabel = null;
-    var query = window.location.search.replace('?', '').parseQueryString();
-    var query_site = '';
-    if (query.site) {
-      query_site = '?site=' + query.site;
-    }
-
-    if ($$('.page-xSections').length) {
-      steps = [{
-        element: document.querySelector('#xSections'),
-        intro: 'Add, copy, hide or delete your sections here.',
-        position: 'right'
-      }];
-      next = engine_path + 'settings.php' + query_site;
-    } else if ($$('.page-xSettings').length) {
-      steps = [{
-        element: document.querySelector('#xSettings'),
-        intro: 'Choose your template and edit general settings.',
-        position: 'right'
-      }];
-      next = engine_path + 'settings.php?mode=template' + (query.site ? '&site=' + query.site : '');
-    } else if ($$('.page-xTemplate').length) {
-
-      steps.push({
-        element: document.querySelector('#xMySite'),
-        intro: 'Site editing view. Add, drag & drop text and images',
-        position: 'right'
-      });
-
-      steps.push({
-        element: document.querySelector('#xTemplateDesign'),
-        intro: 'Customize web design: font, size, colors, spacing and other. You can even add your custom CSS code.',
-        position: 'right'
-      });
-
-      var xHelpDesk = document.querySelector('#xHelpDesk');
-      if (xHelpDesk) {
-        steps.push({
-          element: document.querySelector('#xHelpDesk'),
-          intro: 'Find help here - videos, tutorials, FAQs and a discussion board.',
-          position: 'left'
-        });
-      }
-
-      steps.push({
-        element: document.querySelector('#xSections'),
-        intro: 'Start your website!',
-        position: 'right'
-      });
-
-      doneLabel = 'Done';
-
-    } else if ($$('.page-xMySite').length) {
-      steps = [{
-        element: document.querySelector('#xTopPanelContainer'),
-        intro: 'Hey! This is a control panel.',
-        position: 'right'
-      }];
-      next = engine_path + 'sections.php' + query_site;
-    }
-
-    if (steps.length) {
-
-      var tour = introJs();
-      var exitButton = new Element('a', {
-        'href': '#',
-        'class': 'introjs-button introjs-exit'
-      }).set('html', 'Exit');
-
-      tour.setOptions({
-        steps: steps,
-        'doneLabel': doneLabel ? doneLabel : 'Next',
-        'nextLabel': 'Next',
-        'prevLabel': 'Back',
-        showBullets: false,
-        showStepNumbers: false,
-        exitOnOverlayClick: false
-      });
-
-      tour.start().onafterchange(function () {
-        var skipbutton = $$('.introjs-skipbutton');
-        if (skipbutton.length) {
-          if (skipbutton[0].get('text') == 'Done') {
-            exitButton.hide();
-            skipbutton[0].setStyles({
-              'display': 'inline',
-              'float': 'left'
-            });
-          } else {
-            exitButton.show();
-            skipbutton[0].setStyles({
-              'display': 'none',
-              'float': 'none'
-            });
-          }
-        }
-      }).oncomplete(function () {
-        if (next) {
-          window.location.href = next;
-        } else {
-          exitTour();
-        }
-      }).onexit(function () {
-        exitTour();
-      });
-
-      //add exit button
-      setTimeout(function () {
-        var tooltipbuttons = $$('.introjs-tooltipbuttons');
-
-        exitButton.addEvent('click', function (e) {
-          e.preventDefault();
-          tour.exit();
-          exitTour();
-        });
-        exitButton.inject(tooltipbuttons[0], 'top');
-      }, 200);
-
-      var exitTour = function () {
-        var editor = new BertaEditorBase;
-        var updateUrl = editor.options.updateUrl;
-
-        if (query.site) {
-          updateUrl = updateUrl + query_site;
-        }
-
-        var data = {
-          property: 'tourComplete',
-          value: 1
-        };
-
-        new Request.JSON({
-          url: updateUrl,
-          data: JSON.stringify(data),
-          urlEncoded: false,
-          onComplete: function (resp) {
-            window.location.href = engine_path + 'sections.php' + query_site;
-          }.bind(this),
-          /* Called when on JSON conversion error:
-           * Will use this as error handler for now, because server only returns non-JSON on exception */
-          onError: function (responseBody) {
-            console.error(responseBody);
-          }
-        }).post();
-      };
-    }
+    var editor = new BertaEditorBase;
+    window.BertaHelpers.initTour(document.querySelector('#xTopPanelContainer'), editor.options.updateUrl);
   };
   tourInit();
 

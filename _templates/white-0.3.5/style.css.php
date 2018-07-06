@@ -2,7 +2,6 @@
 
 header("Content-Type: text/css");
 
-$SITE_ROOT = '../../';
 $IS_CSS_FILE = true;
 include('../../engine/inc.page.php');
 $s =& $berta->template->settings;

@@ -4,7 +4,7 @@ var BertaBgEditor = new Class({
   Implements: [Options, Events, UnlinearProcessDispatcher],
 
   options: {
-    updateUrl: 'update.php',
+    updateUrl: '/engine/update.php',
     engineRoot: './',
     flashUploadEnabled: true
   },

@@ -26,7 +26,7 @@
 }
 
 
-.mbLoading{ background: rgba(255,255,255,0.8) url(../../../../layout/loader.gif) no-repeat center; }
+.mbLoading{ background: rgba(255,255,255,0.8) url(/engine/layout/loader.gif) no-repeat center; }
 
 #mbCanvas{ margin:0; padding:0; height:0; border:none; font-size:0; overflow:hidden; }
 #mbCanvas img{ cursor: pointer; }

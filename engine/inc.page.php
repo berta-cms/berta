@@ -4,6 +4,20 @@ error_reporting(E_ALL);
 @ini_set("display_errors", 1);
 @ini_set("ignore_user_abort", 1);
 
+try {
+    /**
+     * Here are included everything that needs to be autoloaded. So we can use it through `Use` keyword.
+     * @var {Symfony\Component\ClassLoader\ClassLoader} $loader
+     * @var {Monolog\Logger} $logger
+     */
+    include_once 'loader.helper.php';
+
+} catch (Exception $e) {}
+
+
+// You can now use your logger
+// $logger->info('My logger is now ready');
+
 //detect ajax request
 $IS_AJAX = isset($_SERVER['HTTP_X_REQUESTED_WITH']) && !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest';
 
@@ -20,29 +34,31 @@ if(function_exists('mb_internal_encoding') && function_exists('mb_regex_encoding
 // basic paths...
 
 if(empty($INDEX_INCLUDED)) $INDEX_INCLUDED = false;
-if(empty($SITE_ROOT)) $SITE_ROOT = $INDEX_INCLUDED ? './' : '../';
-if(empty($ENGINE_ROOT)) $ENGINE_ROOT = $SITE_ROOT . 'engine/';
-$SITE_ABS_ROOT = str_replace('\\', '/', dirname($_SERVER['PHP_SELF']));
 
-if(strlen($SITE_ROOT) > 2) {	// if SITE_ROOT is "../" or "../../" etc., but not "./"
-	$s = $SITE_ROOT;
-	while($s) {
-		$s = substr($s, 0, strlen($s) - 3);
-		$SITE_ABS_ROOT = str_replace('\\', '/', dirname($SITE_ABS_ROOT));
-	}
-}
+/** @var {string} $SITE_ROOT_PATH - Berta site source root directory location on the disc.
+ * Used for PHP file includes and file saving/loading.
+ */
+if(empty($SITE_ROOT_PATH)) $SITE_ROOT_PATH = dirname(__dir__). '/';
 
-//if(empty($INDEX_INCLUDED)) $SITE_ABS_ROOT = str_replace('\\', '/', dirname($SITE_ABS_ROOT));
-//if(!empty($IS_CSS_FILE)) $SITE_ABS_ROOT = str_replace('\\', '/', dirname($SITE_ABS_ROOT));
-if($SITE_ABS_ROOT != '/') $SITE_ABS_ROOT .= '/';
-$ENGINE_ABS_ROOT = $SITE_ABS_ROOT . 'engine/';
+/** @var {string} $SITE_ROOT_URL - The root path of site used in URL generation.
+ * Normally '/' (representing 'berta.me/'). */
+if(empty($SITE_ROOT_URL)) $SITE_ROOT_URL = '/';
+
+/** @var {string} $ENGINE_ROOT_PATH - Berta engine location on the disc.
+ * Used for PHP file includes and file saving/loading. */
+if(empty($ENGINE_ROOT_PATH)) $ENGINE_ROOT_PATH = $SITE_ROOT_PATH . 'engine/';
+
+/** @var {string} $ENGINE_ROOT_URL - The root path of berta engine used in URL generation.
+ * Normally '/engine' (representing 'berta.me/engine'). */
+if(empty($ENGINE_ROOT_URL)) $ENGINE_ROOT_URL = $SITE_ROOT_URL . 'engine/';
+
 
 
 $hasPHP5 = floatval(phpversion()) >= 5;
 if(!$hasPHP5) {
-	if(file_exists($SITE_ROOT . 'INSTALL/includes/first_visit_serverreqs.php')) {
+	if(file_exists($SITE_ROOT_PATH . 'INSTALL/includes/first_visit_serverreqs.php')) {
 		$CHECK_INCLUDED = true;
-		include $SITE_ROOT . 'INSTALL/includes/first_visit_serverreqs.php';
+		include $SITE_ROOT_PATH . 'INSTALL/includes/first_visit_serverreqs.php';
 	} else {
 		die('Berta needs PHP5 support on server.');
 	}
@@ -58,12 +74,11 @@ include_once 'inc.functions.php';
 
 // prefs and basic variables -------------------------------------------------------------------------------------------------------------------------
 
-include_once $ENGINE_ROOT . '_classes/class.berta.php';
-include_once $ENGINE_ROOT . '_classes/class.bertagallery.php';
-include_once $ENGINE_ROOT . 'inc.engineprefs.php';			// since this include $options refer to BertaBase::$options
-include_once $ENGINE_ROOT . 'inc.sentry_error_handling.php';
-if(empty($SITE_ABS_ROOT)) $SITE_ABS_ROOT = $options['SITE_ABS_ROOT'];
-if(empty($ENGINE_ABS_ROOT)) $ENGINE_ABS_ROOT = $options['ENGINE_ABS_ROOT'];
+include_once $ENGINE_ROOT_PATH . '_classes/class.berta.php';
+include_once $ENGINE_ROOT_PATH . '_classes/class.bertagallery.php';
+include_once $ENGINE_ROOT_PATH . 'inc.engineprefs.php';			// since this include $options refer to BertaBase::$options
+include_once $ENGINE_ROOT_PATH . 'inc.sentry_error_handling.php';
+if(empty($SITE_ROOT_URL)) $SITE_ROOT_URL = $options['SITE_ROOT_URL'];
 
 
 // magic quotes --------------------------------------------------------------------------------------------------------------------------------------
@@ -96,12 +111,12 @@ if (DO_UPLOAD && isset($_GET['session_id'])) {
 
 if(AUTH_AUTHREQUIRED && !$berta->security->authentificated) {
 	if ($IS_AJAX){
-		die("<script>window.location.href='".$ENGINE_ABS_ROOT . 'login.php'."'</script>");
+		die("<script>window.location.href='".$ENGINE_ROOT_URL . 'login.php'."'</script>");
     }elseif (DO_UPLOAD) {
         http_response_code(401);
         die();
 	}else{
-		$berta->security->goToLoginPage($ENGINE_ROOT . 'login.php');
+		$berta->security->goToLoginPage($ENGINE_ROOT_PATH . 'login.php');
 	}
 }
 
@@ -110,13 +125,15 @@ if(AUTH_AUTHREQUIRED && !$berta->security->authentificated) {
 
 // settings ------------------------------------------------------------------------------------------------------------------------------------------
 
-include($ENGINE_ROOT . 'inc.settings.php');
+include($ENGINE_ROOT_PATH . 'inc.settings.php');
 
 $berta->init($settingsDefinition);
 
 // settings install management ----------------------------------------
 if(!defined('SETTINGS_INSTALLREQUIRED')) define('SETTINGS_INSTALLREQUIRED', true);
 if(!empty($_REQUEST['_berta_install_done'])) {
+
+    /** @todo: auto-create the first section */
 
 	// final installer adjustments
 	if($berta->settings->get('texts', 'ownerName')) {
@@ -137,24 +154,24 @@ if(SETTINGS_INSTALLREQUIRED && !$berta->settings->get('berta', 'installed')) {
 
 		switch($step) {
 			case 1:
-				if(file_exists($SITE_ROOT . 'INSTALL/includes/check.php')) {
+				if(file_exists($SITE_ROOT_PATH . 'INSTALL/includes/check.php')) {
 					$CHECK_INCLUDED = true;
-					include $SITE_ROOT . 'INSTALL/includes/check.php';
+					include $SITE_ROOT_PATH . 'INSTALL/includes/check.php';
 					exit;
 				}
 				break;
 			case 2:
-				if(file_exists($SITE_ROOT . 'INSTALL/includes/wizzard.php')) {
+				if(file_exists($SITE_ROOT_PATH . 'INSTALL/includes/wizzard.php')) {
 					$CHECK_INCLUDED = true;
-					include $SITE_ROOT . 'INSTALL/includes/wizzard.php';
+					include $SITE_ROOT_PATH . 'INSTALL/includes/wizzard.php';
 					exit;
 				}
 				break;
 		}
 	} else {
-		if(file_exists($SITE_ROOT . 'INSTALL/includes/first_visit.php')) {
+		if(file_exists($SITE_ROOT_PATH . 'INSTALL/includes/first_visit.php')) {
 			$CHECK_INCLUDED = true;
-			include $SITE_ROOT . 'INSTALL/includes/first_visit.php';
+			include $SITE_ROOT_PATH . 'INSTALL/includes/first_visit.php';
 		} else {
 			die('Berta not installed.');
 		}

@@ -1,10 +1,9 @@
 <?php
-
-$SITE_ROOT = '../../';
-$ENGINE_ROOT = '../../engine/';
+/** @todo
+ * - fix this path:  */
 define('AUTH_AUTHREQUIRED', false);
 define('SETTINGS_INSTALLREQUIRED', false);
-include $ENGINE_ROOT . 'inc.page.php';
+include '../../engine/inc.page.php';
 
 if(empty($settings['berta']['installed'])) {
 	if(file_exists('./READ-ME!.html')) {

@@ -9,15 +9,15 @@ class I18n
 
     public static function load_language($lang = null)
     {
-        $ENGINE_ROOT = realpath(config('app.old_berta_root'). '/engine');
+        $ENGINE_ROOT_PATH = realpath(config('app.old_berta_root'). '/engine');
 
-        if($lang && file_exists($ENGINE_ROOT.'/lang/'.$lang.'.php'))
+        if($lang && file_exists($ENGINE_ROOT_PATH.'/lang/'.$lang.'.php'))
         {
-            self::$translations = include($ENGINE_ROOT.'/lang/'.$lang.'.php');
+            self::$translations = include($ENGINE_ROOT_PATH.'/lang/'.$lang.'.php');
         }
-        elseif(file_exists($ENGINE_ROOT.'/lang/'. self::$default_lang.'.php'))
+        elseif(file_exists($ENGINE_ROOT_PATH.'/lang/'. self::$default_lang.'.php'))
         {
-            self::$translations = include($ENGINE_ROOT.'/lang/'.self::$default_lang.'.php');
+            self::$translations = include($ENGINE_ROOT_PATH.'/lang/'.self::$default_lang.'.php');
         }
     }
 

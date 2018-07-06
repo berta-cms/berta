@@ -102,13 +102,11 @@ var MessyMess = new Class({
       $$('.xEntryToBack').addEvent('click', this.editor_saveOrder.bindWithEvent(this));
 
       $$('.xEditableDragXY').addEvents({
-        mouseenter: function () {
-          $('xTopPanelContainer').hide();
-          if ($('xBgEditorPanelTrigContainer')) $('xBgEditorPanelTrigContainer').hide();
+        mouseenter: function() {
+          window.BertaHelpers.hideTopMenus();
         },
-        mouseleave: function () {
-          $('xTopPanelContainer').show();
-          if ($('xBgEditorPanelTrigContainer')) $('xBgEditorPanelTrigContainer').show();
+        mouseleave: function() {
+          window.BertaHelpers.showTopMenus();
         }
       });
 

@@ -71,7 +71,7 @@
 ************/
 
 class CleanURL {
- 
+
 	var $basename;
 	var $uri;
 	var $parts;
@@ -80,13 +80,13 @@ class CleanURL {
 	function parseURL($urlStr = '') {
 		 /* grab URL query string and script name */
 		if(!$urlStr) $urlStr = $_SERVER['REQUEST_URI'];
-		
+
 		$uri = strpos($urlStr, '?') !== false ? substr($urlStr, 0, strpos($urlStr, '?')) : $urlStr;
 		$script = $_SERVER['SCRIPT_NAME'];
 		/* get extension */
 		$scriptArr = explode(".",$script);
 		$ext = end($scriptArr);
-		
+
 		/* if extension is found in URL, eliminate it */
 		if(strstr($uri,".")) {
 			$arr_uri = explode('.', $uri);
@@ -125,9 +125,23 @@ class CleanURL {
 
 	}
 
-	function getParts() {
-		/* return array of sliced query string */
-		return $this->parts;
+    /**
+     * Return the given number of URL parts according to $limit parameter.
+     * Fills non existing parts with boolean value `false`.
+     *
+     * @param {number} [$limit = 0] - The number of URL parts to return. If 0 is unlimited.
+     * @return {array<string|boolean>}
+     */
+	function getParts($limit = 0) {
+        /* return array of sliced query string */
+        if (!$limit) {
+            return $this->parts;
+        }
+        $urlParts = [];
+        for ($i = 0; $i < $limit; $i++) {
+            $urlParts[$i] = empty($this->parts[$i]) ? false : $this->parts[$i];
+        }
+        return $urlParts;
 	}
 
 	function setParts() {
