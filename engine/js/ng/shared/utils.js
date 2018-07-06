@@ -20,6 +20,7 @@
     )
       .then(function (response) {
         if (response.status === 401) {
+          /** @todo redirect to login page if unauthorized */
           return {
             'error_message': 'Unauthorized'
           };
