@@ -15,8 +15,6 @@ class AuthController extends Controller
         $app_key = config('app.key');
         $app_id = config('app.id');
         $payload = [
-            'iss' => 'berta-jwt', // Issuer of the token
-            'sub' => $app_id, // Subject of the token
             'iat' => time(), // Time when JWT was issued.
             'exp' => time() + self::$expiration_time // Expiration time
         ];

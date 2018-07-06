@@ -308,14 +308,12 @@ class Helpers
             $app_id = config('app.id');
             JWT::$leeway = 60;
             $decoded = JWT::decode($token, $app_key, ['HS256']);
-
-            if ($decoded->sub !== $app_id) {
-                return null;
-            }
             return true;
+
         } catch (\Throwable $t) {
             \Log::error($t);
             return null;
+
         } catch (\Excpetion $e) {
             \Log::error($e);
             return null;
