@@ -32,7 +32,7 @@ if ($options['HOSTING_PROFILE']) {
 		}
 	}
 
-	$login_action = $options['HOSTING_PROFILE'];
+	$login_action = $options['HOSTING_PROFILE'] . '?remote_redirect=' . urlencode($options['SITE_HOST_ADDRESS'] . $SITE_ABS_ROOT . '_api/auth/login');
 }else{
     $login_action = $SITE_ABS_ROOT . '_api/auth/login';
 }
