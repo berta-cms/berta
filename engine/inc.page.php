@@ -203,7 +203,3 @@ function convertToQueryString() {
 	}
 	return implode('&', $strOutArr);
 }
-
-
-
-?>

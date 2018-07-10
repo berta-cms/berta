@@ -6,7 +6,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
+use App\Shared\Helpers;
 use App\User\UserModel;
+use App\Http\Controllers\AuthController;
 
 
 class UserAuthServiceProvider extends ServiceProvider
@@ -51,13 +53,52 @@ class UserAuthServiceProvider extends ServiceProvider
         // should return either a User instance or null. You're free to obtain
         // the User instance via an API token or any other method necessary.
 
-        Auth::viaRequest('old_berta_session', function ($request) {
+        Auth::viaRequest('jwt_token', function ($request) {
+            $token = $this->getBearerToken();
 
-            if(!$this->bertaSecurity->authentificated) {
+            if ($token && Helpers::validate_token($token)) {
+                return new UserModel();
+            } else {
+                $this->authController = new AuthController();
+                $this->authController->logout();
                 return null;
             }
-
-            return new UserModel();
         });
+    }
+
+    /**
+     * Get hearder Authorization
+     * */
+    function getAuthorizationHeader()
+    {
+        $headers = null;
+        if (isset($_SERVER['Authorization'])) {
+            $headers = trim($_SERVER["Authorization"]);
+        } else if (isset($_SERVER['HTTP_AUTHORIZATION'])) { //Nginx or fast CGI
+            $headers = trim($_SERVER["HTTP_AUTHORIZATION"]);
+        } elseif (function_exists('apache_request_headers')) {
+            $requestHeaders = apache_request_headers();
+            // Server-side fix for bug in old Android versions (a nice side-effect of this fix means we don't care about capitalization for Authorization)
+            $requestHeaders = array_combine(array_map('ucwords', array_keys($requestHeaders)), array_values($requestHeaders));
+            //print_r($requestHeaders);
+            if (isset($requestHeaders['Authorization'])) {
+                $headers = trim($requestHeaders['Authorization']);
+            }
+        }
+        return $headers;
+    }
+    /**
+     * get access token from header
+     * */
+    function getBearerToken()
+    {
+        $headers = $this->getAuthorizationHeader();
+        // HEADER: Get the access token from the header
+        if (!empty($headers)) {
+            if (preg_match('/Bearer\s(\S+)/', $headers, $matches)) {
+                return $matches[1];
+            }
+        }
+        return null;
     }
 }

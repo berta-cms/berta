@@ -14,7 +14,7 @@ return [
     */
 
     'defaults' => [
-        'guard' => env('AUTH_GUARD', 'old_berta_session'),
+        'guard' => env('AUTH_GUARD', 'jwt_token'),
     ],
 
     /*
@@ -35,10 +35,10 @@ return [
     */
 
     'guards' => [
-        // the name can be used after middleware name in router e.g.: 'auth:old_berta_session'
+        // the name can be used after middleware name in router e.g.: 'auth:jwt_token'
         // The name referenced in default guard will be used if no name is passed after column ('auth')
         // 'name of auth guard for later reference' => ['driver' => 'name to reference in auth service provider `viaRequest`']
-        'old_berta_session' => ['driver' => 'old_berta_session'],
+        'jwt_token' => ['driver' => 'jwt_token'],
     ],
 
     /*

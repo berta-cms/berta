@@ -3,6 +3,7 @@
   /** @todo: move helpers to Berta namespace */
 
   window.sync = function (url, data, method) {
+    var token = window.getCookie('token');
     method = method || 'PATCH';
     return fetch(
       url,
@@ -11,18 +12,38 @@
         credentials: 'include',
         headers: {
           'Accept': 'application/json',
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + token
         },
         body: method === 'GET' ? undefined : JSON.stringify(data)
       }
     )
       .then(function (response) {
+        if (response.status === 401) {
+          window.BertaHelpers.logoutUser();
+          throw new Error('Unauthorized');
+        }
         return response.json();
       })
       .catch(function (error) {
         /** @todo: create error state/reducer to manage failed requests and other app errors */
         console.error('Request failed:', error.message);
       });
+  };
+
+  window.getCookie = function (cname) {
+    var name = cname + '=';
+    var ca = document.cookie.split(';');
+    for (var i = 0; i < ca.length; i++) {
+      var c = ca[i];
+      while (c.charAt(0) === ' ') {
+        c = c.substring(1);
+      }
+      if (c.indexOf(name) === 0) {
+        return c.substring(name.length, c.length);
+      }
+    }
+    return '';
   };
 
   window.getQueryParams = function getQueryParams() {

@@ -80,8 +80,10 @@ class BertaSecurity {
 
 
 	public function authentificate() {
-		session_name(BertaUtils::canonizeString('berta_' . Berta::$options['version'] . '_' . Berta::$options['SITE_ROOT_URL'], '_', ''));
-		session_start();
+        session_name(BertaUtils::canonizeString('berta_' . Berta::$options['version'] . '_' . Berta::$options['SITE_ROOT_URL'], '_', ''));
+        if(!isset($_SESSION)) {
+            session_start();
+        }
 		$curTime = time();
 
 		if(isset($_SESSION['_berta__user']) && is_array($_SESSION['_berta__user'])) {
@@ -153,7 +155,7 @@ class BertaSecurity {
 	public function destroy($authErrNo = false) {
 		if(isset($_SESSION['_berta__user'])) unset($_SESSION['_berta__user']);
 		@session_destroy();
-		$this->user = array();
+        $this->user = array();
 
 		return true;
 	}
@@ -210,4 +212,3 @@ class BertaSecurity {
 	}
 
 }
-?>

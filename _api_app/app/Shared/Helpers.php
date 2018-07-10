@@ -1,6 +1,8 @@
 <?php
 namespace App\Shared;
 
+use Firebase\JWT\JWT;
+
 /**
  * Using a class, so we can import the helper functions and use them in
  * PHP versions older then 5.6.
@@ -269,5 +271,52 @@ class Helpers
         }
 
         return $val;
+    }
+
+    public static function uuid_v4()
+    {
+        return sprintf(
+            '%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
+
+        // 32 bits for "time_low"
+            mt_rand(0, 0xffff),
+            mt_rand(0, 0xffff),
+
+        // 16 bits for "time_mid"
+            mt_rand(0, 0xffff),
+
+        // 16 bits for "time_hi_and_version",
+        // four most significant bits holds version number 4
+            mt_rand(0, 0x0fff) | 0x4000,
+
+        // 16 bits, 8 bits for "clk_seq_hi_res",
+        // 8 bits for "clk_seq_low",
+        // two most significant bits holds zero and one for variant DCE1.1
+            mt_rand(0, 0x3fff) | 0x8000,
+
+        // 48 bits for "node"
+            mt_rand(0, 0xffff),
+            mt_rand(0, 0xffff),
+            mt_rand(0, 0xffff)
+        );
+    }
+
+    public static function validate_token($token)
+    {
+        try {
+            $app_key = config('app.key');
+            $app_id = config('app.id');
+            JWT::$leeway = 60;
+            $decoded = JWT::decode($token, $app_key, ['HS256']);
+            return true;
+
+        } catch (\Throwable $t) {
+            \Log::error($t);
+            return null;
+
+        } catch (\Excpetion $e) {
+            \Log::error($e);
+            return null;
+        }
     }
 }

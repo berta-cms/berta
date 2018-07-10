@@ -32,9 +32,9 @@ if ($options['HOSTING_PROFILE']) {
 		}
 	}
 
-	$login_action = $options['HOSTING_PROFILE'];
+	$login_action = $options['HOSTING_PROFILE'] . '?remote_redirect=' . urlencode($options['SITE_HOST_ADDRESS'] . $SITE_ROOT_URL . '_api/auth/login');
 }else{
-	$login_action = $ENGINE_ROOT_URL . 'login.php';
+    $login_action = $SITE_ROOT_URL . '_api/auth/login';
 }
 
 $auth_action = isset($_POST["auth_action"]) ? $_POST["auth_action"] : false;
@@ -101,6 +101,21 @@ $int_version = $options['int_version'];
                     <div class="xLoginLogo">
                         <img src="<?php echo $ENGINE_ROOT_URL ?>layout/berta.png" alt="berta v <?php echo BertaBase::$options['version'] ?>" />
                     </div>
+
+                    <?php
+                        $maintenanceEndTime = 'Jul 11 2018 13:00'; // <-- Change the maintence end time here
+                        $maintenanceEndTimestamp = strtotime($maintenanceEndTime);
+
+                        if ($maintenanceEndTimestamp > time()) { ?>
+                        <div class="xMaintenanceInfo">
+                            Berta is under the maintenance until
+                            <?php echo date('jS \of F Y h:i A', $maintenanceEndTimestamp) ?> (EEST), UTC +3 <br>
+                            During this time it is possible to encounter some issues with login.
+                        </div>
+                        <?php
+                        }
+                    ?>
+
 					<?php if($errStr) { ?>
 					 	<div class="xLoginError"><?php echo $errStr ?></div>
 					<?php } ?>
@@ -108,8 +123,8 @@ $int_version = $options['int_version'];
 					<!--[if IE ]> <input type="hidden" name="auth_browser" value="invalid" /> <![endif]-->
 					<!--[if !(IE)]><!--> <input type="hidden" name="auth_browser" value="supported" /> <!--<![endif]-->
                     <?php if ($options['HOSTING_PROFILE']) { ?>
-                        <a href="<?php echo $login_action . '?provider=facebook&amp;remote_redirect=' . urlencode($options['SITE_HOST_ADDRESS'] . $ENGINE_ROOT_URL . 'login.php') ?>" class="social_button social_button_facebook"><span class="icon-facebook"></span>Log in with Facebook</a>
-                        <a href="<?php echo $login_action . '?provider=google&amp;remote_redirect=' . urlencode($options['SITE_HOST_ADDRESS'] . $ENGINE_ROOT_URL . 'login.php')  ?>" class="social_button social_button_google"><span class="icon-google-plus"></span>Log in with Google</a>
+                        <a href="<?php echo $login_action . '&amp;provider=facebook' ?>" class="social_button social_button_facebook"><span class="icon-facebook"></span>Log in with Facebook</a>
+                        <a href="<?php echo $login_action . '&amp;provider=google' ?>" class="social_button social_button_google"><span class="icon-google-plus"></span>Log in with Google</a>
                         <p class="social_or">or</p>
                     <?php } ?>
                     <input type="text" name="auth_user" id="auth_user" class="xLoginField" />
