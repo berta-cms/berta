@@ -67,7 +67,7 @@ $site = !empty($_REQUEST['site']) ? $_REQUEST['site'] : false;
 </head>
 <body class="bt-content-editor page-xMySite">
     <?php echo BertaEditor::getTopPanelHTML('site') ?>
-    <iframe src="<?php echo $ENGINE_ROOT_URL ?>editor<?php echo $site ? "?site=$site" : '' ?>" frameborder="0" style="width:100%;height:100%;"></iframe>
+    <iframe sandbox="allow-same-origin allow-scripts" src="<?php echo $ENGINE_ROOT_URL ?>editor<?php echo $site ? "?site=$site" : '' ?>" frameborder="0" style="width:100%;height:100%;"></iframe>
     <script>
         (function(){
             var topPanelContainer = document.getElementById('xTopPanelContainer');
@@ -94,6 +94,10 @@ $site = !empty($_REQUEST['site']) ? $_REQUEST['site'] : false;
 
                     case 'menu:set_site':
                         topMenu.setSiteInURLs(eventData[1]);
+                        break;
+
+                    case 'user:logout':
+                        window.location.reload();
                         break;
                 }
             });

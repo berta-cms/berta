@@ -78,4 +78,29 @@ class AuthController extends Controller
         header('Location:' . \Berta::$options['SITE_ROOT_URL'] . 'engine/login.php?autherror=1');
         exit;
     }
+
+    public function logout()
+    {
+        /**
+         * For `\BertaSecurity` to work, we need other Berta classes, because there many configuration options that are
+         * defined there. All of these includes are only used to make `\BertaSecurity` work.
+         */
+        require_once realpath(config('app.old_berta_root') . '/engine/_classes/class.bertabase.php');
+        require_once realpath(config('app.old_berta_root') . '/engine/_classes/class.bertautils.php');
+        /** @var {\Berta} \Berta - Old berta app class */
+        require_once realpath(config('app.old_berta_root') . '/engine/_classes/class.berta.php');
+        /** @var {\BertaSecurity} \BertaSecurity - Old berta security class, so the old login system would work  */
+        require_once realpath(config('app.old_berta_root') . '/engine/_classes/class.bertasecurity.php');
+
+        /** @var {array} $options - this gets the berta version */
+        include realpath(config('app.old_berta_root') . '/engine/inc.version.php');
+        \Berta::$options['version'] = $options['version'];
+        /** @! This may not work with berta deep in subdirectories */
+        \Berta::$options['SITE_ROOT_URL'] = str_replace('\\', '/', dirname(dirname($_SERVER['PHP_SELF'])));
+
+        $this->bertaSecurity = new \BertaSecurity();
+        $this->bertaSecurity->destroy();
+
+        setcookie('token', null, -1, '/');
+    }
 }

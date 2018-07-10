@@ -8,6 +8,7 @@ use Illuminate\Support\ServiceProvider;
 
 use App\Shared\Helpers;
 use App\User\UserModel;
+use App\Http\Controllers\AuthController;
 
 
 class UserAuthServiceProvider extends ServiceProvider
@@ -55,13 +56,11 @@ class UserAuthServiceProvider extends ServiceProvider
         Auth::viaRequest('jwt_token', function ($request) {
             $token = $this->getBearerToken();
 
-            if (!$token) {
-                return null;
-            }
-
-            if (Helpers::validate_token($token)) {
+            if ($token && Helpers::validate_token($token)) {
                 return new UserModel();
             } else {
+                $this->authController = new AuthController();
+                $this->authController->logout();
                 return null;
             }
         });
