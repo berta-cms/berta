@@ -110,7 +110,7 @@ $int_version = $options['int_version'];
                         <div class="xMaintenanceInfo">
                             Berta is under the maintenance until
                             <?php echo date('jS \of F Y h:i A', $maintenanceEndTimestamp) ?> (EEST), UTC +3 <br>
-                            During this time it is possible to encouter some issues with login.
+                            During this time it is possible to encounter some issues with login.
                         </div>
                         <?php
                         }
