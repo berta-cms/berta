@@ -1885,11 +1885,19 @@ body.xLoginPageBody {
                 margin-bottom: 30px;
             }
 
+			body.xLoginPageBody .xMaintenanceInfo {
+				clear: both;
+				margin: 0 0 20px;
+                text-align: left;
+                color: red;
+            }
+
 			body.xLoginPageBody .xLoginError {
 				clear: both;
 				margin: 0 0 20px;
 				text-align: right;
-			}
+            }
+
 			body.xLoginPageBody .error { }
 
             a.social_button {

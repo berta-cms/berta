@@ -101,6 +101,21 @@ $int_version = $options['int_version'];
                     <div class="xLoginLogo">
                         <img src="<?php echo $ENGINE_ROOT_URL ?>layout/berta.png" alt="berta v <?php echo BertaBase::$options['version'] ?>" />
                     </div>
+
+                    <?php
+                        $maintenanceEndTime = 'Jul 11 2018 13:00'; // <-- Change the maintence end time here
+                        $maintenanceEndTimestamp = strtotime($maintenanceEndTime);
+
+                        if ($maintenanceEndTimestamp > time()) { ?>
+                        <div class="xMaintenanceInfo">
+                            Berta is under the maintenance until
+                            <?php echo date('jS \of F Y h:i A', $maintenanceEndTimestamp) ?> (EEST), UTC +3 <br>
+                            During this time it is possible to encouter some issues with login.
+                        </div>
+                        <?php
+                        }
+                    ?>
+
 					<?php if($errStr) { ?>
 					 	<div class="xLoginError"><?php echo $errStr ?></div>
 					<?php } ?>
