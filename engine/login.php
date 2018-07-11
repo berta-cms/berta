@@ -103,7 +103,7 @@ $int_version = $options['int_version'];
                     </div>
 
                     <?php
-                        $maintenanceEndTime = 'Jul 11 2018 13:00'; // <-- Change the maintence end time here
+                        $maintenanceEndTime = 'Jul 11 2018 17:00'; // <-- Change the maintence end time here
                         $maintenanceEndTimestamp = strtotime($maintenanceEndTime);
 
                         if ($maintenanceEndTimestamp > time()) { ?>
