@@ -72,8 +72,8 @@ class UserAuthServiceProvider extends ServiceProvider
     function getAuthorizationHeader()
     {
         $headers = null;
-        if (isset($_SERVER['Authorization'])) {
-            $headers = trim($_SERVER["Authorization"]);
+        if (isset($_SERVER['X-Authorization'])) {
+            $headers = trim($_SERVER["X-Authorization"]);
         } else if (isset($_SERVER['HTTP_AUTHORIZATION'])) { //Nginx or fast CGI
             $headers = trim($_SERVER["HTTP_AUTHORIZATION"]);
         } elseif (function_exists('apache_request_headers')) {
@@ -81,8 +81,8 @@ class UserAuthServiceProvider extends ServiceProvider
             // Server-side fix for bug in old Android versions (a nice side-effect of this fix means we don't care about capitalization for Authorization)
             $requestHeaders = array_combine(array_map('ucwords', array_keys($requestHeaders)), array_values($requestHeaders));
             //print_r($requestHeaders);
-            if (isset($requestHeaders['Authorization'])) {
-                $headers = trim($requestHeaders['Authorization']);
+            if (isset($requestHeaders['X-Authorization'])) {
+                $headers = trim($requestHeaders['X-Authorization']);
             }
         }
         return $headers;

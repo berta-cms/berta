@@ -13,7 +13,7 @@
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + token
+          'X-Authorization': 'Bearer ' + token
         },
         body: method === 'GET' ? undefined : JSON.stringify(data)
       }
