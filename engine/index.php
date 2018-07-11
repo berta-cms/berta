@@ -33,9 +33,9 @@ $site = !empty($_REQUEST['site']) ? $_REQUEST['site'] : false;
     <link rel="SHORTCUT ICON" href="<?php echo $SITE_ROOT_URL ?>favicon.ico"/>
     <link rel="stylesheet" href="<?php echo $ENGINE_ROOT_URL ?>css/backend.min.css?<?php echo $int_version ?>" type="text/css" charset="utf-8" />
     <link rel="stylesheet" href="<?php echo $ENGINE_ROOT_URL ?>css/editor.css.php?<?php echo $int_version ?>" type="text/css" charset="utf-8" />
+    <link rel="stylesheet" href="<?php echo $ENGINE_ROOT_URL ?>_lib/introjs/introjs.min.css?<?php echo $int_version ?>" type="text/css" charset="utf-8" />
     <script src="<?php echo $ENGINE_ROOT_URL ?>_lib/mootools/mootools-core-1.4.5-full-compat-yc.js"></script>
     <script src="<?php echo $ENGINE_ROOT_URL ?>_lib/mootools/mootools-1.2.5.1-more.js"></script>
-    <script src="<?php echo $ENGINE_ROOT_URL ?>_lib/introjs/introjs.min.css"></script>
     <script src="<?php echo $ENGINE_ROOT_URL ?>_lib/introjs/intro.min.js"></script>
 
     <script type="text/javascript">
