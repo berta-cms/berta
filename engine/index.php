@@ -75,8 +75,10 @@ $site = !empty($_REQUEST['site']) ? $_REQUEST['site'] : false;
      *      @todo: remove this when alert popup system is built.
      * - `allow-popups`: allows to create new popup window (`window.open`) from iframe. This is necessary for the HTML editing option.
      *      @todo: remove this when the HTML editing is updated to JS popup.
+     * - `allow-forms`: allows forms to be submitted in iframe. This fixes edited HTML saving in HTML popup and hyperlink adding.
+     *      @todo: remove this when the HTML editing is updated to JS popup.
      */?>
-    <iframe sandbox="allow-same-origin allow-scripts allow-modals allow-popups" src="<?php echo $ENGINE_ROOT_URL ?>editor<?php echo $site ? "?site=$site" : '' ?>" frameborder="0" style="width:100%;height:100%;"></iframe>
+    <iframe sandbox="allow-same-origin allow-scripts allow-modals allow-popups allow-forms" src="<?php echo $ENGINE_ROOT_URL ?>editor<?php echo $site ? "?site=$site" : '' ?>" frameborder="0" style="width:100%;height:100%;"></iframe>
     <script>
         (function(){
             var topPanelContainer = document.getElementById('xTopPanelContainer');
