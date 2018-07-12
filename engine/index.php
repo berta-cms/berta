@@ -67,7 +67,16 @@ $site = !empty($_REQUEST['site']) ? $_REQUEST['site'] : false;
 </head>
 <body class="bt-content-editor page-xMySite">
     <?php echo BertaEditor::getTopPanelHTML('site') ?>
-    <iframe sandbox="allow-same-origin allow-scripts allow-modals" src="<?php echo $ENGINE_ROOT_URL ?>editor<?php echo $site ? "?site=$site" : '' ?>" frameborder="0" style="width:100%;height:100%;"></iframe>
+    <?php
+    /**
+     * - `allow-same-origin`: the given exceptions for page in iframe from the same origin
+     * - `allow-script`: allows to communicate with the parent window through messages (not modifying parent)
+     * - `allow-modals`: allows browser built in modals like `confirm()` and `alert()`.
+     *      @todo: remove this when alert popup system is built.
+     * - `allow-popups`: allows to create new popup window (`window.open`) from iframe. This is necessary for the HTML editing option.
+     *      @todo: remove this when the HTML editing is updated to JS popup.
+     */?>
+    <iframe sandbox="allow-same-origin allow-scripts allow-modals allow-popups" src="<?php echo $ENGINE_ROOT_URL ?>editor<?php echo $site ? "?site=$site" : '' ?>" frameborder="0" style="width:100%;height:100%;"></iframe>
     <script>
         (function(){
             var topPanelContainer = document.getElementById('xTopPanelContainer');
