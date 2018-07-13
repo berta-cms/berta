@@ -116,7 +116,7 @@ if(AUTH_AUTHREQUIRED && !$berta->security->authentificated) {
         http_response_code(401);
         die();
 	}else{
-		$berta->security->goToLoginPage($ENGINE_ROOT_PATH . 'login.php');
+		$berta->security->goToLoginPage($ENGINE_ROOT_URL . 'login.php');
 	}
 }
 
