@@ -124,7 +124,7 @@ class BertaGallery extends BertaBase
 
     public static function getImageHTML($img, $mediaFolder, $isAdminMode = false, $sizeRatio = 1, $imageTargetWidth = 0, $imageTargetHeight = 0)
     {
-        $mFolder = self::$options['MEDIA_URL'] . $mediaFolder . '/';
+        $mFolder = self::$options['MEDIA_ROOT'] . $mediaFolder . '/';
         $mFolderABS = self::$options['MEDIA_ABS_ROOT'] . $mediaFolder . '/';
         $realWidth = $width = $realHeight = $height = 0;
 
