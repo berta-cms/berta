@@ -21,6 +21,19 @@ class SiteSettingsConfigService
 
         I18n::load_language($lang);
 
+        require_once(realpath(config('app.old_berta_root'). '/engine/_classes/class.bertabase.php'));
+        require_once(realpath(config('app.old_berta_root'). '/engine/_classes/class.bertautils.php'));
+        /** @var {\Berta} \Berta - Old berta app class */
+        require_once(realpath(config('app.old_berta_root'). '/engine/_classes/class.berta.php'));
+
+        $ENGINE_ROOT_PATH = realpath(config('app.old_berta_root') . '/engine') . '/';
+        $SITE_ROOT_PATH = realpath(config('app.old_berta_root')) . '/';
+
+        \Berta::$options['default_language'] = $lang;
+        $options['XML_ROOT'] = realpath(config('app.old_berta_root') . '/storage') . '/';
+        \Berta::$options['XML_ROOT'] = $options['XML_ROOT'];
+        $berta = new \Berta();
+
         $conf = file_get_contents(
             realpath(config('app.old_berta_root'). '/engine/inc.settings.php')
         );

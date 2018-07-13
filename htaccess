@@ -18,13 +18,17 @@
 Options -Indexes
 
 <IfModule mod_rewrite.c>
+  <IfModule mod_negotiation.c>
+        Options -MultiViews
+    </IfModule>
 
 RewriteEngine on
+DirectorySlash Off
 
 
 # CHANGABLE PART - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  \
 
-# *** 	Change the "/" to the name of the folder where you uploaded berta.
+# *** Change the "/" to the name of the folder where you uploaded berta.
 #		E.g.: "/berta/" (without quotes), if you uploaded berta to the
 #		subfolder berta of the www root of your web server.
 RewriteBase /
@@ -40,28 +44,37 @@ RewriteRule engine/hosting$ - [F,L]
 # If you have folders or files inside berta's folder you wish to access directly,
 # then modify and uncomment the following line
 # RewriteCond %{REQUEST_URI} ^/(my_folder_name1|my_folder_name1|my_file.html).*$    [OR]
-RewriteCond %{REQUEST_URI} ^/(_plugin_shop|engine|INSTALL|storage|_templates).*$    [OR]
+RewriteCond %{REQUEST_URI} ^/(engine/editor|engine/elements\.php|engine/upload\.php|engine/update\.php|engine/_lib|engine/layout|engine/css|engine/js|_plugin_shop|INSTALL|storage|_templates).*$    [OR]
 RewriteCond %{REQUEST_URI} ^/(index\.php|sitemap\.xml\.php|robots\.txt|crossdomain\.xml|favicon\.ico).*$
 
 RewriteRule .* - [L]
 
 # END OF CHANGABLE PART - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - /
 
-
+RewriteCond %{REQUEST_URI} /$
+RewriteRule ^(.*)/$ /$1 [R=302,L]
 
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \
-# DON'T CHANGE ANYTHING HERE!
+# DON'T CHANGE ANYTHING HERE!
 
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_URI} !index.php$
-RewriteCond %{REQUEST_URI} !^(.*)/$
-RewriteRule ^(.*)$ /$1/ [R=301,L]
+# RewriteCond %{REQUEST_FILENAME} !-f
+# RewriteCond %{REQUEST_URI} !index.php$
+# RewriteCond %{REQUEST_URI} !^(.*)$
+# RewriteRule ^(.*)/$ /$1 [R=301,L]
 
-# the content is fed to index.php, which handles it
-RewriteRule ^.*$  index.php?__rewrite=1   [L]
+# # the content is fed to index.php, which handles it
+# RewriteRule ^.*$  index.php?__rewrite=1   [L,QSA]
+
+# RewriteCond %{REQUEST_FILENAME} !-d
+# RewriteCond %{REQUEST_FILENAME} !-f
+# Redirect any URL that doesn't go to index , to index.php
+RewriteCond %{REQUEST_URI} !^/index.php
+RewriteRule ^ /index.php [L]
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - /
 
+
 </IfModule>
+

@@ -9,10 +9,11 @@
  * -------------------------------------------------------------
  */
 function smarty_function_bertaLink($params, &$smarty) {
-    global $berta, $SITE_ROOT_URL, $options;
+    global $berta, $SITE_ROOT_URL;
 
+    $options = $berta::$options;
 	$settings = $berta->template->settings;
-	$constructPrettyLink = $berta->apacheRewriteUsed && $berta->environment == 'site';
+    $constructPrettyLink = $berta->apacheRewriteUsed && $berta->environment == 'site';
 	$alwaysSelectTag = $berta->settings->get('navigation', 'alwaysSelectTag') == 'yes';
 
 	if(!empty($params['section']) && empty($berta->sections[$params['section']]))
@@ -35,7 +36,7 @@ function smarty_function_bertaLink($params, &$smarty) {
 	}
 
 	$link = array();
-	$site = '';
+    $site = '';
 
 	if ( isset($params['site']) && $params['site']!=='0' ) {
 		$site = $params['site'];
@@ -61,9 +62,10 @@ function smarty_function_bertaLink($params, &$smarty) {
 	}
 
 	if($constructPrettyLink) {
-		return $SITE_ROOT_URL . implode('/', $link) . ($link ? '/' : '');
+        $SITE_ROOT_URL = empty($SITE_ROOT_URL) ? '/' : $SITE_ROOT_URL;
+        return $SITE_ROOT_URL . implode('/', $link);
 	} else {
-		return (isset($params['absRoot']) ? $SITE_ROOT_URL : '.') . ($link ? ('?' . implode('&', $link)) : '');
+		return (isset($params['absRoot']) ? $SITE_ROOT_URL : 'index.php') . ($link ? ('?' . implode('&', $link)) : '');
 	}
 }
 ?>

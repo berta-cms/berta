@@ -31,11 +31,14 @@ class Berta extends BertaBase
 	function __construct(array $options = array())
 	{
 		// Initialize I18n
-		new I18n();
+        new I18n();
 
 		// Set variables
-		$this->environment = !empty(self::$options['ENVIRONMENT']) ? self::$options['ENVIRONMENT'] : 'site';
-		$this->apacheRewriteUsed = !empty($_REQUEST['__rewrite']) ? true : false;
+        $this->environment = !empty(self::$options['ENVIRONMENT']) ? self::$options['ENVIRONMENT'] : 'site';
+        // $this->apacheRewriteUsed = !empty($_REQUEST['__rewrite']) ? true : false;
+        // Check if function `apache_get_modules` exist, because if it doesn't we're probably not on apache and will
+        // presume that we have something like rewrite enabled.
+		$this->apacheRewriteUsed = function_exists('apache_get_modules') ? (in_array('mod_rewrite', apache_get_modules()) ? true : false) : true;
 		$this->security = new BertaSecurity($this->environment);
 
 		// [Bad bad bad practice!] Update logged in status in the options

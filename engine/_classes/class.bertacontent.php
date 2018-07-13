@@ -40,7 +40,10 @@ class BertaContent extends BertaBase {
 
     public static function getSite($options) {
         $site = '';
-        $apacheRewriteUsed = !empty($_REQUEST['__rewrite']);
+        // $apacheRewriteUsed = !empty($_REQUEST['__rewrite']);
+        // Check if function `apache_get_modules` exist, because if it doesn't we're probably not on apache and will
+        // presume that we have something like rewrite enabled.
+        $apacheRewriteUsed = function_exists('apache_get_modules') ? (in_array('mod_rewrite',apache_get_modules()) ? true : false) : true;
 
         if ($apacheRewriteUsed){
             $urlStr = $_SERVER['REQUEST_URI'];

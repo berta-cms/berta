@@ -21,7 +21,7 @@ $sectionName = false;
 $subSectionName = false;
 $tagName = false;
 $urlStr = false;
-if ($berta->apacheRewriteUsed) {
+if (0 && $berta->apacheRewriteUsed) {
     include $ENGINE_ROOT_PATH . '_classes/class.clean_url.php';
     $cU = new CleanURL();
 
@@ -45,6 +45,9 @@ if ($berta->apacheRewriteUsed) {
 } else {
     $urlStr = $_SERVER['REQUEST_URI'];
 
+    if (!empty($_REQUEST['site'])) {
+        $site = $_REQUEST['site'];
+    }
     $sectionName = $querySectionName = !empty($_REQUEST['section']) ? strtolower($_REQUEST['section']) : false;
     //$subSectionName = !empty($_REQUEST['subsection']) ? strtolower($_REQUEST['subsection']) : false;
     $tagName = !empty($_REQUEST['tag']) ? strtolower($_REQUEST['tag']) : false;
