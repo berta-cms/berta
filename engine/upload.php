@@ -61,16 +61,12 @@ $constraints['large_height'] = $paramLargeHeight ? $paramLargeHeight : $berta->s
 
 //$bSaveOriginal = $berta->settings->get('media', 'imagesOrigSave') == 'yes';
 $bSaveOriginal = true;
-
-$constraints['max_orig_width'] = $berta->settings->get('media', 'imagesOrigMaxWidth');
-$constraints['max_orig_height'] = $berta->settings->get('media', 'imagesOrigMaxHeight');
 */
 
-//$constraints['max_orig_width'] = 50;
-//$constraints['max_orig_height'] = 50;
-
-$constraints['max_orig_width'] = 2000;
-$constraints['max_orig_height'] = 2000;
+/* Media size limits in Mega Bytes */
+$constraints['max_img_size_mb'] = 3;
+$constraints['max_gif_size_mb'] = 5;
+$constraints['max_video_size_mb'] = 256;
 
 // if image is being uploaded for a settings, then different constraints apply
 if($settingsProperty) {
@@ -129,42 +125,53 @@ $result = array();
 
 if(($entryId && $mediaFolder || $settingsProperty || $sectionName && $mediaFolder) && isset($_FILES['Filedata'])) {
 
-	$file = $_FILES['Filedata']['tmp_name'];
-	$error = false;
-	$imInfo = false;
-	$videoExt = false;
-	$fileExt = false;
-	$fileType = '';
+    $file = $_FILES['Filedata']['tmp_name'];
+    $error = false;
+    $imInfo = false;
+    $videoExt = false;
+    $fileExt = false;
+    $fileType = '';
 
-	if(!is_uploaded_file($file) || ($_FILES['Filedata']['size'] > 256 * 1024 * 1024))	$error = 'Please upload only files smaller than 256Mb!';
+    if ((!is_uploaded_file($file) && $_FILES['Filedata']['error'] === UPLOAD_ERR_INI_SIZE) || ($_FILES['Filedata']['size'] > $constraints['max_video_size_mb'] * $megaByte)) {
+        $error = "Please upload video files smaller than <strong>{$constraints['max_video_size_mb']}MB</strong>!";
+    } else if (!is_uploaded_file($file)) {
+        $error = 'Failed to upload file!';
+    }
 
-	if(!$error) {
-		$ext = strtolower(substr(strrchr($_FILES['Filedata']['name'], '.'), 1));
-		if(in_array($ext, $videoExtensions)) {
+    if (!$error) {
+        $ext = strtolower(substr(strrchr($_FILES['Filedata']['name'], '.'), 1));
+        if (in_array($ext, $videoExtensions)) {
             if ($sectionBackground) {
                 $error = 'Videos not supported in background gallery!';
             }
 
-			$videoExt = $ext;
-			$fileType = 'video';
-		} else if(!$sectionBackground && in_array($ext, $iconExtensions)) {
-			$fileExt = $ext;
-			$fileType = 'icon';
-		} else {
-
-			if (!($imInfo = @getimagesize($file)) || (!$error && !in_array($imInfo[2], array(IMAGETYPE_GIF, IMAGETYPE_JPEG, IMAGETYPE_PNG))))	{
-        if ($sectionBackground) {
-          $error = 'Only JPG, GIF, PNG images are supported.';
-        } else {
-          $error = 'Only JPG, GIF, PNG images and MP4, FLV videos are supported.';
+            $videoExt = $ext;
+            $fileType = 'video';
         }
-      }
+        elseif (!$sectionBackground && in_array($ext, $iconExtensions)) {
+            $fileExt = $ext;
+            $fileType = 'icon';
+        }
+        else {
+            if (!($imInfo = @getimagesize($file)) || (!$error && !in_array($imInfo[2], [IMAGETYPE_GIF, IMAGETYPE_JPEG, IMAGETYPE_PNG]))) {
+                if ($sectionBackground) {
+                    $error = 'Only JPG, GIF, PNG images are supported.';
+                }
+                else {
+                    $error = 'Only JPG, GIF, PNG images and MP4, FLV videos are supported.';
+                }
+            }
 
-			if(!$error && (($imInfo[0] > $constraints['max_orig_width']) ||
-						  ($imInfo[1] > $constraints['max_orig_height'])))		$error = 'Please don\'t upload images larger than '.$constraints['max_orig_width'].'x'.$constraints['max_orig_height'].'px !';
-			$fileType = 'image';
-		}
-	}
+            if (!$error && $imInfo[2] == IMAGETYPE_GIF && filesize($file) > ($constraints['max_gif_size_mb'] * $megaByte)) {
+                $error = 'Please upload GIF image smaller then <strong>' . $constraints['max_gif_size_mb'] . 'MB</strong>!';
+            }
+            elseif (!$error && filesize($file) > ($constraints['max_img_size_mb'] * $megaByte)) {
+                $error = 'Please upload image smaller then <strong>' . $constraints['max_img_size_mb'] . 'MB</strong>!';
+            }
+
+            $fileType = 'image';
+        }
+    }
 
 	/*$log = fopen('script.log', 'a');
 	fputs($log, ($error ? 'FAILED' : 'SUCCESS') . ' - ' . preg_replace('/^[^.]+/', '***', $addr) . ": {$_FILES['photoupload']['name']} - {$_FILES['photoupload']['size']} byte\n" );
@@ -283,7 +290,6 @@ if(($entryId && $mediaFolder || $settingsProperty || $sectionName && $mediaFolde
 						// if image could not be resampled, it is not a valid image
 						if($resampleOk) {
 
-							//$origVersionPath = $bSaveOriginal ? BertaEditor::images_getOrigVersionFor($fileFolder . $fName, $constraints['max_orig_width'], $constraints['max_orig_height'], true) : '';
 							//unlink($fileFolder . $fName);
 							//rename($fileFolder . $fTempName, $fileFolder . $fName);
 
