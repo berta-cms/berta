@@ -1,0 +1,4 @@
+Render Berta through Lumen:
+1) Can't switch between sites in editor
+2) added `index.php` in url for editor `/engine/editor/index.php` otherwise its rewriteen by apache or route
+3) `inc.editor` - uncommented apache rewrite - engine uses site, section and tag as query parameters
