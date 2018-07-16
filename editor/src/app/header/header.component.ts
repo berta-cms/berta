@@ -4,16 +4,15 @@ import { Component } from '@angular/core';
   selector: 'berta-header',
   template: `
     <header>
-      <nav> <!-- @todo: add nav component here -->
-        <a [routerLink]="['/sections']" queryParams="">sections</a>
-        <a [routerLink]="['/design']" queryParams="">design</a>
-        <a [routerLink]="['/settings']" queryParams="">settings</a>
-        <a [routerLink]="['/multisite']" queryParams="">multisite</a>
-        <a [routerLink]="['/shop']" queryParams="">shop</a>
-        <a [routerLink]="['/seo']" queryParams="">seo</a>
-        <a href="http://support.berta.me/kb" target="_blank">knowledge base</a>
+      <nav>
+        <a [routerLink]="['/sections']" queryParams="">Sections</a>
+        <a [routerLink]="['/design']" queryParams="">Design</a>
+        <a [routerLink]="['/settings']" queryParams="">Settings</a>
+        <a [routerLink]="['/multisite']" queryParams="">Multisite</a>
+        <a [routerLink]="['/shop']" queryParams="">Shop</a>
+        <a [routerLink]="['/seo']" queryParams="">Seo</a>
+        <a href="http://support.berta.me/kb" target="_blank">Knowledge base</a>
       </nav>
-      <!-- @todo: add user profile dropdown component here -->
       <div class="user-profile">
         <button>user@amil.com</button>
         <ul>
@@ -21,19 +20,22 @@ import { Component } from '@angular/core';
           <li>Log Out</li>
         </ul>
       </div>
-    </header>`,
+    </header>
+  `,
   styles: [`
 
-    /* use flexbox here: */
+    header {
+      display: flex;
+      justify-content: space-between;
+    }
+
     header > * {
       display: inline-block;
     }
 
     header nav a {
       display: inline-block;
-    }
-    .user-profile {
-      float: right;
+      text-decoration: none;
     }
   `]
 })

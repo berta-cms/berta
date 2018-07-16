@@ -6,15 +6,25 @@ body {
   width: 100%;
 }
 
+body {
+  font-family: AvenirNext, Helvetica, Arial, sans-serif;
+}
+
 header {
   background-color: #777;
+  height: 60px;
 
   nav {
-    padding: 10px;
-
     a {
       color: #fff;
       margin-right: 10px;
+      font-size: 1rem;
+      line-height: 22px;
+      margin: 15px 20px;
+    }
+
+    a:last-child {
+      margin-right: 0;
     }
   }
 }
