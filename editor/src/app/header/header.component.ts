@@ -5,12 +5,12 @@ import { Component } from '@angular/core';
   template: `
     <header>
       <nav>
-        <a [routerLink]="['/sections']" queryParams="">Sections</a>
-        <a [routerLink]="['/design']" queryParams="">Design</a>
-        <a [routerLink]="['/settings']" queryParams="">Settings</a>
-        <a [routerLink]="['/multisite']" queryParams="">Multisite</a>
-        <a [routerLink]="['/shop']" queryParams="">Shop</a>
-        <a [routerLink]="['/seo']" queryParams="">Seo</a>
+        <a [routerLink]="['/sections']" [routerLinkActive]="'nav-active'" queryParams="">Sections</a>
+        <a [routerLink]="['/design']" [routerLinkActive]="'nav-active'" queryParams="">Design</a>
+        <a [routerLink]="['/settings']" [routerLinkActive]="'nav-active'" queryParams="">Settings</a>
+        <a [routerLink]="['/multisite']" [routerLinkActive]="'nav-active'" queryParams="">Multisite</a>
+        <a [routerLink]="['/shop']" [routerLinkActive]="'nav-active'" queryParams="">Shop</a>
+        <a [routerLink]="['/seo']" [routerLinkActive]="'nav-active'" queryParams="">Seo</a>
         <a href="http://support.berta.me/kb" target="_blank">Knowledge base</a>
       </nav>
       <div class="user-profile">
@@ -29,18 +29,10 @@ import { Component } from '@angular/core';
       justify-content: space-between;
     }
 
-    header > * {
-      display: inline-block;
-    }
-
     header nav a {
       display: inline-block;
       text-decoration: none;
     }
   `]
 })
-export class HeaderComponent {
-
-  constructor() { }
-
-}
+export class HeaderComponent {}

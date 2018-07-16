@@ -1,3 +1,9 @@
+$berta-bg-dark: #000;
+$berta-bg-light: #fff;
+$berta-nav-text: #4D4D4D;
+$berta-accent: #0c4dff;
+$berta-nav-text-active: #fff;
+
 html,
 body {
   height: 100%;
@@ -11,30 +17,38 @@ body {
 }
 
 header {
-  background-color: #777;
+  background-color: $berta-bg-dark;
   height: 60px;
 
   nav {
     a {
-      color: #fff;
-      margin-right: 10px;
+      color: $berta-nav-text;
       font-size: 1rem;
       line-height: 22px;
-      margin: 15px 20px;
-    }
+      margin: 19px 20px;
+      margin-right: 10px;
 
-    a:last-child {
-      margin-right: 0;
+      &:hover {
+        color: $berta-accent;
+      }
+
+      &:last-child {
+        margin-right: 0;
+      }
+
+      &.nav-active {
+        color: $berta-nav-text-active;
+      }
     }
   }
 }
 
 aside {
-  background-color: #fff;
-  border-right: 1px solid black;  // for develompent
+  background-color: $berta-bg-light;
+  border-right: 1px solid $berta-nav-text;  // for develompent
   padding-top: 60px;
 }
 
 .overlay {
-  background: rgba(30, 30, 30, 0.3);
+  background: rgba($berta-bg-dark, .3);
 }
