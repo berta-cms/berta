@@ -30,24 +30,19 @@ import { AppState } from './app-state/app.state';
         </ul>
       </div>
     </header>
-    <div style="text-align:center">
-      <h1>
-        Welcome to {{title}}!
-      </h1>
-      <img width="300" src="http://www.berta.me/storage/media/logo.png">
-    </div>
-    <h2>Here are some links to help you start: </h2>
-    <ul>
-      <li>
-        <h2><a [routerLink]="'/random'">Random</a></h2>
-      </li>
-      <li>
+    <main>
+      <aside><router-outlet></router-outlet></aside><!-- the sidebar -->
+      <section>
+        <div style="text-align:center">
+          <h1>
+            Welcome to {{title}}!
+          </h1>
+          <img width="300" src="http://www.berta.me/storage/media/logo.png">
+        </div>
         <button (click)="showOverlay()">Show overlay</button>
-      </li>
-    </ul>
+      </section>
+    </main>
     <div [style.display]="((showOverlay$ | async) ? '' : 'none')" class="overlay" (click)="hideOverlay()">
-      <router-outlet></router-outlet>
-    </div>
   `,
   styles: [
     `
@@ -101,6 +96,7 @@ export class AppComponent implements OnInit {
 
   hideOverlay() {
     this.store.dispatch(AppHideOverlay);
+    this.router.navigate(['/']);
   }
   showOverlay() {
     this.store.dispatch(AppShowOverlay);
