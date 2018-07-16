@@ -9,26 +9,7 @@ import { AppState } from './app-state/app.state';
   selector: 'berta-root',
   template: `
     <!--The content below is only a placeholder and can be replaced.-->
-    <header>
-      <nav> <!-- @todo: add nav component here -->
-        <a [routerLink]="['/sections']" queryParams="">sections</a>
-        <a [routerLink]="['/design']" queryParams="">design</a>
-        <a [routerLink]="['/settings']" queryParams="">settings</a>
-        <a [routerLink]="['/multisite']" queryParams="">multisite</a>
-        <a [routerLink]="['/shop']" queryParams="">shop</a>
-        <a [routerLink]="['/seo']" queryParams="">seo</a>
-        <a [routerLink]="['/account']" queryParams="">account</a>
-        <a href="http://support.berta.me/kb" target="_blank">knowledge base</a>
-      </nav>
-      <!-- @todo: add user profile dropdown component here -->
-      <div class="user-profile">
-        <button>user@amil.com</button>
-        <ul>
-          <li>Profile</li>
-          <li>Log Out</li>
-        </ul>
-      </div>
-    </header>
+    <berta-header></berta-header>
     <main>
       <aside [style.display]="(routeIsRoot ? 'none' : '')"><router-outlet></router-outlet></aside><!-- the sidebar -->
       <section>
@@ -44,29 +25,12 @@ import { AppState } from './app-state/app.state';
     <div [style.display]="((showOverlay$ | async) ? '' : 'none')" class="overlay" (click)="hideOverlay()">
   `,
   styles: [`
-    .overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 1;
-    }
-    header {
+    berta-header {
+      display: block;
       position: relative;
       z-index: 3;
     }
-    /* use flexbox here: */
-    header > * {
-      display: inline-block;
-    }
 
-    header nav a {
-      display: inline-block;
-    }
-    .user-profile {
-      float: right;
-    }
     aside {
       position: fixed;
       top: 0;
@@ -75,6 +39,15 @@ import { AppState } from './app-state/app.state';
       height: 100%;
       width: 384px;
       z-index: 2;
+    }
+
+    .overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
     }
     `
   ]
