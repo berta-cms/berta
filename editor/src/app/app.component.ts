@@ -10,16 +10,15 @@ import { AppState } from './app-state/app.state';
   template: `
     <!--The content below is only a placeholder and can be replaced.-->
     <header>
-      <nav><ul> <!-- @todo: add nav component here -->
-        <li><a [routerLink]="['/sections']" queryParams="">sections</a></li>
-        <li><a [routerLink]="['/design']" queryParams="">design</a></li>
-        <li><a [routerLink]="['/settings']" queryParams="">settings</a></li>
-        <li><a [routerLink]="['/multisite']" queryParams="">multisite</a></li>
-        <li><a [routerLink]="['/shop']" queryParams="">shop</a></li>
-        <li><a [routerLink]="['/seo']" queryParams="">seo</a></li>
-        <li><a [routerLink]="['/account']" queryParams="">account</a></li>
-        <li><a href="http://support.berta.me/kb" target="_blank">knowledge base</a></li>
-      </ul>
+      <nav> <!-- @todo: add nav component here -->
+        <a [routerLink]="['/sections']" queryParams="">sections</a>
+        <a [routerLink]="['/design']" queryParams="">design</a>
+        <a [routerLink]="['/settings']" queryParams="">settings</a>
+        <a [routerLink]="['/multisite']" queryParams="">multisite</a>
+        <a [routerLink]="['/shop']" queryParams="">shop</a>
+        <a [routerLink]="['/seo']" queryParams="">seo</a>
+        <a [routerLink]="['/account']" queryParams="">account</a>
+        <a href="http://support.berta.me/kb" target="_blank">knowledge base</a>
       </nav>
       <!-- @todo: add user profile dropdown component here -->
       <div class="user-profile">
@@ -44,39 +43,31 @@ import { AppState } from './app-state/app.state';
     </main>
     <div [style.display]="((showOverlay$ | async) ? '' : 'none')" class="overlay" (click)="hideOverlay()">
   `,
-  styles: [
-    `
+  styles: [`
     .overlay {
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(30,30,30, 0.3);
       z-index: 1;
     }
     header {
       position: relative;
       z-index: 3;
-      background-color: #777;
     }
     /* use flexbox here: */
     header > * {
       display: inline-block;
     }
 
-    header nav ul {
-      list-style: none;
-    }
-    header nav li {
+    header nav a {
       display: inline-block;
-      margin-right: 10px;
     }
     .user-profile {
       float: right;
     }
     aside {
-      background-color: #fff;
       position: fixed;
       top: 0;
       left: 0;
@@ -84,8 +75,6 @@ import { AppState } from './app-state/app.state';
       height: 100%;
       width: 384px;
       z-index: 2;
-      padding-top: 60px;
-      border-right: 1px solid black; /* for develompent */
     }
     `
   ]

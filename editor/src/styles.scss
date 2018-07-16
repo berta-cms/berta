@@ -1,7 +1,30 @@
 html,
 body {
+  height: 100%;
   margin: 0;
   padding: 0;
   width: 100%;
-  height: 100%;
+}
+
+header {
+  background-color: #777;
+
+  nav {
+    padding: 10px;
+
+    a {
+      color: #fff;
+      margin-right: 10px;
+    }
+  }
+}
+
+aside {
+  background-color: #fff;
+  border-right: 1px solid black;  // for develompent
+  padding-top: 60px;
+}
+
+.overlay {
+  background: rgba(30, 30, 30, 0.3);
 }
