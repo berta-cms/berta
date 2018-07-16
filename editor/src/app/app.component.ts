@@ -31,7 +31,7 @@ import { AppState } from './app-state/app.state';
       </div>
     </header>
     <main>
-      <aside><router-outlet></router-outlet></aside><!-- the sidebar -->
+      <aside [style.display]="(routeIsRoot ? 'none' : '')"><router-outlet></router-outlet></aside><!-- the sidebar -->
       <section>
         <div style="text-align:center">
           <h1>
@@ -53,6 +53,12 @@ import { AppState } from './app-state/app.state';
       width: 100%;
       height: 100%;
       background: rgba(30,30,30, 0.3);
+      z-index: 1;
+    }
+    header {
+      position: relative;
+      z-index: 3;
+      background-color: #777;
     }
     /* use flexbox here: */
     header > * {
@@ -69,11 +75,24 @@ import { AppState } from './app-state/app.state';
     .user-profile {
       float: right;
     }
+    aside {
+      background-color: #fff;
+      position: fixed;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      height: 100%;
+      width: 384px;
+      z-index: 2;
+      padding-top: 60px;
+      border-right: 1px solid black; /* for develompent */
+    }
     `
   ]
 })
 export class AppComponent implements OnInit {
   title = 'berta';
+  routeIsRoot = true;
 
   @Select(AppState.getShowOverlay) showOverlay$;
 
@@ -86,8 +105,10 @@ export class AppComponent implements OnInit {
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
         if (event.url !== '/') {
+          this.routeIsRoot = false;
           this.showOverlay();
         } else {
+          this.routeIsRoot = true;
           this.hideOverlay();
         }
       }
