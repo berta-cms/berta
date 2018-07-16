@@ -11,13 +11,15 @@ import { NotFoundComponent } from './not-found/not-found.component';
 import { RandomComponent } from './random/random.component';
 import { AppState } from './app-state/app.state';
 import { HeaderComponent } from './header/header.component';
+import { ProfileDropdownComponent } from './profile-dropdown/profile-dropdown.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NotFoundComponent,
     RandomComponent,
-    HeaderComponent
+    HeaderComponent,
+    ProfileDropdownComponent
   ],
   imports: [
     BrowserModule,
