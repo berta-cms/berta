@@ -18,7 +18,7 @@ import { AppState } from './app-state/app.state';
         <li><a [routerLink]="['/shop']" queryParams="">shop</a></li>
         <li><a [routerLink]="['/seo']" queryParams="">seo</a></li>
         <li><a [routerLink]="['/account']" queryParams="">account</a></li>
-        <li><a href="http://support.berta.me/kb" _target="blank">knowledge base</a></li>
+        <li><a href="http://support.berta.me/kb" target="_blank">knowledge base</a></li>
       </ul>
       </nav>
       <!-- @todo: add user profile dropdown component here -->
