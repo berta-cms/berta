@@ -1,4 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { Router, NavigationEnd } from '@angular/router';
+
+import { Store, Select } from '@ngxs/store';
+import { AppHideOverlay, AppShowOverlay } from './app-state/app.actions';
+import { AppState } from './app-state/app.state';
 
 @Component({
   selector: 'berta-root',
@@ -13,16 +18,13 @@ import { Component } from '@angular/core';
     <h2>Here are some links to help you start: </h2>
     <ul>
       <li>
-        <h2><a target="_blank" rel="noopener" href="https://angular.io/tutorial">Tour of Heroes</a></h2>
+        <h2><a [routerLink]="'/random'">Random</a></h2>
       </li>
       <li>
-        <h2><a target="_blank" rel="noopener" href="https://github.com/angular/angular-cli/wiki">CLI Documentation</a></h2>
-      </li>
-      <li>
-        <h2><a target="_blank" rel="noopener" href="https://blog.angular.io/">Angular blog</a></h2>
+        <button (click)="showOverlay()">Show overlay</button>
       </li>
     </ul>
-    <div class="overlay">
+    <div [style.display]="((showOverlay$ | async) ? '' : 'none')" class="overlay" (click)="hideOverlay()">
       <router-outlet></router-outlet>
     </div>
   `,
@@ -39,6 +41,32 @@ import { Component } from '@angular/core';
     `
   ]
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'berta';
+
+  @Select(AppState.getShowOverlay) showOverlay$;
+
+  constructor(
+    private router: Router,
+    private store: Store) {
+  }
+
+  ngOnInit() {
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        if (event.url !== '/') {
+          this.showOverlay();
+        } else {
+          this.hideOverlay();
+        }
+      }
+    });
+  }
+
+  hideOverlay() {
+    this.store.dispatch(AppHideOverlay);
+  }
+  showOverlay() {
+    this.store.dispatch(AppShowOverlay);
+  }
 }
