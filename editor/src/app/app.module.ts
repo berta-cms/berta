@@ -12,6 +12,7 @@ import { RandomComponent } from './random/random.component';
 import { AppState } from './app-state/app.state';
 import { HeaderComponent } from './header/header.component';
 import { ProfileDropdownComponent } from './profile-dropdown/profile-dropdown.component';
+import { SectionsComponent } from './sections/sections.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { ProfileDropdownComponent } from './profile-dropdown/profile-dropdown.co
     NotFoundComponent,
     RandomComponent,
     HeaderComponent,
-    ProfileDropdownComponent
+    ProfileDropdownComponent,
+    SectionsComponent
   ],
   imports: [
     BrowserModule,

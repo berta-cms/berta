@@ -1,12 +1,13 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { NotFoundComponent } from './not-found/not-found.component';
-import { RandomComponent } from './random/random.component';
+import { SectionsComponent } from './sections/sections.component';
+
 
 const routes: Routes = [
   {
-    path: 'random',
-    component: RandomComponent
+    path: 'sections',
+    component: SectionsComponent
   },
   {
     path: '**',
