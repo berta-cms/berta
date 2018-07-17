@@ -16,7 +16,7 @@ import { Component } from '@angular/core';
         </nav>
         <berta-profile-dropdown></berta-profile-dropdown>
       </div>
-      <button type="button">(o)</button>
+      <button class="bt-view-editor" type="button">(o)</button>
     </header>
   `,
   styles: [`

@@ -1,4 +1,5 @@
 $berta-bg-dark: #000;
+$berta-bg-mid-dark: #333;
 $berta-bg-light: #fff;
 $berta-nav-text: #b3b3b3;
 $berta-accent: #0c4dff;
@@ -22,6 +23,14 @@ body {
   font-family: AvenirNext, Helvetica, Arial, sans-serif;
 }
 
+button {
+  border: 0;
+
+  &:focus {
+    outline: none;
+  }
+}
+
 header {
   background-color: $berta-bg-dark;
   height: $bt-header-height;
@@ -40,6 +49,18 @@ header {
       &.nav-active {
         color: $berta-nav-text-active;
       }
+    }
+  }
+
+  .bt-view-editor {
+    background-color: $berta-bg-mid-dark;
+    color: #9a9a9a;
+    cursor: pointer;
+    padding: $bt-header-item-padding;
+
+    &:hover {
+      background-color: $berta-accent;
+      color: #87a7ff;
     }
   }
 }
@@ -74,14 +95,6 @@ berta-profile-dropdown {
 
     &:hover {
       color: $berta-accent;
-    }
-  }
-
-  button {
-    border: 0;
-
-    &:focus {
-      outline: none;
     }
   }
 }
