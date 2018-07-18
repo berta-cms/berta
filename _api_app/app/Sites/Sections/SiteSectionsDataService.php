@@ -58,16 +58,20 @@ class SiteSectionsDataService extends Storage
                             'type' => 'array',
                             'items' => [
                                 'type' => 'object',
-                                '@value' => ['type' => 'string'],
-                                '@attributes' => [
-                                    'type' => 'object',
-                                    'properties' => [
-                                        'type' => ['type' => 'string'],
-                                        'src' => ['type' => 'string'],
-                                        'width' => ['type' => 'integer'],
-                                        'height' => ['type' => 'integer'],
+                                'properties' => [
+                                    '@value' => ['type' => 'string'],
+                                    '@attributes' => [
+                                        'type' => 'object',
+                                        'properties' => [
+                                            'type' => ['type' => 'string'],
+                                            'src' => ['type' => 'string'],
+                                            'width' => ['type' => 'integer'],
+                                            'height' => ['type' => 'integer'],
+                                        ],
+                                        'required' => ['type', 'src', 'width', 'height']
                                     ],
                                 ],
+                                'required' => ['@value', '@attributes']
                             ],
                         ],
                         '@attributes' => [
