@@ -314,9 +314,16 @@ class Helpers
             \Log::error($t);
             return null;
 
-        } catch (\Excpetion $e) {
+        } catch (\Exception $e) {
             \Log::error($e);
             return null;
         }
+    }
+
+    public static function api_response($message='', $data=[], $status=200) {
+        return response()->json([
+            'message' => $message,
+            'data' => (object)$data
+        ], $status);
     }
 }

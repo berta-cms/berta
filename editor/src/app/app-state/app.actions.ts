@@ -5,3 +5,8 @@ export class AppShowOverlay {
 export class AppHideOverlay {
   static readonly type = 'OVERLAY:HIDE';
 }
+
+export class AppLogin {
+  static readonly type = 'LOGIN';
+  constructor(public token: string) { }
+}

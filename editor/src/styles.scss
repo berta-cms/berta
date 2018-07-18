@@ -35,20 +35,19 @@ header {
   background-color: $berta-bg-dark;
   height: $bt-header-height;
 
-  nav {
-    a {
-      color: $berta-nav-text;
-      font-size: $bt-header-font-size;
-      line-height: $bt-header-line-height;
-      padding: $bt-header-item-padding;
+  a {
+    color: $berta-nav-text;
+    font-size: $bt-header-font-size;
+    line-height: $bt-header-line-height;
+    padding: $bt-header-item-padding;
+    text-decoration: none;
 
-      &:hover {
-        color: $berta-accent;
-      }
+    &:hover {
+      color: $berta-accent;
+    }
 
-      &.nav-active {
-        color: $berta-nav-text-active;
-      }
+    &.nav-active {
+      color: $berta-nav-text-active;
     }
   }
 

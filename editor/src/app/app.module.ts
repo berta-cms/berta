@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
 
 import { NgxsModule } from '@ngxs/store';
 import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
@@ -12,6 +13,7 @@ import { AppState } from './app-state/app.state';
 import { HeaderComponent } from './header/header.component';
 import { ProfileDropdownComponent } from './profile-dropdown/profile-dropdown.component';
 import { SectionsComponent } from './sections/sections.component';
+import { LoginComponent } from './login/login.component';
 
 @NgModule({
   declarations: [
@@ -19,10 +21,12 @@ import { SectionsComponent } from './sections/sections.component';
     NotFoundComponent,
     HeaderComponent,
     ProfileDropdownComponent,
-    SectionsComponent
+    SectionsComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
     AppRoutingModule,
     NgxsModule.forRoot([
       AppState

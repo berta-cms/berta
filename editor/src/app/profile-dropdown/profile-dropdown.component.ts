@@ -1,13 +1,15 @@
 import { Component } from '@angular/core';
+import { AppStateService } from '../app-state/app-state.service';
+import { Router } from '@angular/router';
 
-/** @todo add icons  */
+/** @todo add icons */
 @Component({
   selector: 'berta-profile-dropdown',
   template: `
     <button type="button" class="bt-profile-anchor">user@email.com</button>
     <ul>
       <li><a href="https://hosting.berta.me/log-in" target="_blank">My Profile</a></li>
-      <li><button type="button">Log Out</button></li>
+      <li><button type="button" (click)="logOut()">Log Out</button></li>
     </ul>
   `,
   styles: [`
@@ -42,4 +44,14 @@ import { Component } from '@angular/core';
     }
   `]
 })
-export class ProfileDropdownComponent {}
+export class ProfileDropdownComponent {
+  constructor(
+    private appStateService: AppStateService,
+    private router: Router) {
+  }
+
+  logOut() {
+    this.appStateService.logout();
+    this.router.navigate(['/login']);
+  }
+}

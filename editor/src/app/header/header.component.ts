@@ -1,10 +1,15 @@
 import { Component } from '@angular/core';
+import { Observable } from 'rxjs';
+
+import { Select } from '@ngxs/store';
+
+import { AppState } from '../app-state/app.state';
 
 @Component({
   selector: 'berta-header',
   template: `
     <header>
-      <div class="bt-menu">
+      <div class="bt-menu" *ngIf="isLoggedIn$ | async">
         <nav>
           <a [routerLink]="['/sections']" [routerLinkActive]="'nav-active'" queryParams="">Sections</a>
           <a [routerLink]="['/design']" [routerLinkActive]="'nav-active'" queryParams="">Design</a>
@@ -16,6 +21,7 @@ import { Component } from '@angular/core';
         </nav>
         <berta-profile-dropdown></berta-profile-dropdown>
       </div>
+      <a *ngIf="!(isLoggedIn$ | async)" [routerLink]="['/login']">Log in</a>
       <button class="bt-view-editor" type="button">(o)</button>
     </header>
   `,
@@ -38,4 +44,6 @@ import { Component } from '@angular/core';
     }
   `]
 })
-export class HeaderComponent {}
+export class HeaderComponent {
+  @Select(AppState.isLoggedIn) isLoggedIn$: Observable<boolean>;
+}

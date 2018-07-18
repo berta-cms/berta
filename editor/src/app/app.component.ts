@@ -60,7 +60,8 @@ export class AppComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private store: Store) {
+    private store: Store
+  ) {
   }
 
   ngOnInit() {
