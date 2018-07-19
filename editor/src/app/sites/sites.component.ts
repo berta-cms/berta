@@ -8,9 +8,9 @@ import { SiteStateModel } from './sites-state/site-state.model';
   selector: 'berta-sites',
   template: `
     <h2>Sites</h2>
-    <ul>
-      <li *ngFor="let site of sites$ | async">{{site.name || 'ROOT'}}</li>
-    </ul>
+    <div class="sites">
+      <berta-site *ngFor="let site of sites$ | async" [site]="site" (update)="siteUpdated(site)"></berta-site>
+    </div>
   `,
   styles: []
 })
@@ -22,5 +22,9 @@ export class SitesComponent implements OnInit {
 
   ngOnInit() {
     this.sites$.subscribe((state) => console.log(state));
+  }
+
+  siteUpdated(site, updatedValues) {
+
   }
 }

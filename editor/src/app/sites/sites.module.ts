@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { SitesComponent } from './sites.component';
 import { NgxsModule } from '@ngxs/store';
 import { SitesState } from './sites-state/sites.state';
+import { SiteComponent } from './site/site.component';
 
 
 @NgModule({
@@ -12,6 +13,6 @@ import { SitesState } from './sites-state/sites.state';
       SitesState
     ])
   ],
-  declarations: [SitesComponent]
+  declarations: [SitesComponent, SiteComponent]
 })
 export class SitesModule { }
