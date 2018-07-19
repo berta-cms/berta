@@ -3,7 +3,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'node_modules/rxjs';
 import { map, tap, shareReplay, catchError, exhaustMap, filter, take, retryWhen, switchMap, pairwise} from 'rxjs/operators';
 import { Store } from '@ngxs/store';
-import { AppLogin } from './app.actions';
+import { AppLogin, AppLogout } from './app.actions';
 import { Router } from '@angular/router';
 
 
@@ -34,11 +34,12 @@ export class AppStateService {
 
     if (!this.cachedSiteStates[site] || force) {
       this.cachedSiteStates[site] = this.store.select(state => state.app).pipe(
-        filter(appState => !!appState.authToken),  // Make sure user is logged in
+        filter(appState => !!appState.authToken && appState.site !== null),  // Make sure user is logged in
         take(1),
         // `exhaustMap` waits for the first request to complete instead of canceling and starting new ones.
         exhaustMap(appState => {
-          return this.http.get('/_api/v1/state' + (site ? '/' + site : site), {
+          const _site = site || appState.site;
+          return this.http.get('/_api/v1/state' + (_site ? '/' + _site : _site), {
             headers: { 'X-Authorization': 'Bearer ' + appState.authToken }
           });
         }),
@@ -98,7 +99,7 @@ export class AppStateService {
       next: () => {},
       error: (error) => console.error(error)
     });
-    this.store.dispatch(new AppLogin(null));
+    this.store.dispatch(new AppLogout());
     window.localStorage.removeItem('token');
     this.router.navigate(['/login']);
   }

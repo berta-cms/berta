@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { SectionsComponent } from './sections/sections.component';
 import { LoginComponent } from './login/login.component';
+import { SitesComponent } from './sites/sites.component';
 
 
 const routes: Routes = [
@@ -13,6 +14,10 @@ const routes: Routes = [
   {
     path: 'login',
     component: LoginComponent
+  },
+  {
+    path: 'multisite',
+    component: SitesComponent
   },
   {
     path: '**',

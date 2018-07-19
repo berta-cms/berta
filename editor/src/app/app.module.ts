@@ -7,6 +7,7 @@ import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
 import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
 
 import { AppRoutingModule } from './app-routing.module';
+import { SitesModule } from './sites/sites.module';
 import { AppComponent } from './app.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { AppState } from './app-state/app.state';
@@ -14,6 +15,7 @@ import { HeaderComponent } from './header/header.component';
 import { ProfileDropdownComponent } from './profile-dropdown/profile-dropdown.component';
 import { SectionsComponent } from './sections/sections.component';
 import { LoginComponent } from './login/login.component';
+import { SectionsState } from './sections-state/sections.state';
 
 @NgModule({
   declarations: [
@@ -29,10 +31,12 @@ import { LoginComponent } from './login/login.component';
     HttpClientModule,
     AppRoutingModule,
     NgxsModule.forRoot([
-      AppState
+      AppState,
+      SectionsState
     ]),
     NgxsReduxDevtoolsPluginModule.forRoot(),
-    NgxsLoggerPluginModule.forRoot()
+    NgxsLoggerPluginModule.forRoot(),
+    SitesModule
   ],
   providers: [],
   bootstrap: [AppComponent]

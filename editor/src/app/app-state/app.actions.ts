@@ -10,3 +10,7 @@ export class AppLogin {
   static readonly type = 'LOGIN';
   constructor(public token: string) { }
 }
+
+export class AppLogout {
+  static readonly type = 'LOGOUT';
+}

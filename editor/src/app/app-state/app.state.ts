@@ -1,14 +1,19 @@
 import { State, Action, StateContext, Selector, NgxsOnInit } from '@ngxs/store';
 import { AppStateModel } from './app-state.interface';
-import { AppShowOverlay, AppHideOverlay, AppLogin } from './app.actions';
+import { AppShowOverlay, AppHideOverlay, AppLogin, AppLogout } from './app.actions';
+import { Router, ActivationEnd } from '../../../node_modules/@angular/router';
+import { filter, take } from '../../../node_modules/rxjs/operators';
+
+const defaultState: AppStateModel = {
+  showOverlay: false,
+  authToken: null,
+  hasMultipage: true,  /** @todo: think about features */
+  site: null
+};
 
 @State<AppStateModel>({
   name: 'app',
-  defaults: {
-    showOverlay: false,
-    authToken: null,
-    hasMultipage: true  /** @todo: think about features */
-  }
+  defaults: defaultState
 })
 export class AppState implements NgxsOnInit {
 
@@ -22,9 +27,25 @@ export class AppState implements NgxsOnInit {
     return !!state.authToken;
   }
 
+  constructor(private router: Router) {
+  }
+
   ngxsOnInit({ patchState }: StateContext<AppStateModel>) {
     const token = window.localStorage.getItem('token');
-    patchState({authToken: token});
+    this.router.events.pipe(
+      filter(evt => evt instanceof ActivationEnd),
+      take(1)
+    ).subscribe((event: ActivationEnd) => {
+      if (event.snapshot.queryParams['site']) {
+        patchState({site: event.snapshot.queryParams['site']});
+      } else {
+        patchState({site: ''});
+      }
+    });
+
+    patchState({
+      authToken: token,
+    });
   }
 
   @Action(AppShowOverlay)
@@ -40,5 +61,10 @@ export class AppState implements NgxsOnInit {
   @Action(AppLogin)
   login({ patchState }: StateContext<AppStateModel>, action: AppLogin) {
     patchState({authToken: action.token});
+  }
+
+  @Action(AppLogout)
+  logout({ setState }: StateContext<AppStateModel>) {
+    setState(defaultState);
   }
 }
