@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'node_modules/rxjs';
-import { map, tap, switchMap, shareReplay, catchError} from 'rxjs/operators';
+import { map, tap, shareReplay, catchError, exhaustMap, filter, take} from 'rxjs/operators';
 import { Store } from '@ngxs/store';
 import { AppLogin } from './app.actions';
 
@@ -31,7 +31,10 @@ export class AppStateService {
 
     if (!this.cachedSiteStates[site] || force) {
       this.cachedSiteStates[site] = this.store.select(state => state.app).pipe(
-        switchMap(appState => {
+        filter(appState => !!appState.authToken),  // Make sure user is logged in
+        take(1),
+        // `exhaustMap` waits for the first request to complete instead of canceling and starting new ones.
+        exhaustMap(appState => {
           return this.http.get('/_api/v1/state' + (site ? '/' + site : site), {
             headers: { 'X-Authorization': 'Bearer ' + appState.authToken }
           });
