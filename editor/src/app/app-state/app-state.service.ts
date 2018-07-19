@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { BehaviorSubject } from 'node_modules/rxjs';
-import { map, tap, take, catchError} from 'rxjs/operators';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'node_modules/rxjs';
+import { map, tap, switchMap, shareReplay, catchError} from 'rxjs/operators';
 import { Store } from '@ngxs/store';
 import { AppLogin } from './app.actions';
 
@@ -13,32 +13,42 @@ interface APIResponse {
   };
 }
 
+const CACHE_SIZE = 1;
 
 @Injectable({
   providedIn: 'root'
 })
 export class AppStateService {
 
-  initialAppState$: BehaviorSubject<any>;
+  cachedSiteStates: {[k: string]: Observable<{[k: string]: any}>} = {};
 
   constructor(
     private http: HttpClient,
-    private store: Store,
-  ) {
-    this.initialAppState$ = new BehaviorSubject(null);
+    private store: Store) {
   }
 
-  getInitialState(stateSlice: 'settings'|'site_sections' = 'site_sections') {
-    return this.http.get('/_api/v1/state/0', {headers : {
-      'X-Authorization': 'Bearer' + [
-        'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9',
-        'eyJpYXQiOjE1MzE4MjY0MjQsImV4cCI6MTUzMTkxMjgyNH0',
-        'uv4yPkkVvW5c7xFpWBO7CfJH9Bv02gu8GPt4eZO3j3U'].join('.')
-    }}).pipe(
-      map(json => {
-        return json['site_sections'];
-      })
-    );
+  getInitialState(site: string = '', stateSlice?: 'settings'|'site_sections'|'sites', force = false) {
+
+    if (!this.cachedSiteStates[site] || force) {
+      this.cachedSiteStates[site] = this.store.select(state => state.app).pipe(
+        switchMap(appState => {
+          return this.http.get('/_api/v1/state' + (site ? '/' + site : site), {
+            headers: { 'X-Authorization': 'Bearer ' + appState.authToken }
+          });
+        }),
+        shareReplay(CACHE_SIZE),
+        catchError(error => {
+          delete this.cachedSiteStates[site];
+          throw error;
+        })
+      );
+    }
+
+    if (stateSlice) {
+      return this.cachedSiteStates[site].pipe(map(stateCache => stateCache[stateSlice]));
+    }
+
+    return this.cachedSiteStates[site];
   }
 
   login(user: string, password: string) {
