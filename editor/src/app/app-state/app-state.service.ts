@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'node_modules/rxjs';
-import { map, tap, shareReplay, catchError, exhaustMap, filter, take} from 'rxjs/operators';
+import { map, tap, shareReplay, catchError, exhaustMap, filter, take, retryWhen, switchMap, pairwise} from 'rxjs/operators';
 import { Store } from '@ngxs/store';
 import { AppLogin } from './app.actions';
+import { Router } from '@angular/router';
 
 
 interface APIResponse {
@@ -14,6 +15,7 @@ interface APIResponse {
 }
 
 const CACHE_SIZE = 1;
+const MAX_REQUEST_RETRIES = 100;
 
 @Injectable({
   providedIn: 'root'
@@ -24,7 +26,8 @@ export class AppStateService {
 
   constructor(
     private http: HttpClient,
-    private store: Store) {
+    private store: Store,
+    private router: Router) {
   }
 
   getInitialState(site: string = '', stateSlice?: 'settings'|'site_sections'|'sites', force = false) {
@@ -38,6 +41,25 @@ export class AppStateService {
           return this.http.get('/_api/v1/state' + (site ? '/' + site : site), {
             headers: { 'X-Authorization': 'Bearer ' + appState.authToken }
           });
+        }),
+        retryWhen(attempts => {
+          return attempts.pipe(
+            map((error, i) => {
+              /* Only retry on authorization failure */
+              if (!(error instanceof HttpErrorResponse) || error.status !== 401 || i > MAX_REQUEST_RETRIES) {
+                /* set app error state here maybe don't even throw it */
+                throw error;
+              }
+              this.logout();
+              return error;
+            }),
+            exhaustMap(() => {
+              return this.store.select(state => state.app).pipe(
+                pairwise(),
+                filter(([prevAppState, appState]) => !!appState.authToken && prevAppState !== appState.authToken),
+                take(1));
+            })
+          );
         }),
         shareReplay(CACHE_SIZE),
         catchError(error => {
@@ -78,5 +100,6 @@ export class AppStateService {
     });
     this.store.dispatch(new AppLogin(null));
     window.localStorage.removeItem('token');
+    this.router.navigate(['/login']);
   }
 }

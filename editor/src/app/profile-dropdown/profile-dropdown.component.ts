@@ -52,6 +52,5 @@ export class ProfileDropdownComponent {
 
   logOut() {
     this.appStateService.logout();
-    this.router.navigate(['/login']);
   }
 }
