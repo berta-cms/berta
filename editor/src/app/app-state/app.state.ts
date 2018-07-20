@@ -1,8 +1,8 @@
 import { State, Action, StateContext, Selector, NgxsOnInit } from '@ngxs/store';
 import { AppStateModel } from './app-state.interface';
 import { AppShowOverlay, AppHideOverlay, AppLogin, AppLogout } from './app.actions';
-import { Router, ActivationEnd } from '../../../node_modules/@angular/router';
-import { filter, take } from '../../../node_modules/rxjs/operators';
+import { Router, ActivationEnd } from '@angular/router';
+import { filter, take } from 'rxjs/operators';
 
 const defaultState: AppStateModel = {
   showOverlay: false,
