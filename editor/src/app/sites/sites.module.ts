@@ -4,6 +4,7 @@ import { SitesComponent } from './sites.component';
 import { NgxsModule } from '@ngxs/store';
 import { SitesState } from './sites-state/sites.state';
 import { SiteComponent } from './site/site.component';
+import { AutofocusDirective } from './autofocus.directive';
 
 
 @NgModule({
@@ -13,6 +14,6 @@ import { SiteComponent } from './site/site.component';
       SitesState
     ])
   ],
-  declarations: [SitesComponent, SiteComponent]
+  declarations: [SitesComponent, SiteComponent, AutofocusDirective]
 })
 export class SitesModule { }
