@@ -1,20 +1,27 @@
 import { Component, OnInit } from '@angular/core';
-import { Select } from '../../../../node_modules/@ngxs/store';
-import { SiteSettingsModel, SiteSettingsStateMap } from './site-settings.interface';
-import { Observable } from '../../../../node_modules/rxjs';
-import { SitesSettingsState } from './site-settings.state';
-import { map } from '../../../../node_modules/rxjs/operators';
+import { Select } from '@ngxs/store';
+import { SiteSettingsModel } from './sites-settings.interface';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'berta-site-settings',
   template: `
     <h2>Site settings</h2>
-    <div *ngFor="let setting of getSettings(settings$) | async">{{setting[0]}}: {{setting[1] | json}}</div>
+    <div *ngFor="let settingGroup of getSettingsGroups(settings$) | async">
+      <h3>{{ settingGroup[0] }}</h3>
+      <ul>
+        <li *ngFor="let setting of settingGroup[1]"><strong>{{setting[0]}}</strong>: {{setting[1]}}</li>
+      </ul>
+    </div>
   `,
   styles: [`
+    :host {
+      display: block;
+      overflow-x: hidden;
+      height: 100%;
+    }
     div {
-      overflow: hidden;
-      height: 1em;
       margin-bottom: 10px;
     }
   `]
@@ -27,11 +34,22 @@ export class SiteSettingsComponent implements OnInit {
   ngOnInit() {
   }
 
-  getSettings(settings$) {
-    return settings$.pipe(map((settings: SiteSettingsModel) => {
-      return settings && Object.keys(settings).map((setting) => {
-        return [setting, settings[setting]];
-      }) || [];
-    }));
+  getSettingsGroups(settings$) {
+    return settings$.pipe(
+      map((settings: SiteSettingsModel) => {
+        return settings && Object.keys(settings).map((settingGroup) => {
+          return [
+            this.generateTitle(settingGroup),
+            Object.keys(settings[settingGroup]).map(setting => [this.generateTitle(setting), settings[settingGroup][setting]])
+          ];
+        }) || [];
+      })
+    );
+  }
+
+  generateTitle(setting: string): string {
+    return setting.match(/(([a-z]|[A-Z])[a-z]*)/g)
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
   }
 }

@@ -39,6 +39,7 @@ import { AppState } from './app-state/app.state';
       height: 100%;
       width: 384px;
       z-index: 2;
+      box-sizing: border-box;
     }
 
     .overlay {

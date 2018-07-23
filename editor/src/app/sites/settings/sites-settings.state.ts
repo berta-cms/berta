@@ -1,9 +1,9 @@
 import { State, Action, StateContext, Selector, NgxsOnInit } from '@ngxs/store';
-import { SiteSettingsStateMap } from './site-settings.interface';
+import { SitesSettingsStateModel } from './sites-settings.interface';
 import { AppStateService } from '../../app-state/app-state.service';
 import { take } from 'rxjs/operators';
 
-@State<SiteSettingsStateMap>({
+@State<SitesSettingsStateModel>({
   name: 'siteSettings',
   defaults: {}
 })
@@ -19,11 +19,11 @@ export class SitesSettingsState implements NgxsOnInit {
   }
 
 
-  ngxsOnInit({ setState }: StateContext<SiteSettingsStateMap>) {
+  ngxsOnInit({ setState }: StateContext<SitesSettingsStateModel>) {
     this.appStateService.getInitialState('', 'site_settings').pipe(take(1)).subscribe({
       next: (response) => {
         console.log('response: ', response);
-        setState(response as SiteSettingsStateMap);
+        setState(response as SitesSettingsStateModel);
       },
       error: (error) => console.error(error)
     });

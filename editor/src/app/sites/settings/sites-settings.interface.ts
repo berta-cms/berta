@@ -1,4 +1,4 @@
-export interface SiteSettingsStateMap {
+export interface SitesSettingsStateModel {
   [siteName: string]: SiteSettingsModel;
 }
 
