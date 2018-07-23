@@ -6,16 +6,19 @@ import { SitesState } from './sites-state/sites.state';
 import { SiteComponent } from './site/site.component';
 import { AutofocusDirective } from './autofocus.directive';
 import { SiteSectionsModule } from './sections/site-sections.module';
+import { SiteSettingsComponent } from './settings/site-settings.component';
+import { SitesSettingsState } from './settings/site-settings.state';
 
 
 @NgModule({
   imports: [
     CommonModule,
     NgxsModule.forFeature([
-      SitesState
+      SitesState,
+      SitesSettingsState
     ]),
     SiteSectionsModule
   ],
-  declarations: [SitesComponent, SiteComponent, AutofocusDirective]
+  declarations: [SitesComponent, SiteComponent, AutofocusDirective, SiteSettingsComponent]
 })
 export class SitesModule { }

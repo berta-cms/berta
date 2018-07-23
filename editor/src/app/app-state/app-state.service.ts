@@ -30,7 +30,7 @@ export class AppStateService {
     private router: Router) {
   }
 
-  getInitialState(site: string = '', stateSlice?: 'settings'|'site_sections'|'sites', force = false) {
+  getInitialState(site: string = '', stateSlice?: 'settings'|'site_sections'|'sites'|'site_settings' , force = false) {
 
     if (!this.cachedSiteStates[site] || force) {
       this.cachedSiteStates[site] = this.store.select(state => state.app).pipe(
