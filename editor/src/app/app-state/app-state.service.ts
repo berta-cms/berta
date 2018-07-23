@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Observable } from 'node_modules/rxjs';
+import { Observable } from 'rxjs';
 import { map, tap, shareReplay, catchError, exhaustMap, filter, take, retryWhen, switchMap, pairwise} from 'rxjs/operators';
 import { Store } from '@ngxs/store';
 import { AppLogin, AppLogout } from './app.actions';

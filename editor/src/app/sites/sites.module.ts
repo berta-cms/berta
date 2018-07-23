@@ -5,6 +5,7 @@ import { NgxsModule } from '@ngxs/store';
 import { SitesState } from './sites-state/sites.state';
 import { SiteComponent } from './site/site.component';
 import { AutofocusDirective } from './autofocus.directive';
+import { SiteSectionsModule } from './sections/site-sections.module';
 
 
 @NgModule({
@@ -12,7 +13,8 @@ import { AutofocusDirective } from './autofocus.directive';
     CommonModule,
     NgxsModule.forFeature([
       SitesState
-    ])
+    ]),
+    SiteSectionsModule
   ],
   declarations: [SitesComponent, SiteComponent, AutofocusDirective]
 })

@@ -13,9 +13,8 @@ import { NotFoundComponent } from './not-found/not-found.component';
 import { AppState } from './app-state/app.state';
 import { HeaderComponent } from './header/header.component';
 import { ProfileDropdownComponent } from './profile-dropdown/profile-dropdown.component';
-import { SectionsComponent } from './sections/sections.component';
 import { LoginComponent } from './login/login.component';
-import { SectionsState } from './sections-state/sections.state';
+
 
 @NgModule({
   declarations: [
@@ -23,7 +22,6 @@ import { SectionsState } from './sections-state/sections.state';
     NotFoundComponent,
     HeaderComponent,
     ProfileDropdownComponent,
-    SectionsComponent,
     LoginComponent
   ],
   imports: [
@@ -31,8 +29,7 @@ import { SectionsState } from './sections-state/sections.state';
     HttpClientModule,
     AppRoutingModule,
     NgxsModule.forRoot([
-      AppState,
-      SectionsState
+      AppState
     ]),
     NgxsReduxDevtoolsPluginModule.forRoot(),
     NgxsLoggerPluginModule.forRoot(),

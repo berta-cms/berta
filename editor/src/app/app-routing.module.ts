@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { NotFoundComponent } from './not-found/not-found.component';
-import { SectionsComponent } from './sections/sections.component';
+import { SiteSectionsComponent } from './sites/sections/site-sections.component';
 import { LoginComponent } from './login/login.component';
 import { SitesComponent } from './sites/sites.component';
 
@@ -9,7 +9,7 @@ import { SitesComponent } from './sites/sites.component';
 const routes: Routes = [
   {
     path: 'sections',
-    component: SectionsComponent
+    component: SiteSectionsComponent
   },
   {
     path: 'login',
