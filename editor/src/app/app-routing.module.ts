@@ -5,12 +5,17 @@ import { SiteSectionsComponent } from './sites/sections/site-sections.component'
 import { LoginComponent } from './login/login.component';
 import { SitesComponent } from './sites/sites.component';
 import { SiteSettingsComponent } from './sites/settings/site-settings.component';
+import { SiteTemplateSettingsComponent } from './sites/template-settings/site-template-settings.component';
 
 
 const routes: Routes = [
   {
     path: 'sections',
     component: SiteSectionsComponent
+  },
+  {
+    path: 'design',
+    component: SiteTemplateSettingsComponent
   },
   {
     path: 'settings',

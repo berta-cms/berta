@@ -7,6 +7,7 @@ import { SiteComponent } from './site/site.component';
 import { AutofocusDirective } from './autofocus.directive';
 import { SiteSectionsModule } from './sections/site-sections.module';
 import { SitesSettingsModule } from './settings/sites-settings.module';
+import { SiteTemplateSettingsModule } from './template-settings/site-template-settings.module';
 
 
 
@@ -17,7 +18,8 @@ import { SitesSettingsModule } from './settings/sites-settings.module';
       SitesState
     ]),
     SiteSectionsModule,
-    SitesSettingsModule
+    SitesSettingsModule,
+    SiteTemplateSettingsModule
   ],
   declarations: [SitesComponent, SiteComponent, AutofocusDirective]
 })
