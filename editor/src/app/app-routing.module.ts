@@ -10,24 +10,28 @@ import { SiteTemplateSettingsComponent } from './sites/template-settings/site-te
 
 const routes: Routes = [
   {
-    path: 'sections',
-    component: SiteSectionsComponent
+    path: 'multisite',
+    component: SitesComponent
   },
   {
-    path: 'design',
-    component: SiteTemplateSettingsComponent
+    path: 'sections',
+    component: SiteSectionsComponent
   },
   {
     path: 'settings',
     component: SiteSettingsComponent
   },
   {
-    path: 'login',
-    component: LoginComponent
+    path: 'design',
+    component: SiteTemplateSettingsComponent
   },
   {
-    path: 'multisite',
-    component: SitesComponent
+    path: 'shop',
+    loadChildren: './shop/shop.module#ShopModule',
+  },
+  {
+    path: 'login',
+    component: LoginComponent
   },
   {
     path: '**',
