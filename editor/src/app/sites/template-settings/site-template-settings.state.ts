@@ -2,6 +2,10 @@ import { State, Action, StateContext, Selector, NgxsOnInit } from '@ngxs/store';
 import { AppStateService } from '../../app-state/app-state.service';
 import { take } from 'rxjs/operators';
 import { SitesTemplateSettingsStateModel } from './site-template-settings.interface';
+import { SitesSettingsState } from '../settings/sites-settings.state';
+import { SiteSettingsModel } from '../settings/sites-settings.interface';
+import { AppStateModel } from '../../app-state/app-state.interface';
+import { AppState } from '../../app-state/app.state';
 
 @State<SitesTemplateSettingsStateModel>({
   name: 'siteTemplateSettings',
@@ -9,10 +13,17 @@ import { SitesTemplateSettingsStateModel } from './site-template-settings.interf
 })
 export class SiteTemplateSettingsState implements NgxsOnInit {
 
-  // @Selector()
-  // static getCurrentSite(state: SiteSettingsModel) {
-  //   return state.showOverlay;
-  // }
+  @Selector([AppState, SitesSettingsState.getCurrentSiteSettings])
+  static getCurrentSiteTemplateSettings(
+    state: SiteTemplateSettingsState,
+    appState: AppStateModel,
+    siteSettings: SiteSettingsModel) {
+
+    if (!(state && appState && siteSettings && state[appState.site])) {
+      return;
+    }
+    return state[appState.site][siteSettings.template.template];
+  }
 
   constructor(
     private appStateService: AppStateService) {
@@ -22,7 +33,6 @@ export class SiteTemplateSettingsState implements NgxsOnInit {
   ngxsOnInit({ setState }: StateContext<SitesTemplateSettingsStateModel>) {
     this.appStateService.getInitialState('', 'site_template_settings').pipe(take(1)).subscribe({
       next: (response) => {
-        console.log('response: ', response);
         setState(response as SitesTemplateSettingsStateModel);
       },
       error: (error) => console.error(error)
