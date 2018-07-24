@@ -5,6 +5,7 @@ import { SectionComponent } from './section.component';
 import { NgxsModule } from '@ngxs/store';
 import { SiteSectionsState } from './sections-state/site-sections.state';
 import { SectionTagsState } from './tags/section-tags.state';
+import { SectionEntriesModule } from './entries/section-entries.module';
 
 @NgModule({
   imports: [
@@ -12,7 +13,8 @@ import { SectionTagsState } from './tags/section-tags.state';
     NgxsModule.forFeature([
       SiteSectionsState,
       SectionTagsState
-    ])
+    ]),
+    SectionEntriesModule
   ],
   declarations: [SiteSectionsComponent, SectionComponent]
 })
