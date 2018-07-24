@@ -29,7 +29,7 @@ import { camel2Words } from '../../shared/helpers';
   `]
 })
 export class SiteSettingsComponent {
-  @Select(SitesSettingsState.getCurrentSiteSettingsArray) settings$: Observable<SiteSettingsModel>;
+  @Select(SitesSettingsState.getCurrentSiteSettings) settings$: Observable<SiteSettingsModel>;
 
   getSettingsGroups(settings) {
     if (!settings) {

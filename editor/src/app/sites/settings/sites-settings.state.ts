@@ -13,7 +13,7 @@ import { AppState } from '../../app-state/app.state';
 export class SitesSettingsState implements NgxsOnInit {
 
   @Selector([AppState])
-  static getCurrentSiteSettingsArray(siteSettings: SitesSettingsStateModel, appState: AppStateModel) {
+  static getCurrentSiteSettings(siteSettings: SitesSettingsStateModel, appState: AppStateModel) {
     if (!(siteSettings && appState && siteSettings[appState.site])) {
       return;
     }
