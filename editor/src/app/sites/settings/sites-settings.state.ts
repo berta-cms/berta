@@ -2,6 +2,9 @@ import { State, Action, StateContext, Selector, NgxsOnInit } from '@ngxs/store';
 import { SitesSettingsStateModel } from './sites-settings.interface';
 import { AppStateService } from '../../app-state/app-state.service';
 import { take } from 'rxjs/operators';
+import { AppStateModel } from '../../app-state/app-state.interface';
+import { AppState } from '../../app-state/app.state';
+
 
 @State<SitesSettingsStateModel>({
   name: 'siteSettings',
@@ -9,20 +12,22 @@ import { take } from 'rxjs/operators';
 })
 export class SitesSettingsState implements NgxsOnInit {
 
-  // @Selector()
-  // static getCurrentSite(state: SiteSettingsModel) {
-  //   return state.showOverlay;
-  // }
+  @Selector([AppState])
+  static getCurrentSiteSettingsArray(siteSettings: SitesSettingsStateModel, appState: AppStateModel) {
+    if (!(siteSettings && appState && siteSettings[appState.site])) {
+      return;
+    }
+
+    return siteSettings[appState.site];
+  }
 
   constructor(
     private appStateService: AppStateService) {
   }
 
-
   ngxsOnInit({ setState }: StateContext<SitesSettingsStateModel>) {
     this.appStateService.getInitialState('', 'site_settings').pipe(take(1)).subscribe({
       next: (response) => {
-        console.log('response: ', response);
         setState(response as SitesSettingsStateModel);
       },
       error: (error) => console.error(error)
