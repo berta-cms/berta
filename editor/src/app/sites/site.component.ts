@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
-import { SiteStateModel } from '../sites-state/site-state.model';
+import { SiteStateModel } from './sites-state/site-state.model';
 
 @Component({
   selector: 'berta-site',

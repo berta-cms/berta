@@ -1,5 +1,5 @@
 import { State, Action, StateContext, Selector, NgxsOnInit } from '@ngxs/store';
-import { SitesSettingsStateModel } from './sites-settings.interface';
+import { SitesSettingsStateModel } from './site-settings.interface';
 import { AppStateService } from '../../app-state/app-state.service';
 import { take } from 'rxjs/operators';
 import { AppStateModel } from '../../app-state/app-state.interface';
@@ -10,7 +10,7 @@ import { AppState } from '../../app-state/app.state';
   name: 'siteSettings',
   defaults: {}
 })
-export class SitesSettingsState implements NgxsOnInit {
+export class SiteSettingsState implements NgxsOnInit {
 
   @Selector([AppState])
   static getCurrentSiteSettings(siteSettings: SitesSettingsStateModel, appState: AppStateModel) {

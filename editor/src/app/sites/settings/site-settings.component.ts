@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { Select } from '@ngxs/store';
-import { SiteSettingsModel } from './sites-settings.interface';
+import { SiteSettingsModel } from './site-settings.interface';
 import { Observable } from 'rxjs';
-import { SitesSettingsState } from './sites-settings.state';
+import { SiteSettingsState } from './site-settings.state';
 import { camel2Words } from '../../shared/helpers';
 
 
@@ -29,7 +29,7 @@ import { camel2Words } from '../../shared/helpers';
   `]
 })
 export class SiteSettingsComponent {
-  @Select(SitesSettingsState.getCurrentSiteSettings) settings$: Observable<SiteSettingsModel>;
+  @Select(SiteSettingsState.getCurrentSiteSettings) settings$: Observable<SiteSettingsModel>;
 
   getSettingsGroups(settings) {
     if (!settings) {

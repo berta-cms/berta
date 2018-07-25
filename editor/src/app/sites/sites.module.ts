@@ -3,10 +3,10 @@ import { CommonModule } from '@angular/common';
 import { SitesComponent } from './sites.component';
 import { NgxsModule } from '@ngxs/store';
 import { SitesState } from './sites-state/sites.state';
-import { SiteComponent } from './site/site.component';
+import { SiteComponent } from './site.component';
 import { AutofocusDirective } from './autofocus.directive';
 import { SiteSectionsModule } from './sections/site-sections.module';
-import { SitesSettingsModule } from './settings/sites-settings.module';
+import { SiteSettingsModule } from './settings/site-settings.module';
 import { SiteTemplateSettingsModule } from './template-settings/site-template-settings.module';
 
 
@@ -18,7 +18,7 @@ import { SiteTemplateSettingsModule } from './template-settings/site-template-se
       SitesState
     ]),
     SiteSectionsModule,
-    SitesSettingsModule,
+    SiteSettingsModule,
     SiteTemplateSettingsModule
   ],
   declarations: [SitesComponent, SiteComponent, AutofocusDirective]
