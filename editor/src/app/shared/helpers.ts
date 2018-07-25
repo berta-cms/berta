@@ -7,7 +7,7 @@
  * @returns string with separated words
  */
 export function camel2Words(camelCasedString: string): string {
-  return camelCasedString.match(/(([a-z]|[A-Z])[a-z]*)/g)
+  return camelCasedString.match(/([a-z]+)|([A-Z][a-z]+)|([A-Z]+(?![a-z]))/g)
     .map(word => word.charAt(0).toUpperCase() + word.slice(1))
     .join(' ');
 }
