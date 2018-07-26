@@ -12,11 +12,12 @@ import { SiteSettingsConfigState } from './site-settings-config.state';
   selector: 'berta-site-settings',
   template: `
     <h2>Site settings</h2>
-    <div *ngFor="let settingGroup of getSettingsGroups(settings$ | async)">
-      <h3>{{ settingGroup[0] }}</h3>
-      <ul>
-        <li *ngFor="let setting of settingGroup[1]"><strong>{{setting[0]}}</strong>: {{setting[1]}}</li>
-      </ul>
+
+    <div *ngFor="let settingGroup of settings$ | async">
+      <h3>{{ settingGroup.group.title || settingGroup.group.slug }}</h3>
+      <berta-setting *ngFor="let setting of settingGroup.settings"
+                     [setting]="setting.setting"
+                     [config]="setting.config"></berta-setting>
     </div>
   `,
   styles: [`
@@ -31,7 +32,7 @@ import { SiteSettingsConfigState } from './site-settings-config.state';
   `]
 })
 export class SiteSettingsComponent implements OnInit {
-  settings$: Observable<{[k: string]: {setting: SiteSettingsModel, config: SiteSettingsConfigGroup}}>;
+  settings$: Observable<{ group: any, settings: any[] }[]>;
 
   constructor(private store: Store) { }
 
@@ -53,32 +54,40 @@ export class SiteSettingsComponent implements OnInit {
             return settingsWConfig;
           }));
       }),
+      map(this.getSettingsGroups),
       tap(result => console.log('after settings map: ', result))
     );
   }
 
-  getSettingsGroups(settingsWConfig: {setting: SiteSettingsModel, config: SiteSettingsConfigGroup}) {
+  getSettingsGroups(settingsWConfig: { setting: SiteSettingsModel, config: SiteSettingsConfigGroup }) {
     if (!settingsWConfig) {
       return [];
     }
 
     return Object.keys(settingsWConfig)
       .map((settingGroup) => {
-        const groupKeys = Object.keys(settingsWConfig[settingGroup].setting);
-        const groupsArray = groupKeys.map(
-          setting => [
-            settingsWConfig[settingGroup].config[setting] && settingsWConfig[settingGroup].config[setting].title
-              ? settingsWConfig[settingGroup].config[setting].title
-              : camel2Words(setting),
-            settingsWConfig[settingGroup].setting[setting]
-          ]);
-
-        return [
-          settingsWConfig[settingGroup].config._.title
-            ? settingsWConfig[settingGroup].config._.title
-            : camel2Words(settingGroup),
-          groupsArray
-        ];
-      });
+        return {
+          group: {
+            slug: settingGroup,
+            ...(settingsWConfig[settingGroup].config._ || {})
+          },
+          settings: Object.keys(settingsWConfig[settingGroup].setting).map(
+            setting => {
+              return {
+                setting: {
+                  slug: setting,
+                  value: settingsWConfig[settingGroup].setting[setting]
+                },
+                config: settingsWConfig[settingGroup].config[setting]
+              };
+            }).filter(setting => !!setting.config)
+            .map(setting => {
+              if (setting.config.format === 'select' && !(setting.config.values instanceof Array)) {
+                setting.config = {...setting.config, values: [setting.config.values]};
+              }
+              return setting;
+            })
+        };
+      }).filter(settingGroup => !settingGroup.group.invisible);
   }
 }
