@@ -1,9 +1,11 @@
-import { Component } from '@angular/core';
-import { Select } from '@ngxs/store';
-import { SiteSettingsModel } from './site-settings.interface';
+import { Component, OnInit } from '@angular/core';
+import { Store } from '@ngxs/store';
+import { SiteSettingsModel, SiteSettingsConfigStateModel, SiteSettingsConfigGroup } from './site-settings.interface';
 import { Observable } from 'rxjs';
 import { SiteSettingsState } from './site-settings.state';
 import { camel2Words } from '../../shared/helpers';
+import { mergeMap, map, filter, tap } from '../../../../node_modules/rxjs/operators';
+import { SiteSettingsConfigState } from './site-settings-config.state';
 
 
 @Component({
@@ -28,19 +30,55 @@ import { camel2Words } from '../../shared/helpers';
     }
   `]
 })
-export class SiteSettingsComponent {
-  @Select(SiteSettingsState.getCurrentSiteSettings) settings$: Observable<SiteSettingsModel>;
+export class SiteSettingsComponent implements OnInit {
+  settings$: Observable<{[k: string]: {setting: SiteSettingsModel, config: SiteSettingsConfigGroup}}>;
 
-  getSettingsGroups(settings) {
-    if (!settings) {
+  constructor(private store: Store) { }
+
+  ngOnInit() {
+    this.settings$ = this.store.select(SiteSettingsState.getCurrentSiteSettings).pipe(
+      filter(settings => !!settings && Object.keys(settings).length > 0),
+      mergeMap(settings => {
+        return this.store.select(SiteSettingsConfigState).pipe(
+          filter(settingsConfig => !!settingsConfig && Object.keys(settings).length > 0),
+          map((settingsConfig: SiteSettingsConfigStateModel) => {
+            const settingsWConfig = {};
+
+            for (const settingGroup in settings) {
+              settingsWConfig[settingGroup] = {
+                setting: settings[settingGroup],
+                config: settingsConfig[settingGroup]
+              };
+            }
+            return settingsWConfig;
+          }));
+      }),
+      tap(result => console.log('after settings map: ', result))
+    );
+  }
+
+  getSettingsGroups(settingsWConfig: {setting: SiteSettingsModel, config: SiteSettingsConfigGroup}) {
+    if (!settingsWConfig) {
       return [];
     }
 
-    return Object.keys(settings).map((settingGroup) => {
-      return [
-        camel2Words(settingGroup),
-        Object.keys(settings[settingGroup]).map(setting => [camel2Words(setting), settings[settingGroup][setting]])
-      ];
-    });
+    return Object.keys(settingsWConfig)
+      .map((settingGroup) => {
+        const groupKeys = Object.keys(settingsWConfig[settingGroup].setting);
+        const groupsArray = groupKeys.map(
+          setting => [
+            settingsWConfig[settingGroup].config[setting] && settingsWConfig[settingGroup].config[setting].title
+              ? settingsWConfig[settingGroup].config[setting].title
+              : camel2Words(setting),
+            settingsWConfig[settingGroup].setting[setting]
+          ]);
+
+        return [
+          settingsWConfig[settingGroup].config._.title
+            ? settingsWConfig[settingGroup].config._.title
+            : camel2Words(settingGroup),
+          groupsArray
+        ];
+      });
   }
 }
