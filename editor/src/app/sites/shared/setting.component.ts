@@ -3,8 +3,8 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 @Component({
   selector: 'berta-setting',
   template: `
-    <label>
-      <strong>{{ config.title === '&nbsp;' ? '' : config.title }} [{{config.format}}]</strong>
+    <label [title]="config.format">
+      {{ config.title }}
       <ng-container [ngSwitch]="config.format">
         <input *ngSwitchCase="'text'" type="text" [value]="setting.value">
         <input *ngSwitchCase="'icon'" type="file" [value]="setting.value">
@@ -14,7 +14,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
                   [value]="val.value"
                   [attr.selected]="(val.value === setting.value ? '' : null)">{{ val.title }}</option>
         </select>
-        <div *ngSwitchDefault style="padding: 10px"></div>
+        <div *ngSwitchDefault style="padding: 10px">{{ config.format || '' }}</div>
       </ng-container>
     </label>
   `,
