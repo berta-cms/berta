@@ -5,3 +5,7 @@ export interface SitesTemplateSettingsStateModel {
 export interface SiteTemplateSettingsModel {
   [settingGroup: string]: any;
 }
+
+export interface SiteTemplatesStateModel {
+  [k: string]: any;
+}
