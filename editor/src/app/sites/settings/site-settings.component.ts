@@ -83,7 +83,7 @@ export class SiteSettingsComponent implements OnInit {
             })
             .filter(setting => !!setting.config)
             .map(setting => {
-              if (setting.config.format === 'select') {
+              if (setting.config.format === 'select' || setting.config.format === 'fontselect') {
                 let values = setting.config.values;
 
                 if (isPlainObject(values)) {

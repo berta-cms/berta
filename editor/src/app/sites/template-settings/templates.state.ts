@@ -1,7 +1,9 @@
 import { State, Action, StateContext, Selector, NgxsOnInit } from '@ngxs/store';
 import { AppStateService } from '../../app-state/app-state.service';
 import { take } from 'rxjs/operators';
-import { SiteTemplatesStateModel } from './site-template-settings.interface';
+import { SiteTemplatesStateModel, TemplateModel } from './site-template-settings.interface';
+import { SiteSettingsState } from '../settings/site-settings.state';
+import { SiteSettingsModel } from '../settings/site-settings.interface';
 
 
 @State<SiteTemplatesStateModel>({
@@ -9,6 +11,32 @@ import { SiteTemplatesStateModel } from './site-template-settings.interface';
   defaults: {}
 })
 export class SiteTemplatesState implements NgxsOnInit {
+
+  @Selector([SiteSettingsState.getCurrentSiteSettings])
+  static getCurrentTemplate(state: SiteTemplatesStateModel, siteSettings: SiteSettingsModel) {
+    if (!(state && siteSettings)) {
+      return;
+    }
+    return state[siteSettings.template.template];
+  }
+
+  @Selector([SiteTemplatesState.getCurrentTemplate])
+  static getCurrentTemplateConfig(_: SiteTemplatesStateModel, currentTemplate: TemplateModel) {
+    if (!currentTemplate) {
+      return;
+    }
+
+    return currentTemplate.templateConf;
+  }
+
+  @Selector([SiteTemplatesState.getCurrentTemplate])
+  static getCurrentTemplateSectionTypes(_: SiteTemplatesStateModel, currentTemplate: TemplateModel) {
+    if (!currentTemplate) {
+      return;
+    }
+
+    return currentTemplate.sectionTypes;
+  }
 
   constructor(
     private appStateService: AppStateService) {

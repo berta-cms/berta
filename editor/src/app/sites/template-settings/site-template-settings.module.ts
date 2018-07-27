@@ -4,6 +4,7 @@ import { SiteTemplateSettingsComponent } from './site-template-settings.componen
 import { SiteTemplateSettingsState } from './site-template-settings.state';
 import { NgxsModule } from '@ngxs/store';
 import { SiteTemplatesState } from './templates.state';
+import { SitesSharedModule } from '../shared/sites-shared.module';
 
 @NgModule({
   imports: [
@@ -11,7 +12,8 @@ import { SiteTemplatesState } from './templates.state';
     NgxsModule.forFeature([
       SiteTemplateSettingsState,
       SiteTemplatesState
-    ])
+    ]),
+    SitesSharedModule
   ],
   declarations: [SiteTemplateSettingsComponent]
 })
