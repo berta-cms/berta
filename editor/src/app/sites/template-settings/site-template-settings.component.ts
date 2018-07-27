@@ -1,16 +1,16 @@
-import { Component } from '@angular/core';
-import { Select } from '@ngxs/store';
+import { Component, OnInit } from '@angular/core';
+import { Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
-import { SiteTemplateSettingsModel } from './site-template-settings.interface';
 import { SiteTemplateSettingsState } from './site-template-settings.state';
 import { camel2Words } from '../../shared/helpers';
+import { map, filter } from 'rxjs/operators';
 
 
 @Component({
   selector: 'berta-site-template-settings',
   template: `
     <h2>Site Template Settings</h2>
-    <div *ngFor="let settingGroup of getSettingsGroups(templateSettings$ | async)">
+    <div *ngFor="let settingGroup of templateSettings$ | async">
       <h3>{{ settingGroup[0] }}</h3>
       <ul>
         <li *ngFor="let setting of settingGroup[1]"><strong>{{setting[0]}}</strong>: {{setting[1]}}</li>
@@ -28,10 +28,20 @@ import { camel2Words } from '../../shared/helpers';
     }
   `]
 })
-export class SiteTemplateSettingsComponent {
+export class SiteTemplateSettingsComponent implements OnInit {
 
-  @Select(SiteTemplateSettingsState.getCurrentSiteTemplateSettings)
-  templateSettings$: Observable<SiteTemplateSettingsModel>;
+  templateSettings$: Observable<any[]>;
+
+  constructor (
+    private store: Store) {
+  }
+
+  ngOnInit () {
+    this.templateSettings$ = this.store.select(SiteTemplateSettingsState.getCurrentSiteTemplateSettings).pipe(
+      filter(settings => !!settings && Object.keys(settings).length > 0),
+      map(this.getSettingsGroups)
+    );
+  }
 
   getSettingsGroups(settings) {
     if (!settings) {
