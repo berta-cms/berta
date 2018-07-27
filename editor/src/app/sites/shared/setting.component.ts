@@ -11,8 +11,8 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
         <input *ngSwitchCase="'image'" type="file" [value]="setting.value">
         <select *ngSwitchCase="'select'">
           <option *ngFor="let val of config.values"
-                  [value]="val"
-                  [attr.selected]="(val === setting.value ? '' : null)">{{ val }}</option>
+                  [value]="val.value"
+                  [attr.selected]="(val.value === setting.value ? '' : null)">{{ val.title }}</option>
         </select>
         <div *ngSwitchDefault style="padding: 10px"></div>
       </ng-container>

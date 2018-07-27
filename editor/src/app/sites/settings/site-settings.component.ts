@@ -3,7 +3,7 @@ import { Store } from '@ngxs/store';
 import { SiteSettingsModel, SiteSettingsConfigStateModel, SiteSettingsConfigGroup } from './site-settings.interface';
 import { Observable } from 'rxjs';
 import { SiteSettingsState } from './site-settings.state';
-import { camel2Words } from '../../shared/helpers';
+import { camel2Words, isPlainObject } from '../../shared/helpers';
 import { mergeMap, map, filter, tap } from '../../../../node_modules/rxjs/operators';
 import { SiteSettingsConfigState } from './site-settings-config.state';
 
@@ -80,10 +80,26 @@ export class SiteSettingsComponent implements OnInit {
                 },
                 config: settingsWConfig[settingGroup].config[setting]
               };
-            }).filter(setting => !!setting.config)
+            })
+            .filter(setting => !!setting.config)
             .map(setting => {
-              if (setting.config.format === 'select' && !(setting.config.values instanceof Array)) {
-                setting.config = {...setting.config, values: [setting.config.values]};
+              if (setting.config.format === 'select') {
+                let values = setting.config.values;
+
+                if (isPlainObject(values)) {
+                  values = Object.keys(values).map((value => {
+                    return {value: value, title: values[value]};
+                  }));
+
+                } else if (!(values instanceof Array)) {
+                  values = [{value: String(setting.config.values), title: setting.config.values}];
+
+                } else {
+                  values = values.map(value => {
+                    return {value: value, title: camel2Words(value)};
+                  });
+                }
+                setting.config = {...setting.config, values: values};
               }
               return setting;
             })
