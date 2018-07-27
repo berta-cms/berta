@@ -21,11 +21,6 @@ import { TemplateConf } from './site-template-settings.interface';
     </div>
   `,
   styles: [`
-    :host {
-      display: block;
-      overflow-x: hidden;
-      height: 100%;
-    }
     div {
       margin-bottom: 10px;
     }

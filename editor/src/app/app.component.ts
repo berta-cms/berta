@@ -11,7 +11,8 @@ import { AppState } from './app-state/app.state';
     <!--The content below is only a placeholder and can be replaced.-->
     <berta-header></berta-header>
     <main>
-      <aside [style.display]="(routeIsRoot ? 'none' : '')"><router-outlet></router-outlet></aside><!-- the sidebar -->
+      <aside [style.display]="(routeIsRoot ? 'none' : '')"><!-- the sidebar -->
+        <div class="scroll-wrap"><router-outlet></router-outlet></div></aside>
       <section>
         <div style="text-align:center">
           <h1>
@@ -49,6 +50,12 @@ import { AppState } from './app-state/app.state';
       width: 100%;
       height: 100%;
       z-index: 1;
+    }
+
+    .scroll-wrap {
+      display: block;
+      overflow-x: hidden;
+      height: 100%;
     }
     `
   ]

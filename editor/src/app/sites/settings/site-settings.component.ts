@@ -21,11 +21,6 @@ import { SiteSettingsConfigState } from './site-settings-config.state';
     </div>
   `,
   styles: [`
-    :host {
-      display: block;
-      overflow-x: hidden;
-      height: 100%;
-    }
     div {
       margin-bottom: 10px;
     }

@@ -3,6 +3,9 @@ export interface SiteSectionStateModel {
   order: number;
   title: string;
   site_name: string;
+  seoTitle?: string;
+  seoKeywords?: string;
+  seoDescription?: string;
   backgroundVideoEmbed?: string;
   mediafolder?: string;
   mediaCacheData?: {
@@ -27,5 +30,6 @@ export interface SiteSectionStateModel {
     entry_count?: number;
     published?: 0 | 1;
     has_direct_content?: 0 | 1;
+    type?: string;
   };
 }
