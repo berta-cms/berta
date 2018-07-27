@@ -9,6 +9,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
         <input *ngSwitchCase="'text'" type="text" [value]="setting.value">
         <input *ngSwitchCase="'icon'" type="file" [value]="setting.value">
         <input *ngSwitchCase="'image'" type="file" [value]="setting.value">
+        <textarea *ngSwitchCase="'longtext'">{{setting.value}}</textarea>
         <select *ngSwitchCase="'select'">
           <option *ngFor="let val of config.values"
                   [value]="val.value"
