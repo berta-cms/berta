@@ -4,10 +4,10 @@ import { SitesComponent } from './sites.component';
 import { NgxsModule } from '@ngxs/store';
 import { SitesState } from './sites-state/sites.state';
 import { SiteComponent } from './site.component';
-import { AutofocusDirective } from './autofocus.directive';
 import { SiteSectionsModule } from './sections/site-sections.module';
 import { SiteSettingsModule } from './settings/site-settings.module';
 import { SiteTemplateSettingsModule } from './template-settings/site-template-settings.module';
+import { SitesSharedModule } from './shared/sites-shared.module';
 
 
 
@@ -19,8 +19,9 @@ import { SiteTemplateSettingsModule } from './template-settings/site-template-se
     ]),
     SiteSectionsModule,
     SiteSettingsModule,
-    SiteTemplateSettingsModule
+    SiteTemplateSettingsModule,
+    SitesSharedModule
   ],
-  declarations: [SitesComponent, SiteComponent, AutofocusDirective]
+  declarations: [SitesComponent, SiteComponent]
 })
 export class SitesModule { }

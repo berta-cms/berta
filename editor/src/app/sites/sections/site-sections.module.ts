@@ -6,6 +6,7 @@ import { NgxsModule } from '@ngxs/store';
 import { SiteSectionsState } from './sections-state/site-sections.state';
 import { SectionTagsState } from './tags/section-tags.state';
 import { SectionEntriesModule } from './entries/section-entries.module';
+import { SitesSharedModule } from '../shared/sites-shared.module';
 
 @NgModule({
   imports: [
@@ -14,7 +15,8 @@ import { SectionEntriesModule } from './entries/section-entries.module';
       SiteSectionsState,
       SectionTagsState
     ]),
-    SectionEntriesModule
+    SectionEntriesModule,
+    SitesSharedModule
   ],
   declarations: [SiteSectionsComponent, SectionComponent]
 })
