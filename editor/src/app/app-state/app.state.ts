@@ -23,6 +23,11 @@ export class AppState implements NgxsOnInit {
   }
 
   @Selector()
+  static getSite(state: AppStateModel) {
+    return state.site;
+  }
+
+  @Selector()
   static isLoggedIn(state: AppStateModel): boolean {
     return !!state.authToken;
   }
