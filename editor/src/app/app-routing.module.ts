@@ -1,12 +1,37 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { NotFoundComponent } from './not-found/not-found.component';
-import { RandomComponent } from './random/random.component';
+import { SiteSectionsComponent } from './sites/sections/site-sections.component';
+import { LoginComponent } from './login/login.component';
+import { SitesComponent } from './sites/sites.component';
+import { SiteSettingsComponent } from './sites/settings/site-settings.component';
+import { SiteTemplateSettingsComponent } from './sites/template-settings/site-template-settings.component';
+
 
 const routes: Routes = [
   {
-    path: 'random',
-    component: RandomComponent
+    path: 'multisite',
+    component: SitesComponent
+  },
+  {
+    path: 'sections',
+    component: SiteSectionsComponent
+  },
+  {
+    path: 'settings',
+    component: SiteSettingsComponent
+  },
+  {
+    path: 'design',
+    component: SiteTemplateSettingsComponent
+  },
+  {
+    path: 'shop',
+    loadChildren: './shop/shop.module#ShopModule',
+  },
+  {
+    path: 'login',
+    component: LoginComponent
   },
   {
     path: '**',

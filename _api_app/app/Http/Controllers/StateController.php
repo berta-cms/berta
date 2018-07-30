@@ -13,7 +13,7 @@ use App\Sites\TemplateSettings\SiteTemplateSettingsDataService;
 
 class StateController extends Controller
 {
-    public function get($site)
+    public function get($site='')
     {
         $site = $site === '0' ? '' : $site;
         $sitesDataService = new SitesDataService();

@@ -1,1 +1,109 @@
-/* You can add global styles to this file, and also import other style files */
+$berta-bg-dark: #000;
+$berta-bg-mid-dark: #333;
+$berta-bg-light: #fff;
+$berta-nav-text: #b3b3b3;
+$berta-accent: #0c4dff;
+$berta-nav-text-active: #fff;
+
+$bt-header-font-size: 1rem;
+$bt-header-line-height: 1.375rem;
+$bt-header-item-padding: 1.1875rem 1.25rem;
+$bt-header-height: 3.75rem;
+
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
+body {
+  font-family: AvenirNext, Helvetica, Arial, sans-serif;
+}
+
+button {
+  border: 0;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+header {
+  background-color: $berta-bg-dark;
+  height: $bt-header-height;
+
+  a {
+    color: $berta-nav-text;
+    font-size: $bt-header-font-size;
+    line-height: $bt-header-line-height;
+    padding: $bt-header-item-padding;
+    text-decoration: none;
+
+    &:hover {
+      color: $berta-accent;
+    }
+
+    &.nav-active {
+      color: $berta-nav-text-active;
+    }
+  }
+
+  .bt-view-editor {
+    background-color: $berta-bg-mid-dark;
+    color: #9a9a9a;
+    cursor: pointer;
+    padding: $bt-header-item-padding;
+
+    &:hover {
+      background-color: $berta-accent;
+      color: #87a7ff;
+    }
+  }
+}
+
+berta-profile-dropdown {
+  background-color: $berta-bg-dark;
+
+  .bt-profile-anchor {
+    background-color: inherit;
+    min-width: 9.375rem;
+
+    &:focus {
+      color: $berta-nav-text-active;
+    }
+  }
+
+  ul {
+    background-color: $berta-bg-dark;
+  }
+
+  .bt-profile-anchor,
+  ul > li > * {
+    background-color: transparent;
+    box-sizing: border-box;
+    color: $berta-nav-text;
+    display: block;
+    font-size: $bt-header-font-size;
+    line-height: $bt-header-line-height;
+    padding: $bt-header-item-padding;
+    text-align: left;
+    text-decoration: none;
+
+    &:hover {
+      color: $berta-accent;
+    }
+  }
+}
+
+aside {
+  background-color: $berta-bg-light;
+  border-right: 1px solid $berta-nav-text;  // for develompent
+  padding-top: $bt-header-height;
+}
+
+.overlay {
+  background: rgba($berta-bg-dark, .3);
+}

@@ -10,7 +10,6 @@ class SiteSettingsConfigService
 
     public function __construct()
     {
-
     }
 
     public function get($lang = 'en')
@@ -22,7 +21,7 @@ class SiteSettingsConfigService
         I18n::load_language($lang);
 
         $conf = file_get_contents(
-            realpath(config('app.old_berta_root'). '/engine/inc.settings.php')
+            realpath(config('app.old_berta_root') . '/engine/inc.settings.php')
         );
 
         /**
@@ -34,6 +33,7 @@ class SiteSettingsConfigService
         eval($conf);
 
         $this->settings = $settingsDefinition;
+        $this->settings['template']['template']['values'] = $this->getTemplates();
 
         return $this->settings;
     }
@@ -57,5 +57,19 @@ class SiteSettingsConfigService
         }
 
         return $defaults;
+    }
+
+    public function getTemplates()
+    {
+        $returnArr = [];
+        $templatesRoot = config('app.old_berta_root'). '/_templates/';
+        $d = dir($templatesRoot);
+        while (false !== ($entry = $d->read())) {
+            if ($entry != '.' && $entry != '..' && substr($entry, 0, 1) != '_' && is_dir($templatesRoot . $entry)) {
+                $returnArr[] = $entry;
+            }
+        }
+        $d->close();
+        return $returnArr;
     }
 }

@@ -17,9 +17,12 @@
 
 $app->post('auth/login', ['uses' => 'AuthController@authenticate', 'middleware' => 'setup']);
 $app->get('auth/login', ['uses' => 'AuthController@authenticate', 'middleware' => 'setup']);
+$app->post('v1/login', ['uses' => 'AuthController@apiLogin', 'middleware' => 'setup']);
+$app->put('v1/logout', ['uses' => 'AuthController@apiLogout', 'middleware' => 'setup']);
 
 $app->group(['prefix' => 'v1', 'namespace' => 'App', 'middleware' => ['setup', 'auth']], function () use ($app) {
-    $app->get('state/{site}', 'Http\Controllers\StateController@get');
+
+    $app->get('state[/{site}]', 'Http\Controllers\StateController@get');
 
     $app->group(['prefix' => 'v1', 'namespace' => 'App\Sites', 'middleware' => ['setup', 'auth']], function () use ($app) {
         $app->post('sites', ['as' => 'sites', 'uses' => 'SitesController@create']);

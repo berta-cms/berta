@@ -48,6 +48,9 @@ class SiteSectionsDataService extends Storage
             'properties' => [
                 'name' => ['type' => 'string'],
                 'title' => ['type' => 'string'],
+                'seoTitle' => ['type' => 'string'],
+                'seoKeywords' => ['type' => 'string'],
+                'seoDescription' => ['type' => 'string'],
                 'backgroundVideoEmbed' => ['type' => 'string'],
                 'mediafolder' => ['type' => 'string'],
                 'mediaCacheData' => [
@@ -58,16 +61,20 @@ class SiteSectionsDataService extends Storage
                             'type' => 'array',
                             'items' => [
                                 'type' => 'object',
-                                '@value' => ['type' => 'string'],
-                                '@attributes' => [
-                                    'type' => 'object',
-                                    'properties' => [
-                                        'type' => ['type' => 'string'],
-                                        'src' => ['type' => 'string'],
-                                        'width' => ['type' => 'integer'],
-                                        'height' => ['type' => 'integer'],
+                                'properties' => [
+                                    '@value' => ['type' => 'string'],
+                                    '@attributes' => [
+                                        'type' => 'object',
+                                        'properties' => [
+                                            'type' => ['type' => 'string'],
+                                            'src' => ['type' => 'string'],
+                                            'width' => ['type' => 'integer'],
+                                            'height' => ['type' => 'integer'],
+                                        ],
+                                        'required' => ['type', 'src', 'width', 'height']
                                     ],
                                 ],
+                                'required' => ['@value', '@attributes']
                             ],
                         ],
                         '@attributes' => [
@@ -92,6 +99,7 @@ class SiteSectionsDataService extends Storage
                     'type' => 'object',
                     'properties' => [
                         'tags_behavior' => ['type' => 'string'],
+                        'type' => ['type' => 'string'],
                         'entry_count' => [
                             'type' => 'integer',
                             'minimum' => 0,
