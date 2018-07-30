@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { Select } from '@ngxs/store';
 
 import { AppState } from '../app-state/app.state';
-import { map } from '../../../node_modules/rxjs/operators';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'berta-header',
