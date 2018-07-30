@@ -52,9 +52,7 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit() {
     this.queryParams$ = this.site$.pipe(
-      map(site => {
-        return site ? {site: site} : {};
-      })
+      map(site => site ? {site: site} : {})
     );
   }
 }
