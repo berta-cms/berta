@@ -7,6 +7,7 @@ import { filter, map } from 'rxjs/operators';
 import { SiteSectionsState } from './sections-state/site-sections.state';
 import { isPlainObject, camel2Words } from '../../shared/helpers';
 import { SiteTemplateSettingsState } from '../template-settings/site-template-settings.state';
+import { UpdateSiteSection } from './sections-state/site-sections.actions';
 
 @Component({
   selector: 'berta-site-sections',
@@ -16,7 +17,9 @@ import { SiteTemplateSettingsState } from '../template-settings/site-template-se
       <berta-section *ngFor="let sd of sectionsData$ | async"
                      [section]="sd.section"
                      [params]="sd.params"
-                     [templateSectionTypes]="sd.templateSectionTypes"></berta-section>
+                     [templateSectionTypes]="sd.templateSectionTypes"
+                     (update)="updateSection(sd.section.site_name, $event)"
+                     ></berta-section>
     </div>
   `,
   styles: [`
@@ -121,4 +124,7 @@ export class SiteSectionsComponent implements OnInit {
     );
   }
 
+  updateSection(siteName, updateEvent) {
+    this.store.dispatch(new UpdateSiteSection(siteName, parseInt(updateEvent.section, 10), updateEvent.data));
+  }
 }
