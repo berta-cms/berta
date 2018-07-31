@@ -25,6 +25,11 @@ export class SiteTemplateSettingsState implements NgxsOnInit {
     return state[appState.site][siteSettings.template.template];
   }
 
+  @Selector([SiteSettingsState.getCurrentSiteSettings])
+  static getIsResponsive(_, currentSiteTemplateSettings) {
+    return currentSiteTemplateSettings.pageLayout.responsive === 'yes';
+  }
+
   constructor(
     private appStateService: AppStateService) {
   }

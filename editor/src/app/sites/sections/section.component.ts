@@ -48,6 +48,10 @@ import { SectionTypes } from '../template-settings/site-template-settings.interf
         <textarea name="seo-description">{{section.seoDescription}}</textarea>
       </label>
     </div>
+    <h4 *ngIf="params.length > 0">Params</h4>
+    <div *ngIf="params.length > 0" class="section-params">
+      <berta-setting *ngFor="let param of params" [setting]="param.setting" [config]="param.config"></berta-setting>
+    </div>
   `,
   styles: [`
     :host {
@@ -75,6 +79,7 @@ import { SectionTypes } from '../template-settings/site-template-settings.interf
 export class SectionComponent implements OnInit {
   @Input('section') section: SiteSectionStateModel;
   @Input('templateSectionTypes') templateSectionTypes: SectionTypes;
+  @Input('params') params: any[] = [];
   edit: false | 'title' = false;
 
   constructor() { }
