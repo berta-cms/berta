@@ -22,6 +22,11 @@ export class AppState implements NgxsOnInit {
     return state.showOverlay;
   }
 
+  @Selector()
+  static getSite(state: AppStateModel) {
+    return state.site;
+  }
+
   constructor(private router: Router) {
   }
 
