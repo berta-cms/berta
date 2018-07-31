@@ -3,7 +3,8 @@ export class UserLogin {
   constructor(
     public name: string | null,
     public token: string | null,
-    public features: string[]
+    public features: string[],
+    public profileUrl: string | null
   ) { }
 }
 

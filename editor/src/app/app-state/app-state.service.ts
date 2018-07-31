@@ -88,11 +88,17 @@ export class AppStateService {
         if (!resp.data.token) {
           throw new Error('Invalid login response!');
         }
-        this.store.dispatch(new UserLogin(resp.data.name, resp.data.token, resp.data.features));
+        this.store.dispatch(new UserLogin(
+          resp.data.name,
+          resp.data.token,
+          resp.data.features,
+          resp.data.profileUrl
+        ));
 
         window.localStorage.setItem('name', resp.data.name);
         window.localStorage.setItem('token', resp.data.token);
         window.localStorage.setItem('features', JSON.stringify(resp.data.features));
+        window.localStorage.setItem('profileUrl', resp.data.profileUrl);
       })
     );
   }
@@ -107,6 +113,7 @@ export class AppStateService {
     window.localStorage.removeItem('name');
     window.localStorage.removeItem('token');
     window.localStorage.removeItem('features');
+    window.localStorage.removeItem('profileUrl');
 
     this.router.navigate(['/login']);
   }

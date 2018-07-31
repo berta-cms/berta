@@ -76,7 +76,8 @@ class AuthController extends Controller
         return Helpers::api_response('Login successful!', [
             'name' => $user->name,
             'token' => $token,
-            'features' => $user->features
+            'features' => $user->features,
+            'profileUrl' => $user->profile_url
         ]);
     }
 

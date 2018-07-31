@@ -5,7 +5,8 @@ import { UserLogin, UserLogout } from './user-actions';
 const defaultState: UserStateModel = {
   name: null,
   token: null,
-  features: []
+  features: [],
+  profileUrl: null
 };
 
 @State<UserStateModel>({
@@ -24,11 +25,13 @@ export class UserState implements NgxsOnInit {
     const name = window.localStorage.getItem('name');
     const token = window.localStorage.getItem('token');
     const features = window.localStorage.getItem('features');
+    const profileUrl = window.localStorage.getItem('profileUrl');
 
     patchState({
       name: name,
       token: token,
-      features: JSON.parse(features)
+      features: JSON.parse(features),
+      profileUrl: JSON.parse(profileUrl)
     });
   }
 
@@ -37,7 +40,8 @@ export class UserState implements NgxsOnInit {
     patchState({
       name: action.name,
       token: action.token,
-      features: action.features
+      features: action.features,
+      profileUrl: action.profileUrl
     });
   }
 

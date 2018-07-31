@@ -15,6 +15,7 @@ class UserModel implements
     public $name;
     public $password;
     public $features;
+    public $profile_url;
 
     public function __construct() {
         /** @var {array} $options - Gets the old berta user from PHP file. */
@@ -24,6 +25,7 @@ class UserModel implements
         $this->name = $options['AUTH_user'];
         $this->password = $options['AUTH_password'];
         $this->features = $this->getFeatures();
+        $this->profile_url = $this->getHostingData('HOSTING_PROFILE');
     }
 
 
@@ -71,6 +73,18 @@ class UserModel implements
         }
 
         return $features;
+    }
+
+    private function getHostingData($item)
+    {
+        $ENGINE_ROOT_PATH = realpath(config('app.old_berta_root') . '/engine') . '/';
+        include realpath(config('app.old_berta_root') . '/engine/inc.hosting.php');
+
+        if (!isset($options[$item])) {
+            return null;
+        }
+
+        return $options[$item];
     }
 
 }
