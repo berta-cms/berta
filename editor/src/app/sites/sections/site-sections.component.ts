@@ -34,7 +34,7 @@ export class SiteSectionsComponent implements OnInit {
 
   ngOnInit() {
     this.sectionsData$ = combineLatest(
-      this.store.select(SiteSectionsState),
+      this.store.select(SiteSectionsState.getCurrentSiteSections),
       this.store.select(SiteTemplatesState.getCurrentTemplateSectionTypes),
       this.store.select(SiteTemplateSettingsState.getIsResponsive)).pipe(
         filter(([sections]) => !!sections),
