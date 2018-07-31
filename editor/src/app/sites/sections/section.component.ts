@@ -37,15 +37,21 @@ import { SectionTypes } from '../template-settings/site-template-settings.interf
     <div class="section-seo">
       <label for="seo-title">
         Title:
-        <textarea name="seo-title">{{section.seoTitle}}</textarea>
+        <textarea name="seo-title"
+                  (blur)="updateTextField('seoTitle', $event.target.value, $event)"
+                  (focus)="editField('seoTitle')">{{section.seoTitle}}</textarea>
       </label>
       <label for="seo-keywords">
         Keywords:
-        <textarea name="seo-keywords">{{section.seoKeywords}}</textarea>
+        <textarea name="seo-keywords"
+                  (blur)="updateTextField('seoKeywords', $event.target.value, $event)"
+                  (focus)="editField('seoKeywords')">{{section.seoKeywords}}</textarea>
       </label>
       <label for="seo-description">
         Description:
-        <textarea name="seo-description">{{section.seoDescription}}</textarea>
+        <textarea name="seo-description"
+                  (blur)="updateTextField('seoDescription', $event.target.value, $event)"
+                  (focus)="editField('seoDescription')">{{section.seoDescription}}</textarea>
       </label>
     </div>
     <h4 *ngIf="params.length > 0">Params</h4>
