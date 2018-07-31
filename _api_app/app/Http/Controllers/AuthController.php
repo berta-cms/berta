@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Firebase\JWT\JWT;
 use App\Shared\Helpers;
+use App\User\UserModel;
 
 class AuthController extends Controller
 {
@@ -69,7 +70,15 @@ class AuthController extends Controller
 
         /** @todo: remove this when we move to the new app. This will be necessary for some time for the iframe */
         setcookie('token', $token, time() + self::$expiration_time, '/');
-        return Helpers::api_response('Login successful!', ['token' => $token]);
+
+        $user = new UserModel();
+
+        return Helpers::api_response('Login successful!', [
+            'name' => $user->name,
+            'token' => $token,
+            'features' => $user->features,
+            'profileUrl' => $user->profile_url
+        ]);
     }
 
     public function apiLogout() {

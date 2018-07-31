@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Store, Select } from '@ngxs/store';
-import { AppState } from '../app-state/app.state';
 import { Observable } from 'rxjs';
 import { SiteStateModel } from './sites-state/site-state.model';
+import { UserState } from '../user/user-state';
 
 @Component({
   selector: 'berta-sites',
@@ -22,7 +22,7 @@ import { SiteStateModel } from './sites-state/site-state.model';
   `]
 })
 export class SitesComponent implements OnInit {
-  @Select(AppState.isLoggedIn) isLoggedIn$;
+  @Select(UserState.isLoggedIn) isLoggedIn$;
   @Select('sites') public sites$: Observable<SiteStateModel[]>;
 
   constructor(private store$: Store) { }

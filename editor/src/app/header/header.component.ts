@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { Select } from '@ngxs/store';
 
 import { AppState } from '../app-state/app.state';
+import { UserState } from '../user/user-state';
 import { map } from 'rxjs/operators';
 
 @Component({
@@ -45,7 +46,7 @@ import { map } from 'rxjs/operators';
   `]
 })
 export class HeaderComponent implements OnInit {
-  @Select(AppState.isLoggedIn) isLoggedIn$: Observable<boolean>;
+  @Select(UserState.isLoggedIn) isLoggedIn$: Observable<boolean>;
   @Select(AppState.getSite) site$: Observable<string|null>;
 
   queryParams$: Observable<{[k: string]: string}>;

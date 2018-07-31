@@ -1,19 +1,19 @@
 import { State, Action, StateContext, Selector, NgxsOnInit } from '@ngxs/store';
 import { AppStateModel } from './app-state.interface';
-import { AppShowOverlay, AppHideOverlay, AppLogin, AppLogout } from './app.actions';
+import { AppShowOverlay, AppHideOverlay } from './app.actions';
 import { Router, ActivationEnd } from '@angular/router';
 import { filter, take } from 'rxjs/operators';
+import { UserState } from '../user/user-state';
 
 const defaultState: AppStateModel = {
   showOverlay: false,
-  authToken: null,
-  hasMultipage: true,  /** @todo: think about features */
   site: null
 };
 
 @State<AppStateModel>({
   name: 'app',
-  defaults: defaultState
+  defaults: defaultState,
+  children: [UserState]
 })
 export class AppState implements NgxsOnInit {
 
@@ -27,16 +27,10 @@ export class AppState implements NgxsOnInit {
     return state.site;
   }
 
-  @Selector()
-  static isLoggedIn(state: AppStateModel): boolean {
-    return !!state.authToken;
-  }
-
   constructor(private router: Router) {
   }
 
   ngxsOnInit({ patchState }: StateContext<AppStateModel>) {
-    const token = window.localStorage.getItem('token');
     this.router.events.pipe(
       filter(evt => evt instanceof ActivationEnd),
       take(1)
@@ -46,10 +40,6 @@ export class AppState implements NgxsOnInit {
       } else {
         patchState({site: ''});
       }
-    });
-
-    patchState({
-      authToken: token,
     });
   }
 
@@ -61,15 +51,5 @@ export class AppState implements NgxsOnInit {
   @Action(AppHideOverlay)
   hideOverlay({ patchState }: StateContext<AppStateModel>) {
     patchState({ showOverlay: false });
-  }
-
-  @Action(AppLogin)
-  login({ patchState }: StateContext<AppStateModel>, action: AppLogin) {
-    patchState({authToken: action.token});
-  }
-
-  @Action(AppLogout)
-  logout({ setState }: StateContext<AppStateModel>) {
-    setState(defaultState);
   }
 }
