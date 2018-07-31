@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 
 import { Select } from '@ngxs/store';
 
-import { AppState } from '../app-state/app.state';
+import { UserState } from '../user/user-state';
 
 @Component({
   selector: 'berta-header',
@@ -44,5 +44,5 @@ import { AppState } from '../app-state/app.state';
   `]
 })
 export class HeaderComponent {
-  @Select(AppState.isLoggedIn) isLoggedIn$: Observable<boolean>;
+  @Select(UserState.isLoggedIn) isLoggedIn$: Observable<boolean>;
 }

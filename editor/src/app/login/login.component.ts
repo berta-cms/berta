@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 import { Select } from '@ngxs/store';
 
 import { AppStateService } from '../app-state/app-state.service';
-import { AppState } from '../app-state/app.state';
+import { UserState } from '../user/user-state';
 
 @Component({
   selector: 'berta-login',
@@ -28,7 +28,7 @@ import { AppState } from '../app-state/app.state';
 })
 export class LoginComponent implements OnInit {
   message = 'Login';
-  @Select(AppState.isLoggedIn) isLoggedIn$: Observable<boolean>;
+  @Select(UserState.isLoggedIn) isLoggedIn$: Observable<boolean>;
 
   constructor(
     private appStateService: AppStateService,

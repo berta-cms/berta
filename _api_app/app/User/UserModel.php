@@ -14,6 +14,7 @@ class UserModel implements
     use Authenticatable, Authorizable;
     public $name;
     public $password;
+    public $features;
 
     public function __construct() {
         /** @var {array} $options - Gets the old berta user from PHP file. */
@@ -22,6 +23,7 @@ class UserModel implements
 
         $this->name = $options['AUTH_user'];
         $this->password = $options['AUTH_password'];
+        $this->features = $this->getFeatures();
     }
 
 
@@ -44,4 +46,31 @@ class UserModel implements
     {
         return $this->name;
     }
+
+    private function getFeatures()
+    {
+        $features = [];
+
+        //hosting plan file
+        $path = config('app.old_berta_root') . '/engine/plan';
+
+        if (file_exists($path)) {
+            $plan = intval(file_get_contents($path));
+            // Berta plans
+            // 1 - Basic
+            // 2 - Pro
+            // 3 - Shop
+
+            if ($plan > 1) {
+                $features[] = 'multisite';
+            }
+
+            if ($plan == 3) {
+               $features[] = 'shop';
+            }
+        }
+
+        return $features;
+    }
+
 }
