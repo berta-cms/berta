@@ -1,15 +1,26 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
 import { AppStateService } from '../app-state/app-state.service';
 import { Router } from '@angular/router';
+import { Store } from '@ngxs/store';
+import { UserState } from '../user/user-state';
+import { UserStateModel } from '../user/user.state.model';
 
 /** @todo add icons */
 @Component({
   selector: 'berta-profile-dropdown',
   template: `
-    <button type="button" class="bt-profile-anchor">user@email.com</button>
+    <button type="button" class="bt-profile-anchor">{{ user.name }}</button>
     <ul>
-      <li><a href="https://hosting.berta.me/log-in" target="_blank">My Profile</a></li>
-      <li><button type="button" (click)="logOut()">Log Out</button></li>
+      <li *ngIf="!user.profileUrl">
+        <a [routerLink]="['/account']" [routerLinkActive]="'nav-active'" [queryParams]="queryParams$ | async">Account</a>
+      </li>
+      <li *ngIf="user.profileUrl">
+        <a href="{{ user.profileUrl }}" target="_blank">Account</a>
+      </li>
+      <li>
+        <button type="button" (click)="logOut()">Log Out</button>
+      </li>
     </ul>
   `,
   styles: [`
@@ -44,10 +55,21 @@ import { Router } from '@angular/router';
     }
   `]
 })
-export class ProfileDropdownComponent {
+export class ProfileDropdownComponent implements OnInit {
+
+  user: Observable<UserStateModel>;
+
   constructor(
     private appStateService: AppStateService,
-    private router: Router) {
+    private router: Router,
+    private store: Store) {
+  }
+
+  ngOnInit() {
+
+    this.store.select(UserState).subscribe((userState) => {
+      this.user = userState;
+    });
   }
 
   logOut() {

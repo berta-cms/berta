@@ -98,7 +98,7 @@ export class AppStateService {
         window.localStorage.setItem('name', resp.data.name);
         window.localStorage.setItem('token', resp.data.token);
         window.localStorage.setItem('features', JSON.stringify(resp.data.features));
-        window.localStorage.setItem('profileUrl', resp.data.profileUrl);
+        window.localStorage.setItem('profileUrl', JSON.stringify(resp.data.profileUrl));
       })
     );
   }
