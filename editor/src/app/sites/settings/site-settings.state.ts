@@ -1,9 +1,10 @@
-import { State, Action, StateContext, Selector, NgxsOnInit } from '@ngxs/store';
+import { State, Action, StateContext, Selector, NgxsOnInit, Store } from '@ngxs/store';
 import { SitesSettingsStateModel } from './site-settings.interface';
 import { AppStateService } from '../../app-state/app-state.service';
 import { take } from 'rxjs/operators';
 import { AppStateModel } from '../../app-state/app-state.interface';
 import { AppState } from '../../app-state/app.state';
+import { UpdateSiteSettingsAction } from './site-settings.actions';
 
 
 @State<SitesSettingsStateModel>({
@@ -22,6 +23,7 @@ export class SiteSettingsState implements NgxsOnInit {
   }
 
   constructor(
+    private store: Store,
     private appStateService: AppStateService) {
   }
 
@@ -34,18 +36,15 @@ export class SiteSettingsState implements NgxsOnInit {
     });
   }
 
-  // @Action(AppShowOverlay)
-  // showOverlay({ patchState }: StateContext<SiteSettingsModel>) {
-  //   patchState({ showOverlay: true });
-  // }
+  @Action(UpdateSiteSettingsAction)
+  login({ patchState, getState }: StateContext<SitesSettingsStateModel>, action: UpdateSiteSettingsAction) {
+    const currentSite = this.store.selectSnapshot(AppState.getSite);
+    const currentState = getState();
+    const updatedSiteSettingsGroup = {...currentState[currentSite][action.settingGroup], ...action.payload};
 
-  // @Action(AppHideOverlay)
-  // hideOverlay({ patchState }: StateContext<SiteSettingsModel>) {
-  //   patchState({ showOverlay: false });
-  // }
-
-  // @Action(AppLogin)
-  // login({ patchState }: StateContext<SiteSettingsModel>, action: AppLogin) {
-  //   patchState({authToken: action.token});
-  // }
+    patchState({[currentSite]: {
+      ...currentState[currentSite],
+      [action.settingGroup]: updatedSiteSettingsGroup
+    }});
+  }
 }

@@ -6,6 +6,7 @@ import { SiteSettingsState } from './site-settings.state';
 import { camel2Words, isPlainObject } from '../../shared/helpers';
 import { mergeMap, map, filter, tap } from '../../../../node_modules/rxjs/operators';
 import { SiteSettingsConfigState } from './site-settings-config.state';
+import { UpdateSiteSettingsAction } from './site-settings.actions';
 
 
 @Component({
@@ -17,7 +18,8 @@ import { SiteSettingsConfigState } from './site-settings-config.state';
       <h3>{{ settingGroup.group.title || settingGroup.group.slug }}</h3>
       <berta-setting *ngFor="let setting of settingGroup.settings"
                      [setting]="setting.setting"
-                     [config]="setting.config"></berta-setting>
+                     [config]="setting.config"
+                     (update)="updateSetting(settingGroup.group.slug, $event)"></berta-setting>
     </div>
   `,
   styles: [`
@@ -32,6 +34,14 @@ export class SiteSettingsComponent implements OnInit {
   constructor(private store: Store) { }
 
   ngOnInit() {
+    /**
+     * @note:
+     * Current setup will destroy and recreate all the setting components on each update.
+     * This is due to transformation of store necessary to display it. The transformation will crtheeate new objects and
+     * arrays every time, so all the components will be recreated.
+     *
+     * @todo: update the store, so the data it contains reflects the data we use here.
+     */
     this.settings$ = this.store.select(SiteSettingsState.getCurrentSiteSettings).pipe(
       filter(settings => !!settings && Object.keys(settings).length > 0),
       mergeMap(settings => {
@@ -61,10 +71,13 @@ export class SiteSettingsComponent implements OnInit {
 
     return Object.keys(settingsWConfig)
       .map((settingGroup) => {
+        const groupConfig = (settingsWConfig[settingGroup] &&
+                             settingsWConfig[settingGroup].config &&
+                             settingsWConfig[settingGroup].config._) || {};
         return {
           group: {
             slug: settingGroup,
-            ...(settingsWConfig[settingGroup].config._ || {})
+            ...groupConfig
           },
           settings: Object.keys(settingsWConfig[settingGroup].setting).map(
             setting => {
@@ -100,5 +113,10 @@ export class SiteSettingsComponent implements OnInit {
             })
         };
       }).filter(settingGroup => !settingGroup.group.invisible);
+  }
+
+  updateSetting(settingGroup, updateEvent) {
+    const data = {[updateEvent.field]: updateEvent.value};
+    this.store.dispatch(new UpdateSiteSettingsAction(settingGroup, data));
   }
 }
