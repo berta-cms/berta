@@ -22,6 +22,14 @@ export class SiteSettingsState implements NgxsOnInit {
     return siteSettings[appState.site];
   }
 
+  @Selector([SiteSettingsState.getCurrentSiteSettings])
+  static getCurrentSiteTemplate(_, currentSiteSettings) {
+    if (!(currentSiteSettings && currentSiteSettings.template)) {
+      return;
+    }
+    return currentSiteSettings.template.template;
+  }
+
   constructor(
     private store: Store,
     private appStateService: AppStateService) {
@@ -37,7 +45,7 @@ export class SiteSettingsState implements NgxsOnInit {
   }
 
   @Action(UpdateSiteSettingsAction)
-  login({ patchState, getState }: StateContext<SitesSettingsStateModel>, action: UpdateSiteSettingsAction) {
+  updateSiteSettings({ patchState, getState }: StateContext<SitesSettingsStateModel>, action: UpdateSiteSettingsAction) {
     const currentSite = this.store.selectSnapshot(AppState.getSite);
     const currentState = getState();
     const updatedSiteSettingsGroup = {...currentState[currentSite][action.settingGroup], ...action.payload};

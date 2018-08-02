@@ -115,7 +115,7 @@ export class SiteSettingsComponent implements OnInit {
       }).filter(settingGroup => !settingGroup.group.invisible);
   }
 
-  updateSetting(settingGroup, updateEvent) {
+  updateSetting(settingGroup: string, updateEvent) {
     const data = {[updateEvent.field]: updateEvent.value};
     this.store.dispatch(new UpdateSiteSettingsAction(settingGroup, data));
   }
