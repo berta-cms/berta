@@ -13,13 +13,13 @@ import { UpdateSiteSettingsAction } from './site-settings.actions';
 })
 export class SiteSettingsState implements NgxsOnInit {
 
-  @Selector([AppState])
-  static getCurrentSiteSettings(siteSettings: SitesSettingsStateModel, appState: AppStateModel) {
-    if (!(siteSettings && appState && siteSettings[appState.site])) {
+  @Selector([AppState.getSite])
+  static getCurrentSiteSettings(siteSettings: SitesSettingsStateModel, siteSlug: string) {
+    if (!siteSettings || siteSlug === null) {
       return;
     }
 
-    return siteSettings[appState.site];
+    return siteSettings[siteSlug];
   }
 
   @Selector([SiteSettingsState.getCurrentSiteSettings])

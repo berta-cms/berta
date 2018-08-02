@@ -12,12 +12,12 @@ import { SiteSettingsModel } from '../settings/site-settings.interface';
 })
 export class SiteTemplatesState implements NgxsOnInit {
 
-  @Selector([SiteSettingsState.getCurrentSiteSettings])
-  static getCurrentTemplate(state: SiteTemplatesStateModel, siteSettings: SiteSettingsModel) {
-    if (!(state && siteSettings)) {
+  @Selector([SiteSettingsState.getCurrentSiteTemplate])
+  static getCurrentTemplate(state: SiteTemplatesStateModel, templateSlug: string) {
+    if (!templateSlug) {
       return;
     }
-    return state[siteSettings.template.template];
+    return state[templateSlug];
   }
 
   @Selector([SiteTemplatesState.getCurrentTemplate])
