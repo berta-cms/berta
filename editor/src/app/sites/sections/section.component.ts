@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { SiteSectionStateModel } from './sections-state/site-sections-state.model';
 import { SectionTypes } from '../template-settings/site-template-settings.interface';
 
@@ -10,8 +10,8 @@ import { SectionTypes } from '../template-settings/site-template-settings.interf
       <input #title *ngIf="edit==='title'" bertaAutofocus
              type="text"
              [value]="section.title"
-             (keydown)="updateField('title', title.value, $event)"
-             (blur)="updateField('title', title.value, $event)">
+             (keydown)="updateTextField('title', title.value, $event)"
+             (blur)="updateTextField('title', title.value, $event)">
       <button *ngIf="edit!=='title' && !modificationDisabled"
               title="Edit"
               type="button"
@@ -25,7 +25,7 @@ import { SectionTypes } from '../template-settings/site-template-settings.interf
     </h3>
     <label for="type">
       <strong>Type</strong>
-      <select name="type">
+      <select #sectionType name="type" (change)="updateField({'@attributes': {type: sectionType.value}})">
         <option *ngFor="let sectionType of templateSectionTypes"
                 [value]="sectionType.slug"
                 [attr.selected]="(sectionType.slug === section['@attributes'].type ? '' : null)">
@@ -37,15 +37,21 @@ import { SectionTypes } from '../template-settings/site-template-settings.interf
     <div class="section-seo">
       <label for="seo-title">
         Title:
-        <textarea name="seo-title">{{section.seoTitle}}</textarea>
+        <textarea name="seo-title"
+                  (blur)="updateTextField('seoTitle', $event.target.value, $event)"
+                  (focus)="editField('seoTitle')">{{section.seoTitle}}</textarea>
       </label>
       <label for="seo-keywords">
         Keywords:
-        <textarea name="seo-keywords">{{section.seoKeywords}}</textarea>
+        <textarea name="seo-keywords"
+                  (blur)="updateTextField('seoKeywords', $event.target.value, $event)"
+                  (focus)="editField('seoKeywords')">{{section.seoKeywords}}</textarea>
       </label>
       <label for="seo-description">
         Description:
-        <textarea name="seo-description">{{section.seoDescription}}</textarea>
+        <textarea name="seo-description"
+                  (blur)="updateTextField('seoDescription', $event.target.value, $event)"
+                  (focus)="editField('seoDescription')">{{section.seoDescription}}</textarea>
       </label>
     </div>
     <h4 *ngIf="params.length > 0">Params</h4>
@@ -82,13 +88,29 @@ export class SectionComponent implements OnInit {
   @Input('params') params: any[] = [];
   edit: false | 'title' = false;
 
+  @Output('update') update = new EventEmitter<{section: string|number, data: {[k: string]: any}}>();
+
   constructor() { }
 
   ngOnInit() {
   }
 
-  updateField(field, value, $event) {
+  updateTextField(field, value, $event) {
+    if (this.edit === false || $event instanceof KeyboardEvent && !($event.key === 'Enter' || $event.keyCode === 13)) {
+      return;
+    }
     this.edit = false;
+    const data = {};
+    data[field] = value;
+
+    this.updateField(data);
+  }
+
+  updateField(data) {
+    this.update.emit({
+      section: this.section.order,
+      data
+    });
   }
 
   editField(field) {

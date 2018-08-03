@@ -3,6 +3,7 @@ import { SiteSectionStateModel } from './site-sections-state.model';
 import { AppStateService } from '../../../app-state/app-state.service';
 import { take } from 'rxjs/operators';
 import { AppState } from '../../../app-state/app.state';
+import { UpdateSiteSection } from './site-sections.actions';
 
 @State<SiteSectionStateModel[]>({
   name: 'siteSections',
@@ -34,5 +35,27 @@ export class SiteSectionsState implements NgxsOnInit {
       }
       setState(sections);
     });
+  }
+
+  @Action(UpdateSiteSection)
+  updateSiteSection({ getState, setState }: StateContext<SiteSectionStateModel[]>, action) {
+    const state = getState();
+    if (!state.some(section => section.site_name === action.siteName && section.order === action.order)) {
+      console.log('section not found!!!', action);
+      return;
+    }
+
+    setState(state.map(section => {
+      if (section.site_name !== action.siteName || section.order !== action.order) {
+        return section;
+      }
+      /* Quick workaround for deep settings: */
+      if (action.payload['@attributes']) {
+        /** @todo rebuild this recursive */
+        const attributes = {...section['@attributes'], ...action.payload['@attributes']};
+        return {...section, ...action.payload, ...{'@attributes': attributes}};
+      }
+      return {...section, ...action.payload};  // Deep set must be done here for complex properties
+    }));
   }
 }

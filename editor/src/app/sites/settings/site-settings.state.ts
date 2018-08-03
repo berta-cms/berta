@@ -1,9 +1,10 @@
-import { State, Action, StateContext, Selector, NgxsOnInit } from '@ngxs/store';
+import { State, Action, StateContext, Selector, NgxsOnInit, Store } from '@ngxs/store';
 import { SitesSettingsStateModel } from './site-settings.interface';
 import { AppStateService } from '../../app-state/app-state.service';
 import { take } from 'rxjs/operators';
 import { AppStateModel } from '../../app-state/app-state.interface';
 import { AppState } from '../../app-state/app.state';
+import { UpdateSiteSettingsAction } from './site-settings.actions';
 
 
 @State<SitesSettingsStateModel>({
@@ -12,16 +13,25 @@ import { AppState } from '../../app-state/app.state';
 })
 export class SiteSettingsState implements NgxsOnInit {
 
-  @Selector([AppState])
-  static getCurrentSiteSettings(siteSettings: SitesSettingsStateModel, appState: AppStateModel) {
-    if (!(siteSettings && appState && siteSettings[appState.site])) {
+  @Selector([AppState.getSite])
+  static getCurrentSiteSettings(siteSettings: SitesSettingsStateModel, siteSlug: string) {
+    if (!siteSettings || siteSlug === null) {
       return;
     }
 
-    return siteSettings[appState.site];
+    return siteSettings[siteSlug];
+  }
+
+  @Selector([SiteSettingsState.getCurrentSiteSettings])
+  static getCurrentSiteTemplate(_, currentSiteSettings) {
+    if (!(currentSiteSettings && currentSiteSettings.template)) {
+      return;
+    }
+    return currentSiteSettings.template.template;
   }
 
   constructor(
+    private store: Store,
     private appStateService: AppStateService) {
   }
 
@@ -34,18 +44,15 @@ export class SiteSettingsState implements NgxsOnInit {
     });
   }
 
-  // @Action(AppShowOverlay)
-  // showOverlay({ patchState }: StateContext<SiteSettingsModel>) {
-  //   patchState({ showOverlay: true });
-  // }
+  @Action(UpdateSiteSettingsAction)
+  updateSiteSettings({ patchState, getState }: StateContext<SitesSettingsStateModel>, action: UpdateSiteSettingsAction) {
+    const currentSite = this.store.selectSnapshot(AppState.getSite);
+    const currentState = getState();
+    const updatedSiteSettingsGroup = {...currentState[currentSite][action.settingGroup], ...action.payload};
 
-  // @Action(AppHideOverlay)
-  // hideOverlay({ patchState }: StateContext<SiteSettingsModel>) {
-  //   patchState({ showOverlay: false });
-  // }
-
-  // @Action(AppLogin)
-  // login({ patchState }: StateContext<SiteSettingsModel>, action: AppLogin) {
-  //   patchState({authToken: action.token});
-  // }
+    patchState({[currentSite]: {
+      ...currentState[currentSite],
+      [action.settingGroup]: updatedSiteSettingsGroup
+    }});
+  }
 }

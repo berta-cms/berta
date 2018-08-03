@@ -1,4 +1,4 @@
-import { State, Action, StateContext, Selector, NgxsOnInit } from '@ngxs/store';
+import { State, Action, StateContext, Selector, NgxsOnInit, Store } from '@ngxs/store';
 import { AppStateService } from '../../app-state/app-state.service';
 import { take } from 'rxjs/operators';
 import { SitesTemplateSettingsStateModel } from './site-template-settings.interface';
@@ -6,6 +6,7 @@ import { SiteSettingsState } from '../settings/site-settings.state';
 import { SiteSettingsModel } from '../settings/site-settings.interface';
 import { AppStateModel } from '../../app-state/app-state.interface';
 import { AppState } from '../../app-state/app.state';
+import { UpdateSiteTemplateSettingsAction } from './site-teplate-settings.actions';
 
 @State<SitesTemplateSettingsStateModel>({
   name: 'siteTemplateSettings',
@@ -31,6 +32,7 @@ export class SiteTemplateSettingsState implements NgxsOnInit {
   }
 
   constructor(
+    private store: Store,
     private appStateService: AppStateService) {
   }
 
@@ -44,18 +46,20 @@ export class SiteTemplateSettingsState implements NgxsOnInit {
     });
   }
 
-  // @Action(AppShowOverlay)
-  // showOverlay({ patchState }: StateContext<SiteSettingsModel>) {
-  //   patchState({ showOverlay: true });
-  // }
+  @Action(UpdateSiteTemplateSettingsAction)
+  updateSiteTemplateSettings({ patchState, getState }: StateContext<SitesTemplateSettingsStateModel>,
+                             action: UpdateSiteTemplateSettingsAction) {
+    const currentSite = this.store.selectSnapshot(AppState.getSite);
+    const currentSiteTemplate = this.store.selectSnapshot(SiteSettingsState.getCurrentSiteTemplate);
+    const currentState = getState();
+    const updatedSiteSettingsGroup = {...currentState[currentSite][currentSiteTemplate][action.settingGroup], ...action.payload};
 
-  // @Action(AppHideOverlay)
-  // hideOverlay({ patchState }: StateContext<SiteSettingsModel>) {
-  //   patchState({ showOverlay: false });
-  // }
-
-  // @Action(AppLogin)
-  // login({ patchState }: StateContext<SiteSettingsModel>, action: AppLogin) {
-  //   patchState({authToken: action.token});
-  // }
+    patchState({[currentSite]: {
+      ...currentState[currentSite],
+      [currentSiteTemplate]: {
+        ...currentState[currentSite][currentSiteTemplate],
+        [action.settingGroup]: updatedSiteSettingsGroup
+      }
+    }});
+  }
 }
