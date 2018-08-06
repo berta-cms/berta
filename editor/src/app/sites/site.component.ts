@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
 import { Store } from '@ngxs/store';
 import { SiteStateModel } from './sites-state/site-state.model';
-import { DeleteSiteAction } from './sites-state/sites.actions';
+import { DeleteSiteAction, CloneSiteAction } from './sites-state/sites.actions';
 
 @Component({
   selector: 'berta-site',
@@ -20,9 +20,12 @@ import { DeleteSiteAction } from './sites-state/sites.actions';
     <div *ngIf="edit!=='title'" class="expand"></div>
     <button [attr.disabled]="modificationDisabled"
             [class.bt-active]="site['@attributes'].published"
-            title="publish">P</button>
-    <button [attr.disabled]="modificationDisabled" title="delete" (click)="deleteSite()">X</button>
-    <button title="copy">CP</button>
+            title="publish">Publish</button>
+    <button title="copy"
+            (click)="cloneSite()">Clone</button>
+    <button [attr.disabled]="modificationDisabled"
+            title="delete"
+            (click)="deleteSite()">X</button>
   </div>
   <div class="url-line">http://berta.me/<span *ngIf="edit!=='name'">{{site.name}}</span>
     <button *ngIf="edit!=='name' && !modificationDisabled"
@@ -79,6 +82,10 @@ export class SiteComponent implements OnInit {
 
   editField(field) {
     this.edit = field;
+  }
+
+  cloneSite() {
+    this.store.dispatch(new CloneSiteAction(this.site));
   }
 
   deleteSite() {

@@ -2,7 +2,7 @@ import { State, Action, StateContext, Selector, NgxsOnInit } from '@ngxs/store';
 import { SiteStateModel } from './site-state.model';
 import { AppStateService } from '../../app-state/app-state.service';
 import { take } from 'rxjs/operators';
-import { CreateSiteAction, DeleteSiteAction } from './sites.actions';
+import { CreateSiteAction, DeleteSiteAction, CloneSiteAction } from './sites.actions';
 
 @State<SiteStateModel[]>({
   name: 'sites',
@@ -33,6 +33,27 @@ export class SitesState implements NgxsOnInit {
       // @todo get unique name from backend
       name: 'untitled-' + Math.random().toString(36).substr(2, 9),
       title: '',
+      order: currentState.length,
+      '@attributes': {
+        published: 0
+      }
+    };
+
+    setState(
+      [...currentState, newSite]
+    );
+  }
+
+
+  @Action(CloneSiteAction)
+  cloneSite({ setState, getState }: StateContext<SiteStateModel[]>, action: CloneSiteAction) {
+    const currentState = getState();
+    const newSite: SiteStateModel = {
+      // @todo sync with backend
+      // @todo get new site from backend
+      // @todo sync related site data
+      name: 'clone-of-' + action.site.name,
+      title: 'Clone of ' + action.site.title,
       order: currentState.length,
       '@attributes': {
         published: 0
