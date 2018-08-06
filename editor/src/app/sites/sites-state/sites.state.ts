@@ -1,8 +1,9 @@
+import { set } from 'lodash';
 import { State, Action, StateContext, Selector, NgxsOnInit } from '@ngxs/store';
 import { SiteStateModel } from './site-state.model';
 import { AppStateService } from '../../app-state/app-state.service';
 import { take } from 'rxjs/operators';
-import { CreateSiteAction, DeleteSiteAction, CloneSiteAction } from './sites.actions';
+import { CreateSiteAction, DeleteSiteAction, CloneSiteAction, UpdateSiteAction } from './sites.actions';
 
 @State<SiteStateModel[]>({
   name: 'sites',
@@ -41,6 +42,24 @@ export class SitesState implements NgxsOnInit {
 
     setState(
       [...currentState, newSite]
+    );
+  }
+
+
+  @Action(UpdateSiteAction)
+  updateSite({ setState, getState }: StateContext<SiteStateModel[]>, action: UpdateSiteAction) {
+    const currentState = getState();
+
+    // @todo sync with backend, set returned `name` from server (already slugified and unique)
+    // @todo check for site rename and update related data
+    setState(
+      currentState.map((site) => {
+        if (site.name === action.site.name) {
+          set(site, action.field, action.value);
+          return site;
+        }
+        return site;
+      })
     );
   }
 
