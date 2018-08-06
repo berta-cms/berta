@@ -1,5 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
+import { Store } from '@ngxs/store';
 import { SiteStateModel } from './sites-state/site-state.model';
+import { DeleteSiteAction } from './sites-state/sites.actions';
 
 @Component({
   selector: 'berta-site',
@@ -19,7 +21,7 @@ import { SiteStateModel } from './sites-state/site-state.model';
     <button [attr.disabled]="modificationDisabled"
             [class.bt-active]="site['@attributes'].published"
             title="publish">P</button>
-    <button [attr.disabled]="modificationDisabled" title="delete">X</button>
+    <button [attr.disabled]="modificationDisabled" title="delete" (click)="deleteSite()">X</button>
     <button title="copy">CP</button>
   </div>
   <div class="url-line">http://berta.me/<span *ngIf="edit!=='name'">{{site.name}}</span>
@@ -59,7 +61,7 @@ export class SiteComponent implements OnInit {
   modificationDisabled: null | true = null;
   edit: false | 'title' | 'label' = false;
 
-  constructor() { }
+  constructor(private store: Store) { }
 
   ngOnInit() {
     this.modificationDisabled = this.site.name === '' || null;
@@ -77,5 +79,9 @@ export class SiteComponent implements OnInit {
 
   editField(field) {
     this.edit = field;
+  }
+
+  deleteSite() {
+    this.store.dispatch(new DeleteSiteAction(this.site));
   }
 }

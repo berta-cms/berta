@@ -2,7 +2,7 @@ import { State, Action, StateContext, Selector, NgxsOnInit } from '@ngxs/store';
 import { SiteStateModel } from './site-state.model';
 import { AppStateService } from '../../app-state/app-state.service';
 import { take } from 'rxjs/operators';
-import { CreateSiteAction } from './sites.actions';
+import { CreateSiteAction, DeleteSiteAction } from './sites.actions';
 
 @State<SiteStateModel[]>({
   name: 'sites',
@@ -42,5 +42,14 @@ export class SitesState implements NgxsOnInit {
     setState(
       [...currentState, newSite]
     );
+  }
+
+
+  @Action(DeleteSiteAction)
+  DeleteSite({setState, getState}: StateContext<SiteStateModel[]>, action: DeleteSiteAction) {
+    const currentState = getState();
+    // @todo sync with backend
+    // @todo delete associated data from state
+    setState(currentState.filter(site => site.name !== action.site.name));
   }
 }
