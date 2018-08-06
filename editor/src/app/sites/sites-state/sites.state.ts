@@ -2,17 +2,13 @@ import { State, Action, StateContext, Selector, NgxsOnInit } from '@ngxs/store';
 import { SiteStateModel } from './site-state.model';
 import { AppStateService } from '../../app-state/app-state.service';
 import { take } from 'rxjs/operators';
+import { CreateSiteAction } from './sites.actions';
 
 @State<SiteStateModel[]>({
   name: 'sites',
   defaults: []
 })
 export class SitesState implements NgxsOnInit {
-
-  // @Selector()
-  // static getCurrentSite(state: SiteStateModel[]) {
-  //   return state.showOverlay;
-  // }
 
   constructor(
     private appStateService: AppStateService) {
@@ -22,25 +18,29 @@ export class SitesState implements NgxsOnInit {
   ngxsOnInit({ setState }: StateContext<SiteStateModel[]>) {
     this.appStateService.getInitialState('', 'sites').pipe(take(1)).subscribe({
       next: (response) => {
-        console.log('response: ', response);
         setState(response as SiteStateModel[]);
       },
       error: (error) => console.error(error)
     });
   }
 
-  // @Action(AppShowOverlay)
-  // showOverlay({ patchState }: StateContext<SiteStateModel[]>) {
-  //   patchState({ showOverlay: true });
-  // }
 
-  // @Action(AppHideOverlay)
-  // hideOverlay({ patchState }: StateContext<SiteStateModel[]>) {
-  //   patchState({ showOverlay: false });
-  // }
+  @Action(CreateSiteAction)
+  createSite({ setState, getState }: StateContext<SiteStateModel[]>) {
+    const currentState = getState();
+    const newSite: SiteStateModel = {
+      // @todo sync with backend
+      // @todo get unique name from backend
+      name: 'untitled-' + Math.random().toString(36).substr(2, 9),
+      title: '',
+      order: currentState.length,
+      '@attributes': {
+        published: 0
+      }
+    };
 
-  // @Action(AppLogin)
-  // login({ patchState }: StateContext<SiteStateModel[]>, action: AppLogin) {
-  //   patchState({authToken: action.token});
-  // }
+    setState(
+      [...currentState, newSite]
+    );
+  }
 }

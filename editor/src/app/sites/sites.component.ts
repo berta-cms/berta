@@ -3,6 +3,7 @@ import { Store, Select } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { SiteStateModel } from './sites-state/site-state.model';
 import { UserState } from '../user/user-state';
+import { CreateSiteAction } from './sites-state/sites.actions';
 
 @Component({
   selector: 'berta-sites',
@@ -11,6 +12,7 @@ import { UserState } from '../user/user-state';
     <div class="sites">
       <berta-site *ngFor="let site of sites$ | async" [site]="site" (update)="siteUpdated($event)"></berta-site>
     </div>
+    <button type="button" (click)="createSite()">Create New Site</button>
   `,
   styles: [`
     .sites {
@@ -25,10 +27,14 @@ export class SitesComponent implements OnInit {
   @Select(UserState.isLoggedIn) isLoggedIn$;
   @Select('sites') public sites$: Observable<SiteStateModel[]>;
 
-  constructor(private store$: Store) { }
+  constructor(private store: Store) { }
 
   ngOnInit() {
     this.sites$.subscribe((state) => console.log(state));
+  }
+
+  createSite() {
+    this.store.dispatch(CreateSiteAction);
   }
 
   siteUpdated([site, data]) {
