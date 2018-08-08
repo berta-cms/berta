@@ -6,7 +6,7 @@ import { SiteSettingsState } from '../settings/site-settings.state';
 import { SiteSettingsModel } from '../settings/site-settings.interface';
 import { AppStateModel } from '../../app-state/app-state.interface';
 import { AppState } from '../../app-state/app.state';
-import { UpdateSiteTemplateSettingsAction } from './site-teplate-settings.actions';
+import { UpdateSiteTemplateSettingsAction, DeleteSiteTemplateSettingsAction } from './site-teplate-settings.actions';
 
 @State<SitesTemplateSettingsStateModel>({
   name: 'siteTemplateSettings',
@@ -61,5 +61,14 @@ export class SiteTemplateSettingsState implements NgxsOnInit {
         [action.settingGroup]: updatedSiteSettingsGroup
       }
     }});
+  }
+
+  @Action(DeleteSiteTemplateSettingsAction)
+  deleteSiteTemplateSettings({ setState, getState }: StateContext<SitesTemplateSettingsStateModel>,
+                             action: DeleteSiteTemplateSettingsAction) {
+    const state = getState();
+    const res = Object.assign({}, state);
+    delete res[action.siteName];
+    setState(res);
   }
 }

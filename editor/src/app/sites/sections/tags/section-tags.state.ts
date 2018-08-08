@@ -3,6 +3,7 @@ import { State, Action, StateContext, Selector, NgxsOnInit  } from '@ngxs/store'
 import { AppStateService } from '../../../app-state/app-state.service';
 import { take } from 'rxjs/operators';
 import { SectionTagsStateModel } from './section-tags-state.model';
+import { DeleteSiteSectionsTagsAction } from './section-tags.actions';
 
 @State<SectionTagsStateModel>({
   name: 'sectionTags',
@@ -14,5 +15,13 @@ export class SectionTagsState implements NgxsOnInit {
     this.appStateService.getInitialState('', 'section_tags').pipe(take(1)).subscribe((sections) => {
       setState(sections);
     });
+  }
+
+  @Action(DeleteSiteSectionsTagsAction)
+  deleteSiteSectionsTags({ getState, setState }: StateContext<SectionTagsStateModel[]>, action: DeleteSiteSectionsTagsAction) {
+    const state = getState();
+    const res = Object.assign({}, state);
+    delete res[action.siteName];
+    setState(res);
   }
 }

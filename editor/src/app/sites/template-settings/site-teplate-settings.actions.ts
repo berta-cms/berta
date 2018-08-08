@@ -4,3 +4,9 @@ export class UpdateSiteTemplateSettingsAction {
               public payload: {[k: string]: any}) {
   }
 }
+
+export class DeleteSiteTemplateSettingsAction {
+  static readonly type = 'SITE_TEMPLATE_SETTINGS:DELETE';
+  constructor(public siteName: string) {
+  }
+}

@@ -3,7 +3,7 @@ import { SiteSectionStateModel } from './site-sections-state.model';
 import { AppStateService } from '../../../app-state/app-state.service';
 import { take } from 'rxjs/operators';
 import { AppState } from '../../../app-state/app.state';
-import { UpdateSiteSection, DeleteSiteSections } from './site-sections.actions';
+import { UpdateSiteSectionAction, DeleteSiteSectionsAction } from './site-sections.actions';
 
 @State<SiteSectionStateModel[]>({
   name: 'siteSections',
@@ -37,8 +37,8 @@ export class SiteSectionsState implements NgxsOnInit {
     });
   }
 
-  @Action(UpdateSiteSection)
-  updateSiteSection({ getState, setState }: StateContext<SiteSectionStateModel[]>, action) {
+  @Action(UpdateSiteSectionAction)
+  updateSiteSection({ getState, setState }: StateContext<SiteSectionStateModel[]>, action: UpdateSiteSectionAction) {
     const state = getState();
     if (!state.some(section => section.site_name === action.siteName && section.order === action.order)) {
       console.log('section not found!!!', action);
@@ -59,8 +59,8 @@ export class SiteSectionsState implements NgxsOnInit {
     }));
   }
 
-  @Action(DeleteSiteSections)
-  deleteSiteSections({ getState, setState }: StateContext<SiteSectionStateModel[]>, action: DeleteSiteSections) {
+  @Action(DeleteSiteSectionsAction)
+  deleteSiteSections({ getState, setState }: StateContext<SiteSectionStateModel[]>, action: DeleteSiteSectionsAction) {
     const state = getState();
     setState(
       state.filter(section => section.site_name !== action.siteName)

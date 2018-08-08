@@ -4,8 +4,11 @@ import { SiteStateModel } from './site-state.model';
 import { AppStateService } from '../../app-state/app-state.service';
 import { take } from 'rxjs/operators';
 import { CreateSiteAction, DeleteSiteAction, CloneSiteAction, UpdateSiteAction } from './sites.actions';
-import { DeleteSiteSections } from '../sections/sections-state/site-sections.actions';
+import { DeleteSiteSectionsAction } from '../sections/sections-state/site-sections.actions';
 import { DeleteSiteSettingsAction } from '../settings/site-settings.actions';
+import { DeleteSiteTemplateSettingsAction } from '../template-settings/site-teplate-settings.actions';
+import { DeleteSiteSectionsTagsAction } from '../sections/tags/section-tags.actions';
+import { DeleteSiteSectionsEntriesAction } from '../sections/entries/entries-state/section-entries.actions';
 
 @State<SiteStateModel[]>({
   name: 'sites',
@@ -101,21 +104,10 @@ export class SitesState implements NgxsOnInit {
         })
     );
 
-    // @todo delete associated data from state
-    this.store.dispatch(new DeleteSiteSections(action.site.name));
+    this.store.dispatch(new DeleteSiteSectionsAction(action.site.name));
     this.store.dispatch(new DeleteSiteSettingsAction(action.site.name));
-
-    // dispatch(Actions.deleteSiteSettings({
-    //   site_name: response.name
-    // }));
-    // dispatch(Actions.deleteSiteTemplateSettings({
-    //   site_name: response.name
-    // }));
-    // dispatch(Actions.deleteSiteSectionsTags({
-    //   site_name: response.name
-    // }));
-    // dispatch(Actions.deleteSiteSectionsEntries({
-    //   site_name: response.name
-    // }));
+    this.store.dispatch(new DeleteSiteTemplateSettingsAction(action.site.name));
+    this.store.dispatch(new DeleteSiteSectionsTagsAction(action.site.name));
+    this.store.dispatch(new DeleteSiteSectionsEntriesAction(action.site.name));
   }
 }
