@@ -1,9 +1,10 @@
 import { set } from 'lodash';
-import { State, Action, StateContext, Selector, NgxsOnInit } from '@ngxs/store';
+import { Store, State, Action, StateContext, NgxsOnInit } from '@ngxs/store';
 import { SiteStateModel } from './site-state.model';
 import { AppStateService } from '../../app-state/app-state.service';
 import { take } from 'rxjs/operators';
 import { CreateSiteAction, DeleteSiteAction, CloneSiteAction, UpdateSiteAction } from './sites.actions';
+import { DeleteSiteSections } from '../sections/sections-state/site-sections.actions';
 
 @State<SiteStateModel[]>({
   name: 'sites',
@@ -12,7 +13,8 @@ import { CreateSiteAction, DeleteSiteAction, CloneSiteAction, UpdateSiteAction }
 export class SitesState implements NgxsOnInit {
 
   constructor(
-    private appStateService: AppStateService) {
+    private appStateService: AppStateService,
+    private store: Store) {
   }
 
 
@@ -89,7 +91,6 @@ export class SitesState implements NgxsOnInit {
   DeleteSite({setState, getState}: StateContext<SiteStateModel[]>, action: DeleteSiteAction) {
     const currentState = getState();
     // @todo sync with backend
-    // @todo delete associated data from state
     setState(
       currentState
         .filter(site => site.name !== action.site.name)
@@ -98,5 +99,8 @@ export class SitesState implements NgxsOnInit {
             return set(site, 'order', order);
         })
     );
+
+    // @todo delete associated data from state
+    this.store.dispatch(new DeleteSiteSections(action.site.name));
   }
 }

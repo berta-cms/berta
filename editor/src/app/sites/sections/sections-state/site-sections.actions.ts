@@ -5,3 +5,9 @@ export class UpdateSiteSection {
               public payload: {[k: string]: any}) {
   }
 }
+
+export class DeleteSiteSections {
+  static readonly type = 'SITE_SECTIONS:DELETE';
+  constructor(public siteName: string) {
+  }
+}

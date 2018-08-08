@@ -3,7 +3,7 @@ import { SiteSectionStateModel } from './site-sections-state.model';
 import { AppStateService } from '../../../app-state/app-state.service';
 import { take } from 'rxjs/operators';
 import { AppState } from '../../../app-state/app.state';
-import { UpdateSiteSection } from './site-sections.actions';
+import { UpdateSiteSection, DeleteSiteSections } from './site-sections.actions';
 
 @State<SiteSectionStateModel[]>({
   name: 'siteSections',
@@ -57,5 +57,13 @@ export class SiteSectionsState implements NgxsOnInit {
       }
       return {...section, ...action.payload};  // Deep set must be done here for complex properties
     }));
+  }
+
+  @Action(DeleteSiteSections)
+  deleteSiteSections({ getState, setState }: StateContext<SiteSectionStateModel[]>, action: DeleteSiteSections) {
+    const state = getState();
+    setState(
+      state.filter(section => section.site_name !== action.siteName)
+    );
   }
 }
