@@ -90,6 +90,13 @@ export class SitesState implements NgxsOnInit {
     const currentState = getState();
     // @todo sync with backend
     // @todo delete associated data from state
-    setState(currentState.filter(site => site.name !== action.site.name));
+    setState(
+      currentState
+        .filter(site => site.name !== action.site.name)
+        // Update order
+        .map((site, order) => {
+            return set(site, 'order', order);
+        })
+    );
   }
 }
