@@ -1,3 +1,4 @@
+import { cloneDeep } from 'lodash';
 import { State, Action, StateContext, Selector, NgxsOnInit, Store } from '@ngxs/store';
 import { AppStateService } from '../../app-state/app-state.service';
 import { take } from 'rxjs/operators';
@@ -6,7 +7,10 @@ import { SiteSettingsState } from '../settings/site-settings.state';
 import { SiteSettingsModel } from '../settings/site-settings.interface';
 import { AppStateModel } from '../../app-state/app-state.interface';
 import { AppState } from '../../app-state/app.state';
-import { UpdateSiteTemplateSettingsAction, DeleteSiteTemplateSettingsAction } from './site-teplate-settings.actions';
+import {
+  UpdateSiteTemplateSettingsAction,
+  DeleteSiteTemplateSettingsAction,
+  RenameSiteTemplateSettingsSitenameAction } from './site-teplate-settings.actions';
 
 @State<SitesTemplateSettingsStateModel>({
   name: 'siteTemplateSettings',
@@ -61,6 +65,18 @@ export class SiteTemplateSettingsState implements NgxsOnInit {
         [action.settingGroup]: updatedSiteSettingsGroup
       }
     }});
+  }
+
+
+  @Action(RenameSiteTemplateSettingsSitenameAction)
+  renameSiteTemplateSettingsSitename({ setState, getState }: StateContext<SitesTemplateSettingsStateModel>,
+                             action: RenameSiteTemplateSettingsSitenameAction) {
+    const state = getState();
+    const newState = cloneDeep(state);
+    const keyVal = newState[action.site.name];
+    delete newState[action.site.name];
+    newState[action.siteName] = keyVal;
+    setState(newState);
   }
 
   @Action(DeleteSiteTemplateSettingsAction)

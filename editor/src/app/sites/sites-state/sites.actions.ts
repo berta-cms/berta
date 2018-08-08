@@ -13,6 +13,14 @@ export class UpdateSiteAction {
   }
 }
 
+export class RenameSiteAction {
+  static readonly type = 'SITE:RENAME';
+  constructor(
+    public site: SiteStateModel,
+    public value: string) {
+  }
+}
+
 export class CloneSiteAction {
   static readonly type = 'SITE:CLONE';
   constructor(public site: SiteStateModel) {

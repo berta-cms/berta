@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
 import { Store } from '@ngxs/store';
 import { SiteStateModel } from './sites-state/site-state.model';
-import { DeleteSiteAction, CloneSiteAction, UpdateSiteAction } from './sites-state/sites.actions';
+import { DeleteSiteAction, CloneSiteAction, UpdateSiteAction, RenameSiteAction } from './sites-state/sites.actions';
 
 @Component({
   selector: 'berta-site',
@@ -95,7 +95,11 @@ export class SiteComponent implements OnInit {
   }
 
   updateSite(field: string, value: string) {
-    this.store.dispatch(new UpdateSiteAction(this.site, field, value));
+    if (field === 'name') {
+      this.store.dispatch(new RenameSiteAction(this.site, value));
+    } else {
+      this.store.dispatch(new UpdateSiteAction(this.site, field, value));
+    }
   }
 
   cloneSite() {

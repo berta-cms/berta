@@ -1,9 +1,10 @@
+import { cloneDeep } from 'lodash';
 import { State, Action, StateContext, Selector, NgxsOnInit  } from '@ngxs/store';
 import { take } from 'rxjs/operators';
 
 import { AppStateService } from '../../../../app-state/app-state.service';
 import { SectionEntriesStateModel } from './section-entries-state.model';
-import { DeleteSiteSectionsEntriesAction } from './section-entries.actions';
+import { DeleteSiteSectionsEntriesAction, RenameSectionEntriesSitenameAction } from './section-entries.actions';
 
 @State<SectionEntriesStateModel>({
   name: 'sectionEntries',
@@ -15,6 +16,16 @@ export class SectionEntriesState implements NgxsOnInit {
     this.appStateService.getInitialState('', 'sectionEntries').pipe(take(1)).subscribe((sections) => {
       setState(sections);
     });
+  }
+
+  @Action(RenameSectionEntriesSitenameAction)
+  renameSectionEntriesSitename({ setState, getState }: StateContext<SectionEntriesStateModel>, action: RenameSectionEntriesSitenameAction) {
+    const state = getState();
+    const newState = cloneDeep(state);
+    const keyVal = newState[action.site.name];
+    delete newState[action.site.name];
+    newState[action.siteName] = keyVal;
+    setState(newState);
   }
 
   @Action(DeleteSiteSectionsEntriesAction)

@@ -1,14 +1,18 @@
-import { set } from 'lodash';
+import { set } from 'lodash/fp';
 import { Store, State, Action, StateContext, NgxsOnInit } from '@ngxs/store';
 import { SiteStateModel } from './site-state.model';
 import { AppStateService } from '../../app-state/app-state.service';
 import { take } from 'rxjs/operators';
-import { CreateSiteAction, DeleteSiteAction, CloneSiteAction, UpdateSiteAction } from './sites.actions';
-import { DeleteSiteSectionsAction } from '../sections/sections-state/site-sections.actions';
-import { DeleteSiteSettingsAction } from '../settings/site-settings.actions';
-import { DeleteSiteTemplateSettingsAction } from '../template-settings/site-teplate-settings.actions';
-import { DeleteSiteSectionsTagsAction } from '../sections/tags/section-tags.actions';
-import { DeleteSiteSectionsEntriesAction } from '../sections/entries/entries-state/section-entries.actions';
+import { CreateSiteAction, DeleteSiteAction, CloneSiteAction, UpdateSiteAction, RenameSiteAction } from './sites.actions';
+import { DeleteSiteSectionsAction, RenameSiteSectionsSitenameAction } from '../sections/sections-state/site-sections.actions';
+import { DeleteSiteSettingsAction, RenameSiteSettingsSitenameAction } from '../settings/site-settings.actions';
+import {
+  DeleteSiteTemplateSettingsAction,
+  RenameSiteTemplateSettingsSitenameAction } from '../template-settings/site-teplate-settings.actions';
+import { DeleteSiteSectionsTagsAction, RenameSectionTagsSitenameAction } from '../sections/tags/section-tags.actions';
+import {
+  DeleteSiteSectionsEntriesAction,
+  RenameSectionEntriesSitenameAction } from '../sections/entries/entries-state/section-entries.actions';
 
 @State<SiteStateModel[]>({
   name: 'sites',
@@ -57,16 +61,29 @@ export class SitesState implements NgxsOnInit {
     const currentState = getState();
 
     // @todo sync with backend, set returned `name` from server (already slugified and unique)
-    // @todo check for site rename and update related data
     setState(
       currentState.map((site) => {
         if (site.name === action.site.name) {
-          set(site, action.field, action.value);
-          return site;
+          return set(action.field, action.value, site);
         }
         return site;
       })
     );
+  }
+
+
+  @Action(RenameSiteAction)
+  renameSite({ setState, getState }: StateContext<SiteStateModel[]>, action: RenameSiteAction) {
+    const currentState = getState();
+
+    // @todo sync with backend, validate and return from server
+    this.store.dispatch(new UpdateSiteAction(action.site, 'name', action.value));
+
+    this.store.dispatch(new RenameSiteSectionsSitenameAction(action.site, action.value));
+    this.store.dispatch(new RenameSiteSettingsSitenameAction(action.site, action.value));
+    this.store.dispatch(new RenameSiteTemplateSettingsSitenameAction(action.site, action.value));
+    this.store.dispatch(new RenameSectionTagsSitenameAction(action.site, action.value));
+    this.store.dispatch(new RenameSectionEntriesSitenameAction(action.site, action.value));
   }
 
 
@@ -100,7 +117,7 @@ export class SitesState implements NgxsOnInit {
         .filter(site => site.name !== action.site.name)
         // Update order
         .map((site, order) => {
-            return set(site, 'order', order);
+            return set('order', order, site);
         })
     );
 

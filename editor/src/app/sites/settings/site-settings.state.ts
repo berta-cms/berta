@@ -1,9 +1,10 @@
+import { cloneDeep } from 'lodash';
 import { State, Action, StateContext, Selector, NgxsOnInit, Store } from '@ngxs/store';
 import { SitesSettingsStateModel } from './site-settings.interface';
 import { AppStateService } from '../../app-state/app-state.service';
 import { take } from 'rxjs/operators';
 import { AppState } from '../../app-state/app.state';
-import { UpdateSiteSettingsAction, DeleteSiteSettingsAction } from './site-settings.actions';
+import { UpdateSiteSettingsAction, DeleteSiteSettingsAction, RenameSiteSettingsSitenameAction } from './site-settings.actions';
 
 
 @State<SitesSettingsStateModel>({
@@ -53,6 +54,16 @@ export class SiteSettingsState implements NgxsOnInit {
       ...currentState[currentSite],
       [action.settingGroup]: updatedSiteSettingsGroup
     }});
+  }
+
+  @Action(RenameSiteSettingsSitenameAction)
+  renameSiteSettingsSitename({ setState, getState }: StateContext<SitesSettingsStateModel>, action: RenameSiteSettingsSitenameAction) {
+    const state = getState();
+    const newState = cloneDeep(state);
+    const keyVal = newState[action.site.name];
+    delete newState[action.site.name];
+    newState[action.siteName] = keyVal;
+    setState(newState);
   }
 
   @Action(DeleteSiteSettingsAction)
