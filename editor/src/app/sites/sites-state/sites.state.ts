@@ -5,6 +5,7 @@ import { AppStateService } from '../../app-state/app-state.service';
 import { take } from 'rxjs/operators';
 import { CreateSiteAction, DeleteSiteAction, CloneSiteAction, UpdateSiteAction } from './sites.actions';
 import { DeleteSiteSections } from '../sections/sections-state/site-sections.actions';
+import { DeleteSiteSettingsAction } from '../settings/site-settings.actions';
 
 @State<SiteStateModel[]>({
   name: 'sites',
@@ -102,5 +103,19 @@ export class SitesState implements NgxsOnInit {
 
     // @todo delete associated data from state
     this.store.dispatch(new DeleteSiteSections(action.site.name));
+    this.store.dispatch(new DeleteSiteSettingsAction(action.site.name));
+
+    // dispatch(Actions.deleteSiteSettings({
+    //   site_name: response.name
+    // }));
+    // dispatch(Actions.deleteSiteTemplateSettings({
+    //   site_name: response.name
+    // }));
+    // dispatch(Actions.deleteSiteSectionsTags({
+    //   site_name: response.name
+    // }));
+    // dispatch(Actions.deleteSiteSectionsEntries({
+    //   site_name: response.name
+    // }));
   }
 }
