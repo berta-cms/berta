@@ -23,6 +23,12 @@ export class RenameSiteSectionsSitenameAction {
   }
 }
 
+export class CloneSectionAction {
+  static readonly type = 'SITE_SECTION:CLONE';
+  constructor(public section: SiteSectionStateModel) {
+  }
+}
+
 export class DeleteSiteSectionAction {
   static readonly type = 'SITE_SECTION:DELETE';
   constructor(public section: SiteSectionStateModel) {

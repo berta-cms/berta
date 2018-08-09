@@ -2,7 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Store } from '@ngxs/store';
 import { SiteSectionStateModel } from './sections-state/site-sections-state.model';
 import { SectionTypes } from '../template-settings/site-template-settings.interface';
-import { DeleteSiteSectionAction } from './sections-state/site-sections.actions';
+import { DeleteSiteSectionAction, CloneSectionAction } from './sections-state/site-sections.actions';
 
 @Component({
   selector: 'berta-section',
@@ -21,7 +21,8 @@ import { DeleteSiteSectionAction } from './sections-state/site-sections.actions'
       <div *ngIf="edit!=='title'" class="expand"></div>
       <button [class.bt-active]="section['@attributes'].published"
               title="publish">P</button>
-      <button title="copy">CP</button>
+      <button title="copy"
+              (click)="cloneSection()">Clone</button>
       <button title="delete"
               (click)="deleteSection()">X</button>
     </h3>
@@ -117,6 +118,10 @@ export class SectionComponent implements OnInit {
 
   editField(field) {
     this.edit = field;
+  }
+
+  cloneSection() {
+    this.store.dispatch(new CloneSectionAction(this.section));
   }
 
   deleteSection() {

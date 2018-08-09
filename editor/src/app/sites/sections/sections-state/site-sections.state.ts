@@ -8,7 +8,8 @@ import {
   DeleteSiteSectionsAction,
   RenameSiteSectionsSitenameAction,
   DeleteSiteSectionAction,
-  CreateSectionAction} from './site-sections.actions';
+  CreateSectionAction,
+  CloneSectionAction} from './site-sections.actions';
 import { DeleteSectionTagsAction } from '../tags/section-tags.actions';
 import { DeleteSectionEntriesAction } from '../entries/entries-state/section-entries.actions';
 
@@ -73,6 +74,11 @@ export class SiteSectionsState implements NgxsOnInit {
     );
 
     // @todo add cloned section entries and tags if exists
+  }
+
+  @Action(CloneSectionAction)
+  cloneSection({ getState, setState }: StateContext<SiteSectionStateModel[]>, action: CloneSectionAction) {
+    this.store.dispatch(new CreateSectionAction(action.section));
   }
 
   @Action(UpdateSiteSectionAction)
