@@ -1,6 +1,12 @@
 import { SiteStateModel } from '../../sites-state/site-state.model';
 import { SiteSectionStateModel } from '../sections-state/site-sections-state.model';
 
+export class CreateSectionAction {
+  static readonly type = 'SITE_SECTION:CREATE';
+  constructor(public section?: SiteSectionStateModel) {
+  }
+}
+
 export class UpdateSiteSectionAction {
   static readonly type = 'SITE_SECTION:UPDATE';
   constructor(public siteName: string,

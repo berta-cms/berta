@@ -7,7 +7,7 @@ import { filter, map } from 'rxjs/operators';
 import { SiteSectionsState } from './sections-state/site-sections.state';
 import { isPlainObject, camel2Words } from '../../shared/helpers';
 import { SiteTemplateSettingsState } from '../template-settings/site-template-settings.state';
-import { UpdateSiteSectionAction } from './sections-state/site-sections.actions';
+import { UpdateSiteSectionAction, CreateSectionAction } from './sections-state/site-sections.actions';
 
 @Component({
   selector: 'berta-site-sections',
@@ -20,6 +20,7 @@ import { UpdateSiteSectionAction } from './sections-state/site-sections.actions'
                      [templateSectionTypes]="sd.templateSectionTypes"
                      (update)="updateSection(sd.section.site_name, $event)"
                      ></berta-section>
+      <button type="button" (click)="createSection()">Create New Section</button>
     </div>
   `,
   styles: [`
@@ -122,6 +123,10 @@ export class SiteSectionsComponent implements OnInit {
           });
         })
     );
+  }
+
+  createSection() {
+    this.store.dispatch(CreateSectionAction);
   }
 
   updateSection(siteName, updateEvent) {

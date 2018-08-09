@@ -7,7 +7,8 @@ import {
   UpdateSiteSectionAction,
   DeleteSiteSectionsAction,
   RenameSiteSectionsSitenameAction,
-  DeleteSiteSectionAction } from './site-sections.actions';
+  DeleteSiteSectionAction,
+  CreateSectionAction} from './site-sections.actions';
 import { DeleteSectionTagsAction } from '../tags/section-tags.actions';
 import { DeleteSectionEntriesAction } from '../entries/entries-state/section-entries.actions';
 
@@ -43,6 +44,35 @@ export class SiteSectionsState implements NgxsOnInit {
       }
       setState(sections);
     });
+  }
+
+  @Action(CreateSectionAction)
+  createSection({ getState, setState }: StateContext<SiteSectionStateModel[]>, action: CreateSectionAction) {
+    const state = getState();
+    const site = this.store.selectSnapshot(AppState.getSite);
+
+    // @todo sync with backend and return section data
+    if (action.section) {
+      // clone section, pass section to backend for cloning
+    }
+
+    const newSection: SiteSectionStateModel = {
+      // @todo get unique name from backend
+      name: 'untitled-' + Math.random().toString(36).substr(2, 9),
+      title: '',
+      site_name: site,
+      order: state.filter(section => section.site_name === site).length,
+      '@attributes': {
+        published: 1,
+        tags_behavior: 'invisible'
+      }
+    };
+
+    setState(
+      [...state, newSection]
+    );
+
+    // @todo add cloned section entries and tags if exists
   }
 
   @Action(UpdateSiteSectionAction)
