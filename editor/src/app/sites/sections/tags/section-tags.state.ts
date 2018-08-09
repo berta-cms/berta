@@ -1,4 +1,4 @@
-import { cloneDeep, map as _map } from 'lodash';
+import { cloneDeep } from 'lodash';
 import { State, Action, StateContext, Selector, NgxsOnInit  } from '@ngxs/store';
 
 import { AppStateService } from '../../../app-state/app-state.service';
