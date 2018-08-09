@@ -19,8 +19,18 @@ import { DeleteSiteSectionAction, CloneSectionAction } from './sections-state/si
               type="button"
               (click)="editField('title')">E</button>
       <div *ngIf="edit!=='title'" class="expand"></div>
-      <button [class.bt-active]="section['@attributes'].published"
-              title="publish">P</button>
+      <button *ngIf="section['@attributes'].published < 1"
+              [class.bt-active]="section['@attributes'].published"
+              title="Publish"
+              (click)="updateField({'@attributes': {published: '1'}})">
+        Publish
+      </button>
+      <button *ngIf="section['@attributes'].published > 0"
+              [class.bt-active]="section['@attributes'].published"
+              title="Unpublish"
+              (click)="updateField({'@attributes': {published: '0'}})">
+              Unpublish
+      </button>
       <button title="copy"
               (click)="cloneSection()">Clone</button>
       <button title="delete"
