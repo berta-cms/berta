@@ -1,10 +1,10 @@
-import { cloneDeep } from 'lodash';
+import { cloneDeep, map as _map } from 'lodash';
 import { State, Action, StateContext, Selector, NgxsOnInit  } from '@ngxs/store';
 
 import { AppStateService } from '../../../app-state/app-state.service';
 import { take } from 'rxjs/operators';
 import { SectionTagsStateModel } from './section-tags-state.model';
-import { DeleteSiteSectionsTagsAction, RenameSectionTagsSitenameAction } from './section-tags.actions';
+import { DeleteSiteSectionsTagsAction, RenameSectionTagsSitenameAction, DeleteSectionTagsAction } from './section-tags.actions';
 
 @State<SectionTagsStateModel>({
   name: 'sectionTags',
@@ -25,6 +25,22 @@ export class SectionTagsState implements NgxsOnInit {
     const keyVal = newState[action.site.name];
     delete newState[action.site.name];
     newState[action.siteName] = keyVal;
+    setState(newState);
+  }
+
+  @Action(DeleteSectionTagsAction)
+  deleteSectionTags({ getState, setState }: StateContext<SectionTagsStateModel[]>, action: DeleteSectionTagsAction) {
+    const state = getState();
+    const newState = cloneDeep(state);
+
+    Object.keys(newState).map(siteName => {
+      if (siteName === action.section.site_name && newState[siteName]['section']) {
+        newState[siteName]['section'] = newState[siteName]['section'].filter(section => {
+          return section['@attributes']['name'] !== action.section.name;
+        });
+      }
+    });
+
     setState(newState);
   }
 

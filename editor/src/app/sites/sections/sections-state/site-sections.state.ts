@@ -1,9 +1,15 @@
-import { State, Action, StateContext, Selector, NgxsOnInit  } from '@ngxs/store';
+import { Store, State, Action, StateContext, Selector, NgxsOnInit  } from '@ngxs/store';
 import { SiteSectionStateModel } from './site-sections-state.model';
 import { AppStateService } from '../../../app-state/app-state.service';
 import { take } from 'rxjs/operators';
 import { AppState } from '../../../app-state/app.state';
-import { UpdateSiteSectionAction, DeleteSiteSectionsAction, RenameSiteSectionsSitenameAction } from './site-sections.actions';
+import {
+  UpdateSiteSectionAction,
+  DeleteSiteSectionsAction,
+  RenameSiteSectionsSitenameAction,
+  DeleteSiteSectionAction } from './site-sections.actions';
+import { DeleteSectionTagsAction } from '../tags/section-tags.actions';
+import { DeleteSectionEntriesAction } from '../entries/entries-state/section-entries.actions';
 
 @State<SiteSectionStateModel[]>({
   name: 'siteSections',
@@ -18,7 +24,9 @@ export class SiteSectionsState implements NgxsOnInit {
     });
   }
 
-  constructor(private appStateService: AppStateService) {}
+  constructor(private appStateService: AppStateService,
+              private store: Store) {
+  }
 
   ngxsOnInit({ setState }: StateContext<SiteSectionStateModel[]>) {
     this.appStateService.getInitialState('', 'site_sections').pipe(take(1)).subscribe((sections) => {
@@ -71,6 +79,31 @@ export class SiteSectionsState implements NgxsOnInit {
         return {...section, ...{'site_name': action.siteName}};
       })
     );
+  }
+
+  @Action(DeleteSiteSectionAction)
+  deleteSiteSection({ getState, setState }: StateContext<SiteSectionStateModel[]>, action: DeleteSiteSectionAction) {
+    const state = getState();
+    let order = -1;
+
+    setState(
+      state
+        .filter(section => !(section.site_name === action.section.site_name && section.name === action.section.name))
+        // Update order
+        .map(section => {
+          if (section.site_name === action.section.site_name) {
+            order++;
+
+            if (section.order !== order) {
+              return {...section, ...{'order': order}};
+            }
+          }
+          return section;
+        })
+    );
+
+    this.store.dispatch(new DeleteSectionTagsAction(action.section));
+    this.store.dispatch(new DeleteSectionEntriesAction(action.section));
   }
 
   @Action(DeleteSiteSectionsAction)
