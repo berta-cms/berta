@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 
 import { Store, Select } from '@ngxs/store';
 import { AppHideOverlay, AppShowOverlay } from './app-state/app.actions';
@@ -14,13 +15,10 @@ import { AppState } from './app-state/app.state';
       <aside [style.display]="(routeIsRoot ? 'none' : '')"><!-- the sidebar -->
         <div class="scroll-wrap"><router-outlet></router-outlet></div></aside>
       <section>
-        <div style="text-align:center">
-          <h1>
-            Welcome to {{title}}!
-          </h1>
-          <img width="300" src="http://www.berta.me/storage/media/logo.png">
-        </div>
-        <button (click)="showOverlay()">Show overlay</button>
+        <iframe sandbox="allow-same-origin allow-scripts allow-modals allow-popups allow-forms"
+                [src]="previewUrl"
+                frameborder="0"
+                style="width:100%;height:100%;"></iframe>
       </section>
     </main>
     <div [style.display]="((showOverlay$ | async) ? '' : 'none')" class="overlay" (click)="hideOverlay()">
@@ -63,13 +61,13 @@ import { AppState } from './app-state/app.state';
 export class AppComponent implements OnInit {
   title = 'berta';
   routeIsRoot = true;
+  previewUrl: SafeUrl;
 
   @Select(AppState.getShowOverlay) showOverlay$;
 
-  constructor(
-    private router: Router,
-    private store: Store
-  ) {
+  constructor(private router: Router,
+              private store: Store,
+              private sanitizer: DomSanitizer) {
   }
 
   ngOnInit() {
@@ -84,6 +82,15 @@ export class AppComponent implements OnInit {
         }
       }
     });
+
+    // @todo
+    // 1) Set public page url in app state
+    // 2) Get public page url from app state
+    // 2) Check for logged in user and set previewUrl as `/engine`
+
+    // const url = 'http://local.berta.me';
+    const url = 'about:blank';
+    this.previewUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
   }
 
   hideOverlay() {
