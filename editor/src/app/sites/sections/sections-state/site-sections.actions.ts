@@ -15,6 +15,14 @@ export class UpdateSiteSectionAction {
   }
 }
 
+export class RenameSiteSectionAction {
+  static readonly type = 'SITE_SECTION:RENAME';
+  constructor(public section: SiteSectionStateModel,
+              public order: number,
+              public payload: {[k: string]: any}) {
+  }
+}
+
 export class RenameSiteSectionsSitenameAction {
   static readonly type = 'SITE_SECTIONS_SITENAME:RENAME';
   constructor(

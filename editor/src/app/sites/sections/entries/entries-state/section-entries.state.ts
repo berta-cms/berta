@@ -4,7 +4,11 @@ import { take } from 'rxjs/operators';
 
 import { AppStateService } from '../../../../app-state/app-state.service';
 import { SectionEntriesStateModel } from './section-entries-state.model';
-import { DeleteSiteSectionsEntriesAction, RenameSectionEntriesSitenameAction, DeleteSectionEntriesAction } from './section-entries.actions';
+import {
+  DeleteSiteSectionsEntriesAction,
+  RenameSectionEntriesSitenameAction,
+  DeleteSectionEntriesAction,
+  RenameSectionEntriesAction } from './section-entries.actions';
 
 @State<SectionEntriesStateModel>({
   name: 'sectionEntries',
@@ -16,6 +20,25 @@ export class SectionEntriesState implements NgxsOnInit {
     this.appStateService.getInitialState('', 'sectionEntries').pipe(take(1)).subscribe((sections) => {
       setState(sections);
     });
+  }
+
+  @Action(RenameSectionEntriesAction)
+  renameSectionEntries({ setState, getState }: StateContext<SectionEntriesStateModel>, action: RenameSectionEntriesAction) {
+    const state = getState();
+    const newState = cloneDeep(state);
+
+    Object.keys(newState).map(siteName => {
+      if (siteName === action.section.site_name) {
+        newState[siteName] = newState[siteName].map(entry => {
+          if (entry.sectionName === action.section.name) {
+            entry.sectionName = action.newSectionName;
+          }
+          return entry;
+        });
+      }
+    });
+
+    setState(newState);
   }
 
   @Action(RenameSectionEntriesSitenameAction)

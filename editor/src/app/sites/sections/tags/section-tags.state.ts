@@ -4,7 +4,11 @@ import { State, Action, StateContext, Selector, NgxsOnInit  } from '@ngxs/store'
 import { AppStateService } from '../../../app-state/app-state.service';
 import { take } from 'rxjs/operators';
 import { SectionTagsStateModel } from './section-tags-state.model';
-import { DeleteSiteSectionsTagsAction, RenameSectionTagsSitenameAction, DeleteSectionTagsAction } from './section-tags.actions';
+import {
+  DeleteSiteSectionsTagsAction,
+  RenameSectionTagsSitenameAction,
+  DeleteSectionTagsAction,
+  RenameSectionTagsAction } from './section-tags.actions';
 
 @State<SectionTagsStateModel>({
   name: 'sectionTags',
@@ -16,6 +20,25 @@ export class SectionTagsState implements NgxsOnInit {
     this.appStateService.getInitialState('', 'section_tags').pipe(take(1)).subscribe((sections) => {
       setState(sections);
     });
+  }
+
+  @Action(RenameSectionTagsAction)
+  renameSectionTags({ setState, getState }: StateContext<SectionTagsStateModel>, action: RenameSectionTagsAction) {
+    const state = getState();
+    const newState = cloneDeep(state);
+
+    Object.keys(newState).map(siteName => {
+      if (siteName === action.section.site_name && newState[siteName]['section']) {
+        newState[siteName]['section'] = newState[siteName]['section'].map(section => {
+          if (section['@attributes']['name'] === action.section.name) {
+            section['@attributes']['name'] = action.newSectionName;
+          }
+          return section;
+        });
+      }
+    });
+
+    setState(newState);
   }
 
   @Action(RenameSectionTagsSitenameAction)

@@ -9,9 +9,11 @@ import {
   RenameSiteSectionsSitenameAction,
   DeleteSiteSectionAction,
   CreateSectionAction,
-  CloneSectionAction} from './site-sections.actions';
-import { DeleteSectionTagsAction } from '../tags/section-tags.actions';
-import { DeleteSectionEntriesAction } from '../entries/entries-state/section-entries.actions';
+  CloneSectionAction,
+  RenameSiteSectionAction} from './site-sections.actions';
+import { DeleteSectionTagsAction, RenameSectionTagsAction } from '../tags/section-tags.actions';
+import { DeleteSectionEntriesAction, RenameSectionEntriesAction } from '../entries/entries-state/section-entries.actions';
+import { slugify } from '../../../shared/helpers';
 
 @State<SiteSectionStateModel[]>({
   name: 'siteSections',
@@ -101,6 +103,18 @@ export class SiteSectionsState implements NgxsOnInit {
       }
       return {...section, ...action.payload};  // Deep set must be done here for complex properties
     }));
+  }
+
+  @Action(RenameSiteSectionAction)
+  renameSiteSection({ getState, setState }: StateContext<SiteSectionStateModel[]>, action: RenameSiteSectionAction) {
+
+    // @todo sync and validate from server
+    // @todo return new section name from server (unique and slugified)
+    action.payload.name = slugify(action.payload.title);
+
+    this.store.dispatch(new UpdateSiteSectionAction(action.section.site_name, action.order, action.payload));
+    this.store.dispatch(new RenameSectionTagsAction(action.section, action.payload.name));
+    this.store.dispatch(new RenameSectionEntriesAction(action.section, action.payload.name));
   }
 
   @Action(RenameSiteSectionsSitenameAction)

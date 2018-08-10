@@ -13,6 +13,13 @@ export class DeleteSiteSectionsEntriesAction {
   }
 }
 
+export class RenameSectionEntriesAction {
+  static readonly type = 'SECTION_ENTRIES:RENAME';
+  constructor(public section: SiteSectionStateModel,
+              public newSectionName: string) {
+  }
+}
+
 export class RenameSectionEntriesSitenameAction {
   static readonly type = 'SITE_SECTIONS_ENTRIES_SITENAME:RENAME';
   constructor(
