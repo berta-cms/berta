@@ -10,7 +10,7 @@ import { map } from 'rxjs/operators';
 @Component({
   selector: 'berta-header',
   template: `
-    <header>
+    <header [class.loading]="(isLoading$ | async)">
       <div class="bt-menu" *ngIf="isLoggedIn$ | async">
         <nav>
           <a [routerLink]="['/multisite']" [routerLinkActive]="'nav-active'" [queryParams]="queryParams$ | async">Multisite</a>
@@ -33,6 +33,31 @@ import { map } from 'rxjs/operators';
       justify-content: flex-end;
     }
 
+    header.loading:after {
+      display: block;
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 5px;
+      top: 0;
+      background-color: #777;
+      background-image: repeating-linear-gradient(
+        -45deg,
+        transparent,
+        transparent 1rem,
+        #555 1rem,
+        #555 2rem
+      );
+      background-size: 200% 200%;
+      animation: barberpole 15s linear infinite;
+    }
+
+    @keyframes barberpole {
+      0% {
+        background-position: 100% 100%;
+      }
+    }
+
     header .bt-menu {
       display: flex;
       justify-content: space-between;
@@ -47,6 +72,7 @@ import { map } from 'rxjs/operators';
 })
 export class HeaderComponent implements OnInit {
   @Select(UserState.isLoggedIn) isLoggedIn$: Observable<boolean>;
+  @Select(AppState.getShowLoading) isLoading$: Observable<boolean>;
   @Select(AppState.getSite) site$: Observable<string|null>;
 
   queryParams$: Observable<{[k: string]: string}>;
