@@ -110,21 +110,24 @@ export class SitesState implements NgxsOnInit {
 
   @Action(DeleteSiteAction)
   DeleteSite({setState, getState}: StateContext<SiteStateModel[]>, action: DeleteSiteAction) {
-    const currentState = getState();
-    // @todo sync with backend
-    setState(
-      currentState
-        .filter(site => site.name !== action.site.name)
-        // Update order
-        .map((site, order) => {
-            return set('order', order, site);
-        })
-    );
+    this.appStateService.sync('sites', {site: action.site.name}, 'DELETE')
+    .then((response) => {
+      const currentState = getState();
+      const siteName = response['name'];
 
-    this.store.dispatch(new DeleteSiteSectionsAction(action.site.name));
-    this.store.dispatch(new DeleteSiteSettingsAction(action.site.name));
-    this.store.dispatch(new DeleteSiteTemplateSettingsAction(action.site.name));
-    this.store.dispatch(new DeleteSiteSectionsTagsAction(action.site.name));
-    this.store.dispatch(new DeleteSiteSectionsEntriesAction(action.site.name));
+      setState(
+        currentState
+          .filter(site => site.name !== siteName)
+          // Update order
+          .map((site, order) => {
+              return set('order', order, site);
+          })
+      );
+      this.store.dispatch(new DeleteSiteSectionsAction(siteName));
+      this.store.dispatch(new DeleteSiteSettingsAction(siteName));
+      this.store.dispatch(new DeleteSiteTemplateSettingsAction(siteName));
+      this.store.dispatch(new DeleteSiteSectionsTagsAction(siteName));
+      this.store.dispatch(new DeleteSiteSectionsEntriesAction(siteName));
+      });
   }
 }

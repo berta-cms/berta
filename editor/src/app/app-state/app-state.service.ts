@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { map, tap, shareReplay, catchError, exhaustMap, filter, take, retryWhen, switchMap, pairwise} from 'rxjs/operators';
+import { map, tap, shareReplay, catchError, exhaustMap, filter, take, retryWhen, pairwise} from 'rxjs/operators';
 import { Store } from '@ngxs/store';
 import { UserLogin, UserLogout } from '../user/user-actions';
 import { Router } from '@angular/router';
@@ -37,6 +37,44 @@ export class AppStateService {
 
   hideLoading() {
     this.store.dispatch(new AppHideLoading());
+  }
+
+  sync(urlName: string, data: any, method: string) {
+
+    return this.store.select(state => state.app)
+      .pipe(
+        filter(appState => !!appState.user.token && appState.urls[urlName]),  // Make sure user is logged in
+        take(1),
+        map(state => {
+          this.showLoading();
+          return fetch(
+            state.urls[urlName],
+            {
+              method: method || 'PATCH',
+              credentials: 'include',
+              headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'X-Authorization': 'Bearer ' + state.user.token
+              },
+              body: method === 'GET' ? undefined : JSON.stringify(data)
+            }
+          )
+          .then(response => {
+            this.hideLoading();
+            if (response.status === 401) {
+              this.logout();
+              throw new Error('Unauthorized');
+            }
+            return response.json();
+          })
+          .catch(function (error) {
+            // @todo handle error
+            this.hideLoading();
+            console.error('Request failed:', error.message);
+          });
+      })
+    ).toPromise();
   }
 
   getInitialState(site: string = '', stateSlice?: string , force = false) {

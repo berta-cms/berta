@@ -4,11 +4,13 @@ import { AppShowOverlay, AppHideOverlay, AppShowLoading, AppHideLoading } from '
 import { Router, ActivationEnd } from '@angular/router';
 import { filter, take } from 'rxjs/operators';
 import { UserState } from '../user/user-state';
+import { AppStateService } from './app-state.service';
 
 const defaultState: AppStateModel = {
   showOverlay: false,
   isLoading: false,
-  site: null
+  site: null,
+  urls: []
 };
 
 @State<AppStateModel>({
@@ -33,7 +35,8 @@ export class AppState implements NgxsOnInit {
     return state.site;
   }
 
-  constructor(private router: Router) {
+  constructor(private router: Router,
+              private appStateService: AppStateService) {
   }
 
   ngxsOnInit({ patchState }: StateContext<AppStateModel>) {
@@ -46,6 +49,13 @@ export class AppState implements NgxsOnInit {
       } else {
         patchState({site: ''});
       }
+    });
+
+    this.appStateService.getInitialState('').pipe(take(1)).subscribe({
+      next: (response) => {
+        patchState({urls: response.urls});
+      },
+      error: (error) => console.error(error)
     });
   }
 
