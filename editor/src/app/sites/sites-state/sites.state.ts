@@ -46,7 +46,7 @@ export class SitesState implements NgxsOnInit {
 
   @Action(CreateSiteAction)
   createSite({ setState, getState }: StateContext<SiteStateModel[]>, action: CreateSiteAction) {
-    const siteName = action.site ? action.site.name : '-1';
+    const siteName = action.site ? (action.site.name === '' ? '0' : action.site.name) : '-1';
     this.appStateService.sync('sites', { site: siteName }, 'POST')
       .then((response: any) => {
         if (response.error_message) {

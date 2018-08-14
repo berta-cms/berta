@@ -142,27 +142,39 @@ export class SiteSectionsState implements NgxsOnInit {
 
   @Action(DeleteSiteSectionAction)
   deleteSiteSection({ getState, setState }: StateContext<SiteSectionStateModel[]>, action: DeleteSiteSectionAction) {
-    const state = getState();
-    let order = -1;
+    const data = {
+      site: action.section.site_name,
+      section: action.section.name
+    };
 
-    setState(
-      state
-        .filter(section => !(section.site_name === action.section.site_name && section.name === action.section.name))
-        // Update order
-        .map(section => {
-          if (section.site_name === action.section.site_name) {
-            order++;
+    this.appStateService.sync('siteSections', data, 'DELETE')
+      .then((response: any) => {
+        if (response.error_message) {
+          // @TODO handle error message
+          console.error(response.error_message);
+        } else {
+          const state = getState();
+          let order = -1;
 
-            if (section.order !== order) {
-              return {...section, ...{'order': order}};
-            }
-          }
-          return section;
-        })
-    );
+          setState(
+            state
+              .filter(section => !(section.site_name === response.site && section.name === response.name))
+              // Update order
+              .map(section => {
+                if (section.site_name === response.site) {
+                  order++;
 
-    this.store.dispatch(new DeleteSectionTagsAction(action.section));
-    this.store.dispatch(new DeleteSectionEntriesAction(action.section));
+                  if (section.order !== order) {
+                    return {...section, ...{'order': order}};
+                  }
+                }
+                return section;
+              })
+          );
+          this.store.dispatch(new DeleteSectionTagsAction(action.section));
+          this.store.dispatch(new DeleteSectionEntriesAction(action.section));
+      }
+    });
   }
 
   @Action(DeleteSiteSectionsAction)
