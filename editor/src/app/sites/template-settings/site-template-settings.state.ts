@@ -10,7 +10,8 @@ import { AppState } from '../../app-state/app.state';
 import {
   UpdateSiteTemplateSettingsAction,
   DeleteSiteTemplateSettingsAction,
-  RenameSiteTemplateSettingsSitenameAction } from './site-teplate-settings.actions';
+  RenameSiteTemplateSettingsSitenameAction,
+  CreateSiteTemplateSettingsAction} from './site-teplate-settings.actions';
 
 @State<SitesTemplateSettingsStateModel>({
   name: 'siteTemplateSettings',
@@ -48,6 +49,15 @@ export class SiteTemplateSettingsState implements NgxsOnInit {
       },
       error: (error) => console.error(error)
     });
+  }
+
+  @Action(CreateSiteTemplateSettingsAction)
+  createSiteTemplateSettings({ patchState, getState }: StateContext<SitesTemplateSettingsStateModel>,
+                             action: CreateSiteTemplateSettingsAction) {
+    const currentState   = getState();
+    const newTemplateSettings = {};
+    newTemplateSettings[action.site.name] = action.templateSettings;
+    patchState({...currentState, ...newTemplateSettings});
   }
 
   @Action(UpdateSiteTemplateSettingsAction)

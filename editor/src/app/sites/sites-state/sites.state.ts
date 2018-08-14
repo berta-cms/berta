@@ -8,7 +8,8 @@ import { DeleteSiteSectionsAction, RenameSiteSectionsSitenameAction } from '../s
 import { DeleteSiteSettingsAction, RenameSiteSettingsSitenameAction, CreateSiteSettingsAction } from '../settings/site-settings.actions';
 import {
   DeleteSiteTemplateSettingsAction,
-  RenameSiteTemplateSettingsSitenameAction } from '../template-settings/site-teplate-settings.actions';
+  RenameSiteTemplateSettingsSitenameAction,
+  CreateSiteTemplateSettingsAction} from '../template-settings/site-teplate-settings.actions';
 import { DeleteSiteSectionsTagsAction, RenameSectionTagsSitenameAction } from '../sections/tags/section-tags.actions';
 import {
   DeleteSiteSectionsEntriesAction,
@@ -54,6 +55,10 @@ export class SitesState implements NgxsOnInit {
 
           if (response.settings) {
             this.store.dispatch(new CreateSiteSettingsAction(newSite, response.settings));
+          }
+
+          if (response.siteTemplateSettings) {
+            this.store.dispatch(new CreateSiteTemplateSettingsAction(newSite, response.siteTemplateSettings));
           }
         }
       });
