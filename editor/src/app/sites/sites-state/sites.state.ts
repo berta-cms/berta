@@ -112,22 +112,27 @@ export class SitesState implements NgxsOnInit {
   DeleteSite({setState, getState}: StateContext<SiteStateModel[]>, action: DeleteSiteAction) {
     this.appStateService.sync('sites', {site: action.site.name}, 'DELETE')
     .then((response) => {
-      const currentState = getState();
-      const siteName = response['name'];
+      if (response['error_message']) {
+        // @TODO handle error message
+        console.error(response['error_message']);
+      } else {
+        const currentState = getState();
+        const siteName = response['name'];
 
-      setState(
-        currentState
-          .filter(site => site.name !== siteName)
-          // Update order
-          .map((site, order) => {
-              return set('order', order, site);
-          })
-      );
-      this.store.dispatch(new DeleteSiteSectionsAction(siteName));
-      this.store.dispatch(new DeleteSiteSettingsAction(siteName));
-      this.store.dispatch(new DeleteSiteTemplateSettingsAction(siteName));
-      this.store.dispatch(new DeleteSiteSectionsTagsAction(siteName));
-      this.store.dispatch(new DeleteSiteSectionsEntriesAction(siteName));
-      });
+        setState(
+          currentState
+            .filter(site => site.name !== siteName)
+            // Update order
+            .map((site, order) => {
+                return set('order', order, site);
+            })
+        );
+        this.store.dispatch(new DeleteSiteSectionsAction(siteName));
+        this.store.dispatch(new DeleteSiteSettingsAction(siteName));
+        this.store.dispatch(new DeleteSiteTemplateSettingsAction(siteName));
+        this.store.dispatch(new DeleteSiteSectionsTagsAction(siteName));
+        this.store.dispatch(new DeleteSiteSectionsEntriesAction(siteName));
+      }
+    });
   }
 }
