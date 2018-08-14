@@ -2,6 +2,8 @@ import { SiteStateModel } from './site-state.model';
 
 export class CreateSiteAction {
   static readonly type = 'SITE:CREATE';
+  constructor(public site?: SiteStateModel) {
+  }
 }
 
 export class UpdateSiteAction {

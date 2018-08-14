@@ -4,7 +4,11 @@ import { SitesSettingsStateModel } from './site-settings.interface';
 import { AppStateService } from '../../app-state/app-state.service';
 import { take } from 'rxjs/operators';
 import { AppState } from '../../app-state/app.state';
-import { UpdateSiteSettingsAction, DeleteSiteSettingsAction, RenameSiteSettingsSitenameAction } from './site-settings.actions';
+import {
+  UpdateSiteSettingsAction,
+  DeleteSiteSettingsAction,
+  RenameSiteSettingsSitenameAction,
+  CreateSiteSettingsAction } from './site-settings.actions';
 
 
 @State<SitesSettingsStateModel>({
@@ -42,6 +46,14 @@ export class SiteSettingsState implements NgxsOnInit {
       },
       error: (error) => console.error(error)
     });
+  }
+
+  @Action(CreateSiteSettingsAction)
+  createSiteSettings({ patchState, getState }: StateContext<SitesSettingsStateModel>, action: CreateSiteSettingsAction) {
+    const currentState   = getState();
+    const newSettings = {};
+    newSettings[action.site.name] = action.settings;
+    patchState({...currentState, ...newSettings});
   }
 
   @Action(UpdateSiteSettingsAction)

@@ -5,7 +5,7 @@ import { AppStateService } from '../../app-state/app-state.service';
 import { take } from 'rxjs/operators';
 import { CreateSiteAction, DeleteSiteAction, CloneSiteAction, UpdateSiteAction, RenameSiteAction } from './sites.actions';
 import { DeleteSiteSectionsAction, RenameSiteSectionsSitenameAction } from '../sections/sections-state/site-sections.actions';
-import { DeleteSiteSettingsAction, RenameSiteSettingsSitenameAction } from '../settings/site-settings.actions';
+import { DeleteSiteSettingsAction, RenameSiteSettingsSitenameAction, CreateSiteSettingsAction } from '../settings/site-settings.actions';
 import {
   DeleteSiteTemplateSettingsAction,
   RenameSiteTemplateSettingsSitenameAction } from '../template-settings/site-teplate-settings.actions';
@@ -37,22 +37,26 @@ export class SitesState implements NgxsOnInit {
 
 
   @Action(CreateSiteAction)
-  createSite({ setState, getState }: StateContext<SiteStateModel[]>) {
-    const currentState = getState();
-    const newSite: SiteStateModel = {
-      // @todo sync with backend
-      // @todo get unique name from backend
-      name: 'untitled-' + Math.random().toString(36).substr(2, 9),
-      title: '',
-      order: currentState.length,
-      '@attributes': {
-        published: 0
-      }
-    };
+  createSite({ setState, getState }: StateContext<SiteStateModel[]>, action: CreateSiteAction) {
+    const siteName = action.site ? action.site.name : '-1';
+    this.appStateService.sync('sites', { site: siteName }, 'POST')
+      .then((response: any) => {
+        if (response.error_message) {
+          // @TODO handle error message
+          console.error(response.error_message);
+        } else {
+          const currentState = getState();
+          const newSite: SiteStateModel = response.site;
 
-    setState(
-      [...currentState, newSite]
-    );
+          setState(
+            [...currentState, newSite]
+          );
+
+          if (response.settings) {
+            this.store.dispatch(new CreateSiteSettingsAction(newSite, response.settings));
+          }
+        }
+      });
   }
 
 
@@ -109,30 +113,30 @@ export class SitesState implements NgxsOnInit {
 
 
   @Action(DeleteSiteAction)
-  DeleteSite({setState, getState}: StateContext<SiteStateModel[]>, action: DeleteSiteAction) {
-    this.appStateService.sync('sites', {site: action.site.name}, 'DELETE')
-    .then((response) => {
-      if (response['error_message']) {
-        // @TODO handle error message
-        console.error(response['error_message']);
-      } else {
-        const currentState = getState();
-        const siteName = response['name'];
+  DeleteSite({ setState, getState }: StateContext<SiteStateModel[]>, action: DeleteSiteAction) {
+    this.appStateService.sync('sites', { site: action.site.name }, 'DELETE')
+      .then((response: any) => {
+        if (response.error_message) {
+          // @TODO handle error message
+          console.error(response.error_message);
+        } else {
+          const currentState = getState();
+          const siteName = response.name;
 
-        setState(
-          currentState
-            .filter(site => site.name !== siteName)
-            // Update order
-            .map((site, order) => {
+          setState(
+            currentState
+              .filter(site => site.name !== siteName)
+              // Update order
+              .map((site, order) => {
                 return set('order', order, site);
-            })
-        );
-        this.store.dispatch(new DeleteSiteSectionsAction(siteName));
-        this.store.dispatch(new DeleteSiteSettingsAction(siteName));
-        this.store.dispatch(new DeleteSiteTemplateSettingsAction(siteName));
-        this.store.dispatch(new DeleteSiteSectionsTagsAction(siteName));
-        this.store.dispatch(new DeleteSiteSectionsEntriesAction(siteName));
-      }
-    });
+              })
+          );
+          this.store.dispatch(new DeleteSiteSectionsAction(siteName));
+          this.store.dispatch(new DeleteSiteSettingsAction(siteName));
+          this.store.dispatch(new DeleteSiteTemplateSettingsAction(siteName));
+          this.store.dispatch(new DeleteSiteSectionsTagsAction(siteName));
+          this.store.dispatch(new DeleteSiteSectionsEntriesAction(siteName));
+        }
+      });
   }
 }
