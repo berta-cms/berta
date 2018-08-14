@@ -13,7 +13,10 @@ import {
   DeleteSiteTemplateSettingsAction,
   RenameSiteTemplateSettingsSitenameAction,
   CreateSiteTemplateSettingsAction} from '../template-settings/site-teplate-settings.actions';
-import { DeleteSiteSectionsTagsAction, RenameSectionTagsSitenameAction } from '../sections/tags/section-tags.actions';
+import {
+  DeleteSiteSectionsTagsAction,
+  RenameSectionTagsSitenameAction,
+  AddSiteSectionsTagsAction } from '../sections/tags/section-tags.actions';
 import {
   DeleteSiteSectionsEntriesAction,
   RenameSectionEntriesSitenameAction,
@@ -71,6 +74,10 @@ export class SitesState implements NgxsOnInit {
 
           if (response.entries && response.entries.length) {
             this.store.dispatch(new AddSiteEntriesAction(newSite, response.entries));
+          }
+
+          if (response.tags && response.tags.section) {
+            this.store.dispatch(new AddSiteSectionsTagsAction(newSite, response.tags));
           }
         }
       });
