@@ -10,7 +10,8 @@ import {
   DeleteSiteSectionAction,
   CreateSectionAction,
   CloneSectionAction,
-  RenameSiteSectionAction} from './site-sections.actions';
+  RenameSiteSectionAction,
+  AddSiteSectionsAction} from './site-sections.actions';
 import { DeleteSectionTagsAction, RenameSectionTagsAction } from '../tags/section-tags.actions';
 import { DeleteSectionEntriesAction, RenameSectionEntriesAction } from '../entries/entries-state/section-entries.actions';
 import { slugify } from '../../../shared/helpers';
@@ -76,6 +77,14 @@ export class SiteSectionsState implements NgxsOnInit {
     );
 
     // @todo add cloned section entries and tags if exists
+  }
+
+  @Action(AddSiteSectionsAction)
+  addSiteSections({ getState, setState }: StateContext<SiteSectionStateModel[]>, action: AddSiteSectionsAction) {
+    const state = getState();
+    setState(
+      [...state, ...action.sections]
+    );
   }
 
   @Action(CloneSectionAction)

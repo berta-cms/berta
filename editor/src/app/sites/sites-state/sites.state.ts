@@ -4,7 +4,10 @@ import { SiteStateModel } from './site-state.model';
 import { AppStateService } from '../../app-state/app-state.service';
 import { take } from 'rxjs/operators';
 import { CreateSiteAction, DeleteSiteAction, CloneSiteAction, UpdateSiteAction, RenameSiteAction } from './sites.actions';
-import { DeleteSiteSectionsAction, RenameSiteSectionsSitenameAction } from '../sections/sections-state/site-sections.actions';
+import {
+  DeleteSiteSectionsAction,
+  RenameSiteSectionsSitenameAction,
+  AddSiteSectionsAction } from '../sections/sections-state/site-sections.actions';
 import { DeleteSiteSettingsAction, RenameSiteSettingsSitenameAction, CreateSiteSettingsAction } from '../settings/site-settings.actions';
 import {
   DeleteSiteTemplateSettingsAction,
@@ -59,6 +62,10 @@ export class SitesState implements NgxsOnInit {
 
           if (response.siteTemplateSettings) {
             this.store.dispatch(new CreateSiteTemplateSettingsAction(newSite, response.siteTemplateSettings));
+          }
+
+          if (response.sections && response.sections.length) {
+            this.store.dispatch(new AddSiteSectionsAction(response.sections));
           }
         }
       });
