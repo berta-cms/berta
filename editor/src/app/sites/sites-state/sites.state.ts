@@ -98,22 +98,7 @@ export class SitesState implements NgxsOnInit {
 
   @Action(CloneSiteAction)
   cloneSite({ setState, getState }: StateContext<SiteStateModel[]>, action: CloneSiteAction) {
-    const currentState = getState();
-    const newSite: SiteStateModel = {
-      // @todo sync with backend
-      // @todo get new site from backend
-      // @todo sync related site data
-      name: 'clone-of-' + action.site.name,
-      title: 'Clone of ' + action.site.title,
-      order: currentState.length,
-      '@attributes': {
-        published: 0
-      }
-    };
-
-    setState(
-      [...currentState, newSite]
-    );
+    this.store.dispatch(new CreateSiteAction(action.site));
   }
 
 
