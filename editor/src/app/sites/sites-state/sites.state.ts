@@ -87,31 +87,44 @@ export class SitesState implements NgxsOnInit {
   @Action(UpdateSiteAction)
   updateSite({ setState, getState }: StateContext<SiteStateModel[]>, action: UpdateSiteAction) {
     const currentState = getState();
+    const path = 'site/' + action.site.order + '/' + action.field.split('.').join('/');
+    const data = {
+      path: path,
+      value: action.value
+    };
 
-    // @todo sync with backend, set returned `name` from server (already slugified and unique)
-    setState(
-      currentState.map((site) => {
-        if (site.name === action.site.name) {
-          return set(action.field, action.value, site);
+    this.appStateService.sync('sites', data)
+      .then((response: any) => {
+        if (response.error_message) {
+          // @TODO handle error message
+          console.error(response.error_message);
+        } else {
+          setState(
+            currentState.map((site) => {
+              if (site.name === action.site.name) {
+                return set(action.field, response.value, site);
+              }
+              return site;
+            })
+          );
+
+          // Site related data rename
+          if (action.field === 'name') {
+            this.store.dispatch(new RenameSiteSectionsSitenameAction(action.site, response.value));
+            this.store.dispatch(new RenameSiteSettingsSitenameAction(action.site, response.value));
+            this.store.dispatch(new RenameSiteTemplateSettingsSitenameAction(action.site, response.value));
+            this.store.dispatch(new RenameSectionTagsSitenameAction(action.site, response.value));
+            this.store.dispatch(new RenameSectionEntriesSitenameAction(action.site, response.value));
+          }
         }
-        return site;
-      })
-    );
+      });
   }
 
 
   @Action(RenameSiteAction)
   renameSite({ setState, getState }: StateContext<SiteStateModel[]>, action: RenameSiteAction) {
     const currentState = getState();
-
-    // @todo sync with backend, validate and return from server
     this.store.dispatch(new UpdateSiteAction(action.site, 'name', action.value));
-
-    this.store.dispatch(new RenameSiteSectionsSitenameAction(action.site, action.value));
-    this.store.dispatch(new RenameSiteSettingsSitenameAction(action.site, action.value));
-    this.store.dispatch(new RenameSiteTemplateSettingsSitenameAction(action.site, action.value));
-    this.store.dispatch(new RenameSectionTagsSitenameAction(action.site, action.value));
-    this.store.dispatch(new RenameSectionEntriesSitenameAction(action.site, action.value));
   }
 
 

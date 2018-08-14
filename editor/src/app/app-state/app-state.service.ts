@@ -39,7 +39,7 @@ export class AppStateService {
     this.store.dispatch(new AppHideLoading());
   }
 
-  sync(urlName: string, data: any, method: string) {
+  sync(urlName: string, data: any, method?: string) {
 
     return this.store.select(state => state.app)
       .pipe(
