@@ -16,7 +16,8 @@ import {
 import { DeleteSiteSectionsTagsAction, RenameSectionTagsSitenameAction } from '../sections/tags/section-tags.actions';
 import {
   DeleteSiteSectionsEntriesAction,
-  RenameSectionEntriesSitenameAction } from '../sections/entries/entries-state/section-entries.actions';
+  RenameSectionEntriesSitenameAction,
+  AddSiteEntriesAction} from '../sections/entries/entries-state/section-entries.actions';
 
 @State<SiteStateModel[]>({
   name: 'sites',
@@ -66,6 +67,10 @@ export class SitesState implements NgxsOnInit {
 
           if (response.sections && response.sections.length) {
             this.store.dispatch(new AddSiteSectionsAction(response.sections));
+          }
+
+          if (response.entries && response.entries.length) {
+            this.store.dispatch(new AddSiteEntriesAction(newSite, response.entries));
           }
         }
       });

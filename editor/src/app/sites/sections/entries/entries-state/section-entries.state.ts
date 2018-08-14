@@ -8,7 +8,8 @@ import {
   DeleteSiteSectionsEntriesAction,
   RenameSectionEntriesSitenameAction,
   DeleteSectionEntriesAction,
-  RenameSectionEntriesAction } from './section-entries.actions';
+  RenameSectionEntriesAction,
+  AddSiteEntriesAction} from './section-entries.actions';
 
 @State<SectionEntriesStateModel>({
   name: 'sectionEntries',
@@ -20,6 +21,14 @@ export class SectionEntriesState implements NgxsOnInit {
     this.appStateService.getInitialState('', 'sectionEntries').pipe(take(1)).subscribe((sections) => {
       setState(sections);
     });
+  }
+
+  @Action(AddSiteEntriesAction)
+  addSiteEntries({ patchState, getState }: StateContext<SectionEntriesStateModel>, action: AddSiteEntriesAction) {
+    const currentState   = getState();
+    const newEntries = {};
+    newEntries[action.site.name] = action.entries;
+    patchState({...currentState, ...newEntries});
   }
 
   @Action(RenameSectionEntriesAction)
