@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { take } from 'rxjs/operators';
 import { Store } from '@ngxs/store';
@@ -44,19 +44,14 @@ import { Store } from '@ngxs/store';
     }
   `]
 })
-export class UserAccountComponent implements OnInit {
+export class UserAccountComponent {
 
-  error: string;
-  message: string;
+  error = '';
+  message = '';
 
   constructor(
     private http: HttpClient,
     private store: Store) {
-  }
-
-  ngOnInit() {
-    this.error = '';
-    this.message = '';
   }
 
   changePassword(event, old_password, new_password, retype_password) {
