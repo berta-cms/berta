@@ -11,7 +11,7 @@ import { map } from 'rxjs/operators';
   selector: 'berta-header',
   template: `
     <header>
-      <div class="loading" *ngIf="isLoading$ | async"></div>
+      <div class="loading" [style.display]="((isLoading$ | async) ? 'block' : '')"></div>
       <div class="bt-menu" *ngIf="isLoggedIn$ | async">
         <nav>
           <a [routerLink]="['/multisite']" [routerLinkActive]="'nav-active'" [queryParams]="queryParams$ | async">Multisite</a>
@@ -35,7 +35,7 @@ import { map } from 'rxjs/operators';
     }
 
     header .loading {
-      display: block;
+      display: none;
       content: '';
       position: absolute;
       width: 100%;
