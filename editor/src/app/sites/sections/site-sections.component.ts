@@ -135,7 +135,7 @@ export class SiteSectionsComponent implements OnInit {
     if (field === 'title') {
       this.store.dispatch(new RenameSiteSectionAction(sectionData.section, parseInt(updateEvent.section, 10), updateEvent.data));
     } else {
-      this.store.dispatch(new UpdateSiteSectionAction(sectionData.section.site_name, parseInt(updateEvent.section, 10), updateEvent.data));
+      this.store.dispatch(new UpdateSiteSectionAction(sectionData.section, parseInt(updateEvent.section, 10), updateEvent.data));
     }
   }
 }

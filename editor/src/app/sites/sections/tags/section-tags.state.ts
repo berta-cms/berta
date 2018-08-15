@@ -30,7 +30,7 @@ export class SectionTagsState implements NgxsOnInit {
     const newState = cloneDeep(state);
 
     Object.keys(newState).map(siteName => {
-      if (siteName === action.section.site_name && newState[siteName]['section']) {
+      if (siteName === action.siteName && newState[siteName]['section']) {
         newState[siteName]['section'] = newState[siteName]['section'].map(section => {
           if (section['@attributes']['name'] === action.section.name) {
             section['@attributes']['name'] = action.newSectionName;

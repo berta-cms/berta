@@ -30,7 +30,8 @@ export class DeleteSiteSectionsEntriesAction {
 
 export class RenameSectionEntriesAction {
   static readonly type = 'SECTION_ENTRIES:RENAME';
-  constructor(public section: SiteSectionStateModel,
+  constructor(public siteName: string,
+              public section: SiteSectionStateModel,
               public newSectionName: string) {
   }
 }

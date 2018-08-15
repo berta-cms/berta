@@ -1,3 +1,4 @@
+import { get } from 'lodash';
 import { Store, State, Action, StateContext, Selector, NgxsOnInit  } from '@ngxs/store';
 import { SiteSectionStateModel } from './site-sections-state.model';
 import { AppStateService } from '../../../app-state/app-state.service';
@@ -101,36 +102,57 @@ export class SiteSectionsState implements NgxsOnInit {
 
   @Action(UpdateSiteSectionAction)
   updateSiteSection({ getState, setState }: StateContext<SiteSectionStateModel[]>, action: UpdateSiteSectionAction) {
-    const state = getState();
-    if (!state.some(section => section.site_name === action.siteName && section.order === action.order)) {
-      console.log('section not found!!!', action);
-      return;
+    // @todo rewite this path lookup from payload
+    const fieldKeys = [Object.keys(action.payload)[0]];
+    if (action.payload[fieldKeys[0]] instanceof Object) {
+      fieldKeys.push(Object.keys(action.payload[fieldKeys[0]])[0]);
     }
+    const field = fieldKeys.join('/');
+    const path = action.section.site_name + '/section/' + action.order + '/' + field;
+    const value = get(action.payload, fieldKeys.join('.'));
 
-    setState(state.map(section => {
-      if (section.site_name !== action.siteName || section.order !== action.order) {
-        return section;
-      }
-      /* Quick workaround for deep settings: */
-      if (action.payload['@attributes']) {
-        /** @todo rebuild this recursive */
-        const attributes = {...section['@attributes'], ...action.payload['@attributes']};
-        return {...section, ...action.payload, ...{'@attributes': attributes}};
-      }
-      return {...section, ...action.payload};  // Deep set must be done here for complex properties
-    }));
+    const data = {
+      path: path,
+      value: value
+    };
+
+    this.appStateService.sync('siteSections', data)
+      .then((response: any) => {
+        if (response.error_message) {
+          // @TODO handle error message
+          console.error(response.error_message);
+        } else {
+          const state = getState();
+
+          if (field === 'title') {
+            action.payload.name = response.section.name;
+          }
+
+          setState(state.map(section => {
+            if (section.site_name !== action.section.site_name || section.order !== action.order) {
+              return section;
+            }
+            /* Quick workaround for deep settings: */
+            if (action.payload['@attributes']) {
+              /** @todo rebuild this recursive */
+              const attributes = {...section['@attributes'], ...action.payload['@attributes']};
+              return {...section, ...action.payload, ...{'@attributes': attributes}};
+            }
+            return {...section, ...action.payload};  // Deep set must be done here for complex properties
+          }));
+
+          // Section related data rename
+          if (field === 'title') {
+            this.store.dispatch(new RenameSectionTagsAction(action.section.site_name, action.section, response.section.name));
+            this.store.dispatch(new RenameSectionEntriesAction(action.section.site_name, action.section, response.section.name));
+          }
+        }
+      });
   }
 
   @Action(RenameSiteSectionAction)
   renameSiteSection({ getState, setState }: StateContext<SiteSectionStateModel[]>, action: RenameSiteSectionAction) {
-
-    // @todo sync and validate from server
-    // @todo return new section name from server (unique and slugified)
-    action.payload.name = slugify(action.payload.title);
-
-    this.store.dispatch(new UpdateSiteSectionAction(action.section.site_name, action.order, action.payload));
-    this.store.dispatch(new RenameSectionTagsAction(action.section, action.payload.name));
-    this.store.dispatch(new RenameSectionEntriesAction(action.section, action.payload.name));
+    this.store.dispatch(new UpdateSiteSectionAction(action.section, action.order, action.payload));
   }
 
   @Action(RenameSiteSectionsSitenameAction)

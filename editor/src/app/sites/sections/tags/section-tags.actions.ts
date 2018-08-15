@@ -18,7 +18,8 @@ export class AddSiteSectionsTagsAction {
 
 export class RenameSectionTagsAction {
   static readonly type = 'SECTION_TAGS:RENAME';
-  constructor(public section: SiteSectionStateModel,
+  constructor(public siteName: string,
+              public section: SiteSectionStateModel,
               public newSectionName: string) {
   }
 }
