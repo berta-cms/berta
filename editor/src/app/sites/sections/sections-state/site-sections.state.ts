@@ -12,8 +12,11 @@ import {
   CloneSectionAction,
   RenameSiteSectionAction,
   AddSiteSectionsAction} from './site-sections.actions';
-import { DeleteSectionTagsAction, RenameSectionTagsAction } from '../tags/section-tags.actions';
-import { DeleteSectionEntriesAction, RenameSectionEntriesAction } from '../entries/entries-state/section-entries.actions';
+import { DeleteSectionTagsAction, RenameSectionTagsAction, AddSectionTagsAction } from '../tags/section-tags.actions';
+import {
+  DeleteSectionEntriesAction,
+  RenameSectionEntriesAction,
+  AddSectionEntriesAction } from '../entries/entries-state/section-entries.actions';
 import { slugify } from '../../../shared/helpers';
 
 @State<SiteSectionStateModel[]>({
@@ -52,31 +55,35 @@ export class SiteSectionsState implements NgxsOnInit {
 
   @Action(CreateSectionAction)
   createSection({ getState, setState }: StateContext<SiteSectionStateModel[]>, action: CreateSectionAction) {
-    const state = getState();
-    const site = this.store.selectSnapshot(AppState.getSite);
-
-    // @todo sync with backend and return section data
-    if (action.section) {
-      // clone section, pass section to backend for cloning
-    }
-
-    const newSection: SiteSectionStateModel = {
-      // @todo get unique name from backend
-      name: 'untitled-' + Math.random().toString(36).substr(2, 9),
-      title: '',
-      site_name: site,
-      order: state.filter(section => section.site_name === site).length,
-      '@attributes': {
-        published: 1,
-        tags_behavior: 'invisible'
-      }
+    const siteName = this.store.selectSnapshot(AppState.getSite);
+    const data = {
+      name: action.section ? action.section.name : null,
+      site: siteName,
+      title: action.section ? action.section.title : null,
     };
 
-    setState(
-      [...state, newSection]
-    );
+    this.appStateService.sync('siteSections', data, 'POST')
+      .then((response: any) => {
+        if (response.error_message) {
+          // @TODO handle error message
+          console.error(response.error_message);
+        } else {
+          const state = getState();
+          const newSiteSection: SiteSectionStateModel = response.section;
 
-    // @todo add cloned section entries and tags if exists
+          setState(
+            [...state, newSiteSection]
+          );
+
+          if (response.entries && response.entries.length) {
+            this.store.dispatch(new AddSectionEntriesAction(siteName, response.entries));
+          }
+
+          if (response.tags && response.tags) {
+            this.store.dispatch(new AddSectionTagsAction(siteName, response.tags));
+          }
+      }
+    });
   }
 
   @Action(AddSiteSectionsAction)
