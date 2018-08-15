@@ -1,7 +1,5 @@
 import { Component } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { take } from 'rxjs/operators';
-import { Store } from '@ngxs/store';
+import { UserService } from './user.service';
 
 @Component({
   selector: 'berta-user-account',
@@ -22,7 +20,7 @@ import { Store } from '@ngxs/store';
       <div *ngIf="message">
         {{ message }}
       </div>
-      <div *ngIf="error">
+      <div *ngIf="error" style="color: red">
         {{ error }}
       </div>
     </form>
@@ -50,32 +48,28 @@ export class UserAccountComponent {
   message = '';
 
   constructor(
-    private http: HttpClient,
-    private store: Store) {
+    private userService: UserService) {
   }
 
-  changePassword(event, old_password, new_password, retype_password) {
+  changePassword(event, oldPassword, newPassword, retypePassword) {
     event.preventDefault();
     this.error = '';
     this.message = '';
 
-    this.store.select(state => state.app).pipe(take(1)).subscribe((appState) => {
-      this.http.patch('/_api/v1/user/changepassword', {
-        old_password: old_password,
-        new_password: new_password,
-        retype_password: retype_password,
+    if (newPassword !== retypePassword) {
+      /** @todo: add correct error from server */
+      this.message = "New passwords don't match";
+      return;
+    }
+
+    this.userService.changePassword(oldPassword, newPassword).subscribe({
+      next: (response: any) => {
+        event.target.reset();
+        this.message = response.message;
       },
-        {
-          headers: { 'X-Authorization': 'Bearer ' + appState.user.token }
-        }).subscribe({
-          next: (response: any) => {
-            event.target.reset();
-            this.message = response.message;
-          },
-          error: (error) => {
-            this.error = error.error.message;
-          }
-        });
+      error: (error) => {
+        this.error = error.error.message;
+      }
     });
   }
 }
