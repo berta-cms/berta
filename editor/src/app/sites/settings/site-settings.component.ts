@@ -4,7 +4,7 @@ import { SiteSettingsModel, SiteSettingsConfigStateModel, SiteSettingsConfigGrou
 import { Observable } from 'rxjs';
 import { SiteSettingsState } from './site-settings.state';
 import { camel2Words, isPlainObject } from '../../shared/helpers';
-import { mergeMap, map, filter, tap } from '../../../../node_modules/rxjs/operators';
+import { mergeMap, map, filter, tap } from 'rxjs/operators';
 import { SiteSettingsConfigState } from './site-settings-config.state';
 
 

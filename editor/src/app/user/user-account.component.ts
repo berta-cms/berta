@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { take } from '../../../node_modules/rxjs/operators';
+import { take } from 'rxjs/operators';
 import { Store } from '@ngxs/store';
 
 @Component({
