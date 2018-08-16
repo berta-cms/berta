@@ -29,7 +29,7 @@ export class SectionEntriesState implements NgxsOnInit {
       [action.section.site_name]: state[action.section.site_name].map(entry => {
 
         if (entry.sectionName === action.section.name) {
-          entry.sectionName = action.newSectionName;
+          return {...entry, sectionName: action.newSectionName};
         }
         return entry;
       })
