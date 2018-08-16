@@ -52,7 +52,7 @@ export class SectionTagsState implements NgxsOnInit {
   }
 
   @Action(RenameSectionTagsSitenameAction)
-  renameSiteSettingsSitename({ setState, getState }: StateContext<SectionTagsStateModel>, action: RenameSectionTagsSitenameAction) {
+  renameSectionTagsSitename({ setState, getState }: StateContext<SectionTagsStateModel>, action: RenameSectionTagsSitenameAction) {
     const state = getState();
     const newState = {};
 
