@@ -122,11 +122,6 @@ export class SiteSectionsState implements NgxsOnInit {
           console.error(response.error_message);
         } else {
           const state = getState();
-
-          if (field === 'title') {
-            action.payload.name = response.section.name;
-          }
-
           setState(state.map(section => {
             if (section.site_name !== action.section.site_name || section.order !== action.order) {
               return section;
@@ -139,19 +134,37 @@ export class SiteSectionsState implements NgxsOnInit {
             }
             return {...section, ...action.payload};  // Deep set must be done here for complex properties
           }));
-
-          // Section related data rename
-          if (field === 'title') {
-            dispatch(new RenameSectionTagsAction(action.section.site_name, action.section, response.section.name));
-            dispatch(new RenameSectionEntriesAction(action.section.site_name, action.section, response.section.name));
-          }
         }
       });
   }
 
   @Action(RenameSiteSectionAction)
-  renameSiteSection({ dispatch }: StateContext<SiteSectionStateModel[]>, action: RenameSiteSectionAction) {
-    dispatch(new UpdateSiteSectionAction(action.section, action.order, action.payload));
+  renameSiteSection({ getState, setState, dispatch }: StateContext<SiteSectionStateModel[]>, action: RenameSiteSectionAction) {
+    const path = action.section.site_name + '/section/' + action.order + '/title';
+    const data = {
+      path: path,
+      value: action.payload.title
+    };
+
+    this.appStateService.sync('siteSections', data)
+      .subscribe(response => {
+        if (response.error_message) {
+          // @TODO handle error message
+          console.error(response.error_message);
+        } else {
+          const state = getState();
+          setState(state.map(section => {
+            if (section.site_name !== action.section.site_name || section.order !== action.order) {
+              return section;
+            }
+            return {...section, title: response.section.title, name: response.section.name};
+          }));
+
+          // Section related data rename
+          dispatch(new RenameSectionTagsAction(action.section.site_name, action.section, response.section.name));
+          dispatch(new RenameSectionEntriesAction(action.section.site_name, action.section, response.section.name));
+        }
+      });
   }
 
   @Action(RenameSiteSectionsSitenameAction)
