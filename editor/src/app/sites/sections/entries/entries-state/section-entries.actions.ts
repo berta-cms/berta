@@ -1,5 +1,20 @@
 import { SiteStateModel } from '../../../sites-state/site-state.model';
 import { SiteSectionStateModel } from '../../sections-state/site-sections-state.model';
+import { SectionEntry } from './section-entries-state.model';
+
+export class AddSectionEntriesAction {
+  static readonly type = 'SECTION_ENTRIES:ADD';
+  constructor(public siteName: string,
+              public entries: SectionEntry[]) {
+  }
+}
+
+export class AddSiteEntriesAction {
+  static readonly type = 'SITE_SECTIONS_ENTRIES:ADD';
+  constructor(public site: SiteStateModel,
+              public entries: SectionEntry[]) {
+  }
+}
 
 export class DeleteSectionEntriesAction {
   static readonly type = 'SECTION_ENTRIES:DELETE';
@@ -15,7 +30,8 @@ export class DeleteSiteSectionsEntriesAction {
 
 export class RenameSectionEntriesAction {
   static readonly type = 'SECTION_ENTRIES:RENAME';
-  constructor(public section: SiteSectionStateModel,
+  constructor(public siteName: string,
+              public section: SiteSectionStateModel,
               public newSectionName: string) {
   }
 }

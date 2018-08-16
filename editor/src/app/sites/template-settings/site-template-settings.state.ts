@@ -9,8 +9,8 @@ import { AppState } from '../../app-state/app.state';
 import {
   UpdateSiteTemplateSettingsAction,
   DeleteSiteTemplateSettingsAction,
-  RenameSiteTemplateSettingsSitenameAction
-} from './site-teplate-settings.actions';
+  RenameSiteTemplateSettingsSitenameAction,
+  CreateSiteTemplateSettingsAction} from './site-teplate-settings.actions';
 
 @State<SitesTemplateSettingsStateModel>({
   name: 'siteTemplateSettings',
@@ -50,25 +50,47 @@ export class SiteTemplateSettingsState implements NgxsOnInit {
     });
   }
 
+  @Action(CreateSiteTemplateSettingsAction)
+  createSiteTemplateSettings({ patchState, getState }: StateContext<SitesTemplateSettingsStateModel>,
+                             action: CreateSiteTemplateSettingsAction) {
+    const currentState   = getState();
+    const newTemplateSettings = {};
+    newTemplateSettings[action.site.name] = action.templateSettings;
+    patchState({...currentState, ...newTemplateSettings});
+  }
+
   @Action(UpdateSiteTemplateSettingsAction)
   updateSiteTemplateSettings({ patchState, getState }: StateContext<SitesTemplateSettingsStateModel>,
     action: UpdateSiteTemplateSettingsAction) {
     const currentSite = this.store.selectSnapshot(AppState.getSite);
     const currentSiteTemplate = this.store.selectSnapshot(SiteSettingsState.getCurrentSiteTemplate);
-    const currentState = getState();
-    const updatedSiteSettingsGroup = { ...currentState[currentSite][currentSiteTemplate][action.settingGroup], ...action.payload };
+    const settingKey = Object.keys(action.payload)[0];
+    const data = {
+      path: currentSite + '/site_template_settings/' + currentSiteTemplate + '/' + action.settingGroup + '/' + settingKey,
+      value: action.payload[settingKey]
+    };
 
-    patchState({
-      [currentSite]: {
-        ...currentState[currentSite],
-        [currentSiteTemplate]: {
-          ...currentState[currentSite][currentSiteTemplate],
-          [action.settingGroup]: updatedSiteSettingsGroup
+    this.appStateService.sync('siteTemplateSettings', data)
+      .subscribe(response => {
+        if (response.error_message) {
+          // @TODO handle error message
+          console.error(response.error_message);
+        } else {
+          const currentState = getState();
+          const updatedSiteSettingsGroup = {...currentState[currentSite][currentSiteTemplate][action.settingGroup], ...action.payload};
+
+          patchState({
+            [currentSite]: {
+              ...currentState[currentSite],
+              [currentSiteTemplate]: {
+                ...currentState[currentSite][currentSiteTemplate],
+                [action.settingGroup]: updatedSiteSettingsGroup
+              }
+            }
+          });
         }
-      }
     });
   }
-
 
   @Action(RenameSiteTemplateSettingsSitenameAction)
   renameSiteTemplateSettingsSitename(

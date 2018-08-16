@@ -1,4 +1,5 @@
-import { Store, State, Action, StateContext, Selector, NgxsOnInit } from '@ngxs/store';
+import { get } from 'lodash';
+import { Store, State, Action, StateContext, Selector, NgxsOnInit  } from '@ngxs/store';
 import { SiteSectionStateModel } from './site-sections-state.model';
 import { AppStateService } from '../../../app-state/app-state.service';
 import { take } from 'rxjs/operators';
@@ -10,10 +11,13 @@ import {
   DeleteSiteSectionAction,
   CreateSectionAction,
   CloneSectionAction,
-  RenameSiteSectionAction} from './site-sections.actions';
-import { DeleteSectionTagsAction, RenameSectionTagsAction } from '../tags/section-tags.actions';
-import { DeleteSectionEntriesAction, RenameSectionEntriesAction } from '../entries/entries-state/section-entries.actions';
-import { slugify } from '../../../shared/helpers';
+  RenameSiteSectionAction,
+  AddSiteSectionsAction} from './site-sections.actions';
+import { DeleteSectionTagsAction, RenameSectionTagsAction, AddSectionTagsAction } from '../tags/section-tags.actions';
+import {
+  DeleteSectionEntriesAction,
+  RenameSectionEntriesAction,
+  AddSectionEntriesAction } from '../entries/entries-state/section-entries.actions';
 
 @State<SiteSectionStateModel[]>({
   name: 'siteSections',
@@ -50,32 +54,44 @@ export class SiteSectionsState implements NgxsOnInit {
   }
 
   @Action(CreateSectionAction)
-  createSection({ getState, setState }: StateContext<SiteSectionStateModel[]>, action: CreateSectionAction) {
-    const state = getState();
-    const site = this.store.selectSnapshot(AppState.getSite);
-
-    // @todo sync with backend and return section data
-    if (action.section) {
-      // clone section, pass section to backend for cloning
-    }
-
-    const newSection: SiteSectionStateModel = {
-      // @todo get unique name from backend
-      name: 'untitled-' + Math.random().toString(36).substr(2, 9),
-      title: '',
-      site_name: site,
-      order: state.filter(section => section.site_name === site).length,
-      '@attributes': {
-        published: 1,
-        tags_behavior: 'invisible'
-      }
+  createSection({ getState, setState, dispatch }: StateContext<SiteSectionStateModel[]>, action: CreateSectionAction) {
+    const siteName = this.store.selectSnapshot(AppState.getSite);
+    const data = {
+      name: action.section ? action.section.name : null,
+      site: siteName,
+      title: action.section ? action.section.title : null,
     };
 
-    setState(
-      [...state, newSection]
-    );
+    this.appStateService.sync('siteSections', data, 'POST')
+      .subscribe(response => {
+        if (response.error_message) {
+          // @TODO handle error message
+          console.error(response.error_message);
+        } else {
+          const state = getState();
+          const newSiteSection: SiteSectionStateModel = response.section;
 
-    // @todo add cloned section entries and tags if exists
+          setState(
+            [...state, newSiteSection]
+          );
+
+          if (response.entries && response.entries.length) {
+            dispatch(new AddSectionEntriesAction(siteName, response.entries));
+          }
+
+          if (response.tags && response.tags) {
+            dispatch(new AddSectionTagsAction(siteName, response.tags));
+          }
+      }
+    });
+  }
+
+  @Action(AddSiteSectionsAction)
+  addSiteSections({ getState, setState }: StateContext<SiteSectionStateModel[]>, action: AddSiteSectionsAction) {
+    const state = getState();
+    setState(
+      [...state, ...action.sections]
+    );
   }
 
   @Action(CloneSectionAction)
@@ -84,37 +100,71 @@ export class SiteSectionsState implements NgxsOnInit {
   }
 
   @Action(UpdateSiteSectionAction)
-  updateSiteSection({ getState, setState }: StateContext<SiteSectionStateModel[]>, action: UpdateSiteSectionAction) {
-    const state = getState();
-    if (!state.some(section => section.site_name === action.siteName && section.order === action.order)) {
-      console.log('section not found!!!', action);
-      return;
+  updateSiteSection({ getState, setState, dispatch }: StateContext<SiteSectionStateModel[]>, action: UpdateSiteSectionAction) {
+    // @todo rewite this path lookup from payload
+    const fieldKeys = [Object.keys(action.payload)[0]];
+    if (action.payload[fieldKeys[0]] instanceof Object) {
+      fieldKeys.push(Object.keys(action.payload[fieldKeys[0]])[0]);
     }
+    const field = fieldKeys.join('/');
+    const path = action.section.site_name + '/section/' + action.order + '/' + field;
+    const value = get(action.payload, fieldKeys.join('.'));
 
-    setState(state.map(section => {
-      if (section.site_name !== action.siteName || section.order !== action.order) {
-        return section;
-      }
-      /* Quick workaround for deep settings: */
-      if (action.payload['@attributes']) {
-        /** @todo rebuild this recursive */
-        const attributes = {...section['@attributes'], ...action.payload['@attributes']};
-        return {...section, ...action.payload, ...{'@attributes': attributes}};
-      }
-      return {...section, ...action.payload};  // Deep set must be done here for complex properties
-    }));
+    const data = {
+      path: path,
+      value: value
+    };
+
+    this.appStateService.sync('siteSections', data)
+      .subscribe(response => {
+        if (response.error_message) {
+          // @TODO handle error message
+          console.error(response.error_message);
+        } else {
+          const state = getState();
+          setState(state.map(section => {
+            if (section.site_name !== action.section.site_name || section.order !== action.order) {
+              return section;
+            }
+            /* Quick workaround for deep settings: */
+            if (action.payload['@attributes']) {
+              /** @todo rebuild this recursive */
+              const attributes = {...section['@attributes'], ...action.payload['@attributes']};
+              return {...section, ...action.payload, ...{'@attributes': attributes}};
+            }
+            return {...section, ...action.payload};  // Deep set must be done here for complex properties
+          }));
+        }
+      });
   }
 
   @Action(RenameSiteSectionAction)
-  renameSiteSection({ dispatch }: StateContext<SiteSectionStateModel[]>, action: RenameSiteSectionAction) {
+  renameSiteSection({ getState, setState, dispatch }: StateContext<SiteSectionStateModel[]>, action: RenameSiteSectionAction) {
+    const path = action.section.site_name + '/section/' + action.order + '/title';
+    const data = {
+      path: path,
+      value: action.payload.title
+    };
 
-    // @todo sync and validate from server
-    // @todo return new section name from server (unique and slugified)
-    action.payload.name = slugify(action.payload.title);
+    this.appStateService.sync('siteSections', data)
+      .subscribe(response => {
+        if (response.error_message) {
+          // @TODO handle error message
+          console.error(response.error_message);
+        } else {
+          const state = getState();
+          setState(state.map(section => {
+            if (section.site_name !== action.section.site_name || section.order !== action.order) {
+              return section;
+            }
+            return {...section, title: response.section.title, name: response.section.name};
+          }));
 
-    dispatch(new UpdateSiteSectionAction(action.section.site_name, action.order, action.payload));
-    dispatch(new RenameSectionTagsAction(action.section, action.payload.name));
-    dispatch(new RenameSectionEntriesAction(action.section, action.payload.name));
+          // Section related data rename
+          dispatch(new RenameSectionTagsAction(action.section.site_name, action.section, response.section.name));
+          dispatch(new RenameSectionEntriesAction(action.section.site_name, action.section, response.section.name));
+        }
+      });
   }
 
   @Action(RenameSiteSectionsSitenameAction)
@@ -133,27 +183,39 @@ export class SiteSectionsState implements NgxsOnInit {
 
   @Action(DeleteSiteSectionAction)
   deleteSiteSection({ getState, setState, dispatch }: StateContext<SiteSectionStateModel[]>, action: DeleteSiteSectionAction) {
-    const state = getState();
-    let order = -1;
+    const data = {
+      site: action.section.site_name,
+      section: action.section.name
+    };
 
-    setState(
-      state
-        .filter(section => !(section.site_name === action.section.site_name && section.name === action.section.name))
-        // Update order
-        .map(section => {
-          if (section.site_name === action.section.site_name) {
-            order++;
+    this.appStateService.sync('siteSections', data, 'DELETE')
+      .subscribe(response => {
+        if (response.error_message) {
+          // @TODO handle error message
+          console.error(response.error_message);
+        } else {
+          const state = getState();
+          let order = -1;
 
-            if (section.order !== order) {
-              return {...section, ...{'order': order}};
-            }
-          }
-          return section;
-        })
-    );
+          setState(
+            state
+              .filter(section => !(section.site_name === response.site && section.name === response.name))
+              // Update order
+              .map(section => {
+                if (section.site_name === response.site) {
+                  order++;
 
-    dispatch(new DeleteSectionTagsAction(action.section));
-    dispatch(new DeleteSectionEntriesAction(action.section));
+                  if (section.order !== order) {
+                    return {...section, ...{'order': order}};
+                  }
+                }
+                return section;
+              })
+          );
+          dispatch(new DeleteSectionTagsAction(action.section));
+          dispatch(new DeleteSectionEntriesAction(action.section));
+      }
+    });
   }
 
   @Action(DeleteSiteSectionsAction)

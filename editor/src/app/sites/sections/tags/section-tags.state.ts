@@ -7,7 +7,9 @@ import {
   DeleteSiteSectionsTagsAction,
   RenameSectionTagsSitenameAction,
   DeleteSectionTagsAction,
-  RenameSectionTagsAction } from './section-tags.actions';
+  RenameSectionTagsAction,
+  AddSiteSectionsTagsAction,
+  AddSectionTagsAction} from './section-tags.actions';
 
 @State<SectionTagsStateModel>({
   name: 'sectionTags',
@@ -48,6 +50,27 @@ export class SectionTagsState implements NgxsOnInit {
         })
       }
     });
+  }
+
+  @Action(AddSectionTagsAction)
+  addSectionTags({ patchState, getState }: StateContext<SectionTagsStateModel>, action: AddSectionTagsAction) {
+    const state = getState();
+    const newTags = {};
+
+    if (state[action.siteName]) {
+      newTags[action.siteName] = {section: state[action.siteName]['section'].concat(action.tags)};
+    } else {
+      newTags[action.siteName] = {section: action.tags};
+    }
+    patchState({...state, ...newTags});
+  }
+
+  @Action(AddSiteSectionsTagsAction)
+  addSiteSectionsTags({ patchState, getState }: StateContext<SectionTagsStateModel>, action: AddSiteSectionsTagsAction) {
+    const currentState = getState();
+    const newTags = {};
+    newTags[action.site.name] = action.tags;
+    patchState({...currentState, ...newTags});
   }
 
   @Action(RenameSectionTagsSitenameAction)
