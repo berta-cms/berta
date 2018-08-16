@@ -1,5 +1,5 @@
 import { set } from 'lodash/fp';
-import { Store, State, Action, StateContext, NgxsOnInit } from '@ngxs/store';
+import { State, Action, StateContext, NgxsOnInit } from '@ngxs/store';
 import { SiteStateModel } from './site-state.model';
 import { AppStateService } from '../../app-state/app-state.service';
 import { take } from 'rxjs/operators';
@@ -28,9 +28,7 @@ import {
 })
 export class SitesState implements NgxsOnInit {
 
-  constructor(
-    private appStateService: AppStateService,
-    private store: Store) {
+  constructor(private appStateService: AppStateService) {
   }
 
 
@@ -45,10 +43,10 @@ export class SitesState implements NgxsOnInit {
 
 
   @Action(CreateSiteAction)
-  createSite({ setState, getState }: StateContext<SiteStateModel[]>, action: CreateSiteAction) {
+  createSite({ setState, getState, dispatch }: StateContext<SiteStateModel[]>, action: CreateSiteAction) {
     const siteName = action.site ? (action.site.name === '' ? '0' : action.site.name) : '-1';
     this.appStateService.sync('sites', { site: siteName }, 'POST')
-      .then((response: any) => {
+      .subscribe(response => {
         if (response.error_message) {
           // @TODO handle error message
           console.error(response.error_message);
@@ -61,23 +59,23 @@ export class SitesState implements NgxsOnInit {
           );
 
           if (response.settings) {
-            this.store.dispatch(new CreateSiteSettingsAction(newSite, response.settings));
+            dispatch(new CreateSiteSettingsAction(newSite, response.settings));
           }
 
           if (response.siteTemplateSettings) {
-            this.store.dispatch(new CreateSiteTemplateSettingsAction(newSite, response.siteTemplateSettings));
+            dispatch(new CreateSiteTemplateSettingsAction(newSite, response.siteTemplateSettings));
           }
 
           if (response.sections && response.sections.length) {
-            this.store.dispatch(new AddSiteSectionsAction(response.sections));
+            dispatch(new AddSiteSectionsAction(response.sections));
           }
 
           if (response.entries && response.entries.length) {
-            this.store.dispatch(new AddSiteEntriesAction(newSite, response.entries));
+            dispatch(new AddSiteEntriesAction(newSite, response.entries));
           }
 
           if (response.tags && response.tags.section) {
-            this.store.dispatch(new AddSiteSectionsTagsAction(newSite, response.tags));
+            dispatch(new AddSiteSectionsTagsAction(newSite, response.tags));
           }
         }
       });
@@ -85,7 +83,7 @@ export class SitesState implements NgxsOnInit {
 
 
   @Action(UpdateSiteAction)
-  updateSite({ setState, getState }: StateContext<SiteStateModel[]>, action: UpdateSiteAction) {
+  updateSite({ setState, getState, dispatch }: StateContext<SiteStateModel[]>, action: UpdateSiteAction) {
     const currentState = getState();
     const path = 'site/' + action.site.order + '/' + action.field.split('.').join('/');
     const data = {
@@ -93,51 +91,49 @@ export class SitesState implements NgxsOnInit {
       value: action.value
     };
 
-    this.appStateService.sync('sites', data)
-      .then((response: any) => {
-        if (response.error_message) {
-          // @TODO handle error message
-          console.error(response.error_message);
-        } else {
-          setState(
-            currentState.map((site) => {
-              if (site.name === action.site.name) {
-                return set(action.field, response.value, site);
-              }
-              return site;
-            })
-          );
+    this.appStateService.sync('sites', data).subscribe(response => {
+      if (response.error_message) {
+        // @TODO handle error message
+        console.error(response.error_message);
+      } else {
+        setState(
+          currentState.map((site) => {
+            if (site.name === action.site.name) {
+              return set(action.field, response.value, site);
+            }
+            return site;
+          })
+        );
 
-          // Site related data rename
-          if (action.field === 'name') {
-            this.store.dispatch(new RenameSiteSectionsSitenameAction(action.site, response.value));
-            this.store.dispatch(new RenameSiteSettingsSitenameAction(action.site, response.value));
-            this.store.dispatch(new RenameSiteTemplateSettingsSitenameAction(action.site, response.value));
-            this.store.dispatch(new RenameSectionTagsSitenameAction(action.site, response.value));
-            this.store.dispatch(new RenameSectionEntriesSitenameAction(action.site, response.value));
-          }
+        // Site related data rename
+        if (action.field === 'name') {
+          dispatch(new RenameSiteSectionsSitenameAction(action.site, response.value));
+          dispatch(new RenameSiteSettingsSitenameAction(action.site, response.value));
+          dispatch(new RenameSiteTemplateSettingsSitenameAction(action.site, response.value));
+          dispatch(new RenameSectionTagsSitenameAction(action.site, response.value));
+          dispatch(new RenameSectionEntriesSitenameAction(action.site, response.value));
         }
-      });
+      }
+    });
   }
 
 
   @Action(RenameSiteAction)
-  renameSite({ setState, getState }: StateContext<SiteStateModel[]>, action: RenameSiteAction) {
-    const currentState = getState();
-    this.store.dispatch(new UpdateSiteAction(action.site, 'name', action.value));
+  renameSite({ dispatch }: StateContext<SiteStateModel[]>, action: RenameSiteAction) {
+    dispatch(new UpdateSiteAction(action.site, 'name', action.value));
   }
 
 
   @Action(CloneSiteAction)
-  cloneSite({ setState, getState }: StateContext<SiteStateModel[]>, action: CloneSiteAction) {
-    this.store.dispatch(new CreateSiteAction(action.site));
+  cloneSite({ dispatch }: StateContext<SiteStateModel[]>, action: CloneSiteAction) {
+    dispatch(new CreateSiteAction(action.site));
   }
 
 
   @Action(DeleteSiteAction)
-  DeleteSite({ setState, getState }: StateContext<SiteStateModel[]>, action: DeleteSiteAction) {
+  DeleteSite({ setState, getState, dispatch }: StateContext<SiteStateModel[]>, action: DeleteSiteAction) {
     this.appStateService.sync('sites', { site: action.site.name }, 'DELETE')
-      .then((response: any) => {
+      .subscribe(response => {
         if (response.error_message) {
           // @TODO handle error message
           console.error(response.error_message);
@@ -153,11 +149,11 @@ export class SitesState implements NgxsOnInit {
                 return set('order', order, site);
               })
           );
-          this.store.dispatch(new DeleteSiteSectionsAction(siteName));
-          this.store.dispatch(new DeleteSiteSettingsAction(siteName));
-          this.store.dispatch(new DeleteSiteTemplateSettingsAction(siteName));
-          this.store.dispatch(new DeleteSiteSectionsTagsAction(siteName));
-          this.store.dispatch(new DeleteSiteSectionsEntriesAction(siteName));
+          dispatch(new DeleteSiteSectionsAction(siteName));
+          dispatch(new DeleteSiteSettingsAction(siteName));
+          dispatch(new DeleteSiteTemplateSettingsAction(siteName));
+          dispatch(new DeleteSiteSectionsTagsAction(siteName));
+          dispatch(new DeleteSiteSectionsEntriesAction(siteName));
         }
       });
   }

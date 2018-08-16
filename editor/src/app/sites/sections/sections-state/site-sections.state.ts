@@ -18,7 +18,6 @@ import {
   DeleteSectionEntriesAction,
   RenameSectionEntriesAction,
   AddSectionEntriesAction } from '../entries/entries-state/section-entries.actions';
-import { slugify } from '../../../shared/helpers';
 
 @State<SiteSectionStateModel[]>({
   name: 'siteSections',
@@ -55,7 +54,7 @@ export class SiteSectionsState implements NgxsOnInit {
   }
 
   @Action(CreateSectionAction)
-  createSection({ getState, setState }: StateContext<SiteSectionStateModel[]>, action: CreateSectionAction) {
+  createSection({ getState, setState, dispatch }: StateContext<SiteSectionStateModel[]>, action: CreateSectionAction) {
     const siteName = this.store.selectSnapshot(AppState.getSite);
     const data = {
       name: action.section ? action.section.name : null,
@@ -64,7 +63,7 @@ export class SiteSectionsState implements NgxsOnInit {
     };
 
     this.appStateService.sync('siteSections', data, 'POST')
-      .then((response: any) => {
+      .subscribe(response => {
         if (response.error_message) {
           // @TODO handle error message
           console.error(response.error_message);
@@ -77,11 +76,11 @@ export class SiteSectionsState implements NgxsOnInit {
           );
 
           if (response.entries && response.entries.length) {
-            this.store.dispatch(new AddSectionEntriesAction(siteName, response.entries));
+            dispatch(new AddSectionEntriesAction(siteName, response.entries));
           }
 
           if (response.tags && response.tags) {
-            this.store.dispatch(new AddSectionTagsAction(siteName, response.tags));
+            dispatch(new AddSectionTagsAction(siteName, response.tags));
           }
       }
     });
@@ -96,12 +95,12 @@ export class SiteSectionsState implements NgxsOnInit {
   }
 
   @Action(CloneSectionAction)
-  cloneSection({ getState, setState }: StateContext<SiteSectionStateModel[]>, action: CloneSectionAction) {
-    this.store.dispatch(new CreateSectionAction(action.section));
+  cloneSection({ dispatch }: StateContext<SiteSectionStateModel[]>, action: CloneSectionAction) {
+    dispatch(new CreateSectionAction(action.section));
   }
 
   @Action(UpdateSiteSectionAction)
-  updateSiteSection({ getState, setState }: StateContext<SiteSectionStateModel[]>, action: UpdateSiteSectionAction) {
+  updateSiteSection({ getState, setState, dispatch }: StateContext<SiteSectionStateModel[]>, action: UpdateSiteSectionAction) {
     // @todo rewite this path lookup from payload
     const fieldKeys = [Object.keys(action.payload)[0]];
     if (action.payload[fieldKeys[0]] instanceof Object) {
@@ -117,7 +116,7 @@ export class SiteSectionsState implements NgxsOnInit {
     };
 
     this.appStateService.sync('siteSections', data)
-      .then((response: any) => {
+      .subscribe(response => {
         if (response.error_message) {
           // @TODO handle error message
           console.error(response.error_message);
@@ -143,16 +142,16 @@ export class SiteSectionsState implements NgxsOnInit {
 
           // Section related data rename
           if (field === 'title') {
-            this.store.dispatch(new RenameSectionTagsAction(action.section.site_name, action.section, response.section.name));
-            this.store.dispatch(new RenameSectionEntriesAction(action.section.site_name, action.section, response.section.name));
+            dispatch(new RenameSectionTagsAction(action.section.site_name, action.section, response.section.name));
+            dispatch(new RenameSectionEntriesAction(action.section.site_name, action.section, response.section.name));
           }
         }
       });
   }
 
   @Action(RenameSiteSectionAction)
-  renameSiteSection({ getState, setState }: StateContext<SiteSectionStateModel[]>, action: RenameSiteSectionAction) {
-    this.store.dispatch(new UpdateSiteSectionAction(action.section, action.order, action.payload));
+  renameSiteSection({ dispatch }: StateContext<SiteSectionStateModel[]>, action: RenameSiteSectionAction) {
+    dispatch(new UpdateSiteSectionAction(action.section, action.order, action.payload));
   }
 
   @Action(RenameSiteSectionsSitenameAction)
@@ -170,14 +169,14 @@ export class SiteSectionsState implements NgxsOnInit {
   }
 
   @Action(DeleteSiteSectionAction)
-  deleteSiteSection({ getState, setState }: StateContext<SiteSectionStateModel[]>, action: DeleteSiteSectionAction) {
+  deleteSiteSection({ getState, setState, dispatch }: StateContext<SiteSectionStateModel[]>, action: DeleteSiteSectionAction) {
     const data = {
       site: action.section.site_name,
       section: action.section.name
     };
 
     this.appStateService.sync('siteSections', data, 'DELETE')
-      .then((response: any) => {
+      .subscribe(response => {
         if (response.error_message) {
           // @TODO handle error message
           console.error(response.error_message);
@@ -200,8 +199,8 @@ export class SiteSectionsState implements NgxsOnInit {
                 return section;
               })
           );
-          this.store.dispatch(new DeleteSectionTagsAction(action.section));
-          this.store.dispatch(new DeleteSectionEntriesAction(action.section));
+          dispatch(new DeleteSectionTagsAction(action.section));
+          dispatch(new DeleteSectionEntriesAction(action.section));
       }
     });
   }
