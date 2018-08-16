@@ -2,9 +2,10 @@ import { State, Action, StateContext, Selector, NgxsOnInit, Store } from '@ngxs/
 import { SitesSettingsStateModel } from './site-settings.interface';
 import { AppStateService } from '../../app-state/app-state.service';
 import { take } from 'rxjs/operators';
-import { AppStateModel } from '../../app-state/app-state.interface';
 import { AppState } from '../../app-state/app.state';
-import { UpdateSiteSettingsAction } from './site-settings.actions';
+import { UpdateSiteSettingsAction,
+  DeleteSiteSettingsAction,
+  RenameSiteSettingsSitenameAction } from './site-settings.actions';
 
 
 @State<SitesSettingsStateModel>({
@@ -54,5 +55,29 @@ export class SiteSettingsState implements NgxsOnInit {
       ...currentState[currentSite],
       [action.settingGroup]: updatedSiteSettingsGroup
     }});
+  }
+
+  @Action(RenameSiteSettingsSitenameAction)
+  renameSiteSettingsSitename({ setState, getState }: StateContext<SitesSettingsStateModel>, action: RenameSiteSettingsSitenameAction) {
+    const state = getState();
+    const newState = {};
+
+    /* Using the loop to retain the element order in the map */
+    for (const siteName in state) {
+      if (siteName === action.site.name) {
+        newState[action.siteName] = state[siteName];
+      } else {
+        newState[siteName] = state[siteName];
+      }
+    }
+
+    setState(newState);
+  }
+
+  @Action(DeleteSiteSettingsAction)
+  deleteSiteSettings({ setState, getState }: StateContext<SitesSettingsStateModel>, action: DeleteSiteSettingsAction) {
+    const newState = {...getState()};
+    delete newState[action.siteName];
+    setState(newState);
   }
 }

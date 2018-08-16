@@ -7,7 +7,7 @@ import { filter, map } from 'rxjs/operators';
 import { SiteSectionsState } from './sections-state/site-sections.state';
 import { isPlainObject, camel2Words } from '../../shared/helpers';
 import { SiteTemplateSettingsState } from '../template-settings/site-template-settings.state';
-import { UpdateSiteSection } from './sections-state/site-sections.actions';
+import { UpdateSiteSectionAction } from './sections-state/site-sections.actions';
 
 @Component({
   selector: 'berta-site-sections',
@@ -125,6 +125,6 @@ export class SiteSectionsComponent implements OnInit {
   }
 
   updateSection(siteName, updateEvent) {
-    this.store.dispatch(new UpdateSiteSection(siteName, parseInt(updateEvent.section, 10), updateEvent.data));
+    this.store.dispatch(new UpdateSiteSectionAction(siteName, parseInt(updateEvent.section, 10), updateEvent.data));
   }
 }
