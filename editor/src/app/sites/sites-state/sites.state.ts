@@ -1,5 +1,5 @@
 import { set } from 'lodash/fp';
-import { Store, State, Action, StateContext, NgxsOnInit } from '@ngxs/store';
+import { State, Action, StateContext, NgxsOnInit } from '@ngxs/store';
 import { SiteStateModel } from './site-state.model';
 import { AppStateService } from '../../app-state/app-state.service';
 import { take } from 'rxjs/operators';
@@ -21,8 +21,7 @@ import {
 export class SitesState implements NgxsOnInit {
 
   constructor(
-    private appStateService: AppStateService,
-    private store: Store) {
+    private appStateService: AppStateService) {
   }
 
 
@@ -73,17 +72,15 @@ export class SitesState implements NgxsOnInit {
 
 
   @Action(RenameSiteAction)
-  renameSite({ setState, getState }: StateContext<SiteStateModel[]>, action: RenameSiteAction) {
-    const currentState = getState();
-
+  renameSite({ dispatch }: StateContext<SiteStateModel[]>, action: RenameSiteAction) {
     // @todo sync with backend, validate and return from server
-    this.store.dispatch(new UpdateSiteAction(action.site, 'name', action.value));
+    dispatch(new UpdateSiteAction(action.site, 'name', action.value));
 
-    this.store.dispatch(new RenameSiteSectionsSitenameAction(action.site, action.value));
-    this.store.dispatch(new RenameSiteSettingsSitenameAction(action.site, action.value));
-    this.store.dispatch(new RenameSiteTemplateSettingsSitenameAction(action.site, action.value));
-    this.store.dispatch(new RenameSectionTagsSitenameAction(action.site, action.value));
-    this.store.dispatch(new RenameSectionEntriesSitenameAction(action.site, action.value));
+    dispatch(new RenameSiteSectionsSitenameAction(action.site, action.value));
+    dispatch(new RenameSiteSettingsSitenameAction(action.site, action.value));
+    dispatch(new RenameSiteTemplateSettingsSitenameAction(action.site, action.value));
+    dispatch(new RenameSectionTagsSitenameAction(action.site, action.value));
+    dispatch(new RenameSectionEntriesSitenameAction(action.site, action.value));
   }
 
 
@@ -109,7 +106,7 @@ export class SitesState implements NgxsOnInit {
 
 
   @Action(DeleteSiteAction)
-  DeleteSite({setState, getState}: StateContext<SiteStateModel[]>, action: DeleteSiteAction) {
+  DeleteSite({setState, getState, dispatch}: StateContext<SiteStateModel[]>, action: DeleteSiteAction) {
     const currentState = getState();
     // @todo sync with backend
     setState(
@@ -121,10 +118,10 @@ export class SitesState implements NgxsOnInit {
         })
     );
 
-    this.store.dispatch(new DeleteSiteSectionsAction(action.site.name));
-    this.store.dispatch(new DeleteSiteSettingsAction(action.site.name));
-    this.store.dispatch(new DeleteSiteTemplateSettingsAction(action.site.name));
-    this.store.dispatch(new DeleteSiteSectionsTagsAction(action.site.name));
-    this.store.dispatch(new DeleteSiteSectionsEntriesAction(action.site.name));
+    dispatch(new DeleteSiteSectionsAction(action.site.name));
+    dispatch(new DeleteSiteSettingsAction(action.site.name));
+    dispatch(new DeleteSiteTemplateSettingsAction(action.site.name));
+    dispatch(new DeleteSiteSectionsTagsAction(action.site.name));
+    dispatch(new DeleteSiteSectionsEntriesAction(action.site.name));
   }
 }

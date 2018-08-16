@@ -1,8 +1,7 @@
-import { cloneDeep } from 'lodash';
-import { State, Action, StateContext, Selector, NgxsOnInit  } from '@ngxs/store';
+import { take } from 'rxjs/operators';
+import { State, Action, StateContext, NgxsOnInit } from '@ngxs/store';
 
 import { AppStateService } from '../../../app-state/app-state.service';
-import { take } from 'rxjs/operators';
 import { SectionTagsStateModel } from './section-tags-state.model';
 import {
   DeleteSiteSectionsTagsAction,
@@ -44,10 +43,17 @@ export class SectionTagsState implements NgxsOnInit {
   @Action(RenameSectionTagsSitenameAction)
   renameSiteSettingsSitename({ setState, getState }: StateContext<SectionTagsStateModel>, action: RenameSectionTagsSitenameAction) {
     const state = getState();
-    const newState = cloneDeep(state);
-    const keyVal = newState[action.site.name];
-    delete newState[action.site.name];
-    newState[action.siteName] = keyVal;
+    const newState = {};
+
+    /* Using the loop to retain the element order in the map */
+    for (const siteName in state) {
+      if (siteName === action.site.name) {
+        newState[action.siteName] = state[siteName];
+      } else {
+        newState[siteName] = state[siteName];
+      }
+    }
+
     setState(newState);
   }
 
@@ -69,9 +75,8 @@ export class SectionTagsState implements NgxsOnInit {
 
   @Action(DeleteSiteSectionsTagsAction)
   deleteSiteSectionsTags({ getState, setState }: StateContext<SectionTagsStateModel[]>, action: DeleteSiteSectionsTagsAction) {
-    const state = getState();
-    const res = Object.assign({}, state);
-    delete res[action.siteName];
-    setState(res);
+    const newState = {...getState()};
+    delete newState[action.siteName];
+    setState(newState);
   }
 }
