@@ -3,7 +3,7 @@ import { SitesModule } from '../sites.module';
 import { AppStateService } from '../../app-state/app-state.service';
 import { switchMap, take, map } from 'rxjs/operators';
 import { SitesSettingsStateModel } from './site-settings.interface';
-import { Observable } from 'node_modules/rxjs';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: SitesModule

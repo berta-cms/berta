@@ -60,7 +60,8 @@ class AuthController extends Controller
         setcookie('token', null, -1, '/');
     }
 
-    public function apiLogin(Request $request) {
+    public function apiLogin(Request $request)
+    {
         \Log::info('API LOGIN!!!');
         $token = $this->authenticateRequestAndGetToken($request);
         \Log::info('TOKEN: ', [$token]);
@@ -81,7 +82,8 @@ class AuthController extends Controller
         ]);
     }
 
-    public function apiLogout() {
+    public function apiLogout()
+    {
         try {
             $this->logout();
         } catch (\Throwable $t) {
@@ -93,7 +95,42 @@ class AuthController extends Controller
         return Helpers::api_response('Logout successful');
     }
 
-    private function authenticateRequestAndGetToken(Request $request) {
+    public function changePassword(Request $request)
+    {
+        $old_password = $request->input('old_password');
+        $new_password = $request->input('new_password');
+        $retype_password = $request->input('retype_password');
+
+        $conf_file = realpath(config('app.old_berta_root') . '/engine/config/inc.conf.php');
+        include $conf_file;
+        $password = $options['AUTH_password'];
+
+        if ($password != $old_password) {
+            return Helpers::api_response('Current password doesn\'t match!', [], 412);
+        } elseif ($new_password != $retype_password) {
+            return Helpers::api_response('New and retyped password doesn\'t match!', [], 412);
+        } elseif (strlen($new_password) < 6) {
+            return Helpers::api_response('Password must be at least 6 characters long!', [], 412);
+        } elseif (!preg_match('/^[A-Za-z0-9]+$/', $new_password)) {
+            return Helpers::api_response('Password must contain only alphanumeric characters!', [], 412);
+        } elseif (!is_writable($conf_file)) {
+            return Helpers::api_response('Config file is not writable!', [], 400);
+        } else {
+            $content = file_get_contents($conf_file);
+            $new_content = str_replace(
+                "\$options['AUTH_password'] = '" . $old_password . "'",
+                "\$options['AUTH_password'] = '" . $new_password . "'",
+                $content
+            );
+
+            file_put_contents($conf_file, $new_content);
+        }
+
+        return Helpers::api_response('Password successfully changed!');
+    }
+
+    private function authenticateRequestAndGetToken(Request $request)
+    {
         $token = $request->input('auth_key');
         $valid_token = false;
 
