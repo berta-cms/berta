@@ -14,20 +14,18 @@ import { UserStateModel } from '../user/user.state.model';
     <header>
       <div class="bt-menu" *ngIf="isLoggedIn$ | async">
         <nav>
-          <a *ngIf="user.features.indexOf('multisite') > -1"
+          <a *ngIf="(user$ | async).features.indexOf('multisite') > -1"
              [routerLink]="['/multisite']"
              [routerLinkActive]="'nav-active'"
              [queryParams]="queryParams$ | async">Multisite</a>
           <a [routerLink]="['/sections']" [routerLinkActive]="'nav-active'" [queryParams]="queryParams$ | async">Sections</a>
           <a [routerLink]="['/settings']" [routerLinkActive]="'nav-active'" [queryParams]="queryParams$ | async">Settings</a>
           <a [routerLink]="['/design']" [routerLinkActive]="'nav-active'" [queryParams]="queryParams$ | async">Design</a>
-          <a *ngIf="user.features.indexOf('shop') > -1"
+          <a *ngIf="(user$ | async).features.indexOf('shop') > -1"
              [routerLink]="['/shop']"
              [routerLinkActive]="'nav-active'"
              [queryParams]="queryParams$ | async">Shop</a>
-             <a *ngIf="user.profileUrl"
-                href="http://support.berta.me/kb"
-                target="_blank">Knowledge base</a>
+          <a *ngIf="(user$ | async).profileUrl" href="http://support.berta.me/kb" target="_blank">Knowledge base</a>
         </nav>
         <berta-profile-dropdown></berta-profile-dropdown>
       </div>
@@ -55,21 +53,15 @@ import { UserStateModel } from '../user/user.state.model';
   `]
 })
 export class HeaderComponent implements OnInit {
-  user: Observable<UserStateModel>;
-  queryParams$: Observable<{[k: string]: string}>;
-
+  @Select(UserState) user$: Observable<UserStateModel>;
   @Select(UserState.isLoggedIn) isLoggedIn$: Observable<boolean>;
   @Select(AppState.getSite) site$: Observable<string|null>;
 
-  constructor(
-    private store: Store) {
-  }
+  queryParams$: Observable<{[k: string]: string}>;
+
+  constructor() {}
 
   ngOnInit() {
-    this.store.select(UserState).subscribe((userState) => {
-      this.user = userState;
-    });
-
     this.queryParams$ = this.site$.pipe(
       map(site => site ? {site: site} : {})
     );
