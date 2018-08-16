@@ -1,4 +1,4 @@
-import { Store, State, Action, StateContext, Selector, NgxsOnInit  } from '@ngxs/store';
+import { Store, State, Action, StateContext, Selector, NgxsOnInit } from '@ngxs/store';
 import { SiteSectionStateModel } from './site-sections-state.model';
 import { AppStateService } from '../../../app-state/app-state.service';
 import { take } from 'rxjs/operators';
@@ -79,8 +79,8 @@ export class SiteSectionsState implements NgxsOnInit {
   }
 
   @Action(CloneSectionAction)
-  cloneSection({ getState, setState }: StateContext<SiteSectionStateModel[]>, action: CloneSectionAction) {
-    this.store.dispatch(new CreateSectionAction(action.section));
+  cloneSection({ dispatch }: StateContext<SiteSectionStateModel[]>, action: CloneSectionAction) {
+    dispatch(new CreateSectionAction(action.section));
   }
 
   @Action(UpdateSiteSectionAction)
@@ -106,15 +106,15 @@ export class SiteSectionsState implements NgxsOnInit {
   }
 
   @Action(RenameSiteSectionAction)
-  renameSiteSection({ getState, setState }: StateContext<SiteSectionStateModel[]>, action: RenameSiteSectionAction) {
+  renameSiteSection({ dispatch }: StateContext<SiteSectionStateModel[]>, action: RenameSiteSectionAction) {
 
     // @todo sync and validate from server
     // @todo return new section name from server (unique and slugified)
     action.payload.name = slugify(action.payload.title);
 
-    this.store.dispatch(new UpdateSiteSectionAction(action.section.site_name, action.order, action.payload));
-    this.store.dispatch(new RenameSectionTagsAction(action.section, action.payload.name));
-    this.store.dispatch(new RenameSectionEntriesAction(action.section, action.payload.name));
+    dispatch(new UpdateSiteSectionAction(action.section.site_name, action.order, action.payload));
+    dispatch(new RenameSectionTagsAction(action.section, action.payload.name));
+    dispatch(new RenameSectionEntriesAction(action.section, action.payload.name));
   }
 
   @Action(RenameSiteSectionsSitenameAction)
@@ -132,7 +132,7 @@ export class SiteSectionsState implements NgxsOnInit {
   }
 
   @Action(DeleteSiteSectionAction)
-  deleteSiteSection({ getState, setState }: StateContext<SiteSectionStateModel[]>, action: DeleteSiteSectionAction) {
+  deleteSiteSection({ getState, setState, dispatch }: StateContext<SiteSectionStateModel[]>, action: DeleteSiteSectionAction) {
     const state = getState();
     let order = -1;
 
@@ -152,8 +152,8 @@ export class SiteSectionsState implements NgxsOnInit {
         })
     );
 
-    this.store.dispatch(new DeleteSectionTagsAction(action.section));
-    this.store.dispatch(new DeleteSectionEntriesAction(action.section));
+    dispatch(new DeleteSectionTagsAction(action.section));
+    dispatch(new DeleteSectionEntriesAction(action.section));
   }
 
   @Action(DeleteSiteSectionsAction)
