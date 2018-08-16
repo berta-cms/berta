@@ -5,6 +5,7 @@ import { map, tap, shareReplay, catchError, exhaustMap, filter, take, retryWhen,
 import { Store } from '@ngxs/store';
 import { UserLogin, UserLogout } from '../user/user-actions';
 import { Router } from '@angular/router';
+import { AppShowLoading, AppHideLoading } from './app.actions';
 
 
 interface APIResponse {
@@ -28,6 +29,14 @@ export class AppStateService {
     private http: HttpClient,
     private store: Store,
     private router: Router) {
+  }
+
+  showLoading() {
+    this.store.dispatch(new AppShowLoading());
+  }
+
+  hideLoading() {
+    this.store.dispatch(new AppHideLoading());
   }
 
   getInitialState(site: string = '', stateSlice?: string , force = false) {
