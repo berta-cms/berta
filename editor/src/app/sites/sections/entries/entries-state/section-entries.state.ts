@@ -22,22 +22,18 @@ export class SectionEntriesState implements NgxsOnInit {
   }
 
   @Action(RenameSectionEntriesAction)
-  renameSectionEntries({ setState, getState }: StateContext<SectionEntriesStateModel>, action: RenameSectionEntriesAction) {
+  renameSectionEntries({ patchState, getState }: StateContext<SectionEntriesStateModel>, action: RenameSectionEntriesAction) {
     const state = getState();
-    const newState = cloneDeep(state);
 
-    Object.keys(newState).map(siteName => {
-      if (siteName === action.section.site_name) {
-        newState[siteName] = newState[siteName].map(entry => {
-          if (entry.sectionName === action.section.name) {
-            entry.sectionName = action.newSectionName;
-          }
-          return entry;
-        });
-      }
+    patchState({
+      [action.section.site_name]: state[action.section.site_name].map(entry => {
+
+        if (entry.sectionName === action.section.name) {
+          entry.sectionName = action.newSectionName;
+        }
+        return entry;
+      })
     });
-
-    setState(newState);
   }
 
   @Action(RenameSectionEntriesSitenameAction)
