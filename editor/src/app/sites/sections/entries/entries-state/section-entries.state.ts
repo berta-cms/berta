@@ -54,19 +54,14 @@ export class SectionEntriesState implements NgxsOnInit {
   }
 
   @Action(DeleteSectionEntriesAction)
-  deleteSectionEntries({ setState, getState }: StateContext<SectionEntriesStateModel>, action: DeleteSectionEntriesAction) {
+  deleteSectionEntries({ patchState, getState }: StateContext<SectionEntriesStateModel>, action: DeleteSectionEntriesAction) {
     const state = getState();
-    const newState = cloneDeep(state);
 
-    Object.keys(newState).map(siteName => {
-      if (siteName === action.section.site_name) {
-        newState[siteName] = newState[siteName].filter(entry => {
-          return entry.sectionName !== action.section.name;
-        });
-      }
+    patchState({
+      [action.section.site_name]: state[action.section.site_name].filter(entry => {
+        return entry.sectionName !== action.section.name;
+      })
     });
-
-    setState(newState);
   }
 
   @Action(DeleteSiteSectionsEntriesAction)
