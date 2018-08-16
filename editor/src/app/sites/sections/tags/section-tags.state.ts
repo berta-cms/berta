@@ -48,7 +48,6 @@ export class SectionTagsState implements NgxsOnInit {
         })
       }
     });
-
   }
 
   @Action(RenameSectionTagsSitenameAction)
@@ -69,19 +68,21 @@ export class SectionTagsState implements NgxsOnInit {
   }
 
   @Action(DeleteSectionTagsAction)
-  deleteSectionTags({ getState, setState }: StateContext<SectionTagsStateModel[]>, action: DeleteSectionTagsAction) {
+  deleteSectionTags({ getState, patchState }: StateContext<SectionTagsStateModel[]>, action: DeleteSectionTagsAction) {
     const state = getState();
-    const newState = cloneDeep(state);
 
-    Object.keys(newState).map(siteName => {
-      if (siteName === action.section.site_name && newState[siteName]['section']) {
-        newState[siteName]['section'] = newState[siteName]['section'].filter(section => {
+    if (!state[action.section.site_name].section) {
+      return;
+    }
+
+    patchState({
+      [action.section.site_name]: {
+        ...state[action.section.site_name],
+        section: state[action.section.site_name].section.filter(section => {
           return section['@attributes']['name'] !== action.section.name;
-        });
+        })
       }
     });
-
-    setState(newState);
   }
 
   @Action(DeleteSiteSectionsTagsAction)
