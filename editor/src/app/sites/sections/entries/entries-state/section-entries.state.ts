@@ -27,9 +27,7 @@ export class SectionEntriesState implements NgxsOnInit {
   @Action(AddSectionEntriesAction)
   addSectionEntries({ patchState, getState }: StateContext<SectionEntriesStateModel>, action: AddSectionEntriesAction) {
     const state = getState();
-    const newEntries = {};
-    newEntries[action.siteName] = state[action.siteName].concat(action.entries);
-    patchState({...state, ...newEntries});
+    patchState({[action.siteName]: [...state[action.siteName], ...action.entries]});
   }
 
   @Action(AddSiteEntriesAction)
