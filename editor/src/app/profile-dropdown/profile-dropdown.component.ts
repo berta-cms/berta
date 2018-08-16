@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { Store, Select } from '@ngxs/store';
+import { Select } from '@ngxs/store';
 
 import { AppStateService } from '../app-state/app-state.service';
 import { AppState } from '../app-state/app.state';
@@ -14,13 +14,13 @@ import { UserStateModel } from '../user/user.state.model';
 @Component({
   selector: 'berta-profile-dropdown',
   template: `
-    <button type="button" class="bt-profile-anchor">{{ user.name }}</button>
+    <button type="button" class="bt-profile-anchor">{{ (user$ | async).name }}</button>
     <ul>
-      <li *ngIf="!user.profileUrl">
+      <li *ngIf="!((user$ | async).profileUrl)">
         <a [routerLink]="['/account']" [routerLinkActive]="'nav-active'" [queryParams]="queryParams$ | async">Account</a>
       </li>
-      <li *ngIf="user.profileUrl">
-        <a href="{{ user.profileUrl }}" target="_blank">Account</a>
+      <li *ngIf="(user$ | async).profileUrl">
+        <a href="{{ (user$ | async).profileUrl }}" target="_blank">Account</a>
       </li>
       <li>
         <button type="button" (click)="logOut()">Log Out</button>
@@ -61,23 +61,18 @@ import { UserStateModel } from '../user/user.state.model';
 })
 export class ProfileDropdownComponent implements OnInit {
   @Select(AppState.getSite) site$: Observable<string|null>;
+  @Select(UserState) user$: Observable<UserStateModel>;
 
-  user: Observable<UserStateModel>;
   queryParams$: Observable<{[k: string]: string}>;
 
   constructor(
-    private appStateService: AppStateService,
-    private store: Store) {
+    private appStateService: AppStateService) {
   }
 
   ngOnInit() {
     this.queryParams$ = this.site$.pipe(
       map(site => site ? {site: site} : {})
     );
-
-    this.store.select(UserState).subscribe((userState) => {
-      this.user = userState;
-    });
   }
 
   logOut() {
