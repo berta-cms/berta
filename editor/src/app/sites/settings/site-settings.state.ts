@@ -50,7 +50,7 @@ export class SiteSettingsState implements NgxsOnInit {
 
   @Action(CreateSiteSettingsAction)
   createSiteSettings({ patchState, getState }: StateContext<SitesSettingsStateModel>, action: CreateSiteSettingsAction) {
-    const currentState   = getState();
+    const currentState = getState();
     const newSettings = {};
     newSettings[action.site.name] = action.settings;
     patchState({...currentState, ...newSettings});
@@ -59,13 +59,27 @@ export class SiteSettingsState implements NgxsOnInit {
   @Action(UpdateSiteSettingsAction)
   updateSiteSettings({ patchState, getState }: StateContext<SitesSettingsStateModel>, action: UpdateSiteSettingsAction) {
     const currentSite = this.store.selectSnapshot(AppState.getSite);
-    const currentState = getState();
-    const updatedSiteSettingsGroup = {...currentState[currentSite][action.settingGroup], ...action.payload};
+    const settingKey = Object.keys(action.payload)[0];
+    const data = {
+      path: currentSite + '/settings/' + action.settingGroup + '/' + settingKey,
+      value: action.payload[settingKey]
+    };
 
-    patchState({[currentSite]: {
-      ...currentState[currentSite],
-      [action.settingGroup]: updatedSiteSettingsGroup
-    }});
+    this.appStateService.sync('siteSettings', data)
+      .subscribe(response => {
+        if (response.error_message) {
+          // @TODO handle error message
+          console.error(response.error_message);
+        } else {
+          const currentState = getState();
+          const updatedSiteSettingsGroup = {...currentState[currentSite][action.settingGroup], ...action.payload};
+
+          patchState({[currentSite]: {
+            ...currentState[currentSite],
+            [action.settingGroup]: updatedSiteSettingsGroup
+          }});
+        }
+    });
   }
 
   @Action(RenameSiteSettingsSitenameAction)
