@@ -1,8 +1,12 @@
 import { Component, OnInit } from '@angular/core';
+
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+
+import { Store, Select } from '@ngxs/store';
+
 import { AppStateService } from '../app-state/app-state.service';
-import { Router } from '@angular/router';
-import { Store } from '@ngxs/store';
+import { AppState } from '../app-state/app.state';
 import { UserState } from '../user/user-state';
 import { UserStateModel } from '../user/user.state.model';
 
@@ -56,16 +60,20 @@ import { UserStateModel } from '../user/user.state.model';
   `]
 })
 export class ProfileDropdownComponent implements OnInit {
+  @Select(AppState.getSite) site$: Observable<string|null>;
 
   user: Observable<UserStateModel>;
+  queryParams$: Observable<{[k: string]: string}>;
 
   constructor(
     private appStateService: AppStateService,
-    private router: Router,
     private store: Store) {
   }
 
   ngOnInit() {
+    this.queryParams$ = this.site$.pipe(
+      map(site => site ? {site: site} : {})
+    );
 
     this.store.select(UserState).subscribe((userState) => {
       this.user = userState;
