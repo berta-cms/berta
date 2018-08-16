@@ -37,7 +37,7 @@ export class SectionTagsState implements NgxsOnInit {
           if (section['@attributes'].name === action.section.name) {
             return {
               ...section,
-              ['@attributes']: {
+              '@attributes': {
                 ...section['@attributes'],
                 name: action.newSectionName
               }
