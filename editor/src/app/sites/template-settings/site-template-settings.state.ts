@@ -1,4 +1,3 @@
-import { cloneDeep } from 'lodash';
 import { State, Action, StateContext, Selector, NgxsOnInit, Store } from '@ngxs/store';
 import { AppStateService } from '../../app-state/app-state.service';
 import { take } from 'rxjs/operators';
@@ -62,7 +61,7 @@ export class SiteTemplateSettingsState implements NgxsOnInit {
 
   @Action(UpdateSiteTemplateSettingsAction)
   updateSiteTemplateSettings({ patchState, getState }: StateContext<SitesTemplateSettingsStateModel>,
-                             action: UpdateSiteTemplateSettingsAction) {
+    action: UpdateSiteTemplateSettingsAction) {
     const currentSite = this.store.selectSnapshot(AppState.getSite);
     const currentSiteTemplate = this.store.selectSnapshot(SiteSettingsState.getCurrentSiteTemplate);
     const settingKey = Object.keys(action.payload)[0];
@@ -80,34 +79,46 @@ export class SiteTemplateSettingsState implements NgxsOnInit {
           const currentState = getState();
           const updatedSiteSettingsGroup = {...currentState[currentSite][currentSiteTemplate][action.settingGroup], ...action.payload};
 
-          patchState({[currentSite]: {
-            ...currentState[currentSite],
-            [currentSiteTemplate]: {
-              ...currentState[currentSite][currentSiteTemplate],
-              [action.settingGroup]: updatedSiteSettingsGroup
+          patchState({
+            [currentSite]: {
+              ...currentState[currentSite],
+              [currentSiteTemplate]: {
+                ...currentState[currentSite][currentSiteTemplate],
+                [action.settingGroup]: updatedSiteSettingsGroup
+              }
             }
-          }});
+          });
         }
     });
   }
 
   @Action(RenameSiteTemplateSettingsSitenameAction)
-  renameSiteTemplateSettingsSitename({ setState, getState }: StateContext<SitesTemplateSettingsStateModel>,
-                             action: RenameSiteTemplateSettingsSitenameAction) {
+  renameSiteTemplateSettingsSitename(
+    { setState, getState }: StateContext<SitesTemplateSettingsStateModel>,
+    action: RenameSiteTemplateSettingsSitenameAction) {
+
     const state = getState();
-    const newState = cloneDeep(state);
-    const keyVal = newState[action.site.name];
-    delete newState[action.site.name];
-    newState[action.siteName] = keyVal;
+    const newState = {};
+
+    /* Using the loop to retain the element order in the map */
+    for (const siteName in state) {
+      if (siteName === action.site.name) {
+        newState[action.siteName] = state[siteName];
+      } else {
+        newState[siteName] = state[siteName];
+      }
+    }
+
     setState(newState);
   }
 
   @Action(DeleteSiteTemplateSettingsAction)
-  deleteSiteTemplateSettings({ setState, getState }: StateContext<SitesTemplateSettingsStateModel>,
-                             action: DeleteSiteTemplateSettingsAction) {
-    const state = getState();
-    const res = Object.assign({}, state);
-    delete res[action.siteName];
-    setState(res);
+  deleteSiteTemplateSettings(
+    { setState, getState }: StateContext<SitesTemplateSettingsStateModel>,
+    action: DeleteSiteTemplateSettingsAction) {
+
+    const newState = {...getState()};
+    delete newState[action.siteName];
+    setState(newState);
   }
 }

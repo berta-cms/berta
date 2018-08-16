@@ -10,7 +10,8 @@ import { map } from 'rxjs/operators';
 @Component({
   selector: 'berta-header',
   template: `
-    <header [class.loading]="(isLoading$ | async)">
+    <header>
+      <div class="loading" [style.display]="((isLoading$ | async) ? 'block' : '')"></div>
       <div class="bt-menu" *ngIf="isLoggedIn$ | async">
         <nav>
           <a [routerLink]="['/multisite']" [routerLinkActive]="'nav-active'" [queryParams]="queryParams$ | async">Multisite</a>
@@ -33,8 +34,8 @@ import { map } from 'rxjs/operators';
       justify-content: flex-end;
     }
 
-    header.loading:after {
-      display: block;
+    header .loading {
+      display: none;
       content: '';
       position: absolute;
       width: 100%;
