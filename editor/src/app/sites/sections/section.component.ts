@@ -112,6 +112,9 @@ export class SectionComponent implements OnInit {
     if (this.edit === false || $event instanceof KeyboardEvent && !($event.key === 'Enter' || $event.keyCode === 13)) {
       return;
     }
+    if (this.section[field] === value) {
+      return;
+    }
     this.edit = false;
     const data = {};
     data[field] = value;
