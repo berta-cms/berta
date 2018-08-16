@@ -25,7 +25,7 @@ import { UserStateModel } from '../user/user.state.model';
              [routerLink]="['/shop']"
              [routerLinkActive]="'nav-active'"
              [queryParams]="queryParams$ | async">Shop</a>
-          <a *ngIf="(user$ | async).profileUrl" href="http://support.berta.me/kb" target="_blank">Knowledge base</a>
+          <a href="http://support.berta.me/kb" target="_blank">Knowledge base</a>
         </nav>
         <berta-profile-dropdown></berta-profile-dropdown>
       </div>
