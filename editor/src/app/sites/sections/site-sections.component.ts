@@ -7,7 +7,7 @@ import { filter, map } from 'rxjs/operators';
 import { SiteSectionsState } from './sections-state/site-sections.state';
 import { isPlainObject, camel2Words } from '../../shared/helpers';
 import { SiteTemplateSettingsState } from '../template-settings/site-template-settings.state';
-import { UpdateSiteSectionAction } from './sections-state/site-sections.actions';
+import { UpdateSiteSectionAction, CreateSectionAction, RenameSiteSectionAction } from './sections-state/site-sections.actions';
 
 @Component({
   selector: 'berta-site-sections',
@@ -18,8 +18,9 @@ import { UpdateSiteSectionAction } from './sections-state/site-sections.actions'
                      [section]="sd.section"
                      [params]="sd.params"
                      [templateSectionTypes]="sd.templateSectionTypes"
-                     (update)="updateSection(sd.section.site_name, $event)"
+                     (update)="updateSection(sd, $event)"
                      ></berta-section>
+      <button type="button" (click)="createSection()">Create New Section</button>
     </div>
   `,
   styles: [`
@@ -124,7 +125,17 @@ export class SiteSectionsComponent implements OnInit {
     );
   }
 
-  updateSection(siteName, updateEvent) {
-    this.store.dispatch(new UpdateSiteSectionAction(siteName, parseInt(updateEvent.section, 10), updateEvent.data));
+  createSection() {
+    this.store.dispatch(CreateSectionAction);
+  }
+
+  updateSection(sectionData, updateEvent) {
+    const field = Object.keys(updateEvent.data)[0];
+
+    if (field === 'title') {
+      this.store.dispatch(new RenameSiteSectionAction(sectionData.section, parseInt(updateEvent.section, 10), updateEvent.data));
+    } else {
+      this.store.dispatch(new UpdateSiteSectionAction(sectionData.section.site_name, parseInt(updateEvent.section, 10), updateEvent.data));
+    }
   }
 }

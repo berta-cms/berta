@@ -3,7 +3,11 @@ import { State, Action, StateContext, NgxsOnInit } from '@ngxs/store';
 
 import { AppStateService } from '../../../app-state/app-state.service';
 import { SectionTagsStateModel } from './section-tags-state.model';
-import { DeleteSiteSectionsTagsAction, RenameSectionTagsSitenameAction } from './section-tags.actions';
+import {
+  DeleteSiteSectionsTagsAction,
+  RenameSectionTagsSitenameAction,
+  DeleteSectionTagsAction,
+  RenameSectionTagsAction } from './section-tags.actions';
 
 @State<SectionTagsStateModel>({
   name: 'sectionTags',
@@ -17,8 +21,37 @@ export class SectionTagsState implements NgxsOnInit {
     });
   }
 
+  @Action(RenameSectionTagsAction)
+  renameSectionTags({ patchState, getState }: StateContext<SectionTagsStateModel>, action: RenameSectionTagsAction) {
+    const state = getState();
+
+    if (!state[action.section.site_name].section) {
+      return;
+    }
+
+    patchState({
+      [action.section.site_name]: {
+        ...state[action.section.site_name],
+        section: state[action.section.site_name].section.map(section => {
+
+          if (section['@attributes'].name === action.section.name) {
+            return {
+              ...section,
+              '@attributes': {
+                ...section['@attributes'],
+                name: action.newSectionName
+              }
+            };
+
+          }
+          return section;
+        })
+      }
+    });
+  }
+
   @Action(RenameSectionTagsSitenameAction)
-  renameSiteSettingsSitename({ setState, getState }: StateContext<SectionTagsStateModel>, action: RenameSectionTagsSitenameAction) {
+  renameSectionTagsSitename({ setState, getState }: StateContext<SectionTagsStateModel>, action: RenameSectionTagsSitenameAction) {
     const state = getState();
     const newState = {};
 
@@ -32,6 +65,24 @@ export class SectionTagsState implements NgxsOnInit {
     }
 
     setState(newState);
+  }
+
+  @Action(DeleteSectionTagsAction)
+  deleteSectionTags({ getState, patchState }: StateContext<SectionTagsStateModel[]>, action: DeleteSectionTagsAction) {
+    const state = getState();
+
+    if (!state[action.section.site_name].section) {
+      return;
+    }
+
+    patchState({
+      [action.section.site_name]: {
+        ...state[action.section.site_name],
+        section: state[action.section.site_name].section.filter(section => {
+          return section['@attributes']['name'] !== action.section.name;
+        })
+      }
+    });
   }
 
   @Action(DeleteSiteSectionsTagsAction)

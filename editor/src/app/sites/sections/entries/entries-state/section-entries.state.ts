@@ -3,7 +3,11 @@ import { take } from 'rxjs/operators';
 
 import { AppStateService } from '../../../../app-state/app-state.service';
 import { SectionEntriesStateModel } from './section-entries-state.model';
-import { DeleteSiteSectionsEntriesAction, RenameSectionEntriesSitenameAction } from './section-entries.actions';
+import {
+  DeleteSiteSectionsEntriesAction,
+  RenameSectionEntriesSitenameAction,
+  DeleteSectionEntriesAction,
+  RenameSectionEntriesAction } from './section-entries.actions';
 
 @State<SectionEntriesStateModel>({
   name: 'sectionEntries',
@@ -14,6 +18,21 @@ export class SectionEntriesState implements NgxsOnInit {
   ngxsOnInit({ setState }: StateContext<SectionEntriesStateModel>) {
     this.appStateService.getInitialState('', 'sectionEntries').pipe(take(1)).subscribe((sections) => {
       setState(sections);
+    });
+  }
+
+  @Action(RenameSectionEntriesAction)
+  renameSectionEntries({ patchState, getState }: StateContext<SectionEntriesStateModel>, action: RenameSectionEntriesAction) {
+    const state = getState();
+
+    patchState({
+      [action.section.site_name]: state[action.section.site_name].map(entry => {
+
+        if (entry.sectionName === action.section.name) {
+          return {...entry, sectionName: action.newSectionName};
+        }
+        return entry;
+      })
     });
   }
 
@@ -32,6 +51,17 @@ export class SectionEntriesState implements NgxsOnInit {
     }
 
     setState(newState);
+  }
+
+  @Action(DeleteSectionEntriesAction)
+  deleteSectionEntries({ patchState, getState }: StateContext<SectionEntriesStateModel>, action: DeleteSectionEntriesAction) {
+    const state = getState();
+
+    patchState({
+      [action.section.site_name]: state[action.section.site_name].filter(entry => {
+        return entry.sectionName !== action.section.name;
+      })
+    });
   }
 
   @Action(DeleteSiteSectionsEntriesAction)

@@ -1,9 +1,19 @@
-import { State, Action, StateContext, Selector, NgxsOnInit  } from '@ngxs/store';
+import { Store, State, Action, StateContext, Selector, NgxsOnInit } from '@ngxs/store';
 import { SiteSectionStateModel } from './site-sections-state.model';
 import { AppStateService } from '../../../app-state/app-state.service';
 import { take } from 'rxjs/operators';
 import { AppState } from '../../../app-state/app.state';
-import { UpdateSiteSectionAction, DeleteSiteSectionsAction, RenameSiteSectionsSitenameAction } from './site-sections.actions';
+import {
+  UpdateSiteSectionAction,
+  DeleteSiteSectionsAction,
+  RenameSiteSectionsSitenameAction,
+  DeleteSiteSectionAction,
+  CreateSectionAction,
+  CloneSectionAction,
+  RenameSiteSectionAction} from './site-sections.actions';
+import { DeleteSectionTagsAction, RenameSectionTagsAction } from '../tags/section-tags.actions';
+import { DeleteSectionEntriesAction, RenameSectionEntriesAction } from '../entries/entries-state/section-entries.actions';
+import { slugify } from '../../../shared/helpers';
 
 @State<SiteSectionStateModel[]>({
   name: 'siteSections',
@@ -18,7 +28,9 @@ export class SiteSectionsState implements NgxsOnInit {
     });
   }
 
-  constructor(private appStateService: AppStateService) {}
+  constructor(private appStateService: AppStateService,
+              private store: Store) {
+  }
 
   ngxsOnInit({ setState }: StateContext<SiteSectionStateModel[]>) {
     this.appStateService.getInitialState('', 'site_sections').pipe(take(1)).subscribe((sections) => {
@@ -35,6 +47,40 @@ export class SiteSectionsState implements NgxsOnInit {
       }
       setState(sections);
     });
+  }
+
+  @Action(CreateSectionAction)
+  createSection({ getState, setState }: StateContext<SiteSectionStateModel[]>, action: CreateSectionAction) {
+    const state = getState();
+    const site = this.store.selectSnapshot(AppState.getSite);
+
+    // @todo sync with backend and return section data
+    if (action.section) {
+      // clone section, pass section to backend for cloning
+    }
+
+    const newSection: SiteSectionStateModel = {
+      // @todo get unique name from backend
+      name: 'untitled-' + Math.random().toString(36).substr(2, 9),
+      title: '',
+      site_name: site,
+      order: state.filter(section => section.site_name === site).length,
+      '@attributes': {
+        published: 1,
+        tags_behavior: 'invisible'
+      }
+    };
+
+    setState(
+      [...state, newSection]
+    );
+
+    // @todo add cloned section entries and tags if exists
+  }
+
+  @Action(CloneSectionAction)
+  cloneSection({ dispatch }: StateContext<SiteSectionStateModel[]>, action: CloneSectionAction) {
+    dispatch(new CreateSectionAction(action.section));
   }
 
   @Action(UpdateSiteSectionAction)
@@ -59,6 +105,18 @@ export class SiteSectionsState implements NgxsOnInit {
     }));
   }
 
+  @Action(RenameSiteSectionAction)
+  renameSiteSection({ dispatch }: StateContext<SiteSectionStateModel[]>, action: RenameSiteSectionAction) {
+
+    // @todo sync and validate from server
+    // @todo return new section name from server (unique and slugified)
+    action.payload.name = slugify(action.payload.title);
+
+    dispatch(new UpdateSiteSectionAction(action.section.site_name, action.order, action.payload));
+    dispatch(new RenameSectionTagsAction(action.section, action.payload.name));
+    dispatch(new RenameSectionEntriesAction(action.section, action.payload.name));
+  }
+
   @Action(RenameSiteSectionsSitenameAction)
   renameSiteSectionsSitename({ getState, setState }: StateContext<SiteSectionStateModel[]>, action: RenameSiteSectionsSitenameAction) {
     const state = getState();
@@ -71,6 +129,31 @@ export class SiteSectionsState implements NgxsOnInit {
         return {...section, ...{'site_name': action.siteName}};
       })
     );
+  }
+
+  @Action(DeleteSiteSectionAction)
+  deleteSiteSection({ getState, setState, dispatch }: StateContext<SiteSectionStateModel[]>, action: DeleteSiteSectionAction) {
+    const state = getState();
+    let order = -1;
+
+    setState(
+      state
+        .filter(section => !(section.site_name === action.section.site_name && section.name === action.section.name))
+        // Update order
+        .map(section => {
+          if (section.site_name === action.section.site_name) {
+            order++;
+
+            if (section.order !== order) {
+              return {...section, ...{'order': order}};
+            }
+          }
+          return section;
+        })
+    );
+
+    dispatch(new DeleteSectionTagsAction(action.section));
+    dispatch(new DeleteSectionEntriesAction(action.section));
   }
 
   @Action(DeleteSiteSectionsAction)
