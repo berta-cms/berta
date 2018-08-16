@@ -1,5 +1,5 @@
 import { set } from 'lodash/fp';
-import { Store, State, Action, StateContext, NgxsOnInit } from '@ngxs/store';
+import { State, Action, StateContext, NgxsOnInit } from '@ngxs/store';
 import { SiteStateModel } from './site-state.model';
 import { AppStateService } from '../../app-state/app-state.service';
 import { take } from 'rxjs/operators';
@@ -72,9 +72,7 @@ export class SitesState implements NgxsOnInit {
 
 
   @Action(RenameSiteAction)
-  renameSite({ setState, getState, dispatch }: StateContext<SiteStateModel[]>, action: RenameSiteAction) {
-    const currentState = getState();
-
+  renameSite({ dispatch }: StateContext<SiteStateModel[]>, action: RenameSiteAction) {
     // @todo sync with backend, validate and return from server
     dispatch(new UpdateSiteAction(action.site, 'name', action.value));
 
