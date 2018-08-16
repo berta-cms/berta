@@ -59,8 +59,6 @@ export class HeaderComponent implements OnInit {
 
   queryParams$: Observable<{[k: string]: string}>;
 
-  constructor() {}
-
   ngOnInit() {
     this.queryParams$ = this.site$.pipe(
       map(site => site ? {site: site} : {})
