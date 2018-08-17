@@ -17,13 +17,24 @@ import { AppState } from './app-state/app.state';
       <section>
         <iframe sandbox="allow-same-origin allow-scripts allow-modals allow-popups allow-forms"
                 [src]="previewUrl"
-                frameborder="0"
-                style="width:100%;height:100%;"></iframe>
+                frameborder="0"></iframe>
       </section>
     </main>
     <div [style.display]="((showOverlay$ | async) ? '' : 'none')" class="overlay" (click)="hideOverlay()">
   `,
   styles: [`
+    :host {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+
+    main {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
     berta-header {
       display: block;
       position: relative;
@@ -39,6 +50,18 @@ import { AppState } from './app-state/app.state';
       width: 384px;
       z-index: 2;
       box-sizing: border-box;
+    }
+
+    section {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    iframe {
+      flex-grow: 1;
+      width:100%;
+      height:100%;
     }
 
     .overlay {
@@ -89,7 +112,7 @@ export class AppComponent implements OnInit {
     // 2) Check for logged in user and set previewUrl as `/engine`
 
     // const url = 'http://local.berta.me';
-    const url = 'about:blank';
+    const url = 'http://local.berta.me/_preview';
     this.previewUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
   }
 
