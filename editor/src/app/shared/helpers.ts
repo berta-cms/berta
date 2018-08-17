@@ -62,3 +62,29 @@ export function slugify(str: string): string {
 
   return str;
 }
+
+/**
+ * Transforms payload object into flat array with key path and value
+ *
+ * @param payload object to convert
+ */
+export function objectToPathArray(payload: Object): {path: string[], value: any}[] {
+  const results = [];
+
+  for (const key in payload) {
+    if (isPlainObject(payload[key])) {
+      for ( const child of objectToPathArray(payload[key])) {
+        child.path.unshift(key);
+        results.push(child);
+      }
+
+    } else {
+      results.push({
+        path: [key],
+        value: payload[key]
+      });
+    }
+  }
+
+  return results;
+}

@@ -100,7 +100,7 @@ export class SiteSectionsState implements NgxsOnInit {
   }
 
   @Action(UpdateSiteSectionAction)
-  updateSiteSection({ getState, setState, dispatch }: StateContext<SiteSectionStateModel[]>, action: UpdateSiteSectionAction) {
+  updateSiteSection({ getState, setState }: StateContext<SiteSectionStateModel[]>, action: UpdateSiteSectionAction) {
     // @todo rewite this path lookup from payload
     const fieldKeys = [Object.keys(action.payload)[0]];
     if (action.payload[fieldKeys[0]] instanceof Object) {
