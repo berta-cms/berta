@@ -69,7 +69,10 @@ import { DeleteSiteSectionAction, CloneSectionAction } from './sections-state/si
     </div>
     <h4 *ngIf="params.length > 0">Params</h4>
     <div *ngIf="params.length > 0" class="section-params">
-      <berta-setting *ngFor="let param of params" [setting]="param.setting" [config]="param.config"></berta-setting>
+      <berta-setting *ngFor="let param of params"
+                    [setting]="param.setting"
+                    [config]="param.config"
+                    (update)="updateSectionParams($event)"></berta-setting>
     </div>
   `,
   styles: [`
@@ -131,6 +134,12 @@ export class SectionComponent implements OnInit {
 
   editField(field) {
     this.edit = field;
+  }
+
+  updateSectionParams(updateEvent) {
+    this.updateField({
+      [updateEvent.field]: updateEvent.value
+    });
   }
 
   cloneSection() {
