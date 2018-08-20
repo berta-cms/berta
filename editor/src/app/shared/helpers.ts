@@ -45,20 +45,54 @@ export function isPlainObject(obj: any): boolean {
   return false;
 }
 
-export function slugify(str: string): string {
-  str = str.replace(/^\s+|\s+$/g, ''); // trim
-  str = str.toLowerCase();
 
-  // remove accents, swap ñ for n, etc
-  const from = 'àáäâèéëêìíïîòóöôùúüûñç·/_,:;';
-  const to   = 'aaaaeeeeiiiioooouuuunc------';
-  for (let i = 0, l = from.length; i < l; i++) {
-      str = str.replace(new RegExp(from.charAt(i), 'g'), to.charAt(i));
+/**
+ * Transforms deep payload object into flat array with key path and value
+ *
+ * Example object:
+ * {
+ *   name: 'John'
+ *   attributes: {
+ *     age: 18,
+ *     weight: 75
+ *   }
+ * }
+ *
+ * Result:
+ * [
+ *   {
+ *     path: ['name'],
+ *     value: 'John'
+ *   },
+ *   {
+ *     path: ['attributes', 'age'],
+ *     value: 18
+ *   },
+ *   {
+ *     path: ['attributes', 'weight'],
+ *     value: 75
+ *   }
+ * ]
+ *
+ * @param payload object to convert
+ */
+export function objectToPathArray(payload: Object): {path: string[], value: any}[] {
+  const results = [];
+
+  for (const key in payload) {
+    if (isPlainObject(payload[key])) {
+      for ( const child of objectToPathArray(payload[key])) {
+        child.path.unshift(key);
+        results.push(child);
+      }
+
+    } else {
+      results.push({
+        path: [key],
+        value: payload[key]
+      });
+    }
   }
 
-  str = str.replace(/[^a-z0-9 -]/g, '') // remove invalid chars
-      .replace(/\s+/g, '-') // collapse whitespace and replace by -
-      .replace(/-+/g, '-'); // collapse dashes
-
-  return str;
+  return results;
 }
