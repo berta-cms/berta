@@ -69,62 +69,63 @@ export class SiteSectionsComponent implements OnInit {
                   return true;
                 })
                 .map(param => {
-                return {
-                  setting: {
-                    slug: param,
-                    value: !section[param] && section[param] !== 0 ? '' : section[param]
-                  },
-                  config: params[param]
-                };
-              })
-              .map(param => {
-                // initialize select inputs
-                if (param.config.format === 'select' || param.config.format === 'fontselect') {
-                  let values: {value: string|number, title: string}[];
+                  return {
+                    setting: {
+                      slug: param,
+                      value: !section[param] && section[param] !== 0 ? '' : section[param]
+                    },
+                    config: params[param]
+                  };
+                })
+                .map(param => {
+                  // initialize select inputs
+                  if (param.config.format === 'select' || param.config.format === 'fontselect') {
+                    let values: {value: string|number, title: string}[];
 
-                  if (isPlainObject(param.config.values)) {
-                    values = Object.keys(param.config.values).map((value => {
-                      return {value: value, title: param.config.values[value]};
-                    }));
+                    if (isPlainObject(param.config.values)) {
+                      values = Object.keys(param.config.values).map((value => {
+                        return {value: value, title: param.config.values[value]};
+                      }));
 
-                  } else if (param.config.values instanceof Array) {
-                    values = (param.config.values as Array<string|number>).map((value) => {
-                      return {
-                        value: value,
-                        title: camel2Words(String(value))
-                      };
-                    });
+                    } else if (param.config.values instanceof Array) {
+                      values = (param.config.values as Array<string|number>).map((value) => {
+                        return {
+                          value: value,
+                          title: camel2Words(String(value))
+                        };
+                      });
 
-                  } else {
-                    values = [{value: String(param.config.values), title: String(param.config.values)}];
+                    } else {
+                      values = [{value: String(param.config.values), title: String(param.config.values)}];
+                    }
+                    param.config = {...param.config, values: values};
                   }
-                  param.config = {...param.config, values: values};
-                }
-                return param;
-              })
-              .map(param => {
-                // generate titles
-                if (!param.config.title && param.config.html_before) {
-                  const wrapper = document.createElement('div');
-                  wrapper.innerHTML = param.config.html_before;
-                  return {...param, config: {...param.config, title: wrapper.innerText}};
-                } else if (!param.config.title) {
-                  return {...param, config: {...param.config, title: camel2Words(param.setting.slug)}};
-                }
-                return param;
-              })
-              .map(param => {
-                // Assign default values:
-                if (param.setting.value || param.setting.value === 0) {
                   return param;
-                }
+                })
+                .map(param => {
+                  // generate titles
+                  if (!param.config.title && param.config.html_before) {
+                    const wrapper = document.createElement('div');
+                    wrapper.innerHTML = param.config.html_before;
+                    return {...param, config: {...param.config, title: wrapper.innerText}};
+                  } else if (!param.config.title) {
+                    return {...param, config: {...param.config, title: camel2Words(param.setting.slug)}};
+                  }
+                  return param;
+                })
+                .map(param => {
+                  // Assign default values:
+                  if (param.setting.value || param.setting.value === 0) {
+                    return param;
+                  }
 
-                return {...param, setting: {
-                  ...param.setting,
-                  value: (param.config.default || param.config.default === 0) ? param.config.default : ''
-                }};
+                  return {...param, setting: {
+                    ...param.setting,
+                    value: (param.config.default || param.config.default === 0) ? param.config.default : ''
+                  }};
 
-              })};
+                })
+              };
             }
 
             return {section, params: []};
