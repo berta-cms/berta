@@ -54,10 +54,14 @@ export interface SectionTypes {
         default?: string | number;
         format?: string;
         values?:
-          | (string | number)[]
+          | Array<(string | number)>
           | {
-              [k: string]: string | number;
-            };
+              [k: string]: string | number
+            }
+          | Array<{
+            title: string;
+            value: string|number;
+          }>;
         html_entities?: boolean;
         css_units?: boolean;
         allow_blank?: boolean;

@@ -3,7 +3,7 @@ import { Store } from '@ngxs/store';
 import { Observable, combineLatest } from 'rxjs';
 import { SiteSectionStateModel } from './sections-state/site-sections-state.model';
 import { SiteTemplatesState } from '../template-settings/templates.state';
-import { filter, map } from 'rxjs/operators';
+import { filter, map, distinctUntilChanged } from 'rxjs/operators';
 import { SiteSectionsState } from './sections-state/site-sections.state';
 import { isPlainObject, camel2Words } from '../../shared/helpers';
 import { SiteTemplateSettingsState } from '../template-settings/site-template-settings.state';
@@ -17,7 +17,7 @@ import { UpdateSiteSectionAction, CreateSectionAction, RenameSiteSectionAction }
       <berta-section *ngFor="let sd of sectionsData$ | async"
                      [section]="sd.section"
                      [params]="sd.params"
-                     [templateSectionTypes]="sd.templateSectionTypes"
+                     [templateSectionTypes]="sectionTypes$ | async"
                      (update)="updateSection(sd, $event)"
                      ></berta-section>
       <button type="button" (click)="createSection()">Create New Section</button>
@@ -33,21 +33,26 @@ import { UpdateSiteSectionAction, CreateSectionAction, RenameSiteSectionAction }
 })
 export class SiteSectionsComponent implements OnInit {
   sectionsData$: Observable<{section: SiteSectionStateModel, params: any[], types: any[]}[]>;
+  sectionTypes$: Observable<{slug: string, title: string}[]>;
 
   constructor(private store: Store) { }
 
   ngOnInit() {
+    this.sectionTypes$ = this.store.select(SiteTemplatesState.getCurrentTemplateSectionTypes).pipe(
+      map(sectionTypes => {
+        return Object.keys(sectionTypes || {}).map(sectionType => {
+          return { slug: sectionType, title: sectionTypes[sectionType].title };
+        });
+      })
+    );
+
     this.sectionsData$ = combineLatest(
       this.store.select(SiteSectionsState.getCurrentSiteSections),
       this.store.select(SiteTemplatesState.getCurrentTemplateSectionTypes),
-      this.store.select(SiteTemplateSettingsState.getIsResponsive)).pipe(
+      this.store.select(SiteTemplateSettingsState.getIsResponsive).pipe(distinctUntilChanged())
+    ).pipe(
         filter(([sections]) => !!sections),
         map(([sections, sectionTypes, isResponsive]) => {
-          return [sections, sectionTypes, isResponsive, Object.keys(sectionTypes || {}).map(sectionType => {
-            return { slug: sectionType, title: sectionTypes[sectionType].title };
-          })];
-        }),
-        map(([sections, sectionTypes, isResponsive, sectionTypesArray]) => {
           return sections.map(section => {
             if (section['@attributes'] && sectionTypes[section['@attributes'].type]) {
               const params = (sectionTypes[section['@attributes'].type] &&
@@ -75,20 +80,23 @@ export class SiteSectionsComponent implements OnInit {
               .map(param => {
                 // initialize select inputs
                 if (param.config.format === 'select' || param.config.format === 'fontselect') {
-                  let values = param.config.values;
+                  let values: {value: string|number, title: string}[];
 
-                  if (isPlainObject(values)) {
-                    values = Object.keys(values).map((value => {
-                      return {value: value, title: values[value]};
+                  if (isPlainObject(param.config.values)) {
+                    values = Object.keys(param.config.values).map((value => {
+                      return {value: value, title: param.config.values[value]};
                     }));
 
-                  } else if (!(values instanceof Array)) {
-                    values = [{value: String(param.config.values), title: param.config.values}];
+                  } else if (param.config.values instanceof Array) {
+                    values = (param.config.values as Array<string|number>).map((value) => {
+                      return {
+                        value: value,
+                        title: camel2Words(String(value))
+                      };
+                    });
 
                   } else {
-                    values = values.map(value => {
-                      return {value: value, title: camel2Words(value)};
-                    });
+                    values = [{value: String(param.config.values), title: String(param.config.values)}];
                   }
                   param.config = {...param.config, values: values};
                 }
@@ -116,10 +124,10 @@ export class SiteSectionsComponent implements OnInit {
                   value: (param.config.default || param.config.default === 0) ? param.config.default : ''
                 }};
 
-              }), templateSectionTypes: sectionTypesArray};
+              })};
             }
 
-            return {section, params: [], templateSectionTypes: sectionTypesArray};
+            return {section, params: []};
           });
         })
     );
