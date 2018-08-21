@@ -12,7 +12,7 @@ import { DeleteSiteSettingsAction, RenameSiteSettingsSitenameAction, CreateSiteS
 import {
   DeleteSiteTemplateSettingsAction,
   RenameSiteTemplateSettingsSitenameAction,
-  CreateSiteTemplateSettingsAction} from '../template-settings/site-teplate-settings.actions';
+  CreateSiteTemplateSettingsAction} from '../template-settings/site-template-settings.actions';
 import {
   DeleteSiteSectionsTagsAction,
   RenameSectionTagsSitenameAction,

@@ -3,14 +3,13 @@ import { AppStateService } from '../../app-state/app-state.service';
 import { take } from 'rxjs/operators';
 import { SitesTemplateSettingsStateModel } from './site-template-settings.interface';
 import { SiteSettingsState } from '../settings/site-settings.state';
-import { SiteSettingsModel } from '../settings/site-settings.interface';
 import { AppStateModel } from '../../app-state/app-state.interface';
 import { AppState } from '../../app-state/app.state';
 import {
   UpdateSiteTemplateSettingsAction,
   DeleteSiteTemplateSettingsAction,
   RenameSiteTemplateSettingsSitenameAction,
-  CreateSiteTemplateSettingsAction} from './site-teplate-settings.actions';
+  CreateSiteTemplateSettingsAction} from './site-template-settings.actions';
 
 @State<SitesTemplateSettingsStateModel>({
   name: 'siteTemplateSettings',

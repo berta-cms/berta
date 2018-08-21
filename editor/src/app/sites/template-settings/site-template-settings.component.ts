@@ -6,7 +6,7 @@ import { camel2Words, isPlainObject } from '../../shared/helpers';
 import { map, filter, mergeMap } from 'rxjs/operators';
 import { SiteTemplatesState } from './templates.state';
 import { TemplateConf } from './site-template-settings.interface';
-import { UpdateSiteTemplateSettingsAction } from './site-teplate-settings.actions';
+import { UpdateSiteTemplateSettingsAction } from './site-template-settings.actions';
 
 
 @Component({
