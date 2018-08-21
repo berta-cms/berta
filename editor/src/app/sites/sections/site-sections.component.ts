@@ -51,7 +51,7 @@ export class SiteSectionsComponent implements OnInit {
       this.store.select(SiteTemplatesState.getCurrentTemplateSectionTypes),
       this.store.select(SiteTemplateSettingsState.getIsResponsive).pipe(distinctUntilChanged())
     ).pipe(
-        filter(([sections]) => !!sections),
+        filter(([sections, sectionTypes]) => !!sections && !!sectionTypes),
         map(([sections, sectionTypes, isResponsive]) => {
           return sections.map(section => {
             if (section['@attributes'] && sectionTypes[section['@attributes'].type]) {

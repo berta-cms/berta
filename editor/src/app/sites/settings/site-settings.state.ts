@@ -26,12 +26,13 @@ export class SiteSettingsState implements NgxsOnInit {
   }
 
   @Selector([SiteSettingsState.getCurrentSiteSettings])
-  static getCurrentSiteTemplate(_, currentSiteSettings) {
-    /** @todo: rewrite this method to support new data structure */
-    if (!(currentSiteSettings && currentSiteSettings.template)) {
+  static getCurrentSiteTemplate(_, currentSiteSettings): string | undefined {
+    if (!currentSiteSettings) {
       return;
     }
-    return currentSiteSettings.template.template;
+    const templateSettings = currentSiteSettings.find(settingGroup => settingGroup.slug === 'template');
+    const template = templateSettings && templateSettings.settings.find(setting => setting.slug === 'template');
+    return template && template.value;
   }
 
   constructor(
