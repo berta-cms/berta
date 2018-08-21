@@ -3,9 +3,8 @@ import { Store } from '@ngxs/store';
 import { Observable, combineLatest } from 'rxjs';
 import { SiteTemplateSettingsState } from './site-template-settings.state';
 import { camel2Words, isPlainObject } from '../../shared/helpers';
-import { map, filter, mergeMap } from 'rxjs/operators';
+import { map, filter } from 'rxjs/operators';
 import { SiteTemplatesState } from './site-templates.state';
-import { TemplateConf } from './site-template-settings.interface';
 import { UpdateSiteTemplateSettingsAction } from './site-template-settings.actions';
 
 
