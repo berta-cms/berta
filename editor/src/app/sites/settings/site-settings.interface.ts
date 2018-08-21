@@ -1,4 +1,19 @@
 export interface SitesSettingsStateModel {
+  [siteName: string]: SiteSettingsGroup[];
+}
+
+export interface SiteSettingsGroup {
+  slug: string;
+  settings: SiteSettingsSetting[];
+}
+
+export interface SiteSettingsSetting {
+  slug: string;
+  value: string|number|boolean;
+}
+
+/* Settings response: */
+export interface SiteSettingsResponse {
   [siteName: string]: SiteSettingsModel;
 }
 

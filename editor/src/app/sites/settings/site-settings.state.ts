@@ -1,5 +1,5 @@
 import { State, Action, StateContext, Selector, NgxsOnInit, Store } from '@ngxs/store';
-import { SitesSettingsStateModel } from './site-settings.interface';
+import { SitesSettingsStateModel, SiteSettingsResponse } from './site-settings.interface';
 import { AppStateService } from '../../app-state/app-state.service';
 import { take } from 'rxjs/operators';
 import { AppState } from '../../app-state/app.state';
@@ -27,6 +27,7 @@ export class SiteSettingsState implements NgxsOnInit {
 
   @Selector([SiteSettingsState.getCurrentSiteSettings])
   static getCurrentSiteTemplate(_, currentSiteSettings) {
+    /** @todo: rewrite this method to support new data structure */
     if (!(currentSiteSettings && currentSiteSettings.template)) {
       return;
     }
@@ -40,8 +41,25 @@ export class SiteSettingsState implements NgxsOnInit {
 
   ngxsOnInit({ setState }: StateContext<SitesSettingsStateModel>) {
     this.appStateService.getInitialState('', 'site_settings').pipe(take(1)).subscribe({
-      next: (response) => {
-        setState(response as SitesSettingsStateModel);
+      next: (response: SiteSettingsResponse) => {
+        /** Initializing state: */
+        const newState: SitesSettingsStateModel = {};
+
+        for (const siteSlug in response) {
+          newState[siteSlug] = Object.keys(response[siteSlug]).map(settingGroupSlug => {
+            return {
+              slug: settingGroupSlug,
+              settings: Object.keys(response[siteSlug][settingGroupSlug]).map(settingSlug => {
+                return {
+                  slug: settingSlug,
+                  value: response[siteSlug][settingGroupSlug][settingSlug]
+                };
+              })
+            };
+          });
+        }
+
+        setState(newState);
       },
       error: (error) => console.error(error)
     });
@@ -49,6 +67,8 @@ export class SiteSettingsState implements NgxsOnInit {
 
   @Action(CreateSiteSettingsAction)
   createSiteSettings({ patchState, getState }: StateContext<SitesSettingsStateModel>, action: CreateSiteSettingsAction) {
+    /** @todo: rewrite this method to support new data structure */
+    return;
     const currentState = getState();
     const newSettings = {};
     newSettings[action.site.name] = action.settings;
@@ -57,6 +77,8 @@ export class SiteSettingsState implements NgxsOnInit {
 
   @Action(UpdateSiteSettingsAction)
   updateSiteSettings({ patchState, getState }: StateContext<SitesSettingsStateModel>, action: UpdateSiteSettingsAction) {
+    /** @todo: rewrite this method to support new data structure */
+    return;
     const currentSite = this.store.selectSnapshot(AppState.getSite);
     const settingKey = Object.keys(action.payload)[0];
     const data = {
