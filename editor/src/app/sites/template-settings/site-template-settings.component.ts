@@ -71,57 +71,6 @@ export class SiteTemplateSettingsComponent implements OnInit {
     );
   }
 
-  getSettingsGroups(settingsWConfig) {
-    if (!settingsWConfig) {
-      return [];
-    }
-
-    return Object.keys(settingsWConfig)
-      .map((settingGroup) => {
-        const groupConfig = (settingsWConfig[settingGroup] &&
-                             settingsWConfig[settingGroup].config &&
-                             settingsWConfig[settingGroup].config._) || {};
-        return {
-          group: {
-            slug: settingGroup,
-            ...groupConfig
-          },
-          settings: Object.keys(settingsWConfig[settingGroup].setting).map(
-            setting => {
-              return {
-                setting: {
-                  slug: setting,
-                  value: settingsWConfig[settingGroup].setting[setting]
-                },
-                config: settingsWConfig[settingGroup].config[setting]
-              };
-            })
-            .filter(setting => !!setting.config)
-            .map(setting => {
-              if (setting.config.format === 'select' || setting.config.format === 'fontselect') {
-                let values = setting.config.values;
-
-                if (isPlainObject(values)) {
-                  values = Object.keys(values).map((value => {
-                    return {value: value, title: values[value]};
-                  }));
-
-                } else if (!(values instanceof Array)) {
-                  values = [{value: String(setting.config.values), title: setting.config.values}];
-
-                } else {
-                  values = values.map(value => {
-                    return {value: value, title: camel2Words(value)};
-                  });
-                }
-                setting.config = {...setting.config, values: values};
-              }
-              return setting;
-            })
-        };
-      }).filter(settingGroup => !settingGroup.group.invisible);
-  }
-
   updateSetting(settingGroup: string, updateEvent) {
     const data = {[updateEvent.field]: updateEvent.value};
     this.store.dispatch(new UpdateSiteTemplateSettingsAction(settingGroup, data));
