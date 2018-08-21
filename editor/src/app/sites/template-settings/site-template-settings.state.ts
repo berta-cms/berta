@@ -18,16 +18,16 @@ import {
 })
 export class SiteTemplateSettingsState implements NgxsOnInit {
 
-  @Selector([AppState, SiteSettingsState.getCurrentSiteSettings])
+  @Selector([AppState, SiteSettingsState.getCurrentSiteTemplate])
   static getCurrentSiteTemplateSettings(
     state: SiteTemplateSettingsState,
     appState: AppStateModel,
-    siteSettings: SiteSettingsModel) {
+    currentTemplateSlug: string) {
 
-    if (!(state && appState && siteSettings && state[appState.site])) {
+    if (!(state && appState && currentTemplateSlug && state[appState.site])) {
       return;
     }
-    return state[appState.site][siteSettings.template.template];
+    return state[appState.site][currentTemplateSlug];
   }
 
   @Selector([SiteTemplateSettingsState.getCurrentSiteTemplateSettings])
