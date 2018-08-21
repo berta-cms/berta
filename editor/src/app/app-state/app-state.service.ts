@@ -72,7 +72,7 @@ export class AppStateService {
       );
   }
 
-  getInitialState(site: string = '', stateSlice?: string , force = false) {
+  getInitialState(site: string = '', stateSlice?: string, force = false) {
 
     if (!this.cachedSiteStates[site] || force) {
       this.cachedSiteStates[site] = this.store.select(state => state.app).pipe(

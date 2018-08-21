@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngxs/store';
-import { Observable } from 'rxjs';
+import { Observable, combineLatest } from 'rxjs';
 import { SiteTemplateSettingsState } from './site-template-settings.state';
 import { camel2Words, isPlainObject } from '../../shared/helpers';
 import { map, filter, mergeMap } from 'rxjs/operators';
-import { SiteTemplatesState } from './templates.state';
+import { SiteTemplatesState } from './site-templates.state';
 import { TemplateConf } from './site-template-settings.interface';
 import { UpdateSiteTemplateSettingsAction } from './site-template-settings.actions';
 
@@ -15,11 +15,11 @@ import { UpdateSiteTemplateSettingsAction } from './site-template-settings.actio
     <h2>Site Template Settings</h2>
 
     <div *ngFor="let settingGroup of templateSettings$ | async">
-      <h3>{{ settingGroup.group.title || settingGroup.group.slug }}</h3>
+      <h3>{{ settingGroup.config.title || settingGroup.slug }}</h3>
       <berta-setting *ngFor="let setting of settingGroup.settings"
                      [setting]="setting.setting"
                      [config]="setting.config"
-                     (update)="updateSetting(settingGroup.group.slug, $event)"></berta-setting>
+                     (update)="updateSetting(settingGroup.slug, $event)"></berta-setting>
     </div>
   `,
   styles: [`
@@ -30,7 +30,7 @@ import { UpdateSiteTemplateSettingsAction } from './site-template-settings.actio
 })
 export class SiteTemplateSettingsComponent implements OnInit {
 
-  templateSettings$: Observable<{ group: any, settings: any[] }[]>;
+  templateSettings$: Observable<{ config: any, settings: any[], slug: string }[]>;
 
   constructor (
     private store: Store) {
@@ -45,24 +45,30 @@ export class SiteTemplateSettingsComponent implements OnInit {
      *
      * @todo: update the store, so the data it contains reflects the data we use here.
      */
-    this.templateSettings$ = this.store.select(SiteTemplateSettingsState.getCurrentSiteTemplateSettings).pipe(
-      filter(settings => !!settings && Object.keys(settings).length > 0),
-      mergeMap(settings => {
-        return this.store.select(SiteTemplatesState.getCurrentTemplateConfig).pipe(
-          filter(templateConf => !!templateConf && Object.keys(templateConf).length > 0),
-          map((templateConf: TemplateConf) => {
-            const settingsWConfig = {};
-
-            for (const settingGroup in settings) {
-              settingsWConfig[settingGroup] = {
-                setting: settings[settingGroup],
-                config: templateConf[settingGroup]
-              };
-            }
-            return settingsWConfig;
-          }));
-      }),
-      map(this.getSettingsGroups)
+    this.templateSettings$ = combineLatest(
+      this.store.select(SiteTemplateSettingsState.getCurrentSiteTemplateSettings),
+      this.store.select(SiteTemplatesState.getCurrentTemplateConfig)
+    )
+    .pipe(
+      filter(([settings, config]) => settings && settings.length > 0 && config && Object.keys(config).length > 0),
+      map(([settings, config]) => {
+        return settings
+          .filter(settingGroup => !config[settingGroup.slug]._.invisible)
+          .map(settingGroup => {
+            return {
+              settings: settingGroup.settings
+                .filter(setting => !!config[settingGroup.slug][setting.slug])  // don't show settings that have no config
+                .map(setting => {
+                  return {
+                    setting: setting,
+                    config: config[settingGroup.slug][setting.slug]
+                  };
+                }),
+              config: config[settingGroup.slug]._,
+              slug: settingGroup.slug
+            };
+          });
+      })
     );
   }
 

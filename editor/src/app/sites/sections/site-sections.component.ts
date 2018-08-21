@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngxs/store';
 import { Observable, combineLatest } from 'rxjs';
 import { SiteSectionStateModel } from './sections-state/site-sections-state.model';
-import { SiteTemplatesState } from '../template-settings/templates.state';
+import { SiteTemplatesState } from '../template-settings/site-templates.state';
 import { filter, map, distinctUntilChanged } from 'rxjs/operators';
 import { SiteSectionsState } from './sections-state/site-sections.state';
 import { isPlainObject, camel2Words } from '../../shared/helpers';

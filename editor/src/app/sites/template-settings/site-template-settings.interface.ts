@@ -1,19 +1,56 @@
+/** @todo sort out these interfaces  */
+
+/* -> site template settings */
 export interface SitesTemplateSettingsStateModel {
-  [siteName: string]: SiteTemplateSettingsModel;
+  [siteName: string]: TemplateSettingsSiteModel;
 }
 
-export interface SiteTemplateSettingsModel {
-  [settingGroup: string]: any;
+export interface TemplateSettingsSiteModel {
+  default?: SettingsGroupModel[];
+  'mashup-0.3.5'?: SettingsGroupModel[];
+  'messy-0.4.2'?: SettingsGroupModel[];
+  'white-0.3.5'?: SettingsGroupModel[];
 }
+/* Response */
+export interface SitesTemplateSettingsResponseModel {
+  [siteName: string]: any;
+}
+/* <- */
 
+/* -> site templates */
 export interface SiteTemplatesStateModel {
-  default?: TemplateModel;
-  'mashup-0.3.5'?: TemplateModel;
-  'messy-0.4.2'?: TemplateModel;
-  'white-0.3.5'?: TemplateModel;
+  default?: TemplateSiteModel;
+  'mashup-0.3.5'?: TemplateSiteModel;
+  'messy-0.4.2'?: TemplateSiteModel;
+  'white-0.3.5'?: TemplateSiteModel;
 }
 
-export interface TemplateModel {
+export interface TemplateSiteModel {
+  templateConf: TemplateConf;
+  sectionTypes: SectionTypes;
+}
+
+/* <- */
+
+export interface SettingsGroupModel {
+  slug: string;
+  settings: SettingModel[];
+}
+
+export interface SettingModel {
+  slug: string;
+  value: string|number|boolean;
+}
+
+/** @todo: Add template settings response model */
+export interface SiteTemplatesResponseModel {
+  default?: TemplateModelResponse;
+  'mashup-0.3.5'?: TemplateModelResponse;
+  'messy-0.4.2'?: TemplateModelResponse;
+  'white-0.3.5'?: TemplateModelResponse;
+}
+
+export interface TemplateModelResponse {
   templateConf: TemplateConf;
   sectionTypes: SectionTypes;
 }

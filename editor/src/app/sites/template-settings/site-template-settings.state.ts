@@ -1,7 +1,7 @@
 import { State, Action, StateContext, Selector, NgxsOnInit, Store } from '@ngxs/store';
 import { AppStateService } from '../../app-state/app-state.service';
 import { take } from 'rxjs/operators';
-import { SitesTemplateSettingsStateModel } from './site-template-settings.interface';
+import { SitesTemplateSettingsStateModel, SitesTemplateSettingsResponseModel } from './site-template-settings.interface';
 import { SiteSettingsState } from '../settings/site-settings.state';
 import { AppStateModel } from '../../app-state/app-state.interface';
 import { AppState } from '../../app-state/app.state';
@@ -42,8 +42,32 @@ export class SiteTemplateSettingsState implements NgxsOnInit {
 
   ngxsOnInit({ setState }: StateContext<SitesTemplateSettingsStateModel>) {
     this.appStateService.getInitialState('', 'site_template_settings').pipe(take(1)).subscribe({
-      next: (response) => {
-        setState(response as SitesTemplateSettingsStateModel);
+      next: (response: SitesTemplateSettingsResponseModel) => {
+        /** Initializing state: */
+        const newState: SitesTemplateSettingsStateModel = {};
+
+        for (const siteSlug in response) {
+          newState[siteSlug] = {};
+
+          for (const templateSlug in response[siteSlug]) {
+            console.log('ts', response[siteSlug][templateSlug]);
+            newState[siteSlug][templateSlug] = Object.keys(response[siteSlug][templateSlug]).map(settingGroupSlug => {
+              const settingGroup = response[siteSlug][templateSlug][settingGroupSlug];
+
+              return {
+                slug: settingGroupSlug,
+                settings: Object.keys(settingGroup).map(settingSlug => {
+                  return {
+                    slug: settingSlug,
+                    value: settingGroup[settingSlug]
+                  };
+                })
+              };
+            });
+          }
+        }
+
+        setState(newState);
       },
       error: (error) => console.error(error)
     });
@@ -52,6 +76,7 @@ export class SiteTemplateSettingsState implements NgxsOnInit {
   @Action(CreateSiteTemplateSettingsAction)
   createSiteTemplateSettings({ patchState, getState }: StateContext<SitesTemplateSettingsStateModel>,
                              action: CreateSiteTemplateSettingsAction) {
+    return;
     const currentState   = getState();
     const newTemplateSettings = {};
     newTemplateSettings[action.site.name] = action.templateSettings;
@@ -61,6 +86,7 @@ export class SiteTemplateSettingsState implements NgxsOnInit {
   @Action(UpdateSiteTemplateSettingsAction)
   updateSiteTemplateSettings({ patchState, getState }: StateContext<SitesTemplateSettingsStateModel>,
     action: UpdateSiteTemplateSettingsAction) {
+    return;
     const currentSite = this.store.selectSnapshot(AppState.getSite);
     const currentSiteTemplate = this.store.selectSnapshot(SiteSettingsState.getCurrentSiteTemplate);
     const settingKey = Object.keys(action.payload)[0];
