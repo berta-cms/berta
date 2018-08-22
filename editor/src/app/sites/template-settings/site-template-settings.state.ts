@@ -3,8 +3,9 @@ import { AppStateService } from '../../app-state/app-state.service';
 import { take } from 'rxjs/operators';
 import {
   SitesTemplateSettingsStateModel,
-  SitesTemplateSettingsResponseModel,
-  SettingsGroupModel
+  SitesTemplateSettingsResponse,
+  SettingsGroupModel,
+  TemplateSettingsTemplateResponse
 } from './site-template-settings.interface';
 import { SiteSettingsState } from '../settings/site-settings.state';
 import { AppStateModel } from '../../app-state/app-state.interface';
@@ -46,7 +47,7 @@ export class SiteTemplateSettingsState implements NgxsOnInit {
 
   ngxsOnInit({ setState }: StateContext<SitesTemplateSettingsStateModel>) {
     this.appStateService.getInitialState('', 'site_template_settings').pipe(take(1)).subscribe({
-      next: (response: SitesTemplateSettingsResponseModel) => {
+      next: (response: SitesTemplateSettingsResponse) => {
         /** Initializing state: */
         const newState: SitesTemplateSettingsStateModel = {};
 
@@ -65,7 +66,7 @@ export class SiteTemplateSettingsState implements NgxsOnInit {
   }
 
   @Action(CreateSiteTemplateSettingsAction)
-  createSiteTemplateSettings({ patchState, getState }: StateContext<SitesTemplateSettingsStateModel>,
+  createSiteTemplateSettings({ patchState }: StateContext<SitesTemplateSettingsStateModel>,
                              action: CreateSiteTemplateSettingsAction) {
     const newTemplateSettings = {[action.site.name]: {}};
 
@@ -154,7 +155,7 @@ export class SiteTemplateSettingsState implements NgxsOnInit {
     setState(newState);
   }
 
-  initializeSettingsForTemplate(settings: any): SettingsGroupModel[] {
+  initializeSettingsForTemplate(settings: TemplateSettingsTemplateResponse): SettingsGroupModel[] {
     return Object.keys(settings).map(settingGroupSlug => {
       return {
         slug: settingGroupSlug,

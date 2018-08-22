@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Store } from '@ngxs/store';
 import { SiteSectionStateModel } from './sections-state/site-sections-state.model';
-import { SectionTypes } from '../template-settings/site-template-settings.interface';
+import { SectionTypes } from '../template-settings/site-templates.interface';
 import { DeleteSiteSectionAction, CloneSectionAction } from './sections-state/site-sections.actions';
 
 @Component({

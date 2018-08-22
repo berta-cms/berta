@@ -1,7 +1,7 @@
-import { State, Action, StateContext, Selector, NgxsOnInit } from '@ngxs/store';
+import { State, StateContext, Selector, NgxsOnInit } from '@ngxs/store';
 import { AppStateService } from '../../app-state/app-state.service';
 import { take } from 'rxjs/operators';
-import { SiteTemplatesStateModel, TemplateSiteModel, SiteTemplatesResponseModel } from './site-template-settings.interface';
+import { SiteTemplatesStateModel, TemplateSiteModel, SiteTemplatesResponseModel } from './site-templates.interface';
 import { SiteSettingsState } from '../settings/site-settings.state';
 import { isPlainObject } from 'lodash';
 import { camel2Words } from '../../shared/helpers';
@@ -102,24 +102,8 @@ export class SiteTemplatesState implements NgxsOnInit {
         }
 
         setState(siteTemplateState);
-        // setState(siteSettingsConfig);
       },
       error: (error) => console.error(error)
     });
   }
-
-  // @Action(AppShowOverlay)
-  // showOverlay({ patchState }: StateContext<SiteTemplatesStateModel>) {
-  //   patchState({ showOverlay: true });
-  // }
-
-  // @Action(AppHideOverlay)
-  // hideOverlay({ patchState }: StateContext<SiteTemplatesStateModel>) {
-  //   patchState({ showOverlay: false });
-  // }
-
-  // @Action(AppLogin)
-  // login({ patchState }: StateContext<SiteTemplatesStateModel>, action: AppLogin) {
-  //   patchState({authToken: action.token});
-  // }
 }
