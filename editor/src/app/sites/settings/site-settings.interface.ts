@@ -1,15 +1,7 @@
+import { SettingsGroupModel } from '../../shared/interfaces';
+
 export interface SitesSettingsStateModel {
-  [siteName: string]: SiteSettingsGroup[];
-}
-
-export interface SiteSettingsGroup {
-  slug: string;
-  settings: SiteSettingsSetting[];
-}
-
-export interface SiteSettingsSetting {
-  slug: string;
-  value: string|number|boolean;
+  [siteName: string]: SettingsGroupModel[];
 }
 
 /* Settings response: */

@@ -1,3 +1,5 @@
+import { SettingsGroupModel } from '../../shared/interfaces';
+
 export interface SitesTemplateSettingsStateModel {
   [siteName: string]: TemplateSettingsSiteModel;
 }
@@ -7,16 +9,6 @@ export interface TemplateSettingsSiteModel {
   'mashup-0.3.5'?: SettingsGroupModel[];
   'messy-0.4.2'?: SettingsGroupModel[];
   'white-0.3.5'?: SettingsGroupModel[];
-}
-
-export interface SettingsGroupModel {
-  slug: string;
-  settings: SettingModel[];
-}
-
-export interface SettingModel {
-  slug: string;
-  value: string|number|boolean;
 }
 
 /* Response */

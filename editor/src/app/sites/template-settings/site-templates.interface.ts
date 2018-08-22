@@ -1,3 +1,5 @@
+import { SettingGroupResponse } from '../../shared/interfaces';
+
 export interface SiteTemplatesStateModel {
   default?: TemplateSiteModel;
   'mashup-0.3.5'?: TemplateSiteModel;
@@ -28,42 +30,7 @@ export interface TemplateModelResponse {
 }
 
 export interface TemplateConfResponse {
-  [settingGroupSlug: string]: {
-    _?: {
-      title?: string;
-      invisible?: boolean;
-      [k: string]: any;
-    };
-    [settingSlug: string]: {
-      default?: null | string | number | boolean;
-      description?: string;
-      title?: string;
-      format?:
-        | 'text'
-        | 'longtext'
-        | 'select'
-        | 'fontselect'
-        | 'icon'
-        | 'image'
-        | 'color'
-        | boolean;
-      values?:
-        | (string | number)[]
-        | {
-            [k: string]: string | number;
-          };
-      html_entities?: boolean;
-      css_units?: boolean;
-      min_width?: number | string;
-      min_height?: number | string;
-      max_width?: number | string;
-      max_height?: number | string;
-      allow_blank?: boolean;
-      link?: boolean;
-      validator?: 'GoogleAnalytics' | string;
-      [k: string]: any;
-    };
-  };
+  [settingGroupSlug: string]: SettingGroupResponse;
 }
 
 export interface SiteTemplateSectionTypes {

@@ -1,5 +1,6 @@
 import { State, Action, StateContext, Selector, NgxsOnInit, Store } from '@ngxs/store';
-import { SitesSettingsStateModel, SiteSettingsResponse, SiteSettingsSiteResponse, SiteSettingsGroup } from './site-settings.interface';
+import { SitesSettingsStateModel, SiteSettingsResponse, SiteSettingsSiteResponse } from './site-settings.interface';
+import { SettingsGroupModel } from '../../shared/interfaces';
 import { AppStateService } from '../../app-state/app-state.service';
 import { take } from 'rxjs/operators';
 import { AppState } from '../../app-state/app.state';
@@ -124,7 +125,7 @@ export class SiteSettingsState implements NgxsOnInit {
     setState(newState);
   }
 
-  initializeSettingsForSite(settings: SiteSettingsSiteResponse): SiteSettingsGroup[] {
+  initializeSettingsForSite(settings: SiteSettingsSiteResponse): SettingsGroupModel[] {
     return Object.keys(settings).map(settingGroupSlug => {
       return {
         slug: settingGroupSlug,

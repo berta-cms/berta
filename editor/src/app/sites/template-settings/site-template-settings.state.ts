@@ -4,9 +4,9 @@ import { take } from 'rxjs/operators';
 import {
   SitesTemplateSettingsStateModel,
   SitesTemplateSettingsResponse,
-  SettingsGroupModel,
   TemplateSettingsTemplateResponse
 } from './site-template-settings.interface';
+import { SettingsGroupModel } from '../../shared/interfaces';
 import { SiteSettingsState } from '../settings/site-settings.state';
 import { AppStateModel } from '../../app-state/app-state.interface';
 import { AppState } from '../../app-state/app.state';
