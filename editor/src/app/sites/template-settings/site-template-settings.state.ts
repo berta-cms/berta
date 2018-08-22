@@ -50,7 +50,6 @@ export class SiteTemplateSettingsState implements NgxsOnInit {
           newState[siteSlug] = {};
 
           for (const templateSlug in response[siteSlug]) {
-            console.log('ts', response[siteSlug][templateSlug]);
             newState[siteSlug][templateSlug] = Object.keys(response[siteSlug][templateSlug]).map(settingGroupSlug => {
               const settingGroup = response[siteSlug][templateSlug][settingGroupSlug];
 

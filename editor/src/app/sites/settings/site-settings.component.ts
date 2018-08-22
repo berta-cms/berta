@@ -65,8 +65,7 @@ export class SiteSettingsComponent implements OnInit {
             };
           });
 
-      }),
-      tap(result => console.log('after settings map: ', result))
+      })
     );
   }
 
