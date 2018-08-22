@@ -1,5 +1,5 @@
 import { State, Action, StateContext, Selector, NgxsOnInit, Store } from '@ngxs/store';
-import { SitesSettingsStateModel, SiteSettingsResponse } from './site-settings.interface';
+import { SitesSettingsStateModel, SiteSettingsResponse, SiteSettingsModel, SiteSettingsGroup } from './site-settings.interface';
 import { AppStateService } from '../../app-state/app-state.service';
 import { take } from 'rxjs/operators';
 import { AppState } from '../../app-state/app.state';
@@ -47,17 +47,7 @@ export class SiteSettingsState implements NgxsOnInit {
         const newState: SitesSettingsStateModel = {};
 
         for (const siteSlug in response) {
-          newState[siteSlug] = Object.keys(response[siteSlug]).map(settingGroupSlug => {
-            return {
-              slug: settingGroupSlug,
-              settings: Object.keys(response[siteSlug][settingGroupSlug]).map(settingSlug => {
-                return {
-                  slug: settingSlug,
-                  value: response[siteSlug][settingGroupSlug][settingSlug]
-                };
-              })
-            };
-          });
+          newState[siteSlug] = this.initializeSettingsForSite(response[siteSlug]);
         }
 
         setState(newState);
@@ -67,39 +57,45 @@ export class SiteSettingsState implements NgxsOnInit {
   }
 
   @Action(CreateSiteSettingsAction)
-  createSiteSettings({ patchState, getState }: StateContext<SitesSettingsStateModel>, action: CreateSiteSettingsAction) {
-    /** @todo: rewrite this method to support new data structure */
-    return;
-    const currentState = getState();
-    const newSettings = {};
-    newSettings[action.site.name] = action.settings;
-    patchState({...currentState, ...newSettings});
+  createSiteSettings({ patchState }: StateContext<SitesSettingsStateModel>, action: CreateSiteSettingsAction) {
+    const newSettings = {[action.site.name]: this.initializeSettingsForSite(action.settings)};
+    patchState(newSettings);
   }
 
   @Action(UpdateSiteSettingsAction)
   updateSiteSettings({ patchState, getState }: StateContext<SitesSettingsStateModel>, action: UpdateSiteSettingsAction) {
-    /** @todo: rewrite this method to support new data structure */
-    return;
     const currentSite = this.store.selectSnapshot(AppState.getSite);
     const settingKey = Object.keys(action.payload)[0];
     const data = {
       path: currentSite + '/settings/' + action.settingGroup + '/' + settingKey,
       value: action.payload[settingKey]
     };
+    /** @todo: Loading should be triggered here */
 
     this.appStateService.sync('siteSettings', data)
       .subscribe(response => {
+        /** @todo: additional action should be triggered here!!! */
         if (response.error_message) {
           // @TODO handle error message
           console.error(response.error_message);
         } else {
           const currentState = getState();
-          const updatedSiteSettingsGroup = {...currentState[currentSite][action.settingGroup], ...action.payload};
 
-          patchState({[currentSite]: {
-            ...currentState[currentSite],
-            [action.settingGroup]: updatedSiteSettingsGroup
-          }});
+          patchState({[currentSite]: currentState[currentSite].map(settingGroup => {
+            if (settingGroup.slug !== action.settingGroup) {
+              return settingGroup;
+            }
+
+            return {
+              ...settingGroup,
+              settings: settingGroup.settings.map(setting => {
+                if (setting.slug !== settingKey) {
+                  return setting;
+                }
+                return { ...setting, value: action.payload[settingKey] };
+              })
+            };
+          })});
         }
     });
   }
@@ -126,5 +122,19 @@ export class SiteSettingsState implements NgxsOnInit {
     const newState = {...getState()};
     delete newState[action.siteName];
     setState(newState);
+  }
+
+  initializeSettingsForSite(settings: SiteSettingsModel): SiteSettingsGroup[] {
+    return Object.keys(settings).map(settingGroupSlug => {
+      return {
+        slug: settingGroupSlug,
+        settings: Object.keys(settings[settingGroupSlug]).map(settingSlug => {
+          return {
+            slug: settingSlug,
+            value: settings[settingGroupSlug][settingSlug]
+          };
+        })
+      };
+    });
   }
 }
