@@ -1,10 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngxs/store';
-import { SiteSettingsModel, SiteSettingsConfigGroup } from './site-settings.interface';
 import { Observable, combineLatest } from 'rxjs';
 import { SiteSettingsState } from './site-settings.state';
-import { camel2Words, isPlainObject } from '../../shared/helpers';
-import { map, filter, tap } from 'rxjs/operators';
+import { map, filter } from 'rxjs/operators';
 import { SiteSettingsConfigState } from './site-settings-config.state';
 import { UpdateSiteSettingsAction } from './site-settings.actions';
 

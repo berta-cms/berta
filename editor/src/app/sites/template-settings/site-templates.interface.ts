@@ -31,13 +31,22 @@ export interface TemplateConfResponse {
   [settingGroupSlug: string]: {
     _?: {
       title?: string;
+      invisible?: boolean;
       [k: string]: any;
     };
     [settingSlug: string]: {
-      default?: string | number | boolean;
+      default?: null | string | number | boolean;
       description?: string;
       title?: string;
-      format?: string | boolean;
+      format?:
+        | 'text'
+        | 'longtext'
+        | 'select'
+        | 'fontselect'
+        | 'icon'
+        | 'image'
+        | 'color'
+        | boolean;
       values?:
         | (string | number)[]
         | {
@@ -50,6 +59,8 @@ export interface TemplateConfResponse {
       max_width?: number | string;
       max_height?: number | string;
       allow_blank?: boolean;
+      link?: boolean;
+      validator?: 'GoogleAnalytics' | string;
       [k: string]: any;
     };
   };

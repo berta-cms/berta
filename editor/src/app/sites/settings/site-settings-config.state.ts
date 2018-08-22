@@ -1,7 +1,7 @@
-import { State, Action, StateContext, Selector, NgxsOnInit } from '@ngxs/store';
+import { State, StateContext, NgxsOnInit } from '@ngxs/store';
 import { AppStateService } from '../../app-state/app-state.service';
 import { take } from 'rxjs/operators';
-import { SiteSettingsConfigStateModel } from './site-settings.interface';
+import { SiteSettingsConfigStateModel, SiteSettingsConfigResponse } from './site-settings-config.interface';
 import { camel2Words, isPlainObject } from '../../shared/helpers';
 
 
@@ -19,7 +19,7 @@ export class SiteSettingsConfigState implements NgxsOnInit {
     this.appStateService.getInitialState('', 'siteSettingsConfig').pipe(
       take(1)
     ).subscribe({
-      next: (siteSettingsConfig) => {
+      next: (siteSettingsConfig: SiteSettingsConfigResponse) => {
         /** Initialize state: */
         const settingGroups = {};
 
@@ -28,28 +28,30 @@ export class SiteSettingsConfigState implements NgxsOnInit {
           settingGroups[groupSlug] = {};
 
           for (const settingSlug in settingGroupConfig) {
+            const settingConfig = settingGroupConfig[settingSlug];
+
             if (settingSlug === '_') {
-              settingGroups[groupSlug]['_'] = settingGroupConfig[settingSlug];
+              settingGroups[groupSlug]['_'] = settingConfig;
               continue;
             }
 
-            if (['select', 'fontselect'].indexOf(settingGroupConfig[settingSlug].format) > -1) {
+            if (settingConfig.format === 'select' || settingConfig.format === 'fontselect') {
               let values: {value: string|number, title: string}[] = [];
 
-              if (isPlainObject(settingGroupConfig[settingSlug].values)) {
-                values = Object.keys(settingGroupConfig[settingSlug].values).map((value => {
-                  return {value: value, title: settingGroupConfig[settingSlug].values[value]};
+              if (isPlainObject(settingConfig.values)) {
+                values = Object.keys(settingConfig.values).map((value => {
+                  return {value: value, title: settingConfig.values[value]};
                 }));
 
-              } else if (settingGroupConfig[settingSlug].values instanceof Array) {
-                values = settingGroupConfig[settingSlug].values.map(value => {
+              } else if (settingConfig.values instanceof Array) {
+                values = settingConfig.values.map(value => {
                   return {value: value, title: camel2Words(String(value))};
                 });
 
               } else {
                 values = [{
-                  value: String(settingGroupConfig[settingSlug].values),
-                  title: String(settingGroupConfig[settingSlug].values)
+                  value: String(settingConfig.values),
+                  title: String(settingConfig.values)
                 }];
               }
               settingGroups[groupSlug][settingSlug] = { ...settingGroupConfig[settingSlug], values: values };
@@ -65,19 +67,4 @@ export class SiteSettingsConfigState implements NgxsOnInit {
       error: (error) => console.error(error)
     });
   }
-
-  // @Action(AppShowOverlay)
-  // showOverlay({ patchState }: StateContext<SiteSettingsModel>) {
-  //   patchState({ showOverlay: true });
-  // }
-
-  // @Action(AppHideOverlay)
-  // hideOverlay({ patchState }: StateContext<SiteSettingsModel>) {
-  //   patchState({ showOverlay: false });
-  // }
-
-  // @Action(AppLogin)
-  // login({ patchState }: StateContext<SiteSettingsModel>, action: AppLogin) {
-  //   patchState({authToken: action.token});
-  // }
 }
