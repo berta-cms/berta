@@ -37,8 +37,8 @@ export class SiteSettingsConfigState implements NgxsOnInit {
               let values: {value: string|number, title: string}[] = [];
 
               if (isPlainObject(settingGroupConfig[settingSlug].values)) {
-                values = Object.keys(settingGroupConfig[settingSlug]).map((value => {
-                  return {value: value, title: values[value]};
+                values = Object.keys(settingGroupConfig[settingSlug].values).map((value => {
+                  return {value: value, title: settingGroupConfig[settingSlug].values[value]};
                 }));
 
               } else if (settingGroupConfig[settingSlug].values instanceof Array) {
