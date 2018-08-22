@@ -7,7 +7,7 @@ export interface SiteTemplatesStateModel {
 
 export interface TemplateSiteModel {
   templateConf: TemplateConfModel;
-  sectionTypes: SectionTypes;
+  sectionTypes: SiteTemplateSectionTypes;
 }
 
 export interface TemplateConfModel extends TemplateModelResponse {
@@ -24,7 +24,7 @@ export interface SiteTemplatesResponseModel {
 
 export interface TemplateModelResponse {
   templateConf: TemplateConfResponse;
-  sectionTypes: SectionTypes;
+  sectionTypes: SiteTemplateSectionTypes;
 }
 
 export interface TemplateConfResponse {
@@ -66,7 +66,7 @@ export interface TemplateConfResponse {
   };
 }
 
-export interface SectionTypes {
+export interface SiteTemplateSectionTypes {
   [sectionTypeSlug: string]: {
     title: string;
     params?: {
