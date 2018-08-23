@@ -3,11 +3,12 @@ import { Store } from '@ngxs/store';
 import { Observable, combineLatest } from 'rxjs';
 import { SiteSectionStateModel } from './sections-state/site-sections-state.model';
 import { SiteTemplatesState } from '../template-settings/site-templates.state';
-import { filter, map, distinctUntilChanged } from 'rxjs/operators';
+import { filter, map, distinctUntilChanged, distinct } from 'rxjs/operators';
 import { SiteSectionsState } from './sections-state/site-sections.state';
 import { camel2Words } from '../../shared/helpers';
 import { SiteTemplateSettingsState } from '../template-settings/site-template-settings.state';
 import { UpdateSiteSectionAction, CreateSectionAction, RenameSiteSectionAction } from './sections-state/site-sections.actions';
+import { SettingConfigModel, SettingModel } from '../../shared/interfaces';
 
 @Component({
   selector: 'berta-site-sections',
@@ -32,13 +33,17 @@ import { UpdateSiteSectionAction, CreateSectionAction, RenameSiteSectionAction }
   `]
 })
 export class SiteSectionsComponent implements OnInit {
-  sectionsData$: Observable<{section: SiteSectionStateModel, params: any[], types: any[]}[]>;
+  sectionsData$: Observable<{section: SiteSectionStateModel, params: {
+    setting: SettingModel,
+    config: SettingConfigModel,
+  }[]}[]>;
   sectionTypes$: Observable<{slug: string, title: string}[]>;
 
   constructor(private store: Store) { }
 
   ngOnInit() {
     this.sectionTypes$ = this.store.select(SiteTemplatesState.getCurrentTemplateSectionTypes).pipe(
+      distinctUntilChanged(),
       map(sectionTypes => {
         return Object.keys(sectionTypes || {}).map(sectionType => {
           return { slug: sectionType, title: sectionTypes[sectionType].title };
