@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { Store } from '@ngxs/store';
 import { Observable, combineLatest } from 'rxjs';
+import { map, filter, scan } from 'rxjs/operators';
+import { Store } from '@ngxs/store';
 import { SiteTemplateSettingsState } from './site-template-settings.state';
-import { camel2Words, isPlainObject } from '../../shared/helpers';
-import { map, filter } from 'rxjs/operators';
 import { SiteTemplatesState } from './site-templates.state';
 import { UpdateSiteTemplateSettingsAction } from './site-template-settings.actions';
+import { SettingGroupConfigModel, SettingModel, SettingConfigModel } from '../../shared/interfaces';
 
 
 @Component({
@@ -29,21 +29,20 @@ import { UpdateSiteTemplateSettingsAction } from './site-template-settings.actio
 })
 export class SiteTemplateSettingsComponent implements OnInit {
 
-  templateSettings$: Observable<{ config: any, settings: any[], slug: string }[]>;
+  templateSettings$: Observable<Array<{
+    config: SettingGroupConfigModel['_'],
+    settings: Array<{
+      setting: SettingModel,
+      config: SettingConfigModel
+    }>,
+    slug: string
+  }>>;
 
   constructor (
     private store: Store) {
   }
 
   ngOnInit () {
-    /**
-     * @note:
-     * Current setup will destroy and recreate all the setting components on each update.
-     * This is due to transformation of store necessary to display it. The transformation will crtheeate new objects and
-     * arrays every time, so all the components will be recreated.
-     *
-     * @todo: update the store, so the data it contains reflects the data we use here.
-     */
     this.templateSettings$ = combineLatest(
       this.store.select(SiteTemplateSettingsState.getCurrentSiteTemplateSettings),
       this.store.select(SiteTemplatesState.getCurrentTemplateConfig)
@@ -67,6 +66,40 @@ export class SiteTemplateSettingsComponent implements OnInit {
               slug: settingGroup.slug
             };
           });
+      }),
+      /**
+       * settingGroups in this step aren't the ones we get from the store,
+       * they are virtual objects created in prev step (the map function)
+       */
+      scan((prevSettingGroups, settingGroups) => {
+        if (!prevSettingGroups || prevSettingGroups.length === 0) {
+          return settingGroups;
+        }
+
+        return settingGroups.map(settingGroup => {
+          const prevSettingGroup = prevSettingGroups.find(psg => {
+            return psg.slug === settingGroup.slug &&
+              psg.config === settingGroup.config &&
+              psg.settings.length === settingGroup.settings.length;
+          });
+
+          if (prevSettingGroup) {
+            if (settingGroup.settings.some(((setting, index) => prevSettingGroup.settings[index].setting !== setting.setting))) {
+              /* Careful, not to mutate anything coming from the store: */
+              prevSettingGroup.settings = settingGroup.settings.map(setting => {
+                const prevSetting = prevSettingGroup.settings.find(ps => {
+                  return ps.setting === setting.setting && ps.config === setting.config;
+                });
+                if (prevSetting) {
+                  return prevSetting;
+                }
+                return setting;
+              });
+            }
+            return prevSettingGroup;
+          }
+          return settingGroup;
+        });
       })
     );
   }
