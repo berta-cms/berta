@@ -78,6 +78,7 @@ export class SettingComponent implements OnInit {
       return;
     }
 
+    $event.target.disabled = true;
     this.updateField(field, value);
   }
 
