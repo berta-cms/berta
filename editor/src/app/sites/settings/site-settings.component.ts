@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngxs/store';
 import { Observable, combineLatest } from 'rxjs';
+import { map, filter, scan } from 'rxjs/operators';
 import { SiteSettingsState } from './site-settings.state';
-import { map, filter } from 'rxjs/operators';
 import { SiteSettingsConfigState } from './site-settings-config.state';
 import { UpdateSiteSettingsAction } from './site-settings.actions';
 import { SettingModel, SettingConfigModel, SettingGroupConfigModel } from '../../shared/interfaces';
@@ -40,14 +40,6 @@ export class SiteSettingsComponent implements OnInit {
   constructor(private store: Store) { }
 
   ngOnInit() {
-    /**
-     * @note:
-     * Current setup will destroy and recreate all the setting components on each update.
-     * This is due to transformation of store necessary to display it. The transformation will crtheeate new objects and
-     * arrays every time, so all the components will be recreated.
-     *
-     * @todo: update the store, so the data it contains reflects the data we use here.
-     */
     this.settings$ = combineLatest(
       this.store.select(SiteSettingsState.getCurrentSiteSettings),
       this.store.select(SiteSettingsConfigState)
@@ -71,6 +63,40 @@ export class SiteSettingsComponent implements OnInit {
             };
           });
 
+      }),
+      /**
+       * settingGroups in this step aren't the ones we get from the store,
+       * they are virtual objects created in prev step (the map function)
+       */
+      scan((prevSettingGroups, settingGroups) => {
+        if (!prevSettingGroups || prevSettingGroups.length === 0) {
+          return settingGroups;
+        }
+
+        return settingGroups.map(settingGroup => {
+          const prevSettingGroup = prevSettingGroups.find(psg => {
+            return psg.slug === settingGroup.slug &&
+              psg.config === settingGroup.config &&
+              psg.settings.length === settingGroup.settings.length;
+          });
+
+          if (prevSettingGroup) {
+            if (settingGroup.settings.some(((setting, index) => prevSettingGroup.settings[index].setting !== setting.setting))) {
+              /* Careful, not to mutate anything coming from the store: */
+              prevSettingGroup.settings = settingGroup.settings.map(setting => {
+                const prevSetting = prevSettingGroup.settings.find(ps => {
+                  return ps.setting === setting.setting && ps.config === setting.config;
+                });
+                if (prevSetting) {
+                  return prevSetting;
+                }
+                return setting;
+              });
+            }
+            return prevSettingGroup;
+          }
+          return settingGroup;
+        });
       })
     );
   }
