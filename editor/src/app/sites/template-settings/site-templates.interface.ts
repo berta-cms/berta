@@ -1,4 +1,4 @@
-import { SettingGroupResponse } from '../../shared/interfaces';
+import { SettingConfigGroupResponse, SettingGroupConfigModel, SettingConfigModel, SettingConfigResponse } from '../../shared/interfaces';
 
 export interface SiteTemplatesStateModel {
   default?: TemplateSiteModel;
@@ -8,12 +8,21 @@ export interface SiteTemplatesStateModel {
 }
 
 export interface TemplateSiteModel {
-  templateConf: TemplateConfModel;
-  sectionTypes: SiteTemplateSectionTypes;
+  templateConf: {
+    [settingGroupSlug: string]: SettingGroupConfigModel
+  };
+  // sectionTypes: SiteTemplateSectionTypesModel;
+  sectionTypes: SiteTemplateSectionTypesResponse;
 }
 
-export interface TemplateConfModel extends TemplateModelResponse {
-  values?: { [k: string]: string | number; };
+export interface SiteTemplateSectionTypesModel {
+  [sectionTypeSlug: string]: {
+    title: string;
+    params?: {
+      [paramSlug: string]: SettingConfigModel;
+    }
+    [k: string]: any;
+  };
 }
 
 /* Response: */
@@ -26,37 +35,19 @@ export interface SiteTemplatesResponseModel {
 
 export interface TemplateModelResponse {
   templateConf: TemplateConfResponse;
-  sectionTypes: SiteTemplateSectionTypes;
+  sectionTypes: SiteTemplateSectionTypesResponse;
 }
 
 export interface TemplateConfResponse {
-  [settingGroupSlug: string]: SettingGroupResponse;
+  [settingGroupSlug: string]: SettingConfigGroupResponse;
 }
 
-export interface SiteTemplateSectionTypes {
+export interface SiteTemplateSectionTypesResponse {
   [sectionTypeSlug: string]: {
     title: string;
     params?: {
-      [paramSlug: string]: {
-        default?: string | number;
-        format?: string;
-        values?:
-          | Array<(string | number)>
-          | {
-              [k: string]: string | number
-            }
-          | Array<{
-            title: string;
-            value: string|number;
-          }>;
-        html_entities?: boolean;
-        css_units?: boolean;
-        allow_blank?: boolean;
-        html_before?: string;
-        html_after?: string;
-        [k: string]: any;
-      };
-    };
+      [paramSlug: string]: SettingConfigResponse;
+    }
     [k: string]: any;
   };
 }

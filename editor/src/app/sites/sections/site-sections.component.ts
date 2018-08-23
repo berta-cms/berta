@@ -8,6 +8,7 @@ import { SiteSectionsState } from './sections-state/site-sections.state';
 import { isPlainObject, camel2Words } from '../../shared/helpers';
 import { SiteTemplateSettingsState } from '../template-settings/site-template-settings.state';
 import { UpdateSiteSectionAction, CreateSectionAction, RenameSiteSectionAction } from './sections-state/site-sections.actions';
+import { SettingConfigModel } from '../../shared/interfaces';
 
 @Component({
   selector: 'berta-site-sections',
@@ -74,13 +75,13 @@ export class SiteSectionsComponent implements OnInit {
                       slug: param,
                       value: !section[param] && section[param] !== 0 ? '' : section[param]
                     },
-                    config: params[param]
+                    config: params[param] as any  /** @todo create param initialization on setting loading */
                   };
                 })
                 .map(param => {
                   // initialize select inputs
                   if (param.config.format === 'select' || param.config.format === 'fontselect') {
-                    let values: {value: string|number, title: string}[];
+                    let values: SettingConfigModel['values'];
 
                     if (isPlainObject(param.config.values)) {
                       values = Object.keys(param.config.values).map((value => {
@@ -98,7 +99,8 @@ export class SiteSectionsComponent implements OnInit {
                     } else {
                       values = [{value: String(param.config.values), title: String(param.config.values)}];
                     }
-                    param.config = {...param.config, values: values};
+                    /** @todo create param initialization on setting loading */
+                    param.config = {...param.config, values: values} as SettingConfigModel;
                   }
                   return param;
                 })

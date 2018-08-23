@@ -5,6 +5,7 @@ import { SiteSettingsState } from './site-settings.state';
 import { map, filter } from 'rxjs/operators';
 import { SiteSettingsConfigState } from './site-settings-config.state';
 import { UpdateSiteSettingsAction } from './site-settings.actions';
+import { SettingModel, SettingConfigModel, SettingGroupConfigModel } from '../../shared/interfaces';
 
 
 @Component({
@@ -27,7 +28,14 @@ import { UpdateSiteSettingsAction } from './site-settings.actions';
   `]
 })
 export class SiteSettingsComponent implements OnInit {
-  settings$: Observable<{ config: any, settings: any[], slug: string }[]>;
+  settings$: Observable<Array<{
+    config: SettingGroupConfigModel['_'],
+    settings: Array<{
+      setting: SettingModel,
+      config: SettingConfigModel
+    }>,
+    slug: string
+  }>>;
 
   constructor(private store: Store) { }
 

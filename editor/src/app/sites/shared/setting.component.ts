@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { SettingModel, SettingConfigModel } from '../../shared/interfaces';
 
 @Component({
   selector: 'berta-setting',
@@ -60,10 +61,10 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
   `]
 })
 export class SettingComponent implements OnInit {
-  @Input('setting') setting: {value: any, slug: string};
-  @Input('config') config: any;
+  @Input('setting') setting: SettingModel;
+  @Input('config') config: SettingConfigModel;
 
-  @Output('update') update = new EventEmitter<{field: string, value: any}>();
+  @Output('update') update = new EventEmitter<{field: string, value: SettingModel['value']}>();
 
   private lastValue: any;
 
