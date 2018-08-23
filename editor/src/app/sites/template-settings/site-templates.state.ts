@@ -1,10 +1,14 @@
 import { State, StateContext, Selector, NgxsOnInit } from '@ngxs/store';
-import { AppStateService } from '../../app-state/app-state.service';
 import { take } from 'rxjs/operators';
-import { SiteTemplatesStateModel, TemplateSiteModel, SiteTemplatesResponseModel } from './site-templates.interface';
+import {
+  SiteTemplatesStateModel,
+  TemplateSiteModel,
+  SiteTemplatesResponseModel,
+  TemplateModelResponse
+} from './site-templates.interface';
+import { AppStateService } from '../../app-state/app-state.service';
 import { SiteSettingsState } from '../settings/site-settings.state';
-import { isPlainObject } from 'lodash';
-import { camel2Words } from '../../shared/helpers';
+import { initSettingConfigGroup } from '../../shared/helpers';
 
 
 @State<SiteTemplatesStateModel>({
@@ -53,52 +57,28 @@ export class SiteTemplatesState implements NgxsOnInit {
         const siteTemplateState: SiteTemplatesStateModel = {};
 
         for (const templateSlug in siteTemplateResponse) {
-          const templateSettingGroups = siteTemplateResponse[templateSlug].templateConf;
+          const templateSettingGroups: TemplateModelResponse = siteTemplateResponse[templateSlug].templateConf;
           siteTemplateState[templateSlug] = {
             templateConf: {},
-            sectionTypes: siteTemplateResponse[templateSlug].sectionTypes
+            sectionTypes: {}
           };
 
           for (const groupSlug in templateSettingGroups) {
-            const settingGroupConfig = templateSettingGroups[groupSlug];
-            siteTemplateState[templateSlug].templateConf[groupSlug] = {};
-
-            for (const settingSlug in settingGroupConfig) {
-              if (settingSlug === '_') {
-                siteTemplateState[templateSlug].templateConf[groupSlug]['_'] = settingGroupConfig[settingSlug];
-                continue;
-              }
-
-              if (['select', 'fontselect'].indexOf(settingGroupConfig[settingSlug].format) > -1) {
-                let values: {value: string|number, title: string}[] = [];
-
-                if (isPlainObject(settingGroupConfig[settingSlug].values)) {
-                  values = Object.keys(settingGroupConfig[settingSlug].values).map((value => {
-                    return {value: value, title: settingGroupConfig[settingSlug].values[value]};
-                  }));
-
-                } else if (settingGroupConfig[settingSlug].values instanceof Array) {
-                  values = settingGroupConfig[settingSlug].values.map(value => {
-                    return {value: value, title: camel2Words(String(value))};
-                  });
-
-                } else {
-                  values = [{
-                    value: String(settingGroupConfig[settingSlug].values),
-                    title: String(settingGroupConfig[settingSlug].values)
-                  }];
-                }
-                siteTemplateState[templateSlug].templateConf[groupSlug][settingSlug] = {
-                  ...settingGroupConfig[settingSlug],
-                  values: values
-                };
-                continue;
-              }
-
-              siteTemplateState[templateSlug].templateConf[groupSlug][settingSlug] = settingGroupConfig[settingSlug];
-            }
+            siteTemplateState[templateSlug].templateConf[groupSlug] = initSettingConfigGroup(templateSettingGroups[groupSlug]);
           }
 
+          for (const sectionTypeSlug in siteTemplateResponse[templateSlug].sectionTypes) {
+            const sectionTypeConfig = siteTemplateResponse[templateSlug].sectionTypes[sectionTypeSlug];
+
+            if ('params' in sectionTypeConfig) {
+              siteTemplateState[templateSlug].sectionTypes[sectionTypeSlug] = {
+                ...sectionTypeConfig,
+                params: initSettingConfigGroup(sectionTypeConfig.params)
+              };
+            } else {
+              siteTemplateState[templateSlug].sectionTypes[sectionTypeSlug] = sectionTypeConfig;
+            }
+          }
         }
 
         setState(siteTemplateState);

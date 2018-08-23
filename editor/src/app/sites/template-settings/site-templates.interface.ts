@@ -11,8 +11,7 @@ export interface TemplateSiteModel {
   templateConf: {
     [settingGroupSlug: string]: SettingGroupConfigModel
   };
-  // sectionTypes: SiteTemplateSectionTypesModel;
-  sectionTypes: SiteTemplateSectionTypesResponse;
+  sectionTypes: SiteTemplateSectionTypesModel;
 }
 
 export interface SiteTemplateSectionTypesModel {

@@ -5,10 +5,9 @@ import { SiteSectionStateModel } from './sections-state/site-sections-state.mode
 import { SiteTemplatesState } from '../template-settings/site-templates.state';
 import { filter, map, distinctUntilChanged } from 'rxjs/operators';
 import { SiteSectionsState } from './sections-state/site-sections.state';
-import { isPlainObject, camel2Words } from '../../shared/helpers';
+import { camel2Words } from '../../shared/helpers';
 import { SiteTemplateSettingsState } from '../template-settings/site-template-settings.state';
 import { UpdateSiteSectionAction, CreateSectionAction, RenameSiteSectionAction } from './sections-state/site-sections.actions';
-import { SettingConfigModel } from '../../shared/interfaces';
 
 @Component({
   selector: 'berta-site-sections',
@@ -75,34 +74,8 @@ export class SiteSectionsComponent implements OnInit {
                       slug: param,
                       value: !section[param] && section[param] !== 0 ? '' : section[param]
                     },
-                    config: params[param] as any  /** @todo create param initialization on setting loading */
+                    config: params[param]
                   };
-                })
-                .map(param => {
-                  // initialize select inputs
-                  if (param.config.format === 'select' || param.config.format === 'fontselect') {
-                    let values: SettingConfigModel['values'];
-
-                    if (isPlainObject(param.config.values)) {
-                      values = Object.keys(param.config.values).map((value => {
-                        return {value: value, title: param.config.values[value]};
-                      }));
-
-                    } else if (param.config.values instanceof Array) {
-                      values = (param.config.values as Array<string|number>).map((value) => {
-                        return {
-                          value: value,
-                          title: camel2Words(String(value))
-                        };
-                      });
-
-                    } else {
-                      values = [{value: String(param.config.values), title: String(param.config.values)}];
-                    }
-                    /** @todo create param initialization on setting loading */
-                    param.config = {...param.config, values: values} as SettingConfigModel;
-                  }
-                  return param;
                 })
                 .map(param => {
                   // generate titles
