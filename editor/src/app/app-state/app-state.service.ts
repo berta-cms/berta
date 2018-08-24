@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map, tap, shareReplay, catchError, exhaustMap, filter, take, retryWhen, pairwise, switchMap} from 'rxjs/operators';
 import { Store } from '@ngxs/store';

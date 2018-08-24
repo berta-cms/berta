@@ -1,8 +1,8 @@
 import { get } from 'lodash';
-import { Store, State, Action, StateContext, Selector, NgxsOnInit  } from '@ngxs/store';
+import { take } from 'rxjs/operators';
+import { Store, State, Action, StateContext, Selector, NgxsOnInit } from '@ngxs/store';
 import { SiteSectionStateModel } from './site-sections-state.model';
 import { AppStateService } from '../../../app-state/app-state.service';
-import { take } from 'rxjs/operators';
 import { AppState } from '../../../app-state/app.state';
 import {
   UpdateSiteSectionAction,
