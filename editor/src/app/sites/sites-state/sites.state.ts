@@ -1,9 +1,10 @@
 import { set } from 'lodash/fp';
 import { State, Action, StateContext, NgxsOnInit } from '@ngxs/store';
+import { take } from 'rxjs/operators';
+
 import { SiteStateModel } from './site-state.model';
 import { AppStateService } from '../../app-state/app-state.service';
-import { take } from 'rxjs/operators';
-import { CreateSiteAction, DeleteSiteAction, CloneSiteAction, UpdateSiteAction, RenameSiteAction } from './sites.actions';
+import { CreateSiteAction, DeleteSiteAction, CloneSiteAction, UpdateSiteAction, RenameSiteAction, ResetSitesAction } from './sites.actions';
 import {
   DeleteSiteSectionsAction,
   RenameSiteSectionsSitenameAction,
@@ -21,6 +22,7 @@ import {
   DeleteSiteSectionsEntriesAction,
   RenameSectionEntriesSitenameAction,
   AddSiteEntriesAction} from '../sections/entries/entries-state/section-entries.actions';
+
 
 @State<SiteStateModel[]>({
   name: 'sites',
@@ -131,7 +133,7 @@ export class SitesState implements NgxsOnInit {
 
 
   @Action(DeleteSiteAction)
-  DeleteSite({ setState, getState, dispatch }: StateContext<SiteStateModel[]>, action: DeleteSiteAction) {
+  deleteSite({ setState, getState, dispatch }: StateContext<SiteStateModel[]>, action: DeleteSiteAction) {
     this.appStateService.sync('sites', { site: action.site.name }, 'DELETE')
       .subscribe(response => {
         if (response.error_message) {
@@ -156,5 +158,10 @@ export class SitesState implements NgxsOnInit {
           dispatch(new DeleteSiteSectionsEntriesAction(siteName));
         }
       });
+  }
+
+  @Action(ResetSitesAction)
+  resetSites({ setState }: StateContext<SiteStateModel[]>) {
+    setState([]);
   }
 }

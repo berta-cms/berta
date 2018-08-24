@@ -12,7 +12,8 @@ import {
   CreateSectionAction,
   CloneSectionAction,
   RenameSiteSectionAction,
-  AddSiteSectionsAction} from './site-sections.actions';
+  AddSiteSectionsAction,
+  ResetSiteSectionsAction} from './site-sections.actions';
 import { DeleteSectionTagsAction, RenameSectionTagsAction, AddSectionTagsAction } from '../tags/section-tags.actions';
 import {
   DeleteSectionEntriesAction,
@@ -224,5 +225,10 @@ export class SiteSectionsState implements NgxsOnInit {
     setState(
       state.filter(section => section.site_name !== action.siteName)
     );
+  }
+
+  @Action(ResetSiteSectionsAction)
+  resetSiteSections({ setState }: StateContext<SiteSectionStateModel[]>) {
+    setState([]);
   }
 }

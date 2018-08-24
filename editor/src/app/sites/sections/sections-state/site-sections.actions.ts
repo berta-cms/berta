@@ -54,3 +54,7 @@ export class DeleteSiteSectionsAction {
   constructor(public siteName: string) {
   }
 }
+
+export class ResetSiteSectionsAction {
+  static readonly type = 'SITE_SECTIONS:RESET';
+}

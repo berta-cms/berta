@@ -8,7 +8,8 @@ import {
   UpdateSiteSettingsAction,
   DeleteSiteSettingsAction,
   RenameSiteSettingsSitenameAction,
-  CreateSiteSettingsAction } from './site-settings.actions';
+  CreateSiteSettingsAction,
+  ResetSiteSettingsAction} from './site-settings.actions';
 
 
 @State<SitesSettingsStateModel>({
@@ -137,5 +138,10 @@ export class SiteSettingsState implements NgxsOnInit {
         })
       };
     });
+  }
+
+  @Action(ResetSiteSettingsAction)
+  resetSiteSettings({ setState }: StateContext<SitesSettingsStateModel>) {
+    setState({});
   }
 }

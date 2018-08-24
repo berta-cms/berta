@@ -9,7 +9,8 @@ import {
   DeleteSectionTagsAction,
   RenameSectionTagsAction,
   AddSiteSectionsTagsAction,
-  AddSectionTagsAction} from './section-tags.actions';
+  AddSectionTagsAction,
+  ResetSiteSectionsTagsAction} from './section-tags.actions';
 
 @State<SectionTagsStateModel>({
   name: 'sectionTags',
@@ -91,7 +92,7 @@ export class SectionTagsState implements NgxsOnInit {
   }
 
   @Action(DeleteSectionTagsAction)
-  deleteSectionTags({ getState, patchState }: StateContext<SectionTagsStateModel[]>, action: DeleteSectionTagsAction) {
+  deleteSectionTags({ getState, patchState }: StateContext<SectionTagsStateModel>, action: DeleteSectionTagsAction) {
     const state = getState();
 
     if (!state[action.section.site_name].section) {
@@ -109,9 +110,14 @@ export class SectionTagsState implements NgxsOnInit {
   }
 
   @Action(DeleteSiteSectionsTagsAction)
-  deleteSiteSectionsTags({ getState, setState }: StateContext<SectionTagsStateModel[]>, action: DeleteSiteSectionsTagsAction) {
+  deleteSiteSectionsTags({ getState, setState }: StateContext<SectionTagsStateModel>, action: DeleteSiteSectionsTagsAction) {
     const newState = {...getState()};
     delete newState[action.siteName];
     setState(newState);
+  }
+
+  @Action(ResetSiteSectionsTagsAction)
+  resetSectionTags({ setState }: StateContext<SectionTagsStateModel>) {
+    setState({});
   }
 }

@@ -13,3 +13,7 @@ export class AppShowLoading {
 export class AppHideLoading {
   static readonly type = 'LOADING:HIDE';
 }
+
+export class ResetAppStateAction {
+  static readonly type = 'APP:RESET';
+}

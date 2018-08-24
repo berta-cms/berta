@@ -28,3 +28,8 @@ export class DeleteSiteTemplateSettingsAction {
   constructor(public siteName: string) {
   }
 }
+
+export class ResetSiteTemplateSettingsAction {
+  static readonly type = 'SITE_TEMPLATE_SETTINGS:RESET';
+}
+

@@ -1,5 +1,5 @@
-import { State, StateContext, Selector, NgxsOnInit } from '@ngxs/store';
 import { take } from 'rxjs/operators';
+import { State, StateContext, Selector, NgxsOnInit, Action } from '@ngxs/store';
 import {
   SiteTemplatesStateModel,
   TemplateSiteModel,
@@ -9,6 +9,7 @@ import {
 import { AppStateService } from '../../app-state/app-state.service';
 import { SiteSettingsState } from '../settings/site-settings.state';
 import { initSettingConfigGroup } from '../../shared/helpers';
+import { ResetSiteTemplatesAction } from './site-templates.actions';
 
 
 @State<SiteTemplatesStateModel>({
@@ -85,5 +86,10 @@ export class SiteTemplatesState implements NgxsOnInit {
       },
       error: (error) => console.error(error)
     });
+  }
+
+  @Action(ResetSiteTemplatesAction)
+  resetSiteTemplates({ setState }: StateContext<SiteTemplatesStateModel>) {
+    setState({});
   }
 }

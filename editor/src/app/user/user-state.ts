@@ -1,6 +1,17 @@
+import { Router } from '@angular/router';
 import { State, StateContext, NgxsOnInit, Action, Selector  } from '@ngxs/store';
 import { UserStateModel } from './user.state.model';
-import { UserLogin, UserLogout } from './user-actions';
+import { UserLogin, UserLogoutAction, ResetUserAction } from './user-actions';
+import { AppStateService } from '../app-state/app-state.service';
+import { ResetAppStateAction } from '../app-state/app.actions';
+import { ResetSectionEntriesAction } from '../sites/sections/entries/entries-state/section-entries.actions';
+import { ResetSitesAction } from '../sites/sites-state/sites.actions';
+import { ResetSiteSectionsAction } from '../sites/sections/sections-state/site-sections.actions';
+import { ResetSiteSectionsTagsAction } from '../sites/sections/tags/section-tags.actions';
+import { ResetSiteSettingsAction } from '../sites/settings/site-settings.actions';
+import { ResetSiteSettingsConfigAction } from '../sites/settings/site-settings-config.actions';
+import { ResetSiteTemplateSettingsAction } from '../sites/template-settings/site-template-settings.actions';
+import { ResetSiteTemplatesAction } from '../sites/template-settings/site-templates.actions';
 
 const defaultState: UserStateModel = {
   name: null,
@@ -14,7 +25,10 @@ const defaultState: UserStateModel = {
   defaults: defaultState
 })
 export class UserState implements NgxsOnInit {
-  constructor() {}
+  constructor(
+    private appStateService: AppStateService,
+    private router: Router
+  ) {}
 
   @Selector()
   static isLoggedIn(state: UserStateModel): boolean {
@@ -45,8 +59,30 @@ export class UserState implements NgxsOnInit {
     });
   }
 
-  @Action(UserLogout)
-  logout({ patchState }: StateContext<UserStateModel>, action: UserLogout) {
-    patchState(defaultState);
+  @Action(UserLogoutAction)
+  logout({ dispatch }: StateContext<UserStateModel>) {
+    this.appStateService.logout().subscribe({
+      next: () => {},
+      error: (error) => console.error(error)
+    });
+
+    /* Reset the state of app */
+    dispatch(ResetAppStateAction);
+    dispatch(ResetSitesAction);
+    dispatch(ResetSiteSectionsAction);
+    dispatch(ResetSiteSectionsTagsAction);
+    dispatch(ResetSectionEntriesAction);
+    dispatch(ResetSiteSettingsAction);
+    dispatch(ResetSiteSettingsConfigAction);
+    dispatch(ResetSiteTemplateSettingsAction);
+    dispatch(ResetSiteTemplatesAction);
+    dispatch(ResetUserAction);
+
+    this.router.navigate(['/login']);
+  }
+
+  @Action(ResetUserAction)
+  resetUser({ setState }: StateContext<UserStateModel>) {
+    setState(defaultState);
   }
 }

@@ -3,7 +3,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map, tap, shareReplay, catchError, exhaustMap, filter, take, retryWhen, pairwise, switchMap} from 'rxjs/operators';
 import { Store } from '@ngxs/store';
-import { UserLogin, UserLogout } from '../user/user-actions';
+import { UserLogin, UserLogoutAction } from '../user/user-actions';
 import { Router } from '@angular/router';
 import { AppShowLoading, AppHideLoading } from './app.actions';
 
@@ -57,9 +57,10 @@ export class AppStateService {
           });
         }),
         map(response => {
+          /** @todo build retry on login */
           this.hideLoading();
           if (response.status === 401) {
-            this.logout();
+            this.store.dispatch(UserLogoutAction);
             throw new Error('Unauthorized');
           }
 
@@ -93,7 +94,7 @@ export class AppStateService {
                 /* set app error state here maybe don't even throw it */
                 throw error;
               }
-              this.logout();
+              this.store.dispatch(UserLogoutAction);
               return error;
             }),
             exhaustMap(() => {
@@ -146,17 +147,11 @@ export class AppStateService {
   }
 
   logout() {
-    this.http.put('/_api/v1/logout', {}).subscribe({
-      next: () => {},
-      error: (error) => console.error(error)
-    });
-    this.store.dispatch(new UserLogout());
-
     window.localStorage.removeItem('name');
     window.localStorage.removeItem('token');
     window.localStorage.removeItem('features');
     window.localStorage.removeItem('profileUrl');
 
-    this.router.navigate(['/login']);
+    return this.http.put('/_api/v1/logout', {});
   }
 }

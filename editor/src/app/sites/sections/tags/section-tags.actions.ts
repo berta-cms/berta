@@ -43,3 +43,7 @@ export class RenameSectionTagsSitenameAction {
     public siteName: string) {
   }
 }
+
+export class ResetSiteSectionsTagsAction {
+  static readonly type = 'SITE_SECTIONS_TAGS:RESET';
+}

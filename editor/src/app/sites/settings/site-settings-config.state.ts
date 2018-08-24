@@ -1,8 +1,9 @@
-import { State, StateContext, NgxsOnInit } from '@ngxs/store';
+import { State, StateContext, NgxsOnInit, Action } from '@ngxs/store';
 import { take } from 'rxjs/operators';
 import { SiteSettingsConfigStateModel, SiteSettingsConfigResponse } from './site-settings-config.interface';
 import { AppStateService } from '../../app-state/app-state.service';
 import { initSettingConfigGroup } from '../../shared/helpers';
+import { ResetSiteSettingsConfigAction } from './site-settings-config.actions';
 
 
 @State<SiteSettingsConfigStateModel>({
@@ -31,5 +32,10 @@ export class SiteSettingsConfigState implements NgxsOnInit {
       },
       error: (error) => console.error(error)
     });
+  }
+
+  @Action(ResetSiteSettingsConfigAction)
+  resetSiteSettingsConfig({ setState }: StateContext<SiteSettingsConfigStateModel>) {
+    setState({});
   }
 }

@@ -9,7 +9,8 @@ import {
   DeleteSectionEntriesAction,
   RenameSectionEntriesAction,
   AddSiteEntriesAction,
-  AddSectionEntriesAction} from './section-entries.actions';
+  AddSectionEntriesAction,
+  ResetSectionEntriesAction} from './section-entries.actions';
 
 @State<SectionEntriesStateModel>({
   name: 'sectionEntries',
@@ -81,9 +82,14 @@ export class SectionEntriesState implements NgxsOnInit {
   }
 
   @Action(DeleteSiteSectionsEntriesAction)
-  deleteSiteSectionsEntries({ getState, setState }: StateContext<SectionEntriesStateModel[]>, action: DeleteSiteSectionsEntriesAction) {
+  deleteSiteSectionsEntries({ getState, setState }: StateContext<SectionEntriesStateModel>, action: DeleteSiteSectionsEntriesAction) {
     const newState = {...getState()};
     delete newState[action.siteName];
     setState(newState);
+  }
+
+  @Action(ResetSectionEntriesAction)
+  resetSectionEntries({ setState }: StateContext<SectionEntriesStateModel>) {
+    setState({});
   }
 }

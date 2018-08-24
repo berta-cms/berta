@@ -1,6 +1,6 @@
 import { State, Action, StateContext, Selector, NgxsOnInit } from '@ngxs/store';
 import { AppStateModel } from './app-state.interface';
-import { AppShowOverlay, AppHideOverlay, AppShowLoading, AppHideLoading } from './app.actions';
+import { AppShowOverlay, AppHideOverlay, AppShowLoading, AppHideLoading, ResetAppStateAction } from './app.actions';
 import { Router, ActivationEnd } from '@angular/router';
 import { filter, take } from 'rxjs/operators';
 import { UserState } from '../user/user-state';
@@ -77,5 +77,11 @@ export class AppState implements NgxsOnInit {
   @Action(AppHideLoading)
   hideLoading({ patchState }: StateContext<AppStateModel>) {
     patchState({ isLoading: false });
+  }
+
+  @Action(ResetAppStateAction)
+  resetState({ setState }: StateContext<AppStateModel>) {
+    // Apply default state, not to remove the user, user will reset it self
+    setState(defaultState);
   }
 }

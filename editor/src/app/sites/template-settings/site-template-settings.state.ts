@@ -1,6 +1,6 @@
 import { State, Action, StateContext, Selector, NgxsOnInit, Store } from '@ngxs/store';
-import { AppStateService } from '../../app-state/app-state.service';
 import { take } from 'rxjs/operators';
+import { AppStateService } from '../../app-state/app-state.service';
 import {
   SitesTemplateSettingsStateModel,
   SitesTemplateSettingsResponse,
@@ -14,7 +14,10 @@ import {
   UpdateSiteTemplateSettingsAction,
   DeleteSiteTemplateSettingsAction,
   RenameSiteTemplateSettingsSitenameAction,
-  CreateSiteTemplateSettingsAction} from './site-template-settings.actions';
+  CreateSiteTemplateSettingsAction,
+  ResetSiteTemplateSettingsAction
+} from './site-template-settings.actions';
+
 
 @State<SitesTemplateSettingsStateModel>({
   name: 'siteTemplateSettings',
@@ -153,6 +156,11 @@ export class SiteTemplateSettingsState implements NgxsOnInit {
     const newState = {...getState()};
     delete newState[action.siteName];
     setState(newState);
+  }
+
+  @Action(ResetSiteTemplateSettingsAction)
+  resetSiteTemplateSettings({ setState }: StateContext<SitesTemplateSettingsStateModel>) {
+    setState({});
   }
 
   initializeSettingsForTemplate(settings: TemplateSettingsTemplateResponse): SettingsGroupModel[] {

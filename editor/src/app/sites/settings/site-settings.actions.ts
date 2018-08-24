@@ -28,3 +28,7 @@ export class DeleteSiteSettingsAction {
   constructor(public siteName: string) {
   }
 }
+
+export class ResetSiteSettingsAction {
+  static readonly type = 'SITE_SETTINGS:RESET';
+}

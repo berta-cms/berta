@@ -8,6 +8,10 @@ export class UserLogin {
   ) { }
 }
 
-export class UserLogout {
+export class UserLogoutAction {
   static readonly type = 'USER:LOGOUT';
+}
+
+export class ResetUserAction {
+  static readonly type = 'USER:RESET';
 }
