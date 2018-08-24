@@ -1,5 +1,6 @@
 import { SiteStateModel } from '../sites-state/site-state.model';
 import { SiteSettingsResponse } from './site-settings.interface';
+import { SettingModel } from '../../shared/interfaces';
 
 export class CreateSiteSettingsAction {
   static readonly type = 'SITE_SETTINGS:CREATE';
@@ -12,6 +13,20 @@ export class UpdateSiteSettingsAction {
   static readonly type = 'SITE_SETTINGS:UPDATE';
   constructor(public settingGroup: string,
               public payload: {[k: string]: any}) {
+  }
+}
+export class UpdateSiteSettingsFailAction {
+  static readonly type = 'SITE_SETTINGS:UPDATE:FAIL';
+  constructor(public error: string) {
+  }
+}
+
+export class UpdateSiteSettingsSuccessAction {
+  static readonly type = 'SITE_SETTINGS:UPDATE:SUCCESS';
+  constructor(public site: string,
+              public settingGroup: string,
+              public setting: string,
+              public payload: SettingModel['value']) {
   }
 }
 

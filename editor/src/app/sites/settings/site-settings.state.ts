@@ -8,7 +8,9 @@ import {
   UpdateSiteSettingsAction,
   DeleteSiteSettingsAction,
   RenameSiteSettingsSitenameAction,
-  CreateSiteSettingsAction } from './site-settings.actions';
+  CreateSiteSettingsAction,
+  UpdateSiteSettingsFailAction,
+  UpdateSiteSettingsSuccessAction} from './site-settings.actions';
 
 
 @State<SitesSettingsStateModel>({
@@ -64,7 +66,7 @@ export class SiteSettingsState implements NgxsOnInit {
   }
 
   @Action(UpdateSiteSettingsAction)
-  updateSiteSettings({ patchState, getState }: StateContext<SitesSettingsStateModel>, action: UpdateSiteSettingsAction) {
+  updateSiteSettings({ dispatch }: StateContext<SitesSettingsStateModel>, action: UpdateSiteSettingsAction) {
     const currentSite = this.store.selectSnapshot(AppState.getSite);
     const settingKey = Object.keys(action.payload)[0];
     const data = {
@@ -74,31 +76,50 @@ export class SiteSettingsState implements NgxsOnInit {
     /** @todo: Loading should be triggered here */
 
     this.appStateService.sync('siteSettings', data)
-      .subscribe(response => {
-        /** @todo: additional action should be triggered here!!! */
-        if (response.error_message) {
-          // @TODO handle error message
-          console.error(response.error_message);
-        } else {
-          const currentState = getState();
-
-          patchState({[currentSite]: currentState[currentSite].map(settingGroup => {
-            if (settingGroup.slug !== action.settingGroup) {
-              return settingGroup;
-            }
-
-            return {
-              ...settingGroup,
-              settings: settingGroup.settings.map(setting => {
-                if (setting.slug !== settingKey) {
-                  return setting;
-                }
-                return { ...setting, value: action.payload[settingKey] };
-              })
-            };
-          })});
+      .subscribe({
+        next: response => {
+          if (response.error_message) {
+            dispatch(new UpdateSiteSettingsFailAction(response.error_message));
+          } else {
+            dispatch(new UpdateSiteSettingsSuccessAction(
+              currentSite,
+              action.settingGroup,
+              settingKey,
+              action.payload[settingKey]
+            ));
+          }
+        },
+        error: error => {
+          dispatch(new UpdateSiteSettingsFailAction(error.message ? error.message : String(error)));
         }
-    });
+      });
+  }
+
+  @Action(UpdateSiteSettingsFailAction)
+  updateSiteSettingsFail(action: UpdateSiteSettingsFailAction) {
+    // @TODO handle error message
+    console.error(action.error);
+  }
+
+  @Action(UpdateSiteSettingsSuccessAction)
+  updateSiteSettingsSuccess({ patchState, getState }: StateContext<SitesSettingsStateModel>, action: UpdateSiteSettingsSuccessAction) {
+    const currentState = getState();
+
+    patchState({[action.site]: currentState[action.site].map(settingGroup => {
+      if (settingGroup.slug !== action.settingGroup) {
+        return settingGroup;
+      }
+
+      return {
+        ...settingGroup,
+        settings: settingGroup.settings.map(setting => {
+          if (setting.slug !== action.setting) {
+            return setting;
+          }
+          return { ...setting, value: action.payload };
+        })
+      };
+    })});
   }
 
   @Action(RenameSiteSettingsSitenameAction)
