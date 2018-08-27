@@ -56,15 +56,25 @@ export class AppStateService {
             }
           });
         }),
-        map(response => {
-          /** @todo build retry on login */
-          this.hideLoading();
-          if (response.status === 401) {
-            this.store.dispatch(UserLogoutAction);
-            throw new Error('Unauthorized');
-          }
-
-          return response;
+        retryWhen(attempts => {
+          return attempts.pipe(
+            map((error, i) => {
+              this.hideLoading();
+              /* Only retry on authorization failure */
+              if (!(error instanceof HttpErrorResponse) || error.status !== 401 || i > MAX_REQUEST_RETRIES) {
+                /* set app error state here maybe don't even throw it */
+                throw error;
+              }
+              this.store.dispatch(new UserLogoutAction(true));
+              return error;
+            }),
+            exhaustMap(() => {
+              return this.store.select(state => state.app).pipe(
+                pairwise(),
+                filter(([prevAppState, appState]) => !!appState.user.token && prevAppState.user.token !== appState.user.token),
+                take(1));
+            })
+          );
         }),
         catchError(error => {
             this.hideLoading();
@@ -89,12 +99,13 @@ export class AppStateService {
         retryWhen(attempts => {
           return attempts.pipe(
             map((error, i) => {
+              this.hideLoading();
               /* Only retry on authorization failure */
               if (!(error instanceof HttpErrorResponse) || error.status !== 401 || i > MAX_REQUEST_RETRIES) {
                 /* set app error state here maybe don't even throw it */
                 throw error;
               }
-              this.store.dispatch(UserLogoutAction);
+              this.store.dispatch(new UserLogoutAction(true));
               return error;
             }),
             exhaustMap(() => {
@@ -107,6 +118,10 @@ export class AppStateService {
         }),
         shareReplay(CACHE_SIZE),
         catchError(error => {
+          if ((error instanceof HttpErrorResponse) && error.status === 401) {
+            // Lot out if user is unauthorized
+            this.store.dispatch(new UserLogoutAction(true));
+          }
           delete this.cachedSiteStates[site];
           throw error;
         })
@@ -151,6 +166,8 @@ export class AppStateService {
     window.localStorage.removeItem('token');
     window.localStorage.removeItem('features');
     window.localStorage.removeItem('profileUrl');
+
+    this.cachedSiteStates = {};
 
     return this.http.put('/_api/v1/logout', {});
   }

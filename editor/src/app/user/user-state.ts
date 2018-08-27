@@ -1,7 +1,7 @@
 import { Router } from '@angular/router';
-import { State, StateContext, NgxsOnInit, Action, Selector  } from '@ngxs/store';
+import { State, StateContext, NgxsOnInit, Action, Selector } from '@ngxs/store';
 import { UserStateModel } from './user.state.model';
-import { UserLogin, UserLogoutAction, ResetUserAction } from './user-actions';
+import { UserLogin, UserLogoutAction, ResetUserAction, UpdateUserAction } from './user-actions';
 import { AppStateService } from '../app-state/app-state.service';
 import { ResetAppStateAction } from '../app-state/app.actions';
 import { ResetSectionEntriesAction } from '../sites/sections/entries/entries-state/section-entries.actions';
@@ -60,7 +60,7 @@ export class UserState implements NgxsOnInit {
   }
 
   @Action(UserLogoutAction)
-  logout({ dispatch }: StateContext<UserStateModel>) {
+  logout({ dispatch }: StateContext<UserStateModel>, action: UserLogoutAction) {
     this.appStateService.logout().subscribe({
       next: () => {},
       error: (error) => console.error(error)
@@ -78,6 +78,10 @@ export class UserState implements NgxsOnInit {
     dispatch(ResetSiteTemplatesAction);
     dispatch(ResetUserAction);
 
+    if (action.saveNextUrl) {
+      dispatch(new UpdateUserAction({nextUrl: this.router.url}));
+      console.log('saving current url: ', this.router.url);
+    }
     this.router.navigate(['/login']);
   }
 
