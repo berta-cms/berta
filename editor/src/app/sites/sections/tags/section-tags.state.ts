@@ -1,5 +1,6 @@
-import { take } from 'rxjs/operators';
-import { State, Action, StateContext, NgxsOnInit } from '@ngxs/store';
+import { concat } from 'rxjs';
+import { take, switchMap } from 'rxjs/operators';
+import { State, Action, StateContext, NgxsOnInit, Actions, ofActionSuccessful } from '@ngxs/store';
 
 import { AppStateService } from '../../../app-state/app-state.service';
 import { SectionTagsStateModel } from './section-tags-state.model';
@@ -10,17 +11,29 @@ import {
   RenameSectionTagsAction,
   AddSiteSectionsTagsAction,
   AddSectionTagsAction,
-  ResetSiteSectionsTagsAction} from './section-tags.actions';
+  ResetSiteSectionsTagsAction,
+  InitSiteSectionsTagsAction} from './section-tags.actions';
+import { UserLoginAction } from '../../../user/user-actions';
+
 
 @State<SectionTagsStateModel>({
   name: 'sectionTags',
   defaults: {}
 })
 export class SectionTagsState implements NgxsOnInit {
-  constructor(private appStateService: AppStateService) {}
-  ngxsOnInit({ setState }: StateContext<SectionTagsStateModel>) {
-    this.appStateService.getInitialState('', 'section_tags').pipe(take(1)).subscribe((sections) => {
-      setState(sections);
+  constructor(
+    private actions$: Actions,
+    private appStateService: AppStateService) {}
+
+  ngxsOnInit({ dispatch }: StateContext<SectionTagsStateModel>) {
+    concat(
+      this.appStateService.getInitialState('', 'section_tags').pipe(take(1)),
+      this.actions$.pipe(ofActionSuccessful(UserLoginAction), switchMap(() => {
+        return this.appStateService.getInitialState('', 'section_tags').pipe(take(1));
+      }))
+    )
+    .subscribe((sectionTags) => {
+      dispatch(new InitSiteSectionsTagsAction(sectionTags));
     });
   }
 
@@ -119,5 +132,10 @@ export class SectionTagsState implements NgxsOnInit {
   @Action(ResetSiteSectionsTagsAction)
   resetSectionTags({ setState }: StateContext<SectionTagsStateModel>) {
     setState({});
+  }
+
+  @Action(InitSiteSectionsTagsAction)
+  initSectionTags({ setState }: StateContext<SectionTagsStateModel>, action: InitSiteSectionsTagsAction) {
+    setState(action.payload);
   }
 }

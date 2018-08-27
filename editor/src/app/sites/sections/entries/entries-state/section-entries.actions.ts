@@ -1,6 +1,6 @@
 import { SiteStateModel } from '../../../sites-state/site-state.model';
 import { SiteSectionStateModel } from '../../sections-state/site-sections-state.model';
-import { SectionEntry } from './section-entries-state.model';
+import { SectionEntry, SectionEntriesStateModel } from './section-entries-state.model';
 
 export class AddSectionEntriesAction {
   static readonly type = 'SECTION_ENTRIES:ADD';
@@ -46,4 +46,9 @@ export class RenameSectionEntriesSitenameAction {
 
 export class ResetSectionEntriesAction {
   static readonly type = 'SECTION_ENTRIES:RESET';
+}
+
+export class InitSectionEntriesAction {
+  static readonly type = 'SECTION_ENTRIES:INIT';
+  constructor(public payload: SectionEntriesStateModel) {}
 }

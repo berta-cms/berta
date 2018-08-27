@@ -1,5 +1,8 @@
+import { Router, ActivationEnd } from '@angular/router';
 import { concat } from 'rxjs';
+import { filter, take, switchMap } from 'rxjs/operators';
 import { State, Action, StateContext, Selector, NgxsOnInit, Actions, ofActionSuccessful } from '@ngxs/store';
+
 import { AppStateModel } from './app-state.interface';
 import {
   AppShowOverlay,
@@ -9,8 +12,6 @@ import {
   ResetAppStateAction,
   InitAppStateAction
 } from './app.actions';
-import { Router, ActivationEnd } from '@angular/router';
-import { filter, take, switchMap } from 'rxjs/operators';
 import { UserState } from '../user/user-state';
 import { AppStateService } from './app-state.service';
 import { UserLoginAction } from '../user/user-actions';
