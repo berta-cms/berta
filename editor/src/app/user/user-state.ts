@@ -1,7 +1,7 @@
 import { Router } from '@angular/router';
 import { State, StateContext, NgxsOnInit, Action, Selector } from '@ngxs/store';
 import { UserStateModel } from './user.state.model';
-import { UserLogin, UserLogoutAction, ResetUserAction, UpdateUserAction } from './user-actions';
+import { UserLoginAction, UserLogoutAction, ResetUserAction, UpdateUserAction } from './user-actions';
 import { AppStateService } from '../app-state/app-state.service';
 import { ResetAppStateAction } from '../app-state/app.actions';
 import { ResetSectionEntriesAction } from '../sites/sections/entries/entries-state/section-entries.actions';
@@ -49,8 +49,8 @@ export class UserState implements NgxsOnInit {
     });
   }
 
-  @Action(UserLogin)
-  login({ patchState }: StateContext<UserStateModel>, action: UserLogin) {
+  @Action(UserLoginAction)
+  login({ patchState }: StateContext<UserStateModel>, action: UserLoginAction) {
     patchState({
       name: action.name,
       token: action.token,

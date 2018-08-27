@@ -58,3 +58,8 @@ export class DeleteSiteSectionsAction {
 export class ResetSiteSectionsAction {
   static readonly type = 'SITE_SECTIONS:RESET';
 }
+
+export class InitSiteSectionsAction {
+  static readonly type = 'SITE_SECTIONS:INIT';
+  constructor(public payload: SiteSectionStateModel[]) {}
+}

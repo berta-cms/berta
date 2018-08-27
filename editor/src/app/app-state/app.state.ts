@@ -1,17 +1,28 @@
-import { State, Action, StateContext, Selector, NgxsOnInit } from '@ngxs/store';
+import { concat } from 'rxjs';
+import { State, Action, StateContext, Selector, NgxsOnInit, Actions, ofActionSuccessful } from '@ngxs/store';
 import { AppStateModel } from './app-state.interface';
-import { AppShowOverlay, AppHideOverlay, AppShowLoading, AppHideLoading, ResetAppStateAction } from './app.actions';
+import {
+  AppShowOverlay,
+  AppHideOverlay,
+  AppShowLoading,
+  AppHideLoading,
+  ResetAppStateAction,
+  InitAppStateAction
+} from './app.actions';
 import { Router, ActivationEnd } from '@angular/router';
-import { filter, take } from 'rxjs/operators';
+import { filter, take, switchMap } from 'rxjs/operators';
 import { UserState } from '../user/user-state';
 import { AppStateService } from './app-state.service';
+import { UserLoginAction } from '../user/user-actions';
+
 
 const defaultState: AppStateModel = {
   showOverlay: false,
   isLoading: false,
   site: null,
-  urls: []
+  urls: {}
 };
+
 
 @State<AppStateModel>({
   name: 'app',
@@ -36,10 +47,11 @@ export class AppState implements NgxsOnInit {
   }
 
   constructor(private router: Router,
+              private actions$: Actions,
               private appStateService: AppStateService) {
   }
 
-  ngxsOnInit({ patchState }: StateContext<AppStateModel>) {
+  ngxsOnInit({ patchState, dispatch }: StateContext<AppStateModel>) {
     this.router.events.pipe(
       filter(evt => evt instanceof ActivationEnd)
     ).subscribe((event: ActivationEnd) => {
@@ -51,9 +63,17 @@ export class AppState implements NgxsOnInit {
       }
     });
 
-    this.appStateService.getInitialState('').pipe(take(1)).subscribe({
+    concat(
+      this.appStateService.getInitialState('').pipe(take(1)),
+      // After each subsequent successful login, initialize the state
+      this.actions$.pipe(
+        ofActionSuccessful(UserLoginAction),
+        switchMap(() => this.appStateService.getInitialState('').pipe(take(1)))
+      )
+    )
+    .subscribe({
       next: (response) => {
-        patchState({urls: response.urls});
+        dispatch(new InitAppStateAction({urls: response.urls}));
       },
       error: (error) => console.error(error)
     });
@@ -83,5 +103,10 @@ export class AppState implements NgxsOnInit {
   resetState({ setState }: StateContext<AppStateModel>) {
     // Apply default state, not to remove the user, user will reset it self
     setState(defaultState);
+  }
+
+  @Action(InitAppStateAction)
+  InitState({ patchState }: StateContext<AppStateModel>, action: InitAppStateAction) {
+    patchState({ urls: action.payload.urls});
   }
 }

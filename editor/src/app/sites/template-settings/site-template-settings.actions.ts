@@ -1,5 +1,5 @@
 import { SiteStateModel } from '../sites-state/site-state.model';
-import { SitesTemplateSettingsSiteResponse } from './site-template-settings.interface';
+import { SitesTemplateSettingsSiteResponse, SitesTemplateSettingsResponse } from './site-template-settings.interface';
 
 export class CreateSiteTemplateSettingsAction {
   static readonly type = 'SITE_TEMPLATE_SETTINGS:CREATE';
@@ -31,5 +31,10 @@ export class DeleteSiteTemplateSettingsAction {
 
 export class ResetSiteTemplateSettingsAction {
   static readonly type = 'SITE_TEMPLATE_SETTINGS:RESET';
+}
+
+export class InitSiteTemplateSettingsAction {
+  static readonly type = 'SITE_TEMPLATE_SETTINGS:INIT';
+  constructor(public payload: SitesTemplateSettingsResponse) {}
 }
 

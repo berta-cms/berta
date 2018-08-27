@@ -1,3 +1,5 @@
+import { AppStateModel } from './app-state.interface';
+
 export class AppShowOverlay {
   static readonly type = 'OVERLAY:SHOW';
 }
@@ -16,4 +18,9 @@ export class AppHideLoading {
 
 export class ResetAppStateAction {
   static readonly type = 'APP:RESET';
+}
+
+export class InitAppStateAction {
+  static readonly type = 'APP:INIT';
+  constructor(public payload: Partial<AppStateModel>) {}
 }

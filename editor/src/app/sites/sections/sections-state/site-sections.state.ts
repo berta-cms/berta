@@ -1,6 +1,7 @@
 import { get } from 'lodash';
-import { take } from 'rxjs/operators';
-import { Store, State, Action, StateContext, Selector, NgxsOnInit } from '@ngxs/store';
+import { concat } from 'rxjs';
+import { take, switchMap } from 'rxjs/operators';
+import { Store, State, Action, StateContext, Selector, NgxsOnInit, Actions, ofActionSuccessful } from '@ngxs/store';
 import { SiteSectionStateModel } from './site-sections-state.model';
 import { AppStateService } from '../../../app-state/app-state.service';
 import { AppState } from '../../../app-state/app.state';
@@ -13,12 +14,15 @@ import {
   CloneSectionAction,
   RenameSiteSectionAction,
   AddSiteSectionsAction,
-  ResetSiteSectionsAction} from './site-sections.actions';
+  ResetSiteSectionsAction,
+  InitSiteSectionsAction} from './site-sections.actions';
 import { DeleteSectionTagsAction, RenameSectionTagsAction, AddSectionTagsAction } from '../tags/section-tags.actions';
 import {
   DeleteSectionEntriesAction,
   RenameSectionEntriesAction,
   AddSectionEntriesAction } from '../entries/entries-state/section-entries.actions';
+import { UserLoginAction } from '../../../user/user-actions';
+
 
 @State<SiteSectionStateModel[]>({
   name: 'siteSections',
@@ -34,23 +38,19 @@ export class SiteSectionsState implements NgxsOnInit {
   }
 
   constructor(private appStateService: AppStateService,
+              private actions$: Actions,
               private store: Store) {
   }
 
-  ngxsOnInit({ setState }: StateContext<SiteSectionStateModel[]>) {
-    this.appStateService.getInitialState('', 'site_sections').pipe(take(1)).subscribe((sections) => {
-      if (sections instanceof Array) {
-        sections = sections.map(section => {
-          if (!section['@attributes']) {
-            section = {...section, '@attributes': {}};
-          }
-          if (!section['@attributes']['type']) {
-            section['@attributes'] = {...section['@attributes'], 'type': 'default'};
-          }
-          return section;
-        });
-      }
-      setState(sections);
+  ngxsOnInit({ dispatch }: StateContext<SiteSectionStateModel[]>) {
+    concat(
+      this.appStateService.getInitialState('', 'site_sections').pipe(take(1)),
+      this.actions$.pipe(ofActionSuccessful(UserLoginAction), switchMap(() => {
+        return this.appStateService.getInitialState('', 'site_sections').pipe(take(1));
+      }))
+    )
+    .subscribe((sections) => {
+      dispatch(new InitSiteSectionsAction(sections));
     });
   }
 
@@ -230,5 +230,24 @@ export class SiteSectionsState implements NgxsOnInit {
   @Action(ResetSiteSectionsAction)
   resetSiteSections({ setState }: StateContext<SiteSectionStateModel[]>) {
     setState([]);
+  }
+
+  @Action(InitSiteSectionsAction)
+  initSiteSections({ setState }: StateContext<SiteSectionStateModel[]>, action: InitSiteSectionsAction) {
+    let sections = action.payload;
+
+    if (action.payload instanceof Array) {
+      sections = action.payload.map(section => {
+        if (!section['@attributes']) {
+          section = {...section, '@attributes': {}};
+        }
+        if (!section['@attributes']['type']) {
+          section['@attributes'] = {...section['@attributes'], 'type': 'default'};
+        }
+        return section;
+      });
+    }
+
+    setState(sections);
   }
 }

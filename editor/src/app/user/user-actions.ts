@@ -1,6 +1,6 @@
 import { UserStateModel } from './user.state.model';
 
-export class UserLogin {
+export class UserLoginAction {
   static readonly type = 'USER:LOGIN';
   constructor(
     public name: string | null,

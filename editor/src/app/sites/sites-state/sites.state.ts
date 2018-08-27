@@ -1,10 +1,19 @@
 import { set } from 'lodash/fp';
-import { State, Action, StateContext, NgxsOnInit } from '@ngxs/store';
-import { take } from 'rxjs/operators';
+import { concat } from 'rxjs';
+import { take, switchMap } from 'rxjs/operators';
+import { State, Action, StateContext, NgxsOnInit, ofActionSuccessful, Actions } from '@ngxs/store';
 
 import { SiteStateModel } from './site-state.model';
 import { AppStateService } from '../../app-state/app-state.service';
-import { CreateSiteAction, DeleteSiteAction, CloneSiteAction, UpdateSiteAction, RenameSiteAction, ResetSitesAction } from './sites.actions';
+import {
+  CreateSiteAction,
+  DeleteSiteAction,
+  CloneSiteAction,
+  UpdateSiteAction,
+  RenameSiteAction,
+  ResetSitesAction,
+  InitSitesAction
+} from './sites.actions';
 import {
   DeleteSiteSectionsAction,
   RenameSiteSectionsSitenameAction,
@@ -22,6 +31,7 @@ import {
   DeleteSiteSectionsEntriesAction,
   RenameSectionEntriesSitenameAction,
   AddSiteEntriesAction} from '../sections/entries/entries-state/section-entries.actions';
+import { UserLoginAction } from '../../user/user-actions';
 
 
 @State<SiteStateModel[]>({
@@ -30,14 +40,23 @@ import {
 })
 export class SitesState implements NgxsOnInit {
 
-  constructor(private appStateService: AppStateService) {
+  constructor(
+    private appStateService: AppStateService,
+    private actions$: Actions) {
   }
 
 
-  ngxsOnInit({ setState }: StateContext<SiteStateModel[]>) {
-    this.appStateService.getInitialState('', 'sites').pipe(take(1)).subscribe({
+  ngxsOnInit({ setState, dispatch }: StateContext<SiteStateModel[]>) {
+    concat(
+      this.appStateService.getInitialState('', 'sites').pipe(take(1)),
+      this.actions$.pipe(
+        ofActionSuccessful(UserLoginAction),
+        switchMap(() => this.appStateService.getInitialState('', 'sites').pipe(take(1)))
+      )
+    )
+    .subscribe({
       next: (response) => {
-        setState(response as SiteStateModel[]);
+        dispatch(new InitSitesAction(response as SiteStateModel[]));
       },
       error: (error) => console.error(error)
     });
@@ -163,5 +182,10 @@ export class SitesState implements NgxsOnInit {
   @Action(ResetSitesAction)
   resetSites({ setState }: StateContext<SiteStateModel[]>) {
     setState([]);
+  }
+
+  @Action(InitSitesAction)
+  initSites({ setState }: StateContext<SiteStateModel[]>, action: InitSitesAction) {
+    setState(action.payload);
   }
 }

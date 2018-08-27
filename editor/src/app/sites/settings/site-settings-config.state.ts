@@ -1,9 +1,11 @@
-import { State, StateContext, NgxsOnInit, Action } from '@ngxs/store';
-import { take } from 'rxjs/operators';
+import { State, StateContext, NgxsOnInit, Action, Actions, ofActionSuccessful } from '@ngxs/store';
+import { concat } from 'rxjs';
+import { take, switchMap } from 'rxjs/operators';
 import { SiteSettingsConfigStateModel, SiteSettingsConfigResponse } from './site-settings-config.interface';
 import { AppStateService } from '../../app-state/app-state.service';
 import { initSettingConfigGroup } from '../../shared/helpers';
-import { ResetSiteSettingsConfigAction } from './site-settings-config.actions';
+import { ResetSiteSettingsConfigAction, InitSiteSettingsConfigAction } from './site-settings-config.actions';
+import { UserLoginAction } from '../../user/user-actions';
 
 
 @State<SiteSettingsConfigStateModel>({
@@ -13,22 +15,20 @@ import { ResetSiteSettingsConfigAction } from './site-settings-config.actions';
 export class SiteSettingsConfigState implements NgxsOnInit {
 
   constructor(
+    private actions$: Actions,
     private appStateService: AppStateService) {
   }
 
-  ngxsOnInit({ setState }: StateContext<SiteSettingsConfigStateModel>) {
-    this.appStateService.getInitialState('', 'siteSettingsConfig').pipe(
-      take(1)
-    ).subscribe({
+  ngxsOnInit({ dispatch }: StateContext<SiteSettingsConfigStateModel>) {
+    concat(
+      this.appStateService.getInitialState('', 'siteSettingsConfig').pipe(take(1)),
+      this.actions$.pipe(ofActionSuccessful(UserLoginAction), switchMap(() => {
+        return this.appStateService.getInitialState('', 'siteSettingsConfig').pipe(take(1));
+      }))
+    )
+    .subscribe({
       next: (siteSettingsConfig: SiteSettingsConfigResponse) => {
-        /** Initialize state: */
-        const settingGroups = {};
-
-        for (const groupSlug in siteSettingsConfig) {
-          settingGroups[groupSlug] = initSettingConfigGroup(siteSettingsConfig[groupSlug]);
-        }
-
-        setState(settingGroups);
+        dispatch(new InitSiteSettingsConfigAction(siteSettingsConfig));
       },
       error: (error) => console.error(error)
     });
@@ -37,5 +37,16 @@ export class SiteSettingsConfigState implements NgxsOnInit {
   @Action(ResetSiteSettingsConfigAction)
   resetSiteSettingsConfig({ setState }: StateContext<SiteSettingsConfigStateModel>) {
     setState({});
+  }
+
+  @Action(InitSiteSettingsConfigAction)
+  initSiteSettingsConfig({ setState }: StateContext<SiteSettingsConfigStateModel>, action: InitSiteSettingsConfigAction) {
+    const settingGroups = {};
+
+    for (const groupSlug in action.payload) {
+      settingGroups[groupSlug] = initSettingConfigGroup(action.payload[groupSlug]);
+    }
+
+    setState(settingGroups);
   }
 }

@@ -3,7 +3,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map, tap, shareReplay, catchError, exhaustMap, filter, take, retryWhen, pairwise, switchMap} from 'rxjs/operators';
 import { Store } from '@ngxs/store';
-import { UserLogin, UserLogoutAction } from '../user/user-actions';
+import { UserLoginAction, UserLogoutAction } from '../user/user-actions';
 import { Router } from '@angular/router';
 import { AppShowLoading, AppHideLoading } from './app.actions';
 
@@ -146,7 +146,7 @@ export class AppStateService {
         if (!resp.data.token) {
           throw new Error('Invalid login response!');
         }
-        this.store.dispatch(new UserLogin(
+        this.store.dispatch(new UserLoginAction(
           resp.data.name,
           resp.data.token,
           resp.data.features,
