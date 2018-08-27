@@ -23,3 +23,8 @@ export class UpdateUserAction {
   static readonly type = 'USER:UPDATE';
   constructor(public payload: Partial<UserStateModel>) {}
 }
+
+export class SetUserNextUrlAction {
+  static readonly type = 'USER:SET:NEXT_URL';
+  constructor(public payload: string) {}
+}

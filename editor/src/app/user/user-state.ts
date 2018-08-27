@@ -1,7 +1,7 @@
 import { Router } from '@angular/router';
 import { State, StateContext, NgxsOnInit, Action, Selector } from '@ngxs/store';
 import { UserStateModel } from './user.state.model';
-import { UserLoginAction, UserLogoutAction, ResetUserAction, UpdateUserAction } from './user-actions';
+import { UserLoginAction, UserLogoutAction, ResetUserAction, UpdateUserAction, SetUserNextUrlAction } from './user-actions';
 import { AppStateService } from '../app-state/app-state.service';
 import { ResetAppStateAction } from '../app-state/app.actions';
 import { ResetSectionEntriesAction } from '../sites/sections/entries/entries-state/section-entries.actions';
@@ -79,7 +79,7 @@ export class UserState implements NgxsOnInit {
     dispatch(ResetUserAction);
 
     if (action.saveNextUrl) {
-      dispatch(new UpdateUserAction({nextUrl: this.router.url}));
+      dispatch(new SetUserNextUrlAction(this.router.url));
       console.log('saving current url: ', this.router.url);
     }
     this.router.navigate(['/login']);
@@ -88,5 +88,10 @@ export class UserState implements NgxsOnInit {
   @Action(ResetUserAction)
   resetUser({ setState }: StateContext<UserStateModel>) {
     setState(defaultState);
+  }
+
+  @Action(SetUserNextUrlAction)
+  setNextUrl({ patchState }: StateContext<UserStateModel>, action: SetUserNextUrlAction) {
+    patchState({nextUrl: action.payload});
   }
 }
