@@ -1,10 +1,13 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { map, tap, shareReplay, catchError, exhaustMap, filter, take, retryWhen, pairwise, switchMap} from 'rxjs/operators';
-import { Store } from '@ngxs/store';
-import { UserLoginAction, UserLogoutAction } from '../user/user.actions';
 import { Router } from '@angular/router';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+
+import { Observable, combineLatest } from 'rxjs';
+import { map, tap, shareReplay, catchError, exhaustMap, filter, take, retryWhen, pairwise, switchMap} from 'rxjs/operators';
+
+import { Store } from '@ngxs/store';
+
+import { UserLoginAction, UserLogoutAction } from '../user/user.actions';
 import { AppShowLoading, AppHideLoading } from './app.actions';
 
 
@@ -41,59 +44,65 @@ export class AppStateService {
 
   sync(urlName: string, data: any, method?: string) {
     method = method || 'PATCH';
-    return this.store.select(state => state.app)
-      .pipe(
-        filter(appState => !!appState.user.token && appState.urls[urlName]),
-        take(1),
-        switchMap(state => {
-          this.showLoading();
-          return this.http.request<any>(method, state.urls[urlName], {
-            body: method === 'GET' ? undefined : data,
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'X-Authorization': 'Bearer ' + state.user.token
-            }
-          });
-        }),
-        retryWhen(attempts => {
-          return attempts.pipe(
-            map((error, i) => {
-              this.hideLoading();
-              /* Only retry on authorization failure */
-              if (!(error instanceof HttpErrorResponse) || error.status !== 401 || i > MAX_REQUEST_RETRIES) {
-                /* set app error state here maybe don't even throw it */
-                throw error;
-              }
-              this.store.dispatch(new UserLogoutAction(true));
-              return error;
-            }),
-            exhaustMap(() => {
-              return this.store.select(state => state.app).pipe(
-                pairwise(),
-                filter(([prevAppState, appState]) => !!appState.user.token && prevAppState.user.token !== appState.user.token),
-                take(1));
-            })
-          );
-        }),
-        catchError(error => {
+    return combineLatest(
+      this.store.select(state => state.app),
+      this.store.select(state => state.user)
+    )
+    .pipe(
+      filter(([appState, user]) => !!user.token && appState.urls[urlName]),
+      take(1),
+      switchMap(([appState, user]) => {
+        this.showLoading();
+        return this.http.request<any>(method, appState.urls[urlName], {
+          body: method === 'GET' ? undefined : data,
+          headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+              'X-Authorization': 'Bearer ' + user.token
+          }
+        });
+      }),
+      retryWhen(attempts => {
+        return attempts.pipe(
+          map((error, i) => {
             this.hideLoading();
-            throw error;
-        })
-      );
+            /* Only retry on authorization failure */
+            if (!(error instanceof HttpErrorResponse) || error.status !== 401 || i > MAX_REQUEST_RETRIES) {
+              /* set app error state here maybe don't even throw it */
+              throw error;
+            }
+            this.store.dispatch(new UserLogoutAction(true));
+            return error;
+          }),
+          exhaustMap(() => {
+            return this.store.select(state => state.user).pipe(
+              pairwise(),
+              filter(([prevUser, user]) => !!user.token && prevUser.token !== user.token),
+              take(1));
+          })
+        );
+      }),
+      catchError(error => {
+          this.hideLoading();
+          throw error;
+      })
+    );
   }
 
   getInitialState(site: string = '', stateSlice?: string, force = false) {
 
     if (!this.cachedSiteStates[site] || force) {
-      this.cachedSiteStates[site] = this.store.select(state => state.app).pipe(
-        filter(appState => !!appState.user.token && appState.site !== null),  // Make sure user is logged in
+      this.cachedSiteStates[site] = combineLatest(
+        this.store.select(state => state.app),
+        this.store.select(state => state.user)
+      ).pipe(
+        filter(([appState, user]) => !!user.token && appState.site !== null),  // Make sure user is logged in
         take(1),
         // `exhaustMap` waits for the first request to complete instead of canceling and starting new ones.
-        exhaustMap(appState => {
+        exhaustMap(([appState, user]) => {
           const _site = site || appState.site;
           return this.http.get('/_api/v1/state' + (_site ? '/' + _site : _site), {
-            headers: { 'X-Authorization': 'Bearer ' + appState.user.token }
+            headers: { 'X-Authorization': 'Bearer ' + user.token }
           });
         }),
         retryWhen(attempts => {
@@ -109,9 +118,9 @@ export class AppStateService {
               return error;
             }),
             exhaustMap(() => {
-              return this.store.select(state => state.app).pipe(
+              return this.store.select(state => state.user).pipe(
                 pairwise(),
-                filter(([prevAppState, appState]) => !!appState.user.token && prevAppState.user.token !== appState.user.token),
+                filter(([prevUser, user]) => !!user.token && prevUser.token !== user.token),
                 take(1));
             })
           );

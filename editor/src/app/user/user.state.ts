@@ -1,5 +1,6 @@
 import { Router } from '@angular/router';
 import { State, StateContext, NgxsOnInit, Action, Selector } from '@ngxs/store';
+
 import { UserStateModel } from './user.state.model';
 import { UserLoginAction, UserLogoutAction, ResetUserAction, UpdateUserAction, SetUserNextUrlAction } from './user.actions';
 import { AppStateService } from '../app-state/app-state.service';
@@ -12,6 +13,7 @@ import { ResetSiteSettingsAction } from '../sites/settings/site-settings.actions
 import { ResetSiteSettingsConfigAction } from '../sites/settings/site-settings-config.actions';
 import { ResetSiteTemplateSettingsAction } from '../sites/template-settings/site-template-settings.actions';
 import { ResetSiteTemplatesAction } from '../sites/template-settings/site-templates.actions';
+
 
 const defaultState: UserStateModel = {
   name: null,

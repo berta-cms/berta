@@ -12,7 +12,6 @@ import {
   ResetAppStateAction,
   InitAppStateAction
 } from './app.actions';
-import { UserState } from '../user/user.state';
 import { AppStateService } from './app-state.service';
 import { UserLoginAction } from '../user/user.actions';
 
@@ -27,8 +26,7 @@ const defaultState: AppStateModel = {
 
 @State<AppStateModel>({
   name: 'app',
-  defaults: defaultState,
-  children: [UserState]
+  defaults: defaultState
 })
 export class AppState implements NgxsOnInit {
 
