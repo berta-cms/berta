@@ -1,9 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { take, switchMap } from 'rxjs/operators';
 
-import { Store, Select } from '@ngxs/store';
+import { Store, Select, Actions, ofActionSuccessful } from '@ngxs/store';
 import { AppHideOverlay, AppShowOverlay } from './app-state/app.actions';
 import { AppState } from './app-state/app.state';
+import { UserLoginAction, UserLogoutAction, SetUserNextUrlAction } from './user/user-actions';
+import { UserState } from './user/user-state';
+import { UserStateModel } from './user/user.state.model';
 
 @Component({
   selector: 'berta-root',
@@ -60,15 +65,19 @@ import { AppState } from './app-state/app.state';
     `
   ]
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, OnDestroy {
   title = 'berta';
   routeIsRoot = true;
 
   @Select(AppState.getShowOverlay) showOverlay$;
 
+  private loginSub: Subscription;
+  private logoutSub: Subscription;
+
   constructor(
     private router: Router,
-    private store: Store
+    private store: Store,
+    private actions$: Actions
   ) {
   }
 
@@ -80,9 +89,30 @@ export class AppComponent implements OnInit {
           this.showOverlay();
         } else {
           this.routeIsRoot = true;
-          this.hideOverlay();
+          this.store.dispatch(AppHideOverlay);
         }
       }
+    });
+
+    // After login, navigate to users last location or the root
+    this.loginSub = this.actions$.pipe(
+      ofActionSuccessful(UserLoginAction),
+      switchMap(() => this.store.select(UserState).pipe(take(1))),
+    ).subscribe((user: UserStateModel) => {
+
+      if (user.nextUrl) {
+        this.router.navigateByUrl(user.nextUrl);
+        this.store.dispatch(new SetUserNextUrlAction(''));
+      } else {
+        this.router.navigate(['/']);
+      }
+    });
+
+    // After logout navigate to login url
+    this.logoutSub = this.actions$.pipe(
+      ofActionSuccessful(UserLogoutAction),
+    ).subscribe(() => {
+      this.router.navigate(['/login']);
     });
   }
 
@@ -92,5 +122,10 @@ export class AppComponent implements OnInit {
   }
   showOverlay() {
     this.store.dispatch(AppShowOverlay);
+  }
+
+  ngOnDestroy() {
+    this.loginSub.unsubscribe();
+    this.logoutSub.unsubscribe();
   }
 }

@@ -1,12 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Observable } from 'rxjs';
 
+import { Observable } from 'rxjs';
+import { take } from 'rxjs/operators';
 import { Select } from '@ngxs/store';
 
 import { AppStateService } from '../app-state/app-state.service';
 import { UserState } from '../user/user-state';
+
 
 @Component({
   selector: 'berta-login',
@@ -36,6 +38,11 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.isLoggedIn$.pipe(take(1)).subscribe((isLoggedIn) => {
+      if (isLoggedIn) {
+        this.router.navigate(['/']);
+      }
+    });
   }
 
   login(event, user, pass) {
@@ -47,9 +54,6 @@ export class LoginComponent implements OnInit {
           return;
         }
         this.message = 'Login Successful';
-        setTimeout(() => {
-          this.router.navigate(['/']);
-        }, 500);
       },
       error: (error: HttpErrorResponse|Error) => {
         if (error instanceof HttpErrorResponse && error.status === 401) {

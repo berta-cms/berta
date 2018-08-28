@@ -39,7 +39,8 @@ const routes: Routes = [
   {
     path: 'shop',
     loadChildren: './shop/shop.module#ShopModule',
-    canLoad: [AuthGuardService],
+    /** Can load appears not to be working correctly. @todo: update Angular, see if it helps */
+    // canLoad: [AuthGuardService],
     canActivate: [AuthGuardService]
   },
   {

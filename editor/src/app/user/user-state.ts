@@ -80,9 +80,7 @@ export class UserState implements NgxsOnInit {
 
     if (action.saveNextUrl) {
       dispatch(new SetUserNextUrlAction(this.router.url));
-      console.log('saving current url: ', this.router.url);
     }
-    this.router.navigate(['/login']);
   }
 
   @Action(ResetUserAction)
