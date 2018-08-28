@@ -98,6 +98,7 @@ export class AppStateService {
       ).pipe(
         filter(([appState, user]) => !!user.token && appState.site !== null),  // Make sure user is logged in
         take(1),
+        tap(() => this.showLoading()),
         // `exhaustMap` waits for the first request to complete instead of canceling and starting new ones.
         exhaustMap(([appState, user]) => {
           const _site = site || appState.site;
@@ -109,6 +110,7 @@ export class AppStateService {
           return attempts.pipe(
             map((error, i) => {
               this.hideLoading();
+
               /* Only retry on authorization failure */
               if (!(error instanceof HttpErrorResponse) || error.status !== 401 || i > MAX_REQUEST_RETRIES) {
                 /* set app error state here maybe don't even throw it */
@@ -125,8 +127,11 @@ export class AppStateService {
             })
           );
         }),
+        tap(() => this.hideLoading()),
         shareReplay(CACHE_SIZE),
         catchError(error => {
+          this.hideLoading();
+
           if ((error instanceof HttpErrorResponse) && error.status === 401) {
             // Lot out if user is unauthorized
             this.store.dispatch(new UserLogoutAction(true));
