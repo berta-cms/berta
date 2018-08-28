@@ -3,7 +3,7 @@ import { State, StateContext, NgxsOnInit, Action, Selector } from '@ngxs/store';
 import { tap } from 'rxjs/operators';
 
 import { UserStateModel } from './user.state.model';
-import { UserLoginAction, UserLogoutAction, ResetUserAction, SetUserNextUrlAction } from './user.actions';
+import { UserLoginAction, UserLogoutAction, SetUserNextUrlAction } from './user.actions';
 import { AppStateService } from '../app-state/app-state.service';
 import { ResetAppStateAction } from '../app-state/app.actions';
 import { ResetSectionEntriesAction } from '../sites/sections/entries/entries-state/section-entries.actions';
@@ -67,7 +67,9 @@ export class UserState implements NgxsOnInit {
   }
 
   @Action(UserLogoutAction)
-  logout({ dispatch }: StateContext<UserStateModel>, action: UserLogoutAction) {
+  logout({ dispatch, setState }: StateContext<UserStateModel>, action: UserLogoutAction) {
+    const newState = {...defaultState};
+
     this.appStateService.logout().subscribe({
       next: () => {},
       error: (error) => console.error(error)
@@ -83,16 +85,11 @@ export class UserState implements NgxsOnInit {
     dispatch(ResetSiteSettingsConfigAction);
     dispatch(ResetSiteTemplateSettingsAction);
     dispatch(ResetSiteTemplatesAction);
-    dispatch(ResetUserAction);
 
     if (action.saveNextUrl) {
-      dispatch(new SetUserNextUrlAction(this.router.url));
+      newState.nextUrl = this.router.url;
     }
-  }
-
-  @Action(ResetUserAction)
-  resetUser({ setState }: StateContext<UserStateModel>) {
-    setState(defaultState);
+    setState(newState);
   }
 
   @Action(SetUserNextUrlAction)

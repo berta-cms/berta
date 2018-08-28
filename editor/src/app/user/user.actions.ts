@@ -1,5 +1,3 @@
-import { UserStateModel } from './user.state.model';
-
 export class UserLoginAction {
   static readonly type = 'USER:LOGIN';
   constructor(
@@ -11,15 +9,6 @@ export class UserLoginAction {
 export class UserLogoutAction {
   static readonly type = 'USER:LOGOUT';
   constructor(public saveNextUrl = false) {}
-}
-
-export class ResetUserAction {
-  static readonly type = 'USER:RESET';
-}
-
-export class UpdateUserAction {
-  static readonly type = 'USER:UPDATE';
-  constructor(public payload: Partial<UserStateModel>) {}
 }
 
 export class SetUserNextUrlAction {
