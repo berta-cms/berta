@@ -8,6 +8,7 @@ import { Select, Store } from '@ngxs/store';
 
 import { UserState } from '../user/user.state';
 import { UserLoginAction } from '../user/user.actions';
+import { AppShowLoading, AppHideLoading } from '../app-state/app.actions';
 
 
 @Component({
@@ -48,10 +49,13 @@ export class LoginComponent implements OnInit {
 
   login(event, user, pass) {
     event.preventDefault();
+    this.store.dispatch(new AppShowLoading());
+
     this.store.dispatch(new UserLoginAction(user, pass))
     .subscribe({
       next: () => {
         this.message = 'Login Successful';
+        this.store.dispatch(new AppHideLoading());
       },
       error: (error: HttpErrorResponse|Error) => {
         if (error instanceof HttpErrorResponse && error.status === 401) {
@@ -59,6 +63,7 @@ export class LoginComponent implements OnInit {
         } else {
           this.message = error.message;
         }
+        this.store.dispatch(new AppHideLoading());
       }
     });
   }
