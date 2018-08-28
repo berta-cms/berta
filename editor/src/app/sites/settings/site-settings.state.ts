@@ -2,15 +2,13 @@ import { State, Action, StateContext, Selector, NgxsOnInit, Store } from '@ngxs/
 import { SitesSettingsStateModel, SiteSettingsResponse, SiteSettingsSiteResponse } from './site-settings.interface';
 import { SettingsGroupModel } from '../../shared/interfaces';
 import { AppStateService } from '../../app-state/app-state.service';
-import { take } from 'rxjs/operators';
+import { take, tap } from 'rxjs/operators';
 import { AppState } from '../../app-state/app.state';
 import {
   UpdateSiteSettingsAction,
   DeleteSiteSettingsAction,
   RenameSiteSettingsSitenameAction,
-  CreateSiteSettingsAction,
-  UpdateSiteSettingsFailAction,
-  UpdateSiteSettingsSuccessAction} from './site-settings.actions';
+  CreateSiteSettingsAction} from './site-settings.actions';
 
 
 @State<SitesSettingsStateModel>({
@@ -66,60 +64,40 @@ export class SiteSettingsState implements NgxsOnInit {
   }
 
   @Action(UpdateSiteSettingsAction)
-  updateSiteSettings({ dispatch }: StateContext<SitesSettingsStateModel>, action: UpdateSiteSettingsAction) {
+  updateSiteSettings({ getState, patchState }: StateContext<SitesSettingsStateModel>, action: UpdateSiteSettingsAction) {
     const currentSite = this.store.selectSnapshot(AppState.getSite);
     const settingKey = Object.keys(action.payload)[0];
     const data = {
       path: currentSite + '/settings/' + action.settingGroup + '/' + settingKey,
       value: action.payload[settingKey]
     };
-    /** @todo: Loading should be triggered here */
 
-    this.appStateService.sync('siteSettings', data)
-      .subscribe({
-        next: response => {
-          if (response.error_message) {
-            dispatch(new UpdateSiteSettingsFailAction(response.error_message));
-          } else {
-            dispatch(new UpdateSiteSettingsSuccessAction(
-              currentSite,
-              action.settingGroup,
-              settingKey,
-              action.payload[settingKey]
-            ));
-          }
-        },
-        error: error => {
-          dispatch(new UpdateSiteSettingsFailAction(error.message ? error.message : String(error)));
+    return this.appStateService.sync('siteSettings', data).pipe(
+      tap(response => {
+        if (response.error_message) {
+          /* This should probably be handled in sync */
+          console.error(response.error_message);
+        } else {
+          const currentState = getState();
+
+          patchState({[currentSite]: currentState[currentSite].map(settingGroup => {
+            if (settingGroup.slug !== action.settingGroup) {
+              return settingGroup;
+            }
+
+            return {
+              ...settingGroup,
+              settings: settingGroup.settings.map(setting => {
+                if (setting.slug !== settingKey) {
+                  return setting;
+                }
+                return { ...setting, value: action.payload[settingKey] };
+              })
+            };
+          })});
         }
-      });
-  }
-
-  @Action(UpdateSiteSettingsFailAction)
-  updateSiteSettingsFail(action: UpdateSiteSettingsFailAction) {
-    // @TODO handle error message
-    console.error(action.error);
-  }
-
-  @Action(UpdateSiteSettingsSuccessAction)
-  updateSiteSettingsSuccess({ patchState, getState }: StateContext<SitesSettingsStateModel>, action: UpdateSiteSettingsSuccessAction) {
-    const currentState = getState();
-
-    patchState({[action.site]: currentState[action.site].map(settingGroup => {
-      if (settingGroup.slug !== action.settingGroup) {
-        return settingGroup;
-      }
-
-      return {
-        ...settingGroup,
-        settings: settingGroup.settings.map(setting => {
-          if (setting.slug !== action.setting) {
-            return setting;
-          }
-          return { ...setting, value: action.payload };
-        })
-      };
-    })});
+      })
+    );
   }
 
   @Action(RenameSiteSettingsSitenameAction)
