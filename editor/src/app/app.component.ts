@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { take, switchMap } from 'rxjs/operators';
+import { take, switchMap, mergeMap, filter, map, tap } from 'rxjs/operators';
 
 import { Store, Select, Actions, ofActionSuccessful } from '@ngxs/store';
 import { AppHideOverlay, AppShowOverlay } from './app-state/app.actions';
@@ -82,15 +82,19 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.router.events.subscribe(event => {
-      if (event instanceof NavigationEnd) {
-        if (event.url !== '/') {
-          this.routeIsRoot = false;
-          this.showOverlay();
-        } else {
-          this.routeIsRoot = true;
-          this.store.dispatch(AppHideOverlay);
-        }
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd),
+      tap((event: NavigationEnd) => this.routeIsRoot = event.url === '/'),
+      mergeMap((event) => this.store.select(AppState).pipe(map((state => [event, state])), take(1))),
+      filter(([, state]) => {
+        return this.routeIsRoot === state.showOverlay;
+      }),
+    )
+    .subscribe(([event]) => {
+      if (event.url !== '/') {
+        this.showOverlay();
+      } else {
+        this.store.dispatch(AppHideOverlay);
       }
     });
 
