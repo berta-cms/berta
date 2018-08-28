@@ -4,10 +4,10 @@ import { HttpErrorResponse } from '@angular/common/http';
 
 import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
-import { Select } from '@ngxs/store';
+import { Select, Store } from '@ngxs/store';
 
-import { AppStateService } from '../app-state/app-state.service';
 import { UserState } from '../user/user.state';
+import { UserLoginAction } from '../user/user.actions';
 
 
 @Component({
@@ -15,7 +15,7 @@ import { UserState } from '../user/user.state';
   template: `
   <div *ngIf="!(isLoggedIn$ | async)">
     <h2>Enter your Login details</h2>
-    <p class="error">{{error}}<p>
+    <p class="error">{{message}}<p>
     <form action="" (submit)="login($event, user.value, pass.value)">
       <input #user type="text" name="user">
       <input #pass type="password" name="password">
@@ -24,16 +24,17 @@ import { UserState } from '../user/user.state';
   </div>
   <div *ngIf="isLoggedIn$ | async">
     <h2>Login Successful!</h2>
+    <p>{{message}}</p>
   </div>
   `,
   styles: []
 })
 export class LoginComponent implements OnInit {
-  message = 'Login';
+  message = '';
   @Select(UserState.isLoggedIn) isLoggedIn$: Observable<boolean>;
 
   constructor(
-    private appStateService: AppStateService,
+    private store: Store,
     private router: Router) {
   }
 
@@ -47,12 +48,9 @@ export class LoginComponent implements OnInit {
 
   login(event, user, pass) {
     event.preventDefault();
-    this.appStateService.login(user, pass)
+    this.store.dispatch(new UserLoginAction(user, pass))
     .subscribe({
-      next: (response: any) => {
-        if (!response) {
-          return;
-        }
+      next: () => {
         this.message = 'Login Successful';
       },
       error: (error: HttpErrorResponse|Error) => {

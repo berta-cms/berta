@@ -3,11 +3,9 @@ import { UserStateModel } from './user.state.model';
 export class UserLoginAction {
   static readonly type = 'USER:LOGIN';
   constructor(
-    public name: string | null,
-    public token: string | null,
-    public features: string[],
-    public profileUrl: string | null
-  ) { }
+    public user: string,
+    public password: string) {
+  }
 }
 
 export class UserLogoutAction {

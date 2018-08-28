@@ -7,7 +7,7 @@ import { map, tap, shareReplay, catchError, exhaustMap, filter, take, retryWhen,
 
 import { Store } from '@ngxs/store';
 
-import { UserLoginAction, UserLogoutAction } from '../user/user.actions';
+import { UserLogoutAction } from '../user/user.actions';
 import { AppShowLoading, AppHideLoading } from './app.actions';
 
 
@@ -155,12 +155,6 @@ export class AppStateService {
         if (!resp.data.token) {
           throw new Error('Invalid login response!');
         }
-        this.store.dispatch(new UserLoginAction(
-          resp.data.name,
-          resp.data.token,
-          resp.data.features,
-          resp.data.profileUrl
-        ));
 
         window.localStorage.setItem('name', resp.data.name);
         window.localStorage.setItem('token', resp.data.token);

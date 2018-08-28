@@ -1,8 +1,9 @@
 import { Router } from '@angular/router';
 import { State, StateContext, NgxsOnInit, Action, Selector } from '@ngxs/store';
+import { tap } from 'rxjs/operators';
 
 import { UserStateModel } from './user.state.model';
-import { UserLoginAction, UserLogoutAction, ResetUserAction, UpdateUserAction, SetUserNextUrlAction } from './user.actions';
+import { UserLoginAction, UserLogoutAction, ResetUserAction, SetUserNextUrlAction } from './user.actions';
 import { AppStateService } from '../app-state/app-state.service';
 import { ResetAppStateAction } from '../app-state/app.actions';
 import { ResetSectionEntriesAction } from '../sites/sections/entries/entries-state/section-entries.actions';
@@ -53,12 +54,16 @@ export class UserState implements NgxsOnInit {
 
   @Action(UserLoginAction)
   login({ patchState }: StateContext<UserStateModel>, action: UserLoginAction) {
-    patchState({
-      name: action.name,
-      token: action.token,
-      features: action.features,
-      profileUrl: action.profileUrl
-    });
+    return this.appStateService.login(action.user, action.password).pipe(
+      tap((resp) => {
+        patchState({
+          name: resp.data.name,
+          token: resp.data.token,
+          features: resp.data.features,
+          profileUrl: resp.data.profileUrl
+        });
+      })
+    );
   }
 
   @Action(UserLogoutAction)
