@@ -3,7 +3,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map, tap, shareReplay, catchError, exhaustMap, filter, take, retryWhen, pairwise, switchMap} from 'rxjs/operators';
 import { Store } from '@ngxs/store';
-import { UserLoginAction, UserLogoutAction } from '../user/user-actions';
+import { UserLoginAction, UserLogoutAction } from '../user/user.actions';
 import { Router } from '@angular/router';
 import { AppShowLoading, AppHideLoading } from './app.actions';
 

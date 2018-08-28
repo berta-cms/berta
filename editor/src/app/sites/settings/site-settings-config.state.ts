@@ -5,7 +5,7 @@ import { SiteSettingsConfigStateModel, SiteSettingsConfigResponse } from './site
 import { AppStateService } from '../../app-state/app-state.service';
 import { initSettingConfigGroup } from '../../shared/helpers';
 import { ResetSiteSettingsConfigAction, InitSiteSettingsConfigAction } from './site-settings-config.actions';
-import { UserLoginAction } from '../../user/user-actions';
+import { UserLoginAction } from '../../user/user.actions';
 
 
 @State<SiteSettingsConfigStateModel>({

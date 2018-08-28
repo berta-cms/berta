@@ -12,7 +12,7 @@ import {
   CreateSiteSettingsAction,
   ResetSiteSettingsAction,
   InitSiteSettingsAction} from './site-settings.actions';
-import { UserLoginAction } from '../../user/user-actions';
+import { UserLoginAction } from '../../user/user.actions';
 
 
 @State<SitesSettingsStateModel>({

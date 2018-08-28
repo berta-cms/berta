@@ -19,7 +19,7 @@ import {
   ResetSiteTemplateSettingsAction,
   InitSiteTemplateSettingsAction
 } from './site-template-settings.actions';
-import { UserLoginAction } from '../../user/user-actions';
+import { UserLoginAction } from '../../user/user.actions';
 
 
 @State<SitesTemplateSettingsStateModel>({

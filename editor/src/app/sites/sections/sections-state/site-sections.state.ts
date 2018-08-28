@@ -21,7 +21,7 @@ import {
   DeleteSectionEntriesAction,
   RenameSectionEntriesAction,
   AddSectionEntriesAction } from '../entries/entries-state/section-entries.actions';
-import { UserLoginAction } from '../../../user/user-actions';
+import { UserLoginAction } from '../../../user/user.actions';
 
 
 @State<SiteSectionStateModel[]>({

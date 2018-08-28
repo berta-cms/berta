@@ -6,8 +6,8 @@ import { take, switchMap } from 'rxjs/operators';
 import { Store, Select, Actions, ofActionSuccessful } from '@ngxs/store';
 import { AppHideOverlay, AppShowOverlay } from './app-state/app.actions';
 import { AppState } from './app-state/app.state';
-import { UserLoginAction, UserLogoutAction, SetUserNextUrlAction } from './user/user-actions';
-import { UserState } from './user/user-state';
+import { UserLoginAction, UserLogoutAction, SetUserNextUrlAction } from './user/user.actions';
+import { UserState } from './user/user.state';
 import { UserStateModel } from './user/user.state.model';
 
 @Component({

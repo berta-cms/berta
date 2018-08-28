@@ -13,7 +13,7 @@ import {
   AddSectionTagsAction,
   ResetSiteSectionsTagsAction,
   InitSiteSectionsTagsAction} from './section-tags.actions';
-import { UserLoginAction } from '../../../user/user-actions';
+import { UserLoginAction } from '../../../user/user.actions';
 
 
 @State<SectionTagsStateModel>({

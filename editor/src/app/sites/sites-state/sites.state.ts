@@ -31,7 +31,7 @@ import {
   DeleteSiteSectionsEntriesAction,
   RenameSectionEntriesSitenameAction,
   AddSiteEntriesAction} from '../sections/entries/entries-state/section-entries.actions';
-import { UserLoginAction } from '../../user/user-actions';
+import { UserLoginAction } from '../../user/user.actions';
 
 
 @State<SiteStateModel[]>({

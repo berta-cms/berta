@@ -6,9 +6,9 @@ import { map } from 'rxjs/operators';
 import { Select, Store } from '@ngxs/store';
 
 import { AppState } from '../app-state/app.state';
-import { UserState } from '../user/user-state';
+import { UserState } from '../user/user.state';
 import { UserStateModel } from '../user/user.state.model';
-import { UserLogoutAction } from '../user/user-actions';
+import { UserLogoutAction } from '../user/user.actions';
 
 
 /** @todo add icons */

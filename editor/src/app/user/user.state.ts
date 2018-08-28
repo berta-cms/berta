@@ -1,7 +1,7 @@
 import { Router } from '@angular/router';
 import { State, StateContext, NgxsOnInit, Action, Selector } from '@ngxs/store';
 import { UserStateModel } from './user.state.model';
-import { UserLoginAction, UserLogoutAction, ResetUserAction, UpdateUserAction, SetUserNextUrlAction } from './user-actions';
+import { UserLoginAction, UserLogoutAction, ResetUserAction, UpdateUserAction, SetUserNextUrlAction } from './user.actions';
 import { AppStateService } from '../app-state/app-state.service';
 import { ResetAppStateAction } from '../app-state/app.actions';
 import { ResetSectionEntriesAction } from '../sites/sections/entries/entries-state/section-entries.actions';

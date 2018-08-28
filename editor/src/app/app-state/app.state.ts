@@ -12,9 +12,9 @@ import {
   ResetAppStateAction,
   InitAppStateAction
 } from './app.actions';
-import { UserState } from '../user/user-state';
+import { UserState } from '../user/user.state';
 import { AppStateService } from './app-state.service';
-import { UserLoginAction } from '../user/user-actions';
+import { UserLoginAction } from '../user/user.actions';
 
 
 const defaultState: AppStateModel = {

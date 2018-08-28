@@ -13,7 +13,7 @@ import {
   AddSectionEntriesAction,
   ResetSectionEntriesAction,
   InitSectionEntriesAction} from './section-entries.actions';
-import { UserLoginAction } from '../../../../user/user-actions';
+import { UserLoginAction } from '../../../../user/user.actions';
 
 
 @State<SectionEntriesStateModel>({

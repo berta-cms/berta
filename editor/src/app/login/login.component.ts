@@ -7,7 +7,7 @@ import { take } from 'rxjs/operators';
 import { Select } from '@ngxs/store';
 
 import { AppStateService } from '../app-state/app-state.service';
-import { UserState } from '../user/user-state';
+import { UserState } from '../user/user.state';
 
 
 @Component({

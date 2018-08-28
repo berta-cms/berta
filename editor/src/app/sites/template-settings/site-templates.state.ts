@@ -11,7 +11,7 @@ import { AppStateService } from '../../app-state/app-state.service';
 import { SiteSettingsState } from '../settings/site-settings.state';
 import { initSettingConfigGroup } from '../../shared/helpers';
 import { ResetSiteTemplatesAction, InitSiteTemplatesAction } from './site-templates.actions';
-import { UserLoginAction } from '../../user/user-actions';
+import { UserLoginAction } from '../../user/user.actions';
 
 
 @State<SiteTemplatesStateModel>({
