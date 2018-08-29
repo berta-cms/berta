@@ -32,7 +32,35 @@ if (!class_exists('Twig')) {
     $app->configure('twigbridge');
 }
 
-// $app->withEloquent();
+$app->withEloquent();
+
+/*
+|--------------------------------------------------------------------------
+| Load plugins
+|--------------------------------------------------------------------------
+|
+| Load configuration from plugins. Put the db connections in to connections array.
+|
+*/
+
+foreach (scandir("{$app->path()}/Plugins") as $fileOrDir) {
+    if (in_array($fileOrDir, ['.', '..'])) { continue; }
+
+    $dirPath = "{$app->path()}/Plugins/{$fileOrDir}";
+
+    if (is_dir($dirPath) && is_file("{$dirPath}/config.php")) {
+        $app->make('config')->set("plugin-{$fileOrDir}", require "{$dirPath}/config.php");
+        $newConfig = config("plugin-{$fileOrDir}");
+
+        if (array_key_exists('database.connections', $newConfig)) {
+            foreach ($newConfig['database.connections'] as $conName => $conConfig) {
+                app('config')->set('database.connections.'. $conName, $conConfig);
+            }
+        }
+    }
+}
+
+
 
 /*
 |--------------------------------------------------------------------------

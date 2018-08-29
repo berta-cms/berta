@@ -58,6 +58,18 @@ $app->group(['prefix' => 'v1', 'namespace' => 'App', 'middleware' => ['setup', '
         });
     });
 
+    $app->group(['prefix' => 'v1/plugin', 'namespace' => 'App\Plugins', 'middleware' => ['setup']], function () use ($app) {
+        foreach (scandir("{$app->path()}/Plugins") as $fileOrDir) {
+            if (in_array($fileOrDir, ['.', '..'])) { continue; }
+
+            $dirPath = "{$app->path()}/Plugins/{$fileOrDir}";
+
+            if (is_dir($dirPath) && is_file("{$dirPath}/routes.php")) {
+                require "{$dirPath}/routes.php";
+            }
+        }
+    });
+
     /**
      * This includes test controller for easier development
      * @todo: replace this with automated tests
