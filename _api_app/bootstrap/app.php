@@ -51,12 +51,6 @@ foreach (scandir("{$app->path()}/Plugins") as $fileOrDir) {
     if (is_dir($dirPath) && is_file("{$dirPath}/config.php")) {
         $app->make('config')->set("plugin-{$fileOrDir}", require "{$dirPath}/config.php");
         $newConfig = config("plugin-{$fileOrDir}");
-
-        if (array_key_exists('database.connections', $newConfig)) {
-            foreach ($newConfig['database.connections'] as $conName => $conConfig) {
-                app('config')->set('database.connections.'. $conName, $conConfig);
-            }
-        }
     }
 }
 
