@@ -1,10 +1,10 @@
 import { SiteStateModel } from '../sites-state/site-state.model';
-import { SiteTemplateSettingsModel } from './site-template-settings.interface';
+import { SitesTemplateSettingsSiteResponse } from './site-template-settings.interface';
 
 export class CreateSiteTemplateSettingsAction {
   static readonly type = 'SITE_TEMPLATE_SETTINGS:CREATE';
   constructor(public site: SiteStateModel,
-              public templateSettings: SiteTemplateSettingsModel) {
+              public templateSettings: SitesTemplateSettingsSiteResponse) {
   }
 }
 

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Store } from '@ngxs/store';
 import { SiteStateModel } from './sites-state/site-state.model';
 import { DeleteSiteAction, CloneSiteAction, UpdateSiteAction, RenameSiteAction } from './sites-state/sites.actions';
@@ -36,7 +36,9 @@ import { DeleteSiteAction, CloneSiteAction, UpdateSiteAction, RenameSiteAction }
             title="delete"
             (click)="deleteSite()">X</button>
   </div>
-  <div class="url-line">http://berta.me/<span *ngIf="edit!=='name'">{{site.name}}</span>
+  <div class="url-line">
+    <a [routerLink]="['/multisite']"
+       [queryParams]="(site.name === '' ? null : {site: site.name})">http://berta.me/<span *ngIf="edit!=='name'">{{site.name}}</span></a>
     <button *ngIf="edit!=='name' && !modificationDisabled"
             title="Edit"
             type="button"

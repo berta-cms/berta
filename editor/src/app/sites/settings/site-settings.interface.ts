@@ -1,8 +1,15 @@
+import { SettingsGroupModel } from '../../shared/interfaces';
+
 export interface SitesSettingsStateModel {
-  [siteName: string]: SiteSettingsModel;
+  [siteName: string]: SettingsGroupModel[];
 }
 
-export interface SiteSettingsModel {
+/* Settings response: */
+export interface SiteSettingsResponse {
+  [siteName: string]: SiteSettingsSiteResponse;
+}
+
+export interface SiteSettingsSiteResponse {
   template?: {
     template?: string;
   };
@@ -123,26 +130,4 @@ export interface SiteSettingsModel {
   language?: {
     language?: string;
   };
-}
-
-export interface SiteSettingsConfigStateModel {
-  [settingGroupName: string]: SiteSettingsConfigGroup;
-}
-
-export interface SiteSettingsConfigGroup {
-  _: SiteSettingsSectionMeta;
-  [settingName: string]: SiteSettingsConfigSetting;
-}
-
-export interface SiteSettingsSectionMeta extends SiteSettingsConfigSetting {
-  title: string;
-  invisible?: boolean;
-}
-
-export interface SiteSettingsConfigSetting {
-  value: any;
-  default: any;
-  format: string;
-  title?: string;
-  [k: string]: any;
 }
