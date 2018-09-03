@@ -1,6 +1,6 @@
 import { State, Action, StateContext, Selector, NgxsOnInit, Store } from '@ngxs/store';
 import { AppStateService } from '../../app-state/app-state.service';
-import { take } from 'rxjs/operators';
+import { take, tap } from 'rxjs/operators';
 import {
   SitesTemplateSettingsStateModel,
   SitesTemplateSettingsResponse,
@@ -91,8 +91,8 @@ export class SiteTemplateSettingsState implements NgxsOnInit {
     };
     /** @todo: Loading should be triggered here */
 
-    this.appStateService.sync('siteTemplateSettings', data)
-      .subscribe(response => {
+    return this.appStateService.sync('siteTemplateSettings', data).pipe(
+      tap(response => {
         /** @todo: additional action should be triggered here!!! */
 
         if (response.error_message) {
@@ -122,7 +122,8 @@ export class SiteTemplateSettingsState implements NgxsOnInit {
             }
           });
         }
-    });
+      })
+    );
   }
 
   @Action(RenameSiteTemplateSettingsSitenameAction)
