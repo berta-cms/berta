@@ -58,7 +58,6 @@ import { UserStateModel } from '../user/user.state.model';
       );
       background-size: 200% 200%;
       animation: barberpole 15s linear infinite;
-      z-index: 1;
     }
 
     @keyframes barberpole {

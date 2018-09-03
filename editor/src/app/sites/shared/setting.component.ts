@@ -1,5 +1,4 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { SettingModel, SettingConfigModel } from '../../shared/interfaces';
 
 @Component({
   selector: 'berta-setting',
@@ -33,13 +32,13 @@ import { SettingModel, SettingConfigModel } from '../../shared/interfaces';
         <textarea *ngSwitchCase="'longtext'"
                   (blur)="updateTextField(setting.slug, $event.target.value, $event)">{{setting.value}}</textarea>
 
-        <select *ngSwitchCase="'select'" (change)="updateField(setting.slug, $event.target.value, $event.target)">
+        <select *ngSwitchCase="'select'" (change)="updateField(setting.slug, $event.target.value)">
           <option *ngFor="let val of config.values"
                   [value]="val.value"
                   [attr.selected]="(val.value === setting.value ? '' : null)">{{ val.title }}</option>
         </select>
 
-        <select *ngSwitchCase="'fontselect'" (change)="updateField(setting.slug, $event.target.value, $event.target)">
+        <select *ngSwitchCase="'fontselect'" (change)="updateField(setting.slug, $event.target.value)">
           <option *ngFor="let val of config.values"
                   [value]="val.value"
                   [attr.selected]="(val.value === setting.value ? '' : null)">{{ val.title }}</option>
@@ -61,16 +60,16 @@ import { SettingModel, SettingConfigModel } from '../../shared/interfaces';
   `]
 })
 export class SettingComponent implements OnInit {
-  @Input('setting') setting: SettingModel;
-  @Input('config') config: SettingConfigModel;
+  @Input('setting') setting: {value: any, slug: string};
+  @Input('config') config: any;
 
-  @Output('update') update = new EventEmitter<{field: string, value: SettingModel['value']}>();
+  @Output('update') update = new EventEmitter<{field: string, value: any}>();
 
-  private lastValue: SettingModel['value'];
+  private lastValue: any;
+
+  constructor() { }
 
   ngOnInit() {
-    // Cache the value, so we don't update if nothing changes
-    this.lastValue = this.setting.value;
   }
 
   updateTextField(field, value, $event) {
@@ -78,15 +77,13 @@ export class SettingComponent implements OnInit {
       return;
     }
 
-    this.updateField(field, value, $event.target);
+    this.updateField(field, value);
   }
 
-  updateField(field, value, input: HTMLInputElement) {
+  updateField(field, value) {
     if (value === this.lastValue) {
       return;
     }
-    input.disabled = true;
-    // This is important for the update process, so additional change events won't cause problem
     this.lastValue = value;
     this.update.emit({field, value});
   }

@@ -1,14 +1,13 @@
 import { State, Action, StateContext, Selector, NgxsOnInit, Store } from '@ngxs/store';
-import { SitesSettingsStateModel, SiteSettingsResponse, SiteSettingsSiteResponse } from './site-settings.interface';
-import { SettingsGroupModel } from '../../shared/interfaces';
+import { SitesSettingsStateModel } from './site-settings.interface';
 import { AppStateService } from '../../app-state/app-state.service';
-import { take, tap } from 'rxjs/operators';
+import { take } from 'rxjs/operators';
 import { AppState } from '../../app-state/app.state';
 import {
   UpdateSiteSettingsAction,
   DeleteSiteSettingsAction,
   RenameSiteSettingsSitenameAction,
-  CreateSiteSettingsAction} from './site-settings.actions';
+  CreateSiteSettingsAction } from './site-settings.actions';
 
 
 @State<SitesSettingsStateModel>({
@@ -27,13 +26,11 @@ export class SiteSettingsState implements NgxsOnInit {
   }
 
   @Selector([SiteSettingsState.getCurrentSiteSettings])
-  static getCurrentSiteTemplate(_, currentSiteSettings): string | undefined {
-    if (!currentSiteSettings) {
+  static getCurrentSiteTemplate(_, currentSiteSettings) {
+    if (!(currentSiteSettings && currentSiteSettings.template)) {
       return;
     }
-    const templateSettings = currentSiteSettings.find(settingGroup => settingGroup.slug === 'template');
-    const template = templateSettings && templateSettings.settings.find(setting => setting.slug === 'template');
-    return template && template.value;
+    return currentSiteSettings.template.template;
   }
 
   constructor(
@@ -43,28 +40,23 @@ export class SiteSettingsState implements NgxsOnInit {
 
   ngxsOnInit({ setState }: StateContext<SitesSettingsStateModel>) {
     this.appStateService.getInitialState('', 'site_settings').pipe(take(1)).subscribe({
-      next: (response: SiteSettingsResponse) => {
-        /** Initializing state: */
-        const newState: SitesSettingsStateModel = {};
-
-        for (const siteSlug in response) {
-          newState[siteSlug] = this.initializeSettingsForSite(response[siteSlug]);
-        }
-
-        setState(newState);
+      next: (response) => {
+        setState(response as SitesSettingsStateModel);
       },
       error: (error) => console.error(error)
     });
   }
 
   @Action(CreateSiteSettingsAction)
-  createSiteSettings({ patchState }: StateContext<SitesSettingsStateModel>, action: CreateSiteSettingsAction) {
-    const newSettings = {[action.site.name]: this.initializeSettingsForSite(action.settings)};
-    patchState(newSettings);
+  createSiteSettings({ patchState, getState }: StateContext<SitesSettingsStateModel>, action: CreateSiteSettingsAction) {
+    const currentState = getState();
+    const newSettings = {};
+    newSettings[action.site.name] = action.settings;
+    patchState({...currentState, ...newSettings});
   }
 
   @Action(UpdateSiteSettingsAction)
-  updateSiteSettings({ getState, patchState }: StateContext<SitesSettingsStateModel>, action: UpdateSiteSettingsAction) {
+  updateSiteSettings({ patchState, getState }: StateContext<SitesSettingsStateModel>, action: UpdateSiteSettingsAction) {
     const currentSite = this.store.selectSnapshot(AppState.getSite);
     const settingKey = Object.keys(action.payload)[0];
     const data = {
@@ -72,32 +64,21 @@ export class SiteSettingsState implements NgxsOnInit {
       value: action.payload[settingKey]
     };
 
-    return this.appStateService.sync('siteSettings', data).pipe(
-      tap(response => {
+    this.appStateService.sync('siteSettings', data)
+      .subscribe(response => {
         if (response.error_message) {
-          /* This should probably be handled in sync */
+          // @TODO handle error message
           console.error(response.error_message);
         } else {
           const currentState = getState();
+          const updatedSiteSettingsGroup = {...currentState[currentSite][action.settingGroup], ...action.payload};
 
-          patchState({[currentSite]: currentState[currentSite].map(settingGroup => {
-            if (settingGroup.slug !== action.settingGroup) {
-              return settingGroup;
-            }
-
-            return {
-              ...settingGroup,
-              settings: settingGroup.settings.map(setting => {
-                if (setting.slug !== settingKey) {
-                  return setting;
-                }
-                return { ...setting, value: action.payload[settingKey] };
-              })
-            };
-          })});
+          patchState({[currentSite]: {
+            ...currentState[currentSite],
+            [action.settingGroup]: updatedSiteSettingsGroup
+          }});
         }
-      })
-    );
+    });
   }
 
   @Action(RenameSiteSettingsSitenameAction)
@@ -122,19 +103,5 @@ export class SiteSettingsState implements NgxsOnInit {
     const newState = {...getState()};
     delete newState[action.siteName];
     setState(newState);
-  }
-
-  initializeSettingsForSite(settings: SiteSettingsSiteResponse): SettingsGroupModel[] {
-    return Object.keys(settings).map(settingGroupSlug => {
-      return {
-        slug: settingGroupSlug,
-        settings: Object.keys(settings[settingGroupSlug]).map(settingSlug => {
-          return {
-            slug: settingSlug,
-            value: settings[settingGroupSlug][settingSlug]
-          };
-        })
-      };
-    });
   }
 }

@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Store } from '@ngxs/store';
 import { SiteSectionStateModel } from './sections-state/site-sections-state.model';
-import { SiteTemplateSectionTypesModel } from '../template-settings/site-templates.interface';
+import { SectionTypes } from '../template-settings/site-template-settings.interface';
 import { DeleteSiteSectionAction, CloneSectionAction } from './sections-state/site-sections.actions';
 
 @Component({
@@ -100,7 +100,7 @@ import { DeleteSiteSectionAction, CloneSectionAction } from './sections-state/si
 })
 export class SectionComponent implements OnInit {
   @Input('section') section: SiteSectionStateModel;
-  @Input('templateSectionTypes') templateSectionTypes: SiteTemplateSectionTypesModel;
+  @Input('templateSectionTypes') templateSectionTypes: SectionTypes;
   @Input('params') params: any[] = [];
   edit: false | 'title' = false;
 

@@ -41,10 +41,10 @@ export class AppState implements NgxsOnInit {
 
   ngxsOnInit({ patchState }: StateContext<AppStateModel>) {
     this.router.events.pipe(
-      filter(evt => evt instanceof ActivationEnd)
+      filter(evt => evt instanceof ActivationEnd),
+      take(1)
     ).subscribe((event: ActivationEnd) => {
       if (event.snapshot.queryParams['site']) {
-        /** @todo: trigger actions here */
         patchState({site: event.snapshot.queryParams['site']});
       } else {
         patchState({site: ''});
