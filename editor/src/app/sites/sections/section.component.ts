@@ -1,6 +1,8 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Store } from '@ngxs/store';
 import { SiteSectionStateModel } from './sections-state/site-sections-state.model';
-import { SectionTypes } from '../template-settings/site-template-settings.interface';
+import { SiteTemplateSectionTypesModel } from '../template-settings/site-templates.interface';
+import { DeleteSiteSectionAction, CloneSectionAction } from './sections-state/site-sections.actions';
 
 @Component({
   selector: 'berta-section',
@@ -12,16 +14,27 @@ import { SectionTypes } from '../template-settings/site-template-settings.interf
              [value]="section.title"
              (keydown)="updateTextField('title', title.value, $event)"
              (blur)="updateTextField('title', title.value, $event)">
-      <button *ngIf="edit!=='title' && !modificationDisabled"
+      <button *ngIf="edit!=='title'"
               title="Edit"
               type="button"
               (click)="editField('title')">E</button>
       <div *ngIf="edit!=='title'" class="expand"></div>
-      <button [attr.disabled]="modificationDisabled"
+      <button *ngIf="section['@attributes'].published < 1"
               [class.bt-active]="section['@attributes'].published"
-              title="publish">P</button>
-      <button [attr.disabled]="modificationDisabled" title="delete">X</button>
-      <button title="copy">CP</button>
+              title="Publish"
+              (click)="updateField({'@attributes': {published: '1'}})">
+        Publish
+      </button>
+      <button *ngIf="section['@attributes'].published > 0"
+              [class.bt-active]="section['@attributes'].published"
+              title="Unpublish"
+              (click)="updateField({'@attributes': {published: '0'}})">
+              Unpublish
+      </button>
+      <button title="copy"
+              (click)="cloneSection()">Clone</button>
+      <button title="delete"
+              (click)="deleteSection()">X</button>
     </h3>
     <label for="type">
       <strong>Type</strong>
@@ -56,7 +69,10 @@ import { SectionTypes } from '../template-settings/site-template-settings.interf
     </div>
     <h4 *ngIf="params.length > 0">Params</h4>
     <div *ngIf="params.length > 0" class="section-params">
-      <berta-setting *ngFor="let param of params" [setting]="param.setting" [config]="param.config"></berta-setting>
+      <berta-setting *ngFor="let param of params"
+                    [setting]="param.setting"
+                    [config]="param.config"
+                    (update)="updateSectionParams($event)"></berta-setting>
     </div>
   `,
   styles: [`
@@ -84,19 +100,22 @@ import { SectionTypes } from '../template-settings/site-template-settings.interf
 })
 export class SectionComponent implements OnInit {
   @Input('section') section: SiteSectionStateModel;
-  @Input('templateSectionTypes') templateSectionTypes: SectionTypes;
+  @Input('templateSectionTypes') templateSectionTypes: SiteTemplateSectionTypesModel;
   @Input('params') params: any[] = [];
   edit: false | 'title' = false;
 
   @Output('update') update = new EventEmitter<{section: string|number, data: {[k: string]: any}}>();
 
-  constructor() { }
+  constructor(private store: Store) { }
 
   ngOnInit() {
   }
 
   updateTextField(field, value, $event) {
     if (this.edit === false || $event instanceof KeyboardEvent && !($event.key === 'Enter' || $event.keyCode === 13)) {
+      return;
+    }
+    if (this.section[field] === value) {
       return;
     }
     this.edit = false;
@@ -117,4 +136,17 @@ export class SectionComponent implements OnInit {
     this.edit = field;
   }
 
+  updateSectionParams(updateEvent) {
+    this.updateField({
+      [updateEvent.field]: updateEvent.value
+    });
+  }
+
+  cloneSection() {
+    this.store.dispatch(new CloneSectionAction(this.section));
+  }
+
+  deleteSection() {
+    this.store.dispatch(new DeleteSiteSectionAction(this.section));
+  }
 }

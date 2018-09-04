@@ -5,6 +5,6 @@ export interface SectionTagsStateModel {
 }
 
 export interface SectionTagsInterface {
-  tags: any[];
+  tag: any[];
   '@attributes': { [k: string]: string };
 }

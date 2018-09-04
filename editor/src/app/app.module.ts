@@ -15,6 +15,7 @@ import { HeaderComponent } from './header/header.component';
 import { ProfileDropdownComponent } from './profile-dropdown/profile-dropdown.component';
 import { LoginComponent } from './login/login.component';
 import { UserState } from './user/user-state';
+import { UserAccountComponent } from './user/user-account.component';
 
 
 @NgModule({
@@ -23,6 +24,7 @@ import { UserState } from './user/user-state';
     NotFoundComponent,
     HeaderComponent,
     ProfileDropdownComponent,
+    UserAccountComponent,
     LoginComponent
   ],
   imports: [

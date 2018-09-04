@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { map, tap, shareReplay, catchError, exhaustMap, filter, take, retryWhen, switchMap, pairwise} from 'rxjs/operators';
+import { map, tap, shareReplay, catchError, exhaustMap, filter, take, retryWhen, pairwise, switchMap} from 'rxjs/operators';
 import { Store } from '@ngxs/store';
 import { UserLogin, UserLogout } from '../user/user-actions';
 import { Router } from '@angular/router';
+import { AppShowLoading, AppHideLoading } from './app.actions';
 
 
 interface APIResponse {
@@ -30,7 +31,48 @@ export class AppStateService {
     private router: Router) {
   }
 
-  getInitialState(site: string = '', stateSlice?: string , force = false) {
+  showLoading() {
+    this.store.dispatch(new AppShowLoading());
+  }
+
+  hideLoading() {
+    this.store.dispatch(new AppHideLoading());
+  }
+
+  sync(urlName: string, data: any, method?: string) {
+    method = method || 'PATCH';
+    return this.store.select(state => state.app)
+      .pipe(
+        filter(appState => !!appState.user.token && appState.urls[urlName]),
+        take(1),
+        switchMap(state => {
+          this.showLoading();
+          return this.http.request<any>(method, state.urls[urlName], {
+            body: method === 'GET' ? undefined : data,
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'X-Authorization': 'Bearer ' + state.user.token
+            }
+          });
+        }),
+        map(response => {
+          this.hideLoading();
+          if (response.status === 401) {
+            this.logout();
+            throw new Error('Unauthorized');
+          }
+
+          return response;
+        }),
+        catchError(error => {
+            this.hideLoading();
+            throw error;
+        })
+      );
+  }
+
+  getInitialState(site: string = '', stateSlice?: string, force = false) {
 
     if (!this.cachedSiteStates[site] || force) {
       this.cachedSiteStates[site] = this.store.select(state => state.app).pipe(
@@ -98,7 +140,7 @@ export class AppStateService {
         window.localStorage.setItem('name', resp.data.name);
         window.localStorage.setItem('token', resp.data.token);
         window.localStorage.setItem('features', JSON.stringify(resp.data.features));
-        window.localStorage.setItem('profileUrl', resp.data.profileUrl);
+        window.localStorage.setItem('profileUrl', JSON.stringify(resp.data.profileUrl));
       })
     );
   }

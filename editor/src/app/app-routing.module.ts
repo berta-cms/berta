@@ -6,6 +6,7 @@ import { LoginComponent } from './login/login.component';
 import { SitesComponent } from './sites/sites.component';
 import { SiteSettingsComponent } from './sites/settings/site-settings.component';
 import { SiteTemplateSettingsComponent } from './sites/template-settings/site-template-settings.component';
+import { UserAccountComponent } from './user/user-account.component';
 
 
 const routes: Routes = [
@@ -24,6 +25,10 @@ const routes: Routes = [
   {
     path: 'design',
     component: SiteTemplateSettingsComponent
+  },
+  {
+    path: 'account',
+    component: UserAccountComponent
   },
   {
     path: 'shop',

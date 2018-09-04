@@ -1,7 +1,8 @@
-import { State, Action, StateContext, Selector, NgxsOnInit } from '@ngxs/store';
-import { AppStateService } from '../../app-state/app-state.service';
+import { State, StateContext, NgxsOnInit } from '@ngxs/store';
 import { take } from 'rxjs/operators';
-import { SiteSettingsConfigStateModel } from './site-settings.interface';
+import { SiteSettingsConfigStateModel, SiteSettingsConfigResponse } from './site-settings-config.interface';
+import { AppStateService } from '../../app-state/app-state.service';
+import { initSettingConfigGroup } from '../../shared/helpers';
 
 
 @State<SiteSettingsConfigStateModel>({
@@ -18,25 +19,17 @@ export class SiteSettingsConfigState implements NgxsOnInit {
     this.appStateService.getInitialState('', 'siteSettingsConfig').pipe(
       take(1)
     ).subscribe({
-      next: (siteSettingsConfig) => {
-        setState(siteSettingsConfig);
+      next: (siteSettingsConfig: SiteSettingsConfigResponse) => {
+        /** Initialize state: */
+        const settingGroups = {};
+
+        for (const groupSlug in siteSettingsConfig) {
+          settingGroups[groupSlug] = initSettingConfigGroup(siteSettingsConfig[groupSlug]);
+        }
+
+        setState(settingGroups);
       },
       error: (error) => console.error(error)
     });
   }
-
-  // @Action(AppShowOverlay)
-  // showOverlay({ patchState }: StateContext<SiteSettingsModel>) {
-  //   patchState({ showOverlay: true });
-  // }
-
-  // @Action(AppHideOverlay)
-  // hideOverlay({ patchState }: StateContext<SiteSettingsModel>) {
-  //   patchState({ showOverlay: false });
-  // }
-
-  // @Action(AppLogin)
-  // login({ patchState }: StateContext<SiteSettingsModel>, action: AppLogin) {
-  //   patchState({authToken: action.token});
-  // }
 }
