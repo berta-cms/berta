@@ -13,6 +13,11 @@ import { SettingModel, SettingConfigModel } from '../../shared/interfaces';
                (keydown)="updateTextField(setting.slug, $event.target.value, $event)"
                (blur)="updateTextField(setting.slug, $event.target.value, $event)">
 
+        <berta-text-input *ngSwitchCase="'text'"
+                          [label]="config.title"
+                          [value]="setting.value"
+                          (update)="updateBertaTextField(setting.slug, $event)"></berta-text-input>
+
         <input *ngSwitchCase="'color'"
                size="7"
                type="text"
@@ -79,6 +84,10 @@ export class SettingComponent implements OnInit {
     }
 
     this.updateField(field, value, $event.target);
+  }
+
+  updateBertaTextField(field, $event) {
+    this.updateField(field, $event.value, $event);
   }
 
   updateField(field, value, input: HTMLInputElement) {
