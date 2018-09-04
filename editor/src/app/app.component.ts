@@ -5,6 +5,7 @@ import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { Store, Select } from '@ngxs/store';
 import { AppHideOverlay, AppShowOverlay } from './app-state/app.actions';
 import { AppState } from './app-state/app.state';
+import { UserState } from './user/user-state';
 
 
 @Component({
@@ -88,6 +89,7 @@ export class AppComponent implements OnInit {
   previewUrl: SafeUrl;
 
   @Select(AppState.getShowOverlay) showOverlay$;
+  @Select(UserState.isLoggedIn) isLoggedIn$;
 
   constructor(private router: Router,
               private store: Store,
@@ -107,14 +109,15 @@ export class AppComponent implements OnInit {
       }
     });
 
-    // @todo
-    // 1) Set public page url in app state
-    // 2) Get public page url from app state
-    // 2) Check for logged in user and set previewUrl as `/engine`
+    this.isLoggedIn$.subscribe(isLoggedIn => {
+      let url = location.protocol + '//' + location.hostname;
 
-    // const url = 'http://local.berta.me';
-    const url = 'http://local.berta.me/_preview';
-    this.previewUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
+      if (isLoggedIn) {
+        url = url + '/_preview';
+      }
+
+      this.previewUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
+    });
   }
 
   hideOverlay() {
