@@ -28,3 +28,12 @@ export class DeleteSiteSettingsAction {
   constructor(public siteName: string) {
   }
 }
+
+export class ResetSiteSettingsAction {
+  static readonly type = 'SITE_SETTINGS:RESET';
+}
+
+export class InitSiteSettingsAction {
+  static readonly type = 'SITE_SETTINGS:INIT';
+  constructor(public payload: SiteSettingsResponse) {}
+}

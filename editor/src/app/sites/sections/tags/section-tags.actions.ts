@@ -1,6 +1,6 @@
 import { SiteStateModel } from '../../sites-state/site-state.model';
 import { SiteSectionStateModel } from '../sections-state/site-sections-state.model';
-import { SectionTagsInterface } from './section-tags-state.model';
+import { SectionTagsInterface, SectionTagsStateModel } from './section-tags-state.model';
 
 export class AddSectionTagsAction {
   static readonly type = 'SECTION_TAGS:ADD';
@@ -42,4 +42,13 @@ export class RenameSectionTagsSitenameAction {
     public site: SiteStateModel,
     public siteName: string) {
   }
+}
+
+export class ResetSiteSectionsTagsAction {
+  static readonly type = 'SITE_SECTIONS_TAGS:RESET';
+}
+
+export class InitSiteSectionsTagsAction {
+  static readonly type = 'SITE_SECTIONS_TAGS:INIT';
+  constructor(public payload: SectionTagsStateModel) {}
 }

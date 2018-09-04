@@ -1,6 +1,7 @@
-import { State, Action, StateContext, Selector, NgxsOnInit, Store } from '@ngxs/store';
+import { concat } from 'rxjs';
+import { take, switchMap } from 'rxjs/operators';
+import { State, Action, StateContext, Selector, NgxsOnInit, Store, Actions, ofActionSuccessful } from '@ngxs/store';
 import { AppStateService } from '../../app-state/app-state.service';
-import { take } from 'rxjs/operators';
 import {
   SitesTemplateSettingsStateModel,
   SitesTemplateSettingsResponse,
@@ -14,7 +15,12 @@ import {
   UpdateSiteTemplateSettingsAction,
   DeleteSiteTemplateSettingsAction,
   RenameSiteTemplateSettingsSitenameAction,
-  CreateSiteTemplateSettingsAction} from './site-template-settings.actions';
+  CreateSiteTemplateSettingsAction,
+  ResetSiteTemplateSettingsAction,
+  InitSiteTemplateSettingsAction
+} from './site-template-settings.actions';
+import { UserLoginAction } from '../../user/user.actions';
+
 
 @State<SitesTemplateSettingsStateModel>({
   name: 'siteTemplateSettings',
@@ -41,25 +47,21 @@ export class SiteTemplateSettingsState implements NgxsOnInit {
 
   constructor(
     private store: Store,
+    private actions$: Actions,
     private appStateService: AppStateService) {
   }
 
 
-  ngxsOnInit({ setState }: StateContext<SitesTemplateSettingsStateModel>) {
-    this.appStateService.getInitialState('', 'site_template_settings').pipe(take(1)).subscribe({
+  ngxsOnInit({ dispatch }: StateContext<SitesTemplateSettingsStateModel>) {
+    concat(
+      this.appStateService.getInitialState('', 'site_template_settings').pipe(take(1)),
+      this.actions$.pipe(ofActionSuccessful(UserLoginAction), switchMap(() => {
+        return this.appStateService.getInitialState('', 'site_template_settings').pipe(take(1));
+      }))
+    )
+    .subscribe({
       next: (response: SitesTemplateSettingsResponse) => {
-        /** Initializing state: */
-        const newState: SitesTemplateSettingsStateModel = {};
-
-        for (const siteSlug in response) {
-          newState[siteSlug] = {};
-
-          for (const templateSlug in response[siteSlug]) {
-            newState[siteSlug][templateSlug] = this.initializeSettingsForTemplate(response[siteSlug][templateSlug]);
-          }
-        }
-
-        setState(newState);
+        dispatch(new InitSiteTemplateSettingsAction(response));
       },
       error: (error) => console.error(error)
     });
@@ -152,6 +154,27 @@ export class SiteTemplateSettingsState implements NgxsOnInit {
 
     const newState = {...getState()};
     delete newState[action.siteName];
+    setState(newState);
+  }
+
+  @Action(ResetSiteTemplateSettingsAction)
+  resetSiteTemplateSettings({ setState }: StateContext<SitesTemplateSettingsStateModel>) {
+    setState({});
+  }
+
+  @Action(InitSiteTemplateSettingsAction)
+  initSiteTemplateSettings({ setState }: StateContext<SitesTemplateSettingsStateModel>, action: InitSiteTemplateSettingsAction) {
+    /** Initializing state: */
+    const newState: SitesTemplateSettingsStateModel = {};
+
+    for (const siteSlug in action.payload) {
+      newState[siteSlug] = {};
+
+      for (const templateSlug in action.payload[siteSlug]) {
+        newState[siteSlug][templateSlug] = this.initializeSettingsForTemplate(action.payload[siteSlug][templateSlug]);
+      }
+    }
+
     setState(newState);
   }
 

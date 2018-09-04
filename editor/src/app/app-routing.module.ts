@@ -7,32 +7,41 @@ import { SitesComponent } from './sites/sites.component';
 import { SiteSettingsComponent } from './sites/settings/site-settings.component';
 import { SiteTemplateSettingsComponent } from './sites/template-settings/site-template-settings.component';
 import { UserAccountComponent } from './user/user-account.component';
+import { AuthGuardService } from './auth-guard.service';
 
 
 const routes: Routes = [
   {
     path: 'multisite',
-    component: SitesComponent
+    component: SitesComponent,
+    canActivate: [AuthGuardService]
   },
   {
     path: 'sections',
-    component: SiteSectionsComponent
+    component: SiteSectionsComponent,
+    canActivate: [AuthGuardService]
   },
   {
     path: 'settings',
-    component: SiteSettingsComponent
+    component: SiteSettingsComponent,
+    canActivate: [AuthGuardService]
   },
   {
     path: 'design',
-    component: SiteTemplateSettingsComponent
+    component: SiteTemplateSettingsComponent,
+    canActivate: [AuthGuardService]
   },
   {
     path: 'account',
-    component: UserAccountComponent
+    component: UserAccountComponent,
+    canActivate: [AuthGuardService]
   },
   {
     path: 'shop',
     loadChildren: './shop/shop.module#ShopModule',
+    /** Can load appears not to be working correctly. @todo: update Angular, see if it helps */
+    // canLoad: [AuthGuardService],
+    canActivate: [AuthGuardService]
   },
   {
     path: 'login',
