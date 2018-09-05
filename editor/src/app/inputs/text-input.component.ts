@@ -3,11 +3,15 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 @Component({
   selector: 'berta-text-input',
   template: `
-    <label *ngIf="label">{{ label }}</label>
-    <input [value]="value"
-           (keydown)="updateField($event)"
-           (blur)="updateField($event)">
-           type="text">`
+    <div class="form-group">
+      <label>
+        {{ label }}
+        <input [value]="value"
+              (keydown)="updateField($event)"
+              (blur)="updateField($event)"
+              type="text">
+      </label>
+    </div>`
 })
 export class TextInputComponent {
   @Input() label: string;
