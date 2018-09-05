@@ -10,17 +10,10 @@ import { SettingModel, SettingConfigModel } from '../../shared/interfaces';
                         [value]="setting.value"
                         (update)="updateComponentField(setting.slug, $event)"></berta-text-input>
 
-      <div *ngSwitchCase="'color'">
-        <label>
-          {{ config.title }}
-
-          <input size="7"
-                type="text"
-                [value]="setting.value"
-                (keydown)="updateTextField(setting.slug, $event.target.value, $event)"
-                (blur)="updateTextField(setting.slug, $event.target.value, $event)">
-        </label>
-      </div>
+      <berta-color-input *ngSwitchCase="'color'"
+                        [label]="config.title"
+                        [value]="setting.value"
+                        (update)="updateComponentField(setting.slug, $event)"></berta-color-input>
 
       <div *ngSwitchCase="'icon'" style="text-align: right;">
         <label>

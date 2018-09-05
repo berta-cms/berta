@@ -3,15 +3,19 @@ import { CommonModule } from '@angular/common';
 import { SettingComponent } from './setting.component';
 import { AutofocusDirective } from './autofocus.directive';
 import { TextInputComponent } from '../../inputs/text-input.component';
+import { ColorInputComponent } from '../../inputs/color-input.component';
+import { ColorPickerModule } from 'ngx-color-picker';
 
 @NgModule({
   imports: [
-    CommonModule
+    CommonModule,
+    ColorPickerModule
   ],
   declarations: [
     SettingComponent,
     AutofocusDirective,
-    TextInputComponent
+    TextInputComponent,
+    ColorInputComponent
   ],
   exports: [
     SettingComponent,
