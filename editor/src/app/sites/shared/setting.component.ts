@@ -8,7 +8,7 @@ import { SettingModel, SettingConfigModel } from '../../shared/interfaces';
       <berta-text-input *ngSwitchCase="'text'"
                         [label]="config.title"
                         [value]="setting.value"
-                        (update)="updateBertaTextField(setting.slug, $event)"></berta-text-input>
+                        (update)="updateComponentField(setting.slug, $event)"></berta-text-input>
 
       <div *ngSwitchCase="'color'">
         <label>
@@ -108,8 +108,8 @@ export class SettingComponent implements OnInit {
     this.updateField(field, value, $event.target);
   }
 
-  updateBertaTextField(field, $event) {
-    this.updateField(field, $event.value, $event);
+  updateComponentField(field, value) {
+    this.update.emit({field, value});
   }
 
   updateField(field, value, input: HTMLInputElement) {
