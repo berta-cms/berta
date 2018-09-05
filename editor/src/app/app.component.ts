@@ -113,7 +113,7 @@ export class AppComponent implements OnInit {
       let url = location.protocol + '//' + location.hostname;
 
       if (isLoggedIn) {
-        url = url + '/_preview';
+        url += '/engine/editor/';
       }
 
       this.previewUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
