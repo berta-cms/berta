@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { SettingComponent } from './setting.component';
 import { AutofocusDirective } from './autofocus.directive';
 import { TextInputComponent } from '../../inputs/text-input.component';
+import { LongTextInputComponent } from '../../inputs/long-text-input.component';
 
 @NgModule({
   imports: [
@@ -11,7 +12,8 @@ import { TextInputComponent } from '../../inputs/text-input.component';
   declarations: [
     SettingComponent,
     AutofocusDirective,
-    TextInputComponent
+    TextInputComponent,
+    LongTextInputComponent
   ],
   exports: [
     SettingComponent,

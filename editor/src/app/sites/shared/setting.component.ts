@@ -40,13 +40,10 @@ import { SettingModel, SettingConfigModel } from '../../shared/interfaces';
         </label>
       </div>
 
-      <div *ngSwitchCase="'longtext'">
-        <label>
-          {{ config.title }}
-
-          <textarea (blur)="updateTextField(setting.slug, $event.target.value, $event)">{{setting.value}}</textarea>
-        </label>
-      </div>
+      <berta-long-text-input *ngSwitchCase="'longtext'"
+                             [label]="config.title"
+                             [value]="setting.value"
+                             (update)="updateComponentField(setting.slug, $event)"></berta-long-text-input>
 
       <div *ngSwitchCase="'select'">
         <label>

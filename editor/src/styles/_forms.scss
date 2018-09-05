@@ -8,34 +8,34 @@
     justify-content: space-between;
   }
 
-  input {
-    &[type='text'] {
-      border: 1px solid $input-color;
-      border-radius: $border-radius;
-      color: $input-color;
-      font-size: 1em;
-      margin-left: 1em;
-      outline: none;
-      padding: .75em;
-      width: 42%;
+  input[type='text'],
+  textarea {
+    border: 1px solid $input-color;
+    border-radius: $border-radius;
+    box-sizing: border-box;
+    color: $input-color;
+    font-size: 1em;
+    margin-left: 1em;
+    outline: none;
+    padding: .75em;
+    width: 50%;
 
-      &:hover {
-        border-color: $input-color-active;
-      }
+    &:hover {
+      border-color: $input-color-active;
+    }
 
-      &:focus {
-        border-color: $input-color-active;
-        color: $input-color-active;
-      }
+    &:focus {
+      border-color: $input-color-active;
+      color: $input-color-active;
+    }
 
-      &.error {
-        border-color: $error-color;
-      }
+    &.error {
+      border-color: $error-color;
+    }
 
-      &[disabled] {
-        border-color: $input-color-disabled;
-        color: $input-color-disabled;
-      }
+    &[disabled] {
+      border-color: $input-color-disabled;
+      color: $input-color-disabled;
     }
   }
 }
