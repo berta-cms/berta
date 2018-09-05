@@ -7,7 +7,8 @@ import { TextInputComponent } from './text-input.component';
     <div class="form-group">
       <label>
         {{ label }}
-        <textarea (blur)="updateField($event)">{{ value }}</textarea>
+        <textarea (blur)="updateField($event)"
+                  rows="3">{{ value }}</textarea>
       </label>
     </div>`,
   styles: [`
