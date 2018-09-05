@@ -1,5 +1,5 @@
 import { concat } from 'rxjs';
-import { take, switchMap } from 'rxjs/operators';
+import { take, switchMap, tap } from 'rxjs/operators';
 import { State, Action, StateContext, Selector, NgxsOnInit, Store, Actions, ofActionSuccessful } from '@ngxs/store';
 import { SitesSettingsStateModel, SiteSettingsResponse, SiteSettingsSiteResponse } from './site-settings.interface';
 import { SettingsGroupModel } from '../../shared/interfaces';
@@ -68,20 +68,18 @@ export class SiteSettingsState implements NgxsOnInit {
   }
 
   @Action(UpdateSiteSettingsAction)
-  updateSiteSettings({ patchState, getState }: StateContext<SitesSettingsStateModel>, action: UpdateSiteSettingsAction) {
+  updateSiteSettings({ getState, patchState }: StateContext<SitesSettingsStateModel>, action: UpdateSiteSettingsAction) {
     const currentSite = this.store.selectSnapshot(AppState.getSite);
     const settingKey = Object.keys(action.payload)[0];
     const data = {
       path: currentSite + '/settings/' + action.settingGroup + '/' + settingKey,
       value: action.payload[settingKey]
     };
-    /** @todo: Loading should be triggered here */
 
-    this.appStateService.sync('siteSettings', data)
-      .subscribe(response => {
-        /** @todo: additional action should be triggered here!!! */
+    return this.appStateService.sync('siteSettings', data).pipe(
+      tap(response => {
         if (response.error_message) {
-          // @TODO handle error message
+          /* This should probably be handled in sync */
           console.error(response.error_message);
         } else {
           const currentState = getState();
@@ -102,7 +100,8 @@ export class SiteSettingsState implements NgxsOnInit {
             };
           })});
         }
-    });
+      })
+    );
   }
 
   @Action(RenameSiteSettingsSitenameAction)
