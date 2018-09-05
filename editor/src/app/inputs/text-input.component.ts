@@ -34,8 +34,9 @@ export class TextInputComponent implements OnInit {
     if ($event instanceof KeyboardEvent && !($event.key === 'Enter' || $event.keyCode === 13)) {
       return;
     }
-    $event.target.disabled = true;
     this.lastValue = $event.target.value;
+    $event.target.disabled = true;
+
     this.update.emit($event.target.value);
   }
 }
