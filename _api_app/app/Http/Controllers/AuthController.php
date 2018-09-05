@@ -62,9 +62,7 @@ class AuthController extends Controller
 
     public function apiLogin(Request $request)
     {
-        \Log::info('API LOGIN!!!');
         $token = $this->authenticateRequestAndGetToken($request);
-        \Log::info('TOKEN: ', [$token]);
         if (!$token) {
             return Helpers::api_response('Login failed!', [], 401);
         }

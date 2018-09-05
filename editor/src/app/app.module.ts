@@ -14,7 +14,7 @@ import { AppState } from './app-state/app.state';
 import { HeaderComponent } from './header/header.component';
 import { ProfileDropdownComponent } from './profile-dropdown/profile-dropdown.component';
 import { LoginComponent } from './login/login.component';
-import { UserState } from './user/user-state';
+import { UserState } from './user/user.state';
 import { UserAccountComponent } from './user/user-account.component';
 
 

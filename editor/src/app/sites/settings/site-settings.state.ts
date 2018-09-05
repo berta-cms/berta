@@ -1,14 +1,18 @@
-import { State, Action, StateContext, Selector, NgxsOnInit, Store } from '@ngxs/store';
+import { concat } from 'rxjs';
+import { take, switchMap, tap } from 'rxjs/operators';
+import { State, Action, StateContext, Selector, NgxsOnInit, Store, Actions, ofActionSuccessful } from '@ngxs/store';
 import { SitesSettingsStateModel, SiteSettingsResponse, SiteSettingsSiteResponse } from './site-settings.interface';
 import { SettingsGroupModel } from '../../shared/interfaces';
 import { AppStateService } from '../../app-state/app-state.service';
-import { take, tap } from 'rxjs/operators';
 import { AppState } from '../../app-state/app.state';
 import {
   UpdateSiteSettingsAction,
   DeleteSiteSettingsAction,
   RenameSiteSettingsSitenameAction,
-  CreateSiteSettingsAction} from './site-settings.actions';
+  CreateSiteSettingsAction,
+  ResetSiteSettingsAction,
+  InitSiteSettingsAction} from './site-settings.actions';
+import { UserLoginAction } from '../../user/user.actions';
 
 
 @State<SitesSettingsStateModel>({
@@ -38,20 +42,20 @@ export class SiteSettingsState implements NgxsOnInit {
 
   constructor(
     private store: Store,
+    private actions$: Actions,
     private appStateService: AppStateService) {
   }
 
-  ngxsOnInit({ setState }: StateContext<SitesSettingsStateModel>) {
-    this.appStateService.getInitialState('', 'site_settings').pipe(take(1)).subscribe({
+  ngxsOnInit({ dispatch }: StateContext<SitesSettingsStateModel>) {
+    concat(
+      this.appStateService.getInitialState('', 'site_settings').pipe(take(1)),
+      this.actions$.pipe(ofActionSuccessful(UserLoginAction), switchMap(() => {
+        return this.appStateService.getInitialState('', 'site_settings').pipe(take(1));
+      }))
+    )
+    .subscribe({
       next: (response: SiteSettingsResponse) => {
-        /** Initializing state: */
-        const newState: SitesSettingsStateModel = {};
-
-        for (const siteSlug in response) {
-          newState[siteSlug] = this.initializeSettingsForSite(response[siteSlug]);
-        }
-
-        setState(newState);
+        dispatch(new InitSiteSettingsAction(response));
       },
       error: (error) => console.error(error)
     });
@@ -136,5 +140,21 @@ export class SiteSettingsState implements NgxsOnInit {
         })
       };
     });
+  }
+
+  @Action(ResetSiteSettingsAction)
+  resetSiteSettings({ setState }: StateContext<SitesSettingsStateModel>) {
+    setState({});
+  }
+
+  @Action(InitSiteSettingsAction)
+  initSiteSettings({ setState }: StateContext<SitesSettingsStateModel>, action: InitSiteSettingsAction) {
+    const newState: SitesSettingsStateModel = {};
+
+    for (const siteSlug in action.payload) {
+      newState[siteSlug] = this.initializeSettingsForSite(action.payload[siteSlug]);
+    }
+
+    setState(newState);
   }
 }
