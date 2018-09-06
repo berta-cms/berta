@@ -7,12 +7,17 @@ import { SettingModel } from '../shared/interfaces';
     <div class="form-group">
       <label>
         {{ label }}
-        <input [(colorPicker)]="value"
-               [value]="value"
-               (colorPickerSelect)="updateField($event)"
-               [cpOKButton]="true"
-               [cpCancelButton]="true"
-               type="text">
+        <div class="color-picker-wrapper">
+          <input [(colorPicker)]="value"
+                 [value]="value"
+                 (colorPickerSelect)="updateField($event)"
+                 [cpOKButton]="true"
+                 [cpCancelButton]="true"
+                 type="text">
+          <div class="color-preview"
+               [style.background-color]="value">
+          </div>
+        </div>
       </label>
     </div>`,
   styles: [`
