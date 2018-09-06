@@ -1,7 +1,8 @@
 import { get } from 'lodash';
 import { concat } from 'rxjs';
-import { take, switchMap } from 'rxjs/operators';
+import { take, switchMap, tap } from 'rxjs/operators';
 import { Store, State, Action, StateContext, Selector, NgxsOnInit, Actions, ofActionSuccessful } from '@ngxs/store';
+
 import { SiteSectionStateModel } from './site-sections-state.model';
 import { AppStateService } from '../../../app-state/app-state.service';
 import { AppState } from '../../../app-state/app.state';
@@ -63,8 +64,8 @@ export class SiteSectionsState implements NgxsOnInit {
       title: action.section ? action.section.title : null,
     };
 
-    this.appStateService.sync('siteSections', data, 'POST')
-      .subscribe(response => {
+    return this.appStateService.sync('siteSections', data, 'POST').pipe(
+      tap(response => {
         if (response.error_message) {
           // @TODO handle error message
           console.error(response.error_message);
@@ -83,8 +84,9 @@ export class SiteSectionsState implements NgxsOnInit {
           if (response.tags && response.tags) {
             dispatch(new AddSectionTagsAction(siteName, response.tags));
           }
-      }
-    });
+        }
+      })
+    );
   }
 
   @Action(AddSiteSectionsAction)
@@ -116,8 +118,8 @@ export class SiteSectionsState implements NgxsOnInit {
       value: value
     };
 
-    this.appStateService.sync('siteSections', data)
-      .subscribe(response => {
+    return this.appStateService.sync('siteSections', data).pipe(
+      tap(response => {
         if (response.error_message) {
           // @TODO handle error message
           console.error(response.error_message);
@@ -130,13 +132,14 @@ export class SiteSectionsState implements NgxsOnInit {
             /* Quick workaround for deep settings: */
             if (action.payload['@attributes']) {
               /** @todo rebuild this recursive */
-              const attributes = {...section['@attributes'], ...action.payload['@attributes']};
-              return {...section, ...action.payload, ...{'@attributes': attributes}};
+              const attributes = { ...section['@attributes'], ...action.payload['@attributes'] };
+              return { ...section, ...action.payload, ...{ '@attributes': attributes } };
             }
-            return {...section, ...action.payload};  // Deep set must be done here for complex properties
+            return { ...section, ...action.payload };  // Deep set must be done here for complex properties
           }));
         }
-      });
+      })
+    );
   }
 
   @Action(RenameSiteSectionAction)
@@ -147,8 +150,8 @@ export class SiteSectionsState implements NgxsOnInit {
       value: action.payload.title
     };
 
-    this.appStateService.sync('siteSections', data)
-      .subscribe(response => {
+    return this.appStateService.sync('siteSections', data).pipe(
+      tap(response => {
         if (response.error_message) {
           // @TODO handle error message
           console.error(response.error_message);
@@ -158,14 +161,15 @@ export class SiteSectionsState implements NgxsOnInit {
             if (section.site_name !== action.section.site_name || section.order !== action.order) {
               return section;
             }
-            return {...section, title: response.section.title, name: response.section.name};
+            return { ...section, title: response.section.title, name: response.section.name };
           }));
 
           // Section related data rename
           dispatch(new RenameSectionTagsAction(action.section.site_name, action.section, response.section.name));
           dispatch(new RenameSectionEntriesAction(action.section.site_name, action.section, response.section.name));
         }
-      });
+      })
+    );
   }
 
   @Action(RenameSiteSectionsSitenameAction)
@@ -189,8 +193,8 @@ export class SiteSectionsState implements NgxsOnInit {
       section: action.section.name
     };
 
-    this.appStateService.sync('siteSections', data, 'DELETE')
-      .subscribe(response => {
+    return this.appStateService.sync('siteSections', data, 'DELETE').pipe(
+      tap(response => {
         if (response.error_message) {
           // @TODO handle error message
           console.error(response.error_message);
@@ -207,7 +211,7 @@ export class SiteSectionsState implements NgxsOnInit {
                   order++;
 
                   if (section.order !== order) {
-                    return {...section, ...{'order': order}};
+                    return { ...section, ...{ 'order': order } };
                   }
                 }
                 return section;
@@ -215,8 +219,9 @@ export class SiteSectionsState implements NgxsOnInit {
           );
           dispatch(new DeleteSectionTagsAction(action.section));
           dispatch(new DeleteSectionEntriesAction(action.section));
-      }
-    });
+        }
+      })
+    );
   }
 
   @Action(DeleteSiteSectionsAction)

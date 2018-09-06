@@ -1,14 +1,17 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+
 import { Subscription } from 'rxjs';
 import { take, switchMap, mergeMap, filter, map, tap } from 'rxjs/operators';
-
 import { Store, Select, Actions, ofActionSuccessful } from '@ngxs/store';
+
 import { AppHideOverlay, AppShowOverlay } from './app-state/app.actions';
 import { AppState } from './app-state/app.state';
 import { UserLoginAction, UserLogoutAction, SetUserNextUrlAction } from './user/user.actions';
 import { UserState } from './user/user.state';
 import { UserStateModel } from './user/user.state.model';
+
 
 @Component({
   selector: 'berta-root',
@@ -19,18 +22,26 @@ import { UserStateModel } from './user/user.state.model';
       <aside [style.display]="(routeIsRoot ? 'none' : '')"><!-- the sidebar -->
         <div class="scroll-wrap"><router-outlet></router-outlet></div></aside>
       <section>
-        <div style="text-align:center">
-          <h1>
-            Welcome to {{title}}!
-          </h1>
-          <img width="300" src="http://www.berta.me/storage/media/logo.png">
-        </div>
-        <button (click)="showOverlay()">Show overlay</button>
+        <iframe sandbox="allow-same-origin allow-scripts allow-modals allow-popups allow-forms"
+                [src]="previewUrl"
+                frameborder="0"></iframe>
       </section>
     </main>
     <div [style.display]="((showOverlay$ | async) ? '' : 'none')" class="overlay" (click)="hideOverlay()">
   `,
   styles: [`
+    :host {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+
+    main {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
     berta-header {
       display: block;
       position: relative;
@@ -46,6 +57,18 @@ import { UserStateModel } from './user/user.state.model';
       width: 384px;
       z-index: 2;
       box-sizing: border-box;
+    }
+
+    section {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    iframe {
+      flex-grow: 1;
+      width:100%;
+      height:100%;
     }
 
     .overlay {
@@ -68,17 +91,17 @@ import { UserStateModel } from './user/user.state.model';
 export class AppComponent implements OnInit, OnDestroy {
   title = 'berta';
   routeIsRoot = true;
+  previewUrl: SafeUrl;
 
   @Select(AppState.getShowOverlay) showOverlay$;
+  @Select(UserState.isLoggedIn) isLoggedIn$;
 
   private loginSub: Subscription;
   private logoutSub: Subscription;
-
-  constructor(
-    private router: Router,
-    private store: Store,
-    private actions$: Actions
-  ) {
+  constructor(private router: Router,
+              private store: Store,
+              private actions$: Actions,
+              private sanitizer: DomSanitizer) {
   }
 
   ngOnInit() {
@@ -117,6 +140,16 @@ export class AppComponent implements OnInit, OnDestroy {
       ofActionSuccessful(UserLogoutAction),
     ).subscribe(() => {
       this.router.navigate(['/login']);
+    });
+
+    this.isLoggedIn$.subscribe(isLoggedIn => {
+      let url = location.protocol + '//' + location.hostname;
+
+      if (isLoggedIn) {
+        url += '/engine/editor/';
+      }
+
+      this.previewUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
     });
   }
 

@@ -1,6 +1,7 @@
 import { concat } from 'rxjs';
-import { take, switchMap } from 'rxjs/operators';
+import { take, switchMap, tap } from 'rxjs/operators';
 import { State, Action, StateContext, Selector, NgxsOnInit, Store, Actions, ofActionSuccessful } from '@ngxs/store';
+
 import { AppStateService } from '../../app-state/app-state.service';
 import {
   SitesTemplateSettingsStateModel,
@@ -93,8 +94,8 @@ export class SiteTemplateSettingsState implements NgxsOnInit {
     };
     /** @todo: Loading should be triggered here */
 
-    this.appStateService.sync('siteTemplateSettings', data)
-      .subscribe(response => {
+    return this.appStateService.sync('siteTemplateSettings', data).pipe(
+      tap(response => {
         /** @todo: additional action should be triggered here!!! */
 
         if (response.error_message) {
@@ -124,7 +125,8 @@ export class SiteTemplateSettingsState implements NgxsOnInit {
             }
           });
         }
-    });
+      })
+    );
   }
 
   @Action(RenameSiteTemplateSettingsSitenameAction)

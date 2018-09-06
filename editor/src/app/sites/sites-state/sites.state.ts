@@ -1,6 +1,6 @@
 import { set } from 'lodash/fp';
 import { concat } from 'rxjs';
-import { take, switchMap } from 'rxjs/operators';
+import { take, switchMap, tap } from 'rxjs/operators';
 import { State, Action, StateContext, NgxsOnInit, ofActionSuccessful, Actions } from '@ngxs/store';
 
 import { SiteStateModel } from './site-state.model';
@@ -66,8 +66,8 @@ export class SitesState implements NgxsOnInit {
   @Action(CreateSiteAction)
   createSite({ setState, getState, dispatch }: StateContext<SiteStateModel[]>, action: CreateSiteAction) {
     const siteName = action.site ? (action.site.name === '' ? '0' : action.site.name) : '-1';
-    this.appStateService.sync('sites', { site: siteName }, 'POST')
-      .subscribe(response => {
+    return this.appStateService.sync('sites', { site: siteName }, 'POST').pipe(
+      tap(response => {
         if (response.error_message) {
           // @TODO handle error message
           console.error(response.error_message);
@@ -99,7 +99,8 @@ export class SitesState implements NgxsOnInit {
             dispatch(new AddSiteSectionsTagsAction(newSite, response.tags));
           }
         }
-      });
+      })
+    );
   }
 
 
@@ -112,30 +113,32 @@ export class SitesState implements NgxsOnInit {
       value: action.value
     };
 
-    this.appStateService.sync('sites', data).subscribe(response => {
-      if (response.error_message) {
-        // @TODO handle error message
-        console.error(response.error_message);
-      } else {
-        setState(
-          currentState.map((site) => {
-            if (site.name === action.site.name) {
-              return set(action.field, response.value, site);
-            }
-            return site;
-          })
-        );
+    return this.appStateService.sync('sites', data).pipe(
+      tap(response => {
+        if (response.error_message) {
+          // @TODO handle error message
+          console.error(response.error_message);
+        } else {
+          setState(
+            currentState.map((site) => {
+              if (site.name === action.site.name) {
+                return set(action.field, response.value, site);
+              }
+              return site;
+            })
+          );
 
-        // Site related data rename
-        if (action.field === 'name') {
-          dispatch(new RenameSiteSectionsSitenameAction(action.site, response.value));
-          dispatch(new RenameSiteSettingsSitenameAction(action.site, response.value));
-          dispatch(new RenameSiteTemplateSettingsSitenameAction(action.site, response.value));
-          dispatch(new RenameSectionTagsSitenameAction(action.site, response.value));
-          dispatch(new RenameSectionEntriesSitenameAction(action.site, response.value));
+          // Site related data rename
+          if (action.field === 'name') {
+            dispatch(new RenameSiteSectionsSitenameAction(action.site, response.value));
+            dispatch(new RenameSiteSettingsSitenameAction(action.site, response.value));
+            dispatch(new RenameSiteTemplateSettingsSitenameAction(action.site, response.value));
+            dispatch(new RenameSectionTagsSitenameAction(action.site, response.value));
+            dispatch(new RenameSectionEntriesSitenameAction(action.site, response.value));
+          }
         }
-      }
-    });
+      })
+    );
   }
 
 
@@ -153,8 +156,8 @@ export class SitesState implements NgxsOnInit {
 
   @Action(DeleteSiteAction)
   deleteSite({ setState, getState, dispatch }: StateContext<SiteStateModel[]>, action: DeleteSiteAction) {
-    this.appStateService.sync('sites', { site: action.site.name }, 'DELETE')
-      .subscribe(response => {
+    return this.appStateService.sync('sites', { site: action.site.name }, 'DELETE').pipe(
+      tap(response => {
         if (response.error_message) {
           // @TODO handle error message
           console.error(response.error_message);
@@ -176,7 +179,8 @@ export class SitesState implements NgxsOnInit {
           dispatch(new DeleteSiteSectionsTagsAction(siteName));
           dispatch(new DeleteSiteSectionsEntriesAction(siteName));
         }
-      });
+      })
+    );
   }
 
   @Action(ResetSitesAction)
