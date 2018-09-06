@@ -9,7 +9,8 @@
   }
 
   input[type='text'],
-  textarea {
+  textarea,
+  .select-wrapper button {
     border: 1px solid $input-color;
     border-radius: $border-radius;
     box-sizing: border-box;
@@ -36,6 +37,62 @@
     &[disabled] {
       border-color: $input-color-disabled;
       color: $input-color-disabled;
+    }
+  }
+
+  .select-wrapper {
+    margin-left: 1em;
+    position: relative;
+
+    white-space: nowrap;
+    width: 50%;
+
+    button {
+      background-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAiIGhlaWdodD0iNiIgdmlld0JveD0iMCAwIDEwIDYiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTkgMUw0Ljc1NzM2IDUuMjQyNjRMMC41MTQ3MTkgMSIgc3Ryb2tlPSIjOTc5Nzk3IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48L3N2Zz4=);
+      background-position: 95% center;
+      background-repeat: no-repeat;
+      margin-left: 0;
+      overflow-x: hidden;
+      padding-right: 2em;
+      text-align: left;
+      text-overflow: ellipsis;
+      width: 100%;
+
+      &:focus {
+        border-radius: $border-radius $border-radius 0 0;
+
+        + ul {
+          display: block;
+          z-index: 1;
+        }
+      }
+
+      + ul {
+        background-color: $berta-bg-light;
+        border: 1px solid $input-color-active;
+        border-radius: 0 0 $border-radius $border-radius;
+        border-top: 0;
+        box-sizing: border-box;
+        display: none;
+        list-style: none;
+        margin: 0;
+        max-width: 100%;
+        padding: 0;
+        position: absolute;
+        width: 100%;
+        z-index: 0;
+
+        li {
+          overflow-x: hidden;
+          padding: .75em;
+          text-overflow: ellipsis;
+
+          &:hover {
+            color: $input-color-active;
+          }
+        }
+      }
+
     }
   }
 }

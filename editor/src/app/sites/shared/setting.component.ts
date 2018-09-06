@@ -45,17 +45,13 @@ import { SettingModel, SettingConfigModel } from '../../shared/interfaces';
                              [value]="setting.value"
                              (update)="updateComponentField(setting.slug, $event)"></berta-long-text-input>
 
-      <div *ngSwitchCase="'select'">
-        <label>
-          {{ config.title }}
 
-          <select (change)="updateField(setting.slug, $event.target.value, $event.target)">
-            <option *ngFor="let val of config.values"
-                    [value]="val.value"
-                    [attr.selected]="(val.value === setting.value ? '' : null)">{{ val.title }}</option>
-          </select>
-        </label>
-      </div>
+      <berta-select-input *ngSwitchCase="'select'"
+                          [label]="config.title"
+                          [value]="setting.value"
+                          [values]="config.values"
+                          (update)="updateComponentField(setting.slug, $event)">
+      </berta-select-input>
 
       <div *ngSwitchCase="'fontselect'">
         <label>
