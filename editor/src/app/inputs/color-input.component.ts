@@ -10,32 +10,42 @@ import { SettingModel } from '../shared/interfaces';
         <div class="color-picker-wrapper">
           <input [(colorPicker)]="value"
                  [value]="value"
-                 (colorPickerSelect)="updateField($event)"
+                 (colorPickerClose)="saveColor(value)"
+                 (colorPickerCancel)="cancelColor()"
                  [cpOKButton]="true"
                  [cpCancelButton]="true"
-                 type="text">
+                 [cpSaveClickOutside]="true"
+                 type="text"
+                 readonly>
           <div class="color-preview"
                [style.background-color]="value">
           </div>
         </div>
       </label>
-    </div>`,
-  styles: [`
-    color-picker {
-      position: absolute !important;
-    }
-  `]
+    </div>`
 })
 export class ColorInputComponent implements OnInit {
   @Input() label: string;
-  @Input() value: string;
+  @Input() value: SettingModel['value'];
   @Output() update = new EventEmitter();
 
   private lastValue: SettingModel['value'];
+  private colorIsCancelled = false;
 
   ngOnInit() {
     // Cache the value, so we don't update if nothing changes
     this.lastValue = this.value;
+  }
+
+  saveColor(value) {
+    // We need a setTimeout here because `cancel` event is triggered after picker is closed
+    setTimeout(() => {
+      if (this.colorIsCancelled) {
+        this.colorIsCancelled = false;
+        return;
+      }
+      this.updateField(value);
+    }, 200);
   }
 
   updateField(value) {
@@ -43,7 +53,11 @@ export class ColorInputComponent implements OnInit {
       return;
     }
     this.lastValue = value;
-
     this.update.emit(value);
+  }
+
+  cancelColor() {
+    this.colorIsCancelled = true;
+    this.value = this.lastValue;
   }
 }
