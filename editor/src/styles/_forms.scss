@@ -23,11 +23,12 @@
 
     &:hover {
       border-color: $input-color-active;
+      color: $input-color-active;
     }
 
     &:focus {
       border-color: $input-color-active;
-      color: $input-color-active;
+      color: $berta-accent;
     }
 
     &.error {
@@ -82,12 +83,13 @@
         z-index: 1;
 
         li {
+          color: $input-color-active;
           overflow-x: hidden;
           padding: .75em;
           text-overflow: ellipsis;
 
           &:hover {
-            color: $input-color-active;
+            color: $berta-accent;
           }
         }
       }
