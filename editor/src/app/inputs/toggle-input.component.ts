@@ -12,6 +12,7 @@ import { SettingModel, SettingConfigModel } from '../shared/interfaces';
           <input [checked]="isChecked(value)"
                  (change)="onChange($event)"
                  type="checkbox">
+          <span></span>
         </div>
       </label>
     </div>`
