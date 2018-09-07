@@ -72,6 +72,13 @@ import { SettingModel, SettingConfigModel } from '../../shared/interfaces';
         </label>
       </div>
 
+      <berta-toggle-input *ngSwitchCase="'toggle'"
+                          [label]="config.title"
+                          [value]="setting.value"
+                          [values]="config.values"
+                          (update)="updateComponentField(setting.slug, $event)">
+      </berta-toggle-input>
+
       <div *ngSwitchDefault style="padding: 10px">{{ config.format || '' }}</div>
     </ng-container>
   `,
