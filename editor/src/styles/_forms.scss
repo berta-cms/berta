@@ -22,11 +22,12 @@
 
     &:hover {
       border-color: $input-color-active;
+      color: $input-color-active;
     }
 
     &:focus {
       border-color: $input-color-active;
-      color: $input-color-active;
+      color: $berta-accent;
     }
 
     &.error {
