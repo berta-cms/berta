@@ -8,8 +8,12 @@ import { SettingModel, SettingConfigModel } from '../shared/interfaces';
       <label>
         {{ label }}
 
-        <div class="select-wrapper">
-          <button type="button" [title]="getCurrentTitleByValue(value)">{{ getCurrentTitleByValue(value) }}</button>
+        <div class="select-wrapper" >
+          <button #toggleDropDown
+                  type="button"
+                  [title]="getCurrentTitleByValue(value)"
+                  (click)="openDropDown(toggleDropDown)"
+                  (blur)="closeDropDown(toggleDropDown)">{{ getCurrentTitleByValue(value) }}</button>
           <ul>
             <li *ngFor="let val of values" [title]="val.title" (click)="updateField(val.value)">{{ val.title }}</li>
           </ul>
@@ -28,6 +32,17 @@ export class SelectInputComponent implements OnInit {
   ngOnInit() {
     // Cache the value, so we don't update if nothing changes
     this.lastValue = this.value;
+  }
+
+  openDropDown(toggleDropDown) {
+    toggleDropDown.classList.add('open');
+  }
+
+  closeDropDown(toggleDropDown) {
+    // Wait for `li` click event
+    setTimeout(() => {
+      toggleDropDown.classList.remove('open');
+    }, 200);
   }
 
   getCurrentTitleByValue(value) {

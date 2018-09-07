@@ -58,12 +58,11 @@
       text-overflow: ellipsis;
       width: 100%;
 
-      &:focus {
+      &.open {
         border-radius: $border-radius $border-radius 0 0;
 
         + ul {
           display: block;
-          z-index: 1;
         }
       }
 
@@ -80,7 +79,7 @@
         padding: 0;
         position: absolute;
         width: 100%;
-        z-index: 0;
+        z-index: 1;
 
         li {
           overflow-x: hidden;
