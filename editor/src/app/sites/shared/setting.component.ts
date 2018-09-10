@@ -22,14 +22,10 @@ import { SettingModel, SettingConfigModel } from '../../shared/interfaces';
         </label>
       </div>
 
-      <div *ngSwitchCase="'icon'" style="text-align: right;">
-        <label>
-          {{ config.title }}
-
-          {{setting.value}}<br>
-          <input type="file">
-        </label>
-      </div>
+      <berta-file-input *ngSwitchCase="'icon'"
+                  [label]="config.title"
+                  [value]="setting.value"
+                  (update)="updateComponentField(setting.slug, $event)"></berta-file-input>
 
       <div *ngSwitchCase="'image'" style="text-align: right;">
         <label>
