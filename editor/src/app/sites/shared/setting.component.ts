@@ -29,14 +29,12 @@ import { SettingModel, SettingConfigModel, SettingGroupConfigModel } from '../..
                         [value]="setting.value"
                         (update)="updateComponentField(setting.slug, $event)"></berta-file-input>
 
-      <div *ngSwitchCase="'image'" style="text-align: right;">
-        <label>
-          {{ config.title }}
-
-          {{setting.value}}<br>
-          <input type="file">
-        </label>
-      </div>
+      <berta-image-input *ngSwitchCase="'image'"
+                         [label]="config.title"
+                         [groupSlug]="settingGroup.slug"
+                         [property]="setting.slug"
+                         [value]="setting.value"
+                         (update)="updateComponentField(setting.slug, $event)"></berta-image-input>
 
       <div *ngSwitchCase="'longtext'">
         <label>
