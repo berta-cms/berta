@@ -59,7 +59,7 @@ $app->group(['prefix' => 'v1', 'namespace' => 'App', 'middleware' => ['setup', '
         });
     });
 
-    $app->group(['prefix' => 'v1/plugin', 'namespace' => 'App\Plugins', 'middleware' => ['setup']], function () use ($app) {
+    $app->group(['prefix' => 'v1/plugin', 'namespace' => 'App\Plugins', 'middleware' => ['setup', 'auth']], function () use ($app) {
         foreach (scandir("{$app->path()}/Plugins") as $fileOrDir) {
             if (in_array($fileOrDir, ['.', '..'])) { continue; }
 
