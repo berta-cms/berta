@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { SettingModel, SettingConfigModel } from '../../shared/interfaces';
+import { SettingModel, SettingConfigModel, SettingGroupConfigModel } from '../../shared/interfaces';
 
 @Component({
   selector: 'berta-setting',
@@ -23,9 +23,11 @@ import { SettingModel, SettingConfigModel } from '../../shared/interfaces';
       </div>
 
       <berta-file-input *ngSwitchCase="'icon'"
-                  [label]="config.title"
-                  [value]="setting.value"
-                  (update)="updateComponentField(setting.slug, $event)"></berta-file-input>
+                        [label]="config.title"
+                        [groupSlug]="settingGroup.slug"
+                        [property]="setting.slug"
+                        [value]="setting.value"
+                        (update)="updateComponentField(setting.slug, $event)"></berta-file-input>
 
       <div *ngSwitchCase="'image'" style="text-align: right;">
         <label>
@@ -84,6 +86,7 @@ import { SettingModel, SettingConfigModel } from '../../shared/interfaces';
   `]
 })
 export class SettingComponent implements OnInit {
+  @Input('settingGroup') settingGroup: SettingGroupConfigModel;
   @Input('setting') setting: SettingModel;
   @Input('config') config: SettingConfigModel;
 

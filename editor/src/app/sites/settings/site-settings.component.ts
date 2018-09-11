@@ -16,6 +16,7 @@ import { SettingModel, SettingConfigModel, SettingGroupConfigModel } from '../..
     <div *ngFor="let settingGroup of settings$ | async">
       <h3>{{ settingGroup.config.title || settingGroup.slug }}</h3>
       <berta-setting *ngFor="let setting of settingGroup.settings"
+                     [settingGroup]="settingGroup"
                      [setting]="setting.setting"
                      [config]="setting.config"
                      (update)="updateSetting(settingGroup.slug, $event)"></berta-setting>
