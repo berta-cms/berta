@@ -17,7 +17,7 @@ class ImageHelpers
      */
     public static function getGalleryImage(
         array $image,
-        float $sizeRatio,
+        $sizeRatio,
         array $entry,
         Storage $storageService,
         array $siteSettings

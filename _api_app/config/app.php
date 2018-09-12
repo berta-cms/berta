@@ -43,6 +43,8 @@ return [
 
     'old_berta_root' => realpath(__DIR__. '/../../'),
 
+    'berta_storage_path' => realpath(__DIR__. '/../../storage'),
+
     'api_prefix' => env('API_PREFIX', '_api')
 
 ];
