@@ -1,8 +1,8 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, NgZone, isDevMode } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 
-import { Subscription } from 'rxjs';
+import { Subscription, Observable } from 'rxjs';
 import { take, switchMap, mergeMap, filter, map, tap } from 'rxjs/operators';
 import { Store, Select, Actions, ofActionSuccessful } from '@ngxs/store';
 
@@ -11,6 +11,7 @@ import { AppState } from './app-state/app.state';
 import { UserLoginAction, UserLogoutAction, SetUserNextUrlAction } from './user/user.actions';
 import { UserState } from './user/user.state';
 import { UserStateModel } from './user/user.state.model';
+import { AppStateService } from './app-state/app-state.service';
 
 
 @Component({
@@ -98,8 +99,11 @@ export class AppComponent implements OnInit, OnDestroy {
 
   private loginSub: Subscription;
   private logoutSub: Subscription;
+
   constructor(private router: Router,
               private store: Store,
+              private _ngZone: NgZone,
+              private stateService: AppStateService,
               private actions$: Actions,
               private sanitizer: DomSanitizer) {
   }
@@ -151,6 +155,11 @@ export class AppComponent implements OnInit, OnDestroy {
 
       this.previewUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
     });
+
+    if (isDevMode()) {
+      /* add debugging helpers on `window.bt` while in dev mode */
+      this.setDevUpHelper();
+    }
   }
 
   hideOverlay() {
@@ -164,5 +173,20 @@ export class AppComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.loginSub.unsubscribe();
     this.logoutSub.unsubscribe();
+  }
+
+  setDevUpHelper() {
+    window['bt'] = {
+      sync: (url, data, method) => {
+        return Observable.create((observer) => {
+          this._ngZone.run(() => {
+            this.stateService.sync(url, data, method).subscribe((res) => {
+              observer.next(res);
+              observer.complete();
+            });
+          });
+        });
+      }
+    };
   }
 }

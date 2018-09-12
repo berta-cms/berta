@@ -2,6 +2,7 @@
 
 namespace App\User;
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
@@ -53,7 +54,7 @@ class UserAuthServiceProvider extends ServiceProvider
         // should return either a User instance or null. You're free to obtain
         // the User instance via an API token or any other method necessary.
 
-        Auth::viaRequest('jwt_token', function ($request) {
+        Auth::viaRequest('jwt_token', function (Request $request) {
             $token = $this->getBearerToken($request);
 
             if ($token && Helpers::validate_token($token)) {
@@ -100,17 +101,22 @@ class UserAuthServiceProvider extends ServiceProvider
     /**
      * get access token from header
      * */
-    function getBearerToken($request)
+    function getBearerToken(Request $request)
     {
         $headers = $request->headers->get('x-authorization', null);
         if (!$headers) {
             $headers = $this->getAuthorizationHeader();
         }
+
         // HEADER: Get the access token from the header
         if (!empty($headers)) {
             if (preg_match('/Bearer\s(\S+)/', $headers, $matches)) {
                 return $matches[1];
             }
+        }
+
+        if (env('APP_DEBUG') && $request->isMethod('get')) {
+            return $request->cookie('token', null);
         }
         return null;
     }
