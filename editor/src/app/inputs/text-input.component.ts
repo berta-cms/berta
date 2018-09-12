@@ -29,7 +29,7 @@ export class TextInputComponent implements OnInit {
   showIcon = false;
   disabled = false;
 
-  private lastValue: SettingModel['value'];
+  private lastValue: string;
 
   ngOnInit() {
     // Cache the value, so we don't update if nothing changes
@@ -54,6 +54,12 @@ export class TextInputComponent implements OnInit {
   }
 
   updateField($event) {
+    if ($event instanceof KeyboardEvent && ($event.key === 'Escape' || $event.keyCode === 27)) {
+      ($event.target as HTMLInputElement).value = this.lastValue;
+      ($event.target as HTMLInputElement).blur();
+      return;
+    }
+
     if ($event.target.value === this.lastValue) {
       return;
     }
