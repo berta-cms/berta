@@ -4,49 +4,73 @@ import { SettingModel, SettingConfigModel } from '../../shared/interfaces';
 @Component({
   selector: 'berta-setting',
   template: `
-    <label [title]="config.format">
-      {{ config.title }}
-      <ng-container [ngSwitch]="config.format">
-        <input *ngSwitchCase="'text'"
-               type="text"
-               [value]="setting.value"
-               (keydown)="updateTextField(setting.slug, $event.target.value, $event)"
-               (blur)="updateTextField(setting.slug, $event.target.value, $event)">
+    <ng-container [ngSwitch]="config.format">
+      <berta-text-input *ngSwitchCase="'text'"
+                        [label]="config.title"
+                        [value]="setting.value"
+                        (update)="updateComponentField(setting.slug, $event)"></berta-text-input>
 
-        <input *ngSwitchCase="'color'"
-               size="7"
-               type="text"
-               [value]="setting.value"
-               (keydown)="updateTextField(setting.slug, $event.target.value, $event)"
-               (blur)="updateTextField(setting.slug, $event.target.value, $event)">
+      <div *ngSwitchCase="'color'">
+        <label>
+          {{ config.title }}
 
-        <div *ngSwitchCase="'icon'" style="text-align: right;">
+          <input size="7"
+                type="text"
+                [value]="setting.value"
+                (keydown)="updateTextField(setting.slug, $event.target.value, $event)"
+                (blur)="updateTextField(setting.slug, $event.target.value, $event)">
+        </label>
+      </div>
+
+      <div *ngSwitchCase="'icon'" style="text-align: right;">
+        <label>
+          {{ config.title }}
+
           {{setting.value}}<br>
           <input type="file">
-        </div>
+        </label>
+      </div>
 
-        <div *ngSwitchCase="'image'" style="text-align: right;">
+      <div *ngSwitchCase="'image'" style="text-align: right;">
+        <label>
+          {{ config.title }}
+
           {{setting.value}}<br>
           <input type="file">
-        </div>
+        </label>
+      </div>
 
-        <textarea *ngSwitchCase="'longtext'"
-                  (blur)="updateTextField(setting.slug, $event.target.value, $event)">{{setting.value}}</textarea>
+      <berta-long-text-input *ngSwitchCase="'longtext'"
+                             [label]="config.title"
+                             [value]="setting.value"
+                             (update)="updateComponentField(setting.slug, $event)"></berta-long-text-input>
 
-        <select *ngSwitchCase="'select'" (change)="updateField(setting.slug, $event.target.value, $event.target)">
-          <option *ngFor="let val of config.values"
-                  [value]="val.value"
-                  [attr.selected]="(val.value === setting.value ? '' : null)">{{ val.title }}</option>
-        </select>
+      <div *ngSwitchCase="'select'">
+        <label>
+          {{ config.title }}
 
-        <select *ngSwitchCase="'fontselect'" (change)="updateField(setting.slug, $event.target.value, $event.target)">
-          <option *ngFor="let val of config.values"
-                  [value]="val.value"
-                  [attr.selected]="(val.value === setting.value ? '' : null)">{{ val.title }}</option>
-        </select>
-        <div *ngSwitchDefault style="padding: 10px">{{ config.format || '' }}</div>
-      </ng-container>
-    </label>
+          <select (change)="updateField(setting.slug, $event.target.value, $event.target)">
+            <option *ngFor="let val of config.values"
+                    [value]="val.value"
+                    [attr.selected]="(val.value === setting.value ? '' : null)">{{ val.title }}</option>
+          </select>
+        </label>
+      </div>
+
+      <div *ngSwitchCase="'fontselect'">
+        <label>
+          {{ config.title }}
+
+          <select (change)="updateField(setting.slug, $event.target.value, $event.target)">
+            <option *ngFor="let val of config.values"
+                    [value]="val.value"
+                    [attr.selected]="(val.value === setting.value ? '' : null)">{{ val.title }}</option>
+          </select>
+        </label>
+      </div>
+
+      <div *ngSwitchDefault style="padding: 10px">{{ config.format || '' }}</div>
+    </ng-container>
   `,
   styles: [`
     :host {
@@ -79,6 +103,10 @@ export class SettingComponent implements OnInit {
     }
 
     this.updateField(field, value, $event.target);
+  }
+
+  updateComponentField(field, value) {
+    this.update.emit({field, value});
   }
 
   updateField(field, value, input: HTMLInputElement) {
