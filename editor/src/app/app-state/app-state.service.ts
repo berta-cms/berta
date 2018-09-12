@@ -82,6 +82,7 @@ export class AppStateService {
           })
         );
       }),
+      tap(() => this.hideLoading()),
       catchError(error => {
           this.hideLoading();
           throw error;
