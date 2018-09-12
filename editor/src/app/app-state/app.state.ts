@@ -1,6 +1,6 @@
 import { State, Action, StateContext, Selector, NgxsOnInit } from '@ngxs/store';
 import { AppStateModel } from './app-state.interface';
-import { AppShowOverlay, AppHideOverlay, AppShowLoading, AppHideLoading } from './app.actions';
+import { AppShowOverlay, AppHideOverlay, AppShowLoading, AppHideLoading, UpdateInputFocus } from './app.actions';
 import { Router, ActivationEnd } from '@angular/router';
 import { filter, take } from 'rxjs/operators';
 import { UserState } from '../user/user-state';
@@ -9,6 +9,7 @@ import { AppStateService } from './app-state.service';
 const defaultState: AppStateModel = {
   showOverlay: false,
   isLoading: false,
+  inputFocused: false,
   site: null,
   urls: []
 };
@@ -19,6 +20,11 @@ const defaultState: AppStateModel = {
   children: [UserState]
 })
 export class AppState implements NgxsOnInit {
+
+  @Selector()
+  static getInputFocus(state: AppStateModel) {
+    return state.inputFocused;
+  }
 
   @Selector()
   static getShowOverlay(state: AppStateModel) {
@@ -57,6 +63,11 @@ export class AppState implements NgxsOnInit {
       },
       error: (error) => console.error(error)
     });
+  }
+
+  @Action(UpdateInputFocus)
+  updateInputFocus({ patchState }: StateContext<AppStateModel>, action: UpdateInputFocus) {
+    patchState({ inputFocused: action.isFocused });
   }
 
   @Action(AppShowOverlay)

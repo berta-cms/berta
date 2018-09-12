@@ -25,6 +25,7 @@ export class TextInputComponent implements OnInit {
   @Input() label: string;
   @Input() value: string;
   @Output() update = new EventEmitter();
+  @Output() inputFocus = new EventEmitter();
   focus = false;
   showIcon = false;
   disabled = false;
@@ -43,6 +44,7 @@ export class TextInputComponent implements OnInit {
   onFocus() {
     this.focus = true;
     this.showIcon = false;
+    this.inputFocus.emit(true);
   }
 
   onBlur($event) {
@@ -50,6 +52,12 @@ export class TextInputComponent implements OnInit {
     if (!$event.target.value) {
       this.showIcon = true;
     }
+
+    // Waiting for possible click on app overlay
+    setTimeout(() => {
+      this.inputFocus.emit(false);
+    }, 200);
+
     this.updateField($event);
   }
 

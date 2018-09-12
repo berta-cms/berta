@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
+import { Observable } from 'rxjs';
+import { take } from 'rxjs/operators';
 
 import { Store, Select } from '@ngxs/store';
 import { AppHideOverlay, AppShowOverlay } from './app-state/app.actions';
@@ -66,6 +68,7 @@ export class AppComponent implements OnInit {
   routeIsRoot = true;
 
   @Select(AppState.getShowOverlay) showOverlay$;
+  @Select(AppState.getInputFocus) inputFocus$: Observable<boolean>;
 
   constructor(
     private router: Router,
@@ -88,9 +91,14 @@ export class AppComponent implements OnInit {
   }
 
   hideOverlay() {
-    this.store.dispatch(AppHideOverlay);
-    this.router.navigate(['/']);
+    this.inputFocus$.pipe(take(1)).subscribe((isInputFocused) => {
+      if (!isInputFocused) {
+        this.store.dispatch(AppHideOverlay);
+        this.router.navigate(['/']);
+      }
+    });
   }
+
   showOverlay() {
     this.store.dispatch(AppShowOverlay);
   }
