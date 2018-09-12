@@ -49,11 +49,11 @@ export class AppStateService {
       this.store.select(state => state.user)
     )
     .pipe(
-      filter(([appState, user]) => !!user.token && appState.urls[urlName]),
+      filter(([appState, user]) => !!user.token && (appState.urls[urlName] || urlName)),
       take(1),
       switchMap(([appState, user]) => {
         this.showLoading();
-        return this.http.request<any>(method, appState.urls[urlName], {
+        return this.http.request<any>(method, (appState.urls[urlName] || urlName), {
           body: method === 'GET' ? undefined : data,
           headers: {
               'Accept': 'application/json',
