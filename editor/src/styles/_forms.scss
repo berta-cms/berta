@@ -77,20 +77,7 @@
   }
 
   &.bt-disabled {
-    label,
-    input,
-    textarea {
-      color: $input-color-disabled;
-    }
-
-    .text-input-wrapper,
-    textarea {
-      border-color: $input-color-disabled;
-
-      .icon {
-        fill: $input-color-disabled;
-      }
-    }
+    opacity: .3;
   }
 
   &.error {
