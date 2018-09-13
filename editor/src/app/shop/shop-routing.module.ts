@@ -4,9 +4,14 @@ import { ShopSettingsComponent } from './shop-settings.component';
 
 const routes: Routes = [
   {
-    path: '',
+    path: ':section',
     component: ShopSettingsComponent
   },
+  {
+    path: '',
+    component: ShopSettingsComponent,
+    data: { section: '' }
+  }
 ];
 
 @NgModule({

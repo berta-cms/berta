@@ -1,6 +1,19 @@
 import { SettingConfigModel, SettingConfigGroupResponse, SettingGroupConfigModel } from './interfaces';
 
 /**
+ * Split camelCased string in to an array of strings.
+ *
+ * camelCase => ['camel', 'Case']
+ *
+ * @param camelCasedString String to split
+ * @returns array with camelCased string parts
+ */
+export function splitCamel(camelCasedString: string): Array<string> {
+  return camelCasedString.match(/([a-z]+)|([A-Z][a-z]+)|([A-Z]+(?![a-z]))/g);
+}
+
+
+/**
  * Split camelCased string in to multiple words based on uppercase letters.
  *
  * camelCase -> Camel Case
@@ -13,7 +26,7 @@ export function camel2Words(camelCasedString: string): string {
   if (/[^A-z]/i.test(camelCasedString)) {
     return camelCasedString.charAt(0).toUpperCase() + camelCasedString.slice(1);
   }
-  return camelCasedString.match(/([a-z]+)|([A-Z][a-z]+)|([A-Z]+(?![a-z]))/g)
+  return splitCamel(camelCasedString)
     .map(word => word.charAt(0).toUpperCase() + word.slice(1))
     .join(' ');
 }
