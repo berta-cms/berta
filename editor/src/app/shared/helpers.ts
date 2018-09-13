@@ -14,6 +14,19 @@ export function splitCamel(camelCasedString: string): Array<string> {
 
 
 /**
+ * Uppercase the first letter of given string
+ *
+ * string => String
+ *
+ * @param str string to uppercase the first character
+ * @returns string with uppercase first character
+ */
+export function uCFirst(str: string): string {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+
+/**
  * Split camelCased string in to multiple words based on uppercase letters.
  *
  * camelCase -> Camel Case
@@ -24,10 +37,10 @@ export function splitCamel(camelCasedString: string): Array<string> {
 export function camel2Words(camelCasedString: string): string {
   // If we get a word with non-letter characters, just uppercase the first letter and return.
   if (/[^A-z]/i.test(camelCasedString)) {
-    return camelCasedString.charAt(0).toUpperCase() + camelCasedString.slice(1);
+    return uCFirst(camelCasedString);
   }
   return splitCamel(camelCasedString)
-    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .map(word => uCFirst(word))
     .join(' ');
 }
 

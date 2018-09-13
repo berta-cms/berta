@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { Select } from '@ngxs/store';
+import { Select, Store } from '@ngxs/store';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ShopState } from './shop.state';
-import { map } from 'rxjs/operators';
-import { Observable } from 'rxjs';
-import { splitCamel } from '../shared/helpers';
+import { map, mergeMap, startWith } from 'rxjs/operators';
+import { Observable, combineLatest, of } from 'rxjs';
+import { splitCamel, camel2Words, uCFirst } from '../shared/helpers';
 
 
 @Component({
@@ -12,8 +12,10 @@ import { splitCamel } from '../shared/helpers';
   template: `
     <h2>Shop</h2>
     <ul>
-      <li *ngFor="let sectionSlug of sections$ | async">
-        <a [routerLink]="['/shop', sectionSlug]" [style.fontWeight]="(sectionSlug === currentSection ? 'bold': '')">{{ sectionSlug }}</a>
+      <li *ngFor="let section of sections$ | async">
+        <a [routerLink]="['/shop', section.urlSegment]"
+           [style.fontWeight]="(sectionSlug === section.urlSegment ? 'bold': '')">{{ section.title }}</a>
+        <pre>{{section.data | json}}</pre>
       </li>
     </ul>
   `,
@@ -27,17 +29,36 @@ export class ShopSettingsComponent implements OnInit {
   sections$: Observable<any>;
 
   constructor(
-    private router: Router,
-    private route: ActivatedRoute) {
+    private route: ActivatedRoute,
+    private store: Store) {
   }
 
 
   ngOnInit() {
-    this.sections$ = this.shopSections$.pipe(map((sectionSlugs: string[]) => {
-      return sectionSlugs.map(sectionSlug => {
-        return splitCamel(sectionSlug).map(slugPeace => slugPeace.toLowerCase()).join('-');
-      });
-    }));
+    this.sections$ = this.shopSections$.pipe(
+      map((sectionSlugs: string[]) => {
+        return sectionSlugs.map((sSlug) => {
+          return {
+            slug: sSlug,
+            urlSegment: splitCamel(sSlug).map(slugPeace => slugPeace.toLowerCase()).join('-'),
+            title: camel2Words(sSlug),
+            data: {}
+          };
+        });
+      }),
+      mergeMap((sections: any[]) => {
+        const obsArr = sections.map((section) => {
+          return this.store.select((state) => {
+            return state['shop' + uCFirst(section.slug)] && state['shop' + uCFirst(section.slug)][state.app.site];
+          }).pipe(startWith([]), map(sd => {
+            section.data = sd;
+            return section;
+          }));
+        });
+        return combineLatest(obsArr);
+      })
+    );
+
     this.route.paramMap.subscribe(params => { this.currentSection = params['params']['section']; });
   }
 }
