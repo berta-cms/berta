@@ -14,8 +14,8 @@ import { splitCamel, camel2Words, uCFirst } from '../shared/helpers';
     <ul>
       <li *ngFor="let section of sections$ | async">
         <a [routerLink]="['/shop', section.urlSegment]"
-           [style.fontWeight]="(sectionSlug === section.urlSegment ? 'bold': '')">{{ section.title }}</a>
-        <pre>{{section.data | json}}</pre>
+           [style.fontWeight]="(currentSection === section.urlSegment ? 'bold': '')">{{ section.title }}</a>
+        <pre *ngIf="section.urlSegment === currentSection">{{section.data | json}}</pre>
       </li>
     </ul>
   `,
@@ -50,7 +50,7 @@ export class ShopSettingsComponent implements OnInit {
         const obsArr = sections.map((section) => {
           return this.store.select((state) => {
             return state['shop' + uCFirst(section.slug)] && state['shop' + uCFirst(section.slug)][state.app.site];
-          }).pipe(startWith([]), map(sd => {
+          }).pipe(startWith(null), map(sd => {
             section.data = sd;
             return section;
           }));
@@ -59,6 +59,6 @@ export class ShopSettingsComponent implements OnInit {
       })
     );
 
-    this.route.paramMap.subscribe(params => { this.currentSection = params['params']['section']; });
+    this.route.paramMap.subscribe(params => { this.currentSection = params['params']['section']; console.log(this.currentSection); });
   }
 }

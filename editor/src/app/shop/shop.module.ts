@@ -6,6 +6,10 @@ import { ShopSettingsComponent } from './shop-settings.component';
 import { NgxsModule } from '@ngxs/store';
 import { ShopState } from './shop.state';
 import { ShopProductsState } from './shop-products.state';
+import { ShopOrdersState } from './shop-orders.state';
+import { ShopRegionalCostsState } from './shop-regional-costs.state';
+import { ShopSettingsState } from './shop-settings.state';
+import { ShopSettingsConfigState } from './shop-settings-config.state';
 
 
 @NgModule({
@@ -14,7 +18,11 @@ import { ShopProductsState } from './shop-products.state';
     ShopRoutingModule,
     NgxsModule.forFeature([
       ShopState,
-      ShopProductsState
+      ShopProductsState,
+      ShopOrdersState,
+      ShopRegionalCostsState,
+      ShopSettingsState,
+      ShopSettingsConfigState
     ]),
   ],
   declarations: [ShopSettingsComponent]

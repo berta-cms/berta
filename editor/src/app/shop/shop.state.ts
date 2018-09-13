@@ -31,7 +31,9 @@ export class ShopState implements NgxsOnInit {
       take(1)
     ).subscribe((state) => {
       patchState({
-        sections: Object.keys(state).filter(key => Object.keys(defaultState).indexOf(key) === -1),
+        sections: Object.keys(state).filter(key => {
+          return Object.keys(defaultState).indexOf(key) === -1 && !(/config$/i.test(key));
+        }),
         urls: state.urls
       });
     });
