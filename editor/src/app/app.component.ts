@@ -164,11 +164,12 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   hideOverlay() {
-    this.inputFocus$.pipe(take(1)).subscribe((isInputFocused) => {
-      if (!isInputFocused) {
-        this.store.dispatch(AppHideOverlay);
-        this.router.navigate(['/']);
-      }
+    this.inputFocus$.pipe(
+      take(1),
+      filter(isInputFocused => !isInputFocused)
+    ).subscribe(() => {
+      this.store.dispatch(AppHideOverlay);
+      this.router.navigate(['/']);
     });
   }
 
