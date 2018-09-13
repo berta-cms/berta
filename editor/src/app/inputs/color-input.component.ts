@@ -1,15 +1,15 @@
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
-import { SettingModel } from '../shared/interfaces';
 
 @Component({
   selector: 'berta-color-input',
   template: `
-    <div class="form-group">
+    <div class="form-group" [class.bt-focus]="focus" [class.bt-disabled]="disabled">
       <label>
         {{ label }}
         <div class="color-picker-wrapper">
           <input [(colorPicker)]="value"
                  [value]="value"
+                 (colorPickerOpen)="onColorPickerOpen()"
                  (colorPickerClose)="saveColor(value)"
                  (colorPickerCancel)="cancelColor()"
                  [cpOKButton]="true"
@@ -26,10 +26,13 @@ import { SettingModel } from '../shared/interfaces';
 })
 export class ColorInputComponent implements OnInit {
   @Input() label: string;
-  @Input() value: SettingModel['value'];
+  @Input() value: string;
   @Output() update = new EventEmitter();
+  @Output() inputFocus = new EventEmitter();
 
-  private lastValue: SettingModel['value'];
+  focus = false;
+  disabled = false;
+  private lastValue: string;
   private colorIsCancelled = false;
 
   ngOnInit() {
@@ -37,7 +40,15 @@ export class ColorInputComponent implements OnInit {
     this.lastValue = this.value;
   }
 
+  onColorPickerOpen() {
+    this.focus = true;
+    this.inputFocus.emit(true);
+  }
+
   saveColor(value) {
+    this.focus = false;
+    this.inputFocus.emit(false);
+
     // We need a setTimeout here because `cancel` event is triggered after picker is closed
     setTimeout(() => {
       if (this.colorIsCancelled) {
@@ -53,6 +64,7 @@ export class ColorInputComponent implements OnInit {
       return;
     }
     this.lastValue = value;
+    this.disabled = true;
     this.update.emit(value);
   }
 
