@@ -1,11 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, NgZone, isDevMode } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
-import { Observable } from 'rxjs';
-import { take } from 'rxjs/operators';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 
-import { Store, Select } from '@ngxs/store';
+import { Subscription, Observable } from 'rxjs';
+import { take, switchMap, mergeMap, filter, map, tap } from 'rxjs/operators';
+import { Store, Select, Actions, ofActionSuccessful } from '@ngxs/store';
+
 import { AppHideOverlay, AppShowOverlay } from './app-state/app.actions';
 import { AppState } from './app-state/app.state';
+import { UserLoginAction, UserLogoutAction, SetUserNextUrlAction } from './user/user.actions';
+import { UserState } from './user/user.state';
+import { UserStateModel } from './user/user.state.model';
+import { AppStateService } from './app-state/app-state.service';
 
 
 @Component({
@@ -17,18 +23,26 @@ import { AppState } from './app-state/app.state';
       <aside [style.display]="(routeIsRoot ? 'none' : '')"><!-- the sidebar -->
         <div class="scroll-wrap"><router-outlet></router-outlet></div></aside>
       <section>
-        <div style="text-align:center">
-          <h1>
-            Welcome to {{title}}!
-          </h1>
-          <img width="300" src="http://www.berta.me/storage/media/logo.png">
-        </div>
-        <button (click)="showOverlay()">Show overlay</button>
+        <iframe sandbox="allow-same-origin allow-scripts allow-modals allow-popups allow-forms"
+                [src]="previewUrl"
+                frameborder="0"></iframe>
       </section>
     </main>
     <div [style.display]="((showOverlay$ | async) ? '' : 'none')" class="overlay" (click)="hideOverlay()">
   `,
   styles: [`
+    :host {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+
+    main {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
     berta-header {
       display: block;
       position: relative;
@@ -44,6 +58,18 @@ import { AppState } from './app-state/app.state';
       width: 384px;
       z-index: 2;
       box-sizing: border-box;
+    }
+
+    section {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    iframe {
+      flex-grow: 1;
+      width:100%;
+      height:100%;
     }
 
     .overlay {
@@ -63,31 +89,78 @@ import { AppState } from './app-state/app.state';
     `
   ]
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, OnDestroy {
   title = 'berta';
   routeIsRoot = true;
+  previewUrl: SafeUrl;
 
   @Select(AppState.getShowOverlay) showOverlay$;
   @Select(AppState.getInputFocus) inputFocus$: Observable<boolean>;
+  @Select(UserState.isLoggedIn) isLoggedIn$;
 
-  constructor(
-    private router: Router,
-    private store: Store
-  ) {
+  private loginSub: Subscription;
+  private logoutSub: Subscription;
+
+  constructor(private router: Router,
+              private store: Store,
+              private _ngZone: NgZone,
+              private stateService: AppStateService,
+              private actions$: Actions,
+              private sanitizer: DomSanitizer) {
   }
 
   ngOnInit() {
-    this.router.events.subscribe(event => {
-      if (event instanceof NavigationEnd) {
-        if (event.url !== '/') {
-          this.routeIsRoot = false;
-          this.showOverlay();
-        } else {
-          this.routeIsRoot = true;
-          this.hideOverlay();
-        }
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd),
+      tap((event: NavigationEnd) => this.routeIsRoot = event.url === '/'),
+      mergeMap((event) => this.store.select(AppState).pipe(map((state => [event, state])), take(1))),
+      filter(([, state]) => {
+        return this.routeIsRoot === state.showOverlay;
+      }),
+    )
+    .subscribe(([event]) => {
+      if (event.url !== '/') {
+        this.showOverlay();
+      } else {
+        this.store.dispatch(AppHideOverlay);
       }
     });
+
+    // After login, navigate to users last location or the root
+    this.loginSub = this.actions$.pipe(
+      ofActionSuccessful(UserLoginAction),
+      switchMap(() => this.store.select(UserState).pipe(take(1))),
+    ).subscribe((user: UserStateModel) => {
+
+      if (user.nextUrl) {
+        this.router.navigateByUrl(user.nextUrl);
+        this.store.dispatch(new SetUserNextUrlAction(''));
+      } else {
+        this.router.navigate(['/']);
+      }
+    });
+
+    // After logout navigate to login url
+    this.logoutSub = this.actions$.pipe(
+      ofActionSuccessful(UserLogoutAction),
+    ).subscribe(() => {
+      this.router.navigate(['/login']);
+    });
+
+    this.isLoggedIn$.subscribe(isLoggedIn => {
+      let url = location.protocol + '//' + location.hostname;
+
+      if (isLoggedIn) {
+        url += '/engine/editor/';
+      }
+
+      this.previewUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
+    });
+
+    if (isDevMode()) {
+      /* add debugging helpers on `window.bt` while in dev mode */
+      this.setDevUpHelper();
+    }
   }
 
   hideOverlay() {
@@ -101,5 +174,25 @@ export class AppComponent implements OnInit {
 
   showOverlay() {
     this.store.dispatch(AppShowOverlay);
+  }
+
+  ngOnDestroy() {
+    this.loginSub.unsubscribe();
+    this.logoutSub.unsubscribe();
+  }
+
+  setDevUpHelper() {
+    window['bt'] = {
+      sync: (url, data, method) => {
+        return Observable.create((observer) => {
+          this._ngZone.run(() => {
+            this.stateService.sync(url, data, method).subscribe((res) => {
+              observer.next(res);
+              observer.complete();
+            });
+          });
+        });
+      }
+    };
   }
 }

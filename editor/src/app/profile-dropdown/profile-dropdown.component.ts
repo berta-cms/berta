@@ -3,12 +3,13 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { Select } from '@ngxs/store';
+import { Select, Store } from '@ngxs/store';
 
-import { AppStateService } from '../app-state/app-state.service';
 import { AppState } from '../app-state/app.state';
-import { UserState } from '../user/user-state';
+import { UserState } from '../user/user.state';
 import { UserStateModel } from '../user/user.state.model';
+import { UserLogoutAction } from '../user/user.actions';
+
 
 /** @todo add icons */
 @Component({
@@ -66,7 +67,7 @@ export class ProfileDropdownComponent implements OnInit {
   queryParams$: Observable<{[k: string]: string}>;
 
   constructor(
-    private appStateService: AppStateService) {
+    private store: Store) {
   }
 
   ngOnInit() {
@@ -76,6 +77,6 @@ export class ProfileDropdownComponent implements OnInit {
   }
 
   logOut() {
-    this.appStateService.logout();
+    this.store.dispatch(UserLogoutAction);
   }
 }

@@ -3,4 +3,5 @@ export interface UserStateModel {
   token: string | null;
   features: string[];
   profileUrl: string | null;
+  nextUrl?: string;
 }

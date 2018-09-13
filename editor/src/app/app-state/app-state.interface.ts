@@ -3,5 +3,5 @@ export interface AppStateModel {
   isLoading: boolean;
   inputFocused: boolean;
   site: string | null;
-  urls: {name: string}[];
+  urls: {[name: string]: string};
 }
