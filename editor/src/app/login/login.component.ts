@@ -1,19 +1,22 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
+
 import { Observable } from 'rxjs';
+import { take } from 'rxjs/operators';
+import { Select, Store } from '@ngxs/store';
 
-import { Select } from '@ngxs/store';
+import { UserState } from '../user/user.state';
+import { UserLoginAction } from '../user/user.actions';
+import { AppShowLoading, AppHideLoading } from '../app-state/app.actions';
 
-import { AppStateService } from '../app-state/app-state.service';
-import { UserState } from '../user/user-state';
 
 @Component({
   selector: 'berta-login',
   template: `
   <div *ngIf="!(isLoggedIn$ | async)">
     <h2>Enter your Login details</h2>
-    <p class="error">{{error}}<p>
+    <p class="error">{{message}}<p>
     <form action="" (submit)="login($event, user.value, pass.value)">
       <input #user type="text" name="user">
       <input #pass type="password" name="password">
@@ -22,34 +25,37 @@ import { UserState } from '../user/user-state';
   </div>
   <div *ngIf="isLoggedIn$ | async">
     <h2>Login Successful!</h2>
+    <p>{{message}}</p>
   </div>
   `,
   styles: []
 })
 export class LoginComponent implements OnInit {
-  message = 'Login';
+  message = '';
   @Select(UserState.isLoggedIn) isLoggedIn$: Observable<boolean>;
 
   constructor(
-    private appStateService: AppStateService,
+    private store: Store,
     private router: Router) {
   }
 
   ngOnInit() {
+    this.isLoggedIn$.pipe(take(1)).subscribe((isLoggedIn) => {
+      if (isLoggedIn) {
+        this.router.navigate(['/']);
+      }
+    });
   }
 
   login(event, user, pass) {
     event.preventDefault();
-    this.appStateService.login(user, pass)
+    this.store.dispatch(new AppShowLoading());
+
+    this.store.dispatch(new UserLoginAction(user, pass))
     .subscribe({
-      next: (response: any) => {
-        if (!response) {
-          return;
-        }
+      next: () => {
         this.message = 'Login Successful';
-        setTimeout(() => {
-          this.router.navigate(['/']);
-        }, 500);
+        this.store.dispatch(new AppHideLoading());
       },
       error: (error: HttpErrorResponse|Error) => {
         if (error instanceof HttpErrorResponse && error.status === 401) {
@@ -57,6 +63,7 @@ export class LoginComponent implements OnInit {
         } else {
           this.message = error.message;
         }
+        this.store.dispatch(new AppHideLoading());
       }
     });
   }
