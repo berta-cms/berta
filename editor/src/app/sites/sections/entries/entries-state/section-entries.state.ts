@@ -1,5 +1,6 @@
-import { State, Action, StateContext, NgxsOnInit } from '@ngxs/store';
-import { take } from 'rxjs/operators';
+import { concat } from 'rxjs';
+import { take, switchMap } from 'rxjs/operators';
+import { State, Action, StateContext, NgxsOnInit, Actions, ofActionSuccessful } from '@ngxs/store';
 
 import { AppStateService } from '../../../../app-state/app-state.service';
 import { SectionEntriesStateModel } from './section-entries-state.model';
@@ -9,17 +10,32 @@ import {
   DeleteSectionEntriesAction,
   RenameSectionEntriesAction,
   AddSiteEntriesAction,
-  AddSectionEntriesAction} from './section-entries.actions';
+  AddSectionEntriesAction,
+  ResetSectionEntriesAction,
+  InitSectionEntriesAction} from './section-entries.actions';
+import { UserLoginAction } from '../../../../user/user.actions';
+
 
 @State<SectionEntriesStateModel>({
   name: 'sectionEntries',
   defaults: {}
 })
 export class SectionEntriesState implements NgxsOnInit {
-  constructor(private appStateService: AppStateService) {}
-  ngxsOnInit({ setState }: StateContext<SectionEntriesStateModel>) {
-    this.appStateService.getInitialState('', 'sectionEntries').pipe(take(1)).subscribe((sections) => {
-      setState(sections);
+
+  constructor(
+    private actions$: Actions,
+    private appStateService: AppStateService) {
+  }
+
+  ngxsOnInit({ dispatch }: StateContext<SectionEntriesStateModel>) {
+    concat(
+      this.appStateService.getInitialState('', 'sectionEntries').pipe(take(1)),
+      this.actions$.pipe(ofActionSuccessful(UserLoginAction), switchMap(() => {
+        return this.appStateService.getInitialState('', 'sectionEntries').pipe(take(1));
+      }))
+    )
+    .subscribe((sectionEntries) => {
+      dispatch(new InitSectionEntriesAction(sectionEntries));
     });
   }
 
@@ -81,9 +97,19 @@ export class SectionEntriesState implements NgxsOnInit {
   }
 
   @Action(DeleteSiteSectionsEntriesAction)
-  deleteSiteSectionsEntries({ getState, setState }: StateContext<SectionEntriesStateModel[]>, action: DeleteSiteSectionsEntriesAction) {
+  deleteSiteSectionsEntries({ getState, setState }: StateContext<SectionEntriesStateModel>, action: DeleteSiteSectionsEntriesAction) {
     const newState = {...getState()};
     delete newState[action.siteName];
     setState(newState);
+  }
+
+  @Action(ResetSectionEntriesAction)
+  resetSectionEntries({ setState }: StateContext<SectionEntriesStateModel>) {
+    setState({});
+  }
+
+  @Action(InitSectionEntriesAction)
+  initSectionEntries({ setState }: StateContext<SectionEntriesStateModel>, action: InitSectionEntriesAction) {
+    setState(action.payload);
   }
 }

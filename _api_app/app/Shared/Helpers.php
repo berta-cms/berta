@@ -323,7 +323,7 @@ class Helpers
     public static function api_response($message='', $data=[], $status=200) {
         return response()->json([
             'message' => $message,
-            'data' => (object)$data
+            'data' => $data
         ], $status);
     }
 }

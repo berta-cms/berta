@@ -62,11 +62,9 @@ class AuthController extends Controller
 
     public function apiLogin(Request $request)
     {
-        \Log::info('API LOGIN!!!');
         $token = $this->authenticateRequestAndGetToken($request);
-        \Log::info('TOKEN: ', [$token]);
         if (!$token) {
-            return Helpers::api_response('Login failed!', [], 401);
+            return Helpers::api_response('Login failed!', (object)[], 401);
         }
 
         /** @todo: remove this when we move to the new app. This will be necessary for some time for the iframe */
@@ -87,9 +85,9 @@ class AuthController extends Controller
         try {
             $this->logout();
         } catch (\Throwable $t) {
-            return Helpers::api_response('Logout failed!', [], 400);
+            return Helpers::api_response('Logout failed!', (object)[], 400);
         } catch (\Exception $e) {
-            return Helpers::api_response('Logout failed!', [], 400);
+            return Helpers::api_response('Logout failed!', (object)[], 400);
         }
 
         return Helpers::api_response('Logout successful');
@@ -106,15 +104,15 @@ class AuthController extends Controller
         $password = $options['AUTH_password'];
 
         if ($password != $old_password) {
-            return Helpers::api_response('Current password doesn\'t match!', [], 412);
+            return Helpers::api_response('Current password doesn\'t match!', (object)[], 412);
         } elseif ($new_password != $retype_password) {
-            return Helpers::api_response('New and retyped password doesn\'t match!', [], 412);
+            return Helpers::api_response('New and retyped password doesn\'t match!', (object)[], 412);
         } elseif (strlen($new_password) < 6) {
-            return Helpers::api_response('Password must be at least 6 characters long!', [], 412);
+            return Helpers::api_response('Password must be at least 6 characters long!', (object)[], 412);
         } elseif (!preg_match('/^[A-Za-z0-9]+$/', $new_password)) {
-            return Helpers::api_response('Password must contain only alphanumeric characters!', [], 412);
+            return Helpers::api_response('Password must contain only alphanumeric characters!', (object)[], 412);
         } elseif (!is_writable($conf_file)) {
-            return Helpers::api_response('Config file is not writable!', [], 400);
+            return Helpers::api_response('Config file is not writable!', (object)[], 400);
         } else {
             $content = file_get_contents($conf_file);
             $new_content = str_replace(

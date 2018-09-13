@@ -145,7 +145,7 @@ class SiteSectionsDataService extends Storage
      *
      * @return array Array of sections
      */
-    public function get()
+    public function get($sectionName = null)
     {
         if (!$this->SECTIONS) {
             $this->SECTIONS = $this->xmlFile2array($this->XML_FILE);
@@ -167,6 +167,15 @@ class SiteSectionsDataService extends Storage
                     }
                 }
             }
+        }
+
+        if ($sectionName !== null) {
+            foreach($this->SECTIONS as $_section) {
+                if ($_section['name'] === $sectionName) {
+                    return $_section;
+                }
+            }
+            return null;
         }
 
         return $this->SECTIONS;
