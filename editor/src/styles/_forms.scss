@@ -58,18 +58,7 @@
   }
 
   &.bt-disabled {
-    label,
-    input {
-      color: $input-color-disabled;
-    }
-
-    .text-input-wrapper {
-      border-color: $input-color-disabled;
-
-      .icon {
-        fill: $input-color-disabled;
-      }
-    }
+    opacity: .3;
   }
 
   &.error {
