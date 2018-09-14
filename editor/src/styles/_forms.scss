@@ -42,41 +42,6 @@
     }
   }
 
-  &:hover,
-  &.bt-focus {
-    label,
-    input {
-      color: $input-color-active;
-    }
-
-    .text-input-wrapper {
-      border: 1px solid $input-color-active;
-
-      .icon {
-        fill: $input-color-active;
-      }
-    }
-  }
-
-  &.bt-disabled {
-    opacity: .3;
-  }
-
-  &.error {
-    label,
-    input {
-      color: $error-color;
-    }
-
-    .text-input-wrapper {
-      border-color: $error-color;
-
-      .icon {
-        fill: $error-color;
-      }
-    }
-  }
-
   .toggle-wrapper {
     $toggle-width: 30px;
     $toggle-height: 22px;
@@ -139,6 +104,64 @@
         &:after {
           border-color: $input-color-active;
         }
+      }
+    }
+  }
+
+  &:hover,
+  &.bt-focus {
+    label,
+    input {
+      color: $input-color-active;
+    }
+
+    .text-input-wrapper {
+      border: 1px solid $input-color-active;
+
+      .icon {
+        fill: $input-color-active;
+      }
+    }
+
+    .toggle-wrapper {
+      input {
+        &:checked {
+          + span {
+            background-color: $input-color-active;
+            border-color: $input-color-active;
+
+            &:after {
+              border-color: $input-color-active;
+            }
+          }
+        }
+      }
+
+      span {
+        border-color: $input-color-active;
+
+        &:after {
+          border-color: $input-color-active;
+        }
+      }
+    }
+  }
+
+  &.bt-disabled {
+    opacity: .3;
+  }
+
+  &.error {
+    label,
+    input {
+      color: $error-color;
+    }
+
+    .text-input-wrapper {
+      border-color: $error-color;
+
+      .icon {
+        fill: $error-color;
       }
     }
   }
