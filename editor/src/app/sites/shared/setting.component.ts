@@ -1,5 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Store } from '@ngxs/store';
 import { SettingModel, SettingConfigModel, SettingGroupConfigModel } from '../../shared/interfaces';
+import { UpdateInputFocus } from '../../app-state/app.actions';
 
 @Component({
   selector: 'berta-setting',
@@ -8,6 +10,7 @@ import { SettingModel, SettingConfigModel, SettingGroupConfigModel } from '../..
       <berta-text-input *ngSwitchCase="'text'"
                         [label]="config.title"
                         [value]="setting.value"
+                        (inputFocus)="updateComponentFocus($event)"
                         (update)="updateComponentField(setting.slug, $event)"></berta-text-input>
 
       <div *ngSwitchCase="'color'">
@@ -94,9 +97,15 @@ export class SettingComponent implements OnInit {
 
   private lastValue: SettingModel['value'];
 
+  constructor(private store: Store) { }
+
   ngOnInit() {
     // Cache the value, so we don't update if nothing changes
     this.lastValue = this.setting.value;
+  }
+
+  updateComponentFocus(isFocused) {
+    this.store.dispatch(new UpdateInputFocus(isFocused));
   }
 
   updateTextField(field, value, $event) {

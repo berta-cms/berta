@@ -2,6 +2,7 @@
 
 namespace App\User;
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
@@ -53,8 +54,8 @@ class UserAuthServiceProvider extends ServiceProvider
         // should return either a User instance or null. You're free to obtain
         // the User instance via an API token or any other method necessary.
 
-        Auth::viaRequest('jwt_token', function ($request) {
-            $token = $this->getBearerToken();
+        Auth::viaRequest('jwt_token', function (Request $request) {
+            $token = $this->getBearerToken($request);
 
             if ($token && Helpers::validate_token($token)) {
                 return new UserModel();
@@ -73,16 +74,26 @@ class UserAuthServiceProvider extends ServiceProvider
     {
         $headers = null;
         if (isset($_SERVER['X-Authorization'])) {
-            $headers = trim($_SERVER["X-Authorization"]);
+            $headers = trim($_SERVER['X-Authorization']);
+        } else if (isset($_SERVER['X-authorization'])) {
+            $headers = trim($_SERVER['X-authorization']);
+        } else if (isset($_SERVER['x-authorization'])) {
+            $headers = trim($_SERVER['x-authorization']);
         } else if (isset($_SERVER['HTTP_AUTHORIZATION'])) { //Nginx or fast CGI
             $headers = trim($_SERVER["HTTP_AUTHORIZATION"]);
         } elseif (function_exists('apache_request_headers')) {
             $requestHeaders = apache_request_headers();
             // Server-side fix for bug in old Android versions (a nice side-effect of this fix means we don't care about capitalization for Authorization)
             $requestHeaders = array_combine(array_map('ucwords', array_keys($requestHeaders)), array_values($requestHeaders));
-            //print_r($requestHeaders);
+
             if (isset($requestHeaders['X-Authorization'])) {
                 $headers = trim($requestHeaders['X-Authorization']);
+            }
+            else if (isset($requestHeaders['X-authorization'])) {
+                $headers = trim($requestHeaders['X-authorization']);
+            }
+            else if (isset($requestHeaders['x-authorization'])) {
+                $headers = trim($requestHeaders['x-authorization']);
             }
         }
         return $headers;
@@ -90,14 +101,22 @@ class UserAuthServiceProvider extends ServiceProvider
     /**
      * get access token from header
      * */
-    function getBearerToken()
+    function getBearerToken(Request $request)
     {
-        $headers = $this->getAuthorizationHeader();
+        $headers = $request->headers->get('x-authorization', null);
+        if (!$headers) {
+            $headers = $this->getAuthorizationHeader();
+        }
+
         // HEADER: Get the access token from the header
         if (!empty($headers)) {
             if (preg_match('/Bearer\s(\S+)/', $headers, $matches)) {
                 return $matches[1];
             }
+        }
+
+        if (env('APP_DEBUG') && $request->isMethod('get')) {
+            return $request->cookie('token', null);
         }
         return null;
     }

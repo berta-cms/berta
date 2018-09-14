@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Store, Select } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { SiteStateModel } from './sites-state/site-state.model';
-import { UserState } from '../user/user-state';
+import { UserState } from '../user/user.state';
 import { CreateSiteAction } from './sites-state/sites.actions';
 
 @Component({

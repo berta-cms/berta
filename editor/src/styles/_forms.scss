@@ -1,89 +1,77 @@
 .form-group {
   font-size: $input-font-size;
 
+
   label {
     align-items: center;
     color: $input-color;
     display: flex;
     justify-content: space-between;
+    transition: color .2s;
   }
 
-  input[type='text'],
-  .file-input {
+  .text-input-wrapper {
+    align-items: center;
     border: 1px solid $input-color;
     border-radius: $border-radius;
-    box-sizing: border-box;
-    color: $input-color;
-    font-size: 1em;
+    display: flex;
     margin-left: 1em;
-    outline: none;
-    padding: .75em;
+    padding-left: .75em;
+    transition: border-color .2s;
     width: 50%;
 
-    &:hover {
-      border-color: $input-color-active;
+    .icon {
+      fill: $input-color;
+      transition: fill .2s;
+    }
+
+    input {
+      border: 0;
+      border-radius: $border-radius;
+      color: $input-color;
+      flex-grow: 1;
+      font-size: 1em;
+      outline: none;
+      padding: .75em .75em .75em 0;
+      transition: color .2s;
+
+      &:focus {
+        color: $berta-accent;
+      }
+    }
+  }
+
+  &:hover,
+  &.bt-focus {
+    label,
+    input {
       color: $input-color-active;
     }
 
-    &:focus {
-      border-color: $input-color-active;
-      color: $berta-accent;
-    }
+    .text-input-wrapper {
+      border: 1px solid $input-color-active;
 
-    &.error {
-      border-color: $error-color;
-      color: $error-color;
-    }
-
-    &[disabled] {
-      border-color: $input-color-disabled;
-      color: $input-color-disabled;
+      .icon {
+        fill: $input-color-active;
+      }
     }
   }
 
-  .file-input-wrapper {
-    box-sizing: border-box;
-    margin-left: 1em;
-    width: 50%;
+  &.bt-disabled {
+    opacity: .3;
+  }
 
+  &.error {
+    label,
     input {
-      display: none;
+      color: $error-color;
     }
 
-    .file-input {
-      background-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iMTIiIHZpZXdCb3g9IjAgMCAxMiAxMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZD0iTTYgMTJDOS4zMTM3MSAxMiAxMiA5LjMxMzcxIDEyIDZDMTIgMi42ODYyOSA5LjMxMzcxIDAgNiAwQzIuNjg2MjkgMCAwIDIuNjg2MjkgMCA2QzAgOS4zMTM3MSAyLjY4NjI5IDEyIDYgMTJaIiBmaWxsPSIjOWI5YjliIi8+PHBhdGggZD0iTTYgMy4zMzMzM1Y4LjY2NjY3IiBzdHJva2U9IndoaXRlIiBzdHJva2UtbGluZWNhcD0ic3F1YXJlIi8+PHBhdGggZD0iTTguNjY2NzEgNkgzLjMzMzM3IiBzdHJva2U9IndoaXRlIiBzdHJva2UtbGluZWNhcD0ic3F1YXJlIi8+PC9zdmc+);
-      background-position: 95% center;
-      background-repeat: no-repeat;
-      cursor: pointer;
-      margin-left: 0;
-      overflow: hidden;
-      padding-right: 2em;
-      position: relative;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      width: 100%;
+    .text-input-wrapper {
+      border-color: $error-color;
 
-      &:hover {
-        background-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iMTIiIHZpZXdCb3g9IjAgMCAxMiAxMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZD0iTTYgMTJDOS4zMTM3MSAxMiAxMiA5LjMxMzcxIDEyIDZDMTIgMi42ODYyOSA5LjMxMzcxIDAgNiAwQzIuNjg2MjkgMCAwIDIuNjg2MjkgMCA2QzAgOS4zMTM3MSAyLjY4NjI5IDEyIDYgMTJaIiBmaWxsPSIjNEE0QTRBIi8+PHBhdGggZD0iTTYgMy4zMzMzM1Y4LjY2NjY3IiBzdHJva2U9IndoaXRlIiBzdHJva2UtbGluZWNhcD0ic3F1YXJlIi8+PHBhdGggZD0iTTguNjY2NzEgNkgzLjMzMzM3IiBzdHJva2U9IndoaXRlIiBzdHJva2UtbGluZWNhcD0ic3F1YXJlIi8+PC9zdmc+);
-      }
-
-      &.has-file {
-        background: none;
-      }
-
-      .remove-file {
-        background-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTQiIGhlaWdodD0iMTMiIHZpZXdCb3g9IjAgMCAxNCAxMyIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNOS44Mjg0IDkuMTkyNDNMNC4xNzE1NSAzLjUzNTU3IiBzdHJva2U9IiM5QjlCOUIiIHN0cm9rZS1saW5lY2FwPSJzcXVhcmUiLz48cGF0aCBkPSJNOS44Mjg0NCAzLjUzNTUyTDQuMTcxNTkgOS4xOTIzNyIgc3Ryb2tlPSIjOUI5QjlCIiBzdHJva2UtbGluZWNhcD0ic3F1YXJlIi8+PC9zdmc+);
-        background-position: center center;
-        background-repeat: no-repeat;
-        bottom: 0;
-        position: absolute;
-        right: 0;
-        top: 0;
-        width: 2em;
-
-        &:hover {
-          background-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTQiIGhlaWdodD0iMTMiIHZpZXdCb3g9IjAgMCAxNCAxMyIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNOS44Mjg0IDkuMTkyNDNMNC4xNzE1NSAzLjUzNTU3IiBzdHJva2U9IiM0YTRhNGEiIHN0cm9rZS1saW5lY2FwPSJzcXVhcmUiLz48cGF0aCBkPSJNOS44Mjg0NCAzLjUzNTUyTDQuMTcxNTkgOS4xOTIzNyIgc3Ryb2tlPSIjNGE0YTRhIiBzdHJva2UtbGluZWNhcD0ic3F1YXJlIi8+PC9zdmc+);
-        }
+      .icon {
+        fill: $error-color;
       }
     }
   }

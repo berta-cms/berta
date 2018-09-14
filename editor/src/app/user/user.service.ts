@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { take, switchMap, filter } from 'rxjs/operators';
 import { Store } from '@ngxs/store';
 
-import { UserState } from './user-state';
+import { UserState } from './user.state';
 
 @Injectable({
   providedIn: 'root'
