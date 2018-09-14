@@ -54,8 +54,21 @@ $app->group(['prefix' => 'v1', 'namespace' => 'App', 'middleware' => ['setup', '
                 $app->delete('entries', 'SectionEntriesController@delete');
                 $app->put('entries/galleries', ['as' => 'entry_gallery', 'uses' => 'SectionEntriesController@galleryOrder']);
                 $app->delete('entries/galleries', 'SectionEntriesController@galleryDelete');
+                $app->get('entries/render/{site}/{section}[/{id}]', 'SectionEntriesController@renderEntries');
             });
         });
+    });
+
+    $app->group(['prefix' => 'v1/plugin', 'namespace' => 'App\Plugins', 'middleware' => ['setup', 'auth']], function () use ($app) {
+        foreach (scandir("{$app->path()}/Plugins") as $fileOrDir) {
+            if (in_array($fileOrDir, ['.', '..'])) { continue; }
+
+            $dirPath = "{$app->path()}/Plugins/{$fileOrDir}";
+
+            if (is_dir($dirPath) && is_file("{$dirPath}/routes.php")) {
+                require "{$dirPath}/routes.php";
+            }
+        }
     });
 
     /**

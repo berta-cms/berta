@@ -43,6 +43,7 @@ RewriteCond %{REQUEST_URI} /engine/index\.php$
 RewriteRule .*  /engine/dist/index.html  [L]
 
 RewriteCond %{REQUEST_URI} ^/engine.*
+RewriteCond %{REQUEST_URI} !^/engine/editor.*
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule ^ /engine/dist/index.html [L]
 
