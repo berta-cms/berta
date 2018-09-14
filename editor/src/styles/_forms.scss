@@ -6,38 +6,94 @@
     color: $input-color;
     display: flex;
     justify-content: space-between;
+    transition: color .2s;
   }
 
-  input[type='text'],
-  textarea,
-  .select-wrapper button {
+  .text-input-wrapper {
+    align-items: center;
+    border: 1px solid $input-color;
+    border-radius: $border-radius;
+    display: flex;
+    margin-left: 1em;
+    padding-left: .75em;
+    transition: border-color .2s;
+    width: 50%;
+
+    .icon {
+      fill: $input-color;
+      transition: fill .2s;
+    }
+
+    input {
+      border: 0;
+      border-radius: $border-radius;
+      color: $input-color;
+      flex-grow: 1;
+      font-size: 1em;
+      outline: none;
+      padding: .75em .75em .75em 0;
+      transition: color .2s;
+
+      &:focus {
+        color: $berta-accent;
+      }
+    }
+  }
+
+  textarea {
     border: 1px solid $input-color;
     border-radius: $border-radius;
     box-sizing: border-box;
     color: $input-color;
+    display: block;
     font-size: 1em;
-    margin-left: 1em;
+    margin: .75em 0 0;
     outline: none;
     padding: .75em;
-    width: 50%;
+    transition: color .2s, border-color .2s;
+    width: 100%;
 
-    &:hover {
-      border-color: $input-color-active;
+    &:focus {
+      color: $berta-accent;
+    }
+  }
+
+  &:hover,
+  &.bt-focus {
+    label,
+    input,
+    textarea:not(:focus):not([disabled]) {
       color: $input-color-active;
     }
 
-    &:focus {
-      border-color: $input-color-active;
-      color: $berta-accent;
+    .text-input-wrapper,
+    textarea {
+      border: 1px solid $input-color-active;
+
+      .icon {
+        fill: $input-color-active;
+      }
+    }
+  }
+
+  &.bt-disabled {
+    opacity: .3;
+  }
+
+  &.error {
+    label,
+    input,
+    textarea:not(:focus) {
+      color: $error-color;
     }
 
-    &.error {
+    .text-input-wrapper,
+    textarea:not(:focus) {
       border-color: $error-color;
-    }
 
-    &[disabled] {
-      border-color: $input-color-disabled;
-      color: $input-color-disabled;
+      .icon {
+        fill: $error-color;
+      }
     }
   }
 
@@ -96,4 +152,5 @@
 
     }
   }
+
 }

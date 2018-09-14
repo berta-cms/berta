@@ -34,3 +34,12 @@ export class DeleteSiteAction {
   constructor(public site: SiteStateModel) {
   }
 }
+
+export class ResetSitesAction {
+  static readonly type = 'SITE:RESET';
+}
+
+export class InitSitesAction {
+  static readonly type = 'SITE:INIT';
+  constructor(public payload: SiteStateModel[]) {}
+}
