@@ -33,6 +33,7 @@ import { AppShowLoading, AppHideLoading } from '../app-state/app.actions';
 })
 export class FileInputComponent implements OnInit {
   @Input() label: string;
+  @Input() templateSlug: string;
   @Input() groupSlug: string;
   @Input() property: string;
   @Input() value: string;
@@ -57,8 +58,13 @@ export class FileInputComponent implements OnInit {
     this.disabled = true;
     $event.target.disabled = true;
     this.store.dispatch(new AppShowLoading());
+    let url = this.groupSlug + '/' + this.property;
 
-    this.fileUploadService.upload(this.groupSlug + '/' + this.property, $event.target.files[0]).subscribe({
+    if (this.templateSlug) {
+      url = this.templateSlug + '/' + url;
+    }
+
+    this.fileUploadService.upload(url, $event.target.files[0]).subscribe({
       next: (response: any) => {
         this.hasError = false;
         this.value = response.filename;

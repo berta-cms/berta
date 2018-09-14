@@ -27,20 +27,21 @@ import { UpdateInputFocus } from '../../app-state/app.actions';
 
       <berta-file-input *ngSwitchCase="'icon'"
                         [label]="config.title"
+                        [templateSlug]="templateSlug"
+                        [groupSlug]="settingGroup.slug"
+                        [property]="setting.slug"
+                        [accept]="'image/x-icon'"
+                        [value]="setting.value"
+                        (update)="updateComponentField(setting.slug, $event)"></berta-file-input>
+
+      <berta-file-input *ngSwitchCase="'image'"
+                        [label]="config.title"
+                        [templateSlug]="templateSlug"
                         [groupSlug]="settingGroup.slug"
                         [property]="setting.slug"
                         [accept]="'image/*'"
                         [value]="setting.value"
                         (update)="updateComponentField(setting.slug, $event)"></berta-file-input>
-
-      <div *ngSwitchCase="'image'" style="text-align: right;">
-        <label>
-          {{ config.title }}
-
-          {{setting.value}}<br>
-          <input type="file">
-        </label>
-      </div>
 
       <div *ngSwitchCase="'longtext'">
         <label>
@@ -90,6 +91,7 @@ import { UpdateInputFocus } from '../../app-state/app.actions';
   `]
 })
 export class SettingComponent implements OnInit {
+  @Input('templateSlug') templateSlug: string;
   @Input('settingGroup') settingGroup: SettingGroupConfigModel;
   @Input('setting') setting: SettingModel;
   @Input('config') config: SettingConfigModel;
