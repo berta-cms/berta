@@ -29,6 +29,7 @@ import { UpdateInputFocus } from '../../app-state/app.actions';
                         [label]="config.title"
                         [groupSlug]="settingGroup.slug"
                         [property]="setting.slug"
+                        [accept]="'image/*'"
                         [value]="setting.value"
                         (update)="updateComponentField(setting.slug, $event)"></berta-file-input>
 

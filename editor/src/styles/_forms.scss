@@ -10,7 +10,8 @@
     transition: color .2s;
   }
 
-  .text-input-wrapper {
+  .text-input-wrapper,
+  .file-input-wrapper {
     align-items: center;
     border: 1px solid $input-color;
     border-radius: $border-radius;
@@ -25,7 +26,12 @@
       transition: fill .2s;
     }
 
-    input {
+    .icon-remove {
+      transition: stroke .2s;
+    }
+
+    input,
+    .file-input {
       border: 0;
       border-radius: $border-radius;
       color: $input-color;
@@ -41,18 +47,42 @@
     }
   }
 
+  .file-input-wrapper {
+    cursor: pointer;
+
+    input {
+      display: none;
+    }
+
+    .file-input {
+      overflow-x: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    svg {
+      padding-right: .75em;
+    }
+  }
+
   &:hover,
   &.bt-focus {
     label,
+    .file-input,
     input {
       color: $input-color-active;
     }
 
-    .text-input-wrapper {
+    .text-input-wrapper,
+    .file-input-wrapper {
       border: 1px solid $input-color-active;
 
       .icon {
         fill: $input-color-active;
+      }
+
+      .icon-remove {
+        stroke: $input-color-active;
       }
     }
   }
@@ -63,15 +93,21 @@
 
   &.error {
     label,
+    .file-input,
     input {
       color: $error-color;
     }
 
-    .text-input-wrapper {
+    .text-input-wrapper,
+    .file-input-wrapper {
       border-color: $error-color;
 
       .icon {
         fill: $error-color;
+      }
+
+      .icon-remove {
+        stroke: $error-color;
       }
     }
   }
