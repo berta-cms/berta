@@ -64,6 +64,11 @@ export class SelectInputComponent implements OnInit {
     const currentValue = this.values.find(val => {
       return val.value === value;
     });
+
+    if (!currentValue) {
+      return '-';
+    }
+
     return currentValue.title;
   }
 
