@@ -4,7 +4,7 @@ import { SettingModel, SettingConfigModel } from '../shared/interfaces';
 @Component({
   selector: 'berta-toggle-input',
   template: `
-    <div class="form-group">
+    <div class="form-group" [class.bt-disabled]="disabled">
       <label>
         {{ label }}
 
@@ -22,6 +22,7 @@ export class ToggleInputComponent {
   @Input() value: SettingModel['value'];
   @Input() values: SettingConfigModel['values'];
   @Output() update = new EventEmitter();
+  disabled = false;
 
   private activeValues = ['yes'];
 
@@ -45,6 +46,8 @@ export class ToggleInputComponent {
       value = this.getUncheckedValue();
     }
 
+    $event.target.disabled = true;
+    this.disabled = true;
     this.update.emit(value);
   }
 }
