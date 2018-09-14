@@ -9,7 +9,8 @@
     transition: color .2s;
   }
 
-  .text-input-wrapper {
+  .text-input-wrapper,
+  .select-wrapper {
     align-items: center;
     border: 1px solid $input-color;
     border-radius: $border-radius;
@@ -24,7 +25,8 @@
       transition: fill .2s;
     }
 
-    input {
+    > input,
+    > .button-wrapper button {
       border: 0;
       border-radius: $border-radius;
       color: $input-color;
@@ -36,6 +38,61 @@
 
       &:focus {
         color: $berta-accent;
+      }
+    }
+  }
+
+  .select-wrapper {
+    display: block;
+    position: relative;
+    white-space: nowrap;
+
+    .button-wrapper {
+      align-items: center;
+      box-sizing: border-box;
+      display: flex;
+      padding-right: .75em;
+      width: 100%;
+    }
+
+    button {
+      overflow-x: hidden;
+      text-align: left;
+      text-overflow: ellipsis;
+    }
+
+    svg {
+      min-width: 10px;
+    }
+
+    .drop-icon {
+      stroke: $input-color;
+      transition: stroke .2s;
+    }
+
+    ul {
+      background-color: $berta-bg-light;
+      border: 1px solid $input-color-active;
+      border-radius: 0 0 $border-radius $border-radius;
+      box-sizing: border-box;
+      display: none;
+      left: -1px;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      position: absolute;
+      right: -1px;
+      z-index: 1;
+
+      li {
+        color: $input-color-active;
+        overflow-x: hidden;
+        padding: .75em;
+        text-overflow: ellipsis;
+
+        &:hover {
+          color: $berta-accent;
+        }
       }
     }
   }
@@ -62,16 +119,36 @@
   &.bt-focus {
     label,
     input,
+    .button-wrapper button,
     textarea:not(:focus):not([disabled]) {
       color: $input-color-active;
     }
 
     .text-input-wrapper,
+    .select-wrapper,
     textarea {
       border: 1px solid $input-color-active;
 
       .icon {
         fill: $input-color-active;
+      }
+    }
+
+    .select-wrapper {
+      color: $input-color-active;
+
+      .drop-icon {
+        stroke: $input-color-active;
+      }
+    }
+  }
+
+  &.bt-focus {
+    .select-wrapper {
+      border-radius: $border-radius $border-radius 0 0;
+
+      ul {
+        display: block;
       }
     }
   }
@@ -83,74 +160,24 @@
   &.error {
     label,
     input,
+    .button-wrapper button,
     textarea:not(:focus) {
       color: $error-color;
     }
 
     .text-input-wrapper,
+    .select-wrapper,
+    .select-wrapper ul,
     textarea:not(:focus) {
       border-color: $error-color;
 
       .icon {
         fill: $error-color;
       }
+
+      .drop-icon {
+        stroke: $error-color;
+      }
     }
   }
-
-  .select-wrapper {
-    margin-left: 1em;
-    position: relative;
-
-    white-space: nowrap;
-    width: 50%;
-
-    button {
-      background-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAiIGhlaWdodD0iNiIgdmlld0JveD0iMCAwIDEwIDYiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTkgMUw0Ljc1NzM2IDUuMjQyNjRMMC41MTQ3MTkgMSIgc3Ryb2tlPSIjOTc5Nzk3IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48L3N2Zz4=);
-      background-position: 95% center;
-      background-repeat: no-repeat;
-      margin-left: 0;
-      overflow-x: hidden;
-      padding-right: 2em;
-      text-align: left;
-      text-overflow: ellipsis;
-      width: 100%;
-
-      &.open {
-        border-radius: $border-radius $border-radius 0 0;
-
-        + ul {
-          display: block;
-        }
-      }
-
-      + ul {
-        background-color: $berta-bg-light;
-        border: 1px solid $input-color-active;
-        border-radius: 0 0 $border-radius $border-radius;
-        border-top: 0;
-        box-sizing: border-box;
-        display: none;
-        list-style: none;
-        margin: 0;
-        max-width: 100%;
-        padding: 0;
-        position: absolute;
-        width: 100%;
-        z-index: 1;
-
-        li {
-          color: $input-color-active;
-          overflow-x: hidden;
-          padding: .75em;
-          text-overflow: ellipsis;
-
-          &:hover {
-            color: $berta-accent;
-          }
-        }
-      }
-
-    }
-  }
-
 }
