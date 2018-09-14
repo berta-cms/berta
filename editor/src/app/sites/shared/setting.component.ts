@@ -75,7 +75,7 @@ import { UpdateInputFocus } from '../../app-state/app.actions';
         </label>
       </div>
 
-      <div *ngSwitchDefault style="padding: 10px">{{ config.format || '' }}</div>
+      <h4 *ngSwitchDefault>{{ config.title }}</h4>
     </ng-container>
   `,
   styles: [`
