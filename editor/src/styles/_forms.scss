@@ -6,92 +6,178 @@
     color: $input-color;
     display: flex;
     justify-content: space-between;
+    transition: color .2s;
   }
 
-  input[type='text'],
-  textarea,
-  .select-wrapper button {
+  .text-input-wrapper,
+  .select-wrapper {
+    align-items: center;
     border: 1px solid $input-color;
     border-radius: $border-radius;
-    box-sizing: border-box;
-    color: $input-color;
-    font-size: 1em;
+    display: flex;
     margin-left: 1em;
-    outline: none;
-    padding: .75em;
+    padding-left: .75em;
+    transition: border-color .2s;
     width: 50%;
 
-    &:hover {
-      border-color: $input-color-active;
+    .icon {
+      fill: $input-color;
+      transition: fill .2s;
     }
 
-    &:focus {
-      border-color: $input-color-active;
-      color: $input-color-active;
-    }
+    > input,
+    > .button-wrapper button {
+      border: 0;
+      border-radius: $border-radius;
+      color: $input-color;
+      flex-grow: 1;
+      font-size: 1em;
+      outline: none;
+      padding: .75em .75em .75em 0;
+      transition: color .2s;
 
-    &.error {
-      border-color: $error-color;
-    }
-
-    &[disabled] {
-      border-color: $input-color-disabled;
-      color: $input-color-disabled;
+      &:focus {
+        color: $berta-accent;
+      }
     }
   }
 
   .select-wrapper {
-    margin-left: 1em;
+    display: block;
     position: relative;
-
     white-space: nowrap;
-    width: 50%;
+
+    .button-wrapper {
+      align-items: center;
+      box-sizing: border-box;
+      display: flex;
+      padding-right: .75em;
+      width: 100%;
+    }
 
     button {
-      background-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAiIGhlaWdodD0iNiIgdmlld0JveD0iMCAwIDEwIDYiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTkgMUw0Ljc1NzM2IDUuMjQyNjRMMC41MTQ3MTkgMSIgc3Ryb2tlPSIjOTc5Nzk3IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48L3N2Zz4=);
-      background-position: 95% center;
-      background-repeat: no-repeat;
-      margin-left: 0;
       overflow-x: hidden;
-      padding-right: 2em;
       text-align: left;
       text-overflow: ellipsis;
-      width: 100%;
+    }
 
-      &.open {
-        border-radius: $border-radius $border-radius 0 0;
+    svg {
+      min-width: 10px;
+    }
 
-        + ul {
-          display: block;
+    .drop-icon {
+      stroke: $input-color;
+      transition: stroke .2s;
+    }
+
+    ul {
+      background-color: $berta-bg-light;
+      border: 1px solid $input-color-active;
+      border-radius: 0 0 $border-radius $border-radius;
+      box-sizing: border-box;
+      display: none;
+      left: -1px;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      position: absolute;
+      right: -1px;
+      z-index: 1;
+
+      li {
+        color: $input-color-active;
+        overflow-x: hidden;
+        padding: .75em;
+        text-overflow: ellipsis;
+
+        &:hover {
+          color: $berta-accent;
         }
       }
+    }
+  }
 
-      + ul {
-        background-color: $berta-bg-light;
-        border: 1px solid $input-color-active;
-        border-radius: 0 0 $border-radius $border-radius;
-        border-top: 0;
-        box-sizing: border-box;
-        display: none;
-        list-style: none;
-        margin: 0;
-        max-width: 100%;
-        padding: 0;
-        position: absolute;
-        width: 100%;
-        z-index: 1;
+  textarea {
+    border: 1px solid $input-color;
+    border-radius: $border-radius;
+    box-sizing: border-box;
+    color: $input-color;
+    display: block;
+    font-size: 1em;
+    margin: .75em 0 0;
+    outline: none;
+    padding: .75em;
+    transition: color .2s, border-color .2s;
+    width: 100%;
 
-        li {
-          overflow-x: hidden;
-          padding: .75em;
-          text-overflow: ellipsis;
+    &:focus {
+      color: $berta-accent;
+    }
+  }
 
-          &:hover {
-            color: $input-color-active;
-          }
-        }
+  &:hover,
+  &.bt-focus {
+    label,
+    input,
+    .button-wrapper button,
+    textarea:not(:focus):not([disabled]) {
+      color: $input-color-active;
+    }
+
+    .text-input-wrapper,
+    .select-wrapper,
+    textarea {
+      border: 1px solid $input-color-active;
+
+      .icon {
+        fill: $input-color-active;
+      }
+    }
+
+    .select-wrapper {
+      color: $input-color-active;
+
+      .drop-icon {
+        stroke: $input-color-active;
+      }
+    }
+  }
+
+  &.bt-focus {
+    .select-wrapper {
+      border-radius: $border-radius $border-radius 0 0;
+
+      ul {
+        display: block;
+      }
+    }
+  }
+
+  &.bt-disabled {
+    opacity: .3;
+  }
+
+  &.error {
+    label,
+    input,
+    .button-wrapper button,
+    textarea:not(:focus) {
+      color: $error-color;
+    }
+
+    .text-input-wrapper,
+    .select-wrapper,
+    .select-wrapper ul,
+    textarea:not(:focus) {
+      border-color: $error-color;
+
+      .icon {
+        fill: $error-color;
       }
 
+      .drop-icon {
+        stroke: $error-color;
+      }
     }
   }
 }

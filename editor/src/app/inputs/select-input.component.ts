@@ -4,16 +4,20 @@ import { SettingModel, SettingConfigModel } from '../shared/interfaces';
 @Component({
   selector: 'berta-select-input',
   template: `
-    <div class="form-group">
+    <div class="form-group" [class.bt-focus]="focus" [class.bt-disabled]="disabled">
       <label>
         {{ label }}
 
-        <div class="select-wrapper" >
-          <button #toggleDropDown
-                  type="button"
-                  [title]="getCurrentTitleByValue(value)"
-                  (click)="openDropDown(toggleDropDown)"
-                  (blur)="closeDropDown(toggleDropDown)">{{ getCurrentTitleByValue(value) }}</button>
+        <div class="select-wrapper">
+          <div class="button-wrapper">
+            <button type="button"
+                    [title]="getCurrentTitleByValue(value)"
+                    (click)="toggleDropDown()"
+                    (blur)="closeDropDown(toggleDropDown)">{{ getCurrentTitleByValue(value) }}</button>
+            <svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M9 1L4.75736 5.24264L0.514719 1" stroke="#9b9b9b" stroke-linecap="round" stroke-linejoin="round" class="drop-icon"/>
+            </svg>
+          </div>
           <ul>
             <li *ngFor="let val of values" [title]="val.title" (click)="updateField(val.value)">{{ val.title }}</li>
           </ul>
@@ -26,6 +30,9 @@ export class SelectInputComponent implements OnInit {
   @Input() value: SettingModel['value'];
   @Input() values: SettingConfigModel['values'];
   @Output() update = new EventEmitter();
+  @Output() inputFocus = new EventEmitter();
+  focus = false;
+  disabled = false;
 
   private lastValue: SettingModel['value'];
 
@@ -34,14 +41,22 @@ export class SelectInputComponent implements OnInit {
     this.lastValue = this.value;
   }
 
-  openDropDown(toggleDropDown) {
-    toggleDropDown.classList.add('open');
+  toggleDropDown() {
+    if (this.disabled) {
+      return;
+    }
+    this.focus = !this.focus;
+    this.inputFocus.emit(this.focus);
   }
 
   closeDropDown(toggleDropDown) {
+    if (!this.focus) {
+      return;
+    }
     // Wait for `li` click event
     setTimeout(() => {
-      toggleDropDown.classList.remove('open');
+      this.focus = false;
+      this.inputFocus.emit(false);
     }, 200);
   }
 
@@ -57,6 +72,7 @@ export class SelectInputComponent implements OnInit {
       return;
     }
     this.lastValue = value;
+    this.disabled = true;
     this.update.emit(value);
   }
 }

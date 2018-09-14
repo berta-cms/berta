@@ -4,22 +4,18 @@ import { TextInputComponent } from './text-input.component';
 @Component({
   selector: 'berta-long-text-input',
   template: `
-    <div class="form-group">
+    <div class="form-group" [class.bt-focus]="focus" [class.bt-disabled]="disabled">
       <label>
         {{ label }}
-        <textarea (blur)="updateField($event)"
+        <textarea (focus)="onFocus()"
+                  (keydown)="updateField($event)"
+                  (blur)="onBlur($event)"
                   rows="3">{{ value }}</textarea>
       </label>
     </div>`,
   styles: [`
     :host label {
       display: block;
-    }
-
-    textarea {
-      display: block;
-      width: 100%;
-      margin: .75em 0 0;
     }
   `]
 })

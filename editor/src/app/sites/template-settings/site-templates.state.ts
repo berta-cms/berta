@@ -1,5 +1,6 @@
-import { State, StateContext, Selector, NgxsOnInit } from '@ngxs/store';
-import { take } from 'rxjs/operators';
+import { concat } from 'rxjs';
+import { take, switchMap } from 'rxjs/operators';
+import { State, StateContext, Selector, NgxsOnInit, Action, Actions, ofActionSuccessful } from '@ngxs/store';
 import {
   SiteTemplatesStateModel,
   TemplateSiteModel,
@@ -9,6 +10,8 @@ import {
 import { AppStateService } from '../../app-state/app-state.service';
 import { SiteSettingsState } from '../settings/site-settings.state';
 import { initSettingConfigGroup } from '../../shared/helpers';
+import { ResetSiteTemplatesAction, InitSiteTemplatesAction } from './site-templates.actions';
+import { UserLoginAction } from '../../user/user.actions';
 
 
 @State<SiteTemplatesStateModel>({
@@ -44,46 +47,60 @@ export class SiteTemplatesState implements NgxsOnInit {
   }
 
   constructor(
+    private actions$: Actions,
     private appStateService: AppStateService) {
   }
 
-  ngxsOnInit({ setState }: StateContext<SiteTemplatesStateModel>) {
-    this.appStateService.getInitialState('', 'siteTemplates').pipe(
-      take(1)
-    ).subscribe({
+  ngxsOnInit({ dispatch }: StateContext<SiteTemplatesStateModel>) {
+    concat(
+      this.appStateService.getInitialState('', 'siteTemplates').pipe(take(1)),
+      this.actions$.pipe(ofActionSuccessful(UserLoginAction), switchMap(() => {
+        return this.appStateService.getInitialState('', 'siteTemplates').pipe(take(1));
+      }))
+    )
+    .subscribe({
       next: (siteTemplateResponse: SiteTemplatesResponseModel) => {
-
-        /** Initialize state: */
-        const siteTemplateState: SiteTemplatesStateModel = {};
-
-        for (const templateSlug in siteTemplateResponse) {
-          const templateSettingGroups: TemplateModelResponse = siteTemplateResponse[templateSlug].templateConf;
-          siteTemplateState[templateSlug] = {
-            templateConf: {},
-            sectionTypes: {}
-          };
-
-          for (const groupSlug in templateSettingGroups) {
-            siteTemplateState[templateSlug].templateConf[groupSlug] = initSettingConfigGroup(templateSettingGroups[groupSlug]);
-          }
-
-          for (const sectionTypeSlug in siteTemplateResponse[templateSlug].sectionTypes) {
-            const sectionTypeConfig = siteTemplateResponse[templateSlug].sectionTypes[sectionTypeSlug];
-
-            if ('params' in sectionTypeConfig) {
-              siteTemplateState[templateSlug].sectionTypes[sectionTypeSlug] = {
-                ...sectionTypeConfig,
-                params: initSettingConfigGroup(sectionTypeConfig.params)
-              };
-            } else {
-              siteTemplateState[templateSlug].sectionTypes[sectionTypeSlug] = sectionTypeConfig;
-            }
-          }
-        }
-
-        setState(siteTemplateState);
+        dispatch(new InitSiteTemplatesAction(siteTemplateResponse));
       },
       error: (error) => console.error(error)
     });
+  }
+
+  @Action(ResetSiteTemplatesAction)
+  resetSiteTemplates({ setState }: StateContext<SiteTemplatesStateModel>) {
+    setState({});
+  }
+
+  @Action(InitSiteTemplatesAction)
+  initSiteTemplates({ setState }: StateContext<SiteTemplatesStateModel>, action: InitSiteTemplatesAction) {
+    /** Initialize state: */
+    const siteTemplateState: SiteTemplatesStateModel = {};
+
+    for (const templateSlug in action.payload) {
+      const templateSettingGroups: TemplateModelResponse = action.payload[templateSlug].templateConf;
+      siteTemplateState[templateSlug] = {
+        templateConf: {},
+        sectionTypes: {}
+      };
+
+      for (const groupSlug in templateSettingGroups) {
+        siteTemplateState[templateSlug].templateConf[groupSlug] = initSettingConfigGroup(templateSettingGroups[groupSlug]);
+      }
+
+      for (const sectionTypeSlug in action.payload[templateSlug].sectionTypes) {
+        const sectionTypeConfig = action.payload[templateSlug].sectionTypes[sectionTypeSlug];
+
+        if ('params' in sectionTypeConfig) {
+          siteTemplateState[templateSlug].sectionTypes[sectionTypeSlug] = {
+            ...sectionTypeConfig,
+            params: initSettingConfigGroup(sectionTypeConfig.params)
+          };
+        } else {
+          siteTemplateState[templateSlug].sectionTypes[sectionTypeSlug] = sectionTypeConfig;
+        }
+      }
+    }
+
+    setState(siteTemplateState);
   }
 }
