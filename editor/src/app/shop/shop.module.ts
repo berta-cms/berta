@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { ShopRoutingModule } from './shop-routing.module';
-import { ShopSettingsComponent } from './shop-settings.component';
+import { ShopComponent } from './shop.component';
 import { NgxsModule } from '@ngxs/store';
 import { ShopState } from './shop.state';
 import { ShopProductsState } from './shop-products.state';
@@ -25,6 +25,6 @@ import { ShopSettingsConfigState } from './shop-settings-config.state';
       ShopSettingsConfigState
     ]),
   ],
-  declarations: [ShopSettingsComponent]
+  declarations: [ShopComponent]
 })
 export class ShopModule { }

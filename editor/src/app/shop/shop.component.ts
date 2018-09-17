@@ -21,7 +21,7 @@ import { splitCamel, camel2Words, uCFirst } from '../shared/helpers';
   `,
   styles: []
 })
-export class ShopSettingsComponent implements OnInit {
+export class ShopComponent implements OnInit {
   @Select(ShopState.getSections) shopSections$;
   @Select(state => state.app) appState$;
 
