@@ -1,4 +1,4 @@
-import { concat } from 'rxjs';
+import { concat, of } from 'rxjs';
 import { take, switchMap, tap } from 'rxjs/operators';
 import { State, Action, StateContext, Selector, NgxsOnInit, Store, Actions, ofActionSuccessful } from '@ngxs/store';
 import { SitesSettingsStateModel, SiteSettingsResponse, SiteSettingsSiteResponse } from './site-settings.interface';
@@ -79,16 +79,25 @@ export class SiteSettingsState implements NgxsOnInit {
       value: action.payload[settingKey]
     };
 
-    if (action.payload instanceof File) {
-      const url = (currentTemplateSlug ? currentTemplateSlug + '/' : '') + action.settingGroup + '/' + settingKey;
-      return this.fileUploadService.upload(url, action.payload).subscribe({
-        next: (response: any) => {
-          if (response.error_message) {
-            console.error(response.error_message);
-          } else {
-            const currentState = getState();
+    const url = (currentTemplateSlug ? currentTemplateSlug + '/' : '') + action.settingGroup + '/' + settingKey;
+    const fileUpload$ = data.value instanceof File ? this.fileUploadService.upload(url, action.payload) : of(null);
 
-            patchState({[currentSite]: currentState[currentSite].map(settingGroup => {
+    return fileUpload$.pipe(
+      tap((fileUpload) => {
+        if (fileUpload) {
+          data.value = fileUpload.filename;
+        }
+      }),
+      switchMap(() => this.appStateService.sync('siteSettings', data)),
+      tap(response => {
+        if (response.error_message) {
+          /* This should probably be handled in sync */
+          console.error(response.error_message);
+        } else {
+          const currentState = getState();
+
+          patchState({
+            [currentSite]: currentState[currentSite].map(settingGroup => {
               if (settingGroup.slug !== action.settingGroup) {
                 return settingGroup;
               }
@@ -99,41 +108,11 @@ export class SiteSettingsState implements NgxsOnInit {
                   if (setting.slug !== settingKey) {
                     return setting;
                   }
-                  return { ...setting, value: response.filename };
+                  return { ...setting, value: action.payload[settingKey] };
                 })
               };
-            })});
-          }
-        },
-        error: (error) => {
-          console.error(error);
-        }
-      });
-    }
-
-    return this.appStateService.sync('siteSettings', data).pipe(
-      tap(response => {
-        if (response.error_message) {
-          /* This should probably be handled in sync */
-          console.error(response.error_message);
-        } else {
-          const currentState = getState();
-
-          patchState({[currentSite]: currentState[currentSite].map(settingGroup => {
-            if (settingGroup.slug !== action.settingGroup) {
-              return settingGroup;
-            }
-
-            return {
-              ...settingGroup,
-              settings: settingGroup.settings.map(setting => {
-                if (setting.slug !== settingKey) {
-                  return setting;
-                }
-                return { ...setting, value: action.payload[settingKey] };
-              })
-            };
-          })});
+            })
+          });
         }
       })
     );
