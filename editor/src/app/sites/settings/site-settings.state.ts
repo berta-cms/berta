@@ -1,5 +1,5 @@
 import { concat, of } from 'rxjs';
-import { take, switchMap, tap } from 'rxjs/operators';
+import { take, switchMap, tap, map } from 'rxjs/operators';
 import { State, Action, StateContext, Selector, NgxsOnInit, Store, Actions, ofActionSuccessful } from '@ngxs/store';
 import { SitesSettingsStateModel, SiteSettingsResponse, SiteSettingsSiteResponse } from './site-settings.interface';
 import { SettingsGroupModel } from '../../shared/interfaces';
@@ -83,12 +83,13 @@ export class SiteSettingsState implements NgxsOnInit {
     const fileUpload$ = data.value instanceof File ? this.fileUploadService.upload(url, action.payload) : of(null);
 
     return fileUpload$.pipe(
-      tap((fileUpload) => {
+      map((fileUpload) => {
         if (fileUpload) {
-          data.value = fileUpload.filename;
+          return { ...data, value: fileUpload.filename };
         }
+        return data;
       }),
-      switchMap(() => this.appStateService.sync('siteSettings', data)),
+      switchMap((syncData) => this.appStateService.sync('siteSettings', syncData)),
       tap(response => {
         if (response.error_message) {
           /* This should probably be handled in sync */
