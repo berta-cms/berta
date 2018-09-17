@@ -15,7 +15,10 @@ import { splitCamel, camel2Words, uCFirst } from '../shared/helpers';
       <li *ngFor="let section of sections$ | async">
         <a [routerLink]="['/shop', section.urlSegment]"
            [style.fontWeight]="(currentSection === section.urlSegment ? 'bold': '')">{{ section.title }}</a>
-        <pre *ngIf="section.urlSegment === currentSection">{{section.data | json}}</pre>
+           <ng-container [ngSwitch]="currentSection">
+             <berta-shop-products *ngSwitchCase="'products'"></berta-shop-products>
+             <pre *ngSwitchCase="section.urlSegment">{{section.data | json}}</pre>
+           </ng-container>
       </li>
     </ul>
   `,
