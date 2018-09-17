@@ -1,8 +1,5 @@
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
-import { Store } from '@ngxs/store';
 import { SettingModel } from '../shared/interfaces';
-import { FileUploadService } from '../sites/shared/file-upload.service';
-import { AppShowLoading, AppHideLoading } from '../app-state/app.actions';
 
 @Component({
   selector: 'berta-file-input',
@@ -36,18 +33,13 @@ export class FileInputComponent implements OnInit {
   @Input() templateSlug: string;
   @Input() groupSlug: string;
   @Input() property: string;
-  @Input() value: string;
+  @Input() value: string|File;
   @Input() accept: string;
   @Output() update = new EventEmitter();
 
   hasError = false;
   disabled = false;
-  private lastValue: SettingModel['value'];
-
-  constructor(
-    private store: Store,
-    private fileUploadService: FileUploadService) {
-  }
+  private lastValue: SettingModel['value']|File;
 
   ngOnInit() {
     // Cache the value, so we don't update if nothing changes
@@ -56,31 +48,8 @@ export class FileInputComponent implements OnInit {
 
   onChange($event) {
     this.disabled = true;
-    $event.target.disabled = true;
-    this.store.dispatch(new AppShowLoading());
-    let url = this.groupSlug + '/' + this.property;
-
-    if (this.templateSlug) {
-      url = this.templateSlug + '/' + url;
-    }
-
-    this.fileUploadService.upload(url, $event.target.files[0]).subscribe({
-      next: (response: any) => {
-        this.hasError = false;
-        this.value = response.filename;
-        this.disabled = false;
-        $event.target.disabled = false;
-        this.store.dispatch(new AppHideLoading());
-        this.updateField(this.value);
-      },
-      error: (error) => {
-        this.hasError = true;
-        this.disabled = false;
-        $event.target.disabled = false;
-        this.store.dispatch(new AppHideLoading());
-        console.error(error);
-      }
-    });
+    (<HTMLInputElement>$event.target).disabled = true;
+    this.updateField($event.target.files[0]);
   }
 
   removeFile($event, fileInput) {
@@ -88,7 +57,8 @@ export class FileInputComponent implements OnInit {
     $event.preventDefault();
     this.value = '';
     this.disabled = true;
-    fileInput.disabled = true;
+    (<HTMLInputElement>fileInput).disabled = true;
+
     this.updateField(this.value);
   }
 

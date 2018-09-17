@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { take, map, catchError } from 'rxjs/operators';
+import { Store } from '@ngxs/store';
+import { AppShowLoading, AppHideLoading } from '../../app-state/app.actions';
 
 
 @Injectable({
@@ -9,6 +11,7 @@ import { take, map, catchError } from 'rxjs/operators';
 export class FileUploadService {
 
   constructor(
+    private store: Store,
     private http: HttpClient) {
   }
 
@@ -17,12 +20,16 @@ export class FileUploadService {
     const formData = new FormData();
     formData.append('Filedata', file);
 
+    this.store.dispatch(new AppShowLoading());
+
     return this.http.post(url, formData).pipe(
       take(1),
       map((response) => {
+        this.store.dispatch(new AppHideLoading());
         return response;
       }),
       catchError(error => {
+        this.store.dispatch(new AppHideLoading());
         throw error;
       })
     );

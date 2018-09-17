@@ -1,8 +1,9 @@
-import { concat } from 'rxjs';
-import { take, switchMap, tap } from 'rxjs/operators';
+import { concat, of } from 'rxjs';
+import { take, switchMap, tap, map } from 'rxjs/operators';
 import { State, Action, StateContext, Selector, NgxsOnInit, Store, Actions, ofActionSuccessful } from '@ngxs/store';
 import { SitesSettingsStateModel, SiteSettingsResponse, SiteSettingsSiteResponse } from './site-settings.interface';
 import { SettingsGroupModel } from '../../shared/interfaces';
+import { FileUploadService } from '../shared/file-upload.service';
 import { AppStateService } from '../../app-state/app-state.service';
 import { AppState } from '../../app-state/app.state';
 import {
@@ -43,7 +44,8 @@ export class SiteSettingsState implements NgxsOnInit {
   constructor(
     private store: Store,
     private actions$: Actions,
-    private appStateService: AppStateService) {
+    private appStateService: AppStateService,
+    private fileUploadService: FileUploadService) {
   }
 
   ngxsOnInit({ dispatch }: StateContext<SitesSettingsStateModel>) {
@@ -76,7 +78,15 @@ export class SiteSettingsState implements NgxsOnInit {
       value: action.payload[settingKey]
     };
 
-    return this.appStateService.sync('siteSettings', data).pipe(
+    const url = action.settingGroup + '/' + settingKey;
+    const fileUpload$ = data.value instanceof File ?
+      this.fileUploadService.upload(url, data.value).pipe(
+        map(fileUpload => ({ ...data, value: fileUpload['filename'] })))
+      :
+      of(data);
+
+    return fileUpload$.pipe(
+      switchMap(syncData => this.appStateService.sync('siteSettings', syncData)),
       tap(response => {
         if (response.error_message) {
           /* This should probably be handled in sync */
@@ -95,7 +105,7 @@ export class SiteSettingsState implements NgxsOnInit {
                 if (setting.slug !== settingKey) {
                   return setting;
                 }
-                return { ...setting, value: action.payload[settingKey] };
+                return { ...setting, value: response.value };
               })
             };
           })});
