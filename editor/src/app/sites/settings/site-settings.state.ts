@@ -13,6 +13,7 @@ import {
   ResetSiteSettingsAction,
   InitSiteSettingsAction} from './site-settings.actions';
 import { UserLoginAction } from '../../user/user.actions';
+import { FileUploadService } from '../shared/file-upload.service';
 
 
 @State<SitesSettingsStateModel>({
@@ -43,7 +44,8 @@ export class SiteSettingsState implements NgxsOnInit {
   constructor(
     private store: Store,
     private actions$: Actions,
-    private appStateService: AppStateService) {
+    private appStateService: AppStateService,
+    private fileUploadService: FileUploadService) {
   }
 
   ngxsOnInit({ dispatch }: StateContext<SitesSettingsStateModel>) {
@@ -70,11 +72,44 @@ export class SiteSettingsState implements NgxsOnInit {
   @Action(UpdateSiteSettingsAction)
   updateSiteSettings({ getState, patchState }: StateContext<SitesSettingsStateModel>, action: UpdateSiteSettingsAction) {
     const currentSite = this.store.selectSnapshot(AppState.getSite);
+    const currentTemplateSlug = this.store.selectSnapshot(SiteSettingsState.getCurrentSiteTemplate);
     const settingKey = Object.keys(action.payload)[0];
     const data = {
       path: currentSite + '/settings/' + action.settingGroup + '/' + settingKey,
       value: action.payload[settingKey]
     };
+
+    if (action.payload instanceof File) {
+      const url = (currentTemplateSlug ? currentTemplateSlug + '/' : '') + action.settingGroup + '/' + settingKey;
+      return this.fileUploadService.upload(url, action.payload).subscribe({
+        next: (response: any) => {
+          if (response.error_message) {
+            console.error(response.error_message);
+          } else {
+            const currentState = getState();
+
+            patchState({[currentSite]: currentState[currentSite].map(settingGroup => {
+              if (settingGroup.slug !== action.settingGroup) {
+                return settingGroup;
+              }
+
+              return {
+                ...settingGroup,
+                settings: settingGroup.settings.map(setting => {
+                  if (setting.slug !== settingKey) {
+                    return setting;
+                  }
+                  return { ...setting, value: response.filename };
+                })
+              };
+            })});
+          }
+        },
+        error: (error) => {
+          console.error(error);
+        }
+      });
+    }
 
     return this.appStateService.sync('siteSettings', data).pipe(
       tap(response => {
