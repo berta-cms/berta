@@ -111,4 +111,9 @@
       }
     }
   }
+
+  .error-message {
+    color: $error-color;
+    margin: .5em 0;
+  }
 }

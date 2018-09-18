@@ -26,6 +26,9 @@ import { SettingModel } from '../shared/interfaces';
           </svg>
         </div>
       </label>
+      <div class="error-message" [style.display]="(hasError ? '' : 'none')">
+        File exceeds the maximum file-size limit {{ maxFileSize/1024/1024 }} MB
+      </div>
     </div>`
 })
 export class FileInputComponent implements OnInit {
@@ -38,6 +41,7 @@ export class FileInputComponent implements OnInit {
   @Output() update = new EventEmitter();
 
   hasError = false;
+  maxFileSize = 3145728;  // 3 MB
   disabled = false;
   private lastValue: SettingModel['value']|File;
 
@@ -47,9 +51,20 @@ export class FileInputComponent implements OnInit {
   }
 
   onChange($event) {
+    if (!this.validate($event)) {
+      return;
+    }
     this.disabled = true;
     (<HTMLInputElement>$event.target).disabled = true;
     this.updateField($event.target.files[0]);
+  }
+
+  validate($event) {
+    if ($event.target.files[0].size > this.maxFileSize) {
+      this.hasError = true;
+      return false;
+    }
+    return true;
   }
 
   removeFile($event, fileInput) {
