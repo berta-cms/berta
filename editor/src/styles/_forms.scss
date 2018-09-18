@@ -20,6 +20,10 @@
     transition: border-color .2s;
     width: 50%;
 
+    svg {
+      flex-shrink: 0;
+    }
+
     .icon {
       fill: $input-color;
       transition: fill .2s;
