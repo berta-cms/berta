@@ -1,8 +1,9 @@
-import { concat } from 'rxjs';
-import { take, switchMap, tap } from 'rxjs/operators';
+import { concat, of } from 'rxjs';
+import { take, switchMap, tap, map } from 'rxjs/operators';
 import { State, Action, StateContext, Selector, NgxsOnInit, Store, Actions, ofActionSuccessful } from '@ngxs/store';
 
 import { AppStateService } from '../../app-state/app-state.service';
+import { FileUploadService } from '../shared/file-upload.service';
 import {
   SitesTemplateSettingsStateModel,
   SitesTemplateSettingsResponse,
@@ -49,7 +50,8 @@ export class SiteTemplateSettingsState implements NgxsOnInit {
   constructor(
     private store: Store,
     private actions$: Actions,
-    private appStateService: AppStateService) {
+    private appStateService: AppStateService,
+    private fileUploadService: FileUploadService) {
   }
 
 
@@ -92,12 +94,17 @@ export class SiteTemplateSettingsState implements NgxsOnInit {
       path: currentSite + '/site_template_settings/' + currentSiteTemplate + '/' + action.settingGroup + '/' + settingKey,
       value: action.payload[settingKey]
     };
-    /** @todo: Loading should be triggered here */
 
-    return this.appStateService.sync('siteTemplateSettings', data).pipe(
+    const url = currentSiteTemplate + '/' + action.settingGroup + '/' + settingKey;
+    const fileUpload$ = data.value instanceof File ?
+      this.fileUploadService.upload(url, data.value).pipe(
+        map(fileUpload => ({ ...data, value: fileUpload['filename'] })))
+      :
+      of(data);
+
+    return fileUpload$.pipe(
+      switchMap(syncData => this.appStateService.sync('siteTemplateSettings', syncData)),
       tap(response => {
-        /** @todo: additional action should be triggered here!!! */
-
         if (response.error_message) {
           // @TODO handle error message
           console.error(response.error_message);
@@ -118,7 +125,7 @@ export class SiteTemplateSettingsState implements NgxsOnInit {
                     if (setting.slug !== settingKey) {
                       return setting;
                     }
-                    return { ...setting, value: action.payload[settingKey] };
+                    return { ...setting, value: response.value };
                   })
                 };
               })

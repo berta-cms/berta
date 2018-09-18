@@ -138,6 +138,12 @@ export function initSettingConfigGroup(settingGroupConfigResponse: SettingConfig
         }];
       }
 
+      // Turn ['yes', 'no'] select type into toggle input type
+      if (values.length === 2 &&
+          ((values[0].value === 'yes' && values[1].value === 'no') || (values[0].value === 'no' && values[1].value === 'yes'))) {
+        settingGroupConfigResponse[settingSlug].format = 'toggle';
+      }
+
       result[settingSlug] = {
         ...settingGroupConfigResponse[settingSlug],
         values: values

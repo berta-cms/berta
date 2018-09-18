@@ -1,5 +1,11 @@
 import { AppStateModel } from './app-state.interface';
 
+export class UpdateInputFocus {
+  static readonly type = 'INPUT_FOCUS:UPDATE';
+  constructor(public isFocused: boolean) {
+  }
+}
+
 export class AppShowOverlay {
   static readonly type = 'OVERLAY:SHOW';
 }
