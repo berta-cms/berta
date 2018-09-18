@@ -13,7 +13,8 @@ import { SettingModel, SettingConfigModel } from '../shared/interfaces';
             <button type="button"
                     [title]="getCurrentTitleByValue(value)"
                     (click)="toggleDropDown()"
-                    (blur)="closeDropDown(toggleDropDown)">{{ getCurrentTitleByValue(value) }}</button>
+                    (keydown)="onKeyDown($event)"
+                    (blur)="closeDropDown()">{{ getCurrentTitleByValue(value) }}</button>
             <svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M9 1L4.75736 5.24264L0.514719 1" stroke="#9b9b9b" stroke-linecap="round" stroke-linejoin="round" class="drop-icon"/>
             </svg>
@@ -49,7 +50,13 @@ export class SelectInputComponent implements OnInit {
     this.inputFocus.emit(this.focus);
   }
 
-  closeDropDown(toggleDropDown) {
+  onKeyDown($event) {
+    if ($event.key === 'Escape' || $event.keyCode === 27) {
+      this.closeDropDown();
+    }
+  }
+
+  closeDropDown() {
     if (!this.focus) {
       return;
     }
