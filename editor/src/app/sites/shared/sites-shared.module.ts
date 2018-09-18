@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { SettingComponent } from './setting.component';
 import { AutofocusDirective } from './autofocus.directive';
 import { TextInputComponent } from '../../inputs/text-input.component';
+import { LongTextInputComponent } from '../../inputs/long-text-input.component';
+import { ToggleInputComponent } from '../../inputs/toggle-input.component';
 import { FileInputComponent } from '../../inputs/file-input.component';
 
 @NgModule({
@@ -13,6 +15,8 @@ import { FileInputComponent } from '../../inputs/file-input.component';
     SettingComponent,
     AutofocusDirective,
     TextInputComponent,
+    LongTextInputComponent,
+    ToggleInputComponent,
     FileInputComponent
   ],
   exports: [
