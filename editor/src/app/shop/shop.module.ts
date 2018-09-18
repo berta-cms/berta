@@ -6,11 +6,12 @@ import { ShopComponent } from './shop.component';
 import { NgxsModule } from '@ngxs/store';
 import { ShopState } from './shop.state';
 import { ShopProductsState } from './products/shop-products.state';
-import { ShopOrdersState } from './shop-orders.state';
+import { ShopOrdersState } from './orders/shop-orders.state';
 import { ShopRegionalCostsState } from './shop-regional-costs.state';
 import { ShopSettingsState } from './shop-settings.state';
 import { ShopSettingsConfigState } from './shop-settings-config.state';
 import { ShopProductsComponent } from './products/shop-products.component';
+import { ShopOrdersComponent } from './orders/shop-orders.component';
 
 
 @NgModule({
@@ -26,6 +27,6 @@ import { ShopProductsComponent } from './products/shop-products.component';
       ShopSettingsConfigState
     ]),
   ],
-  declarations: [ShopComponent, ShopProductsComponent]
+  declarations: [ShopComponent, ShopProductsComponent, ShopOrdersComponent]
 })
 export class ShopModule { }

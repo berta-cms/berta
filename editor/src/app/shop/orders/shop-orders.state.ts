@@ -1,8 +1,7 @@
 import { State, StateContext, NgxsOnInit, Selector } from '@ngxs/store';
-import { ShopStateService } from './shop-state.service';
+import { ShopStateService } from '../shop-state.service';
 import { take } from 'rxjs/operators';
-import { AppState } from '../app-state/app.state';
-import { AppStateModel } from '../app-state/app-state.interface';
+import { AppState } from '../../app-state/app.state';
 
 interface ShopOrdersModel {
   [site: string]: any[];
@@ -17,9 +16,9 @@ const defaultState: ShopOrdersModel = {};
 })
 export class ShopOrdersState implements NgxsOnInit {
 
-  @Selector([AppState])
-  static getCurrentSiteOrders(state: ShopOrdersModel, appState: AppStateModel) {
-    return state[appState.site];
+  @Selector([AppState.getSite])
+  static getCurrentSiteOrders(state: ShopOrdersModel, site: string) {
+    return state[site];
   }
 
   constructor(
