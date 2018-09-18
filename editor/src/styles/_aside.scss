@@ -1,0 +1,49 @@
+aside {
+  background-color: $berta-bg-light;
+  border-right: 1px solid $berta-nav-text;  // for develompent
+  padding-top: $bt-header-height;
+}
+
+.setting-group {
+  h3 {
+    align-items: center;
+    border-bottom: 1px solid $berta-nav-text;
+    border-top: 1px solid $berta-nav-text;
+    color: $berta-nav-text;
+    cursor: pointer;
+    display: flex;
+    font-size: 1em;
+    justify-content: space-between;
+    margin: 0;
+    padding: 1.3em;
+    transition: color .2s;
+
+    .drop-icon {
+      stroke: $berta-nav-text;
+      transition: stroke .2s;
+    }
+
+    &:hover {
+      color: $berta-accent;
+
+      .drop-icon {
+        stroke: $berta-accent;
+      }
+    }
+  }
+
+  h4 {
+    color: $berta-nav-text;
+    margin: 0;
+  }
+
+  &:first-child {
+    h3 {
+      border-top: 0;
+    }
+  }
+
+  berta-setting {
+    margin: 1.3em;
+  }
+}

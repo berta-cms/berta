@@ -50,6 +50,7 @@
       outline: none;
       padding: .75em .75em .75em 0;
       transition: color .2s;
+      width: 100%;
 
       &:focus {
         color: $berta-accent;

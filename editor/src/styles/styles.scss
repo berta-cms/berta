@@ -1,5 +1,6 @@
 @import 'variables';
 @import 'forms';
+@import 'aside';
 
 html,
 body {
@@ -87,12 +88,6 @@ berta-profile-dropdown {
       color: $berta-accent;
     }
   }
-}
-
-aside {
-  background-color: $berta-bg-light;
-  border-right: 1px solid $berta-nav-text;  // for develompent
-  padding-top: $bt-header-height;
 }
 
 .overlay {

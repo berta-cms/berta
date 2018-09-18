@@ -12,16 +12,21 @@ import { SettingGroupConfigModel, SettingModel, SettingConfigModel } from '../..
 @Component({
   selector: 'berta-site-template-settings',
   template: `
-    <h2>Site Template Settings</h2>
-
-    <div *ngFor="let settingGroup of templateSettings$ | async">
-      <h3>{{ settingGroup.config.title || settingGroup.slug }}</h3>
-      <berta-setting *ngFor="let setting of settingGroup.settings"
-                     [templateSlug]="settingGroup.templateSlug"
-                     [settingGroup]="settingGroup"
-                     [setting]="setting.setting"
-                     [config]="setting.config"
-                     (update)="updateSetting(settingGroup.slug, $event)"></berta-setting>
+    <div class="setting-group" *ngFor="let settingGroup of templateSettings$ | async">
+      <h3>
+        {{ settingGroup.config.title || settingGroup.slug }}
+        <svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M9 1L4.75736 5.24264L0.514719 1" stroke="#9b9b9b" stroke-linecap="round" stroke-linejoin="round" class="drop-icon"/>
+        </svg>
+      </h3>
+      <div class="settings">
+        <berta-setting *ngFor="let setting of settingGroup.settings"
+                      [templateSlug]="settingGroup.templateSlug"
+                      [settingGroup]="settingGroup"
+                      [setting]="setting.setting"
+                      [config]="setting.config"
+                      (update)="updateSetting(settingGroup.slug, $event)"></berta-setting>
+      </div>
     </div>
   `,
   styles: [`
