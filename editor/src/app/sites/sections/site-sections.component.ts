@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngxs/store';
 import { Observable, combineLatest } from 'rxjs';
-import { filter, map, distinctUntilChanged } from 'rxjs/operators';
+import { filter, map, shareReplay } from 'rxjs/operators';
 import { SiteSectionStateModel } from './sections-state/site-sections-state.model';
 import { SiteTemplatesState } from '../template-settings/site-templates.state';
 import { SiteSectionsState } from './sections-state/site-sections.state';
@@ -43,18 +43,18 @@ export class SiteSectionsComponent implements OnInit {
 
   ngOnInit() {
     this.sectionTypes$ = this.store.select(SiteTemplatesState.getCurrentTemplateSectionTypes).pipe(
-      distinctUntilChanged(),
       map(sectionTypes => {
         return Object.keys(sectionTypes || {}).map(sectionType => {
           return { slug: sectionType, title: sectionTypes[sectionType].title };
         });
-      })
+      }),
+      shareReplay(1)  // Reuse the same observable for all sections
     );
 
     this.sectionsData$ = combineLatest(
       this.store.select(SiteSectionsState.getCurrentSiteSections),
       this.store.select(SiteTemplatesState.getCurrentTemplateSectionTypes),
-      this.store.select(SiteTemplateSettingsState.getIsResponsive).pipe(distinctUntilChanged())
+      this.store.select(SiteTemplateSettingsState.getIsResponsive)
     ).pipe(
         filter(([sections, sectionTypes]) => !!sections && !!sectionTypes),
         map(([sections, sectionTypes, isResponsive]) => {
