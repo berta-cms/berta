@@ -97,7 +97,7 @@ $templateConf = array(
 		'paddingTop' => 			array('format' => 'text',	'default' => '90px',	'css_units' => true, 	'title' => I18n::_('How far content is from page top?'),     'description' => I18n::_('The vertical distance between the top of the page and the content area.')),
 		'paddingLeft' => 			array('format' => 'text',	'default' => '30px',	'css_units' => true, 	'title' => I18n::_('How far content is from menu?'),         'description' => I18n::_('The horizontal distance between the menu and the content area.')),
 		'leftColumnWidth' => 		array('format' => 'text',	'default' => '170px',	'css_units' => true, 	'title' => I18n::_('Width of the left column'),              'description' => ''),
-		'group_responsive' => array('format' => false, 'default' => false, 'title' => '<h3>'.I18n::_('Responsive design').'</h3>'),
+		'group_responsive' => array('format' => false, 'default' => false, 'title' => I18n::_('Responsive design')),
 		'responsive' =>	array('format' => 'select', 'default' => 'no', 'values' => array('no', 'yes'), 'title' => I18n::_('Enabled'), 'description' => I18n::_('Sets whether layout should be responsive or not.')),
 	),
 
@@ -117,5 +117,3 @@ $templateConf = array(
 );
 
 return array($sectionTypes, $templateConf);
-
-?>

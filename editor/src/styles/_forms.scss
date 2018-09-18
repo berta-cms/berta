@@ -11,7 +11,8 @@
   }
 
   .text-input-wrapper,
-  .color-picker-wrapper {
+  .color-picker-wrapper,
+  .file-input-wrapper {
     align-items: center;
     border: 1px solid $input-color;
     border-radius: $border-radius;
@@ -21,12 +22,22 @@
     transition: border-color .2s;
     width: 50%;
 
+    svg {
+      flex-shrink: 0;
+    }
+
     .icon {
       fill: $input-color;
       transition: fill .2s;
     }
 
-    > input {
+    > input,
+    .icon-remove {
+      transition: stroke .2s;
+    }
+
+    input,
+    .file-input {
       border: 0;
       border-radius: $border-radius;
       box-sizing: border-box;
@@ -66,19 +77,152 @@
     }
   }
 
+  .file-input-wrapper {
+    cursor: pointer;
+
+    input {
+      display: none;
+    }
+
+    .file-input {
+      overflow-x: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    svg {
+      padding-right: .75em;
+    }
+  }
+
+  .toggle-wrapper {
+    $toggle-width: 30px;
+    $toggle-height: 22px;
+    $toggle-slider-size: 20px;
+
+    text-align: right;
+    width: 50%;
+
+    input {
+      margin-left: -9999px;
+      position: absolute;
+      visibility: hidden;
+
+      &:checked {
+        + span {
+          background-color: $input-color;
+
+          &:after {
+            left: $toggle-width - $toggle-slider-size - 1;
+          }
+
+          &:hover {
+            background-color: $input-color-active;
+            border-color: $input-color-active;
+
+            &:after {
+              border-color: $input-color-active;
+            }
+          }
+        }
+      }
+    }
+
+    span {
+      background-color: $berta-bg-light;
+      border: 1px solid $input-color;
+      border-radius: $toggle-width;
+      cursor: pointer;
+      display: inline-block;
+      height: $toggle-height;
+      transition: background-color .2s, border-color .2s;
+      width: $toggle-width;
+
+      &:after {
+        background-color: $berta-bg-light;
+        border: 1px solid $input-color;
+        border-radius: 50%;
+        content: '';
+        display: block;
+        height: $toggle-slider-size;
+        left: 0;
+        position: relative;
+        transition: left .2s, border-color .2s;
+        width: $toggle-slider-size;
+      }
+
+      &:hover {
+        border-color: $input-color-active;
+
+        &:after {
+          border-color: $input-color-active;
+        }
+      }
+    }
+  }
+
+  textarea {
+    border: 1px solid $input-color;
+    border-radius: $border-radius;
+    box-sizing: border-box;
+    color: $input-color;
+    display: block;
+    font-size: 1em;
+    margin: .75em 0 0;
+    outline: none;
+    padding: .75em;
+    transition: color .2s, border-color .2s;
+    width: 100%;
+
+    &:focus {
+      color: $berta-accent;
+    }
+  }
+
   &:hover,
   &.bt-focus {
     label,
-    input {
+    .file-input,
+    input,
+    textarea:not(:focus):not([disabled]) {
       color: $input-color-active;
     }
 
     .text-input-wrapper,
-    .color-picker-wrapper {
+    .color-picker-wrapper,
+    .file-input-wrapper,
+    textarea {
       border: 1px solid $input-color-active;
 
       .icon {
         fill: $input-color-active;
+      }
+
+      .icon-remove {
+        stroke: $input-color-active;
+      }
+    }
+
+    .toggle-wrapper {
+      input {
+        &:checked {
+          + span {
+            background-color: $input-color-active;
+            border-color: $input-color-active;
+
+            &:after {
+              border-color: $input-color-active;
+            }
+          }
+        }
+      }
+
+      span {
+        border-color: $input-color-active;
+
+        &:after {
+          border-color: $input-color-active;
+        }
       }
     }
   }
@@ -89,18 +233,31 @@
 
   &.error {
     label,
-    input {
+    .file-input,
+    input,
+    textarea:not(:focus) {
       color: $error-color;
     }
 
     .text-input-wrapper,
-    .color-picker-wrapper {
+    .color-picker-wrapper,
+    .file-input-wrapper,
+    textarea:not(:focus) {
       border-color: $error-color;
 
       .icon {
         fill: $error-color;
       }
+
+      .icon-remove {
+        stroke: $error-color;
+      }
     }
+  }
+
+  .error-message {
+    color: $error-color;
+    margin: .5em 0;
   }
 }
 

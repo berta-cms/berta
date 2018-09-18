@@ -2,9 +2,12 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SettingComponent } from './setting.component';
 import { AutofocusDirective } from './autofocus.directive';
-import { TextInputComponent } from '../../inputs/text-input.component';
-import { ColorInputComponent } from '../../inputs/color-input.component';
 import { ColorPickerModule } from 'ngx-color-picker';
+import { TextInputComponent } from '../../inputs/text-input.component';
+import { LongTextInputComponent } from '../../inputs/long-text-input.component';
+import { ToggleInputComponent } from '../../inputs/toggle-input.component';
+import { ColorInputComponent } from '../../inputs/color-input.component';
+import { FileInputComponent } from '../../inputs/file-input.component';
 
 @NgModule({
   imports: [
@@ -15,7 +18,10 @@ import { ColorPickerModule } from 'ngx-color-picker';
     SettingComponent,
     AutofocusDirective,
     TextInputComponent,
-    ColorInputComponent
+    LongTextInputComponent,
+    ToggleInputComponent,
+    ColorInputComponent,
+    FileInputComponent
   ],
   exports: [
     SettingComponent,

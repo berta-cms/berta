@@ -72,7 +72,8 @@ export class TextInputComponent implements OnInit {
       return;
     }
 
-    if ($event instanceof KeyboardEvent && !($event.key === 'Enter' || $event.keyCode === 13)) {
+    if ($event instanceof KeyboardEvent &&
+        (this.constructor.name === 'LongTextInputComponent' || !($event.key === 'Enter' || $event.keyCode === 13))) {
       return;
     }
 
