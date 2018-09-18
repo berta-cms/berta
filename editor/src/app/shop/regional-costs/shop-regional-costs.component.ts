@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ShopRegionalCostsState } from './shop-regional-costs.state';
 import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
-import { ShopSettingsState } from '../shop-settings.state';
+import { ShopSettingsState } from '../settings/shop-settings.state';
 import { map, shareReplay } from 'rxjs/operators';
 
 @Component({
