@@ -26,12 +26,7 @@ import { SettingModel, SettingConfigModel, SettingGroupConfigModel } from '../..
                       (update)="updateSetting(settingGroup.slug, $event)"></berta-setting>
       </div>
     </div>
-  `,
-  styles: [`
-    div {
-      margin-bottom: 10px;
-    }
-  `]
+  `
 })
 export class SiteSettingsComponent implements OnInit {
   settings$: Observable<Array<{
