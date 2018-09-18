@@ -13,7 +13,7 @@ import { SettingModel } from '../shared/interfaces';
           <input #fileInput
                  [accept]="accept"
                  type="file"
-                 (change)="onChange($event)">
+                 (change)="onChange(fileInput)">
           <svg *ngIf="!value" width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path fill-rule="evenodd" clip-rule="evenodd" d="M6 12C9.31371 12 12 9.31371 12 6C12 2.68629 9.31371 0 6 0C2.68629 0 0 2.68629 0 6C0 9.31371 2.68629 12 6 12Z" fill="#9b9b9b" class="icon"/>
             <path d="M6 3.33333V8.66667" stroke="white" stroke-linecap="square"/><path d="M8.66671 6H3.33337" stroke="white" stroke-linecap="square"/>
@@ -50,29 +50,29 @@ export class FileInputComponent implements OnInit {
     this.lastValue = this.value;
   }
 
-  onChange($event) {
-    if (!this.validate($event)) {
+  onChange(fileInput: HTMLInputElement) {
+    if (!this.validate(fileInput)) {
       return;
     }
     this.disabled = true;
-    (<HTMLInputElement>$event.target).disabled = true;
-    this.updateField($event.target.files[0]);
+    fileInput.disabled = true;
+    this.updateField(fileInput.files[0]);
   }
 
-  validate($event) {
-    if ($event.target.files[0].size > this.maxFileSize) {
+  validate(fileInput: HTMLInputElement) {
+    if (fileInput.files[0].size > this.maxFileSize) {
       this.hasError = true;
       return false;
     }
     return true;
   }
 
-  removeFile($event, fileInput) {
+  removeFile($event, fileInput: HTMLInputElement) {
     $event.stopPropagation();
     $event.preventDefault();
     this.value = '';
     this.disabled = true;
-    (<HTMLInputElement>fileInput).disabled = true;
+    fileInput.disabled = true;
 
     this.updateField(this.value);
   }
