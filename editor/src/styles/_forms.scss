@@ -57,6 +57,8 @@
     }
 
     button {
+      appearance: none;
+      background-color: $berta-bg-light;
       overflow-x: hidden;
       text-align: left;
       text-overflow: ellipsis;
