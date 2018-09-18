@@ -31,6 +31,7 @@
     input {
       border: 0;
       border-radius: $border-radius;
+      box-sizing: border-box;
       color: $input-color;
       flex-grow: 1;
       font-size: 1em;
@@ -40,6 +41,72 @@
 
       &:focus {
         color: $berta-accent;
+      }
+    }
+  }
+
+  .toggle-wrapper {
+    $toggle-width: 30px;
+    $toggle-height: 22px;
+    $toggle-slider-size: 20px;
+
+    text-align: right;
+    width: 50%;
+
+    input {
+      margin-left: -9999px;
+      position: absolute;
+      visibility: hidden;
+
+      &:checked {
+        + span {
+          background-color: $input-color;
+
+          &:after {
+            left: $toggle-width - $toggle-slider-size - 1;
+          }
+
+          &:hover {
+            background-color: $input-color-active;
+            border-color: $input-color-active;
+
+            &:after {
+              border-color: $input-color-active;
+            }
+          }
+        }
+      }
+    }
+
+    span {
+      background-color: $berta-bg-light;
+      border: 1px solid $input-color;
+      border-radius: $toggle-width;
+      cursor: pointer;
+      display: inline-block;
+      height: $toggle-height;
+      transition: background-color .2s, border-color .2s;
+      width: $toggle-width;
+
+      &:after {
+        background-color: $berta-bg-light;
+        border: 1px solid $input-color;
+        border-radius: 50%;
+        content: '';
+        display: block;
+        height: $toggle-slider-size;
+        left: 0;
+        position: relative;
+        transition: left .2s, border-color .2s;
+        width: $toggle-slider-size;
+      }
+
+      &:hover {
+        border-color: $input-color-active;
+
+        &:after {
+          border-color: $input-color-active;
+        }
       }
     }
   }
@@ -76,6 +143,29 @@
 
       .icon {
         fill: $input-color-active;
+      }
+    }
+
+    .toggle-wrapper {
+      input {
+        &:checked {
+          + span {
+            background-color: $input-color-active;
+            border-color: $input-color-active;
+
+            &:after {
+              border-color: $input-color-active;
+            }
+          }
+        }
+      }
+
+      span {
+        border-color: $input-color-active;
+
+        &:after {
+          border-color: $input-color-active;
+        }
       }
     }
   }

@@ -73,6 +73,13 @@ import { UpdateInputFocus } from '../../app-state/app.actions';
         </label>
       </div>
 
+      <berta-toggle-input *ngSwitchCase="'toggle'"
+                          [label]="config.title"
+                          [value]="setting.value"
+                          [values]="config.values"
+                          (update)="updateComponentField(setting.slug, $event)">
+      </berta-toggle-input>
+
       <h4 *ngSwitchDefault>{{ config.title }}</h4>
     </ng-container>
   `,
