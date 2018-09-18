@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Store } from '@ngxs/store';
-import { SettingModel, SettingConfigModel } from '../../shared/interfaces';
+import { SettingModel, SettingConfigModel, SettingGroupConfigModel } from '../../shared/interfaces';
 import { UpdateInputFocus } from '../../app-state/app.actions';
 
 @Component({
@@ -25,23 +25,23 @@ import { UpdateInputFocus } from '../../app-state/app.actions';
         </label>
       </div>
 
-      <div *ngSwitchCase="'icon'" style="text-align: right;">
-        <label>
-          {{ config.title }}
+      <berta-file-input *ngSwitchCase="'icon'"
+                        [label]="config.title"
+                        [templateSlug]="templateSlug"
+                        [groupSlug]="settingGroup.slug"
+                        [property]="setting.slug"
+                        [accept]="'image/x-icon'"
+                        [value]="setting.value"
+                        (update)="updateComponentField(setting.slug, $event)"></berta-file-input>
 
-          {{setting.value}}<br>
-          <input type="file">
-        </label>
-      </div>
-
-      <div *ngSwitchCase="'image'" style="text-align: right;">
-        <label>
-          {{ config.title }}
-
-          {{setting.value}}<br>
-          <input type="file">
-        </label>
-      </div>
+      <berta-file-input *ngSwitchCase="'image'"
+                        [label]="config.title"
+                        [templateSlug]="templateSlug"
+                        [groupSlug]="settingGroup.slug"
+                        [property]="setting.slug"
+                        [accept]="'image/*'"
+                        [value]="setting.value"
+                        (update)="updateComponentField(setting.slug, $event)"></berta-file-input>
 
       <berta-long-text-input *ngSwitchCase="'longtext'"
                              [label]="config.title"
@@ -70,7 +70,14 @@ import { UpdateInputFocus } from '../../app-state/app.actions';
         </label>
       </div>
 
-      <div *ngSwitchDefault style="padding: 10px">{{ config.format || '' }}</div>
+      <berta-toggle-input *ngSwitchCase="'toggle'"
+                          [label]="config.title"
+                          [value]="setting.value"
+                          [values]="config.values"
+                          (update)="updateComponentField(setting.slug, $event)">
+      </berta-toggle-input>
+
+      <h4 *ngSwitchDefault>{{ config.title }}</h4>
     </ng-container>
   `,
   styles: [`
@@ -86,6 +93,8 @@ import { UpdateInputFocus } from '../../app-state/app.actions';
   `]
 })
 export class SettingComponent implements OnInit {
+  @Input('templateSlug') templateSlug: string;
+  @Input('settingGroup') settingGroup: SettingGroupConfigModel;
   @Input('setting') setting: SettingModel;
   @Input('config') config: SettingConfigModel;
 
