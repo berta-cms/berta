@@ -81,7 +81,7 @@ export class SiteSettingsState implements NgxsOnInit {
     const url = action.settingGroup + '/' + settingKey;
     const fileUpload$ = data.value instanceof File ?
       this.fileUploadService.upload(url, data.value).pipe(
-        map(fileUpload => ({ ...data, value: fileUpload['filename'] })))
+        map(fileUpload => ({ ...data, value: fileUpload.filename })))
       :
       of(data);
 

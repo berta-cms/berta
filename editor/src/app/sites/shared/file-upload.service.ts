@@ -22,7 +22,7 @@ export class FileUploadService {
 
     this.store.dispatch(new AppShowLoading());
 
-    return this.http.post(url, formData).pipe(
+    return this.http.post<{filename: string}>(url, formData).pipe(
       take(1),
       map((response) => {
         this.store.dispatch(new AppHideLoading());
