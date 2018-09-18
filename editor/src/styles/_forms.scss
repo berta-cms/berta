@@ -1,7 +1,6 @@
 .form-group {
   font-size: $input-font-size;
 
-
   label {
     align-items: center;
     color: $input-color;
@@ -19,6 +18,10 @@
     padding-left: .75em;
     transition: border-color .2s;
     width: 50%;
+
+    svg {
+      flex-shrink: 0;
+    }
 
     .icon {
       fill: $input-color;
@@ -108,14 +111,34 @@
     }
   }
 
+  textarea {
+    border: 1px solid $input-color;
+    border-radius: $border-radius;
+    box-sizing: border-box;
+    color: $input-color;
+    display: block;
+    font-size: 1em;
+    margin: .75em 0 0;
+    outline: none;
+    padding: .75em;
+    transition: color .2s, border-color .2s;
+    width: 100%;
+
+    &:focus {
+      color: $berta-accent;
+    }
+  }
+
   &:hover,
   &.bt-focus {
     label,
-    input {
+    input,
+    textarea:not(:focus):not([disabled]) {
       color: $input-color-active;
     }
 
-    .text-input-wrapper {
+    .text-input-wrapper,
+    textarea {
       border: 1px solid $input-color-active;
 
       .icon {
@@ -153,11 +176,13 @@
 
   &.error {
     label,
-    input {
+    input,
+    textarea:not(:focus) {
       color: $error-color;
     }
 
-    .text-input-wrapper {
+    .text-input-wrapper,
+    textarea:not(:focus) {
       border-color: $error-color;
 
       .icon {

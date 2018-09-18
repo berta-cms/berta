@@ -43,13 +43,11 @@ import { UpdateInputFocus } from '../../app-state/app.actions';
         </label>
       </div>
 
-      <div *ngSwitchCase="'longtext'">
-        <label>
-          {{ config.title }}
-
-          <textarea (blur)="updateTextField(setting.slug, $event.target.value, $event)">{{setting.value}}</textarea>
-        </label>
-      </div>
+      <berta-long-text-input *ngSwitchCase="'longtext'"
+                             [label]="config.title"
+                             [value]="setting.value"
+                             (inputFocus)="updateComponentFocus($event)"
+                             (update)="updateComponentField(setting.slug, $event)"></berta-long-text-input>
 
       <div *ngSwitchCase="'select'">
         <label>
@@ -82,7 +80,7 @@ import { UpdateInputFocus } from '../../app-state/app.actions';
                           (update)="updateComponentField(setting.slug, $event)">
       </berta-toggle-input>
 
-      <div *ngSwitchDefault style="padding: 10px">{{ config.format || '' }}</div>
+      <h4 *ngSwitchDefault>{{ config.title }}</h4>
     </ng-container>
   `,
   styles: [`
