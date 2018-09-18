@@ -1,5 +1,6 @@
 .form-group {
   font-size: $input-font-size;
+  transition: opacity .2s;
 
   label {
     align-items: center;
@@ -10,6 +11,7 @@
   }
 
   .text-input-wrapper,
+  .color-picker-wrapper,
   .select-wrapper,
   .file-input-wrapper {
     align-items: center;
@@ -31,6 +33,7 @@
       transition: fill .2s;
     }
 
+    > input,
     .icon-remove {
       transition: stroke .2s;
     }
@@ -51,6 +54,29 @@
       &:focus {
         color: $berta-accent;
       }
+    }
+  }
+
+  .color-picker-wrapper {
+    overflow: hidden;
+    position: relative;
+
+    > input {
+      background-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZD0iTTI2LjY2NjcgMjYuNjY2N0g0MFY0MEgyNi42NjY3VjI2LjY2NjdaIiBmaWxsPSIjOUI5QjlCIi8+PHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik0wIDI2LjY2NjdIMTMuMzMzM1Y0MEgwVjI2LjY2NjdaIiBmaWxsPSIjOUI5QjlCIi8+PHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik0xMy4zMzMzIDEzLjMzMzNIMjYuNjY2N1YyNi42NjY2SDEzLjMzMzNWMTMuMzMzM1oiIGZpbGw9IiM5QjlCOUIiLz48cGF0aCBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZD0iTTI2LjY2NjcgMEg0MFYxMy4zMzMzSDI2LjY2NjdWMFoiIGZpbGw9IiM5QjlCOUIiLz48cGF0aCBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZD0iTTAgMEgxMy4zMzMzVjEzLjMzMzNIMFYwWiIgZmlsbD0iIzlCOUI5QiIvPjwvc3ZnPg==);
+      background-position-x: right;
+      background-repeat: no-repeat;
+      border-radius: 0;
+      margin-left: 0;
+      padding-right: 40px;
+      width: 100%;
+    }
+
+    .color-preview {
+      bottom: 0;
+      position: absolute;
+      right: 0;
+      top: 0;
+      width: 40px;
     }
   }
 
@@ -224,6 +250,7 @@
     }
 
     .text-input-wrapper,
+    .color-picker-wrapper,
     .select-wrapper,
     .file-input-wrapper,
     textarea {
@@ -294,6 +321,7 @@
     }
 
     .text-input-wrapper,
+    .color-picker-wrapper,
     .select-wrapper,
     .select-wrapper ul,
     .file-input-wrapper,
@@ -315,4 +343,8 @@
     color: $error-color;
     margin: .5em 0;
   }
+}
+
+color-picker {
+  position: absolute;
 }
