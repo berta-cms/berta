@@ -16,8 +16,9 @@ import { splitCamel, camel2Words, uCFirst } from '../shared/helpers';
 
           <berta-shop-products *ngIf="currentSection === 'products' && section.urlSegment === currentSection"></berta-shop-products>
           <berta-shop-orders *ngIf="currentSection === 'orders' && section.urlSegment === currentSection"></berta-shop-orders>
+          <berta-shop-regional-costs *ngIf="currentSection === 'regional-costs' && section.urlSegment === currentSection"></berta-shop-regional-costs>
 
-          <ng-container *ngIf="currentSection !== 'products' && currentSection !== 'orders'">
+          <ng-container *ngIf="currentSection !== 'products' && currentSection !== 'orders' && currentSection !== 'regional-costs'">
             <pre *ngIf="section.urlSegment === currentSection">{{section.data | json}}</pre>
           </ng-container>
     </div>

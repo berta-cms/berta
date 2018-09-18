@@ -5,7 +5,10 @@ import { AppState } from '../app-state/app.state';
 import { AppStateModel } from '../app-state/app-state.interface';
 
 interface ShopSettingsModel {
-  [site: string]: any[];
+  [site: string]: {
+    group_config: {[k: string]: string};
+    [k: string]: any;
+  };
 }
 
 const defaultState: ShopSettingsModel = {};
@@ -17,9 +20,19 @@ const defaultState: ShopSettingsModel = {};
 })
 export class ShopSettingsState implements NgxsOnInit {
 
-  @Selector([AppState])
-  static getCurrentSiteSettings(state: ShopSettingsModel, appState: AppStateModel) {
-    return state[appState.site];
+  @Selector([AppState.getSite])
+  static getCurrentSiteSettings(state: ShopSettingsModel, site: string) {
+    return state[site];
+  }
+
+  @Selector([ShopSettingsState.getCurrentSiteSettings])
+  static getCurrentWeightUnit(_, currentSiteSettings) {
+    return currentSiteSettings ? currentSiteSettings.group_config.weightUnit : '';
+  }
+
+  @Selector([ShopSettingsState.getCurrentSiteSettings])
+  static getCurrentCurrency(_, currentSiteSettings) {
+    return currentSiteSettings ? currentSiteSettings.group_config.currency : '';
   }
 
   constructor(

@@ -1,8 +1,7 @@
 import { State, StateContext, NgxsOnInit, Selector } from '@ngxs/store';
-import { ShopStateService } from './shop-state.service';
+import { ShopStateService } from '../shop-state.service';
 import { take } from 'rxjs/operators';
-import { AppState } from '../app-state/app.state';
-import { AppStateModel } from '../app-state/app-state.interface';
+import { AppState } from '../../app-state/app.state';
 
 interface ShopRegionalCostsModel {
   [site: string]: any[];
@@ -17,9 +16,9 @@ const defaultState: ShopRegionalCostsModel = {};
 })
 export class ShopRegionalCostsState implements NgxsOnInit {
 
-  @Selector([AppState])
-  static getCurrentSiteRegionalCosts(state: ShopRegionalCostsModel, appState: AppStateModel) {
-    return state[appState.site];
+  @Selector([AppState.getSite])
+  static getCurrentSiteRegionalCosts(state: ShopRegionalCostsModel, site: string) {
+    return state[site];
   }
 
   constructor(

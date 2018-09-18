@@ -4,14 +4,18 @@ import { CommonModule } from '@angular/common';
 import { ShopRoutingModule } from './shop-routing.module';
 import { ShopComponent } from './shop.component';
 import { NgxsModule } from '@ngxs/store';
+
+import { SitesSharedModule } from '../sites/shared/sites-shared.module';
+
 import { ShopState } from './shop.state';
 import { ShopProductsState } from './products/shop-products.state';
 import { ShopOrdersState } from './orders/shop-orders.state';
-import { ShopRegionalCostsState } from './shop-regional-costs.state';
+import { ShopRegionalCostsState } from './regional-costs/shop-regional-costs.state';
 import { ShopSettingsState } from './shop-settings.state';
 import { ShopSettingsConfigState } from './shop-settings-config.state';
 import { ShopProductsComponent } from './products/shop-products.component';
 import { ShopOrdersComponent } from './orders/shop-orders.component';
+import { ShopRegionalCostsComponent } from './regional-costs/shop-regional-costs.component';
 
 
 @NgModule({
@@ -26,7 +30,8 @@ import { ShopOrdersComponent } from './orders/shop-orders.component';
       ShopSettingsState,
       ShopSettingsConfigState
     ]),
+    SitesSharedModule
   ],
-  declarations: [ShopComponent, ShopProductsComponent, ShopOrdersComponent]
+  declarations: [ShopComponent, ShopProductsComponent, ShopOrdersComponent, ShopRegionalCostsComponent]
 })
 export class ShopModule { }
