@@ -5,6 +5,7 @@ import { AutofocusDirective } from './autofocus.directive';
 import { TextInputComponent } from '../../inputs/text-input.component';
 import { LongTextInputComponent } from '../../inputs/long-text-input.component';
 import { ToggleInputComponent } from '../../inputs/toggle-input.component';
+import { FileInputComponent } from '../../inputs/file-input.component';
 
 @NgModule({
   imports: [
@@ -15,7 +16,8 @@ import { ToggleInputComponent } from '../../inputs/toggle-input.component';
     AutofocusDirective,
     TextInputComponent,
     LongTextInputComponent,
-    ToggleInputComponent
+    ToggleInputComponent,
+    FileInputComponent
   ],
   exports: [
     SettingComponent,

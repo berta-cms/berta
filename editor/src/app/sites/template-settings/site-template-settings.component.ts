@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Observable, combineLatest } from 'rxjs';
 import { map, filter, scan } from 'rxjs/operators';
 import { Store } from '@ngxs/store';
+import { SiteSettingsState } from '../settings/site-settings.state';
 import { SiteTemplateSettingsState } from './site-template-settings.state';
 import { SiteTemplatesState } from './site-templates.state';
 import { UpdateSiteTemplateSettingsAction } from './site-template-settings.actions';
@@ -16,6 +17,8 @@ import { SettingGroupConfigModel, SettingModel, SettingConfigModel } from '../..
     <div *ngFor="let settingGroup of templateSettings$ | async">
       <h3>{{ settingGroup.config.title || settingGroup.slug }}</h3>
       <berta-setting *ngFor="let setting of settingGroup.settings"
+                     [templateSlug]="settingGroup.templateSlug"
+                     [settingGroup]="settingGroup"
                      [setting]="setting.setting"
                      [config]="setting.config"
                      (update)="updateSetting(settingGroup.slug, $event)"></berta-setting>
@@ -33,7 +36,8 @@ export class SiteTemplateSettingsComponent implements OnInit {
     config: SettingGroupConfigModel['_'],
     settings: Array<{
       setting: SettingModel,
-      config: SettingConfigModel
+      config: SettingConfigModel,
+      templateSlug: string
     }>,
     slug: string
   }>>;
@@ -45,11 +49,12 @@ export class SiteTemplateSettingsComponent implements OnInit {
   ngOnInit () {
     this.templateSettings$ = combineLatest(
       this.store.select(SiteTemplateSettingsState.getCurrentSiteTemplateSettings),
-      this.store.select(SiteTemplatesState.getCurrentTemplateConfig)
+      this.store.select(SiteTemplatesState.getCurrentTemplateConfig),
+      this.store.select(SiteSettingsState.getCurrentSiteTemplate)
     )
     .pipe(
       filter(([settings, config]) => settings && settings.length > 0 && config && Object.keys(config).length > 0),
-      map(([settings, config]) => {
+      map(([settings, config, templateSlug]) => {
         return settings
           .filter(settingGroup => !config[settingGroup.slug]._.invisible)
           .map(settingGroup => {
@@ -63,7 +68,8 @@ export class SiteTemplateSettingsComponent implements OnInit {
                   };
                 }),
               config: config[settingGroup.slug]._,
-              slug: settingGroup.slug
+              slug: settingGroup.slug,
+              templateSlug: templateSlug
             };
           });
       }),
@@ -71,8 +77,8 @@ export class SiteTemplateSettingsComponent implements OnInit {
        * settingGroups in this step aren't the ones we get from the store,
        * they are virtual objects created in prev step (the map function)
        */
-      scan((prevSettingGroups, settingGroups) => {
-        if (!prevSettingGroups || prevSettingGroups.length === 0) {
+      scan((prevSettingGroups, settingGroups, templateSlug) => {
+        if (!prevSettingGroups || prevSettingGroups.length === 0 || !templateSlug) {
           return settingGroups;
         }
 
