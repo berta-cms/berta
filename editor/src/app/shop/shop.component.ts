@@ -10,19 +10,23 @@ import { splitCamel, camel2Words, uCFirst } from '../shared/helpers';
 @Component({
   selector: 'berta-shop',
   template: `
-    <h2>Shop</h2>
-    <ul>
-      <li *ngFor="let section of sections$ | async">
-        <a [routerLink]="['/shop', section.urlSegment]"
-           [style.fontWeight]="(currentSection === section.urlSegment ? 'bold': '')">{{ section.title }}</a>
-           <ng-container [ngSwitch]="currentSection">
-             <berta-shop-products *ngSwitchCase="'products'"></berta-shop-products>
-             <pre *ngSwitchCase="section.urlSegment">{{section.data | json}}</pre>
-           </ng-container>
-      </li>
-    </ul>
+    <div *ngFor="let section of sections$ | async">
+      <a [routerLink]="['/shop', section.urlSegment]"
+         [style.color]="(currentSection === section.urlSegment ? 'black': '')"><h3>{{ section.title }}</h3></a>
+
+          <berta-shop-products *ngIf="currentSection === 'products' && section.urlSegment === currentSection"></berta-shop-products>
+
+          <ng-container *ngIf="currentSection !== 'products'">
+            <pre *ngIf="section.urlSegment === currentSection">{{section.data | json}}</pre>
+          </ng-container>
+    </div>
   `,
-  styles: []
+  styles: [`
+   :host > div > a {
+     color: gray;
+     text-decoration: none;
+   }
+  `]
 })
 export class ShopComponent implements OnInit {
   @Select(ShopState.getSections) shopSections$;

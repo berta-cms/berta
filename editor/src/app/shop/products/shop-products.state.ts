@@ -17,9 +17,9 @@ const defaultState: ShopProductsModel = {};
 })
 export class ShopProductsState implements NgxsOnInit {
 
-  @Selector([AppState])
-  static getCurrentSiteProducts(state: ShopProductsModel, appState: AppStateModel): Array<string> {
-    return state[appState.site];
+  @Selector([AppState.getSite])
+  static getCurrentSiteProducts(state: ShopProductsModel, site: string): Array<string> {
+    return state[site];
   }
 
   constructor(
