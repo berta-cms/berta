@@ -95,6 +95,7 @@ export class AppComponent implements OnInit, OnDestroy {
   previewUrl: SafeUrl;
 
   @Select(AppState.getShowOverlay) showOverlay$;
+  @Select(AppState.getInputFocus) inputFocus$: Observable<boolean>;
   @Select(UserState.isLoggedIn) isLoggedIn$;
 
   private loginSub: Subscription;
@@ -163,9 +164,15 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   hideOverlay() {
-    this.store.dispatch(AppHideOverlay);
-    this.router.navigate(['/']);
+    this.inputFocus$.pipe(
+      take(1),
+      filter(isInputFocused => !isInputFocused)
+    ).subscribe(() => {
+      this.store.dispatch(AppHideOverlay);
+      this.router.navigate(['/']);
+    });
   }
+
   showOverlay() {
     this.store.dispatch(AppShowOverlay);
   }

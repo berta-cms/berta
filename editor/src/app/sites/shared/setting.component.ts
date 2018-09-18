@@ -1,52 +1,73 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { SettingModel, SettingConfigModel } from '../../shared/interfaces';
+import { Store } from '@ngxs/store';
+import { SettingModel, SettingConfigModel, SettingGroupConfigModel } from '../../shared/interfaces';
+import { UpdateInputFocus } from '../../app-state/app.actions';
 
 @Component({
   selector: 'berta-setting',
   template: `
-    <label [title]="config.format">
-      {{ config.title }}
-      <ng-container [ngSwitch]="config.format">
-        <input *ngSwitchCase="'text'"
-               type="text"
-               [value]="setting.value"
-               (keydown)="updateTextField(setting.slug, $event.target.value, $event)"
-               (blur)="updateTextField(setting.slug, $event.target.value, $event)">
+    <ng-container [ngSwitch]="config.format">
+      <berta-text-input *ngSwitchCase="'text'"
+                        [label]="config.title"
+                        [value]="setting.value"
+                        (inputFocus)="updateComponentFocus($event)"
+                        (update)="updateComponentField(setting.slug, $event)"></berta-text-input>
 
-        <input *ngSwitchCase="'color'"
-               size="7"
-               type="text"
-               [value]="setting.value"
-               (keydown)="updateTextField(setting.slug, $event.target.value, $event)"
-               (blur)="updateTextField(setting.slug, $event.target.value, $event)">
+      <berta-color-input *ngSwitchCase="'color'"
+                        [label]="config.title"
+                        [value]="setting.value"
+                        (inputFocus)="updateComponentFocus($event)"
+                        (update)="updateComponentField(setting.slug, $event)"></berta-color-input>
 
-        <div *ngSwitchCase="'icon'" style="text-align: right;">
-          {{setting.value}}<br>
-          <input type="file">
-        </div>
+      <berta-file-input *ngSwitchCase="'icon'"
+                        [label]="config.title"
+                        [templateSlug]="templateSlug"
+                        [groupSlug]="settingGroup.slug"
+                        [property]="setting.slug"
+                        [accept]="'image/x-icon'"
+                        [value]="setting.value"
+                        (update)="updateComponentField(setting.slug, $event)"></berta-file-input>
 
-        <div *ngSwitchCase="'image'" style="text-align: right;">
-          {{setting.value}}<br>
-          <input type="file">
-        </div>
+      <berta-file-input *ngSwitchCase="'image'"
+                        [label]="config.title"
+                        [templateSlug]="templateSlug"
+                        [groupSlug]="settingGroup.slug"
+                        [property]="setting.slug"
+                        [accept]="'image/*'"
+                        [value]="setting.value"
+                        (update)="updateComponentField(setting.slug, $event)"></berta-file-input>
 
-        <textarea *ngSwitchCase="'longtext'"
-                  (blur)="updateTextField(setting.slug, $event.target.value, $event)">{{setting.value}}</textarea>
+      <berta-long-text-input *ngSwitchCase="'longtext'"
+                             [label]="config.title"
+                             [value]="setting.value"
+                             (inputFocus)="updateComponentFocus($event)"
+                             (update)="updateComponentField(setting.slug, $event)"></berta-long-text-input>
 
-        <select *ngSwitchCase="'select'" (change)="updateField(setting.slug, $event.target.value, $event.target)">
-          <option *ngFor="let val of config.values"
-                  [value]="val.value"
-                  [attr.selected]="(val.value === setting.value ? '' : null)">{{ val.title }}</option>
-        </select>
+      <berta-select-input *ngSwitchCase="'select'"
+                          [label]="config.title"
+                          [value]="setting.value"
+                          [values]="config.values"
+                          (inputFocus)="updateComponentFocus($event)"
+                          (update)="updateComponentField(setting.slug, $event)">
+      </berta-select-input>
 
-        <select *ngSwitchCase="'fontselect'" (change)="updateField(setting.slug, $event.target.value, $event.target)">
-          <option *ngFor="let val of config.values"
-                  [value]="val.value"
-                  [attr.selected]="(val.value === setting.value ? '' : null)">{{ val.title }}</option>
-        </select>
-        <div *ngSwitchDefault style="padding: 10px">{{ config.format || '' }}</div>
-      </ng-container>
-    </label>
+      <berta-select-input *ngSwitchCase="'fontselect'"
+                          [label]="config.title"
+                          [value]="setting.value"
+                          [values]="config.values"
+                          (inputFocus)="updateComponentFocus($event)"
+                          (update)="updateComponentField(setting.slug, $event)">
+      </berta-select-input>
+
+      <berta-toggle-input *ngSwitchCase="'toggle'"
+                          [label]="config.title"
+                          [value]="setting.value"
+                          [values]="config.values"
+                          (update)="updateComponentField(setting.slug, $event)">
+      </berta-toggle-input>
+
+      <h4 *ngSwitchDefault>{{ config.title }}</h4>
+    </ng-container>
   `,
   styles: [`
     :host {
@@ -61,6 +82,8 @@ import { SettingModel, SettingConfigModel } from '../../shared/interfaces';
   `]
 })
 export class SettingComponent implements OnInit {
+  @Input('templateSlug') templateSlug: string;
+  @Input('settingGroup') settingGroup: SettingGroupConfigModel;
   @Input('setting') setting: SettingModel;
   @Input('config') config: SettingConfigModel;
 
@@ -68,9 +91,15 @@ export class SettingComponent implements OnInit {
 
   private lastValue: SettingModel['value'];
 
+  constructor(private store: Store) { }
+
   ngOnInit() {
     // Cache the value, so we don't update if nothing changes
     this.lastValue = this.setting.value;
+  }
+
+  updateComponentFocus(isFocused) {
+    this.store.dispatch(new UpdateInputFocus(isFocused));
   }
 
   updateTextField(field, value, $event) {
@@ -79,6 +108,10 @@ export class SettingComponent implements OnInit {
     }
 
     this.updateField(field, value, $event.target);
+  }
+
+  updateComponentField(field, value) {
+    this.update.emit({field, value});
   }
 
   updateField(field, value, input: HTMLInputElement) {

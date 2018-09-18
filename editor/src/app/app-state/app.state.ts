@@ -10,7 +10,8 @@ import {
   AppShowLoading,
   AppHideLoading,
   ResetAppStateAction,
-  InitAppStateAction
+  InitAppStateAction,
+  UpdateInputFocus
 } from './app.actions';
 import { AppStateService } from './app-state.service';
 import { UserLoginAction } from '../user/user.actions';
@@ -19,6 +20,7 @@ import { UserLoginAction } from '../user/user.actions';
 const defaultState: AppStateModel = {
   showOverlay: false,
   isLoading: false,
+  inputFocused: false,
   site: null,
   urls: {}
 };
@@ -29,6 +31,11 @@ const defaultState: AppStateModel = {
   defaults: defaultState
 })
 export class AppState implements NgxsOnInit {
+
+  @Selector()
+  static getInputFocus(state: AppStateModel) {
+    return state.inputFocused;
+  }
 
   @Selector()
   static getShowOverlay(state: AppStateModel) {
@@ -76,6 +83,11 @@ export class AppState implements NgxsOnInit {
       },
       error: (error) => console.error(error)
     });
+  }
+
+  @Action(UpdateInputFocus)
+  updateInputFocus({ patchState }: StateContext<AppStateModel>, action: UpdateInputFocus) {
+    patchState({ inputFocused: action.isFocused });
   }
 
   @Action(AppShowOverlay)
