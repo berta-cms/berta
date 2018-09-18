@@ -10,12 +10,14 @@
   }
 
   .text-input-wrapper,
+  .select-wrapper,
   .file-input-wrapper {
     align-items: center;
     border: 1px solid $input-color;
     border-radius: $border-radius;
     display: flex;
     margin-left: 1em;
+    min-width: 50%;
     padding-left: .75em;
     transition: border-color .2s;
     width: 50%;
@@ -33,7 +35,8 @@
       transition: stroke .2s;
     }
 
-    input,
+    > input,
+    > .button-wrapper button,
     .file-input {
       border: 0;
       border-radius: $border-radius;
@@ -47,6 +50,63 @@
 
       &:focus {
         color: $berta-accent;
+      }
+    }
+  }
+
+  .select-wrapper {
+    display: block;
+    position: relative;
+    white-space: nowrap;
+
+    .button-wrapper {
+      align-items: center;
+      box-sizing: border-box;
+      display: flex;
+      padding-right: .75em;
+      width: 100%;
+    }
+
+    button {
+      appearance: none;
+      background-color: $berta-bg-light;
+      overflow-x: hidden;
+      text-align: left;
+      text-overflow: ellipsis;
+    }
+
+    svg {
+      min-width: 10px;
+    }
+
+    .drop-icon {
+      stroke: $input-color;
+      transition: stroke .2s;
+    }
+
+    ul {
+      background-color: $berta-bg-light;
+      border: 1px solid $input-color-active;
+      border-radius: 0 0 $border-radius $border-radius;
+      box-sizing: border-box;
+      display: none;
+      left: -1px;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      position: absolute;
+      right: -1px;
+      z-index: 1;
+
+      li {
+        color: $input-color-active;
+        overflow-x: hidden;
+        padding: .75em;
+        text-overflow: ellipsis;
+
+        &:hover {
+          color: $berta-accent;
+        }
       }
     }
   }
@@ -158,11 +218,13 @@
     label,
     .file-input,
     input,
+    .button-wrapper button,
     textarea:not(:focus):not([disabled]) {
       color: $input-color-active;
     }
 
     .text-input-wrapper,
+    .select-wrapper,
     .file-input-wrapper,
     textarea {
       border: 1px solid $input-color-active;
@@ -198,6 +260,24 @@
         }
       }
     }
+
+    .select-wrapper {
+      color: $input-color-active;
+
+      .drop-icon {
+        stroke: $input-color-active;
+      }
+    }
+  }
+
+  &.bt-focus {
+    .select-wrapper {
+      border-radius: $border-radius $border-radius 0 0;
+
+      ul {
+        display: block;
+      }
+    }
   }
 
   &.bt-disabled {
@@ -208,11 +288,14 @@
     label,
     .file-input,
     input,
+    .button-wrapper button,
     textarea:not(:focus) {
       color: $error-color;
     }
 
     .text-input-wrapper,
+    .select-wrapper,
+    .select-wrapper ul,
     .file-input-wrapper,
     textarea:not(:focus) {
       border-color: $error-color;
@@ -221,6 +304,7 @@
         fill: $error-color;
       }
 
+      .drop-icon,
       .icon-remove {
         stroke: $error-color;
       }
