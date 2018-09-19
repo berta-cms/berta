@@ -5,12 +5,17 @@ import { ShopProductsState } from './shop-products.state';
 @Component({
   selector: 'berta-shop-products',
   template: `
-    <ul>
-      <li *ngFor="let product of products$ | async"><b>{{product.name}}:</b>
-        <span title="Reservations">{{product.reservation}}</span>/<span title="In Stock">{{product.instock}}</span></li>
-    </ul>
+    <div *ngFor="let product of products$ | async">
+      <berta-text-input [label]="product.name" [value]="product.instock"></berta-text-input>
+      <p>Reservations: <span title="Reservations">{{product.reservation}}</span></p>
+    </div>
   `,
-  styles: []
+  styles: [`
+      p {
+        font-size: 0.875em;
+        text-align: right;
+      }
+  `]
 })
 export class ShopProductsComponent implements OnInit {
   @Select(ShopProductsState.getCurrentSiteProducts) products$;
