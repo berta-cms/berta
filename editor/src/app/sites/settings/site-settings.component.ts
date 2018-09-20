@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngxs/store';
 import { Observable, combineLatest } from 'rxjs';
 import { map, filter, scan } from 'rxjs/operators';
@@ -43,7 +43,6 @@ export class SiteSettingsComponent implements OnInit {
 
   constructor(
     private store: Store,
-    private router: Router,
     private route: ActivatedRoute) {
   }
 

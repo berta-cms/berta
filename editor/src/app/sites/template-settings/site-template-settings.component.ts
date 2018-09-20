@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { Observable, combineLatest } from 'rxjs';
 import { map, filter, scan } from 'rxjs/operators';
 import { Store } from '@ngxs/store';
@@ -12,8 +13,10 @@ import { SettingGroupConfigModel, SettingModel, SettingConfigModel } from '../..
 @Component({
   selector: 'berta-site-template-settings',
   template: `
-    <div class="setting-group" [class.is-expanded]="settingGroup.isExpanded" *ngFor="let settingGroup of templateSettings$ | async">
-      <h3 (click)="toggleGroup(settingGroup)">
+    <div class="setting-group"
+         [class.is-expanded]="currentGroup === settingGroup.slug"
+         *ngFor="let settingGroup of templateSettings$ | async">
+      <h3 [routerLink]="['/design', settingGroup.slug]">
         {{ settingGroup.config.title || settingGroup.slug }}
         <svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M9 1L4.75736 5.24264L0.514719 1" stroke="#9b9b9b" stroke-linecap="round" stroke-linejoin="round" class="drop-icon"/>
@@ -31,7 +34,8 @@ import { SettingGroupConfigModel, SettingModel, SettingConfigModel } from '../..
   `
 })
 export class SiteTemplateSettingsComponent implements OnInit {
-
+  defaultGroup = 'generalFontSettings';
+  currentGroup: string;
   templateSettings$: Observable<Array<{
     config: SettingGroupConfigModel['_'],
     settings: Array<{
@@ -39,12 +43,12 @@ export class SiteTemplateSettingsComponent implements OnInit {
       config: SettingConfigModel,
       templateSlug: string
     }>,
-    slug: string,
-    isExpanded?: boolean
+    slug: string
   }>>;
 
-  constructor (
-    private store: Store) {
+  constructor(
+    private store: Store,
+    private route: ActivatedRoute) {
   }
 
   ngOnInit () {
@@ -109,10 +113,10 @@ export class SiteTemplateSettingsComponent implements OnInit {
         });
       })
     );
-  }
 
-  toggleGroup(settingGroup) {
-    settingGroup.isExpanded = !settingGroup.isExpanded;
+    this.route.paramMap.subscribe(params => {
+      this.currentGroup = params['params']['group'] || this.defaultGroup;
+    });
   }
 
   updateSetting(settingGroup: string, updateEvent) {

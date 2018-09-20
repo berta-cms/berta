@@ -32,6 +32,11 @@ const routes: Routes = [
     canActivate: [AuthGuardService]
   },
   {
+    path: 'design/:group',
+    component: SiteTemplateSettingsComponent,
+    canActivate: [AuthGuardService]
+  },
+  {
     path: 'design',
     component: SiteTemplateSettingsComponent,
     canActivate: [AuthGuardService]
