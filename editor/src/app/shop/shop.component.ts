@@ -10,14 +10,22 @@ import { splitCamel, camel2Words, uCFirst } from '../shared/helpers';
 @Component({
   selector: 'berta-shop',
   template: `
-    <div *ngFor="let section of sections$ | async">
-      <a [routerLink]="['/shop', section.urlSegment]"
-         [style.color]="(currentSection === section.urlSegment ? 'black': '')"><h3>{{ section.title }}</h3></a>
+    <div *ngFor="let settingsSection of settingsSections$ | async">
+      <a [routerLink]="['/shop', settingsSection.urlSegment]"
+         [style.color]="(currentSettingSection === settingsSection.urlSegment ? 'black': '')"><h3>{{ settingsSection.title }}</h3></a>
 
-          <berta-shop-products *ngIf="currentSection === 'products' && section.urlSegment === currentSection"></berta-shop-products>
-          <berta-shop-orders *ngIf="currentSection === 'orders' && section.urlSegment === currentSection"></berta-shop-orders>
-          <berta-shop-regional-costs *ngIf="currentSection === 'regional-costs' && section.urlSegment === currentSection"></berta-shop-regional-costs>
-          <berta-shop-settings *ngIf="currentSection === 'settings' && section.urlSegment === currentSection"></berta-shop-settings>
+          <berta-shop-products
+            *ngIf="currentSettingSection === 'products' && settingsSection.urlSegment === currentSettingSection">
+          </berta-shop-products>
+          <berta-shop-orders
+            *ngIf="currentSettingSection === 'orders' && settingsSection.urlSegment === currentSettingSection">
+          </berta-shop-orders>
+          <berta-shop-regional-costs
+            *ngIf="currentSettingSection === 'regional-costs' && settingsSection.urlSegment === currentSettingSection">
+          </berta-shop-regional-costs>
+          <berta-shop-settings
+            *ngIf="currentSettingSection === 'settings' && settingsSection.urlSegment === currentSettingSection">
+          </berta-shop-settings>
 
     </div>
   `,
@@ -32,8 +40,8 @@ export class ShopComponent implements OnInit {
   @Select(ShopState.getSections) shopSections$;
   @Select(state => state.app) appState$;
 
-  currentSection = '';
-  sections$: Observable<any>;
+  currentSettingSection = '';
+  settingsSections$: Observable<any>;
 
   constructor(
     private route: ActivatedRoute,
@@ -42,7 +50,7 @@ export class ShopComponent implements OnInit {
 
 
   ngOnInit() {
-    this.sections$ = this.shopSections$.pipe(
+    this.settingsSections$ = this.shopSections$.pipe(
       map((sectionSlugs: string[]) => {
         return sectionSlugs.map((sSlug) => {
           return {
@@ -66,6 +74,6 @@ export class ShopComponent implements OnInit {
       })
     );
 
-    this.route.paramMap.subscribe(params => { this.currentSection = params['params']['section']; console.log(this.currentSection); });
+    this.route.paramMap.subscribe(params => { this.currentSettingSection = params['params']['section']; console.log(this.currentSettingSection); });
   }
 }
