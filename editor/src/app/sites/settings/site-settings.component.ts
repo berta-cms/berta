@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Store } from '@ngxs/store';
 import { Observable, combineLatest } from 'rxjs';
 import { map, filter, scan } from 'rxjs/operators';
@@ -13,10 +14,12 @@ import { SettingModel, SettingConfigModel, SettingGroupConfigModel } from '../..
   template: `
     <div class="setting-group" [class.is-expanded]="settingGroup.isExpanded" *ngFor="let settingGroup of settings$ | async">
       <h3 (click)="toggleGroup(settingGroup)">
-        {{ settingGroup.config.title || settingGroup.slug }}
-        <svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M9 1L4.75736 5.24264L0.514719 1" stroke="#9b9b9b" stroke-linecap="round" stroke-linejoin="round" class="drop-icon"/>
-        </svg>
+        <a [routerLink]="['/settings', settingGroup.slug]">...</a>
+          {{ settingGroup.config.title || settingGroup.slug }}
+          <svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M9 1L4.75736 5.24264L0.514719 1" stroke="#9b9b9b" stroke-linecap="round" stroke-linejoin="round" class="drop-icon"/>
+          </svg>
+
       </h3>
       <div class="settings">
         <berta-setting *ngFor="let setting of settingGroup.settings"
@@ -39,7 +42,11 @@ export class SiteSettingsComponent implements OnInit {
     isExpanded?: boolean
   }>>;
 
-  constructor(private store: Store) { }
+  constructor(
+    private store: Store,
+    private router: Router,
+    private route: ActivatedRoute) {
+  }
 
   ngOnInit() {
     this.settings$ = combineLatest(
