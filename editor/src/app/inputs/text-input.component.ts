@@ -24,8 +24,8 @@ import { SettingModel } from '../shared/interfaces';
 export class TextInputComponent implements OnInit {
   @Input() label: string;
   @Input() value: string;
-  @Output() update = new EventEmitter();
-  @Output() inputFocus = new EventEmitter();
+  @Output() update = new EventEmitter<string>();
+  @Output() inputFocus = new EventEmitter<boolean>();
   focus = false;
   showIcon = false;
   disabled = false;
