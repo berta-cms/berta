@@ -7,7 +7,7 @@ aside {
 .setting-group {
   h3 {
     align-items: center;
-    border-top: 1px solid $berta-nav-text;
+    border-bottom: 1px solid $berta-nav-text;
     color: $berta-nav-text;
     cursor: pointer;
     display: flex;
@@ -61,7 +61,7 @@ aside {
     }
 
     > .settings {
-      border-top: 1px solid $berta-nav-text;
+      border-bottom: 1px solid $berta-nav-text;
       max-height: 1500px; // auto
       overflow: visible;
     }
