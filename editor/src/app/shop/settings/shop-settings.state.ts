@@ -1,14 +1,17 @@
-import { State, StateContext, NgxsOnInit, Selector } from '@ngxs/store';
+import { State, StateContext, NgxsOnInit, Selector, Action, Store } from '@ngxs/store';
 import { ShopStateService } from '../shop-state.service';
 import { take } from 'rxjs/operators';
 import { AppState } from '../../app-state/app.state';
 import { AppStateModel } from '../../app-state/app-state.interface';
+import { SettingModel } from '../../shared/interfaces';
+import { UpdateShopSettingsAction } from './shop-settings.actions';
+
 
 interface ShopSettingsModel {
-  [site: string]: {
-    group_config: {[k: string]: string};
-    [k: string]: any;
-  };
+  [site: string]: Array<{
+    slug: string;
+    settings: SettingModel[];
+  }>;
 }
 
 const defaultState: ShopSettingsModel = {};
@@ -44,6 +47,7 @@ export class ShopSettingsState implements NgxsOnInit {
   }
 
   constructor(
+    private store: Store,
     private stateService: ShopStateService) {
   }
 
@@ -58,6 +62,26 @@ export class ShopSettingsState implements NgxsOnInit {
         newState[siteSlug] = this.initializeShopSettingsForSite(settings[siteSlug]);
       }
       setState(newState);
+    });
+  }
+
+  @Action(UpdateShopSettingsAction)
+  updateShopSettings({getState, patchState}: StateContext<ShopSettingsModel>, action: UpdateShopSettingsAction) {
+    const state = getState();
+    const site = this.store.selectSnapshot(AppState.getSite);
+
+    return patchState({
+      [site]: state[site].map(settingGroup => {
+        if (settingGroup.slug !== action.groupSlug) {
+          return settingGroup;
+        }
+        return {...settingGroup, settings: settingGroup.settings.map(setting => {
+          if (setting.slug !== action.payload.field) {
+            return setting;
+          }
+          return {...setting, value: action.payload.value};
+        })};
+      })
     });
   }
 
