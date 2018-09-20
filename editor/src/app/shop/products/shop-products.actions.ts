@@ -1,4 +1,4 @@
-export class UpdateProductAction {
+export class UpdateShopProductAction {
   static readonly type = 'SHOP_PRODUCT:UPDATE';
   constructor(
     public uniqid: string,

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
 import { ShopProductsState } from './shop-products.state';
-import { UpdateProductAction } from './shop-products.actions';
+import { UpdateShopProductAction } from './shop-products.actions';
 import { UpdateInputFocus } from '../../app-state/app.actions';
 
 @Component({
@@ -33,7 +33,7 @@ export class ShopProductsComponent implements OnInit {
   }
 
   updateProducts(field: string, value, uniqid: string) {
-    this.store.dispatch(new UpdateProductAction(uniqid, {field, value}));
+    this.store.dispatch(new UpdateShopProductAction(uniqid, {field, value}));
   }
 
   updateInputFocus(isFocused: boolean) {

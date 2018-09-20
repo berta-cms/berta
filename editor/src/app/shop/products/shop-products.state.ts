@@ -2,7 +2,7 @@ import { State, StateContext, NgxsOnInit, Selector, Action, Store } from '@ngxs/
 import { ShopStateService } from '../shop-state.service';
 import { take } from 'rxjs/operators';
 import { AppState } from '../../app-state/app.state';
-import { UpdateProductAction } from './shop-products.actions';
+import { UpdateShopProductAction } from './shop-products.actions';
 
 
 interface ShopProduct {
@@ -38,8 +38,8 @@ export class ShopProductsState implements NgxsOnInit {
   }
 
 
-  @Action(UpdateProductAction)
-  updateShopProduct({ getState, patchState }: StateContext<ShopProductsModel>, action: UpdateProductAction) {
+  @Action(UpdateShopProductAction)
+  updateShopProduct({ getState, patchState }: StateContext<ShopProductsModel>, action: UpdateShopProductAction) {
     const currentSite = this.store.selectSnapshot(AppState.getSite);
     const state = getState();
 
