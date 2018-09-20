@@ -1,30 +1,30 @@
 import { Component, OnInit } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { ShopState } from './shop.state';
 import { map, mergeMap, startWith } from 'rxjs/operators';
-import { Observable, combineLatest, of } from 'rxjs';
+import { Observable, combineLatest} from 'rxjs';
 import { splitCamel, camel2Words, uCFirst } from '../shared/helpers';
 
 
 @Component({
   selector: 'berta-shop',
   template: `
-    <div *ngFor="let settingsSection of settingsSections$ | async">
-      <a [routerLink]="['/shop', settingsSection.urlSegment]"
-         [style.color]="(currentSettingSection === settingsSection.urlSegment ? 'black': '')"><h3>{{ settingsSection.title }}</h3></a>
+    <div *ngFor="let shopSection of shopSections$ | async">
+      <a [routerLink]="['/shop', shopSection.urlSegment]"
+         [style.color]="(currentShopSection === shopSection.urlSegment ? 'black': '')"><h3>{{ shopSection.title }}</h3></a>
 
           <berta-shop-products
-            *ngIf="currentSettingSection === 'products' && settingsSection.urlSegment === currentSettingSection">
+            *ngIf="currentShopSection === 'products' && shopSection.urlSegment === currentShopSection">
           </berta-shop-products>
           <berta-shop-orders
-            *ngIf="currentSettingSection === 'orders' && settingsSection.urlSegment === currentSettingSection">
+            *ngIf="currentShopSection === 'orders' && shopSection.urlSegment === currentShopSection">
           </berta-shop-orders>
           <berta-shop-regional-costs
-            *ngIf="currentSettingSection === 'regional-costs' && settingsSection.urlSegment === currentSettingSection">
+            *ngIf="currentShopSection === 'regional-costs' && shopSection.urlSegment === currentShopSection">
           </berta-shop-regional-costs>
           <berta-shop-settings
-            *ngIf="currentSettingSection === 'settings' && settingsSection.urlSegment === currentSettingSection">
+            *ngIf="currentShopSection === 'settings' && shopSection.urlSegment === currentShopSection">
           </berta-shop-settings>
 
     </div>
@@ -37,11 +37,8 @@ import { splitCamel, camel2Words, uCFirst } from '../shared/helpers';
   `]
 })
 export class ShopComponent implements OnInit {
-  @Select(ShopState.getSections) shopSections$;
-  @Select(state => state.app) appState$;
-
-  currentSettingSection = '';
-  settingsSections$: Observable<any>;
+  currentShopSection = '';
+  shopSections$: Observable<any>;
 
   constructor(
     private route: ActivatedRoute,
@@ -50,7 +47,7 @@ export class ShopComponent implements OnInit {
 
 
   ngOnInit() {
-    this.settingsSections$ = this.shopSections$.pipe(
+    this.shopSections$ = this.store.select(ShopState.getSections).pipe(
       map((sectionSlugs: string[]) => {
         return sectionSlugs.map((sSlug) => {
           return {
@@ -74,6 +71,6 @@ export class ShopComponent implements OnInit {
       })
     );
 
-    this.route.paramMap.subscribe(params => { this.currentSettingSection = params['params']['section']; console.log(this.currentSettingSection); });
+    this.route.paramMap.subscribe(params => { this.currentShopSection = params['params']['section']; });
   }
 }
