@@ -6,10 +6,20 @@ import { Select } from '@ngxs/store';
   selector: 'berta-shop-orders',
   template: `
     <div *ngFor="let order of orders$ | async">
-      <p>{{order.id}}: {{order.created_at}}</p>
+      <p>{{order.id}}. <span>{{order.created_at}}</span></p>
     </div>
   `,
-  styles: []
+  styles: [`
+  p {
+    font-size: 0.875em;
+    color: #9b9b9b;
+    display: flex;
+    justify-content: space-between;
+  }
+  p > span {
+    width: 50%;
+  }
+`]
 })
 export class ShopOrdersComponent implements OnInit {
   @Select(ShopOrdersState.getCurrentSiteOrders) orders$;
