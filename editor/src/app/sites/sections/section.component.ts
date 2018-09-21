@@ -39,15 +39,11 @@ import { UpdateInputFocus } from '../../app-state/app.actions';
       <button title="settings">Settings</button>
     </h3>
     <div class="settings">
-      <label for="type">
-        <strong>Type</strong>
-        <select #sectionType name="type" (change)="updateField({'@attributes': {type: sectionType.value}})">
-          <option *ngFor="let sectionType of templateSectionTypes"
-                  [value]="sectionType.slug"
-                  [attr.selected]="(sectionType.slug === section['@attributes'].type ? '' : null)">
-            {{ sectionType.title }}</option>
-        </select>
-      </label>
+      <berta-select-input [label]="'Type'"
+                          [value]="section['@attributes'].type"
+                          [values]="templateSectionTypes"
+                          (inputFocus)="updateComponentFocus($event)"
+                          (update)="updateField({'@attributes': {type: $event}})"></berta-select-input>
       <div *ngIf="params.length > 0" class="section-params">
         <berta-setting *ngFor="let param of params"
                       [setting]="param.setting"

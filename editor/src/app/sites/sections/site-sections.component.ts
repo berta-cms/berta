@@ -26,7 +26,7 @@ export class SiteSectionsComponent implements OnInit {
     setting: SettingModel,
     config: SettingConfigModel,
   }[]}[]>;
-  sectionTypes$: Observable<{slug: string, title: string}[]>;
+  sectionTypes$: Observable<{value: string, title: string}[]>;
 
   constructor(private store: Store) { }
 
@@ -34,7 +34,7 @@ export class SiteSectionsComponent implements OnInit {
     this.sectionTypes$ = this.store.select(SiteTemplatesState.getCurrentTemplateSectionTypes).pipe(
       map(sectionTypes => {
         return Object.keys(sectionTypes || {}).map(sectionType => {
-          return { slug: sectionType, title: sectionTypes[sectionType].title };
+          return { value: sectionType, title: sectionTypes[sectionType].title };
         });
       }),
       shareReplay(1)  // Reuse the same observable for all sections
