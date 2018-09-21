@@ -1,0 +1,32 @@
+berta-site-sections {
+  display: block;
+  margin-bottom: 1.3em;
+
+  > button {
+    font-size: .875em;
+    margin: 1.3em;
+  }
+}
+
+
+berta-section {
+  display: block;
+
+  &:last-child {
+    margin-bottom: 1.3em;
+  }
+
+  h3 {
+    border-bottom: 1px solid $grey-light;
+    font-size: 1em;
+    margin: 0;
+    padding: 1.3em;
+
+    button {
+      background: none;
+      border: 0;
+      margin-left: 1em;
+      padding: 0;
+    }
+  }
+}

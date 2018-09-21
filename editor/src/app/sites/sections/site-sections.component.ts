@@ -13,24 +13,13 @@ import { SettingConfigModel, SettingModel } from '../../shared/interfaces';
 @Component({
   selector: 'berta-site-sections',
   template: `
-    <h2>Site Sections</h2>
-    <div class="sections">
-      <berta-section *ngFor="let sd of sectionsData$ | async"
-                     [section]="sd.section"
-                     [params]="sd.params"
-                     [templateSectionTypes]="sectionTypes$ | async"
-                     (update)="updateSection(sd, $event)"
-                     ></berta-section>
-      <button type="button" (click)="createSection()">Create New Section</button>
-    </div>
-  `,
-  styles: [`
-    berta-section {
-      margin-top: 1.5rem;
-      padding-bottom: .5rem;
-      border-bottom: 1px solid gray;
-    }
-  `]
+    <berta-section *ngFor="let sd of sectionsData$ | async"
+                   [section]="sd.section"
+                   [params]="sd.params"
+                   [templateSectionTypes]="sectionTypes$ | async"
+                   (update)="updateSection(sd, $event)"></berta-section>
+    <button type="button" class="button" (click)="createSection()">Create new section</button>
+  `
 })
 export class SiteSectionsComponent implements OnInit {
   sectionsData$: Observable<{section: SiteSectionStateModel, params: {

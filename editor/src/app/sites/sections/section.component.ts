@@ -3,6 +3,7 @@ import { Store } from '@ngxs/store';
 import { SiteSectionStateModel } from './sections-state/site-sections-state.model';
 import { SiteTemplateSectionTypesModel } from '../template-settings/site-templates.interface';
 import { DeleteSiteSectionAction, CloneSectionAction } from './sections-state/site-sections.actions';
+import { UpdateInputFocus } from '../../app-state/app.actions';
 
 @Component({
   selector: 'berta-section',
@@ -34,45 +35,40 @@ import { DeleteSiteSectionAction, CloneSectionAction } from './sections-state/si
       <button title="copy"
               (click)="cloneSection()">Clone</button>
       <button title="delete"
-              (click)="deleteSection()">X</button>
+              (click)="deleteSection()">x</button>
+      <button title="settings">Settings</button>
     </h3>
-    <label for="type">
-      <strong>Type</strong>
-      <select #sectionType name="type" (change)="updateField({'@attributes': {type: sectionType.value}})">
-        <option *ngFor="let sectionType of templateSectionTypes"
-                [value]="sectionType.slug"
-                [attr.selected]="(sectionType.slug === section['@attributes'].type ? '' : null)">
-          {{ sectionType.title }}</option>
-      </select>
-    </label>
+    <div class="settings">
+      <label for="type">
+        <strong>Type</strong>
+        <select #sectionType name="type" (change)="updateField({'@attributes': {type: sectionType.value}})">
+          <option *ngFor="let sectionType of templateSectionTypes"
+                  [value]="sectionType.slug"
+                  [attr.selected]="(sectionType.slug === section['@attributes'].type ? '' : null)">
+            {{ sectionType.title }}</option>
+        </select>
+      </label>
+      <div *ngIf="params.length > 0" class="section-params">
+        <berta-setting *ngFor="let param of params"
+                      [setting]="param.setting"
+                      [config]="param.config"
+                      (update)="updateSectionParams($event)"></berta-setting>
+      </div>
+      <h4>SEO</h4>
+      <berta-long-text-input [label]="'Title'"
+                              [value]="section.seoTitle"
+                              (inputFocus)="updateComponentFocus($event)"
+                              (update)="updateTextField2('seoTitle', $event)"></berta-long-text-input>
 
-    <h4>SEO</h4>
-    <div class="section-seo">
-      <label for="seo-title">
-        Title:
-        <textarea name="seo-title"
-                  (blur)="updateTextField('seoTitle', $event.target.value, $event)"
-                  (focus)="editField('seoTitle')">{{section.seoTitle}}</textarea>
-      </label>
-      <label for="seo-keywords">
-        Keywords:
-        <textarea name="seo-keywords"
-                  (blur)="updateTextField('seoKeywords', $event.target.value, $event)"
-                  (focus)="editField('seoKeywords')">{{section.seoKeywords}}</textarea>
-      </label>
-      <label for="seo-description">
-        Description:
-        <textarea name="seo-description"
-                  (blur)="updateTextField('seoDescription', $event.target.value, $event)"
-                  (focus)="editField('seoDescription')">{{section.seoDescription}}</textarea>
-      </label>
-    </div>
-    <h4 *ngIf="params.length > 0">Params</h4>
-    <div *ngIf="params.length > 0" class="section-params">
-      <berta-setting *ngFor="let param of params"
-                    [setting]="param.setting"
-                    [config]="param.config"
-                    (update)="updateSectionParams($event)"></berta-setting>
+      <berta-long-text-input [label]="'Keywords'"
+                              [value]="section.seoKeywords"
+                              (inputFocus)="updateComponentFocus($event)"
+                              (update)="updateTextField2('seoKeywords', $event)"></berta-long-text-input>
+
+      <berta-long-text-input [label]="'Description'"
+                              [value]="section.seoDescription"
+                              (inputFocus)="updateComponentFocus($event)"
+                              (update)="updateTextField2('seoDescription', $event)"></berta-long-text-input>
     </div>
   `,
   styles: [`
@@ -85,9 +81,6 @@ import { DeleteSiteSectionAction, CloneSectionAction } from './sections-state/si
     label[for=type] {
       display: flex;
       justify-content: space-between;
-    }
-    .section-seo {
-      padding-left: 1rem;
     }
     h3 {
       display: flex;
@@ -111,6 +104,10 @@ export class SectionComponent implements OnInit {
   ngOnInit() {
   }
 
+  updateComponentFocus(isFocused) {
+    this.store.dispatch(new UpdateInputFocus(isFocused));
+  }
+
   updateTextField(field, value, $event) {
     if (this.edit === false || $event instanceof KeyboardEvent && !($event.key === 'Enter' || $event.keyCode === 13)) {
       return;
@@ -119,6 +116,13 @@ export class SectionComponent implements OnInit {
       return;
     }
     this.edit = false;
+    const data = {};
+    data[field] = value;
+
+    this.updateField(data);
+  }
+
+  updateTextField2(field, value) {
     const data = {};
     data[field] = value;
 
