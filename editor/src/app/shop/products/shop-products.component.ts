@@ -12,14 +12,27 @@ import { UpdateInputFocus } from '../../app-state/app.actions';
                         [value]="product.instock"
                         (update)="updateProducts('instock', $event, product.uniqid)"
                         (inputFocus)="updateInputFocus($event)"></berta-text-input>
-      <p>Reservations: <span title="Reservations">{{product.reservation}}</span></p>
+      <p>reservations: <span title="Reservations">{{product.reservation}}</span></p>
     </div>
   `,
   styles: [`
-      p {
-        font-size: 0.875em;
-        text-align: right;
-      }
+    :host > div {
+      border-top: 1px solid #ebebeb;
+      padding-top: 20px;
+    }
+    :host > div:first-child {
+      border-top: none;
+      padding-top: 0;
+    }
+    p {
+      font-size: 0.875em;
+      color: #9b9b9b;
+      display: flex;
+      justify-content: space-between;
+    }
+    p > span {
+      width: 50%;
+    }
   `]
 })
 export class ShopProductsComponent implements OnInit {
