@@ -1,8 +1,11 @@
 import { State, StateContext, NgxsOnInit, Selector, Action, Store } from '@ngxs/store';
 import { ShopStateService } from '../shop-state.service';
-import { take } from 'rxjs/operators';
+import { take, tap, catchError } from 'rxjs/operators';
 import { AppState } from '../../app-state/app.state';
 import { UpdateShopProductAction } from './shop-products.actions';
+import { AppStateService } from '../../app-state/app-state.service';
+import { ShopState } from '../shop.state';
+import { HttpErrorResponse } from '@angular/common/http';
 
 
 interface ShopProduct {
@@ -34,6 +37,7 @@ export class ShopProductsState implements NgxsOnInit {
 
   constructor(
     private store: Store,
+    private appStateService: AppStateService,
     private stateService: ShopStateService) {
   }
 
@@ -41,18 +45,35 @@ export class ShopProductsState implements NgxsOnInit {
   @Action(UpdateShopProductAction)
   updateShopProduct({ getState, patchState }: StateContext<ShopProductsModel>, action: UpdateShopProductAction) {
     const currentSite = this.store.selectSnapshot(AppState.getSite);
+    const syncURLs = this.store.selectSnapshot(ShopState.getURLs);
     const state = getState();
 
-    patchState({[currentSite]: state[currentSite].map(product => {
-        if (product.uniqid !== action.uniqid) {
-          return product;
+    return this.appStateService.sync(syncURLs.products, {
+      path: `${currentSite}/${action.uniqid}/${action.payload.field}`,
+      value: action.payload.value
+    }, 'PATCH').pipe(
+      tap(response => {
+        patchState({
+          [currentSite]: state[currentSite].map(product => {
+            if (product.uniqid !== action.uniqid) {
+              return product;
+            }
+            return {
+              ... product,
+              [action.payload.field]: response.data.value
+            };
+          })
+        });
+      }),
+      catchError((error: HttpErrorResponse|Error) => {
+        if (error instanceof HttpErrorResponse) {
+          console.error(error.error.message);
+        } else {
+          console.error(error.message);
         }
-        return {
-          ... product,
-          [action.payload.field]: action.payload.value
-        };
+        throw error;
       })
-    });
+    );
   }
 
 

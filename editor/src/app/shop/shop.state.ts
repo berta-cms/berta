@@ -1,7 +1,8 @@
+import { take } from 'rxjs/operators';
 import { State, StateContext, NgxsOnInit, Selector } from '@ngxs/store';
+
 import { ShopModel } from './shop.interface';
 import { ShopStateService } from './shop-state.service';
-import { take } from 'rxjs/operators';
 
 
 const defaultState: ShopModel = {
@@ -19,6 +20,11 @@ export class ShopState implements NgxsOnInit {
   @Selector()
   static getSections(state: ShopModel): Array<string> {
     return state.sections;
+  }
+
+  @Selector()
+  static getURLs(state: ShopModel) {
+    return state.urls;
   }
 
   constructor(
