@@ -7,7 +7,7 @@ aside {
 .setting-group {
   h3 {
     align-items: center;
-    border-bottom: 1px solid $berta-nav-text;
+    border-bottom: 1px solid $grey-light;
     color: $berta-nav-text;
     cursor: pointer;
     display: flex;
@@ -16,6 +16,7 @@ aside {
     margin: 0;
     outline: none;
     padding: 1.3em;
+    transition:  color .2s;
 
     svg {
       transition: transform .2s;
@@ -55,15 +56,32 @@ aside {
   &.is-expanded {
 
     h3 {
+      box-shadow: 0 2px 5px 0 $grey-light;
+      color: $berta-accent;
+
       svg {
         transform: scaleY(-1);
+      }
+
+      .drop-icon {
+        stroke: $berta-accent;
       }
     }
 
     > .settings {
-      border-bottom: 1px solid $berta-nav-text;
+      border-bottom: 1px solid $grey-light;
       max-height: 1500px; // auto
       overflow: visible;
+    }
+
+    &:last-child {
+      > .settings {
+        border-bottom: 0;
+      }
+    }
+
+    + .setting-group {
+      box-shadow: 0 -2px 5px 0 $grey-light;
     }
   }
 
