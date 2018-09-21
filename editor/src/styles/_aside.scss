@@ -12,6 +12,7 @@ aside {
     cursor: pointer;
     display: flex;
     font-size: 1em;
+    font-weight: normal;
     justify-content: space-between;
     margin: 0;
     outline: none;
@@ -39,6 +40,8 @@ aside {
   h4 {
     border-top: 1px solid $grey-light;
     color: $berta-nav-text;
+    font-size: .9em;
+    font-weight: normal;
     margin: 0;
     padding-top: 1.3em;
   }
@@ -53,6 +56,15 @@ aside {
     max-height: 0;
     overflow: hidden;
     transition:  max-height .2s ease;
+
+    berta-setting {
+      &:first-child {
+        h4 {
+          border-top: 0;
+          padding-top: 0;
+        }
+      }
+    }
   }
 
   &.is-expanded {
