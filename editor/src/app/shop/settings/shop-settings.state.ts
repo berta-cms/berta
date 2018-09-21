@@ -1,10 +1,13 @@
+import { take, tap, catchError } from 'rxjs/operators';
+import { HttpErrorResponse } from '@angular/common/http';
 import { State, StateContext, NgxsOnInit, Selector, Action, Store } from '@ngxs/store';
+
 import { ShopStateService } from '../shop-state.service';
-import { take } from 'rxjs/operators';
 import { AppState } from '../../app-state/app.state';
-import { AppStateModel } from '../../app-state/app-state.interface';
 import { SettingModel } from '../../shared/interfaces';
 import { UpdateShopSettingsAction } from './shop-settings.actions';
+import { AppStateService } from '../../app-state/app-state.service';
+import { ShopState } from '../shop.state';
 
 
 interface ShopSettingsModel {
@@ -48,6 +51,7 @@ export class ShopSettingsState implements NgxsOnInit {
 
   constructor(
     private store: Store,
+    private appStateService: AppStateService,
     private stateService: ShopStateService) {
   }
 
@@ -69,20 +73,36 @@ export class ShopSettingsState implements NgxsOnInit {
   updateShopSettings({getState, patchState}: StateContext<ShopSettingsModel>, action: UpdateShopSettingsAction) {
     const state = getState();
     const site = this.store.selectSnapshot(AppState.getSite);
+    const syncURLs = this.store.selectSnapshot(ShopState.getURLs);
 
-    return patchState({
-      [site]: state[site].map(settingGroup => {
-        if (settingGroup.slug !== action.groupSlug) {
-          return settingGroup;
+    return this.appStateService.sync(syncURLs.settings, {
+      path: `${site}/${action.groupSlug}/${action.payload.field}`,
+      value: action.payload.value
+    }, 'PATCH').pipe(
+      tap(response => {
+        patchState({
+          [site]: state[site].map(settingGroup => {
+            if (settingGroup.slug !== action.groupSlug) {
+              return settingGroup;
+            }
+            return {...settingGroup, settings: settingGroup.settings.map(setting => {
+              if (setting.slug !== action.payload.field) {
+                return setting;
+              }
+              return {...setting, value: response.data.value};
+            })};
+          })
+        });
+      }),
+      catchError((error: HttpErrorResponse|Error) => {
+        if (error instanceof HttpErrorResponse) {
+          console.error(error.error.message);
+        } else {
+          console.error(error.message);
         }
-        return {...settingGroup, settings: settingGroup.settings.map(setting => {
-          if (setting.slug !== action.payload.field) {
-            return setting;
-          }
-          return {...setting, value: action.payload.value};
-        })};
+        throw error;
       })
-    });
+    );
   }
 
   private initializeShopSettingsForSite(settings: any): any[] {
