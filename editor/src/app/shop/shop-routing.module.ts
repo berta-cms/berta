@@ -1,12 +1,17 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { ShopSettingsComponent } from './shop-settings.component';
+import { ShopComponent } from './shop.component';
 
 const routes: Routes = [
   {
-    path: '',
-    component: ShopSettingsComponent
+    path: ':section',
+    component: ShopComponent
   },
+  {
+    path: '',
+    component: ShopComponent,
+    data: { section: '' }
+  }
 ];
 
 @NgModule({

@@ -27,7 +27,13 @@ import { FileInputComponent } from '../../inputs/file-input.component';
   ],
   exports: [
     SettingComponent,
-    AutofocusDirective
+    AutofocusDirective,
+    TextInputComponent,
+    LongTextInputComponent,
+    ToggleInputComponent,
+    ColorInputComponent,
+    SelectInputComponent,
+    FileInputComponent
   ]
 })
 export class SitesSharedModule { }

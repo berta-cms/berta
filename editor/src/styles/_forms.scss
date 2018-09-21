@@ -47,6 +47,7 @@
       color: $input-color;
       flex-grow: 1;
       font-size: 1em;
+      min-width: 1rem;
       outline: none;
       padding: .75em .75em .75em 0;
       transition: color .2s;
@@ -348,4 +349,10 @@
 
 color-picker {
   position: absolute;
+}
+
+.color-picker {
+  button {
+    margin-left: .5em;
+  }
 }

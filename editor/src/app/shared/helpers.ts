@@ -1,6 +1,32 @@
 import { SettingConfigModel, SettingConfigGroupResponse, SettingGroupConfigModel } from './interfaces';
 
 /**
+ * Split camelCased string in to an array of strings.
+ *
+ * camelCase => ['camel', 'Case']
+ *
+ * @param camelCasedString String to split
+ * @returns array with camelCased string parts
+ */
+export function splitCamel(camelCasedString: string): Array<string> {
+  return camelCasedString.match(/([a-z]+)|([A-Z][a-z]+)|([A-Z]+(?![a-z]))/g);
+}
+
+
+/**
+ * Uppercase the first letter of given string
+ *
+ * string => String
+ *
+ * @param str string to uppercase the first character
+ * @returns string with uppercase first character
+ */
+export function uCFirst(str: string): string {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+
+/**
  * Split camelCased string in to multiple words based on uppercase letters.
  *
  * camelCase -> Camel Case
@@ -11,10 +37,10 @@ import { SettingConfigModel, SettingConfigGroupResponse, SettingGroupConfigModel
 export function camel2Words(camelCasedString: string): string {
   // If we get a word with non-letter characters, just uppercase the first letter and return.
   if (/[^A-z]/i.test(camelCasedString)) {
-    return camelCasedString.charAt(0).toUpperCase() + camelCasedString.slice(1);
+    return uCFirst(camelCasedString);
   }
-  return camelCasedString.match(/([a-z]+)|([A-Z][a-z]+)|([A-Z]+(?![a-z]))/g)
-    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+  return splitCamel(camelCasedString)
+    .map(word => uCFirst(word))
     .join(' ');
 }
 
