@@ -11,7 +11,7 @@ import { UpdateShopRegionAction, UpdateShopRegionCostAction } from './shop-regio
 @Component({
   selector: 'berta-shop-regional-costs',
   template: `
-    <div *ngFor="let region of regionalCosts$ | async" style="margin-bottom: 2rem">
+    <div class="bt-sh-region" *ngFor="let region of regionalCosts$ | async">
       <berta-text-input label="Region"
                         [value]="region.name"
                         (update)="updateRegion('name', $event, region.id)"
@@ -20,19 +20,46 @@ import { UpdateShopRegionAction, UpdateShopRegionCostAction } from './shop-regio
                         [value]="region.vat"
                         (update)="updateRegion('vat', $event, region.id)"
                         (inputFocus)="updateInputFocus($event)"></berta-text-input>
-      <div *ngFor="let cost of region.costs" style="padding-left: 2rem; margin-top: 1rem">
+      <p>Costs</p>
+      <div class="bt-sh-regional-cost" *ngFor="let cost of region.costs">
         <berta-text-input [label]="weightLabel$ | async"
                           [value]="cost.weight"
                           (update)="updateRegionalCost('weight', $event, region.id, cost.id)"
                           (inputFocus)="updateInputFocus($event)"></berta-text-input>
         <berta-text-input [label]="priceLabel$ | async"
                           [value]="cost.price"
-                          (update)="updateRegionalCost('weight', $event, region.id, cost.id)"
+                          (update)="updateRegionalCost('price', $event, region.id, cost.id)"
                           (inputFocus)="updateInputFocus($event)"></berta-text-input>
       </div>
     </div>
   `,
-  styles: []
+  styles: [`
+    berta-text-input {
+      display: block;
+      margin: 1rem 0;
+    }
+    berta-text-input:first-child {
+      margin-top: 0;
+    }
+
+    .bt-sh-region {
+      padding-top: 1rem;
+      border-bottom: 1px solid #ebebeb;
+    }
+
+    .bt-sh-region:last-child {
+      padding-bottom: 0;
+      border-bottom: none;
+    }
+
+    .bt-sh-regional-cost {
+      padding-left: 2rem;
+    }
+    p {
+      color: #9b9b9b;
+      font-size: 0.875em;
+    }
+  `]
 })
 export class ShopRegionalCostsComponent implements OnInit {
   @Select(ShopRegionalCostsState.getCurrentSiteRegionalCosts) regionalCosts$;

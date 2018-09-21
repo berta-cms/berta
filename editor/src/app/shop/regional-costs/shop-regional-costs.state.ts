@@ -1,8 +1,12 @@
+import { take, tap, catchError } from 'rxjs/operators';
+import { HttpErrorResponse } from '@angular/common/http';
 import { State, StateContext, NgxsOnInit, Selector, Action, Store } from '@ngxs/store';
-import { take } from 'rxjs/operators';
+
 import { ShopStateService } from '../shop-state.service';
 import { AppState } from '../../app-state/app.state';
 import { UpdateShopRegionAction, UpdateShopRegionCostAction } from './shop-regional-costs.actions';
+import { ShopState } from '../shop.state';
+import { AppStateService } from '../../app-state/app-state.service';
 
 
 interface ShopRegion {
@@ -38,6 +42,7 @@ export class ShopRegionalCostsState implements NgxsOnInit {
 
   constructor(
     private store: Store,
+    private appStateService: AppStateService,
     private stateService: ShopStateService) {
   }
 
@@ -54,13 +59,29 @@ export class ShopRegionalCostsState implements NgxsOnInit {
   updateShopRegion({getState, patchState}: StateContext<ShopRegionalCostsModel>, action: UpdateShopRegionAction) {
     const state = getState();
     const site = this.store.selectSnapshot(AppState.getSite);
+    const syncURLs = this.store.selectSnapshot(ShopState.getURLs);
 
-    patchState({[site]: state[site].map(region => {
-      if (region.id !== action.id) {
-        return region;
-      }
-      return {...region, [action.payload.field]: action.payload.value};
-    })});
+    return this.appStateService.sync(syncURLs.regions, {
+      path: `${site}/${action.id}/${action.payload.field}`,
+      value: action.payload.value
+    }, 'PATCH').pipe(
+      tap((response: {message: string, data: any}) => {
+        patchState({[site]: state[site].map(region => {
+          if (region.id !== action.id) {
+            return region;
+          }
+          return {...region, [action.payload.field]: response.data.value};
+        })});
+      }),
+      catchError((error: HttpErrorResponse|Error) => {
+        if (error instanceof HttpErrorResponse) {
+          console.error(error.error.message);
+        } else {
+          console.error(error.message);
+        }
+        throw error;
+      })
+    );
   }
 
   @Action(UpdateShopRegionCostAction)
@@ -68,16 +89,33 @@ export class ShopRegionalCostsState implements NgxsOnInit {
     const state = getState();
     const site = this.store.selectSnapshot(AppState.getSite);
 
-    patchState({[site]: state[site].map(region => {
-      if (region.id !== action.id) {
-        return region;
-      }
-      return {...region, costs: region.costs.map(cost => {
-        if (cost.id !== action.costId) {
-          return cost;
+    const syncURLs = this.store.selectSnapshot(ShopState.getURLs);
+
+    return this.appStateService.sync(syncURLs.regionalCosts, {
+      path: `${site}/${action.id}/${action.payload.field}`,
+      value: action.payload.value
+    }, 'PATCH').pipe(
+      tap((response: {message: string, data: any}) => {
+        patchState({[site]: state[site].map(region => {
+          if (region.id !== action.id) {
+            return region;
+          }
+          return {...region, costs: region.costs.map(cost => {
+            if (cost.id !== action.costId) {
+              return cost;
+            }
+            return {...cost, [action.payload.field]: response.data.value};
+          })};
+        })});
+      }),
+      catchError((error: HttpErrorResponse|Error) => {
+        if (error instanceof HttpErrorResponse) {
+          console.error(error.error.message);
+        } else {
+          console.error(error.message);
         }
-        return {...cost, [action.payload.field]: action.payload.value};
-      })};
-    })});
+        throw error;
+      })
+    );
   }
 }
