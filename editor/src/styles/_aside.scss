@@ -28,10 +28,10 @@ aside {
     }
 
     &:hover {
-      color: $berta-accent;
+      color: $input-color-active;
 
       .drop-icon {
-        stroke: $berta-accent;
+        stroke: $input-color-active;
       }
     }
   }
@@ -54,17 +54,29 @@ aside {
   }
 
   &.is-expanded {
+    &:before {
+      box-shadow: 0 2px 5px 0 $grey-light;
+      content: '';
+      display: block;
+      height: 1px;
+      position: relative;
+      top: -1px;
+    }
 
     h3 {
-      box-shadow: 0 2px 5px 0 $grey-light;
-      color: $berta-accent;
+      border-bottom: 0;
+      cursor: default;
 
       svg {
         transform: scaleY(-1);
       }
 
-      .drop-icon {
-        stroke: $berta-accent;
+      &:hover {
+        color: $berta-nav-text;
+
+        .drop-icon {
+          stroke: $berta-nav-text;
+        }
       }
     }
 
