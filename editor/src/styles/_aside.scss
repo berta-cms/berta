@@ -37,8 +37,10 @@ aside {
   }
 
   h4 {
+    border-top: 1px solid $grey-light;
     color: $berta-nav-text;
     margin: 0;
+    padding-top: 1.3em;
   }
 
   &:first-child {
@@ -54,13 +56,16 @@ aside {
   }
 
   &.is-expanded {
+    position: relative;
+
     &:before {
       box-shadow: 0 2px 5px 0 $grey-light;
       content: '';
       display: block;
-      height: 1px;
-      position: relative;
-      top: -1px;
+      height: 3px;
+      position: absolute;
+      top: -3px;
+      width: 100%;
     }
 
     h3 {
