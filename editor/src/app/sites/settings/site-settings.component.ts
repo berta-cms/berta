@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngxs/store';
 import { Observable, combineLatest } from 'rxjs';
 import { map, filter, scan } from 'rxjs/operators';
+import { splitCamel, uCFirst } from '../../shared/helpers';
 import { SiteSettingsState } from './site-settings.state';
 import { SiteSettingsConfigState } from './site-settings-config.state';
 import { UpdateSiteSettingsAction } from './site-settings.actions';
@@ -12,8 +13,10 @@ import { SettingModel, SettingConfigModel, SettingGroupConfigModel } from '../..
 @Component({
   selector: 'berta-site-settings',
   template: `
-    <div class="setting-group" [class.is-expanded]="currentGroup === settingGroup.slug" *ngFor="let settingGroup of settings$ | async">
-      <h3 [routerLink]="['/settings', settingGroup.slug]">
+    <div class="setting-group"
+         [class.is-expanded]="camelifySlug(currentGroup) === settingGroup.slug"
+         *ngFor="let settingGroup of settings$ | async">
+      <h3 [routerLink]="['/settings', slugifyCamel(settingGroup.slug)]">
         {{ settingGroup.config.title || settingGroup.slug }}
         <svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M9 1L4.75736 5.24264L0.514719 1" stroke="#9b9b9b" stroke-linecap="round" stroke-linejoin="round" class="drop-icon"/>
@@ -110,6 +113,16 @@ export class SiteSettingsComponent implements OnInit {
     this.route.paramMap.subscribe(params => {
       this.currentGroup = params['params']['group'] || this.defaultGroup;
     });
+  }
+
+  slugifyCamel(camelText: string) {
+    return splitCamel(camelText).map(piece => piece.toLowerCase()).join('-');
+  }
+
+  camelifySlug(slug: string) {
+    return slug.split('-').map((piece, i) => {
+      return i ? uCFirst(piece) : piece;
+    }).join('');
   }
 
   updateSetting(settingGroup: string, updateEvent) {
