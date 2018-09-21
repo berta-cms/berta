@@ -19,6 +19,7 @@ berta-section {
   h3 {
     border-bottom: 1px solid $grey-light;
     font-size: 1em;
+    font-weight: normal;
     margin: 0;
     padding: 1.3em;
 
@@ -28,5 +29,17 @@ berta-section {
       margin-left: 1em;
       padding: 0;
     }
+  }
+
+  h4 {
+    border-top: 1px solid $grey-light;
+    font-size: .9em;
+    font-weight: normal;
+    margin: 1.3em;
+    padding-top: 1.3em;
+  }
+
+  .form-group {
+    margin: 1.3em;
   }
 }
