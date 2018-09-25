@@ -47,10 +47,11 @@
       color: $input-color;
       flex-grow: 1;
       font-size: 1em;
+      min-width: 1rem;
       outline: none;
       padding: .75em .75em .75em 0;
       transition: color .2s;
-      min-width: 1rem;
+      width: 100%;
 
       &:focus {
         color: $berta-accent;

@@ -1,0 +1,122 @@
+aside {
+  background-color: $berta-bg-light;
+  border-right: 1px solid $berta-nav-text;  // for develompent
+  padding-top: $bt-header-height;
+}
+
+.setting-group {
+  h3 {
+    align-items: center;
+    border-bottom: 1px solid $grey-light;
+    color: $berta-nav-text;
+    cursor: pointer;
+    display: flex;
+    font-size: 1em;
+    font-weight: normal;
+    justify-content: space-between;
+    margin: 0;
+    outline: none;
+    padding: 1.3em;
+    transition:  color .2s;
+
+    svg {
+      transition: transform .2s;
+    }
+
+    .drop-icon {
+      stroke: $berta-nav-text;
+      transition: stroke .2s;
+    }
+
+    &:hover {
+      color: $input-color-active;
+
+      .drop-icon {
+        stroke: $input-color-active;
+      }
+    }
+  }
+
+  h4 {
+    border-top: 1px solid $grey-light;
+    color: $berta-nav-text;
+    font-size: .9em;
+    font-weight: normal;
+    margin: 0;
+    padding-top: 1.3em;
+  }
+
+  &:first-child {
+    h3 {
+      border-top: 0;
+    }
+  }
+
+  > .settings {
+    max-height: 0;
+    overflow: hidden;
+    transition:  max-height .2s ease;
+
+    berta-setting {
+      &:first-child {
+        margin-top: 0;
+
+        h4 {
+          border-top: 0;
+          padding-top: 0;
+        }
+      }
+    }
+  }
+
+  &.is-expanded {
+    position: relative;
+
+    &:before {
+      box-shadow: 0 2px 5px 0 $grey-light;
+      content: '';
+      display: block;
+      height: 3px;
+      position: absolute;
+      top: -3px;
+      width: 100%;
+    }
+
+    h3 {
+      border-bottom: 0;
+      cursor: default;
+
+      svg {
+        transform: scaleY(-1);
+      }
+
+      &:hover {
+        color: $berta-nav-text;
+
+        .drop-icon {
+          stroke: $berta-nav-text;
+        }
+      }
+    }
+
+    > .settings {
+      border-bottom: 1px solid $grey-light;
+      max-height: 1500px; // auto
+      overflow: visible;
+    }
+
+    &:last-child {
+      > .settings {
+        border-bottom: 0;
+      }
+    }
+
+    + .setting-group {
+      box-shadow: 0 -2px 5px 0 $grey-light;
+    }
+  }
+
+  berta-setting {
+    margin: 1.3em;
+  }
+}

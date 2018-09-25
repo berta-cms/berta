@@ -72,7 +72,6 @@ import { UpdateInputFocus } from '../../app-state/app.actions';
   styles: [`
     :host {
       display: block;
-      margin-bottom: 10px;
     }
     label {
       display: flex;
