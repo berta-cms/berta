@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Store } from '@ngxs/store';
 import { Observable, combineLatest } from 'rxjs';
 import { filter, map, shareReplay } from 'rxjs/operators';
 import { SiteSectionStateModel } from './sections-state/site-sections-state.model';
+import { AppState } from '../../app-state/app.state';
 import { SiteTemplatesState } from '../template-settings/site-templates.state';
 import { SiteSectionsState } from './sections-state/site-sections.state';
 import { camel2Words } from '../../shared/helpers';
@@ -32,6 +33,7 @@ export class SiteSectionsComponent implements OnInit {
   currentSection: string;
 
   constructor(private store: Store,
+              private router: Router,
               private route: ActivatedRoute) { }
 
   ngOnInit() {
@@ -112,14 +114,35 @@ export class SiteSectionsComponent implements OnInit {
   }
 
   createSection() {
-    this.store.dispatch(CreateSectionAction);
+    this.store.dispatch(CreateSectionAction)
+    .subscribe({
+      next: (state) => {
+        const currentSite = this.store.selectSnapshot(AppState.getSite);
+        const updatedSection = state.siteSections.filter(section => {
+          return section.site_name === currentSite;
+        }).slice(-1)[0];
+        this.router.navigate(['/sections', updatedSection.name]);
+      },
+      error: (error) => console.error(error)
+    });
   }
 
   updateSection(sectionData, updateEvent) {
     const field = Object.keys(updateEvent.data)[0];
 
     if (field === 'title') {
-      this.store.dispatch(new RenameSiteSectionAction(sectionData.section, parseInt(updateEvent.section, 10), updateEvent.data));
+      this.store.dispatch(new RenameSiteSectionAction(sectionData.section, parseInt(updateEvent.section, 10), updateEvent.data))
+        .subscribe({
+          next: (state) => {
+            const currentSite = this.store.selectSnapshot(AppState.getSite);
+            const updatedSection = state.siteSections.find(section => {
+              return section.site_name === currentSite && section.order === sectionData.section.order;
+            });
+
+            this.router.navigate(['/sections', updatedSection.name], {replaceUrl: true});
+          },
+          error: (error) => console.error(error)
+        });
     } else {
       this.store.dispatch(new UpdateSiteSectionAction(sectionData.section, parseInt(updateEvent.section, 10), updateEvent.data));
     }
