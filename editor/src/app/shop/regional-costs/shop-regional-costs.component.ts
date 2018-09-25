@@ -9,7 +9,9 @@ import {
   UpdateShopRegionAction,
   UpdateShopRegionCostAction,
   AddShopRegionAction,
-  AddShopRegionCostAction } from './shop-regional-costs.actions';
+  AddShopRegionCostAction,
+  DeleteShopRegionAction,
+  DeleteShopRegionCostAction} from './shop-regional-costs.actions';
 
 
 @Component({
@@ -34,6 +36,7 @@ import {
                           [value]="cost.price"
                           (update)="updateRegionalCost('price', $event, region.id, cost.id)"
                           (inputFocus)="updateInputFocus($event)"></berta-text-input>
+        <button type="button" (click)="deleteCost(cost.id, region.id, $event)">Delete Cost</button>
       </div>
       <form class="bt-sh-regional-cost" (submit)="addCost(region.id, $event)">
         <h5>Add Cost</h5>
@@ -45,8 +48,9 @@ import {
                           value=""
                           (update)="newCost.price = $event"
                           (inputFocus)="updateInputFocus($event)"></berta-text-input>
-        <button type="submit">add</button>
+        <button type="submit">Add Region</button>
       </form>
+      <button type="button" (click)="deleteRegion(region.id, $event)">Delete Region</button>
     </div>
     <form (submit)="addRegion($event)" class="bt-sh-region" *ngIf="!!newRegion">
       <h4>Add region</h4>
@@ -146,7 +150,12 @@ export class ShopRegionalCostsComponent implements OnInit {
     });
   }
 
-  addCost(regionId, event) {
+  deleteRegion(regionId, event) {
+    event.target.disabled = true;
+    this.store.dispatch(new DeleteShopRegionAction({id: regionId}));
+  }
+
+  addCost(id, event) {
     event.preventDefault();
     const data = {
       weight: +this.newCost.weight,
@@ -157,8 +166,13 @@ export class ShopRegionalCostsComponent implements OnInit {
      * @todo: add feature [autoDisable] on input
      * @todo: add disable property on input, so we can disable them on need
      */
-    this.store.dispatch(new AddShopRegionCostAction(regionId, data)).subscribe(() => {
+    this.store.dispatch(new AddShopRegionCostAction(id, data)).subscribe(() => {
       this.newCost = { weight: 0, price: 0 };
     });
+  }
+
+  deleteCost(id, regionId, event) {
+    event.target.disabled = true;
+    this.store.dispatch(new DeleteShopRegionCostAction(regionId, {id: id}));
   }
 }

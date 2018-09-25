@@ -4,7 +4,13 @@ import { State, StateContext, NgxsOnInit, Selector, Action, Store } from '@ngxs/
 
 import { ShopStateService } from '../shop-state.service';
 import { AppState } from '../../app-state/app.state';
-import { UpdateShopRegionAction, UpdateShopRegionCostAction, AddShopRegionAction, AddShopRegionCostAction } from './shop-regional-costs.actions';
+import {
+  UpdateShopRegionAction,
+  UpdateShopRegionCostAction,
+  AddShopRegionAction,
+  AddShopRegionCostAction,
+  DeleteShopRegionAction,
+  DeleteShopRegionCostAction } from './shop-regional-costs.actions';
 import { ShopState } from '../shop.state';
 import { AppStateService } from '../../app-state/app-state.service';
 
@@ -85,7 +91,7 @@ export class ShopRegionalCostsState implements NgxsOnInit {
   }
 
   @Action(AddShopRegionAction)
-  AddShopRegion({getState, patchState}: StateContext<ShopRegionalCostsModel>, action: AddShopRegionAction) {
+  addShopRegion({getState, patchState}: StateContext<ShopRegionalCostsModel>, action: AddShopRegionAction) {
     const state = getState();
     const site = this.store.selectSnapshot(AppState.getSite);
     const syncURLs = this.store.selectSnapshot(ShopState.getURLs);
@@ -101,6 +107,27 @@ export class ShopRegionalCostsState implements NgxsOnInit {
           vat: +response.data.data.vat,
           costs: []
         }]});
+      }),
+      catchError((error: HttpErrorResponse|Error) => {
+        if (error instanceof HttpErrorResponse) {
+          console.error(error.error.message);
+        } else {
+          console.error(error.message);
+        }
+        throw error;
+      })
+    );
+  }
+
+  @Action(DeleteShopRegionAction)
+  deleteShopRegion({getState, patchState}: StateContext<ShopRegionalCostsModel>, action: DeleteShopRegionAction) {
+    const state = getState();
+    const site = this.store.selectSnapshot(AppState.getSite);
+    const syncURLs = this.store.selectSnapshot(ShopState.getURLs);
+
+    return this.appStateService.sync(syncURLs.regions + `/${(site || 0)}/${action.payload.id}`, {}, 'DELETE').pipe(
+      tap((response: {message: string, data: any}) => {
+        patchState({[site]: state[site].filter(region => +region.id !== +action.payload.id)});
       }),
       catchError((error: HttpErrorResponse|Error) => {
         if (error instanceof HttpErrorResponse) {
@@ -169,6 +196,38 @@ export class ShopRegionalCostsState implements NgxsOnInit {
             weight: response.data.data.weight,
             price: response.data.data.price
           }]};
+        })});
+      }),
+      catchError((error: HttpErrorResponse|Error) => {
+        if (error instanceof HttpErrorResponse) {
+          console.error(error.error.message);
+        } else {
+          console.error(error.message);
+        }
+        throw error;
+      })
+    );
+  }
+
+  @Action(DeleteShopRegionCostAction)
+  deleteShopRegionalCost({getState, patchState}: StateContext<ShopRegionalCostsModel>, action: DeleteShopRegionCostAction) {
+    const state = getState();
+    const site = this.store.selectSnapshot(AppState.getSite);
+    const syncURLs = this.store.selectSnapshot(ShopState.getURLs);
+
+    return this.appStateService.sync(syncURLs.regionalCosts + `/${(site || 0)}/${action.payload.id}`, {}, 'DELETE').pipe(
+      tap(() => {
+        patchState({[site]: state[site].map(region => {
+          if (region.id !== action.regionId) {
+            return region;
+          }
+          return {
+            ...region,
+            costs: region.costs.filter(cost => {
+              /** @todo: make sure state holds correct value types */
+              return +cost.id !== +action.payload.id;
+            })
+          };
         })});
       }),
       catchError((error: HttpErrorResponse|Error) => {

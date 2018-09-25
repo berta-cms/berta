@@ -19,6 +19,16 @@ export class AddShopRegionAction {
   }
 }
 
+export class DeleteShopRegionAction {
+  static readonly type = 'SHOP_REGION:DELETE';
+  constructor(
+    public payload: {
+      id: number
+    }) {
+  }
+}
+
+/* --- Costs --- */
 export class UpdateShopRegionCostAction {
   static readonly type = 'SHOP_REGIONAL_COST:UPDATE';
   constructor(
@@ -38,6 +48,16 @@ export class AddShopRegionCostAction {
     public payload: {
       weight: number,
       price: number
+    }) {
+  }
+}
+
+export class DeleteShopRegionCostAction {
+  static readonly type = 'SHOP_REGIONAL_COST:DELETE';
+  constructor(
+    public regionId: number,
+    public payload: {
+      id: number
     }) {
   }
 }
