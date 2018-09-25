@@ -32,6 +32,19 @@ berta-section {
     margin: 0;
     padding: 1.3em;
 
+    .edit {
+      cursor: pointer;
+      margin-left: .25em;
+      max-height: 1em;
+    }
+
+    input {
+      border: 0;
+      font-size: 1em;
+      outline: none;
+      padding: 0;
+    }
+
     button {
       background: none;
       border: 0;
