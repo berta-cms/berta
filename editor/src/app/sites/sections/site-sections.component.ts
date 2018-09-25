@@ -118,10 +118,12 @@ export class SiteSectionsComponent implements OnInit {
     .subscribe({
       next: (state) => {
         const currentSite = this.store.selectSnapshot(AppState.getSite);
-        const updatedSection = state.siteSections.filter(section => {
-          return section.site_name === currentSite;
-        }).slice(-1)[0];
-        this.router.navigate(['/sections', updatedSection.name]);
+        const createdSection = state.siteSections
+          .filter(section => section.site_name === currentSite)
+          .reduce((prev, current) => {
+            return (prev.order > current.order) ? prev : current;
+          });
+        this.router.navigate(['/sections', createdSection.name]);
       },
       error: (error) => console.error(error)
     });
