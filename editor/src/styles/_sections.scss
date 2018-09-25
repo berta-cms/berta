@@ -16,6 +16,15 @@ berta-section {
     margin-bottom: 1.3em;
   }
 
+  .section-container {
+    > .settings {
+      max-height: 0;
+      overflow: hidden;
+      transition:  max-height .2s ease;
+    }
+  }
+
+
   h3 {
     border-bottom: 1px solid $grey-light;
     font-size: 1em;
@@ -26,6 +35,7 @@ berta-section {
     button {
       background: none;
       border: 0;
+      cursor: pointer;
       margin-left: 1em;
       padding: 0;
     }
@@ -41,5 +51,15 @@ berta-section {
 
   .form-group {
     margin: 1.3em;
+  }
+
+  .section-container {
+    &.is-expanded {
+      > .settings {
+        border-bottom: 1px solid $grey-light;
+        max-height: 1500px; // auto
+        overflow: visible;
+      }
+    }
   }
 }

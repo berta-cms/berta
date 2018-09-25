@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngxs/store';
 import { Observable, combineLatest } from 'rxjs';
 import { filter, map, shareReplay } from 'rxjs/operators';
@@ -15,6 +16,7 @@ import { SettingConfigModel, SettingModel } from '../../shared/interfaces';
   template: `
     <berta-section *ngFor="let sd of sectionsData$ | async"
                    [section]="sd.section"
+                   [isExpanded]="sd.section.name === currentSection"
                    [params]="sd.params"
                    [templateSectionTypes]="sectionTypes$ | async"
                    (update)="updateSection(sd, $event)"></berta-section>
@@ -27,8 +29,10 @@ export class SiteSectionsComponent implements OnInit {
     config: SettingConfigModel,
   }[]}[]>;
   sectionTypes$: Observable<{value: string, title: string}[]>;
+  currentSection: string;
 
-  constructor(private store: Store) { }
+  constructor(private store: Store,
+              private route: ActivatedRoute) { }
 
   ngOnInit() {
     this.sectionTypes$ = this.store.select(SiteTemplatesState.getCurrentTemplateSectionTypes).pipe(
@@ -101,6 +105,10 @@ export class SiteSectionsComponent implements OnInit {
           });
         })
     );
+
+    this.route.paramMap.subscribe(params => {
+      this.currentSection = params['params']['section'];
+    });
   }
 
   createSection() {
