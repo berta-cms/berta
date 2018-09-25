@@ -40,9 +40,14 @@ berta-section {
 
     input {
       border: 0;
+      font-family: AvenirNext, Helvetica, Arial, sans-serif;
       font-size: 1em;
       outline: none;
       padding: 0;
+
+      &:focus {
+        color: $berta-accent;
+      }
     }
 
     button {

@@ -9,6 +9,7 @@ import { SiteTemplatesState } from '../template-settings/site-templates.state';
 import { SiteSectionsState } from './sections-state/site-sections.state';
 import { camel2Words } from '../../shared/helpers';
 import { SiteTemplateSettingsState } from '../template-settings/site-template-settings.state';
+import { UpdateInputFocus } from '../../app-state/app.actions';
 import { UpdateSiteSectionAction, CreateSectionAction, RenameSiteSectionAction } from './sections-state/site-sections.actions';
 import { SettingConfigModel, SettingModel } from '../../shared/interfaces';
 
@@ -20,6 +21,7 @@ import { SettingConfigModel, SettingModel } from '../../shared/interfaces';
                    [isExpanded]="sd.section.name === currentSection"
                    [params]="sd.params"
                    [templateSectionTypes]="sectionTypes$ | async"
+                   (inputFocus)="updateComponentFocus($event)"
                    (update)="updateSection(sd, $event)"></berta-section>
     <button type="button" class="button" (click)="createSection()">Create new section</button>
   `
@@ -111,6 +113,10 @@ export class SiteSectionsComponent implements OnInit {
     this.route.paramMap.subscribe(params => {
       this.currentSection = params['params']['section'];
     });
+  }
+
+  updateComponentFocus(isFocused) {
+    this.store.dispatch(new UpdateInputFocus(isFocused));
   }
 
   createSection() {
