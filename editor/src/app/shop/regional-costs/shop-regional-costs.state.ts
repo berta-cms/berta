@@ -4,7 +4,7 @@ import { State, StateContext, NgxsOnInit, Selector, Action, Store } from '@ngxs/
 
 import { ShopStateService } from '../shop-state.service';
 import { AppState } from '../../app-state/app.state';
-import { UpdateShopRegionAction, UpdateShopRegionCostAction } from './shop-regional-costs.actions';
+import { UpdateShopRegionAction, UpdateShopRegionCostAction, AddShopRegionAction } from './shop-regional-costs.actions';
 import { ShopState } from '../shop.state';
 import { AppStateService } from '../../app-state/app-state.service';
 
@@ -72,6 +72,35 @@ export class ShopRegionalCostsState implements NgxsOnInit {
           }
           return {...region, [action.payload.field]: response.data.value};
         })});
+      }),
+      catchError((error: HttpErrorResponse|Error) => {
+        if (error instanceof HttpErrorResponse) {
+          console.error(error.error.message);
+        } else {
+          console.error(error.message);
+        }
+        throw error;
+      })
+    );
+  }
+
+  @Action(AddShopRegionAction)
+  AddShopRegion({getState, patchState}: StateContext<ShopRegionalCostsModel>, action: AddShopRegionAction) {
+    const state = getState();
+    const site = this.store.selectSnapshot(AppState.getSite);
+    const syncURLs = this.store.selectSnapshot(ShopState.getURLs);
+
+    return this.appStateService.sync(syncURLs.regions, {
+      site: site,
+      data: {vat: 0, ...action.payload}
+    }, 'POST').pipe(
+      tap((response: {message: string, data: any}) => {
+        patchState({[site]: [...state[site], {
+          id: +response.data.data.id,
+          name: response.data.data.name,
+          vat: +response.data.data.vat,
+          costs: []
+        }]});
       }),
       catchError((error: HttpErrorResponse|Error) => {
         if (error instanceof HttpErrorResponse) {

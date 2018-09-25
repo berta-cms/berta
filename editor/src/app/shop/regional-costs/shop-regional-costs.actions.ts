@@ -9,6 +9,16 @@ export class UpdateShopRegionAction {
   }
 }
 
+export class AddShopRegionAction {
+  static readonly type = 'SHOP_REGION:ADD';
+  constructor(
+    public payload: {
+      name: string,
+      vat?: number
+    }) {
+  }
+}
+
 export class UpdateShopRegionCostAction {
   static readonly type = 'SHOP_REGIONAL_COST:UPDATE';
   constructor(

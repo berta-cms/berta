@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { ShopSettingsState } from '../settings/shop-settings.state';
 import { map, shareReplay } from 'rxjs/operators';
 import { UpdateInputFocus } from '../../app-state/app.actions';
-import { UpdateShopRegionAction, UpdateShopRegionCostAction } from './shop-regional-costs.actions';
+import { UpdateShopRegionAction, UpdateShopRegionCostAction, AddShopRegionAction } from './shop-regional-costs.actions';
 
 
 @Component({
@@ -32,6 +32,18 @@ import { UpdateShopRegionAction, UpdateShopRegionCostAction } from './shop-regio
                           (inputFocus)="updateInputFocus($event)"></berta-text-input>
       </div>
     </div>
+    <form (submit)="addRegion($event)" class="bt-sh-region" *ngIf="!!newRegion">
+      <h4>Add region</h4>
+      <berta-text-input label="Region"
+                        [value]="newRegion.name"
+                        (update)="newRegion.name = $event"
+                        (inputFocus)="updateInputFocus($event)"></berta-text-input>
+      <berta-text-input label="VAT"
+                        [value]="newRegion.vat"
+                        (update)="newRegion.vat = $event"
+                        (inputFocus)="updateInputFocus($event)"></berta-text-input>
+      <button type="submit">add</button>
+    </form>
   `,
   styles: [`
     berta-text-input {
@@ -65,6 +77,10 @@ export class ShopRegionalCostsComponent implements OnInit {
   @Select(ShopRegionalCostsState.getCurrentSiteRegionalCosts) regionalCosts$;
   weightLabel$: Observable<string>;
   priceLabel$: Observable<string>;
+  newRegion = {
+    name: '',
+    vat: ''
+  };
 
   constructor(private store: Store) { }
 
@@ -94,4 +110,19 @@ export class ShopRegionalCostsComponent implements OnInit {
     this.store.dispatch(new UpdateInputFocus(isFocused));
   }
 
+  addRegion(event) {
+    event.preventDefault();
+    const data = {
+      name: this.newRegion.name,
+      vat: +this.newRegion.vat
+    };
+    /** This is hack, to wor around input auto disable. Fix this when updating design
+     * @todo: add feature [autoDisable] on input
+     * @todo: add disable property on input, so we can disable them on need
+     */
+    this.newRegion = null;
+    this.store.dispatch(new AddShopRegionAction(data)).subscribe(() => {
+      this.newRegion = { name: '', vat: '' };
+    });
+  }
 }
