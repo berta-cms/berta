@@ -5,7 +5,11 @@ import { Observable } from 'rxjs';
 import { ShopSettingsState } from '../settings/shop-settings.state';
 import { map, shareReplay } from 'rxjs/operators';
 import { UpdateInputFocus } from '../../app-state/app.actions';
-import { UpdateShopRegionAction, UpdateShopRegionCostAction, AddShopRegionAction } from './shop-regional-costs.actions';
+import {
+  UpdateShopRegionAction,
+  UpdateShopRegionCostAction,
+  AddShopRegionAction,
+  AddShopRegionCostAction } from './shop-regional-costs.actions';
 
 
 @Component({
@@ -31,6 +35,18 @@ import { UpdateShopRegionAction, UpdateShopRegionCostAction, AddShopRegionAction
                           (update)="updateRegionalCost('price', $event, region.id, cost.id)"
                           (inputFocus)="updateInputFocus($event)"></berta-text-input>
       </div>
+      <form class="bt-sh-regional-cost" (submit)="addCost(region.id, $event)">
+        <h5>Add Cost</h5>
+        <berta-text-input [label]="weightLabel$ | async"
+                          value=""
+                          (update)="newCost.weight = $event"
+                          (inputFocus)="updateInputFocus($event)"></berta-text-input>
+        <berta-text-input [label]="priceLabel$ | async"
+                          value=""
+                          (update)="newCost.price = $event"
+                          (inputFocus)="updateInputFocus($event)"></berta-text-input>
+        <button type="submit">add</button>
+      </form>
     </div>
     <form (submit)="addRegion($event)" class="bt-sh-region" *ngIf="!!newRegion">
       <h4>Add region</h4>
@@ -81,6 +97,10 @@ export class ShopRegionalCostsComponent implements OnInit {
     name: '',
     vat: ''
   };
+  newCost = {
+    weight: 0,
+    price: 0
+  };
 
   constructor(private store: Store) { }
 
@@ -123,6 +143,22 @@ export class ShopRegionalCostsComponent implements OnInit {
     this.newRegion = null;
     this.store.dispatch(new AddShopRegionAction(data)).subscribe(() => {
       this.newRegion = { name: '', vat: '' };
+    });
+  }
+
+  addCost(regionId, event) {
+    event.preventDefault();
+    const data = {
+      weight: +this.newCost.weight,
+      price: +this.newCost.price
+    };
+
+    /** This is hack, to wor around input auto disable. Fix this when updating design
+     * @todo: add feature [autoDisable] on input
+     * @todo: add disable property on input, so we can disable them on need
+     */
+    this.store.dispatch(new AddShopRegionCostAction(regionId, data)).subscribe(() => {
+      this.newCost = { weight: 0, price: 0 };
     });
   }
 }

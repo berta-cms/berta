@@ -4,7 +4,7 @@ import { State, StateContext, NgxsOnInit, Selector, Action, Store } from '@ngxs/
 
 import { ShopStateService } from '../shop-state.service';
 import { AppState } from '../../app-state/app.state';
-import { UpdateShopRegionAction, UpdateShopRegionCostAction, AddShopRegionAction } from './shop-regional-costs.actions';
+import { UpdateShopRegionAction, UpdateShopRegionCostAction, AddShopRegionAction, AddShopRegionCostAction } from './shop-regional-costs.actions';
 import { ShopState } from '../shop.state';
 import { AppStateService } from '../../app-state/app-state.service';
 
@@ -135,6 +135,40 @@ export class ShopRegionalCostsState implements NgxsOnInit {
             }
             return {...cost, [action.payload.field]: response.data.value};
           })};
+        })});
+      }),
+      catchError((error: HttpErrorResponse|Error) => {
+        if (error instanceof HttpErrorResponse) {
+          console.error(error.error.message);
+        } else {
+          console.error(error.message);
+        }
+        throw error;
+      })
+    );
+  }
+
+  @Action(AddShopRegionCostAction)
+  addShopRegionalCost({getState, patchState}: StateContext<ShopRegionalCostsModel>, action: AddShopRegionCostAction) {
+    const state = getState();
+    const site = this.store.selectSnapshot(AppState.getSite);
+
+    const syncURLs = this.store.selectSnapshot(ShopState.getURLs);
+
+    return this.appStateService.sync(syncURLs.regionalCosts, {
+      site: site,
+      data: { id_region: action.regionId, ...action.payload }
+    }, 'POST').pipe(
+      tap((response: {message: string, data: any}) => {
+        patchState({[site]: state[site].map(region => {
+          if (region.id !== action.regionId) {
+            return region;
+          }
+          return {...region, costs: [...region.costs, {
+            id: response.data.data.id,
+            weight: response.data.data.weight,
+            price: response.data.data.price
+          }]};
         })});
       }),
       catchError((error: HttpErrorResponse|Error) => {

@@ -30,3 +30,14 @@ export class UpdateShopRegionCostAction {
     }) {
   }
 }
+
+export class AddShopRegionCostAction {
+  static readonly type = 'SHOP_REGIONAL_COST:ADD';
+  constructor(
+    public regionId: number,
+    public payload: {
+      weight: number,
+      price: number
+    }) {
+  }
+}
