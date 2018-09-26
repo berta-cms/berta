@@ -41,11 +41,11 @@ import { DeleteSiteAction, CloneSiteAction, UpdateSiteAction, RenameSiteAction }
                   (click)="cloneSite()">Clone</button>
           <button [attr.disabled]="modificationDisabled"
                   title="delete"
-                  (click)="deleteSite()">X</button>
+                  (click)="deleteSite()">x</button>
         </div>
         <div class="url-line">
           <a [routerLink]="['/multisite']"
-            [queryParams]="(site.name === '' ? null : {site: site.name})">http://berta.me/<span *ngIf="edit!=='name'">{{site.name}}</span></a>
+            [queryParams]="(site.name === '' ? null : {site: site.name})">{{ hostname }}/<span *ngIf="edit!=='name'">{{site.name}}</span></a>
           <svg *ngIf="edit!=='name' && !modificationDisabled"
                title="Edit"
                type="button"
@@ -88,12 +88,14 @@ export class SiteComponent implements OnInit {
   @Output() inputFocus = new EventEmitter();
   @Output('update') update: EventEmitter<[SiteStateModel, {[k: string]: string}]> = new EventEmitter();
 
+  hostname: string;
   modificationDisabled: null | true = null;
   edit: false | 'title' | 'label' = false;
 
   constructor(private store: Store) { }
 
   ngOnInit() {
+    this.hostname = location.hostname;
     this.modificationDisabled = this.site.name === '' || null;
   }
 
