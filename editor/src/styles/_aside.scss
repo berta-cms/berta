@@ -5,6 +5,8 @@ aside {
 }
 
 .setting-group {
+  transition:  background-color .2s;
+
   h3 {
     align-items: center;
     border-bottom: 1px solid $grey-10;
@@ -39,7 +41,7 @@ aside {
 
   h4 {
     border-top: 1px solid $grey-10;
-    color: $grey-30;
+    color: $grey-80;
     font-size: .9em;
     font-weight: normal;
     margin: 0;
@@ -70,32 +72,19 @@ aside {
   }
 
   &.is-expanded {
-    position: relative;
-
-    &:before {
-      box-shadow: 0 2px 5px 0 $grey-10;
-      content: '';
-      display: block;
-      height: 3px;
-      position: absolute;
-      top: -3px;
-      width: 100%;
-    }
+    background-color: $grey-1;
 
     h3 {
       border-bottom: 0;
+      color: $grey-80;
       cursor: default;
 
       svg {
         transform: scaleY(-1);
       }
 
-      &:hover {
-        color: $grey-30;
-
-        .drop-icon {
-          stroke: $grey-30;
-        }
+      .drop-icon {
+        stroke: $grey-80;
       }
     }
 
@@ -109,10 +98,6 @@ aside {
       > .settings {
         border-bottom: 0;
       }
-    }
-
-    + .setting-group {
-      box-shadow: 0 -2px 5px 0 $grey-10;
     }
   }
 

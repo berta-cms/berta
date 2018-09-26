@@ -4,7 +4,7 @@
 
   label {
     align-items: center;
-    color: $grey-40;
+    color: $grey-80;
     display: flex;
     justify-content: space-between;
     transition: color .2s;
@@ -15,6 +15,7 @@
   .select-wrapper,
   .file-input-wrapper {
     align-items: center;
+    background-color: $white;
     border: 1px solid $grey-40;
     border-radius: $border-radius;
     display: flex;
@@ -41,6 +42,7 @@
     > input,
     > .button-wrapper button,
     .file-input {
+      background-color: transparent;
       border: 0;
       border-radius: $border-radius;
       box-sizing: border-box;
@@ -97,7 +99,7 @@
 
     button {
       appearance: none;
-      background-color: $white;
+      background-color: transparent;
       overflow-x: hidden;
       text-align: left;
       text-overflow: ellipsis;
@@ -243,7 +245,6 @@
 
   &:hover,
   &.bt-focus {
-    label,
     .file-input,
     input,
     .button-wrapper button,
