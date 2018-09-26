@@ -147,7 +147,9 @@ export class SiteSectionsComponent implements OnInit {
               return section.site_name === currentSite && section.order === sectionData.section.order;
             });
 
-            this.router.navigate(['/sections', updatedSection.name], {replaceUrl: true});
+            if (this.currentSection === sectionData.section.name) {
+              this.router.navigate(['/sections', updatedSection.name], {replaceUrl: true});
+            }
           },
           error: (error) => console.error(error)
         });
