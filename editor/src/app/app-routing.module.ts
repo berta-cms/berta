@@ -17,6 +17,11 @@ const routes: Routes = [
     canActivate: [AuthGuardService]
   },
   {
+    path: 'sections/:section',
+    component: SiteSectionsComponent,
+    canActivate: [AuthGuardService]
+  },
+  {
     path: 'sections',
     component: SiteSectionsComponent,
     canActivate: [AuthGuardService]
