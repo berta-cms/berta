@@ -1,11 +1,22 @@
-$grey-light: #e6e6e6;
-
-$berta-bg-dark: #000;
-$berta-bg-mid-dark: #333;
-$berta-bg-light: #fff;
-$berta-nav-text: #b3b3b3;
+// Colors
 $berta-accent: #0c4dff;
-$berta-nav-text-active: #fff;
+$white: #fff;
+$black: #000;
+$error-color: #f00;
+
+$grey-1: #f9f9f9;
+$grey-10: #e6e6e6;
+$grey-20: #ccc;
+$grey-30: #b3b3b3;
+$grey-40: #9b9b9b;
+$grey-80: #4a4a4a;
+$grey-90: #333;
+
+$berta-bg-dark: $black;
+$berta-bg-mid-dark: $grey-90;
+$berta-bg-light: $white;
+$berta-nav-text: $grey-30;
+$berta-nav-text-active: $white;
 
 $bt-header-font-size: 1rem;
 $bt-header-line-height: 1.375rem;
@@ -13,11 +24,10 @@ $bt-header-item-padding: 1.1875rem 1.25rem;
 $bt-header-height: 3.75rem;
 
 $input-font-size: .875em;
-$input-color: #9b9b9b;
-$input-color-active: #4a4a4a;
-$error-color: #f00;
+$input-color: $grey-40;
+$input-color-active: $grey-80;
 
-$button-disabled-color: #e6e6e6;
-$button-secondary-color: #ccc;
+$button-disabled-color: $grey-10;
+$button-secondary-color: $grey-20;
 
 $border-radius: 5px;

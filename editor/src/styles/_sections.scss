@@ -26,7 +26,7 @@ berta-section {
 
 
   h3 {
-    border-bottom: 1px solid $grey-light;
+    border-bottom: 1px solid $grey-10;
     font-size: 1em;
     font-weight: normal;
     margin: 0;
@@ -78,7 +78,7 @@ berta-section {
   }
 
   h4 {
-    border-top: 1px solid $grey-light;
+    border-top: 1px solid $grey-10;
     font-size: .9em;
     font-weight: normal;
     margin: 1.3em;
@@ -92,7 +92,7 @@ berta-section {
   .section-container {
     &.is-expanded {
       > .settings {
-        border-bottom: 1px solid $grey-light;
+        border-bottom: 1px solid $grey-10;
         max-height: 1500px; // auto
         overflow: visible;
       }
