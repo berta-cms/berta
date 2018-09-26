@@ -10,7 +10,7 @@ aside {
   h3 {
     align-items: center;
     border-bottom: 1px solid $grey-10;
-    color: $grey-30;
+    color: $black;
     cursor: pointer;
     display: flex;
     font-size: 1em;
@@ -26,15 +26,15 @@ aside {
     }
 
     .drop-icon {
-      stroke: $grey-30;
+      stroke: $black;
       transition: stroke .2s;
     }
 
     &:hover {
-      color: $grey-80;
+      color: $berta-accent;
 
       .drop-icon {
-        stroke: $grey-80;
+        stroke: $berta-accent;
       }
     }
   }
@@ -76,7 +76,6 @@ aside {
 
     h3 {
       border-bottom: 0;
-      color: $grey-80;
       cursor: default;
 
       svg {
@@ -84,7 +83,11 @@ aside {
       }
 
       .drop-icon {
-        stroke: $grey-80;
+        stroke: $berta-accent;
+      }
+
+      &:hover {
+        color: $black;
       }
     }
 
