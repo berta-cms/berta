@@ -4,7 +4,7 @@
 
   label {
     align-items: center;
-    color: $input-color;
+    color: $grey-40;
     display: flex;
     justify-content: space-between;
     transition: color .2s;
@@ -15,7 +15,7 @@
   .select-wrapper,
   .file-input-wrapper {
     align-items: center;
-    border: 1px solid $input-color;
+    border: 1px solid $grey-40;
     border-radius: $border-radius;
     display: flex;
     margin-left: 1em;
@@ -29,7 +29,7 @@
     }
 
     .icon {
-      fill: $input-color;
+      fill: $grey-40;
       transition: fill .2s;
     }
 
@@ -44,7 +44,7 @@
       border: 0;
       border-radius: $border-radius;
       box-sizing: border-box;
-      color: $input-color;
+      color: $grey-40;
       flex-grow: 1;
       font-size: 1em;
       min-width: 1rem;
@@ -97,7 +97,7 @@
 
     button {
       appearance: none;
-      background-color: $berta-bg-light;
+      background-color: $white;
       overflow-x: hidden;
       text-align: left;
       text-overflow: ellipsis;
@@ -108,13 +108,13 @@
     }
 
     .drop-icon {
-      stroke: $input-color;
+      stroke: $grey-40;
       transition: stroke .2s;
     }
 
     ul {
-      background-color: $berta-bg-light;
-      border: 1px solid $input-color-active;
+      background-color: $white;
+      border: 1px solid $grey-80;
       border-radius: 0 0 $border-radius $border-radius;
       box-sizing: border-box;
       display: none;
@@ -127,7 +127,7 @@
       z-index: 1;
 
       li {
-        color: $input-color-active;
+        color: $grey-80;
         overflow-x: hidden;
         padding: .75em;
         text-overflow: ellipsis;
@@ -172,18 +172,18 @@
 
       &:checked {
         + span {
-          background-color: $input-color;
+          background-color: $grey-40;
 
           &:after {
             left: $toggle-width - $toggle-slider-size - 1;
           }
 
           &:hover {
-            background-color: $input-color-active;
-            border-color: $input-color-active;
+            background-color: $grey-80;
+            border-color: $grey-80;
 
             &:after {
-              border-color: $input-color-active;
+              border-color: $grey-80;
             }
           }
         }
@@ -191,8 +191,8 @@
     }
 
     span {
-      background-color: $berta-bg-light;
-      border: 1px solid $input-color;
+      background-color: $white;
+      border: 1px solid $grey-40;
       border-radius: $toggle-width;
       cursor: pointer;
       display: inline-block;
@@ -201,8 +201,8 @@
       width: $toggle-width;
 
       &:after {
-        background-color: $berta-bg-light;
-        border: 1px solid $input-color;
+        background-color: $white;
+        border: 1px solid $grey-40;
         border-radius: 50%;
         content: '';
         display: block;
@@ -214,20 +214,20 @@
       }
 
       &:hover {
-        border-color: $input-color-active;
+        border-color: $grey-80;
 
         &:after {
-          border-color: $input-color-active;
+          border-color: $grey-80;
         }
       }
     }
   }
 
   textarea {
-    border: 1px solid $input-color;
+    border: 1px solid $grey-40;
     border-radius: $border-radius;
     box-sizing: border-box;
-    color: $input-color;
+    color: $grey-40;
     display: block;
     font-size: 1em;
     margin: .75em 0 0;
@@ -248,7 +248,7 @@
     input,
     .button-wrapper button,
     textarea:not(:focus):not([disabled]) {
-      color: $input-color-active;
+      color: $grey-80;
     }
 
     .text-input-wrapper,
@@ -256,14 +256,14 @@
     .select-wrapper,
     .file-input-wrapper,
     textarea {
-      border: 1px solid $input-color-active;
+      border: 1px solid $grey-80;
 
       .icon {
-        fill: $input-color-active;
+        fill: $grey-80;
       }
 
       .icon-remove {
-        stroke: $input-color-active;
+        stroke: $grey-80;
       }
     }
 
@@ -271,30 +271,30 @@
       input {
         &:checked {
           + span {
-            background-color: $input-color-active;
-            border-color: $input-color-active;
+            background-color: $grey-80;
+            border-color: $grey-80;
 
             &:after {
-              border-color: $input-color-active;
+              border-color: $grey-80;
             }
           }
         }
       }
 
       span {
-        border-color: $input-color-active;
+        border-color: $grey-80;
 
         &:after {
-          border-color: $input-color-active;
+          border-color: $grey-80;
         }
       }
     }
 
     .select-wrapper {
-      color: $input-color-active;
+      color: $grey-80;
 
       .drop-icon {
-        stroke: $input-color-active;
+        stroke: $grey-80;
       }
     }
   }
