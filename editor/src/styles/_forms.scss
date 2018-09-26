@@ -105,13 +105,13 @@
       text-overflow: ellipsis;
     }
 
-    svg {
-      min-width: 10px;
-    }
-
     .drop-icon {
-      stroke: $grey-40;
-      transition: stroke .2s;
+      min-width: 10px;
+
+      path {
+        stroke: $grey-40;
+        transition: stroke .2s;
+      }
     }
 
     ul {
@@ -295,7 +295,9 @@
       color: $grey-80;
 
       .drop-icon {
-        stroke: $grey-80;
+        path {
+          stroke: $grey-80;
+        }
       }
     }
   }
@@ -335,7 +337,7 @@
         fill: $error-color;
       }
 
-      .drop-icon,
+      .drop-icon path,
       .icon-remove {
         stroke: $error-color;
       }

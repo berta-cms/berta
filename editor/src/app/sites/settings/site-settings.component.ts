@@ -18,8 +18,8 @@ import { SettingModel, SettingConfigModel, SettingGroupConfigModel } from '../..
          *ngFor="let settingGroup of settings$ | async">
       <h3 [routerLink]="['/settings', slugifyCamel(settingGroup.slug)]">
         {{ settingGroup.config.title || settingGroup.slug }}
-        <svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M9 1L4.75736 5.24264L0.514719 1" stroke="#9b9b9b" stroke-linecap="round" stroke-linejoin="round" class="drop-icon"/>
+        <svg class="drop-icon" width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M9 1L4.75736 5.24264L0.514719 1" stroke="#9b9b9b" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
       </h3>
       <div class="settings">

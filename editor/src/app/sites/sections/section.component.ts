@@ -8,9 +8,9 @@ import { UpdateInputFocus } from '../../app-state/app.actions';
 @Component({
   selector: 'berta-section',
   template: `
-    <div class="section-container" [class.is-expanded]="isExpanded">
+    <div class="setting-group" [class.is-expanded]="isExpanded">
       <h3>
-        <span *ngIf="!focus">{{ section.title || '...' }}</span>
+        <span *ngIf="!focus" class="input-placeholder">{{ section.title || '...' }}</span>
         <input *ngIf="focus"
                bertaAutofocus
                type="text"
@@ -23,7 +23,7 @@ import { UpdateInputFocus } from '../../app-state/app.actions';
              title="Edit"
              type="button"
              (click)="editTitle()"
-             class="edit"
+             class="edit-icon"
              width="20" height="20" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
           <path class="icon" d="M6 34.5v7.5h7.5l22.13-22.13-7.5-7.5-22.13 22.13zm35.41-20.41c.78-.78.78-2.05 0-2.83l-4.67-4.67c-.78-.78-2.05-.78-2.83 0l-3.66 3.66 7.5 7.5 3.66-3.66z"/>
           <path d="M0 0h48v48h-48z" fill="none"/>
@@ -51,32 +51,45 @@ import { UpdateInputFocus } from '../../app-state/app.actions';
                 [routerLink]="['/sections', (isExpanded ? '' : section.name)]">Settings</button>
       </h3>
       <div class="settings">
-        <berta-select-input [label]="'Type'"
-                            [value]="section['@attributes'].type"
-                            [values]="templateSectionTypes"
-                            (inputFocus)="updateComponentFocus($event)"
-                            (update)="updateField({'@attributes': {type: $event}})"></berta-select-input>
+        <div class="setting">
+          <berta-select-input [label]="'Type'"
+                              [value]="section['@attributes'].type"
+                              [values]="templateSectionTypes"
+                              (inputFocus)="updateComponentFocus($event)"
+                              (update)="updateField({'@attributes': {type: $event}})"></berta-select-input>
+        </div>
+
         <div *ngIf="params.length > 0" class="section-params">
           <berta-setting *ngFor="let param of params"
                         [setting]="param.setting"
                         [config]="param.config"
                         (update)="updateSectionParams($event)"></berta-setting>
         </div>
-        <h4>SEO</h4>
-        <berta-long-text-input [label]="'Title'"
-                                [value]="section.seoTitle"
-                                (inputFocus)="updateComponentFocus($event)"
-                                (update)="updateTextField('seoTitle', $event)"></berta-long-text-input>
 
-        <berta-long-text-input [label]="'Keywords'"
-                                [value]="section.seoKeywords"
-                                (inputFocus)="updateComponentFocus($event)"
-                                (update)="updateTextField('seoKeywords', $event)"></berta-long-text-input>
+        <div class="setting">
+          <h4>SEO</h4>
+        </div>
 
-        <berta-long-text-input [label]="'Description'"
-                                [value]="section.seoDescription"
-                                (inputFocus)="updateComponentFocus($event)"
-                                (update)="updateTextField('seoDescription', $event)"></berta-long-text-input>
+        <div class="setting">
+          <berta-long-text-input [label]="'Title'"
+                                 [value]="section.seoTitle"
+                                 (inputFocus)="updateComponentFocus($event)"
+                                 (update)="updateTextField('seoTitle', $event)"></berta-long-text-input>
+        </div>
+
+        <div class="setting">
+          <berta-long-text-input [label]="'Keywords'"
+                                 [value]="section.seoKeywords"
+                                 (inputFocus)="updateComponentFocus($event)"
+                                 (update)="updateTextField('seoKeywords', $event)"></berta-long-text-input>
+        </div>
+
+        <div class="setting">
+          <berta-long-text-input [label]="'Description'"
+                                 [value]="section.seoDescription"
+                                 (inputFocus)="updateComponentFocus($event)"
+                                 (update)="updateTextField('seoDescription', $event)"></berta-long-text-input>
+        </div>
       </div>
     </div>
   `,

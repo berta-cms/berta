@@ -1,6 +1,5 @@
 berta-site-sections {
   display: block;
-  margin-bottom: 1.3em;
 
   > button {
     font-size: .875em;
@@ -8,94 +7,6 @@ berta-site-sections {
   }
 }
 
-
 berta-section {
   display: block;
-
-  &:last-child {
-    margin-bottom: 1.3em;
-  }
-
-  .section-container {
-    > .settings {
-      max-height: 0;
-      overflow: hidden;
-      transition:  max-height .2s ease;
-    }
-  }
-
-
-  h3 {
-    border-bottom: 1px solid $grey-10;
-    font-size: 1em;
-    font-weight: normal;
-    margin: 0;
-    padding: 1.3em;
-
-    .edit {
-      cursor: pointer;
-      margin-left: .25em;
-      max-height: 1em;
-
-      .icon {
-        transition: fill .2s;
-      }
-
-      &:hover {
-
-        .icon {
-          fill: $berta-accent;
-        }
-      }
-    }
-
-    input {
-      border: 0;
-      font-family: AvenirNext, Helvetica, Arial, sans-serif;
-      font-size: 1em;
-      outline: none;
-      padding: 0;
-      transition: color .2s;
-
-      &:focus {
-        color: $berta-accent;
-      }
-    }
-
-    button {
-      background: none;
-      border: 0;
-      cursor: pointer;
-      margin-left: 1em;
-      padding: 0;
-      transition: color .2s;
-
-      &:hover,
-      &.active {
-        color: $berta-accent;
-      }
-    }
-  }
-
-  h4 {
-    border-top: 1px solid $grey-10;
-    font-size: .9em;
-    font-weight: normal;
-    margin: 1.3em;
-    padding-top: 1.3em;
-  }
-
-  .form-group {
-    margin: 1.3em;
-  }
-
-  .section-container {
-    &.is-expanded {
-      > .settings {
-        border-bottom: 1px solid $grey-10;
-        max-height: 1500px; // auto
-        overflow: visible;
-      }
-    }
-  }
 }

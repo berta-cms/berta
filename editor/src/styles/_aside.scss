@@ -21,27 +21,81 @@ aside {
     padding: 1.3em;
     transition:  color .2s;
 
-    svg {
-      transition: transform .2s;
+    .input-placeholder {
+      transition: color .2s;
+    }
+
+    input {
+      background-color: transparent;
+      border: 0;
+      font-family: AvenirNext, Helvetica, Arial, sans-serif;
+      font-size: 1em;
+      outline: none;
+      padding: 0;
+      transition: color .2s;
+
+      &:focus {
+        color: $berta-accent;
+      }
+    }
+
+    button {
+      background: none;
+      border: 0;
+      cursor: pointer;
+      margin-left: 1em;
+      padding: 0;
+      transition: color .2s;
+
+      &:hover,
+      &.active {
+        color: $berta-accent;
+      }
     }
 
     .drop-icon {
-      stroke: $black;
-      transition: stroke .2s;
+      transition: transform .2s;
+
+      path {
+        stroke: $black;
+        transition: stroke .2s;
+      }
+    }
+
+    .edit-icon {
+      cursor: pointer;
+      margin-left: .25em;
+      max-height: 1em;
+
+      .icon {
+        transition: fill .2s;
+      }
     }
 
     &:hover {
       color: $berta-accent;
 
+      .input-placeholder {
+        color: $berta-accent;
+      }
+
       .drop-icon {
-        stroke: $berta-accent;
+        path {
+          stroke: $berta-accent;
+        }
+      }
+
+      .edit-icon {
+        .icon {
+          fill: $berta-accent;
+        }
       }
     }
   }
 
   h4 {
     border-top: 1px solid $grey-10;
-    color: $grey-80;
+    color: $black;
     font-size: .9em;
     font-weight: normal;
     margin: 0;
@@ -59,7 +113,10 @@ aside {
     overflow: hidden;
     transition:  max-height .2s ease;
 
-    berta-setting {
+    berta-setting,
+    .setting {
+      margin: 1.3em;
+
       &:first-child {
         margin-top: 0;
 
@@ -78,12 +135,12 @@ aside {
       border-bottom: 0;
       cursor: default;
 
-      svg {
-        transform: scaleY(-1);
-      }
-
       .drop-icon {
-        stroke: $berta-accent;
+        transform: scaleY(-1);
+
+        path {
+          stroke: $berta-accent;
+        }
       }
 
       &:hover {
@@ -96,15 +153,5 @@ aside {
       max-height: 1500px; // auto
       overflow: visible;
     }
-
-    &:last-child {
-      > .settings {
-        border-bottom: 0;
-      }
-    }
-  }
-
-  berta-setting {
-    margin: 1.3em;
   }
 }
