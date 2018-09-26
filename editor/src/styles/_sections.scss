@@ -36,6 +36,17 @@ berta-section {
       cursor: pointer;
       margin-left: .25em;
       max-height: 1em;
+
+      .icon {
+        transition: fill .2s;
+      }
+
+      &:hover {
+
+        .icon {
+          fill: $berta-accent;
+        }
+      }
     }
 
     input {
@@ -44,6 +55,7 @@ berta-section {
       font-size: 1em;
       outline: none;
       padding: 0;
+      transition: color .2s;
 
       &:focus {
         color: $berta-accent;
@@ -56,6 +68,12 @@ berta-section {
       cursor: pointer;
       margin-left: 1em;
       padding: 0;
+      transition: color .2s;
+
+      &:hover,
+      &.active {
+        color: $berta-accent;
+      }
     }
   }
 

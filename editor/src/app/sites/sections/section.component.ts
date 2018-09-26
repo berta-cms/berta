@@ -47,6 +47,7 @@ import { UpdateInputFocus } from '../../app-state/app.actions';
         <button title="delete"
                 (click)="deleteSection()">x</button>
         <button title="settings"
+                [class.active]="isExpanded"
                 [routerLink]="['/sections', (isExpanded ? '' : section.name)]">Settings</button>
       </h3>
       <div class="settings">
