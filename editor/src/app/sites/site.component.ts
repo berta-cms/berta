@@ -6,53 +6,67 @@ import { DeleteSiteAction, CloneSiteAction, UpdateSiteAction, RenameSiteAction }
 @Component({
   selector: 'berta-site',
   template: `
-  <div class="control-line">
-    <span [style.display]="(edit==='title' ? 'none' : '')">{{site.title || '[title]'}}</span>
-    <input #title *ngIf="edit==='title'" bertaAutofocus
-           type="text"
-           [value]="site.title"
-           (keydown)="updateField('title', title.value, $event)"
-           (blur)="updateField('title', title.value, $event)">
-    <button *ngIf="edit!=='title'"
-            title="Edit"
-            type="button"
-            (click)="editField('title')">E</button>
-    <div *ngIf="edit!=='title'" class="expand"></div>
-    <button *ngIf="site['@attributes'].published < 1"
-            title="Publish"
-            [attr.disabled]="modificationDisabled"
-            (click)="updateSite('@attributes.published', '1')">
-      Publish
-    </button>
-    <button *ngIf="site['@attributes'].published > 0"
-            title="Unpublish"
-            [attr.disabled]="modificationDisabled"
-            (click)="updateSite('@attributes.published', '0')">
-            Unpublish
-    </button>
-    <button title="copy"
-            (click)="cloneSite()">Clone</button>
-    <button [attr.disabled]="modificationDisabled"
-            title="delete"
-            (click)="deleteSite()">X</button>
-  </div>
-  <div class="url-line">
-    <a [routerLink]="['/multisite']"
-       [queryParams]="(site.name === '' ? null : {site: site.name})">http://berta.me/<span *ngIf="edit!=='name'">{{site.name}}</span></a>
-    <button *ngIf="edit!=='name' && !modificationDisabled"
-            title="Edit"
-            type="button"
-            (click)="editField('name')">E</button>
-    <input #name *ngIf="edit==='name'" bertaAutofocus
-           type="text"
-           [value]="site.name"
-           [attr.disabled]="modificationDisabled"
-           (keydown)="updateField('name', name.value, $event)"
-           (blur)="updateField('name', name.value, $event)">
-  </div>
+    <div class="setting-group">
+      <h3>
+        <div class="control-line">
+          <span [style.display]="(edit==='title' ? 'none' : '')">{{site.title || '...'}}</span>
+          <input #title *ngIf="edit==='title'" bertaAutofocus
+                type="text"
+                [value]="site.title"
+                (keydown)="updateField('title', title.value, $event)"
+                (blur)="updateField('title', title.value, $event)">
+          <svg *ngIf="edit!=='title'"
+               title="Edit"
+               type="button"
+               (click)="editField('title')"
+               class="edit-icon"
+               width="20" height="20" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+            <path class="icon" d="M6 34.5v7.5h7.5l22.13-22.13-7.5-7.5-22.13 22.13zm35.41-20.41c.78-.78.78-2.05 0-2.83l-4.67-4.67c-.78-.78-2.05-.78-2.83 0l-3.66 3.66 7.5 7.5 3.66-3.66z"/>
+            <path d="M0 0h48v48h-48z" fill="none"/>
+          </svg>
+          <div *ngIf="edit!=='title'" class="expand"></div>
+          <button *ngIf="site['@attributes'].published < 1"
+                  title="Publish"
+                  [attr.disabled]="modificationDisabled"
+                  (click)="updateSite('@attributes.published', '1')">
+            Publish
+          </button>
+          <button *ngIf="site['@attributes'].published > 0"
+                  title="Unpublish"
+                  [attr.disabled]="modificationDisabled"
+                  (click)="updateSite('@attributes.published', '0')">
+                  Unpublish
+          </button>
+          <button title="copy"
+                  (click)="cloneSite()">Clone</button>
+          <button [attr.disabled]="modificationDisabled"
+                  title="delete"
+                  (click)="deleteSite()">X</button>
+        </div>
+        <div class="url-line">
+          <a [routerLink]="['/multisite']"
+            [queryParams]="(site.name === '' ? null : {site: site.name})">http://berta.me/<span *ngIf="edit!=='name'">{{site.name}}</span></a>
+          <svg *ngIf="edit!=='name' && !modificationDisabled"
+               title="Edit"
+               type="button"
+               (click)="editField('name')"
+               class="edit-icon"
+               width="20" height="20" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+            <path class="icon" d="M6 34.5v7.5h7.5l22.13-22.13-7.5-7.5-22.13 22.13zm35.41-20.41c.78-.78.78-2.05 0-2.83l-4.67-4.67c-.78-.78-2.05-.78-2.83 0l-3.66 3.66 7.5 7.5 3.66-3.66z"/>
+            <path d="M0 0h48v48h-48z" fill="none"/>
+          </svg>
+          <input #name *ngIf="edit==='name'" bertaAutofocus
+                type="text"
+                [value]="site.name"
+                [attr.disabled]="modificationDisabled"
+                (keydown)="updateField('name', name.value, $event)"
+                (blur)="updateField('name', name.value, $event)">
+        </div>
+      </h3>
+    </div>
   `,
   styles: [`
-    :host {
+    :host h3 {
       display: block;
     }
 
@@ -70,6 +84,8 @@ import { DeleteSiteAction, CloneSiteAction, UpdateSiteAction, RenameSiteAction }
 })
 export class SiteComponent implements OnInit {
   @Input('site') site: SiteStateModel;
+
+  @Output() inputFocus = new EventEmitter();
   @Output('update') update: EventEmitter<[SiteStateModel, {[k: string]: string}]> = new EventEmitter();
 
   modificationDisabled: null | true = null;
