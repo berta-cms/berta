@@ -11,7 +11,6 @@ aside {
     align-items: center;
     border-bottom: 1px solid $grey-10;
     color: $black;
-    cursor: pointer;
     display: flex;
     font-size: 1em;
     font-weight: normal;
@@ -20,10 +19,6 @@ aside {
     outline: none;
     padding: 1.3em;
     transition:  color .2s;
-
-    .input-placeholder {
-      transition: color .2s;
-    }
 
     input {
       background-color: transparent;
@@ -70,24 +65,24 @@ aside {
       .icon {
         transition: fill .2s;
       }
-    }
 
-    &:hover {
-      color: $berta-accent;
-
-      .input-placeholder {
-        color: $berta-accent;
-      }
-
-      .drop-icon {
-        path {
-          stroke: $berta-accent;
-        }
-      }
-
-      .edit-icon {
+      &:hover {
         .icon {
           fill: $berta-accent;
+        }
+      }
+    }
+
+    &.hoverable {
+      cursor: pointer;
+
+      &:hover {
+        color: $berta-accent;
+
+        .drop-icon {
+          path {
+            stroke: $berta-accent;
+          }
         }
       }
     }
