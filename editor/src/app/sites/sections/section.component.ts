@@ -47,7 +47,7 @@ import { UpdateInputFocus } from '../../app-state/app.actions';
         <button title="delete"
                 (click)="deleteSection()">x</button>
         <button title="settings"
-                [routerLink]="['/sections', section.name]">Settings</button>
+                [routerLink]="['/sections', (isExpanded ? '' : section.name)]">Settings</button>
       </h3>
       <div class="settings">
         <berta-select-input [label]="'Type'"
