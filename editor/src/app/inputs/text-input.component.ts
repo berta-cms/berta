@@ -15,6 +15,7 @@ import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
             <path d="M0 0h48v48h-48z" fill="none"/>
           </svg>
           <input [value]="value"
+                 [attr.disabled]="(disabled ? '' : null)"
                  [attr.placeholder]="placeholder"
                  (focus)="onFocus()"
                  (keydown)="updateField($event)"
@@ -27,12 +28,12 @@ import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 export class TextInputComponent implements OnInit {
   @Input() label?: string;
   @Input() placeholder?: string;
+  @Input() disabled?: boolean;
   @Input() value: string;
   @Output() update = new EventEmitter();
   @Output() inputFocus = new EventEmitter();
   focus = false;
   showIcon = false;
-  disabled = false;
 
   private lastValue: string;
 
@@ -82,7 +83,6 @@ export class TextInputComponent implements OnInit {
     }
 
     this.lastValue = $event.target.value;
-    $event.target.disabled = true;
     this.disabled = true;
 
     this.update.emit($event.target.value);
