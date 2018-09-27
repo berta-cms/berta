@@ -5,9 +5,9 @@ import { ShopModel } from './shop.interface';
 import { ShopStateService } from './shop-state.service';
 import { SitesState } from '../sites/sites-state/sites.state';
 import {
-  RenameShopRegionSitenameAction,
-  DeleteShopRegionSitenameAction,
-  AddShopRegionSitenameAction } from './regional-costs/shop-regional-costs.actions';
+  RenameShopRegionSiteAction,
+  DeleteShopRegionSiteAction,
+  AddShopRegionSiteAction } from './regional-costs/shop-regional-costs.actions';
 
 
 const defaultState: ShopModel = {
@@ -59,13 +59,13 @@ export class ShopState implements NgxsOnInit {
       filter((oldSiteName, newSiteName) => !!oldSiteName || !!newSiteName)
     ).subscribe(([oldSiteName, newSiteName]) => {
       if (oldSiteName && newSiteName) {
-        this.store.dispatch(new RenameShopRegionSitenameAction(oldSiteName, newSiteName));
+        this.store.dispatch(new RenameShopRegionSiteAction(oldSiteName, newSiteName));
       } else if (oldSiteName) {
         // Site was deleted - delete settings for the site
-        this.store.dispatch(new DeleteShopRegionSitenameAction(oldSiteName));
+        this.store.dispatch(new DeleteShopRegionSiteAction(oldSiteName));
       } else if (newSiteName) {
         // Site was created - get the data from server
-        this.store.dispatch(new AddShopRegionSitenameAction(newSiteName));
+        this.store.dispatch(new AddShopRegionSiteAction(newSiteName));
       }
     });
 

@@ -17,9 +17,9 @@ import {
   AddShopRegionCostAction,
   DeleteShopRegionAction,
   DeleteShopRegionCostAction,
-  RenameShopRegionSitenameAction,
-  DeleteShopRegionSitenameAction,
-  AddShopRegionSitenameAction} from './shop-regional-costs.actions';
+  RenameShopRegionSiteAction,
+  DeleteShopRegionSiteAction,
+  AddShopRegionSiteAction} from './shop-regional-costs.actions';
 import { ShopState } from '../shop.state';
 import { AppStateService } from '../../app-state/app-state.service';
 
@@ -250,10 +250,10 @@ export class ShopRegionalCostsState implements NgxsOnInit {
     );
   }
 
-  @Action(RenameShopRegionSitenameAction)
+  @Action(RenameShopRegionSiteAction)
   renameShopRegionsSitename(
     { setState, getState }: StateContext<ShopRegionalCostsModel>,
-    action: RenameShopRegionSitenameAction) {
+    action: RenameShopRegionSiteAction) {
     const state = getState();
     const newState = {};
 
@@ -269,10 +269,10 @@ export class ShopRegionalCostsState implements NgxsOnInit {
     setState(newState);
   }
 
-  @Action(DeleteShopRegionSitenameAction)
+  @Action(DeleteShopRegionSiteAction)
   deleteShopRegionsSitename(
     { setState, getState }: StateContext<ShopRegionalCostsModel>,
-    action: DeleteShopRegionSitenameAction) {
+    action: DeleteShopRegionSiteAction) {
     const state = getState();
     const newState = {};
 
@@ -286,10 +286,10 @@ export class ShopRegionalCostsState implements NgxsOnInit {
     setState(newState);
   }
 
-  @Action(AddShopRegionSitenameAction)
+  @Action(AddShopRegionSiteAction)
   addShopRegionsSitename(
     { patchState }: StateContext<ShopRegionalCostsModel>,
-    action: AddShopRegionSitenameAction) {
+    action: AddShopRegionSiteAction) {
 
     return this.stateService.getInitialState(action.payload, 'regionalCosts').pipe(
       take(1)
