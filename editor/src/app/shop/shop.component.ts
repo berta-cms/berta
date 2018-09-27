@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import { Select, Store } from '@ngxs/store';
-import { ActivatedRoute, Router } from '@angular/router';
-import { ShopState } from './shop.state';
-import { map, mergeMap, startWith } from 'rxjs/operators';
 import { Observable, combineLatest} from 'rxjs';
+import { map, mergeMap, startWith } from 'rxjs/operators';
+
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Store } from '@ngxs/store';
+
+import { ShopState } from './shop.state';
 import { splitCamel, camel2Words, uCFirst } from '../shared/helpers';
 
 
@@ -82,9 +84,9 @@ export class ShopComponent implements OnInit {
 
   toggleSection(sectionUrlSegment) {
     if (this.currentShopSection === sectionUrlSegment) {
-      this.router.navigate(['/shop']);
+      this.router.navigate(['/shop'], { queryParamsHandling: 'preserve' });
     } else {
-      this.router.navigate(['/shop', sectionUrlSegment]);
+      this.router.navigate(['/shop', sectionUrlSegment], { queryParamsHandling: 'preserve' });
     }
   }
 }
