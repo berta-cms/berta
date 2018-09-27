@@ -1,5 +1,4 @@
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
-import { SettingModel } from '../shared/interfaces';
 
 @Component({
   selector: 'berta-text-input',
@@ -16,6 +15,7 @@ import { SettingModel } from '../shared/interfaces';
             <path d="M0 0h48v48h-48z" fill="none"/>
           </svg>
           <input [value]="value"
+                 [placeholder]="placeholder"
                  (focus)="onFocus()"
                  (keydown)="updateField($event)"
                  (blur)="onBlur($event)"
@@ -26,12 +26,14 @@ import { SettingModel } from '../shared/interfaces';
 })
 export class TextInputComponent implements OnInit {
   @Input() label?: string;
+  @Input() usePlaceholder?: boolean;
   @Input() value: string;
   @Output() update = new EventEmitter();
   @Output() inputFocus = new EventEmitter();
   focus = false;
   showIcon = false;
   disabled = false;
+  placeholder = '';
 
   private lastValue: string;
 
@@ -41,6 +43,12 @@ export class TextInputComponent implements OnInit {
 
     if (!this.value) {
       this.showIcon = true;
+    }
+
+    // Use label as placeholder
+    if (this.usePlaceholder && this.label) {
+      this.placeholder = this.label;
+      this.label = '';
     }
   }
 
