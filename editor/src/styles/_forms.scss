@@ -243,6 +243,13 @@
     }
   }
 
+  &.no-label {
+    .text-input-wrapper {
+      margin-left: 0;
+      width: 100%;
+    }
+  }
+
   &:hover,
   &.bt-focus {
     .file-input,

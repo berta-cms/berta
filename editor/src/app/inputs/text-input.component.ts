@@ -4,7 +4,10 @@ import { SettingModel } from '../shared/interfaces';
 @Component({
   selector: 'berta-text-input',
   template: `
-    <div class="form-group" [class.bt-focus]="focus" [class.bt-disabled]="disabled">
+    <div class="form-group"
+         [class.bt-focus]="focus"
+         [class.bt-disabled]="disabled"
+         [class.no-label]="!label">
       <label>
         {{ label }}
         <div class="text-input-wrapper">
@@ -22,7 +25,7 @@ import { SettingModel } from '../shared/interfaces';
     </div>`
 })
 export class TextInputComponent implements OnInit {
-  @Input() label: string;
+  @Input() label?: string;
   @Input() value: string;
   @Output() update = new EventEmitter();
   @Output() inputFocus = new EventEmitter();
