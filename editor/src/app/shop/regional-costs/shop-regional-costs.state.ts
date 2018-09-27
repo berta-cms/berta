@@ -251,7 +251,7 @@ export class ShopRegionalCostsState implements NgxsOnInit {
   }
 
   @Action(RenameShopRegionSiteAction)
-  renameShopRegionsSitename(
+  renameShopRegionsSite(
     { setState, getState }: StateContext<ShopRegionalCostsModel>,
     action: RenameShopRegionSiteAction) {
     const state = getState();
@@ -270,7 +270,7 @@ export class ShopRegionalCostsState implements NgxsOnInit {
   }
 
   @Action(DeleteShopRegionSiteAction)
-  deleteShopRegionsSitename(
+  deleteShopRegionsSite(
     { setState, getState }: StateContext<ShopRegionalCostsModel>,
     action: DeleteShopRegionSiteAction) {
     const state = getState();
@@ -287,7 +287,7 @@ export class ShopRegionalCostsState implements NgxsOnInit {
   }
 
   @Action(AddShopRegionSiteAction)
-  addShopRegionsSitename(
+  addShopRegionsSite(
     { patchState }: StateContext<ShopRegionalCostsModel>,
     action: AddShopRegionSiteAction) {
 

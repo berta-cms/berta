@@ -63,7 +63,7 @@ export class DeleteShopRegionCostAction {
 }
 
 export class RenameShopRegionSiteAction {
-  static readonly type = 'SHOP_REGIONAL:SITE_RENAME';
+  static readonly type = 'SHOP_REGION:SITE_RENAME';
   constructor(
     public siteName: string,
     public payload: string) {
@@ -71,14 +71,14 @@ export class RenameShopRegionSiteAction {
 }
 
 export class DeleteShopRegionSiteAction {
-  static readonly type = 'SHOP_REGIONAL:SITE_DELETE';
+  static readonly type = 'SHOP_REGION:SITE_DELETE';
   constructor(
     public payload: string) {
   }
 }
 
 export class AddShopRegionSiteAction {
-  static readonly type = 'SHOP_REGIONAL:SITE_ADD';
+  static readonly type = 'SHOP_REGION:SITE_ADD';
   constructor(
     public payload: string) {
   }
