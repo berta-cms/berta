@@ -15,7 +15,7 @@ import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
             <path d="M0 0h48v48h-48z" fill="none"/>
           </svg>
           <input [value]="value"
-                 [placeholder]="placeholder"
+                 [attr.placeholder]="placeholder"
                  (focus)="onFocus()"
                  (keydown)="updateField($event)"
                  (blur)="onBlur($event)"
@@ -26,14 +26,13 @@ import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 })
 export class TextInputComponent implements OnInit {
   @Input() label?: string;
-  @Input() usePlaceholder?: boolean;
+  @Input() placeholder?: string;
   @Input() value: string;
   @Output() update = new EventEmitter();
   @Output() inputFocus = new EventEmitter();
   focus = false;
   showIcon = false;
   disabled = false;
-  placeholder = '';
 
   private lastValue: string;
 
@@ -43,12 +42,6 @@ export class TextInputComponent implements OnInit {
 
     if (!this.value) {
       this.showIcon = true;
-    }
-
-    // Use label as placeholder
-    if (this.usePlaceholder && this.label) {
-      this.placeholder = this.label;
-      this.label = '';
     }
   }
 
