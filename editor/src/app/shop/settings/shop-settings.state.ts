@@ -5,7 +5,11 @@ import { State, StateContext, NgxsOnInit, Selector, Action, Store } from '@ngxs/
 import { ShopStateService } from '../shop-state.service';
 import { AppState } from '../../app-state/app.state';
 import { SettingModel } from '../../shared/interfaces';
-import { UpdateShopSettingsAction } from './shop-settings.actions';
+import {
+  UpdateShopSettingsAction,
+  DeleteShopSettingsSiteAction,
+  RenameShopSettingsSiteAction,
+  AddShopSettingsSiteAction } from './shop-settings.actions';
 import { AppStateService } from '../../app-state/app-state.service';
 import { ShopState } from '../shop.state';
 
@@ -116,6 +120,54 @@ export class ShopSettingsState implements NgxsOnInit {
           };
         })
       };
+    });
+  }
+
+  @Action(RenameShopSettingsSiteAction)
+  renameShopSettingsSite(
+    { setState, getState }: StateContext<ShopSettingsModel>,
+    action: RenameShopSettingsSiteAction) {
+    const state = getState();
+    const newState = {};
+
+    /* Using the loop to retain the element order in the map */
+    for (const siteName in state) {
+      if (siteName === action.siteName) {
+        newState[action.payload] = state[siteName];
+      } else {
+        newState[siteName] = state[siteName];
+      }
+    }
+
+    setState(newState);
+  }
+
+  @Action(DeleteShopSettingsSiteAction)
+  deleteShopSettingsSite(
+    { setState, getState }: StateContext<ShopSettingsModel>,
+    action: DeleteShopSettingsSiteAction) {
+    const state = getState();
+    const newState = {};
+
+    /* Using the loop to retain the element order in the map */
+    for (const siteName in state) {
+      if (siteName !== action.payload) {
+        newState[siteName] = state[siteName];
+      }
+    }
+
+    setState(newState);
+  }
+
+  @Action(AddShopSettingsSiteAction)
+  addShopSettingsSite(
+    { patchState }: StateContext<ShopSettingsModel>,
+    action: AddShopSettingsSiteAction) {
+
+    return this.stateService.getInitialState(action.payload, 'settings').pipe(
+      take(1)
+    ).subscribe((settings) => {
+      patchState({[action.payload]: this.initializeShopSettingsForSite(settings[action.payload])});
     });
   }
 }
