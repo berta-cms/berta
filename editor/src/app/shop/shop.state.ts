@@ -1,8 +1,13 @@
-import { take } from 'rxjs/operators';
-import { State, StateContext, NgxsOnInit, Selector } from '@ngxs/store';
+import { take, map, pairwise, filter } from 'rxjs/operators';
+import { State, StateContext, NgxsOnInit, Selector, Store } from '@ngxs/store';
 
 import { ShopModel } from './shop.interface';
 import { ShopStateService } from './shop-state.service';
+import { SitesState } from '../sites/sites-state/sites.state';
+import {
+  RenameShopRegionSitenameAction,
+  DeleteShopRegionSitenameAction,
+  AddShopRegionSitenameAction } from './regional-costs/shop-regional-costs.actions';
 
 
 const defaultState: ShopModel = {
@@ -28,11 +33,42 @@ export class ShopState implements NgxsOnInit {
   }
 
   constructor(
+    private store: Store,
     private stateService: ShopStateService) {
   }
 
 
   ngxsOnInit({ patchState }: StateContext<ShopModel>) {
+    this.store.select(SitesState).pipe(
+      filter(sites => !!sites && sites.length > 0),
+      map(sites => sites.map(site => site.name)),
+      pairwise(),
+      map(([prevSiteNames,
+        siteNames]) => {
+        let leftOverPrevSiteNames = prevSiteNames;
+        const newSiteName = siteNames.reduce((_newSiteName, siteName) => {
+          if (leftOverPrevSiteNames.indexOf(siteName) === -1) {
+            return siteName;
+          }
+          leftOverPrevSiteNames = leftOverPrevSiteNames.filter(sn => sn !== siteName);
+          return _newSiteName;
+        }, null);
+
+        return [leftOverPrevSiteNames[0], newSiteName];
+      }),
+      filter((oldSiteName, newSiteName) => !!oldSiteName || !!newSiteName)
+    ).subscribe(([oldSiteName, newSiteName]) => {
+      if (oldSiteName && newSiteName) {
+        this.store.dispatch(new RenameShopRegionSitenameAction(oldSiteName, newSiteName));
+      } else if (oldSiteName) {
+        // Site was deleted - delete settings for the site
+        this.store.dispatch(new DeleteShopRegionSitenameAction(oldSiteName));
+      } else if (newSiteName) {
+        // Site was created - get the data from server
+        this.store.dispatch(new AddShopRegionSitenameAction(newSiteName));
+      }
+    });
+
     return this.stateService.getInitialState().pipe(
       take(1)
     ).subscribe((state) => {

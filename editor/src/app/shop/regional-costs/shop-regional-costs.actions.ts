@@ -61,3 +61,25 @@ export class DeleteShopRegionCostAction {
     }) {
   }
 }
+
+export class RenameShopRegionSitenameAction {
+  static readonly type = 'SHOP_REGIONAL:SITE_RENAME';
+  constructor(
+    public siteName: string,
+    public payload: string) {
+  }
+}
+
+export class DeleteShopRegionSitenameAction {
+  static readonly type = 'SHOP_REGIONAL:SITE_DELETE';
+  constructor(
+    public payload: string) {
+  }
+}
+
+export class AddShopRegionSitenameAction {
+  static readonly type = 'SHOP_REGIONAL:SITE_ADD';
+  constructor(
+    public payload: string) {
+  }
+}

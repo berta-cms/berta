@@ -1,6 +1,12 @@
 import { take, tap, catchError } from 'rxjs/operators';
 import { HttpErrorResponse } from '@angular/common/http';
-import { State, StateContext, NgxsOnInit, Selector, Action, Store } from '@ngxs/store';
+import {
+  State,
+  StateContext,
+  NgxsOnInit,
+  Selector,
+  Action,
+  Store} from '@ngxs/store';
 
 import { ShopStateService } from '../shop-state.service';
 import { AppState } from '../../app-state/app.state';
@@ -10,7 +16,10 @@ import {
   AddShopRegionAction,
   AddShopRegionCostAction,
   DeleteShopRegionAction,
-  DeleteShopRegionCostAction } from './shop-regional-costs.actions';
+  DeleteShopRegionCostAction,
+  RenameShopRegionSitenameAction,
+  DeleteShopRegionSitenameAction,
+  AddShopRegionSitenameAction} from './shop-regional-costs.actions';
 import { ShopState } from '../shop.state';
 import { AppStateService } from '../../app-state/app-state.service';
 
@@ -126,8 +135,8 @@ export class ShopRegionalCostsState implements NgxsOnInit {
     const syncURLs = this.store.selectSnapshot(ShopState.getURLs);
 
     return this.appStateService.sync(syncURLs.regions + `/${(site || 0)}/${action.payload.id}`, {}, 'DELETE').pipe(
-      tap((response: {message: string, data: any}) => {
-        patchState({[site]: state[site].filter(region => +region.id !== +action.payload.id)});
+      tap(() => {
+        patchState({ [site]: state[site].filter(region => +region.id !== +action.payload.id) });
       }),
       catchError((error: HttpErrorResponse|Error) => {
         if (error instanceof HttpErrorResponse) {
@@ -239,5 +248,53 @@ export class ShopRegionalCostsState implements NgxsOnInit {
         throw error;
       })
     );
+  }
+
+  @Action(RenameShopRegionSitenameAction)
+  renameShopRegionsSitename(
+    { setState, getState }: StateContext<ShopRegionalCostsModel>,
+    action: RenameShopRegionSitenameAction) {
+    const state = getState();
+    const newState = {};
+
+    /* Using the loop to retain the element order in the map */
+    for (const siteName in state) {
+      if (siteName === action.siteName) {
+        newState[action.payload] = state[siteName];
+      } else {
+        newState[siteName] = state[siteName];
+      }
+    }
+
+    setState(newState);
+  }
+
+  @Action(DeleteShopRegionSitenameAction)
+  deleteShopRegionsSitename(
+    { setState, getState }: StateContext<ShopRegionalCostsModel>,
+    action: DeleteShopRegionSitenameAction) {
+    const state = getState();
+    const newState = {};
+
+    /* Using the loop to retain the element order in the map */
+    for (const siteName in state) {
+      if (siteName !== action.payload) {
+        newState[siteName] = state[siteName];
+      }
+    }
+
+    setState(newState);
+  }
+
+  @Action(AddShopRegionSitenameAction)
+  addShopRegionsSitename(
+    { patchState }: StateContext<ShopRegionalCostsModel>,
+    action: AddShopRegionSitenameAction) {
+
+    return this.stateService.getInitialState(action.payload, 'regionalCosts').pipe(
+      take(1)
+    ).subscribe((regionalCosts) => {
+      patchState({[action.payload]: regionalCosts[action.payload]});
+    });
   }
 }
