@@ -1,5 +1,4 @@
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
-import { SettingModel } from '../shared/interfaces';
 
 @Component({
   selector: 'berta-text-input',
