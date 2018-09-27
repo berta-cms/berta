@@ -23,7 +23,7 @@ import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
     `,
     styles: [`
       :host {
-        display: inline-block;
+        display: flex;
       }
     `]
 })
