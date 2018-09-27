@@ -48,7 +48,7 @@ import {
                           value=""
                           (update)="newCost.price = $event"
                           (inputFocus)="updateInputFocus($event)"></berta-text-input>
-        <button type="submit">Add Region</button>
+        <button type="submit">Add Cost</button>
       </form>
       <button type="button" (click)="deleteRegion(region.id, $event)">Delete Region</button>
     </div>
@@ -62,7 +62,7 @@ import {
                         [value]="newRegion.vat"
                         (update)="newRegion.vat = $event"
                         (inputFocus)="updateInputFocus($event)"></berta-text-input>
-      <button type="submit">add</button>
+      <button type="submit">Add Region</button>
     </form>
   `,
   styles: [`
@@ -117,7 +117,7 @@ export class ShopRegionalCostsComponent implements OnInit {
 
     this.priceLabel$ = this.store.select(ShopSettingsState.getCurrentCurrency).pipe(
       map(currency => {
-        return `if weight is less than (${currency})`;
+        return `then price is (${currency})`;
       }),
       shareReplay(1));
   }
