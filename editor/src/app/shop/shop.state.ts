@@ -62,6 +62,10 @@ export class ShopState implements NgxsOnInit {
       }),
       filter((oldSiteName, newSiteName) => !!oldSiteName || !!newSiteName)
     ).subscribe(([oldSiteName, newSiteName]) => {
+      /**
+       * @note: Orders and Products don't need to be initialized, because there will be no orders or products
+       * for site that's just created
+       */
       if (oldSiteName && newSiteName) {
         this.store.dispatch([
           new RenameShopRegionSiteAction(oldSiteName, newSiteName),
