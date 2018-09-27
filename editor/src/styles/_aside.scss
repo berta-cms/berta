@@ -21,6 +21,7 @@ aside {
     transition:  color .2s;
 
     .url-line {
+      font-size: $input-font-size;
       margin-top: .5em;
 
       a {
@@ -69,7 +70,6 @@ aside {
 
     .edit-icon {
       cursor: pointer;
-      margin-left: .25em;
       max-height: 1em;
 
       .icon {
