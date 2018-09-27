@@ -29,6 +29,7 @@ export class TextInputComponent implements OnInit {
   @Input() label?: string;
   @Input() placeholder?: string;
   @Input() disabled?: boolean;
+  @Input() enabledOnUpdate?: boolean;
   @Input() value: string;
   @Output() update = new EventEmitter();
   @Output() inputFocus = new EventEmitter();
@@ -83,7 +84,10 @@ export class TextInputComponent implements OnInit {
     }
 
     this.lastValue = $event.target.value;
-    this.disabled = true;
+
+    if (!this.enabledOnUpdate) {
+      this.disabled = true;
+    }
 
     this.update.emit($event.target.value);
   }
