@@ -20,6 +20,15 @@ aside {
     padding: 1.3em;
     transition:  color .2s;
 
+    .url-line {
+      margin-top: .5em;
+
+      a {
+        color: $black;
+        text-decoration: none;
+      }
+    }
+
     input {
       background-color: transparent;
       border: 0;

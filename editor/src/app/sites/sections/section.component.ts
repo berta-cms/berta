@@ -3,7 +3,6 @@ import { Store } from '@ngxs/store';
 import { SiteSectionStateModel } from './sections-state/site-sections-state.model';
 import { SiteTemplateSectionTypesModel } from '../template-settings/site-templates.interface';
 import { DeleteSiteSectionAction, CloneSectionAction } from './sections-state/site-sections.actions';
-import { UpdateInputFocus } from '../../app-state/app.actions';
 
 @Component({
   selector: 'berta-section',
@@ -101,7 +100,7 @@ export class SectionComponent {
   constructor(private store: Store) { }
 
   updateComponentFocus(isFocused) {
-    this.store.dispatch(new UpdateInputFocus(isFocused));
+    this.inputFocus.emit(isFocused);
   }
 
   updateTextField(field, value) {
