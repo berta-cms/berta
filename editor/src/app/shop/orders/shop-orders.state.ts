@@ -2,7 +2,11 @@ import { State, StateContext, NgxsOnInit, Selector, Action } from '@ngxs/store';
 import { ShopStateService } from '../shop-state.service';
 import { take } from 'rxjs/operators';
 import { AppState } from '../../app-state/app.state';
-import { RenameShopOrdersSiteAction, DeleteShopOrdersSiteAction, AddShopOrdersSiteAction } from './shop-orders.actions';
+import {
+  RenameShopOrdersSiteAction,
+  DeleteShopOrdersSiteAction,
+  AddShopOrdersSiteAction,
+  ResetShopOrdersAction } from './shop-orders.actions';
 
 
 interface ShopOrdersModel {
@@ -63,5 +67,10 @@ export class ShopOrdersState implements NgxsOnInit {
   @Action(AddShopOrdersSiteAction)
   addOrdersSite({ patchState }: StateContext<ShopOrdersModel>, action: AddShopOrdersSiteAction) {
     patchState({[action.payload]: []});
+  }
+
+  @Action(ResetShopOrdersAction)
+  resetOrders({ setState }: StateContext<ShopOrdersModel>) {
+    setState(defaultState);
   }
 }

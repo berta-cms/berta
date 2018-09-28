@@ -30,3 +30,8 @@ export class AddShopProductSiteAction {
     public payload: string) {
   }
 }
+
+/* Reset: */
+export class ResetShopProductsAction {
+  public static type = 'SHOP_PRODUCT:RESET';
+}

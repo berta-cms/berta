@@ -1,5 +1,6 @@
-import { take, map, pairwise, filter } from 'rxjs/operators';
-import { State, StateContext, NgxsOnInit, Selector, Store } from '@ngxs/store';
+import { concat } from 'rxjs';
+import { take, map, pairwise, filter, switchMap } from 'rxjs/operators';
+import { State, StateContext, NgxsOnInit, Selector, Store, Action } from '@ngxs/store';
 
 import { ShopModel } from './shop.interface';
 import { ShopStateService } from './shop-state.service';
@@ -7,13 +8,26 @@ import { SitesState } from '../sites/sites-state/sites.state';
 import {
   RenameShopRegionSiteAction,
   DeleteShopRegionSiteAction,
-  AddShopRegionSiteAction } from './regional-costs/shop-regional-costs.actions';
+  AddShopRegionSiteAction,
+  ResetShopRegionalCostsAction} from './regional-costs/shop-regional-costs.actions';
 import {
   RenameShopSettingsSiteAction,
   DeleteShopSettingsSiteAction,
-  AddShopSettingsSiteAction } from './settings/shop-settings.actions';
-import { RenameShopProductSiteAction, DeleteShopProductSiteAction, AddShopProductSiteAction } from './products/shop-products.actions';
-import { RenameShopOrdersSiteAction, DeleteShopOrdersSiteAction, AddShopOrdersSiteAction } from './orders/shop-orders.actions';
+  AddShopSettingsSiteAction,
+  ResetShopSettingsAction,
+  ResetShopSettingsConfigAction} from './settings/shop-settings.actions';
+import {
+  RenameShopProductSiteAction,
+  DeleteShopProductSiteAction,
+  AddShopProductSiteAction,
+  ResetShopProductsAction } from './products/shop-products.actions';
+import {
+  RenameShopOrdersSiteAction,
+  DeleteShopOrdersSiteAction,
+  AddShopOrdersSiteAction,
+  ResetShopOrdersAction } from './orders/shop-orders.actions';
+import { UserState } from '../user/user.state';
+import { ResetShopAction } from './shop.actions';
 
 
 const defaultState: ShopModel = {
@@ -39,13 +53,13 @@ export class ShopState implements NgxsOnInit {
   }
 
   constructor(
-    private store: Store,
+    private store$: Store,
     private stateService: ShopStateService) {
   }
 
 
-  ngxsOnInit({ patchState }: StateContext<ShopModel>) {
-    this.store.select(SitesState).pipe(
+  ngxsOnInit({ patchState, setState, dispatch }: StateContext<ShopModel>) {
+    this.store$.select(SitesState).pipe(
       filter(sites => !!sites && sites.length > 0),
       map(sites => sites.map(site => site.name)),
       pairwise(),
@@ -69,7 +83,7 @@ export class ShopState implements NgxsOnInit {
        * for site that's just created
        */
       if (oldSiteName && newSiteName) {
-        this.store.dispatch([
+        this.store$.dispatch([
           new RenameShopRegionSiteAction(oldSiteName, newSiteName),
           new RenameShopSettingsSiteAction(oldSiteName, newSiteName),
           new RenameShopProductSiteAction(oldSiteName, newSiteName),
@@ -77,7 +91,7 @@ export class ShopState implements NgxsOnInit {
         ]);
       } else if (oldSiteName) {
         // Site was deleted - delete settings for the site
-        this.store.dispatch([
+        this.store$.dispatch([
           new DeleteShopRegionSiteAction(oldSiteName),
           new DeleteShopSettingsSiteAction(oldSiteName),
           new DeleteShopProductSiteAction(oldSiteName),
@@ -85,7 +99,7 @@ export class ShopState implements NgxsOnInit {
         ]);
       } else if (newSiteName) {
         // Site was created - get the data from server
-        this.store.dispatch([
+        this.store$.dispatch([
           new AddShopRegionSiteAction(newSiteName),
           new AddShopSettingsSiteAction(newSiteName),
           new AddShopProductSiteAction(newSiteName),
@@ -94,9 +108,16 @@ export class ShopState implements NgxsOnInit {
       }
     });
 
-    return this.stateService.getInitialState().pipe(
-      take(1)
+    /* LOGIN: */
+    concat(
+      this.stateService.getInitialState().pipe(take(1)),
+      this.store$.select(UserState.isLoggedIn).pipe(
+        pairwise(),
+        filter(([wasLoggedIn, isLoggedIn]) => !wasLoggedIn && isLoggedIn),
+        switchMap(() => this.stateService.getInitialState().pipe(take(1)))
+      )
     ).subscribe((state) => {
+      /** @todo: CREATE INIT ACTION */
       patchState({
         sections: Object.keys(state).filter(key => {
           return Object.keys(defaultState).indexOf(key) === -1 && !(/config$/i.test(key));
@@ -104,5 +125,26 @@ export class ShopState implements NgxsOnInit {
         urls: state.urls
       });
     });
+
+    /* LOGOUT: */
+    this.store$.select(UserState.isLoggedIn).pipe(
+      pairwise(),
+      filter(([wasLoggedIn, isLoggedIn]) => wasLoggedIn && !isLoggedIn)
+    )
+    .subscribe(() => {
+      dispatch([
+        ResetShopAction,
+        ResetShopProductsAction,
+        ResetShopOrdersAction,
+        ResetShopRegionalCostsAction,
+        ResetShopSettingsAction,
+        ResetShopSettingsConfigAction
+      ]);
+    });
+  }
+
+  @Action(ResetShopAction)
+  resetShop({ setState }: StateContext<ShopModel>) {
+    setState(defaultState);
   }
 }

@@ -32,3 +32,12 @@ export class AddShopSettingsSiteAction {
     public payload: string) {
   }
 }
+
+/* Reset: */
+export class ResetShopSettingsAction {
+  public static type = 'SHOP_SETTINGS:RESET';
+}
+
+export class ResetShopSettingsConfigAction {
+  public static type = 'SHOP_SETTINGS_CONFIG:RESET';
+}

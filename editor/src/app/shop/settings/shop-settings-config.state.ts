@@ -1,9 +1,8 @@
-import { State, StateContext, NgxsOnInit, Selector } from '@ngxs/store';
-import { ShopStateService } from '../shop-state.service';
 import { take } from 'rxjs/operators';
-import { AppState } from '../../app-state/app.state';
-import { AppStateModel } from '../../app-state/app-state.interface';
+import { State, StateContext, NgxsOnInit, Action } from '@ngxs/store';
+import { ShopStateService } from '../shop-state.service';
 import { initSettingConfigGroup } from '../../shared/helpers';
+import { ResetShopSettingsConfigAction } from './shop-settings.actions';
 
 interface ShopSettingsConfigModel {
   [site: string]: any;
@@ -36,5 +35,10 @@ export class ShopSettingsConfigState implements NgxsOnInit {
 
       setState(settingGroups);
     });
+  }
+
+  @Action(ResetShopSettingsConfigAction)
+  resetProducts({ setState }: StateContext<ShopSettingsConfigModel>) {
+    setState(defaultState);
   }
 }

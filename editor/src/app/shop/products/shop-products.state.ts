@@ -2,7 +2,12 @@ import { State, StateContext, NgxsOnInit, Selector, Action, Store } from '@ngxs/
 import { ShopStateService } from '../shop-state.service';
 import { take, tap, catchError } from 'rxjs/operators';
 import { AppState } from '../../app-state/app.state';
-import { UpdateShopProductAction, RenameShopProductSiteAction, DeleteShopProductSiteAction, AddShopProductSiteAction } from './shop-products.actions';
+import {
+  UpdateShopProductAction,
+  RenameShopProductSiteAction,
+  DeleteShopProductSiteAction,
+  AddShopProductSiteAction,
+  ResetShopProductsAction} from './shop-products.actions';
 import { AppStateService } from '../../app-state/app-state.service';
 import { ShopState } from '../shop.state';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -111,5 +116,10 @@ export class ShopProductsState implements NgxsOnInit {
   @Action(AddShopProductSiteAction)
   addProductsSite({ patchState }: StateContext<ShopProductsModel>, action: AddShopProductSiteAction) {
     patchState({[action.payload]: []});
+  }
+
+  @Action(ResetShopProductsAction)
+  resetProducts({ setState }: StateContext<ShopProductsModel>) {
+    setState(defaultState);
   }
 }

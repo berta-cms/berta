@@ -9,7 +9,8 @@ import {
   UpdateShopSettingsAction,
   DeleteShopSettingsSiteAction,
   RenameShopSettingsSiteAction,
-  AddShopSettingsSiteAction } from './shop-settings.actions';
+  AddShopSettingsSiteAction,
+  ResetShopSettingsAction} from './shop-settings.actions';
 import { AppStateService } from '../../app-state/app-state.service';
 import { ShopState } from '../shop.state';
 
@@ -169,5 +170,10 @@ export class ShopSettingsState implements NgxsOnInit {
     ).subscribe((settings) => {
       patchState({[action.payload]: this.initializeShopSettingsForSite(settings[action.payload])});
     });
+  }
+
+  @Action(ResetShopSettingsAction)
+  resetProducts({ setState }: StateContext<ShopSettingsModel>) {
+    setState(defaultState);
   }
 }

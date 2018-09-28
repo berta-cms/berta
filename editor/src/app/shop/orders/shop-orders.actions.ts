@@ -19,3 +19,9 @@ export class AddShopOrdersSiteAction {
     public payload: string) {
   }
 }
+
+/* Reset: */
+export class ResetShopOrdersAction {
+  public static type = 'SHOP_ORDERS:RESET';
+}
+

@@ -19,7 +19,8 @@ import {
   DeleteShopRegionCostAction,
   RenameShopRegionSiteAction,
   DeleteShopRegionSiteAction,
-  AddShopRegionSiteAction } from './shop-regional-costs.actions';
+  AddShopRegionSiteAction,
+  ResetShopRegionalCostsAction} from './shop-regional-costs.actions';
 import { ShopState } from '../shop.state';
 import { AppStateService } from '../../app-state/app-state.service';
 
@@ -296,5 +297,10 @@ export class ShopRegionalCostsState implements NgxsOnInit {
     ).subscribe((regionalCosts) => {
       patchState({[action.payload]: regionalCosts[action.payload]});
     });
+  }
+
+  @Action(ResetShopRegionalCostsAction)
+  resetProducts({ setState }: StateContext<ShopRegionalCostsModel>) {
+    setState(defaultState);
   }
 }
