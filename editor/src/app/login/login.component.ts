@@ -14,7 +14,8 @@ import { UserLoginAction } from '../user/user.actions';
 @Component({
   selector: 'berta-login',
   template: `
-  <div *ngIf="!(isLoggedIn$ | async)" class="login-container">
+  <div *ngIf="!(isLoggedIn$ | async)" class="login-container setting-group">
+    <h3><img src="/engine/layout/berta.png"></h3>
     <div *ngIf="message" class="error-message">{{ message }}</div>
     <form action="" (submit)="login($event)">
       <berta-text-input [label]="'Username'"
@@ -28,10 +29,12 @@ import { UserLoginAction } from '../user/user.actions';
                         [enabledOnUpdate]="true"
                         (inputFocus)="updateComponentFocus($event)"
                         (update)="updateField('password', $event)"></berta-text-input>
-      <button type="submit" class="button">Log in</button>
+      <div class="form-group">
+        <button type="submit" class="button">Log in</button>
+      </div>
     </form>
     <div class="footer">
-      berta [version] [year - current year]
+      berta 2008 - {{ currentYear }}
     </div>
   </div>
   `
@@ -40,6 +43,7 @@ export class LoginComponent implements OnInit {
   message = '';
   username = '';
   password = '';
+  currentYear = (new Date()).getFullYear();
 
   @Select(UserState.isLoggedIn) isLoggedIn$: Observable<boolean>;
 
