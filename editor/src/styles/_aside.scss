@@ -1,15 +1,16 @@
 aside {
-  background-color: $berta-bg-light;
-  border-right: 1px solid $berta-nav-text;  // for develompent
+  background-color: $white;
+  border-right: 1px solid $grey-30;  // for develompent
   padding-top: $bt-header-height;
 }
 
 .setting-group {
+  transition:  background-color .2s;
+
   h3 {
     align-items: center;
-    border-bottom: 1px solid $grey-light;
-    color: $berta-nav-text;
-    cursor: pointer;
+    border-bottom: 1px solid $grey-10;
+    color: $black;
     display: flex;
     font-size: 1em;
     font-weight: normal;
@@ -19,27 +20,87 @@ aside {
     padding: 1.3em;
     transition:  color .2s;
 
-    svg {
-      transition: transform .2s;
+    .url-line {
+      font-size: $input-font-size;
+      margin-top: .5em;
+
+      a {
+        color: $black;
+        text-decoration: none;
+      }
+    }
+
+    input {
+      background-color: transparent;
+      border: 0;
+      font-family: AvenirNext, Helvetica, Arial, sans-serif;
+      font-size: 1em;
+      outline: none;
+      padding: 0;
+      transition: color .2s;
+
+      &:focus {
+        color: $berta-accent;
+      }
+    }
+
+    button {
+      background: none;
+      border: 0;
+      color: $black;
+      cursor: pointer;
+      margin-left: 1em;
+      padding: 0;
+      transition: color .2s;
+
+      &:hover,
+      &.active {
+        color: $berta-accent;
+      }
     }
 
     .drop-icon {
-      stroke: $berta-nav-text;
-      transition: stroke .2s;
+      transition: transform .2s;
+
+      path {
+        stroke: $black;
+        transition: stroke .2s;
+      }
     }
 
-    &:hover {
-      color: $input-color-active;
+    .edit-icon {
+      cursor: pointer;
+      max-height: 1em;
 
-      .drop-icon {
-        stroke: $input-color-active;
+      .icon {
+        transition: fill .2s;
+      }
+
+      &:hover {
+        .icon {
+          fill: $berta-accent;
+        }
+      }
+    }
+
+    &.hoverable {
+      cursor: pointer;
+
+      &:hover {
+        color: $berta-accent;
+
+        .drop-icon {
+          path {
+            stroke: $berta-accent;
+          }
+        }
       }
     }
   }
 
   h4 {
-    border-top: 1px solid $grey-light;
-    color: $berta-nav-text;
+    border-top: 1px solid $grey-10;
+    color: $black;
     font-size: .9em;
     font-weight: normal;
     margin: 0;
@@ -57,7 +118,10 @@ aside {
     overflow: hidden;
     transition:  max-height .2s ease;
 
-    berta-setting {
+    berta-setting,
+    .setting {
+      margin: 1.3em;
+
       &:first-child {
         margin-top: 0;
 
@@ -70,53 +134,29 @@ aside {
   }
 
   &.is-expanded {
-    position: relative;
-
-    &:before {
-      box-shadow: 0 2px 5px 0 $grey-light;
-      content: '';
-      display: block;
-      height: 3px;
-      position: absolute;
-      top: -3px;
-      width: 100%;
-    }
+    background-color: $grey-1;
 
     h3 {
       border-bottom: 0;
       cursor: default;
 
-      svg {
+      .drop-icon {
         transform: scaleY(-1);
+
+        path {
+          stroke: $berta-accent;
+        }
       }
 
       &:hover {
-        color: $berta-nav-text;
-
-        .drop-icon {
-          stroke: $berta-nav-text;
-        }
+        color: $black;
       }
     }
 
     > .settings {
-      border-bottom: 1px solid $grey-light;
+      border-bottom: 1px solid $grey-10;
       max-height: 1500px; // auto
       overflow: visible;
     }
-
-    &:last-child {
-      > .settings {
-        border-bottom: 0;
-      }
-    }
-
-    + .setting-group {
-      box-shadow: 0 -2px 5px 0 $grey-light;
-    }
-  }
-
-  berta-setting {
-    margin: 1.3em;
   }
 }

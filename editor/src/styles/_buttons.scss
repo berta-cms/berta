@@ -1,8 +1,8 @@
 .button {
-  background-color: $berta-bg-dark;
+  background-color: $black;
   border: 0;
   border-radius: $border-radius;
-  color: $berta-nav-text;
+  color: $grey-30;
   display: inline-block;
   font-size: 1em;
   line-height: 1;
@@ -12,22 +12,22 @@
 
   &:hover {
     background-color: $berta-accent;
+    color: $white;
   }
 
   &:focus,
   &:active {
     background-color: darken($berta-accent, 10%);
-    color: darken($berta-nav-text, 10%);
+    color: darken($grey-30, 10%);
   }
 
   &.secondary {
-    background-color: $button-secondary-color;
-    color: $berta-bg-light;
+    background-color: $grey-20;
+    color: $white;
   }
 
   &.disabled,
   &[disabled] {
-    background-color: $button-disabled-color;
+    background-color: $grey-10;
   }
-
 }

@@ -2,6 +2,7 @@
 @import 'buttons';
 @import 'forms';
 @import 'aside';
+@import 'sites';
 @import 'sections';
 
 html,
@@ -26,11 +27,11 @@ button {
 }
 
 header {
-  background-color: $berta-bg-dark;
+  background-color: $black;
   height: $bt-header-height;
 
   a {
-    color: $berta-nav-text;
+    color: $grey-30;
     font-size: $bt-header-font-size;
     line-height: $bt-header-line-height;
     padding: $bt-header-item-padding;
@@ -41,12 +42,12 @@ header {
     }
 
     &.nav-active {
-      color: $berta-nav-text-active;
+      color: $white;
     }
   }
 
   .bt-view-editor {
-    background-color: $berta-bg-mid-dark;
+    background-color: $grey-90;
     color: #9a9a9a;
     cursor: pointer;
     padding: $bt-header-item-padding;
@@ -59,26 +60,26 @@ header {
 }
 
 berta-profile-dropdown {
-  background-color: $berta-bg-dark;
+  background-color: $black;
 
   .bt-profile-anchor {
     background-color: inherit;
     min-width: 9.375rem;
 
     &:focus {
-      color: $berta-nav-text-active;
+      color: $white;
     }
   }
 
   ul {
-    background-color: $berta-bg-dark;
+    background-color: $black;
   }
 
   .bt-profile-anchor,
   ul > li > * {
     background-color: transparent;
     box-sizing: border-box;
-    color: $berta-nav-text;
+    color: $grey-30;
     display: block;
     font-size: $bt-header-font-size;
     line-height: $bt-header-line-height;
@@ -93,5 +94,5 @@ berta-profile-dropdown {
 }
 
 .overlay {
-  background: rgba($berta-bg-dark, .3);
+  background: rgba($black, .3);
 }

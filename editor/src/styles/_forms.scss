@@ -4,10 +4,17 @@
 
   label {
     align-items: center;
-    color: $input-color;
+    color: $black;
     display: flex;
     justify-content: space-between;
     transition: color .2s;
+  }
+
+  input,
+  textarea {
+    &::placeholder {
+      color: $grey-20;
+    }
   }
 
   .text-input-wrapper,
@@ -15,7 +22,8 @@
   .select-wrapper,
   .file-input-wrapper {
     align-items: center;
-    border: 1px solid $input-color;
+    background-color: $white;
+    border: 1px solid $grey-40;
     border-radius: $border-radius;
     display: flex;
     margin-left: 1em;
@@ -29,8 +37,12 @@
     }
 
     .icon {
-      fill: $input-color;
+      fill: $grey-40;
       transition: fill .2s;
+    }
+
+    .icon-empty {
+      margin-right: .25em;
     }
 
     > input,
@@ -41,10 +53,11 @@
     > input,
     > .button-wrapper button,
     .file-input {
+      background-color: transparent;
       border: 0;
       border-radius: $border-radius;
       box-sizing: border-box;
-      color: $input-color;
+      color: $grey-40;
       flex-grow: 1;
       font-size: 1em;
       min-width: 1rem;
@@ -97,24 +110,24 @@
 
     button {
       appearance: none;
-      background-color: $berta-bg-light;
+      background-color: transparent;
       overflow-x: hidden;
       text-align: left;
       text-overflow: ellipsis;
     }
 
-    svg {
-      min-width: 10px;
-    }
-
     .drop-icon {
-      stroke: $input-color;
-      transition: stroke .2s;
+      min-width: 10px;
+
+      path {
+        stroke: $grey-40;
+        transition: stroke .2s;
+      }
     }
 
     ul {
-      background-color: $berta-bg-light;
-      border: 1px solid $input-color-active;
+      background-color: $white;
+      border: 1px solid $grey-80;
       border-radius: 0 0 $border-radius $border-radius;
       box-sizing: border-box;
       display: none;
@@ -127,7 +140,7 @@
       z-index: 1;
 
       li {
-        color: $input-color-active;
+        color: $grey-80;
         overflow-x: hidden;
         padding: .75em;
         text-overflow: ellipsis;
@@ -172,18 +185,18 @@
 
       &:checked {
         + span {
-          background-color: $input-color;
+          background-color: $grey-40;
 
           &:after {
             left: $toggle-width - $toggle-slider-size - 1;
           }
 
           &:hover {
-            background-color: $input-color-active;
-            border-color: $input-color-active;
+            background-color: $grey-80;
+            border-color: $grey-80;
 
             &:after {
-              border-color: $input-color-active;
+              border-color: $grey-80;
             }
           }
         }
@@ -191,8 +204,8 @@
     }
 
     span {
-      background-color: $berta-bg-light;
-      border: 1px solid $input-color;
+      background-color: $white;
+      border: 1px solid $grey-40;
       border-radius: $toggle-width;
       cursor: pointer;
       display: inline-block;
@@ -201,8 +214,8 @@
       width: $toggle-width;
 
       &:after {
-        background-color: $berta-bg-light;
-        border: 1px solid $input-color;
+        background-color: $white;
+        border: 1px solid $grey-40;
         border-radius: 50%;
         content: '';
         display: block;
@@ -214,20 +227,20 @@
       }
 
       &:hover {
-        border-color: $input-color-active;
+        border-color: $grey-80;
 
         &:after {
-          border-color: $input-color-active;
+          border-color: $grey-80;
         }
       }
     }
   }
 
   textarea {
-    border: 1px solid $input-color;
+    border: 1px solid $grey-40;
     border-radius: $border-radius;
     box-sizing: border-box;
-    color: $input-color;
+    color: $grey-40;
     display: block;
     font-size: 1em;
     margin: .75em 0 0;
@@ -241,14 +254,20 @@
     }
   }
 
+  &.no-label {
+    .text-input-wrapper {
+      margin-left: 0;
+      width: 100%;
+    }
+  }
+
   &:hover,
   &.bt-focus {
-    label,
     .file-input,
     input,
     .button-wrapper button,
     textarea:not(:focus):not([disabled]) {
-      color: $input-color-active;
+      color: $grey-80;
     }
 
     .text-input-wrapper,
@@ -256,14 +275,14 @@
     .select-wrapper,
     .file-input-wrapper,
     textarea {
-      border: 1px solid $input-color-active;
+      border: 1px solid $grey-80;
 
       .icon {
-        fill: $input-color-active;
+        fill: $grey-80;
       }
 
       .icon-remove {
-        stroke: $input-color-active;
+        stroke: $grey-80;
       }
     }
 
@@ -271,30 +290,32 @@
       input {
         &:checked {
           + span {
-            background-color: $input-color-active;
-            border-color: $input-color-active;
+            background-color: $grey-80;
+            border-color: $grey-80;
 
             &:after {
-              border-color: $input-color-active;
+              border-color: $grey-80;
             }
           }
         }
       }
 
       span {
-        border-color: $input-color-active;
+        border-color: $grey-80;
 
         &:after {
-          border-color: $input-color-active;
+          border-color: $grey-80;
         }
       }
     }
 
     .select-wrapper {
-      color: $input-color-active;
+      color: $grey-80;
 
       .drop-icon {
-        stroke: $input-color-active;
+        path {
+          stroke: $grey-80;
+        }
       }
     }
   }
@@ -334,7 +355,7 @@
         fill: $error-color;
       }
 
-      .drop-icon,
+      .drop-icon path,
       .icon-remove {
         stroke: $error-color;
       }
@@ -354,5 +375,74 @@ color-picker {
 .color-picker {
   button {
     margin-left: .5em;
+  }
+}
+
+.input-row {
+  display: flex;
+
+  berta-text-input {
+    flex-grow: 1;
+    width: 100%;
+
+    &:not(:first-child) {
+      .form-group {
+        .text-input-wrapper {
+          border-bottom-left-radius: 0;
+          border-left: 0;
+          border-top-left-radius: 0;
+          position: relative;
+
+          &:before {
+            background-color: $grey-40;
+            content: '';
+            display: block;
+            height: 60%;
+            left: 0;
+            position: absolute;
+            top: 20%;
+            transition: background-color .2s;
+            width: 1px;
+          }
+
+          &:hover {
+            &:before {
+              background-color: $grey-80;
+            }
+          }
+        }
+
+        &.bt-focus {
+          .text-input-wrapper {
+            &:before {
+              background-color: $grey-80;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .label-text {
+    display: none;
+  }
+
+  .form-group {
+    .text-input-wrapper {
+      border-bottom-right-radius: 0;
+      border-right: 0;
+      border-top-right-radius: 0;
+      margin-left: 0;
+      width: 100%;
+    }
+
+    &.bt-disabled {
+      opacity: 1;
+    }
+  }
+
+  .button {
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
   }
 }

@@ -38,10 +38,10 @@ import { UpdateInputFocus } from '../../app-state/app.actions';
                         (update)="updateComponentField(setting.slug, $event)"></berta-file-input>
 
       <berta-long-text-input *ngSwitchCase="'longtext'"
-                             [label]="config.title"
-                             [value]="setting.value"
-                             (inputFocus)="updateComponentFocus($event)"
-                             (update)="updateComponentField(setting.slug, $event)"></berta-long-text-input>
+                            [label]="config.title"
+                            [value]="setting.value"
+                            (inputFocus)="updateComponentFocus($event)"
+                            (update)="updateComponentField(setting.slug, $event)"></berta-long-text-input>
 
       <berta-select-input *ngSwitchCase="'select'"
                           [label]="config.title"
