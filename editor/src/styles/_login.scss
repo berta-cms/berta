@@ -12,6 +12,12 @@ berta-login {
     border-bottom: 0;
   }
 
+  .error-message {
+    color: $error-color;
+    font-size: $input-font-size;
+    margin: 1.3em 1.3em 0;
+  }
+
   form {
     flex-grow: 1;
 
