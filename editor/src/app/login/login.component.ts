@@ -21,12 +21,14 @@ import { UserLoginAction } from '../user/user.actions';
       <berta-text-input [label]="'Username'"
                         [value]="username"
                         [enabledOnUpdate]="true"
+                        [hideIcon]="true"
                         (inputFocus)="updateComponentFocus($event)"
                         (update)="updateField('username', $event)"></berta-text-input>
       <berta-text-input [label]="'Password'"
                         [value]="password"
                         [type]="'password'"
                         [enabledOnUpdate]="true"
+                        [hideIcon]="true"
                         (inputFocus)="updateComponentFocus($event)"
                         (update)="updateField('password', $event)"></berta-text-input>
       <div class="form-group">
