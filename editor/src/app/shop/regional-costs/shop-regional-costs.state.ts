@@ -6,7 +6,7 @@ import {
   NgxsOnInit,
   Selector,
   Action,
-  Store} from '@ngxs/store';
+  Store } from '@ngxs/store';
 
 import { ShopStateService } from '../shop-state.service';
 import { AppState } from '../../app-state/app.state';
@@ -19,7 +19,7 @@ import {
   DeleteShopRegionCostAction,
   RenameShopRegionSiteAction,
   DeleteShopRegionSiteAction,
-  AddShopRegionSiteAction} from './shop-regional-costs.actions';
+  AddShopRegionSiteAction } from './shop-regional-costs.actions';
 import { ShopState } from '../shop.state';
 import { AppStateService } from '../../app-state/app-state.service';
 

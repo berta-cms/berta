@@ -12,6 +12,8 @@ import {
   RenameShopSettingsSiteAction,
   DeleteShopSettingsSiteAction,
   AddShopSettingsSiteAction } from './settings/shop-settings.actions';
+import { RenameShopProductSiteAction, DeleteShopProductSiteAction, AddShopProductSiteAction } from './products/shop-products.actions';
+import { RenameShopOrdersSiteAction, DeleteShopOrdersSiteAction, AddShopOrdersSiteAction } from './orders/shop-orders.actions';
 
 
 const defaultState: ShopModel = {
@@ -69,19 +71,25 @@ export class ShopState implements NgxsOnInit {
       if (oldSiteName && newSiteName) {
         this.store.dispatch([
           new RenameShopRegionSiteAction(oldSiteName, newSiteName),
-          new RenameShopSettingsSiteAction(oldSiteName, newSiteName)
+          new RenameShopSettingsSiteAction(oldSiteName, newSiteName),
+          new RenameShopProductSiteAction(oldSiteName, newSiteName),
+          new RenameShopOrdersSiteAction(oldSiteName, newSiteName)
         ]);
       } else if (oldSiteName) {
         // Site was deleted - delete settings for the site
         this.store.dispatch([
           new DeleteShopRegionSiteAction(oldSiteName),
-          new DeleteShopSettingsSiteAction(oldSiteName)
+          new DeleteShopSettingsSiteAction(oldSiteName),
+          new DeleteShopProductSiteAction(oldSiteName),
+          new DeleteShopOrdersSiteAction(oldSiteName)
         ]);
       } else if (newSiteName) {
         // Site was created - get the data from server
         this.store.dispatch([
           new AddShopRegionSiteAction(newSiteName),
-          new AddShopSettingsSiteAction(newSiteName)
+          new AddShopSettingsSiteAction(newSiteName),
+          new AddShopProductSiteAction(newSiteName),
+          new AddShopOrdersSiteAction(newSiteName)
         ]);
       }
     });

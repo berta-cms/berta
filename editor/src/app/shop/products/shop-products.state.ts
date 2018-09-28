@@ -2,7 +2,7 @@ import { State, StateContext, NgxsOnInit, Selector, Action, Store } from '@ngxs/
 import { ShopStateService } from '../shop-state.service';
 import { take, tap, catchError } from 'rxjs/operators';
 import { AppState } from '../../app-state/app.state';
-import { UpdateShopProductAction } from './shop-products.actions';
+import { UpdateShopProductAction, RenameShopProductSiteAction, DeleteShopProductSiteAction, AddShopProductSiteAction } from './shop-products.actions';
 import { AppStateService } from '../../app-state/app-state.service';
 import { ShopState } from '../shop.state';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -83,5 +83,33 @@ export class ShopProductsState implements NgxsOnInit {
     ).subscribe((products) => {
       setState(products);
     });
+  }
+
+  @Action(RenameShopProductSiteAction)
+  renameProductsSite({ getState, setState }: StateContext<ShopProductsModel>, action: RenameShopProductSiteAction) {
+    const state = getState(),
+          newState = {};
+
+    for (const siteName in state) {
+      if (siteName === action.siteName) {
+        newState[action.payload] = state[siteName];
+      } else {
+        newState[siteName] = state[siteName];
+      }
+    }
+
+    setState(newState);
+  }
+
+  @Action(DeleteShopProductSiteAction)
+  deleteProductsSite({ getState, setState }: StateContext<ShopProductsModel>, action: DeleteShopProductSiteAction) {
+    const state = {...getState()};
+    delete state[action.payload];
+    setState(state);
+  }
+
+  @Action(AddShopProductSiteAction)
+  addProductsSite({ patchState }: StateContext<ShopProductsModel>, action: AddShopProductSiteAction) {
+    patchState({[action.payload]: []});
   }
 }
