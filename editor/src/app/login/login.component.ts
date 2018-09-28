@@ -7,31 +7,40 @@ import { take } from 'rxjs/operators';
 import { Select, Store } from '@ngxs/store';
 
 import { UserState } from '../user/user.state';
+import { AppShowLoading, AppHideLoading, UpdateInputFocus } from '../app-state/app.actions';
 import { UserLoginAction } from '../user/user.actions';
-import { AppShowLoading, AppHideLoading } from '../app-state/app.actions';
 
 
 @Component({
   selector: 'berta-login',
   template: `
-  <div *ngIf="!(isLoggedIn$ | async)">
-    <h2>Enter your Login details</h2>
-    <p class="error">{{message}}<p>
-    <form action="" (submit)="login($event, user.value, pass.value)">
-      <input #user type="text" name="user">
-      <input #pass type="password" name="password">
-      <button type="submit">Login</button>
+  <div *ngIf="!(isLoggedIn$ | async)" class="login-container">
+    <div *ngIf="message" class="error-message">{{ message }}</div>
+    <form action="" (submit)="login($event)">
+      <berta-text-input [label]="'Username'"
+                        [value]="username"
+                        [enabledOnUpdate]="true"
+                        (inputFocus)="updateComponentFocus($event)"
+                        (update)="updateField('username', $event)"></berta-text-input>
+      <berta-text-input [label]="'Password'"
+                        [value]="password"
+                        [type]="'password'"
+                        [enabledOnUpdate]="true"
+                        (inputFocus)="updateComponentFocus($event)"
+                        (update)="updateField('password', $event)"></berta-text-input>
+      <button type="submit" class="button">Log in</button>
     </form>
+    <div class="footer">
+      berta [version] [year - current year]
+    </div>
   </div>
-  <div *ngIf="isLoggedIn$ | async">
-    <h2>Login Successful!</h2>
-    <p>{{message}}</p>
-  </div>
-  `,
-  styles: []
+  `
 })
 export class LoginComponent implements OnInit {
   message = '';
+  username = '';
+  password = '';
+
   @Select(UserState.isLoggedIn) isLoggedIn$: Observable<boolean>;
 
   constructor(
@@ -47,11 +56,19 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  login(event, user, pass) {
+  updateField(field, value) {
+    this[field] = value;
+  }
+
+  updateComponentFocus(isFocused) {
+    this.store.dispatch(new UpdateInputFocus(isFocused));
+  }
+
+  login(event) {
     event.preventDefault();
     this.store.dispatch(new AppShowLoading());
 
-    this.store.dispatch(new UserLoginAction(user, pass))
+    this.store.dispatch(new UserLoginAction(this.username, this.password))
     .subscribe({
       next: () => {
         this.message = 'Login Successful';

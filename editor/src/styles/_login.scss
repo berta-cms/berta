@@ -1,0 +1,18 @@
+berta-login {
+  height: 100%;
+}
+
+.login-container {
+  color: $black;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  form {
+    flex-grow: 1;
+  }
+
+  .footer {
+    padding: 1.3em;
+  }
+}

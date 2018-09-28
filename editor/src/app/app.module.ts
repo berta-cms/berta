@@ -16,6 +16,7 @@ import { ProfileDropdownComponent } from './profile-dropdown/profile-dropdown.co
 import { LoginComponent } from './login/login.component';
 import { UserState } from './user/user.state';
 import { UserAccountComponent } from './user/user-account.component';
+import { SitesSharedModule } from './sites/shared/sites-shared.module';
 
 
 @NgModule({
@@ -37,7 +38,8 @@ import { UserAccountComponent } from './user/user-account.component';
     ]),
     NgxsReduxDevtoolsPluginModule.forRoot(),
     NgxsLoggerPluginModule.forRoot(),
-    SitesModule
+    SitesModule,
+    SitesSharedModule
   ],
   providers: [],
   bootstrap: [AppComponent]
