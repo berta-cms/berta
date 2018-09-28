@@ -28,7 +28,6 @@
     display: flex;
     margin-left: 1em;
     min-width: 50%;
-    padding-left: .75em;
     transition: border-color .2s;
     width: 50%;
 
@@ -42,7 +41,11 @@
     }
 
     .icon-empty {
-      margin-right: .25em;
+      margin-left: .75em;
+
+      + input {
+        padding-left: .25em;
+      }
     }
 
     > input,
@@ -62,7 +65,7 @@
       font-size: 1em;
       min-width: 1rem;
       outline: none;
-      padding: .75em .75em .75em 0;
+      padding: .75em;
       transition: color .2s;
       width: 100%;
 
