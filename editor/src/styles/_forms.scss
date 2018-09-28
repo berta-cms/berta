@@ -10,6 +10,13 @@
     transition: color .2s;
   }
 
+  input,
+  textarea {
+    &::placeholder {
+      color: $grey-20;
+    }
+  }
+
   .text-input-wrapper,
   .color-picker-wrapper,
   .select-wrapper,
@@ -32,6 +39,10 @@
     .icon {
       fill: $grey-40;
       transition: fill .2s;
+    }
+
+    .icon-empty {
+      margin-right: .25em;
     }
 
     > input,
