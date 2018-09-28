@@ -20,6 +20,16 @@ aside {
     padding: 1.3em;
     transition:  color .2s;
 
+    .url-line {
+      font-size: $input-font-size;
+      margin-top: .5em;
+
+      a {
+        color: $black;
+        text-decoration: none;
+      }
+    }
+
     input {
       background-color: transparent;
       border: 0;
@@ -37,6 +47,7 @@ aside {
     button {
       background: none;
       border: 0;
+      color: $black;
       cursor: pointer;
       margin-left: 1em;
       padding: 0;
@@ -59,7 +70,6 @@ aside {
 
     .edit-icon {
       cursor: pointer;
-      margin-left: .25em;
       max-height: 1em;
 
       .icon {
