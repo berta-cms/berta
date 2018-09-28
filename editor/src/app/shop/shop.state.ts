@@ -1,6 +1,6 @@
 import { concat } from 'rxjs';
 import { take, map, pairwise, filter, switchMap } from 'rxjs/operators';
-import { State, StateContext, NgxsOnInit, Selector, Store, Action } from '@ngxs/store';
+import { State, StateContext, NgxsOnInit, Selector, Store, Action, InitState } from '@ngxs/store';
 
 import { ShopModel } from './shop.interface';
 import { ShopStateService } from './shop-state.service';
@@ -27,7 +27,7 @@ import {
   AddShopOrdersSiteAction,
   ResetShopOrdersAction } from './orders/shop-orders.actions';
 import { UserState } from '../user/user.state';
-import { ResetShopAction } from './shop.actions';
+import { ResetShopAction, InitShopAction } from './shop.actions';
 
 
 const defaultState: ShopModel = {
@@ -117,13 +117,12 @@ export class ShopState implements NgxsOnInit {
         switchMap(() => this.stateService.getInitialState().pipe(take(1)))
       )
     ).subscribe((state) => {
-      /** @todo: CREATE INIT ACTION */
-      patchState({
+      dispatch(new InitShopAction({
         sections: Object.keys(state).filter(key => {
           return Object.keys(defaultState).indexOf(key) === -1 && !(/config$/i.test(key));
         }),
         urls: state.urls
-      });
+      }));
     });
 
     /* LOGOUT: */
@@ -141,6 +140,11 @@ export class ShopState implements NgxsOnInit {
         ResetShopSettingsConfigAction
       ]);
     });
+  }
+
+  @Action(InitShopAction)
+  initializeShop({ setState }: StateContext<ShopModel>, action: InitShopAction) {
+    setState(action.payload);
   }
 
   @Action(ResetShopAction)

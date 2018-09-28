@@ -1,16 +1,19 @@
 import { State, StateContext, NgxsOnInit, Selector, Action, Store } from '@ngxs/store';
 import { ShopStateService } from '../shop-state.service';
-import { take, tap, catchError } from 'rxjs/operators';
+import { take, tap, catchError, pairwise, filter, switchMap } from 'rxjs/operators';
 import { AppState } from '../../app-state/app.state';
 import {
   UpdateShopProductAction,
   RenameShopProductSiteAction,
   DeleteShopProductSiteAction,
   AddShopProductSiteAction,
-  ResetShopProductsAction} from './shop-products.actions';
+  ResetShopProductsAction,
+  InitShopProductsAction} from './shop-products.actions';
 import { AppStateService } from '../../app-state/app-state.service';
 import { ShopState } from '../shop.state';
 import { HttpErrorResponse } from '@angular/common/http';
+import { concat } from 'rxjs';
+import { UserState } from '../../user/user.state';
 
 
 interface ShopProduct {
@@ -41,16 +44,35 @@ export class ShopProductsState implements NgxsOnInit {
   }
 
   constructor(
-    private store: Store,
+    private store$: Store,
     private appStateService: AppStateService,
     private stateService: ShopStateService) {
   }
 
+  ngxsOnInit({ dispatch }: StateContext<ShopProductsModel>) {
+    return concat(
+      this.stateService.getInitialState('', 'products').pipe(take(1)),
+      /* LOGIN: */
+      this.store$.select(UserState.isLoggedIn).pipe(
+        pairwise(),
+        filter(([wasLoggedIn, isLoggedIn]) => !wasLoggedIn && isLoggedIn),
+        switchMap(() => this.stateService.getInitialState('', 'products').pipe(take(1)))
+      )
+    ).subscribe((products) => {
+      dispatch(new InitShopProductsAction(products));
+    });
+  }
+
+
+  @Action(InitShopProductsAction)
+  initializeShopOrders({ setState }: StateContext<ShopProductsModel>, action: InitShopProductsAction) {
+    setState(action.payload);
+  }
 
   @Action(UpdateShopProductAction)
   updateShopProduct({ getState, patchState }: StateContext<ShopProductsModel>, action: UpdateShopProductAction) {
-    const currentSite = this.store.selectSnapshot(AppState.getSite);
-    const syncURLs = this.store.selectSnapshot(ShopState.getURLs);
+    const currentSite = this.store$.selectSnapshot(AppState.getSite);
+    const syncURLs = this.store$.selectSnapshot(ShopState.getURLs);
     const state = getState();
 
     return this.appStateService.sync(syncURLs.products, {
@@ -79,15 +101,6 @@ export class ShopProductsState implements NgxsOnInit {
         throw error;
       })
     );
-  }
-
-
-  ngxsOnInit({ setState }: StateContext<ShopProductsModel>) {
-    return this.stateService.getInitialState('', 'products').pipe(
-      take(1)
-    ).subscribe((products) => {
-      setState(products);
-    });
   }
 
   @Action(RenameShopProductSiteAction)

@@ -33,6 +33,16 @@ export class AddShopSettingsSiteAction {
   }
 }
 
+/* Init: */
+export class InitShopSettingsAction {
+  public static type = 'SHOP_SETTINGS:INIT';
+  constructor(public payload: any) {}
+}
+export class InitShopSettingsConfigAction {
+  public static type = 'SHOP_SETTINGS_CONFIG:INIT';
+  constructor(public payload: any) {}
+}
+
 /* Reset: */
 export class ResetShopSettingsAction {
   public static type = 'SHOP_SETTINGS:RESET';

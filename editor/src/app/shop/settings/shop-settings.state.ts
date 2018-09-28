@@ -1,4 +1,4 @@
-import { take, tap, catchError } from 'rxjs/operators';
+import { take, tap, catchError, pairwise, filter, switchMap } from 'rxjs/operators';
 import { HttpErrorResponse } from '@angular/common/http';
 import { State, StateContext, NgxsOnInit, Selector, Action, Store } from '@ngxs/store';
 
@@ -10,9 +10,12 @@ import {
   DeleteShopSettingsSiteAction,
   RenameShopSettingsSiteAction,
   AddShopSettingsSiteAction,
-  ResetShopSettingsAction} from './shop-settings.actions';
+  ResetShopSettingsAction,
+  InitShopSettingsAction} from './shop-settings.actions';
 import { AppStateService } from '../../app-state/app-state.service';
 import { ShopState } from '../shop.state';
+import { concat } from 'rxjs';
+import { UserState } from '../../user/user.state';
 
 
 interface ShopSettingsModel {
@@ -54,31 +57,44 @@ export class ShopSettingsState implements NgxsOnInit {
       .find(setting => setting.slug === 'currency').value || '';
   }
 
+
   constructor(
-    private store: Store,
+    private store$: Store,
     private appStateService: AppStateService,
     private stateService: ShopStateService) {
   }
 
-
-  ngxsOnInit({ setState }: StateContext<ShopSettingsModel>) {
-    return this.stateService.getInitialState('', 'settings').pipe(
-      take(1)
+  ngxsOnInit({ dispatch }: StateContext<ShopSettingsModel>) {
+    return concat(
+      this.stateService.getInitialState('', 'settings').pipe(take(1)),
+      /* LOGIN: */
+      this.store$.select(UserState.isLoggedIn).pipe(
+        pairwise(),
+        filter(([wasLoggedIn, isLoggedIn]) => !wasLoggedIn && isLoggedIn),
+        switchMap(() => this.stateService.getInitialState('', 'settings').pipe(take(1)))
+      )
     ).subscribe((settings) => {
       const newState: {[k: string]: any} = {};
 
       for (const siteSlug in settings) {
         newState[siteSlug] = this.initializeShopSettingsForSite(settings[siteSlug]);
       }
-      setState(newState);
+
+      dispatch(new InitShopSettingsAction(newState));
     });
+  }
+
+
+  @Action(InitShopSettingsAction)
+  initializeShopOrders({ setState }: StateContext<ShopSettingsModel>, action: InitShopSettingsAction) {
+    setState(action.payload);
   }
 
   @Action(UpdateShopSettingsAction)
   updateShopSettings({getState, patchState}: StateContext<ShopSettingsModel>, action: UpdateShopSettingsAction) {
     const state = getState();
-    const site = this.store.selectSnapshot(AppState.getSite);
-    const syncURLs = this.store.selectSnapshot(ShopState.getURLs);
+    const site = this.store$.selectSnapshot(AppState.getSite);
+    const syncURLs = this.store$.selectSnapshot(ShopState.getURLs);
 
     return this.appStateService.sync(syncURLs.settings, {
       path: `${site}/${action.groupSlug}/${action.payload.field}`,

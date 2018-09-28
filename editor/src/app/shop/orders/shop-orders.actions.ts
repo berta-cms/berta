@@ -20,6 +20,12 @@ export class AddShopOrdersSiteAction {
   }
 }
 
+/* Init: */
+export class InitShopOrdersAction {
+  public static type = 'SHOP_ORDERS:INIT';
+  constructor(public payload: any) {}
+}
+
 /* Reset: */
 export class ResetShopOrdersAction {
   public static type = 'SHOP_ORDERS:RESET';

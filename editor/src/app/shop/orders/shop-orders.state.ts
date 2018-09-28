@@ -1,12 +1,15 @@
-import { State, StateContext, NgxsOnInit, Selector, Action } from '@ngxs/store';
+import { concat } from 'rxjs';
+import { take, pairwise, filter, switchMap } from 'rxjs/operators';
+import { State, StateContext, NgxsOnInit, Selector, Action, Store } from '@ngxs/store';
 import { ShopStateService } from '../shop-state.service';
-import { take } from 'rxjs/operators';
 import { AppState } from '../../app-state/app.state';
 import {
   RenameShopOrdersSiteAction,
   DeleteShopOrdersSiteAction,
   AddShopOrdersSiteAction,
-  ResetShopOrdersAction } from './shop-orders.actions';
+  ResetShopOrdersAction,
+  InitShopOrdersAction} from './shop-orders.actions';
+import { UserState } from '../../user/user.state';
 
 
 interface ShopOrdersModel {
@@ -27,17 +30,30 @@ export class ShopOrdersState implements NgxsOnInit {
     return state[site];
   }
 
+
   constructor(
+    private store$: Store,
     private stateService: ShopStateService) {
   }
 
-
-  ngxsOnInit({ setState }: StateContext<ShopOrdersModel>) {
-    return this.stateService.getInitialState('', 'orders').pipe(
-      take(1)
+  ngxsOnInit({ dispatch }: StateContext<ShopOrdersModel>) {
+    return concat(
+      this.stateService.getInitialState('', 'orders').pipe(take(1)),
+      /* LOGIN: */
+      this.store$.select(UserState.isLoggedIn).pipe(
+        pairwise(),
+        filter(([wasLoggedIn, isLoggedIn]) => !wasLoggedIn && isLoggedIn),
+        switchMap(() => this.stateService.getInitialState('', 'orders').pipe(take(1)))
+      )
     ).subscribe((orders) => {
-      setState(orders);
+      dispatch(new InitShopOrdersAction(orders));
     });
+  }
+
+
+  @Action(InitShopOrdersAction)
+  initializeShopOrders({ setState }: StateContext<ShopOrdersModel>, action: InitShopOrdersAction) {
+    setState(action.payload);
   }
 
   @Action(RenameShopOrdersSiteAction)

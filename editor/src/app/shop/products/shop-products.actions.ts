@@ -31,6 +31,12 @@ export class AddShopProductSiteAction {
   }
 }
 
+/* Init: */
+export class InitShopProductsAction {
+  public static type = 'SHOP_PRODUCT:INIT';
+  constructor(public payload: any) {}
+}
+
 /* Reset: */
 export class ResetShopProductsAction {
   public static type = 'SHOP_PRODUCT:RESET';

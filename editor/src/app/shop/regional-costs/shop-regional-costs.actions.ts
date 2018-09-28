@@ -85,7 +85,13 @@ export class AddShopRegionSiteAction {
   }
 }
 
+/* Init: */
+export class InitShopRegionalCostsAction {
+  public static type = 'SHOP_REGIONAL_COSTS:INIT';
+  constructor(public payload: any) {}
+}
+
 /* Reset: */
 export class ResetShopRegionalCostsAction {
-  public static type = 'SHOP_REGIONAL_COST:RESET';
+  public static type = 'SHOP_REGIONAL_COSTS:RESET';
 }

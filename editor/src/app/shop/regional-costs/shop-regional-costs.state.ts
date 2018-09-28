@@ -1,4 +1,5 @@
-import { take, tap, catchError } from 'rxjs/operators';
+import { concat } from 'rxjs';
+import { take, tap, catchError, pairwise, filter, switchMap } from 'rxjs/operators';
 import { HttpErrorResponse } from '@angular/common/http';
 import {
   State,
@@ -20,9 +21,11 @@ import {
   RenameShopRegionSiteAction,
   DeleteShopRegionSiteAction,
   AddShopRegionSiteAction,
-  ResetShopRegionalCostsAction} from './shop-regional-costs.actions';
+  ResetShopRegionalCostsAction,
+  InitShopRegionalCostsAction} from './shop-regional-costs.actions';
 import { ShopState } from '../shop.state';
 import { AppStateService } from '../../app-state/app-state.service';
+import { UserState } from '../../user/user.state';
 
 
 interface ShopRegion {
@@ -57,25 +60,35 @@ export class ShopRegionalCostsState implements NgxsOnInit {
   }
 
   constructor(
-    private store: Store,
+    private store$: Store,
     private appStateService: AppStateService,
     private stateService: ShopStateService) {
   }
 
-
-  ngxsOnInit({ setState }: StateContext<ShopRegionalCostsModel>) {
-    return this.stateService.getInitialState('', 'regionalCosts').pipe(
-      take(1)
+  ngxsOnInit({ dispatch }: StateContext<ShopRegionalCostsModel>) {
+    return concat(
+      this.stateService.getInitialState('', 'regionalCosts').pipe(take(1)),
+      /* LOGIN: */
+      this.store$.select(UserState.isLoggedIn).pipe(
+        pairwise(),
+        filter(([wasLoggedIn, isLoggedIn]) => !wasLoggedIn && isLoggedIn),
+        switchMap(() => this.stateService.getInitialState('', 'regionalCosts').pipe(take(1)))
+      )
     ).subscribe((regionalCosts) => {
-      setState(regionalCosts);
+      dispatch(new InitShopRegionalCostsAction(regionalCosts));
     });
+  }
+
+  @Action(InitShopRegionalCostsAction)
+  initializeShopOrders({ setState }: StateContext<ShopRegionalCostsModel>, action: InitShopRegionalCostsAction) {
+    setState(action.payload);
   }
 
   @Action(UpdateShopRegionAction)
   updateShopRegion({getState, patchState}: StateContext<ShopRegionalCostsModel>, action: UpdateShopRegionAction) {
     const state = getState();
-    const site = this.store.selectSnapshot(AppState.getSite);
-    const syncURLs = this.store.selectSnapshot(ShopState.getURLs);
+    const site = this.store$.selectSnapshot(AppState.getSite);
+    const syncURLs = this.store$.selectSnapshot(ShopState.getURLs);
 
     return this.appStateService.sync(syncURLs.regions, {
       path: `${site}/${action.id}/${action.payload.field}`,
@@ -103,8 +116,8 @@ export class ShopRegionalCostsState implements NgxsOnInit {
   @Action(AddShopRegionAction)
   addShopRegion({getState, patchState}: StateContext<ShopRegionalCostsModel>, action: AddShopRegionAction) {
     const state = getState();
-    const site = this.store.selectSnapshot(AppState.getSite);
-    const syncURLs = this.store.selectSnapshot(ShopState.getURLs);
+    const site = this.store$.selectSnapshot(AppState.getSite);
+    const syncURLs = this.store$.selectSnapshot(ShopState.getURLs);
 
     return this.appStateService.sync(syncURLs.regions, {
       site: site,
@@ -132,8 +145,8 @@ export class ShopRegionalCostsState implements NgxsOnInit {
   @Action(DeleteShopRegionAction)
   deleteShopRegion({getState, patchState}: StateContext<ShopRegionalCostsModel>, action: DeleteShopRegionAction) {
     const state = getState();
-    const site = this.store.selectSnapshot(AppState.getSite);
-    const syncURLs = this.store.selectSnapshot(ShopState.getURLs);
+    const site = this.store$.selectSnapshot(AppState.getSite);
+    const syncURLs = this.store$.selectSnapshot(ShopState.getURLs);
 
     return this.appStateService.sync(syncURLs.regions + `/${(site || 0)}/${action.payload.id}`, {}, 'DELETE').pipe(
       tap(() => {
@@ -153,9 +166,9 @@ export class ShopRegionalCostsState implements NgxsOnInit {
   @Action(UpdateShopRegionCostAction)
   updateShopRegionalCost({getState, patchState}: StateContext<ShopRegionalCostsModel>, action: UpdateShopRegionCostAction) {
     const state = getState();
-    const site = this.store.selectSnapshot(AppState.getSite);
+    const site = this.store$.selectSnapshot(AppState.getSite);
 
-    const syncURLs = this.store.selectSnapshot(ShopState.getURLs);
+    const syncURLs = this.store$.selectSnapshot(ShopState.getURLs);
 
     return this.appStateService.sync(syncURLs.regionalCosts, {
       path: `${site}/${action.id}/${action.payload.field}`,
@@ -188,9 +201,9 @@ export class ShopRegionalCostsState implements NgxsOnInit {
   @Action(AddShopRegionCostAction)
   addShopRegionalCost({getState, patchState}: StateContext<ShopRegionalCostsModel>, action: AddShopRegionCostAction) {
     const state = getState();
-    const site = this.store.selectSnapshot(AppState.getSite);
+    const site = this.store$.selectSnapshot(AppState.getSite);
 
-    const syncURLs = this.store.selectSnapshot(ShopState.getURLs);
+    const syncURLs = this.store$.selectSnapshot(ShopState.getURLs);
 
     return this.appStateService.sync(syncURLs.regionalCosts, {
       site: site,
@@ -222,8 +235,8 @@ export class ShopRegionalCostsState implements NgxsOnInit {
   @Action(DeleteShopRegionCostAction)
   deleteShopRegionalCost({getState, patchState}: StateContext<ShopRegionalCostsModel>, action: DeleteShopRegionCostAction) {
     const state = getState();
-    const site = this.store.selectSnapshot(AppState.getSite);
-    const syncURLs = this.store.selectSnapshot(ShopState.getURLs);
+    const site = this.store$.selectSnapshot(AppState.getSite);
+    const syncURLs = this.store$.selectSnapshot(ShopState.getURLs);
 
     return this.appStateService.sync(syncURLs.regionalCosts + `/${(site || 0)}/${action.payload.id}`, {}, 'DELETE').pipe(
       tap(() => {
