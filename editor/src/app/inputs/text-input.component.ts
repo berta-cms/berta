@@ -17,16 +17,17 @@ import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
           <input [value]="value"
                  [attr.disabled]="(disabled ? '' : null)"
                  [attr.placeholder]="placeholder"
+                 [attr.type]="(type || 'text')"
                  (focus)="onFocus()"
                  (keydown)="updateField($event)"
-                 (blur)="onBlur($event)"
-                 type="text">
+                 (blur)="onBlur($event)">
         </div>
       </label>
     </div>`
 })
 export class TextInputComponent implements OnInit {
   @Input() label?: string;
+  @Input() type?: string;
   @Input() placeholder?: string;
   @Input() disabled?: boolean;
   @Input() enabledOnUpdate?: boolean;
