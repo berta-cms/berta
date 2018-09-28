@@ -12,6 +12,7 @@
 
   &:hover {
     background-color: $berta-accent;
+    color: $white;
   }
 
   &:focus,
@@ -29,5 +30,4 @@
   &[disabled] {
     background-color: $grey-10;
   }
-
 }

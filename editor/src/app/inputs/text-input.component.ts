@@ -6,7 +6,7 @@ import { SettingModel } from '../shared/interfaces';
   template: `
     <div class="form-group" [class.bt-focus]="focus" [class.bt-disabled]="disabled">
       <label>
-        {{ label }}
+        <span class="label-text">{{ label }}</span>
         <div class="text-input-wrapper">
           <svg *ngIf="showIcon" width="20" height="20" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
             <path class="icon" d="M6 34.5v7.5h7.5l22.13-22.13-7.5-7.5-22.13 22.13zm35.41-20.41c.78-.78.78-2.05 0-2.83l-4.67-4.67c-.78-.78-2.05-.78-2.83 0l-3.66 3.66 7.5 7.5 3.66-3.66z"/>
