@@ -25,6 +25,7 @@
     background-color: $white;
     border: 1px solid $grey-40;
     border-radius: $border-radius;
+    box-sizing: border-box;
     display: flex;
     margin-left: 1em;
     min-width: 50%;
