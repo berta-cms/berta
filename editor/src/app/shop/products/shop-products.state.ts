@@ -128,7 +128,11 @@ export class ShopProductsState implements NgxsOnInit {
 
   @Action(AddShopProductSiteAction)
   addProductsSite({ patchState }: StateContext<ShopProductsModel>, action: AddShopProductSiteAction) {
-    patchState({[action.payload]: []});
+    return this.stateService.getInitialState(action.payload, 'products').pipe(
+      take(1)
+    ).subscribe((products) => {
+      patchState({[action.payload]: products[action.payload]});
+    });
   }
 
   @Action(ResetShopProductsAction)
