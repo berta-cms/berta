@@ -23,7 +23,7 @@ berta-shop {
   &:not(:first-child) {
     .header {
       border-top: 1px solid $grey-10;
-      padding-top: 1.3em;
+      padding-top: 2.5em;
     }
   }
 
@@ -33,6 +33,7 @@ berta-shop {
 
     berta-inline-text-input {
       font-size: $input-font-size;
+      font-weight: bold;
     }
 
     input {
@@ -40,6 +41,7 @@ berta-shop {
       border: 0;
       font-family: AvenirNext, Helvetica, Arial, sans-serif;
       font-size: 1em;
+      font-weight: bold;
       outline: none;
       padding: 0;
       transition: color .2s;
@@ -77,6 +79,42 @@ berta-shop {
       &.active {
         color: $berta-accent;
       }
+    }
+  }
+
+  h4 {
+    border-top: 0;
+    padding-top: 0;
+  }
+
+  .costs-label {
+    font-size: $input-font-size;
+  }
+
+  .bt-sh-regional-cost {
+    .input-row  {
+      .button {
+        min-width: 30%;
+      }
+    }
+  }
+}
+
+.bt-sh-region-add {
+  h4 {
+    font-weight: bold;
+    padding-bottom: .5em;
+  }
+
+  &:not(:first-child) {
+    h4 {
+      padding-top: 2.5em;
+    }
+  }
+
+  .input-row  {
+    .button {
+      min-width: 30%;
     }
   }
 }

@@ -28,48 +28,72 @@ import {
       </div>
 
       <div class="setting">
-        <berta-text-input label="VAT"
+        <berta-text-input label="VAT (%)"
                           [value]="region.vat"
                           (update)="updateRegion('vat', $event, region.id)"
                           (inputFocus)="updateInputFocus($event)"></berta-text-input>
       </div>
 
-      <p>Costs</p>
-      <div class="bt-sh-regional-cost" *ngFor="let cost of region.costs">
-        <berta-text-input [label]="weightLabel$ | async"
-                          [value]="cost.weight"
-                          (update)="updateRegionalCost('weight', $event, region.id, cost.id)"
-                          (inputFocus)="updateInputFocus($event)"></berta-text-input>
-        <berta-text-input [label]="priceLabel$ | async"
-                          [value]="cost.price"
-                          (update)="updateRegionalCost('price', $event, region.id, cost.id)"
-                          (inputFocus)="updateInputFocus($event)"></berta-text-input>
-        <button type="button" (click)="deleteCost(cost.id, region.id, $event)">Delete Cost</button>
+      <div class="setting">
+        <h4>Costs</h4>
+        <p class="costs-label">
+          {{ weightTitle$ | async }} {{ priceTitle$ | async }}
+        </p>
+
       </div>
-      <form class="bt-sh-regional-cost" (submit)="addCost(region.id, $event)">
-        <h5>Add Cost</h5>
-        <berta-text-input [label]="weightLabel$ | async"
-                          value=""
-                          (update)="newCost.weight = $event"
-                          (inputFocus)="updateInputFocus($event)"></berta-text-input>
-        <berta-text-input [label]="priceLabel$ | async"
-                          value=""
-                          (update)="newCost.price = $event"
-                          (inputFocus)="updateInputFocus($event)"></berta-text-input>
-        <button type="submit">Add Cost</button>
+
+      <div class="bt-sh-regional-cost" *ngFor="let cost of region.costs">
+        <div class="setting">
+          <div class="input-row">
+            <berta-text-input [value]="cost.weight"
+                              [placeholder]="(weightLabel$ | async)"
+                              [title]="(weightTitle$ | async)"
+                              (update)="updateRegionalCost('weight', $event, region.id, cost.id)"
+                              (inputFocus)="updateInputFocus($event)"></berta-text-input>
+            <berta-text-input [value]="cost.price"
+                              [placeholder]="(priceLabel$ | async)"
+                              [title]="(priceTitle$ | async)"
+                              (update)="updateRegionalCost('price', $event, region.id, cost.id)"
+                              (inputFocus)="updateInputFocus($event)"></berta-text-input>
+            <button type="button" class="button" (click)="deleteCost(cost.id, region.id, $event)">Delete</button>
+          </div>
+        </div>
+      </div>
+      <form class="setting bt-sh-regional-cost" (submit)="addCost(region.id, $event)">
+        <div class="input-row">
+          <berta-text-input value=""
+                            [placeholder]="(weightLabel$ | async)"
+                            [title]="(weightTitle$ | async)"
+                            [enabledOnUpdate]="true"
+                            (update)="newCost.weight = $event"
+                            (inputFocus)="updateInputFocus($event)"></berta-text-input>
+          <berta-text-input value=""
+                            [placeholder]="(priceLabel$ | async)"
+                            [title]="(priceTitle$ | async)"
+                            [enabledOnUpdate]="true"
+                            (update)="newCost.price = $event"
+                            (inputFocus)="updateInputFocus($event)"></berta-text-input>
+          <button type="submit" class="button">Add</button>
+        </div>
       </form>
     </div>
-    <form (submit)="addRegion($event)" class="bt-sh-region" *ngIf="!!newRegion">
+    <form (submit)="addRegion($event)" class="setting bt-sh-region-add" *ngIf="!!newRegion">
+
       <h4>Add region</h4>
-      <berta-text-input label="Region"
-                        [value]="newRegion.name"
-                        (update)="newRegion.name = $event"
-                        (inputFocus)="updateInputFocus($event)"></berta-text-input>
-      <berta-text-input label="VAT"
-                        [value]="newRegion.vat"
-                        (update)="newRegion.vat = $event"
-                        (inputFocus)="updateInputFocus($event)"></berta-text-input>
-      <button type="submit">Add Region</button>
+
+      <div class="input-row">
+        <berta-text-input [value]="newRegion.name"
+                          [placeholder]="'region'"
+                          [enabledOnUpdate]="true"
+                          (update)="newRegion.name = $event"
+                          (inputFocus)="updateInputFocus($event)"></berta-text-input>
+        <berta-text-input [value]="newRegion.vat"
+                          [placeholder]="'VAT (%)'"
+                          [enabledOnUpdate]="true"
+                          (update)="newRegion.vat = $event"
+                          (inputFocus)="updateInputFocus($event)"></berta-text-input>
+        <button type="submit" class="button">Add</button>
+      </div>
     </form>
   `,
   styles: [`
@@ -81,7 +105,9 @@ import {
 export class ShopRegionalCostsComponent implements OnInit {
   @Select(ShopRegionalCostsState.getCurrentSiteRegionalCosts) regionalCosts$;
   weightLabel$: Observable<string>;
+  weightTitle$: Observable<string>;
   priceLabel$: Observable<string>;
+  priceTitle$: Observable<string>;
   newRegion = {
     name: '',
     vat: ''
@@ -96,11 +122,23 @@ export class ShopRegionalCostsComponent implements OnInit {
   ngOnInit() {
     this.weightLabel$ = this.store.select(ShopSettingsState.getCurrentWeightUnit).pipe(
       map(wUnit => {
+        return `weight (${wUnit})`;
+      }),
+      shareReplay(1));
+
+    this.weightTitle$ = this.store.select(ShopSettingsState.getCurrentWeightUnit).pipe(
+      map(wUnit => {
         return `if weight is less than (${wUnit})`;
       }),
       shareReplay(1));
 
     this.priceLabel$ = this.store.select(ShopSettingsState.getCurrentCurrency).pipe(
+      map(currency => {
+        return `price (${currency})`;
+      }),
+      shareReplay(1));
+
+    this.priceTitle$ = this.store.select(ShopSettingsState.getCurrentCurrency).pipe(
       map(currency => {
         return `then price is (${currency})`;
       }),
