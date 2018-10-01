@@ -46,7 +46,8 @@ export class ShopStateService {
         // `exhaustMap` waits for the first request to complete instead of canceling and starting new ones.
         exhaustMap(([appState, user]) => {
           return this.http.get('/_api/v1/plugin/shop', {
-            headers: { 'X-Authorization': 'Bearer ' + user.token }
+            headers: { 'X-Authorization': 'Bearer ' + user.token },
+            params: site ? {'site': site} : {}  // Use null instead of empty string so we can fetch home page
           });
         }),
         retryWhen(attempts => {

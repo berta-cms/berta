@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, isDevMode } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 
 import { NgxsModule } from '@ngxs/store';
@@ -35,9 +35,9 @@ import { SitesSharedModule } from './sites/shared/sites-shared.module';
     NgxsModule.forRoot([
       AppState,
       UserState
-    ]),
-    NgxsReduxDevtoolsPluginModule.forRoot(),
-    NgxsLoggerPluginModule.forRoot(),
+    ], { developmentMode: isDevMode() }),
+    NgxsReduxDevtoolsPluginModule.forRoot({ disabled: !isDevMode() }),
+    NgxsLoggerPluginModule.forRoot({ disabled: true }),  // it logs too much, enable only when needed
     SitesModule,
     SitesSharedModule
   ],

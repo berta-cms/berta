@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import { Select, Store } from '@ngxs/store';
-import { ActivatedRoute } from '@angular/router';
-import { ShopState } from './shop.state';
-import { map, mergeMap, startWith } from 'rxjs/operators';
 import { Observable, combineLatest} from 'rxjs';
+import { map, mergeMap, startWith } from 'rxjs/operators';
+
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Store } from '@ngxs/store';
+
+import { ShopState } from './shop.state';
 import { splitCamel, camel2Words, uCFirst } from '../shared/helpers';
 
 
@@ -11,8 +13,8 @@ import { splitCamel, camel2Words, uCFirst } from '../shared/helpers';
   selector: 'berta-shop',
   template: `
     <div *ngFor="let shopSection of shopSections$ | async">
-      <a [routerLink]="['/shop', shopSection.urlSegment]"
-         [style.color]="(currentShopSection === shopSection.urlSegment ? 'black': '')"><h3>{{ shopSection.title }}</h3></a>
+         <h3 (click)="toggleSection(shopSection.urlSegment)"
+             [style.color]="(currentShopSection === shopSection.urlSegment ? 'black': '')">{{ shopSection.title }}</h3>
 
           <berta-shop-products
             *ngIf="currentShopSection === 'products' && shopSection.urlSegment === currentShopSection">
@@ -30,9 +32,14 @@ import { splitCamel, camel2Words, uCFirst } from '../shared/helpers';
     </div>
   `,
   styles: [`
-   :host > div > a {
+    :host {
+      display: block;
+       padding: 20px;
+    }
+    h3 {
      color: gray;
      text-decoration: none;
+     cursor: pointer;
    }
   `]
 })
@@ -42,6 +49,7 @@ export class ShopComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private store: Store) {
   }
 
@@ -72,5 +80,13 @@ export class ShopComponent implements OnInit {
     );
 
     this.route.paramMap.subscribe(params => { this.currentShopSection = params['params']['section']; });
+  }
+
+  toggleSection(sectionUrlSegment) {
+    if (this.currentShopSection === sectionUrlSegment) {
+      this.router.navigate(['/shop'], { queryParamsHandling: 'preserve' });
+    } else {
+      this.router.navigate(['/shop', sectionUrlSegment], { queryParamsHandling: 'preserve' });
+    }
   }
 }

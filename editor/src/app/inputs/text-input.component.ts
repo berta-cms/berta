@@ -33,8 +33,8 @@ export class TextInputComponent implements OnInit {
   @Input() enabledOnUpdate?: boolean;
   @Input() hideIcon?: boolean;
   @Input() value: string;
-  @Output() update = new EventEmitter();
-  @Output() inputFocus = new EventEmitter();
+  @Output() update = new EventEmitter<string>();
+  @Output() inputFocus = new EventEmitter<boolean>();
   focus = false;
   showIcon = false;
 

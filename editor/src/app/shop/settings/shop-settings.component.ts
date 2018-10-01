@@ -7,6 +7,8 @@ import { filter, map, scan } from 'rxjs/operators';
 import { Store } from '@ngxs/store';
 import { ShopSettingsState } from './shop-settings.state';
 import { ShopSettingsConfigState } from './shop-settings-config.state';
+import { UpdateShopSettingsAction } from './shop-settings.actions';
+
 
 @Component({
   selector: 'berta-shop-settings',
@@ -96,9 +98,8 @@ export class ShopSettingsComponent implements OnInit {
     );
   }
 
-  updateSetting(settingGroup: string, updateEvent) {
-    // const data = {[updateEvent.field]: updateEvent.value};
-    // this.store.dispatch(new UpdateShopSettingsAction(settingGroup, data));
+  updateSetting(settingGroup: string, event) {
+    this.store.dispatch(new UpdateShopSettingsAction(
+      settingGroup, {field: event.field, value: event.value}));
   }
-
 }
