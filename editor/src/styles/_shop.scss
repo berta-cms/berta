@@ -12,3 +12,71 @@ berta-shop {
     }
   }
 }
+
+.bt-sh-region {
+  margin: 1.3em 0;
+
+  &:first-child {
+    margin-top: .5em;
+  }
+
+  &:not(:first-child) {
+    .header {
+      border-top: 1px solid $grey-10;
+      padding-top: 1.3em;
+    }
+  }
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+
+    berta-inline-text-input {
+      font-size: $input-font-size;
+    }
+
+    input {
+      background-color: transparent;
+      border: 0;
+      font-family: AvenirNext, Helvetica, Arial, sans-serif;
+      font-size: 1em;
+      outline: none;
+      padding: 0;
+      transition: color .2s;
+
+      &:focus {
+        color: $berta-accent;
+      }
+    }
+
+    .edit-icon {
+      cursor: pointer;
+      max-height: 1em;
+
+      .icon {
+        transition: fill .2s;
+      }
+
+      &:hover {
+        .icon {
+          fill: $berta-accent;
+        }
+      }
+    }
+
+    button {
+      background: none;
+      border: 0;
+      color: $black;
+      cursor: pointer;
+      margin-left: 1em;
+      padding: 0;
+      transition: color .2s;
+
+      &:hover,
+      &.active {
+        color: $berta-accent;
+      }
+    }
+  }
+}

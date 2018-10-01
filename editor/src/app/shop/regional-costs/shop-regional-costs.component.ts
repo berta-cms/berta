@@ -18,14 +18,22 @@ import {
   selector: 'berta-shop-regional-costs',
   template: `
     <div class="bt-sh-region" *ngFor="let region of regionalCosts$ | async">
-      <berta-text-input label="Region"
-                        [value]="region.name"
-                        (update)="updateRegion('name', $event, region.id)"
-                        (inputFocus)="updateInputFocus($event)"></berta-text-input>
-      <berta-text-input label="VAT"
-                        [value]="region.vat"
-                        (update)="updateRegion('vat', $event, region.id)"
-                        (inputFocus)="updateInputFocus($event)"></berta-text-input>
+
+      <div class="setting header">
+        <berta-inline-text-input [value]="region.name"
+                                 (update)="updateRegion('name', $event, region.id)"
+                                 (inputFocus)="updateInputFocus($event)"></berta-inline-text-input>
+
+        <button type="button" (click)="deleteRegion(region.id, $event)">x</button>
+      </div>
+
+      <div class="setting">
+        <berta-text-input label="VAT"
+                          [value]="region.vat"
+                          (update)="updateRegion('vat', $event, region.id)"
+                          (inputFocus)="updateInputFocus($event)"></berta-text-input>
+      </div>
+
       <p>Costs</p>
       <div class="bt-sh-regional-cost" *ngFor="let cost of region.costs">
         <berta-text-input [label]="weightLabel$ | async"
@@ -50,7 +58,6 @@ import {
                           (inputFocus)="updateInputFocus($event)"></berta-text-input>
         <button type="submit">Add Cost</button>
       </form>
-      <button type="button" (click)="deleteRegion(region.id, $event)">Delete Region</button>
     </div>
     <form (submit)="addRegion($event)" class="bt-sh-region" *ngIf="!!newRegion">
       <h4>Add region</h4>
@@ -66,30 +73,8 @@ import {
     </form>
   `,
   styles: [`
-    berta-text-input {
+    :host {
       display: block;
-      margin: 1rem 0;
-    }
-    berta-text-input:first-child {
-      margin-top: 0;
-    }
-
-    .bt-sh-region {
-      padding-top: 1rem;
-      border-bottom: 1px solid #ebebeb;
-    }
-
-    .bt-sh-region:last-child {
-      padding-bottom: 0;
-      border-bottom: none;
-    }
-
-    .bt-sh-regional-cost {
-      padding-left: 2rem;
-    }
-    p {
-      color: #9b9b9b;
-      font-size: 0.875em;
     }
   `]
 })
