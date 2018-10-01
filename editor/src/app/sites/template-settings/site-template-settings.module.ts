@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 import { SiteTemplateSettingsComponent } from './site-template-settings.component';
 import { SiteTemplateSettingsState } from './site-template-settings.state';
 import { NgxsModule } from '@ngxs/store';
@@ -9,6 +10,7 @@ import { SitesSharedModule } from '../shared/sites-shared.module';
 @NgModule({
   imports: [
     CommonModule,
+    RouterModule.forChild([]),
     NgxsModule.forFeature([
       SiteTemplateSettingsState,
       SiteTemplatesState

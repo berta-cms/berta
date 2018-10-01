@@ -1,0 +1,162 @@
+aside {
+  background-color: $white;
+  border-right: 1px solid $grey-30;  // for develompent
+  padding-top: $bt-header-height;
+}
+
+.setting-group {
+  transition:  background-color .2s;
+
+  h3 {
+    align-items: center;
+    border-bottom: 1px solid $grey-10;
+    color: $black;
+    display: flex;
+    font-size: 1em;
+    font-weight: normal;
+    justify-content: space-between;
+    margin: 0;
+    outline: none;
+    padding: 1.3em;
+    transition:  color .2s;
+
+    .url-line {
+      font-size: $input-font-size;
+      margin-top: .5em;
+
+      a {
+        color: $black;
+        text-decoration: none;
+      }
+    }
+
+    input {
+      background-color: transparent;
+      border: 0;
+      font-family: AvenirNext, Helvetica, Arial, sans-serif;
+      font-size: 1em;
+      outline: none;
+      padding: 0;
+      transition: color .2s;
+
+      &:focus {
+        color: $berta-accent;
+      }
+    }
+
+    button {
+      background: none;
+      border: 0;
+      color: $black;
+      cursor: pointer;
+      margin-left: 1em;
+      padding: 0;
+      transition: color .2s;
+
+      &:hover,
+      &.active {
+        color: $berta-accent;
+      }
+    }
+
+    .drop-icon {
+      transition: transform .2s;
+
+      path {
+        stroke: $black;
+        transition: stroke .2s;
+      }
+    }
+
+    .edit-icon {
+      cursor: pointer;
+      max-height: 1em;
+
+      .icon {
+        transition: fill .2s;
+      }
+
+      &:hover {
+        .icon {
+          fill: $berta-accent;
+        }
+      }
+    }
+
+    &.hoverable {
+      cursor: pointer;
+
+      &:hover {
+        color: $berta-accent;
+
+        .drop-icon {
+          path {
+            stroke: $berta-accent;
+          }
+        }
+      }
+    }
+  }
+
+  h4 {
+    border-top: 1px solid $grey-10;
+    color: $black;
+    font-size: .9em;
+    font-weight: normal;
+    margin: 0;
+    padding-top: 1.3em;
+  }
+
+  &:first-child {
+    h3 {
+      border-top: 0;
+    }
+  }
+
+  > .settings {
+    max-height: 0;
+    overflow: hidden;
+    transition:  max-height .2s ease;
+
+    berta-setting,
+    .setting {
+      margin: 1.3em;
+
+      &:first-child {
+        margin-top: 0;
+
+        h4 {
+          border-top: 0;
+          padding-top: 0;
+        }
+      }
+    }
+  }
+
+  &.is-expanded {
+    background-color: $grey-1;
+
+    h3 {
+      border-bottom: 0;
+      cursor: default;
+
+      .drop-icon {
+        transform: scaleY(-1);
+
+        path {
+          stroke: $berta-accent;
+        }
+      }
+
+      &:hover {
+        color: $black;
+      }
+    }
+
+    > .settings {
+      border-bottom: 1px solid $grey-10;
+      max-height: 1500px; // auto
+      overflow: visible;
+    }
+  }
+}

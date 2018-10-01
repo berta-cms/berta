@@ -31,10 +31,10 @@ import { UserLoginAction } from '../../../user/user.actions';
 })
 export class SiteSectionsState implements NgxsOnInit {
 
-  @Selector([AppState])
-  static getCurrentSiteSections(state, appState) {
+  @Selector([AppState.getSite])
+  static getCurrentSiteSections(state, site) {
     return state.filter(section => {
-      return section.site_name === appState.site;
+      return section.site_name === site;
     });
   }
 

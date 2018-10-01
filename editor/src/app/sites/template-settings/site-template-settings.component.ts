@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { Observable, combineLatest } from 'rxjs';
 import { map, filter, scan } from 'rxjs/operators';
 import { Store } from '@ngxs/store';
+import { splitCamel, uCFirst } from '../../shared/helpers';
 import { SiteSettingsState } from '../settings/site-settings.state';
 import { SiteTemplateSettingsState } from './site-template-settings.state';
 import { SiteTemplatesState } from './site-templates.state';
@@ -12,26 +14,29 @@ import { SettingGroupConfigModel, SettingModel, SettingConfigModel } from '../..
 @Component({
   selector: 'berta-site-template-settings',
   template: `
-    <h2>Site Template Settings</h2>
-
-    <div *ngFor="let settingGroup of templateSettings$ | async">
-      <h3>{{ settingGroup.config.title || settingGroup.slug }}</h3>
-      <berta-setting *ngFor="let setting of settingGroup.settings"
-                     [templateSlug]="settingGroup.templateSlug"
-                     [settingGroup]="settingGroup"
-                     [setting]="setting.setting"
-                     [config]="setting.config"
-                     (update)="updateSetting(settingGroup.slug, $event)"></berta-setting>
+    <div class="setting-group"
+         [class.is-expanded]="camelifySlug(currentGroup) === settingGroup.slug"
+         *ngFor="let settingGroup of templateSettings$ | async">
+      <h3 [routerLink]="['/design', slugifyCamel(settingGroup.slug)]" class="hoverable">
+        {{ settingGroup.config.title || settingGroup.slug }}
+        <svg class="drop-icon" width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M9 1L4.75736 5.24264L0.514719 1" stroke="#9b9b9b" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </h3>
+      <div class="settings">
+        <berta-setting *ngFor="let setting of settingGroup.settings"
+                      [templateSlug]="settingGroup.templateSlug"
+                      [settingGroup]="settingGroup"
+                      [setting]="setting.setting"
+                      [config]="setting.config"
+                      (update)="updateSetting(settingGroup.slug, $event)"></berta-setting>
+      </div>
     </div>
-  `,
-  styles: [`
-    div {
-      margin-bottom: 10px;
-    }
-  `]
+  `
 })
 export class SiteTemplateSettingsComponent implements OnInit {
-
+  defaultGroup = 'general-font-settings';
+  currentGroup: string;
   templateSettings$: Observable<Array<{
     config: SettingGroupConfigModel['_'],
     settings: Array<{
@@ -42,8 +47,9 @@ export class SiteTemplateSettingsComponent implements OnInit {
     slug: string
   }>>;
 
-  constructor (
-    private store: Store) {
+  constructor(
+    private store: Store,
+    private route: ActivatedRoute) {
   }
 
   ngOnInit () {
@@ -108,6 +114,20 @@ export class SiteTemplateSettingsComponent implements OnInit {
         });
       })
     );
+
+    this.route.paramMap.subscribe(params => {
+      this.currentGroup = params['params']['group'] || this.defaultGroup;
+    });
+  }
+
+  slugifyCamel(camelText: string) {
+    return splitCamel(camelText).map(piece => piece.toLowerCase()).join('-');
+  }
+
+  camelifySlug(slug: string) {
+    return slug.split('-').map((piece, i) => {
+      return i ? uCFirst(piece) : piece;
+    }).join('');
   }
 
   updateSetting(settingGroup: string, updateEvent) {

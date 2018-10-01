@@ -13,7 +13,9 @@ import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
                  (colorPickerClose)="saveColor(value)"
                  (colorPickerCancel)="cancelColor()"
                  [cpOKButton]="true"
+                 [cpOKButtonClass]="'button'"
                  [cpCancelButton]="true"
+                 [cpCancelButtonClass]="'button secondary'"
                  [cpSaveClickOutside]="true"
                  type="text"
                  readonly>

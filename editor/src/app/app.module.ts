@@ -16,6 +16,7 @@ import { ProfileDropdownComponent } from './profile-dropdown/profile-dropdown.co
 import { LoginComponent } from './login/login.component';
 import { UserState } from './user/user.state';
 import { UserAccountComponent } from './user/user-account.component';
+import { SitesSharedModule } from './sites/shared/sites-shared.module';
 
 
 @NgModule({
@@ -36,8 +37,9 @@ import { UserAccountComponent } from './user/user-account.component';
       UserState
     ], { developmentMode: isDevMode() }),
     NgxsReduxDevtoolsPluginModule.forRoot({ disabled: !isDevMode() }),
-    NgxsLoggerPluginModule.forRoot({ disabled: true }),
-    SitesModule
+    NgxsLoggerPluginModule.forRoot({ disabled: true }),  // it logs too much, enable only when needed
+    SitesModule,
+    SitesSharedModule
   ],
   providers: [],
   bootstrap: [AppComponent]
