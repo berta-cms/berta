@@ -18,30 +18,24 @@ import {
   selector: 'berta-shop-regional-costs',
   template: `
     <div class="bt-sh-region" *ngFor="let region of regionalCosts$ | async">
-
       <div class="setting header">
         <berta-inline-text-input [value]="region.name"
                                  (update)="updateRegion('name', $event, region.id)"
                                  (inputFocus)="updateInputFocus($event)"></berta-inline-text-input>
-
         <button type="button" (click)="deleteRegion(region.id, $event)">x</button>
       </div>
-
       <div class="setting">
         <berta-text-input label="VAT (%)"
                           [value]="region.vat"
                           (update)="updateRegion('vat', $event, region.id)"
                           (inputFocus)="updateInputFocus($event)"></berta-text-input>
       </div>
-
       <div class="setting">
         <h4>Costs</h4>
         <p class="costs-label">
           {{ weightTitle$ | async }} {{ priceTitle$ | async }}
         </p>
-
       </div>
-
       <div class="bt-sh-regional-cost" *ngFor="let cost of region.costs">
         <div class="setting">
           <div class="input-row">
@@ -65,34 +59,36 @@ import {
                             [placeholder]="(weightLabel$ | async)"
                             [title]="(weightTitle$ | async)"
                             [enabledOnUpdate]="true"
+                            [disabled]="addCostDisabled"
                             (update)="newCost.weight = $event"
                             (inputFocus)="updateInputFocus($event)"></berta-text-input>
           <berta-text-input value=""
                             [placeholder]="(priceLabel$ | async)"
                             [title]="(priceTitle$ | async)"
                             [enabledOnUpdate]="true"
+                            [disabled]="addCostDisabled"
                             (update)="newCost.price = $event"
                             (inputFocus)="updateInputFocus($event)"></berta-text-input>
-          <button type="submit" class="button">Add</button>
+          <button type="submit" class="button" [attr.disabled]="(addCostDisabled ? '' : null)">Add</button>
         </div>
       </form>
     </div>
-    <form (submit)="addRegion($event)" class="setting bt-sh-region-add" *ngIf="!!newRegion">
-
+    <form (submit)="addRegion($event)" class="setting bt-sh-region-add">
       <h4>Add region</h4>
-
       <div class="input-row">
         <berta-text-input [value]="newRegion.name"
                           [placeholder]="'region'"
                           [enabledOnUpdate]="true"
+                          [disabled]="addRegionDisabled"
                           (update)="newRegion.name = $event"
                           (inputFocus)="updateInputFocus($event)"></berta-text-input>
         <berta-text-input [value]="newRegion.vat"
                           [placeholder]="'VAT (%)'"
                           [enabledOnUpdate]="true"
+                          [disabled]="addRegionDisabled"
                           (update)="newRegion.vat = $event"
                           (inputFocus)="updateInputFocus($event)"></berta-text-input>
-        <button type="submit" class="button">Add</button>
+        <button type="submit" class="button" [attr.disabled]="(addRegionDisabled ? '' : null)">Add</button>
       </div>
     </form>
   `,
@@ -108,6 +104,8 @@ export class ShopRegionalCostsComponent implements OnInit {
   weightTitle$: Observable<string>;
   priceLabel$: Observable<string>;
   priceTitle$: Observable<string>;
+  addRegionDisabled = false;
+  addCostDisabled = false;
   newRegion = {
     name: '',
     vat: ''
@@ -163,13 +161,11 @@ export class ShopRegionalCostsComponent implements OnInit {
       name: this.newRegion.name,
       vat: +this.newRegion.vat
     };
-    /** This is hack, to wor around input auto disable. Fix this when updating design
-     * @todo: add feature [autoDisable] on input
-     * @todo: add disable property on input, so we can disable them on need
-     */
-    this.newRegion = null;
+    this.addRegionDisabled = true;
+
     this.store.dispatch(new AddShopRegionAction(data)).subscribe(() => {
       this.newRegion = { name: '', vat: '' };
+      this.addRegionDisabled = false;
     });
   }
 
@@ -184,13 +180,11 @@ export class ShopRegionalCostsComponent implements OnInit {
       weight: +this.newCost.weight,
       price: +this.newCost.price
     };
+    this.addCostDisabled = true;
 
-    /** This is hack, to wor around input auto disable. Fix this when updating design
-     * @todo: add feature [autoDisable] on input
-     * @todo: add disable property on input, so we can disable them on need
-     */
     this.store.dispatch(new AddShopRegionCostAction(id, data)).subscribe(() => {
       this.newCost = { weight: 0, price: 0 };
+      this.addCostDisabled = false;
     });
   }
 
