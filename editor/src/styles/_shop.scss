@@ -1,0 +1,14 @@
+berta-shop {
+  .setting-group {
+    > .settings {
+      .subgroup:not(:first-child) {
+        .setting {
+          h4 {
+            border-top: 1px solid $grey-10;
+            padding-top: 1.3em;
+          }
+        }
+      }
+    }
+  }
+}
