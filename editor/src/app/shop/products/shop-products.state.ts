@@ -76,13 +76,13 @@ export class ShopProductsState implements NgxsOnInit {
     const state = getState();
 
     return this.appStateService.sync(syncURLs.products, {
-      path: `${currentSite}/${action.uniqid}/${action.payload.field}`,
+      path: `${currentSite}/${action.id}/${action.payload.field}`,
       value: action.payload.value
     }, 'PATCH').pipe(
       tap(response => {
         patchState({
           [currentSite]: state[currentSite].map(product => {
-            if (product.uniqid !== action.uniqid) {
+            if (product.id !== action.id) {
               return product;
             }
             return {

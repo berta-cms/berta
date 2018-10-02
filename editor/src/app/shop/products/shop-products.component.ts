@@ -10,7 +10,7 @@ import { UpdateInputFocus } from '../../app-state/app.actions';
     <div *ngFor="let product of products$ | async">
       <berta-text-input [label]="product.name"
                         [value]="product.instock"
-                        (update)="updateProducts('instock', $event, product.uniqid)"
+                        (update)="updateProducts('instock', $event, product.id)"
                         (inputFocus)="updateInputFocus($event)"></berta-text-input>
       <p>reservations: <span title="Reservations">{{product.reservation}}</span></p>
     </div>
@@ -45,8 +45,8 @@ export class ShopProductsComponent implements OnInit {
   ngOnInit() {
   }
 
-  updateProducts(field: string, value, uniqid: string) {
-    this.store.dispatch(new UpdateShopProductAction(uniqid, {field, value}));
+  updateProducts(field: string, value, id: string) {
+    this.store.dispatch(new UpdateShopProductAction(id, {field, value}));
   }
 
   updateInputFocus(isFocused: boolean) {
