@@ -21,7 +21,12 @@ import { UpdateShopSettingsAction } from './shop-settings.actions';
                    [config]="setting.config"
                    (update)="updateSetting(settingGroup.slug, $event)"></berta-setting>
   </div>
-  `
+  `,
+  styles: [`
+    h4 {
+      font-weight: bold;
+    }
+  `]
 })
 export class ShopSettingsComponent implements OnInit {
   settings$: Observable<Array<{
