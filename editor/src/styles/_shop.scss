@@ -29,6 +29,11 @@ berta-shop-orders {
     justify-content: space-between;
 
     > span {
+      border-left: 1px solid $grey-1;
+      box-sizing: border-box;
+      color: $grey-40;
+      margin-left: 1em;
+      padding-left: .75em;
       width: 50%;
     }
   }
