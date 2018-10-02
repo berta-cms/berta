@@ -76,13 +76,13 @@ export class ShopProductsState implements NgxsOnInit {
     const state = getState();
 
     return this.appStateService.sync(syncURLs.products, {
-      path: `${currentSite}/${action.uniqid}/${action.payload.field}`,
+      path: `${currentSite}/${action.id}/${action.payload.field}`,
       value: action.payload.value
     }, 'PATCH').pipe(
       tap(response => {
         patchState({
           [currentSite]: state[currentSite].map(product => {
-            if (product.uniqid !== action.uniqid) {
+            if (product.id !== action.id) {
               return product;
             }
             return {
@@ -128,7 +128,11 @@ export class ShopProductsState implements NgxsOnInit {
 
   @Action(AddShopProductSiteAction)
   addProductsSite({ patchState }: StateContext<ShopProductsModel>, action: AddShopProductSiteAction) {
-    patchState({[action.payload]: []});
+    return this.stateService.getInitialState(action.payload, 'products').pipe(
+      take(1)
+    ).subscribe((products) => {
+      patchState({[action.payload]: products[action.payload]});
+    });
   }
 
   @Action(ResetShopProductsAction)

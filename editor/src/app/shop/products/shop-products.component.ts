@@ -11,7 +11,7 @@ import { UpdateInputFocus } from '../../app-state/app.actions';
       <berta-text-input [value]="product.instock"
                         [label]="product.name"
                         [title]="'In stock'"
-                        (update)="updateProducts('instock', $event, product.uniqid)"
+                        (update)="updateProducts('instock', $event, product.id)"
                         (inputFocus)="updateInputFocus($event)"></berta-text-input>
       <p>Reservations: <span>{{product.reservation}}</span></p>
     </div>
@@ -27,8 +27,8 @@ export class ShopProductsComponent implements OnInit {
   ngOnInit() {
   }
 
-  updateProducts(field: string, value, uniqid: string) {
-    this.store.dispatch(new UpdateShopProductAction(uniqid, {field, value}));
+  updateProducts(field: string, value, id: string) {
+    this.store.dispatch(new UpdateShopProductAction(id, {field, value}));
   }
 
   updateInputFocus(isFocused: boolean) {
