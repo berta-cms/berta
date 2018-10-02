@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable, combineLatest } from 'rxjs';
 import { SettingGroupConfigModel, SettingModel, SettingConfigModel } from '../../shared/interfaces';
-import { SiteSettingsState } from '../../sites/settings/site-settings.state';
-import { SiteSettingsConfigState } from '../../sites/settings/site-settings-config.state';
 import { filter, map, scan } from 'rxjs/operators';
 import { Store } from '@ngxs/store';
 import { ShopSettingsState } from './shop-settings.state';
@@ -13,16 +11,22 @@ import { UpdateShopSettingsAction } from './shop-settings.actions';
 @Component({
   selector: 'berta-shop-settings',
   template: `
-  <div *ngFor="let settingGroup of settings$ | async">
-  <h4>{{ settingGroup.config.title || settingGroup.slug }}</h4>
-  <berta-setting *ngFor="let setting of settingGroup.settings"
-                 [settingGroup]="settingGroup"
-                 [setting]="setting.setting"
-                 [config]="setting.config"
-                 (update)="updateSetting(settingGroup.slug, $event)"></berta-setting>
+  <div *ngFor="let settingGroup of settings$ | async" class="subgroup">
+    <div class="setting">
+      <h4>{{ settingGroup.config.title || settingGroup.slug }}</h4>
+    </div>
+    <berta-setting *ngFor="let setting of settingGroup.settings"
+                   [settingGroup]="settingGroup"
+                   [setting]="setting.setting"
+                   [config]="setting.config"
+                   (update)="updateSetting(settingGroup.slug, $event)"></berta-setting>
   </div>
   `,
-  styles: []
+  styles: [`
+    h4 {
+      font-weight: bold;
+    }
+  `]
 })
 export class ShopSettingsComponent implements OnInit {
   settings$: Observable<Array<{

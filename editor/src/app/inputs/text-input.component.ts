@@ -6,7 +6,8 @@ import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
     <div class="form-group"
          [class.bt-focus]="focus"
          [class.bt-disabled]="disabled"
-         [class.no-label]="!label">
+         [class.no-label]="!label"
+         [attr.title]="title">
       <label>
         <span class="label-text">{{ label }}</span>
         <div class="text-input-wrapper">
@@ -27,6 +28,7 @@ import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 })
 export class TextInputComponent implements OnInit {
   @Input() label?: string;
+  @Input() title?: string;
   @Input() type?: string;
   @Input() placeholder?: string;
   @Input() disabled?: boolean;
