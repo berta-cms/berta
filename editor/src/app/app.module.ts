@@ -17,6 +17,7 @@ import { LoginComponent } from './login/login.component';
 import { UserState } from './user/user.state';
 import { UserAccountComponent } from './user/user-account.component';
 import { SitesSharedModule } from './sites/shared/sites-shared.module';
+import { PreviewComponent } from './preview/preview.component';
 
 
 @NgModule({
@@ -26,7 +27,8 @@ import { SitesSharedModule } from './sites/shared/sites-shared.module';
     HeaderComponent,
     ProfileDropdownComponent,
     UserAccountComponent,
-    LoginComponent
+    LoginComponent,
+    PreviewComponent
   ],
   imports: [
     BrowserModule,
