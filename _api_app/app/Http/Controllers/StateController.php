@@ -10,6 +10,7 @@ use App\Sites\Sections\Tags\SectionTagsDataService;
 use App\Sites\Settings\SiteSettingsDataService;
 use App\Sites\SitesDataService;
 use App\Sites\TemplateSettings\SiteTemplateSettingsDataService;
+use App\User\UserModel;
 
 class StateController extends Controller
 {
@@ -87,5 +88,20 @@ class StateController extends Controller
         $state['siteSettingsConfig'] = $siteSettingsConfigService->get($lang);
 
         return response()->json($state);
+    }
+
+    public function getMeta()
+    {
+        include realpath(config('app.old_berta_root') . '/engine/inc.version.php');
+        $user = new UserModel();
+        $meta = [
+            'version' => $options['version'],
+            'internalVersion' => $options['int_version'],
+            'forgotPasswordUrl' => $user->forgot_password_url,
+            'loginUrl' => $user->profile_url ? $user->profile_url : route('login'),
+            'isBertaHosting' => $user->profile_url != false
+        ];
+
+        return response()->json($meta);
     }
 }
