@@ -14,6 +14,10 @@ export class PreviewService {
 
   sync(url, data, method) {
     console.log('Sync through angular');
+    /** @todo:
+     * - Trigger appropriate actions to update the state here instead of direct sync
+     * - Trigger correct actions to update the iframe when settings change
+     */
     return this.appService.sync(url, data, method);
   }
 }
