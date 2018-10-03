@@ -122,6 +122,12 @@ aside {
     .setting {
       margin: 1.3em;
 
+      p {
+        &:first-child {
+          margin-top: 0;
+        }
+      }
+
       &:first-child {
         margin-top: 0;
 
@@ -133,10 +139,20 @@ aside {
     }
   }
 
+  .card {
+    background-color: $white;
+    border: 1px solid $grey-10;
+    border-radius: $border-radius;
+    box-sizing: border-box;
+    color: $grey-80;
+    margin: 1.3em 0;
+    padding: .5em 1em;
+  }
+
   table {
     border-collapse: collapse;
     font-size: $input-font-size;
-    margin: 1.3em 0;
+    width: 100%;
 
     th,
     td {

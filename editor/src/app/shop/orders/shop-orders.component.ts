@@ -50,18 +50,20 @@ import { ShopOrdersState } from './shop-orders.state';
         </span>
       </p>
 
-      <table *ngIf="(order.orders && order.orders.length)">
-        <tr>
-          <th>Item name</th>
-          <th>Qty</th>
-          <th>Price ({{currency$ | async}})</th>
-        </tr>
-        <tr *ngFor="let item of order.orders">
-          <td>{{item.name}}</td>
-          <td>{{item.qty}}</td>
-          <td>{{stringToCurrency(item.sum_total)}}</td>
-        </tr>
-      </table>
+      <div class="card">
+        <table *ngIf="(order.orders && order.orders.length)">
+          <tr>
+            <th>Item name</th>
+            <th>Qty</th>
+            <th>Price ({{currency$ | async}})</th>
+          </tr>
+          <tr *ngFor="let item of order.orders">
+            <td>{{item.name}}</td>
+            <td>{{item.qty}}</td>
+            <td>{{stringToCurrency(item.sum_total)}}</td>
+          </tr>
+        </table>
+      </div>
     </div>
   `
 })
