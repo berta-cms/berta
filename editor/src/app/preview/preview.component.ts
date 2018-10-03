@@ -1,3 +1,4 @@
+import { Observable } from 'rxjs';
 import { Component, OnInit } from '@angular/core';
 import { SafeUrl, DomSanitizer } from '@angular/platform-browser';
 import { Store } from '@ngxs/store';
@@ -48,10 +49,51 @@ export class PreviewComponent implements OnInit {
   }
 
   onLoad(event) {
-    const iframe: HTMLIFrameElement = event.target;
-    console.log('IFRAME LOADED!!!');
-    console.log(iframe.contentWindow);
-    console.log('sync: ', iframe.contentWindow['sync']);
+    this.waitFullLoad(event.target).subscribe({
+      next: (iframe) => {
+        console.log('IFRAME LOADED!!!');
+        console.log(iframe.contentWindow);
+        console.log('sync: ', iframe.contentWindow['sync']);
+      },
+      error: (error) => {
+        console.error(error);
+      }
+  });
+
+
   }
 
+  private waitFullLoad(iframe: HTMLIFrameElement): Observable<HTMLIFrameElement> {
+    return Observable.create(observer => {
+      const maxChecks = 10;
+      let intervalCount = 0;
+      let lastError = '';
+
+      const loadCheck = setInterval(() => {
+        if (intervalCount >= maxChecks) {
+          clearInterval(loadCheck);
+          observer.error({message: 'Could not load iframe: ' + lastError, data: iframe});
+          return;
+        }
+        if (!iframe.contentDocument) {
+          lastError = 'Iframe has no contentDocument';
+          intervalCount++;
+          return;
+        }
+        if (typeof(iframe.contentWindow['sync']) !== 'function') {
+          lastError = '`sync` function does not exist on iframe(s) `contentWindow`';
+          intervalCount++;
+          return;
+        }
+        if (iframe.contentDocument.body.classList.length === 0 ||
+            !/(xContent|xSectionType)-/.test(iframe.contentDocument.body.className)) {
+              lastError = 'Berta classes `xContent-[]` or `xSectionType-` are missing from body element';
+              intervalCount++;
+              return;
+        }
+        observer.next(iframe);
+        observer.complete();
+      }, 500);
+    });
+  }
 }
