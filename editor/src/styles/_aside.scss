@@ -133,6 +133,30 @@ aside {
     }
   }
 
+  table {
+    border-collapse: collapse;
+    font-size: $input-font-size;
+    margin: 1.3em 0;
+
+    th,
+    td {
+      padding: .5em;
+      text-align: left;
+
+      &:first-child {
+        padding-left: 0;
+      }
+
+      &:last-child {
+        padding-right: 0;
+      }
+    }
+
+    tr:not(:first-child) {
+      border-top: 1px solid $grey-10;
+    }
+  }
+
   &.is-expanded {
     background-color: $grey-1;
 

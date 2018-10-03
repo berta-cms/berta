@@ -144,3 +144,13 @@ berta-shop-orders {
     }
   }
 }
+
+berta-shop-orders {
+  p {
+    > span {
+      border-left: 0;
+      color: $black;
+      padding-left: 0;
+    }
+  }
+}
