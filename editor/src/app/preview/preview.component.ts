@@ -1,8 +1,11 @@
 import { Observable } from 'rxjs';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, NgZone } from '@angular/core';
 import { SafeUrl, DomSanitizer } from '@angular/platform-browser';
 import { Store } from '@ngxs/store';
 import { UserState } from '../user/user.state';
+import { PreviewService } from './preview.service';
+import { AppShowLoading } from '../app-state/app.actions';
+
 
 @Component({
   selector: 'berta-preview',
@@ -33,6 +36,8 @@ export class PreviewComponent implements OnInit {
 
   constructor(
     private store: Store,
+    private ngZone: NgZone,
+    private service: PreviewService,
     private sanitizer: DomSanitizer) {
   }
 
@@ -51,9 +56,24 @@ export class PreviewComponent implements OnInit {
   onLoad(event) {
     this.waitFullLoad(event.target).subscribe({
       next: (iframe) => {
-        console.log('IFRAME LOADED!!!');
-        console.log(iframe.contentWindow);
-        console.log('sync: ', iframe.contentWindow['sync']);
+        iframe.contentWindow['syncState'] = (url, data, method) => {
+
+          /* Return promise to the old berta */
+          return new Promise((resolve, reject) => {
+            this.ngZone.run(() => {
+              this.store.dispatch(AppShowLoading);
+              this.service.sync(url, data, method).subscribe({
+                next: (response) => {
+                  resolve(response);
+                },
+                error: (err) => {
+                  reject(err);
+                }
+              });
+            });
+          });
+
+        };
       },
       error: (error) => {
         console.error(error);
