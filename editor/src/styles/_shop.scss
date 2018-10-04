@@ -144,3 +144,17 @@ berta-shop-orders {
     }
   }
 }
+
+berta-shop-orders {
+  .setting:not(:last-child) {
+    padding-bottom: 1em;
+  }
+
+  p {
+    > span {
+      border-left: 0;
+      color: $black;
+      padding-left: 0;
+    }
+  }
+}
