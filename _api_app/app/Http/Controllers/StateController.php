@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Configuration\SiteSettingsConfigService;
 use App\Configuration\SiteTemplatesConfigService;
+use App\Shared\Helpers;
 use App\Sites\Sections\Entries\SectionEntriesDataService;
 use App\Sites\Sections\SiteSectionsDataService;
 use App\Sites\Sections\Tags\SectionTagsDataService;
@@ -102,6 +103,6 @@ class StateController extends Controller
             'isBertaHosting' => $user->profile_url != false
         ];
 
-        return response()->json($meta);
+        return Helpers::api_response('', $meta);
     }
 }

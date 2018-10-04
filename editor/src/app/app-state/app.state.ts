@@ -11,7 +11,8 @@ import {
   AppHideLoading,
   ResetAppStateAction,
   InitAppStateAction,
-  UpdateInputFocus
+  UpdateInputFocus,
+  UpdateAppStateAction
 } from './app.actions';
 import { AppStateService } from './app-state.service';
 import { UserLoginAction } from '../user/user.actions';
@@ -22,7 +23,12 @@ const defaultState: AppStateModel = {
   isLoading: false,
   inputFocused: false,
   site: null,
-  urls: {}
+  urls: {},
+  forgotPasswordUrl: '',
+  internalVersion: '',
+  isBertaHosting: false,
+  loginUrl: '',
+  version: ''
 };
 
 
@@ -68,6 +74,14 @@ export class AppState implements NgxsOnInit {
         patchState({site: ''});
       }
     });
+
+    this.appStateService.getAppMetadata().pipe(take(1))
+      .subscribe({
+        next: (metadata) => {
+          dispatch(new UpdateAppStateAction(metadata));
+        },
+        error: (error) => console.error(error)
+      });
 
     concat(
       this.appStateService.getInitialState('').pipe(take(1)),
@@ -119,5 +133,10 @@ export class AppState implements NgxsOnInit {
   @Action(InitAppStateAction)
   InitState({ patchState }: StateContext<AppStateModel>, action: InitAppStateAction) {
     patchState({ urls: action.payload.urls});
+  }
+
+  @Action(UpdateAppStateAction)
+  updateState({ patchState }: StateContext<AppStateModel>, action: UpdateAppStateAction) {
+    patchState(action.payload);
   }
 }

@@ -90,6 +90,14 @@ export class AppStateService {
     );
   }
 
+  getAppMetadata() {
+    return this.http.get('/_api/v1/meta').pipe(
+      map((resp: APIResponse) => {
+        return resp.data;
+      })
+    );
+  }
+
   getInitialState(site: string = '', stateSlice?: string, force = false) {
 
     if (!this.cachedSiteStates[site] || force) {
