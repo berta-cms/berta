@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 
 import { Observable } from 'rxjs';
@@ -18,8 +18,17 @@ import { AppState } from '../app-state/app.state';
   template: `
   <div *ngIf="!(isLoggedIn$ | async)" class="login-container setting-group">
     <h3><img src="/engine/layout/berta.png"></h3>
+
+    <div *ngIf="appState.isBertaHosting" class="form-group social-login">
+      <a href="{{ appState.loginUrl }}?remote_redirect={{ appState.authenticateUrl }}&amp;provider=facebook" class="button">Log in with Facebook</a>
+      <a href="{{ appState.loginUrl }}?remote_redirect={{ appState.authenticateUrl }}&amp;provider=google" class="button">Log in with Google</a>
+      <p>or</p>
+    </div>
+
     <div *ngIf="message" class="error-message">{{ message }}</div>
-    <form action="" (submit)="login($event)">
+    <form [attr.action]="(appState.isBertaHosting ? appState.loginUrl + '?remote_redirect=' + appState.authenticateUrl: null)"
+          method="post"
+          (submit)="login($event)">
       <berta-text-input [label]="'Username'"
                         [value]="username"
                         [enabledOnUpdate]="true"
@@ -54,6 +63,7 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private store: Store,
+    private route: ActivatedRoute,
     private router: Router) {
   }
 
@@ -64,8 +74,14 @@ export class LoginComponent implements OnInit {
       }
     });
 
-    this.store.select(AppState).pipe(take(1)).subscribe((state: AppStateModel) => {
+    this.store.select(AppState).subscribe((state: AppStateModel) => {
       this.appState = state;
+    });
+
+    this.route.queryParams.subscribe(params => {
+      if (params.autherror) {
+        this.message = 'Incorrect Username or password!';
+      }
     });
   }
 
@@ -78,6 +94,10 @@ export class LoginComponent implements OnInit {
   }
 
   login(event) {
+    if (this.appState.isBertaHosting) {
+      return true;
+    }
+
     event.preventDefault();
     this.store.dispatch(new AppShowLoading());
 

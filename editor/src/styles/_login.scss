@@ -10,6 +10,22 @@ berta-login {
 
   h3 {
     border-bottom: 0;
+    display: block;
+  }
+
+  .social-login {
+    font-size: $input-font-size;
+    margin: 0 1.3em;
+    text-align: center;
+
+    a {
+      display: block;
+      margin-bottom: 1.3em;
+    }
+
+    p {
+      margin-bottom: 0;
+    }
   }
 
   .error-message {

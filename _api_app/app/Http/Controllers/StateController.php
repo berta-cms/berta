@@ -100,6 +100,7 @@ class StateController extends Controller
             'internalVersion' => $options['int_version'],
             'forgotPasswordUrl' => $user->forgot_password_url,
             'loginUrl' => $user->profile_url ? $user->profile_url : route('login'),
+            'authenticateUrl' => route('authenticate'),
             'isBertaHosting' => $user->profile_url != false
         ];
 

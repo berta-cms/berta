@@ -8,5 +8,6 @@ export interface AppStateModel {
   internalVersion: string;
   isBertaHosting: boolean;
   loginUrl: string;
+  authenticateUrl: string;
   version: string;
 }

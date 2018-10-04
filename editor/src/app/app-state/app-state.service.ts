@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 
 import { Observable, combineLatest } from 'rxjs';
@@ -30,8 +29,7 @@ export class AppStateService {
 
   constructor(
     private http: HttpClient,
-    private store: Store,
-    private router: Router) {
+    private store: Store) {
   }
 
   showLoading() {

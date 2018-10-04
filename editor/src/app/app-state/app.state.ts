@@ -28,6 +28,7 @@ const defaultState: AppStateModel = {
   internalVersion: '',
   isBertaHosting: false,
   loginUrl: '',
+  authenticateUrl: '',
   version: ''
 };
 
