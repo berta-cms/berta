@@ -6,9 +6,11 @@ import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { Select, Store } from '@ngxs/store';
 
+import { AppStateModel } from '../app-state/app-state.interface';
 import { UserState } from '../user/user.state';
 import { AppShowLoading, AppHideLoading, UpdateInputFocus } from '../app-state/app.actions';
 import { UserLoginAction } from '../user/user.actions';
+import { AppState } from '../app-state/app.state';
 
 
 @Component({
@@ -36,12 +38,13 @@ import { UserLoginAction } from '../user/user.actions';
       </div>
     </form>
     <div class="footer">
-      berta 2008 - {{ currentYear }}
+      berta v {{ appState.version }} 2008 - {{ currentYear }}
     </div>
   </div>
   `
 })
 export class LoginComponent implements OnInit {
+  appState: AppStateModel;
   message = '';
   username = '';
   password = '';
@@ -59,6 +62,10 @@ export class LoginComponent implements OnInit {
       if (isLoggedIn) {
         this.router.navigate(['/']);
       }
+    });
+
+    this.store.select(AppState).pipe(take(1)).subscribe((state: AppStateModel) => {
+      this.appState = state;
     });
   }
 
