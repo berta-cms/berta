@@ -46,13 +46,14 @@ import { AppState } from '../app-state/app.state';
                         [hideIcon]="true"
                         (inputFocus)="updateComponentFocus($event)"
                         (update)="updateField('password', $event)"></berta-text-input>
-      <div class="form-group">
+      <div class="form-group buttons">
         <button type="submit" class="button">Log in</button>
         <a href="{{ appState.forgotPasswordUrl }}" target="_blank">Forgot password?</a>
       </div>
     </form>
     <div class="footer">
-      berta v {{ appState.version }} 2008 - {{ currentYear }}
+      <span>berta v{{ appState.version }}</span>
+      <span>2008 - {{ currentYear }}</span>
     </div>
   </div>
   `

@@ -41,6 +41,10 @@ berta-login {
       margin: 1.3em;
     }
 
+    .buttons {
+      text-align: right;
+    }
+
     button {
       display: block;
       font-size: $base-font-size;
@@ -55,7 +59,9 @@ berta-login {
   }
 
   .footer {
+    display: flex;
     font-size: $input-font-size;
+    justify-content: space-between;
     padding: 1.3em;
   }
 }
