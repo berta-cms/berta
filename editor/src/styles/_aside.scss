@@ -173,6 +173,16 @@ aside {
     }
   }
 
+  .setting-description {
+    color: $grey-40;
+    font-size: $input-font-size;
+    margin-top: 1em;
+
+    a {
+      color: $grey-40;
+    }
+  }
+
   &.is-expanded {
     background-color: $grey-1;
 

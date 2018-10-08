@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { Store } from '@ngxs/store';
 import { SettingModel, SettingConfigModel, SettingGroupConfigModel } from '../../shared/interfaces';
 import { UpdateInputFocus } from '../../app-state/app.actions';
@@ -68,6 +69,8 @@ import { UpdateInputFocus } from '../../app-state/app.actions';
 
       <h4 *ngSwitchDefault>{{ config.title }}</h4>
     </ng-container>
+
+    <p *ngIf="description" [innerHTML]="description" class="setting-description"></p>
   `,
   styles: [`
     :host {
@@ -89,12 +92,19 @@ export class SettingComponent implements OnInit {
   @Output('update') update = new EventEmitter<{field: string, value: SettingModel['value']}>();
 
   private lastValue: SettingModel['value'];
+  description: SafeHtml;
 
-  constructor(private store: Store) { }
+  constructor(
+    private store: Store,
+    private sanitizer: DomSanitizer) { }
 
   ngOnInit() {
     // Cache the value, so we don't update if nothing changes
     this.lastValue = this.setting.value;
+
+    if (this.config.description) {
+      this.description = this.sanitizer.bypassSecurityTrustHtml(this.config.description);
+    }
   }
 
   updateComponentFocus(isFocused) {
