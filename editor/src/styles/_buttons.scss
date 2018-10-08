@@ -9,6 +9,7 @@
   padding: .75em 1.3em;
   text-decoration: none;
   transition: color .2s, background-color .2s;
+  white-space: nowrap;
 
   &:hover {
     background-color: $berta-accent;
