@@ -45,7 +45,12 @@ berta-login {
       display: block;
       font-size: $base-font-size;
       margin-left: auto;
+      margin-bottom: 1.3em;
       width: 50%;
+    }
+
+    a {
+      color: $black;
     }
   }
 

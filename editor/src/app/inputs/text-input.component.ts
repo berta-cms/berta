@@ -16,6 +16,7 @@ import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
             <path d="M0 0h48v48h-48z" fill="none"/>
           </svg>
           <input [value]="value"
+                 [attr.name]="(name || null)"
                  [attr.disabled]="(disabled ? '' : null)"
                  [attr.placeholder]="placeholder"
                  [attr.type]="(type || 'text')"
@@ -28,6 +29,7 @@ import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 })
 export class TextInputComponent implements OnInit {
   @Input() label?: string;
+  @Input() name?: string;
   @Input() title?: string;
   @Input() type?: string;
   @Input() placeholder?: string;

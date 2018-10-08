@@ -20,8 +20,10 @@ import { AppState } from '../app-state/app.state';
     <h3><img src="/engine/layout/berta.png"></h3>
 
     <div *ngIf="appState.isBertaHosting" class="form-group social-login">
-      <a href="{{ appState.loginUrl }}?remote_redirect={{ appState.authenticateUrl }}&amp;provider=facebook" class="button">Log in with Facebook</a>
-      <a href="{{ appState.loginUrl }}?remote_redirect={{ appState.authenticateUrl }}&amp;provider=google" class="button">Log in with Google</a>
+      <a href="{{ appState.loginUrl }}?remote_redirect={{ appState.authenticateUrl }}&amp;provider=facebook" class="button">
+        Log in with Facebook</a>
+      <a href="{{ appState.loginUrl }}?remote_redirect={{ appState.authenticateUrl }}&amp;provider=google" class="button">
+        Log in with Google</a>
       <p>or</p>
     </div>
 
@@ -30,12 +32,14 @@ import { AppState } from '../app-state/app.state';
           method="post"
           (submit)="login($event)">
       <berta-text-input [label]="'Username'"
+                        [name]="'auth_user'"
                         [value]="username"
                         [enabledOnUpdate]="true"
                         [hideIcon]="true"
                         (inputFocus)="updateComponentFocus($event)"
                         (update)="updateField('username', $event)"></berta-text-input>
       <berta-text-input [label]="'Password'"
+                        [name]="'auth_pass'"
                         [value]="password"
                         [type]="'password'"
                         [enabledOnUpdate]="true"
@@ -44,6 +48,7 @@ import { AppState } from '../app-state/app.state';
                         (update)="updateField('password', $event)"></berta-text-input>
       <div class="form-group">
         <button type="submit" class="button">Log in</button>
+        <a href="{{ appState.forgotPasswordUrl }}" target="_blank">Forgot password?</a>
       </div>
     </form>
     <div class="footer">
@@ -101,7 +106,7 @@ export class LoginComponent implements OnInit {
     event.preventDefault();
     this.store.dispatch(new AppShowLoading());
 
-    this.store.dispatch(new UserLoginAction(this.username, this.password))
+    this.store.dispatch(new UserLoginAction({username: this.username, password: this.password}))
     .subscribe({
       next: () => {
         this.message = 'Login Successful';

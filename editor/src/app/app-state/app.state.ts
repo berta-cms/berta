@@ -126,9 +126,20 @@ export class AppState implements NgxsOnInit {
   }
 
   @Action(ResetAppStateAction)
-  resetState({ setState }: StateContext<AppStateModel>) {
+  resetState({ getState, setState }: StateContext<AppStateModel>) {
     // Apply default state, not to remove the user, user will reset it self
-    setState(defaultState);
+    const state = {...getState()};
+
+    // Reset to default state except metadata properties
+    setState({
+      ...defaultState,
+      forgotPasswordUrl: state.forgotPasswordUrl,
+      internalVersion: state.internalVersion,
+      isBertaHosting: state.isBertaHosting,
+      loginUrl: state.loginUrl,
+      authenticateUrl: state.authenticateUrl,
+      version: state.version
+    });
   }
 
   @Action(InitAppStateAction)

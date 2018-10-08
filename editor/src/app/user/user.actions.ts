@@ -1,8 +1,11 @@
 export class UserLoginAction {
   static readonly type = 'USER:LOGIN';
   constructor(
-    public user: string,
-    public password: string) {
+    public payload: {
+      username?: string,
+      password?: string
+      token?: string
+    }) {
   }
 }
 

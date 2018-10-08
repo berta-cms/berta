@@ -156,12 +156,13 @@ export class AppStateService {
     return this.cachedSiteStates[site];
   }
 
-  login(user: string, password: string) {
+  login(data) {
     window.localStorage.removeItem('token');
 
     return this.http.post('/_api/v1/login', {
-      'auth_user': user,
-      'auth_pass': password
+      'auth_user': data.username,
+      'auth_pass': data.password,
+      'auth_key': data.token
     }).pipe(
       tap((resp: APIResponse) => {
         if (!resp.data.token) {

@@ -1,4 +1,4 @@
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { State, StateContext, NgxsOnInit, Action, Selector } from '@ngxs/store';
 import { tap } from 'rxjs/operators';
 
@@ -30,19 +30,25 @@ const defaultState: UserStateModel = {
 export class UserState implements NgxsOnInit {
   constructor(
     private appStateService: AppStateService,
-    private router: Router
-  ) {}
+    private router: Router,
+    private route: ActivatedRoute) {}
 
   @Selector()
   static isLoggedIn(state: UserStateModel): boolean {
     return !!state.token;
   }
 
-  ngxsOnInit({ patchState }: StateContext<UserStateModel>) {
+  ngxsOnInit({ patchState, dispatch }: StateContext<UserStateModel>) {
     const name = window.localStorage.getItem('name');
     const token = window.localStorage.getItem('token');
     const features = window.localStorage.getItem('features');
     const profileUrl = window.localStorage.getItem('profileUrl');
+
+    this.route.queryParams.subscribe(params => {
+      if (!token && params.token) {
+        dispatch(new UserLoginAction({token: params.token}));
+      }
+    });
 
     patchState({
       name: name,
@@ -54,7 +60,7 @@ export class UserState implements NgxsOnInit {
 
   @Action(UserLoginAction)
   login({ patchState }: StateContext<UserStateModel>, action: UserLoginAction) {
-    return this.appStateService.login(action.user, action.password).pipe(
+    return this.appStateService.login(action.payload).pipe(
       tap((resp) => {
         patchState({
           name: resp.data.name,

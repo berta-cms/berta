@@ -32,7 +32,7 @@ class AuthController extends Controller
             return new RedirectResponse(\Berta::$options['SITE_ROOT_URL'] . 'engine/login?autherror=1');
         }
         setcookie('token', $token, time() + self::$expiration_time, '/');
-        return new RedirectResponse(\Berta::$options['SITE_ROOT_URL'] . 'engine');
+        return new RedirectResponse(\Berta::$options['SITE_ROOT_URL'] . 'engine/login?token=' . $token);
     }
 
     public function logout()
