@@ -9,8 +9,12 @@ import { UpdateInputFocus } from '../app-state/app.actions';
   template: `
     <div class="user-account-container setting-group">
       <h3>Change password</h3>
-      <div *ngIf="error" class="form-group error-message">{{ error }}</div>
       <form action="" (submit)="changePassword($event)">
+        <div *ngIf="error" class="form-group">
+          <div class="error-message">
+            {{ error }}
+          </div>
+        </div>
         <berta-text-input [label]="'Old password'"
                           [value]="oldPassword"
                           [type]="'password'"
@@ -37,13 +41,14 @@ import { UpdateInputFocus } from '../app-state/app.actions';
 
         <div class="form-group">
           <button type="submit" class="button">Change password</button>
+
+          <div *ngIf="message" class="info-message">{{ message }}</div>
+
+          <div class="setting-description">
+            Password must be at least 6 characters long and containing alphanumeric (A-Z, a-z, 0-9) characters.
+          </div>
         </div>
 
-        <div *ngIf="message" class="form-group info-message">{{ message }}</div>
-
-        <div class="form-group setting-description">
-          Password must be at least 6 characters long and containing alphanumeric (A-Z, a-z, 0-9) characters.
-        </div>
       </form>
     </div>
   `
