@@ -20,9 +20,9 @@ import { AppState } from '../app-state/app.state';
     <h3><img src="/engine/layout/berta.png"></h3>
 
     <div *ngIf="appState.isBertaHosting" class="form-group social-login">
-      <a href="{{ appState.loginUrl }}?remote_redirect={{ appState.authenticateUrl }}&amp;provider=facebook" class="button">
+      <a href="{{ appState.loginUrl }}?remote_redirect={{ appState.authenticateUrl }}&amp;provider=facebook" class="button facebook">
         Log in with Facebook</a>
-      <a href="{{ appState.loginUrl }}?remote_redirect={{ appState.authenticateUrl }}&amp;provider=google" class="button">
+      <a href="{{ appState.loginUrl }}?remote_redirect={{ appState.authenticateUrl }}&amp;provider=google" class="button google">
         Log in with Google</a>
       <p>or</p>
     </div>

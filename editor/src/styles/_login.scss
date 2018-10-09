@@ -19,8 +19,26 @@ berta-login {
     text-align: center;
 
     a {
+      color: $white;
       display: block;
       margin-bottom: 1.3em;
+      transition: background-color .2s;
+
+      &.facebook {
+        background-color: $facebook-color;
+
+        &:hover {
+          background-color: darken($facebook-color, 10%);
+        }
+      }
+
+      &.google {
+        background-color: $google-color;
+
+        &:hover {
+          background-color: darken($google-color, 10%);
+        }
+      }
     }
 
     p {
@@ -48,8 +66,8 @@ berta-login {
     button {
       display: block;
       font-size: $base-font-size;
-      margin-left: auto;
       margin-bottom: 1.3em;
+      margin-left: auto;
       width: 50%;
     }
 
