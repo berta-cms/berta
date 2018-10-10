@@ -30,3 +30,8 @@ export class InitAppStateAction {
   static readonly type = 'APP:INIT';
   constructor(public payload: Partial<AppStateModel>) {}
 }
+
+export class UpdateAppStateAction {
+  static readonly type = 'APP:UPDATE';
+  constructor(public payload: Partial<AppStateModel>) {}
+}

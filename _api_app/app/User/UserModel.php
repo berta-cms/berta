@@ -16,6 +16,7 @@ class UserModel implements
     public $password;
     public $features;
     public $profile_url;
+    public $forgot_password_url;
 
     public function __construct() {
         /** @var {array} $options - Gets the old berta user from PHP file. */
@@ -26,6 +27,7 @@ class UserModel implements
         $this->password = $options['AUTH_password'];
         $this->features = $this->getFeatures();
         $this->profile_url = $this->getHostingData('HOSTING_PROFILE');
+        $this->forgot_password_url = $this->getHostingData('FORGOTPASSWORD_LINK');
     }
 
 

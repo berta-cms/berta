@@ -129,7 +129,7 @@ export class SiteSectionsComponent implements OnInit {
           .reduce((prev, current) => {
             return (prev.order > current.order) ? prev : current;
           });
-        this.router.navigate(['/sections', createdSection.name]);
+        this.router.navigate(['/sections', createdSection.name], { queryParamsHandling: 'preserve' });
       },
       error: (error) => console.error(error)
     });
@@ -148,7 +148,7 @@ export class SiteSectionsComponent implements OnInit {
             });
 
             if (this.currentSection === sectionData.section.name) {
-              this.router.navigate(['/sections', updatedSection.name], {replaceUrl: true});
+              this.router.navigate(['/sections', updatedSection.name], {replaceUrl: true, queryParamsHandling: 'preserve'});
             }
           },
           error: (error) => console.error(error)

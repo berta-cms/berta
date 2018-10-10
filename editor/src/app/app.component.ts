@@ -112,7 +112,9 @@ export class AppComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd),
-      tap((event: NavigationEnd) => this.routeIsRoot = event.url === '/'),
+      tap((event: NavigationEnd) => {
+        return this.routeIsRoot = event.url.split('?')[0] === '/';
+      }),
       mergeMap((event) => this.store.select(AppState).pipe(map((state => [event, state])), take(1))),
       filter(([, state]) => {
         return this.routeIsRoot === state.showOverlay;
@@ -169,7 +171,7 @@ export class AppComponent implements OnInit, OnDestroy {
       filter(isInputFocused => !isInputFocused)
     ).subscribe(() => {
       this.store.dispatch(AppHideOverlay);
-      this.router.navigate(['/']);
+      this.router.navigate(['/'], { queryParamsHandling: 'preserve' });
     });
   }
 
