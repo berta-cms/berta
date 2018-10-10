@@ -13,21 +13,21 @@ import { DeleteSiteAction, CloneSiteAction, UpdateSiteAction, RenameSiteAction }
                                    (inputFocus)="updateComponentFocus($event)"
                                    (update)="updateField('title', $event)"></berta-inline-text-input>
           <div class="expand"></div>
-          <button *ngIf="!modificationDisabled && site['@attributes'].published < 1"
-                  title="Publish"
-                  (click)="updateField('@attributes.published', '1')">
-            Publish
-          </button>
-          <button *ngIf="!modificationDisabled && site['@attributes'].published > 0"
-                  title="Unpublish"
-                  (click)="updateField('@attributes.published', '0')">
-                  Unpublish
+          <button *ngIf="!modificationDisabled"
+                  [attr.title]="site['@attributes'].published > 0 ? 'Unpublish': 'Publish'"
+                  (click)="updateField('@attributes.published', site['@attributes'].published > 0 ? '0' : '1')">
+            <berta-icon-publish [published]="(site['@attributes'].published > 0)"></berta-icon-publish>
           </button>
           <button title="copy"
-                  (click)="cloneSite()">Clone</button>
+                  (click)="cloneSite()">
+            <bt-icon-clone></bt-icon-clone>
+          </button>
           <button *ngIf="!modificationDisabled"
                   title="delete"
-                  (click)="deleteSite()">x</button>
+                  class="delete"
+                  (click)="deleteSite()">
+            <bt-icon-delete></bt-icon-delete>
+          </button>
         </div>
         <div class="url-line">
           <a [routerLink]="['/multisite']"

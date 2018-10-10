@@ -79,7 +79,8 @@ berta-shop-orders {
 
     .edit-icon {
       cursor: pointer;
-      max-height: 1em;
+      margin-left: .15em;
+      max-height: .85em;
 
       .icon {
         transition: fill .2s;
@@ -101,9 +102,33 @@ berta-shop-orders {
       padding: 0;
       transition: color .2s;
 
+      svg {
+        path {
+          fill: $black;
+          transition: fill .2s;
+        }
+      }
+
       &:hover,
       &.active {
         color: $berta-accent;
+
+        svg {
+          path {
+            fill: $berta-accent;
+          }
+        }
+      }
+
+      &.delete {
+        &:hover,
+        &.active {
+          svg {
+            path {
+              fill: $error-color;
+            }
+          }
+        }
       }
     }
   }

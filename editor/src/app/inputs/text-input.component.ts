@@ -11,9 +11,8 @@ import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
       <label>
         <span class="label-text">{{ label }}</span>
         <div class="text-input-wrapper">
-          <svg *ngIf="!hideIcon && showIcon" class="icon-empty" width="20" height="20" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
-            <path class="icon" d="M6 34.5v7.5h7.5l22.13-22.13-7.5-7.5-22.13 22.13zm35.41-20.41c.78-.78.78-2.05 0-2.83l-4.67-4.67c-.78-.78-2.05-.78-2.83 0l-3.66 3.66 7.5 7.5 3.66-3.66z"/>
-            <path d="M0 0h48v48h-48z" fill="none"/>
+          <svg *ngIf="!hideIcon && showIcon" class="icon-empty" xmlns="http://www.w3.org/2000/svg" width="16" height="16" version="1.1" viewBox="0 0 16 16">
+            <path class="icon" d="m3.8 14.6 1-1-2.5-2.5-1 1v1.1h1.4v1.4zm5.5-9.8q0-0.2-0.2-0.2-0.1 0-0.2 0.1l-5.7 5.7q-0.1 0.1-0.1 0.2 0 0.2 0.2 0.2 0.1 0 0.2-0.1l5.7-5.7q0.1-0.1 0.1-0.2zm-0.6-2 4.4 4.4-8.8 8.8h-4.4v-4.4zm7.2 1q0 0.6-0.4 1l-1.8 1.8-4.4-4.4 1.8-1.7q0.4-0.4 1-0.4 0.6 0 1 0.4l2.5 2.5q0.4 0.4 0.4 1z" stroke-width="0"/>
           </svg>
           <input [value]="value"
                  [attr.name]="(name || null)"
