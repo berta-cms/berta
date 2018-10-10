@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 
 import { Observable, combineLatest } from 'rxjs';
@@ -30,8 +29,7 @@ export class AppStateService {
 
   constructor(
     private http: HttpClient,
-    private store: Store,
-    private router: Router) {
+    private store: Store) {
   }
 
   showLoading() {
@@ -86,6 +84,14 @@ export class AppStateService {
       catchError(error => {
           this.hideLoading();
           throw error;
+      })
+    );
+  }
+
+  getAppMetadata() {
+    return this.http.get('/_api/v1/meta').pipe(
+      map((resp: APIResponse) => {
+        return resp.data;
       })
     );
   }
@@ -150,12 +156,13 @@ export class AppStateService {
     return this.cachedSiteStates[site];
   }
 
-  login(user: string, password: string) {
+  login(data) {
     window.localStorage.removeItem('token');
 
     return this.http.post('/_api/v1/login', {
-      'auth_user': user,
-      'auth_pass': password
+      'auth_user': data.username,
+      'auth_pass': data.password,
+      'auth_key': data.token
     }).pipe(
       tap((resp: APIResponse) => {
         if (!resp.data.token) {

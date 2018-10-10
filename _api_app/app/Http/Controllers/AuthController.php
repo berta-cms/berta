@@ -29,10 +29,10 @@ class AuthController extends Controller
     {
         $token = $this->authenticateRequestAndGetToken($request);
         if (!$token) {
-            return new RedirectResponse(\Berta::$options['SITE_ROOT_URL'] . 'engine/login.php?autherror=1');
+            return new RedirectResponse(\Berta::$options['SITE_ROOT_URL'] . 'engine/login?autherror=1');
         }
         setcookie('token', $token, time() + self::$expiration_time, '/');
-        return new RedirectResponse(\Berta::$options['SITE_ROOT_URL'] . 'engine');
+        return new RedirectResponse(\Berta::$options['SITE_ROOT_URL'] . 'engine/login?token=' . $token);
     }
 
     public function logout()

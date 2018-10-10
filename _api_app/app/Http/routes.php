@@ -16,9 +16,11 @@
 // });
 
 $app->post('auth/login', ['uses' => 'AuthController@authenticate', 'middleware' => 'setup']);
-$app->get('auth/login', ['uses' => 'AuthController@authenticate', 'middleware' => 'setup']);
-$app->post('v1/login', ['uses' => 'AuthController@apiLogin', 'middleware' => 'setup']);
+$app->get('auth/login', ['as'=> 'authenticate', 'uses' => 'AuthController@authenticate', 'middleware' => 'setup']);
+$app->post('v1/login', ['as' => 'login', 'uses' => 'AuthController@apiLogin', 'middleware' => 'setup']);
 $app->put('v1/logout', ['uses' => 'AuthController@apiLogout', 'middleware' => 'setup']);
+
+$app->get('v1/meta', ['uses' => 'StateController@getMeta', 'middleware' => 'setup']);
 
 $app->group(['prefix' => 'v1', 'namespace' => 'App', 'middleware' => ['setup', 'auth']], function () use ($app) {
 
