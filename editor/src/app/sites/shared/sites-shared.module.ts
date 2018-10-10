@@ -10,6 +10,7 @@ import { ToggleInputComponent } from '../../inputs/toggle-input.component';
 import { ColorInputComponent } from '../../inputs/color-input.component';
 import { SelectInputComponent } from '../../inputs/select-input.component';
 import { FileInputComponent } from '../../inputs/file-input.component';
+import { IconCloneComponent } from './icon-clone.component';
 
 @NgModule({
   imports: [
@@ -25,7 +26,8 @@ import { FileInputComponent } from '../../inputs/file-input.component';
     ToggleInputComponent,
     ColorInputComponent,
     SelectInputComponent,
-    FileInputComponent
+    FileInputComponent,
+    IconCloneComponent
   ],
   exports: [
     SettingComponent,
@@ -36,7 +38,8 @@ import { FileInputComponent } from '../../inputs/file-input.component';
     ToggleInputComponent,
     ColorInputComponent,
     SelectInputComponent,
-    FileInputComponent
+    FileInputComponent,
+    IconCloneComponent
   ]
 })
 export class SitesSharedModule { }
