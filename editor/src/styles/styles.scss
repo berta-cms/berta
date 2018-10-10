@@ -38,6 +38,7 @@ header {
     line-height: $bt-header-line-height;
     padding: $bt-header-item-padding;
     text-decoration: none;
+    transition: color .2s;
 
     &:hover {
       color: $berta-accent;
@@ -50,13 +51,12 @@ header {
 
   .bt-view-editor {
     background-color: $grey-90;
-    color: #9a9a9a;
+    color: $grey-40;
     cursor: pointer;
     padding: $bt-header-item-padding;
 
     &:hover {
       background-color: $berta-accent;
-      color: #87a7ff;
     }
   }
 }
@@ -79,18 +79,34 @@ berta-profile-dropdown {
 
   .bt-profile-anchor,
   ul > li > * {
+    align-items: center;
     background-color: transparent;
     box-sizing: border-box;
     color: $grey-30;
-    display: block;
+    display: flex;
     font-size: $bt-header-font-size;
+    justify-content: space-between;
     line-height: $bt-header-line-height;
     padding: $bt-header-item-padding;
     text-align: left;
     text-decoration: none;
+    transition: color .2s;
+
+    svg {
+      path {
+        fill: $grey-30;
+        transition: fill .2s;
+      }
+    }
 
     &:hover {
       color: $berta-accent;
+
+      svg {
+        path {
+          fill: $berta-accent;
+        }
+      }
     }
   }
 }
