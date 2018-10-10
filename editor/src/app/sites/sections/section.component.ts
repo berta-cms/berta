@@ -32,7 +32,7 @@ import { DeleteSiteSectionAction, CloneSectionAction } from './sections-state/si
                 (click)="deleteSection()">x</button>
         <button title="settings"
                 [class.active]="isExpanded"
-                [routerLink]="['/sections', (isExpanded ? '' : section.name)]">Settings</button>
+                [routerLink]="['/sections', (isExpanded ? '' : section.name)]" queryParamsHandling="merge">Settings</button>
       </h3>
       <div class="settings">
         <div class="setting">
