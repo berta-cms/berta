@@ -10,6 +10,7 @@
   text-align: center;
   text-decoration: none;
   transition: color .2s, background-color .2s;
+  white-space: nowrap;
 
   &:hover {
     background-color: $berta-accent;

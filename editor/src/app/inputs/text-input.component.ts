@@ -25,7 +25,12 @@ import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
                  (blur)="onBlur($event)">
         </div>
       </label>
-    </div>`
+    </div>`,
+  styles: [`
+    :host {
+      display: block;
+    }
+  `]
 })
 export class TextInputComponent implements OnInit {
   @Input() label?: string;
