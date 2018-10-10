@@ -12,7 +12,8 @@ import {
   RenameSiteSettingsSitenameAction,
   CreateSiteSettingsAction,
   ResetSiteSettingsAction,
-  InitSiteSettingsAction} from './site-settings.actions';
+  InitSiteSettingsAction,
+  UpdateSiteSettingsFromSyncAction} from './site-settings.actions';
 import { UserLoginAction } from '../../user/user.actions';
 
 
@@ -102,6 +103,40 @@ export class SiteSettingsState implements NgxsOnInit {
             return {
               ...settingGroup,
               settings: settingGroup.settings.map(setting => {
+                if (setting.slug !== settingKey) {
+                  return setting;
+                }
+                return { ...setting, value: response.value };
+              })
+            };
+          })});
+        }
+      })
+    );
+  }
+
+  @Action(UpdateSiteSettingsFromSyncAction)
+  updateSiteSettingsFromSync({patchState, getState}: StateContext<SitesSettingsStateModel>, action: UpdateSiteSettingsFromSyncAction) {
+    return this.appStateService.sync('siteSettings', {
+      path: action.path,
+      value: action.payload
+    }).pipe(
+      tap(response => {
+        if (response.error_message) {
+          /* This should probably be handled in sync */
+          console.error(response.error_message);
+        } else {
+          const currentState = getState();
+          const [currentSite, _, settingGroup, settingKey] = action.path.split('/');
+
+          patchState({[currentSite]: currentState[currentSite].map(_settingGroup => {
+            if (_settingGroup.slug !== settingGroup) {
+              return _settingGroup;
+            }
+
+            return {
+              ..._settingGroup,
+              settings: _settingGroup.settings.map(setting => {
                 if (setting.slug !== settingKey) {
                   return setting;
                 }

@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngxs/store';
 import { AppStateService } from '../app-state/app-state.service';
+import { UpdateSiteSettingsFromSyncAction } from '../sites/settings/site-settings.actions';
+import { map, tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +15,10 @@ export class PreviewService {
   }
 
   sync(url, data, method) {
+    /** @todo:
+     * - Trigger appropriate actions to update the state here instead of direct sync
+     * - Trigger correct actions to update the iframe when settings change
+     */
     console.log('Sync through angular');
     console.log('SYNC URL: ' + url);
     console.log('SYNC DATA:', data);
@@ -31,8 +37,30 @@ export class PreviewService {
           value: "<p><strong>FOOTER TEXXXT</strong></p>↵<p></p>"
         }
         SYNC METHOD: PATCH
+
+        To check result:
+        - scope to editor iframe in console
+        - `window.redux_store.getState().siteSettings.getIn(['','[setting group]', '[setting key]'])`
         */
-        break;
+        return this.store.dispatch(new UpdateSiteSettingsFromSyncAction(
+          data.path,
+          data.value
+        ))
+        .pipe(
+          map(state => state.siteSettings),
+          map(state => {
+            const [currentSite, _, settingGroupSlug, settingKey] = data.path.split('/');
+            const settingGroup = state[currentSite].find((group) => group.slug === settingGroupSlug);
+            const setting = settingGroup.settings.find(_setting => _setting.slug === settingKey);
+
+            return {
+              path: data.path,
+              real: setting.value,
+              site: currentSite,
+              update: setting.value,
+              value: setting.value
+            };
+          }));
 
         case 'sites/sections':
         /** trigger section update actions like gallery properties
@@ -41,7 +69,6 @@ export class PreviewService {
         SYNC DATA: {path: "0/section/0/mediaCacheData/@attributes/autoplay", value: "31"}
         SYNC METHOD: PATCH
         */
-        break;
 
         case 'sites/sections/backgrounds':
         /* Background has its own endpoint
@@ -52,14 +79,12 @@ export class PreviewService {
 
         case 'sites/sections/entries':
         /* trigger entry update actions */
-        break;
-    }
 
-    /** @todo:
-     * - Trigger appropriate actions to update the state here instead of direct sync
-     * - Trigger correct actions to update the iframe when settings change
-     */
-    return this.appService.sync(url, data, method);
+        default:
+          console.log('DEFAULT SYNC');
+
+          return this.appService.sync(url, data, method).pipe(tap(resp => console.log(resp)));
+    }
   }
 
   parseSyncUrl(url) {
