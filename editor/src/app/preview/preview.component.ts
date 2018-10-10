@@ -105,7 +105,7 @@ export class PreviewComponent implements OnInit {
           intervalCount++;
           return;
         }
-        if (iframe.contentDocument.body.classList.length === 0 ||
+        if (iframe.contentDocument.body && iframe.contentDocument.body.classList.length === 0 ||
             !/(xContent|xSectionType)-/.test(iframe.contentDocument.body.className)) {
               lastError = 'Berta classes `xContent-[]` or `xSectionType-` are missing from body element';
               intervalCount++;
