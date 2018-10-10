@@ -12,6 +12,7 @@ import { SelectInputComponent } from '../../inputs/select-input.component';
 import { FileInputComponent } from '../../inputs/file-input.component';
 import { IconCloneComponent } from './icon-clone.component';
 import { IconDeleteComponent } from './icon-delete.component';
+import { IconPublishComponent } from './icon-publish.component';
 
 @NgModule({
   imports: [
@@ -29,7 +30,8 @@ import { IconDeleteComponent } from './icon-delete.component';
     SelectInputComponent,
     FileInputComponent,
     IconCloneComponent,
-    IconDeleteComponent
+    IconDeleteComponent,
+    IconPublishComponent
   ],
   exports: [
     SettingComponent,
@@ -42,7 +44,8 @@ import { IconDeleteComponent } from './icon-delete.component';
     SelectInputComponent,
     FileInputComponent,
     IconCloneComponent,
-    IconDeleteComponent
+    IconDeleteComponent,
+    IconPublishComponent
   ]
 })
 export class SitesSharedModule { }
