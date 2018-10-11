@@ -5,6 +5,8 @@ import { Store } from '@ngxs/store';
 import { UserState } from '../user/user.state';
 import { PreviewService } from './preview.service';
 import { AppShowLoading } from '../app-state/app.actions';
+import { map, switchMap } from 'rxjs/operators';
+import { AppState } from '../app-state/app.state';
 
 
 @Component({
@@ -42,15 +44,22 @@ export class PreviewComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.store.select(UserState.isLoggedIn).subscribe(isLoggedIn => {
-      let url = location.protocol + '//' + location.hostname;
-
-      if (isLoggedIn) {
-        url += '/engine/editor/';
-      }
-
-      this.previewUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
-    });
+    this.store.select(UserState.isLoggedIn)
+      .pipe(
+        map(isLoggedIn => {
+          return location.protocol + '//' + location.hostname + (isLoggedIn ? '/engine/editor/' : '');
+        }),
+        switchMap(location => {
+          return this.store.select(AppState.getSite).pipe(
+            map(site => {
+              return site ? location + `?site=${site}` : location;
+            })
+          );
+        })
+      )
+      .subscribe(url => {
+        this.previewUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
+      });
   }
 
   onLoad(event) {
@@ -93,6 +102,7 @@ export class PreviewComponent implements OnInit {
         if (intervalCount >= maxChecks) {
           clearInterval(loadCheck);
           observer.error({message: 'Could not load iframe: ' + lastError, data: iframe});
+          observer.complete();
           return;
         }
         if (!iframe.contentDocument) {
@@ -105,8 +115,10 @@ export class PreviewComponent implements OnInit {
           intervalCount++;
           return;
         }
-        if (iframe.contentDocument.body && iframe.contentDocument.body.classList.length === 0 ||
-            !/(xContent|xSectionType)-/.test(iframe.contentDocument.body.className)) {
+        if (iframe.contentDocument.body &&
+            (iframe.contentDocument.body.classList.length === 0 ||
+            !/(xContent|xSectionType)-/.test(iframe.contentDocument.body.className))
+        ) {
               lastError = 'Berta classes `xContent-[]` or `xSectionType-` are missing from body element';
               intervalCount++;
               return;
