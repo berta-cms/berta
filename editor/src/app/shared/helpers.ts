@@ -182,3 +182,20 @@ export function initSettingConfigGroup(settingGroupConfigResponse: SettingConfig
 
   return result;
 }
+
+/**
+ * Create nested JSON objects according to given path and return it
+ *
+ * Path parts will be used as object keys
+ *
+ * @param path Path string, from which object keys will be generated
+ * @param value value to set for the deepest object key
+ * @example:
+ * mediaCacheData/@attributes/autoplay => {{mediaCacheData:{"@attributes":{autoplay: null}}}}
+ */
+export function pathToObject(path: string, value: any = null) {
+  const pathArr = path.split('/');
+  return pathArr.reverse().reduce((obj, curKey) => {
+    return {[curKey]: obj};
+  }, value);
+}
