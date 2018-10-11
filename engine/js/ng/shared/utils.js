@@ -34,7 +34,7 @@
     return promise
       .catch(function (error) {
         /** @todo: create error state/reducer to manage failed requests and other app errors */
-        console.error('Request failed:', error.message);
+        console.error('Request failed:', error);
       });
   };
 
