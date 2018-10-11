@@ -83,6 +83,12 @@ export class PreviewComponent implements OnInit {
           });
 
         };
+
+        /* Trigger changes from this app to the iframe app */
+        this.service.connectIframeView(iframe);
+        iframe.contentWindow.onbeforeunload = () => {
+          this.service.disconnectIframeView();
+        };
       },
       error: (error) => {
         console.error(error);

@@ -1,17 +1,26 @@
 import { Injectable } from '@angular/core';
-import { Store } from '@ngxs/store';
-import { map, tap } from 'rxjs/operators';
+
+import { Store, Actions, ofActionSuccessful } from '@ngxs/store';
 import { AppStateService } from '../app-state/app-state.service';
-import { UpdateSiteSettingsFromSyncAction } from '../sites/settings/site-settings.actions';
 import { UpdateSiteSectionFromSyncAction } from '../sites/sections/sections-state/site-sections.actions';
+import { UpdateSiteSettingsFromSyncAction } from '../sites/settings/site-settings.actions';
+import { map, tap, switchMap, take } from 'rxjs/operators';
+import { UpdateSiteTemplateSettingsAction } from '../sites/template-settings/site-template-settings.actions';
+import { SiteTemplateSettingsState } from '../sites/template-settings/site-template-settings.state';
+import { combineLatest, Subscription } from 'rxjs';
+import { AppState } from '../app-state/app.state';
+import { SiteSettingsState } from '../sites/settings/site-settings.state';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class PreviewService {
+  private iframeUpdateSubscriptions: Subscription[] = [];
 
   constructor(
     private appService: AppStateService,
+    private actions$: Actions,
     private store: Store) {
   }
 
@@ -107,6 +116,45 @@ export class PreviewService {
 
           return this.appService.sync(url, data, method).pipe(tap(resp => console.log(resp)));
     }
+  }
+
+  connectIframeView(iframe: HTMLIFrameElement) {
+    this.iframeUpdateSubscriptions.push(this.actions$.pipe(
+      ofActionSuccessful(UpdateSiteTemplateSettingsAction),
+      switchMap(action => {
+        return combineLatest(
+          this.store.select(SiteTemplateSettingsState.getCurrentSiteTemplateSettings).pipe(
+           map(siteTemplateSettings => {
+            const settingKey = Object.keys(action.payload)[0];
+            const settingGroup = siteTemplateSettings.find((group) => group.slug === action.settingGroup);
+            const setting = settingGroup.settings.find(_setting => _setting.slug === settingKey);
+             return {
+               path: action.settingGroup + '/' + settingKey,
+               value: setting.value
+             };
+           })
+         ),
+         this.store.select(AppState.getSite),
+         this.store.select(SiteSettingsState.getCurrentSiteTemplate)
+        ).pipe(take(1));
+      })
+    ).subscribe(([update, siteSlug, templateSlug]) => {
+      iframe.contentWindow['redux_store'].dispatch(
+        iframe.contentWindow['Actions'].updateSiteTemplateSettings({
+          path: `${siteSlug}/site_template_settings/${templateSlug}/${update.path}`,
+          site: siteSlug,
+          value: update.value,
+          real: update.value,
+          update: update.value
+        }));
+    }));
+  }
+
+  disconnectIframeView() {
+    this.iframeUpdateSubscriptions.forEach(subscription => {
+      subscription.unsubscribe();
+    });
+    this.iframeUpdateSubscriptions = [];
   }
 
   parseSyncUrl(url) {
