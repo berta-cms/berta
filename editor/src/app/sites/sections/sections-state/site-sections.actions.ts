@@ -21,6 +21,13 @@ export class UpdateSiteSectionAction {
   }
 }
 
+export class UpdateSiteSectionFromSyncAction {
+  static readonly type = 'SITE_SECTION:UPDATE:SYNC';
+  constructor(public path: string,
+              public payload: any) {
+  }
+}
+
 export class RenameSiteSectionAction {
   static readonly type = 'SITE_SECTION:RENAME';
   constructor(public section: SiteSectionStateModel,

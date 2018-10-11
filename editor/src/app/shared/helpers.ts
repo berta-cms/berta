@@ -199,3 +199,25 @@ export function pathToObject(path: string, value: any = null) {
     return {[curKey]: obj};
   }, value);
 }
+
+/**
+ * Assign value to object by path and return updated object
+ *
+ * @param obj Object to update
+ * @param path Path string from which object keys will be updated
+ * @param value value to update
+ */
+export function assignByPath(obj: any, path: string, value: any) {
+  const pathArr = path.replace(/^\//, '').split('/');
+  const key = pathArr[0];
+  const rest = pathArr.slice(1).join('/');
+
+  if (!rest) {
+    return {...obj, [key]: value};
+  }
+  if (key in obj) {
+    return {...obj, [key]: assignByPath(obj[key], rest, value)};
+  } else {
+    return {...obj, [key]: pathToObject(rest, value) };
+  }
+}

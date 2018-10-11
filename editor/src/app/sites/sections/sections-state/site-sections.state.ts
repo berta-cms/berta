@@ -3,11 +3,13 @@ import { concat } from 'rxjs';
 import { take, switchMap, tap } from 'rxjs/operators';
 import { Store, State, Action, StateContext, Selector, NgxsOnInit, Actions, ofActionSuccessful } from '@ngxs/store';
 
+import { assignByPath } from 'src/app/shared/helpers';
 import { SiteSectionStateModel } from './site-sections-state.model';
 import { AppStateService } from '../../../app-state/app-state.service';
 import { AppState } from '../../../app-state/app.state';
 import {
   UpdateSiteSectionAction,
+  UpdateSiteSectionFromSyncAction,
   DeleteSiteSectionsAction,
   RenameSiteSectionsSitenameAction,
   DeleteSiteSectionAction,
@@ -136,6 +138,34 @@ export class SiteSectionsState implements NgxsOnInit {
               return { ...section, ...action.payload, ...{ '@attributes': attributes } };
             }
             return { ...section, ...action.payload };  // Deep set must be done here for complex properties
+          }));
+        }
+      })
+    );
+  }
+
+  @Action(UpdateSiteSectionFromSyncAction)
+  updateSiteSettingsFromSync({setState, getState}: StateContext<SiteSectionStateModel[]>, action: UpdateSiteSectionFromSyncAction) {
+    return this.appStateService.sync('siteSections', {
+      path: action.path,
+      value: action.payload
+    }).pipe(
+      tap(response => {
+        if (response.error_message) {
+          /* This should probably be handled in sync */
+          console.error(response.error_message);
+        } else {
+          const state = getState();
+          const path = action.path.split('/');
+          const [currentSite, _, sectionOrder] = path;
+          const siteName = currentSite === '0' ? '' : currentSite;
+
+          setState(state.map(section => {
+            if (section.site_name !== siteName || section.order !== parseInt(sectionOrder, 10)) {
+              return section;
+            }
+
+            return assignByPath(section, path.slice(3).join('/'), action.payload);
           }));
         }
       })

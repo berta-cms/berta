@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngxs/store';
+import { map, tap } from 'rxjs/operators';
 import { AppStateService } from '../app-state/app-state.service';
 import { UpdateSiteSettingsFromSyncAction } from '../sites/settings/site-settings.actions';
-import { map, tap } from 'rxjs/operators';
+import { UpdateSiteSectionFromSyncAction } from '../sites/sections/sections-state/site-sections.actions';
 
 @Injectable({
   providedIn: 'root'
@@ -63,12 +64,34 @@ export class PreviewService {
           }));
 
         case 'sites/sections':
-        /** trigger section update actions like gallery properties
-         * @example:
-        SYNC URL: http://local.berta.me/_api/v1/sites/sections
-        SYNC DATA: {path: "0/section/0/mediaCacheData/@attributes/autoplay", value: "31"}
-        SYNC METHOD: PATCH
-        */
+          /** trigger section update actions like gallery properties
+           * @example:
+          SYNC URL: http://local.berta.me/_api/v1/sites/sections
+          SYNC DATA: {path: "0/section/0/mediaCacheData/@attributes/autoplay", value: "31"}
+          SYNC METHOD: PATCH
+          */
+          return this.store.dispatch(new UpdateSiteSectionFromSyncAction(
+            data.path,
+            data.value
+          ))
+          .pipe(
+            map(state => state.siteSections),
+            map(state => {
+              const path = data.path.split('/');
+              const [currentSite, _, sectionOrder] = path;
+              const siteName = currentSite === '0' ? '' : currentSite;
+              const section = state.find(_section => _section.site_name === siteName && _section.order === parseInt(sectionOrder, 10));
+
+              return {
+                order: section.order,
+                path: data.path,
+                real: data.value,
+                site: siteName,
+                update: data.value,
+                value: data.value,
+                section: section
+              };
+            }));
 
         case 'sites/sections/backgrounds':
         /* Background has its own endpoint
