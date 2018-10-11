@@ -30,16 +30,16 @@ import { UserLoginAction } from '../../user/user.actions';
 })
 export class SiteTemplateSettingsState implements NgxsOnInit {
 
-  @Selector([AppState, SiteSettingsState.getCurrentSiteTemplate])
+  @Selector([AppState.getSite, SiteSettingsState.getCurrentSiteTemplate])
   static getCurrentSiteTemplateSettings(
     state: SiteTemplateSettingsState,
-    appState: AppStateModel,
+    site: string,
     currentTemplateSlug: string) {
 
-    if (!(state && appState && currentTemplateSlug && state[appState.site])) {
+    if (!(state && currentTemplateSlug && state[site])) {
       return;
     }
-    return state[appState.site][currentTemplateSlug];
+    return state[site][currentTemplateSlug];
   }
 
   @Selector([SiteTemplateSettingsState.getCurrentSiteTemplateSettings])
