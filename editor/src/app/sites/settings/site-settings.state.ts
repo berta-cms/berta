@@ -134,14 +134,21 @@ export class SiteSettingsState implements NgxsOnInit {
               return _settingGroup;
             }
 
+            if (_settingGroup.settings.some(setting => setting.slug === settingKey)) {
+              return {
+                ..._settingGroup,
+                settings: _settingGroup.settings.map(setting => {
+                  if (setting.slug !== settingKey) {
+                    return setting;
+                  }
+                  return { ...setting, value: response.value };
+                })
+              };
+            }
+
             return {
               ..._settingGroup,
-              settings: _settingGroup.settings.map(setting => {
-                if (setting.slug !== settingKey) {
-                  return setting;
-                }
-                return { ...setting, value: response.value };
-              })
+              settings: [..._settingGroup.settings, {slug: settingKey, value: response.value}]
             };
           })});
         }
