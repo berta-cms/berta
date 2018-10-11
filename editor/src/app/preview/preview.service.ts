@@ -77,8 +77,7 @@ export class PreviewService {
           .pipe(
             map(state => state.siteSections),
             map(state => {
-              const path = data.path.split('/');
-              const [currentSite, _, sectionOrder] = path;
+              const [currentSite, _, sectionOrder] = data.path.split('/');
               const siteName = currentSite === '0' ? '' : currentSite;
               const section = state.find(_section => _section.site_name === siteName && _section.order === parseInt(sectionOrder, 10));
 
