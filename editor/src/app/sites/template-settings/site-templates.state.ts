@@ -70,8 +70,7 @@ export class SiteTemplatesState implements NgxsOnInit {
     this.store.select(SiteSettingsState.getCurrentSiteLanguage).pipe(
       pairwise(),
       filter(([prevLang, lang]) => !!prevLang && prevLang !== lang),
-      map(lang => lang[1])
-    ).subscribe(language => {
+    ).subscribe(([, language]) => {
       this.appStateService.getLocaleSettings(language, 'siteTemplates').pipe(take(1)).subscribe({
         next: (siteTemplateResponse: SiteTemplatesResponseModel) => {
           dispatch(new InitSiteTemplatesAction(siteTemplateResponse));

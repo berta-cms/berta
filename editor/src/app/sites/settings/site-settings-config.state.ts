@@ -37,17 +37,16 @@ export class SiteSettingsConfigState implements NgxsOnInit {
 
     // Listen for language change
     this.store.select(SiteSettingsState.getCurrentSiteLanguage).pipe(
-        pairwise(),
-        filter(([prevLang, lang]) => !!prevLang && prevLang !== lang),
-        map(lang => lang[1])
-      ).subscribe(language => {
-        this.appStateService.getLocaleSettings(language, 'siteSettingsConfig').pipe(take(1)).subscribe({
-          next: (siteSettingsConfig: SiteSettingsConfigResponse) => {
-            dispatch(new InitSiteSettingsConfigAction(siteSettingsConfig));
-          },
-          error: (error) => console.error(error)
-        });
+      pairwise(),
+      filter(([prevLang, lang]) => !!prevLang && prevLang !== lang),
+    ).subscribe(([, language]) => {
+      this.appStateService.getLocaleSettings(language, 'siteSettingsConfig').pipe(take(1)).subscribe({
+        next: (siteSettingsConfig: SiteSettingsConfigResponse) => {
+          dispatch(new InitSiteSettingsConfigAction(siteSettingsConfig));
+        },
+        error: (error) => console.error(error)
       });
+    });
   }
 
   @Action(ResetSiteSettingsConfigAction)
