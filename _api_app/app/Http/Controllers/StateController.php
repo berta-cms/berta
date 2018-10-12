@@ -113,8 +113,7 @@ class StateController extends Controller
      */
     public function getLocaleSettings(Request $request)
     {
-        $json = $request->json()->all();
-        $lang = $json['language'];
+        $lang = $request->query('language');
 
         $siteTemplatesConfigService = new SiteTemplatesConfigService();
         $state['siteTemplates'] = $siteTemplatesConfigService->get($lang);

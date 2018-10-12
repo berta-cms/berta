@@ -1,6 +1,6 @@
 import { concat } from 'rxjs';
-import { take, switchMap } from 'rxjs/operators';
-import { State, StateContext, Selector, NgxsOnInit, Action, Actions, ofActionSuccessful } from '@ngxs/store';
+import { take, switchMap, pairwise, filter, map } from 'rxjs/operators';
+import { Store, State, StateContext, Selector, NgxsOnInit, Action, Actions, ofActionSuccessful } from '@ngxs/store';
 import {
   SiteTemplatesStateModel,
   TemplateSiteModel,
@@ -47,6 +47,7 @@ export class SiteTemplatesState implements NgxsOnInit {
   }
 
   constructor(
+    private store: Store,
     private actions$: Actions,
     private appStateService: AppStateService) {
   }
@@ -63,6 +64,20 @@ export class SiteTemplatesState implements NgxsOnInit {
         dispatch(new InitSiteTemplatesAction(siteTemplateResponse));
       },
       error: (error) => console.error(error)
+    });
+
+    // Listen for language change
+    this.store.select(SiteSettingsState.getCurrentSiteLanguage).pipe(
+      pairwise(),
+      filter(([prevLang, lang]) => !!prevLang && prevLang !== lang),
+      map(lang => lang[1])
+    ).subscribe(language => {
+      this.appStateService.getLocaleSettings(language, 'siteTemplates').pipe(take(1)).subscribe({
+        next: (siteTemplateResponse: SiteTemplatesResponseModel) => {
+          dispatch(new InitSiteTemplatesAction(siteTemplateResponse));
+        },
+        error: (error) => console.error(error)
+      });
     });
   }
 
