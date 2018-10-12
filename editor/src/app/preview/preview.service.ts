@@ -22,7 +22,7 @@ import { CreateSiteAction, DeleteSiteAction, UpdateSiteAction } from '../sites/s
   providedIn: 'root'
 })
 export class PreviewService {
-  private iframeUpdateSubscriptions: Subscription[] = [];
+  private iframeReloadSubscription: Subscription;
 
   constructor(
     private appService: AppStateService,
@@ -129,7 +129,7 @@ export class PreviewService {
       Reload the preview iframe after settings affecting preview change
       Because we don't have preview renderer in frontend yet.
      */
-    this.actions$.pipe(
+    this.iframeReloadSubscription = this.actions$.pipe(
       ofActionSuccessful(
         ...[
           CreateSiteAction,
@@ -158,10 +158,7 @@ export class PreviewService {
   }
 
   disconnectIframeView() {
-    this.iframeUpdateSubscriptions.forEach(subscription => {
-      subscription.unsubscribe();
-    });
-    this.iframeUpdateSubscriptions = [];
+    this.iframeReloadSubscription.unsubscribe();
   }
 
   parseSyncUrl(url) {
