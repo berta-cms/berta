@@ -10,11 +10,12 @@ import {
   DeleteSiteSectionAction,
   DeleteSiteSectionsAction
 } from '../sites/sections/sections-state/site-sections.actions';
-import { UpdateSiteSettingsFromSyncAction } from '../sites/settings/site-settings.actions';
+import { UpdateSiteSettingsFromSyncAction, UpdateSiteSettingsAction } from '../sites/settings/site-settings.actions';
 import { map, tap, buffer, filter, scan } from 'rxjs/operators';
 import { UpdateSiteTemplateSettingsAction } from '../sites/template-settings/site-template-settings.actions';
 import { Subscription } from 'rxjs';
 import { AppState } from '../app-state/app.state';
+import { CreateSiteAction, DeleteSiteAction, UpdateSiteAction } from '../sites/sites-state/sites.actions';
 
 
 @Injectable({
@@ -131,14 +132,15 @@ export class PreviewService {
     this.actions$.pipe(
       ofActionSuccessful(
         ...[
-          // CreateSectionAction,  // Possibly only reload on site created action
+          CreateSiteAction,
+          UpdateSiteAction,
+          DeleteSiteAction,
           AddSiteSectionsAction,
           UpdateSiteSectionAction,
           RenameSiteSectionAction,
           DeleteSiteSectionAction,  // *
           DeleteSiteSectionsAction,
-          // CreateSiteSettingsAction  // This is called when site is created, so react on that
-          // DeleteSiteSettingsAction  /
+          UpdateSiteSettingsAction,
           UpdateSiteTemplateSettingsAction
         ]
       ),
