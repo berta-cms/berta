@@ -75,6 +75,7 @@ export class SiteSectionsState implements NgxsOnInit {
           const state = getState();
           const newSiteSection: SiteSectionStateModel = response.section;
 
+          /** @todo: possibly trigger AddSiteSectionsAction to decrease action clutter */
           setState(
             [...state, newSiteSection]
           );
@@ -229,6 +230,7 @@ export class SiteSectionsState implements NgxsOnInit {
           // @TODO handle error message
           console.error(response.error_message);
         } else {
+          /** @todo: considder triggering `DeleteSiteSectionsAction` to reduce action clutter */
           const state = getState();
           let order = -1;
 
