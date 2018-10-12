@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use App\Configuration\SiteSettingsConfigService;
 use App\Configuration\SiteTemplatesConfigService;
 use App\Shared\Helpers;
@@ -27,6 +28,7 @@ class StateController extends Controller
             'sites' => route('sites'),
             'siteSettings' => route('site_settings'),
             'siteTemplateSettings' => route('site_template_settings'),
+            'localeSettings' => route('locale_settings'),
             'siteSections' => route('site_sections'),
             'siteSectionsReset' => route('site_sections_reset'),
             'siteSectionBackgrounds' => route('site_section_backgrounds'),
@@ -82,10 +84,6 @@ class StateController extends Controller
         }
 
         $state['siteTemplates'] = $siteTemplatesConfigService->get($lang);
-
-        /**
-         * @todo Add siteSettingsConfig in redux store
-         */
         $state['siteSettingsConfig'] = $siteSettingsConfigService->get($lang);
 
         return response()->json($state);
@@ -105,5 +103,25 @@ class StateController extends Controller
         ];
 
         return Helpers::api_response('', $meta);
+    }
+
+    /**
+     * Returns translated settings for site localization: templates and settings config
+     *
+     * @param Request $request
+     * @return json
+     */
+    public function getLocaleSettings(Request $request)
+    {
+        $json = $request->json()->all();
+        $lang = $json['language'];
+
+        $siteTemplatesConfigService = new SiteTemplatesConfigService();
+        $state['siteTemplates'] = $siteTemplatesConfigService->get($lang);
+
+        $siteSettingsConfigService = new SiteSettingsConfigService();
+        $state['siteSettingsConfig'] = $siteSettingsConfigService->get($lang);
+
+        return response()->json($state);
     }
 }
