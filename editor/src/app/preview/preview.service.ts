@@ -2,7 +2,9 @@ import { Injectable } from '@angular/core';
 
 import { Store, Actions, ofActionSuccessful } from '@ngxs/store';
 import { AppStateService } from '../app-state/app-state.service';
-import { UpdateSiteSectionFromSyncAction } from '../sites/sections/sections-state/site-sections.actions';
+import {
+  UpdateSiteSectionFromSyncAction,
+  DeleteSiteSectionBackgroundFromSyncAction } from '../sites/sections/sections-state/site-sections.actions';
 import { UpdateSiteSettingsFromSyncAction } from '../sites/settings/site-settings.actions';
 import { map, tap, switchMap, take } from 'rxjs/operators';
 import { UpdateSiteTemplateSettingsAction } from '../sites/template-settings/site-template-settings.actions';
@@ -102,11 +104,29 @@ export class PreviewService {
             }));
 
         case 'sites/sections/backgrounds':
-        /* Background has its own endpoint
-          SYNC URL: http://local.berta.me/_api/v1/sites/sections/backgrounds
-          preview.service.ts:18 SYNC DATA: {site: "0", section: "maig", file: "chrome_2018-03-21_15-39-07.jpg"}
-          preview.service.ts:19 SYNC METHOD: DELETE
-        */
+          /* Background has its own endpoint
+            SYNC URL: http://local.berta.me/_api/v1/sites/sections/backgrounds
+            preview.service.ts:18 SYNC DATA: {site: "0", section: "maig", file: "chrome_2018-03-21_15-39-07.jpg"}
+            preview.service.ts:19 SYNC METHOD: DELETE
+          */
+          if (method === 'DELETE') {
+            return this.store.dispatch(new DeleteSiteSectionBackgroundFromSyncAction(
+              data.site,
+              data.section,
+              data.file
+            ))
+            .pipe(
+              tap(() => {
+                return {
+                  site: data.site,
+                  section: data.section,
+                  file: data.file
+                };
+              }));
+
+          } else {
+            // update order
+          }
 
         case 'sites/sections/entries':
         /* trigger entry update actions */

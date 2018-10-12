@@ -18,7 +18,8 @@ import {
   RenameSiteSectionAction,
   AddSiteSectionsAction,
   ResetSiteSectionsAction,
-  InitSiteSectionsAction} from './site-sections.actions';
+  InitSiteSectionsAction,
+  DeleteSiteSectionBackgroundFromSyncAction} from './site-sections.actions';
 import { DeleteSectionTagsAction, RenameSectionTagsAction, AddSectionTagsAction } from '../tags/section-tags.actions';
 import {
   DeleteSectionEntriesAction,
@@ -169,6 +170,18 @@ export class SiteSectionsState implements NgxsOnInit {
           }));
         }
       })
+    );
+  }
+
+  @Action(DeleteSiteSectionBackgroundFromSyncAction)
+  deleteSiteSectionBackgroundFromSync({}, action: DeleteSiteSectionBackgroundFromSyncAction) {
+    // This action won't modify state, background reorder action will do this
+    return this.appStateService.sync('siteSectionBackgrounds', {
+      site: action.site,
+      section: action.section,
+      file: action.file
+      },
+      'DELETE'
     );
   }
 
