@@ -1,6 +1,6 @@
 import { Store, State, StateContext, NgxsOnInit, Action, Actions, ofActionSuccessful } from '@ngxs/store';
 import { concat } from 'rxjs';
-import { take, switchMap, filter, pairwise, map } from 'rxjs/operators';
+import { take, switchMap, filter, pairwise } from 'rxjs/operators';
 import { SiteSettingsConfigStateModel, SiteSettingsConfigResponse } from './site-settings-config.interface';
 import { AppStateService } from '../../app-state/app-state.service';
 import { initSettingConfigGroup } from '../../shared/helpers';
@@ -38,14 +38,10 @@ export class SiteSettingsConfigState implements NgxsOnInit {
     // Listen for language change
     this.store.select(SiteSettingsState.getCurrentSiteLanguage).pipe(
       pairwise(),
-      filter(([prevLang, lang]) => !!prevLang && prevLang !== lang),
-    ).subscribe(([, language]) => {
-      this.appStateService.getLocaleSettings(language, 'siteSettingsConfig').pipe(take(1)).subscribe({
-        next: (siteSettingsConfig: SiteSettingsConfigResponse) => {
-          dispatch(new InitSiteSettingsConfigAction(siteSettingsConfig));
-        },
-        error: (error) => console.error(error)
-      });
+      filter(([prevLang, lang]) => !!prevLang && !!lang && prevLang !== lang),
+      switchMap(([, language]) => this.appStateService.getLocaleSettings(language, 'siteSettingsConfig').pipe(take(1)))
+    ).subscribe((siteSettingsConfig: SiteSettingsConfigResponse) => {
+      dispatch(new InitSiteSettingsConfigAction(siteSettingsConfig));
     });
   }
 
