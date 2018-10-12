@@ -148,7 +148,7 @@ return array(
 	/* setting name */ 'Banner image' => 'Bannera attēls',
 	/* setting name */ 'Banner link' => 'Bannera saite',
 
-	/* setting tab */ 'Language' => 'Language',
+	/* setting tab */ 'Language' => 'Lokalizācija',
 	/* setting name */ 'Interface language' => 'Valoda',
 
 	/* setting tab */ 'Other settings' => 'Dažādi',
@@ -320,7 +320,7 @@ return array(
 	'description_menu_position' => 'Izvēlnes pozicionēšana',
 	'description_banner' => 'Banners are images which are visible in all sections. Use it for buttons or social icons in your site. Displayed image will be half of the original size, full size will be used for hi-res displays.',
 	'description_banner_link' => 'Bannera saite. Adreses priekšā neaizmirsti pievienot http:// (piem.: http://www.berta.me)',
-	'description_language' => 'Choose language of berta interface. Refresh site to apply.',
+	'description_language' => 'Izvēlies interfeisa valodu.',
 	'Heading position' => 'Galvenes pozīcija',
 	'description_heading_position' => 'Galvenes novietojums, fiksēts vai nefiksēts',
 	'description_submenu_alwaysopen' => 'Apakšizvēlnes ir vienmēr atvērtas.',
@@ -384,6 +384,4 @@ return array(
 	'seo_help_text' => 'Search Engine Optimization (SEO) palīdz uzlabot mājaslapas reitingu Google meklēšanas rezultātos. <a href="https://support.google.com/webmasters/answer/35624" target="_blank">Uzzini vairāk, kā tas strādā</a>.',
 	'Keywords' => 'Atslēgvārdi',
 	'Content description' => 'Satura apraksts',
-)
-
-?>
+);
