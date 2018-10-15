@@ -26,6 +26,7 @@ const MAX_REQUEST_RETRIES = 100;
 export class AppStateService {
 
   cachedSiteStates: {[k: string]: Observable<{[k: string]: any}>} = {};
+  cachedLocaleSettings: {[k: string]: Observable<{[k: string]: any}>} = {};
 
   constructor(
     private http: HttpClient,
@@ -53,6 +54,7 @@ export class AppStateService {
         this.showLoading();
         return this.http.request<any>(method, (appState.urls[urlName] || urlName), {
           body: method === 'GET' ? undefined : data,
+          params: method === 'GET' ? data : undefined,
           headers: {
               'Accept': 'application/json',
               'Content-Type': 'application/json',
@@ -154,6 +156,21 @@ export class AppStateService {
     }
 
     return this.cachedSiteStates[site];
+  }
+
+  getLocaleSettings(language: string = 'en', stateSlice?: string, force = false) {
+    if (!this.cachedLocaleSettings[language] || force) {
+      this.cachedLocaleSettings[language] = this.sync('localeSettings', {language: language}, 'GET')
+        .pipe(
+          shareReplay(CACHE_SIZE)
+        );
+    }
+
+    if (stateSlice) {
+      return this.cachedLocaleSettings[language].pipe(map(stateCache => stateCache[stateSlice]));
+    }
+
+    return this.cachedLocaleSettings[language];
   }
 
   login(data) {
