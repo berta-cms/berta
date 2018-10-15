@@ -84,8 +84,8 @@ export class PreviewComponent implements OnInit {
 
         };
 
-        /* Trigger changes from this app to the iframe app */
-        this.service.connectIframeView(iframe);
+        /* Reload the iframe when the settings change */
+        this.service.connectIframeReload(iframe);
         iframe.contentWindow.onbeforeunload = () => {
           this.service.disconnectIframeView();
         };
