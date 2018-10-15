@@ -122,14 +122,6 @@ export class PreviewService {
               file: data.file
               },
               'DELETE'
-            ).pipe(
-              map(() => {
-                return {
-                  site: data.site,
-                  section: data.section,
-                  file: data.file
-                };
-              })
             );
 
           } else {
