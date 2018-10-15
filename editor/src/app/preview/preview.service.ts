@@ -4,7 +4,8 @@ import { Store, Actions, ofActionSuccessful } from '@ngxs/store';
 import { AppStateService } from '../app-state/app-state.service';
 import {
   UpdateSiteSectionFromSyncAction,
-  DeleteSiteSectionBackgroundFromSyncAction } from '../sites/sections/sections-state/site-sections.actions';
+  DeleteSiteSectionBackgroundFromSyncAction,
+  UpdateSiteSectionBackgroundFromSyncAction} from '../sites/sections/sections-state/site-sections.actions';
 import { UpdateSiteSettingsFromSyncAction } from '../sites/settings/site-settings.actions';
 import { map, tap, switchMap, take } from 'rxjs/operators';
 import { UpdateSiteTemplateSettingsAction } from '../sites/template-settings/site-template-settings.actions';
@@ -125,7 +126,23 @@ export class PreviewService {
               }));
 
           } else {
-            // update order
+            return this.store.dispatch(new UpdateSiteSectionBackgroundFromSyncAction(
+              data.site,
+              data.section,
+              data.files
+            ))
+            .pipe(
+              map(state => state.siteSections),
+              map(state => {
+                const section = state.find(_section => _section.site_name === data.site && _section.name === data.section);
+
+                return {
+                  site: data.site,
+                  section: data.section,
+                  files: section.mediaCacheData.file,
+                  mediafolder: section.mediafolder
+                };
+              }));
           }
 
         case 'sites/sections/entries':

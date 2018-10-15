@@ -19,7 +19,8 @@ import {
   AddSiteSectionsAction,
   ResetSiteSectionsAction,
   InitSiteSectionsAction,
-  DeleteSiteSectionBackgroundFromSyncAction} from './site-sections.actions';
+  DeleteSiteSectionBackgroundFromSyncAction,
+  UpdateSiteSectionBackgroundFromSyncAction} from './site-sections.actions';
 import { DeleteSectionTagsAction, RenameSectionTagsAction, AddSectionTagsAction } from '../tags/section-tags.actions';
 import {
   DeleteSectionEntriesAction,
@@ -175,13 +176,43 @@ export class SiteSectionsState implements NgxsOnInit {
 
   @Action(DeleteSiteSectionBackgroundFromSyncAction)
   deleteSiteSectionBackgroundFromSync({}, action: DeleteSiteSectionBackgroundFromSyncAction) {
-    // This action won't modify state, background reorder action will do this
+    // This action won't modify state, following background reorder action will do this
     return this.appStateService.sync('siteSectionBackgrounds', {
       site: action.site,
       section: action.section,
       file: action.file
       },
       'DELETE'
+    );
+  }
+
+  @Action(UpdateSiteSectionBackgroundFromSyncAction)
+  updateSiteSectionBackgroundFromSync({ getState, setState }: StateContext<SiteSectionStateModel[]>,
+                                      action: UpdateSiteSectionBackgroundFromSyncAction) {
+    return this.appStateService.sync('siteSectionBackgrounds', {
+      site: action.site,
+      section: action.section,
+      files: action.files
+      },
+      'PUT'
+    ).pipe(
+      tap(response => {
+        if (response.error_message) {
+          // @TODO handle error message
+          console.error(response.error_message);
+        } else {
+          const state = getState();
+
+          setState(state.map(section => {
+            if (section.site_name !== action.site || section.name !== action.section) {
+              return section;
+            }
+
+            const mediaCacheData = { ...section.mediaCacheData, file: response.files };
+            return { ...section, mediafolder: response.mediafolder, mediaCacheData: mediaCacheData };
+          }));
+        }
+      })
     );
   }
 
