@@ -13,7 +13,6 @@ import {
   RenameSiteSectionAction,
   DeleteSiteSectionAction,
   DeleteSiteSectionsAction,
-  DeleteSiteSectionBackgroundFromSyncAction,
   UpdateSiteSectionBackgroundFromSyncAction
 } from '../sites/sections/sections-state/site-sections.actions';
 import { UpdateSiteSettingsFromSyncAction, UpdateSiteSettingsAction } from '../sites/settings/site-settings.actions';
@@ -117,19 +116,21 @@ export class PreviewService {
             preview.service.ts:19 SYNC METHOD: DELETE
           */
           if (method === 'DELETE') {
-            return this.store.dispatch(new DeleteSiteSectionBackgroundFromSyncAction(
-              data.site,
-              data.section,
-              data.file
-            ))
-            .pipe(
-              tap(() => {
+            return this.appService.sync('siteSectionBackgrounds', {
+              site: data.site,
+              section: data.section,
+              file: data.file
+              },
+              'DELETE'
+            ).pipe(
+              map(() => {
                 return {
                   site: data.site,
                   section: data.section,
                   file: data.file
                 };
-              }));
+              })
+            );
 
           } else {
             return this.store.dispatch(new UpdateSiteSectionBackgroundFromSyncAction(

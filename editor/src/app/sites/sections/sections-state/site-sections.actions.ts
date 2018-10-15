@@ -28,14 +28,6 @@ export class UpdateSiteSectionFromSyncAction {
   }
 }
 
-export class DeleteSiteSectionBackgroundFromSyncAction {
-  static readonly type = 'SITE_SECTION_BACKGROUND:DELETE:SYNC';
-  constructor(public site: string,
-              public section: string,
-              public file: string) {
-  }
-}
-
 export class UpdateSiteSectionBackgroundFromSyncAction {
   static readonly type = 'SITE_SECTION_BACKGROUND:UPDATE:SYNC';
   constructor(public site: string,
