@@ -9,8 +9,26 @@ export class PopupService {
 
   popupState$: BehaviorSubject<PopupState|null> = new BehaviorSubject(null);
 
-  /* ToDo subscribe to error-state, to automatically show errors */
-  constructor() { }
+  /** @example
+   * In a component import the popup service, then you can ues it like so:
+   ```
+   this.popupService.showPopup({
+      type: 'info',
+      content: 'This is info message!',
+      showOverlay: true,
+      timeout: 1000 * 10,
+
+      onTimeout: (popupService) => {
+        popupService.closePopup();
+        this.popupService.showPopup({
+          type: '',
+          content: 'Info has left the popup!',
+          timeout: 1000
+        });
+      }
+    });
+    ```
+   */
 
   subscribe(observer: PartialObserver<PopupState|null>) {
     return this.popupState$.subscribe(observer);

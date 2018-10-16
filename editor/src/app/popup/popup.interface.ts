@@ -1,17 +1,10 @@
+import { PopupService } from './popup.service';
+
 export interface PopupState {
   type: 'error'|'warning'|'info'|'success'|Object;
-  hasOverlay?: boolean;
+  content: any;
+  showOverlay?: boolean;
   isModal?: boolean;
-  component?: Object;
   timeout?: number;
-  onTimeout?: Function;
+  onTimeout?: (popupService: PopupService) => void;
 }
-
-/*
-- hasOverlay: bool
-- isModal: bool
-- type: error|warning|info|success|component
-- component?: Component
-- timeout: miliseconds
-- onTimeout: function
-*/
