@@ -1,0 +1,37 @@
+@import 'variables';
+
+.bt-popup-wrap {
+  padding-top: 4rem;
+}
+
+.bt-popup-content {
+  background-color: $white;
+  border: 1px solid $grey-90;
+  border-radius: 6px;
+  color: $grey-90;
+  font-size: $base-font-size;
+  margin-top: 1rem;
+  padding: 1.3rem;
+  text-align: center;
+  width: 430px;
+
+
+  &.bt-popup-warn {
+    border-color: $warn-color;
+    color: $warn-color;
+  }
+
+  &.bt-popup-error {
+    border-color: $error-color;
+    color: $error-color;
+  }
+
+  &.bt-popup-success {
+    border-color: $berta-accent;
+    color: $berta-accent;
+  }
+}
+
+.bt-popup-overlay {
+  background: rgba($black, .3);;
+}
