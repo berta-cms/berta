@@ -7,4 +7,11 @@ export interface PopupState {
   isModal?: boolean;
   timeout?: number;
   onTimeout?: (popupService: PopupService) => void;
+  actions?: PopupAction[];
+}
+
+export interface PopupAction {
+  label: string;
+  callback?: (popupService: PopupService) => void;
+  type?: 'primary' | 'secondary';
 }

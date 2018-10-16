@@ -17,6 +17,16 @@ export class PopupService {
       content: 'This is info message!',
       showOverlay: true,
       timeout: 1000 * 10,
+      actions: [
+        {
+          label: 'OK',
+          type: 'primary'
+        },
+        {
+          label: 'not OK',
+          callback: (popupService) => { console.log('not OK'); }
+        }
+      ],
 
       onTimeout: (popupService) => {
         popupService.closePopup();

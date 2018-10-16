@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { PopupService } from './popup.service';
-import { PopupState } from './popup.interface';
+import { PopupState, PopupAction } from './popup.interface';
 
 
 /*
 TODO:
-- Add actions to popup
 - Subscribe to errors
 - Add ability to show component
 */
@@ -20,6 +19,13 @@ TODO:
          [class.bt-popup-error]="popupType === 'error'"
          [class.bt-popup-success]="popupType === 'success'">
       {{ popupState.content }}
+      <div *ngIf="actions" class="bt-popup-action-wrap">
+        <button type="button"
+                [class.bt-primary]="action.type === 'primary'"
+                [class.bt-secondary]="action.type !== 'primary'"
+                (click)="actionClick(action, $event)"
+                *ngFor="let action of actions">{{ action.label }}</button>
+      </div>
     </div>
   </div>
   <div *ngIf="popupState && (popupState.showOverlay || popupState.isModal)"
@@ -53,6 +59,7 @@ export class PopupComponent implements OnInit {
   popupState: PopupState = null;
   popupTimer: any;
   popupType = 'info';
+  actions: PopupAction[] = null;
 
   constructor(private service: PopupService) { }
 
@@ -67,6 +74,7 @@ export class PopupComponent implements OnInit {
 
         if (popupState) {
           this.popupType = typeof popupState.type === 'string' ? popupState.type : 'info';
+          this.actions = popupState.actions;
 
           if (popupState.timeout) {
             this.popupTimer = setTimeout(() => {
@@ -77,8 +85,20 @@ export class PopupComponent implements OnInit {
               }
             }, popupState.timeout);
           }
-        }
 
+          /*
+           * Add default action for modal popup if no action is passed, otherwise, user can't exit
+           * You can make completely un-closable popup by passing empty actions array
+           */
+          if (popupState.isModal && !popupState.actions && !popupState.timeout) {
+            this.actions = [{
+              type: 'primary',
+              label: 'OK'
+            }];
+          }
+        } else {
+          this.actions = null;
+        }
       },
       error: (err) => {
         console.error(err);
@@ -93,5 +113,13 @@ export class PopupComponent implements OnInit {
       return false;
     }
     this.service.closePopup();
+  }
+
+  actionClick(action: PopupAction, event: Event) {
+    if (action.callback instanceof Function) {
+      action.callback(this.service);
+    } else {
+      this.service.closePopup();
+    }
   }
 }
