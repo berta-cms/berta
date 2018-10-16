@@ -18,6 +18,7 @@ import { UserState } from './user/user.state';
 import { UserAccountComponent } from './user/user-account.component';
 import { SitesSharedModule } from './sites/shared/sites-shared.module';
 import { PopupComponent } from './popup/popup.component';
+import { ErrorState } from './error-state/error.state';
 
 
 @NgModule({
@@ -36,7 +37,8 @@ import { PopupComponent } from './popup/popup.component';
     AppRoutingModule,
     NgxsModule.forRoot([
       AppState,
-      UserState
+      UserState,
+      ErrorState
     ], { developmentMode: isDevMode() }),
     NgxsReduxDevtoolsPluginModule.forRoot({ disabled: !isDevMode() }),
     NgxsLoggerPluginModule.forRoot({ disabled: true }),  // it logs too much, enable only when needed
