@@ -37,7 +37,6 @@ TODO:
       display: flex;
       position: fixed;
       z-index: 11;
-      top: 0;
       width: 100%;
       flex-direction: row;
       justify-content: center;

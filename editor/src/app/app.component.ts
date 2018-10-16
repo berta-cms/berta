@@ -166,22 +166,6 @@ export class AppComponent implements OnInit, OnDestroy {
       /* add debugging helpers on `window.bt` while in dev mode */
       this.setDevUpHelper();
     }
-
-    this.popupService.showPopup({
-      type: 'info',
-      content: 'This is info message!',
-      showOverlay: true,
-      timeout: 1000 * 10,
-
-      onTimeout: (popupService) => {
-        popupService.closePopup();
-        this.popupService.showPopup({
-          type: '',
-          content: 'Info has left the popup!',
-          timeout: 1000
-        });
-      }
-    });
   }
 
   hideOverlay() {
