@@ -1,7 +1,8 @@
 import { concat } from 'rxjs';
-import { take, switchMap } from 'rxjs/operators';
+import { take, switchMap, tap } from 'rxjs/operators';
 import { State, Action, StateContext, NgxsOnInit, Actions, ofActionSuccessful } from '@ngxs/store';
 
+import { assignByPath } from 'src/app/shared/helpers';
 import { AppStateService } from '../../../../app-state/app-state.service';
 import { SectionEntriesStateModel } from './section-entries-state.model';
 import {
@@ -12,8 +13,11 @@ import {
   AddSiteEntriesAction,
   AddSectionEntriesAction,
   ResetSectionEntriesAction,
-  InitSectionEntriesAction} from './section-entries.actions';
+  InitSectionEntriesAction,
+  UpdateSectionEntryFromSyncAction} from './section-entries.actions';
 import { UserLoginAction } from '../../../../user/user.actions';
+import { UpdateSiteSectionAction } from '../../sections-state/site-sections.actions';
+import { UpdateSectionTagsAction } from '../../tags/section-tags.actions';
 
 
 @State<SectionEntriesStateModel>({
@@ -111,5 +115,58 @@ export class SectionEntriesState implements NgxsOnInit {
   @Action(InitSectionEntriesAction)
   initSectionEntries({ setState }: StateContext<SectionEntriesStateModel>, action: InitSectionEntriesAction) {
     setState(action.payload);
+  }
+
+  @Action(UpdateSectionEntryFromSyncAction)
+  updateSectionEntryFromSync({ getState, patchState, dispatch }: StateContext<SectionEntriesStateModel>,
+                             action: UpdateSectionEntryFromSyncAction) {
+    return this.appStateService.sync('sectionEntries', {
+      path: action.path,
+      value: action.payload
+    }).pipe(
+      tap(response => {
+        if (response.error_message) {
+          /* This should probably be handled in sync */
+          console.error(response.error_message);
+        } else {
+          const currentState = getState();
+          const [currentSite, , currentSection, entryId] = action.path.split('/');
+          const siteName = currentSite === '0' ? '' : currentSite;
+          let path = action.path.split('/').slice(4).join('/');
+          let payload = action.payload;
+
+          if (path === 'tags/tag') {
+            path = 'tags';
+            payload = response.entry.tags;
+          }
+
+          patchState({
+            [siteName]: currentState[siteName].map(entry => {
+              if (entry.id !== entryId || entry.sectionName !== currentSection) {
+                return entry;
+              }
+
+              return assignByPath(entry, path, payload);
+            })
+          });
+
+          if (response.section) {
+            dispatch(new UpdateSiteSectionAction(
+              siteName,
+              response.section_order,
+              {
+                '@attributes': {
+                  has_direct_content: response.has_direct_content
+                }
+              })
+            );
+          }
+
+          if (response.tags) {
+            dispatch(new UpdateSectionTagsAction(siteName, currentSection, response.tags));
+          }
+        }
+      })
+    );
   }
 }

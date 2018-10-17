@@ -2,6 +2,14 @@ import { SiteStateModel } from '../../sites-state/site-state.model';
 import { SiteSectionStateModel } from '../sections-state/site-sections-state.model';
 import { SectionTagsInterface, SectionTagsStateModel } from './section-tags-state.model';
 
+export class UpdateSectionTagsAction {
+  static readonly type = 'SECTION_TAGS:UPDATE';
+  constructor(public siteName: string,
+              public sectionName: string,
+              public tags: SectionTagsInterface) {
+  }
+}
+
 export class AddSectionTagsAction {
   static readonly type = 'SECTION_TAGS:ADD';
   constructor(public siteName: string,

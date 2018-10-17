@@ -18,6 +18,9 @@ import {
 import { UpdateSiteSettingsFromSyncAction, UpdateSiteSettingsAction } from '../sites/settings/site-settings.actions';
 import { UpdateSiteTemplateSettingsAction } from '../sites/template-settings/site-template-settings.actions';
 import { CreateSiteAction, DeleteSiteAction, UpdateSiteAction } from '../sites/sites-state/sites.actions';
+import { UpdateSectionEntryFromSyncAction } from '../sites/sections/entries/entries-state/section-entries.actions';
+import { SiteSectionsState } from '../sites/sections/sections-state/site-sections.state';
+import { SectionTagsState } from '../sites/sections/tags/section-tags.state';
 
 
 @Injectable({
@@ -67,7 +70,7 @@ export class PreviewService {
         .pipe(
           map(state => state.siteSettings),
           map(state => {
-            const [currentSite,, settingGroupSlug, settingKey] = data.path.split('/');
+            const [currentSite, , settingGroupSlug, settingKey] = data.path.split('/');
             const settingGroup = state[currentSite].find((group) => group.slug === settingGroupSlug);
             const setting = settingGroup.settings.find(_setting => _setting.slug === settingKey);
 
@@ -94,7 +97,7 @@ export class PreviewService {
           .pipe(
             map(state => state.siteSections),
             map(state => {
-              const [currentSite,, sectionOrder] = data.path.split('/');
+              const [currentSite, , sectionOrder] = data.path.split('/');
               const siteName = currentSite === '0' ? '' : currentSite;
               const section = state.find(_section => _section.site_name === siteName && _section.order === parseInt(sectionOrder, 10));
 
@@ -145,7 +148,53 @@ export class PreviewService {
           }
 
         case 'sites/sections/entries':
-        /* trigger entry update actions */
+          /* trigger entry update actions */
+          if (method === 'PATCH') {
+            return this.store.dispatch(new UpdateSectionEntryFromSyncAction(
+              data.path,
+              data.value
+            ))
+            .pipe(
+              map(state => state.sectionEntries),
+              map(state => {
+                const [currentSiteName, , currentSectionName, entryId] = data.path.split('/');
+                const siteName = currentSiteName === '0' ? '' : currentSiteName;
+                const entry = state[siteName].find(_entry => _entry.id === entryId && _entry.sectionName === currentSectionName);
+                const prop = data.path.split('/').slice(4).join('/');
+                let ret: any = {
+                  entry: entry,
+                  path: data.path,
+                  real: data.value,
+                  update: data.value,
+                  value: data.value
+                };
+
+                if (prop === 'tags/tag') {
+                  const section = this.store.selectSnapshot(SiteSectionsState.getCurrentSiteSections)
+                    .find(_section => _section.name === currentSectionName);
+                  const tags = this.store.selectSnapshot(SectionTagsState.getCurrentSiteTags)
+                    .find(_section => _section['@attributes'].name === currentSectionName);
+                  const tagsList = tags.tag.map(tag => tag['@value']);
+
+                  ret = {
+                    ...ret,
+                    ...{
+                      site_name: siteName,
+                      section: section,
+                      section_name: section.name,
+                      section_order: section.order,
+                      has_direct_content: section['@attributes'].has_direct_content,
+                      tags: tags,
+                      real: tagsList.join(', '),
+                      update: tagsList.join(' / '),
+                      value: tagsList.join(' / ')
+                    }
+                  };
+                }
+
+                return ret;
+              }));
+          }
 
         default:
           console.log('DEFAULT SYNC');

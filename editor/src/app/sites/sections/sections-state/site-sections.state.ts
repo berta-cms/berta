@@ -114,7 +114,7 @@ export class SiteSectionsState implements NgxsOnInit {
       fieldKeys.push(Object.keys(action.payload[fieldKeys[0]])[0]);
     }
     const field = fieldKeys.join('/');
-    const path = action.section.site_name + '/section/' + action.order + '/' + field;
+    const path = action.site + '/section/' + action.order + '/' + field;
     const value = get(action.payload, fieldKeys.join('.'));
 
     const data = {
@@ -130,7 +130,7 @@ export class SiteSectionsState implements NgxsOnInit {
         } else {
           const state = getState();
           setState(state.map(section => {
-            if (section.site_name !== action.section.site_name || section.order !== action.order) {
+            if (section.site_name !== action.site || section.order !== action.order) {
               return section;
             }
             /* Quick workaround for deep settings: */

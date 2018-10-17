@@ -321,12 +321,15 @@ class SectionEntriesDataService extends Storage
             $sections = $siteSectionsDataService->get();
             $section = $sections[$section_order];
 
+            // Initiate tags service again, we need updated data after populateTags action
+            $sectionTagsDataService = new SectionTagsDataService($this->SITE, $this->SECTION_NAME);
+
             $ret = array_merge($ret, [
                 'site_name' => $this->SITE,
                 'section_name' => $this->SECTION_NAME,
                 'section' => $section,
                 'section_order' => $section_order,
-                'tags' => $section_tags,
+                'tags' => $sectionTagsDataService->getSectionTagsState(),
                 'has_direct_content' => $has_direct_content
             ]);
         }
@@ -567,6 +570,9 @@ class SectionEntriesDataService extends Storage
         $sections = $siteSectionsDataService->get();
         $section = $sections[$section_order];
 
+        // Initiate tags service again, we need updated data after populateTags action
+        $sectionTagsDataService = new SectionTagsDataService($this->SITE, $this->SECTION_NAME);
+
         return [
             'site_name' => $this->SITE,
             'section_name' => $this->SECTION_NAME,
@@ -574,7 +580,7 @@ class SectionEntriesDataService extends Storage
             'section_order' => $section_order,
             'entry_id' => $entry['id'],
             'entry_order' => $entry_order,
-            'tags' => $section_tags,
+            'tags' => $sectionTagsDataService->getSectionTagsState(),
             'has_direct_content' => $has_direct_content,
             'entry_count' => $section_entry_count
         ];

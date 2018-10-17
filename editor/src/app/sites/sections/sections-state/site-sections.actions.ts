@@ -15,7 +15,7 @@ export class AddSiteSectionsAction {
 
 export class UpdateSiteSectionAction {
   static readonly type = 'SITE_SECTION:UPDATE';
-  constructor(public section: SiteSectionStateModel,
+  constructor(public site: string,
               public order: number,
               public payload: {[k: string]: any}) {
   }

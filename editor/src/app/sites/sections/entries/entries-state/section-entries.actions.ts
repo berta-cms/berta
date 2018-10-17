@@ -52,3 +52,10 @@ export class InitSectionEntriesAction {
   static readonly type = 'SECTION_ENTRIES:INIT';
   constructor(public payload: SectionEntriesStateModel) {}
 }
+
+export class UpdateSectionEntryFromSyncAction {
+  static readonly type = 'SECTION_ENTRY:UPDATE:SYNC';
+  constructor(public path: string,
+              public payload: any) {
+  }
+}

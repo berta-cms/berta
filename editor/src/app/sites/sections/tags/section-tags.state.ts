@@ -1,7 +1,8 @@
 import { concat } from 'rxjs';
 import { take, switchMap } from 'rxjs/operators';
-import { State, Action, StateContext, NgxsOnInit, Actions, ofActionSuccessful } from '@ngxs/store';
+import { State, Action, StateContext, NgxsOnInit, Actions, ofActionSuccessful, Selector } from '@ngxs/store';
 
+import { AppState } from '../../../../app/app-state/app.state';
 import { AppStateService } from '../../../app-state/app-state.service';
 import { SectionTagsStateModel } from './section-tags-state.model';
 import {
@@ -12,7 +13,8 @@ import {
   AddSiteSectionsTagsAction,
   AddSectionTagsAction,
   ResetSiteSectionsTagsAction,
-  InitSiteSectionsTagsAction} from './section-tags.actions';
+  InitSiteSectionsTagsAction,
+  UpdateSectionTagsAction} from './section-tags.actions';
 import { UserLoginAction } from '../../../user/user.actions';
 
 
@@ -21,6 +23,12 @@ import { UserLoginAction } from '../../../user/user.actions';
   defaults: {}
 })
 export class SectionTagsState implements NgxsOnInit {
+
+  @Selector([AppState.getSite])
+  static getCurrentSiteTags(state, site) {
+    return state[site].section;
+  }
+
   constructor(
     private actions$: Actions,
     private appStateService: AppStateService) {}
@@ -34,6 +42,26 @@ export class SectionTagsState implements NgxsOnInit {
     )
     .subscribe((sectionTags) => {
       dispatch(new InitSiteSectionsTagsAction(sectionTags));
+    });
+  }
+
+  @Action(UpdateSectionTagsAction)
+  updateSectionTags({ getState, patchState }: StateContext<SectionTagsStateModel>, action: UpdateSectionTagsAction) {
+    const state = getState();
+
+    patchState({
+      [action.siteName]: {
+        ...state[action.siteName],
+        section: state[action.siteName].section.some(section => section['@attributes'].name === action.sectionName) ?
+          state[action.siteName].section.map(section => {
+            if (section['@attributes'].name === action.sectionName) {
+              return action.tags;
+            }
+            return section;
+          })
+          :
+          [...state[action.siteName].section, action.tags]
+      }
     });
   }
 
