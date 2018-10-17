@@ -579,7 +579,6 @@ class SectionEntriesDataService extends Storage
             'section' => $section,
             'section_order' => $section_order,
             'entry_id' => $entry['id'],
-            'entry_order' => $entry_order,
             'tags' => $sectionTagsDataService->getSectionTagsState(),
             'has_direct_content' => $has_direct_content,
             'entry_count' => $section_entry_count

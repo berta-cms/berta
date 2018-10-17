@@ -69,3 +69,12 @@ export class OrderSectionEntriesFromSyncAction {
       public value: string) {
   }
 }
+
+export class DeleteSectionEntryFromSyncAction {
+  static readonly type = 'SECTION_ENTRY:DELETE:SYNC';
+  constructor(
+      public site: string,
+      public section: string,
+      public entryId: string) {
+  }
+}

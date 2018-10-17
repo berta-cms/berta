@@ -20,7 +20,8 @@ import { UpdateSiteTemplateSettingsAction } from '../sites/template-settings/sit
 import { CreateSiteAction, DeleteSiteAction, UpdateSiteAction } from '../sites/sites-state/sites.actions';
 import {
   UpdateSectionEntryFromSyncAction,
-  OrderSectionEntriesFromSyncAction } from '../sites/sections/entries/entries-state/section-entries.actions';
+  OrderSectionEntriesFromSyncAction,
+  DeleteSectionEntryFromSyncAction} from '../sites/sections/entries/entries-state/section-entries.actions';
 import { SiteSectionsState } from '../sites/sections/sections-state/site-sections.state';
 import { SectionTagsState } from '../sites/sections/tags/section-tags.state';
 
@@ -217,7 +218,32 @@ export class PreviewService {
                   order: order
                 };
               }));
+
+          } else if (method === 'DELETE') {
+            return this.store.dispatch(new DeleteSectionEntryFromSyncAction(
+              data.site,
+              data.section,
+              data.entryId
+            )).pipe(
+              map(() => {
+                const section = this.store.selectSnapshot(SiteSectionsState.getCurrentSiteSections)
+                  .find(_section => _section.name === data.section);
+                const tags = this.store.selectSnapshot(SectionTagsState.getCurrentSiteTags)
+                  .find(_section => _section['@attributes'].name === data.section);
+
+                return {
+                  site_name: data.site,
+                  section_name: data.section,
+                  entry_id: data.entryId,
+                  entry_count: section['@attributes'].entry_count,
+                  section: section,
+                  section_order: section.order,
+                  has_direct_content: section['@attributes'].has_direct_content,
+                  tags: tags
+                };
+              }));
           }
+          break;
 
         default:
           console.log('DEFAULT SYNC');

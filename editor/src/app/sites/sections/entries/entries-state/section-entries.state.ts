@@ -15,7 +15,8 @@ import {
   ResetSectionEntriesAction,
   InitSectionEntriesAction,
   UpdateSectionEntryFromSyncAction,
-  OrderSectionEntriesFromSyncAction} from './section-entries.actions';
+  OrderSectionEntriesFromSyncAction,
+  DeleteSectionEntryFromSyncAction} from './section-entries.actions';
 import { UserLoginAction } from '../../../../user/user.actions';
 import { UpdateSiteSectionAction } from '../../sections-state/site-sections.actions';
 import { UpdateSectionTagsAction } from '../../tags/section-tags.actions';
@@ -197,6 +198,61 @@ export class SectionEntriesState implements NgxsOnInit {
               return {...entry, order: response.order.indexOf(entry.id)};
             })
           });
+        }
+      })
+    );
+  }
+
+  @Action(DeleteSectionEntryFromSyncAction)
+  deleteSectionEntryFromSync({ getState, patchState, dispatch }: StateContext<SectionEntriesStateModel>,
+                             action: DeleteSectionEntryFromSyncAction) {
+    return this.appStateService.sync('sectionEntries', {
+      site: action.site,
+      section: action.section,
+      entryId: action.entryId
+    },
+    'DELETE').pipe(
+      tap(response => {
+        if (response.error_message) {
+          /* This should probably be handled in sync */
+          console.error(response.error_message);
+        } else {
+          const currentState = getState();
+          const deletedEntry = currentState[action.site].find(entry => entry.sectionName === action.section && entry.id === action.entryId);
+
+          patchState({
+            [action.site]: currentState[action.site]
+              .filter(entry => !(entry.sectionName === action.section && entry.id === action.entryId))
+              .map(entry => {
+                if (entry.sectionName === action.section && entry.order > deletedEntry.order) {
+                  return {...entry, order: entry.order - 1};
+                }
+
+                return entry;
+              })
+          });
+
+          dispatch(new UpdateSiteSectionAction(
+            action.site,
+            response.section_order,
+            {
+              '@attributes': {
+                entry_count: response.entry_count
+              }
+            })
+          );
+
+          dispatch(new UpdateSiteSectionAction(
+            action.site,
+            response.section_order,
+            {
+              '@attributes': {
+                has_direct_content: response.has_direct_content
+              }
+            })
+          );
+
+          dispatch(new UpdateSectionTagsAction(action.site, action.section, response.tags));
         }
       })
     );
