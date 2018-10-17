@@ -18,7 +18,9 @@ import {
 import { UpdateSiteSettingsFromSyncAction, UpdateSiteSettingsAction } from '../sites/settings/site-settings.actions';
 import { UpdateSiteTemplateSettingsAction } from '../sites/template-settings/site-template-settings.actions';
 import { CreateSiteAction, DeleteSiteAction, UpdateSiteAction } from '../sites/sites-state/sites.actions';
-import { UpdateSectionEntryFromSyncAction } from '../sites/sections/entries/entries-state/section-entries.actions';
+import {
+  UpdateSectionEntryFromSyncAction,
+  OrderSectionEntriesFromSyncAction } from '../sites/sections/entries/entries-state/section-entries.actions';
 import { SiteSectionsState } from '../sites/sections/sections-state/site-sections.state';
 import { SectionTagsState } from '../sites/sections/tags/section-tags.state';
 
@@ -193,6 +195,27 @@ export class PreviewService {
                 }
 
                 return ret;
+              }));
+
+          } else if (method === 'PUT') {
+            return this.store.dispatch(new OrderSectionEntriesFromSyncAction(
+              data.site,
+              data.section,
+              data.entryId,
+              data.value
+            )).pipe(
+              map(state => state.sectionEntries),
+              map(state => {
+                const order = state[data.site]
+                  .filter(entry => entry.sectionName === data.section)
+                  .sort((a, b) => a.order - b.order)
+                  .map(entry => entry.id);
+
+                return {
+                  site_name: data.site,
+                  section_name: data.section,
+                  order: order
+                };
               }));
           }
 

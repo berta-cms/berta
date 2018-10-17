@@ -14,7 +14,8 @@ import {
   AddSectionEntriesAction,
   ResetSectionEntriesAction,
   InitSectionEntriesAction,
-  UpdateSectionEntryFromSyncAction} from './section-entries.actions';
+  UpdateSectionEntryFromSyncAction,
+  OrderSectionEntriesFromSyncAction} from './section-entries.actions';
 import { UserLoginAction } from '../../../../user/user.actions';
 import { UpdateSiteSectionAction } from '../../sections-state/site-sections.actions';
 import { UpdateSectionTagsAction } from '../../tags/section-tags.actions';
@@ -165,6 +166,37 @@ export class SectionEntriesState implements NgxsOnInit {
           if (response.tags) {
             dispatch(new UpdateSectionTagsAction(siteName, currentSection, response.tags));
           }
+        }
+      })
+    );
+  }
+
+  @Action(OrderSectionEntriesFromSyncAction)
+  OrderSectionEntriesFromSyncAction({ getState, patchState }: StateContext<SectionEntriesStateModel>,
+                                    action: OrderSectionEntriesFromSyncAction) {
+    return this.appStateService.sync('sectionEntries', {
+      site: action.site,
+      section: action.section,
+      entryId: action.entryId,
+      value: action.value
+    },
+    'PUT').pipe(
+      tap(response => {
+        if (response.error_message) {
+          /* This should probably be handled in sync */
+          console.error(response.error_message);
+        } else {
+          const currentState = getState();
+
+          patchState({
+            [action.site]: currentState[action.site].map(entry => {
+              if (entry.sectionName !== action.section) {
+                return entry;
+              }
+
+              return {...entry, order: response.order.indexOf(entry.id)};
+            })
+          });
         }
       })
     );

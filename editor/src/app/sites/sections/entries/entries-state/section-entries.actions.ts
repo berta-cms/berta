@@ -59,3 +59,13 @@ export class UpdateSectionEntryFromSyncAction {
               public payload: any) {
   }
 }
+
+export class OrderSectionEntriesFromSyncAction {
+  static readonly type = 'SECTION_ENTRIES:ORDER:SYNC';
+  constructor(
+      public site: string,
+      public section: string,
+      public entryId: string,
+      public value: string) {
+  }
+}
