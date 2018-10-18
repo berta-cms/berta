@@ -5,7 +5,6 @@ import { PopupState, PopupAction } from './popup.interface';
 
 /*
 TODO:
-- Subscribe to errors
 - Add ability to show component
 */
 
