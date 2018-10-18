@@ -21,7 +21,8 @@ import { CreateSiteAction, DeleteSiteAction, UpdateSiteAction } from '../sites/s
 import {
   UpdateSectionEntryFromSyncAction,
   OrderSectionEntriesFromSyncAction,
-  DeleteSectionEntryFromSyncAction} from '../sites/sections/entries/entries-state/section-entries.actions';
+  DeleteSectionEntryFromSyncAction,
+  UpdateEntryGalleryFromSyncAction} from '../sites/sections/entries/entries-state/section-entries.actions';
 import { SiteSectionsState } from '../sites/sections/sections-state/site-sections.state';
 import { SectionTagsState } from '../sites/sections/tags/section-tags.state';
 
@@ -244,6 +245,48 @@ export class PreviewService {
               }));
           }
           break;
+
+        case 'sites/sections/entries/galleries':
+          if (method === 'DELETE') {
+            return this.appService.sync('entryGallery', {
+              site: data.site,
+              section: data.section,
+              entryId: data.entryId,
+              file: data.file
+              },
+              'DELETE'
+            ).pipe(
+              map(() => {
+                return {
+                  site: data.site,
+                  section: data.section,
+                  entry_id: data.entryId,
+                  file: data.file
+                };
+              })
+            );
+
+          } else {
+            return this.store.dispatch(new UpdateEntryGalleryFromSyncAction(
+              data.site,
+              data.section,
+              data.entryId,
+              data.files
+            )).pipe(
+              map(state => state.sectionEntries),
+              map(state => {
+                const entry = state[data.site].find(_entry => _entry.id === data.entryId && _entry.sectionName === data.section);
+
+                return {
+                  site: data.site,
+                  section: data.section,
+                  entry_id: data.entryId,
+                  mediafolder: entry.mediafolder,
+                  files: entry.mediaCacheData.file
+                };
+              })
+            );
+        }
 
         default:
           console.log('DEFAULT SYNC');

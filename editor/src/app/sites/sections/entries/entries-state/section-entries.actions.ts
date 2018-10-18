@@ -78,3 +78,12 @@ export class DeleteSectionEntryFromSyncAction {
       public entryId: string) {
   }
 }
+
+export class UpdateEntryGalleryFromSyncAction {
+  static readonly type = 'SECTION_ENTRY_GALLERY:UPDATE:SYNC';
+  constructor(public site: string,
+              public section: string,
+              public entryId: string,
+              public files: string[]) {
+  }
+}

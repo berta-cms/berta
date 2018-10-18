@@ -16,7 +16,8 @@ import {
   InitSectionEntriesAction,
   UpdateSectionEntryFromSyncAction,
   OrderSectionEntriesFromSyncAction,
-  DeleteSectionEntryFromSyncAction} from './section-entries.actions';
+  DeleteSectionEntryFromSyncAction,
+  UpdateEntryGalleryFromSyncAction} from './section-entries.actions';
 import { UserLoginAction } from '../../../../user/user.actions';
 import { UpdateSiteSectionAction } from '../../sections-state/site-sections.actions';
 import { UpdateSectionTagsAction } from '../../tags/section-tags.actions';
@@ -253,6 +254,40 @@ export class SectionEntriesState implements NgxsOnInit {
           );
 
           dispatch(new UpdateSectionTagsAction(action.site, action.section, response.tags));
+        }
+      })
+    );
+  }
+
+  @Action(UpdateEntryGalleryFromSyncAction)
+  updateEntryGalleryFromSync({ getState, patchState }: StateContext<SectionEntriesStateModel>,
+                             action: UpdateEntryGalleryFromSyncAction) {
+    return this.appStateService.sync('entryGallery', {
+      site: action.site,
+      section: action.section,
+      entryId: action.entryId,
+      files: action.files
+      },
+      'PUT'
+    ).pipe(
+      tap(response => {
+        if (response.error_message) {
+          // @TODO handle error message
+          console.error(response.error_message);
+        } else {
+          const currentState = getState();
+
+          patchState({
+            [action.site]: currentState[action.site]
+              .map(entry => {
+                if (entry.sectionName === action.section && entry.id === action.entryId) {
+                  const mediaCacheData = { ...entry.mediaCacheData, file: response.files };
+                  return {...entry, mediafolder: response.mediafolder, mediaCacheData: mediaCacheData};
+                }
+
+                return entry;
+              })
+          });
         }
       })
     );
