@@ -8,7 +8,10 @@
     var promise;
 
     if (typeof window.syncState === 'function') {
-      promise = window.syncState(url, data, method);
+      promise = window.syncState(url, data, method)
+        .then(function(reponse) {
+          return JSON.parse(JSON.stringify(reponse));
+        });
     } else {
       promise = fetch(
         url,
