@@ -5,8 +5,10 @@ import { Store } from '@ngxs/store';
 import { UserState } from '../user/user.state';
 import { PreviewService } from './preview.service';
 import { AppShowLoading } from '../app-state/app.actions';
-import { map, switchMap } from 'rxjs/operators';
+import { map, switchMap, take } from 'rxjs/operators';
 import { AppState } from '../app-state/app.state';
+import { AppStateService } from '../app-state/app-state.service';
+import { InitSectionEntriesAction } from '../sites/sections/entries/entries-state/section-entries.actions';
 
 
 @Component({
@@ -39,6 +41,7 @@ export class PreviewComponent implements OnInit {
   constructor(
     private store: Store,
     private ngZone: NgZone,
+    private appStateService: AppStateService,
     private service: PreviewService,
     private sanitizer: DomSanitizer) {
   }
@@ -65,6 +68,14 @@ export class PreviewComponent implements OnInit {
   onLoad(event) {
     this.waitFullLoad(event.target).subscribe({
       next: (iframe) => {
+        iframe.contentWindow.addEventListener('SECTION_ENTRY_CREATE', function () {
+          // Force update all entries
+          // @TODO possibly limit fetch to one site
+          this.appStateService.getInitialState('', 'sectionEntries', true).pipe(take(1)).subscribe((sectionEntries) => {
+            this.store.dispatch(new InitSectionEntriesAction(sectionEntries));
+          });
+        }.bind(this));
+
         iframe.contentWindow['syncState'] = (url, data, method) => {
 
           /* Return promise to the old berta */
@@ -93,9 +104,7 @@ export class PreviewComponent implements OnInit {
       error: (error) => {
         console.error(error);
       }
-  });
-
-
+    });
   }
 
   private waitFullLoad(iframe: HTMLIFrameElement): Observable<HTMLIFrameElement> {
