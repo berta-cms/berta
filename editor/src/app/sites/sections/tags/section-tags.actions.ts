@@ -60,3 +60,12 @@ export class InitSiteSectionsTagsAction {
   static readonly type = 'SITE_SECTIONS_TAGS:INIT';
   constructor(public payload: SectionTagsStateModel) {}
 }
+
+export class OrderSectionTagsFromSyncAction {
+  static readonly type = 'SECTION_TAGS:ORDER:SYNC';
+  constructor(public site: string,
+              public section: string,
+              public tag: string,
+              public value: string) {
+  }
+}

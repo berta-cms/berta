@@ -1,5 +1,5 @@
 import { concat } from 'rxjs';
-import { take, switchMap } from 'rxjs/operators';
+import { take, switchMap, tap } from 'rxjs/operators';
 import { State, Action, StateContext, NgxsOnInit, Actions, ofActionSuccessful, Selector } from '@ngxs/store';
 
 import { AppState } from '../../../../app/app-state/app.state';
@@ -14,7 +14,8 @@ import {
   AddSectionTagsAction,
   ResetSiteSectionsTagsAction,
   InitSiteSectionsTagsAction,
-  UpdateSectionTagsAction} from './section-tags.actions';
+  UpdateSectionTagsAction,
+  OrderSectionTagsFromSyncAction} from './section-tags.actions';
 import { UserLoginAction } from '../../../user/user.actions';
 
 
@@ -165,5 +166,35 @@ export class SectionTagsState implements NgxsOnInit {
   @Action(InitSiteSectionsTagsAction)
   initSectionTags({ setState }: StateContext<SectionTagsStateModel>, action: InitSiteSectionsTagsAction) {
     setState(action.payload);
+  }
+
+  @Action(OrderSectionTagsFromSyncAction)
+  orderSectionTagsFromSync({ getState, patchState }: StateContext<SectionTagsStateModel>, action: OrderSectionTagsFromSyncAction) {
+    return this.appStateService.sync('sectionTags', {
+      site: action.site,
+      section: action.section,
+      tag: action.tag,
+      value: action.value
+    }, 'PUT').pipe(
+      tap(response => {
+        if (response.error_message) {
+          /* This should probably be handled in sync */
+          console.error(response.error_message);
+        } else {
+          const currentState = getState();
+
+          patchState({
+            [action.site]: {section: currentState[action.site].section.map(section => {
+              if (section['@attributes'].name !== action.section) {
+                return section;
+              }
+              return {...section, tag: section.tag.map(tag => {
+                return {...tag, order: response.order.indexOf(tag['@attributes'].name)};
+              })};
+            })}
+          });
+        }
+      })
+    );
   }
 }
