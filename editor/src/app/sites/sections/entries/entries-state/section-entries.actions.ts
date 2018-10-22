@@ -2,6 +2,15 @@ import { SiteStateModel } from '../../../sites-state/site-state.model';
 import { SiteSectionStateModel } from '../../sections-state/site-sections-state.model';
 import { SectionEntry, SectionEntriesStateModel } from './section-entries-state.model';
 
+export class AddSectionEntryFromSyncAction {
+  static readonly type = 'SECTION_ENTRY:ADD:SYNC';
+  constructor(
+      public site: string,
+      public section: string,
+      public entryId: string) {
+  }
+}
+
 export class AddSectionEntriesAction {
   static readonly type = 'SECTION_ENTRIES:ADD';
   constructor(public siteName: string,

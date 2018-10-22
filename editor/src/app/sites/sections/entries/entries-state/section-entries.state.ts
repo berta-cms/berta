@@ -17,7 +17,8 @@ import {
   UpdateSectionEntryFromSyncAction,
   OrderSectionEntriesFromSyncAction,
   DeleteSectionEntryFromSyncAction,
-  UpdateEntryGalleryFromSyncAction} from './section-entries.actions';
+  UpdateEntryGalleryFromSyncAction,
+  AddSectionEntryFromSyncAction} from './section-entries.actions';
 import { UserLoginAction } from '../../../../user/user.actions';
 import { UpdateSiteSectionAction } from '../../sections-state/site-sections.actions';
 import { UpdateSectionTagsAction } from '../../tags/section-tags.actions';
@@ -43,6 +44,17 @@ export class SectionEntriesState implements NgxsOnInit {
     )
     .subscribe((sectionEntries) => {
       dispatch(new InitSectionEntriesAction(sectionEntries));
+    });
+  }
+
+  @Action(AddSectionEntryFromSyncAction)
+  addSectionEntryFromSync({ getState, patchState }: StateContext<SectionEntriesStateModel>, action: AddSectionEntryFromSyncAction) {
+    const state = getState();
+    this.appStateService.getInitialState('', 'sectionEntries', true).pipe(take(1)).subscribe((sectionEntries) => {
+      const newEntry = sectionEntries[action.site].find(
+        entry => entry.sectionName === action.section && entry.id === action.entryId.toString()
+      );
+      patchState({[action.site]: [...state[action.site], newEntry]});
     });
   }
 

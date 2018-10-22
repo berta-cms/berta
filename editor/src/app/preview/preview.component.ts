@@ -8,7 +8,7 @@ import { AppShowLoading } from '../app-state/app.actions';
 import { map, switchMap, take } from 'rxjs/operators';
 import { AppState } from '../app-state/app.state';
 import { AppStateService } from '../app-state/app-state.service';
-import { InitSectionEntriesAction } from '../sites/sections/entries/entries-state/section-entries.actions';
+import { InitSectionEntriesAction, AddSectionEntryFromSyncAction } from '../sites/sections/entries/entries-state/section-entries.actions';
 
 
 @Component({
@@ -68,13 +68,7 @@ export class PreviewComponent implements OnInit {
   onLoad(event) {
     this.waitFullLoad(event.target).subscribe({
       next: (iframe) => {
-        iframe.contentWindow.addEventListener('SECTION_ENTRY_CREATE', function () {
-          // Force update all entries
-          // @TODO possibly limit fetch to one site
-          this.appStateService.getInitialState('', 'sectionEntries', true).pipe(take(1)).subscribe((sectionEntries) => {
-            this.store.dispatch(new InitSectionEntriesAction(sectionEntries));
-          });
-        }.bind(this));
+        iframe.contentWindow.addEventListener('SECTION_ENTRY_CREATE', this.createNewEntry.bind(this));
 
         iframe.contentWindow['syncState'] = (url, data, method) => {
 
@@ -142,5 +136,13 @@ export class PreviewComponent implements OnInit {
         observer.complete();
       }, 500);
     });
+  }
+
+  private createNewEntry(event) {
+    this.store.dispatch(new AddSectionEntryFromSyncAction(
+      event.detail.site,
+      event.detail.section,
+      event.detail.entryId
+    ));
   }
 }
