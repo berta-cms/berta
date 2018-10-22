@@ -22,7 +22,8 @@ import {
   UpdateSectionEntryFromSyncAction,
   OrderSectionEntriesFromSyncAction,
   DeleteSectionEntryFromSyncAction,
-  UpdateEntryGalleryFromSyncAction} from '../sites/sections/entries/entries-state/section-entries.actions';
+  UpdateEntryGalleryFromSyncAction,
+  AddSectionEntryFromSyncAction} from '../sites/sections/entries/entries-state/section-entries.actions';
 import { SiteSectionsState } from '../sites/sections/sections-state/site-sections.state';
 import { SectionTagsState } from '../sites/sections/tags/section-tags.state';
 import { OrderSectionTagsFromSyncAction } from '../sites/sections/tags/section-tags.actions';
@@ -321,6 +322,11 @@ export class PreviewService {
 
   connectIframeReload(iframe: HTMLIFrameElement) {
     /*
+      Listen for `create new entry` event from iframe and sync data
+     */
+    iframe.contentWindow.addEventListener('SECTION_ENTRY_CREATE', this.createNewEntry.bind(this));
+
+    /*
       Reload the preview iframe after settings affecting preview change
       Because we don't have preview renderer in frontend yet.
      */
@@ -352,7 +358,8 @@ export class PreviewService {
     });
   }
 
-  disconnectIframeView() {
+  disconnectIframeView(iframe: HTMLIFrameElement) {
+    iframe.contentWindow.removeEventListener('SECTION_ENTRY_CREATE', this.createNewEntry);
     this.iframeReloadSubscription.unsubscribe();
   }
 
@@ -367,5 +374,13 @@ export class PreviewService {
       return parts.slice(1);
     }
     return parts;
+  }
+
+  private createNewEntry(event) {
+    this.store.dispatch(new AddSectionEntryFromSyncAction(
+      event.detail.site,
+      event.detail.section,
+      event.detail.entryId
+    ));
   }
 }

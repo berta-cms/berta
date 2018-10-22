@@ -8,7 +8,6 @@ import { AppShowLoading } from '../app-state/app.actions';
 import { map, switchMap, take } from 'rxjs/operators';
 import { AppState } from '../app-state/app.state';
 import { AppStateService } from '../app-state/app-state.service';
-import { InitSectionEntriesAction, AddSectionEntryFromSyncAction } from '../sites/sections/entries/entries-state/section-entries.actions';
 
 
 @Component({
@@ -41,7 +40,6 @@ export class PreviewComponent implements OnInit {
   constructor(
     private store: Store,
     private ngZone: NgZone,
-    private appStateService: AppStateService,
     private service: PreviewService,
     private sanitizer: DomSanitizer) {
   }
@@ -68,8 +66,6 @@ export class PreviewComponent implements OnInit {
   onLoad(event) {
     this.waitFullLoad(event.target).subscribe({
       next: (iframe) => {
-        iframe.contentWindow.addEventListener('SECTION_ENTRY_CREATE', this.createNewEntry.bind(this));
-
         iframe.contentWindow['syncState'] = (url, data, method) => {
 
           /* Return promise to the old berta */
@@ -92,7 +88,7 @@ export class PreviewComponent implements OnInit {
         /* Reload the iframe when the settings change */
         this.service.connectIframeReload(iframe);
         iframe.contentWindow.onbeforeunload = () => {
-          this.service.disconnectIframeView();
+          this.service.disconnectIframeView(iframe);
         };
       },
       error: (error) => {
@@ -136,13 +132,5 @@ export class PreviewComponent implements OnInit {
         observer.complete();
       }, 500);
     });
-  }
-
-  private createNewEntry(event) {
-    this.store.dispatch(new AddSectionEntryFromSyncAction(
-      event.detail.site,
-      event.detail.section,
-      event.detail.entryId
-    ));
   }
 }
