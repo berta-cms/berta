@@ -7,6 +7,7 @@ import { take, filter, tap, exhaustMap, retryWhen, map, pairwise, shareReplay, c
 import { Store } from '@ngxs/store';
 import { AppShowLoading, AppHideLoading } from '../app-state/app.actions';
 import { UserLogoutAction } from '../user/user.actions';
+import { PushErrorAction } from '../error-state/error.actions';
 
 
 interface APIResponse {
@@ -58,9 +59,10 @@ export class ShopStateService {
               /* Only retry on authorization failure */
               if (!(error instanceof HttpErrorResponse) || error.status !== 401 || i > MAX_REQUEST_RETRIES) {
                 /* set app error state here maybe don't even throw it */
+                this.store.dispatch(new UserLogoutAction(true));
                 throw error;
               }
-              this.store.dispatch(new UserLogoutAction(true));
+              this.showError(error, {});
               return error;
             }),
             exhaustMap(() => {
@@ -81,6 +83,7 @@ export class ShopStateService {
             this.store.dispatch(new UserLogoutAction(true));
           }
           delete this.cachedSectionStates[site];
+          this.showError(error, {});
           throw error;
         }),
         map((resp: APIResponse) => {
@@ -96,4 +99,26 @@ export class ShopStateService {
     return this.cachedSectionStates[site];
   }
 
+  private showError(error: any, data: any) {
+    let message = 'Oops unexpected error!';
+
+    if (error) {
+      if (error.error && error.error.message) {
+        message = error.error.message;
+      } else if (error.message) {
+        message = error.message;
+      }
+
+      if (error.status && error.status === 401) {
+        message = 'Please log in!';
+      }
+    }
+
+    this.store.dispatch(new AppHideLoading());
+    this.store.dispatch(new PushErrorAction({
+      message: message,
+      httpStatus: error.status ? error.status : undefined,
+      field: data.path ? data.path : ''
+    }));
+  }
 }

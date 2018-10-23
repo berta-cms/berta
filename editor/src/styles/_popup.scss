@@ -1,0 +1,112 @@
+@import 'variables';
+
+.bt-popup-wrap {
+  top: $bt-header-height;
+}
+
+.bt-popup-content {
+  background-color: $white;
+  border: 1px solid $grey-90;
+  border-radius: $border-radius;
+  color: $grey-90;
+  font-size: $base-font-size;
+  margin-top: 1rem;
+  padding: 1.3rem;
+  text-align: center;
+  width: 430px;
+
+
+  &.bt-popup-warn {
+    border-color: $warn-color;
+    color: $warn-color;
+
+    .bt-primary {
+      background-color: $warn-color;
+    }
+
+    .bt-secondary {
+      border-color: $warn-color;
+      color: $warn-color;
+
+      &:hover {
+        background: $warn-color;
+      }
+    }
+  }
+
+  &.bt-popup-error {
+    border-color: $error-color;
+    color: $error-color;
+
+    .bt-primary {
+      background-color: $error-color;
+    }
+
+    .bt-secondary {
+      border-color: $error-color;
+      color: $error-color;
+
+      &:hover {
+        background: $error-color;
+      }
+    }
+  }
+
+  &.bt-popup-success {
+    border-color: $berta-accent;
+    color: $berta-accent;
+
+    .bt-primary {
+      background-color: $berta-accent;
+    }
+
+    .bt-secondary {
+      border-color: $berta-accent;
+      color: $berta-accent;
+
+      &:hover {
+        background: $berta-accent;
+      }
+    }
+  }
+}
+
+.bt-popup-action-wrap {
+  margin-top: 1.3rem;
+  display: flex;
+  justify-content: center;
+
+  button {
+    // -moz-appearance: none;
+    // -ms-progress-appearance: none;
+    // -webkit-appearance: none;
+    appearance: none;
+    border-radius: $border-radius;
+    flex-shrink: 1;
+    padding: .75em 1.3em;
+    width: 30%;
+    margin: 0 0.5rem;
+  }
+
+  .bt-primary {
+    color: $white;
+
+    &:hover {
+      opacity: 0.6;
+    }
+  }
+
+  .bt-secondary {
+    background: $white;
+    border-width: 1px;
+    border-style: solid;
+
+    &:hover {
+      color: $white;
+    }
+  }
+}
+
+.bt-popup-overlay {
+  background: rgba($black, .3);;
+}

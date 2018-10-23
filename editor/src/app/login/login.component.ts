@@ -11,6 +11,7 @@ import { UserState } from '../user/user.state';
 import { AppShowLoading, AppHideLoading, UpdateInputFocus } from '../app-state/app.actions';
 import { UserLoginAction } from '../user/user.actions';
 import { AppState } from '../app-state/app.state';
+import { PopupService } from '../popup/popup.service';
 
 
 @Component({
@@ -70,6 +71,7 @@ export class LoginComponent implements OnInit {
   constructor(
     private store: Store,
     private route: ActivatedRoute,
+    private popupService: PopupService,
     private router: Router) {
   }
 
@@ -111,7 +113,15 @@ export class LoginComponent implements OnInit {
     .subscribe({
       next: () => {
         this.message = 'Login Successful';
-        this.store.dispatch(new AppHideLoading());
+        this.popupService.showPopup({
+          type: 'success',
+          content: this.message,
+          timeout: 1000,
+          onTimeout: (popupService) => {
+            this.store.dispatch(new AppHideLoading());
+            popupService.closePopup();
+          }
+        });
       },
       error: (error: HttpErrorResponse|Error) => {
         if (error instanceof HttpErrorResponse && error.status === 401) {
@@ -119,7 +129,15 @@ export class LoginComponent implements OnInit {
         } else {
           this.message = error.message;
         }
-        this.store.dispatch(new AppHideLoading());
+        this.popupService.showPopup({
+          type: 'error',
+          content: this.message,
+          timeout: 2000,
+          onTimeout: (popupService) => {
+            this.store.dispatch(new AppHideLoading());
+            popupService.closePopup();
+          }
+        });
       }
     });
   }

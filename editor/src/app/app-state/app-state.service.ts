@@ -8,6 +8,7 @@ import { Store } from '@ngxs/store';
 
 import { UserLogoutAction } from '../user/user.actions';
 import { AppShowLoading, AppHideLoading } from './app.actions';
+import { PushErrorAction } from '../error-state/error.actions';
 
 
 interface APIResponse {
@@ -71,6 +72,7 @@ export class AppStateService {
               /* set app error state here maybe don't even throw it */
               throw error;
             }
+            this.showError(error, {});
             this.store.dispatch(new UserLogoutAction(true));
             return error;
           }),
@@ -84,8 +86,9 @@ export class AppStateService {
       }),
       tap(() => this.hideLoading()),
       catchError(error => {
-          this.hideLoading();
-          throw error;
+        this.showError(error, data);
+        this.hideLoading();
+        throw error;
       })
     );
   }
@@ -140,7 +143,7 @@ export class AppStateService {
         shareReplay(CACHE_SIZE),
         catchError(error => {
           this.hideLoading();
-
+          this.showError(error, {});
           if ((error instanceof HttpErrorResponse) && error.status === 401) {
             // Lot out if user is unauthorized
             this.store.dispatch(new UserLogoutAction(true));
@@ -203,5 +206,28 @@ export class AppStateService {
     this.cachedSiteStates = {};
 
     return this.http.put('/_api/v1/logout', {});
+  }
+
+  private showError(error: any, data: any) {
+    let message = 'Oops unexpected error!';
+
+    if (error) {
+      if (error.error && error.error.message) {
+        message = error.error.message;
+      } else if (error.message) {
+        message = error.message;
+      }
+
+      if (error.status && error.status === 401) {
+        message = 'Please log in!';
+      }
+    }
+
+    this.hideLoading();
+    this.store.dispatch(new PushErrorAction({
+      message: message,
+      httpStatus: error.status ? error.status : undefined,
+      field: data.path ? data.path : ''
+    }));
   }
 }

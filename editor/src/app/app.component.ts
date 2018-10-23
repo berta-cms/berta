@@ -12,6 +12,7 @@ import { UserLoginAction, UserLogoutAction, SetUserNextUrlAction } from './user/
 import { UserState } from './user/user.state';
 import { UserStateModel } from './user/user.state.model';
 import { AppStateService } from './app-state/app-state.service';
+import { PopupService } from './popup/popup.service';
 
 
 @Component({
@@ -28,7 +29,8 @@ import { AppStateService } from './app-state/app-state.service';
                 frameborder="0"></iframe>
       </section>
     </main>
-    <div [style.display]="((showOverlay$ | async) ? '' : 'none')" class="overlay" (click)="hideOverlay()">
+    <div [style.display]="((showOverlay$ | async) ? '' : 'none')" class="overlay" (click)="hideOverlay()"></div>
+    <berta-popup></berta-popup>
   `,
   styles: [`
     :host {
@@ -106,6 +108,7 @@ export class AppComponent implements OnInit, OnDestroy {
               private _ngZone: NgZone,
               private stateService: AppStateService,
               private actions$: Actions,
+              private popupService: PopupService,
               private sanitizer: DomSanitizer) {
   }
 
