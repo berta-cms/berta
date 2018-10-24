@@ -74,6 +74,16 @@ export function isPlainObject(obj: any): boolean {
   return false;
 }
 
+/**
+ * Converts string to currency formatted string
+ * @param number
+ */
+export function stringToCurrency(number: string): string {
+  return parseFloat(number).toLocaleString('en-US', {
+    minimumFractionDigits: 2
+  });
+}
+
 
 /**
  * Transforms deep payload object into flat array with key path and value

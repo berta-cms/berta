@@ -22,7 +22,9 @@ import {
         <berta-inline-text-input [value]="region.name"
                                  (update)="updateRegion('name', $event, region.id)"
                                  (inputFocus)="updateInputFocus($event)"></berta-inline-text-input>
-        <button type="button" (click)="deleteRegion(region.id, $event)">x</button>
+        <button type="button" class="delete" (click)="deleteRegion(region.id, $event)">
+          <bt-icon-delete></bt-icon-delete>
+        </button>
       </div>
       <div class="setting">
         <berta-text-input label="VAT (%)"

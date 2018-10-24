@@ -11,7 +11,8 @@ import {
   AppHideLoading,
   ResetAppStateAction,
   InitAppStateAction,
-  UpdateInputFocus
+  UpdateInputFocus,
+  UpdateAppStateAction
 } from './app.actions';
 import { AppStateService } from './app-state.service';
 import { UserLoginAction } from '../user/user.actions';
@@ -22,7 +23,13 @@ const defaultState: AppStateModel = {
   isLoading: false,
   inputFocused: false,
   site: null,
-  urls: {}
+  urls: {},
+  forgotPasswordUrl: '',
+  internalVersion: '',
+  isBertaHosting: false,
+  loginUrl: '',
+  authenticateUrl: '',
+  version: ''
 };
 
 
@@ -69,6 +76,14 @@ export class AppState implements NgxsOnInit {
       }
     });
 
+    this.appStateService.getAppMetadata().pipe(take(1))
+      .subscribe({
+        next: (metadata) => {
+          dispatch(new UpdateAppStateAction(metadata));
+        },
+        error: (error) => console.error(error)
+      });
+
     concat(
       this.appStateService.getInitialState('').pipe(take(1)),
       // After each subsequent successful login, initialize the state
@@ -111,13 +126,29 @@ export class AppState implements NgxsOnInit {
   }
 
   @Action(ResetAppStateAction)
-  resetState({ setState }: StateContext<AppStateModel>) {
+  resetState({ getState, setState }: StateContext<AppStateModel>) {
     // Apply default state, not to remove the user, user will reset it self
-    setState(defaultState);
+    const state = {...getState()};
+
+    // Reset to default state except metadata properties
+    setState({
+      ...defaultState,
+      forgotPasswordUrl: state.forgotPasswordUrl,
+      internalVersion: state.internalVersion,
+      isBertaHosting: state.isBertaHosting,
+      loginUrl: state.loginUrl,
+      authenticateUrl: state.authenticateUrl,
+      version: state.version
+    });
   }
 
   @Action(InitAppStateAction)
   InitState({ patchState }: StateContext<AppStateModel>, action: InitAppStateAction) {
     patchState({ urls: action.payload.urls});
+  }
+
+  @Action(UpdateAppStateAction)
+  updateState({ patchState }: StateContext<AppStateModel>, action: UpdateAppStateAction) {
+    patchState(action.payload);
   }
 }

@@ -1,0 +1,43 @@
+.user-account-container {
+  color: $black;
+
+  h3 {
+    border-bottom: 0;
+  }
+
+  form {
+    .error-message {
+      color: $error-color;
+      font-size: $input-font-size;
+    }
+
+    berta-text-input {
+      margin: 1.3em;
+
+      &:first-child {
+        margin-top: 0;
+      }
+    }
+
+    > .form-group {
+      font-size: 1em;
+      margin: 1.3em;
+
+      &:first-child {
+        margin-top: 0;
+      }
+    }
+
+    button {
+      display: block;
+      font-size: $base-font-size;
+      margin: 0 0 1.3em auto;
+      width: 50%;
+    }
+
+    .info-message {
+      font-size: $input-font-size;
+      text-align: right;
+    }
+  }
+}

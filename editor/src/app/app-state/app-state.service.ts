@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 
 import { Observable, combineLatest } from 'rxjs';
@@ -9,6 +8,7 @@ import { Store } from '@ngxs/store';
 
 import { UserLogoutAction } from '../user/user.actions';
 import { AppShowLoading, AppHideLoading } from './app.actions';
+import { PushErrorAction } from '../error-state/error.actions';
 
 
 interface APIResponse {
@@ -27,11 +27,11 @@ const MAX_REQUEST_RETRIES = 100;
 export class AppStateService {
 
   cachedSiteStates: {[k: string]: Observable<{[k: string]: any}>} = {};
+  cachedLocaleSettings: {[k: string]: Observable<{[k: string]: any}>} = {};
 
   constructor(
     private http: HttpClient,
-    private store: Store,
-    private router: Router) {
+    private store: Store) {
   }
 
   showLoading() {
@@ -55,6 +55,7 @@ export class AppStateService {
         this.showLoading();
         return this.http.request<any>(method, (appState.urls[urlName] || urlName), {
           body: method === 'GET' ? undefined : data,
+          params: method === 'GET' ? data : undefined,
           headers: {
               'Accept': 'application/json',
               'Content-Type': 'application/json',
@@ -71,6 +72,7 @@ export class AppStateService {
               /* set app error state here maybe don't even throw it */
               throw error;
             }
+            this.showError(error, {});
             this.store.dispatch(new UserLogoutAction(true));
             return error;
           }),
@@ -84,8 +86,17 @@ export class AppStateService {
       }),
       tap(() => this.hideLoading()),
       catchError(error => {
-          this.hideLoading();
-          throw error;
+        this.showError(error, data);
+        this.hideLoading();
+        throw error;
+      })
+    );
+  }
+
+  getAppMetadata() {
+    return this.http.get('/_api/v1/meta').pipe(
+      map((resp: APIResponse) => {
+        return resp.data;
       })
     );
   }
@@ -132,7 +143,7 @@ export class AppStateService {
         shareReplay(CACHE_SIZE),
         catchError(error => {
           this.hideLoading();
-
+          this.showError(error, {});
           if ((error instanceof HttpErrorResponse) && error.status === 401) {
             // Lot out if user is unauthorized
             this.store.dispatch(new UserLogoutAction(true));
@@ -150,12 +161,28 @@ export class AppStateService {
     return this.cachedSiteStates[site];
   }
 
-  login(user: string, password: string) {
+  getLocaleSettings(language: string = 'en', stateSlice?: string, force = false) {
+    if (!this.cachedLocaleSettings[language] || force) {
+      this.cachedLocaleSettings[language] = this.sync('localeSettings', {language: language}, 'GET')
+        .pipe(
+          shareReplay(CACHE_SIZE)
+        );
+    }
+
+    if (stateSlice) {
+      return this.cachedLocaleSettings[language].pipe(map(stateCache => stateCache[stateSlice]));
+    }
+
+    return this.cachedLocaleSettings[language];
+  }
+
+  login(data) {
     window.localStorage.removeItem('token');
 
     return this.http.post('/_api/v1/login', {
-      'auth_user': user,
-      'auth_pass': password
+      'auth_user': data.username,
+      'auth_pass': data.password,
+      'auth_key': data.token
     }).pipe(
       tap((resp: APIResponse) => {
         if (!resp.data.token) {
@@ -179,5 +206,28 @@ export class AppStateService {
     this.cachedSiteStates = {};
 
     return this.http.put('/_api/v1/logout', {});
+  }
+
+  private showError(error: any, data: any) {
+    let message = 'Oops unexpected error!';
+
+    if (error) {
+      if (error.error && error.error.message) {
+        message = error.error.message;
+      } else if (error.message) {
+        message = error.message;
+      }
+
+      if (error.status && error.status === 401) {
+        message = 'Please log in!';
+      }
+    }
+
+    this.hideLoading();
+    this.store.dispatch(new PushErrorAction({
+      message: message,
+      httpStatus: error.status ? error.status : undefined,
+      field: data.path ? data.path : ''
+    }));
   }
 }

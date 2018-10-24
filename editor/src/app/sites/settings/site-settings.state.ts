@@ -42,6 +42,16 @@ export class SiteSettingsState implements NgxsOnInit {
     return template && template.value;
   }
 
+  @Selector([SiteSettingsState.getCurrentSiteSettings])
+  static getCurrentSiteLanguage(_, currentSiteSettings): string | undefined {
+    if (!currentSiteSettings) {
+      return;
+    }
+    const languageSettings = currentSiteSettings.find(settingGroup => settingGroup.slug === 'language');
+    const language = languageSettings && languageSettings.settings.find(setting => setting.slug === 'language');
+    return language && language.value;
+  }
+
   constructor(
     private store: Store,
     private actions$: Actions,
