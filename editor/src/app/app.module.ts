@@ -6,6 +6,7 @@ import { NgxsModule } from '@ngxs/store';
 import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
 import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
 
+import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { SitesModule } from './sites/sites.module';
 import { AppComponent } from './app.component';
@@ -39,8 +40,8 @@ import { ErrorState } from './error-state/error.state';
       AppState,
       UserState,
       ErrorState
-    ], { developmentMode: isDevMode() }),
-    NgxsReduxDevtoolsPluginModule.forRoot({ disabled: !isDevMode() }),
+    ], { developmentMode: !environment.production }),
+    NgxsReduxDevtoolsPluginModule.forRoot({ disabled: environment.production }),
     NgxsLoggerPluginModule.forRoot({ disabled: true }),  // it logs too much, enable only when needed
     SitesModule,
     SitesSharedModule
