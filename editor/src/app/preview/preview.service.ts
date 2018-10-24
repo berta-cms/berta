@@ -42,15 +42,6 @@ export class PreviewService {
   }
 
   sync(url, data, method) {
-    /** @todo:
-     * - Trigger appropriate actions to update the state here instead of direct sync
-     * - Trigger correct actions to update the iframe when settings change
-     */
-    console.log('Sync through angular');
-    console.log('SYNC URL: ' + url);
-    console.log('SYNC DATA:', data);
-    console.log('SYNC METHOD:', method);
-
     const urlParts = this.parseSyncUrl(url);
     const urlIdentifier = urlParts.join('/');
 
@@ -314,9 +305,7 @@ export class PreviewService {
         }
 
         default:
-          console.log('DEFAULT SYNC');
-
-          return this.appService.sync(url, data, method).pipe(tap(resp => console.log(resp)));
+          return this.appService.sync(url, data, method);
     }
   }
 
