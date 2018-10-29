@@ -31,7 +31,7 @@ import { UserStateModel } from '../user/user.state.model';
         <berta-profile-dropdown></berta-profile-dropdown>
       </div>
       <a *ngIf="!(isLoggedIn$ | async)" [routerLink]="['/login']">Log in</a>
-      <button class="bt-view-editor" type="button">(o)</button>
+      <berta-preview-toggle></berta-preview-toggle>
     </header>
   `,
   styles: [`

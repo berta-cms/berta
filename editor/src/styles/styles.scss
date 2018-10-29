@@ -52,10 +52,17 @@ header {
   }
 
   .bt-view-editor {
+    align-items: center;
     background-color: $grey-90;
     color: $grey-40;
     cursor: pointer;
+    display: flex;
     padding: $bt-header-item-padding;
+    transition: background-color .2s;
+
+    path {
+      fill: $grey-30;
+    }
 
     &:hover {
       background-color: $berta-accent;

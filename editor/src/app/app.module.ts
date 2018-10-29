@@ -13,6 +13,7 @@ import { AppComponent } from './app.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { AppState } from './app-state/app.state';
 import { HeaderComponent } from './header/header.component';
+import { PreviewToggleComponent } from './header/preview-toggle.component';
 import { ProfileDropdownComponent } from './profile-dropdown/profile-dropdown.component';
 import { LoginComponent } from './login/login.component';
 import { UserState } from './user/user.state';
@@ -28,6 +29,7 @@ import { ErrorState } from './error-state/error.state';
     AppComponent,
     NotFoundComponent,
     HeaderComponent,
+    PreviewToggleComponent,
     ProfileDropdownComponent,
     UserAccountComponent,
     LoginComponent,
