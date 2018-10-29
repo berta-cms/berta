@@ -375,7 +375,7 @@ class SiteSettingsDataService extends Storage
         $settings = $this->get();
         /** @todo: update this to use path without site (first two peaces are predictable)  */
         $path_arr = array_slice(explode('/', $path), 2);
-        $value = trim(urldecode($value));
+        $value = trim($value);
 
         $ret = array(
             'site' => $this->SITE == '0' ? '' : $this->SITE,

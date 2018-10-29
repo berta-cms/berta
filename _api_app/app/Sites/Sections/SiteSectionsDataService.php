@@ -281,7 +281,7 @@ class SiteSectionsDataService extends Storage
         $path_arr = array_slice(explode('/', $path), 1);
         $prop = $path_arr[count($path_arr) - 1];
         $order = $path_arr[1];
-        $value = trim(urldecode($value));
+        $value = trim($value);
         $ret = array(
             'site' => $this->site_name,
             'order' => $order,

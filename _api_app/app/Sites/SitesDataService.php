@@ -157,7 +157,7 @@ class SitesDataService extends Storage
         $site_name = $sites['site'][$path_arr[1]]['name'];
         $site_root = $this->XML_SITES_ROOT . '/' . $site_name;
         $prop = array_pop($path_arr);
-        $value = trim(urldecode($value));
+        $value = trim($value);
         $ret = array(
             'path' => $path,
             'value' => $value,
