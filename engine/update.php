@@ -201,7 +201,9 @@ if(!$returnError) {
             }
             elseif($decoded['property'] == 'galleryImageCrop') {    // image gets cropped
 
-                $path = $options['MEDIA_ROOT'] . $e['mediafolder']['value'] . '/';
+                $mediafolder = $e['mediafolder']['value'] . '/';
+                $path = $options['MEDIA_ROOT'] . $mediafolder;
+                $url_path = $options['MEDIA_URL'] . $mediafolder;
 
                 $crop = BertaUtils::smart_crop_image($path.$decoded['value'], $decoded['x'], $decoded['y'], $decoded['w'], $decoded['h']);
                 BertaEditor::images_deleteDerivatives($path, $decoded['value']);
@@ -226,11 +228,11 @@ if(!$returnError) {
                     $e['mediaCacheData']['file']['@attributes']['height'] = $crop['h'];
                 }
 
-                $smallThumb = BertaEditor::images_getSmallThumbFor($path.$newFileName);
+                $smallThumb = BertaEditor::images_getSmallThumbFor($mediafolder . $newFileName);
 
                 $returnUpdate = $newFileName;
                 $returnParams = array(
-                    'path'=>$path,
+                    'path'=>$url_path,
                     'smallThumb' => $smallThumb
                     );
             }

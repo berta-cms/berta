@@ -185,9 +185,11 @@ if(($entryId && $mediaFolder || $settingsProperty || $sectionName && $mediaFolde
 	} else {
 
 		// set and check (and create if needed) the containing folder
-		$fileFolder = $options['MEDIA_ROOT'];
+        $fileFolder = $options['MEDIA_ROOT'];
+        $fileFolderUrl = $options['MEDIA_URL'];
 		if($mediaFolder) {
-			$fileFolder = $options['MEDIA_ROOT'] . $mediaFolder;
+            $fileFolder = $options['MEDIA_ROOT'] . $mediaFolder;
+            $fileFolderUrl = $options['MEDIA_URL'] . $mediaFolder;
 			if(!file_exists($fileFolder) || !is_dir($fileFolder)) {
 			    if(!@mkdir($fileFolder, 0777)) {
 			    	$result['status'] = 0;
@@ -199,7 +201,8 @@ if(($entryId && $mediaFolder || $settingsProperty || $sectionName && $mediaFolde
 			    	$result['error'] = 'Media folder is not writable!';
 			    }
 			}
-			$fileFolder .= '/';
+            $fileFolder .= '/';
+            $fileFolderUrl .= '/';
 		}
 
 		if(empty($result['error'])) {
@@ -268,7 +271,7 @@ if(($entryId && $mediaFolder || $settingsProperty || $sectionName && $mediaFolde
 						$return['hash'] = md5_file($fileFolder . $fName);
 						$result['type'] = $fileType;
 						$result['smallthumb_path'] = $result['smallthumb_width'] = $result['smallthumb_height'] = null;
-						$result['path'] = $fileFolder . $fName;
+						$result['path'] = $fileFolderUrl . $fName;
 						$result['filename'] = $fName;
 						$result['size'] = $_FILES['Filedata']['size'];
 						$result['width'] = null;
@@ -347,8 +350,8 @@ if(($entryId && $mediaFolder || $settingsProperty || $sectionName && $mediaFolde
 							$result['smallthumb_path'] = $smallThumbPath;
 							$result['smallthumb_width'] = $smallThumbInfo[0];
 							$result['smallthumb_height'] = $smallThumbInfo[1];
-							$result['path'] = $fileFolder . $fName;
-							$result['path_orig'] = $fileFolder . $fName; //$origVersionPath;
+							$result['path'] = $fileFolderUrl . $fName;
+							$result['path_orig'] = $fileFolderUrl . $fName; //$origVersionPath;
 							$result['filename'] = $fName;
 							$result['size'] = $_FILES['Filedata']['size'];
 							$result['width'] = $imInfo[0];

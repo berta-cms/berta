@@ -1,7 +1,8 @@
 import { concat } from 'rxjs';
-import { take, switchMap } from 'rxjs/operators';
+import { take, switchMap, tap } from 'rxjs/operators';
 import { State, Action, StateContext, NgxsOnInit, Actions, ofActionSuccessful } from '@ngxs/store';
 
+import { assignByPath } from 'src/app/shared/helpers';
 import { AppStateService } from '../../../../app-state/app-state.service';
 import { SectionEntriesStateModel } from './section-entries-state.model';
 import {
@@ -12,8 +13,15 @@ import {
   AddSiteEntriesAction,
   AddSectionEntriesAction,
   ResetSectionEntriesAction,
-  InitSectionEntriesAction} from './section-entries.actions';
+  InitSectionEntriesAction,
+  UpdateSectionEntryFromSyncAction,
+  OrderSectionEntriesFromSyncAction,
+  DeleteSectionEntryFromSyncAction,
+  UpdateEntryGalleryFromSyncAction,
+  AddSectionEntryFromSyncAction} from './section-entries.actions';
 import { UserLoginAction } from '../../../../user/user.actions';
+import { UpdateSiteSectionAction } from '../../sections-state/site-sections.actions';
+import { UpdateSectionTagsAction } from '../../tags/section-tags.actions';
 
 
 @State<SectionEntriesStateModel>({
@@ -36,6 +44,17 @@ export class SectionEntriesState implements NgxsOnInit {
     )
     .subscribe((sectionEntries) => {
       dispatch(new InitSectionEntriesAction(sectionEntries));
+    });
+  }
+
+  @Action(AddSectionEntryFromSyncAction)
+  addSectionEntryFromSync({ getState, patchState }: StateContext<SectionEntriesStateModel>, action: AddSectionEntryFromSyncAction) {
+    const state = getState();
+    this.appStateService.getInitialState('', 'sectionEntries', true).pipe(take(1)).subscribe((sectionEntries) => {
+      const newEntry = sectionEntries[action.site].find(
+        entry => entry.sectionName === action.section && entry.id === action.entryId.toString()
+      );
+      patchState({[action.site]: [...state[action.site], newEntry]});
     });
   }
 
@@ -111,5 +130,178 @@ export class SectionEntriesState implements NgxsOnInit {
   @Action(InitSectionEntriesAction)
   initSectionEntries({ setState }: StateContext<SectionEntriesStateModel>, action: InitSectionEntriesAction) {
     setState(action.payload);
+  }
+
+  @Action(UpdateSectionEntryFromSyncAction)
+  updateSectionEntryFromSync({ getState, patchState, dispatch }: StateContext<SectionEntriesStateModel>,
+                             action: UpdateSectionEntryFromSyncAction) {
+    return this.appStateService.sync('sectionEntries', {
+      path: action.path,
+      value: action.payload
+    }).pipe(
+      tap(response => {
+        if (response.error_message) {
+          /* This should probably be handled in sync */
+          console.error(response.error_message);
+        } else {
+          const currentState = getState();
+          const [currentSite, , currentSection, entryId] = action.path.split('/');
+          const siteName = currentSite === '0' ? '' : currentSite;
+          let path = action.path.split('/').slice(4).join('/');
+          let payload = action.payload;
+
+          if (path === 'tags/tag') {
+            path = 'tags';
+            payload = response.entry.tags;
+          }
+
+          patchState({
+            [siteName]: currentState[siteName].map(entry => {
+              if (entry.id !== entryId || entry.sectionName !== currentSection) {
+                return entry;
+              }
+
+              return assignByPath(entry, path, payload);
+            })
+          });
+
+          if (response.section) {
+            dispatch(new UpdateSiteSectionAction(
+              siteName,
+              response.section_order,
+              {
+                '@attributes': {
+                  has_direct_content: response.has_direct_content
+                }
+              })
+            );
+          }
+
+          if (response.tags) {
+            dispatch(new UpdateSectionTagsAction(siteName, currentSection, response.tags));
+          }
+        }
+      })
+    );
+  }
+
+  @Action(OrderSectionEntriesFromSyncAction)
+  OrderSectionEntriesFromSyncAction({ getState, patchState }: StateContext<SectionEntriesStateModel>,
+                                    action: OrderSectionEntriesFromSyncAction) {
+    return this.appStateService.sync('sectionEntries', {
+      site: action.site,
+      section: action.section,
+      entryId: action.entryId,
+      value: action.value
+    },
+    'PUT').pipe(
+      tap(response => {
+        if (response.error_message) {
+          /* This should probably be handled in sync */
+          console.error(response.error_message);
+        } else {
+          const currentState = getState();
+
+          patchState({
+            [action.site]: currentState[action.site].map(entry => {
+              if (entry.sectionName !== action.section) {
+                return entry;
+              }
+
+              return {...entry, order: response.order.indexOf(entry.id)};
+            })
+          });
+        }
+      })
+    );
+  }
+
+  @Action(DeleteSectionEntryFromSyncAction)
+  deleteSectionEntryFromSync({ getState, patchState, dispatch }: StateContext<SectionEntriesStateModel>,
+                             action: DeleteSectionEntryFromSyncAction) {
+    return this.appStateService.sync('sectionEntries', {
+      site: action.site,
+      section: action.section,
+      entryId: action.entryId
+    },
+    'DELETE').pipe(
+      tap(response => {
+        if (response.error_message) {
+          /* This should probably be handled in sync */
+          console.error(response.error_message);
+        } else {
+          const currentState = getState();
+          const deletedEntry = currentState[action.site].find(entry => entry.sectionName === action.section && entry.id === action.entryId);
+
+          patchState({
+            [action.site]: currentState[action.site]
+              .filter(entry => !(entry.sectionName === action.section && entry.id === action.entryId))
+              .map(entry => {
+                if (entry.sectionName === action.section && entry.order > deletedEntry.order) {
+                  return {...entry, order: entry.order - 1};
+                }
+
+                return entry;
+              })
+          });
+
+          dispatch(new UpdateSiteSectionAction(
+            action.site,
+            response.section_order,
+            {
+              '@attributes': {
+                entry_count: response.entry_count
+              }
+            })
+          );
+
+          dispatch(new UpdateSiteSectionAction(
+            action.site,
+            response.section_order,
+            {
+              '@attributes': {
+                has_direct_content: response.has_direct_content
+              }
+            })
+          );
+
+          dispatch(new UpdateSectionTagsAction(action.site, action.section, response.tags));
+        }
+      })
+    );
+  }
+
+  @Action(UpdateEntryGalleryFromSyncAction)
+  updateEntryGalleryFromSync({ getState, patchState }: StateContext<SectionEntriesStateModel>,
+                             action: UpdateEntryGalleryFromSyncAction) {
+    return this.appStateService.sync('entryGallery', {
+      site: action.site,
+      section: action.section,
+      entryId: action.entryId,
+      files: action.files
+      },
+      'PUT'
+    ).pipe(
+      tap(response => {
+        if (response.error_message) {
+          // @TODO handle error message
+          console.error(response.error_message);
+        } else {
+          const currentState = getState();
+
+          patchState({
+            [action.site]: currentState[action.site]
+              .map(entry => {
+                if (entry.sectionName === action.section && entry.id === action.entryId) {
+                  const mediaCacheData = { ...entry.mediaCacheData, file: response.files };
+                  return {...entry, mediafolder: response.mediafolder, mediaCacheData: mediaCacheData};
+                }
+
+                return entry;
+              })
+          });
+        }
+      })
+    );
   }
 }

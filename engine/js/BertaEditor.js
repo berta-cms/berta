@@ -625,6 +625,13 @@ var BertaEditor = new Class({
             Cookie.write('_berta__entry_highlight', resp.update.entryid, {
               path: this.options.paths.engineABSRoot
             });
+            window.dispatchEvent(new CustomEvent('SECTION_ENTRY_CREATE', {
+              detail: {
+                site: getCurrentSite(),
+                section: this.currentSection,
+                entryId: resp.update.entryid
+              }
+            }));
             window.location.hash = 'entry-' + resp.update.entryid;
             window.location.reload();
           } else {

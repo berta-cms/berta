@@ -1,3 +1,4 @@
+import { set } from 'lodash/fp';
 import { SettingConfigModel, SettingConfigGroupResponse, SettingGroupConfigModel } from './interfaces';
 
 /**
@@ -191,4 +192,17 @@ export function initSettingConfigGroup(settingGroupConfigResponse: SettingConfig
   }
 
   return result;
+}
+
+
+/**
+ * Assign value to object by path and return updated object
+ *
+ * @param obj Object to update
+ * @param path Path string from which object keys will be updated
+ * @param value value to update
+ */
+export function assignByPath(obj: any, path: string, value: any) {
+  const pathArr = path.replace(/^\//, '').split('/');
+  return set(pathArr, value, obj);
 }

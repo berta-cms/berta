@@ -3,11 +3,13 @@ import { concat } from 'rxjs';
 import { take, switchMap, tap } from 'rxjs/operators';
 import { Store, State, Action, StateContext, Selector, NgxsOnInit, Actions, ofActionSuccessful } from '@ngxs/store';
 
+import { assignByPath } from 'src/app/shared/helpers';
 import { SiteSectionStateModel } from './site-sections-state.model';
 import { AppStateService } from '../../../app-state/app-state.service';
 import { AppState } from '../../../app-state/app.state';
 import {
   UpdateSiteSectionAction,
+  UpdateSiteSectionFromSyncAction,
   DeleteSiteSectionsAction,
   RenameSiteSectionsSitenameAction,
   DeleteSiteSectionAction,
@@ -16,7 +18,8 @@ import {
   RenameSiteSectionAction,
   AddSiteSectionsAction,
   ResetSiteSectionsAction,
-  InitSiteSectionsAction} from './site-sections.actions';
+  InitSiteSectionsAction,
+  UpdateSiteSectionBackgroundFromSyncAction} from './site-sections.actions';
 import { DeleteSectionTagsAction, RenameSectionTagsAction, AddSectionTagsAction } from '../tags/section-tags.actions';
 import {
   DeleteSectionEntriesAction,
@@ -73,6 +76,7 @@ export class SiteSectionsState implements NgxsOnInit {
           const state = getState();
           const newSiteSection: SiteSectionStateModel = response.section;
 
+          /** @todo: possibly trigger AddSiteSectionsAction to decrease action clutter */
           setState(
             [...state, newSiteSection]
           );
@@ -110,7 +114,7 @@ export class SiteSectionsState implements NgxsOnInit {
       fieldKeys.push(Object.keys(action.payload[fieldKeys[0]])[0]);
     }
     const field = fieldKeys.join('/');
-    const path = action.section.site_name + '/section/' + action.order + '/' + field;
+    const path = action.site + '/section/' + action.order + '/' + field;
     const value = get(action.payload, fieldKeys.join('.'));
 
     const data = {
@@ -126,7 +130,7 @@ export class SiteSectionsState implements NgxsOnInit {
         } else {
           const state = getState();
           setState(state.map(section => {
-            if (section.site_name !== action.section.site_name || section.order !== action.order) {
+            if (section.site_name !== action.site || section.order !== action.order) {
               return section;
             }
             /* Quick workaround for deep settings: */
@@ -136,6 +140,64 @@ export class SiteSectionsState implements NgxsOnInit {
               return { ...section, ...action.payload, ...{ '@attributes': attributes } };
             }
             return { ...section, ...action.payload };  // Deep set must be done here for complex properties
+          }));
+        }
+      })
+    );
+  }
+
+  @Action(UpdateSiteSectionFromSyncAction)
+  updateSiteSettingsFromSync({setState, getState}: StateContext<SiteSectionStateModel[]>, action: UpdateSiteSectionFromSyncAction) {
+    return this.appStateService.sync('siteSections', {
+      path: action.path,
+      value: action.payload
+    }).pipe(
+      tap(response => {
+        if (response.error_message) {
+          /* This should probably be handled in sync */
+          console.error(response.error_message);
+        } else {
+          const state = getState();
+          const path = action.path.split('/');
+          const [currentSite, _, sectionOrder] = path;
+          const siteName = currentSite === '0' ? '' : currentSite;
+
+          setState(state.map(section => {
+            if (section.site_name !== siteName || section.order !== parseInt(sectionOrder, 10)) {
+              return section;
+            }
+
+            return assignByPath(section, path.slice(3).join('/'), action.payload);
+          }));
+        }
+      })
+    );
+  }
+
+  @Action(UpdateSiteSectionBackgroundFromSyncAction)
+  updateSiteSectionBackgroundFromSync({ getState, setState }: StateContext<SiteSectionStateModel[]>,
+                                      action: UpdateSiteSectionBackgroundFromSyncAction) {
+    return this.appStateService.sync('siteSectionBackgrounds', {
+      site: action.site,
+      section: action.section,
+      files: action.files
+      },
+      'PUT'
+    ).pipe(
+      tap(response => {
+        if (response.error_message) {
+          // @TODO handle error message
+          console.error(response.error_message);
+        } else {
+          const state = getState();
+
+          setState(state.map(section => {
+            if (section.site_name !== action.site || section.name !== action.section) {
+              return section;
+            }
+
+            const mediaCacheData = { ...section.mediaCacheData, file: response.files };
+            return { ...section, mediafolder: response.mediafolder, mediaCacheData: mediaCacheData };
           }));
         }
       })
@@ -199,6 +261,7 @@ export class SiteSectionsState implements NgxsOnInit {
           // @TODO handle error message
           console.error(response.error_message);
         } else {
+          /** @todo: considder triggering `DeleteSiteSectionsAction` to reduce action clutter */
           const state = getState();
           let order = -1;
 

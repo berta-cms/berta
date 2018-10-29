@@ -15,9 +15,24 @@ export class AddSiteSectionsAction {
 
 export class UpdateSiteSectionAction {
   static readonly type = 'SITE_SECTION:UPDATE';
-  constructor(public section: SiteSectionStateModel,
+  constructor(public site: string,
               public order: number,
               public payload: {[k: string]: any}) {
+  }
+}
+
+export class UpdateSiteSectionFromSyncAction {
+  static readonly type = 'SITE_SECTION:UPDATE:SYNC';
+  constructor(public path: string,
+              public payload: any) {
+  }
+}
+
+export class UpdateSiteSectionBackgroundFromSyncAction {
+  static readonly type = 'SITE_SECTION_BACKGROUND:UPDATE:SYNC';
+  constructor(public site: string,
+              public section: string,
+              public files: string[]) {
   }
 }
 

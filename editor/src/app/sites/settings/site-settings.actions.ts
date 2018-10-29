@@ -16,6 +16,13 @@ export class UpdateSiteSettingsAction {
   }
 }
 
+export class UpdateSiteSettingsFromSyncAction {
+  static readonly type = 'SITE_SETTINGS:UPDATE:SYNC';
+  constructor(public path: string,
+              public payload: any) {
+  }
+}
+
 export class RenameSiteSettingsSitenameAction {
   static readonly type = 'SITE_SETTINGS_SITENAME:RENAME';
   constructor(

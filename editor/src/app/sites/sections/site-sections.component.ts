@@ -154,7 +154,7 @@ export class SiteSectionsComponent implements OnInit {
           error: (error) => console.error(error)
         });
     } else {
-      this.store.dispatch(new UpdateSiteSectionAction(sectionData.section, parseInt(updateEvent.section, 10), updateEvent.data));
+      this.store.dispatch(new UpdateSiteSectionAction(sectionData.section.site_name, parseInt(updateEvent.section, 10), updateEvent.data));
     }
   }
 }

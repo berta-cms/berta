@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule, isDevMode } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 
 import { NgxsModule } from '@ngxs/store';
@@ -18,6 +18,7 @@ import { LoginComponent } from './login/login.component';
 import { UserState } from './user/user.state';
 import { UserAccountComponent } from './user/user-account.component';
 import { SitesSharedModule } from './sites/shared/sites-shared.module';
+import { PreviewComponent } from './preview/preview.component';
 import { PopupComponent } from './popup/popup.component';
 import { ErrorState } from './error-state/error.state';
 
@@ -30,6 +31,7 @@ import { ErrorState } from './error-state/error.state';
     ProfileDropdownComponent,
     UserAccountComponent,
     LoginComponent,
+    PreviewComponent,
     PopupComponent
   ],
   imports: [
