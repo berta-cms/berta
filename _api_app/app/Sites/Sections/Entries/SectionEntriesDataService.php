@@ -256,7 +256,7 @@ class SectionEntriesDataService extends Storage
     {
         $entries = $this->get();
         $path_arr = array_slice(explode('/', $path), 3);
-        $value = trim(urldecode($value));
+        $value = trim($value);
         $prop = $path_arr[1];
         $entryId = $path_arr[0];
         $index = null;

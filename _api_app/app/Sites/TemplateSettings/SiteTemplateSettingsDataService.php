@@ -411,7 +411,7 @@ class SiteTemplateSettingsDataService extends Storage
     {
         $site_template_settings = $this->get();
         $path_arr = array_slice(explode('/', $path), 3);
-        $value = trim(urldecode($value));
+        $value = trim($value);
 
         $ret = array(
             'site' => $this->SITE == '0' ? '' : $this->SITE,
