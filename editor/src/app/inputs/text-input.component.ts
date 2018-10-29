@@ -60,7 +60,9 @@ export class TextInputComponent implements OnInit {
   onFocus() {
     this.focus = true;
     this.showIcon = false;
-    this.inputFocus.emit(true);
+    setTimeout(() => {
+      this.inputFocus.emit(true);
+    }, 200);
   }
 
   onBlur($event) {
