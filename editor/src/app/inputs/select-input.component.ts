@@ -47,7 +47,10 @@ export class SelectInputComponent implements OnInit {
       return;
     }
     this.focus = !this.focus;
-    this.inputFocus.emit(this.focus);
+
+    setTimeout(() => {
+      this.inputFocus.emit(this.focus);
+    }, 200);
   }
 
   onKeyDown($event) {
@@ -60,6 +63,7 @@ export class SelectInputComponent implements OnInit {
     if (!this.focus) {
       return;
     }
+
     // Wait for `li` click event
     setTimeout(() => {
       this.focus = false;
