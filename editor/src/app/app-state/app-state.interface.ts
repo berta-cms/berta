@@ -10,4 +10,5 @@ export interface AppStateModel {
   loginUrl: string;
   authenticateUrl: string;
   version: string;
+  lastRoute: string;
 }

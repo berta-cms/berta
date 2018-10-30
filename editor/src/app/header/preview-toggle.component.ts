@@ -1,5 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { Router, ActivationEnd } from '@angular/router';
+import { Observable } from 'rxjs';
+import { filter } from 'rxjs/operators';
+import { Store, Select } from '@ngxs/store';
 
+import { AppState } from '../app-state/app.state';
 
 /** @todo add icons */
 @Component({
@@ -17,14 +22,29 @@ import { Component, OnInit } from '@angular/core';
   `]
 })
 export class PreviewToggleComponent implements OnInit {
+  @Select(AppState.getLastRoute) lastRoute$: Observable<string>;
 
   private isPreviewActive = true;
 
-  ngOnInit() {
+  constructor(
+    private store: Store,
+    private router: Router) {
+  }
 
+  ngOnInit() {
+    this.router.events.pipe(
+      filter(evt => evt instanceof ActivationEnd)
+    ).subscribe((event: ActivationEnd) => {
+      this.isPreviewActive = event.snapshot.url.length === 0;
+    });
   }
 
   togglePreview() {
-    this.isPreviewActive = !this.isPreviewActive;
+    if (this.isPreviewActive) {
+      const lastRoute = this.store.selectSnapshot(AppState.getLastRoute);
+      this.router.navigate([lastRoute]);
+    } else {
+      this.router.navigate(['/']);
+    }
   }
 }

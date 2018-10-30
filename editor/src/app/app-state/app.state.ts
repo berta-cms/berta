@@ -29,7 +29,8 @@ const defaultState: AppStateModel = {
   isBertaHosting: false,
   loginUrl: '',
   authenticateUrl: '',
-  version: ''
+  version: '',
+  lastRoute: '/settings'
 };
 
 
@@ -59,6 +60,11 @@ export class AppState implements NgxsOnInit {
     return state.site;
   }
 
+  @Selector()
+  static getLastRoute(state: AppStateModel) {
+    return state.lastRoute;
+  }
+
   constructor(private router: Router,
               private actions$: Actions,
               private appStateService: AppStateService) {
@@ -68,11 +74,17 @@ export class AppState implements NgxsOnInit {
     this.router.events.pipe(
       filter(evt => evt instanceof ActivationEnd)
     ).subscribe((event: ActivationEnd) => {
-      if (event.snapshot.queryParams['site']) {
+      const snapshot = event.snapshot;
+      if (snapshot.queryParams['site']) {
         /** @todo: trigger actions here */
-        patchState({site: event.snapshot.queryParams['site']});
+        patchState({site: snapshot.queryParams['site']});
       } else {
         patchState({site: ''});
+      }
+
+      if (snapshot.url.length && snapshot.url[0].path !== 'login') {
+        const lastRoute = '/' + snapshot.url.map(segment => segment.path).join('/');
+        dispatch(new UpdateAppStateAction({lastRoute: lastRoute}));
       }
     });
 
