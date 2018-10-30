@@ -1,6 +1,6 @@
-import { Router, ActivationEnd, ChildActivationEnd, NavigationEnd } from '@angular/router';
+import { Router, ActivationEnd, NavigationEnd } from '@angular/router';
 import { concat } from 'rxjs';
-import { filter, take, switchMap } from 'rxjs/operators';
+import { filter, take, switchMap, map } from 'rxjs/operators';
 import { State, Action, StateContext, Selector, NgxsOnInit, Actions, ofActionSuccessful } from '@ngxs/store';
 
 import { AppStateModel } from './app-state.interface';
@@ -83,9 +83,11 @@ export class AppState implements NgxsOnInit {
     });
 
     this.router.events.pipe(
-      filter(event => event instanceof NavigationEnd && event.url !== '/' && event.url !== '/login')
-    ).subscribe((event: NavigationEnd) => {
-      dispatch(new UpdateAppStateAction({lastRoute: event.url}));
+      filter(event => event instanceof NavigationEnd),
+      map((event: NavigationEnd) => event.url.split('?')[0]),
+      filter(url => url !== '/' && url !== '/login')
+    ).subscribe((url: string) => {
+      dispatch(new UpdateAppStateAction({lastRoute: url}));
     });
 
     this.appStateService.getAppMetadata().pipe(take(1))
