@@ -40,11 +40,12 @@ export class PreviewToggleComponent implements OnInit {
   }
 
   togglePreview() {
+    let route = '/';
+
     if (this.isPreviewActive) {
-      const lastRoute = this.store.selectSnapshot(AppState.getLastRoute);
-      this.router.navigate([lastRoute]);
-    } else {
-      this.router.navigate(['/']);
+      route = this.store.selectSnapshot(AppState.getLastRoute);
     }
+
+    this.router.navigate([route], { queryParamsHandling: 'preserve' });
   }
 }
