@@ -1,4 +1,4 @@
-import { Router, ActivationEnd } from '@angular/router';
+import { Router, ActivationEnd, ChildActivationEnd, NavigationEnd } from '@angular/router';
 import { concat } from 'rxjs';
 import { filter, take, switchMap } from 'rxjs/operators';
 import { State, Action, StateContext, Selector, NgxsOnInit, Actions, ofActionSuccessful } from '@ngxs/store';
@@ -74,18 +74,18 @@ export class AppState implements NgxsOnInit {
     this.router.events.pipe(
       filter(evt => evt instanceof ActivationEnd)
     ).subscribe((event: ActivationEnd) => {
-      const snapshot = event.snapshot;
-      if (snapshot.queryParams['site']) {
+      if (event.snapshot.queryParams['site']) {
         /** @todo: trigger actions here */
-        patchState({site: snapshot.queryParams['site']});
+        patchState({site: event.snapshot.queryParams['site']});
       } else {
         patchState({site: ''});
       }
+    });
 
-      if (snapshot.url.length && snapshot.url[0].path !== 'login') {
-        const lastRoute = '/' + snapshot.url.map(segment => segment.path).join('/');
-        dispatch(new UpdateAppStateAction({lastRoute: lastRoute}));
-      }
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd && event.url !== '/' && event.url !== '/login')
+    ).subscribe((event: NavigationEnd) => {
+      dispatch(new UpdateAppStateAction({lastRoute: event.url}));
     });
 
     this.appStateService.getAppMetadata().pipe(take(1))
