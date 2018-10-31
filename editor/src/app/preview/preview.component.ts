@@ -7,7 +7,6 @@ import { PreviewService } from './preview.service';
 import { AppShowLoading } from '../app-state/app.actions';
 import { map, switchMap, take } from 'rxjs/operators';
 import { AppState } from '../app-state/app.state';
-import { AppStateService } from '../app-state/app-state.service';
 
 
 @Component({
@@ -66,24 +65,39 @@ export class PreviewComponent implements OnInit {
   onLoad(event) {
     this.waitFullLoad(event.target).subscribe({
       next: (iframe) => {
-        iframe.contentWindow['syncState'] = (url, data, method) => {
+        /*
+          Check for iframe login page
+          try to login user with existing token
+        */
+        if (iframe.contentDocument.body && iframe.contentDocument.body.className === 'xLoginPageBody') {
+          console.log('Login page shown');
+          /*
+            TODO
+            - login using token and reload iframe
+            - logout if login with token fails
+            - serverside: possibly prolong old berta session timeout on token validation
+          */
+        }
 
-          /* Return promise to the old berta */
-          return new Promise((resolve, reject) => {
-            this.ngZone.run(() => {
-              this.store.dispatch(AppShowLoading);
-              this.service.sync(url, data, method).subscribe({
-                next: (response) => {
-                  resolve(response);
-                },
-                error: (err) => {
-                  reject(err);
-                }
+        if (typeof(iframe.contentWindow['sync']) === 'function') {
+
+          iframe.contentWindow['syncState'] = (url, data, method) => {
+            /* Return promise to the old berta */
+            return new Promise((resolve, reject) => {
+              this.ngZone.run(() => {
+                this.store.dispatch(AppShowLoading);
+                this.service.sync(url, data, method).subscribe({
+                  next: (response) => {
+                    resolve(response);
+                  },
+                  error: (err) => {
+                    reject(err);
+                  }
+                });
               });
             });
-          });
-
-        };
+          };
+        }
 
         /* Reload the iframe when the settings change */
         this.service.connectIframeReload(iframe);
@@ -115,19 +129,22 @@ export class PreviewComponent implements OnInit {
           intervalCount++;
           return;
         }
-        if (typeof(iframe.contentWindow['sync']) !== 'function') {
-          lastError = '`sync` function does not exist on iframe(s) `contentWindow`';
-          intervalCount++;
-          return;
-        }
-        if (iframe.contentDocument.body &&
-            (iframe.contentDocument.body.classList.length === 0 ||
-            !/(xContent|xSectionType)-/.test(iframe.contentDocument.body.className))
-        ) {
-              lastError = 'Berta classes `xContent-[]` or `xSectionType-` are missing from body element';
-              intervalCount++;
-              return;
-        }
+
+        // if (typeof(iframe.contentWindow['sync']) !== 'function') {
+        //   lastError = '`sync` function does not exist on iframe(s) `contentWindow`';
+        //   intervalCount++;
+        //   return;
+        // }
+
+        // if (iframe.contentDocument.body &&
+        //     (iframe.contentDocument.body.classList.length === 0 ||
+        //     !/(xContent|xSectionType)-/.test(iframe.contentDocument.body.className))
+        // ) {
+        //       lastError = 'Berta classes `xContent-[]` or `xSectionType-` are missing from body element';
+        //       intervalCount++;
+        //       return;
+        // }
+
         observer.next(iframe);
         observer.complete();
       }, 500);
