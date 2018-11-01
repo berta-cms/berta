@@ -1,12 +1,15 @@
-import { Observable } from 'rxjs';
 import { Component, OnInit, NgZone } from '@angular/core';
 import { SafeUrl, DomSanitizer } from '@angular/platform-browser';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { map, switchMap, tap, take } from 'rxjs/operators';
 import { Store } from '@ngxs/store';
+
+import { AppState } from '../app-state/app.state';
 import { UserState } from '../user/user.state';
 import { PreviewService } from './preview.service';
 import { AppShowLoading } from '../app-state/app.actions';
-import { map, switchMap, take } from 'rxjs/operators';
-import { AppState } from '../app-state/app.state';
+import { UserLogoutAction } from '../user/user.actions';
 
 
 @Component({
@@ -40,7 +43,8 @@ export class PreviewComponent implements OnInit {
     private store: Store,
     private ngZone: NgZone,
     private service: PreviewService,
-    private sanitizer: DomSanitizer) {
+    private sanitizer: DomSanitizer,
+    private http: HttpClient) {
   }
 
   ngOnInit() {
@@ -68,15 +72,39 @@ export class PreviewComponent implements OnInit {
         /*
           Check for iframe login page
           try to login user with existing token
+
+          TODO
+          - don't wait for full page load in case it's a login.php page
         */
         if (iframe.contentDocument.body && iframe.contentDocument.body.className === 'xLoginPageBody') {
-          console.log('Login page shown');
-          /*
-            TODO
-            - login using token and reload iframe
-            - logout if login with token fails
-            - serverside: possibly prolong old berta session timeout on token validation
-          */
+          const user = this.store.selectSnapshot(UserState);
+
+          if (!user.token) {
+            this.store.dispatch(UserLogoutAction);
+            return;
+          }
+
+          const appState = this.store.selectSnapshot(AppState);
+
+          return this.http.get(appState.authenticateUrl, {
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+              'X-Requested-With': 'XMLHttpRequest' // Otherwise Lumen don't recognize AJAX request
+            },
+            params: {
+              auth_key: user.token
+            }
+          }).pipe(take(1)).subscribe({
+            next: () => {
+              // Token is valid, reload irame
+              iframe.src += '';
+            },
+            error: (error) => {
+              console.error(error);
+              this.store.dispatch(UserLogoutAction);
+            }
+          });
         }
 
         if (typeof(iframe.contentWindow['sync']) === 'function') {
