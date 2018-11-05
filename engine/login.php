@@ -1,4 +1,7 @@
 <?php
+
+die();
+
 define('AUTH_AUTHREQUIRED', false);
 define('SETTINGS_INSTALLREQUIRED', false);
 define('BERTA_ENVIRONMENT', 'engine');

@@ -72,11 +72,8 @@ export class PreviewComponent implements OnInit {
         /*
           Check for iframe login page
           try to login user with existing token
-
-          TODO
-          - don't wait for full page load in case it's a login.php page
         */
-        if (iframe.contentDocument.body && iframe.contentDocument.body.className === 'xLoginPageBody') {
+        if (iframe.contentDocument.location.href.split('/').pop() === 'login.php') {
           const user = this.store.selectSnapshot(UserState);
 
           if (!user.token) {
@@ -152,26 +149,26 @@ export class PreviewComponent implements OnInit {
           observer.complete();
           return;
         }
+
         if (!iframe.contentDocument) {
           lastError = 'Iframe has no contentDocument';
           intervalCount++;
           return;
         }
 
-        // if (typeof(iframe.contentWindow['sync']) !== 'function') {
-        //   lastError = '`sync` function does not exist on iframe(s) `contentWindow`';
-        //   intervalCount++;
-        //   return;
-        // }
+        if (iframe.contentDocument.location.href.split('/').pop() === 'login.php') {
+          observer.next(iframe);
+          observer.complete();
+        }
 
-        // if (iframe.contentDocument.body &&
-        //     (iframe.contentDocument.body.classList.length === 0 ||
-        //     !/(xContent|xSectionType)-/.test(iframe.contentDocument.body.className))
-        // ) {
-        //       lastError = 'Berta classes `xContent-[]` or `xSectionType-` are missing from body element';
-        //       intervalCount++;
-        //       return;
-        // }
+        if (iframe.contentDocument.body &&
+            (iframe.contentDocument.body.classList.length === 0 ||
+            !/(xContent|xSectionType)-/.test(iframe.contentDocument.body.className))
+        ) {
+              lastError = 'Berta classes `xContent-[]` or `xSectionType-` are missing from body element';
+              intervalCount++;
+              return;
+        }
 
         observer.next(iframe);
         observer.complete();
