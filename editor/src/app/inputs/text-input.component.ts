@@ -60,7 +60,9 @@ export class TextInputComponent implements OnInit {
   onFocus() {
     this.focus = true;
     this.showIcon = false;
-    this.inputFocus.emit(true);
+    setTimeout(() => {
+      this.inputFocus.emit(true);
+    });
   }
 
   onBlur($event) {
@@ -72,7 +74,7 @@ export class TextInputComponent implements OnInit {
     // Waiting for possible click on app overlay
     setTimeout(() => {
       this.inputFocus.emit(false);
-    }, 200);
+    });
 
     this.updateField($event);
   }
