@@ -1,5 +1,7 @@
 <?php
 
+// We are dying here to hide old berta login page show up when old berta session expires
+// @TODO Remove all the contents or this file when we are sure we don't need this page any more
 die();
 
 define('AUTH_AUTHREQUIRED', false);
