@@ -81,22 +81,23 @@ class Berta extends BertaBase
             $this->sections = BertaContent::getSections();
         }
 
-		if(!$sectionName || empty($this->sections[$sectionName]) && $sectionName!='sitemap.xml')
-		{
-			if($this->environment == 'engine')
-				list($sectionName, ) = each($this->sections);
-			else
-			{
-				foreach($this->sections as $sName => $s)
-				{
-					if(!empty($s['@attributes']['published']))
-					{
+		if (!$sectionName || empty($this->sections[$sectionName]) && $sectionName!='sitemap.xml') {
+			if ($this->environment == 'engine') {
+				foreach($this->sections as $sName => $s) {
+                    $sectionName = $sName;
+                    break;
+                }
+
+            } else {
+				foreach($this->sections as $sName => $s) {
+					if (!empty($s['@attributes']['published'])) {
 						$sectionName = $sName;
 						break;
 					}
 				}
 			}
-		}
+        }
+
 		$this->sectionName = $sectionName;
 
 		// content ...

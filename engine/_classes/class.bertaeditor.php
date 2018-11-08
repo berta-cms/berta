@@ -208,13 +208,11 @@ class BertaEditor extends BertaContent {
             if(!empty($section['mediafolder']['value']))
                 $mediaFiles = BertaEditor::gatherMediaFilesIn($section['mediafolder']['value']);
 
-            //var_dump($mediaFiles);
-
             if($mediaFiles) {
 
                 $sectionCache =& $section['mediaCacheData'];
 
-                if(!count($sectionCache) || empty($sectionCache['file'])) {
+                if(!$sectionCache || !count($sectionCache) || empty($sectionCache['file'])) {
                     // if the media cache is empty, create a fresh array
                     $mediaCacheData=array('file' => array());
                     if (isset($section['mediaCacheData'])){
@@ -324,13 +322,11 @@ class BertaEditor extends BertaContent {
                     if(!empty($e['mediafolder']['value']))
                         $mediaFiles = BertaEditor::gatherMediaFilesIn($e['mediafolder']['value']);
 
-                    //var_dump($mediaFiles);
-
                     if($mediaFiles) {
 
                         $entryCache =& $blog['entry'][$eId]['mediaCacheData'];
 
-                        if(!count($entryCache) || empty($entryCache['file'])) {
+                        if(!$entryCache || !count($entryCache) || empty($entryCache['file'])) {
                             // if the media cache is empty, create a fresh array
                             $mediaCacheData=array('file' => array());
                             if (isset($blog['entry'][$eId]['mediaCacheData'])){
@@ -583,7 +579,7 @@ class BertaEditor extends BertaContent {
         if(!empty(self::$options['remote_update_uri']) && ini_get('allow_url_fopen')) {
             $remoteResult = false;
             reset(self::$options['remote_update_uri']);
-            while((!$remoteResult || empty($remoteResult['content'])) && (list(, $remoteURL) = each(self::$options['remote_update_uri']))) {
+            while((!$remoteResult || empty($remoteResult['content'])) && $remoteURL = current(self::$options['remote_update_uri'])) {
                 $remoteResult = BertaUtils::getRemoteFile($remoteURL, 'videos', 5);
             }
 
@@ -676,11 +672,12 @@ DOC;
                 $newsTickerContent = $_SESSION['_berta_newsticker'];
             } elseif((empty($_SESSION['_berta_newsticker_numtries']) || $_SESSION['_berta_newsticker_numtries'] < 5) && ini_get('allow_url_fopen')) {
                 $remoteResult = false;
+
                 reset(self::$options['remote_update_uri']);
-                while((!$remoteResult || empty($remoteResult['content'])) && (list(, $remoteURL) = each(self::$options['remote_update_uri']))) {
+                while ((!$remoteResult || empty($remoteResult['content'])) && $remoteURL = current(self::$options['remote_update_uri'])) {
                     $remoteResult = BertaUtils::getRemoteFile($remoteURL, 'newsticker', 5);
                 }
-                //var_dump($remoteResult ); //$options['newsticker_update_uri_alt']);
+
                 if($remoteResult && isset($remoteResult['content'])) {
                     $newsTickerContent = $_SESSION['_berta_newsticker'] = $remoteResult['content'];
                     setcookie('_berta_newsticker', $remoteResult['content']);
@@ -868,5 +865,3 @@ DOC;
     }
 
 }
-
-?>

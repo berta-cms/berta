@@ -100,13 +100,13 @@ class BertaTemplate extends BertaBase {
 			$this->settings = new Settings($this->settingsDefinition, $generalSettingsInstance, $this->name);
 
 			// instantiate settings for each section type definition (extend $this->settings)
-			reset($this->sectionTypes);
-			while(list($tName, $t) = each($this->sectionTypes)) {
+            reset($this->sectionTypes);
+            foreach ($this->sectionTypes as $tName => $t) {
 				$this->sectionTypes[$tName]['settings'] = new Settings(
 					false, $this->settings, false,
 					isset($t['settings']) ? $t['settings'] : false
 				);
-			}
+            }
 			return true;
 		}
 		return false;
@@ -135,14 +135,15 @@ class BertaTemplate extends BertaBase {
 		if($allContent) {
 			$allEntries = array();
 			reset($allContent);
-			while(list($sName, $c) = each($allContent)) {
+            foreach ($allContent as $sName => $c) {
 				if($sName == $this->sectionName) {
 					$allEntries[$sName] = $entries;
 				} else {
 					list($e, ) = $this->getEntriesLists($sName, null, $c);
 					$allEntries[$sName] = $e;
 				}
-			}
+            }
+
 			$this->addVariable('entriesBySection', $allEntries);
 		}
 	}
@@ -382,9 +383,9 @@ DOC;
 
 		// add vars
 		reset($vars);
-		while(list($vName, $vContent) = each($vars)) {
-			$this->smarty->assign($vName, $vContent);
-		}
+        foreach ($vars as $vName => $vContent) {
+            $this->smarty->assign($vName, $vContent);
+        }
 
 	}
 

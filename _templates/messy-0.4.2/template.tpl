@@ -155,7 +155,7 @@
                 { /if }
 
                 {* activate click on background & background content counter if not on mobile device & background has more than one element & grid view is not active  *}
-                { if !$berta.options.MOBILE_DEVICE && ($berta.section.mediaCacheData.file|@count > 1 || $berta.section.mediaCacheData.file.value) && !($berta.section.type == 'grid' && $smarty.cookies._berta_grid_view) }
+                { if !$berta.options.MOBILE_DEVICE && (($berta.section.mediaCacheData.file && $berta.section.mediaCacheData.file|@count > 1) || $berta.section.mediaCacheData.file.value) && !($berta.section.type == 'grid' && $smarty.cookies._berta_grid_view) }
                     <div id="xBackgroundLeft"></div>
                     <div id="xBackgroundRight"></div>
                     <div id="xBackgroundLeftCounter"{if $bgAttr.hide_navigation=='yes' || $isResponsive=='yes'} class="xHidden"{/if}><div class="counterContent"></div></div>
@@ -164,7 +164,7 @@
             </div>
 
             {* show arrows if on mobile device & background has more than one element & grid view is not active *}
-            { if $berta.options.MOBILE_DEVICE && ($berta.section.mediaCacheData.file|@count > 1 || $berta.section.mediaCacheData.file.value) && !($berta.section.type == 'grid' && $smarty.cookies._berta_grid_view) }
+            { if $berta.options.MOBILE_DEVICE && (($berta.section.mediaCacheData.file && $berta.section.mediaCacheData.file|@count > 1) || $berta.section.mediaCacheData.file.value) && !($berta.section.type == 'grid' && $smarty.cookies._berta_grid_view) }
                 <div id="xBackgroundPrevious"{if $bgAttr.hide_navigation=='yes'} class="xHidden"{/if}><a href="#"><span>previous</span></a></div>
                 <div id="xBackgroundNext"{if $bgAttr.hide_navigation=='yes'} class="xHidden"{/if}><a href="#"><span>next</span></a></div>
             { /if }

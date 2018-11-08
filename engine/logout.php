@@ -11,7 +11,7 @@ $berta->security->destroy();
 
 //destroy cookies
 reset($_COOKIE);
-while(list($idx, ) = each($_COOKIE)) {
+foreach ($_COOKIE as $idx => $cookie) {
 	if(strpos($idx, '_berta_') === 0) {
 		//unset($_COOKIE[$idx]);
 		setcookie($idx, "", time() - 3600);
