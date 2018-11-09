@@ -35,7 +35,7 @@ class BertaSecurity {
 	public $errAuth = 0;	// the reason (id), why autentification failed;
 	public $errLogin = 0;	// the reason (id), why login failed;
 
-	public function __construct($authEnvironment = 'site', $authExpiresSeconds = 21600) {
+	public function __construct($authEnvironment = 'site', $authExpiresSeconds = 86400) {
 		$this->authExpiresSeconds = $authExpiresSeconds;
 		$this->authUseAuthentification = true;
 

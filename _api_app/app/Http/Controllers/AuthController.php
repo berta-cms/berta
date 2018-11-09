@@ -27,12 +27,24 @@ class AuthController extends Controller
 
     public function authenticate(Request $request)
     {
+        $isAjax = $request->ajax();
         $token = $this->authenticateRequestAndGetToken($request);
+
         if (!$token) {
-            return new RedirectResponse(\Berta::$options['SITE_ROOT_URL'] . 'engine/login?autherror=1');
+            if ($isAjax) {
+                return Helpers::api_response('Invalid token!', (object)[], 401);
+            } else {
+                return new RedirectResponse(\Berta::$options['SITE_ROOT_URL'] . 'engine/login?autherror=1');
+            }
         }
+
         setcookie('token', $token, time() + self::$expiration_time, '/');
-        return new RedirectResponse(\Berta::$options['SITE_ROOT_URL'] . 'engine/login?token=' . $token);
+
+        if ($isAjax) {
+            return Helpers::api_response('Valid token');
+        } else {
+            return new RedirectResponse(\Berta::$options['SITE_ROOT_URL'] . 'engine/login?token=' . $token);
+        }
     }
 
     public function logout()

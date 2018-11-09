@@ -1,13 +1,15 @@
-import { Observable } from 'rxjs';
 import { Component, OnInit, NgZone } from '@angular/core';
 import { SafeUrl, DomSanitizer } from '@angular/platform-browser';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { map, switchMap, tap, take } from 'rxjs/operators';
 import { Store } from '@ngxs/store';
+
+import { AppState } from '../app-state/app.state';
 import { UserState } from '../user/user.state';
 import { PreviewService } from './preview.service';
 import { AppShowLoading } from '../app-state/app.actions';
-import { map, switchMap, take } from 'rxjs/operators';
-import { AppState } from '../app-state/app.state';
-import { AppStateService } from '../app-state/app-state.service';
+import { UserLogoutAction } from '../user/user.actions';
 
 
 @Component({
@@ -41,7 +43,8 @@ export class PreviewComponent implements OnInit {
     private store: Store,
     private ngZone: NgZone,
     private service: PreviewService,
-    private sanitizer: DomSanitizer) {
+    private sanitizer: DomSanitizer,
+    private http: HttpClient) {
   }
 
   ngOnInit() {
@@ -66,24 +69,60 @@ export class PreviewComponent implements OnInit {
   onLoad(event) {
     this.waitFullLoad(event.target).subscribe({
       next: (iframe) => {
-        iframe.contentWindow['syncState'] = (url, data, method) => {
+        /*
+          Check for iframe login page
+          try to login user with existing token
+        */
+        if (iframe.contentDocument.location.href.split('/').pop() === 'login.php') {
+          const user = this.store.selectSnapshot(UserState);
 
-          /* Return promise to the old berta */
-          return new Promise((resolve, reject) => {
-            this.ngZone.run(() => {
-              this.store.dispatch(AppShowLoading);
-              this.service.sync(url, data, method).subscribe({
-                next: (response) => {
-                  resolve(response);
-                },
-                error: (err) => {
-                  reject(err);
-                }
+          if (!user.token) {
+            this.store.dispatch(UserLogoutAction);
+            return;
+          }
+
+          const appState = this.store.selectSnapshot(AppState);
+
+          return this.http.get(appState.authenticateUrl, {
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+              'X-Requested-With': 'XMLHttpRequest' // Otherwise Lumen don't recognize AJAX request
+            },
+            params: {
+              auth_key: user.token
+            }
+          }).pipe(take(1)).subscribe({
+            next: () => {
+              // Token is valid, reload irame
+              iframe.src += '';
+            },
+            error: (error) => {
+              console.error(error);
+              this.store.dispatch(UserLogoutAction);
+            }
+          });
+        }
+
+        if (typeof(iframe.contentWindow['sync']) === 'function') {
+
+          iframe.contentWindow['syncState'] = (url, data, method) => {
+            /* Return promise to the old berta */
+            return new Promise((resolve, reject) => {
+              this.ngZone.run(() => {
+                this.store.dispatch(AppShowLoading);
+                this.service.sync(url, data, method).subscribe({
+                  next: (response) => {
+                    resolve(response);
+                  },
+                  error: (err) => {
+                    reject(err);
+                  }
+                });
               });
             });
-          });
-
-        };
+          };
+        }
 
         /* Reload the iframe when the settings change */
         this.service.connectIframeReload(iframe);
@@ -110,16 +149,18 @@ export class PreviewComponent implements OnInit {
           observer.complete();
           return;
         }
+
         if (!iframe.contentDocument) {
           lastError = 'Iframe has no contentDocument';
           intervalCount++;
           return;
         }
-        if (typeof(iframe.contentWindow['sync']) !== 'function') {
-          lastError = '`sync` function does not exist on iframe(s) `contentWindow`';
-          intervalCount++;
-          return;
+
+        if (iframe.contentDocument.location.href.split('/').pop() === 'login.php') {
+          observer.next(iframe);
+          observer.complete();
         }
+
         if (iframe.contentDocument.body &&
             (iframe.contentDocument.body.classList.length === 0 ||
             !/(xContent|xSectionType)-/.test(iframe.contentDocument.body.className))
@@ -128,6 +169,7 @@ export class PreviewComponent implements OnInit {
               intervalCount++;
               return;
         }
+
         observer.next(iframe);
         observer.complete();
       }, 500);
