@@ -1,7 +1,7 @@
 <?php
 
 if(empty($CHECK_INCLUDED)) {
-	define('AUTH_AUTHREQUIRED', true);
+    define('AUTH_AUTHREQUIRED', true);
 	define('SETTINGS_INSTALLREQUIRED', false);
 	include '../../engine/inc.page.php';
 }
@@ -63,7 +63,9 @@ body {
 	<div class="xMAlign-container xPanel">
 		<div class="xMAlign-outer">
 			<div class="xMAlign-inner">
-				<?php echo I18n::_('welcome_text__not_supported') ?>
+                <h2>Thank you for choosing Berta.me!</h2>
+                <p>This server does not meet Berta's requirements.<br />
+                Berta needs PHP >= 5.5.9 and < 7.2.0 support on server.</p>
 			</div>
 		</div>
 	</div>
