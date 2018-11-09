@@ -1,6 +1,6 @@
-import { Router, ActivationEnd } from '@angular/router';
+import { Router, ActivationEnd, NavigationEnd } from '@angular/router';
 import { concat } from 'rxjs';
-import { filter, take, switchMap } from 'rxjs/operators';
+import { filter, take, switchMap, map } from 'rxjs/operators';
 import { State, Action, StateContext, Selector, NgxsOnInit, Actions, ofActionSuccessful } from '@ngxs/store';
 
 import { AppStateModel } from './app-state.interface';
@@ -29,7 +29,8 @@ const defaultState: AppStateModel = {
   isBertaHosting: false,
   loginUrl: '',
   authenticateUrl: '',
-  version: ''
+  version: '',
+  lastRoute: '/settings'
 };
 
 
@@ -59,6 +60,11 @@ export class AppState implements NgxsOnInit {
     return state.site;
   }
 
+  @Selector()
+  static getLastRoute(state: AppStateModel) {
+    return state.lastRoute;
+  }
+
   constructor(private router: Router,
               private actions$: Actions,
               private appStateService: AppStateService) {
@@ -74,6 +80,14 @@ export class AppState implements NgxsOnInit {
       } else {
         patchState({site: ''});
       }
+    });
+
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd),
+      map((event: NavigationEnd) => event.url.split('?')[0]),
+      filter(url => url !== '/' && url !== '/login')
+    ).subscribe((url: string) => {
+      dispatch(new UpdateAppStateAction({lastRoute: url}));
     });
 
     this.appStateService.getAppMetadata().pipe(take(1))

@@ -108,16 +108,17 @@ export class AppComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd),
-      tap((event: NavigationEnd) => {
-        return this.routeIsRoot = event.url.split('?')[0] === '/';
+      map((event: NavigationEnd) => event.url.split('?')[0]),
+      tap(url => {
+        return this.routeIsRoot = url === '/';
       }),
-      mergeMap((event) => this.store.select(AppState).pipe(map((state => [event, state])), take(1))),
+      mergeMap((url) => this.store.select(AppState).pipe(map((state => [url, state])), take(1))),
       filter(([, state]) => {
         return this.routeIsRoot === state.showOverlay;
       }),
     )
-    .subscribe(([event]) => {
-      if (event.url !== '/') {
+    .subscribe(([url]) => {
+      if (url !== '/') {
         this.showOverlay();
       } else {
         this.store.dispatch(AppHideOverlay);
