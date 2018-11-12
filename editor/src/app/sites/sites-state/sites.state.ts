@@ -12,7 +12,8 @@ import {
   UpdateSiteAction,
   RenameSiteAction,
   ResetSitesAction,
-  InitSitesAction
+  InitSitesAction,
+  ReOrderSitesAction
 } from './sites.actions';
 import {
   DeleteSiteSectionsAction,
@@ -178,6 +179,39 @@ export class SitesState implements NgxsOnInit {
           dispatch(new DeleteSiteTemplateSettingsAction(siteName));
           dispatch(new DeleteSiteSectionsTagsAction(siteName));
           dispatch(new DeleteSiteSectionsEntriesAction(siteName));
+        }
+      })
+    );
+  }
+
+  @Action(ReOrderSitesAction)
+  reOrderSitesAction({ getState, setState }: StateContext<SiteStateModel[]>, action: ReOrderSitesAction) {
+    const sitesToSort = [...getState()];
+
+    sitesToSort.sort((siteA, siteB) => {
+      if (siteA.order !== action.currentOrder && siteB.order !== action.currentOrder) {
+        return siteB.order > siteA.order ? -1 : 1;
+      } else if (siteA.order === action.currentOrder) {
+        return siteB.order >= action.payload ? -1 : 1;
+      } else if (siteB.order === action.currentOrder) {
+        return action.payload >= siteA.order ? -1 : 1;
+      }
+    });
+
+    return this.appStateService.sync('sites', sitesToSort.map(site => site.name), 'PUT').pipe(
+      tap(response => {
+        if (response.error_message) {
+          // @TODO handle error message
+          console.error(response.error_message);
+        } else {
+          const sites = getState();
+
+          setState(sites.map(site => {
+            return {
+              ...site,
+              order: (<string[]> response).indexOf(site.name)
+            };
+          }).sort((siteA, siteB) => siteB.order > siteA.order ? -1 : 1));
         }
       })
     );

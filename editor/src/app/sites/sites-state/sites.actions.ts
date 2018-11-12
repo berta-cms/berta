@@ -35,6 +35,14 @@ export class DeleteSiteAction {
   }
 }
 
+export class ReOrderSitesAction {
+  static readonly type = 'SITE:REORDER';
+  constructor(
+    public currentOrder: number,
+    public payload: number) {
+  }
+}
+
 export class ResetSitesAction {
   static readonly type = 'SITE:RESET';
 }

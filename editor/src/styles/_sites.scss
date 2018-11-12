@@ -1,3 +1,5 @@
+@import 'variables';
+
 berta-sites {
   display: block;
 
@@ -9,4 +11,14 @@ berta-sites {
 
 berta-site {
   display: block;
+  transition: border-width 150ms ease-in;
+
+  &.bt-sort-place-after {
+    border-bottom: 3rem solid $grey-10;
+  }
+
+  &.bt-sort-place-before {
+    border-top: 3rem solid $grey-10;
+  }
 }
+
