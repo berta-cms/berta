@@ -96,8 +96,7 @@ if(!empty($settings['berta']['installed'])) {
                             );
                         ?>
 
-						<p><input type="button" value=" <?php echo I18n::_('Done!') ?> " id="xFirstTimeCheckContinue" onclick="window.location='<?php echo $redirectURL ?>?_berta_install_done=1<?php echo !empty($options['MULTISITE']) ? '&site='.$options['MULTISITE'] : '' ?>'" /></p>
-
+                        <p><input type="button" value=" <?php echo I18n::_('Done!') ?> " id="xFinishInstall" data-path="<?php echo $basePath?>/berta/installed"></p>
 					</div>
 					<?php
 
