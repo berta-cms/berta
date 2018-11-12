@@ -69,11 +69,12 @@ export class PreviewComponent implements OnInit {
   onLoad(event) {
     this.waitFullLoad(event.target).subscribe({
       next: (iframe) => {
+        const lastUrlPart = iframe.contentDocument.location.href.replace(/\/$/, '').split('/').pop();
         /*
           Check for iframe login page
           try to login user with existing token
         */
-        if (iframe.contentDocument.location.href.split('/').pop() === 'login.php') {
+        if (lastUrlPart === 'login.php' || lastUrlPart === 'engine') {
           const user = this.store.selectSnapshot(UserState);
 
           if (!user.token) {
@@ -141,6 +142,7 @@ export class PreviewComponent implements OnInit {
       const maxChecks = 10;
       let intervalCount = 0;
       let lastError = '';
+      const lastUrlPart = iframe.contentDocument.location.href.replace(/\/$/, '').split('/').pop();
 
       const loadCheck = setInterval(() => {
         if (intervalCount >= maxChecks) {
@@ -156,16 +158,16 @@ export class PreviewComponent implements OnInit {
           return;
         }
 
-        if (iframe.contentDocument.location.href.split('/').pop() === 'login.php') {
+        if (lastUrlPart === 'login.php' || lastUrlPart === 'engine') {
           observer.next(iframe);
           observer.complete();
         }
 
         if (iframe.contentDocument.body &&
             (iframe.contentDocument.body.classList.length === 0 ||
-            !/(xContent|xSectionType)-/.test(iframe.contentDocument.body.className))
+            !/(xLoginPageBody|xContent-|xSectionType-)/.test(iframe.contentDocument.body.className))
         ) {
-              lastError = 'Berta classes `xContent-[]` or `xSectionType-` are missing from body element';
+              lastError = 'Berta classes `xLoginPageBody` or `xContent-[]` or `xSectionType-` are missing from body element';
               intervalCount++;
               return;
         }
