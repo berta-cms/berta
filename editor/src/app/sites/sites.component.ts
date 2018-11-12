@@ -10,9 +10,10 @@ import { CreateSiteAction, ReOrderSitesAction } from './sites-state/sites.action
   template: `
     <div class="nice" (dragend)="resetDrag()" (drop)="onDrop($event)">
       <berta-site *ngFor="let site of sites$ | async"
+                  draggable="true"
                   [class.bt-sort-place-after]="dragOverIndex > 0 && dragOverIndex === site.order && draggedIndex < dragOverIndex"
                   [class.bt-sort-place-before]="dragOverIndex > 0 && dragOverIndex === site.order && draggedIndex > dragOverIndex"
-                  draggable="true"
+                  [class.bt-sort-is-dragged]="site.order === draggedIndex && hideElement"
                   (dragstart)="siteDragStart($event, site)"
                   (dragover)="dragOver($event, site)"
                   (drop)="onDrop($event)"
@@ -26,6 +27,7 @@ export class SitesComponent {
   @Select('sites') public sites$: Observable<SiteStateModel[]>;
   dragOverIndex: number|null = null;
   draggedIndex: number|null = null;
+  hideElement = false;
 
   constructor(private store: Store) { }
 
@@ -45,6 +47,12 @@ export class SitesComponent {
     }
     this.draggedIndex = +site.order;
     event.dataTransfer.dropEffect = 'move';
+
+    // Hide the element that's being dragged from the site list
+    // Use delay so we get the image as drag anchor
+    setTimeout(() => {
+      this.hideElement = true;
+    }, 10);
   }
 
   dragOver(event, site) {
@@ -65,5 +73,6 @@ export class SitesComponent {
   resetDrag() {
     this.dragOverIndex = null;
     this.draggedIndex = null;
+    this.hideElement = false;
   }
 }

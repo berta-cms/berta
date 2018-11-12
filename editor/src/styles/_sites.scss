@@ -20,5 +20,10 @@ berta-site {
   &.bt-sort-place-before {
     border-top: 3rem solid $grey-10;
   }
+
+  &.bt-sort-is-dragged {
+    height: 0;
+    overflow: hidden;
+  }
 }
 
