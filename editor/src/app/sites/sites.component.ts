@@ -10,8 +10,8 @@ import { CreateSiteAction, ReOrderSitesAction } from './sites-state/sites.action
   template: `
     <div class="nice" (dragend)="resetDrag()" (drop)="onDrop($event)">
       <berta-site *ngFor="let site of sites$ | async"
-                  [class.bt-sort-place-after]="dragOverIndex === site.order && draggedIndex < dragOverIndex"
-                  [class.bt-sort-place-before]="dragOverIndex === site.order && draggedIndex > dragOverIndex"
+                  [class.bt-sort-place-after]="dragOverIndex > 0 && dragOverIndex === site.order && draggedIndex < dragOverIndex"
+                  [class.bt-sort-place-before]="dragOverIndex > 0 && dragOverIndex === site.order && draggedIndex > dragOverIndex"
                   draggable="true"
                   (dragstart)="siteDragStart($event, site)"
                   (dragover)="dragOver($event, site)"
@@ -38,6 +38,11 @@ export class SitesComponent {
   }
 
   siteDragStart(event, site) {
+    if (site.order === 0) {
+      // The home page is always the first one, don' t allow to move it
+      event.preventDefault();
+      return false;
+    }
     this.draggedIndex = +site.order;
     event.dataTransfer.dropEffect = 'move';
   }
@@ -51,7 +56,7 @@ export class SitesComponent {
   onDrop(event) {
     event.preventDefault();
     event.stopPropagation();
-    if (this.draggedIndex === this.dragOverIndex) {
+    if (this.draggedIndex === this.dragOverIndex || this.dragOverIndex === 0) {
       return;
     }
     this.store.dispatch(new ReOrderSitesAction(this.draggedIndex, this.dragOverIndex));
