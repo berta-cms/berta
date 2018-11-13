@@ -143,7 +143,8 @@ var BertaEditor = new Class({
         }
 
         // Tutorial videos
-        this.bertaVideosInit();
+        // Disabled outdated video tutorials
+        // this.bertaVideosInit();
 
         if (this.entriesList) {
 
