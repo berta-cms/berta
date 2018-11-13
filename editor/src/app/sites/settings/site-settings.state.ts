@@ -15,6 +15,7 @@ import {
   InitSiteSettingsAction,
   UpdateSiteSettingsFromSyncAction} from './site-settings.actions';
 import { UserLoginAction } from '../../user/user.actions';
+import { AddSiteSectionAction } from '../sections/sections-state/site-sections.actions';
 
 
 @State<SitesSettingsStateModel>({
@@ -126,7 +127,8 @@ export class SiteSettingsState implements NgxsOnInit {
   }
 
   @Action(UpdateSiteSettingsFromSyncAction)
-  updateSiteSettingsFromSync({patchState, getState}: StateContext<SitesSettingsStateModel>, action: UpdateSiteSettingsFromSyncAction) {
+  updateSiteSettingsFromSync({patchState, getState, dispatch}: StateContext<SitesSettingsStateModel>,
+                             action: UpdateSiteSettingsFromSyncAction) {
     return this.appStateService.sync('siteSettings', {
       path: action.path,
       value: action.payload
@@ -161,6 +163,10 @@ export class SiteSettingsState implements NgxsOnInit {
               settings: [..._settingGroup.settings, {slug: settingKey, value: response.value}]
             };
           })});
+
+          if (response.section) {
+            dispatch(new AddSiteSectionAction(response.section));
+          }
         }
       })
     );

@@ -19,7 +19,8 @@ import {
   AddSiteSectionsAction,
   ResetSiteSectionsAction,
   InitSiteSectionsAction,
-  UpdateSiteSectionBackgroundFromSyncAction} from './site-sections.actions';
+  UpdateSiteSectionBackgroundFromSyncAction,
+  AddSiteSectionAction} from './site-sections.actions';
 import { DeleteSectionTagsAction, RenameSectionTagsAction, AddSectionTagsAction } from '../tags/section-tags.actions';
 import {
   DeleteSectionEntriesAction,
@@ -59,7 +60,7 @@ export class SiteSectionsState implements NgxsOnInit {
   }
 
   @Action(CreateSectionAction)
-  createSection({ getState, setState, dispatch }: StateContext<SiteSectionStateModel[]>, action: CreateSectionAction) {
+  createSection({ dispatch }: StateContext<SiteSectionStateModel[]>, action: CreateSectionAction) {
     const siteName = this.store.selectSnapshot(AppState.getSite);
     const data = {
       name: action.section ? action.section.name : null,
@@ -73,13 +74,9 @@ export class SiteSectionsState implements NgxsOnInit {
           // @TODO handle error message
           console.error(response.error_message);
         } else {
-          const state = getState();
           const newSiteSection: SiteSectionStateModel = response.section;
 
-          /** @todo: possibly trigger AddSiteSectionsAction to decrease action clutter */
-          setState(
-            [...state, newSiteSection]
-          );
+          dispatch(new AddSiteSectionAction(newSiteSection));
 
           if (response.entries && response.entries.length) {
             dispatch(new AddSectionEntriesAction(siteName, response.entries));
@@ -91,6 +88,12 @@ export class SiteSectionsState implements NgxsOnInit {
         }
       })
     );
+  }
+
+  @Action(AddSiteSectionAction)
+  addSiteSection({ getState, setState }: StateContext<SiteSectionStateModel[]>, action: AddSiteSectionAction) {
+    const state = getState();
+    setState([...state, action.section]);
   }
 
   @Action(AddSiteSectionsAction)

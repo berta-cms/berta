@@ -72,7 +72,8 @@ class Berta extends BertaBase
             $fSections = [
                 $firstSectionName => [
                     'title' => ['value' => 'Home'],
-                    'name' => ['value' => $firstSectionName]
+                    'name' => ['value' => $firstSectionName],
+                    '@attributes' => ['tags_behavior' => 'invisible', 'published' => 1],
                 ]
             ];
             BertaEditor::saveSections($fSections);
