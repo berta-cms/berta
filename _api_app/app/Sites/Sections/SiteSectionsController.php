@@ -19,7 +19,7 @@ class SiteSectionsController extends Controller
         $sectionsDataService = new SiteSectionsDataService($json['site']);
 
         if ($cloneFrom) {
-            $section = $sectionsDataService->clone(
+            $section = $sectionsDataService->cloneSection(
                 $json['name'],
                 $json['title']
             );

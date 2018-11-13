@@ -228,7 +228,7 @@ class SiteSectionsDataService extends Storage
         return $section;
     }
 
-    public function clone($name = null, $title = null)
+    public function cloneSection($name = null, $title = null)
     {
         $sections = $this->get();
         $title = empty($title) ? $name : $title;
