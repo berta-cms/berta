@@ -42,6 +42,7 @@ export class SitesComponent {
   siteDragStart(event, site) {
     this.draggedIndex = +site.order;
     event.dataTransfer.dropEffect = 'move';
+    event.dataTransfer.setData('text/plain', String(site.order));
 
     // Hide the element that's being dragged from the site list
     // Use delay so we get the image as drag anchor
