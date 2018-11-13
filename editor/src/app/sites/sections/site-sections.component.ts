@@ -20,22 +20,24 @@ import { SettingConfigModel, SettingModel } from '../../shared/interfaces';
 @Component({
   selector: 'berta-site-sections',
   template: `
-    <berta-section *ngFor="let sd of sectionsData$ | async"
-                   draggable="true"
-                   [class.bt-sort-place-after]="dragOverIndex === sd.section.order && draggedIndex < dragOverIndex"
-                   [class.bt-sort-place-before]="dragOverIndex === sd.section.order && draggedIndex > dragOverIndex"
-                   [class.bt-sort-is-dragged]="sd.section.order === draggedIndex && hideElement"
-                   (dragstart)="siteDragStart($event, sd.section)"
-                   (dragover)="dragOver($event, sd.section)"
-                   (drop)="onDrop($event)"
-                   (dragend)="resetDrag()"
-                   [section]="sd.section"
-                   [isExpanded]="sd.section.name === currentSection"
-                   [params]="sd.params"
-                   [templateSectionTypes]="sectionTypes$ | async"
-                   (inputFocus)="updateComponentFocus($event)"
-                   (update)="updateSection(sd, $event)"></berta-section>
-    <button type="button" class="button" (click)="createSection()">Create new section</button>
+    <div class="berta-site-sections" [class.bt-reordering]="draggedIndex !== null">
+      <berta-section *ngFor="let sd of sectionsData$ | async"
+                    draggable="true"
+                    [class.bt-sort-place-after]="dragOverIndex === sd.section.order && draggedIndex < dragOverIndex"
+                    [class.bt-sort-place-before]="dragOverIndex === sd.section.order && draggedIndex > dragOverIndex"
+                    [class.bt-sort-is-dragged]="sd.section.order === draggedIndex && hideElement"
+                    (dragstart)="siteDragStart($event, sd.section)"
+                    (dragover)="dragOver($event, sd.section)"
+                    (drop)="onDrop($event)"
+                    (dragend)="resetDrag()"
+                    [section]="sd.section"
+                    [isExpanded]="sd.section.name === currentSection"
+                    [params]="sd.params"
+                    [templateSectionTypes]="sectionTypes$ | async"
+                    (inputFocus)="updateComponentFocus($event)"
+                    (update)="updateSection(sd, $event)"></berta-section>
+      <button type="button" class="button" (click)="createSection()">Create new section</button>
+    </div>
   `
 })
 export class SiteSectionsComponent implements OnInit {
@@ -181,9 +183,6 @@ export class SiteSectionsComponent implements OnInit {
     this.draggedIndex = +section.order;
     event.dataTransfer.dropEffect = 'move';
     event.dataTransfer.setData('text/plain', String(section.order));
-    this.dragAnchor.nativeElement.style.position = 'fixed';
-    this.dragAnchor.nativeElement.style.width = '383px';
-
 
     // Hide the element that's being dragged from the site list
     // Use delay so we get the image as drag anchor
