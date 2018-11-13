@@ -64,6 +64,14 @@ export class DeleteSiteSectionAction {
   }
 }
 
+export class ReOrderSiteSectionsAction {
+  static readonly type = 'SITE_SECTIONS:REORDER';
+  constructor(
+    public currentOrder: number,
+    public payload: number) {
+  }
+}
+
 export class DeleteSiteSectionsAction {
   static readonly type = 'SITE_SECTIONS:DELETE';
   constructor(public siteName: string) {

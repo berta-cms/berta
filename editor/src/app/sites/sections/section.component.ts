@@ -14,8 +14,8 @@ import { DeleteSiteSectionAction, CloneSectionAction } from './sections-state/si
                                  (update)="updateTextField('title', $event)"></berta-inline-text-input>
 
         <div class="expand"></div>
-        <button [attr.title]="section['@attributes'].published > 0 ? 'Unpublish': 'Publish'"
-                (click)="updateField({'@attributes': {published: section['@attributes'].published > 0 ? '0' : '1'}})">
+        <button [attr.title]="(section['@attributes'].published > 0 ? 'Unpublish': 'Publish')"
+                (click)="updateField({'@attributes': {published: (section['@attributes'].published > 0 ? '0' : '1')}})">
           <berta-icon-publish [published]="(section['@attributes'].published > 0)"></berta-icon-publish>
         </button>
         <button title="copy"
