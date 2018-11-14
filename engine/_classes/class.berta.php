@@ -63,25 +63,6 @@ class Berta extends BertaBase
 		// seciton ...
         $this->sections = BertaContent::getSections();
 
-        if (empty($this->sections) && class_exists('BertaEditor')) {
-            /**
-             * Auto-create the first section and call it 'home'
-             */
-            $firstSectionName = 'home';
-            $blog = [];
-            $fSections = [
-                $firstSectionName => [
-                    'title' => ['value' => 'Home'],
-                    'name' => ['value' => $firstSectionName],
-                    '@attributes' => ['tags_behavior' => 'invisible', 'published' => 1],
-                ]
-            ];
-            BertaEditor::saveSections($fSections);
-            BertaEditor::saveBlog($firstSectionName, $blog);
-
-            $this->sections = BertaContent::getSections();
-        }
-
 		if(!$sectionName || empty($this->sections[$sectionName]) && $sectionName!='sitemap.xml')
 		{
 			if($this->environment == 'engine')
