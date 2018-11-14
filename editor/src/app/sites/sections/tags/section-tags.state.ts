@@ -50,6 +50,10 @@ export class SectionTagsState implements NgxsOnInit {
   updateSectionTags({ getState, patchState }: StateContext<SectionTagsStateModel>, action: UpdateSectionTagsAction) {
     const state = getState();
 
+    if (!action.tags) {
+      return;
+    }
+
     patchState({
       [action.siteName]: {
         ...state[action.siteName],

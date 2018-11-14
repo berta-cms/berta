@@ -265,7 +265,9 @@ export class SectionEntriesState implements NgxsOnInit {
             })
           );
 
-          dispatch(new UpdateSectionTagsAction(action.site, action.section, response.tags));
+          if (response.tags) {
+            dispatch(new UpdateSectionTagsAction(action.site, action.section, response.tags));
+          }
         }
       })
     );
