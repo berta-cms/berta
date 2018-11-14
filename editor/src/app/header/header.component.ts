@@ -14,7 +14,7 @@ import { UserStateModel } from '../user/user.state.model';
     <header>
       <div class="loading" [style.display]="((isLoading$ | async) ? 'block' : '')"></div>
       <div class="bt-menu" *ngIf="isLoggedIn$ | async">
-        <nav>
+        <nav *ngIf="!(isSetup$ | async)">
           <a *ngIf="(user$ | async).features.indexOf('multisite') > -1"
              [routerLink]="['/multisite']"
              [routerLinkActive]="'nav-active'"
@@ -84,6 +84,7 @@ export class HeaderComponent implements OnInit {
   @Select(UserState.isLoggedIn) isLoggedIn$: Observable<boolean>;
   @Select(AppState.getShowLoading) isLoading$: Observable<boolean>;
   @Select(AppState.getSite) site$: Observable<string|null>;
+  @Select(AppState.isSetup) isSetup$: Observable<boolean>;
 
   queryParams$: Observable<{[k: string]: string}>;
 

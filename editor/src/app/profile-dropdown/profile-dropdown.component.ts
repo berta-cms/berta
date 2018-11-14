@@ -41,6 +41,7 @@ import { UserLogoutAction } from '../user/user.actions';
     :host {
       display: block;
       position: relative;
+      margin-left: auto;
     }
 
     :host:hover > ul,
