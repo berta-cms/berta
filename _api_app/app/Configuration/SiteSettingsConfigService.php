@@ -7,6 +7,7 @@ use App\Shared\I18n;
 class SiteSettingsConfigService
 {
     private $settings;
+    private $defaultTemplate = 'messy-0.4.2';
 
     public function __construct()
     {
@@ -34,6 +35,11 @@ class SiteSettingsConfigService
 
         $this->settings = $settingsDefinition;
         $this->settings['template']['template']['values'] = $this->getTemplates();
+
+        // Currently default template is set in old Berta if it's not already set in XML
+        // We need a default template here in case old Berta has not set this value yet
+        // @TODO Create settings XML file with default template in api
+        $this->settings['template']['template']['default'] = $this->defaultTemplate;
 
         return $this->settings;
     }

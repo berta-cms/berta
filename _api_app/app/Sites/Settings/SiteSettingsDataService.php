@@ -279,8 +279,7 @@ class SiteSettingsDataService extends Storage
     private $SITE_SETTINGS = [];
     private static $DEFAULT_SITE_SETTINGS = [
         'template/template' => 'messy-0.4.2',
-        'berta/lastUpdated' => 'D, d M Y H:i:s',
-        'berta/installed' => 1,
+        'berta/lastUpdated' => 'D, d M Y H:i:s'
     ];
     private $siteSettingsDefaults;
 
