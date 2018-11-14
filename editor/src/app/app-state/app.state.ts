@@ -19,6 +19,7 @@ import { UserLoginAction } from '../user/user.actions';
 
 
 const defaultState: AppStateModel = {
+  setup: false,
   showOverlay: false,
   isLoading: false,
   inputFocused: false,
@@ -39,6 +40,11 @@ const defaultState: AppStateModel = {
   defaults: defaultState
 })
 export class AppState implements NgxsOnInit {
+
+  @Selector()
+  static isSetup(state: AppStateModel) {
+    return state.setup;
+  }
 
   @Selector()
   static getInputFocus(state: AppStateModel) {

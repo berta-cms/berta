@@ -46,7 +46,7 @@ if(!empty($settings['berta']['installed'])) {
     $site = empty($options['MULTISITE']) ? '' : $options['MULTISITE'];
     $basePath = $site . '/settings';
 
-	?><body class="xLoginPageBody" x_mode="settings">
+	?><body class="xLoginPageBody xSetupWizard" x_mode="settings">
 		<div class="xMAlign-container xPanel">
 			<div class="xMAlign-outer">
 				<div class="xMAlign-inner justify">

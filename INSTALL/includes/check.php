@@ -100,7 +100,7 @@ if(!empty($settings['berta']['installed'])) {
 
 } else {
 
-	?><body class="xLoginPageBody">
+	?><body class="xLoginPageBody xSetupWizard">
 		<div class="xMAlign-container xPanel">
 			<div class="xMAlign-outer">
 				<div class="xMAlign-inner justify">

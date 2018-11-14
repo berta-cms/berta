@@ -1,4 +1,5 @@
 export interface AppStateModel {
+  setup: boolean;
   showOverlay: boolean;
   isLoading: boolean;
   inputFocused: boolean;

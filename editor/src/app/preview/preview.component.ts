@@ -8,7 +8,7 @@ import { Store } from '@ngxs/store';
 import { AppState } from '../app-state/app.state';
 import { UserState } from '../user/user.state';
 import { PreviewService } from './preview.service';
-import { AppShowLoading } from '../app-state/app.actions';
+import { AppShowLoading, UpdateAppStateAction } from '../app-state/app.actions';
 import { UserLogoutAction } from '../user/user.actions';
 
 
@@ -70,6 +70,10 @@ export class PreviewComponent implements OnInit {
     this.waitFullLoad(event.target).subscribe({
       next: (iframe) => {
         const lastUrlPart = iframe.contentDocument.location.href.replace(/\/$/, '').split('/').pop();
+        const isSetup = iframe.contentDocument.body && /xSetupWizard/.test(iframe.contentDocument.body.className);
+
+        this.store.dispatch(new UpdateAppStateAction({setup: isSetup}));
+
         /*
           Check for iframe login page
           try to login user with existing token
