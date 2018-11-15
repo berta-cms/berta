@@ -27,7 +27,7 @@ export class SectionTagsState implements NgxsOnInit {
 
   @Selector([AppState.getSite])
   static getCurrentSiteTags(state, site) {
-    return state[site].section;
+    return state[site] ? state[site].section : [];
   }
 
   constructor(
