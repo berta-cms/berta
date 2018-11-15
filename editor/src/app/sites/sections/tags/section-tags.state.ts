@@ -149,7 +149,7 @@ export class SectionTagsState implements NgxsOnInit {
   deleteSectionTags({ getState, patchState }: StateContext<SectionTagsStateModel>, action: DeleteSectionTagsAction) {
     const state = getState();
 
-    if (!state[action.section.site_name].section) {
+    if (!state[action.section.site_name] || !state[action.section.site_name].section) {
       return;
     }
 

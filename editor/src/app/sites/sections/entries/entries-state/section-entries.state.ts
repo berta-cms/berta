@@ -81,6 +81,10 @@ export class SectionEntriesState implements NgxsOnInit {
   renameSectionEntries({ patchState, getState }: StateContext<SectionEntriesStateModel>, action: RenameSectionEntriesAction) {
     const state = getState();
 
+    if (!state[action.section.site_name]) {
+      return;
+    }
+
     patchState({
       [action.section.site_name]: state[action.section.site_name].map(entry => {
 
@@ -112,6 +116,10 @@ export class SectionEntriesState implements NgxsOnInit {
   @Action(DeleteSectionEntriesAction)
   deleteSectionEntries({ patchState, getState }: StateContext<SectionEntriesStateModel>, action: DeleteSectionEntriesAction) {
     const state = getState();
+
+    if (!state[action.section.site_name]) {
+      return;
+    }
 
     patchState({
       [action.section.site_name]: state[action.section.site_name].filter(entry => {
