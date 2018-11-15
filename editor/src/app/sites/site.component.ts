@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Router } from '@angular/router';
 import { Store } from '@ngxs/store';
 import { SiteStateModel } from './sites-state/site-state.model';
 import { DeleteSiteAction, CloneSiteAction, UpdateSiteAction, RenameSiteAction } from './sites-state/sites.actions';
@@ -66,7 +67,8 @@ export class SiteComponent implements OnInit {
   hostname: string;
   modificationDisabled: null | true = null;
 
-  constructor(private store: Store) { }
+  constructor(private router: Router,
+              private store: Store) { }
 
   ngOnInit() {
     this.hostname = location.hostname;
@@ -90,6 +92,10 @@ export class SiteComponent implements OnInit {
   }
 
   deleteSite() {
-    this.store.dispatch(new DeleteSiteAction(this.site));
+    this.store.dispatch(new DeleteSiteAction(this.site)).subscribe({
+      next: () => {
+        this.router.navigate([], {queryParams: {site: null}, queryParamsHandling: 'merge'});
+      }
+    });
   }
 }
