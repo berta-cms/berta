@@ -54,27 +54,35 @@ export class SectionTagsState implements NgxsOnInit {
       return;
     }
 
-    patchState({
-      [action.siteName]: {
-        ...state[action.siteName],
-        section: state[action.siteName].section.some(section => section['@attributes'].name === action.sectionName) ?
-          state[action.siteName].section.map(section => {
-            if (section['@attributes'].name === action.sectionName) {
-              return action.tags;
-            }
-            return section;
-          })
-          :
-          [...state[action.siteName].section, action.tags]
-      }
-    });
+    if (state[action.siteName]) {
+      patchState({
+        [action.siteName]: {
+          ...state[action.siteName],
+          section: state[action.siteName].section.some(section => section['@attributes'].name === action.sectionName) ?
+            state[action.siteName].section.map(section => {
+              if (section['@attributes'].name === action.sectionName) {
+                return action.tags;
+              }
+              return section;
+            })
+            :
+            [...state[action.siteName].section, action.tags]
+        }
+      });
+    } else {
+      patchState({
+        [action.siteName]: {
+            section: [action.tags]
+        }
+      });
+    }
   }
 
   @Action(RenameSectionTagsAction)
   renameSectionTags({ patchState, getState }: StateContext<SectionTagsStateModel>, action: RenameSectionTagsAction) {
     const state = getState();
 
-    if (!state[action.section.site_name].section) {
+    if (!state[action.section.site_name] || !state[action.section.site_name].section) {
       return;
     }
 

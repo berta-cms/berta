@@ -54,7 +54,12 @@ export class SectionEntriesState implements NgxsOnInit {
       const newEntry = sectionEntries[action.site].find(
         entry => entry.sectionName === action.section && entry.id === action.entryId.toString()
       );
-      patchState({[action.site]: [...state[action.site], newEntry]});
+
+      if (state[action.site]) {
+        patchState({[action.site]: [...state[action.site], newEntry]});
+      } else {
+        patchState({[action.site]: [newEntry]});
+      }
     });
   }
 
