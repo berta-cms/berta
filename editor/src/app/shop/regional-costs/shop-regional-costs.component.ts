@@ -181,6 +181,7 @@ export class ShopRegionalCostsComponent implements OnInit {
       showOverlay: true,
       actions: [
         {
+          type: 'primary',
           label: 'OK',
           callback: (popupService) => {
             event.target.disabled = true;
@@ -189,7 +190,6 @@ export class ShopRegionalCostsComponent implements OnInit {
           }
         },
         {
-          type: 'secondary',
           label: 'Cancel'
         }
       ],
@@ -217,6 +217,7 @@ export class ShopRegionalCostsComponent implements OnInit {
       showOverlay: true,
       actions: [
         {
+          type: 'primary',
           label: 'OK',
           callback: (popupService) => {
             event.target.disabled = true;
@@ -225,7 +226,6 @@ export class ShopRegionalCostsComponent implements OnInit {
           }
         },
         {
-          type: 'secondary',
           label: 'Cancel'
         }
       ],

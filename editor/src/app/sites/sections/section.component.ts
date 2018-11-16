@@ -138,6 +138,7 @@ export class SectionComponent {
       showOverlay: true,
       actions: [
         {
+          type: 'primary',
           label: 'OK',
           callback: (popupService) => {
             this.store.dispatch(new DeleteSiteSectionAction(this.section));
@@ -145,7 +146,6 @@ export class SectionComponent {
           }
         },
         {
-          type: 'secondary',
           label: 'Cancel'
         }
       ],

@@ -98,6 +98,7 @@ export class SiteComponent implements OnInit {
       showOverlay: true,
       actions: [
         {
+          type: 'primary',
           label: 'OK',
           callback: (popupService) => {
             this.store.dispatch(new DeleteSiteAction(this.site));
@@ -105,7 +106,6 @@ export class SiteComponent implements OnInit {
           }
         },
         {
-          type: 'secondary',
           label: 'Cancel'
         }
       ],
