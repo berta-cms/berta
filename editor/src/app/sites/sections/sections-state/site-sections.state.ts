@@ -252,7 +252,7 @@ export class SiteSectionsState implements NgxsOnInit {
   @Action(ReOrderSiteSectionsAction)
   ReOrderSiteSections({ getState, setState }: StateContext<SiteSectionStateModel[]>, action: ReOrderSiteSectionsAction) {
     const siteName = this.store.selectSnapshot(AppState.getSite);
-    const sectionsToSort = getState().filter(section => section.site_name === siteName);
+    const sectionsToSort = this.store.selectSnapshot(SiteSectionsState.getCurrentSiteSections);
 
     sectionsToSort.sort((sectionA, sectionB) => {
       if (sectionA.order !== action.currentOrder && sectionB.order !== action.currentOrder) {
