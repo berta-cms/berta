@@ -1,4 +1,5 @@
 import { Component, OnInit, NgZone } from '@angular/core';
+import { Router } from '@angular/router';
 import { SafeUrl, DomSanitizer } from '@angular/platform-browser';
 import { HttpClient } from '@angular/common/http';
 import { Observable, combineLatest } from 'rxjs';
@@ -40,6 +41,7 @@ export class PreviewComponent implements OnInit {
   previewUrl: SafeUrl;
 
   constructor(
+    private router: Router,
     private store: Store,
     private ngZone: NgZone,
     private service: PreviewService,
@@ -90,6 +92,11 @@ export class PreviewComponent implements OnInit {
       next: (iframe) => {
         const lastUrlPart = iframe.contentDocument.location.href.replace(/\/$/, '').split('/').pop();
         const isSetup = iframe.contentDocument.body && /xSetupWizard/.test(iframe.contentDocument.body.className);
+        const urlParams = new URLSearchParams(iframe.contentDocument.location.search);
+        const site = urlParams.get('site');
+
+        // Switch sites from iframe
+        this.router.navigate([], {queryParams: {site: site}, queryParamsHandling: 'merge'});
 
         this.store.dispatch(new UpdateAppStateAction({setup: isSetup}));
 
