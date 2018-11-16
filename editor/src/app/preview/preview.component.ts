@@ -1,8 +1,8 @@
 import { Component, OnInit, NgZone } from '@angular/core';
 import { SafeUrl, DomSanitizer } from '@angular/platform-browser';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { map, switchMap, tap, take } from 'rxjs/operators';
+import { Observable, combineLatest } from 'rxjs';
+import { take, filter } from 'rxjs/operators';
 import { Store } from '@ngxs/store';
 
 import { AppState } from '../app-state/app.state';
@@ -48,22 +48,41 @@ export class PreviewComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.store.select(UserState.isLoggedIn)
-      .pipe(
-        map(isLoggedIn => {
-          return location.protocol + '//' + location.hostname + (isLoggedIn ? '/engine/editor/' : '');
-        }),
-        switchMap(location => {
-          return this.store.select(AppState.getSite).pipe(
-            map(site => {
-              return site ? location + `?site=${site}` : location;
-            })
-          );
-        })
-      )
-      .subscribe(url => {
-        this.previewUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
-      });
+    // Load iframe with current site and section
+    combineLatest(
+      this.store.select(AppState.getSite),
+      this.store.select(AppState.getSection),
+      this.store.select(UserState.isLoggedIn)
+    ).pipe(
+      filter(([site]) => site !== null),
+    ).subscribe(([site, section, isLoggedIn]) => {
+      let url = location.protocol + '//' + location.hostname;
+      const queryParams = [];
+
+      if (isLoggedIn) {
+        url += '/engine/editor/';
+
+        if (site) {
+          queryParams.push({
+            key: 'site',
+            value: site
+          });
+        }
+
+        if (section) {
+          queryParams.push({
+            key: 'section',
+            value: section
+          });
+        }
+
+        if (queryParams.length) {
+          url += '?' + queryParams.map(param => param.key + '=' + param.value).join('&');
+        }
+      }
+
+      this.previewUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
+    });
   }
 
   onLoad(event) {

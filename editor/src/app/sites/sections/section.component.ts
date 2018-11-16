@@ -3,6 +3,7 @@ import { Store } from '@ngxs/store';
 import { SiteSectionStateModel } from './sections-state/site-sections-state.model';
 import { SiteTemplateSectionTypesModel } from '../template-settings/site-templates.interface';
 import { DeleteSiteSectionAction, CloneSectionAction } from './sections-state/site-sections.actions';
+import { UpdateAppStateAction } from 'src/app/app-state/app.actions';
 
 @Component({
   selector: 'berta-section',
@@ -11,7 +12,9 @@ import { DeleteSiteSectionAction, CloneSectionAction } from './sections-state/si
       <h3>
         <berta-inline-text-input [value]="section.title"
                                  (inputFocus)="updateComponentFocus($event)"
-                                 (update)="updateTextField('title', $event)"></berta-inline-text-input>
+                                 (update)="updateTextField('title', $event)"
+                                 (textClick)="switchSection(section.name)"
+                                 class="clickable-text"></berta-inline-text-input>
 
         <div class="expand"></div>
         <button [attr.title]="section['@attributes'].published > 0 ? 'Unpublish': 'Publish'"
@@ -100,6 +103,10 @@ export class SectionComponent {
   @Output('update') update = new EventEmitter<{section: string|number, data: {[k: string]: any}}>();
 
   constructor(private store: Store) { }
+
+  switchSection(sectionName) {
+    this.store.dispatch(new UpdateAppStateAction({section: sectionName}));
+  }
 
   updateComponentFocus(isFocused) {
     this.inputFocus.emit(isFocused);
