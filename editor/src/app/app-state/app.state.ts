@@ -92,8 +92,7 @@ export class AppState implements NgxsOnInit {
       // Set current site
       // and section to null when site is changed
       if (state.site !== newSiteName) {
-        dispatch(new UpdateAppStateAction({section: null}));
-        dispatch(new UpdateAppStateAction({site: newSiteName}));
+        dispatch(new UpdateAppStateAction({site: newSiteName, section: null}));
       }
     });
 
