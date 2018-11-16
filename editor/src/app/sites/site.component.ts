@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Store } from '@ngxs/store';
+import { PopupService } from '../popup/popup.service';
 import { SiteStateModel } from './sites-state/site-state.model';
 import { DeleteSiteAction, CloneSiteAction, UpdateSiteAction, RenameSiteAction } from './sites-state/sites.actions';
 
@@ -66,7 +67,8 @@ export class SiteComponent implements OnInit {
   hostname: string;
   modificationDisabled: null | true = null;
 
-  constructor(private store: Store) { }
+  constructor(private store: Store,
+              private popupService: PopupService) { }
 
   ngOnInit() {
     this.hostname = location.hostname;
@@ -90,6 +92,23 @@ export class SiteComponent implements OnInit {
   }
 
   deleteSite() {
-    this.store.dispatch(new DeleteSiteAction(this.site));
+    this.popupService.showPopup({
+      type: 'warn',
+      content: 'Are you sure you want to delete this site?',
+      showOverlay: true,
+      actions: [
+        {
+          label: 'OK',
+          callback: (popupService) => {
+            this.store.dispatch(new DeleteSiteAction(this.site));
+            popupService.closePopup();
+          }
+        },
+        {
+          type: 'secondary',
+          label: 'Cancel'
+        }
+      ],
+    });
   }
 }
