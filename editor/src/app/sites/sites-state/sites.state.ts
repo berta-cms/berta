@@ -185,7 +185,7 @@ export class SitesState implements NgxsOnInit {
   }
 
   @Action(ReOrderSitesAction)
-  reOrderSitesAction({ getState, setState }: StateContext<SiteStateModel[]>, action: ReOrderSitesAction) {
+  reOrderSites({ getState, setState }: StateContext<SiteStateModel[]>, action: ReOrderSitesAction) {
     const sitesToSort = [...getState()];
 
     sitesToSort.sort((siteA, siteB) => {
