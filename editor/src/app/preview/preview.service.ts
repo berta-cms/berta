@@ -13,11 +13,12 @@ import {
   RenameSiteSectionAction,
   DeleteSiteSectionAction,
   DeleteSiteSectionsAction,
-  UpdateSiteSectionBackgroundFromSyncAction
+  UpdateSiteSectionBackgroundFromSyncAction,
+  ReOrderSiteSectionsAction
 } from '../sites/sections/sections-state/site-sections.actions';
 import { UpdateSiteSettingsFromSyncAction, UpdateSiteSettingsAction } from '../sites/settings/site-settings.actions';
 import { UpdateSiteTemplateSettingsAction } from '../sites/template-settings/site-template-settings.actions';
-import { CreateSiteAction, DeleteSiteAction, UpdateSiteAction } from '../sites/sites-state/sites.actions';
+import { CreateSiteAction, DeleteSiteAction, UpdateSiteAction, ReOrderSitesAction } from '../sites/sites-state/sites.actions';
 import {
   UpdateSectionEntryFromSyncAction,
   OrderSectionEntriesFromSyncAction,
@@ -324,11 +325,13 @@ export class PreviewService {
         ...[
           CreateSiteAction,
           UpdateSiteAction,
+          ReOrderSitesAction,
           DeleteSiteAction,
           AddSiteSectionsAction,
           UpdateSiteSectionAction,
           RenameSiteSectionAction,
-          DeleteSiteSectionAction,  // *
+          ReOrderSiteSectionsAction,
+          DeleteSiteSectionAction,
           DeleteSiteSectionsAction,
           UpdateSiteSettingsAction,
           UpdateSiteTemplateSettingsAction
