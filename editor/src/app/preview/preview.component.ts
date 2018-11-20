@@ -39,6 +39,7 @@ import { UserLogoutAction } from '../user/user.actions';
 })
 export class PreviewComponent implements OnInit {
   previewUrl: SafeUrl;
+  iframe: HTMLIFrameElement;
 
   constructor(
     private router: Router,
@@ -60,6 +61,17 @@ export class PreviewComponent implements OnInit {
     ).subscribe(([site, section, isLoggedIn]) => {
       let url = location.protocol + '//' + location.hostname;
       const queryParams = [];
+      let doRealod = true;
+
+      if (this.iframe) {
+        const iframeUrlParams = new URLSearchParams(this.iframe.contentDocument.location.search);
+        const iframeSite = iframeUrlParams.get('site') || '';
+        const iframeSection = iframeUrlParams.get('section');
+
+        if (iframeSite === site && iframeSection === section) {
+          doRealod = false;
+        }
+      }
 
       if (isLoggedIn) {
         url += '/engine/editor/';
@@ -83,13 +95,16 @@ export class PreviewComponent implements OnInit {
         }
       }
 
-      this.previewUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
+      if (doRealod) {
+        this.previewUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
+      }
     });
   }
 
   onLoad(event) {
     this.waitFullLoad(event.target).subscribe({
       next: (iframe) => {
+        this.iframe = iframe;
         const lastUrlPart = iframe.contentDocument.location.href.replace(/\/$/, '').split('/').pop();
         const isSetup = iframe.contentDocument.body && /xSetupWizard/.test(iframe.contentDocument.body.className);
         const urlParams = new URLSearchParams(iframe.contentDocument.location.search);
