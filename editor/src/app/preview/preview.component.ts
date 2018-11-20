@@ -12,6 +12,10 @@ import { PreviewService } from './preview.service';
 import { AppShowLoading, UpdateAppStateAction } from '../app-state/app.actions';
 import { UserLogoutAction } from '../user/user.actions';
 
+interface IframeLocation {
+  site: null|string;
+  section: null|string;
+}
 
 @Component({
   selector: 'berta-preview',
@@ -39,7 +43,10 @@ import { UserLogoutAction } from '../user/user.actions';
 })
 export class PreviewComponent implements OnInit {
   previewUrl: SafeUrl;
-  iframe: HTMLIFrameElement;
+  iframeLocation: IframeLocation = {
+    site: null,
+    section: ''
+  };
 
   constructor(
     private router: Router,
@@ -53,25 +60,12 @@ export class PreviewComponent implements OnInit {
   ngOnInit() {
     // Load iframe with current site and section
     combineLatest(
-      this.store.select(AppState.getSite),
-      this.store.select(AppState.getSection),
+      this.store.select(AppState.getSite).pipe(filter(site => site !== this.iframeLocation.site)),
+      this.store.select(AppState.getSection).pipe(filter(section => section !== this.iframeLocation.section)),
       this.store.select(UserState.isLoggedIn)
-    ).pipe(
-      filter(([site]) => site !== null),
     ).subscribe(([site, section, isLoggedIn]) => {
       let url = location.protocol + '//' + location.hostname;
       const queryParams = [];
-      let doRealod = true;
-
-      if (this.iframe) {
-        const iframeUrlParams = new URLSearchParams(this.iframe.contentDocument.location.search);
-        const iframeSite = iframeUrlParams.get('site') || '';
-        const iframeSection = iframeUrlParams.get('section');
-
-        if (iframeSite === site && iframeSection === section) {
-          doRealod = false;
-        }
-      }
 
       if (isLoggedIn) {
         url += '/engine/editor/';
@@ -95,23 +89,23 @@ export class PreviewComponent implements OnInit {
         }
       }
 
-      if (doRealod) {
-        this.previewUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
-      }
+      this.previewUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
     });
   }
 
   onLoad(event) {
     this.waitFullLoad(event.target).subscribe({
       next: (iframe) => {
-        this.iframe = iframe;
         const lastUrlPart = iframe.contentDocument.location.href.replace(/\/$/, '').split('/').pop();
         const isSetup = iframe.contentDocument.body && /xSetupWizard/.test(iframe.contentDocument.body.className);
         const urlParams = new URLSearchParams(iframe.contentDocument.location.search);
-        const site = urlParams.get('site');
+        this.iframeLocation = {
+          site: urlParams.get('site'),
+          section: urlParams.get('section'),
+        };
 
         // Switch sites from iframe
-        this.router.navigate([], {queryParams: {site: site}, queryParamsHandling: 'merge'});
+        this.router.navigate([], {queryParams: {site: this.iframeLocation.site}, queryParamsHandling: 'merge'});
 
         this.store.dispatch(new UpdateAppStateAction({setup: isSetup}));
 
