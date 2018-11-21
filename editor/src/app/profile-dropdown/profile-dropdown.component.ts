@@ -1,11 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-
+import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-
 import { Select, Store } from '@ngxs/store';
 
-import { AppState } from '../app-state/app.state';
 import { UserState } from '../user/user.state';
 import { UserStateModel } from '../user/user.state.model';
 import { UserLogoutAction } from '../user/user.actions';
@@ -18,7 +14,7 @@ import { UserLogoutAction } from '../user/user.actions';
     <button type="button" class="bt-profile-anchor">{{ (user$ | async).name }}</button>
     <ul>
       <li *ngIf="!((user$ | async).profileUrl)">
-        <a [routerLink]="['/account']" [routerLinkActive]="'nav-active'" [queryParams]="queryParams$ | async">
+        <a [routerLink]="['/account']" [routerLinkActive]="'nav-active'" queryParamsHandling="preserve">
           Account
           <svg xmlns="http://www.w3.org/2000/svg" width="13.3" height="16" version="1.1" viewBox="0 0 13.3 16"><path d="m13.3 13.2q0 1.1-0.7 1.9t-1.6 0.8h-8.9q-0.9 0-1.6-0.8t-0.7-1.9q0-0.9 0.1-1.7 0.1-0.8 0.3-1.6 0.2-0.8 0.6-1.4t1-0.9q0.6-0.4 1.4-0.4 1.4 1.3 3.3 1.3 1.9 0 3.3-1.3 0.8 0 1.4 0.4 0.6 0.4 1 0.9t0.6 1.4q0.2 0.8 0.3 1.6 0.1 0.8 0.1 1.7zm-2.7-9.2q0 1.7-1.2 2.8-1.2 1.2-2.8 1.2t-2.8-1.2q-1.2-1.2-1.2-2.8 0-1.7 1.2-2.8 1.2-1.2 2.8-1.2t2.8 1.2q1.2 1.2 1.2 2.8z" stroke-width="0"/></svg>
         </a>
@@ -70,20 +66,11 @@ import { UserLogoutAction } from '../user/user.actions';
     }
   `]
 })
-export class ProfileDropdownComponent implements OnInit {
-  @Select(AppState.getSite) site$: Observable<string|null>;
+export class ProfileDropdownComponent {
   @Select(UserState) user$: Observable<UserStateModel>;
-
-  queryParams$: Observable<{[k: string]: string}>;
 
   constructor(
     private store: Store) {
-  }
-
-  ngOnInit() {
-    this.queryParams$ = this.site$.pipe(
-      map(site => site ? {site: site} : {})
-    );
   }
 
   logOut() {

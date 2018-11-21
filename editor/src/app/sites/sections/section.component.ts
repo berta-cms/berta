@@ -1,8 +1,10 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Router } from '@angular/router';
 import { Store } from '@ngxs/store';
 import { SiteSectionStateModel } from './sections-state/site-sections-state.model';
 import { SiteTemplateSectionTypesModel } from '../template-settings/site-templates.interface';
 import { DeleteSiteSectionAction, CloneSectionAction } from './sections-state/site-sections.actions';
+import { AppState } from 'src/app/app-state/app.state';
 
 @Component({
   selector: 'berta-section',
@@ -11,7 +13,9 @@ import { DeleteSiteSectionAction, CloneSectionAction } from './sections-state/si
       <h3>
         <berta-inline-text-input [value]="section.title"
                                  (inputFocus)="updateComponentFocus($event)"
-                                 (update)="updateTextField('title', $event)"></berta-inline-text-input>
+                                 (update)="updateTextField('title', $event)"
+                                 (textClick)="switchSection(section.name)"
+                                 class="clickable-text"></berta-inline-text-input>
 
         <div class="expand"></div>
         <button [attr.title]="section['@attributes'].published > 0 ? 'Unpublish': 'Publish'"
@@ -30,7 +34,7 @@ import { DeleteSiteSectionAction, CloneSectionAction } from './sections-state/si
         <button title="settings"
                 [class.active]="isExpanded"
                 [routerLink]="['/sections', (isExpanded ? '' : section.name)]"
-                queryParamsHandling="merge">
+                queryParamsHandling="preserve">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" version="1.1" viewBox="0 0 16 16">
             <path d="m10.7 8q0-1.1-0.8-1.9-0.8-0.8-1.9-0.8t-1.9 0.8q-0.8 0.8-0.8 1.9t0.8 1.9q0.8 0.8 1.9 0.8t1.9-0.8q0.8-0.8 0.8-1.9zm5.3-1.1v2.3q0 0.1-0.1 0.2t-0.2 0.1l-1.9 0.3q-0.2 0.6-0.4 0.9 0.4 0.5 1.1 1.4 0.1 0.1 0.1 0.3t-0.1 0.2q-0.3 0.4-1 1.1t-1 0.7q-0.1 0-0.3-0.1l-1.4-1.1q-0.5 0.2-0.9 0.4-0.2 1.4-0.3 1.9-0.1 0.3-0.4 0.3h-2.3q-0.1 0-0.3-0.1-0.1-0.1-0.1-0.2l-0.3-1.9q-0.5-0.2-0.9-0.4l-1.5 1.1q-0.1 0.1-0.3 0.1-0.1 0-0.3-0.1-1.3-1.2-1.7-1.7-0.1-0.1-0.1-0.2 0-0.1 0.1-0.2 0.2-0.2 0.5-0.7 0.4-0.5 0.6-0.7-0.3-0.5-0.4-1l-1.9-0.3q-0.1 0-0.2-0.1-0.1-0.1-0.1-0.2v-2.3q0-0.1 0.1-0.2 0.1-0.1 0.2-0.1l1.9-0.3q0.1-0.5 0.4-1-0.4-0.6-1.1-1.4-0.1-0.1-0.1-0.2 0-0.1 0.1-0.2 0.3-0.4 1-1.1 0.8-0.7 1-0.7 0.1 0 0.3 0.1l1.4 1.1q0.5-0.2 0.9-0.4 0.2-1.4 0.3-1.9 0.1-0.3 0.4-0.3h2.3q0.1 0 0.3 0.1 0.1 0.1 0.1 0.2l0.3 1.9q0.5 0.2 0.9 0.4l1.5-1.1q0.1-0.1 0.3-0.1 0.1 0 0.3 0.1 1.3 1.2 1.7 1.8 0.1 0.1 0.1 0.2 0 0.1-0.1 0.2-0.2 0.2-0.5 0.7t-0.6 0.7q0.3 0.5 0.4 1l1.9 0.3q0.1 0 0.2 0.1 0.1 0.1 0.1 0.2z" stroke-width="0"/>
           </svg>
@@ -99,7 +103,13 @@ export class SectionComponent {
   @Output() inputFocus = new EventEmitter();
   @Output('update') update = new EventEmitter<{section: string|number, data: {[k: string]: any}}>();
 
-  constructor(private store: Store) { }
+  constructor(private store: Store,
+              private router: Router) { }
+
+  switchSection(sectionName) {
+    const siteName = this.store.selectSnapshot(AppState.getSite);
+    this.router.navigate([], {queryParams: {site: siteName ? siteName : null, section: sectionName}, queryParamsHandling: 'merge'});
+  }
 
   updateComponentFocus(isFocused) {
     this.inputFocus.emit(isFocused);
