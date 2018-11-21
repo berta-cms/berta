@@ -1,5 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
+import { take, filter } from 'rxjs/operators';
 import { Store } from '@ngxs/store';
 import { PopupService } from 'src/app/popup/popup.service';
 import { SiteSectionStateModel } from './sections-state/site-sections-state.model';
@@ -106,6 +107,7 @@ export class SectionComponent {
 
   constructor(private store: Store,
               private router: Router,
+              private route: ActivatedRoute,
               private popupService: PopupService) { }
 
   switchSection(sectionName) {
@@ -151,7 +153,16 @@ export class SectionComponent {
           type: 'primary',
           label: 'OK',
           callback: (popupService) => {
-            this.store.dispatch(new DeleteSiteSectionAction(this.section));
+            this.store.dispatch(new DeleteSiteSectionAction(this.section)).subscribe({
+              next: () => {
+                this.route.queryParams.pipe(
+                  take(1),
+                  filter(params => params.section && params.section === this.section.name)
+                ).subscribe(() => {
+                  this.router.navigate([], {queryParams: {section: null}, queryParamsHandling: 'merge'});
+                });
+              }
+            });
             popupService.closePopup();
           }
         },

@@ -118,7 +118,12 @@ export class SiteComponent implements OnInit {
           callback: (popupService) => {
             this.store.dispatch(new DeleteSiteAction(this.site)).subscribe({
               next: () => {
-                this.router.navigate([], {queryParams: {site: null}});
+                this.route.queryParams.pipe(
+                  take(1),
+                  filter(params => params.site && params.site === this.site.name)
+                ).subscribe(() => {
+                  this.router.navigate([], {queryParams: {site: null}});
+                });
               }
             });
             popupService.closePopup();
