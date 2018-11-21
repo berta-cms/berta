@@ -92,7 +92,7 @@ export class SiteComponent implements OnInit {
             filter(params => params.site && params.site === this.site.name)
           ).subscribe(() => {
             const renamedSite = state.sites.find(site => site.order === this.site.order);
-            this.router.navigate([], {queryParams: {site: renamedSite.name}});
+            this.router.navigate([], {queryParams: {site: renamedSite.name}, queryParamsHandling: 'merge'});
           });
         }
       });
