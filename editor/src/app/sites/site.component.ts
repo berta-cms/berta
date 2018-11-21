@@ -94,7 +94,7 @@ export class SiteComponent implements OnInit {
   deleteSite() {
     this.store.dispatch(new DeleteSiteAction(this.site)).subscribe({
       next: () => {
-        this.router.navigate([], {queryParams: {site: null}, queryParamsHandling: 'merge'});
+        this.router.navigate([], {queryParams: {site: null}});
       }
     });
   }

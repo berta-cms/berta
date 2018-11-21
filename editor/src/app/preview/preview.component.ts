@@ -1,8 +1,9 @@
 import { Component, OnInit, NgZone } from '@angular/core';
+import { Router } from '@angular/router';
 import { SafeUrl, DomSanitizer } from '@angular/platform-browser';
 import { HttpClient } from '@angular/common/http';
 import { Observable, combineLatest } from 'rxjs';
-import { take, filter } from 'rxjs/operators';
+import { take, filter, debounceTime } from 'rxjs/operators';
 import { Store } from '@ngxs/store';
 
 import { AppState } from '../app-state/app.state';
@@ -11,6 +12,10 @@ import { PreviewService } from './preview.service';
 import { AppShowLoading, UpdateAppStateAction } from '../app-state/app.actions';
 import { UserLogoutAction } from '../user/user.actions';
 
+interface IframeLocation {
+  site: null|string;
+  section: null|string;
+}
 
 @Component({
   selector: 'berta-preview',
@@ -38,8 +43,13 @@ import { UserLogoutAction } from '../user/user.actions';
 })
 export class PreviewComponent implements OnInit {
   previewUrl: SafeUrl;
+  iframeLocation: IframeLocation = {
+    site: undefined,
+    section: undefined
+  };
 
   constructor(
+    private router: Router,
     private store: Store,
     private ngZone: NgZone,
     private service: PreviewService,
@@ -50,12 +60,17 @@ export class PreviewComponent implements OnInit {
   ngOnInit() {
     // Load iframe with current site and section
     combineLatest(
-      this.store.select(AppState.getSite),
-      this.store.select(AppState.getSection),
+      combineLatest(
+        this.store.select(AppState.getSite),
+        this.store.select(AppState.getSection)
+      ).pipe(
+        debounceTime(10),
+        filter(([site, section]) => {
+          return (site !== this.iframeLocation.site || section !== this.iframeLocation.section);
+        })
+      ),
       this.store.select(UserState.isLoggedIn)
-    ).pipe(
-      filter(([site]) => site !== null),
-    ).subscribe(([site, section, isLoggedIn]) => {
+    ).subscribe(([[site, section], isLoggedIn]) => {
       let url = location.protocol + '//' + location.hostname;
       const queryParams = [];
 
@@ -90,6 +105,17 @@ export class PreviewComponent implements OnInit {
       next: (iframe) => {
         const lastUrlPart = iframe.contentDocument.location.href.replace(/\/$/, '').split('/').pop();
         const isSetup = iframe.contentDocument.body && /xSetupWizard/.test(iframe.contentDocument.body.className);
+        const urlParams = new URLSearchParams(iframe.contentDocument.location.search);
+        this.iframeLocation = {
+          site: urlParams.get('site') || '',
+          section: urlParams.get('section'),
+        };
+
+        // Switch sites from iframe
+        this.router.navigate([], {queryParams: {
+          site: urlParams.get('site'),
+          section: this.iframeLocation.section
+        }, queryParamsHandling: 'merge'});
 
         this.store.dispatch(new UpdateAppStateAction({setup: isSetup}));
 
