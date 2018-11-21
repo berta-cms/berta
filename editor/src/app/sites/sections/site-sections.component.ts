@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Store } from '@ngxs/store';
 import { Observable, combineLatest } from 'rxjs';
@@ -10,20 +10,34 @@ import { SiteSectionsState } from './sections-state/site-sections.state';
 import { camel2Words } from '../../shared/helpers';
 import { SiteTemplateSettingsState } from '../template-settings/site-template-settings.state';
 import { UpdateInputFocus } from '../../app-state/app.actions';
-import { UpdateSiteSectionAction, CreateSectionAction, RenameSiteSectionAction } from './sections-state/site-sections.actions';
+import {
+  UpdateSiteSectionAction,
+  CreateSectionAction,
+  RenameSiteSectionAction,
+  ReOrderSiteSectionsAction } from './sections-state/site-sections.actions';
 import { SettingConfigModel, SettingModel } from '../../shared/interfaces';
 
 @Component({
   selector: 'berta-site-sections',
   template: `
-    <berta-section *ngFor="let sd of sectionsData$ | async"
-                   [section]="sd.section"
-                   [isExpanded]="sd.section.name === currentSection"
-                   [params]="sd.params"
-                   [templateSectionTypes]="sectionTypes$ | async"
-                   (inputFocus)="updateComponentFocus($event)"
-                   (update)="updateSection(sd, $event)"></berta-section>
-    <button type="button" class="button" (click)="createSection()">Create new section</button>
+    <div class="berta-site-sections" [class.bt-reordering]="draggedIndex !== null">
+      <berta-section *ngFor="let sd of sectionsData$ | async"
+                    draggable="true"
+                    [class.bt-sort-place-after]="dragOverIndex === sd.section.order && draggedIndex < dragOverIndex"
+                    [class.bt-sort-place-before]="dragOverIndex === sd.section.order && draggedIndex > dragOverIndex"
+                    [class.bt-sort-is-dragged]="sd.section.order === draggedIndex && hideElement"
+                    (dragstart)="siteDragStart($event, sd.section)"
+                    (dragover)="dragOver($event, sd.section)"
+                    (drop)="onDrop($event)"
+                    (dragend)="resetDrag()"
+                    [section]="sd.section"
+                    [isExpanded]="sd.section.name === currentSection"
+                    [params]="sd.params"
+                    [templateSectionTypes]="sectionTypes$ | async"
+                    (inputFocus)="updateComponentFocus($event)"
+                    (update)="updateSection(sd, $event)"></berta-section>
+      <button type="button" class="button" (click)="createSection()">Create new section</button>
+    </div>
   `
 })
 export class SiteSectionsComponent implements OnInit {
@@ -33,6 +47,12 @@ export class SiteSectionsComponent implements OnInit {
   }[]}[]>;
   sectionTypes$: Observable<{value: string, title: string}[]>;
   currentSection: string;
+
+  dragOverIndex: number|null = null;
+  draggedIndex: number|null = null;
+  hideElement = false;
+
+  @ViewChild('dragAnchor') dragAnchor: ElementRef;
 
   constructor(private store: Store,
               private router: Router,
@@ -156,5 +176,39 @@ export class SiteSectionsComponent implements OnInit {
     } else {
       this.store.dispatch(new UpdateSiteSectionAction(sectionData.section.site_name, parseInt(updateEvent.section, 10), updateEvent.data));
     }
+  }
+
+  siteDragStart(event: DragEvent, section: SiteSectionStateModel) {
+    event.stopPropagation();
+    this.draggedIndex = +section.order;
+    event.dataTransfer.dropEffect = 'move';
+    event.dataTransfer.setData('text/plain', String(section.order));
+
+    // Hide the element that's being dragged from the site list
+    // Use delay so we get the image as drag anchor
+    setTimeout(() => {
+      this.hideElement = true;
+    }, 10);
+  }
+
+  dragOver(event: DragEvent, section: SiteSectionStateModel) {
+    // For drop to work this must be prevented
+    event.preventDefault();
+    this.dragOverIndex = +section.order;
+  }
+
+  onDrop(event: DragEvent) {
+    event.preventDefault();
+    event.stopPropagation();
+    if (this.draggedIndex === this.dragOverIndex) {
+      return;
+    }
+    this.store.dispatch(new ReOrderSiteSectionsAction(this.draggedIndex, this.dragOverIndex));
+  }
+
+  resetDrag() {
+    this.dragOverIndex = null;
+    this.draggedIndex = null;
+    this.hideElement = false;
   }
 }

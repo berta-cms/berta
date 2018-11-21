@@ -19,7 +19,8 @@ import {
   AddSiteSectionsAction,
   ResetSiteSectionsAction,
   InitSiteSectionsAction,
-  UpdateSiteSectionBackgroundFromSyncAction} from './site-sections.actions';
+  UpdateSiteSectionBackgroundFromSyncAction,
+  ReOrderSiteSectionsAction} from './site-sections.actions';
 import { DeleteSectionTagsAction, RenameSectionTagsAction, AddSectionTagsAction } from '../tags/section-tags.actions';
 import {
   DeleteSectionEntriesAction,
@@ -38,7 +39,7 @@ export class SiteSectionsState implements NgxsOnInit {
   static getCurrentSiteSections(state, site) {
     return state.filter(section => {
       return section.site_name === site;
-    });
+    }).sort((sectionA, sectionB) => sectionA.order > sectionB.order ? 1 : -1);
   }
 
   constructor(private appStateService: AppStateService,
@@ -244,6 +245,47 @@ export class SiteSectionsState implements NgxsOnInit {
           return section;
         }
         return {...section, ...{'site_name': action.siteName}};
+      })
+    );
+  }
+
+  @Action(ReOrderSiteSectionsAction)
+  reOrderSiteSections({ getState, setState }: StateContext<SiteSectionStateModel[]>, action: ReOrderSiteSectionsAction) {
+    const siteName = this.store.selectSnapshot(AppState.getSite);
+    const sectionsToSort = this.store.selectSnapshot(SiteSectionsState.getCurrentSiteSections);
+
+    sectionsToSort.sort((sectionA, sectionB) => {
+      if (sectionA.order !== action.currentOrder && sectionB.order !== action.currentOrder) {
+        return sectionB.order > sectionA.order ? -1 : 1;
+      } else if (sectionA.order === action.currentOrder) {
+        return sectionB.order >= action.payload ? -1 : 1;
+      } else if (sectionB.order === action.currentOrder) {
+        return action.payload >= sectionA.order ? -1 : 1;
+      }
+    });
+
+    return this.appStateService.sync('siteSections', {
+      site: siteName,
+      sections: sectionsToSort.map(section => section.name)
+    }, 'PUT').pipe(
+      tap(response => {
+        if (response.error_message) {
+          // @TODO handle error message
+          console.error(response.error_message);
+        } else {
+          const sites = getState();
+
+          setState(sites.map(section => {
+            if ((<string[]> response.sections).indexOf(section.name) === -1) {
+              // The order of this section was not updated in this request
+              return section;
+            }
+            return {
+              ...section,
+              order: (<string[]> response.sections).indexOf(section.name)
+            };
+          }));
+        }
       })
     );
   }
