@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { ShopRegionalCostsState } from './shop-regional-costs.state';
-import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
-import { ShopSettingsState } from '../settings/shop-settings.state';
 import { map, shareReplay } from 'rxjs/operators';
+import { Select, Store } from '@ngxs/store';
+
+import { PopupService } from 'src/app/popup/popup.service';
+import { ShopSettingsState } from '../settings/shop-settings.state';
+import { ShopRegionalCostsState } from './shop-regional-costs.state';
 import { UpdateInputFocus } from '../../app-state/app.actions';
 import {
   UpdateShopRegionAction,
@@ -117,7 +119,8 @@ export class ShopRegionalCostsComponent implements OnInit {
     price: 0
   };
 
-  constructor(private store: Store) { }
+  constructor(private store: Store,
+              private popupService: PopupService) { }
 
   ngOnInit() {
     this.weightLabel$ = this.store.select(ShopSettingsState.getCurrentWeightUnit).pipe(
@@ -172,8 +175,25 @@ export class ShopRegionalCostsComponent implements OnInit {
   }
 
   deleteRegion(regionId, event) {
-    event.target.disabled = true;
-    this.store.dispatch(new DeleteShopRegionAction({id: regionId}));
+    this.popupService.showPopup({
+      type: 'warn',
+      content: 'Are you sure you want to delete this region?',
+      showOverlay: true,
+      actions: [
+        {
+          type: 'primary',
+          label: 'OK',
+          callback: (popupService) => {
+            event.target.disabled = true;
+            this.store.dispatch(new DeleteShopRegionAction({id: regionId}));
+            popupService.closePopup();
+          }
+        },
+        {
+          label: 'Cancel'
+        }
+      ],
+    });
   }
 
   addCost(id, event) {
@@ -191,7 +211,24 @@ export class ShopRegionalCostsComponent implements OnInit {
   }
 
   deleteCost(id, regionId, event) {
-    event.target.disabled = true;
-    this.store.dispatch(new DeleteShopRegionCostAction(regionId, {id: id}));
+    this.popupService.showPopup({
+      type: 'warn',
+      content: 'Are you sure you want to delete this cost?',
+      showOverlay: true,
+      actions: [
+        {
+          type: 'primary',
+          label: 'OK',
+          callback: (popupService) => {
+            event.target.disabled = true;
+            this.store.dispatch(new DeleteShopRegionCostAction(regionId, {id: id}));
+            popupService.closePopup();
+          }
+        },
+        {
+          label: 'Cancel'
+        }
+      ],
+    });
   }
 }

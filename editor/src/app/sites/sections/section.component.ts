@@ -1,5 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Store } from '@ngxs/store';
+import { PopupService } from 'src/app/popup/popup.service';
 import { SiteSectionStateModel } from './sections-state/site-sections-state.model';
 import { SiteTemplateSectionTypesModel } from '../template-settings/site-templates.interface';
 import { DeleteSiteSectionAction, CloneSectionAction } from './sections-state/site-sections.actions';
@@ -99,7 +100,8 @@ export class SectionComponent {
   @Output() inputFocus = new EventEmitter();
   @Output('update') update = new EventEmitter<{section: string|number, data: {[k: string]: any}}>();
 
-  constructor(private store: Store) { }
+  constructor(private store: Store,
+              private popupService: PopupService) { }
 
   updateComponentFocus(isFocused) {
     this.inputFocus.emit(isFocused);
@@ -130,6 +132,23 @@ export class SectionComponent {
   }
 
   deleteSection() {
-    this.store.dispatch(new DeleteSiteSectionAction(this.section));
+    this.popupService.showPopup({
+      type: 'warn',
+      content: 'Are you sure you want to delete this section?',
+      showOverlay: true,
+      actions: [
+        {
+          type: 'primary',
+          label: 'OK',
+          callback: (popupService) => {
+            this.store.dispatch(new DeleteSiteSectionAction(this.section));
+            popupService.closePopup();
+          }
+        },
+        {
+          label: 'Cancel'
+        }
+      ],
+    });
   }
 }
