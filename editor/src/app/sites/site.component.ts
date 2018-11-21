@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngxs/store';
+import { PopupService } from '../popup/popup.service';
 import { SiteStateModel } from './sites-state/site-state.model';
 import { DeleteSiteAction, CloneSiteAction, UpdateSiteAction, RenameSiteAction } from './sites-state/sites.actions';
 
@@ -68,7 +69,8 @@ export class SiteComponent implements OnInit {
   modificationDisabled: null | true = null;
 
   constructor(private router: Router,
-              private store: Store) { }
+              private store: Store,
+              private popupService: PopupService) { }
 
   ngOnInit() {
     this.hostname = location.hostname;
@@ -92,10 +94,28 @@ export class SiteComponent implements OnInit {
   }
 
   deleteSite() {
-    this.store.dispatch(new DeleteSiteAction(this.site)).subscribe({
-      next: () => {
-        this.router.navigate([], {queryParams: {site: null}});
-      }
+
+    this.popupService.showPopup({
+      type: 'warn',
+      content: 'Are you sure you want to delete this site?',
+      showOverlay: true,
+      actions: [
+        {
+          type: 'primary',
+          label: 'OK',
+          callback: (popupService) => {
+            this.store.dispatch(new DeleteSiteAction(this.site)).subscribe({
+              next: () => {
+                this.router.navigate([], {queryParams: {site: null}});
+              }
+            });
+            popupService.closePopup();
+          }
+        },
+        {
+          label: 'Cancel'
+        }
+      ],
     });
   }
 }

@@ -1,6 +1,7 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngxs/store';
+import { PopupService } from 'src/app/popup/popup.service';
 import { SiteSectionStateModel } from './sections-state/site-sections-state.model';
 import { SiteTemplateSectionTypesModel } from '../template-settings/site-templates.interface';
 import { DeleteSiteSectionAction, CloneSectionAction } from './sections-state/site-sections.actions';
@@ -18,8 +19,8 @@ import { AppState } from 'src/app/app-state/app.state';
                                  class="clickable-text"></berta-inline-text-input>
 
         <div class="expand"></div>
-        <button [attr.title]="section['@attributes'].published > 0 ? 'Unpublish': 'Publish'"
-                (click)="updateField({'@attributes': {published: section['@attributes'].published > 0 ? '0' : '1'}})">
+        <button [attr.title]="(section['@attributes'].published > 0 ? 'Unpublish': 'Publish')"
+                (click)="updateField({'@attributes': {published: (section['@attributes'].published > 0 ? '0' : '1')}})">
           <berta-icon-publish [published]="(section['@attributes'].published > 0)"></berta-icon-publish>
         </button>
         <button title="copy"
@@ -104,7 +105,8 @@ export class SectionComponent {
   @Output('update') update = new EventEmitter<{section: string|number, data: {[k: string]: any}}>();
 
   constructor(private store: Store,
-              private router: Router) { }
+              private router: Router,
+              private popupService: PopupService) { }
 
   switchSection(sectionName) {
     const siteName = this.store.selectSnapshot(AppState.getSite);
@@ -140,6 +142,23 @@ export class SectionComponent {
   }
 
   deleteSection() {
-    this.store.dispatch(new DeleteSiteSectionAction(this.section));
+    this.popupService.showPopup({
+      type: 'warn',
+      content: 'Are you sure you want to delete this section?',
+      showOverlay: true,
+      actions: [
+        {
+          type: 'primary',
+          label: 'OK',
+          callback: (popupService) => {
+            this.store.dispatch(new DeleteSiteSectionAction(this.section));
+            popupService.closePopup();
+          }
+        },
+        {
+          label: 'Cancel'
+        }
+      ],
+    });
   }
 }
