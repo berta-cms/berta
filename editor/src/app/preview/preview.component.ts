@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { SafeUrl, DomSanitizer } from '@angular/platform-browser';
 import { HttpClient } from '@angular/common/http';
 import { Observable, combineLatest } from 'rxjs';
-import { take, filter } from 'rxjs/operators';
+import { take, filter, debounceTime } from 'rxjs/operators';
 import { Store } from '@ngxs/store';
 
 import { AppState } from '../app-state/app.state';
@@ -44,8 +44,8 @@ interface IframeLocation {
 export class PreviewComponent implements OnInit {
   previewUrl: SafeUrl;
   iframeLocation: IframeLocation = {
-    site: null,
-    section: ''
+    site: undefined,
+    section: undefined
   };
 
   constructor(
@@ -60,9 +60,14 @@ export class PreviewComponent implements OnInit {
   ngOnInit() {
     // Load iframe with current site and section
     combineLatest(
-      this.store.select(AppState.getSite).pipe(filter(site => site !== this.iframeLocation.site)),
-      this.store.select(AppState.getSection).pipe(filter(section => section !== this.iframeLocation.section)),
+      this.store.select(AppState.getSite),
+      this.store.select(AppState.getSection),
       this.store.select(UserState.isLoggedIn)
+    ).pipe(
+      debounceTime(10),
+      filter(([site, section]) => {
+        return site !== this.iframeLocation.site || section !== this.iframeLocation.section;
+      })
     ).subscribe(([site, section, isLoggedIn]) => {
       let url = location.protocol + '//' + location.hostname;
       const queryParams = [];
@@ -100,12 +105,15 @@ export class PreviewComponent implements OnInit {
         const isSetup = iframe.contentDocument.body && /xSetupWizard/.test(iframe.contentDocument.body.className);
         const urlParams = new URLSearchParams(iframe.contentDocument.location.search);
         this.iframeLocation = {
-          site: urlParams.get('site'),
+          site: urlParams.get('site') || '',
           section: urlParams.get('section'),
         };
 
         // Switch sites from iframe
-        this.router.navigate([], {queryParams: {site: this.iframeLocation.site}, queryParamsHandling: 'merge'});
+        this.router.navigate([], {queryParams: {
+          site: urlParams.get('site'),
+          section: this.iframeLocation.section
+        }, queryParamsHandling: 'merge'});
 
         this.store.dispatch(new UpdateAppStateAction({setup: isSetup}));
 

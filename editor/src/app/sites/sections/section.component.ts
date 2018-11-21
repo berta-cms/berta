@@ -1,9 +1,10 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Router } from '@angular/router';
 import { Store } from '@ngxs/store';
 import { SiteSectionStateModel } from './sections-state/site-sections-state.model';
 import { SiteTemplateSectionTypesModel } from '../template-settings/site-templates.interface';
 import { DeleteSiteSectionAction, CloneSectionAction } from './sections-state/site-sections.actions';
-import { UpdateAppStateAction } from 'src/app/app-state/app.actions';
+import { AppState } from 'src/app/app-state/app.state';
 
 @Component({
   selector: 'berta-section',
@@ -102,10 +103,12 @@ export class SectionComponent {
   @Output() inputFocus = new EventEmitter();
   @Output('update') update = new EventEmitter<{section: string|number, data: {[k: string]: any}}>();
 
-  constructor(private store: Store) { }
+  constructor(private store: Store,
+              private router: Router) { }
 
   switchSection(sectionName) {
-    this.store.dispatch(new UpdateAppStateAction({section: sectionName}));
+    const siteName = this.store.selectSnapshot(AppState.getSite);
+    this.router.navigate([], {queryParams: {site: siteName ? siteName : null, section: sectionName}, queryParamsHandling: 'merge'});
   }
 
   updateComponentFocus(isFocused) {

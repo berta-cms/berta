@@ -88,11 +88,11 @@ export class AppState implements NgxsOnInit {
     ).subscribe((event: ActivationEnd) => {
       const state = {...getState()};
       const newSiteName = event.snapshot.queryParams['site'] || '';
+      const newSectionName = !event.snapshot.queryParams['section'] ? null : event.snapshot.queryParams['section'];
 
-      // Set current site
-      // and section to null when site is changed
-      if (state.site !== newSiteName) {
-        dispatch(new UpdateAppStateAction({site: newSiteName, section: null}));
+      // Set current site and section
+      if (state.site !== newSiteName || state.section !== newSectionName) {
+        dispatch(new UpdateAppStateAction({site: newSiteName, section: newSectionName}));
       }
     });
 
