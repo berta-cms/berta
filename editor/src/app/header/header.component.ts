@@ -1,8 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 
-import { Select, Store } from '@ngxs/store';
+import { Select } from '@ngxs/store';
 
 import { AppState } from '../app-state/app.state';
 import { UserState } from '../user/user.state';
@@ -14,18 +13,18 @@ import { UserStateModel } from '../user/user.state.model';
     <header>
       <div class="loading" [style.display]="((isLoading$ | async) ? 'block' : '')"></div>
       <div class="bt-menu" *ngIf="isLoggedIn$ | async">
-        <nav>
+        <nav *ngIf="!(isSetup$ | async)">
           <a *ngIf="(user$ | async).features.indexOf('multisite') > -1"
              [routerLink]="['/multisite']"
              [routerLinkActive]="'nav-active'"
-             [queryParams]="queryParams$ | async">Multisite</a>
-          <a [routerLink]="['/sections']" [routerLinkActive]="'nav-active'" [queryParams]="queryParams$ | async">Sections</a>
-          <a [routerLink]="['/settings']" [routerLinkActive]="'nav-active'" [queryParams]="queryParams$ | async">Settings</a>
-          <a [routerLink]="['/design']" [routerLinkActive]="'nav-active'" [queryParams]="queryParams$ | async">Design</a>
+             queryParamsHandling="preserve">Multisite</a>
+          <a [routerLink]="['/sections']" [routerLinkActive]="'nav-active'" queryParamsHandling="preserve">Sections</a>
+          <a [routerLink]="['/settings']" [routerLinkActive]="'nav-active'" queryParamsHandling="preserve">Settings</a>
+          <a [routerLink]="['/design']" [routerLinkActive]="'nav-active'" queryParamsHandling="preserve">Design</a>
           <a *ngIf="(user$ | async).features.indexOf('shop') > -1"
              [routerLink]="['/shop']"
              [routerLinkActive]="'nav-active'"
-             [queryParams]="queryParams$ | async">Shop</a>
+             queryParamsHandling="preserve">Shop</a>
           <a href="http://support.berta.me/kb" target="_blank">Knowledge base</a>
         </nav>
         <berta-profile-dropdown></berta-profile-dropdown>
@@ -79,17 +78,9 @@ import { UserStateModel } from '../user/user.state.model';
     }
   `]
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent {
   @Select(UserState) user$: Observable<UserStateModel>;
   @Select(UserState.isLoggedIn) isLoggedIn$: Observable<boolean>;
   @Select(AppState.getShowLoading) isLoading$: Observable<boolean>;
-  @Select(AppState.getSite) site$: Observable<string|null>;
-
-  queryParams$: Observable<{[k: string]: string}>;
-
-  ngOnInit() {
-    this.queryParams$ = this.site$.pipe(
-      map(site => site ? {site: site} : {})
-    );
-  }
+  @Select(AppState.isSetup) isSetup$: Observable<boolean>;
 }

@@ -4,6 +4,7 @@ namespace App\Sites\Settings;
 
 use App\Configuration\SiteSettingsConfigService;
 use App\Shared\Storage;
+use App\Sites\Sections\SiteSectionsDataService;
 
 /**
  * This class is a service that handles site settings data for Berta CMS.
@@ -278,8 +279,7 @@ class SiteSettingsDataService extends Storage
     private $SITE_SETTINGS = [];
     private static $DEFAULT_SITE_SETTINGS = [
         'template/template' => 'messy-0.4.2',
-        'berta/lastUpdated' => 'D, d M Y H:i:s',
-        'berta/installed' => 1,
+        'berta/lastUpdated' => 'D, d M Y H:i:s'
     ];
     private $siteSettingsDefaults;
 
@@ -375,6 +375,7 @@ class SiteSettingsDataService extends Storage
         $settings = $this->get();
         /** @todo: update this to use path without site (first two peaces are predictable)  */
         $path_arr = array_slice(explode('/', $path), 2);
+        $path = implode('/', $path_arr);
         $value = trim($value);
 
         $ret = array(
@@ -390,11 +391,22 @@ class SiteSettingsDataService extends Storage
 
         $this->setValueByPath(
             $settings,
-            implode('/', $path_arr),
+            $path,
             $value
         );
 
         $this->array2xmlFile($settings, $this->XML_FILE, $this->ROOT_ELEMENT);
+
+        // If Berta is installed, create a new default `Home` section
+        if ($path == 'berta/installed' && $value) {
+            $sectionsDataService = new SiteSectionsDataService($this->SITE);
+            $sections = $sectionsDataService->get();
+
+            if (!$sections) {
+                $section = $sectionsDataService->create('home', 'Home');
+                $ret['section'] = $section;
+            }
+        }
 
         return $ret;
     }

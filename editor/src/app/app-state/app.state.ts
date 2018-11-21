@@ -19,10 +19,12 @@ import { UserLoginAction } from '../user/user.actions';
 
 
 const defaultState: AppStateModel = {
+  setup: false,
   showOverlay: false,
   isLoading: false,
   inputFocused: false,
   site: null,
+  section: null,
   urls: {},
   forgotPasswordUrl: '',
   internalVersion: '',
@@ -39,6 +41,11 @@ const defaultState: AppStateModel = {
   defaults: defaultState
 })
 export class AppState implements NgxsOnInit {
+
+  @Selector()
+  static isSetup(state: AppStateModel) {
+    return state.setup;
+  }
 
   @Selector()
   static getInputFocus(state: AppStateModel) {
@@ -61,6 +68,11 @@ export class AppState implements NgxsOnInit {
   }
 
   @Selector()
+  static getSection(state: AppStateModel) {
+    return state.section;
+  }
+
+  @Selector()
   static getLastRoute(state: AppStateModel) {
     return state.lastRoute;
   }
@@ -70,15 +82,17 @@ export class AppState implements NgxsOnInit {
               private appStateService: AppStateService) {
   }
 
-  ngxsOnInit({ patchState, dispatch }: StateContext<AppStateModel>) {
+  ngxsOnInit({ getState, dispatch }: StateContext<AppStateModel>) {
     this.router.events.pipe(
       filter(evt => evt instanceof ActivationEnd)
     ).subscribe((event: ActivationEnd) => {
-      if (event.snapshot.queryParams['site']) {
-        /** @todo: trigger actions here */
-        patchState({site: event.snapshot.queryParams['site']});
-      } else {
-        patchState({site: ''});
+      const state = {...getState()};
+      const newSiteName = event.snapshot.queryParams['site'] || '';
+      const newSectionName = !event.snapshot.queryParams['section'] ? null : event.snapshot.queryParams['section'];
+
+      // Set current site and section
+      if (state.site !== newSiteName || state.section !== newSectionName) {
+        dispatch(new UpdateAppStateAction({site: newSiteName, section: newSectionName}));
       }
     });
 

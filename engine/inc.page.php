@@ -52,15 +52,14 @@ if(empty($ENGINE_ROOT_PATH)) $ENGINE_ROOT_PATH = $SITE_ROOT_PATH . 'engine/';
  * Normally '/engine' (representing 'berta.me/engine'). */
 if(empty($ENGINE_ROOT_URL)) $ENGINE_ROOT_URL = $SITE_ROOT_URL . 'engine/';
 
+$hasSupportedPhpVersion = version_compare(PHP_VERSION, '5.5.9', '>=') && version_compare(PHP_VERSION, '7.2.0', '<');
 
-
-$hasPHP5 = floatval(phpversion()) >= 5;
-if(!$hasPHP5) {
+if(!$hasSupportedPhpVersion) {
 	if(file_exists($SITE_ROOT_PATH . 'INSTALL/includes/first_visit_serverreqs.php')) {
 		$CHECK_INCLUDED = true;
 		include $SITE_ROOT_PATH . 'INSTALL/includes/first_visit_serverreqs.php';
 	} else {
-		die('Berta needs PHP5 support on server.');
+		die('Berta needs PHP >= 5.5.9 and < 7.2.0 support on server.');
 	}
 }
 

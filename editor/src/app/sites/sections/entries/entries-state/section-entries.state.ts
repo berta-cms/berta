@@ -54,7 +54,12 @@ export class SectionEntriesState implements NgxsOnInit {
       const newEntry = sectionEntries[action.site].find(
         entry => entry.sectionName === action.section && entry.id === action.entryId.toString()
       );
-      patchState({[action.site]: [...state[action.site], newEntry]});
+
+      if (state[action.site]) {
+        patchState({[action.site]: [...state[action.site], newEntry]});
+      } else {
+        patchState({[action.site]: [newEntry]});
+      }
     });
   }
 
@@ -75,6 +80,10 @@ export class SectionEntriesState implements NgxsOnInit {
   @Action(RenameSectionEntriesAction)
   renameSectionEntries({ patchState, getState }: StateContext<SectionEntriesStateModel>, action: RenameSectionEntriesAction) {
     const state = getState();
+
+    if (!state[action.section.site_name]) {
+      return;
+    }
 
     patchState({
       [action.section.site_name]: state[action.section.site_name].map(entry => {
@@ -107,6 +116,10 @@ export class SectionEntriesState implements NgxsOnInit {
   @Action(DeleteSectionEntriesAction)
   deleteSectionEntries({ patchState, getState }: StateContext<SectionEntriesStateModel>, action: DeleteSectionEntriesAction) {
     const state = getState();
+
+    if (!state[action.section.site_name]) {
+      return;
+    }
 
     patchState({
       [action.section.site_name]: state[action.section.site_name].filter(entry => {
@@ -265,7 +278,9 @@ export class SectionEntriesState implements NgxsOnInit {
             })
           );
 
-          dispatch(new UpdateSectionTagsAction(action.site, action.section, response.tags));
+          if (response.tags) {
+            dispatch(new UpdateSectionTagsAction(action.site, action.section, response.tags));
+          }
         }
       })
     );

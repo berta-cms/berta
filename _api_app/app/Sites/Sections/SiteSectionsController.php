@@ -17,10 +17,18 @@ class SiteSectionsController extends Controller
         $json = $request->json()->all();
         $cloneFrom = $json['name'];
         $sectionsDataService = new SiteSectionsDataService($json['site']);
-        $section = $sectionsDataService->create(
-            $json['name'],
-            $json['title']
-        );
+
+        if ($cloneFrom) {
+            $section = $sectionsDataService->cloneSection(
+                $json['name'],
+                $json['title']
+            );
+        } else {
+            $section = $sectionsDataService->create(
+                $json['name'],
+                $json['title']
+            );
+        }
 
         $tags = $cloneFrom ? new SectionTagsDataService($json['site'], $section['name']) : null;
         $entries = $cloneFrom ? new SectionEntriesDataService($json['site'], $section['name']) : null;

@@ -94,6 +94,7 @@ export class AppComponent implements OnInit, OnDestroy {
   @Select(AppState.getShowOverlay) showOverlay$;
   @Select(AppState.getInputFocus) inputFocus$: Observable<boolean>;
   @Select(UserState.isLoggedIn) isLoggedIn$;
+  @Select(AppState.isSetup) isSetup$: Observable<boolean>;
 
   private loginSub: Subscription;
   private logoutSub: Subscription;
@@ -152,6 +153,13 @@ export class AppComponent implements OnInit, OnDestroy {
       if (isLoggedIn) {
         url += '/engine/editor/';
       }
+    });
+
+    // Navigate to root if setup mode
+    this.isSetup$.pipe(
+      filter(isSetup => isSetup)
+    ).subscribe(() => {
+      this.router.navigate(['/'], { queryParamsHandling: 'preserve' });
     });
 
     if (isDevMode()) {

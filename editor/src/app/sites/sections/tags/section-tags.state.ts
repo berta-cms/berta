@@ -27,7 +27,7 @@ export class SectionTagsState implements NgxsOnInit {
 
   @Selector([AppState.getSite])
   static getCurrentSiteTags(state, site) {
-    return state[site].section;
+    return state[site] ? state[site].section : [];
   }
 
   constructor(
@@ -50,27 +50,39 @@ export class SectionTagsState implements NgxsOnInit {
   updateSectionTags({ getState, patchState }: StateContext<SectionTagsStateModel>, action: UpdateSectionTagsAction) {
     const state = getState();
 
-    patchState({
-      [action.siteName]: {
-        ...state[action.siteName],
-        section: state[action.siteName].section.some(section => section['@attributes'].name === action.sectionName) ?
-          state[action.siteName].section.map(section => {
-            if (section['@attributes'].name === action.sectionName) {
-              return action.tags;
-            }
-            return section;
-          })
-          :
-          [...state[action.siteName].section, action.tags]
-      }
-    });
+    if (!action.tags) {
+      return;
+    }
+
+    if (state[action.siteName]) {
+      patchState({
+        [action.siteName]: {
+          ...state[action.siteName],
+          section: state[action.siteName].section.some(section => section['@attributes'].name === action.sectionName) ?
+            state[action.siteName].section.map(section => {
+              if (section['@attributes'].name === action.sectionName) {
+                return action.tags;
+              }
+              return section;
+            })
+            :
+            [...state[action.siteName].section, action.tags]
+        }
+      });
+    } else {
+      patchState({
+        [action.siteName]: {
+            section: [action.tags]
+        }
+      });
+    }
   }
 
   @Action(RenameSectionTagsAction)
   renameSectionTags({ patchState, getState }: StateContext<SectionTagsStateModel>, action: RenameSectionTagsAction) {
     const state = getState();
 
-    if (!state[action.section.site_name].section) {
+    if (!state[action.section.site_name] || !state[action.section.site_name].section) {
       return;
     }
 
@@ -137,7 +149,7 @@ export class SectionTagsState implements NgxsOnInit {
   deleteSectionTags({ getState, patchState }: StateContext<SectionTagsStateModel>, action: DeleteSectionTagsAction) {
     const state = getState();
 
-    if (!state[action.section.site_name].section) {
+    if (!state[action.section.site_name] || !state[action.section.site_name].section) {
       return;
     }
 

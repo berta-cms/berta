@@ -94,6 +94,19 @@ var BertaEditor = new Class({
 
         this.editablesInit();
 
+        // Finish berta install button
+        $('xFinishInstall').addEvent('click', function (e) {
+          var path = e.target.data('data-path');
+
+          redux_store.dispatch(Actions.initUpdateSiteSettings(
+            path,
+            1,
+            function () {
+              window.location.reload();
+            }
+          ));
+        });
+
         // action links
         $$(this.options.xActionClass).each(function (el) {
           this.elementEdit_init(el, this.options.xBertaEditorClassAction);
@@ -130,7 +143,8 @@ var BertaEditor = new Class({
         }
 
         // Tutorial videos
-        this.bertaVideosInit();
+        // Disabled outdated video tutorials
+        // this.bertaVideosInit();
 
         if (this.entriesList) {
 

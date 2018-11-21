@@ -199,65 +199,76 @@ class SiteSectionsDataService extends Storage
 
     public function create($name = null, $title = null)
     {
-        $isClone = $name !== null;
+        $name = $name ? $name : 'untitled-' . uniqid();
         $sections = $this->get();
 
-        // Clone section
-        if ($isClone) {
-            $title = empty($title) ? $name : $title;
-            $section_order = array_search($name, array_column($sections, 'name'));
+        $section_order = array_search($name, array_column($sections, 'name'));
 
-            if ($section_order === false) {
-                return array('error_message' => 'Section "' . $name . '" not found!');
-            }
-
-            // Berta requires existing section file for entries
-            $entries = new SectionEntriesDataService($this->SITE, 'clone-of-' . $name, 'clone of ' . $title);
-            $section_entries = $entries->create($name);
-
-            $section = $sections[$section_order];
-            $section['name'] = $section_entries['name'];
-            $section['title'] = $section_entries['title'];
-            unset($section['positionXY']);
-
-            // copy mediafolder
-            if (isset($section['mediafolder'])) {
-                $section['mediafolder'] = $section_entries['name'] . '-background';
-
-                $this->copyFolder(
-                    realpath($this->MEDIA_ROOT) . '/' . $sections[$section_order]['mediafolder'],
-                    realpath($this->MEDIA_ROOT) . '/' . $section['mediafolder']
-                );
-            }
-
-            $section_order = count($sections);
-
-        } else {
-            $name = 'untitled-' . uniqid();
-
-            // Berta requires existing section file for entries
-            $entries = new SectionEntriesDataService($this->SITE, $name, $title);
-            $section_entries = $entries->create();
-
-            $section = [
-                '@attributes' => array('tags_behavior' => 'invisible', 'published' => 1),
-                'name' => $name,
-                'title' => '',
-            ];
+        if ($section_order !== false) {
+            return array('error_message' => 'Section "' . $name . '" already exists!');
         }
+
+        // Berta requires existing section file for entries
+        $entries = new SectionEntriesDataService($this->SITE, $name, $title);
+        $section_entries = $entries->create();
+
+        $section = [
+            '@attributes' => array('tags_behavior' => 'invisible', 'published' => 1),
+            'name' => $name,
+            'title' => $title ? $title : '',
+        ];
 
         array_push($sections, $section);
 
-        // Clone section
-        if ($isClone) {
-            $tags = new SectionTagsDataService($this->SITE, $section['name']);
-            $section_tags = $tags->populateTags();
-            $allHaveTags = $section_tags['allHaveTags'];
+        $this->array2xmlFile(['section' => $sections], $this->XML_FILE, $this->ROOT_ELEMENT);
 
-            // update direct content property
-            // @TODO redux also should know about this attribute change!
-            $sections[$section_order]['@attributes']['has_direct_content'] = !$allHaveTags ? '1' : '0';
+        $section['order'] = count($sections) - 1;
+        $section['site_name'] = $this->site_name;
+
+        return $section;
+    }
+
+    public function cloneSection($name = null, $title = null)
+    {
+        $sections = $this->get();
+        $title = empty($title) ? $name : $title;
+        $section_order = array_search($name, array_column($sections, 'name'));
+
+        if ($section_order === false) {
+            return array('error_message' => 'Section "' . $name . '" not found!');
         }
+
+        // Berta requires existing section file for entries
+        $entries = new SectionEntriesDataService($this->SITE, 'clone-of-' . $name, 'clone of ' . $title);
+        $section_entries = $entries->create($name);
+
+        $section = $sections[$section_order];
+        $section['name'] = $section_entries['name'];
+        $section['title'] = $section_entries['title'];
+        unset($section['positionXY']);
+
+        // copy mediafolder
+        if (isset($section['mediafolder'])) {
+            $section['mediafolder'] = $section_entries['name'] . '-background';
+
+            $this->copyFolder(
+                realpath($this->MEDIA_ROOT) . '/' . $sections[$section_order]['mediafolder'],
+                realpath($this->MEDIA_ROOT) . '/' . $section['mediafolder']
+            );
+        }
+
+        $section_order = count($sections);
+
+        array_push($sections, $section);
+
+        $tags = new SectionTagsDataService($this->SITE, $section['name']);
+        $section_tags = $tags->populateTags();
+        $allHaveTags = $section_tags['allHaveTags'];
+
+        // update direct content property
+        // @TODO redux also should know about this attribute change!
+        $sections[$section_order]['@attributes']['has_direct_content'] = !$allHaveTags ? '1' : '0';
+
 
         $this->array2xmlFile(['section' => $sections], $this->XML_FILE, $this->ROOT_ELEMENT);
 
@@ -267,6 +278,7 @@ class SiteSectionsDataService extends Storage
         // @TODO Also return cloned entries and tags
         return $section;
     }
+
 
     /**
      * Saves a value with a given path and saves the change to XML file

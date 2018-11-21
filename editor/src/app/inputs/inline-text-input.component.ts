@@ -3,7 +3,9 @@ import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 @Component({
   selector: 'berta-inline-text-input',
   template: `
-    <span *ngIf="!focus" class="input-placeholder">{{ value || '...' }}</span>
+    <span *ngIf="!focus"
+          class="input-placeholder"
+          (click)="onTextClick()">{{ value || '...' }}</span>
     <input *ngIf="focus"
            bertaAutofocus
            [value]="value"
@@ -25,12 +27,17 @@ import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
         display: flex;
         align-items: center;
       }
+
+      :host.clickable-text .input-placeholder {
+        cursor: pointer;
+      }
     `]
 })
 export class InlineTextInputComponent implements OnInit {
   @Input() value: string;
   @Output() update = new EventEmitter();
   @Output() inputFocus = new EventEmitter();
+  @Output() textClick = new EventEmitter();
   focus = false;
 
   private lastValue: string;
@@ -38,6 +45,10 @@ export class InlineTextInputComponent implements OnInit {
   ngOnInit() {
     // Cache the value, so we don't update if nothing changes
     this.lastValue = this.value;
+  }
+
+  onTextClick() {
+    this.textClick.emit(true);
   }
 
   onFocus() {

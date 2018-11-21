@@ -23,10 +23,10 @@ if(empty($settings['berta']['installed'])) {
 	$testOutput = '<ul id="xFirstTimeCheckList">';
 	$testOutput .= '<p><strong>Is your website hosted on a suitable server?</strong></p>';
 
-	// php version ...
-	$isOk = floatval(phpversion()) >= 5;
+    // php version ...
+	$isOk = version_compare(PHP_VERSION, '5.5.9', '>=') && version_compare(PHP_VERSION, '7.2.0', '<');
 	$listOk &= $isOk; $listHasErrors |= !$isOk;
-	$testOutput .= getStatus($isOk, 'Server supports PHP 5', 'Berta cannot function without PHP 5. Ask your server administrator to enable PHP 5');
+	$testOutput .= getStatus($isOk, 'Supported PHP version', 'Berta needs PHP >= 5.5.9 and < 7.2.0 support on server. Ask your server administrator to enable supported PHP version.');
 
 	// multibyte ...
 	$isOk = function_exists('mb_ereg_replace') && function_exists('mb_strlen') && function_exists('mb_substr');
@@ -100,7 +100,7 @@ if(!empty($settings['berta']['installed'])) {
 
 } else {
 
-	?><body class="xLoginPageBody">
+	?><body class="xLoginPageBody xSetupWizard">
 		<div class="xMAlign-container xPanel">
 			<div class="xMAlign-outer">
 				<div class="xMAlign-inner justify">

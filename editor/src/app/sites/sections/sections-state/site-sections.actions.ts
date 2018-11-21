@@ -7,6 +7,12 @@ export class CreateSectionAction {
   }
 }
 
+export class AddSiteSectionAction {
+  static readonly type = 'SITE_SECTION:ADD';
+  constructor(public section: SiteSectionStateModel) {
+  }
+}
+
 export class AddSiteSectionsAction {
   static readonly type = 'SITE_SECTIONS:ADD';
   constructor(public sections: SiteSectionStateModel[]) {
