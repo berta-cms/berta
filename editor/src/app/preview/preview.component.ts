@@ -60,15 +60,17 @@ export class PreviewComponent implements OnInit {
   ngOnInit() {
     // Load iframe with current site and section
     combineLatest(
-      this.store.select(AppState.getSite),
-      this.store.select(AppState.getSection),
+      combineLatest(
+        this.store.select(AppState.getSite),
+        this.store.select(AppState.getSection)
+      ).pipe(
+        debounceTime(10),
+        filter(([site, section]) => {
+          return (site !== this.iframeLocation.site || section !== this.iframeLocation.section);
+        })
+      ),
       this.store.select(UserState.isLoggedIn)
-    ).pipe(
-      debounceTime(10),
-      filter(([site, section]) => {
-        return site !== this.iframeLocation.site || section !== this.iframeLocation.section;
-      })
-    ).subscribe(([site, section, isLoggedIn]) => {
+    ).subscribe(([[site, section], isLoggedIn]) => {
       let url = location.protocol + '//' + location.hostname;
       const queryParams = [];
 
