@@ -145,7 +145,7 @@ export class SitesState implements NgxsOnInit {
 
   @Action(RenameSiteAction)
   renameSite({ dispatch }: StateContext<SiteStateModel[]>, action: RenameSiteAction) {
-    dispatch(new UpdateSiteAction(action.site, 'name', action.value));
+    return dispatch(new UpdateSiteAction(action.site, 'name', action.value));
   }
 
 

@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
+import { take, filter } from 'rxjs/operators';
 import { Store } from '@ngxs/store';
 import { PopupService } from '../popup/popup.service';
 import { SiteStateModel } from './sites-state/site-state.model';
@@ -69,6 +70,7 @@ export class SiteComponent implements OnInit {
   modificationDisabled: null | true = null;
 
   constructor(private router: Router,
+              private route: ActivatedRoute,
               private store: Store,
               private popupService: PopupService) { }
 
@@ -83,7 +85,17 @@ export class SiteComponent implements OnInit {
 
   updateField(field: string, value: string) {
     if (field === 'name') {
-      this.store.dispatch(new RenameSiteAction(this.site, value));
+      this.store.dispatch(new RenameSiteAction(this.site, value)).subscribe({
+        next: (state) => {
+          this.route.queryParams.pipe(
+            take(1),
+            filter(params => params.site && params.site === this.site.name)
+          ).subscribe(() => {
+            const renamedSite = state.sites.find(site => site.order === this.site.order);
+            this.router.navigate([], {queryParams: {site: renamedSite.name}});
+          });
+        }
+      });
     } else {
       this.store.dispatch(new UpdateSiteAction(this.site, field, value));
     }
