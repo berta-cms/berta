@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Store } from '@ngxs/store';
 import { Observable, combineLatest } from 'rxjs';
-import { filter, map, shareReplay } from 'rxjs/operators';
+import { filter, map, shareReplay, take } from 'rxjs/operators';
 import { SiteSectionStateModel } from './sections-state/site-sections-state.model';
 import { AppState } from '../../app-state/app.state';
 import { SiteTemplatesState } from '../template-settings/site-templates.state';
@@ -167,9 +167,17 @@ export class SiteSectionsComponent implements OnInit {
               return section.site_name === currentSite && section.order === sectionData.section.order;
             });
 
-            if (this.currentSection === sectionData.section.name) {
-              this.router.navigate(['/sections', updatedSection.name], {replaceUrl: true, queryParamsHandling: 'preserve'});
-            }
+            this.route.queryParams.pipe(
+              take(1),
+              filter(params => params.section && params.section === sectionData.section.name ||
+                               this.currentSection === sectionData.section.name
+              )
+            ).subscribe(params => {
+              const route = this.currentSection === sectionData.section.name ? ['/sections', updatedSection.name] : [];
+              const qParams = params.section && params.section === sectionData.section.name ? {section: updatedSection.name} : {};
+
+              this.router.navigate(route, {queryParams: qParams, queryParamsHandling: 'merge'});
+            });
           },
           error: (error) => console.error(error)
         });
