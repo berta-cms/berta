@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { take, filter } from 'rxjs/operators';
+import { take, filter, switchMap, map, mergeMap } from 'rxjs/operators';
 import { Store } from '@ngxs/store';
 import { PopupService } from '../popup/popup.service';
 import { SiteStateModel } from './sites-state/site-state.model';
@@ -70,9 +70,9 @@ export class SiteComponent implements OnInit {
   modificationDisabled: null | true = null;
 
   constructor(private router: Router,
-              private route: ActivatedRoute,
-              private store: Store,
-              private popupService: PopupService) { }
+    private route: ActivatedRoute,
+    private store: Store,
+    private popupService: PopupService) { }
 
   ngOnInit() {
     this.hostname = location.hostname;
@@ -85,17 +85,19 @@ export class SiteComponent implements OnInit {
 
   updateField(field: string, value: string) {
     if (field === 'name') {
-      this.store.dispatch(new RenameSiteAction(this.site, value)).subscribe({
-        next: (state) => {
-          this.route.queryParams.pipe(
+      this.store.dispatch(new RenameSiteAction(this.site, value)).pipe(
+        switchMap(state => {
+          return this.route.queryParams.pipe(
             take(1),
-            filter(params => params.site && params.site === this.site.name)
-          ).subscribe(() => {
-            const renamedSite = state.sites.find(site => site.order === this.site.order);
-            this.router.navigate([], {queryParams: {site: renamedSite.name}, queryParamsHandling: 'merge'});
-          });
-        }
+            filter(params => params.site && params.site === this.site.name),
+            map(() => state)
+          );
+        }),
+        map(state => state.sites.find(site => site.order === this.site.order))
+      ).subscribe((renamedSite) => {
+        this.router.navigate([], { replaceUrl: true, queryParams: { site: renamedSite.name }, queryParamsHandling: 'merge' });
       });
+
     } else {
       this.store.dispatch(new UpdateSiteAction(this.site, field, value));
     }
@@ -106,7 +108,6 @@ export class SiteComponent implements OnInit {
   }
 
   deleteSite() {
-
     this.popupService.showPopup({
       type: 'warn',
       content: 'Are you sure you want to delete this site?',
@@ -116,16 +117,17 @@ export class SiteComponent implements OnInit {
           type: 'primary',
           label: 'OK',
           callback: (popupService) => {
-            this.store.dispatch(new DeleteSiteAction(this.site)).subscribe({
-              next: () => {
-                this.route.queryParams.pipe(
+            this.store.dispatch(new DeleteSiteAction(this.site)).pipe(
+              mergeMap(() => {
+                return this.route.queryParams.pipe(
                   take(1),
                   filter(params => params.site && params.site === this.site.name)
-                ).subscribe(() => {
-                  this.router.navigate([], {queryParams: {site: null}});
-                });
-              }
+                );
+              })
+            ).subscribe(() => {
+              this.router.navigate([], { queryParams: { site: null } });
             });
+
             popupService.closePopup();
           }
         },
