@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Store } from '@ngxs/store';
 import { Observable, combineLatest } from 'rxjs';
-import { filter, map, shareReplay } from 'rxjs/operators';
+import { filter, map, shareReplay, take } from 'rxjs/operators';
 import { SiteSectionStateModel } from './sections-state/site-sections-state.model';
 import { AppState } from '../../app-state/app.state';
 import { SiteTemplatesState } from '../template-settings/site-templates.state';
@@ -167,9 +167,28 @@ export class SiteSectionsComponent implements OnInit {
               return section.site_name === currentSite && section.order === sectionData.section.order;
             });
 
-            if (this.currentSection === sectionData.section.name) {
-              this.router.navigate(['/sections', updatedSection.name], {replaceUrl: true, queryParamsHandling: 'preserve'});
-            }
+            this.route.queryParams.pipe(
+              take(1),
+              map(query => {
+                const obj = {};
+
+                if (query.section && query.section === sectionData.section.name) {
+                  obj['query'] = {section: updatedSection.name};
+                }
+
+                if (this.currentSection === sectionData.section.name) {
+                  obj['params'] = ['/sections', updatedSection.name];
+                }
+
+                return obj;
+              }),
+              filter(obj => !!Object.keys(obj).length)
+            ).subscribe(obj => {
+              const route = 'params' in obj ? obj['params'] : [];
+              const qParams = 'query' in obj ? obj['query'] : {};
+
+              this.router.navigate(route, {replaceUrl: true, queryParams: qParams, queryParamsHandling: 'merge'});
+            });
           },
           error: (error) => console.error(error)
         });
