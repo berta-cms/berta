@@ -7,9 +7,9 @@ if(!isset($BERTA_ERROR)) $BERTA_ERROR = '';
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title><?php echo $berta->settings->get('texts', 'pageTitle') ?> / error!</title>
-<link rel="stylesheet" href="<?php echo Berta::$options['ENGINE_ROOT_URL'] ?>css/backend.min.css?<?php echo Berta::$options['int_version'] ?>" type="text/css" charset="utf-8" />
-<link href="<?php echo Berta::$options['ENGINE_ROOT_URL'] ?>css/editor.css.php?<?php echo Berta::$options['int_version'] ?>" rel="stylesheet" type="text/css" />
-<link href="<?php echo Berta::$options['ENGINE_ROOT_URL'] ?>css/login.css?<?php echo Berta::$options['int_version'] ?>" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="<?php echo Berta::$options['ENGINE_ROOT_URL'] ?>css/backend.min.css?<?php echo Berta::$options['version'] ?>" type="text/css" charset="utf-8" />
+<link href="<?php echo Berta::$options['ENGINE_ROOT_URL'] ?>css/editor.css.php?<?php echo Berta::$options['version'] ?>" rel="stylesheet" type="text/css" />
+<link href="<?php echo Berta::$options['ENGINE_ROOT_URL'] ?>css/login.css?<?php echo Berta::$options['version'] ?>" rel="stylesheet" type="text/css" />
 </head>
 <body class="xLoginPageBody">
 	<div class="xMAlign-container xPanel">

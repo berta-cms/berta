@@ -6,7 +6,7 @@ if( !empty($berta->content['entry']) ) {
     $tplName = $berta->template->settings->templateName;
 
     //remove tiny_mce *.GZ file, if current version is different - to prevent errors if tiny_mce has changed
-    if( empty($berta->content['@attributes']['last_upd_ver']) || !isset($options['int_version']) || (isset($options['int_version']) && $berta->content['@attributes']['last_upd_ver'] != $options['int_version']) ) {
+    if (empty($berta->content['@attributes']['last_upd_ver']) || ($berta->content['@attributes']['last_upd_ver'] != $options['version'])) {
         $old_gz_files = glob($ENGINE_ROOT_PATH.'_lib/tiny_mce/*.gz');
         if ($old_gz_files){
             foreach ($old_gz_files as $filename) {
@@ -16,7 +16,9 @@ if( !empty($berta->content['entry']) ) {
     }
 
     // Updates for 0.8.2
-    if( empty($berta->content['@attributes']['last_upd_ver']) || ($berta->content['@attributes']['last_upd_ver'] < 1082) ) {
+    // Starting from version 1.0.0 last_upd_ver contains version format x.x.x
+    // Before 1.0.0 it was int_version as integer
+    if (empty($berta->content['@attributes']['last_upd_ver']) || (count(explode('.', $berta->content['@attributes']['last_upd_ver'])) == 1 && $berta->content['@attributes']['last_upd_ver'] < 1082)) {
         switch($tplName) {
             case 'messy':
                 foreach( $berta->content['entry'] as $eKey => $e ) {
@@ -42,8 +44,8 @@ if( !empty($berta->content['entry']) ) {
                 break;
         }
 
-        $berta->content['@attributes']['last_upd_ver'] = $options['int_version'];
-        $berta->allContent[$berta->sectionName]['@attributes']['last_upd_ver'] = $options['int_version'];
+        $berta->content['@attributes']['last_upd_ver'] = $options['version'];
+        $berta->allContent[$berta->sectionName]['@attributes']['last_upd_ver'] = $options['version'];
         $berta->template->addContent($berta->requestURI, $berta->sectionName, $berta->sections, $berta->tagName, $berta->tags, $berta->content, $berta->allContent);
         BertaEditor::saveBlog($berta->sectionName, $berta->content);
     }
