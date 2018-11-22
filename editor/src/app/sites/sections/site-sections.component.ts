@@ -169,14 +169,25 @@ export class SiteSectionsComponent implements OnInit {
 
             this.route.queryParams.pipe(
               take(1),
-              filter(params => params.section && params.section === sectionData.section.name ||
-                               this.currentSection === sectionData.section.name
-              )
-            ).subscribe(params => {
-              const route = this.currentSection === sectionData.section.name ? ['/sections', updatedSection.name] : [];
-              const qParams = params.section && params.section === sectionData.section.name ? {section: updatedSection.name} : {};
+              map(query => {
+                const obj = {};
 
-              this.router.navigate(route, {queryParams: qParams, queryParamsHandling: 'merge'});
+                if (query.section && query.section === sectionData.section.name) {
+                  obj['query'] = {section: updatedSection.name};
+                }
+
+                if (this.currentSection === sectionData.section.name) {
+                  obj['params'] = ['/sections', updatedSection.name];
+                }
+
+                return obj;
+              }),
+              filter(obj => !!Object.keys(obj).length)
+            ).subscribe(obj => {
+              const route = 'params' in obj ? obj['params'] : [];
+              const qParams = 'query' in obj ? obj['query'] : {};
+
+              this.router.navigate(route, {replaceUrl: true, queryParams: qParams, queryParamsHandling: 'merge'});
             });
           },
           error: (error) => console.error(error)

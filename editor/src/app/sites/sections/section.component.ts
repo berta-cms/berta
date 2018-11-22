@@ -1,6 +1,7 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { take, filter } from 'rxjs/operators';
+import { combineLatest } from 'rxjs';
+import { take, filter, switchMap, map } from 'rxjs/operators';
 import { Store } from '@ngxs/store';
 import { PopupService } from 'src/app/popup/popup.service';
 import { SiteSectionStateModel } from './sections-state/site-sections-state.model';
@@ -153,16 +154,35 @@ export class SectionComponent {
           type: 'primary',
           label: 'OK',
           callback: (popupService) => {
-            this.store.dispatch(new DeleteSiteSectionAction(this.section)).subscribe({
-              next: () => {
-                this.route.queryParams.pipe(
-                  take(1),
-                  filter(params => params.section && params.section === this.section.name)
-                ).subscribe(() => {
-                  this.router.navigate([], {queryParams: {section: null}, queryParamsHandling: 'merge'});
-                });
-              }
+            this.store.dispatch(new DeleteSiteSectionAction(this.section)).pipe(
+              switchMap(() => {
+                return combineLatest(
+                  this.route.queryParams,
+                  this.route.paramMap
+                );
+              }),
+              take(1),
+              map(([query, params]) => {
+                const obj = {};
+
+                if (query.section && query.section === this.section.name) {
+                  obj['query'] = {section: null};
+                }
+
+                if (params['params']['section'] && params['params']['section'] === this.section.name) {
+                  obj['params'] = ['/sections'];
+                }
+
+                return obj;
+              }),
+              filter(obj => !!Object.keys(obj).length)
+            ).subscribe(obj => {
+              const route = 'params' in obj ? obj['params'] : [];
+              const qParams = 'query' in obj ? obj['query'] : {};
+
+              this.router.navigate(route, {queryParams: qParams, queryParamsHandling: 'merge'});
             });
+
             popupService.closePopup();
           }
         },
