@@ -471,6 +471,7 @@ DOC;
     $file = self::$options['TEMPLATES_FULL_SERVER_PATH'] . '../../../includes/sentry_template.html';
     if (self::$options['HOSTING_PROFILE'] && file_exists($file)) {
       $scripts = file_get_contents($file);
+      $scripts = str_replace('RELEASE_VERSION', self::$options['version'], $scripts);
     }
     return $scripts;
   }
