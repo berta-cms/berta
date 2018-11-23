@@ -53,7 +53,7 @@ import { PopupService } from '../popup/popup.service';
       </div>
     </form>
     <div class="footer">
-      <span>berta v{{ appState.version }}</span>
+      <span>berta {{ appState.version }}</span>
       <span>2008 - {{ currentYear }}</span>
     </div>
   </div>

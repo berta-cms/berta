@@ -16,7 +16,7 @@ if( !empty($berta->content['entry']) ) {
     }
 
     // Updates for 0.8.2
-    // Starting from version 1.0.0 last_upd_ver contains version format x.x.x
+    // Starting from version 1.0.0 last_upd_ver contains version format v[x].[x].[x]
     // Before 1.0.0 it was int_version as integer
     if (empty($berta->content['@attributes']['last_upd_ver']) || (count(explode('.', $berta->content['@attributes']['last_upd_ver'])) == 1 && $berta->content['@attributes']['last_upd_ver'] < 1082)) {
         switch($tplName) {
@@ -50,5 +50,3 @@ if( !empty($berta->content['entry']) ) {
         BertaEditor::saveBlog($berta->sectionName, $berta->content);
     }
 }
-
-?>
