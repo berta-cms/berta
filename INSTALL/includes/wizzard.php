@@ -13,7 +13,7 @@ $berta->settings = new Settings($settingsDefinition);
 
 include_once $ENGINE_ROOT_PATH . '_classes/class.bertaeditor.php';
 
-$int_version = $options['int_version'];
+$version = $options['version'];
 
 $uriPath = explode('?', $_SERVER['REQUEST_URI'])[0];
 
@@ -22,9 +22,9 @@ $uriPath = explode('?', $_SERVER['REQUEST_URI'])[0];
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title><?php echo $berta->settings->get('texts', 'pageTitle') ?> / welcome</title>
-<link rel="stylesheet" href="<?php echo $ENGINE_ROOT_URL ?>css/backend.min.css?<?php echo $int_version ?>" type="text/css" charset="utf-8" />
-<link rel="stylesheet" href="<?php echo $ENGINE_ROOT_URL ?>css/editor.css.php?<?php echo $int_version ?>" type="text/css" charset="utf-8" />
-<link rel="stylesheet" href="<?php echo $ENGINE_ROOT_URL ?>css/login.css?<?php echo $int_version ?>" type="text/css" />
+<link rel="stylesheet" href="<?php echo $ENGINE_ROOT_URL ?>css/backend.min.css?<?php echo $version ?>" type="text/css" charset="utf-8" />
+<link rel="stylesheet" href="<?php echo $ENGINE_ROOT_URL ?>css/editor.css.php?<?php echo $version ?>" type="text/css" charset="utf-8" />
+<link rel="stylesheet" href="<?php echo $ENGINE_ROOT_URL ?>css/login.css?<?php echo $version ?>" type="text/css" />
 <?php include $ENGINE_ROOT_PATH . 'inc.head.php'; ?>
 </head><?php
 

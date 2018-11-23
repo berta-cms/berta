@@ -95,7 +95,6 @@ class StateController extends Controller
         $user = new UserModel();
         $meta = [
             'version' => $options['version'],
-            'internalVersion' => $options['int_version'],
             'forgotPasswordUrl' => $user->forgot_password_url,
             'loginUrl' => $user->profile_url ? $user->profile_url : route('login'),
             'authenticateUrl' => route('authenticate'),

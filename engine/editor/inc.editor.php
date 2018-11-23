@@ -67,7 +67,7 @@ if ($querySectionName && $querySectionName != 'sitemap.xml' && $berta->sectionNa
 //  CHECK VERSIONS   ------------------------------------------------------------------------------------------------------------
 // ------------------------------------------------------------------------------------------------------------------------------
 
-if (empty($berta->content['@attributes']['last_upd_ver']) || ($berta->content['@attributes']['last_upd_ver'] < $options['int_version'])) {
+if (empty($berta->content['@attributes']['last_upd_ver']) || ($berta->content['@attributes']['last_upd_ver'] != $options['version'])) {
     include_once $ENGINE_ROOT_PATH . 'inc.version_check_and_updates.php';
 }
 
