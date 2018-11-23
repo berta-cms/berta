@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { take, map, catchError } from 'rxjs/operators';
 import { Store } from '@ngxs/store';
+import { AppState } from 'src/app/app-state/app.state';
 import { AppShowLoading, AppHideLoading } from '../../app-state/app.actions';
 
 
@@ -16,7 +17,8 @@ export class FileUploadService {
   }
 
   upload(property, file) {
-    const url = '/engine/upload.php?property=' + property;
+    const currentSite = this.store.selectSnapshot(AppState.getSite);
+    const url = '/engine/upload.php?property=' + property + (currentSite ? '&site=' + currentSite : '');
     const formData = new FormData();
     formData.append('Filedata', file);
 
