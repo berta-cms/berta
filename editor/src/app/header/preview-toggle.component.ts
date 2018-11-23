@@ -24,7 +24,7 @@ import { AppState } from '../app-state/app.state';
 export class PreviewToggleComponent implements OnInit {
   @Select(AppState.getLastRoute) lastRoute$: Observable<string>;
 
-  private isPreviewActive = true;
+  isPreviewActive = true;
 
   constructor(
     private store: Store,
