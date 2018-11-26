@@ -12,7 +12,7 @@ if ($options['MULTISITE_DISABLED']) {
 
 $allSites = BertaContent::getSites();
 $topPanelHTML = BertaEditor::getTopPanelHTML('multisite');
-$int_version = BertaEditor::$options['int_version'];
+$version = BertaEditor::$options['version'];
 
 ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -20,8 +20,8 @@ $int_version = BertaEditor::$options['int_version'];
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <title><?php echo $berta->settings->get('texts', 'pageTitle') ?> / <?php echo I18n::_('Multisite') ?></title>
 <link rel="SHORTCUT ICON" href="<?php echo $SITE_ROOT_URL ?>favicon.ico"/>
-<link rel="stylesheet" href="<?php echo $ENGINE_ROOT_URL ?>css/backend.min.css?<?php echo $int_version ?>" type="text/css" charset="utf-8" />
-<link rel="stylesheet" href="<?php echo $ENGINE_ROOT_URL ?>css/editor.css.php?<?php echo $int_version ?>" type="text/css" charset="utf-8" />
+<link rel="stylesheet" href="<?php echo $ENGINE_ROOT_URL ?>css/backend.min.css?<?php echo $version ?>" type="text/css" charset="utf-8" />
+<link rel="stylesheet" href="<?php echo $ENGINE_ROOT_URL ?>css/editor.css.php?<?php echo $version ?>" type="text/css" charset="utf-8" />
 <?php include('inc.head.php'); ?>
 </head>
 

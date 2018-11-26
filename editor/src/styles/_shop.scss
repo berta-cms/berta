@@ -1,0 +1,185 @@
+berta-shop {
+  .setting-group {
+    > .settings {
+      .subgroup:not(:first-child) {
+        .setting {
+          h4 {
+            border-top: 1px solid $grey-10;
+            padding-top: 1.3em;
+          }
+        }
+      }
+    }
+  }
+}
+
+berta-shop-products,
+berta-shop-orders {
+  display: block;
+
+  .setting {
+    &:not(:last-child) {
+      border-bottom: 1px solid $grey-10;
+    }
+  }
+
+  p {
+    display: flex;
+    font-size: $input-font-size;
+    justify-content: space-between;
+
+    > span {
+      border-left: 1px solid $grey-1;
+      box-sizing: border-box;
+      color: $grey-40;
+      margin-left: 1em;
+      padding-left: .75em;
+      width: 50%;
+    }
+  }
+}
+
+.bt-sh-region {
+  margin: 1.3em 0;
+
+  &:first-child {
+    margin-top: .5em;
+  }
+
+  &:not(:first-child) {
+    .header {
+      border-top: 1px solid $grey-10;
+      padding-top: 2.5em;
+    }
+  }
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+
+    berta-inline-text-input {
+      font-size: $input-font-size;
+      font-weight: bold;
+    }
+
+    input {
+      background-color: transparent;
+      border: 0;
+      font-family: AvenirNext, Helvetica, Arial, sans-serif;
+      font-size: 1em;
+      font-weight: bold;
+      outline: none;
+      padding: 0;
+      transition: color .2s;
+
+      &:focus {
+        color: $berta-accent;
+      }
+    }
+
+    .edit-icon {
+      cursor: pointer;
+      margin-left: .15em;
+      max-height: .85em;
+
+      .icon {
+        transition: fill .2s;
+      }
+
+      &:hover {
+        .icon {
+          fill: $berta-accent;
+        }
+      }
+    }
+
+    button {
+      background: none;
+      border: 0;
+      color: $black;
+      cursor: pointer;
+      margin-left: 1em;
+      padding: 0;
+      transition: color .2s;
+
+      svg {
+        path {
+          fill: $black;
+          transition: fill .2s;
+        }
+      }
+
+      &:hover,
+      &.active {
+        color: $berta-accent;
+
+        svg {
+          path {
+            fill: $berta-accent;
+          }
+        }
+      }
+
+      &.delete {
+        &:hover,
+        &.active {
+          svg {
+            path {
+              fill: $error-color;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  h4 {
+    border-top: 0;
+    padding-top: 0;
+  }
+
+  .costs-label {
+    font-size: $input-font-size;
+  }
+
+  .bt-sh-regional-cost {
+    .input-row  {
+      .button {
+        min-width: 30%;
+      }
+    }
+  }
+}
+
+.bt-sh-region-add {
+  h4 {
+    font-weight: bold;
+    padding-bottom: .5em;
+  }
+
+  &:not(:first-child) {
+    h4 {
+      padding-top: 2.5em;
+    }
+  }
+
+  .input-row  {
+    .button {
+      min-width: 30%;
+    }
+  }
+}
+
+berta-shop-orders {
+  .setting:not(:last-child) {
+    padding-bottom: 1em;
+  }
+
+  p {
+    > span {
+      border-left: 0;
+      color: $black;
+      padding-left: 0;
+    }
+  }
+}

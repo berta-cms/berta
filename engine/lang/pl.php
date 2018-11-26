@@ -323,7 +323,7 @@ return array(
     'description_menu_position' => 'Pozycjonowanie menu',
     'description_banner' => 'Banners are images which are visible in all sections. Use it for buttons or social icons in your site. Displayed image will be half of the original size, full size will be used for hi-res displays.',
     'description_banner_link' => 'Link banera. Przed adresem nie zapomnij dodać http:// (piem.: http://www.berta.me)',
-    'description_language' => 'Choose language of berta interface. Refresh site to apply.',
+    'description_language' => 'Choose language of interface.',
     'Heading position' => 'Pozycja nagłówka',
     'description_heading_position' => 'Pozycja nagłówka, niezmienna lub zmienna',
     'description_submenu_alwaysopen' => 'Rozdziały zawsze są otwarte.',
@@ -382,6 +382,4 @@ return array(
     'Weight units (g, oz) used for postage cost calculation.' => 'Jednostka wagi (g, oz), która jest używana, obliczając koszty wysyłki pocztowej.',
     'Design' => 'Projekt',
     'Shop entry width' => 'Szerokość wpisu sklepu',
-)
-
-?>
+);

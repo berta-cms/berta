@@ -41,6 +41,11 @@ $settingsFontSelect = array_merge(array('inherit' => '(inherit from general-font
 
 $settingsDefinition = array(
 
+    'berta' => array(
+        '_' => array('invisible' => true),
+        'installed' => array('format' => 'text', 'allow_blank' => true, 'default' => null, 'title' => '', 'description' => ''),
+    ),
+
     // siteTexts block is NOT editable in the settings page. It is reserved for texts appearing only on the page
     'siteTexts' => array(
         '_' => array('title' => I18n::_('Texts in the website'), 'invisible' => true),
@@ -95,8 +100,6 @@ $settingsDefinition = array(
         'galleryFullScreenCloseText' => array('format' => 'text', 'allow_blank' => true, 'default' => 'x', 'title' => I18n::_('Close button'), 'description' => I18n::_('&quot;Close&quot; symbol. You can enter your own.')),
         'galleryFullScreenImageNumbers' => array('format' => 'select', 'default' => 'yes', 'values' => array('yes', 'no'), 'title' => I18n::_('Image numbers'), 'description' => I18n::_('Enables/disables numbers below the image.')),
         'galleryFullScreenCaptionAlign' => array('format' => 'select', 'default' => 'left', 'values' => array('left', 'right', 'center'), 'title' => I18n::_('Caption alignment'), 'description' => I18n::_('Positioning of the image caption text.')),
-
-        'space' => array('format' => false, 'default' => false, 'title' => '&nbsp;'),
         'group_gallery' => array('format' => false, 'default' => false, 'title' => I18n::_('Image gallery appearance:')),
         'gallerySlideshowAutoRewind' => array('format' => 'select', 'default' => 'no', 'values' => array('yes', 'no'), 'title' => I18n::_('Auto-rewind gallery slideshow'), 'description' => I18n::_('Display the first image after clicking on the last image in galleries that are in slideshow mode.')),
         'gallerySlideNumberVisibilityDefault' => array('format' => 'select', 'default' => 'yes', 'values' => array('yes', 'no'), 'title' => I18n::_('Show slideshow image numbers'), 'description' => I18n::_('Set the default state of image number visibility in slideshow galleries.')),

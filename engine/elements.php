@@ -162,7 +162,7 @@ if($jsonRequest) {
                                             echo '<span class="grabHandle xMAlign-container"><span class="xMAlign-outer"><a class="xMAlign-inner" title="click and drag to move"><span></span></a></span></span>';
                                             echo '<a href="#" class="crop" data-src="'.$imSrc.'"></a>';
                                             echo '<a href="#" class="delete"></a>';
-                                            echo '<div class="xEGEImageCaption ' . $xEditSelectorMCESimple . ' xProperty-galleryImageCaption xCaption-image-caption xParam-' . $im['@attributes']['src'] . '">', !empty($im['value']) ? $im['value'] : '', '</div>';
+                                            echo '<div class="xEGEImageCaption ' . $xEditSelectorMCESimple . ' xProperty-galleryImageCaption xCaption-image-caption xParam-' . $im['@attributes']['src'] . '" data-path="' . $basePath . 'mediaCacheData/file/' . $idx. '/@value">', !empty($im['value']) ? $im['value'] : '', '</div>';
                                             echo '</li>';
                                         }
                                     }

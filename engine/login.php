@@ -1,4 +1,9 @@
 <?php
+
+// We are dying here to hide old berta login page show up when old berta session expires
+// @TODO Remove all the contents or this file when we are sure we don't need this page any more
+die();
+
 define('AUTH_AUTHREQUIRED', false);
 define('SETTINGS_INSTALLREQUIRED', false);
 define('BERTA_ENVIRONMENT', 'engine');
@@ -68,7 +73,7 @@ if($auth_action == "login" && !$errStr) {
 	}
 }
 
-$int_version = $options['int_version'];
+$version = $options['version'];
 
 ?><!DOCTYPE html>
 <!--[if lt IE 7 ]> <html class="ie6 ie-old"> <![endif]-->
@@ -79,9 +84,9 @@ $int_version = $options['int_version'];
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title><?php echo $berta->settings->get('texts', 'page-title') ?> / login</title>
-<link rel="stylesheet" href="<?php echo $ENGINE_ROOT_URL ?>css/backend.min.css?<?php echo $int_version ?>" type="text/css" charset="utf-8" />
-<link rel="stylesheet" href="<?php echo $ENGINE_ROOT_URL ?>css/editor.css.php?<?php echo $int_version ?>" type="text/css" charset="utf-8" />
-<link rel="stylesheet" href="<?php echo $ENGINE_ROOT_URL ?>css/login.css?<?php echo $int_version ?>" type="text/css" />
+<link rel="stylesheet" href="<?php echo $ENGINE_ROOT_URL ?>css/backend.min.css?<?php echo $version ?>" type="text/css" charset="utf-8" />
+<link rel="stylesheet" href="<?php echo $ENGINE_ROOT_URL ?>css/editor.css.php?<?php echo $version ?>" type="text/css" charset="utf-8" />
+<link rel="stylesheet" href="<?php echo $ENGINE_ROOT_URL ?>css/login.css?<?php echo $version ?>" type="text/css" />
 <?php include 'inc.header_default_scripts.php' ?>
 <?php echo BertaTemplate::sentryScripts(); ?>
 <script type="text/javascript">

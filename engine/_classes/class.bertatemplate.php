@@ -332,20 +332,20 @@ class BertaTemplate extends BertaBase {
 
 		$sttingsJS = Zend_Json::encode($jsSettings);
 
-		$int_version = self::$options['int_version'];
+		$version = self::$options['version'];
 		$timestamp = time();
 		$site = !empty(self::$options['MULTISITE']) ? '&amp;site='.self::$options['MULTISITE'] : '';
         $forceResponsiveStyleParam = $jsSettings['sectionType'] == 'portfolio' ? '&amp;responsive=1' : '';
 
         if($this->loggedIn) {
             $vars['berta']['css'] = <<<DOC
-    <link rel="stylesheet" href="{$engineAbsRoot}css/backend.min.css?{$int_version}" type="text/css">
-    <link rel="stylesheet" href="{$engineAbsRoot}css/editor.css.php?{$int_version}" type="text/css">
-    <link rel="stylesheet" href="{$templatesAbsRoot}{$this->name}/editor.css.php?{$int_version}" type="text/css">
+    <link rel="stylesheet" href="{$engineAbsRoot}css/backend.min.css?{$version}" type="text/css">
+    <link rel="stylesheet" href="{$engineAbsRoot}css/editor.css.php?{$version}" type="text/css">
+    <link rel="stylesheet" href="{$templatesAbsRoot}{$this->name}/editor.css.php?{$version}" type="text/css">
 DOC;
         }else{
             $vars['berta']['css'] = <<<DOC
-    <link rel="stylesheet" href="{$engineAbsRoot}css/frontend.min.css?{$int_version}" type="text/css">
+    <link rel="stylesheet" href="{$engineAbsRoot}css/frontend.min.css?{$version}" type="text/css">
 DOC;
         }
 
@@ -362,12 +362,12 @@ DOC;
 DOC;
         if($this->loggedIn) {
             $vars['berta']['scripts'] .= <<<DOC
-    <script src="{$engineAbsRoot}js/backend.min.js?{$int_version}"></script>
-    <script src="{$engineAbsRoot}js/ng-backend.min.js?{$int_version}"></script>
+    <script src="{$engineAbsRoot}js/backend.min.js?{$version}"></script>
+    <script src="{$engineAbsRoot}js/ng-backend.min.js?{$version}"></script>
 DOC;
         } else {
             $vars['berta']['scripts'] .= <<<DOC
-    <script src="{$engineAbsRoot}js/frontend.min.js?{$int_version}"></script>
+    <script src="{$engineAbsRoot}js/frontend.min.js?{$version}"></script>
 DOC;
         }
 
@@ -471,6 +471,7 @@ DOC;
     $file = self::$options['TEMPLATES_FULL_SERVER_PATH'] . '../../../includes/sentry_template.html';
     if (self::$options['HOSTING_PROFILE'] && file_exists($file)) {
       $scripts = file_get_contents($file);
+      $scripts = str_replace('RELEASE_VERSION', self::$options['version'], $scripts);
     }
     return $scripts;
   }

@@ -2,18 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use App\Configuration\SiteSettingsConfigService;
 use App\Configuration\SiteTemplatesConfigService;
+use App\Shared\Helpers;
 use App\Sites\Sections\Entries\SectionEntriesDataService;
 use App\Sites\Sections\SiteSectionsDataService;
 use App\Sites\Sections\Tags\SectionTagsDataService;
 use App\Sites\Settings\SiteSettingsDataService;
 use App\Sites\SitesDataService;
 use App\Sites\TemplateSettings\SiteTemplateSettingsDataService;
+use App\User\UserModel;
 
 class StateController extends Controller
 {
-    public function get($site)
+    public function get($site='')
     {
         $site = $site === '0' ? '' : $site;
         $sitesDataService = new SitesDataService();
@@ -25,6 +28,7 @@ class StateController extends Controller
             'sites' => route('sites'),
             'siteSettings' => route('site_settings'),
             'siteTemplateSettings' => route('site_template_settings'),
+            'localeSettings' => route('locale_settings'),
             'siteSections' => route('site_sections'),
             'siteSectionsReset' => route('site_sections_reset'),
             'siteSectionBackgrounds' => route('site_section_backgrounds'),
@@ -80,10 +84,40 @@ class StateController extends Controller
         }
 
         $state['siteTemplates'] = $siteTemplatesConfigService->get($lang);
+        $state['siteSettingsConfig'] = $siteSettingsConfigService->get($lang);
 
-        /**
-         * @todo Add siteSettingsConfig in redux store
-         */
+        return response()->json($state);
+    }
+
+    public function getMeta()
+    {
+        include realpath(config('app.old_berta_root') . '/engine/inc.version.php');
+        $user = new UserModel();
+        $meta = [
+            'version' => $options['version'],
+            'forgotPasswordUrl' => $user->forgot_password_url,
+            'loginUrl' => $user->profile_url ? $user->profile_url : route('login'),
+            'authenticateUrl' => route('authenticate'),
+            'isBertaHosting' => $user->profile_url != false
+        ];
+
+        return Helpers::api_response('', $meta);
+    }
+
+    /**
+     * Returns translated settings for site localization: templates and settings config
+     *
+     * @param Request $request
+     * @return json
+     */
+    public function getLocaleSettings(Request $request)
+    {
+        $lang = $request->query('language');
+
+        $siteTemplatesConfigService = new SiteTemplatesConfigService();
+        $state['siteTemplates'] = $siteTemplatesConfigService->get($lang);
+
+        $siteSettingsConfigService = new SiteSettingsConfigService();
         $state['siteSettingsConfig'] = $siteSettingsConfigService->get($lang);
 
         return response()->json($state);

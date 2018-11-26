@@ -35,7 +35,7 @@
         </style>
     {/if}
     { if $berta.shop_enabled == true }
-        <link rel="stylesheet" href="{ $berta.options.SITE_ROOT_URL }_plugin_shop/css/shop.css.php?{$berta.options.int_version}{if $berta.options.MULTISITE}&amp;site={$berta.options.MULTISITE}{/if}" type="text/css">
+        <link rel="stylesheet" href="{ $berta.options.SITE_ROOT_URL }_plugin_shop/css/shop.css.php?{$berta.options.version}{if $berta.options.MULTISITE}&amp;site={$berta.options.MULTISITE}{/if}" type="text/css">
     { /if }
 
     {if $berta.settings.css.customCSS}
@@ -45,11 +45,11 @@
     {/if}
     { googleWebFontsAPI }
     { /if }
-    <script type="text/javascript" src="{ $berta.options.TEMPLATES_ABS_ROOT }{ $berta.templateName }/mess.js?{$berta.options.int_version}"></script>
+    <script type="text/javascript" src="{ $berta.options.TEMPLATES_ABS_ROOT }{ $berta.templateName }/mess.js?{$berta.options.version}"></script>
     <script type="text/javascript" src="{ $berta.options.TEMPLATES_ABS_ROOT }{ $berta.templateName }/mooMasonry.js"></script>
 
     { if $berta.shop_enabled == true }
-        <script type="text/javascript" src="{ $berta.options.SITE_ROOT_URL }_plugin_shop/js/shop.js?{$berta.options.int_version}"></script>
+        <script type="text/javascript" src="{ $berta.options.SITE_ROOT_URL }_plugin_shop/js/shop.js?{$berta.options.version}"></script>
     { /if }
 </head>
 
@@ -430,8 +430,6 @@
               { $siteFooter }
             </p>
         </div>
-
-        { if $berta.settings.settings.showTutorialVideos == 'yes' && !$smarty.cookies._berta_videos_hidden }{ videoTutorials }{ /if }
 
         { intercomScript }
 

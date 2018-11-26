@@ -27,7 +27,7 @@
         </style>
     {/if}
 	{ googleWebFontsAPI }
-	<script type="text/javascript" src="{ $berta.options.TEMPLATES_ABS_ROOT }{ $berta.templateName }/white.js?{$berta.options.int_version}"></script>
+	<script type="text/javascript" src="{ $berta.options.TEMPLATES_ABS_ROOT }{ $berta.templateName }/white.js?{$berta.options.version}"></script>
 </head>
 
 <body class="xContent-{ $berta.section.name }{if $berta.tagName} xSubmenu-{$berta.tagName}{/if}{if $berta.environment == 'engine'} page-xMySite{/if}{if $berta.section.type} xSectionType-{ $berta.section.type }{/if}">
@@ -185,9 +185,7 @@
 
 	</div>
 
-	{ if $berta.settings.settings.showTutorialVideos == 'yes' && !$smarty.cookies._berta_videos_hidden }{ videoTutorials }{ /if }
-
-    { intercomScript }
+  { intercomScript }
 
 	{ include file="../_includes/inc.js_include.tpl" }
 

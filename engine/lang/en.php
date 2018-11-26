@@ -27,7 +27,7 @@ return array(
 	'description_menu_position' => 'Menu position',
 	'description_banner' => 'Banners are images which are visible in all sections. Use it for buttons or social icons in your site. Displayed image will be half of the original size, full size will be used for hi-res displays.',
 	'description_banner_link' => 'Banner link \'http://\' should be in front of the address',
-	'description_language' => 'Choose language of berta interface. Refresh site, to apply.',
+	'description_language' => 'Choose language of interface.',
 	'Heading position' => 'Heading position fixed or absolute. Fixed always stays in one place, absolute moves together with content.',
 	'description_heading_position' => 'Heading position fixed or absolute. Fixed always stays in one place, absolute moves together with content.',
 	'description_submenu_alwaysopen' => 'Submenu is open when menu item is current.',
@@ -35,6 +35,4 @@ return array(
 	'javascript_include' => 'Javascript code included right before closing &lt;/body&gt; element. Learn more how to <a href="https://github.com/berta-cms/berta/wiki/Include-JavaScript-code" target="_blank" title="How to include JavaScript code">include JavaScript code</a>.',
 	'description_custom_css' => 'Place your custom CSS code here. Any existing CSS definitions will be overwritten. For more information visit our <a href="https://github.com/berta-cms/berta/wiki/Add-custom-CSS" target="_blank">WIKI</a>.',
 	'seo_help_text' => 'Search Engine Optimization (SEO) helps Google to find your website and improves its rank in search results. <a href="https://support.google.com/webmasters/answer/35624" target="_blank">Learn more how it works</a>.'
-)
-
-?>
+);

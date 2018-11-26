@@ -1,0 +1,85 @@
+berta-login {
+  height: 100%;
+}
+
+.login-container {
+  color: $black;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  h3 {
+    border-bottom: 0;
+    display: block;
+  }
+
+  .social-login {
+    font-size: $input-font-size;
+    margin: 0 1.3em;
+    text-align: center;
+
+    a {
+      color: $white;
+      display: block;
+      margin-bottom: 1.3em;
+      transition: background-color .2s;
+
+      &.facebook {
+        background-color: $facebook-color;
+
+        &:hover {
+          background-color: darken($facebook-color, 10%);
+        }
+      }
+
+      &.google {
+        background-color: $google-color;
+
+        &:hover {
+          background-color: darken($google-color, 10%);
+        }
+      }
+    }
+
+    p {
+      margin-bottom: 0;
+    }
+  }
+
+  .error-message {
+    color: $error-color;
+    font-size: $input-font-size;
+    margin: 1.3em 1.3em 0;
+  }
+
+  form {
+    flex-grow: 1;
+
+    .form-group {
+      margin: 1.3em;
+    }
+
+    .buttons {
+      text-align: right;
+    }
+
+    button {
+      display: block;
+      font-size: $base-font-size;
+      margin-bottom: 1.3em;
+      margin-left: auto;
+      width: 50%;
+    }
+
+    a {
+      color: $black;
+    }
+  }
+
+  .footer {
+    display: flex;
+    font-size: $input-font-size;
+    justify-content: space-between;
+    padding: 1.3em;
+  }
+}

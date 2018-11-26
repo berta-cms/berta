@@ -66,10 +66,8 @@ function smarty_function_googleWebFontsAPI() {
 	}
 
 	if ($fonts){
-		$js_include="<link href='http://fonts.googleapis.com/css?family=".implode('|',$fonts)."&amp;subset=latin,latin-ext,cyrillic-ext,greek-ext,greek,vietnamese,cyrillic' rel='stylesheet' type='text/css'>";
+		$js_include="<link href='//fonts.googleapis.com/css?family=".implode('|',$fonts)."&amp;subset=latin,latin-ext,cyrillic-ext,greek-ext,greek,vietnamese,cyrillic' rel='stylesheet' type='text/css'>";
 	}
 
 	return $js_include;
 }
-
-?>

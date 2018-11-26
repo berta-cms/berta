@@ -66,7 +66,7 @@ $templateConf = array(
 		'centeredWidth' =>	array('format' => 'text',	'default' => '960px',	'css_units' => true,	'title' => I18n::_('Centered content width'),	'description' => I18n::_('Content width if layout is centered.')),
 		'centeringGuidesColor' =>	array('format' => 'select', 'default' => 'dark', 'values' => array('dark', 'bright'),	'title' => I18n::_('Centering guides color tone'),	'description' => I18n::_('Color tone for centering guides (dark for bright background colors, bright for dark background colors).')),
 
-		'group_responsive' => array('format' => false, 'default' => false, 'title' => '<h3>'.I18n::_('Responsive design').'</h3>'),
+		'group_responsive' => array('format' => false, 'default' => false, 'title' => I18n::_('Responsive design')),
 		'responsive' =>	array('format' => 'select', 'default' => 'no', 'values' => array('no', 'yes'), 'title' => I18n::_('Enabled'), 'description' => I18n::_('Sets whether layout should be responsive or not.')),
 		'centeredContents' => array('format' => 'select', 'default' => 'no', 'values' => array('no', 'yes'), 'title' => I18n::_('Centered contents'), 'description' => I18n::_('Page heading, menu items and section entries is horizontally centered to window.')),
 		'headingMargin' =>	array('format' => 'text', 'default' => '20px 10px',	'title' => I18n::_('Heading margin'),	'description' => I18n::_('Margin around page heading or logo. Please see the short CSS guide at the bottom of this page.')),
@@ -161,7 +161,7 @@ $templateConf = array(
 
 	'grid' => array(
 		'_' => array('title' => I18n::_('Thumbnails')),
-        'whatAreThumbnails' => array('format' => '', 'default' => '', 'title' => I18n::_('Thumbnails can be turned on by setting the section type to "Thumbnails enabled" & adding more than 1 images to background gallery.') . '<br/><br/>'),
+        'whatAreThumbnails' => array('format' => '', 'default' => '', 'title' => I18n::_('Thumbnails can be turned on by setting the section type to "Thumbnails enabled" & adding more than 1 images to background gallery.')),
         'contentWidth' => array('format' => 'text',	'default' => '60%',	'title' => I18n::_('Thumbnail container width'),	'description' => I18n::_('IMPORTANT! This must be set as percentage. i.e. 60%')),
 	),
 
@@ -176,5 +176,3 @@ if(@file_exists('../_plugin_shop/template.conf.php')) {
 }
 
 return array($sectionTypes, $templateConf);
-
-?>

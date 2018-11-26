@@ -1,0 +1,126 @@
+@import 'variables';
+@import 'buttons';
+@import 'forms';
+@import 'aside';
+@import 'not-found';
+@import 'sites';
+@import 'sections';
+@import 'shop';
+@import 'login';
+@import 'account';
+@import 'popup';
+
+html,
+body {
+  font-size: 16px;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
+body {
+  font-family: AvenirNext, Helvetica, Arial, sans-serif;
+}
+
+button {
+  border: 0;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+header {
+  background-color: $black;
+  height: $bt-header-height;
+
+  a {
+    color: $grey-30;
+    font-size: $bt-header-font-size;
+    line-height: $bt-header-line-height;
+    padding: $bt-header-item-padding;
+    text-decoration: none;
+    transition: color .2s;
+
+    &:hover {
+      color: $berta-accent;
+    }
+
+    &.nav-active {
+      color: $white;
+    }
+  }
+
+  .bt-view-editor {
+    align-items: center;
+    background-color: $grey-90;
+    color: $grey-40;
+    cursor: pointer;
+    display: flex;
+    padding: $bt-header-item-padding;
+    transition: background-color .2s;
+
+    path {
+      fill: $grey-30;
+    }
+
+    &:hover {
+      background-color: $berta-accent;
+    }
+  }
+}
+
+berta-profile-dropdown {
+  background-color: $black;
+
+  .bt-profile-anchor {
+    background-color: inherit;
+    min-width: 9.375rem;
+
+    &:focus {
+      color: $white;
+    }
+  }
+
+  ul {
+    background-color: $black;
+  }
+
+  .bt-profile-anchor,
+  ul > li > * {
+    align-items: center;
+    background-color: transparent;
+    box-sizing: border-box;
+    color: $grey-30;
+    display: flex;
+    font-size: $bt-header-font-size;
+    justify-content: space-between;
+    line-height: $bt-header-line-height;
+    padding: $bt-header-item-padding;
+    text-align: left;
+    text-decoration: none;
+    transition: color .2s;
+
+    svg {
+      path {
+        fill: $grey-30;
+        transition: fill .2s;
+      }
+    }
+
+    &:hover {
+      color: $berta-accent;
+
+      svg {
+        path {
+          fill: $berta-accent;
+        }
+      }
+    }
+  }
+}
+
+.overlay {
+  background: rgba($black, .3);
+}

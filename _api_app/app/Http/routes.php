@@ -11,15 +11,19 @@
 |
  */
 
-// $app->get('/', function () use ($app) {
-//     return 'Nothing here. Go away!';
-// });
-
 $app->post('auth/login', ['uses' => 'AuthController@authenticate', 'middleware' => 'setup']);
-$app->get('auth/login', ['uses' => 'AuthController@authenticate', 'middleware' => 'setup']);
+$app->get('auth/login', ['as'=> 'authenticate', 'uses' => 'AuthController@authenticate', 'middleware' => 'setup']);
+$app->post('v1/login', ['as' => 'login', 'uses' => 'AuthController@apiLogin', 'middleware' => 'setup']);
+$app->put('v1/logout', ['uses' => 'AuthController@apiLogout', 'middleware' => 'setup']);
+
+$app->get('v1/meta', ['uses' => 'StateController@getMeta', 'middleware' => 'setup']);
 
 $app->group(['prefix' => 'v1', 'namespace' => 'App', 'middleware' => ['setup', 'auth']], function () use ($app) {
-    $app->get('state/{site}', 'Http\Controllers\StateController@get');
+
+    $app->patch('user/changepassword', 'Http\Controllers\AuthController@changePassword');
+
+    $app->get('state[/{site}]', 'Http\Controllers\StateController@get');
+    $app->get('locale-settings', ['as'=>'locale_settings',  'uses' => 'Http\Controllers\StateController@getLocaleSettings']);
 
     $app->group(['prefix' => 'v1', 'namespace' => 'App\Sites', 'middleware' => ['setup', 'auth']], function () use ($app) {
         $app->post('sites', ['as' => 'sites', 'uses' => 'SitesController@create']);
@@ -49,8 +53,21 @@ $app->group(['prefix' => 'v1', 'namespace' => 'App', 'middleware' => ['setup', '
                 $app->delete('entries', 'SectionEntriesController@delete');
                 $app->put('entries/galleries', ['as' => 'entry_gallery', 'uses' => 'SectionEntriesController@galleryOrder']);
                 $app->delete('entries/galleries', 'SectionEntriesController@galleryDelete');
+                $app->get('entries/render/{site}/{section}[/{id}]', 'SectionEntriesController@renderEntries');
             });
         });
+    });
+
+    $app->group(['prefix' => 'v1/plugin', 'namespace' => 'App\Plugins', 'middleware' => ['setup', 'auth']], function () use ($app) {
+        foreach (scandir("{$app->path()}/Plugins") as $fileOrDir) {
+            if (in_array($fileOrDir, ['.', '..'])) { continue; }
+
+            $dirPath = "{$app->path()}/Plugins/{$fileOrDir}";
+
+            if (is_dir($dirPath) && is_file("{$dirPath}/routes.php")) {
+                require "{$dirPath}/routes.php";
+            }
+        }
     });
 
     /**

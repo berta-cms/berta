@@ -37,8 +37,8 @@ class SectionEntryRenderService
         array $siteSettings,
         array $siteTemplateSettings,
         Storage $storageService,
-        bool $isEditMode,
-        bool $isShopAvailable
+        $isEditMode,
+        $isShopAvailable
     )
     {
         $this->entry = $entry;

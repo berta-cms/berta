@@ -12,5 +12,5 @@
     "session_id" : "<?php echo session_id() ?>"
   };
 </script>
-<script src="<?php echo $ENGINE_ROOT_URL ?>js/backend.min.js?<?php echo $int_version ?>"></script>
-<script src="<?php echo $ENGINE_ROOT_URL ?>js/ng-backend.min.js?<?php echo $int_version ?>"></script>
+<script src="<?php echo $ENGINE_ROOT_URL ?>js/backend.min.js?<?php echo $version ?>"></script>
+<script src="<?php echo $ENGINE_ROOT_URL ?>js/ng-backend.min.js?<?php echo $version ?>"></script>
