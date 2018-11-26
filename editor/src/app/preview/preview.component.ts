@@ -188,7 +188,7 @@ export class PreviewComponent implements OnInit {
 
   private waitFullLoad(iframe: HTMLIFrameElement): Observable<HTMLIFrameElement> {
     return Observable.create(observer => {
-      const maxChecks = 10;
+      const maxChecks = 120;
       let intervalCount = 0;
       let lastError = '';
       const lastUrlPart = iframe.contentDocument.location.href.replace(/\/$/, '').split('/').pop();
