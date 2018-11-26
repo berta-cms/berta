@@ -1,23 +1,28 @@
 Berta.me is a free, open source web app for building websites. You can also call it a CMS if you like.
 ==========
 
-It will run on any webserver with common settings (Apache, PHP5 with GD and multi-byte support).
 Berta does NOT require a database. All content is stored in files.
 
 For more information, visit http://www.berta.me
 
 Installation
 ---------
-- Requires PHP >= 5.5.9
+- Requires Apache web server with mod_rewrite enabled
+- Requires PHP >= 5.5.9 and < 7.2.0 with GD and multi-byte support.
 - Read the file: `INSTALL/HOW-TO-INSTALL-OR-UPDATE.html`
 - Create empty `storage` folder in the app root and make sure it's writeable.
 - Install Node dependencies `npm install`.
 - Assets are managed by Gulp: http://gulpjs.com/. Run `gulp` to generate and listen for asset changes.
 - Backend API uses https://lumen.laravel.com/ PHP micro-framework. `cd _api_app` and run `composer install`. Composer is a Dependency Manager for PHP – https://getcomposer.org/ make sure it's installed.
+- Content management frontend uses Angular. `cd editor` and compile app `ng build --prod`.
 - Open app in browser and navigate to `/engine`. Default username `admin` password `xxx`.
 
 Changelog
 ----------
+**v1.0.0 (release date 26 Nov 2018)**
+ * Content editor partly rewritten using Angular
+ * Improvements and bugfixes
+
 **v0.9.0b (release date 18 Jun 2018)**
  * Redux integration (sites, sections, template settings, general settings)
  * Lumen based API
