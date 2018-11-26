@@ -25,9 +25,9 @@ class UserModel implements
 
         $this->name = $options['AUTH_user'];
         $this->password = $options['AUTH_password'];
-        $this->features = $this->getFeatures();
         $this->profile_url = $this->getHostingData('HOSTING_PROFILE');
         $this->forgot_password_url = $this->getHostingData('FORGOTPASSWORD_LINK');
+        $this->features = $this->getFeatures();
     }
 
 
@@ -57,21 +57,20 @@ class UserModel implements
 
         //hosting plan file
         $path = config('app.old_berta_root') . '/engine/plan';
+        $has_plan = file_exists($path);
+        $plan = $has_plan ? intval(file_get_contents($path)) : null;
+        // Berta plans
+        // 1 - Basic
+        // 2 - Pro
+        // 3 - Shop
+        $is_trial = !$has_plan && $this->profile_url;
 
-        if (file_exists($path)) {
-            $plan = intval(file_get_contents($path));
-            // Berta plans
-            // 1 - Basic
-            // 2 - Pro
-            // 3 - Shop
+        if ($is_trial || $plan > 1) {
+            $features[] = 'multisite';
+        }
 
-            if ($plan > 1) {
-                $features[] = 'multisite';
-            }
-
-            if ($plan == 3) {
-               $features[] = 'shop';
-            }
+        if ($is_trial || $plan == 3) {
+            $features[] = 'shop';
         }
 
         return $features;
