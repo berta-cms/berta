@@ -5,7 +5,7 @@ Berta does NOT require a database. All content is stored in files.
 
 For more information, visit http://www.berta.me
 
-Installation
+Installation instruction for v1.0.0
 ---------
 - Requires Apache web server with mod_rewrite enabled
 - Requires PHP >= 5.5.9 and < 7.2.0 with GD and multi-byte support.
