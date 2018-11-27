@@ -193,9 +193,9 @@ export class PreviewService {
                 if (prop === 'tags/tag') {
                   const section = this.store.selectSnapshot(SiteSectionsState.getCurrentSiteSections)
                     .find(_section => _section.name === currentSectionName);
-                  const tags = this.store.selectSnapshot(SectionTagsState.getCurrentSiteTags)
+                  const sectionTags = this.store.selectSnapshot(SectionTagsState.getCurrentSiteTags)
                     .find(_section => _section['@attributes'].name === currentSectionName);
-                  const tagsList = tags.tag.map(tag => tag['@value']);
+                  const entryTags = entry.tags ? entry.tags.tag : [];
 
                   ret = {
                     ...ret,
@@ -205,10 +205,10 @@ export class PreviewService {
                       section_name: section.name,
                       section_order: section.order,
                       has_direct_content: section['@attributes'].has_direct_content,
-                      tags: tags,
-                      real: tagsList.join(', '),
-                      update: tagsList.join(' / '),
-                      value: tagsList.join(' / ')
+                      tags: sectionTags,
+                      real: entryTags.join(', '),
+                      update: entryTags.join(' / '),
+                      value: entryTags.join(' / ')
                     }
                   };
                 }
