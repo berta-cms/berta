@@ -14,7 +14,7 @@ Installation instruction for v1.0.0
 - Install Node dependencies `npm install`.
 - Assets are managed by Gulp: http://gulpjs.com/. Run `gulp` to generate and listen for asset changes.
 - Backend API uses https://lumen.laravel.com/ PHP micro-framework. `cd _api_app` and run `composer install`. Composer is a Dependency Manager for PHP – https://getcomposer.org/ make sure it's installed.
-- Content management frontend uses Angular. `cd editor` and compile app `ng build --prod`.
+- Content management frontend uses Angular. `cd editor` then `npm install` and compile app `ng build --prod`.
 - Open app in browser and navigate to `/engine`. Default username `admin` password `xxx`.
 
 Changelog
