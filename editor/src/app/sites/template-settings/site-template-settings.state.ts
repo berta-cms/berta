@@ -11,7 +11,6 @@ import {
 } from './site-template-settings.interface';
 import { SettingsGroupModel } from '../../shared/interfaces';
 import { SiteSettingsState } from '../settings/site-settings.state';
-import { AppStateModel } from '../../app-state/app-state.interface';
 import { AppState } from '../../app-state/app.state';
 import {
   UpdateSiteTemplateSettingsAction,
@@ -44,7 +43,14 @@ export class SiteTemplateSettingsState implements NgxsOnInit {
 
   @Selector([SiteTemplateSettingsState.getCurrentSiteTemplateSettings])
   static getIsResponsive(_, currentSiteTemplateSettings) {
-    return currentSiteTemplateSettings.pageLayout.responsive === 'yes';
+    const settingGroup = currentSiteTemplateSettings.find(g => g.slug === 'pageLayout');
+
+    if (!settingGroup) {
+      return false;
+    }
+
+    const isResponsive = settingGroup.settings.find(s => s.slug === 'responsive' && s.value === 'yes');
+    return !!isResponsive;
   }
 
   constructor(
@@ -53,7 +59,6 @@ export class SiteTemplateSettingsState implements NgxsOnInit {
     private appStateService: AppStateService,
     private fileUploadService: FileUploadService) {
   }
-
 
   ngxsOnInit({ dispatch }: StateContext<SitesTemplateSettingsStateModel>) {
     concat(
