@@ -5,29 +5,9 @@
     font-size: .875em;
     margin: 1.3em;
   }
-
-  &.bt-reordering {
-    .settings {
-      display: none;
-    }
-  }
 }
 
 berta-section {
+  background-color: $white;
   display: block;
-  cursor: grab;
-
-  &.bt-sort-place-after {
-    border-bottom: 3rem solid $grey-10;
-  }
-
-  &.bt-sort-place-before {
-    border-top: 3rem solid $grey-10;
-  }
-
-  &.bt-sort-is-dragged {
-    height: 0;
-    overflow: hidden;
-    cursor: grabbing;
-  }
 }

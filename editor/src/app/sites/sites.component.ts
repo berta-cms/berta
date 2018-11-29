@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { Store, Select } from '@ngxs/store';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
+import { Store, Select } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { SiteStateModel } from './sites-state/site-state.model';
 import { UpdateInputFocus } from '../app-state/app.actions';

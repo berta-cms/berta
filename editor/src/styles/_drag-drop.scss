@@ -1,3 +1,11 @@
+.cdk-drag {
+  cursor: grab;
+}
+
+.cdk-drag-preview {
+  cursor: grabbing;
+}
+
 .cdk-drag-placeholder {
   opacity: 0;
 }
