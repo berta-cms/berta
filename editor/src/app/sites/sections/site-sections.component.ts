@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { CdkDragDrop } from '@angular/cdk/drag-drop';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Store } from '@ngxs/store';
 import { Observable, combineLatest } from 'rxjs';
 import { filter, map, shareReplay, take } from 'rxjs/operators';
@@ -18,11 +18,19 @@ import {
   ReOrderSiteSectionsAction } from './sections-state/site-sections.actions';
 import { SettingConfigModel, SettingModel } from '../../shared/interfaces';
 
+interface SectionData {
+  section: SiteSectionStateModel;
+  params: {
+    setting: SettingModel,
+    config: SettingConfigModel,
+  }[];
+}
+
 @Component({
   selector: 'berta-site-sections',
   template: `
     <div class="berta-site-sections" cdkDropList (cdkDropListDropped)="onDrop($event)">
-      <berta-section *ngFor="let sd of sectionsData$ | async"
+      <berta-section *ngFor="let sd of sectionsList"
                      cdkDrag
                      [section]="sd.section"
                      [isExpanded]="sd.section.name === currentSection"
@@ -30,15 +38,13 @@ import { SettingConfigModel, SettingModel } from '../../shared/interfaces';
                      [templateSectionTypes]="sectionTypes$ | async"
                      (inputFocus)="updateComponentFocus($event)"
                      (update)="updateSection(sd, $event)"></berta-section>
-      <button type="button" class="button" (click)="createSection()">Create new section</button>
     </div>
+    <button type="button" class="button" (click)="createSection()">Create new section</button>
   `
 })
 export class SiteSectionsComponent implements OnInit {
-  sectionsData$: Observable<{section: SiteSectionStateModel, params: {
-    setting: SettingModel,
-    config: SettingConfigModel,
-  }[]}[]>;
+  sectionsData$: Observable<SectionData[]>;
+  sectionsList: SectionData[];
   sectionTypes$: Observable<{value: string, title: string}[]>;
   currentSection: string;
 
@@ -119,6 +125,10 @@ export class SiteSectionsComponent implements OnInit {
         })
     );
 
+    this.sectionsData$.subscribe(sectionsData => {
+      this.sectionsList = [...sectionsData];
+    });
+
     this.route.paramMap.subscribe(params => {
       this.currentSection = params['params']['section'];
     });
@@ -190,6 +200,8 @@ export class SiteSectionsComponent implements OnInit {
     if (event.previousIndex === event.currentIndex) {
       return;
     }
+
+    moveItemInArray(this.sectionsList, event.previousIndex, event.currentIndex);
     this.store.dispatch(new ReOrderSiteSectionsAction(event.previousIndex, event.currentIndex));
   }
 }

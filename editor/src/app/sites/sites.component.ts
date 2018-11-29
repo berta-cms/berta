@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { CdkDragDrop } from '@angular/cdk/drag-drop';
+import { Component, OnInit } from '@angular/core';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Store, Select } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { SiteStateModel } from './sites-state/site-state.model';
@@ -10,7 +10,7 @@ import { CreateSiteAction, ReOrderSitesAction } from './sites-state/sites.action
   selector: 'berta-sites',
   template: `
     <div cdkDropList (cdkDropListDropped)="onDrop($event)">
-      <berta-site *ngFor="let site of sites$ | async"
+      <berta-site *ngFor="let site of sitesList"
                   cdkDrag
                   [site]="site"
                   (inputFocus)="updateComponentFocus($event)"></berta-site>
@@ -18,10 +18,18 @@ import { CreateSiteAction, ReOrderSitesAction } from './sites-state/sites.action
     <button type="button" class="button" (click)="createSite()">Create new site</button>
   `
 })
-export class SitesComponent {
+export class SitesComponent implements OnInit {
   @Select('sites') public sites$: Observable<SiteStateModel[]>;
+  sitesList: SiteStateModel[];
+
 
   constructor(private store: Store) { }
+
+  ngOnInit() {
+    this.sites$.subscribe(sites => {
+      this.sitesList = [...sites];
+    });
+  }
 
   updateComponentFocus(isFocused) {
     this.store.dispatch(new UpdateInputFocus(isFocused));
@@ -36,6 +44,7 @@ export class SitesComponent {
       return;
     }
 
+    moveItemInArray(this.sitesList, event.previousIndex, event.currentIndex);
     this.store.dispatch(new ReOrderSitesAction(event.previousIndex, event.currentIndex));
   }
 }
