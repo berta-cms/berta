@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Store, Select } from '@ngxs/store';
+import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { Observable } from 'rxjs';
 import { SiteStateModel } from './sites-state/site-state.model';
 import { UpdateInputFocus } from '../app-state/app.actions';
@@ -8,15 +9,9 @@ import { CreateSiteAction, ReOrderSitesAction } from './sites-state/sites.action
 @Component({
   selector: 'berta-sites',
   template: `
-    <div class="nice" (dragend)="resetDrag()" (drop)="onDrop($event)">
+    <div cdkDropList (cdkDropListDropped)="onDrop($event)">
       <berta-site *ngFor="let site of sites$ | async"
-                  draggable="true"
-                  [class.bt-sort-place-after]="dragOverIndex === site.order && draggedIndex < dragOverIndex"
-                  [class.bt-sort-place-before]="dragOverIndex === site.order && draggedIndex > dragOverIndex"
-                  [class.bt-sort-is-dragged]="site.order === draggedIndex && hideElement"
-                  (dragstart)="siteDragStart($event, site)"
-                  (dragover)="dragOver($event, site)"
-                  (drop)="onDrop($event)"
+                  cdkDrag
                   [site]="site"
                   (inputFocus)="updateComponentFocus($event)"></berta-site>
     </div>
@@ -25,9 +20,6 @@ import { CreateSiteAction, ReOrderSitesAction } from './sites-state/sites.action
 })
 export class SitesComponent {
   @Select('sites') public sites$: Observable<SiteStateModel[]>;
-  dragOverIndex: number|null = null;
-  draggedIndex: number|null = null;
-  hideElement = false;
 
   constructor(private store: Store) { }
 
@@ -39,36 +31,11 @@ export class SitesComponent {
     this.store.dispatch(CreateSiteAction);
   }
 
-  siteDragStart(event, site) {
-    this.draggedIndex = +site.order;
-    event.dataTransfer.dropEffect = 'move';
-    event.dataTransfer.setData('text/plain', String(site.order));
-
-    // Hide the element that's being dragged from the site list
-    // Use delay so we get the image as drag anchor
-    setTimeout(() => {
-      this.hideElement = true;
-    }, 10);
-  }
-
-  dragOver(event, site) {
-    // For drop to work this must be prevented
-    event.preventDefault();
-    this.dragOverIndex = +site.order;
-  }
-
-  onDrop(event) {
-    event.preventDefault();
-    event.stopPropagation();
-    if (this.draggedIndex === this.dragOverIndex) {
+  onDrop(event: CdkDragDrop<string[]>) {
+    if (event.previousIndex === event.currentIndex) {
       return;
     }
-    this.store.dispatch(new ReOrderSitesAction(this.draggedIndex, this.dragOverIndex));
-  }
 
-  resetDrag() {
-    this.dragOverIndex = null;
-    this.draggedIndex = null;
-    this.hideElement = false;
+    this.store.dispatch(new ReOrderSitesAction(event.previousIndex, event.currentIndex));
   }
 }
