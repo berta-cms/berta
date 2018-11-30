@@ -1,12 +1,12 @@
-import { Observable, combineLatest} from 'rxjs';
-import { map, mergeMap, startWith } from 'rxjs/operators';
-
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Observable, combineLatest} from 'rxjs';
+import { map, mergeMap, startWith } from 'rxjs/operators';
 import { Store } from '@ngxs/store';
 
-import { ShopState } from './shop.state';
 import { splitCamel, camel2Words, uCFirst } from '../shared/helpers';
+import { Animations } from '../shared/animations';
+import { ShopState } from './shop.state';
 
 
 @Component({
@@ -21,7 +21,7 @@ import { splitCamel, camel2Words, uCFirst } from '../shared/helpers';
           <path d="M9 1L4.75736 5.24264L0.514719 1" stroke="#9b9b9b" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
       </h3>
-      <div class="settings">
+      <div class="settings" [@isExpanded]="currentShopSection === shopSection.urlSegment">
         <berta-shop-products
           *ngIf="currentShopSection === 'products' && shopSection.urlSegment === currentShopSection">
         </berta-shop-products>
@@ -41,7 +41,10 @@ import { splitCamel, camel2Words, uCFirst } from '../shared/helpers';
     :host {
       display: block;
     }
-  `]
+  `],
+  animations: [
+    Animations.slideToggle
+  ]
 })
 export class ShopComponent implements OnInit {
   currentShopSection = '';

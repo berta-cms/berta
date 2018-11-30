@@ -139,9 +139,7 @@ aside {
   }
 
   > .settings {
-    max-height: 0;
     overflow: hidden;
-    transition:  max-height .2s ease;
 
     berta-setting,
     .setting {
@@ -230,8 +228,6 @@ aside {
 
     > .settings {
       border-bottom: 1px solid $grey-10;
-      max-height: 200000px; // auto
-      overflow: visible;
     }
   }
 }
