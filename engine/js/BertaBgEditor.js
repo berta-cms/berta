@@ -43,10 +43,7 @@ var BertaBgEditor = new Class({
     this.setOptions(options);
     this.tinyMCE_ConfigurationsInit();
     this.allContainer = bgEditorContainerElement;
-
-    var selectedSection = this.allContainer.getParent().getElement('.menuItemSelected');
-    this.sectionName = this.getSectionNameForElement(selectedSection);
-
+    this.sectionName = this.allContainer.getParent('body').getClassStoredValue('xContent');
     this.processHandler = new UnlinearProcessHandler(); // singleton process handler
     this.processHandler.addObservable(this);
 
