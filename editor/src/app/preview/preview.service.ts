@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
 
 import { Store, Actions, ofActionSuccessful } from '@ngxs/store';
-import { Subscription } from 'rxjs';
-import { map, tap, buffer, filter, scan } from 'rxjs/operators';
+import { Subscription, Observable } from 'rxjs';
+import { map, buffer, filter, scan, switchMap } from 'rxjs/operators';
 
 import { AppState } from '../app-state/app.state';
 import { AppStateService } from '../app-state/app-state.service';
+import { PopupService } from '../popup/popup.service';
+import { AppHideLoading } from '../app-state/app.actions';
 import {
   UpdateSiteSectionFromSyncAction,
   AddSiteSectionsAction,
@@ -38,6 +40,7 @@ export class PreviewService {
 
   constructor(
     private appService: AppStateService,
+    private popupService: PopupService,
     private actions$: Actions,
     private store: Store) {
   }
@@ -238,11 +241,39 @@ export class PreviewService {
               }));
 
           } else if (method === 'DELETE') {
-            return this.store.dispatch(new DeleteSectionEntryFromSyncAction(
-              data.site,
-              data.section,
-              data.entryId
-            )).pipe(
+            return Observable.create(observer => {
+              this.store.dispatch(new AppHideLoading());
+              this.popupService.showPopup({
+                type: 'warn',
+                content: 'Are you sure you want to delete this entry?',
+                showOverlay: true,
+                isModal: true,
+                actions: [
+                  {
+                    type: 'primary',
+                    label: 'OK',
+                    callback: (popupService) => {
+                      observer.next();
+                      popupService.closePopup();
+                    }
+                  },
+                  {
+                    label: 'Cancel',
+                    callback: (popupService) => {
+                      observer.complete();
+                      popupService.closePopup();
+                    }
+                  }
+                ],
+              });
+            }).pipe(
+              switchMap(() => {
+                return this.store.dispatch(new DeleteSectionEntryFromSyncAction(
+                  data.site,
+                  data.section,
+                  data.entryId
+                ));
+              }),
               map(() => {
                 const section = this.store.selectSnapshot(SiteSectionsState.getCurrentSiteSections)
                   .find(_section => _section.name === data.section);
@@ -259,7 +290,8 @@ export class PreviewService {
                   has_direct_content: section['@attributes'].has_direct_content,
                   tags: tags
                 };
-              }));
+              })
+            );
           }
           break;
 
