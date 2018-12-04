@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 import { SiteSectionsComponent } from './site-sections.component';
 import { SectionComponent } from './section.component';
 import { NgxsModule } from '@ngxs/store';
@@ -12,6 +13,7 @@ import { SitesSharedModule } from '../shared/sites-shared.module';
 @NgModule({
   imports: [
     CommonModule,
+    DragDropModule,
     RouterModule.forChild([]),
     NgxsModule.forFeature([
       SiteSectionsState,
