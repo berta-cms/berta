@@ -254,6 +254,7 @@ export class PreviewService {
                     label: 'OK',
                     callback: (popupService) => {
                       observer.next();
+                      observer.complete();
                       popupService.closePopup();
                     }
                   },

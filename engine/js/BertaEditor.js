@@ -659,29 +659,18 @@ var BertaEditor = new Class({
 
   entryDelete: function (event) {
     event = new Event(event).stop();
-    var btn = $(event.target);
     var entryObj = $(event.target).getParent('.xEntry');
     var entryId = entryObj.getClassStoredValue('xEntryId');
     var entryThumbnail = $$('.portfolioThumbnail[data-id="' + entryId + '"]');
-    btn.setProperty('display', 'none');
     var site = getCurrentSite();
 
     redux_store.dispatch(Actions.initDeleteSectionEntry(
       site,
       this.currentSection,
       entryId,
-      function (resp) {
-        if (!resp) {
-          alert('Berta says, there was a server error while deleting this entry! Something has gone sooooo wrong...');
-
-        } else if (resp && !resp.error_message) {
-          entryObj.destroy();
-          entryThumbnail.destroy();
-
-        } else {
-          alert(resp.error_message);
-          btn.setProperty('display', 'inline');
-        }
+      function () {
+        entryObj.destroy();
+        entryThumbnail.destroy();
       }.bindWithEvent(this)
     ));
   },
