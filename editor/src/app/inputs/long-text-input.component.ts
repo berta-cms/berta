@@ -44,20 +44,13 @@ export class LongTextInputComponent implements OnInit {
 
   onFocus() {
     this.textInputService.onComponentFocused();
-
-    setTimeout(() => {
-      this.inputFocus.emit(true);
-    });
+    this.inputFocus.emit(true);
   }
 
   onBlur(event) {
     this.textInputService.onComponentBlurred(event);
     this.updateField(event);
-
-    // Waiting for possible click on app overlay
-    setTimeout(() => {
-      this.inputFocus.emit(false);
-    });
+    this.inputFocus.emit(false);
   }
 
   updateField(event) {
@@ -70,6 +63,8 @@ export class LongTextInputComponent implements OnInit {
       this.disabled = true;
     }
 
+    /* Blur the input, so it wont get blurred in the update process and cause errors */
+    event.target.blur();
     this.update.emit(value);
   }
 }
