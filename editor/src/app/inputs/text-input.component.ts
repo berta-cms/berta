@@ -1,3 +1,4 @@
+import { tap } from 'rxjs/operators';
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { TextInputService } from './text-input.service';
 
@@ -54,17 +55,22 @@ export class TextInputComponent implements OnInit {
 
   ngOnInit() {
     this.textInputService.initValue(this.value, {hideIcon: !!this.hideIcon});
+    this.textInputService.value.pipe(
+      tap(() => {
+        if (!this.enabledOnUpdate) {
+          this.disabled = true;
+        }
+      })
+    ).subscribe((value) => this.update.emit(value));
   }
 
   onFocus() {
     this.textInputService.onComponentFocused();
-
     this.inputFocus.emit(true);
   }
 
   onBlur(event) {
     this.textInputService.onComponentBlurred(event);
-    this.updateField(event);
 
     // Waiting for possible click on app overlay
     this.inputFocus.emit(false);
@@ -75,13 +81,5 @@ export class TextInputComponent implements OnInit {
     if (value === null) {
       return;
     }
-
-    if (!this.enabledOnUpdate) {
-      this.disabled = true;
-    }
-
-    /* Blur the input, so it wont get blurred in the update process and cause errors */
-    event.target.blur();
-    this.update.emit(value);
   }
 }

@@ -1,5 +1,5 @@
+import { BehaviorSubject, Subject } from 'rxjs';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
 
 /**
  * This service is meant to manage input in text elements. And should be injected only in component directly so that
@@ -11,6 +11,7 @@ export class TextInputService {
   private hideIcon = false;
   private isLongInput = false;
 
+  public value = new Subject<string>();
   public focus = new BehaviorSubject<boolean>(false);
   public showIcon = new BehaviorSubject<boolean>(true);
 
@@ -38,12 +39,12 @@ export class TextInputService {
     }
   }
 
-
   onComponentBlurred(event) {
     this.focus.next(false);
     if (!event.target.value && !this.hideIcon) {
       this.showIcon.next(true);
     }
+    this.updateField(event);
   }
 
   updateField(event) {
@@ -63,7 +64,9 @@ export class TextInputService {
     }
 
     this.lastValue = event.target.value;
-
-    return event.target.value;
+    if (event instanceof KeyboardEvent) {
+      (event.target as HTMLInputElement).blur();
+    }
+    this.value.next(event.target.value);
   }
 }

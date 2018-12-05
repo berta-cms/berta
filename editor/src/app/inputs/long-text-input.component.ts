@@ -1,3 +1,4 @@
+import { tap } from 'rxjs/operators';
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { TextInputService } from './text-input.service';
 
@@ -40,6 +41,13 @@ export class LongTextInputComponent implements OnInit {
 
   ngOnInit() {
     this.textInputService.initValue(this.value, {isLongInput: true});
+    this.textInputService.value.pipe(
+      tap(() => {
+        if (!this.enabledOnUpdate) {
+          this.disabled = true;
+        }
+      })
+    ).subscribe((value) => this.update.emit(value));
   }
 
   onFocus() {
@@ -49,7 +57,6 @@ export class LongTextInputComponent implements OnInit {
 
   onBlur(event) {
     this.textInputService.onComponentBlurred(event);
-    this.updateField(event);
     this.inputFocus.emit(false);
   }
 
@@ -58,13 +65,5 @@ export class LongTextInputComponent implements OnInit {
     if (value === null) {
       return;
     }
-
-    if (!this.enabledOnUpdate) {
-      this.disabled = true;
-    }
-
-    /* Blur the input, so it wont get blurred in the update process and cause errors */
-    event.target.blur();
-    this.update.emit(value);
   }
 }
