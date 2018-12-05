@@ -659,44 +659,20 @@ var BertaEditor = new Class({
 
   entryDelete: function (event) {
     event = new Event(event).stop();
+    var entryObj = $(event.target).getParent('.xEntry');
+    var entryId = entryObj.getClassStoredValue('xEntryId');
+    var entryThumbnail = $$('.portfolioThumbnail[data-id="' + entryId + '"]');
+    var site = getCurrentSite();
 
-    if (this.processHandler.isIdleOrWarnIfBusy()) {
-      if (confirm('Berta asks:\n\nAre you sure you want to delete this entry along with all the images and other stuff it has attached and never have it back and never regret it afterwards?')) {
-        var btn = $(event.target);
-        var entryObj = $(event.target).getParent('.xEntry');
-        var entryId = entryObj.getClassStoredValue('xEntryId');
-        var entryThumbnail = $$('.portfolioThumbnail[data-id="' + entryId + '"]');
-
-        btn.setProperty('display', 'none');
-        entryObj.addClass('xSavingAtLarge');
-
-        var deleteProcessId = this.unlinearProcess_getId('delete-entry');
-        this.unlinearProcess_start(deleteProcessId, 'Deleting entry');
-
-        var site = getCurrentSite();
-
-        redux_store.dispatch(Actions.initDeleteSectionEntry(
-          site,
-          this.currentSection,
-          entryId,
-          function (resp) {
-            if (!resp) {
-              alert('Berta says, there was a server error while deleting this entry! Something has gone sooooo wrong...');
-
-            } else if (resp && !resp.error_message) {
-              this.unlinearProcess_stop(deleteProcessId);
-              entryObj.destroy();
-              entryThumbnail.destroy();
-
-            } else {
-              alert(resp.error_message);
-              btn.setProperty('display', 'inline');
-              entryObj.removeClass('xSavingAtLarge');
-            }
-          }.bindWithEvent(this)
-        ));
-      }
-    }
+    redux_store.dispatch(Actions.initDeleteSectionEntry(
+      site,
+      this.currentSection,
+      entryId,
+      function () {
+        entryObj.destroy();
+        entryThumbnail.destroy();
+      }.bindWithEvent(this)
+    ));
   },
 
   entryOrderSave: function (elJustMoved) {
