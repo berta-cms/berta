@@ -7,7 +7,8 @@ export class AddSectionEntryFromSyncAction {
   constructor(
       public site: string,
       public section: string,
-      public entryId: string) {
+      public tag: string,
+      public before_entry: string) {
   }
 }
 

@@ -15,6 +15,13 @@ use App\Sites\TemplateSettings\SiteTemplateSettingsDataService;
 class SectionEntriesController extends Controller
 {
 
+    public function create(Request $request)
+    {
+        $res = $request->json()->all();
+        // @TODO create and call `createEntry` from SectionEntriesDataService
+        return response()->json($res);
+    }
+
     public function update(Request $request)
     {
         $json = $request->json()->all();

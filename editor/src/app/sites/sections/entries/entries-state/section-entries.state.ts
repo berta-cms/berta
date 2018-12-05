@@ -48,19 +48,30 @@ export class SectionEntriesState implements NgxsOnInit {
   }
 
   @Action(AddSectionEntryFromSyncAction)
-  addSectionEntryFromSync({ getState, patchState }: StateContext<SectionEntriesStateModel>, action: AddSectionEntryFromSyncAction) {
-    const state = getState();
-    this.appStateService.getInitialState('', 'sectionEntries', true).pipe(take(1)).subscribe((sectionEntries) => {
-      const newEntry = sectionEntries[action.site].find(
-        entry => entry.sectionName === action.section && entry.id === action.entryId.toString()
-      );
+  addSectionEntryFromSync({ getState, patchState, dispatch }: StateContext<SectionEntriesStateModel>,
+                          action: AddSectionEntryFromSyncAction) {
 
-      if (state[action.site]) {
-        patchState({[action.site]: [...state[action.site], newEntry]});
-      } else {
-        patchState({[action.site]: [newEntry]});
-      }
-    });
+    return this.appStateService.sync('sectionEntries', {
+      site: action.site,
+      section: action.section,
+      tag: action.tag,
+      before_entry: action.before_entry
+    },
+    'POST').pipe(
+      tap(response => {
+        if (response.error_message) {
+          /* This should probably be handled in sync */
+          console.error(response.error_message);
+        } else {
+          // @TODO
+          // Add entry to state
+          // update entry new order
+          // update section:
+          // entry_count
+          // has_direct_content
+        }
+      })
+    );
   }
 
   @Action(AddSectionEntriesAction)

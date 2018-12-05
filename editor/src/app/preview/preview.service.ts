@@ -172,8 +172,28 @@ export class PreviewService {
           }
 
         case 'sites/sections/entries':
-          /* trigger entry update actions */
-          if (method === 'PATCH') {
+          /* trigger entry actions */
+          if (method === 'POST') {
+            return this.store.dispatch(new AddSectionEntryFromSyncAction(
+              data.site,
+              data.section,
+              data.tag,
+              data.before_entry
+            )).pipe(
+              map(state => state.sectionEntries),
+              map(state => {
+                // @TODO
+                // find created entry
+                // if before_entry then get entry that is before
+                // else get max entry
+                // return entry id or entry and maybe other info
+                // old berta needs entry id to reload iframe
+
+                return {'entryid': 1};
+              })
+            );
+
+          } else if (method === 'PATCH') {
             return this.store.dispatch(new UpdateSectionEntryFromSyncAction(
               data.path,
               data.value
@@ -345,11 +365,6 @@ export class PreviewService {
 
   connectIframeReload(iframe: HTMLIFrameElement) {
     /*
-      Listen for `create new entry` event from iframe and sync data
-     */
-    iframe.contentWindow.addEventListener('SECTION_ENTRY_CREATE', this.createNewEntry.bind(this));
-
-    /*
       Catch external links and prevent navigating away from iframe
     */
     this.catchExternalLinks(iframe.contentWindow.document);
@@ -389,7 +404,6 @@ export class PreviewService {
   }
 
   disconnectIframeView(iframe: HTMLIFrameElement) {
-    iframe.contentWindow.removeEventListener('SECTION_ENTRY_CREATE', this.createNewEntry);
     this.iframeReloadSubscription.unsubscribe();
   }
 
@@ -456,11 +470,4 @@ export class PreviewService {
     });
   }
 
-  private createNewEntry(event) {
-    this.store.dispatch(new AddSectionEntryFromSyncAction(
-      event.detail.site,
-      event.detail.section,
-      event.detail.entryId
-    ));
-  }
 }
