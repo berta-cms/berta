@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Store } from '@ngxs/store';
 import { Observable, combineLatest } from 'rxjs';
 import { filter, map, shareReplay, take } from 'rxjs/operators';
@@ -17,42 +18,36 @@ import {
   ReOrderSiteSectionsAction } from './sections-state/site-sections.actions';
 import { SettingConfigModel, SettingModel } from '../../shared/interfaces';
 
+interface SectionData {
+  section: SiteSectionStateModel;
+  params: {
+    setting: SettingModel,
+    config: SettingConfigModel,
+  }[];
+}
+
 @Component({
   selector: 'berta-site-sections',
   template: `
-    <div class="berta-site-sections" [class.bt-reordering]="draggedIndex !== null">
-      <berta-section *ngFor="let sd of sectionsData$ | async"
-                    draggable="true"
-                    [class.bt-sort-place-after]="dragOverIndex === sd.section.order && draggedIndex < dragOverIndex"
-                    [class.bt-sort-place-before]="dragOverIndex === sd.section.order && draggedIndex > dragOverIndex"
-                    [class.bt-sort-is-dragged]="sd.section.order === draggedIndex && hideElement"
-                    (dragstart)="siteDragStart($event, sd.section)"
-                    (dragover)="dragOver($event, sd.section)"
-                    (drop)="onDrop($event)"
-                    (dragend)="resetDrag()"
-                    [section]="sd.section"
-                    [isExpanded]="sd.section.name === currentSection"
-                    [params]="sd.params"
-                    [templateSectionTypes]="sectionTypes$ | async"
-                    (inputFocus)="updateComponentFocus($event)"
-                    (update)="updateSection(sd, $event)"></berta-section>
-      <button type="button" class="button" (click)="createSection()">Create new section</button>
+    <div class="berta-site-sections" cdkDropList (cdkDropListDropped)="onDrop($event)">
+      <berta-section *ngFor="let sd of sectionsList"
+                     cdkDrag
+                     [section]="sd.section"
+                     [isExpanded]="sd.section.name === currentSection"
+                     [params]="sd.params"
+                     [templateSectionTypes]="sectionTypes$ | async"
+                     (inputFocus)="updateComponentFocus($event)"
+                     (update)="updateSection(sd, $event)"></berta-section>
     </div>
+    <button type="button" class="button" (click)="createSection()">Create new section</button>
   `
 })
 export class SiteSectionsComponent implements OnInit {
-  sectionsData$: Observable<{section: SiteSectionStateModel, params: {
-    setting: SettingModel,
-    config: SettingConfigModel,
-  }[]}[]>;
+  sectionsData$: Observable<SectionData[]>;
+  sectionsList: SectionData[];
   sectionTypes$: Observable<{value: string, title: string}[]>;
   currentSection: string;
 
-  dragOverIndex: number|null = null;
-  draggedIndex: number|null = null;
-  hideElement = false;
-
-  @ViewChild('dragAnchor') dragAnchor: ElementRef;
 
   constructor(private store: Store,
               private router: Router,
@@ -130,6 +125,10 @@ export class SiteSectionsComponent implements OnInit {
         })
     );
 
+    this.sectionsData$.subscribe(sectionsData => {
+      this.sectionsList = [...sectionsData];
+    });
+
     this.route.paramMap.subscribe(params => {
       this.currentSection = params['params']['section'];
     });
@@ -197,37 +196,12 @@ export class SiteSectionsComponent implements OnInit {
     }
   }
 
-  siteDragStart(event: DragEvent, section: SiteSectionStateModel) {
-    event.stopPropagation();
-    this.draggedIndex = +section.order;
-    event.dataTransfer.dropEffect = 'move';
-    event.dataTransfer.setData('text/plain', String(section.order));
-
-    // Hide the element that's being dragged from the site list
-    // Use delay so we get the image as drag anchor
-    setTimeout(() => {
-      this.hideElement = true;
-    }, 10);
-  }
-
-  dragOver(event: DragEvent, section: SiteSectionStateModel) {
-    // For drop to work this must be prevented
-    event.preventDefault();
-    this.dragOverIndex = +section.order;
-  }
-
-  onDrop(event: DragEvent) {
-    event.preventDefault();
-    event.stopPropagation();
-    if (this.draggedIndex === this.dragOverIndex) {
+  onDrop(event: CdkDragDrop<string[]>) {
+    if (event.previousIndex === event.currentIndex) {
       return;
     }
-    this.store.dispatch(new ReOrderSiteSectionsAction(this.draggedIndex, this.dragOverIndex));
-  }
 
-  resetDrag() {
-    this.dragOverIndex = null;
-    this.draggedIndex = null;
-    this.hideElement = false;
+    moveItemInArray(this.sectionsList, event.previousIndex, event.currentIndex);
+    this.store.dispatch(new ReOrderSiteSectionsAction(event.previousIndex, event.currentIndex));
   }
 }

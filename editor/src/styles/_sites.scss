@@ -10,22 +10,6 @@ berta-sites {
 }
 
 berta-site {
-  cursor: grab;
+  background-color: $white;
   display: block;
-  transition: border-width 150ms ease-in;
-
-  &.bt-sort-place-after {
-    border-bottom: 3rem solid $grey-10;
-  }
-
-  &.bt-sort-place-before {
-    border-top: 3rem solid $grey-10;
-  }
-
-  &.bt-sort-is-dragged {
-    cursor: grabbing;
-    height: 0;
-    overflow: hidden;
-  }
 }
-

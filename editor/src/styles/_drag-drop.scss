@@ -1,0 +1,25 @@
+.cdk-drop-list {
+  background-color: $grey-10;
+}
+
+.cdk-drag {
+  cursor: grab;
+}
+
+.cdk-drag-preview {
+  cursor: grabbing;
+}
+
+.cdk-drag-placeholder {
+  opacity: 0;
+}
+
+.cdk-drag-animating {
+  transition: transform 250ms cubic-bezier(0, 0, .2, 1);
+}
+
+.cdk-drop-list-dragging > * {
+  &:not(.cdk-drag-placeholder) {
+    transition: transform 250ms cubic-bezier(0, 0, .2, 1);
+  }
+}
