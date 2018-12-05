@@ -3,6 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { combineLatest } from 'rxjs';
 import { take, filter, switchMap, map } from 'rxjs/operators';
 import { Store } from '@ngxs/store';
+import { Animations } from '../../shared/animations';
 import { PopupService } from 'src/app/popup/popup.service';
 import { SiteSectionStateModel } from './sections-state/site-sections-state.model';
 import { SiteTemplateSectionTypesModel } from '../template-settings/site-templates.interface';
@@ -43,7 +44,7 @@ import { AppState } from 'src/app/app-state/app.state';
           </svg>
         </button>
       </h3>
-      <div class="settings">
+      <div class="settings" [@isExpanded]="isExpanded">
         <div class="setting">
           <berta-select-input [label]="'Type'"
                               [value]="section['@attributes'].type"
@@ -95,7 +96,10 @@ import { AppState } from 'src/app/app-state/app.state';
     h3 input[type=text] {
       flex-grow: 1;
     }
-  `]
+  `],
+  animations: [
+    Animations.slideToggle
+  ]
 })
 export class SectionComponent implements OnInit {
   @Input('section') section: SiteSectionStateModel;

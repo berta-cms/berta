@@ -251,36 +251,42 @@ class BertaTemplate extends BertaBase {
 		$vars['berta']['publishedSections'] = array();
 		$isFirstSection = true;
 		foreach($this->sections as $sName => $s) {
-			if(!empty($s['title']['value'])) {
-				// add system variables
-				$vars['berta']['sections'][$sName] = array(
-					'name' => $s['name']['value'],
-					'title' => !empty($s['title']) ? htmlspecialchars($s['title']['value']) : '',
-					'has_direct_content' => !empty($s['@attributes']['has_direct_content']) ? '1' : '0',
-					'published' => !empty($s['@attributes']['published']) ? '1' : '0',
-					'num_entries' => isset($s['@attributes']['num_entries']) ? (int) $s['@attributes']['num_entries'] : 0,
-					'type' => !empty($s['@attributes']['type']) ? $s['@attributes']['type'] : 'default'
-				);
-				// add variables from template section-type settings
-				foreach($s as $key => $val) {
-					if($key != '@attributes' && !isset($vars['berta']['sections'][$sName][$key]))
-						$vars['berta']['sections'][$sName][$key] = isset($val['value']) ? $val['value'] : $val;
-				}
 
-				// - show all sections when in engine mode
-				// - show landing section in menu if landingSectionVisible=yes or it has tags menu
-				if($this->environment == 'engine' ||
-						$vars['berta']['sections'][$sName]['published'] &&
-						($this->settings->get('navigation', 'landingSectionVisible') == 'yes' || !$isFirstSection || !empty($this->tags[$sName])))
-                    $vars['berta']['publishedSections'][$sName] =& $vars['berta']['sections'][$sName];
-				if($vars['berta']['sections'][$sName]['published']) $isFirstSection = false;
+            // add system variables
+            $vars['berta']['sections'][$sName] = array(
+                'name' => $s['name']['value'],
+                'title' => !empty($s['title']) ? htmlspecialchars($s['title']['value']) : '',
+                'has_direct_content' => !empty($s['@attributes']['has_direct_content']) ? '1' : '0',
+                'published' => !empty($s['@attributes']['published']) ? '1' : '0',
+                'num_entries' => isset($s['@attributes']['num_entries']) ? (int) $s['@attributes']['num_entries'] : 0,
+                'type' => !empty($s['@attributes']['type']) ? $s['@attributes']['type'] : 'default'
+            );
+            // add variables from template section-type settings
+            foreach($s as $key => $val) {
+                if($key != '@attributes' && !isset($vars['berta']['sections'][$sName][$key]))
+                    $vars['berta']['sections'][$sName][$key] = isset($val['value']) ? $val['value'] : $val;
+            }
 
-				// set current section and page title
-				if($this->sectionName == $sName) {
-					$vars['berta']['pageTitle'] .= ' / ' . $s['title']['value'];
-					$vars['berta']['section'] =& $vars['berta']['sections'][$sName];
-                }
-			}
+            // - show all sections when in engine mode
+            // - show landing section in menu if landingSectionVisible=yes or it has tags menu
+            if($this->environment == 'engine' ||
+                    $vars['berta']['sections'][$sName]['published'] &&
+                    ($this->settings->get('navigation', 'landingSectionVisible') == 'yes' || !$isFirstSection || !empty($this->tags[$sName])))
+                $vars['berta']['publishedSections'][$sName] =& $vars['berta']['sections'][$sName];
+            if($vars['berta']['sections'][$sName]['published']) $isFirstSection = false;
+
+            // set current section and page title
+            if($this->sectionName == $sName) {
+                $vars['berta']['pageTitle'] .= ' / ' . (!empty($s['title']) ? htmlspecialchars($s['title']['value']) : '');
+                $vars['berta']['section'] =& $vars['berta']['sections'][$sName];
+            }
+
+            if (empty($s['title']['value'])) {
+                unset(
+                    $vars['berta']['sections'][$sName],
+                    $vars['berta']['publishedSections'][$sName]
+                );
+            }
 		}
 
 		// add subsections...

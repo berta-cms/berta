@@ -4,6 +4,7 @@ import { Observable, combineLatest } from 'rxjs';
 import { map, filter, scan } from 'rxjs/operators';
 import { Store } from '@ngxs/store';
 import { splitCamel, uCFirst } from '../../shared/helpers';
+import { Animations } from '../../shared/animations';
 import { SiteSettingsState } from '../settings/site-settings.state';
 import { SiteTemplateSettingsState } from './site-template-settings.state';
 import { SiteTemplatesState } from './site-templates.state';
@@ -23,7 +24,7 @@ import { SettingGroupConfigModel, SettingModel, SettingConfigModel } from '../..
           <path d="M9 1L4.75736 5.24264L0.514719 1" stroke="#9b9b9b" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
       </h3>
-      <div class="settings">
+      <div class="settings" [@isExpanded]="camelifySlug(currentGroup) === settingGroup.slug">
         <berta-setting *ngFor="let setting of settingGroup.settings"
                       [templateSlug]="settingGroup.templateSlug"
                       [settingGroup]="settingGroup"
@@ -32,7 +33,10 @@ import { SettingGroupConfigModel, SettingModel, SettingConfigModel } from '../..
                       (update)="updateSetting(settingGroup.slug, $event)"></berta-setting>
       </div>
     </div>
-  `
+  `,
+  animations: [
+    Animations.slideToggle
+  ]
 })
 export class SiteTemplateSettingsComponent implements OnInit {
   defaultGroup = 'general-font-settings';
