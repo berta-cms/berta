@@ -60,13 +60,17 @@
             if (site_name === k) {
               return site.map(function (sections) {
 
-                if (sections.some(function (section) { return section.getIn(['@attributes', 'name']) === action.data.section_name;})) {
+                if (sections.some(function (section) { return section && section.getIn(['@attributes', 'name']) === action.data.section_name;})) {
                   return sections.map(function (section) {
                     if (section.getIn(['@attributes', 'name']) === action.data.section_name) {
                       return section.merge(action.data.tags);
                     }
                     return section;
                   });
+                }
+
+                if (!action.data.tags) {
+                  return sections;
                 }
 
                 return sections.set(sections.size, Immutable.fromJS(action.data.tags));

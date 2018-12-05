@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { combineLatest } from 'rxjs';
 import { take, filter, switchMap, map } from 'rxjs/operators';
@@ -16,10 +16,10 @@ import { AppState } from 'src/app/app-state/app.state';
     <div class="setting-group" [class.is-expanded]="isExpanded">
       <h3>
         <berta-inline-text-input [value]="section.title"
+                                 [class.clickable-text]="isClickableText"
                                  (inputFocus)="updateComponentFocus($event)"
                                  (update)="updateTextField('title', $event)"
-                                 (textClick)="switchSection(section.name)"
-                                 class="clickable-text"></berta-inline-text-input>
+                                 (textClick)="switchSection(section.name)"></berta-inline-text-input>
 
         <div class="expand"></div>
         <button [attr.title]="(section['@attributes'].published > 0 ? 'Unpublish': 'Publish')"
@@ -101,7 +101,7 @@ import { AppState } from 'src/app/app-state/app.state';
     Animations.slideToggle
   ]
 })
-export class SectionComponent {
+export class SectionComponent implements OnInit {
   @Input('section') section: SiteSectionStateModel;
   @Input('isExpanded') isExpanded: boolean;
   @Input('templateSectionTypes') templateSectionTypes: SiteTemplateSectionTypesModel;
@@ -110,12 +110,22 @@ export class SectionComponent {
   @Output() inputFocus = new EventEmitter();
   @Output('update') update = new EventEmitter<{section: string|number, data: {[k: string]: any}}>();
 
+  isClickableText: boolean;
+
+
   constructor(private store: Store,
-              private router: Router,
-              private route: ActivatedRoute,
-              private popupService: PopupService) { }
+    private router: Router,
+    private route: ActivatedRoute,
+    private popupService: PopupService) { }
+
+  ngOnInit() {
+    this.isClickableText = !(this.section['@attributes'].type && this.section['@attributes'].type === 'external_link');
+  }
 
   switchSection(sectionName) {
+    if (!this.isClickableText) {
+      return;
+    }
     const siteName = this.store.selectSnapshot(AppState.getSite);
     this.router.navigate([], {queryParams: {site: siteName ? siteName : null, section: sectionName}, queryParamsHandling: 'merge'});
   }
