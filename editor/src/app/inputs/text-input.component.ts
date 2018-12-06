@@ -22,7 +22,7 @@ import { TextInputService } from './text-input.service';
                  [attr.placeholder]="placeholder"
                  [attr.type]="(type || 'text')"
                  (focus)="onFocus()"
-                 (keydown)="updateField($event)"
+                 (keydown)="onKeyDown($event)"
                  (blur)="onBlur($event)">
         </div>
       </label>
@@ -76,10 +76,7 @@ export class TextInputComponent implements OnInit {
     this.inputFocus.emit(false);
   }
 
-  updateField(event) {
-    const value = this.textInputService.updateField(event);
-    if (value === null) {
-      return;
-    }
+  onKeyDown(event) {
+    this.textInputService.updateField(event);
   }
 }

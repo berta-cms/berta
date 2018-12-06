@@ -9,7 +9,7 @@ import { TextInputService } from './text-input.service';
       <label>
         {{ label }}
         <textarea (focus)="onFocus()"
-                  (keydown)="updateField($event)"
+                  (keydown)="onKeyDown($event)"
                   (blur)="onBlur($event)"
                   rows="3">{{ value }}</textarea>
       </label>
@@ -60,10 +60,7 @@ export class LongTextInputComponent implements OnInit {
     this.inputFocus.emit(false);
   }
 
-  updateField(event) {
-    const value = this.textInputService.updateField(event);
-    if (value === null) {
-      return;
-    }
+  onKeyDown(event) {
+    this.textInputService.updateField(event);
   }
 }
