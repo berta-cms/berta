@@ -177,19 +177,22 @@ export class PreviewService {
             return this.store.dispatch(new AddSectionEntryFromSyncAction(
               data.site,
               data.section,
-              data.tag,
-              data.before_entry
+              {
+                tag: data.tag,
+                before_entry: data.before_entry
+              }
             )).pipe(
               map(state => state.sectionEntries),
               map(state => {
-                // @TODO
-                // find created entry
-                // if before_entry then get entry that is before
-                // else get max entry
-                // return entry id or entry and maybe other info
-                // old berta needs entry id to reload iframe
+                // Newly created entry is with greatest `id`
+                const entryid = Math.max.apply(
+                  null,
+                  state[data.site]
+                  .filter(entry => entry.sectionName === data.section)
+                  .map(entry => parseInt(entry.id, 10))
+                );
 
-                return {'entryid': 1};
+                return {'entryid': entryid};
               })
             );
 

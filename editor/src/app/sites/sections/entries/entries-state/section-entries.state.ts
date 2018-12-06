@@ -54,8 +54,8 @@ export class SectionEntriesState implements NgxsOnInit {
     return this.appStateService.sync('sectionEntries', {
       site: action.site,
       section: action.section,
-      tag: action.tag,
-      before_entry: action.before_entry
+      tag: action.payload.tag,
+      before_entry: action.payload.before_entry
     },
     'POST').pipe(
       tap(response => {
@@ -63,12 +63,40 @@ export class SectionEntriesState implements NgxsOnInit {
           /* This should probably be handled in sync */
           console.error(response.error_message);
         } else {
-          // @TODO
-          // Add entry to state
-          // update entry new order
-          // update section:
-          // entry_count
-          // has_direct_content
+          const currentState = getState();
+
+          patchState({
+            [action.site]: [...currentState[action.site].map(entry => {
+              if (entry.sectionName === action.section && entry.order >= response.entry.order) {
+                return {...entry, order: entry.order + 1};
+              }
+              return entry;
+            }), response.entry]
+          });
+
+          dispatch(new UpdateSiteSectionAction(
+            action.site,
+            response.section_order,
+            {
+              '@attributes': {
+                entry_count: response.entry_count
+              }
+            })
+          );
+
+          dispatch(new UpdateSiteSectionAction(
+            action.site,
+            response.section_order,
+            {
+              '@attributes': {
+                has_direct_content: response.has_direct_content
+              }
+            })
+          );
+
+          if (response.tags) {
+            dispatch(new UpdateSectionTagsAction(action.site, action.section, response.tags));
+          }
         }
       })
     );

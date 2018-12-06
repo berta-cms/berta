@@ -551,7 +551,7 @@ class SectionEntriesDataService extends Storage
         $id = $ids ? max($ids) + 1 : 1;
 
         $new_entry = [
-            'id' => $id,
+            'id' => (string) $id,
             'uniqid' => uniqid(),
             'date' => date('d.m.Y H:i:s'),
             'mediafolder' => $mediafolder,
@@ -585,7 +585,7 @@ class SectionEntriesDataService extends Storage
                     $tag_title = $tags['tag'][$tag_key]['@value'];
 
                     $new_entry['tags'] = [
-                        'tag' => $tag_title
+                        'tag' => [$tag_title]
                     ];
                 }
             }
@@ -646,21 +646,10 @@ class SectionEntriesDataService extends Storage
             $has_direct_content
         );
 
-        // @todo SiteSectionsDataService method saveValueByPath should update instance state as well
-        // currently it's updating only xml file
-        // that is why we are calling new SiteSectionsDataService third time in one method here :(
-        $siteSectionsDataService = new SiteSectionsDataService($this->SITE);
-        $sections = $siteSectionsDataService->get();
-        $section = $sections[$section_order];
-
         // Initiate tags service again, we need updated data after populateTags action
         $sectionTagsDataService = new SectionTagsDataService($this->SITE, $this->SECTION_NAME);
 
-        // @TODO check if we really need to return all these params to update state in frontend
         return [
-            'site_name' => $this->SITE,
-            'section_name' => $this->SECTION_NAME,
-            'section' => $section,
             'section_order' => $section_order,
             'entry' => $new_entry,
             'tags' => $sectionTagsDataService->getSectionTagsState(),
