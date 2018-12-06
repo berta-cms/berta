@@ -3,6 +3,8 @@
 namespace App\Sites\Sections\Entries;
 
 use App\Shared\Storage;
+use App\Sites\Settings\SiteSettingsDataService;
+use App\Sites\TemplateSettings\SiteTemplateSettingsDataService;
 use App\Sites\Sections\SiteSectionsDataService;
 use App\Sites\Sections\Tags\SectionTagsDataService;
 use App\Shared\Helpers;
@@ -507,6 +509,164 @@ class SectionEntriesDataService extends Storage
         }
 
         return array('success' => true);
+    }
+
+    public function createEntry($before_entry, $tag)
+    {
+        $mediafolder = $this->SECTION_NAME;
+        $counter = 1;
+        do {
+            $new_mediafolder = $mediafolder . $counter;
+            $counter++;
+        } while (file_exists($this->MEDIA_ROOT . '/' . $new_mediafolder));
+        $mediafolder = $new_mediafolder;
+
+        $siteSettingsDataService = new SiteSettingsDataService($this->SITE);
+        $siteSettings = $siteSettingsDataService->getState();
+        $template = $siteSettings['template']['template'];
+
+        $siteTemplateSettingsDataService = new SiteTemplateSettingsDataService($this->SITE, $template);
+        $siteTemplateSettings = $siteTemplateSettingsDataService->getState();
+
+        $defaultGalleryType = 'slideshow';
+        if (isset($siteTemplateSettings['entryLayout']['defaultGalleryType'])) {
+            $defaultGalleryType = $siteTemplateSettings['entryLayout']['defaultGalleryType'];
+        }
+
+        $galleryFullScreen = 'yes';
+        if (isset($siteSettings['entryLayout']['galleryFullScreenDefault'])) {
+            $galleryFullScreen = $siteSettings['entryLayout']['galleryFullScreenDefault'];
+        }
+
+        if (!@mkdir($this->MEDIA_ROOT . '/' . $mediafolder, 0777)) {
+            $ret['value'] = $mediafolder;
+            $ret['error_message'] = 'Can\'t create media folder! Check permissions.';
+            $ret['status_code'] = 400;
+            return $ret;
+        }
+
+        $entries = $this->get();
+
+        $ids = array_pluck($entries['entry'], 'id');
+        $id = $ids ? max($ids) + 1 : 1;
+
+        $new_entry = [
+            'id' => $id,
+            'uniqid' => uniqid(),
+            'date' => date('d.m.Y H:i:s'),
+            'mediafolder' => $mediafolder,
+            'mediaCacheData' => [
+                '@attributes'=> [
+                    'type' => $defaultGalleryType,
+                    'fullscreen' => $galleryFullScreen
+                ],
+                'file' => []
+            ]
+        ];
+
+        if ($tag) {
+            $sectionTagsDataService = new SectionTagsDataService($this->SITE, $this->SECTION_NAME);
+            $tags = $sectionTagsDataService->getSectionTagsState();
+
+            // Find tag and set tag title for entry
+            if ($tags['tag']) {
+                $tag_key = array_search(
+                    $tag,
+                    array_column(
+                        array_column(
+                            $tags['tag'],
+                            '@attributes'
+                        ),
+                        'name'
+                    )
+                );
+
+                if ($tag_key !== false) {
+                    $tag_title = $tags['tag'][$tag_key]['@value'];
+
+                    $new_entry['tags'] = [
+                        'tag' => $tag_title
+                    ];
+                }
+            }
+        }
+
+        // Insert entry in correct position
+        $entry_order = count($entries['entry']);
+        if ($before_entry) {
+            $order = array_search($before_entry, array_column($entries['entry'], 'id'));
+
+            if ($order !== false) {
+                $entry_order = $order;
+                array_splice($entries['entry'], $order, 0, [$new_entry]);
+            } else {
+                $entries['entry'][] = $new_entry;
+            }
+
+        } else {
+            $entries['entry'][] = $new_entry;
+        }
+
+        // Save sorted entries
+        $this->array2xmlFile($entries, $this->XML_FILE, $this->ROOT_ELEMENT);
+
+        // Add params for frontend state
+        $new_entry['sectionName'] = $this->SECTION_NAME;
+        $new_entry['order'] = $entry_order;
+
+        // Update section entry count
+        $siteSectionsDataService = new SiteSectionsDataService($this->SITE);
+        $sections = $siteSectionsDataService->get();
+        $section_order = array_search($this->SECTION_NAME, array_column($sections, 'name'));
+        $section_entry_count = count($entries['entry']);
+        $siteSectionsDataService->saveValueByPath(
+            implode('/', [
+                $this->SITE,
+                'section',
+                $section_order,
+                '@attributes',
+                'entry_count'
+            ]),
+            $section_entry_count
+        );
+
+        // update direct content property
+        $siteSectionsDataService = new SiteSectionsDataService($this->SITE);
+        $sectionTagsDataService = new SectionTagsDataService($this->SITE, $this->SECTION_NAME);
+        $section_tags = $sectionTagsDataService->populateTags();
+        $has_direct_content = !$section_tags['allHaveTags'] ? 1 : 0;
+        $siteSectionsDataService->saveValueByPath(
+            implode('/', [
+                $this->SITE,
+                'section',
+                $section_order,
+                '@attributes',
+                'has_direct_content'
+            ]),
+            $has_direct_content
+        );
+
+        // @todo SiteSectionsDataService method saveValueByPath should update instance state as well
+        // currently it's updating only xml file
+        // that is why we are calling new SiteSectionsDataService third time in one method here :(
+        $siteSectionsDataService = new SiteSectionsDataService($this->SITE);
+        $sections = $siteSectionsDataService->get();
+        $section = $sections[$section_order];
+
+        // Initiate tags service again, we need updated data after populateTags action
+        $sectionTagsDataService = new SectionTagsDataService($this->SITE, $this->SECTION_NAME);
+
+        // @TODO check if we really need to return all these params to update state in frontend
+        return [
+            'site_name' => $this->SITE,
+            'section_name' => $this->SECTION_NAME,
+            'section' => $section,
+            'section_order' => $section_order,
+            'entry' => $new_entry,
+            'tags' => $sectionTagsDataService->getSectionTagsState(),
+            'has_direct_content' => $has_direct_content,
+            'entry_count' => $section_entry_count
+        ];
     }
 
     public function deleteEntry($entry_id)
