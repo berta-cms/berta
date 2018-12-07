@@ -631,6 +631,9 @@ class SectionEntriesDataService extends Storage
         );
 
         // update direct content property
+        // @todo SiteSectionsDataService method saveValueByPath should update instance state as well
+        // currently it's updating only xml file
+        // that is why we are calling new SiteSectionsDataService again
         $siteSectionsDataService = new SiteSectionsDataService($this->SITE);
         $sectionTagsDataService = new SectionTagsDataService($this->SITE, $this->SECTION_NAME);
         $section_tags = $sectionTagsDataService->populateTags();
