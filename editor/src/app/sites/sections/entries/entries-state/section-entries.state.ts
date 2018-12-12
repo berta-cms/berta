@@ -1,8 +1,9 @@
 import { concat } from 'rxjs';
 import { take, switchMap, tap } from 'rxjs/operators';
-import { State, Action, StateContext, NgxsOnInit, Actions, ofActionSuccessful } from '@ngxs/store';
+import { State, Action, StateContext, NgxsOnInit, Actions, ofActionSuccessful, Selector } from '@ngxs/store';
 
 import { assignByPath } from 'src/app/shared/helpers';
+import { AppState } from '../../../../app-state/app.state';
 import { AppStateService } from '../../../../app-state/app-state.service';
 import { SectionEntriesStateModel } from './section-entries-state.model';
 import {
@@ -29,6 +30,12 @@ import { UpdateSectionTagsAction } from '../../tags/section-tags.actions';
   defaults: {}
 })
 export class SectionEntriesState implements NgxsOnInit {
+
+  @Selector([AppState.getSite])
+  static getCurrentSiteEntries(state, site) {
+    const entries = state[site] || [];
+    return entries.sort((entryA, entryB) => entryA.order > entryB.order ? 1 : (entryA.order < entryB.order ? -1 : 0 ));
+  }
 
   constructor(
     private actions$: Actions,
