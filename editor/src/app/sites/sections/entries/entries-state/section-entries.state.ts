@@ -34,7 +34,7 @@ export class SectionEntriesState implements NgxsOnInit {
   @Selector([AppState.getSite])
   static getCurrentSiteEntries(state, site) {
     const entries = state[site] || [];
-    return entries.sort((entryA, entryB) => entryA.order > entryB.order ? 1 : (entryA.order < entryB.order ? -1 : 0 ));
+    return entries;
   }
 
   constructor(
