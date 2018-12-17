@@ -88,9 +88,6 @@ switch($decoded['property']) {
 BertaUtils::logEvent('before update');
 
 switch($decoded['action']) {
-    case 'CREATE_NEW_ENTRY':
-        include 'update/inc.update.createnewentry.php';
-        break;
     case 'CHANGE_PASSWORD':
         include 'update/inc.update.changepassword.php';
         break;

@@ -616,45 +616,22 @@ var BertaEditor = new Class({
     event = new Event(event).stop();
     var target = $(event.target);
     if (target.tagName != 'A') target = target.getParent('a');
+    var site = getCurrentSite();
+    var entryInfo = this.getEntryInfoForElement(target);
 
-    if (this.processHandler.isIdleOrWarnIfBusy()) {
-      target.addClass('xSaving');
-      var entryInfo = this.getEntryInfoForElement(target);
-      var data = {
-        section: this.currentSection,
-        tag: this.currentTag,
-        entry: null,
-        action: 'CREATE_NEW_ENTRY',
-        value: null,
-        mediafolder: '',
-        before_entry: entryInfo.entryId
-      };
-
-      new Request.JSON({
-        url: this.options.updateUrl,
-        data: JSON.stringify(data),
-        urlEncoded: false,
-        onComplete: function (resp) {
-          if (!resp.error_message && resp.update && resp.update.entryid) {
-            Cookie.write('_berta__entry_highlight', resp.update.entryid, {
-              path: this.options.paths.engineABSRoot
-            });
-            window.dispatchEvent(new CustomEvent('SECTION_ENTRY_CREATE', {
-              detail: {
-                site: getCurrentSite(),
-                section: this.currentSection,
-                entryId: resp.update.entryid
-              }
-            }));
-            window.location.hash = 'entry-' + resp.update.entryid;
-            window.location.reload();
-          } else {
-            alert(resp.error_message);
-            target.removeClass('xSaving');
-          }
-        }.bindWithEvent(this)
-      }).post();
-    }
+    redux_store.dispatch(Actions.initCreateSectionEntry(
+      site,
+      this.currentSection,
+      this.currentTag,
+      entryInfo.entryId,
+      function (resp) {
+        Cookie.write('_berta__entry_highlight', resp.entryid, {
+          path: this.options.paths.engineABSRoot
+        });
+        window.location.hash = 'entry-' + resp.entryid;
+        window.location.reload();
+      }.bindWithEvent(this)
+    ));
   },
 
   entryDelete: function (event) {

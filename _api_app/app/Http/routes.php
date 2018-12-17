@@ -49,6 +49,7 @@ $app->group(['prefix' => 'v1', 'namespace' => 'App', 'middleware' => ['setup', '
 
             $app->group(['prefix' => 'v1/sites/sections', 'namespace' => 'App\Sites\Sections\Entries', 'middleware' => ['setup', 'auth']], function () use ($app) {
                 $app->patch('entries', ['as' => 'section_entries', 'uses' => 'SectionEntriesController@update']);
+                $app->post('entries', 'SectionEntriesController@create');
                 $app->put('entries', 'SectionEntriesController@order');
                 $app->delete('entries', 'SectionEntriesController@delete');
                 $app->put('entries/galleries', ['as' => 'entry_gallery', 'uses' => 'SectionEntriesController@galleryOrder']);

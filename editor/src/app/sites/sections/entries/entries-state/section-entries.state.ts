@@ -48,19 +48,58 @@ export class SectionEntriesState implements NgxsOnInit {
   }
 
   @Action(AddSectionEntryFromSyncAction)
-  addSectionEntryFromSync({ getState, patchState }: StateContext<SectionEntriesStateModel>, action: AddSectionEntryFromSyncAction) {
-    const state = getState();
-    this.appStateService.getInitialState('', 'sectionEntries', true).pipe(take(1)).subscribe((sectionEntries) => {
-      const newEntry = sectionEntries[action.site].find(
-        entry => entry.sectionName === action.section && entry.id === action.entryId.toString()
-      );
+  addSectionEntryFromSync({ getState, patchState, dispatch }: StateContext<SectionEntriesStateModel>,
+                          action: AddSectionEntryFromSyncAction) {
 
-      if (state[action.site]) {
-        patchState({[action.site]: [...state[action.site], newEntry]});
-      } else {
-        patchState({[action.site]: [newEntry]});
-      }
-    });
+    return this.appStateService.sync('sectionEntries', {
+      site: action.site,
+      section: action.section,
+      tag: action.payload.tag,
+      before_entry: action.payload.before_entry
+    },
+    'POST').pipe(
+      tap(response => {
+        if (response.error_message) {
+          /* This should probably be handled in sync */
+          console.error(response.error_message);
+        } else {
+          const currentState = getState();
+
+          patchState({
+            [action.site]: [...currentState[action.site].map(entry => {
+              if (entry.sectionName === action.section && entry.order >= response.entry.order) {
+                return {...entry, order: entry.order + 1};
+              }
+              return entry;
+            }), response.entry]
+          });
+
+          dispatch(new UpdateSiteSectionAction(
+            action.site,
+            response.section_order,
+            {
+              '@attributes': {
+                entry_count: response.entry_count
+              }
+            })
+          );
+
+          dispatch(new UpdateSiteSectionAction(
+            action.site,
+            response.section_order,
+            {
+              '@attributes': {
+                has_direct_content: response.has_direct_content
+              }
+            })
+          );
+
+          if (response.tags) {
+            dispatch(new UpdateSectionTagsAction(action.site, action.section, response.tags));
+          }
+        }
+      })
+    );
   }
 
   @Action(AddSectionEntriesAction)

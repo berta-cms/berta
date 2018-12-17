@@ -5,6 +5,26 @@
 
   Object.assign(window.Actions, {
 
+
+    initCreateSectionEntry: function (site, section, tag, before_entry, onComplete) {
+      return function (dispatch) {
+        dispatch({
+          type: ActionTypes.INIT_CREATE_SECTION_ENTRY
+        });
+
+        sync(window.Berta.urls.sectionEntries, {
+          site: site,
+          section: section,
+          tag: tag,
+          before_entry: before_entry
+        }, 'POST')
+          .then(function (response) {
+            onComplete(response);
+          });
+      };
+    },
+
+
     addSiteSectionsEntries: function (data) {
       return {
         type: ActionTypes.ADD_SITE_SECTIONS_ENTRIES,
