@@ -1,3 +1,5 @@
+import { Subject } from 'rxjs';
+import { bufferTime } from 'rxjs/operators';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { Store } from '@ngxs/store';
@@ -91,45 +93,41 @@ export class SettingComponent implements OnInit {
 
   @Output('update') update = new EventEmitter<{field: string, value: SettingModel['value']}>();
 
-  private lastValue: SettingModel['value'];
   description: SafeHtml;
+
+  private syncEvents$ = new Subject<[string, any]>();
 
   constructor(
     private store: Store,
     private sanitizer: DomSanitizer) { }
 
   ngOnInit() {
-    // Cache the value, so we don't update if nothing changes
-    this.lastValue = this.setting.value;
 
     if (this.config.description) {
       this.description = this.sanitizer.bypassSecurityTrustHtml(this.config.description);
     }
+
+    /* Make events execute synchoruniosly so we don't get Change after Change error */
+    this.syncEvents$.pipe(bufferTime(200)).subscribe((events) => {
+      for (const [name, val] of events) {
+        switch (name) {
+          case 'focus':
+            this.store.dispatch(val);
+            break;
+
+          case 'update':
+            this.update.emit(val);
+            break;
+        }
+      }
+    });
   }
 
   updateComponentFocus(isFocused) {
-    this.store.dispatch(new UpdateInputFocus(isFocused));
-  }
-
-  updateTextField(field, value, $event) {
-    if ($event instanceof KeyboardEvent && !($event.key === 'Enter' || $event.keyCode === 13)) {
-      return;
-    }
-
-    this.updateField(field, value, $event.target);
+    this.syncEvents$.next(['focus', new UpdateInputFocus(isFocused)]);
   }
 
   updateComponentField(field, value) {
-    this.update.emit({field, value});
-  }
-
-  updateField(field, value, input: HTMLInputElement) {
-    if (value === this.lastValue) {
-      return;
-    }
-    input.disabled = true;
-    // This is important for the update process, so additional change events won't cause problem
-    this.lastValue = value;
-    this.update.emit({field, value});
+    this.syncEvents$.next(['update', {field, value}]);
   }
 }
