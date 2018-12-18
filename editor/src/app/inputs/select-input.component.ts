@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { SettingModel, SettingConfigModel } from '../shared/interfaces';
 
 @Component({
@@ -10,11 +10,11 @@ import { SettingModel, SettingConfigModel } from '../shared/interfaces';
 
         <div class="select-wrapper">
           <div class="button-wrapper">
-            <button type="button"
+            <button #dropDownAnchor type="button"
                     [title]="getCurrentTitleByValue(value)"
                     (click)="toggleDropDown()"
                     (keydown)="onKeyDown($event)"
-                    (blur)="closeDropDown()">{{ getCurrentTitleByValue(value) }}</button>
+                    (blur)="onBlur()">{{ getCurrentTitleByValue(value) }}</button>
             <svg class="drop-icon" width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M9 1L4.75736 5.24264L0.514719 1" stroke="#9b9b9b" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
@@ -32,8 +32,11 @@ export class SelectInputComponent implements OnInit {
   @Input() values: SettingConfigModel['values'];
   @Output() update = new EventEmitter();
   @Output() inputFocus = new EventEmitter();
+
+  @ViewChild('dropDownAnchor') dropDownAnchor: ElementRef;
   focus = false;
   disabled = false;
+  blurTimeoutId: any;
 
   private lastValue: SettingModel['value'];
 
@@ -46,29 +49,33 @@ export class SelectInputComponent implements OnInit {
     if (this.disabled) {
       return;
     }
-    this.focus = !this.focus;
 
-    setTimeout(() => {
-      this.inputFocus.emit(this.focus);
-    }, 200);
+    this.focus = !this.focus;
+    this.inputFocus.emit(this.focus);
   }
 
   onKeyDown($event) {
     if ($event.key === 'Escape' || $event.keyCode === 27) {
       this.closeDropDown();
+      this.dropDownAnchor.nativeElement.blur();
     }
   }
 
-  closeDropDown() {
+  onBlur() {
+    this.clearBlurTimeout();
+
     if (!this.focus) {
       return;
     }
 
-    // Wait for `li` click event
-    setTimeout(() => {
-      this.focus = false;
-      this.inputFocus.emit(false);
+    this.blurTimeoutId = setTimeout(() => {
+      this.closeDropDown();
     }, 200);
+  }
+
+  closeDropDown() {
+    this.focus = false;
+    this.inputFocus.emit(false);
   }
 
   getCurrentTitleByValue(value) {
@@ -84,11 +91,22 @@ export class SelectInputComponent implements OnInit {
   }
 
   updateField(value) {
-    if (value === this.lastValue) {
-      return;
+    this.clearBlurTimeout();
+
+    if (value !== this.lastValue) {
+      this.lastValue = value;
+      this.disabled = true;
+      this.update.emit(value);
     }
-    this.lastValue = value;
-    this.disabled = true;
-    this.update.emit(value);
+
+    this.closeDropDown();
+    this.dropDownAnchor.nativeElement.blur();
+  }
+
+  private clearBlurTimeout() {
+    if (this.blurTimeoutId) {
+      clearTimeout(this.blurTimeoutId);
+      this.blurTimeoutId = null;
+    }
   }
 }
