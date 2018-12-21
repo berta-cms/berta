@@ -45,9 +45,28 @@ export class ShopProductsComponent implements OnInit {
 
         entries = entries
           .filter(entry => products.some(product => product.uniqid === entry.uniqid))
-          .map(entry => {
-            return {...entry, ...products.find(product => product.uniqid === entry.uniqid)};
-          });
+          .reduce((_entries, entry) => {
+            _entries = [
+              ..._entries,
+              ...products
+                .filter(product => {
+                  const attributes = entry.content && entry.content.cartAttributes ? entry.content.cartAttributes.split(',') : [];
+                  const name = entry.content && entry.content.cartTitle || '';
+
+                  // Filter out product by name or attribute
+                  return product.uniqid === entry.uniqid && (
+                    (attributes.length === 0 && product.name ===  name) ||
+                    attributes.map(attribute => name + ' ' + attribute).indexOf(product.name) > -1
+                  );
+                })
+                .map(product => {
+                  return {...entry, ...product};
+                })
+            ];
+
+            return _entries;
+
+          }, []);
 
         return sections
           .reduce((groups, section) => {
