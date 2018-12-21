@@ -56,7 +56,7 @@ export class ShopProductsComponent implements OnInit {
                   // Filter out product by name or attribute
                   return product.uniqid === entry.uniqid && (
                     (attributes.length === 0 && product.name ===  name) ||
-                    attributes.map(attribute => name + ' ' + attribute).indexOf(product.name) > -1
+                    attributes.map(attribute => name + (name.length ? ' ' : '') + attribute).indexOf(product.name) > -1
                   );
                 })
                 .map(product => {
