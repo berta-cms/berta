@@ -1,4 +1,4 @@
-import { State, StateContext, NgxsOnInit, Selector, Action, Store } from '@ngxs/store';
+import { State, StateContext, NgxsOnInit, Selector, Action, Actions, Store, ofActionSuccessful } from '@ngxs/store';
 import { ShopStateService } from '../shop-state.service';
 import { take, tap, catchError, pairwise, filter, switchMap } from 'rxjs/operators';
 import { AppState } from '../../app-state/app.state';
@@ -9,6 +9,7 @@ import {
   AddShopProductSiteAction,
   ResetShopProductsAction,
   InitShopProductsAction} from './shop-products.actions';
+import { UpdateSectionEntryFromSyncAction } from '../../sites/sections/entries/entries-state/section-entries.actions';
 import { AppStateService } from '../../app-state/app-state.service';
 import { ShopState } from '../shop.state';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -45,12 +46,13 @@ export class ShopProductsState implements NgxsOnInit {
 
   constructor(
     private store$: Store,
+    private actions$: Actions,
     private appStateService: AppStateService,
     private stateService: ShopStateService) {
   }
 
   ngxsOnInit({ dispatch }: StateContext<ShopProductsModel>) {
-    return concat(
+    concat(
       this.stateService.getInitialState('', 'products').pipe(take(1)),
       /* LOGIN: */
       this.store$.select(UserState.isLoggedIn).pipe(
@@ -58,6 +60,21 @@ export class ShopProductsState implements NgxsOnInit {
         filter(([wasLoggedIn, isLoggedIn]) => !wasLoggedIn && isLoggedIn),
         switchMap(() => this.stateService.getInitialState('', 'products').pipe(take(1)))
       )
+    ).subscribe((products) => {
+      // console.log('yo!');
+      dispatch(new InitShopProductsAction(products));
+    });
+
+    // Update products from server on entry update (name, attribute, instock, reservations)
+    this.actions$.pipe(
+      ofActionSuccessful(UpdateSectionEntryFromSyncAction),
+      filter(action => {
+        const actions = ['cartTitle', 'cartPrice', 'cartAttributes'];
+        const prop = action.path.split('/').pop();
+        return actions.indexOf(prop) > -1;
+      }),
+      switchMap(() => this.stateService.getInitialState('', 'products', true).pipe(take(1)))
+
     ).subscribe((products) => {
       dispatch(new InitShopProductsAction(products));
     });
