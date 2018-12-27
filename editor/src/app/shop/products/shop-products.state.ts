@@ -61,7 +61,6 @@ export class ShopProductsState implements NgxsOnInit {
         switchMap(() => this.stateService.getInitialState('', 'products').pipe(take(1)))
       )
     ).subscribe((products) => {
-      // console.log('yo!');
       dispatch(new InitShopProductsAction(products));
     });
 
