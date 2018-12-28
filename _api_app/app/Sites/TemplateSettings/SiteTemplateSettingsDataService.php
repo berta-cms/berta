@@ -372,18 +372,18 @@ class SiteTemplateSettingsDataService extends Storage
     public function get()
     {
         $siteTemplateSettings = $this->xmlFile2array($this->XML_FILE);
-
-        // Disable `autoResponsive` if `responsive` is enabled for Messy
-        if ($this->TEMPLATE == 'messy' && isset($siteTemplateSettings['pageLayout']['responsive']) && $siteTemplateSettings['pageLayout']['responsive'] == 'yes') {
-            $siteTemplateSettings['pageLayout']['autoResponsive'] = 'no';
-        }
-
         return $siteTemplateSettings;
     }
 
     public function getState()
     {
         $siteTemplateSettings = $this->get();
+
+        // Disable `autoResponsive` if `responsive` is enabled for Messy
+        if ($this->TEMPLATE == 'messy' && isset($siteTemplateSettings['pageLayout']['responsive']) && $siteTemplateSettings['pageLayout']['responsive'] == 'yes') {
+            $siteTemplateSettings['pageLayout']['autoResponsive'] = 'no';
+        }
+
         $siteTemplateSettings = self::mergeSiteTemplateDefaults($this->siteTemplateDefaults, $siteTemplateSettings);
 
         return $siteTemplateSettings;

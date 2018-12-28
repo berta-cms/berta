@@ -136,6 +136,16 @@ export class SiteTemplateSettingsComponent implements OnInit {
 
   updateSetting(settingGroup: string, updateEvent) {
     const data = {[updateEvent.field]: updateEvent.value};
+    const currentSiteTemplate = this.store.selectSnapshot(SiteSettingsState.getCurrentSiteTemplate).split('-').shift();
+
+    if (currentSiteTemplate === 'messy' && settingGroup === 'pageLayout') {
+      if (data['responsive'] && data['responsive'] === 'yes') {
+        this.store.dispatch(new UpdateSiteTemplateSettingsAction(settingGroup, {autoResponsive: 'no'}));
+      } else if (data['autoResponsive'] && data['autoResponsive'] === 'yes') {
+        this.store.dispatch(new UpdateSiteTemplateSettingsAction(settingGroup, {responsive: 'no'}));
+      }
+    }
+
     this.store.dispatch(new UpdateSiteTemplateSettingsAction(settingGroup, data));
   }
 }
