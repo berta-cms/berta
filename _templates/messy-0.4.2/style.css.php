@@ -5,6 +5,7 @@ include('../../engine/inc.page.php');
 $s =& $berta->template->settings;
 $isEngineView = $berta->security->userLoggedIn;
 $isResponsive = $s->get('pageLayout', 'responsive')=='yes' || isset($_GET['responsive']);
+$isAutoResponsive = !$isResponsive && $s->get('pageLayout', 'autoResponsive') == 'yes';
 
 $expires= 60 * 60 * 24 * 1;	// 1 day
 header('Pragma: public');
@@ -911,6 +912,14 @@ nav ul{
 		}
 	}
 
+<?php } ?>
+
+<?php if( $isAutoResponsive ){ ?>
+    @media (max-width: 767px)  {
+        body.xAutoResponsive {
+
+        }
+    }
 <?php } ?>
 
 <?php if(!1) { ?></style><?php } ?>

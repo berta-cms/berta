@@ -7,7 +7,12 @@
     {else}
         {assign var=isResponsive value=$berta.settings.pageLayout.responsive}
     {/if}
-    {if $isResponsive=='yes'}<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">{/if}
+
+    {if $isResponsive !== 'yes' && $berta.settings.pageLayout.autoResponsive == 'yes'}
+        {assign var=isAutoResponsive value=true}
+    {/if}
+
+    {if $isResponsive=='yes' || ($berta.environment == 'site' && $isAutoResponsive)}<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">{/if}
     <meta name="keywords" content="{if $berta.section.seoKeywords}{ $berta.section.seoKeywords|strip_tags|escape }{else}{ $berta.settings.texts.metaKeywords|strip_tags|escape }{/if}">
     <meta name="description" content="{if $berta.section.seoDescription}{ $berta.section.seoDescription|strip_tags|escape }{else}{ $berta.settings.texts.metaDescription|strip_tags|escape }{/if}">
     <meta name="author" content="{ $berta.settings.texts.ownerName }">
@@ -53,7 +58,7 @@
     { /if }
 </head>
 
-<body class="xContent-{ $berta.section.name }{if $berta.tagName} xSubmenu-{$berta.tagName}{/if}{if $berta.environment == 'engine'} page-xMySite{/if}{if $berta.section.type} xSectionType-{ $berta.section.type }{/if}">
+<body class="xContent-{ $berta.section.name }{if $berta.tagName} xSubmenu-{$berta.tagName}{/if}{if $berta.environment == 'engine'} page-xMySite{/if}{if $berta.section.type} xSectionType-{ $berta.section.type }{/if}{if $berta.environment == 'site' && $isAutoResponsive} xAutoResponsive{/if}">
     { if ($berta.section.type == 'shopping_cart' &&  $berta.environment == 'engine') || $berta.section.type != 'shopping_cart'  }
 
         {* *** section background ************************************************* *}
