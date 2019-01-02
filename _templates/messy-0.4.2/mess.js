@@ -18,6 +18,8 @@ var MessyMess = new Class({
   bgRightCounter: null,
   bgLeftCounter: null,
   isResponsive: false,
+  isAutoResponsive: false,
+  mobileBrekapoint: 768,
 
 
   initialize: function () {
@@ -30,6 +32,8 @@ var MessyMess = new Class({
     var that = this;
 
     this.isResponsive = $$('.xResponsive').length;
+
+    this.isAutoResponsive = $$('.xAutoResponsive').length > 0;
 
     // Berta Background
     this.bgContainer = $('xBackground');
@@ -90,7 +94,9 @@ var MessyMess = new Class({
     if (Cookie.read('_berta_grid_view'))
       Cookie.dispose('_berta_grid_view');
 
-    setInterval(function () { that.copyrightStickToBottom() }, 1000);
+    setInterval(function () {
+      that.copyrightStickToBottom();
+    }, 1000);
 
     var messyItems = $$('.mess');
 
@@ -374,6 +380,7 @@ var MessyMess = new Class({
       var allDraggables = $$('.xEditableDragXY:not(.xFixed)');
       var maxY = y = 0;
       var windowH = window.getSize().y;
+      var windowW = window.getSize().x;
       var bottomH = 0;
 
       bottom.getChildren().each(function (item) {
@@ -383,7 +390,7 @@ var MessyMess = new Class({
         }
       });
 
-      if (this.isResponsive) {
+      if (this.isResponsive || (this.isAutoResponsive && bertaGlobalOptions.environment == 'site' && windowW < this.mobileBrekapoint)) {
         maxY = $('allContainer').getSize().y;
         //add h1 margin-top to the height
         var h1 = $$('h1');
