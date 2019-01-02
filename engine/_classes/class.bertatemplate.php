@@ -342,6 +342,7 @@ class BertaTemplate extends BertaBase {
 		$timestamp = time();
 		$site = !empty(self::$options['MULTISITE']) ? '&amp;site='.self::$options['MULTISITE'] : '';
         $forceResponsiveStyleParam = $jsSettings['sectionType'] == 'portfolio' ? '&amp;responsive=1' : '';
+        $isEngineParam = $this->environment == 'engine' ? '&amp;engine=1' : '';
 
         if($this->loggedIn) {
             $vars['berta']['css'] = <<<DOC
@@ -356,7 +357,7 @@ DOC;
         }
 
         $vars['berta']['css'] .= <<<DOC
-    <link rel="stylesheet" href="{$templatesAbsRoot}{$this->name}/style.css.php?{$timestamp}{$site}{$forceResponsiveStyleParam}" type="text/css">
+    <link rel="stylesheet" href="{$templatesAbsRoot}{$this->name}/style.css.php?{$timestamp}{$site}{$forceResponsiveStyleParam}{$isEngineParam}" type="text/css">
 DOC;
 
         $sentryScripts = self::sentryScripts();

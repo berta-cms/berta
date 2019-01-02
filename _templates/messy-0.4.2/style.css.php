@@ -3,9 +3,8 @@
 $IS_CSS_FILE = true;
 include('../../engine/inc.page.php');
 $s =& $berta->template->settings;
-$isEngineView = $berta->security->userLoggedIn;
 $isResponsive = $s->get('pageLayout', 'responsive')=='yes' || isset($_GET['responsive']);
-$isAutoResponsive = !$isResponsive && $s->get('pageLayout', 'autoResponsive') == 'yes';
+$isAutoResponsive = !$isResponsive && !isset($_GET['engine']) && $s->get('pageLayout', 'autoResponsive') == 'yes';
 
 $expires= 60 * 60 * 24 * 1;	// 1 day
 header('Pragma: public');
@@ -144,6 +143,9 @@ a img { border: none; }
 	margin: 0 10px 10px 10px;
 }
 
+#menuToggle {
+    display: none;
+}
 
 nav ul{
 	list-style: none;
@@ -684,8 +686,39 @@ nav ul{
 }
 
 
+<?php if ($isAutoResponsive) { ?>
+    @media (max-width: 767px)  {
+        .mess,
+        #contentContainer h1,
+        .menuItem,
+        .floating-banner {
+            left: auto !important;
+            position: static !important;
+            top: auto !important;
+        }
 
-<?php if( $isResponsive ){ ?>
+        #contentContainer {
+		    width: auto;
+		    max-width: <?php echo $s->get('pageLayout', 'centeredWidth') ?>;
+	    }
+
+        #pageEntries .xEntry {
+            min-height: 1px;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+            width: auto !important;  /* @TODO remove this if auto responsive will use columns for entries */
+        }
+    }
+<?php } ?>
+
+
+<?php if ($isResponsive || $isAutoResponsive) { ?>
+
+    <?php if ($isAutoResponsive) { ?>
+        @media (max-width: 767px) {
+    <?php } ?>
+
 	img,
 	#pageEntries .xEntry .xGalleryContainer .xGallery,
 	#pageEntries .xEntry .xGalleryContainer .xGallery .xGalleryItem,
@@ -714,7 +747,6 @@ nav ul{
 	}
 
 	#menuToggle {
-		display: none;
 		width: 1.5em;
 		height: auto;
 		padding: 1.5em 1em;
@@ -846,15 +878,21 @@ nav ul{
 		position: relative !important;
 	}
 
-	/* larger than tablet */
-	@media (min-width: 768px) {
-		#pageEntries .xEntry .xGalleryType-row .xGallery {
-			max-width: inherit !important;
-		}
-	}
+    <?php if ($isAutoResponsive) { ?>
+        }  /* end of @media (max-width: 767px)  */
+    <?php } ?>
 
-	/* small tablet */
-	@media (max-width: 767px)  {
+    <?php if ($isResponsive) { ?>
+        /* larger than tablet */
+        @media (min-width: 768px) {
+            #pageEntries .xEntry .xGalleryType-row .xGallery {
+                max-width: inherit !important;
+            }
+        }
+    <?php } ?>
+
+    /* small tablet */
+    @media (max-width: 767px) {
 
 		#menuToggle {
 			display: inline-block;
@@ -901,7 +939,7 @@ nav ul{
 				text-align: center;
 			}
 		<?php } ?>
-	}
+    }
 
 	@media (max-width: 480px) {
 		#pageEntries.columns-2 .xEntry,
@@ -912,14 +950,6 @@ nav ul{
 		}
 	}
 
-<?php } ?>
-
-<?php if( $isAutoResponsive ){ ?>
-    @media (max-width: 767px)  {
-        body.xAutoResponsive {
-
-        }
-    }
 <?php } ?>
 
 <?php if(!1) { ?></style><?php } ?>
