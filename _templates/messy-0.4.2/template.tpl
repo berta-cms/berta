@@ -200,10 +200,10 @@
 
         {* check for shop *}
         { if $berta.shop_enabled == true }
-        	{ assign var="shoppingCartSection" value="" }
+            { assign var="shoppingCartSection" value="" }
             { foreach $berta.publishedSections as $sName => $section }
                 { if $section.type == 'shopping_cart' }
-                        { assign var="shoppingCartSection" value=$berta.publishedSections.$sName }
+                    { assign var="shoppingCartSection" value=$berta.publishedSections.$sName }
                 { /if }
             { /foreach }
         { /if }
