@@ -136,7 +136,7 @@ if($jsonRequest) {
                                             $imageThumbSrc = BertaEditor::images_getSmallThumbFor($entryImageSrc);
                                             $thumbName = basename($imageThumbSrc);
                                             $imageSize = getimagesize($options['MEDIA_ROOT']. $entry['mediafolder']['value']. '/' . $thumbName);
-                                            $imageWidth = $imageSize[0] + 'px';
+                                            $imageWidth = $imageSize[0] . 'px';
                                         }
 
                                         echo '<li class="video" filename="' . (string) $im['@attributes']['src'] . '" fileinfo="' . '' . '">';
