@@ -130,6 +130,39 @@ class BertaTemplate extends BertaBase {
 
         list($entries, $entriesForTag) = $this->getEntriesLists($this->sectionName, $this->tagName, $this->content);
         $this->addVariable('allentries', $entries);
+
+        // if messy template and auto responsive is ON and environment is `site`
+        // reorder entries based on XY position
+        // @TODO addVariable isResponsive and isAutoResponsive for template and remove logic from tpl file
+        $templateName = explode('-', $this->name)[0];
+        $isPortfolioType = isset($this->sections[$sectionName]['@attributes']['type']) && $this->sections[$sectionName]['@attributes']['type'] == 'portfolio';
+        $isResponsive = $isPortfolioType || $this->settings->get('pageLayout', 'responsive') == 'yes';
+        $isAutoResponsive = $this->settings->get('pageLayout', 'autoResponsive') == 'yes';
+
+        if ($templateName == 'messy' && $this->environment == 'site' && !$isResponsive && $isAutoResponsive) {
+
+            usort($entriesForTag, function ($item1, $item2) {
+                if (!isset($item1['positionXY'])) {
+                    $item1['positionXY'] = '0,0';
+                }
+                if (!isset($item2['positionXY'])) {
+                    $item2['positionXY'] = '0,0';
+                }
+                list($item1['positionX'], $item1['positionY']) = explode(',', $item1['positionXY']);
+                list($item2['positionX'], $item2['positionY']) = explode(',', $item2['positionXY']);
+
+                if ($item1['positionX'] == $item2['positionX'] && $item1['positionY'] == $item2['positionY']) {
+                    return 0;
+                }
+
+                if ($item1['positionY'] == $item2['positionY']) {
+                    return $item1['positionX'] < $item2['positionX'] ? -1 : 1;
+                }
+
+                return $item1['positionY'] < $item2['positionY'] ? -1 : 1;
+            });
+        }
+
         $this->addVariable('entries', $entriesForTag);
 
         if($allContent) {
