@@ -38,6 +38,8 @@ var BertaGallery = new Class({
 
   is_touch_device: 'ontouchstart' in document.documentElement,
   isResponsive: false,
+  isAutoResponsive: false,
+  mobileBrekapoint: 768,
 
   initialize: function (container, options) {
     if (container.hasClass('xInitialized')) {
@@ -49,8 +51,24 @@ var BertaGallery = new Class({
     this.loadFirst();
   },
 
+  debounce: function (func, wait, immediate) {
+    var timeout;
+    return function() {
+      var context = this, args = arguments;
+      var later = function() {
+        timeout = null;
+        if (!immediate) func.apply(context, args);
+      };
+      var callNow = immediate && !timeout;
+      clearTimeout(timeout);
+      timeout = setTimeout(later, wait);
+      if (callNow) func.apply(context, args);
+    };
+  },
+
   attach: function (container) {
-    isResponsive = $$('.xResponsive').length;
+    this.isResponsive = $$('.xResponsive').length > 0;
+    this.isAutoResponsive = $$('.xAutoResponsive').length > 0;
     this.container = container;
     this.type = this.container.getClassStoredValue('xGalleryType');
     //this.container.addClass('galleryType-' + this.type);
@@ -555,12 +573,22 @@ var BertaGallery = new Class({
         var player = _V_(containerID, {
           "controls": true,
           "preload": "auto",
-          "poster": src,
+          "poster": src && src.charAt(0) !== '#' ? src : null,
           "autoplay": autoPlay > 0 ? true : false
         });
 
-        if (isResponsive) {
+        if (this.isResponsive || (this.isAutoResponsive && this.mobileBrekapoint > window.getSize().x)) {
           player.el.setStyle('padding-bottom', mHeight * 100 / mWidth + '%');
+        }
+
+        if (this.isAutoResponsive) {
+          window.addEvent('resize', this.debounce(function () {
+            if (this.mobileBrekapoint > window.getSize().x) {
+              player.el.setStyle('padding-bottom', mHeight * 100 / mWidth + '%');
+            } else {
+              player.el.setStyle('padding-bottom', null);
+            }
+          }.bind(this), 250));
         }
 
         new Element('img', {
@@ -607,10 +635,6 @@ var BertaGallery = new Class({
         }).chain(function () {
           this.phase = "done";
           if (mType == 'image') this.layout_inject(bDeleteExisting, true);
-
-          if (isResponsive) {
-            this.imageContainer.set('style', '');
-          }
 
           this.layout_finisage(src, mType, mWidth, mHeight);
 
