@@ -918,21 +918,21 @@ nav ul{
 <?php } ?>
 
 @media (max-width: 767px) {
-    .xAutoResponsive .mess,
-    .xAutoResponsive #contentContainer h1,
-    .xAutoResponsive .menuItem,
-    .xAutoResponsive .floating-banner {
+    .bt-auto-responsive .mess,
+    .bt-auto-responsive #contentContainer h1,
+    .bt-auto-responsive .menuItem,
+    .bt-auto-responsive .floating-banner {
         left: auto !important;
         position: static !important;
         top: auto !important;
     }
 
-    .xAutoResponsive #contentContainer {
+    .bt-auto-responsive #contentContainer {
         width: auto;
         max-width: <?php echo $s->get('pageLayout', 'centeredWidth') ?>;
     }
 
-    .xAutoResponsive #pageEntries .xEntry {
+    .bt-auto-responsive #pageEntries .xEntry {
         min-height: 1px;
         -webkit-box-sizing: border-box;
         -moz-box-sizing: border-box;
@@ -940,36 +940,36 @@ nav ul{
         width: auto !important;  /* @TODO remove this if auto responsive will use columns for entries */
     }
 
-    .xAutoResponsive img,
-    .xAutoResponsive #pageEntries .xEntry .xGalleryContainer .xGallery,
-    .xAutoResponsive #pageEntries .xEntry .xGalleryContainer .xGallery .xGalleryItem,
-    .xAutoResponsive #pageEntries .xEntry .xGalleryContainer .xGallery .xGalleryItem .image {
+    .bt-auto-responsive img,
+    .bt-auto-responsive #pageEntries .xEntry .xGalleryContainer .xGallery,
+    .bt-auto-responsive #pageEntries .xEntry .xGalleryContainer .xGallery .xGalleryItem,
+    .bt-auto-responsive #pageEntries .xEntry .xGalleryContainer .xGallery .xGalleryItem .image {
         max-width: 100% !important;
         height: auto !important;
     }
 
-    .xAutoResponsive #xBackground img,
-    .xAutoResponsive #xFilledBackground img {
+    .bt-auto-responsive #xBackground img,
+    .bt-auto-responsive #xFilledBackground img {
         max-width: none !important;
     }
 
-    .xAutoResponsive #pageEntries .xEntry .xGalleryType-row .xGalleryItem {
+    .bt-auto-responsive #pageEntries .xEntry .xGalleryType-row .xGalleryItem {
         -webkit-box-sizing:border-box;
         -moz-box-sizing:border-box;
         box-sizing:border-box;
     }
 
-    .xAutoResponsive #contentContainer h1 {
+    .bt-auto-responsive #contentContainer h1 {
         margin: <?php echo $s->get('pageLayout', 'headingMargin') ?>;
     }
 
-    .xAutoResponsive nav {
+    .bt-auto-responsive nav {
         margin: <?php echo $s->get('pageLayout', 'menuMargin') ?>;
         position: relative;
         z-index: 1;
     }
 
-    .xAutoResponsive #menuToggle {
+    .bt-auto-responsive #menuToggle {
         width: 1.5em;
         height: auto;
         padding: 1.5em 1em;
@@ -978,70 +978,70 @@ nav ul{
         background-color: black;
     }
 
-    .xAutoResponsive #menuToggle.active {
+    .bt-auto-responsive #menuToggle.active {
         background-color: white;
     }
 
-    .xAutoResponsive #menuToggle span {
+    .bt-auto-responsive #menuToggle span {
         position: relative;
         display: block;
     }
 
-    .xAutoResponsive #menuToggle span,
-    .xAutoResponsive #menuToggle span:before,
-    .xAutoResponsive #menuToggle span:after {
+    .bt-auto-responsive #menuToggle span,
+    .bt-auto-responsive #menuToggle span:before,
+    .bt-auto-responsive #menuToggle span:after {
         background-color: white;
         width: 100%;
         height: 2px;
     }
 
-    .xAutoResponsive #menuToggle.active span,
-    .xAutoResponsive #menuToggle.active span:before,
-    .xAutoResponsive #menuToggle.active span:after {
+    .bt-auto-responsive #menuToggle.active span,
+    .bt-auto-responsive #menuToggle.active span:before,
+    .bt-auto-responsive #menuToggle.active span:after {
         background-color: black;
     }
 
-    .xAutoResponsive #menuToggle span:before,
-    .xAutoResponsive #menuToggle span:after {
+    .bt-auto-responsive #menuToggle span:before,
+    .bt-auto-responsive #menuToggle span:after {
         position: absolute;
         margin-top: -.6em;
         content: " ";
     }
 
-    .xAutoResponsive #menuToggle span:after {
+    .bt-auto-responsive #menuToggle span:after {
         margin-top: .6em;
     }
 
-    .xAutoResponsive nav ul li {
+    .bt-auto-responsive nav ul li {
         display: inline-block;
         white-space: nowrap;
         margin-right: 10px;
     }
 
-    .xAutoResponsive nav ul li a {
+    .bt-auto-responsive nav ul li a {
         display: block;
     }
 
-    .xAutoResponsive nav ul li:hover ul {
+    .bt-auto-responsive nav ul li:hover ul {
         display: block;
         position: absolute;
         top: auto;
         left: auto;
     }
 
-    .xAutoResponsive nav ul li ul {
+    .bt-auto-responsive nav ul li ul {
         display: none;
     }
 
-    .xAutoResponsive nav ul li ul li {
+    .bt-auto-responsive nav ul li ul li {
         display: block;
     }
 
-    .xAutoResponsive #additionalText {
+    .bt-auto-responsive #additionalText {
         margin: 0 10px;
     }
 
-    .xAutoResponsive .floating-banner {
+    .bt-auto-responsive .floating-banner {
         position: relative;
         display: inline-block;
         margin: 10px;
@@ -1049,45 +1049,45 @@ nav ul{
 
     <?php if($s->get('pageLayout', 'centeredContents') == 'yes') { ?>
 
-        .xAutoResponsive #allContainer {
+        .bt-auto-responsive #allContainer {
             text-align: center;
         }
 
-        .xAutoResponsive #multisites {
+        .bt-auto-responsive #multisites {
             margin-top: 20px;
         }
 
-        .xAutoResponsive #contentContainer h1 {
+        .bt-auto-responsive #contentContainer h1 {
             clear: both;
         }
 
-        .xAutoResponsive nav {
+        .bt-auto-responsive nav {
             text-align: center;
         }
 
-        .xAutoResponsive nav ul li {
+        .bt-auto-responsive nav ul li {
             margin-left: 5px;
             margin-right: 5px;
         }
 
-        .xAutoResponsive #menuToggle span,
-        .xAutoResponsive #menuToggle span:before,
-        .xAutoResponsive #menuToggle span:after {
+        .bt-auto-responsive #menuToggle span,
+        .bt-auto-responsive #menuToggle span:before,
+        .bt-auto-responsive #menuToggle span:after {
             text-align: left;
         }
 
-        .xAutoResponsive .menuItem li {
+        .bt-auto-responsive .menuItem li {
             text-align: left;
         }
 
-        .xAutoResponsive #pageEntries .xEntry,
-        .xAutoResponsive #pageEntries .xEntry .xGalleryContainer .xGallery,
-        .xAutoResponsive #pageEntries .xEntry .xGalleryType-slideshow .xGallery,
-        .xAutoResponsive #pageEntries .xEntry .xGalleryContainer .xGallery .xGalleryItem {
+        .bt-auto-responsive #pageEntries .xEntry,
+        .bt-auto-responsive #pageEntries .xEntry .xGalleryContainer .xGallery,
+        .bt-auto-responsive #pageEntries .xEntry .xGalleryType-slideshow .xGallery,
+        .bt-auto-responsive #pageEntries .xEntry .xGalleryContainer .xGallery .xGalleryItem {
             margin: 0 auto;
         }
 
-        .xAutoResponsive #pageEntries .xEntry .xGalleryContainer ul.xGalleryNav li {
+        .bt-auto-responsive #pageEntries .xEntry .xGalleryContainer ul.xGalleryNav li {
             float: none;
             display: inline-block;
         }
@@ -1095,65 +1095,65 @@ nav ul{
     <?php } ?>
 
     /* helpers */
-    .xAutoResponsive .vjs-poster {
+    .bt-auto-responsive .vjs-poster {
         position: absolute;
     }
 
-    .xAutoResponsive .xFixed {
+    .bt-auto-responsive .xFixed {
         position: relative !important;
     }
 
-    .xAutoResponsive #menuToggle {
+    .bt-auto-responsive #menuToggle {
         display: inline-block;
     }
 
-    .xAutoResponsive nav > ul {
+    .bt-auto-responsive nav > ul {
         display: none;
     }
 
-    .xAutoResponsive nav ul li {
+    .bt-auto-responsive nav ul li {
         display: block;
     }
 
-    .xAutoResponsive nav ul li ul,
-    .xAutoResponsive nav ul li:hover ul {
+    .bt-auto-responsive nav ul li ul,
+    .bt-auto-responsive nav ul li:hover ul {
         position: relative;
         display: block;
     }
 
-    .xAutoResponsive #pageEntries.columns-3 .xEntry {
+    .bt-auto-responsive #pageEntries.columns-3 .xEntry {
         width: 50%;
     }
 
-    .xAutoResponsive #pageEntries.columns-4 .xEntry {
+    .bt-auto-responsive #pageEntries.columns-4 .xEntry {
         width: 50%;
     }
 
-    .xAutoResponsive #pageEntries.columns-3 .xEntry:nth-child(3n+1) {
+    .bt-auto-responsive #pageEntries.columns-3 .xEntry:nth-child(3n+1) {
         clear: none;
     }
 
-    .xAutoResponsive #pageEntries.columns-3 .xEntry:nth-child(2n+1),
-    .xAutoResponsive #pageEntries.columns-4 .xEntry:nth-child(2n+1) {
+    .bt-auto-responsive #pageEntries.columns-3 .xEntry:nth-child(2n+1),
+    .bt-auto-responsive #pageEntries.columns-4 .xEntry:nth-child(2n+1) {
         clear: left;
     }
 
-    .xAutoResponsive #pageEntries .xEntry .xGalleryType-row .xGallery .xGalleryItem {
+    .bt-auto-responsive #pageEntries .xEntry .xGalleryType-row .xGallery .xGalleryItem {
         padding-bottom: <?php echo $s->get('entryLayout', 'spaceBetweenImages') ?>;
         padding-right: 0;
     }
 
     <?php if($s->get('pageLayout', 'centeredContents') == 'yes') { ?>
-        .xAutoResponsive .menuItem li {
+        .bt-auto-responsive .menuItem li {
             text-align: center;
         }
     <?php } ?>
 }
 
 @media (max-width: 480px) {
-    .xAutoResponsive #pageEntries.columns-2 .xEntry,
-    .xAutoResponsive #pageEntries.columns-3 .xEntry,
-    .xAutoResponsive #pageEntries.columns-4 .xEntry {
+    .bt-auto-responsive #pageEntries.columns-2 .xEntry,
+    .bt-auto-responsive #pageEntries.columns-3 .xEntry,
+    .bt-auto-responsive #pageEntries.columns-4 .xEntry {
         float: none;
         width: 100%;
     }

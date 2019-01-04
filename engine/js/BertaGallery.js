@@ -68,7 +68,7 @@ var BertaGallery = new Class({
 
   attach: function (container) {
     this.isResponsive = $$('.xResponsive').length > 0;
-    this.isAutoResponsive = $$('.xAutoResponsive').length > 0;
+    this.isAutoResponsive = $$('.bt-auto-responsive').length > 0;
     this.container = container;
     this.type = this.container.getClassStoredValue('xGalleryType');
     //this.container.addClass('galleryType-' + this.type);

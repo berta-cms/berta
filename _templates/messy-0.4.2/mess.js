@@ -46,9 +46,9 @@ var MessyMess = new Class({
 
     var that = this;
 
-    this.isResponsive = $$('.xResponsive').length;
+    this.isResponsive = $$('.xResponsive').length > 0;
 
-    this.isAutoResponsive = $$('.xAutoResponsive').length > 0;
+    this.isAutoResponsive = $$('.bt-auto-responsive').length > 0;
 
     // Berta Background
     this.bgContainer = $('xBackground');
