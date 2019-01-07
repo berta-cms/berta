@@ -25,6 +25,7 @@ class SiteSettingsConfigService
 
         I18n::load_language($lang);
 
+        $ENGINE_ROOT_PATH = config('app.old_berta_root') . '/engine/';
         $conf = file_get_contents(
             realpath(config('app.old_berta_root') . '/engine/inc.settings.php')
         );
