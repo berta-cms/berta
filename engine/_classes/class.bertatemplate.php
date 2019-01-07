@@ -8,6 +8,7 @@ class BertaTemplate extends BertaBase {
     private $smarty;
 
     public $name;
+    public $templateName;
     public $loggedIn = false;
     public $templateHTML;
 
@@ -26,6 +27,7 @@ class BertaTemplate extends BertaBase {
 
     public function __construct($templateName, $generalSettingsInstance = false, $loggedIn = false, $apacheRewriteUsed=false) {
         $this->name = $templateName;
+        $this->templateName = explode('-', $this->name)[0];
         $this->loggedIn = $loggedIn;
         $this->environment = !empty(self::$options['ENVIRONMENT']) ? self::$options['ENVIRONMENT'] : 'site';
         $this->apacheRewriteUsed = $apacheRewriteUsed;
@@ -392,6 +394,12 @@ DOC;
         $vars['berta']['css'] .= <<<DOC
     <link rel="stylesheet" href="{$templatesAbsRoot}{$this->name}/style.css.php?{$timestamp}{$site}{$forceResponsiveStyleParam}{$isEngineParam}" type="text/css">
 DOC;
+
+        if ($this->templateName == 'messy') {
+            $vars['berta']['css'] .= <<<DOC
+            <link rel="stylesheet" href="{$templatesAbsRoot}{$this->name}/style.css?{$version}" type="text/css">
+DOC;
+        }
 
         $sentryScripts = self::sentryScripts();
         $vars['berta']['scripts'] = <<<DOC

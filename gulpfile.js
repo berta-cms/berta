@@ -7,7 +7,15 @@ var gulp = require('gulp'),
     watch = require('gulp-watch'),
     livereload = require('gulp-livereload'),
     notify = require('gulp-notify'),
-    jshint = require('gulp-jshint');
+    jshint = require('gulp-jshint'),
+    sass = require('gulp-sass'),
+    autoprefixer = require('gulp-autoprefixer');
+
+sass.compiler = require('node-sass');
+
+var scss_files = [
+  '_templates/messy-0.4.2/scss/**/*.scss'
+];
 
 var css_backend_files = [
     'engine/_lib/video-js/video-js.min.css',
@@ -96,6 +104,20 @@ var js_frontend_files = [
     'engine/_lib/milkbox/js/milkbox.js'
 ];
 
+gulp.task('scss_templates', function () {
+  return gulp.src(scss_files)
+    .pipe(gulp_sourcemaps.init())
+    .pipe(autoprefixer({
+      browsers: ['last 2 versions'],
+      cascade: false
+    }))
+    .pipe(sass({outputStyle: 'compressed'}).on('error', sass.logError))
+    .pipe(gulp_sourcemaps.write())
+    .pipe(gulp.dest('_templates/messy-0.4.2'))
+    .pipe(livereload())
+    .pipe(notify('SCSS: compiled!'));
+});
+
 gulp.task('css_backend', function() {
     return gulp.src(css_backend_files)
         .pipe(gulp_rebase_css_urls('engine/css'))
@@ -155,9 +177,13 @@ gulp.task('ng_lint', function() {
     .pipe(jshint.reporter('default'));
 });
 
-gulp.task('default', ['css_backend', 'css_frontend', 'js_backend', 'ng_lint', 'js_ng_backend', 'js_frontend'], function() {
+gulp.task('default', ['scss_templates', 'css_backend', 'css_frontend', 'js_backend', 'ng_lint', 'js_ng_backend', 'js_frontend'], function() {
 
     livereload.listen();
+
+    gulp.watch(scss_files, function(event) {
+      gulp.start('scss_templates');
+    });
 
     gulp.watch(css_backend_files, function(event) {
         gulp.start('css_backend');
