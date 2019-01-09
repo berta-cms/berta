@@ -75,18 +75,24 @@ export class ShopProductsComponent implements OnInit {
 
         // 2. Group products according to entry location in Sections and Tags
         const groups = sections.reduce((_groups, section) => {
-          let sectionProducts;
+          let sectionProducts, sectionTagProducts;
 
-          [sectionProducts, productData] = productData.reduce(([_groupProducts, leftOverProductData], product) => {
-            if (product.entry.sectionName === section.name
-                && (!product.entry.tags || product.entry.tags.tag.length === 0)) {
-              _groupProducts.push(product);
-            } else {
-              leftOverProductData.push(product);
-            }
+          [sectionProducts, sectionTagProducts, productData] = productData
+            .reduce(([_groupProducts, _sectionTagProducts, leftOverProductData], product) => {
+              if (product.entry.sectionName === section.name) {
 
-            return [_groupProducts, leftOverProductData];
-          }, [[], []]);
+                if ((!product.entry.tags || product.entry.tags.tag.length === 0)) {
+                  _groupProducts.push(product);
+                } else {
+                  _sectionTagProducts.push(product);
+                }
+
+              } else {
+                leftOverProductData.push(product);
+              }
+
+              return [_groupProducts, _sectionTagProducts, leftOverProductData];
+            }, [[], [], []]);
 
           // Add section as entry group
           _groups.push({...section, products: sectionProducts});
@@ -95,18 +101,9 @@ export class ShopProductsComponent implements OnInit {
           if (sectionTags) {
             sectionTags = sectionTags.tag
               .map(tag => {
-                let tagProducts;
-
-                [tagProducts, productData] = productData.reduce(([_groupProducts, leftOverProductData], product) => {
-                  if (product.entry.sectionName === section.name && product.entry.tags
-                      && product.entry.tags.tag.some(entryTag => entryTag === tag['@value'])) {
-                    _groupProducts.push(product);
-                  } else {
-                    leftOverProductData.push(product);
-                  }
-
-                  return [_groupProducts, leftOverProductData];
-                }, [[], []]);
+                const tagProducts = sectionTagProducts.filter((product) => {
+                  return product.entry.tags.tag.some(entryTag => entryTag === tag['@value']);
+                });
 
                 return {
                   isTag: true,
