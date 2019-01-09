@@ -14,7 +14,7 @@ import { UpdateInputFocus } from '../../app-state/app.actions';
   template: `
     <div *ngFor="let group of productsData$ | async" class="setting">
       <h4 [class.is-tag]="group.isTag">{{ group.title }}</h4>
-      <div *ngFor="let product of group.entries" class="product">
+      <div *ngFor="let product of group.products" class="product">
         <berta-text-input [value]="product.instock"
                           [label]="product.name"
                           [title]="'In stock'"
@@ -42,71 +42,93 @@ export class ShopProductsComponent implements OnInit {
       this.products$
     ).pipe(
       map(([sections, tags, entries, products]) => {
+        let leftOverProducts = [...products];
+        let productData: any[] = entries.reduce((_productData, entry) => {
 
-        entries = entries
-          .filter(entry => products.some(product => product.uniqid === entry.uniqid))
-          .reduce((_entries, entry) => {
-            _entries = [
-              ..._entries,
-              ...products
-                .filter(product => {
-                  const attributes = entry.content && entry.content.cartAttributes ? entry.content.cartAttributes.split(',') : [];
-                  const name = entry.content && entry.content.cartTitle || '';
+          leftOverProducts = leftOverProducts.reduce((_prodRef, product, idx) => {
+            const attributes = entry.content && entry.content.cartAttributes ? entry.content.cartAttributes.split(',') : [];
+            const name = entry.content && entry.content.cartTitle || '';
 
-                  // Filter out product by name or attribute
-                  return product.uniqid === entry.uniqid && (
-                    (attributes.length === 0 && product.name ===  name) ||
-                    attributes.map(attribute => name + (name.length ? ' ' : '') + attribute).indexOf(product.name) > -1
-                  );
-                })
-                .map(product => {
-                  return {...entry, ...product};
-                })
-            ];
+            if (product.uniqid === entry.uniqid) {
 
-            return _entries;
+              if ((attributes.length === 0 && product.name === name) ||
+                  attributes.map(attribute => name + (name.length ? ' ' : '') + attribute).indexOf(product.name) > -1) {
+                _productData.push({
+                  ...product,
+                  entry: entry  // make this more precise, we don't need all the properties of entry here
+                });
+              } else {
+                // Ignore any products with this ID and not matching attributes, because they're "deleted"
+              }
 
-          }, []);
-
-        return sections
-          .reduce((groups, section) => {
-
-            // Add section as entry group
-            groups = [...groups, section];
-            const sectionTags = tags.find(tag => tag['@attributes'].name === section.name && tag.tag.length > 0);
-
-            if (sectionTags) {
-              // Add section tags as entry groups
-              groups = [...groups, ...sectionTags.tag
-                // @TODO make tag sorting work
-                // .sort((a, b) => a.order - b.order)
-                .map(tag => {
-                  return {
-                    isTag: true,
-                    name: tag['@attributes'].name,
-                    title: tag['@value'],
-                    sectionName: section.name
-                  };
-                })
-              ];
+            } else {
+              _prodRef.push(product);
             }
 
-            return groups;
-          }, [])
-          .map(group => {
-            return {...group,
-              entries: entries
-                .filter(entry => {
-                  if (group.isTag) {
-                    return entry.sectionName === group.sectionName && entry.tags && entry.tags.tag.some(tag => tag === group.title);
+            return _prodRef;
+          }, []);
+
+          return _productData;
+        }, []);
+
+        const groups = sections.reduce((_groups, section) => {
+          let sectionProducts;
+
+          [sectionProducts, productData] = productData.reduce(([_groupProducts, leftOverProductData], product) => {
+            if (product.entry.sectionName === section.name
+                && (!product.entry.tags || product.entry.tags.tag.length === 0)) {
+              _groupProducts.push(product);
+            } else {
+              leftOverProductData.push(product);
+            }
+
+            return [_groupProducts, leftOverProductData];
+          }, [[], []]);
+
+          // Add section as entry group
+          _groups.push({...section, products: sectionProducts});
+          let sectionTags = tags.find(tag => tag['@attributes'].name === section.name && tag.tag.length > 0);
+
+          if (sectionTags) {
+            sectionTags = sectionTags.tag
+              .map(tag => {
+                let tagProducts;
+
+                [tagProducts, productData] = productData.reduce(([_groupProducts, leftOverProductData], product) => {
+                  if (product.entry.sectionName === section.name && product.entry.tags
+                      && product.entry.tags.tag.some(entryTag => entryTag === tag['@value'])) {
+                    _groupProducts.push(product);
                   } else {
-                    return entry.sectionName === group.name && (!entry.tags || entry.tags.tag.length === 0);
+                    leftOverProductData.push(product);
                   }
-                })
-                .sort((a, b) => a.order - b.order)
-            };
-          })
-          .filter(group => group.entries.length > 0);
+
+                  return [_groupProducts, leftOverProductData];
+                }, [[], []]);
+
+                return {
+                  isTag: true,
+                  name: tag['@attributes'].name,
+                  title: tag['@value'],
+                  sectionName: section.name,
+                  order: tag.order,
+                  products: tagProducts
+                };
+              }).sort((tagA, tagB) => tagA.order - tagB.order);
+
+              return [..._groups, ...sectionTags];
+          }
+
+          return _groups;
+        }, []);
+
+        if (leftOverProducts.length > 0) {
+          groups.push({
+            title: 'No section',
+            products: leftOverProducts
+          });
+        }
+
+        return groups.filter(group => group.products.length > 0);
       })
     );
   }
