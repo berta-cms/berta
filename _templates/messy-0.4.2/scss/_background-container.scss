@@ -1,0 +1,122 @@
+#xBackgroundContainer {
+  #xBackground {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    #xBackgroundLoader {
+      width: 31px;
+      height: 31px;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      margin-left: -15px;
+      margin-top: -15px;
+      display: none;
+    }
+
+    .visual-list {
+      display: none;
+    }
+
+    .visual-image {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      overflow: hidden;
+
+      .bg-element {
+        position: absolute;
+        display: block;
+      }
+    }
+
+    .visual-caption {
+      position: absolute;
+      text-align: left;
+      top: 50%;
+      left: 50%;
+      padding: 0 10px;
+
+      * {
+        background: inherit !important;
+        color: inherit !important;
+        background-color: transparent !important;
+      }
+    }
+
+    #xBackgroundRight,
+    #xBackgroundLeft {
+      position: absolute;
+      width: 50%;
+      height: 100%;
+    }
+
+    #xBackgroundRight {
+      right: 0;
+    }
+
+    #xBackgroundLeft {
+      left: 0;
+    }
+
+    #xBackgroundRightCounter,
+    #xBackgroundLeftCounter {
+      position: absolute;
+    }
+
+    #xBackgroundRightCounter {
+      .counterContent {
+        position: absolute;
+        right: 8px;
+      }
+    }
+
+    #xBackgroundLeftCounter {
+      .counterContent {
+        position: absolute;
+        left: 26px;
+      }
+    }
+  }
+
+  #xBackgroundNext,
+  #xBackgroundPrevious {
+    position: fixed;
+    width: 24px;
+    z-index: 1000;
+    top: 50%;
+    margin-top: -12px;
+    visibility: visible;
+
+    a {
+      width: 24px;
+      height: 24px;
+      display: block;
+
+      span {
+        display: none;
+      }
+    }
+  }
+
+  #xBackgroundNext {
+    right: 20px;
+
+    a {
+      background-position: -24px 0px;
+    }
+  }
+
+  #xBackgroundPrevious {
+    left: 20px;
+
+    a {
+      background-position: 0px 0px;
+    }
+  }
+}

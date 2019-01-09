@@ -1,0 +1,255 @@
+#allContainer {
+  position: relative;
+  margin: 0;
+  padding: 0;
+  min-height: 20px;
+}
+
+#contentContainer {
+  position: relative;
+  width: 100%;
+
+  &.xCentered {
+    margin: 0 auto;
+  }
+
+  &.xResponsive {
+    width: auto;
+  }
+}
+
+#contentContainer h1 {
+  padding: 0;
+  margin: 0;
+  z-index: 50000;
+}
+
+h1 {
+
+  a,
+  a:link,
+  a:visited,
+  a:hover,
+  a:active {
+    text-decoration: none;
+  }
+}
+
+#pageEntries {
+  position: relative;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  width: 100%;
+
+  .xEntry {
+    position: relative;
+    list-style: none;
+
+    .xGalleryContainer {
+      position: relative;
+      clear: both;
+      padding: 0;
+
+      .xGallery {
+        position: relative;
+        display: block;
+      }
+
+      ul {
+        &.xGalleryNav {
+          display: block;
+          position: relative;
+          clear: both;
+          margin: 0 0 2px;
+          padding: 0;
+          list-style: none;
+          height: 18px;
+
+          li {
+            display: block;
+            float: left;
+            list-style: none;
+            line-height: 96%;
+            margin: 0;
+          }
+
+          .xGalleryImageCaption {
+            display: none;
+          }
+
+          a {
+            display: block;
+            float: left;
+            padding: 1px 5px 1px;
+            outline: none;
+          }
+        }
+      }
+    }
+
+    .xGalleryType-row {
+      .xGalleryItem {
+        position: relative;
+        float: left;
+      }
+    }
+
+    .entryText {
+      position: relative;
+      clear: both;
+      margin: 0 0 6px;
+
+      p {
+        margin: 0 0 6px;
+      }
+
+      ul {
+        margin: 0 0 6px;
+        padding: 0 0 0 15px;
+
+        li {
+          list-style-type: circle;
+          margin: 0 0 3px 0;
+          padding: 0;
+        }
+      }
+
+      ol {
+        margin: 0 0 6px;
+        padding: 0 0 0 15px;
+
+        li {
+          margin: 0 0 3px 0;
+          padding: 0;
+          list-style-type: decimal;
+        }
+      }
+    }
+
+    .entryTags {
+      position: relative;
+      clear: both;
+    }
+  }
+
+  &.columns-2 .xEntry,
+  &.columns-3 .xEntry,
+  &.columns-4 .xEntry {
+    float: left;
+  }
+
+  &.columns-2 .xEntry {
+    width: 50%;
+  }
+
+  &.columns-3 .xEntry {
+    width: 33.33333%;
+  }
+
+  &.columns-4 .xEntry {
+    width: 25%;
+  }
+
+  &.columns-2 .xEntry:nth-child(2n+1),
+  &.columns-3 .xEntry:nth-child(3n+1),
+  &.columns-4 .xEntry:nth-child(4n+1) {
+    clear: left;
+  }
+
+  /* disqus.com fix */
+  #dsq-content {
+
+    ul,
+    li {
+      list-style-position: outside;
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+    }
+  }
+}
+
+.xGalleryImageCaption {
+  display: none;
+}
+
+#xGridView {
+  top: 100px;
+  padding-bottom: 100px;
+  visibility: hidden;
+
+  .box {
+    float: left;
+    margin: 5px;
+  }
+}
+
+#xGridViewTriggerContainer {
+  width: 22px;
+  position: absolute;
+  right: 12px;
+  top: 12px;
+  margin-right: 10px;
+  display: block;
+
+  a {
+    width: 24px;
+    height: 24px;
+    background-position: -48px 0px;
+    display: block;
+
+    &:hover {
+      background-position: -48px -24px;
+    }
+
+    span {
+      display: none;
+    }
+  }
+}
+
+.iframeWrapper  {
+  position: relative;
+  padding-bottom: 56.25%;
+
+  iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100% !important;
+  }
+}
+
+#xBackgroundVideoEmbed {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+
+  &.fillWindow {
+    .iframeWrapper {
+      padding-bottom: 0 !important;
+
+      iframe {
+        max-width: none !important;
+      }
+    }
+  }
+}
+
+#additionalText {
+  z-index: 49000;
+  min-width: 140px;
+
+  p {
+    margin: 0;
+    padding: 0;
+  }
+}
+
+.floating-banner {
+  position: absolute;
+  z-index: 3000;
+}
