@@ -43,6 +43,8 @@ export class ShopProductsComponent implements OnInit {
     ).pipe(
       map(([sections, tags, entries, products]) => {
         let leftOverProducts = [...products];
+
+        // 1. Add entry data to products
         let productData: any[] = entries.reduce((_productData, entry) => {
 
           leftOverProducts = leftOverProducts.reduce((_prodRef, product, idx) => {
@@ -71,6 +73,7 @@ export class ShopProductsComponent implements OnInit {
           return _productData;
         }, []);
 
+        // 2. Group products according to entry location in Sections and Tags
         const groups = sections.reduce((_groups, section) => {
           let sectionProducts;
 
