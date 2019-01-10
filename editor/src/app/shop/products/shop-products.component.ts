@@ -1,18 +1,23 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, isDevMode } from '@angular/core';
 import { Observable, combineLatest } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { Select, Store } from '@ngxs/store';
+
 import { SiteSectionsState } from '../../sites/sections/sections-state/site-sections.state';
 import { SectionTagsState } from '../../sites/sections/tags/section-tags.state';
 import { SectionEntriesState } from '../../sites/sections/entries/entries-state/section-entries.state';
 import { ShopProductsState } from './shop-products.state';
 import { UpdateShopProductAction } from './shop-products.actions';
 import { UpdateInputFocus } from '../../app-state/app.actions';
+import { SiteSectionStateModel } from 'src/app/sites/sections/sections-state/site-sections-state.model';
+import { SectionTagsInterface } from 'src/app/sites/sections/tags/section-tags-state.model';
+import { SectionEntry } from 'src/app/sites/sections/entries/entries-state/section-entries-state.model';
+
 
 @Component({
   selector: 'berta-shop-products',
   template: `
-    <div *ngFor="let group of productsData$ | async" class="setting">
+    <div *ngFor="let group of productGroups$ | async" class="setting">
       <h4 [class.is-tag]="group.isTag">{{ group.title }}</h4>
       <div *ngFor="let product of group.products" class="product">
         <berta-text-input [value]="product.instock"
@@ -26,22 +31,27 @@ import { UpdateInputFocus } from '../../app-state/app.actions';
   `
 })
 export class ShopProductsComponent implements OnInit {
-  @Select(ShopProductsState.getCurrentSiteProducts) products$;
 
-  productsData$: Observable<any>;  // <- @TODO create interface
+  productGroups$: Observable<{
+    name: string,
+    title: string,
+    isTag: boolean,
+    hasProducts: boolean,
+    products: any[]
+  }[]>;
 
   constructor(
     private store: Store) {
   }
 
   ngOnInit() {
-    this.productsData$ = combineLatest(
+    this.productGroups$ = combineLatest(
       this.store.select(SiteSectionsState.getCurrentSiteShopSections),
       this.store.select(SectionTagsState.getCurrentSiteTags),
       this.store.select(SectionEntriesState.getCurrentSiteEntries),
-      this.products$
+      this.store.select(ShopProductsState.getCurrentSiteProducts)
     ).pipe(
-      map(([sections, tags, entries, products]) => {
+      map(([sections, tags, entries, products]: [SiteSectionStateModel[], SectionTagsInterface[], SectionEntry[], any]) => {
         let leftOverProducts = [...products];
 
         // 1. Add entry data to products
@@ -95,11 +105,18 @@ export class ShopProductsComponent implements OnInit {
             }, [[], [], []]);
 
           // Add section as entry group
-          _groups.push({...section, products: sectionProducts});
-          let sectionTags = tags.find(tag => tag['@attributes'].name === section.name && tag.tag.length > 0);
+          const sectionTags = tags.find(tag => tag['@attributes'].name === section.name && tag.tag.length > 0);
+          _groups.push({
+            isTag: false,
+            name: section.name,
+            title: section.title,
+            products: sectionProducts,
+            hasProducts: sectionTags && sectionTagProducts.length > 0
+          });
 
           if (sectionTags) {
-            sectionTags = sectionTags.tag
+            const tagGroups = [...sectionTags.tag]
+              .sort((tagA, tagB) => tagA.order - tagB.order)
               .map(tag => {
                 const tagProducts = sectionTagProducts.filter((product) => {
                   return product.entry.tags.tag.some(entryTag => entryTag === tag['@value']);
@@ -109,26 +126,25 @@ export class ShopProductsComponent implements OnInit {
                   isTag: true,
                   name: tag['@attributes'].name,
                   title: tag['@value'],
-                  sectionName: section.name,
-                  order: tag.order,
-                  products: tagProducts
+                  products: tagProducts,
+                  hasProducts: tagProducts.length > 0
                 };
-              }).sort((tagA, tagB) => tagA.order - tagB.order);
+              });
 
-              return [..._groups, ...sectionTags];
+              return [..._groups, ...tagGroups];
           }
 
           return _groups;
         }, []);
 
-        if (leftOverProducts.length > 0 && isDevMode()) {
-          groups.push({
-            title: 'No section',
-            products: leftOverProducts
-          });
-        }
+        // if (leftOverProducts.length > 0 && isDevMode()) {
+        //   groups.push({
+        //     title: 'No section',
+        //     products: leftOverProducts
+        //   });
+        // }
 
-        return groups.filter(group => group.products.length > 0);
+        return groups.filter(group => group.products.length > 0 || group.hasProducts);
       })
     );
   }
