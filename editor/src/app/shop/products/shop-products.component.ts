@@ -17,7 +17,7 @@ import { SectionEntry } from 'src/app/sites/sections/entries/entries-state/secti
 @Component({
   selector: 'berta-shop-products',
   template: `
-    <div *ngFor="let group of productGroups$ | async" class="setting">
+    <div *ngFor="let group of productGroups$ | async" class="setting" [class.bt-is-empty]="group.products.length === 0">
       <h4 [class.is-tag]="group.isTag">{{ group.title }}</h4>
       <div *ngFor="let product of group.products" class="product">
         <berta-text-input [value]="product.instock"

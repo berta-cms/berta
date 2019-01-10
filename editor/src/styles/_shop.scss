@@ -61,6 +61,13 @@ berta-shop-products {
       margin-bottom: 1.3em;
     }
   }
+
+  .setting.bt-is-empty + .setting {
+    .is-tag {
+      border-top: 0;
+      padding-top: 0;
+    }
+  }
 }
 
 .bt-sh-region {
