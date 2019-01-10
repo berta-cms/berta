@@ -1,42 +1,68 @@
 $class-ns: '.bt-responsive';
 @import '_responsive-common';
 
-@media (max-width: 767px) {
-  #{$class-ns} {
-    nav > ul {
-      display: none;
-    }
+#{$class-ns} {
 
-    nav ul li {
-        display: block;
-    }
+  @media (max-width: 767px) {
+    @import 'responsive-mobile-common';
 
-    nav ul li ul,
-    nav ul li:hover ul {
-        position: relative;
-        display: block;
+
+    #pageEntries {
+      &.columns-3 {
+        .xEntry {
+          width: 50%;
+
+          &:nth-child(3n+1) {
+            clear: none;
+          }
+
+          &:nth-child(2n+1) {
+            clear: left;
+          }
+        }
+      }
+
+      &.columns-4 {
+        .xEntry {
+          width: 50%;
+
+          &:nth-child(2n+1) {
+            clear: left;
+          }
+        }
+      }
+    }
+  }
+
+  @media (max-width: 480px) {
+    #pageEntries {
+      &.columns-2,
+      &.columns-3,
+      &.columns-4 {
+        .xEntry {
+          float: none;
+          width: 100%;
+        }
+      }
+    }
+  }
+
+  /* larger than tablet */
+  @media (min-width: 768px) {
+
+    #pageEntries .xEntry .xGalleryType-row .xGallery {
+      max-width: inherit !important;
     }
   }
 }
 
 
 $class-ns: '.bt-auto-responsive';
+
 @media (max-width: 767px) {
   @import '_responsive-common';
 
   #{$class-ns} {
-    nav > ul {
-      display: none;
-    }
-
-    nav ul li {
-        display: block;
-    }
-
-    nav ul li ul,
-    nav ul li:hover ul {
-        position: relative;
-        display: block;
-    }
+    @import 'responsive-mobile-common';
   }
 }

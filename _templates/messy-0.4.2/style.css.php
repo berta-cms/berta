@@ -79,9 +79,7 @@ a:active {
     font-style: <?php echo $s->get('heading', 'fontStyle') ?>;
     font-variant: <?php echo $s->get('heading', 'fontVariant') ?>;
     line-height: <?php echo $s->get('heading', 'lineHeight') ?>;
-    <?php if( !$isResponsive ){ ?>
-    position: <?php echo $s->get('heading', 'position') ?> !important;
-    <?php } ?>
+    position: <?php echo $s->get('heading', 'position') ?> !important;§
 }
 
 h1 a,
@@ -333,42 +331,11 @@ h1 a:active {
 
     <?php } ?>
 
-    <?php if ($isResponsive) { ?>
-        /* larger than tablet */
-        @media (min-width: 768px) {
-            #pageEntries .xEntry .xGalleryType-row .xGallery {
-                max-width: inherit !important;
-            }
-        }
-    <?php } ?>
-
     /* small tablet */
     @media (max-width: 767px) {
 
-        #menuToggle {
-            display: inline-block;
-        }
-
-        #pageEntries.columns-3 .xEntry {
-            width: 50%;
-        }
-
-        #pageEntries.columns-4 .xEntry {
-            width: 50%;
-        }
-
-        #pageEntries.columns-3 .xEntry:nth-child(3n+1) {
-            clear: none;
-        }
-
-        #pageEntries.columns-3 .xEntry:nth-child(2n+1),
-        #pageEntries.columns-4 .xEntry:nth-child(2n+1) {
-            clear: left;
-        }
-
         #pageEntries .xEntry .xGalleryType-row .xGallery .xGalleryItem {
             padding-bottom: <?php echo $s->get('entryLayout', 'spaceBetweenImages') ?>;
-            padding-right: 0;
         }
 
         <?php if($s->get('pageLayout', 'centeredContents') == 'yes') { ?>
@@ -378,19 +345,9 @@ h1 a:active {
         <?php } ?>
     }
 
-    @media (max-width: 480px) {
-        #pageEntries.columns-2 .xEntry,
-        #pageEntries.columns-3 .xEntry,
-        #pageEntries.columns-4 .xEntry {
-            float: none;
-            width: 100%;
-        }
-    }
-
 <?php } ?>
 
 @media (max-width: 767px) {
-    .bt-auto-responsive #contentContainer h1,
     .bt-auto-responsive .menuItem,
     .bt-auto-responsive .floating-banner {
         left: auto !important;
@@ -468,30 +425,8 @@ h1 a:active {
 
     /* helpers */
 
-    .bt-auto-responsive #menuToggle {
-        display: inline-block;
-    }
-
-    .bt-auto-responsive #pageEntries.columns-3 .xEntry {
-        width: 50%;
-    }
-
-    .bt-auto-responsive #pageEntries.columns-4 .xEntry {
-        width: 50%;
-    }
-
-    .bt-auto-responsive #pageEntries.columns-3 .xEntry:nth-child(3n+1) {
-        clear: none;
-    }
-
-    .bt-auto-responsive #pageEntries.columns-3 .xEntry:nth-child(2n+1),
-    .bt-auto-responsive #pageEntries.columns-4 .xEntry:nth-child(2n+1) {
-        clear: left;
-    }
-
     .bt-auto-responsive #pageEntries .xEntry .xGalleryType-row .xGallery .xGalleryItem {
         padding-bottom: <?php echo $s->get('entryLayout', 'spaceBetweenImages') ?>;
-        padding-right: 0;
     }
 
     <?php if($s->get('pageLayout', 'centeredContents') == 'yes') { ?>
@@ -499,15 +434,6 @@ h1 a:active {
             text-align: center;
         }
     <?php } ?>
-}
-
-@media (max-width: 480px) {
-    .bt-auto-responsive #pageEntries.columns-2 .xEntry,
-    .bt-auto-responsive #pageEntries.columns-3 .xEntry,
-    .bt-auto-responsive #pageEntries.columns-4 .xEntry {
-        float: none;
-        width: 100%;
-    }
 }
 
 <?php if(!1) { ?></style><?php } ?>

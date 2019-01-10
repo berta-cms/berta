@@ -102,6 +102,14 @@
     }
   }
 
+  #contentContainer {
+    h1 {
+      left: auto !important;
+      position: static !important;
+      top: auto !important;
+    }
+  }
+
   #additionalText {
     margin: 0 10px;
   }
@@ -125,5 +133,7 @@
   .xFixed {
     position: static !important;
   }
+
+
 
 }

@@ -1,0 +1,33 @@
+#menuToggle {
+  display: inline-block;
+}
+
+nav {
+  >ul {
+    display: none;
+  }
+
+  ul {
+    li {
+      display: block;
+
+      ul,
+      &:hover ul {
+        position: relative;
+        display: block;
+      }
+    }
+  }
+}
+
+#pageEntries {
+  .xEntry {
+    .xGalleryType-row {
+      .xGallery {
+        .xGalleryItem {
+          padding-right: 0;
+        }
+      }
+    }
+  }
+}
