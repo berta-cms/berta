@@ -100,12 +100,12 @@ nav {
   }
 }
 
-#contentContainer {
-  h1 {
-    left: auto !important;
-    position: static !important;
-    top: auto !important;
-  }
+#contentContainer h1,
+.menuItem,
+.floating-banner {
+  left: auto !important;
+  position: static !important;
+  top: auto !important;
 }
 
 #additionalText {
@@ -113,7 +113,6 @@ nav {
 }
 
 .floating-banner {
-  position: relative;
   display: inline-block;
   margin: 10px;
 }
@@ -122,6 +121,8 @@ nav {
 
 .vjs-poster {
   position: absolute;
+  top: 0;
+  left: 0;
 }
 
 .mess {

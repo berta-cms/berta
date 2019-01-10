@@ -60,8 +60,6 @@ a:active {
         background-color: rgba(255,255,255,0.5);
     <?php } ?>
     width: <?php echo $s->get('pageLayout', 'centeredWidth') ?>;
-    position: fixed;
-    height: 100%;
 }
 
 #contentContainer.xCentered {
@@ -97,9 +95,7 @@ h1 a:active {
     font-style: <?php echo $s->get('menu', 'fontStyle') ?>;
     font-variant: <?php echo $s->get('menu', 'fontVariant') ?>;
     line-height: <?php echo $s->get('menu', 'lineHeight') ?>;
-    <?php if( !$isResponsive ){ ?>
-        position: <?php echo $s->get('menu', 'position') ?> !important;
-    <?php } ?>
+    position: <?php echo $s->get('menu', 'position') ?> !important;
 }
 
 .menuItem a:link,
@@ -348,12 +344,6 @@ h1 a:active {
 <?php } ?>
 
 @media (max-width: 767px) {
-    .bt-auto-responsive .menuItem,
-    .bt-auto-responsive .floating-banner {
-        left: auto !important;
-        position: static !important;
-        top: auto !important;
-    }
 
     .bt-auto-responsive #contentContainer {
         width: auto;
