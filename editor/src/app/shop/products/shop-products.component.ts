@@ -121,7 +121,7 @@ export class ShopProductsComponent implements OnInit {
           return _groups;
         }, []);
 
-        if (leftOverProducts.length > 0) {
+        if (leftOverProducts.length > 0 && isDevMode()) {
           groups.push({
             title: 'No section',
             products: leftOverProducts
