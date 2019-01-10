@@ -37,10 +37,17 @@ import { UserLoginAction } from '../../../user/user.actions';
 export class SiteSectionsState implements NgxsOnInit {
 
   @Selector([AppState.getSite])
-  static getCurrentSiteSections(state, site) {
+  static getCurrentSiteSections(state, site): SiteSectionStateModel[] {
     return state.filter(section => {
       return section.site_name === site;
     }).sort((sectionA, sectionB) => sectionA.order > sectionB.order ? 1 : -1);
+  }
+
+  @Selector([AppState.getSite])
+  static getCurrentSiteShopSections(state, site): SiteSectionStateModel[] {
+    return SiteSectionsState.getCurrentSiteSections(state, site).filter(
+      section => section['@attributes'].type && section['@attributes'].type === 'shop'
+    );
   }
 
   constructor(private appStateService: AppStateService,

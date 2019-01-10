@@ -4,7 +4,7 @@ import { State, Action, StateContext, NgxsOnInit, Actions, ofActionSuccessful, S
 
 import { AppState } from '../../../../app/app-state/app.state';
 import { AppStateService } from '../../../app-state/app-state.service';
-import { SectionTagsStateModel } from './section-tags-state.model';
+import { SectionTagsStateModel, SectionTagsInterface } from './section-tags-state.model';
 import {
   DeleteSiteSectionsTagsAction,
   RenameSectionTagsSitenameAction,
@@ -26,7 +26,7 @@ import { UserLoginAction } from '../../../user/user.actions';
 export class SectionTagsState implements NgxsOnInit {
 
   @Selector([AppState.getSite])
-  static getCurrentSiteTags(state, site) {
+  static getCurrentSiteTags(state, site): SectionTagsInterface[] {
     return state[site] ? state[site].section : [];
   }
 

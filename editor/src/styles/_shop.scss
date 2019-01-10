@@ -10,18 +10,25 @@ berta-shop {
         }
       }
     }
+
+    berta-shop-products {
+      h4 {
+        font-weight: bold;
+        padding-bottom: 1em;
+
+        &.is-tag {
+          &:before {
+            content: '- ';
+          }
+        }
+      }
+    }
   }
 }
 
 berta-shop-products,
 berta-shop-orders {
   display: block;
-
-  .setting {
-    &:not(:last-child) {
-      border-bottom: 1px solid $grey-10;
-    }
-  }
 
   p {
     display: flex;
@@ -35,6 +42,30 @@ berta-shop-orders {
       margin-left: 1em;
       padding-left: .75em;
       width: 50%;
+    }
+  }
+}
+
+berta-shop-orders {
+  .setting {
+    &:not(:last-child) {
+      border-bottom: 1px solid $grey-10;
+    }
+  }
+}
+
+berta-shop-products {
+  .product {
+    &:not(:last-child) {
+      border-bottom: 1px solid $grey-10;
+      margin-bottom: 1.3em;
+    }
+  }
+
+  .setting.bt-is-empty + .setting {
+    .is-tag {
+      border-top: 0;
+      padding-top: 0;
     }
   }
 }

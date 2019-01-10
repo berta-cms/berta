@@ -1,10 +1,11 @@
 import { concat } from 'rxjs';
 import { take, switchMap, tap } from 'rxjs/operators';
-import { State, Action, StateContext, NgxsOnInit, Actions, ofActionSuccessful } from '@ngxs/store';
+import { State, Action, StateContext, NgxsOnInit, Actions, ofActionSuccessful, Selector } from '@ngxs/store';
 
 import { assignByPath } from 'src/app/shared/helpers';
+import { AppState } from '../../../../app-state/app.state';
 import { AppStateService } from '../../../../app-state/app-state.service';
-import { SectionEntriesStateModel } from './section-entries-state.model';
+import { SectionEntriesStateModel, SectionEntry } from './section-entries-state.model';
 import {
   DeleteSiteSectionsEntriesAction,
   RenameSectionEntriesSitenameAction,
@@ -29,6 +30,12 @@ import { UpdateSectionTagsAction } from '../../tags/section-tags.actions';
   defaults: {}
 })
 export class SectionEntriesState implements NgxsOnInit {
+
+  @Selector([AppState.getSite])
+  static getCurrentSiteEntries(state, site): SectionEntry[] {
+    const entries = state[site] || [];
+    return entries;
+  }
 
   constructor(
     private actions$: Actions,
