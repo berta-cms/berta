@@ -53,12 +53,6 @@ a:active {
     text-decoration: <?php echo $s->get('links', 'textDecorationActive') ?>;
 }
 
-.mess {
-    <?php if( !$isResponsive ){ ?>
-        position: absolute !important;
-    <?php } ?>
-}
-
 .xCenteringGuide {
     <?php if($s->get('pageLayout', 'centeringGuidesColor') == 'dark') { ?>
         background-color: rgba(0,0,0,0.5);
@@ -294,16 +288,6 @@ h1 a:active {
 
 <?php if ($isResponsive) { ?>
 
-    #additionalText {
-        margin: 0 10px;
-    }
-
-    .floating-banner {
-        position: relative;
-        display: inline-block;
-        margin: 10px;
-    }
-
     <?php if($s->get('pageLayout', 'centeredContents') == 'yes') { ?>
 
         #allContainer {
@@ -348,15 +332,6 @@ h1 a:active {
         }
 
     <?php } ?>
-
-    /* helpers */
-    .vjs-poster {
-        position: absolute;
-    }
-
-    .xFixed {
-        position: relative !important;
-    }
 
     <?php if ($isResponsive) { ?>
         /* larger than tablet */
@@ -415,7 +390,6 @@ h1 a:active {
 <?php } ?>
 
 @media (max-width: 767px) {
-    .bt-auto-responsive .mess,
     .bt-auto-responsive #contentContainer h1,
     .bt-auto-responsive .menuItem,
     .bt-auto-responsive .floating-banner {
@@ -443,16 +417,6 @@ h1 a:active {
 
     .bt-auto-responsive nav {
         margin: <?php echo $s->get('pageLayout', 'menuMargin') ?>;
-    }
-
-    .bt-auto-responsive #additionalText {
-        margin: 0 10px;
-    }
-
-    .bt-auto-responsive .floating-banner {
-        position: relative;
-        display: inline-block;
-        margin: 10px;
     }
 
     <?php if($s->get('pageLayout', 'centeredContents') == 'yes') { ?>
@@ -503,13 +467,6 @@ h1 a:active {
     <?php } ?>
 
     /* helpers */
-    .bt-auto-responsive .vjs-poster {
-        position: absolute;
-    }
-
-    .bt-auto-responsive .xFixed {
-        position: relative !important;
-    }
 
     .bt-auto-responsive #menuToggle {
         display: inline-block;

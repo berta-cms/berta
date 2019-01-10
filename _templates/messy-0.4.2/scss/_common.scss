@@ -24,10 +24,13 @@ a {
   display: none;
 }
 
+.mess {
+  position: absolute !important;
+}
+
 .xFixed {
   position: fixed !important;
 }
-
 
 .row {
   width: 100%;

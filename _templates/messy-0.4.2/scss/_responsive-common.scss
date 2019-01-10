@@ -59,11 +59,6 @@
     }
   }
 
-
-
-
-
-
   #menuToggle {
     width: 1.5em;
     height: auto;
@@ -105,6 +100,30 @@
     span:after {
       margin-top: .6em;
     }
+  }
+
+  #additionalText {
+    margin: 0 10px;
+  }
+
+  .floating-banner {
+    position: relative;
+    display: inline-block;
+    margin: 10px;
+  }
+
+  /* helpers */
+
+  .vjs-poster {
+    position: absolute;
+  }
+
+  .mess {
+    position: static !important;
+  }
+
+  .xFixed {
+    position: static !important;
   }
 
 }
