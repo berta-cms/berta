@@ -1,11 +1,8 @@
-$class-ns: '.bt-responsive';
-@import '_responsive-common';
-
-#{$class-ns} {
+.bt-responsive {
+  @import '_responsive-common';
 
   @media (max-width: 767px) {
     @import 'responsive-mobile-common';
-
 
     #pageEntries {
       &.columns-3 {
@@ -36,6 +33,7 @@ $class-ns: '.bt-responsive';
 
   @media (max-width: 480px) {
     #pageEntries {
+
       &.columns-2,
       &.columns-3,
       &.columns-4 {
@@ -57,12 +55,9 @@ $class-ns: '.bt-responsive';
 }
 
 
-$class-ns: '.bt-auto-responsive';
-
-@media (max-width: 767px) {
-  @import '_responsive-common';
-
-  #{$class-ns} {
+.bt-auto-responsive {
+  @media (max-width: 767px) {
+    @import '_responsive-common';
     @import 'responsive-mobile-common';
   }
 }
