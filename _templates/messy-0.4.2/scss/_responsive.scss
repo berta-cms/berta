@@ -1,0 +1,42 @@
+$class-ns: '.bt-responsive';
+@import '_responsive-common';
+
+@media (max-width: 767px) {
+  #{$class-ns} {
+    nav > ul {
+      display: none;
+    }
+
+    nav ul li {
+        display: block;
+    }
+
+    nav ul li ul,
+    nav ul li:hover ul {
+        position: relative;
+        display: block;
+    }
+  }
+}
+
+
+$class-ns: '.bt-auto-responsive';
+@media (max-width: 767px) {
+  @import '_responsive-common';
+
+  #{$class-ns} {
+    nav > ul {
+      display: none;
+    }
+
+    nav ul li {
+        display: block;
+    }
+
+    nav ul li ul,
+    nav ul li:hover ul {
+        position: relative;
+        display: block;
+    }
+  }
+}

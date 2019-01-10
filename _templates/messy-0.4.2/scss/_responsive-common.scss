@@ -1,0 +1,110 @@
+#{$class-ns} {
+
+  img,
+  #pageEntries .xEntry .xGalleryContainer .xGallery,
+  #pageEntries .xEntry .xGalleryContainer .xGallery .xGalleryItem,
+  #pageEntries .xEntry .xGalleryContainer .xGallery .xGalleryItem .image {
+    max-width: 100% !important;
+    height: auto !important;
+  }
+
+  #xBackground,
+  #xFilledBackground {
+    img {
+      max-width: none !important;
+    }
+  }
+
+  #pageEntries {
+    .xEntry {
+      .xGalleryType-row {
+        .xGalleryItem {
+          box-sizing: border-box;
+        }
+      }
+    }
+  }
+
+  nav {
+    position: relative;
+    z-index: 1;
+
+    ul {
+      li {
+        display: inline-block;
+        white-space: nowrap;
+        margin-right: 10px;
+
+        a {
+          display: block;
+        }
+
+        &:hover {
+          ul {
+            display: block;
+            position: absolute;
+            top: auto;
+            left: auto;
+          }
+        }
+
+        ul {
+          display: none;
+
+          li {
+            display: block;
+          }
+        }
+      }
+    }
+  }
+
+
+
+
+
+
+  #menuToggle {
+    width: 1.5em;
+    height: auto;
+    padding: 1.5em 1em;
+    margin-bottom: 0.5em;
+    border: 1px solid black;
+    background-color: black;
+
+    &.active {
+      background-color: white;
+
+      span,
+      span:before,
+      span:after {
+        background-color: black;
+      }
+    }
+
+    span {
+      position: relative;
+      display: block;
+    }
+
+    span,
+    span:before,
+    span:after {
+      background-color: white;
+      width: 100%;
+      height: 2px;
+    }
+
+    span:before,
+    span:after {
+      position: absolute;
+      margin-top: -.6em;
+      content: ' ';
+    }
+
+    span:after {
+      margin-top: .6em;
+    }
+  }
+
+}

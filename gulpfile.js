@@ -107,11 +107,11 @@ var js_frontend_files = [
 gulp.task('scss_templates', function () {
   return gulp.src(scss_files)
     .pipe(gulp_sourcemaps.init())
+    .pipe(sass({outputStyle: 'compressed'}).on('error', sass.logError))
     .pipe(autoprefixer({
       browsers: ['last 2 versions'],
       cascade: false
     }))
-    .pipe(sass({outputStyle: 'compressed'}).on('error', sass.logError))
     .pipe(gulp_sourcemaps.write())
     .pipe(gulp.dest('_templates/messy-0.4.2'))
     .pipe(livereload())

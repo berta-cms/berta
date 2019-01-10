@@ -284,102 +284,15 @@ h1 a:active {
     margin: <?php echo $s->get('pageLayout', 'menuMargin') ?>;
 }
 
+.bt-responsive #contentContainer h1 {
+    margin: <?php echo $s->get('pageLayout', 'headingMargin') ?>;
+}
+
+.bt-responsive nav {
+    margin: <?php echo $s->get('pageLayout', 'menuMargin') ?>;
+}
+
 <?php if ($isResponsive) { ?>
-
-    img,
-    #pageEntries .xEntry .xGalleryContainer .xGallery,
-    #pageEntries .xEntry .xGalleryContainer .xGallery .xGalleryItem,
-    #pageEntries .xEntry .xGalleryContainer .xGallery .xGalleryItem .image {
-        max-width: 100% !important;
-        height: auto !important;
-    }
-
-    #xBackground img,
-    #xFilledBackground img {
-        max-width: none !important;
-    }
-
-    #pageEntries .xEntry .xGalleryType-row .xGalleryItem {
-        -webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;
-    }
-
-    #contentContainer h1 {
-        margin: <?php echo $s->get('pageLayout', 'headingMargin') ?>;
-    }
-
-    nav {
-        margin: <?php echo $s->get('pageLayout', 'menuMargin') ?>;
-        position: relative;
-        z-index: 1;
-    }
-
-    #menuToggle {
-        width: 1.5em;
-        height: auto;
-        padding: 1.5em 1em;
-        margin-bottom: 0.5em;
-        border: 1px solid black;
-        background-color: black;
-    }
-
-    #menuToggle.active {
-        background-color: white;
-    }
-
-    #menuToggle span {
-        position: relative;
-        display: block;
-    }
-
-    #menuToggle span,
-    #menuToggle span:before,
-    #menuToggle span:after {
-        background-color: white;
-        width: 100%;
-        height: 2px;
-    }
-
-    #menuToggle.active span,
-    #menuToggle.active span:before,
-    #menuToggle.active span:after {
-        background-color: black;
-    }
-
-    #menuToggle span:before,
-    #menuToggle span:after {
-        position: absolute;
-        margin-top: -.6em;
-        content: " ";
-    }
-
-    #menuToggle span:after {
-        margin-top: .6em;
-    }
-
-    nav ul li {
-        display: inline-block;
-        white-space: nowrap;
-        margin-right: 10px;
-    }
-
-    nav ul li a {
-        display: block;
-    }
-
-    nav ul li:hover ul {
-        display: block;
-        position: absolute;
-        top: auto;
-        left: auto;
-    }
-
-    nav ul li ul {
-        display: none;
-    }
-
-    nav ul li ul li {
-        display: block;
-    }
 
     #additionalText {
         margin: 0 10px;
@@ -461,20 +374,6 @@ h1 a:active {
             display: inline-block;
         }
 
-        nav > ul {
-            display: none;
-        }
-
-        nav ul li {
-            display: block;
-        }
-
-        nav ul li ul,
-        nav ul li:hover ul {
-            position: relative;
-            display: block;
-        }
-
         #pageEntries.columns-3 .xEntry {
             width: 50%;
         }
@@ -538,101 +437,12 @@ h1 a:active {
         width: auto !important;  /* @TODO remove this if auto responsive will use columns for entries */
     }
 
-    .bt-auto-responsive img,
-    .bt-auto-responsive #pageEntries .xEntry .xGalleryContainer .xGallery,
-    .bt-auto-responsive #pageEntries .xEntry .xGalleryContainer .xGallery .xGalleryItem,
-    .bt-auto-responsive #pageEntries .xEntry .xGalleryContainer .xGallery .xGalleryItem .image {
-        max-width: 100% !important;
-        height: auto !important;
-    }
-
-    .bt-auto-responsive #xBackground img,
-    .bt-auto-responsive #xFilledBackground img {
-        max-width: none !important;
-    }
-
-    .bt-auto-responsive #pageEntries .xEntry .xGalleryType-row .xGalleryItem {
-        -webkit-box-sizing:border-box;
-        -moz-box-sizing:border-box;
-        box-sizing:border-box;
-    }
-
     .bt-auto-responsive #contentContainer h1 {
         margin: <?php echo $s->get('pageLayout', 'headingMargin') ?>;
     }
 
     .bt-auto-responsive nav {
         margin: <?php echo $s->get('pageLayout', 'menuMargin') ?>;
-        position: relative;
-        z-index: 1;
-    }
-
-    .bt-auto-responsive #menuToggle {
-        width: 1.5em;
-        height: auto;
-        padding: 1.5em 1em;
-        margin-bottom: 0.5em;
-        border: 1px solid black;
-        background-color: black;
-    }
-
-    .bt-auto-responsive #menuToggle.active {
-        background-color: white;
-    }
-
-    .bt-auto-responsive #menuToggle span {
-        position: relative;
-        display: block;
-    }
-
-    .bt-auto-responsive #menuToggle span,
-    .bt-auto-responsive #menuToggle span:before,
-    .bt-auto-responsive #menuToggle span:after {
-        background-color: white;
-        width: 100%;
-        height: 2px;
-    }
-
-    .bt-auto-responsive #menuToggle.active span,
-    .bt-auto-responsive #menuToggle.active span:before,
-    .bt-auto-responsive #menuToggle.active span:after {
-        background-color: black;
-    }
-
-    .bt-auto-responsive #menuToggle span:before,
-    .bt-auto-responsive #menuToggle span:after {
-        position: absolute;
-        margin-top: -.6em;
-        content: " ";
-    }
-
-    .bt-auto-responsive #menuToggle span:after {
-        margin-top: .6em;
-    }
-
-    .bt-auto-responsive nav ul li {
-        display: inline-block;
-        white-space: nowrap;
-        margin-right: 10px;
-    }
-
-    .bt-auto-responsive nav ul li a {
-        display: block;
-    }
-
-    .bt-auto-responsive nav ul li:hover ul {
-        display: block;
-        position: absolute;
-        top: auto;
-        left: auto;
-    }
-
-    .bt-auto-responsive nav ul li ul {
-        display: none;
-    }
-
-    .bt-auto-responsive nav ul li ul li {
-        display: block;
     }
 
     .bt-auto-responsive #additionalText {
@@ -703,20 +513,6 @@ h1 a:active {
 
     .bt-auto-responsive #menuToggle {
         display: inline-block;
-    }
-
-    .bt-auto-responsive nav > ul {
-        display: none;
-    }
-
-    .bt-auto-responsive nav ul li {
-        display: block;
-    }
-
-    .bt-auto-responsive nav ul li ul,
-    .bt-auto-responsive nav ul li:hover ul {
-        position: relative;
-        display: block;
     }
 
     .bt-auto-responsive #pageEntries.columns-3 .xEntry {
