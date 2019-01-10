@@ -58,7 +58,7 @@ export class ShopProductsComponent implements OnInit {
         let productData: any[] = entries.reduce((_productData, entry) => {
 
           leftOverProducts = leftOverProducts.reduce((_prodRef, product, idx) => {
-            const attributes = entry.content && entry.content.cartAttributes ? entry.content.cartAttributes.split(',') : [];
+            const attributes = entry.content && entry.content.cartAttributes ? entry.content.cartAttributes.split(/,\s*/i) : [];
             const name = entry.content && entry.content.cartTitle || '';
 
             if (product.uniqid === entry.uniqid) {
