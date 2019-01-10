@@ -242,6 +242,7 @@ class SiteTemplateSettingsDataService extends Storage
                     'menuMargin' => ['type' => 'string'],
                     'paddingLeft' => ['$ref' => '#/definitions/cssUnit.df'],
                     'paddingTop' => ['$ref' => '#/definitions/cssUnit.df'],
+                    'autoResponsive' => ['type' => 'string', 'enum' => ['yes', 'no']],
                     'responsive' => ['type' => 'string', 'enum' => ['no', 'yes']],
                     'siteMenuMargin' => ['$ref' => '#/definitions/cssUnit.df']
                 ]
@@ -371,13 +372,18 @@ class SiteTemplateSettingsDataService extends Storage
     public function get()
     {
         $siteTemplateSettings = $this->xmlFile2array($this->XML_FILE);
-
         return $siteTemplateSettings;
     }
 
     public function getState()
     {
-        $siteTemplateSettings = $this->xmlFile2array($this->XML_FILE);
+        $siteTemplateSettings = $this->get();
+
+        // Disable `autoResponsive` if `responsive` is enabled for Messy
+        if ($this->TEMPLATE == 'messy' && isset($siteTemplateSettings['pageLayout']['responsive']) && $siteTemplateSettings['pageLayout']['responsive'] == 'yes') {
+            $siteTemplateSettings['pageLayout']['autoResponsive'] = 'no';
+        }
+
         $siteTemplateSettings = self::mergeSiteTemplateDefaults($this->siteTemplateDefaults, $siteTemplateSettings);
 
         return $siteTemplateSettings;

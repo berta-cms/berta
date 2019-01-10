@@ -18,6 +18,8 @@ var MessyMess = new Class({
   bgRightCounter: null,
   bgLeftCounter: null,
   isResponsive: false,
+  isAutoResponsive: false,
+  mobileBrekapoint: 768,
 
 
   initialize: function () {
@@ -25,11 +27,28 @@ var MessyMess = new Class({
     window.addEvent('load', this.onLoad.bind(this));
   },
 
+  debounce: function (func, wait, immediate) {
+    var timeout;
+    return function() {
+      var context = this, args = arguments;
+      var later = function() {
+        timeout = null;
+        if (!immediate) func.apply(context, args);
+      };
+      var callNow = immediate && !timeout;
+      clearTimeout(timeout);
+      timeout = setTimeout(later, wait);
+      if (callNow) func.apply(context, args);
+    };
+  },
+
   onDOMReady: function () {
 
     var that = this;
 
-    this.isResponsive = $$('.xResponsive').length;
+    this.isResponsive = $$('.xResponsive').length > 0;
+
+    this.isAutoResponsive = $$('.bt-auto-responsive').length > 0;
 
     // Berta Background
     this.bgContainer = $('xBackground');
@@ -90,7 +109,9 @@ var MessyMess = new Class({
     if (Cookie.read('_berta_grid_view'))
       Cookie.dispose('_berta_grid_view');
 
-    setInterval(function () { that.copyrightStickToBottom() }, 1000);
+    setInterval(function () {
+      that.copyrightStickToBottom();
+    }, 1000);
 
     var messyItems = $$('.mess');
 
@@ -209,12 +230,18 @@ var MessyMess = new Class({
 
     if (this.isResponsive) {
       if (bertaGlobalOptions.environment == 'site') {
-        this.iframeResponsiveFix($$('iframe'));
+        this.iframeResponsiveFix($$('iframe'), false);
       }
     }
 
+    if (this.isAutoResponsive && bertaGlobalOptions.environment == 'site') {
+      window.addEvent('resize', this.debounce(function () {
+        this.iframeResponsiveFix($$('iframe'), true);
+      }.bind(this), 250));
+    }
+
     if (this.xBackgroundVideoEmbed && !(this.isResponsive && bertaGlobalOptions.environment == 'site')) {
-      this.iframeResponsiveFix($$(this.xBackgroundVideoEmbed));
+      this.iframeResponsiveFix($$(this.xBackgroundVideoEmbed), false);
     }
 
     if (this.xBackgroundVideoEmbed && !$('xBackgroundVideoEmbed').hasClass('keepRatio')) {
@@ -257,22 +284,33 @@ var MessyMess = new Class({
     $$(this.xBackgroundVideoEmbed)[0].setAttribute('style', 'top: ' + videoTop + 'px; left:' + videoLeft + 'px; width: ' + videoWidth + 'px; height:' + videoHeight + 'px !important;');
   },
 
-  iframeResponsiveFix: function (el) {
+  iframeResponsiveFix: function (el, removeWrapper) {
+    if (!window.berta) {
+      return;
+    }
+
+    var doRemoveWrapper = removeWrapper && this.mobileBrekapoint <= window.getSize().x;
 
     el.each(function (item) {
+      var hasWrapper = item.getParent().hasClass('iframeWrapper');
       var source = item.get('src');
       berta.options.iframeWrapperWhiteList.each(function (whiteList) {
 
         if (source.indexOf(whiteList) > -1) {
-          var width = item.get('width');
-          var height = item.get('height');
-          var wrapper = new Element('div', { 'class': 'iframeWrapper' });
-
-          if (width && height) {
-            wrapper.setStyle('padding-bottom', height * 100 / width + '%');
+          if (hasWrapper && doRemoveWrapper) {
+            item.inject(item.getParent(), 'after');
+            item.getPrevious().destroy();
           }
 
-          if (!item.getParent().hasClass('iframeWrapper')) { //if no iframeWrapper already exists
+          if (!hasWrapper && !doRemoveWrapper) {
+            var width = item.get('width');
+            var height = item.get('height');
+            var wrapper = new Element('div', { 'class': 'iframeWrapper' });
+
+            if (width && height) {
+              wrapper.setStyle('padding-bottom', height * 100 / width + '%');
+            }
+
             wrapper.wraps(item);
           }
         }
@@ -374,6 +412,7 @@ var MessyMess = new Class({
       var allDraggables = $$('.xEditableDragXY:not(.xFixed)');
       var maxY = y = 0;
       var windowH = window.getSize().y;
+      var windowW = window.getSize().x;
       var bottomH = 0;
 
       bottom.getChildren().each(function (item) {
@@ -383,7 +422,7 @@ var MessyMess = new Class({
         }
       });
 
-      if (this.isResponsive) {
+      if (this.isResponsive || (this.isAutoResponsive && bertaGlobalOptions.environment == 'site' && windowW < this.mobileBrekapoint)) {
         maxY = $('allContainer').getSize().y;
         //add h1 margin-top to the height
         var h1 = $$('h1');

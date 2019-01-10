@@ -7,7 +7,12 @@
     {else}
         {assign var=isResponsive value=$berta.settings.pageLayout.responsive}
     {/if}
-    {if $isResponsive=='yes'}<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">{/if}
+
+    {if $isResponsive !== 'yes' && $berta.settings.pageLayout.autoResponsive == 'yes' && $berta.environment == 'site'}
+        {assign var=isAutoResponsive value=true}
+    {/if}
+
+    {if $isResponsive=='yes' || $isAutoResponsive}<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">{/if}
     <meta name="keywords" content="{if $berta.section.seoKeywords}{ $berta.section.seoKeywords|strip_tags|escape }{else}{ $berta.settings.texts.metaKeywords|strip_tags|escape }{/if}">
     <meta name="description" content="{if $berta.section.seoDescription}{ $berta.section.seoDescription|strip_tags|escape }{else}{ $berta.settings.texts.metaDescription|strip_tags|escape }{/if}">
     <meta name="author" content="{ $berta.settings.texts.ownerName }">
@@ -23,15 +28,23 @@
     { if ($berta.section.type == 'shopping_cart' &&  $berta.environment == 'engine') || $berta.section.type != 'shopping_cart'  }
     { $berta.scripts }
     { $berta.css }
-    {* section related CSS for responsive layout *}
-    {if $isResponsive=='yes'}
+    {* CSS for responsive layout *}
+    {if $isResponsive == 'yes' || $isAutoResponsive}
         <style type="text/css">
+            {if $isAutoResponsive}
+              @media (max-width: 767px) {literal}{{/literal}
+            {/if}
+
             #pageEntries .xEntry {literal}{{/literal}
                 padding: {if $berta.section.entryPadding }{ $berta.section.entryPadding }{ else }{ $berta.sectionTypes.default.params.entryPadding.default }{/if};
                 {if $berta.section.entryMaxWidth}
                     max-width: { $berta.section.entryMaxWidth };
                 {/if}
             {literal}}{/literal}
+
+            {if $isAutoResponsive}
+              {literal}}{/literal}
+            {/if}
         </style>
     {/if}
     { if $berta.shop_enabled == true }
@@ -53,7 +66,7 @@
     { /if }
 </head>
 
-<body class="xContent-{ $berta.section.name }{if $berta.tagName} xSubmenu-{$berta.tagName}{/if}{if $berta.environment == 'engine'} page-xMySite{/if}{if $berta.section.type} xSectionType-{ $berta.section.type }{/if}">
+<body class="xContent-{ $berta.section.name }{if $berta.tagName} xSubmenu-{$berta.tagName}{/if}{if $berta.environment == 'engine'} page-xMySite{/if}{if $berta.section.type} xSectionType-{ $berta.section.type }{/if}{if $isAutoResponsive} bt-auto-responsive{/if}">
     { if ($berta.section.type == 'shopping_cart' &&  $berta.environment == 'engine') || $berta.section.type != 'shopping_cart'  }
 
         {* *** section background ************************************************* *}
@@ -187,10 +200,10 @@
 
         {* check for shop *}
         { if $berta.shop_enabled == true }
-        	{ assign var="shoppingCartSection" value="" }
+            { assign var="shoppingCartSection" value="" }
             { foreach $berta.publishedSections as $sName => $section }
                 { if $section.type == 'shopping_cart' }
-                        { assign var="shoppingCartSection" value=$berta.publishedSections.$sName }
+                    { assign var="shoppingCartSection" value=$berta.publishedSections.$sName }
                 { /if }
             { /foreach }
         { /if }
@@ -265,9 +278,7 @@
                 <!-- MENU -->
                 { if count($berta.publishedSections) > 0 && (($berta.environment == 'site' && $berta.settings.navigation.landingSectionMenuVisible=='yes') || $berta.environment == 'engine' || ($berta.environment == 'site' && $berta.settings.navigation.landingSectionMenuVisible=='no' && $berta.sectionName != $berta.sections|@key)) }
                     <nav>
-                        {if $isResponsive == 'yes'}
-                            <a href="#" id="menuToggle"><span></span></a>
-                        {/if}
+                        <a href="#" id="menuToggle"><span></span></a>
                         <ul>
                             { assign var="currentSectionName" value=$berta.sectionName }
                             { foreach $berta.publishedSections as $sName => $section }
