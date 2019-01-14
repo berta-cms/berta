@@ -3,7 +3,6 @@
 $IS_CSS_FILE = true;
 include('../../engine/inc.page.php');
 $s =& $berta->template->settings;
-$isResponsive = $s->get('pageLayout', 'responsive')=='yes' || isset($_GET['responsive']);
 
 $expires= 60 * 60 * 24 * 1;	// 1 day
 header('Pragma: public');
@@ -36,6 +35,10 @@ body {
     <?php } ?>
 }
 
+body:not(.bt-responsive):not(.bt-auto-responsive) #contentContainer.xCentered {
+    width: <?php echo $s->get('pageLayout', 'centeredWidth') ?>;
+}
+
 a:link {
     color: <?php echo $s->get('links', 'colorLink') ?>;
     text-decoration: <?php echo $s->get('links', 'textDecorationLink') ?>;
@@ -60,13 +63,6 @@ a:active {
         background-color: rgba(255,255,255,0.5);
     <?php } ?>
     width: <?php echo $s->get('pageLayout', 'centeredWidth') ?>;
-}
-
-#contentContainer.xCentered {
-    width: <?php echo $s->get('pageLayout', 'centeredWidth') ?>;
-}
-#contentContainer.xResponsive {
-    max-width: <?php echo $s->get('pageLayout', 'centeredWidth') ?>;
 }
 
 #contentContainer h1 {
@@ -145,18 +141,6 @@ h1 a:active {
 .menuItem li.selected > a {
     color: <?php echo $s->get('tagsMenu', 'colorActive') ?> !important;
     text-decoration: <?php echo $s->get('tagsMenu', 'textDecorationActive') ?> !important;
-}
-
-#pageEntries .xEntry {
-    <?php if( $isResponsive ){ ?>
-        min-height: 1px;
-        -webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;
-    <?php } else { ?>
-        max-width: <?php echo $s->get('entryLayout', 'contentWidth') ?>;
-        min-width: 150px;
-        padding: 0;
-        clear: both;
-    <?php } ?>
 }
 
 #pageEntries .xEntry h2 {
@@ -272,6 +256,10 @@ h1 a:active {
     margin: <?php echo $s->get('pageLayout', 'menuMargin') ?>;
 }
 
+.bt-responsive #contentContainer {
+    max-width: <?php echo $s->get('pageLayout', 'centeredWidth') ?>;
+}
+
 .bt-responsive #contentContainer h1 {
     margin: <?php echo $s->get('pageLayout', 'headingMargin') ?>;
 }
@@ -280,82 +268,15 @@ h1 a:active {
     margin: <?php echo $s->get('pageLayout', 'menuMargin') ?>;
 }
 
-<?php if ($isResponsive) { ?>
-
-    <?php if($s->get('pageLayout', 'centeredContents') == 'yes') { ?>
-
-        #allContainer {
-            text-align: center;
-        }
-
-        #multisites {
-            margin-top: 20px;
-        }
-
-        #contentContainer h1 {
-            clear: both;
-        }
-
-        nav {
-            text-align: center;
-        }
-
-        nav ul li {
-            margin-left: 5px;
-            margin-right: 5px;
-        }
-
-        #menuToggle span, #menuToggle span:before, #menuToggle span:after {
-            text-align: left;
-        }
-
-        .menuItem li {
-            text-align: left;
-        }
-
-        #pageEntries .xEntry,
-        #pageEntries .xEntry .xGalleryContainer .xGallery,
-        #pageEntries .xEntry .xGalleryType-slideshow .xGallery,
-        #pageEntries .xEntry .xGalleryContainer .xGallery .xGalleryItem {
-            margin: 0 auto;
-        }
-
-        #pageEntries .xEntry .xGalleryContainer ul.xGalleryNav li {
-            float: none;
-            display: inline-block;
-        }
-
-    <?php } ?>
-
-    /* small tablet */
-    @media (max-width: 767px) {
-
-        #pageEntries .xEntry .xGalleryType-row .xGallery .xGalleryItem {
-            padding-bottom: <?php echo $s->get('entryLayout', 'spaceBetweenImages') ?>;
-        }
-
-        <?php if($s->get('pageLayout', 'centeredContents') == 'yes') { ?>
-            .menuItem li {
-                text-align: center;
-            }
-        <?php } ?>
-    }
-
-<?php } ?>
-
 @media (max-width: 767px) {
 
-    .bt-auto-responsive #contentContainer {
-        width: auto;
-        max-width: <?php echo $s->get('pageLayout', 'centeredWidth') ?>;
+    .bt-responsive #pageEntries .xEntry .xGalleryType-row .xGallery .xGalleryItem,
+    .bt-auto-responsive #pageEntries .xEntry .xGalleryType-row .xGallery .xGalleryItem {
+        padding-bottom: <?php echo $s->get('entryLayout', 'spaceBetweenImages') ?>;
     }
 
-    .bt-auto-responsive #pageEntries .xEntry {
-        min-height: 1px;
-        -webkit-box-sizing: border-box;
-        -moz-box-sizing: border-box;
-        box-sizing: border-box;
-        width: auto !important;  /* @TODO remove this if auto responsive will use columns for entries */
+    .bt-auto-responsive #contentContainer {
+        max-width: <?php echo $s->get('pageLayout', 'centeredWidth') ?>;
     }
 
     .bt-auto-responsive #contentContainer h1 {
@@ -366,64 +287,6 @@ h1 a:active {
         margin: <?php echo $s->get('pageLayout', 'menuMargin') ?>;
     }
 
-    <?php if($s->get('pageLayout', 'centeredContents') == 'yes') { ?>
-
-        .bt-auto-responsive #allContainer {
-            text-align: center;
-        }
-
-        .bt-auto-responsive #multisites {
-            margin-top: 20px;
-        }
-
-        .bt-auto-responsive #contentContainer h1 {
-            clear: both;
-        }
-
-        .bt-auto-responsive nav {
-            text-align: center;
-        }
-
-        .bt-auto-responsive nav ul li {
-            margin-left: 5px;
-            margin-right: 5px;
-        }
-
-        .bt-auto-responsive #menuToggle span,
-        .bt-auto-responsive #menuToggle span:before,
-        .bt-auto-responsive #menuToggle span:after {
-            text-align: left;
-        }
-
-        .bt-auto-responsive .menuItem li {
-            text-align: left;
-        }
-
-        .bt-auto-responsive #pageEntries .xEntry,
-        .bt-auto-responsive #pageEntries .xEntry .xGalleryContainer .xGallery,
-        .bt-auto-responsive #pageEntries .xEntry .xGalleryType-slideshow .xGallery,
-        .bt-auto-responsive #pageEntries .xEntry .xGalleryContainer .xGallery .xGalleryItem {
-            margin: 0 auto;
-        }
-
-        .bt-auto-responsive #pageEntries .xEntry .xGalleryContainer ul.xGalleryNav li {
-            float: none;
-            display: inline-block;
-        }
-
-    <?php } ?>
-
-    /* helpers */
-
-    .bt-auto-responsive #pageEntries .xEntry .xGalleryType-row .xGallery .xGalleryItem {
-        padding-bottom: <?php echo $s->get('entryLayout', 'spaceBetweenImages') ?>;
-    }
-
-    <?php if($s->get('pageLayout', 'centeredContents') == 'yes') { ?>
-        .bt-auto-responsive .menuItem li {
-            text-align: center;
-        }
-    <?php } ?>
 }
 
 <?php if(!1) { ?></style><?php } ?>

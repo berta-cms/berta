@@ -20,6 +20,14 @@ nav {
   }
 }
 
+&.bt-centered-content {
+  .menuItem {
+    li {
+      text-align: center;
+    }
+  }
+}
+
 #pageEntries {
   .xEntry {
     .xGalleryType-row {

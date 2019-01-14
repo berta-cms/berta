@@ -15,6 +15,12 @@ img,
 
 #pageEntries {
   .xEntry {
+    min-height: 1px;
+    box-sizing: border-box;
+    max-width: none;
+    min-width: 0;
+    clear: none;
+
     .xGalleryType-row {
       .xGalleryItem {
         box-sizing: border-box;
@@ -117,7 +123,74 @@ nav {
   margin: 10px;
 }
 
-/* helpers */
+&.bt-centered-content {
+  #allContainer {
+    text-align: center;
+  }
+
+  #multisites {
+    margin-top: 20px;
+  }
+
+  #contentContainer {
+    h1 {
+      clear: both;
+    }
+  }
+
+  nav {
+    text-align: center;
+  }
+
+  nav {
+    ul {
+      li {
+        margin-left: 5px;
+        margin-right: 5px;
+      }
+    }
+  }
+
+  #menuToggle {
+
+    span,
+    span:before,
+    span:after {
+      text-align: left;
+    }
+  }
+
+  .menuItem {
+    li {
+      text-align: left;
+    }
+  }
+
+  #pageEntries {
+
+    .xEntry,
+    .xEntry .xGalleryContainer .xGallery,
+    .xEntry .xGalleryType-slideshow .xGallery,
+    .xEntry .xGalleryContainer .xGallery .xGalleryItem {
+      margin: 0 auto;
+    }
+  }
+
+  #pageEntries {
+    .xEntry {
+      .xGalleryContainer {
+        ul {
+          &.xGalleryNav {
+            li {
+              float: none;
+              display: inline-block;
+            }
+          }
+        }
+      }
+    }
+  }
+}
 
 .vjs-poster {
   position: absolute;

@@ -59,5 +59,15 @@
   @media (max-width: 767px) {
     @import '_responsive-common';
     @import 'responsive-mobile-common';
+
+    #contentContainer {
+      width: auto;
+    }
+
+    #pageEntries {
+      .xEntry {
+        width: auto !important;
+      }
+    }
   }
 }
