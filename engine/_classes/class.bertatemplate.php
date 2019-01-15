@@ -391,7 +391,7 @@ DOC;
 DOC;
         }
 
-        if ($this->templateName == 'messy') {
+        if (in_array($this->templateName, ['messy', 'white'])) {
             $vars['berta']['css'] .= <<<DOC
             <link rel="stylesheet" href="{$templatesAbsRoot}{$this->name}/style.css?{$version}" type="text/css">
 DOC;
