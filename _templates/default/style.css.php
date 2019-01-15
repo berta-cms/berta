@@ -1,7 +1,6 @@
 <?php
-
-$IS_CSS_FILE = true;
 include('../../engine/inc.page.php');
+
 $s =& $berta->template->settings;
 $isResponsive = $s->get('pageLayout', 'responsive')=='yes';
 
@@ -15,10 +14,7 @@ if($lastMod = $berta->settings->get('berta', 'lastUpdated')) {
 header("Content-Type: text/css");
 
 $contentFloat = substr($s->get('pageLayout', 'contentAlign'), -4) == 'left' ? 'left' : 'right';
-$contentFloatOpposite = $contentFloat == 'left' ? 'right' : 'left';
-
 $contentTextAlign = strpos($s->get('pageLayout', 'contentAlign'), 'justify') === 0 ? 'justify' : $s->get('pageLayout', 'contentAlign');
-$contentTextAlignOpposite = $contentTextAlign == 'justify' ? 'justify' : ($contentTextAlign == 'left' ? 'right' : 'left');
 
 if(!1) { ?><style type="text/css"><?php } ?>
 
@@ -42,8 +38,6 @@ body {
 		background-position: <?php echo $s->get('background', 'backgroundPosition') ?>;
 		background-attachment: <?php echo $bgAttachment ?>;
 	<?php } ?>
-
-	min-height: 100%;
 }
 
 
