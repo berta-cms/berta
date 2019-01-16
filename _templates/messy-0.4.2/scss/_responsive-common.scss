@@ -2,14 +2,14 @@ img,
 #pageEntries .xEntry .xGalleryContainer .xGallery,
 #pageEntries .xEntry .xGalleryContainer .xGallery .xGalleryItem,
 #pageEntries .xEntry .xGalleryContainer .xGallery .xGalleryItem .image {
-  max-width: 100% !important;
+  max-width: 100%;
   height: auto !important;
 }
 
 #xBackground,
 #xFilledBackground {
   img {
-    max-width: none !important;
+    max-width: none;
   }
 }
 

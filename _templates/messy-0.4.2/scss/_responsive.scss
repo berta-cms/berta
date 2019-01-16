@@ -1,6 +1,16 @@
 .bt-responsive {
   @import '_responsive-common';
 
+  #pageEntries {
+    .xEntry {
+      .xGalleryType-row {
+        .xGallery {
+          max-width: inherit;
+        }
+      }
+    }
+  }
+
   @media (max-width: 767px) {
     @import 'responsive-mobile-common';
 
@@ -28,6 +38,14 @@
           }
         }
       }
+
+      .xEntry {
+        .xGalleryType-row {
+          .xGallery {
+            max-width: 100%;
+          }
+        }
+      }
     }
   }
 
@@ -42,14 +60,6 @@
           width: 100%;
         }
       }
-    }
-  }
-
-  /* larger than tablet */
-  @media (min-width: 768px) {
-
-    #pageEntries .xEntry .xGalleryType-row .xGallery {
-      max-width: inherit !important;
     }
   }
 }
