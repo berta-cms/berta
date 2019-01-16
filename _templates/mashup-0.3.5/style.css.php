@@ -2,8 +2,6 @@
 include '../../engine/inc.page.php';
 
 $s = &$berta->template->settings;
-$isResponsive = $s->get('pageLayout', 'responsive') == 'yes';
-
 $expires = 60 * 60 * 24 * 1;	// 1 day
 header('Pragma: public');
 header('Cache-Control: max-age=' . $expires);
@@ -129,7 +127,6 @@ a:active {
     font-size: <?php echo $s->get('menu', 'fontSize') ?>;
     font-weight: <?php echo $s->get('menu', 'fontWeight') ?>;
     font-style: <?php echo $s->get('menu', 'fontStyle') ?>;
-    font-variant: <?php echo $s->get('menu', 'fontVariant') ?>;
     line-height: <?php echo $s->get('menu', 'lineHeight') ?>;
 }
 
@@ -218,253 +215,27 @@ a:active {
     padding-bottom: <?php echo $s->get('entryLayout', 'spaceBetweenImages') ?>;
 }
 
+.bt-responsive .firstPagePic {
+    margin-bottom: <?php echo $s->get('pageLayout', 'paddingLeft') ?>;
+}
 
-<?php if( $isResponsive ){ ?>
+.bt-responsive #firstPageMarkedEntries .xEntry {
+    max-width: <?php echo $s->get('firstPage', 'imageSizeRatio')*100 ?>%;
+}
 
-	#sideColumn.xCentered {
-		left: auto;
-		margin-left: 0;
-	}
+/* tablet */
+@media (max-width: 767px)  {
+    .bt-responsive #sideColumnTop {
+        padding-left: <?php echo $s->get('pageLayout', 'paddingLeft') ?>;
+    }
 
-	.firstPagePic {
-		position: relative;
-		margin-bottom: <?php echo $s->get('pageLayout', 'paddingLeft') ?>;
-	}
+    .bt-responsive #sideColumnBottom {
+        padding-left: <?php echo $s->get('pageLayout', 'paddingLeft') ?>;
+    }
 
-	#firstPageMarkedEntries .xEntry {
-		max-width: <?php echo $s->get('firstPage', 'imageSizeRatio')*100 ?>%;
-	}
-
-
-	#firstPageMarkedEntries .xEntry .xGalleryContainer .xGallery div.xGalleryItem {
-		font-size: 0;
-	}
-
-	img,
-	#pageEntries li.xEntry .xGalleryContainer .xGallery,
-	#pageEntries li.xEntry .xGalleryContainer .xGallery div.xGalleryItem,
-	#pageEntries li.xEntry .xGalleryContainer .xGallery div.xGalleryItem .image,
-	#firstPageMarkedEntries .xEntry .xGalleryContainer .xGallery,
-	#firstPageMarkedEntries .xEntry .xGalleryContainer .xGallery div.xGalleryItem,
-	#firstPageMarkedEntries .xEntry .xGalleryContainer .xGallery div.xGalleryItem .image
-	{
-		max-width: 100% !important;
-		height: auto !important;
-	}
-
-	#pageEntries li.xEntry,
-	#pageEntries li.xEntry .xGalleryContainer .xGallery div.xGalleryItem,
-	#firstPageMarkedEntries .xEntry,
-	#firstPageMarkedEntries .xEntry .xGalleryContainer .xGallery div.xGalleryItem,
-	.row .column {
-		-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;
-	}
-
-	#firstPageMarkedEntries.columns-2 .xEntry,
-	#firstPageMarkedEntries.columns-3 .xEntry,
-	#firstPageMarkedEntries.columns-4 .xEntry {
-		float: left;
-		padding-right: 15px;
-	}
-
-	#firstPageMarkedEntries.columns-2 .xEntry {
-		width: 50%;
-	}
-
-	#firstPageMarkedEntries.columns-3 .xEntry {
-		width: 33.33333%;
-	}
-
-	#firstPageMarkedEntries.columns-4 .xEntry {
-		width: 25%;
-	}
-
-	#firstPageMarkedEntries.columns-2 .xEntry:nth-child(2n),
-	#firstPageMarkedEntries.columns-3 .xEntry:nth-child(3n),
-	#firstPageMarkedEntries.columns-4 .xEntry:nth-child(4n) {
-		padding-right: 0;
-	}
-
-	#firstPageMarkedEntries.columns-2 .xEntry:nth-child(2n+1),
-	#firstPageMarkedEntries.columns-3 .xEntry:nth-child(3n+1),
-	#firstPageMarkedEntries.columns-4 .xEntry:nth-child(4n+1) {
-		clear: left;
-	}
-
-	.vjs-poster {
-		position: absolute;
-		top: 0;
-		left: 0;
-	}
-
-	#contentContainer {
-		width: auto;
-	}
-
-	#menuToggle {
-		display: none;
-		width: 1.5em;
-		height: auto;
-		padding: 1.5em 1em;
-		margin-bottom: 0.5em;
-		border: 1px solid black;
-		background-color: black;
-	}
-
-	#menuToggle.active {
-		background-color: white;
-	}
-
-	#menuToggle span {
-		position: relative;
-		display: block;
-	}
-
-	#menuToggle span,
-	#menuToggle span:before,
-	#menuToggle span:after {
-		background-color: white;
-		width: 100%;
-		height: 2px;
-	}
-
-	#menuToggle.active span,
-	#menuToggle.active span:before,
-	#menuToggle.active span:after {
-		background-color: black;
-	}
-
-	#menuToggle span:before,
-	#menuToggle span:after {
-		position: absolute;
-		margin-top: -.6em;
-		content: " ";
-	}
-
-	#menuToggle span:after {
-		margin-top: .6em;
-	}
-
-	#sideColumnTop ul {
-		margin-bottom: 0;
-	}
-
-	.xNarrow #mainColumn.xCentered {
-		margin-left: 0;
-	}
-
-
-	#additionalText {
-		position: static;
-	}
-
-	.floating-banner {
-		position: static;
-		display: inline-block;
-		margin: 10px 10px 10px 0;
-	}
-
-	/* larger than tablet */
-	@media (min-width: 768px) {
-		#pageEntries li.xEntry .xGalleryType-row .xGallery {
-			max-width: inherit !important;
-		}
-	}
-
-	/* small tablet */
-	@media (max-width: 767px)  {
-
-		#sideColumn {
-			position: absolute;
-			bottom: auto;
-			left: 0;
-			width: 100%;
-		}
-
-		#sideColumnTop {
-			padding-left: <?php echo $s->get('pageLayout', 'paddingLeft') ?>;
-		}
-
-		#sideColumnTop > ul {
-			display: none;
-		}
-
-		#sideColumnTop #multisites {
-			display: block;
-		}
-
-		#sideColumnTop h1 {
-			min-height: initial;
-		}
-
-		#sideColumnTop ul li {
-			margin-top: 1em;
-		}
-
-		#menuToggle {
-			display: inline-block;
-		}
-
-		#mainColumn {
-			margin-left: 0;
-		}
-
-		#mainColumn.xCentered {
-			left: auto;
-			margin-left: 0;
-		}
-
-		.floating-banners {
-			margin-left: 0;
-		}
-
-		#sideColumnBottom {
-			padding-left: <?php echo $s->get('pageLayout', 'paddingLeft') ?>;
-		}
-
-
-		#firstPageMarkedEntries.columns-3 .xEntry {
-			width: 50%;
-		}
-
-		#firstPageMarkedEntries.columns-4 .xEntry {
-			width: 50%;
-		}
-
-		#firstPageMarkedEntries.columns-3 .xEntry:nth-child(3n+1) {
-			clear: none;
-		}
-
-		#firstPageMarkedEntries.columns-3 .xEntry:nth-child(2n+1),
-		#firstPageMarkedEntries.columns-4 .xEntry:nth-child(2n+1) {
-			clear: left;
-		}
-
-		#firstPageMarkedEntries.columns-3 .xEntry:nth-child(2n),
-		#firstPageMarkedEntries.columns-4 .xEntry:nth-child(2n) {
-			padding-right: 0;
-		}
-
-		#firstPageMarkedEntries.columns-3 .xEntry:nth-child(3n) {
-			padding-right: 15px;
-		}
-
-		#pageEntries li.xEntry .xGalleryType-row .xGallery .xGalleryItem {
-			padding-bottom: <?php echo $s->get('entryLayout', 'spaceBetweenImages') ?>;
-			padding-right: 0;
-		}
-	}
-
-	@media (max-width: 480px) {
-		#firstPageMarkedEntries.columns-2 .xEntry,
-		#firstPageMarkedEntries.columns-3 .xEntry,
-		#firstPageMarkedEntries.columns-4 .xEntry {
-			float: none;
-			width: 100%;
-			padding-right: 0;
-		}
-	}
-
-<?php } ?>
+    .bt-responsive #pageEntries li.xEntry .xGalleryType-row .xGallery .xGalleryItem {
+        padding-bottom: <?php echo $s->get('entryLayout', 'spaceBetweenImages') ?>;
+    }
+}
 
 <?php if(!1) { ?></style><?php } ?>

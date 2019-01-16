@@ -230,7 +230,7 @@
   #pageEntries li.xEntry .xGalleryContainer .xGallery,
   #pageEntries li.xEntry .xGalleryContainer .xGallery div.xGalleryItem,
   #pageEntries li.xEntry .xGalleryContainer .xGallery div.xGalleryItem .image {
-    max-width: 100% !important;
+    max-width: 100%;
     height: auto !important;
   }
 
@@ -239,7 +239,7 @@
       &.xEntry {
         .xGalleryType-row {
           .xGallery {
-            max-width: inherit !important;
+            max-width: inherit;
 
             .xGalleryItem {
               padding-right: 0;
