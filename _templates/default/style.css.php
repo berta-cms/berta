@@ -1,17 +1,16 @@
 <?php
-include('../../engine/inc.page.php');
+include '../../engine/inc.page.php';
 
-$s =& $berta->template->settings;
-$isResponsive = $s->get('pageLayout', 'responsive')=='yes';
+$s = &$berta->template->settings;
 
-$expires= 60 * 60 * 24 * 1;	// 1 day
+$expires = 60 * 60 * 24 * 1;	// 1 day
 header('Pragma: public');
 header('Cache-Control: max-age=' . $expires);
 header('Expires: ' . gmdate('D, d M Y H:i:s', time() + $expires) . ' GMT');
-if($lastMod = $berta->settings->get('berta', 'lastUpdated')) {
-	header('Last-Modified: ' . $lastMod);
+if ($lastMod = $berta->settings->get('berta', 'lastUpdated')) {
+    header('Last-Modified: ' . $lastMod);
 }
-header("Content-Type: text/css");
+header('Content-Type: text/css');
 
 $contentFloat = substr($s->get('pageLayout', 'contentAlign'), -4) == 'left' ? 'left' : 'right';
 $contentTextAlign = strpos($s->get('pageLayout', 'contentAlign'), 'justify') === 0 ? 'justify' : $s->get('pageLayout', 'contentAlign');
@@ -224,163 +223,20 @@ h1 {
     float: <?php echo $contentFloat ?>;
 }
 
-§#pageEntries li.xEntry .entryContent .tagsList div {
+#pageEntries li.xEntry .entryContent .tagsList div {
     float: <?php echo $contentFloat ?> !important;
 }
 
-<?php if( $isResponsive ){ ?>
-
-	img,
-	#pageEntries li.xEntry .xGalleryContainer .xGallery,
-	#pageEntries li.xEntry .xGalleryContainer .xGallery div.xGalleryItem,
-	#pageEntries li.xEntry .xGalleryContainer .xGallery div.xGalleryItem .image {
-		max-width: 100% !important;
-		height: auto !important;
-	}
-
-	#xFilledBackground img {
-	    max-width: none !important;
-	}
-
-	#contentContainer {
-		width: auto;
-		max-width: <?php echo $s->get('pageLayout', 'contentWidth') ?>;
-	}
-
-	#menuToggle {
-		display: none;
-		width: 1.5em;
-		height: auto;
-		padding: 1.5em 1em;
-		margin-bottom: 0.5em;
-		border: 1px solid black;
-		background-color: black;
-	}
-
-	#menuToggle.active {
-		background-color: white;
-	}
-
-	#menuToggle span {
-		position: relative;
-		display: block;
-	}
-
-	#menuToggle span,
-	#menuToggle span:before,
-	#menuToggle span:after {
-		background-color: white;
-		width: 100%;
-		height: 2px;
-	}
-
-	#menuToggle.active span,
-	#menuToggle.active span:before,
-	#menuToggle.active span:after {
-		background-color: black;
-	}
-
-	#menuToggle span:before,
-	#menuToggle span:after {
-		position: absolute;
-		margin-top: -.6em;
-		content: " ";
-	}
-
-	#menuToggle span:after {
-		margin-top: .6em;
-	}
-
-	h1 {
-		float: none;
-	}
-
-	#additionalText {
-		position: static;
-		margin-bottom: 1em;
-	}
-
-	.floating-banner {
-		position: static;
-		display: inline-block;
-		margin: 10px;
-	}
-
-	.vjs-poster {
-		position: absolute;
-		top: 0;
-		left: 0;
-	}
-
-	#pageEntries li.xEntry,
-	#pageEntries li.xEntry .xGalleryContainer .xGallery div.xGalleryItem,
-	.row .column {
-		-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;
-	}
-
-	/* larger than tablet */
-	@media (min-width: 768px) {
-		#pageEntries li.xEntry .xGalleryType-row .xGallery {
-			max-width: inherit !important;
-		}
-	}
-
-	/* small tablet */
-	@media (max-width: 767px)  {
-		#menuToggle {
-			display: inline-block;
-		}
-
-
-		div#siteTopMenu > ul {
-			display: none;
-		}
-
-		div#siteTopMenu,
-		div#siteTopMenu ul,
-		div#siteTopMenu ul li,
-		div#siteTopMenu ul li a,
-		div#siteTopMenu ul li a:link,
-		div#siteTopMenu ul li a:visited {
-			float: none;
-		}
-
-		div#siteTopMenu > ul > li {
-			margin-bottom: 0.5em;
-		}
-
-		div#siteTopMenu ul#mainMenu li {
-			line-height: 2em;
-		}
-
-		div#siteTopMenu ul li ul.subMenu {
-			display: block;
-			margin-left: 1em;
-		}
-
-		div#siteTopMenu ul li.selected ul.subMenu li a {
-			font-weight: normal;
-		}
-
-		div#siteTopMenu ul li ul.subMenu li.selected a {
-			font-weight: bold;
-		}
-
-		div#siteTopMenu ul#mainMenu li .separator {
-			display: none;
-		}
-
-		div#siteTopMenu ul#subMenu {
-			display: none;
-		}
-
-		#pageEntries li.xEntry .xGalleryType-row .xGallery .xGalleryItem {
-			padding-bottom: <?php echo $s->get('entryLayout', 'spaceBetweenImages') ?>;
-			padding-right: 0;
-		}
-	}
+.bt-responsive #contentContainer {
+    max-width: <?php echo $s->get('pageLayout', 'contentWidth') ?>;
 }
 
-<?php } ?>
+
+/* small tablet */
+@media (max-width: 767px)  {
+    .bt-responsive #pageEntries li.xEntry .xGalleryType-row .xGallery .xGalleryItem {
+        padding-bottom: <?php echo $s->get('entryLayout', 'spaceBetweenImages') ?>;
+    }
+}
 
 <?php if(!1) { ?></style><?php } ?>
