@@ -203,6 +203,17 @@ class Storage
     }
 
     /**
+     * Removes invalid characters by XML 1.0 specification
+     *
+     * @param string
+     * @returns cleaned string
+     */
+    protected function removeXMLInvalidChars($string)
+    {
+        return preg_replace('/[^\x{0009}\x{000a}\x{000d}\x{0020}-\x{D7FF}\x{E000}-\x{FFFD}]+/u', '', $string);
+    }
+
+    /**
      * Converts an array to XML document
      *
      * @param array $xml XML document
@@ -222,7 +233,7 @@ class Storage
                         throw new \Exception('Illegal character in attribute name. attribute: ' . $key . ' in node: ' . $node_name);
                     }
 
-                    $node->setAttribute($key, $value);
+                    $node->setAttribute($key, $this->removeXMLInvalidChars($value));
                 }
 
                 unset($arr['@attributes']); //remove the key from the array once done.
@@ -231,7 +242,7 @@ class Storage
             // check if it has a value stored in @value, if yes store the value and return
             // else check if its directly stored as string
             if (isset($arr['@value'])) {
-                $node->appendChild($xml->createCDATASection($arr['@value']));
+                $node->appendChild($xml->createCDATASection($this->removeXMLInvalidChars($arr['@value'])));
                 unset($arr['@value']); //remove the key from the array once done.
 
                 //return from recursion, as a note with value cannot have child nodes.
@@ -266,7 +277,7 @@ class Storage
         // after we are done with all the keys in the array (if it is one)
         // we check if it has any text value, if yes, append it.
         if (!is_array($arr)) {
-            $node->appendChild($xml->createCDATASection($arr));
+            $node->appendChild($xml->createCDATASection($this->removeXMLInvalidChars($arr)));
         }
 
         return $node;
