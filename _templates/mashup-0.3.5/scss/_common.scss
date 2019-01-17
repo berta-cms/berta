@@ -4,13 +4,13 @@ body {
   height: 100%;
 }
 
-.ie6 {
-  html {
+html {
+  &.ie6 {
     overflow-y: hidden;
-  }
 
-  body {
-    overflow-y: hidden;
+    body {
+      overflow-y: hidden;
+    }
   }
 }
 

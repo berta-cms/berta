@@ -263,7 +263,7 @@
   }
 
 
-	@media (max-width: 480px) {
+  @media (max-width: 480px) {
     #firstPageMarkedEntries {
       &.columns-2 .xEntry,
       &.columns-3 .xEntry,
@@ -273,5 +273,5 @@
         padding-right: 0;
       }
     }
-	}
+  }
 }
