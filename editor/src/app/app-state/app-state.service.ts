@@ -6,6 +6,7 @@ import { map, tap, shareReplay, catchError, exhaustMap, filter, take, retryWhen,
 
 import { Store } from '@ngxs/store';
 
+import { removeXMLInvalidChars } from '../shared/helpers';
 import { UserLogoutAction } from '../user/user.actions';
 import { AppShowLoading, AppHideLoading } from './app.actions';
 import { PushErrorAction } from '../error-state/error.actions';
@@ -53,6 +54,14 @@ export class AppStateService {
       take(1),
       switchMap(([appState, user]) => {
         this.showLoading();
+
+        // Remove XML 1.0 invalid characters from user input
+        if (['POST', 'PUT', 'PATCH'].indexOf(method) > -1) {
+          data = JSON.stringify(data);
+          data = removeXMLInvalidChars(data);
+          data = JSON.parse(data)
+        }
+
         return this.http.request<any>(method, (appState.urls[urlName] || urlName), {
           body: method === 'GET' ? undefined : data,
           params: method === 'GET' ? data : undefined,
