@@ -63,7 +63,7 @@ $templateConf = array(
 		'paddingTop' => 		array('format' => 'text',	'default' => '30px',	'css_units' => true, 	'title' => I18n::_('How far content is from page top?'), 'description' => I18n::_('The vertical distance between the top of the page and the content area.')),
 		'paddingLeft' => 		array('format' => 'text',	'default' => '30px',	'css_units' => true, 	'title' => I18n::_('How far content is from sidebar?'), 'description' => I18n::_('The horizontal distance between the menu and the content area.')),
 		'group_responsive' => array('format' => false, 'default' => false, 'title' => I18n::_('Responsive design')),
-		'responsive' =>	array('format' => 'select', 'default' => 'no', 'values' => array('no', 'yes'), 'title' => I18n::_('Enabled'), 'description' => I18n::_('Sets whether layout should be responsive or not.')),
+		'responsive' =>	array('format' => 'select', 'default' => 'yes', 'values' => array('no', 'yes'), 'title' => I18n::_('Enabled'), 'description' => I18n::_('Sets whether layout should be responsive or not.')),
 		'mashUpColumns' => array('format' => 'select', 'default' => '1', 'values' => array('1','2','3','4'), 'title' => I18n::_('Mash-up columns'), 'description' => I18n::_('Column count for Mash-up section.')),
 	),
 

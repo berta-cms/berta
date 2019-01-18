@@ -1,0 +1,42 @@
+html,
+body {
+  width: 100%;
+  height: 100%;
+}
+
+html {
+  &.ie6 {
+    overflow-y: hidden;
+
+    body {
+      overflow-y: hidden;
+    }
+  }
+}
+
+body {
+  background-color: #fff;
+  text-align: left;
+}
+
+a {
+  img {
+    border: none;
+  }
+}
+
+.noHorizScroll {
+  overflow-x: hidden !important;
+}
+
+
+.iframeWrapper {
+  position: relative;
+  padding-bottom: 56.25%;
+
+  iframe {
+    position: absolute;
+    width: 100%;
+    height: 100% !important;
+  }
+}
