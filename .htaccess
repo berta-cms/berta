@@ -47,7 +47,8 @@ RewriteCond %{REQUEST_URI} !^/engine/editor.*
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule ^ /engine/dist/index.html [L]
 
-RewriteCond %{REQUEST_URI} ^/storage.*\.(xml|sqlite|db|log|php)$
+RewriteCond %{REQUEST_URI} ^/storage.*\.(xml|sqlite|db|log|php)$ [OR]
+RewriteCond %{REQUEST_URI} ^/storage/$
 RewriteRule ^ - [R=404,L]
 
 # If you have folders or files inside berta's folder you wish to access directly,
