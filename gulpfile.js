@@ -139,7 +139,7 @@ function scssTemplates (scssFiles, outputDestination) {
         browsers: ['last 2 versions'],
         cascade: false
       }))
-      .pipe(gulp_sourcemaps.write())
+      .pipe(gulp_sourcemaps.write('/maps'))
       .pipe(gulp.dest(outputDestination))
       .pipe(livereload())
       .pipe(notify('SCSS: compiled!'));
