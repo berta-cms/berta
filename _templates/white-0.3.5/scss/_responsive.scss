@@ -1,0 +1,185 @@
+.bt-responsive {
+  #sideColumn {
+    &.xCentered {
+      left: auto;
+      margin-left: 0;
+    }
+  }
+
+  img,
+  ol#pageEntries li.xEntry .xGalleryContainer .xGallery,
+  ol#pageEntries li.xEntry .xGalleryContainer .xGallery .xGalleryItem,
+  ol#pageEntries li.xEntry .xGalleryContainer .xGallery .xGalleryItem .image {
+    max-width: 100%;
+    height: auto !important;
+  }
+
+  ol {
+    &#pageEntries {
+      li {
+        &.xEntry {
+          .xGalleryType-row {
+            .xGallery {
+              max-width: inherit;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  ol#pageEntries li.xEntry,
+  ol#pageEntries li.xEntry .xGalleryContainer .xGallery .xGalleryItem,
+  .row .column {
+    box-sizing: border-box;
+  }
+
+  .vjs-poster {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+
+  #contentContainer {
+    width: auto;
+  }
+
+  #menuToggle {
+    display: none;
+    width: 1.5em;
+    height: auto;
+    padding: 1.5em 1em;
+    margin-bottom: 0.5em;
+    border: 1px solid black;
+    background-color: black;
+
+    &.active {
+      background-color: white;
+
+      span,
+      span:before,
+      span:after {
+        background-color: black;
+      }
+    }
+
+    span {
+      position: relative;
+      display: block;
+    }
+
+    span,
+    span:before,
+    span:after {
+      background-color: white;
+      width: 100%;
+      height: 2px;
+    }
+
+    span:before,
+    span:after {
+      position: absolute;
+      margin-top: -.6em;
+      content: " ";
+    }
+
+    span:after {
+      margin-top: .6em;
+    }
+  }
+
+  #sideColumnTop {
+    ul {
+      margin-bottom: 0;
+    }
+  }
+
+  #additionalText {
+    position: static;
+  }
+
+  .floating-banner {
+    position: static;
+    display: inline-block;
+    margin: 10px 10px 10px 0;
+  }
+
+
+
+
+  /* tablet */
+  @media (max-width: 767px) {
+
+    #sideColumn {
+      position: absolute;
+      bottom: auto;
+      left: 0;
+    }
+
+    #sideColumnTop {
+      padding-left: 0;
+
+      h1 {
+        min-height: initial;
+      }
+
+      >ul {
+        display: none;
+      }
+
+      #multisites {
+        display: block;
+      }
+
+      ul {
+        li {
+          margin-top: 1em;
+        }
+      }
+    }
+
+    #menuToggle {
+      display: inline-block;
+    }
+
+    #mainColumn {
+      margin-left: 0;
+
+      &.xCentered {
+        left: auto;
+        margin-left: 0;
+      }
+    }
+
+    .xNarrow {
+      #mainColumn {
+        &.xCentered {
+          margin-left: 0;
+        }
+      }
+    }
+
+    .floating-banners {
+      margin-left: 0;
+    }
+
+    ol {
+      &#pageEntries {
+        li {
+          &.xEntry {
+            .xGalleryType-row {
+              .xGallery {
+                max-width: 100%;
+
+                .xGalleryItem {
+                  padding-right: 0;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+}

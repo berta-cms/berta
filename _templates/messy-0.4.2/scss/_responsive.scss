@@ -1,0 +1,83 @@
+.bt-responsive {
+  @import '_responsive-common';
+
+  #pageEntries {
+    .xEntry {
+      .xGalleryType-row {
+        .xGallery {
+          max-width: inherit;
+        }
+      }
+    }
+  }
+
+  @media (max-width: 767px) {
+    @import 'responsive-mobile-common';
+
+    #pageEntries {
+      &.columns-3 {
+        .xEntry {
+          width: 50%;
+
+          &:nth-child(3n+1) {
+            clear: none;
+          }
+
+          &:nth-child(2n+1) {
+            clear: left;
+          }
+        }
+      }
+
+      &.columns-4 {
+        .xEntry {
+          width: 50%;
+
+          &:nth-child(2n+1) {
+            clear: left;
+          }
+        }
+      }
+
+      .xEntry {
+        .xGalleryType-row {
+          .xGallery {
+            max-width: 100%;
+          }
+        }
+      }
+    }
+  }
+
+  @media (max-width: 480px) {
+    #pageEntries {
+
+      &.columns-2,
+      &.columns-3,
+      &.columns-4 {
+        .xEntry {
+          float: none;
+          width: 100%;
+        }
+      }
+    }
+  }
+}
+
+
+.bt-auto-responsive {
+  @media (max-width: 767px) {
+    @import '_responsive-common';
+    @import 'responsive-mobile-common';
+
+    #contentContainer {
+      width: auto;
+    }
+
+    #pageEntries {
+      .xEntry {
+        width: auto !important;
+      }
+    }
+  }
+}
