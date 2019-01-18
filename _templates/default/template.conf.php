@@ -73,7 +73,7 @@ $templateConf = array(
 		'bodyMargin' => 			array('format' => 'text',		'default' => '20px 40px 40px', 'css_units' => true,	                                                'title' => I18n::_('Page margins'),             'description' => I18n::_('How far the content is from browser edges. Please see the short CSS guide at the bottom of this page.')),
 		'siteMenuMargin' => 		array('format' => 'text',		'default' => '0', 'css_units' => true,			                                                'title' => I18n::_('Top menu margins'),         'description' => I18n::_('How big is the distance from the top menu to the other page elements')),
 		'group_responsive' => array('format' => false, 'default' => false, 'title' => I18n::_('Responsive design')),
-		'responsive' =>	array('format' => 'select', 'default' => 'no', 'values' => array('no', 'yes'), 'title' => I18n::_('Enabled'), 'description' => I18n::_('Sets whether layout should be responsive or not.')),
+		'responsive' =>	array('format' => 'select', 'default' => 'yes', 'values' => array('no', 'yes'), 'title' => I18n::_('Enabled'), 'description' => I18n::_('Sets whether layout should be responsive or not.')),
 	),
 
 	'pageHeading' => array(

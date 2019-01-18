@@ -1,0 +1,191 @@
+.bt-responsive {
+
+  img,
+  #pageEntries li.xEntry .xGalleryContainer .xGallery,
+  #pageEntries li.xEntry .xGalleryContainer .xGallery .xGalleryItem,
+  #pageEntries li.xEntry .xGalleryContainer .xGallery .xGalleryItem .image {
+    max-width: 100%;
+    height: auto !important;
+  }
+
+  #xFilledBackground {
+    img {
+      max-width: none;
+    }
+  }
+
+  #contentContainer {
+    width: auto;
+  }
+
+  #menuToggle {
+    display: none;
+    width: 1.5em;
+    height: auto;
+    padding: 1.5em 1em;
+    margin-bottom: 0.5em;
+    border: 1px solid black;
+    background-color: black;
+
+    span {
+      position: relative;
+      display: block;
+
+      &:before,
+      &:after {
+        position: absolute;
+        margin-top: -.6em;
+        content: " ";
+      }
+
+      &:after {
+        margin-top: .6em;
+      }
+    }
+
+    span,
+    span:before,
+    span:after {
+      background-color: white;
+      width: 100%;
+      height: 2px;
+    }
+
+    &.active {
+      background-color: white;
+
+      span,
+      span:before,
+      span:after {
+        background-color: black;
+      }
+    }
+  }
+
+  h1 {
+    float: none;
+  }
+
+  #additionalText {
+    position: static;
+    margin-bottom: 1em;
+  }
+
+  .floating-banner {
+    position: static;
+    display: inline-block;
+    margin: 10px;
+  }
+
+  .vjs-poster {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+
+  #pageEntries li.xEntry,
+  #pageEntries li.xEntry .xGalleryContainer .xGallery .xGalleryItem,
+  .row .column {
+    box-sizing: border-box;
+  }
+
+  #pageEntries {
+    li {
+      &.xEntry {
+        .xGalleryType-row {
+          .xGallery {
+            max-width: inherit;
+          }
+        }
+      }
+    }
+  }
+
+
+  /*  tablet */
+  @media (max-width: 767px) {
+    #menuToggle {
+      display: inline-block;
+    }
+
+    #siteTopMenu,
+    #siteTopMenu ul,
+    #siteTopMenu ul li,
+    #siteTopMenu ul li a,
+    #siteTopMenu ul li a:link,
+    #siteTopMenu ul li a:visited {
+      float: none;
+    }
+
+    #siteTopMenu {
+      >ul {
+        display: none;
+
+        >li {
+          margin-bottom: 0.5em;
+        }
+      }
+
+      #mainMenu {
+        li {
+          line-height: 2em;
+
+          .separator {
+            display: none;
+          }
+        }
+      }
+
+      #subMenu {
+        display: none;
+      }
+
+      ul {
+        li {
+          &.selected {
+            ul {
+              &.subMenu {
+                li {
+                  a {
+                    font-weight: normal;
+                  }
+                }
+              }
+            }
+          }
+
+          ul {
+            &.subMenu {
+              display: block;
+              margin-left: 1em;
+
+              li {
+                &.selected {
+                  a {
+                    font-weight: bold;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
+    #pageEntries {
+      li {
+        &.xEntry {
+          .xGalleryType-row {
+            .xGallery {
+              max-width: 100%;
+
+              .xGalleryItem {
+                padding-right: 0;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,252 @@
+#allContainer {
+  position: relative;
+  margin: 0;
+  padding: 0;
+
+  &.xCentered {
+    margin: 0 auto;
+
+    #contentContainer {
+      width: 100%;
+    }
+  }
+}
+
+.ie6 {
+  #allContainer {
+    width: 100%;
+    height: 100%;
+    overflow-x: auto;
+  }
+
+  #contentContainer {
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto !important;
+  }
+}
+
+#contentContainer {
+  position: relative;
+  z-index: 1000;
+  width: 100%;
+}
+
+#mainColumnContainer {
+  position: relative;
+}
+
+#mainColumn {
+  position: relative;
+  padding-bottom: 20px;
+  width: auto;
+
+  &.xCentered {
+    left: 50%;
+  }
+}
+
+.xNarrow {
+  #mainColumn {
+    &.xCentered {
+      left: 0;
+    }
+  }
+}
+
+#firstPageMarkedEntries {
+  position: relative;
+}
+
+.firstPagePic {
+  position: absolute;
+
+  .xGalleryEditButton {
+    display: none;
+
+    span {
+      display: none;
+    }
+  }
+}
+
+.firstPagePicLink {
+  display: block;
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 1000;
+  outline: none;
+  width: 100%;
+  height: 100%;
+}
+
+#pageEntries {
+  position: relative;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  li {
+    &.xEntry {
+      position: relative;
+      clear: both;
+      list-style: none;
+      padding: 0;
+
+      h2 {
+        padding: 0;
+        margin: 0;
+        font-size: 16px;
+        font-weight: bold;
+      }
+
+      .xGalleryContainer {
+        position: relative;
+        clear: both;
+        padding: 0;
+
+        .xGallery {
+          position: relative;
+
+          .xGalleryItem {
+            display: block;
+          }
+        }
+
+        ul {
+          &.xGalleryNav {
+            display: block;
+            position: relative;
+            clear: both;
+            margin: 0 0 2px;
+            padding: 0;
+            list-style: none;
+            height: 18px;
+
+            li {
+              display: block;
+              float: left;
+              list-style: none;
+              line-height: 96%;
+              margin: 0;
+
+              a {
+                display: block;
+                float: left;
+                padding: 1px 5px 1px;
+                outline: none;
+              }
+
+              .xGalleryImageCaption {
+                display: none;
+              }
+            }
+          }
+        }
+      }
+
+      .entryText {
+        position: relative;
+        clear: both;
+        margin: 0 0 6px;
+
+        p {
+          margin: 0 0 6px;
+        }
+
+        ul {
+          margin: 0 0 6px;
+          padding: 0 0 0 15px;
+
+          li {
+            list-style-type: circle;
+            margin: 0 0 3px 0;
+            padding: 0;
+          }
+        }
+
+        ol {
+          margin: 0 0 6px;
+          padding: 0 0 0 15px;
+
+          li {
+            margin: 0 0 3px 0;
+            padding: 0;
+            list-style-type: decimal;
+          }
+        }
+      }
+
+      .entryTags {
+        position: relative;
+        clear: both;
+      }
+    }
+  }
+
+  /* disqus fix */
+  #pageEntries {
+    #dsq-content {
+
+      ul,
+      li {
+        list-style-position: outside;
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+      }
+    }
+  }
+}
+
+.xGalleryType-row {
+  .xGalleryItem {
+    position: relative;
+    float: left;
+  }
+}
+
+.xGalleryImageCaption {
+  position: relative;
+}
+
+.xGalleryType-slideshow {
+  .xGalleryImageCaption {
+    display: none;
+  }
+}
+
+.floating-banner {
+  position: absolute;
+  z-index: 3000;
+}
+
+.xSectionType-portfolio {
+
+  img,
+  #pageEntries li.xEntry .xGalleryContainer .xGallery,
+  #pageEntries li.xEntry .xGalleryContainer .xGallery div.xGalleryItem,
+  #pageEntries li.xEntry .xGalleryContainer .xGallery div.xGalleryItem .image {
+    max-width: 100%;
+    height: auto !important;
+  }
+
+  #pageEntries {
+    li {
+      &.xEntry {
+        .xGalleryType-row {
+          .xGallery {
+            max-width: inherit;
+
+            .xGalleryItem {
+              padding-right: 0;
+            }
+          }
+        }
+      }
+    }
+  }
+}

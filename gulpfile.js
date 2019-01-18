@@ -26,6 +26,18 @@ var template = {
       '_templates/white-0.3.5/scss/**/*.scss'
     ]
   },
+  default: {
+    dest: '_templates/default',
+    files: [
+      '_templates/default/scss/**/*.scss'
+    ]
+  },
+  mashup: {
+    dest: '_templates/mashup-0.3.5',
+    files: [
+      '_templates/mashup-0.3.5/scss/**/*.scss'
+    ]
+  }
 };
 
 var css_backend_files = [
@@ -136,6 +148,8 @@ function scssTemplates (scssFiles, outputDestination) {
 
 gulp.task('scss_messy', scssTemplates(template.messy.files, template.messy.dest));
 gulp.task('scss_white', scssTemplates(template.white.files, template.white.dest));
+gulp.task('scss_default', scssTemplates(template.default.files, template.default.dest));
+gulp.task('scss_mashup', scssTemplates(template.mashup.files, template.mashup.dest));
 
 gulp.task('css_backend', function () {
   return gulp.src(css_backend_files)
@@ -196,7 +210,7 @@ gulp.task('ng_lint', function () {
     .pipe(jshint.reporter('default'));
 });
 
-gulp.task('default', ['scss_messy', 'scss_white', 'css_backend', 'css_frontend', 'js_backend', 'ng_lint', 'js_ng_backend', 'js_frontend'], function () {
+gulp.task('default', ['scss_messy', 'scss_white', 'scss_default', 'scss_mashup', 'css_backend', 'css_frontend', 'js_backend', 'ng_lint', 'js_ng_backend', 'js_frontend'], function () {
 
   livereload.listen();
 
@@ -206,6 +220,14 @@ gulp.task('default', ['scss_messy', 'scss_white', 'css_backend', 'css_frontend',
 
   gulp.watch(template.white.files, function () {
     gulp.start('scss_white');
+  });
+
+  gulp.watch(template.default.files, function () {
+    gulp.start('scss_default');
+  });
+
+  gulp.watch(template.mashup.files, function () {
+    gulp.start('scss_mashup');
   });
 
   gulp.watch(css_backend_files, function () {
