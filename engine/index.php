@@ -1,5 +1,7 @@
 <?php
-if (empty($INDEX_INCLUDED)) { $INDEX_INCLUDED = false; }
+if (empty($INDEX_INCLUDED)) {
+    $INDEX_INCLUDED = false;
+}
 
 if (!$INDEX_INCLUDED) {
     define('AUTH_AUTHREQUIRED', true); // require authentification if inside engine folder
@@ -14,105 +16,8 @@ if (!$berta->security->userLoggedIn) {
     if ($INDEX_INCLUDED) {
         include_once $ENGINE_ROOT_PATH . 'editor/inc.editor.php';
         exit;
-    }
-    else {
+    } else {
         header('Location: /');
         exit;
     }
 }
-include_once $ENGINE_ROOT_PATH . '_classes/class.bertaeditor.php';
-
-$version = BertaEditor::$options['version'];
-$site = !empty($_REQUEST['site']) ? $_REQUEST['site'] : false;
-
-?><!DOCTYPE html>
-<html>
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title><?php echo $berta->settings->get('texts', 'pageTitle') ?></title>
-    <link rel="SHORTCUT ICON" href="<?php echo $SITE_ROOT_URL ?>favicon.ico"/>
-    <link rel="stylesheet" href="<?php echo $ENGINE_ROOT_URL ?>css/backend.min.css?<?php echo $version ?>" type="text/css" charset="utf-8" />
-    <link rel="stylesheet" href="<?php echo $ENGINE_ROOT_URL ?>css/editor.css.php?<?php echo $version ?>" type="text/css" charset="utf-8" />
-    <link rel="stylesheet" href="<?php echo $ENGINE_ROOT_URL ?>_lib/introjs/introjs.min.css?<?php echo $version ?>" type="text/css" charset="utf-8" />
-    <script src="<?php echo $ENGINE_ROOT_URL ?>_lib/mootools/mootools-core-1.4.5-full-compat-yc.js"></script>
-    <script src="<?php echo $ENGINE_ROOT_URL ?>_lib/mootools/mootools-1.2.5.1-more.js"></script>
-    <script src="<?php echo $ENGINE_ROOT_URL ?>_lib/introjs/intro.min.js"></script>
-
-    <script type="text/javascript">
-    var bertaGlobalOptions = {
-        "paths": {
-            "engineRoot": "<?php echo BertaEditor::$options['ENGINE_ROOT_URL'] ?>",
-            "engineABSRoot": "<?php echo BertaEditor::$options['ENGINE_ROOT_URL'] ?>",
-            "siteABSRoot": "<?php echo BertaEditor::$options['SITE_ROOT_URL'] ?>",
-            "template": "<?php echo BertaEditor::$options['SITE_ROOT_URL'] . '_templates/' . $berta->template->name . '/' ?>",
-            "updateUrl": "<?php echo BertaEditor::$options['ENGINE_ROOT_URL'] ?>/update.php"
-        },
-        "skipTour": <?php echo (isset($sections) && count($sections)) || $berta->settings->get('siteTexts', 'tourComplete') ? 'true' : 'false' ?>,
-        "session_id": "<?php echo session_id() ?>"
-    };
-    </script>
-    <?php echo BertaTemplate::sentryScripts(); ?>
-    <script src="<?php echo $ENGINE_ROOT_URL ?>js/berta.helpers.js"></script>
-    <script src="<?php echo $ENGINE_ROOT_URL ?>js/berta.engine.js"></script>
-    <style>
-        html,body {
-            width: 100%;
-            height: 100%;
-            margin: 0;
-        }
-        body {
-            overflow-y: hidden;
-        }
-    </style>
-</head>
-<body class="bt-content-editor page-xMySite">
-    <?php echo BertaEditor::getTopPanelHTML('site') ?>
-    <?php
-    /**
-     * - `allow-same-origin`: the given exceptions for page in iframe from the same origin
-     * - `allow-script`: allows to communicate with the parent window through messages (not modifying parent)
-     * - `allow-modals`: allows browser built in modals like `confirm()` and `alert()`.
-     *      @todo: remove this when alert popup system is built.
-     * - `allow-popups`: allows to create new popup window (`window.open`) from iframe. This is necessary for the HTML editing option.
-     *      @todo: remove this when the HTML editing is updated to JS popup.
-     * - `allow-forms`: allows forms to be submitted in iframe. This fixes edited HTML saving in HTML popup and hyperlink adding.
-     *      @todo: remove this when the HTML editing is updated to JS popup.
-     */?>
-    <iframe sandbox="allow-same-origin allow-scripts allow-modals allow-popups allow-forms" src="<?php echo $ENGINE_ROOT_URL ?>editor<?php echo $site ? "?site=$site" : '' ?>" frameborder="0" style="width:100%;height:100%;"></iframe>
-    <script>
-        (function(){
-            var topPanelContainer = document.getElementById('xTopPanelContainer');
-            var topMenu = window.Berta.Engine.initTopMenu(topPanelContainer);
-            window.Berta.Engine.initNewsTicker($('xNewsTickerContainer'));
-            window.BertaHelpers.initTour(topPanelContainer, bertaGlobalOptions.updateUrl);
-
-            window.addEventListener('message', function (event) {
-                var eventData = (event.data && event.data.split('=')) || [];
-
-                switch (eventData[0]) {
-                    case 'menu:show':
-
-                        if (topMenu) {
-                            topMenu.show();
-                        }
-                        break;
-
-                    case 'menu:hide':
-                        if (topMenu) {
-                            topMenu.hide();
-                        }
-                        break;
-
-                    case 'menu:set_site':
-                        topMenu.setSiteInURLs(eventData[1]);
-                        break;
-
-                    case 'user:logout':
-                        window.location.reload();
-                        break;
-                }
-            });
-        })();
-    </script>
-</body>
-</html>
