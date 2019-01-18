@@ -1,0 +1,291 @@
+#allContainer {
+  position: relative;
+  z-index: 100;
+  padding: 0;
+  margin: 0;
+}
+
+#contentContainer {
+  margin-top: 0;
+  margin-bottom: 0;
+
+  h1 {
+
+    a,
+    a:link,
+    a:visited,
+    a:hover,
+    a:active {
+      text-decoration: none;
+    }
+  }
+}
+
+#multisites {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  float: right;
+
+  li {
+    display: inline-block;
+    margin: 0 10px 10px 10px;
+  }
+}
+
+#siteTopMenu {
+  clear: both;
+
+  ul {
+    margin: 0 0 0;
+    padding: 0;
+    display: block;
+    clear: both;
+    list-style: none;
+
+    li {
+      display: block;
+      float: left;
+      margin: 0;
+
+      .separator {
+        display: block;
+        float: left;
+        padding: 0;
+      }
+
+      &:first-child {
+        .separator {
+          display: none;
+        }
+      }
+
+      a {
+
+        &:link,
+        &:visited {
+          display: block;
+          float: left;
+        }
+      }
+
+      &.selected {
+
+        a,
+        span {
+          font-weight: bold;
+        }
+
+        span {
+          &.separator {
+            font-weight: normal;
+            text-decoration: none;
+          }
+        }
+      }
+
+      ul {
+        &.subMenu {
+          display: none;
+        }
+      }
+    }
+  }
+
+  #mainMenu {
+    li {
+      white-space: nowrap;
+    }
+  }
+}
+
+#additionalText {
+  position: absolute;
+  max-width: 500px;
+  z-index: 49000;
+
+  p {
+    margin: 0;
+    padding: 0;
+  }
+}
+
+.ie {
+  #additionalText {
+    width: 500px;
+  }
+}
+
+#pageEntries {
+  list-style: none;
+  padding: 2em 0 0;
+  clear: both;
+  width: 100%;
+
+  li {
+    &.xEntry {
+      list-style: none;
+      padding: 0;
+
+      h2 {
+        display: block;
+        width: 100%;
+        padding: 0;
+      }
+
+      p {
+        &.shortDesc {
+          margin: 0 0 5px;
+          padding: 0;
+        }
+      }
+
+      .xGalleryContainer {
+        position: relative;
+        padding: 0;
+        margin: 0 0 2px;
+
+        .xGallery {
+          position: relative;
+
+          .xGalleryItem {
+            display: block;
+          }
+        }
+
+        ul {
+          &.xGalleryNav {
+            display: block;
+            position: relative;
+            clear: both;
+            margin: 0 0 2px;
+            padding: 0;
+            list-style: none;
+            height: 18px;
+
+            li {
+              display: block;
+              list-style: none;
+              line-height: 96%;
+              margin: 0;
+
+              a {
+                display: block;
+                float: left;
+                padding: 1px 2px 1px;
+              }
+
+              &.selected {
+                a {
+                  background-color: #535353;
+                  color: #FFFFFF;
+                }
+              }
+
+              .xGalleryImageCaption {
+                display: none;
+              }
+            }
+          }
+        }
+      }
+
+      .xGalleryType-row {
+        .xGalleryItem {
+          float: left;
+          padding-bottom: 5px;
+        }
+
+        .xGalleryImageCaption {
+          p {
+            margin: 5px 0 0;
+          }
+        }
+      }
+
+      .xGalleryType-slideshow {
+        .xGalleryImageCaption {
+          display: none;
+        }
+      }
+
+      .entryText {
+        width: 100%;
+        position: relative;
+        clear: both;
+        margin: 4px 0 8px;
+
+        p {
+          margin: 0 0 6px;
+        }
+
+        ul {
+          margin: 0 0 6px;
+          padding: 0 0 0 15px;
+
+          li {
+            list-style-type: circle;
+            margin: 0 0 3px 0;
+            padding: 0;
+          }
+        }
+
+        ol {
+          margin: 0 0 6px;
+          padding: 0 0 0 15px;
+
+          li {
+            margin: 0 0 3px 0;
+            padding: 0;
+            list-style-type: decimal;
+          }
+        }
+      }
+
+      .entryContent {
+        clear: both;
+        padding: 0;
+
+        p {
+          &.itm {
+            clear: both;
+            margin: 0 0 2px;
+            padding: 0;
+          }
+        }
+
+        .tagsList {
+          clear: both;
+
+          div {
+            clear: none;
+          }
+        }
+      }
+    }
+  }
+
+  /* disqus fix */
+  #dsq-content {
+
+    ul,
+    li {
+      list-style-position: outside;
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+    }
+  }
+}
+
+.xSectionType-portfolio {
+  .xGalleryContainer {
+    width: 100%;
+    float: none;
+  }
+}
+
+.floating-banner {
+  position: absolute;
+  z-index: 3000;
+}

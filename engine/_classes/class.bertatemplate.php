@@ -391,11 +391,9 @@ DOC;
 DOC;
         }
 
-        if ($this->templateName == 'messy') {
-            $vars['berta']['css'] .= <<<DOC
-            <link rel="stylesheet" href="{$templatesAbsRoot}{$this->name}/style.css?{$version}" type="text/css">
+        $vars['berta']['css'] .= <<<DOC
+    <link rel="stylesheet" href="{$templatesAbsRoot}{$this->name}/style.css?{$version}" type="text/css">
 DOC;
-        }
 
         $vars['berta']['css'] .= <<<DOC
     <link rel="stylesheet" href="{$templatesAbsRoot}{$this->name}/style.css.php?{$timestamp}{$site}{$forceResponsiveStyleParam}{$isEngineParam}" type="text/css">
