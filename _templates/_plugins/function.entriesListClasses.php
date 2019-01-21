@@ -5,16 +5,16 @@
  * File:     function.entriesListClasses.php
  * Type:     function
  * Name:     entriesListClasses
- * Purpose:  
+ * Purpose:
  * -------------------------------------------------------------
  */
-function smarty_function_entriesListClasses($params, &$smarty) {
-	global $berta;
-	
-	$classes = array('xEntriesList');
-	$classes[] = 'xSection-' . $berta->sectionName;
-	$classes[] = 'xTag-' . $berta->tagName;
+function smarty_function_entriesListClasses($params, &$smarty)
+{
+    global $berta;
 
-	return implode(' ', $classes);
+    $classes = ['xEntriesList'];
+    $classes[] = 'xSection-' . $berta->sectionName;
+    $classes[] = 'xTag-' . $berta->tagName;
+
+    return implode(' ', $classes);
 }
-?>

@@ -8,12 +8,11 @@
  * Purpose:
  * -------------------------------------------------------------
  */
-function smarty_function_entryGalleryFirstImage($params, &$smarty) {
-
-    if(!empty($params['entry'])) {
+function smarty_function_entryGalleryFirstImage($params, &$smarty)
+{
+    if (!empty($params['entry'])) {
         return BertaGallery::getFirstImage($params['entry']['__raw']);
     }
 
     return '';
 }
-?>

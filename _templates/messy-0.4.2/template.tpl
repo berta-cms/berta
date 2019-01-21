@@ -211,8 +211,6 @@
         {* all templates must include allContainer *}
         <div id="allContainer">
 
-        {* engine panel lives in pageHeader - don't leave it out *}
-        {* { pageHeader } *}
     { /if }
 
     {* F awesome hack. Dont do it in future *}
