@@ -2,12 +2,11 @@
 
 class BertaGallery extends BertaBase
 {
-
     public static function getImagesArray($entry)
     {
-        $imgs = array();
+        $imgs = [];
         if (!empty($entry['mediaCacheData']['file']) && count($entry['mediaCacheData']['file']) > 0) {
-            $imgs = array();
+            $imgs = [];
             Array_XML::makeListIfNotList($entry['mediaCacheData']['file']);
             foreach ($entry['mediaCacheData']['file'] as $idx => $im) {
                 if ((string) $idx == '@attributes') {
@@ -88,7 +87,7 @@ class BertaGallery extends BertaBase
             }
 
             $strOut = '<div class="xGalleryContainer xGalleryHasImages xGalleryType-' . $galleryType . $specificClasses . '">';
-            $strOut .= "<div class=\"xGallery\" style=\"width: {$firstImageWidth}px; height: {$firstImageHeight}px;\"" . ($rowGalleryPadding ? ' xRowGalleryPadding="' . $rowGalleryPadding . '"' : '') . ">";
+            $strOut .= "<div class=\"xGallery\" style=\"width: {$firstImageWidth}px; height: {$firstImageHeight}px;\"" . ($rowGalleryPadding ? ' xRowGalleryPadding="' . $rowGalleryPadding . '"' : '') . '>';
             $strOut .= $firstImageHTML;
             if ($isAdminMode) {
                 $strOut .= '<a href="#" class="xGalleryEditButton xEditorLink xSysCaption xMAlign-container"><span class="xMAlign-outer-gallery"><span class="xMAlign-inner-gallery">edit gallery</span></span></a>';
@@ -101,11 +100,8 @@ class BertaGallery extends BertaBase
             }
 
             $strOut .= '</div>';
-
         } elseif ($isAdminMode) {
             $strOut = '<div class="xGalleryContainer">'; //.
-            //'<img src="' . $options['MEDIA_URL'] . $p['mediafolder']['value'] . '/' . $imgs[0] . '" alt="' . (!empty($p['title']['value']) ? htmlspecialchars($p['title']['value']) : '') . '" />' .
-            //'</div>';
 
             $strOut .= '<div class="imageEmpty">';
             if ($isAdminMode) {
@@ -118,7 +114,7 @@ class BertaGallery extends BertaBase
         }
 
         return $bReturnFullInfo ?
-        array($strOut, $firstImageWidth, $firstImageHeight) :
+        [$strOut, $firstImageWidth, $firstImageHeight] :
         $strOut;
     }
 
@@ -131,13 +127,12 @@ class BertaGallery extends BertaBase
         $firstImageHTML = $firstImageWidth = $firstImageHeight = null;
         if ($img) {
             if ($img['@attributes']['type'] == 'image' || !empty($img['@attributes']['poster_frame'])) {
-
                 $isPoster = !empty($img['@attributes']['poster_frame']);
                 $imgSrc = $isPoster ? $img['@attributes']['poster_frame'] : $img['@attributes']['src'];
                 $srcset = '';
 
                 if (isset($img['value'])) {
-                    $alt = str_replace(array("\r\n", "\n"), " ", $img['value']);
+                    $alt = str_replace(["\r\n", "\n"], ' ', $img['value']);
                     $alt = trim(preg_replace('/\s\s+/', ' ', htmlspecialchars(strip_tags($alt))));
                 } else {
                     $alt = '';
@@ -181,19 +176,17 @@ class BertaGallery extends BertaBase
                     '<div class="xGalleryImageCaption">' . (!empty($img['value']) ? $img['value'] : '') . '</div>' .
                     '</div>';
             }
-
         }
 
-        return array($firstImageHTML, $width, $height);
+        return [$firstImageHTML, $width, $height];
     }
 
     private static function getNavHTML($imgs, $galleryType, $mFolder, $mFolderABS, $isAdminMode = false, $sizeRatio = 1, $imageTargetWidth = 0, $imageTargetHeight = 0, $galleryFullScreen = false)
     {
-
         //milkbox fullscreen
         $milkbox = '';
 
-        $navStr = '<ul class="xGalleryNav" ' . ((count($imgs) == 1 || in_array($galleryType, array('row', 'column', 'pile', 'link'))) ? 'style="display:none"' : '') . '>'; // <link/> / added || $galleryType == 'link'
+        $navStr = '<ul class="xGalleryNav" ' . ((count($imgs) == 1 || in_array($galleryType, ['row', 'column', 'pile', 'link'])) ? 'style="display:none"' : '') . '>'; // <link/> / added || $galleryType == 'link'
         for ($i = 0; $i < count($imgs); $i++) {
             $width = $height = $isPoster = 0;
             $srcset = '';
@@ -210,8 +203,8 @@ class BertaGallery extends BertaBase
                 $src = $imgs[$i]['@attributes']['src'];
 
                 // For caompatibility with versions < 0.6.6 leave the search for "original" images
-                $origLink = file_exists($mFolder . "_orig_" . $imgs[$i]['@attributes']['src']) ?
-                $mFolderABS . "_orig_" . $imgs[$i]['@attributes']['src'] :
+                $origLink = file_exists($mFolder . '_orig_' . $imgs[$i]['@attributes']['src']) ?
+                $mFolderABS . '_orig_' . $imgs[$i]['@attributes']['src'] :
                 $mFolderABS . $src;
                 $videoLink = '';
             }
@@ -300,7 +293,7 @@ class BertaGallery extends BertaBase
             $newH = $boundsH;
         }
 
-        return array($newW, $newH);
+        return [$newW, $newH];
     }
 
     public static function getResizedSrc($folder, $src, $w, $h)
@@ -324,7 +317,6 @@ class BertaGallery extends BertaBase
                 ($imageInfo[2] == IMAGETYPE_PNG && function_exists('imagecreatefrompng')));
 
             if ($canMakeThumb) {
-
                 if ($thumbWidth && !$thumbHeight) {
                     $thumbHeight = ($thumbWidth / $imageInfo[0]) * $imageInfo[1];
                 } elseif (!$thumbWidth && $thumbHeight) {
@@ -371,8 +363,6 @@ class BertaGallery extends BertaBase
         $newFileName = self::$options['images']['grid_image_prefix'] . $fileName;
 
         $gridImagePath = $dirName . $newFileName;
-        //$sizes = getimagesize($gridImagePath);
-        //if(file_exists($gridImagePath) && $sizes[0] == 140) {
         if (file_exists($gridImagePath)) {
             return $newFileName;
         } elseif (self::createThumbnail($imagePath, $gridImagePath, 140, '')) {
@@ -393,7 +383,7 @@ class BertaGallery extends BertaBase
 
         $alwaysSelectTag = $berta->settings->get('navigation', 'alwaysSelectTag') == 'yes';
 
-        $tagKeys = $berta->tags[$section['name']] ? array_keys($berta->tags[$section['name']]) : array();
+        $tagKeys = $berta->tags[$section['name']] ? array_keys($berta->tags[$section['name']]) : [];
         $notFirstTag = $tag != reset($tagKeys);
 
         $sectionKeys = array_keys($berta->sections);
@@ -404,25 +394,21 @@ class BertaGallery extends BertaBase
             if ($tag != null && (($alwaysSelectTag && $notFirstTag) || !$alwaysSelectTag)) {
                 $linkHref .= '&tag=' . $tag;
             }
-
         } elseif (($berta->environment == 'engine' || ($berta->environment == 'site' && !$berta->apacheRewriteUsed)) && $firstSection) {
             $linkHref = self::$options['SITE_ROOT_URL'];
             if ($tag != null && (($alwaysSelectTag && $notFirstTag) || !$alwaysSelectTag)) {
                 $linkHref .= '?section=' . $section['name'] . '&tag=' . $tag;
             }
-
         } elseif ($berta->environment == 'site' && $berta->apacheRewriteUsed && !$firstSection) {
             $linkHref = self::$options['SITE_ROOT_URL'] . $section['name'] . '/';
             if ($tag != null && (($alwaysSelectTag && $notFirstTag) || !$alwaysSelectTag)) {
                 $linkHref .= $tag . '/';
             }
-
         } elseif ($berta->environment == 'site' && $berta->apacheRewriteUsed && $firstSection) {
             $linkHref = self::$options['SITE_ROOT_URL'];
             if ($tag != null && (($alwaysSelectTag && $notFirstTag) || !$alwaysSelectTag)) {
                 $linkHref .= $section['name'] . '/' . $tag . '/';
             }
-
         }
 
         if ($imgs && count($imgs) > 0) {
@@ -437,7 +423,4 @@ class BertaGallery extends BertaBase
 
         return $returnImages;
     }
-
 }
-
-?>
