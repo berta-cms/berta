@@ -135,7 +135,7 @@
 				<div id="firstPageMarkedEntries" class="{ entriesListClasses } xNoEntryOrdering{if intval($berta.settings.pageLayout.mashUpColumns)>1} columns-{intval($berta.settings.pageLayout.mashUpColumns)}{ /if }">
 					{ selectMarkedEntries assign="markedEntries" count=$berta.section.marked_items_count }
 					{ foreach from=$markedEntries item="entry" name="markedEntriesLoop" }
-						{ white_firstPageMarkedEntry entry=$entry imageselect=$berta.section.marked_items_imageselect }
+						{ firstPageMarkedEntry entry=$entry imageselect=$berta.section.marked_items_imageselect }
 					{ /foreach }
 					<br class="clear" />
 				</div>
