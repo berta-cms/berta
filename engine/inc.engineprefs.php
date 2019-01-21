@@ -3,22 +3,21 @@ date_default_timezone_set(@date_default_timezone_get());
 
 $options['IS_AJAX'] = $IS_AJAX;
 
-if(empty($options)) $options = array();
+if (empty($options)) {
+    $options = [];
+}
 include_once $ENGINE_ROOT_PATH . '_classes/class.bertabase.php';
 BertaBase::$options = $options;
-$options =& BertaBase::$options;
-
+$options = &BertaBase::$options;
 
 // user configuration variables
 
 require 'config/inc.conf.php';
 
-
 /**
  * Berta's release version
  */
 require 'inc.version.php';
-
 
 /**
  * Interface language (I18n)
@@ -26,11 +25,9 @@ require 'inc.version.php';
  */
 
 $options['default_language'] = 'en';
-$options['languages'] = array('en' => 'English', 'lv' => 'Latviešu', 'fr' => 'Français', 'ru' => 'Русский', 'nl' => 'Nederlands', 'pl' => 'Polski', 'es' => 'Spanish');
-
+$options['languages'] = ['en' => 'English', 'lv' => 'Latviešu', 'fr' => 'Français', 'ru' => 'Русский', 'nl' => 'Nederlands', 'pl' => 'Polski', 'es' => 'Spanish'];
 
 $options['MOBILE_DEVICE'] = $MOBILE_DEVICE;
-
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -54,9 +51,8 @@ $options['tags.xml'] = 'tags.xml';
 $options['cache.tags.%.xml'] = 'cache.tags.%.xml';
 $options['blog.%.xml'] = 'blog.%.xml';
 
-$options['tags'] = array();
+$options['tags'] = [];
 $options['tags']['all_value'] = 'a181a603769c1f98ad927e7367c7aa51';
-
 
 /**
  * System folders
@@ -71,7 +67,6 @@ $options['TEMPLATES_ROOT'] = $SITE_ROOT_PATH . '_templates/';
 $options['TEMPLATES_ABS_ROOT'] = $options['SITE_ROOT_URL'] . '_templates/';
 $options['TEMPLATES_FULL_SERVER_PATH'] = $SITE_ROOT_PATH . '_templates' . '/';
 
-
 /**
  * Writable folders
  */
@@ -84,28 +79,27 @@ $options['MULTISITE'] = BertaContent::getSite($options);
 
 $options['MEDIA_FOLDER_NAME'] = 'media';
 
-if( !empty($options['MULTISITE']) ) {
+if (!empty($options['MULTISITE'])) {
     $options['XML_ROOT'] = $options['XML_SITES_ROOT'] . $options['MULTISITE'] . '/';
 
     $options['MEDIA_ROOT'] = $options['XML_ROOT'] . $options['MEDIA_FOLDER_NAME'] . '/';
-	$options['MEDIA_URL'] = '/storage/-sites/' . $options['MULTISITE'] . '/' . $options['MEDIA_FOLDER_NAME'] . '/';
+    $options['MEDIA_URL'] = '/storage/-sites/' . $options['MULTISITE'] . '/' . $options['MEDIA_FOLDER_NAME'] . '/';
     $options['MEDIA_TEMP_ROOT'] = $options['MEDIA_ROOT'];
 
-	$options['CACHE_ROOT'] = $options['XML_ROOT'] . 'cache/';
-	$options['MEDIA_ABS_ROOT'] = $options['SITE_ROOT_URL'] . 'storage/-sites/' . $options['MULTISITE'] . '/media/';
-	$options['CACHE_ABS_ROOT'] = $options['SITE_ROOT_URL'] . 'storage/-sites/' . $options['MULTISITE'] . '/cache/';
-}else{
+    $options['CACHE_ROOT'] = $options['XML_ROOT'] . 'cache/';
+    $options['MEDIA_ABS_ROOT'] = $options['SITE_ROOT_URL'] . 'storage/-sites/' . $options['MULTISITE'] . '/media/';
+    $options['CACHE_ABS_ROOT'] = $options['SITE_ROOT_URL'] . 'storage/-sites/' . $options['MULTISITE'] . '/cache/';
+} else {
     $options['XML_ROOT'] = $SITE_ROOT_PATH . 'storage/';
 
     $options['MEDIA_ROOT'] = $SITE_ROOT_PATH . 'storage/' . $options['MEDIA_FOLDER_NAME'] . '/';
     $options['MEDIA_URL'] = $SITE_ROOT_URL . 'storage/' . $options['MEDIA_FOLDER_NAME'] . '/';
     $options['MEDIA_TEMP_ROOT'] = $options['MEDIA_ROOT'];
 
-	$options['CACHE_ROOT'] = $SITE_ROOT_PATH . 'storage/cache/';
-	$options['MEDIA_ABS_ROOT'] = $options['SITE_ROOT_URL'] . 'storage/media/';
-	$options['CACHE_ABS_ROOT'] = $options['SITE_ROOT_URL'] . 'storage/cache/';
+    $options['CACHE_ROOT'] = $SITE_ROOT_PATH . 'storage/cache/';
+    $options['MEDIA_ABS_ROOT'] = $options['SITE_ROOT_URL'] . 'storage/media/';
+    $options['CACHE_ABS_ROOT'] = $options['SITE_ROOT_URL'] . 'storage/cache/';
 }
-
 
 /**
  * Berta's hosting options
@@ -114,16 +108,15 @@ require 'inc.hosting.php';
 
 // if hosted on HIP, need to show "hosted on HIP"
 //$options['hip_ipaddr'] = array('85.31.99.218', '85.31.102.201');
-$options['hip_ipaddr'] = array();
-
+$options['hip_ipaddr'] = [];
 
 // external
-$options['remote_update_uri'] = array(
-	'http://www.berta.me/news_ticker_videos_update.php'
-);
-foreach($options['hip_ipaddr'] as $ip)
-	$options['remote_update_uri'][] = 'http://' . $ip . '/berta-remote/news_ticker_videos_update.php';
-
+$options['remote_update_uri'] = [
+    'http://www.berta.me/news_ticker_videos_update.php'
+];
+foreach ($options['hip_ipaddr'] as $ip) {
+    $options['remote_update_uri'][] = 'http://' . $ip . '/berta-remote/news_ticker_videos_update.php';
+}
 
 // thumbnail size for editor layout
 $options['images']['small_thumb_width'] = false;	// false means "auto"
@@ -146,7 +139,6 @@ $options['images']['medium_height'] = 400;
 $options['images']['large_width'] = 600;
 $options['images']['large_height'] = 600;
 
-
 /**
  * Editables
  */
@@ -165,11 +157,11 @@ $xEditSelectorRC = 'xEditableRC';	// with "real" content
 $xEditSelectorYesNo = 'xEditableYesNo';	// the "yes/no" switch
 $xEmpty = 'xEmpty';
 
-$editsForSettings = array('text' => $xEditSelectorSimple,
-  						  'longtext' => $xEditSelectorTA,
-						  'richtext' => $xEditSelectorMCESimple,
-						  'color' => $xEditSelectorColor,
-						  'image' => $xEditSelectorImage,
-						  'icon' => $xEditSelectorICO,
-						  'select' => $xEditSelectorSelectRC,
-					 	  'fontselect' => $xEditSelectorFontSelect);
+$editsForSettings = ['text' => $xEditSelectorSimple,
+                          'longtext' => $xEditSelectorTA,
+                          'richtext' => $xEditSelectorMCESimple,
+                          'color' => $xEditSelectorColor,
+                          'image' => $xEditSelectorImage,
+                          'icon' => $xEditSelectorICO,
+                          'select' => $xEditSelectorSelectRC,
+                          'fontselect' => $xEditSelectorFontSelect];

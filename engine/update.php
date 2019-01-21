@@ -86,7 +86,6 @@ if (!$returnError) {
                     'path' => $url_path,
                     'smallThumb' => $smallThumb
                     ];
-
             }
 
             $e['updated'] = ['value' => date('d.m.Y H:i:s')];
