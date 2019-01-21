@@ -896,4 +896,4 @@ var BertaBackground = new Class({
   },
 });
 
-var messyMess = new MessyMess();
+new MessyMess();
