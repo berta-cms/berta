@@ -57,8 +57,6 @@ var js_backend_files = [
   'engine/_lib/mootools/mootools-1.2.5.1-more.js',
   'engine/_lib/mootools/mootools-1.2.5.1-more-delegation.js',
   'engine/_lib/mootools/Element.Data.js',
-  'engine/_lib/mgfx/rotater.js',
-  'engine/_lib/mgfx/tabs.js',
   'engine/_lib/picturefill/picturefill.min.js',
   'engine/_lib/video-js/video.min.js',
   'engine/js/berta.helpers.js',

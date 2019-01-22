@@ -112,18 +112,6 @@ var BertaEditor = new Class({
           this.elementEdit_init(el, this.options.xBertaEditorClassAction);
         }, this);
 
-        var maxH = 0;
-        if ($('settingsTabs')) {
-          var tabsDims = $('settingsTabs').getSize();
-          $('settingsContentContainer').getElements('.settingsContent').each(function (el) {
-            var dims = el.getSize();
-            maxH = Math.max(maxH, dims.y);
-            el.setStyle('top', (tabsDims.y - 1) + 'px');
-          });
-          $('settingsContentContainer').setStyle('height', (maxH + 20) + 'px');
-          this.tabsInit.delay(300);
-        }
-
         if ($('xNewsTickerContainer')) this.hideNewsTicker();
 
         break;
@@ -361,15 +349,6 @@ var BertaEditor = new Class({
     }
   },
 
-  tabsInit: function () {
-    var tabs = new MGFX.Tabs('.settingsTab', '.settingsContent', {
-      autoplay: false,
-      transitionDuration: 100,
-      slideInterval: 6000
-    });
-  },
-
-
   bgImageInit: function () {
     var imContainer = $('xFilledBackground');
     if (imContainer) {
@@ -381,6 +360,7 @@ var BertaEditor = new Class({
       }
     }
   },
+
   bgImageInit_do: function () {
     var imContainer = $('xFilledBackground');
     var im = imContainer.getElement('img');
