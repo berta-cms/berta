@@ -445,7 +445,7 @@ var BertaEditorBase = new Class({
               editor.mooRainbow = new MooRainbow(null, {
                 id: 'xMooRainbow',
                 wheel: true,
-                imgPath: '_lib/moorainbow/images/'
+                imgPath: '../_lib/moorainbow/images/'
               });
             editor.mooRainbow.element = this;
 
