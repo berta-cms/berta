@@ -4,9 +4,7 @@ var BertaGalleryEditor = new Class({
   Implements: [Options, Events, UnlinearProcessDispatcher],
 
   options: {
-    uupdateUrl: '/engine/update.php',
-    engineRoot: '/engine/',
-    flashUploadEnabled: true
+    engineRoot: '/engine/'
   },
 
   // DOM elements

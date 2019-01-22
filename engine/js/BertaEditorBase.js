@@ -6,7 +6,6 @@ Element.implement({
 
   exists: function () {
     return this;
-    //return (this.getIndex() >= 0);
   },
 
   getClassStoredValue: function (varName) {
@@ -26,7 +25,6 @@ Element.implement({
     }
     this.addClass(varName + '-' + varValue);
   }
-
 });
 
 var BertaEditorBase = new Class({
@@ -116,46 +114,6 @@ var BertaEditorBase = new Class({
 
   },
 
-  // News ticker functions
-  initNewsTicker: function () {
-    // init news ticker for all pages
-    this.newsTickerContainer = $('xNewsTickerContainer');
-    if (this.newsTickerContainer) {
-      this.newsTickerContainer.getElement('a.close').addEvent('click', function (event) {
-        event.stop();
-        this.hideNewsTicker();
-      }.bind(this));
-    }
-  },
-
-  hideNewsTicker: function (event) {
-    this.newsTickerContainer = $('xNewsTickerContainer');
-
-    if (!this.newsTickerContainer.hasClass('xNewsTickerHidden')) {
-      this.newsTickerContainer.addClass('xNewsTickerHidden');
-
-      var topPanel = $('xTopPanel');
-      var editorMenu = $('xEditorMenu');
-      var totalWidth = 0;
-
-      editorMenu.getElements('li').each(function (el) {
-        totalWidth += el.getSize().x;
-      });
-      totalWidth += parseInt(editorMenu.getStyle('padding-left')) + parseInt(editorMenu.getStyle('padding-right')) + 1;
-
-      new Fx.Slide(this.newsTickerContainer, {
-        duration: 800,
-        transition: Fx.Transitions.Quint.easeInOut
-      }).show().slideOut();
-      topPanel.set('tween', {
-        duration: 800,
-        transition: Fx.Transitions.Quint.easeInOut
-      }).tween('width', topPanel.getSize().x + 1 + 'px', totalWidth + 'px');
-
-      Cookie.write('_berta_newsticker_hidden', 1 /*,{ domain: window.location.host, path: window.location.pathname }*/ );
-    }
-  },
-
 
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   ///|  Element initialization  |///////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -167,7 +125,7 @@ var BertaEditorBase = new Class({
     el.store('elementEdit_init', true);
 
     var bPlaceholderSet = this.makePlaceholderIfEmpty(el),
-        self = this;
+      self = this;
 
 
     switch (editorClass) {
@@ -184,7 +142,6 @@ var BertaEditorBase = new Class({
             editor.fireEvent(BertaEditorBase.EDITABLE_START, [el, editor.elementEdit_instances[editor.elementEdit_instances.length - 1]]);
           }
         }.bindWithEvent(el, this));
-        //this.makePlaceholderIfEmpty(el);
         break;
 
       case this.options.xBertaEditorClassTA:
@@ -318,8 +275,8 @@ var BertaEditorBase = new Class({
 
         var params = [];
         var paramNames = ['xMinWidth', 'xMinHeight', 'xMaxWidth', 'xMaxHeight'],
-            urlParamNames = ['min_width', 'min_height', 'max_width', 'max_height'],
-            p;
+          urlParamNames = ['min_width', 'min_height', 'max_width', 'max_height'],
+          p;
         for (var i = 0; i < paramNames.length; i++) {
           p = el.getClassStoredValue(paramNames[i]);
           if (p) params.push(urlParamNames[i] + '=' + p);
@@ -578,7 +535,6 @@ var BertaEditorBase = new Class({
             }
           },
           onDrag: function () {
-            window.BertaHelpers.hideTopMenus();
             if (parseInt(el.getStyle('left')) < 0) {
               el.setStyle('left', '0');
             }
@@ -608,9 +564,6 @@ var BertaEditorBase = new Class({
             }
           },
           onComplete: function (el) {
-            window.BertaHelpers.showTopMenus();
-
-            this.hideControlPanel(el);
             $('xCoords').destroy();
             el.removeClass('xEditing');
 
@@ -646,7 +599,6 @@ var BertaEditorBase = new Class({
 
           }.bind(this)
         });
-        this.hideControlPanel(el);
         break;
 
       case this.options.xBertaEditorClassAction:
@@ -813,17 +765,6 @@ var BertaEditorBase = new Class({
           console.error(responseBody);
         },
       }).post();
-    }
-  },
-
-  hideControlPanel: function(el) {
-    if ( (el.hasClass('xEntry') || el.hasClass('xProperty-additionalTextXY')) &&  parseInt(el.getStyle('top'))<40 ){
-      el.addEvent('mouseenter', function(){
-        window.BertaHelpers.hideTopMenus();
-      });
-      el.addEvent('mouseleave', function(){
-        window.BertaHelpers.showTopMenus();
-      });
     }
   },
 
@@ -1124,7 +1065,7 @@ var BertaEditorBase = new Class({
           case el.hasClass(this.options.xBertaEditorClassSelectRC.substr(1)):
           case el.hasClass(this.options.xBertaEditorClassFontSelect.substr(1)):
             var editInitializer = this.elementEdit_instances[this.elementEdit_instances.length - 1].editting,
-                oldValue;
+              oldValue;
             if (editInitializer.hasClass('xEntrySlideNumberVisibility')) {
               if (resp.update == 'no') oldValue = 'yes';
               else oldValue = 'no';
@@ -1154,19 +1095,14 @@ var BertaEditorBase = new Class({
 
             $$('.galleryTypeSettings').addClass('xHidden');
 
-            //console.debug(newContentText);
             if (newContentText == 'slideshow') {
               el.getSiblings('.xEntrySlideshowSettings').removeClass('xHidden');
-              // el.getSiblings('.xEntryLinkSettings').addClass('xHidden');
             }
             if (newContentText == 'row') {
               el.getSiblings('.xEntryRowSettings').removeClass('xHidden');
-              // el.getSiblings('.xEntrySlideshowSettings').addClass('xHidden');
-              // el.getSiblings('.xEntryLinkSettings').addClass('xHidden');
             }
             if (newContentText == 'link') {
               el.getSiblings('.xEntryLinkSettings').removeClass('xHidden');
-              // el.getSiblings('.xEntrySlideshowSettings').addClass('xHidden');
             }
             break;
 
@@ -1356,7 +1292,6 @@ var BertaEditorBase = new Class({
       height: '60px !important',
       theme_advanced_statusbar_location: null,
       plugins: 'save,insertanything'
-      //paste_postprocess : function(pl,o) { o.node.innerHTML = TidyEditor("paste_postprocess", o.node.innerHTML); }
     });
   },
 
@@ -1388,6 +1323,7 @@ var BertaEditorBase = new Class({
       'html': '&nbsp;' + property + '&nbsp;'
     });
   },
+
   makePlaceholder: function (el) {
     var property = el.getClassStoredValue('xProperty');
     var caption = el.getClassStoredValue('xCaption');
@@ -1396,16 +1332,15 @@ var BertaEditorBase = new Class({
     return true;
   },
 
-
   makePlaceholderIfEmpty: function (el) {
     if (el.get('html').trim() == '')
       return this.makePlaceholder(el);
     return false;
   },
+
   makeEmptyIfEmpty: function (el) {
     if (el.inlineIsEmpty()) el.innerHTML = '';
   },
-
 
   escapeForJSON: function (str) {
     // Replace &quot: xBertaEditorClassSimple editor reads value from element html instead of text
@@ -1520,54 +1455,3 @@ var BertaEditorBase = new Class({
 
 BertaEditorBase.EDITABLE_START = 'editable_start';
 BertaEditorBase.EDITABLE_FINISH = 'editable_finish';
-
-
-// Toggles top panel's visibility
-window.addEvent('domready', function () {
-  var slideEl = document.getElementById('xTopPanel');
-  if (window.BertaHelpers) {
-    window.BertaHelpers.showTopMenus();
-    window.BertaHelpers.updateTopMenuSite(document.location.search);
-  }
-
-  if (slideEl) {
-    var slideOutEl = document.getElementById('xTopPanelSlideOut');
-    var slideInEl = document.getElementById('xTopPanelSlideIn');
-
-    var fxOut = new Fx.Tween(slideEl);
-    var fxIn = new Fx.Tween(slideInEl);
-
-    slideOutEl.getElement('span').addEvent('click', function (event) {
-      event.stop();
-
-      if ($('xNewsTickerContainer')) {
-        $('xNewsTickerContainer').hide();
-      }
-
-      fxOut.start('top', -19).chain(function () {
-        fxIn.start('top', 0);
-      });
-    });
-
-    slideInEl.getElement('span').addEvent('click', function (event) {
-      event.stop();
-
-      fxIn.start('top', -19).chain(function () {
-        fxOut.start('top', 0);
-      });
-    });
-  }
-});
-
-
-function TidyEditor(t, v) {
-  alert(v);
-  switch (t) {
-    case 'paste_postprocess':
-      var p4 = /<div id="_mcePaste[^>]*>(?!<div>)([\s\S]*)<\/div>([\s\S]*)$/i;
-      v = v.replace(p4, '<div>$1</div>');
-      var p5 = /<div id="_mcePaste[^>]*>/gi;
-      v = v.replace(p5, '<div>');
-  }
-  return v;
-}

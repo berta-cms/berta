@@ -122,15 +122,6 @@ var MessyMess = new Class({
       $$('.xEntryMove').addClass('xHandle');
       $$('.xEntryToBack').addEvent('click', this.editor_saveOrder.bindWithEvent(this));
 
-      $$('.xEditableDragXY').addEvents({
-        mouseenter: function() {
-          window.BertaHelpers.hideTopMenus();
-        },
-        mouseleave: function() {
-          window.BertaHelpers.showTopMenus();
-        }
-      });
-
       bertaEditor.fixDragHandlePos();
     }
 

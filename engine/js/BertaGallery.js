@@ -53,9 +53,10 @@ var BertaGallery = new Class({
 
   debounce: function (func, wait, immediate) {
     var timeout;
-    return function() {
-      var context = this, args = arguments;
-      var later = function() {
+    return function () {
+      var context = this,
+        args = arguments;
+      var later = function () {
         timeout = null;
         if (!immediate) func.apply(context, args);
       };
@@ -71,8 +72,6 @@ var BertaGallery = new Class({
     this.isAutoResponsive = $$('.bt-auto-responsive').length > 0;
     this.container = container;
     this.type = this.container.getClassStoredValue('xGalleryType');
-    //this.container.addClass('galleryType-' + this.type);
-
     this.fullscreen = this.container.getElement('div.xFullscreen');
     this.imageContainer = this.container.getElement('div.xGallery');
     this.navContainer = this.container.getElement('ul.xGalleryNav');
@@ -279,8 +278,8 @@ var BertaGallery = new Class({
       }
 
       var totalWidth = 0,
-          maxHeight = 0,
-          itmSize, numImages = 0;
+        maxHeight = 0,
+        itmSize, numImages = 0;
       this.imageContainer.getChildren('.xGalleryItem').each(function (item) {
         if (item.getClassStoredValue('xGalleryItemType') != 'video') {
           item.setStyle('height', 'auto');
@@ -299,7 +298,7 @@ var BertaGallery = new Class({
     } else if (this.type == 'pile') {
       var margin = 0;
       var totalHeight = 0,
-          totalWidth = 0;
+        totalWidth = 0;
       if (!this.layout_pileOnHoverBinded) this.layout_pileOnHoverBinded = this.layout_pileOnHover.bindWithEvent(this);
       this.imageContainer.getChildren('.xGalleryItem').each(function (el) {
         totalHeight = Math.max(totalHeight, margin + parseInt(el.getStyle('height')));
@@ -321,8 +320,8 @@ var BertaGallery = new Class({
     } else if (this.type == 'column') {
 
       var totalHeight = 0,
-          maxWidth = 0,
-          itmSize;
+        maxWidth = 0,
+        itmSize;
       this.imageContainer.getChildren('.xGalleryItem').each(function (item) {
         itmSize = item.getSize();
         totalHeight += itmSize.y;
@@ -345,8 +344,8 @@ var BertaGallery = new Class({
     if (target) {
       var imElements = this.imageContainer.getChildren('.xGalleryItem');
       var z = 1000,
-          zPlus = 200,
-          numElements = imElements.length;
+        zPlus = 200,
+        numElements = imElements.length;
       this.imageContainer.getChildren('.xGalleryItem').each(function (el, idx) {
 
         // set correct z-index
@@ -470,7 +469,7 @@ var BertaGallery = new Class({
 
     if (this.currentSrc && this.type == 'slideshow') {
       this.currentSrc = null;
-      this.phase = "fadeout";
+      this.phase = 'fadeout';
       this.imageFadeOutFx.start('opacity', 0).chain(this.load_Render.bind(this, [src, mType, mWidth, mHeight, videoPath, autoPlay, caption, bDeleteExisting, xImgIndex, srcset]));
     } else {
       this.currentSrc = null;
@@ -506,8 +505,8 @@ var BertaGallery = new Class({
           }, 500);
         }
 
-        this.phase = "preload";
-        var altText = caption.replace(/(<([^>]+)>)/ig, " ").replace(/(\r\n|\n|\r)/gm, " ").replace(/\s{2,}/g, ' ').trim();
+        this.phase = 'preload';
+        var altText = caption.replace(/(<([^>]+)>)/ig, ' ').replace(/(\r\n|\n|\r)/gm, ' ').replace(/\s{2,}/g, ' ').trim();
         this.preload = new Asset.image(src, this.type == 'slideshow' ? {
           'width': mWidth,
           'height': mHeight,
@@ -571,10 +570,10 @@ var BertaGallery = new Class({
         this.preload.setStyle('position', 'absolute');
 
         var player = _V_(containerID, {
-          "controls": true,
-          "preload": "auto",
-          "poster": src && src.charAt(0) !== '#' ? src : null,
-          "autoplay": autoPlay > 0 ? true : false
+          'controls': true,
+          'preload': 'auto',
+          'poster': src && src.charAt(0) !== '#' ? src : null,
+          'autoplay': autoPlay > 0 ? true : false
         });
 
         if (this.isResponsive || (this.isAutoResponsive && this.mobileBrekapoint > window.getSize().x)) {
@@ -628,12 +627,12 @@ var BertaGallery = new Class({
           loader.addClass('xHidden');
         }
 
-        this.phase = "fadein";
+        this.phase = 'fadein';
         this.imageResizeFx.start({
           'width': mWidth,
           'height': mHeight
         }).chain(function () {
-          this.phase = "done";
+          this.phase = 'done';
           if (mType == 'image') this.layout_inject(bDeleteExisting, true);
 
           this.layout_finisage(src, mType, mWidth, mHeight);
@@ -646,7 +645,7 @@ var BertaGallery = new Class({
         }.bind(this));
 
       } else if (this.type == 'link') {
-        this.phase = "done";
+        this.phase = 'done';
         if (mType == 'image') this.layout_inject(bDeleteExisting, false);
         var topImg = this.imageContainer.getFirst('.xGalleryItem');
         var bottomImg = this.imageContainer.getLast('.xGalleryItem');
@@ -676,7 +675,7 @@ var BertaGallery = new Class({
           }
         });
       } else {
-        this.phase = "done";
+        this.phase = 'done';
 
         if (mType == 'image') this.layout_inject(bDeleteExisting, false);
 
@@ -739,4 +738,5 @@ var BertaPortfolio = new Class({
     }
   }
 });
-var bertaPortfolio = new BertaPortfolio();
+
+new BertaPortfolio();

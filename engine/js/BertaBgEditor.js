@@ -3,12 +3,6 @@ var BertaBgEditor = new Class({
   Extends: BertaEditorBase,
   Implements: [Options, Events, UnlinearProcessDispatcher],
 
-  options: {
-    updateUrl: '/engine/update.php',
-    engineRoot: './',
-    flashUploadEnabled: true
-  },
-
   // DOM elements
   allContainer: null,
   container: null,
@@ -37,7 +31,6 @@ var BertaBgEditor = new Class({
   initialize: function (bgEditorContainerElement, options) {
     var query = window.location.search.replace('?', '').parseQueryString();
     if (query.site) {
-      this.options.updateUrl = this.options.updateUrl + '?site=' + query.site;
       this.options.elementsUrl = this.options.elementsUrl + '?site=' + query.site;
     }
     this.setOptions(options);
@@ -60,8 +53,7 @@ var BertaBgEditor = new Class({
     new Request.HTML({
       url: this.options.elementsUrl,
       update: this.allContainer,
-      onComplete: function (resp) {
-        //console.debug(resp);
+      onComplete: function () {
         this.allContainer.removeClass('xSavingAtLarge');
         this.attach.delay(10, this);
         this.fireEvent('load');
@@ -182,11 +174,10 @@ var BertaBgEditor = new Class({
       ).inject(container);
     }
 
-
     // add move handle and close button
     new Element('span', {
-      'class': 'grabHandle xMAlign-container'
-    })
+        'class': 'grabHandle xMAlign-container'
+      })
       .set('html', '<span class="xMAlign-outer"><a class="xMAlign-inner" title="click and drag to move"><span></span></a></span>')
       .inject(container);
 
@@ -260,14 +251,17 @@ var BertaBgEditor = new Class({
     this.stripSortables.addItems(el);
     this.sortingChanged = true;
   },
+
   sortingRemoveElement: function (el) {
     this.stripSortables.removeItems(el);
     this.sortingChanged = true;
   },
+
   sortingActivate: function (el) {
     this.stripSortables.attach();
     if (this.sortingChanged) this.sortingSave(); // do a quick save - just in case
   },
+
   sortingDeactivate: function () {
     this.stripSortables.detach();
     this.sortingSaveCancel(); // cancel any saving
@@ -280,11 +274,13 @@ var BertaBgEditor = new Class({
       this.sortingSaveTimeout = this.sortingSaveDo.delay(1000, this);
     }
   },
+
   sortingSaveCancel: function () {
     this.unlinearProcess_stop(this.sortingProcessId);
     $clear(this.sortingSaveTimeout);
     this.sortingSaveTimeout = 0;
   },
+
   sortingSaveDo: function () {
     $clear(this.sortingSaveTimeout);
     this.sortingSaveTimeout = 0;
@@ -349,8 +345,6 @@ var BertaBgEditor = new Class({
     this.editorOpen(liEl);
   },
 
-
-
   onDeleteClick: function (event) {
     event = new Event(event).stop();
     var target = $(event.target);
@@ -382,17 +376,8 @@ var BertaBgEditor = new Class({
           this.sortingSave();
         }.bind(this)
       ));
-
     }
   },
-
-  /*
-  initTabs: function() {
-    var target = this.container;
-    var addMedia = target.getChildren('.xBgMedia')
-    var settings = target.getChildren('.xBgMediaSettings');
-  },
-*/
 
   onGalTabClick: function (event) {
     event.stop();
