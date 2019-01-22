@@ -203,22 +203,6 @@ body.xEditorEnabled { }
 	}
 
 
-body.xSettingsPageBody a.introjs-button {
-    text-decoration: none !important;
-}
-
-.introjs-button {
-    padding: .5em .8em .4em !important;
-}
-
-.introjs-exit {
-    float: left;
-}
-
-.page-xTemplate .introjs-skipbutton {
-    display: none;
-}
-
 /* middle-align containers ------------------------------------------------------------------------------------------- */
 
 .xMAlign-container {
@@ -560,10 +544,6 @@ body.xSettingsPageBody a.introjs-button {
 				}
 
 				ul#xEditorMenu li a:hover { color: #000; }
-
-                ul#xEditorMenu li.introjs-showElement a {
-                    color: #000;
-                }
 
 			ul#xEditorMenu li.selected, ul#xEditorMenu li.selected a {
 				font-weight: bold;

@@ -1557,13 +1557,6 @@ window.addEvent('domready', function () {
       });
     });
   }
-
-  tourInit = function () {
-    var editor = new BertaEditorBase;
-    window.BertaHelpers.initTour(document.querySelector('#xTopPanelContainer'), editor.options.updateUrl);
-  };
-  tourInit();
-
 });
 
 

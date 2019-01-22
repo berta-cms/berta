@@ -43,8 +43,7 @@ var template = {
 var css_backend_files = [
   'engine/_lib/video-js/video-js.min.css',
   'engine/_lib/berta/default.css',
-  'engine/_lib/moorainbow/mooRainbow.css',
-  'engine/_lib/introjs/introjs.min.css'
+  'engine/_lib/moorainbow/mooRainbow.css'
 ];
 
 var css_frontend_files = [
@@ -62,7 +61,6 @@ var js_backend_files = [
   'engine/_lib/mgfx/tabs.js',
   'engine/_lib/picturefill/picturefill.min.js',
   'engine/_lib/video-js/video.min.js',
-  'engine/_lib/introjs/intro.min.js',
   'engine/js/berta.helpers.js',
   'engine/js/BertaGallery.js',
   'engine/js/Assets.js',

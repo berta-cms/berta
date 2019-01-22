@@ -373,8 +373,7 @@ class BertaTemplate extends BertaBase
             'i18n' => [
                 'create new entry here' => I18n::_('create new entry here'),
                 'create new entry' => I18n::_('create new entry'),
-            ],
-            'skipTour' => count($this->sections) || $this->settings->get('siteTexts', 'tourComplete')
+            ]
         ];
 
         $sttingsJS = Zend_Json::encode($jsSettings);
