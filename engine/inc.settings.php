@@ -128,11 +128,39 @@ $settingsDefinition = [
         'banner10_link' => ['format' => 'text', 'allow_blank' => true, 'default' => null, 'link' => true, 'title' => I18n::_('Banner link') . ' (10)', 'description' => ''],
     ],
 
-    'socialMediaButtons' => [
+    'socialMediaLinks' => [
         '_' => ['title' => I18n::_('Social media buttons')],
+        'links' => [
+            'list_of' => [
+                'link' => [
+                    'format' => 'text',
+                    'default' => '',
+                    'title' => I18n::_('Social media link'),
+                    'description' => ''
+                ]
+            ],
+            'default' => [],
+            'title' => I18n::_('Social media link'),
+            'description' => ''
+        ],
+        'location' => [
+            'format' => 'select',
+            'allow_blank' => false,
+            'default' => 'footer',
+            'values' => [
+                'footer',
+                'additionalText'
+            ],
+            'title' => I18n::_('Location'),
+            'description' => I18n::_('Location of social media buttons. Content of additional text or additional footer will be replaced.')
+        ],
+    ],
+
+    'socialMediaButtons' => [
+        '_' => ['title' => I18n::_('Custom social media buttons')],
         'socialMediaHTML' => ['format' => 'longtext', 'allow_blank' => true, 'default' => '', 'html_entities' => true, 'title' => I18n::_('HTML code'), 'description' => I18n::_('Paste or write your HTML code here.')],
         'socialMediaJS' => ['format' => 'longtext', 'allow_blank' => true, 'default' => '', 'html_entities' => true, 'title' => I18n::_('Javascript code'), 'description' => I18n::_('Paste or write your Javascript code here.')],
-        'socialMediaLocation' => ['format' => 'select', 'allow_blank' => false, 'default' => 'footer', 'values' => ['footer', 'additionalText'], 'title' => I18n::_('Location'), 'description' => I18n::_('Location of social media buttons. Content of addition text or addition footer will be replaced.')],
+        'socialMediaLocation' => ['format' => 'select', 'allow_blank' => false, 'default' => 'footer', 'values' => ['footer', 'additionalText'], 'title' => I18n::_('Location'), 'description' => I18n::_('Location of social media buttons. Content of additional text or additional footer will be replaced.')],
     ],
 
     'language' => [

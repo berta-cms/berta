@@ -24,11 +24,16 @@ import { SettingModel, SettingConfigModel, SettingGroupConfigModel } from '../..
         </svg>
       </h3>
       <div class="settings" [@isExpanded]="camelifySlug(currentGroup) === settingGroup.slug">
-        <berta-setting *ngFor="let setting of settingGroup.settings"
-                      [settingGroup]="settingGroup"
-                      [setting]="setting.setting"
-                      [config]="setting.config"
-                      (update)="updateSetting(settingGroup.slug, $event)"></berta-setting>
+        <div *ngFor="let setting of settingGroup.settings">
+          <berta-setting *ngIf="!setting.config.list_of"
+                         [settingGroup]="settingGroup"
+                         [setting]="setting.setting"
+                         [config]="setting.config"
+                         (update)="updateSetting(settingGroup.slug, $event)"></berta-setting>
+          <div *ngIf="setting.config.list_of">
+            [show list of inputs here]
+          <div>
+        </div>
       </div>
     </div>
   `,

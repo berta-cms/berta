@@ -5,7 +5,7 @@ export interface SettingsGroupModel {
 
 export interface SettingModel {
   slug: string;
-  value: string|number|boolean;
+  value: string|number|boolean|SettingModel[];
 }
 
 export interface SettingGroupConfigModel {
@@ -44,6 +44,7 @@ export interface SettingConfigModel {
   allow_blank?: boolean;
   link?: boolean;
   validator?: 'GoogleAnalytics' | string;
+  list_of?: {[k: string]: SettingConfigModel};
   [k: string]: any;
 }
 

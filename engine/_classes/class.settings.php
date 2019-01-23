@@ -52,7 +52,7 @@ class Settings
 
     private function saveDo($settingsCopy)
     {
-        $this->addCDATA($settingsCopy);
+        Array_XML::addCDATA($settingsCopy);
         if ($xml = Array_XML::array2xml($settingsCopy, 'settings')) {
             if (@file_put_contents(BertaBase::$options['XML_ROOT'] . $this->fileName, $xml) !== false) {
                 @chmod(BertaBase::$options['XML_ROOT'] . $this->fileName, 0666);
@@ -61,19 +61,6 @@ class Settings
         }
 
         return false;
-    }
-
-    private function addCDATA(&$array, $depth = 0)
-    {
-        foreach ($array as $aId => $child) {
-            if (!is_array($child) && trim((string) $child) != '') {
-                $array[$aId] = '<![CDATA[' . $child . ']]>';
-            }
-
-            if (is_array($array[$aId])) {
-                $this->addCDATA($array[$aId], $depth + 1);
-            }
-        }
     }
 
     public function update($collection, $prop, $value)
