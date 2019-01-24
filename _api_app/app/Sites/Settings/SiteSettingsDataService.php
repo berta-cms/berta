@@ -318,7 +318,7 @@ class SiteSettingsDataService extends Storage
         if (empty($this->SITE_SETTINGS)) {
             $this->SITE_SETTINGS = $this->xmlFile2array($this->XML_FILE);
 
-            // Make list_of setting as list
+            // Make children setting as list
             foreach ($this->SITE_SETTINGS as $groupSlug => $groupSettings) {
                 foreach ($groupSettings as $settingSlug => $setting) {
                     $listOfSlug = substr($settingSlug, 0, -1);

@@ -131,7 +131,7 @@ $settingsDefinition = [
     'socialMediaLinks' => [
         '_' => ['title' => I18n::_('Social media buttons')],
         'links' => [
-            'list_of' => [
+            'children' => [
                 'link' => [
                     'format' => 'text',
                     'default' => '',

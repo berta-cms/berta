@@ -25,12 +25,12 @@ import { SettingModel, SettingConfigModel, SettingGroupConfigModel } from '../..
       </h3>
       <div class="settings" [@isExpanded]="camelifySlug(currentGroup) === settingGroup.slug">
         <div *ngFor="let setting of settingGroup.settings">
-          <berta-setting *ngIf="!setting.config.list_of"
+          <berta-setting *ngIf="!setting.config.children"
                          [settingGroup]="settingGroup"
                          [setting]="setting.setting"
                          [config]="setting.config"
                          (update)="updateSetting(settingGroup.slug, $event)"></berta-setting>
-          <div *ngIf="setting.config.list_of">
+          <div *ngIf="setting.config.children">
             [show list of inputs here]
           <div>
         </div>
@@ -49,9 +49,11 @@ export class SiteSettingsComponent implements OnInit {
     settings: Array<{
       setting: SettingModel,
       config: SettingConfigModel,
-      list_of: [] | Array<{
-        setting: SettingModel,
-        config: SettingConfigModel
+      children?: Array<{
+        [k: string]: {
+          setting: SettingModel,
+          config: SettingConfigModel
+        }
       }>
     }>,
     slug: string
@@ -79,9 +81,8 @@ export class SiteSettingsComponent implements OnInit {
                   return {
                     setting: setting,
                     config: config[settingGroup.slug][setting.slug],
-                    list_of: []
-                    // list_of: config[settingGroup.slug][setting.slug].list_of ?
-                    //   config[settingGroup.slug][setting.slug].list_of ...
+                    // children: config[settingGroup.slug][setting.slug].children ?
+                    //   config[settingGroup.slug][setting.slug].children ...
                     //   :
                     //   []
                   };

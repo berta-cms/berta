@@ -44,7 +44,7 @@ export interface SettingConfigModel {
   allow_blank?: boolean;
   link?: boolean;
   validator?: 'GoogleAnalytics' | string;
-  list_of?: {[k: string]: SettingConfigModel};
+  children?: Array<{[k: string]: SettingConfigModel}>;
   [k: string]: any;
 }
 
@@ -90,6 +90,6 @@ export interface SettingConfigResponse {
   allow_blank?: boolean;
   link?: boolean;
   validator?: 'GoogleAnalytics' | string;
-  list_of?: {[k: string]: SettingConfigModel};
+  children?: Array<{[k: string]: SettingConfigModel}>;
   [k: string]: any;
 }
