@@ -317,6 +317,16 @@ class SiteSettingsDataService extends Storage
     {
         if (empty($this->SITE_SETTINGS)) {
             $this->SITE_SETTINGS = $this->xmlFile2array($this->XML_FILE);
+
+            // Make list_of setting as list
+            foreach ($this->SITE_SETTINGS as $groupSlug => $groupSettings) {
+                foreach ($groupSettings as $settingSlug => $setting) {
+                    $listOfSlug = substr($settingSlug, 0, -1);
+                    if (isset($setting[$listOfSlug])) {
+                        $this->SITE_SETTINGS[$groupSlug][$settingSlug][$listOfSlug] = $this->asList($this->SITE_SETTINGS[$groupSlug][$settingSlug][$listOfSlug]);
+                    }
+                }
+            }
         }
 
         return $this->SITE_SETTINGS;
@@ -324,17 +334,12 @@ class SiteSettingsDataService extends Storage
 
     public function getState()
     {
-        if (empty($this->SITE_SETTINGS)) {
-            $this->SITE_SETTINGS = $this->xmlFile2array($this->XML_FILE);
-        }
-
-        $siteSettings = self::mergeSiteSettingsDefaults($this->siteSettingsDefaults, $this->SITE_SETTINGS);
-
+        $siteSettings = self::mergeSiteSettingsDefaults($this->siteSettingsDefaults, $this->get());
         return $siteSettings;
     }
 
     /**
-     * Merge site  settings with site settings default values
+     * Merge site settings with site settings default values
      */
     private static function mergeSiteSettingsDefaults($siteSettingsDefaults, $siteSettings)
     {

@@ -48,7 +48,11 @@ export class SiteSettingsComponent implements OnInit {
     config: SettingGroupConfigModel['_'],
     settings: Array<{
       setting: SettingModel,
-      config: SettingConfigModel
+      config: SettingConfigModel,
+      list_of: [] | Array<{
+        setting: SettingModel,
+        config: SettingConfigModel
+      }>
     }>,
     slug: string
   }>>;
@@ -74,7 +78,12 @@ export class SiteSettingsComponent implements OnInit {
                 .map(setting => {
                   return {
                     setting: setting,
-                    config: config[settingGroup.slug][setting.slug]
+                    config: config[settingGroup.slug][setting.slug],
+                    list_of: []
+                    // list_of: config[settingGroup.slug][setting.slug].list_of ?
+                    //   config[settingGroup.slug][setting.slug].list_of ...
+                    //   :
+                    //   []
                   };
                 }),
               config: config[settingGroup.slug]._,

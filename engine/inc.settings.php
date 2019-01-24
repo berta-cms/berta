@@ -137,10 +137,16 @@ $settingsDefinition = [
                     'default' => '',
                     'title' => I18n::_('Social media link'),
                     'description' => ''
+                ],
+                'icon' => [
+                    'format' => 'text',
+                    'default' => '',
+                    'title' => I18n::_('Social media icon'),
+                    'description' => ''
                 ]
             ],
             'default' => [],
-            'title' => I18n::_('Social media link'),
+            'title' => I18n::_('Social media links'),
             'description' => ''
         ],
         'location' => [

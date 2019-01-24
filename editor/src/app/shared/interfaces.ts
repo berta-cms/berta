@@ -90,5 +90,6 @@ export interface SettingConfigResponse {
   allow_blank?: boolean;
   link?: boolean;
   validator?: 'GoogleAnalytics' | string;
+  list_of?: {[k: string]: SettingConfigModel};
   [k: string]: any;
 }
