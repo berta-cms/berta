@@ -8,6 +8,13 @@ export interface SettingModel {
   value: string|number|boolean;
 }
 
+export interface SettingChildrenModel {
+  [slug: string]: {
+    setting: SettingModel,
+    config: SettingConfigModel
+  }
+}
+
 export interface SettingGroupConfigModel {
   _?: {
     title?: string;

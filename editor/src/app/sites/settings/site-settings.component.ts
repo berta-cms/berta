@@ -8,7 +8,7 @@ import { Animations } from '../../shared/animations';
 import { SiteSettingsState } from './site-settings.state';
 import { SiteSettingsConfigState } from './site-settings-config.state';
 import { UpdateSiteSettingsAction } from './site-settings.actions';
-import { SettingModel, SettingConfigModel, SettingGroupConfigModel } from '../../shared/interfaces';
+import { SettingModel, SettingChildrenModel, SettingConfigModel, SettingGroupConfigModel } from '../../shared/interfaces';
 
 
 @Component({
@@ -49,12 +49,7 @@ export class SiteSettingsComponent implements OnInit {
     settings: Array<{
       setting: SettingModel,
       config: SettingConfigModel,
-      children?: Array<{
-        [k: string]: {
-          setting: SettingModel,
-          config: SettingConfigModel
-        }
-      }>
+      children?: SettingChildrenModel[]
     }>,
     slug: string
   }>>;
@@ -78,9 +73,11 @@ export class SiteSettingsComponent implements OnInit {
               settings: settingGroup.settings
                 .filter(setting => !!config[settingGroup.slug][setting.slug])  // don't show settings that have no config
                 .map(setting => {
-                  let settingObj = {
+                  let settingObj: {setting: SettingModel,
+                                   config: SettingConfigModel,
+                                   children?: SettingChildrenModel[]} = {
                     setting: setting,
-                    config: config[settingGroup.slug][setting.slug],
+                    config: config[settingGroup.slug][setting.slug]
                   };
                   const childrenConfig = config[settingGroup.slug][setting.slug].children;
 
