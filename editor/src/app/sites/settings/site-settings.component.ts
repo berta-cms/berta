@@ -78,14 +78,31 @@ export class SiteSettingsComponent implements OnInit {
               settings: settingGroup.settings
                 .filter(setting => !!config[settingGroup.slug][setting.slug])  // don't show settings that have no config
                 .map(setting => {
-                  return {
+                  let settingObj = {
                     setting: setting,
                     config: config[settingGroup.slug][setting.slug],
-                    // children: config[settingGroup.slug][setting.slug].children ?
-                    //   config[settingGroup.slug][setting.slug].children ...
-                    //   :
-                    //   []
                   };
+                  const childrenConfig = config[settingGroup.slug][setting.slug].children;
+
+                  if (childrenConfig) {
+                    const children = (setting.value as any).map(child => {
+                      let childObj = {};
+                      for (const slug in child) {
+                        childObj[slug] = {
+                          setting: {
+                            slug: slug,
+                            value: child[slug]
+                          },
+                          config: childrenConfig[slug]
+                        }
+                      }
+                      return childObj;
+                    });
+
+                    settingObj = {...settingObj, ...{children: children}};
+                  }
+
+                  return settingObj;
                 }),
               config: config[settingGroup.slug]._,
               slug: settingGroup.slug

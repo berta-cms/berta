@@ -323,7 +323,7 @@ class SiteSettingsDataService extends Storage
                 foreach ($groupSettings as $settingSlug => $setting) {
                     $listOfSlug = substr($settingSlug, 0, -1);
                     if (isset($setting[$listOfSlug])) {
-                        $this->SITE_SETTINGS[$groupSlug][$settingSlug][$listOfSlug] = $this->asList($this->SITE_SETTINGS[$groupSlug][$settingSlug][$listOfSlug]);
+                        $this->SITE_SETTINGS[$groupSlug][$settingSlug] = $this->asList($this->SITE_SETTINGS[$groupSlug][$settingSlug][$listOfSlug]);
                     }
                 }
             }
