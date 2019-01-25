@@ -143,6 +143,10 @@ h1 a:active {
     text-decoration: <?php echo $s->get('tagsMenu', 'textDecorationActive') ?> !important;
 }
 
+#pageEntries .xEntry {
+    max-width: <?php echo $s->get('entryLayout', 'contentWidth') ?>;
+}
+
 #pageEntries .xEntry h2 {
     color: <?php echo $s->get('entryHeading', 'color') ?>;
     font-family: <?php echo $s->getFont('entryHeading') ?>;
