@@ -31,7 +31,11 @@ import { SettingModel, SettingChildrenModel, SettingConfigModel, SettingGroupCon
                          [config]="setting.config"
                          (update)="updateSetting(settingGroup.slug, $event)"></berta-setting>
           <div *ngIf="setting.config.children">
-            [show list of inputs here]
+            <berta-setting-children [children]="setting.children"
+                                    [config]="setting.config"
+                                    (update)="updateChildren(settingGroup.slug, setting.setting.slug, $event)"
+                                    (add)="addChildren(settingGroup.slug, setting.setting.slug, $event)"
+                                    (delete)="deleteChildren(settingGroup.slug, setting.setting.slug, $event)"></berta-setting-children>
           <div>
         </div>
       </div>
@@ -161,5 +165,17 @@ export class SiteSettingsComponent implements OnInit {
   updateSetting(settingGroup: string, updateEvent) {
     const data = {[updateEvent.field]: updateEvent.value};
     this.store.dispatch(new UpdateSiteSettingsAction(settingGroup, data));
+  }
+
+  addChildren(settingGroup: string, slug: string, updateEvent) {
+    console.log('settingGroup', settingGroup, 'slug', slug, 'updateEvent', updateEvent);
+  }
+
+  updateChildren(settingGroup: string, slug: string, updateEvent) {
+    console.log('settingGroup', settingGroup, 'slug', slug, 'updateEvent', updateEvent);
+  }
+
+  deleteChildren(settingGroup: string, slug: string, updateEvent) {
+    console.log('settingGroup', settingGroup, 'slug', slug, 'updateEvent', updateEvent);
   }
 }
