@@ -14,7 +14,9 @@ function smarty_function_customEntryHeader($params, &$smarty)
     $settings = $berta->template->settings;
     $basePath = $berta::$options['MULTISITE'] . '/entry/' . $params['section'] . '/' . $params['entry']['id'] . '/';
 
-    if ($berta->environment != 'engine') return '';
+    if ($berta->environment != 'engine') {
+        return '';
+    }
 
     $markedValue = !empty($params['entry']['marked']) ? 1 : 0;
 
@@ -24,10 +26,9 @@ function smarty_function_customEntryHeader($params, &$smarty)
 
     $shopMenuEntry = null;
     if (isset($params['ishopentry']) && $params['ishopentry'] == 1) {
-
         $xUnits = $settings->get('shop', 'weightUnit');
 
-		//build shop menu entry...
+        //build shop menu entry...
         $shopMenuEntry .= '	<div class="xEntrySeperator"></div>
 							<div class="xEntryBoxParams"><b>Attribute</b>
 								<div class="xEditable xProperty-cartAttributes xCaption-attribute cCartAttributes" data-path="' . $basePath . 'content/cartAttributes">' . $params['entry']['cartAttributes'] . '</div>

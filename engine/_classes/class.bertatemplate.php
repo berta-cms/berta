@@ -3,8 +3,8 @@
 include_once dirname(__FILE__) . '/../_lib/smarty/Smarty.class.php';
 include_once dirname(__FILE__) . '/Zend/Json.php';
 
-class BertaTemplate extends BertaBase {
-
+class BertaTemplate extends BertaBase
+{
     private $smarty;
 
     public $name;
@@ -25,7 +25,8 @@ class BertaTemplate extends BertaBase {
     private $tagName;
     private $tags;
 
-    public function __construct($templateName, $generalSettingsInstance = false, $loggedIn = false, $apacheRewriteUsed=false) {
+    public function __construct($templateName, $generalSettingsInstance = false, $loggedIn = false, $apacheRewriteUsed = false)
+    {
         $this->name = $templateName;
         $this->templateName = explode('-', $this->name)[0];
         $this->loggedIn = $loggedIn;
@@ -37,65 +38,65 @@ class BertaTemplate extends BertaBase {
         $this->smarty->compile_dir = self::$options['CACHE_ROOT'];
         $this->smarty->cache_dir = self::$options['CACHE_ROOT'];
         $this->smarty->template_dir = self::$options['TEMPLATES_FULL_SERVER_PATH'];
-        $this->smarty->plugins_dir = array('plugins', self::$options['TEMPLATES_FULL_SERVER_PATH'] . '_plugins');
-        $this->smarty->register->resource('text', array(
+        $this->smarty->plugins_dir = ['plugins', self::$options['TEMPLATES_FULL_SERVER_PATH'] . '_plugins'];
+        $this->smarty->register->resource(
+            'text',
+            [
             'BertaTemplate',
             'smarty_resource_text_get_template',
             'smarty_resource_text_get_timestamp',
             'smarty_resource_text_get_secure',
-            'smarty_resource_text_get_trusted')
+            'smarty_resource_text_get_trusted']
         );
 
         $this->load($this->name, $generalSettingsInstance);
     }
 
-    public function load($templateName, $generalSettingsInstance = false) {
-
+    public function load($templateName, $generalSettingsInstance = false)
+    {
         //set default template as messy
-        if (!$templateName){
-            foreach ( $this->getAllTemplates() AS $tpl ){
-                list($template_all)=explode('-',$tpl);
-                if ($template_all=='messy'){
+        if (!$templateName) {
+            foreach ($this->getAllTemplates() as $tpl) {
+                list($template_all) = explode('-', $tpl);
+                if ($template_all == 'messy') {
                     $templateName = $tpl;
                     break;
-                }else{
+                } else {
                     $templateName = 'default';
                 }
             }
             //save in settings
             $settings = new Settings(false);
-            $settings->update('template', 'template', array('value'=>$templateName));
+            $settings->update('template', 'template', ['value' => $templateName]);
             $settings->save();
         }
 
-        $this->name =  $templateName;
+        $this->name = $templateName;
 
         $tPath = self::$options['TEMPLATES_FULL_SERVER_PATH'] . $this->name;
-        if(!file_exists($tPath)) {
-
-            $template=explode('-',$this->name);
-            $template=$template[0];
+        if (!file_exists($tPath)) {
+            $template = explode('-', $this->name);
+            $template = $template[0];
 
             //try to get same template with different version if not exists
-            foreach ( $this->getAllTemplates() AS $tpl ){
-                list($template_all)=explode('-',$tpl);
-                if ($template_all==$template){
+            foreach ($this->getAllTemplates() as $tpl) {
+                list($template_all) = explode('-', $tpl);
+                if ($template_all == $template) {
                     $this->name = $tpl;
                     break;
                 //default template = messy
-                }else{
+                } else {
                     $this->name = 'default';
                 }
             }
             $tPath = self::$options['TEMPLATES_FULL_SERVER_PATH'] . $this->name;
         }
 
-
-        if(file_exists($tPath) && file_exists($tPath . '/template.conf.php')) {
+        if (file_exists($tPath) && file_exists($tPath . '/template.conf.php')) {
             $this->smarty->template_dir = $tPath;
-            $this->smarty->plugins_dir = array('plugins', self::$options['TEMPLATES_FULL_SERVER_PATH'] . '_plugins', $tPath . '/plugins');
+            $this->smarty->plugins_dir = ['plugins', self::$options['TEMPLATES_FULL_SERVER_PATH'] . '_plugins', $tPath . '/plugins'];
 
-            list($this->sectionTypes, $this->settingsDefinition) = include($tPath . '/template.conf.php');
+            list($this->sectionTypes, $this->settingsDefinition) = include $tPath . '/template.conf.php';
 
             $this->templateHTML = @file_get_contents($tPath . '/template.tpl');
             $this->templateFile = $tPath . '/template.tpl';
@@ -103,9 +104,11 @@ class BertaTemplate extends BertaBase {
 
             // instantiate settings for each section type definition (extend $this->settings)
             reset($this->sectionTypes);
-            while(list($tName, $t) = each($this->sectionTypes)) {
+            while (list($tName, $t) = each($this->sectionTypes)) {
                 $this->sectionTypes[$tName]['settings'] = new Settings(
-                    false, $this->settings, false,
+                    false,
+                    $this->settings,
+                    false,
                     isset($t['settings']) ? $t['settings'] : false
                 );
             }
@@ -114,21 +117,23 @@ class BertaTemplate extends BertaBase {
         return false;
     }
 
-    public function addVariable($varName, $varValue) {
+    public function addVariable($varName, $varValue)
+    {
         $this->smarty->assign($varName, $varValue);
     }
 
-    public function addContent($requestURI, $sectionName, &$sections, $tagName, &$tags, &$content, &$allContent) {
+    public function addContent($requestURI, $sectionName, &$sections, $tagName, &$tags, &$content, &$allContent)
+    {
         // set variables for later processing in function addEngineVariables
         $this->requestURI = $requestURI;
         $this->sectionName = $sectionName;
-        $this->sections =& $sections;
+        $this->sections = &$sections;
         $this->tagName = $tagName;
-        $this->tags =& $tags;
+        $this->tags = &$tags;
 
         // add entries...
-        $this->content =& $content;
-        $this->allContent =& $allContent;
+        $this->content = &$content;
+        $this->allContent = &$allContent;
 
         list($entries, $entriesForTag) = $this->getEntriesLists($this->sectionName, $this->tagName, $this->content);
         $this->addVariable('allentries', $entries);
@@ -142,7 +147,6 @@ class BertaTemplate extends BertaBase {
         $isAutoResponsive = $this->settings->get('pageLayout', 'autoResponsive') == 'yes';
 
         if ($templateName == 'messy' && $this->environment == 'site' && !$isResponsive && $isAutoResponsive) {
-
             usort($entriesForTag, function ($item1, $item2) {
                 if (!isset($item1['positionXY'])) {
                     $item1['positionXY'] = '0,0';
@@ -167,11 +171,11 @@ class BertaTemplate extends BertaBase {
 
         $this->addVariable('entries', $entriesForTag);
 
-        if($allContent) {
-            $allEntries = array();
+        if ($allContent) {
+            $allEntries = [];
             reset($allContent);
-            while(list($sName, $c) = each($allContent)) {
-                if($sName == $this->sectionName) {
+            while (list($sName, $c) = each($allContent)) {
+                if ($sName == $this->sectionName) {
                     $allEntries[$sName] = $entries;
                 } else {
                     list($e, ) = $this->getEntriesLists($sName, null, $c);
@@ -182,27 +186,28 @@ class BertaTemplate extends BertaBase {
         }
     }
 
-    private function getEntriesLists($sName, $tagName, &$content) {
+    private function getEntriesLists($sName, $tagName, &$content)
+    {
         $haveToSave = false;
-        $entries = array();
-        $entriesForTag = array();
+        $entries = [];
+        $entriesForTag = [];
 
-        if(!empty($content['entry'])) {
-            foreach($content['entry'] as $idx => $p) {
-                if((string) $idx == '@attributes') continue;
+        if (!empty($content['entry'])) {
+            foreach ($content['entry'] as $idx => $p) {
+                if ((string) $idx == '@attributes') {
+                    continue;
+                }
 
-                if(!empty($p['id']) && !empty($p['id']['value'])
+                if (!empty($p['id']) && !empty($p['id']['value'])
                     && !empty($p['uniqid']) && !empty($p['uniqid']['value'])
                     && !empty($p['mediafolder']) && !empty($p['mediafolder']['value'])) {
-
                     $id = $p['id']['value'];
-                    $entries[$id] = BertaTemplate::entryForTemplate($p, array('section' => $this->sections[$sName]));
+                    $entries[$id] = BertaTemplate::entryForTemplate($p, ['section' => $this->sections[$sName]]);
 
-                    if(!$tagName && !$entries[$id]['tags']
+                    if (!$tagName && !$entries[$id]['tags']
                             || $tagName && isset($entries[$id]['tags'][$tagName])) {
                         $entriesForTag[$id] = $entries[$id];
                     }
-
                 } else {
                     unset($this->content['entry'][$idx]);
                     $haveToSave = true;
@@ -210,54 +215,46 @@ class BertaTemplate extends BertaBase {
             }
         }
 
-        if($haveToSave && class_exists('BertaEditor')) {
+        if ($haveToSave && class_exists('BertaEditor')) {
             BertaEditor::saveBlog($this->sectionName, $this->content);
         }
 
-        return array($entries, $entriesForTag);
+        return [$entries, $entriesForTag];
     }
 
-
-
-
-    public function output() {
+    public function output()
+    {
         $this->addEngineVariables();
 
-        if ($this->sectionName == 'sitemap.xml'){
-            header("Content-type: text/xml; charset=utf-8");
+        if ($this->sectionName == 'sitemap.xml') {
+            header('Content-type: text/xml; charset=utf-8');
             $tpl = self::$options['TEMPLATES_FULL_SERVER_PATH'] . '_includes/sitemap.xml';
-        }else{
+        } else {
             $tpl = $this->templateFile;
         }
 
         return $this->smarty->fetch($tpl);
     }
 
-
-
-
-
-
     // PRIVATE ...
 
-
-    private function addEngineVariables() {
-        $vars = array();
-        $vars['berta'] = array();
+    private function addEngineVariables()
+    {
+        $vars = [];
+        $vars['berta'] = [];
         $vars['berta']['environment'] = $this->environment;
         $vars['berta']['templateName'] = $this->name;
-        $vars['berta']['options'] =& self::$options;
+        $vars['berta']['options'] = &self::$options;
 
         $hostingPlan = false;
-        if(@file_exists(self::$options['ENGINE_ROOT_PATH'] .'plan')) {
+        if (@file_exists(self::$options['ENGINE_ROOT_PATH'] . 'plan')) {
             $hostingPlan = file_get_contents(self::$options['ENGINE_ROOT_PATH'] . 'plan');
         }
         $vars['berta']['hostingPlan'] = $hostingPlan;
 
-
-        if ( isset($_SESSION['_berta_msg']) ){
+        if (isset($_SESSION['_berta_msg'])) {
             $vars['berta']['msg'] = $_SESSION['_berta_msg'];
-            unset( $_SESSION['_berta_msg'] );
+            unset($_SESSION['_berta_msg']);
         }
 
         $vars['berta']['settings'] = $this->settings->getApplied();
@@ -267,7 +264,7 @@ class BertaTemplate extends BertaBase {
 
         global $shopEnabled;
         $vars['berta']['shop_enabled'] = false;
-        if(isset($shopEnabled) && $shopEnabled === true) {
+        if (isset($shopEnabled) && $shopEnabled === true) {
             $vars['berta']['shop_enabled'] = true;
 
             global $db;
@@ -282,38 +279,41 @@ class BertaTemplate extends BertaBase {
         $vars['berta']['requestURI'] = $this->requestURI;
         $vars['berta']['sectionName'] = $this->sectionName;
         $vars['berta']['section'] = null;
-        $vars['berta']['sections'] = array();
-        $vars['berta']['publishedSections'] = array();
+        $vars['berta']['sections'] = [];
+        $vars['berta']['publishedSections'] = [];
         $isFirstSection = true;
-        foreach($this->sections as $sName => $s) {
-
+        foreach ($this->sections as $sName => $s) {
             // add system variables
-            $vars['berta']['sections'][$sName] = array(
+            $vars['berta']['sections'][$sName] = [
                 'name' => $s['name']['value'],
                 'title' => !empty($s['title']) ? htmlspecialchars($s['title']['value']) : '',
                 'has_direct_content' => !empty($s['@attributes']['has_direct_content']) ? '1' : '0',
                 'published' => !empty($s['@attributes']['published']) ? '1' : '0',
                 'num_entries' => isset($s['@attributes']['num_entries']) ? (int) $s['@attributes']['num_entries'] : 0,
                 'type' => !empty($s['@attributes']['type']) ? $s['@attributes']['type'] : 'default'
-            );
+            ];
             // add variables from template section-type settings
-            foreach($s as $key => $val) {
-                if($key != '@attributes' && !isset($vars['berta']['sections'][$sName][$key]))
+            foreach ($s as $key => $val) {
+                if ($key != '@attributes' && !isset($vars['berta']['sections'][$sName][$key])) {
                     $vars['berta']['sections'][$sName][$key] = isset($val['value']) ? $val['value'] : $val;
+                }
             }
 
             // - show all sections when in engine mode
             // - show landing section in menu if landingSectionVisible=yes or it has tags menu
-            if($this->environment == 'engine' ||
+            if ($this->environment == 'engine' ||
                     $vars['berta']['sections'][$sName]['published'] &&
-                    ($this->settings->get('navigation', 'landingSectionVisible') == 'yes' || !$isFirstSection || !empty($this->tags[$sName])))
-                $vars['berta']['publishedSections'][$sName] =& $vars['berta']['sections'][$sName];
-            if($vars['berta']['sections'][$sName]['published']) $isFirstSection = false;
+                    ($this->settings->get('navigation', 'landingSectionVisible') == 'yes' || !$isFirstSection || !empty($this->tags[$sName]))) {
+                $vars['berta']['publishedSections'][$sName] = &$vars['berta']['sections'][$sName];
+            }
+            if ($vars['berta']['sections'][$sName]['published']) {
+                $isFirstSection = false;
+            }
 
             // set current section and page title
-            if($this->sectionName == $sName) {
+            if ($this->sectionName == $sName) {
                 $vars['berta']['pageTitle'] .= ' / ' . (!empty($s['title']) ? htmlspecialchars($s['title']['value']) : '');
-                $vars['berta']['section'] =& $vars['berta']['sections'][$sName];
+                $vars['berta']['section'] = &$vars['berta']['sections'][$sName];
             }
 
             if (empty($s['title']['value'])) {
@@ -327,23 +327,29 @@ class BertaTemplate extends BertaBase {
         // add subsections...
         $vars['berta']['tagName'] = $this->tagName;
         $vars['berta']['tags'] = $this->tags;
-        if($this->tagName) $vars['berta']['pageTitle'] .= ' / ' . $this->tags[$this->sectionName][$this->tagName]['title'];
+        if ($this->tagName) {
+            $vars['berta']['pageTitle'] .= ' / ' . $this->tags[$this->sectionName][$this->tagName]['title'];
+        }
 
         // add siteTexts ...
         $texts = $this->settings->base->getAll('siteTexts');
-        foreach($texts as $tVar => $t) if(!isset($vars[$tVar])) $vars[$tVar] = $t;
+        foreach ($texts as $tVar => $t) {
+            if (!isset($vars[$tVar])) {
+                $vars[$tVar] = $t;
+            }
+        }
 
         // berta scripts ...
         $engineAbsRoot = self::$options['ENGINE_ROOT_URL'];
         $templatesAbsRoot = self::$options['TEMPLATES_ABS_ROOT'];
 
         if ($this->apacheRewriteUsed) {
-            $site = !empty(self::$options['MULTISITE']) ? self::$options['MULTISITE'].'/' : '';
-        }else{
-            $site = !empty(self::$options['MULTISITE']) ? '?site='.self::$options['MULTISITE'] : '' ;
+            $site = !empty(self::$options['MULTISITE']) ? self::$options['MULTISITE'] . '/' : '';
+        } else {
+            $site = !empty(self::$options['MULTISITE']) ? '?site=' . self::$options['MULTISITE'] : '' ;
         }
 
-        $jsSettings = array(
+        $jsSettings = [
             'templateName' => $this->name,
             'environment' => $this->environment,
             'flashUploadEnabled' => $this->settings->get('settings', 'flashUploadEnabled') == 'yes' ? 'true' : 'false',
@@ -355,37 +361,36 @@ class BertaTemplate extends BertaBase {
             'galleryFullScreenCloseText' => $this->settings->get('entryLayout', 'galleryFullScreenCloseText'),
             'galleryFullScreenImageNumbers' => $this->settings->get('entryLayout', 'galleryFullScreenImageNumbers'),
             'galleryFullScreenCaptionAlign' => $this->settings->get('entryLayout', 'galleryFullScreenCaptionAlign'),
-            'paths' => array(
+            'paths' => [
                 'engineRoot' => htmlspecialchars(self::$options['ENGINE_ROOT_URL']),
                 'engineABSRoot' => htmlspecialchars($engineAbsRoot),
                 'siteABSMainRoot' => htmlspecialchars(self::$options['SITE_ROOT_URL']),
                 'siteABSRoot' => htmlspecialchars(self::$options['SITE_ROOT_URL']) . $site,
                 'template' => htmlspecialchars(self::$options['SITE_ROOT_URL'] . '_templates/' . $this->name . '/'),
                 'site' => htmlspecialchars(self::$options['MULTISITE'])
-            ),
+            ],
 
-            'i18n' => array(
+            'i18n' => [
                 'create new entry here' => I18n::_('create new entry here'),
                 'create new entry' => I18n::_('create new entry'),
-            ),
-            'skipTour' => count($this->sections) || $this->settings->get('siteTexts', 'tourComplete')
-        );
+            ]
+        ];
 
         $sttingsJS = Zend_Json::encode($jsSettings);
 
         $version = self::$options['version'];
         $timestamp = time();
-        $site = !empty(self::$options['MULTISITE']) ? '&amp;site='.self::$options['MULTISITE'] : '';
+        $site = !empty(self::$options['MULTISITE']) ? '&amp;site=' . self::$options['MULTISITE'] : '';
         $forceResponsiveStyleParam = $jsSettings['sectionType'] == 'portfolio' ? '&amp;responsive=1' : '';
         $isEngineParam = $this->environment == 'engine' ? '&amp;engine=1' : '';
 
-        if($this->loggedIn) {
+        if ($this->loggedIn) {
             $vars['berta']['css'] = <<<DOC
     <link rel="stylesheet" href="{$engineAbsRoot}css/backend.min.css?{$version}" type="text/css">
     <link rel="stylesheet" href="{$engineAbsRoot}css/editor.css.php?{$version}" type="text/css">
     <link rel="stylesheet" href="{$templatesAbsRoot}{$this->name}/editor.css.php?{$version}" type="text/css">
 DOC;
-        }else{
+        } else {
             $vars['berta']['css'] = <<<DOC
     <link rel="stylesheet" href="{$engineAbsRoot}css/frontend.min.css?{$version}" type="text/css">
 DOC;
@@ -406,7 +411,7 @@ DOC;
         var bertaGlobalOptions = $sttingsJS;
     </script>
 DOC;
-        if($this->loggedIn) {
+        if ($this->loggedIn) {
             $vars['berta']['scripts'] .= <<<DOC
     <script src="{$engineAbsRoot}js/backend.min.js?{$version}"></script>
     <script src="{$engineAbsRoot}js/ng-backend.min.js?{$version}"></script>
@@ -417,61 +422,69 @@ DOC;
 DOC;
         }
 
-
-
         // counter ...
 
         $vars['berta']['google_id'] = $this->settings->get('settings', 'googleAnalyticsId');
-        if($vars['berta']['google_id'] == 'none') $vars['berta']['google_id'] = '';
-
-
+        if ($vars['berta']['google_id'] == 'none') {
+            $vars['berta']['google_id'] = '';
+        }
 
         // add vars
         reset($vars);
-        while(list($vName, $vContent) = each($vars)) {
+        while (list($vName, $vContent) = each($vars)) {
             $this->smarty->assign($vName, $vContent);
         }
-
     }
 
+    public static function smarty_resource_text_get_template($tpl_name, &$tpl_source, &$smarty_obj)
+    {
+        $tpl_source = $tpl_name;
+        return true;
+    }
 
+    public static function smarty_resource_text_get_timestamp($tpl_name, &$tpl_timestamp, &$smarty_obj)
+    {
+        $tpl_timestamp = time();
+        return true;
+    }
 
+    public static function smarty_resource_text_get_secure($tpl_name, &$smarty_obj)
+    {
+        return true;
+    }
 
-
-
-    public static function smarty_resource_text_get_template($tpl_name, &$tpl_source, &$smarty_obj) { $tpl_source = $tpl_name; return true; }
-    public static function smarty_resource_text_get_timestamp($tpl_name, &$tpl_timestamp, &$smarty_obj) { $tpl_timestamp = time(); return true; }
-    public static function smarty_resource_text_get_secure($tpl_name, &$smarty_obj) { return true; }
-    public static function smarty_resource_text_get_trusted($tpl_name, &$smarty_obj) {}
-
-
+    public static function smarty_resource_text_get_trusted($tpl_name, &$smarty_obj)
+    {
+    }
 
     // BACK-END AND UTILITY...
 
-    public function loadSmartyPlugin($type, $name) {
-        for($i = count($this->smarty->plugins_dir) - 1; $i >= 0; $i--) {
+    public function loadSmartyPlugin($type, $name)
+    {
+        for ($i = count($this->smarty->plugins_dir) - 1; $i >= 0; $i--) {
             $path = realpath($this->smarty->plugins_dir[$i]) . '/' . $type . '.' . $name . '.php';
-            if(file_exists($path)) {
-                include_once($path);
+            if (file_exists($path)) {
+                include_once $path;
             }
         }
     }
 
-
-    public static function getAllTemplates() {
-        $returnArr = array();
+    public static function getAllTemplates()
+    {
+        $returnArr = [];
         $d = dir(self::$options['TEMPLATES_ROOT']);
-        while(false !== ($entry = $d->read())) {
-            if($entry != '.' && $entry != '..' && substr($entry, 0, 1) != '_' && is_dir(self::$options['TEMPLATES_ROOT'] . $entry))
+        while (false !== ($entry = $d->read())) {
+            if ($entry != '.' && $entry != '..' && substr($entry, 0, 1) != '_' && is_dir(self::$options['TEMPLATES_ROOT'] . $entry)) {
                 $returnArr[] = $entry;
+            }
         }
         $d->close();
         return $returnArr;
     }
 
-
-    public static function entryForTemplate($p, $additionalValues = false) {
-        $e = array();
+    public static function entryForTemplate($p, $additionalValues = false)
+    {
+        $e = [];
 
         // preset variables..
         $e['__raw'] = $p;
@@ -481,28 +494,30 @@ DOC;
         $e['mediafolder'] = $p['mediafolder']['value'];
         $e['marked'] = !empty($p['marked']['value']) ? '1' : '0';
 
-        if($additionalValues) {
-            foreach($additionalValues as $key => $value) {
-                if(!isset($e[$key]))	// don't overwrite
+        if ($additionalValues) {
+            foreach ($additionalValues as $key => $value) {
+                if (!isset($e[$key])) {	// don't overwrite
                     $e[$key] = $value;
+                }
             }
         }
 
         // entry content..
-        if(!empty($p['content'])) {
-            foreach($p['content'] as $key => $value) {
-                if(!isset($e[$key]))	// don't overwrite
+        if (!empty($p['content'])) {
+            foreach ($p['content'] as $key => $value) {
+                if (!isset($e[$key])) {	// don't overwrite
                     $e[$key] = !empty($value['value']) ? $value['value'] : '';
+                }
             }
         }
 
         // tags..
-        $tagsList = array();
+        $tagsList = [];
 
-        if(!empty($p['tags']['tag'])) {
+        if (!empty($p['tags']['tag'])) {
             Array_XML::makeListIfNotList($p['tags']['tag']);
-            foreach($p['tags']['tag'] as $tName => $t) {
-                if(!empty($t['value'])) {
+            foreach ($p['tags']['tag'] as $tName => $t) {
+                if (!empty($t['value'])) {
                     $tagsList[strtolower(BertaUtils::canonizeString($t['value']))] = $t['value'];
                 }
             }
@@ -512,14 +527,14 @@ DOC;
         return $e;
     }
 
-  public static function sentryScripts() {
-    $scripts = '';
-    $file = self::$options['TEMPLATES_FULL_SERVER_PATH'] . '../../../includes/sentry_template.html';
-    if (self::$options['HOSTING_PROFILE'] && file_exists($file)) {
-      $scripts = file_get_contents($file);
-      $scripts = str_replace('RELEASE_VERSION', self::$options['version'], $scripts);
+    public static function sentryScripts()
+    {
+        $scripts = '';
+        $file = self::$options['TEMPLATES_FULL_SERVER_PATH'] . '../../../includes/sentry_template.html';
+        if (self::$options['HOSTING_PROFILE'] && file_exists($file)) {
+            $scripts = file_get_contents($file);
+            $scripts = str_replace('RELEASE_VERSION', self::$options['version'], $scripts);
+        }
+        return $scripts;
     }
-    return $scripts;
-  }
-
 }

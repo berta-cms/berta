@@ -4,16 +4,6 @@ var BertaEditor = new Class({
   Implements: [Options, UnlinearProcessDispatcher, Events],
 
   options: {
-    tips: {
-      'section_delete': 'Delete this section',
-      'section_add': 'Create a new section',
-      'default_tag': 'Set this tag as default tag to show when a visitor opens this section',
-      'entry_delete': 'Delete this entry',
-      'image_delete': 'Delete this image',
-      'video_attach': 'Choose a video file to upload',
-      'video_delete': 'Detach and delete this video'
-    },
-
     paths: null,
   },
 
@@ -26,23 +16,18 @@ var BertaEditor = new Class({
   /* DOM elements */
   entriesList: null, // the OL element thad contains the entries
   portfolioThumbnails: null,
-  newsTickerContainer: null,
   subMenu: null,
 
   /* variables containing information */
   currentSection: null, // the name of the section opened
   currentTag: null, // the name of the tag selected
 
-
-
   /* old */
   submenuSortables: new Array(),
   orderSortables: null,
   tagsMenu: null,
-  tips: null,
   mooRainbow: null,
   /* old */
-
 
   initialize: function (options) {
     this.setOptions(options);
@@ -82,9 +67,6 @@ var BertaEditor = new Class({
     //set wmode to transparent
     this.setWmodeTransparent();
 
-    // init news ticker
-    this.initNewsTicker();
-
     switch (this.edittingMode) {
 
       case 'multipage':
@@ -112,20 +94,6 @@ var BertaEditor = new Class({
           this.elementEdit_init(el, this.options.xBertaEditorClassAction);
         }, this);
 
-        var maxH = 0;
-        if ($('settingsTabs')) {
-          var tabsDims = $('settingsTabs').getSize();
-          $('settingsContentContainer').getElements('.settingsContent').each(function (el) {
-            var dims = el.getSize();
-            maxH = Math.max(maxH, dims.y);
-            el.setStyle('top', (tabsDims.y - 1) + 'px');
-          });
-          $('settingsContentContainer').setStyle('height', (maxH + 20) + 'px');
-          this.tabsInit.delay(300);
-        }
-
-        if ($('xNewsTickerContainer')) this.hideNewsTicker();
-
         break;
 
       case 'entries':
@@ -137,14 +105,6 @@ var BertaEditor = new Class({
 
         // section background editing
         if ($('xBgEditorPanelTrig')) $('xBgEditorPanelTrig').addEvent('click', this.onBgEditClick.bindWithEvent(this));
-
-        if (this.newsTickerContainer) {
-          this.hideNewsTicker.delay(7000);
-        }
-
-        // Tutorial videos
-        // Disabled outdated video tutorials
-        // this.bertaVideosInit();
 
         if (this.entriesList) {
 
@@ -361,15 +321,6 @@ var BertaEditor = new Class({
     }
   },
 
-  tabsInit: function () {
-    var tabs = new MGFX.Tabs('.settingsTab', '.settingsContent', {
-      autoplay: false,
-      transitionDuration: 100,
-      slideInterval: 6000
-    });
-  },
-
-
   bgImageInit: function () {
     var imContainer = $('xFilledBackground');
     if (imContainer) {
@@ -381,11 +332,12 @@ var BertaEditor = new Class({
       }
     }
   },
+
   bgImageInit_do: function () {
     var imContainer = $('xFilledBackground');
     var im = imContainer.getElement('img');
     var wOrig = im.width,
-        hOrig = im.height;
+      hOrig = im.height;
 
     var imAlignment = imContainer.getClassStoredValue('xPosition');
     imContainer.setStyle('display', 'block');
@@ -393,12 +345,12 @@ var BertaEditor = new Class({
     var fnOnResize = function () {
       var wndSize = $(window).getSize();
       var w = wndSize.x,
-          h = wndSize.y;
+        h = wndSize.y;
       var posX, posY;
 
       // scale
       var scaleX = w / wOrig,
-          scaleY = h / hOrig;
+        scaleY = h / hOrig;
       if (scaleX > scaleY)
         scaleY = scaleX;
       else
@@ -491,14 +443,14 @@ var BertaEditor = new Class({
 
     var galleryInstance, galleryInstanceIndex;
     if (this.galleries.some(function (item, index) {
-      // if the containers match then this is the right gallery instance
-      if ($(item.container) == $(galleryContainer)) {
-        galleryInstance = item;
-        galleryInstanceIndex = index;
-        return true;
-      }
-      return false;
-    })) {
+        // if the containers match then this is the right gallery instance
+        if ($(item.container) == $(galleryContainer)) {
+          galleryInstance = item;
+          galleryInstanceIndex = index;
+          return true;
+        }
+        return false;
+      })) {
 
       // remove the gallery instance
       galleryInstance.detach();
@@ -529,7 +481,6 @@ var BertaEditor = new Class({
 
         if (this.options.templateName.substr(0, 5) == 'messy') {
           $$('.xCreateNewEntry').show();
-          window.BertaHelpers.showTopMenus();
           $$('.xEntry .xCreateNewEntry').hide();
         }
 
@@ -569,43 +520,7 @@ var BertaEditor = new Class({
     }).post({
       'json': JSON.encode(data(this))
     });
-
-
   },
-
-
-
-
-  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  ///|  Tag management  |///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-  tagsSetDefault: function (tag) {
-    var data = {
-      section: $$('ol.blogroll')[0].getProperty('section'),
-      entry: null,
-      entryNum: null,
-      property: 'tagsSetDefault',
-      value: tag
-    };
-
-    new Request.JSON({
-      url: this.options.updateUrl,
-      data: JSON.stringify(data),
-      urlEncoded: false,
-      onComplete: function (resp) {
-
-      }.bind(this)
-    }).post();
-  },
-
-
-
-
-
-
-
-
 
 
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -762,90 +677,9 @@ var BertaEditor = new Class({
         subMenu.removeClass('xSaving');
       }
     ));
-  },
-
-
-  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  ///|  Tutorial videos  |//////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-  bertaVideosInit: function (event) {
-    if ($('bertaVideosWrapper')) {
-      var videosContainer = $('bertaVideosWrapper');
-      var videosBackground = $('bertaVideosBackground');
-      var videoFrame = $('videoFrame');
-      var videoLinks = $('videoLinks') ? $('videoLinks').getElements('a.switchVideo') : new Array();
-
-      videosContainer.addEvents({
-        'click:relay(a.switchVideo)': function (event) {
-          event.stop();
-          videoFrame.set('src', this.get('href'));
-          videoLinks.removeClass('selected');
-          event.target.addClass('selected');
-        },
-        'click:relay(a.closeFrame)': function (event) {
-          event.stop();
-          videosContainer.destroy();
-          videosBackground.destroy();
-          tourInit();
-        },
-        'click:relay(.togglePopup)': function (event) {
-          this.toggleVideos(event);
-        }.bind(this)
-      });
-      window.addEvent('keydown', function (event) {
-        if (event.key == 'esc') {
-          videosContainer.destroy();
-          videosBackground.destroy();
-          tourInit();
-        }
-      });
-    }
-    Cookie.write('_berta_videos_hidden', 1);
-  },
-
-  toggleVideos: function (event) {
-    if (this.processHandler.isIdleOrWarnIfBusy()) {
-      event.stop();
-      var el = event.target;
-
-      var value = el.get('checked') == true ? 'yes' : 'no';
-      var property = el.getClassStoredValue('xProperty');
-
-      var elParent = el.getParent();
-      elParent.addClass('xSavingAtLarge');
-
-      var processId = this.unlinearProcess_getId('toggle-videos');
-      this.unlinearProcess_start(processId, 'Toggling tutorial videos');
-      var data = {
-        value: value,
-        property: property
-      };
-
-      new Request.JSON({
-        url: this.options.updateUrl,
-        data: JSON.stringify(data),
-        urlEncoded: false,
-        onComplete: function (resp) {
-          if (!resp) {
-            alert('An error occured while toggling the tutorial video window state. Something has gone wrong!');
-          } else if (resp && !resp.error_message) {
-            this.unlinearProcess_stop(processId);
-            value == 'yes' ? el.set('checked', true) : el.set('checked', false);
-            elParent.removeClass('xSavingAtLarge');
-          } else {
-            alert(resp.error_message);
-            elParent.removeClass('xSavingAtLarge');
-          }
-        }.bindWithEvent(this)
-      }).post();
-    }
   }
-
-
 });
 
 BertaEditor.EDITABLES_INIT = 'editables_init';
-
 
 window.bertaEditor = new BertaEditor(window.bertaGlobalOptions);

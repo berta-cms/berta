@@ -43,8 +43,7 @@ var template = {
 var css_backend_files = [
   'engine/_lib/video-js/video-js.min.css',
   'engine/_lib/berta/default.css',
-  'engine/_lib/moorainbow/mooRainbow.css',
-  'engine/_lib/introjs/introjs.min.css'
+  'engine/_lib/moorainbow/mooRainbow.css'
 ];
 
 var css_frontend_files = [
@@ -58,11 +57,8 @@ var js_backend_files = [
   'engine/_lib/mootools/mootools-1.2.5.1-more.js',
   'engine/_lib/mootools/mootools-1.2.5.1-more-delegation.js',
   'engine/_lib/mootools/Element.Data.js',
-  'engine/_lib/mgfx/rotater.js',
-  'engine/_lib/mgfx/tabs.js',
   'engine/_lib/picturefill/picturefill.min.js',
   'engine/_lib/video-js/video.min.js',
-  'engine/_lib/introjs/intro.min.js',
   'engine/js/berta.helpers.js',
   'engine/js/BertaGallery.js',
   'engine/js/Assets.js',
@@ -75,10 +71,6 @@ var js_backend_files = [
   'engine/_lib/tiny_mce/tiny_mce_gzip.js',
   'engine/_lib/moorainbow/mooRainbow.1.2b2.js',
   'engine/_lib/lassocrop/lassocrop.js',
-  'engine/js/BertaEditor_Sections.js',
-  'engine/js/BertaEditor_Seo.js',
-  'engine/js/BertaEditor_ChangePassword.js',
-  'engine/js/BertaEditor_Multisite.js',
   'node_modules/promise-polyfill/dist/polyfill.min.js',
   'node_modules/whatwg-fetch/fetch.js',
   'node_modules/immutable/dist/immutable.min.js',

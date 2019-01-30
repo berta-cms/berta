@@ -8,7 +8,7 @@
  * Purpose:
  * -------------------------------------------------------------
  */
-function smarty_function_intercomScript($params, &$smarty) {
+function smarty_function_intercomScript($params, &$smarty)
+{
     return class_exists('BertaEditor') ? BertaEditor::intercomScript() : '';
 }
-?>

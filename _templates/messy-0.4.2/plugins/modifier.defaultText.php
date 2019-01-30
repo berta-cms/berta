@@ -8,13 +8,13 @@
  * Purpose:  shows text from xml or shows default text, if not defined
  * -------------------------------------------------------------
  */
-function smarty_modifier_defaultText($text, $defaultText) {
-	global $berta;
-	
-	if($text) { 
-		return $text;
-	}
-	
-	return $defaultText;
+function smarty_modifier_defaultText($text, $defaultText)
+{
+    global $berta;
+
+    if ($text) {
+        return $text;
+    }
+
+    return $defaultText;
 }
-?>

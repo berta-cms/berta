@@ -1,7 +1,6 @@
 <?php
 
-return array(
-
+return [
     'berta_copyright_text' => '<a href="http://www.berta.me/" target="_blank" title="Stwórz swój własny portfel z Berta.me w kilka minut!">Berta.me</a>',
 
     // Translations from the top "admin" menu
@@ -42,7 +41,6 @@ return array(
     'Note: the fields that already have value appear yellow only when you roll over them with your mouse. Click on the text below to edit.' => 'Uwaga: wypełnione pole stają się żółte przy najechaniu na nich kursorem myszki. Klikaj na tekście poniżej, aby poprawiać.',
     'Done!' => 'Wykonane!',
 
-
     // Translatins from sections editor (sections.php)
 
     /* title */ 'Sections' => 'Działy',
@@ -58,7 +56,6 @@ return array(
     'sections_help_text' => 'Działy są podstawowe elementy strony i ich tytuły tworzą główne menu.',
     'What is the "external link"?' => 'Co to jest "external link" (link zewnētrzny)?',
     'external_link_help_text' => 'Elementem menu może być link zewnętrzny. Na przykład, adres e-mail <em>mailto:sombeody@someplace.net</em>) lub link do innej strony internetowej (na przykład, <em>http://www.example.com</em>)',
-
 
     // Translations from profile page (profile.php)
     'Profile' => 'Profil',
@@ -138,7 +135,7 @@ return array(
     /* setting name */ 'Auto-rewind gallery slideshow' => 'Wrócić na początek galerii',
     /* help text */    'Display the first image after clicking on the last image in galleries that are in slideshow mode.' => 'W trybie pokazu slajdów pierwszy obraz pojawia się po ostatnim.',
     /* setting name */      'Show slideshow image numbers' => 'Pokazywać numery obrazów w pokazie slajdów',
-    /* help text */         'Set the default state of image number visibility in slideshow galleries.' =>  'Ustanawia, czy domyślnie pokazywać numery obrazów w galeriach pokazów slajdów.',
+    /* help text */         'Set the default state of image number visibility in slideshow galleries.' => 'Ustanawia, czy domyślnie pokazywać numery obrazów w galeriach pokazów slajdów.',
     /* setting name */ 'Video player' => 'Wygląd video player',
     /* help text */    'Choose between the two visually different players for your video files.' => 'Wybierz pomiędzy dwoma różnymi odtwarzaczami wideo.',
 
@@ -155,14 +152,11 @@ return array(
     /* setting name */ 'Advanced file uploading enabled' => 'Ulepszone wysyłanie plików',
     /* help text */    'Set if the advanced uploading features (selecting multiple files at once, asynchronous uploading) are enabled. You should not disable them UNLESS you are experiencing problems with file uploads.' => 'Zapewnia możliwość wysyłania kilka plików jednocześnie. Wybierz "No" tylko wtedy, jeżeli są problemy z wysyłaniem plików.',
 
-
     // Translations from entries view (and editing)
 
-    '<p>Congratulations! You have successfully installed Berta.</p><p>Now, before adding your content, you have to create a new section. Go to the <a href="sections.php">sections page</a> and do that!</p>' =>
-    '<p>Gratulacje! Z powodzeniem zainstalowałeś swoją stronę internetową!</p><p>Przed dodaniem informacji, stwórz nowy dział. Idź do <a href="sections.php">tytuł</a></p>',
+    '<p>Congratulations! You have successfully installed Berta.</p><p>Now, before adding your content, you have to create a new section. Go to the <a href="sections.php">sections page</a> and do that!</p>' => '<p>Gratulacje! Z powodzeniem zainstalowałeś swoją stronę internetową!</p><p>Przed dodaniem informacji, stwórz nowy dział. Idź do <a href="sections.php">tytuł</a></p>',
     'create new entry here' => 'stworzyć nowy wpis',
     'create new entry' => 'stworzyć nowy wpis',
-
 
     // Translations for default template
 
@@ -239,11 +233,10 @@ return array(
     /* help text */    'Separator symbol that divides year, month and day' => 'Symbol, który oddziela rok, miesiąc i dzień',
     /* setting name */ 'Time separator' => 'Symbol oddzielający cyfry godziny',
 
-    /* setting tab */  'Entry heading'=> 'Tytuł wpisu',
+    /* setting tab */  'Entry heading' => 'Tytuł wpisu',
     /* help text */    'How far the entry heading is form other elements in page. Please see the short CSS guide at the bottom of this page.' => 'Jak daleko tytuł wpisu znajduje się od innych elementów strony. Patrz opis wartości CSS na dole strony.',
 
-    /* setting tab */ 'Entry footer' =>  'Stopka wpisu',
-
+    /* setting tab */ 'Entry footer' => 'Stopka wpisu',
 
     // Translations for Mashup template
       /* setting name */ 'First page' => 'Pierwsza strona',
@@ -283,14 +276,12 @@ return array(
     /* setting name */ 'Color when opened' => 'Kolor otwartego elementu',
     /* setting name */ 'Decoration when opened' => 'Dekoracja otwartego elementu',
 
-
     // Translations for White template
 
     /* setting name */ 'Empty space on top' => 'Puste miejsce na górze',
     /* setting name */ 'Empty space on bottom' => 'Puste miejsce na dole',
     /* setting name */ 'How far content is from menu?' => 'Jak daleko treść strony znajduje się od głównego menu?',
     /* setting name */ 'Width of the left column' => 'Szerokość lewej kolumny',
-
 
     // Translations for Messy template
 
@@ -340,7 +331,6 @@ return array(
 
     'To enable Berta\'s news ticker, your computer needs to be connected to the internet!' => 'Aby zobaczyć nowości Berta, niezbędne jest połączenie internetowe do komputera!',
 
-
     //shop translations
     'Shop' => 'Sklep',
     'shop' => 'sklep',
@@ -382,4 +372,4 @@ return array(
     'Weight units (g, oz) used for postage cost calculation.' => 'Jednostka wagi (g, oz), która jest używana, obliczając koszty wysyłki pocztowej.',
     'Design' => 'Projekt',
     'Shop entry width' => 'Szerokość wpisu sklepu',
-);
+];

@@ -1,7 +1,6 @@
 <?php
 
-return array(
-
+return [
         'berta_copyright_text' => '<a href="http://www.berta.me/" target="_blank" title="Создайте собственное портфолио за считанные минуты с Berta.me!">Berta.me</a>',
 
         // Translations from the top "admin" menu
@@ -42,7 +41,6 @@ return array(
         'Note: the fields that already have value appear yellow only when you roll over them with your mouse. Click on the text below to edit.' => 'Примечание: заполненные поля становятся желтыми, только при наведении курсора мыши. Нажмите на текст ниже, чтобы редактировать.',
         'Done!' => 'Готово!',
 
-
         // Translatins from sections editor (sections.php)
 
         /* title */ 'Sections' => 'Разделы',
@@ -58,7 +56,6 @@ return array(
         'sections_help_text' => 'Разделы – это основные элементы сайта и их названия формируют главное меню.',
         'What is the "external link"?' => 'Что такое "внешняя ссылка"?',
         'external_link_help_text' => 'Элемент меню может быть внешней ссылкой. (например, адрес электронной почты <em>mailto:sombeody@someplace.net</em>) или ссылка на другой сайт (например, <em>http://www.example.com</em>)',
-
 
         // Translations from profile page (profile.php)
         'Profile' => 'Профиль',
@@ -138,7 +135,7 @@ return array(
         /* setting name */ 'Auto-rewind gallery slideshow' => 'Вернуться в начало галереи',
         /* help text */    'Display the first image after clicking on the last image in galleries that are in slideshow mode.' => 'Переходить к первому изображению после нажатия на последнее в режиме слайдов.',
         /* setting name */      'Show slideshow image numbers' => 'Отображать нумерацию изображения',
-        /* help text */         'Set the default state of image number visibility in slideshow galleries.' =>  'Отображает нумерацию изображений в галереях по умолчанию.',
+        /* help text */         'Set the default state of image number visibility in slideshow galleries.' => 'Отображает нумерацию изображений в галереях по умолчанию.',
         /* setting name */ 'Video player' => 'Вид видео проигрывателя',
         /* help text */    'Choose between the two visually different players for your video files.' => 'Выберите между двумя предлагаемыми видами видео проигрывателей.',
 
@@ -155,14 +152,11 @@ return array(
         /* setting name */ 'Advanced file uploading enabled' => 'Добавление нескольких файлов',
         /* help text */    'Set if the advanced uploading features (selecting multiple files at once, asynchronous uploading) are enabled. You should not disable them UNLESS you are experiencing problems with file uploads.' => 'Обеспечивает возможность добавления нескольких файлов одновременно. Выберите "Нет", только при наличии неполадок с добавлением файлов.',
 
-
         // Translations from entries view (and editing)
 
-        '<p>Congratulations! You have successfully installed Berta.</p><p>Now, before adding your content, you have to create a new section. Go to the <a href="sections.php">sections page</a> and do that!</p>' =>
-                '<p>Поздравляем! Вы успешно создали свой web сайт!</p><p>Прежде чем добавить содержание, создайте новый раздел. Перейти к <a href="sections.php">разделам</a></p>',
+        '<p>Congratulations! You have successfully installed Berta.</p><p>Now, before adding your content, you have to create a new section. Go to the <a href="sections.php">sections page</a> and do that!</p>' => '<p>Поздравляем! Вы успешно создали свой web сайт!</p><p>Прежде чем добавить содержание, создайте новый раздел. Перейти к <a href="sections.php">разделам</a></p>',
         'create new entry here' => 'создать новую запись здесь',
     'create new entry' => 'создать новую запись',
-
 
         // Translations for default template
 
@@ -233,11 +227,10 @@ return array(
         /* setting name */ 'Gallery margins' => 'Отступ галереи',
         /* help text */    'Margin around gallery block' => 'Отступы вокруг блока галереи',
 
-        /* setting tab */  'Entry heading'=> 'Заголовок записи',
+        /* setting tab */  'Entry heading' => 'Заголовок записи',
         /* help text */    'How far the entry heading is form other elements in page. Please see the short CSS guide at the bottom of this page.' => 'Как далеко заголовок записи находится от других элементов страницы. Информацию о значениях CSS найдете в конце страницы.',
 
-        /* setting tab */ 'Entry footer' =>  'Нижняя часть (футер) записи',
-
+        /* setting tab */ 'Entry footer' => 'Нижняя часть (футер) записи',
 
     // Translations for Mashup template
 
@@ -278,14 +271,12 @@ return array(
     /* setting name */ 'Color when opened' => 'Цвет элемента после открытия',
     /* setting name */ 'Decoration when opened' => 'Декорирование элемента после открытия',
 
-
     // Translations for White template
 
     /* setting name */ 'Empty space on top' => 'Пустое пространство на верху страницы',
     /* setting name */ 'Empty space on bottom' => 'Пустое пространство внизу страницы',
     /* setting name */ 'How far content is from menu?' => 'Расстояние между содержанием и главным меню',
     /* setting name */ 'Width of the left column' => 'Ширина левой колонки',
-
 
     // Translations for Messy template
 
@@ -354,9 +345,4 @@ return array(
         'Close' => 'Закрыть',
 
         'To enable Berta\'s news ticker, your computer needs to be connected to the internet!' => 'Чтобы читать новости Berta, вашему компьютеру необходим доступ в интернет!',
-
-
-)
-
-
-?>
+];

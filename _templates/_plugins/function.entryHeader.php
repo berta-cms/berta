@@ -15,7 +15,9 @@ function smarty_function_entryHeader($params, &$smarty)
     $settings = $berta->template->settings;
     $basePath = $berta::$options['MULTISITE'] . '/entry/' . $params['section'] . '/' . $params['entry']['id'] . '/';
 
-    if ($berta->environment != 'engine') return '';
+    if ($berta->environment != 'engine') {
+        return '';
+    }
 
     $moveButton = $berta->subSectionName ?
         '<a href="#" class="xEntryMoveForbidden" title="entries can be sorted only when you are NOT in subsection!"><span>move entry</span></a>' :
