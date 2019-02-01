@@ -38,8 +38,8 @@ export class SettingRowAddComponent implements OnInit {
     this.inputFields = {};
     Object.keys(this.config).map(slug => {
       this.inputFields[slug] = {
-        setting: {slug: slug, value: ''},
-        config: {...this.config[slug], ...{enabledOnUpdate: true}}
+        setting: { slug: slug, value: '' },
+        config: { ...this.config[slug], ...{ enabledOnUpdate: true } }
       };
     });
   }
@@ -51,13 +51,15 @@ export class SettingRowAddComponent implements OnInit {
   addRow(event) {
     event.preventDefault();
 
-    const newRow = Object.keys(this.config).reduce((row, slug) => {
-      row[slug] = this.inputFields[slug].setting.value;
-      return row;
-    }, {});
+    // Wait for updateField event to complete
+    setTimeout(() => {
+      const newRow = Object.keys(this.config).reduce((row, slug) => {
+        row[slug] = this.inputFields[slug].setting.value;
+        return row;
+      }, {});
 
-    // @TODO figure out how to disable/enable/clear input fields
-
-    this.add.emit(newRow);
+      // @TODO figure out how to disable/enable/clear input fields
+      this.add.emit(newRow);
+    }, 200);
   }
 }
