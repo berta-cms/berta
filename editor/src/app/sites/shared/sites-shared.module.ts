@@ -1,7 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SettingComponent } from './setting.component';
-import { SettingChildrenComponent } from './setting-children.component';
+import { SettingRowComponent } from './setting-row.component';
+import { SettingRowAddComponent } from './setting-row-add.component';
 import { AutofocusDirective } from './autofocus.directive';
 import { ColorPickerModule } from 'ngx-color-picker';
 import { TextInputComponent } from '../../inputs/text-input.component';
@@ -22,7 +23,8 @@ import { IconPublishComponent } from './icon-publish.component';
   ],
   declarations: [
     SettingComponent,
-    SettingChildrenComponent,
+    SettingRowComponent,
+    SettingRowAddComponent,
     AutofocusDirective,
     TextInputComponent,
     LongTextInputComponent,
@@ -37,7 +39,8 @@ import { IconPublishComponent } from './icon-publish.component';
   ],
   exports: [
     SettingComponent,
-    SettingChildrenComponent,
+    SettingRowComponent,
+    SettingRowAddComponent,
     AutofocusDirective,
     TextInputComponent,
     LongTextInputComponent,

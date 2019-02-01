@@ -136,12 +136,14 @@ $settingsDefinition = [
                     'format' => 'text',
                     'default' => '',
                     'title' => I18n::_('Link'),
+                    'placeholder' => I18n::_('Link'),
                     'description' => ''
                 ],
                 'icon' => [
                     'format' => 'text',
                     'default' => '',
                     'title' => I18n::_('Icon'),
+                    'placeholder' => I18n::_('Icon'),
                     'description' => ''
                 ]
             ],

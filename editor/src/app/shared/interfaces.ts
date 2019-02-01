@@ -28,6 +28,8 @@ export interface SettingConfigModel {
   default?: null | string | number | boolean;
   description?: string;
   title?: string;
+  placeholder?: string;
+  enabledOnUpdate?: boolean;
   format?:
     | 'text'
     | 'longtext'

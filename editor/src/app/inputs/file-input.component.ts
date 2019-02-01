@@ -34,7 +34,6 @@ import { SettingModel } from '../shared/interfaces';
 export class FileInputComponent implements OnInit {
   @Input() label: string;
   @Input() templateSlug: string;
-  @Input() groupSlug: string;
   @Input() property: string;
   @Input() value: string|File;
   @Input() accept: string;

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { SafeHtml, DomSanitizer } from '@angular/platform-browser';
 import { Store } from '@ngxs/store';
 import { Observable, combineLatest } from 'rxjs';
 import { map, filter, scan } from 'rxjs/operators';
@@ -26,17 +27,29 @@ import { SettingModel, SettingChildrenModel, SettingConfigModel, SettingGroupCon
       <div class="settings" [@isExpanded]="camelifySlug(currentGroup) === settingGroup.slug">
         <div *ngFor="let setting of settingGroup.settings">
           <berta-setting *ngIf="!setting.config.children"
-                         [settingGroup]="settingGroup"
                          [setting]="setting.setting"
                          [config]="setting.config"
                          (update)="updateSetting(settingGroup.slug, $event)"></berta-setting>
+
           <div *ngIf="setting.config.children">
-            <berta-setting-children [children]="setting.children"
-                                    [config]="setting.config"
-                                    (update)="updateChildren(settingGroup.slug, setting.setting.slug, $event)"
-                                    (add)="addChildren(settingGroup.slug, setting.setting.slug, $event)"
-                                    (delete)="deleteChildren(settingGroup.slug, setting.setting.slug, $event)"></berta-setting-children>
-          <div>
+            <div class="setting">
+              <h4>{{ setting.config.title }}</h4>
+            </div>
+
+            <berta-setting-row *ngFor="let inputFields of setting.children; let index = index"
+                               [inputFields]="inputFields"
+                               (update)="updateChildren(settingGroup.slug, setting.setting.slug, index, $event)"
+                               (delete)="deleteChildren(settingGroup.slug, setting.setting.slug, index)">
+            </berta-setting-row>
+
+            <berta-setting-row-add [config]="setting.config.children"
+                                   (add)="addChildren(settingGroup.slug, setting.setting.slug, $event)">
+            </berta-setting-row-add>
+
+            <div class="setting" *ngIf="setting.config.description">
+              <p class="setting-description" [innerHTML]="getSettingDescription(setting.config.description)"></p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -60,7 +73,8 @@ export class SiteSettingsComponent implements OnInit {
 
   constructor(
     private store: Store,
-    private route: ActivatedRoute) {
+    private route: ActivatedRoute,
+    private sanitizer: DomSanitizer) {
   }
 
   ngOnInit() {
@@ -77,9 +91,11 @@ export class SiteSettingsComponent implements OnInit {
               settings: settingGroup.settings
                 .filter(setting => !!config[settingGroup.slug][setting.slug])  // don't show settings that have no config
                 .map(setting => {
-                  let settingObj: {setting: SettingModel,
-                                   config: SettingConfigModel,
-                                   children?: SettingChildrenModel[]} = {
+                  let settingObj: {
+                    setting: SettingModel,
+                    config: SettingConfigModel,
+                    children?: SettingChildrenModel[]
+                  } = {
                     setting: setting,
                     config: config[settingGroup.slug][setting.slug]
                   };
@@ -100,7 +116,7 @@ export class SiteSettingsComponent implements OnInit {
                       return childObj;
                     });
 
-                    settingObj = {...settingObj, ...{children: children}};
+                    settingObj = { ...settingObj, ...{ children: children } };
                   }
 
                   return settingObj;
@@ -162,8 +178,12 @@ export class SiteSettingsComponent implements OnInit {
     }).join('');
   }
 
+  getSettingDescription(text: string): SafeHtml {
+    return this.sanitizer.bypassSecurityTrustHtml(text);
+  }
+
   updateSetting(settingGroup: string, updateEvent) {
-    const data = {[updateEvent.field]: updateEvent.value};
+    const data = { [updateEvent.field]: updateEvent.value };
     this.store.dispatch(new UpdateSiteSettingsAction(settingGroup, data));
   }
 
@@ -171,11 +191,11 @@ export class SiteSettingsComponent implements OnInit {
     console.log('settingGroup', settingGroup, 'slug', slug, 'updateEvent', updateEvent);
   }
 
-  updateChildren(settingGroup: string, slug: string, updateEvent) {
-    console.log('settingGroup', settingGroup, 'slug', slug, 'updateEvent', updateEvent);
+  updateChildren(settingGroup: string, slug: string, index: number,  updateEvent) {
+    console.log('settingGroup', settingGroup, 'slug', slug, 'index', index, 'updateEvent', updateEvent);
   }
 
-  deleteChildren(settingGroup: string, slug: string, updateEvent) {
-    console.log('settingGroup', settingGroup, 'slug', slug, 'updateEvent', updateEvent);
+  deleteChildren(settingGroup: string, slug: string, index: number) {
+    console.log('settingGroup', settingGroup, 'slug', slug, 'index', index);
   }
 }

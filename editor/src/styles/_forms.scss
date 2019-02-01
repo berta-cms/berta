@@ -385,7 +385,8 @@ color-picker {
 .input-row {
   display: flex;
 
-  berta-text-input {
+  > berta-setting,
+  > berta-text-input {
     flex-grow: 1;
     width: 100%;
 

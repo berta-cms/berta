@@ -27,7 +27,6 @@ import { SettingGroupConfigModel, SettingModel, SettingConfigModel } from '../..
       <div class="settings" [@isExpanded]="camelifySlug(currentGroup) === settingGroup.slug">
         <berta-setting *ngFor="let setting of settingGroup.settings"
                       [templateSlug]="settingGroup.templateSlug"
-                      [settingGroup]="settingGroup"
                       [setting]="setting.setting"
                       [config]="setting.config"
                       (update)="updateSetting(settingGroup.slug, $event)"></berta-setting>
