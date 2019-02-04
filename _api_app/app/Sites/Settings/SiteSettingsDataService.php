@@ -426,8 +426,14 @@ class SiteSettingsDataService extends Storage
         $path = implode('/', $path_arr);
 
         $settings = $this->get();
-        $children = $this->asList($this->getValueByPath($settings, $path));
-        $children[] = $value;
+        $children = $this->getValueByPath($settings, $path);
+
+        if ($children) {
+            $children = $this->asList($children);
+            $children[] = $value;
+        } else {
+            $children = [$value];
+        }
 
         $this->setValueByPath(
             $settings,
@@ -437,5 +443,36 @@ class SiteSettingsDataService extends Storage
 
         $this->array2xmlFile($settings, $this->XML_FILE, $this->ROOT_ELEMENT);
         return $value;
+    }
+
+    public function deleteChildren($path, $value)
+    {
+        $path_arr = array_slice(explode('/', $path), 2);
+        $parentPath = implode('/', $path_arr);
+        $childSlug = substr(end($path_arr), 0, -1);
+        $path_arr[] = $childSlug;
+        $path = implode('/', $path_arr);
+
+        $settings = $this->get();
+        $children = $this->asList($this->getValueByPath($settings, $path));
+
+        $child = array_splice($children, $value, 1);
+        $children = $this->asList($children);
+
+        if ($children) {
+            $this->setValueByPath(
+                $settings,
+                $path,
+                $children
+            );
+        } else {
+            $this->unsetValueByPath(
+                $settings,
+                $parentPath
+            );
+        }
+
+        $this->array2xmlFile($settings, $this->XML_FILE, $this->ROOT_ELEMENT);
+        return $child;
     }
 }

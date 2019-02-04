@@ -14,7 +14,8 @@ import {
   ResetSiteSettingsAction,
   InitSiteSettingsAction,
   UpdateSiteSettingsFromSyncAction,
-  AddSiteSettingChildrenAction} from './site-settings.actions';
+  AddSiteSettingChildrenAction,
+  DeleteSiteSettingChildrenAction} from './site-settings.actions';
 import { UserLoginAction } from '../../user/user.actions';
 import { AddSiteSectionAction } from '../sections/sections-state/site-sections.actions';
 
@@ -203,6 +204,44 @@ export class SiteSettingsState implements NgxsOnInit {
                 }
 
                 return { ...setting, value: [...setting.value as Array<{[k:string]: string|number|boolean}>, response]};
+              })
+            };
+          })});
+        }
+      })
+    );
+  }
+
+  @Action(DeleteSiteSettingChildrenAction)
+  deleteSiteSettingChildren({ getState, patchState }: StateContext<SitesSettingsStateModel>, action: DeleteSiteSettingChildrenAction) {
+    const currentSite = this.store.selectSnapshot(AppState.getSite);
+    const settingKey = action.slug;
+    const data = {
+      path: currentSite + '/settings/' + action.settingGroup + '/' + settingKey,
+      value: action.payload
+    };
+
+    return this.appStateService.sync('siteSettings', data, 'DELETE').pipe(
+      tap(response => {
+        if (response.error_message) {
+          /* This should probably be handled in sync */
+          console.error(response.error_message);
+        } else {
+          const currentState = getState();
+
+          patchState({[currentSite]: currentState[currentSite].map(settingGroup => {
+            if (settingGroup.slug !== action.settingGroup) {
+              return settingGroup;
+            }
+
+            return {
+              ...settingGroup,
+              settings: settingGroup.settings.map(setting => {
+                if (setting.slug !== settingKey) {
+                  return setting;
+                }
+
+                return {...setting, value: (setting.value as Array<{[k:string]: string|number|boolean}>).filter((_, i) => i !== action.payload)};
               })
             };
           })});

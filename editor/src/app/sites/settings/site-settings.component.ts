@@ -8,7 +8,7 @@ import { splitCamel, uCFirst } from '../../shared/helpers';
 import { Animations } from '../../shared/animations';
 import { SiteSettingsState } from './site-settings.state';
 import { SiteSettingsConfigState } from './site-settings-config.state';
-import { UpdateSiteSettingsAction, AddSiteSettingChildrenAction } from './site-settings.actions';
+import { UpdateSiteSettingsAction, AddSiteSettingChildrenAction, DeleteSiteSettingChildrenAction } from './site-settings.actions';
 import { SettingModel, SettingChildrenModel, SettingConfigModel, SettingGroupConfigModel } from '../../shared/interfaces';
 
 
@@ -196,6 +196,6 @@ export class SiteSettingsComponent implements OnInit {
   }
 
   deleteChildren(settingGroup: string, slug: string, index: number) {
-    console.log('settingGroup', settingGroup, 'slug', slug, 'index', index);
+    this.store.dispatch(new DeleteSiteSettingChildrenAction(settingGroup, slug, index));
   }
 }

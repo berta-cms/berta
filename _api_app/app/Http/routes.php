@@ -33,6 +33,7 @@ $app->group(['prefix' => 'v1', 'namespace' => 'App', 'middleware' => ['setup', '
 
         $app->patch('sites/settings', ['as' => 'site_settings', 'uses' => 'Settings\SiteSettingsController@update']);
         $app->post('sites/settings', 'Settings\SiteSettingsController@createChildren');
+        $app->delete('sites/settings', 'Settings\SiteSettingsController@deleteChildren');
 
         $app->patch('sites/template-settings', ['as' => 'site_template_settings', 'uses' => 'TemplateSettings\SiteTemplateSettingsController@update']);
 

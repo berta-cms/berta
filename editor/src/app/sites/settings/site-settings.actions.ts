@@ -53,3 +53,11 @@ export class AddSiteSettingChildrenAction {
               public payload: any) {
   }
 }
+
+export class DeleteSiteSettingChildrenAction {
+  static readonly type = 'SITE_SETTINGS:DELETE_CHILDREN';
+  constructor(public settingGroup: string,
+              public slug: string,
+              public payload: number) {
+  }
+}
