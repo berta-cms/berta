@@ -5,7 +5,7 @@ export interface SettingsGroupModel {
 
 export interface SettingModel {
   slug: string;
-  value: string|number|boolean;
+  value: string|number|boolean|Array<{[k:string]: string|number|boolean}>;
 }
 
 export interface SettingChildrenModel {

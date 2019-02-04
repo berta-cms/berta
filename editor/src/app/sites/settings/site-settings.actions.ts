@@ -45,3 +45,11 @@ export class InitSiteSettingsAction {
   static readonly type = 'SITE_SETTINGS:INIT';
   constructor(public payload: SiteSettingsResponse) {}
 }
+
+export class AddSiteSettingChildrenAction {
+  static readonly type = 'SITE_SETTINGS:ADD_CHILDREN';
+  constructor(public settingGroup: string,
+              public slug: string,
+              public payload: any) {
+  }
+}

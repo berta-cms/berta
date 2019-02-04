@@ -8,7 +8,7 @@ import { splitCamel, uCFirst } from '../../shared/helpers';
 import { Animations } from '../../shared/animations';
 import { SiteSettingsState } from './site-settings.state';
 import { SiteSettingsConfigState } from './site-settings-config.state';
-import { UpdateSiteSettingsAction } from './site-settings.actions';
+import { UpdateSiteSettingsAction, AddSiteSettingChildrenAction } from './site-settings.actions';
 import { SettingModel, SettingChildrenModel, SettingConfigModel, SettingGroupConfigModel } from '../../shared/interfaces';
 
 
@@ -188,7 +188,7 @@ export class SiteSettingsComponent implements OnInit {
   }
 
   addChildren(settingGroup: string, slug: string, updateEvent) {
-    console.log('settingGroup', settingGroup, 'slug', slug, 'updateEvent', updateEvent);
+    this.store.dispatch(new AddSiteSettingChildrenAction(settingGroup, slug, updateEvent));
   }
 
   updateChildren(settingGroup: string, slug: string, index: number,  updateEvent) {

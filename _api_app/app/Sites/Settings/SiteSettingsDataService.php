@@ -103,7 +103,7 @@ class SiteSettingsDataService extends Storage
      * Associative array representing data structure handled by this service.
      */
     public static $JSON_SCHEMA = [
-        '$schema' => "http://json-schema.org/draft-06/schema#",
+        '$schema' => 'http://json-schema.org/draft-06/schema#',
         'type' => 'object',
         'properties' => [
             'template' => [
@@ -317,16 +317,6 @@ class SiteSettingsDataService extends Storage
     {
         if (empty($this->SITE_SETTINGS)) {
             $this->SITE_SETTINGS = $this->xmlFile2array($this->XML_FILE);
-
-            // Make children setting as list
-            foreach ($this->SITE_SETTINGS as $groupSlug => $groupSettings) {
-                foreach ($groupSettings as $settingSlug => $setting) {
-                    $listOfSlug = substr($settingSlug, 0, -1);
-                    if (isset($setting[$listOfSlug])) {
-                        $this->SITE_SETTINGS[$groupSlug][$settingSlug] = $this->asList($this->SITE_SETTINGS[$groupSlug][$settingSlug][$listOfSlug]);
-                    }
-                }
-            }
         }
 
         return $this->SITE_SETTINGS;
@@ -334,7 +324,19 @@ class SiteSettingsDataService extends Storage
 
     public function getState()
     {
-        $siteSettings = self::mergeSiteSettingsDefaults($this->siteSettingsDefaults, $this->get());
+        $siteSettings = $this->get();
+
+        // Make children setting as list
+        foreach ($siteSettings as $groupSlug => $groupSettings) {
+            foreach ($groupSettings as $settingSlug => $setting) {
+                $listOfSlug = substr($settingSlug, 0, -1);
+                if (isset($setting[$listOfSlug])) {
+                    $siteSettings[$groupSlug][$settingSlug] = $this->asList($siteSettings[$groupSlug][$settingSlug][$listOfSlug]);
+                }
+            }
+        }
+
+        $siteSettings = self::mergeSiteSettingsDefaults($this->siteSettingsDefaults, $siteSettings);
         return $siteSettings;
     }
 
@@ -383,11 +385,11 @@ class SiteSettingsDataService extends Storage
         $path = implode('/', $path_arr);
         $value = trim($value);
 
-        $ret = array(
+        $ret = [
             'site' => $this->SITE == '0' ? '' : $this->SITE,
             'path' => $path,
             'value' => $value,
-        );
+        ];
 
         if (!file_exists($this->XML_FILE)) {
             $ret['error_message'] = 'Settings file not found in storage!';
@@ -414,5 +416,26 @@ class SiteSettingsDataService extends Storage
         }
 
         return $ret;
+    }
+
+    public function createChildren($path, $value)
+    {
+        $path_arr = array_slice(explode('/', $path), 2);
+        $childSlug = substr(end($path_arr), 0, -1);
+        $path_arr[] = $childSlug;
+        $path = implode('/', $path_arr);
+
+        $settings = $this->get();
+        $children = $this->asList($this->getValueByPath($settings, $path));
+        $children[] = $value;
+
+        $this->setValueByPath(
+            $settings,
+            $path,
+            $children
+        );
+
+        $this->array2xmlFile($settings, $this->XML_FILE, $this->ROOT_ELEMENT);
+        return $value;
     }
 }

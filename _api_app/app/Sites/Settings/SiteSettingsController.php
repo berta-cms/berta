@@ -8,8 +8,23 @@ use Illuminate\Http\Request;
 
 class SiteSettingsController extends Controller
 {
+    public function createChildren(Request $request)
+    {
+        $json = $request->json()->all();
+        $path_arr = explode('/', $json['path']);
+        $site = $path_arr[0];
+        $settingsDataService = new SiteSettingsDataService($site);
 
-    public function update(Request $request) {
+        $newChildren = $settingsDataService->createChildren(
+            $json['path'],
+            $json['value']
+        );
+
+        return response()->json($newChildren);
+    }
+
+    public function update(Request $request)
+    {
         $json = $request->json()->all();
         $path_arr = explode('/', $json['path']);
         $site = $path_arr[0];
@@ -28,5 +43,4 @@ class SiteSettingsController extends Controller
 
         return response()->json($res);
     }
-
 }
