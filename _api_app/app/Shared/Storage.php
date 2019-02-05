@@ -77,9 +77,9 @@ class Storage
      * @param array $array Array where to get the value
      * @param string $path Slash delimited path to the value
      */
-    protected function getValueByPath(&$array, $path)
+    protected function getValueByPath($array, $path)
     {
-        $result =& $array;
+        $result = $array;
         $_path = explode('/', $path);
 
         foreach ($_path as $key) {

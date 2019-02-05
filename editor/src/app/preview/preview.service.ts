@@ -18,7 +18,13 @@ import {
   UpdateSiteSectionBackgroundFromSyncAction,
   ReOrderSiteSectionsAction
 } from '../sites/sections/sections-state/site-sections.actions';
-import { UpdateSiteSettingsFromSyncAction, UpdateSiteSettingsAction } from '../sites/settings/site-settings.actions';
+import {
+  UpdateSiteSettingsFromSyncAction,
+  UpdateSiteSettingsAction,
+  AddSiteSettingChildrenAction,
+  UpdateSiteSettingChildreAction,
+  DeleteSiteSettingChildrenAction
+} from '../sites/settings/site-settings.actions';
 import { UpdateSiteTemplateSettingsAction } from '../sites/template-settings/site-template-settings.actions';
 import { CreateSiteAction, DeleteSiteAction, UpdateSiteAction, ReOrderSitesAction } from '../sites/sites-state/sites.actions';
 import {
@@ -390,6 +396,9 @@ export class PreviewService {
           DeleteSiteSectionAction,
           DeleteSiteSectionsAction,
           UpdateSiteSettingsAction,
+          AddSiteSettingChildrenAction,
+          UpdateSiteSettingChildreAction,
+          DeleteSiteSettingChildrenAction,
           UpdateSiteTemplateSettingsAction
         ]
       ),

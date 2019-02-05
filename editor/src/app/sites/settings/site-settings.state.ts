@@ -15,7 +15,8 @@ import {
   InitSiteSettingsAction,
   UpdateSiteSettingsFromSyncAction,
   AddSiteSettingChildrenAction,
-  DeleteSiteSettingChildrenAction} from './site-settings.actions';
+  DeleteSiteSettingChildrenAction,
+  UpdateSiteSettingChildreAction} from './site-settings.actions';
 import { UserLoginAction } from '../../user/user.actions';
 import { AddSiteSectionAction } from '../sections/sections-state/site-sections.actions';
 
@@ -242,6 +243,54 @@ export class SiteSettingsState implements NgxsOnInit {
                 }
 
                 return {...setting, value: (setting.value as Array<{[k:string]: string|number|boolean}>).filter((_, i) => i !== action.payload)};
+              })
+            };
+          })});
+        }
+      })
+    );
+  }
+
+  @Action(UpdateSiteSettingChildreAction)
+  updateSiteSettingChildren({ getState, patchState }: StateContext<SitesSettingsStateModel>, action: UpdateSiteSettingChildreAction) {
+
+    const currentSite = this.store.selectSnapshot(AppState.getSite);
+    const settingSlug = action.slug;
+    const childParentSlug = settingSlug.substr(0, settingSlug.length - 1);
+    const childSlug = Object.keys(action.payload)[0];
+    const path = [currentSite, 'settings', action.settingGroup, settingSlug, childParentSlug, action.index, childSlug];
+    const data = {
+      path: path.join('/'),
+      value: action.payload[childSlug]
+    };
+
+    return this.appStateService.sync('siteSettings', data).pipe(
+      tap(response => {
+        if (response.error_message) {
+          /* This should probably be handled in sync */
+          console.error(response.error_message);
+        } else {
+          const currentState = getState();
+
+          patchState({[currentSite]: currentState[currentSite].map(settingGroup => {
+            if (settingGroup.slug !== action.settingGroup) {
+              return settingGroup;
+            }
+
+            return {
+              ...settingGroup,
+              settings: settingGroup.settings.map(setting => {
+                if (setting.slug !== settingSlug) {
+                  return setting;
+                }
+
+                return {...setting, value: (setting.value as Array<{[k:string]: string|number|boolean}>).map((child, index) => {
+                  if (action.index !== index) {
+                    return child;
+                  }
+
+                  return { ...child, [childSlug]: response.value };
+                })};
               })
             };
           })});

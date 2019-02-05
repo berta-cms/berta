@@ -61,3 +61,12 @@ export class DeleteSiteSettingChildrenAction {
               public payload: number) {
   }
 }
+
+export class UpdateSiteSettingChildreAction {
+  static readonly type = 'SITE_SETTINGS:UPDATE_CHILDREN';
+  constructor(public settingGroup: string,
+              public slug: string,
+              public index: number,
+              public payload: {[k: string]: any}) {
+  }
+}

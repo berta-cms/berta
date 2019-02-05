@@ -383,6 +383,18 @@ class SiteSettingsDataService extends Storage
         /** @todo: update this to use path without site (first two peaces are predictable)  */
         $path_arr = array_slice(explode('/', $path), 2);
         $path = implode('/', $path_arr);
+        $isSettingChildren = count($path_arr) > 2;
+
+        // Checking if children is asList
+        if ($isSettingChildren) {
+            $setting = $this->getValueByPath($settings, $path);
+            // Setting asList not found, try to save setting without index
+            if ($setting === NULL) {
+                array_splice($path_arr, 3, 1);
+                $path = implode('/', $path_arr);
+            }
+        }
+
         $value = trim($value);
 
         $ret = [
