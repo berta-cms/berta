@@ -229,7 +229,16 @@ export function getIconFromUrl(url: string) {
   let iconName = 'link';
   const availableIcons = [
     'facebook',
-    'twitter'
+    'twitter',
+    'instagram',
+    'flickr',
+    '500px',
+    'dribbble',
+    'linkedin',
+    'behance',
+    'pinterest',
+    'vimeo',
+    'youtube'
   ];
 
   let parsedUrl: URL;

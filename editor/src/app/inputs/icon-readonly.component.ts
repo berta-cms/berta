@@ -10,6 +10,11 @@ import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
       transform: translateY(50%);
       margin-right: .5em;
     }
+
+    img {
+      width: 16px;
+      height: 16px;
+    }
   `]
 })
 export class IconReadonlyComponent implements OnInit {
