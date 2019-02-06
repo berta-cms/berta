@@ -32,6 +32,9 @@ import { UpdateInputFocus } from '../../app-state/app.actions';
                         [value]="setting.value"
                         (update)="updateComponentField(setting.slug, $event)"></berta-file-input>
 
+      <berta-icon-readonly *ngSwitchCase="'icon-readonly'"
+                        [value]="setting.value"></berta-icon-readonly>
+
       <berta-file-input *ngSwitchCase="'image'"
                         [label]="config.title"
                         [templateSlug]="templateSlug"

@@ -38,7 +38,7 @@ export class SettingRowAddComponent implements OnInit {
     this.inputFields = {};
     Object.keys(this.config).map(slug => {
       this.inputFields[slug] = {
-        setting: { slug: slug, value: '' },
+        setting: { slug: slug, value: this.config[slug].default || '' },
         config: { ...this.config[slug], ...{ enabledOnUpdate: true } }
       };
     });

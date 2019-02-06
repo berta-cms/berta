@@ -4,7 +4,7 @@ import { SafeHtml, DomSanitizer } from '@angular/platform-browser';
 import { Store } from '@ngxs/store';
 import { Observable, combineLatest } from 'rxjs';
 import { map, filter, scan } from 'rxjs/operators';
-import { splitCamel, uCFirst } from '../../shared/helpers';
+import { splitCamel, uCFirst, getIconFromUrl } from '../../shared/helpers';
 import { Animations } from '../../shared/animations';
 import { SiteSettingsState } from './site-settings.state';
 import { SiteSettingsConfigState } from './site-settings-config.state';
@@ -208,6 +208,12 @@ export class SiteSettingsComponent implements OnInit {
   addChildren(settingGroup: string, slug: string, updateEvent) {
     const hasSomeValue = Object.keys(updateEvent).some(item => updateEvent[item].trim().length > 0);
     if (hasSomeValue) {
+      // Update social media icon by url
+      if (settingGroup === 'socialMediaLinks' && slug === 'links' && updateEvent.url !== undefined) {
+        const iconName = getIconFromUrl(updateEvent.url);
+        updateEvent['icon'] = iconName;
+      }
+
       this.store.dispatch(new AddSiteSettingChildrenAction(settingGroup, slug, updateEvent));
     }
   }
@@ -215,6 +221,12 @@ export class SiteSettingsComponent implements OnInit {
   updateChildren(settingGroup: string, slug: string, index: number, updateEvent) {
     const data = { [updateEvent.field]: updateEvent.value };
     this.store.dispatch(new UpdateSiteSettingChildreAction(settingGroup, slug, index, data));
+
+    // Update social media icon by url
+    if (settingGroup === 'socialMediaLinks' && slug === 'links' && updateEvent.field === 'url') {
+      const iconName = getIconFromUrl(updateEvent.value);
+      this.store.dispatch(new UpdateSiteSettingChildreAction(settingGroup, slug, index, {icon: iconName}));
+    }
   }
 
   deleteChildren(settingGroup: string, slug: string, index: number) {

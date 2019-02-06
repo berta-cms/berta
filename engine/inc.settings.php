@@ -140,8 +140,8 @@ $settingsDefinition = [
                     'description' => ''
                 ],
                 'icon' => [
-                    'format' => 'text',
-                    'default' => '',
+                    'format' => 'icon-readonly',
+                    'default' => 'link',
                     'title' => I18n::_('Icon'),
                     'placeholder' => I18n::_('Icon'),
                     'description' => ''
