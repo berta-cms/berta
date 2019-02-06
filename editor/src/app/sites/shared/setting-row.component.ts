@@ -10,6 +10,7 @@ import { PopupService } from '../../../app/popup/popup.service';
     <div class="setting">
       <div class="input-row">
         <berta-setting *ngFor="let inputField of inputFields | keyvalue"
+                        [class.bt-auto-width]="['icon-readonly'].indexOf(inputField.value.config.format) > -1"
                         [setting]="inputField.value.setting"
                         [config]="inputField.value.config"
                         (update)="updateField($event)"></berta-setting>

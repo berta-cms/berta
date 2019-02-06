@@ -426,6 +426,24 @@ color-picker {
         }
       }
     }
+
+    &.bt-auto-width {
+      width: auto;
+
+      + berta-setting {
+        .form-group {
+          .text-input-wrapper {
+            border-bottom-left-radius: $border-radius;
+            border-top-left-radius: $border-radius;
+            border-left: 1px solid $grey-40;
+
+            &:before {
+              display: none;
+            }
+          }
+        }
+      }
+    }
   }
 
   .label-text {

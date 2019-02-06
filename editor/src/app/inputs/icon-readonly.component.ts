@@ -3,12 +3,12 @@ import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'berta-icon-readonly',
-  template: `
-    <img [src]="iconSrc">
-  `,
+  template: `<img [src]="iconSrc">`,
   styles: [`
     :host {
       display: block;
+      transform: translateY(50%);
+      margin-right: .5em;
     }
   `]
 })
