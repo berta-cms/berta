@@ -81,3 +81,11 @@ a {
   position: fixed;
   height: 100%;
 }
+
+.social-icon {
+  display: inline-block;
+
+  &:not(:last-child) {
+    margin-right: .5em;
+  }
+}

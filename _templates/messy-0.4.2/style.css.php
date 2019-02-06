@@ -84,6 +84,10 @@ h1 a:active {
     color: <?php echo $s->get('heading', 'color') ?> !important;
 }
 
+.social-icon path {
+    fill: <?php echo $s->get('socialMediaLinks', 'color') ?>;
+}
+
 .menuItem {
     font-family: <?php echo $s->getFont('menu') ?>;
     font-size: <?php echo $s->get('menu', 'fontSize') ?>;

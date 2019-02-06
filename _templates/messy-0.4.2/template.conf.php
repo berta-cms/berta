@@ -147,6 +147,16 @@ $templateConf = [
         'hidden' => ['format' => 'select',     'values' => ['yes', 'no'], 'default' => 'no',                         'title' => I18n::_('Submenu is hidden'),        'description' => ''],
     ],
 
+    'socialMediaLinks' => [
+        '_' => ['title' => I18n::_('Social media buttons')],
+        'color' => [
+            'format' => 'color',
+            'default' => '#000000',
+            'title' => I18n::_('Button color'),
+            'description' => ''
+        ]
+    ],
+
     'links' => [
         '_' => ['title' => I18n::_('Hyperlinks')],
         'colorLink' => ['format' => 'color',		'default' => '#000000', 	    'title' => I18n::_('Link color'),                'description' => ''],

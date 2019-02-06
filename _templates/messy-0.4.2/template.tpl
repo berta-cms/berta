@@ -375,6 +375,8 @@
                     <div id="additionalText" class="{ messClasses property='additionalTextXY' isResponsive=$isResponsive }" style="{ messStyles xy=$additionalTextXY isResponsive=$isResponsive }"{if $berta.environment == 'engine' && $isResponsive != 'yes'} data-path="{ $berta.options.MULTISITE }/settings/siteTexts/additionalTextXY"{ /if }>
                         {if $berta.settings.socialMediaButtons.socialMediaLocation == 'additionalText' && $berta.settings.socialMediaButtons.socialMediaHTML}
                             { $berta.settings.socialMediaButtons.socialMediaHTML|@html_entity_decode|replace:'<br />':"\n" }
+                        {elseif $berta.settings.socialMediaLinks.location == 'additionalText' && $berta.settings.socialMediaLinks.links.link}
+                            { include file="../_includes/inc.social_media_links.tpl" }
                         {else}
                             <div class="xEditableMCESimple xProperty-additionalText xCaption-additional-text"{if $berta.environment == 'engine'} data-path="{ $berta.options.MULTISITE }/settings/siteTexts/additionalText"{ /if }>
                                 { $additionalText }
@@ -424,9 +426,11 @@
         { /if }
 
         <div id="bottom" class="clearfix">
-            <div id="additionalFooterText" class="{if !($berta.settings.socialMediaButtons.socialMediaLocation == 'footer' && $berta.settings.socialMediaButtons.socialMediaHTML)}xEditableMCESimple {/if}xProperty-additionalFooterText xCaption-additional-footer-text clearfix"{if $berta.environment == 'engine' && !($berta.settings.socialMediaButtons.socialMediaLocation == 'footer' && $berta.settings.socialMediaButtons.socialMediaHTML)} data-path="{ $berta.options.MULTISITE }/settings/siteTexts/additionalFooterText"{/if}>
+            <div id="additionalFooterText" class="{if !($berta.settings.socialMediaButtons.socialMediaLocation == 'footer' && $berta.settings.socialMediaButtons.socialMediaHTML) && !($berta.settings.socialMediaLinks.location == 'footer' && $berta.settings.socialMediaLinks.links.link)}xEditableMCESimple {/if}xProperty-additionalFooterText xCaption-additional-footer-text clearfix"{if $berta.environment == 'engine' && !($berta.settings.socialMediaButtons.socialMediaLocation == 'footer' && $berta.settings.socialMediaButtons.socialMediaHTML) && !($berta.settings.socialMediaLinks.location == 'footer' && $berta.settings.socialMediaLinks.links.link)} data-path="{ $berta.options.MULTISITE }/settings/siteTexts/additionalFooterText"{/if}>
                 {if $berta.settings.socialMediaButtons.socialMediaLocation == 'footer' && $berta.settings.socialMediaButtons.socialMediaHTML}
                     { $berta.settings.socialMediaButtons.socialMediaHTML|@html_entity_decode|replace:'<br />':"\n" }
+                {elseif $berta.settings.socialMediaLinks.location == 'footer' && $berta.settings.socialMediaLinks.links.link}
+                    { include file="../_includes/inc.social_media_links.tpl" }
                 {else}
                     { $additionalFooterText }
                 {/if}
