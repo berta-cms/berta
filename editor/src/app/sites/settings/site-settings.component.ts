@@ -117,6 +117,20 @@ export class SiteSettingsComponent implements OnInit {
                           config: childrenConfig[slug]
                         }
                       }
+
+                      // Add non existing properties from config with empty values
+                      for (const slug in childrenConfig) {
+                        if (childObj[slug] === undefined) {
+                          childObj[slug] = {
+                            setting: {
+                              slug: slug,
+                              value: ''
+                            },
+                            config: childrenConfig[slug]
+                          }
+                        }
+                      }
+
                       return childObj;
                     });
 
@@ -192,7 +206,10 @@ export class SiteSettingsComponent implements OnInit {
   }
 
   addChildren(settingGroup: string, slug: string, updateEvent) {
-    this.store.dispatch(new AddSiteSettingChildrenAction(settingGroup, slug, updateEvent));
+    const hasSomeValue = Object.keys(updateEvent).some(item => updateEvent[item].trim().length > 0);
+    if (hasSomeValue) {
+      this.store.dispatch(new AddSiteSettingChildrenAction(settingGroup, slug, updateEvent));
+    }
   }
 
   updateChildren(settingGroup: string, slug: string, index: number, updateEvent) {
