@@ -53,6 +53,10 @@ a:active {
 	text-decoration: <?php echo $s->get('links', 'textDecorationActive') ?>;
 }
 
+.social-icon path {
+    fill: <?php echo $s->get('socialMediaLinks', 'color') ?>;
+}
+
 #allContainer.xCentered {
     max-width: <?php echo intval($s->get('pageLayout', 'contentWidth')) + intval($s->get('pageLayout', 'paddingLeft')) + intval($s->get('sideBar', 'width')) ?>px;
 }

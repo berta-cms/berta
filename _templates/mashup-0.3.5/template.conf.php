@@ -66,6 +66,16 @@ $templateConf = [
         'mashUpColumns' => ['format' => 'select', 'default' => '1', 'values' => ['1', '2', '3', '4'], 'title' => I18n::_('Mash-up columns'), 'description' => I18n::_('Column count for Mash-up section.')],
     ],
 
+    'socialMediaLinks' => [
+        '_' => ['title' => I18n::_('Social media buttons')],
+        'color' => [
+            'format' => 'color',
+            'default' => '#000000',
+            'title' => I18n::_('Button color'),
+            'description' => ''
+        ]
+    ],
+
     'entryLayout' => [
         '_' => ['title' => I18n::_('Entry layout')],
         'spaceBetween' => ['format' => 'text',	'default' => '20px', 'css_units' => true,		'title' => I18n::_('Space between entries'), 	'description' => I18n::_('Distance from entry to entry. In pixels.')],
