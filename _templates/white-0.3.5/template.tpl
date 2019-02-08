@@ -68,7 +68,7 @@
 						<div class="xHandle"></div>
 						{if $berta.settings.socialMediaButtons.socialMediaLocation == 'additionalText' && $berta.settings.socialMediaButtons.socialMediaHTML}
               { $berta.settings.socialMediaButtons.socialMediaHTML|@html_entity_decode|replace:'<br />':"\n" }
-            {elseif $berta.settings.socialMediaLinks.location == 'additionalText' && $berta.settings.socialMediaLinks.links.link}
+            {elseif $berta.settings.socialMediaLinks.location == 'additionalText' && $socialMediaLinks}
               { include file="../_includes/inc.social_media_links.tpl" }
             {else}
 							<div class="xEditableMCESimple xProperty-additionalText xCaption-additional-text"{if $berta.environment == 'engine'} data-path="{ $berta.options.MULTISITE }/settings/siteTexts/additionalText"{ /if }>
@@ -107,7 +107,7 @@
 			<div id="sideColumnBottom">
 				{if $berta.settings.socialMediaButtons.socialMediaLocation == 'footer' && $berta.settings.socialMediaButtons.socialMediaHTML}
           { $berta.settings.socialMediaButtons.socialMediaHTML|@html_entity_decode|replace:'<br />':"\n" }
-        {elseif $berta.settings.socialMediaLinks.location == 'footer' && $berta.settings.socialMediaLinks.links.link}
+        {elseif $berta.settings.socialMediaLinks.location == 'footer' && $socialMediaLinks}
           { include file="../_includes/inc.social_media_links.tpl" }
         {/if}
 				<p id="userCopyright" class="xEditableTA xProperty-siteFooter"{if $berta.environment == 'engine'} data-path="{ $berta.options.MULTISITE }/settings/siteTexts/siteFooter"{ /if }>

@@ -161,17 +161,32 @@ export class SiteSettingsComponent implements OnInit {
               psg.settings.length === settingGroup.settings.length;
           });
 
+          console.log('>', prevSettingGroup);
+
           if (prevSettingGroup) {
             if (settingGroup.settings.some(((setting, index) => prevSettingGroup.settings[index].setting !== setting.setting))) {
               /* Careful, not to mutate anything coming from the store: */
               prevSettingGroup.settings = settingGroup.settings.map(setting => {
+
+
                 const prevSetting = prevSettingGroup.settings.find(ps => {
                   return ps.setting === setting.setting && ps.config === setting.config;
                 });
+
+
                 if (prevSetting) {
                   return prevSetting;
                 }
+
+
+                // if (prevSetting && prevSetting.children !== setting.children) {
+                //   console.log('children changed');
+                // }
+
+
                 return setting;
+
+
               });
             }
             return prevSettingGroup;
