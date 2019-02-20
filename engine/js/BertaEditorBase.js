@@ -1269,7 +1269,8 @@ var BertaEditorBase = new Class({
 
         valid_elements: 'iframe[*],object[*],embed[*],param[*],form[*],input[*],textarea[*],select[*],option[*],' +
           'p[class|style|id],b[class],i[class],strong[class],em[class],a[*],br[*],u[class],sup[*],sub[*],' +
-          'ul[*],li,ol[*],img[*],hr[class],h2[class|style|id],h3[class|style|id],div[*],blockquote[*],table[*],thead[*],tbody[*],tr[*],td[*],span[*],ins[*],blockquote[*],time[*]',
+          'ul[*],li,ol[*],img[*],hr[class],h2[class|style|id],h3[class|style|id],div[*],blockquote[*],table[*],thead[*],tbody[*],tr[*],td[*],span[*],ins[*],blockquote[*],time[*],' +
+          'audio[*],source[*]',
         custom_elements: '',
         extended_valid_elements: '',
         convert_urls: false,
