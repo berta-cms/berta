@@ -204,7 +204,20 @@ export class SiteSettingsState implements NgxsOnInit {
                   return setting;
                 }
 
-                return { ...setting, value: [...setting.value as Array<{[k:string]: string|number|boolean}>, response]};
+                const newChild: any = Object.keys(response).map(slug => {
+                  return {
+                    slug: slug,
+                    value: response[slug]
+                  }
+                });
+
+                return {
+                  ...setting,
+                  value: [
+                    ...setting.value as Array<{[k:string]: string|number|boolean}>,
+                    newChild
+                  ]
+                };
               })
             };
           })});
@@ -284,12 +297,21 @@ export class SiteSettingsState implements NgxsOnInit {
                   return setting;
                 }
 
-                return {...setting, value: (setting.value as Array<{[k:string]: string|number|boolean}>).map((child, index) => {
+                return {...setting, value: (setting.value as any).map((row, index) => {
+
                   if (action.index !== index) {
-                    return child;
+                    return row;
                   }
 
-                  return { ...child, [childSlug]: response.value };
+                  const slug = Object.keys(action.payload)[0];
+
+                  return row.map(child => {
+                    if (child.slug !== slug) {
+                      return child;
+                    }
+
+                    return { ...child, value: response.value };
+                  });
                 })};
               })
             };
@@ -330,7 +352,17 @@ export class SiteSettingsState implements NgxsOnInit {
         settings: Object.keys(settings[settingGroupSlug]).map(settingSlug => {
           return {
             slug: settingSlug,
-            value: settings[settingGroupSlug][settingSlug]
+            value: settings[settingGroupSlug][settingSlug] instanceof Array ?
+              settings[settingGroupSlug][settingSlug].map(children => {
+                return Object.keys(children).map(slug => {
+                  return {
+                    slug: slug,
+                    value: children[slug]
+                  }
+                })
+              })
+              :
+              settings[settingGroupSlug][settingSlug]
           };
         })
       };

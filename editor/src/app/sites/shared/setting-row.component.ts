@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 
-import { SettingChildrenModel, SettingModel } from '../../shared/interfaces';
+import { SettingChildModel, SettingModel } from '../../shared/interfaces';
 import { PopupService } from '../../../app/popup/popup.service';
 
 
@@ -27,7 +27,7 @@ import { PopupService } from '../../../app/popup/popup.service';
   `]
 })
 export class SettingRowComponent {
-  @Input('inputFields') inputFields: SettingChildrenModel[];
+  @Input('inputFields') inputFields: Array<SettingChildModel[]>;
 
   @Output() update = new EventEmitter<{ field: string, value: SettingModel['value'] }>();
   @Output() delete = new EventEmitter();

@@ -12,8 +12,9 @@ import {
   UpdateSiteSettingsAction,
   AddSiteSettingChildrenAction,
   DeleteSiteSettingChildrenAction,
-  UpdateSiteSettingChildreAction } from './site-settings.actions';
-import { SettingModel, SettingChildrenModel, SettingConfigModel, SettingGroupConfigModel } from '../../shared/interfaces';
+  UpdateSiteSettingChildreAction
+} from './site-settings.actions';
+import { SettingModel, SettingChildModel, SettingConfigModel, SettingGroupConfigModel } from '../../shared/interfaces';
 
 
 @Component({
@@ -70,7 +71,7 @@ export class SiteSettingsComponent implements OnInit {
     settings: Array<{
       setting: SettingModel,
       config: SettingConfigModel,
-      children?: SettingChildrenModel[]
+      children?: Array<SettingChildModel[]>
     }>,
     slug: string
   }>>;
@@ -98,7 +99,7 @@ export class SiteSettingsComponent implements OnInit {
                   let settingObj: {
                     setting: SettingModel,
                     config: SettingConfigModel,
-                    children?: SettingChildrenModel[]
+                    children?: Array<SettingChildModel[]>
                   } = {
                     setting: setting,
                     config: config[settingGroup.slug][setting.slug]
@@ -106,32 +107,13 @@ export class SiteSettingsComponent implements OnInit {
                   const childrenConfig = config[settingGroup.slug][setting.slug].children;
 
                   if (childrenConfig) {
-                    const children = (setting.value as any).map(child => {
-                      let childObj = {};
-                      for (const slug in child) {
-                        childObj[slug] = {
-                          setting: {
-                            slug: slug,
-                            value: child[slug]
-                          },
-                          config: childrenConfig[slug]
-                        }
-                      }
-
-                      // Add non existing properties from config with empty values
-                      for (const slug in childrenConfig) {
-                        if (childObj[slug] === undefined) {
-                          childObj[slug] = {
-                            setting: {
-                              slug: slug,
-                              value: ''
-                            },
-                            config: childrenConfig[slug]
-                          }
-                        }
-                      }
-
-                      return childObj;
+                    const children = (setting.value as any).map(row => {
+                      return row.map(child => {
+                        return {
+                          setting: child,
+                          config: childrenConfig[child.slug]
+                        };
+                      });
                     });
 
                     settingObj = { ...settingObj, ...{ children: children } };
@@ -161,32 +143,47 @@ export class SiteSettingsComponent implements OnInit {
               psg.settings.length === settingGroup.settings.length;
           });
 
-          console.log('>', prevSettingGroup);
-
           if (prevSettingGroup) {
             if (settingGroup.settings.some(((setting, index) => prevSettingGroup.settings[index].setting !== setting.setting))) {
               /* Careful, not to mutate anything coming from the store: */
-              prevSettingGroup.settings = settingGroup.settings.map(setting => {
-
+              prevSettingGroup.settings = settingGroup.settings.map((setting, index) => {
 
                 const prevSetting = prevSettingGroup.settings.find(ps => {
                   return ps.setting === setting.setting && ps.config === setting.config;
                 });
 
-
                 if (prevSetting) {
                   return prevSetting;
                 }
 
+                // @todo this doesn't work as expected, needs to be fixed to use previous objects
+                if (setting.children) {
+                  const prevSettingChildren = prevSettingGroup.settings[index].children;
 
-                // if (prevSetting && prevSetting.children !== setting.children) {
-                //   console.log('children changed');
-                // }
+                  if (prevSettingChildren.length > 0) {
 
+                    setting.children = setting.children.map((row, index) => {
+                      const prevSettingRow = prevSettingChildren[index];
+
+                      if (prevSettingRow) {
+                        return row.map((child, i) => {
+
+                          const prevChild = prevSettingRow[i];
+
+                          if (prevChild && prevChild.setting === child.config) {
+                            return prevChild;
+                          }
+
+                          return child;
+                        });
+                      }
+
+                      return row;
+                    });
+                  }
+                }
 
                 return setting;
-
-
               });
             }
             return prevSettingGroup;
@@ -240,7 +237,7 @@ export class SiteSettingsComponent implements OnInit {
     // Update social media icon by url
     if (settingGroup === 'socialMediaLinks' && slug === 'links' && updateEvent.field === 'url') {
       const iconName = getIconFromUrl(updateEvent.value);
-      this.store.dispatch(new UpdateSiteSettingChildreAction(settingGroup, slug, index, {icon: iconName}));
+      this.store.dispatch(new UpdateSiteSettingChildreAction(settingGroup, slug, index, { icon: iconName }));
     }
   }
 

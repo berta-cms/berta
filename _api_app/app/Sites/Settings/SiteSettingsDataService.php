@@ -282,6 +282,7 @@ class SiteSettingsDataService extends Storage
         'berta/lastUpdated' => 'D, d M Y H:i:s'
     ];
     private $siteSettingsDefaults;
+    private $siteSettingsConfig;
 
     public function __construct($site = '')
     {
@@ -291,6 +292,7 @@ class SiteSettingsDataService extends Storage
 
         $siteSettingsConfigService = new SiteSettingsConfigService();
         $this->siteSettingsDefaults = $siteSettingsConfigService->getDefaults();
+        $this->siteSettingsConfig = $siteSettingsConfigService->get();
     }
 
     public function getDefaultSettings()
@@ -332,6 +334,14 @@ class SiteSettingsDataService extends Storage
                 $listOfSlug = substr($settingSlug, 0, -1);
                 if (isset($setting[$listOfSlug])) {
                     $siteSettings[$groupSlug][$settingSlug] = $this->asList($siteSettings[$groupSlug][$settingSlug][$listOfSlug]);
+
+                    if (isset($this->siteSettingsConfig[$groupSlug][$settingSlug]['children'])) {
+                        // Add non existing properties from config with empty values
+                        $config = array_fill_keys(array_keys($this->siteSettingsConfig[$groupSlug][$settingSlug]['children']), '');
+                        $siteSettings[$groupSlug][$settingSlug] = array_map(function($item) use ($config) {
+                            return array_merge($config, $item);
+                        }, $siteSettings[$groupSlug][$settingSlug]);
+                    }
                 }
             }
         }
@@ -482,6 +492,14 @@ class SiteSettingsDataService extends Storage
                 $settings,
                 $parentPath
             );
+
+            // Also remove parent node if parent is empty
+            if (!$settings[$path_arr[0]]) {
+                $this->unsetValueByPath(
+                    $settings,
+                    $path_arr[0]
+                );
+            }
         }
 
         $this->array2xmlFile($settings, $this->XML_FILE, $this->ROOT_ELEMENT);

@@ -8,11 +8,9 @@ export interface SettingModel {
   value: string|number|boolean|Array<{[k:string]: string|number|boolean}>;
 }
 
-export interface SettingChildrenModel {
-  [slug: string]: {
-    setting: SettingModel,
-    config: SettingConfigModel
-  }
+export interface SettingChildModel {
+  config: SettingConfigModel;
+  setting: SettingModel;
 }
 
 export interface SettingGroupConfigModel {
