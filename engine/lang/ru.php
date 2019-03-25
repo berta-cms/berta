@@ -118,7 +118,7 @@ return [
         /* help text */    'Maximum size of a large image (visible if \'Large images\' are switched on in the gallery editor). These settings don\'t affect original image.' => 'Максимальные размер большого изображения. Будет отображаться, когда в редакторе галереи будет активированы большие изображения. Эти установки не влияют на оригинальное изображение.',
 
         /* setting tab */ 'Media' => 'Медиа',
-        /* setting subcategory */ 'Lightbox settings:' => '<strong>Настройки всплывающего окна:</strong>',
+        /* setting subcategory */ 'Lightbox settings:' => 'Настройки всплывающего окна:',
         /* setting name */ 'Is enabled by default' => 'Активированы по умолчанию',
         /* help text */    'Enables Lightbox mode for new entries.' => 'Активировать режим всплывающих окон для новых записей.',
         /* setting name */ 'Background color' => 'Цвет фона',
@@ -131,7 +131,7 @@ return [
         /* help text */    'Enables/disables numbers below the image.' => 'Включить/выключить нумерацию изображений',
         /* setting name */ 'Caption alignment' => 'Положение описания',
         /* help text */    'Positioning of the image caption text.' => 'Положение описания изображения',
-        /* setting subcategory */ 'Image gallery appearance:' => '<strong>Вид галереи:</strong>',
+        /* setting subcategory */ 'Image gallery appearance:' => 'Вид галереи:',
         /* setting name */ 'Auto-rewind gallery slideshow' => 'Вернуться в начало галереи',
         /* help text */    'Display the first image after clicking on the last image in galleries that are in slideshow mode.' => 'Переходить к первому изображению после нажатия на последнее в режиме слайдов.',
         /* setting name */      'Show slideshow image numbers' => 'Отображать нумерацию изображения',

@@ -118,7 +118,7 @@ return [
         /* help text */    'Maximum size of a large image (visible if \'Large images\' are switched on in the gallery editor). These settings don\'t affect original image.' => 'Taille maximale des grandes images (visible si « Grandes images » est activé dans l’éditeur de la galerie. Ce paramètre n’affecte pas l’image originale.',
 
         /* setting tab */ 'Media' => 'Média',
-        /* setting subcategory */ 'Lightbox settings:' => '<strong>Paramètres Lightbox :</strong>',
+        /* setting subcategory */ 'Lightbox settings:' => 'Paramètres Lightbox:',
         /* setting name */ 'Is enabled by default' => 'Activée par défaut',
         /* help text */    'Enables Lightbox mode for new entries.' => 'Activer le mode Lightbox pour les nouvelles entrées.',
         /* setting name */ 'Background color' => 'Couleur de fond',
@@ -131,7 +131,7 @@ return [
         /* help text */    'Enables/disables numbers below the image.' => 'Affiche les numéros sous les images',
         /* setting name */ 'Caption alignment' => 'Alignement de la légende',
         /* help text */    'Positioning of the image caption text.' => 'Positionnement du texte de légende.',
-        /* setting subcategory */ 'Image gallery appearance:' => '<strong>Apparence de la galerie d’image :</strong>',
+        /* setting subcategory */ 'Image gallery appearance:' => 'Apparence de la galerie d’image:',
         /* setting name */ 'Auto-rewind gallery slideshow' => 'Slideshow continu',
         /* help text */    'Display the first image after clicking on the last image in galleries that are in slideshow mode.' => 'Affiche la première image après avoir cliqué sur la dernière dans le mode slideshow.',
         /* setting name */ 'Video player' => 'Lecteur vidéo',

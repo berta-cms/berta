@@ -118,7 +118,7 @@ return [
         /* help text */    'Maximum size of a large image (visible if \'Large images\' are switched on in the gallery editor). These settings don\'t affect original image.' => 'De maximale afmeting van een "large image" (zichtbaar als "large images" in de gallery editor aanstaat).Deze instelling zal de afmeting van de originele afbeelding niet beinvloeden.',
 
         /* setting tab */ 'Media' => 'Media',
-        /* setting subcategory */ 'Lightbox settings:' => '<strong>Lightbox instellingen :</strong>',
+        /* setting subcategory */ 'Lightbox settings:' => 'Lightbox instellingen:',
         /* setting name */ 'Is enabled by default' => 'Staat default aan',
         /* help text */    'Enables Lightbox mode for new entries.' => 'Zet Lightbox mode voor nieuwe Entries aan.',
         /* setting name */ 'Background color' => 'Background color',
@@ -131,7 +131,7 @@ return [
         /* help text */    'Enables/disables numbers below the image.' => 'Zet de nummering onder de afbeeldingen aan/uit',
         /* setting name */ 'Caption alignment' => 'Caption alignment',
         /* help text */    'Positioning of the image caption text.' => 'Positionering van de image caption tekst.',
-        /* setting subcategory */ 'Image gallery appearance:' => '<strong>Image gallery appearance:</strong>',
+        /* setting subcategory */ 'Image gallery appearance:' => 'Image gallery appearance:',
         /* setting name */ 'Auto-rewind gallery slideshow' => 'Slideshow loop',
         /* help text */    'Display the first image after clicking on the last image in galleries that are in slideshow mode.' => 'Toon de eerste afbeelding na het klikken op de laatste afbeelding van een gallery in slideshow mode.',
         /* setting name */ 'Show slideshow image numbers' => 'Show slideshow image numbers',

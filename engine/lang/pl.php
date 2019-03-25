@@ -118,7 +118,7 @@ return [
     /* help text */    'Maximum size of a large image (visible if \'Large images\' are switched on in the gallery editor). These settings don\'t affect original image.' => 'Maksymalny rozmiar małego obrazu. Będzie on widoczny, kiedy w edytorze galerii zostanie włączony "Duże obrazy"',
 
     /* setting tab */ 'Media' => 'Media',
-    /* setting subcategory */ 'Lightbox settings:' => '<strong>Lightbox ustawienia:</strong>',
+    /* setting subcategory */ 'Lightbox settings:' => 'Lightbox ustawienia:',
     /* setting name */ 'Is enabled by default' => 'Włączony domyślnie',
     /* help text */    'Enables Lightbox mode for new entries.' => 'Włącza  tryb Lightbox dla nowych wpisów.',
     /* setting name */ 'Background color' => 'Kolor tła',
@@ -131,7 +131,7 @@ return [
     /* help text */    'Enables/disables numbers below the image.' => 'Włączyć/wyłączyć cyfry pod obrazem',
     /* setting name */ 'Caption alignment' => 'Pozycja napisu',
     /* help text */    'Positioning of the image caption text.' => 'Pozycja napisu obrazu',
-    /* setting subcategory */ 'Image gallery appearance:' => '<strong>Wygląd galerii obrazów:</strong>',
+    /* setting subcategory */ 'Image gallery appearance:' => 'Wygląd galerii obrazów:',
     /* setting name */ 'Auto-rewind gallery slideshow' => 'Wrócić na początek galerii',
     /* help text */    'Display the first image after clicking on the last image in galleries that are in slideshow mode.' => 'W trybie pokazu slajdów pierwszy obraz pojawia się po ostatnim.',
     /* setting name */      'Show slideshow image numbers' => 'Pokazywać numery obrazów w pokazie slajdów',

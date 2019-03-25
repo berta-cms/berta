@@ -120,7 +120,7 @@ return [
     /* help text */    'Maximum size of a large image (visible if \'Large images\' are switched on in the gallery editor). These settings don\'t affect original image.' => 'Maksimālais mazā attēla izmērs. Tas būs redzams, kad galerijas redaktorā tiks ieslēgts "Lielās bildes"',
 
     /* setting tab */ 'Media' => 'Media',
-    /* setting subcategory */ 'Lightbox settings:' => '<strong>Lightbox iestatījumi:</strong>',
+    /* setting subcategory */ 'Lightbox settings:' => 'Lightbox iestatījumi:',
     /* setting name */ 'Is enabled by default' => 'Pēc noklusējuma ieslēgts',
     /* help text */    'Enables Lightbox mode for new entries.' => 'Ieslēdz Lightbox režīmu jauniem ierakstiem.',
     /* setting name */ 'Background color' => 'fona krāsa',
@@ -133,7 +133,7 @@ return [
     /* help text */    'Enables/disables numbers below the image.' => 'Ieslēgt/izslēgt ciparus zem attēla',
     /* setting name */ 'Caption alignment' => 'Paskaidrojuma teksta pozīcija',
     /* help text */    'Positioning of the image caption text.' => 'Paskaidrojuma (caption) teksta pozīcija',
-    /* setting subcategory */ 'Image gallery appearance:' => '<strong>Attēlu galerijas izskats:</strong>',
+    /* setting subcategory */ 'Image gallery appearance:' => 'Attēlu galerijas izskats:',
     /* setting name */ 'Auto-rewind gallery slideshow' => 'Atgriezties galerijas uz sākumu',
     /* help text */    'Display the first image after clicking on the last image in galleries that are in slideshow mode.' => 'Slaidrādes režīmā pirmais attēls seko pēdējam.',
     /* setting name */	'Show slideshow image numbers' => 'Rādīt slaidrādes attēlu nummurus',
