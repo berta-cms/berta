@@ -128,6 +128,11 @@ if (($entryId && $mediaFolder || $settingsProperty || $sectionName && $mediaFold
                 $error = 'Please upload image smaller then <strong>' . $constraints['max_img_size_mb'] . 'MB</strong>!';
             }
 
+            // Check for corrupted images
+            if (!$error && in_array($imInfo[2], [IMAGETYPE_GIF, IMAGETYPE_JPEG, IMAGETYPE_PNG]) && BertaUtils::isCorruptedImage($file)) {
+                $error = 'Bad or corrupted image file';
+            }
+
             $fileType = 'image';
         }
     }
