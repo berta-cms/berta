@@ -312,6 +312,29 @@ class BertaUtils extends BertaBase
         return ['w' => $w, 'h' => $h];
     }
 
+    public static function isCorruptedImage($file) {
+        $type = @exif_imagetype($file);
+        if (!$type) {
+            return true;
+        }
+
+        switch ($type) {
+            case IMAGETYPE_GIF:
+                $image = @imagecreatefromgif($file);
+                break;
+            case IMAGETYPE_JPEG:
+                $image = @imagecreatefromjpeg($file);
+                break;
+            case IMAGETYPE_PNG:
+                $image = @imagecreatefrompng($file);
+                break;
+            default:
+                $image = false;
+        }
+
+        return $image ? false : true;
+    }
+
     public static function db()
     {
         $db = false;
