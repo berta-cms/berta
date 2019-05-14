@@ -84,6 +84,10 @@ h1 a:active {
     color: <?php echo $s->get('heading', 'color') ?> !important;
 }
 
+.social-icon path {
+    fill: <?php echo $s->get('socialMediaLinks', 'color') ?>;
+}
+
 .menuItem {
     font-family: <?php echo $s->getFont('menu') ?>;
     font-size: <?php echo $s->get('menu', 'fontSize') ?>;
@@ -195,7 +199,7 @@ h1 a:active {
 
 #xBackground .visual-caption {
     width: <?php echo $s->get('entryLayout', 'contentWidth') ?>;
-    margin-left: -<?php echo $s->get('entryLayout', 'contentWidth')/2 ?>px;
+    margin-left: -<?php echo intval($s->get('entryLayout', 'contentWidth'))/2 ?>px;
 }
 
 #xBackground #xBackgroundRight {
@@ -247,8 +251,8 @@ h1 a:active {
 }
 
 #xGridView {
-    left: <?php echo (100 - $s->get('grid', 'contentWidth'))/2 ?>%;
-    right: <?php echo (100 - $s->get('grid', 'contentWidth'))/2 ?>%;
+    left: <?php echo (100 - intval($s->get('grid', 'contentWidth')))/2 ?>%;
+    right: <?php echo (100 - intval($s->get('grid', 'contentWidth')))/2 ?>%;
     width: <?php echo $s->get('grid', 'contentWidth') ?>;
 }
 

@@ -73,6 +73,16 @@ $templateConf = [
         'backgroundAttachment' => ['format' => 'select',		'values' => ['fixed' => 'Fixed to browser window', 'fill' => 'Filled in browser window', 'scroll' => 'No stretch, scroll along with content'], 'default' => 'scroll', 		            'title' => I18n::_('Background position'),       'description' => I18n::_('Sets how background behaves in relation with the browser window.')]
     ],
 
+    'socialMediaLinks' => [
+        '_' => ['title' => I18n::_('Social media buttons')],
+        'color' => [
+            'format' => 'color',
+            'default' => '#000000',
+            'title' => I18n::_('Button color'),
+            'description' => ''
+        ]
+    ],
+
     'pageHeading' => [
         '_' => ['title' => I18n::_('Page heading')],
         'image' => ['format' => 'image',		'default' => '', 'min_width' => 1, 'min_height' => 1, 'max_width' => 140, 'max_height' => 400, 	'title' => I18n::_('Header image'),  'description' => '<span class="warning">' . I18n::_('Displayed image will be half of the original size, full size will be used for hi-res displays.') . '</span>'],

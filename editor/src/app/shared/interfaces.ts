@@ -5,7 +5,12 @@ export interface SettingsGroupModel {
 
 export interface SettingModel {
   slug: string;
-  value: string|number|boolean;
+  value: string|number|boolean|Array<{[k:string]: string|number|boolean}>;
+}
+
+export interface SettingChildModel {
+  config: SettingConfigModel;
+  setting: SettingModel;
 }
 
 export interface SettingGroupConfigModel {
@@ -21,6 +26,8 @@ export interface SettingConfigModel {
   default?: null | string | number | boolean;
   description?: string;
   title?: string;
+  placeholder?: string;
+  enabledOnUpdate?: boolean;
   format?:
     | 'text'
     | 'longtext'
@@ -44,6 +51,7 @@ export interface SettingConfigModel {
   allow_blank?: boolean;
   link?: boolean;
   validator?: 'GoogleAnalytics' | string;
+  children?: Array<{[k: string]: SettingConfigModel}>;
   [k: string]: any;
 }
 
@@ -89,5 +97,6 @@ export interface SettingConfigResponse {
   allow_blank?: boolean;
   link?: boolean;
   validator?: 'GoogleAnalytics' | string;
+  children?: Array<{[k: string]: SettingConfigModel}>;
   [k: string]: any;
 }

@@ -385,7 +385,8 @@ color-picker {
 .input-row {
   display: flex;
 
-  berta-text-input {
+  > berta-setting,
+  > berta-text-input {
     flex-grow: 1;
     width: 100%;
 
@@ -420,6 +421,24 @@ color-picker {
           .text-input-wrapper {
             &:before {
               background-color: $grey-80;
+            }
+          }
+        }
+      }
+    }
+
+    &.bt-auto-width {
+      width: auto;
+
+      + berta-setting {
+        .form-group {
+          .text-input-wrapper {
+            border-bottom-left-radius: $border-radius;
+            border-top-left-radius: $border-radius;
+            border-left: 1px solid $grey-40;
+
+            &:before {
+              display: none;
             }
           }
         }

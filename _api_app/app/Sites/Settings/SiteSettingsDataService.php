@@ -103,7 +103,7 @@ class SiteSettingsDataService extends Storage
      * Associative array representing data structure handled by this service.
      */
     public static $JSON_SCHEMA = [
-        '$schema' => "http://json-schema.org/draft-06/schema#",
+        '$schema' => 'http://json-schema.org/draft-06/schema#',
         'type' => 'object',
         'properties' => [
             'template' => [
@@ -282,6 +282,7 @@ class SiteSettingsDataService extends Storage
         'berta/lastUpdated' => 'D, d M Y H:i:s'
     ];
     private $siteSettingsDefaults;
+    private $siteSettingsConfig;
 
     public function __construct($site = '')
     {
@@ -291,6 +292,7 @@ class SiteSettingsDataService extends Storage
 
         $siteSettingsConfigService = new SiteSettingsConfigService();
         $this->siteSettingsDefaults = $siteSettingsConfigService->getDefaults();
+        $this->siteSettingsConfig = $siteSettingsConfigService->get();
     }
 
     public function getDefaultSettings()
@@ -324,17 +326,32 @@ class SiteSettingsDataService extends Storage
 
     public function getState()
     {
-        if (empty($this->SITE_SETTINGS)) {
-            $this->SITE_SETTINGS = $this->xmlFile2array($this->XML_FILE);
+        $siteSettings = $this->get();
+
+        // Make children setting as list
+        foreach ($siteSettings as $groupSlug => $groupSettings) {
+            foreach ($groupSettings as $settingSlug => $setting) {
+                $listOfSlug = substr($settingSlug, 0, -1);
+                if (isset($setting[$listOfSlug])) {
+                    $siteSettings[$groupSlug][$settingSlug] = $this->asList($siteSettings[$groupSlug][$settingSlug][$listOfSlug]);
+
+                    if (isset($this->siteSettingsConfig[$groupSlug][$settingSlug]['children'])) {
+                        // Add non existing properties from config with empty values
+                        $config = array_fill_keys(array_keys($this->siteSettingsConfig[$groupSlug][$settingSlug]['children']), '');
+                        $siteSettings[$groupSlug][$settingSlug] = array_map(function($item) use ($config) {
+                            return array_merge($config, $item);
+                        }, $siteSettings[$groupSlug][$settingSlug]);
+                    }
+                }
+            }
         }
 
-        $siteSettings = self::mergeSiteSettingsDefaults($this->siteSettingsDefaults, $this->SITE_SETTINGS);
-
+        $siteSettings = self::mergeSiteSettingsDefaults($this->siteSettingsDefaults, $siteSettings);
         return $siteSettings;
     }
 
     /**
-     * Merge site  settings with site settings default values
+     * Merge site settings with site settings default values
      */
     private static function mergeSiteSettingsDefaults($siteSettingsDefaults, $siteSettings)
     {
@@ -376,13 +393,25 @@ class SiteSettingsDataService extends Storage
         /** @todo: update this to use path without site (first two peaces are predictable)  */
         $path_arr = array_slice(explode('/', $path), 2);
         $path = implode('/', $path_arr);
+        $isSettingChildren = count($path_arr) > 2;
+
+        // Checking if children is asList
+        if ($isSettingChildren) {
+            $setting = $this->getValueByPath($settings, $path);
+            // Setting asList not found, try to save setting without index
+            if ($setting === NULL) {
+                array_splice($path_arr, 3, 1);
+                $path = implode('/', $path_arr);
+            }
+        }
+
         $value = trim($value);
 
-        $ret = array(
+        $ret = [
             'site' => $this->SITE == '0' ? '' : $this->SITE,
             'path' => $path,
             'value' => $value,
-        );
+        ];
 
         if (!file_exists($this->XML_FILE)) {
             $ret['error_message'] = 'Settings file not found in storage!';
@@ -409,5 +438,71 @@ class SiteSettingsDataService extends Storage
         }
 
         return $ret;
+    }
+
+    public function createChildren($path, $value)
+    {
+        $path_arr = array_slice(explode('/', $path), 2);
+        $childSlug = substr(end($path_arr), 0, -1);
+        $path_arr[] = $childSlug;
+        $path = implode('/', $path_arr);
+
+        $settings = $this->get();
+        $children = $this->getValueByPath($settings, $path);
+
+        if ($children) {
+            $children = $this->asList($children);
+            $children[] = $value;
+        } else {
+            $children = [$value];
+        }
+
+        $this->setValueByPath(
+            $settings,
+            $path,
+            $children
+        );
+
+        $this->array2xmlFile($settings, $this->XML_FILE, $this->ROOT_ELEMENT);
+        return $value;
+    }
+
+    public function deleteChildren($path, $value)
+    {
+        $path_arr = array_slice(explode('/', $path), 2);
+        $parentPath = implode('/', $path_arr);
+        $childSlug = substr(end($path_arr), 0, -1);
+        $path_arr[] = $childSlug;
+        $path = implode('/', $path_arr);
+
+        $settings = $this->get();
+        $children = $this->asList($this->getValueByPath($settings, $path));
+
+        $child = array_splice($children, $value, 1);
+        $children = $this->asList($children);
+
+        if ($children) {
+            $this->setValueByPath(
+                $settings,
+                $path,
+                $children
+            );
+        } else {
+            $this->unsetValueByPath(
+                $settings,
+                $parentPath
+            );
+
+            // Also remove parent node if parent is empty
+            if (!$settings[$path_arr[0]]) {
+                $this->unsetValueByPath(
+                    $settings,
+                    $path_arr[0]
+                );
+            }
+        }
+
+        $this->array2xmlFile($settings, $this->XML_FILE, $this->ROOT_ELEMENT);
+        return $child;
     }
 }

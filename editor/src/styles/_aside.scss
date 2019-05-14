@@ -160,6 +160,12 @@ aside {
         }
       }
     }
+
+    .input-row {
+      > berta-setting {
+        margin: 0;
+      }
+    }
   }
 
   .card {

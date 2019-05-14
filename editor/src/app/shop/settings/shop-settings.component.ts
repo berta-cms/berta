@@ -16,7 +16,6 @@ import { UpdateShopSettingsAction } from './shop-settings.actions';
       <h4>{{ settingGroup.config.title || settingGroup.slug }}</h4>
     </div>
     <berta-setting *ngFor="let setting of settingGroup.settings"
-                   [settingGroup]="settingGroup"
                    [setting]="setting.setting"
                    [config]="setting.config"
                    (update)="updateSetting(settingGroup.slug, $event)"></berta-setting>

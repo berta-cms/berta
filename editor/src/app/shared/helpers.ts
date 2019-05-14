@@ -218,3 +218,46 @@ export function removeXMLInvalidChars(string: string): string {
   const notSafeRegex = /[^\x09\x0A\x0D\x20-\xFF\x85\xA0-\uD7FF\uE000-\uFDCF\uFDE0-\uFFFD]/gm;
   return string.replace(notSafeRegex, '');
 }
+
+
+/**
+ * Get icon name from URL
+ *
+ * @param url
+ */
+export function getIconFromUrl(url: string) {
+  let iconName = 'link';
+  const availableIcons = [
+    'facebook',
+    'twitter',
+    'instagram',
+    'flickr',
+    '500px',
+    'dribbble',
+    'linkedin',
+    'behance',
+    'pinterest',
+    'vimeo',
+    'youtube'
+  ];
+
+  let parsedUrl: URL;
+
+  try {
+    parsedUrl = new URL(url);
+  } catch {}
+
+  if (parsedUrl && parsedUrl.hostname) {
+    const hostParts = parsedUrl.hostname.split('.');
+
+    if (hostParts.length > 1) {
+      const hostName = hostParts[hostParts.length - 2];
+
+      if (availableIcons.indexOf(hostName) > -1 ) {
+        iconName = hostName;
+      }
+    }
+  }
+
+  return iconName;
+}

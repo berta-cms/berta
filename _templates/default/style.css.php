@@ -53,6 +53,10 @@ a:hover {
 	text-decoration: <?php echo $s->get('links', 'textDecorationHover') ?>;
 }
 
+.social-icon path {
+    fill: <?php echo $s->get('socialMediaLinks', 'color') ?>;
+}
+
 a:active,
 div#siteTopMenu ul li.selected span {
 	color: <?php echo $s->get('links', 'colorActive') ?>;

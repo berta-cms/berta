@@ -72,6 +72,27 @@ class Storage
     }
 
     /**
+     * Get a value in array by key path
+     *
+     * @param array $array Array where to get the value
+     * @param string $path Slash delimited path to the value
+     */
+    protected function getValueByPath($array, $path)
+    {
+        $result = $array;
+        $_path = explode('/', $path);
+
+        foreach ($_path as $key) {
+            $result = &$result[$key];
+            if (!$result) {
+                break;
+            }
+        }
+
+        return $result;
+    }
+
+    /**
      * Sets a value in array by key path
      *
      * @param array $array Array where to set the value

@@ -1,14 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { SafeHtml, DomSanitizer } from '@angular/platform-browser';
 import { Store } from '@ngxs/store';
 import { Observable, combineLatest } from 'rxjs';
 import { map, filter, scan } from 'rxjs/operators';
-import { splitCamel, uCFirst } from '../../shared/helpers';
+import { splitCamel, uCFirst, getIconFromUrl } from '../../shared/helpers';
 import { Animations } from '../../shared/animations';
 import { SiteSettingsState } from './site-settings.state';
 import { SiteSettingsConfigState } from './site-settings-config.state';
-import { UpdateSiteSettingsAction } from './site-settings.actions';
-import { SettingModel, SettingConfigModel, SettingGroupConfigModel } from '../../shared/interfaces';
+import {
+  UpdateSiteSettingsAction,
+  AddSiteSettingChildrenAction,
+  DeleteSiteSettingChildrenAction,
+  UpdateSiteSettingChildreAction
+} from './site-settings.actions';
+import { SettingModel, SettingChildModel, SettingConfigModel, SettingGroupConfigModel } from '../../shared/interfaces';
 
 
 @Component({
@@ -24,11 +30,32 @@ import { SettingModel, SettingConfigModel, SettingGroupConfigModel } from '../..
         </svg>
       </h3>
       <div class="settings" [@isExpanded]="camelifySlug(currentGroup) === settingGroup.slug">
-        <berta-setting *ngFor="let setting of settingGroup.settings"
-                      [settingGroup]="settingGroup"
-                      [setting]="setting.setting"
-                      [config]="setting.config"
-                      (update)="updateSetting(settingGroup.slug, $event)"></berta-setting>
+        <div *ngFor="let setting of settingGroup.settings">
+          <berta-setting *ngIf="!setting.config.children"
+                         [setting]="setting.setting"
+                         [config]="setting.config"
+                         (update)="updateSetting(settingGroup.slug, $event)"></berta-setting>
+
+          <div *ngIf="setting.config.children">
+            <div class="setting">
+              <h4>{{ setting.config.title }}</h4>
+            </div>
+
+            <berta-setting-row *ngFor="let inputFields of setting.children; let index = index"
+                               [inputFields]="inputFields"
+                               (update)="updateChildren(settingGroup.slug, setting.setting.slug, index, $event)"
+                               (delete)="deleteChildren(settingGroup.slug, setting.setting.slug, index)">
+            </berta-setting-row>
+
+            <berta-setting-row-add [config]="setting.config.children"
+                                   (add)="addChildren(settingGroup.slug, setting.setting.slug, $event)">
+            </berta-setting-row-add>
+
+            <div class="setting" *ngIf="setting.config.description">
+              <p class="setting-description" [innerHTML]="getSettingDescription(setting.config.description)"></p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   `,
@@ -43,14 +70,16 @@ export class SiteSettingsComponent implements OnInit {
     config: SettingGroupConfigModel['_'],
     settings: Array<{
       setting: SettingModel,
-      config: SettingConfigModel
+      config: SettingConfigModel,
+      children?: Array<SettingChildModel[]>
     }>,
     slug: string
   }>>;
 
   constructor(
     private store: Store,
-    private route: ActivatedRoute) {
+    private route: ActivatedRoute,
+    private sanitizer: DomSanitizer) {
   }
 
   ngOnInit() {
@@ -67,10 +96,30 @@ export class SiteSettingsComponent implements OnInit {
               settings: settingGroup.settings
                 .filter(setting => !!config[settingGroup.slug][setting.slug])  // don't show settings that have no config
                 .map(setting => {
-                  return {
+                  let settingObj: {
+                    setting: SettingModel,
+                    config: SettingConfigModel,
+                    children?: Array<SettingChildModel[]>
+                  } = {
                     setting: setting,
                     config: config[settingGroup.slug][setting.slug]
                   };
+                  const childrenConfig = config[settingGroup.slug][setting.slug].children;
+
+                  if (childrenConfig) {
+                    const children = (setting.value as any).map(row => {
+                      return row.map(child => {
+                        return {
+                          setting: child,
+                          config: childrenConfig[child.slug]
+                        };
+                      });
+                    });
+
+                    settingObj = { ...settingObj, ...{ children: children } };
+                  }
+
+                  return settingObj;
                 }),
               config: config[settingGroup.slug]._,
               slug: settingGroup.slug
@@ -97,13 +146,43 @@ export class SiteSettingsComponent implements OnInit {
           if (prevSettingGroup) {
             if (settingGroup.settings.some(((setting, index) => prevSettingGroup.settings[index].setting !== setting.setting))) {
               /* Careful, not to mutate anything coming from the store: */
-              prevSettingGroup.settings = settingGroup.settings.map(setting => {
+              prevSettingGroup.settings = settingGroup.settings.map((setting, index) => {
+
                 const prevSetting = prevSettingGroup.settings.find(ps => {
                   return ps.setting === setting.setting && ps.config === setting.config;
                 });
+
                 if (prevSetting) {
                   return prevSetting;
                 }
+
+                // @todo this doesn't work as expected, needs to be fixed to use previous objects
+                if (setting.children) {
+                  const prevSettingChildren = prevSettingGroup.settings[index].children;
+
+                  if (prevSettingChildren.length > 0) {
+
+                    setting.children = setting.children.map((row, index) => {
+                      const prevSettingRow = prevSettingChildren[index];
+
+                      if (prevSettingRow) {
+                        return row.map((child, i) => {
+
+                          const prevChild = prevSettingRow[i];
+
+                          if (prevChild && prevChild.setting === child.config) {
+                            return prevChild;
+                          }
+
+                          return child;
+                        });
+                      }
+
+                      return row;
+                    });
+                  }
+                }
+
                 return setting;
               });
             }
@@ -129,8 +208,40 @@ export class SiteSettingsComponent implements OnInit {
     }).join('');
   }
 
+  getSettingDescription(text: string): SafeHtml {
+    return this.sanitizer.bypassSecurityTrustHtml(text);
+  }
+
   updateSetting(settingGroup: string, updateEvent) {
-    const data = {[updateEvent.field]: updateEvent.value};
+    const data = { [updateEvent.field]: updateEvent.value };
     this.store.dispatch(new UpdateSiteSettingsAction(settingGroup, data));
+  }
+
+  addChildren(settingGroup: string, slug: string, updateEvent) {
+    const hasSomeValue = Object.keys(updateEvent).some(item => updateEvent[item].trim().length > 0);
+    if (hasSomeValue) {
+      // Update social media icon by url
+      if (settingGroup === 'socialMediaLinks' && slug === 'links' && updateEvent.url !== undefined) {
+        const iconName = getIconFromUrl(updateEvent.url);
+        updateEvent['icon'] = iconName;
+      }
+
+      this.store.dispatch(new AddSiteSettingChildrenAction(settingGroup, slug, updateEvent));
+    }
+  }
+
+  updateChildren(settingGroup: string, slug: string, index: number, updateEvent) {
+    const data = { [updateEvent.field]: updateEvent.value };
+    this.store.dispatch(new UpdateSiteSettingChildreAction(settingGroup, slug, index, data));
+
+    // Update social media icon by url
+    if (settingGroup === 'socialMediaLinks' && slug === 'links' && updateEvent.field === 'url') {
+      const iconName = getIconFromUrl(updateEvent.value);
+      this.store.dispatch(new UpdateSiteSettingChildreAction(settingGroup, slug, index, { icon: iconName }));
+    }
+  }
+
+  deleteChildren(settingGroup: string, slug: string, index: number) {
+    this.store.dispatch(new DeleteSiteSettingChildrenAction(settingGroup, slug, index));
   }
 }

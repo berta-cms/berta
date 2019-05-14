@@ -184,6 +184,13 @@ class BertaTemplate extends BertaBase
             }
             $this->addVariable('entriesBySection', $allEntries);
         }
+
+        $socialMediaLinks = [];
+        if (isset($this->settings->base->settings['socialMediaLinks']['links']['link'])) {
+            $socialMediaLinks = $this->settings->base->settings['socialMediaLinks']['links']['link'];
+            Array_XML::makeListIfNotList($socialMediaLinks);
+        }
+        $this->addVariable('socialMediaLinks', $socialMediaLinks);
     }
 
     private function getEntriesLists($sName, $tagName, &$content)

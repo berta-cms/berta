@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SettingComponent } from './setting.component';
+import { SettingRowComponent } from './setting-row.component';
+import { SettingRowAddComponent } from './setting-row-add.component';
 import { AutofocusDirective } from './autofocus.directive';
 import { ColorPickerModule } from 'ngx-color-picker';
 import { TextInputComponent } from '../../inputs/text-input.component';
@@ -13,6 +15,7 @@ import { FileInputComponent } from '../../inputs/file-input.component';
 import { IconCloneComponent } from './icon-clone.component';
 import { IconDeleteComponent } from './icon-delete.component';
 import { IconPublishComponent } from './icon-publish.component';
+import { IconReadonlyComponent } from '../../inputs/icon-readonly.component';
 
 @NgModule({
   imports: [
@@ -21,6 +24,8 @@ import { IconPublishComponent } from './icon-publish.component';
   ],
   declarations: [
     SettingComponent,
+    SettingRowComponent,
+    SettingRowAddComponent,
     AutofocusDirective,
     TextInputComponent,
     LongTextInputComponent,
@@ -29,12 +34,15 @@ import { IconPublishComponent } from './icon-publish.component';
     ColorInputComponent,
     SelectInputComponent,
     FileInputComponent,
+    IconReadonlyComponent,
     IconCloneComponent,
     IconDeleteComponent,
     IconPublishComponent
   ],
   exports: [
     SettingComponent,
+    SettingRowComponent,
+    SettingRowAddComponent,
     AutofocusDirective,
     TextInputComponent,
     LongTextInputComponent,
@@ -43,6 +51,7 @@ import { IconPublishComponent } from './icon-publish.component';
     ColorInputComponent,
     SelectInputComponent,
     FileInputComponent,
+    IconReadonlyComponent,
     IconCloneComponent,
     IconDeleteComponent,
     IconPublishComponent

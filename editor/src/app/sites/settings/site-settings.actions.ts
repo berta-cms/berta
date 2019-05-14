@@ -45,3 +45,28 @@ export class InitSiteSettingsAction {
   static readonly type = 'SITE_SETTINGS:INIT';
   constructor(public payload: SiteSettingsResponse) {}
 }
+
+export class AddSiteSettingChildrenAction {
+  static readonly type = 'SITE_SETTINGS:ADD_CHILDREN';
+  constructor(public settingGroup: string,
+              public slug: string,
+              public payload: any) {
+  }
+}
+
+export class DeleteSiteSettingChildrenAction {
+  static readonly type = 'SITE_SETTINGS:DELETE_CHILDREN';
+  constructor(public settingGroup: string,
+              public slug: string,
+              public payload: number) {
+  }
+}
+
+export class UpdateSiteSettingChildreAction {
+  static readonly type = 'SITE_SETTINGS:UPDATE_CHILDREN';
+  constructor(public settingGroup: string,
+              public slug: string,
+              public index: number,
+              public payload: {[k: string]: any}) {
+  }
+}

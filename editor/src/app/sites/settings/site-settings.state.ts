@@ -13,7 +13,10 @@ import {
   CreateSiteSettingsAction,
   ResetSiteSettingsAction,
   InitSiteSettingsAction,
-  UpdateSiteSettingsFromSyncAction} from './site-settings.actions';
+  UpdateSiteSettingsFromSyncAction,
+  AddSiteSettingChildrenAction,
+  DeleteSiteSettingChildrenAction,
+  UpdateSiteSettingChildreAction} from './site-settings.actions';
 import { UserLoginAction } from '../../user/user.actions';
 import { AddSiteSectionAction } from '../sections/sections-state/site-sections.actions';
 
@@ -172,6 +175,152 @@ export class SiteSettingsState implements NgxsOnInit {
     );
   }
 
+  @Action(AddSiteSettingChildrenAction)
+  addSiteSettingChildren({ getState, patchState }: StateContext<SitesSettingsStateModel>, action: AddSiteSettingChildrenAction) {
+    const currentSite = this.store.selectSnapshot(AppState.getSite);
+    const settingKey = action.slug;
+    const data = {
+      path: currentSite + '/settings/' + action.settingGroup + '/' + settingKey,
+      value: action.payload
+    };
+
+    return this.appStateService.sync('siteSettings', data, 'POST').pipe(
+      tap(response => {
+        if (response.error_message) {
+          /* This should probably be handled in sync */
+          console.error(response.error_message);
+        } else {
+          const currentState = getState();
+
+          patchState({[currentSite]: currentState[currentSite].map(settingGroup => {
+            if (settingGroup.slug !== action.settingGroup) {
+              return settingGroup;
+            }
+
+            return {
+              ...settingGroup,
+              settings: settingGroup.settings.map(setting => {
+                if (setting.slug !== settingKey) {
+                  return setting;
+                }
+
+                const newChild: any = Object.keys(response).map(slug => {
+                  return {
+                    slug: slug,
+                    value: response[slug]
+                  }
+                });
+
+                return {
+                  ...setting,
+                  value: [
+                    ...setting.value as Array<{[k:string]: string|number|boolean}>,
+                    newChild
+                  ]
+                };
+              })
+            };
+          })});
+        }
+      })
+    );
+  }
+
+  @Action(DeleteSiteSettingChildrenAction)
+  deleteSiteSettingChildren({ getState, patchState }: StateContext<SitesSettingsStateModel>, action: DeleteSiteSettingChildrenAction) {
+    const currentSite = this.store.selectSnapshot(AppState.getSite);
+    const settingKey = action.slug;
+    const data = {
+      path: currentSite + '/settings/' + action.settingGroup + '/' + settingKey,
+      value: action.payload
+    };
+
+    return this.appStateService.sync('siteSettings', data, 'DELETE').pipe(
+      tap(response => {
+        if (response.error_message) {
+          /* This should probably be handled in sync */
+          console.error(response.error_message);
+        } else {
+          const currentState = getState();
+
+          patchState({[currentSite]: currentState[currentSite].map(settingGroup => {
+            if (settingGroup.slug !== action.settingGroup) {
+              return settingGroup;
+            }
+
+            return {
+              ...settingGroup,
+              settings: settingGroup.settings.map(setting => {
+                if (setting.slug !== settingKey) {
+                  return setting;
+                }
+
+                return {...setting, value: (setting.value as Array<{[k:string]: string|number|boolean}>).filter((_, i) => i !== action.payload)};
+              })
+            };
+          })});
+        }
+      })
+    );
+  }
+
+  @Action(UpdateSiteSettingChildreAction)
+  updateSiteSettingChildren({ getState, patchState }: StateContext<SitesSettingsStateModel>, action: UpdateSiteSettingChildreAction) {
+
+    const currentSite = this.store.selectSnapshot(AppState.getSite);
+    const settingSlug = action.slug;
+    const childParentSlug = settingSlug.substr(0, settingSlug.length - 1);
+    const childSlug = Object.keys(action.payload)[0];
+    const path = [currentSite, 'settings', action.settingGroup, settingSlug, childParentSlug, action.index, childSlug];
+    const data = {
+      path: path.join('/'),
+      value: action.payload[childSlug]
+    };
+
+    return this.appStateService.sync('siteSettings', data).pipe(
+      tap(response => {
+        if (response.error_message) {
+          /* This should probably be handled in sync */
+          console.error(response.error_message);
+        } else {
+          const currentState = getState();
+
+          patchState({[currentSite]: currentState[currentSite].map(settingGroup => {
+            if (settingGroup.slug !== action.settingGroup) {
+              return settingGroup;
+            }
+
+            return {
+              ...settingGroup,
+              settings: settingGroup.settings.map(setting => {
+                if (setting.slug !== settingSlug) {
+                  return setting;
+                }
+
+                return {...setting, value: (setting.value as any).map((row, index) => {
+
+                  if (action.index !== index) {
+                    return row;
+                  }
+
+                  const slug = Object.keys(action.payload)[0];
+
+                  return row.map(child => {
+                    if (child.slug !== slug) {
+                      return child;
+                    }
+
+                    return { ...child, value: response.value };
+                  });
+                })};
+              })
+            };
+          })});
+        }
+      })
+    );
+  }
+
   @Action(RenameSiteSettingsSitenameAction)
   renameSiteSettingsSitename({ setState, getState }: StateContext<SitesSettingsStateModel>, action: RenameSiteSettingsSitenameAction) {
     const state = getState();
@@ -203,7 +352,17 @@ export class SiteSettingsState implements NgxsOnInit {
         settings: Object.keys(settings[settingGroupSlug]).map(settingSlug => {
           return {
             slug: settingSlug,
-            value: settings[settingGroupSlug][settingSlug]
+            value: settings[settingGroupSlug][settingSlug] instanceof Array ?
+              settings[settingGroupSlug][settingSlug].map(children => {
+                return Object.keys(children).map(slug => {
+                  return {
+                    slug: slug,
+                    value: children[slug]
+                  }
+                })
+              })
+              :
+              settings[settingGroupSlug][settingSlug]
           };
         })
       };

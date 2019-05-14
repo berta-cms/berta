@@ -13,6 +13,7 @@
     "IBM.xmllanguagesupport",
     "DotJoshJohnson.xml",
     "mblode.twig-language-2",
-    "imperez.smarty"
+    "imperez.smarty",
+    "natewallace.angular2-inline"
   ]
 }
