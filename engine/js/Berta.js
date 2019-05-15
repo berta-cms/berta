@@ -227,4 +227,4 @@ var Berta = new Class({
 
 });
 
-new Berta(window.bertaGlobalOptions);
+window.berta = new Berta(window.bertaGlobalOptions);
