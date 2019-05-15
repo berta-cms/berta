@@ -276,6 +276,10 @@ h1 a:active {
     margin: <?php echo $s->get('pageLayout', 'menuMargin') ?>;
 }
 
+.bt-auto-responsive #contentContainer.xCentered {
+    max-width: <?php echo $s->get('pageLayout', 'centeredWidth') ?>;
+}
+
 @media (max-width: 767px) {
 
     .bt-responsive #pageEntries .xEntry .xGalleryType-row .xGallery .xGalleryItem,
