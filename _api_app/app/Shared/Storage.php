@@ -158,8 +158,15 @@ class Storage
         $xml = new \DOMDocument('1.0', 'utf-8');
         $xml->formatOutput = true;
         $xml->appendChild($this->array2xml($xml, $root, $arr));
-        $xml->save($xml_file);
-        @chmod($xml_file, 0666);
+
+        $fp = fopen($xml_file, 'w');
+        if (flock($fp, LOCK_EX)) {
+            $xml->save($xml_file);
+            @chmod($xml_file, 0666);
+            flock($fp, LOCK_UN);
+        } else {
+            throw new \Exception('Could not write locked file: ' . $xml_file);
+        }
     }
 
     /**
@@ -171,7 +178,15 @@ class Storage
     protected function xmlFile2array($xml_file)
     {
         if (file_exists($xml_file)) {
-            $xml_str = file_get_contents($xml_file);
+
+            $fp = fopen($xml_file, 'r');
+            if (flock($fp, LOCK_SH)) {
+                $xml_str = file_get_contents($xml_file);
+                flock($fp, LOCK_UN);
+            } else {
+                throw new \Exception('Could not read locked file: ' . $xml_file);
+            }
+
             $xml = new \DOMDocument('1.0', 'utf-8');
             $xml->formatOutput = true;
             $parsed = $xml->loadXML($xml_str);
