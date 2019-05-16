@@ -180,7 +180,7 @@ class Storage
         if (file_exists($xml_file)) {
 
             $fp = fopen($xml_file, 'r');
-            if (flock($fp, LOCK_EX)) {
+            if (flock($fp, LOCK_SH)) {
                 $xml_str = file_get_contents($xml_file);
                 flock($fp, LOCK_UN);
             } else {

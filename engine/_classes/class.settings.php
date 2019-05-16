@@ -39,7 +39,7 @@ class Settings
         $xml_file = BertaBase::$options['XML_ROOT'] . $this->fileName;
         if (file_exists($xml_file)) {
             $fp = fopen($xml_file, 'r');
-            if (flock($fp, LOCK_EX)) {
+            if (flock($fp, LOCK_SH)) {
                 $xml = file_get_contents($xml_file);
                 flock($fp, LOCK_UN);
                 $this->settings = Array_XML::xml2array($xml, 'settings');
