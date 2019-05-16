@@ -36,10 +36,16 @@ class Settings
 
     public function load()
     {
-        if (file_exists(BertaBase::$options['XML_ROOT'] . $this->fileName)) {
-            if ($xml = file_get_contents(BertaBase::$options['XML_ROOT'] . $this->fileName)) {
+        $xml_file = BertaBase::$options['XML_ROOT'] . $this->fileName;
+        if (file_exists($xml_file)) {
+            $fp = fopen($xml_file, 'r');
+            if (flock($fp, LOCK_EX)) {
+                $xml = file_get_contents($xml_file);
+                flock($fp, LOCK_UN);
                 $this->settings = Array_XML::xml2array($xml, 'settings');
                 return $this->settings;
+            } else {
+                throw new \Exception('Could not read locked file: ' . $xml_file);
             }
         }
         return false;
@@ -54,12 +60,18 @@ class Settings
     {
         Array_XML::addCDATA($settingsCopy);
         if ($xml = Array_XML::array2xml($settingsCopy, 'settings')) {
-            if (@file_put_contents(BertaBase::$options['XML_ROOT'] . $this->fileName, $xml) !== false) {
-                @chmod(BertaBase::$options['XML_ROOT'] . $this->fileName, 0666);
+            $xml_file = BertaBase::$options['XML_ROOT'] . $this->fileName;
+            $fp = fopen($xml_file, 'w');
+            if (flock($fp, LOCK_EX)) {
+                fwrite($fp, $xml);
+                @chmod($xml_file, 0666);
+                flock($fp, LOCK_UN);
+                fclose($fp);
                 return true;
+            } else {
+                throw new \Exception('Could not write locked file: ' . $xml_file);
             }
         }
-
         return false;
     }
 

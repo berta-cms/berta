@@ -50,9 +50,16 @@ class BertaEditor extends BertaContent
         Array_XML::addCDATA($blogCopy);
 
         if ($xml = Array_XML::array2xml($blogCopy, 'blog')) {
-            $fileName = self::$options['XML_ROOT'] . str_replace('%', $sName, self::$options['blog.%.xml']);
-            file_put_contents($fileName, $xml);
-            @chmod($fileName, 0666);
+            $xml_file = self::$options['XML_ROOT'] . str_replace('%', $sName, self::$options['blog.%.xml']);
+            $fp = fopen($xml_file, 'w');
+            if (flock($fp, LOCK_EX)) {
+                fwrite($fp, $xml);
+                @chmod($xml_file, 0666);
+                flock($fp, LOCK_UN);
+                fclose($fp);
+            } else {
+                throw new \Exception('Could not write locked file: ' . $xml_file);
+            }
             return true;
         }
     }
