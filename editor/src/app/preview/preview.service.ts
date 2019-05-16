@@ -36,6 +36,7 @@ import {
 import { SiteSectionsState } from '../sites/sections/sections-state/site-sections.state';
 import { SectionTagsState } from '../sites/sections/tags/section-tags.state';
 import { OrderSectionTagsFromSyncAction } from '../sites/sections/tags/section-tags.actions';
+import { UpdateShopSettingsAction } from '../shop/settings/shop-settings.actions';
 
 
 @Injectable({
@@ -399,7 +400,8 @@ export class PreviewService {
           AddSiteSettingChildrenAction,
           UpdateSiteSettingChildreAction,
           DeleteSiteSettingChildrenAction,
-          UpdateSiteTemplateSettingsAction
+          UpdateSiteTemplateSettingsAction,
+          UpdateShopSettingsAction
         ]
       ),
       /* Only reload when the overlay gets closed: */

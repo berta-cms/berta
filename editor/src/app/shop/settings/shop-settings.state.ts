@@ -1,7 +1,9 @@
-import { take, tap, catchError, pairwise, filter, switchMap } from 'rxjs/operators';
 import { HttpErrorResponse } from '@angular/common/http';
+import { concat, of } from 'rxjs';
+import { take, tap, catchError, pairwise, filter, switchMap, map } from 'rxjs/operators';
 import { State, StateContext, NgxsOnInit, Selector, Action, Store } from '@ngxs/store';
 
+import { FileUploadService } from '../../sites/shared/file-upload.service';
 import { ShopStateService } from '../shop-state.service';
 import { AppState } from '../../app-state/app.state';
 import { SettingModel } from '../../shared/interfaces';
@@ -14,7 +16,6 @@ import {
   InitShopSettingsAction} from './shop-settings.actions';
 import { AppStateService } from '../../app-state/app-state.service';
 import { ShopState } from '../shop.state';
-import { concat } from 'rxjs';
 import { UserState } from '../../user/user.state';
 
 
@@ -61,7 +62,8 @@ export class ShopSettingsState implements NgxsOnInit {
   constructor(
     private store$: Store,
     private appStateService: AppStateService,
-    private stateService: ShopStateService) {
+    private stateService: ShopStateService,
+    private fileUploadService: FileUploadService) {
   }
 
   ngxsOnInit({ dispatch }: StateContext<ShopSettingsModel>) {
@@ -95,11 +97,19 @@ export class ShopSettingsState implements NgxsOnInit {
     const state = getState();
     const site = this.store$.selectSnapshot(AppState.getSite);
     const syncURLs = this.store$.selectSnapshot(ShopState.getURLs);
-
-    return this.appStateService.sync(syncURLs.settings, {
+    const data = {
       path: `${site}/${action.groupSlug}/${action.payload.field}`,
       value: action.payload.value
-    }, 'PATCH').pipe(
+    };
+    const url = `shop/${action.payload.field}`;
+    const fileUpload$ = data.value instanceof File ?
+      this.fileUploadService.upload(url, data.value).pipe(
+        map(fileUpload => ({ ...data, value: fileUpload.filename })))
+      :
+      of(data);
+
+    return fileUpload$.pipe(
+      switchMap(syncData => this.appStateService.sync(syncURLs.settings, syncData)),
       tap(response => {
         patchState({
           [site]: state[site].map(settingGroup => {
