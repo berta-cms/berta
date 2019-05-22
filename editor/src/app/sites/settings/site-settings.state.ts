@@ -93,15 +93,7 @@ export class SiteSettingsState implements NgxsOnInit {
       value: action.payload[settingKey]
     };
 
-    const url = action.settingGroup + '/' + settingKey;
-    const fileUpload$ = data.value instanceof File ?
-      this.fileUploadService.upload(url, data.value).pipe(
-        map(fileUpload => ({ ...data, value: fileUpload.filename })))
-      :
-      of(data);
-
-    return fileUpload$.pipe(
-      switchMap(syncData => this.appStateService.sync('siteSettings', syncData)),
+    return (data.value instanceof File ? this.fileUploadService.upload('siteSettingsUpload', data) : this.appStateService.sync('siteSettings', data)).pipe(
       tap(response => {
         if (response.error_message) {
           /* This should probably be handled in sync */

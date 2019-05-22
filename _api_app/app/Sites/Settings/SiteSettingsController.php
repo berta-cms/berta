@@ -57,4 +57,9 @@ class SiteSettingsController extends Controller
 
         return response()->json($res);
     }
+
+    public function upload(Request $request) {
+        // @todo implement file upload
+        return response()->json('upload endpoint');
+    }
 }
