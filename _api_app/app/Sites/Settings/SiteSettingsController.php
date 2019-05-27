@@ -42,9 +42,9 @@ class SiteSettingsController extends Controller
         $json = $request->json()->all();
         $path_arr = explode('/', $json['path']);
         $site = $path_arr[0];
-        $settings = new SiteSettingsDataService($site);
+        $settingsDataService = new SiteSettingsDataService($site);
 
-        $res = $settings->saveValueByPath($json['path'], $json['value']);
+        $res = $settingsDataService->saveValueByPath($json['path'], $json['value']);
         // @@@:TODO: Replace this with something sensible, when migration to redux is done
         // `real` returns the user input value
         // `update` returns formatted value for frontend special cases:
@@ -59,7 +59,15 @@ class SiteSettingsController extends Controller
     }
 
     public function upload(Request $request) {
-        // @todo implement file upload
-        return response()->json('upload endpoint');
+        $data = $request->all();
+        $path_arr = explode('/', $data['path']);
+        $site = $path_arr[0];
+        $settingsDataService = new SiteSettingsDataService($site);
+        $res = $settingsDataService->uploadFileByPath($data);
+
+        $res['update'] = $res['value'];
+        $res['real'] = $res['value'];
+
+        return response()->json($res);
     }
 }

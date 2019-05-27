@@ -45,6 +45,9 @@ return [
 
     'berta_storage_path' => realpath(__DIR__. '/../../storage'),
 
-    'api_prefix' => env('API_PREFIX', '_api')
+    'api_prefix' => env('API_PREFIX', '_api'),
 
+    'image_max_file_size' => 1024 * 3, // 3MB in kilobytes
+    'image_mimetypes' => 'image/png,image/jpeg,image/gif',
+    'ico_mimetypes'=> 'image/vnd.microsoft.icon,image/x-icon',
 ];

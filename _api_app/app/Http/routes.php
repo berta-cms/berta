@@ -32,7 +32,7 @@ $app->group(['prefix' => 'v1', 'namespace' => 'App', 'middleware' => ['setup', '
         $app->delete('sites', 'SitesController@delete');
 
         $app->patch('sites/settings', ['as' => 'site_settings', 'uses' => 'Settings\SiteSettingsController@update']);
-        $app->patch('sites/settings/upload', ['as' => 'site_settings_upload', 'uses' => 'Settings\SiteSettingsController@upload']);
+        $app->post('sites/settings/upload', ['as' => 'site_settings_upload', 'uses' => 'Settings\SiteSettingsController@upload']);
         $app->post('sites/settings', 'Settings\SiteSettingsController@createChildren');
         $app->delete('sites/settings', 'Settings\SiteSettingsController@deleteChildren');
 

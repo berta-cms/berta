@@ -140,6 +140,71 @@ class Storage
         return empty($site) ? $this->XML_MAIN_ROOT : $this->XML_SITES_ROOT . '/' . $site;
     }
 
+    protected function getOrCreateMediaDir()
+    {
+        if (!file_exists($this->MEDIA_ROOT)) {
+            mkdir($this->MEDIA_ROOT, 0777, true);
+        }
+
+        return $this->MEDIA_ROOT;
+    }
+
+    protected function getUniqueFileName($dir, $fileName)
+    {
+        $name = pathinfo($fileName, PATHINFO_FILENAME);
+        $name = Helpers::slugify($name, '-', '-');
+        $name = $name ? $name : '1';
+        $extension = pathinfo($fileName, PATHINFO_EXTENSION);
+
+        if (!file_exists($dir . '/' . $name . '.' . $extension)) {
+            return $name . '.' . $extension;
+        }
+
+        preg_match('/(.+)_([0-9])+$/', $name, $nrFileParts);
+
+        if (!$nrFileParts) {
+            $fileName = $name . '_1.' . $extension;;
+            if (!file_exists($dir . '/' . $fileName)) {
+                return $fileName;
+            }
+            $nrFileParts = [$fileName, $name, '1'];
+        }
+
+        $dirContent = [];
+        foreach (scandir($dir) as $file) {
+            if (!is_file($dir . '/' . $file)) { continue; }
+            $dirContent[] = $file;
+        }
+
+        $maxFileIdx = intval($nrFileParts[2]);
+
+        foreach ($dirContent as $file) {
+            preg_match('/' .$name . '_([0-9]).' . $extension . '/', $file, $nrParts);
+            if (!$nrParts) { continue; }
+            $idx = intval($nrParts[1]);
+            if ($idx > $maxFileIdx) {
+                $maxFileIdx = $idx;
+            }
+        }
+
+        return $name . '_' . ($maxFileIdx + 1) . '.' . $extension;
+    }
+
+    public static function removeOldFiles($dir, $fileName)
+    {
+        if (file_exists($dir . '/' . $fileName)) {
+            unlink($dir . '/' . $fileName);
+        }
+
+        // Remove thumbnails
+        foreach (scandir($dir) as $file) {
+            if (!is_file($dir . '/' . $file) || substr($file, 0, 1) !== '_' || !ends_with($file, $fileName)) {
+                continue;
+            }
+            unlink($dir . '/' . $file);
+        }
+    }
+
     /**
      * Saves an array to XML file
      *

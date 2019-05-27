@@ -2,8 +2,11 @@
 
 namespace App\Sites\Settings;
 
+use Validator;
+
 use App\Configuration\SiteSettingsConfigService;
 use App\Shared\Storage;
+use App\Shared\ImageHelpers;
 use App\Sites\Sections\SiteSectionsDataService;
 
 /**
@@ -313,7 +316,7 @@ class SiteSettingsDataService extends Storage
     /**
      * Returns settings of site as an array
      *
-     * @return array Array of sections
+     * @return array Array of site settings
      */
     public function get()
     {
@@ -419,12 +422,12 @@ class SiteSettingsDataService extends Storage
         }
 
         $this->setValueByPath(
-            $settings,
+            $this->SITE_SETTINGS,
             $path,
             $value
         );
 
-        $this->array2xmlFile($settings, $this->XML_FILE, $this->ROOT_ELEMENT);
+        $this->array2xmlFile($this->SITE_SETTINGS, $this->XML_FILE, $this->ROOT_ELEMENT);
 
         // If Berta is installed, create a new default `Home` section
         if ($path == 'berta/installed' && $value) {
@@ -438,6 +441,65 @@ class SiteSettingsDataService extends Storage
         }
 
         return $ret;
+    }
+
+    public function uploadFileByPath($data)
+    {
+        $path = $data['path'];
+        $file = $data['value'];
+
+        if (!$file->isValid()) {
+            // @todo handle errors, output error messages in UI
+            throw new \Exception('Upload failed.');
+        }
+
+        $validator = Validator::make($data, [
+            'value' => 'max:' .  config('app.image_max_file_size') . '|mimetypes:' . config('app.image_mimetypes') . ',' . config('app.ico_mimetypes')
+        ]);
+
+        if ($validator->fails()) {
+            // @todo handle errors, output error messages in UI
+            throw new \Exception(implode(' ', $validator->messages()->all()));
+        }
+
+        $isImage = in_array($file->getMimeType(), explode(',', config('app.image_mimetypes')));
+
+        if ($isImage && ImageHelpers::isCorruptedImage($file)) {
+            // @todo handle errors, output error messages in UI
+            throw new \Exception('Bad or corrupted image file.');
+        }
+
+        $mediaDir = $this->getOrCreateMediaDir();
+
+        if (!is_writable($mediaDir)) {
+            // @todo handle errors, output error messages in UI
+            throw new \Exception('Media folder not writable.');
+        }
+
+        $oldFileName = $this->getValueByPath( $this->get(), implode('/', array_slice(explode('/', $path), 2)));
+        $fileName = $this->getUniqueFileName($mediaDir, $file->getClientOriginalName());
+        $file->move($mediaDir, $fileName);
+
+        if (!$isImage) {
+            if ($oldFileName) {
+                $this->removeOldFiles($mediaDir, $oldFileName);
+            }
+            return self::saveValueByPath($path, $fileName);
+        }
+
+        list($width, $height) = getimagesize($mediaDir .'/'. $fileName);
+        $width = round($width / 2);
+        $height = round($height / 2);
+
+        ImageHelpers::getResizedSrc($mediaDir, $fileName, $width, $height);
+        if ($oldFileName) {
+            $this->removeOldFiles($mediaDir, $oldFileName);
+        }
+
+        self::saveValueByPath($path . '_width', $width);
+        self::saveValueByPath($path . '_height', $height);
+
+        return self::saveValueByPath($path, $fileName);
     }
 
     public function createChildren($path, $value)
@@ -458,12 +520,12 @@ class SiteSettingsDataService extends Storage
         }
 
         $this->setValueByPath(
-            $settings,
+            $this->SITE_SETTINGS,
             $path,
             $children
         );
 
-        $this->array2xmlFile($settings, $this->XML_FILE, $this->ROOT_ELEMENT);
+        $this->array2xmlFile($this->SITE_SETTINGS, $this->XML_FILE, $this->ROOT_ELEMENT);
         return $value;
     }
 
@@ -483,26 +545,26 @@ class SiteSettingsDataService extends Storage
 
         if ($children) {
             $this->setValueByPath(
-                $settings,
+                $this->SITE_SETTINGS,
                 $path,
                 $children
             );
         } else {
             $this->unsetValueByPath(
-                $settings,
+                $this->SITE_SETTINGS,
                 $parentPath
             );
 
             // Also remove parent node if parent is empty
-            if (!$settings[$path_arr[0]]) {
+            if (!$this->SITE_SETTINGS[$path_arr[0]]) {
                 $this->unsetValueByPath(
-                    $settings,
+                    $this->SITE_SETTINGS,
                     $path_arr[0]
                 );
             }
         }
 
-        $this->array2xmlFile($settings, $this->XML_FILE, $this->ROOT_ELEMENT);
+        $this->array2xmlFile($this->SITE_SETTINGS, $this->XML_FILE, $this->ROOT_ELEMENT);
         return $child;
     }
 }

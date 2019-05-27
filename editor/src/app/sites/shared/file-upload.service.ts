@@ -21,7 +21,7 @@ export class FileUploadService {
   upload(urlName: string, data) {
     const formData = new FormData();
     formData.append('path', data.path);
-    formData.append('Filedata', data.value);
+    formData.append('value', data.value);
 
     return combineLatest(
       this.store.select(state => state.app),
@@ -32,7 +32,7 @@ export class FileUploadService {
       switchMap(([appState, user]) => {
         this.appStateService.showLoading();
 
-        return this.http.patch<any>(appState.urls[urlName], formData, {
+        return this.http.post<any>(appState.urls[urlName], formData, {
           headers: { 'X-Authorization': 'Bearer ' + user.token }
         });
       }),

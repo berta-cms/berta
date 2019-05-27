@@ -118,6 +118,7 @@ class ImageHelpers
 
     public static function getResizedSrc($folder, $src, $w, $h)
     {
+        $folder = rtrim($folder, '/') . '/';
         $newSrc = '_' . $w . 'x' . $h . '_' . $src;
         if (file_exists($folder . $newSrc) || self::createThumbnail($folder . $src, $folder . $newSrc, $w, $h)) {
             return $newSrc;
@@ -319,5 +320,29 @@ class ImageHelpers
         fclose($fh);
 
         return $count > 1;
+    }
+
+    public static function isCorruptedImage($file)
+    {
+        $type = @exif_imagetype($file);
+        if (!$type) {
+            return true;
+        }
+
+        switch ($type) {
+            case IMAGETYPE_GIF:
+                $image = @imagecreatefromgif($file);
+                break;
+            case IMAGETYPE_JPEG:
+                $image = @imagecreatefromjpeg($file);
+                break;
+            case IMAGETYPE_PNG:
+                $image = @imagecreatefrompng($file);
+                break;
+            default:
+                $image = false;
+        }
+
+        return $image ? false : true;
     }
 }
