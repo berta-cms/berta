@@ -2,8 +2,12 @@
 
 namespace App\Sites\TemplateSettings;
 
+use Validator;
+
 use App\Configuration\SiteTemplatesConfigService;
 use App\Shared\Storage;
+use App\Shared\ImageHelpers;
+
 
 /**
  * This class is a service that handles site template settings data for Berta CMS.
@@ -434,5 +438,55 @@ class SiteTemplateSettingsDataService extends Storage
         $this->array2xmlFile($site_template_settings, $this->XML_FILE, $this->ROOT_ELEMENT);
 
         return $ret;
+    }
+
+    public function uploadFileByPath($data)
+    {
+        $path = $data['path'];
+        $file = $data['value'];
+
+        if (!$file->isValid()) {
+            // @todo handle errors, output error messages in UI
+            throw new \Exception('Upload failed.');
+        }
+
+        $validator = Validator::make($data, [
+            'value' => 'max:' .  config('app.image_max_file_size') . '|mimetypes:' . config('app.image_mimetypes')
+        ]);
+
+        if ($validator->fails()) {
+            // @todo handle errors, output error messages in UI
+            throw new \Exception(implode(' ', $validator->messages()->all()));
+        }
+
+        if (ImageHelpers::isCorruptedImage($file)) {
+            // @todo handle errors, output error messages in UI
+            throw new \Exception('Bad or corrupted image file.');
+        }
+
+        $mediaDir = $this->getOrCreateMediaDir();
+
+        if (!is_writable($mediaDir)) {
+            // @todo handle errors, output error messages in UI
+            throw new \Exception('Media folder not writable.');
+        }
+
+        $oldFileName = $this->getValueByPath( $this->get(), implode('/', array_slice(explode('/', $path), 3)));
+        $fileName = $this->getUniqueFileName($mediaDir, $file->getClientOriginalName());
+        $file->move($mediaDir, $fileName);
+
+        list($width, $height) = getimagesize($mediaDir .'/'. $fileName);
+        $width = round($width / 2);
+        $height = round($height / 2);
+
+        ImageHelpers::getResizedSrc($mediaDir, $fileName, $width, $height);
+        if ($oldFileName) {
+            $this->removeOldFiles($mediaDir, $oldFileName);
+        }
+
+        self::saveValueByPath($path . '_width', $width);
+        self::saveValueByPath($path . '_height', $height);
+
+        return self::saveValueByPath($path, $fileName);
     }
 }

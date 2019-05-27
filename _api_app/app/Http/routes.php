@@ -37,6 +37,7 @@ $app->group(['prefix' => 'v1', 'namespace' => 'App', 'middleware' => ['setup', '
         $app->delete('sites/settings', 'Settings\SiteSettingsController@deleteChildren');
 
         $app->patch('sites/template-settings', ['as' => 'site_template_settings', 'uses' => 'TemplateSettings\SiteTemplateSettingsController@update']);
+        $app->post('sites/template-settings/upload', ['as' => 'site_template_settings_upload', 'uses' => 'TemplateSettings\SiteTemplateSettingsController@upload']);
 
         $app->group(['prefix' => 'v1/sites', 'namespace' => 'App\Sites\Sections', 'middleware' => ['setup', 'auth']], function () use ($app) {
             $app->post('sections', ['as' => 'site_sections', 'uses' => 'SiteSectionsController@create']);
