@@ -32,7 +32,7 @@ export class FileUploadService {
       switchMap(([appState, user]) => {
         this.appStateService.showLoading();
 
-        return this.http.post<any>(appState.urls[urlName], formData, {
+        return this.http.post<any>(appState.urls[urlName] || urlName, formData, {
           headers: { 'X-Authorization': 'Bearer ' + user.token }
         });
       }),

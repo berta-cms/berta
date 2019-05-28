@@ -101,15 +101,8 @@ export class ShopSettingsState implements NgxsOnInit {
       path: `${site}/${action.groupSlug}/${action.payload.field}`,
       value: action.payload.value
     };
-    const url = `shop/${action.payload.field}`;
-    const fileUpload$ = data.value instanceof File ?
-      this.fileUploadService.upload(url, data.value).pipe(
-        map(fileUpload => ({ ...data, value: fileUpload.filename })))
-      :
-      of(data);
 
-    return fileUpload$.pipe(
-      switchMap(syncData => this.appStateService.sync(syncURLs.settings, syncData)),
+    return (data.value instanceof File ? this.fileUploadService.upload(syncURLs.settingsUpload, data) : this.appStateService.sync(syncURLs.settings, data)).pipe(
       tap(response => {
         patchState({
           [site]: state[site].map(settingGroup => {
