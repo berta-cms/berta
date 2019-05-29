@@ -373,25 +373,29 @@ class ImageHelpers
 
     public static function isCorruptedImage($file)
     {
-        $type = @exif_imagetype($file);
-        if (!$type) {
+        try {
+            $type = exif_imagetype($file);
+            if (!$type) {
+                return true;
+            }
+
+            switch ($type) {
+                case IMAGETYPE_GIF:
+                    $image = imagecreatefromgif($file);
+                    break;
+                case IMAGETYPE_JPEG:
+                    $image = imagecreatefromjpeg($file);
+                    break;
+                case IMAGETYPE_PNG:
+                    $image = imagecreatefrompng($file);
+                    break;
+                default:
+                    $image = false;
+            }
+            return $image ? false : true;
+
+        } catch (\Exception $e) {
             return true;
         }
-
-        switch ($type) {
-            case IMAGETYPE_GIF:
-                $image = @imagecreatefromgif($file);
-                break;
-            case IMAGETYPE_JPEG:
-                $image = @imagecreatefromjpeg($file);
-                break;
-            case IMAGETYPE_PNG:
-                $image = @imagecreatefrompng($file);
-                break;
-            default:
-                $image = false;
-        }
-
-        return $image ? false : true;
     }
 }
