@@ -454,7 +454,7 @@ class SiteSettingsDataService extends Storage
         }
 
         $validator = Validator::make($data, [
-            'value' => 'max:' .  config('app.image_max_file_size') . '|mimetypes:' . config('app.image_mimetypes') . ',' . config('app.ico_mimetypes')
+            'value' => 'max:' .  config('app.image_max_file_size') . '|mimetypes:' . implode(',', config('app.image_mimetypes')) . ',' . implode(',', config('app.ico_mimetypes'))
         ]);
 
         if ($validator->fails()) {
@@ -462,7 +462,7 @@ class SiteSettingsDataService extends Storage
             throw new \Exception(implode(' ', $validator->messages()->all()));
         }
 
-        $isImage = in_array($file->getMimeType(), explode(',', config('app.image_mimetypes')));
+        $isImage = in_array($file->getMimeType(), config('app.image_mimetypes'));
 
         if ($isImage && ImageHelpers::isCorruptedImage($file)) {
             // @todo handle errors, output error messages in UI

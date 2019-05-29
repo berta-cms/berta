@@ -451,7 +451,7 @@ class SiteTemplateSettingsDataService extends Storage
         }
 
         $validator = Validator::make($data, [
-            'value' => 'max:' .  config('app.image_max_file_size') . '|mimetypes:' . config('app.image_mimetypes')
+            'value' => 'max:' .  config('app.image_max_file_size') . '|mimetypes:' . implode(',', config('app.image_mimetypes'))
         ]);
 
         if ($validator->fails()) {

@@ -1,7 +1,6 @@
 <?php
 
 return [
-
     /*
     |--------------------------------------------------------------------------
     | Encryption Key
@@ -15,7 +14,6 @@ return [
 
     'key' => env('APP_KEY', '[YOUR_APP_KEY]') . env('APP_ID', '[YOUR_APP_ID]'),
     'id' => env('APP_ID', '[YOUR_APP_ID]'),
-
     'cipher' => 'AES-256-CBC',
 
     /*
@@ -40,16 +38,19 @@ return [
     |
     */
     'fallback_locale' => env('APP_FALLBACK_LOCALE', 'en'),
-
-    'old_berta_root' => realpath(__DIR__. '/../../'),
-
-    'berta_storage_path' => realpath(__DIR__. '/../../storage'),
-
+    'old_berta_root' => realpath(__DIR__ . '/../../'),
+    'berta_storage_path' => realpath(__DIR__ . '/../../storage'),
     'api_prefix' => env('API_PREFIX', '_api'),
-
     'image_max_file_size' => 1024 * 3, // 3MB in kilobytes
-    'image_mimetypes' => 'image/png,image/jpeg,image/gif',
-    'ico_mimetypes'=> 'image/vnd.microsoft.icon,image/x-icon',
+    'image_mimetypes' => [
+        'image/png',
+        'image/jpeg',
+        'image/gif'
+    ],
+    'ico_mimetypes' => [
+        'image/vnd.microsoft.icon',
+        'image/x-icon'
+    ],
     'small_thumb_prefix' => '_smallthumb_',
     'small_thumb_width' => false, // false means "auto"
     'small_thumb_height' => 80,
