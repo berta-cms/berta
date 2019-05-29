@@ -2,8 +2,10 @@
 
 namespace App\Sites\Sections;
 
+use Validator;
 use App\Shared\Helpers;
 use App\Shared\Storage;
+use App\Shared\ImageHelpers;
 use App\Sites\Sections\Entries\SectionEntriesDataService;
 use App\Sites\Sections\Tags\SectionTagsDataService;
 
@@ -553,6 +555,108 @@ class SiteSectionsDataService extends Storage
         }
 
         return ['error_message' => 'Section "' . $name . '" not found!'];
+    }
+
+    public function galleryUpload($data)
+    {
+        $path = $data['path'];
+        $file = $data['value'];
+        $section_idx = explode('/', $path)[2];
+
+        if (!$file->isValid()) {
+            return [
+                'status' => 0,
+                'error' => 'Upload failed.'
+            ];
+        }
+
+        $validator = Validator::make($data, [
+            'value' => 'max:' .  config('app.image_max_file_size') . '|mimetypes:' . config('app.image_mimetypes')
+        ]);
+
+        if ($validator->fails()) {
+            return [
+                'status' => 0,
+                'error' => implode(' ', $validator->messages()->all())
+            ];
+        }
+
+        if (ImageHelpers::isCorruptedImage($file)) {
+            return [
+                'status' => 0,
+                'error' => 'Bad or corrupted image file.'
+            ];
+        }
+
+        $mediaRootDir = $this->getOrCreateMediaDir();
+
+        if (!is_writable($mediaRootDir)) {
+            return [
+                'status' => 0,
+                'error' => 'Media folder not writable.'
+            ];
+        }
+
+        $sections = $this->get();
+        $section = $sections[$section_idx];
+
+        $mediaDirName = isset($section['mediafolder']) ? $section['mediafolder'] : $section['name'] . '-background';
+        $mediaDir = $mediaRootDir . '/' . $mediaDirName;
+
+        if (!file_exists($mediaDir)) {
+            mkdir($mediaDir, 0777, true);
+        }
+
+        $fileName = $this->getUniqueFileName($mediaDir, $file->getClientOriginalName());
+        $fileSize = $file->getSize();
+        $file->move($mediaDir, $fileName);
+        list($width, $height) = getimagesize($mediaDir .'/'. $fileName);
+
+        $smallThumb = ImageHelpers::images_getSmallThumbFor($mediaDir .'/'. $fileName);
+        list($smallThumbWidth, $smallThumbHeight) = getimagesize($smallThumb);
+        $bgImage = ImageHelpers::images_getBgImageFor($mediaDir .'/'. $fileName);
+        list($bgImageWidth, $bgImageHeight) = getimagesize($bgImage);
+        $gridImage = ImageHelpers::images_getGridImageFor($mediaDir .'/'. $fileName);
+        list($gridImageWidth, $gridImageHeight) = getimagesize($gridImage);
+
+        if (!isset($section['mediafolder'])) {
+            $section['mediafolder'] = $mediaDirName;
+        }
+
+        if (!isset($section['mediaCacheData'])) {
+            $section['mediaCacheData']['file'] = [];
+        }
+
+        $section['mediaCacheData']['file'][] = [
+            '@attributes' => [
+                'type' => 'image',
+                'src' => $fileName,
+                'width' => $width,
+                'height' => $height
+            ]
+        ];
+
+        $sections[$section_idx] = $section;
+        $this->array2xmlFile(['section' => $sections], $this->XML_FILE, $this->ROOT_ELEMENT);
+
+        return [
+            'status' => 1,
+            'hash' => md5_file($mediaDir .'/'. $fileName),
+            'type' => 'image',
+            'smallthumb_path' => $this->MEDIA_URL . '/' . $mediaDirName . '/' . basename($smallThumb),
+            'smallthumb_width' => $smallThumbWidth,
+            'smallthumb_height' => $smallThumbHeight,
+            'path' => $this->MEDIA_URL . '/' . $mediaDirName . '/' . $fileName,
+            'path_orig' => $this->MEDIA_URL . '/' . $mediaDirName . '/' . $fileName,
+            'filename' => $fileName,
+            'size' => $fileSize,
+            'width' => $width,
+            'height' => $height,
+            'bg_image_width' => $bgImageWidth,
+            'bg_image_height' => $bgImageHeight,
+            'grid_image_width' => $gridImageWidth,
+            'grid_image_height' => $gridImageHeight
+        ];
     }
 
     /************************************************************

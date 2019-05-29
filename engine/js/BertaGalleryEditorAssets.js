@@ -4,6 +4,7 @@ var BertaGalleryUploader = new Class({
     this.galleryEditor = galleryEditor;
     this.selectFiles = this.galleryEditor.container.getElement('.xEntryAddImagesLink');
     this.uploadUrl = this.selectFiles.getAttribute('href');
+    this.path = this.selectFiles.data('data-path');
     this.fileInput = this.selectFiles.getPrevious();
     this.addUploader();
   },
@@ -60,7 +61,8 @@ var BertaGalleryUploader = new Class({
       uploadItem.store('FXProgressBar', new Fx.ProgressBar(uploadItem));
       uploadItem.retrieve('FXProgressBar').cancel().set(0);
 
-      formData.append('Filedata', file, file.name);
+      formData.append('path', this.path);
+      formData.append('value', file);
 
       xhr.upload.addEventListener('progress', function (e) {
         if (e.lengthComputable) {
@@ -99,6 +101,8 @@ var BertaGalleryUploader = new Class({
       }.bindWithEvent(this), false);
 
       xhr.open('POST', this.uploadUrl, true);
+      var token = window.getCookie('token');
+      xhr.setRequestHeader('X-Authorization', 'Bearer ' + token);
       xhr.send(formData);
 
     }.bind(this));

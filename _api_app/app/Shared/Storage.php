@@ -29,7 +29,7 @@ class Storage
 
         if (!empty($site) and $site !== '0') {
             $this->MEDIA_ROOT = $this->XML_SITES_ROOT . '/' . $site . '/' . $this->MEDIA_FOLDER;
-            $this->MEDIA_URL = '/storage/' . $site . '/' . $this->MEDIA_FOLDER;
+            $this->MEDIA_URL = '/storage/-sites/' . $site . '/' . $this->MEDIA_FOLDER;
         } else {
             $this->MEDIA_ROOT = $this->XML_MAIN_ROOT . '/' . $this->MEDIA_FOLDER;
             $this->MEDIA_URL = '/storage/' . $this->MEDIA_FOLDER;

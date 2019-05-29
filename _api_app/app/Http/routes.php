@@ -47,6 +47,7 @@ $app->group(['prefix' => 'v1', 'namespace' => 'App', 'middleware' => ['setup', '
             $app->delete('sections', 'SiteSectionsController@delete');
 
             $app->put('sections/backgrounds', ['as' => 'site_section_backgrounds', 'uses' => 'SiteSectionsController@galleryOrder']);
+            $app->post('sections/backgrounds', 'SiteSectionsController@galleryUpload');
             $app->delete('sections/backgrounds', 'SiteSectionsController@galleryDelete');
 
             $app->put('sections/tags', ['as' => 'section_tags', 'uses' => 'Tags\SectionTagsController@order']);

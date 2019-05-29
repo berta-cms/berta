@@ -101,4 +101,14 @@ class SiteSectionsController extends Controller
         $ret = $sectionsDataService->galleryOrder($json['section'], $json['files']);
         return response()->json($ret);
     }
+
+    public function galleryUpload(Request $request)
+    {
+        $data = $request->all();
+        $path_arr = explode('/', $data['path']);
+        $site = $path_arr[0];
+        $sectionsDataService = new SiteSectionsDataService($site);
+        $ret = $sectionsDataService->galleryUpload($data);
+        return response()->json($ret);
+    }
 }

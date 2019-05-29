@@ -265,7 +265,7 @@ if ($jsonRequest) {
 
                 echo '<div class="xBgAddMedia">';
                 echo '<input type="file" name="Filedata" class="xHidden" multiple>';
-                echo '<a class="xEntryAddImagesLink" href="' . $ENGINE_ROOT_URL . 'upload.php?' . ($site ? 'site=' . $site . '&amp;' : '') . 'section=' . $section['name']['value'] . '&amp;mediafolder=' . $sectionMF . '&amp;section_background=true&amp;session_id=' . session_id() . '">+ add media</a>';
+                echo '<a class="xEntryAddImagesLink" href="/_api/v1/sites/sections/backgrounds" data-path="' . $basePath . '">+ add media</a>';
                 echo '</div>';
 
                 echo '<div class="xBgSettings xHidden">';

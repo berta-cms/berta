@@ -100,6 +100,55 @@ class ImageHelpers
         ];
     }
 
+    public static function images_getSmallThumbFor($imagePath)
+    {
+        $fileName = basename($imagePath);
+        $dirName = dirname($imagePath);
+        $thumbPath = $dirName . '/' . config('app.small_thumb_prefix') . $fileName;
+
+        if (!file_exists($thumbPath)) {
+            self::createThumbnail(
+                $imagePath,
+                $thumbPath,
+                config('app.small_thumb_width'),
+                config('app.small_thumb_height')
+            );
+        }
+
+        return $thumbPath;
+    }
+
+    public static function images_getBgImageFor($imagePath)
+    {
+        $fileName = basename($imagePath);
+        $dirName = dirname($imagePath);
+        $thumbPath = $dirName . '/' . config('app.bg_image_prefix') . $fileName;
+
+        if (!file_exists($thumbPath)) {
+            copy($imagePath, $thumbPath);
+        }
+
+        return $thumbPath;
+    }
+
+    public static function images_getGridImageFor($imagePath)
+    {
+        $fileName = basename($imagePath);
+        $dirName = dirname($imagePath);
+        $thumbPath = $dirName . '/' . config('app.grid_image_prefix') . $fileName;
+
+        if (!file_exists($thumbPath)) {
+            self::createThumbnail(
+                $imagePath,
+                $thumbPath,
+                config('app.grid_thumb_width'),
+                config('app.grid_thumb_height')
+            );
+        }
+
+        return $thumbPath;
+    }
+
     public static function fitInBounds($w, $h, $boundsW, $boundsH)
     {
         $rw = $w / $boundsW;

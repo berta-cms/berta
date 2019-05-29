@@ -50,4 +50,11 @@ return [
     'image_max_file_size' => 1024 * 3, // 3MB in kilobytes
     'image_mimetypes' => 'image/png,image/jpeg,image/gif',
     'ico_mimetypes'=> 'image/vnd.microsoft.icon,image/x-icon',
+    'small_thumb_prefix' => '_smallthumb_',
+    'small_thumb_width' => false, // false means "auto"
+    'small_thumb_height' => 80,
+    'bg_image_prefix' => '_bg_',
+    'grid_image_prefix' => '_grid_',
+    'grid_thumb_width' => 140,
+    'grid_thumb_height' => false, // false means "auto"
 ];
