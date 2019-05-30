@@ -169,7 +169,7 @@ var BertaGalleryEditor = new Class({
   },
 
   addUploadedElement: function (container, uploadResponseJSON) {
-    var image_order = $(this.container).getElements('div.images>ul>li.image').length;
+    var image_order = $(this.container).getElements('div.images>ul>li').length - 1;
     var targetElDims = {
       w: null,
       h: null
@@ -385,6 +385,15 @@ var BertaGalleryEditor = new Class({
         captions.forEach(function (caption, order) {
           var path = basePath + order + '/@value';
           caption.set('data-path', path).data('data-path', true);
+        });
+
+        var slides = $(this.container).getElements('.images>ul>li');
+        slides.forEach(function (slide, order) {
+          var xAutoPlay = $(slide).getElement('.xAutoPlay span');
+          if (xAutoPlay) {
+            var path = basePath + order + '/@attributes/autoplay';
+            xAutoPlay.set('data-path', path).data('data-path', true);
+          }
         });
 
         this.unlinearProcess_stop(this.sortingProcessId);

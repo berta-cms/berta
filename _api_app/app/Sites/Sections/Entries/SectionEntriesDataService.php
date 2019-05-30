@@ -797,6 +797,7 @@ class SectionEntriesDataService extends Storage
     {
         $path = $data['path'];
         $file = $data['value'];
+        $posterVideo = explode('/', $path)[4];
 
         if (!$file->isValid()) {
             return [
@@ -805,7 +806,7 @@ class SectionEntriesDataService extends Storage
             ];
         }
 
-        $isImage = in_array($file->getMimeType(), config('app.image_mimetypes'));
+        $isImage = in_array($file->getMimeType(), config('app.image_mimetypes')) || $posterVideo;
         $validator = Validator::make($data, [
             'value' => $isImage ?
                 'max:' .  config('app.image_max_file_size') . '|mimetypes:' . implode(',', config('app.image_mimetypes'))
@@ -883,14 +884,36 @@ class SectionEntriesDataService extends Storage
         $smallThumb = ImageHelpers::images_getSmallThumbFor($mediaDir .'/'. $fileName);
         list($smallThumbWidth, $smallThumbHeight) = getimagesize($smallThumb);
 
-        $entry['mediaCacheData']['file'][] = [
-            '@attributes' => [
-                'type' => 'image',
-                'src' => $fileName,
-                'width' => $width,
-                'height' => $height
-            ]
-        ];
+        // Add new Poster
+        if ($posterVideo) {
+            $slide_order = array_search($posterVideo, array_column(array_column($entry['mediaCacheData']['file'], '@attributes'), 'src'));
+            if ($slide_order !== false) {
+                $slide = $entry['mediaCacheData']['file'][$slide_order];
+
+                if (isset($slide['@attributes']['poster_frame'])) {
+                    $this->removeOldFiles($mediaDir, $slide['@attributes']['poster_frame']);
+                }
+
+                $slide['@attributes'] = array_merge($slide['@attributes'], [
+                    'poster_frame' => $fileName,
+                    'width' => $width,
+                    'height' => $height
+                ]);
+
+                $entry['mediaCacheData']['file'][$slide_order] = $slide;
+            }
+
+        // Add new Image
+        } else {
+            $entry['mediaCacheData']['file'][] = [
+                '@attributes' => [
+                    'type' => 'image',
+                    'src' => $fileName,
+                    'width' => $width,
+                    'height' => $height
+                ]
+            ];
+        }
 
         $entries[self::$ROOT_LIST_ELEMENT][$entry_order] = $entry;
         $this->array2xmlFile($entries, $this->XML_FILE, $this->ROOT_ELEMENT);

@@ -123,7 +123,9 @@ var BertaPosterUploader = new Class({
     this.galleryEditor = galleryEditor;
     this.selectFile = selectFileLink;
     this.item = this.selectFile.getParent('li');
-    this.uploadUrl = this.galleryEditor.container.getElement('.xEntryAddImagesLink').getAttribute('href') + '&poster_for=' + videoSrc;
+    var xEntryAddImagesLink = this.galleryEditor.container.getElement('.xEntryAddImagesLink');
+    this.uploadUrl = xEntryAddImagesLink.getAttribute('href');
+    this.path = xEntryAddImagesLink.data('data-path') + videoSrc;
     this.fileInput = this.selectFile.getPrevious();
     this.addUploader();
   },
@@ -163,8 +165,8 @@ var BertaPosterUploader = new Class({
     var uploadPromise = new Promise(function (resolve, reject) {
       var xhr = new XMLHttpRequest();
       var formData = new FormData();
-
-      formData.append('Filedata', file, file.name);
+      formData.append('path', this.path);
+      formData.append('value', file);
 
       xhr.addEventListener('load', function () {
         var data = $H(JSON.decode(xhr.responseText, true) || {});
@@ -186,6 +188,8 @@ var BertaPosterUploader = new Class({
       }.bindWithEvent(this), false);
 
       xhr.open('POST', this.uploadUrl, true);
+      var token = window.getCookie('token');
+      xhr.setRequestHeader('X-Authorization', 'Bearer ' + token);
       xhr.send(formData);
 
     }.bind(this));
