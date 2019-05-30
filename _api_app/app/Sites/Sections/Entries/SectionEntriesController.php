@@ -72,6 +72,17 @@ class SectionEntriesController extends Controller
         return response()->json($ret);
     }
 
+    public function galleryUpload(Request $request)
+    {
+        $data = $request->all();
+        $path_arr = explode('/', $data['path']);
+        $site = $path_arr[0];
+        $section = $path_arr[2];
+        $sectionEntriesDataService = new SectionEntriesDataService($site, $section);
+        $ret = $sectionEntriesDataService->galleryUpload($data);
+        return response()->json($ret);
+    }
+
     /**
      * This method is entry rendering example
      */

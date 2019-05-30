@@ -74,7 +74,7 @@ if ($jsonRequest) {
 
                     echo '<div class="xEntryGalleryAddMedia">';
                     echo '<input type="file" name="Filedata" class="xHidden" multiple>';
-                    echo '<a class="xEntryAddImagesLink xEditorLink" href="' . $ENGINE_ROOT_URL . 'upload.php?' . ($site ? 'site=' . $site . '&amp;' : '') . 'section=' . $decoded['section'] . '&amp;entry=' . $entry['id']['value'] . '&amp;mediafolder=' . $entry['mediafolder']['value'] . '&amp;session_id=' . session_id() . '">+ add media</a>';
+                    echo '<a class="xEntryAddImagesLink" href="/_api/v1/sites/sections/entries/galleries" data-path="' . $basePath . '">+ add media</a>';
                     echo '</div>';
 
                     echo '<div class="xEntryGallerySettings xGreyBack xHidden">';

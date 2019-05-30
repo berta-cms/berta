@@ -2,7 +2,9 @@
 
 namespace App\Sites\Sections\Entries;
 
+use Validator;
 use App\Shared\Storage;
+use App\Shared\ImageHelpers;
 use App\Sites\Settings\SiteSettingsDataService;
 use App\Sites\TemplateSettings\SiteTemplateSettingsDataService;
 use App\Sites\Sections\SiteSectionsDataService;
@@ -751,9 +753,11 @@ class SectionEntriesDataService extends Storage
 
         if ($entry_order !== false) {
             $entry = &$entries['entry'][$entry_order];
-            $entry['mediaCacheData'] = isset($entry['mediaCacheData']) ? $entry['mediaCacheData'] : array('file' => []);
-            $files = $this->asList($entry['mediaCacheData']['file']);
+            if (!isset($entry['mediaCacheData']) || !isset($entry['mediaCacheData']['file'])) {
+                $entry['mediaCacheData']['file'] = [];
+            }
 
+            $files = $this->asList($entry['mediaCacheData']['file']);
             $reordered = [];
 
             foreach ($new_files as $file) {
@@ -787,6 +791,124 @@ class SectionEntriesDataService extends Storage
         }
 
         return ['error_message' => 'Entry with ID "' . $entry_id . '" not found!'];
+    }
+
+    public function galleryUpload($data)
+    {
+        $path = $data['path'];
+        $file = $data['value'];
+
+        if (!$file->isValid()) {
+            return [
+                'status' => 0,
+                'error' => 'Upload failed.'
+            ];
+        }
+
+        $isImage = in_array($file->getMimeType(), config('app.image_mimetypes'));
+        $validator = Validator::make($data, [
+            'value' => $isImage ?
+                'max:' .  config('app.image_max_file_size') . '|mimetypes:' . implode(',', config('app.image_mimetypes'))
+                :
+                'max:' .  config('app.video_max_file_size') . '|mimetypes:' . implode(',', config('app.video_mimetypes'))
+        ]);
+
+        if ($validator->fails()) {
+            return [
+                'status' => 0,
+                'error' => implode(' ', $validator->messages()->all())
+            ];
+        }
+
+        if ($isImage && ImageHelpers::isCorruptedImage($file)) {
+            return [
+                'status' => 0,
+                'error' => 'Bad or corrupted image file.'
+            ];
+        }
+
+        $mediaRootDir = $this->getOrCreateMediaDir();
+
+        if (!is_writable($mediaRootDir)) {
+            return [
+                'status' => 0,
+                'error' => 'Media folder not writable.'
+            ];
+        }
+
+        $entries = $this->get();
+        $entry_id = explode('/', $path)[3];
+        $entry_order = array_search($entry_id, array_column($entries['entry'], 'id'));
+        $entry = $entries['entry'][$entry_order];
+        $mediaDirName = $entry['mediafolder'];
+        $mediaDir = $mediaRootDir . '/' . $mediaDirName;
+        unset($entry['mediaCacheData']['@value']);
+
+        if (!file_exists($mediaDir)) {
+            mkdir($mediaDir, 0777, true);
+        }
+
+        $fileName = $this->getUniqueFileName($mediaDir, $file->getClientOriginalName());
+        $fileSize = $file->getSize();
+        $file->move($mediaDir, $fileName);
+
+        // A video file
+        if (!$isImage) {
+            $entry['mediaCacheData']['file'][] = [
+                '@attributes' => [
+                    'type' => 'video',
+                    'src' => $fileName
+                ]
+            ];
+
+            $entries[self::$ROOT_LIST_ELEMENT][$entry_order] = $entry;
+            $this->array2xmlFile($entries, $this->XML_FILE, $this->ROOT_ELEMENT);
+
+            return [
+               'status' => 1,
+               'hash' => md5_file($mediaDir .'/'. $fileName),
+               'type' => 'video',
+               'smallthumb_path' => null,
+               'smallthumb_width' => null,
+               'smallthumb_height' => null,
+               'path' => $this->MEDIA_URL . '/' . $mediaDirName . '/' . $fileName,
+               'filename' => $fileName,
+               'size' => $fileSize,
+               'width' => null,
+               'height' => null
+            ];
+        }
+
+        list($width, $height) = getimagesize($mediaDir .'/'. $fileName);
+        $smallThumb = ImageHelpers::images_getSmallThumbFor($mediaDir .'/'. $fileName);
+        list($smallThumbWidth, $smallThumbHeight) = getimagesize($smallThumb);
+
+        $entry['mediaCacheData']['file'][] = [
+            '@attributes' => [
+                'type' => 'image',
+                'src' => $fileName,
+                'width' => $width,
+                'height' => $height
+            ]
+        ];
+
+        $entries[self::$ROOT_LIST_ELEMENT][$entry_order] = $entry;
+        $this->array2xmlFile($entries, $this->XML_FILE, $this->ROOT_ELEMENT);
+
+        return [
+            'status' => 1,
+            'hash' => md5_file($mediaDir .'/'. $fileName),
+            'type' => 'image',
+            'smallthumb_path' => $this->MEDIA_URL . '/' . $mediaDirName . '/' . basename($smallThumb),
+            'smallthumb_width' => $smallThumbWidth,
+            'smallthumb_height' => $smallThumbHeight,
+            'path' => $this->MEDIA_URL . '/' . $mediaDirName . '/' . $fileName,
+            'path_orig' => $this->MEDIA_URL . '/' . $mediaDirName . '/' . $fileName,
+            'filename' => $fileName,
+            'size' => $fileSize,
+            'width' => $width,
+            'height' => $height
+        ];
     }
 
     public function galleryDelete($section_name, $entry_id, $file)

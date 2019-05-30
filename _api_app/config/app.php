@@ -42,6 +42,7 @@ return [
     'berta_storage_path' => realpath(__DIR__ . '/../../storage'),
     'api_prefix' => env('API_PREFIX', '_api'),
     'image_max_file_size' => 1024 * 3, // 3MB in kilobytes
+    'video_max_file_size' => 1024 * 256, // 256MB in kilobytes
     'image_mimetypes' => [
         'image/png',
         'image/jpeg',
@@ -50,6 +51,10 @@ return [
     'ico_mimetypes' => [
         'image/vnd.microsoft.icon',
         'image/x-icon'
+    ],
+    'video_mimetypes' => [
+        'video/mp4',
+        'video/x-flv'
     ],
     'small_thumb_prefix' => '_smallthumb_',
     'small_thumb_width' => false, // false means "auto"

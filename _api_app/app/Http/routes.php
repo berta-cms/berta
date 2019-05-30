@@ -58,6 +58,7 @@ $app->group(['prefix' => 'v1', 'namespace' => 'App', 'middleware' => ['setup', '
                 $app->put('entries', 'SectionEntriesController@order');
                 $app->delete('entries', 'SectionEntriesController@delete');
                 $app->put('entries/galleries', ['as' => 'entry_gallery', 'uses' => 'SectionEntriesController@galleryOrder']);
+                $app->post('entries/galleries', 'SectionEntriesController@galleryUpload');
                 $app->delete('entries/galleries', 'SectionEntriesController@galleryDelete');
                 $app->get('entries/render/{site}/{section}[/{id}]', 'SectionEntriesController@renderEntries');
             });
