@@ -934,6 +934,54 @@ class SectionEntriesDataService extends Storage
         ];
     }
 
+    public function galleryCrop($data) {
+        $entries = $this->get();
+        $entryOrder = array_search($data['entryId'], array_column($entries['entry'], 'id'));
+        $entry = $entries['entry'][$entryOrder];
+        $slide = $entry['mediaCacheData']['file'][$data['imageOrder']];
+        $oldFileName = $slide['@attributes']['src'];
+        $mediaRootDir = $this->getOrCreateMediaDir();
+
+        if (!is_writable($mediaRootDir)) {
+            throw new \Exception('Upload failed.');
+        }
+
+        $mediaDirName = $entry['mediafolder'];
+        $mediaDir = $mediaRootDir . '/' . $mediaDirName;
+        $fileName = $this->getUniqueFileName($mediaDir, $oldFileName);
+        copy($mediaDir . '/' . $oldFileName, $mediaDir . '/' . $fileName);
+        $newSize = ImageHelpers::smart_crop_image($mediaDir .'/'. $fileName, $data['x'], $data['y'], $data['w'], $data['h']);
+        $width = $newSize['w'];
+        $height = $newSize['h'];
+        $smallThumb = ImageHelpers::images_getSmallThumbFor($mediaDir .'/'. $fileName);
+
+        $this->removeOldFiles($mediaDir, $oldFileName);
+
+        $slide['@attributes'] = array_merge($slide['@attributes'], [
+            'src' => $fileName,
+            'width' => $width,
+            'height' => $height
+        ]);
+
+        $entry['mediaCacheData']['file'][$data['imageOrder']] = $slide;
+        $entries[self::$ROOT_LIST_ELEMENT][$entryOrder] = $entry;
+        $this->array2xmlFile($entries, $this->XML_FILE, $this->ROOT_ELEMENT);
+
+        return  [
+            'update' => $fileName,
+            'updateText' => $fileName,
+            'real' => $oldFileName,
+            'eval_script' => false,
+            'error_message' => false,
+            'params' => [
+                'path' => $this->MEDIA_URL . '/' . $mediaDirName . '/',
+                'smallThumb' => $this->MEDIA_URL . '/' . $mediaDirName . '/' . basename($smallThumb),
+                'width' => $width,
+                'height' => $height
+            ]
+        ];
+    }
+
     public function galleryDelete($section_name, $entry_id, $file)
     {
         $entries = $this->get();

@@ -83,6 +83,14 @@ class SectionEntriesController extends Controller
         return response()->json($ret);
     }
 
+    public function galleryCrop(Request $request)
+    {
+        $data = $request->all();
+        $sectionEntriesDataService = new SectionEntriesDataService($data['site'], $data['section']);
+        $ret = $sectionEntriesDataService->galleryCrop($data);
+        return response()->json($ret);
+    }
+
     /**
      * This method is entry rendering example
      */
