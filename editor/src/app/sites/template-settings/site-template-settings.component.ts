@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable, combineLatest } from 'rxjs';
-import { map, filter, scan } from 'rxjs/operators';
+import { map, filter, scan, take } from 'rxjs/operators';
 import { Store } from '@ngxs/store';
 import { splitCamel, uCFirst } from '../../shared/helpers';
 import { Animations } from '../../shared/animations';
@@ -29,6 +29,8 @@ import { SettingGroupConfigModel, SettingModel, SettingConfigModel } from '../..
                       [templateSlug]="settingGroup.templateSlug"
                       [setting]="setting.setting"
                       [config]="setting.config"
+                      [disabled]="settingUpdate[settingGroup.slug + ':' + setting.setting.slug]"
+                      [error]="settingError[settingGroup.slug + ':' + setting.setting.slug]"
                       (update)="updateSetting(settingGroup.slug, $event)"></berta-setting>
       </div>
     </div>
@@ -49,6 +51,8 @@ export class SiteTemplateSettingsComponent implements OnInit {
     }>,
     slug: string
   }>>;
+  settingUpdate: { [k: string]: boolean } = {};
+  settingError: { [k: string]: string } = {};
 
   constructor(
     private store: Store,
@@ -136,6 +140,8 @@ export class SiteTemplateSettingsComponent implements OnInit {
   updateSetting(settingGroup: string, updateEvent) {
     const data = {[updateEvent.field]: updateEvent.value};
     const currentSiteTemplate = this.store.selectSnapshot(SiteSettingsState.getCurrentSiteTemplate).split('-').shift();
+    this.settingError[`${settingGroup}:${updateEvent.field}`] = '';
+    this.settingUpdate[`${settingGroup}:${updateEvent.field}`] = true;
 
     if (currentSiteTemplate === 'messy' && settingGroup === 'pageLayout') {
       if (data['responsive'] && data['responsive'] === 'yes') {
@@ -145,6 +151,15 @@ export class SiteTemplateSettingsComponent implements OnInit {
       }
     }
 
-    this.store.dispatch(new UpdateSiteTemplateSettingsAction(settingGroup, data));
+    this.store.dispatch(new UpdateSiteTemplateSettingsAction(settingGroup, data))
+    .pipe(take(1))
+    .subscribe(() => {
+      this.settingUpdate[`${settingGroup}:${updateEvent.field}`] = false;
+    }, error => {
+      if (error.error && error.error.message) {
+        this.settingError[`${settingGroup}:${updateEvent.field}`] = error.error.message;
+      }
+      this.settingUpdate[`${settingGroup}:${updateEvent.field}`] = false;
+    });
   }
 }

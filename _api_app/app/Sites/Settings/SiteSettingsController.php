@@ -2,9 +2,11 @@
 
 namespace App\Sites\Settings;
 
+use Illuminate\Http\Request;
+
+use App\Shared\Helpers;
 use App\Http\Controllers\Controller;
 use App\Sites\Settings\SiteSettingsDataService;
-use Illuminate\Http\Request;
 
 class SiteSettingsController extends Controller
 {
@@ -64,6 +66,10 @@ class SiteSettingsController extends Controller
         $site = $path_arr[0];
         $settingsDataService = new SiteSettingsDataService($site);
         $res = $settingsDataService->uploadFileByPath($data);
+
+        if (isset($res['error'])) {
+            return Helpers::api_response($res['error'], (object)[], $res['status']);
+        }
 
         $res['update'] = $res['value'];
         $res['real'] = $res['value'];

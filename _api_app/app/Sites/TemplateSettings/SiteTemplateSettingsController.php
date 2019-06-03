@@ -3,6 +3,8 @@
 namespace App\Sites\TemplateSettings;
 
 use Illuminate\Http\Request;
+
+use App\Shared\Helpers;
 use App\Http\Controllers\Controller;
 use App\Sites\TemplateSettings\SiteTemplateSettingsDataService;
 
@@ -33,6 +35,10 @@ class SiteTemplateSettingsController extends Controller
 
         $templateSettingsDataService = new SiteTemplateSettingsDataService($site, $template);
         $res = $templateSettingsDataService->uploadFileByPath($data);
+
+        if (isset($res['error'])) {
+            return Helpers::api_response($res['error'], (object)[], $res['status']);
+        }
 
         $res['update'] = $res['value'];
         $res['real'] = $res['value'];

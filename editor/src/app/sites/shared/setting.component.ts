@@ -30,6 +30,8 @@ import { UpdateInputFocus } from '../../app-state/app.actions';
                         [property]="setting.slug"
                         [accept]="'image/x-icon'"
                         [value]="setting.value"
+                        [disabled]="disabled"
+                        [error]="error"
                         (update)="updateComponentField(setting.slug, $event)"></berta-file-input>
 
       <berta-icon-readonly *ngSwitchCase="'icon-readonly'"
@@ -41,6 +43,8 @@ import { UpdateInputFocus } from '../../app-state/app.actions';
                         [property]="setting.slug"
                         [accept]="'image/*'"
                         [value]="setting.value"
+                        [disabled]="disabled"
+                        [error]="error"
                         (update)="updateComponentField(setting.slug, $event)"></berta-file-input>
 
       <berta-long-text-input *ngSwitchCase="'longtext'"
@@ -94,7 +98,8 @@ export class SettingComponent implements OnInit {
   @Input('templateSlug') templateSlug: string;
   @Input('setting') setting: SettingModel;
   @Input('config') config: SettingConfigModel;
-
+  @Input() disabled: boolean;
+  @Input() error: string;
   @Output('update') update = new EventEmitter<{field: string, value: SettingModel['value']}>();
 
   description: SafeHtml;

@@ -446,8 +446,10 @@ class SiteTemplateSettingsDataService extends Storage
         $file = $data['value'];
 
         if (!$file->isValid()) {
-            // @todo handle errors, output error messages in UI
-            throw new \Exception('Upload failed.');
+            return [
+                'error' => 'Upload failed.',
+                'status' => 500
+            ];
         }
 
         $validator = Validator::make($data, [
@@ -455,20 +457,26 @@ class SiteTemplateSettingsDataService extends Storage
         ]);
 
         if ($validator->fails()) {
-            // @todo handle errors, output error messages in UI
-            throw new \Exception(implode(' ', $validator->messages()->all()));
+            return [
+                'error' => $validator->messages()->all(),
+                'status' => 400
+            ];
         }
 
         if (ImageHelpers::isCorruptedImage($file)) {
-            // @todo handle errors, output error messages in UI
-            throw new \Exception('Bad or corrupted image file.');
+            return [
+                'error' => 'Bad or corrupted image file.',
+                'status' => 400
+            ];
         }
 
         $mediaDir = $this->getOrCreateMediaDir();
 
         if (!is_writable($mediaDir)) {
-            // @todo handle errors, output error messages in UI
-            throw new \Exception('Media folder not writable.');
+            return [
+                'error' => 'Media folder not writable.',
+                'status' => 500
+            ];
         }
 
         $oldFileName = $this->getValueByPath( $this->get(), implode('/', array_slice(explode('/', $path), 3)));
