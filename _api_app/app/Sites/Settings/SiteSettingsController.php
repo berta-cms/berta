@@ -71,17 +71,17 @@ class SiteSettingsController extends Controller
         }
 
         $validator = Validator::make(['file' => $file], [
-            'file' => 'max:' .  config('app.image_max_file_size') . '|mimetypes:' . implode(',', config('app.image_mimetypes')) . ',' . implode(',', config('app.ico_mimetypes'))
+            'file' => 'max:' .  config('app.image_max_file_size') . '|mimes:' . implode(',', config('app.image_mimes')) . ',' . implode(',', config('app.ico_mimes'))
         ]);
-
-        if ($validator->fails()) {
-            return Helpers::api_response($validator->messages()->all(), (object)[], 400);
-        }
 
         $isImage = in_array($file->getMimeType(), config('app.image_mimetypes'));
 
-        if ($isImage && ImageHelpers::isCorrupted($file)) {
-            return Helpers::api_response('Bad or corrupted image file.', (object)[], 400);
+        $validator->sometimes('file', 'not_corrupted_image', function($file) use ($isImage) {
+            return $isImage;
+        });
+
+        if ($validator->fails()) {
+            return Helpers::api_response($validator->messages()->all(), (object)[], 400);
         }
 
         $path_arr = explode('/', $path);

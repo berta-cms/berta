@@ -56,6 +56,19 @@ return [
         'video/mp4',
         'video/x-flv'
     ],
+    'image_mimes' => [
+        'png',
+        'jpeg',
+        'jpg',
+        'gif'
+    ],
+    'ico_mimes' => [
+        'ico'
+    ],
+    'video_mimes' => [
+        'mp4',
+        'flv'
+    ],
     'small_thumb_prefix' => '_smallthumb_',
     'small_thumb_width' => false, // false means "auto"
     'small_thumb_height' => 80,
