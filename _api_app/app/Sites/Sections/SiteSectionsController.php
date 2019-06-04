@@ -87,23 +87,23 @@ class SiteSectionsController extends Controller
         return response()->json($json);
     }
 
-    public function galleryDelete(Request $request)
+    public function backgroundGalleryDelete(Request $request)
     {
         $json = $request->json()->all();
         $sectionsDataService = new SiteSectionsDataService($json['site']);
-        $res = $sectionsDataService->galleryDelete($json['section'], $json['file']);
+        $res = $sectionsDataService->backgroundGalleryDelete($json['section'], $json['file']);
         return response()->json($res);
     }
 
-    public function galleryOrder(Request $request)
+    public function backgroundGalleryOrder(Request $request)
     {
         $json = $request->json()->all();
         $sectionsDataService = new SiteSectionsDataService($json['site']);
-        $ret = $sectionsDataService->galleryOrder($json['section'], $json['files']);
+        $ret = $sectionsDataService->backgroundGalleryOrder($json['section'], $json['files']);
         return response()->json($ret);
     }
 
-    public function galleryUpload(Request $request)
+    public function backgroundGalleryUpload(Request $request)
     {
         $file = $request->file('value');
         $path = $request->get('path');
@@ -137,7 +137,7 @@ class SiteSectionsController extends Controller
                 'error' => 'Media folder not writable.'
             ]);
         }
-        $ret = $sectionsDataService->galleryUpload($path, $file);
+        $ret = $sectionsDataService->backgroundGalleryUpload($path, $file);
 
         return response()->json($ret);
     }

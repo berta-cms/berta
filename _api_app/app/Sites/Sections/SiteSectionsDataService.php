@@ -466,7 +466,7 @@ class SiteSectionsDataService extends Storage
 
     /**
      */
-    public function galleryDelete($name, $file)
+    public function backgroundGalleryDelete($name, $file)
     {
         $sections['section'] = $this->get();
         $section_order = array_search($name, array_column($sections['section'], 'name'));
@@ -512,7 +512,7 @@ class SiteSectionsDataService extends Storage
 
     /**
      */
-    public function galleryOrder($name, $new_files)
+    public function backgroundGalleryOrder($name, $new_files)
     {
         $sections['section'] = $this->get();
         $section_order = array_search($name, array_column($sections['section'], 'name'));
@@ -556,7 +556,7 @@ class SiteSectionsDataService extends Storage
         return ['error_message' => 'Section "' . $name . '" not found!'];
     }
 
-    public function galleryUpload($path, $file)
+    public function backgroundGalleryUpload($path, $file)
     {
         $section_idx = explode('/', $path)[2];
         $mediaRootDir = $this->getOrCreateMediaDir();
