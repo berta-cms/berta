@@ -83,7 +83,7 @@ if ($jsonRequest) {
                                 '<div class="clear"></div>';
                     echo '<div class="xEntrySlideshowSettings galleryTypeSettings' . ($galType == 'slideshow' ? '' : ' xHidden') . '">',
                                     '<div class="caption">autoplay seconds</div>',
-                                    '<div class="xEntryAutoPlay xFloatLeft xEditableRC xCommand-SET_AUTOPLAY xCaption-0" title="' . $autoPlay . '">' . $autoPlay . '</div>',
+                                    '<div class="xEntryAutoPlay xFloatLeft xEditableRC xCommand-SET_AUTOPLAY xCaption-0" title="' . $autoPlay . '" data-path="' . $basePath . 'mediaCacheData/@attributes/autoplay">' . $autoPlay . '</div>',
                                     '<div class="clear"></div>',
                                     '<div class="caption">show image numbers</div>',
                                     '<div class="xEntrySlideNumberVisibility xFloatLeft xEditableSelectRC xCommand-SET_SLIDE_NUMBER_VISIBILITY" x_options="yes||no" data-path="' . $basePath . 'mediaCacheData/@attributes/slide_numbers_visible">' . $numberVisibility . '</div>',
