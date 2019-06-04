@@ -100,7 +100,13 @@ class ImageHelpers
         ];
     }
 
-    public static function images_getSmallThumbFor($imagePath)
+    /**
+     * Create or return a thumbnail image for image file
+     *
+     * @param string $imagePath path to the source image file
+     * @return string path to target image file
+     */
+    public static function getThumbnail($imagePath)
     {
         $fileName = basename($imagePath);
         $dirName = dirname($imagePath);
@@ -118,7 +124,13 @@ class ImageHelpers
         return $thumbPath;
     }
 
-    public static function images_getBgImageFor($imagePath)
+    /**
+     * Create or return a background image for image file
+     *
+     * @param string $imagePath path to the source image file
+     * @return string path to target image file
+     */
+    public static function getBackgroundImage($imagePath)
     {
         $fileName = basename($imagePath);
         $dirName = dirname($imagePath);
@@ -131,7 +143,13 @@ class ImageHelpers
         return $thumbPath;
     }
 
-    public static function images_getGridImageFor($imagePath)
+    /**
+     * Create or return a grid image for image file
+     *
+     * @param string $imagePath path to the source image file
+     * @return string path to target image file
+     */
+    public static function getGridImage($imagePath)
     {
         $fileName = basename($imagePath);
         $dirName = dirname($imagePath);
@@ -149,7 +167,17 @@ class ImageHelpers
         return $thumbPath;
     }
 
-    public static function smart_crop_image($file, $x, $y, $w, $h)
+    /**
+     * Image crop
+     *
+     * @param string $file path to the source image file
+     * @param integer $x target image x coordinate
+     * @param integer $y target image y coordinate
+     * @param integer $w target image width
+     * @param integer $h target image height
+     * @return array target image width and height
+     */
+    public static function crop($file, $x, $y, $w, $h)
     {
         $info = getimagesize($file);
 
@@ -172,7 +200,7 @@ class ImageHelpers
         $image_resized = imagecreatetruecolor($w, $h);
 
         // Don't resize or crop animated gifs
-        if ($info[2] == IMAGETYPE_GIF && self::is_animated($file)) {
+        if ($info[2] == IMAGETYPE_GIF && self::isAnimated($file)) {
             $w = $imageWidth;
             $h = $imageHeight;
         } else {
@@ -253,12 +281,12 @@ class ImageHelpers
                     $thumbWidth = ($thumbHeight / $imageInfo[1]) * $imageInfo[0];
                 }
 
-                $imageThumb = self::smart_resize_image($imagePath, $thumbWidth, $thumbHeight, false, 'return', false);
+                $imageThumb = self::resize($imagePath, $thumbWidth, $thumbHeight, false, 'return', false);
                 if ($imageThumb) {
                     switch ($imageInfo[2]) {
                         case IMAGETYPE_GIF:
                             // Don't resize animated gifs
-                            if (self::is_animated($imagePath)) {
+                            if (self::isAnimated($imagePath)) {
                                 copy($imagePath, $thumbPath);
                             } else {
                                 imagegif($imageThumb, $thumbPath);
@@ -285,9 +313,21 @@ class ImageHelpers
         return false;
     }
 
-    // credit to Maxim Chernyak
-    // http://mediumexposure.com/techblog/smart-image-resizing-while-preserving-transparency-php-and-gd-library
-    private static function smart_resize_image(
+    /**
+     * Image resize
+     * credit to Maxim Chernyak
+     * http://mediumexposure.com/techblog/smart-image-resizing-while-preserving-transparency-php-and-gd-library
+     *
+     * @param string $file path to the source image file
+     * @param integer $width target image width
+     * @param integer $height target image height
+     * @param boolean $proportional keep source image proportions
+     * @param string $output return type
+     * @param boolean $delete_original delete source file
+     * @param boolean $use_linux_commands use linux commands for file delete
+     * @return boolean|object|stream see $output param
+     */
+    private static function resize(
         $file,
         $width = 0,
         $height = 0,
@@ -336,7 +376,7 @@ class ImageHelpers
         }
 
         // Don't resize animated gifs
-        if ($info[2] == IMAGETYPE_GIF && self::is_animated($file)) {
+        if ($info[2] == IMAGETYPE_GIF && self::isAnimated($file)) {
 
             $image_resized = imagecreatefromgif($file);
 
@@ -406,9 +446,14 @@ class ImageHelpers
         return true;
     }
 
-    private static function is_animated($filename)
+    /**
+     * Checks file whether it is animated (gif)
+     *
+     * @param string $filename full path to file
+     * @return boolean
+     */
+    private static function isAnimated($filename)
     {
-
         if (!($fh = @fopen($filename, 'rb'))) {
             return false;
         }
@@ -430,7 +475,13 @@ class ImageHelpers
         return $count > 1;
     }
 
-    public static function isCorruptedImage($file)
+    /**
+     * Checks image object whether it is corrupted
+     *
+     * @param object $file file object to test
+     * @return boolean
+     */
+    public static function isCorrupted($file)
     {
         try {
             $type = exif_imagetype($file);

@@ -581,7 +581,7 @@ class SiteSectionsDataService extends Storage
             ];
         }
 
-        if (ImageHelpers::isCorruptedImage($file)) {
+        if (ImageHelpers::isCorrupted($file)) {
             return [
                 'status' => 0,
                 'error' => 'Bad or corrupted image file.'
@@ -612,11 +612,11 @@ class SiteSectionsDataService extends Storage
         $file->move($mediaDir, $fileName);
         list($width, $height) = getimagesize($mediaDir .'/'. $fileName);
 
-        $smallThumb = ImageHelpers::images_getSmallThumbFor($mediaDir .'/'. $fileName);
+        $smallThumb = ImageHelpers::getThumbnail($mediaDir .'/'. $fileName);
         list($smallThumbWidth, $smallThumbHeight) = getimagesize($smallThumb);
-        $bgImage = ImageHelpers::images_getBgImageFor($mediaDir .'/'. $fileName);
+        $bgImage = ImageHelpers::getBackgroundImage($mediaDir .'/'. $fileName);
         list($bgImageWidth, $bgImageHeight) = getimagesize($bgImage);
-        $gridImage = ImageHelpers::images_getGridImageFor($mediaDir .'/'. $fileName);
+        $gridImage = ImageHelpers::getGridImage($mediaDir .'/'. $fileName);
         list($gridImageWidth, $gridImageHeight) = getimagesize($gridImage);
 
         if (!isset($section['mediafolder'])) {

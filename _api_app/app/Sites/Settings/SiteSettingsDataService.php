@@ -468,7 +468,7 @@ class SiteSettingsDataService extends Storage
 
         $isImage = in_array($file->getMimeType(), config('app.image_mimetypes'));
 
-        if ($isImage && ImageHelpers::isCorruptedImage($file)) {
+        if ($isImage && ImageHelpers::isCorrupted($file)) {
             return [
                 'error' => 'Bad or corrupted image file.',
                 'status' => 400

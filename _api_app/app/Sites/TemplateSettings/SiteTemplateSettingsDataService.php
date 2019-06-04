@@ -463,7 +463,7 @@ class SiteTemplateSettingsDataService extends Storage
             ];
         }
 
-        if (ImageHelpers::isCorruptedImage($file)) {
+        if (ImageHelpers::isCorrupted($file)) {
             return [
                 'error' => 'Bad or corrupted image file.',
                 'status' => 400

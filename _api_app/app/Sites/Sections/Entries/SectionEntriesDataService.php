@@ -821,7 +821,7 @@ class SectionEntriesDataService extends Storage
             ];
         }
 
-        if ($isImage && ImageHelpers::isCorruptedImage($file)) {
+        if ($isImage && ImageHelpers::isCorrupted($file)) {
             return [
                 'status' => 0,
                 'error' => 'Bad or corrupted image file.'
@@ -881,7 +881,7 @@ class SectionEntriesDataService extends Storage
         }
 
         list($width, $height) = getimagesize($mediaDir .'/'. $fileName);
-        $smallThumb = ImageHelpers::images_getSmallThumbFor($mediaDir .'/'. $fileName);
+        $smallThumb = ImageHelpers::getThumbnail($mediaDir .'/'. $fileName);
         list($smallThumbWidth, $smallThumbHeight) = getimagesize($smallThumb);
 
         // Add new Poster
@@ -950,10 +950,10 @@ class SectionEntriesDataService extends Storage
         $mediaDir = $mediaRootDir . '/' . $mediaDirName;
         $fileName = $this->getUniqueFileName($mediaDir, $oldFileName);
         copy($mediaDir . '/' . $oldFileName, $mediaDir . '/' . $fileName);
-        $newSize = ImageHelpers::smart_crop_image($mediaDir .'/'. $fileName, $data['x'], $data['y'], $data['w'], $data['h']);
+        $newSize = ImageHelpers::crop($mediaDir .'/'. $fileName, $data['x'], $data['y'], $data['w'], $data['h']);
         $width = $newSize['w'];
         $height = $newSize['h'];
-        $smallThumb = ImageHelpers::images_getSmallThumbFor($mediaDir .'/'. $fileName);
+        $smallThumb = ImageHelpers::getThumbnail($mediaDir .'/'. $fileName);
 
         $this->removeOldFiles($mediaDir, $oldFileName);
 
