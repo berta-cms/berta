@@ -2,6 +2,7 @@
 
 namespace App\Sites\TemplateSettings;
 
+use Validator;
 use Illuminate\Http\Request;
 
 use App\Shared\Helpers;
@@ -28,18 +29,32 @@ class SiteTemplateSettingsController extends Controller
     }
 
     public function upload(Request $request) {
-        $data = $request->all();
-        $path_arr = explode('/', $data['path']);
-        $site = $path_arr[0];
-        $template = $path_arr[2];
+        $file = $request->file('value');
+        $path = $request->get('path');
 
-        $templateSettingsDataService = new SiteTemplateSettingsDataService($site, $template);
-        $res = $templateSettingsDataService->uploadFileByPath($data);
-
-        if (isset($res['error'])) {
-            return Helpers::api_response($res['error'], (object)[], $res['status']);
+        if (!$file->isValid()) {
+            return Helpers::api_response('Upload failed.', (object)[], 500);
         }
 
+        $validator = Validator::make(['file' => $file], [
+            'file' => 'max:' .  config('app.image_max_file_size') . '|mimes:' . implode(',', config('app.image_mimes')) . '|not_corrupted_image'
+        ]);
+
+        if ($validator->fails()) {
+            return Helpers::api_response($validator->messages()->all(), (object)[], 400);
+        }
+
+        $path_arr = explode('/', $path);
+        $site = $path_arr[0];
+        $template = $path_arr[2];
+        $templateSettingsDataService = new SiteTemplateSettingsDataService($site, $template);
+        $mediaDir = $templateSettingsDataService->getOrCreateMediaDir();
+
+        if (!is_writable($mediaDir)) {
+            return Helpers::api_response('Media folder not writable.', (object)[], 500);
+        }
+
+        $res = $templateSettingsDataService->uploadFileByPath($path, $file);
         $res['update'] = $res['value'];
         $res['real'] = $res['value'];
 

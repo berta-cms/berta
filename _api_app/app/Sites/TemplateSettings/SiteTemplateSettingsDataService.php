@@ -440,45 +440,9 @@ class SiteTemplateSettingsDataService extends Storage
         return $ret;
     }
 
-    public function uploadFileByPath($data)
+    public function uploadFileByPath($path, $file)
     {
-        $path = $data['path'];
-        $file = $data['value'];
-
-        if (!$file->isValid()) {
-            return [
-                'error' => 'Upload failed.',
-                'status' => 500
-            ];
-        }
-
-        $validator = Validator::make($data, [
-            'value' => 'max:' .  config('app.image_max_file_size') . '|mimetypes:' . implode(',', config('app.image_mimetypes'))
-        ]);
-
-        if ($validator->fails()) {
-            return [
-                'error' => $validator->messages()->all(),
-                'status' => 400
-            ];
-        }
-
-        if (ImageHelpers::isCorrupted($file)) {
-            return [
-                'error' => 'Bad or corrupted image file.',
-                'status' => 400
-            ];
-        }
-
         $mediaDir = $this->getOrCreateMediaDir();
-
-        if (!is_writable($mediaDir)) {
-            return [
-                'error' => 'Media folder not writable.',
-                'status' => 500
-            ];
-        }
-
         $oldFileName = $this->getValueByPath( $this->get(), implode('/', array_slice(explode('/', $path), 3)));
         $fileName = $this->getUniqueFileName($mediaDir, $file->getClientOriginalName());
         $file->move($mediaDir, $fileName);

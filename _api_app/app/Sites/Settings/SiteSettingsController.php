@@ -6,7 +6,6 @@ use Validator;
 use Illuminate\Http\Request;
 
 use App\Shared\Helpers;
-use App\Shared\ImageHelpers;
 use App\Http\Controllers\Controller;
 use App\Sites\Settings\SiteSettingsDataService;
 
