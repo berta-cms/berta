@@ -2,8 +2,6 @@
 
 namespace App\Sites\Settings;
 
-use Validator;
-
 use App\Configuration\SiteSettingsConfigService;
 use App\Shared\Storage;
 use App\Shared\ImageHelpers;
@@ -443,47 +441,17 @@ class SiteSettingsDataService extends Storage
         return $ret;
     }
 
-    public function uploadFileByPath($data)
+    /**
+     * Upload a file for site setting
+     *
+     * @param string $path Path to setting in XML structure
+     * @param object $file File object
+     * @return array Array of changed value
+     */
+    public function uploadFileByPath($path, $file)
     {
-        $path = $data['path'];
-        $file = $data['value'];
-
-        if (!$file->isValid()) {
-            return [
-                'error' => 'Upload failed.',
-                'status' => 500
-            ];
-        }
-
-        $validator = Validator::make($data, [
-            'value' => 'max:' .  config('app.image_max_file_size') . '|mimetypes:' . implode(',', config('app.image_mimetypes')) . ',' . implode(',', config('app.ico_mimetypes'))
-        ]);
-
-        if ($validator->fails()) {
-            return [
-                'error' => $validator->messages()->all(),
-                'status' => 400
-            ];
-        }
-
         $isImage = in_array($file->getMimeType(), config('app.image_mimetypes'));
-
-        if ($isImage && ImageHelpers::isCorrupted($file)) {
-            return [
-                'error' => 'Bad or corrupted image file.',
-                'status' => 400
-            ];
-        }
-
         $mediaDir = $this->getOrCreateMediaDir();
-
-        if (!is_writable($mediaDir)) {
-            return [
-                'error' => 'Media folder not writable.',
-                'status' => 500
-            ];
-        }
-
         $oldFileName = $this->getValueByPath( $this->get(), implode('/', array_slice(explode('/', $path), 2)));
         $fileName = $this->getUniqueFileName($mediaDir, $file->getClientOriginalName());
         $file->move($mediaDir, $fileName);

@@ -140,7 +140,7 @@ class Storage
         return empty($site) ? $this->XML_MAIN_ROOT : $this->XML_SITES_ROOT . '/' . $site;
     }
 
-    protected function getOrCreateMediaDir()
+    public function getOrCreateMediaDir()
     {
         if (!file_exists($this->MEDIA_ROOT)) {
             mkdir($this->MEDIA_ROOT, 0777, true);
