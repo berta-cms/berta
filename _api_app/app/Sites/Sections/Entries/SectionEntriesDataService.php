@@ -2,7 +2,6 @@
 
 namespace App\Sites\Sections\Entries;
 
-use Validator;
 use App\Shared\Storage;
 use App\Shared\ImageHelpers;
 use App\Sites\Settings\SiteSettingsDataService;
@@ -793,51 +792,12 @@ class SectionEntriesDataService extends Storage
         return ['error_message' => 'Entry with ID "' . $entry_id . '" not found!'];
     }
 
-    public function galleryUpload($data)
+    public function galleryUpload($path, $file)
     {
-        $path = $data['path'];
-        $file = $data['value'];
-        $posterVideo = explode('/', $path)[4];
-
-        if (!$file->isValid()) {
-            return [
-                'status' => 0,
-                'error' => 'Upload failed.'
-            ];
-        }
-
-        $isImage = in_array($file->getMimeType(), config('app.image_mimetypes')) || $posterVideo;
-        $validator = Validator::make($data, [
-            'value' => $isImage ?
-                'max:' .  config('app.image_max_file_size') . '|mimetypes:' . implode(',', config('app.image_mimetypes'))
-                :
-                'max:' .  config('app.video_max_file_size') . '|mimetypes:' . implode(',', config('app.video_mimetypes'))
-        ]);
-
-        if ($validator->fails()) {
-            return [
-                'status' => 0,
-                'error' => implode(' ', $validator->messages()->all())
-            ];
-        }
-
-        if ($isImage && ImageHelpers::isCorrupted($file)) {
-            return [
-                'status' => 0,
-                'error' => 'Bad or corrupted image file.'
-            ];
-        }
-
         $mediaRootDir = $this->getOrCreateMediaDir();
-
-        if (!is_writable($mediaRootDir)) {
-            return [
-                'status' => 0,
-                'error' => 'Media folder not writable.'
-            ];
-        }
-
         $entries = $this->get();
+        $posterVideo = explode('/', $path)[4];
+        $isImage = in_array($file->getMimeType(), config('app.image_mimetypes')) || $posterVideo;
         $entry_id = explode('/', $path)[3];
         $entry_order = array_search($entry_id, array_column($entries['entry'], 'id'));
         $entry = $entries['entry'][$entry_order];

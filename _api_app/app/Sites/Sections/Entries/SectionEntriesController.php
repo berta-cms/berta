@@ -2,6 +2,7 @@
 
 namespace App\Sites\Sections\Entries;
 
+use Validator;
 use Illuminate\Http\Request;
 use App\Shared\Storage;
 use App\Http\Controllers\Controller;
@@ -74,12 +75,47 @@ class SectionEntriesController extends Controller
 
     public function galleryUpload(Request $request)
     {
-        $data = $request->all();
-        $path_arr = explode('/', $data['path']);
+        $file = $request->file('value');
+        $path = $request->get('path');
+        $posterVideo = explode('/', $path)[4];
+
+        if (!$file->isValid()) {
+            return response()->json([
+                'status' => 0,
+                'error' => 'Upload failed.'
+            ]);
+        }
+
+        $isImage = in_array($file->getMimeType(), config('app.image_mimetypes')) || $posterVideo;
+        $validator = Validator::make(['file' => $file], [
+            'file' => $isImage ?
+                'max:' .  config('app.image_max_file_size') . '|mimes:' . implode(',', config('app.image_mimes')) . '|not_corrupted_image'
+                :
+                'max:' .  config('app.video_max_file_size') . '|mimes:' . implode(',', config('app.video_mimes'))
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 0,
+                'error' => implode(' ', $validator->messages()->all())
+            ]);
+        }
+
+        $path_arr = explode('/', $path);
         $site = $path_arr[0];
         $section = $path_arr[2];
         $sectionEntriesDataService = new SectionEntriesDataService($site, $section);
-        $ret = $sectionEntriesDataService->galleryUpload($data);
+        $mediaDir = $sectionEntriesDataService->getOrCreateMediaDir();
+
+        if (!is_writable($mediaDir)) {
+            return response()->json([
+                'status' => 0,
+                'error' => 'Media folder not writable.'
+            ]);
+        }
+
+        $ret = $sectionEntriesDataService->galleryUpload($path, $file);
+
         return response()->json($ret);
     }
 
