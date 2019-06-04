@@ -851,7 +851,7 @@ class SectionEntriesDataService extends Storage
                 $slide = $entry['mediaCacheData']['file'][$slide_order];
 
                 if (isset($slide['@attributes']['poster_frame'])) {
-                    $this->removeOldFiles($mediaDir, $slide['@attributes']['poster_frame']);
+                    $this->removeImageWithThumbnails($mediaDir, $slide['@attributes']['poster_frame']);
                 }
 
                 $slide['@attributes'] = array_merge($slide['@attributes'], [
@@ -915,7 +915,7 @@ class SectionEntriesDataService extends Storage
         $height = $newSize['h'];
         $smallThumb = ImageHelpers::getThumbnail($mediaDir .'/'. $fileName);
 
-        $this->removeOldFiles($mediaDir, $oldFileName);
+        $this->removeImageWithThumbnails($mediaDir, $oldFileName);
 
         $slide['@attributes'] = array_merge($slide['@attributes'], [
             'src' => $fileName,

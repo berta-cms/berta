@@ -458,7 +458,7 @@ class SiteSettingsDataService extends Storage
 
         if (!$isImage) {
             if ($oldFileName) {
-                $this->removeOldFiles($mediaDir, $oldFileName);
+                $this->removeImageWithThumbnails($mediaDir, $oldFileName);
             }
             return self::saveValueByPath($path, $fileName);
         }
@@ -469,7 +469,7 @@ class SiteSettingsDataService extends Storage
 
         ImageHelpers::getResizedSrc($mediaDir, $fileName, $width, $height);
         if ($oldFileName) {
-            $this->removeOldFiles($mediaDir, $oldFileName);
+            $this->removeImageWithThumbnails($mediaDir, $oldFileName);
         }
 
         self::saveValueByPath($path . '_width', $width);

@@ -190,7 +190,7 @@ class Storage
         return $name . '_' . ($maxFileIdx + 1) . '.' . $extension;
     }
 
-    public static function removeOldFiles($dir, $fileName)
+    public static function removeImageWithThumbnails($dir, $fileName)
     {
         if (file_exists($dir . '/' . $fileName)) {
             unlink($dir . '/' . $fileName);
