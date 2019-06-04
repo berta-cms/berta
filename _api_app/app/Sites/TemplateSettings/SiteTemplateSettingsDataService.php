@@ -2,8 +2,6 @@
 
 namespace App\Sites\TemplateSettings;
 
-use Validator;
-
 use App\Configuration\SiteTemplatesConfigService;
 use App\Shared\Storage;
 use App\Shared\ImageHelpers;

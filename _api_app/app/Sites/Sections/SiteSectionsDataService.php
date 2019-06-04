@@ -2,7 +2,6 @@
 
 namespace App\Sites\Sections;
 
-use Validator;
 use App\Shared\Helpers;
 use App\Shared\Storage;
 use App\Shared\ImageHelpers;
@@ -557,49 +556,12 @@ class SiteSectionsDataService extends Storage
         return ['error_message' => 'Section "' . $name . '" not found!'];
     }
 
-    public function galleryUpload($data)
+    public function galleryUpload($path, $file)
     {
-        $path = $data['path'];
-        $file = $data['value'];
         $section_idx = explode('/', $path)[2];
-
-        if (!$file->isValid()) {
-            return [
-                'status' => 0,
-                'error' => 'Upload failed.'
-            ];
-        }
-
-        $validator = Validator::make($data, [
-            'value' => 'max:' .  config('app.image_max_file_size') . '|mimetypes:' . implode(',', config('app.image_mimetypes'))
-        ]);
-
-        if ($validator->fails()) {
-            return [
-                'status' => 0,
-                'error' => implode(' ', $validator->messages()->all())
-            ];
-        }
-
-        if (ImageHelpers::isCorrupted($file)) {
-            return [
-                'status' => 0,
-                'error' => 'Bad or corrupted image file.'
-            ];
-        }
-
         $mediaRootDir = $this->getOrCreateMediaDir();
-
-        if (!is_writable($mediaRootDir)) {
-            return [
-                'status' => 0,
-                'error' => 'Media folder not writable.'
-            ];
-        }
-
         $sections = $this->get();
         $section = $sections[$section_idx];
-
         $mediaDirName = isset($section['mediafolder']) ? $section['mediafolder'] : $section['name'] . '-background';
         $mediaDir = $mediaRootDir . '/' . $mediaDirName;
 

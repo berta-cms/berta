@@ -2,6 +2,7 @@
 
 namespace App\Sites\Sections;
 
+use Validator;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -104,11 +105,40 @@ class SiteSectionsController extends Controller
 
     public function galleryUpload(Request $request)
     {
-        $data = $request->all();
-        $path_arr = explode('/', $data['path']);
+        $file = $request->file('value');
+        $path = $request->get('path');
+
+        if (!$file->isValid()) {
+            return response()->json([
+                'status' => 0,
+                'error' => 'Upload failed.'
+            ]);
+        }
+
+        $validator = Validator::make(['file' => $file], [
+            'file' => 'max:' .  config('app.image_max_file_size') . '|mimes:' . implode(',', config('app.image_mimes')) . '|not_corrupted_image'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 0,
+                'error' => implode(' ', $validator->messages()->all())
+            ]);
+        }
+
+        $path_arr = explode('/', $path);
         $site = $path_arr[0];
         $sectionsDataService = new SiteSectionsDataService($site);
-        $ret = $sectionsDataService->galleryUpload($data);
+        $mediaRootDir = $sectionsDataService->getOrCreateMediaDir();
+
+        if (!is_writable($mediaRootDir)) {
+            return response()->json([
+                'status' => 0,
+                'error' => 'Media folder not writable.'
+            ]);
+        }
+        $ret = $sectionsDataService->galleryUpload($path, $file);
+
         return response()->json($ret);
     }
 }
