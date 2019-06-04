@@ -51,9 +51,9 @@ export class FileInputComponent implements OnInit {
   }
 
   onChange(fileInput: HTMLInputElement) {
-    // if (!this.validate(fileInput) || this.disabled) {
-    //   return;
-    // }
+    if (!this.validate(fileInput) || this.disabled) {
+      return;
+    }
     this.updateField(fileInput.files[0]);
   }
 
