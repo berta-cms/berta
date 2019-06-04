@@ -450,7 +450,7 @@ class SiteSettingsDataService extends Storage
      */
     public function uploadFileByPath($path, $file)
     {
-        $isImage = in_array($file->getMimeType(), config('app.image_mimetypes'));
+        $isImage = in_array($file->guessExtension(), config('app.image_mimes'));
         $mediaDir = $this->getOrCreateMediaDir();
         $oldFileName = $this->getValueByPath( $this->get(), implode('/', array_slice(explode('/', $path), 2)));
         $fileName = $this->getUniqueFileName($mediaDir, $file->getClientOriginalName());

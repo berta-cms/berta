@@ -73,7 +73,7 @@ class SiteSettingsController extends Controller
             'file' => 'max:' .  config('app.image_max_file_size') . '|mimes:' . implode(',', config('app.image_mimes')) . ',' . implode(',', config('app.ico_mimes'))
         ]);
 
-        $isImage = in_array($file->getMimeType(), config('app.image_mimetypes'));
+        $isImage = in_array($file->guessExtension(), config('app.image_mimes'));
 
         $validator->sometimes('file', 'not_corrupted_image', function($file) use ($isImage) {
             return $isImage;

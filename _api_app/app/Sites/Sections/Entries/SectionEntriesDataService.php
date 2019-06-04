@@ -797,7 +797,7 @@ class SectionEntriesDataService extends Storage
         $mediaRootDir = $this->getOrCreateMediaDir();
         $entries = $this->get();
         $posterVideo = explode('/', $path)[4];
-        $isImage = in_array($file->getMimeType(), config('app.image_mimetypes')) || $posterVideo;
+        $isImage = in_array($file->guessExtension(), config('app.image_mimes')) || $posterVideo;
         $entry_id = explode('/', $path)[3];
         $entry_order = array_search($entry_id, array_column($entries['entry'], 'id'));
         $entry = $entries['entry'][$entry_order];
