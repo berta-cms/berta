@@ -100,15 +100,7 @@ export class SiteTemplateSettingsState implements NgxsOnInit {
       value: action.payload[settingKey]
     };
 
-    const url = currentSiteTemplate + '/' + action.settingGroup + '/' + settingKey;
-    const fileUpload$ = data.value instanceof File ?
-      this.fileUploadService.upload(url, data.value).pipe(
-        map(fileUpload => ({ ...data, value: fileUpload['filename'] })))
-      :
-      of(data);
-
-    return fileUpload$.pipe(
-      switchMap(syncData => this.appStateService.sync('siteTemplateSettings', syncData)),
+    return (data.value instanceof File ? this.fileUploadService.upload('siteTemplateSettingsUpload', data) : this.appStateService.sync('siteTemplateSettings', data)).pipe(
       tap(response => {
         if (response.error_message) {
           // @TODO handle error message

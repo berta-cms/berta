@@ -169,7 +169,7 @@ var BertaGalleryEditor = new Class({
   },
 
   addUploadedElement: function (container, uploadResponseJSON) {
-    var image_order = $(this.container).getElements('div.images>ul>li.image').length;
+    var image_order = $(this.container).getElements('div.images>ul>li').length - 1;
     var targetElDims = {
       w: null,
       h: null
@@ -385,6 +385,15 @@ var BertaGalleryEditor = new Class({
         captions.forEach(function (caption, order) {
           var path = basePath + order + '/@value';
           caption.set('data-path', path).data('data-path', true);
+        });
+
+        var slides = $(this.container).getElements('.images>ul>li');
+        slides.forEach(function (slide, order) {
+          var xAutoPlay = $(slide).getElement('.xAutoPlay span');
+          if (xAutoPlay) {
+            var path = basePath + order + '/@attributes/autoplay';
+            xAutoPlay.set('data-path', path).data('data-path', true);
+          }
         });
 
         this.unlinearProcess_stop(this.sortingProcessId);
@@ -664,41 +673,60 @@ var BertaGalleryEditor = new Class({
               'left': Math.round(checkBoard.getSize().x / 2 - loader.getSize().x / 2) + 'px'
             });
 
-            var data = {
+            var site = getCurrentSite();
+            var imageOrder = liEl.getParent('ul').getChildren('li').indexOf(liEl);
+            var path = site + '/entry/' + this.sectionName + '/' + this.entryId + '/mediaCacheData/file/' + imageOrder + '/@attributes/';
+            var xhr = new XMLHttpRequest();
+            xhr.addEventListener('load', function () {
+              if (xhr.status !== 200) {
+                console.error('Image crop failed.');
+                cancel.fireEvent('click');
+                loader.addClass('xHidden');
+                $$(processCrop, cancel).removeProperty('disabled');
+                return;
+              }
+
+              var data = JSON.decode(xhr.responseText);
+              imageThumb.src = data.params.smallThumb;
+              liEl.set('filename', data.update);
+              target.set('data-src', data.params.path + data.update);
+              liEl.getElement('.xEGEImageCaption').removeClass('xParam-' + data.real).addClass('xParam-' + data.update);
+              cancel.fireEvent('click');
+              loader.addClass('xHidden');
+              $$(processCrop, cancel).removeProperty('disabled');
+
+              redux_store.dispatch(Actions.initUpdateSectionEntry(
+                path + 'src',
+                data.update
+              ));
+
+              redux_store.dispatch(Actions.initUpdateSectionEntry(
+                path + 'width',
+                data.params.width
+              ));
+
+              redux_store.dispatch(Actions.initUpdateSectionEntry(
+                path + 'height',
+                data.params.height
+              ));
+            });
+
+            xhr.open('PATCH', '/_api/v1/sites/sections/entries/galleries', true);
+            var token = window.getCookie('token');
+            xhr.setRequestHeader('Accept', 'application/json');
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.setRequestHeader('X-Authorization', 'Bearer ' + token);
+
+            xhr.send(JSON.stringify({
+              site: site,
               section: editor.sectionName,
-              entry: editor.entryId,
-              property: 'galleryImageCrop',
-              value: filename,
+              entryId: editor.entryId,
+              imageOrder: imageOrder,
               x: leftInput.get('value'),
               y: topInput.get('value'),
               w: widthInput.get('value'),
               h: heightInput.get('value')
-            };
-
-            var site = getCurrentSite();
-            var image_order = liEl.getParent('ul').getChildren('li').indexOf(liEl);
-            var path = site + '/entry/' + this.sectionName + '/' + this.entryId + '/mediaCacheData/file/' + image_order + '/@attributes/src';
-
-            new Request.JSON({
-              url: editor.options.updateUrl,
-              data: JSON.stringify(data),
-              urlEncoded: false,
-              onComplete: function (resp) {
-                imageThumb.src = resp.params.smallThumb;
-                liEl.set('filename', resp.update);
-                target.set('data-src', resp.params.path + resp.update);
-                liEl.getElement('.xEGEImageCaption').removeClass('xParam-' + resp.real).addClass('xParam-' + resp.update);
-                cancel.fireEvent('click');
-                loader.addClass('xHidden');
-                $$(processCrop, cancel).removeProperty('disabled');
-
-                redux_store.dispatch(Actions.initUpdateSectionEntry(
-                  path,
-                  resp.update
-                ));
-              }
-            }).post();
-
+            }));
           }.bind(this));
         }.bind(this);
       }.bind(this)

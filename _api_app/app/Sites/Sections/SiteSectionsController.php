@@ -2,6 +2,7 @@
 
 namespace App\Sites\Sections;
 
+use Validator;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -86,19 +87,58 @@ class SiteSectionsController extends Controller
         return response()->json($json);
     }
 
-    public function galleryDelete(Request $request)
+    public function backgroundGalleryDelete(Request $request)
     {
         $json = $request->json()->all();
         $sectionsDataService = new SiteSectionsDataService($json['site']);
-        $res = $sectionsDataService->galleryDelete($json['section'], $json['file']);
+        $res = $sectionsDataService->backgroundGalleryDelete($json['section'], $json['file']);
         return response()->json($res);
     }
 
-    public function galleryOrder(Request $request)
+    public function backgroundGalleryOrder(Request $request)
     {
         $json = $request->json()->all();
         $sectionsDataService = new SiteSectionsDataService($json['site']);
-        $ret = $sectionsDataService->galleryOrder($json['section'], $json['files']);
+        $ret = $sectionsDataService->backgroundGalleryOrder($json['section'], $json['files']);
+        return response()->json($ret);
+    }
+
+    public function backgroundGalleryUpload(Request $request)
+    {
+        $file = $request->file('value');
+        $path = $request->get('path');
+
+        if (!$file->isValid()) {
+            return response()->json([
+                'status' => 0,
+                'error' => 'Upload failed.'
+            ]);
+        }
+
+        $validator = Validator::make(['file' => $file], [
+            'file' => 'max:' .  config('app.image_max_file_size') . '|mimes:' . implode(',', config('app.image_mimes')) . '|not_corrupted_image'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 0,
+                'error' => implode(' ', $validator->messages()->all())
+            ]);
+        }
+
+        $path_arr = explode('/', $path);
+        $site = $path_arr[0];
+        $sectionsDataService = new SiteSectionsDataService($site);
+        $mediaRootDir = $sectionsDataService->getOrCreateMediaDir();
+
+        if (!is_writable($mediaRootDir)) {
+            return response()->json([
+                'status' => 0,
+                'error' => 'Media folder not writable.'
+            ]);
+        }
+        $ret = $sectionsDataService->backgroundGalleryUpload($path, $file);
+
         return response()->json($ret);
     }
 }

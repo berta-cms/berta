@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { take, map, catchError } from 'rxjs/operators';
+import { combineLatest } from 'rxjs';
+import { take, catchError, filter, switchMap, tap } from 'rxjs/operators';
 import { Store } from '@ngxs/store';
-import { AppState } from 'src/app/app-state/app.state';
-import { AppShowLoading, AppHideLoading } from '../../app-state/app.actions';
+
+import { AppStateService } from '../../app-state/app-state.service';
 
 
 @Injectable({
@@ -13,25 +14,33 @@ export class FileUploadService {
 
   constructor(
     private store: Store,
-    private http: HttpClient) {
+    private http: HttpClient,
+    private appStateService: AppStateService) {
   }
 
-  upload(property, file) {
-    const currentSite = this.store.selectSnapshot(AppState.getSite);
-    const url = '/engine/upload.php?property=' + property + (currentSite ? '&site=' + currentSite : '');
+  upload(urlName: string, data) {
     const formData = new FormData();
-    formData.append('Filedata', file);
+    formData.append('path', data.path);
+    formData.append('value', data.value);
 
-    this.store.dispatch(new AppShowLoading());
-
-    return this.http.post<{filename: string}>(url, formData).pipe(
+    return combineLatest(
+      this.store.select(state => state.app),
+      this.store.select(state => state.user)
+    ).pipe(
+      filter(([appState, user]) => !!user.token && (appState.urls[urlName] || urlName)),
       take(1),
-      map((response) => {
-        this.store.dispatch(new AppHideLoading());
-        return response;
+      switchMap(([appState, user]) => {
+        this.appStateService.showLoading();
+
+        return this.http.post<any>(appState.urls[urlName] || urlName, formData, {
+          headers: { 'X-Authorization': 'Bearer ' + user.token }
+        });
+      }),
+      tap(() => {
+        this.appStateService.hideLoading()
       }),
       catchError(error => {
-        this.store.dispatch(new AppHideLoading());
+        this.appStateService.hideLoading();
         throw error;
       })
     );

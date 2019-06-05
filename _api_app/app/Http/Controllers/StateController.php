@@ -27,7 +27,9 @@ class StateController extends Controller
         $state['urls'] = [
             'sites' => route('sites'),
             'siteSettings' => route('site_settings'),
+            'siteSettingsUpload' => route('site_settings_upload'),
             'siteTemplateSettings' => route('site_template_settings'),
+            'siteTemplateSettingsUpload' => route('site_template_settings_upload'),
             'localeSettings' => route('locale_settings'),
             'siteSections' => route('site_sections'),
             'siteSectionsReset' => route('site_sections_reset'),

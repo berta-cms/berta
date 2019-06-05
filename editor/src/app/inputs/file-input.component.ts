@@ -4,7 +4,7 @@ import { SettingModel } from '../shared/interfaces';
 @Component({
   selector: 'berta-file-input',
   template: `
-    <div class="form-group" [class.error]="hasError" [class.bt-disabled]="disabled">
+    <div class="form-group" [class.error]="error" [class.bt-disabled]="disabled">
       <label>
         {{ label }}
 
@@ -12,6 +12,7 @@ import { SettingModel } from '../shared/interfaces';
           <div class="file-input">{{ value || 'Add file...'  }}</div>
           <input #fileInput
                  [accept]="accept"
+                 [disabled]="disabled"
                  type="file"
                  (change)="onChange(fileInput)">
           <svg *ngIf="!value" width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -26,8 +27,8 @@ import { SettingModel } from '../shared/interfaces';
           </svg>
         </div>
       </label>
-      <div class="error-message" [style.display]="(hasError ? '' : 'none')">
-        File exceeds the maximum file-size limit {{ maxFileSize/1024/1024 }} MB
+      <div class="error-message" [style.display]="(error ? '' : 'none')">
+        {{ error }}
       </div>
     </div>`
 })
@@ -37,11 +38,11 @@ export class FileInputComponent implements OnInit {
   @Input() property: string;
   @Input() value: string|File;
   @Input() accept: string;
+  @Input() disabled: string;
+  @Input() error: string;
   @Output() update = new EventEmitter();
 
-  hasError = false;
   maxFileSize = 3145728;  // 3 MB
-  disabled = false;
   private lastValue: SettingModel['value']|File;
 
   ngOnInit() {
@@ -50,17 +51,15 @@ export class FileInputComponent implements OnInit {
   }
 
   onChange(fileInput: HTMLInputElement) {
-    if (!this.validate(fileInput)) {
+    if (!this.validate(fileInput) || this.disabled) {
       return;
     }
-    this.disabled = true;
-    fileInput.disabled = true;
     this.updateField(fileInput.files[0]);
   }
 
   validate(fileInput: HTMLInputElement) {
     if (fileInput.files[0].size > this.maxFileSize) {
-      this.hasError = true;
+      this.error = `File exceeds the maximum file-size limit ${this.maxFileSize/1024/1024} MB`;
       return false;
     }
     return true;
@@ -69,10 +68,12 @@ export class FileInputComponent implements OnInit {
   removeFile($event, fileInput: HTMLInputElement) {
     $event.stopPropagation();
     $event.preventDefault();
-    this.value = '';
-    this.disabled = true;
-    fileInput.disabled = true;
 
+    if (this.disabled) {
+      return;
+    }
+
+    this.value = '';
     this.updateField(this.value);
   }
 

@@ -4,6 +4,7 @@ namespace App\Sites\Sections;
 
 use App\Shared\Helpers;
 use App\Shared\Storage;
+use App\Shared\ImageHelpers;
 use App\Sites\Sections\Entries\SectionEntriesDataService;
 use App\Sites\Sections\Tags\SectionTagsDataService;
 
@@ -465,7 +466,7 @@ class SiteSectionsDataService extends Storage
 
     /**
      */
-    public function galleryDelete($name, $file)
+    public function backgroundGalleryDelete($name, $file)
     {
         $sections['section'] = $this->get();
         $section_order = array_search($name, array_column($sections['section'], 'name'));
@@ -511,7 +512,7 @@ class SiteSectionsDataService extends Storage
 
     /**
      */
-    public function galleryOrder($name, $new_files)
+    public function backgroundGalleryOrder($name, $new_files)
     {
         $sections['section'] = $this->get();
         $section_order = array_search($name, array_column($sections['section'], 'name'));
@@ -553,6 +554,71 @@ class SiteSectionsDataService extends Storage
         }
 
         return ['error_message' => 'Section "' . $name . '" not found!'];
+    }
+
+    public function backgroundGalleryUpload($path, $file)
+    {
+        $section_idx = explode('/', $path)[2];
+        $mediaRootDir = $this->getOrCreateMediaDir();
+        $sections = $this->get();
+        $section = $sections[$section_idx];
+        $mediaDirName = isset($section['mediafolder']) ? $section['mediafolder'] : $section['name'] . '-background';
+        $mediaDir = $mediaRootDir . '/' . $mediaDirName;
+
+        if (!file_exists($mediaDir)) {
+            mkdir($mediaDir, 0777, true);
+        }
+
+        $fileName = $this->getUniqueFileName($mediaDir, $file->getClientOriginalName());
+        $fileSize = $file->getSize();
+        $file->move($mediaDir, $fileName);
+        list($width, $height) = getimagesize($mediaDir .'/'. $fileName);
+
+        $smallThumb = ImageHelpers::getThumbnail($mediaDir .'/'. $fileName);
+        list($smallThumbWidth, $smallThumbHeight) = getimagesize($smallThumb);
+        $bgImage = ImageHelpers::getBackgroundImage($mediaDir .'/'. $fileName);
+        list($bgImageWidth, $bgImageHeight) = getimagesize($bgImage);
+        $gridImage = ImageHelpers::getGridImage($mediaDir .'/'. $fileName);
+        list($gridImageWidth, $gridImageHeight) = getimagesize($gridImage);
+
+        if (!isset($section['mediafolder'])) {
+            $section['mediafolder'] = $mediaDirName;
+        }
+
+        if (!isset($section['mediaCacheData'])) {
+            $section['mediaCacheData']['file'] = [];
+        }
+
+        $section['mediaCacheData']['file'][] = [
+            '@attributes' => [
+                'type' => 'image',
+                'src' => $fileName,
+                'width' => $width,
+                'height' => $height
+            ]
+        ];
+
+        $sections[$section_idx] = $section;
+        $this->array2xmlFile(['section' => $sections], $this->XML_FILE, $this->ROOT_ELEMENT);
+
+        return [
+            'status' => 1,
+            'hash' => md5_file($mediaDir .'/'. $fileName),
+            'type' => 'image',
+            'smallthumb_path' => $this->MEDIA_URL . '/' . $mediaDirName . '/' . basename($smallThumb),
+            'smallthumb_width' => $smallThumbWidth,
+            'smallthumb_height' => $smallThumbHeight,
+            'path' => $this->MEDIA_URL . '/' . $mediaDirName . '/' . $fileName,
+            'path_orig' => $this->MEDIA_URL . '/' . $mediaDirName . '/' . $fileName,
+            'filename' => $fileName,
+            'size' => $fileSize,
+            'width' => $width,
+            'height' => $height,
+            'bg_image_width' => $bgImageWidth,
+            'bg_image_height' => $bgImageHeight,
+            'grid_image_width' => $gridImageWidth,
+            'grid_image_height' => $gridImageHeight
+        ];
     }
 
     /************************************************************

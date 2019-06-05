@@ -1,7 +1,6 @@
 <?php
 
 return [
-
     /*
     |--------------------------------------------------------------------------
     | Encryption Key
@@ -15,7 +14,6 @@ return [
 
     'key' => env('APP_KEY', '[YOUR_APP_KEY]') . env('APP_ID', '[YOUR_APP_ID]'),
     'id' => env('APP_ID', '[YOUR_APP_ID]'),
-
     'cipher' => 'AES-256-CBC',
 
     /*
@@ -40,11 +38,29 @@ return [
     |
     */
     'fallback_locale' => env('APP_FALLBACK_LOCALE', 'en'),
-
-    'old_berta_root' => realpath(__DIR__. '/../../'),
-
-    'berta_storage_path' => realpath(__DIR__. '/../../storage'),
-
-    'api_prefix' => env('API_PREFIX', '_api')
-
+    'old_berta_root' => realpath(__DIR__ . '/../../'),
+    'berta_storage_path' => realpath(__DIR__ . '/../../storage'),
+    'api_prefix' => env('API_PREFIX', '_api'),
+    'image_max_file_size' => 1024 * 3, // 3MB in kilobytes
+    'video_max_file_size' => 1024 * 256, // 256MB in kilobytes
+    'image_mimes' => [
+        'png',
+        'jpeg',
+        'jpg',
+        'gif'
+    ],
+    'ico_mimes' => [
+        'ico'
+    ],
+    'video_mimes' => [
+        'mp4',
+        'flv'
+    ],
+    'small_thumb_prefix' => '_smallthumb_',
+    'small_thumb_width' => false, // false means "auto"
+    'small_thumb_height' => 80,
+    'bg_image_prefix' => '_bg_',
+    'grid_image_prefix' => '_grid_',
+    'grid_thumb_width' => 140,
+    'grid_thumb_height' => false, // false means "auto"
 ];

@@ -497,32 +497,6 @@ class BertaEditor extends BertaContent
         return false;
     }
 
-    /**
-     * Generate BG image and return the path.
-     * @param {string} $imagePath - Path to original image
-     * @return {string} - location of generated image on drive
-     */
-    public static function images_getBgImageFor($imagePath)
-    {
-        $fileName = basename($imagePath);
-        $dirName = dirname($imagePath);
-        if ($dirName) {
-            $dirName .= '/';
-        }
-
-        $bgImagePath = $dirName . self::$options['images']['bg_image_prefix'] . $fileName;
-
-        list($width, $height) = getimagesize($imagePath);
-
-        if (file_exists($bgImagePath)) {
-            return $bgImagePath;
-        } elseif (BertaGallery::createThumbnail($imagePath, $bgImagePath, $width, $height)) {
-            return $bgImagePath;
-        }
-
-        return false;
-    }
-
     public static function images_deleteDerivatives($folder, $file = '')
     {
         if ($handle = opendir($folder)) {

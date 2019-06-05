@@ -74,7 +74,7 @@ if ($jsonRequest) {
 
                     echo '<div class="xEntryGalleryAddMedia">';
                     echo '<input type="file" name="Filedata" class="xHidden" multiple>';
-                    echo '<a class="xEntryAddImagesLink xEditorLink" href="' . $ENGINE_ROOT_URL . 'upload.php?' . ($site ? 'site=' . $site . '&amp;' : '') . 'section=' . $decoded['section'] . '&amp;entry=' . $entry['id']['value'] . '&amp;mediafolder=' . $entry['mediafolder']['value'] . '&amp;session_id=' . session_id() . '">+ add media</a>';
+                    echo '<a class="xEntryAddImagesLink" href="/_api/v1/sites/sections/entries/galleries" data-path="' . $basePath . '">+ add media</a>';
                     echo '</div>';
 
                     echo '<div class="xEntryGallerySettings xGreyBack xHidden">';
@@ -139,7 +139,7 @@ if ($jsonRequest) {
                                 echo '<div class="dimsForm">' .
                                                 '<div class="posterContainer"></div><input type="file"><a class="poster" href="#">' . ($imageThumbSrc ? 'change' : 'upload') . ' poster frame</a>' .
                                             '</div>';
-                                echo '<div class="xAutoPlay"><label><span class="xEditableRealCheck xProperty-videoAutoplay xParam-' . $im['@attributes']['src'] . '">' . (isset($im['@attributes']['autoplay']) && $im['@attributes']['autoplay'] ? 1 : 0) . '</span>autoplay</label></div>';
+                                echo '<div class="xAutoPlay"><label><span class="xEditableRealCheck xProperty-videoAutoplay xParam-' . $im['@attributes']['src'] . '" data-path="'. $basePath .'mediaCacheData/file/' . $idx . '/@attributes/autoplay">' . (isset($im['@attributes']['autoplay']) && $im['@attributes']['autoplay'] ? 1 : 0) . '</span>autoplay</label></div>';
                                 echo '<div class="xEGEImageCaption ' . $xEditSelectorMCESimple . ' xProperty-galleryImageCaption xCaption-caption xParam-' . $im['@attributes']['src'] . '">', !empty($im['value']) ? $im['value'] : '', '</div>';
                                 echo '</li>';
                                 echo "\n";
@@ -265,7 +265,7 @@ if ($jsonRequest) {
 
                 echo '<div class="xBgAddMedia">';
                 echo '<input type="file" name="Filedata" class="xHidden" multiple>';
-                echo '<a class="xEntryAddImagesLink" href="' . $ENGINE_ROOT_URL . 'upload.php?' . ($site ? 'site=' . $site . '&amp;' : '') . 'section=' . $section['name']['value'] . '&amp;mediafolder=' . $sectionMF . '&amp;section_background=true&amp;session_id=' . session_id() . '">+ add media</a>';
+                echo '<a class="xEntryAddImagesLink" href="/_api/v1/sites/sections/backgrounds" data-path="' . $basePath . '">+ add media</a>';
                 echo '</div>';
 
                 echo '<div class="xBgSettings xHidden">';

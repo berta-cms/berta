@@ -32,10 +32,12 @@ $app->group(['prefix' => 'v1', 'namespace' => 'App', 'middleware' => ['setup', '
         $app->delete('sites', 'SitesController@delete');
 
         $app->patch('sites/settings', ['as' => 'site_settings', 'uses' => 'Settings\SiteSettingsController@update']);
+        $app->post('sites/settings/upload', ['as' => 'site_settings_upload', 'uses' => 'Settings\SiteSettingsController@upload']);
         $app->post('sites/settings', 'Settings\SiteSettingsController@createChildren');
         $app->delete('sites/settings', 'Settings\SiteSettingsController@deleteChildren');
 
         $app->patch('sites/template-settings', ['as' => 'site_template_settings', 'uses' => 'TemplateSettings\SiteTemplateSettingsController@update']);
+        $app->post('sites/template-settings/upload', ['as' => 'site_template_settings_upload', 'uses' => 'TemplateSettings\SiteTemplateSettingsController@upload']);
 
         $app->group(['prefix' => 'v1/sites', 'namespace' => 'App\Sites\Sections', 'middleware' => ['setup', 'auth']], function () use ($app) {
             $app->post('sections', ['as' => 'site_sections', 'uses' => 'SiteSectionsController@create']);
@@ -44,8 +46,9 @@ $app->group(['prefix' => 'v1', 'namespace' => 'App', 'middleware' => ['setup', '
             $app->put('sections', 'SiteSectionsController@order');
             $app->delete('sections', 'SiteSectionsController@delete');
 
-            $app->put('sections/backgrounds', ['as' => 'site_section_backgrounds', 'uses' => 'SiteSectionsController@galleryOrder']);
-            $app->delete('sections/backgrounds', 'SiteSectionsController@galleryDelete');
+            $app->put('sections/backgrounds', ['as' => 'site_section_backgrounds', 'uses' => 'SiteSectionsController@backgroundGalleryOrder']);
+            $app->post('sections/backgrounds', 'SiteSectionsController@backgroundGalleryUpload');
+            $app->delete('sections/backgrounds', 'SiteSectionsController@backgroundGalleryDelete');
 
             $app->put('sections/tags', ['as' => 'section_tags', 'uses' => 'Tags\SectionTagsController@order']);
 
@@ -55,6 +58,8 @@ $app->group(['prefix' => 'v1', 'namespace' => 'App', 'middleware' => ['setup', '
                 $app->put('entries', 'SectionEntriesController@order');
                 $app->delete('entries', 'SectionEntriesController@delete');
                 $app->put('entries/galleries', ['as' => 'entry_gallery', 'uses' => 'SectionEntriesController@galleryOrder']);
+                $app->post('entries/galleries', 'SectionEntriesController@galleryUpload');
+                $app->patch('entries/galleries', 'SectionEntriesController@galleryCrop');
                 $app->delete('entries/galleries', 'SectionEntriesController@galleryDelete');
                 $app->get('entries/render/{site}/{section}[/{id}]', 'SectionEntriesController@renderEntries');
             });

@@ -4,6 +4,8 @@ namespace App\Sites\TemplateSettings;
 
 use App\Configuration\SiteTemplatesConfigService;
 use App\Shared\Storage;
+use App\Shared\ImageHelpers;
+
 
 /**
  * This class is a service that handles site template settings data for Berta CMS.
@@ -434,5 +436,27 @@ class SiteTemplateSettingsDataService extends Storage
         $this->array2xmlFile($site_template_settings, $this->XML_FILE, $this->ROOT_ELEMENT);
 
         return $ret;
+    }
+
+    public function uploadFileByPath($path, $file)
+    {
+        $mediaDir = $this->getOrCreateMediaDir();
+        $oldFileName = $this->getValueByPath( $this->get(), implode('/', array_slice(explode('/', $path), 3)));
+        $fileName = $this->getUniqueFileName($mediaDir, $file->getClientOriginalName());
+        $file->move($mediaDir, $fileName);
+
+        list($width, $height) = getimagesize($mediaDir .'/'. $fileName);
+        $width = round($width / 2);
+        $height = round($height / 2);
+
+        ImageHelpers::getResizedSrc($mediaDir, $fileName, $width, $height);
+        if ($oldFileName) {
+            $this->removeImageWithThumbnails($mediaDir, $oldFileName);
+        }
+
+        self::saveValueByPath($path . '_width', $width);
+        self::saveValueByPath($path . '_height', $height);
+
+        return self::saveValueByPath($path, $fileName);
     }
 }

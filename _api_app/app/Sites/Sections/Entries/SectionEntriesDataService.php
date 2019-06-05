@@ -3,6 +3,7 @@
 namespace App\Sites\Sections\Entries;
 
 use App\Shared\Storage;
+use App\Shared\ImageHelpers;
 use App\Sites\Settings\SiteSettingsDataService;
 use App\Sites\TemplateSettings\SiteTemplateSettingsDataService;
 use App\Sites\Sections\SiteSectionsDataService;
@@ -751,9 +752,11 @@ class SectionEntriesDataService extends Storage
 
         if ($entry_order !== false) {
             $entry = &$entries['entry'][$entry_order];
-            $entry['mediaCacheData'] = isset($entry['mediaCacheData']) ? $entry['mediaCacheData'] : array('file' => []);
-            $files = $this->asList($entry['mediaCacheData']['file']);
+            if (!isset($entry['mediaCacheData']) || !isset($entry['mediaCacheData']['file'])) {
+                $entry['mediaCacheData']['file'] = [];
+            }
 
+            $files = $this->asList($entry['mediaCacheData']['file']);
             $reordered = [];
 
             foreach ($new_files as $file) {
@@ -787,6 +790,156 @@ class SectionEntriesDataService extends Storage
         }
 
         return ['error_message' => 'Entry with ID "' . $entry_id . '" not found!'];
+    }
+
+    public function galleryUpload($path, $file)
+    {
+        $mediaRootDir = $this->getOrCreateMediaDir();
+        $entries = $this->get();
+        $posterVideo = explode('/', $path)[4];
+        $isImage = in_array($file->guessExtension(), config('app.image_mimes')) || $posterVideo;
+        $entry_id = explode('/', $path)[3];
+        $entry_order = array_search($entry_id, array_column($entries['entry'], 'id'));
+        $entry = $entries['entry'][$entry_order];
+        $mediaDirName = $entry['mediafolder'];
+        $mediaDir = $mediaRootDir . '/' . $mediaDirName;
+        unset($entry['mediaCacheData']['@value']);
+
+        if (!file_exists($mediaDir)) {
+            mkdir($mediaDir, 0777, true);
+        }
+
+        $fileName = $this->getUniqueFileName($mediaDir, $file->getClientOriginalName());
+        $fileSize = $file->getSize();
+        $file->move($mediaDir, $fileName);
+
+        // A video file
+        if (!$isImage) {
+            $entry['mediaCacheData']['file'][] = [
+                '@attributes' => [
+                    'type' => 'video',
+                    'src' => $fileName
+                ]
+            ];
+
+            $entries[self::$ROOT_LIST_ELEMENT][$entry_order] = $entry;
+            $this->array2xmlFile($entries, $this->XML_FILE, $this->ROOT_ELEMENT);
+
+            return [
+               'status' => 1,
+               'hash' => md5_file($mediaDir .'/'. $fileName),
+               'type' => 'video',
+               'smallthumb_path' => null,
+               'smallthumb_width' => null,
+               'smallthumb_height' => null,
+               'path' => $this->MEDIA_URL . '/' . $mediaDirName . '/' . $fileName,
+               'filename' => $fileName,
+               'size' => $fileSize,
+               'width' => null,
+               'height' => null
+            ];
+        }
+
+        list($width, $height) = getimagesize($mediaDir .'/'. $fileName);
+        $smallThumb = ImageHelpers::getThumbnail($mediaDir .'/'. $fileName);
+        list($smallThumbWidth, $smallThumbHeight) = getimagesize($smallThumb);
+
+        // Add new Poster
+        if ($posterVideo) {
+            $slide_order = array_search($posterVideo, array_column(array_column($entry['mediaCacheData']['file'], '@attributes'), 'src'));
+            if ($slide_order !== false) {
+                $slide = $entry['mediaCacheData']['file'][$slide_order];
+
+                if (isset($slide['@attributes']['poster_frame'])) {
+                    $this->removeImageWithThumbnails($mediaDir, $slide['@attributes']['poster_frame']);
+                }
+
+                $slide['@attributes'] = array_merge($slide['@attributes'], [
+                    'poster_frame' => $fileName,
+                    'width' => $width,
+                    'height' => $height
+                ]);
+
+                $entry['mediaCacheData']['file'][$slide_order] = $slide;
+            }
+
+        // Add new Image
+        } else {
+            $entry['mediaCacheData']['file'][] = [
+                '@attributes' => [
+                    'type' => 'image',
+                    'src' => $fileName,
+                    'width' => $width,
+                    'height' => $height
+                ]
+            ];
+        }
+
+        $entries[self::$ROOT_LIST_ELEMENT][$entry_order] = $entry;
+        $this->array2xmlFile($entries, $this->XML_FILE, $this->ROOT_ELEMENT);
+
+        return [
+            'status' => 1,
+            'hash' => md5_file($mediaDir .'/'. $fileName),
+            'type' => 'image',
+            'smallthumb_path' => $this->MEDIA_URL . '/' . $mediaDirName . '/' . basename($smallThumb),
+            'smallthumb_width' => $smallThumbWidth,
+            'smallthumb_height' => $smallThumbHeight,
+            'path' => $this->MEDIA_URL . '/' . $mediaDirName . '/' . $fileName,
+            'path_orig' => $this->MEDIA_URL . '/' . $mediaDirName . '/' . $fileName,
+            'filename' => $fileName,
+            'size' => $fileSize,
+            'width' => $width,
+            'height' => $height
+        ];
+    }
+
+    public function galleryCrop($data) {
+        $entries = $this->get();
+        $entryOrder = array_search($data['entryId'], array_column($entries['entry'], 'id'));
+        $entry = $entries['entry'][$entryOrder];
+        $slide = $entry['mediaCacheData']['file'][$data['imageOrder']];
+        $oldFileName = $slide['@attributes']['src'];
+        $mediaRootDir = $this->getOrCreateMediaDir();
+
+        if (!is_writable($mediaRootDir)) {
+            throw new \Exception('Upload failed.');
+        }
+
+        $mediaDirName = $entry['mediafolder'];
+        $mediaDir = $mediaRootDir . '/' . $mediaDirName;
+        $fileName = $this->getUniqueFileName($mediaDir, $oldFileName);
+        copy($mediaDir . '/' . $oldFileName, $mediaDir . '/' . $fileName);
+        $newSize = ImageHelpers::crop($mediaDir .'/'. $fileName, $data['x'], $data['y'], $data['w'], $data['h']);
+        $width = $newSize['w'];
+        $height = $newSize['h'];
+        $smallThumb = ImageHelpers::getThumbnail($mediaDir .'/'. $fileName);
+
+        $this->removeImageWithThumbnails($mediaDir, $oldFileName);
+
+        $slide['@attributes'] = array_merge($slide['@attributes'], [
+            'src' => $fileName,
+            'width' => $width,
+            'height' => $height
+        ]);
+
+        $entry['mediaCacheData']['file'][$data['imageOrder']] = $slide;
+        $entries[self::$ROOT_LIST_ELEMENT][$entryOrder] = $entry;
+        $this->array2xmlFile($entries, $this->XML_FILE, $this->ROOT_ELEMENT);
+
+        return  [
+            'update' => $fileName,
+            'updateText' => $fileName,
+            'real' => $oldFileName,
+            'eval_script' => false,
+            'error_message' => false,
+            'params' => [
+                'path' => $this->MEDIA_URL . '/' . $mediaDirName . '/',
+                'smallThumb' => $this->MEDIA_URL . '/' . $mediaDirName . '/' . basename($smallThumb),
+                'width' => $width,
+                'height' => $height
+            ]
+        ];
     }
 
     public function galleryDelete($section_name, $entry_id, $file)

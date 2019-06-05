@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable, combineLatest } from 'rxjs';
 import { SettingGroupConfigModel, SettingModel, SettingConfigModel } from '../../shared/interfaces';
-import { filter, map, scan } from 'rxjs/operators';
+import { filter, map, scan, take } from 'rxjs/operators';
 import { Store } from '@ngxs/store';
 import { ShopSettingsState } from './shop-settings.state';
 import { ShopSettingsConfigState } from './shop-settings-config.state';
@@ -18,6 +18,8 @@ import { UpdateShopSettingsAction } from './shop-settings.actions';
     <berta-setting *ngFor="let setting of settingGroup.settings"
                    [setting]="setting.setting"
                    [config]="setting.config"
+                   [disabled]="settingUpdate[settingGroup.slug + ':' + setting.setting.slug]"
+                   [error]="settingError[settingGroup.slug + ':' + setting.setting.slug]"
                    (update)="updateSetting(settingGroup.slug, $event)"></berta-setting>
   </div>
   `,
@@ -36,6 +38,8 @@ export class ShopSettingsComponent implements OnInit {
     }>,
     slug: string
   }>>;
+  settingUpdate: { [k: string]: boolean } = {};
+  settingError: { [k: string]: string } = {};
 
   constructor(private store: Store) { }
 
@@ -102,7 +106,18 @@ export class ShopSettingsComponent implements OnInit {
   }
 
   updateSetting(settingGroup: string, event) {
-    this.store.dispatch(new UpdateShopSettingsAction(
-      settingGroup, {field: event.field, value: event.value}));
+    this.settingError[`${settingGroup}:${event.field}`] = '';
+    this.settingUpdate[`${settingGroup}:${event.field}`] = true;
+
+    this.store.dispatch(new UpdateShopSettingsAction(settingGroup, {field: event.field, value: event.value}))
+      .pipe(take(1))
+      .subscribe(() => {
+        this.settingUpdate[`${settingGroup}:${event.field}`] = false;
+      }, error => {
+        if (error.error && error.error.message) {
+          this.settingError[`${settingGroup}:${event.field}`] = error.error.message;
+        }
+        this.settingUpdate[`${settingGroup}:${event.field}`] = false;
+      });
   }
 }

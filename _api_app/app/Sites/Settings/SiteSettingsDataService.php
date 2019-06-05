@@ -4,6 +4,7 @@ namespace App\Sites\Settings;
 
 use App\Configuration\SiteSettingsConfigService;
 use App\Shared\Storage;
+use App\Shared\ImageHelpers;
 use App\Sites\Sections\SiteSectionsDataService;
 
 /**
@@ -313,7 +314,7 @@ class SiteSettingsDataService extends Storage
     /**
      * Returns settings of site as an array
      *
-     * @return array Array of sections
+     * @return array Array of site settings
      */
     public function get()
     {
@@ -419,12 +420,12 @@ class SiteSettingsDataService extends Storage
         }
 
         $this->setValueByPath(
-            $settings,
+            $this->SITE_SETTINGS,
             $path,
             $value
         );
 
-        $this->array2xmlFile($settings, $this->XML_FILE, $this->ROOT_ELEMENT);
+        $this->array2xmlFile($this->SITE_SETTINGS, $this->XML_FILE, $this->ROOT_ELEMENT);
 
         // If Berta is installed, create a new default `Home` section
         if ($path == 'berta/installed' && $value) {
@@ -438,6 +439,43 @@ class SiteSettingsDataService extends Storage
         }
 
         return $ret;
+    }
+
+    /**
+     * Upload a file for site setting
+     *
+     * @param string $path Path to setting in XML structure
+     * @param object $file File object
+     * @return array Array of changed value
+     */
+    public function uploadFileByPath($path, $file)
+    {
+        $isImage = in_array($file->guessExtension(), config('app.image_mimes'));
+        $mediaDir = $this->getOrCreateMediaDir();
+        $oldFileName = $this->getValueByPath( $this->get(), implode('/', array_slice(explode('/', $path), 2)));
+        $fileName = $this->getUniqueFileName($mediaDir, $file->getClientOriginalName());
+        $file->move($mediaDir, $fileName);
+
+        if (!$isImage) {
+            if ($oldFileName) {
+                $this->removeImageWithThumbnails($mediaDir, $oldFileName);
+            }
+            return self::saveValueByPath($path, $fileName);
+        }
+
+        list($width, $height) = getimagesize($mediaDir .'/'. $fileName);
+        $width = round($width / 2);
+        $height = round($height / 2);
+
+        ImageHelpers::getResizedSrc($mediaDir, $fileName, $width, $height);
+        if ($oldFileName) {
+            $this->removeImageWithThumbnails($mediaDir, $oldFileName);
+        }
+
+        self::saveValueByPath($path . '_width', $width);
+        self::saveValueByPath($path . '_height', $height);
+
+        return self::saveValueByPath($path, $fileName);
     }
 
     public function createChildren($path, $value)
@@ -458,12 +496,12 @@ class SiteSettingsDataService extends Storage
         }
 
         $this->setValueByPath(
-            $settings,
+            $this->SITE_SETTINGS,
             $path,
             $children
         );
 
-        $this->array2xmlFile($settings, $this->XML_FILE, $this->ROOT_ELEMENT);
+        $this->array2xmlFile($this->SITE_SETTINGS, $this->XML_FILE, $this->ROOT_ELEMENT);
         return $value;
     }
 
@@ -483,26 +521,26 @@ class SiteSettingsDataService extends Storage
 
         if ($children) {
             $this->setValueByPath(
-                $settings,
+                $this->SITE_SETTINGS,
                 $path,
                 $children
             );
         } else {
             $this->unsetValueByPath(
-                $settings,
+                $this->SITE_SETTINGS,
                 $parentPath
             );
 
             // Also remove parent node if parent is empty
-            if (!$settings[$path_arr[0]]) {
+            if (!$this->SITE_SETTINGS[$path_arr[0]]) {
                 $this->unsetValueByPath(
-                    $settings,
+                    $this->SITE_SETTINGS,
                     $path_arr[0]
                 );
             }
         }
 
-        $this->array2xmlFile($settings, $this->XML_FILE, $this->ROOT_ELEMENT);
+        $this->array2xmlFile($this->SITE_SETTINGS, $this->XML_FILE, $this->ROOT_ELEMENT);
         return $child;
     }
 }

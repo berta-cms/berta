@@ -2,6 +2,7 @@
 
 namespace App\Sites\Sections\Entries;
 
+use Validator;
 use Illuminate\Http\Request;
 use App\Shared\Storage;
 use App\Http\Controllers\Controller;
@@ -69,6 +70,60 @@ class SectionEntriesController extends Controller
         $json = $request->json()->all();
         $sectionEntriesDataService = new SectionEntriesDataService($json['site'], $json['section']);
         $ret = $sectionEntriesDataService->galleryDelete($json['section'], $json['entryId'], $json['file']);
+        return response()->json($ret);
+    }
+
+    public function galleryUpload(Request $request)
+    {
+        $file = $request->file('value');
+        $path = $request->get('path');
+        $posterVideo = explode('/', $path)[4];
+
+        if (!$file->isValid()) {
+            return response()->json([
+                'status' => 0,
+                'error' => 'Upload failed.'
+            ]);
+        }
+
+        $isImage = in_array($file->guessExtension(), config('app.image_mimes')) || $posterVideo;
+        $validator = Validator::make(['file' => $file], [
+            'file' => $isImage ?
+                'max:' .  config('app.image_max_file_size') . '|mimes:' . implode(',', config('app.image_mimes')) . '|not_corrupted_image'
+                :
+                'max:' .  config('app.video_max_file_size') . '|mimes:' . implode(',', config('app.video_mimes'))
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 0,
+                'error' => implode(' ', $validator->messages()->all())
+            ]);
+        }
+
+        $path_arr = explode('/', $path);
+        $site = $path_arr[0];
+        $section = $path_arr[2];
+        $sectionEntriesDataService = new SectionEntriesDataService($site, $section);
+        $mediaDir = $sectionEntriesDataService->getOrCreateMediaDir();
+
+        if (!is_writable($mediaDir)) {
+            return response()->json([
+                'status' => 0,
+                'error' => 'Media folder not writable.'
+            ]);
+        }
+
+        $ret = $sectionEntriesDataService->galleryUpload($path, $file);
+
+        return response()->json($ret);
+    }
+
+    public function galleryCrop(Request $request)
+    {
+        $data = $request->all();
+        $sectionEntriesDataService = new SectionEntriesDataService($data['site'], $data['section']);
+        $ret = $sectionEntriesDataService->galleryCrop($data);
         return response()->json($ret);
     }
 

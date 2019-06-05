@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { SafeHtml, DomSanitizer } from '@angular/platform-browser';
 import { Store } from '@ngxs/store';
 import { Observable, combineLatest } from 'rxjs';
-import { map, filter, scan } from 'rxjs/operators';
+import { map, filter, scan, take } from 'rxjs/operators';
 import { splitCamel, uCFirst, getIconFromUrl } from '../../shared/helpers';
 import { Animations } from '../../shared/animations';
 import { SiteSettingsState } from './site-settings.state';
@@ -34,6 +34,8 @@ import { SettingModel, SettingChildModel, SettingConfigModel, SettingGroupConfig
           <berta-setting *ngIf="!setting.config.children"
                          [setting]="setting.setting"
                          [config]="setting.config"
+                         [disabled]="settingUpdate[settingGroup.slug + ':' + setting.setting.slug]"
+                         [error]="settingError[settingGroup.slug + ':' + setting.setting.slug]"
                          (update)="updateSetting(settingGroup.slug, $event)"></berta-setting>
 
           <div *ngIf="setting.config.children">
@@ -75,6 +77,8 @@ export class SiteSettingsComponent implements OnInit {
     }>,
     slug: string
   }>>;
+  settingUpdate: { [k: string]: boolean } = {};
+  settingError: { [k: string]: string } = {};
 
   constructor(
     private store: Store,
@@ -214,7 +218,19 @@ export class SiteSettingsComponent implements OnInit {
 
   updateSetting(settingGroup: string, updateEvent) {
     const data = { [updateEvent.field]: updateEvent.value };
-    this.store.dispatch(new UpdateSiteSettingsAction(settingGroup, data));
+    this.settingError[`${settingGroup}:${updateEvent.field}`] = '';
+    this.settingUpdate[`${settingGroup}:${updateEvent.field}`] = true;
+
+    this.store.dispatch(new UpdateSiteSettingsAction(settingGroup, data))
+      .pipe(take(1))
+      .subscribe(() => {
+        this.settingUpdate[`${settingGroup}:${updateEvent.field}`] = false;
+      }, error => {
+        if (error.error && error.error.message) {
+          this.settingError[`${settingGroup}:${updateEvent.field}`] = error.error.message;
+        }
+        this.settingUpdate[`${settingGroup}:${updateEvent.field}`] = false;
+      });
   }
 
   addChildren(settingGroup: string, slug: string, updateEvent) {

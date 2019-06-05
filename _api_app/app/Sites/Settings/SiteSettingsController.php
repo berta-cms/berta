@@ -2,9 +2,12 @@
 
 namespace App\Sites\Settings;
 
+use Validator;
+use Illuminate\Http\Request;
+
+use App\Shared\Helpers;
 use App\Http\Controllers\Controller;
 use App\Sites\Settings\SiteSettingsDataService;
-use Illuminate\Http\Request;
 
 class SiteSettingsController extends Controller
 {
@@ -42,9 +45,9 @@ class SiteSettingsController extends Controller
         $json = $request->json()->all();
         $path_arr = explode('/', $json['path']);
         $site = $path_arr[0];
-        $settings = new SiteSettingsDataService($site);
+        $settingsDataService = new SiteSettingsDataService($site);
 
-        $res = $settings->saveValueByPath($json['path'], $json['value']);
+        $res = $settingsDataService->saveValueByPath($json['path'], $json['value']);
         // @@@:TODO: Replace this with something sensible, when migration to redux is done
         // `real` returns the user input value
         // `update` returns formatted value for frontend special cases:
@@ -54,6 +57,44 @@ class SiteSettingsController extends Controller
         $res['update'] = $res['value'];
         $res['real'] = $res['value'];
         // @@@:TODO:END
+
+        return response()->json($res);
+    }
+
+    public function upload(Request $request) {
+        $file = $request->file('value');
+        $path = $request->get('path');
+
+        if (!$file->isValid()) {
+            return Helpers::api_response('Upload failed.', (object)[], 500);
+        }
+
+        $validator = Validator::make(['file' => $file], [
+            'file' => 'max:' .  config('app.image_max_file_size') . '|mimes:' . implode(',', config('app.image_mimes')) . ',' . implode(',', config('app.ico_mimes'))
+        ]);
+
+        $isImage = in_array($file->guessExtension(), config('app.image_mimes'));
+
+        $validator->sometimes('file', 'not_corrupted_image', function($file) use ($isImage) {
+            return $isImage;
+        });
+
+        if ($validator->fails()) {
+            return Helpers::api_response($validator->messages()->all(), (object)[], 400);
+        }
+
+        $path_arr = explode('/', $path);
+        $site = $path_arr[0];
+        $settingsDataService = new SiteSettingsDataService($site);
+        $mediaDir = $settingsDataService->getOrCreateMediaDir();
+
+        if (!is_writable($mediaDir)) {
+            return Helpers::api_response('Media folder not writable.', (object)[], 500);
+        }
+
+        $res = $settingsDataService->uploadFileByPath($path, $file);
+        $res['update'] = $res['value'];
+        $res['real'] = $res['value'];
 
         return response()->json($res);
     }
