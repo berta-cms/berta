@@ -2,5 +2,5 @@
 /**
  * Berta's release version
  */
-$options['app_version'] = [1, 1, 4];
+$options['app_version'] = [1, 2, 0];
 $options['version'] = 'v' . implode('.', $options['app_version']);
