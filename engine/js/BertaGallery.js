@@ -152,6 +152,7 @@ var BertaGallery = new Class({
           var swiperEl = this.imageContainer.getElement('.swiper-container');
           var entryGallery = new Swiper(swiperEl, {
             autoHeight: true,
+            effect: 'fade',
             navigation: {
               nextEl: swiperEl.getElement('.swiper-button-next'),
               prevEl: swiperEl.getElement('.swiper-button-prev')
