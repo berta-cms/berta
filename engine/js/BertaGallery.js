@@ -148,24 +148,11 @@ var BertaGallery = new Class({
         this.preload = this.imageContainer.getElement('div.xGalleryItem');
 
         if ((this.fullscreen || this.getNext()) && this.type == 'slideshow') {
-          this.preload.setStyle('cursor', 'pointer');
-
-          if (this.fullscreen) {
-            this.preload.addEvent('click', this.loadFullscreen.bind(this));
-          } else {
-            this.preload.addEvent('click', this.loadNext.bind(this));
-          }
-
-          if (this.autoplay > 0) {
-            var obj = this;
-            this.time = this.autoplay * 1000;
-
-            if (li.getParent().getElements('a').length > 1) {
-              this.interval = setTimeout(function () {
-                obj.loadNext(true);
-              }, this.time);
-            }
-          }
+          // @TODO destroy swiper instance when switching between gallery editor
+          var swiperEl = this.imageContainer.getElement('.swiper-container');
+          var entryGallery = new Swiper(swiperEl, {
+            autoHeight: true
+          });
         }
 
         if (this.type == 'link') {

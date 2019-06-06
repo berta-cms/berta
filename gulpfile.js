@@ -41,12 +41,14 @@ var template = {
 };
 
 var css_backend_files = [
+  'node_modules/swiper/dist/css/swiper.min.css',
   'engine/_lib/video-js/video-js.min.css',
   'engine/_lib/berta/default.css',
   'engine/_lib/moorainbow/mooRainbow.css'
 ];
 
 var css_frontend_files = [
+  'node_modules/swiper/dist/css/swiper.min.css',
   'engine/_lib/video-js/video-js.min.css',
   'engine/_lib/berta/default.css',
   'engine/_lib/milkbox/css/milkbox/milkbox.css'
@@ -75,7 +77,8 @@ var js_backend_files = [
   'node_modules/whatwg-fetch/fetch.js',
   'node_modules/immutable/dist/immutable.min.js',
   'node_modules/redux/dist/redux.min.js',
-  'node_modules/redux-thunk/dist/redux-thunk.min.js'
+  'node_modules/redux-thunk/dist/redux-thunk.min.js',
+  'node_modules/swiper/dist/js/swiper.min.js'
 ];
 
 var js_ng_backend_files = [
@@ -116,7 +119,8 @@ var js_frontend_files = [
   'engine/_lib/video-js/video.min.js',
   'engine/js/BertaGallery.js',
   'engine/js/Berta.js',
-  'engine/_lib/milkbox/js/milkbox.js'
+  'engine/_lib/milkbox/js/milkbox.js',
+  'node_modules/swiper/dist/js/swiper.min.js'
 ];
 
 

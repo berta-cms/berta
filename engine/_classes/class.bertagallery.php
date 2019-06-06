@@ -88,7 +88,18 @@ class BertaGallery extends BertaBase
 
             $strOut = '<div class="xGalleryContainer xGalleryHasImages xGalleryType-' . $galleryType . $specificClasses . '">';
             $strOut .= "<div class=\"xGallery\" style=\"width: {$firstImageWidth}px; height: {$firstImageHeight}px;\"" . ($rowGalleryPadding ? ' xRowGalleryPadding="' . $rowGalleryPadding . '"' : '') . '>';
-            $strOut .= $firstImageHTML;
+
+            if ($galleryType == 'slideshow') {
+                $slides = [];
+                foreach ($imgs as $img) {
+                    list($slideHTML) = BertaGallery::getImageHTML($img, $mediaFolderName, $isAdminMode, $sizeRatio, $imageTargetWidth, $imageTargetHeight);
+                    $slides[] = $slideHTML;
+                }
+                $strOut .= BertaGallery::getSlideshowHTML($slides);
+            } else {
+                $strOut .= $firstImageHTML;
+            }
+
             if ($isAdminMode) {
                 $strOut .= '<a href="#" class="xGalleryEditButton xEditorLink xSysCaption xMAlign-container"><span class="xMAlign-outer-gallery"><span class="xMAlign-inner-gallery">edit gallery</span></span></a>';
             }
@@ -116,6 +127,19 @@ class BertaGallery extends BertaBase
         return $bReturnFullInfo ?
         [$strOut, $firstImageWidth, $firstImageHeight] :
         $strOut;
+    }
+
+    public static function getSlideshowHTML($slides)
+    {
+        $html = '<div class="swiper-container">';
+        $html .= '<div class="swiper-wrapper">';
+        foreach ($slides as $i => $slide) {
+            $html .= '<div class="swiper-slide">'. $slide . '</div>';
+        }
+        $html .= '</div>';
+        $html .= '</div>';
+
+        return $html;
     }
 
     public static function getImageHTML($img, $mediaFolder, $isAdminMode = false, $sizeRatio = 1, $imageTargetWidth = 0, $imageTargetHeight = 0)
