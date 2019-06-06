@@ -137,6 +137,12 @@ class BertaGallery extends BertaBase
             $html .= '<div class="swiper-slide">'. $slide . '</div>';
         }
         $html .= '</div>';
+
+        if (count($slides) > 1) {
+            $html .= '<div class="swiper-button-prev"></div>
+                      <div class="swiper-button-next"></div>';
+        }
+
         $html .= '</div>';
 
         return $html;

@@ -1,0 +1,7 @@
+.swiper-button-prev {
+  background-image: url('/engine/layout/swiper-prev.svg');
+}
+
+.swiper-button-next {
+  background-image: url('/engine/layout/swiper-next.svg');
+}

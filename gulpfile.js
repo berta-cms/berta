@@ -44,6 +44,7 @@ var css_backend_files = [
   'node_modules/swiper/dist/css/swiper.min.css',
   'engine/_lib/video-js/video-js.min.css',
   'engine/_lib/berta/default.css',
+  'engine/_lib/berta/swiper.css',
   'engine/_lib/moorainbow/mooRainbow.css'
 ];
 
@@ -51,6 +52,7 @@ var css_frontend_files = [
   'node_modules/swiper/dist/css/swiper.min.css',
   'engine/_lib/video-js/video-js.min.css',
   'engine/_lib/berta/default.css',
+  'engine/_lib/berta/swiper.css',
   'engine/_lib/milkbox/css/milkbox/milkbox.css'
 ];
 
@@ -149,9 +151,11 @@ gulp.task('scss_mashup', scssTemplates(template.mashup.files, template.mashup.de
 
 gulp.task('css_backend', function () {
   return gulp.src(css_backend_files)
+    .pipe(gulp_sourcemaps.init())
     .pipe(gulp_rebase_css_urls('engine/css'))
     .pipe(gulp_concat('backend.min.css'))
     .pipe(gulp_minify_css())
+    .pipe(gulp_sourcemaps.write('/maps'))
     .pipe(gulp.dest('engine/css'))
     .pipe(livereload())
     .pipe(notify('CSS: backend compiled!'));
@@ -159,9 +163,11 @@ gulp.task('css_backend', function () {
 
 gulp.task('css_frontend', function () {
   return gulp.src(css_frontend_files)
+    .pipe(gulp_sourcemaps.init())
     .pipe(gulp_rebase_css_urls('engine/css'))
     .pipe(gulp_concat('frontend.min.css'))
     .pipe(gulp_minify_css())
+    .pipe(gulp_sourcemaps.write('/maps'))
     .pipe(gulp.dest('engine/css'))
     .pipe(livereload())
     .pipe(notify('CSS: frontend compiled!'));

@@ -151,7 +151,11 @@ var BertaGallery = new Class({
           // @TODO destroy swiper instance when switching between gallery editor
           var swiperEl = this.imageContainer.getElement('.swiper-container');
           var entryGallery = new Swiper(swiperEl, {
-            autoHeight: true
+            autoHeight: true,
+            navigation: {
+              nextEl: swiperEl.getElement('.swiper-button-next'),
+              prevEl: swiperEl.getElement('.swiper-button-prev')
+            }
           });
         }
 
