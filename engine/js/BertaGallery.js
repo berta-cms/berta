@@ -154,6 +154,20 @@ var BertaGallery = new Class({
         this.preload = this.imageContainer.getElement('div.xGalleryItem');
 
         if ((this.fullscreen || this.getNext()) && this.type == 'slideshow') {
+          // Add fullscreen
+          if (this.fullscreen) {
+            var galleryId = this.container.getParent().getClassStoredValue('xEntryId');
+            this.imageContainer.getElements('.xGalleryItem').each(function(galleryItem, i) {
+              galleryItem.setStyle('cursor', 'pointer');
+              galleryItem.addEvent('click', function() {
+                milkbox.showGallery({
+                  gallery: 'gallery-' + galleryId,
+                  index: i
+                });
+              });
+            }, this);
+          }
+
           var swiperEl = this.imageContainer.getElement('.swiper-container');
           this.gallerySwiper = new Swiper(swiperEl, {
             autoHeight: true,
