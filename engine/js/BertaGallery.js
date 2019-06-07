@@ -110,6 +110,10 @@ var BertaGallery = new Class({
       this.navContainer = null;
   },
   detach: function () {
+    if (this.gallerySwiper) {
+      this.gallerySwiper.destroy();
+    }
+
     if (this.navContainer) {
       this.navContainer.getElements('a').each(function (item) {
         item.removeEvents('click');
@@ -150,7 +154,6 @@ var BertaGallery = new Class({
         this.preload = this.imageContainer.getElement('div.xGalleryItem');
 
         if ((this.fullscreen || this.getNext()) && this.type == 'slideshow') {
-          // @TODO gallerySwiper.destroy in detach method: destroy swiper instance when switching between gallery editor
           var swiperEl = this.imageContainer.getElement('.swiper-container');
           this.gallerySwiper = new Swiper(swiperEl, {
             autoHeight: true,
