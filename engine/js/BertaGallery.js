@@ -17,6 +17,7 @@ var BertaGallery = new Class({
 
   container: null,
   imageContainer: null,
+  gallerySwiper: null,
   navContainer: null,
   rowClearElement: null,
 
@@ -91,7 +92,6 @@ var BertaGallery = new Class({
           duration: 'short',
           transition: Fx.Transitions.Sine.easeInOut
         });
-        this.nav_setEvents();
 
         this.newObjectInjectWhere = this.options.environment == 'site' ? this.imageContainer : this.imageContainer.getElement('.xGalleryEditButton');
         this.newObjectInjectPosition = this.options.environment == 'site' ? 'bottom' : 'before';
@@ -134,6 +134,8 @@ var BertaGallery = new Class({
 
   loadFirst: function () {
     if (this.navContainer) {
+      var navContainer = this.navContainer;
+      var nav_highlightItem = this.nav_highlightItem;
       var li = this.navContainer.getElement('li');
       this.nav_highlightItem(li);
       var aEl = this.navContainer.getElement('li a');
@@ -148,16 +150,23 @@ var BertaGallery = new Class({
         this.preload = this.imageContainer.getElement('div.xGalleryItem');
 
         if ((this.fullscreen || this.getNext()) && this.type == 'slideshow') {
-          // @TODO destroy swiper instance when switching between gallery editor
+          // @TODO gallerySwiper.destroy in detach method: destroy swiper instance when switching between gallery editor
           var swiperEl = this.imageContainer.getElement('.swiper-container');
-          var entryGallery = new Swiper(swiperEl, {
+          this.gallerySwiper = new Swiper(swiperEl, {
             autoHeight: true,
             effect: 'fade',
             navigation: {
               nextEl: swiperEl.getElement('.swiper-button-next'),
               prevEl: swiperEl.getElement('.swiper-button-prev')
+            },
+            on: {
+              slideChange: function() {
+                nav_highlightItem(navContainer.getElements('li')[this.activeIndex]);
+              }
             }
           });
+
+          this.nav_setEvents();
         }
 
         if (this.type == 'link') {
@@ -421,13 +430,13 @@ var BertaGallery = new Class({
 
     var li = linkElement.getParent('li');
     this.nav_highlightItem(li);
-    var caption = li.getElement('.xGalleryImageCaption').get('html');
+    // @TODO Add caption
+    // var caption = li.getElement('.xGalleryImageCaption').get('html');
 
-    this.load(linkElement.get('href'), linkElement.getClassStoredValue('xType'), linkElement.getClassStoredValue('xW'), linkElement.getClassStoredValue('xH'), linkElement.getClassStoredValue('xVideoHref'), linkElement.getClassStoredValue('xAutoPlay'), caption, false, linkElement.getClassStoredValue('xImgIndex'), linkElement.get('data-srcset'));
+    this.gallerySwiper.slideTo(linkElement.getClassStoredValue('xImgIndex') - 1);
   },
   nav_highlightItem: function (liElement) {
-    // implementable in the future
-    this.navContainer.getElements('li').removeClass('selected');
+    liElement.getParent().getChildren().removeClass('selected');
     liElement.addClass('selected');
   },
 

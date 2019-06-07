@@ -86,8 +86,9 @@ class BertaGallery extends BertaBase
                     break;
             }
 
+            $dimensions = $galleryType == 'slideshow' ? '' : ' style="width: ' . $firstImageWidth . 'px; height: ' . $firstImageHeight . 'px;"';
             $strOut = '<div class="xGalleryContainer xGalleryHasImages xGalleryType-' . $galleryType . $specificClasses . '">';
-            $strOut .= "<div class=\"xGallery\" style=\"width: {$firstImageWidth}px; height: {$firstImageHeight}px;\"" . ($rowGalleryPadding ? ' xRowGalleryPadding="' . $rowGalleryPadding . '"' : '') . '>';
+            $strOut .= "<div class=\"xGallery\"" . $dimensions . ($rowGalleryPadding ? ' xRowGalleryPadding="' . $rowGalleryPadding . '"' : '') . '>';
 
             if ($galleryType == 'slideshow') {
                 $slides = [];

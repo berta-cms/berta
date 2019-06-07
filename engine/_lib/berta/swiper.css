@@ -1,3 +1,11 @@
+.swiper-slide {
+  background-color: #fff;
+}
+
+.swiper-slide .xGalleryItem {
+  margin: 0 auto;
+}
+
 .swiper-button-prev {
   background-image: url('/engine/layout/swiper-prev.svg');
 }
