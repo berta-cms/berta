@@ -532,7 +532,6 @@ var BertaGallery = new Class({
           'alt': altText,
           'onload': this.load_Finish.bind(this, [src, mType, mWidth, mHeight, bDeleteExisting])
         } : {
-          'alt': altText,
           'width': mWidth,
           'height': mHeight,
           'srcset': this.srcset,
@@ -571,8 +570,9 @@ var BertaGallery = new Class({
         this.preload = new Element('video', {
           'id': containerID,
           'width': mWidth,
-          'height': mHeight,
-          'class': 'video-js vjs-default-skin xGalleryItem xGalleryItemType-video'
+          'class': 'xGalleryItem xGalleryItemType-video',
+          'controls': true,
+          'poster': src && src.charAt(0) !== '#' ? src : null,
         });
 
         var videoType = videoPath.split('.').pop();
@@ -587,38 +587,10 @@ var BertaGallery = new Class({
         this.layout_inject(bDeleteExisting, true);
         this.preload.setStyle('position', 'absolute');
 
-        var player = _V_(containerID, {
-          'controls': true,
-          'preload': 'auto',
-          'poster': src && src.charAt(0) !== '#' ? src : null,
-          'autoplay': autoPlay > 0 ? true : false
-        });
-
-        if (this.isResponsive || (this.isAutoResponsive && this.mobileBrekapoint > window.getSize().x)) {
-          player.el.setStyle('padding-bottom', mHeight * 100 / mWidth + '%');
+        if (autoPlay > 0) {
+          this.preload.muted = true;
+          this.preload.play();
         }
-
-        if (this.isAutoResponsive) {
-          window.addEvent('resize', this.debounce(function () {
-            if (this.mobileBrekapoint > window.getSize().x) {
-              player.el.setStyle('padding-bottom', mHeight * 100 / mWidth + '%');
-            } else {
-              player.el.setStyle('padding-bottom', null);
-            }
-          }.bind(this), 250));
-        }
-
-        new Element('img', {
-          'src': src,
-          'class': 'xGalleryImageVideoBack',
-          'width': mWidth,
-          'height': mHeight,
-          'srcset': this.srcset,
-          'styles': {
-            'width': mWidth + 'px',
-            'height': mHeight + 'px'
-          }
-        }).inject(this.preload, 'top');
 
         new Element('div', {
           'class': 'xGalleryImageCaption'

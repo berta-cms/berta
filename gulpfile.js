@@ -42,7 +42,6 @@ var template = {
 
 var css_backend_files = [
   'node_modules/swiper/dist/css/swiper.min.css',
-  'engine/_lib/video-js/video-js.min.css',
   'engine/_lib/berta/default.css',
   'engine/_lib/berta/swiper.css',
   'engine/_lib/moorainbow/mooRainbow.css'
@@ -50,7 +49,6 @@ var css_backend_files = [
 
 var css_frontend_files = [
   'node_modules/swiper/dist/css/swiper.min.css',
-  'engine/_lib/video-js/video-js.min.css',
   'engine/_lib/berta/default.css',
   'engine/_lib/berta/swiper.css',
   'engine/_lib/milkbox/css/milkbox/milkbox.css'
@@ -62,7 +60,6 @@ var js_backend_files = [
   'engine/_lib/mootools/mootools-1.2.5.1-more-delegation.js',
   'engine/_lib/mootools/Element.Data.js',
   'engine/_lib/picturefill/picturefill.min.js',
-  'engine/_lib/video-js/video.min.js',
   'engine/js/berta.helpers.js',
   'engine/js/BertaGallery.js',
   'engine/js/Assets.js',
@@ -118,7 +115,6 @@ var js_frontend_files = [
   'engine/_lib/mootools/mootools-1.2.5.1-more.js',
   'engine/_lib/mootools/mootools-1.2.5.1-more-delegation.js',
   'engine/_lib/picturefill/picturefill.min.js',
-  'engine/_lib/video-js/video.min.js',
   'engine/js/BertaGallery.js',
   'engine/js/Berta.js',
   'engine/_lib/milkbox/js/milkbox.js',
