@@ -93,7 +93,11 @@ class BertaGallery extends BertaBase
             if ($galleryType == 'slideshow') {
                 $slides = [];
                 foreach ($imgs as $img) {
-                    list($slideHTML) = BertaGallery::getImageHTML($img, $mediaFolderName, $isAdminMode, $sizeRatio, $imageTargetWidth, $imageTargetHeight);
+                    if ($img['@attributes']['type'] == 'image') {
+                        list($slideHTML) = BertaGallery::getImageHTML($img, $mediaFolderName, $isAdminMode, $sizeRatio, $imageTargetWidth, $imageTargetHeight);
+                    } else {
+                        $slideHTML = BertaGallery::getVideoHTML($img, $mediaFolderName, $isAdminMode, $sizeRatio, $imageTargetWidth, $imageTargetHeight);
+                    }
                     $slides[] = $slideHTML;
                 }
                 $strOut .= BertaGallery::getSlideshowHTML($slides);
@@ -210,6 +214,22 @@ class BertaGallery extends BertaBase
         }
 
         return [$firstImageHTML, $width, $height];
+    }
+
+    public static function getVideoHTML($img, $mediaFolder, $isAdminMode = false, $sizeRatio = 1, $imageTargetWidth = 0, $imageTargetHeight = 0)
+    {
+        $mFolderABS = self::$options['MEDIA_ABS_ROOT'] . $mediaFolder . '/';
+        list(, $width) = BertaGallery::getImageHTML($img, $mediaFolder, $isAdminMode = false, $sizeRatio = 1, $imageTargetWidth = 0, $imageTargetHeight = 0);
+
+        $poster = isset($img['@attributes']['poster_frame']) ? ' poster="' . $mFolderABS . $img['@attributes']['poster_frame'] . '"' : '';
+
+        $html = '
+            <video width="' . $width . '" class="xGalleryItem xGalleryItemType-video" controls'.$poster.'>
+                <source src="'. $mFolderABS . $img['@attributes']['src'] .'" type="video/mp4">
+                <div class="xGalleryImageCaption"></div>
+            </video>
+            ' . PHP_EOL;
+        return $html;
     }
 
     private static function getNavHTML($imgs, $galleryType, $mFolder, $mFolderABS, $isAdminMode = false, $sizeRatio = 1, $imageTargetWidth = 0, $imageTargetHeight = 0, $galleryFullScreen = false)

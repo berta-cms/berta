@@ -146,7 +146,7 @@ var BertaGallery = new Class({
       var fistItemType = aEl.getClassStoredValue('xType');
       this.autoplay = parseInt(this.container.getClassStoredValue('xGalleryAutoPlay'));
 
-      if (fistItemType != 'image' || (fistItemType == 'image' && this.type == 'row')) {
+      if (this.type !== 'slideshow' && (fistItemType != 'image' || (fistItemType == 'image' && this.type == 'row'))) {
         // load only if not image, because if that's image, it's already written in the HTML
         this.load(aEl.get('href'), aEl.getClassStoredValue('xType'), aEl.getClassStoredValue('xW'), aEl.getClassStoredValue('xH'), aEl.getClassStoredValue('xVideoHref'), aEl.getClassStoredValue('xAutoPlay'), li.getElement('.xGalleryImageCaption').get('html'), true, 1, aEl.get('data-srcset'));
       } else {
@@ -563,12 +563,9 @@ var BertaGallery = new Class({
         break;
 
       case 'video':
-        var containerID = 'video_' + new Date().getTime();
-
         if (mHeight) mHeight = parseInt(mHeight);
 
         this.preload = new Element('video', {
-          'id': containerID,
           'width': mWidth,
           'class': 'xGalleryItem xGalleryItemType-video',
           'controls': true,

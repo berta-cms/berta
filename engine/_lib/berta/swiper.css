@@ -13,3 +13,13 @@
 .swiper-button-next {
   background-image: url('/engine/layout/swiper-next.svg');
 }
+
+.swiper-slide .xGalleryItem {
+  max-width: 100%;
+}
+
+.swiper-slide .xGalleryItem,
+.swiper-slide img {
+  max-width: 100%;
+  height: auto !important;
+}
