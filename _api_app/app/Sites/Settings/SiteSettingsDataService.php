@@ -425,6 +425,10 @@ class SiteSettingsDataService extends Storage
             $value
         );
 
+        if (empty($this->SITE_SETTINGS)) {
+            throw new \Exception('Could not write empty settings!');
+        }
+
         $this->array2xmlFile($this->SITE_SETTINGS, $this->XML_FILE, $this->ROOT_ELEMENT);
 
         // If Berta is installed, create a new default `Home` section
