@@ -60,6 +60,10 @@ class Settings
     {
         Array_XML::addCDATA($settingsCopy);
         if ($xml = Array_XML::array2xml($settingsCopy, 'settings')) {
+            if ($xml == '') {
+                throw new \Exception('Could not write empty settings');
+            }
+
             $xml_file = BertaBase::$options['XML_ROOT'] . $this->fileName;
             $fp = fopen($xml_file, 'w');
             if (flock($fp, LOCK_EX)) {
