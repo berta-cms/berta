@@ -1,6 +1,6 @@
 import { Router, ActivatedRoute } from '@angular/router';
 import { State, StateContext, NgxsOnInit, Action, Selector } from '@ngxs/store';
-import { tap } from 'rxjs/operators';
+import { tap, filter, take } from 'rxjs/operators';
 
 import { UserStateModel } from './user.state.model';
 import { UserLoginAction, UserLogoutAction, SetUserNextUrlAction } from './user.actions';
@@ -44,10 +44,15 @@ export class UserState implements NgxsOnInit {
     const features = window.localStorage.getItem('features');
     const profileUrl = window.localStorage.getItem('profileUrl');
 
-    this.route.queryParams.subscribe(params => {
-      if (!token && params.token) {
-        dispatch(new UserLoginAction({token: params.token}));
-      }
+    this.route.queryParams.pipe(
+      filter(params => !!params.token),
+      take(1)
+    ).subscribe(params => {
+      /* Always re-log in with the token (if we have the token) */
+      dispatch(new UserLoginAction({token: params.token}));
+      /* assume user is has not logged in: */
+      patchState({name: null, token: null, features: null, profileUrl: null});
+      return;
     });
 
     patchState({
