@@ -144,7 +144,7 @@ var BertaGallery = new Class({
       this.nav_highlightItem(li);
       var aEl = this.navContainer.getElement('li a');
       var fistItemType = aEl.getClassStoredValue('xType');
-      this.autoplay = parseInt(this.container.getClassStoredValue('xGalleryAutoPlay'));
+      this.autoplay = parseInt(this.container.getClassStoredValue('xGalleryAutoPlay'), 10);
 
       if (this.type !== 'slideshow' && (fistItemType != 'image' || (fistItemType == 'image' && this.type == 'row'))) {
         // load only if not image, because if that's image, it's already written in the HTML
@@ -169,7 +169,7 @@ var BertaGallery = new Class({
           }
 
           var swiperEl = this.imageContainer.getElement('.swiper-container');
-          this.gallerySwiper = new Swiper(swiperEl, {
+          var swiperOptions = {
             autoHeight: true,
             effect: 'fade',
             navigation: {
@@ -181,8 +181,15 @@ var BertaGallery = new Class({
                 nav_highlightItem(navContainer.getElements('li')[this.activeIndex]);
               }
             }
-          });
+          };
 
+          if (this.autoplay) {
+            swiperOptions['autoplay'] = {
+              delay: this.autoplay * 1000
+            };
+          }
+
+          this.gallerySwiper = new Swiper(swiperEl, swiperOptions);
           this.nav_setEvents();
         }
 
