@@ -225,11 +225,13 @@ class BertaGallery extends BertaBase
         $autoplay = isset($img['@attributes']['autoplay']) && $img['@attributes']['autoplay'] > 0 ? ' data-autoplay="' .$img['@attributes']['autoplay'] . '"' : '';
 
         $html = '
-            <video width="' . $width . '" class="xGalleryItem xGalleryItemType-video" controls'.$poster.$autoplay.'>
-                <source src="'. $mFolderABS . $img['@attributes']['src'] .'" type="video/mp4">
-                <div class="xGalleryImageCaption"></div>
-            </video>
-            ' . PHP_EOL;
+            <div class="xGalleryItem xGalleryItemType-video">
+                <video width="' . $width . '" controls'.$poster.$autoplay.'>
+                    <source src="'. $mFolderABS . $img['@attributes']['src'] .'" type="video/mp4">
+                </video>
+                <div class="xGalleryImageCaption">' . (!empty($img['value']) ? $img['value'] : '') . '</div>
+            </div>
+            ';
         return $html;
     }
 

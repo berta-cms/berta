@@ -19,7 +19,8 @@
 }
 
 .swiper-slide .xGalleryItem,
-.swiper-slide img {
+.swiper-slide img,
+.swiper-slide video {
   max-width: 100%;
   height: auto !important;
 }
