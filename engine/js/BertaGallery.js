@@ -169,6 +169,26 @@ var BertaGallery = new Class({
           }
 
           var swiperEl = this.imageContainer.getElement('.swiper-container');
+          var videos = [];
+
+          swiperEl.getElements('.swiper-slide').each(function(slide, i) {
+            var video = slide.getElement('video');
+            if (video) {
+              videos[i] = video;
+            }
+          });
+
+          var loadVideo = function(video) {
+            if (video.data('autoplay')) {
+              video.muted = true;
+              video.play();
+            }
+          };
+
+          var unLoadVideo = function(video) {
+            video.pause();
+          };
+
           var swiperOptions = {
             autoHeight: true,
             effect: 'fade',
@@ -177,7 +197,20 @@ var BertaGallery = new Class({
               prevEl: swiperEl.getElement('.swiper-button-prev')
             },
             on: {
+              init: function () {
+                if (videos[this.activeIndex]) {
+                  loadVideo(videos[this.activeIndex]);
+                }
+              },
               slideChange: function() {
+                if (videos[this.previousIndex]) {
+                  unLoadVideo(videos[this.previousIndex]);
+                }
+
+                if (videos[this.activeIndex]) {
+                  loadVideo(videos[this.activeIndex]);
+                }
+
                 nav_highlightItem(navContainer.getElements('li')[this.activeIndex]);
               }
             }

@@ -114,6 +114,7 @@ var js_frontend_files = [
   'engine/_lib/mootools/mootools-core-1.4.5-full-compat-yc.js',
   'engine/_lib/mootools/mootools-1.2.5.1-more.js',
   'engine/_lib/mootools/mootools-1.2.5.1-more-delegation.js',
+  'engine/_lib/mootools/Element.Data.js',
   'engine/_lib/picturefill/picturefill.min.js',
   'engine/js/BertaGallery.js',
   'engine/js/Berta.js',

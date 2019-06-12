@@ -222,9 +222,10 @@ class BertaGallery extends BertaBase
         list(, $width) = BertaGallery::getImageHTML($img, $mediaFolder, $isAdminMode = false, $sizeRatio = 1, $imageTargetWidth = 0, $imageTargetHeight = 0);
 
         $poster = isset($img['@attributes']['poster_frame']) ? ' poster="' . $mFolderABS . $img['@attributes']['poster_frame'] . '"' : '';
+        $autoplay = isset($img['@attributes']['autoplay']) && $img['@attributes']['autoplay'] > 0 ? ' data-autoplay="' .$img['@attributes']['autoplay'] . '"' : '';
 
         $html = '
-            <video width="' . $width . '" class="xGalleryItem xGalleryItemType-video" controls'.$poster.'>
+            <video width="' . $width . '" class="xGalleryItem xGalleryItemType-video" controls'.$poster.$autoplay.'>
                 <source src="'. $mFolderABS . $img['@attributes']['src'] .'" type="video/mp4">
                 <div class="xGalleryImageCaption"></div>
             </video>
