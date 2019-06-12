@@ -48,10 +48,10 @@ export class UserState implements NgxsOnInit {
       filter(params => !!params.token),
       take(1)
     ).subscribe(params => {
-      /* Always re-log in with the token (if we have the token) */
-      dispatch(new UserLoginAction({token: params.token}));
       /* assume user is has not logged in: */
       patchState({name: null, token: null, features: null, profileUrl: null});
+      /* Always re-log in with the token (if we have the token) */
+      dispatch(new UserLoginAction({token: params.token}));
       return;
     });
 
