@@ -37,16 +37,19 @@ var BertaGallery = new Class({
 
   numFinishedLoading: 0,
 
-  is_touch_device: 'ontouchstart' in document.documentElement,
   isResponsive: false,
   isAutoResponsive: false,
   mobileBrekapoint: 768,
 
   initialize: function (container, options) {
+    this.is_touch_device = this.isTouchDevice();
     if (container.hasClass('xInitialized')) {
       return;
     }
     container.addClass('xInitialized');
+    if (this.is_touch_device) {
+      container.addClass('bt-is-touch-device');
+    }
     this.setOptions(options);
     this.attach(container);
     this.loadFirst();
@@ -109,6 +112,7 @@ var BertaGallery = new Class({
     } else
       this.navContainer = null;
   },
+
   detach: function () {
     if (this.gallerySwiper) {
       this.gallerySwiper.destroy();
@@ -128,6 +132,21 @@ var BertaGallery = new Class({
     this.currentSrc = null;
   },
 
+  isTouchDevice: function () {
+    var prefixes = ' -webkit- -moz- -o- -ms- '.split(' ');
+    var mq = function(query) {
+      return window.matchMedia(query).matches;
+    };
+
+    if (('ontouchstart' in window) || window.DocumentTouch && document instanceof DocumentTouch) {
+      return true;
+    }
+
+    // include the 'heartz' as a way to have a non matching MQ to help terminate the join
+    // https://git.io/vznFH
+    var query = ['(', prefixes.join('touch-enabled),('), 'heartz', ')'].join('');
+    return mq(query);
+  },
 
 
 

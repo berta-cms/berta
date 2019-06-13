@@ -8,6 +8,7 @@
 
 .swiper-button-next,
 .swiper-button-prev {
+  display: none;
   width: 47px;
   height: 47px;
   margin-top: -24px;
@@ -22,10 +23,16 @@
   background-image: url('/engine/layout/swiper-next.svg');
 }
 
-.swiper-button-next.swiper-button-disabled,
-.swiper-button-prev.swiper-button-disabled {
-  display: none;
+.swiper-container:hover .swiper-button-prev:not(.swiper-button-disabled),
+.swiper-container:hover .swiper-button-next:not(.swiper-button-disabled) {
+  display: block;
 }
+
+.bt-is-touch-device .swiper-button-prev:not(.swiper-button-disabled),
+.bt-is-touch-device .swiper-button-next:not(.swiper-button-disabled) {
+  display: block;
+}
+
 .swiper-slide .xGalleryItem {
   max-width: 100%;
 }
