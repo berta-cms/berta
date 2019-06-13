@@ -158,6 +158,10 @@ var BertaGallery = new Class({
           if (this.fullscreen) {
             var galleryId = this.container.getParent().getClassStoredValue('xEntryId');
             this.imageContainer.getElements('.xGalleryItem').each(function(galleryItem, i) {
+              if (galleryItem.hasClass('xGalleryItemType-video')) {
+                return;
+              }
+
               galleryItem.setStyle('cursor', 'pointer');
               galleryItem.addEvent('click', function() {
                 milkbox.showGallery({
