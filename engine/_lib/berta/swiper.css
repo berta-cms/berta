@@ -33,10 +33,6 @@
   display: block;
 }
 
-.swiper-slide .xGalleryItem {
-  max-width: 100%;
-}
-
 .swiper-slide .xGalleryItem,
 .swiper-slide img,
 .swiper-slide video {

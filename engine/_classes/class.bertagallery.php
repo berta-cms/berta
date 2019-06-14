@@ -73,6 +73,7 @@ class BertaGallery extends BertaBase
 
         if ($imgs && count($imgs) > 0) {
             list($firstImageHTML, $firstImageWidth, $firstImageHeight) = BertaGallery::getImageHTML($imgs[0], $mediaFolderName, $isAdminMode, $sizeRatio, $imageTargetWidth, $imageTargetHeight);
+            $firstImageWidth = $firstImageWidth ? $firstImageWidth : $imageTargetWidth;
 
             $specificClasses = '';
             switch ($galleryType) {
@@ -86,7 +87,7 @@ class BertaGallery extends BertaBase
                     break;
             }
 
-            $dimensions = $galleryType == 'slideshow' ? '' : ' style="width: ' . $firstImageWidth . 'px; height: ' . $firstImageHeight . 'px;"';
+            $dimensions = ' style="width: ' . $firstImageWidth . 'px;' . ($galleryType !== 'slideshow' ? 'height: ' . $firstImageHeight . 'px;' : '') . '"';
             $strOut = '<div class="xGalleryContainer xGalleryHasImages xGalleryType-' . $galleryType . $specificClasses . '">';
             $strOut .= "<div class=\"xGallery\"" . $dimensions . ($rowGalleryPadding ? ' xRowGalleryPadding="' . $rowGalleryPadding . '"' : '') . '>';
 
