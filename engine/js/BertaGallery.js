@@ -198,8 +198,12 @@ var BertaGallery = new Class({
             var video = slide.getElement('video');
             if (video) {
               videos[i] = video;
+              video.addEventListener('loadeddata', function reloadSwiper(e) {
+                this.gallerySwiper.update();
+                e.target.removeEventListener(e.type, reloadSwiper);
+              }.bindWithEvent(this), false);
             }
-          });
+          }, this);
 
           var loadVideo = function(video) {
             if (video.data('autoplay')) {

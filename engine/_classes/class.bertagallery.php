@@ -218,8 +218,10 @@ class BertaGallery extends BertaBase
 
     public static function getVideoHTML($img, $mediaFolder, $isAdminMode = false, $sizeRatio = 1, $imageTargetWidth = 0, $imageTargetHeight = 0)
     {
+        $targetWidth = $imageTargetWidth;
         $mFolderABS = self::$options['MEDIA_ABS_ROOT'] . $mediaFolder . '/';
         list(, $width) = BertaGallery::getImageHTML($img, $mediaFolder, $isAdminMode = false, $sizeRatio = 1, $imageTargetWidth = 0, $imageTargetHeight = 0);
+        $width = $width ? $width : $targetWidth;
 
         $poster = isset($img['@attributes']['poster_frame']) ? ' poster="' . $mFolderABS . $img['@attributes']['poster_frame'] . '"' : '';
         $autoplay = isset($img['@attributes']['autoplay']) && $img['@attributes']['autoplay'] > 0 ? ' data-autoplay="' .$img['@attributes']['autoplay'] . '"' : '';
