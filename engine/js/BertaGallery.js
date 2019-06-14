@@ -514,9 +514,6 @@ var BertaGallery = new Class({
 
     var li = linkElement.getParent('li');
     this.nav_highlightItem(li);
-    // @TODO Add caption
-    // var caption = li.getElement('.xGalleryImageCaption').get('html');
-
     this.gallerySwiper.slideTo(linkElement.getClassStoredValue('xImgIndex') - 1);
   },
   nav_highlightItem: function (liElement) {
