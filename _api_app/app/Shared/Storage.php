@@ -224,12 +224,24 @@ class Storage
         $xml->formatOutput = true;
         $xml->appendChild($this->array2xml($xml, $root, $arr));
 
-        $fp = fopen($xml_file, 'w');
+        // Use append flag ('a'), so we wouldn't delete the file, before lock
+        $fp = fopen($xml_file, 'a');
         if (flock($fp, LOCK_EX)) {
-            $xml->save($xml_file);
+            // Clear the file once we have the lock
+            ftruncate($fp, 0);
+
+            // Write file content with the pointer instead of XML extension,
+            // so we know what we're doing
+            fwrite($fp, $xml->saveXML());
+
+            // Make sure everything is written to the file
+            fflush($fp);
+
             @chmod($xml_file, 0666);
             flock($fp, LOCK_UN);
+            fclose($fp);
         } else {
+            fclose($fp);
             throw new \Exception('Could not write locked file: ' . $xml_file);
         }
     }
