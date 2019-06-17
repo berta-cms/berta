@@ -65,14 +65,23 @@ class Settings
             }
 
             $xml_file = BertaBase::$options['XML_ROOT'] . $this->fileName;
-            $fp = fopen($xml_file, 'w');
+
+            // Use append flag ('a'), so we wouldn't delete the file, before lock
+            $fp = fopen($xml_file, 'a');
             if (flock($fp, LOCK_EX)) {
+                // Clear the file once we have the lock
+                ftruncate($fp, 0);
+
                 fwrite($fp, $xml);
                 @chmod($xml_file, 0666);
+
+                // Make sure everything is written to the file
+                fflush($fp);
                 flock($fp, LOCK_UN);
                 fclose($fp);
                 return true;
             } else {
+                fclose($fp);
                 throw new \Exception('Could not write locked file: ' . $xml_file);
             }
         }
