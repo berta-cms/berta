@@ -319,7 +319,7 @@ class SiteSettingsDataService extends Storage
     public function get()
     {
         if (empty($this->SITE_SETTINGS)) {
-            $this->SITE_SETTINGS = $this->xmlFile2array($this->XML_FILE);
+            $this->reload();
         }
 
         return $this->SITE_SETTINGS;
@@ -546,5 +546,9 @@ class SiteSettingsDataService extends Storage
 
         $this->array2xmlFile($this->SITE_SETTINGS, $this->XML_FILE, $this->ROOT_ELEMENT);
         return $child;
+    }
+
+    public function reload() {
+        $this->SITE_SETTINGS = $this->xmlFile2array($this->XML_FILE);
     }
 }
