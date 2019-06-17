@@ -11,10 +11,10 @@ class ExampleTest extends TestCase
      */
     public function testExample()
     {
-        $this->get('/');
+        $this->get('/v1/meta');
 
         $this->assertEquals(
-            $this->response->getContent(), $this->app->version()
+            $this->response->getStatusCode(), 200
         );
     }
 }
