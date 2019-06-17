@@ -23,6 +23,7 @@ import { SitesSharedModule } from './sites/shared/sites-shared.module';
 import { PreviewComponent } from './preview/preview.component';
 import { PopupComponent } from './popup/popup.component';
 import { ErrorState } from './error-state/error.state';
+import { SharedModule } from './shared/shared.module';
 
 
 @NgModule({
@@ -42,6 +43,7 @@ import { ErrorState } from './error-state/error.state';
     BrowserAnimationsModule,
     HttpClientModule,
     AppRoutingModule,
+    SharedModule,
     NgxsModule.forRoot([
       AppState,
       UserState,

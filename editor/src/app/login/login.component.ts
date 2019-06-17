@@ -20,38 +20,45 @@ import { PopupService } from '../popup/popup.service';
   <div *ngIf="!(isLoggedIn$ | async)" class="login-container setting-group">
     <h3><img src="/engine/layout/berta.png"></h3>
 
-    <div *ngIf="appState.isBertaHosting" class="form-group social-login">
-      <a href="{{ appState.loginUrl }}?remote_redirect={{ appState.authenticateUrl }}&amp;provider=facebook" class="button facebook">
-        Log in with Facebook</a>
-      <a href="{{ appState.loginUrl }}?remote_redirect={{ appState.authenticateUrl }}&amp;provider=google" class="button google">
-        Log in with Google</a>
-      <p>or</p>
+    <div class="bt-login-loading" *ngIf="(isLoading$ | async); else logInForm">
+      <berta-loading></berta-loading>
     </div>
 
-    <div *ngIf="message" class="error-message">{{ message }}</div>
-    <form [attr.action]="(appState.isBertaHosting ? appState.loginUrl + '?remote_redirect=' + appState.authenticateUrl: null)"
-          method="post"
-          (submit)="login($event)">
-      <berta-text-input [label]="'Username'"
-                        [name]="'auth_user'"
-                        [value]="username"
-                        [enabledOnUpdate]="true"
-                        [hideIcon]="true"
-                        (inputFocus)="updateComponentFocus($event)"
-                        (update)="updateField('username', $event)"></berta-text-input>
-      <berta-text-input [label]="'Password'"
-                        [name]="'auth_pass'"
-                        [value]="password"
-                        [type]="'password'"
-                        [enabledOnUpdate]="true"
-                        [hideIcon]="true"
-                        (inputFocus)="updateComponentFocus($event)"
-                        (update)="updateField('password', $event)"></berta-text-input>
-      <div class="form-group buttons">
-        <button type="submit" class="button">Log in</button>
-        <a href="{{ appState.forgotPasswordUrl }}" target="_blank">Forgot password?</a>
+    <ng-template #logInForm>
+      <div *ngIf="appState.isBertaHosting" class="form-group social-login">
+        <a href="{{ appState.loginUrl }}?remote_redirect={{ appState.authenticateUrl }}&amp;provider=facebook" class="button facebook">
+          Log in with Facebook</a>
+        <a href="{{ appState.loginUrl }}?remote_redirect={{ appState.authenticateUrl }}&amp;provider=google" class="button google">
+          Log in with Google</a>
+        <p>or</p>
       </div>
-    </form>
+
+      <div *ngIf="message" class="error-message">{{ message }}</div>
+      <form [attr.action]="(appState.isBertaHosting ? appState.loginUrl + '?remote_redirect=' + appState.authenticateUrl: null)"
+            method="post"
+            (submit)="login($event)">
+        <berta-text-input [label]="'Username'"
+                          [name]="'auth_user'"
+                          [value]="username"
+                          [enabledOnUpdate]="true"
+                          [hideIcon]="true"
+                          (inputFocus)="updateComponentFocus($event)"
+                          (update)="updateField('username', $event)"></berta-text-input>
+        <berta-text-input [label]="'Password'"
+                          [name]="'auth_pass'"
+                          [value]="password"
+                          [type]="'password'"
+                          [enabledOnUpdate]="true"
+                          [hideIcon]="true"
+                          (inputFocus)="updateComponentFocus($event)"
+                          (update)="updateField('password', $event)"></berta-text-input>
+        <div class="form-group buttons">
+          <button type="submit" class="button">Log in</button>
+          <a href="{{ appState.forgotPasswordUrl }}" target="_blank">Forgot password?</a>
+        </div>
+      </form>
+    </ng-template>
+
     <div class="footer">
       <span>berta {{ appState.version }}</span>
       <span>2008 - {{ currentYear }}</span>
@@ -67,6 +74,7 @@ export class LoginComponent implements OnInit {
   currentYear = (new Date()).getFullYear();
 
   @Select(UserState.isLoggedIn) isLoggedIn$: Observable<boolean>;
+  @Select(AppState.getShowLoading) isLoading$: Observable<boolean>;
 
   constructor(
     private store: Store,
