@@ -60,11 +60,4 @@ import { Component, OnInit } from '@angular/core';
     }
   `]
 })
-export class LoadingComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit() {
-  }
-
-}
+export class LoadingComponent {}
