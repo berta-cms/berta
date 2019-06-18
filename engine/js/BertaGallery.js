@@ -42,13 +42,13 @@ var BertaGallery = new Class({
   mobileBrekapoint: 768,
 
   initialize: function (container, options) {
-    this.is_touch_device = this.isTouchDevice();
+    this.is_mobile_device = window.BertaHelpers.isMobile();
     if (container.hasClass('xInitialized')) {
       return;
     }
     container.addClass('xInitialized');
-    if (this.is_touch_device) {
-      container.addClass('bt-is-touch-device');
+    if (this.is_mobile_device) {
+      container.addClass('bt-is-mobile-device');
     }
     this.setOptions(options);
     this.attach(container);
@@ -131,23 +131,6 @@ var BertaGallery = new Class({
     this.container = this.imageContainer = this.navContainer = null;
     this.currentSrc = null;
   },
-
-  isTouchDevice: function () {
-    var prefixes = ' -webkit- -moz- -o- -ms- '.split(' ');
-    var mq = function(query) {
-      return window.matchMedia(query).matches;
-    };
-
-    if (('ontouchstart' in window) || window.DocumentTouch && document instanceof DocumentTouch) {
-      return true;
-    }
-
-    // include the 'heartz' as a way to have a non matching MQ to help terminate the join
-    // https://git.io/vznFH
-    var query = ['(', prefixes.join('touch-enabled),('), 'heartz', ')'].join('');
-    return mq(query);
-  },
-
 
 
 
@@ -254,7 +237,7 @@ var BertaGallery = new Class({
         }
 
         if (this.type == 'link') {
-          if (!this.getNext() || this.is_touch_device) {
+          if (!this.getNext() || this.is_mobile_device) {
             var topImg = this.imageContainer.getFirst('.xGalleryItem');
             var linkHref = this.container.getClassStoredValue('xGalleryLinkAddress');
             var linkTarget = this.container.getClassStoredValue('xGalleryLinkTarget');

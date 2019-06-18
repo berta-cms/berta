@@ -28,8 +28,8 @@
   display: block;
 }
 
-.bt-is-touch-device .swiper-button-prev:not(.swiper-button-disabled),
-.bt-is-touch-device .swiper-button-next:not(.swiper-button-disabled) {
+.bt-is-mobile-device .swiper-button-prev:not(.swiper-button-disabled),
+.bt-is-mobile-device .swiper-button-next:not(.swiper-button-disabled) {
   display: block;
 }
 
