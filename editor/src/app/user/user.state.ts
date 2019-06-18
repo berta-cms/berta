@@ -5,7 +5,7 @@ import { tap, filter, take } from 'rxjs/operators';
 import { UserStateModel } from './user.state.model';
 import { UserLoginAction, UserLogoutAction, SetUserNextUrlAction } from './user.actions';
 import { AppStateService } from '../app-state/app-state.service';
-import { ResetAppStateAction } from '../app-state/app.actions';
+import { ResetAppStateAction, AppShowLoading, AppHideLoading } from '../app-state/app.actions';
 import { ResetSectionEntriesAction } from '../sites/sections/entries/entries-state/section-entries.actions';
 import { ResetSitesAction } from '../sites/sites-state/sites.actions';
 import { ResetSiteSectionsAction } from '../sites/sections/sections-state/site-sections.actions';
@@ -50,8 +50,11 @@ export class UserState implements NgxsOnInit {
     ).subscribe(params => {
       /* assume user is has not logged in: */
       patchState({name: null, token: null, features: null, profileUrl: null});
+      dispatch(new AppShowLoading());
       /* Always re-log in with the token (if we have the token) */
-      dispatch(new UserLoginAction({token: params.token}));
+      dispatch(new UserLoginAction({token: params.token})).pipe(
+        take(1)
+      ).subscribe(() => dispatch(new AppHideLoading()));
       return;
     });
 
