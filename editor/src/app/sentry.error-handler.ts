@@ -6,10 +6,11 @@ import { HttpClient } from '@angular/common/http';
 
 
 @Injectable()
-export class SentryErrorHandler implements ErrorHandler {
+export class SentryErrorHandler extends ErrorHandler {
   sentryDSN: string|null = null;
 
   constructor(private http: HttpClient) {
+    super();
     this.initSentry();
   }
 
@@ -24,6 +25,7 @@ export class SentryErrorHandler implements ErrorHandler {
     if (this.sentryDSN) {
       Sentry.captureException(error.originalError || error);
     }
-    throw error;
+
+    super.handleError(error);
   }
 }
