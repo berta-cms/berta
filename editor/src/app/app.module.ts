@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, ErrorHandler } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -24,6 +24,7 @@ import { PreviewComponent } from './preview/preview.component';
 import { PopupComponent } from './popup/popup.component';
 import { ErrorState } from './error-state/error.state';
 import { SharedModule } from './shared/shared.module';
+import { SentryErrorHandler } from './sentry.error-handler';
 
 
 @NgModule({
@@ -54,7 +55,9 @@ import { SharedModule } from './shared/shared.module';
     SitesModule,
     SitesSharedModule
   ],
-  providers: [],
+  providers: [
+    {provide: ErrorHandler, useClass: SentryErrorHandler}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
