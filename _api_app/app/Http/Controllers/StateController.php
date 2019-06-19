@@ -106,6 +106,11 @@ class StateController extends Controller
         return Helpers::api_response('', $meta);
     }
 
+    public function getSentryDSN()
+    {
+        return env('SENTRY_PUBLIC_DSN', '');
+    }
+
     /**
      * Returns translated settings for site localization: templates and settings config
      *

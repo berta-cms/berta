@@ -17,6 +17,7 @@ $app->post('v1/login', ['as' => 'login', 'uses' => 'AuthController@apiLogin', 'm
 $app->put('v1/logout', ['uses' => 'AuthController@apiLogout', 'middleware' => 'setup']);
 
 $app->get('v1/meta', ['uses' => 'StateController@getMeta', 'middleware' => 'setup']);
+$app->get('v1/sentry-dsn', ['uses' => 'StateController@getSentryDSN', 'middleware' => 'setup']);
 
 $app->group(['prefix' => 'v1', 'namespace' => 'App', 'middleware' => ['setup', 'auth']], function () use ($app) {
 
