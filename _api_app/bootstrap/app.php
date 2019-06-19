@@ -108,6 +108,7 @@ $app->routeMiddleware([
 |
 */
 
+$app->register(Sentry\SentryLaravel\SentryLumenServiceProvider::class);
 $app->register(App\Providers\AppServiceProvider::class);
 $app->register(App\User\UserAuthServiceProvider::class);
 // $app->register(App\Providers\EventServiceProvider::class);
@@ -122,6 +123,7 @@ $app->register(TwigBridge\ServiceProvider::class);
 | the application. This will provide all of the URLs the application
 | can respond to, as well as the controllers that may handle them.
 |
+| * Sentry must be registered before routes are included
 */
 
 $app->group(['namespace' => 'App\Http\Controllers'], function ($app) {
