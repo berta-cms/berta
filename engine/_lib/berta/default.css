@@ -17,6 +17,11 @@ body {
 div.clear,
 br.clear { clear: both; }
 
+.xGalleryType-row + .xGalleryType-slideshow,
+.xGalleryType-pile + .xGalleryType-slideshow {
+    display: none;
+}
+
 #allContainer {
     margin: 20px 40px 40px;
     padding: 0;
@@ -158,6 +163,16 @@ div.xGalleryItem {
 
 /* small tablet */
 @media (max-width: 767px)  {
+
+    .xGalleryType-row,
+    .xGalleryType-pile {
+      display: none;
+    }
+
+    .xGalleryType-row + .xGalleryType-slideshow,
+    .xGalleryType-pile + .xGalleryType-slideshow {
+      display: block;
+    }
 
     .xSectionType-portfolio  #pageEntries .xEntry .xGalleryContainer {
         width: 100%;

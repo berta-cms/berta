@@ -53,6 +53,7 @@ var BertaGallery = new Class({
     this.setOptions(options);
     this.attach(container);
     this.loadFirst();
+    window.addEvent('resize', this.layout_update.bindWithEvent(this));
   },
 
   debounce: function (func, wait, immediate) {
