@@ -22,6 +22,16 @@ br.clear { clear: both; }
     display: none;
 }
 
+body.bt-responsive:not(.page-xMySite) .xGalleryType-row,
+body.bt-responsive:not(.page-xMySite) .xGalleryType-pile {
+    display: none;
+}
+
+body.bt-responsive:not(.page-xMySite) .xGalleryType-row + .xGalleryType-slideshow,
+body.bt-responsive:not(.page-xMySite) .xGalleryType-pile + .xGalleryType-slideshow {
+    display: block;
+}
+
 #allContainer {
     margin: 20px 40px 40px;
     padding: 0;
