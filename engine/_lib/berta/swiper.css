@@ -4,11 +4,17 @@
 
 .swiper-button-next,
 .swiper-button-prev {
-  display: none;
+  opacity: 0;
   width: 47px;
   height: 47px;
   margin-top: -24px;
   background-size: 47px 47px;
+  transition: opacity .2s;
+}
+
+.swiper-button-next.swiper-button-disabled,
+.swiper-button-prev.swiper-button-disabled {
+  opacity: 0;
 }
 
 .swiper-button-prev {
@@ -21,12 +27,12 @@
 
 .swiper-container:hover .swiper-button-prev:not(.swiper-button-disabled),
 .swiper-container:hover .swiper-button-next:not(.swiper-button-disabled) {
-  display: block;
+  opacity: 1;
 }
 
-.bt-is-touch-device .swiper-button-prev:not(.swiper-button-disabled),
-.bt-is-touch-device .swiper-button-next:not(.swiper-button-disabled) {
-  display: block;
+.bt-is-mobile-device .swiper-button-prev:not(.swiper-button-disabled),
+.bt-is-mobile-device .swiper-button-next:not(.swiper-button-disabled) {
+  opacity: 1;
 }
 
 .swiper-slide .xGalleryItem,

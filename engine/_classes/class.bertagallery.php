@@ -47,15 +47,21 @@ class BertaGallery extends BertaBase
 
         //return entry ID - needed for milkbox
         $galleryFullScreen = !$isAdminMode && isset($entry['mediaCacheData']['@attributes']['fullscreen']) && $entry['mediaCacheData']['@attributes']['fullscreen'] == 'yes' ? $entry['id']['value'] : false;
-
         $galleryAutoPlay = !empty($entry['mediaCacheData']['@attributes']['autoplay']) ? $entry['mediaCacheData']['@attributes']['autoplay'] : '0';
         $gallerySlideNumbersVisible = !empty($entry['mediaCacheData']['@attributes']['slide_numbers_visible']) ? $entry['mediaCacheData']['@attributes']['slide_numbers_visible'] : $berta->settings->get('entryLayout', 'gallerySlideNumberVisibilityDefault');
         $galleryLinkAddress = !empty($entry['mediaCacheData']['@attributes']['link_address']) ? $entry['mediaCacheData']['@attributes']['link_address'] : '';
         $galleryLinkTarget = !empty($entry['mediaCacheData']['@attributes']['linkTarget']) ? $entry['mediaCacheData']['@attributes']['linkTarget'] : '';
-
         $rowGalleryPadding = !empty($entry['mediaCacheData']['@attributes']['row_gallery_padding']) ? $entry['mediaCacheData']['@attributes']['row_gallery_padding'] : false;
 
-        return BertaGallery::getHTML($imgs, $entry['mediafolder']['value'], $galleryType, $isAdminMode, false, 1, $galleryFullScreen, $imageSize, $galleryAutoPlay, $gallerySlideNumbersVisible, $galleryLinkAddress, $galleryLinkTarget, $rowGalleryPadding);
+        $html = BertaGallery::getHTML($imgs, $entry['mediafolder']['value'], $galleryType, $isAdminMode, false, 1, $galleryFullScreen, $imageSize, $galleryAutoPlay, $gallerySlideNumbersVisible, $galleryLinkAddress, $galleryLinkTarget, $rowGalleryPadding);
+
+        // Add a slideshow html markup as a backup for mobile devices for gallery type row and pile
+        if (!$isAdminMode && in_array($galleryType, ['row', 'pile'])) {
+            $galleryType = 'slideshow';
+            $html .= BertaGallery::getHTML($imgs, $entry['mediafolder']['value'], $galleryType, $isAdminMode, false, 1, false, $imageSize, $galleryAutoPlay, $gallerySlideNumbersVisible, $galleryLinkAddress, $galleryLinkTarget, $rowGalleryPadding);
+        }
+
+        return $html;
     }
 
     public static function getHTML($imgs, $mediaFolderName, $galleryType, $isAdminMode = false, $bReturnFullInfo = false, $sizeRatio = 1, $galleryFullScreen = false, $imageSize = 'large', $galleryAutoPlay = '0', $gallerySlideNumbersVisible = 'yes', $galleryLinkAddress = '', $galleryLinkTarget = '', $rowGalleryPadding = false)
