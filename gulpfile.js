@@ -152,6 +152,10 @@ gulp.task('css_backend', function () {
     .pipe(gulp_sourcemaps.init())
     .pipe(gulp_rebase_css_urls('engine/css'))
     .pipe(gulp_concat('backend.min.css'))
+    .pipe(autoprefixer({
+      browsers: ['last 2 versions'],
+      cascade: false
+    }))
     .pipe(gulp_minify_css())
     .pipe(gulp_sourcemaps.write('/maps'))
     .pipe(gulp.dest('engine/css'))
@@ -164,6 +168,10 @@ gulp.task('css_frontend', function () {
     .pipe(gulp_sourcemaps.init())
     .pipe(gulp_rebase_css_urls('engine/css'))
     .pipe(gulp_concat('frontend.min.css'))
+    .pipe(autoprefixer({
+      browsers: ['last 2 versions'],
+      cascade: false
+    }))
     .pipe(gulp_minify_css())
     .pipe(gulp_sourcemaps.write('/maps'))
     .pipe(gulp.dest('engine/css'))
