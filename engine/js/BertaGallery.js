@@ -203,6 +203,9 @@ var BertaGallery = new Class({
           var swiperOptions = {
             autoHeight: true,
             effect: 'fade',
+            fadeEffect: {
+              crossFade: true
+            },
             navigation: {
               nextEl: swiperEl.getElement('.swiper-button-next'),
               prevEl: swiperEl.getElement('.swiper-button-prev')
