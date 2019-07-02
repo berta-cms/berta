@@ -53,8 +53,7 @@ return [
         'ico'
     ],
     'video_mimes' => [
-        'mp4',
-        'flv'
+        'mp4'
     ],
     'small_thumb_prefix' => '_smallthumb_',
     'small_thumb_width' => false, // false means "auto"

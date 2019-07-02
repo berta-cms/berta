@@ -41,14 +41,16 @@ var template = {
 };
 
 var css_backend_files = [
-  'engine/_lib/video-js/video-js.min.css',
+  'node_modules/swiper/dist/css/swiper.min.css',
   'engine/_lib/berta/default.css',
+  'engine/_lib/berta/swiper.css',
   'engine/_lib/moorainbow/mooRainbow.css'
 ];
 
 var css_frontend_files = [
-  'engine/_lib/video-js/video-js.min.css',
+  'node_modules/swiper/dist/css/swiper.min.css',
   'engine/_lib/berta/default.css',
+  'engine/_lib/berta/swiper.css',
   'engine/_lib/milkbox/css/milkbox/milkbox.css'
 ];
 
@@ -58,7 +60,6 @@ var js_backend_files = [
   'engine/_lib/mootools/mootools-1.2.5.1-more-delegation.js',
   'engine/_lib/mootools/Element.Data.js',
   'engine/_lib/picturefill/picturefill.min.js',
-  'engine/_lib/video-js/video.min.js',
   'engine/js/berta.helpers.js',
   'engine/js/BertaGallery.js',
   'engine/js/Assets.js',
@@ -75,7 +76,8 @@ var js_backend_files = [
   'node_modules/whatwg-fetch/fetch.js',
   'node_modules/immutable/dist/immutable.min.js',
   'node_modules/redux/dist/redux.min.js',
-  'node_modules/redux-thunk/dist/redux-thunk.min.js'
+  'node_modules/redux-thunk/dist/redux-thunk.min.js',
+  'node_modules/swiper/dist/js/swiper.min.js'
 ];
 
 var js_ng_backend_files = [
@@ -112,11 +114,13 @@ var js_frontend_files = [
   'engine/_lib/mootools/mootools-core-1.4.5-full-compat-yc.js',
   'engine/_lib/mootools/mootools-1.2.5.1-more.js',
   'engine/_lib/mootools/mootools-1.2.5.1-more-delegation.js',
+  'engine/_lib/mootools/Element.Data.js',
   'engine/_lib/picturefill/picturefill.min.js',
-  'engine/_lib/video-js/video.min.js',
+  'engine/js/berta.helpers.js',
   'engine/js/BertaGallery.js',
   'engine/js/Berta.js',
-  'engine/_lib/milkbox/js/milkbox.js'
+  'engine/_lib/milkbox/js/milkbox.js',
+  'node_modules/swiper/dist/js/swiper.min.js'
 ];
 
 
@@ -145,9 +149,15 @@ gulp.task('scss_mashup', scssTemplates(template.mashup.files, template.mashup.de
 
 gulp.task('css_backend', function () {
   return gulp.src(css_backend_files)
+    .pipe(gulp_sourcemaps.init())
     .pipe(gulp_rebase_css_urls('engine/css'))
     .pipe(gulp_concat('backend.min.css'))
+    .pipe(autoprefixer({
+      browsers: ['last 2 versions'],
+      cascade: false
+    }))
     .pipe(gulp_minify_css())
+    .pipe(gulp_sourcemaps.write('/maps'))
     .pipe(gulp.dest('engine/css'))
     .pipe(livereload())
     .pipe(notify('CSS: backend compiled!'));
@@ -155,9 +165,15 @@ gulp.task('css_backend', function () {
 
 gulp.task('css_frontend', function () {
   return gulp.src(css_frontend_files)
+    .pipe(gulp_sourcemaps.init())
     .pipe(gulp_rebase_css_urls('engine/css'))
     .pipe(gulp_concat('frontend.min.css'))
+    .pipe(autoprefixer({
+      browsers: ['last 2 versions'],
+      cascade: false
+    }))
     .pipe(gulp_minify_css())
+    .pipe(gulp_sourcemaps.write('/maps'))
     .pipe(gulp.dest('engine/css'))
     .pipe(livereload())
     .pipe(notify('CSS: frontend compiled!'));

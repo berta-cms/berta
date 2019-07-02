@@ -880,6 +880,7 @@ input[type="submit"]:hover {
             left: 0; top: 0;
             background: url('<?php echo $ENGINE_ROOT_URL ?>layout/editable-back.png') repeat;
             -moz-opacity: 0; opacity: 0;
+            z-index: 2;
         }
         .xGalleryHasImages a.xGalleryEditButton:hover {
             -moz-opacity: 1; opacity: 1;

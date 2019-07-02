@@ -17,6 +17,7 @@ var BertaGallery = new Class({
 
   container: null,
   imageContainer: null,
+  gallerySwiper: null,
   navContainer: null,
   rowClearElement: null,
 
@@ -36,19 +37,23 @@ var BertaGallery = new Class({
 
   numFinishedLoading: 0,
 
-  is_touch_device: 'ontouchstart' in document.documentElement,
   isResponsive: false,
   isAutoResponsive: false,
   mobileBrekapoint: 768,
 
   initialize: function (container, options) {
+    this.is_mobile_device = window.BertaHelpers.isMobile();
     if (container.hasClass('xInitialized')) {
       return;
     }
     container.addClass('xInitialized');
+    if (this.is_mobile_device) {
+      container.addClass('bt-is-mobile-device');
+    }
     this.setOptions(options);
     this.attach(container);
     this.loadFirst();
+    window.addEvent('resize', this.layout_update.bindWithEvent(this));
   },
 
   debounce: function (func, wait, immediate) {
@@ -91,7 +96,6 @@ var BertaGallery = new Class({
           duration: 'short',
           transition: Fx.Transitions.Sine.easeInOut
         });
-        this.nav_setEvents();
 
         this.newObjectInjectWhere = this.options.environment == 'site' ? this.imageContainer : this.imageContainer.getElement('.xGalleryEditButton');
         this.newObjectInjectPosition = this.options.environment == 'site' ? 'bottom' : 'before';
@@ -109,7 +113,12 @@ var BertaGallery = new Class({
     } else
       this.navContainer = null;
   },
+
   detach: function () {
+    if (this.gallerySwiper) {
+      this.gallerySwiper.destroy();
+    }
+
     if (this.navContainer) {
       this.navContainer.getElements('a').each(function (item) {
         item.removeEvents('click');
@@ -126,21 +135,21 @@ var BertaGallery = new Class({
 
 
 
-
-
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   ///////////////| Loading  |////////////////////////////////////////////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   loadFirst: function () {
     if (this.navContainer) {
+      var navContainer = this.navContainer;
+      var nav_highlightItem = this.nav_highlightItem;
       var li = this.navContainer.getElement('li');
       this.nav_highlightItem(li);
       var aEl = this.navContainer.getElement('li a');
       var fistItemType = aEl.getClassStoredValue('xType');
-      this.autoplay = parseInt(this.container.getClassStoredValue('xGalleryAutoPlay'));
+      this.autoplay = parseInt(this.container.getClassStoredValue('xGalleryAutoPlay'), 10);
 
-      if (fistItemType != 'image' || (fistItemType == 'image' && this.type == 'row')) {
+      if (this.type !== 'slideshow' && (fistItemType != 'image' || (fistItemType == 'image' && this.type == 'row'))) {
         // load only if not image, because if that's image, it's already written in the HTML
         this.load(aEl.get('href'), aEl.getClassStoredValue('xType'), aEl.getClassStoredValue('xW'), aEl.getClassStoredValue('xH'), aEl.getClassStoredValue('xVideoHref'), aEl.getClassStoredValue('xAutoPlay'), li.getElement('.xGalleryImageCaption').get('html'), true, 1, aEl.get('data-srcset'));
       } else {
@@ -148,28 +157,91 @@ var BertaGallery = new Class({
         this.preload = this.imageContainer.getElement('div.xGalleryItem');
 
         if ((this.fullscreen || this.getNext()) && this.type == 'slideshow') {
-          this.preload.setStyle('cursor', 'pointer');
-
+          // Add fullscreen
           if (this.fullscreen) {
-            this.preload.addEvent('click', this.loadFullscreen.bind(this));
-          } else {
-            this.preload.addEvent('click', this.loadNext.bind(this));
+            var galleryId = this.container.getParent().getClassStoredValue('xEntryId');
+            this.imageContainer.getElements('.xGalleryItem').each(function(galleryItem, i) {
+              if (galleryItem.hasClass('xGalleryItemType-video')) {
+                return;
+              }
+
+              galleryItem.setStyle('cursor', 'pointer');
+              galleryItem.addEvent('click', function() {
+                milkbox.showGallery({
+                  gallery: 'gallery-' + galleryId,
+                  index: i
+                });
+              });
+            }, this);
           }
 
-          if (this.autoplay > 0) {
-            var obj = this;
-            this.time = this.autoplay * 1000;
+          var swiperEl = this.imageContainer.getElement('.swiper-container');
+          var videos = [];
 
-            if (li.getParent().getElements('a').length > 1) {
-              this.interval = setTimeout(function () {
-                obj.loadNext(true);
-              }, this.time);
+          swiperEl.getElements('.swiper-slide').each(function(slide, i) {
+            var video = slide.getElement('video');
+            if (video) {
+              videos[i] = video;
+              video.addEventListener('loadeddata', function reloadSwiper(e) {
+                this.gallerySwiper.update();
+                e.target.removeEventListener(e.type, reloadSwiper);
+              }.bindWithEvent(this), false);
             }
+          }, this);
+
+          var loadVideo = function(video) {
+            if (video.data('autoplay')) {
+              video.muted = true;
+              video.play();
+            }
+          };
+
+          var unLoadVideo = function(video) {
+            video.pause();
+          };
+
+          var swiperOptions = {
+            autoHeight: true,
+            effect: 'fade',
+            fadeEffect: {
+              crossFade: true
+            },
+            navigation: {
+              nextEl: swiperEl.getElement('.swiper-button-next'),
+              prevEl: swiperEl.getElement('.swiper-button-prev')
+            },
+            on: {
+              init: function () {
+                if (videos[this.activeIndex]) {
+                  loadVideo(videos[this.activeIndex]);
+                }
+              },
+              slideChange: function() {
+                if (videos[this.previousIndex]) {
+                  unLoadVideo(videos[this.previousIndex]);
+                }
+
+                if (videos[this.activeIndex]) {
+                  loadVideo(videos[this.activeIndex]);
+                }
+
+                nav_highlightItem(navContainer.getElements('li')[this.activeIndex]);
+              }
+            }
+          };
+
+          if (this.autoplay) {
+            swiperOptions['autoplay'] = {
+              delay: this.autoplay * 1000
+            };
           }
+
+          this.gallerySwiper = new Swiper(swiperEl, swiperOptions);
+          this.nav_setEvents();
         }
 
         if (this.type == 'link') {
-          if (!this.getNext() || this.is_touch_device) {
+          if (!this.getNext() || this.is_mobile_device) {
             var topImg = this.imageContainer.getFirst('.xGalleryItem');
             var linkHref = this.container.getClassStoredValue('xGalleryLinkAddress');
             var linkTarget = this.container.getClassStoredValue('xGalleryLinkTarget');
@@ -429,13 +501,10 @@ var BertaGallery = new Class({
 
     var li = linkElement.getParent('li');
     this.nav_highlightItem(li);
-    var caption = li.getElement('.xGalleryImageCaption').get('html');
-
-    this.load(linkElement.get('href'), linkElement.getClassStoredValue('xType'), linkElement.getClassStoredValue('xW'), linkElement.getClassStoredValue('xH'), linkElement.getClassStoredValue('xVideoHref'), linkElement.getClassStoredValue('xAutoPlay'), caption, false, linkElement.getClassStoredValue('xImgIndex'), linkElement.get('data-srcset'));
+    this.gallerySwiper.slideTo(linkElement.getClassStoredValue('xImgIndex') - 1);
   },
   nav_highlightItem: function (liElement) {
-    // implementable in the future
-    this.navContainer.getElements('li').removeClass('selected');
+    liElement.getParent().getChildren().removeClass('selected');
     liElement.addClass('selected');
   },
 
@@ -514,7 +583,6 @@ var BertaGallery = new Class({
           'alt': altText,
           'onload': this.load_Finish.bind(this, [src, mType, mWidth, mHeight, bDeleteExisting])
         } : {
-          'alt': altText,
           'width': mWidth,
           'height': mHeight,
           'srcset': this.srcset,
@@ -546,15 +614,13 @@ var BertaGallery = new Class({
         break;
 
       case 'video':
-        var containerID = 'video_' + new Date().getTime();
-
         if (mHeight) mHeight = parseInt(mHeight);
 
         this.preload = new Element('video', {
-          'id': containerID,
           'width': mWidth,
-          'height': mHeight,
-          'class': 'video-js vjs-default-skin xGalleryItem xGalleryItemType-video'
+          'class': 'xGalleryItem xGalleryItemType-video',
+          'controls': true,
+          'poster': src && src.charAt(0) !== '#' ? src : null,
         });
 
         var videoType = videoPath.split('.').pop();
@@ -569,38 +635,10 @@ var BertaGallery = new Class({
         this.layout_inject(bDeleteExisting, true);
         this.preload.setStyle('position', 'absolute');
 
-        var player = _V_(containerID, {
-          'controls': true,
-          'preload': 'auto',
-          'poster': src && src.charAt(0) !== '#' ? src : null,
-          'autoplay': autoPlay > 0 ? true : false
-        });
-
-        if (this.isResponsive || (this.isAutoResponsive && this.mobileBrekapoint > window.getSize().x)) {
-          player.el.setStyle('padding-bottom', mHeight * 100 / mWidth + '%');
+        if (autoPlay > 0) {
+          this.preload.muted = true;
+          this.preload.play();
         }
-
-        if (this.isAutoResponsive) {
-          window.addEvent('resize', this.debounce(function () {
-            if (this.mobileBrekapoint > window.getSize().x) {
-              player.el.setStyle('padding-bottom', mHeight * 100 / mWidth + '%');
-            } else {
-              player.el.setStyle('padding-bottom', null);
-            }
-          }.bind(this), 250));
-        }
-
-        new Element('img', {
-          'src': src,
-          'class': 'xGalleryImageVideoBack',
-          'width': mWidth,
-          'height': mHeight,
-          'srcset': this.srcset,
-          'styles': {
-            'width': mWidth + 'px',
-            'height': mHeight + 'px'
-          }
-        }).inject(this.preload, 'top');
 
         new Element('div', {
           'class': 'xGalleryImageCaption'
