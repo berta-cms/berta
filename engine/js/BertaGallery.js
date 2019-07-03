@@ -741,14 +741,16 @@ var BertaPortfolio = new Class({
 
   showEntry: function (entry) {
     entry.removeClass('xHidden');
-    var gallery = entry.getElement('.xGalleryContainer');
+    var galleries = entry.getElements('.xGalleryContainer');
 
     setTimeout(function () {
-      if (bertaGlobalOptions.environment == 'site') {
-        berta.initGallery(gallery[0]);
-      } else {
-        bertaEditor.initGallery(gallery[0]);
-      }
+      galleries[0].each(function (item) {
+        if (bertaGlobalOptions.environment == 'site') {
+          berta.initGallery(item);
+        } else {
+          bertaEditor.initGallery(item);
+        }
+      });
     }, 500);
   },
 
