@@ -77,7 +77,7 @@ var BertaGallery = new Class({
     this.isAutoResponsive = $$('.bt-auto-responsive').length > 0;
     this.container = container;
     this.type = this.container.getClassStoredValue('xGalleryType');
-    this.fullscreen = this.container.getElement('div.xFullscreen');
+    this.fullscreen = this.container.getParent().getElement('div.xFullscreen');
     this.imageContainer = this.container.getElement('div.xGallery');
     this.navContainer = this.container.getElement('ul.xGalleryNav');
 
@@ -287,7 +287,7 @@ var BertaGallery = new Class({
 
   //gallery row mode - fullscreen
   attachRowFullscreen: function () {
-    this.container.getParent().getElements('.xGalleryItem:not(.xGalleryItemType-video)').each(function (item) {
+    this.container.getElements('.xGalleryItem:not(.xGalleryItemType-video)').each(function (item) {
       item.setStyle('cursor', 'pointer');
       item.addEvent('click', function () {
         var ImgIndex = this.getClassStoredValue('xImgIndex');
