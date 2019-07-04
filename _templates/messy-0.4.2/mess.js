@@ -27,21 +27,6 @@ var MessyMess = new Class({
     window.addEvent('load', this.onLoad.bind(this));
   },
 
-  debounce: function (func, wait, immediate) {
-    var timeout;
-    return function() {
-      var context = this, args = arguments;
-      var later = function() {
-        timeout = null;
-        if (!immediate) func.apply(context, args);
-      };
-      var callNow = immediate && !timeout;
-      clearTimeout(timeout);
-      timeout = setTimeout(later, wait);
-      if (callNow) func.apply(context, args);
-    };
-  },
-
   onDOMReady: function () {
 
     var that = this;
@@ -226,7 +211,7 @@ var MessyMess = new Class({
     }
 
     if (this.isAutoResponsive && bertaGlobalOptions.environment == 'site') {
-      window.addEvent('resize', this.debounce(function () {
+      window.addEvent('resize', window.BertaHelpers.debounce(function () {
         this.iframeResponsiveFix($$('iframe'), true);
       }.bind(this), 250));
     }
