@@ -333,18 +333,15 @@ var BertaGallery = new Class({
         });
       }
 
-      var totalWidth = 0,
-        maxHeight = 0,
-        itmSize, numImages = 0;
+      var totalWidth = 0, itemWidth = 0, numImages = 0;
       this.imageContainer.getChildren('.xGalleryItem').each(function (item) {
         if (item.getClassStoredValue('xGalleryItemType') != 'video') {
           item.setStyle('height', 'auto');
         }
-        itmSize = item.getSize();
+        itemWidth = parseInt(item.getStyle('width'), 10);
         itmMarginLeft = parseInt(0 + item.getStyle('margin-left'));
         itmMarginRight = parseInt(0 + item.getStyle('margin-right'));
-        totalWidth += itmSize.x + itmMarginLeft + itmMarginRight;
-        if (itmSize.y > maxHeight) maxHeight = itmSize.y;
+        totalWidth += itemWidth + itmMarginLeft + itmMarginRight;
         numImages++;
       });
 
