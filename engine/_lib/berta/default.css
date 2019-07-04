@@ -22,16 +22,6 @@ br.clear { clear: both; }
     display: none;
 }
 
-body.bt-responsive:not(.page-xMySite) .xGalleryType-row,
-body.bt-responsive:not(.page-xMySite) .xGalleryType-pile {
-    display: none;
-}
-
-body.bt-responsive:not(.page-xMySite) .xGalleryType-row + .xGalleryType-slideshow,
-body.bt-responsive:not(.page-xMySite) .xGalleryType-pile + .xGalleryType-slideshow {
-    display: block;
-}
-
 #allContainer {
     margin: 20px 40px 40px;
     padding: 0;
@@ -174,14 +164,18 @@ div.xGalleryItem {
 /* small tablet */
 @media (max-width: 767px)  {
 
-    .xGalleryType-row,
-    .xGalleryType-pile {
-      display: none;
+    body.bt-responsive:not(.page-xMySite) .xGalleryType-row,
+    body.bt-responsive:not(.page-xMySite) .xGalleryType-pile,
+    body.bt-auto-responsive:not(.page-xMySite) .xGalleryType-row,
+    body.bt-auto-responsive:not(.page-xMySite) .xGalleryType-pile {
+        display: none;
     }
 
-    .xGalleryType-row + .xGalleryType-slideshow,
-    .xGalleryType-pile + .xGalleryType-slideshow {
-      display: block;
+    body.bt-responsive:not(.page-xMySite) .xGalleryType-row + .xGalleryType-slideshow,
+    body.bt-responsive:not(.page-xMySite) .xGalleryType-pile + .xGalleryType-slideshow,
+    body.bt-auto-responsive:not(.page-xMySite) .xGalleryType-row + .xGalleryType-slideshow,
+    body.bt-auto-responsive:not(.page-xMySite) .xGalleryType-pile + .xGalleryType-slideshow {
+        display: block;
     }
 
     .xSectionType-portfolio  #pageEntries .xEntry .xGalleryContainer {
