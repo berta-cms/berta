@@ -39,6 +39,7 @@ var BertaGallery = new Class({
 
   isResponsive: false,
   isAutoResponsive: false,
+  isRowFallback: false,
   mobileBrekapoint: 768,
 
   initialize: function (container, options) {
@@ -57,9 +58,11 @@ var BertaGallery = new Class({
   },
 
   attach: function (container) {
+    this.container = container;
     this.isResponsive = $$('.xResponsive').length > 0;
     this.isAutoResponsive = $$('.bt-auto-responsive').length > 0;
-    this.container = container;
+    var fallbackGallery = this.container.getPrevious();
+    this.isRowFallback = fallbackGallery && fallbackGallery.hasClass('xGalleryType-row');
     this.type = this.container.getClassStoredValue('xGalleryType');
     this.fullscreen = this.container.getParent().getElement('div.xFullscreen');
     this.imageContainer = this.container.getElement('div.xGallery');
@@ -184,9 +187,19 @@ var BertaGallery = new Class({
             video.pause();
           };
 
+          // Add negative left margin for row gallery slideshow fallback
+          // to fully fit in screen
+          if (this.isRowFallback) {
+            var galleryPosition = this.container.getBoundingClientRect();
+            this.container.getFirst().setStyle('margin-left', -galleryPosition.left);
+          }
+
           var swiperOptions = {
+            centeredSlides: this.isRowFallback,
+            slidesPerView: this.isRowFallback ? 'auto' : 1,
+            spaceBetween: this.isRowFallback ? 10 : 0,
             autoHeight: true,
-            effect: 'fade',
+            effect: this.isRowFallback ? 'slide': 'fade',
             fadeEffect: {
               crossFade: true
             },
