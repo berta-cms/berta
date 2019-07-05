@@ -23,7 +23,6 @@ br.clear { clear: both; }
 }
 
 .xGalleryType-row + .xGalleryType-slideshow .xGallery {
-  width: 100vw !important;
   max-width: none !important;
   overflow: hidden;
 }

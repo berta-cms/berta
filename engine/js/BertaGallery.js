@@ -203,11 +203,14 @@ var BertaGallery = new Class({
             video.pause();
           };
 
-          // Add negative left margin for row gallery slideshow fallback
-          // to fully fit in screen
+          // Make gallery fit the screen in width for row gallery slideshow fallback
           if (this.isRowFallback) {
+            var galleryWrapper = this.container.getFirst();
             var galleryPosition = this.container.getBoundingClientRect();
-            this.container.getFirst().setStyle('margin-left', -galleryPosition.left);
+            galleryWrapper.setStyles({
+              'width': '100vw',
+              'margin-left': -galleryPosition.left
+            });
           }
 
           var swiperOptions = {
