@@ -62,7 +62,7 @@ var BertaGallery = new Class({
     this.isResponsive = $$('.xResponsive').length > 0;
     this.isAutoResponsive = $$('.bt-auto-responsive').length > 0;
     var fallbackGallery = this.container.getPrevious();
-    this.isRowFallback = fallbackGallery && fallbackGallery.hasClass('xGalleryType-row');
+    this.isRowFallback = fallbackGallery && fallbackGallery.hasClass('xGalleryType-row') ? true : false;
     this.type = this.container.getClassStoredValue('xGalleryType');
     this.fullscreen = this.container.getParent().getElement('div.xFullscreen');
     this.imageContainer = this.container.getElement('div.xGallery');
@@ -219,6 +219,7 @@ var BertaGallery = new Class({
             spaceBetween: this.isRowFallback ? 10 : 0,
             autoHeight: true,
             effect: this.isRowFallback ? 'slide': 'fade',
+            mousewheel: this.isRowFallback,
             fadeEffect: {
               crossFade: true
             },
