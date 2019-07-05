@@ -219,7 +219,7 @@ var BertaGallery = new Class({
             spaceBetween: this.isRowFallback ? 10 : 0,
             autoHeight: true,
             effect: this.isRowFallback ? 'slide': 'fade',
-            mousewheel: this.isRowFallback,
+            mousewheel: this.isRowFallback ? {releaseOnEdges: true} : false,
             fadeEffect: {
               crossFade: true
             },
