@@ -206,11 +206,13 @@ var BertaGallery = new Class({
           // Make gallery fit the screen in width for row gallery slideshow fallback
           if (this.isRowFallback) {
             var galleryWrapper = this.container.getFirst();
-            var galleryPosition = this.container.getBoundingClientRect();
-            galleryWrapper.setStyles({
-              'width': '100vw',
-              'margin-left': -galleryPosition.left
-            });
+            galleryWrapper.setStyle('width', '100vw');
+            var setFullWidth = function () {
+                var galleryPosition = this.container.getBoundingClientRect();
+                galleryWrapper.setStyle('margin-left', -galleryPosition.left);
+            }.bindWithEvent(this);
+            setFullWidth();
+            window.addEvent('resize', window.BertaHelpers.debounce(setFullWidth.bindWithEvent(this), 300));
           }
 
           var swiperOptions = {
