@@ -43,6 +43,11 @@ br.clear { clear: both; }
     opacity: 1;
 }
 
+.xGalleryType-row + .xGalleryType-slideshow .swiper-button-prev,
+.xGalleryType-row + .xGalleryType-slideshow .swiper-button-next {
+  display: none;
+}
+
 #allContainer {
     margin: 20px 40px 40px;
     padding: 0;
