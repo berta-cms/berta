@@ -154,11 +154,27 @@ var BertaGallery = new Class({
 
               galleryItem.setStyle('cursor', 'pointer');
               galleryItem.addEvent('click', function() {
+                // Row gallery slideshow fallback prev/next navigation
+                // for partly visible slides
+                if (this.isRowFallback) {
+                  var isNextEl = galleryItem.getParent('.swiper-slide-next');
+                  if (isNextEl) {
+                    this.gallerySwiper.slideNext();
+                    return;
+                  }
+
+                  var isPrevEl = galleryItem.getParent('.swiper-slide-prev');
+                  if (isPrevEl) {
+                    this.gallerySwiper.slidePrev();
+                    return;
+                  }
+                }
+
                 milkbox.showGallery({
                   gallery: 'gallery-' + galleryId,
                   index: i
                 });
-              });
+              }.bindWithEvent(this));
             }, this);
           }
 
