@@ -147,13 +147,13 @@ var BertaGallery = new Class({
           // Add fullscreen
           if (this.fullscreen) {
             var galleryId = this.container.getParent().getClassStoredValue('xEntryId');
-            this.imageContainer.getElements('.xGalleryItem').each(function(galleryItem, i) {
+            this.imageContainer.getElements('.xGalleryItem').each(function (galleryItem, i) {
               if (galleryItem.hasClass('xGalleryItemType-video')) {
                 return;
               }
 
               galleryItem.setStyle('cursor', 'pointer');
-              galleryItem.addEvent('click', function() {
+              galleryItem.addEvent('click', function () {
                 // Row gallery slideshow fallback prev/next navigation
                 // for partly visible slides
                 if (this.isRowFallback) {
@@ -181,7 +181,7 @@ var BertaGallery = new Class({
           var swiperEl = this.imageContainer.getElement('.swiper-container');
           var videos = [];
 
-          swiperEl.getElements('.swiper-slide').each(function(slide, i) {
+          swiperEl.getElements('.swiper-slide').each(function (slide, i) {
             var video = slide.getElement('video');
             if (video) {
               videos[i] = video;
@@ -192,14 +192,14 @@ var BertaGallery = new Class({
             }
           }, this);
 
-          var loadVideo = function(video) {
+          var loadVideo = function (video) {
             if (video.data('autoplay')) {
               video.muted = true;
               video.play();
             }
           };
 
-          var unLoadVideo = function(video) {
+          var unLoadVideo = function (video) {
             video.pause();
           };
 
@@ -208,8 +208,8 @@ var BertaGallery = new Class({
             var galleryWrapper = this.container.getFirst();
             galleryWrapper.setStyle('width', '100vw');
             var setFullWidth = function () {
-                var galleryPosition = this.container.getBoundingClientRect();
-                galleryWrapper.setStyle('margin-left', -galleryPosition.left);
+              var galleryPosition = this.container.getBoundingClientRect();
+              galleryWrapper.setStyle('margin-left', -galleryPosition.left);
             }.bindWithEvent(this);
             setFullWidth();
             window.addEvent('resize', window.BertaHelpers.debounce(setFullWidth.bindWithEvent(this), 300));
@@ -220,8 +220,10 @@ var BertaGallery = new Class({
             slidesPerView: this.isRowFallback ? 'auto' : 1,
             spaceBetween: this.isRowFallback ? 10 : 0,
             autoHeight: true,
-            effect: this.isRowFallback ? 'slide': 'fade',
-            mousewheel: this.isRowFallback ? {releaseOnEdges: true} : false,
+            effect: this.isRowFallback ? 'slide' : 'fade',
+            mousewheel: this.isRowFallback ? {
+              releaseOnEdges: true
+            } : false,
             fadeEffect: {
               crossFade: true
             },
@@ -235,7 +237,7 @@ var BertaGallery = new Class({
                   loadVideo(videos[this.activeIndex]);
                 }
               },
-              slideChange: function() {
+              slideChange: function () {
                 if (videos[this.previousIndex]) {
                   unLoadVideo(videos[this.previousIndex]);
                 }
@@ -368,7 +370,9 @@ var BertaGallery = new Class({
         });
       }
 
-      var totalWidth = 0, itemWidth = 0, numImages = 0;
+      var totalWidth = 0,
+        itemWidth = 0,
+        numImages = 0;
       this.imageContainer.getChildren('.xGalleryItem').each(function (item) {
         if (item.getClassStoredValue('xGalleryItemType') != 'video') {
           item.setStyle('height', 'auto');
