@@ -62,6 +62,7 @@ var js_backend_files = [
   'engine/_lib/picturefill/picturefill.min.js',
   'engine/js/berta.helpers.js',
   'engine/js/BertaGallery.js',
+  'engine/js/BertaPortfolio.js',
   'engine/js/Assets.js',
   'engine/js/BertaEditorBase.js',
   'engine/js/inline_edit.js',
@@ -118,6 +119,7 @@ var js_frontend_files = [
   'engine/_lib/picturefill/picturefill.min.js',
   'engine/js/berta.helpers.js',
   'engine/js/BertaGallery.js',
+  'engine/js/BertaPortfolio.js',
   'engine/js/Berta.js',
   'engine/_lib/milkbox/js/milkbox.js',
   'node_modules/swiper/dist/js/swiper.min.js'
