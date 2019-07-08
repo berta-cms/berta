@@ -223,14 +223,29 @@ var BertaEditor = new Class({
 
 
   initGallery: function (item) {
-    var g = new BertaGallery(item, {
-      environment: this.options.environment,
-      engineRoot: this.options.paths.engineRoot,
-      engineABSRoot: this.options.paths.engineABSRoot,
-      playerType: this.options.videoPlayerType,
-      slideshowAutoRewind: this.options.slideshowAutoRewind
-    });
-    this.galleries.push(g);
+    var gallery;
+    var galleryType = item.getClassStoredValue('xGalleryType') || 'slideshow';
+
+    if (galleryType === 'slideshow') {
+      gallery = new BertaGallerySlideshow(item, {
+        environment: this.options.environment,
+        engineRoot: this.options.paths.engineRoot,
+        engineABSRoot: this.options.paths.engineABSRoot,
+        playerType: this.options.videoPlayerType,
+        slideshowAutoRewind: this.options.slideshowAutoRewind
+      });
+
+    } else {
+      gallery = new BertaGallery(item, {
+        environment: this.options.environment,
+        engineRoot: this.options.paths.engineRoot,
+        engineABSRoot: this.options.paths.engineABSRoot,
+        playerType: this.options.videoPlayerType,
+        slideshowAutoRewind: this.options.slideshowAutoRewind
+      });
+    }
+
+    this.galleries.push(gallery);
   },
 
 
