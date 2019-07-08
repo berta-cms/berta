@@ -41,7 +41,6 @@ var Berta = new Class({
   },
 
   entriesList: null,
-  galleries: new Array(),
 
   initialize: function (options) {
     this.setOptions(options);
@@ -79,15 +78,28 @@ var Berta = new Class({
   },
 
   initGallery: function (item) {
-    var g = new BertaGallery(item, {
-      environment: this.options.environment,
-      engineRoot: this.options.paths.engineRoot,
-      engineABSRoot: this.options.paths.engineABSRoot,
-      playerType: this.options.videoPlayerType,
-      slideshowAutoRewind: this.options.slideshowAutoRewind,
-      galleryFullScreenImageBorders: this.options.galleryFullScreenImageBorders
-    });
-    this.galleries.push(g);
+    var galleryType = item.getClassStoredValue('xGalleryType') || 'slideshow';
+
+    if (galleryType === 'slideshow') {
+      new BertaGallerySlideshow(item, {
+        environment: this.options.environment,
+        engineRoot: this.options.paths.engineRoot,
+        engineABSRoot: this.options.paths.engineABSRoot,
+        playerType: this.options.videoPlayerType,
+        slideshowAutoRewind: this.options.slideshowAutoRewind,
+        galleryFullScreenImageBorders: this.options.galleryFullScreenImageBorders
+      });
+
+    } else {
+      new BertaGallery(item, {
+        environment: this.options.environment,
+        engineRoot: this.options.paths.engineRoot,
+        engineABSRoot: this.options.paths.engineABSRoot,
+        playerType: this.options.videoPlayerType,
+        slideshowAutoRewind: this.options.slideshowAutoRewind,
+        galleryFullScreenImageBorders: this.options.galleryFullScreenImageBorders
+      });
+    }
   },
 
   bgImageInit: function () {

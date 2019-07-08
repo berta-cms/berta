@@ -1,0 +1,4 @@
+var BertaGallerySlideshow = new Class({
+
+
+});
