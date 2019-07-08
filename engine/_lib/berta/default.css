@@ -36,11 +36,16 @@ br.clear { clear: both; }
     width: auto;
     -webkit-transition: opacity .2s;
     transition: opacity .2s;
-    opacity: .5;
+    opacity: .3;
 }
 
 .xGalleryType-row + .xGalleryType-slideshow .swiper-slide-active {
     opacity: 1;
+}
+
+.xGalleryType-row + .xGalleryType-slideshow .swiper-slide-prev,
+.xGalleryType-row + .xGalleryType-slideshow .swiper-slide-next {
+  cursor: pointer;
 }
 
 .xGalleryType-row + .xGalleryType-slideshow .swiper-button-prev,

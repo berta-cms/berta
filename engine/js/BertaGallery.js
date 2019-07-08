@@ -64,7 +64,7 @@ var BertaGallery = new Class({
     var fallbackGallery = this.container.getPrevious();
     this.isRowFallback = fallbackGallery && fallbackGallery.hasClass('xGalleryType-row') ? true : false;
     this.type = this.container.getClassStoredValue('xGalleryType');
-    this.fullscreen = this.container.getParent().getElement('div.xFullscreen');
+    this.fullscreen = this.container.getParent().getElement('div.xFullscreen') !== null;
     this.imageContainer = this.container.getElement('div.xGallery');
     this.navContainer = this.container.getElement('ul.xGalleryNav');
 
@@ -144,39 +144,43 @@ var BertaGallery = new Class({
         this.preload = this.imageContainer.getElement('div.xGalleryItem');
 
         if ((this.fullscreen || this.getNext()) && this.type == 'slideshow') {
-          // Add fullscreen
-          if (this.fullscreen) {
-            var galleryId = this.container.getParent().getClassStoredValue('xEntryId');
-            this.imageContainer.getElements('.xGalleryItem').each(function (galleryItem, i) {
+          var galleryId = this.container.getParent().getClassStoredValue('xEntryId');
+          this.imageContainer.getElements('.xGalleryItem').each(function (galleryItem, i) {
+            if (!(this.isRowFallback || this.fullscreen)) {
+              return;
+            }
+
+            if (this.fullscreen) {
+              galleryItem.setStyle('cursor', 'pointer');
+            }
+
+            galleryItem.addEvent('click', function () {
+              // Row gallery slideshow fallback prev/next navigation
+              // for partly visible slides
+              if (this.isRowFallback) {
+                var isNextEl = galleryItem.getParent('.swiper-slide-next');
+                if (isNextEl) {
+                  this.gallerySwiper.slideNext();
+                  return;
+                }
+
+                var isPrevEl = galleryItem.getParent('.swiper-slide-prev');
+                if (isPrevEl) {
+                  this.gallerySwiper.slidePrev();
+                  return;
+                }
+              }
+
               if (galleryItem.hasClass('xGalleryItemType-video')) {
                 return;
               }
 
-              galleryItem.setStyle('cursor', 'pointer');
-              galleryItem.addEvent('click', function () {
-                // Row gallery slideshow fallback prev/next navigation
-                // for partly visible slides
-                if (this.isRowFallback) {
-                  var isNextEl = galleryItem.getParent('.swiper-slide-next');
-                  if (isNextEl) {
-                    this.gallerySwiper.slideNext();
-                    return;
-                  }
-
-                  var isPrevEl = galleryItem.getParent('.swiper-slide-prev');
-                  if (isPrevEl) {
-                    this.gallerySwiper.slidePrev();
-                    return;
-                  }
-                }
-
-                milkbox.showGallery({
-                  gallery: 'gallery-' + galleryId,
-                  index: i
-                });
-              }.bindWithEvent(this));
-            }, this);
-          }
+              milkbox.showGallery({
+                gallery: 'gallery-' + galleryId,
+                index: i
+              });
+            }.bindWithEvent(this));
+          }, this);
 
           var swiperEl = this.imageContainer.getElement('.swiper-container');
           var videos = [];
