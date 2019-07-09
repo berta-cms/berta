@@ -90,6 +90,16 @@ var Berta = new Class({
         galleryFullScreenImageBorders: this.options.galleryFullScreenImageBorders
       });
 
+    } else if (galleryType === 'row') {
+      new BertaGalleryRow(item, {
+        environment: this.options.environment,
+        engineRoot: this.options.paths.engineRoot,
+        engineABSRoot: this.options.paths.engineABSRoot,
+        playerType: this.options.videoPlayerType,
+        slideshowAutoRewind: this.options.slideshowAutoRewind,
+        galleryFullScreenImageBorders: this.options.galleryFullScreenImageBorders
+      });
+
     } else {
       new BertaGallery(item, {
         environment: this.options.environment,
@@ -125,19 +135,19 @@ var Berta = new Class({
 
     var im = imContainer.getElement('img');
     var wOrig = im.width,
-        hOrig = im.height;
+      hOrig = im.height;
 
     var imAlignment = imContainer.getClassStoredValue('xPosition');
 
     var fnOnResize = function () {
       var wndSize = $(window).getSize();
       var w = wndSize.x,
-          h = wndSize.y;
+        h = wndSize.y;
       var posX, posY;
 
       // scale
       var scaleX = w / wOrig,
-          scaleY = h / hOrig;
+        scaleY = h / hOrig;
       if (scaleX > scaleY)
         scaleY = scaleX;
       else
