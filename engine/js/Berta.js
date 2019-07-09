@@ -81,54 +81,19 @@ var Berta = new Class({
     var galleryType = item.getClassStoredValue('xGalleryType') || 'slideshow';
 
     if (galleryType === 'slideshow') {
-      new BertaGallerySlideshow(item, {
-        environment: this.options.environment,
-        engineRoot: this.options.paths.engineRoot,
-        engineABSRoot: this.options.paths.engineABSRoot,
-        playerType: this.options.videoPlayerType,
-        slideshowAutoRewind: this.options.slideshowAutoRewind,
-        galleryFullScreenImageBorders: this.options.galleryFullScreenImageBorders
-      });
+      new BertaGallerySlideshow(item);
 
     } else if (galleryType === 'row') {
-      new BertaGalleryRow(item, {
-        environment: this.options.environment,
-        engineRoot: this.options.paths.engineRoot,
-        engineABSRoot: this.options.paths.engineABSRoot,
-        playerType: this.options.videoPlayerType,
-        slideshowAutoRewind: this.options.slideshowAutoRewind,
-        galleryFullScreenImageBorders: this.options.galleryFullScreenImageBorders
-      });
+      new BertaGalleryRow(item);
 
     } else if (galleryType === 'column') {
-      new BertaGalleryColumn(item, {
-        environment: this.options.environment,
-        engineRoot: this.options.paths.engineRoot,
-        engineABSRoot: this.options.paths.engineABSRoot,
-        playerType: this.options.videoPlayerType,
-        slideshowAutoRewind: this.options.slideshowAutoRewind,
-        galleryFullScreenImageBorders: this.options.galleryFullScreenImageBorders
-      });
+      new BertaGalleryColumn(item);
 
     } else if (galleryType === 'pile') {
-      new BertaGalleryPile(item, {
-        environment: this.options.environment,
-        engineRoot: this.options.paths.engineRoot,
-        engineABSRoot: this.options.paths.engineABSRoot,
-        playerType: this.options.videoPlayerType,
-        slideshowAutoRewind: this.options.slideshowAutoRewind,
-        galleryFullScreenImageBorders: this.options.galleryFullScreenImageBorders
-      });
+      new BertaGalleryPile(item);
 
     } else if (galleryType === 'link') {
-      new BertaGalleryLink(item, {
-        environment: this.options.environment,
-        engineRoot: this.options.paths.engineRoot,
-        engineABSRoot: this.options.paths.engineABSRoot,
-        playerType: this.options.videoPlayerType,
-        slideshowAutoRewind: this.options.slideshowAutoRewind,
-        galleryFullScreenImageBorders: this.options.galleryFullScreenImageBorders
-      });
+      new BertaGalleryLink(item);
     }
   },
 

@@ -1,7 +1,5 @@
 var BertaGalleryLink = new Class({
 
-  Implements: Options,
-
   container: null,
   imageContainer: null,
   navContainer: null,
@@ -15,7 +13,7 @@ var BertaGalleryLink = new Class({
   imageResizeFx: null,
   imageShowFx: null,
 
-  initialize: function (container, options) {
+  initialize: function (container) {
     this.is_mobile_device = window.BertaHelpers.isMobile();
     if (container.hasClass('xInitialized')) {
       return;
@@ -24,7 +22,6 @@ var BertaGalleryLink = new Class({
     if (this.is_mobile_device) {
       container.addClass('bt-is-mobile-device');
     }
-    this.setOptions(options);
     this.attach(container);
     this.loadFirst();
   },
@@ -44,8 +41,8 @@ var BertaGalleryLink = new Class({
         transition: Fx.Transitions.Sine.easeInOut
       });
 
-      this.newObjectInjectWhere = this.options.environment == 'site' ? this.imageContainer : this.imageContainer.getElement('.xGalleryEditButton');
-      this.newObjectInjectPosition = this.options.environment == 'site' ? 'bottom' : 'before';
+      this.newObjectInjectWhere = bertaGlobalOptions.environment == 'site' ? this.imageContainer : this.imageContainer.getElement('.xGalleryEditButton');
+      this.newObjectInjectPosition = bertaGlobalOptions.environment == 'site' ? 'bottom' : 'before';
 
     } else {
       this.navContainer = null;

@@ -1,15 +1,12 @@
 var BertaGallerySlideshow = new Class({
 
-  Implements: Options,
-
   container: null,
   imageContainer: null,
   gallerySwiper: null,
   navContainer: null,
   isRowFallback: false,
 
-
-  initialize: function (container, options) {
+  initialize: function (container) {
     this.is_mobile_device = window.BertaHelpers.isMobile();
     if (container.hasClass('xInitialized')) {
       return;
@@ -18,7 +15,7 @@ var BertaGallerySlideshow = new Class({
     if (this.is_mobile_device) {
       container.addClass('bt-is-mobile-device');
     }
-    this.setOptions(options);
+
     this.attach(container);
     this.loadFirst();
   },

@@ -227,49 +227,19 @@ var BertaEditor = new Class({
     var galleryType = item.getClassStoredValue('xGalleryType') || 'slideshow';
 
     if (galleryType === 'slideshow') {
-      gallery = new BertaGallerySlideshow(item, {
-        environment: this.options.environment,
-        engineRoot: this.options.paths.engineRoot,
-        engineABSRoot: this.options.paths.engineABSRoot,
-        playerType: this.options.videoPlayerType,
-        slideshowAutoRewind: this.options.slideshowAutoRewind
-      });
+      gallery = new BertaGallerySlideshow(item);
 
     } else if (galleryType === 'row') {
-      gallery = new BertaGalleryRow(item, {
-        environment: this.options.environment,
-        engineRoot: this.options.paths.engineRoot,
-        engineABSRoot: this.options.paths.engineABSRoot,
-        playerType: this.options.videoPlayerType,
-        slideshowAutoRewind: this.options.slideshowAutoRewind
-      });
+      gallery = new BertaGalleryRow(item);
 
     } else if (galleryType === 'column') {
-      gallery = new BertaGalleryColumn(item, {
-        environment: this.options.environment,
-        engineRoot: this.options.paths.engineRoot,
-        engineABSRoot: this.options.paths.engineABSRoot,
-        playerType: this.options.videoPlayerType,
-        slideshowAutoRewind: this.options.slideshowAutoRewind
-      });
+      gallery = new BertaGalleryColumn(item);
 
     } else if (galleryType === 'pile') {
-      gallery = new BertaGalleryPile(item, {
-        environment: this.options.environment,
-        engineRoot: this.options.paths.engineRoot,
-        engineABSRoot: this.options.paths.engineABSRoot,
-        playerType: this.options.videoPlayerType,
-        slideshowAutoRewind: this.options.slideshowAutoRewind
-      });
+      gallery = new BertaGalleryPile(item);
 
     } else if (galleryType === 'link') {
-      gallery = new BertaGalleryLink(item, {
-        environment: this.options.environment,
-        engineRoot: this.options.paths.engineRoot,
-        engineABSRoot: this.options.paths.engineABSRoot,
-        playerType: this.options.videoPlayerType,
-        slideshowAutoRewind: this.options.slideshowAutoRewind
-      });
+      gallery = new BertaGalleryLink(item);
     }
 
     this.galleries.push(gallery);

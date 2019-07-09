@@ -1,7 +1,5 @@
 var BertaGalleryColumn = new Class({
 
-  Implements: Options,
-
   container: null,
   imageContainer: null,
   navContainer: null,
@@ -16,7 +14,7 @@ var BertaGalleryColumn = new Class({
   imageResizeFx: null,
   imageShowFx: null,
 
-  initialize: function (container, options) {
+  initialize: function (container) {
     this.is_mobile_device = window.BertaHelpers.isMobile();
     if (container.hasClass('xInitialized')) {
       return;
@@ -25,7 +23,6 @@ var BertaGalleryColumn = new Class({
     if (this.is_mobile_device) {
       container.addClass('bt-is-mobile-device');
     }
-    this.setOptions(options);
     this.attach(container);
     this.loadFirst();
     window.addEvent('resize', window.BertaHelpers.debounce(this.layout_update.bindWithEvent(this), 200));
@@ -51,7 +48,7 @@ var BertaGalleryColumn = new Class({
         'class': 'clear'
       }).inject(this.imageContainer);
 
-      this.newObjectInjectWhere = this.options.environment == 'site' ? this.rowClearElement : this.imageContainer.getElement('.xGalleryEditButton');
+      this.newObjectInjectWhere = bertaGlobalOptions.environment == 'site' ? this.rowClearElement : this.imageContainer.getElement('.xGalleryEditButton');
       this.newObjectInjectPosition = 'before';
 
     } else {
