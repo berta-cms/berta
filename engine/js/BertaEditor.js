@@ -270,15 +270,6 @@ var BertaEditor = new Class({
         playerType: this.options.videoPlayerType,
         slideshowAutoRewind: this.options.slideshowAutoRewind
       });
-
-    } else {
-      gallery = new BertaGallery(item, {
-        environment: this.options.environment,
-        engineRoot: this.options.paths.engineRoot,
-        engineABSRoot: this.options.paths.engineABSRoot,
-        playerType: this.options.videoPlayerType,
-        slideshowAutoRewind: this.options.slideshowAutoRewind
-      });
     }
 
     this.galleries.push(gallery);
