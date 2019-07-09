@@ -110,6 +110,16 @@ var Berta = new Class({
         galleryFullScreenImageBorders: this.options.galleryFullScreenImageBorders
       });
 
+    } else if (galleryType === 'pile') {
+      new BertaGalleryPile(item, {
+        environment: this.options.environment,
+        engineRoot: this.options.paths.engineRoot,
+        engineABSRoot: this.options.paths.engineABSRoot,
+        playerType: this.options.videoPlayerType,
+        slideshowAutoRewind: this.options.slideshowAutoRewind,
+        galleryFullScreenImageBorders: this.options.galleryFullScreenImageBorders
+      });
+
     } else {
       new BertaGallery(item, {
         environment: this.options.environment,
