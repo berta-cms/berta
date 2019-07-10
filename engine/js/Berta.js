@@ -41,7 +41,6 @@ var Berta = new Class({
   },
 
   entriesList: null,
-  galleries: new Array(),
 
   initialize: function (options) {
     this.setOptions(options);
@@ -79,15 +78,24 @@ var Berta = new Class({
   },
 
   initGallery: function (item) {
-    var g = new BertaGallery(item, {
-      environment: this.options.environment,
-      engineRoot: this.options.paths.engineRoot,
-      engineABSRoot: this.options.paths.engineABSRoot,
-      playerType: this.options.videoPlayerType,
-      slideshowAutoRewind: this.options.slideshowAutoRewind,
-      galleryFullScreenImageBorders: this.options.galleryFullScreenImageBorders
-    });
-    this.galleries.push(g);
+    var galleryType = item.getClassStoredValue('xGalleryType');
+
+    switch (galleryType) {
+      case 'row':
+        new BertaGalleryRow(item);
+        break;
+      case 'column':
+        new BertaGalleryColumn(item);
+        break;
+      case 'pile':
+        new BertaGalleryPile(item);
+        break;
+      case 'link':
+        new BertaGalleryLink(item);
+        break;
+      default:
+        new BertaGallerySlideshow(item);
+    }
   },
 
   bgImageInit: function () {
@@ -113,19 +121,19 @@ var Berta = new Class({
 
     var im = imContainer.getElement('img');
     var wOrig = im.width,
-        hOrig = im.height;
+      hOrig = im.height;
 
     var imAlignment = imContainer.getClassStoredValue('xPosition');
 
     var fnOnResize = function () {
       var wndSize = $(window).getSize();
       var w = wndSize.x,
-          h = wndSize.y;
+        h = wndSize.y;
       var posX, posY;
 
       // scale
       var scaleX = w / wOrig,
-          scaleY = h / hOrig;
+        scaleY = h / hOrig;
       if (scaleX > scaleY)
         scaleY = scaleX;
       else

@@ -223,14 +223,27 @@ var BertaEditor = new Class({
 
 
   initGallery: function (item) {
-    var g = new BertaGallery(item, {
-      environment: this.options.environment,
-      engineRoot: this.options.paths.engineRoot,
-      engineABSRoot: this.options.paths.engineABSRoot,
-      playerType: this.options.videoPlayerType,
-      slideshowAutoRewind: this.options.slideshowAutoRewind
-    });
-    this.galleries.push(g);
+    var gallery;
+    var galleryType = item.getClassStoredValue('xGalleryType');
+
+    switch (galleryType) {
+      case 'row':
+        gallery = new BertaGalleryRow(item);
+        break;
+      case 'column':
+        gallery = new BertaGalleryColumn(item);
+        break;
+      case 'pile':
+        gallery = new BertaGalleryPile(item);
+        break;
+      case 'link':
+        gallery = new BertaGalleryLink(item);
+        break;
+      default:
+        gallery = new BertaGallerySlideshow(item);
+    }
+
+    this.galleries.push(gallery);
   },
 
 

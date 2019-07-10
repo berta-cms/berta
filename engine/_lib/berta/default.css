@@ -22,6 +22,37 @@ br.clear { clear: both; }
     display: none;
 }
 
+.xGalleryType-row + .xGalleryType-slideshow .xGallery {
+  max-width: none !important;
+  overflow: hidden;
+}
+
+.xGalleryType-row + .xGalleryType-slideshow .swiper-container {
+    overflow: visible;
+}
+
+.xGalleryType-row + .xGalleryType-slideshow .swiper-slide {
+    max-width: 80%;
+    width: auto;
+    -webkit-transition: opacity .2s;
+    transition: opacity .2s;
+    opacity: .3;
+}
+
+.xGalleryType-row + .xGalleryType-slideshow .swiper-slide-active {
+    opacity: 1;
+}
+
+.xGalleryType-row + .xGalleryType-slideshow .swiper-slide-prev,
+.xGalleryType-row + .xGalleryType-slideshow .swiper-slide-next {
+  cursor: pointer;
+}
+
+.xGalleryType-row + .xGalleryType-slideshow .swiper-button-prev,
+.xGalleryType-row + .xGalleryType-slideshow .swiper-button-next {
+  display: none;
+}
+
 #allContainer {
     margin: 20px 40px 40px;
     padding: 0;
