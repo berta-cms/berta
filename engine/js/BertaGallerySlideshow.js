@@ -56,6 +56,7 @@ var BertaGallerySlideshow = new Class({
 
       if (this.fullscreen || this.getNext()) {
         var galleryId = this.container.getParent().getClassStoredValue('xEntryId');
+        var imageItems = this.imageContainer.getElements('.xGalleryItemType-image');
         this.imageContainer.getElements('.xGalleryItem').each(function (galleryItem, i) {
           if (!(this.isRowFallback || this.fullscreen)) {
             return;
@@ -86,9 +87,10 @@ var BertaGallerySlideshow = new Class({
               return;
             }
 
+            var ImgIndex = imageItems.indexOf(galleryItem);
             milkbox.showGallery({
               gallery: 'gallery-' + galleryId,
-              index: i
+              index: ImgIndex
             });
           }.bindWithEvent(this));
         }, this);

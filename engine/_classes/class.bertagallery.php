@@ -323,14 +323,8 @@ class BertaGallery extends BertaBase
                 ($i + 1) .
                 '</span></a><div class="xGalleryImageCaption">' . (!empty($imgs[$i]['value']) ? $imgs[$i]['value'] : '') . '</div></li>' . "\n";
 
-            if ($galleryFullScreen) {
-                if (!empty($videoLink)) {
-                    //add video link properties
-                    //instead of video, show only poster
-                    $origLink = file_exists($mFolder . self::$options['images']['orig_prefix'] . $imgs[$i]['@attributes']['poster_frame']) ?
-                    $mFolderABS . self::$options['images']['orig_prefix'] . $imgs[$i]['@attributes']['poster_frame'] :
-                    $mFolderABS . $imgs[$i]['@attributes']['poster_frame'];
-                }
+            // Exclude video from fullscreen ($origLink is not set for video)
+            if ($galleryFullScreen && $origLink) {
                 $milkbox .= '<a href="' . $origLink . '" rel="milkbox[gallery-' . $galleryFullScreen . ']" title="' . htmlspecialchars($imgs[$i]['value']) . '" >#</a>';
             }
         }
