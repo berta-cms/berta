@@ -224,22 +224,23 @@ var BertaEditor = new Class({
 
   initGallery: function (item) {
     var gallery;
-    var galleryType = item.getClassStoredValue('xGalleryType') || 'slideshow';
+    var galleryType = item.getClassStoredValue('xGalleryType');
 
-    if (galleryType === 'slideshow') {
-      gallery = new BertaGallerySlideshow(item);
-
-    } else if (galleryType === 'row') {
-      gallery = new BertaGalleryRow(item);
-
-    } else if (galleryType === 'column') {
-      gallery = new BertaGalleryColumn(item);
-
-    } else if (galleryType === 'pile') {
-      gallery = new BertaGalleryPile(item);
-
-    } else if (galleryType === 'link') {
-      gallery = new BertaGalleryLink(item);
+    switch (galleryType) {
+      case 'row':
+        gallery = new BertaGalleryRow(item);
+        break;
+      case 'column':
+        gallery = new BertaGalleryColumn(item);
+        break;
+      case 'pile':
+        gallery = new BertaGalleryPile(item);
+        break;
+      case 'link':
+        gallery = new BertaGalleryLink(item);
+        break;
+      default:
+        gallery = new BertaGallerySlideshow(item);
     }
 
     this.galleries.push(gallery);

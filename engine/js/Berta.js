@@ -78,22 +78,23 @@ var Berta = new Class({
   },
 
   initGallery: function (item) {
-    var galleryType = item.getClassStoredValue('xGalleryType') || 'slideshow';
+    var galleryType = item.getClassStoredValue('xGalleryType');
 
-    if (galleryType === 'slideshow') {
-      new BertaGallerySlideshow(item);
-
-    } else if (galleryType === 'row') {
-      new BertaGalleryRow(item);
-
-    } else if (galleryType === 'column') {
-      new BertaGalleryColumn(item);
-
-    } else if (galleryType === 'pile') {
-      new BertaGalleryPile(item);
-
-    } else if (galleryType === 'link') {
-      new BertaGalleryLink(item);
+    switch (galleryType) {
+      case 'row':
+        new BertaGalleryRow(item);
+        break;
+      case 'column':
+        new BertaGalleryColumn(item);
+        break;
+      case 'pile':
+        new BertaGalleryPile(item);
+        break;
+      case 'link':
+        new BertaGalleryLink(item);
+        break;
+      default:
+        new BertaGallerySlideshow(item);
     }
   },
 
