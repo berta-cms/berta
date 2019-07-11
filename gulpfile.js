@@ -49,6 +49,8 @@ var css_backend_files = [
 
 var css_frontend_files = [
   'node_modules/swiper/dist/css/swiper.min.css',
+  'node_modules/photoswipe/dist/photoswipe.css',
+  'node_modules/photoswipe/dist/default-skin/default-skin.css',
   'engine/_lib/berta/default.css',
   'engine/_lib/berta/swiper.css',
   'engine/_lib/milkbox/css/milkbox/milkbox.css'
@@ -130,7 +132,9 @@ var js_frontend_files = [
   'engine/js/BertaPortfolio.js',
   'engine/js/Berta.js',
   'engine/_lib/milkbox/js/milkbox.js',
-  'node_modules/swiper/dist/js/swiper.min.js'
+  'node_modules/swiper/dist/js/swiper.min.js',
+  'node_modules/photoswipe/dist/photoswipe.min.js',
+  'node_modules/photoswipe/dist/photoswipe-ui-default.min.js'
 ];
 
 
