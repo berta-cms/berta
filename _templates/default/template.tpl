@@ -240,6 +240,8 @@
 
 	</div>
 
+  { include file="../_includes/inc.photoswipe_html.tpl" }
+
 	{ intercomScript }
 
   { include file="../_includes/inc.js_include.tpl" }
