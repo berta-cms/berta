@@ -107,15 +107,17 @@ var BertaGalleryPile = new Class({
   },
 
   attachFullscreen: function () {
-    this.container.getElements('.xGalleryItem:not(.xGalleryItemType-video)').each(function (item) {
+    var items = this.container.getElements('.xGalleryItem:not(.xGalleryItemType-video)');
+
+    items.each(function (item) {
       item.setStyle('cursor', 'pointer');
       item.addEvent('click', function () {
-        var ImgIndex = this.getClassStoredValue('xImgIndex');
+        var ImgIndex = items.indexOf(item);
         var GalleryId = this.getParent('.xEntry').getClassStoredValue('xEntryId');
 
         milkbox.showGallery({
           gallery: 'gallery-' + GalleryId,
-          index: ImgIndex - 1
+          index: ImgIndex
         });
       });
     });
