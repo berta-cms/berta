@@ -48,6 +48,16 @@ br.clear { clear: both; }
   cursor: pointer;
 }
 
+.xGalleryType-row + .xGalleryType-slideshow .swiper-slide-prev .xGalleryItemType-video::after,
+.xGalleryType-row + .xGalleryType-slideshow .swiper-slide-next .xGalleryItemType-video::after {
+  content: '';
+  display: block;
+  position: absolute;
+  top: 0;
+  height: 100%;
+  width: 100%;
+}
+
 .xGalleryType-row + .xGalleryType-slideshow .swiper-button-prev,
 .xGalleryType-row + .xGalleryType-slideshow .swiper-button-next {
   display: none;
