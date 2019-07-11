@@ -129,6 +129,7 @@ var js_frontend_files = [
   'engine/js/BertaGalleryColumn.js',
   'engine/js/BertaGalleryPile.js',
   'engine/js/BertaGalleryLink.js',
+  'engine/js/BertaGalleryFullscreen.js',
   'engine/js/BertaPortfolio.js',
   'engine/js/Berta.js',
   'engine/_lib/milkbox/js/milkbox.js',

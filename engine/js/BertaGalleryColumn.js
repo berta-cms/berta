@@ -107,20 +107,17 @@ var BertaGalleryColumn = new Class({
   },
 
   attachFullscreen: function () {
-    var items = this.container.getElements('.xGalleryItem:not(.xGalleryItemType-video)');
+    var items = this.container.getElements('.xGalleryItem');
+    items.each(function (item, i) {
+      if (item.hasClass('xGalleryItemType-video')) {
+        return;
+      }
 
-    items.each(function (item) {
       item.setStyle('cursor', 'pointer');
       item.addEvent('click', function () {
-        var ImgIndex = items.indexOf(item);
-        var GalleryId = this.getParent('.xEntry').getClassStoredValue('xEntryId');
-
-        milkbox.showGallery({
-          gallery: 'gallery-' + GalleryId,
-          index: ImgIndex
-        });
-      });
-    });
+        BertaGalleryFullscreen(this.container, i);
+      }.bindWithEvent(this));
+    }, this);
   },
 
   getNext: function (bRotate) {

@@ -191,6 +191,15 @@ div.xGalleryItem {
     display: block;
 }
 
+/* Pile gallery sets pretty high z-indexes for images, make fullscreen view on top of everything */
+.pswp {
+  z-index: 10000;
+}
+
+.pswp .xGalleryImageCaption {
+  display: block;
+}
+
 /* helpers */
 
 .clearfix { zoom: 1; }
