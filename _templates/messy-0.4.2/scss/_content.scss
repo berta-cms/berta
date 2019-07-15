@@ -58,37 +58,6 @@ h1 {
         position: relative;
         display: block;
       }
-
-      ul {
-        &.xGalleryNav {
-          display: block;
-          position: relative;
-          clear: both;
-          margin: 0 0 2px;
-          padding: 0;
-          list-style: none;
-          height: 18px;
-
-          li {
-            display: block;
-            float: left;
-            list-style: none;
-            line-height: 96%;
-            margin: 0;
-          }
-
-          .xGalleryImageCaption {
-            display: none;
-          }
-
-          a {
-            display: block;
-            float: left;
-            padding: 1px 5px 1px;
-            outline: none;
-          }
-        }
-      }
     }
 
     .xGalleryType-row {
@@ -170,6 +139,35 @@ h1 {
       margin: 0;
       padding: 0;
     }
+  }
+}
+
+.xGalleryNav {
+  display: block;
+  position: relative;
+  clear: both;
+  margin: 0 0 2px;
+  padding: 0;
+  list-style: none;
+  height: 18px;
+
+  li {
+    display: block;
+    float: left;
+    list-style: none;
+    line-height: 96%;
+    margin: 0;
+  }
+
+  .xGalleryImageCaption {
+    display: none;
+  }
+
+  a {
+    display: block;
+    float: left;
+    padding: 1px 5px 1px;
+    outline: none;
   }
 }
 
