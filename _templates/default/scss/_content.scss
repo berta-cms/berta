@@ -152,42 +152,6 @@
             display: block;
           }
         }
-
-        ul {
-          &.xGalleryNav {
-            display: block;
-            position: relative;
-            clear: both;
-            margin: 0 0 2px;
-            padding: 0;
-            list-style: none;
-            height: 18px;
-
-            li {
-              display: block;
-              list-style: none;
-              line-height: 96%;
-              margin: 0;
-
-              a {
-                display: block;
-                float: left;
-                padding: 1px 2px 1px;
-              }
-
-              &.selected {
-                a {
-                  background-color: #535353;
-                  color: #FFFFFF;
-                }
-              }
-
-              .xGalleryImageCaption {
-                display: none;
-              }
-            }
-          }
-        }
       }
 
       .xGalleryType-row {
@@ -274,6 +238,40 @@
       list-style-type: none;
       margin: 0;
       padding: 0;
+    }
+  }
+}
+
+.xGalleryNav {
+  display: block;
+  position: relative;
+  clear: both;
+  margin: 0 0 2px;
+  padding: 0;
+  list-style: none;
+  height: 18px;
+
+  li {
+    display: block;
+    list-style: none;
+    line-height: 96%;
+    margin: 0;
+
+    a {
+      display: block;
+      float: left;
+      padding: 1px 2px 1px;
+    }
+
+    &.selected {
+      a {
+        background-color: #535353;
+        color: #FFFFFF;
+      }
+    }
+
+    .xGalleryImageCaption {
+      display: none;
     }
   }
 }
