@@ -5,11 +5,13 @@
 .swiper-button-next,
 .swiper-button-prev {
   opacity: 0;
-  width: 47px;
-  height: 47px;
-  margin-top: -24px;
-  background-size: 47px 47px;
+  top:0;
+  width: 50px;
+  height: 100%;
+  margin-top: 0;
+  background-size: auto;
   transition: opacity .2s;
+  background-image: url('/engine/layout/swiper-arrow.svg');
 }
 
 .swiper-button-next.swiper-button-disabled,
@@ -18,21 +20,22 @@
 }
 
 .swiper-button-prev {
-  background-image: url('/engine/layout/swiper-prev.svg');
+  left: 0;
 }
 
 .swiper-button-next {
-  background-image: url('/engine/layout/swiper-next.svg');
+  transform: rotate(180deg);
+  right: 0;
 }
 
 .swiper-container:hover .swiper-button-prev:not(.swiper-button-disabled),
 .swiper-container:hover .swiper-button-next:not(.swiper-button-disabled) {
-  opacity: 1;
+  opacity: .8;
 }
 
 .bt-is-mobile-device .swiper-button-prev:not(.swiper-button-disabled),
 .bt-is-mobile-device .swiper-button-next:not(.swiper-button-disabled) {
-  opacity: 1;
+  opacity: .8;
 }
 
 .swiper-slide .xGalleryItem,
