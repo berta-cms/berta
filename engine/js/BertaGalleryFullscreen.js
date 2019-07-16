@@ -33,6 +33,15 @@ var BertaGalleryFullscreen = function (galleryEl, slideIndex) {
   };
 
   var pswpElement = document.querySelectorAll('.pswp')[0];
-  var gallery = new PhotoSwipe( pswpElement, PhotoSwipeUI_Default, slides, options);
+  var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, slides, options);
   gallery.init();
+
+  var pauseAllVideos = function () {
+    pswpElement.querySelectorAll('video').forEach(function (video) {
+      video.pause();
+    });
+  };
+
+  gallery.listen('beforeChange', pauseAllVideos);
+  gallery.listen('close', pauseAllVideos);
 };
