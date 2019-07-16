@@ -2,27 +2,24 @@ var BertaGalleryFullscreen = function (galleryEl, slideIndex) {
   var slides = [];
 
   var parseSlides = function () {
-    galleryEl.querySelectorAll('.xGalleryItem').forEach(function (item) {
+    var items = galleryEl.querySelectorAll('.xGalleryItem');
+
+    galleryEl.querySelectorAll('.xGalleryNav a').forEach(function (item, i) {
       var slide;
-      var isImageSlide = item.classList.contains('xGalleryItemType-image');
+      var isImageSlide = item.classList.contains('xType-image');
 
       if (isImageSlide) {
-        var imageEl = item.querySelector('img');
-
-        // @TODO get original image src, width and height
         slide = {
-          src: imageEl.getAttribute('src'),
-          w: parseInt(imageEl.getAttribute('width'), 10),
-          h: parseInt(imageEl.getAttribute('height'), 10),
-          title: imageEl.getAttribute('alt')
+          src: item.getAttribute('data-original-src'),
+          w: parseInt(item.getAttribute('data-original-width'), 10),
+          h: parseInt(item.getAttribute('data-original-height'), 10),
+          title: item.getAttribute('data-caption'),
         };
 
         // Video slide
       } else {
-        var html = item.tagName === 'VIDEO' ? item.outerHTML : item.innerHTML;
-
         slide = {
-          html: html
+          html: items[i].outerHTML
         };
       }
 

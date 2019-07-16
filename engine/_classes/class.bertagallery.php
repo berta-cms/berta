@@ -311,7 +311,18 @@ class BertaGallery extends BertaBase
 
             $autoPlay = isset($imgs[$i]['@attributes']['autoplay']) ? $imgs[$i]['@attributes']['autoplay'] : 0;
 
+            if (isset($imgs[$i]['value'])) {
+                $caption = str_replace(["\r\n", "\n"], ' ', $imgs[$i]['value']);
+                $caption = trim(preg_replace('/\s\s+/', ' ', htmlspecialchars(strip_tags($caption))));
+            } else {
+                $caption = '';
+            }
+
             $navStr .= '<li><a href="' . ($src ? $mFolderABS . $src : '#') . ($isAdminMode ? '?no_cache=' . rand() : '') . '" ' .
+                'data-original-src="' . $origLink . '" ' .
+                'data-original-width="' . $width_original . '" ' .
+                'data-original-height="' . $height_original . '" ' .
+                'data-caption="' . $caption . '" ' .
                 'class="xType-' . $imgs[$i]['@attributes']['type'] . ' ' .
                 'xVideoHref-' . $videoLink . ' ' .
                 'xAutoPlay-' . $autoPlay . ' ' .
