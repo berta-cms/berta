@@ -193,7 +193,17 @@ div.xGalleryItem {
 
 /* Make sure it's on top of everything */
 .pswp {
-  z-index: 50000;
+  z-index: 100001;
+}
+
+.pswp .xGalleryItemType-video {
+  display: flex;
+  height: 100%;
+}
+
+.pswp video {
+  max-width: 100%;
+  width: 100%;
 }
 
 .pswp .xGalleryImageCaption {
