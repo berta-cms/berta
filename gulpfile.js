@@ -9,7 +9,9 @@ var gulp = require('gulp'),
     notify = require('gulp-notify'),
     jshint = require('gulp-jshint'),
     sass = require('gulp-sass'),
-    autoprefixer = require('gulp-autoprefixer');
+    autoprefixer = require('gulp-autoprefixer'),
+    clean = require('gulp-clean'),
+    replace = require('gulp-replace');
 
 sass.compiler = require('node-sass');
 
@@ -39,6 +41,10 @@ var template = {
     ]
   }
 };
+
+var vendor_assets = [
+  'node_modules/photoswipe/dist/default-skin/*.{png,gif,svg}',
+];
 
 var css_backend_files = [
   'node_modules/swiper/dist/css/swiper.min.css',
@@ -162,6 +168,16 @@ gulp.task('scss_white', scssTemplates(template.white.files, template.white.dest)
 gulp.task('scss_default', scssTemplates(template.default.files, template.default.dest));
 gulp.task('scss_mashup', scssTemplates(template.mashup.files, template.mashup.dest));
 
+gulp.task('cleanup', function () {
+  return gulp.src('engine/css/vendor', {read: false})
+    .pipe(clean({force: true}));
+});
+
+gulp.task('copy_vendor_assets', ['cleanup'], function () {
+  return gulp.src(vendor_assets, {base: './node_modules/'})
+    .pipe(gulp.dest('engine/css/vendor'));
+});
+
 gulp.task('css_backend', function () {
   return gulp.src(css_backend_files)
     .pipe(gulp_sourcemaps.init())
@@ -182,6 +198,7 @@ gulp.task('css_frontend', function () {
   return gulp.src(css_frontend_files)
     .pipe(gulp_sourcemaps.init())
     .pipe(gulp_rebase_css_urls('engine/css'))
+    .pipe(replace('../../node_modules', './vendor'))
     .pipe(gulp_concat('frontend.min.css'))
     .pipe(autoprefixer({
       browsers: ['last 2 versions'],
@@ -233,7 +250,7 @@ gulp.task('ng_lint', function () {
     .pipe(jshint.reporter('default'));
 });
 
-gulp.task('default', ['scss_messy', 'scss_white', 'scss_default', 'scss_mashup', 'css_backend', 'css_frontend', 'js_backend', 'ng_lint', 'js_ng_backend', 'js_frontend'], function () {
+gulp.task('default', ['copy_vendor_assets', 'scss_messy', 'scss_white', 'scss_default', 'scss_mashup', 'css_backend', 'css_frontend', 'js_backend', 'ng_lint', 'js_ng_backend', 'js_frontend'], function () {
 
   livereload.listen();
 

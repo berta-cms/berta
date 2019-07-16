@@ -191,9 +191,9 @@ div.xGalleryItem {
     display: block;
 }
 
-/* Pile gallery sets pretty high z-indexes for images, make fullscreen view on top of everything */
+/* Make sure it's on top of everything */
 .pswp {
-  z-index: 10000;
+  z-index: 50000;
 }
 
 .pswp .xGalleryImageCaption {
