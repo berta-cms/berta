@@ -257,4 +257,9 @@ div.xGalleryItem {
     .portfolioThumbnail:nth-child(2n+1) {
         clear: none;
     }
+
+    .bt-responsive .pswp img,
+    .bt-auto-responsive .pswp img {
+      max-width: none;
+    }
 }
