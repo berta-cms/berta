@@ -15,6 +15,11 @@
   outline: none;
 }
 
+.swiper-button-next:focus,
+.swiper-button-prev:focus {
+  outline: none;
+}
+
 [data-slide-type="video"] .swiper-button-next,
 [data-slide-type="video"] .swiper-button-prev {
   background-position: center bottom;
