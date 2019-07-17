@@ -128,6 +128,7 @@ var BertaGallerySlideshow = new Class({
         }
 
         var swiperOptions = {
+          init: false,
           centeredSlides: this.isRowFallback,
           slidesPerView: this.isRowFallback ? 'auto' : 1,
           spaceBetween: this.isRowFallback ? 10 : 0,
@@ -170,6 +171,14 @@ var BertaGallerySlideshow = new Class({
         }
 
         this.gallerySwiper = new Swiper(swiperEl, swiperOptions);
+
+        this.gallerySwiper.on('init slideChange', function () {
+          var slide = this.slides[this.activeIndex];
+          var isImageSlide = slide.getElement('.xGalleryItemType-image') !== null;
+          this.$el[0].setAttribute('data-slide-type', isImageSlide ? 'image' : 'video');
+        });
+
+        this.gallerySwiper.init();
         this.nav_setEvents();
       }
     }
