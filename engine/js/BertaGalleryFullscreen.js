@@ -1,39 +1,36 @@
 var BertaGalleryFullscreen = function (galleryEl, slideIndex) {
   var slides = [];
 
-  var parseSlides = function () {
-    var items = galleryEl.querySelectorAll('.xGalleryItem');
+  var items = galleryEl.querySelectorAll('.xGalleryItem');
 
-    galleryEl.querySelectorAll('.xGalleryNav a').forEach(function (item, i) {
-      var slide;
-      var isImageSlide = item.classList.contains('xType-image');
+  galleryEl.querySelectorAll('.xGalleryNav a').forEach(function (item, i) {
+    var slide;
+    var isImageSlide = item.classList.contains('xType-image');
 
-      if (isImageSlide) {
-        slide = {
-          originalImage: {
-            src: item.getAttribute('data-original-src'),
-            w: parseInt(item.getAttribute('data-original-width'), 10),
-            h: parseInt(item.getAttribute('data-original-height'), 10),
-          },
-          mobileImage: {
-            src: item.getAttribute('data-mobile-src'),
-            w: parseInt(item.getAttribute('data-mobile-width'), 10),
-            h: parseInt(item.getAttribute('data-mobile-height'), 10)
-          },
-          title: item.getAttribute('data-caption'),
-        };
+    if (isImageSlide) {
+      slide = {
+        originalImage: {
+          src: item.getAttribute('data-original-src'),
+          w: parseInt(item.getAttribute('data-original-width'), 10),
+          h: parseInt(item.getAttribute('data-original-height'), 10),
+        },
+        mobileImage: {
+          src: item.getAttribute('data-mobile-src'),
+          w: parseInt(item.getAttribute('data-mobile-width'), 10),
+          h: parseInt(item.getAttribute('data-mobile-height'), 10)
+        },
+        title: item.getAttribute('data-caption'),
+      };
 
-        // Video slide
-      } else {
-        slide = {
-          html: items[i].outerHTML
-        };
-      }
+    // Video slide
+    } else {
+      slide = {
+        html: items[i].outerHTML
+      };
+    }
 
-      slides.push(slide);
-    });
-  };
-  parseSlides();
+    slides.push(slide);
+  });
 
   var options = {
     index: slideIndex,
