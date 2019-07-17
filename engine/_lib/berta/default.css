@@ -22,6 +22,11 @@ br.clear { clear: both; }
     display: none;
 }
 
+.xGalleryType-row + .xGalleryType-slideshow .xGalleryNav,
+.xGalleryType-pile + .xGalleryType-slideshow .xGalleryNav {
+    display: none;
+}
+
 .xGalleryType-row + .xGalleryType-slideshow .xGallery {
   max-width: none !important;
   overflow: hidden;
