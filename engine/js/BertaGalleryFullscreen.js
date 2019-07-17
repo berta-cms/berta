@@ -36,7 +36,12 @@ var BertaGalleryFullscreen = function (galleryEl, slideIndex) {
   parseSlides();
 
   var options = {
-    index: slideIndex
+    index: slideIndex,
+    shareButtons: [
+      {id:'facebook', label:'Share on Facebook', url:'https://www.facebook.com/sharer/sharer.php?u={{url}}'},
+      {id:'twitter', label:'Tweet', url:'https://twitter.com/intent/tweet?text={{text}}&url={{url}}'},
+      {id:'pinterest', label:'Pin it', url:'http://www.pinterest.com/pin/create/button/?url={{url}}&media={{image_url}}&description={{text}}'}
+    ]
   };
 
   var pswpElement = document.querySelectorAll('.pswp')[0];
