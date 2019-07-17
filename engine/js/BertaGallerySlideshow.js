@@ -172,7 +172,10 @@ var BertaGallerySlideshow = new Class({
 
         this.gallerySwiper = new Swiper(swiperEl, swiperOptions);
 
-        this.gallerySwiper.on('init slideChange', function () {
+        this.gallerySwiper.on('init slideChange resize', function () {
+          if (!this.slides.length) {
+            return;
+          }
           var slide = this.slides[this.activeIndex];
           var isImageSlide = slide.getElement('.xGalleryItemType-image') !== null;
           this.$el[0].setAttribute('data-slide-type', isImageSlide ? 'image' : 'video');
