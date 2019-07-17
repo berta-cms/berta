@@ -206,6 +206,11 @@ div.xGalleryItem {
   width: 100%;
 }
 
+.bt-responsive .pswp img,
+.bt-auto-responsive .pswp img {
+  max-width: none;
+}
+
 .pswp .xGalleryImageCaption {
   display: block;
 }
