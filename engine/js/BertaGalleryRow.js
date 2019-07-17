@@ -30,7 +30,7 @@ var BertaGalleryRow = new Class({
 
   attach: function (container) {
     this.container = container;
-    this.fullscreen = this.container.getParent().getElement('div.xFullscreen') !== null;
+    this.fullscreen = this.container.get('data-fullscreen') !== null;
     this.imageContainer = this.container.getElement('div.xGallery');
     this.navContainer = this.container.getElement('ul.xGalleryNav');
 

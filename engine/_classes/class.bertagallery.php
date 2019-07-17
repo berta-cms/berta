@@ -44,9 +44,7 @@ class BertaGallery extends BertaBase
         $imgs = BertaGallery::getImagesArray($entry);
         $galleryType = !empty($entry['mediaCacheData']['@attributes']['type']) ? $entry['mediaCacheData']['@attributes']['type'] : 'slideshow';
         $imageSize = !empty($entry['mediaCacheData']['@attributes']['size']) ? $entry['mediaCacheData']['@attributes']['size'] : 'large';
-
-        //return entry ID - needed for milkbox
-        $galleryFullScreen = !$isAdminMode && isset($entry['mediaCacheData']['@attributes']['fullscreen']) && $entry['mediaCacheData']['@attributes']['fullscreen'] == 'yes' ? $entry['id']['value'] : false;
+        $galleryFullScreen = !$isAdminMode && isset($entry['mediaCacheData']['@attributes']['fullscreen']) && $entry['mediaCacheData']['@attributes']['fullscreen'] == 'yes';
         $galleryAutoPlay = !empty($entry['mediaCacheData']['@attributes']['autoplay']) ? $entry['mediaCacheData']['@attributes']['autoplay'] : '0';
         $gallerySlideNumbersVisible = !empty($entry['mediaCacheData']['@attributes']['slide_numbers_visible']) ? $entry['mediaCacheData']['@attributes']['slide_numbers_visible'] : $berta->settings->get('entryLayout', 'gallerySlideNumberVisibilityDefault');
         $galleryLinkAddress = !empty($entry['mediaCacheData']['@attributes']['link_address']) ? $entry['mediaCacheData']['@attributes']['link_address'] : '';
@@ -94,7 +92,7 @@ class BertaGallery extends BertaBase
             }
 
             $dimensions = ' style="width: ' . $firstImageWidth . 'px;' . ($galleryType !== 'slideshow' ? 'height: ' . $firstImageHeight . 'px;' : '') . '"';
-            $strOut = '<div class="xGalleryContainer xGalleryHasImages xGalleryType-' . $galleryType . $specificClasses . '">';
+            $strOut = '<div class="xGalleryContainer xGalleryHasImages xGalleryType-' . $galleryType . $specificClasses . '"'. ($galleryFullScreen ? ' data-fullscreen="1"' : '') .'>';
             $strOut .= "<div class=\"xGallery\"" . $dimensions . ($rowGalleryPadding ? ' xRowGalleryPadding="' . $rowGalleryPadding . '"' : '') . '>';
 
             if ($galleryType == 'slideshow') {
@@ -117,7 +115,7 @@ class BertaGallery extends BertaBase
             }
 
             $strOut .= '</div>';
-            $strOut .= BertaGallery::getNavHTML($imgs, $galleryType, $mFolder, $mFolderABS, $isAdminMode, $sizeRatio, $imageTargetWidth, $imageTargetHeight, $galleryFullScreen);
+            $strOut .= BertaGallery::getNavHTML($imgs, $galleryType, $mFolder, $mFolderABS, $isAdminMode, $sizeRatio, $imageTargetWidth, $imageTargetHeight);
             if ($galleryType == 'slideshow') {
                 $strOut .= '<div class="loader xHidden"></div>';
             }
@@ -244,12 +242,9 @@ class BertaGallery extends BertaBase
         return $html;
     }
 
-    private static function getNavHTML($imgs, $galleryType, $mFolder, $mFolderABS, $isAdminMode = false, $sizeRatio = 1, $imageTargetWidth = 0, $imageTargetHeight = 0, $galleryFullScreen = false)
+    private static function getNavHTML($imgs, $galleryType, $mFolder, $mFolderABS, $isAdminMode = false, $sizeRatio = 1, $imageTargetWidth = 0, $imageTargetHeight = 0)
     {
         global $berta;
-
-        //milkbox fullscreen
-        $milkbox = '';
 
         $navStr = '<ul class="xGalleryNav" ' . ((count($imgs) == 1 || in_array($galleryType, ['row', 'column', 'pile', 'link'])) ? 'style="display:none"' : '') . '>'; // <link/> / added || $galleryType == 'link'
         for ($i = 0; $i < count($imgs); $i++) {
@@ -354,17 +349,8 @@ class BertaGallery extends BertaBase
                 '"' . $srcset . ' target="_blank"><span>' .
                 ($i + 1) .
                 '</span></a><div class="xGalleryImageCaption">' . (!empty($imgs[$i]['value']) ? $imgs[$i]['value'] : '') . '</div></li>' . "\n";
-
-            // Exclude video from fullscreen ($origLink is not set for video)
-            if ($galleryFullScreen && $origLink) {
-                $milkbox .= '<a href="' . $origLink . '" rel="milkbox[gallery-' . $galleryFullScreen . ']" title="' . htmlspecialchars($imgs[$i]['value']) . '" >#</a>';
-            }
         }
         $navStr .= '</ul>';
-
-        if ($galleryFullScreen) {
-            $navStr .= '<div class="xFullscreen">' . $milkbox . '</div>';
-        }
 
         return $navStr;
     }

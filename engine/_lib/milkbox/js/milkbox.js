@@ -805,7 +805,3 @@ var Milkbox = new Class({
 	}
 
 });//END MILKBOX;
-
-window.addEvent('domready', function(){
-	milkbox = new Milkbox();
-});

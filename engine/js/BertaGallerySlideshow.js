@@ -24,7 +24,7 @@ var BertaGallerySlideshow = new Class({
     this.container = container;
     var fallbackGallery = this.container.getPrevious();
     this.isRowFallback = fallbackGallery && fallbackGallery.hasClass('xGalleryType-row') ? true : false;
-    this.fullscreen = this.container.getParent().getElement('div.xFullscreen') !== null;
+    this.fullscreen = this.container.get('data-fullscreen') !== null;
     this.imageContainer = this.container.getElement('div.xGallery');
     this.navContainer = this.container.getElement('ul.xGalleryNav');
 
