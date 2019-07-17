@@ -246,6 +246,8 @@ class BertaGallery extends BertaBase
 
     private static function getNavHTML($imgs, $galleryType, $mFolder, $mFolderABS, $isAdminMode = false, $sizeRatio = 1, $imageTargetWidth = 0, $imageTargetHeight = 0, $galleryFullScreen = false)
     {
+        global $berta;
+
         //milkbox fullscreen
         $milkbox = '';
 
@@ -309,6 +311,22 @@ class BertaGallery extends BertaBase
             $width = round($width * $sizeRatio);
             $height = round($height * $sizeRatio);
 
+            // Generate image for mobile devices in full screen mode
+            // Use size of large image from settings, default max size = 600
+            $src_large = $origLink;
+            $width_large = $width_original;
+            $height_large = $height_original;
+
+            if ($imgs[$i]['@attributes']['type'] == 'image') {
+                $imageTargetWidth = $berta->template->settings->get('media', 'imagesLargeWidth', false, true);
+                $imageTargetHeight = $berta->template->settings->get('media', 'imagesLargeHeight', false, true);
+
+                if ($width_original && $height_original && $imageTargetWidth && $imageTargetHeight && ($width_original >= $imageTargetWidth || $height_original >= $imageTargetHeight)) {
+                    list($width_large, $height_large) = self::fitInBounds($width_original, $height_original, $imageTargetWidth, $imageTargetHeight);
+                    $src_large = $mFolderABS . self::getResizedSrc($mFolder, $src_original, $width_large, $height_large);
+                }
+            }
+
             $autoPlay = isset($imgs[$i]['@attributes']['autoplay']) ? $imgs[$i]['@attributes']['autoplay'] : 0;
 
             if (isset($imgs[$i]['value'])) {
@@ -323,6 +341,9 @@ class BertaGallery extends BertaBase
                 'data-original-width="' . $width_original . '" ' .
                 'data-original-height="' . $height_original . '" ' .
                 'data-caption="' . $caption . '" ' .
+                'data-mobile-src="' . $src_large . '" ' .
+                'data-mobile-width="' . $width_large . '" ' .
+                'data-mobile-height="' . $height_large . '" ' .
                 'class="xType-' . $imgs[$i]['@attributes']['type'] . ' ' .
                 'xVideoHref-' . $videoLink . ' ' .
                 'xAutoPlay-' . $autoPlay . ' ' .
