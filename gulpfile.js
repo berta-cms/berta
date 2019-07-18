@@ -59,6 +59,7 @@ var css_frontend_files = [
   'node_modules/photoswipe/dist/default-skin/default-skin.css',
   'engine/_lib/berta/default.css',
   'engine/_lib/berta/swiper.css',
+  'engine/_lib/berta/photoswipe.css',
   'engine/_lib/milkbox/css/milkbox/milkbox.css'
 ];
 
