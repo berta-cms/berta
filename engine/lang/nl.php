@@ -149,8 +149,6 @@ return [
 /*setting name*/ 'Paste or write your Javascript code here.' => 'Plak of schrijf jouw Javascript code hier.',
 /* setting tab */ 'Location' => 'Plaatsing',
 /*setting name*/ 'Location of social media buttons. Content of addition text or addition footer will be replaced.' => 'Plaatsing van  de social media buttons. De inhoud van additional text of additional footer text wordt door deze inhoud vervangen.',
-/* setting tab */ 'Show videos on startup' => 'Toon videos bij opstarten',
-/*setting name*/ 'Show or hide Berta\'s tutorial videos on startup. To view the videos, set this to \'Yes\' and they will appear next time you log in.' => 'Vertoon of verberg videos bij opstarten. Om de videos te tonen kies je "yes" en ze verschijnen de volgende keer dat je weer inlogt.',
 
         /* setting tab */ 'Language' => 'Taal',
         /* setting name */ 'Interface language' => 'Interface taal',

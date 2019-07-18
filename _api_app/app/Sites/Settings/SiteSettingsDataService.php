@@ -40,7 +40,6 @@ use App\Sites\Sections\SiteSectionsDataService;
  *     <metaDescription><![CDATA[My personal website]]></metaDescription>
  *   </texts>
  *   <settings>
- *     <showTutorialVideos><![CDATA[no]]></showTutorialVideos>
  *     <hideBertaCopyright><![CDATA[yes]]></hideBertaCopyright>
  *     <googleAnalyticsId><![CDATA[123]]></googleAnalyticsId>
  *     <googleSiteVerification><![CDATA[&lt;meta name=&quot;google-site-verification&quot; content=&quot;xyz&quot; /&gt;]]></googleSiteVerification>
@@ -153,7 +152,6 @@ class SiteSettingsDataService extends Storage
             'settings' => [
                 'type' => 'object',
                 'properties' => [
-                    'showTutorialVideos' => ['type' => 'string'],
                     'hideBertaCopyright' => ['type' => 'string'],
                     'googleAnalyticsId' => ['type' => 'string'],
                     'googleSiteVerification' => ['type' => 'string'],

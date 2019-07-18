@@ -33,7 +33,6 @@
         <metaDescription><![CDATA[My personal website]]></metaDescription>
     </texts>
     <settings>
-        <showTutorialVideos><![CDATA[no]]></showTutorialVideos>
         <hideBertaCopyright><![CDATA[yes]]></hideBertaCopyright>
         <googleAnalyticsId><![CDATA[123]]></googleAnalyticsId>
         <googleSiteVerification><![CDATA[&lt;meta name=&quot;google-site-verification&quot; content=&quot;xyz&quot; /&gt;]]></googleSiteVerification>

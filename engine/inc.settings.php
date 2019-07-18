@@ -180,7 +180,6 @@ $settingsDefinition = [
         '_' => ['title' => I18n::_('Other settings')],
         'googleAnalyticsId' => ['format' => 'text', 'allow_blank' => true, 'default' => '', 'html_entities' => true, 'title' => I18n::_('Google Analytics ID'), 'validator' => 'GoogleAnalytics', 'description' => I18n::_('The ID of the <a href="http://google.com/analytics" target="_blank">Google Analytics</a> site profile. To obtain an ID, register in <a href="http://google.com/analytics" target="_blank">Google Analytics</a> and create a profile for your site.')],
         'googleSiteVerification' => ['format' => 'text', 'allow_blank' => true, 'default' => '', 'html_entities' => true, 'title' => I18n::_('Google site verification tag'), 'description' => I18n::_('Google ownership verification <meta> tag. <a href="http://support.google.com/a/bin/answer.py?hl=en&answer=186017" target="_blank">More info</a>.')],
-        'showTutorialVideos' => ['format' => 'select', 'default' => 'yes', 'values' => ['yes', 'no'], 'title' => I18n::_('Show videos on startup'), 'description' => I18n::_('Show or hide Berta\'s tutorial videos on startup. To view the videos, set this to \'Yes\' and they will appear next time you log in.')],
         'jsInclude' => ['format' => 'longtext', 'allow_blank' => true, 'default' => '', 'html_entities' => true, 'title' => I18n::_('Javascript include'), 'description' => I18n::_('javascript_include')],
     ],
 ];
