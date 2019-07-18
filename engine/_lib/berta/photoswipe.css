@@ -3,6 +3,20 @@
   z-index: 100001;
 }
 
+.pswp__button--arrow--left:before,
+.pswp__button--arrow--right:before {
+  top: 33px;
+  background-image: url('/engine/layout/swiper-arrow.svg');
+  background-position: center center;
+  background-size: auto;
+  width: 35px;
+  height: 35px;
+}
+
+.pswp__button--arrow--right:before {
+  transform: rotate(180deg);
+}
+
 .pswp .xGalleryItemType-video {
   display: flex;
   height: 100%;
@@ -23,9 +37,10 @@
 }
 
 /* small tablet */
-@media (max-width: 767px)  {
-    .bt-responsive .pswp img,
-    .bt-auto-responsive .pswp img {
-      max-width: none;
-    }
+@media (max-width: 767px) {
+
+  .bt-responsive .pswp img,
+  .bt-auto-responsive .pswp img {
+    max-width: none;
+  }
 }
