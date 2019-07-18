@@ -123,8 +123,6 @@ return [
         /* help text */    'Enables Lightbox mode for new entries.' => 'Активировать режим всплывающих окон для новых записей.',
         /* setting name */ 'Background color' => 'Цвет фона',
         /* help text */    'Color of the Lightbox background layer.' => 'Цвет фона всплывающего окна(белый/черный/отсутствует)',
-        /* setting name */ 'Image frame' => 'Рамка изображения',
-        /* help text */    'Enables/Disables a frame around image.' => 'Включить/выключить рамку изображения.',
         /* setting name */ 'Close button' => 'Кнопка зыкрытия',
         /* help text */    'Close symbol. You can enter your own.' => 'Символ закрытия. Можете ввести любое значение.',
         /* setting name */ 'Image numbers' => 'Нумерация изображений',

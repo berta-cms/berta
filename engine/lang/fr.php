@@ -123,8 +123,6 @@ return [
         /* help text */    'Enables Lightbox mode for new entries.' => 'Activer le mode Lightbox pour les nouvelles entrées.',
         /* setting name */ 'Background color' => 'Couleur de fond',
         /* help text */    'Color of the Lightbox background layer.' => 'Couleur du calque Lightbox',
-        /* setting name */ 'Image frame' => 'Cadre d’image',
-        /* help text */    'Enables/Disables a frame around image.' => 'Crée un cadre autour de l’image',
         /* setting name */ 'Close button' => 'Bouton « fermer »',
         /* help text */    '&quot;Close&quot; symbol. You can enter your own.' => 'Symbole pour fermer la Lightbox.',
         /* setting name */ 'Image numbers' => 'Numéros d’image',
