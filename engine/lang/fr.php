@@ -124,7 +124,6 @@ return [
         /* setting name */ 'Background color' => 'Couleur de fond',
         /* help text */    'Color of the Lightbox background layer.' => 'Couleur du calque Lightbox',
         /* setting name */ 'Image numbers' => 'Numéros d’image',
-        /* help text */    'Enables/disables numbers below the image.' => 'Affiche les numéros sous les images',
         /* setting name */ 'Caption alignment' => 'Alignement de la légende',
         /* help text */    'Positioning of the image caption text.' => 'Positionnement du texte de légende.',
         /* setting subcategory */ 'Image gallery appearance:' => 'Apparence de la galerie d’image:',

@@ -124,7 +124,6 @@ return [
         /* setting name */ 'Background color' => 'Background color',
         /* help text */    'Color of the Lightbox background layer.' => 'Color van de Lightbox background laag.',
         /* setting name */ 'Image numbers' => 'Image numbers',
-        /* help text */    'Enables/disables numbers below the image.' => 'Zet de nummering onder de afbeeldingen aan/uit',
         /* setting name */ 'Caption alignment' => 'Caption alignment',
         /* help text */    'Positioning of the image caption text.' => 'Positionering van de image caption tekst.',
         /* setting subcategory */ 'Image gallery appearance:' => 'Image gallery appearance:',

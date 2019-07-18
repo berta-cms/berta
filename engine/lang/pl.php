@@ -124,7 +124,6 @@ return [
     /* setting name */ 'Background color' => 'Kolor tła',
     /* help text */    'Color of the Lightbox background layer.' => 'Kolor tła Lightbox (biała/czarna/żadna)',
     /* setting name */ 'Image numbers' => 'Cyfry pod obrazem',
-    /* help text */    'Enables/disables numbers below the image.' => 'Włączyć/wyłączyć cyfry pod obrazem',
     /* setting name */ 'Caption alignment' => 'Pozycja napisu',
     /* help text */    'Positioning of the image caption text.' => 'Pozycja napisu obrazu',
     /* setting subcategory */ 'Image gallery appearance:' => 'Wygląd galerii obrazów:',

@@ -126,7 +126,7 @@ return [
     /* setting name */ 'Background color' => 'fona krāsa',
     /* help text */    'Color of the Lightbox background layer.' => 'Lightbox fona krāsa (balts/melns/nekāda)',
     /* setting name */ 'Image numbers' => 'Cipari zem attēla',
-    /* help text */    'Enables/disables numbers below the image.' => 'Ieslēgt/izslēgt ciparus zem attēla',
+    /* help text */    'Enables/disables Lightbox slide numbers.' => 'Ieslēgt/izslēgt Lightbox slaida numurus.',
     /* setting name */ 'Caption alignment' => 'Paskaidrojuma teksta pozīcija',
     /* help text */    'Positioning of the image caption text.' => 'Paskaidrojuma (caption) teksta pozīcija',
     /* setting subcategory */ 'Image gallery appearance:' => 'Attēlu galerijas izskats:',

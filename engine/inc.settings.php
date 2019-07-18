@@ -95,7 +95,7 @@ $settingsDefinition = [
         'group_lightbox' => ['format' => false, 'default' => false, 'title' => I18n::_('Lightbox settings:')],
         'galleryFullScreenDefault' => ['format' => 'select', 'default' => 'yes', 'values' => ['yes', 'no'], 'title' => I18n::_('Is enabled by default'), 'description' => I18n::_('Enables Lightbox mode for new entries.')],
         'galleryFullScreenBackground' => ['format' => 'select', 'default' => 'black', 'values' => ['black', 'white'], 'title' => I18n::_('Background color'), 'description' => I18n::_('Color of the Lightbox background layer.')],
-        'galleryFullScreenImageNumbers' => ['format' => 'select', 'default' => 'yes', 'values' => ['yes', 'no'], 'title' => I18n::_('Image numbers'), 'description' => I18n::_('Enables/disables numbers below the image.')],
+        'galleryFullScreenImageNumbers' => ['format' => 'select', 'default' => 'yes', 'values' => ['yes', 'no'], 'title' => I18n::_('Image numbers'), 'description' => I18n::_('Enables/disables Lightbox slide numbers.')],
         'galleryFullScreenCaptionAlign' => ['format' => 'select', 'default' => 'left', 'values' => ['left', 'right', 'center'], 'title' => I18n::_('Caption alignment'), 'description' => I18n::_('Positioning of the image caption text.')],
         'group_gallery' => ['format' => false, 'default' => false, 'title' => I18n::_('Image gallery appearance:')],
         'gallerySlideshowAutoRewind' => ['format' => 'select', 'default' => 'no', 'values' => ['yes', 'no'], 'title' => I18n::_('Auto-rewind gallery slideshow'), 'description' => I18n::_('Display the first image after clicking on the last image in galleries that are in slideshow mode.')],

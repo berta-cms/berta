@@ -124,7 +124,6 @@ return [
         /* setting name */ 'Background color' => 'Цвет фона',
         /* help text */    'Color of the Lightbox background layer.' => 'Цвет фона всплывающего окна(белый/черный/отсутствует)',
         /* setting name */ 'Image numbers' => 'Нумерация изображений',
-        /* help text */    'Enables/disables numbers below the image.' => 'Включить/выключить нумерацию изображений',
         /* setting name */ 'Caption alignment' => 'Положение описания',
         /* help text */    'Positioning of the image caption text.' => 'Положение описания изображения',
         /* setting subcategory */ 'Image gallery appearance:' => 'Вид галереи:',
