@@ -3,18 +3,15 @@
   z-index: 100001;
 }
 
+.pswp__button,
 .pswp__button--arrow--left:before,
 .pswp__button--arrow--right:before {
-  top: 33px;
-  background-image: url('/engine/layout/swiper-arrow.svg');
-  background-position: center center;
-  background-size: auto;
-  width: 35px;
-  height: 35px;
+  background-image: url('/engine/layout/photoswipe-theme-black.svg');
 }
 
-.pswp__button--arrow--right:before {
-  transform: rotate(180deg);
+.pswp__button--arrow--left,
+.pswp__button--arrow--right {
+  background: none;
 }
 
 .pswp .xGalleryItemType-video {
@@ -43,4 +40,63 @@
   .bt-auto-responsive .pswp img {
     max-width: none;
   }
+}
+
+/* Browser supports SVG and resolution is more than 105dpi */
+@media (-webkit-min-device-pixel-ratio: 1.1),
+(min-resolution: 105dpi),
+(min-resolution: 1.1dppx) {
+  .pswp--svg .pswp__button,
+  .pswp--svg .pswp__button--arrow--left:before,
+  .pswp--svg .pswp__button--arrow--right:before {
+      background-image: url('/engine/layout/photoswipe-theme-black.svg');
+  }
+
+  .pswp.theme-white .pswp--svg .pswp__button,
+  .pswp.theme-white .pswp--svg .pswp__button--arrow--left:before,
+  .pswp.theme-white .pswp--svg .pswp__button--arrow--right:before {
+      background-image: url('/engine/layout/photoswipe-theme-white.svg');
+  }
+
+  .pswp--svg .pswp__button--arrow--left,
+  .pswp--svg .pswp__button--arrow--right,
+  .pswp.theme-white .pswp--svg .pswp__button--arrow--left,
+  .pswp.theme-white .pswp--svg .pswp__button--arrow--right{
+    background: none;
+  }
+}
+
+
+/* White theme */
+.pswp.theme-white .pswp__bg {
+  background-color: #fff;
+}
+
+.pswp.theme-white .pswp__button,
+.pswp.theme-white .pswp__button--arrow--left:before,
+.pswp.theme-white .pswp__button--arrow--right:before {
+  background-image: url('/engine/layout/photoswipe-theme-white.svg');
+}
+
+.pswp.theme-white .pswp__button--arrow--left,
+.pswp.theme-white .pswp__button--arrow--right {
+  background: none;
+}
+
+.pswp.theme-white .pswp__button--arrow--left:before,
+.pswp.theme-white .pswp__button--arrow--right:before,
+.pswp.theme-white .pswp__ui--fit .pswp__top-bar,
+.pswp.theme-white .pswp__ui--fit .pswp__caption {
+  background-color: rgba(255, 255, 255, .3);
+}
+
+.pswp.theme-white .pswp__counter,
+.pswp.theme-white .pswp__caption small,
+.pswp.theme-white .pswp__caption__center {
+  color: #000;
+}
+
+.pswp.theme-white .pswp__top-bar,
+.pswp.theme-white .pswp__caption {
+  background-color: rgba(255, 255, 255, .5);
 }

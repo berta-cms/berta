@@ -94,7 +94,7 @@ $settingsDefinition = [
         '_' => ['title' => I18n::_('Entry layout')],
         'group_lightbox' => ['format' => false, 'default' => false, 'title' => I18n::_('Lightbox settings:')],
         'galleryFullScreenDefault' => ['format' => 'select', 'default' => 'yes', 'values' => ['yes', 'no'], 'title' => I18n::_('Is enabled by default'), 'description' => I18n::_('Enables Lightbox mode for new entries.')],
-        'galleryFullScreenBackground' => ['format' => 'select', 'default' => 'black', 'values' => ['black', 'white', 'none'], 'title' => I18n::_('Background color'), 'description' => I18n::_('Color of the Lightbox background layer.')],
+        'galleryFullScreenBackground' => ['format' => 'select', 'default' => 'black', 'values' => ['black', 'white'], 'title' => I18n::_('Background color'), 'description' => I18n::_('Color of the Lightbox background layer.')],
         'galleryFullScreenFrame' => ['format' => 'select', 'default' => 'no', 'values' => ['yes', 'no'], 'title' => I18n::_('Image frame'), 'description' => I18n::_('Enables/Disables a frame around image.')],
         'galleryFullScreenCloseText' => ['format' => 'text', 'allow_blank' => true, 'default' => 'x', 'title' => I18n::_('Close button'), 'description' => I18n::_('&quot;Close&quot; symbol. You can enter your own.')],
         'galleryFullScreenImageNumbers' => ['format' => 'select', 'default' => 'yes', 'values' => ['yes', 'no'], 'title' => I18n::_('Image numbers'), 'description' => I18n::_('Enables/disables numbers below the image.')],
