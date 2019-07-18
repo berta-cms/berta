@@ -47,7 +47,6 @@ export interface SiteSettingsSiteResponse {
     hideBertaCopyright?: string;
     googleAnalyticsId?: string;
     googleSiteVerification?: string;
-    flashUploadEnabled?: string;
     jsInclude?: string;
   };
   entryLayout?: {

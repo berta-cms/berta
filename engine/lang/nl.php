@@ -159,8 +159,6 @@ return [
         /* setting name */ 'Google Analytics ID' => 'ID Google Analytics',
         /* setting name */ 'Google site verification tag' => 'Google site verification tag',
         /* help text */    'The ID of the <a href="http://google.com/analytics" target="_blank">Google Analytics</a> site profile. To obtain an ID, register in <a href="http://google.com/analytics" target="_blank">Google Analytics</a> and create a profile for your site.' => 'De ID van de Google Analytics site profile (bijvoorbeeld: <em>UA-1234567-12</em>). Om een eigen ID te krijgen moet je je hier  <a href="http://google.com/analytics" target="_blank">Google Analytics</a> registreren en een profiel aanmaken voor jouw site.',
-        /* setting name */ 'Advanced file uploading enabled' => 'Advanced file upload aanzetten',
-        /* help text */    'Set if the advanced uploading features (selecting multiple files at once, asynchronous uploading) are enabled. You should not disable them UNLESS you are experiencing problems with file uploads.' => 'Dit staat standaard aan. Hiermee kun je meerdere bestanden uploaden of asynchroon uploaden. Niet uitzetten tenzij je problemen met uploaden hebt.',
 
     // Translations from entries view (and editing)
 
