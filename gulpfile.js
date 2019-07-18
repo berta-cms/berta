@@ -69,6 +69,7 @@ var js_backend_files = [
   'engine/_lib/mootools/mootools-1.2.5.1-more-delegation.js',
   'engine/_lib/mootools/Element.Data.js',
   'engine/_lib/picturefill/picturefill.min.js',
+  'engine/_lib/milkbox/js/milkbox.js',
   'engine/js/berta.helpers.js',
   'engine/js/BertaGallerySlideshow.js',
   'engine/js/BertaGalleryRow.js',
