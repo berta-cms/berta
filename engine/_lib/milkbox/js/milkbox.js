@@ -734,7 +734,6 @@ var Milkbox = new Class({
 
 		this.bottom.adopt(this.navigation, this.description, new Element('div',{'class':'mbClear'}));
 		this.close = new Element('a',{'id':'mbCloseLink'});
-		this.close.set('text', bertaGlobalOptions.galleryFullScreenCloseText);
 		this.next = new Element('a',{'id':'mbNextLink'});
 		this.next.set('text', '>');
 		this.prev = new Element('a',{'id':'mbPrevLink'});

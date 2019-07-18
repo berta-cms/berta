@@ -51,7 +51,6 @@ use App\Sites\Sections\SiteSectionsDataService;
  *     <galleryFullScreenCaptionAlign><![CDATA[left]]></galleryFullScreenCaptionAlign>
  *     <galleryFullScreenDefault><![CDATA[yes]]></galleryFullScreenDefault>
  *     <galleryFullScreenBackground><![CDATA[black]]></galleryFullScreenBackground>
- *     <galleryFullScreenCloseText><![CDATA[x]]></galleryFullScreenCloseText>
  *     <galleryFullScreenImageNumbers><![CDATA[yes]]></galleryFullScreenImageNumbers>
  *     <gallerySlideshowAutoRewind><![CDATA[no]]></gallerySlideshowAutoRewind>
  *     <gallerySlideNumberVisibilityDefault><![CDATA[yes]]></gallerySlideNumberVisibilityDefault>
@@ -167,7 +166,6 @@ class SiteSettingsDataService extends Storage
                     'galleryFullScreenCaptionAlign' => ['type' => 'string'],
                     'galleryFullScreenDefault' => ['type' => 'string'],
                     'galleryFullScreenBackground' => ['type' => 'string'],
-                    'galleryFullScreenCloseText' => ['type' => 'string'],
                     'galleryFullScreenImageNumbers' => ['type' => 'string'],
                     'gallerySlideshowAutoRewind' => ['type' => 'string'],
                     'gallerySlideNumberVisibilityDefault' => ['type' => 'string'],

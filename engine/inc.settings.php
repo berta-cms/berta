@@ -95,7 +95,6 @@ $settingsDefinition = [
         'group_lightbox' => ['format' => false, 'default' => false, 'title' => I18n::_('Lightbox settings:')],
         'galleryFullScreenDefault' => ['format' => 'select', 'default' => 'yes', 'values' => ['yes', 'no'], 'title' => I18n::_('Is enabled by default'), 'description' => I18n::_('Enables Lightbox mode for new entries.')],
         'galleryFullScreenBackground' => ['format' => 'select', 'default' => 'black', 'values' => ['black', 'white'], 'title' => I18n::_('Background color'), 'description' => I18n::_('Color of the Lightbox background layer.')],
-        'galleryFullScreenCloseText' => ['format' => 'text', 'allow_blank' => true, 'default' => 'x', 'title' => I18n::_('Close button'), 'description' => I18n::_('&quot;Close&quot; symbol. You can enter your own.')],
         'galleryFullScreenImageNumbers' => ['format' => 'select', 'default' => 'yes', 'values' => ['yes', 'no'], 'title' => I18n::_('Image numbers'), 'description' => I18n::_('Enables/disables numbers below the image.')],
         'galleryFullScreenCaptionAlign' => ['format' => 'select', 'default' => 'left', 'values' => ['left', 'right', 'center'], 'title' => I18n::_('Caption alignment'), 'description' => I18n::_('Positioning of the image caption text.')],
         'group_gallery' => ['format' => false, 'default' => false, 'title' => I18n::_('Image gallery appearance:')],

@@ -123,8 +123,6 @@ return [
         /* help text */    'Enables Lightbox mode for new entries.' => 'Zet Lightbox mode voor nieuwe Entries aan.',
         /* setting name */ 'Background color' => 'Background color',
         /* help text */    'Color of the Lightbox background layer.' => 'Color van de Lightbox background laag.',
-        /* setting name */ 'Close button' => 'Close button',
-        /* help text */    '&quot;Close&quot; symbol. You can enter your own.' => 'Symbool of tekst om de lightbox te sluiten. Je kan hier jouw eigen tekst of symbool invoegen',
         /* setting name */ 'Image numbers' => 'Image numbers',
         /* help text */    'Enables/disables numbers below the image.' => 'Zet de nummering onder de afbeeldingen aan/uit',
         /* setting name */ 'Caption alignment' => 'Caption alignment',

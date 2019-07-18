@@ -123,8 +123,6 @@ return [
     /* help text */    'Enables Lightbox mode for new entries.' => 'Włącza  tryb Lightbox dla nowych wpisów.',
     /* setting name */ 'Background color' => 'Kolor tła',
     /* help text */    'Color of the Lightbox background layer.' => 'Kolor tła Lightbox (biała/czarna/żadna)',
-    /* setting name */ 'Close button' => 'Przycisk wyłączenia',
-    /* help text */    '&quot;Close&quot; symbol. You can enter your own.' => 'Przycisk "wyłączenia". Możesz wprowadzić dowolny przycisk.',
     /* setting name */ 'Image numbers' => 'Cyfry pod obrazem',
     /* help text */    'Enables/disables numbers below the image.' => 'Włączyć/wyłączyć cyfry pod obrazem',
     /* setting name */ 'Caption alignment' => 'Pozycja napisu',
