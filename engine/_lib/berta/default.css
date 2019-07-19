@@ -94,7 +94,8 @@ br.clear { clear: both; }
 .bt-back-to-top {
   position: fixed;
   z-index: 100001;
-  display: inline-block;
+  display: none;
+  opacity: 0;
   bottom: 30px;
   right: 30px;
 }
