@@ -101,6 +101,8 @@ return [
     /* help text */    'Choose "no" to hide the menu in first section.' => 'Izvēlies "No", lai paslēptu izvēlni pirmajā sadaļā.',
     /* setting name */ 'Always auto-select a submenu item?' => 'Automātiski izvēlēties pirmo apakšizvēlni?',
     /* help text */    'Choose "yes" to automatically select the first submenu item when clicking on a menu item. This works only when there is a submenu.' => 'Izvēlies "Yes" un pēc izvēlnes iezīmēšanas automātiski tiks izvēlēta apakšizvēlne.',
+    /* setting name */ 'Enable navigation to page top' => 'Atļaut navigāciju uz lapas sākumu',
+    /* help text */    'Shows navigation button at the bottom when page is scrolled.' => 'Rāda navigācijas pogu, kad lapa tiek ritināta.',
 
     /* setting name */ 'Favicon' => 'Favicon',
     /* help text */    'Small picture to display in the address bar of the browser. The file must be in .ICO format and 16x16 pixels big.' => '16x16 pikseļu attēls, kurš atrodams pretī adrešu laukam pārlūkprogrammā. Failam jābūt .ICO formātā.',

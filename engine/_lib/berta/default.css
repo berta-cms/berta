@@ -91,6 +91,13 @@ br.clear { clear: both; }
     margin: 0 0 0;
 }
 
+.bt-back-to-top {
+  position: fixed;
+  z-index: 100001;
+  display: inline-block;
+  bottom: 30px;
+  right: 30px;
+}
 
 /* filled background */
 #xFilledBackground {

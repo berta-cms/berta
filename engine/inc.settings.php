@@ -70,6 +70,7 @@ $settingsDefinition = [
         'landingSectionPageHeadingVisible' => ['format' => 'select', 'default' => 'yes', 'values' => ['yes', 'no'], 'title' => I18n::_('Show page heading in first section?'), 'description' => I18n::_('Choose "no" to hide page heading in first section.')],
         'landingSectionMenuVisible' => ['format' => 'select', 'default' => 'yes', 'values' => ['yes', 'no'], 'title' => I18n::_('Show menu in first section?'), 'description' => I18n::_('Choose "no" to hide the menu in first section.')],
         'alwaysSelectTag' => ['format' => 'select', 'default' => 'yes', 'values' => ['yes', 'no'], 'title' => I18n::_('Always auto-select a submenu item?'), 'description' => I18n::_('Choose "yes" to automatically select the first submenu item when clicking on a menu item. This works only when there is a submenu.')],
+        'backToTopEnabled' => ['format' => 'select', 'default' => 'no', 'values' => ['yes', 'no'], 'title' => I18n::_('Enable navigation to page top'), 'description' => I18n::_('Shows navigation button at the bottom when page is scrolled.')],
     ],
 
     'pageLayout' => [
