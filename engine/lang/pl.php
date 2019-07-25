@@ -132,8 +132,6 @@ return [
     /* setting name */ 'Caption alignment' => 'Pozycja napisu',
     /* help text */    'Positioning of the image caption text.' => 'Pozycja napisu obrazu',
     /* setting subcategory */ 'Image gallery appearance:' => 'Wygląd galerii obrazów:',
-    /* setting name */ 'Auto-rewind gallery slideshow' => 'Wrócić na początek galerii',
-    /* help text */    'Display the first image after clicking on the last image in galleries that are in slideshow mode.' => 'W trybie pokazu slajdów pierwszy obraz pojawia się po ostatnim.',
     /* setting name */      'Show slideshow image numbers' => 'Pokazywać numery obrazów w pokazie slajdów',
     /* help text */         'Set the default state of image number visibility in slideshow galleries.' => 'Ustanawia, czy domyślnie pokazywać numery obrazów w galeriach pokazów slajdów.',
     /* setting name */ 'Video player' => 'Wygląd video player',
