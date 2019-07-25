@@ -177,7 +177,7 @@ var BertaGallerySlideshow = new Class({
           if (!this.slides.length) {
             return;
           }
-          var slide = this.slides[this.realIndex];
+          var slide = this.slides[this.activeIndex];
           var isImageSlide = slide.getElement('.xGalleryItemType-image') !== null;
           this.$el[0].setAttribute('data-slide-type', isImageSlide ? 'image' : 'video');
         });
