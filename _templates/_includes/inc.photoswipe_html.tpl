@@ -34,7 +34,7 @@
                 </button>
 
                 <div class="pswp__caption">
-                    <div class="pswp__caption__center"></div>
+                    <div class="pswp__caption__center align-{$berta.settings.entryLayout.galleryFullScreenCaptionAlign}"></div>
                 </div>
             </div>
         </div>

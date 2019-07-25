@@ -41,6 +41,14 @@
   display: block;
 }
 
+.pswp__caption__center.align-center {
+  text-align: center;
+}
+
+.pswp__caption__center.align-right {
+  text-align: right;
+}
+
 /* small tablet */
 @media (max-width: 767px) {
 
