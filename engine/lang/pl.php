@@ -149,8 +149,6 @@ return [
     /* setting tab */ 'Other settings' => 'Różne',
     /* setting name */ 'Google Analytics ID' => 'Google Analytics ID',
     /* help text */    'The ID of the Google Analytics site profile (example: <em>UA-1234567-12</em>). To obtain an ID, register in <a href="http://google.com/analytics" target="_blank">Google Analytics</a> and create a profile for your site.' => 'Numer Google Analytics. Idź do <a href="http://google.com/analytics" target="_blank">Google Analytics</a>, laby stworzyć swój profil oraz uzyskać swój ID (na przykład: <em>UA-1234567-12</em>)',
-    /* setting name */ 'Advanced file uploading enabled' => 'Ulepszone wysyłanie plików',
-    /* help text */    'Set if the advanced uploading features (selecting multiple files at once, asynchronous uploading) are enabled. You should not disable them UNLESS you are experiencing problems with file uploads.' => 'Zapewnia możliwość wysyłania kilka plików jednocześnie. Wybierz "No" tylko wtedy, jeżeli są problemy z wysyłaniem plików.',
 
     // Translations from entries view (and editing)
 

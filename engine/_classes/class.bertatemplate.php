@@ -360,7 +360,6 @@ class BertaTemplate extends BertaBase
             'templateName' => $this->name,
             'environment' => $this->environment,
             'backToTopEnabled' => $this->settings->get('navigation', 'backToTopEnabled'),
-            'flashUploadEnabled' => $this->settings->get('settings', 'flashUploadEnabled') == 'yes' ? 'true' : 'false',
             'slideshowAutoRewind' => $this->settings->get('entryLayout', 'gallerySlideshowAutoRewind'),
             'sectionType' => $vars['berta']['section']['type'],
             'gridStep' => $this->settings->get('pageLayout', 'gridStep'),

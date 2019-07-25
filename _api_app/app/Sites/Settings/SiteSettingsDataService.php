@@ -40,11 +40,9 @@ use App\Sites\Sections\SiteSectionsDataService;
  *     <metaDescription><![CDATA[My personal website]]></metaDescription>
  *   </texts>
  *   <settings>
- *     <showTutorialVideos><![CDATA[no]]></showTutorialVideos>
  *     <hideBertaCopyright><![CDATA[yes]]></hideBertaCopyright>
  *     <googleAnalyticsId><![CDATA[123]]></googleAnalyticsId>
  *     <googleSiteVerification><![CDATA[&lt;meta name=&quot;google-site-verification&quot; content=&quot;xyz&quot; /&gt;]]></googleSiteVerification>
- *     <flashUploadEnabled><![CDATA[yes]]></flashUploadEnabled>
  *     <jsInclude><![CDATA[&lt;script&gt;<br />var b = 2;<br />&lt;/script&gt;]]></jsInclude>
  *   </settings>
  *   <entryLayout>
@@ -154,11 +152,9 @@ class SiteSettingsDataService extends Storage
             'settings' => [
                 'type' => 'object',
                 'properties' => [
-                    'showTutorialVideos' => ['type' => 'string'],
                     'hideBertaCopyright' => ['type' => 'string'],
                     'googleAnalyticsId' => ['type' => 'string'],
                     'googleSiteVerification' => ['type' => 'string'],
-                    'flashUploadEnabled' => ['type' => 'string'],
                     'jsInclude' => ['type' => 'string'],
                 ],
             ],
