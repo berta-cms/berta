@@ -148,8 +148,6 @@ return [
         /* setting name */ 'Google Analytics ID' => 'ID Google Analytics',
         /* setting name */ 'Google site verification tag' => 'Balise META de vérification Google',
         /* help text */    'The ID of the Google Analytics site profile (example: <em>UA-1234567-12</em>). To obtain an ID, register in <a href="http://google.com/analytics" target="_blank">Google Analytics</a> and create a profile for your site.' => 'L’identifiant de votre compte Google Analytics (exemple : <em>UA-1234567-12</em>). Pour obtenir un identifiant, enregistrez vous sur <a href="http://google.com/analytics" target="_blank">Google Analytics</a> et créez un profil pour votre site.',
-        /* setting name */ 'Advanced file uploading enabled' => 'Activer le mode de téléchargement avancé',
-        /* help text */    'Set if the advanced uploading features (selecting multiple files at once, asynchronous uploading) are enabled. You should not disable them UNLESS you are experiencing problems with file uploads.' => 'Activé si les fonctions avancées de téléchargement sont disponibles (multi-fichiers, chargement asynchrone). Ne désactiver que si vous rencontrez des problèmes lors du téléchargement de fichiers.',
 
     // Translations from entries view (and editing)
 

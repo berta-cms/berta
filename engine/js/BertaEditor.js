@@ -426,8 +426,7 @@ var BertaEditor = new Class({
     var bgEditorContainer = $('xBgEditorPanelContainer');
 
     var bBgEditor = new BertaBgEditor(bgEditorContainer, {
-      engineRoot: this.options.paths.engineRoot,
-      flashUploadEnabled: this.options.flashUploadEnabled
+      engineRoot: this.options.paths.engineRoot
     });
 
 
@@ -471,8 +470,7 @@ var BertaEditor = new Class({
 
       // instantiate the gallery editor
       var bGEditor = new BertaGalleryEditor(galleryContainer, {
-        engineRoot: this.options.paths.engineRoot,
-        flashUploadEnabled: this.options.flashUploadEnabled
+        engineRoot: this.options.paths.engineRoot
       });
       //this.processHandler.addObservable(bGEditor);
       this.galleryEditors.push(bGEditor);

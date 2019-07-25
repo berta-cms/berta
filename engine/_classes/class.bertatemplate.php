@@ -359,7 +359,6 @@ class BertaTemplate extends BertaBase
         $jsSettings = [
             'templateName' => $this->name,
             'environment' => $this->environment,
-            'flashUploadEnabled' => $this->settings->get('settings', 'flashUploadEnabled') == 'yes' ? 'true' : 'false',
             'slideshowAutoRewind' => $this->settings->get('entryLayout', 'gallerySlideshowAutoRewind'),
             'sectionType' => $vars['berta']['section']['type'],
             'gridStep' => $this->settings->get('pageLayout', 'gridStep'),
