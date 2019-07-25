@@ -196,30 +196,6 @@ div.xGalleryItem {
     display: block;
 }
 
-/* Make sure it's on top of everything */
-.pswp {
-  z-index: 100001;
-}
-
-.pswp .xGalleryItemType-video {
-  display: flex;
-  height: 100%;
-}
-
-.pswp video {
-  max-width: 100%;
-  width: 100%;
-}
-
-.bt-responsive .pswp img,
-.bt-auto-responsive .pswp img {
-  max-width: none;
-}
-
-.pswp .xGalleryImageCaption {
-  display: block;
-}
-
 /* helpers */
 
 .clearfix { zoom: 1; }
@@ -266,10 +242,5 @@ div.xGalleryItem {
     .portfolioThumbnail:nth-child(3n+1),
     .portfolioThumbnail:nth-child(2n+1) {
         clear: none;
-    }
-
-    .bt-responsive .pswp img,
-    .bt-auto-responsive .pswp img {
-      max-width: none;
     }
 }

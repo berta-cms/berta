@@ -44,8 +44,6 @@
         <galleryFullScreenCaptionAlign><![CDATA[left]]></galleryFullScreenCaptionAlign>
         <galleryFullScreenDefault><![CDATA[yes]]></galleryFullScreenDefault>
         <galleryFullScreenBackground><![CDATA[black]]></galleryFullScreenBackground>
-        <galleryFullScreenFrame><![CDATA[no]]></galleryFullScreenFrame>
-        <galleryFullScreenCloseText><![CDATA[x]]></galleryFullScreenCloseText>
         <galleryFullScreenImageNumbers><![CDATA[yes]]></galleryFullScreenImageNumbers>
         <gallerySlideshowAutoRewind><![CDATA[no]]></gallerySlideshowAutoRewind>
         <gallerySlideNumberVisibilityDefault><![CDATA[yes]]></gallerySlideNumberVisibilityDefault>

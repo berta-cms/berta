@@ -34,6 +34,7 @@ var BertaGalleryFullscreen = function (galleryEl, slideIndex) {
 
   var options = {
     index: slideIndex,
+    counterEl: bertaGlobalOptions.galleryFullScreenImageNumbers === 'yes',
     shareButtons: [
       {id:'facebook', label:'Share on Facebook', url:'https://www.facebook.com/sharer/sharer.php?u={{url}}'},
       {id:'twitter', label:'Tweet', url:'https://twitter.com/intent/tweet?text={{text}}&url={{url}}'},

@@ -726,12 +726,6 @@ var Milkbox = new Class({
 			this.overlay.setStyle('background-color','#fff');
 		}
 		this.center = new Element('div', {'id':'mbCenter', 'styles':{'width':this.options.initialWidth,'height':this.options.initialHeight,'marginLeft':-(this.options.initialWidth/2),'opacity':0, 'visibility': 'hidden' }}).inject($(document.body));
-		if (bertaGlobalOptions.galleryFullScreenFrame=='no'){
-			if (bertaGlobalOptions.galleryFullScreenBackground=='black'){
-				this.center.addClass('milkbox_theme_white');
-			}
-		}
-
 		this.canvas = new Element('div', {'id':'mbCanvas'}).inject(this.center);
 		this.bottom = new Element('div',{'id':'mbBottom'}).inject(this.center).setStyle('visibility','hidden');
 		this.bottom.setStyle('text-align',bertaGlobalOptions.galleryFullScreenCaptionAlign);
@@ -740,7 +734,6 @@ var Milkbox = new Class({
 
 		this.bottom.adopt(this.navigation, this.description, new Element('div',{'class':'mbClear'}));
 		this.close = new Element('a',{'id':'mbCloseLink'});
-		this.close.set('text', bertaGlobalOptions.galleryFullScreenCloseText);
 		this.next = new Element('a',{'id':'mbNextLink'});
 		this.next.set('text', '>');
 		this.prev = new Element('a',{'id':'mbPrevLink'});

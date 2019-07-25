@@ -54,8 +54,6 @@ export interface SiteSettingsSiteResponse {
     galleryFullScreenCaptionAlign?: string;
     galleryFullScreenDefault?: string;
     galleryFullScreenBackground?: string;
-    galleryFullScreenFrame?: string;
-    galleryFullScreenCloseText?: string;
     galleryFullScreenImageNumbers?: string;
     gallerySlideshowAutoRewind?: string;
     gallerySlideNumberVisibilityDefault?: string;
