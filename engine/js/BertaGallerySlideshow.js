@@ -93,17 +93,6 @@ var BertaGallerySlideshow = new Class({
         var swiperEl = this.imageContainer.getElement('.swiper-container');
         var videos = [];
 
-        swiperEl.getElements('.swiper-slide').each(function (slide, i) {
-          var video = slide.getElement('video');
-          if (video) {
-            videos[i] = video;
-            video.addEventListener('loadeddata', function reloadSwiper(e) {
-              this.gallerySwiper.update();
-              e.target.removeEventListener(e.type, reloadSwiper);
-            }.bindWithEvent(this), false);
-          }
-        }, this);
-
         var loadVideo = function (video) {
           if (video.data('autoplay')) {
             video.muted = true;
@@ -144,24 +133,6 @@ var BertaGallerySlideshow = new Class({
           navigation: {
             nextEl: swiperEl.getElement('.swiper-button-next'),
             prevEl: swiperEl.getElement('.swiper-button-prev')
-          },
-          on: {
-            init: function () {
-              if (videos[this.realIndex]) {
-                loadVideo(videos[this.realIndex]);
-              }
-            },
-            slideChange: function () {
-              if (videos[this.previousIndex]) {
-                unLoadVideo(videos[this.previousIndex]);
-              }
-
-              if (videos[this.realIndex]) {
-                loadVideo(videos[this.realIndex]);
-              }
-
-              nav_highlightItem(navContainer.getElements('li')[this.realIndex]);
-            }
           }
         };
 
@@ -173,6 +144,23 @@ var BertaGallerySlideshow = new Class({
 
         this.gallerySwiper = new Swiper(swiperEl, swiperOptions);
 
+        this.gallerySwiper.on('init', function () {
+          swiperEl.getElements('.swiper-slide').each(function (slide, i) {
+            var video = slide.getElement('video');
+            if (video) {
+              videos[i] = video;
+              video.addEventListener('loadeddata', function reloadSwiper(e) {
+                this.update();
+                e.target.removeEventListener(e.type, reloadSwiper);
+              }.bindWithEvent(this), false);
+            }
+          }, this);
+
+          if (videos[this.activeIndex]) {
+            loadVideo(videos[this.activeIndex]);
+          }
+        });
+
         this.gallerySwiper.on('init slideChange resize', function () {
           if (!this.slides.length) {
             return;
@@ -180,6 +168,18 @@ var BertaGallerySlideshow = new Class({
           var slide = this.slides[this.activeIndex];
           var isImageSlide = slide.getElement('.xGalleryItemType-image') !== null;
           this.$el[0].setAttribute('data-slide-type', isImageSlide ? 'image' : 'video');
+        });
+
+        this.gallerySwiper.on('slideChange', function () {
+          if (videos[this.previousIndex]) {
+            unLoadVideo(videos[this.previousIndex]);
+          }
+
+          if (videos[this.activeIndex]) {
+            loadVideo(videos[this.activeIndex]);
+          }
+
+          nav_highlightItem(navContainer.getElements('li')[this.realIndex]);
         });
 
         this.gallerySwiper.init();
