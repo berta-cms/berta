@@ -127,8 +127,6 @@ return [
         /* setting name */ 'Caption alignment' => 'Alignement de la légende',
         /* help text */    'Positioning of the image caption text.' => 'Positionnement du texte de légende.',
         /* setting subcategory */ 'Image gallery appearance:' => 'Apparence de la galerie d’image:',
-        /* setting name */ 'Auto-rewind gallery slideshow' => 'Slideshow continu',
-        /* help text */    'Display the first image after clicking on the last image in galleries that are in slideshow mode.' => 'Affiche la première image après avoir cliqué sur la dernière dans le mode slideshow.',
         /* setting name */ 'Video player' => 'Lecteur vidéo',
         /* help text */    'Choose between the two visually different players for your video files.' => 'Choisissez parmie les deux lecteurs pour la lecture de vos vidéos.',
 

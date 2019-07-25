@@ -129,6 +129,7 @@ var BertaGallerySlideshow = new Class({
 
         var swiperOptions = {
           init: false,
+          loop: bertaGlobalOptions.slideshowAutoRewind === 'yes' && !this.isRowFallback,
           centeredSlides: this.isRowFallback,
           slidesPerView: this.isRowFallback ? 'auto' : 1,
           spaceBetween: this.isRowFallback ? 10 : 0,
@@ -146,8 +147,8 @@ var BertaGallerySlideshow = new Class({
           },
           on: {
             init: function () {
-              if (videos[this.activeIndex]) {
-                loadVideo(videos[this.activeIndex]);
+              if (videos[this.realIndex]) {
+                loadVideo(videos[this.realIndex]);
               }
             },
             slideChange: function () {
@@ -155,11 +156,11 @@ var BertaGallerySlideshow = new Class({
                 unLoadVideo(videos[this.previousIndex]);
               }
 
-              if (videos[this.activeIndex]) {
-                loadVideo(videos[this.activeIndex]);
+              if (videos[this.realIndex]) {
+                loadVideo(videos[this.realIndex]);
               }
 
-              nav_highlightItem(navContainer.getElements('li')[this.activeIndex]);
+              nav_highlightItem(navContainer.getElements('li')[this.realIndex]);
             }
           }
         };
@@ -176,7 +177,7 @@ var BertaGallerySlideshow = new Class({
           if (!this.slides.length) {
             return;
           }
-          var slide = this.slides[this.activeIndex];
+          var slide = this.slides[this.realIndex];
           var isImageSlide = slide.getElement('.xGalleryItemType-image') !== null;
           this.$el[0].setAttribute('data-slide-type', isImageSlide ? 'image' : 'video');
         });
@@ -217,7 +218,7 @@ var BertaGallerySlideshow = new Class({
 
     var li = linkElement.getParent('li');
     this.nav_highlightItem(li);
-    this.gallerySwiper.slideTo(linkElement.getClassStoredValue('xImgIndex') - 1);
+    this.gallerySwiper.slideTo(parseInt(linkElement.getClassStoredValue('xImgIndex') - (this.gallerySwiper.params.loop ? 0 : 1), 10));
   },
 
   nav_highlightItem: function (liElement) {

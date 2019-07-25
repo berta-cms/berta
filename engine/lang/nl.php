@@ -127,8 +127,6 @@ return [
         /* setting name */ 'Caption alignment' => 'Caption alignment',
         /* help text */    'Positioning of the image caption text.' => 'Positionering van de image caption tekst.',
         /* setting subcategory */ 'Image gallery appearance:' => 'Image gallery appearance:',
-        /* setting name */ 'Auto-rewind gallery slideshow' => 'Slideshow loop',
-        /* help text */    'Display the first image after clicking on the last image in galleries that are in slideshow mode.' => 'Toon de eerste afbeelding na het klikken op de laatste afbeelding van een gallery in slideshow mode.',
         /* setting name */ 'Show slideshow image numbers' => 'Show slideshow image numbers',
         /* help text */    'Set the default state of image number visibility in slideshow galleries.' => 'Zijn de image numbers zichtbaar in de slide show?',
         /* setting name */ 'Video player' => 'Video player',

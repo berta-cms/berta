@@ -127,8 +127,6 @@ return [
         /* setting name */ 'Caption alignment' => 'Положение описания',
         /* help text */    'Positioning of the image caption text.' => 'Положение описания изображения',
         /* setting subcategory */ 'Image gallery appearance:' => 'Вид галереи:',
-        /* setting name */ 'Auto-rewind gallery slideshow' => 'Вернуться в начало галереи',
-        /* help text */    'Display the first image after clicking on the last image in galleries that are in slideshow mode.' => 'Переходить к первому изображению после нажатия на последнее в режиме слайдов.',
         /* setting name */      'Show slideshow image numbers' => 'Отображать нумерацию изображения',
         /* help text */         'Set the default state of image number visibility in slideshow galleries.' => 'Отображает нумерацию изображений в галереях по умолчанию.',
         /* setting name */ 'Video player' => 'Вид видео проигрывателя',

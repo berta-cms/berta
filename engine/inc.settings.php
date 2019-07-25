@@ -98,7 +98,7 @@ $settingsDefinition = [
         'galleryFullScreenImageNumbers' => ['format' => 'select', 'default' => 'yes', 'values' => ['yes', 'no'], 'title' => I18n::_('Image numbers'), 'description' => I18n::_('Enables/disables Lightbox slide numbers.')],
         'galleryFullScreenCaptionAlign' => ['format' => 'select', 'default' => 'left', 'values' => ['left', 'right', 'center'], 'title' => I18n::_('Caption alignment'), 'description' => I18n::_('Positioning of the image caption text.')],
         'group_gallery' => ['format' => false, 'default' => false, 'title' => I18n::_('Image gallery appearance:')],
-        'gallerySlideshowAutoRewind' => ['format' => 'select', 'default' => 'no', 'values' => ['yes', 'no'], 'title' => I18n::_('Auto-rewind gallery slideshow'), 'description' => I18n::_('Display the first image after clicking on the last image in galleries that are in slideshow mode.')],
+        'gallerySlideshowAutoRewind' => ['format' => 'select', 'default' => 'no', 'values' => ['yes', 'no'], 'title' => I18n::_('Slideshow loop mode')],
         'gallerySlideNumberVisibilityDefault' => ['format' => 'select', 'default' => 'yes', 'values' => ['yes', 'no'], 'title' => I18n::_('Show slideshow image numbers'), 'description' => I18n::_('Set the default state of image number visibility in slideshow galleries.')],
     ],
 
