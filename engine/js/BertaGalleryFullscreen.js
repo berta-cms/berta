@@ -36,6 +36,7 @@ var BertaGalleryFullscreen = function (galleryEl, slideIndex) {
     index: slideIndex,
     counterEl: bertaGlobalOptions.galleryFullScreenImageNumbers === 'yes',
     history: false,
+    clickToCloseNonZoomable: false,
     shareButtons: [
       {id:'facebook', label:'Share on Facebook', url:'https://www.facebook.com/sharer/sharer.php?u={{url}}'},
       {id:'twitter', label:'Tweet', url:'https://twitter.com/intent/tweet?text={{text}}&url={{url}}'},
