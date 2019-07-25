@@ -2,6 +2,7 @@ var BertaGalleryFullscreen = function (galleryEl, slideIndex) {
   var slides = [];
 
   var items = galleryEl.querySelectorAll('.xGalleryItem');
+  var isLoopSlideshow = galleryEl.querySelector('[data-swiper-slide-index]') !== null;
 
   galleryEl.querySelectorAll('.xGalleryNav a').forEach(function (item, i) {
     var slide;
@@ -25,7 +26,7 @@ var BertaGalleryFullscreen = function (galleryEl, slideIndex) {
     // Video slide
     } else {
       slide = {
-        html: items[i].outerHTML
+        html: items[i + (isLoopSlideshow ? 1 : 0)].outerHTML
       };
     }
 
