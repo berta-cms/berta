@@ -359,6 +359,7 @@ class BertaTemplate extends BertaBase
         $jsSettings = [
             'templateName' => $this->name,
             'environment' => $this->environment,
+            'backToTopEnabled' => $this->settings->get('navigation', 'backToTopEnabled'),
             'slideshowAutoRewind' => $this->settings->get('entryLayout', 'gallerySlideshowAutoRewind'),
             'sectionType' => $vars['berta']['section']['type'],
             'gridStep' => $this->settings->get('pageLayout', 'gridStep'),
