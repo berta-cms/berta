@@ -96,9 +96,14 @@ br.clear { clear: both; }
   z-index: 100001;
   display: none;
   opacity: 0;
-  bottom: 5px;
+  bottom: 10px;
   right: 10px;
-  padding: 10px;
+  width: 24px;
+  height: 24px;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 50%;
+  text-align: center;
+  line-height: 1.7;
   transition: opacity .2s ease-in;
 }
 
