@@ -9,6 +9,14 @@
   background-image: url('/engine/layout/photoswipe-theme-black.svg');
 }
 
+.pswp__button--arrow--left:before,
+.pswp__button--arrow--right:before {
+  border-radius: 50%;
+  top: 34px;
+  height: 32px;
+  background-size: 264px 90px;
+}
+
 .pswp__button--arrow--left,
 .pswp__button--arrow--right {
   background: none;
