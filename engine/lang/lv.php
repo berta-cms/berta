@@ -101,6 +101,8 @@ return [
     /* help text */    'Choose "no" to hide the menu in first section.' => 'Izvēlies "No", lai paslēptu izvēlni pirmajā sadaļā.',
     /* setting name */ 'Always auto-select a submenu item?' => 'Automātiski izvēlēties pirmo apakšizvēlni?',
     /* help text */    'Choose "yes" to automatically select the first submenu item when clicking on a menu item. This works only when there is a submenu.' => 'Izvēlies "Yes" un pēc izvēlnes iezīmēšanas automātiski tiks izvēlēta apakšizvēlne.',
+    /* setting name */ 'Enable navigation to page top' => 'Atļaut navigāciju uz lapas sākumu',
+    /* help text */    'Shows navigation button at the bottom when page is scrolled.' => 'Rāda navigācijas pogu, kad lapa tiek ritināta.',
 
     /* setting name */ 'Favicon' => 'Favicon',
     /* help text */    'Small picture to display in the address bar of the browser. The file must be in .ICO format and 16x16 pixels big.' => '16x16 pikseļu attēls, kurš atrodams pretī adrešu laukam pārlūkprogrammā. Failam jābūt .ICO formātā.',
@@ -146,8 +148,6 @@ return [
     /* setting tab */ 'Other settings' => 'Dažādi',
     /* setting name */ 'Google Analytics ID' => 'Google Analytics ID',
     /* help text */    'The ID of the Google Analytics site profile (example: <em>UA-1234567-12</em>). To obtain an ID, register in <a href="http://google.com/analytics" target="_blank">Google Analytics</a> and create a profile for your site.' => 'Google Analytics numurs. Dodies uz <a href="http://google.com/analytics" target="_blank">Google Analytics</a>, lai izveidotu savu profilu un iegūtu savu ID (piemēram: <em>UA-1234567-12</em>)',
-    /* setting name */ 'Advanced file uploading enabled' => 'Uzlabotā failu augšup-lādēšana',
-    /* help text */    'Set if the advanced uploading features (selecting multiple files at once, asynchronous uploading) are enabled. You should not disable them UNLESS you are experiencing problems with file uploads.' => 'Nodrošina iespēju augšuplēdēt vairākus failus vienlaicīgi. Izvēlies "No" tikai tad, ja ir problēmas ar attēlu augšuplādi.',
 
     // Translations from entries view (and editing)
 

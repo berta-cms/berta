@@ -191,6 +191,8 @@
 
   { include file="../_includes/inc.photoswipe_html.tpl" }
 
+  { include file="../_includes/inc.back_to_top.tpl" }
+
   { intercomScript }
 
 	{ include file="../_includes/inc.js_include.tpl" }

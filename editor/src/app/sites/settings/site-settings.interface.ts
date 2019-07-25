@@ -43,11 +43,9 @@ export interface SiteSettingsSiteResponse {
     metaDescription?: string;
   };
   settings?: {
-    showTutorialVideos?: string;
     hideBertaCopyright?: string;
     googleAnalyticsId?: string;
     googleSiteVerification?: string;
-    flashUploadEnabled?: string;
     jsInclude?: string;
   };
   entryLayout?: {

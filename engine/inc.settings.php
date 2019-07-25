@@ -70,6 +70,7 @@ $settingsDefinition = [
         'landingSectionPageHeadingVisible' => ['format' => 'select', 'default' => 'yes', 'values' => ['yes', 'no'], 'title' => I18n::_('Show page heading in first section?'), 'description' => I18n::_('Choose "no" to hide page heading in first section.')],
         'landingSectionMenuVisible' => ['format' => 'select', 'default' => 'yes', 'values' => ['yes', 'no'], 'title' => I18n::_('Show menu in first section?'), 'description' => I18n::_('Choose "no" to hide the menu in first section.')],
         'alwaysSelectTag' => ['format' => 'select', 'default' => 'yes', 'values' => ['yes', 'no'], 'title' => I18n::_('Always auto-select a submenu item?'), 'description' => I18n::_('Choose "yes" to automatically select the first submenu item when clicking on a menu item. This works only when there is a submenu.')],
+        'backToTopEnabled' => ['format' => 'select', 'default' => 'no', 'values' => ['yes', 'no'], 'title' => I18n::_('Enable navigation to page top'), 'description' => I18n::_('Shows navigation button at the bottom when page is scrolled.')],
     ],
 
     'pageLayout' => [
@@ -178,8 +179,6 @@ $settingsDefinition = [
         '_' => ['title' => I18n::_('Other settings')],
         'googleAnalyticsId' => ['format' => 'text', 'allow_blank' => true, 'default' => '', 'html_entities' => true, 'title' => I18n::_('Google Analytics ID'), 'validator' => 'GoogleAnalytics', 'description' => I18n::_('The ID of the <a href="http://google.com/analytics" target="_blank">Google Analytics</a> site profile. To obtain an ID, register in <a href="http://google.com/analytics" target="_blank">Google Analytics</a> and create a profile for your site.')],
         'googleSiteVerification' => ['format' => 'text', 'allow_blank' => true, 'default' => '', 'html_entities' => true, 'title' => I18n::_('Google site verification tag'), 'description' => I18n::_('Google ownership verification <meta> tag. <a href="http://support.google.com/a/bin/answer.py?hl=en&answer=186017" target="_blank">More info</a>.')],
-        'flashUploadEnabled' => ['format' => 'select', 'allow_blank' => false, 'default' => 'yes', 'values' => ['yes', 'no'], 'title' => I18n::_('Advanced file uploading enabled'), 'description' => I18n::_('Set if the advanced uploading features (selecting multiple files at once, asynchronous uploading) are enabled. You should not disable them UNLESS you are experiencing problems with file uploads.')],
-        'showTutorialVideos' => ['format' => 'select', 'default' => 'yes', 'values' => ['yes', 'no'], 'title' => I18n::_('Show videos on startup'), 'description' => I18n::_('Show or hide Berta\'s tutorial videos on startup. To view the videos, set this to \'Yes\' and they will appear next time you log in.')],
         'jsInclude' => ['format' => 'longtext', 'allow_blank' => true, 'default' => '', 'html_entities' => true, 'title' => I18n::_('Javascript include'), 'description' => I18n::_('javascript_include')],
     ],
 ];
