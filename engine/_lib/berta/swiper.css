@@ -10,8 +10,25 @@
   height: 100%;
   margin-top: 0;
   background-size: auto;
-  transition: opacity .2s;
+  transition: opacity .2s ease-in;
   background-image: url('/engine/layout/swiper-arrow.svg');
+  outline: none;
+}
+
+.swiper-button-next:focus,
+.swiper-button-prev:focus {
+  outline: none;
+}
+
+[data-slide-type="video"] .swiper-button-next,
+[data-slide-type="video"] .swiper-button-prev {
+  background-position: center bottom;
+  height: 50%;
+  padding-top: 17px;
+}
+
+[data-slide-type="video"] .swiper-button-next {
+  background-position: center top;
 }
 
 .swiper-button-next.swiper-button-disabled,
