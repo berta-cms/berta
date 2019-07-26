@@ -164,24 +164,27 @@ var BertaGallerySlideshow = new Class({
         }.bindWithEvent(this));
 
         this.gallerySwiper.on('init slideChange resize', function () {
-          if (!this.slides.length) {
+          var gallerySwiper = this;
+
+          if (!gallerySwiper.slides.length) {
             return;
           }
-          var slide = this.slides[this.activeIndex];
+          var slide = gallerySwiper.slides[gallerySwiper.activeIndex];
           var isImageSlide = slide.getElement('.xGalleryItemType-image') !== null;
-          this.$el[0].setAttribute('data-slide-type', isImageSlide ? 'image' : 'video');
+          gallerySwiper.$el[0].setAttribute('data-slide-type', isImageSlide ? 'image' : 'video');
         });
 
         this.gallerySwiper.on('slideChange', function () {
-          if (videos[this.previousIndex]) {
-            unLoadVideo(videos[this.previousIndex]);
+          var gallerySwiper = this;
+          if (videos[gallerySwiper.previousIndex]) {
+            unLoadVideo(videos[gallerySwiper.previousIndex]);
           }
 
-          if (videos[this.activeIndex]) {
-            loadVideo(videos[this.activeIndex]);
+          if (videos[gallerySwiper.activeIndex]) {
+            loadVideo(videos[gallerySwiper.activeIndex]);
           }
 
-          nav_highlightItem(navContainer.getElements('li')[this.realIndex]);
+          nav_highlightItem(navContainer.getElements('li')[gallerySwiper.realIndex]);
         });
 
         this.gallerySwiper.init();
