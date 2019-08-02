@@ -24,7 +24,7 @@ var BertaGallerySlideshow = new Class({
     this.container = container;
     var fallbackGallery = this.container.getPrevious();
     this.isRowFallback = fallbackGallery && fallbackGallery.hasClass('xGalleryType-row') ? true : false;
-    this.fullscreen = this.container.getParent().getElement('div.xFullscreen') !== null;
+    this.fullscreen = this.container.get('data-fullscreen') !== null;
     this.imageContainer = this.container.getElement('div.xGallery');
     this.navContainer = this.container.getElement('ul.xGalleryNav');
 
@@ -55,59 +55,8 @@ var BertaGallerySlideshow = new Class({
       this.autoplay = parseInt(this.container.getClassStoredValue('xGalleryAutoPlay'), 10);
 
       if (this.fullscreen || this.getNext()) {
-        var galleryId = this.container.getParent().getClassStoredValue('xEntryId');
-        var imageItems = this.imageContainer.getElements('.xGalleryItemType-image');
-        this.imageContainer.getElements('.xGalleryItem').each(function (galleryItem, i) {
-          if (!(this.isRowFallback || this.fullscreen)) {
-            return;
-          }
-
-          if (this.fullscreen) {
-            galleryItem.setStyle('cursor', 'pointer');
-          }
-
-          galleryItem.addEvent('click', function () {
-            // Row gallery slideshow fallback prev/next navigation
-            // for partly visible slides
-            if (this.isRowFallback) {
-              var isNextEl = galleryItem.getParent('.swiper-slide-next');
-              if (isNextEl) {
-                this.gallerySwiper.slideNext();
-                return;
-              }
-
-              var isPrevEl = galleryItem.getParent('.swiper-slide-prev');
-              if (isPrevEl) {
-                this.gallerySwiper.slidePrev();
-                return;
-              }
-            }
-
-            if (galleryItem.hasClass('xGalleryItemType-video')) {
-              return;
-            }
-
-            var ImgIndex = imageItems.indexOf(galleryItem);
-            milkbox.showGallery({
-              gallery: 'gallery-' + galleryId,
-              index: ImgIndex
-            });
-          }.bindWithEvent(this));
-        }, this);
-
         var swiperEl = this.imageContainer.getElement('.swiper-container');
         var videos = [];
-
-        swiperEl.getElements('.swiper-slide').each(function (slide, i) {
-          var video = slide.getElement('video');
-          if (video) {
-            videos[i] = video;
-            video.addEventListener('loadeddata', function reloadSwiper(e) {
-              this.gallerySwiper.update();
-              e.target.removeEventListener(e.type, reloadSwiper);
-            }.bindWithEvent(this), false);
-          }
-        }, this);
 
         var loadVideo = function (video) {
           if (video.data('autoplay')) {
@@ -133,6 +82,8 @@ var BertaGallerySlideshow = new Class({
         }
 
         var swiperOptions = {
+          init: false,
+          loop: bertaGlobalOptions.slideshowAutoRewind === 'yes' && !this.isRowFallback,
           centeredSlides: this.isRowFallback,
           slidesPerView: this.isRowFallback ? 'auto' : 1,
           spaceBetween: this.isRowFallback ? 10 : 0,
@@ -147,24 +98,6 @@ var BertaGallerySlideshow = new Class({
           navigation: {
             nextEl: swiperEl.getElement('.swiper-button-next'),
             prevEl: swiperEl.getElement('.swiper-button-prev')
-          },
-          on: {
-            init: function () {
-              if (videos[this.activeIndex]) {
-                loadVideo(videos[this.activeIndex]);
-              }
-            },
-            slideChange: function () {
-              if (videos[this.previousIndex]) {
-                unLoadVideo(videos[this.previousIndex]);
-              }
-
-              if (videos[this.activeIndex]) {
-                loadVideo(videos[this.activeIndex]);
-              }
-
-              nav_highlightItem(navContainer.getElements('li')[this.activeIndex]);
-            }
           }
         };
 
@@ -175,6 +108,86 @@ var BertaGallerySlideshow = new Class({
         }
 
         this.gallerySwiper = new Swiper(swiperEl, swiperOptions);
+
+        this.gallerySwiper.on('init', function () {
+          this.imageContainer.querySelectorAll('.xGalleryItem').forEach(function (galleryItem, i) {
+
+            if (!(this.isRowFallback || this.fullscreen)) {
+              return;
+            }
+
+            if (this.fullscreen) {
+              galleryItem.style.cursor = 'pointer';
+            }
+
+            galleryItem.addEventListener('click', function() {
+              // Row gallery slideshow fallback prev/next navigation
+              // for partly visible slides
+              if (this.isRowFallback) {
+                var isNextEl = galleryItem.parentNode.classList.contains('swiper-slide-next');
+                if (isNextEl) {
+                  this.gallerySwiper.slideNext();
+                  return;
+                }
+
+                var isPrevEl = galleryItem.parentNode.classList.contains('swiper-slide-prev');
+                if (isPrevEl) {
+                  this.gallerySwiper.slidePrev();
+                  return;
+                }
+              }
+
+              if (galleryItem.classList.contains('xGalleryItemType-video')) {
+                return;
+              }
+
+              var index = this.gallerySwiper.params.loop ? parseInt(galleryItem.parentNode.getAttribute('data-swiper-slide-index'), 10) : i;
+              BertaGalleryFullscreen(this.container, index);
+
+            }.bind(this));
+          }, this);
+
+          swiperEl.querySelectorAll('.swiper-slide').forEach(function (slide, i) {
+            var video = slide.querySelector('video');
+            if (video) {
+              videos[i] = video;
+              video.addEventListener('loadeddata', function reloadSwiper(e) {
+                this.gallerySwiper.update();
+                e.target.removeEventListener(e.type, reloadSwiper);
+              }.bind(this), false);
+            }
+          }, this);
+
+          if (videos[this.gallerySwiper.activeIndex]) {
+            loadVideo(videos[this.gallerySwiper.activeIndex]);
+          }
+        }.bind(this));
+
+        this.gallerySwiper.on('init slideChange resize', function () {
+          var gallerySwiper = this;
+
+          if (!gallerySwiper.slides.length) {
+            return;
+          }
+          var slide = gallerySwiper.slides[gallerySwiper.activeIndex];
+          var isImageSlide = slide.querySelector('.xGalleryItemType-image') !== null;
+          gallerySwiper.$el[0].setAttribute('data-slide-type', isImageSlide ? 'image' : 'video');
+        });
+
+        this.gallerySwiper.on('slideChange', function () {
+          var gallerySwiper = this;
+          if (videos[gallerySwiper.previousIndex]) {
+            unLoadVideo(videos[gallerySwiper.previousIndex]);
+          }
+
+          if (videos[gallerySwiper.activeIndex]) {
+            loadVideo(videos[gallerySwiper.activeIndex]);
+          }
+
+          nav_highlightItem(navContainer.querySelectorAll('li')[gallerySwiper.realIndex]);
+        });
+
+        this.gallerySwiper.init();
         this.nav_setEvents();
       }
     }
@@ -210,7 +223,7 @@ var BertaGallerySlideshow = new Class({
 
     var li = linkElement.getParent('li');
     this.nav_highlightItem(li);
-    this.gallerySwiper.slideTo(linkElement.getClassStoredValue('xImgIndex') - 1);
+    this.gallerySwiper.slideTo(parseInt(linkElement.getClassStoredValue('xImgIndex') - (this.gallerySwiper.params.loop ? 0 : 1), 10));
   },
 
   nav_highlightItem: function (liElement) {

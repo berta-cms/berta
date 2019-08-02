@@ -189,6 +189,8 @@
 
 	</div>
 
+  { include file="../_includes/inc.photoswipe_html.tpl" }
+
   { include file="../_includes/inc.back_to_top.tpl" }
 
   { intercomScript }

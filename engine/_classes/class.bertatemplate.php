@@ -364,10 +364,7 @@ class BertaTemplate extends BertaBase
             'sectionType' => $vars['berta']['section']['type'],
             'gridStep' => $this->settings->get('pageLayout', 'gridStep'),
             'galleryFullScreenBackground' => $this->settings->get('entryLayout', 'galleryFullScreenBackground'),
-            'galleryFullScreenFrame' => $this->settings->get('entryLayout', 'galleryFullScreenFrame'),
-            'galleryFullScreenCloseText' => $this->settings->get('entryLayout', 'galleryFullScreenCloseText'),
             'galleryFullScreenImageNumbers' => $this->settings->get('entryLayout', 'galleryFullScreenImageNumbers'),
-            'galleryFullScreenCaptionAlign' => $this->settings->get('entryLayout', 'galleryFullScreenCaptionAlign'),
             'paths' => [
                 'engineRoot' => htmlspecialchars(self::$options['ENGINE_ROOT_URL']),
                 'engineABSRoot' => htmlspecialchars($engineAbsRoot),
