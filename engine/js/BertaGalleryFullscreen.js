@@ -34,6 +34,7 @@ var BertaGalleryFullscreen = function (galleryEl, slideIndex) {
   });
 
   var options = {
+    loop: bertaGlobalOptions.slideshowAutoRewind === 'yes',
     index: slideIndex,
     counterEl: bertaGlobalOptions.galleryFullScreenImageNumbers === 'yes',
     history: false,
