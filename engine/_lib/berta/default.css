@@ -102,9 +102,9 @@ br.clear { clear: both; }
   height: 24px;
   background: rgba(0, 0, 0, 0.3);
   border-radius: 50%;
-  text-align: center;
-  line-height: 1.7;
   transition: opacity .2s ease-in;
+  align-items: center;
+  justify-content: center;
 }
 
 .bt-back-to-top.show {

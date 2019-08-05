@@ -18,7 +18,7 @@ var BertaBackToTop = function () {
   var showTimeout;
 
   var show = function () {
-    button.style.display = 'block';
+    button.style.display = 'flex';
     button.classList.add('show');
 
     clearTimeout(showTimeout);
