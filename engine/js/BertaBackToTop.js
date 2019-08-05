@@ -1,4 +1,8 @@
 var BertaBackToTop = function () {
+  if (bertaGlobalOptions.backToTopEnabled !== 'yes') {
+    return;
+  }
+
   var button = document.querySelector('.js-back-to-top');
   if (!button) {
     return;
