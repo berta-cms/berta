@@ -1,4 +1,8 @@
 var BertaBackToTop = function () {
+  if (bertaGlobalOptions.backToTopEnabled !== 'yes') {
+    return;
+  }
+
   var button = document.querySelector('.js-back-to-top');
   if (!button) {
     return;
@@ -14,7 +18,7 @@ var BertaBackToTop = function () {
   var showTimeout;
 
   var show = function () {
-    button.style.display = 'block';
+    button.style.display = 'flex';
     button.classList.add('show');
 
     clearTimeout(showTimeout);
