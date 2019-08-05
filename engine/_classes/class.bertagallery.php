@@ -313,11 +313,11 @@ class BertaGallery extends BertaBase
             $height_large = $height_original;
 
             if ($imgs[$i]['@attributes']['type'] == 'image') {
-                $imageTargetWidth = $berta->template->settings->get('media', 'imagesLargeWidth', false, true);
-                $imageTargetHeight = $berta->template->settings->get('media', 'imagesLargeHeight', false, true);
+                $imageTargetWidthLarge = $berta->template->settings->get('media', 'imagesLargeWidth', false, true);
+                $imageTargetHeightLarge = $berta->template->settings->get('media', 'imagesLargeHeight', false, true);
 
-                if ($width_original && $height_original && $imageTargetWidth && $imageTargetHeight && ($width_original >= $imageTargetWidth || $height_original >= $imageTargetHeight)) {
-                    list($width_large, $height_large) = self::fitInBounds($width_original, $height_original, $imageTargetWidth, $imageTargetHeight);
+                if ($width_original && $height_original && $imageTargetWidthLarge && $imageTargetHeightLarge && ($width_original >= $imageTargetWidthLarge || $height_original >= $imageTargetHeightLarge)) {
+                    list($width_large, $height_large) = self::fitInBounds($width_original, $height_original, $imageTargetWidthLarge, $imageTargetHeightLarge);
                     $src_large = $mFolderABS . self::getResizedSrc($mFolder, $src_original, $width_large, $height_large);
                 }
             }
