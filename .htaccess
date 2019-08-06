@@ -18,7 +18,6 @@
 
 RewriteEngine on
 
-
 # CHANGABLE PART - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  \
 
 # *** 	Change the "/" to the name of the folder where you uploaded berta.
@@ -26,18 +25,32 @@ RewriteEngine on
 #		subfolder berta of the www root of your web server.
 RewriteBase /
 
-# ***   In the following RewriteCond statements, change the part "^/" to include
-#       the name of the foler you uploaded berta to.
-#       E.g.: "^/berta/" (without quotes), if you uploaded berta to the
-#       subfolder berta of the www root of your web server.
+RewriteRule ^(plans-pricing)/$ /plans/ [R=301,L]
+RewriteRule ^(what-s-berta)/$ /about/ [R=301,L]
+RewriteRule ^(berta-shop)/$ /shop-plugin/ [R=301,L]
+RewriteRule ^(features|about-templates|try-it-out)/$ / [R=301,L]
 
-RewriteCond %{REQUEST_URI} !^(.*)/$
-RewriteRule engine/hosting$ - [F,L]
+RewriteCond %{HTTP_HOST} ^berta.lv [NC,OR]
+RewriteCond %{HTTP_HOST} ^www.berta.lv [NC,OR]
+RewriteCond %{HTTP_HOST} ^freeberta.com [NC,OR]
+RewriteCond %{HTTP_HOST} ^www.freeberta.com [NC,OR]
+RewriteCond %{HTTP_HOST} ^berta.hungrylab.lv [NC,OR]
+RewriteCond %{HTTP_HOST} ^www.berta.hungrylab.lv [NC,OR]
+RewriteCond %{HTTP_HOST} ^berta.hungry.lv [NC,OR]
+RewriteCond %{HTTP_HOST} ^www.berta.hungry.lv [NC]
+RewriteRule ^(.*)$ https://berta.me/$1 [R=301,NC,L]
+
+# ***	In the following RewriteCond statements, change the part "^/" to include
+#		the name of the foler you uploaded berta to.
+#		E.g.: "^/berta/" (without quotes), if you uploaded berta to the
+#		subfolder berta of the www root of your web server.
 
 # If you have folders or files inside berta's folder you wish to access directly,
 # then modify and uncomment the following line
-# RewriteCond %{REQUEST_URI} ^/(my_folder_name1|my_folder_name1|my_file.html).*$    [OR]
-RewriteCond %{REQUEST_URI} ^/(_plugin_shop|engine|INSTALL|storage|_templates).*$    [OR]
+# RewriteCond %{REQUEST_URI} ^/(my_folder_name1|my_folder_name1|my_file.html).*$	[OR]
+RewriteCond %{REQUEST_URI} ^/(dragall|releases|_berta|test|new|test_new|forum|news_ticker.php).*$	[OR]
+RewriteCond %{REQUEST_URI} ^/(uldis|googleb66b3d33fc1a4cf3.html).*$	[OR]
+RewriteCond %{REQUEST_URI} ^/(engine|INSTALL|storage|_templates).*$	[OR]
 RewriteCond %{REQUEST_URI} ^/(index\.php|sitemap\.xml\.php|robots\.txt|crossdomain\.xml|favicon\.ico).*$
 
 RewriteRule .* - [L]
