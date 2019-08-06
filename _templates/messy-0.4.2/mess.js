@@ -336,8 +336,9 @@ var MessyMess = new Class({
     },
 
     showCoverGallery: function(coverGallery, slides) {
-    	var navigation = $$('.navigation');
-    	var navigationBackgroundColor = navigation[0].getStyle('background-color');
+        var navigation = $$('.navigation');
+        var navigationBackgroundColor = navigation[0].getStyle('background-color');
+        var menuToggle = $('menuToggle');
         var slidesCount = slides.length;
         var autoplay = coverGallery.get('data-autoplay');
         var animationDuration = 400;
@@ -430,7 +431,7 @@ var MessyMess = new Class({
         $(window).addEvent('scroll', function() {
         	var scrollY = this.getScroll().y;
 
-        	if (scrollY > 20) {
+        	if (scrollY > 20 || menuToggle.hasClass('active')) {
 				navigation.removeClass('noBackground');
         	}else{
         		navigation.addClass('noBackground');

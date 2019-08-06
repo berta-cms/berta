@@ -191,7 +191,8 @@ var Berta = new Class({
 		}
 
 	    var responsiveMenu = function() {
-	        var menuToggle = $('menuToggle');
+			var menuToggle = $('menuToggle');
+			var navigation = $$('.navigation');
 
 	        if ( menuToggle ) {
 	            var objSlide = menuToggle.getNext();
@@ -200,7 +201,11 @@ var Berta = new Class({
 	            menuToggle.addEvent('click', function(e){
 	                e.preventDefault();
 	                objSlide.toggleClass('active');
-	                this.toggleClass('active');
+					this.toggleClass('active');
+
+					if (this.hasClass('active') && navigation.hasClass('noBackground')) {
+						navigation.removeClass('noBackground');
+					}
 	            });
 
 	            window.addEvent('resize', function(){
@@ -210,7 +215,7 @@ var Berta = new Class({
 		                    objSlide.show();
 		                // small tablet
 		                }else{
-		                    menuToggle.removeClass('active');
+							menuToggle.removeClass('active');
 		                    objSlide.removeClass('active');
 		                }
 	            	}

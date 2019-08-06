@@ -50,19 +50,19 @@ a:visited {
 	display: inline-block;
 	padding: 0.4em 1em;
 	color: white;
-	background: #1a1a1a;
-	border: 2px solid #1a1a1a;
+	background: #0023ff;
+	border: 2px solid #0023ff;
 	border-radius: 3px;
 	text-decoration: none;
 	text-shadow: none;
-	text-transform: uppercase;
+	/* text-transform: uppercase; */
 	transition: .2s;
 }
 
 .menuItem.xSection-free-trial a:hover,
 .button:hover {
-	background-color: #000;
-	border-color: #000;
+	background-color: #0023ff;
+	border-color: #0023ff;
 }
 
 .menuItem.xSection-log-in a:link,
@@ -109,12 +109,13 @@ a:visited {
 	left: 0;
 	right: 0;
 	z-index: 1;
-	background-color: #44928c;
+	background-color: #0023ff;
 	-webkit-transition: .4s;
 	transition: .4s;
 }
 
-.navigation.noBackground {
+.navigation.noBackground,
+.navigation.noBackground .contentContainer.xResponsive {
 	background-color: rgba(0,0,0,0);
 }
 
@@ -126,8 +127,12 @@ a:visited {
 	border: 0;
 }
 
+.navigation h1 img {
+	display: block;
+}
+
 .navigation nav {
-	margin: 0.9em;
+	margin: 0.85em;
 	text-align: right;
 }
 
@@ -160,7 +165,7 @@ a:visited {
 
 .xContent-home .covers {
 	position: relative;
-	background-color: #44928c;
+	background-color: #0023ff;
 }
 
 .xContent-home .coversBackground {
@@ -178,7 +183,6 @@ a:visited {
 	max-width: 960px;
 	margin-left: auto;
 	margin-right: auto;
-	padding: 5em 0;
 }
 
 .xContent-home #pageEntries .xEntry h2 {
@@ -188,7 +192,7 @@ a:visited {
 .xContent-home .xCoverId-1 .contentContainer {
 	float: left;
 	width: 40%;
-	padding: 3em 1em;
+	padding: 7em 1em;
 	-webkit-transform: none;
 	-moz-transform: none;
 	-ms-transform: none;
@@ -219,9 +223,10 @@ a:visited {
 }
 
 .xContent-home .xCoverId-1 .entryText h2 {
-	font-size: 2.3em;
+	font-size: 2.2em;
 	line-height: 1.3em;
 	margin: 0;
+	font-weight: normal;
 }
 
 .xContent-home .xCoverId-1 .entryText p {
@@ -229,16 +234,16 @@ a:visited {
 }
 
 .xContent-home .xCoverId-1 .button {
-	margin-top: 3em;
+	margin-top: 1em;
 }
 
 .xContent-home .xCoverId-1 .coverGalleryWrapper {
-	position: relative;
+	position: absolute;
+	bottom: 0;
+	right: 0;
 	float: right;
-	width: 60%;
+	width: 55%;
 	box-sizing: border-box;
-	background: url('/storage/media/macbook.png') no-repeat;
-	background-size: 100%;
 }
 
 .xContent-home .xCoverId-1 .coverGallery {
@@ -247,15 +252,14 @@ a:visited {
 	height: 0;
 	padding: 0;
 	overflow: hidden;
-	padding-bottom: 47.5%;
-	margin: 3.7% auto 8% auto;
+	padding-bottom: 56%;
 	background-color: #000;
 	box-sizing: border-box;
-	width: 76%;
+	width: 100%;
 }
 
 .xContent-home .xCoverId-1 .coverGallery .slide {
-	background-position: top left;
+	background-position: center;
 	box-sizing: border-box;
 	position: absolute;
 	top: 0;
@@ -583,10 +587,11 @@ a:visited {
 	.navigation nav #menuToggle {
 		width: 1.7em;
 		height: auto;
-		padding: .9em .5em;
-		margin: 12px;
+		padding: 1.5em 1.3em;
 		border: 0 none;
 		background: none;
+		position: relative;
+		top: 5px;
 	}
 
 	#menuToggle span,
@@ -614,11 +619,10 @@ a:visited {
 	.navigation nav ul li {
 		text-align: center;
 		margin: 0;
-		border-top: 1px solid #ccc;
 	}
 
 	.navigation nav ul li:last-child {
-		border-bottom: 1px solid #ccc;
+		margin-bottom: 1em;
 	}
 
 	.navigation nav ul li a {
@@ -676,7 +680,6 @@ a:visited {
 	.xContent-home .xCoverId-1 .contentContainer {
 		padding: 0 1em;
 		width: 100%;
-		text-align: center;
 	}
 
 	.xContent-home .xCoverId-1 .entryText h2 {
