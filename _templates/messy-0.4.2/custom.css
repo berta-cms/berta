@@ -24,7 +24,7 @@ h3,
 
 a:link,
 a:visited {
-	border-bottom: 1px solid #b7460c;
+	border-bottom: 1px solid #0023ff;
 }
 
 #allContainer {
@@ -175,7 +175,7 @@ a:visited {
     left: 0;
     right: 0;
 	background-repeat: no-repeat;
-	background-position: center center;
+	background-position: top left;
 	background-size: cover;
 }
 
@@ -192,7 +192,7 @@ a:visited {
 .xContent-home .xCoverId-1 .contentContainer {
 	float: left;
 	width: 40%;
-	padding: 7em 1em;
+	padding: 7em 2em;
 	-webkit-transform: none;
 	-moz-transform: none;
 	-ms-transform: none;
@@ -353,7 +353,7 @@ a:visited {
 }
 
 .xContent-plans #pageEntries .xEntryId-2 span {
-	color: #b7460c;
+	color: #0023ff;
 	position: relative;
 	top: 2px;
 }
@@ -435,10 +435,10 @@ a:visited {
 
 .plan .notes {
 	text-transform: uppercase;
-	color: #b7460c;
+	color: #0023ff;
 	padding: .3em .5em;
 	font-size: .9em;
-	border: 1px solid #b7460c;
+	border: 1px solid #0023ff;
 	font-weight: normal;
 	margin-bottom: .7em;
 }
@@ -525,6 +525,7 @@ a:visited {
 	top: auto !important;
 	right: auto !important;
 	margin: 2em auto 0 auto;
+	padding-top: 1em;
 	max-width: 960px;
 	width: 100%;
 }
@@ -538,6 +539,7 @@ a:visited {
 
 #additionalFooterText {
 	margin: 0;
+	width: 60%;
 }
 
 #additionalFooterText a {
@@ -649,7 +651,7 @@ a:visited {
 	}
 
 	#pageEntries .xEntry {
-		padding: 0 20px 20px 20px;
+		padding: 0 2em 2em 2em;
 	}
 
 	#pageEntries .xEntry h2 {
@@ -674,7 +676,7 @@ a:visited {
 	}
 
 	.xContent-home .xCoverId-1 .contentContainer {
-		padding: 6em 1em 3em;
+		padding: 6em 2em 3em;
 		width: 100%;
 	}
 
@@ -735,8 +737,8 @@ a:visited {
 	}
 
 	.pricing .plan {
-		width: 280px;
-		min-width:280px;
+		width: 264px;
+		min-width:264px;
 		margin: 0 auto;
 		display: block;
 	}
@@ -763,6 +765,10 @@ a:visited {
 		margin: 0 .1em;
 	}
 
+	#bottom {
+		padding-top: .5em;
+		max-width: 100%;
+	}
 }
 
 /* entry layouts */
