@@ -118,6 +118,9 @@ var BertaGalleryEditor = new Class({
     // slide number visibility handle
     this.elementEdit_init(this.container.getElement('.xEntrySlideNumberVisibility'), this.options.xBertaEditorClassSelectRC);
 
+    // galleryWidthByWidestSlide
+    this.elementEdit_init(this.container.getElement('.xGalleryWidthByWidestSlide'), this.options.xBertaEditorClassSelectRC);
+
     // link address handle
     this.elementEdit_init(this.container.getElement('.xEntryLinkAddress'), this.options.xBertaEditorClassRC);
 

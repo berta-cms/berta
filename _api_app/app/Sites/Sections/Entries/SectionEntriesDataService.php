@@ -31,7 +31,7 @@ use App\Shared\Helpers;
  *         <uniqid><![CDATA[5af2bc3d80e13]]></uniqid>
  *         <date><![CDATA[09.05.2018 12:15:41]]></date>
  *         <mediafolder><![CDATA[section-two1]]></mediafolder>
- *         <mediaCacheData type="slideshow" fullscreen="yes" autoplay="5" slide_numbers_visible="yes" link_address="http://example.com" linkTarget="_blank" row_gallery_padding="10px" size="medium">
+ *         <mediaCacheData type="slideshow" fullscreen="yes" autoplay="5" slide_numbers_visible="yes" gallery_width_by_widest_slide="no" link_address="http://example.com" linkTarget="_blank" row_gallery_padding="10px" size="medium">
  *             <file type="video" src="small.mp4" autoplay="1" poster_frame="small.jpg" width="842" height="842"><![CDATA[<p>Video caption</p>]]></file>
  *             <file type="image" src="square11525866927.jpg" width="383" height="655"><![CDATA[<p>Image caption 1</p>]]></file>
  *             <file type="image" src="square6.jpg" width="842" height="842"><![CDATA[<p>Image caption 2</p>]]></file>
@@ -121,6 +121,7 @@ class SectionEntriesDataService extends Storage
                                             'enum' => ['large', 'medium', 'small']
                                         ],
                                         'slide_numbers_visible' => ['type' => 'string', 'enum' => ['yes', 'no']],
+                                        'gallery_width_by_widest_slide' => ['type' => 'string', 'enum' => ['no', 'yes']],
                                         'type' => [
                                             'type' => 'string',
                                             'enum' => ['slideshow', 'row', 'column', 'pile', 'link']
