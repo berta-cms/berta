@@ -1093,7 +1093,9 @@ var BertaEditorBase = new Class({
               el.set('html', resp.update);
             }
 
-            $$('.galleryTypeSettings').addClass('xHidden');
+            if (el.hasClass('xEntrySetGalType')) {
+              $$('.galleryTypeSettings').addClass('xHidden');
+            }
 
             if (newContentText == 'slideshow') {
               el.getSiblings('.xEntrySlideshowSettings').removeClass('xHidden');
