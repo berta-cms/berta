@@ -241,7 +241,9 @@
 
                             { if $cover.mediaCacheData.file }
                                 <div class="coverGalleryWrapper">
-                                    <div class="coverGallery" data-autoplay="{ if isset($cover.mediaCacheData["@attributes"].autoplay) }{ $cover.mediaCacheData["@attributes"].autoplay }{else}5{/if}">
+                                    <div class="coverGallery"
+                                        data-autoplay="{ if isset($cover.mediaCacheData["@attributes"].autoplay) }{ $cover.mediaCacheData["@attributes"].autoplay }{else}5{/if}"
+                                        { if !empty($cover.mediaCacheData["@attributes"].useNextImgAsBg) }data-use-next-img-as-bg="true"{/if}>
                                     {if isset($cover.mediaCacheData.file["@attributes"]) }
                                         {assign var=coverImages value=array($cover.mediaCacheData.file)}
                                     {else}
