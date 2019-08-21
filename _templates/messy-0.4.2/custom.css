@@ -253,13 +253,14 @@ a:visited {
 	padding: 0;
 	overflow: hidden;
 	padding-bottom: 56%;
-	background-color: #000;
+	background-color: transparent;
 	box-sizing: border-box;
 	width: 100%;
 }
 
 .xContent-home .xCoverId-1 .coverGallery .slide {
-	background-position: center;
+	background-position: center bottom;
+	background-size: contain;
 	box-sizing: border-box;
 	position: absolute;
 	top: 0;
