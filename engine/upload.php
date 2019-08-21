@@ -70,7 +70,7 @@ $constraints['max_orig_height'] = $berta->settings->get('media', 'imagesOrigMaxH
 //$constraints['max_orig_width'] = 50;
 //$constraints['max_orig_height'] = 50;
 
-$constraints['max_orig_width'] = 2000;
+$constraints['max_orig_width'] = 3000;
 $constraints['max_orig_height'] = 2000;
 
 // if image is being uploaded for a settings, then different constraints apply
