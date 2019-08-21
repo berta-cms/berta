@@ -341,6 +341,7 @@ var MessyMess = new Class({
         var menuToggle = $('menuToggle');
         var slidesCount = slides.length;
         var autoplay = coverGallery.get('data-autoplay');
+        var useNextImageAsBackground = coverGallery.get('data-use-next-img-as-bg');
         var animationDuration = 400;
         var cover = coverGallery.getParent('.cover');
 
@@ -350,7 +351,11 @@ var MessyMess = new Class({
 
             backgroundImgObj.addEventListener('load', function() {
 
-            	var coverImgSrc = getCoverImgSrc(backgroundImgSrc);
+                var coverImgSrc = getCoverImgSrc(backgroundImgSrc);
+                if (slidesCount > 1 && useNextImageAsBackground) {
+                    var bgSlide = slide.getPrevious();
+                    coverImgSrc = getCoverImgSrc(bgSlide.get('data-image'));
+                }
 
 				new Request({
 					url: coverImgSrc,
