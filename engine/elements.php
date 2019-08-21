@@ -218,7 +218,7 @@ if($jsonRequest) {
 
 				if($cover) {
 
-					$autoPlay = !empty($cover['mediaCacheData']['@attributes']['autoplay']) ? (int) $cover['mediaCacheData']['@attributes']['autoplay'] : 5;
+					$autoPlay = isset($cover['mediaCacheData']['@attributes']['autoplay']) ? (int) $cover['mediaCacheData']['@attributes']['autoplay'] : 5;
 					$useNextImgAsBg = !empty($cover['mediaCacheData']['@attributes']['useNextImgAsBg']) ? ($cover['mediaCacheData']['@attributes']['useNextImgAsBg'] ? 'yes' : 'no') : 'no';
 
 					echo '<div class="xEntryGalleryEditor-wrap"><div class="xEntryGalleryEditor clearfix">';
