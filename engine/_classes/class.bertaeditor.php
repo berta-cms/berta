@@ -802,7 +802,13 @@ class BertaEditor extends BertaContent {
 						}
 					//}
 				}
-		    }
+			}
+
+			// Remve cover image if it exists:
+			$coverImagePath = $folder . 'cover/'. $file;
+			if (file_exists($coverImagePath)) {
+				@unlink($coverImagePath);
+			}
 
 		    closedir($handle);
 		}
