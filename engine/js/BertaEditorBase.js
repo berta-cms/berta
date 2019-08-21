@@ -926,6 +926,11 @@ var BertaEditorBase = new Class({
 									editInitializer.getParent('.xGalleryContainer').removeClass('xSlideNumbersVisible-' + oldValue).addClass('xSlideNumbersVisible-' + resp.update);
 								}
 
+								if(editInitializer.hasClass('xUseNextImgAsBg')) {
+									if(resp.update == 'no') oldValue = 'yes';
+									else oldValue = 'no';
+								}
+
 								// for the RC selects we check:
 								// 1) either the returned update equals the newly set content, which means that the saving was successful
 								if(resp.update == newContent) {
@@ -958,7 +963,10 @@ var BertaEditorBase = new Class({
 									this.entryLayoutStyles(el, resp.update);
 								}
 
-								$$('.galleryTypeSettings').addClass('xHidden');
+								// Don't hide the settings if we're updating cover gallery. Don't know why we're hiding them in the first place
+								if (!editInitializer.hasClass('xUseNextImgAsBg')) {
+									$$('.galleryTypeSettings').addClass('xHidden');
+								}
 
 								//console.debug(newContentText);
 								if(newContentText == 'slideshow') {

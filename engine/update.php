@@ -433,7 +433,14 @@ if($jsonRequest) {
 							}
 							break;
 
-
+						case 'SET_USE_NEXT_IMG_AS_BG':
+							if(empty($e['mediaCacheData']['@attributes'])) $e['mediaCacheData']['@attributes'] = array();
+							if($decoded['params'] == 'yes') {
+								$e['mediaCacheData']['@attributes']['useNextImgAsBg'] = true;
+							} else {
+								$e['mediaCacheData']['@attributes']['useNextImgAsBg'] = false;
+							}
+							break;
 					}
 
 				}else{ // all other properties go straight forward into the xml
