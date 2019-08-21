@@ -320,6 +320,9 @@ if(($entryId && $mediaFolder || $coverId && $mediaFolder ||  $settingsProperty |
 								BertaEditor::saveSections($sectionsToEdit);
 							}
 							elseif ($coverId) { // update cover image cache
+								// create cover image in the `cover/` folder
+								BertaEditor::images_getCoverImageFor($fileFolder . $fName);
+
 								$blog = BertaEditor::loadBlog($sectionName);
 
 								BertaEditor::updateImageCacheForCover($blog, $coverId);

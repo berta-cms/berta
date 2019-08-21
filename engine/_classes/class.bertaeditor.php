@@ -771,6 +771,24 @@ class BertaEditor extends BertaContent {
 		return false;
 	}
 
+	public static function images_getCoverImageFor($imagePath) {
+		$fileName = basename($imagePath);
+		$dirName = dirname($imagePath);
+		if($dirName) $dirName .= '/';
+
+		$coverImagePath = $dirName . 'cover/' . $fileName;
+
+		list($width, $height) = getimagesize($imagePath);
+
+		if(file_exists($coverImagePath)) {
+			return $coverImagePath;
+		} elseif(BertaGallery::createThumbnail($imagePath, $coverImagePath, $width, $height)) {
+			return $coverImagePath;
+		}
+
+		return false;
+	}
+
 
 	public static function images_deleteDerivatives($folder, $file = '') {
 		if($handle = opendir($folder)) {
