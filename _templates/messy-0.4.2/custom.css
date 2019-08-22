@@ -175,10 +175,21 @@ a:hover {
 		border-radius: 3px;
 	}
 
-	#menuToggle:hover span,
-	#menuToggle:hover span:before,
-	#menuToggle:hover span:after {
-		background-color: #ddd;
+	#menuToggle:hover span {
+		opacity: 0.7;
+	}
+
+	#menuToggle.active span {
+		background-color: #fff;
+		opacity: 0.7;
+	}
+	#menuToggle.active span:before,
+	#menuToggle.active span:after {
+		background-color: #fff;
+	}
+
+	#menuToggle.active:hover span {
+		opacity: 1;
 	}
 
 	.navigation nav ul {
