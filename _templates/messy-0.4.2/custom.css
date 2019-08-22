@@ -117,10 +117,8 @@ a:hover {
 	text-decoration: underline;
 }
 
-.menuItem.xSection-free-trial a:link,
-.menuItem.xSection-free-trial a:visited,
-.menuItem.xSection-log-in a:link,
-.menuItem.xSection-log-in a:visited
+.menuItem.xSection-free-trial a,
+.menuItem.xSection-log-in a
  {
 	border-radius: 3px;
 	border: 2px solid #fff;
@@ -185,42 +183,30 @@ a:hover {
 
 	.navigation nav ul {
 		flex-direction: column;
+		align-items: stretch;
+		width: 100%;
 	}
 
-	.navigation nav ul li {
+	.navigation .menuItem {
 		text-align: center;
-		margin: 0;
+		margin: 0 0 .7em 0;
 	}
 
-	.navigation nav ul li:last-child {
+	.navigation .menuItem:last-child {
 		margin-bottom: 1em;
 	}
 
-	.navigation nav ul li a {
+	.menuItem a {
 		display: block;
-		padding: 0.7em;
+		margin: auto;
+		padding: 0.56em;
+		max-width: 80%;
 	}
 
-	.menuItem a:link, .menuItem a:visited {
-		border-bottom: 0;
-	}
-
-	.menuItem.xSection-free-trial a:link,
-	.menuItem.xSection-free-trial a:visited,
-	.menuItem.xSection-log-in a:link,
-	.menuItem.xSection-log-in a:visited {
+	.menuItem.xSection-free-trial a,
+	.menuItem.xSection-log-in a {
 		font-size: 1em;
-		background: none;
-		display: block;
-		padding: 0.7em;
-		color: #fff;
-		border: 0;
-	}
-
-	.menuItem.xSection-free-trial a:link,
-	.menuItem.xSection-free-trial a:visited,
-	.menuItem.xSection-free-trial a:hover {
-		color: #fff;
+		padding: 0.6em;
 	}
 }
 
@@ -254,6 +240,15 @@ a:hover {
 .button.secondary:hover {
 	color: #000;
 	border: 2px solid #000;
+}
+
+.button.info,
+.button.info:link,
+.button.info:visited {
+	color: #fff;
+	background: none;
+	border: 2px solid #fff;
+	text-transform: none;
 }
 
 .button.info:hover {
