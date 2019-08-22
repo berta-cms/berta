@@ -232,6 +232,14 @@ nav ul{
 				text-decoration: <?php echo $s->get('tagsMenu', 'textDecorationActive') ?> !important;
 			}
 
+	.menuItem.menuItemSelected > a,
+	.menuItem.menuItemSelected > span {
+		color: <?php echo $s->get('menu', 'colorActive') ?>;
+		text-decoration: <?php echo $s->get('menu', 'textDecorationActive') ?>;
+	}
+	.menuItem.menuItemSelected > span {
+		cursor: text;
+	}
 
 .covers {
 	margin-bottom: 2em;
