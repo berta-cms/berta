@@ -434,6 +434,14 @@ a:hover {
 	margin-top: 2.5em;
 }
 
+.xContent-happy-websites .xGalleryItem {
+	transition: background-color .2s;
+}
+.xContent-happy-websites .xGalleryItem:hover {
+	background-color: #333333;
+}
+
+
 #pageEntries #more-happy-websites {
 	padding: 0;
 	margin: 0 auto;
