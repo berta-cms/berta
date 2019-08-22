@@ -191,14 +191,6 @@ nav ul{
 		color: <?php echo $s->get('menu', 'colorHover') ?>;
 		text-decoration: <?php echo $s->get('menu', 'textDecorationHover') ?>;
 	}
-	.menuItemSelected>a,
-	.menuItemSelected>span {
-		color: <?php echo $s->get('menu', 'colorActive') ?> !important;
-		text-decoration: <?php echo $s->get('menu', 'textDecorationActive') ?> !important;
-	}
-	.menuItemSelected>span {
-		cursor: text;
-	}
 
 	.menuItem ul {
 		list-style: none;
