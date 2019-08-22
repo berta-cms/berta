@@ -650,22 +650,44 @@ a:hover {
 	width: 960px;
 }
 
-#bottom a:link,
-#bottom a:visited {
-	color: #999;
-	text-decoration: none;
-	border: 0;
-}
+/** Footer navigation  */
 
 #additionalFooterText {
 	margin: 0;
 	width: 60%;
 }
 
-#additionalFooterText a {
+.xProperty-additionalFooterText a {
+	color: #999;
+	border: 0;
 	display: inline-block;
 	margin-right: 2em;
+	text-decoration: none;
+	transition: .2s;
 }
+
+.xProperty-additionalFooterText a:hover {
+	text-decoration: underline;
+}
+
+.xProperty-additionalFooterText ~ p a {
+	color: #999;
+	border: 0;
+	text-decoration: none;
+	transition: .2s;
+}
+
+.xProperty-additionalFooterText ~ p span {
+	border-radius: 50%;
+	transition: background .2s;
+}
+
+.xProperty-additionalFooterText ~ p a:hover span {
+	color: #fff;
+	background-color: #999;
+}
+
+/* --- */
 
 #bertaCopyright {
 	margin: 0;
