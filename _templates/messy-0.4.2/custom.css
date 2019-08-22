@@ -527,8 +527,8 @@ a:visited {
 	right: auto !important;
 	margin: 2em auto 0 auto;
 	padding-top: 1em;
-	max-width: 960px;
-	width: 100%;
+	max-width: 95%;
+	width: 960px;
 }
 
 #bottom a:link,
