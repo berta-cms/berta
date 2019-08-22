@@ -243,6 +243,10 @@ a:hover {
 	transition: .2s;
 }
 
+.button:hover {
+	opacity: 0.7;
+}
+
 .button.secondary,
 .button.secondary:link,
 .button.secondary:visited {
@@ -253,8 +257,8 @@ a:hover {
 }
 
 .button.secondary:hover {
-	color: #000;
-	border: 2px solid #000;
+	color: #fff;
+	background: #1a1a1a;
 }
 
 .button.info,
