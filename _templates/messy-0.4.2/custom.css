@@ -173,6 +173,7 @@ a:hover {
 		width: 100%;
 		height: 3px;
 		border-radius: 3px;
+		transition: .2s;
 	}
 
 	#menuToggle:hover span {
@@ -200,7 +201,7 @@ a:hover {
 
 	.navigation .menuItem {
 		text-align: center;
-		margin: 0 0 .7em 0;
+		/* margin: 0 0 .7em 0; */
 	}
 
 	.navigation .menuItem:last-child {
@@ -212,6 +213,11 @@ a:hover {
 		margin: auto;
 		padding: 0.56em;
 		max-width: 80%;
+	}
+
+	.menuItem.xSection-free-trial,
+	.menuItem.xSection-log-in {
+		margin-top: 0.56em;
 	}
 
 	.menuItem.xSection-free-trial a,
