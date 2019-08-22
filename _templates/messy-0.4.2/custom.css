@@ -1,3 +1,7 @@
+/**
+ * Baseline
+ */
+/* #region */
 html {
 	height: auto;
 }
@@ -17,91 +21,33 @@ h3,
 	font-weight: 600;
 }
 
-.menuItem,
 #pageEntries .xEntry h2 {
 	font-family: "avenir", Arial, Helvetica, sans-serif;
 }
 
+a,
 a:link,
 a:visited {
-	border-bottom: 1px solid #0023ff;
+	/* border-bottom: 1px solid #0023ff; */
+	text-decoration: underline;
 }
+a:hover {
+	text-decoration: none;
+}
+/* #endregion */
+
 
 #allContainer {
 	flex: 1;
 }
 
-.menuItem a {
-	border: 0;
-}
 
-.menuItemSelected>a,
-.menuItem a:hover {
-	border-bottom: 1px solid #fff;
-}
+/**
+ * Header navigation
+ */
+/* #region */
 
-.menuItem.xSection-free-trial a:link,
-.menuItem.xSection-free-trial a:visited,
-.menuItem.xSection-log-in a:link,
-.menuItem.xSection-log-in a:visited,
-.button,
-.button:link,
-.button:visited {
-	display: inline-block;
-	padding: 0.4em 1em;
-	color: white;
-	background: #0023ff;
-	border: 2px solid #0023ff;
-	border-radius: 3px;
-	text-decoration: none;
-	text-shadow: none;
-	/* text-transform: uppercase; */
-	transition: .2s;
-}
-
-.menuItem.xSection-free-trial a:hover,
-.button:hover {
-	background-color: #0023ff;
-	border-color: #0023ff;
-}
-
-.menuItem.xSection-log-in a:link,
-.menuItem.xSection-log-in a:visited,
-.button.info,
-.button.info:link,
-.button.info:visited {
-	color: #fff;
-	background: none;
-	border: 2px solid #fff;
-	text-transform: none;
-}
-
-.menuItem.xSection-log-in a:hover,
-.button.info:hover {
-	color: #ddd;
-	border: 2px solid #ddd;
-}
-
-.button.secondary,
-.button.secondary:link,
-.button.secondary:visited {
-	color: #1a1a1a;
-	background-color: #fff;
-	border: 2px solid #1a1a1a;
-	font-weight: 600;
-}
-
-.button.secondary:hover {
-	color: #000;
-	border: 2px solid #000;
-}
-
-.menuItem.xSection-free-trial a:link,
-.menuItem.xSection-log-in a:link {
-	font-size: 1em;
-	padding: 0.3em 0.8em;
-}
-
+/* Navigation wrapper class */
 .navigation {
 	padding: 0;
 	position: fixed;
@@ -117,6 +63,10 @@ a:visited {
 .navigation.noBackground,
 .navigation.noBackground .contentContainer.xResponsive {
 	background-color: rgba(0,0,0,0);
+}
+
+.navigation .contentContainer.xResponsive {
+	max-width: none;
 }
 
 .navigation h1 {
@@ -136,11 +86,82 @@ a:visited {
 	text-align: right;
 }
 
+.navigation nav ul {
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+}
+
 .navigation nav ul li {
 	margin: 0 0 0 .7em;
 }
 
-.navigation .button, .navigation .button.info {
+/* Menu item class */
+.navigation .menuItem {
+	font-family: "avenir", Arial, Helvetica, sans-serif;
+}
+
+.menuItem a {
+	display: inline-block;
+	padding: 0.4em 1em;
+	color: white;
+	border: none;
+	border-radius: 3px;
+	text-decoration: none;
+	text-shadow: none;
+	transition: .2s;
+}
+
+.menuItem.menuItemSelected a,
+.menuItem a:hover {
+	text-decoration: underline;
+}
+
+/* .menuItem.xSection-free-trial a:link,
+.menuItem.xSection-free-trial a:visited,
+.menuItem.xSection-log-in a:link,
+.menuItem.xSection-log-in a:visited {
+	display: inline-block;
+	padding: 0.4em 1em;
+	color: white;
+	background: #0023ff;
+	border: 2px solid #0023ff;
+	border-radius: 3px;
+	text-decoration: none;
+	text-shadow: none;
+	transition: .2s;
+} */
+
+/* .menuItem.xSection-free-trial a:hover,
+.button:hover {
+	background-color: #0023ff;
+	border-color: #0023ff;
+}
+
+.menuItem.xSection-log-in a:link,
+.menuItem.xSection-log-in a:visited,
+.button.info,
+.button.info:link,
+.button.info:visited {
+	color: #fff;
+	background: none;
+	border: 2px solid #fff;
+	text-transform: none;
+}
+
+.menuItem.xSection-log-in a:hover {
+	color: #ddd;
+	border: 2px solid #ddd;
+}
+
+.menuItem.xSection-free-trial a:link,
+.menuItem.xSection-log-in a:link {
+	font-size: 1em;
+	padding: 0.3em 0.8em;
+} */
+
+.navigation .button,
+.navigation .button.info {
 	position: absolute;
 	top: 1em;
 	right: 6.5em;
@@ -150,9 +171,41 @@ a:visited {
 .navigation .button.info {
 	right: 1em;
 }
+/* #endregion */
 
-.navigation .contentContainer.xResponsive {
-	max-width: none;
+
+.button,
+.button:link,
+.button:visited {
+	display: inline-block;
+	padding: 0.4em 1em;
+	color: white;
+	background: #0023ff;
+	border: 2px solid #0023ff;
+	border-radius: 3px;
+	text-decoration: none;
+	text-shadow: none;
+	/* text-transform: uppercase; */
+	transition: .2s;
+}
+
+.button.secondary,
+.button.secondary:link,
+.button.secondary:visited {
+	color: #1a1a1a;
+	background-color: #fff;
+	border: 2px solid #1a1a1a;
+	font-weight: 600;
+}
+
+.button.secondary:hover {
+	color: #000;
+	border: 2px solid #000;
+}
+
+.button.info:hover {
+	color: #ddd;
+	border: 2px solid #ddd;
 }
 
 #pageEntries .xEntry .entryText ul {
