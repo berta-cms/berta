@@ -28,7 +28,6 @@ h3,
 a,
 a:link,
 a:visited {
-	/* border-bottom: 1px solid #0023ff; */
 	text-decoration: underline;
 }
 a:hover {
@@ -201,7 +200,6 @@ a:hover {
 
 	.navigation .menuItem {
 		text-align: center;
-		/* margin: 0 0 .7em 0; */
 	}
 
 	.navigation .menuItem:last-child {
