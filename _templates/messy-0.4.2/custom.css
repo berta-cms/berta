@@ -251,7 +251,7 @@ a:hover {
 .button.secondary:link,
 .button.secondary:visited {
 	color: #1a1a1a;
-	background-color: #fff;
+	background-color: transparent;
 	border: 2px solid #1a1a1a;
 	font-weight: 600;
 }
@@ -513,7 +513,6 @@ a:hover {
 }
 
 .xContent-plans form .button.secondary {
-	background-color: #ddd;
 	font-size: .9em;
 }
 
