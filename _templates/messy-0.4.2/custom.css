@@ -171,6 +171,78 @@ a:hover {
 .navigation .button.info {
 	right: 1em;
 }
+
+@media (max-width: 767px)  {
+
+	.navigation nav {
+		margin:0;
+	}
+
+	.navigation nav #menuToggle {
+		width: 1.7em;
+		height: auto;
+		padding: 1.5em 1.3em;
+		border: 0 none;
+		background: none;
+		position: relative;
+		top: 5px;
+	}
+
+	#menuToggle span,
+	#menuToggle span:before,
+	#menuToggle span:after {
+		width: 100%;
+		height: 3px;
+		border-radius: 3px;
+	}
+
+	#menuToggle:hover span,
+	#menuToggle:hover span:before,
+	#menuToggle:hover span:after {
+		background-color: #ddd;
+	}
+
+	.navigation nav ul {
+		flex-direction: column;
+	}
+
+	.navigation nav ul li {
+		text-align: center;
+		margin: 0;
+	}
+
+	.navigation nav ul li:last-child {
+		margin-bottom: 1em;
+	}
+
+	.navigation nav ul li a {
+		display: block;
+		padding: 0.7em;
+	}
+
+	.menuItem a:link, .menuItem a:visited {
+		border-bottom: 0;
+	}
+
+	.menuItem.xSection-free-trial a:link,
+	.menuItem.xSection-free-trial a:visited,
+	.menuItem.xSection-log-in a:link,
+	.menuItem.xSection-log-in a:visited {
+		font-size: 1em;
+		background: none;
+		display: block;
+		padding: 0.7em;
+		color: #fff;
+		border: 0;
+	}
+
+	.menuItem.xSection-free-trial a:link,
+	.menuItem.xSection-free-trial a:visited,
+	.menuItem.xSection-free-trial a:hover {
+		color: #fff;
+	}
+}
+
 /* #endregion */
 
 
@@ -634,74 +706,6 @@ a:hover {
 	.coverCaption,
 	.xContent-home .xCoverId-1 .coverGalleryWrapper {
 		display:none;
-	}
-
-	.navigation nav #menuToggle {
-		width: 1.7em;
-		height: auto;
-		padding: 1.5em 1.3em;
-		border: 0 none;
-		background: none;
-		position: relative;
-		top: 5px;
-	}
-
-	#menuToggle span,
-	#menuToggle span:before,
-	#menuToggle span:after {
-		width: 100%;
-		height: 3px;
-		border-radius: 3px;
-	}
-
-	#menuToggle:hover span,
-	#menuToggle:hover span:before,
-	#menuToggle:hover span:after {
-		background-color: #ddd;
-	}
-
-	.navigation nav {
-		margin:0;
-	}
-
-	.navigation nav ul {
-		clear: both;
-	}
-
-	.navigation nav ul li {
-		text-align: center;
-		margin: 0;
-	}
-
-	.navigation nav ul li:last-child {
-		margin-bottom: 1em;
-	}
-
-	.navigation nav ul li a {
-		display: block;
-		padding: 0.7em;
-	}
-
-	.menuItem a:link, .menuItem a:visited {
-		border-bottom: 0;
-	}
-
-	.menuItem.xSection-free-trial a:link,
-	.menuItem.xSection-free-trial a:visited,
-	.menuItem.xSection-log-in a:link,
-	.menuItem.xSection-log-in a:visited {
-		font-size: 1em;
-		background: none;
-		display: block;
-		padding: 0.7em;
-		color: #fff;
-		border: 0;
-	}
-
-	.menuItem.xSection-free-trial a:link,
-	.menuItem.xSection-free-trial a:visited,
-	.menuItem.xSection-free-trial a:hover {
-		color: #fff;
 	}
 
 	#pageEntries .xEntry {
