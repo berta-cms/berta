@@ -117,48 +117,29 @@ a:hover {
 	text-decoration: underline;
 }
 
-/* .menuItem.xSection-free-trial a:link,
+.menuItem.xSection-free-trial a:link,
 .menuItem.xSection-free-trial a:visited,
 .menuItem.xSection-log-in a:link,
-.menuItem.xSection-log-in a:visited {
-	display: inline-block;
-	padding: 0.4em 1em;
-	color: white;
-	background: #0023ff;
-	border: 2px solid #0023ff;
+.menuItem.xSection-log-in a:visited
+ {
 	border-radius: 3px;
+	border: 2px solid #fff;
+
+	color: #fff;
+	font-size: 1em;
+	padding: 0.3em 0.8em;
+
 	text-decoration: none;
 	text-shadow: none;
-	transition: .2s;
-} */
-
-/* .menuItem.xSection-free-trial a:hover,
-.button:hover {
-	background-color: #0023ff;
-	border-color: #0023ff;
-}
-
-.menuItem.xSection-log-in a:link,
-.menuItem.xSection-log-in a:visited,
-.button.info,
-.button.info:link,
-.button.info:visited {
-	color: #fff;
-	background: none;
-	border: 2px solid #fff;
 	text-transform: none;
 }
 
-.menuItem.xSection-log-in a:hover {
-	color: #ddd;
-	border: 2px solid #ddd;
+.menuItem.xSection-free-trial a:hover,
+.menuItem.xSection-log-in a:hover
+ {
+	color: #0023ff;
+	background-color: #fff;
 }
-
-.menuItem.xSection-free-trial a:link,
-.menuItem.xSection-log-in a:link {
-	font-size: 1em;
-	padding: 0.3em 0.8em;
-} */
 
 .navigation .button,
 .navigation .button.info {
