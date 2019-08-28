@@ -92,6 +92,9 @@ var BertaCoverGalleryEditor = new Class({
 		// autoplay handle
 		this.elementEdit_init(this.container.getElement('.xEntryAutoPlay'), this.options.xBertaEditorClassRC);
 
+		// useNextImgAsBg handle
+		this.elementEdit_init(this.container.getElement('.xUseNextImgAsBg'), this.options.xBertaEditorClassSelectRC);
+
 		// close link
 		this.container.getElement('a.xEntryGalCloseLink').addEvent('click', this.onCloseClick.bindWithEvent(this));
 

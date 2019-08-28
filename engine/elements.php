@@ -218,7 +218,8 @@ if($jsonRequest) {
 
 				if($cover) {
 
-					$autoPlay = !empty($cover['mediaCacheData']['@attributes']['autoplay']) ? (int) $cover['mediaCacheData']['@attributes']['autoplay'] : 5;
+					$autoPlay = isset($cover['mediaCacheData']['@attributes']['autoplay']) ? (int) $cover['mediaCacheData']['@attributes']['autoplay'] : 5;
+					$useNextImgAsBg = !empty($cover['mediaCacheData']['@attributes']['useNextImgAsBg']) ? ($cover['mediaCacheData']['@attributes']['useNextImgAsBg'] ? 'yes' : 'no') : 'no';
 
 					echo '<div class="xEntryGalleryEditor-wrap"><div class="xEntryGalleryEditor clearfix">';
 						echo '<div class="xEntryGalleryMenu">';
@@ -244,8 +245,12 @@ if($jsonRequest) {
 						echo '<div class="xEntryGallerySettings xGreyBack xHidden">';
 							echo '<div class="xEntrySlideshowSettings galleryTypeSettings">',
 									'<div class="caption">autoplay seconds</div>',
-								 	'<div class="xEntryAutoPlay xFloatLeft xEditableRC xCommand-SET_AUTOPLAY xCaption-5" title="' . $autoPlay . '">' . $autoPlay . '</div>',
+								 	'<div class="xEntryAutoPlay xFloatLeft xEditableRC xCommand-SET_AUTOPLAY xCaption-' . $autoPlay . '" title="' . $autoPlay . '">' . $autoPlay . '</div>',
+									'<div class="clear"></div>',
+									'<div class="caption">Use next image as background</div>',
+									'<div class="xUseNextImgAsBg xFloatLeft xEditableSelectRC xCommand-SET_USE_NEXT_IMG_AS_BG xCaption-'.$useNextImgAsBg.'" x_options="yes||no">' . $useNextImgAsBg . '</div>',
 								 '</div>';
+							  '</div>';
 						echo '</div>';
 
 						echo '<div class="images"><ul>';

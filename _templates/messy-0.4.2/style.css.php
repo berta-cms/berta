@@ -191,14 +191,6 @@ nav ul{
 		color: <?php echo $s->get('menu', 'colorHover') ?>;
 		text-decoration: <?php echo $s->get('menu', 'textDecorationHover') ?>;
 	}
-	.menuItemSelected>a,
-	.menuItemSelected>span {
-		color: <?php echo $s->get('menu', 'colorActive') ?> !important;
-		text-decoration: <?php echo $s->get('menu', 'textDecorationActive') ?> !important;
-	}
-	.menuItemSelected>span {
-		cursor: text;
-	}
 
 	.menuItem ul {
 		list-style: none;
@@ -232,6 +224,14 @@ nav ul{
 				text-decoration: <?php echo $s->get('tagsMenu', 'textDecorationActive') ?> !important;
 			}
 
+	.menuItem.menuItemSelected > a,
+	.menuItem.menuItemSelected > span {
+		color: <?php echo $s->get('menu', 'colorActive') ?>;
+		text-decoration: <?php echo $s->get('menu', 'textDecorationActive') ?>;
+	}
+	.menuItem.menuItemSelected > span {
+		cursor: text;
+	}
 
 .covers {
 	margin-bottom: 2em;

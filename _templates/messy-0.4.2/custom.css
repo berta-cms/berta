@@ -1,3 +1,7 @@
+/**
+ * Baseline
+ */
+/* #region */
 html {
 	height: auto;
 }
@@ -17,91 +21,32 @@ h3,
 	font-weight: 600;
 }
 
-.menuItem,
 #pageEntries .xEntry h2 {
 	font-family: "avenir", Arial, Helvetica, sans-serif;
 }
 
+a,
 a:link,
 a:visited {
-	border-bottom: 1px solid #b7460c;
+	text-decoration: underline;
 }
+a:hover {
+	text-decoration: none;
+}
+/* #endregion */
+
 
 #allContainer {
 	flex: 1;
 }
 
-.menuItem a {
-	border: 0;
-}
 
-.menuItemSelected>a,
-.menuItem a:hover {
-	border-bottom: 1px solid #fff;
-}
+/**
+ * Header navigation
+ */
+/* #region */
 
-.menuItem.xSection-free-trial a:link,
-.menuItem.xSection-free-trial a:visited,
-.menuItem.xSection-log-in a:link,
-.menuItem.xSection-log-in a:visited,
-.button,
-.button:link,
-.button:visited {
-	display: inline-block;
-	padding: 0.4em 1em;
-	color: white;
-	background: #1a1a1a;
-	border: 2px solid #1a1a1a;
-	border-radius: 3px;
-	text-decoration: none;
-	text-shadow: none;
-	text-transform: uppercase;
-	transition: .2s;
-}
-
-.menuItem.xSection-free-trial a:hover,
-.button:hover {
-	background-color: #000;
-	border-color: #000;
-}
-
-.menuItem.xSection-log-in a:link,
-.menuItem.xSection-log-in a:visited,
-.button.info,
-.button.info:link,
-.button.info:visited {
-	color: #fff;
-	background: none;
-	border: 2px solid #fff;
-	text-transform: none;
-}
-
-.menuItem.xSection-log-in a:hover,
-.button.info:hover {
-	color: #ddd;
-	border: 2px solid #ddd;
-}
-
-.button.secondary,
-.button.secondary:link,
-.button.secondary:visited {
-	color: #1a1a1a;
-	background-color: #fff;
-	border: 2px solid #1a1a1a;
-	font-weight: 600;
-}
-
-.button.secondary:hover {
-	color: #000;
-	border: 2px solid #000;
-}
-
-.menuItem.xSection-free-trial a:link,
-.menuItem.xSection-log-in a:link {
-	font-size: 1em;
-	padding: 0.3em 0.8em;
-}
-
+/* Navigation wrapper class */
 .navigation {
 	padding: 0;
 	position: fixed;
@@ -109,13 +54,18 @@ a:visited {
 	left: 0;
 	right: 0;
 	z-index: 1;
-	background-color: #44928c;
+	background-color: #0023ff;
 	-webkit-transition: .4s;
 	transition: .4s;
 }
 
-.navigation.noBackground {
+.navigation.noBackground,
+.navigation.noBackground .contentContainer.xResponsive {
 	background-color: rgba(0,0,0,0);
+}
+
+.navigation .contentContainer.xResponsive {
+	max-width: none;
 }
 
 .navigation h1 {
@@ -126,16 +76,70 @@ a:visited {
 	border: 0;
 }
 
+.navigation h1 img {
+	display: block;
+}
+
 .navigation nav {
-	margin: 0.9em;
+	margin: 0.85em;
 	text-align: right;
+}
+
+.navigation nav ul {
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
 }
 
 .navigation nav ul li {
 	margin: 0 0 0 .7em;
 }
 
-.navigation .button, .navigation .button.info {
+/* Menu item class */
+.navigation .menuItem {
+	font-family: "avenir", Arial, Helvetica, sans-serif;
+}
+
+.menuItem a {
+	display: inline-block;
+	padding: 0.4em 1em;
+	color: white;
+	border: none;
+	border-radius: 3px;
+	text-decoration: none;
+	text-shadow: none;
+	transition: .2s;
+}
+
+.menuItem.menuItemSelected a,
+.menuItem a:hover {
+	text-decoration: underline;
+}
+
+.menuItem.xSection-free-trial a,
+.menuItem.xSection-log-in a
+ {
+	border-radius: 3px;
+	border: 2px solid #fff;
+
+	color: #fff;
+	font-size: 1em;
+	padding: 0.3em 0.8em;
+
+	text-decoration: none;
+	text-shadow: none;
+	text-transform: none;
+}
+
+.menuItem.xSection-free-trial a:hover,
+.menuItem.xSection-log-in a:hover
+ {
+	color: #0023ff;
+	background-color: #fff;
+}
+
+.navigation .button,
+.navigation .button.info {
 	position: absolute;
 	top: 1em;
 	right: 6.5em;
@@ -146,8 +150,129 @@ a:visited {
 	right: 1em;
 }
 
-.navigation .contentContainer.xResponsive {
-	max-width: none;
+@media (max-width: 767px)  {
+
+	.navigation nav {
+		margin:0;
+	}
+
+	.navigation nav #menuToggle {
+		width: 1.7em;
+		height: auto;
+		padding: 1.5em 1.3em;
+		border: 0 none;
+		background: none;
+		position: relative;
+		top: 5px;
+	}
+
+	#menuToggle span,
+	#menuToggle span:before,
+	#menuToggle span:after {
+		width: 100%;
+		height: 3px;
+		border-radius: 3px;
+		transition: .2s;
+	}
+
+	#menuToggle:hover span {
+		opacity: 0.7;
+	}
+
+	#menuToggle.active span {
+		background-color: #fff;
+		opacity: 0.7;
+	}
+	#menuToggle.active span:before,
+	#menuToggle.active span:after {
+		background-color: #fff;
+	}
+
+	#menuToggle.active:hover span {
+		opacity: 1;
+	}
+
+	.navigation nav ul {
+		flex-direction: column;
+		align-items: stretch;
+		width: 100%;
+	}
+
+	.navigation .menuItem {
+		text-align: center;
+	}
+
+	.navigation .menuItem:last-child {
+		margin-bottom: 1em;
+	}
+
+	.menuItem a {
+		display: block;
+		margin: auto;
+		padding: 0.56em;
+		max-width: 80%;
+	}
+
+	.menuItem.xSection-free-trial,
+	.menuItem.xSection-log-in {
+		margin-top: 0.56em;
+	}
+
+	.menuItem.xSection-free-trial a,
+	.menuItem.xSection-log-in a {
+		font-size: 1em;
+		padding: 0.6em;
+	}
+}
+
+/* #endregion */
+
+
+.button,
+.button:link,
+.button:visited {
+	display: inline-block;
+	padding: 0.4em 1em;
+	color: white;
+	background: #0023ff;
+	border: 2px solid #0023ff;
+	border-radius: 3px;
+	text-decoration: none;
+	text-shadow: none;
+	/* text-transform: uppercase; */
+	transition: .2s;
+}
+
+.button:hover {
+	opacity: 0.7;
+}
+
+.button.secondary,
+.button.secondary:link,
+.button.secondary:visited {
+	color: #1a1a1a;
+	background-color: transparent;
+	border: 2px solid #1a1a1a;
+	font-weight: 600;
+}
+
+.button.secondary:hover {
+	color: #fff;
+	background: #1a1a1a;
+}
+
+.button.info,
+.button.info:link,
+.button.info:visited {
+	color: #fff;
+	background: none;
+	border: 2px solid #fff;
+	text-transform: none;
+}
+
+.button.info:hover {
+	color: #ddd;
+	border: 2px solid #ddd;
 }
 
 #pageEntries .xEntry .entryText ul {
@@ -160,7 +285,7 @@ a:visited {
 
 .xContent-home .covers {
 	position: relative;
-	background-color: #44928c;
+	background-color: #0023ff;
 }
 
 .xContent-home .coversBackground {
@@ -170,7 +295,7 @@ a:visited {
     left: 0;
     right: 0;
 	background-repeat: no-repeat;
-	background-position: center center;
+	background-position: top left;
 	background-size: cover;
 }
 
@@ -178,7 +303,6 @@ a:visited {
 	max-width: 960px;
 	margin-left: auto;
 	margin-right: auto;
-	padding: 5em 0;
 }
 
 .xContent-home #pageEntries .xEntry h2 {
@@ -188,7 +312,7 @@ a:visited {
 .xContent-home .xCoverId-1 .contentContainer {
 	float: left;
 	width: 40%;
-	padding: 3em 1em;
+	padding: 7em 2em;
 	-webkit-transform: none;
 	-moz-transform: none;
 	-ms-transform: none;
@@ -219,9 +343,10 @@ a:visited {
 }
 
 .xContent-home .xCoverId-1 .entryText h2 {
-	font-size: 2.3em;
+	font-size: 2.2em;
 	line-height: 1.3em;
 	margin: 0;
+	font-weight: normal;
 }
 
 .xContent-home .xCoverId-1 .entryText p {
@@ -229,16 +354,16 @@ a:visited {
 }
 
 .xContent-home .xCoverId-1 .button {
-	margin-top: 3em;
+	margin-top: 1em;
 }
 
 .xContent-home .xCoverId-1 .coverGalleryWrapper {
-	position: relative;
+	position: absolute;
+	bottom: 0;
+	right: 0;
 	float: right;
-	width: 60%;
+	width: 55%;
 	box-sizing: border-box;
-	background: url('/storage/media/macbook.png') no-repeat;
-	background-size: 100%;
 }
 
 .xContent-home .xCoverId-1 .coverGallery {
@@ -247,15 +372,15 @@ a:visited {
 	height: 0;
 	padding: 0;
 	overflow: hidden;
-	padding-bottom: 47.5%;
-	margin: 3.7% auto 8% auto;
-	background-color: #000;
+	padding-bottom: 56%;
+	background-color: transparent;
 	box-sizing: border-box;
-	width: 76%;
+	width: 100%;
 }
 
 .xContent-home .xCoverId-1 .coverGallery .slide {
-	background-position: top left;
+	background-position: center bottom;
+	background-size: contain;
 	box-sizing: border-box;
 	position: absolute;
 	top: 0;
@@ -309,6 +434,14 @@ a:visited {
 	margin-top: 2.5em;
 }
 
+.xContent-happy-websites .xGalleryItem {
+	transition: background-color .2s;
+}
+.xContent-happy-websites .xGalleryItem:hover {
+	background-color: #333333;
+}
+
+
 #pageEntries #more-happy-websites {
 	padding: 0;
 	margin: 0 auto;
@@ -349,7 +482,7 @@ a:visited {
 }
 
 .xContent-plans #pageEntries .xEntryId-2 span {
-	color: #b7460c;
+	color: #0023ff;
 	position: relative;
 	top: 2px;
 }
@@ -388,7 +521,6 @@ a:visited {
 }
 
 .xContent-plans form .button.secondary {
-	background-color: #ddd;
 	font-size: .9em;
 }
 
@@ -431,11 +563,10 @@ a:visited {
 
 .plan .notes {
 	text-transform: uppercase;
-	color: #b7460c;
+	color: #0023ff;
 	padding: .3em .5em;
 	font-size: .9em;
-	border: 1px solid #b7460c;
-	border-radius: 3px;
+	border: 1px solid #0023ff;
 	font-weight: normal;
 	margin-bottom: .7em;
 }
@@ -445,38 +576,36 @@ a:visited {
 }
 
 .plan .header {
-	background-color: #363636;
+	background-color: #878a92;
 	color: #fff;
-	padding: .5em;
-	border-radius: 3px 3px 0 0;
-	font-size: 1.3em;
+	padding: 1em 0 0;
+	font-size: 1.2em;
+	text-transform: uppercase;
 }
 
 .plan .price {
-	font-size: 3em;
+	font-size: 2.5em;
 	padding: 0.7em .25em 0.5em;
-	border-right: 1px solid #ccc;
-	border-left: 1px solid #ccc;
-	background-color: #eee;
-	font-weight: normal;
+	background-color: #878a92;
+	font-weight: bold;
+	color: #fff;
 }
 
 .plan .price span {
-	font-size: .3em;
-	color: #999;
+	font-size: .4em;
+	font-weight: normal;
 }
 
 .plan .price div {
-	font-size: .3em;
+	font-size: .35em;
 	margin-top: 1em;
-	color: #999;
+	font-weight: normal;
 }
 
 .plan .features {
 	min-height: 9em;
-	border-right: 1px solid #ccc;
-	border-left: 1px solid #ccc;
 	padding: 1.8em .5em 0.1em;
+	background-color: #f5f5f5;
 }
 
 .plan .features p {
@@ -485,13 +614,12 @@ a:visited {
 
 .plan .features p.strike {
 	text-decoration: line-through;
+	color: #ccc;
 }
 
 .plan .buttons {
-	border: 1px solid #ccc;
-	border-top: 0;
-	border-radius: 0 0 3px 3px;
 	padding: 0 1em 1em 1em;
+	background-color: #f5f5f5;
 }
 
 .plan .buttons p {
@@ -525,25 +653,49 @@ a:visited {
 	top: auto !important;
 	right: auto !important;
 	margin: 2em auto 0 auto;
-	max-width: 960px;
-	width: 100%;
+	padding-top: 1em;
+	max-width: 95%;
+	width: 960px;
 }
 
-#bottom a:link,
-#bottom a:visited {
-	color: #999;
-	text-decoration: none;
-	border: 0;
-}
+/** Footer navigation  */
 
 #additionalFooterText {
 	margin: 0;
+	width: 60%;
 }
 
-#additionalFooterText a {
+.xProperty-additionalFooterText a {
+	color: #999;
+	border: 0;
 	display: inline-block;
 	margin-right: 2em;
+	text-decoration: none;
+	transition: .2s;
 }
+
+.xProperty-additionalFooterText a:hover {
+	text-decoration: underline;
+}
+
+.xProperty-additionalFooterText ~ p a {
+	color: #999;
+	border: 0;
+	text-decoration: none;
+	transition: .2s;
+}
+
+.xProperty-additionalFooterText ~ p span {
+	border-radius: 50%;
+	transition: background .2s;
+}
+
+.xProperty-additionalFooterText ~ p a:hover span {
+	color: #fff;
+	background-color: #999;
+}
+
+/* --- */
 
 #bertaCopyright {
 	margin: 0;
@@ -580,76 +732,8 @@ a:visited {
 		display:none;
 	}
 
-	.navigation nav #menuToggle {
-		width: 1.7em;
-		height: auto;
-		padding: .9em .5em;
-		margin: 12px;
-		border: 0 none;
-		background: none;
-	}
-
-	#menuToggle span,
-	#menuToggle span:before,
-	#menuToggle span:after {
-		width: 100%;
-		height: 3px;
-		border-radius: 3px;
-	}
-
-	#menuToggle:hover span,
-	#menuToggle:hover span:before,
-	#menuToggle:hover span:after {
-		background-color: #ddd;
-	}
-
-	.navigation nav {
-		margin:0;
-	}
-
-	.navigation nav ul {
-		clear: both;
-	}
-
-	.navigation nav ul li {
-		text-align: center;
-		margin: 0;
-		border-top: 1px solid #ccc;
-	}
-
-	.navigation nav ul li:last-child {
-		border-bottom: 1px solid #ccc;
-	}
-
-	.navigation nav ul li a {
-		display: block;
-		padding: 0.7em;
-	}
-
-	.menuItem a:link, .menuItem a:visited {
-		border-bottom: 0;
-	}
-
-	.menuItem.xSection-free-trial a:link,
-	.menuItem.xSection-free-trial a:visited,
-	.menuItem.xSection-log-in a:link,
-	.menuItem.xSection-log-in a:visited {
-		font-size: 1em;
-		background: none;
-		display: block;
-		padding: 0.7em;
-		color: #fff;
-		border: 0;
-	}
-
-	.menuItem.xSection-free-trial a:link,
-	.menuItem.xSection-free-trial a:visited,
-	.menuItem.xSection-free-trial a:hover {
-		color: #fff;
-	}
-
 	#pageEntries .xEntry {
-		padding: 0 20px 20px 20px;
+		padding: 0 2em 2em 2em;
 	}
 
 	#pageEntries .xEntry h2 {
@@ -674,9 +758,8 @@ a:visited {
 	}
 
 	.xContent-home .xCoverId-1 .contentContainer {
-		padding: 0 1em;
+		padding: 6em 2em 3em;
 		width: 100%;
-		text-align: center;
 	}
 
 	.xContent-home .xCoverId-1 .entryText h2 {
@@ -736,8 +819,8 @@ a:visited {
 	}
 
 	.pricing .plan {
-		width: 280px;
-		min-width:280px;
+		width: 264px;
+		min-width:264px;
 		margin: 0 auto;
 		display: block;
 	}
@@ -764,6 +847,10 @@ a:visited {
 		margin: 0 .1em;
 	}
 
+	#bottom {
+		padding-top: .5em;
+		max-width: 100%;
+	}
 }
 
 /* entry layouts */

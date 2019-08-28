@@ -70,7 +70,7 @@ $constraints['max_orig_height'] = $berta->settings->get('media', 'imagesOrigMaxH
 //$constraints['max_orig_width'] = 50;
 //$constraints['max_orig_height'] = 50;
 
-$constraints['max_orig_width'] = 2000;
+$constraints['max_orig_width'] = 3000;
 $constraints['max_orig_height'] = 2000;
 
 // if image is being uploaded for a settings, then different constraints apply
@@ -320,6 +320,9 @@ if(($entryId && $mediaFolder || $coverId && $mediaFolder ||  $settingsProperty |
 								BertaEditor::saveSections($sectionsToEdit);
 							}
 							elseif ($coverId) { // update cover image cache
+								// create cover image in the `cover/` folder
+								BertaEditor::images_getCoverImageFor($fileFolder . $fName);
+
 								$blog = BertaEditor::loadBlog($sectionName);
 
 								BertaEditor::updateImageCacheForCover($blog, $coverId);
