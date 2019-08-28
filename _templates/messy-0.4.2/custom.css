@@ -434,11 +434,11 @@ a:hover {
 	margin-top: 2.5em;
 }
 
-.xContent-happy-websites .xGalleryItem {
-	transition: background-color .2s;
+.xContent-happy-websites .xGalleryItem img {
+	transition: transform .2s;
 }
-.xContent-happy-websites .xGalleryItem:hover {
-	background-color: #333333;
+.xContent-happy-websites .xGalleryItem:hover img {
+	transform: scale(1.1);
 }
 
 
