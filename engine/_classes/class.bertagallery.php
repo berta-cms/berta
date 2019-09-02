@@ -47,22 +47,23 @@ class BertaGallery extends BertaBase
         $galleryFullScreen = !$isAdminMode && isset($entry['mediaCacheData']['@attributes']['fullscreen']) && $entry['mediaCacheData']['@attributes']['fullscreen'] == 'yes';
         $galleryAutoPlay = !empty($entry['mediaCacheData']['@attributes']['autoplay']) ? $entry['mediaCacheData']['@attributes']['autoplay'] : '0';
         $gallerySlideNumbersVisible = !empty($entry['mediaCacheData']['@attributes']['slide_numbers_visible']) ? $entry['mediaCacheData']['@attributes']['slide_numbers_visible'] : $berta->settings->get('entryLayout', 'gallerySlideNumberVisibilityDefault');
+        $galleryWidthByWidestSlide = !empty($entry['mediaCacheData']['@attributes']['gallery_width_by_widest_slide']) ? $entry['mediaCacheData']['@attributes']['gallery_width_by_widest_slide'] : 'no';
         $galleryLinkAddress = !empty($entry['mediaCacheData']['@attributes']['link_address']) ? $entry['mediaCacheData']['@attributes']['link_address'] : '';
         $galleryLinkTarget = !empty($entry['mediaCacheData']['@attributes']['linkTarget']) ? $entry['mediaCacheData']['@attributes']['linkTarget'] : '';
         $rowGalleryPadding = !empty($entry['mediaCacheData']['@attributes']['row_gallery_padding']) ? $entry['mediaCacheData']['@attributes']['row_gallery_padding'] : false;
 
-        $html = BertaGallery::getHTML($imgs, $entry['mediafolder']['value'], $galleryType, $isAdminMode, false, 1, $galleryFullScreen, $imageSize, $galleryAutoPlay, $gallerySlideNumbersVisible, $galleryLinkAddress, $galleryLinkTarget, $rowGalleryPadding);
+        $html = BertaGallery::getHTML($imgs, $entry['mediafolder']['value'], $galleryType, $isAdminMode, false, 1, $galleryFullScreen, $imageSize, $galleryAutoPlay, $gallerySlideNumbersVisible, $galleryWidthByWidestSlide, $galleryLinkAddress, $galleryLinkTarget, $rowGalleryPadding);
 
         // Add a slideshow html markup as a backup for mobile devices for gallery type row and pile
         if (!$isAdminMode && in_array($galleryType, ['row', 'pile'])) {
             $galleryType = 'slideshow';
-            $html .= BertaGallery::getHTML($imgs, $entry['mediafolder']['value'], $galleryType, $isAdminMode, false, 1, false, $imageSize, $galleryAutoPlay, $gallerySlideNumbersVisible, $galleryLinkAddress, $galleryLinkTarget, $rowGalleryPadding);
+            $html .= BertaGallery::getHTML($imgs, $entry['mediafolder']['value'], $galleryType, $isAdminMode, false, 1, false, $imageSize, $galleryAutoPlay, $gallerySlideNumbersVisible, $galleryWidthByWidestSlide, $galleryLinkAddress, $galleryLinkTarget, $rowGalleryPadding);
         }
 
         return $html;
     }
 
-    public static function getHTML($imgs, $mediaFolderName, $galleryType, $isAdminMode = false, $bReturnFullInfo = false, $sizeRatio = 1, $galleryFullScreen = false, $imageSize = 'large', $galleryAutoPlay = '0', $gallerySlideNumbersVisible = 'yes', $galleryLinkAddress = '', $galleryLinkTarget = '', $rowGalleryPadding = false)
+    public static function getHTML($imgs, $mediaFolderName, $galleryType, $isAdminMode = false, $bReturnFullInfo = false, $sizeRatio = 1, $galleryFullScreen = false, $imageSize = 'large', $galleryAutoPlay = '0', $gallerySlideNumbersVisible = 'yes', $galleryWidthByWidestSlide = 'no', $galleryLinkAddress = '', $galleryLinkTarget = '', $rowGalleryPadding = false)
     {
         global $berta;
         $strOut = '';
@@ -91,24 +92,46 @@ class BertaGallery extends BertaBase
                     break;
             }
 
-            $dimensions = ' style="width: ' . $firstImageWidth . 'px;' . ($galleryType !== 'slideshow' ? 'height: ' . $firstImageHeight . 'px;' : '') . '"';
-            $strOut = '<div class="xGalleryContainer xGalleryHasImages xGalleryType-' . $galleryType . $specificClasses . '"'. ($galleryFullScreen ? ' data-fullscreen="1"' : '') .'>';
-            $strOut .= "<div class=\"xGallery\"" . $dimensions . ($rowGalleryPadding ? ' xRowGalleryPadding="' . $rowGalleryPadding . '"' : '') . '>';
+            $galleryContent = '';
+            $widestImage = $firstImageWidth;
 
             if ($galleryType == 'slideshow') {
                 $slides = [];
                 foreach ($imgs as $img) {
                     if ($img['@attributes']['type'] == 'image') {
-                        list($slideHTML) = BertaGallery::getImageHTML($img, $mediaFolderName, $isAdminMode, $sizeRatio, $imageTargetWidth, $imageTargetHeight);
+                        list($slideHTML, $slideWidth) = BertaGallery::getImageHTML($img, $mediaFolderName, $isAdminMode, $sizeRatio, $imageTargetWidth, $imageTargetHeight);
+                        if ($widestImage < $slideWidth) {
+                            $widestImage = $slideWidth;
+                        }
                     } else {
-                        $slideHTML = BertaGallery::getVideoHTML($img, $mediaFolderName, $isAdminMode, $sizeRatio, $imageTargetWidth, $imageTargetHeight);
+                        list($slideHTML, $slideWidth) = BertaGallery::getVideoHTML($img, $mediaFolderName, $isAdminMode, $sizeRatio, $imageTargetWidth, $imageTargetHeight);
+                        if ($widestImage < $slideWidth) {
+                            $widestImage = $slideWidth;
+                        }
                     }
                     $slides[] = $slideHTML;
                 }
-                $strOut .= BertaGallery::getSlideshowHTML($slides);
+                $galleryContent .= BertaGallery::getSlideshowHTML($slides);
             } else {
-                $strOut .= $firstImageHTML;
+                $galleryContent .= $firstImageHTML;
             }
+
+            // Set slideshow gallery width by widest slide if
+            // - gallery type is slideshow and
+            // - current template is messy and gallery setting `galleryWidthByWidestSlide` is ON
+
+            // @TODO consider to set slideshow width by widest slide for all other temaplates by default
+
+            $isMessyTemplate = strpos($berta->settings->get('template', 'template'), 'messy') === 0;
+
+            if ($galleryType == 'slideshow' && $isMessyTemplate && $galleryWidthByWidestSlide === 'yes') {
+                $firstImageWidth = $widestImage;
+            }
+
+            $dimensions = ' style="width: ' . $firstImageWidth . 'px;' . ($galleryType !== 'slideshow' ? 'height: ' . $firstImageHeight . 'px;' : '') . '"';
+            $strOut = '<div class="xGalleryContainer xGalleryHasImages xGalleryType-' . $galleryType . $specificClasses . '"'. ($galleryFullScreen ? ' data-fullscreen="1"' : '') .'>';
+            $strOut .= "<div class=\"xGallery\"" . $dimensions . ($rowGalleryPadding ? ' xRowGalleryPadding="' . $rowGalleryPadding . '"' : '') . '>';
+            $strOut .= $galleryContent;
 
             if ($isAdminMode) {
                 $strOut .= '<a href="#" class="xGalleryEditButton xEditorLink xSysCaption xMAlign-container"><span class="xMAlign-outer-gallery"><span class="xMAlign-inner-gallery">edit gallery</span></span></a>';
@@ -239,7 +262,7 @@ class BertaGallery extends BertaBase
                 <div class="xGalleryImageCaption">' . (!empty($img['value']) ? $img['value'] : '') . '</div>
             </div>
             ';
-        return $html;
+        return [$html, $width];
     }
 
     private static function getNavHTML($imgs, $galleryType, $mFolder, $mFolderABS, $isAdminMode = false, $sizeRatio = 1, $imageTargetWidth = 0, $imageTargetHeight = 0)

@@ -14,6 +14,7 @@ $jsonRequest = !empty($_REQUEST['json']) ? stripslashes($_REQUEST['json']) : fal
 if ($jsonRequest) {
     $decoded = $result = Zend_Json::decode(str_replace(["\n", "\r"], ['\n', ''], $jsonRequest));
     $site = !empty($_REQUEST['site']) ? $_REQUEST['site'] : false;
+    $isMessyTemplate = strpos($berta->settings->get('template', 'template'), 'messy') === 0;
 
     switch ($decoded['property']) {
         case 'gallery':
@@ -47,6 +48,10 @@ if ($jsonRequest) {
                     $numberVisibility = !empty($entry['mediaCacheData']['@attributes']['slide_numbers_visible'])
                                         ? $entry['mediaCacheData']['@attributes']['slide_numbers_visible']
                                         : $berta->settings->get('entryLayout', 'gallerySlideNumberVisibilityDefault');
+                    $galleryWidthByWidestSlide = !empty($entry['mediaCacheData']['@attributes']['gallery_width_by_widest_slide'])
+                                        ? $entry['mediaCacheData']['@attributes']['gallery_width_by_widest_slide']
+                                        : 'no';
+
                     $linkAddress = !empty($entry['mediaCacheData']['@attributes']['link_address'])
                                         ? $entry['mediaCacheData']['@attributes']['link_address'] : '';
                     $linkTarget = !empty($entry['mediaCacheData']['@attributes']['linkTarget'])
@@ -87,6 +92,13 @@ if ($jsonRequest) {
                                     '<div class="clear"></div>',
                                     '<div class="caption">show image numbers</div>',
                                     '<div class="xEntrySlideNumberVisibility xFloatLeft xEditableSelectRC xCommand-SET_SLIDE_NUMBER_VISIBILITY" x_options="yes||no" data-path="' . $basePath . 'mediaCacheData/@attributes/slide_numbers_visible">' . $numberVisibility . '</div>',
+
+                                    ($isMessyTemplate ?
+                                    '<div class="clear"></div>
+                                    <div class="caption">width by widest slide</div>
+                                    <div class="xGalleryWidthByWidestSlide xFloatLeft xEditableSelectRC xCommand-GALLERY_WIDTH_BY_WIDEST_SLIDE" x_options="no||yes" data-path="' . $basePath . 'mediaCacheData/@attributes/gallery_width_by_widest_slide">' . $galleryWidthByWidestSlide . '</div>'
+                                    : ''),
+
                                 '</div>';
                     echo '<div class="xEntryLinkSettings galleryTypeSettings' . ($galType == 'link' ? '' : ' xHidden') . ' ">',
                                     '<div class="caption">link address</div>',

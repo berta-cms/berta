@@ -1202,7 +1202,8 @@ a.xCreateNewEntry.xSaving {
 
             .xEntryGalleryFullScreen .xEntrySetFullScreen,
             .xEntryGalleryImageSize .xEntrySetImageSize,
-            .xEntrySlideshowSettings .xEntrySlideNumberVisibility {
+            .xEntrySlideshowSettings .xEntrySlideNumberVisibility,
+            .xEntrySlideshowSettings .xGalleryWidthByWidestSlide {
                 width: 80px;
             }
             .xEntryGallerySettings .xEntrySetGalType,
