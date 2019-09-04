@@ -119,7 +119,10 @@ var BertaGalleryEditor = new Class({
     this.elementEdit_init(this.container.getElement('.xEntrySlideNumberVisibility'), this.options.xBertaEditorClassSelectRC);
 
     // galleryWidthByWidestSlide
-    this.elementEdit_init(this.container.getElement('.xGalleryWidthByWidestSlide'), this.options.xBertaEditorClassSelectRC);
+    var galleryWidthByWidestSlideEl = this.container.getElement('.xGalleryWidthByWidestSlide');
+    if (galleryWidthByWidestSlideEl) {
+      this.elementEdit_init(galleryWidthByWidestSlideEl, this.options.xBertaEditorClassSelectRC);
+    }
 
     // link address handle
     this.elementEdit_init(this.container.getElement('.xEntryLinkAddress'), this.options.xBertaEditorClassRC);
