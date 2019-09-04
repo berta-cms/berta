@@ -116,15 +116,11 @@ class BertaGallery extends BertaBase
                 $galleryContent .= $firstImageHTML;
             }
 
-            // Set slideshow gallery width by widest slide if
-            // - gallery type is slideshow and
-            // - current template is messy and gallery setting `galleryWidthByWidestSlide` is ON
-
-            // @TODO consider to set slideshow width by widest slide for all other temaplates by default
-
             $isMessyTemplate = strpos($berta->settings->get('template', 'template'), 'messy') === 0;
 
-            if ($galleryType == 'slideshow' && $isMessyTemplate && $galleryWidthByWidestSlide === 'yes') {
+            // Set slideshow gallery width by widest slide
+            // except if current template is messy and gallery setting `galleryWidthByWidestSlide` is OFF
+            if ($galleryType == 'slideshow' && (!$isMessyTemplate || $isMessyTemplate && $galleryWidthByWidestSlide === 'yes')) {
                 $firstImageWidth = $widestImage;
             }
 
