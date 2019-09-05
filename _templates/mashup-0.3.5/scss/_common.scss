@@ -43,7 +43,10 @@ a {
 
 .social-icon {
   display: inline-block;
-  width: 24px;
-  height: 24px;
   margin: 0 .5em .5em 0;
+
+  svg {
+    width: 24px;
+    height: 24px;
+  }
 }
