@@ -24,7 +24,13 @@ $sectionTypes = [
         'columns' => ['format' => 'select', 'default' => '1', 'values' => ['1', '2', '3', '4'], 'html_before' => '<div class="label">' . I18n::_('Columns') . ':</div>'],
         'entryMaxWidth' => ['format' => 'text', 'css_units' => true, 'default' => '', 'html_before' => '<div class="label">' . I18n::_('Entry max width') . ':</div>'],
         'entryPadding' => ['format' => 'text', 'default' => '0 10px 20px 10px', 'html_before' => '<div class="label">' . I18n::_('Entry padding') . ':</div>'],
-        'backgroundVideoEmbed' => ['format' => 'text', 'default' => '', 'html_entities' => true, 'html_before' => '<div class="label">' . I18n::_('Background video (embed)') . ':</div>'],
+        'backgroundVideoEmbed' => [
+            'format' => 'text',
+            'default' => '',
+            'allow_blank' => true,
+            'html_entities' => true,
+            'html_before' => '<div class="label">' . I18n::_('Background video (embed)') . ':</div>'
+        ],
         'backgroundVideoRatio' => ['format' => 'select', 'default' => 'fillWindow', 'values' => ['fillWindow' => I18n::_('Fill window'), 'keepRatio' => I18n::_('Keep ratio')], 'html_before' => '<div class="label">' . I18n::_('Background video ratio') . ':</div>'],
     ]],
     'external_link' => ['title' => 'External link', 'params' => [
@@ -40,7 +46,14 @@ $templateConf = [
         '_' => ['title' => I18n::_('General font settings')],
         'color' => ['format' => 'color',		'default' => '#363636', 							                'title' => I18n::_('Color'),         'description' => ''],
         'fontFamily' => ['format' => 'fontselect',	'values' => $fontOptions, 'default' => 'Arial, sans-serif', 		'title' => I18n::_('Font face'),     'description' => ''],
-        'googleFont' => ['format' => 'text',		'default' => '',	'html_entities' => true,						'title' => 'Google web fonts',       'description' => I18n::_('googleFont_description')],
+        'googleFont' => [
+            'format' => 'text',
+            'default' => '',
+            'allow_blank' => true,
+            'html_entities' => true,
+            'title' => 'Google web fonts',
+            'description' => I18n::_('googleFont_description')
+        ],
         'fontSize' => ['format' => 'text', 'css_units' => true, 'default' => '12px', 								                'title' => I18n::_('Font size'),     'description' => ''],
         'fontWeight' => ['format' => 'select',		'values' => ['normal', 'bold'], 'default' => 'normal', 		'title' => I18n::_('Font weight'),   'description' => ''],
         'fontStyle' => ['format' => 'select',		'values' => ['normal', 'italic'], 'default' => 'normal', 		'title' => I18n::_('Font style'),    'description' => ''],
@@ -77,7 +90,14 @@ $templateConf = [
         '_' => ['title' => I18n::_('Entry heading')],
         'color' => ['format' => 'color',		'default' => '#363636', 					                                    'title' => I18n::_('Color'),             'description' => ''],
         'fontFamily' => ['format' => 'fontselect',	'values' => $fontOptions, 'default' => 'Arial, sans-serif', 			        'title' => I18n::_('Font face'),         'description' => ''],
-        'googleFont' => ['format' => 'text',		'default' => '', 	'html_entities' => true,									'title' => 'Google web fonts',         'description' => I18n::_('googleFont_description')],
+        'googleFont' => [
+            'format' => 'text',
+            'default' => '',
+            'allow_blank' => true,
+            'html_entities' => true,
+            'title' => 'Google web fonts',
+            'description' => I18n::_('googleFont_description')
+        ],
         'fontSize' => ['format' => 'text', 'css_units' => true, 'default' => '1.8em', 					                                        'title' => I18n::_('Font size'),         'description' => ''],
         'fontWeight' => ['format' => 'select',		'values' => ['normal', 'bold'], 'default' => 'normal', 			        'title' => I18n::_('Font weight'),       'description' => ''],
         'fontStyle' => ['format' => 'select',		'values' => ['normal', 'italic'], 'default' => 'normal', 			        'title' => I18n::_('Font style'),        'description' => ''],
@@ -102,7 +122,14 @@ $templateConf = [
         'image' => ['format' => 'image',		'default' => '', 'min_width' => 1, 'min_height' => 1, 'max_width' => 140, 'max_height' => 400, 	 	'title' => I18n::_('Logo image'),    'description' => '<span class="warning">' . I18n::_('Displayed image will be half of the original size, full size will be used for hi-res displays.') . '</span>'],
         'color' => ['format' => 'color',		'default' => '#000000',                                                                             'title' => I18n::_('Color'),         'description' => ''],
         'fontFamily' => ['format' => 'fontselect',	'values' => $fontOptionsWithInherit, 'default' => '"Arial black", Gadget', 			    'title' => I18n::_('Font face'),     'description' => ''],
-        'googleFont' => ['format' => 'text',		'default' => '', 'html_entities' => true,														'title' => 'Google web fonts',         'description' => I18n::_('googleFont_description')],
+        'googleFont' => [
+            'format' => 'text',
+            'default' => '',
+            'allow_blank' => true,
+            'html_entities' => true,
+            'title' => 'Google web fonts',
+            'description' => I18n::_('googleFont_description')
+        ],
         'fontSize' => ['format' => 'text', 'css_units' => true, 'default' => '30px',                                                                                'title' => I18n::_('Font size'),     'description' => ''],
         'fontWeight' => ['format' => 'select',		'values' => ['normal', 'bold'], 'default' => 'bold',                                           'title' => I18n::_('Font weight'),   'description' => ''],
         'fontStyle' => ['format' => 'select',		'values' => ['normal', 'italic'], 'default' => 'normal',                                       'title' => I18n::_('Font style'),    'description' => ''],
@@ -114,7 +141,14 @@ $templateConf = [
         '_' => ['title' => I18n::_('Main menu')],
         'position' => ['format' => 'select',		'values' => ['fixed', 'absolute'], 'default' => 'absolute', 		                        'title' => I18n::_('Menu position'),           'description' => I18n::_('description_menu_position')],
         'fontFamily' => ['format' => 'fontselect',	'values' => $fontOptionsWithInherit, 'default' => '"Arial black", Gadget',  'title' => I18n::_('Font face'),             'description' => ''],
-        'googleFont' => ['format' => 'text',		'default' => '', 'html_entities' => true,											'title' => 'Google web fonts',         'description' => I18n::_('googleFont_description')],
+        'googleFont' => [
+            'format' => 'text',
+            'default' => '',
+            'allow_blank' => true,
+            'html_entities' => true,
+            'title' => 'Google web fonts',
+            'description' => I18n::_('googleFont_description')
+        ],
         'fontSize' => ['format' => 'text', 'css_units' => true, 'default' => '20px', 								                                    'title' => I18n::_('Font size'),             'description' => ''],
         'fontWeight' => ['format' => 'select',		'values' => ['normal', 'bold'], 'default' => 'bold', 		                        'title' => I18n::_('Font weight'),           'description' => ''],
         'fontStyle' => ['format' => 'select',		'values' => ['normal', 'italic'], 'default' => 'normal', 		                    'title' => I18n::_('Font style'),            'description' => ''],
@@ -130,7 +164,14 @@ $templateConf = [
     'tagsMenu' => [
         '_' => ['title' => I18n::_('Submenu')],
         'fontFamily' => ['format' => 'fontselect',	'values' => $fontOptionsWithInherit, 'default' => '"Arial black", Gadget',  'title' => I18n::_('Font face'),             'description' => ''],
-        'googleFont' => ['format' => 'text',		'default' => '', 'html_entities' => true,											'title' => 'Google web fonts',         'description' => I18n::_('googleFont_description')],
+        'googleFont' => [
+            'format' => 'text',
+            'default' => '',
+            'allow_blank' => true,
+            'html_entities' => true,
+            'title' => 'Google web fonts',
+            'description' => I18n::_('googleFont_description')
+        ],
         'fontSize' => ['format' => 'text', 'css_units' => true, 'default' => '16px', 								                                    'title' => I18n::_('Font size'),             'description' => ''],
         'fontWeight' => ['format' => 'select',		'values' => ['normal', 'bold'], 'default' => 'normal',                             'title' => I18n::_('Font weight'),           'description' => ''],
         'fontStyle' => ['format' => 'select',		'values' => ['normal', 'italic'], 'default' => 'normal',                           'title' => I18n::_('Font style'),            'description' => ''],
