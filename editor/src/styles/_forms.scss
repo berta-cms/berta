@@ -39,6 +39,11 @@
     .icon {
       fill: $grey-40;
       transition: fill .2s;
+
+      &.clear {
+        cursor: pointer;
+        margin-right: .75em;
+      }
     }
 
     .icon-empty {
