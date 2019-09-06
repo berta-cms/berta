@@ -45,6 +45,18 @@ $templateConf = [
         'lineHeight' => ['format' => 'text', 'css_units' => true, 'default' => 'normal', 								'title' => I18n::_('Line height'), 'description' => I18n::_('Height of text line. Use em, px or % values or the default value "normal"')]
     ],
 
+    'links' => [
+        '_' => ['title' => I18n::_('Hyperlinks')],
+        'colorLink' => ['format' => 'color',		'default' => '#0000ff', 	'title' => I18n::_('Link color'), 'description' => ''],
+        'colorVisited' => ['format' => 'color',		'default' => '#666666', 	'title' => I18n::_('Visited link color'), 'description' => ''],
+        'colorHover' => ['format' => 'color',		'default' => '#0000ff', 	'title' => I18n::_('Link color when hovered'), 'description' => ''],
+        'colorActive' => ['format' => 'color',		'default' => '#0000ff', 	'title' => I18n::_('Link color when clicked'), 'description' => ''],
+        'textDecorationLink' => ['format' => 'select',		'values' => ['none', 'underline', 'overline', 'line-through'], 	'default' => 'none', 		'title' => I18n::_('Link decoration'), 'description' => ''],
+        'textDecorationVisited' => ['format' => 'select',		'values' => ['none', 'underline', 'overline', 'line-through'],		'default' => 'none', 		'title' => I18n::_('Visited link decoration'), 'description' => ''],
+        'textDecorationHover' => ['format' => 'select',		'values' => ['none', 'underline', 'overline', 'line-through'],		'default' => 'underline', 		'title' => I18n::_('Link decoration when hovered'), 'description' => ''],
+        'textDecorationActive' => ['format' => 'select',		'values' => ['none', 'underline', 'overline', 'line-through'],		'default' => 'underline', 		'title' => I18n::_('Link decoration when clicked'), 'description' => '']
+    ],
+
     'background' => [
         '_' => ['title' => I18n::_('Background')],
         'backgroundColor' => ['format' => 'color',		'default' => '#FFFFFF',									'title' => I18n::_('Background color'), 'description' => ''],
@@ -66,24 +78,11 @@ $templateConf = [
         'mashUpColumns' => ['format' => 'select', 'default' => '1', 'values' => ['1', '2', '3', '4'], 'title' => I18n::_('Mash-up columns'), 'description' => I18n::_('Column count for Mash-up section.')],
     ],
 
-    'socialMediaLinks' => [
-        '_' => ['title' => I18n::_('Social media buttons')],
-        'color' => [
-            'format' => 'color',
-            'default' => '#000000',
-            'title' => I18n::_('Button color'),
-            'description' => ''
-        ]
-    ],
-
-    'entryLayout' => [
-        '_' => ['title' => I18n::_('Entry layout')],
-        'spaceBetween' => ['format' => 'text',	'default' => '20px', 'css_units' => true,		'title' => I18n::_('Space between entries'), 	'description' => I18n::_('Distance from entry to entry. In pixels.')],
-        'defaultGalleryType' => ['format' => 'select',		'values' => ['slideshow', 'row'], 'default' => 'slideshow', 					'title' => I18n::_('Default gallery type'), 'description' => ''],
-        'spaceBetweenImages' => ['format' => 'text',		'default' => '1em', 'css_units' => true,    'title' => I18n::_('Space between images in row and column'),       'description' => I18n::_('Horizontal/vertical space between images when gallery is in "row"/"column" mode')],
-        'galleryNavMargin' => ['format' => 'text',		'default' => '5px', 'css_units' => true,	'title' => I18n::_('Space between images and image navigation'), 	'description' => I18n::_('Vertical space between images and image navigation (the digits below the image) when gallery is in "slideshow" mode')],
-        'galleryMargin' => ['format' => 'text',		'default' => '5px', 'css_units' => true,	'title' => I18n::_('Empty space below gallery'), 	'description' => I18n::_('Distance between the gallery and the content below')],
-        'displayTags' => ['format' => 'select',	'values' => ['yes', 'no'], 'default' => 'no', 	'title' => I18n::_('Display tags by each entry'), 'description' => I18n::_('This determines whether people will see tags you set for each entry. Regardless of this settting, tags still will make up the main menu.')]
+    'firstPage' => [
+        '_' => ['title' => I18n::_('First page')],
+        'imageSizeRatio' => ['format' => 'text',		'default' => '0.4', 'css_units' => false,	'title' => I18n::_('Image size ratio'), 	'description' => I18n::_('Images in the first page layout will be resized by this ratio. Think of it as percentage, e.g., 0.7 = 70% of the original image size.')],
+        'imageHaveShadows' => ['format' => 'select',		'values' => ['yes', 'no'], 'default' => 'no', 	'title' => I18n::_('Images have shadows?'), 'description' => ''],
+        'hoverWiggle' => ['format' => 'select',		'values' => ['yes', 'no'], 'default' => 'yes', 	'title' => I18n::_('Images wiggle on mouse-over?'), 'description' => '']
     ],
 
     'sideBar' => [
@@ -105,13 +104,6 @@ $templateConf = [
         'fontStyle' => ['format' => 'select',		'values' => ['normal', 'italic'], 'default' => 'normal', 			'title' => I18n::_('Heading font style'), 'description' => ''],
         'fontVariant' => ['format' => 'select',		'values' => ['normal', 'small-caps'], 'default' => 'normal', 		'title' => I18n::_('Heading font variant'), 'description' => ''],
         'lineHeight' => ['format' => 'text', 'css_units' => true, 'default' => '1em', 					'title' => I18n::_('Heading line height'), 'description' => I18n::_('Height of text line. Use em, px or % values or the default value "normal"')]
-    ],
-
-    'firstPage' => [
-        '_' => ['title' => I18n::_('First page')],
-        'imageSizeRatio' => ['format' => 'text',		'default' => '0.4', 'css_units' => false,	'title' => I18n::_('Image size ratio'), 	'description' => I18n::_('Images in the first page layout will be resized by this ratio. Think of it as percentage, e.g., 0.7 = 70% of the original image size.')],
-        'imageHaveShadows' => ['format' => 'select',		'values' => ['yes', 'no'], 'default' => 'no', 	'title' => I18n::_('Images have shadows?'), 'description' => ''],
-        'hoverWiggle' => ['format' => 'select',		'values' => ['yes', 'no'], 'default' => 'yes', 	'title' => I18n::_('Images wiggle on mouse-over?'), 'description' => '']
     ],
 
     'menu' => [
@@ -146,16 +138,24 @@ $templateConf = [
         'textDecorationActive' => ['format' => 'select',		'values' => ['none', 'underline', 'overline', 'line-through'],		'default' => 'line-through', 		'title' => I18n::_('Decoration when opened'), 'description' => '']
     ],
 
-    'links' => [
-        '_' => ['title' => I18n::_('Hyperlinks')],
-        'colorLink' => ['format' => 'color',		'default' => '#0000ff', 	'title' => I18n::_('Link color'), 'description' => ''],
-        'colorVisited' => ['format' => 'color',		'default' => '#666666', 	'title' => I18n::_('Visited link color'), 'description' => ''],
-        'colorHover' => ['format' => 'color',		'default' => '#0000ff', 	'title' => I18n::_('Link color when hovered'), 'description' => ''],
-        'colorActive' => ['format' => 'color',		'default' => '#0000ff', 	'title' => I18n::_('Link color when clicked'), 'description' => ''],
-        'textDecorationLink' => ['format' => 'select',		'values' => ['none', 'underline', 'overline', 'line-through'], 	'default' => 'none', 		'title' => I18n::_('Link decoration'), 'description' => ''],
-        'textDecorationVisited' => ['format' => 'select',		'values' => ['none', 'underline', 'overline', 'line-through'],		'default' => 'none', 		'title' => I18n::_('Visited link decoration'), 'description' => ''],
-        'textDecorationHover' => ['format' => 'select',		'values' => ['none', 'underline', 'overline', 'line-through'],		'default' => 'underline', 		'title' => I18n::_('Link decoration when hovered'), 'description' => ''],
-        'textDecorationActive' => ['format' => 'select',		'values' => ['none', 'underline', 'overline', 'line-through'],		'default' => 'underline', 		'title' => I18n::_('Link decoration when clicked'), 'description' => '']
+    'entryLayout' => [
+        '_' => ['title' => I18n::_('Entry layout')],
+        'spaceBetween' => ['format' => 'text',	'default' => '20px', 'css_units' => true,		'title' => I18n::_('Space between entries'), 	'description' => I18n::_('Distance from entry to entry. In pixels.')],
+        'defaultGalleryType' => ['format' => 'select',		'values' => ['slideshow', 'row'], 'default' => 'slideshow', 					'title' => I18n::_('Default gallery type'), 'description' => ''],
+        'spaceBetweenImages' => ['format' => 'text',		'default' => '1em', 'css_units' => true,    'title' => I18n::_('Space between images in row and column'),       'description' => I18n::_('Horizontal/vertical space between images when gallery is in "row"/"column" mode')],
+        'galleryNavMargin' => ['format' => 'text',		'default' => '5px', 'css_units' => true,	'title' => I18n::_('Space between images and image navigation'), 	'description' => I18n::_('Vertical space between images and image navigation (the digits below the image) when gallery is in "slideshow" mode')],
+        'galleryMargin' => ['format' => 'text',		'default' => '5px', 'css_units' => true,	'title' => I18n::_('Empty space below gallery'), 	'description' => I18n::_('Distance between the gallery and the content below')],
+        'displayTags' => ['format' => 'select',	'values' => ['yes', 'no'], 'default' => 'no', 	'title' => I18n::_('Display tags by each entry'), 'description' => I18n::_('This determines whether people will see tags you set for each entry. Regardless of this settting, tags still will make up the main menu.')]
+    ],
+
+    'socialMediaLinks' => [
+        '_' => ['title' => I18n::_('Social media buttons')],
+        'color' => [
+            'format' => 'color',
+            'default' => '#000000',
+            'title' => I18n::_('Button color'),
+            'description' => ''
+        ]
     ],
 
     'css' => [
