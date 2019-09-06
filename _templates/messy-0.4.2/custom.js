@@ -1,6 +1,4 @@
 window.addEvent('domready', function() {
-    var body = $$('body');
-    var navigation = $$('.navigation');
     var bertaCopyright = $('bertaCopyright');
     var additionalText = $('additionalText');
     var start_trial_button = $$('.xSection-free-trial a, .start_trial');
@@ -31,15 +29,6 @@ window.addEvent('domready', function() {
 
     bertaCopyright.set('html', '');
     additionalText.inject(bertaCopyright);
-
-    if (navigation) {
-        if (body[0].hasClass('xContent-home')) {
-            var trial_button = navigation.getElement('.xSection-free-trial');
-            if (trial_button) {
-                trial_button.dispose();
-            }
-        }
-    }
 
     //Comes from Google Adwords
     var gclid = getQueryVariable('gclid');

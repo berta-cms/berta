@@ -18,7 +18,7 @@ require 'config/inc.conf.php';
  * Berta's release version
  */
 $options['version'] = '0.8.10b';
-$options['int_version'] = '1123';
+$options['int_version'] = '1124';
 
 
 /**
