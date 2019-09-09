@@ -114,6 +114,44 @@ $settingsDefinition = [
         ],
     ],
 
+    'pageLayout' => [
+        '_' => [
+            'title' => I18n::_('Page layout')
+        ],
+        'favicon' => [
+            'format' => 'icon',
+            'default' => '',
+            'title' => I18n::_('Favicon'),
+            'description' => I18n::_('Small picture to display in the address bar of the browser. The file must be in .ICO format and 16x16 pixels big.')
+        ],
+        'gridStep' => [
+            'format' => 'text',
+            'default' => 10,
+            'title' => I18n::_('Grid step'),
+            'description' => I18n::_('Distance in pixels for snap-to-grid dragging.')
+        ],
+        'showGrid' => [
+            'format' => 'select',
+            'default' => 'no',
+            'values' => [
+                'yes',
+                'no'
+            ],
+            'title' => I18n::_('Show gridlines'),
+            'description' => I18n::_('Choose "yes" to show gridlines in background. Available only in Messy template.')
+        ],
+        'gridColor' => [
+            'format' => 'select',
+            'default' => 'black',
+            'values' => [
+                'black',
+                'white'
+            ],
+            'title' => I18n::_('Gridlines color'),
+            'description' => ''
+        ],
+    ],
+
     'navigation' => [
         '_' => [
             'title' => I18n::_('Navigation')
@@ -170,92 +208,6 @@ $settingsDefinition = [
         ],
     ],
 
-    'pageLayout' => [
-        '_' => [
-            'title' => I18n::_('Page layout')
-        ],
-        'favicon' => [
-            'format' => 'icon',
-            'default' => '',
-            'title' => I18n::_('Favicon'),
-            'description' => I18n::_('Small picture to display in the address bar of the browser. The file must be in .ICO format and 16x16 pixels big.')
-        ],
-        'gridStep' => [
-            'format' => 'text',
-            'default' => 10,
-            'title' => I18n::_('Grid step'),
-            'description' => I18n::_('Distance in pixels for snap-to-grid dragging.')
-        ],
-        'showGrid' => [
-            'format' => 'select',
-            'default' => 'no',
-            'values' => [
-                'yes',
-                'no'
-            ],
-            'title' => I18n::_('Show gridlines'),
-            'description' => I18n::_('Choose "yes" to show gridlines in background. Available only in Messy template.')
-        ],
-        'gridColor' => [
-            'format' => 'select',
-            'default' => 'black',
-            'values' => [
-                'black',
-                'white'
-            ],
-            'title' => I18n::_('Gridlines color'),
-            'description' => ''
-        ],
-    ],
-
-    'media' => [
-        '_' => [
-            'title' => I18n::_('Media')
-        ],
-        'imagesSmallWidth' => [
-            'format' => 'text',
-            'default' => $options['images']['small_width'],
-            'css_units' => false,
-            'title' => I18n::_('Small image width'),
-            'description' => I18n::_('Maximum size of a small image (visible if \'Small images\' are switched on in the gallery editor). These settings don\'t affect original image.')
-        ],
-        'imagesSmallHeight' => [
-            'format' => 'text',
-            'default' => $options['images']['small_height'],
-            'css_units' => false,
-            'title' => I18n::_('Small image height'),
-            'description' => ''
-        ],
-        'imagesMediumWidth' => [
-            'format' => 'text',
-            'default' => $options['images']['medium_width'],
-            'css_units' => false,
-            'title' => I18n::_('Medium image width'),
-            'description' => I18n::_('Maximum size of a medium image (visible if \'Medium images\' are switched on in the gallery editor). These settings don\'t affect original image.')
-        ],
-        'imagesMediumHeight' => [
-            'format' => 'text',
-            'default' => $options['images']['medium_height'],
-            'css_units' => false,
-            'title' => I18n::_('Medium image height'),
-            'description' => ''
-        ],
-        'imagesLargeWidth' => [
-            'format' => 'text',
-            'default' => $options['images']['large_width'],
-            'css_units' => false,
-            'title' => I18n::_('Large image width'),
-            'description' => I18n::_('Maximum size of a large image (visible if \'Large images\' are switched on in the gallery editor). These settings don\'t affect original image.')
-        ],
-        'imagesLargeHeight' => [
-            'format' => 'text',
-            'default' => $options['images']['large_height'],
-            'css_units' => false,
-            'title' => I18n::_('Large image height'),
-            'description' => ''
-        ],
-    ],
-
     'entryLayout' => [
         '_' => [
             'title' => I18n::_('Entry layout')
@@ -273,7 +225,7 @@ $settingsDefinition = [
             'description' => I18n::_('Enables Lightbox mode for new entries.')
         ],
         'galleryFullScreenBackground' => [
-            'format' => 'select',
+            'format' => 'se~lect',
             'default' => 'black',
             'values' => [
                 'black',
@@ -326,6 +278,123 @@ $settingsDefinition = [
             ],
             'title' => I18n::_('Show slideshow image numbers'),
             'description' => I18n::_('Set the default state of image number visibility in slideshow galleries.')
+        ],
+    ],
+
+    'media' => [
+        '_' => [
+            'title' => I18n::_('Media')
+        ],
+        'imagesSmallWidth' => [
+            'format' => 'text',
+            'default' => $options['images']['small_width'],
+            'css_units' => false,
+            'title' => I18n::_('Small image width'),
+            'description' => I18n::_('Maximum size of a small image (visible if \'Small images\' are switched on in the gallery editor). These settings don\'t affect original image.')
+        ],
+        'imagesSmallHeight' => [
+            'format' => 'text',
+            'default' => $options['images']['small_height'],
+            'css_units' => false,
+            'title' => I18n::_('Small image height'),
+            'description' => ''
+        ],
+        'imagesMediumWidth' => [
+            'format' => 'text',
+            'default' => $options['images']['medium_width'],
+            'css_units' => false,
+            'title' => I18n::_('Medium image width'),
+            'description' => I18n::_('Maximum size of a medium image (visible if \'Medium images\' are switched on in the gallery editor). These settings don\'t affect original image.')
+        ],
+        'imagesMediumHeight' => [
+            'format' => 'text',
+            'default' => $options['images']['medium_height'],
+            'css_units' => false,
+            'title' => I18n::_('Medium image height'),
+            'description' => ''
+        ],
+        'imagesLargeWidth' => [
+            'format' => 'text',
+            'default' => $options['images']['large_width'],
+            'css_units' => false,
+            'title' => I18n::_('Large image width'),
+            'description' => I18n::_('Maximum size of a large image (visible if \'Large images\' are switched on in the gallery editor). These settings don\'t affect original image.')
+        ],
+        'imagesLargeHeight' => [
+            'format' => 'text',
+            'default' => $options['images']['large_height'],
+            'css_units' => false,
+            'title' => I18n::_('Large image height'),
+            'description' => ''
+        ],
+    ],
+
+    'socialMediaLinks' => [
+        '_' => ['title' => I18n::_('Social media buttons')],
+        'links' => [
+            'children' => [
+                'icon' => [
+                    'format' => 'icon-readonly',
+                    'default' => 'link',
+                    'title' => I18n::_('Icon'),
+                    'placeholder' => I18n::_('Icon'),
+                    'description' => ''
+                ],
+                'url' => [
+                    'format' => 'text',
+                    'default' => '',
+                    'title' => I18n::_('Link'),
+                    'placeholder' => I18n::_('Link'),
+                    'description' => ''
+                ]
+            ],
+            'default' => [],
+            'title' => I18n::_('Social media links'),
+            'description' => ''
+        ],
+        'location' => [
+            'format' => 'select',
+            'allow_blank' => false,
+            'default' => 'footer',
+            'values' => [
+                'footer',
+                'additionalText'
+            ],
+            'title' => I18n::_('Location'),
+            'description' => I18n::_('Location of social media buttons. Content of additional text or additional footer will be replaced.')
+        ],
+    ],
+
+    'socialMediaButtons' => [
+        '_' => [
+            'title' => I18n::_('Custom social media buttons')
+        ],
+        'socialMediaHTML' => [
+            'format' => 'longtext',
+            'allow_blank' => true,
+            'default' => '',
+            'html_entities' => true,
+            'title' => I18n::_('HTML code'),
+            'description' => I18n::_('Paste or write your HTML code here.')
+        ],
+        'socialMediaJS' => [
+            'format' => 'longtext',
+            'allow_blank' => true,
+            'default' => '',
+            'html_entities' => true,
+            'title' => I18n::_('Javascript code'),
+            'description' => I18n::_('Paste or write your Javascript code here.')
+        ],
+        'socialMediaLocation' => [
+            'format' => 'select',
+            'allow_blank' => false,
+            'default' => 'footer',
+            'values' => [
+                'footer',
+                'additionalText'
+            ],
+            'title' => I18n::_('Location'),
+            'description' => I18n::_('Location of social media buttons. Content of additional text or additional footer will be replaced.')
         ],
     ],
 
@@ -515,77 +584,6 @@ $settingsDefinition = [
         ],
     ],
 
-    'socialMediaLinks' => [
-        '_' => [
-            'title' => I18n::_('Social media buttons')
-        ],
-        'links' => [
-            'children' => [
-                'icon' => [
-                    'format' => 'icon-readonly',
-                    'default' => 'link',
-                    'title' => I18n::_('Icon'),
-                    'placeholder' => I18n::_('Icon'),
-                    'description' => ''
-                ],
-                'url' => [
-                    'format' => 'text',
-                    'default' => '',
-                    'title' => I18n::_('Link'),
-                    'placeholder' => I18n::_('Link'),
-                    'description' => ''
-                ]
-            ],
-            'default' => [],
-            'title' => I18n::_('Social media links'),
-            'description' => ''
-        ],
-        'location' => [
-            'format' => 'select',
-            'allow_blank' => false,
-            'default' => 'footer',
-            'values' => [
-                'footer',
-                'additionalText'
-            ],
-            'title' => I18n::_('Location'),
-            'description' => I18n::_('Location of social media buttons. Content of additional text or additional footer will be replaced.')
-        ],
-    ],
-
-    'socialMediaButtons' => [
-        '_' => [
-            'title' => I18n::_('Custom social media buttons')
-        ],
-        'socialMediaHTML' => [
-            'format' => 'longtext',
-            'allow_blank' => true,
-            'default' => '',
-            'html_entities' => true,
-            'title' => I18n::_('HTML code'),
-            'description' => I18n::_('Paste or write your HTML code here.')
-        ],
-        'socialMediaJS' => [
-            'format' => 'longtext',
-            'allow_blank' => true,
-            'default' => '',
-            'html_entities' => true,
-            'title' => I18n::_('Javascript code'),
-            'description' => I18n::_('Paste or write your Javascript code here.')
-        ],
-        'socialMediaLocation' => [
-            'format' => 'select',
-            'allow_blank' => false,
-            'default' => 'footer',
-            'values' => [
-                'footer',
-                'additionalText'
-            ],
-            'title' => I18n::_('Location'),
-            'description' => I18n::_('Location of social media buttons. Content of additional text or additional footer will be replaced.')
-        ],
-    ],
-
     'language' => [
         '_' => [
             'title' => I18n::_('Language')
@@ -642,16 +640,7 @@ if (@file_exists($ENGINE_ROOT_PATH . 'plan')) {
 
     //settings for PRO and SHOP hosting plans
     if ($hostingPlan > 1) {
-        $settingsDefinition['settings']['hideBertaCopyright'] = [
-            'format' => 'select',
-            'default' => 'no',
-            'values' => [
-                'yes',
-                'no'
-            ],
-            'title' => I18n::_('Hide copyrights'),
-            'description' => I18n::_('Hides Berta\'s copyrights')
-        ];
+        $settingsDefinition['settings']['hideBertaCopyright'] = ['format' => 'select', 'default' => 'no', 'values' => ['yes', 'no'], 'title' => I18n::_('Hide copyrights'), 'description' => I18n::_('Hides Berta\'s copyrights')];
     }
     $options['HOSTING_PLAN'] = $hostingPlan;
 } else {

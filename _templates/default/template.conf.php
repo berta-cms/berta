@@ -120,16 +120,6 @@ $templateConf = [
         'margin' => ['format' => 'text', 'css_units' => true,	'default' => '0 0 10px', 				                                    'title' => I18n::_('Margins'),                                   'description' => I18n::_('How far the menu is form other elements in page. Please see the short CSS guide at the bottom of this page.')]
     ],
 
-    'socialMediaLinks' => [
-        '_' => ['title' => I18n::_('Social media buttons')],
-        'color' => [
-            'format' => 'color',
-            'default' => '#000000',
-            'title' => I18n::_('Button color'),
-            'description' => ''
-        ]
-    ],
-
     'entryLayout' => [
         '_' => ['title' => I18n::_('Entry layout')],
         'margin' => ['format' => 'text', 'css_units' => true, 'default' => '0 0 4em', 							                                                                                'title' => I18n::_('Entry margins'), 	            'description' => I18n::_('Margins around entries. Please see the short CSS guide at the bottom of this page.')],
@@ -162,6 +152,16 @@ $templateConf = [
         'fontStyle' => ['format' => 'select',		'values' => ['inherit', 'normal', 'italic'], 'default' => 'inherit', 		'title' => I18n::_('Font style'),        'description' => ''],
         'fontVariant' => ['format' => 'select',		'values' => ['inherit', 'normal', 'small-caps'], 'default' => 'inherit', 'title' => I18n::_('Font variant'),      'description' => ''],
         'lineHeight' => ['format' => 'text', 'css_units' => true, 'default' => 'inherit', 					                                'title' => I18n::_('Line height'),       'description' => I18n::_('Height of text line. Use em, px or % values or the default value "normal"')],
+    ],
+
+    'socialMediaLinks' => [
+        '_' => ['title' => I18n::_('Social media buttons')],
+        'color' => [
+            'format' => 'color',
+            'default' => '#000000',
+            'title' => I18n::_('Button color'),
+            'description' => ''
+        ]
     ],
 
     'css' => [
