@@ -41,16 +41,6 @@ $templateConf = [
         'lineHeight' => ['format' => 'text', 'css_units' => true, 'default' => 'normal', 								                'title' => I18n::_('Line height'),   'description' => I18n::_('Height of text line. Use em, px or % values or the default value "normal"')]
     ],
 
-    'menu' => [
-        '_' => ['title' => I18n::_('Main menu')],
-        'colorLink' => ['format' => 'color',		'default' => '#666666', 	                                                            'title' => I18n::_('Color'),                 'description' => ''],
-        'colorHover' => ['format' => 'color',		'default' => '#666666', 	                                                            'title' => I18n::_('Color when hovered'),    'description' => I18n::_('Color of the element under mouse cursor')],
-        'colorActive' => ['format' => 'color',		'default' => '#666666', 	                                                            'title' => I18n::_('Color when selected'),   'description' => I18n::_('Color of the element of the currently opened section')],
-        'textDecorationLink' => ['format' => 'select',		'values' => ['none', 'underline', 'overline', 'line-through'], 	'default' => 'none', 		    'title' => I18n::_('Decoration'),                'description' => ''],
-        'textDecorationHover' => ['format' => 'select',		'values' => ['none', 'underline', 'overline', 'line-through'],		'default' => 'underline', 		'title' => I18n::_('Decoration when hovered'),   'description' => ''],
-        'textDecorationActive' => ['format' => 'select',		'values' => ['none', 'underline', 'overline', 'line-through'],		'default' => 'underline',       'title' => I18n::_('Decoration when selected'),    'description' => '']
-    ],
-
     'links' => [
         '_' => ['title' => I18n::_('Hyperlinks')],
         'colorLink' => ['format' => 'color',		'default' => '#666666', 	    'title' => I18n::_('Link color'),                'description' => ''],
@@ -73,14 +63,15 @@ $templateConf = [
         'backgroundAttachment' => ['format' => 'select',		'values' => ['fixed' => 'Fixed to browser window', 'fill' => 'Filled in browser window', 'scroll' => 'No stretch, scroll along with content'], 'default' => 'scroll', 		            'title' => I18n::_('Background position'),       'description' => I18n::_('Sets how background behaves in relation with the browser window.')]
     ],
 
-    'socialMediaLinks' => [
-        '_' => ['title' => I18n::_('Social media buttons')],
-        'color' => [
-            'format' => 'color',
-            'default' => '#000000',
-            'title' => I18n::_('Button color'),
-            'description' => ''
-        ]
+    'pageLayout' => [
+        '_' => ['title' => I18n::_('Page layout')],
+        'centered' => ['format' => 'select', 'default' => 'no', 'values' => ['yes', 'no'], 'title' => I18n::_('Centered layout'), 'description' => I18n::_('Sets whether layout should be centered or not.')],
+        'contentWidth' => ['format' => 'text',	'default' => '600px',	'css_units' => true, 	'title' => I18n::_('Entry text max width'),                  'description' => I18n::_('Width of texts in the entries. This does not apply to the width of images.')],
+        'paddingTop' => ['format' => 'text',	'default' => '90px',	'css_units' => true, 	'title' => I18n::_('How far content is from page top?'),     'description' => I18n::_('The vertical distance between the top of the page and the content area.')],
+        'paddingLeft' => ['format' => 'text',	'default' => '30px',	'css_units' => true, 	'title' => I18n::_('How far content is from menu?'),         'description' => I18n::_('The horizontal distance between the menu and the content area.')],
+        'leftColumnWidth' => ['format' => 'text',	'default' => '170px',	'css_units' => true, 	'title' => I18n::_('Width of the left column'),              'description' => ''],
+        'group_responsive' => ['format' => false, 'default' => false, 'title' => I18n::_('Responsive design')],
+        'responsive' => ['format' => 'select', 'default' => 'yes', 'values' => ['no', 'yes'], 'title' => I18n::_('Enabled'), 'description' => I18n::_('Sets whether layout should be responsive or not.')],
     ],
 
     'pageHeading' => [
@@ -98,15 +89,14 @@ $templateConf = [
         'marginBottom' => ['format' => 'text',		'default' => '20px', 				'css_units' => true,                'title' => I18n::_('Empty space on bottom'),                     'description' => '']
     ],
 
-    'pageLayout' => [
-        '_' => ['title' => I18n::_('Page layout')],
-        'centered' => ['format' => 'select', 'default' => 'no', 'values' => ['yes', 'no'], 'title' => I18n::_('Centered layout'), 'description' => I18n::_('Sets whether layout should be centered or not.')],
-        'contentWidth' => ['format' => 'text',	'default' => '600px',	'css_units' => true, 	'title' => I18n::_('Entry text max width'),                  'description' => I18n::_('Width of texts in the entries. This does not apply to the width of images.')],
-        'paddingTop' => ['format' => 'text',	'default' => '90px',	'css_units' => true, 	'title' => I18n::_('How far content is from page top?'),     'description' => I18n::_('The vertical distance between the top of the page and the content area.')],
-        'paddingLeft' => ['format' => 'text',	'default' => '30px',	'css_units' => true, 	'title' => I18n::_('How far content is from menu?'),         'description' => I18n::_('The horizontal distance between the menu and the content area.')],
-        'leftColumnWidth' => ['format' => 'text',	'default' => '170px',	'css_units' => true, 	'title' => I18n::_('Width of the left column'),              'description' => ''],
-        'group_responsive' => ['format' => false, 'default' => false, 'title' => I18n::_('Responsive design')],
-        'responsive' => ['format' => 'select', 'default' => 'yes', 'values' => ['no', 'yes'], 'title' => I18n::_('Enabled'), 'description' => I18n::_('Sets whether layout should be responsive or not.')],
+    'menu' => [
+        '_' => ['title' => I18n::_('Main menu')],
+        'colorLink' => ['format' => 'color',		'default' => '#666666', 	                                                            'title' => I18n::_('Color'),                 'description' => ''],
+        'colorHover' => ['format' => 'color',		'default' => '#666666', 	                                                            'title' => I18n::_('Color when hovered'),    'description' => I18n::_('Color of the element under mouse cursor')],
+        'colorActive' => ['format' => 'color',		'default' => '#666666', 	                                                            'title' => I18n::_('Color when selected'),   'description' => I18n::_('Color of the element of the currently opened section')],
+        'textDecorationLink' => ['format' => 'select',		'values' => ['none', 'underline', 'overline', 'line-through'], 	'default' => 'none', 		    'title' => I18n::_('Decoration'),                'description' => ''],
+        'textDecorationHover' => ['format' => 'select',		'values' => ['none', 'underline', 'overline', 'line-through'],		'default' => 'underline', 		'title' => I18n::_('Decoration when hovered'),   'description' => ''],
+        'textDecorationActive' => ['format' => 'select',		'values' => ['none', 'underline', 'overline', 'line-through'],		'default' => 'underline',       'title' => I18n::_('Decoration when selected'),    'description' => '']
     ],
 
     'entryLayout' => [
@@ -118,6 +108,17 @@ $templateConf = [
         'galleryMargin' => ['format' => 'text',		'default' => '1em', 'css_units' => true,                                'title' => I18n::_('Empty space below gallery'),                     'description' => I18n::_('Distance between the gallery and the content below')],
         'displayTags' => ['format' => 'select',	'values' => ['yes', 'no'], 'default' => 'yes',                     'title' => I18n::_('Display tags by each entry'),                    'description' => I18n::_('This determines whether people will see tags you set for each entry. Regardless of this settting, tags still will make up the main menu.')]
     ],
+
+    'socialMediaLinks' => [
+        '_' => ['title' => I18n::_('Social media buttons')],
+        'color' => [
+            'format' => 'color',
+            'default' => '#000000',
+            'title' => I18n::_('Button color'),
+            'description' => ''
+        ]
+    ],
+
     'css' => [
         '_' => ['title' => I18n::_('Custom CSS')],
         'customCSS' => ['format' => 'longtext',	'allow_blank' => true,	'default' => '',	'html_entities' => true,	'title' => I18n::_('Custom CSS'), 'description' => I18n::_('description_custom_css')]
