@@ -31,6 +31,7 @@ $sectionTypes = [
             'link' => [
                 'format' => 'text',
                 'default' => '',
+                'allow_blank' => true,
                 'link' => true,
             ],
             'target' => [
@@ -88,6 +89,7 @@ $templateConf = [
         'googleFont' => [
             'format' => 'text',
             'default' => '',
+            'allow_blank' => true,
             'html_entities' => true,
             'title' => I18n::_('Google web fonts'),
             'description' => I18n::_('googleFont_description'),
@@ -96,6 +98,7 @@ $templateConf = [
             'format' => 'text',
             'css_units' => true,
             'default' => '11px',
+            'allow_blank' => true,
             'title' => I18n::_('Font size'),
             'description' => '',
         ],
@@ -133,6 +136,7 @@ $templateConf = [
             'format' => 'text',
             'css_units' => true,
             'default' => 'normal',
+            'allow_blank' => true,
             'title' => I18n::_('Line height'),
             'description' => I18n::_('Height of text line. Use em, px or % values or the default value "normal"'),
         ],
@@ -239,7 +243,11 @@ $templateConf = [
         'backgroundImage' => [
             'format' => 'image',
             'default' => '',
-            'min_width' => 1, 'min_height' => 1, 'max_width' => 3000, 'max_height' => 3000, 'title' => I18n::_('Background image'),
+            'min_width' => 1,
+            'min_height' => 1,
+            'max_width' => 3000,
+            'max_height' => 3000,
+            'title' => I18n::_('Background image'),
             'description' => I18n::_('Picture to use for page background.'),
         ],
         'backgroundRepeat' => [
@@ -300,6 +308,7 @@ $templateConf = [
         'contentWidth' => [
             'format' => 'text',
             'default' => '380px',
+            'allow_blank' => true,
             'css_units' => true,
             'title' => I18n::_('Entry text max width'),
             'description' => I18n::_('Width of texts in the entries. This does not apply to the width of images.'),
@@ -307,6 +316,7 @@ $templateConf = [
         'paddingTop' => [
             'format' => 'text',
             'default' => '30px',
+            'allow_blank' => true,
             'css_units' => true,
             'title' => I18n::_('How far content is from page top?'),
             'description' => I18n::_('The vertical distance between the top of the page and the content area.'),
@@ -314,13 +324,15 @@ $templateConf = [
         'paddingLeft' => [
             'format' => 'text',
             'default' => '30px',
+            'allow_blank' => true,
             'css_units' => true,
             'title' => I18n::_('How far content is from sidebar?'),
             'description' => I18n::_('The horizontal distance between the menu and the content area.'),
         ],
         'group_responsive' => [
             'format' => false,
-            'default' => false, 'title' => I18n::_('Responsive design'),
+            'default' => false,
+            'title' => I18n::_('Responsive design'),
         ],
         'responsive' => [
             'format' => 'select',
@@ -339,7 +351,8 @@ $templateConf = [
                 '2',
                 '3',
                 '4',
-            ], 'title' => I18n::_('Mash-up columns'),
+            ],
+            'title' => I18n::_('Mash-up columns'),
             'description' => I18n::_('Column count for Mash-up section.'),
         ],
     ],
@@ -351,7 +364,9 @@ $templateConf = [
         'imageSizeRatio' => [
             'format' => 'text',
             'default' => '0.4',
-            'css_units' => false, 'title' => I18n::_('Image size ratio'),
+            'allow_blank' => true,
+            'css_units' => false,
+            'title' => I18n::_('Image size ratio'),
             'description' => I18n::_('Images in the first page layout will be resized by this ratio. Think of it as percentage, e.g., 0.7 = 70% of the original image size.'),
         ],
         'imageHaveShadows' => [
@@ -383,6 +398,7 @@ $templateConf = [
         'width' => [
             'format' => 'text',
             'default' => '200px',
+            'allow_blank' => true,
             'css_units' => true,
             'title' => I18n::_('Width'),
             'description' => '',
@@ -390,6 +406,7 @@ $templateConf = [
         'marginLeft' => [
             'format' => 'text',
             'default' => '0px',
+            'allow_blank' => true,
             'css_units' => true,
             'title' => I18n::_('Left margin'),
             'description' => I18n::_('How far the sidebar is from the left side of the screen. This gets ignored, if centered layout is enabled.'),
@@ -397,6 +414,7 @@ $templateConf = [
         'marginTop' => [
             'format' => 'text',
             'default' => '30px',
+            'allow_blank' => true,
             'css_units' => true,
             'title' => I18n::_('Top padding'),
             'description' => I18n::_('How far the header is from the top of the screen?'),
@@ -404,6 +422,7 @@ $templateConf = [
         'marginBottom' => [
             'format' => 'text',
             'default' => '20px',
+            'allow_blank' => true,
             'css_units' => true,
             'title' => I18n::_('Space between header and menu'),
             'description' => I18n::_('How far the menu is from the header text or header image.'),
@@ -448,6 +467,7 @@ $templateConf = [
         'googleFont' => [
             'format' => 'text',
             'default' => '',
+            'allow_blank' => true,
             'html_entities' => true,
             'title' => I18n::_('Google web fonts'),
             'description' => I18n::_('googleFont_description'),
@@ -456,6 +476,7 @@ $templateConf = [
             'format' => 'text',
             'css_units' => true,
             'default' => '10px',
+            'allow_blank' => true,
             'title' => I18n::_('Heading font size'),
             'description' => '',
         ],
@@ -493,6 +514,7 @@ $templateConf = [
             'format' => 'text',
             'css_units' => true,
             'default' => '1em',
+            'allow_blank' => true,
             'title' => I18n::_('Heading line height'),
             'description' => I18n::_('Height of text line. Use em, px or % values or the default value "normal"'),
         ],
@@ -512,6 +534,7 @@ $templateConf = [
         'googleFont' => [
             'format' => 'text',
             'default' => '',
+            'allow_blank' => true,
             'html_entities' => true,
             'title' => I18n::_('Google web fonts'),
             'description' => I18n::_('googleFont_description'),
@@ -520,6 +543,7 @@ $templateConf = [
             'format' => 'text',
             'css_units' => true,
             'default' => '10px',
+            'allow_blank' => true,
             'title' => I18n::_('Font size'),
             'description' => '',
         ],
@@ -547,6 +571,7 @@ $templateConf = [
             'format' => 'text',
             'css_units' => true,
             'default' => '16px',
+            'allow_blank' => true,
             'title' => I18n::_('Line height'),
             'description' => I18n::_('Height of text line. Use em, px or % values or the default value "normal"'),
         ],
@@ -620,6 +645,7 @@ $templateConf = [
         'googleFont' => [
             'format' => 'text',
             'default' => '',
+            'allow_blank' => true,
             'html_entities' => true,
             'title' => I18n::_('Google web fonts'),
             'description' => I18n::_('googleFont_description'),
@@ -628,6 +654,7 @@ $templateConf = [
             'format' => 'text',
             'css_units' => true,
             'default' => '11px',
+            'allow_blank' => true,
             'title' => I18n::_('Font size'),
             'description' => '',
         ],
@@ -655,6 +682,7 @@ $templateConf = [
             'format' => 'text',
             'css_units' => true,
             'default' => '16px',
+            'allow_blank' => true,
             'title' => I18n::_('Line height'),
             'description' => I18n::_('Height of text line. Use em, px or % values or the default value "normal"'),
         ],
@@ -721,6 +749,7 @@ $templateConf = [
         'spaceBetween' => [
             'format' => 'text',
             'default' => '20px',
+            'allow_blank' => true,
             'css_units' => true,
             'title' => I18n::_('Space between entries'),
             'description' => I18n::_('Distance from entry to entry. In pixels.'),
@@ -738,6 +767,7 @@ $templateConf = [
         'spaceBetweenImages' => [
             'format' => 'text',
             'default' => '1em',
+            'allow_blank' => true,
             'css_units' => true,
             'title' => I18n::_('Space between images in row and column'),
             'description' => I18n::_('Horizontal/vertical space between images when gallery is in "row"/"column" mode'),
@@ -745,6 +775,7 @@ $templateConf = [
         'galleryNavMargin' => [
             'format' => 'text',
             'default' => '5px',
+            'allow_blank' => true,
             'css_units' => true,
             'title' => I18n::_('Space between images and image navigation'),
             'description' => I18n::_('Vertical space between images and image navigation (the digits below the image) when gallery is in "slideshow" mode'),
@@ -752,6 +783,7 @@ $templateConf = [
         'galleryMargin' => [
             'format' => 'text',
             'default' => '5px',
+            'allow_blank' => true,
             'css_units' => true,
             'title' => I18n::_('Empty space below gallery'),
             'description' => I18n::_('Distance between the gallery and the content below'),
