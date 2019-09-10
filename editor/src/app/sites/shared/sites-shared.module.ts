@@ -6,6 +6,7 @@ import { SettingRowAddComponent } from './setting-row-add.component';
 import { AutofocusDirective } from './autofocus.directive';
 import { ColorPickerModule } from 'ngx-color-picker';
 import { TextInputComponent } from '../../inputs/text-input.component';
+import { UrlInputComponent } from '../../inputs/url-input.component';
 import { LongTextInputComponent } from '../../inputs/long-text-input.component';
 import { InlineTextInputComponent } from '../../inputs/inline-text-input.component';
 import { ToggleInputComponent } from '../../inputs/toggle-input.component';
@@ -28,6 +29,7 @@ import { IconReadonlyComponent } from '../../inputs/icon-readonly.component';
     SettingRowAddComponent,
     AutofocusDirective,
     TextInputComponent,
+    UrlInputComponent,
     LongTextInputComponent,
     InlineTextInputComponent,
     ToggleInputComponent,
@@ -45,6 +47,7 @@ import { IconReadonlyComponent } from '../../inputs/icon-readonly.component';
     SettingRowAddComponent,
     AutofocusDirective,
     TextInputComponent,
+    UrlInputComponent,
     LongTextInputComponent,
     InlineTextInputComponent,
     ToggleInputComponent,

@@ -115,10 +115,10 @@ $settingsDefinition = [
                     'description' => ''
                 ],
                 'url' => [
-                    'format' => 'text',
+                    'format' => 'url',
                     'default' => '',
                     'title' => I18n::_('Link'),
-                    'placeholder' => I18n::_('Link'),
+                    'placeholder' => ('https://example.com'),
                     'description' => ''
                 ]
             ],

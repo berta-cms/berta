@@ -18,6 +18,14 @@ import { UpdateInputFocus } from '../../app-state/app.actions';
                         (inputFocus)="updateComponentFocus($event)"
                         (update)="updateComponentField(setting.slug, $event)"></berta-text-input>
 
+      <berta-url-input *ngSwitchCase="'url'"
+                        [label]="config.title"
+                        [placeholder]="config.placeholder"
+                        [value]="setting.value"
+                        [enabledOnUpdate]="config.enabledOnUpdate"
+                        (inputFocus)="updateComponentFocus($event)"
+                        (update)="updateComponentField(setting.slug, $event)"></berta-url-input>
+
       <berta-color-input *ngSwitchCase="'color'"
                         [label]="config.title"
                         [value]="setting.value"
