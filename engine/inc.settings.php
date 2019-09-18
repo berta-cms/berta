@@ -42,89 +42,300 @@ $settingsFontSelect = array_merge(['inherit' => '(inherit from general-font-sett
 $settingsDefinition = [
     'berta' => [
         '_' => ['invisible' => true],
-        'installed' => ['format' => 'text', 'allow_blank' => true, 'default' => null, 'title' => '', 'description' => ''],
+        'installed' => [
+            'format' => 'text',
+            'allow_blank' => true,
+            'default' => null,
+            'title' => '',
+            'description' => ''
+        ],
     ],
 
     // siteTexts block is NOT editable in the settings page. It is reserved for texts appearing only on the page
     'siteTexts' => [
-        '_' => ['title' => I18n::_('Texts in the website'), 'invisible' => true],
-        'siteHeading' => ['format' => 'text', 'allow_blank' => true, 'default' => null, 'title' => I18n::_('Site heading'), 'description' => ''],
+        '_' => [
+            'title' => I18n::_('Texts in the website'),
+            'invisible' => true
+        ],
+        'siteHeading' => [
+            'format' => 'text',
+            'allow_blank' => true,
+            'default' => null,
+            'title' => I18n::_('Site heading'),
+            'description' => ''
+        ],
     ],
 
     'template' => [
-        '_' => ['title' => I18n::_('Template')],
-        'template' => ['format' => 'select', 'values' => 'templates', 'allow_blank' => false, 'default' => false, 'title' => I18n::_('Template'), 'description' => I18n::_('Templates are like skins or themes for your site. You can choose one template from the ones installed in your templates folder. To add a new template to this list, upload it to the templates folder via FTP.')],
+        '_' => [
+            'title' => I18n::_('Template')
+        ],
+        'template' => [
+            'format' => 'select',
+            'values' => 'templates',
+            'allow_blank' => false,
+            'default' => false,
+            'title' => I18n::_('Template'),
+            'description' => I18n::_('Templates are like skins or themes for your site. You can choose one template from the ones installed in your templates folder. To add a new template to this list, upload it to the templates folder via FTP.')
+        ],
     ],
 
     'texts' => [
-        '_' => ['title' => I18n::_('Texts')],
-        'ownerName' => ['format' => 'text', 'allow_blank' => true, 'default' => null, 'title' => I18n::_('Your name'), 'description' => I18n::_('Your name will be put in a meta-tag in the code of your site. You can choose any name ;)')],
-        'pageTitle' => ['format' => 'text', 'allow_blank' => true, 'default' => 'berta', 'title' => I18n::_('Page title (title bar)'), 'description' => I18n::_('Text that appears in the bowser title bar')],
-        'metaDescription' => ['format' => 'text', 'allow_blank' => true, 'default' => 'Personal portfolio built with Berta', 'title' => I18n::_('<META> description'), 'description' => I18n::_('Short site description. It should not be longer than one or two sentences.')],
-        'metaKeywords' => ['format' => 'text', 'allow_blank' => true, 'default' => 'berta', 'title' => I18n::_('<META> keywords'), 'description' => I18n::_('Keywords visible only to search engines. Keywords along with the description can improve your site ranking in search results.')],
-    ],
-
-    'navigation' => [
-        '_' => ['title' => I18n::_('Navigation')],
-        'landingSectionVisible' => ['format' => 'select', 'default' => 'yes', 'values' => ['yes', 'no'], 'title' => I18n::_('Is first section visible in menu?'), 'description' => I18n::_('Choose "no" to hide the first section in the main menu. Link from the page title (or header image) will lead to it. NOTE: This setting has no effect, if the section has a submenu; then it is visible at all times.')],
-        'landingSectionPageHeadingVisible' => ['format' => 'select', 'default' => 'yes', 'values' => ['yes', 'no'], 'title' => I18n::_('Show page heading in first section?'), 'description' => I18n::_('Choose "no" to hide page heading in first section.')],
-        'landingSectionMenuVisible' => ['format' => 'select', 'default' => 'yes', 'values' => ['yes', 'no'], 'title' => I18n::_('Show menu in first section?'), 'description' => I18n::_('Choose "no" to hide the menu in first section.')],
-        'alwaysSelectTag' => ['format' => 'select', 'default' => 'yes', 'values' => ['yes', 'no'], 'title' => I18n::_('Always auto-select a submenu item?'), 'description' => I18n::_('Choose "yes" to automatically select the first submenu item when clicking on a menu item. This works only when there is a submenu.')],
-        'backToTopEnabled' => ['format' => 'select', 'default' => 'no', 'values' => ['yes', 'no'], 'title' => I18n::_('Enable navigation to page top'), 'description' => I18n::_('Shows navigation button at the bottom when page is scrolled.')],
+        '_' => [
+            'title' => I18n::_('Texts')
+        ],
+        'ownerName' => [
+            'format' => 'text',
+            'allow_blank' => true,
+            'default' => null,
+            'title' => I18n::_('Your name'),
+            'description' => I18n::_('Your name will be put in a meta-tag in the code of your site. You can choose any name ;)')
+        ],
+        'pageTitle' => [
+            'format' => 'text',
+            'allow_blank' => true,
+            'default' => 'berta',
+            'title' => I18n::_('Page title (title bar)'),
+            'description' => I18n::_('Text that appears in the bowser title bar')
+        ],
+        'metaDescription' => [
+            'format' => 'text',
+            'allow_blank' => true,
+            'default' => 'Personal portfolio built with Berta',
+            'title' => I18n::_('<META> description'),
+            'description' => I18n::_('Short site description. It should not be longer than one or two sentences.')
+        ],
+        'metaKeywords' => [
+            'format' => 'text',
+            'allow_blank' => true,
+            'default' => 'berta',
+            'title' => I18n::_('<META> keywords'),
+            'description' => I18n::_('Keywords visible only to search engines. Keywords along with the description can improve your site ranking in search results.')
+        ],
     ],
 
     'pageLayout' => [
-        '_' => ['title' => I18n::_('Page layout')],
-        'favicon' => ['format' => 'icon', 'default' => '', 'title' => I18n::_('Favicon'), 'description' => I18n::_('Small picture to display in the address bar of the browser. The file must be in .ICO format and 16x16 pixels big.')],
-        'gridStep' => ['format' => 'text', 'default' => 10, 'title' => I18n::_('Grid step'), 'description' => I18n::_('Distance in pixels for snap-to-grid dragging.')],
-        'showGrid' => ['format' => 'select', 'default' => 'no', 'values' => ['yes', 'no'], 'title' => I18n::_('Show gridlines'), 'description' => I18n::_('Choose "yes" to show gridlines in background. Available only in Messy template.')],
-        'gridColor' => ['format' => 'select', 'default' => 'black', 'values' => ['black', 'white'], 'title' => I18n::_('Gridlines color'), 'description' => ''],
+        '_' => [
+            'title' => I18n::_('Page layout')
+        ],
+        'favicon' => [
+            'format' => 'icon',
+            'default' => '',
+            'allow_blank' => true,
+            'title' => I18n::_('Favicon'),
+            'description' => I18n::_('Small picture to display in the address bar of the browser. The file must be in .ICO format and 16x16 pixels big.')
+        ],
+        'gridStep' => [
+            'format' => 'text',
+            'default' => 10,
+            'allow_blank' => true,
+            'title' => I18n::_('Grid step'),
+            'description' => I18n::_('Distance in pixels for snap-to-grid dragging.')
+        ],
+        'showGrid' => [
+            'format' => 'select',
+            'default' => 'no',
+            'values' => [
+                'yes',
+                'no'
+            ],
+            'title' => I18n::_('Show gridlines'),
+            'description' => I18n::_('Choose "yes" to show gridlines in background. Available only in Messy template.')
+        ],
+        'gridColor' => [
+            'format' => 'select',
+            'default' => 'black',
+            'allow_blank' => true,
+            'values' => [
+                'black',
+                'white'
+            ],
+            'title' => I18n::_('Gridlines color'),
+            'description' => ''
+        ],
     ],
 
-    'media' => [
-        '_' => ['title' => I18n::_('Media')],
-        'imagesSmallWidth' => ['format' => 'text', 'default' => $options['images']['small_width'], 'css_units' => false, 'title' => I18n::_('Small image width'), 'description' => I18n::_('Maximum size of a small image (visible if \'Small images\' are switched on in the gallery editor). These settings don\'t affect original image.')],
-        'imagesSmallHeight' => ['format' => 'text', 'default' => $options['images']['small_height'], 'css_units' => false, 'title' => I18n::_('Small image height'), 'description' => ''],
-        'imagesMediumWidth' => ['format' => 'text', 'default' => $options['images']['medium_width'], 'css_units' => false, 'title' => I18n::_('Medium image width'), 'description' => I18n::_('Maximum size of a medium image (visible if \'Medium images\' are switched on in the gallery editor). These settings don\'t affect original image.')],
-        'imagesMediumHeight' => ['format' => 'text', 'default' => $options['images']['medium_height'], 'css_units' => false, 'title' => I18n::_('Medium image height'), 'description' => ''],
-        'imagesLargeWidth' => ['format' => 'text', 'default' => $options['images']['large_width'], 'css_units' => false, 'title' => I18n::_('Large image width'), 'description' => I18n::_('Maximum size of a large image (visible if \'Large images\' are switched on in the gallery editor). These settings don\'t affect original image.')],
-        'imagesLargeHeight' => ['format' => 'text', 'default' => $options['images']['large_height'], 'css_units' => false, 'title' => I18n::_('Large image height'), 'description' => ''],
+    'navigation' => [
+        '_' => [
+            'title' => I18n::_('Navigation')
+        ],
+        'landingSectionVisible' => [
+            'format' => 'select',
+            'default' => 'yes',
+            'values' => [
+                'yes',
+                'no'
+            ],
+            'title' => I18n::_('Is first section visible in menu?'),
+            'description' => I18n::_('Choose "no" to hide the first section in the main menu. Link from the page title (or header image) will lead to it. NOTE: This setting has no effect, if the section has a submenu; then it is visible at all times.')
+        ],
+        'landingSectionPageHeadingVisible' => [
+            'format' => 'select',
+            'default' => 'yes',
+            'values' => [
+                'yes',
+                'no'
+            ],
+            'title' => I18n::_('Show page heading in first section?'),
+            'description' => I18n::_('Choose "no" to hide page heading in first section.')
+        ],
+        'landingSectionMenuVisible' => [
+            'format' => 'select',
+            'default' => 'yes',
+            'values' => [
+                'yes',
+                'no'
+            ],
+            'title' => I18n::_('Show menu in first section?'),
+            'description' => I18n::_('Choose "no" to hide the menu in first section.')
+        ],
+        'alwaysSelectTag' => [
+            'format' => 'select',
+            'default' => 'yes',
+            'values' => [
+                'yes',
+                'no'
+            ],
+            'title' => I18n::_('Always auto-select a submenu item?'),
+            'description' => I18n::_('Choose "yes" to automatically select the first submenu item when clicking on a menu item. This works only when there is a submenu.')
+        ],
+        'backToTopEnabled' => [
+            'format' => 'select',
+            'default' => 'no',
+            'values' => [
+                'yes',
+                'no'
+            ],
+            'title' => I18n::_('Enable navigation to page top'),
+            'description' => I18n::_('Shows navigation button at the bottom when page is scrolled.')
+        ],
     ],
 
     'entryLayout' => [
-        '_' => ['title' => I18n::_('Entry layout')],
-        'group_lightbox' => ['format' => false, 'default' => false, 'title' => I18n::_('Lightbox settings:')],
-        'galleryFullScreenDefault' => ['format' => 'select', 'default' => 'yes', 'values' => ['yes', 'no'], 'title' => I18n::_('Is enabled by default'), 'description' => I18n::_('Enables Lightbox mode for new entries.')],
-        'galleryFullScreenBackground' => ['format' => 'select', 'default' => 'black', 'values' => ['black', 'white'], 'title' => I18n::_('Background color'), 'description' => I18n::_('Color of the Lightbox background layer.')],
-        'galleryFullScreenImageNumbers' => ['format' => 'select', 'default' => 'yes', 'values' => ['yes', 'no'], 'title' => I18n::_('Image numbers'), 'description' => I18n::_('Enables/disables Lightbox slide numbers.')],
-        'galleryFullScreenCaptionAlign' => ['format' => 'select', 'default' => 'left', 'values' => ['left', 'right', 'center'], 'title' => I18n::_('Caption alignment'), 'description' => I18n::_('Positioning of the image caption text.')],
-        'group_gallery' => ['format' => false, 'default' => false, 'title' => I18n::_('Image gallery appearance:')],
-        'gallerySlideshowAutoRewind' => ['format' => 'select', 'default' => 'no', 'values' => ['yes', 'no'], 'title' => I18n::_('Slideshow loop mode')],
-        'gallerySlideNumberVisibilityDefault' => ['format' => 'select', 'default' => 'yes', 'values' => ['yes', 'no'], 'title' => I18n::_('Show slideshow image numbers'), 'description' => I18n::_('Set the default state of image number visibility in slideshow galleries.')],
+        '_' => [
+            'title' => I18n::_('Entry layout')
+        ],
+        'group_lightbox' => [
+            'format' => false,
+            'default' => false,
+            'title' => I18n::_('Lightbox settings:')
+        ],
+        'galleryFullScreenDefault' => [
+            'format' => 'select',
+            'default' => 'yes',
+            'values' => ['yes', 'no'],
+            'title' => I18n::_('Is enabled by default'),
+            'description' => I18n::_('Enables Lightbox mode for new entries.')
+        ],
+        'galleryFullScreenBackground' => [
+            'format' => 'se~lect',
+            'default' => 'black',
+            'values' => [
+                'black',
+                'white'
+            ],
+            'title' => I18n::_('Background color'),
+            'description' => I18n::_('Color of the Lightbox background layer.')
+        ],
+        'galleryFullScreenImageNumbers' => [
+            'format' => 'select',
+            'default' => 'yes',
+            'values' => [
+                'yes',
+                'no'
+            ],
+            'title' => I18n::_('Image numbers'),
+            'description' => I18n::_('Enables/disables Lightbox slide numbers.')
+        ],
+        'galleryFullScreenCaptionAlign' => [
+            'format' => 'select',
+            'default' => 'left',
+            'values' => [
+                'left',
+                'right',
+                'center'
+            ],
+            'title' => I18n::_('Caption alignment'),
+            'description' => I18n::_('Positioning of the image caption text.')
+        ],
+        'group_gallery' => [
+            'format' => false,
+            'default' => false,
+            'title' => I18n::_('Image gallery appearance:')
+        ],
+        'gallerySlideshowAutoRewind' => [
+            'format' => 'select',
+            'default' => 'no',
+            'values' => [
+                'yes',
+                'no'
+            ],
+            'title' => I18n::_('Slideshow loop mode')
+        ],
+        'gallerySlideNumberVisibilityDefault' => [
+            'format' => 'select',
+            'default' => 'yes',
+            'values' => [
+                'yes',
+                'no'
+            ],
+            'title' => I18n::_('Show slideshow image numbers'),
+            'description' => I18n::_('Set the default state of image number visibility in slideshow galleries.')
+        ],
     ],
 
-    'banners' => [
-        '_' => ['title' => I18n::_('Banners')],
-        'banner1_image' => ['format' => 'image', 'default' => '', 'min_width' => 1, 'min_height' => 1, 'max_width' => 3000, 'max_height' => 3000, 'title' => I18n::_('Banner image') . ' (1)', 'description' => '<span class="warning">' . I18n::_('description_banner') . '</span>'],
-        'banner1_link' => ['format' => 'text', 'allow_blank' => true, 'default' => null, 'link' => true, 'title' => I18n::_('Banner link') . ' (1)', 'description' => I18n::_('description_banner_link')],
-        'banner2_image' => ['format' => 'image', 'default' => '', 'min_width' => 1, 'min_height' => 1, 'max_width' => 3000, 'max_height' => 3000, 'title' => I18n::_('Banner image') . ' (2)', 'description' => ''],
-        'banner2_link' => ['format' => 'text', 'allow_blank' => true, 'default' => null, 'link' => true, 'title' => I18n::_('Banner link') . ' (2)', 'description' => ''],
-        'banner3_image' => ['format' => 'image', 'default' => '', 'min_width' => 1, 'min_height' => 1, 'max_width' => 3000, 'max_height' => 3000, 'title' => I18n::_('Banner image') . ' (3)', 'description' => ''],
-        'banner3_link' => ['format' => 'text', 'allow_blank' => true, 'default' => null, 'link' => true, 'title' => I18n::_('Banner link') . ' (3)', 'description' => ''],
-        'banner4_image' => ['format' => 'image', 'default' => '', 'min_width' => 1, 'min_height' => 1, 'max_width' => 3000, 'max_height' => 3000, 'title' => I18n::_('Banner image') . ' (4)', 'description' => ''],
-        'banner4_link' => ['format' => 'text', 'allow_blank' => true, 'default' => null, 'link' => true, 'title' => I18n::_('Banner link') . ' (4)', 'description' => ''],
-        'banner5_image' => ['format' => 'image', 'default' => '', 'min_width' => 1, 'min_height' => 1, 'max_width' => 3000, 'max_height' => 3000, 'title' => I18n::_('Banner image') . ' (5)', 'description' => ''],
-        'banner5_link' => ['format' => 'text', 'allow_blank' => true, 'default' => null, 'link' => true, 'title' => I18n::_('Banner link') . ' (5)', 'description' => ''],
-        'banner6_image' => ['format' => 'image', 'default' => '', 'min_width' => 1, 'min_height' => 1, 'max_width' => 3000, 'max_height' => 3000, 'title' => I18n::_('Banner image') . ' (6)', 'description' => ''],
-        'banner6_link' => ['format' => 'text', 'allow_blank' => true, 'default' => null, 'link' => true, 'title' => I18n::_('Banner link') . ' (6)', 'description' => ''],
-        'banner7_image' => ['format' => 'image', 'default' => '', 'min_width' => 1, 'min_height' => 1, 'max_width' => 3000, 'max_height' => 3000, 'title' => I18n::_('Banner image') . ' (7)', 'description' => ''],
-        'banner7_link' => ['format' => 'text', 'allow_blank' => true, 'default' => null, 'link' => true, 'title' => I18n::_('Banner link') . ' (7)', 'description' => ''],
-        'banner8_image' => ['format' => 'image', 'default' => '', 'min_width' => 1, 'min_height' => 1, 'max_width' => 3000, 'max_height' => 3000, 'title' => I18n::_('Banner image') . ' (8)', 'description' => ''],
-        'banner8_link' => ['format' => 'text', 'allow_blank' => true, 'default' => null, 'link' => true, 'title' => I18n::_('Banner link') . ' (8)', 'description' => ''],
-        'banner9_image' => ['format' => 'image', 'default' => '', 'min_width' => 1, 'min_height' => 1, 'max_width' => 3000, 'max_height' => 3000, 'title' => I18n::_('Banner image') . ' (9)', 'description' => ''],
-        'banner9_link' => ['format' => 'text', 'allow_blank' => true, 'default' => null, 'link' => true, 'title' => I18n::_('Banner link') . ' (9)', 'description' => ''],
-        'banner10_image' => ['format' => 'image', 'default' => '', 'min_width' => 1, 'min_height' => 1, 'max_width' => 3000, 'max_height' => 3000, 'title' => I18n::_('Banner image') . ' (10)', 'description' => ''],
-        'banner10_link' => ['format' => 'text', 'allow_blank' => true, 'default' => null, 'link' => true, 'title' => I18n::_('Banner link') . ' (10)', 'description' => ''],
+    'media' => [
+        '_' => [
+            'title' => I18n::_('Media')
+        ],
+        'imagesSmallWidth' => [
+            'format' => 'text',
+            'default' => $options['images']['small_width'],
+            'allow_blank' => true,
+            'css_units' => false,
+            'title' => I18n::_('Small image width'),
+            'description' => I18n::_('Maximum size of a small image (visible if \'Small images\' are switched on in the gallery editor). These settings don\'t affect original image.')
+        ],
+        'imagesSmallHeight' => [
+            'format' => 'text',
+            'default' => $options['images']['small_height'],
+            'allow_blank' => true,
+            'css_units' => false,
+            'title' => I18n::_('Small image height'),
+            'description' => ''
+        ],
+        'imagesMediumWidth' => [
+            'format' => 'text',
+            'default' => $options['images']['medium_width'],
+            'allow_blank' => true,
+            'css_units' => false,
+            'title' => I18n::_('Medium image width'),
+            'description' => I18n::_('Maximum size of a medium image (visible if \'Medium images\' are switched on in the gallery editor). These settings don\'t affect original image.')
+        ],
+        'imagesMediumHeight' => [
+            'format' => 'text',
+            'default' => $options['images']['medium_height'],
+            'css_units' => false,
+            'allow_blank' => true,
+            'title' => I18n::_('Medium image height'),
+            'description' => ''
+        ],
+        'imagesLargeWidth' => [
+            'format' => 'text',
+            'default' => $options['images']['large_width'],
+            'allow_blank' => true,
+            'css_units' => false,
+            'title' => I18n::_('Large image width'),
+            'description' => I18n::_('Maximum size of a large image (visible if \'Large images\' are switched on in the gallery editor). These settings don\'t affect original image.')
+        ],
+        'imagesLargeHeight' => [
+            'format' => 'text',
+            'default' => $options['images']['large_height'],
+            'allow_blank' => true,
+            'css_units' => false,
+            'title' => I18n::_('Large image height'),
+            'description' => ''
+        ],
     ],
 
     'socialMediaLinks' => [
@@ -164,22 +375,267 @@ $settingsDefinition = [
     ],
 
     'socialMediaButtons' => [
-        '_' => ['title' => I18n::_('Custom social media buttons')],
-        'socialMediaHTML' => ['format' => 'longtext', 'allow_blank' => true, 'default' => '', 'html_entities' => true, 'title' => I18n::_('HTML code'), 'description' => I18n::_('Paste or write your HTML code here.')],
-        'socialMediaJS' => ['format' => 'longtext', 'allow_blank' => true, 'default' => '', 'html_entities' => true, 'title' => I18n::_('Javascript code'), 'description' => I18n::_('Paste or write your Javascript code here.')],
-        'socialMediaLocation' => ['format' => 'select', 'allow_blank' => false, 'default' => 'footer', 'values' => ['footer', 'additionalText'], 'title' => I18n::_('Location'), 'description' => I18n::_('Location of social media buttons. Content of additional text or additional footer will be replaced.')],
+        '_' => [
+            'title' => I18n::_('Custom social media buttons')
+        ],
+        'socialMediaHTML' => [
+            'format' => 'longtext',
+            'allow_blank' => true,
+            'default' => '',
+            'html_entities' => true,
+            'title' => I18n::_('HTML code'),
+            'description' => I18n::_('Paste or write your HTML code here.')
+        ],
+        'socialMediaJS' => [
+            'format' => 'longtext',
+            'allow_blank' => true,
+            'default' => '',
+            'html_entities' => true,
+            'title' => I18n::_('Javascript code'),
+            'description' => I18n::_('Paste or write your Javascript code here.')
+        ],
+        'socialMediaLocation' => [
+            'format' => 'select',
+            'allow_blank' => false,
+            'default' => 'footer',
+            'values' => [
+                'footer',
+                'additionalText'
+            ],
+            'title' => I18n::_('Location'),
+            'description' => I18n::_('Location of social media buttons. Content of additional text or additional footer will be replaced.')
+        ],
+    ],
+
+    'banners' => [
+        '_' => [
+            'title' => I18n::_('Banners')
+        ],
+        'banner1_image' => [
+            'format' => 'image',
+            'default' => '',
+            'min_width' => 1,
+            'min_height' => 1,
+            'max_width' => 3000,
+            'max_height' => 3000,
+            'title' => I18n::_('Banner image') . ' (1)',
+            'description' => '<span class="warning">' . I18n::_('description_banner') . '</span>'
+        ],
+        'banner1_link' => [
+            'format' => 'text',
+            'allow_blank' => true,
+            'default' => null,
+            'link' => true,
+            'title' => I18n::_('Banner link') . ' (1)',
+            'description' => I18n::_('description_banner_link')
+        ],
+        'banner2_image' => [
+            'format' => 'image',
+            'default' => '',
+            'min_width' => 1,
+            'min_height' => 1,
+            'max_width' => 3000,
+            'max_height' => 3000,
+            'title' => I18n::_('Banner image') . ' (2)',
+            'description' => ''
+        ],
+        'banner2_link' => [
+            'format' => 'text',
+            'allow_blank' => true,
+            'default' => null,
+            'link' => true,
+            'title' => I18n::_('Banner link') . ' (2)',
+            'description' => ''
+        ],
+        'banner3_image' => [
+            'format' => 'image',
+            'default' => '',
+            'min_width' => 1,
+            'min_height' => 1,
+            'max_width' => 3000,
+            'max_height' => 3000,
+            'title' => I18n::_('Banner image') . ' (3)',
+            'description' => ''
+        ],
+        'banner3_link' => [
+            'format' => 'text',
+            'allow_blank' => true,
+            'default' => null,
+            'link' => true,
+            'title' => I18n::_('Banner link') . ' (3)',
+            'description' => ''
+        ],
+        'banner4_image' => [
+            'format' => 'image',
+            'default' => '',
+            'min_width' => 1,
+            'min_height' => 1,
+            'max_width' => 3000,
+            'max_height' => 3000,
+            'title' => I18n::_('Banner image') . ' (4)',
+            'description' => ''
+        ],
+        'banner4_link' => [
+            'format' => 'text',
+            'allow_blank' => true,
+            'default' => null,
+            'link' => true,
+            'title' => I18n::_('Banner link') . ' (4)',
+            'description' => ''
+        ],
+        'banner5_image' => [
+            'format' => 'image',
+            'default' => '',
+            'min_width' => 1,
+            'min_height' => 1,
+            'max_width' => 3000,
+            'max_height' => 3000,
+            'title' => I18n::_('Banner image') . ' (5)',
+            'description' => ''
+        ],
+        'banner5_link' => [
+            'format' => 'text',
+            'allow_blank' => true,
+            'default' => null,
+            'link' => true,
+            'title' => I18n::_('Banner link') . ' (5)',
+            'description' => ''
+        ],
+        'banner6_image' => [
+            'format' => 'image',
+            'default' => '',
+            'min_width' => 1,
+            'min_height' => 1,
+            'max_width' => 3000,
+            'max_height' => 3000,
+            'title' => I18n::_('Banner image') . ' (6)',
+            'description' => ''
+        ],
+        'banner6_link' => [
+            'format' => 'text',
+            'allow_blank' => true,
+            'default' => null,
+            'link' => true,
+            'title' => I18n::_('Banner link') . ' (6)',
+            'description' => ''
+        ],
+        'banner7_image' => [
+            'format' => 'image',
+            'default' => '',
+            'min_width' => 1,
+            'min_height' => 1,
+            'max_width' => 3000,
+            'max_height' => 3000,
+            'title' => I18n::_('Banner image') . ' (7)',
+            'description' => ''
+        ],
+        'banner7_link' => [
+            'format' => 'text',
+            'allow_blank' => true,
+            'default' => null,
+            'link' => true,
+            'title' => I18n::_('Banner link') . ' (7)',
+            'description' => ''
+        ],
+        'banner8_image' => [
+            'format' => 'image',
+            'default' => '',
+            'min_width' => 1,
+            'min_height' => 1,
+            'max_width' => 3000,
+            'max_height' => 3000,
+            'title' => I18n::_('Banner image') . ' (8)',
+            'description' => ''
+        ],
+        'banner8_link' => [
+            'format' => 'text',
+            'allow_blank' => true,
+            'default' => null,
+            'link' => true,
+            'title' => I18n::_('Banner link') . ' (8)',
+            'description' => ''
+        ],
+        'banner9_image' => [
+            'format' => 'image',
+            'default' => '',
+            'min_width' => 1,
+            'min_height' => 1,
+            'max_width' => 3000,
+            'max_height' => 3000,
+            'title' => I18n::_('Banner image') . ' (9)',
+            'description' => ''
+        ],
+        'banner9_link' => [
+            'format' => 'text',
+            'allow_blank' => true,
+            'default' => null,
+            'link' => true,
+            'title' => I18n::_('Banner link') . ' (9)',
+            'description' => ''
+        ],
+        'banner10_image' => [
+            'format' => 'image',
+            'default' => '',
+            'min_width' => 1,
+            'min_height' => 1,
+            'max_width' => 3000,
+            'max_height' => 3000,
+            'title' => I18n::_('Banner image') . ' (10)',
+            'description' => ''
+        ],
+        'banner10_link' => [
+            'format' => 'text',
+            'allow_blank' => true,
+            'default' => null,
+            'link' => true,
+            'title' => I18n::_('Banner link') . ' (10)',
+            'description' => ''
+        ],
     ],
 
     'language' => [
-        '_' => ['title' => I18n::_('Language')],
-        'language' => ['format' => 'select', 'allow_blank' => false, 'default' => $options['default_language'], 'values' => $options['languages'], 'title' => I18n::_('Interface language'), 'description' => I18n::_('description_language')],
+        '_' => [
+            'title' => I18n::_('Language')
+        ],
+        'language' => [
+            'format' => 'select',
+            'allow_blank' => false,
+            'default' => $options['default_language'],
+            'values' => $options['languages'],
+            'title' => I18n::_('Interface language'),
+            'description' => I18n::_('description_language')
+        ],
     ],
 
     'settings' => [
-        '_' => ['title' => I18n::_('Other settings')],
-        'googleAnalyticsId' => ['format' => 'text', 'allow_blank' => true, 'default' => '', 'html_entities' => true, 'title' => I18n::_('Google Analytics ID'), 'validator' => 'GoogleAnalytics', 'description' => I18n::_('The ID of the <a href="http://google.com/analytics" target="_blank">Google Analytics</a> site profile. To obtain an ID, register in <a href="http://google.com/analytics" target="_blank">Google Analytics</a> and create a profile for your site.')],
-        'googleSiteVerification' => ['format' => 'text', 'allow_blank' => true, 'default' => '', 'html_entities' => true, 'title' => I18n::_('Google site verification tag'), 'description' => I18n::_('Google ownership verification <meta> tag. <a href="http://support.google.com/a/bin/answer.py?hl=en&answer=186017" target="_blank">More info</a>.')],
-        'jsInclude' => ['format' => 'longtext', 'allow_blank' => true, 'default' => '', 'html_entities' => true, 'title' => I18n::_('Javascript include'), 'description' => I18n::_('javascript_include')],
+        '_' => [
+            'title' => I18n::_('Other settings')
+        ],
+        'googleAnalyticsId' => [
+            'format' => 'text',
+            'allow_blank' => true,
+            'default' => '',
+            'html_entities' => true,
+            'title' => I18n::_('Google Analytics ID'),
+            'validator' => 'GoogleAnalytics',
+            'description' => I18n::_('The ID of the <a href="http://google.com/analytics" target="_blank">Google Analytics</a> site profile. To obtain an ID, register in <a href="http://google.com/analytics" target="_blank">Google Analytics</a> and create a profile for your site.')
+        ],
+        'googleSiteVerification' => [
+            'format' => 'text',
+            'allow_blank' => true,
+            'default' => '',
+            'html_entities' => true,
+            'title' => I18n::_('Google site verification tag'),
+            'description' => I18n::_('Google ownership verification <meta> tag. <a href="http://support.google.com/a/bin/answer.py?hl=en&answer=186017" target="_blank">More info</a>.')
+        ],
+        'jsInclude' => [
+            'format' => 'longtext',
+            'allow_blank' => true,
+            'default' => '',
+            'html_entities' => true,
+            'title' => I18n::_('Javascript include'),
+            'description' => I18n::_('javascript_include')
+        ],
     ],
 ];
 
