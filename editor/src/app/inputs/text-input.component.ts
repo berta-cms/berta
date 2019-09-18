@@ -26,6 +26,9 @@ import { TextInputService } from './text-input.service';
                  (blur)="onBlur($event)">
           <svg *ngIf="allowBlank && value"
                (click)="clearValue($event)"
+               role="button"
+               tabindex="0"
+               aria-label="clear"
                class="icon clear"
                width="14" height="13" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M9.8284 9.19243L4.17155 3.53557" stroke="#9B9B9B" stroke-linecap="square" class="icon-remove"/>
