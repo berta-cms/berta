@@ -39,6 +39,17 @@
     .icon {
       fill: $grey-40;
       transition: fill .2s;
+      margin-right: .75em;
+
+      &.clear {
+        cursor: pointer;
+
+        &:hover {
+          path {
+            stroke: $error-color;
+          }
+        }
+      }
     }
 
     .icon-empty {
@@ -169,8 +180,8 @@
       white-space: nowrap;
     }
 
-    svg {
-      padding-right: .75em;
+    .add {
+      margin-right: .75em;
     }
   }
 
