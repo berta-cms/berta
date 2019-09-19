@@ -258,8 +258,11 @@ div.xGalleryItem {
         width: 49%;
     }
 
-    .portfolioThumbnail:nth-child(3n+1),
+    .portfolioThumbnail:nth-child(3n+1) {
+      clear: none;
+    }
+
     .portfolioThumbnail:nth-child(2n+1) {
-        clear: none;
+      clear: left;
     }
 }
