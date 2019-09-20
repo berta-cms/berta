@@ -199,9 +199,10 @@ var BertaEditor = new Class({
                     // We should create a new clone element with different tag name
                     // to make nth-of-type css rule work
                     // nth-of-type works with tag name not class selector
-                    return new Element('article', {
+                    return new Element('span', {
                       class: 'portfolioThumbnail'
                     }).setStyles({
+                      display: 'block',
                       visibility: 'hidden',
                       position: 'absolute',
                       left: el.offsetLeft,
