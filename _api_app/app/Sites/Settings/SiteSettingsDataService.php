@@ -5,6 +5,7 @@ namespace App\Sites\Settings;
 use App\Configuration\SiteSettingsConfigService;
 use App\Shared\Storage;
 use App\Shared\ImageHelpers;
+use App\Shared\ConfigHelpers;
 use App\Sites\Sections\SiteSectionsDataService;
 
 /**
@@ -437,6 +438,14 @@ class SiteSettingsDataService extends Storage
         return $ret;
     }
 
+    // Overwrite method from Storage class
+    public function setValueByPath(&$settings, $path, $value)
+    {
+        $config_path = ConfigHelpers::getSettingPathByXmlPath($path);
+        $value = ConfigHelpers::formatValue($this->siteSettingsConfig, $config_path, $value);
+        parent::setValueByPath($settings, $path, $value);
+    }
+
     /**
      * Upload a file for site setting
      *
@@ -477,6 +486,13 @@ class SiteSettingsDataService extends Storage
     public function createChildren($path, $value)
     {
         $path_arr = array_slice(explode('/', $path), 2);
+        $path = implode('/', $path_arr);
+
+        // format children row values
+        foreach ($value as $k => $v) {
+            $value[$k] = ConfigHelpers::formatValue($this->siteSettingsConfig, "{$path}/children/{$k}", $v);
+        }
+
         $childSlug = substr(end($path_arr), 0, -1);
         $path_arr[] = $childSlug;
         $path = implode('/', $path_arr);
