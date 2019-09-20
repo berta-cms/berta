@@ -624,14 +624,26 @@ var BertaEditor = new Class({
     var target = $(event.target);
     if (!target.hasClass('xEntry')) target = target.getParent('.xEntry');
     target.addClass('xEntryHover');
-
+    target.setAttribute('data-hover', 'on');
   },
+
   entryOnUnHover: function (event) {
     event = new Event(event);
     var target = $(event.target);
-    if (!target.hasClass('xEntry')) target = target.getParent('.xEntry');
-    target.removeClass('xEntryHover');
+
+    if (!target.hasClass('xEntry')) {
+      target = target.getParent('.xEntry');
+    }
+
+    var tagsListInput = target.getElement('.tagsList input');
+
+    // If submenu input is not focused
+    if (!tagsListInput) {
+      target.removeClass('xEntryHover');
+    }
+    target.setAttribute('data-hover', 'off');
   },
+
   entryDropdownToggle: function (event) {
     var dropdown = $(event.target);
     var entry = dropdown.getParent().getParent();

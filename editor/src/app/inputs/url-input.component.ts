@@ -24,6 +24,17 @@ import { TextInputService } from './text-input.service';
                  (focus)="onFocus()"
                  (keydown)="onKeyDown($event)"
                  (blur)="onBlur($event)">
+          <svg *ngIf="allowBlank && value"
+                (click)="clearValue($event)"
+                role="button"
+                tabindex="0"
+                aria-label="clear"
+                class="icon clear"
+                width="14" height="13" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <title>clear</title>
+            <path d="M9.8284 9.19243L4.17155 3.53557" stroke="#9B9B9B" stroke-linecap="square" class="icon-remove"/>
+            <path d="M9.82844 3.53552L4.17159 9.19237" stroke="#9B9B9B" stroke-linecap="square" class="icon-remove"/>
+          </svg>
         </div>
       </label>
     </div>`,
@@ -45,6 +56,7 @@ export class UrlInputComponent implements OnInit {
   @Input() enabledOnUpdate?: boolean;
   @Input() hideIcon?: boolean;
   @Input() value: string;
+  @Input() allowBlank?: boolean;
   @Output() update = new EventEmitter<string>();
   @Output() inputFocus = new EventEmitter<boolean>();
 
@@ -85,5 +97,11 @@ export class UrlInputComponent implements OnInit {
 
   onKeyDown(event) {
     this.textInputService.updateField(event);
+  }
+
+  clearValue(event) {
+    event.preventDefault();
+    this.value = '';
+    this.update.emit(this.value);
   }
 }

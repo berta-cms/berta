@@ -23,6 +23,7 @@ import { UpdateInputFocus } from '../../app-state/app.actions';
                         [label]="config.title"
                         [placeholder]="config.placeholder"
                         [value]="setting.value"
+                        [allowBlank]="config.allow_blank"
                         [enabledOnUpdate]="config.enabledOnUpdate"
                         (inputFocus)="updateComponentFocus($event)"
                         (update)="updateComponentField(setting.slug, $event)"></berta-url-input>

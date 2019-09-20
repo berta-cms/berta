@@ -422,7 +422,7 @@ $settingsDefinition = [
             'description' => '<span class="warning">' . I18n::_('description_banner') . '</span>'
         ],
         'banner1_link' => [
-            'format' => 'text',
+            'format' => 'url',
             'allow_blank' => true,
             'default' => null,
             'link' => true,
@@ -440,7 +440,7 @@ $settingsDefinition = [
             'description' => ''
         ],
         'banner2_link' => [
-            'format' => 'text',
+            'format' => 'url',
             'allow_blank' => true,
             'default' => null,
             'link' => true,
@@ -458,7 +458,7 @@ $settingsDefinition = [
             'description' => ''
         ],
         'banner3_link' => [
-            'format' => 'text',
+            'format' => 'url',
             'allow_blank' => true,
             'default' => null,
             'link' => true,
@@ -476,7 +476,7 @@ $settingsDefinition = [
             'description' => ''
         ],
         'banner4_link' => [
-            'format' => 'text',
+            'format' => 'url',
             'allow_blank' => true,
             'default' => null,
             'link' => true,
@@ -494,7 +494,7 @@ $settingsDefinition = [
             'description' => ''
         ],
         'banner5_link' => [
-            'format' => 'text',
+            'format' => 'url',
             'allow_blank' => true,
             'default' => null,
             'link' => true,
@@ -512,7 +512,7 @@ $settingsDefinition = [
             'description' => ''
         ],
         'banner6_link' => [
-            'format' => 'text',
+            'format' => 'url',
             'allow_blank' => true,
             'default' => null,
             'link' => true,
@@ -530,7 +530,7 @@ $settingsDefinition = [
             'description' => ''
         ],
         'banner7_link' => [
-            'format' => 'text',
+            'format' => 'url',
             'allow_blank' => true,
             'default' => null,
             'link' => true,
@@ -548,7 +548,7 @@ $settingsDefinition = [
             'description' => ''
         ],
         'banner8_link' => [
-            'format' => 'text',
+            'format' => 'url',
             'allow_blank' => true,
             'default' => null,
             'link' => true,
@@ -566,7 +566,7 @@ $settingsDefinition = [
             'description' => ''
         ],
         'banner9_link' => [
-            'format' => 'text',
+            'format' => 'url',
             'allow_blank' => true,
             'default' => null,
             'link' => true,
@@ -584,7 +584,7 @@ $settingsDefinition = [
             'description' => ''
         ],
         'banner10_link' => [
-            'format' => 'text',
+            'format' => 'url',
             'allow_blank' => true,
             'default' => null,
             'link' => true,
