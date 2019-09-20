@@ -186,7 +186,7 @@ var BertaEditor = new Class({
                   this.entriesList.getElements('.xCreateNewEntry').setStyle('visibility', 'visible');
                   this.entryOrderSave(el);
                 }.bind(this),
-                onStart: function (el, clone) {
+                onStart: function () {
                   this.entriesList.getElements('.xCreateNewEntry').setStyle('visibility', 'hidden');
                 }.bind(this)
               });
