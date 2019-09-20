@@ -195,7 +195,19 @@ var BertaEditor = new Class({
                 new Sortables(this.portfolioThumbnails, {
                   handle: '.xHandle',
                   constrain: true,
-                  clone: true,
+                  clone: function (_, el) {
+                    // We should create a new clone element with different tag name
+                    // to make nth-of-type css rule work
+                    // nth-of-type works with tag name not class selector
+                    return new Element('article', {
+                      class: 'portfolioThumbnail'
+                    }).setStyles({
+                      visibility: 'hidden',
+                      position: 'absolute',
+                      left: el.offsetLeft,
+                      top: el.offsetTop
+                    }).set('html', el.get('html'));
+                  },
                   opacity: 0.3,
                   revert: true,
                   onComplete: function (el) {
