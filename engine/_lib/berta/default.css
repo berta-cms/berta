@@ -212,7 +212,7 @@ div.xGalleryItem .xGalleryImageVideoBack {
   box-sizing: border-box;
 }
 
-.portfolioThumbnail:nth-child(3n+1) {
+.portfolioThumbnail:nth-of-type(3n+1) {
   clear: left;
 }
 
@@ -290,11 +290,11 @@ div.xGalleryItem .xGalleryImageVideoBack {
     width: 49%;
   }
 
-  .portfolioThumbnail:nth-child(3n+1) {
+  .portfolioThumbnail:nth-of-type(3n+1) {
     clear: none;
   }
 
-  .portfolioThumbnail:nth-child(2n+1) {
+  .portfolioThumbnail:nth-of-type(2n+1) {
     clear: left;
   }
 }
