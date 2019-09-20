@@ -134,6 +134,8 @@ var inlineEdit = new Class({
   },
 
   onSave: function () {
+    this.entryUnHover(this.editting);
+
     this.inputBox.removeEvents();
 
     this.newContent = this.options.WYSIWYGSettings ?
@@ -155,6 +157,21 @@ var inlineEdit = new Class({
     }
 
     this.fireEvent('onComplete', [this, this.editting, this.oldContent, this.oldContentText, this.newContent, this.newContentText]);
+  },
+
+  entryUnHover: function (el) {
+    var pathParts = el.data('path').split('/');
+    var isEntryTagField = pathParts.length === 6 && pathParts.slice(1)[0] === 'entry' && pathParts.slice(-1)[0] === 'tag';
+
+    if (!isEntryTagField) {
+      return;
+    }
+
+    var xEntryEl = el.getParent('.xEntry');
+
+    if (xEntryEl.getAttribute('data-hover') === 'off') {
+      xEntryEl.removeClass('xEntryHover');
+    }
   },
 
   setAllStyles: function (prevel, el) {
