@@ -486,13 +486,6 @@ class SiteSettingsDataService extends Storage
     public function createChildren($path, $value)
     {
         $path_arr = array_slice(explode('/', $path), 2);
-        $path = implode('/', $path_arr);
-
-        // format children row values
-        foreach ($value as $k => $v) {
-            $value[$k] = ConfigHelpers::formatValue($this->siteSettingsConfig, "{$path}/children/{$k}", $v);
-        }
-
         $childSlug = substr(end($path_arr), 0, -1);
         $path_arr[] = $childSlug;
         $path = implode('/', $path_arr);
@@ -500,18 +493,29 @@ class SiteSettingsDataService extends Storage
         $settings = $this->get();
         $children = $this->getValueByPath($settings, $path);
 
+        $childrenCount = 0;
         if ($children) {
             $children = $this->asList($children);
-            $children[] = $value;
-        } else {
-            $children = [$value];
+            $childrenCount = count($children);
+
+            // We should tell SITE_SETTINGS that this is an array if only one children exists
+            // @TODO implement type=array in xml structure
+            if ($childrenCount == 1) {
+                $this->setValueByPath(
+                    $this->SITE_SETTINGS,
+                    $path,
+                    $children
+                );
+            }
         }
 
-        $this->setValueByPath(
-            $this->SITE_SETTINGS,
-            $path,
-            $children
-        );
+        foreach ($value as $k => $v) {
+            $this->setValueByPath(
+                $this->SITE_SETTINGS,
+                "{$path}/{$childrenCount}/{$k}",
+                $v
+            );
+        }
 
         $this->array2xmlFile($this->SITE_SETTINGS, $this->XML_FILE, $this->ROOT_ELEMENT);
         return $value;
