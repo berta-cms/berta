@@ -5,6 +5,7 @@ namespace App\Sites\Settings;
 use App\Configuration\SiteSettingsConfigService;
 use App\Shared\Storage;
 use App\Shared\ImageHelpers;
+use App\Shared\ConfigHelpers;
 use App\Sites\Sections\SiteSectionsDataService;
 
 /**
@@ -437,6 +438,14 @@ class SiteSettingsDataService extends Storage
         return $ret;
     }
 
+    // Overwrite method from Storage class
+    public function setValueByPath(&$settings, $path, $value)
+    {
+        $config_path = ConfigHelpers::getSettingPathByXmlPath($path);
+        $value = ConfigHelpers::formatValue($this->siteSettingsConfig, $config_path, $value);
+        parent::setValueByPath($settings, $path, $value);
+    }
+
     /**
      * Upload a file for site setting
      *
@@ -484,18 +493,29 @@ class SiteSettingsDataService extends Storage
         $settings = $this->get();
         $children = $this->getValueByPath($settings, $path);
 
+        $childrenCount = 0;
         if ($children) {
             $children = $this->asList($children);
-            $children[] = $value;
-        } else {
-            $children = [$value];
+            $childrenCount = count($children);
+
+            // We should tell SITE_SETTINGS that this is an array if only one children exists
+            // @TODO implement type=array in xml structure
+            if ($childrenCount == 1) {
+                $this->setValueByPath(
+                    $this->SITE_SETTINGS,
+                    $path,
+                    $children
+                );
+            }
         }
 
-        $this->setValueByPath(
-            $this->SITE_SETTINGS,
-            $path,
-            $children
-        );
+        foreach ($value as $k => $v) {
+            $this->setValueByPath(
+                $this->SITE_SETTINGS,
+                "{$path}/{$childrenCount}/{$k}",
+                $v
+            );
+        }
 
         $this->array2xmlFile($this->SITE_SETTINGS, $this->XML_FILE, $this->ROOT_ELEMENT);
         return $value;
