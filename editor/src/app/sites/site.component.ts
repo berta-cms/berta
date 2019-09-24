@@ -1,20 +1,23 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { take, filter, switchMap, map, mergeMap } from 'rxjs/operators';
-import { Store } from '@ngxs/store';
+import { Store, Select } from '@ngxs/store';
 import { PopupService } from '../popup/popup.service';
 import { SiteStateModel } from './sites-state/site-state.model';
 import { DeleteSiteAction, CloneSiteAction, UpdateSiteAction, RenameSiteAction } from './sites-state/sites.actions';
+import { Observable } from 'rxjs';
+import { AppStateModel } from '../app-state/app-state.interface';
 
 @Component({
   selector: 'berta-site',
   template: `
-    <div class="setting-group">
+
+    <div class="setting-group" [class.current-site]="(current_site$|async).site == site.name">
       <h3>
         <div class="control-line">
           <berta-inline-text-input [value]="site.title"
-                                   (inputFocus)="updateComponentFocus($event)"
-                                   (update)="updateField('title', $event)"></berta-inline-text-input>
+                                    (inputFocus)="updateComponentFocus($event)"
+                                    (update)="updateField('title', $event)"></berta-inline-text-input>
           <div class="expand"></div>
           <button *ngIf="!modificationDisabled"
                   [attr.title]="site['@attributes'].published > 0 ? 'Unpublish': 'Publish'"
@@ -34,15 +37,15 @@ import { DeleteSiteAction, CloneSiteAction, UpdateSiteAction, RenameSiteAction }
         </div>
         <div class="url-line">
           <a [routerLink]="['/multisite']"
-             [queryParams]="(site.name === '' ? null : {site: site.name})">{{ hostname }}/</a>
+              [queryParams]="(site.name === '' ? null : {site: site.name})" class="link">{{ hostname }}/</a>
 
-          <berta-inline-text-input *ngIf="!modificationDisabled"
-                                   [value]="site.name"
-                                   (inputFocus)="updateComponentFocus($event)"
-                                   (update)="updateField('name', $event)"></berta-inline-text-input>
+          <berta-inline-text-input class="link" *ngIf="!modificationDisabled"
+                                    [value]="site.name"
+                                    (inputFocus)="updateComponentFocus($event)"
+                                    (update)="updateField('name', $event)"></berta-inline-text-input>
         </div>
       </h3>
-    </div>
+    </div>    
   `,
   styles: [`
     :host h3 {
@@ -59,6 +62,9 @@ import { DeleteSiteAction, CloneSiteAction, UpdateSiteAction, RenameSiteAction }
     .url-line {
       display: flex;
     }
+    .url-line:hover a, .url-line:hover , .link:hover {
+      color: #0c4dff;
+    }
   `]
 })
 export class SiteComponent implements OnInit {
@@ -66,7 +72,10 @@ export class SiteComponent implements OnInit {
 
   @Output() inputFocus = new EventEmitter();
 
-  hostname: string;
+  @Select('app') public current_site$: Observable<AppStateModel>;
+  
+  hostname: string;s
+  current: string;
   modificationDisabled: null | true = null;
 
   constructor(private router: Router,
@@ -77,6 +86,9 @@ export class SiteComponent implements OnInit {
   ngOnInit() {
     this.hostname = location.hostname;
     this.modificationDisabled = this.site.name === '' || null;
+    // this.current_site$.subscribe(app => {
+    //   this.current = [...sites];
+    // });
   }
 
   updateComponentFocus(isFocused) {
