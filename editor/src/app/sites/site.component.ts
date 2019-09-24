@@ -8,8 +8,6 @@ import { DeleteSiteAction, CloneSiteAction, UpdateSiteAction, RenameSiteAction }
 import { Observable } from 'rxjs';
 import { AppStateModel } from '../app-state/app-state.interface';
 
-
-
 @Component({
   selector: 'berta-site',
   template: `
@@ -62,7 +60,6 @@ import { AppStateModel } from '../app-state/app-state.interface';
     .url-line {
       display: flex;
     }
-
   `]
 })
 export class SiteComponent implements OnInit {
