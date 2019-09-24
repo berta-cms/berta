@@ -8,11 +8,13 @@ import { DeleteSiteAction, CloneSiteAction, UpdateSiteAction, RenameSiteAction }
 import { Observable } from 'rxjs';
 import { AppStateModel } from '../app-state/app-state.interface';
 
+
+
 @Component({
   selector: 'berta-site',
   template: `
 
-    <div class="setting-group" [class.current-site]="(current_site$|async).site == site.name">
+    <div class="setting-group" [class.active]="(current_site$|async).site == site.name">
       <h3>
         <div class="control-line">
           <berta-inline-text-input [value]="site.title"
@@ -35,9 +37,9 @@ import { AppStateModel } from '../app-state/app-state.interface';
             <bt-icon-delete></bt-icon-delete>
           </button>
         </div>
-        <div class="url-line">
+        <div class="url-line link">
           <a [routerLink]="['/multisite']"
-              [queryParams]="(site.name === '' ? null : {site: site.name})" class="link">{{ hostname }}/</a>
+              [queryParams]="(site.name === '' ? null : {site: site.name})" >{{ hostname }}/</a>
 
           <berta-inline-text-input class="link" *ngIf="!modificationDisabled"
                                     [value]="site.name"
@@ -62,9 +64,7 @@ import { AppStateModel } from '../app-state/app-state.interface';
     .url-line {
       display: flex;
     }
-    .url-line:hover a, .url-line:hover , .link:hover {
-      color: #0c4dff;
-    }
+
   `]
 })
 export class SiteComponent implements OnInit {
@@ -74,8 +74,7 @@ export class SiteComponent implements OnInit {
 
   @Select('app') public current_site$: Observable<AppStateModel>;
   
-  hostname: string;s
-  current: string;
+  hostname: string;
   modificationDisabled: null | true = null;
 
   constructor(private router: Router,
@@ -86,9 +85,6 @@ export class SiteComponent implements OnInit {
   ngOnInit() {
     this.hostname = location.hostname;
     this.modificationDisabled = this.site.name === '' || null;
-    // this.current_site$.subscribe(app => {
-    //   this.current = [...sites];
-    // });
   }
 
   updateComponentFocus(isFocused) {

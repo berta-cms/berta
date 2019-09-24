@@ -13,6 +13,9 @@ berta-site {
   background-color: $white;
   display: block;
 }
-.current-site{
+.active{
   background-color: $grey-10;
+}
+.link:hover span, .link:hover a {
+  color: $berta-accent !important;
 }
