@@ -5,6 +5,9 @@ namespace App\Sites\Sections;
 use App\Shared\Helpers;
 use App\Shared\Storage;
 use App\Shared\ImageHelpers;
+use App\Shared\ConfigHelpers;
+use App\Configuration\SiteTemplatesConfigService;
+use App\Sites\Settings\SiteSettingsDataService;
 use App\Sites\Sections\Entries\SectionEntriesDataService;
 use App\Sites\Sections\Tags\SectionTagsDataService;
 
@@ -366,6 +369,24 @@ class SiteSectionsDataService extends Storage
         $ret['section'] = $sections['section'][$order];
 
         return $ret;
+    }
+
+    // Overwrite method from Storage class
+    public function setValueByPath(&$sections, $path, $value)
+    {
+        $siteSettingsDataService = new SiteSettingsDataService($this->site_name);
+        $siteSettings = $siteSettingsDataService->get();
+
+        $siteTemplatesConfigService = new SiteTemplatesConfigService();
+        $siteTemplatesConfig = $siteTemplatesConfigService->get();
+
+        $config_path = ConfigHelpers::getSectionPathByXmlPath($path, $siteTemplatesConfig, $siteSettings, $sections);
+
+        if ($config_path) {
+            $value = ConfigHelpers::formatValue($siteTemplatesConfig, $config_path, $value);
+        }
+
+        parent::setValueByPath($sections, $path, $value);
     }
 
     /**

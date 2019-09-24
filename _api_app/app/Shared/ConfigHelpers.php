@@ -35,7 +35,7 @@ class ConfigHelpers
     }
 
     /**
-     *  Returns path to configuration from path in xml
+     *  Returns site settings path to configuration from path in xml
      */
     public static function getSettingPathByXmlPath($xmlPath)
     {
@@ -52,5 +52,25 @@ class ConfigHelpers
         }
 
         return implode('/', $settingPath);
+    }
+
+    /**
+     *  Returns section settings path to configuration from path in xml
+     */
+    public static function getSectionPathByXmlPath($xmlPath, $siteTemplatesConfig, $siteSettings, $sections)
+    {
+        $xmlPathParts = explode('/', $xmlPath);
+        $sectionOrder = $xmlPathParts[1];
+        $property = $xmlPathParts[2];
+        $templateName = $siteSettings['template']['template'];
+        $siteTemplateConfig = $siteTemplatesConfig[$templateName];
+        $section = $sections['section'][$sectionOrder];
+        $sectionType = isset($section['@attributes']['type']) ? $section['@attributes']['type'] : 'default';
+
+        if (!isset($siteTemplateConfig['sectionTypes'][$sectionType]['params'][$property])) {
+            return false;
+        }
+
+        return "{$templateName}/sectionTypes/{$sectionType}/params/{$property}";
     }
 }
