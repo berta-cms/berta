@@ -13,7 +13,6 @@ import { AppStateModel } from '../app-state/app-state.interface';
 @Component({
   selector: 'berta-site',
   template: `
-
     <div class="setting-group" [class.active]="(current_site$|async).site == site.name">
       <h3>
         <div class="control-line">
@@ -40,7 +39,6 @@ import { AppStateModel } from '../app-state/app-state.interface';
         <div class="url-line link">
           <a [routerLink]="['/multisite']"
               [queryParams]="(site.name === '' ? null : {site: site.name})" >{{ hostname }}/</a>
-
           <berta-inline-text-input class="link" *ngIf="!modificationDisabled"
                                     [value]="site.name"
                                     (inputFocus)="updateComponentFocus($event)"
