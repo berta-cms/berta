@@ -144,7 +144,11 @@ class BertaGallery extends BertaBase
                 $firstImageWidth = $widestImage;
             }
 
-            $dimensions = ' style="width: ' . $firstImageWidth . 'px;' . ($galleryType !== 'slideshow' ? 'height: ' . $firstImageHeight . 'px;' : '') . '"';
+            if ($galleryType == 'row') {
+                $dimensions = '';
+            } else {
+                $dimensions = ' style="width: ' . $firstImageWidth . 'px;' . ($galleryType !== 'slideshow' ? 'height: ' . $firstImageHeight . 'px;' : '') . '"';
+            }
             $strOut = '<div class="xGalleryContainer xGalleryHasImages xGalleryType-' . $galleryType . $specificClasses . '"'. ($galleryFullScreen ? ' data-fullscreen="1"' : '') .'>';
             $strOut .= "<div class=\"xGallery\"" . $dimensions . ($rowGalleryPadding ? ' xRowGalleryPadding="' . $rowGalleryPadding . '"' : '') . '>';
             $strOut .= $galleryContent;

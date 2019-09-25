@@ -21,6 +21,15 @@ br.clear {
   clear: both;
 }
 
+.xGalleryType-row > .xGallery {
+  white-space: nowrap;
+}
+
+.xGalleryType-row > .xGallery > .xGalleryItem {
+  display: inline-block;
+  vertical-align: top;
+}
+
 .xGalleryType-row+.xGalleryType-slideshow,
 .xGalleryType-pile+.xGalleryType-slideshow {
   display: none;
