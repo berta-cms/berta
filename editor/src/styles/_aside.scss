@@ -1,11 +1,11 @@
 aside {
   background-color: $white;
-  border-right: 1px solid $grey-30; // for develompent
+  border-right: 1px solid $grey-30;  // for develompent
   padding-top: $bt-header-height;
 }
 
 .setting-group {
-  transition: background-color .2s;
+  transition:  background-color .2s;
 
   h3 {
     align-items: center;
@@ -18,7 +18,7 @@ aside {
     margin: 0;
     outline: none;
     padding: 1.3em;
-    transition: color .2s;
+    transition:  color .2s;
 
     .url-line {
       font-size: $input-font-size;
@@ -105,8 +105,8 @@ aside {
 
     .edit-icon {
       cursor: pointer;
-      margin-left: 0.5rem;
-      max-height: 0.8em;
+      margin-left: .5rem;
+      max-height: .8em;
 
       .icon {
         transition: fill .2s;

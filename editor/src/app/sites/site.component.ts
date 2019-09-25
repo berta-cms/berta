@@ -15,8 +15,8 @@ import { AppStateModel } from '../app-state/app-state.interface';
       <h3>
         <div class="control-line">
           <berta-inline-text-input [value]="site.title"
-                                    (inputFocus)="updateComponentFocus($event)"
-                                    (update)="updateField('title', $event)"></berta-inline-text-input>
+                                  (inputFocus)="updateComponentFocus($event)"
+                                  (update)="updateField('title', $event)"></berta-inline-text-input>
           <div class="expand"></div>
           <button *ngIf="!modificationDisabled"
                   [attr.title]="site['@attributes'].published > 0 ? 'Unpublish': 'Publish'"
@@ -38,9 +38,9 @@ import { AppStateModel } from '../app-state/app-state.interface';
           <a [routerLink]="['/multisite']"
               [queryParams]="(site.name === '' ? null : {site: site.name})" >{{ hostname }}/</a>
           <berta-inline-text-input *ngIf="!modificationDisabled"
-                                    [value]="site.name"
-                                    (inputFocus)="updateComponentFocus($event)"
-                                    (update)="updateField('name', $event)"></berta-inline-text-input>
+                                  [value]="site.name"
+                                  (inputFocus)="updateComponentFocus($event)"
+                                  (update)="updateField('name', $event)"></berta-inline-text-input>
         </div>
       </h3>
     </div>
