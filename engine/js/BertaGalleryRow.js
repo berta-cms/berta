@@ -118,21 +118,12 @@ var BertaGalleryRow = new Class({
       });
     }
 
-    var totalWidth = 0,
-      itemWidth = 0,
-      numImages = 0;
     this.imageContainer.getChildren('.xGalleryItem').each(function (item) {
       if (item.getClassStoredValue('xGalleryItemType') != 'video') {
         item.setStyle('height', 'auto');
       }
-      itemWidth = parseInt(item.getStyle('width'), 10);
-      itmMarginLeft = parseInt(0 + item.getStyle('margin-left'));
-      itmMarginRight = parseInt(0 + item.getStyle('margin-right'));
-      totalWidth += itemWidth + itmMarginLeft + itmMarginRight;
-      numImages++;
     });
 
-    this.imageContainer.setStyle('width', (totalWidth + numImages /* for "em" discrepancy */ ) + 'px');
     this.imageContainer.getElements('.xGalleryItem').setStyle('position', 'relative');
   },
 
