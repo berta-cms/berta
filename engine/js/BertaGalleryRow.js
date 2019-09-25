@@ -7,8 +7,10 @@ var BertaGalleryRow = new Class({
   newObjectInjectPosition: null,
   currentSrc: null,
   preload: null,
-  phase: null,
   loadTimer: null,
+  loadedItems: 0,
+  currentItem: 0,
+  itemIsLoaded: true,
 
 
   initialize: function (container) {
@@ -31,6 +33,7 @@ var BertaGalleryRow = new Class({
     this.imageContainer = this.container.getElement('div.xGallery');
     this.navContainer = this.container.getElement('ul.xGalleryNav');
     this.galleryEditButton = this.imageContainer.getElement('.xGalleryEditButton');
+    this.loadedItems = this.container.getElements('.xGalleryItem').length;
 
     if (this.navContainer && this.navContainer.getElements('a').length > 0) {
       this.rowClearElement = new Element('br', {
@@ -59,7 +62,7 @@ var BertaGalleryRow = new Class({
       var li = this.navContainer.getElement('li');
       this.nav_highlightItem(li);
       var aEl = this.navContainer.getElement('li a');
-      this.load(aEl.get('href'), aEl.getClassStoredValue('xType'), aEl.getClassStoredValue('xW'), aEl.getClassStoredValue('xH'), aEl.getClassStoredValue('xVideoHref'), aEl.getClassStoredValue('xAutoPlay'), li.getElement('.xGalleryImageCaption').get('html'), true, 1, aEl.get('data-srcset'));
+      this.load(aEl.get('href'), aEl.getClassStoredValue('xType'), aEl.getClassStoredValue('xW'), aEl.getClassStoredValue('xH'), aEl.getClassStoredValue('xVideoHref'), aEl.getClassStoredValue('xAutoPlay'), li.getElement('.xGalleryImageCaption').get('html'), 1, aEl.get('data-srcset'));
     }
   },
 
@@ -69,7 +72,7 @@ var BertaGalleryRow = new Class({
       if (nextLi) {
         this.nav_highlightItem(nextLi);
         var aEl = nextLi.getElement('a');
-        this.load(aEl.get('href'), aEl.getClassStoredValue('xType'), aEl.getClassStoredValue('xW'), aEl.getClassStoredValue('xH'), aEl.getClassStoredValue('xVideoHref'), aEl.getClassStoredValue('xAutoPlay'), nextLi.getElement('.xGalleryImageCaption').get('html'), false, aEl.getClassStoredValue('xImgIndex'), aEl.get('data-srcset'));
+        this.load(aEl.get('href'), aEl.getClassStoredValue('xType'), aEl.getClassStoredValue('xW'), aEl.getClassStoredValue('xH'), aEl.getClassStoredValue('xVideoHref'), aEl.getClassStoredValue('xAutoPlay'), nextLi.getElement('.xGalleryImageCaption').get('html'), aEl.getClassStoredValue('xImgIndex'), aEl.get('data-srcset'));
       } else {
         //after everything is loaded
 
@@ -135,14 +138,12 @@ var BertaGalleryRow = new Class({
     this.imageContainer.getElements('.xGalleryItem').setStyle('position', 'relative');
   },
 
-  layout_inject: function (bDeleteExisting, bDoContainerFade) {
-    if (bDeleteExisting) {
-      this.imageContainer.getChildren('.xGalleryItem').destroy();
+  layout_inject: function () {
+    if (!this.itemIsLoaded) {
+      this.preload.inject(this.newObjectInjectWhere, this.newObjectInjectPosition);
+      picturefill(this.preload.getElement('img'));
     }
 
-    this.preload.inject(this.newObjectInjectWhere, this.newObjectInjectPosition);
-
-    picturefill(this.preload.getElement('img'));
     this.layout_update();
   },
 
@@ -169,101 +170,88 @@ var BertaGalleryRow = new Class({
     liElement.addClass('selected');
   },
 
-  load: function (src, mType, mWidth, mHeight, videoPath, autoPlay, caption, bDeleteExisting, xImgIndex, srcset) {
+  load: function (src, mType, mWidth, mHeight, videoPath, autoPlay, caption, xImgIndex, srcset) {
+    this.currentItem += 1;
+    this.itemIsLoaded = this.currentItem <= this.loadedItems;
     this.currentSrc = null;
-    this.load_Render(src, mType, mWidth, mHeight, videoPath, autoPlay, caption, bDeleteExisting, xImgIndex, srcset);
+    this.load_Render(src, mType, mWidth, mHeight, videoPath, autoPlay, caption, xImgIndex, srcset);
   },
 
-  load_Render: function (src, mType, mWidth, mHeight, videoPath, autoPlay, caption, bDeleteExisting, xImgIndex, srcset) {
+  load_Render: function (src, mType, mWidth, mHeight, videoPath, autoPlay, caption, xImgIndex, srcset) {
     this.currentSrc = src;
-    this.currentVideoAutoPlay = autoPlay;
-    this.currentCaption = caption;
     this.xImgIndex = xImgIndex;
     this.srcset = srcset ? srcset : null;
 
     switch (mType) {
       case 'image':
+        if (!this.itemIsLoaded) {
+          var altText = caption.replace(/(<([^>]+)>)/ig, ' ').replace(/(\r\n|\n|\r)/gm, ' ').replace(/\s{2,}/g, ' ').trim();
 
-        var loader = this.imageContainer.getNext('.loader');
+          this.preload = new Asset.image(src, {
+            'width': mWidth,
+            'height': mHeight,
+            'srcset': this.srcset,
+            'alt': altText
+          });
 
-        if (loader) {
-          this.loadTimer = setTimeout(function () {
-            loader.removeClass('xHidden');
-          }, 500);
+          this.preload = new Element('div', {
+            'class': 'xGalleryItem xGalleryItemType-image xImgIndex-' + this.xImgIndex
+          }).adopt(this.preload);
+
+          new Element('div', {
+            'class': 'xGalleryImageCaption'
+          }).set('html', caption).inject(this.preload);
         }
 
-        this.phase = 'preload';
-        var altText = caption.replace(/(<([^>]+)>)/ig, ' ').replace(/(\r\n|\n|\r)/gm, ' ').replace(/\s{2,}/g, ' ').trim();
-        this.preload = new Asset.image(src, {
-          'width': mWidth,
-          'height': mHeight,
-          'srcset': this.srcset,
-          'alt': altText
-        });
-
-        this.preload = new Element('div', {
-          'class': 'image'
-        }).adopt(this.preload);
-
-        if (mWidth) this.preload.setStyle('width', mWidth + 'px');
-        if (mHeight) this.preload.setStyle('height', mHeight + 'px');
-
-        this.preload = new Element('div', {
-          'class': 'xGalleryItem xGalleryItemType-image xImgIndex-' + this.xImgIndex
-        }).adopt(this.preload);
-
-        if (mWidth) this.preload.setStyle('width', mWidth + 'px');
-        if (mHeight) this.preload.setStyle('height', mHeight + 'px');
-
-        new Element('div', {
-          'class': 'xGalleryImageCaption'
-        }).set('html', caption).inject(this.preload);
-
-        this.load_Finish(src, mType, mWidth, mHeight, bDeleteExisting);
+        this.load_Finish(src, mType);
         break;
 
       case 'video':
-        if (mHeight) mHeight = parseInt(mHeight);
 
-        this.preload = new Element('video', {
-          'width': mWidth,
-          'class': 'xGalleryItem xGalleryItemType-video',
-          'controls': true,
-          'poster': src && src.charAt(0) !== '#' ? src : null,
-        });
+        if (this.itemIsLoaded) {
+          this.preload = this.imageContainer.getChildren()[this.currentItem - 1].getElement('video');
 
-        var videoType = videoPath.split('.').pop();
+        } else {
+          this.preload = new Element('video', {
+            'width': mWidth,
+            'class': 'xGalleryItem xGalleryItemType-video',
+            'controls': true,
+            'poster': src && src.charAt(0) !== '#' ? src : null,
+          });
 
-        var source = new Element('source', {
-          'src': videoPath,
-          'type': 'video/' + videoType
-        });
+          var videoType = videoPath.split('.').pop();
 
-        source.inject(this.preload, 'top');
+          var source = new Element('source', {
+            'src': videoPath,
+            'type': 'video/' + videoType
+          });
 
-        this.layout_inject(bDeleteExisting, true);
-        this.preload.setStyle('position', 'absolute');
+          source.inject(this.preload, 'top');
+
+          this.layout_inject();
+          this.preload.setStyle('position', 'absolute');
+
+          new Element('div', {
+            'class': 'xGalleryImageCaption'
+          }).set('html', caption).inject(this.preload);
+        }
 
         if (autoPlay > 0) {
           this.preload.muted = true;
           this.preload.play();
         }
 
-        new Element('div', {
-          'class': 'xGalleryImageCaption'
-        }).set('html', caption).inject(this.preload);
-
-        this.load_Finish(src, mType, mWidth, mHeight, bDeleteExisting);
+        this.load_Finish(src, mType);
         break;
     }
   },
 
-  load_Finish: function (src, mType, mWidth, mHeight, bDeleteExisting) {
+  load_Finish: function (src, mType) {
     // test if the loaded image's src is the last invoked image's src
     if (src == this.currentSrc) {
-      this.phase = 'done';
-
-      if (mType == 'image') this.layout_inject(bDeleteExisting, false);
+      if (mType == 'image') {
+        this.layout_inject();
+      }
 
       this.layout_update();
       this.loadNext();
