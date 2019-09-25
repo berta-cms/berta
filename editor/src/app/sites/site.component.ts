@@ -11,7 +11,7 @@ import { AppStateModel } from '../app-state/app-state.interface';
 @Component({
   selector: 'berta-site',
   template: `
-    <div class="setting-group" [class.active]="(current_site$|async).site == site.name">
+    <div class="setting-group" [class.active]="(currentSite$|async).site == site.name">
       <h3>
         <div class="control-line">
           <berta-inline-text-input [value]="site.title"
@@ -67,7 +67,7 @@ export class SiteComponent implements OnInit {
 
   @Output() inputFocus = new EventEmitter();
 
-  @Select('app') public current_site$: Observable<AppStateModel>;
+  @Select('app') public currentSite$: Observable<AppStateModel>;
 
   hostname: string;
   modificationDisabled: null | true = null;
