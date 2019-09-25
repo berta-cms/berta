@@ -43,7 +43,7 @@ import { AppStateModel } from '../app-state/app-state.interface';
                                     (update)="updateField('name', $event)"></berta-inline-text-input>
         </div>
       </h3>
-    </div>    
+    </div>
   `,
   styles: [`
     :host h3 {
@@ -68,7 +68,7 @@ export class SiteComponent implements OnInit {
   @Output() inputFocus = new EventEmitter();
 
   @Select('app') public current_site$: Observable<AppStateModel>;
-  
+
   hostname: string;
   modificationDisabled: null | true = null;
 

@@ -15,10 +15,11 @@ berta-site {
 }
 
 .active{
-  background-color: $grey-10;
+  background-color: $grey-1;
 }
 
-.link:hover span, 
-.link:hover a {
-  color: $berta-accent !important;
+.link:hover span,
+.link:hover a:hover,
+.setting-group h3 .url-line:hover a{
+  color: $berta-accent;
 }
