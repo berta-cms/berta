@@ -9,9 +9,6 @@ var BertaGalleryRow = new Class({
   preload: null,
   phase: null,
   loadTimer: null,
-  imageFadeOutFx: null,
-  imageResizeFx: null,
-  imageShowFx: null,
 
 
   initialize: function (container) {
@@ -35,15 +32,6 @@ var BertaGalleryRow = new Class({
     this.navContainer = this.container.getElement('ul.xGalleryNav');
 
     if (this.navContainer && this.navContainer.getElements('a').length > 0) {
-      this.imageFadeOutFx = new Fx.Tween(this.imageContainer, {
-        duration: 'short',
-        transition: Fx.Transitions.Sine.easeInOut
-      });
-      this.imageShowFx = new Fx.Tween(this.imageContainer, {
-        duration: 'normal',
-        transition: Fx.Transitions.Sine.easeInOut
-      });
-
       this.rowClearElement = new Element('br', {
         'class': 'clear'
       }).inject(this.imageContainer);
@@ -60,11 +48,6 @@ var BertaGalleryRow = new Class({
       this.navContainer.getElements('a').each(function (item) {
         item.removeEvents('click');
       });
-
-      this.imageFadeOutFx.cancel();
-      if (this.imageResizeFx) this.imageResizeFx.cancel();
-      this.imageShowFx.cancel();
-      this.imageFadeOutFx = this.imageResizeFx = this.imageShowFx = null;
     }
     this.container = this.imageContainer = this.navContainer = null;
     this.currentSrc = null;
@@ -161,17 +144,6 @@ var BertaGalleryRow = new Class({
     this.preload.inject(this.newObjectInjectWhere, this.newObjectInjectPosition);
 
     picturefill(this.preload.getElement('img'));
-
-    if (bDoContainerFade) {
-      this.imageShowFx.set('opacity', 1);
-    } else {
-      // just fade in the newly added image
-      new Fx.Tween(this.preload, {
-        duration: 'short',
-        transition: Fx.Transitions.Sine.easeInOut
-      }).set('opacity', 0).start('opacity', 1);
-    }
-
     this.layout_update();
   },
 
@@ -199,19 +171,6 @@ var BertaGalleryRow = new Class({
   },
 
   load: function (src, mType, mWidth, mHeight, videoPath, autoPlay, caption, bDeleteExisting, xImgIndex, srcset) {
-    switch (this.phase) {
-      case 'fadeout':
-        this.imageFadeOutFx.cancel();
-        break;
-      case 'fadein':
-        this.imageResizeFx.cancel();
-        this.imageShowFx.cancel();
-        break;
-      default:
-        this.imageShowFx.cancel();
-        break;
-    }
-
     this.currentSrc = null;
     this.load_Render(src, mType, mWidth, mHeight, videoPath, autoPlay, caption, bDeleteExisting, xImgIndex, srcset);
   },
