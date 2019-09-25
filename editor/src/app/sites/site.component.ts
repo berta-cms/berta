@@ -34,10 +34,10 @@ import { AppStateModel } from '../app-state/app-state.interface';
             <bt-icon-delete></bt-icon-delete>
           </button>
         </div>
-        <div class="url-line link">
+        <div class="url-line">
           <a [routerLink]="['/multisite']"
               [queryParams]="(site.name === '' ? null : {site: site.name})" >{{ hostname }}/</a>
-          <berta-inline-text-input class="link" *ngIf="!modificationDisabled"
+          <berta-inline-text-input *ngIf="!modificationDisabled"
                                     [value]="site.name"
                                     (inputFocus)="updateComponentFocus($event)"
                                     (update)="updateField('name', $event)"></berta-inline-text-input>

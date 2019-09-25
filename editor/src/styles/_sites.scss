@@ -1,10 +1,10 @@
-@import 'variables';
+@import "variables";
 
 berta-sites {
   display: block;
 
   > button {
-    font-size: .875em;
+    font-size: 0.875em;
     margin: 1.3em;
   }
 }
@@ -12,14 +12,4 @@ berta-sites {
 berta-site {
   background-color: $white;
   display: block;
-}
-
-.active{
-  background-color: $grey-1;
-}
-
-.link:hover span,
-.link:hover a:hover,
-.setting-group h3 .url-line:hover a{
-  color: $berta-accent;
 }
