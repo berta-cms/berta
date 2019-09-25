@@ -112,6 +112,26 @@ class BertaGallery extends BertaBase
                     $slides[] = $slideHTML;
                 }
                 $galleryContent .= BertaGallery::getSlideshowHTML($slides);
+            } else if ($galleryType == 'row') {
+                // Returned image limit
+                $imageLimit = self::$options['row_gallery_image_limit'][$imageSize];
+
+                foreach ($imgs as $i => $img) {
+                    if ($i >= $imageLimit) {
+                        break;
+                    }
+
+                    if ($img['@attributes']['type'] == 'image') {
+                        // Possibly we don't have to calculate total width,
+                        // we can solve this with css no-wrap or float: left or display: inline or even better - display flex
+                        list($itemHTML, $itemWidth) = BertaGallery::getImageHTML($img, $mediaFolderName, $isAdminMode, $sizeRatio, $imageTargetWidth, $imageTargetHeight);
+                    } else {
+                        list($itemHTML, $itemWidth) = BertaGallery::getVideoHTML($img, $mediaFolderName, $isAdminMode, $sizeRatio, $imageTargetWidth, $imageTargetHeight);
+                    }
+
+                    $galleryContent .= $itemHTML;
+                }
+
             } else {
                 $galleryContent .= $firstImageHTML;
             }
