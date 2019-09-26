@@ -123,16 +123,24 @@ class SitesDataService extends Storage
         $name = 'untitled-' . uniqid();
         $dir = $this->XML_SITES_ROOT . '/' . $name;
 
-        @mkdir($dir, 0777, true);
-
         if ($cloneFrom != null) {
             $src = $cloneFrom == '0' ? $this->XML_MAIN_ROOT : $this->XML_SITES_ROOT . '/' . $cloneFrom;
+            $name = 'copy-of-'.$cloneFrom;
+            $copyName = $name;
+            $i=1;
+            while (file_exists($this->XML_SITES_ROOT.'/'.$name)) {
+                $name = $copyName.'-'.$i;
+                $i++;
+            }
+            $dir = $this->XML_SITES_ROOT . '/' . $name;
             $this->copyFolder($src, $dir);
+        } else {
+            @mkdir($dir, 0777, true);
         }
 
         $site = [
             'name' => $name,
-            'title' => '',
+            'title' => $cloneFrom != null ? $name : '',
             '@attributes' => array('published' => 0),
         ];
         array_push($sites, $site);
