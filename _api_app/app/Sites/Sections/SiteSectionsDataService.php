@@ -315,6 +315,14 @@ class SiteSectionsDataService extends Storage
                 return $ret;
             }
 
+            //Compare the title when we rename it
+            $success=false;
+            if ($old_name===$new_name && $old_title!==$value){
+                $ret['success'] = true;
+                $ret['value'] = $value;
+                $success=true;
+            }
+
             // Rename section name
             $this->setValueByPath(
                 $sections,
@@ -338,8 +346,10 @@ class SiteSectionsDataService extends Storage
                 );
             }
 
-            $entries = new SectionEntriesDataService($this->SITE, $old_name, $old_title);
-            $ret = array_merge($ret, $entries->rename($new_name, $value));
+            if (!$success) {
+                $entries = new SectionEntriesDataService($this->SITE, $old_name, $old_title);
+                $ret = array_merge($ret, $entries->rename($new_name, $value));
+            }
 
             if (!$ret['success']) {
                 $ret['value'] = $old_title;
