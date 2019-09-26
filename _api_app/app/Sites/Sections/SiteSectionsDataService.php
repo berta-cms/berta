@@ -316,7 +316,7 @@ class SiteSectionsDataService extends Storage
             }
 
             //Compare the title when we rename it
-            if ($old_name !== $new_name){
+            if ($old_name !== $new_name) {
 
                 // Rename section name
                 $this->setValueByPath(
@@ -357,7 +357,6 @@ class SiteSectionsDataService extends Storage
                 $ret['real'] = $new_name;
             } else {
                 $ret['success'] = true;
-                $ret['value'] = $value;
             }
         }
 
