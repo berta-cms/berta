@@ -30,13 +30,9 @@ aside {
       }
 
       &:hover {
-        a,
-        span {
+        span,
+        a{
           color: $berta-accent;
-
-          &:hover {
-            color: $berta-accent;
-          }
         }
       }
     }
