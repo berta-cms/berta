@@ -308,6 +308,7 @@ class SiteSectionsDataService extends Storage
             $old_name = $sections['section'][$order]['name'];
             $old_title = isset($sections['section'][$order]['title']) ? $sections['section'][$order]['title'] : '';
             $new_name = $this->getUniqueSlug($old_name, $value);
+            $success=false;
 
             if (empty($value)) {
                 $ret['value'] = $old_title;
@@ -316,7 +317,6 @@ class SiteSectionsDataService extends Storage
             }
 
             //Compare the title when we rename it
-            $success=false;
             if ($old_name===$new_name && $old_title!==$value){
                 $ret['success'] = true;
                 $ret['value'] = $value;
