@@ -322,44 +322,45 @@ class SiteSectionsDataService extends Storage
                 $ret['value'] = $value;
                 $success=true;
             }
-
-            // Rename section name
-            $this->setValueByPath(
-                $sections,
-                'section/' . $order . '/name',
-                $new_name
-            );
-
-            // Rename section background path
-            if (isset($sections['section'][$order]['mediafolder'])) {
-                $mediafolder = $new_name . '-background';
-
-                @rename(
-                    realpath($this->MEDIA_ROOT) . '/' . $sections['section'][$order]['mediafolder'],
-                    realpath($this->MEDIA_ROOT) . '/' . $mediafolder
-                );
-
+            if (!$success) {
+                // Rename section name
                 $this->setValueByPath(
                     $sections,
-                    'section/' . $order . '/mediafolder',
-                    $mediafolder
+                    'section/' . $order . '/name',
+                    $new_name
                 );
-            }
 
-            if (!$success) {
+                // Rename section background path
+                if (isset($sections['section'][$order]['mediafolder'])) {
+                    $mediafolder = $new_name . '-background';
+
+                    @rename(
+                        realpath($this->MEDIA_ROOT) . '/' . $sections['section'][$order]['mediafolder'],
+                        realpath($this->MEDIA_ROOT) . '/' . $mediafolder
+                    );
+
+                    $this->setValueByPath(
+                        $sections,
+                        'section/' . $order . '/mediafolder',
+                        $mediafolder
+                    );
+                }
+
+
                 $entries = new SectionEntriesDataService($this->SITE, $old_name, $old_title);
                 $ret = array_merge($ret, $entries->rename($new_name, $value));
-            }
 
-            if (!$ret['success']) {
-                $ret['value'] = $old_title;
-                return $ret;
-            }
 
-            $tags = new SectionTagsDataService($this->SITE, $old_name);
-            $tags->renameSection($new_name);
-            $ret['old_name'] = $old_name;
-            $ret['real'] = $new_name;
+                if (!$ret['success']) {
+                    $ret['value'] = $old_title;
+                    return $ret;
+                }
+
+                $tags = new SectionTagsDataService($this->SITE, $old_name);
+                $tags->renameSection($new_name);
+                $ret['old_name'] = $old_name;
+                $ret['real'] = $new_name;
+            }
         }
 
         if ($prop === 'caption_bg_color') {
