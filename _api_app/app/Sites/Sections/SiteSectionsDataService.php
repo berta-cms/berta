@@ -341,10 +341,8 @@ class SiteSectionsDataService extends Storage
                     );
                 }
 
-
                 $entries = new SectionEntriesDataService($this->SITE, $old_name, $old_title);
                 $ret = array_merge($ret, $entries->rename($new_name, $value));
-
 
                 if (!$ret['success']) {
                     $ret['value'] = $old_title;
