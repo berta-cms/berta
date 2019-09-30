@@ -1,10 +1,11 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { take, filter, switchMap, map, mergeMap } from 'rxjs/operators';
+import { take, filter, switchMap, map, mergeMap, pairwise } from 'rxjs/operators';
 import { Store } from '@ngxs/store';
 import { PopupService } from '../popup/popup.service';
 import { SiteStateModel } from './sites-state/site-state.model';
 import { DeleteSiteAction, CloneSiteAction, UpdateSiteAction, RenameSiteAction } from './sites-state/sites.actions';
+import { SitesState } from './sites-state/sites.state';
 
 @Component({
   selector: 'berta-site',
@@ -104,7 +105,31 @@ export class SiteComponent implements OnInit {
   }
 
   cloneSite() {
-    this.store.dispatch(new CloneSiteAction(this.site));
+    this.store.dispatch(new CloneSiteAction(this.site)).subscribe((state => {
+      const names = [[],[]];
+      this.store.select(SitesState).pipe(
+        pairwise(),
+        take(2),
+        switchMap(state => {
+          return this.route.queryParams.pipe(
+            take(1),
+            map(() => state),
+          )
+        }),
+      ).subscribe((state => {
+        state[0].forEach(state => {
+          names[0].push(state['name'])
+        });
+        state[1].forEach(state => {
+          names[1].push(state['name'])
+        });
+        names[1].forEach(name => {
+          if (!names[0].includes(name)) {
+            this.router.navigate([], { queryParams: { site: name } });
+          }
+        });
+      }));
+    }))
   }
 
   deleteSite() {
