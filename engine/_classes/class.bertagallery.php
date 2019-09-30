@@ -118,10 +118,6 @@ class BertaGallery extends BertaBase
                 $totalWidth = 0;
 
                 foreach ($imgs as $i => $img) {
-                    if ($i >= $imageLimit) {
-                        break;
-                    }
-
                     if ($img['@attributes']['type'] == 'image') {
                         // Possibly we don't have to calculate total width,
                         // we can solve this with css no-wrap or float: left or display: inline or even better - display flex
@@ -135,7 +131,9 @@ class BertaGallery extends BertaBase
                     $spaceBetweenItems = 12;
                     $totalWidth += $itemWidth + $spaceBetweenItems;
 
-                    $galleryContent .= $itemHTML;
+                    if ($i < $imageLimit) {
+                        $galleryContent .= $itemHTML;
+                    }
                 }
 
             } else {
