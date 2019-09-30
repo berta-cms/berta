@@ -115,6 +115,7 @@ class BertaGallery extends BertaBase
             } else if ($galleryType == 'row') {
                 // Returned image limit
                 $imageLimit = self::$options['row_gallery_image_limit'][$imageSize];
+                $totalWidth = 0;
 
                 foreach ($imgs as $i => $img) {
                     if ($i >= $imageLimit) {
@@ -128,6 +129,11 @@ class BertaGallery extends BertaBase
                     } else {
                         list($itemHTML, $itemWidth) = BertaGallery::getVideoHTML($img, $mediaFolderName, $isAdminMode, $sizeRatio, $imageTargetWidth, $imageTargetHeight);
                     }
+
+                    // @TODO get $spaceBetweenItems from template settings
+                    // currently we use 12px = 1em as this is a default value for messy template
+                    $spaceBetweenItems = 12;
+                    $totalWidth += $itemWidth + $spaceBetweenItems;
 
                     $galleryContent .= $itemHTML;
                 }
@@ -145,7 +151,7 @@ class BertaGallery extends BertaBase
             }
 
             if ($galleryType == 'row') {
-                $dimensions = '';
+                $dimensions = ' style="min-width: ' . $totalWidth . 'px"';
             } else {
                 $dimensions = ' style="width: ' . $firstImageWidth . 'px;' . ($galleryType !== 'slideshow' ? 'height: ' . $firstImageHeight . 'px;' : '') . '"';
             }
