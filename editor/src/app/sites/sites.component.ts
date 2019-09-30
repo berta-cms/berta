@@ -41,6 +41,7 @@ export class SitesComponent implements OnInit {
 
   createSite() {
     let newName;
+    const names = [[],[]];
     this.store.select(SitesState).pipe(
       pairwise(),
       take(2),
@@ -51,13 +52,17 @@ export class SitesComponent implements OnInit {
         )
       }),
     ).subscribe((state => {
-      if (state[0].length !== state[1].length) {
-        state[1].forEach(name => {
-          if (!state[0].includes(name['name'])) {
-            newName = name['name'];
-          }
-        });
-      }
+      state[0].forEach(state => {
+        names[0].push(state['name'])
+      });
+      state[1].forEach(state => {
+        names[1].push(state['name'])
+      });
+      names[1].forEach(name => {
+        if (!names[0].includes(name)) {
+          newName = name;
+        }
+      });
     }));
 
     this.store.dispatch(CreateSiteAction).subscribe((state => {
