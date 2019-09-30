@@ -10,7 +10,6 @@ var BertaGalleryRow = new Class({
   loadTimer: null,
   loadedItems: 0,
   currentItem: 0,
-  currentItemIsLoaded: true,
 
 
   initialize: function (container) {
@@ -138,8 +137,8 @@ var BertaGalleryRow = new Class({
     this.imageContainer.getElements('.xGalleryItem').setStyle('position', 'relative');
   },
 
-  layout_inject: function () {
-    if (!this.currentItemIsLoaded) {
+  layout_inject: function (currentItemIsLoaded) {
+    if (!currentItemIsLoaded) {
       this.preload.inject(this.newObjectInjectWhere, this.newObjectInjectPosition);
       picturefill(this.preload.getElement('img'));
     }
@@ -172,19 +171,19 @@ var BertaGalleryRow = new Class({
 
   load: function (src, mType, mWidth, mHeight, videoPath, autoPlay, caption, xImgIndex, srcset) {
     this.currentItem += 1;
-    this.currentItemIsLoaded = this.currentItem <= this.loadedItems;
     this.currentSrc = null;
-    this.load_Render(src, mType, mWidth, mHeight, videoPath, autoPlay, caption, xImgIndex, srcset);
+    var currentItemIsLoaded = this.currentItem <= this.loadedItems;
+    this.load_Render(src, mType, mWidth, mHeight, videoPath, autoPlay, caption, xImgIndex, srcset, currentItemIsLoaded);
   },
 
-  load_Render: function (src, mType, mWidth, mHeight, videoPath, autoPlay, caption, xImgIndex, srcset) {
+  load_Render: function (src, mType, mWidth, mHeight, videoPath, autoPlay, caption, xImgIndex, srcset, currentItemIsLoaded) {
     this.currentSrc = src;
     this.xImgIndex = xImgIndex;
     this.srcset = srcset ? srcset : null;
 
     switch (mType) {
       case 'image':
-        if (!this.currentItemIsLoaded) {
+        if (!currentItemIsLoaded) {
           var altText = caption.replace(/(<([^>]+)>)/ig, ' ').replace(/(\r\n|\n|\r)/gm, ' ').replace(/\s{2,}/g, ' ').trim();
 
           this.preload = new Asset.image(src, {
@@ -203,12 +202,12 @@ var BertaGalleryRow = new Class({
           }).set('html', caption).inject(this.preload);
         }
 
-        this.load_Finish(src, mType);
+        this.load_Finish(src, mType, currentItemIsLoaded);
         break;
 
       case 'video':
 
-        if (this.currentItemIsLoaded) {
+        if (currentItemIsLoaded) {
           this.preload = this.imageContainer.getChildren()[this.currentItem - 1].getElement('video');
 
         } else {
@@ -228,7 +227,7 @@ var BertaGalleryRow = new Class({
 
           source.inject(this.preload, 'top');
 
-          this.layout_inject();
+          this.layout_inject(currentItemIsLoaded);
           this.preload.setStyle('position', 'absolute');
 
           new Element('div', {
@@ -241,16 +240,16 @@ var BertaGalleryRow = new Class({
           this.preload.play();
         }
 
-        this.load_Finish(src, mType);
+        this.load_Finish(src, mType, currentItemIsLoaded);
         break;
     }
   },
 
-  load_Finish: function (src, mType) {
+  load_Finish: function (src, mType, currentItemIsLoaded) {
     // test if the loaded image's src is the last invoked image's src
     if (src == this.currentSrc) {
       if (mType == 'image') {
-        this.layout_inject();
+        this.layout_inject(currentItemIsLoaded);
       }
 
       this.layout_update();
