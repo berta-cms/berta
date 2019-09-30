@@ -10,7 +10,7 @@ var BertaGalleryRow = new Class({
   loadTimer: null,
   loadedItems: 0,
   currentItem: 0,
-  itemIsLoaded: true,
+  currentItemIsLoaded: true,
 
 
   initialize: function (container) {
@@ -139,7 +139,7 @@ var BertaGalleryRow = new Class({
   },
 
   layout_inject: function () {
-    if (!this.itemIsLoaded) {
+    if (!this.currentItemIsLoaded) {
       this.preload.inject(this.newObjectInjectWhere, this.newObjectInjectPosition);
       picturefill(this.preload.getElement('img'));
     }
@@ -172,7 +172,7 @@ var BertaGalleryRow = new Class({
 
   load: function (src, mType, mWidth, mHeight, videoPath, autoPlay, caption, xImgIndex, srcset) {
     this.currentItem += 1;
-    this.itemIsLoaded = this.currentItem <= this.loadedItems;
+    this.currentItemIsLoaded = this.currentItem <= this.loadedItems;
     this.currentSrc = null;
     this.load_Render(src, mType, mWidth, mHeight, videoPath, autoPlay, caption, xImgIndex, srcset);
   },
@@ -184,7 +184,7 @@ var BertaGalleryRow = new Class({
 
     switch (mType) {
       case 'image':
-        if (!this.itemIsLoaded) {
+        if (!this.currentItemIsLoaded) {
           var altText = caption.replace(/(<([^>]+)>)/ig, ' ').replace(/(\r\n|\n|\r)/gm, ' ').replace(/\s{2,}/g, ' ').trim();
 
           this.preload = new Asset.image(src, {
@@ -208,7 +208,7 @@ var BertaGalleryRow = new Class({
 
       case 'video':
 
-        if (this.itemIsLoaded) {
+        if (this.currentItemIsLoaded) {
           this.preload = this.imageContainer.getChildren()[this.currentItem - 1].getElement('video');
 
         } else {
