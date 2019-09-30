@@ -41,7 +41,7 @@ export class SitesComponent implements OnInit {
 
   createSite() {
     let newName;
-    const names = [[],[]];
+    const names = [[], []];
     this.store.select(SitesState).pipe(
       pairwise(),
       take(2),

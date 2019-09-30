@@ -106,7 +106,7 @@ export class SiteComponent implements OnInit {
 
   cloneSite() {
     this.store.dispatch(new CloneSiteAction(this.site)).subscribe((state => {
-      const names = [[],[]];
+      const names = [[], []];
       this.store.select(SitesState).pipe(
         pairwise(),
         take(2),
