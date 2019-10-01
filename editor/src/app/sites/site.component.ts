@@ -105,31 +105,22 @@ export class SiteComponent implements OnInit {
   }
 
   cloneSite() {
-    this.store.dispatch(new CloneSiteAction(this.site)).subscribe((state => {
-      const names = [[], []];
-      this.store.select(SitesState).pipe(
-        pairwise(),
-        take(2),
-        switchMap(state => {
-          return this.route.queryParams.pipe(
-            take(1),
-            map(() => state),
-          )
-        }),
-      ).subscribe((state => {
-        state[0].forEach(state => {
-          names[0].push(state['name'])
-        });
-        state[1].forEach(state => {
-          names[1].push(state['name'])
-        });
-        names[1].forEach(name => {
-          if (!names[0].includes(name)) {
-            this.router.navigate([], { queryParams: { site: name } });
-          }
-        });
-      }));
-    }))
+    this.store.select(SitesState).pipe(
+      take(1),
+      map((sites: SiteStateModel[]) => {
+        return sites.map(site => site.name);
+      }),
+      switchMap(siteNames => this.store.dispatch(new CloneSiteAction(this.site)).pipe(
+        map(({sites: sitesState}) => {
+          return sitesState.find(site => siteNames.indexOf(site.name) === -1);
+        })
+      ))
+    ).subscribe(newSite => {
+      if (!newSite) {
+        return;
+      }
+      this.router.navigate([], { queryParams: { site: newSite.name } });
+    });
   }
 
   deleteSite() {
