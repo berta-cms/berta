@@ -30,9 +30,9 @@ aside {
       }
 
       &:hover {
-        span,
-        a{
+        span, a {
           color: $berta-accent;
+          cursor: pointer;
         }
       }
     }
