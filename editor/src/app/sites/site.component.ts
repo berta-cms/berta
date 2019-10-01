@@ -40,7 +40,7 @@ import { AppStateModel } from '../app-state/app-state.interface';
           <berta-inline-text-input *ngIf="!modificationDisabled"
                                    [value]="site.name"
                                    (inputFocus)="updateComponentFocus($event)"
-                                   (click)="navigateSiteUrl(site.name)"
+                                   (textClick)="navigateSiteUrl(site.name)"
                                    (update)="updateField('name', $event)"></berta-inline-text-input>
         </div>
       </h3>
