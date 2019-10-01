@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { take, filter, switchMap, map, mergeMap, pairwise } from 'rxjs/operators';
+import { take, filter, switchMap, map, mergeMap } from 'rxjs/operators';
 import { Store } from '@ngxs/store';
 import { PopupService } from '../popup/popup.service';
 import { SiteStateModel } from './sites-state/site-state.model';
