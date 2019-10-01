@@ -40,7 +40,7 @@ import { AppStateModel } from '../app-state/app-state.interface';
           <berta-inline-text-input *ngIf="!modificationDisabled"
                                    [value]="site.name"
                                    (inputFocus)="updateComponentFocus($event)"
-                                   (click)="updateSiteUrl(site.name)"
+                                   (click)="navigateSiteUrl(site.name)"
                                    (update)="updateField('name', $event)"></berta-inline-text-input>
         </div>
       </h3>
@@ -142,7 +142,7 @@ export class SiteComponent implements OnInit {
     });
   }
 
-  updateSiteUrl(siteUrl) {
+  navigateSiteUrl(siteUrl) {
     this.router.navigate([], { queryParams: { site: siteUrl } });
   }
 }
