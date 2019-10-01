@@ -3,10 +3,10 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Store, Select } from '@ngxs/store';
 import { Observable } from 'rxjs';
+import { take, map, switchMap } from 'rxjs/operators';
 import { SiteStateModel } from './sites-state/site-state.model';
 import { UpdateInputFocus } from '../app-state/app.actions';
 import { CreateSiteAction, ReOrderSitesAction } from './sites-state/sites.actions';
-import { take, map, switchMap, pairwise } from 'rxjs/operators';
 import { SitesState } from './sites-state/sites.state';
 
 @Component({
@@ -26,8 +26,7 @@ export class SitesComponent implements OnInit {
   sitesList: SiteStateModel[];
 
   constructor(private store: Store,
-    private router: Router,
-    private route: ActivatedRoute) { }
+    private router: Router) { }
 
   ngOnInit() {
     this.sites$.subscribe(sites => {
