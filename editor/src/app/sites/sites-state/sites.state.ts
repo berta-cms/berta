@@ -187,14 +187,15 @@ export class SitesState implements NgxsOnInit {
   @Action(ReOrderSitesAction)
   reOrderSites({ getState, setState }: StateContext<SiteStateModel[]>, action: ReOrderSitesAction) {
     const sitesToSort = [...getState()];
+    const isFirefox = window.navigator.userAgent.indexOf('Firefox');
 
     sitesToSort.sort((siteA, siteB) => {
       if (siteA.order !== action.currentOrder && siteB.order !== action.currentOrder) {
-        return siteB.order > siteA.order ? -1 : 1;
+        return isFirefox !== -1 ? (siteB.order >= siteA.order ? -1 : 1) : (siteB.order > siteA.order ? -1 : 1);
       } else if (siteA.order === action.currentOrder) {
-        return siteB.order >= action.payload ? -1 : 1;
+        return isFirefox !== -1 ? (siteB.order > action.payload ? -1 : 1) : (siteB.order >= action.payload ? -1 : 1);
       } else if (siteB.order === action.currentOrder) {
-        return action.payload >= siteA.order ? -1 : 1;
+        return isFirefox !== -1 ? (action.payload > siteA.order ? -1 : 1) : (action.payload >= siteA.order ? -1 : 1);
       }
     });
 
