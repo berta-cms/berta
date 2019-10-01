@@ -143,7 +143,6 @@ export class SiteComponent implements OnInit {
   }
 
   updateSiteUrl(siteUrl) {
-    console.log(siteUrl);
     this.router.navigate([], { queryParams: { site: siteUrl } });
   }
 }
