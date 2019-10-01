@@ -32,6 +32,12 @@ var BertaGalleryRow = new Class({
     this.imageContainer = this.container.getElement('div.xGallery');
     this.navContainer = this.container.getElement('ul.xGalleryNav');
     this.galleryEditButton = this.imageContainer.getElement('.xGalleryEditButton');
+
+    var galleryLoader = this.imageContainer.getElement('.loading');
+    if (galleryLoader) {
+      galleryLoader.dispose();
+    }
+
     this.loadedItems = this.container.getElements('.xGalleryItem').length;
 
     if (this.navContainer && this.navContainer.getElements('a').length > 0) {
