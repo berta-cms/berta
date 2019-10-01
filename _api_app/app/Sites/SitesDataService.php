@@ -126,6 +126,7 @@ class SitesDataService extends Storage
         if ($cloneFrom != null) {
             $src = $cloneFrom == '0' ? $this->XML_MAIN_ROOT : $this->XML_SITES_ROOT . '/' . $cloneFrom;
             $name = 'copy-of-'.$cloneFrom;
+            $title = 'Copy of '.$cloneFrom;
             $copyName = $name;
             $i=1;
             while (file_exists($this->XML_SITES_ROOT.'/'.$name)) {
@@ -140,7 +141,7 @@ class SitesDataService extends Storage
 
         $site = [
             'name' => $name,
-            'title' => $cloneFrom != null ? $name : '',
+            'title' => $cloneFrom != null ? $title : '',
             '@attributes' => array('published' => 0),
         ];
         array_push($sites, $site);
