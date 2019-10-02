@@ -63,7 +63,7 @@ class SitesDataService extends Storage
     private $ROOT_ELEMENT = 'sites';
     private $SITES = array();
     private $XML_FILE;
-    private $TITLE = "Main site";
+    private $MAIN_SITE_DEFAULT_TITLE = "Main site";
 
     public function __construct()
     {
@@ -85,7 +85,7 @@ class SitesDataService extends Storage
                 // Return only main site when storage/-sites does not exist
                 $this->SITES[] = [
                     'name' => '',
-                    'title' => $this->TITLE,
+                    'title' => $this->MAIN_SITE_DEFAULT_TITLE,
                     '@attributes' => ['published' => 1],
                 ];
             } else {
@@ -128,7 +128,7 @@ class SitesDataService extends Storage
             $src = $cloneFrom == '0' ? $this->XML_MAIN_ROOT : $this->XML_SITES_ROOT . '/' . $cloneFrom;
             $name = 'copy-of-'.$cloneFrom;
             if($cloneFrom == '0') {
-                $title = $this->TITLE;
+                $title = $this->MAIN_SITE_DEFAULT_TITLE;
             } else {
                 foreach ($sites as $site) {
                     if ($site['name'] === $cloneFrom) {
