@@ -130,6 +130,7 @@ class SitesDataService extends Storage
             foreach ($sites as $site) {
                 if ($site['name'] === $cloneFrom) {
                     $title = $site['title'];
+                    break;
                 }
             }
             $title = 'Copy of '.$title;
