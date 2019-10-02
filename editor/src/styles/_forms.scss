@@ -197,22 +197,34 @@
       margin-left: -9999px;
       position: absolute;
       visibility: hidden;
-
+      &:disabled {
+        +span {
+          background-color: $white;
+          border-color: $grey-10;
+          &:after {
+            border-color: $grey-10;
+            background-color: $grey-10;
+          }
+        }
+      }
+      &:active {
+        +span {
+          background-color: $white;
+          border-color: $grey-80;
+          &:after {
+            background-color: $grey-80;
+          }
+        }
+      }
+      &:hover {
+        + span {
+          border-color: $grey-80;
+        }
+      }
       &:checked {
         + span {
-          background-color: $grey-40;
-
           &:after {
-            left: $toggle-width - $toggle-slider-size - 1;
-          }
-
-          &:hover {
-            background-color: $grey-80;
-            border-color: $grey-80;
-
-            &:after {
-              border-color: $grey-80;
-            }
+            left: $toggle-width - $toggle-slider-size - 2;
           }
         }
       }
@@ -229,8 +241,8 @@
       width: $toggle-width;
 
       &:after {
-        background-color: $white;
-        border: 1px solid $grey-40;
+        background-color: $grey-40;
+        border: 1px solid $white;
         border-radius: 50%;
         content: '';
         display: block;
@@ -239,14 +251,6 @@
         position: relative;
         transition: left .2s, border-color .2s;
         width: $toggle-slider-size;
-      }
-
-      &:hover {
-        border-color: $grey-80;
-
-        &:after {
-          border-color: $grey-80;
-        }
       }
     }
   }
@@ -298,29 +302,6 @@
 
       .icon-remove {
         stroke: $grey-80;
-      }
-    }
-
-    .toggle-wrapper {
-      input {
-        &:checked {
-          + span {
-            background-color: $grey-80;
-            border-color: $grey-80;
-
-            &:after {
-              border-color: $grey-80;
-            }
-          }
-        }
-      }
-
-      span {
-        border-color: $grey-80;
-
-        &:after {
-          border-color: $grey-80;
-        }
       }
     }
 
