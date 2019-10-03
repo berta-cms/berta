@@ -202,12 +202,11 @@
           background-color: $white;
           border-color: $grey-10;
           &:after {
-            border-color: $grey-10;
             background-color: $grey-10;
           }
         }
       }
-      &:active {
+      &:active:enabled {
         +span {
           background-color: $white;
           border-color: $grey-80;
@@ -216,7 +215,7 @@
           }
         }
       }
-      &:hover {
+      &:hover:enabled {
         + span {
           border-color: $grey-80;
         }
