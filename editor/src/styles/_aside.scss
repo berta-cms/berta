@@ -28,6 +28,13 @@ aside {
         color: $black;
         text-decoration: none;
       }
+
+      &:hover {
+        span, a {
+          color: $berta-accent;
+          cursor: pointer;
+        }
+      }
     }
 
     input {
@@ -234,5 +241,9 @@ aside {
     > .settings {
       border-bottom: 1px solid $grey-10;
     }
+  }
+
+  &.active {
+    background-color: $grey-1;
   }
 }
