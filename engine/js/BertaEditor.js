@@ -525,13 +525,8 @@ var BertaEditor = new Class({
     };
     new Request.HTML({
       url: this.options.elementsUrl,
-      update: container,
       onComplete: function (resp) {
-        container.removeClass('xSavingAtLarge');
-
-        // for some mysterious reason, mootools somehow looses track of what is what
-        container = container.getElement('.xGalleryEditButton').getParent('.xGalleryContainer');
-
+        container = resp[0].replaces(container);
         // instantiate the gallery for the container
         this.initGallery(container);
 

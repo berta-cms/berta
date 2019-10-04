@@ -112,6 +112,51 @@ class BertaGallery extends BertaBase
                     $slides[] = $slideHTML;
                 }
                 $galleryContent .= BertaGallery::getSlideshowHTML($slides);
+            } else if ($galleryType == 'row') {
+                // Returned image limit
+                $imageLimit = self::$options['row_gallery_image_limit'][$imageSize];
+                $totalWidth = 0;
+
+                $loader = false;
+                foreach ($imgs as $i => $img) {
+                    if ($img['@attributes']['type'] == 'image') {
+                        // Possibly we don't have to calculate total width,
+                        // we can solve this with css no-wrap or float: left or display: inline or even better - display flex
+                        list($itemHTML, $itemWidth, $itemHeight) = BertaGallery::getImageHTML($img, $mediaFolderName, $isAdminMode, $sizeRatio, $imageTargetWidth, $imageTargetHeight);
+                    } else {
+                        list($itemHTML, $itemWidth) = BertaGallery::getVideoHTML($img, $mediaFolderName, $isAdminMode, $sizeRatio, $imageTargetWidth, $imageTargetHeight);
+                        $itemHeight = $itemWidth * .5625; // 16:9 ratio
+                    }
+
+                    // @TODO get $spaceBetweenItems from template settings
+                    // currently we use 12px = 1em as this is a default value for messy template
+                    $spaceBetweenItems = 12;
+                    $totalWidth += $itemWidth + $spaceBetweenItems;
+
+                    if ($i < $imageLimit) {
+                        $galleryContent .= $itemHTML;
+                    }
+
+                    if (count($imgs) > $imageLimit && $i + 1 == $imageLimit) {
+                        $loader = [
+                            'height' => $itemHeight,
+                            'currentWidth' => $totalWidth
+                        ];
+                    }
+                }
+
+                if ($loader) {
+                    $galleryContent .= '
+                        <div class="xGalleryItem loading" style="min-height: ' . $loader['height'] . 'px; width: ' . ($totalWidth - $loader['currentWidth']) . 'px">
+                            <svg xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" height="128" width="128" version="1.1">
+                                <g>
+                                    <path style="fill:#ccc;fill-opacity:1;stroke-width:21.4183197" d="M 84.500003,64.000001 A 15.500001,15.500001 0 0 0 100,79.5 15.500001,15.500001 0 0 0 115.5,64.000001 15.500001,15.500001 0 0 0 100,48.5 15.500001,15.500001 0 0 0 84.500003,64.000001 Z m -41.000003,0 A 15.500001,15.500001 0 0 1 28,79.5 15.500001,15.500001 0 0 1 12.5,64.000001 15.500001,15.500001 0 0 1 28,48.5 15.500001,15.500001 0 0 1 43.5,64.000001 Z" />
+                                </g>
+                            </svg>
+                        </div>
+                    ';
+                }
+
             } else {
                 $galleryContent .= $firstImageHTML;
             }
@@ -124,7 +169,11 @@ class BertaGallery extends BertaBase
                 $firstImageWidth = $widestImage;
             }
 
-            $dimensions = ' style="width: ' . $firstImageWidth . 'px;' . ($galleryType !== 'slideshow' ? 'height: ' . $firstImageHeight . 'px;' : '') . '"';
+            if ($galleryType == 'row') {
+                $dimensions = ' style="min-width: ' . $totalWidth . 'px"';
+            } else {
+                $dimensions = ' style="width: ' . $firstImageWidth . 'px;' . ($galleryType !== 'slideshow' ? 'height: ' . $firstImageHeight . 'px;' : '') . '"';
+            }
             $strOut = '<div class="xGalleryContainer xGalleryHasImages xGalleryType-' . $galleryType . $specificClasses . '"'. ($galleryFullScreen ? ' data-fullscreen="1"' : '') .'>';
             $strOut .= "<div class=\"xGallery\"" . $dimensions . ($rowGalleryPadding ? ' xRowGalleryPadding="' . $rowGalleryPadding . '"' : '') . '>';
             $strOut .= $galleryContent;
@@ -244,7 +293,7 @@ class BertaGallery extends BertaBase
     {
         $targetWidth = $imageTargetWidth;
         $mFolderABS = self::$options['MEDIA_ABS_ROOT'] . $mediaFolder . '/';
-        list(, $width) = BertaGallery::getImageHTML($img, $mediaFolder, $isAdminMode = false, $sizeRatio = 1, $imageTargetWidth = 0, $imageTargetHeight = 0);
+        list(, $width) = BertaGallery::getImageHTML($img, $mediaFolder, $isAdminMode, $sizeRatio, $imageTargetWidth, $imageTargetHeight);
         $width = $width ? $width : $targetWidth;
 
         $poster = isset($img['@attributes']['poster_frame']) ? ' poster="' . $mFolderABS . $img['@attributes']['poster_frame'] . '"' : '';
