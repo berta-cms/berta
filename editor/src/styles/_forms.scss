@@ -201,6 +201,7 @@
         +span {
           background-color: $white;
           border-color: $grey-10;
+          cursor: default;
           &:after {
             background-color: $grey-10;
           }
