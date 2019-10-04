@@ -1,7 +1,7 @@
 .bt-responsive {
 
   img,
-  #pageEntries li.xEntry .xGalleryContainer .xGallery,
+  #pageEntries li.xEntry .xGalleryContainer:not(.xGalleryType-pile) .xGallery,
   #pageEntries li.xEntry .xGalleryContainer .xGallery .xGalleryItem,
   #pageEntries li.xEntry .xGalleryContainer .xGallery .xGalleryItem .image {
     max-width: 100%;

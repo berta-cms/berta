@@ -139,6 +139,14 @@ $options['images']['medium_height'] = 400;
 $options['images']['large_width'] = 600;
 $options['images']['large_height'] = 600;
 
+// Row gallery image limit returned from server
+// Remaining images will be rendered in frontend
+$options['row_gallery_image_limit'] = [
+    'large' => 3,
+    'medium' => 5,
+    'small' => 7
+];
+
 /**
  * Editables
  */
