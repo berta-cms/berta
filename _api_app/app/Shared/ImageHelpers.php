@@ -6,7 +6,7 @@ use App\Shared\Storage;
 class ImageHelpers
 {
     /**
-     * Returns single gallery image with additional options for frontend
+     * Returns single gallery item with additional options for frontend
      *
      * @param array $image Single image
      * @param float $sizeRatio Range 0 - 1
@@ -15,7 +15,7 @@ class ImageHelpers
      * @param array $siteSettings
      * @return null|array
      */
-    public static function getGalleryImage(
+    public static function getGalleryItem(
         array $image,
         $sizeRatio,
         array $entry,
@@ -32,11 +32,6 @@ class ImageHelpers
         $isImage = isset($image['@attributes']['type']) && $image['@attributes']['type'] == 'image';
         $isPoster = isset($image['@attributes']['poster_frame']);
         $imageName = $isPoster ? $image['@attributes']['poster_frame'] : $image['@attributes']['src'];
-
-        if (!$isImage && !$isPoster) {
-            return null;
-        }
-
         $alt = null;
         $caption = null;
         $width = null;
@@ -90,13 +85,21 @@ class ImageHelpers
             // end generate image for 2x displays
         }
 
+        // Video properties
+        $poster = $isPoster ? $imageUrlPath . $imageName  : null;
+        $autoplay = isset($image['@attributes']['autoplay']) && $image['@attributes']['autoplay'] == '1';
+        $width = $width ? $width : $imageTargetWidth;
+
         return [
-            'src' => $imageUrlPath . $imageName,
+            'type' => $image['@attributes']['type'],
+            'src' => $imageUrlPath . $image['@attributes']['src'],
             'width' => $width,
             'height' => $height,
             'srcset' => $srcset,
             'alt' => $alt,
             'caption' => $caption,
+            'poster' => $poster,
+            'autoplay' => $autoplay,
         ];
     }
 

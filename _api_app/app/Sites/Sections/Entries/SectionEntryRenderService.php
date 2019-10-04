@@ -42,7 +42,7 @@ class SectionEntryRenderService
     )
     {
         $this->entry = $entry;
-        $this->galleryItems = $this->getGalleryImages();
+        $this->galleryItems = $this->getGalleryItemsData();
         $this->section = $section;
         $this->siteSettings = $siteSettings;
         $this->siteTemplateSettings = $siteTemplateSettings;
@@ -91,11 +91,12 @@ class SectionEntryRenderService
         $entry['showUrl'] = $this->templateName == 'default' && ($this->isEditMode || (isset($entry['content']['url']) && !empty($entry['content']['url'])));
 
         $entry['galleryPosition'] = $galleryPosition ? $galleryPosition : ($this->sectionType == 'portfolio' ? 'below description' : 'above title');
-        $entry['galleryItems'] = $this->galleryItems;
-        $entry['galleryFirstImage'] = $this->getGalleryFirstImage();
+        $entry['galleryItems'] = $this->getGalleryItems();
         $entry['galleryNavigation'] = $this->getGalleryNavigation();
         $entry['galleryClassList'] = $this->getGalleryClassList();
         $entry['rowGalleryPadding'] = isset($entry['mediaCacheData']['@attributes']['row_gallery_padding']) && !empty($entry['mediaCacheData']['@attributes']['row_gallery_padding']) ? $entry['mediaCacheData']['@attributes']['row_gallery_padding'] : null;
+
+        // @TODO pass gallery total width and height to view
 
         return $entry;
     }
@@ -196,32 +197,39 @@ class SectionEntryRenderService
     }
 
     // @TODO Move gallery related code to helpers and/or own render class
-    private function getGalleryImages()
+    private function getGalleryItemsData()
     {
-        $images = [];
+        $items = [];
         if (isset($this->entry['mediaCacheData']['file'])) {
-            $images = Helpers::asList($this->entry['mediaCacheData']['file']);
+            $items = Helpers::asList($this->entry['mediaCacheData']['file']);
         }
 
-        return $images;
+        return $items;
     }
 
-    private function getGalleryFirstImage()
+    public function getGalleryItems()
     {
-        if (!$this->galleryItems) {
-            return null;
+        $items = [];
+
+        foreach ($this->galleryItems as $item) {
+            $items[] = ImageHelpers::getGalleryItem(
+                $item,
+                1,
+                $this->entry,
+                $this->storageService,
+                $this->siteSettings
+            );
         }
 
-        $image = ImageHelpers::getGalleryImage(
-            current($this->galleryItems),
-            1,
-            $this->entry,
-            $this->storageService,
-            $this->siteSettings
-        );
+        // limit to one for now
+        // @TODO apply limits
+        if ($items) {
+            $items = [current($items)];
+        }
 
-        return $image;
+        return $items;
     }
+
 
     private function getGalleryNavigation()
     {
@@ -236,7 +244,7 @@ class SectionEntryRenderService
         $itemUrlPath = $this->storageService->MEDIA_URL . '/' . $this->entry['mediafolder'] . '/';
 
         foreach ($galleryItems as $i => $item) {
-            $navigationItem = ImageHelpers::getGalleryImage(
+            $navigationItem = ImageHelpers::getGalleryItem(
                 $item,
                 1,
                 $this->entry,

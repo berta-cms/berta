@@ -1,12 +1,21 @@
 <div class="{{ galleryClassList }}">
   {% if galleryItems %}
     <div class="xGallery"{% if galleryFirstImage %} style="width: {{  galleryFirstImage.width }}px; height: {{  galleryFirstImage.height }}px"{% endif %}{% if rowGalleryPadding %} xRowGalleryPadding="{{ rowGalleryPadding }}"{% endif %}>
-      {% if galleryFirstImage %}
-        <div class="xGalleryItem xGalleryItemType-image xImgIndex-1" style="width: {{ galleryFirstImage.width }}px; height: {{ galleryFirstImage.height }}px">
-          <img src="{{ galleryFirstImage.src }}" width="{{ galleryFirstImage.width }}" height="{{ galleryFirstImage.height }}"{% if galleryFirstImage.srcset %} srcset="{{ galleryFirstImage.srcset }}"{% endif %} alt="{{ galleryFirstImage.alt }}">
-          <div class="xGalleryImageCaption">{{ galleryFirstImage.caption|raw }}</div>
-        </div>
-      {% endif %}
+      {% for item in galleryItems %}
+        {% if item.type == 'image' %}
+          <div class="xGalleryItem xGalleryItemType-image xImgIndex-1" style="width: {{ item.width }}px; height: {{ item.height }}px">
+            <img src="{{ item.src }}" width="{{ item.width }}" height="{{ item.height }}"{% if item.srcset %} srcset="{{ item.srcset }}"{% endif %} alt="{{ item.alt }}">
+            <div class="xGalleryImageCaption">{{ item.caption|raw }}</div>
+          </div>
+        {% else %}
+          <div class="xGalleryItem xGalleryItemType-video">
+            <video width="{{ item.width }}" controls{% if item.poster %} poster="{{ item.poster }}"{% endif %}{% if item.autoplay %} data-autoplay="1"{% endif %}>
+              <source src="{{ item.src }}" type="video/mp4">
+            </video>
+            <div class="xGalleryImageCaption">{{ item.caption|raw }}</div>
+          </div>
+        {% endif %}
+      {% endfor %}
 
       {% if isEditMode %}
         <a href="#" class="xGalleryEditButton xEditorLink xSysCaption xMAlign-container"><span class="xMAlign-outer-gallery"><span class="xMAlign-inner-gallery">edit gallery</span></span></a>
