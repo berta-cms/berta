@@ -1,5 +1,5 @@
 <div class="{{ galleryClassList }}">
-  {% if galleryImages %}
+  {% if galleryItems %}
     <div class="xGallery"{% if galleryFirstImage %} style="width: {{  galleryFirstImage.width }}px; height: {{  galleryFirstImage.height }}px"{% endif %}{% if rowGalleryPadding %} xRowGalleryPadding="{{ rowGalleryPadding }}"{% endif %}>
       {% if galleryFirstImage %}
         <div class="xGalleryItem xGalleryItemType-image xImgIndex-1" style="width: {{ galleryFirstImage.width }}px; height: {{ galleryFirstImage.height }}px">
@@ -15,12 +15,12 @@
 
     {% if galleryNavigation %}
       <ul class="xGalleryNav"{% if not galleryNavigation.showNavigation %} style="display:none"{% endif %}>
-        {% for image in galleryNavigation.images %}
+        {% for item in galleryNavigation.items %}
           <li>
-            <a href="{{ image.src }}" class="xType-{{ image.type }} xVideoHref-{{ image.videoLink }} xAutoPlay-{{ image.autoPlay }} xOrigHref-{% if image.type == 'image' %}{{ image.origLink }}{% endif %} xW-{{ image.width }} xH-{{ image.height }} xImgIndex-{{ image.index }}"{% if image.srcset %} data-srcset="{{ image.srcset }}"{% endif %} target="_blank">
-              <span>{{ image.index }}</span>
+            <a href="{{ item.src }}" class="xType-{{ item.type }} xVideoHref-{{ item.videoLink }} xAutoPlay-{{ item.autoPlay }} xOrigHref-{% if item.type == 'image' %}{{ item.origLink }}{% endif %} xW-{{ item.width }} xH-{{ item.height }} xImgIndex-{{ item.index }}"{% if item.srcset %} data-srcset="{{ item.srcset }}"{% endif %} target="_blank">
+              <span>{{ item.index }}</span>
             </a>
-            <div class="xGalleryImageCaption">{{ image.caption|raw }}</div>
+            <div class="xGalleryImageCaption">{{ item.caption|raw }}</div>
           </li>
         {% endfor %}
       </ul>
@@ -28,8 +28,8 @@
 
     {% if galleryNavigation.showFullScreen %}
       <div class="xFullscreen">
-        {% for image in galleryNavigation.images %}
-          <a href="{{ image.origLink }}" rel="milkbox[gallery-{{ id }}]" title="{{ image.alt }}">#</a>
+        {% for item in galleryNavigation.items %}
+          <a href="{{ item.origLink }}" rel="milkbox[gallery-{{ id }}]" title="{{ item.alt }}">#</a>
         {% endfor %}
       </div>
     {% endif %}
