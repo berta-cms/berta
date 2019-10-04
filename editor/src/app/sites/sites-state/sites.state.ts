@@ -33,6 +33,8 @@ import {
   RenameSectionEntriesSitenameAction,
   AddSiteEntriesAction} from '../sections/entries/entries-state/section-entries.actions';
 import { UserLoginAction } from '../../user/user.actions';
+import { Attribute } from '@angular/compiler';
+import { Writable } from 'stream';
 
 
 @State<SiteStateModel[]>({
@@ -186,17 +188,18 @@ export class SitesState implements NgxsOnInit {
 
   @Action(ReOrderSitesAction)
   reOrderSites({ getState, setState }: StateContext<SiteStateModel[]>, action: ReOrderSitesAction) {
-    const sitesToSort = [...getState()];
-    const isFirefox = window.navigator.userAgent.indexOf('Firefox');
+    let sitesToSort = new Array;
+    sitesToSort = [...getState()];
+    const index = action.currentOrder < action.payload ? 0.5 : -0.5;
+    sitesToSort.splice(action.currentOrder, 1, {
+      name: sitesToSort[action.currentOrder].name,
+      title: sitesToSort[action.currentOrder].title,
+      order: action.payload + index,
+      '@attributes': sitesToSort[action.currentOrder]['@attributes'],
+    }) ;
 
     sitesToSort.sort((siteA, siteB) => {
-      if (siteA.order !== action.currentOrder && siteB.order !== action.currentOrder) {
-        return isFirefox !== -1 ? (siteB.order >= siteA.order ? -1 : 1) : (siteB.order > siteA.order ? -1 : 1);
-      } else if (siteA.order === action.currentOrder) {
-        return isFirefox !== -1 ? (siteB.order > action.payload ? -1 : 1) : (siteB.order >= action.payload ? -1 : 1);
-      } else if (siteB.order === action.currentOrder) {
-        return isFirefox !== -1 ? (action.payload > siteA.order ? -1 : 1) : (action.payload >= siteA.order ? -1 : 1);
-      }
+      return siteA.order - siteB.order;
     });
 
     return this.appStateService.sync('sites', sitesToSort.map(site => site.name), 'PUT').pipe(
