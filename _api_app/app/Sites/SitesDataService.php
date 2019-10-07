@@ -141,11 +141,15 @@ class SitesDataService extends Storage
             $copyTitle = $title;
             $copyName = $name;
             $i=1;
-            while (file_exists($this->XML_SITES_ROOT . '/' . $name)) {
-                $name = $copyName.'-'.$i;
-                $title = $copyTitle.'-'.$i;
-                $i++;
+
+            foreach ($sites as $site) {
+                if ($name === $site['name']) {
+                    $name = $copyName.'-'.$i;
+                    $title = $copyTitle.' '.$i;
+                    $i++;
+                }
             }
+
             $dir = $this->XML_SITES_ROOT . '/' . $name;
             $this->copyFolder($src, $dir);
         } else {
