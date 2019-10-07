@@ -25,6 +25,7 @@ import { PopupComponent } from './popup/popup.component';
 import { ErrorState } from './error-state/error.state';
 import { SharedModule } from './shared/shared.module';
 import { SentryErrorHandler } from './sentry.error-handler';
+import { IconFacebookComponent } from './login/icon-facebook.component';
 
 
 @NgModule({
@@ -37,7 +38,8 @@ import { SentryErrorHandler } from './sentry.error-handler';
     UserAccountComponent,
     LoginComponent,
     PreviewComponent,
-    PopupComponent
+    PopupComponent,
+    IconFacebookComponent
   ],
   imports: [
     BrowserModule,
