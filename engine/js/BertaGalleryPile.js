@@ -33,6 +33,7 @@ var BertaGalleryPile = new Class({
     this.fullscreen = this.container.get('data-fullscreen') !== null;
     this.imageContainer = this.container.getElement('div.xGallery');
     this.navContainer = this.container.getElement('ul.xGalleryNav');
+    this.galleryEditButton = this.imageContainer.getElement('.xGalleryEditButton');
 
     if (this.navContainer && this.navContainer.getElements('a').length > 0) {
       this.imageFadeOutFx = new Fx.Tween(this.imageContainer, {
@@ -48,7 +49,7 @@ var BertaGalleryPile = new Class({
         'class': 'clear'
       }).inject(this.imageContainer);
 
-      this.newObjectInjectWhere = bertaGlobalOptions.environment == 'site' ? this.rowClearElement : this.imageContainer.getElement('.xGalleryEditButton');
+      this.newObjectInjectWhere = bertaGlobalOptions.environment == 'site' ? this.rowClearElement : this.galleryEditButton;
       this.newObjectInjectPosition = 'before';
 
     } else {
@@ -99,8 +100,15 @@ var BertaGalleryPile = new Class({
         var aEl = nextLi.getElement('a');
         this.load(aEl.get('href'), aEl.getClassStoredValue('xType'), aEl.getClassStoredValue('xW'), aEl.getClassStoredValue('xH'), aEl.getClassStoredValue('xVideoHref'), aEl.getClassStoredValue('xAutoPlay'), nextLi.getElement('.xGalleryImageCaption').get('html'), false, aEl.getClassStoredValue('xImgIndex'), aEl.get('data-srcset'));
       } else {
+        //after everything is loaded
+
         if (this.fullscreen) {
           this.attachFullscreen();
+        }
+
+        // update gallery edit button width
+        if (this.galleryEditButton) {
+          this.galleryEditButton.setStyle('width', this.imageContainer.scrollWidth);
         }
       }
     }

@@ -1,16 +1,18 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
+import { Observable } from 'rxjs';
 import { take, filter, switchMap, map, mergeMap } from 'rxjs/operators';
-import { Store } from '@ngxs/store';
+import { Store, Select } from '@ngxs/store';
 import { PopupService } from '../popup/popup.service';
 import { SiteStateModel } from './sites-state/site-state.model';
 import { DeleteSiteAction, CloneSiteAction, UpdateSiteAction, RenameSiteAction } from './sites-state/sites.actions';
 import { SitesState } from './sites-state/sites.state';
+import { AppStateModel } from '../app-state/app-state.interface';
 
 @Component({
   selector: 'berta-site',
   template: `
-    <div class="setting-group">
+    <div class="setting-group" [class.active]="(currentSite$|async).site == site.name">
       <h3>
         <div class="control-line">
           <berta-inline-text-input [value]="site.title"
@@ -35,11 +37,11 @@ import { SitesState } from './sites-state/sites.state';
         </div>
         <div class="url-line">
           <a [routerLink]="['/multisite']"
-             [queryParams]="(site.name === '' ? null : {site: site.name})">{{ hostname }}/</a>
-
+              [queryParams]="(site.name === '' ? null : {site: site.name})" >{{ hostname }}/</a>
           <berta-inline-text-input *ngIf="!modificationDisabled"
                                    [value]="site.name"
                                    (inputFocus)="updateComponentFocus($event)"
+                                   (textClick)="navigateToSite(site.name)"
                                    (update)="updateField('name', $event)"></berta-inline-text-input>
         </div>
       </h3>
@@ -66,6 +68,8 @@ export class SiteComponent implements OnInit {
   @Input('site') site: SiteStateModel;
 
   @Output() inputFocus = new EventEmitter();
+
+  @Select('app') public currentSite$: Observable<AppStateModel>;
 
   hostname: string;
   modificationDisabled: null | true = null;
@@ -152,5 +156,9 @@ export class SiteComponent implements OnInit {
         }
       ],
     });
+  }
+
+  navigateToSite(siteUrl) {
+    this.router.navigate([], { queryParams: { site: siteUrl } });
   }
 }

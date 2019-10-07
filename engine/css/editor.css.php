@@ -870,14 +870,13 @@ input[type="submit"]:hover {
         width: 100%;
         height: 20px;
     }
-        .xGalleryContainer a.xGalleryEditButton {
-
-        }
         .xGalleryHasImages a.xGalleryEditButton {
             position: absolute;
             display: inline-block;
-            width: 100%; height: 100%;
-            left: 0; top: 0;
+            min-width: 100%;
+            height: 100%;
+            left: 0;
+            top: 0;
             background: url('<?php echo $ENGINE_ROOT_URL ?>layout/editable-back.png') repeat;
             -moz-opacity: 0; opacity: 0;
             z-index: 2;
