@@ -42,11 +42,6 @@ berta-login {
         padding: 10px 10px 10px 10px;
         background-color: $facebook-color;
 
-        & svg {
-          width: 25px;
-          padding-right: 20px;
-        }
-
         & p {
           margin-top: 0;
           font-size: 18px;
@@ -72,11 +67,6 @@ berta-login {
           font-weight: bold;
         }
 
-        & img {
-          width: 25px;
-          padding-right: 20px;
-        }
-
         &:disabled {
           color: #7c7c7c;
           background-color: #d2d2d2;
@@ -93,6 +83,10 @@ berta-login {
         }
 
       }
+    }
+    & svg {
+      width: 25px;
+      padding-right: 20px;
     }
 
     p {
