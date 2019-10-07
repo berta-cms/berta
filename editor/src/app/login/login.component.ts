@@ -27,9 +27,11 @@ import { PopupService } from '../popup/popup.service';
     <ng-template #logInForm>
       <div *ngIf="appState.isBertaHosting" class="form-group social-login">
         <a href="{{ appState.loginUrl }}?remote_redirect={{ appState.authenticateUrl }}&amp;provider=facebook" class="button facebook">
+        <bt-icon-facebook></bt-icon-facebook>
           Log in with Facebook</a>
         <a href="{{ appState.loginUrl }}?remote_redirect={{ appState.authenticateUrl }}&amp;provider=google" class="button google">
-          Log in with Google</a>
+        <img src="../../../../engine/layout/Google.png" alt="G">
+        <p>Sign in with Google</p></a>
         <p>or</p>
       </div>
 
