@@ -263,15 +263,15 @@ export class SiteSectionsState implements NgxsOnInit {
   reOrderSiteSections({ getState, setState }: StateContext<SiteSectionStateModel[]>, action: ReOrderSiteSectionsAction) {
     const siteName = this.store.selectSnapshot(AppState.getSite);
     const sectionsToSort = this.store.selectSnapshot(SiteSectionsState.getCurrentSiteSections);
-    const isFirefox = window.navigator.userAgent.indexOf('Firefox');
+    const indexToSortBy = action.currentOrder < action.payload ? action.payload + 0.5 : action.payload - 0.5;
 
     sectionsToSort.sort((sectionA, sectionB) => {
       if (sectionA.order !== action.currentOrder && sectionB.order !== action.currentOrder) {
-        return isFirefox !== -1 ? (sectionB.order >= sectionA.order ? -1 : 1) : (sectionB.order > sectionA.order ? -1 : 1);
+        return sectionB.order > sectionA.order ? -1 : 1;
       } else if (sectionA.order === action.currentOrder) {
-        return isFirefox !== -1 ? (sectionB.order > action.payload ? -1 : 1) : (sectionB.order >= action.payload ? -1 : 1);
+        return sectionB.order >= indexToSortBy ? -1 : 1;
       } else if (sectionB.order === action.currentOrder) {
-        return isFirefox !== -1 ? (action.payload > sectionA.order ? -1 : 1) : (action.payload >= sectionA.order ? -1 : 1);
+        return sectionA.order <= indexToSortBy ? -1 : 1;
       }
     });
 
