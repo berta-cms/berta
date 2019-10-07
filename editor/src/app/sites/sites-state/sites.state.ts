@@ -33,9 +33,6 @@ import {
   RenameSectionEntriesSitenameAction,
   AddSiteEntriesAction} from '../sections/entries/entries-state/section-entries.actions';
 import { UserLoginAction } from '../../user/user.actions';
-import { Attribute } from '@angular/compiler';
-import { Writable } from 'stream';
-
 
 @State<SiteStateModel[]>({
   name: 'sites',
