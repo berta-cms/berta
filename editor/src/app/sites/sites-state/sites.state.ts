@@ -34,6 +34,7 @@ import {
   AddSiteEntriesAction} from '../sections/entries/entries-state/section-entries.actions';
 import { UserLoginAction } from '../../user/user.actions';
 
+
 @State<SiteStateModel[]>({
   name: 'sites',
   defaults: []
@@ -150,7 +151,7 @@ export class SitesState implements NgxsOnInit {
 
   @Action(CloneSiteAction)
   cloneSite({ dispatch }: StateContext<SiteStateModel[]>, action: CloneSiteAction) {
-    dispatch(new CreateSiteAction(action.site));
+    return dispatch(new CreateSiteAction(action.site));
   }
 
 
@@ -185,18 +186,17 @@ export class SitesState implements NgxsOnInit {
 
   @Action(ReOrderSitesAction)
   reOrderSites({ getState, setState }: StateContext<SiteStateModel[]>, action: ReOrderSitesAction) {
-    let sitesToSort = new Array;
-    sitesToSort = [...getState()];
-    const index = action.currentOrder < action.payload ? 0.5 : -0.5;
-    sitesToSort.splice(action.currentOrder, 1, {
-      name: sitesToSort[action.currentOrder].name,
-      title: sitesToSort[action.currentOrder].title,
-      order: action.payload + index,
-      '@attributes': sitesToSort[action.currentOrder]['@attributes'],
-    }) ;
+    const sitesToSort = [...getState()];
+    const indexToSortBy = action.currentOrder < action.payload ? action.payload + 0.5 : action.payload - 0.5;
 
     sitesToSort.sort((siteA, siteB) => {
-      return siteA.order - siteB.order;
+      if (siteA.order !== action.currentOrder && siteB.order !== action.currentOrder) {
+        return siteB.order > siteA.order ? -1 : 1;
+      } else if (siteA.order === action.currentOrder) {
+        return siteB.order > indexToSortBy ? -1 : 1;
+      } else if (siteB.order === action.currentOrder) {
+        return siteA.order < indexToSortBy  ? -1 : 1;
+      }
     });
 
     return this.appStateService.sync('sites', sitesToSort.map(site => site.name), 'PUT').pipe(
