@@ -199,7 +199,6 @@
       visibility: hidden;
       &:disabled {
         +span {
-          background-color: $white;
           border-color: $grey-10;
           cursor: default;
           &:after {
@@ -207,26 +206,14 @@
           }
         }
       }
-      &:active:enabled {
-        +span {
-          background-color: $white;
-          border-color: $grey-80;
-          &:after {
-            background-color: $grey-80;
-          }
-        }
+      &:active:enabled + span {
+        border-color: $grey-80;
       }
-      &:hover:enabled {
-        + span {
-          border-color: $grey-80;
-        }
+      &:hover:enabled + span {
+        border-color: $grey-80;
       }
-      &:checked {
-        + span {
-          &:after {
-            left: $toggle-width - $toggle-slider-size - 2;
-          }
-        }
+      &:checked + span:after {
+        left: $toggle-width - $toggle-slider-size - 2;
       }
     }
 
