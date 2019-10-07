@@ -63,6 +63,7 @@ class SitesDataService extends Storage
     private $ROOT_ELEMENT = 'sites';
     private $SITES = array();
     private $XML_FILE;
+    private $MAIN_SITE_DEFAULT_TITLE = 'Main site';
 
     public function __construct()
     {
@@ -84,7 +85,7 @@ class SitesDataService extends Storage
                 // Return only main site when storage/-sites does not exist
                 $this->SITES[] = [
                     'name' => '',
-                    'title' => 'Main site',
+                    'title' => $this->MAIN_SITE_DEFAULT_TITLE,
                     '@attributes' => ['published' => 1],
                 ];
             } else {
@@ -123,16 +124,41 @@ class SitesDataService extends Storage
         $name = 'untitled-' . uniqid();
         $dir = $this->XML_SITES_ROOT . '/' . $name;
 
-        @mkdir($dir, 0777, true);
-
         if ($cloneFrom != null) {
             $src = $cloneFrom == '0' ? $this->XML_MAIN_ROOT : $this->XML_SITES_ROOT . '/' . $cloneFrom;
+            $name = 'copy-of-'.$cloneFrom;
+            if($cloneFrom == '0') {
+                $title = $this->MAIN_SITE_DEFAULT_TITLE;
+            } else {
+                foreach ($sites as $site) {
+                    if ($site['name'] === $cloneFrom) {
+                        $title = $site['title'];
+                        break;
+                    }
+                }
+            }
+            $title = 'Copy of '.$title;
+            $copyTitle = $title;
+            $copyName = $name;
+            $i=1;
+
+            foreach ($sites as $site) {
+                if ($name === $site['name']) {
+                    $name = $copyName.'-'.$i;
+                    $title = $copyTitle.' '.$i;
+                    $i++;
+                }
+            }
+
+            $dir = $this->XML_SITES_ROOT . '/' . $name;
             $this->copyFolder($src, $dir);
+        } else {
+            @mkdir($dir, 0777, true);
         }
 
         $site = [
             'name' => $name,
-            'title' => '',
+            'title' => $cloneFrom != null ? $title : '',
             '@attributes' => array('published' => 0),
         ];
         array_push($sites, $site);

@@ -1,11 +1,12 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
+import { Observable } from 'rxjs';
 import { take, filter, switchMap, map, mergeMap } from 'rxjs/operators';
 import { Store, Select } from '@ngxs/store';
 import { PopupService } from '../popup/popup.service';
 import { SiteStateModel } from './sites-state/site-state.model';
 import { DeleteSiteAction, CloneSiteAction, UpdateSiteAction, RenameSiteAction } from './sites-state/sites.actions';
-import { Observable } from 'rxjs';
+import { SitesState } from './sites-state/sites.state';
 import { AppStateModel } from '../app-state/app-state.interface';
 
 @Component({
@@ -108,7 +109,22 @@ export class SiteComponent implements OnInit {
   }
 
   cloneSite() {
-    this.store.dispatch(new CloneSiteAction(this.site));
+    this.store.select(SitesState).pipe(
+      take(1),
+      map((sites: SiteStateModel[]) => {
+        return sites.map(site => site.name);
+      }),
+      switchMap(siteNames => this.store.dispatch(new CloneSiteAction(this.site)).pipe(
+        map(({sites: sitesState}) => {
+          return sitesState.find(site => siteNames.indexOf(site.name) === -1);
+        })
+      ))
+    ).subscribe(newSite => {
+      if (!newSite) {
+        return;
+      }
+      this.router.navigate([], { queryParams: { site: newSite.name } });
+    });
   }
 
   deleteSite() {

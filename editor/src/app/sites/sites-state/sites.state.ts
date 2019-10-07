@@ -151,7 +151,7 @@ export class SitesState implements NgxsOnInit {
 
   @Action(CloneSiteAction)
   cloneSite({ dispatch }: StateContext<SiteStateModel[]>, action: CloneSiteAction) {
-    dispatch(new CreateSiteAction(action.site));
+    return dispatch(new CreateSiteAction(action.site));
   }
 
 
