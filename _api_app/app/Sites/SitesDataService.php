@@ -63,7 +63,7 @@ class SitesDataService extends Storage
     private $ROOT_ELEMENT = 'sites';
     private $SITES = array();
     private $XML_FILE;
-    private $MAIN_SITE_DEFAULT_TITLE = "Main site";
+    private $MAIN_SITE_DEFAULT_TITLE = 'Main site';
 
     public function __construct()
     {
