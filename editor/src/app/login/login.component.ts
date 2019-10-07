@@ -30,7 +30,7 @@ import { PopupService } from '../popup/popup.service';
         <bt-icon-facebook></bt-icon-facebook>
         <p>Log in with Facebook</p></a>
         <a href="{{ appState.loginUrl }}?remote_redirect={{ appState.authenticateUrl }}&amp;provider=google" class="button google">
-        <img src="../../../../engine/layout/Google.png" alt="G">
+        <img src="/engine/layout/Google.png" alt="G">
         <p>Sign in with Google</p></a>
         <p>or</p>
       </div>
