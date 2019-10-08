@@ -31,6 +31,8 @@ berta-login {
     flex-direction: column;
 
     a {
+      width: 100%;
+      height: 37px;
       color: $white;
       display: flex;
       align-items: center;
@@ -38,12 +40,18 @@ berta-login {
       transition: background-color .2s;
 
       &.facebook {
-        padding: 10px 10px 10px 10px;
         background-color: $facebook-color;
+        padding: 3px 0 2px 0;
+
+        & svg {
+          width: 35px;
+          padding-left: 3px;
+        }
 
         & p {
           margin-top: 0;
           font-size: 18px;
+          flex-grow: 2;
         }
 
         &:hover {
@@ -52,16 +60,28 @@ berta-login {
       }
 
       &.google {
-        background-color: $white;
-        box-shadow: 0px 0px 4px 1px #aaaaaa;
-        color: $google-color;
-        padding-right: 10px;
-        padding-left: 10px;
+        background-color: $google-color;
+        color: $white;
+        padding: 3px 0 2px 0;
+
+        & bt-icon-google {
+          background-color: $white;
+          margin-left: 3px;
+          height: 35px;
+          width: 35px;
+          margin-bottom: 1px;
+          display: flex;
+          justify-content: center
+        }
+
+        & svg {
+          width: 20px;
+        }
 
         & p {
           margin-top: 0;
           font-size: 18px;
-          font-weight: bold;
+          flex-grow: 2;
         }
 
         &:disabled {
@@ -70,8 +90,7 @@ berta-login {
         }
 
         &:hover:enabled {
-          background-color: darken($white, 3%);
-          box-shadow: 0px 0px 4px 1px #afc4e4;
+          background-color: darken($google-color, 3%);
         }
 
         &:active:enabled {
@@ -80,10 +99,6 @@ berta-login {
         }
 
       }
-    }
-    & svg {
-      width: 25px;
-      padding-right: 20px;
     }
 
     p {
