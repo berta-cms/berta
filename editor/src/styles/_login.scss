@@ -37,7 +37,7 @@ berta-login {
       display: flex;
       align-items: center;
       margin-bottom: 1.3em;
-      padding: 3px 0 2px 0;
+      padding: 1px 0 1px 0;
       transition: background-color .2s;
 
       &.facebook {
@@ -45,7 +45,7 @@ berta-login {
 
         & svg {
           width: 25px;
-          padding-left: 10px;
+          padding-left: 7px;
         }
 
         & p {
@@ -64,10 +64,11 @@ berta-login {
 
         & bt-icon-google {
           background-color: $white;
-          margin-left: 3px;
-          height: 35px;
+          border-top-left-radius: 4px;
+          border-bottom-left-radius: 4px;
+          margin-left: 1px;
+          height: 100%;
           width: 35px;
-          margin-bottom: 1px;
           display: flex;
           justify-content: center
         }
