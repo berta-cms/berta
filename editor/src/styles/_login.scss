@@ -37,11 +37,11 @@ berta-login {
       display: flex;
       align-items: center;
       margin-bottom: 1.3em;
+      padding: 3px 0 2px 0;
       transition: background-color .2s;
 
       &.facebook {
         background-color: $facebook-color;
-        padding: 3px 0 2px 0;
 
         & svg {
           width: 35px;
@@ -61,8 +61,6 @@ berta-login {
 
       &.google {
         background-color: $google-color;
-        color: $white;
-        padding: 3px 0 2px 0;
 
         & bt-icon-google {
           background-color: $white;
