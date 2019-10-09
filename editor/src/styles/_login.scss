@@ -40,18 +40,18 @@ berta-login {
       padding: 1px 0 1px 0;
       transition: background-color .2s;
 
+      & p {
+        margin-top: 0;
+        font-size: 1rem;
+        flex-grow: 2;
+      }
+
       &.facebook {
         background-color: $facebook-color;
 
         & svg {
           width: 25px;
           padding-left: 7px;
-        }
-
-        & p {
-          margin-top: 0;
-          font-size: 18px;
-          flex-grow: 2;
         }
 
         &:hover {
@@ -75,12 +75,6 @@ berta-login {
 
         & svg {
           width: 20px;
-        }
-
-        & p {
-          margin-top: 0;
-          font-size: 18px;
-          flex-grow: 2;
         }
 
         &:disabled {

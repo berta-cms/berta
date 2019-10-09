@@ -4,7 +4,8 @@ import { LoadingComponent } from './loading/loading.component';
 import { IconGoogleComponent } from './icon-google.component';
 import { IconFacebookComponent } from './icon-facebook.component';
 @NgModule({
-  declarations: [LoadingComponent,
+  declarations: [
+    LoadingComponent,
     IconGoogleComponent,
     IconFacebookComponent
   ],
