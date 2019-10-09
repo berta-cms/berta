@@ -48,6 +48,12 @@ berta-login {
 
       &.facebook {
         background-color: $facebook-color;
+        margin-top: 20px;
+
+        & bt-icon-facebook {
+          justify-content: center;
+          display: flex;
+        }
 
         & svg {
           width: 25px;
@@ -61,6 +67,7 @@ berta-login {
 
       &.google {
         background-color: $google-color;
+        margin-bottom: 20px;
 
         & bt-icon-google {
           background-color: $white;
