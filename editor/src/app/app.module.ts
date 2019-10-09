@@ -37,7 +37,7 @@ import { SentryErrorHandler } from './sentry.error-handler';
     UserAccountComponent,
     LoginComponent,
     PreviewComponent,
-    PopupComponent,
+    PopupComponent
   ],
   imports: [
     BrowserModule,
