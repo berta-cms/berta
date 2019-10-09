@@ -269,9 +269,9 @@ export class SiteSectionsState implements NgxsOnInit {
       if (sectionA.order !== action.currentOrder && sectionB.order !== action.currentOrder) {
         return sectionB.order > sectionA.order ? -1 : 1;
       } else if (sectionA.order === action.currentOrder) {
-        return sectionB.order >= indexToSortBy ? -1 : 1;
+        return sectionB.order > indexToSortBy ? -1 : 1;
       } else if (sectionB.order === action.currentOrder) {
-        return sectionA.order <= indexToSortBy ? -1 : 1;
+        return sectionA.order < indexToSortBy ? -1 : 1;
       }
     });
 
