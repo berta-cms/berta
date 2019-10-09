@@ -72,7 +72,7 @@
       border: 0;
       border-radius: $border-radius;
       box-sizing: border-box;
-      color: $grey-40;
+      color: $grey-80;
       flex-grow: 1;
       font-size: 1em;
       min-width: 1rem;
@@ -197,24 +197,23 @@
       margin-left: -9999px;
       position: absolute;
       visibility: hidden;
-
-      &:checked {
-        + span {
-          background-color: $grey-40;
-
+      &:disabled {
+        +span {
+          border-color: $grey-10;
+          cursor: default;
           &:after {
-            left: $toggle-width - $toggle-slider-size - 1;
-          }
-
-          &:hover {
-            background-color: $grey-80;
-            border-color: $grey-80;
-
-            &:after {
-              border-color: $grey-80;
-            }
+            background-color: $grey-10;
           }
         }
+      }
+      &:active:enabled + span {
+        border-color: $grey-80;
+      }
+      &:hover:enabled + span {
+        border-color: $grey-80;
+      }
+      &:checked + span:after {
+        left: $toggle-width - $toggle-slider-size - 2;
       }
     }
 
@@ -229,8 +228,8 @@
       width: $toggle-width;
 
       &:after {
-        background-color: $white;
-        border: 1px solid $grey-40;
+        background-color: $grey-80;
+        border: 1px solid $white;
         border-radius: 50%;
         content: '';
         display: block;
@@ -239,14 +238,6 @@
         position: relative;
         transition: left .2s, border-color .2s;
         width: $toggle-slider-size;
-      }
-
-      &:hover {
-        border-color: $grey-80;
-
-        &:after {
-          border-color: $grey-80;
-        }
       }
     }
   }
@@ -298,29 +289,6 @@
 
       .icon-remove {
         stroke: $grey-80;
-      }
-    }
-
-    .toggle-wrapper {
-      input {
-        &:checked {
-          + span {
-            background-color: $grey-80;
-            border-color: $grey-80;
-
-            &:after {
-              border-color: $grey-80;
-            }
-          }
-        }
-      }
-
-      span {
-        border-color: $grey-80;
-
-        &:after {
-          border-color: $grey-80;
-        }
       }
     }
 
