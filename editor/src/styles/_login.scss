@@ -56,8 +56,10 @@ berta-login {
         }
 
         & svg {
-          width: 25px;
-          padding-left: 7px;
+          padding-left: 1px;
+          border-bottom-left-radius: 4px;
+          border-top-left-radius: 4px;
+          width: 37px;
         }
 
         &:hover {
@@ -75,7 +77,7 @@ berta-login {
           border-bottom-left-radius: 4px;
           margin-left: 1px;
           height: 100%;
-          width: 35px;
+          width: 37px;
           display: flex;
           justify-content: center
         }
