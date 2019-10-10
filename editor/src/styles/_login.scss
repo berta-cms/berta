@@ -111,20 +111,21 @@ berta-login {
 
   form {
     flex-grow: 1;
+    margin: 20px 1.3em;
 
     .form-group {
-      margin: 1.3em;
+      margin: 1.3em 0;
     }
 
     .buttons {
-      text-align: right;
+      text-align: left;
     }
 
     button {
       display: block;
       font-size: $base-font-size;
       margin-bottom: 1.3em;
-      margin-left: auto;
+      margin-right: auto;
       width: 50%;
     }
 
