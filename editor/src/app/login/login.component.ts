@@ -39,14 +39,14 @@ import { PopupService } from '../popup/popup.service';
       <form [attr.action]="(appState.isBertaHosting ? appState.loginUrl + '?remote_redirect=' + appState.authenticateUrl: null)"
             method="post"
             (submit)="login($event)">
-        <berta-text-input [label]="'Username'"
+        <berta-text-input [placeholder]="'Username'"
                           [name]="'auth_user'"
                           [value]="username"
                           [enabledOnUpdate]="true"
                           [hideIcon]="true"
                           (inputFocus)="updateComponentFocus($event)"
                           (update)="updateField('username', $event)"></berta-text-input>
-        <berta-text-input [label]="'Password'"
+        <berta-text-input [placeholder]="'Password'"
                           [name]="'auth_pass'"
                           [value]="password"
                           [type]="'password'"
