@@ -187,14 +187,15 @@ export class SitesState implements NgxsOnInit {
   @Action(ReOrderSitesAction)
   reOrderSites({ getState, setState }: StateContext<SiteStateModel[]>, action: ReOrderSitesAction) {
     const sitesToSort = [...getState()];
+    const indexToSortBy = action.currentOrder < action.payload ? action.payload + 0.5 : action.payload - 0.5;
 
     sitesToSort.sort((siteA, siteB) => {
       if (siteA.order !== action.currentOrder && siteB.order !== action.currentOrder) {
         return siteB.order > siteA.order ? -1 : 1;
       } else if (siteA.order === action.currentOrder) {
-        return siteB.order >= action.payload ? -1 : 1;
+        return siteB.order > indexToSortBy ? -1 : 1;
       } else if (siteB.order === action.currentOrder) {
-        return action.payload >= siteA.order ? -1 : 1;
+        return siteA.order < indexToSortBy  ? -1 : 1;
       }
     });
 
