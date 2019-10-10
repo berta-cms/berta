@@ -85,6 +85,23 @@ class ImageHelpers
             // end generate image for 2x displays
         }
 
+        // Generate image for mobile devices in full screen mode
+        // Use size of large image from settings, default max size = 600
+        $src_large = $imageUrlPath . $image['@attributes']['src'];
+        $width_large = $widthOriginal;
+        $height_large = $heightOriginal;
+
+        if ($isImage) {
+            $imageTargetWidthLarge = $siteSettings['media']['imagesLargeWidth'];
+            $imageTargetHeightLarge = $siteSettings['media']['imagesLargeHeight'];
+
+            if ($widthOriginal && $heightOriginal && $imageTargetWidthLarge && $imageTargetHeightLarge && ($widthOriginal >= $imageTargetWidthLarge || $heightOriginal >= $imageTargetHeightLarge)) {
+                list($width_large, $height_large) = self::fitInBounds($widthOriginal, $heightOriginal, $imageTargetWidthLarge, $imageTargetHeightLarge);
+                $src_large = $imageUrlPath . self::getResizedSrc($imagePath, $imageNameOriginal, $width_large, $height_large);
+            }
+        }
+
+
         // Video properties
         $poster = $isPoster ? $imageUrlPath . $imageName  : null;
         $autoplay = isset($image['@attributes']['autoplay']) && $image['@attributes']['autoplay'] == '1';
@@ -92,7 +109,13 @@ class ImageHelpers
 
         return [
             'type' => $image['@attributes']['type'],
-            'src' => $imageUrlPath . $image['@attributes']['src'],
+            'src' => $imageUrlPath . $imageName,
+            'original' => $imageUrlPath . $image['@attributes']['src'],
+            'original_width' => $widthOriginal,
+            'original_height' => $heightOriginal,
+            'large_src' => $src_large,
+            'large_width' => $width_large,
+            'large_height' => $height_large,
             'width' => $width,
             'height' => $height,
             'srcset' => $srcset,

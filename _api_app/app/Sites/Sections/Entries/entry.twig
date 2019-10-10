@@ -8,7 +8,7 @@
   {% endif %}
 
   {% if galleryPosition == 'above title' %}
-    {% include 'Sites/Sections/Entries/_entryGallery' %}
+    {{ gallery|raw }}
   {% endif %}
 
   {% if templateName != 'default' %}
@@ -22,7 +22,7 @@
   {% endif %}
 
   {% if galleryPosition == 'between title/description' %}
-    {% include 'Sites/Sections/Entries/_entryGallery' %}
+    {{ gallery|raw }}
   {% endif %}
 
   {% if showDescription %}
@@ -30,7 +30,7 @@
   {% endif %}
 
   {% if galleryPosition == 'below description' %}
-    {% include 'Sites/Sections/Entries/_entryGallery' %}
+    {{ gallery|raw }}
   {% endif %}
 
   {% if showUrl %}

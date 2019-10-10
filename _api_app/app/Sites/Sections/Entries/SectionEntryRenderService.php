@@ -5,11 +5,11 @@ namespace App\Sites\Sections\Entries;
 use App\Shared\Helpers;
 use App\Shared\ImageHelpers;
 use App\Shared\Storage;
+use App\Sites\Sections\Entries\Galleries\GallerySlideshowRenderService;
 
 class SectionEntryRenderService
 {
     private $entry;
-    private $galleryItems;
     private $section;
     private $siteSettings;
     private $siteTemplateSettings;
@@ -39,10 +39,8 @@ class SectionEntryRenderService
         Storage $storageService,
         $isEditMode,
         $isShopAvailable
-    )
-    {
+    ) {
         $this->entry = $entry;
-        $this->galleryItems = $this->getGalleryItemsData();
         $this->section = $section;
         $this->siteSettings = $siteSettings;
         $this->siteTemplateSettings = $siteTemplateSettings;
@@ -78,7 +76,6 @@ class SectionEntryRenderService
         $entry['entryWidth'] = isset($entry['content']['width']) ? $entry['content']['width'] : '';
         $entry['isShopAvailable'] = $this->isShopAvailable;
         $entry['entryHTMLTag'] = $this->templateName == 'messy' ? 'div' : 'li';
-        $entry['galleryType'] = $this->galleryType;
         $entry['showCartTitle'] = $this->isShopAvailable && $this->sectionType == 'shop' && ($this->isEditMode || (isset($entry['content']['cartTitle']) && !empty($entry['content']['cartTitle'])));
         $entry['showTitle'] = ($this->sectionType == 'portfolio' || $this->templateName == 'default') && ($this->isEditMode || (isset($entry['content']['title']) && !empty($entry['content']['title'])));
         $entry['showDescription'] = $this->isEditMode || (isset($entry['content']['description']) && !empty($entry['content']['description']));
@@ -90,13 +87,40 @@ class SectionEntryRenderService
         $entry['outOfStockText'] = $outOfStockText;
         $entry['showUrl'] = $this->templateName == 'default' && ($this->isEditMode || (isset($entry['content']['url']) && !empty($entry['content']['url'])));
 
-        $entry['galleryPosition'] = $galleryPosition ? $galleryPosition : ($this->sectionType == 'portfolio' ? 'below description' : 'above title');
-        $entry['galleryItems'] = $this->getGalleryItems();
-        $entry['galleryNavigation'] = $this->getGalleryNavigation();
-        $entry['galleryClassList'] = $this->getGalleryClassList();
-        $entry['rowGalleryPadding'] = isset($entry['mediaCacheData']['@attributes']['row_gallery_padding']) && !empty($entry['mediaCacheData']['@attributes']['row_gallery_padding']) ? $entry['mediaCacheData']['@attributes']['row_gallery_padding'] : null;
+        // @TODO create rendering for other gallery types
+        switch ($this->galleryType) {
+            case 'row':
+                // code...
+                break;
 
-        // @TODO pass gallery total width and height to view
+            case 'column':
+                // code...
+                break;
+
+            case 'pile':
+                // code...
+                break;
+
+            case 'link':
+                // code...
+                break;
+
+            default:
+                // slideshow
+                $galleryTypeRenderService = new GallerySlideshowRenderService(
+                    $entry,
+                    $this->siteSettings,
+                    $this->siteTemplateSettings,
+                    $this->storageService,
+                    $this->isEditMode
+                );
+                break;
+        }
+
+        $entry['gallery'] = $galleryTypeRenderService->render();
+        $entry['galleryType'] = $this->galleryType;
+        $entry['galleryPosition'] = $galleryPosition ? $galleryPosition : ($this->sectionType == 'portfolio' ? 'below description' : 'above title');
+        $entry['rowGalleryPadding'] = isset($entry['mediaCacheData']['@attributes']['row_gallery_padding']) && !empty($entry['mediaCacheData']['@attributes']['row_gallery_padding']) ? $entry['mediaCacheData']['@attributes']['row_gallery_padding'] : null;
 
         return $entry;
     }
@@ -196,128 +220,128 @@ class SectionEntryRenderService
         return null;
     }
 
-    // @TODO Move gallery related code to helpers and/or own render class
-    private function getGalleryItemsData()
-    {
-        $items = [];
-        if (isset($this->entry['mediaCacheData']['file'])) {
-            $items = Helpers::asList($this->entry['mediaCacheData']['file']);
-        }
+    // @TODO remove unused code after all gallery types are implemented
 
-        return $items;
-    }
+    // private function getGalleryItemsData()
+    // {
+    //     $items = [];
+    //     if (isset($this->entry['mediaCacheData']['file'])) {
+    //         $items = Helpers::asList($this->entry['mediaCacheData']['file']);
+    //     }
 
-    public function getGalleryItems()
-    {
-        $items = [];
+    //     return $items;
+    // }
 
-        foreach ($this->galleryItems as $item) {
-            $items[] = ImageHelpers::getGalleryItem(
-                $item,
-                1,
-                $this->entry,
-                $this->storageService,
-                $this->siteSettings
-            );
-        }
+    // public function getGalleryItems()
+    // {
+    //     $items = [];
 
-        // limit to one for now
-        // @TODO apply limits
-        if ($items) {
-            $items = [current($items)];
-        }
+    //     foreach ($this->galleryItems as $item) {
+    //         $items[] = ImageHelpers::getGalleryItem(
+    //             $item,
+    //             1,
+    //             $this->entry,
+    //             $this->storageService,
+    //             $this->siteSettings
+    //         );
+    //     }
 
-        return $items;
-    }
+    //     // limit to one for now
+    //     // @TODO apply limits
+    //     if ($items) {
+    //         $items = [current($items)];
+    //     }
 
+    //     return $items;
+    // }
 
-    private function getGalleryNavigation()
-    {
-        $galleryItems = $this->galleryItems;
-        $navigationItems = [];
+    // private function getGalleryNavigation()
+    // {
+    //     $galleryItems = $this->galleryItems;
+    //     $navigationItems = [];
 
-        if (!$galleryItems) {
-            return null;
-        }
+    //     if (!$galleryItems) {
+    //         return null;
+    //     }
 
-        $itemPath = $this->storageService->MEDIA_ROOT . '/' . $this->entry['mediafolder'] . '/';
-        $itemUrlPath = $this->storageService->MEDIA_URL . '/' . $this->entry['mediafolder'] . '/';
+    //     $itemPath = $this->storageService->MEDIA_ROOT . '/' . $this->entry['mediafolder'] . '/';
+    //     $itemUrlPath = $this->storageService->MEDIA_URL . '/' . $this->entry['mediafolder'] . '/';
 
-        foreach ($galleryItems as $i => $item) {
-            $navigationItem = ImageHelpers::getGalleryItem(
-                $item,
-                1,
-                $this->entry,
-                $this->storageService,
-                $this->siteSettings
-            );
+    //     foreach ($galleryItems as $i => $item) {
+    //         $navigationItem = ImageHelpers::getGalleryItem(
+    //             $item,
+    //             1,
+    //             $this->entry,
+    //             $this->storageService,
+    //             $this->siteSettings
+    //         );
 
-            $navigationItem = array_merge($item, $navigationItem ? $navigationItem : []);
+    //         $navigationItem = array_merge($item, $navigationItem ? $navigationItem : []);
 
-            $navigationItem['index'] = $i + 1;
+    //         $navigationItem['index'] = $i + 1;
 
-            $navigationItem['type'] = $navigationItem['@attributes']['type'];
+    //         $navigationItem['type'] = $navigationItem['@attributes']['type'];
 
-            if ($navigationItem['type'] == 'video') {
-                $navigationItem['src'] = '#';
-                $navigationItem['videoLink'] = $itemUrlPath . $navigationItem['@attributes']['src'];
+    //         if ($navigationItem['type'] == 'video') {
+    //             $navigationItem['src'] = '#';
+    //             $navigationItem['videoLink'] = $itemUrlPath . $navigationItem['@attributes']['src'];
 
-                //default image size (video without poster)
-                if (!isset($navigationItem['width'])) {
-                    $width = 300;
-                    $height = 150;
-                    $imageSize = isset($this->entry['mediaCacheData']['@attributes']['size']) ? $this->entry['mediaCacheData']['@attributes']['size'] : 'large';
-                    $imageTargetWidth = $this->siteSettings['media']['images' . ucfirst($imageSize) . 'Width'];
-                    $imageTargetHeight = $this->siteSettings['media']['images' . ucfirst($imageSize) . 'Height'];
-                    list($width, $height) = ImageHelpers::fitInBounds($width, $height, $imageTargetWidth, $imageTargetHeight);
-                    $navigationItem['width'] = $width;
-                    $navigationItem['height'] = $height;
-                }
-                if (isset($navigationItem['@attributes']['poster_frame'])) {
-                    $navigationItem['origLink'] = $itemUrlPath . $navigationItem['@attributes']['poster_frame'];
-                }
+    //             //default image size (video without poster)
+    //             if (!isset($navigationItem['width'])) {
+    //                 $width = 300;
+    //                 $height = 150;
+    //                 $imageSize = isset($this->entry['mediaCacheData']['@attributes']['size']) ? $this->entry['mediaCacheData']['@attributes']['size'] : 'large';
+    //                 $imageTargetWidth = $this->siteSettings['media']['images' . ucfirst($imageSize) . 'Width'];
+    //                 $imageTargetHeight = $this->siteSettings['media']['images' . ucfirst($imageSize) . 'Height'];
+    //                 list($width, $height) = ImageHelpers::fitInBounds($width, $height, $imageTargetWidth, $imageTargetHeight);
+    //                 $navigationItem['width'] = $width;
+    //                 $navigationItem['height'] = $height;
+    //             }
+    //             if (isset($navigationItem['@attributes']['poster_frame'])) {
+    //                 $navigationItem['origLink'] = $itemUrlPath . $navigationItem['@attributes']['poster_frame'];
+    //             }
 
-                // type = Image
-            } else {
-                $navigationItem['origLink'] = file_exists($itemPath . '_orig_' . $navigationItem['@attributes']['src']) ? $itemUrlPath . '_orig_' . $navigationItem['@attributes']['src'] : $itemUrlPath . $navigationItem['@attributes']['src'];
-            }
+    //             // type = Image
+    //         } else {
+    //             $navigationItem['origLink'] = file_exists($itemPath . '_orig_' . $navigationItem['@attributes']['src']) ? $itemUrlPath . '_orig_' . $navigationItem['@attributes']['src'] : $itemUrlPath . $navigationItem['@attributes']['src'];
+    //         }
 
-            if ($this->isEditMode) {
-                $navigationItem['src'] .= '?no_cache=' . rand();
-            }
+    //         if ($this->isEditMode) {
+    //             $navigationItem['src'] .= '?no_cache=' . rand();
+    //         }
 
-            $navigationItem['autoPlay'] = isset($navigationItem['@attributes']['autoplay']) ? $navigationItem['@attributes']['autoplay'] : 0;
+    //         $navigationItem['autoPlay'] = isset($navigationItem['@attributes']['autoplay']) ? $navigationItem['@attributes']['autoplay'] : 0;
 
-            $navigationItems[] = $navigationItem;
-        }
+    //         $navigationItems[] = $navigationItem;
+    //     }
 
-        return [
-            'showNavigation' => count($galleryItems) > 1 && $this->galleryType == 'slideshow',
-            'items' => $navigationItems,
-            'showFullScreen' => !$this->isEditMode && isset($this->entry['mediaCacheData']['@attributes']['fullscreen']) && $this->entry['mediaCacheData']['@attributes']['fullscreen'] == 'yes',
-        ];
-    }
+    //     return [
+    //         'showNavigation' => count($galleryItems) > 1 && $this->galleryType == 'slideshow',
+    //         'items' => $navigationItems,
+    //         'showFullScreen' => !$this->isEditMode && isset($this->entry['mediaCacheData']['@attributes']['fullscreen']) && $this->entry['mediaCacheData']['@attributes']['fullscreen'] == 'yes',
+    //     ];
+    // }
 
-    public function getGalleryClassList()
-    {
-        $entry = $this->entry;
-        $classes = ['xGalleryContainer'];
-        $galleryType = $this->galleryType;
-        $galleryLinkAddress = isset($entry['mediaCacheData']['@attributes']['link_address']) ? $entry['mediaCacheData']['@attributes']['link_address'] : '';
-        $galleryLinkTarget = isset($entry['mediaCacheData']['@attributes']['linkTarget']) ? $entry['mediaCacheData']['@attributes']['linkTarget'] : '';
+    // public function getGalleryClassList()
+    // {
+    //     $entry = $this->entry;
+    //     $classes = ['xGalleryContainer'];
+    //     $galleryType = $this->galleryType;
+    //     $galleryLinkAddress = isset($entry['mediaCacheData']['@attributes']['link_address']) ? $entry['mediaCacheData']['@attributes']['link_address'] : '';
+    //     $galleryLinkTarget = isset($entry['mediaCacheData']['@attributes']['linkTarget']) ? $entry['mediaCacheData']['@attributes']['linkTarget'] : '';
 
-        if ($this->galleryItems) {
-            $classes[] = 'xGalleryHasImages';
-            $classes[] = 'xGalleryType-' . $galleryType;
+    //     if ($this->galleryItems) {
+    //         $classes[] = 'xGalleryHasImages';
+    //         $classes[] = 'xGalleryType-' . $galleryType;
 
-            if ($galleryType == 'link') {
-                $classes[] = 'xGalleryLinkAddress-' . $galleryLinkAddress;
-                $classes[] = 'xGalleryLinkTarget-' . $galleryLinkTarget;
-            }
-        }
+    //         if ($galleryType == 'link') {
+    //             $classes[] = 'xGalleryLinkAddress-' . $galleryLinkAddress;
+    //             $classes[] = 'xGalleryLinkTarget-' . $galleryLinkTarget;
+    //         }
+    //     }
 
-        return implode(' ', $classes);
-    }
+    //     return implode(' ', $classes);
+    // }
 
     public function render($tag = null)
     {
