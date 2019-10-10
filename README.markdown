@@ -3,7 +3,7 @@ Berta.me is a free, open source web app for building websites. You can also call
 
 Berta does NOT require a database. All content is stored in files.
 
-For more information, visit http://www.berta.me
+For more information, visit https://berta.me
 
 - [Installation](https://github.com/berta-cms/berta/wiki/Installation)
 - [Upgrade from previous versions](https://github.com/berta-cms/berta/wiki/Upgrade-from-previous-versions)
