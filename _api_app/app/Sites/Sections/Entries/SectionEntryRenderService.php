@@ -6,6 +6,7 @@ use App\Shared\Helpers;
 use App\Shared\ImageHelpers;
 use App\Shared\Storage;
 use App\Sites\Sections\Entries\Galleries\GallerySlideshowRenderService;
+use App\Sites\Sections\Entries\Galleries\GalleryRowRenderService;
 
 class SectionEntryRenderService
 {
@@ -90,7 +91,13 @@ class SectionEntryRenderService
         // @TODO create rendering for other gallery types
         switch ($this->galleryType) {
             case 'row':
-                // code...
+                $galleryTypeRenderService = new GalleryRowRenderService(
+                    $entry,
+                    $this->siteSettings,
+                    $this->siteTemplateSettings,
+                    $this->storageService,
+                    $this->isEditMode
+                );
                 break;
 
             case 'column':
