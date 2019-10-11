@@ -120,7 +120,6 @@ class SectionEntryRenderService
         $entry['gallery'] = $galleryTypeRenderService->render();
         $entry['galleryType'] = $this->galleryType;
         $entry['galleryPosition'] = $galleryPosition ? $galleryPosition : ($this->sectionType == 'portfolio' ? 'below description' : 'above title');
-        $entry['rowGalleryPadding'] = isset($entry['mediaCacheData']['@attributes']['row_gallery_padding']) && !empty($entry['mediaCacheData']['@attributes']['row_gallery_padding']) ? $entry['mediaCacheData']['@attributes']['row_gallery_padding'] : null;
 
         return $entry;
     }
