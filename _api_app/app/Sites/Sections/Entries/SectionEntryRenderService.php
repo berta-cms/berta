@@ -7,6 +7,7 @@ use App\Shared\ImageHelpers;
 use App\Shared\Storage;
 use App\Sites\Sections\Entries\Galleries\GallerySlideshowRenderService;
 use App\Sites\Sections\Entries\Galleries\GalleryRowRenderService;
+use App\Sites\Sections\Entries\Galleries\GalleryColumnRenderService;
 
 class SectionEntryRenderService
 {
@@ -101,7 +102,13 @@ class SectionEntryRenderService
                 break;
 
             case 'column':
-                // code...
+                $galleryTypeRenderService = new GalleryColumnRenderService(
+                    $entry,
+                    $this->siteSettings,
+                    $this->siteTemplateSettings,
+                    $this->storageService,
+                    $this->isEditMode
+                );
                 break;
 
             case 'pile':
