@@ -145,6 +145,22 @@ class SectionEntryRenderService
         }
 
         $entry['gallery'] = $galleryTypeRenderService->render();
+
+        // Add a slideshow html markup as a backup for mobile devices for gallery type row and pile
+        if (!$this->isEditMode && in_array($this->galleryType, ['row', 'pile'])) {
+            // Force entry to be as slideshow
+            $entry['mediaCacheData']['@attributes']['type'] = 'slideshow';
+
+            $gallerySlideshowRenderService = new GallerySlideshowRenderService(
+                $entry,
+                $this->siteSettings,
+                $this->siteTemplateSettings,
+                $this->storageService,
+                $this->isEditMode
+            );
+            $entry['gallery'] .= $gallerySlideshowRenderService->render();
+        }
+
         $entry['galleryType'] = $this->galleryType;
         $entry['galleryPosition'] = $galleryPosition ? $galleryPosition : ($this->sectionType == 'portfolio' ? 'below description' : 'above title');
 
