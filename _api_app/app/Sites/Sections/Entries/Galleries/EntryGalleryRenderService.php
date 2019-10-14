@@ -26,14 +26,6 @@ abstract class EntryGalleryRenderService
             $classes[] = 'xGalleryType-' . $this->galleryType;
         }
 
-        // @TODO implement these classes in galleryType == 'link'
-        // and then remove this commented code
-
-        //     if ($galleryType == 'link') {
-        //         $classes[] = 'xGalleryLinkAddress-' . $galleryLinkAddress;
-        //         $classes[] = 'xGalleryLinkTarget-' . $galleryLinkTarget;
-        //     }
-
         return $classes;
     }
 

@@ -9,6 +9,7 @@ use App\Sites\Sections\Entries\Galleries\GallerySlideshowRenderService;
 use App\Sites\Sections\Entries\Galleries\GalleryRowRenderService;
 use App\Sites\Sections\Entries\Galleries\GalleryColumnRenderService;
 use App\Sites\Sections\Entries\Galleries\GalleryPileRenderService;
+use App\Sites\Sections\Entries\Galleries\GalleryLinkRenderService;
 
 class SectionEntryRenderService
 {
@@ -90,7 +91,6 @@ class SectionEntryRenderService
         $entry['outOfStockText'] = $outOfStockText;
         $entry['showUrl'] = $this->templateName == 'default' && ($this->isEditMode || (isset($entry['content']['url']) && !empty($entry['content']['url'])));
 
-        // @TODO create rendering for other gallery types
         switch ($this->galleryType) {
             case 'row':
                 $galleryTypeRenderService = new GalleryRowRenderService(
@@ -123,7 +123,13 @@ class SectionEntryRenderService
                 break;
 
             case 'link':
-                // code...
+                $galleryTypeRenderService = new GalleryLinkRenderService(
+                    $entry,
+                    $this->siteSettings,
+                    $this->siteTemplateSettings,
+                    $this->storageService,
+                    $this->isEditMode
+                );
                 break;
 
             default:
