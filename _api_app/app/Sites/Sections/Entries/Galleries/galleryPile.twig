@@ -1,0 +1,57 @@
+<div class="{{ galleryClassList }}"{% if isFullscreen %} data-fullscreen="1"{% endif %}>
+  {% if items %}
+    <div class="xGallery" style="{{ galleryStyles }}" {% if rowGalleryPadding %} rowGalleryPadding="{{ rowGalleryPadding }}"{% endif %}>
+
+      {% for item in items %}
+        {% if item.type == 'image' %}
+          <div class="xGalleryItem xGalleryItemType-image xImgIndex-1" style="width: {{ item.width }}px; height: {{ item.height }}px">
+            <img src="{{ item.src }}" width="{{ item.width }}" height="{{ item.height }}"{% if item.srcset %} srcset="{{ item.srcset }}"{% endif %} alt="{{ item.alt }}">
+            <div class="xGalleryImageCaption">{{ item.caption|raw }}</div>
+          </div>
+        {% else %}
+          <div class="xGalleryItem xGalleryItemType-video">
+            <video width="{{ item.width }}" controls{% if item.poster %} poster="{{ item.poster }}"{% endif %}{% if item.autoplay %} data-autoplay="1"{% endif %}>
+              <source src="{{ item.original }}" type="video/mp4">
+            </video>
+            <div class="xGalleryImageCaption">{{ item.caption|raw }}</div>
+          </div>
+        {% endif %}
+      {% endfor %}
+
+      {% if isEditMode %}
+        <a href="#" class="xGalleryEditButton xEditorLink xSysCaption xMAlign-container">
+          <span class="xMAlign-outer-gallery">
+            <span class="xMAlign-inner-gallery">edit gallery</span>
+          </span>
+        </a>
+      {% endif %}
+    </div>
+
+    <ul class="xGalleryNav" style="display:none">
+      {% for item in navigationItems %}
+        <li>
+          <a href="{{ item.src }}"
+             data-original-src="{{ item.original }}"
+             data-original-width="{{ item.original_width }}"
+             data-original-height="{{ item.original_height }}"
+             data-caption="{{ item.alt }}"
+             data-mobile-src="{{ item.large_src }}"
+             data-mobile-width="{{ item.large_width }}"
+             data-mobile-height="{{ item.large_height }}"
+             class="xType-{{ item.type }}
+             xVideoHref-{{ item.videoLink }}
+             xAutoPlay-{{ item.autoPlay }}
+             xOrigHref-{% if item.type == 'image' %}{{ item.original }}{% endif %}
+             xW-{{ item.width }}
+             xH-{{ item.height }}
+             xImgIndex-{{ item.index }}"
+             {% if item.srcset %} data-srcset="{{ item.srcset }}"{% endif %}
+             target="_blank">
+            <span>{{ item.index }}</span>
+          </a>
+          <div class="xGalleryImageCaption">{{ item.caption|raw }}</div>
+        </li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+</div>
