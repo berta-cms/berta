@@ -27,9 +27,11 @@ import { PopupService } from '../popup/popup.service';
     <ng-template #logInForm>
       <div *ngIf="appState.isBertaHosting" class="form-group social-login">
         <a href="{{ appState.loginUrl }}?remote_redirect={{ appState.authenticateUrl }}&amp;provider=facebook" class="button facebook">
-          Log in with Facebook</a>
+        <bt-icon-facebook></bt-icon-facebook>
+        <p>Log in with Facebook</p></a>
         <a href="{{ appState.loginUrl }}?remote_redirect={{ appState.authenticateUrl }}&amp;provider=google" class="button google">
-          Log in with Google</a>
+        <bt-icon-google></bt-icon-google>
+        <p>Sign in with Google</p></a>
         <p>or</p>
       </div>
 
@@ -37,14 +39,14 @@ import { PopupService } from '../popup/popup.service';
       <form [attr.action]="(appState.isBertaHosting ? appState.loginUrl + '?remote_redirect=' + appState.authenticateUrl: null)"
             method="post"
             (submit)="login($event)">
-        <berta-text-input [label]="'Username'"
+        <berta-text-input [placeholder]="'Username'"
                           [name]="'auth_user'"
                           [value]="username"
                           [enabledOnUpdate]="true"
                           [hideIcon]="true"
                           (inputFocus)="updateComponentFocus($event)"
                           (update)="updateField('username', $event)"></berta-text-input>
-        <berta-text-input [label]="'Password'"
+        <berta-text-input [placeholder]="'Password'"
                           [name]="'auth_pass'"
                           [value]="password"
                           [type]="'password'"

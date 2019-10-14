@@ -26,15 +26,41 @@ berta-login {
     font-size: $input-font-size;
     margin: 0 1.3em;
     text-align: center;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
 
     a {
+      width: 100%;
+      height: 37px;
       color: $white;
-      display: block;
+      display: flex;
+      align-items: center;
       margin-bottom: 1.3em;
+      padding: 1px 0 1px 0;
       transition: background-color .2s;
+
+      & p {
+        margin-top: 0;
+        font-size: 1rem;
+        flex-grow: 2;
+      }
 
       &.facebook {
         background-color: $facebook-color;
+        margin-top: 20px;
+
+        & bt-icon-facebook {
+          justify-content: center;
+          display: flex;
+        }
+
+        & svg {
+          padding-left: 1px;
+          border-bottom-left-radius: 4px;
+          border-top-left-radius: 4px;
+          width: 37px;
+        }
 
         &:hover {
           background-color: darken($facebook-color, 10%);
@@ -43,10 +69,32 @@ berta-login {
 
       &.google {
         background-color: $google-color;
+        margin-bottom: 20px;
 
-        &:hover {
-          background-color: darken($google-color, 10%);
+        & bt-icon-google {
+          background-color: $white;
+          border-top-left-radius: 4px;
+          border-bottom-left-radius: 4px;
+          margin-left: 1px;
+          height: 100%;
+          width: 37px;
+          display: flex;
+          justify-content: center
         }
+
+        & svg {
+          width: 20px;
+        }
+
+        &:disabled {
+          color: #7c7c7c;
+          background-color: #d2d2d2;
+        }
+
+        &:hover:enabled {
+          background-color: darken($google-color, 3%);
+        }
+
       }
     }
 
@@ -63,21 +111,21 @@ berta-login {
 
   form {
     flex-grow: 1;
+    margin: 20px 1.3em;
 
     .form-group {
-      margin: 1.3em;
+      margin: 1.3em 0;
     }
 
     .buttons {
-      text-align: right;
+      text-align: left;
     }
 
     button {
       display: block;
       font-size: $base-font-size;
       margin-bottom: 1.3em;
-      margin-left: auto;
-      width: 50%;
+      width: 100%;
     }
 
     a {
