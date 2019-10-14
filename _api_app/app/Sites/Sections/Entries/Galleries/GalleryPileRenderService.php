@@ -3,6 +3,7 @@
 namespace App\Sites\Sections\Entries\Galleries;
 
 use App\Shared\Storage;
+use App\Sites\Sections\Entries\Galleries\GallerySlideshowRenderService;
 
 class GalleryPileRenderService extends EntryGalleryRenderService
 {
@@ -80,7 +81,23 @@ class GalleryPileRenderService extends EntryGalleryRenderService
         }
 
         $data = $this->getViewData();
+        $view = view('Sites/Sections/Entries/Galleries/galleryPile', $data);
 
-        return view('Sites/Sections/Entries/Galleries/galleryPile', $data);
+        // Add a slideshow as a fallback for mobile devices
+        if (!$this->isEditMode) {
+            // Force entry to be as slideshow
+            $this->entry['mediaCacheData']['@attributes']['type'] = 'slideshow';
+
+            $gallerySlideshowRenderService = new GallerySlideshowRenderService(
+                $this->entry,
+                $this->siteSettings,
+                $this->siteTemplateSettings,
+                $this->storageService,
+                $this->isEditMode
+            );
+            $view .= $gallerySlideshowRenderService->render();
+        }
+
+        return $view;
     }
 }
