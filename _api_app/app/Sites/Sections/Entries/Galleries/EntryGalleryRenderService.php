@@ -21,7 +21,7 @@ abstract class EntryGalleryRenderService
     {
         $classes = ['xGalleryContainer'];
 
-        if (!empty($this->getGalleryItemsData())) {
+        if (!empty($this->getGalleryItemsData($this->entry))) {
             $classes[] = 'xGalleryHasImages';
             $classes[] = 'xGalleryType-' . $this->galleryType;
         }
@@ -29,21 +29,20 @@ abstract class EntryGalleryRenderService
         return $classes;
     }
 
-    public function getGalleryItemsData()
+    public function getGalleryItemsData($entry)
     {
         $items = [];
-        if (isset($this->entry['mediaCacheData']['file'])) {
-            $items = Helpers::asList($this->entry['mediaCacheData']['file']);
+        if (isset($entry['mediaCacheData']['file'])) {
+            $items = Helpers::asList($entry['mediaCacheData']['file']);
         }
 
         return $items;
     }
 
-    public function getGalleryItems()
+    public function generateGalleryItems($galleryItemsData)
     {
         $items = [];
-
-        foreach ($this->galleryItemsData as $item) {
+        foreach ($galleryItemsData as $item) {
             $items[] = ImageHelpers::getGalleryItem(
                 $item,
                 1,

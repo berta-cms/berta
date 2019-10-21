@@ -36,8 +36,8 @@ class GalleryRowRenderService extends EntryGalleryRenderService
 
         parent::__construct();
 
-        $this->galleryItemsData = $this->getGalleryItemsData();
-        $this->galleryItems = $this->getGalleryItems();
+        $this->galleryItemsData = $this->getGalleryItemsData($this->entry);
+        $this->galleryItems = $this->generateGalleryItems($this->galleryItemsData);
         $this->galleryItemsLimit = $this->getGalleryItemsLimit();
     }
 
