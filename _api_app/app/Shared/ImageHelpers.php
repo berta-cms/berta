@@ -87,17 +87,17 @@ class ImageHelpers
 
         // Generate image for mobile devices in full screen mode
         // Use size of large image from settings, default max size = 600
-        $src_large = $imageUrlPath . $image['@attributes']['src'];
-        $width_large = $widthOriginal;
-        $height_large = $heightOriginal;
+        $srcLarge = $imageUrlPath . $image['@attributes']['src'];
+        $widthLarge = $widthOriginal;
+        $heightLarge = $heightOriginal;
 
         if ($isImage) {
             $imageTargetWidthLarge = $siteSettings['media']['imagesLargeWidth'];
             $imageTargetHeightLarge = $siteSettings['media']['imagesLargeHeight'];
 
             if ($widthOriginal && $heightOriginal && $imageTargetWidthLarge && $imageTargetHeightLarge && ($widthOriginal >= $imageTargetWidthLarge || $heightOriginal >= $imageTargetHeightLarge)) {
-                list($width_large, $height_large) = self::fitInBounds($widthOriginal, $heightOriginal, $imageTargetWidthLarge, $imageTargetHeightLarge);
-                $src_large = $imageUrlPath . self::getResizedSrc($imagePath, $imageNameOriginal, $width_large, $height_large);
+                list($widthLarge, $heightLarge) = self::fitInBounds($widthOriginal, $heightOriginal, $imageTargetWidthLarge, $imageTargetHeightLarge);
+                $srcLarge = $imageUrlPath . self::getResizedSrc($imagePath, $imageNameOriginal, $widthLarge, $heightLarge);
             }
         }
 
@@ -113,9 +113,9 @@ class ImageHelpers
             'original' => $imageUrlPath . $image['@attributes']['src'],
             'original_width' => $widthOriginal,
             'original_height' => $heightOriginal,
-            'large_src' => $src_large,
-            'large_width' => $width_large,
-            'large_height' => $height_large,
+            'large_src' => $srcLarge,
+            'large_width' => $widthLarge,
+            'large_height' => $heightLarge,
             'width' => $width,
             'height' => $height,
             'srcset' => $srcset,
