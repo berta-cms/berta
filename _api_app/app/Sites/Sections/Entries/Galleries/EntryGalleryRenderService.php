@@ -82,6 +82,7 @@ abstract class EntryGalleryRenderService
 
     public function getViewData()
     {
+        $data = [];
         $data['isEditMode'] = $this->isEditMode;
         $data['isFullscreen'] = !$this->isEditMode && isset($this->entry['mediaCacheData']['@attributes']['fullscreen']) && $this->entry['mediaCacheData']['@attributes']['fullscreen'] == 'yes';
         $data['galleryClassList'] = $this->getGalleryClassList();
