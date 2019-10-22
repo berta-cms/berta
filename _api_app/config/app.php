@@ -62,4 +62,12 @@ return [
     'grid_image_prefix' => '_grid_',
     'grid_thumb_width' => 140,
     'grid_thumb_height' => false, // false means "auto"
+
+    // Row gallery image limit returned from server
+    // Remaining images will be rendered in frontend
+    'row_gallery_image_limit' => [
+        'large' => 3,
+        'medium' => 5,
+        'small' => 7
+    ],
 ];

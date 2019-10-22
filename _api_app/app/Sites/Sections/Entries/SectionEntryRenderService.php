@@ -5,11 +5,15 @@ namespace App\Sites\Sections\Entries;
 use App\Shared\Helpers;
 use App\Shared\ImageHelpers;
 use App\Shared\Storage;
+use App\Sites\Sections\Entries\Galleries\GallerySlideshowRenderService;
+use App\Sites\Sections\Entries\Galleries\GalleryRowRenderService;
+use App\Sites\Sections\Entries\Galleries\GalleryColumnRenderService;
+use App\Sites\Sections\Entries\Galleries\GalleryPileRenderService;
+use App\Sites\Sections\Entries\Galleries\GalleryLinkRenderService;
 
 class SectionEntryRenderService
 {
     private $entry;
-    private $images;
     private $section;
     private $siteSettings;
     private $siteTemplateSettings;
@@ -39,10 +43,8 @@ class SectionEntryRenderService
         Storage $storageService,
         $isEditMode,
         $isShopAvailable
-    )
-    {
+    ) {
         $this->entry = $entry;
-        $this->images = $this->getGalleryImages();
         $this->section = $section;
         $this->siteSettings = $siteSettings;
         $this->siteTemplateSettings = $siteTemplateSettings;
@@ -78,7 +80,6 @@ class SectionEntryRenderService
         $entry['entryWidth'] = isset($entry['content']['width']) ? $entry['content']['width'] : '';
         $entry['isShopAvailable'] = $this->isShopAvailable;
         $entry['entryHTMLTag'] = $this->templateName == 'messy' ? 'div' : 'li';
-        $entry['galleryType'] = $this->galleryType;
         $entry['showCartTitle'] = $this->isShopAvailable && $this->sectionType == 'shop' && ($this->isEditMode || (isset($entry['content']['cartTitle']) && !empty($entry['content']['cartTitle'])));
         $entry['showTitle'] = ($this->sectionType == 'portfolio' || $this->templateName == 'default') && ($this->isEditMode || (isset($entry['content']['title']) && !empty($entry['content']['title'])));
         $entry['showDescription'] = $this->isEditMode || (isset($entry['content']['description']) && !empty($entry['content']['description']));
@@ -90,12 +91,62 @@ class SectionEntryRenderService
         $entry['outOfStockText'] = $outOfStockText;
         $entry['showUrl'] = $this->templateName == 'default' && ($this->isEditMode || (isset($entry['content']['url']) && !empty($entry['content']['url'])));
 
+        switch ($this->galleryType) {
+            case 'row':
+                $galleryTypeRenderService = new GalleryRowRenderService(
+                    $entry,
+                    $this->siteSettings,
+                    $this->siteTemplateSettings,
+                    $this->storageService,
+                    $this->isEditMode
+                );
+                break;
+
+            case 'column':
+                $galleryTypeRenderService = new GalleryColumnRenderService(
+                    $entry,
+                    $this->siteSettings,
+                    $this->siteTemplateSettings,
+                    $this->storageService,
+                    $this->isEditMode
+                );
+                break;
+
+            case 'pile':
+                $galleryTypeRenderService = new GalleryPileRenderService(
+                    $entry,
+                    $this->siteSettings,
+                    $this->siteTemplateSettings,
+                    $this->storageService,
+                    $this->isEditMode
+                );
+                break;
+
+            case 'link':
+                $galleryTypeRenderService = new GalleryLinkRenderService(
+                    $entry,
+                    $this->siteSettings,
+                    $this->siteTemplateSettings,
+                    $this->storageService,
+                    $this->isEditMode
+                );
+                break;
+
+            default:
+                // slideshow
+                $galleryTypeRenderService = new GallerySlideshowRenderService(
+                    $entry,
+                    $this->siteSettings,
+                    $this->siteTemplateSettings,
+                    $this->storageService,
+                    $this->isEditMode
+                );
+                break;
+        }
+
+        $entry['gallery'] = $galleryTypeRenderService->render();
+        $entry['galleryType'] = $this->galleryType;
         $entry['galleryPosition'] = $galleryPosition ? $galleryPosition : ($this->sectionType == 'portfolio' ? 'below description' : 'above title');
-        $entry['galleryImages'] = $this->images;
-        $entry['galleryFirstImage'] = $this->getGalleryFirstImage();
-        $entry['galleryNavigation'] = $this->getGalleryNavigation();
-        $entry['galleryClassList'] = $this->getGalleryClassList();
-        $entry['rowGalleryPadding'] = isset($entry['mediaCacheData']['@attributes']['row_gallery_padding']) && !empty($entry['mediaCacheData']['@attributes']['row_gallery_padding']) ? $entry['mediaCacheData']['@attributes']['row_gallery_padding'] : null;
 
         return $entry;
     }
@@ -193,122 +244,6 @@ class SectionEntryRenderService
         }
 
         return null;
-    }
-
-    // @TODO Move gallery related code to helpers and/or own render class
-    private function getGalleryImages()
-    {
-        $images = [];
-        if (isset($this->entry['mediaCacheData']['file'])) {
-            $images = Helpers::asList($this->entry['mediaCacheData']['file']);
-        }
-
-        return $images;
-    }
-
-    private function getGalleryFirstImage()
-    {
-        if (!$this->images) {
-            return null;
-        }
-
-        $image = ImageHelpers::getGalleryImage(
-            current($this->images),
-            1,
-            $this->entry,
-            $this->storageService,
-            $this->siteSettings
-        );
-
-        return $image;
-    }
-
-    private function getGalleryNavigation()
-    {
-        $images = $this->images;
-        $navigationImages = [];
-
-        if (!$images) {
-            return null;
-        }
-
-        $imagePath = $this->storageService->MEDIA_ROOT . '/' . $this->entry['mediafolder'] . '/';
-        $imageUrlPath = $this->storageService->MEDIA_URL . '/' . $this->entry['mediafolder'] . '/';
-
-        foreach ($images as $i => $image) {
-            $navigationImage = ImageHelpers::getGalleryImage(
-                $image,
-                1,
-                $this->entry,
-                $this->storageService,
-                $this->siteSettings
-            );
-
-            $navigationImage = array_merge($image, $navigationImage ? $navigationImage : []);
-
-            $navigationImage['index'] = $i + 1;
-
-            $navigationImage['type'] = $navigationImage['@attributes']['type'];
-
-            if ($navigationImage['type'] == 'video') {
-                $navigationImage['src'] = '#';
-                $navigationImage['videoLink'] = $imageUrlPath . $navigationImage['@attributes']['src'];
-
-                //default image size (video without poster)
-                if (!isset($navigationImage['width'])) {
-                    $width = 300;
-                    $height = 150;
-                    $imageSize = isset($this->entry['mediaCacheData']['@attributes']['size']) ? $this->entry['mediaCacheData']['@attributes']['size'] : 'large';
-                    $imageTargetWidth = $this->siteSettings['media']['images' . ucfirst($imageSize) . 'Width'];
-                    $imageTargetHeight = $this->siteSettings['media']['images' . ucfirst($imageSize) . 'Height'];
-                    list($width, $height) = ImageHelpers::fitInBounds($width, $height, $imageTargetWidth, $imageTargetHeight);
-                    $navigationImage['width'] = $width;
-                    $navigationImage['height'] = $height;
-                }
-                if (isset($navigationImage['@attributes']['poster_frame'])) {
-                    $navigationImage['origLink'] = $imageUrlPath . $navigationImage['@attributes']['poster_frame'];
-                }
-
-                // type = Image
-            } else {
-                $navigationImage['origLink'] = file_exists($imagePath . '_orig_' . $navigationImage['@attributes']['src']) ? $imageUrlPath . '_orig_' . $navigationImage['@attributes']['src'] : $imageUrlPath . $navigationImage['@attributes']['src'];
-            }
-
-            if ($this->isEditMode) {
-                $navigationImage['src'] .= '?no_cache=' . rand();
-            }
-
-            $navigationImage['autoPlay'] = isset($navigationImage['@attributes']['autoplay']) ? $navigationImage['@attributes']['autoplay'] : 0;
-
-            $navigationImages[] = $navigationImage;
-        }
-
-        return [
-            'showNavigation' => count($images) > 1 && $this->galleryType == 'slideshow',
-            'images' => $navigationImages,
-            'showFullScreen' => !$this->isEditMode && isset($this->entry['mediaCacheData']['@attributes']['fullscreen']) && $this->entry['mediaCacheData']['@attributes']['fullscreen'] == 'yes',
-        ];
-    }
-
-    public function getGalleryClassList()
-    {
-        $entry = $this->entry;
-        $classes = ['xGalleryContainer'];
-        $galleryType = $this->galleryType;
-        $galleryLinkAddress = isset($entry['mediaCacheData']['@attributes']['link_address']) ? $entry['mediaCacheData']['@attributes']['link_address'] : '';
-        $galleryLinkTarget = isset($entry['mediaCacheData']['@attributes']['linkTarget']) ? $entry['mediaCacheData']['@attributes']['linkTarget'] : '';
-
-        if ($this->images) {
-            $classes[] = 'xGalleryHasImages';
-            $classes[] = 'xGalleryType-' . $galleryType;
-
-            if ($galleryType == 'link') {
-                $classes[] = 'xGalleryLinkAddress-' . $galleryLinkAddress;
-                $classes[] = 'xGalleryLinkTarget-' . $galleryLinkTarget;
-            }
-        }
-
-        return implode(' ', $classes);
     }
 
     public function render($tag = null)

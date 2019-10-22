@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Shared;
 
 use App\Shared\Storage;
@@ -6,7 +7,7 @@ use App\Shared\Storage;
 class ImageHelpers
 {
     /**
-     * Returns single gallery image with additional options for frontend
+     * Returns single gallery item with additional options for frontend
      *
      * @param array $image Single image
      * @param float $sizeRatio Range 0 - 1
@@ -15,14 +16,13 @@ class ImageHelpers
      * @param array $siteSettings
      * @return null|array
      */
-    public static function getGalleryImage(
+    public static function getGalleryItem(
         array $image,
         $sizeRatio,
         array $entry,
         Storage $storageService,
         array $siteSettings
-    )
-    {
+    ) {
         // Ratio is calculated only for mashup template first page marked entries
         // isset($this->siteTemplateSettings['firstPage']['imageSizeRatio']) ? $this->siteTemplateSettings['firstPage']['imageSizeRatio'] : 1;
         if ($sizeRatio <= 0) {
@@ -32,11 +32,6 @@ class ImageHelpers
         $isImage = isset($image['@attributes']['type']) && $image['@attributes']['type'] == 'image';
         $isPoster = isset($image['@attributes']['poster_frame']);
         $imageName = $isPoster ? $image['@attributes']['poster_frame'] : $image['@attributes']['src'];
-
-        if (!$isImage && !$isPoster) {
-            return null;
-        }
-
         $alt = null;
         $caption = null;
         $width = null;
@@ -46,7 +41,7 @@ class ImageHelpers
         $imageUrlPath = $storageService->MEDIA_URL . '/' . $entry['mediafolder'] . '/';
 
         if (isset($image['@value'])) {
-            $alt = str_replace(array("\r\n", "\n"), " ", $image['@value']);
+            $alt = str_replace(["\r\n", "\n"], ' ', $image['@value']);
             $alt = trim(preg_replace('/\s\s+/', ' ', htmlspecialchars(strip_tags($alt))));
             $caption = $image['@value'];
         }
@@ -74,7 +69,6 @@ class ImageHelpers
         $imageNameOriginal = $imageName;
 
         if ($width && $height && $imageTargetWidth && $imageTargetHeight && ($width > $imageTargetWidth || $height > $imageTargetHeight)) {
-
             list($width, $height) = self::fitInBounds($width, $height, $imageTargetWidth, $imageTargetHeight);
 
             $imageName = self::getResizedSrc($imagePath, $imageName, $width, $height);
@@ -90,13 +84,43 @@ class ImageHelpers
             // end generate image for 2x displays
         }
 
+        // Generate image for mobile devices in full screen mode
+        // Use size of large image from settings, default max size = 600
+        $srcLarge = $imageUrlPath . $image['@attributes']['src'];
+        $widthLarge = $widthOriginal;
+        $heightLarge = $heightOriginal;
+
+        if ($isImage) {
+            $imageTargetWidthLarge = $siteSettings['media']['imagesLargeWidth'];
+            $imageTargetHeightLarge = $siteSettings['media']['imagesLargeHeight'];
+
+            if ($widthOriginal && $heightOriginal && $imageTargetWidthLarge && $imageTargetHeightLarge && ($widthOriginal >= $imageTargetWidthLarge || $heightOriginal >= $imageTargetHeightLarge)) {
+                list($widthLarge, $heightLarge) = self::fitInBounds($widthOriginal, $heightOriginal, $imageTargetWidthLarge, $imageTargetHeightLarge);
+                $srcLarge = $imageUrlPath . self::getResizedSrc($imagePath, $imageNameOriginal, $widthLarge, $heightLarge);
+            }
+        }
+
+        // Video properties
+        $poster = $isPoster ? $imageUrlPath . $imageName : null;
+        $autoplay = isset($image['@attributes']['autoplay']) && $image['@attributes']['autoplay'] == '1';
+        $width = $width ? $width : $imageTargetWidth;
+
         return [
+            'type' => $image['@attributes']['type'],
             'src' => $imageUrlPath . $imageName,
+            'original' => $imageUrlPath . $image['@attributes']['src'],
+            'original_width' => $widthOriginal,
+            'original_height' => $heightOriginal,
+            'large_src' => $srcLarge,
+            'large_width' => $widthLarge,
+            'large_height' => $heightLarge,
             'width' => $width,
             'height' => $height,
             'srcset' => $srcset,
             'alt' => $alt,
             'caption' => $caption,
+            'poster' => $poster,
+            'autoplay' => $autoplay,
         ];
     }
 
@@ -249,7 +273,7 @@ class ImageHelpers
             $newH = $boundsH;
         }
 
-        return array($newW, $newH);
+        return [$newW, $newH];
     }
 
     public static function getResizedSrc($folder, $src, $w, $h)
@@ -274,7 +298,6 @@ class ImageHelpers
                 ($imageInfo[2] == IMAGETYPE_PNG && function_exists('imagecreatefrompng')));
 
             if ($canMakeThumb) {
-
                 if ($thumbWidth && !$thumbHeight) {
                     $thumbHeight = ($thumbWidth / $imageInfo[0]) * $imageInfo[1];
                 } elseif (!$thumbWidth && $thumbHeight) {
@@ -334,20 +357,20 @@ class ImageHelpers
         $proportional = false,
         $output = 'file',
         $delete_original = true,
-        $use_linux_commands = false) {
-
+        $use_linux_commands = false
+    ) {
         if ($height <= 0 && $width <= 0) {
             return false;
         }
 
-        # Setting defaults and meta
+        // Setting defaults and meta
         $info = getimagesize($file);
         $image = '';
         $final_width = 0;
         $final_height = 0;
         list($width_old, $height_old) = $info;
 
-        # Calculating proportionality
+        // Calculating proportionality
         if ($proportional) {
             if ($width == 0) {
                 $factor = $height / $height_old;
@@ -364,7 +387,7 @@ class ImageHelpers
             $final_height = round(($height <= 0) ? $height_old : $height);
         }
 
-        # Loading image to memory according to type
+        // Loading image to memory according to type
         switch ($info[2]) {
             case IMAGETYPE_GIF:$image = imagecreatefromgif($file);
                 break;
@@ -377,11 +400,9 @@ class ImageHelpers
 
         // Don't resize animated gifs
         if ($info[2] == IMAGETYPE_GIF && self::isAnimated($file)) {
-
             $image_resized = imagecreatefromgif($file);
-
         } else {
-            # This is the resizing/resampling/transparency-preserving magic
+            // This is the resizing/resampling/transparency-preserving magic
             $image_resized = imagecreatetruecolor($final_width, $final_height);
             if (($info[2] == IMAGETYPE_GIF) || ($info[2] == IMAGETYPE_PNG)) {
                 $transparency = imagecolortransparent($image);
@@ -401,17 +422,16 @@ class ImageHelpers
             imagecopyresampled($image_resized, $image, 0, 0, 0, 0, $final_width, $final_height, $width_old, $height_old);
         }
 
-        # Taking care of original, if needed
+        // Taking care of original, if needed
         if ($delete_original) {
             if ($use_linux_commands) {
                 exec('rm ' . $file);
             } else {
                 @unlink($file);
             }
-
         }
 
-        # Preparing a method of providing result
+        // Preparing a method of providing result
         switch (strtolower($output)) {
             case 'browser':
                 $mime = image_type_to_mime_type($info[2]);
@@ -428,7 +448,7 @@ class ImageHelpers
                 break;
         }
 
-        # Writing image according to type to the output destination
+        // Writing image according to type to the output destination
         switch ($info[2]) {
             case IMAGETYPE_GIF:
                 imagegif($image_resized, $output);
@@ -503,7 +523,6 @@ class ImageHelpers
                     $image = false;
             }
             return $image ? false : true;
-
         } catch (\Exception $e) {
             return true;
         }
