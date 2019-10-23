@@ -136,7 +136,6 @@ class BertaTemplate extends BertaBase
         $this->allContent = &$allContent;
 
         list($entries, $entriesForTag) = $this->getEntriesLists($this->sectionName, $this->tagName, $this->content);
-        $this->addVariable('allentries', $entries);
 
         // if messy template and auto responsive is ON and environment is `site`
         // reorder entries based on XY position
@@ -170,20 +169,6 @@ class BertaTemplate extends BertaBase
         }
 
         $this->addVariable('entries', $entriesForTag);
-
-        if ($allContent) {
-            $allEntries = [];
-            reset($allContent);
-            while (list($sName, $c) = each($allContent)) {
-                if ($sName == $this->sectionName) {
-                    $allEntries[$sName] = $entries;
-                } else {
-                    list($e, ) = $this->getEntriesLists($sName, null, $c);
-                    $allEntries[$sName] = $e;
-                }
-            }
-            $this->addVariable('entriesBySection', $allEntries);
-        }
 
         $socialMediaLinks = [];
         if (isset($this->settings->base->settings['socialMediaLinks']['links']['link'])) {
