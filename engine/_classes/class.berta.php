@@ -63,7 +63,7 @@ class Berta extends BertaBase
 
         if (!$sectionName || empty($this->sections[$sectionName]) && $sectionName != 'sitemap.xml') {
             if ($this->environment == 'engine') {
-                list($sectionName, ) = each($this->sections);
+                $sectionName = current($this->sections);
             } else {
                 foreach ($this->sections as $sName => $s) {
                     if (!empty($s['@attributes']['published'])) {

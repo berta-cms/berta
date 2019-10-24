@@ -46,7 +46,7 @@ function smarty_function_selectMarkedEntries($params, &$smarty)
 
     $returnFinal = [];
     reset($return);
-    while (list($i, $p) = each($return)) {
+    foreach ($return as $i => $p) {
         if (!empty($p['id']) && !empty($p['id']['value'])
                 && !empty($p['uniqid']) && !empty($p['uniqid']['value'])
                 && !empty($p['mediafolder']) && !empty($p['mediafolder']['value'])) {
