@@ -26,6 +26,7 @@ class SiteSettingsConfigService
         I18n::load_language($lang);
 
         $ENGINE_ROOT_PATH = config('app.old_berta_root') . '/engine/';
+        $SITE_ROOT_PATH = config('app.old_berta_root');
         $conf = file_get_contents(
             realpath(config('app.old_berta_root') . '/engine/inc.settings.php')
         );
@@ -69,7 +70,7 @@ class SiteSettingsConfigService
     public function getTemplates()
     {
         $returnArr = [];
-        $templatesRoot = config('app.old_berta_root'). '/_templates/';
+        $templatesRoot = config('app.old_berta_root') . '/_templates/';
         $d = dir($templatesRoot);
         while (false !== ($entry = $d->read())) {
             if ($entry != '.' && $entry != '..' && substr($entry, 0, 1) != '_' && is_dir($templatesRoot . $entry)) {

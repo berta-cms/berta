@@ -232,6 +232,77 @@ class SectionEntriesDataService extends Storage
     }
 
     /**
+     * Returns all entries of site section as an array filtered by tag
+     *
+     * @return array Array of entries
+     */
+    public function getByTag($tag = null, $isEditMode = false)
+    {
+        $entries = $this->get();
+
+        // Filter entries by tag
+        $entries = array_filter($entries[self::$ROOT_LIST_ELEMENT], function ($entry) use ($tag) {
+            if ($tag) {
+                return !empty($entry['tags']['tag']) && in_array($tag, $entry['tags']['tag']);
+            } else {
+                return empty($entry['tags']['tag']);
+            }
+        });
+
+        $siteSettingsDataService = new SiteSettingsDataService($this->SITE);
+        $siteSettings = $siteSettingsDataService->getState();
+        $template = $siteSettings['template']['template'];
+        $templateName = explode('-', $template)[0];
+
+        $siteTemplateSettingsDataService = new SiteTemplateSettingsDataService($this->SITE, $template);
+        $siteTemplateSettings = $siteTemplateSettingsDataService->getState();
+        $isResponsiveTemplate = isset($siteTemplateSettings['pageLayout']['responsive']) && $siteTemplateSettings['pageLayout']['responsive'] == 'yes';
+        $isAutoResponsive = isset($siteTemplateSettings['pageLayout']['autoResponsive']) && $siteTemplateSettings['pageLayout']['autoResponsive'] == 'yes';
+
+        $siteSectionsDataService = new SiteSectionsDataService($this->SITE);
+        $sections = $siteSectionsDataService->get();
+        $section_order = array_search($this->SECTION_NAME, array_column($sections, 'name'));
+        $section = $sections[$section_order];
+        $sectionType = isset($section['@attributes']['type']) ? $section['@attributes']['type'] : 'default';
+
+        $isResponsive = $sectionType == 'portfolio' || $isResponsiveTemplate;
+
+        // if messy template and auto responsive is ON and environment is `site`
+        // reorder entries based on XY position
+        if ($templateName == 'messy' && !$isEditMode && !$isResponsive && $isAutoResponsive) {
+            $entries = $this->orderByXYPosition($entries);
+        }
+
+        return $entries;
+    }
+
+    public function orderByXYPosition($entries)
+    {
+        usort($entries, function ($item1, $item2) {
+            if (!isset($item1['positionXY'])) {
+                $item1['positionXY'] = '0,0';
+            }
+            if (!isset($item2['positionXY'])) {
+                $item2['positionXY'] = '0,0';
+            }
+            list($item1['positionX'], $item1['positionY']) = explode(',', $item1['positionXY']);
+            list($item2['positionX'], $item2['positionY']) = explode(',', $item2['positionXY']);
+
+            if ($item1['positionX'] == $item2['positionX'] && $item1['positionY'] == $item2['positionY']) {
+                return 0;
+            }
+
+            if ($item1['positionY'] == $item2['positionY']) {
+                return $item1['positionX'] < $item2['positionX'] ? -1 : 1;
+            }
+
+            return $item1['positionY'] < $item2['positionY'] ? -1 : 1;
+        });
+
+        return $entries;
+    }
+
+    /**
      * Returns all entries transformed for frontend needs
      *
      * @return array Array of entries
@@ -420,7 +491,7 @@ class SectionEntriesDataService extends Storage
 
     public function rename($new_name, $new_title)
     {
-        $ret = array('success' => true);
+        $ret = ['success' => true];
 
         if (!file_exists($this->XML_FILE)) {
             $ret['success'] = false;
@@ -492,10 +563,10 @@ class SectionEntriesDataService extends Storage
                         }
 
                         if (!@rmdir($mediaFolder)) {
-                            return array(
+                            return [
                                 'success' => false,
                                 'error_message' => 'Unable to remove folder "' . $mediaFolder . '"!'
-                            );
+                            ];
                         };
                     }
                 }
@@ -504,13 +575,13 @@ class SectionEntriesDataService extends Storage
 
         // Delete entries
         if (!@unlink($this->XML_FILE)) {
-            return array(
+            return [
                 'success' => false,
                 'error_message' => 'Unable to remove file "' . $this->XML_FILE . '"!'
-            );
+            ];
         }
 
-        return array('success' => true);
+        return ['success' => true];
     }
 
     public function createEntry($before_entry, $tag)
@@ -558,7 +629,7 @@ class SectionEntriesDataService extends Storage
             'date' => date('d.m.Y H:i:s'),
             'mediafolder' => $mediafolder,
             'mediaCacheData' => [
-                '@attributes'=> [
+                '@attributes' => [
                     'type' => $defaultGalleryType,
                     'fullscreen' => $galleryFullScreen
                 ],
@@ -604,7 +675,6 @@ class SectionEntriesDataService extends Storage
             } else {
                 $entries['entry'][] = $new_entry;
             }
-
         } else {
             $entries['entry'][] = $new_entry;
         }
@@ -828,7 +898,7 @@ class SectionEntriesDataService extends Storage
 
             return [
                'status' => 1,
-               'hash' => md5_file($mediaDir .'/'. $fileName),
+               'hash' => md5_file($mediaDir . '/' . $fileName),
                'type' => 'video',
                'smallthumb_path' => null,
                'smallthumb_width' => null,
@@ -841,8 +911,8 @@ class SectionEntriesDataService extends Storage
             ];
         }
 
-        list($width, $height) = getimagesize($mediaDir .'/'. $fileName);
-        $smallThumb = ImageHelpers::getThumbnail($mediaDir .'/'. $fileName);
+        list($width, $height) = getimagesize($mediaDir . '/' . $fileName);
+        $smallThumb = ImageHelpers::getThumbnail($mediaDir . '/' . $fileName);
         list($smallThumbWidth, $smallThumbHeight) = getimagesize($smallThumb);
 
         // Add new Poster
@@ -864,7 +934,7 @@ class SectionEntriesDataService extends Storage
                 $entry['mediaCacheData']['file'][$slide_order] = $slide;
             }
 
-        // Add new Image
+            // Add new Image
         } else {
             $entry['mediaCacheData']['file'][] = [
                 '@attributes' => [
@@ -881,7 +951,7 @@ class SectionEntriesDataService extends Storage
 
         return [
             'status' => 1,
-            'hash' => md5_file($mediaDir .'/'. $fileName),
+            'hash' => md5_file($mediaDir . '/' . $fileName),
             'type' => 'image',
             'smallthumb_path' => $this->MEDIA_URL . '/' . $mediaDirName . '/' . basename($smallThumb),
             'smallthumb_width' => $smallThumbWidth,
@@ -895,7 +965,8 @@ class SectionEntriesDataService extends Storage
         ];
     }
 
-    public function galleryCrop($data) {
+    public function galleryCrop($data)
+    {
         $entries = $this->get();
         $entryOrder = array_search($data['entryId'], array_column($entries['entry'], 'id'));
         $entry = $entries['entry'][$entryOrder];
@@ -911,10 +982,10 @@ class SectionEntriesDataService extends Storage
         $mediaDir = $mediaRootDir . '/' . $mediaDirName;
         $fileName = $this->getUniqueFileName($mediaDir, $oldFileName);
         copy($mediaDir . '/' . $oldFileName, $mediaDir . '/' . $fileName);
-        $newSize = ImageHelpers::crop($mediaDir .'/'. $fileName, $data['x'], $data['y'], $data['w'], $data['h']);
+        $newSize = ImageHelpers::crop($mediaDir . '/' . $fileName, $data['x'], $data['y'], $data['w'], $data['h']);
         $width = $newSize['w'];
         $height = $newSize['h'];
-        $smallThumb = ImageHelpers::getThumbnail($mediaDir .'/'. $fileName);
+        $smallThumb = ImageHelpers::getThumbnail($mediaDir . '/' . $fileName);
 
         $this->removeImageWithThumbnails($mediaDir, $oldFileName);
 

@@ -304,66 +304,7 @@
                 {* If not grid view *}
                 { if !($smarty.cookies._berta_grid_view && $berta.section.type == 'grid') }
                 <div id="pageEntries" class="{ entriesListClasses }{ if $isResponsive != 'yes' } xNoEntryOrdering{else} {if intval($berta.section.columns)>1}columns-{intval($berta.section.columns)}{ /if }{ /if } clearfix">
-
-                    {* now loop through all entries and print them out *}
-                    { foreach $entries as $entry }
-
-                        <div class="entry clearfix {if $berta.section.type == 'portfolio'}xHidden {/if}{ entryClasses entry=$entry } { messClasses property='positionXY' isResponsive=$isResponsive } xShopMessyEntry" style="{ messStyles xy=$entry.positionXY entry=$entry  isResponsive=$isResponsive }{ if $isResponsive != 'yes' }{if $entry.width} width:{$entry.width};{elseif strlen(trim($berta.settings.shop.entryWidth)) > 0  && $berta.section.type == 'shop'}width: { $berta.settings.shop.entryWidth }px;{ /if }{/if}" id="{ entrySlug entry=$entry }"{if $berta.environment == 'engine' && $isResponsive != 'yes'} data-path="{ $berta.options.MULTISITE }/entry/{ $berta.section.name }/{ $entry.id }/content/positionXY"{ /if }>
-
-                            { $isshopentry=0 }
-                            { if $berta.section.type == 'shop' and $berta.shop_enabled == true }
-                                { $isshopentry=1 }
-                            { /if }
-                            {* the entry settings and delete and move buttons live in the entryHeader - don't leave it out! *}
-                            { customEntryHeader entry=$entry section=$berta.section.name ishopentry=$isshopentry }
-
-                            {* entryGallery prints the image gallery for the entry *}
-
-                            {if $berta.section.type != 'portfolio'}
-                                { entryGallery entry=$entry }
-                            {/if}
-
-                            <div class="entryTextWrap galleryType-{ $entry.__raw.mediaCacheData['@attributes'].type }">
-                                { if ($berta.environment == 'engine' || !empty($entry.cartTitle)) and $berta.section.type == 'shop' and $berta.shop_enabled == true }
-                                    <h2><span class="xEditable xProperty-cartTitle xCaption-item-name cCartTitle"{if $berta.environment == 'engine'} data-path="{ $berta.options.MULTISITE }/entry/{ $berta.section.name }/{ $entry.id }/content/cartTitle"{ /if }>{ $entry.cartTitle }</span></h2>
-                                { elseif $berta.section.type == 'portfolio' && ($berta.environment == 'engine' || !empty($entry.title)) }
-                                    <h2><span class="xEditable xProperty-title xCaption-entry&nbsp;title"{if $berta.environment == 'engine'} data-path="{ $berta.options.MULTISITE }/entry/{ $berta.section.name }/{ $entry.id }/content/title"{ /if }>{ $entry.title }</span></h2>
-                                { /if }
-
-                                { if $berta.environment == 'engine' || !empty($entry.description) }
-                                    <div class="entryText xEditableMCE xProperty-description"{if $berta.environment == 'engine'} data-path="{ $berta.options.MULTISITE }/entry/{ $berta.section.name }/{ $entry.id }/content/description"{ /if }>{ $entry.description }</div>
-                                { /if }
-
-                                { if $berta.section.type == 'shop' and $berta.shop_enabled == true }
-                                    <div class="addToCart" data-uniqid="{$entry.uniqid}">
-                                        { if $berta.environment == 'engine' }
-                                            <div class="cartPrice xEditableRC xProperty-cartPrice xCaption-price xFormatModifier-toPrice" title="{ $entry.cartPrice }"{if $berta.environment == 'engine'} data-path="{ $berta.options.MULTISITE }/entry/{ $berta.section.name }/{ $entry.id }/content/cartPrice"{ /if }>{ $entry.cartPrice|@toPrice }</div>
-                                        {else}
-                                            <div class="cartPrice" title="{ $entry.cartPrice }" data-weight="{ $entry.weight|intval }">{ $entry.cartPrice|@toPrice }</div>
-                                        {/if}
-
-                                        <br class="clear">
-
-                                        <div class="cartAttributes{if !$entry.cartAttributes} hidden{/if}">{ $entry.cartAttributes|@toCartAttributes }</div>
-                                        <span class="aele{ if empty($entry.cartPrice) || $berta.environment == 'site'} hidden{/if}"><span>{ $berta.settings.shop.addToBasket }</span></span>
-                                        <span class="addedToCart hidden"><span></span> { $berta.settings.shop.addedToBasket }</span>
-                                        <span class="outOfStock hidden">{ $berta.settings.shop.outOfStock }</span>
-                                    </div>
-                                { /if }
-                            </div>
-
-                            {if $berta.section.type == 'portfolio'}
-                                { entryGallery entry=$entry }
-                            {/if}
-
-                            {* entry footer wraps the entry including the header - don't leave it out! *}
-                            { entryFooter entry=$entry }
-                        </div>
-
-                    { foreachelse }
-                        {* the template can be modified in a way that here goes content the is displayed when there are no entries in the section *}
-
-                    { /foreach }
+                  {$entriesHTML}
                 </div>
                 { /if }
 

@@ -122,39 +122,7 @@
 		<div id="contentContainer"{if $berta.settings.pageLayout.responsive=='yes' } class="xResponsive"{/if}>
 			<div id="mainColumn"{if $berta.settings.pageLayout.centered == 'yes' } class="xCentered"{ /if }{if $berta.settings.pageLayout.responsive=='yes' } data-paddingtop="{$berta.settings.pageLayout.paddingTop}"{/if}>
 				<ol id="pageEntries" class="{ entriesListClasses }">
-
-					{* now loop through all entries and print them out *}
-					{ foreach from=$entries key="entryId" item="entry" name="entriesLoop" }
-						<li class="entry clearfix {if $berta.section.type == 'portfolio'}xHidden {/if}{ entryClasses entry=$entry }" id="{ entrySlug entry=$entry }">
-							{* the entry settings and delete and move buttons live in the entryHeader - don't leave it out! *}
-							{ entryHeader section=$berta.section.name entry=$entry }
-
-							{* entryGallery prints the image gallery for the entry *}
-                            {if $berta.section.type != 'portfolio'}
-                               { entryGallery entry=$entry }
-                            {/if}
-
-                            <div class="entryTextWrap galleryType-{ $entry.__raw.mediaCacheData['@attributes'].type }">
-                                { if $berta.section.type == 'portfolio' && ($berta.environment == 'engine' || !empty($entry.title)) }
-                                    <h2><span class="xEditable xProperty-title xCaption-entry&nbsp;title"{if $berta.environment == 'engine'} data-path="{ $berta.options.MULTISITE }/entry/{ $berta.section.name }/{ $entry.id }/content/title"{ /if }>{ $entry.title }</span></h2>
-                                { /if }
-
-    							{ if $berta.environment == 'engine' || !empty($entry.description) }
-                                    <div class="entryText xEditableMCE xProperty-description"{if $berta.environment == 'engine'} data-path="{ $berta.options.MULTISITE }/entry/{ $berta.section.name }/{ $entry.id }/content/description"{ /if }>{ $entry.description }</div>
-    							{ /if }
-                            </div>
-
-                            {* entryGallery prints the image gallery for the entry *}
-                            {if $berta.section.type == 'portfolio'}
-                               { entryGallery entry=$entry }
-                            {/if}
-
-							{* entry footer wraps the entry including the header - don't leave it out! *}
-							{ entryFooter entry=$entry }
-						</li>
-					{ foreachelse }
-						{* the template can be modified in a way that here goes content the is displayed when there are no entries in the section *}
-					{ /foreach }
+					{$entriesHTML}
 				</ol>
 
 				<br class="clear" />

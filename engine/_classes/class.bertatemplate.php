@@ -1,4 +1,10 @@
 <?php
+use App\Shared\Storage;
+use App\Sites\Settings\SiteSettingsDataService;
+use App\Sites\TemplateSettings\SiteTemplateSettingsDataService;
+use App\Sites\Sections\SiteSectionsDataService;
+use App\Sites\Sections\Entries\SectionEntriesDataService;
+use App\Sites\Sections\Entries\SectionEntryRenderService;
 
 include_once dirname(__FILE__) . '/../_lib/smarty/Smarty.class.php';
 include_once dirname(__FILE__) . '/Zend/Json.php';
@@ -124,6 +130,8 @@ class BertaTemplate extends BertaBase
 
     public function addContent($requestURI, $sectionName, &$sections, $tagName, &$tags, &$content, &$allContent)
     {
+        global $shopEnabled;
+
         // set variables for later processing in function addEngineVariables
         $this->requestURI = $requestURI;
         $this->sectionName = $sectionName;
@@ -135,39 +143,32 @@ class BertaTemplate extends BertaBase
         $this->content = &$content;
         $this->allContent = &$allContent;
 
-        list($entries, $entriesForTag) = $this->getEntriesLists($this->sectionName, $this->tagName, $this->content);
+        $sectionEntriesDS = new SectionEntriesDataService(self::$options['MULTISITE'], $this->sectionName);
+        $entries = $sectionEntriesDS->getByTag($this->tagName, $this->environment == 'engine');
+        $siteSectionsDS = new SiteSectionsDataService(self::$options['MULTISITE']);
+        $sectionData = $siteSectionsDS->get($this->sectionName);
+        $siteSettingsDS = new SiteSettingsDataService(self::$options['MULTISITE']);
+        $siteTemplateSettingsDS = new SiteTemplateSettingsDataService(self::$options['MULTISITE']);
 
-        // if messy template and auto responsive is ON and environment is `site`
-        // reorder entries based on XY position
-        // @TODO addVariable isResponsive and isAutoResponsive for template and remove logic from tpl file
-        $templateName = explode('-', $this->name)[0];
-        $isPortfolioType = isset($this->sections[$sectionName]['@attributes']['type']) && $this->sections[$sectionName]['@attributes']['type'] == 'portfolio';
-        $isResponsive = $isPortfolioType || $this->settings->get('pageLayout', 'responsive') == 'yes';
-        $isAutoResponsive = $this->settings->get('pageLayout', 'autoResponsive') == 'yes';
-
-        if ($templateName == 'messy' && $this->environment == 'site' && !$isResponsive && $isAutoResponsive) {
-            usort($entriesForTag, function ($item1, $item2) {
-                if (!isset($item1['positionXY'])) {
-                    $item1['positionXY'] = '0,0';
-                }
-                if (!isset($item2['positionXY'])) {
-                    $item2['positionXY'] = '0,0';
-                }
-                list($item1['positionX'], $item1['positionY']) = explode(',', $item1['positionXY']);
-                list($item2['positionX'], $item2['positionY']) = explode(',', $item2['positionXY']);
-
-                if ($item1['positionX'] == $item2['positionX'] && $item1['positionY'] == $item2['positionY']) {
-                    return 0;
-                }
-
-                if ($item1['positionY'] == $item2['positionY']) {
-                    return $item1['positionX'] < $item2['positionX'] ? -1 : 1;
-                }
-
-                return $item1['positionY'] < $item2['positionY'] ? -1 : 1;
-            });
+        $entriesHTML = '';
+        foreach ($entries as $entry) {
+            $sectionEntriesRS = new SectionEntryRenderService(
+                $entry,
+                $sectionData,
+                $siteSettingsDS->getState(),
+                $siteTemplateSettingsDS->getState(),
+                (new Storage()),
+                $this->environment == 'engine',
+                isset($shopEnabled) && $shopEnabled
+            );
+            $entriesHTML .= $sectionEntriesRS->render();
         }
 
+        $this->addVariable('entriesHTML', $entriesHTML);
+
+        // We still need entries for portfolio view and for section type = mashup
+        // TODO remove assigning entries to template when rendering is moved to API app
+        list($entries, $entriesForTag) = $this->getEntriesLists($this->sectionName, $this->tagName, $this->content);
         $this->addVariable('entries', $entriesForTag);
 
         $socialMediaLinks = [];
