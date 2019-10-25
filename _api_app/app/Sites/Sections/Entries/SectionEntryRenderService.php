@@ -10,6 +10,7 @@ use App\Sites\Sections\Entries\Galleries\GalleryRowRenderService;
 use App\Sites\Sections\Entries\Galleries\GalleryColumnRenderService;
 use App\Sites\Sections\Entries\Galleries\GalleryPileRenderService;
 use App\Sites\Sections\Entries\Galleries\GalleryLinkRenderService;
+use App\Plugins\Shop\ShopSettingsDataService;
 
 class SectionEntryRenderService
 {
@@ -68,11 +69,7 @@ class SectionEntryRenderService
     private function getViewData()
     {
         $entry = $this->entry;
-        //@TODO create a method to get shop settings default values, currently default values are hardcoded here
-        $currency = isset($this->siteSettings['shop']['currency']) && !empty($this->siteSettings['shop']['currency']) ? $this->siteSettings['shop']['currency'] : 'EUR';
-        $addToBasketLabel = isset($this->siteSettings['shop']['addToBasket']) && !empty($this->siteSettings['shop']['addToBasket']) ? $this->siteSettings['shop']['addToBasket'] : 'add to basket';
-        $addedToBasketText = isset($this->siteSettings['shop']['addedToBasket']) && !empty($this->siteSettings['shop']['addedToBasket']) ? $this->siteSettings['shop']['addedToBasket'] : 'added!';
-        $outOfStockText = isset($this->siteSettings['shop']['outOfStock']) && !empty($this->siteSettings['shop']['outOfStock']) ? $this->siteSettings['shop']['outOfStock'] : 'Out of stock!';
+
         $galleryPosition = isset($this->siteTemplateSettings['entryLayout']['galleryPosition']) ? $this->siteTemplateSettings['entryLayout']['galleryPosition'] : null;
         $isResponsiveTemplate = isset($this->siteTemplateSettings['pageLayout']['responsive']) && $this->siteTemplateSettings['pageLayout']['responsive'] == 'yes';
         $isResponsive = $this->sectionType == 'portfolio' || $isResponsiveTemplate;
@@ -94,12 +91,20 @@ class SectionEntryRenderService
         $entry['showTitle'] = ($this->sectionType == 'portfolio' || $this->templateName == 'default') && ($this->isEditMode || (isset($entry['content']['title']) && !empty($entry['content']['title'])));
         $entry['showDescription'] = $this->isEditMode || (isset($entry['content']['description']) && !empty($entry['content']['description']));
         $entry['showAddToCart'] = $this->isShopAvailable && $this->sectionType == 'shop';
-        $entry['cartPriceFormatted'] = isset($entry['content']['cartPrice']) ? Helpers::formatPrice($entry['content']['cartPrice'], $currency) : '';
         $entry['cartAttributes'] = isset($entry['content']['cartAttributes']) ? Helpers::toCartAttributes($entry['content']['cartAttributes']) : '';
-        $entry['addToBasketLabel'] = $addToBasketLabel;
-        $entry['addedToBasketText'] = $addedToBasketText;
-        $entry['outOfStockText'] = $outOfStockText;
+        $entry['entryWeight'] = isset($entry['content']['weight']) ? $entry['content']['weight'] : '';
         $entry['showUrl'] = $this->templateName == 'default' && ($this->isEditMode || (isset($entry['content']['url']) && !empty($entry['content']['url'])));
+
+        if ($this->isShopAvailable) {
+            $shopSettingsDS = new ShopSettingsDataService($this->site);
+            $shopSettings = $shopSettingsDS->get()['group_config'];
+
+            $entry['cartPriceFormatted'] = isset($entry['content']['cartPrice']) ? Helpers::formatPrice($entry['content']['cartPrice'], $shopSettings['currency']) : '';
+            $entry['weightUnits'] = $shopSettings['weightUnit'];
+            $entry['addToBasketLabel'] = $shopSettings['addToBasket'];
+            $entry['addedToBasketText'] = $shopSettings['addedToBasket'];
+            $entry['outOfStockText'] = $shopSettings['outOfStock'];
+        }
 
         switch ($this->galleryType) {
             case 'row':
