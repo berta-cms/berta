@@ -1,4 +1,8 @@
-<{{ entryHTMLTag }} id="{{ entryId }}" class="{{ classList }}"{% if styleList %} style="{{ styleList }}"{% endif %}>
+<{{ entryHTMLTag }}
+  id="{{ entryId }}"
+  {% if isEditMode and templateName == 'messy' and not isResponsive %}data-path="{{apiPath}}content/positionXY"{% endif %}
+  class="{{ classList }}"
+  {% if styleList %}style="{{ styleList }}"{% endif %}>
 
   {% if isEditMode %}
 		<a class="xCreateNewEntry xPanel xAction-entryCreateNew" href="#"><span>create new entry here</span></a>

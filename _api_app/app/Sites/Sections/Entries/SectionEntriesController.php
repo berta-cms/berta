@@ -146,12 +146,15 @@ class SectionEntriesController extends Controller
             if ($id !== null && $entry['id'] !== $id) {
                 continue;
             }
+
+
             $sectionEntriesRS = new SectionEntryRenderService(
+                $site,
                 $entry,
                 $sectionData,
                 $siteSettingsDS->getState(),
                 $siteTemplateSettingsDS->getState(),
-                (new Storage()),
+                (new Storage($site)),
                 false,
                 config('plugin-Shop.key') === $request->getHost()
             );

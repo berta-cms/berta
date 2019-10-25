@@ -40,6 +40,7 @@ class TestController extends Controller
         $storageService = new Storage('');
 
         $entryRenderService = new SectionEntryRenderService(
+            '',
             $entry,
             $section,
             $siteSettings,

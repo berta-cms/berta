@@ -13,6 +13,7 @@ use App\Sites\Sections\Entries\Galleries\GalleryLinkRenderService;
 
 class SectionEntryRenderService
 {
+    private $site;
     private $entry;
     private $section;
     private $siteSettings;
@@ -27,6 +28,7 @@ class SectionEntryRenderService
     /**
      * Construct SectionEntryRenderService instance
      *
+     * @param array $site Site name
      * @param array $entry Single entry
      * @param array $section Single section
      * @param array $siteSettings
@@ -36,6 +38,7 @@ class SectionEntryRenderService
      * @param bool $isShopAvailable
      */
     public function __construct(
+        $site,
         array $entry,
         array $section,
         array $siteSettings,
@@ -44,6 +47,9 @@ class SectionEntryRenderService
         $isEditMode,
         $isShopAvailable
     ) {
+
+
+        $this->site = $site;
         $this->entry = $entry;
         $this->section = $section;
         $this->siteSettings = $siteSettings;
@@ -68,10 +74,14 @@ class SectionEntryRenderService
         $addedToBasketText = isset($this->siteSettings['shop']['addedToBasket']) && !empty($this->siteSettings['shop']['addedToBasket']) ? $this->siteSettings['shop']['addedToBasket'] : 'added!';
         $outOfStockText = isset($this->siteSettings['shop']['outOfStock']) && !empty($this->siteSettings['shop']['outOfStock']) ? $this->siteSettings['shop']['outOfStock'] : 'Out of stock!';
         $galleryPosition = isset($this->siteTemplateSettings['entryLayout']['galleryPosition']) ? $this->siteTemplateSettings['entryLayout']['galleryPosition'] : null;
+        $isResponsiveTemplate = isset($this->siteTemplateSettings['pageLayout']['responsive']) && $this->siteTemplateSettings['pageLayout']['responsive'] == 'yes';
+        $isResponsive = $this->sectionType == 'portfolio' || $isResponsiveTemplate;
 
         $entry['entryId'] = $this->getEntryId();
         $entry['classList'] = $this->getClassList();
         $entry['styleList'] = $this->getStyleList();
+        $entry['isResponsive'] = $isResponsive;
+        $entry['apiPath'] = $this->site . '/entry/' . $this->section['name'] . '/' . $entry['id'] . '/';
         $entry['isEditMode'] = $this->isEditMode;
         $entry['templateName'] = $this->templateName;
         $entry['tagList'] = isset($entry['tags']['tag']) ? Helpers::createEntryTagList($entry['tags']['tag']) : '';

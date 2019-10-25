@@ -153,11 +153,12 @@ class BertaTemplate extends BertaBase
         $entriesHTML = '';
         foreach ($entries as $entry) {
             $sectionEntriesRS = new SectionEntryRenderService(
+                self::$options['MULTISITE'],
                 $entry,
                 $sectionData,
                 $siteSettingsDS->getState(),
                 $siteTemplateSettingsDS->getState(),
-                (new Storage()),
+                (new Storage(self::$options['MULTISITE'])),
                 $this->environment == 'engine',
                 isset($shopEnabled) && $shopEnabled
             );
