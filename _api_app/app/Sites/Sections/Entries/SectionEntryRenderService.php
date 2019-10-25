@@ -66,7 +66,7 @@ class SectionEntryRenderService
     /**
      * Prepare data for view
      */
-    private function getViewData()
+    public function getViewData()
     {
         $entry = $this->entry;
 

@@ -1,4 +1,10 @@
 <?php
+use App\Shared\Storage;
+use App\Sites\Settings\SiteSettingsDataService;
+use App\Sites\TemplateSettings\SiteTemplateSettingsDataService;
+use App\Sites\Sections\SiteSectionsDataService;
+use App\Sites\Sections\Entries\SectionEntriesDataService;
+use App\Sites\Sections\Entries\SectionEntryRenderService;
 
 define('AUTH_AUTHREQUIRED', true);
 define('BERTA_ENVIRONMENT', 'engine');
@@ -13,16 +19,34 @@ $jsonRequest = !empty($_REQUEST['json']) ? stripslashes($_REQUEST['json']) : fal
 
 if ($jsonRequest) {
     $decoded = $result = Zend_Json::decode(str_replace(["\n", "\r"], ['\n', ''], $jsonRequest));
-    $site = !empty($_REQUEST['site']) ? $_REQUEST['site'] : false;
+    $site = !empty($_REQUEST['site']) ? $_REQUEST['site'] : '';
     $isMessyTemplate = strpos($berta->settings->get('template', 'template'), 'messy') === 0;
 
     switch ($decoded['property']) {
         case 'gallery':
             if ($decoded['section'] && $decoded['entry']) {
-                $blog = BertaContent::loadBlog($decoded['section']);
-                $entry = BertaContent::getEntry($decoded['entry'], $blog);
+                $storageService = new Storage($site);
+                $siteSettingsDS = new SiteSettingsDataService($site);
+                $siteTemplateSettingsDS = new SiteTemplateSettingsDataService($site);
+                $siteSectionsDS = new SiteSectionsDataService($site);
+                $sectionData = $siteSectionsDS->get($decoded['section']);
+                $sectionEntriesDS = new SectionEntriesDataService($site, $decoded['section']);
+                $entries = $sectionEntriesDS->get();
+                $entryIndex = array_search($decoded['entry'], array_column($entries['entry'], 'id'));
+                $entry = $entries['entry'][$entryIndex];
 
-                echo BertaGallery::getHTMLForEntry($entry, true);
+                $sectionEntriesRS = new SectionEntryRenderService(
+                    $site,
+                    $entry,
+                    $sectionData,
+                    $siteSettingsDS->getState(),
+                    $siteTemplateSettingsDS->getState(),
+                    $storageService,
+                    true,
+                    isset($shopEnabled) && $shopEnabled
+                );
+
+                echo $sectionEntriesRS->getViewData()['gallery'];
             }
 
             break;
