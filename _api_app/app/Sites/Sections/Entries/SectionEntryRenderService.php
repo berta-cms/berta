@@ -163,6 +163,12 @@ class SectionEntryRenderService
         $entry['galleryType'] = $this->galleryType;
         $entry['galleryPosition'] = $galleryPosition ? $galleryPosition : ($this->sectionType == 'portfolio' ? 'below description' : 'above title');
 
+        $entry['entryContents'] = view('Sites/Sections/Entries/_entryContents', $entry);
+
+        if ($this->isEditMode) {
+            $entry['entryContents'] = view('Sites/Sections/Entries/_entryEditor', $entry);
+        }
+
         return $entry;
     }
 
