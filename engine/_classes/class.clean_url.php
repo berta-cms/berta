@@ -164,7 +164,7 @@ class CleanURL
         $url = parse_url($stringurl);
         $strurl = ''; //basename($url['path'],".php");
         $qstring = parse_str($url['query'], $vars);
-        while (list($k, $v) = each($vars)) {
+        foreach($vars as $k => $v) {
             $strurl .= '/' . $v;
         }
         return $strurl;

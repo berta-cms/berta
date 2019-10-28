@@ -110,7 +110,7 @@ class BertaTemplate extends BertaBase
 
             // instantiate settings for each section type definition (extend $this->settings)
             reset($this->sectionTypes);
-            while (list($tName, $t) = each($this->sectionTypes)) {
+            foreach ($this->sectionTypes as $tName => $t) {
                 $this->sectionTypes[$tName]['settings'] = new Settings(
                     false,
                     $this->settings,
@@ -422,7 +422,7 @@ DOC;
 
         // add vars
         reset($vars);
-        while (list($vName, $vContent) = each($vars)) {
+        foreach ($vars as $vName => $vContent) {
             $this->smarty->assign($vName, $vContent);
         }
     }
