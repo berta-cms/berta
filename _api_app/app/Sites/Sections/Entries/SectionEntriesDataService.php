@@ -240,6 +240,10 @@ class SectionEntriesDataService extends Storage
     {
         $entries = $this->get();
 
+        if (!$entries[self::$ROOT_LIST_ELEMENT]) {
+            return $entries[self::$ROOT_LIST_ELEMENT];
+        }
+
         // Filter entries by tag
         $entries = array_filter($entries[self::$ROOT_LIST_ELEMENT], function ($entry) use ($tag) {
             if ($tag) {
