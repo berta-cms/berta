@@ -36,17 +36,8 @@
         <a href="#" class="xEntryDelete xAction-entryDelete" title="delete"><span>Delete</span></a>
       </li>
     </ul>
-    {% if isShopAvailable %}
-      {#
-        @TODO figure out how to manage shop plugin code to place shop related code there
-      #}
-        <div class="xEntrySeperator"></div>
-        <div class="xEntryBoxParams">
-          <b>Attribute</b>
-          <div class="xEditable xProperty-cartAttributes xCaption-attribute cCartAttributes" data-path="{{apiPath}}content/cartAttributes">{{ cartAttributesEdit }}</div>
-          <div class="xEditable xProperty-weight xCaption-weight xUnits-{{ weightUnits }}" data-path="{{apiPath}}content/weight">{{ entryWeight }}</div>
-        </div>
-    {% endif %}
+
+    {{ productAttributesEditor|raw }}
   </div>
 
   {{ entryContents|raw }}
