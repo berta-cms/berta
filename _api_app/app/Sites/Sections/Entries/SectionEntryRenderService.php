@@ -93,8 +93,20 @@ class SectionEntryRenderService
             'entry' => Helpers::arrayToAttributes([
                 'class' => $this->getClassList(),
                 'style' => $this->getStyleList(),
-                'data-path' => $this->isEditMode && $this->templateName == 'messy' && !$isResponsive ?  "{$apiPath}content/positionXY" : null
-            ])
+                'data-path' => $this->isEditMode && $this->templateName == 'messy' && !$isResponsive ? "{$apiPath}content/positionXY" : null
+            ]),
+            'title' => Helpers::arrayToAttributes([
+                'data-path' => $this->isEditMode ? "{$apiPath}content/title" : null
+            ]),
+            'description' => Helpers::arrayToAttributes([
+                'data-path' => $this->isEditMode ? "{$apiPath}content/description" : null
+            ]),
+            'url' => Helpers::arrayToAttributes([
+                'data-path' => $this->isEditMode ? "{$apiPath}content/url" : null
+            ]),
+
+
+
         ];
 
         switch ($this->galleryType) {
@@ -160,6 +172,9 @@ class SectionEntryRenderService
 
         if ($this->isShopAvailable) {
             $entry['showCartTitle'] = $this->isShopAvailable && $this->sectionType == 'shop' && ($this->isEditMode || (isset($entry['content']['cartTitle']) && !empty($entry['content']['cartTitle'])));
+            $entry['attributes']['cartTitle'] = Helpers::arrayToAttributes([
+                'data-path' => $this->isEditMode ? "{$apiPath}content/cartTitle" : null
+            ]);
             $entry['showAddToCart'] = $this->isShopAvailable && $this->sectionType == 'shop';
             $entry['cartAttributes'] = isset($entry['content']['cartAttributes']) ? Helpers::toCartAttributes($entry['content']['cartAttributes']) : '';
             $entry['cartAttributesEdit'] = isset($entry['content']['cartAttributes']) ? $entry['content']['cartAttributes'] : '';
@@ -167,8 +182,10 @@ class SectionEntryRenderService
 
             $shopSettingsDS = new ShopSettingsDataService($this->site);
             $shopSettings = $shopSettingsDS->get()['group_config'];
-
             $entry['cartPriceFormatted'] = isset($entry['content']['cartPrice']) ? Helpers::formatPrice($entry['content']['cartPrice'], $shopSettings['currency']) : '';
+            $entry['attributes']['cartPrice'] = Helpers::arrayToAttributes([
+                'data-path' => $this->isEditMode ? "{$apiPath}content/cartPrice" : null
+            ]);
             $entry['weightUnits'] = $shopSettings['weightUnit'];
             $entry['addToBasketLabel'] = $shopSettings['addToBasket'];
             $entry['addedToBasketText'] = $shopSettings['addedToBasket'];
