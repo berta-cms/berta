@@ -48,8 +48,6 @@ class SectionEntryRenderService
         $isEditMode,
         $isShopAvailable
     ) {
-
-
         $this->site = $site;
         $this->entry = $entry;
         $this->section = $section;
@@ -104,9 +102,6 @@ class SectionEntryRenderService
             'url' => Helpers::arrayToAttributes([
                 'data-path' => $this->isEditMode ? "{$apiPath}content/url" : null
             ]),
-
-
-
         ];
 
         switch ($this->galleryType) {
