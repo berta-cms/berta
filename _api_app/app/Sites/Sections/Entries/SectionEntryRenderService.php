@@ -84,14 +84,9 @@ class SectionEntryRenderService
         $entry['entryMarked'] = isset($entry['marked']) && $entry['marked'] ? 1 : 0;
         $entry['entryFixed'] = isset($entry['content']['fixed']) && $entry['content']['fixed'] ? 1 : 0;
         $entry['entryWidth'] = isset($entry['content']['width']) ? $entry['content']['width'] : '';
-        $entry['isShopAvailable'] = $this->isShopAvailable;
         $entry['entryHTMLTag'] = $this->templateName == 'messy' ? 'div' : 'li';
-        $entry['showCartTitle'] = $this->isShopAvailable && $this->sectionType == 'shop' && ($this->isEditMode || (isset($entry['content']['cartTitle']) && !empty($entry['content']['cartTitle'])));
         $entry['showTitle'] = ($this->sectionType == 'portfolio' || $this->templateName == 'default') && ($this->isEditMode || (isset($entry['content']['title']) && !empty($entry['content']['title'])));
         $entry['showDescription'] = $this->isEditMode || (isset($entry['content']['description']) && !empty($entry['content']['description']));
-        $entry['showAddToCart'] = $this->isShopAvailable && $this->sectionType == 'shop';
-        $entry['cartAttributes'] = isset($entry['content']['cartAttributes']) ? Helpers::toCartAttributes($entry['content']['cartAttributes']) : '';
-        $entry['entryWeight'] = isset($entry['content']['weight']) ? $entry['content']['weight'] : '';
         $entry['showUrl'] = $this->templateName == 'default' && ($this->isEditMode || (isset($entry['content']['url']) && !empty($entry['content']['url'])));
 
         $entry['attributes'] = [
@@ -101,17 +96,6 @@ class SectionEntryRenderService
                 'data-path' => $this->isEditMode && $this->templateName == 'messy' && !$isResponsive ?  "{$apiPath}content/positionXY" : null
             ])
         ];
-
-        if ($this->isShopAvailable) {
-            $shopSettingsDS = new ShopSettingsDataService($this->site);
-            $shopSettings = $shopSettingsDS->get()['group_config'];
-
-            $entry['cartPriceFormatted'] = isset($entry['content']['cartPrice']) ? Helpers::formatPrice($entry['content']['cartPrice'], $shopSettings['currency']) : '';
-            $entry['weightUnits'] = $shopSettings['weightUnit'];
-            $entry['addToBasketLabel'] = $shopSettings['addToBasket'];
-            $entry['addedToBasketText'] = $shopSettings['addedToBasket'];
-            $entry['outOfStockText'] = $shopSettings['outOfStock'];
-        }
 
         switch ($this->galleryType) {
             case 'row':
@@ -170,8 +154,29 @@ class SectionEntryRenderService
         $entry['galleryType'] = $this->galleryType;
         $entry['galleryPosition'] = $galleryPosition ? $galleryPosition : ($this->sectionType == 'portfolio' ? 'below description' : 'above title');
 
-        $entry['entryContents'] = view('Sites/Sections/Entries/_entryContents', $entry);
+        // Shop plugin related data
+        // TODO move the logic to plugin code
+        $entry['isShopAvailable'] = $this->isShopAvailable;
 
+        if ($this->isShopAvailable) {
+            $entry['showCartTitle'] = $this->isShopAvailable && $this->sectionType == 'shop' && ($this->isEditMode || (isset($entry['content']['cartTitle']) && !empty($entry['content']['cartTitle'])));
+            $entry['showAddToCart'] = $this->isShopAvailable && $this->sectionType == 'shop';
+            $entry['cartAttributes'] = isset($entry['content']['cartAttributes']) ? Helpers::toCartAttributes($entry['content']['cartAttributes']) : '';
+            $entry['cartAttributesEdit'] = isset($entry['content']['cartAttributes']) ? $entry['content']['cartAttributes'] : '';
+            $entry['entryWeight'] = isset($entry['content']['weight']) ? $entry['content']['weight'] : '';
+
+            $shopSettingsDS = new ShopSettingsDataService($this->site);
+            $shopSettings = $shopSettingsDS->get()['group_config'];
+
+            $entry['cartPriceFormatted'] = isset($entry['content']['cartPrice']) ? Helpers::formatPrice($entry['content']['cartPrice'], $shopSettings['currency']) : '';
+            $entry['weightUnits'] = $shopSettings['weightUnit'];
+            $entry['addToBasketLabel'] = $shopSettings['addToBasket'];
+            $entry['addedToBasketText'] = $shopSettings['addedToBasket'];
+            $entry['outOfStockText'] = $shopSettings['outOfStock'];
+        }
+        // End shop plugin related data
+
+        $entry['entryContents'] = view('Sites/Sections/Entries/_entryContents', $entry);
         if ($this->isEditMode) {
             $entry['entryContents'] = view('Sites/Sections/Entries/_entryEditor', $entry);
         }
