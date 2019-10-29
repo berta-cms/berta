@@ -1,8 +1,3 @@
-<{{ entryHTMLTag }}
-  id="{{ entryId }}"
-  {% if isEditMode and templateName == 'messy' and not isResponsive %}data-path="{{apiPath}}content/positionXY"{% endif %}
-  class="{{ classList }}"
-  {% if styleList %}style="{{ styleList }}"{% endif %}>
-
+<{{ entryHTMLTag }} id="{{ entryId }}"{{ attributes.entry|raw }}>
   {{ entryContents|raw }}
 </{{ entryHTMLTag }}>

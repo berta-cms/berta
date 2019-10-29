@@ -326,4 +326,26 @@ class Helpers
             'data' => $data
         ], $status);
     }
+
+    /**
+     * Converts array of attributes to string of attributes
+     */
+    public static function arrayToAttributes($attributes)
+    {
+        // Filter out attributes without value
+        $attributes = array_filter($attributes, function($value) {
+            return !empty($value);
+        });
+
+        if (empty($attributes)) {
+            return '';
+        }
+
+        $html = '';
+        foreach ($attributes as $attribute => $value) {
+            $html .= " {$attribute}=\"{$value}\"";
+        }
+
+        return $html;
+    }
 }

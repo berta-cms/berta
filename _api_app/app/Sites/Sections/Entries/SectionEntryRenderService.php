@@ -70,15 +70,14 @@ class SectionEntryRenderService
     {
         $entry = $this->entry;
 
+        $apiPath = $this->site . '/entry/' . $this->section['name'] . '/' . $entry['id'] . '/';
         $galleryPosition = isset($this->siteTemplateSettings['entryLayout']['galleryPosition']) ? $this->siteTemplateSettings['entryLayout']['galleryPosition'] : null;
         $isResponsiveTemplate = isset($this->siteTemplateSettings['pageLayout']['responsive']) && $this->siteTemplateSettings['pageLayout']['responsive'] == 'yes';
         $isResponsive = $this->sectionType == 'portfolio' || $isResponsiveTemplate;
 
         $entry['entryId'] = $this->getEntryId();
-        $entry['classList'] = $this->getClassList();
-        $entry['styleList'] = $this->getStyleList();
         $entry['isResponsive'] = $isResponsive;
-        $entry['apiPath'] = $this->site . '/entry/' . $this->section['name'] . '/' . $entry['id'] . '/';
+        $entry['apiPath'] = $apiPath;
         $entry['isEditMode'] = $this->isEditMode;
         $entry['templateName'] = $this->templateName;
         $entry['tagList'] = isset($entry['tags']['tag']) ? Helpers::createEntryTagList($entry['tags']['tag']) : '';
@@ -94,6 +93,14 @@ class SectionEntryRenderService
         $entry['cartAttributes'] = isset($entry['content']['cartAttributes']) ? Helpers::toCartAttributes($entry['content']['cartAttributes']) : '';
         $entry['entryWeight'] = isset($entry['content']['weight']) ? $entry['content']['weight'] : '';
         $entry['showUrl'] = $this->templateName == 'default' && ($this->isEditMode || (isset($entry['content']['url']) && !empty($entry['content']['url'])));
+
+        $entry['attributes'] = [
+            'entry' => Helpers::arrayToAttributes([
+                'class' => $this->getClassList(),
+                'style' => $this->getStyleList(),
+                'data-path' => $this->isEditMode && $this->templateName == 'messy' && !$isResponsive ?  "{$apiPath}content/positionXY" : null
+            ])
+        ];
 
         if ($this->isShopAvailable) {
             $shopSettingsDS = new ShopSettingsDataService($this->site);
