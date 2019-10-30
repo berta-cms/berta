@@ -95,7 +95,7 @@ class BertaGallery extends BertaBase
             }
 
             if (count($imgs) == 1) {
-                $specificClasses .= ' xGalleryHasOneItem';
+                $specificClasses .= ' bt-gallery-has-one-item';
             }
 
             $galleryContent = '';
