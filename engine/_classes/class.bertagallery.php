@@ -54,10 +54,12 @@ class BertaGallery extends BertaBase
 
         $html = BertaGallery::getHTML($imgs, $entry['mediafolder']['value'], $galleryType, $isAdminMode, false, 1, $galleryFullScreen, $imageSize, $galleryAutoPlay, $gallerySlideNumbersVisible, $galleryWidthByWidestSlide, $galleryLinkAddress, $galleryLinkTarget, $rowGalleryPadding);
 
-        // Add a slideshow html markup as a backup for mobile devices for gallery type row and pile
-        if (!$isAdminMode && in_array($galleryType, ['row', 'pile'])) {
+        // Add a slideshow html markup as a backup for mobile devices for gallery type
+        // - pile
+        // - row with at least two images
+        if (!$isAdminMode && ($galleryType == 'pile' || ($galleryType == 'row' && count($imgs)>1))) {
             $galleryType = 'slideshow';
-            $html .= BertaGallery::getHTML($imgs, $entry['mediafolder']['value'], $galleryType, $isAdminMode, false, 1, false, $imageSize, $galleryAutoPlay, $gallerySlideNumbersVisible, $galleryWidthByWidestSlide, $galleryLinkAddress, $galleryLinkTarget, $rowGalleryPadding);
+            $html .= BertaGallery::getHTML($imgs, $entry['mediafolder']['value'], $galleryType, $isAdminMode, false, 1, $galleryFullScreen, $imageSize, $galleryAutoPlay, $gallerySlideNumbersVisible, $galleryWidthByWidestSlide, $galleryLinkAddress, $galleryLinkTarget, $rowGalleryPadding);
         }
 
         return $html;
@@ -90,6 +92,10 @@ class BertaGallery extends BertaBase
                 case 'slideshow':
                     $specificClasses = ' xGalleryAutoPlay-' . $galleryAutoPlay . ' xSlideNumbersVisible-' . $gallerySlideNumbersVisible;
                     break;
+            }
+
+            if (count($imgs) == 1) {
+                $specificClasses .= ' bt-gallery-has-one-item';
             }
 
             $galleryContent = '';
