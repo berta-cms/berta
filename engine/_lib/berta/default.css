@@ -93,7 +93,6 @@ br.clear {
 }
 
 .xGalleryType-row+.xGalleryType-slideshow .xGallery {
-  max-width: none !important;
   overflow: hidden;
 }
 
@@ -329,11 +328,18 @@ div.xGalleryItem .xGalleryImageVideoBack {
     display: none;
   }
 
+  body.bt-responsive:not(.page-xMySite) .xGalleryType-row.bt-gallery-has-one-item,
   body.bt-responsive:not(.page-xMySite) .xGalleryType-row+.xGalleryType-slideshow,
   body.bt-responsive:not(.page-xMySite) .xGalleryType-pile+.xGalleryType-slideshow,
+  body.bt-auto-responsive:not(.page-xMySite) .xGalleryType-row.bt-gallery-has-one-item,
   body.bt-auto-responsive:not(.page-xMySite) .xGalleryType-row+.xGalleryType-slideshow,
   body.bt-auto-responsive:not(.page-xMySite) .xGalleryType-pile+.xGalleryType-slideshow {
     display: block;
+  }
+
+  body.bt-responsive:not(.page-xMySite) .xGalleryType-row.bt-gallery-has-one-item .xGallery,
+  body.bt-auto-responsive:not(.page-xMySite) .xGalleryType-row.bt-gallery-has-one-item .xGallery {
+    min-width: 0 !important;
   }
 
   .xSectionType-portfolio #pageEntries .xEntry .xGalleryContainer {
