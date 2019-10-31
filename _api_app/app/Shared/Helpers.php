@@ -328,9 +328,9 @@ class Helpers
     }
 
     /**
-     * Converts array of attributes to string of attributes
+     * Converts array of attributes to string of HTML attributes
      */
-    public static function arrayToAttributes($attributes)
+    public static function arrayToHtmlAttributes($attributes)
     {
         // Filter out attributes without value
         $attributes = array_filter($attributes, function($value) {

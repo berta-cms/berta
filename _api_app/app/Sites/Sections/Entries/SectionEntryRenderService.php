@@ -75,7 +75,7 @@ class SectionEntryRenderService
         if (($this->sectionType == 'portfolio' || $this->templateName == 'default') && ($this->isEditMode || (isset($entry['content']['title']) && !empty($entry['content']['title'])))) {
             $entryTitle = view('Sites/Sections/Entries/_entryTitle', array_merge($entry, [
                 'attributes' => [
-                    'title' => Helpers::arrayToAttributes([
+                    'title' => Helpers::arrayToHtmlAttributes([
                         'data-path' => $this->isEditMode ? "{$apiPath}content/title" : null
                     ])
                 ]
@@ -143,7 +143,7 @@ class SectionEntryRenderService
             if ($this->isEditMode || (isset($entry['content']['cartTitle']) && !empty($entry['content']['cartTitle']))) {
                 $entryTitle = view('Sites/Sections/Entries/shop/_cartTitle', array_merge($entry, [
                     'attributes' => [
-                        'cartTitle' => Helpers::arrayToAttributes([
+                        'cartTitle' => Helpers::arrayToHtmlAttributes([
                             'data-path' => $this->isEditMode ? "{$apiPath}content/cartTitle" : null
                         ])
                     ]
@@ -156,7 +156,7 @@ class SectionEntryRenderService
             $addToCart = view('Sites/Sections/Entries/shop/_addToCart', array_merge($entry, [
                 'isEditMode' => $this->isEditMode,
                 'attributes' => [
-                    'cartPrice' => Helpers::arrayToAttributes([
+                    'cartPrice' => Helpers::arrayToHtmlAttributes([
                         'data-path' => $this->isEditMode ? "{$apiPath}content/cartPrice" : null
                     ])
                 ],
@@ -185,10 +185,10 @@ class SectionEntryRenderService
             'entryTitle' => isset($entryTitle) ? $entryTitle : '',
             'showDescription' => $this->isEditMode || (isset($entry['content']['description']) && !empty($entry['content']['description'])),
             'attributes' => [
-                'description' => Helpers::arrayToAttributes([
+                'description' => Helpers::arrayToHtmlAttributes([
                     'data-path' => $this->isEditMode ? "{$apiPath}content/description" : null
                 ]),
-                'url' => Helpers::arrayToAttributes([
+                'url' => Helpers::arrayToHtmlAttributes([
                     'data-path' => $this->isEditMode ? "{$apiPath}content/url" : null
                 ])
             ],
@@ -214,7 +214,7 @@ class SectionEntryRenderService
             'entryHTMLTag' => $this->templateName == 'messy' ? 'div' : 'li',
             'entryId' => $this->getEntryId(),
             'attributes' => [
-                'entry' => Helpers::arrayToAttributes([
+                'entry' => Helpers::arrayToHtmlAttributes([
                     'class' => $this->getClassList(),
                     'style' => $this->getStyleList(),
                     'data-path' => $this->isEditMode && $this->templateName == 'messy' && !$isResponsive ? "{$apiPath}content/positionXY" : null
