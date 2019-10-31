@@ -73,6 +73,26 @@ abstract class EntryGalleryRenderService
                 $navigationItem['src'] .= '?no_cache=' . rand();
             }
 
+            $navigationItem['attributes'] = Helpers::arrayToHtmlAttributes([
+                'class' => implode(' ', [
+                    'xType-' . $navigationItem['type'],
+                    'xVideoHref-' . (isset($navigationItem['videoLink']) ? $navigationItem['videoLink'] : ''),
+                    'xAutoPlay-' . $navigationItem['autoPlay'],
+                    'xOrigHref-' . ($navigationItem['type'] == 'image' ? $navigationItem['original'] : ''),
+                    'xW-' . $navigationItem['width'],
+                    'xH-' . $navigationItem['height'],
+                    'xImgIndex-' . $navigationItem['index']
+                ]),
+                'data-original-src' => $navigationItem['original'],
+                'data-original-width' => $navigationItem['original_width'],
+                'data-original-height' => $navigationItem['original_height'],
+                'data-caption' => $navigationItem['alt'],
+                'data-mobile-src' => $navigationItem['large_src'],
+                'data-mobile-width' => $navigationItem['large_width'],
+                'data-mobile-height' => $navigationItem['large_height'],
+                'data-srcset' => $navigationItem['srcset'] ? $navigationItem['srcset'] : null
+            ]);
+
             $navigationItems[] = $navigationItem;
         }
 
