@@ -55,6 +55,11 @@ class GalleryRowRenderService extends EntryGalleryRenderService
     public function getGalleryClassList()
     {
         $classes = parent::getGalleryClassList();
+
+        if (count($this->galleryItemsData) == 1) {
+            $classes[] = 'bt-gallery-has-one-item';
+        }
+
         return implode(' ', $classes);
     }
 
@@ -126,8 +131,8 @@ class GalleryRowRenderService extends EntryGalleryRenderService
         $data = $this->getViewData();
         $view = view('Sites/Sections/Entries/Galleries/galleryRow', $data);
 
-        // Add a slideshow as a fallback for mobile devices
-        if (!$this->isEditMode) {
+        // Add a slideshow as a fallback for mobile devices when there is at least two slides
+        if (!$this->isEditMode && count($this->galleryItemsData) > 1) {
             // Force entry to be as slideshow
             $this->entry['mediaCacheData']['@attributes']['type'] = 'slideshow';
 

@@ -40,23 +40,7 @@
     <ul class="xGalleryNav" style="display:none">
       {% for item in navigationItems %}
         <li>
-          <a href="{{ item.src }}"
-             data-original-src="{{ item.original }}"
-             data-original-width="{{ item.original_width }}"
-             data-original-height="{{ item.original_height }}"
-             data-caption="{{ item.alt }}"
-             data-mobile-src="{{ item.large_src }}"
-             data-mobile-width="{{ item.large_width }}"
-             data-mobile-height="{{ item.large_height }}"
-             class="xType-{{ item.type }}
-             xVideoHref-{{ item.videoLink }}
-             xAutoPlay-{{ item.autoPlay }}
-             xOrigHref-{% if item.type == 'image' %}{{ item.original }}{% endif %}
-             xW-{{ item.width }}
-             xH-{{ item.height }}
-             xImgIndex-{{ item.index }}"
-             {% if item.srcset %} data-srcset="{{ item.srcset }}"{% endif %}
-             target="_blank">
+          <a href="{{ item.src }}" target="_blank"{{ item.attributes|raw }}>
             <span>{{ item.index }}</span>
           </a>
           <div class="xGalleryImageCaption">{{ item.caption|raw }}</div>

@@ -4,15 +4,12 @@ error_reporting(E_ALL);
 @ini_set('display_errors', 1);
 @ini_set('ignore_user_abort', 1);
 
-try {
-    /**
-     * Here are included everything that needs to be autoloaded. So we can use it through `Use` keyword.
-     * @var {Symfony\Component\ClassLoader\ClassLoader} $loader
-     * @var {Monolog\Logger} $logger
-     */
-    include_once 'loader.helper.php';
-} catch (Exception $e) {
-}
+/**
+ * Here are included everything that needs to be autoloaded. So we can use it through `Use` keyword.
+ * @var {Symfony\Component\ClassLoader\ClassLoader} $loader
+ * @var {Monolog\Logger} $logger
+ */
+include_once 'loader.helper.php';
 
 // You can now use your logger
 // $logger->info('My logger is now ready');

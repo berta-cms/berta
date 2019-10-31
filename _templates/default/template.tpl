@@ -145,53 +145,7 @@
 			</div>
 
 			<ol id="pageEntries" class="{ entriesListClasses }">
-
-				{* now loop through all entries and print them out *}
-				{ foreach from=$entries key="entryId" item="entry" name="entriesLoop" }
- 					<li class="entry {if $berta.section.type == 'portfolio'}xHidden {/if}{ entryClasses entry=$entry }" id="{ entrySlug entry=$entry }">
-
-						{* the entry settings and delete and move buttons live in the entryHeader - don't leave it out! *}
-						{ entryHeader section=$berta.section.name entry=$entry }
-
-						{ if $berta.settings.entryLayout.galleryPosition == 'above title' }
-							{* entryGallery prints the image gallery for the entry *}
-							{ entryGallery entry=$entry }
-						{ /if }
-
-						{ if $berta.environment == 'engine' || !empty($entry.title) }
-						<h2><span class="xEditable xProperty-title xCaption-entry&nbsp;title"{if $berta.environment == 'engine'} data-path="{ $berta.options.MULTISITE }/entry/{ $berta.section.name }/{ $entry.id }/content/title"{ /if }>{ $entry.title }</span></h2>
-						{ /if }
-
-						{ if $berta.settings.entryLayout.galleryPosition == 'between title/description' }
-							{* entryGallery prints the image gallery for the entry *}
-							{ entryGallery entry=$entry }
-						{ /if }
-
-						{ if $berta.environment == 'engine' || !empty($entry.description) }
-						<div class="entryText xEditableMCE xProperty-description"{if $berta.environment == 'engine'} data-path="{ $berta.options.MULTISITE }/entry/{ $berta.section.name }/{ $entry.id }/content/description"{ /if }>{ $entry.description }</div>
-						{ /if }
-
-						{ if $berta.settings.entryLayout.galleryPosition == 'below description' }
-							{* entryGallery prints the image gallery for the entry *}
-							{ entryGallery entry=$entry }
-						{ /if }
-
-						{ assign var=hasURL value= $berta.environment == 'engine' || !empty($entry.url) }
-						{ if $hasURL }
-						<div class="entryContent">
-							<div class="xEditable xProperty-url"{if $berta.environment == 'engine'} data-path="{ $berta.options.MULTISITE }/entry/{ $berta.section.name }/{ $entry.id }/content/url"{ /if }>{ if $berta.environment == 'site'}<a href="{ $entry.url }" target="_blank">{ $entry.url }</a>{else}{ $entry.url }{/if}</div>
-						</div>
-						{ /if }
-
-						{* entry footer wraps the entry including the header - don't leave it out! *}
-						{ entryFooter entry=$entry }
-						<br class="clear" />
-					</li>
-				{ foreachelse }
-					{* the template can be modified in a way that here goes content that is displayed when there are no entries in the section *}
-
-				{ /foreach }
-
+				{$entriesHTML}
 			</ol>
 
             {if $berta.section.type == 'portfolio'}
