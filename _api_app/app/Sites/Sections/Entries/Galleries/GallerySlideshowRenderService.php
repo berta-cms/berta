@@ -79,7 +79,9 @@ class GallerySlideshowRenderService extends EntryGalleryRenderService
             return false;
         }
 
-        $isMessyTemplate = $this->entry['templateName'] == 'messy';
+        $template = $this->siteSettings['template']['template'];
+        $templateName = explode('-', $template)[0];
+        $isMessyTemplate = $templateName == 'messy';
         $galleryWidthByWidestSlide = !empty($this->entry['mediaCacheData']['@attributes']['gallery_width_by_widest_slide']) ? $this->entry['mediaCacheData']['@attributes']['gallery_width_by_widest_slide'] : 'no';
 
         // Set slideshow gallery width by widest slide

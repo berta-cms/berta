@@ -69,42 +69,18 @@ class SectionEntryRenderService
         $entry = $this->entry;
 
         $apiPath = $this->site . '/entry/' . $this->section['name'] . '/' . $entry['id'] . '/';
-        $galleryPosition = isset($this->siteTemplateSettings['entryLayout']['galleryPosition']) ? $this->siteTemplateSettings['entryLayout']['galleryPosition'] : null;
         $isResponsiveTemplate = isset($this->siteTemplateSettings['pageLayout']['responsive']) && $this->siteTemplateSettings['pageLayout']['responsive'] == 'yes';
         $isResponsive = $this->sectionType == 'portfolio' || $isResponsiveTemplate;
 
-        $entry['entryId'] = $this->getEntryId();
-        $entry['attributes'] = [
-            'entry' => Helpers::arrayToAttributes([
-                'class' => $this->getClassList(),
-                'style' => $this->getStyleList(),
-                'data-path' => $this->isEditMode && $this->templateName == 'messy' && !$isResponsive ? "{$apiPath}content/positionXY" : null
-            ]),
-            'title' => Helpers::arrayToAttributes([
-                'data-path' => $this->isEditMode ? "{$apiPath}content/title" : null
-            ]),
-            'description' => Helpers::arrayToAttributes([
-                'data-path' => $this->isEditMode ? "{$apiPath}content/description" : null
-            ]),
-            'url' => Helpers::arrayToAttributes([
-                'data-path' => $this->isEditMode ? "{$apiPath}content/url" : null
-            ]),
-        ];
-
-        $entry['isResponsive'] = $isResponsive;
-        $entry['apiPath'] = $apiPath;
-        $entry['isEditMode'] = $this->isEditMode;
-        $entry['templateName'] = $this->templateName;
-        $entry['tagList'] = isset($entry['tags']['tag']) ? Helpers::createEntryTagList($entry['tags']['tag']) : '';
-        $entry['entryMarked'] = isset($entry['marked']) && $entry['marked'] ? 1 : 0;
-        $entry['entryFixed'] = isset($entry['content']['fixed']) && $entry['content']['fixed'] ? 1 : 0;
-        $entry['entryWidth'] = isset($entry['content']['width']) ? $entry['content']['width'] : '';
-        $entry['entryHTMLTag'] = $this->templateName == 'messy' ? 'div' : 'li';
         if (($this->sectionType == 'portfolio' || $this->templateName == 'default') && ($this->isEditMode || (isset($entry['content']['title']) && !empty($entry['content']['title'])))) {
-            $entry['entryTitle'] = view('Sites/Sections/Entries/_entryTitle', $entry);
+            $entryTitle = view('Sites/Sections/Entries/_entryTitle', array_merge($entry, [
+                'attributes' => [
+                    'title' => Helpers::arrayToAttributes([
+                        'data-path' => $this->isEditMode ? "{$apiPath}content/title" : null
+                    ])
+                ]
+            ]));
         }
-        $entry['showDescription'] = $this->isEditMode || (isset($entry['content']['description']) && !empty($entry['content']['description']));
-        $entry['showUrl'] = $this->templateName == 'default' && ($this->isEditMode || (isset($entry['content']['url']) && !empty($entry['content']['url'])));
 
         switch ($this->galleryType) {
             case 'row':
@@ -159,46 +135,96 @@ class SectionEntryRenderService
                 break;
         }
 
-        $entry['gallery'] = $galleryTypeRenderService->render();
-        $entry['galleryType'] = $this->galleryType;
-        $entry['galleryPosition'] = $galleryPosition ? $galleryPosition : ($this->sectionType == 'portfolio' ? 'below description' : 'above title');
+        $gallery = $galleryTypeRenderService->render();
 
         // Shop plugin related data
         // TODO move the logic to plugin code
-        $entry['isShopAvailable'] = $this->isShopAvailable;
-
         if ($this->isShopAvailable) {
             if ($this->isEditMode || (isset($entry['content']['cartTitle']) && !empty($entry['content']['cartTitle']))) {
-                $entry['attributes']['cartTitle'] = Helpers::arrayToAttributes([
-                    'data-path' => $this->isEditMode ? "{$apiPath}content/cartTitle" : null
-                ]);
-                $entry['entryTitle'] = view('Sites/Sections/Entries/shop/_cartTitle', $entry);
+                $entryTitle = view('Sites/Sections/Entries/shop/_cartTitle', array_merge($entry, [
+                    'attributes' => [
+                        'cartTitle' => Helpers::arrayToAttributes([
+                            'data-path' => $this->isEditMode ? "{$apiPath}content/cartTitle" : null
+                        ])
+                    ]
+                ]));
             }
-            $entry['cartAttributes'] = isset($entry['content']['cartAttributes']) ? Helpers::toCartAttributes($entry['content']['cartAttributes']) : '';
-            $entry['cartAttributesEdit'] = isset($entry['content']['cartAttributes']) ? $entry['content']['cartAttributes'] : '';
-            $entry['entryWeight'] = isset($entry['content']['weight']) ? $entry['content']['weight'] : '';
 
             $shopSettingsDS = new ShopSettingsDataService($this->site);
             $shopSettings = $shopSettingsDS->get()['group_config'];
-            $entry['cartPriceFormatted'] = isset($entry['content']['cartPrice']) ? Helpers::formatPrice($entry['content']['cartPrice'], $shopSettings['currency']) : '';
-            $entry['attributes']['cartPrice'] = Helpers::arrayToAttributes([
-                'data-path' => $this->isEditMode ? "{$apiPath}content/cartPrice" : null
+
+            $addToCart = view('Sites/Sections/Entries/shop/_addToCart', array_merge($entry, [
+                'isEditMode' => $this->isEditMode,
+                'attributes' => [
+                    'cartPrice' => Helpers::arrayToAttributes([
+                        'data-path' => $this->isEditMode ? "{$apiPath}content/cartPrice" : null
+                    ])
+                ],
+                'cartPriceFormatted' => isset($entry['content']['cartPrice']) ? Helpers::formatPrice($entry['content']['cartPrice'], $shopSettings['currency']) : '',
+                'cartAttributes' => isset($entry['content']['cartAttributes']) ? Helpers::toCartAttributes($entry['content']['cartAttributes']) : '',
+                'addToBasketLabel' => $shopSettings['addToBasket'],
+                'addedToBasketText' => $shopSettings['addedToBasket'],
+                'outOfStockText' => $shopSettings['outOfStock']
+            ]));
+
+            $productAttributesEditor = view('Sites/Sections/Entries/shop/_productAttributesEditor', [
+                'apiPath' => $apiPath,
+                'cartAttributesEdit' => isset($entry['content']['cartAttributes']) ? $entry['content']['cartAttributes'] : '',
+                'weightUnits' => $shopSettings['weightUnit'],
+                'entryWeight' => isset($entry['content']['weight']) ? $entry['content']['weight'] : ''
             ]);
-            $entry['weightUnits'] = $shopSettings['weightUnit'];
-            $entry['addToBasketLabel'] = $shopSettings['addToBasket'];
-            $entry['addedToBasketText'] = $shopSettings['addedToBasket'];
-            $entry['outOfStockText'] = $shopSettings['outOfStock'];
-            $entry['addToCart'] = view('Sites/Sections/Entries/shop/_addToCart', $entry);
-            $entry['productAttributesEditor'] = view('Sites/Sections/Entries/shop/_productAttributesEditor', $entry);
         }
         // End shop plugin related data
 
-        $entry['entryContents'] = view('Sites/Sections/Entries/_entryContents', $entry);
+        $galleryPosition = isset($this->siteTemplateSettings['entryLayout']['galleryPosition']) ? $this->siteTemplateSettings['entryLayout']['galleryPosition'] : null;
+        $entryContents = view('Sites/Sections/Entries/_entryContents', array_merge($entry, [
+            'galleryPosition' => $galleryPosition ? $galleryPosition : ($this->sectionType == 'portfolio' ? 'below description' : 'above title'),
+            'gallery' => $gallery,
+            'templateName' => $this->templateName,
+            'galleryType' => $this->galleryType,
+            'entryTitle' => isset($entryTitle) ? $entryTitle : '',
+            'showDescription' => $this->isEditMode || (isset($entry['content']['description']) && !empty($entry['content']['description'])),
+            'attributes' => [
+                'description' => Helpers::arrayToAttributes([
+                    'data-path' => $this->isEditMode ? "{$apiPath}content/description" : null
+                ]),
+                'url' => Helpers::arrayToAttributes([
+                    'data-path' => $this->isEditMode ? "{$apiPath}content/url" : null
+                ])
+            ],
+            'showUrl' => $this->templateName == 'default' && ($this->isEditMode || (isset($entry['content']['url']) && !empty($entry['content']['url']))),
+            'isEditMode' => $this->isEditMode,
+            'addToCart' => isset($addToCart) ? $addToCart : ''
+        ]));
+
         if ($this->isEditMode) {
-            $entry['entryContents'] = view('Sites/Sections/Entries/_entryEditor', $entry);
+            $entryContents = view('Sites/Sections/Entries/_entryEditor', [
+                'templateName' => $this->templateName,
+                'tagList' => isset($entry['tags']['tag']) ? Helpers::createEntryTagList($entry['tags']['tag']) : '',
+                'apiPath' => $apiPath,
+                'entryFixed' => isset($entry['content']['fixed']) && $entry['content']['fixed'] ? 1 : 0,
+                'entryWidth' => isset($entry['content']['width']) ? $entry['content']['width'] : '',
+                'entryMarked' => isset($entry['marked']) && $entry['marked'] ? 1 : 0,
+                'productAttributesEditor' => isset($productAttributesEditor) ? $productAttributesEditor : '',
+                'entryContents' => $entryContents,
+            ]);
         }
 
-        return $entry;
+        return [
+            'entryHTMLTag' => $this->templateName == 'messy' ? 'div' : 'li',
+            'entryId' => $this->getEntryId(),
+            'attributes' => [
+                'entry' => Helpers::arrayToAttributes([
+                    'class' => $this->getClassList(),
+                    'style' => $this->getStyleList(),
+                    'data-path' => $this->isEditMode && $this->templateName == 'messy' && !$isResponsive ? "{$apiPath}content/positionXY" : null
+                ])
+            ],
+            'entryContents' => $entryContents,
+            // 'gallery' variable is used in elements.php
+            // TODO possibly we can create a new endpoint in API and replace old elements.php endpoint
+            'gallery' => $gallery,
+        ];
     }
 
     private function getEntryId()
