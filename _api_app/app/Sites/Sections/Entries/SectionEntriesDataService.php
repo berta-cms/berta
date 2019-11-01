@@ -246,8 +246,15 @@ class SectionEntriesDataService extends Storage
 
         // Filter entries by tag
         $entries = array_filter($entries[self::$ROOT_LIST_ELEMENT], function ($entry) use ($tag) {
+            $entryTags = [];
+            if (!empty($entry['tags']['tag'])) {
+                $entryTags = array_map(function ($tag) {
+                    return Helpers::slugify($tag, '-', '-');
+                }, $entry['tags']['tag']);
+            }
+
             if ($tag) {
-                return !empty($entry['tags']['tag']) && in_array($tag, $entry['tags']['tag']);
+                return !empty($entryTags) && in_array($tag, $entryTags);
             } else {
                 return empty($entry['tags']['tag']);
             }
