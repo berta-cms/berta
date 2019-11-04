@@ -148,7 +148,7 @@ class BertaTemplate extends BertaBase
         $siteSectionsDS = new SiteSectionsDataService(self::$options['MULTISITE']);
         $sectionData = $siteSectionsDS->get($this->sectionName);
         $siteSettingsDS = new SiteSettingsDataService(self::$options['MULTISITE']);
-        $siteTemplateSettingsDS = new SiteTemplateSettingsDataService(self::$options['MULTISITE']);
+        $siteTemplateSettingsDS = new SiteTemplateSettingsDataService(self::$options['MULTISITE'], $this->name);
 
         $entriesHTML = '';
         foreach ($entries as $entry) {
