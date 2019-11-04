@@ -43,6 +43,18 @@ br.clear {
   clear: both;
 }
 
+.xGalleryType-link.bt-has-hover .xGalleryItem:last-child {
+  display: none;
+}
+
+.xGalleryType-link.bt-has-hover a:hover .xGalleryItem:first-child {
+  display: none;
+}
+
+.xGalleryType-link.bt-has-hover a:hover .xGalleryItem:last-child {
+  display: block;
+}
+
 .xGalleryType-row > .xGallery {
   white-space: nowrap;
 }
