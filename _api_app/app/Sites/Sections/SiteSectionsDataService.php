@@ -175,7 +175,7 @@ class SiteSectionsDataService extends Storage
 
         if ($sectionName !== null) {
             foreach($this->SECTIONS as $_section) {
-                if ($_section['name'] === $sectionName) {
+                if ($_section['name'] === (string) $sectionName) {
                     return $_section;
                 }
             }
