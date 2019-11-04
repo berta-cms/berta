@@ -19,6 +19,7 @@ $IS_AJAX = isset($_SERVER['HTTP_X_REQUESTED_WITH']) && !empty($_SERVER['HTTP_X_R
 
 // Detects mobile devices
 include_once '_lib/mobile_device_detect/mobile_device_detect.php';
+$DEVICE_USER_AGENT = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '';
 $MOBILE_DEVICE = mobile_device_detect($DEVICE_USER_AGENT);
 
 // Set multibyte encoding to UTF-8 for better canonization of strings
