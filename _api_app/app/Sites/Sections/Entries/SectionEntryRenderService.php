@@ -178,7 +178,7 @@ class SectionEntryRenderService
 
         $galleryPosition = isset($this->siteTemplateSettings['entryLayout']['galleryPosition']) ? $this->siteTemplateSettings['entryLayout']['galleryPosition'] : null;
         $entryContents = view('Sites/Sections/Entries/_entryContents', array_merge($entry, [
-            'galleryPosition' => $galleryPosition ? $galleryPosition : ($this->sectionType == 'portfolio' ? 'below description' : 'above title'),
+            'galleryPosition' => $galleryPosition ? $galleryPosition : ($this->sectionType == 'portfolio' ? 'after text wrap' : 'above title'),
             'gallery' => $gallery,
             'templateName' => $this->templateName,
             'galleryType' => $this->galleryType,

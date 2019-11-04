@@ -36,3 +36,7 @@
 {% if templateName != 'default' %}
   </div>
 {% endif %}
+
+{% if galleryPosition == 'after text wrap' %}
+  {{ gallery|raw }}
+{% endif %}
