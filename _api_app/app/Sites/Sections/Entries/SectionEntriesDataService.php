@@ -290,14 +290,14 @@ class SectionEntriesDataService extends Storage
     public function orderByXYPosition($entries)
     {
         usort($entries, function ($item1, $item2) {
-            if (!isset($item1['positionXY'])) {
-                $item1['positionXY'] = '0,0';
+            if (!isset($item1['content']['positionXY'])) {
+                $item1['content']['positionXY'] = '0,0';
             }
-            if (!isset($item2['positionXY'])) {
-                $item2['positionXY'] = '0,0';
+            if (!isset($item2['content']['positionXY'])) {
+                $item2['content']['positionXY'] = '0,0';
             }
-            list($item1['positionX'], $item1['positionY']) = explode(',', $item1['positionXY']);
-            list($item2['positionX'], $item2['positionY']) = explode(',', $item2['positionXY']);
+            list($item1['positionX'], $item1['positionY']) = explode(',', $item1['content']['positionXY']);
+            list($item2['positionX'], $item2['positionY']) = explode(',', $item2['content']['positionXY']);
 
             if ($item1['positionX'] == $item2['positionX'] && $item1['positionY'] == $item2['positionY']) {
                 return 0;
