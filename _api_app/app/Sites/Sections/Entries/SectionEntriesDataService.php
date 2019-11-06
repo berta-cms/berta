@@ -290,24 +290,20 @@ class SectionEntriesDataService extends Storage
     public function orderByXYPosition($entries)
     {
         usort($entries, function ($item1, $item2) {
-            if (!isset($item1['positionXY'])) {
-                $item1['positionXY'] = '0,0';
-            }
-            if (!isset($item2['positionXY'])) {
-                $item2['positionXY'] = '0,0';
-            }
-            list($item1['positionX'], $item1['positionY']) = explode(',', $item1['positionXY']);
-            list($item2['positionX'], $item2['positionY']) = explode(',', $item2['positionXY']);
+            $pos1 = isset($item1['content']['positionXY']) ? $item1['content']['positionXY'] : '0,0';
+            $pos2 = isset($item2['content']['positionXY']) ? $item2['content']['positionXY'] : '0,0';
+            list($pos1X, $pos1Y) = explode(',', $pos1);
+            list($pos2X, $pos2Y) = explode(',', $pos2);
 
-            if ($item1['positionX'] == $item2['positionX'] && $item1['positionY'] == $item2['positionY']) {
+            if ($pos1X == $pos2X && $pos1Y == $pos2Y) {
                 return 0;
             }
 
-            if ($item1['positionY'] == $item2['positionY']) {
-                return $item1['positionX'] < $item2['positionX'] ? -1 : 1;
+            if ($pos1Y == $pos2Y) {
+                return $pos1X < $pos2X ? -1 : 1;
             }
 
-            return $item1['positionY'] < $item2['positionY'] ? -1 : 1;
+            return $pos1Y < $pos2Y ? -1 : 1;
         });
 
         return $entries;
