@@ -1,7 +1,6 @@
-<div class="{{ galleryClassList }}"{% if isFullscreen %} data-fullscreen="1"{% endif %}>
+<div class="{{ galleryClassList }}">
   {% if items %}
-    <div class="xGallery" style="{{ galleryStyles }}" {% if rowGalleryPadding %} rowGalleryPadding="{{ rowGalleryPadding }}"{% endif %}>
-
+    <a href="{{ linkAddress }}" target="{{ linkTarget }}" class="xGallery" style="{{ galleryStyles }}">
       {% for item in items %}
         {% if item.type == 'image' %}
           <div class="xGalleryItem xGalleryItemType-image xImgIndex-1" style="width: {{ item.width }}px; height: {{ item.height }}px">
@@ -25,17 +24,6 @@
           </span>
         </a>
       {% endif %}
-    </div>
-
-    <ul class="xGalleryNav" style="display:none">
-      {% for item in navigationItems %}
-        <li>
-          <a href="{{ item.src }}" target="_blank"{{ item.attributes|raw }}>
-            <span>{{ item.index }}</span>
-          </a>
-          <div class="xGalleryImageCaption">{{ item.caption|raw }}</div>
-        </li>
-      {% endfor %}
-    </ul>
+    </a>
   {% endif %}
 </div>

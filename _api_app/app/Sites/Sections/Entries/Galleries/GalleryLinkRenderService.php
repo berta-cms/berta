@@ -39,6 +39,8 @@ class GalleryLinkRenderService extends EntryGalleryRenderService
         $data = parent::getViewData();
         $data['galleryClassList'] = $this->getGalleryClassList();
         $data['galleryStyles'] = $this->getGalleryStyles();
+        $data['linkAddress'] = !empty($this->entry['mediaCacheData']['@attributes']['link_address']) ? $this->entry['mediaCacheData']['@attributes']['link_address'] : '';
+        $data['linkTarget'] = !empty($this->entry['mediaCacheData']['@attributes']['linkTarget']) ? $this->entry['mediaCacheData']['@attributes']['linkTarget'] : '_self';
         $data['items'] = $this->getLimitedGalleryItems();
 
         return $data;
@@ -47,10 +49,9 @@ class GalleryLinkRenderService extends EntryGalleryRenderService
     public function getGalleryClassList()
     {
         $classes = parent::getGalleryClassList();
-        $galleryLinkAddress = !empty($this->entry['mediaCacheData']['@attributes']['link_address']) ? $this->entry['mediaCacheData']['@attributes']['link_address'] : '';
-        $galleryLinkTarget = !empty($this->entry['mediaCacheData']['@attributes']['linkTarget']) ? $this->entry['mediaCacheData']['@attributes']['linkTarget'] : '';
-        $classes[] = 'xGalleryLinkAddress-' . $galleryLinkAddress;
-        $classes[] = 'xGalleryLinkTarget-' . $galleryLinkTarget;
+        if (count($this->galleryItems) > 1) {
+            $classes[] = 'bt-has-hover';
+        }
 
         return implode(' ', $classes);
     }
@@ -74,8 +75,10 @@ class GalleryLinkRenderService extends EntryGalleryRenderService
 
     private function getLimitedGalleryItems()
     {
-        // Return only one item, other items will be loaded in fronted
-        return array_slice($this->galleryItems, 0, 1);
+        // Limit to two items
+        // First is a visible item
+        // Second is element visible on hover
+        return array_slice($this->galleryItems, 0, 2);
     }
 
     public function render()
