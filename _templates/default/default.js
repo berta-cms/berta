@@ -21,7 +21,7 @@ var DefaultTemplate = new Class({
       var source = item.get('src');
 
       berta.options.iframeWrapperWhiteList.each(function (whiteList) {
-        if (source.indexOf(whiteList) > -1) {
+        if (source && source.indexOf(whiteList) > -1) {
           var width = item.get('width');
           var height = item.get('height');
           var wrapper = new Element('div', {

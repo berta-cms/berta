@@ -272,7 +272,7 @@ var MessyMess = new Class({
       var source = item.get('src');
       berta.options.iframeWrapperWhiteList.each(function (whiteList) {
 
-        if (source.indexOf(whiteList) > -1) {
+        if (source && source.indexOf(whiteList) > -1) {
           if (hasWrapper && doRemoveWrapper) {
             item.inject(item.getParent(), 'after');
             item.getPrevious().destroy();
