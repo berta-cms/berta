@@ -5,6 +5,7 @@ var BertaGallerySlideshow = new Class({
   gallerySwiper: null,
   navContainer: null,
   isRowFallback: false,
+  isFallbackGallery: false,
 
   initialize: function (container) {
     this.is_mobile_device = window.BertaHelpers.isMobile();
@@ -23,7 +24,8 @@ var BertaGallerySlideshow = new Class({
   attach: function (container) {
     this.container = container;
     var fallbackGallery = this.container.getPrevious();
-    this.isRowFallback = fallbackGallery && fallbackGallery.hasClass('xGalleryType-row') ? true : false;
+    this.isFallbackGallery = fallbackGallery && fallbackGallery.hasClass('xGalleryContainer');
+    this.isRowFallback = fallbackGallery && fallbackGallery.hasClass('xGalleryType-row');
     this.fullscreen = this.container.get('data-fullscreen') !== null;
     this.imageContainer = this.container.getElement('div.xGallery');
     this.navContainer = this.container.getElement('ul.xGalleryNav');
@@ -83,7 +85,7 @@ var BertaGallerySlideshow = new Class({
 
         var swiperOptions = {
           init: false,
-          loop: bertaGlobalOptions.slideshowAutoRewind === 'yes' && !this.isRowFallback,
+          loop: bertaGlobalOptions.slideshowAutoRewind === 'yes' && !this.isFallbackGallery,
           centeredSlides: this.isRowFallback,
           slidesPerView: this.isRowFallback ? 'auto' : 1,
           spaceBetween: this.isRowFallback ? 10 : 0,
@@ -101,7 +103,7 @@ var BertaGallerySlideshow = new Class({
           }
         };
 
-        if (this.autoplay) {
+        if (this.autoplay && !this.isFallbackGallery) {
           swiperOptions['autoplay'] = {
             delay: this.autoplay * 1000
           };
