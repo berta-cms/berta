@@ -45,7 +45,9 @@ class GallerySlideshowRenderService extends EntryGalleryRenderService
         $data['attributes'] = [
             'gallery' => Helpers::arrayToHtmlAttributes([
                 'data-fullscreen' => $data['isFullscreen'] ? 1 : null,
-                'data-fallback-gallery' => $this->fallbackGallery
+                'data-fallback-gallery' => $this->fallbackGallery,
+                'data-autoplay' => (!$this->fallbackGallery && !empty($this->entry['mediaCacheData']['@attributes']['autoplay'])) ? $this->entry['mediaCacheData']['@attributes']['autoplay'] : '0',
+                'data-loop' =>  !$this->fallbackGallery && isset($this->siteSettings['entryLayout']['gallerySlideshowAutoRewind']) && $this->siteSettings['entryLayout']['gallerySlideshowAutoRewind'] == 'yes'
             ])
         ];
         $data['galleryStyles'] = $this->getGalleryStyles();
@@ -61,10 +63,8 @@ class GallerySlideshowRenderService extends EntryGalleryRenderService
         $classes = parent::getGalleryClassList();
 
         if (!empty($this->galleryItemsData)) {
-            $galleryAutoPlay = !empty($this->entry['mediaCacheData']['@attributes']['autoplay']) ? $this->entry['mediaCacheData']['@attributes']['autoplay'] : '0';
             $gallerySlideNumbersVisible = !empty($this->entry['mediaCacheData']['@attributes']['slide_numbers_visible']) ? $this->entry['mediaCacheData']['@attributes']['slide_numbers_visible'] : $this->siteSettings['entryLayout']['gallerySlideNumberVisibilityDefault'];
 
-            $classes[] = 'xGalleryAutoPlay-' . $galleryAutoPlay;
             $classes[] = 'xSlideNumbersVisible-' . $gallerySlideNumbersVisible;
         }
 

@@ -23,13 +23,12 @@ var BertaGallerySlideshow = new Class({
   },
 
   getOptions: function () {
-    var fallbackGallery = this.container.get('data-fallback-gallery');
     this.options = {
       fullscreen: this.container.get('data-fullscreen') !== null,
-      autoplay: !fallbackGallery && parseInt(this.container.getClassStoredValue('xGalleryAutoPlay'), 10),
-      fallbackGallery: fallbackGallery,
+      autoplay: parseInt(this.container.get('data-autoplay'), 10),
+      fallbackGallery: this.container.get('data-fallback-gallery'),
       swiperOptions: {
-        loop: bertaGlobalOptions.slideshowAutoRewind === 'yes' && !fallbackGallery,
+        loop: this.container.get('data-loop'),
       }
     };
   },
