@@ -26,7 +26,7 @@ var BertaGallerySlideshow = new Class({
     this.options = {
       fullscreen: this.container.get('data-fullscreen') !== null,
       autoplay: parseInt(this.container.get('data-autoplay'), 10),
-      fallbackGallery: this.container.get('data-fallback-gallery'),
+      asRowGallery: this.container.get('data-as-row-gallery'),
       swiperOptions: {
         loop: this.container.get('data-loop'),
       }
@@ -78,7 +78,7 @@ var BertaGallerySlideshow = new Class({
         };
 
         // Make gallery fit the screen in width for row gallery slideshow fallback
-        if (this.options.fallbackGallery === 'row') {
+        if (this.options.asRowGallery) {
           var galleryWrapper = this.container.getFirst();
           galleryWrapper.setStyle('width', '100vw');
           var setFullWidth = function () {
@@ -92,12 +92,12 @@ var BertaGallerySlideshow = new Class({
         var swiperOptions = {
           init: false,
           loop: this.options.swiperOptions.loop,
-          centeredSlides: this.options.fallbackGallery === 'row',
-          slidesPerView: this.options.fallbackGallery === 'row' ? 'auto' : 1,
-          spaceBetween: this.options.fallbackGallery === 'row' ? 10 : 0,
+          centeredSlides: this.options.asRowGallery,
+          slidesPerView: this.options.asRowGallery ? 'auto' : 1,
+          spaceBetween: this.options.asRowGallery ? 10 : 0,
           autoHeight: true,
-          effect: this.options.fallbackGallery === 'row' ? 'slide' : 'fade',
-          mousewheel: this.options.fallbackGallery === 'row' ? {
+          effect: this.options.asRowGallery ? 'slide' : 'fade',
+          mousewheel: this.options.asRowGallery ? {
             releaseOnEdges: true
           } : false,
           fadeEffect: {
@@ -120,7 +120,7 @@ var BertaGallerySlideshow = new Class({
         this.gallerySwiper.on('init', function () {
           this.imageContainer.querySelectorAll('.xGalleryItem').forEach(function (galleryItem, i) {
 
-            if (!(this.options.fallbackGallery === 'row' || this.options.fullscreen)) {
+            if (!(this.options.asRowGallery || this.options.fullscreen)) {
               return;
             }
 
@@ -131,7 +131,7 @@ var BertaGallerySlideshow = new Class({
             galleryItem.addEventListener('click', function () {
               // Row gallery slideshow fallback prev/next navigation
               // for partly visible slides
-              if (this.options.fallbackGallery === 'row') {
+              if (this.options.asRowGallery) {
                 var isNextEl = galleryItem.parentNode.classList.contains('swiper-slide-next');
                 if (isNextEl) {
                   this.gallerySwiper.slideNext();

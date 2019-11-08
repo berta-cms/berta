@@ -94,7 +94,7 @@ class GalleryPileRenderService extends EntryGalleryRenderService
                 $this->siteTemplateSettings,
                 $this->storageService,
                 $this->isEditMode,
-                'pile'
+                false
             );
             $view .= $gallerySlideshowRenderService->render();
         }

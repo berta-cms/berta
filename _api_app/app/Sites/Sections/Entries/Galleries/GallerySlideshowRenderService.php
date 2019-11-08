@@ -12,7 +12,8 @@ class GallerySlideshowRenderService extends EntryGalleryRenderService
     public $siteTemplateSettings;
     public $storageService;
     public $isEditMode;
-    public $fallbackGallery;
+    public $isLoopAvailable;
+    public $asRowGallery;
 
     public $galleryItemsData;
     public $galleryItems;
@@ -23,14 +24,16 @@ class GallerySlideshowRenderService extends EntryGalleryRenderService
         array $siteTemplateSettings,
         Storage $storageService,
         $isEditMode,
-        $fallbackGallery = null
+        $isLoopAvailable = true,
+        $asRowGallery = false
     ) {
         $this->entry = $entry;
         $this->siteSettings = $siteSettings;
         $this->siteTemplateSettings = $siteTemplateSettings;
         $this->storageService = $storageService;
         $this->isEditMode = $isEditMode;
-        $this->fallbackGallery = $fallbackGallery;
+        $this->isLoopAvailable = $isLoopAvailable;
+        $this->asRowGallery = $asRowGallery;
 
         parent::__construct();
 
@@ -45,9 +48,9 @@ class GallerySlideshowRenderService extends EntryGalleryRenderService
         $data['attributes'] = [
             'gallery' => Helpers::arrayToHtmlAttributes([
                 'data-fullscreen' => $data['isFullscreen'] ? 1 : null,
-                'data-fallback-gallery' => $this->fallbackGallery,
-                'data-autoplay' => (!$this->fallbackGallery && !empty($this->entry['mediaCacheData']['@attributes']['autoplay'])) ? $this->entry['mediaCacheData']['@attributes']['autoplay'] : '0',
-                'data-loop' =>  !$this->fallbackGallery && isset($this->siteSettings['entryLayout']['gallerySlideshowAutoRewind']) && $this->siteSettings['entryLayout']['gallerySlideshowAutoRewind'] == 'yes'
+                'data-as-row-gallery' => $this->asRowGallery,
+                'data-autoplay' => ($this->isLoopAvailable && !empty($this->entry['mediaCacheData']['@attributes']['autoplay'])) ? $this->entry['mediaCacheData']['@attributes']['autoplay'] : '0',
+                'data-loop' =>  $this->isLoopAvailable && isset($this->siteSettings['entryLayout']['gallerySlideshowAutoRewind']) && $this->siteSettings['entryLayout']['gallerySlideshowAutoRewind'] == 'yes'
             ])
         ];
         $data['galleryStyles'] = $this->getGalleryStyles();
