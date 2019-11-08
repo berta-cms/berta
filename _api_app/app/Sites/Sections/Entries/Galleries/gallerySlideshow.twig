@@ -1,4 +1,4 @@
-<div class="{{ galleryClassList }}"{% if isFullscreen %} data-fullscreen="1"{% endif %}>
+<div class="{{ galleryClassList }}"{{ attributes.gallery|raw }}>
   {% if items %}
     <div class="xGallery" style="{{ galleryStyles }}" {% if rowGalleryPadding %} rowGalleryPadding="{{ rowGalleryPadding }}"{% endif %}>
       <div class="swiper-container">
