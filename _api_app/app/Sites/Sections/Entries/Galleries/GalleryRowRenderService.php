@@ -141,7 +141,8 @@ class GalleryRowRenderService extends EntryGalleryRenderService
                 $this->siteSettings,
                 $this->siteTemplateSettings,
                 $this->storageService,
-                $this->isEditMode
+                $this->isEditMode,
+                'row'
             );
             $view .= $gallerySlideshowRenderService->render();
         }

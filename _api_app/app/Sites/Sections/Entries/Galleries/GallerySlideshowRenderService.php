@@ -3,6 +3,7 @@
 namespace App\Sites\Sections\Entries\Galleries;
 
 use App\Shared\Storage;
+use App\Shared\Helpers;
 
 class GallerySlideshowRenderService extends EntryGalleryRenderService
 {
@@ -11,6 +12,7 @@ class GallerySlideshowRenderService extends EntryGalleryRenderService
     public $siteTemplateSettings;
     public $storageService;
     public $isEditMode;
+    public $fallbackGallery;
 
     public $galleryItemsData;
     public $galleryItems;
@@ -20,13 +22,15 @@ class GallerySlideshowRenderService extends EntryGalleryRenderService
         array $siteSettings,
         array $siteTemplateSettings,
         Storage $storageService,
-        $isEditMode
+        $isEditMode,
+        $fallbackGallery = null
     ) {
         $this->entry = $entry;
         $this->siteSettings = $siteSettings;
         $this->siteTemplateSettings = $siteTemplateSettings;
         $this->storageService = $storageService;
         $this->isEditMode = $isEditMode;
+        $this->fallbackGallery = $fallbackGallery;
 
         parent::__construct();
 
@@ -38,6 +42,12 @@ class GallerySlideshowRenderService extends EntryGalleryRenderService
     {
         $data = parent::getViewData();
         $data['galleryClassList'] = $this->getGalleryClassList();
+        $data['attributes'] = [
+            'gallery' => Helpers::arrayToHtmlAttributes([
+                'data-fullscreen' => $data['isFullscreen'] ? 1 : null,
+                'data-fallback-gallery' => $this->fallbackGallery
+            ])
+        ];
         $data['galleryStyles'] = $this->getGalleryStyles();
 
         $data['items'] = $this->galleryItems;
