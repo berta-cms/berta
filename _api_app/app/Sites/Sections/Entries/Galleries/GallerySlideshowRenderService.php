@@ -50,7 +50,7 @@ class GallerySlideshowRenderService extends EntryGalleryRenderService
                 'data-fullscreen' => $data['isFullscreen'] ? 1 : null,
                 'data-as-row-gallery' => $this->asRowGallery,
                 'data-autoplay' => ($this->isLoopAvailable && !empty($this->entry['mediaCacheData']['@attributes']['autoplay'])) ? $this->entry['mediaCacheData']['@attributes']['autoplay'] : '0',
-                'data-loop' =>  $this->isLoopAvailable && isset($this->siteSettings['entryLayout']['gallerySlideshowAutoRewind']) && $this->siteSettings['entryLayout']['gallerySlideshowAutoRewind'] == 'yes'
+                'data-loop' => $this->isLoopAvailable && isset($this->siteSettings['entryLayout']['gallerySlideshowAutoRewind']) && $this->siteSettings['entryLayout']['gallerySlideshowAutoRewind'] == 'yes'
             ])
         ];
         $data['galleryStyles'] = $this->getGalleryStyles();
