@@ -17,12 +17,12 @@ var BertaGallerySlideshow = new Class({
       container.addClass('bt-is-mobile-device');
     }
 
-    this.getOptions();
+    this.initOptions();
     this.attach();
     this.loadFirst();
   },
 
-  getOptions: function () {
+  initOptions: function () {
     this.options = {
       fullscreen: this.container.get('data-fullscreen') !== null,
       autoplay: parseInt(this.container.get('data-autoplay'), 10),
