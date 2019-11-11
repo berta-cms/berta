@@ -1,12 +1,13 @@
 var BertaGallerySlideshow = new Class({
 
+  options: {},
   container: null,
   imageContainer: null,
   gallerySwiper: null,
   navContainer: null,
-  isRowFallback: false,
 
   initialize: function (container) {
+    this.container = container;
     this.is_mobile_device = window.BertaHelpers.isMobile();
     if (container.hasClass('xInitialized')) {
       return;
@@ -16,15 +17,23 @@ var BertaGallerySlideshow = new Class({
       container.addClass('bt-is-mobile-device');
     }
 
-    this.attach(container);
+    this.initOptions();
+    this.attach();
     this.loadFirst();
   },
 
-  attach: function (container) {
-    this.container = container;
-    var fallbackGallery = this.container.getPrevious();
-    this.isRowFallback = fallbackGallery && fallbackGallery.hasClass('xGalleryType-row') ? true : false;
-    this.fullscreen = this.container.get('data-fullscreen') !== null;
+  initOptions: function () {
+    this.options = {
+      fullscreen: this.container.get('data-fullscreen') !== null,
+      autoplay: parseInt(this.container.get('data-autoplay'), 10),
+      asRowGallery: this.container.get('data-as-row-gallery'),
+      swiperOptions: {
+        loop: this.container.get('data-loop'),
+      }
+    };
+  },
+
+  attach: function () {
     this.imageContainer = this.container.getElement('div.xGallery');
     this.navContainer = this.container.getElement('ul.xGalleryNav');
 
@@ -52,9 +61,8 @@ var BertaGallerySlideshow = new Class({
       var nav_highlightItem = this.nav_highlightItem;
       var li = this.navContainer.getElement('li');
       this.nav_highlightItem(li);
-      this.autoplay = parseInt(this.container.getClassStoredValue('xGalleryAutoPlay'), 10);
 
-      if (this.fullscreen || this.getNext()) {
+      if (this.options.fullscreen || this.getNext()) {
         var swiperEl = this.imageContainer.getElement('.swiper-container');
         var videos = [];
 
@@ -70,7 +78,7 @@ var BertaGallerySlideshow = new Class({
         };
 
         // Make gallery fit the screen in width for row gallery slideshow fallback
-        if (this.isRowFallback) {
+        if (this.options.asRowGallery) {
           var galleryWrapper = this.container.getFirst();
           galleryWrapper.setStyle('width', '100vw');
           var setFullWidth = function () {
@@ -83,13 +91,13 @@ var BertaGallerySlideshow = new Class({
 
         var swiperOptions = {
           init: false,
-          loop: bertaGlobalOptions.slideshowAutoRewind === 'yes' && !this.isRowFallback,
-          centeredSlides: this.isRowFallback,
-          slidesPerView: this.isRowFallback ? 'auto' : 1,
-          spaceBetween: this.isRowFallback ? 10 : 0,
+          loop: this.options.swiperOptions.loop,
+          centeredSlides: this.options.asRowGallery,
+          slidesPerView: this.options.asRowGallery ? 'auto' : 1,
+          spaceBetween: this.options.asRowGallery ? 10 : 0,
           autoHeight: true,
-          effect: this.isRowFallback ? 'slide' : 'fade',
-          mousewheel: this.isRowFallback ? {
+          effect: this.options.asRowGallery ? 'slide' : 'fade',
+          mousewheel: this.options.asRowGallery ? {
             releaseOnEdges: true
           } : false,
           fadeEffect: {
@@ -101,9 +109,9 @@ var BertaGallerySlideshow = new Class({
           }
         };
 
-        if (this.autoplay) {
+        if (this.options.autoplay) {
           swiperOptions['autoplay'] = {
-            delay: this.autoplay * 1000
+            delay: this.options.autoplay * 1000
           };
         }
 
@@ -112,18 +120,18 @@ var BertaGallerySlideshow = new Class({
         this.gallerySwiper.on('init', function () {
           this.imageContainer.querySelectorAll('.xGalleryItem').forEach(function (galleryItem, i) {
 
-            if (!(this.isRowFallback || this.fullscreen)) {
+            if (!(this.options.asRowGallery || this.options.fullscreen)) {
               return;
             }
 
-            if (this.fullscreen) {
+            if (this.options.fullscreen) {
               galleryItem.style.cursor = 'pointer';
             }
 
-            galleryItem.addEventListener('click', function() {
+            galleryItem.addEventListener('click', function () {
               // Row gallery slideshow fallback prev/next navigation
               // for partly visible slides
-              if (this.isRowFallback) {
+              if (this.options.asRowGallery) {
                 var isNextEl = galleryItem.parentNode.classList.contains('swiper-slide-next');
                 if (isNextEl) {
                   this.gallerySwiper.slideNext();

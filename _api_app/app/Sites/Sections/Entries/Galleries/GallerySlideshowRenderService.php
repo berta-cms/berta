@@ -3,6 +3,7 @@
 namespace App\Sites\Sections\Entries\Galleries;
 
 use App\Shared\Storage;
+use App\Shared\Helpers;
 
 class GallerySlideshowRenderService extends EntryGalleryRenderService
 {
@@ -11,6 +12,8 @@ class GallerySlideshowRenderService extends EntryGalleryRenderService
     public $siteTemplateSettings;
     public $storageService;
     public $isEditMode;
+    public $isLoopAvailable;
+    public $asRowGallery;
 
     public $galleryItemsData;
     public $galleryItems;
@@ -20,13 +23,17 @@ class GallerySlideshowRenderService extends EntryGalleryRenderService
         array $siteSettings,
         array $siteTemplateSettings,
         Storage $storageService,
-        $isEditMode
+        $isEditMode,
+        $isLoopAvailable = true,
+        $asRowGallery = false
     ) {
         $this->entry = $entry;
         $this->siteSettings = $siteSettings;
         $this->siteTemplateSettings = $siteTemplateSettings;
         $this->storageService = $storageService;
         $this->isEditMode = $isEditMode;
+        $this->isLoopAvailable = $isLoopAvailable;
+        $this->asRowGallery = $asRowGallery;
 
         parent::__construct();
 
@@ -38,6 +45,14 @@ class GallerySlideshowRenderService extends EntryGalleryRenderService
     {
         $data = parent::getViewData();
         $data['galleryClassList'] = $this->getGalleryClassList();
+        $data['attributes'] = [
+            'gallery' => Helpers::arrayToHtmlAttributes([
+                'data-fullscreen' => $data['isFullscreen'] ? 1 : null,
+                'data-as-row-gallery' => $this->asRowGallery,
+                'data-autoplay' => ($this->isLoopAvailable && !empty($this->entry['mediaCacheData']['@attributes']['autoplay'])) ? $this->entry['mediaCacheData']['@attributes']['autoplay'] : '0',
+                'data-loop' => $this->isLoopAvailable && isset($this->siteSettings['entryLayout']['gallerySlideshowAutoRewind']) && $this->siteSettings['entryLayout']['gallerySlideshowAutoRewind'] == 'yes'
+            ])
+        ];
         $data['galleryStyles'] = $this->getGalleryStyles();
 
         $data['items'] = $this->galleryItems;
@@ -51,10 +66,8 @@ class GallerySlideshowRenderService extends EntryGalleryRenderService
         $classes = parent::getGalleryClassList();
 
         if (!empty($this->galleryItemsData)) {
-            $galleryAutoPlay = !empty($this->entry['mediaCacheData']['@attributes']['autoplay']) ? $this->entry['mediaCacheData']['@attributes']['autoplay'] : '0';
             $gallerySlideNumbersVisible = !empty($this->entry['mediaCacheData']['@attributes']['slide_numbers_visible']) ? $this->entry['mediaCacheData']['@attributes']['slide_numbers_visible'] : $this->siteSettings['entryLayout']['gallerySlideNumberVisibilityDefault'];
 
-            $classes[] = 'xGalleryAutoPlay-' . $galleryAutoPlay;
             $classes[] = 'xSlideNumbersVisible-' . $gallerySlideNumbersVisible;
         }
 
