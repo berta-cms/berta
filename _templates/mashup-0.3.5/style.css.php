@@ -191,7 +191,7 @@ a:active {
     padding-bottom: <?php echo $s->get('entryLayout', 'spaceBetweenImages') ?>;
 }
 
-.xGalleryType-row .xGalleryItem {
+.xGalleryType-row:not(.bt-gallery-has-one-item) .xGalleryItem {
     margin-right: <?php echo $s->get('entryLayout', 'spaceBetweenImages') ?>;
 }
 
@@ -215,7 +215,7 @@ a:active {
     padding-left: <?php echo $s->get('pageLayout', 'paddingLeft') ?>;
 }
 
-.xSectionType-portfolio #pageEntries li.xEntry .xGalleryType-row .xGallery .xGalleryItem {
+.xSectionType-portfolio #pageEntries li.xEntry .xGalleryType-row:not(.bt-gallery-has-one-item) .xGallery .xGalleryItem {
     padding-bottom: <?php echo $s->get('entryLayout', 'spaceBetweenImages') ?>;
 }
 
@@ -237,7 +237,7 @@ a:active {
         padding-left: <?php echo $s->get('pageLayout', 'paddingLeft') ?>;
     }
 
-    .bt-responsive #pageEntries li.xEntry .xGalleryType-row .xGallery .xGalleryItem {
+    .bt-responsive #pageEntries li.xEntry .xGalleryType-row:not(.bt-gallery-has-one-item) .xGallery .xGalleryItem {
         padding-bottom: <?php echo $s->get('entryLayout', 'spaceBetweenImages') ?>;
     }
 }
