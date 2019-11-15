@@ -2,23 +2,23 @@
   {% if items %}
     <div class="xGallery" style="{{ galleryStyles }}" {% if rowGalleryPadding %} rowGalleryPadding="{{ rowGalleryPadding }}"{% endif %}>
 
-      {% for item in items %}
-        {% if item.type == 'image' %}
+      {%- for item in items -%}
+        {%- if item.type == 'image' -%}
           <div class="xGalleryItem xGalleryItemType-image xImgIndex-1" style="width: {{ item.width }}px; height: {{ item.height }}px">
             <img src="{{ item.src }}" width="{{ item.width }}" height="{{ item.height }}"{% if item.srcset %} srcset="{{ item.srcset }}"{% endif %} alt="{{ item.alt }}">
             <div class="xGalleryImageCaption">{{ item.caption|raw }}</div>
           </div>
-        {% else %}
+        {%- else -%}
           <div class="xGalleryItem xGalleryItemType-video">
             <video width="{{ item.width }}" controls{% if item.poster %} poster="{{ item.poster }}"{% endif %}{% if item.autoplay %} data-autoplay="1"{% endif %}>
               <source src="{{ item.original }}" type="video/mp4">
             </video>
             <div class="xGalleryImageCaption">{{ item.caption|raw }}</div>
           </div>
-        {% endif %}
-      {% endfor %}
+        {%- endif -%}
+      {%- endfor -%}
 
-      {% if loader %}
+      {%- if loader -%}
         <div class="xGalleryItem loading" style="width: {{ loader.width }}px; min-height: {{ loader.height }}px;">
           <svg xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" height="128" width="128" version="1.1">
             <g>
@@ -26,15 +26,15 @@
             </g>
           </svg>
         </div>
-      {% endif %}
+      {%- endif -%}
 
-      {% if isEditMode %}
+      {%- if isEditMode -%}
         <a href="#" class="xGalleryEditButton xEditorLink xSysCaption xMAlign-container">
           <span class="xMAlign-outer-gallery">
             <span class="xMAlign-inner-gallery">edit gallery</span>
           </span>
         </a>
-      {% endif %}
+      {%- endif -%}
     </div>
 
     <ul class="xGalleryNav" style="display:none">
