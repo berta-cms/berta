@@ -2,5 +2,7 @@
 /**
  * Berta's release version
  */
-$options['app_version'] = [1, 7, 1];
-$options['version'] = 'v' . implode('.', $options['app_version']);
+$composerConfig = json_decode(file_get_contents(dirname(__DIR__) . '/_api_app/composer.json'), true);
+
+$options['app_version'] = explode('.', $composerConfig['version']);
+$options['version'] = "v{$composerConfig['version']}";
