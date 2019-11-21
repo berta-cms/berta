@@ -174,7 +174,7 @@ h1 a:active {
     padding-bottom: <?php echo $s->get('entryLayout', 'spaceBetweenImages') ?>;
 }
 
-#pageEntries .xEntry .xGalleryType-row .xGalleryItem {
+#pageEntries .xEntry .xGalleryType-row:not(.bt-gallery-has-one-item) .xGalleryItem {
     margin-right: <?php echo $s->get('entryLayout', 'spaceBetweenImages') ?>;
 }
 
@@ -282,8 +282,8 @@ h1 a:active {
 
 @media (max-width: 767px) {
 
-    .bt-responsive #pageEntries .xEntry .xGalleryType-row .xGallery .xGalleryItem,
-    .bt-auto-responsive #pageEntries .xEntry .xGalleryType-row .xGallery .xGalleryItem {
+    .bt-responsive #pageEntries .xEntry .xGalleryType-row:not(.bt-gallery-has-one-item) .xGallery .xGalleryItem,
+    .bt-auto-responsive #pageEntries .xEntry .xGalleryType-row:not(.bt-gallery-has-one-item) .xGallery .xGalleryItem {
         padding-bottom: <?php echo $s->get('entryLayout', 'spaceBetweenImages') ?>;
     }
 

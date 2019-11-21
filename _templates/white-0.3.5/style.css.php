@@ -129,7 +129,7 @@ ol#pageEntries li.xEntry .xGalleryType-column .xGalleryItem {
     padding-bottom: <?php echo $s->get('entryLayout', 'spaceBetweenImages') ?>;
 }
 
-ol#pageEntries li.xEntry .xGalleryType-row .xGalleryItem {
+ol#pageEntries li.xEntry .xGalleryType-row:not(.bt-gallery-has-one-item) .xGalleryItem {
     margin-right: <?php echo $s->get('entryLayout', 'spaceBetweenImages') ?>;
 }
 
@@ -163,7 +163,7 @@ ol#pageEntries .xGalleryContainer ul.xGalleryNav li.selected a {
         padding-left: <?php echo $s->get('pageLayout', 'paddingLeft') ?>;
     }
 
-    .bt-responsive ol#pageEntries li.xEntry .xGalleryType-row .xGallery .xGalleryItem {
+    .bt-responsive ol#pageEntries li.xEntry .xGalleryType-row:not(.bt-gallery-has-one-item) .xGallery .xGalleryItem {
         padding-bottom: <?php echo $s->get('entryLayout', 'spaceBetweenImages') ?>;
     }
 }
