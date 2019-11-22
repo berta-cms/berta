@@ -65,14 +65,16 @@ import {
                             [enabledOnUpdate]="true"
                             [disabled]="addCostDisabled"
                             (update)="newCost.weight = $event"
-                            (inputFocus)="updateInputFocus($event)"></berta-text-input>
+                            (inputFocus)="updateInputFocus($event)"
+                            (keydown.enter)="addCost(region.id, $event)"></berta-text-input>
           <berta-text-input value=""
                             [placeholder]="(priceLabel$ | async)"
                             [title]="(priceTitle$ | async)"
                             [enabledOnUpdate]="true"
                             [disabled]="addCostDisabled"
                             (update)="newCost.price = $event"
-                            (inputFocus)="updateInputFocus($event)"></berta-text-input>
+                            (inputFocus)="updateInputFocus($event)"
+                            (keydown.enter)="addCost(region.id, $event)"></berta-text-input>
           <button type="submit" class="button" [attr.disabled]="(addCostDisabled ? '' : null)">Add</button>
         </div>
       </form>
@@ -85,13 +87,15 @@ import {
                           [enabledOnUpdate]="true"
                           [disabled]="addRegionDisabled"
                           (update)="newRegion.name = $event"
-                          (inputFocus)="updateInputFocus($event)"></berta-text-input>
+                          (inputFocus)="updateInputFocus($event)"
+                          (keydown.enter)="addRegion($event)"></berta-text-input>
         <berta-text-input [value]="newRegion.vat"
                           [placeholder]="'VAT (%)'"
                           [enabledOnUpdate]="true"
                           [disabled]="addRegionDisabled"
                           (update)="newRegion.vat = $event"
-                          (inputFocus)="updateInputFocus($event)"></berta-text-input>
+                          (inputFocus)="updateInputFocus($event)"
+                          (keydown.enter)="addRegion($event)"></berta-text-input>
         <button type="submit" class="button" [attr.disabled]="(addRegionDisabled ? '' : null)">Add</button>
       </div>
     </form>
