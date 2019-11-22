@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<settings>
+  <pageLayout>
+    <responsive><![CDATA[yes]]></responsive>
+    <centeredContents><![CDATA[no]]></centeredContents>
+    <centered><![CDATA[yes]]></centered>
+    <menuMargin><![CDATA[25px 10px]]></menuMargin>
+    <centeredWidth><![CDATA[960px]]></centeredWidth>
+  </pageLayout>
+  <entryHeading>
+    <googleFont><![CDATA[Karma]]></googleFont>
+    <margin><![CDATA[0 0 15px 0]]></margin>
+  </entryHeading>
+  <heading>
+    <googleFont><![CDATA[Pacifico]]></googleFont>
+    <fontSize><![CDATA[40px]]></fontSize>
+    <fontWeight><![CDATA[normal]]></fontWeight>
+  </heading>
+  <menu>
+    <fontWeight><![CDATA[bold]]></fontWeight>
+    <textDecorationHover><![CDATA[none]]></textDecorationHover>
+    <textDecorationActive><![CDATA[none]]></textDecorationActive>
+    <fontSize><![CDATA[16px]]></fontSize>
+    <fontFamily><![CDATA[Arial, sans-serif]]></fontFamily>
+    <googleFont><![CDATA[Karma]]></googleFont>
+    <lineHeight><![CDATA[2em]]></lineHeight>
+  </menu>
+  <generalFontSettings>
+    <googleFont><![CDATA[Karma]]></googleFont>
+    <fontSize><![CDATA[14px]]></fontSize>
+    <lineHeight><![CDATA[20px]]></lineHeight>
+  </generalFontSettings>
+  <entryLayout>
+    <contentWidth><![CDATA[700px]]></contentWidth>
+  </entryLayout>
+  <css>
+    <customCSS><![CDATA[h1 a:hover {
+    text-decoration: none;
+}
+
+.portfolioThumbnailsWrap {
+    margin-top: 0;
+}
+
+.floating-banner {
+    position: absolute;
+    top: 0;
+}
+
+.banner-3 {
+    right: 10px;
+}
+
+.banner-2 {
+    right: 50px;
+}
+
+.banner-1 {
+    right: 90px;
+}]]></customCSS>
+  </css>
+</settings>

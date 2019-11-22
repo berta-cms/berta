@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<blog section="photography" last_upd_ver="1130" version="0.8.10b">
+  <entry>
+    <id><![CDATA[2]]></id>
+    <uniqid><![CDATA[558d12ef8da61]]></uniqid>
+    <date><![CDATA[26.06.2015 11:53:03]]></date>
+    <content>
+      <title><![CDATA[Bike]]></title>
+      <description><![CDATA[<p style="text-align: justify;"><span>Donec condimentum dui dolor, sed rutrum enim placerat quis. Sed sodales nec metus posuere congue. Proin vitae consectetur nisi. Proin gravida ipsum velit, eu eleifend dui placerat at. Quisque nec magna sed nisl vulputate ornare sit amet sit amet velit. Sed sed urna bibendum, euismod orci ac, consequat velit. Nunc rhoncus, est vestibulum maximus pellentesque, tortor mauris vulputate tortor, vitae varius lorem diam ut purus.</span></p>]]></description>
+    </content>
+    <mediafolder><![CDATA[photography2]]></mediafolder>
+    <mediaCacheData type="column" fullscreen="yes">
+      <file type="image" src="rsz_bi1.jpg.jpg" width="1066" height="800"><![CDATA[]]></file>
+      <file type="image" src="rsz_bi2.jpg" width="1110" height="834"><![CDATA[]]></file>
+      <file type="image" src="rsz_bi31.jpg" width="1066" height="800"><![CDATA[]]></file>
+    </mediaCacheData>
+    <updated><![CDATA[12.08.2015 17:35:34]]></updated>
+  </entry>
+  <entry>
+    <id><![CDATA[1]]></id>
+    <uniqid><![CDATA[558561841ead6]]></uniqid>
+    <date><![CDATA[20.06.2015 15:50:12]]></date>
+    <content>
+      <title><![CDATA[Nature]]></title>
+      <description><![CDATA[<p style="text-align: justify;"><span>Ut eget mattis nunc. Nullam tristique convallis eros, nec dignissim mi maximus euismod. Morbi nec imperdiet diam. Donec ultricies orci sed urna dictum vulputate. Nam in nisi odio. Aenean vulputate tortor quis risus suscipit luctus. Duis in vehicula sapien. </span></p>
+<p style="text-align: justify;"><span>Curabitur dapibus libero ut augue feugiat semper. Integer ultricies arcu ligula, in bibendum ligula hendrerit non. Curabitur pretium sem vitae ipsum vulputate, vel euismod mauris pellentesque. Integer lacinia nisl id metus placerat, ac pellentesque augue convallis. Nam aliquam maximus ipsum, id vestibulum urna vestibulum eget. Nulla facilisi. Pellentesque ut eros ac turpis dictum lacinia. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.</span></p>]]></description>
+    </content>
+    <mediafolder><![CDATA[photography1]]></mediafolder>
+    <mediaCacheData type="column" fullscreen="yes">
+      <file type="image" src="rsz_na1.jpg" width="1069" height="801"><![CDATA[]]></file>
+      <file type="image" src="rsz_na2.jpg.jpg" width="1066" height="800"><![CDATA[]]></file>
+      <file type="image" src="rsz_na3.jpg" width="1066" height="800"><![CDATA[]]></file>
+    </mediaCacheData>
+    <updated><![CDATA[12.08.2015 17:38:51]]></updated>
+  </entry>
+  <entry>
+    <id><![CDATA[3]]></id>
+    <uniqid><![CDATA[558d14c2ccb1f]]></uniqid>
+    <date><![CDATA[26.06.2015 12:00:50]]></date>
+    <content>
+      <title><![CDATA[Materials]]></title>
+      <description><![CDATA[<p style="text-align: justify;"><span>Praesent in iaculis velit. Donec gravida commodo accumsan. Maecenas blandit interdum dui vel sagittis. Curabitur eu pretium purus, a efficitur nibh. Pellentesque sollicitudin euismod ipsum, vitae tristique felis convallis eu. Vestibulum nisi ex, egestas eu accumsan ut, mattis sit amet velit. </span></p>
+<p style="text-align: justify;"><span>Maecenas faucibus bibendum arcu. Praesent facilisis purus felis, quis faucibus mi pharetra et. Proin maximus ex quis faucibus placerat. Vestibulum ut dignissim magna. Cras pretium mi nec nisi convallis faucibus. Nunc mollis urna non sagittis pretium. </span></p>
+<p style="text-align: justify;"><span>Praesent rhoncus, purus a vestibulum luctus, nibh nulla cursus mauris, ac facilisis tellus risus a lectus. Donec orci sem, porta non quam quis, finibus tincidunt lacus. Quisque imperdiet pretium malesuada.</span></p>]]></description>
+    </content>
+    <mediafolder><![CDATA[photography3]]></mediafolder>
+    <mediaCacheData type="column" fullscreen="yes">
+      <file type="image" src="rsz_ch214353192201435320437.jpg" width="1498" height="1124"><![CDATA[]]></file>
+      <file type="image" src="rsz_ma1.jpg" width="1700" height="1133"><![CDATA[]]></file>
+      <file type="image" src="rsz_ma3.jpg.jpg" width="1068" height="798"><![CDATA[]]></file>
+    </mediaCacheData>
+    <updated><![CDATA[12.08.2015 17:39:03]]></updated>
+  </entry>
+  <entry>
+    <id><![CDATA[4]]></id>
+    <uniqid><![CDATA[558d1660ebb3c]]></uniqid>
+    <date><![CDATA[26.06.2015 12:07:44]]></date>
+    <content>
+      <title><![CDATA[Beach]]></title>
+      <description><![CDATA[<p style="text-align: justify;"><span>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras malesuada purus quis libero ullamcorper, vitae accumsan leo feugiat. Etiam consequat erat a lorem scelerisque tristique. Maecenas a convallis libero, id maximus nisi. </span></p>
+<p style="text-align: justify;"><span>Aliquam ac lorem a ex consequat porttitor ornare tempus felis. Ut vel magna ut ex sollicitudin sagittis. Integer fermentum elit nec arcu imperdiet efficitur. Curabitur lacinia ligula turpis, non feugiat nisi malesuada id. Donec ut lacus risus. Morbi id erat sodales, dapibus turpis et, porta tortor. Quisque fermentum massa et ante finibus accumsan. Maecenas eget commodo risus, ac convallis justo.</span></p>]]></description>
+    </content>
+    <mediafolder><![CDATA[photography4]]></mediafolder>
+    <mediaCacheData type="column" fullscreen="yes">
+      <file type="image" src="rsz_1ch71435319727.jpg" width="1497" height="1124"><![CDATA[]]></file>
+      <file type="image" src="rsz_beach3.jpg" width="1065" height="798"><![CDATA[]]></file>
+      <file type="image" src="rsz_beach2.jpg.jpg" width="1067" height="801"><![CDATA[]]></file>
+    </mediaCacheData>
+    <updated><![CDATA[12.08.2015 17:39:15]]></updated>
+  </entry>
+  <entry>
+    <id><![CDATA[5]]></id>
+    <uniqid><![CDATA[558d1670c7d5b]]></uniqid>
+    <date><![CDATA[26.06.2015 12:08:00]]></date>
+    <content>
+      <title><![CDATA[Sentiments]]></title>
+      <description><![CDATA[<p style="text-align: justify;"><span>Pellentesque commodo leo eu finibus tristique. Quisque fringilla, tellus at egestas tempus, risus libero ultricies mauris, a placerat ligula diam non eros. Duis scelerisque imperdiet tempus. Proin sed sollicitudin enim, nec tristique lorem. Nam tempor turpis ut urna viverra fermentum. Pellentesque a tincidunt urna.</span></p>]]></description>
+    </content>
+    <mediafolder><![CDATA[photography5]]></mediafolder>
+    <mediaCacheData type="column" fullscreen="yes">
+      <file type="image" src="rsz_ch6.jpg" width="1318" height="989"><![CDATA[]]></file>
+      <file type="image" src="lake-kajak-kayak.jpg" width="1671" height="1253"><![CDATA[]]></file>
+      <file type="image" src="rsz_man-people-walking-park.jpg.jpg" width="1782" height="1335"><![CDATA[]]></file>
+    </mediaCacheData>
+    <updated><![CDATA[12.08.2015 17:39:25]]></updated>
+  </entry>
+  <entry>
+    <id><![CDATA[6]]></id>
+    <uniqid><![CDATA[558d1682c3950]]></uniqid>
+    <date><![CDATA[26.06.2015 12:08:18]]></date>
+    <content>
+      <title><![CDATA[History]]></title>
+      <description><![CDATA[<p style="text-align: justify;"><span>Nam auctor vestibulum consequat. Duis convallis dignissim nulla, eu dapibus dolor. Phasellus sed dignissim leo, nec molestie metus. Sed viverra est felis, a efficitur lectus volutpat ut. Morbi ac semper ipsum. </span></p>
+<p style="text-align: justify;"><span>Mauris et condimentum mi. Nam a purus dapibus, blandit est eu, finibus turpis. Nulla accumsan accumsan eros, suscipit mattis metus. Fusce placerat sodales felis. Aenean sagittis vehicula metus, ut blandit est ultrices eget. Maecenas at tempor ipsum. Nulla consectetur aliquet elit, eu mattis lectus elementum nec. Praesent sed facilisis nisl. Mauris fermentum lacinia dui, non lobortis odio dignissim et. </span></p>
+<p style="text-align: justify;"><span>Maecenas quis nulla lorem. Curabitur sodales dictum gravida.</span></p>]]></description>
+    </content>
+    <mediafolder><![CDATA[photography6]]></mediafolder>
+    <mediaCacheData type="column" fullscreen="yes">
+      <file type="image" src="rsz_ch5.jpg" width="1513" height="1131"><![CDATA[]]></file>
+      <file type="image" src="rsz_hist2.jpg" width="1774" height="1330"><![CDATA[]]></file>
+      <file type="image" src="rsz_hist3.jpg" width="2000" height="1500"><![CDATA[]]></file>
+    </mediaCacheData>
+    <updated><![CDATA[12.08.2015 17:39:41]]></updated>
+  </entry>
+  <entry>
+    <id><![CDATA[7]]></id>
+    <uniqid><![CDATA[558d16a5db48a]]></uniqid>
+    <date><![CDATA[26.06.2015 12:08:53]]></date>
+    <content>
+      <title><![CDATA[Urbanism]]></title>
+      <description><![CDATA[<p style="text-align: justify;">Nam eu enim dictum ante sollicitudin scelerisque id at leo. Aliquam eu eleifend mi. Fusce pharetra elementum libero sed viverra. Praesent eros risus, malesuada at hendrerit et, posuere at metus. Curabitur diam leo, vulputate vitae venenatis sed, imperdiet at purus. Nunc aliquet commodo mi. Aenean faucibus enim nibh, faucibus tincidunt ligula volutpat at. Mauris ac ex magna. Nunc condimentum vehicula dictum. Donec in nisi eros. Pellentesque tempor feugiat nisi ac consectetur.</p>]]></description>
+    </content>
+    <mediafolder><![CDATA[photography7]]></mediafolder>
+    <mediaCacheData type="column" fullscreen="yes">
+      <file type="image" src="ur21435320784.jpg" width="1497" height="1124"><![CDATA[]]></file>
+      <file type="image" src="rsz_city2_1_.jpg" width="1779" height="1335"><![CDATA[]]></file>
+      <file type="image" src="rsz_citry3.jpg" width="2000" height="1339"><![CDATA[]]></file>
+    </mediaCacheData>
+    <updated><![CDATA[12.08.2015 17:39:55]]></updated>
+  </entry>
+  <entry>
+    <id><![CDATA[8]]></id>
+    <uniqid><![CDATA[558d16b874706]]></uniqid>
+    <date><![CDATA[26.06.2015 12:09:12]]></date>
+    <content>
+      <title><![CDATA[People]]></title>
+      <description><![CDATA[<p style="text-align: justify;"><span>Maecenas a sapien id ante tincidunt laoreet non sit amet justo. Mauris efficitur congue nulla, quis aliquet neque ornare eu. Suspendisse a odio massa. Pellentesque venenatis sed ante in dignissim. Curabitur sed tortor et diam commodo ornare a vitae arcu. Curabitur eu purus eget dolor sagittis ullamcorper. Integer sodales volutpat lacus, ut lobortis nunc hendrerit id.</span></p>]]></description>
+    </content>
+    <mediafolder><![CDATA[photography8]]></mediafolder>
+    <mediaCacheData type="column" fullscreen="yes">
+      <file type="image" src="rsz_1pe1.jpg" width="2000" height="1499"><![CDATA[]]></file>
+      <file type="image" src="rsz_pe2.jpg" width="2000" height="1496"><![CDATA[]]></file>
+      <file type="image" src="rsz_pe3.jpg" width="2000" height="1331"><![CDATA[]]></file>
+    </mediaCacheData>
+    <updated><![CDATA[12.08.2015 17:40:06]]></updated>
+  </entry>
+  <entry>
+    <id><![CDATA[9]]></id>
+    <uniqid><![CDATA[558d16c993988]]></uniqid>
+    <date><![CDATA[26.06.2015 12:09:29]]></date>
+    <content>
+      <title><![CDATA[B &amp; W]]></title>
+      <description><![CDATA[<p style="text-align: justify;"><span>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi vehicula fringilla placerat. Nullam at erat id nisl efficitur tempus. Aenean magna libero, volutpat non dolor ac, tincidunt fringilla orci. Maecenas eu eros mauris. Etiam maximus lectus sagittis felis suscipit tempor. Nullam ornare mauris eros, nec gravida mauris condimentum eget. Duis ullamcorper, tellus non eleifend tincidunt, augue urna mollis quam, quis viverra felis ipsum sit amet odio. Vestibulum lectus sapien, porta et tortor quis, rutrum varius erat. Morbi dignissim lorem nec tellus varius, sed tempor diam mollis. Fusce tincidunt lacus nec nulla posuere venenatis.</span></p>]]></description>
+    </content>
+    <mediafolder><![CDATA[photography9]]></mediafolder>
+    <mediaCacheData type="column" fullscreen="yes">
+      <file type="image" src="black-and-white-street-walking-zebra-crossing.jpg" width="1708" height="1277"><![CDATA[]]></file>
+      <file type="image" src="snow-black-and-white-forest-trees.jpg" width="1708" height="1280"><![CDATA[]]></file>
+      <file type="image" src="rsz_bw2.jpg" width="2000" height="1500"><![CDATA[]]></file>
+    </mediaCacheData>
+    <updated><![CDATA[12.08.2015 17:40:18]]></updated>
+  </entry>
+</blog>
