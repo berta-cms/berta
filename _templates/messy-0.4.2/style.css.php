@@ -93,7 +93,6 @@ h1 a:active {
     font-size: <?php echo $s->get('menu', 'fontSize') ?>;
     font-weight: <?php echo $s->get('menu', 'fontWeight') ?>;
     font-style: <?php echo $s->get('menu', 'fontStyle') ?>;
-    font-variant: <?php echo $s->get('menu', 'fontVariant') ?>;
     line-height: <?php echo $s->get('menu', 'lineHeight') ?>;
     position: <?php echo $s->get('menu', 'position') ?> !important;
 }
