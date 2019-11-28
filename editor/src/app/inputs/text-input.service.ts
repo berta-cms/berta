@@ -54,6 +54,14 @@ export class TextInputService {
       return null;
     }
 
+    if (event.key === 'ArrowDown' || event.keyCode === 40) {
+      console.log('event');
+    }
+
+    if (event.key === 'ArrowUp' || event.keyCode === 38) {
+
+    }
+
     if (event.target.value === this.lastValue) {
       return null;
     }
