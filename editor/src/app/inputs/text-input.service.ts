@@ -47,19 +47,40 @@ export class TextInputService {
     this.updateField(event);
   }
 
-  updateField(event) {
+    const bigUnits = ['px', '%', 'pt'];
+    const litleUnits = ['em', 'rem', 'vw', 'vh'];
+
     if (event instanceof KeyboardEvent && (event.key === 'Escape' || event.keyCode === 27)) {
       (event.target as HTMLInputElement).value = this.lastValue;
       (event.target as HTMLInputElement).blur();
       return null;
     }
 
+      const regex  = /\D+/g;
+      const regex1 = /\d+/g;
+      const found = event.target.value.match(regex);
+      const digit = event.target.value.match(regex1);
+      let value = Number(digit.shift());
+      const unit = found === null ? null : found.shift();
+      let i = 0;
+      if (digit != null) {
+        if (event.target.value === null || event.target.value === '' || found === null || bigUnits.includes(found[0])) {
+          i = 1;
+        } else if (litleUnits.includes(found[0])) {
+          i = 0.1;
+        }
     if (event.key === 'ArrowDown' || event.keyCode === 40) {
-      console.log('event');
+          value = value - i;
+          (event.target as HTMLInputElement).value = value + unit; // fonction pour changer la value
+          return null;
     }
 
     if (event.key === 'ArrowUp' || event.keyCode === 38) {
-
+          value = value + i;
+          (event.target as HTMLInputElement).value = value + unit; // fonction pour changer la value
+          return null;
+        }
+      }
     }
 
     if (event.target.value === this.lastValue) {
