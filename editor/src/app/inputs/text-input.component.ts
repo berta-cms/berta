@@ -22,7 +22,7 @@ import { TextInputService } from './text-input.service';
                  [attr.placeholder]="placeholder"
                  [attr.type]="(type || 'text')"
                  (focus)="onFocus()"
-                 (keydown)="onKeyDown($event)"
+                 (keydown)="onKeyDown($event, label)"
                  (blur)="onBlur($event)">
           <svg *ngIf="allowBlank && value"
                (click)="clearValue($event)"
@@ -88,8 +88,8 @@ export class TextInputComponent implements OnInit {
     this.inputFocus.emit(false);
   }
 
-  onKeyDown(event) {
-    this.textInputService.updateField(event);
+  onKeyDown(event, label) {
+    this.textInputService.updateField(event, label);
   }
 
   clearValue(event) {

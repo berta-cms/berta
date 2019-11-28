@@ -96,7 +96,7 @@ export class UrlInputComponent implements OnInit {
   }
 
   onKeyDown(event) {
-    this.textInputService.updateField(event);
+    this.textInputService.updateField(event, null);
   }
 
   clearValue(event) {

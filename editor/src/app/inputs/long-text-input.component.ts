@@ -61,6 +61,6 @@ export class LongTextInputComponent implements OnInit {
   }
 
   onKeyDown(event) {
-    this.textInputService.updateField(event);
+    this.textInputService.updateField(event, null);
   }
 }

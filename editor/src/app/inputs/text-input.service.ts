@@ -44,9 +44,11 @@ export class TextInputService {
     if (!event.target.value && !this.hideIcon) {
       this.showIcon.next(true);
     }
-    this.updateField(event);
+    this.updateField(event, null);
   }
 
+  updateField(event, label) {
+    const myLabel = ['Page margins', 'Margins', 'Gallery margins', 'Entry margins'];
     const bigUnits = ['px', '%', 'pt'];
     const litleUnits = ['em', 'rem', 'vw', 'vh'];
 
@@ -55,6 +57,7 @@ export class TextInputService {
       (event.target as HTMLInputElement).blur();
       return null;
     }
+    if (!myLabel.includes(label)) {
       const regex  = /[a-z]+/g;
       const regex1 = /-?[0-9]\d*(\.\d+)?/g;
       const found = event.target.value.match(regex);
@@ -75,16 +78,15 @@ export class TextInputService {
           i = i * 10;
         }
 
-    if (event.key === 'ArrowDown' || event.keyCode === 40) {
+        if (event.key === 'ArrowDown' || event.keyCode === 40) {
           value = Math.round((value - i) * 10) / 10;
-    }
+        }
 
-    if (event.key === 'ArrowUp' || event.keyCode === 38) {
+        if (event.key === 'ArrowUp' || event.keyCode === 38) {
           value = Math.round((value + i) * 10) / 10;
         }
-          (event.target as HTMLInputElement).value = value + unit; // fonction pour changer la value
-          return null;
-        }
+        (event.target as HTMLInputElement).value = value + unit; // fonction pour changer la value
+        return null;
       }
     }
 
