@@ -70,16 +70,18 @@ export class TextInputService {
         } else if (litleUnits.includes(unit)) {
           i = 0.1;
         }
+
+        if (event.ctrlKey === true) {
+          i = i * 10;
+        }
+
     if (event.key === 'ArrowDown' || event.keyCode === 40) {
           value = Math.round((value - i) * 10) / 10;
-
-          (event.target as HTMLInputElement).value = value + unit; // fonction pour changer la value
-          return null;
     }
 
     if (event.key === 'ArrowUp' || event.keyCode === 38) {
-          value = value + i;
-          value = Math.round(value * 10) / 10;
+          value = Math.round((value + i) * 10) / 10;
+        }
           (event.target as HTMLInputElement).value = value + unit; // fonction pour changer la value
           return null;
         }
