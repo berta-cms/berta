@@ -55,28 +55,31 @@ export class TextInputService {
       (event.target as HTMLInputElement).blur();
       return null;
     }
-
-      const regex  = /\D+/g;
-      const regex1 = /\d+/g;
+      const regex  = /[a-z]+/g;
+      const regex1 = /-?[0-9]\d*(\.\d+)?/g;
       const found = event.target.value.match(regex);
       const digit = event.target.value.match(regex1);
-      let value = Number(digit.shift());
+      let value = Number(digit === null ? null : digit.shift());
       const unit = found === null ? null : found.shift();
       let i = 0;
-      if (digit != null) {
-        if (event.target.value === null || event.target.value === '' || found === null || bigUnits.includes(found[0])) {
+
+      if (value != null) {
+
+        if (value === null || found === null || bigUnits.includes(unit)) {
           i = 1;
-        } else if (litleUnits.includes(found[0])) {
+        } else if (litleUnits.includes(unit)) {
           i = 0.1;
         }
     if (event.key === 'ArrowDown' || event.keyCode === 40) {
-          value = value - i;
+          value = Math.round((value - i) * 10) / 10;
+
           (event.target as HTMLInputElement).value = value + unit; // fonction pour changer la value
           return null;
     }
 
     if (event.key === 'ArrowUp' || event.keyCode === 38) {
           value = value + i;
+          value = Math.round(value * 10) / 10;
           (event.target as HTMLInputElement).value = value + unit; // fonction pour changer la value
           return null;
         }
