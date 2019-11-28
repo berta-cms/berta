@@ -48,45 +48,49 @@ export class TextInputService {
   }
 
   updateField(event, label) {
-    const myLabel = ['Page margins', 'Margins', 'Gallery margins', 'Entry margins'];
-    const bigUnits = ['px', '%', 'pt'];
-    const litleUnits = ['em', 'rem', 'vw', 'vh'];
 
     if (event instanceof KeyboardEvent && (event.key === 'Escape' || event.keyCode === 27)) {
       (event.target as HTMLInputElement).value = this.lastValue;
       (event.target as HTMLInputElement).blur();
       return null;
     }
-    if (!myLabel.includes(label)) {
-      const regex  = /[a-z%]+/g;
-      const regex1 = /-?[0-9]\d*(\.\d+)?/g;
-      const found = event.target.value.match(regex);
-      const digit = event.target.value.match(regex1);
-      let value = Number(digit === null ? null : digit.shift());
-      const unit = found === null ? null : found.shift();
-      let i = 0;
 
-      if (value != null) {
+    if (event.key === 'ArrowDown' || event.keyCode === 40 || event.key === 'ArrowUp' || event.keyCode === 38) {
+      const myLabel = ['Page margins', 'Margins', 'Gallery margins', 'Entry margins'];
+      const bigUnits = ['px', '%', 'pt'];
+      const litleUnits = ['em', 'rem', 'vw', 'vh'];
 
-        if (value === null || found === null || bigUnits.includes(unit)) {
-          i = 1;
-        } else if (litleUnits.includes(unit)) {
-          i = 0.1;
+      if (!myLabel.includes(label)) {
+        const regex  = /[a-z%]+/g;
+        const regex1 = /-?[0-9]\d*(\.\d+)?/g;
+        const found = event.target.value.match(regex);
+        const digit = event.target.value.match(regex1);
+        let value = Number(digit === null ? null : digit.shift());
+        const unit = found === null ? null : found.shift();
+        let i = 0;
+
+        if (value != null) {
+
+          if (value === null || found === null || bigUnits.includes(unit)) {
+            i = 1;
+          } else if (litleUnits.includes(unit)) {
+            i = 0.1;
+          }
+
+          if (event.ctrlKey === true) {
+            i = i * 10;
+          }
+
+          if (event.key === 'ArrowDown' || event.keyCode === 40) {
+            value = Math.round((value - i) * 10) / 10;
+          }
+
+          if (event.key === 'ArrowUp' || event.keyCode === 38) {
+            value = Math.round((value + i) * 10) / 10;
+          }
+          (event.target as HTMLInputElement).value = value + unit; // fonction pour changer la value
+          return null;
         }
-
-        if (event.ctrlKey === true) {
-          i = i * 10;
-        }
-
-        if (event.key === 'ArrowDown' || event.keyCode === 40) {
-          value = Math.round((value - i) * 10) / 10;
-        }
-
-        if (event.key === 'ArrowUp' || event.keyCode === 38) {
-          value = Math.round((value + i) * 10) / 10;
-        }
-        (event.target as HTMLInputElement).value = value + unit; // fonction pour changer la value
-        return null;
       }
     }
 
