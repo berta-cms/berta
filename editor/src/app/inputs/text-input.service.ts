@@ -58,7 +58,7 @@ export class TextInputService {
       return null;
     }
     if (!myLabel.includes(label)) {
-      const regex  = /[a-z]+/g;
+      const regex  = /[a-z%]+/g;
       const regex1 = /-?[0-9]\d*(\.\d+)?/g;
       const found = event.target.value.match(regex);
       const digit = event.target.value.match(regex1);
