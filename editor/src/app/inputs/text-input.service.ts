@@ -44,10 +44,10 @@ export class TextInputService {
     if (!event.target.value && !this.hideIcon) {
       this.showIcon.next(true);
     }
-    this.updateField(event, null);
+    this.updateField(event);
   }
 
-  updateField(event, label) {
+  updateField(event) {
 
     if (event instanceof KeyboardEvent && (event.key === 'Escape' || event.keyCode === 27)) {
       (event.target as HTMLInputElement).value = this.lastValue;
@@ -56,15 +56,14 @@ export class TextInputService {
     }
 
     if (event.key === 'ArrowDown' || event.keyCode === 40 || event.key === 'ArrowUp' || event.keyCode === 38) {
-      const myLabel = ['Page margins', 'Margins', 'Gallery margins', 'Entry margins'];
       const bigUnits = ['px', '%', 'pt'];
       const litleUnits = ['em', 'rem', 'vw', 'vh'];
+      const unitRegex  = /[a-z%]+/g;
+      const digitRegex = /-?[0-9]\d*(\.\d+)?/g;
+      const found = event.target.value.match(unitRegex);
+      const digit = event.target.value.match(digitRegex);
 
-      if (!myLabel.includes(label)) {
-        const regex  = /[a-z%]+/g;
-        const regex1 = /-?[0-9]\d*(\.\d+)?/g;
-        const found = event.target.value.match(regex);
-        const digit = event.target.value.match(regex1);
+      if (digit.length === 1) {
         let value = Number(digit === null ? null : digit.shift());
         const unit = found === null ? null : found.shift();
         let i = 0;
