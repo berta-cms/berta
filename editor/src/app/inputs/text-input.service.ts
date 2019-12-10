@@ -58,15 +58,17 @@ export class TextInputService {
     if (event.key === 'ArrowDown' || event.keyCode === 40 || event.key === 'ArrowUp' || event.keyCode === 38) {
       const bigUnits = ['px', '%', 'pt'];
       const litleUnits = ['em', 'rem', 'vw', 'vh'];
+
       const unitRegex  = /[a-z%]+/g;
       const digitRegex = /-?[0-9]\d*(\.\d+)?/g;
-      const found = event.target.value.match(unitRegex);
-      const digit = event.target.value.match(digitRegex) === null ? null : event.target.value.match(digitRegex);
-      let value = Number(digit === null ? null : digit.shift());
-      const unit = found === null ? null : found.shift();
-      let i = 0;
 
-      if (value !== null && typeof digit[0] === 'undefined') {
+      const found = event.target.value.match(unitRegex);
+      const digit = event.target.value.match(digitRegex);
+
+      if (digit !== null && digit.length <= 1 ) {
+        let value = Number(digit.shift());
+        const unit = found === null ? null : found.shift();
+        let i: number;
 
         if (found === null || bigUnits.includes(unit)) {
           i = 1;
