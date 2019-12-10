@@ -7,6 +7,7 @@ use App\Shared\Storage;
 use App\Shared\ImageHelpers;
 use App\Shared\ConfigHelpers;
 use App\Sites\Sections\SiteSectionsDataService;
+use App\Configuration\SiteTemplatesConfigService;
 
 /**
  * This class is a service that handles site settings data for Berta CMS.
@@ -277,6 +278,7 @@ class SiteSettingsDataService extends Storage
     ];
     private $siteSettingsDefaults;
     private $siteSettingsConfig;
+    private $siteTemplatesConfigService;
 
     public function __construct($site = '')
     {
@@ -287,6 +289,7 @@ class SiteSettingsDataService extends Storage
         $siteSettingsConfigService = new SiteSettingsConfigService();
         $this->siteSettingsDefaults = $siteSettingsConfigService->getDefaults();
         $this->siteSettingsConfig = $siteSettingsConfigService->get();
+        $this->siteTemplatesConfigService = new SiteTemplatesConfigService();
     }
 
     public function getDefaultSettings()
@@ -561,6 +564,40 @@ class SiteSettingsDataService extends Storage
     }
 
     public function reload() {
-        $this->SITE_SETTINGS = $this->xmlFile2array($this->XML_FILE);
+        $this->SITE_SETTINGS = $this->fixTemplateName($this->xmlFile2array($this->XML_FILE));
+    }
+
+    /**
+     * Update version in template name to current version, save and return the settings.
+     *
+     * In old Berta versions templates have old versions.
+     * For instance `messy-0.4.0` instead of `messy-0.4.2` (or whatever the current is).
+     * To work around this legacy feature we fid the template that starts with the same name
+     * and use it's current version instead.
+     *
+     * @param array $settings
+     * @return array
+     */
+    private function fixTemplateName($settings) {
+        $availableTemplates = array_keys($this->siteTemplatesConfigService->get());
+
+        if (empty($settings['template']['template']) || in_array($settings['template']['template'], $availableTemplates)) {
+            return $settings;
+        }
+
+        list($name) = explode('-', $settings['template']['template']);
+        // This is equivalent to find function in JS
+        $actualName = current(array_filter($availableTemplates, function($template) use ($name) {
+            return starts_with($template, $name);
+        }));
+
+        if (!$actualName) {
+            $actualName = self::$DEFAULT_SITE_SETTINGS['template/template'];
+        }
+
+        $settings['template']['template'] = $actualName;
+        $this->array2xmlFile($settings, $this->XML_FILE, $this->ROOT_ELEMENT);
+
+        return $settings;
     }
 }
