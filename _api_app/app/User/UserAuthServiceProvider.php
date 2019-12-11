@@ -36,7 +36,6 @@ class UserAuthServiceProvider extends ServiceProvider
         /** @var {array} $options - this gets the berta version */
         include realpath(config('app.old_berta_root'). '/engine/inc.version.php');
         \Berta::$options['version'] = $options['version'];
-        /** @! This may not work with berta deep in subdirectories */
         \Berta::$options['SITE_ROOT_URL'] = '/';
 
         $this->bertaSecurity = new \BertaSecurity();
@@ -57,7 +56,14 @@ class UserAuthServiceProvider extends ServiceProvider
         Auth::viaRequest('jwt_token', function (Request $request) {
             $token = $this->getBearerToken($request);
 
-            if ($token && Helpers::validate_token($token)) {
+            if (
+                $token && Helpers::validate_token($token) ||
+                // If the token is not provided, we need to check if OLD berta is authenticated
+                // This is due to Old Systems dependency on the new ONE, sometimes it will need to know
+                // Sometimes the old system will need to know if it's authenticated through the new system
+                // see: SiteSettingsConfigService.php:32 (Auth::check())
+                empty($token) && $this->bertaSecurity->authentificated
+            ) {
                 return new UserModel();
             } else {
                 $this->authController = new AuthController();
