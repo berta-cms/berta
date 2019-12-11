@@ -63,7 +63,6 @@ class AuthController extends Controller
         /** @var {array} $options - this gets the berta version */
         include realpath(config('app.old_berta_root') . '/engine/inc.version.php');
         \Berta::$options['version'] = $options['version'];
-        /** @! This may not work with berta deep in subdirectories */
         \Berta::$options['SITE_ROOT_URL'] = '/';
 
         $this->bertaSecurity = new \BertaSecurity();
