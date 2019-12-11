@@ -49,6 +49,12 @@ class SiteSettingsConfigService
         $this->settings['template']['template']['values'] = $this->getTemplates();
         $this->settings['template']['template']['default'] = $this->defaultTemplate;
 
+        // Make sure `shop` settings don't mix with the page settings.
+        // @TODO remove this once we clean up the settings
+        if (isset($this->settings['shop'])) {
+            unset($this->settings['shop']);
+        }
+
         return $this->settings;
     }
 
