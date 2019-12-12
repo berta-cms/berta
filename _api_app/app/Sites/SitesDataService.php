@@ -3,6 +3,7 @@ namespace App\Sites;
 
 use App\Shared\Helpers;
 use App\Shared\Storage;
+use PDO;
 
 /**
  * @class Sites
@@ -165,6 +166,21 @@ class SitesDataService extends Storage
 
         $this->array2xmlFile(['site' => $sites], $this->XML_FILE, $this->ROOT_ELEMENT);
         $site['order'] = count($sites) - 1;
+
+        $dbPath = $dir . '/shop-db.sqlite';
+        if (file_exists($dbPath)) {
+            try {
+                $db = new PDO("sqlite:".$dbPath);
+                $db->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
+            }catch(PDOException $e) {
+
+                echo $e->getMessage();
+                die();
+            }
+            $h = $db->prepare('DELETE FROM orders');
+            $h->execute();
+            $db = null;
+        }
 
         return $site;
     }
