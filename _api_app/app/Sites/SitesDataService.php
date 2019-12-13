@@ -179,6 +179,8 @@ class SitesDataService extends Storage
             }
             $h = $db->prepare('DELETE FROM orders');
             $h->execute();
+            $h = $db->prepare('UPDATE product SET reservation = 0');
+            $h->execute();
             $db = null;
         }
 
