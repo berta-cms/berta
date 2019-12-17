@@ -67,7 +67,7 @@ export class TextInputService {
       if (digit !== null && digit.length <= 1 ) {
         let value = Number(digit.shift());
         const unit = found === null ? null : found.shift();
-        let i: number;
+        let i = 0;
 
         if (found === null || integerUnits.includes(unit)) {
           i = 1;
