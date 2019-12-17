@@ -48,7 +48,6 @@ export class TextInputService {
   }
 
   updateField(event) {
-
     if (event instanceof KeyboardEvent && (event.key === 'Escape' || event.keyCode === 27)) {
       (event.target as HTMLInputElement).value = this.lastValue;
       (event.target as HTMLInputElement).blur();
@@ -56,8 +55,8 @@ export class TextInputService {
     }
 
     if (event.key === 'ArrowDown' || event.keyCode === 40 || event.key === 'ArrowUp' || event.keyCode === 38) {
-      const bigUnits = ['px', '%', 'pt'];
-      const litleUnits = ['em', 'rem', 'vw', 'vh'];
+      const integerUnits = ['px', '%', 'pt'];
+      const decimalUnits = ['em', 'rem', 'vw', 'vh'];
 
       const unitRegex  = /[a-z%]+/g;
       const digitRegex = /-?[0-9]\d*(\.\d+)?/g;
@@ -70,9 +69,9 @@ export class TextInputService {
         const unit = found === null ? null : found.shift();
         let i: number;
 
-        if (found === null || bigUnits.includes(unit)) {
+        if (found === null || integerUnits.includes(unit)) {
           i = 1;
-        } else if (litleUnits.includes(unit)) {
+        } else if (decimalUnits.includes(unit)) {
           i = 0.1;
         }
 
