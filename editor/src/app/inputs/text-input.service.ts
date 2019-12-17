@@ -87,7 +87,7 @@ export class TextInputService {
         if (event.key === 'ArrowUp' || event.keyCode === 38) {
           value = Math.round((value + i) * 10) / 10;
         }
-        (event.target as HTMLInputElement).value = value + unit; // fonction pour changer la value
+        (event.target as HTMLInputElement).value = value + unit;
         return null;
       }
     }
