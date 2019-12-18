@@ -75,7 +75,7 @@ export class TextInputService {
           i = 0.1;
         }
 
-        if (event.ctrlKey === true) {
+        if (event.ctrlKey === true || event.metaKey === true) {
           i = i * 10;
         }
 
