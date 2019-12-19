@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<sections>
+  <section tags_behavior="invisible" published="1" has_direct_content="1" entry_count="1">
+    <name><![CDATA[story]]></name>
+    <title><![CDATA[STORY]]></title>
+    <seoTitle><![CDATA[Create a website with Berta.me]]></seoTitle>
+    <seoKeywords><![CDATA[how to make web, design a website]]></seoKeywords>
+    <seoDescription><![CDATA[Capetown is a simple, but modern theme that is built on Berta.me. Choose this theme, add your content and showcase your work online.]]></seoDescription>
+  </section>
+  <section tags_behavior="invisible" published="1" has_direct_content="1" entry_count="6">
+    <name><![CDATA[products]]></name>
+    <title><![CDATA[PRODUCTS]]></title>
+    <columns><![CDATA[3]]></columns>
+  </section>
+  <section tags_behavior="invisible" published="1" has_direct_content="1" entry_count="4">
+    <name><![CDATA[team]]></name>
+    <title><![CDATA[TEAM]]></title>
+    <columns><![CDATA[2]]></columns>
+    <entryPadding><![CDATA[0 10px 40px 10px]]></entryPadding>
+  </section>
+  <section tags_behavior="invisible" published="1" has_direct_content="1" entry_count="2">
+    <name><![CDATA[contacts]]></name>
+    <title><![CDATA[CONTACTS]]></title>
+    <columns><![CDATA[2]]></columns>
+  </section>
+</sections>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<blog section="story" last_upd_ver="1120" version="0.8.10b">
+  <entry>
+    <id><![CDATA[1]]></id>
+    <uniqid><![CDATA[5509940b60042]]></uniqid>
+    <date><![CDATA[18.03.2015 17:04:43]]></date>
+    <tags>
+      <tag />
+    </tags>
+    <content>
+      <title />
+      <url />
+      <description><![CDATA[<p><iframe src="https://player.vimeo.com/video/62266367?color=ffffff&amp;title=0&amp;byline=0&amp;portrait=0&amp;badge=0" width="500" height="281" frameborder="0" webkitallowfullscreen="" mozallowfullscreen="" allowfullscreen=""></iframe></p>
+<p><a href="https://vimeo.com/62266367">Jory Brigham Design</a> from <a href="https://vimeo.com/cana">The Cana Family</a> on <a href="https://vimeo.com">Vimeo</a>.</p>]]></description>
+    </content>
+    <mediafolder><![CDATA[story1]]></mediafolder>
+    <mediaCacheData type="slideshow" fullscreen="yes">
+      <file />
+    </mediaCacheData>
+    <updated><![CDATA[18.03.2015 17:10:42]]></updated>
+  </entry>
+</blog>

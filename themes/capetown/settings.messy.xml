@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<settings>
+  <pageLayout>
+    <responsive><![CDATA[yes]]></responsive>
+    <centeredContents><![CDATA[yes]]></centeredContents>
+    <menuMargin><![CDATA[30px 80px 40px 80px]]></menuMargin>
+    <centeredWidth><![CDATA[900px]]></centeredWidth>
+    <centered><![CDATA[yes]]></centered>
+  </pageLayout>
+  <heading>
+    <position><![CDATA[fixed]]></position>
+    <image><![CDATA[rsz_rsz_bird1.png]]></image>
+    <image_width><![CDATA[113]]></image_width>
+    <image_height><![CDATA[113]]></image_height>
+  </heading>
+  <menu>
+    <googleFont><![CDATA[Ropa Sans]]></googleFont>
+    <position><![CDATA[absolute]]></position>
+    <fontWeight><![CDATA[normal]]></fontWeight>
+    <textDecorationHover><![CDATA[none]]></textDecorationHover>
+    <textDecorationActive><![CDATA[none]]></textDecorationActive>
+    <colorActive><![CDATA[#f50f0f]]></colorActive>
+  </menu>
+  <background>
+    <backgroundImageEnabled><![CDATA[yes]]></backgroundImageEnabled>
+    <backgroundColor><![CDATA[#f0f0f0]]></backgroundColor>
+  </background>
+  <entryLayout>
+    <galleryMargin><![CDATA[10px]]></galleryMargin>
+    <contentWidth><![CDATA[450px]]></contentWidth>
+    <spaceBetweenImages><![CDATA[0px]]></spaceBetweenImages>
+    <galleryNavMargin><![CDATA[0px]]></galleryNavMargin>
+  </entryLayout>
+  <css>
+    <customCSS><![CDATA[@media (min-width: 481px) {
+    .xContent-team #pageEntries.columns-2 .xEntry {
+        width: 70%;
+    }
+
+    .xContent-team #pageEntries.columns-2 .xEntry:nth-child(2n+1) {
+        width: 30%;
+    }
+}]]></customCSS>
+  </css>
+  <generalFontSettings>
+    <fontSize><![CDATA[15px]]></fontSize>
+    <googleFont><![CDATA[Quattrocento Sans]]></googleFont>
+  </generalFontSettings>
+  <entryHeading>
+    <margin><![CDATA[0 0 0 0]]></margin>
+  </entryHeading>
+  <links>
+    <textDecorationHover><![CDATA[none]]></textDecorationHover>
+    <textDecorationActive><![CDATA[none]]></textDecorationActive>
+  </links>
+</settings>
