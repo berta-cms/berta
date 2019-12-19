@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<blog section="shows" last_upd_ver="1120" version="0.8.10b">
+  <entry>
+    <id><![CDATA[1]]></id>
+    <uniqid><![CDATA[551297146494c]]></uniqid>
+    <date><![CDATA[25.03.2015 13:08:04]]></date>
+    <tags>
+      <tag />
+    </tags>
+    <content>
+      <title />
+      <url />
+      <description><![CDATA[<h2><span style="color: #c0c0c0; font-size: xx-large;"><span style="color: #c0c0c0; font-size: xx-large;"></span><span style="color: #c0c0c0; font-size: xx-large;"></span>Kyoto Fashion Week</span></h2>
+<p></p>
+<p><span style="color: #c0c0c0;">Cras mattis consectetur purus sit amet fermentum. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Maecenas faucibus mollis interdum. Sed posuere consectetur est at lobortis. Curabitur blandit tempus porttitor. Sed posuere consectetur est at lobortis.&nbsp;Aenean lacinia bibendum nulla sed.</span></p>]]></description>
+    </content>
+    <mediafolder><![CDATA[shows1]]></mediafolder>
+    <mediaCacheData type="row" fullscreen="yes" size="medium">
+      <file type="image" src="show01.jpg" width="959" height="1600"></file>
+      <file type="image" src="show03.jpg" width="804" height="1340"></file>
+      <file type="image" src="show04.jpg" width="916" height="1528"></file>
+      <file type="image" src="rsz_show07.jpg" width="1203" height="2000"></file>
+      <file type="image" src="show06.jpg" width="959" height="1600"></file>
+      <file type="image" src="rsz_show02.jpg" width="1200" height="2000"></file>
+    </mediaCacheData>
+    <updated><![CDATA[25.03.2015 15:18:06]]></updated>
+  </entry>
+</blog>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<blog section="fashion" last_upd_ver="1120" version="0.8.10b">
+  <entry>
+    <id><![CDATA[1]]></id>
+    <uniqid><![CDATA[550886d47db21]]></uniqid>
+    <date><![CDATA[17.03.2015 21:56:04]]></date>
+    <tags>
+      <tag />
+    </tags>
+    <content>
+      <title />
+      <url />
+      <description><![CDATA[<h2><span style="color: #c0c0c0; font-size: xx-large;"><span style="background-color: #000000;"></span><span style="background-color: #000000;"></span>Maecenas faucibus</span></h2>
+<p></p>
+<p><span style="color: #c0c0c0;">Cras mattis consectetur purus sit amet fermentum. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Maecenas faucibus mollis interdum. Sed posuere consectetur est at lobortis. Curabitur blandit tempus porttitor. Sed posuere consectetur est at lobortis.&nbsp;Aenean lacinia bibendum nulla sed.&nbsp;<span>Cras mattis consectetur purus sit amet fermentum. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Maecenas faucibus mollis interdum. Sed posuere consectetur est at lobortis. Curabitur blandit tempus porttitor. Sed posuere consectetur est at lobortis.&nbsp;Aenean lacinia bibendum nulla sed.</span></span></p>
+<p><span style="color: #c0c0c0;"><span>Cras mattis consectetur purus sit amet fermentum. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Maecenas faucibus mollis interdum. Sed posuere consectetur est at lobortis. Curabitur blandit tempus porttitor. Sed posuere consectetur est at lobortis.&nbsp;Aenean lacinia bibendum nulla sed.</span></span></p>]]></description>
+    </content>
+    <mediafolder><![CDATA[fashion1]]></mediafolder>
+    <mediaCacheData type="row" fullscreen="yes" size="medium">
+      <file type="image" src="rsz_model2.jpg" width="2000" height="1198"></file>
+      <file type="image" src="model1.jpg" width="1920" height="1152"></file>
+    </mediaCacheData>
+    <updated><![CDATA[25.03.2015 20:14:30]]></updated>
+  </entry>
+</blog>
