@@ -12,7 +12,8 @@ import { SettingConfigModel } from '../../shared/interfaces';
                       [class.bt-auto-width]="['icon-readonly'].indexOf(inputField.value.config.format) > -1"
                       [setting]="inputField.value.setting"
                       [config]="inputField.value.config"
-                      (update)="updateField($event)"></berta-setting>
+                      (update)="updateField($event)"
+                      (keydown.enter)="addRow($event)"></berta-setting>
 
         <button type="submit"
                 class="button">Add</button>
