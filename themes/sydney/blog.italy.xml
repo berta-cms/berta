@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<blog section="italy" last_upd_ver="1128" version="0.8.10b">
+  <entry>
+    <id><![CDATA[1]]></id>
+    <uniqid><![CDATA[54ef441788502]]></uniqid>
+    <date><![CDATA[26.02.2015 18:04:39]]></date>
+    <mediafolder><![CDATA[italy1]]></mediafolder>
+    <mediaCacheData type="column" fullscreen="yes">
+      <file type="image" src="italy1.jpeg" width="1894" height="1259"></file>
+      <file type="image" src="italy2.jpeg" width="1983" height="1324"></file>
+      <file type="image" src="italy3.jpeg" width="1931" height="1287"></file>
+    </mediaCacheData>
+    <updated><![CDATA[27.02.2015 10:31:46]]></updated>
+  </entry>
+  <entry>
+    <id><![CDATA[2]]></id>
+    <uniqid><![CDATA[54ef4418441bf]]></uniqid>
+    <date><![CDATA[26.02.2015 18:04:40]]></date>
+    <content>
+      <description><![CDATA[<h2>Italy</h2>
+<div class="project-description">
+<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.&nbsp;</p>
+<p>Typi non habent claritatem insitam; est usus legentis in iis qui facit eorum claritatem. Investigationes demonstraverunt lectores legere me lius quod ii legunt saepius. Claritas est etiam processus dynamicus, qui sequitur mutationem consuetudium lectorum. Mirum est notare quam littera gothica, quam nunc putamus parum claram, anteposuerit litterarum formas humanitatis per seacula quarta decima et quinta decima. Eodem modo typi, qui nunc nobis videntur parum clari, fiant sollemnes in futurum.&nbsp;</p>
+<p>Images from&nbsp;https://unsplash.com/.&nbsp;</p>
+</div>]]></description>
+    </content>
+    <mediafolder><![CDATA[italy2]]></mediafolder>
+    <mediaCacheData type="slideshow" fullscreen="yes">
+      <file />
+    </mediaCacheData>
+    <updated><![CDATA[27.02.2015 10:31:25]]></updated>
+  </entry>
+</blog>

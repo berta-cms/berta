@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<blog section="portfolio" last_upd_ver="1128" version="0.8.10b">
+  <entry>
+    <id><![CDATA[1]]></id>
+    <uniqid><![CDATA[54eef7fb34161]]></uniqid>
+    <date><![CDATA[26.02.2015 12:39:55]]></date>
+    <content>
+      <description><![CDATA[<p style="text-align: center;">Forest</p>]]></description>
+    </content>
+    <mediafolder><![CDATA[portfolio1]]></mediafolder>
+    <mediaCacheData type="link" fullscreen="yes" link_address="http://sydney.berta.me/forest/">
+      <file type="image" src="image1.jpg" width="1125" height="1124"></file>
+    </mediaCacheData>
+    <updated><![CDATA[16.04.2015 09:46:04]]></updated>
+  </entry>
+  <entry>
+    <id><![CDATA[2]]></id>
+    <uniqid><![CDATA[54ef14562ca2e]]></uniqid>
+    <date><![CDATA[26.02.2015 14:40:54]]></date>
+    <content>
+      <description><![CDATA[<p style="text-align: center;">Italy</p>]]></description>
+    </content>
+    <mediafolder><![CDATA[portfolio2]]></mediafolder>
+    <mediaCacheData type="link" fullscreen="yes" link_address="http://sydney.berta.me/italy/">
+      <file type="image" src="rsz_1image2.jpg" width="1832" height="1834"></file>
+    </mediaCacheData>
+    <updated><![CDATA[16.04.2015 09:46:15]]></updated>
+  </entry>
+  <entry>
+    <id><![CDATA[3]]></id>
+    <uniqid><![CDATA[54ef1482d6a13]]></uniqid>
+    <date><![CDATA[26.02.2015 14:41:38]]></date>
+    <content>
+      <description><![CDATA[<p style="text-align: center;">People</p>]]></description>
+    </content>
+    <mediafolder><![CDATA[portfolio3]]></mediafolder>
+    <mediaCacheData type="link" fullscreen="yes" link_address="http://sydney.berta.me/people/">
+      <file type="image" src="image3.jpeg" width="1669" height="1671"></file>
+    </mediaCacheData>
+    <updated><![CDATA[16.04.2015 09:46:28]]></updated>
+  </entry>
+  <entry>
+    <id><![CDATA[4]]></id>
+    <uniqid><![CDATA[54ef148b1410d]]></uniqid>
+    <date><![CDATA[26.02.2015 14:41:47]]></date>
+    <content>
+      <description><![CDATA[<p style="text-align: center;">Sea</p>]]></description>
+    </content>
+    <mediafolder><![CDATA[portfolio4]]></mediafolder>
+    <mediaCacheData type="link" fullscreen="yes" link_address="http://sydney.berta.me/sea/">
+      <file type="image" src="image4.jpeg" width="1668" height="1670"></file>
+    </mediaCacheData>
+    <updated><![CDATA[16.04.2015 09:46:54]]></updated>
+  </entry>
+  <entry>
+    <id><![CDATA[5]]></id>
+    <uniqid><![CDATA[54ef18cec1ed9]]></uniqid>
+    <date><![CDATA[26.02.2015 14:59:58]]></date>
+    <content>
+      <description><![CDATA[<p style="text-align: center;">Mountains</p>]]></description>
+    </content>
+    <mediafolder><![CDATA[portfolio6]]></mediafolder>
+    <mediaCacheData type="link" fullscreen="yes" link_address="http://sydney.berta.me/mountains">
+      <file type="image" src="image5.jpeg" width="1667" height="1670"></file>
+    </mediaCacheData>
+    <updated><![CDATA[16.04.2015 09:46:44]]></updated>
+  </entry>
+  <entry>
+    <id><![CDATA[6]]></id>
+    <uniqid><![CDATA[54ef18d718bfb]]></uniqid>
+    <date><![CDATA[26.02.2015 15:00:07]]></date>
+    <content>
+      <description><![CDATA[<p style="text-align: center;">Roads</p>]]></description>
+    </content>
+    <mediafolder><![CDATA[portfolio7]]></mediafolder>
+    <mediaCacheData type="link" fullscreen="yes" link_address="http://sydney.berta.me/roads/">
+      <file type="image" src="image6.jpg" width="1771" height="1774"></file>
+    </mediaCacheData>
+    <updated><![CDATA[16.04.2015 09:46:35]]></updated>
+  </entry>
+</blog>

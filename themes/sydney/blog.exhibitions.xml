@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<blog section="exhibitions" last_upd_ver="1128" version="0.8.10b">
+  <entry>
+    <id><![CDATA[1]]></id>
+    <uniqid><![CDATA[54f03040c7505]]></uniqid>
+    <date><![CDATA[27.02.2015 10:52:16]]></date>
+    <content>
+      <description><![CDATA[<h2></h2>
+<h2>Benalla Art Gallery</h2>
+<div class="project-description">
+<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.&nbsp;</p>
+<p>Typi non habent claritatem insitam; est usus legentis in iis qui facit eorum claritatem. Investigationes demonstraverunt lectores legere me lius quod ii legunt saepius. Claritas est etiam processus dynamicus, qui sequitur mutationem consuetudium lectorum. Mirum est notare quam littera gothica, quam nunc putamus parum claram, anteposuerit litterarum formas humanitatis per seacula quarta decima et quinta decima. Eodem modo typi, qui nunc nobis videntur parum clari, fiant sollemnes in futurum.&nbsp;</p>
+<p>The image from&nbsp;http://commons.wikimedia.org/wiki/File:Benalla_Art_Gallery_002.JPG</p>
+</div>]]></description>
+    </content>
+    <mediafolder><![CDATA[exhibitions1]]></mediafolder>
+    <mediaCacheData type="slideshow" fullscreen="yes">
+      <file type="image" src="rsz_art_gallery.jpg" width="2000" height="1329"></file>
+    </mediaCacheData>
+    <updated><![CDATA[27.02.2015 11:00:27]]></updated>
+  </entry>
+</blog>

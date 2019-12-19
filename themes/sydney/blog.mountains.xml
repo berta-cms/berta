@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<blog section="mountains" last_upd_ver="1128" version="0.8.10b">
+  <entry>
+    <id><![CDATA[1]]></id>
+    <uniqid><![CDATA[54ef44267bc7f]]></uniqid>
+    <date><![CDATA[26.02.2015 18:04:54]]></date>
+    <mediafolder><![CDATA[mountains1]]></mediafolder>
+    <mediaCacheData type="column" fullscreen="yes">
+      <file type="image" src="mountains1.jpeg" width="1898" height="1267"><![CDATA[]]></file>
+      <file type="image" src="mountains2.jpeg" width="1873" height="1248"><![CDATA[]]></file>
+      <file type="image" src="mountains3.jpeg" width="1766" height="1180"><![CDATA[]]></file>
+    </mediaCacheData>
+    <updated><![CDATA[27.02.2015 10:32:59]]></updated>
+  </entry>
+  <entry>
+    <id><![CDATA[2]]></id>
+    <uniqid><![CDATA[54ef442685175]]></uniqid>
+    <date><![CDATA[26.02.2015 18:04:54]]></date>
+    <content>
+      <description><![CDATA[<h2>Mountains</h2>
+<div class="project-description">
+<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.&nbsp;</p>
+<p>Typi non habent claritatem insitam; est usus legentis in iis qui facit eorum claritatem. Investigationes demonstraverunt lectores legere me lius quod ii legunt saepius. Claritas est etiam processus dynamicus, qui sequitur mutationem consuetudium lectorum. Mirum est notare quam littera gothica, quam nunc putamus parum claram, anteposuerit litterarum formas humanitatis per seacula quarta decima et quinta decima. Eodem modo typi, qui nunc nobis videntur parum clari, fiant sollemnes in futurum.&nbsp;</p>
+<p>Images provided from&nbsp;https://unsplash.com/.&nbsp;</p>
+</div>]]></description>
+    </content>
+    <mediafolder><![CDATA[mountains2]]></mediafolder>
+    <mediaCacheData type="slideshow" fullscreen="yes">
+      <file/>
+    </mediaCacheData>
+    <updated><![CDATA[26.02.2015 18:53:01]]></updated>
+    <tags>
+      <tag><![CDATA[test]]></tag>
+    </tags>
+  </entry>
+  <entry>
+    <id>3</id>
+    <uniqid>5ba25bef75c7c</uniqid>
+    <date><![CDATA[19.09.2018 17:23:43]]></date>
+    <tags>
+      <tag/>
+    </tags>
+    <content>
+      <title/>
+      <url/>
+      <description/>
+    </content>
+    <mediafolder>mountains3</mediafolder>
+    <mediaCacheData type="slideshow" fullscreen="yes">
+      <file />
+    </mediaCacheData>
+  </entry>
+</blog>
