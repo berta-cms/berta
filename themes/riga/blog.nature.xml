@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<blog section="nature" last_upd_ver="1120" version="0.8.10b">
+  <entry>
+    <id><![CDATA[3]]></id>
+    <uniqid><![CDATA[5512d075080b9]]></uniqid>
+    <date><![CDATA[25.03.2015 17:12:53]]></date>
+    <tags>
+      <tag/>
+    </tags>
+    <content>
+      <title><![CDATA[]]></title>
+      <url><![CDATA[]]></url>
+      <description><![CDATA[]]></description>
+    </content>
+    <mediafolder><![CDATA[nature3]]></mediafolder>
+    <mediaCacheData type="row" fullscreen="yes" size="medium">
+      <file type="image" src="g1p1.jpg" width="2000" height="1199"><![CDATA[]]></file>
+      <file type="image" src="g1p11.jpg" width="2000" height="1198"><![CDATA[]]></file>
+      <file type="image" src="rsz_g1p9.jpg" width="2000" height="1202"><![CDATA[]]></file>
+    </mediaCacheData>
+    <updated><![CDATA[31.03.2015 17:02:42]]></updated>
+  </entry>
+  <entry>
+    <id><![CDATA[1]]></id>
+    <uniqid><![CDATA[5505b5b74665e]]></uniqid>
+    <date><![CDATA[15.03.2015 18:39:19]]></date>
+    <tags>
+      <tag/>
+    </tags>
+    <content>
+      <title><![CDATA[]]></title>
+      <url><![CDATA[]]></url>
+      <description><![CDATA[]]></description>
+    </content>
+    <mediafolder><![CDATA[nature1]]></mediafolder>
+    <mediaCacheData type="row" fullscreen="yes" size="medium">
+      <file type="image" src="g2p4.jpg" width="2000" height="1202"><![CDATA[]]></file>
+      <file type="image" src="g2p8.jpg" width="2000" height="1202"><![CDATA[]]></file>
+      <file type="image" src="rsz_g1p13.jpg" width="2000" height="1200"><![CDATA[]]></file>
+    </mediaCacheData>
+    <updated><![CDATA[31.03.2015 17:17:05]]></updated>
+  </entry>
+  <entry>
+    <id><![CDATA[2]]></id>
+    <uniqid><![CDATA[5505d7083a2b5]]></uniqid>
+    <date><![CDATA[15.03.2015 21:01:28]]></date>
+    <tags>
+      <tag/>
+    </tags>
+    <content>
+      <title><![CDATA[]]></title>
+      <url><![CDATA[]]></url>
+      <description><![CDATA[]]></description>
+    </content>
+    <mediafolder><![CDATA[nature2]]></mediafolder>
+    <mediaCacheData type="row" fullscreen="yes">
+      <file type="image" src="g1p5.jpg" width="2000" height="1199"><![CDATA[]]></file>
+      <file type="image" src="g1p4.jpg" width="2000" height="1202"><![CDATA[]]></file>
+    </mediaCacheData>
+    <updated><![CDATA[31.03.2015 17:17:53]]></updated>
+  </entry>
+</blog>

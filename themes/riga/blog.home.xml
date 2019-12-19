@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<blog section="home" last_upd_ver="1120" version="0.8.10b">
+  <entry>
+    <id><![CDATA[1]]></id>
+    <uniqid><![CDATA[5512d25c7c125]]></uniqid>
+    <date><![CDATA[25.03.2015 17:21:00]]></date>
+    <tags>
+      <tag />
+    </tags>
+    <content>
+      <title />
+      <url />
+      <description />
+    </content>
+    <mediafolder><![CDATA[home1]]></mediafolder>
+    <mediaCacheData type="row" fullscreen="yes" size="medium">
+      <file type="image" src="g4p4.jpg" width="2000" height="1196"></file>
+      <file type="image" src="g4p16.jpg" width="2000" height="1196"></file>
+      <file type="image" src="g4p3.jpg" width="1856" height="1116"></file>
+    </mediaCacheData>
+    <updated><![CDATA[31.03.2015 22:33:10]]></updated>
+  </entry>
+  <entry>
+    <id><![CDATA[2]]></id>
+    <uniqid><![CDATA[5512d25c805b1]]></uniqid>
+    <date><![CDATA[25.03.2015 17:21:00]]></date>
+    <tags>
+      <tag />
+    </tags>
+    <content>
+      <title />
+      <url />
+      <description />
+    </content>
+    <mediafolder><![CDATA[home2]]></mediafolder>
+    <mediaCacheData type="row" fullscreen="yes">
+      <file type="image" src="g4p1.jpg" width="2000" height="1202"></file>
+      <file type="image" src="g4p12.jpg" width="2000" height="1202"></file>
+    </mediaCacheData>
+    <updated><![CDATA[31.03.2015 22:04:59]]></updated>
+  </entry>
+  <entry>
+    <id><![CDATA[3]]></id>
+    <uniqid><![CDATA[5512d25c84062]]></uniqid>
+    <date><![CDATA[25.03.2015 17:21:00]]></date>
+    <tags>
+      <tag />
+    </tags>
+    <content>
+      <title />
+      <url />
+      <description />
+    </content>
+    <mediafolder><![CDATA[home3]]></mediafolder>
+    <mediaCacheData type="row" fullscreen="yes" size="medium">
+      <file type="image" src="g4p11.jpg" width="2000" height="1199"></file>
+      <file type="image" src="g1p8.jpg" width="2000" height="1203"></file>
+      <file type="image" src="g4p10.jpg" width="2000" height="1202"></file>
+    </mediaCacheData>
+    <updated><![CDATA[31.03.2015 22:37:23]]></updated>
+  </entry>
+</blog>

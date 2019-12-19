@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<blog section="about" last_upd_ver="1120" version="0.8.10b">
+  <entry>
+    <id><![CDATA[1]]></id>
+    <uniqid><![CDATA[5506d14eb2743]]></uniqid>
+    <date><![CDATA[16.03.2015 14:49:18]]></date>
+    <tags>
+      <tag />
+    </tags>
+    <content>
+      <title />
+      <url />
+      <description />
+      <width />
+    </content>
+    <mediafolder><![CDATA[about1]]></mediafolder>
+    <mediaCacheData type="row" fullscreen="no" size="medium">
+      <file type="image" src="profile9.jpg" width="800" height="828"></file>
+    </mediaCacheData>
+    <updated><![CDATA[31.03.2015 22:29:13]]></updated>
+  </entry>
+  <entry>
+    <id><![CDATA[2]]></id>
+    <uniqid><![CDATA[5506d40b39efa]]></uniqid>
+    <date><![CDATA[16.03.2015 15:00:59]]></date>
+    <tags>
+      <tag />
+    </tags>
+    <content>
+      <title />
+      <url />
+      <description><![CDATA[<h3><b>Biography&nbsp;</b></h3>
+<ul>
+<li>Nam eget nisl luctus, fermentum ex sed, pretium nisl.</li>
+<li>Nunc at tristique lectus, in porttitor risus.</li>
+<li>Curabitur viverra, turpis in malesuada congue, diam dui pretium mauris, sed convallis lacus nisl suscipit sem.</li>
+<li>Vivamus maximus orci ac elit aliquet ornare.</li>
+<li>Morbi sed sapien tristique, varius orci nec, scelerisque lectus.</li>
+<li>Donec tristique sapien enim, in sollicitudin diam consequat non.</li>
+<li>Donec tristique nunc leo, a dapibus felis dictum ut.</li>
+<li>Integer elit eros, cursus ac purus tempus, tincidunt porttitor eros.&nbsp;</li>
+</ul>]]></description>
+      <width><![CDATA[600px]]></width>
+    </content>
+    <mediafolder><![CDATA[about2]]></mediafolder>
+    <mediaCacheData type="slideshow" fullscreen="yes">
+      <file />
+    </mediaCacheData>
+    <updated><![CDATA[31.03.2015 22:28:00]]></updated>
+  </entry>
+</blog>
