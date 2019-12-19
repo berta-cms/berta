@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<blog section="contacts" last_upd_ver="1120" version="0.8.10b">
+  <entry>
+    <id><![CDATA[2]]></id>
+    <uniqid><![CDATA[55117beaac4ef]]></uniqid>
+    <date><![CDATA[24.03.2015 16:59:54]]></date>
+    <tags>
+      <tag/>
+    </tags>
+    <content>
+      <title><![CDATA[]]></title>
+      <url><![CDATA[]]></url>
+      <description><![CDATA[<h2><span style="font-size: x-large;">Bio</span></h2>
+<div class="project-description">
+<p></p>
+<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.&nbsp;</p>
+<p>Typi non habent claritatem insitam; est usus legentis in iis qui facit eorum claritatem. Investigationes demonstraverunt lectores legere me lius quod ii legunt saepius. Claritas est etiam processus dynamicus, qui sequitur mutationem consuetudium lectorum. Mirum est notare quam littera gothica, quam nunc putamus parum claram, anteposuerit litterarum formas humanitatis per seacula quarta decima et quinta decima. Eodem modo typi, qui nunc nobis videntur parum clari, fiant sollemnes in futurum.&nbsp;</p>
+</div>]]></description>
+    </content>
+    <mediafolder><![CDATA[contacts2]]></mediafolder>
+    <mediaCacheData type="slideshow" fullscreen="yes" size="small">
+      <file type="image" src="profile9.jpg" width="800" height="828"><![CDATA[]]></file>
+    </mediaCacheData>
+    <updated><![CDATA[30.03.2015 16:15:07]]></updated>
+  </entry>
+  <entry>
+    <id><![CDATA[3]]></id>
+    <uniqid><![CDATA[55117c9701668]]></uniqid>
+    <date><![CDATA[24.03.2015 17:02:47]]></date>
+    <tags>
+      <tag/>
+    </tags>
+    <content>
+      <title><![CDATA[]]></title>
+      <url><![CDATA[]]></url>
+      <description><![CDATA[<h2><span style="font-size: x-large;">Contacts</span></h2>
+<p></p>
+<p>email (at) gmail.com<br />+12 3456789</p>]]></description>
+    </content>
+    <mediafolder><![CDATA[contacts3]]></mediafolder>
+    <mediaCacheData type="slideshow" fullscreen="yes">
+      <file/>
+    </mediaCacheData>
+    <updated><![CDATA[24.03.2015 17:03:16]]></updated>
+  </entry>
+</blog>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<blog section="hit-the-road" last_upd_ver="1120" version="0.8.10b">
+  <entry>
+    <id><![CDATA[1]]></id>
+    <uniqid><![CDATA[550c289a25663]]></uniqid>
+    <date><![CDATA[20.03.2015 16:03:06]]></date>
+    <tags>
+      <tag/>
+    </tags>
+    <content>
+      <title><![CDATA[]]></title>
+      <url><![CDATA[]]></url>
+      <description><![CDATA[<h3></h3>]]></description>
+    </content>
+    <mediafolder><![CDATA[hit-the-road1]]></mediafolder>
+    <mediaCacheData type="slideshow" fullscreen="yes" size="medium">
+      <file type="image" src="108h.jpg" width="2000" height="1201"><![CDATA[]]></file>
+      <file type="image" src="88h.jpg" width="2000" height="1199"><![CDATA[]]></file>
+      <file type="image" src="125h.jpg" width="2000" height="1202"><![CDATA[]]></file>
+      <file type="image" src="163h.jpg" width="2000" height="1199"><![CDATA[]]></file>
+    </mediaCacheData>
+    <updated><![CDATA[30.03.2015 15:49:21]]></updated>
+  </entry>
+  <entry>
+    <id><![CDATA[2]]></id>
+    <uniqid><![CDATA[551033c17ddc6]]></uniqid>
+    <date><![CDATA[23.03.2015 17:39:45]]></date>
+    <tags>
+      <tag/>
+    </tags>
+    <content>
+      <title><![CDATA[]]></title>
+      <url><![CDATA[]]></url>
+      <description><![CDATA[<h3><span style="font-size: x-large;">Hit the road</span></h3>
+<p><span>Lorem ipsum dolor sit amet, mollis delectus facilisis eum in, vim ei tantas molestie sententiae, altera detracto ex vim. At has malis elitr scriptorem, audiam consequuntur mei eu, nam tantas constituam omittantur ex. Vis meis mnesarchum delicatissimi no, eros graeco copiosae at sea, tota suavitate adversarium id sit. Postea elaboraret dissentias duo ei, ne sit dicat habemus.</span></p>
+<p><span>Persius accumsan principes usu ex, electram mnesarchum percipitur in per. Cum exerci regione aperiam te, duo amet nibh no, cu pro cibo solet. Iudicabit constituam ut sit, ad labitur blandit vix, sea ex debet mundi vivendum.</span></p>]]></description>
+    </content>
+    <mediafolder><![CDATA[hit-the-road2]]></mediafolder>
+    <mediaCacheData type="slideshow" fullscreen="yes">
+      <file/>
+    </mediaCacheData>
+    <updated><![CDATA[30.03.2015 15:50:36]]></updated>
+  </entry>
+</blog>

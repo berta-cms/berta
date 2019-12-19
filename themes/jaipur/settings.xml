@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<settings>
+    <template>
+        <template><![CDATA[white-0.3.5]]></template>
+    </template>
+    <siteTexts>
+        <siteHeading><![CDATA[JAIPUR]]></siteHeading>
+    </siteTexts>
+    <berta>
+        <lastUpdated><![CDATA[Thu, 21 May 2015 13:21:08 GMT]]></lastUpdated>
+        <installed><![CDATA[1]]></installed>
+    </berta>
+    <texts>
+        <pageTitle><![CDATA[Jaipur]]></pageTitle>
+    </texts>
+    <media>
+        <imagesLargeWidth><![CDATA[1200]]></imagesLargeWidth>
+        <imagesLargeHeight><![CDATA[1200]]></imagesLargeHeight>
+        <imagesMediumWidth><![CDATA[500]]></imagesMediumWidth>
+        <imagesMediumHeight><![CDATA[500]]></imagesMediumHeight>
+    </media>
+    <navigation>
+        <landingSectionVisible><![CDATA[no]]></landingSectionVisible>
+    </navigation>
+    <entryLayout>
+        <galleryFullScreenBackground><![CDATA[white]]></galleryFullScreenBackground>
+        <galleryFullScreenDefault><![CDATA[no]]></galleryFullScreenDefault>
+    </entryLayout>
+    <socialMediaButtons>
+        <socialMediaLocation><![CDATA[footer]]></socialMediaLocation>
+    </socialMediaButtons>
+    <socialMediaLinks>
+        <links>
+            <link>
+                <icon><![CDATA[facebook]]></icon>
+                <url><![CDATA[https://www.facebook.com/bertaCMS]]></url>
+            </link>
+            <link>
+                <icon><![CDATA[twitter]]></icon>
+                <url><![CDATA[https://twitter.com/berta_cms]]></url>
+            </link>
+            <link>
+                <icon><![CDATA[youtube]]></icon>
+                <url><![CDATA[https://www.youtube.com/user/CMSBerta]]></url>
+            </link>
+        </links>
+    </socialMediaLinks>
+</settings>

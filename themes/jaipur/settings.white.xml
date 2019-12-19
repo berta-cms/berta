@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<settings>
+  <links>
+    <textDecorationHover><![CDATA[none]]></textDecorationHover>
+    <textDecorationActive><![CDATA[none]]></textDecorationActive>
+  </links>
+  <pageLayout>
+    <responsive><![CDATA[yes]]></responsive>
+    <centered><![CDATA[yes]]></centered>
+    <leftColumnWidth><![CDATA[200px]]></leftColumnWidth>
+    <contentWidth><![CDATA[700px]]></contentWidth>
+    <paddingLeft><![CDATA[20px]]></paddingLeft>
+    <paddingTop><![CDATA[35px]]></paddingTop>
+  </pageLayout>
+  <pageHeading>
+    <googleFont><![CDATA[Nova Square]]></googleFont>
+    <fontSize><![CDATA[40px]]></fontSize>
+    <marginBottom><![CDATA[40px]]></marginBottom>
+  </pageHeading>
+  <generalFontSettings>
+    <googleFont><![CDATA[Gafata]]></googleFont>
+    <fontSize><![CDATA[15px]]></fontSize>
+    <lineHeight><![CDATA[20px]]></lineHeight>
+  </generalFontSettings>
+  <css>
+    <customCSS><![CDATA[#pageEntries .xEntry .xGalleryContainer ul.xGalleryNav a {
+    width: 10px;
+    height: 10px;
+    border-radius: 5px;
+    background-color: #ccc;
+    padding: 0;
+    margin: 5px 5px 0 0;
+}
+
+#pageEntries .xEntry .xGalleryContainer ul.xGalleryNav li.selected a {
+    background-color: #000;
+}
+
+#pageEntries .xEntry .xGalleryContainer ul.xGalleryNav a span {
+    display: none;
+}
+
+.xGalleryType-column img {
+    display: block;
+}
+
+.xContent-home #mainColumn {
+    max-width: 900px;
+    margin-left: -370px;
+}
+
+.xContent-home #allContainer {
+    max-width: 1100px;
+}]]></customCSS>
+  </css>
+  <menu>
+    <colorLink><![CDATA[#000000]]></colorLink>
+    <colorHover><![CDATA[#000000]]></colorHover>
+    <colorActive><![CDATA[#000000]]></colorActive>
+    <textDecorationHover><![CDATA[none]]></textDecorationHover>
+    <textDecorationActive><![CDATA[underline]]></textDecorationActive>
+  </menu>
+  <entryLayout>
+    <spaceBetweenImages><![CDATA[0px]]></spaceBetweenImages>
+    <galleryMargin><![CDATA[20px]]></galleryMargin>
+    <galleryNavMargin><![CDATA[10px]]></galleryNavMargin>
+    <spaceBetween><![CDATA[35px]]></spaceBetween>
+  </entryLayout>
+</settings>
