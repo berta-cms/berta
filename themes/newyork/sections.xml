@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<sections>
+  <section tags_behavior="invisible" published="1" has_direct_content="1" type="portfolio" entry_count="5">
+    <name><![CDATA[portfolio]]></name>
+    <title><![CDATA[PORTFOLIO]]></title>
+    <order><![CDATA[0]]></order>
+    <seoTitle><![CDATA[]]></seoTitle>
+    <sectionBgColor><![CDATA[#ffffff]]></sectionBgColor>
+  </section>
+  <section tags_behavior="invisible" published="1" has_direct_content="1" entry_count="1" type="external_link">
+    <name><![CDATA[contacts]]></name>
+    <title><![CDATA[CONTACTS]]></title>
+    <link><![CDATA[mailto:support@berta.me]]></link>
+    <order><![CDATA[1]]></order>
+    <target><![CDATA[_blank]]></target>
+  </section>
+</sections>
