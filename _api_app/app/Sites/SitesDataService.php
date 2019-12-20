@@ -3,7 +3,9 @@ namespace App\Sites;
 
 use App\Shared\Helpers;
 use App\Shared\Storage;
-use PDO;
+use App\Plugins\Shop\ShopClientsDataService;
+use App\Plugins\Shop\ShopOrdersDataService;
+use App\Plugins\Shop\ShopProductsDataService;
 
 /**
  * @class Sites
@@ -169,19 +171,12 @@ class SitesDataService extends Storage
 
         $dbPath = $dir . '/shop-db.sqlite';
         if (file_exists($dbPath)) {
-            try {
-                $db = new PDO("sqlite:".$dbPath);
-                $db->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
-            }catch(PDOException $e) {
-
-                echo $e->getMessage();
-                die();
-            }
-            $h = $db->prepare('DELETE FROM orders');
-            $h->execute();
-            $h = $db->prepare('UPDATE product SET reservation = 0');
-            $h->execute();
-            $db = null;
+            $clientsDataService = new ShopClientsDataService($name);
+            $clientsDataService->TruncateClients();
+            $ordersDataService = new ShopOrdersDataService($name);
+            $ordersDataService->TruncateOrders();
+            $productsDataService = new ShopProductsDataService($name);
+            $productsDataService->ClearReservation();
         }
 
         return $site;
