@@ -1,6 +1,7 @@
 <?php
 namespace App\Sites;
 
+use Illuminate\Http\Request;
 use App\Shared\Helpers;
 use App\Shared\Storage;
 use App\Plugins\Shop\ShopClientsDataService;
@@ -121,7 +122,7 @@ class SitesDataService extends Storage
         return $sites;
     }
 
-    public function create($cloneFrom = null)
+    public function create($cloneFrom = null, Request $request)
     {
         $sites = $this->get();
         $name = 'untitled-' . uniqid();
@@ -169,8 +170,7 @@ class SitesDataService extends Storage
         $this->array2xmlFile(['site' => $sites], $this->XML_FILE, $this->ROOT_ELEMENT);
         $site['order'] = count($sites) - 1;
 
-        $dbPath = $dir . '/shop-db.sqlite';
-        if (file_exists($dbPath)) {
+        if (config('plugin-Shop.key') === $request->getHost()) {
             $clientsDataService = new ShopClientsDataService($name);
             $clientsDataService->TruncateClients();
             $ordersDataService = new ShopOrdersDataService($name);
