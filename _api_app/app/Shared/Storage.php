@@ -282,6 +282,9 @@ class Storage
      */
     protected function copyFolder($src, $dst)
     {
+        if (!file_exists($this->XML_SITES_ROOT)){
+            mkdir($this->XML_SITES_ROOT);
+        }
         $dir = opendir($src);
         @mkdir($dst);
 
