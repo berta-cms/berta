@@ -20,7 +20,7 @@ class SitesController extends Controller
         $json = $request->json()->all();
         $cloneFrom = $json['site'] == -1 ? null : $json['site'];
         $isClone = $cloneFrom !== null;
-        $site = $sites->create($cloneFrom);
+        $site = $sites->create($cloneFrom, $request);
         $siteTemplatesConfigService = new SiteTemplatesConfigService();
         $allTemplates = $siteTemplatesConfigService->getAllTemplates();
 
