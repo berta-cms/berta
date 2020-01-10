@@ -14,23 +14,30 @@ class Storage
 
     protected $SITE = '';
     protected $XML_MAIN_ROOT;
+    protected $XML_STORAGE_ROOT;
     protected $XML_SITES_ROOT;
+    protected $XML_PREVIEW_ROOT;
     public $MEDIA_ROOT;
     public $MEDIA_URL;
     protected static $DEFAULT_VALUES = [];
 
     private $MEDIA_FOLDER = 'media';
+    private $PREVIEW_FOLDER = 'preview';
 
     public function __construct($site = '')
     {
         $this->SITE = $site;
         $this->XML_MAIN_ROOT = realpath(config('app.old_berta_root') . '/storage');
+        $this->XML_STORAGE_ROOT = $this->XML_MAIN_ROOT;
         $this->XML_SITES_ROOT = $this->XML_MAIN_ROOT . '/-sites';
 
         if (!empty($site) and $site !== '0') {
+            $this->XML_STORAGE_ROOT = $this->XML_SITES_ROOT . '/' . $site;
+            $this->XML_PREVIEW_ROOT = $this->XML_STORAGE_ROOT . '/' . $this->PREVIEW_FOLDER;
             $this->MEDIA_ROOT = $this->XML_SITES_ROOT . '/' . $site . '/' . $this->MEDIA_FOLDER;
             $this->MEDIA_URL = '/storage/-sites/' . $site . '/' . $this->MEDIA_FOLDER;
         } else {
+            $this->XML_PREVIEW_ROOT = $this->XML_MAIN_ROOT . '/' . $this->PREVIEW_FOLDER;
             $this->MEDIA_ROOT = $this->XML_MAIN_ROOT . '/' . $this->MEDIA_FOLDER;
             $this->MEDIA_URL = '/storage/' . $this->MEDIA_FOLDER;
         }
@@ -62,10 +69,10 @@ class Storage
     {
         if (is_array($val)) {
             if (array_values($val) !== $val) {
-                return array(0 => $val);
+                return [0 => $val];
             }
         } else {
-            return array(0 => $val);
+            return [0 => $val];
         }
 
         return $val;
@@ -163,7 +170,8 @@ class Storage
         preg_match('/(.+)_([0-9])+$/', $name, $nrFileParts);
 
         if (!$nrFileParts) {
-            $fileName = $name . '_1.' . $extension;;
+            $fileName = $name . '_1.' . $extension;
+            ;
             if (!file_exists($dir . '/' . $fileName)) {
                 return $fileName;
             }
@@ -172,15 +180,19 @@ class Storage
 
         $dirContent = [];
         foreach (scandir($dir) as $file) {
-            if (!is_file($dir . '/' . $file)) { continue; }
+            if (!is_file($dir . '/' . $file)) {
+                continue;
+            }
             $dirContent[] = $file;
         }
 
         $maxFileIdx = intval($nrFileParts[2]);
 
         foreach ($dirContent as $file) {
-            preg_match('/' .$name . '_([0-9]).' . $extension . '/', $file, $nrParts);
-            if (!$nrParts) { continue; }
+            preg_match('/' . $name . '_([0-9]).' . $extension . '/', $file, $nrParts);
+            if (!$nrParts) {
+                continue;
+            }
             $idx = intval($nrParts[1]);
             if ($idx > $maxFileIdx) {
                 $maxFileIdx = $idx;
@@ -255,7 +267,6 @@ class Storage
     protected function xmlFile2array($xml_file)
     {
         if (file_exists($xml_file)) {
-
             $fp = fopen($xml_file, 'r');
             if (flock($fp, LOCK_SH)) {
                 $xml_str = file_get_contents($xml_file);
@@ -275,7 +286,7 @@ class Storage
             return $this->xml2array($xml->documentElement);
         }
 
-        return array();
+        return [];
     }
 
     /**
@@ -288,7 +299,7 @@ class Storage
         while (false !== ($file = readdir($dir))) {
             if (($file != '.') && ($file != '..')) {
                 if (is_dir($src . '/' . $file)) {
-                    if ($file != '-sites') {
+                    if (!in_array($file, ['-sites', $this->PREVIEW_FOLDER])) {
                         self::copyFolder($src . '/' . $file, $dst . '/' . $file);
                     }
                 } else {
@@ -308,7 +319,7 @@ class Storage
             return;
         }
 
-        $files = array_diff(scandir($dir), array('.', '..'));
+        $files = array_diff(scandir($dir), ['.', '..']);
         foreach ($files as $file) {
             (is_dir("$dir/$file") && !is_link($dir)) ? $this->delFolder("$dir/$file") : unlink("$dir/$file");
         }
@@ -334,7 +345,7 @@ class Storage
      * @param string $arr Array to convert to XML
      * @return mixed Node to append to XML document
      */
-    protected function array2xml($xml, $node_name, $arr = array())
+    protected function array2xml($xml, $node_name, $arr = [])
     {
         $node = $xml->createElement($node_name);
 
@@ -420,7 +431,7 @@ class Storage
      */
     private function xml2array($node)
     {
-        $output = array();
+        $output = [];
 
         switch ($node->nodeType) {
             case XML_CDATA_SECTION_NODE:
@@ -443,7 +454,7 @@ class Storage
 
                         // assume more nodes of same kind are coming
                         if (!isset($output[$tag_name])) {
-                            $output[$tag_name] = array();
+                            $output[$tag_name] = [];
                         }
 
                         $output[$tag_name][] = $subtree;
@@ -471,7 +482,7 @@ class Storage
 
                 // loop through the attributes and collect them
                 if ($node->attributes->length) {
-                    $attrs = array();
+                    $attrs = [];
 
                     foreach ($node->attributes as $attrName => $attrNode) {
                         $attrs[$attrName] = (string)$attrNode->value;
@@ -479,7 +490,7 @@ class Storage
 
                     // if its an leaf node, store the value in @value instead of directly storing it.
                     if (!is_array($output)) {
-                        $output = array('@value' => $output);
+                        $output = ['@value' => $output];
                     }
 
                     $output['@attributes'] = $attrs;

@@ -69,9 +69,9 @@ class SitesDataService extends Storage
     private $XML_FILE;
     private $MAIN_SITE_DEFAULT_TITLE = 'Main site';
 
-    public function __construct()
+    public function __construct($site = '')
     {
-        parent::__construct();
+        parent::__construct($site);
         $this->XML_FILE = $this->XML_SITES_ROOT . '/sites.xml';
     }
 
@@ -246,6 +246,18 @@ class SitesDataService extends Storage
         $this->array2xmlFile($sites, $this->XML_FILE, $this->ROOT_ELEMENT);
 
         return $ret;
+    }
+
+    public function createPrieview($themeName)
+    {
+        // delete previous preview content
+        $this->delFolder($this->XML_PREVIEW_ROOT);
+
+        // generate new preview content
+        // for now just copy all the existing contents to preview
+        $this->copyFolder($this->XML_STORAGE_ROOT, $this->XML_PREVIEW_ROOT);
+
+        // @TODO and merge only site settings and site design settings
     }
 
     /**

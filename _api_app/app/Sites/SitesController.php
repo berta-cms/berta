@@ -78,6 +78,25 @@ class SitesController extends Controller
         return response()->json($res, $res['status_code']);
     }
 
+    public function themePreview(Request $request)
+    {
+        // @TODO switch to json request
+        // $json = $request->json()->all();
+        $json = $request->query();
+        $siteName = $json['site'];
+        $themeName = $json['theme'];
+
+        $sitesDS = new SitesDataService($siteName);
+        $sitesDS->createPrieview($themeName);
+
+        return response()->json([
+            'url' => 'generate preview url here',
+            'json' => $json,
+            'themeName' => $themeName,
+            'siteName' => $siteName
+        ]);
+    }
+
     public function delete(Request $request)
     {
         $sites = new SitesDataService();
