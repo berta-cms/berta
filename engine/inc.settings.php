@@ -228,7 +228,7 @@ $settingsDefinition = [
             'description' => I18n::_('Enables Lightbox mode for new entries.')
         ],
         'galleryFullScreenBackground' => [
-            'format' => 'se~lect',
+            'format' => 'select',
             'default' => 'black',
             'values' => [
                 'black',
