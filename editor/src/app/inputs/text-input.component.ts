@@ -1,5 +1,5 @@
 import { tap } from 'rxjs/operators';
-import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { TextInputService } from './text-input.service';
 
 @Component({
@@ -43,6 +43,9 @@ import { TextInputService } from './text-input.service';
       display: block;
     }
   `],
+  /* ChangeDetection here is disabled and will make the component update only if an observable is updated.
+  ** We could avoid the use of this with a one-direction data flow */
+  changeDetection: ChangeDetectionStrategy.OnPush,
   /* Provide text input service here, so each component has it's own service */
   providers: [TextInputService]
 })

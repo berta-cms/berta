@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Configuration;
+use Illuminate\Support\Facades\Auth;
 
 use App\Shared\I18n;
 
@@ -23,10 +24,15 @@ class SiteSettingsConfigService
             return $this->settings;
         }
 
+        /* Setup for the @@@HACK: */
         I18n::load_language($lang);
-
+        if (!isset($options)) {
+            $options = [];
+        }
+        $berta = (object)['security' => (object)['userLoggedIn' => Auth::check()]];
         $ENGINE_ROOT_PATH = config('app.old_berta_root') . '/engine/';
-        $SITE_ROOT_PATH = config('app.old_berta_root');
+        $SITE_ROOT_PATH = config('app.old_berta_root') . '/';
+        $options['XML_ROOT'] = "{$SITE_ROOT_PATH}storage/";
         $conf = file_get_contents(
             realpath(config('app.old_berta_root') . '/engine/inc.settings.php')
         );
@@ -42,6 +48,12 @@ class SiteSettingsConfigService
         $this->settings = $settingsDefinition;
         $this->settings['template']['template']['values'] = $this->getTemplates();
         $this->settings['template']['template']['default'] = $this->defaultTemplate;
+
+        // Make sure `shop` settings don't mix with the page settings.
+        // @TODO remove this once we clean up the settings
+        if (isset($this->settings['shop'])) {
+            unset($this->settings['shop']);
+        }
 
         return $this->settings;
     }

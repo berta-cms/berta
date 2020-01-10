@@ -1,8 +1,12 @@
 <?php
 namespace App\Sites;
 
+use Illuminate\Http\Request;
 use App\Shared\Helpers;
 use App\Shared\Storage;
+use App\Plugins\Shop\ShopClientsDataService;
+use App\Plugins\Shop\ShopOrdersDataService;
+use App\Plugins\Shop\ShopProductsDataService;
 
 /**
  * @class Sites
@@ -118,7 +122,7 @@ class SitesDataService extends Storage
         return $sites;
     }
 
-    public function create($cloneFrom = null)
+    public function create($cloneFrom = null, Request $request)
     {
         $sites = $this->get();
         $name = 'untitled-' . uniqid();
@@ -165,6 +169,15 @@ class SitesDataService extends Storage
 
         $this->array2xmlFile(['site' => $sites], $this->XML_FILE, $this->ROOT_ELEMENT);
         $site['order'] = count($sites) - 1;
+
+        if (config('plugin-Shop.key') === $request->getHost()) {
+            $clientsDataService = new ShopClientsDataService($name);
+            $clientsDataService->TruncateClients();
+            $ordersDataService = new ShopOrdersDataService($name);
+            $ordersDataService->TruncateOrders();
+            $productsDataService = new ShopProductsDataService($name);
+            $productsDataService->ClearReservation();
+        }
 
         return $site;
     }

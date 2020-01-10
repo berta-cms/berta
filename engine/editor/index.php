@@ -10,5 +10,5 @@ if (!$INDEX_INCLUDED) {
     define('SETTINGS_INSTALLREQUIRED', true);  // don't require INSTALL if just watching the site
 }
 
-include dirname(__dir__) . '/inc.page.php';
-include __dir__ . '/inc.editor.php';
+include dirname(__DIR__) . '/inc.page.php';
+include __DIR__ . '/inc.editor.php';

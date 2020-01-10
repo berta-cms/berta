@@ -5,40 +5,50 @@
   window.sync = function (url, data, method) {
     var token = window.getCookie('token');
     method = method || 'PATCH';
-    var promise;
 
-    if (typeof window.syncState === 'function') {
-      promise = window.syncState(url, data, method)
-        .then(function(reponse) {
+    return new Promise(function(resolve) {
+      var maxChecks = 5;
+
+      if (typeof window.syncState === 'function') {
+        resolve(window.syncState(url, data, method).then(function(reponse) {
           return JSON.parse(JSON.stringify(reponse));
-        });
-    } else {
-      promise = fetch(
-        url,
-        {
-          method: method,
-          credentials: 'include',
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            'X-Authorization': 'Bearer ' + token
-          },
-          body: method === 'GET' ? undefined : JSON.stringify(data)
-        }
-      ).then(function (response) {
-        if (response.status === 401) {
-          window.BertaHelpers.logoutUser();
-          throw new Error('Unauthorized');
-        }
-        return response.json();
-      });
-    }
+        }));
+        return;
+      }
 
-    return promise
-      .catch(function (error) {
-        /** @todo: create error state/reducer to manage failed requests and other app errors */
-        console.error('Request failed:', error);
-      });
+      var interval = setInterval(function() {
+        if (typeof window.syncState === 'function') {
+          clearInterval(interval);
+          resolve(window.syncState(url, data, method).then(function(reponse) {
+              return JSON.parse(JSON.stringify(reponse));
+          }));
+        }
+
+        if (maxChecks === 0) {
+          clearInterval(interval);
+          resolve(fetch(
+            url,
+            {
+              method: method,
+              credentials: 'include',
+              headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'X-Authorization': 'Bearer ' + token
+              },
+              body: method === 'GET' ? undefined : JSON.stringify(data)
+            }
+          ).then(function (response) {
+            if (response.status === 401) {
+              window.BertaHelpers.logoutUser();
+              throw new Error('Unauthorized');
+            }
+            return response.json();
+          }));
+        }
+        maxChecks =- 1;
+      }, 200);
+    });
   };
 
   window.getCookie = function (cname) {
