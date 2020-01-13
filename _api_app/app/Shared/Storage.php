@@ -17,6 +17,7 @@ class Storage
     protected $XML_STORAGE_ROOT;
     protected $XML_SITES_ROOT;
     protected $XML_PREVIEW_ROOT;
+    protected $THEMES_ROOT;
     public $MEDIA_ROOT;
     public $MEDIA_URL;
     protected static $DEFAULT_VALUES = [];
@@ -30,6 +31,7 @@ class Storage
         $this->XML_MAIN_ROOT = realpath(config('app.old_berta_root') . '/storage');
         $this->XML_STORAGE_ROOT = $this->XML_MAIN_ROOT;
         $this->XML_SITES_ROOT = $this->XML_MAIN_ROOT . '/-sites';
+        $this->THEMES_ROOT = realpath(config('app.old_berta_root') . '/_themes');
 
         if (!empty($site) and $site !== '0') {
             $this->XML_STORAGE_ROOT = $this->XML_SITES_ROOT . '/' . $site;

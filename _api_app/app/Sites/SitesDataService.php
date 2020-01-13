@@ -4,6 +4,8 @@ namespace App\Sites;
 use Illuminate\Http\Request;
 use App\Shared\Helpers;
 use App\Shared\Storage;
+use App\Sites\Settings\SiteSettingsDataService;
+use App\Sites\ThemesDataService;
 use App\Plugins\Shop\ShopClientsDataService;
 use App\Plugins\Shop\ShopOrdersDataService;
 use App\Plugins\Shop\ShopProductsDataService;
@@ -257,7 +259,14 @@ class SitesDataService extends Storage
         // for now just copy all the existing contents to preview
         $this->copyFolder($this->XML_STORAGE_ROOT, $this->XML_PREVIEW_ROOT);
 
-        // @TODO and merge only site settings and site design settings
+        // Merge site settings
+        $siteSettingsDS = new SiteSettingsDataService($this->SITE);
+        $currentSiteSettings = $siteSettingsDS->get();
+        $themesDS = new ThemesDataService($themeName);
+        $newSiteSettings = $themesDS->mergeSettings($currentSiteSettings);
+        $this->array2xmlFile($newSiteSettings, $themesDS->XML_PREVIEW_ROOT . '/settings.xml', $siteSettingsDS->ROOT_ELEMENT);
+
+        // @TODO merge site design settings
     }
 
     /**

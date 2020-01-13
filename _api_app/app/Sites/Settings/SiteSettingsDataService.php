@@ -269,7 +269,7 @@ class SiteSettingsDataService extends Storage
             ],
         ],
     ];
-    private $ROOT_ELEMENT = 'settings';
+    public $ROOT_ELEMENT = 'settings';
     private $XML_FILE;
     private $SITE_SETTINGS = [];
     private static $DEFAULT_SITE_SETTINGS = [
