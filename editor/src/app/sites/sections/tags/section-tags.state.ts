@@ -124,7 +124,7 @@ export class SectionTagsState implements NgxsOnInit {
   addSiteSectionsTags({ patchState, getState }: StateContext<SectionTagsStateModel>, action: AddSiteSectionsTagsAction) {
     const currentState = getState();
     const newTags = {};
-    newTags[action.site.name] = action.tags;
+    newTags[action.site.name] = {section: action.tags};
     patchState({...currentState, ...newTags});
   }
 

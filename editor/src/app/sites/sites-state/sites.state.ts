@@ -88,15 +88,11 @@ export class SitesState implements NgxsOnInit {
             dispatch(new CreateSiteTemplateSettingsAction(newSite, response.siteTemplateSettings));
           }
 
-          if (response.sections && response.sections.length) {
-            dispatch(new AddSiteSectionsAction(response.sections));
-          }
+          dispatch(new AddSiteSectionsAction(response.sections));
 
           dispatch(new AddSiteEntriesAction(newSite, response.entries));
 
-          if (response.tags && response.tags.section) {
-            dispatch(new AddSiteSectionsTagsAction(newSite, response.tags));
-          }
+          dispatch(new AddSiteSectionsTagsAction(newSite, response.tags));
         }
       })
     );
