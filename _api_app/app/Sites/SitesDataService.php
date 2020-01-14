@@ -269,6 +269,7 @@ class SitesDataService extends Storage
         // Merge site design settings 1:1
         $themeTemplateName = explode('-', $newSiteSettings['template']['template'])[0];
         copy($themesDS->THEME_STORAGE_ROOT . '/settings.' . $themeTemplateName . '.xml', $themesDS->XML_PREVIEW_ROOT . '/settings.' . $themeTemplateName . '.xml');
+        // @TODO copy background image from theme if used
     }
 
     /**
