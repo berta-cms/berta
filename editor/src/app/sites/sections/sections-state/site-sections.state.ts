@@ -107,28 +107,9 @@ export class SiteSectionsState implements NgxsOnInit {
   @Action(AddSiteSectionsAction)
   addSiteSections({ getState, setState }: StateContext<SiteSectionStateModel[]>, action: AddSiteSectionsAction) {
     const state = getState();
-    const data = {
-      name: 'home',
-      site_name: action.site.name,
-      title: 'Home',
-      order: 0,
-      '@attributes': {
-        tags_behavior: 'invisible',
-        published: 1 as const,
-        type: 'default'
-      }
-    };
-
-    if (action.sections.length === 0) {
-      setState(
-        [...state, data]
-      );
-    } else {
       setState(
         [...state, ...action.sections]
       );
-    }
-
   }
 
   @Action(CloneSectionAction)

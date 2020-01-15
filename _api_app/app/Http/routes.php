@@ -29,7 +29,7 @@ $app->group(['prefix' => 'v1','namespace' => 'App\Http\Controllers', 'middleware
     $app->get('locale-settings', ['as'=>'locale_settings', 'prefix'=>'locale_settings', 'uses' => 'StateController@getLocaleSettings']);
 });
 
-$app->group(['namespace' => 'App\Sites', 'middleware' => ['setup', 'auth']], function () use ($app) {
+$app->group(['prefix' => 'v1','namespace' => 'App\Sites', 'middleware' => ['setup', 'auth']], function () use ($app) {
     $app->post('sites', ['as' => 'sites', 'uses' => 'SitesController@create']);
     $app->patch('sites', 'SitesController@update');
     $app->put('sites', 'SitesController@order');
