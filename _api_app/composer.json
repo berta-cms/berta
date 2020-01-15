@@ -1,7 +1,7 @@
 {
     "name": "berta-cms/berta",
     "description": "Berta CMS",
-    "version": "1.7.4",
+    "version": "1.7.5",
     "keywords": ["berta", "cms", "lumen"],
     "license": "GPL-3.0",
     "type": "project",
