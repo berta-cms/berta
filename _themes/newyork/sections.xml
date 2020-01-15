@@ -7,11 +7,9 @@
     <seoTitle><![CDATA[]]></seoTitle>
     <sectionBgColor><![CDATA[#ffffff]]></sectionBgColor>
   </section>
-  <section tags_behavior="invisible" published="1" has_direct_content="1" entry_count="1" type="external_link">
+  <section tags_behavior="invisible" published="1" has_direct_content="1" entry_count="1" type="default">
     <name><![CDATA[contacts]]></name>
     <title><![CDATA[CONTACTS]]></title>
-    <link><![CDATA[mailto:support@berta.me]]></link>
     <order><![CDATA[1]]></order>
-    <target><![CDATA[_blank]]></target>
   </section>
 </sections>
