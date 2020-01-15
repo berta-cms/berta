@@ -107,9 +107,9 @@ export class SiteSectionsState implements NgxsOnInit {
   @Action(AddSiteSectionsAction)
   addSiteSections({ getState, setState }: StateContext<SiteSectionStateModel[]>, action: AddSiteSectionsAction) {
     const state = getState();
-      setState(
-        [...state, ...action.sections]
-      );
+    setState(
+      [...state, ...action.sections]
+    );
   }
 
   @Action(CloneSectionAction)
