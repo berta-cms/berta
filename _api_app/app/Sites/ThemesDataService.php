@@ -4,6 +4,7 @@ namespace App\Sites;
 
 use App\Shared\Storage;
 use App\Configuration\SiteSettingsConfigService;
+use App\Sites\Sections\SiteSectionsDataService;
 
 /**
  * Service for ready made berta themes
@@ -55,5 +56,48 @@ class ThemesDataService extends Storage
     private function getThemeSiteSettings()
     {
         return $this->xmlFile2array($this->THEME_STORAGE_ROOT . '/settings.xml');
+    }
+
+    public function mergeSections($currentSiteSections)
+    {
+        $themeSiteSections = array_reverse($this->getThemeSiteSections());
+
+        foreach ($themeSiteSections as $themeSiteSection) {
+            $sectionOrder = array_search($themeSiteSection['name'], array_column($currentSiteSections, 'name'));
+
+            // Found existing section with same name
+            if ($sectionOrder !== false) {
+                $hasContent = isset($currentSiteSections[$sectionOrder]['@attributes']['entry_count']) && $currentSiteSections[$sectionOrder]['@attributes']['entry_count'] > 0;
+
+                // Skip merge for sections with existing content
+                if ($hasContent) {
+                    continue;
+                }
+            }
+
+            copy($this->THEME_STORAGE_ROOT . '/blog.' . $themeSiteSection['name'] . '.xml', $this->XML_PREVIEW_ROOT . '/blog.' . $themeSiteSection['name'] . '.xml');
+
+            // @TODO copy gallery files
+
+            // Replace existing section with theme section
+            if ($sectionOrder !== false) {
+                $currentSiteSections[$sectionOrder] = $themeSiteSection;
+            // Merge as new section at the beginning of section list
+            } else {
+                array_unshift($currentSiteSections, $themeSiteSection);
+            }
+
+            // @TODO copy section background images if exists
+        }
+
+        return $currentSiteSections;
+    }
+
+    private function getThemeSiteSections()
+    {
+        $siteSectionsDS = new SiteSectionsDataService($this->SITE, $this->THEME_STORAGE_ROOT);
+        $themeSiteSections = $siteSectionsDS->get();
+
+        return $themeSiteSections;
     }
 }

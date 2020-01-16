@@ -131,16 +131,18 @@ class SiteSectionsDataService extends Storage
         ],
     ];
 
-    private $ROOT_ELEMENT = 'sections';
+    public $ROOT_ELEMENT = 'sections';
     private $SECTIONS = array();
     private $XML_FILE;
     private $site_name;
 
-    public function __construct($site = '')
+    public function __construct($site = '', $xml_root = null)
     {
         parent::__construct($site);
         $this->site_name = $site;
-        $xml_root = $this->getSiteXmlRoot($site);
+        if (!$xml_root) {
+            $xml_root = $this->getSiteXmlRoot($site);
+        }
         $this->XML_FILE = $xml_root . '/sections.xml';
     }
 
