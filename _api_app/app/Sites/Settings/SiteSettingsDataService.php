@@ -280,15 +280,15 @@ class SiteSettingsDataService extends Storage
     private $siteSettingsConfig;
     private $siteTemplatesConfigService;
 
-    public function __construct($site = '')
+    public function __construct($site = '', $xml_root = null)
     {
         parent::__construct($site);
-        $xml_root = $this->getSiteXmlRoot($site);
+        $xml_root = $xml_root ? $xml_root : $this->getSiteXmlRoot($site);
         $this->XML_FILE = $xml_root . '/settings.xml';
 
-        $siteSettingsConfigService = new SiteSettingsConfigService();
-        $this->siteSettingsDefaults = $siteSettingsConfigService->getDefaults();
-        $this->siteSettingsConfig = $siteSettingsConfigService->get();
+        $this->siteSettingsConfigService = new SiteSettingsConfigService();
+        $this->siteSettingsDefaults = $this->siteSettingsConfigService->getDefaults();
+        $this->siteSettingsConfig = $this->siteSettingsConfigService->get();
         $this->siteTemplatesConfigService = new SiteTemplatesConfigService();
     }
 
@@ -599,5 +599,40 @@ class SiteSettingsDataService extends Storage
         $this->array2xmlFile($settings, $this->XML_FILE, $this->ROOT_ELEMENT);
 
         return $settings;
+    }
+
+    /**
+     * Merge site settings from other source folder
+     * @param string $src_root settings source root folder
+     */
+    public function mergeSiteSettings($src_root)
+    {
+        $currentSiteSettings = $this->get();
+        $newSiteSettings = $this->xmlFile2array($src_root . '/settings.xml');
+        $siteSettingsConfig = $this->siteSettingsConfigService->get();
+
+        // Merge only those settings that affects site style
+        foreach ($siteSettingsConfig as $groupKey => $group) {
+            foreach ($group as $settingKey => $setting) {
+                if (!(isset($setting['affectsStyle']) && $setting['affectsStyle'])) {
+                    continue;
+                }
+
+                // overwrite with defined value from new settings
+                if (isset($newSiteSettings[$groupKey][$settingKey])) {
+                    $currentSiteSettings[$groupKey][$settingKey] = $newSiteSettings[$groupKey][$settingKey];
+                // remove existing one and keep the new default value from template settings definitions
+                } else {
+                    unset($currentSiteSettings[$groupKey][$settingKey]);
+                }
+            }
+
+            if (empty($currentSiteSettings[$groupKey])) {
+                unset($currentSiteSettings[$groupKey]);
+            }
+        }
+        $this->array2xmlFile($currentSiteSettings, $this->XML_FILE, $this->ROOT_ELEMENT);
+
+        return $currentSiteSettings;
     }
 }

@@ -261,13 +261,11 @@ class SitesDataService extends Storage
         $this->copyFolder($this->XML_STORAGE_ROOT, $this->XML_PREVIEW_ROOT);
 
         // Merge site settings
-        $siteSettingsDS = new SiteSettingsDataService($this->SITE);
-        $currentSiteSettings = $siteSettingsDS->get();
-        $themesDS = new ThemesDataService($themeName);
-        $newSiteSettings = $themesDS->mergeSettings($currentSiteSettings);
-        $this->array2xmlFile($newSiteSettings, $themesDS->XML_PREVIEW_ROOT . '/settings.xml', $siteSettingsDS->ROOT_ELEMENT);
+        $siteSettingsDS = new SiteSettingsDataService($this->SITE, $this->XML_PREVIEW_ROOT);
+        $newSiteSettings = $siteSettingsDS->mergeSiteSettings($this->THEMES_ROOT . '/' . $themeName);
 
         // Merge site design settings 1:1
+        $themesDS = new ThemesDataService($themeName);
         $themeTemplateName = explode('-', $newSiteSettings['template']['template'])[0];
         copy($themesDS->THEME_STORAGE_ROOT . '/settings.' . $themeTemplateName . '.xml', $this->XML_PREVIEW_ROOT . '/settings.' . $themeTemplateName . '.xml');
 
