@@ -5,6 +5,7 @@ namespace App\Sites;
 use App\Shared\Storage;
 use App\Configuration\SiteSettingsConfigService;
 use App\Sites\Sections\SiteSectionsDataService;
+use App\Sites\Sections\Entries\SectionEntriesDataService;
 
 /**
  * Service for ready made berta themes
@@ -75,9 +76,12 @@ class ThemesDataService extends Storage
                 }
             }
 
+            // Copy section entries
             copy($this->THEME_STORAGE_ROOT . '/blog.' . $themeSiteSection['name'] . '.xml', $this->XML_PREVIEW_ROOT . '/blog.' . $themeSiteSection['name'] . '.xml');
 
-            // @TODO copy gallery files
+            // Copy section entry media files
+            $sectionEntriesDS = new SectionEntriesDataService($this->SITE, $themeSiteSection['name'], null, $this->THEME_STORAGE_ROOT);
+            $sectionEntriesDS->copyMediaFiles($this->XML_PREVIEW_ROOT);
 
             // Replace existing section with theme section
             if ($sectionOrder !== false) {

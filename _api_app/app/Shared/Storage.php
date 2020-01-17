@@ -22,7 +22,7 @@ class Storage
     public $MEDIA_URL;
     protected static $DEFAULT_VALUES = [];
 
-    private $MEDIA_FOLDER = 'media';
+    public $MEDIA_FOLDER = 'media';
     private $PREVIEW_FOLDER = 'preview';
 
     public function __construct($site = '')

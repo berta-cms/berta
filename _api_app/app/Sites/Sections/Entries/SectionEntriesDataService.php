@@ -181,10 +181,10 @@ class SectionEntriesDataService extends Storage
     private $XML_ROOT;
     private $XML_FILE;
 
-    public function __construct($site = '', $sectionName = '', $sectionTitle = '')
+    public function __construct($site = '', $sectionName = '', $sectionTitle = '', $xml_root = null)
     {
         parent::__construct($site);
-        $this->XML_ROOT = $this->getSiteXmlRoot($site);
+        $this->XML_ROOT = $xml_root ? $xml_root : $this->getSiteXmlRoot($site);
         $this->SECTION_NAME = $sectionName;
         $this->SECTION_TITLE = $sectionTitle;
         $this->XML_FILE = $this->XML_ROOT . '/blog.' . $sectionName . '.xml';
@@ -1081,6 +1081,25 @@ class SectionEntriesDataService extends Storage
             }
 
             closedir($handle);
+        }
+    }
+
+    /**
+     * Copy all section entries gallery files to destination folder
+     * @param string $dst_root destination folder
+     */
+    public function copyMediaFiles($dst_root)
+    {
+        $entries = $this->get();
+        $entries = $entries[self::$ROOT_LIST_ELEMENT];
+
+        foreach ($entries as $entry) {
+            if (isset($entry['mediafolder'])) {
+                $this->copyFolder(
+                    $this->XML_ROOT . '/' . $this->MEDIA_FOLDER . '/' . $entry['mediafolder'],
+                    $dst_root . '/' . $this->MEDIA_FOLDER . '/' . $entry['mediafolder']
+                );
+            }
         }
     }
 }
