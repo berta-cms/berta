@@ -270,12 +270,8 @@ class SitesDataService extends Storage
         $siteTemplateSettingsDS->mergeSiteTemplateSettings($this->THEMES_ROOT . '/' . $themeName);
 
         // Merge sections
-        $siteSectionsDS = new SiteSectionsDataService($this->SITE);
-        $currentSiteSections = $siteSectionsDS->get();
-        $themesDS = new ThemesDataService($themeName);
-        $newSiteSections = $themesDS->mergeSections($currentSiteSections);
-        // Save merged sections
-        $this->array2xmlFile(['section' => $newSiteSections], $this->XML_PREVIEW_ROOT . '/sections.xml', $siteSectionsDS->ROOT_ELEMENT);
+        $siteSectionsDS = new SiteSectionsDataService($this->SITE, $this->XML_PREVIEW_ROOT);
+        $siteSectionsDS->mergeSiteSections($this->THEMES_ROOT . '/' . $themeName);
     }
 
     /**

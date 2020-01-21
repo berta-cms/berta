@@ -707,4 +707,49 @@ class SiteSectionsDataService extends Storage
             closedir($handle);
         }
     }
+
+   /**
+     * Merge site sections from other source folder
+     * @param string $src_root site sections source root folder
+     */
+    public function mergeSiteSections($src_root)
+    {
+        $currentSiteSections = $this->get();
+
+        $siteSectionsDS = new self('', $src_root);
+        $themeSiteSections = array_reverse($siteSectionsDS->get());
+
+        foreach ($themeSiteSections as $themeSiteSection) {
+            $sectionOrder = array_search($themeSiteSection['name'], array_column($currentSiteSections, 'name'));
+
+            // Found existing section with same name
+            if ($sectionOrder !== false) {
+                $hasContent = isset($currentSiteSections[$sectionOrder]['@attributes']['entry_count']) && $currentSiteSections[$sectionOrder]['@attributes']['entry_count'] > 0;
+
+                // Skip merge for sections with existing content
+                if ($hasContent) {
+                    continue;
+                }
+            }
+
+            // Copy section entries
+            copy($src_root . '/blog.' . $themeSiteSection['name'] . '.xml', $this->XML_PREVIEW_ROOT . '/blog.' . $themeSiteSection['name'] . '.xml');
+
+            // Copy section entry media files
+            $sectionEntriesDS = new SectionEntriesDataService($this->SITE, $themeSiteSection['name'], null, $src_root);
+            $sectionEntriesDS->copyMediaFiles($this->XML_PREVIEW_ROOT);
+
+            // Replace existing section with theme section
+            if ($sectionOrder !== false) {
+                $currentSiteSections[$sectionOrder] = $themeSiteSection;
+            // Merge as new section at the beginning of section list
+            } else {
+                array_unshift($currentSiteSections, $themeSiteSection);
+            }
+
+            // @TODO copy section background images if exists
+        }
+
+        $this->array2xmlFile(['section' => $currentSiteSections], $this->XML_FILE, $this->ROOT_ELEMENT);
+    }
 }
