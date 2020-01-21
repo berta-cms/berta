@@ -5,6 +5,7 @@ namespace App\Sites\TemplateSettings;
 use App\Configuration\SiteTemplatesConfigService;
 use App\Shared\Storage;
 use App\Shared\ImageHelpers;
+use App\Sites\Settings\SiteSettingsDataService;
 
 
 /**
@@ -360,15 +361,15 @@ class SiteTemplateSettingsDataService extends Storage
     private $XML_FILE;
     private $siteTemplateDefaults;
 
-    public function __construct($site = '', $template = 'messy-0.4.2')
+    public function __construct($site = '', $template = 'messy-0.4.2', $xml_root = null)
     {
         parent::__construct($site);
-        $xml_root = $this->getSiteXmlRoot($site);
+        $this->xml_root = $xml_root ? $xml_root : $this->getSiteXmlRoot($site);
         $this->TEMPLATE = explode('-', $template)[0];
-        $this->XML_FILE = $xml_root . '/settings.' . $this->TEMPLATE . '.xml';
+        $this->XML_FILE = $this->xml_root . '/settings.' . $this->TEMPLATE . '.xml';
 
-        $siteTemplatesConfigService = new SiteTemplatesConfigService();
-        $this->siteTemplateDefaults = $siteTemplatesConfigService->getDefaults()[$template]['templateConf'];
+        $this->siteTemplatesConfigService = new SiteTemplatesConfigService();
+        $this->siteTemplateDefaults = $this->siteTemplatesConfigService->getDefaults()[$template]['templateConf'];
     }
 
     public function get()
@@ -458,5 +459,48 @@ class SiteTemplateSettingsDataService extends Storage
         self::saveValueByPath($path . '_height', $height);
 
         return self::saveValueByPath($path, $fileName);
+    }
+
+
+    /**
+     * Merge site template settings from other source folder
+     * @param string $src_root template settings source root folder
+     */
+    public function mergeSiteTemplateSettings($src_root)
+    {
+        $newSiteTemplateSettings = [];
+
+        $currentSiteTemplateSettings = $this->get();
+        $sourceSiteSettingsDS = new SiteSettingsDataService('', $src_root);
+        $sourceSiteSettings = $sourceSiteSettingsDS->get();
+        $sourceSiteTemplateSettingsDS = new self('', $sourceSiteSettings['template']['template'], $src_root);
+        $sourceSiteTemplateSettings = $sourceSiteTemplateSettingsDS->get();
+        $sourceTemplateConfig = $this->siteTemplatesConfigService->get()[$sourceSiteSettings['template']['template']]['templateConf'];
+
+        // Merge template settings
+        foreach ($sourceSiteTemplateSettings as $groupKey => $group) {
+            foreach ($group as $settingKey => $value) {
+                $newSiteTemplateSettings[$groupKey][$settingKey] = $value;
+                $isImageSetting = isset($sourceTemplateConfig[$groupKey][$settingKey]) && $sourceTemplateConfig[$groupKey][$settingKey]['format'] == 'image';
+
+                if (!$isImageSetting) {
+                    continue;
+                }
+
+                $affectsStyle = isset($sourceTemplateConfig[$groupKey][$settingKey]['affectsStyle']) && $sourceTemplateConfig[$groupKey][$settingKey]['affectsStyle'];
+
+                // Keep images form old settings if they don't affect style
+                if (!$affectsStyle && isset($currentSiteTemplateSettings[$groupKey][$settingKey])) {
+                    $newSiteTemplateSettings[$groupKey][$settingKey] = $currentSiteTemplateSettings[$groupKey][$settingKey];
+                }
+
+                // Copy image file
+                if ($affectsStyle && $value) {
+                    copy($src_root . '/' . $this->MEDIA_FOLDER . '/' . $value, $this->xml_root . '/' . $this->MEDIA_FOLDER . '/' . $value);
+                }
+            }
+        }
+
+        $this->array2xmlFile($newSiteTemplateSettings, $this->XML_FILE, $this->ROOT_ELEMENT);
     }
 }

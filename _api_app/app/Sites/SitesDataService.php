@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use App\Shared\Helpers;
 use App\Shared\Storage;
 use App\Sites\Settings\SiteSettingsDataService;
+use App\Sites\TemplateSettings\SiteTemplateSettingsDataService;
 use App\Sites\Sections\SiteSectionsDataService;
 use App\Sites\ThemesDataService;
 use App\Plugins\Shop\ShopClientsDataService;
@@ -264,16 +265,14 @@ class SitesDataService extends Storage
         $siteSettingsDS = new SiteSettingsDataService($this->SITE, $this->XML_PREVIEW_ROOT);
         $newSiteSettings = $siteSettingsDS->mergeSiteSettings($this->THEMES_ROOT . '/' . $themeName);
 
-        // Merge site design settings 1:1
-        $themesDS = new ThemesDataService($themeName);
-        $themeTemplateName = explode('-', $newSiteSettings['template']['template'])[0];
-        copy($themesDS->THEME_STORAGE_ROOT . '/settings.' . $themeTemplateName . '.xml', $this->XML_PREVIEW_ROOT . '/settings.' . $themeTemplateName . '.xml');
-
-        // @TODO copy site background image from theme if used
+        // Merge site template settings
+        $siteTemplateSettingsDS = new SiteTemplateSettingsDataService($this->SITE, $newSiteSettings['template']['template'], $this->XML_PREVIEW_ROOT);
+        $siteTemplateSettingsDS->mergeSiteTemplateSettings($this->THEMES_ROOT . '/' . $themeName);
 
         // Merge sections
         $siteSectionsDS = new SiteSectionsDataService($this->SITE);
         $currentSiteSections = $siteSectionsDS->get();
+        $themesDS = new ThemesDataService($themeName);
         $newSiteSections = $themesDS->mergeSections($currentSiteSections);
         // Save merged sections
         $this->array2xmlFile(['section' => $newSiteSections], $this->XML_PREVIEW_ROOT . '/sections.xml', $siteSectionsDS->ROOT_ELEMENT);
