@@ -64,7 +64,7 @@ function smarty_function_bertaLink($params, &$smarty)
     }
 
     if ($constructPrettyLink) {
-        return $SITE_ROOT_URL . implode('/', $link) . ($link ? '/' : '');
+        return $SITE_ROOT_URL . implode('/', $link) . ($link ? '/' : '') . ($options['PREVIEW_FOLDER'] ? '?preview=1' : '');
     } else {
         return (isset($params['absRoot']) ? $SITE_ROOT_URL : '.') . ($link ? ('?' . implode('&', $link)) : '');
     }

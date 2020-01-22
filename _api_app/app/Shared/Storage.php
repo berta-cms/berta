@@ -25,7 +25,7 @@ class Storage
     public $MEDIA_FOLDER = 'media';
     private $PREVIEW_FOLDER = 'preview';
 
-    public function __construct($site = '')
+    public function __construct($site = '', $preview_folder = '')
     {
         $this->SITE = $site;
         $this->XML_MAIN_ROOT = realpath(config('app.old_berta_root') . '/storage');
@@ -36,12 +36,12 @@ class Storage
         if (!empty($site) and $site !== '0') {
             $this->XML_STORAGE_ROOT = $this->XML_SITES_ROOT . '/' . $site;
             $this->XML_PREVIEW_ROOT = $this->XML_STORAGE_ROOT . '/' . $this->PREVIEW_FOLDER;
-            $this->MEDIA_ROOT = $this->XML_SITES_ROOT . '/' . $site . '/' . $this->MEDIA_FOLDER;
-            $this->MEDIA_URL = '/storage/-sites/' . $site . '/' . $this->MEDIA_FOLDER;
+            $this->MEDIA_ROOT = $this->XML_SITES_ROOT . '/' . $site . '/' . $preview_folder . $this->MEDIA_FOLDER;
+            $this->MEDIA_URL = '/storage/-sites/' . $site . '/' . $preview_folder . $this->MEDIA_FOLDER;
         } else {
             $this->XML_PREVIEW_ROOT = $this->XML_MAIN_ROOT . '/' . $this->PREVIEW_FOLDER;
-            $this->MEDIA_ROOT = $this->XML_MAIN_ROOT . '/' . $this->MEDIA_FOLDER;
-            $this->MEDIA_URL = '/storage/' . $this->MEDIA_FOLDER;
+            $this->MEDIA_ROOT = $this->XML_MAIN_ROOT . '/' . $preview_folder . $this->MEDIA_FOLDER;
+            $this->MEDIA_URL = '/storage/' . $preview_folder . $this->MEDIA_FOLDER;
         }
     }
 

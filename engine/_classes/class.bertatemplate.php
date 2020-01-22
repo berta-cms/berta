@@ -143,14 +143,14 @@ class BertaTemplate extends BertaBase
         $this->content = &$content;
         $this->allContent = &$allContent;
 
-        $sectionEntriesDS = new SectionEntriesDataService(self::$options['MULTISITE'], $this->sectionName);
+        $sectionEntriesDS = new SectionEntriesDataService(self::$options['MULTISITE'], $this->sectionName, '', self::$options['XML_ROOT']);
         $entries = $sectionEntriesDS->getByTag($this->tagName, $this->environment == 'engine');
-        $siteSectionsDS = new SiteSectionsDataService(self::$options['MULTISITE']);
+        $siteSectionsDS = new SiteSectionsDataService(self::$options['MULTISITE'], self::$options['XML_ROOT']);
         $sectionData = $siteSectionsDS->get($this->sectionName);
-        $siteSettingsDS = new SiteSettingsDataService(self::$options['MULTISITE']);
-        $siteTemplateSettingsDS = new SiteTemplateSettingsDataService(self::$options['MULTISITE'], $this->name);
-
+        $siteSettingsDS = new SiteSettingsDataService(self::$options['MULTISITE'], self::$options['XML_ROOT']);
+        $siteTemplateSettingsDS = new SiteTemplateSettingsDataService(self::$options['MULTISITE'], $this->name, self::$options['XML_ROOT']);
         $entriesHTML = '';
+
         foreach ($entries as $entry) {
             $sectionEntriesRS = new SectionEntryRenderService(
                 self::$options['MULTISITE'],
@@ -158,7 +158,7 @@ class BertaTemplate extends BertaBase
                 $sectionData,
                 $siteSettingsDS->getState(),
                 $siteTemplateSettingsDS->getState(),
-                (new Storage(self::$options['MULTISITE'])),
+                (new Storage(self::$options['MULTISITE'], self::$options['PREVIEW_FOLDER'])),
                 $this->environment == 'engine',
                 isset($shopEnabled) && $shopEnabled
             );
