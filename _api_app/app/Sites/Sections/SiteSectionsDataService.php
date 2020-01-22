@@ -732,6 +732,14 @@ class SiteSectionsDataService extends Storage
                 }
             }
 
+            // copy section mediafolder (background gallery)
+            if (isset($themeSiteSection['mediafolder'])) {
+                $this->copyFolder(
+                    $src_root . '/' . $this->MEDIA_FOLDER . '/' . $themeSiteSection['mediafolder'],
+                    $this->XML_PREVIEW_ROOT . '/' . $this->MEDIA_FOLDER . '/' . $themeSiteSection['mediafolder']
+                );
+            }
+
             // Copy section entries
             copy($src_root . '/blog.' . $themeSiteSection['name'] . '.xml', $this->XML_PREVIEW_ROOT . '/blog.' . $themeSiteSection['name'] . '.xml');
 
@@ -746,8 +754,6 @@ class SiteSectionsDataService extends Storage
             } else {
                 array_unshift($currentSiteSections, $themeSiteSection);
             }
-
-            // @TODO copy section background images if exists
         }
 
         $this->array2xmlFile(['section' => $currentSiteSections], $this->XML_FILE, $this->ROOT_ELEMENT);
