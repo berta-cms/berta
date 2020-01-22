@@ -140,10 +140,8 @@ class SiteSectionsDataService extends Storage
     {
         parent::__construct($site);
         $this->site_name = $site;
-        if (!$xml_root) {
-            $xml_root = $this->getSiteXmlRoot($site);
-        }
-        $this->XML_FILE = $xml_root . '/sections.xml';
+        $this->XML_ROOT = $xml_root ? $xml_root : $this->getSiteXmlRoot($site);
+        $this->XML_FILE = $this->XML_ROOT . '/sections.xml';
     }
 
     /**
@@ -736,16 +734,16 @@ class SiteSectionsDataService extends Storage
             if (isset($themeSiteSection['mediafolder'])) {
                 $this->copyFolder(
                     $src_root . '/' . $this->MEDIA_FOLDER . '/' . $themeSiteSection['mediafolder'],
-                    $this->XML_PREVIEW_ROOT . '/' . $this->MEDIA_FOLDER . '/' . $themeSiteSection['mediafolder']
+                    $this->XML_ROOT . '/' . $this->MEDIA_FOLDER . '/' . $themeSiteSection['mediafolder']
                 );
             }
 
             // Copy section entries
-            copy($src_root . '/blog.' . $themeSiteSection['name'] . '.xml', $this->XML_PREVIEW_ROOT . '/blog.' . $themeSiteSection['name'] . '.xml');
+            copy($src_root . '/blog.' . $themeSiteSection['name'] . '.xml', $this->XML_ROOT . '/blog.' . $themeSiteSection['name'] . '.xml');
 
             // Copy section entry media files
             $sectionEntriesDS = new SectionEntriesDataService($this->SITE, $themeSiteSection['name'], null, $src_root);
-            $sectionEntriesDS->copyMediaFiles($this->XML_PREVIEW_ROOT);
+            $sectionEntriesDS->copyMediaFiles($this->XML_ROOT);
 
             // Replace existing section with theme section
             if ($sectionOrder !== false) {
