@@ -67,7 +67,7 @@ $options['TEMPLATES_ROOT'] = $SITE_ROOT_PATH . '_templates/';
 $options['TEMPLATES_ABS_ROOT'] = $options['SITE_ROOT_URL'] . '_templates/';
 $options['TEMPLATES_FULL_SERVER_PATH'] = $SITE_ROOT_PATH . '_templates' . '/';
 
-$options['PREVIEW_FOLDER'] = isset($_GET['preview']) ? 'preview/' : '';
+$options['PREVIEW_FOLDER'] = isset($_REQUEST['preview']) ? 'preview/' : '';
 
 /**
  * Writable folders
