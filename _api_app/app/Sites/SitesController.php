@@ -97,6 +97,26 @@ class SitesController extends Controller
         ]);
     }
 
+    public function themeApply(Request $request)
+    {
+        // @TODO switch to json request
+        // $json = $request->json()->all();
+        $json = $request->query();
+        $siteName = $json['site'];
+        $themeName = $json['theme'];
+
+        $sitesDS = new SitesDataService($siteName);
+        $sitesDS->themeApply($themeName);
+
+        // @TODO return new site state here to update frontend, currently frontend window is reloaded to get correct site state
+        return response()->json([
+            'var1' => 'val1',
+            'json' => $json,
+            'themeName' => $themeName,
+            'siteName' => $siteName
+        ]);
+    }
+
     public function delete(Request $request)
     {
         $sites = new SitesDataService();

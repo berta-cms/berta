@@ -274,6 +274,21 @@ class SitesDataService extends Storage
         $siteSectionsDS->mergeSiteSections($this->THEMES_ROOT . '/' . $themeName);
     }
 
+    public function themeApply($themeName)
+    {
+        // Merge site settings
+        $siteSettingsDS = new SiteSettingsDataService($this->SITE);
+        $newSiteSettings = $siteSettingsDS->mergeSiteSettings($this->THEMES_ROOT . '/' . $themeName);
+
+        // Merge site template settings
+        $siteTemplateSettingsDS = new SiteTemplateSettingsDataService($this->SITE, $newSiteSettings['template']['template']);
+        $siteTemplateSettingsDS->mergeSiteTemplateSettings($this->THEMES_ROOT . '/' . $themeName);
+
+        // Merge sections
+        $siteSectionsDS = new SiteSectionsDataService($this->SITE);
+        $siteSectionsDS->mergeSiteSections($this->THEMES_ROOT . '/' . $themeName);
+    }
+
     /**
      */
     public function delete($name)
