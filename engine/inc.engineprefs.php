@@ -84,7 +84,6 @@ if (!empty($options['MULTISITE'])) {
 
     $options['MEDIA_ROOT'] = $options['XML_ROOT'] . $options['MEDIA_FOLDER_NAME'] . '/';
     $options['MEDIA_URL'] = '/storage/-sites/' . $options['MULTISITE'] . '/' . $options['MEDIA_FOLDER_NAME'] . '/';
-    $options['MEDIA_TEMP_ROOT'] = $options['MEDIA_ROOT'];
 
     $options['CACHE_ROOT'] = $options['XML_ROOT'] . 'cache/';
     $options['MEDIA_ABS_ROOT'] = $options['SITE_ROOT_URL'] . 'storage/-sites/' . $options['MULTISITE'] . '/media/';
@@ -94,7 +93,6 @@ if (!empty($options['MULTISITE'])) {
 
     $options['MEDIA_ROOT'] = $SITE_ROOT_PATH . 'storage/' . $options['MEDIA_FOLDER_NAME'] . '/';
     $options['MEDIA_URL'] = $SITE_ROOT_URL . 'storage/' . $options['MEDIA_FOLDER_NAME'] . '/';
-    $options['MEDIA_TEMP_ROOT'] = $options['MEDIA_ROOT'];
 
     $options['CACHE_ROOT'] = $SITE_ROOT_PATH . 'storage/cache/';
     $options['MEDIA_ABS_ROOT'] = $options['SITE_ROOT_URL'] . 'storage/media/';
