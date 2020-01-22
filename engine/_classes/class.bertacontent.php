@@ -39,7 +39,7 @@ class BertaContent extends BertaBase
     public static function getSite($options)
     {
         $site = '';
-        $apacheRewriteUsed = !empty($_REQUEST['__rewrite']);
+        $apacheRewriteUsed = true;
 
         if ($apacheRewriteUsed) {
             $urlStr = $_SERVER['REQUEST_URI'];

@@ -67,6 +67,8 @@ $options['TEMPLATES_ROOT'] = $SITE_ROOT_PATH . '_templates/';
 $options['TEMPLATES_ABS_ROOT'] = $options['SITE_ROOT_URL'] . '_templates/';
 $options['TEMPLATES_FULL_SERVER_PATH'] = $SITE_ROOT_PATH . '_templates' . '/';
 
+$options['PREVIEW_FOLDER'] = isset($_GET['preview']) ? 'preview/' : '';
+
 /**
  * Writable folders
  */
@@ -80,23 +82,23 @@ $options['MULTISITE'] = BertaContent::getSite($options);
 $options['MEDIA_FOLDER_NAME'] = 'media';
 
 if (!empty($options['MULTISITE'])) {
-    $options['XML_ROOT'] = $options['XML_SITES_ROOT'] . $options['MULTISITE'] . '/';
+    $options['XML_ROOT'] = $options['XML_SITES_ROOT'] . $options['MULTISITE'] . '/' . $options['PREVIEW_FOLDER'];
 
     $options['MEDIA_ROOT'] = $options['XML_ROOT'] . $options['MEDIA_FOLDER_NAME'] . '/';
-    $options['MEDIA_URL'] = '/storage/-sites/' . $options['MULTISITE'] . '/' . $options['MEDIA_FOLDER_NAME'] . '/';
+    $options['MEDIA_URL'] = '/storage/-sites/' . $options['MULTISITE'] . '/' . $options['PREVIEW_FOLDER'] . $options['MEDIA_FOLDER_NAME'] . '/';
 
     $options['CACHE_ROOT'] = $options['XML_ROOT'] . 'cache/';
-    $options['MEDIA_ABS_ROOT'] = $options['SITE_ROOT_URL'] . 'storage/-sites/' . $options['MULTISITE'] . '/media/';
-    $options['CACHE_ABS_ROOT'] = $options['SITE_ROOT_URL'] . 'storage/-sites/' . $options['MULTISITE'] . '/cache/';
+    $options['MEDIA_ABS_ROOT'] = $options['SITE_ROOT_URL'] . 'storage/-sites/' . $options['MULTISITE'] . '/' . $options['PREVIEW_FOLDER'] . 'media/';
+    $options['CACHE_ABS_ROOT'] = $options['SITE_ROOT_URL'] . 'storage/-sites/' . $options['MULTISITE'] . '/' . $options['PREVIEW_FOLDER'] . 'cache/';
 } else {
-    $options['XML_ROOT'] = $SITE_ROOT_PATH . 'storage/';
+    $options['XML_ROOT'] = $SITE_ROOT_PATH . 'storage/' . $options['PREVIEW_FOLDER'];
 
-    $options['MEDIA_ROOT'] = $SITE_ROOT_PATH . 'storage/' . $options['MEDIA_FOLDER_NAME'] . '/';
-    $options['MEDIA_URL'] = $SITE_ROOT_URL . 'storage/' . $options['MEDIA_FOLDER_NAME'] . '/';
+    $options['MEDIA_ROOT'] = $SITE_ROOT_PATH . 'storage/' . $options['PREVIEW_FOLDER'] . $options['MEDIA_FOLDER_NAME'] . '/';
+    $options['MEDIA_URL'] = $SITE_ROOT_URL . 'storage/' . $options['PREVIEW_FOLDER'] . $options['MEDIA_FOLDER_NAME'] . '/';
 
-    $options['CACHE_ROOT'] = $SITE_ROOT_PATH . 'storage/cache/';
-    $options['MEDIA_ABS_ROOT'] = $options['SITE_ROOT_URL'] . 'storage/media/';
-    $options['CACHE_ABS_ROOT'] = $options['SITE_ROOT_URL'] . 'storage/cache/';
+    $options['CACHE_ROOT'] = $SITE_ROOT_PATH . 'storage/' . $options['PREVIEW_FOLDER'] . 'cache/';
+    $options['MEDIA_ABS_ROOT'] = $options['SITE_ROOT_URL'] . 'storage/' . $options['PREVIEW_FOLDER'] . 'media/';
+    $options['CACHE_ABS_ROOT'] = $options['SITE_ROOT_URL'] . 'storage/' . $options['PREVIEW_FOLDER'] . 'cache/';
 }
 
 /**

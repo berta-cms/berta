@@ -75,7 +75,7 @@ RewriteCond %{REQUEST_URI} !^(.*)/$
 RewriteRule ^(.*)$ /$1/ [R=301,L]
 
 # the content is fed to index.php, which handles it
-RewriteRule ^.*$  index.php?__rewrite=1   [L]
+RewriteRule ^ index.php [L]
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - /
 

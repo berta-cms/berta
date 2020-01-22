@@ -14,7 +14,7 @@ class Berta extends BertaBase
     public $security;
     public $settings;
     public $environment;
-    public $apacheRewriteUsed = false;
+    public $apacheRewriteUsed = true;
     public $request_uri;
 
     public $sections;
@@ -34,7 +34,6 @@ class Berta extends BertaBase
 
         // Set variables
         $this->environment = !empty(self::$options['ENVIRONMENT']) ? self::$options['ENVIRONMENT'] : 'site';
-        $this->apacheRewriteUsed = !empty($_REQUEST['__rewrite']) ? true : false;
         $this->security = new BertaSecurity($this->environment);
 
         // [Bad bad bad practice!] Update logged in status in the options
