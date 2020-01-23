@@ -7,7 +7,6 @@ use App\Shared\Storage;
 use App\Sites\Settings\SiteSettingsDataService;
 use App\Sites\TemplateSettings\SiteTemplateSettingsDataService;
 use App\Sites\Sections\SiteSectionsDataService;
-use App\Sites\ThemesDataService;
 use App\Plugins\Shop\ShopClientsDataService;
 use App\Plugins\Shop\ShopOrdersDataService;
 use App\Plugins\Shop\ShopProductsDataService;

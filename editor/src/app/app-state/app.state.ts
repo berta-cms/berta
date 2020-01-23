@@ -31,7 +31,8 @@ const defaultState: AppStateModel = {
   loginUrl: '',
   authenticateUrl: '',
   version: '',
-  lastRoute: '/settings'
+  lastRoute: '/settings',
+  themes: []
 };
 
 

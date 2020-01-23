@@ -12,16 +12,25 @@ use App\Sites\Sections\Entries\SectionEntriesDataService;
  */
 class ThemesDataService extends Storage
 {
-    private $THEME = null;
-    public $THEME_STORAGE_ROOT = null;
-
-    public function __construct($theme = null)
+    public function __construct()
     {
         parent::__construct();
+    }
 
-        if ($theme) {
-            $this->THEME = $theme;
-            $this->THEME_STORAGE_ROOT = $this->THEMES_ROOT . '/' . $this->THEME;
+    public function getThemes()
+    {
+        $themes = [];
+        if (!is_dir($this->THEMES_ROOT)) {
+            return $themes;
         }
+
+        $files = array_diff(scandir($this->THEMES_ROOT), ['.', '..']);
+        foreach ($files as $file) {
+            if (is_dir("$this->THEMES_ROOT/$file")) {
+                $themes[] = $file;
+            }
+        }
+
+        return $themes;
     }
 }
