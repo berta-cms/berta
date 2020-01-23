@@ -1,8 +1,13 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Store } from '@ngxs/store';
 
 import { AppStateModel } from '../app-state/app-state.interface';
 import { AppState } from '../app-state/app.state';
+import {
+  PreviewThemeSitesAction,
+  ApplyThemeSitesAction
+} from '../sites/sites-state/sites.actions';
 
 @Component({
   selector: 'berta-themes',
@@ -20,7 +25,8 @@ export class ThemesComponent implements OnInit {
   appState: AppStateModel;
 
   constructor(
-    private store: Store) {
+    private store: Store,
+    private router: Router) {
   }
 
   ngOnInit() {
@@ -31,11 +37,40 @@ export class ThemesComponent implements OnInit {
 
   previewTheme(event, theme) {
     event.preventDefault();
-    console.log('previewTheme:', theme);
+    if (this.appState.isLoading) {
+      return;
+    }
+
+    this.store.dispatch(new PreviewThemeSitesAction({
+      site: this.appState.site,
+      theme: theme
+    })).subscribe({
+      next: () => {
+        const url = window.location.origin + (this.appState.site ? '/' + this.appState.site : '') + '?preview=1';
+        window.open(url, '_blank');
+      },
+      error: (error) => console.error(error)
+    });
   }
 
   applyTheme(event, theme) {
     event.preventDefault();
-    console.log('applyTheme:', theme);
+    if (this.appState.isLoading) {
+      return;
+    }
+
+    this.store.dispatch(new ApplyThemeSitesAction({
+      site: this.appState.site,
+      theme: theme
+    })).subscribe({
+      next: () => {
+        // @TODO update merged site state
+        // Current workaround is to reload the window
+        this.router.navigate(['/'], { queryParamsHandling: 'preserve' }).then(() => {
+          window.location.reload();
+        });
+      },
+      error: (error) => console.error(error)
+    });
   }
 }
