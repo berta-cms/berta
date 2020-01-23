@@ -17,6 +17,7 @@ import { HeaderComponent } from './header/header.component';
 import { PreviewToggleComponent } from './header/preview-toggle.component';
 import { ProfileDropdownComponent } from './profile-dropdown/profile-dropdown.component';
 import { LoginComponent } from './login/login.component';
+import { ThemesComponent } from './themes/themes.component'
 import { UserState } from './user/user.state';
 import { UserAccountComponent } from './user/user-account.component';
 import { SitesSharedModule } from './sites/shared/sites-shared.module';
@@ -37,6 +38,7 @@ import { SentryErrorHandler } from './sentry.error-handler';
     UserAccountComponent,
     LoginComponent,
     PreviewComponent,
+    ThemesComponent,
     PopupComponent
   ],
   imports: [
