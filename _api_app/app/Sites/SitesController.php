@@ -80,28 +80,19 @@ class SitesController extends Controller
 
     public function themePreview(Request $request)
     {
-        // @TODO switch to json request
-        // $json = $request->json()->all();
-        $json = $request->query();
+        $json = $request->json()->all();
         $siteName = $json['site'];
         $themeName = $json['theme'];
 
         $sitesDS = new SitesDataService($siteName);
         $sitesDS->createPrieview($themeName);
 
-        return response()->json([
-            'url' => 'generate preview url here',
-            'json' => $json,
-            'themeName' => $themeName,
-            'siteName' => $siteName
-        ]);
+        return response()->json($json);
     }
 
     public function themeApply(Request $request)
     {
-        // @TODO switch to json request
-        // $json = $request->json()->all();
-        $json = $request->query();
+        $json = $request->json()->all();
         $siteName = $json['site'];
         $themeName = $json['theme'];
 
@@ -109,12 +100,7 @@ class SitesController extends Controller
         $sitesDS->themeApply($themeName);
 
         // @TODO return new site state here to update frontend, currently frontend window is reloaded to get correct site state
-        return response()->json([
-            'var1' => 'val1',
-            'json' => $json,
-            'themeName' => $themeName,
-            'siteName' => $siteName
-        ]);
+        return response()->json($json);
     }
 
     public function delete(Request $request)

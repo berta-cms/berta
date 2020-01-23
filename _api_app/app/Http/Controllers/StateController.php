@@ -31,6 +31,8 @@ class StateController extends Controller
             'siteSettingsUpload' => route('site_settings_upload'),
             'siteTemplateSettings' => route('site_template_settings'),
             'siteTemplateSettingsUpload' => route('site_template_settings_upload'),
+            'siteThemePreview' => route('site_theme_preview'),
+            'siteThemeApply' => route('site_theme_apply'),
             'localeSettings' => route('locale_settings'),
             'siteSections' => route('site_sections'),
             'siteSectionsReset' => route('site_sections_reset'),

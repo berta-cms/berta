@@ -35,11 +35,8 @@ $app->group(['namespace' => 'App\Sites', 'middleware' => ['setup', 'auth']], fun
     $app->put('sites', 'SitesController@order');
     $app->delete('sites', 'SitesController@delete');
 
-    // set as post later - because it creates a preview
-    $app->get('sites/theme-preview', ['as' => 'site_theme_preview', 'uses' => 'SitesController@themePreview']);
-
-    // set as put later - because it replaces (merges) site content
-    $app->get('sites/theme-apply', ['as' => 'site_theme_apply', 'uses' => 'SitesController@themeApply']);
+    $app->post('sites/theme-preview', ['as' => 'site_theme_preview', 'uses' => 'SitesController@themePreview']);
+    $app->put('sites/theme-apply', ['as' => 'site_theme_apply', 'uses' => 'SitesController@themeApply']);
 
     $app->patch('sites/settings', ['as' => 'site_settings', 'uses' => 'Settings\SiteSettingsController@update']);
     $app->post('sites/settings/upload', ['as' => 'site_settings_upload', 'uses' => 'Settings\SiteSettingsController@upload']);
