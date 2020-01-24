@@ -81,6 +81,18 @@ $settingsDefinition = [
         ],
     ],
 
+    'theme' => [
+        '_' => [
+            'title' => I18n::_('Theme')
+        ],
+        'theme' => [
+            'format' => 'route',
+            'default' => '/themes',
+            'title' => I18n::_('Choose theme'),
+            'description' => I18n::_('Themes are ready made sites with predefined design settings.')
+        ],
+    ],
+
     'texts' => [
         '_' => [
             'title' => I18n::_('Texts')
