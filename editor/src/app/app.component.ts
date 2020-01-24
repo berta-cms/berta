@@ -19,7 +19,7 @@ import { AppStateService } from './app-state/app-state.service';
     <!--The content below is only a placeholder and can be replaced.-->
     <berta-header></berta-header>
     <main>
-      <aside [style.display]="(routeIsRoot ? 'none' : '')"><!-- the sidebar -->
+      <aside [class.fullscreen]="isSidebarFullscreen" [style.display]="(routeIsRoot ? 'none' : '')"><!-- the sidebar -->
         <div class="scroll-wrap"><router-outlet></router-outlet></div></aside>
       <section>
         <berta-preview></berta-preview>
@@ -58,6 +58,16 @@ import { AppStateService } from './app-state/app-state.service';
       box-sizing: border-box;
     }
 
+    aside.fullscreen {
+      width: auto;
+      height: auto;
+      top: 5.05em;
+      right: 1.3em;
+      bottom: 1.3em;
+      left: 1.3em;
+      padding: 1.3em;
+    }
+
     section {
       flex-grow: 1;
       display: flex;
@@ -90,6 +100,8 @@ import { AppStateService } from './app-state/app-state.service';
 export class AppComponent implements OnInit, OnDestroy {
   title = 'berta';
   routeIsRoot = true;
+  isSidebarFullscreen = false;
+  sidebarFullscreenRoutes = ['/themes'];
 
   @Select(AppState.getShowOverlay) showOverlay$;
   @Select(AppState.getInputFocus) inputFocus$: Observable<boolean>;
@@ -111,6 +123,7 @@ export class AppComponent implements OnInit, OnDestroy {
       filter(event => event instanceof NavigationEnd),
       map((event: NavigationEnd) => event.url.split('?')[0]),
       tap(url => {
+        this.isSidebarFullscreen = this.sidebarFullscreenRoutes.indexOf(url) > -1;
         return this.routeIsRoot = url === '/';
       }),
       mergeMap((url) => this.store.select(AppState).pipe(map((state => [url, state])), take(1))),
