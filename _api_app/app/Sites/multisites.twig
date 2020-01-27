@@ -1,29 +1,12 @@
-{% if multisitesOption|length  > 1 %}
-  <ul id="multisites">
-    {% for multisitesOption in siteName => site %}
-      {% if environment == 'engine' || multisiteOption != siteName || ( siteName =='0' && multisiteOption !='' ) %}
-        <li {% if multisiteOption === siteName || ( siteName =='0' && multisiteOption =='' ) %} class="selected" {% endif %}>
-          <a href="{{ bertaLink site = siteName }}">
-            {% if site['title']['value'] !='' %}
-              {{ site['title']['value'] }}
-            {% else %}
-              {% if siteName =='0' %}
-                Main Site
-              {% else %}
-                {{ siteName }}
-              {% endif %}
-            {% endif %}
-          </a>
-        </li>
-      {% endif %}
-    {% endfor %}
-  </ul>
-{% endif %}
+<ul id="multisites">
+  {% for multisites in siteName => sites %}
+    {% if isAvailable === true ) %}
+      <li {% if isCurrentSite === true ) %} class="selected" {% endif %}>
+        <a href="{{ site.link }}">
+          {{ sites.headerName }}
+        </a>
+      </li>
+    {% endif %}
+  {% endfor %}
+</ul>
 
-{#
-  $berta.options.MULTISITES = multisitesOption
-  $berta.options.MULTISITE = multisiteOption
-  $berta.environment = environment
-  $siteName = siteName
-
-#}
