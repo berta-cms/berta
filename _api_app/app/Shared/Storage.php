@@ -295,6 +295,10 @@ class Storage
      */
     protected function copyFolder($src, $dst)
     {
+        if (!is_dir($src)) {
+            return;
+        }
+
         $dir = opendir($src);
         @mkdir($dst, 0777, true);
 
