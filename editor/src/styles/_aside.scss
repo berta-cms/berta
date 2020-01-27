@@ -158,6 +158,10 @@ aside {
         }
       }
 
+      .button {
+        font-size: $input-font-size;
+      }
+
       &:first-child {
         margin-top: 0;
 
