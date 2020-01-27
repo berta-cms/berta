@@ -27,6 +27,8 @@ $app->group(['prefix' => 'v1','namespace' => 'App\Http\Controllers', 'middleware
 
     $app->get('state[/{site}]', 'StateController@get');
     $app->get('locale-settings', ['as'=>'locale_settings', 'prefix'=>'locale_settings', 'uses' => 'StateController@getLocaleSettings']);
+
+    $app->get('multisite/render', 'SitesController@render');
 });
 
 $app->group(['prefix' => 'v1','namespace' => 'App\Sites', 'middleware' => ['setup', 'auth']], function () use ($app) {

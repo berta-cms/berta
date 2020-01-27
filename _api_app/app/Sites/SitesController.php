@@ -94,4 +94,17 @@ class SitesController extends Controller
         $sites->order($json);
         return response()->json($json);
     }
+
+    public function render(Request $request)
+    {
+        $SitesRenderService = new SitesRenderService();
+
+        $res. =$SitesRenderService->render();
+
+        if ($res === '') {
+            return abort(404, "Not found! lu");
+        }
+
+        return response($res);
+    }
 }
