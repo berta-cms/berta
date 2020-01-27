@@ -489,9 +489,13 @@ class SiteTemplateSettingsDataService extends Storage
 
                 $affectsStyle = isset($sourceTemplateConfig[$groupKey][$settingKey]['affectsStyle']) && $sourceTemplateConfig[$groupKey][$settingKey]['affectsStyle'];
 
-                // Keep images form old settings if they don't affect style
-                if (!$affectsStyle && isset($currentSiteTemplateSettings[$groupKey][$settingKey])) {
-                    $newSiteTemplateSettings[$groupKey][$settingKey] = $currentSiteTemplateSettings[$groupKey][$settingKey];
+                if (!$affectsStyle) {
+                    // Keep images form old settings if they don't affect style
+                    if (isset($currentSiteTemplateSettings[$groupKey][$settingKey])) {
+                        $newSiteTemplateSettings[$groupKey][$settingKey] = $currentSiteTemplateSettings[$groupKey][$settingKey];
+                    } else {
+                        unset($newSiteTemplateSettings[$groupKey][$settingKey]);
+                    }
                 }
 
                 // Copy image file
