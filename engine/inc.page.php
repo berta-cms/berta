@@ -52,7 +52,7 @@ if(!$hasPHP5) {
 
 include 'inc.error_handling.php';
 include_once 'inc.functions.php';
-
+setExternalReferer();
 
 
 

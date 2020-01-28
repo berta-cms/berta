@@ -52,4 +52,31 @@ function d($var){
     echo '</pre></div>';
 }
 
-?>
+function getBaseDomainName($url) {
+    $parsed_url = parse_url($url);
+    if (empty($parsed_url['host'])) {
+        return '';
+    }
+    $base_domain = explode('.', $parsed_url['host']);
+    if (count($base_domain) < 2) {
+        return '';
+    }
+    $base_domain = implode('.', array_slice($base_domain, -2));
+
+    return $base_domain;
+}
+
+function setExternalReferer() {
+    if (empty($_SERVER['HTTP_REFERER']) || empty($_SERVER['HTTP_HOST'])) {
+        return;
+    }
+
+    $server_base_domain = getBaseDomainName('//'. $_SERVER['HTTP_HOST']);
+    $referer_base_domain = getBaseDomainName($_SERVER['HTTP_REFERER']);
+    if ($server_base_domain === $referer_base_domain) {
+        return;
+    }
+
+    $twoYearsInSeconds = 3.154e+7 * 2;
+    setcookie('bt_external_referer', $_SERVER['HTTP_REFERER'], time() + $twoYearsInSeconds, '/', '.' . $server_base_domain);
+}
