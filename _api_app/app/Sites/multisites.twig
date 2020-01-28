@@ -1,11 +1,13 @@
 <ul id="multisites">
-  {% for multisites in siteName => sites %}
-    {% if isAvailable === true ) %}
-      <li {% if isCurrentSite === true ) %} class="selected" {% endif %}>
-        <a href="{{ site.link }}">
-          {{ sites.headerName }}
-        </a>
-      </li>
+  {% for sites in multisite %}
+    {% if sites.isPublished is same as (true) %}
+      {% if sites.isAvailable is same as (true) %}
+        <li {% if sites.isCurrentSite is same as (true)  %} class="selected" {% endif %}>
+          <a href="">
+            {{ sites.Name }}
+          </a>
+        </li>
+      {% endif %}
     {% endif %}
   {% endfor %}
 </ul>
