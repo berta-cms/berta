@@ -94,6 +94,15 @@ import { AppStateService } from './app-state/app-state.service';
       overflow-x: hidden;
       height: 100%;
     }
+
+    @media (min-width: 1024px) {
+      aside.fullscreen {
+        left: 50%;
+        right: auto;
+        transform: translateX(-50%);
+        width: 968px;
+      }
+    }
     `
   ]
 })
