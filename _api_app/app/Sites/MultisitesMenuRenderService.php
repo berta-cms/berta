@@ -24,25 +24,13 @@ class MultisitesRenderService
      * @param bool $isCurrentSite
      */
 
-    public function __construct(){}
 
     public function getViewData()
     {
         $SitesDataService = new SitesDataService();
         $multisites = $SitesDataService->get();
 
-        // foreach ($multisites as $siteName => $sites) {
-        //     $isCurrentSite = $currentSite === $siteName || ($siteName == '0' && $currentSite == '')? true : false;
-        //     $isAvailable = $environment == 'engine' || $currentSite != $siteName || ($siteName == '0' && $currentSite != '') ? true : false;
 
-        //     if ($sites['title']['value'] != '') {
-        //         $displayName = $sites['title']['value'];
-        //     } elseif ($siteName === '0') {
-        //         $displayName = 'Main Site';
-        //     } else {
-        //         $displayName = $siteName;
-        //     }
-        // }
 
             return $multisites;
 
@@ -60,7 +48,6 @@ class MultisitesRenderService
          *          isCurrentSite: bool
          *      .....=>
          *          ....
-         *  environment: string
          * ]
          */
     }

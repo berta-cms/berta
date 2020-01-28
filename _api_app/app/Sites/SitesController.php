@@ -97,8 +97,8 @@ class SitesController extends Controller
 
     public function renderMultisteMenu(Request $request)
     {
-        $MultisitesRenderService = new MultisitesRenderService();
-        $res = $MultisitesRenderService->render();
+        $MultisitesMenuRenderService = new MultisitesMenuRenderService();
+        $res = $MultisitesMenuRenderService->render();
 
         if ($res === '') {
             return abort(404, "Not found! lu");
