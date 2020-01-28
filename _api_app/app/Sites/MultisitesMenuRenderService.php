@@ -6,58 +6,60 @@ use App\Shared\Helpers;
 use App\Shared\Storage;
 use App\Sites\SitesDataService;
 
-class MultisitesRenderService
+class MultisitesMenuRenderService
 {
-    private $multisites;
     private $currentSite;
-    private $environment;
-    private $isAvailable;
-    private $isCurrentSite;
+    private $isEditMode;
 
     /**
      * Construct SitesRenderService instance
      *
-     * @param array $multisite name, title, atribute,
      * @param string $currentSite
-     * @param string $environment
-     * @param bool $isAvailable
-     * @param bool $isCurrentSite
+     * @param bool $isEditMode
      */
 
+    public function __construct(
+        $currentSite,
+        $isEditMode
+    ){
+        $this->currentSite = '';
+        $this->isEditMode = true;
+    }
 
     public function getViewData()
     {
+
         $SitesDataService = new SitesDataService();
         $multisites = $SitesDataService->get();
+        $data['multisite'] = [];
+        $i = 0;
+        foreach ($multisites as $sites) {
+            $isPublished = $this->isEditMode == true ? true : $sites['@attributes']['published'];
+            $isCurrentSite = $this->currentSite === $sites['name'] ? true : false;
+            $isAvailable = $this->isEditMode == true || $this->currentSite != $sites['name'] || ($sites['name'] == '' && $this->currentSite == '') ? true : false;
+            $displayName = $sites['title'] !== '' ? $sites['title'] : $sites["name"];
 
-
-
-            return $multisites;
-
-        /**
-         * Return
-         *
-         * [
-         *  multisites =>
-         *      siteName =>
-         *          Name: string
-         *          Title: string
-         *          displayName: string
-         *          Link: string
-         *          isAvailable: bool
-         *          isCurrentSite: bool
-         *      .....=>
-         *          ....
-         * ]
-         */
+            $data['multisite'] = $data['multisite'] + [
+                $i => [
+                    'Name' => $displayName,
+                    'isPublished' => $isPublished,
+                    'isCurrentSite' => $isCurrentSite,
+                    'isAvailable' => $isAvailable
+                ],
+            ];
+            $i++;
+        }
+        return $data;
     }
 
     public function render()
     {
         $data = $this->getViewData();
         var_dump($data);
-        return view('Sites/multisites', $data);
-
+        if (count($data['multisite']) > 1) {
+            return view('Sites/multisites', $data);
+        }
+        return null;
     }
 }
 

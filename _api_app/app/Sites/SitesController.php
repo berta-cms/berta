@@ -97,7 +97,10 @@ class SitesController extends Controller
 
     public function renderMultisteMenu(Request $request)
     {
-        $MultisitesMenuRenderService = new MultisitesMenuRenderService();
+        $MultisitesMenuRenderService = new MultisitesMenuRenderService(
+            '',
+            true
+        );
         $res = $MultisitesMenuRenderService->render();
 
         if ($res === '') {
