@@ -95,11 +95,10 @@ class SitesController extends Controller
         return response()->json($json);
     }
 
-    public function render(Request $request)
+    public function renderMultisteMenu(Request $request)
     {
-        $SitesRenderService = new SitesRenderService();
-
-        $res. =$SitesRenderService->render();
+        $MultisitesRenderService = new MultisitesRenderService();
+        $res = $MultisitesRenderService->render();
 
         if ($res === '') {
             return abort(404, "Not found! lu");
