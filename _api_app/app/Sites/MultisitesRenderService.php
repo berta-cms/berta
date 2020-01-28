@@ -4,14 +4,15 @@ namespace App\Sites;
 
 use App\Shared\Helpers;
 use App\Shared\Storage;
+use App\Sites\SitesDataService;
 
-class SitesRenderService
+class MultisitesRenderService
 {
     private $multisites;
     private $currentSite;
     private $environment;
     private $isAvailable;
-    private $isCurrentSite
+    private $isCurrentSite;
 
     /**
      * Construct SitesRenderService instance
@@ -23,32 +24,27 @@ class SitesRenderService
      * @param bool $isCurrentSite
      */
 
-    public function __construct()
-    {
-
-    }
+    public function __construct(){}
 
     public function getViewData()
     {
+        $SitesDataService = new SitesDataService();
+        $multisites = $SitesDataService->get();
 
-        foreach ($multisites as $siteName => $sites) {
-            $isCurrentSite = $currentSite === $siteName || ($siteName == '0' && $currentSite == '')? true : false;
-            $isAvailable = $environment == 'engine' || $currentSite != $siteName || ($siteName == '0' && $currentSite != '') ? true : false;
+        // foreach ($multisites as $siteName => $sites) {
+        //     $isCurrentSite = $currentSite === $siteName || ($siteName == '0' && $currentSite == '')? true : false;
+        //     $isAvailable = $environment == 'engine' || $currentSite != $siteName || ($siteName == '0' && $currentSite != '') ? true : false;
 
-            if ($sites['title']['value'] != '') {
-                $displayName = $sites['title']['value'];
-            } elseif ($siteName === '0') {
-                $displayName = 'Main Site';
-            } else {
-                $displayName = $siteName;
-            }
+        //     if ($sites['title']['value'] != '') {
+        //         $displayName = $sites['title']['value'];
+        //     } elseif ($siteName === '0') {
+        //         $displayName = 'Main Site';
+        //     } else {
+        //         $displayName = $siteName;
+        //     }
+        // }
 
-
-
-
-        }
-
-
+            return $multisites;
 
         /**
          * Return
@@ -72,12 +68,8 @@ class SitesRenderService
     public function render()
     {
         $data = $this->getViewData();
-
-        if (count($data) > 1) {
-            return view('Sites/multisites', $data);
-        }
-
-        return null
+        var_dump($data);
+        return view('Sites/multisites', $data);
 
     }
 }
