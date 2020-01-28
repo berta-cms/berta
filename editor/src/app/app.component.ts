@@ -20,7 +20,9 @@ import { AppStateService } from './app-state/app-state.service';
     <berta-header></berta-header>
     <main>
       <aside [class.fullscreen]="isSidebarFullscreen" [style.display]="(routeIsRoot ? 'none' : '')"><!-- the sidebar -->
-        <div class="scroll-wrap"><router-outlet></router-outlet></div></aside>
+        <div class="scroll-wrap"><router-outlet></router-outlet></div>
+        <a href="#" (click)="closeSidebar($event)" class="close"><svg height="16" viewBox="0 0 16 16" width="16" xmlns="http://www.w3.org/2000/svg"><path d="m16 12.8754q0 .5387-.377104.9158l-1.83165 1.8317q-.377105.3771-.915825.3771-.538721 0-.915825-.3771l-3.959596-3.9596-3.959596 3.9596q-.3771043.3771-.9158249.3771-.5387205 0-.9158249-.3771l-1.83164982-1.8317q-.37710438-.3771-.37710438-.9158 0-.5387.37710438-.9158l3.95959592-3.9596-3.95959592-3.9596q-.37710438-.3771-.37710438-.9158 0-.5387.37710438-.9158l1.83164982-1.8317q.3771044-.3771.9158249-.3771.5387206 0 .9158249.3771l3.959596 3.9596 3.959596-3.9596q.377104-.3771.915825-.3771.53872 0 .915825.3771l1.83165 1.8317q.377104.3771.377104.9158 0 .5387-.377104.9158l-3.959596 3.9596 3.959596 3.9596q.377104.3771.377104.9158z" stroke-width=".013468"/></svg></a>
+      </aside>
       <section>
         <berta-preview></berta-preview>
       </section>
@@ -119,6 +121,8 @@ export class AppComponent implements OnInit, OnDestroy {
 
   private loginSub: Subscription;
   private logoutSub: Subscription;
+  private currentRouteUrl: string;
+  private previousRouteUrl: string;
 
   constructor(private router: Router,
               private store: Store,
@@ -128,10 +132,13 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.currentRouteUrl = this.router.url;
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd),
       map((event: NavigationEnd) => event.url.split('?')[0]),
       tap(url => {
+        this.previousRouteUrl = this.currentRouteUrl;
+        this.currentRouteUrl = url;
         this.isSidebarFullscreen = this.sidebarFullscreenRoutes.indexOf(url) > -1;
         return this.routeIsRoot = url === '/';
       }),
@@ -198,6 +205,12 @@ export class AppComponent implements OnInit, OnDestroy {
       this.store.dispatch(AppHideOverlay);
       this.router.navigate(['/'], { queryParamsHandling: 'preserve' });
     });
+  }
+
+  closeSidebar(event) {
+    event.preventDefault();
+    const routeUrl = this.previousRouteUrl || '/';
+    this.router.navigate([routeUrl], { queryParamsHandling: 'preserve' })
   }
 
   showOverlay() {
