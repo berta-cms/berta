@@ -24,7 +24,7 @@ class ThemesDataService extends Storage
             return $themes;
         }
 
-        $files = array_diff(scandir($this->THEMES_ROOT), ['.', '..']);
+        $files = array_diff(scandir($this->THEMES_ROOT), ['.', '..', '.git']);
         foreach ($files as $file) {
             if (is_dir("$this->THEMES_ROOT/$file")) {
                 $themes[] = $file;
