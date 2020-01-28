@@ -23,7 +23,7 @@ class MultisitesMenuRenderService
         $isEditMode
     ){
         $this->currentSite = '';
-        $this->isEditMode = true;
+        $this->isEditMode = false;
     }
 
     public function getViewData()
@@ -34,7 +34,7 @@ class MultisitesMenuRenderService
         $data['multisite'] = [];
         $i = 0;
         foreach ($multisites as $sites) {
-            $isPublished = $this->isEditMode == true ? true : $sites['@attributes']['published'];
+            $isPublished = $this->isEditMode == true ? true : $sites['@attributes']['published'] == 1 ? true : false;
             $isCurrentSite = $this->currentSite === $sites['name'] ? true : false;
             $isAvailable = $this->isEditMode == true || $this->currentSite != $sites['name'] || ($sites['name'] == '' && $this->currentSite == '') ? true : false;
             $displayName = $sites['title'] !== '' ? $sites['title'] : $sites["name"];
