@@ -1,12 +1,10 @@
 <ul id="multisites">
   {% for site in sites %}
-      {% if site.isAvailable is same as (true) %}
-        <li class="{{ site.isCurrentSite }}">
-          <a href="{{ site.link }}">
-            {{ site.Name }}
-          </a>
-        </li>
-      {% endif %}
+      <li {{ site.isAvailable }} class="{{ site.isCurrentSite }}">
+        <a href="{{ site.link }}">
+          {{ site.Name }}
+        </a>
+      </li>
   {% endfor %}
 </ul>
 
