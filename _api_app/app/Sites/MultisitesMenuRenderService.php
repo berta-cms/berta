@@ -35,19 +35,22 @@ class MultisitesMenuRenderService
         $i = 0;
         foreach ($multisites as $sites) {
             $isPublished = $this->isEditMode == true ? true : $sites['@attributes']['published'] == 1 ? true : false;
-            $isCurrentSite = $this->currentSite === $sites['name'] ? true : false;
-            $isAvailable = $this->isEditMode == true || $this->currentSite != $sites['name'] || ($sites['name'] == '' && $this->currentSite == '') ? true : false;
-            $displayName = $sites['title'] !== '' ? $sites['title'] : $sites["name"];
+            if($isPublished) {
+                $isCurrentSite = $this->currentSite === $sites['name'] ? true : false;
+                $isAvailable = $this->isEditMode == true || $this->currentSite != $sites['name'] || ($sites['name'] == '' && $this->currentSite == '') ? true : false;
+                $displayName = $sites['title'] !== '' ? $sites['title'] : $sites["name"];
+                $link = $this->isEditMode == true ? './?site='.$sites["name"] : '/'.$sites["name"];
 
-            $data['multisite'] = $data['multisite'] + [
-                $i => [
-                    'Name' => $displayName,
-                    'isPublished' => $isPublished,
-                    'isCurrentSite' => $isCurrentSite,
-                    'isAvailable' => $isAvailable
-                ],
-            ];
-            $i++;
+                $data['multisite'] = $data['multisite'] + [
+                    $i => [
+                        'Name' => $displayName,
+                        'isCurrentSite' => $isCurrentSite === true ? 'selected' : null,
+                        'isAvailable' => $isAvailable,
+                        'link' => $link
+                    ],
+                ];
+                $i++;
+            }
         }
         return $data;
     }
@@ -55,7 +58,6 @@ class MultisitesMenuRenderService
     public function render()
     {
         $data = $this->getViewData();
-        var_dump($data);
         if (count($data['multisite']) > 1) {
             return view('Sites/multisites', $data);
         }
