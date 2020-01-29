@@ -1,6 +1,6 @@
 <ul id="multisites">
   {% for site in sites %}
-      <li {{ site.isAvailable }} class="{{ site.isCurrentSite }}">
+      <li {{ site.isCurrentSite }}>
         <a href="{{ site.link }}">
           {{ site.Name }}
         </a>

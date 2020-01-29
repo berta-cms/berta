@@ -32,35 +32,42 @@ class MultisitesMenuRenderService
         $sites = $sitesDataService->get();
         $data['sites'] = [];
         $i = 0;
+
         foreach ($sites as $site) {
             $isPublished = $this->isEditMode == true ? true : $site['@attributes']['published'] == 1 ? true : false;
-            if($isPublished) {
-                $isCurrentSite = $this->currentSite === $site['name'] ? 'selected' : null;
-                $isAvailable = $this->isEditMode == true || $this->currentSite != $site['name'] || ($site['name'] == '' && $this->currentSite == '') ? '' : 'hidden';
-                $displayName = $site['title'] !== '' ? $site['title'] : $site["name"];
-                $link = $this->isEditMode == true ? './?site='.$site["name"] : '/'.$site["name"];
 
-                $data['sites'] = $data['sites'] + [
-                    $i => [
-                        'Name' => $displayName,
-                        'isCurrentSite' => $isCurrentSite,
-                        'isAvailable' => $isAvailable,
-                        'link' => $link
-                    ],
-                ];
+            if($isPublished) {
+                $className = $this->currentSite === $site['name'] ? 'class= "selected"' : null;
+
+                if ($this->isEditMode == true || $this->currentSite != $site['name'] || ($site['name'] == '' && $this->currentSite == '')) {
+                    $displayName = $site['title'] !== '' ? $site['title'] : $site["name"];
+                    $link = $this->isEditMode == true ? './?site='.$site["name"] : '/'.$site["name"];
+                    $data['sites'] = $data['sites'] + [
+                        $i => [
+                            'Name' => $displayName,
+                            'isCurrentSite' => $className,
+                            'link' => $link
+                        ],
+                    ];
+                }
                 $i++;
             }
         }
-        return $data;
+
+        if ($i > 1) {
+            return $data;
+        }
+
+        return null;
     }
 
     public function render()
     {
         $data = $this->getViewData();
-        if (count($data['sites']) > 1) {
+        if ($data) {
             return view('Sites/multisitesMenu', $data);
         }
-        return null;
+        return '';
     }
 }
 

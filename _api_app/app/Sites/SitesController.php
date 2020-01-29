@@ -103,10 +103,6 @@ class SitesController extends Controller
         );
         $res = $multisitesMenuRenderService->render();
 
-        if ($res === '') {
-            return null;
-        }
-
         return response($res);
     }
 }
