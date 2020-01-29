@@ -43,8 +43,8 @@ class MultisitesMenuRenderService
                     $displayName = $site['title'] !== '' ? $site['title'] : $site["name"];
                     $link = $this->isEditMode == true ? './?site='.$site["name"] : '/'.$site["name"];
                     $data['sites'][] = [
-                        'Name' => $displayName,
-                        'isCurrentSite' => $className,
+                        'name' => $displayName,
+                        'className' => $className,
                         'link' => $link
                     ];
                 }

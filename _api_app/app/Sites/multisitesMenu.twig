@@ -1,8 +1,8 @@
 <ul id="multisites">
   {% for site in sites %}
-      <li {{ site.isCurrentSite }}>
+      <li {{ site.className }}>
         <a href="{{ site.link }}">
-          {{ site.Name }}
+          {{ site.name }}
         </a>
       </li>
   {% endfor %}
