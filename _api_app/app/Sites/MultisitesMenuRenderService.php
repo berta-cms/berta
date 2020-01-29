@@ -22,8 +22,8 @@ class MultisitesMenuRenderService
         $currentSite,
         $isEditMode
     ){
-        $this->currentSite = '';
-        $this->isEditMode = false;
+        $this->currentSite = $currentSite;
+        $this->isEditMode = $isEditMode;
     }
 
     public function getViewData()
