@@ -238,16 +238,8 @@
                     { /if }
                 { /if }
 
-                {* multisites menu ********************************************************************* *}
-                {if $berta.options.MULTISITES|count > 1}
-                    <ul id="multisites" class="{ messClasses property='multisitesXY' isResponsive=$isResponsive }" style="{ messStyles xy=$multisitesXY isResponsive=$isResponsive }"{if $berta.environment == 'engine' && $isResponsive != 'yes'} data-path="{ $berta.options.MULTISITE }/settings/siteTexts/multisitesXY"{ /if }>
-                        {foreach $berta.options.MULTISITES AS $siteName => $site }
-                            {if $berta.environment == 'engine' || $berta.options.MULTISITE != $siteName || ($siteName=='0' && $berta.options.MULTISITE !='' ) }
-                                <li{if $berta.options.MULTISITE === $siteName || ($siteName=='0' && $berta.options.MULTISITE =='')} class="selected"{/if}><a href="{ bertaLink site=$siteName }">{if $site['title']['value']!=''}{$site['title']['value']}{else}{if $siteName=='0'}Main site{else}{$siteName}{/if}{/if}</a></li>
-                            {/if}
-                        {/foreach}
-                    </ul>
-                {/if}
+	              {* multisites menu ********************************************************************* *}
+                {$multisiteMenu}
 
                 { if $berta.environment == 'engine' && $berta.sections }
                 <div id="xBgEditorPanelContainer"></div>

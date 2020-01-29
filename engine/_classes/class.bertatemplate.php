@@ -1,5 +1,6 @@
 <?php
 use App\Shared\Storage;
+use App\Sites\MultisitesMenuRenderService;
 use App\Sites\Settings\SiteSettingsDataService;
 use App\Sites\TemplateSettings\SiteTemplateSettingsDataService;
 use App\Sites\Sections\SiteSectionsDataService;
@@ -139,16 +140,23 @@ class BertaTemplate extends BertaBase
         $this->tagName = $tagName;
         $this->tags = &$tags;
 
+        $isEditMode = $this->environment == 'engine' ? true : false;
+
         // add entries...
         $this->content = &$content;
         $this->allContent = &$allContent;
 
+        $multisitesMenuRenderService = new MultisitesMenuRenderService(self::$options['MULTISITE'], $isEditMode);
         $sectionEntriesDS = new SectionEntriesDataService(self::$options['MULTISITE'], $this->sectionName);
         $entries = $sectionEntriesDS->getByTag($this->tagName, $this->environment == 'engine');
         $siteSectionsDS = new SiteSectionsDataService(self::$options['MULTISITE']);
         $sectionData = $siteSectionsDS->get($this->sectionName);
         $siteSettingsDS = new SiteSettingsDataService(self::$options['MULTISITE']);
         $siteTemplateSettingsDS = new SiteTemplateSettingsDataService(self::$options['MULTISITE'], $this->name);
+
+        $multisiteMenu = '';
+        $multisiteMenu = $multisitesMenuRenderService->render();
+        $this->addVariable('multisiteMenu', $multisiteMenu);
 
         $entriesHTML = '';
         foreach ($entries as $entry) {
