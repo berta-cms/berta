@@ -95,10 +95,10 @@ class SitesController extends Controller
         return response()->json($json);
     }
 
-    public function renderMultisteMenu(Request $request)
+    public function renderMultisteMenu($site = '', Request $request)
     {
         $multisitesMenuRenderService = new MultisitesMenuRenderService(
-            '',
+            $site,
             true
         );
         $res = $multisitesMenuRenderService->render();
