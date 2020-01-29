@@ -29,17 +29,17 @@ class MultisitesMenuRenderService
     public function getViewData()
     {
 
-        $SitesDataService = new SitesDataService();
-        $multisites = $SitesDataService->get();
+        $sitesDataService = new SitesDataService();
+        $sites = $sitesDataService->get();
         $data['multisite'] = [];
         $i = 0;
-        foreach ($multisites as $sites) {
-            $isPublished = $this->isEditMode == true ? true : $sites['@attributes']['published'] == 1 ? true : false;
+        foreach ($sites as $site) {
+            $isPublished = $this->isEditMode == true ? true : $site['@attributes']['published'] == 1 ? true : false;
             if($isPublished) {
-                $isCurrentSite = $this->currentSite === $sites['name'] ? true : false;
-                $isAvailable = $this->isEditMode == true || $this->currentSite != $sites['name'] || ($sites['name'] == '' && $this->currentSite == '') ? true : false;
-                $displayName = $sites['title'] !== '' ? $sites['title'] : $sites["name"];
-                $link = $this->isEditMode == true ? './?site='.$sites["name"] : '/'.$sites["name"];
+                $isCurrentSite = $this->currentSite === $site['name'] ? true : false;
+                $isAvailable = $this->isEditMode == true || $this->currentSite != $site['name'] || ($site['name'] == '' && $this->currentSite == '') ? true : false;
+                $displayName = $site['title'] !== '' ? $site['title'] : $site["name"];
+                $link = $this->isEditMode == true ? './?site='.$site["name"] : '/'.$site["name"];
 
                 $data['multisite'] = $data['multisite'] + [
                     $i => [
