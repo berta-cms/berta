@@ -104,7 +104,7 @@ class SitesController extends Controller
         $res = $multisitesMenuRenderService->render();
 
         if ($res === '') {
-            return abort(404, "Not found! lu");
+            return null;
         }
 
         return response($res);
