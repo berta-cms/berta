@@ -1,5 +1,5 @@
 <ul id="multisites">
-  {% for site in multisite %}
+  {% for site in sites %}
       {% if site.isAvailable is same as (true) %}
         <li class="{{ site.isCurrentSite }}">
           <a href="{{ site.link }}">

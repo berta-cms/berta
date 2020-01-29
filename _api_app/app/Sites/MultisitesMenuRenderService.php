@@ -31,7 +31,7 @@ class MultisitesMenuRenderService
 
         $sitesDataService = new SitesDataService();
         $sites = $sitesDataService->get();
-        $data['multisite'] = [];
+        $data['sites'] = [];
         $i = 0;
         foreach ($sites as $site) {
             $isPublished = $this->isEditMode == true ? true : $site['@attributes']['published'] == 1 ? true : false;
@@ -41,7 +41,7 @@ class MultisitesMenuRenderService
                 $displayName = $site['title'] !== '' ? $site['title'] : $site["name"];
                 $link = $this->isEditMode == true ? './?site='.$site["name"] : '/'.$site["name"];
 
-                $data['multisite'] = $data['multisite'] + [
+                $data['sites'] = $data['sites'] + [
                     $i => [
                         'Name' => $displayName,
                         'isCurrentSite' => $isCurrentSite === true ? 'selected' : null,
@@ -58,7 +58,7 @@ class MultisitesMenuRenderService
     public function render()
     {
         $data = $this->getViewData();
-        if (count($data['multisite']) > 1) {
+        if (count($data['sites']) > 1) {
             return view('Sites/multisitesMenu', $data);
         }
         return null;
