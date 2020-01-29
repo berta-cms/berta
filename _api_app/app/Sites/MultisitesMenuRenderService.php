@@ -59,7 +59,7 @@ class MultisitesMenuRenderService
     {
         $data = $this->getViewData();
         if (count($data['multisite']) > 1) {
-            return view('Sites/multisites', $data);
+            return view('Sites/multisitesMenu', $data);
         }
         return null;
     }
