@@ -36,7 +36,7 @@ class MultisitesMenuRenderService
         foreach ($sites as $site) {
             $isPublished = $this->isEditMode == true ? true : $site['@attributes']['published'] == 1 ? true : false;
             if($isPublished) {
-                $isCurrentSite = $this->currentSite === $site['name'] ? true : false;
+                $isCurrentSite = $this->currentSite === $site['name'] ? 'selected' : null;
                 $isAvailable = $this->isEditMode == true || $this->currentSite != $site['name'] || ($site['name'] == '' && $this->currentSite == '') ? true : false;
                 $displayName = $site['title'] !== '' ? $site['title'] : $site["name"];
                 $link = $this->isEditMode == true ? './?site='.$site["name"] : '/'.$site["name"];
@@ -44,7 +44,7 @@ class MultisitesMenuRenderService
                 $data['sites'] = $data['sites'] + [
                     $i => [
                         'Name' => $displayName,
-                        'isCurrentSite' => $isCurrentSite === true ? 'selected' : null,
+                        'isCurrentSite' => $isCurrentSite,
                         'isAvailable' => $isAvailable,
                         'link' => $link
                     ],
