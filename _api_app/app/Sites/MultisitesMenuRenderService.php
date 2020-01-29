@@ -28,7 +28,6 @@ class MultisitesMenuRenderService
 
     public function getViewData()
     {
-
         $sitesDataService = new SitesDataService();
         $sites = $sitesDataService->get();
         $data['sites'] = [];
