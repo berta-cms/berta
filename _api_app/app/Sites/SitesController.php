@@ -99,7 +99,8 @@ class SitesController extends Controller
     {
         $multisitesMenuRenderService = new MultisitesMenuRenderService(
             $site,
-            true
+            true,
+            ''
         );
         $res = $multisitesMenuRenderService->render();
 

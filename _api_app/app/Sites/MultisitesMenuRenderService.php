@@ -5,11 +5,13 @@ namespace App\Sites;
 use App\Shared\Helpers;
 use App\Shared\Storage;
 use App\Sites\SitesDataService;
+use App\Sites\Settings\SiteSettingsDataService;
 
 class MultisitesMenuRenderService
 {
     private $currentSite;
     private $isEditMode;
+    private $berta;
 
     /**
      * Construct SitesRenderService instance
@@ -20,18 +22,63 @@ class MultisitesMenuRenderService
 
     public function __construct(
         $currentSite,
-        $isEditMode
+        $isEditMode,
+        $berta
     ){
         $this->currentSite = $currentSite;
         $this->isEditMode = $isEditMode;
+        $this->berta = $berta;
+    }
+
+    public function messyClass($params)
+    {
+        $isResponsive = $this->berta->settings->get('pageLayout', 'responsive') == 'yes' || (isset($params['isResponsive']) && $params['isResponsive'] == 'yes');
+
+        if ($isResponsive) {
+            return;
+        }
+        return 'mess xEditableDragXY xProperty-' . $params;
+    }
+
+    public function messyStyle($params)
+    {
+        $isResponsive = $this->berta->settings->get('pageLayout', 'responsive') == 'yes' || (isset($params['isResponsive']) && $params['isResponsive'] == 'yes');
+
+        if ($isResponsive) {
+            return;
+        }
+
+        $placeInFullScreen = !empty($params['entry']) ? !empty($params['entry']['updated']) : true;
+
+        $pos = !empty($params) ? explode(',', $params) :
+            [
+                rand($placeInFullScreen ? 0 : 900, 960),
+                rand($placeInFullScreen ? 0 : 30, $placeInFullScreen ? 600 : 200)
+            ];
+        return 'left:' . $pos[0] . 'px;top:' . $pos[1]. 'px;';
     }
 
     public function getViewData()
     {
         $sitesDataService = new SitesDataService();
         $sites = $sitesDataService->get();
-        $data['sites'] = [];
         $i = 0;
+
+        if ($this->berta && $this->berta->templateName == 'messy') {
+
+            $siteSettingsDataService = new SiteSettingsDataService('');
+            $siteSettings =  $siteSettingsDataService->getSettingsBySite($this->currentSite);
+
+            if ($this->isEditMode && $this->berta->settings->get('pageLayout', 'responsive') != 'yes') {
+               $data_path = $this->currentSite . '/settings/siteTexts/multisitesXY';
+            }
+
+            $data['ulAtribute'] = [
+                'class' => self::messyClass('multisitesXY'),
+                'style' => self::messyStyle(array_key_exists('siteTexts', $siteSettings ) ? $siteSettings['siteTexts']['multisitesXY'] : '' ),
+                'data' => $data_path ? $data_path : '',
+            ];
+        }
 
         foreach ($sites as $site) {
             $isPublished = $this->isEditMode || $site['@attributes']['published'] == 1;
