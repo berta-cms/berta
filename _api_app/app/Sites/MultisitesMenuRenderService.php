@@ -40,8 +40,8 @@ class MultisitesMenuRenderService
                 $className = $this->currentSite === $site['name'] ? 'class = selected' : null;
 
                 if ($this->isEditMode == true || $this->currentSite != $site['name'] || ($site['name'] == '' && $this->currentSite == '')) {
-                    $displayName = $site['title'] !== '' ? $site['title'] : $site["name"];
-                    $link = $this->isEditMode == true ? './?site='.$site["name"] : '/'.$site["name"];
+                    $displayName = $site['title'] !== '' ? $site['title'] : $site['name'];
+                    $link = $this->isEditMode == true ? './?site='.$site['name'] : '/'.$site['name'];
                     $data['sites'][] = [
                         'name' => $displayName,
                         'className' => $className,

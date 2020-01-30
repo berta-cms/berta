@@ -154,7 +154,6 @@ class BertaTemplate extends BertaBase
         $siteSettingsDS = new SiteSettingsDataService(self::$options['MULTISITE']);
         $siteTemplateSettingsDS = new SiteTemplateSettingsDataService(self::$options['MULTISITE'], $this->name);
 
-        $multisiteMenu = '';
         $multisiteMenu = $multisitesMenuRenderService->render();
         $this->addVariable('multisiteMenu', $multisiteMenu);
 
