@@ -64,6 +64,7 @@ class MultisitesMenuRenderService
 
         if ($this->berta && $this->berta->templateName == 'messy') {
 
+            $data_path = '';
             $siteSettingsDataService = new SiteSettingsDataService('');
             $siteSettings =  $siteSettingsDataService->getSettingsBySite($this->currentSite);
 
@@ -74,7 +75,7 @@ class MultisitesMenuRenderService
             $data['ulAtribute'] = [
                 'class' => self::messyClass('multisitesXY'),
                 'style' => self::messyStyle(array_key_exists('siteTexts', $siteSettings ) ? $siteSettings['siteTexts']['multisitesXY'] : '' ),
-                'data' => $data_path ? $data_path : '',
+                'data' => $data_path
             ];
         }
 
