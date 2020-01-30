@@ -32,7 +32,7 @@ class MultisitesMenuRenderService
 
     public function messyClass($params)
     {
-        $isResponsive = $this->berta->settings->get('pageLayout', 'responsive') == 'yes' || (isset($params['isResponsive']) && $params['isResponsive'] == 'yes');
+        $isResponsive = $this->berta->settings->get('pageLayout', 'responsive') == 'yes';
 
         if ($isResponsive) {
             return;
@@ -42,18 +42,16 @@ class MultisitesMenuRenderService
 
     public function messyStyle($params)
     {
-        $isResponsive = $this->berta->settings->get('pageLayout', 'responsive') == 'yes' || (isset($params['isResponsive']) && $params['isResponsive'] == 'yes');
+        $isResponsive = $this->berta->settings->get('pageLayout', 'responsive') == 'yes';
 
         if ($isResponsive) {
             return;
         }
 
-        $placeInFullScreen = !empty($params['entry']) ? !empty($params['entry']['updated']) : true;
-
         $pos = !empty($params) ? explode(',', $params) :
             [
-                rand($placeInFullScreen ? 0 : 900, 960),
-                rand($placeInFullScreen ? 0 : 30, $placeInFullScreen ? 600 : 200)
+                rand(0 , 960),
+                rand(0 , 600 )
             ];
         return 'left:' . $pos[0] . 'px;top:' . $pos[1]. 'px;';
     }
