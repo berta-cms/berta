@@ -37,7 +37,7 @@ class MultisitesMenuRenderService
             $isPublished = $this->isEditMode == true ? true : $site['@attributes']['published'] == 1 ? true : false;
 
             if($isPublished) {
-                $className = $this->currentSite === $site['name'] ? 'class= "selected"' : null;
+                $className = $this->currentSite === $site['name'] ? 'class = selected' : null;
 
                 if ($this->isEditMode == true || $this->currentSite != $site['name'] || ($site['name'] == '' && $this->currentSite == '')) {
                     $displayName = $site['title'] !== '' ? $site['title'] : $site["name"];
