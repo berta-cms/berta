@@ -74,7 +74,7 @@ class MultisitesMenuRenderService
 
             $data['ulAtribute'] = [
                 'class' => self::messyClass('multisitesXY'),
-                'style' => self::messyStyle(array_key_exists('siteTexts', $siteSettings ) ? $siteSettings['siteTexts']['multisitesXY'] : '' ),
+                'style' => self::messyStyle(array_key_exists('siteTexts', $siteSettings ) && array_key_exists('multisitesXY', $siteSettings['siteTexts'] ) ? $siteSettings['siteTexts']['multisitesXY'] : '' ),
                 'data' => $data_path
             ];
         }
