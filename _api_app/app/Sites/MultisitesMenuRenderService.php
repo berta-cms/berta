@@ -75,6 +75,7 @@ class MultisitesMenuRenderService
                 if ($this->isEditMode  || $this->currentSite != $site['name'] || ($site['name'] == '' && $this->currentSite == '')) {
                     $displayName = $site['title'] !== '' ? $site['title'] : $site['name'];
                     $link = $this->isEditMode ? './?site='.$site['name'] : '/'.$site['name'];
+                    $link = $link == './?site=' ? './' : $link;
                     $data['sites'][] = [
                         'name' => $displayName,
                         'className' => $className,
