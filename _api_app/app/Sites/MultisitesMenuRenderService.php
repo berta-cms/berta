@@ -11,43 +11,28 @@ class MultisitesMenuRenderService
 {
     private $currentSite;
     private $isEditMode;
-    private $berta;
+    private $siteTemplateSettings;
 
     /**
      * Construct SitesRenderService instance
      *
      * @param string $currentSite
      * @param bool $isEditMode
+     * @param array $siteTemplateSettings
      */
 
     public function __construct(
         $currentSite,
         $isEditMode,
-        $berta
+        array $siteTemplateSettings
     ){
         $this->currentSite = $currentSite;
         $this->isEditMode = $isEditMode;
-        $this->berta = $berta;
-    }
-
-    public function messyClass($params)
-    {
-        $isResponsive = $this->berta->settings->get('pageLayout', 'responsive') == 'yes';
-
-        if ($isResponsive) {
-            return;
-        }
-        return 'mess xEditableDragXY xProperty-' . $params;
+        $this->siteTemplateSettings = $siteTemplateSettings;
     }
 
     public function messyStyle($params)
     {
-        $isResponsive = $this->berta->settings->get('pageLayout', 'responsive') == 'yes';
-
-        if ($isResponsive) {
-            return;
-        }
-
         $pos = !empty($params) ? explode(',', $params) :
             [
                 rand(0 , 960),
@@ -60,21 +45,23 @@ class MultisitesMenuRenderService
     {
         $sitesDataService = new SitesDataService();
         $sites = $sitesDataService->get();
+        $isResponsive = isset($this->siteTemplateSettings['pageLayout']['responsive']) && $this->siteTemplateSettings['pageLayout']['responsive'] == 'yes';
+        $siteSettingsDataService = new SiteSettingsDataService($this->currentSite);
+        $siteSettings =  $siteSettingsDataService->getSettingsBySite($this->currentSite);
+        $templateName = explode('-', $siteSettings['template']['template'])[0];
         $i = 0;
 
-        if ($this->berta && $this->berta->templateName == 'messy') {
+        if ($templateName == 'messy') {
 
             $data_path = '';
-            $siteSettingsDataService = new SiteSettingsDataService('');
-            $siteSettings =  $siteSettingsDataService->getSettingsBySite($this->currentSite);
 
-            if ($this->isEditMode && $this->berta->settings->get('pageLayout', 'responsive') != 'yes') {
+            if ($this->isEditMode && !$isResponsive) {
                $data_path = $this->currentSite . '/settings/siteTexts/multisitesXY';
             }
 
             $data['ulAtribute'] = [
-                'class' => self::messyClass('multisitesXY'),
-                'style' => self::messyStyle(array_key_exists('siteTexts', $siteSettings ) && array_key_exists('multisitesXY', $siteSettings['siteTexts'] ) ? $siteSettings['siteTexts']['multisitesXY'] : '' ),
+                'class' => $isResponsive ? '' : 'mess xEditableDragXY xProperty-multisitesXY',
+                'style' => $isResponsive ? '' : self::messyStyle(array_key_exists('siteTexts', $siteSettings ) && array_key_exists('multisitesXY', $siteSettings['siteTexts'] ) ? $siteSettings['siteTexts']['multisitesXY'] : ''),
                 'data' => $data_path
             ];
         }

@@ -146,13 +146,19 @@ class BertaTemplate extends BertaBase
         $this->content = &$content;
         $this->allContent = &$allContent;
 
-        $multisitesMenuRenderService = new MultisitesMenuRenderService(self::$options['MULTISITE'], $isEditMode, $this);
+
         $sectionEntriesDS = new SectionEntriesDataService(self::$options['MULTISITE'], $this->sectionName);
         $entries = $sectionEntriesDS->getByTag($this->tagName, $isEditMode);
         $siteSectionsDS = new SiteSectionsDataService(self::$options['MULTISITE']);
         $sectionData = $siteSectionsDS->get($this->sectionName);
         $siteSettingsDS = new SiteSettingsDataService(self::$options['MULTISITE']);
         $siteTemplateSettingsDS = new SiteTemplateSettingsDataService(self::$options['MULTISITE'], $this->name);
+
+        $multisitesMenuRenderService = new MultisitesMenuRenderService(
+            self::$options['MULTISITE'],
+            $isEditMode,
+            $siteTemplateSettingsDS->getState()
+        );
 
         $multisiteMenu = $multisitesMenuRenderService->render();
         $this->addVariable('multisiteMenu', $multisiteMenu);
