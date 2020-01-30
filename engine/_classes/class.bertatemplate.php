@@ -140,7 +140,7 @@ class BertaTemplate extends BertaBase
         $this->tagName = $tagName;
         $this->tags = &$tags;
 
-        $isEditMode = $this->environment == 'engine' ? true : false;
+        $isEditMode = $this->environment == 'engine';
 
         // add entries...
         $this->content = &$content;
@@ -148,7 +148,7 @@ class BertaTemplate extends BertaBase
 
         $multisitesMenuRenderService = new MultisitesMenuRenderService(self::$options['MULTISITE'], $isEditMode);
         $sectionEntriesDS = new SectionEntriesDataService(self::$options['MULTISITE'], $this->sectionName);
-        $entries = $sectionEntriesDS->getByTag($this->tagName, $this->environment == 'engine');
+        $entries = $sectionEntriesDS->getByTag($this->tagName, $isEditMode);
         $siteSectionsDS = new SiteSectionsDataService(self::$options['MULTISITE']);
         $sectionData = $siteSectionsDS->get($this->sectionName);
         $siteSettingsDS = new SiteSettingsDataService(self::$options['MULTISITE']);
@@ -166,7 +166,7 @@ class BertaTemplate extends BertaBase
                 $siteSettingsDS->getState(),
                 $siteTemplateSettingsDS->getState(),
                 (new Storage(self::$options['MULTISITE'])),
-                $this->environment == 'engine',
+                $isEditMode,
                 isset($shopEnabled) && $shopEnabled
             );
             $entriesHTML .= $sectionEntriesRS->render();
