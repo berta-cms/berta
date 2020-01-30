@@ -34,14 +34,14 @@ class MultisitesMenuRenderService
         $i = 0;
 
         foreach ($sites as $site) {
-            $isPublished = $this->isEditMode == true ? true : $site['@attributes']['published'] == 1 ? true : false;
+            $isPublished = $this->isEditMode || $site['@attributes']['published'] == 1 ? true : false;
 
             if($isPublished) {
                 $className = $this->currentSite === $site['name'] ? 'selected' : null;
 
-                if ($this->isEditMode == true || $this->currentSite != $site['name'] || ($site['name'] == '' && $this->currentSite == '')) {
+                if ($this->isEditMode  || $this->currentSite != $site['name'] || ($site['name'] == '' && $this->currentSite == '')) {
                     $displayName = $site['title'] !== '' ? $site['title'] : $site['name'];
-                    $link = $this->isEditMode == true ? './?site='.$site['name'] : '/'.$site['name'];
+                    $link = $this->isEditMode ? './?site='.$site['name'] : '/'.$site['name'];
                     $data['sites'][] = [
                         'name' => $displayName,
                         'className' => $className,
