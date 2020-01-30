@@ -34,7 +34,7 @@ class MultisitesMenuRenderService
         $i = 0;
 
         foreach ($sites as $site) {
-            $isPublished = $this->isEditMode || $site['@attributes']['published'] == 1 ? true : false;
+            $isPublished = $this->isEditMode || $site['@attributes']['published'] == 1;
 
             if($isPublished) {
                 $className = $this->currentSite === $site['name'] ? 'selected' : null;
