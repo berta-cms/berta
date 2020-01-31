@@ -100,7 +100,9 @@ class SitesController extends Controller
         $multisitesMenuRenderService = new MultisitesMenuRenderService(
             $site,
             true,
-            ''
+            [],
+            []
+
         );
         $res = $multisitesMenuRenderService->render();
 

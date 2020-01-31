@@ -24,10 +24,12 @@ class MultisitesMenuRenderService
     public function __construct(
         $currentSite,
         $isEditMode,
+        array $siteSettingsDS,
         array $siteTemplateSettings
     ){
         $this->currentSite = $currentSite;
         $this->isEditMode = $isEditMode;
+        $this->siteSettingsDS = $siteSettingsDS;
         $this->siteTemplateSettings = $siteTemplateSettings;
     }
 
@@ -46,9 +48,9 @@ class MultisitesMenuRenderService
         $sitesDataService = new SitesDataService();
         $sites = $sitesDataService->get();
         $isResponsive = isset($this->siteTemplateSettings['pageLayout']['responsive']) && $this->siteTemplateSettings['pageLayout']['responsive'] == 'yes';
-        $siteSettingsDataService = new SiteSettingsDataService($this->currentSite);
-        $siteSettings =  $siteSettingsDataService->getSettingsBySite($this->currentSite);
-        $templateName = explode('-', $siteSettings['template']['template'])[0];
+        $siteSettings =   $this->siteSettingsDS;
+        $template = isset($siteSettings['template']['template']) ? $siteSettings['template']['template'] : '';
+        $templateName = explode('-', $template)[0];
         $i = 0;
 
         if ($templateName == 'messy') {
