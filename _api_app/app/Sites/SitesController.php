@@ -104,8 +104,7 @@ class SitesController extends Controller
             [],
             []
         );
-        $res = $sitesMenuRenderService->render();
 
-        return response($res);
+        return $sitesMenuRenderService->render();
     }
 }
