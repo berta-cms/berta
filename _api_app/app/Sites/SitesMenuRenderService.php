@@ -50,7 +50,37 @@ class sitesMenuRenderService
         $template = isset($this->siteSettings['template']['template']) ? $this->siteSettings['template']['template'] : '';
         $templateName = explode('-', $template)[0];
         $menuAttributes = [];
-        $i = 0;
+
+        if (!$this->isEditMode) {
+            $sites = array_filter($sites, function ($site) {
+                return $site['@attributes']['published'] == 1;
+            });
+        }
+
+        if (count($sites) < 2) {
+            return null;
+        }
+
+        // Hide current site from menu
+        if (!$this->isEditMode) {
+            $sites = array_filter($sites, function ($site) {
+                return $this->currentSite !== $site['name'];
+            });
+        }
+
+        $data['sites'] = array_map(function ($site) {
+            if ($this->isEditMode) {
+                $link = !empty($site['name']) ? './?site=' . $site['name'] : './';
+            } else {
+                $link = '/' . $site['name'];
+            }
+
+            return [
+                'name' => !empty($site['title']) ? $site['title'] : $site['name'],
+                'className' => $this->currentSite === $site['name'] ? 'selected' : null,
+                'link' => $link
+            ];
+        }, $sites);
 
         if ($templateName == 'messy') {
             if ($this->isEditMode && !$isResponsive) {
@@ -59,48 +89,20 @@ class sitesMenuRenderService
 
             if (!$isResponsive) {
                 $menuAttributes['class'] = 'mess xEditableDragXY xProperty-multisitesXY';
-
-                if (isset($this->siteSettings['siteTexts']['multisitesXY'])) {
-                    $menuAttributes['style'] = $this->getStyles($this->siteSettings['siteTexts']['multisitesXY']);
-                }
+                $menuAttributes['style'] = $this->getStyles(isset($this->siteSettings['siteTexts']['multisitesXY']) ? $this->siteSettings['siteTexts']['multisitesXY'] : '');
             }
         }
 
         $data['attributes'] = Helpers::arrayToHtmlAttributes($menuAttributes);
-
-        foreach ($sites as $site) {
-            $isPublished = $this->isEditMode || $site['@attributes']['published'] == 1;
-
-            if ($isPublished) {
-                $className = $this->currentSite === $site['name'] ? 'selected' : null;
-
-                if ($this->isEditMode || $this->currentSite != $site['name'] || ($site['name'] == '' && $this->currentSite == '')) {
-                    $displayName = $site['title'] !== '' ? $site['title'] : $site['name'];
-                    $link = $this->isEditMode ? './?site=' . $site['name'] : '/' . $site['name'];
-                    $link = $link == './?site=' ? './' : $link;
-                    $data['sites'][] = [
-                        'name' => $displayName,
-                        'className' => $className,
-                        'link' => $link
-                    ];
-                }
-                $i++;
-            }
-        }
-
-        if ($i > 1) {
-            return $data;
-        }
-
-        return null;
+        return $data;
     }
 
     public function render()
     {
         $data = $this->getViewData();
-        if ($data) {
-            return view('Sites/sitesMenu', $data);
+        if (!$data) {
+            return '';
         }
-        return '';
+        return view('Sites/sitesMenu', $data);
     }
 }
