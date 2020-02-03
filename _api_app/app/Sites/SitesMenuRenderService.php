@@ -7,7 +7,7 @@ use App\Shared\Storage;
 use App\Sites\SitesDataService;
 use App\Sites\Settings\SiteSettingsDataService;
 
-class MultisitesMenuRenderService
+class sitesMenuRenderService
 {
     private $currentSite;
     private $isEditMode;
@@ -99,7 +99,7 @@ class MultisitesMenuRenderService
     {
         $data = $this->getViewData();
         if ($data) {
-            return view('Sites/multisitesMenu', $data);
+            return view('Sites/sitesMenu', $data);
         }
         return '';
     }

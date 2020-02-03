@@ -239,7 +239,7 @@
                 { /if }
 
 	              {* multisites menu ********************************************************************* *}
-                {$multisiteMenu}
+                {$sitesMenu}
 
                 { if $berta.environment == 'engine' && $berta.sections }
                 <div id="xBgEditorPanelContainer"></div>

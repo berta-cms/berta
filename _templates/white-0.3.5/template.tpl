@@ -38,7 +38,7 @@
 		<div id="sideColumn" class="{ if $berta.settings.pageLayout.centered == 'yes' }xCentered{ /if }{if $berta.settings.pageLayout.responsive=='yes'} xResponsive{/if}">
 			<div id="sideColumnTop">
 	              {* multisites menu ********************************************************************* *}
-                {$multisiteMenu}
+                {$sitesMenu}
 
                 { if ($berta.environment == 'site' && $berta.settings.navigation.landingSectionPageHeadingVisible=='yes') || $berta.environment == 'engine' || ($berta.environment == 'site' && $berta.settings.navigation.landingSectionPageHeadingVisible=='no' && $berta.sectionName != $berta.sections|@key) }
                     { if $berta.settings.pageHeading.image }

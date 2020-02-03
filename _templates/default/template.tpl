@@ -44,7 +44,7 @@
 		<div id="contentContainer"{if $berta.settings.pageLayout.responsive=='yes' } class="xResponsive"{/if}>
 
             {* multisites menu ********************************************************************* *}
-            {$multisiteMenu}
+            {$sitesMenu}
 
             { if ($berta.environment == 'site' && $berta.settings.navigation.landingSectionPageHeadingVisible=='yes') || $berta.environment == 'engine' || ($berta.environment == 'site' && $berta.settings.navigation.landingSectionPageHeadingVisible=='no' && $berta.sectionName != $berta.sections|@key) }
                 { if $berta.settings.pageHeading.image }
