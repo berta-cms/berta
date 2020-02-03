@@ -1,4 +1,4 @@
-<ul id="multisites" {% if ulAtribute.class is defined %} class="{{ ulAtribute.class }}" style="{{ ulAtribute.style }}" data-path="{{ ulAtribute.data }}" {% endif %}>
+<ul id="multisites"{{ attributes|raw }}>
   {% for site in sites %}
       <li{% if site.className %} class="{{ site.className }}"{% endif %}>
         <a href="{{ site.link }}">

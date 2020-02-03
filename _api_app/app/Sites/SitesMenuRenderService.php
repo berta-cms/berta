@@ -23,16 +23,16 @@ class sitesMenuRenderService
     public function __construct(
         $currentSite,
         $isEditMode,
-        array $siteSettingsDS,
+        array $siteSettings,
         array $siteTemplateSettings
     ) {
         $this->currentSite = $currentSite;
         $this->isEditMode = $isEditMode;
-        $this->siteSettingsDS = $siteSettingsDS;
+        $this->siteSettings = $siteSettings;
         $this->siteTemplateSettings = $siteTemplateSettings;
     }
 
-    public function messyStyle($params)
+    public function getStyles($params)
     {
         $pos = !empty($params) ? explode(',', $params) :
             [
@@ -47,24 +47,26 @@ class sitesMenuRenderService
         $sitesDataService = new SitesDataService();
         $sites = $sitesDataService->get();
         $isResponsive = isset($this->siteTemplateSettings['pageLayout']['responsive']) && $this->siteTemplateSettings['pageLayout']['responsive'] == 'yes';
-        $siteSettings = $this->siteSettingsDS;
-        $template = isset($siteSettings['template']['template']) ? $siteSettings['template']['template'] : '';
+        $template = isset($this->siteSettings['template']['template']) ? $this->siteSettings['template']['template'] : '';
         $templateName = explode('-', $template)[0];
+        $menuAttributes = [];
         $i = 0;
 
         if ($templateName == 'messy') {
-            $data_path = '';
-
             if ($this->isEditMode && !$isResponsive) {
-                $data_path = $this->currentSite . '/settings/siteTexts/multisitesXY';
+                $menuAttributes['data-path'] = $this->currentSite . '/settings/siteTexts/multisitesXY';
             }
 
-            $data['ulAtribute'] = [
-                'class' => $isResponsive ? '' : 'mess xEditableDragXY xProperty-multisitesXY',
-                'style' => $isResponsive ? '' : self::messyStyle(array_key_exists('siteTexts', $siteSettings) && array_key_exists('multisitesXY', $siteSettings['siteTexts']) ? $siteSettings['siteTexts']['multisitesXY'] : ''),
-                'data' => $data_path
-            ];
+            if (!$isResponsive) {
+                $menuAttributes['class'] = 'mess xEditableDragXY xProperty-multisitesXY';
+
+                if (isset($this->siteSettings['siteTexts']['multisitesXY'])) {
+                    $menuAttributes['style'] = $this->getStyles($this->siteSettings['siteTexts']['multisitesXY']);
+                }
+            }
         }
+
+        $data['attributes'] = Helpers::arrayToHtmlAttributes($menuAttributes);
 
         foreach ($sites as $site) {
             $isPublished = $this->isEditMode || $site['@attributes']['published'] == 1;
