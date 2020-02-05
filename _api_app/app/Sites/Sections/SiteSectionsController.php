@@ -6,6 +6,7 @@ use Validator;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
+use App\Sites\Settings\SiteSettingsDataService;
 use App\Sites\Sections\SiteSectionsDataService;
 use App\Sites\Sections\SectionsMenuRenderService;
 use App\Sites\Sections\Tags\SectionTagsDataService;
@@ -145,7 +146,17 @@ class SiteSectionsController extends Controller
 
     public function renderMenu($site = '', Request $request)
     {
-        $sectionsMenuRS = new SectionsMenuRenderService();
+        $sectionsDS = new SiteSectionsDataService($site);
+        $sections = $sectionsDS->get();
+
+        $siteSettingsDS = new SiteSettingsDataService($site);
+        $siteSettings = $siteSettingsDS->getState();
+
+        $sectionsMenuRS = new SectionsMenuRenderService(
+            $sections,
+            $siteSettings,
+            false
+        );
 
         return $sectionsMenuRS->render();
     }
