@@ -3,15 +3,14 @@
 namespace App\Sites;
 
 use App\Shared\Helpers;
-use App\Shared\Storage;
-use App\Sites\SitesDataService;
-use App\Sites\Settings\SiteSettingsDataService;
 
 class SitesMenuRenderService
 {
     private $currentSite;
     private $isEditMode;
+    private $siteSettings;
     private $siteTemplateSettings;
+    private $sites;
 
     /**
      * Construct SitesRenderService instance
@@ -24,12 +23,14 @@ class SitesMenuRenderService
         $currentSite,
         $isEditMode,
         array $siteSettings,
-        array $siteTemplateSettings
+        array $siteTemplateSettings,
+        array $sites
     ) {
         $this->currentSite = $currentSite;
         $this->isEditMode = $isEditMode;
         $this->siteSettings = $siteSettings;
         $this->siteTemplateSettings = $siteTemplateSettings;
+        $this->sites = $sites;
     }
 
     public function getStyles($params)
@@ -44,8 +45,7 @@ class SitesMenuRenderService
 
     public function getViewData()
     {
-        $sitesDataService = new SitesDataService();
-        $sites = $sitesDataService->get();
+        $sites = $this->sites;
         $isResponsive = isset($this->siteTemplateSettings['pageLayout']['responsive']) && $this->siteTemplateSettings['pageLayout']['responsive'] == 'yes';
         $template = isset($this->siteSettings['template']['template']) ? $this->siteSettings['template']['template'] : '';
         $templateName = explode('-', $template)[0];

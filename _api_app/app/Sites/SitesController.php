@@ -98,11 +98,13 @@ class SitesController extends Controller
 
     public function renderMenu($site = '', Request $request)
     {
+        $sitesDS = new SitesDataService();
         $sitesMenuRenderService = new SitesMenuRenderService(
             $site,
             true,
             [],
-            []
+            [],
+            $sitesDS->get()
         );
 
         return $sitesMenuRenderService->render();
