@@ -51,6 +51,8 @@ $app->group(['prefix' => 'v1/sites', 'namespace' => 'App\Sites\Sections', 'middl
     $app->put('sections', 'SiteSectionsController@order');
     $app->delete('sections', 'SiteSectionsController@delete');
 
+    $app->get('sections/render-menu[/{site}]', 'SiteSectionsController@renderMenu');
+
     $app->put('sections/backgrounds', ['as' => 'site_section_backgrounds', 'uses' => 'SiteSectionsController@backgroundGalleryOrder']);
     $app->post('sections/backgrounds', 'SiteSectionsController@backgroundGalleryUpload');
     $app->delete('sections/backgrounds', 'SiteSectionsController@backgroundGalleryDelete');

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 use App\Sites\Sections\SiteSectionsDataService;
+use App\Sites\Sections\SectionsMenuRenderService;
 use App\Sites\Sections\Tags\SectionTagsDataService;
 use App\Sites\Sections\Entries\SectionEntriesDataService;
 
@@ -140,5 +141,12 @@ class SiteSectionsController extends Controller
         $ret = $sectionsDataService->backgroundGalleryUpload($path, $file);
 
         return response()->json($ret);
+    }
+
+    public function renderMenu($site = '', Request $request)
+    {
+        $sectionsMenuRS = new SectionsMenuRenderService();
+
+        return $sectionsMenuRS->render();
     }
 }
