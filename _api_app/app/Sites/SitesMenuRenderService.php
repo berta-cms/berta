@@ -7,7 +7,7 @@ use App\Shared\Storage;
 use App\Sites\SitesDataService;
 use App\Sites\Settings\SiteSettingsDataService;
 
-class sitesMenuRenderService
+class SitesMenuRenderService
 {
     private $currentSite;
     private $isEditMode;

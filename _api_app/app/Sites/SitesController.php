@@ -11,7 +11,7 @@ use App\Sites\Sections\Tags\SectionTagsDataService;
 use App\Sites\Settings\SiteSettingsDataService;
 use App\Sites\SitesDataService;
 use App\Sites\TemplateSettings\SiteTemplateSettingsDataService;
-use App\Sites\sitesMenuRenderService;
+use App\Sites\SitesMenuRenderService;
 
 class SitesController extends Controller
 {
