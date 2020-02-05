@@ -11,6 +11,7 @@ class SitesMenuRenderService
     private $siteSettings;
     private $siteTemplateSettings;
     private $sites;
+    private $DRAGGABLE_MENU_CLASSES = 'mess xEditableDragXY xProperty-multisitesXY';
 
     /**
      * Construct SitesRenderService instance
@@ -88,7 +89,7 @@ class SitesMenuRenderService
             }
 
             if (!$isResponsive) {
-                $menuAttributes['class'] = 'mess xEditableDragXY xProperty-multisitesXY';
+                $menuAttributes['class'] = $this->DRAGGABLE_MENU_CLASSES;
                 $menuAttributes['style'] = $this->getStyles(isset($this->siteSettings['siteTexts']['multisitesXY']) ? $this->siteSettings['siteTexts']['multisitesXY'] : '');
             }
         }
