@@ -148,13 +148,19 @@ class SiteSectionsController extends Controller
     {
         $sectionsDS = new SiteSectionsDataService($site);
         $sections = $sectionsDS->get();
-
+        $sectionSlug = $request->get('section');
+        $tagSlug = $request->get('tag');
         $siteSettingsDS = new SiteSettingsDataService($site);
         $siteSettings = $siteSettingsDS->getState();
+        $sectionTagsDS = new SectionTagsDataService($site);
+        $sectionTags = $sectionTagsDS->get();
 
         $sectionsMenuRS = new SectionsMenuRenderService(
             $sections,
+            $sectionSlug,
             $siteSettings,
+            $sectionTags,
+            $tagSlug,
             false
         );
 
