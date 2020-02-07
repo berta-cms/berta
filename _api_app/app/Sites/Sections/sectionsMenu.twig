@@ -1,1 +1,21 @@
-[sections]
+<nav>
+	<a href="#" id="menuToggle">
+		<span></span>
+	</a>
+	<ul>
+    {% for section in sections %}
+    <li>
+      <a href="#">{{ section.title }}</a>
+      {% if section.tags %}
+        <ul>
+          {% for tag in section.tags %}
+            <li>
+              <a href="{{ tag.url }}">{{ tag.title }}</a>
+            </li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    </li>
+    {% endfor %}
+  </ul>
+</nav>

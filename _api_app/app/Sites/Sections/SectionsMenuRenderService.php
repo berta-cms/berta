@@ -35,7 +35,12 @@ class SectionsMenuRenderService
 
         $tags = array_reduce($tags, function ($sections, $section) {
             // @TODO Add url for each tag
-            $sections[$section['@attributes']['name']] = $section['tag'];
+            $sections[$section['@attributes']['name']] = array_map(function ($tag) {
+                return [
+                    'title' => $tag['@value'],
+                    'url' => $tag['@attributes']['name']
+                ];
+            }, $section['tag']);
             return $sections;
         }, []);
 
@@ -81,6 +86,19 @@ class SectionsMenuRenderService
             $section['tags'] = !empty($tags[$section['name']]) ? $tags[$section['name']] : [];
             return $section;
         }, $sections);
+
+        // @todo Filter submenus
+        // settings.navigation.alwaysSelectTag
+        // messy.tagsMenu.alwaysOpen
+        // messy.tagsMenu.hidden
+        // messy: $isResponsive == 'yes' || $berta.settings.tagsMenu.alwaysOpen=='yes' || $berta.sectionName==$sName
+        // default: { if $berta.settings.pageLayout.responsive == 'yes' && !empty($berta.tags.$subName) }
+        // default: we have additional submenu template right after main menu
+        // mashup: { if !empty($berta.tags.$sName) }
+        // white: { if $sName == $section.name and !empty($berta.tags.$sName) }
+        // default.menu.separator
+        // default.subMenu.separator
+        // displayTags - remove it, unused template setting in all template config
 
         return [
             'sections' => $sections
