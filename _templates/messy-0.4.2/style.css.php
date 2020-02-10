@@ -88,7 +88,7 @@ h1 a:active {
     fill: <?php echo $s->get('socialMediaLinks', 'color') ?>;
 }
 
-.menuItem {
+.bt-sections-menu > ul > li {
     font-family: <?php echo $s->getFont('menu') ?>;
     font-size: <?php echo $s->get('menu', 'fontSize') ?>;
     font-weight: <?php echo $s->get('menu', 'fontWeight') ?>;
@@ -98,51 +98,49 @@ h1 a:active {
     position: <?php echo $s->get('menu', 'position') ?> !important;
 }
 
-.menuItem a:link,
-.menuItem a:visited {
+.bt-sections-menu > ul > li a:link,
+.bt-sections-menu > ul > li a:visited {
     color: <?php echo $s->get('menu', 'colorLink') ?>;
     text-decoration: <?php echo $s->get('menu', 'textDecorationLink') ?>;
 }
 
-.menuItem a:hover,
-.menuItem a:active {
+.bt-sections-menu > ul > li a:hover,
+.bt-sections-menu > ul > li a:active {
     color: <?php echo $s->get('menu', 'colorHover') ?>;
     text-decoration: <?php echo $s->get('menu', 'textDecorationHover') ?>;
 }
 
-.menuItemSelected > a,
-.menuItemSelected > span {
+.bt-sections-menu > ul > li.selected > a {
     color: <?php echo $s->get('menu', 'colorActive') ?> !important;
     text-decoration: <?php echo $s->get('menu', 'textDecorationActive') ?> !important;
 }
 
-.menuItem ul {
+.bt-sections-menu .subMenu {
     left: <?php echo $s->get('tagsMenu', 'x') ?>;
     top: <?php echo $s->get('tagsMenu', 'y') ?>;
 }
 
-.menuItem li {
+.bt-sections-menu .subMenu li {
     font-family: <?php echo $s->getFont('tagsMenu') ?>;
     font-size: <?php echo $s->get('tagsMenu', 'fontSize') ?>;
     font-weight: <?php echo $s->get('tagsMenu', 'fontWeight') ?>;
     font-style: <?php echo $s->get('tagsMenu', 'fontStyle') ?>;
-    font-variant: <?php echo $s->get('tagsMenu', 'fontVariant') ?>;
     line-height: <?php echo $s->get('tagsMenu', 'lineHeight') ?>;
 }
 
-.menuItem li a:link,
-.menuItem li a:visited {
+.bt-sections-menu .subMenu li a:link,
+.bt-sections-menu .subMenu li a:visited {
     color: <?php echo $s->get('tagsMenu', 'colorLink') ?>;
     text-decoration: <?php echo $s->get('tagsMenu', 'textDecorationLink') ?>;
 }
 
-.menuItem li a:hover,
-.menuItem li a:active {
+.bt-sections-menu .subMenu li a:hover,
+.bt-sections-menu .subMenu li a:active {
     color: <?php echo $s->get('tagsMenu', 'colorHover') ?>;
     text-decoration: <?php echo $s->get('tagsMenu', 'textDecorationHover') ?>;
 }
 
-.menuItem li.selected > a {
+.bt-sections-menu .subMenu li.selected > a {
     color: <?php echo $s->get('tagsMenu', 'colorActive') ?> !important;
     text-decoration: <?php echo $s->get('tagsMenu', 'textDecorationActive') ?> !important;
 }
@@ -272,7 +270,7 @@ h1 a:active {
     margin: <?php echo $s->get('pageLayout', 'headingMargin') ?>;
 }
 
-.bt-responsive nav {
+.bt-responsive .bt-sections-menu {
     margin: <?php echo $s->get('pageLayout', 'menuMargin') ?>;
 }
 
@@ -295,7 +293,7 @@ h1 a:active {
         margin: <?php echo $s->get('pageLayout', 'headingMargin') ?>;
     }
 
-    .bt-auto-responsive nav {
+    .bt-auto-responsive .bt-sections-menu {
         margin: <?php echo $s->get('pageLayout', 'menuMargin') ?>;
     }
 

@@ -15,33 +15,30 @@
   display: none;
 }
 
-nav {
+.bt-sections-menu {
   ul {
     list-style: none;
     padding: 0;
     margin: 0;
   }
-}
 
-.menuItem {
-  z-index: 45000;
-  white-space: nowrap;
+  > ul {
 
-  ul {
+    > li {
+      z-index: 45000;
+      white-space: nowrap;
+    }
+  }
+
+  .subMenu {
     list-style: none;
     margin: 0;
     padding: 0;
     position: relative;
-  }
 
-  li {
-    margin: 0;
-    padding: 0;
-  }
-}
-
-.menuItemSelected {
-  >span {
-    cursor: text;
+    li {
+      margin: 0;
+      padding: 0;
+    }
   }
 }
