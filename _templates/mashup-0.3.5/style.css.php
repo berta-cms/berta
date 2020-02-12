@@ -92,41 +92,7 @@ a:active {
     color: <?php echo $s->get('sideBar', 'color') ?> !important;
 }
 
-#sideColumnTop li a:link, #sideColumnTop li a:visited {
-    color: <?php echo $s->get('menu', 'colorLink') ?>;
-    text-decoration: <?php echo $s->get('menu', 'textDecorationLink') ?>;
-}
-
-#sideColumnTop li a:hover {
-    color: <?php echo $s->get('menu', 'colorHover') ?>;
-    text-decoration: <?php echo $s->get('menu', 'textDecorationHover') ?>;
-}
-
-#sideColumnTop li a:active,
-#sideColumnTop li.selected > a,
-#sideColumnTop li.selected > span {
-    color: <?php echo $s->get('menu', 'colorActive') ?>;
-    text-decoration: <?php echo $s->get('menu', 'textDecorationActive') ?>;
-}
-
-#sideColumnTop li li a:link,
-#sideColumnTop li li a:visited {
-    color: <?php echo $s->get('tagsMenu', 'colorLink') ?>;
-    text-decoration: <?php echo $s->get('tagsMenu', 'textDecorationLink') ?>;
-}
-
-#sideColumnTop li li a:hover {
-    color: <?php echo $s->get('tagsMenu', 'colorHover') ?>;
-    text-decoration: <?php echo $s->get('tagsMenu', 'textDecorationHover') ?>;
-}
-
-#sideColumnTop li li a:active,
-#sideColumnTop li li.selected > a {
-    color: <?php echo $s->get('tagsMenu', 'colorActive') ?>;
-    text-decoration: <?php echo $s->get('tagsMenu', 'textDecorationActive') ?>;
-}
-
-#sideColumnTop ul li {
+.bt-sections-menu > ul > li {
     font-family: <?php echo $s->getFont('menu') ?>;
     font-size: <?php echo $s->get('menu', 'fontSize') ?>;
     font-weight: <?php echo $s->get('menu', 'fontWeight') ?>;
@@ -134,13 +100,47 @@ a:active {
     line-height: <?php echo $s->get('menu', 'lineHeight') ?>;
 }
 
-#sideColumnTop ul ul li {
+.bt-sections-menu > ul > li a:link,
+.bt-sections-menu > ul > li a:visited {
+    color: <?php echo $s->get('menu', 'colorLink') ?>;
+    text-decoration: <?php echo $s->get('menu', 'textDecorationLink') ?>;
+}
+
+.bt-sections-menu > ul > li a:hover {
+    color: <?php echo $s->get('menu', 'colorHover') ?>;
+    text-decoration: <?php echo $s->get('menu', 'textDecorationHover') ?>;
+}
+
+.bt-sections-menu > ul > li a:active,
+.bt-sections-menu > ul > li.selected > a,
+.bt-sections-menu > ul > li.selected > span {
+    color: <?php echo $s->get('menu', 'colorActive') ?>;
+    text-decoration: <?php echo $s->get('menu', 'textDecorationActive') ?>;
+}
+
+.bt-sections-menu .subMenu li {
     font-family: <?php echo $s->getFont('tagsMenu') ?>;
     font-size: <?php echo $s->get('tagsMenu', 'fontSize') ?>;
     font-weight: <?php echo $s->get('tagsMenu', 'fontWeight') ?>;
     font-style: <?php echo $s->get('tagsMenu', 'fontStyle') ?>;
-    font-variant: <?php echo $s->get('tagsMenu', 'fontVariant') ?>;
     line-height: <?php echo $s->get('tagsMenu', 'lineHeight') ?>;
+}
+
+.bt-sections-menu .subMenu li a:link,
+.bt-sections-menu .subMenu li a:visited {
+    color: <?php echo $s->get('tagsMenu', 'colorLink') ?>;
+    text-decoration: <?php echo $s->get('tagsMenu', 'textDecorationLink') ?>;
+}
+
+.bt-sections-menu .subMenu li a:hover {
+    color: <?php echo $s->get('tagsMenu', 'colorHover') ?>;
+    text-decoration: <?php echo $s->get('tagsMenu', 'textDecorationHover') ?>;
+}
+
+.bt-sections-menu .subMenu li a:active,
+.bt-sections-menu .subMenu li.selected > a {
+    color: <?php echo $s->get('tagsMenu', 'colorActive') ?>;
+    text-decoration: <?php echo $s->get('tagsMenu', 'textDecorationActive') ?>;
 }
 
 #firstPageMarkedEntries .xEntry {

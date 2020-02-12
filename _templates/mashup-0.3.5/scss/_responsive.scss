@@ -136,7 +136,7 @@
     }
   }
 
-  #sideColumnTop {
+  .bt-sections-menu {
     ul {
       margin-bottom: 0;
     }
@@ -185,17 +185,19 @@
       width: 100%;
     }
 
+    #multisites {
+      display: block;
+    }
+
     #sideColumnTop {
-      >ul {
-        display: none;
-      }
-
-      #multisites {
-        display: block;
-      }
-
       h1 {
         min-height: initial;
+      }
+    }
+
+    .bt-sections-menu {
+      >ul {
+        display: none;
       }
 
       ul {
@@ -266,6 +268,7 @@
 
   @media (max-width: 480px) {
     #firstPageMarkedEntries {
+
       &.columns-2 .xEntry,
       &.columns-3 .xEntry,
       &.columns-4 .xEntry {
