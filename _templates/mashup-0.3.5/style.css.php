@@ -92,7 +92,7 @@ a:active {
     color: <?php echo $s->get('sideBar', 'color') ?> !important;
 }
 
-.bt-sections-menu > ul > li {
+#sideColumnTop ul li {
     font-family: <?php echo $s->getFont('menu') ?>;
     font-size: <?php echo $s->get('menu', 'fontSize') ?>;
     font-weight: <?php echo $s->get('menu', 'fontWeight') ?>;
@@ -100,25 +100,25 @@ a:active {
     line-height: <?php echo $s->get('menu', 'lineHeight') ?>;
 }
 
-.bt-sections-menu > ul > li a:link,
-.bt-sections-menu > ul > li a:visited {
+#sideColumnTop li a:link,
+#sideColumnTop li a:visited {
     color: <?php echo $s->get('menu', 'colorLink') ?>;
     text-decoration: <?php echo $s->get('menu', 'textDecorationLink') ?>;
 }
 
-.bt-sections-menu > ul > li a:hover {
+#sideColumnTop li a:hover {
     color: <?php echo $s->get('menu', 'colorHover') ?>;
     text-decoration: <?php echo $s->get('menu', 'textDecorationHover') ?>;
 }
 
-.bt-sections-menu > ul > li a:active,
-.bt-sections-menu > ul > li.selected > a,
-.bt-sections-menu > ul > li.selected > span {
+#sideColumnTop li a:active,
+#sideColumnTop li.selected > a,
+#sideColumnTop li.selected > span {
     color: <?php echo $s->get('menu', 'colorActive') ?>;
     text-decoration: <?php echo $s->get('menu', 'textDecorationActive') ?>;
 }
 
-.bt-sections-menu .subMenu li {
+#sideColumnTop .bt-sections-menu .subMenu li {
     font-family: <?php echo $s->getFont('tagsMenu') ?>;
     font-size: <?php echo $s->get('tagsMenu', 'fontSize') ?>;
     font-weight: <?php echo $s->get('tagsMenu', 'fontWeight') ?>;
@@ -126,19 +126,19 @@ a:active {
     line-height: <?php echo $s->get('tagsMenu', 'lineHeight') ?>;
 }
 
-.bt-sections-menu .subMenu li a:link,
-.bt-sections-menu .subMenu li a:visited {
+#sideColumnTop .bt-sections-menu .subMenu li a:link,
+#sideColumnTop .bt-sections-menu .subMenu li a:visited {
     color: <?php echo $s->get('tagsMenu', 'colorLink') ?>;
     text-decoration: <?php echo $s->get('tagsMenu', 'textDecorationLink') ?>;
 }
 
-.bt-sections-menu .subMenu li a:hover {
+#sideColumnTop .bt-sections-menu .subMenu li a:hover {
     color: <?php echo $s->get('tagsMenu', 'colorHover') ?>;
     text-decoration: <?php echo $s->get('tagsMenu', 'textDecorationHover') ?>;
 }
 
-.bt-sections-menu .subMenu li a:active,
-.bt-sections-menu .subMenu li.selected > a {
+#sideColumnTop .bt-sections-menu .subMenu li a:active,
+#sideColumnTop .bt-sections-menu .subMenu li.selected > a {
     color: <?php echo $s->get('tagsMenu', 'colorActive') ?>;
     text-decoration: <?php echo $s->get('tagsMenu', 'textDecorationActive') ?>;
 }

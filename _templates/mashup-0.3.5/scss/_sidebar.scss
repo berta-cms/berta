@@ -24,6 +24,18 @@
   }
 }
 
+#multisites {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+
+  li {
+    display: inline-block;
+    margin: 0 10px 10px 0;
+    padding: 0;
+  }
+}
+
 #sideColumnTop {
   padding-left: 20px;
   padding-right: 20px;
@@ -39,21 +51,7 @@
       text-decoration: none;
     }
   }
-}
 
-#multisites {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-
-  li {
-    display: inline-block;
-    margin: 0 10px 10px 0;
-    padding: 0;
-  }
-}
-
-.bt-sections-menu {
   ul {
     list-style: none;
     margin: 0 0 20px;

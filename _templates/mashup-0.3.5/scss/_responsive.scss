@@ -136,7 +136,7 @@
     }
   }
 
-  .bt-sections-menu {
+  #sideColumnTop {
     ul {
       margin-bottom: 0;
     }
@@ -193,17 +193,17 @@
       h1 {
         min-height: initial;
       }
-    }
-
-    .bt-sections-menu {
-      >ul {
-        display: none;
-      }
 
       ul {
         li {
           margin-top: 1em;
         }
+      }
+    }
+
+    .bt-sections-menu {
+      >ul {
+        display: none;
       }
     }
 
