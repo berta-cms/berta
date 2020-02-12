@@ -117,6 +117,10 @@
       left: 0;
     }
 
+    #multisites {
+      display: block;
+    }
+
     #sideColumnTop {
       padding-left: 0;
 
@@ -126,10 +130,6 @@
 
       >ul {
         display: none;
-      }
-
-      #multisites {
-        display: block;
       }
 
       ul {
