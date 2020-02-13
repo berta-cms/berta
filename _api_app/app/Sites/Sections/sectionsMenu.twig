@@ -5,7 +5,7 @@
 	<ul>
     {% for section in sections %}
     <li{{ section.attributes|raw }}>
-      <a href="#">{{ section.title }}</a>
+      <a{{ section.linkAttributes|raw }}>{{ section.title }}</a>
       {% if section.tags %}
         <ul>
           {% for tag in section.tags %}

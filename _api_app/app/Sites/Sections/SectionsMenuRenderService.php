@@ -100,11 +100,14 @@ class SectionsMenuRenderService
         $this->isResponsive = $currentSectionType == 'portfolio' || $isResponsiveTemplate;
 
         $sections = array_map(function ($section) use ($tags, $isResponsiveTemplate) {
-            // @todo Add url to section
-
             $section['attributes'] = Helpers::arrayToHtmlAttributes([
                 'class' => $this->getSectionClassList($section),
                 'data-path' => $this->isEditMode && !$this->isResponsive ? $this->site . '/section/' . $section['order'] . '/positionXY' : ''
+            ]);
+
+            $section['linkAttributes'] = Helpers::arrayToHtmlAttributes([
+                'href' => '#', // @todo Add url to section
+                'target' => !empty($section['@attributes']['type']) && $section['@attributes']['type'] == 'external_link' ? (!empty($section['target']) ? $section['target']: '_blank') : ''
             ]);
 
             $section['tags'] = !empty($tags[$section['name']]) ? $tags[$section['name']] : [];
