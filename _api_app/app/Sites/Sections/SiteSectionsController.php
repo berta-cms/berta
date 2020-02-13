@@ -153,7 +153,7 @@ class SiteSectionsController extends Controller
         $tagSlug = $request->get('tag');
         $siteSettingsDS = new SiteSettingsDataService($site);
         $siteSettings = $siteSettingsDS->getState();
-        $siteTemplateSettingsDS = new SiteTemplateSettingsDataService($site);
+        $siteTemplateSettingsDS = new SiteTemplateSettingsDataService($site, $siteSettings['template']['template']);
         $siteTemplateSettings = $siteTemplateSettingsDS->getState();
         $sectionTagsDS = new SectionTagsDataService($site);
         $sectionTags = $sectionTagsDS->get();

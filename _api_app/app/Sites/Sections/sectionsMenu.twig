@@ -18,4 +18,14 @@
     </li>
     {% endfor %}
   </ul>
+
+  {% if submenu %}
+    <ul>
+      {% for tag in submenu %}
+        <li>
+          <a href="{{ tag.url }}">{{ tag.title }}</a>
+        </li>
+      {% endfor %}
+    </ul>
+  {% endif %}
 </nav>

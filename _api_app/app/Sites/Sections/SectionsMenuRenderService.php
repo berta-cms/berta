@@ -56,6 +56,7 @@ class SectionsMenuRenderService
     {
         $sections = $this->sections;
         $tags = $this->getTags();
+        $submenu = [];
 
         // Filter sections
         $sections = array_filter($sections, function ($section) {
@@ -92,13 +93,13 @@ class SectionsMenuRenderService
         $isResponsiveTemplate = isset($this->siteTemplateSettings['pageLayout']['responsive']) && $this->siteTemplateSettings['pageLayout']['responsive'] == 'yes';
         $isResponsive = $currentSectionType == 'portfolio' || $isResponsiveTemplate;
 
-        $sections = array_map(function ($section) use ($tags, $isResponsive) {
+        $sections = array_map(function ($section) use ($tags, $isResponsive, $isResponsiveTemplate) {
             // @todo Add url to section
             $section['tags'] = !empty($tags[$section['name']]) ? $tags[$section['name']] : [];
 
             switch ($this->templateName) {
                 case 'messy':
-                    $section['tags'] = array_filter($section['tags'], function($tag) use ($section, $isResponsive)  {
+                    $section['tags'] = array_filter($section['tags'], function ($tag) use ($section, $isResponsive) {
                         if ($this->siteTemplateSettings['tagsMenu']['hidden'] == 'yes') {
                             return false;
                         }
@@ -112,7 +113,7 @@ class SectionsMenuRenderService
                     break;
 
                 case 'white':
-                    $section['tags'] = array_filter($section['tags'], function($tag) use ($section, $isResponsive)  {
+                    $section['tags'] = array_filter($section['tags'], function ($tag) use ($section) {
                         if ($this->sectionSlug != $section['name']) {
                             return false;
                         }
@@ -120,25 +121,27 @@ class SectionsMenuRenderService
                         return true;
                     });
                     break;
+                case 'default':
+                    $section['tags'] = array_filter($section['tags'], function ($tag) use ($isResponsiveTemplate) {
+                        return $isResponsiveTemplate;
+                    });
+                    break;
             }
 
             return $section;
         }, $sections);
 
-        // @todo Filter submenus
+        // @todo
         // settings.navigation.alwaysSelectTag - check this when building tag link
 
-        // mashup: { if !empty($berta.tags.$sName) }
-
-        // white: { if $sName == $section.name and !empty($berta.tags.$sName) }
-
-        // default: { if $berta.settings.pageLayout.responsive == 'yes' && !empty($berta.tags.$subName) }
-        // default: we have additional submenu template right after main menu
-        // default.menu.separator
-        // default.subMenu.separator
+        // Separate submenu for `default` template
+        if ($this->templateName == 'default' && isset($tags[$this->sectionSlug])) {
+            $submenu =  $tags[$this->sectionSlug];
+        }
 
         return [
-            'sections' => $sections
+            'sections' => $sections,
+            'submenu' => $submenu
         ];
     }
 
