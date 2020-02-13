@@ -7,14 +7,17 @@ class SectionsMenuRenderService
     private $sections;
     private $sectionSlug;
     private $siteSettings;
+    private $siteTemplateSettings;
     private $sectionTags;
     private $tagSlug;
     private $isEditMode;
+    private $templateName;
 
     public function __construct(
         array $sections,
         $sectionSlug,
         array $siteSettings,
+        array $siteTemplateSettings,
         array $sectionTags,
         $tagSlug,
         $isEditMode
@@ -22,9 +25,11 @@ class SectionsMenuRenderService
         $this->sections = $sections;
         $this->sectionSlug = $sectionSlug;
         $this->siteSettings = $siteSettings;
+        $this->siteTemplateSettings = $siteTemplateSettings;
         $this->sectionTags = $sectionTags;
         $this->tagSlug = $tagSlug;
         $this->isEditMode = $isEditMode;
+        $this->templateName = explode('-', $this->siteSettings['template']['template'])[0];
     }
 
     private function getTags()
@@ -60,7 +65,7 @@ class SectionsMenuRenderService
         });
 
         if (!$this->isEditMode) {
-            // Remove unpublished sites from public page
+            // Remove unpublished sections from public page
             $sections = array_filter($sections, function ($section) {
                 return $section['@attributes']['published'] == '1';
             });
@@ -81,21 +86,44 @@ class SectionsMenuRenderService
             }
         }
 
-        $sections = array_map(function ($section) use ($tags) {
+        $currentSectionOrder = array_search($this->sectionSlug, array_column($sections, 'name'));
+        $currentSection = $sections[$currentSectionOrder];
+        $currentSectionType = isset($currentSection['@attributes']['type']) ? $currentSection['@attributes']['type'] : null;
+        $isResponsiveTemplate = isset($this->siteTemplateSettings['pageLayout']['responsive']) && $this->siteTemplateSettings['pageLayout']['responsive'] == 'yes';
+        $isResponsive = $currentSectionType == 'portfolio' || $isResponsiveTemplate;
+
+        $sections = array_map(function ($section) use ($tags, $isResponsive) {
             // @todo Add url to section
             $section['tags'] = !empty($tags[$section['name']]) ? $tags[$section['name']] : [];
+
+            switch ($this->templateName) {
+                case 'messy':
+                    $section['tags'] = array_filter($section['tags'], function($tag) use ($section, $isResponsive)  {
+                        if ($this->siteTemplateSettings['tagsMenu']['hidden'] == 'yes') {
+                            return false;
+                        }
+
+                        if (!$isResponsive && $this->siteTemplateSettings['tagsMenu']['alwaysOpen'] != 'yes' && $this->sectionSlug != $section['name']) {
+                            return false;
+                        }
+
+                        return true;
+                    });
+                    break;
+            }
+
             return $section;
         }, $sections);
 
         // @todo Filter submenus
-        // settings.navigation.alwaysSelectTag
-        // messy.tagsMenu.alwaysOpen
-        // messy.tagsMenu.hidden
-        // messy: $isResponsive == 'yes' || $berta.settings.tagsMenu.alwaysOpen=='yes' || $berta.sectionName==$sName
+        // settings.navigation.alwaysSelectTag - check this when building tag link
+
+        // mashup: { if !empty($berta.tags.$sName) }
+
+        // white: { if $sName == $section.name and !empty($berta.tags.$sName) }
+
         // default: { if $berta.settings.pageLayout.responsive == 'yes' && !empty($berta.tags.$subName) }
         // default: we have additional submenu template right after main menu
-        // mashup: { if !empty($berta.tags.$sName) }
-        // white: { if $sName == $section.name and !empty($berta.tags.$sName) }
         // default.menu.separator
         // default.subMenu.separator
 

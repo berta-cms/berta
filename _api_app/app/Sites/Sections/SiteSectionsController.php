@@ -11,6 +11,7 @@ use App\Sites\Sections\SiteSectionsDataService;
 use App\Sites\Sections\SectionsMenuRenderService;
 use App\Sites\Sections\Tags\SectionTagsDataService;
 use App\Sites\Sections\Entries\SectionEntriesDataService;
+use App\Sites\TemplateSettings\SiteTemplateSettingsDataService;
 
 class SiteSectionsController extends Controller
 {
@@ -152,6 +153,8 @@ class SiteSectionsController extends Controller
         $tagSlug = $request->get('tag');
         $siteSettingsDS = new SiteSettingsDataService($site);
         $siteSettings = $siteSettingsDS->getState();
+        $siteTemplateSettingsDS = new SiteTemplateSettingsDataService($site);
+        $siteTemplateSettings = $siteTemplateSettingsDS->getState();
         $sectionTagsDS = new SectionTagsDataService($site);
         $sectionTags = $sectionTagsDS->get();
 
@@ -159,6 +162,7 @@ class SiteSectionsController extends Controller
             $sections,
             $sectionSlug,
             $siteSettings,
+            $siteTemplateSettings,
             $sectionTags,
             $tagSlug,
             false
