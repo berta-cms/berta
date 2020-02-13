@@ -2,8 +2,11 @@
 
 namespace App\Sites\Sections;
 
+use App\Shared\Helpers;
+
 class SectionsMenuRenderService
 {
+    private $site;
     private $sections;
     private $sectionSlug;
     private $siteSettings;
@@ -11,9 +14,11 @@ class SectionsMenuRenderService
     private $sectionTags;
     private $tagSlug;
     private $isEditMode;
+    private $isResponsive;
     private $templateName;
 
     public function __construct(
+        $site,
         array $sections,
         $sectionSlug,
         array $siteSettings,
@@ -22,6 +27,7 @@ class SectionsMenuRenderService
         $tagSlug,
         $isEditMode
     ) {
+        $this->site = $site;
         $this->sections = $sections;
         $this->sectionSlug = $sectionSlug;
         $this->siteSettings = $siteSettings;
@@ -91,20 +97,26 @@ class SectionsMenuRenderService
         $currentSection = $sections[$currentSectionOrder];
         $currentSectionType = isset($currentSection['@attributes']['type']) ? $currentSection['@attributes']['type'] : null;
         $isResponsiveTemplate = isset($this->siteTemplateSettings['pageLayout']['responsive']) && $this->siteTemplateSettings['pageLayout']['responsive'] == 'yes';
-        $isResponsive = $currentSectionType == 'portfolio' || $isResponsiveTemplate;
+        $this->isResponsive = $currentSectionType == 'portfolio' || $isResponsiveTemplate;
 
-        $sections = array_map(function ($section) use ($tags, $isResponsive, $isResponsiveTemplate) {
+        $sections = array_map(function ($section) use ($tags, $isResponsiveTemplate) {
             // @todo Add url to section
+
+            $section['attributes'] = Helpers::arrayToHtmlAttributes([
+                'class' => $this->getSectionClassList($section),
+                'data-path' => $this->isEditMode && !$this->isResponsive ? $this->site . '/section/' . $section['order'] . '/positionXY' : ''
+            ]);
+
             $section['tags'] = !empty($tags[$section['name']]) ? $tags[$section['name']] : [];
 
             switch ($this->templateName) {
                 case 'messy':
-                    $section['tags'] = array_filter($section['tags'], function ($tag) use ($section, $isResponsive) {
+                    $section['tags'] = array_filter($section['tags'], function ($tag) use ($section) {
                         if ($this->siteTemplateSettings['tagsMenu']['hidden'] == 'yes') {
                             return false;
                         }
 
-                        if (!$isResponsive && $this->siteTemplateSettings['tagsMenu']['alwaysOpen'] != 'yes' && $this->sectionSlug != $section['name']) {
+                        if (!$this->isResponsive && $this->siteTemplateSettings['tagsMenu']['alwaysOpen'] != 'yes' && $this->sectionSlug != $section['name']) {
                             return false;
                         }
 
@@ -136,13 +148,36 @@ class SectionsMenuRenderService
 
         // Separate submenu for `default` template
         if ($this->templateName == 'default' && isset($tags[$this->sectionSlug])) {
-            $submenu =  $tags[$this->sectionSlug];
+            $submenu = $tags[$this->sectionSlug];
         }
 
         return [
             'sections' => $sections,
             'submenu' => $submenu
         ];
+    }
+
+    private function getSectionClassList($section)
+    {
+        $classList = [];
+
+        if ($section['name'] == $this->sectionSlug) {
+            $classList[] = 'selected';
+        }
+
+        if ($this->templateName == 'messy') {
+            $classList[] = 'xSection-' . $section['name'];
+
+            if ($this->siteTemplateSettings['menu']['position'] == 'fixed') {
+                $classList[] = 'xFixed';
+            }
+
+            if (!$this->isResponsive) {
+                $classList = array_merge($classList, ['mess', 'xEditableDragXY', 'xProperty-positionXY']);
+            }
+        }
+
+        return implode(' ', $classList);
     }
 
     public function render()

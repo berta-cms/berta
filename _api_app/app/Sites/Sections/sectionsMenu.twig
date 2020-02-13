@@ -4,7 +4,7 @@
 	</a>
 	<ul>
     {% for section in sections %}
-    <li>
+    <li{{ section.attributes|raw }}>
       <a href="#">{{ section.title }}</a>
       {% if section.tags %}
         <ul>

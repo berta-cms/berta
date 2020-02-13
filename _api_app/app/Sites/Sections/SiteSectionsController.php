@@ -148,7 +148,7 @@ class SiteSectionsController extends Controller
     public function renderMenu($site = '', Request $request)
     {
         $sectionsDS = new SiteSectionsDataService($site);
-        $sections = $sectionsDS->get();
+        $sections = $sectionsDS->getState();
         $sectionSlug = $request->get('section');
         $tagSlug = $request->get('tag');
         $siteSettingsDS = new SiteSettingsDataService($site);
@@ -159,13 +159,14 @@ class SiteSectionsController extends Controller
         $sectionTags = $sectionTagsDS->get();
 
         $sectionsMenuRS = new SectionsMenuRenderService(
+            $site,
             $sections,
             $sectionSlug,
             $siteSettings,
             $siteTemplateSettings,
             $sectionTags,
             $tagSlug,
-            false
+            true
         );
 
         return $sectionsMenuRS->render();
