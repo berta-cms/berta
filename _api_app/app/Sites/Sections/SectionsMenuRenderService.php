@@ -110,6 +110,16 @@ class SectionsMenuRenderService
                         return true;
                     });
                     break;
+
+                case 'white':
+                    $section['tags'] = array_filter($section['tags'], function($tag) use ($section, $isResponsive)  {
+                        if ($this->sectionSlug != $section['name']) {
+                            return false;
+                        }
+
+                        return true;
+                    });
+                    break;
             }
 
             return $section;
