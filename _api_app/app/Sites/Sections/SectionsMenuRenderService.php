@@ -98,7 +98,6 @@ class SectionsMenuRenderService
         // white: { if $sName == $section.name and !empty($berta.tags.$sName) }
         // default.menu.separator
         // default.subMenu.separator
-        // displayTags - remove it, unused template setting in all template config
 
         return [
             'sections' => $sections
