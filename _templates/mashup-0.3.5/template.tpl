@@ -77,31 +77,7 @@
 					</div>
 				{/if}
 
-				{ if count($berta.publishedSections) > 0 && (($berta.environment == 'site' && $berta.settings.navigation.landingSectionMenuVisible=='yes') || $berta.environment == 'engine' || ($berta.environment == 'site' && $berta.settings.navigation.landingSectionMenuVisible=='no' && $berta.sectionName != $berta.sections|@key)) }
-          <nav class="bt-sections-menu">
-            <a href="#" id="menuToggle"><span></span></a>
-            <ul>
-              { assign var="currnetSectionName" value=$berta.sectionName }
-              { foreach from=$berta.publishedSections item="section" key="sName" name="sectionsMenuLoop" }
-                { if $currnetSectionName == $section.name }<li class="selected">{ else }<li>{ /if }
-                  <a href="{ bertaLink section=$sName }" target="{ bertaTarget section=$sName }">{ $section.title }</a>
-
-                  { if !empty($berta.tags.$sName) }
-                    <ul class="subMenu xSection-{ $sName }{ if $berta.tags.$sName|@count > 1 && $berta.environment == 'engine' } xAllowOrdering{ /if }">
-                      { foreach from=$berta.tags.$sName key="tName" item="tag" name="subSectionsMenuLoop" }
-                        { if $berta.tagName == $tName and $currnetSectionName == $section.name }<li class="selected xTag-{ $tName }">{ else }<li class="xTag-{ $tName }">{ /if }
-                          <a class="handle" href="{ bertaLink section=$sName tag=$tName }" target="{ bertaTarget section=$sName tag=$tName }">{ $tag.title }</a>
-                        </li>
-                      { /foreach }
-                    </ul>
-                  { /if }
-
-                </li>
-              { /foreach }
-            </ul>
-          </nav>
-				{ /if }
-
+        {$sectionsMenu}
 			</div>
 			<div id="sideColumnBottom">
         {if $berta.settings.socialMediaButtons.socialMediaLocation == 'footer' && $berta.settings.socialMediaButtons.socialMediaHTML}

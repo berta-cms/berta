@@ -76,49 +76,7 @@
 			{/if}
 
       {* *** sections menu ***************************************************************** *}
-			{
-      if count($berta.publishedSections) > 0 &&
-        (
-          ($berta.environment == 'site' && $berta.settings.navigation.landingSectionMenuVisible=='yes') ||
-          $berta.environment == 'engine' ||
-          ($berta.environment == 'site' && $berta.settings.navigation.landingSectionMenuVisible=='no' && $berta.sectionName != $berta.sections|@key)
-        )
-      }
-        <nav class="bt-sections-menu">
-          <a href="#" id="menuToggle"><span></span></a>
-          <ul>
-            { foreach from=$berta.publishedSections item="section" name="sectionsMenuLoop" }
-              { if $berta.sectionName == $section.name }<li class="selected">{ else }<li>{ /if }
-                <a href="{ bertaLink section=$section.name }" target="{ bertaTarget section=$section.name }">{ $section.title }</a>
-
-                { assign var="subName" value=$section.name }
-                { if $berta.settings.pageLayout.responsive == 'yes' && !empty($berta.tags.$subName) }
-                  <ul class="subMenu xSection-{ $subName }">
-                    { foreach $berta.tags.$subName as $tName => $tag }
-                      <li class="xTag-{ $tName }{ if $berta.tagName == $tName and $subName == $section.name } selected{ /if }">
-                        <a class="handle" href="{ bertaLink section=$subName tag=$tName }" target="{ bertaTarget section=$subName tag=$tName }">{ $tag.title }</a>
-                      </li>
-                    { /foreach }
-                  </ul>
-                { /if }
-
-              </li>
-            { /foreach }
-          </ul>
-
-          {* *** sub menu ********************************************************************* *}
-          { assign var="sName" value=$berta.sectionName }
-          { if !empty($berta.tags.$sName) }
-            <ul class="subMenu xSection-{ $sName }{ if $berta.tags.$sName|@count > 1 && $berta.environment == 'engine' } xAllowOrdering{ /if }">
-              { foreach from=$berta.tags.$sName key="tName" item="tag" name="subMenuLoop" }
-                { if $berta.tagName == $tName }<li class="selected xTag-{ $tName }">{ else }<li class="xTag-{ $tName }">{ /if }
-                  <a class="handle" href="{ bertaLink section=$berta.sectionName tag=$tName }" target="{ bertaTarget section=$berta.sectionName tag=$tName }">{ $tag.title }</a>
-                </li>
-              { /foreach }
-            </ul>
-          { /if }
-        </nav>
-      { /if }
+      {$sectionsMenu}
 
 			<ol id="pageEntries" class="{ entriesListClasses }">
 				{$entriesHTML}

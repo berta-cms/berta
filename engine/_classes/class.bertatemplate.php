@@ -5,8 +5,10 @@ use App\Sites\SitesMenuRenderService;
 use App\Sites\Settings\SiteSettingsDataService;
 use App\Sites\TemplateSettings\SiteTemplateSettingsDataService;
 use App\Sites\Sections\SiteSectionsDataService;
+use App\Sites\Sections\SectionsMenuRenderService;
 use App\Sites\Sections\Entries\SectionEntriesDataService;
 use App\Sites\Sections\Entries\SectionEntryRenderService;
+use App\Sites\Sections\Tags\SectionTagsDataService;
 
 include_once dirname(__FILE__) . '/../_lib/smarty/Smarty.class.php';
 include_once dirname(__FILE__) . '/Zend/Json.php';
@@ -152,12 +154,15 @@ class BertaTemplate extends BertaBase
         $sectionEntriesDS = new SectionEntriesDataService(self::$options['MULTISITE'], $this->sectionName);
         $entries = $sectionEntriesDS->getByTag($this->tagName, $isEditMode);
         $siteSectionsDS = new SiteSectionsDataService(self::$options['MULTISITE']);
+        $siteSections = $siteSectionsDS->getState();
         $sectionData = $siteSectionsDS->get($this->sectionName);
         $siteSettingsDS = new SiteSettingsDataService(self::$options['MULTISITE']);
         $siteTemplateSettingsDS = new SiteTemplateSettingsDataService(self::$options['MULTISITE'], $this->name);
 
         $siteSettingsState = $siteSettingsDS->getState();
         $siteTemplateSettingsState =  $siteTemplateSettingsDS->getState();
+        $sectionTagsDS = new SectionTagsDataService(self::$options['MULTISITE']);
+        $sectionTags = $sectionTagsDS->get();
 
         $sitesMenuRenderService = new SitesMenuRenderService(
             self::$options['MULTISITE'],
@@ -186,6 +191,19 @@ class BertaTemplate extends BertaBase
         }
 
         $this->addVariable('entriesHTML', $entriesHTML);
+
+        $sectionsMenuRS = new SectionsMenuRenderService(
+            self::$options['MULTISITE'],
+            $siteSections,
+            $this->sectionName,
+            $siteSettingsState,
+            $siteTemplateSettingsState,
+            $sectionTags,
+            $this->tagName,
+            $isEditMode
+        );
+        $sectionsMenu = $sectionsMenuRS->render();
+        $this->addVariable('sectionsMenu', $sectionsMenu);
 
         // We still need entries for portfolio view and for section type = mashup
         // TODO remove assigning entries to template when rendering is moved to API app
