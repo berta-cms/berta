@@ -1,0 +1,9 @@
+<ul id="multisites"{{ attributes|raw }}>
+  {% for site in sites %}
+      <li{% if site.className %} class="{{ site.className }}"{% endif %}>
+        <a href="{{ site.link }}">
+          {{ site.name }}
+        </a>
+      </li>
+  {% endfor %}
+</ul>

@@ -27,6 +27,7 @@ $app->group(['prefix' => 'v1','namespace' => 'App\Http\Controllers', 'middleware
 
     $app->get('state[/{site}]', 'StateController@get');
     $app->get('locale-settings', ['as'=>'locale_settings', 'prefix'=>'locale_settings', 'uses' => 'StateController@getLocaleSettings']);
+
 });
 
 $app->group(['prefix' => 'v1','namespace' => 'App\Sites', 'middleware' => ['setup', 'auth']], function () use ($app) {
@@ -34,6 +35,8 @@ $app->group(['prefix' => 'v1','namespace' => 'App\Sites', 'middleware' => ['setu
     $app->patch('sites', 'SitesController@update');
     $app->put('sites', 'SitesController@order');
     $app->delete('sites', 'SitesController@delete');
+
+    $app->get('sites/render-menu[/{site}]', 'SitesController@renderMenu');
 
     $app->patch('sites/settings', ['as' => 'site_settings', 'uses' => 'Settings\SiteSettingsController@update']);
     $app->post('sites/settings/upload', ['as' => 'site_settings_upload', 'uses' => 'Settings\SiteSettingsController@upload']);
