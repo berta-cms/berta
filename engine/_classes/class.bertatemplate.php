@@ -1,5 +1,7 @@
 <?php
 use App\Shared\Storage;
+use App\Sites\SitesDataService;
+use App\Sites\SitesMenuRenderService;
 use App\Sites\Settings\SiteSettingsDataService;
 use App\Sites\TemplateSettings\SiteTemplateSettingsDataService;
 use App\Sites\Sections\SiteSectionsDataService;
@@ -139,16 +141,34 @@ class BertaTemplate extends BertaBase
         $this->tagName = $tagName;
         $this->tags = &$tags;
 
+        $isEditMode = $this->environment == 'engine';
+
         // add entries...
         $this->content = &$content;
         $this->allContent = &$allContent;
 
+        $sitesDataService = new SitesDataService();
+        $sites = $sitesDataService->get();
         $sectionEntriesDS = new SectionEntriesDataService(self::$options['MULTISITE'], $this->sectionName);
-        $entries = $sectionEntriesDS->getByTag($this->tagName, $this->environment == 'engine');
+        $entries = $sectionEntriesDS->getByTag($this->tagName, $isEditMode);
         $siteSectionsDS = new SiteSectionsDataService(self::$options['MULTISITE']);
         $sectionData = $siteSectionsDS->get($this->sectionName);
         $siteSettingsDS = new SiteSettingsDataService(self::$options['MULTISITE']);
         $siteTemplateSettingsDS = new SiteTemplateSettingsDataService(self::$options['MULTISITE'], $this->name);
+
+        $siteSettingsState = $siteSettingsDS->getState();
+        $siteTemplateSettingsState =  $siteTemplateSettingsDS->getState();
+
+        $sitesMenuRenderService = new SitesMenuRenderService(
+            self::$options['MULTISITE'],
+            $isEditMode,
+            $siteSettingsState,
+            $siteTemplateSettingsState,
+            $sites
+        );
+
+        $sitesMenu = $sitesMenuRenderService->render();
+        $this->addVariable('sitesMenu', $sitesMenu);
 
         $entriesHTML = '';
         foreach ($entries as $entry) {
@@ -156,10 +176,10 @@ class BertaTemplate extends BertaBase
                 self::$options['MULTISITE'],
                 $entry,
                 $sectionData,
-                $siteSettingsDS->getState(),
-                $siteTemplateSettingsDS->getState(),
+                $siteSettingsState,
+                $siteTemplateSettingsState,
                 (new Storage(self::$options['MULTISITE'])),
-                $this->environment == 'engine',
+                $isEditMode,
                 isset($shopEnabled) && $shopEnabled
             );
             $entriesHTML .= $sectionEntriesRS->render();

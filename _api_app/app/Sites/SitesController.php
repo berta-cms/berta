@@ -2,6 +2,7 @@
 
 namespace App\Sites;
 
+use Illuminate\Http\Request;
 use App\Configuration\SiteTemplatesConfigService;
 use App\Http\Controllers\Controller;
 use App\Sites\Sections\Entries\SectionEntriesDataService;
@@ -10,7 +11,7 @@ use App\Sites\Sections\Tags\SectionTagsDataService;
 use App\Sites\Settings\SiteSettingsDataService;
 use App\Sites\SitesDataService;
 use App\Sites\TemplateSettings\SiteTemplateSettingsDataService;
-use Illuminate\Http\Request;
+use App\Sites\SitesMenuRenderService;
 
 class SitesController extends Controller
 {
@@ -93,5 +94,19 @@ class SitesController extends Controller
         $json = $request->json()->all();
         $sites->order($json);
         return response()->json($json);
+    }
+
+    public function renderMenu($site = '', Request $request)
+    {
+        $sitesDS = new SitesDataService();
+        $sitesMenuRenderService = new SitesMenuRenderService(
+            $site,
+            true,
+            [],
+            [],
+            $sitesDS->get()
+        );
+
+        return $sitesMenuRenderService->render();
     }
 }
