@@ -46,10 +46,16 @@ class SectionsMenuRenderService
 
         $tags = array_reduce($tags, function ($sections, $section) {
             // @TODO Add url for each tag
-            $sections[$section['@attributes']['name']] = array_map(function ($tag) {
+            $sections[$section['@attributes']['name']] = array_map(function ($tag) use ($section) {
                 return [
-                    'title' => $tag['@value'],
-                    'url' => $tag['@attributes']['name']
+                    'attributes' => Helpers::arrayToHtmlAttributes([
+                        'class' => $this->getSubmenuItemClassList($tag, $section)
+                    ]),
+                    'linkAttributes' => Helpers::arrayToHtmlAttributes([
+                        'class' => 'handle',
+                        'href' => $tag['@attributes']['name']
+                    ]),
+                    'title' => $tag['@value']
                 ];
             }, $section['tag']);
             return $sections;
@@ -203,6 +209,18 @@ class SectionsMenuRenderService
 
         if ($this->isEditMode && count($section['tags']) > 1) {
             $classList[] = 'xAllowOrdering';
+        }
+
+        return implode(' ', $classList);
+    }
+
+    private function getSubmenuItemClassList($tag, $section)
+    {
+        $classList = [];
+        $classList[] = 'xTag-' . $tag['@attributes']['name'];
+
+        if ($tag['@attributes']['name'] == $this->tagSlug && $section['@attributes']['name'] == $this->sectionSlug) {
+            $classList[] = 'selected';
         }
 
         return implode(' ', $classList);

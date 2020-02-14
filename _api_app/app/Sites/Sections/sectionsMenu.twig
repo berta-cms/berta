@@ -9,8 +9,8 @@
 				{% if section.tags %}
 					<ul{{ section.submenuAttributes|raw }}>
 						{% for tag in section.tags %}
-							<li>
-								<a href="{{ tag.url }}">{{ tag.title }}</a>
+							<li{{ tag.attributes|raw }}>
+								<a{{ tag.linkAttributes|raw }}>{{ tag.title }}</a>
 							</li>
 						{% endfor %}
 					</ul>
@@ -22,8 +22,8 @@
 	{% if submenu.tags %}
 		<ul{{ submenu.submenuAttributes|raw }}>
 			{% for tag in submenu.tags %}
-				<li>
-					<a href="{{ tag.url }}">{{ tag.title }}</a>
+				<li{{ tag.attributes|raw }}>
+					<a{{ tag.linkAttributes|raw }}>{{ tag.title }}</a>
 				</li>
 			{% endfor %}
 		</ul>
