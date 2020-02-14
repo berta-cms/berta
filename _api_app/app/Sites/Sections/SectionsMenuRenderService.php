@@ -107,7 +107,7 @@ class SectionsMenuRenderService
 
             $section['linkAttributes'] = Helpers::arrayToHtmlAttributes([
                 'href' => '#', // @todo Add url to section
-                'target' => !empty($section['@attributes']['type']) && $section['@attributes']['type'] == 'external_link' ? (!empty($section['target']) ? $section['target']: '_blank') : ''
+                'target' => !empty($section['@attributes']['type']) && $section['@attributes']['type'] == 'external_link' ? (!empty($section['target']) ? $section['target'] : '_blank') : ''
             ]);
 
             $section['tags'] = !empty($tags[$section['name']]) ? $tags[$section['name']] : [];
@@ -143,6 +143,12 @@ class SectionsMenuRenderService
                     break;
             }
 
+            if (!empty($section['tags'])) {
+                $section['submenuAttributes'] = Helpers::arrayToHtmlAttributes([
+                    'class' => $this->getSubmenuClassList($section)
+                ]);
+            }
+
             return $section;
         }, $sections);
 
@@ -151,7 +157,14 @@ class SectionsMenuRenderService
 
         // Separate submenu for `default` template
         if ($this->templateName == 'default' && isset($tags[$this->sectionSlug])) {
-            $submenu = $tags[$this->sectionSlug];
+            $submenu['tags'] = $tags[$this->sectionSlug];
+            $currentSection['tags'] = $submenu['tags'];
+
+            if (!empty($currentSection['tags'])) {
+                $submenu['submenuAttributes'] = Helpers::arrayToHtmlAttributes([
+                    'class' => $this->getSubmenuClassList($currentSection)
+                ]);
+            }
         }
 
         return [
@@ -178,6 +191,18 @@ class SectionsMenuRenderService
             if (!$this->isResponsive) {
                 $classList = array_merge($classList, ['mess', 'xEditableDragXY', 'xProperty-positionXY']);
             }
+        }
+
+        return implode(' ', $classList);
+    }
+
+    private function getSubmenuClassList($section)
+    {
+        $classList = ['subMenu'];
+        $classList[] = 'xSection-' . $section['name'];
+
+        if ($this->isEditMode && count($section['tags']) > 1) {
+            $classList[] = 'xAllowOrdering';
         }
 
         return implode(' ', $classList);
