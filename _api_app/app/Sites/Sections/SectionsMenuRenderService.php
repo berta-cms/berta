@@ -45,7 +45,6 @@ class SectionsMenuRenderService
         });
 
         $tags = array_reduce($tags, function ($sections, $section) {
-            // @TODO Add url for each tag
             $sections[$section['@attributes']['name']] = array_map(function ($tag) use ($section) {
                 return [
                     'attributes' => Helpers::arrayToHtmlAttributes([
@@ -201,12 +200,16 @@ class SectionsMenuRenderService
             $urlParts['site'] = $this->site;
         }
 
-        // @todo
-        // settings.navigation.alwaysSelectTag - check this when building tag link
+        $isFirstSection = $section['name'] == current($this->sections)['name'];
+        $hasDirectContent = !empty($section['@attributes']['has_direct_content']) && $section['@attributes']['has_direct_content'];
+        $alwaysSelectTag = $this->siteSettings['navigation']['alwaysSelectTag'] == 'yes';
+        $isFirstTag = !$tag || $alwaysSelectTag && $tag['name'] == current($section['tags'])['name'];
 
-        $urlParts['section'] = $section['name'];
+        if ($this->isEditMode || !$isFirstSection || !$isFirstTag || ($hasDirectContent && !empty($section['tags']))) {
+            $urlParts['section'] = $section['name'];
+        }
 
-        if ($tag) {
+        if ($tag && ($this->isEditMode || $hasDirectContent || !$isFirstTag)) {
             $urlParts['tag'] = $tag['name'];
         }
 
