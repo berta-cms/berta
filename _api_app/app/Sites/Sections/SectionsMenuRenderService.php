@@ -51,11 +51,8 @@ class SectionsMenuRenderService
                     'attributes' => Helpers::arrayToHtmlAttributes([
                         'class' => $this->getSubmenuItemClassList($tag, $section)
                     ]),
-                    'linkAttributes' => Helpers::arrayToHtmlAttributes([
-                        'class' => 'handle',
-                        'href' => $tag['@attributes']['name']
-                    ]),
-                    'title' => $tag['@value']
+                    'title' => $tag['@value'],
+                    'name' => $tag['@attributes']['name']
                 ];
             }, $section['tag']);
             return $sections;
@@ -112,7 +109,7 @@ class SectionsMenuRenderService
             ]);
 
             $section['linkAttributes'] = Helpers::arrayToHtmlAttributes([
-                'href' => '#', // @todo Add url to section
+                'href' => $this->getUrl($section),
                 'target' => !empty($section['@attributes']['type']) && $section['@attributes']['type'] == 'external_link' ? (!empty($section['target']) ? $section['target'] : '_blank') : ''
             ]);
 
@@ -153,13 +150,18 @@ class SectionsMenuRenderService
                 $section['submenuAttributes'] = Helpers::arrayToHtmlAttributes([
                     'class' => $this->getSubmenuClassList($section)
                 ]);
+
+                $section['tags'] = array_map(function ($tag) use ($section) {
+                    $tag['linkAttributes'] = Helpers::arrayToHtmlAttributes([
+                        'class' => 'handle',
+                        'href' => $this->getUrl($section, $tag)
+                    ]);
+                    return $tag;
+                }, $section['tags']);
             }
 
             return $section;
         }, $sections);
-
-        // @todo
-        // settings.navigation.alwaysSelectTag - check this when building tag link
 
         // Separate submenu for `default` template
         if ($this->templateName == 'default' && isset($tags[$this->sectionSlug])) {
@@ -170,6 +172,14 @@ class SectionsMenuRenderService
                 $submenu['submenuAttributes'] = Helpers::arrayToHtmlAttributes([
                     'class' => $this->getSubmenuClassList($currentSection)
                 ]);
+
+                $submenu['tags'] = array_map(function ($tag) use ($currentSection) {
+                    $tag['linkAttributes'] = Helpers::arrayToHtmlAttributes([
+                        'class' => 'handle',
+                        'href' => $this->getUrl($currentSection, $tag)
+                    ]);
+                    return $tag;
+                }, $submenu['tags']);
             }
         }
 
@@ -177,6 +187,43 @@ class SectionsMenuRenderService
             'sections' => $sections,
             'submenu' => $submenu
         ];
+    }
+
+    private function getUrl($section, $tag = null)
+    {
+        $urlParts = [];
+        $isExternalLink = isset($section['@attributes']['type']) && $section['@attributes']['type'] == 'external_link';
+        if ($isExternalLink && !empty($section['link'])) {
+            return $section['link'];
+        }
+
+        if (!empty($this->site)) {
+            $urlParts['site'] = $this->site;
+        }
+
+        // @todo
+        // settings.navigation.alwaysSelectTag - check this when building tag link
+
+        $urlParts['section'] = $section['name'];
+
+        if ($tag) {
+            $urlParts['tag'] = $tag['name'];
+        }
+
+        if ($this->isEditMode) {
+            if (empty($urlParts)) {
+                return '.';
+            }
+
+            $parts = [];
+            foreach ($urlParts as $property => $value) {
+                $parts[] = $property . '=' . $value;
+            }
+
+            return '?' . implode('&', $parts);
+        } else {
+            return '/' . implode('/', $urlParts);
+        }
     }
 
     private function getSectionClassList($section)
