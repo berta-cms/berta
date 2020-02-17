@@ -104,6 +104,7 @@ class SectionsMenuRenderService
         $sections = array_map(function ($section) use ($tags, $isResponsiveTemplate) {
             $section['attributes'] = Helpers::arrayToHtmlAttributes([
                 'class' => $this->getSectionClassList($section),
+                'style' => $this->getSectionStyleList($section),
                 'data-path' => $this->isEditMode && !$this->isResponsive ? $this->site . '/section/' . $section['order'] . '/positionXY' : ''
             ]);
 
@@ -250,6 +251,36 @@ class SectionsMenuRenderService
         }
 
         return implode(' ', $classList);
+    }
+
+    private function getSectionStyleList($section)
+    {
+        $styles = [];
+        if ($this->templateName == 'messy' && !$this->isResponsive) {
+            if (isset($section['positionXY'])) {
+                list($left, $top) = explode(',', $section['positionXY']);
+            } else {
+                // Place section menu item in random position if not dragged before
+                list($left, $top) = [
+                    rand(0, 960),
+                    rand(0, 600),
+                ];
+            }
+
+            $styles[] = ['left' => $left . 'px'];
+            $styles[] = ['top' => $top . 'px'];
+
+            if (!empty($styles)) {
+                $styles = array_map(function ($style) {
+                    $key = key($style);
+                    return $key . ': ' . ($style[$key]);
+                }, $styles);
+
+                return implode(';', $styles);
+            }
+        }
+
+        return null;
     }
 
     private function getSubmenuClassList($section)
