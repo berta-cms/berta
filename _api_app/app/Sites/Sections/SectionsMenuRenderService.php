@@ -95,6 +95,10 @@ class SectionsMenuRenderService
             }
         }
 
+        if (empty($sections)) {
+            return;
+        }
+
         $currentSectionOrder = array_search($this->sectionSlug, array_column($sections, 'name'));
         $currentSection = $sections[$currentSectionOrder];
         $currentSectionType = isset($currentSection['@attributes']['type']) ? $currentSection['@attributes']['type'] : null;
