@@ -89,7 +89,7 @@ export class ThemesComponent implements OnInit {
       next: () => {
         // @TODO update merged site state
         // Current workaround is to reload the window
-        this.router.navigate(['/'], { queryParamsHandling: 'preserve' }).then(() => {
+        this.router.navigate(['/'], { replaceUrl: true, queryParams: { section: null }, queryParamsHandling: 'merge' }).then(() => {
           window.location.reload();
         });
       },
