@@ -181,9 +181,9 @@ class SectionEntriesDataService extends Storage
     private $XML_ROOT;
     private $XML_FILE;
 
-    public function __construct($site = '', $sectionName = '', $sectionTitle = '', $xml_root = null)
+    public function __construct($site = '', $sectionName = '', $sectionTitle = '', $xml_root = null, $isPreview=false)
     {
-        parent::__construct($site);
+        parent::__construct($site, $isPreview);
         $this->XML_ROOT = $xml_root ? $xml_root : $this->getSiteXmlRoot($site);
         $this->SECTION_NAME = $sectionName;
         $this->SECTION_TITLE = $sectionTitle;

@@ -135,11 +135,13 @@ class SiteSectionsDataService extends Storage
     private $SECTIONS = array();
     private $XML_FILE;
     private $site_name;
+    private $isPreview;
 
-    public function __construct($site = '', $xml_root = null)
+    public function __construct($site = '', $xml_root = null, $isPreview=false)
     {
-        parent::__construct($site);
+        parent::__construct($site, $isPreview);
         $this->site_name = $site;
+        $this->isPreview = $isPreview;
         $this->XML_ROOT = $xml_root ? $xml_root : $this->getSiteXmlRoot($site);
         $this->XML_FILE = $this->XML_ROOT . '/sections.xml';
     }
@@ -421,7 +423,7 @@ class SiteSectionsDataService extends Storage
 
         if ($section_idx !== false) {
             // delete all entries
-            $entries = new SectionEntriesDataService($this->SITE, $name);
+            $entries = new SectionEntriesDataService($this->SITE, $name, '', $this->XML_ROOT, $this->isPreview);
             $res = $entries->delete();
 
             if (!$res['success']) {
@@ -453,7 +455,7 @@ class SiteSectionsDataService extends Storage
             }
 
             // delete tags
-            $tags = new SectionTagsDataService($this->SITE, $name);
+            $tags = new SectionTagsDataService($this->SITE, $name, $this->XML_ROOT);
             $section_tags = $tags->delete();
 
             // delete section
@@ -714,6 +716,16 @@ class SiteSectionsDataService extends Storage
     {
         $currentSiteSections = $this->get();
 
+        // filter and delete `demo` sections
+        $currentSiteSections = array_filter($currentSiteSections, function($section) {
+            $isDemo = isset($section['@attributes']['demo']) && $section['@attributes']['demo'];
+            if ($isDemo) {
+                $this->delete($section['name']);
+            }
+
+            return !$isDemo;
+        });
+
         $siteSectionsDS = new self('', $src_root);
         $themeSiteSections = array_reverse($siteSectionsDS->get());
 
@@ -744,6 +756,9 @@ class SiteSectionsDataService extends Storage
             // Copy section entry media files
             $sectionEntriesDS = new SectionEntriesDataService($this->SITE, $themeSiteSection['name'], null, $src_root);
             $sectionEntriesDS->copyMediaFiles($this->XML_ROOT);
+
+            // Mark section as demo (section with demo data)
+            $themeSiteSection['@attributes']['demo'] = 1;
 
             // Replace existing section with theme section
             if ($sectionOrder !== false) {

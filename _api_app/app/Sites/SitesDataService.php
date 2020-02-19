@@ -269,7 +269,7 @@ class SitesDataService extends Storage
         $siteTemplateSettingsDS->mergeSiteTemplateSettings($this->THEMES_ROOT . '/' . $themeName);
 
         // Merge sections
-        $siteSectionsDS = new SiteSectionsDataService($this->SITE, $this->XML_PREVIEW_ROOT);
+        $siteSectionsDS = new SiteSectionsDataService($this->SITE, $this->XML_PREVIEW_ROOT, true);
         $siteSectionsDS->mergeSiteSections($this->THEMES_ROOT . '/' . $themeName);
     }
 

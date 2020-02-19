@@ -158,7 +158,7 @@ class BertaTemplate extends BertaBase
                 $sectionData,
                 $siteSettingsDS->getState(),
                 $siteTemplateSettingsDS->getState(),
-                (new Storage(self::$options['MULTISITE'], self::$options['PREVIEW_FOLDER'])),
+                (new Storage(self::$options['MULTISITE'], !empty(self::$options['PREVIEW_FOLDER']))),
                 $this->environment == 'engine',
                 isset($shopEnabled) && $shopEnabled
             );
