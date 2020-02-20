@@ -6,6 +6,7 @@ use App\Shared\Helpers;
 use App\Shared\Storage;
 use App\Shared\ImageHelpers;
 use App\Shared\ConfigHelpers;
+use App\Events\SectionUpdated;
 use App\Configuration\SiteTemplatesConfigService;
 use App\Sites\Settings\SiteSettingsDataService;
 use App\Sites\Sections\Entries\SectionEntriesDataService;
@@ -299,6 +300,7 @@ class SiteSectionsDataService extends Storage
         $path_arr = array_slice(explode('/', $path), 1);
         $prop = $path_arr[count($path_arr) - 1];
         $order = $path_arr[1];
+        $sectionName = $sections['section'][$order]['name'];
         $value = trim($value);
         $ret = array(
             'site' => $this->site_name,
@@ -310,7 +312,7 @@ class SiteSectionsDataService extends Storage
         );
 
         if ($prop === 'title') {
-            $old_name = $sections['section'][$order]['name'];
+            $old_name = $sectionName;
             $old_title = isset($sections['section'][$order]['title']) ? $sections['section'][$order]['title'] : '';
             $new_name = $this->getUniqueSlug($old_name, $value);
 
@@ -356,6 +358,9 @@ class SiteSectionsDataService extends Storage
 
                 $tags = new SectionTagsDataService($this->SITE, $old_name);
                 $tags->renameSection($new_name);
+
+                $sectionName = $new_name;
+
                 $ret['old_name'] = $old_name;
                 $ret['real'] = $new_name;
             } else {
@@ -374,6 +379,8 @@ class SiteSectionsDataService extends Storage
         );
 
         $this->array2xmlFile($sections, $this->XML_FILE, $this->ROOT_ELEMENT);
+        event(new SectionUpdated($this->SITE, $sectionName));
+
         $ret['section'] = $sections['section'][$order];
 
         return $ret;
@@ -395,6 +402,17 @@ class SiteSectionsDataService extends Storage
         }
 
         parent::setValueByPath($sections, $path, $value);
+    }
+
+    public function unsetDemoStatus($sectionName)
+    {
+        $sections = $this->get();
+        $sectionOrder = array_search($sectionName, array_column($sections, 'name'));
+        if ($sectionOrder === false) {
+            return;
+        }
+
+        $this->deleteValueByPath("/section/{$sectionOrder}/@attributes/demo");
     }
 
     /**
