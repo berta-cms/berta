@@ -273,11 +273,13 @@ class SectionEntriesDataService extends Storage
 
         $siteSectionsDataService = new SiteSectionsDataService($this->SITE);
         $sections = $siteSectionsDataService->get();
-        $section_order = array_search($this->SECTION_NAME, array_column($sections, 'name'));
-        $section = $sections[$section_order];
-        $sectionType = isset($section['@attributes']['type']) ? $section['@attributes']['type'] : 'default';
+        if (!empty($sections)) {
+            $section_order = array_search($this->SECTION_NAME, array_column($sections, 'name'));
+            $section = $sections[$section_order];
+            $sectionType = isset($section['@attributes']['type']) ? $section['@attributes']['type'] : 'default';
+        }
 
-        $isResponsive = $sectionType == 'portfolio' || $isResponsiveTemplate;
+        $isResponsive = (isset($sectionType) && $sectionType == 'portfolio') || $isResponsiveTemplate;
 
         // if messy template and auto responsive is ON and environment is `site`
         // reorder entries based on XY position
