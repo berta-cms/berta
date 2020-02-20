@@ -4,6 +4,7 @@ namespace App\Sites\Sections\Entries;
 
 use App\Shared\Storage;
 use App\Shared\ImageHelpers;
+use App\Events\SectionUpdated;
 use App\Sites\Settings\SiteSettingsDataService;
 use App\Sites\TemplateSettings\SiteTemplateSettingsDataService;
 use App\Sites\Sections\SiteSectionsDataService;
@@ -377,6 +378,7 @@ class SectionEntriesDataService extends Storage
         );
 
         $this->array2xmlFile($entries, $this->XML_FILE, $this->ROOT_ELEMENT);
+        event(new SectionUpdated($this->SITE, $this->SECTION_NAME));
 
         $ret['entry'] = $entries[self::$ROOT_LIST_ELEMENT][$index];
 
@@ -486,6 +488,7 @@ class SectionEntriesDataService extends Storage
 
         array_splice($entries['entry'], $entry_new_order, 0, $entry_to_move);
         $this->array2xmlFile($entries, $this->XML_FILE, $this->ROOT_ELEMENT);
+        event(new SectionUpdated($this->SITE, $this->SECTION_NAME));
 
         $order = array_column($entries['entry'], 'id');
 
@@ -857,6 +860,7 @@ class SectionEntriesDataService extends Storage
             $entry['mediaCacheData']['file'] = $new_files ? $reordered : [];
 
             $this->array2xmlFile($entries, $this->XML_FILE, $this->ROOT_ELEMENT);
+            event(new SectionUpdated($this->SITE, $this->SECTION_NAME));
 
             return [
                 'site' => $this->SITE,
