@@ -546,6 +546,7 @@ class SiteSectionsDataService extends Storage
 
             $file = current(array_splice($files, $file_order, 1));
             $this->array2xmlFile($sections, $this->XML_FILE, $this->ROOT_ELEMENT);
+            event(new SectionUpdated($this->SITE, $name));
 
             return [
                 'site' => $this->SITE,
@@ -591,6 +592,7 @@ class SiteSectionsDataService extends Storage
             $section['mediaCacheData']['file'] = $new_files ? $reordered : [];
 
             $this->array2xmlFile($sections, $this->XML_FILE, $this->ROOT_ELEMENT);
+            event(new SectionUpdated($this->SITE, $name));
 
             return [
                 'site' => $this->SITE,
@@ -647,6 +649,7 @@ class SiteSectionsDataService extends Storage
 
         $sections[$section_idx] = $section;
         $this->array2xmlFile(['section' => $sections], $this->XML_FILE, $this->ROOT_ELEMENT);
+        event(new SectionUpdated($this->SITE, $section['name']));
 
         return [
             'status' => 1,
