@@ -738,14 +738,14 @@ class SiteSectionsDataService extends Storage
         $currentSiteSections = $this->get();
 
         // filter and delete `demo` sections
-        $currentSiteSections = array_filter($currentSiteSections, function($section) {
+        $currentSiteSections = array_values(array_filter($currentSiteSections, function($section) {
             $isDemo = isset($section['@attributes']['demo']) && $section['@attributes']['demo'];
             if ($isDemo) {
                 $this->delete($section['name']);
             }
 
             return !$isDemo;
-        });
+        }));
 
         $siteSectionsDS = new self('', $src_root);
         $themeSiteSections = array_reverse($siteSectionsDS->get());
