@@ -1,5 +1,7 @@
 <?php
 use App\Shared\Storage;
+use App\Sites\SitesDataService;
+use App\Sites\SitesMenuRenderService;
 use App\Sites\Settings\SiteSettingsDataService;
 use App\Sites\TemplateSettings\SiteTemplateSettingsDataService;
 use App\Sites\Sections\SiteSectionsDataService;
@@ -139,27 +141,48 @@ class BertaTemplate extends BertaBase
         $this->tagName = $tagName;
         $this->tags = &$tags;
 
+        $isEditMode = $this->environment == 'engine';
+
         // add entries...
         $this->content = &$content;
         $this->allContent = &$allContent;
 
+        $sitesDataService = new SitesDataService();
+        $sites = $sitesDataService->get();
+
         $sectionEntriesDS = new SectionEntriesDataService(self::$options['MULTISITE'], $this->sectionName, '', self::$options['XML_ROOT']);
-        $entries = $sectionEntriesDS->getByTag($this->tagName, $this->environment == 'engine');
+        $entries = $sectionEntriesDS->getByTag($this->tagName, $isEditMode);
+
         $siteSectionsDS = new SiteSectionsDataService(self::$options['MULTISITE'], self::$options['XML_ROOT']);
         $sectionData = $siteSectionsDS->get($this->sectionName);
-        $siteSettingsDS = new SiteSettingsDataService(self::$options['MULTISITE'], self::$options['XML_ROOT']);
-        $siteTemplateSettingsDS = new SiteTemplateSettingsDataService(self::$options['MULTISITE'], $this->name, self::$options['XML_ROOT']);
-        $entriesHTML = '';
 
+        $siteSettingsDS = new SiteSettingsDataService(self::$options['MULTISITE'], self::$options['XML_ROOT']);
+        $siteSettingsState = $siteSettingsDS->getState();
+
+        $siteTemplateSettingsDS = new SiteTemplateSettingsDataService(self::$options['MULTISITE'], $this->name, self::$options['XML_ROOT']);
+        $siteTemplateSettingsState =  $siteTemplateSettingsDS->getState();
+
+        $sitesMenuRenderService = new SitesMenuRenderService(
+            self::$options['MULTISITE'],
+            $isEditMode,
+            $siteSettingsState,
+            $siteTemplateSettingsState,
+            $sites
+        );
+
+        $sitesMenu = $sitesMenuRenderService->render();
+        $this->addVariable('sitesMenu', $sitesMenu);
+
+        $entriesHTML = '';
         foreach ($entries as $entry) {
             $sectionEntriesRS = new SectionEntryRenderService(
                 self::$options['MULTISITE'],
                 $entry,
                 $sectionData,
-                $siteSettingsDS->getState(),
-                $siteTemplateSettingsDS->getState(),
+                $siteSettingsState,
+                $siteTemplateSettingsState,
                 (new Storage(self::$options['MULTISITE'], !empty(self::$options['PREVIEW_FOLDER']))),
-                $this->environment == 'engine',
+                $isEditMode,
                 isset($shopEnabled) && $shopEnabled
             );
             $entriesHTML .= $sectionEntriesRS->render();

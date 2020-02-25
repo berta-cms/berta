@@ -27,6 +27,7 @@ $app->group(['prefix' => 'v1','namespace' => 'App\Http\Controllers', 'middleware
 
     $app->get('state[/{site}]', 'StateController@get');
     $app->get('locale-settings', ['as'=>'locale_settings', 'prefix'=>'locale_settings', 'uses' => 'StateController@getLocaleSettings']);
+
 });
 
 $app->group(['prefix' => 'v1','namespace' => 'App\Sites', 'middleware' => ['setup', 'auth']], function () use ($app) {
@@ -37,6 +38,8 @@ $app->group(['prefix' => 'v1','namespace' => 'App\Sites', 'middleware' => ['setu
 
     $app->post('sites/theme-preview', ['as' => 'site_theme_preview', 'uses' => 'SitesController@themePreview']);
     $app->put('sites/theme-apply', ['as' => 'site_theme_apply', 'uses' => 'SitesController@themeApply']);
+
+    $app->get('sites/render-menu[/{site}]', 'SitesController@renderMenu');
 
     $app->patch('sites/settings', ['as' => 'site_settings', 'uses' => 'Settings\SiteSettingsController@update']);
     $app->post('sites/settings/upload', ['as' => 'site_settings_upload', 'uses' => 'Settings\SiteSettingsController@upload']);
@@ -92,4 +95,3 @@ $app->group(['prefix' => 'v1/plugin', 'namespace' => 'App\Plugins', 'middleware'
 if (app()->environment('local', 'stage')) {
     require __DIR__ . '/../Dev/testRoutes.php';
 }
-
