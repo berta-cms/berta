@@ -17,6 +17,7 @@ import { IconCloneComponent } from './icon-clone.component';
 import { IconDeleteComponent } from './icon-delete.component';
 import { IconPublishComponent } from './icon-publish.component';
 import { IconReadonlyComponent } from '../../inputs/icon-readonly.component';
+import { RouteButton } from 'src/app/inputs/route-button.component';
 
 @NgModule({
   imports: [
@@ -37,6 +38,7 @@ import { IconReadonlyComponent } from '../../inputs/icon-readonly.component';
     SelectInputComponent,
     FileInputComponent,
     IconReadonlyComponent,
+    RouteButton,
     IconCloneComponent,
     IconDeleteComponent,
     IconPublishComponent
@@ -55,6 +57,7 @@ import { IconReadonlyComponent } from '../../inputs/icon-readonly.component';
     SelectInputComponent,
     FileInputComponent,
     IconReadonlyComponent,
+    RouteButton,
     IconCloneComponent,
     IconDeleteComponent,
     IconPublishComponent

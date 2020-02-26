@@ -111,7 +111,7 @@ $app->routeMiddleware([
 $app->register(Sentry\SentryLaravel\SentryLumenServiceProvider::class);
 $app->register(App\Providers\AppServiceProvider::class);
 $app->register(App\User\UserAuthServiceProvider::class);
-// $app->register(App\Providers\EventServiceProvider::class);
+$app->register(App\Providers\EventServiceProvider::class);
 $app->register(TwigBridge\ServiceProvider::class);
 
 /*

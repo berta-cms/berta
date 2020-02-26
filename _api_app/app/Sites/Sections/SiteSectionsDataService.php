@@ -6,6 +6,7 @@ use App\Shared\Helpers;
 use App\Shared\Storage;
 use App\Shared\ImageHelpers;
 use App\Shared\ConfigHelpers;
+use App\Events\SectionUpdated;
 use App\Configuration\SiteTemplatesConfigService;
 use App\Sites\Settings\SiteSettingsDataService;
 use App\Sites\Sections\Entries\SectionEntriesDataService;
@@ -131,17 +132,19 @@ class SiteSectionsDataService extends Storage
         ],
     ];
 
-    private $ROOT_ELEMENT = 'sections';
+    public $ROOT_ELEMENT = 'sections';
     private $SECTIONS = array();
     private $XML_FILE;
     private $site_name;
+    private $isPreview;
 
-    public function __construct($site = '')
+    public function __construct($site = '', $xml_root = null, $isPreview=false)
     {
-        parent::__construct($site);
+        parent::__construct($site, $isPreview);
         $this->site_name = $site;
-        $xml_root = $this->getSiteXmlRoot($site);
-        $this->XML_FILE = $xml_root . '/sections.xml';
+        $this->isPreview = $isPreview;
+        $this->XML_ROOT = $xml_root ? $xml_root : $this->getSiteXmlRoot($site);
+        $this->XML_FILE = $this->XML_ROOT . '/sections.xml';
     }
 
     /**
@@ -297,6 +300,7 @@ class SiteSectionsDataService extends Storage
         $path_arr = array_slice(explode('/', $path), 1);
         $prop = $path_arr[count($path_arr) - 1];
         $order = $path_arr[1];
+        $sectionName = $sections['section'][$order]['name'];
         $value = trim($value);
         $ret = array(
             'site' => $this->site_name,
@@ -308,7 +312,7 @@ class SiteSectionsDataService extends Storage
         );
 
         if ($prop === 'title') {
-            $old_name = $sections['section'][$order]['name'];
+            $old_name = $sectionName;
             $old_title = isset($sections['section'][$order]['title']) ? $sections['section'][$order]['title'] : '';
             $new_name = $this->getUniqueSlug($old_name, $value);
 
@@ -354,6 +358,9 @@ class SiteSectionsDataService extends Storage
 
                 $tags = new SectionTagsDataService($this->SITE, $old_name);
                 $tags->renameSection($new_name);
+
+                $sectionName = $new_name;
+
                 $ret['old_name'] = $old_name;
                 $ret['real'] = $new_name;
             } else {
@@ -372,6 +379,8 @@ class SiteSectionsDataService extends Storage
         );
 
         $this->array2xmlFile($sections, $this->XML_FILE, $this->ROOT_ELEMENT);
+        event(new SectionUpdated($this->SITE, $sectionName));
+
         $ret['section'] = $sections['section'][$order];
 
         return $ret;
@@ -393,6 +402,17 @@ class SiteSectionsDataService extends Storage
         }
 
         parent::setValueByPath($sections, $path, $value);
+    }
+
+    public function unsetDemoStatus($sectionName)
+    {
+        $sections = $this->get();
+        $sectionOrder = array_search($sectionName, array_column($sections, 'name'));
+        if ($sectionOrder === false) {
+            return;
+        }
+
+        $this->deleteValueByPath("/section/{$sectionOrder}/@attributes/demo");
     }
 
     /**
@@ -421,7 +441,7 @@ class SiteSectionsDataService extends Storage
 
         if ($section_idx !== false) {
             // delete all entries
-            $entries = new SectionEntriesDataService($this->SITE, $name);
+            $entries = new SectionEntriesDataService($this->SITE, $name, '', $this->XML_ROOT, $this->isPreview);
             $res = $entries->delete();
 
             if (!$res['success']) {
@@ -453,7 +473,7 @@ class SiteSectionsDataService extends Storage
             }
 
             // delete tags
-            $tags = new SectionTagsDataService($this->SITE, $name);
+            $tags = new SectionTagsDataService($this->SITE, $name, $this->XML_ROOT);
             $section_tags = $tags->delete();
 
             // delete section
@@ -526,6 +546,7 @@ class SiteSectionsDataService extends Storage
 
             $file = current(array_splice($files, $file_order, 1));
             $this->array2xmlFile($sections, $this->XML_FILE, $this->ROOT_ELEMENT);
+            event(new SectionUpdated($this->SITE, $name));
 
             return [
                 'site' => $this->SITE,
@@ -571,6 +592,7 @@ class SiteSectionsDataService extends Storage
             $section['mediaCacheData']['file'] = $new_files ? $reordered : [];
 
             $this->array2xmlFile($sections, $this->XML_FILE, $this->ROOT_ELEMENT);
+            event(new SectionUpdated($this->SITE, $name));
 
             return [
                 'site' => $this->SITE,
@@ -627,6 +649,7 @@ class SiteSectionsDataService extends Storage
 
         $sections[$section_idx] = $section;
         $this->array2xmlFile(['section' => $sections], $this->XML_FILE, $this->ROOT_ELEMENT);
+        event(new SectionUpdated($this->SITE, $section['name']));
 
         return [
             'status' => 1,
@@ -704,5 +727,69 @@ class SiteSectionsDataService extends Storage
 
             closedir($handle);
         }
+    }
+
+   /**
+     * Merge site sections from other source folder
+     * @param string $src_root site sections source root folder
+     */
+    public function mergeSiteSections($src_root)
+    {
+        $currentSiteSections = $this->get();
+
+        // filter and delete `demo` sections
+        $currentSiteSections = array_values(array_filter($currentSiteSections, function($section) {
+            $isDemo = isset($section['@attributes']['demo']) && $section['@attributes']['demo'];
+            if ($isDemo) {
+                $this->delete($section['name']);
+            }
+
+            return !$isDemo;
+        }));
+
+        $siteSectionsDS = new self('', $src_root);
+        $themeSiteSections = array_reverse($siteSectionsDS->get());
+
+        foreach ($themeSiteSections as $themeSiteSection) {
+            $sectionOrder = array_search($themeSiteSection['name'], array_column($currentSiteSections, 'name'));
+
+            // Found existing section with same name
+            if ($sectionOrder !== false) {
+                $hasContent = isset($currentSiteSections[$sectionOrder]['@attributes']['entry_count']) && $currentSiteSections[$sectionOrder]['@attributes']['entry_count'] > 0;
+
+                // Skip merge for sections with existing content
+                if ($hasContent) {
+                    continue;
+                }
+            }
+
+            // copy section mediafolder (background gallery)
+            if (isset($themeSiteSection['mediafolder'])) {
+                $this->copyFolder(
+                    $src_root . '/' . $this->MEDIA_FOLDER . '/' . $themeSiteSection['mediafolder'],
+                    $this->XML_ROOT . '/' . $this->MEDIA_FOLDER . '/' . $themeSiteSection['mediafolder']
+                );
+            }
+
+            // Copy section entries
+            copy($src_root . '/blog.' . $themeSiteSection['name'] . '.xml', $this->XML_ROOT . '/blog.' . $themeSiteSection['name'] . '.xml');
+
+            // Copy section entry media files
+            $sectionEntriesDS = new SectionEntriesDataService($this->SITE, $themeSiteSection['name'], null, $src_root);
+            $sectionEntriesDS->copyMediaFiles($this->XML_ROOT);
+
+            // Mark section as demo (section with demo data)
+            $themeSiteSection['@attributes']['demo'] = 1;
+
+            // Replace existing section with theme section
+            if ($sectionOrder !== false) {
+                $currentSiteSections[$sectionOrder] = $themeSiteSection;
+            // Merge as new section at the beginning of section list
+            } else {
+                array_unshift($currentSiteSections, $themeSiteSection);
+            }
+        }
+
+        $this->array2xmlFile(['section' => $currentSiteSections], $this->XML_FILE, $this->ROOT_ELEMENT);
     }
 }

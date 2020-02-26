@@ -6,6 +6,7 @@ import { Observable, combineLatest } from 'rxjs';
 import { map, filter, scan, take } from 'rxjs/operators';
 import { splitCamel, uCFirst, getIconFromUrl } from '../../shared/helpers';
 import { Animations } from '../../shared/animations';
+import { AppState } from '../../app-state/app.state';
 import { SiteSettingsState } from './site-settings.state';
 import { SiteSettingsConfigState } from './site-settings-config.state';
 import {
@@ -89,12 +90,14 @@ export class SiteSettingsComponent implements OnInit {
   ngOnInit() {
     this.settings$ = combineLatest(
       this.store.select(SiteSettingsState.getCurrentSiteSettings),
-      this.store.select(SiteSettingsConfigState)
+      this.store.select(SiteSettingsConfigState),
+      this.store.select(AppState)
     ).pipe(
       filter(([settings, config]) => settings && settings.length > 0 && config && Object.keys(config).length > 0),
-      map(([settings, config]) => {
+      map(([settings, config, appState]) => {
         return settings
           .filter(settingGroup => !config[settingGroup.slug]._.invisible)
+          .filter(settingGroup => settingGroup.slug !== 'theme' || appState.themes.length > 0)
           .map(settingGroup => {
             return {
               settings: settingGroup.settings

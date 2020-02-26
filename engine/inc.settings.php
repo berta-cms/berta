@@ -75,8 +75,21 @@ $settingsDefinition = [
             'values' => 'templates',
             'allow_blank' => false,
             'default' => false,
+            'affectsStyle' => true,
             'title' => I18n::_('Template'),
             'description' => I18n::_('Templates are like skins or themes for your site. You can choose one template from the ones installed in your templates folder. To add a new template to this list, upload it to the templates folder via FTP.')
+        ],
+    ],
+
+    'theme' => [
+        '_' => [
+            'title' => I18n::_('Theme')
+        ],
+        'theme' => [
+            'format' => 'route',
+            'default' => '/themes',
+            'title' => I18n::_('Choose theme'),
+            'description' => I18n::_('Themes are ready made sites with predefined design settings.')
         ],
     ],
 
@@ -166,6 +179,7 @@ $settingsDefinition = [
                 'yes',
                 'no'
             ],
+            'affectsStyle' => true,
             'title' => I18n::_('Is first section visible in menu?'),
             'description' => I18n::_('Choose "no" to hide the first section in the main menu. Link from the page title (or header image) will lead to it. NOTE: This setting has no effect, if the section has a submenu; then it is visible at all times.')
         ],
@@ -176,6 +190,7 @@ $settingsDefinition = [
                 'yes',
                 'no'
             ],
+            'affectsStyle' => true,
             'title' => I18n::_('Show page heading in first section?'),
             'description' => I18n::_('Choose "no" to hide page heading in first section.')
         ],
@@ -186,6 +201,7 @@ $settingsDefinition = [
                 'yes',
                 'no'
             ],
+            'affectsStyle' => true,
             'title' => I18n::_('Show menu in first section?'),
             'description' => I18n::_('Choose "no" to hide the menu in first section.')
         ],
@@ -196,6 +212,7 @@ $settingsDefinition = [
                 'yes',
                 'no'
             ],
+            'affectsStyle' => true,
             'title' => I18n::_('Always auto-select a submenu item?'),
             'description' => I18n::_('Choose "yes" to automatically select the first submenu item when clicking on a menu item. This works only when there is a submenu.')
         ],
@@ -206,6 +223,7 @@ $settingsDefinition = [
                 'yes',
                 'no'
             ],
+            'affectsStyle' => true,
             'title' => I18n::_('Enable navigation to page top'),
             'description' => I18n::_('Shows navigation button at the bottom when page is scrolled.')
         ],
@@ -224,6 +242,7 @@ $settingsDefinition = [
             'format' => 'select',
             'default' => 'yes',
             'values' => ['yes', 'no'],
+            'affectsStyle' => true,
             'title' => I18n::_('Is enabled by default'),
             'description' => I18n::_('Enables Lightbox mode for new entries.')
         ],
@@ -234,6 +253,7 @@ $settingsDefinition = [
                 'black',
                 'white'
             ],
+            'affectsStyle' => true,
             'title' => I18n::_('Background color'),
             'description' => I18n::_('Color of the Lightbox background layer.')
         ],
@@ -244,6 +264,7 @@ $settingsDefinition = [
                 'yes',
                 'no'
             ],
+            'affectsStyle' => true,
             'title' => I18n::_('Image numbers'),
             'description' => I18n::_('Enables/disables Lightbox slide numbers.')
         ],
@@ -255,6 +276,7 @@ $settingsDefinition = [
                 'right',
                 'center'
             ],
+            'affectsStyle' => true,
             'title' => I18n::_('Caption alignment'),
             'description' => I18n::_('Positioning of the image caption text.')
         ],
@@ -270,6 +292,7 @@ $settingsDefinition = [
                 'yes',
                 'no'
             ],
+            'affectsStyle' => true,
             'title' => I18n::_('Slideshow loop mode')
         ],
         'gallerySlideNumberVisibilityDefault' => [
@@ -279,6 +302,7 @@ $settingsDefinition = [
                 'yes',
                 'no'
             ],
+            'affectsStyle' => true,
             'title' => I18n::_('Show slideshow image numbers'),
             'description' => I18n::_('Set the default state of image number visibility in slideshow galleries.')
         ],
@@ -293,6 +317,7 @@ $settingsDefinition = [
             'default' => $options['images']['small_width'],
             'allow_blank' => true,
             'css_units' => false,
+            'affectsStyle' => true,
             'title' => I18n::_('Small image width'),
             'description' => I18n::_('Maximum size of a small image (visible if \'Small images\' are switched on in the gallery editor). These settings don\'t affect original image.')
         ],
@@ -301,6 +326,7 @@ $settingsDefinition = [
             'default' => $options['images']['small_height'],
             'allow_blank' => true,
             'css_units' => false,
+            'affectsStyle' => true,
             'title' => I18n::_('Small image height'),
             'description' => ''
         ],
@@ -309,6 +335,7 @@ $settingsDefinition = [
             'default' => $options['images']['medium_width'],
             'allow_blank' => true,
             'css_units' => false,
+            'affectsStyle' => true,
             'title' => I18n::_('Medium image width'),
             'description' => I18n::_('Maximum size of a medium image (visible if \'Medium images\' are switched on in the gallery editor). These settings don\'t affect original image.')
         ],
@@ -317,6 +344,7 @@ $settingsDefinition = [
             'default' => $options['images']['medium_height'],
             'css_units' => false,
             'allow_blank' => true,
+            'affectsStyle' => true,
             'title' => I18n::_('Medium image height'),
             'description' => ''
         ],
@@ -325,6 +353,7 @@ $settingsDefinition = [
             'default' => $options['images']['large_width'],
             'allow_blank' => true,
             'css_units' => false,
+            'affectsStyle' => true,
             'title' => I18n::_('Large image width'),
             'description' => I18n::_('Maximum size of a large image (visible if \'Large images\' are switched on in the gallery editor). These settings don\'t affect original image.')
         ],
@@ -333,6 +362,7 @@ $settingsDefinition = [
             'default' => $options['images']['large_height'],
             'allow_blank' => true,
             'css_units' => false,
+            'affectsStyle' => true,
             'title' => I18n::_('Large image height'),
             'description' => ''
         ],
@@ -369,6 +399,7 @@ $settingsDefinition = [
                 'footer',
                 'additionalText'
             ],
+            'affectsStyle' => true,
             'title' => I18n::_('Location'),
             'description' => I18n::_('Location of social media buttons. Content of additional text or additional footer will be replaced.')
         ],
@@ -402,6 +433,7 @@ $settingsDefinition = [
                 'footer',
                 'additionalText'
             ],
+            'affectsStyle' => true,
             'title' => I18n::_('Location'),
             'description' => I18n::_('Location of social media buttons. Content of additional text or additional footer will be replaced.')
         ],

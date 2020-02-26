@@ -229,6 +229,7 @@ $templateConf = [
             'min_height' => 1,
             'max_width' => 3000,
             'max_height' => 3000,
+            'affectsStyle' => true,
             'title' => I18n::_('Background image'),
             'description' => I18n::_('Picture to use for page background.'),
         ],

@@ -149,14 +149,17 @@ class BertaTemplate extends BertaBase
 
         $sitesDataService = new SitesDataService();
         $sites = $sitesDataService->get();
-        $sectionEntriesDS = new SectionEntriesDataService(self::$options['MULTISITE'], $this->sectionName);
-        $entries = $sectionEntriesDS->getByTag($this->tagName, $isEditMode);
-        $siteSectionsDS = new SiteSectionsDataService(self::$options['MULTISITE']);
-        $sectionData = $siteSectionsDS->get($this->sectionName);
-        $siteSettingsDS = new SiteSettingsDataService(self::$options['MULTISITE']);
-        $siteTemplateSettingsDS = new SiteTemplateSettingsDataService(self::$options['MULTISITE'], $this->name);
 
+        $sectionEntriesDS = new SectionEntriesDataService(self::$options['MULTISITE'], $this->sectionName, '', self::$options['XML_ROOT']);
+        $entries = $sectionEntriesDS->getByTag($this->tagName, $isEditMode);
+
+        $siteSectionsDS = new SiteSectionsDataService(self::$options['MULTISITE'], self::$options['XML_ROOT']);
+        $sectionData = $siteSectionsDS->get($this->sectionName);
+
+        $siteSettingsDS = new SiteSettingsDataService(self::$options['MULTISITE'], self::$options['XML_ROOT']);
         $siteSettingsState = $siteSettingsDS->getState();
+
+        $siteTemplateSettingsDS = new SiteTemplateSettingsDataService(self::$options['MULTISITE'], $this->name, self::$options['XML_ROOT']);
         $siteTemplateSettingsState =  $siteTemplateSettingsDS->getState();
 
         $sitesMenuRenderService = new SitesMenuRenderService(
@@ -178,7 +181,7 @@ class BertaTemplate extends BertaBase
                 $sectionData,
                 $siteSettingsState,
                 $siteTemplateSettingsState,
-                (new Storage(self::$options['MULTISITE'])),
+                (new Storage(self::$options['MULTISITE'], !empty(self::$options['PREVIEW_FOLDER']))),
                 $isEditMode,
                 isset($shopEnabled) && $shopEnabled
             );
@@ -394,6 +397,7 @@ class BertaTemplate extends BertaBase
         $site = !empty(self::$options['MULTISITE']) ? '&amp;site=' . self::$options['MULTISITE'] : '';
         $forceResponsiveStyleParam = $jsSettings['sectionType'] == 'portfolio' ? '&amp;responsive=1' : '';
         $isEngineParam = $this->environment == 'engine' ? '&amp;engine=1' : '';
+        $isPreview = isset($_REQUEST['preview']) ? '&amp;preview=1' : '';
 
         if ($this->loggedIn) {
             $vars['berta']['css'] = <<<DOC
@@ -412,7 +416,7 @@ DOC;
 DOC;
 
         $vars['berta']['css'] .= <<<DOC
-    <link rel="stylesheet" href="{$templatesAbsRoot}{$this->name}/style.css.php?{$timestamp}{$site}{$forceResponsiveStyleParam}{$isEngineParam}" type="text/css">
+    <link rel="stylesheet" href="{$templatesAbsRoot}{$this->name}/style.css.php?{$timestamp}{$site}{$forceResponsiveStyleParam}{$isEngineParam}{$isPreview}" type="text/css">
 DOC;
 
         $sentryScripts = self::sentryScripts();

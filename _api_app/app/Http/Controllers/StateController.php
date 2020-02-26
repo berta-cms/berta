@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Configuration\SiteSettingsConfigService;
 use App\Configuration\SiteTemplatesConfigService;
 use App\Shared\Helpers;
+use App\Sites\ThemesDataService;
 use App\Sites\Sections\Entries\SectionEntriesDataService;
 use App\Sites\Sections\SiteSectionsDataService;
 use App\Sites\Sections\Tags\SectionTagsDataService;
@@ -30,6 +31,8 @@ class StateController extends Controller
             'siteSettingsUpload' => route('site_settings_upload'),
             'siteTemplateSettings' => route('site_template_settings'),
             'siteTemplateSettingsUpload' => route('site_template_settings_upload'),
+            'siteThemePreview' => route('site_theme_preview'),
+            'siteThemeApply' => route('site_theme_apply'),
             'localeSettings' => route('locale_settings'),
             'siteSections' => route('site_sections'),
             'siteSectionsReset' => route('site_sections_reset'),
@@ -95,12 +98,14 @@ class StateController extends Controller
     {
         include realpath(config('app.old_berta_root') . '/engine/inc.version.php');
         $user = new UserModel();
+        $themesDS = new ThemesDataService();
         $meta = [
             'version' => $options['version'],
             'forgotPasswordUrl' => $user->forgot_password_url,
             'loginUrl' => $user->profile_url ? $user->profile_url : route('login'),
             'authenticateUrl' => route('authenticate'),
-            'isBertaHosting' => $user->profile_url != false
+            'isBertaHosting' => $user->profile_url != false,
+            'themes' => $themesDS->getThemes()
         ];
 
         return Helpers::api_response('', $meta);

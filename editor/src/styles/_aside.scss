@@ -2,6 +2,29 @@ aside {
   background-color: $white;
   border-right: 1px solid $grey-30;  // for develompent
   padding-top: $bt-header-height;
+
+  > .close {
+    display: none;
+    position: absolute;
+    top: 1.3em;
+    right: 1.3em;
+
+    path {
+      transition: fill .4s ease-in-out;
+    }
+
+    &:hover {
+      path {
+        fill: $berta-accent;
+      }
+    }
+  }
+
+  &.fullscreen {
+    > .close {
+      display: block;
+    }
+  }
 }
 
 .setting-group {
@@ -156,6 +179,10 @@ aside {
         &:first-child {
           margin-top: 0;
         }
+      }
+
+      .button {
+        font-size: $input-font-size;
       }
 
       &:first-child {

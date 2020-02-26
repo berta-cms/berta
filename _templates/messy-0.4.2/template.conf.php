@@ -271,7 +271,12 @@ $templateConf = [
         'backgroundImage' => [
             'format' => 'image',
             'default' => '',
-            'min_width' => 1, 'min_height' => 1, 'max_width' => 3000, 'max_height' => 3000, 'title' => I18n::_('Background image'),
+            'min_width' => 1,
+            'min_height' => 1,
+            'max_width' => 3000,
+            'max_height' => 3000,
+            'affectsStyle' => true,
+            'title' => I18n::_('Background image'),
             'description' => I18n::_('Picture to use for page background.'),
         ],
         'backgroundRepeat' => [

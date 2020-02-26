@@ -36,6 +36,9 @@ $app->group(['prefix' => 'v1','namespace' => 'App\Sites', 'middleware' => ['setu
     $app->put('sites', 'SitesController@order');
     $app->delete('sites', 'SitesController@delete');
 
+    $app->post('sites/theme-preview', ['as' => 'site_theme_preview', 'uses' => 'SitesController@themePreview']);
+    $app->put('sites/theme-apply', ['as' => 'site_theme_apply', 'uses' => 'SitesController@themeApply']);
+
     $app->get('sites/render-menu[/{site}]', 'SitesController@renderMenu');
 
     $app->patch('sites/settings', ['as' => 'site_settings', 'uses' => 'Settings\SiteSettingsController@update']);
@@ -92,4 +95,3 @@ $app->group(['prefix' => 'v1/plugin', 'namespace' => 'App\Plugins', 'middleware'
 if (app()->environment('local', 'stage')) {
     require __DIR__ . '/../Dev/testRoutes.php';
 }
-
