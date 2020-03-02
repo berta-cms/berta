@@ -15,7 +15,7 @@ class BertaContent extends BertaBase
                 if (isset($xmlFeed['site']) && is_array($xmlFeed['site'])) {
                     Array_XML::makeListIfNotList($xmlFeed['site']);
                     foreach ($xmlFeed['site'] as $s) {
-                        if ($published || (isset($s['@attributes']['published']) && $s['@attributes']['published'])) {
+                        if ($published || isset($_REQUEST['preview']) || (isset($s['@attributes']['published']) && $s['@attributes']['published'])) {
                             if (!empty($s['name']['value']) && trim($s['name']['value']) != '') {
                                 $sArr[trim($s['name']['value'])] = $s;
                             } else {

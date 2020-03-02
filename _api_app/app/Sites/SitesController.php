@@ -79,6 +79,31 @@ class SitesController extends Controller
         return response()->json($res, $res['status_code']);
     }
 
+    public function themePreview(Request $request)
+    {
+        $json = $request->json()->all();
+        $siteName = $json['site'];
+        $themeName = $json['theme'];
+
+        $sitesDS = new SitesDataService($siteName);
+        $sitesDS->createPrieview($themeName);
+
+        return response()->json($json);
+    }
+
+    public function themeApply(Request $request)
+    {
+        $json = $request->json()->all();
+        $siteName = $json['site'];
+        $themeName = $json['theme'];
+
+        $sitesDS = new SitesDataService($siteName);
+        $sitesDS->themeApply($themeName);
+
+        // @TODO return new site state here to update frontend, currently frontend window is reloaded to get correct site state
+        return response()->json($json);
+    }
+
     public function delete(Request $request)
     {
         $sites = new SitesDataService();

@@ -4,6 +4,7 @@ namespace App\Sites\Sections\Entries;
 
 use App\Shared\Storage;
 use App\Shared\ImageHelpers;
+use App\Events\SectionUpdated;
 use App\Sites\Settings\SiteSettingsDataService;
 use App\Sites\TemplateSettings\SiteTemplateSettingsDataService;
 use App\Sites\Sections\SiteSectionsDataService;
@@ -181,10 +182,10 @@ class SectionEntriesDataService extends Storage
     private $XML_ROOT;
     private $XML_FILE;
 
-    public function __construct($site = '', $sectionName = '', $sectionTitle = '')
+    public function __construct($site = '', $sectionName = '', $sectionTitle = '', $xml_root = null, $isPreview=false)
     {
-        parent::__construct($site);
-        $this->XML_ROOT = $this->getSiteXmlRoot($site);
+        parent::__construct($site, $isPreview);
+        $this->XML_ROOT = $xml_root ? $xml_root : $this->getSiteXmlRoot($site);
         $this->SECTION_NAME = $sectionName;
         $this->SECTION_TITLE = $sectionTitle;
         $this->XML_FILE = $this->XML_ROOT . '/blog.' . $sectionName . '.xml';
@@ -272,11 +273,13 @@ class SectionEntriesDataService extends Storage
 
         $siteSectionsDataService = new SiteSectionsDataService($this->SITE);
         $sections = $siteSectionsDataService->get();
-        $section_order = array_search($this->SECTION_NAME, array_column($sections, 'name'));
-        $section = $sections[$section_order];
-        $sectionType = isset($section['@attributes']['type']) ? $section['@attributes']['type'] : 'default';
+        if (!empty($sections)) {
+            $section_order = array_search($this->SECTION_NAME, array_column($sections, 'name'));
+            $section = $sections[$section_order];
+            $sectionType = isset($section['@attributes']['type']) ? $section['@attributes']['type'] : 'default';
+        }
 
-        $isResponsive = $sectionType == 'portfolio' || $isResponsiveTemplate;
+        $isResponsive = (isset($sectionType) && $sectionType == 'portfolio') || $isResponsiveTemplate;
 
         // if messy template and auto responsive is ON and environment is `site`
         // reorder entries based on XY position
@@ -377,6 +380,7 @@ class SectionEntriesDataService extends Storage
         );
 
         $this->array2xmlFile($entries, $this->XML_FILE, $this->ROOT_ELEMENT);
+        event(new SectionUpdated($this->SITE, $this->SECTION_NAME));
 
         $ret['entry'] = $entries[self::$ROOT_LIST_ELEMENT][$index];
 
@@ -486,6 +490,7 @@ class SectionEntriesDataService extends Storage
 
         array_splice($entries['entry'], $entry_new_order, 0, $entry_to_move);
         $this->array2xmlFile($entries, $this->XML_FILE, $this->ROOT_ELEMENT);
+        event(new SectionUpdated($this->SITE, $this->SECTION_NAME));
 
         $order = array_column($entries['entry'], 'id');
 
@@ -857,6 +862,7 @@ class SectionEntriesDataService extends Storage
             $entry['mediaCacheData']['file'] = $new_files ? $reordered : [];
 
             $this->array2xmlFile($entries, $this->XML_FILE, $this->ROOT_ELEMENT);
+            event(new SectionUpdated($this->SITE, $this->SECTION_NAME));
 
             return [
                 'site' => $this->SITE,
@@ -1081,6 +1087,25 @@ class SectionEntriesDataService extends Storage
             }
 
             closedir($handle);
+        }
+    }
+
+    /**
+     * Copy all section entries gallery files to destination folder
+     * @param string $dst_root destination folder
+     */
+    public function copyMediaFiles($dst_root)
+    {
+        $entries = $this->get();
+        $entries = $entries[self::$ROOT_LIST_ELEMENT];
+
+        foreach ($entries as $entry) {
+            if (isset($entry['mediafolder'])) {
+                $this->copyFolder(
+                    $this->XML_ROOT . '/' . $this->MEDIA_FOLDER . '/' . $entry['mediafolder'],
+                    $dst_root . '/' . $this->MEDIA_FOLDER . '/' . $entry['mediafolder']
+                );
+            }
         }
     }
 }

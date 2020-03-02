@@ -51,3 +51,13 @@ export class InitSitesAction {
   static readonly type = 'SITE:INIT';
   constructor(public payload: SiteStateModel[]) {}
 }
+
+export class PreviewThemeSitesAction {
+  static readonly type = 'SITE:PREVIEW_THEME';
+  constructor(public payload: {site: string, theme: string}) {}
+}
+
+export class ApplyThemeSitesAction {
+  static readonly type = 'SITE:APPLY_THEME';
+  constructor(public payload: {site: string, theme: string}) {}
+}

@@ -13,7 +13,9 @@ import {
   RenameSiteAction,
   ResetSitesAction,
   InitSitesAction,
-  ReOrderSitesAction
+  ReOrderSitesAction,
+  PreviewThemeSitesAction,
+  ApplyThemeSitesAction
 } from './sites.actions';
 import {
   DeleteSiteSectionsAction,
@@ -222,5 +224,17 @@ export class SitesState implements NgxsOnInit {
   @Action(InitSitesAction)
   initSites({ setState }: StateContext<SiteStateModel[]>, action: InitSitesAction) {
     setState(action.payload);
+  }
+
+  @Action(PreviewThemeSitesAction)
+  PreviewThemeSites({}, action: PreviewThemeSitesAction) {
+    return this.appStateService.sync('siteThemePreview', action.payload, 'POST');
+  }
+
+  @Action(ApplyThemeSitesAction)
+  ApplyThemeSites({}, action: ApplyThemeSitesAction) {
+    // @TODO API should return new state and we should update state here
+    // Current workaround is to reload window to get correct state
+    return this.appStateService.sync('siteThemeApply', action.payload, 'PUT');
   }
 }

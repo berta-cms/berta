@@ -4,6 +4,7 @@ namespace App\Sites\Sections\Tags;
 
 use App\Shared\Helpers;
 use App\Shared\Storage;
+use App\Events\SectionUpdated;
 use App\Sites\Sections\Entries\SectionEntriesDataService;
 
 
@@ -111,10 +112,10 @@ class SectionTagsDataService extends Storage
     private $XML_FILE;
     private $TAGS;
 
-    public function __construct($site = '', $sectionName = '')
+    public function __construct($site = '', $sectionName = '', $xml_root = null)
     {
         parent::__construct($site);
-        $this->XML_ROOT = $this->getSiteXmlRoot($site);
+        $this->XML_ROOT = $xml_root ? $xml_root : $this->getSiteXmlRoot($site);
         $this->SECTION_NAME = $sectionName;
         $this->XML_FILE = $this->XML_ROOT . '/tags.xml';
     }
@@ -257,6 +258,7 @@ class SectionTagsDataService extends Storage
             $tags['section'][$section_order]['tag'] = $section_tags;
 
             $this->array2xmlFile($tags, $this->XML_FILE, $this->ROOT_ELEMENT);
+            event(new SectionUpdated($this->SITE, $this->SECTION_NAME));
 
             $order = array_column(
                 array_column(

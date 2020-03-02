@@ -4,6 +4,9 @@ namespace App\Sites;
 use Illuminate\Http\Request;
 use App\Shared\Helpers;
 use App\Shared\Storage;
+use App\Sites\Settings\SiteSettingsDataService;
+use App\Sites\TemplateSettings\SiteTemplateSettingsDataService;
+use App\Sites\Sections\SiteSectionsDataService;
 use App\Plugins\Shop\ShopClientsDataService;
 use App\Plugins\Shop\ShopOrdersDataService;
 use App\Plugins\Shop\ShopProductsDataService;
@@ -69,9 +72,9 @@ class SitesDataService extends Storage
     private $XML_FILE;
     private $MAIN_SITE_DEFAULT_TITLE = 'Main site';
 
-    public function __construct()
+    public function __construct($site = '')
     {
-        parent::__construct();
+        parent::__construct($site);
         $this->XML_FILE = $this->XML_SITES_ROOT . '/sites.xml';
     }
 
@@ -246,6 +249,43 @@ class SitesDataService extends Storage
         $this->array2xmlFile($sites, $this->XML_FILE, $this->ROOT_ELEMENT);
 
         return $ret;
+    }
+
+    public function createPrieview($themeName)
+    {
+        // delete previous preview content
+        $this->delFolder($this->XML_PREVIEW_ROOT);
+
+        // generate new preview content
+        // for now just copy all the existing contents to preview
+        $this->copyFolder($this->XML_STORAGE_ROOT, $this->XML_PREVIEW_ROOT);
+
+        // Merge site settings
+        $siteSettingsDS = new SiteSettingsDataService($this->SITE, $this->XML_PREVIEW_ROOT);
+        $newSiteSettings = $siteSettingsDS->mergeSiteSettings($this->THEMES_ROOT . '/' . $themeName);
+
+        // Merge site template settings
+        $siteTemplateSettingsDS = new SiteTemplateSettingsDataService($this->SITE, $newSiteSettings['template']['template'], $this->XML_PREVIEW_ROOT);
+        $siteTemplateSettingsDS->mergeSiteTemplateSettings($this->THEMES_ROOT . '/' . $themeName);
+
+        // Merge sections
+        $siteSectionsDS = new SiteSectionsDataService($this->SITE, $this->XML_PREVIEW_ROOT, true);
+        $siteSectionsDS->mergeSiteSections($this->THEMES_ROOT . '/' . $themeName);
+    }
+
+    public function themeApply($themeName)
+    {
+        // Merge site settings
+        $siteSettingsDS = new SiteSettingsDataService($this->SITE);
+        $newSiteSettings = $siteSettingsDS->mergeSiteSettings($this->THEMES_ROOT . '/' . $themeName);
+
+        // Merge site template settings
+        $siteTemplateSettingsDS = new SiteTemplateSettingsDataService($this->SITE, $newSiteSettings['template']['template']);
+        $siteTemplateSettingsDS->mergeSiteTemplateSettings($this->THEMES_ROOT . '/' . $themeName);
+
+        // Merge sections
+        $siteSectionsDS = new SiteSectionsDataService($this->SITE);
+        $siteSectionsDS->mergeSiteSections($this->THEMES_ROOT . '/' . $themeName);
     }
 
     /**

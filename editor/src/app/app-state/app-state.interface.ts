@@ -12,4 +12,5 @@ export interface AppStateModel {
   authenticateUrl: string;
   version: string;
   lastRoute: string;
+  themes: string[];
 }

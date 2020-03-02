@@ -1,0 +1,88 @@
+berta-themes {
+  display: flex;
+  height: 100%;
+  font-size: 0.875em;
+}
+
+.themes-container {
+  margin: auto;
+  padding: 2.6em 0 0;
+  list-style: none;
+
+  li {
+    float: left;
+    margin: 0 0 2.6em 1.3em;
+
+    &:nth-child(3n+1) {
+      clear: left;
+      margin-left: 0;
+    }
+
+    .image-container {
+      position: relative;
+      border: 2px solid $grey-10;
+      transition: border-color .4s ease-in-out;
+
+      a {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 50%;
+        bottom: 0;
+        opacity: 0;
+        color: $berta-accent-light;
+        transition: opacity .4s ease-in-out;
+
+        span {
+          position: absolute;
+          opacity: 0;
+          top: 40%;
+          left: 23%;
+          transition: .4s;
+
+          svg {
+            display: block;
+            margin: 0 auto;
+            margin-bottom: .25em;
+
+            path {
+              transition: fill .4s ease-in-out;
+            }
+          }
+        }
+
+        &.apply {
+          left: 50%;
+        }
+
+        &:hover {
+          color: $white;
+
+          path {
+            fill: #fff;
+          }
+        }
+      }
+
+      &:hover {
+        border-color: rgba($color: $berta-accent, $alpha: .7);
+
+        a {
+          background-color: rgba($color: $berta-accent, $alpha: .7);
+          opacity: 1;
+
+          span {
+            top: 35%;
+            opacity: 1;
+          }
+        }
+      }
+    }
+
+    p {
+      text-transform: capitalize;
+      margin: .5em 0 0;
+      text-align: left;
+    }
+  }
+}

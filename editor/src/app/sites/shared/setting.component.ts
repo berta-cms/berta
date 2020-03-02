@@ -47,6 +47,10 @@ import { UpdateInputFocus } from '../../app-state/app.actions';
       <berta-icon-readonly *ngSwitchCase="'icon-readonly'"
                         [value]="setting.value"></berta-icon-readonly>
 
+      <berta-route-button *ngSwitchCase="'route'"
+                        [label]="config.title"
+                        [route]="setting.value"></berta-route-button>
+
       <berta-file-input *ngSwitchCase="'image'"
                         [label]="config.title"
                         [templateSlug]="templateSlug"
