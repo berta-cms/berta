@@ -13,6 +13,7 @@ class SectionsMenuRenderService
     private $siteTemplateSettings;
     private $sectionTags;
     private $tagSlug;
+    private $isPreviewMode;
     private $isEditMode;
     private $isResponsive;
     private $templateName;
@@ -25,6 +26,7 @@ class SectionsMenuRenderService
         array $siteTemplateSettings,
         array $sectionTags,
         $tagSlug,
+        $isPreviewMode,
         $isEditMode
     ) {
         $this->site = $site;
@@ -34,6 +36,7 @@ class SectionsMenuRenderService
         $this->siteTemplateSettings = $siteTemplateSettings;
         $this->sectionTags = $sectionTags;
         $this->tagSlug = $tagSlug;
+        $this->isPreviewMode = $isPreviewMode;
         $this->isEditMode = $isEditMode;
         $this->templateName = explode('-', $this->siteSettings['template']['template'])[0];
     }
@@ -230,7 +233,7 @@ class SectionsMenuRenderService
 
             return '?' . implode('&', $parts);
         } else {
-            return '/' . implode('/', $urlParts);
+            return '/' . implode('/', $urlParts) . ($this->isPreviewMode ? '?preview=1' : '');
         }
     }
 
