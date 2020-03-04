@@ -38,7 +38,7 @@ class SitesHeaderRenderService
         $this->templateName = explode('-', $this->siteSettings['template']['template'])[0];
     }
 
-    public function getHeadingStyles($params)
+    private function getHeadingStyles($params)
     {
         $pos = !empty($params) ? explode(',', $params) :
             [
@@ -73,7 +73,19 @@ class SitesHeaderRenderService
         return Helpers::arrayToHtmlAttributes($attributes);
     }
 
-    public function getViewData()
+    private function getHeadingImage()
+    {
+        $settingGroup = $this->templateName == 'mashup' ? 'sideBar' : 'heading';
+        $filename = !empty($this->siteTemplateSettings[$settingGroup]['image']) ? $this->siteTemplateSettings[$settingGroup]['image'] : null;
+
+        if (!empty($filename)) {
+            return null;
+        }
+
+        return $filename;
+    }
+
+    private function getViewData()
     {
         $data = [];
         $isLandingSectionPageHeadingVisible = $this->siteSettings['navigation']['landingSectionPageHeadingVisible'] == 'yes';
@@ -104,6 +116,8 @@ class SitesHeaderRenderService
 
         $data['title'] = isset($this->siteSettings['siteTexts']['siteHeading']) ? $this->siteSettings['siteTexts']['siteHeading'] : '';
         $data['headingAttributes'] = $this->getHeadingAttributes();
+        $data['headingImage'] = $this->getHeadingImage();
+        $data['isEditMode'] = $this->isEditMode;
 
         return $data;
     }
