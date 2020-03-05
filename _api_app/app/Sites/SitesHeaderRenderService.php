@@ -3,6 +3,8 @@
 namespace App\Sites;
 
 use App\Shared\Helpers;
+use App\Shared\Storage;
+use App\Shared\ImageHelpers;
 
 class SitesHeaderRenderService
 {
@@ -11,11 +13,13 @@ class SitesHeaderRenderService
     private $siteTemplateSettings;
     private $sections;
     private $sectionSlug;
+    private $storageService;
     private $isEditMode;
 
     private $templateName;
     private $isResponsive;
     private $DRAGGABLE_HEADING_CLASSES = ['mess', 'xEditableDragXY', 'xProperty-siteHeadingXY'];
+    private $EDITABLE_CLASSES = ['xEditable', 'xProperty-siteHeading'];
 
     /**
      * Construct SitesHeaderRenderService instance
@@ -26,6 +30,7 @@ class SitesHeaderRenderService
         array $siteTemplateSettings,
         array $sections,
         $sectionSlug,
+        Storage $storageService,
         $isEditMode
     ) {
         $this->siteName = $siteName;
@@ -33,6 +38,7 @@ class SitesHeaderRenderService
         $this->siteTemplateSettings = $siteTemplateSettings;
         $this->sections = $sections;
         $this->sectionSlug = $sectionSlug;
+        $this->storageService = $storageService;
         $this->isEditMode = $isEditMode;
 
         $this->templateName = explode('-', $this->siteSettings['template']['template'])[0];
@@ -77,12 +83,36 @@ class SitesHeaderRenderService
     {
         $settingGroup = $this->templateName == 'mashup' ? 'sideBar' : 'heading';
         $filename = !empty($this->siteTemplateSettings[$settingGroup]['image']) ? $this->siteTemplateSettings[$settingGroup]['image'] : null;
+        $alt = !empty($this->siteSettings['texts']['pageTitle']) ? $this->siteSettings['texts']['pageTitle'] : '';
 
-        if (!empty($filename)) {
+        if (empty($filename)) {
             return null;
         }
 
-        return $filename;
+        $image = ImageHelpers::getImageItem(
+            $filename,
+            $this->storageService,
+            [
+                'width' => $this->siteTemplateSettings[$settingGroup]['image_width'],
+                'height' => $this->siteTemplateSettings[$settingGroup]['image_height'],
+                'alt' => $alt
+            ]
+        );
+
+        return Helpers::arrayToHtmlAttributes($image);
+    }
+
+    private function getEditableAttributes() {
+        if (!$this->isEditMode) {
+            return;
+        }
+
+        $attributes = [
+            'class' => implode(' ', $this->EDITABLE_CLASSES),
+            'data-path' => $this->siteName . '/settings/siteTexts/siteHeading'
+        ];
+
+        return Helpers::arrayToHtmlAttributes($attributes);
     }
 
     private function getViewData()
@@ -116,7 +146,9 @@ class SitesHeaderRenderService
 
         $data['title'] = isset($this->siteSettings['siteTexts']['siteHeading']) ? $this->siteSettings['siteTexts']['siteHeading'] : '';
         $data['headingAttributes'] = $this->getHeadingAttributes();
-        $data['headingImage'] = $this->getHeadingImage();
+        $data['headingImageAttributes'] = $this->getHeadingImage();
+        $data['link'] = $this->isEditMode ? '.' . (!empty($this->siteName) ? '?site=' . $this->siteName : '') : '/' . $this->siteName;
+        $data['editableAttributes'] = $this->getEditableAttributes();
         $data['isEditMode'] = $this->isEditMode;
 
         return $data;

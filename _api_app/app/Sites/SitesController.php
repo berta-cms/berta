@@ -3,8 +3,9 @@
 namespace App\Sites;
 
 use Illuminate\Http\Request;
-use App\Configuration\SiteTemplatesConfigService;
 use App\Http\Controllers\Controller;
+use App\Shared\Storage;
+use App\Configuration\SiteTemplatesConfigService;
 use App\Sites\Sections\Entries\SectionEntriesDataService;
 use App\Sites\Sections\SiteSectionsDataService;
 use App\Sites\Sections\Tags\SectionTagsDataService;
@@ -154,6 +155,7 @@ class SitesController extends Controller
             $siteTemplateSettings,
             $sections,
             $sectionSlug,
+            (new Storage($site)),
             true
         );
 
