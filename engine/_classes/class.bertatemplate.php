@@ -144,6 +144,7 @@ class BertaTemplate extends BertaBase
         $this->tags = &$tags;
 
         $isEditMode = $this->environment == 'engine';
+        $isPreviewMode = !empty(self::$options['PREVIEW_FOLDER']);
 
         // add entries...
         $this->content = &$content;
@@ -186,7 +187,7 @@ class BertaTemplate extends BertaBase
                 $sectionData,
                 $siteSettingsState,
                 $siteTemplateSettingsState,
-                (new Storage(self::$options['MULTISITE'], !empty(self::$options['PREVIEW_FOLDER']))),
+                (new Storage(self::$options['MULTISITE'], $isPreviewMode)),
                 $isEditMode,
                 isset($shopEnabled) && $shopEnabled
             );
@@ -203,6 +204,7 @@ class BertaTemplate extends BertaBase
             $siteTemplateSettingsState,
             $sectionTags,
             $this->tagName,
+            $isPreviewMode,
             $isEditMode
         );
         $sectionsMenu = $sectionsMenuRS->render();
