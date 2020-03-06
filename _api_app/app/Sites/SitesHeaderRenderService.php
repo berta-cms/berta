@@ -70,6 +70,9 @@ class SitesHeaderRenderService
         if ($this->isEditMode && !$this->isResponsive) {
             $attributes['data-path'] = $this->siteName . '/settings/siteTexts/siteHeadingXY';
             $classes = $this->DRAGGABLE_HEADING_CLASSES;
+        }
+
+        if (!$this->isResponsive) {
             $attributes['style'] = $this->getHeadingStyles(isset($this->siteSettings['siteTexts']['siteHeadingXY']) ? $this->siteSettings['siteTexts']['siteHeadingXY'] : '');
         }
 

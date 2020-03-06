@@ -5,6 +5,7 @@ use App\Sites\SitesMenuRenderService;
 use App\Sites\Settings\SiteSettingsDataService;
 use App\Sites\TemplateSettings\SiteTemplateSettingsDataService;
 use App\Sites\Sections\SiteSectionsDataService;
+use App\Sites\SitesHeaderRenderService;
 use App\Sites\Sections\SectionsMenuRenderService;
 use App\Sites\Sections\Entries\SectionEntriesDataService;
 use App\Sites\Sections\Entries\SectionEntryRenderService;
@@ -150,6 +151,8 @@ class BertaTemplate extends BertaBase
         $this->content = &$content;
         $this->allContent = &$allContent;
 
+        $storage = new Storage(self::$options['MULTISITE'], $isPreviewMode);
+
         $sitesDataService = new SitesDataService();
         $sites = $sitesDataService->get();
 
@@ -179,6 +182,19 @@ class BertaTemplate extends BertaBase
         $sitesMenu = $sitesMenuRenderService->render();
         $this->addVariable('sitesMenu', $sitesMenu);
 
+        $sitesHeaderRenderService = new SitesHeaderRenderService(
+            self::$options['MULTISITE'],
+            $siteSettingsState,
+            $siteTemplateSettingsState,
+            $siteSections,
+            $this->sectionName,
+            $storage,
+            $isPreviewMode,
+            $isEditMode
+        );
+        $siteHeader = $sitesHeaderRenderService->render();
+        $this->addVariable('siteHeader', $siteHeader);
+
         $entriesHTML = '';
         foreach ($entries as $entry) {
             $sectionEntriesRS = new SectionEntryRenderService(
@@ -187,7 +203,7 @@ class BertaTemplate extends BertaBase
                 $sectionData,
                 $siteSettingsState,
                 $siteTemplateSettingsState,
-                (new Storage(self::$options['MULTISITE'], $isPreviewMode)),
+                $storage,
                 $isEditMode,
                 isset($shopEnabled) && $shopEnabled
             );

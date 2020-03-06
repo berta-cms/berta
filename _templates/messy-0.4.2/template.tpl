@@ -249,21 +249,7 @@
                 { /if }
 
                 <!-- PAGE HEADING -->
-                { if ($berta.environment == 'site' && $berta.settings.navigation.landingSectionPageHeadingVisible=='yes') || $berta.environment == 'engine' || ($berta.environment == 'site' && $berta.settings.navigation.landingSectionPageHeadingVisible=='no' && $berta.sectionName != $berta.sections|@key) }
-                    { if $berta.settings.heading.image }
-                        <h1 class="{ messClasses property='siteHeadingXY' isResponsive=$isResponsive }{ if $berta.settings.heading.position == 'fixed' } xFixed{ /if }" style="{ messStyles xy=$siteHeadingXY isResponsive=$isResponsive }"{if $berta.environment == 'engine' && $isResponsive != 'yes'} data-path="{ $berta.options.MULTISITE }/settings/siteTexts/siteHeadingXY"{ /if }><a href="{ bertaLink }">{ responsiveImage image = $berta.settings.heading prefix=image path = $berta.options.MEDIA_ABS_ROOT alt=$berta.settings.texts.pageTitle }</a></h1>
-                    { else }
-                        <h1 class="{ messClasses property='siteHeadingXY' isResponsive=$isResponsive }{ if $berta.settings.heading.position == 'fixed' } xFixed{ /if }" style="{ messStyles xy=$siteHeadingXY isResponsive=$isResponsive }"{if $berta.environment == 'engine' && $isResponsive != 'yes'} data-path="{ $berta.options.MULTISITE }/settings/siteTexts/siteHeadingXY"{ /if }>
-                            <span class="xEditable xProperty-siteHeading"{if $berta.environment == 'engine'} data-path="{ $berta.options.MULTISITE }/settings/siteTexts/siteHeading"{ /if }>
-                            { if $berta.environment == "engine" }
-                                { $siteHeading }
-                            { else }
-                                <a href="{ bertaLink }">{ $siteHeading }</a>
-                            { /if }
-                            </span>
-                        </h1>
-                    { /if }
-                { /if }
+                {$siteHeader}
 
                 <!-- MENU -->
                 {$sectionsMenu}

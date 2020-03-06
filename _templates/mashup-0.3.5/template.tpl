@@ -48,19 +48,7 @@
 	              {* multisites menu ********************************************************************* *}
                 {$sitesMenu}
 
-                { if ($berta.environment == 'site' && $berta.settings.navigation.landingSectionPageHeadingVisible=='yes') || $berta.environment == 'engine' || ($berta.environment == 'site' && $berta.settings.navigation.landingSectionPageHeadingVisible=='no' && $berta.sectionName != $berta.sections|@key) }
-                    { if $berta.settings.sideBar.image }
-                    <h1><a href="{ bertaLink }">{ responsiveImage image = $berta.settings.sideBar prefix=image path = $berta.options.MEDIA_ABS_ROOT alt=$berta.settings.texts.pageTitle }</a></h1>
-                    { else }
-                    <h1 class="xEditable xProperty-siteHeading"{if $berta.environment == 'engine'} data-path="{ $berta.options.MULTISITE }/settings/siteTexts/siteHeading"{ /if }>
-                        { if $berta.environment == "engine" }
-                            { $siteHeading }
-                        { else }
-                            <a href="{ bertaLink }">{ $siteHeading }</a>
-                        { /if }
-                    </h1>
-                    { /if }
-                { /if }
+                {$siteHeader}
 
 				{ if ($berta.environment == 'site' && $berta.settings.navigation.landingSectionMenuVisible=='yes') || $berta.environment == 'engine' || ($berta.environment == 'site' && $berta.settings.navigation.landingSectionMenuVisible=='no' && $berta.sectionName != $berta.sections|@key) }
 					<div id="additionalText"{if $berta.settings.pageLayout.responsive!='yes'} class="xEditableDragXY xProperty-additionalTextXY" style="{ additionalTextPos xy=$additionalTextXY }"{/if}{if $berta.environment == 'engine' && $berta.settings.pageLayout.responsive != 'yes'} data-path="{ $berta.options.MULTISITE }/settings/siteTexts/additionalTextXY"{ /if }>
