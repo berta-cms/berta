@@ -156,6 +156,7 @@ class SitesController extends Controller
             $sections,
             $sectionSlug,
             (new Storage($site)),
+            false,
             true
         );
 

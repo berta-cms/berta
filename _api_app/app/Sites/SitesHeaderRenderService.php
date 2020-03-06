@@ -14,6 +14,7 @@ class SitesHeaderRenderService
     private $sections;
     private $sectionSlug;
     private $storageService;
+    private $isPreviewMode;
     private $isEditMode;
 
     private $templateName;
@@ -31,6 +32,7 @@ class SitesHeaderRenderService
         array $sections,
         $sectionSlug,
         Storage $storageService,
+        $isPreviewMode,
         $isEditMode
     ) {
         $this->siteName = $siteName;
@@ -39,6 +41,7 @@ class SitesHeaderRenderService
         $this->sections = $sections;
         $this->sectionSlug = $sectionSlug;
         $this->storageService = $storageService;
+        $this->isPreviewMode = $isPreviewMode;
         $this->isEditMode = $isEditMode;
 
         $this->templateName = explode('-', $this->siteSettings['template']['template'])[0];
@@ -102,6 +105,29 @@ class SitesHeaderRenderService
         return Helpers::arrayToHtmlAttributes($image);
     }
 
+    private function getUrl()
+    {
+        $urlParts = [];
+        if (!empty($this->siteName)) {
+            $urlParts['site'] = $this->siteName;
+        }
+
+        if ($this->isEditMode) {
+            if (empty($urlParts)) {
+                return '.';
+            }
+
+            $parts = [];
+            foreach ($urlParts as $property => $value) {
+                $parts[] = $property . '=' . $value;
+            }
+
+            return '?' . implode('&', $parts);
+        } else {
+            return '/' . implode('/', $urlParts) . ($this->isPreviewMode ? '?preview=1' : '');
+        }
+    }
+
     private function getEditableAttributes() {
         if (!$this->isEditMode) {
             return;
@@ -147,7 +173,7 @@ class SitesHeaderRenderService
         $data['title'] = isset($this->siteSettings['siteTexts']['siteHeading']) ? $this->siteSettings['siteTexts']['siteHeading'] : '';
         $data['headingAttributes'] = $this->getHeadingAttributes();
         $data['headingImageAttributes'] = $this->getHeadingImage();
-        $data['link'] = $this->isEditMode ? '.' . (!empty($this->siteName) ? '?site=' . $this->siteName : '') : '/' . $this->siteName;
+        $data['link'] = $this->getUrl();
         $data['editableAttributes'] = $this->getEditableAttributes();
         $data['isEditMode'] = $this->isEditMode;
 
