@@ -136,6 +136,7 @@ class SectionEntriesController extends Controller
         $siteSettingsDS = new SiteSettingsDataService($site);
         $siteTemplateSettingsDS = new SiteTemplateSettingsDataService($site);
 
+        $sections = $siteSectionsDS->getState();
         $sectionData = $siteSectionsDS->get($section);
         if (!$sectionData) {
             return abort(404, "Section with name {$section} not found!");
@@ -147,9 +148,9 @@ class SectionEntriesController extends Controller
                 continue;
             }
 
-
             $sectionEntriesRS = new SectionEntryRenderService(
                 $site,
+                $sections,
                 $entry,
                 $sectionData,
                 $siteSettingsDS->getState(),

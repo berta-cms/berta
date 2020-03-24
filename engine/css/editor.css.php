@@ -857,6 +857,10 @@ input[type="submit"]:hover {
         font-style: italic;
     }
 
+    .bt-move-entry-to-section {
+        display: none;
+        text-align: right;
+    }
 
 .xGalleryContainer  {
     clear: left;

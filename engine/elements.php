@@ -29,6 +29,7 @@ if ($jsonRequest) {
                 $siteSettingsDS = new SiteSettingsDataService($site);
                 $siteTemplateSettingsDS = new SiteTemplateSettingsDataService($site);
                 $siteSectionsDS = new SiteSectionsDataService($site);
+                $sections = $siteSectionsDS->getState();
                 $sectionData = $siteSectionsDS->get($decoded['section']);
                 $sectionEntriesDS = new SectionEntriesDataService($site, $decoded['section']);
                 $entries = $sectionEntriesDS->get();
@@ -37,6 +38,7 @@ if ($jsonRequest) {
 
                 $sectionEntriesRS = new SectionEntryRenderService(
                     $site,
+                    $sections,
                     $entry,
                     $sectionData,
                     $siteSettingsDS->getState(),

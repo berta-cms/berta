@@ -154,6 +154,7 @@ class BertaTemplate extends BertaBase
         $entries = $sectionEntriesDS->getByTag($this->tagName, $isEditMode);
 
         $siteSectionsDS = new SiteSectionsDataService(self::$options['MULTISITE'], self::$options['XML_ROOT']);
+        $siteSections = $siteSectionsDS->getState();
         $sectionData = $siteSectionsDS->get($this->sectionName);
 
         $siteSettingsDS = new SiteSettingsDataService(self::$options['MULTISITE'], self::$options['XML_ROOT']);
@@ -177,6 +178,7 @@ class BertaTemplate extends BertaBase
         foreach ($entries as $entry) {
             $sectionEntriesRS = new SectionEntryRenderService(
                 self::$options['MULTISITE'],
+                $siteSections,
                 $entry,
                 $sectionData,
                 $siteSettingsState,

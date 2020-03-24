@@ -218,6 +218,18 @@ var BertaEditor = new Class({
               }
             }
 
+            // Entry moving to other section
+            $$('.js-bt-open-move-entry-to-section').addEvent('click', function (e) {
+              e.preventDefault();
+              var xEntryEditWrap = this.getParent('.xEntryEditWrap');
+              var xEntryDropdownBox = xEntryEditWrap.getElement('.xEntryDropdownBox');
+              var moveEntryToSectionContainer = xEntryEditWrap.getElement('.bt-move-entry-to-section');
+              xEntryDropdownBox.removeClass('xVisible');
+              moveEntryToSectionContainer.show();
+            });
+
+            $$('.js-move-entry-to-section').addEvent('change', this.entryMoveToSection.bindWithEvent(this));
+
             this.highlightNewEntry.delay(100, this);
 
           } else if (!this.currentSection) {
@@ -566,6 +578,19 @@ var BertaEditor = new Class({
         window.location.reload();
       }.bindWithEvent(this)
     ));
+  },
+
+  entryMoveToSection: function(event) {
+    var site = getCurrentSite();
+    var toSection = event.target.value;
+    var entryObj = $(event.target).getParent('.xEntry');
+    var entryId = entryObj.getClassStoredValue('xEntryId');
+    var query = window.location.search.replace('?', '').cleanQueryString().parseQueryString();
+    delete query[''];
+    query['section'] = toSection;
+
+    // @TODO dispatch event here
+    window.location.href = window.origin + window.location.pathname + '?' + Object.toQueryString(query);
   },
 
   entryDelete: function (event) {
