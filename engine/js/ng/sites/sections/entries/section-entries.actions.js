@@ -133,6 +133,22 @@
       };
     },
 
+    initEntryMoveToSection: function (site, currentSection, entryId, toSection, onComplete) {
+      return function (dispatch) {
+        dispatch({
+          type: ActionTypes.INIT_MOVE_ENTRY_TO_SECTION
+        });
+
+        sync(window.Berta.urls.sectionEntriesMove, {
+          site: site,
+          currentSection: currentSection,
+          entryId: entryId,
+          toSection: toSection
+        })
+          .then(onComplete);
+      };
+    },
+
     initDeleteSectionEntry: function (site, section, entryId, onComplete) {
       return function (dispatch) {
         dispatch({

@@ -49,6 +49,15 @@ class SectionEntriesController extends Controller
         return response()->json($res);
     }
 
+    /**
+     * Move entry to other section
+     */
+    public function move(Request $request)
+    {
+        $json = $request->json()->all();
+        return response()->json($json);
+    }
+
     public function delete(Request $request)
     {
         $json = $request->json()->all();

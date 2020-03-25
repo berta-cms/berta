@@ -589,8 +589,15 @@ var BertaEditor = new Class({
     delete query[''];
     query['section'] = toSection;
 
-    // @TODO dispatch event here
-    window.location.href = window.origin + window.location.pathname + '?' + Object.toQueryString(query);
+    redux_store.dispatch(Actions.initEntryMoveToSection(
+      site,
+      this.currentSection,
+      entryId,
+      toSection,
+      function () {
+        window.location.href = window.origin + window.location.pathname + '?' + Object.toQueryString(query);
+      }
+    ));
   },
 
   entryDelete: function (event) {
