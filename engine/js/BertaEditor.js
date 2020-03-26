@@ -219,16 +219,20 @@ var BertaEditor = new Class({
             }
 
             // Entry moving to other section
-            $$('.js-bt-open-move-entry-to-section').addEvent('click', function (e) {
-              e.preventDefault();
-              var xEntryEditWrap = this.getParent('.xEntryEditWrap');
-              var xEntryDropdownBox = xEntryEditWrap.getElement('.xEntryDropdownBox');
-              var moveEntryToSectionContainer = xEntryEditWrap.getElement('.bt-move-entry-to-section');
-              xEntryDropdownBox.removeClass('xVisible');
-              moveEntryToSectionContainer.show();
+            document.querySelectorAll('.js-bt-open-move-entry-to-section').forEach(function (el) {
+              el.addEventListener('click', function (e) {
+                e.preventDefault();
+                var xEntryEditWrap = this.closest('.xEntryEditWrap');
+                var xEntryDropdownBox = xEntryEditWrap.querySelector('.xEntryDropdownBox');
+                var moveEntryToSectionContainer = xEntryEditWrap.querySelector('.bt-move-entry-to-section');
+                xEntryDropdownBox.classList.remove('xVisible');
+                moveEntryToSectionContainer.style.display = 'block';
+              });
             });
 
-            $$('.js-move-entry-to-section').addEvent('change', this.entryMoveToSection.bindWithEvent(this));
+            document.querySelectorAll('.js-move-entry-to-section').forEach(function (el) {
+              el.addEventListener('change', this.entryMoveToSection.bind(this));
+            }.bind(this));
 
             this.highlightNewEntry.delay(100, this);
 
@@ -580,14 +584,12 @@ var BertaEditor = new Class({
     ));
   },
 
-  entryMoveToSection: function(event) {
+  entryMoveToSection: function (event) {
     var site = getCurrentSite();
     var toSection = event.target.value;
-    var entryObj = $(event.target).getParent('.xEntry');
+    var entryObj = event.target.closest('.xEntry');
     var entryId = entryObj.getClassStoredValue('xEntryId');
-    var query = window.location.search.replace('?', '').cleanQueryString().parseQueryString();
-    delete query[''];
-    query['section'] = toSection;
+    var redirectUrl = window.BertaHelpers.updateQueryStringParameter(window.location.href, 'section', toSection);
 
     redux_store.dispatch(Actions.initEntryMoveToSection(
       site,
@@ -595,7 +597,7 @@ var BertaEditor = new Class({
       entryId,
       toSection,
       function () {
-        window.location.href = window.origin + window.location.pathname + '?' + Object.toQueryString(query);
+        window.location.href = redirectUrl;
       }
     ));
   },
