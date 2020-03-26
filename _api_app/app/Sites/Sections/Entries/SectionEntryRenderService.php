@@ -210,8 +210,6 @@ class SectionEntryRenderService
                 return !$isCurrentSection && $validSectionType;
             });
 
-            // var_export($sections);
-
             $entryContents = view('Sites/Sections/Entries/_entryEditor', [
                 'sections' => $sections,
                 'templateName' => $this->templateName,
