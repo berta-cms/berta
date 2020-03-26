@@ -32,7 +32,8 @@ import {
   OrderSectionEntriesFromSyncAction,
   DeleteSectionEntryFromSyncAction,
   UpdateEntryGalleryFromSyncAction,
-  AddSectionEntryFromSyncAction} from '../sites/sections/entries/entries-state/section-entries.actions';
+  AddSectionEntryFromSyncAction,
+  MoveSectionEntryFromSyncAction} from '../sites/sections/entries/entries-state/section-entries.actions';
 import { SiteSectionsState } from '../sites/sections/sections-state/site-sections.state';
 import { SectionTagsState } from '../sites/sections/tags/section-tags.state';
 import { OrderSectionTagsFromSyncAction } from '../sites/sections/tags/section-tags.actions';
@@ -325,6 +326,14 @@ export class PreviewService {
             );
           }
           break;
+
+        case 'sites/sections/entries/move':
+          return this.store.dispatch(new MoveSectionEntryFromSyncAction(
+            data.site,
+            data.currentSection,
+            data.entryId,
+            data.toSection
+          ));
 
         case 'sites/sections/entries/galleries':
           if (method === 'DELETE') {

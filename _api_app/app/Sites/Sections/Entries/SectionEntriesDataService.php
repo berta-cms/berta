@@ -655,6 +655,9 @@ class SectionEntriesDataService extends Storage
                 'id' => (string) $id,
                 'mediafolder' => $mediafolder,
             ]);
+
+            // Remove entry tags when moving to other section
+            unset($new_entry['tags']);
         } else {
             $new_entry = [
                 'id' => (string) $id,

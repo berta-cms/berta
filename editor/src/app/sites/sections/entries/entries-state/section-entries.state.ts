@@ -19,7 +19,8 @@ import {
   OrderSectionEntriesFromSyncAction,
   DeleteSectionEntryFromSyncAction,
   UpdateEntryGalleryFromSyncAction,
-  AddSectionEntryFromSyncAction} from './section-entries.actions';
+  AddSectionEntryFromSyncAction,
+  MoveSectionEntryFromSyncAction} from './section-entries.actions';
 import { UserLoginAction } from '../../../../user/user.actions';
 import { UpdateSiteSectionAction } from '../../sections-state/site-sections.actions';
 import { UpdateSectionTagsAction } from '../../tags/section-tags.actions';
@@ -107,6 +108,83 @@ export class SectionEntriesState implements NgxsOnInit {
         }
       })
     );
+  }
+
+  @Action(MoveSectionEntryFromSyncAction)
+  moveSectionEntryFromSync({ getState, patchState, dispatch }: StateContext<SectionEntriesStateModel>,
+    action: MoveSectionEntryFromSyncAction) {
+    return this.appStateService.sync('sectionEntriesMove', {
+      site: action.site,
+      currentSection: action.currentSection,
+      entryId: action.entryId,
+      toSection: action.toSection
+    }).pipe(
+        tap(response => {
+          if (response.error_message) {
+            console.error(response.error_message);
+          } else {
+            const currentState = getState();
+            const deletedEntry = currentState[action.site].find(entry => entry.sectionName === action.currentSection && entry.id === action.entryId);
+
+            patchState({
+              [action.site]: [...currentState[action.site]
+                .filter(entry => !(entry.sectionName === action.currentSection && entry.id === action.entryId))
+                .map(entry => {
+                  if (entry.sectionName === action.currentSection && entry.order > deletedEntry.order) {
+                    return { ...entry, order: entry.order - 1 };
+                  }
+
+                  return entry;
+                }),
+                response.entry]
+            });
+
+            dispatch(new UpdateSiteSectionAction(
+              action.site,
+              response.deleted_entry.section_order,
+              {
+                '@attributes': {
+                  entry_count: response.deleted_entry.entry_count
+                }
+              })
+            );
+
+            dispatch(new UpdateSiteSectionAction(
+              action.site,
+              response.deleted_entry.section_order,
+              {
+                '@attributes': {
+                  has_direct_content: response.deleted_entry.has_direct_content
+                }
+              })
+            );
+
+            if (response.deleted_entry.tags) {
+              dispatch(new UpdateSectionTagsAction(action.site, action.currentSection, response.deleted_entry.tags));
+            }
+
+            dispatch(new UpdateSiteSectionAction(
+              action.site,
+              response.section_order,
+              {
+                '@attributes': {
+                  entry_count: response.entry_count
+                }
+              })
+            );
+
+            dispatch(new UpdateSiteSectionAction(
+              action.site,
+              response.section_order,
+              {
+                '@attributes': {
+                  has_direct_content: response.has_direct_content
+                }
+              })
+            );
+          }
+        })
+      );
   }
 
   @Action(AddSectionEntriesAction)

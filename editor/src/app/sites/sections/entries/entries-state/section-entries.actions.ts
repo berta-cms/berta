@@ -14,6 +14,16 @@ export class AddSectionEntryFromSyncAction {
   ) {}
 }
 
+export class MoveSectionEntryFromSyncAction {
+  static readonly type = 'SECTION_ENTRY:MOVE:SYNC';
+  constructor(
+    public site: string,
+    public currentSection: string,
+    public entryId: string,
+    public toSection: string
+  ) {}
+}
+
 export class AddSectionEntriesAction {
   static readonly type = 'SECTION_ENTRIES:ADD';
   constructor(public siteName: string,
