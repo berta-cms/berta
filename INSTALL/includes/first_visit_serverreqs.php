@@ -63,7 +63,7 @@ if (empty($CHECK_INCLUDED)) {
                 <div class="xMAlign-inner">
                     <h2>Thank you for choosing Berta.me!</h2>
                     <p>This server does not meet Berta's requirements.<br />
-                    Berta needs PHP >= 7.2.0 support on server.</p>
+                    Berta needs PHP >= 5.6.4 support on server.</p>
                 </div>
             </div>
         </div>

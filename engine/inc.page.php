@@ -59,14 +59,14 @@ if (empty($ENGINE_ROOT_URL)) {
     $ENGINE_ROOT_URL = $SITE_ROOT_URL . 'engine/';
 }
 
-$hasSupportedPhpVersion = version_compare(PHP_VERSION, '7.2.0', '>=');
+$hasSupportedPhpVersion = version_compare(PHP_VERSION, '5.6.4', '>=');
 
 if (!$hasSupportedPhpVersion) {
     if (file_exists($SITE_ROOT_PATH . 'INSTALL/includes/first_visit_serverreqs.php')) {
         $CHECK_INCLUDED = true;
         include $SITE_ROOT_PATH . 'INSTALL/includes/first_visit_serverreqs.php';
     } else {
-        die('Berta needs PHP >= 7.2.0 support on server.');
+        die('Berta needs PHP >= 5.6.4 support on server.');
     }
 }
 
