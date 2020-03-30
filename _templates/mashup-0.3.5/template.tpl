@@ -92,6 +92,11 @@
 				{/if}
 
 				<div id="firstPageMarkedEntries" class="{ entriesListClasses } xNoEntryOrdering{if intval($berta.settings.pageLayout.mashUpColumns)>1} columns-{intval($berta.settings.pageLayout.mashUpColumns)}{ /if }">
+          {*
+            temporary workaround for firstPageMarkedEntry plugin function otherwise error about undefined function smarty_function_bertaLink is thrown
+            TODO move firstPageMarkedEntry rendering to API
+          *}
+          <!-- { bertaLink } -->
 					{ selectMarkedEntries assign="markedEntries" count=$berta.section.marked_items_count }
 					{ foreach from=$markedEntries item="entry" name="markedEntriesLoop" }
 						{ firstPageMarkedEntry entry=$entry imageselect=$berta.section.marked_items_imageselect }
