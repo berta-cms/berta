@@ -15,6 +15,7 @@ use App\Plugins\Shop\ShopSettingsDataService;
 class SectionEntryRenderService
 {
     private $site;
+    private $sections;
     private $entry;
     private $section;
     private $siteSettings;
@@ -30,6 +31,7 @@ class SectionEntryRenderService
      * Construct SectionEntryRenderService instance
      *
      * @param array $site Site name
+     * @param array $sections
      * @param array $entry Single entry
      * @param array $section Single section
      * @param array $siteSettings
@@ -40,6 +42,7 @@ class SectionEntryRenderService
      */
     public function __construct(
         $site,
+        array $sections,
         array $entry,
         array $section,
         array $siteSettings,
@@ -49,6 +52,7 @@ class SectionEntryRenderService
         $isShopAvailable
     ) {
         $this->site = $site;
+        $this->sections = $sections;
         $this->entry = $entry;
         $this->section = $section;
         $this->siteSettings = $siteSettings;
@@ -198,7 +202,16 @@ class SectionEntryRenderService
         ]));
 
         if ($this->isEditMode) {
+            // Sections list for moving entry to other section
+            // Exclude current section, external link and shopping cart
+            $sections = array_filter($this->sections, function($section) {
+                $isCurrentSection = $this->section['name'] === $section['name'];
+                $validSectionType = empty($section['@attributes']['type']) ? true : !in_array($section['@attributes']['type'], ['external_link', 'shopping_cart']);
+                return !$isCurrentSection && $validSectionType;
+            });
+
             $entryContents = view('Sites/Sections/Entries/_entryEditor', [
+                'sections' => $sections,
                 'templateName' => $this->templateName,
                 'tagList' => isset($entry['tags']['tag']) ? Helpers::createEntryTagList($entry['tags']['tag']) : '',
                 'apiPath' => $apiPath,

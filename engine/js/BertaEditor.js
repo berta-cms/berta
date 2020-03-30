@@ -218,6 +218,22 @@ var BertaEditor = new Class({
               }
             }
 
+            // Entry moving to other section
+            document.querySelectorAll('.js-bt-open-move-entry-to-section').forEach(function (el) {
+              el.addEventListener('click', function (e) {
+                e.preventDefault();
+                var xEntryEditWrap = this.closest('.xEntryEditWrap');
+                var xEntryDropdownBox = xEntryEditWrap.querySelector('.xEntryDropdownBox');
+                var moveEntryToSectionContainer = xEntryEditWrap.querySelector('.bt-move-entry-to-section');
+                xEntryDropdownBox.classList.remove('xVisible');
+                moveEntryToSectionContainer.style.display = 'block';
+              });
+            });
+
+            document.querySelectorAll('.js-move-entry-to-section').forEach(function (el) {
+              el.addEventListener('change', this.entryMoveToSection.bind(this));
+            }.bind(this));
+
             this.highlightNewEntry.delay(100, this);
 
           } else if (!this.currentSection) {
@@ -569,6 +585,24 @@ var BertaEditor = new Class({
         window.location.hash = 'entry-' + resp.entryid;
         window.location.reload();
       }.bindWithEvent(this)
+    ));
+  },
+
+  entryMoveToSection: function (event) {
+    var site = getCurrentSite();
+    var toSection = event.target.value;
+    var entryObj = event.target.closest('.xEntry');
+    var entryId = entryObj.getClassStoredValue('xEntryId');
+    var redirectUrl = window.BertaHelpers.updateQueryStringParameter(window.location.href, 'section', toSection);
+
+    redux_store.dispatch(Actions.initEntryMoveToSection(
+      site,
+      this.currentSection,
+      entryId,
+      toSection,
+      function () {
+        window.location.href = redirectUrl;
+      }
     ));
   },
 

@@ -16,6 +16,12 @@
 
   <div class="xEntryDropdownBox">
     <ul>
+      {% if sections %}
+        <li>
+          <a href="#" class="js-bt-open-move-entry-to-section" title="move entry to other section"><span>Move to section</span></a>
+        </li>
+      {% endif %}
+
       {% if templateName == 'messy' %}
         <li>
           <a href="#" class="xEntryToBack" title="send to back behind others"><span>Send to back</span></a>
@@ -39,6 +45,18 @@
 
     {{ productAttributesEditor|raw }}
   </div>
+
+  {% if sections %}
+    <div class="bt-move-entry-to-section">
+      Move entry to:
+      <select class="js-move-entry-to-section">
+        <option>-</option>
+        {% for section in sections %}
+          <option value="{{ section.name }}">{{ section.title }}</option>
+        {% endfor %}
+      </select>
+    </div>
+  {% endif %}
 
   {{ entryContents|raw }}
 </div>

@@ -182,7 +182,7 @@ class SectionEntriesDataService extends Storage
     private $XML_ROOT;
     private $XML_FILE;
 
-    public function __construct($site = '', $sectionName = '', $sectionTitle = '', $xml_root = null, $isPreview=false)
+    public function __construct($site = '', $sectionName = '', $sectionTitle = '', $xml_root = null, $isPreview = false)
     {
         parent::__construct($site, $isPreview);
         $this->XML_ROOT = $xml_root ? $xml_root : $this->getSiteXmlRoot($site);
@@ -596,7 +596,13 @@ class SectionEntriesDataService extends Storage
         return ['success' => true];
     }
 
-    public function createEntry($before_entry, $tag)
+    /**
+     * Create new entry in section
+     * $newEntry existing entry data in case we are moving data from other section
+     * $beforeEntry where to place the new entry
+     * $tag entry tag
+     */
+    public function createEntry($newEntry, $beforeEntry, $tag)
     {
         $mediafolder = $this->SECTION_NAME;
         $counter = 1;
@@ -635,19 +641,38 @@ class SectionEntriesDataService extends Storage
         $ids = array_pluck($entries['entry'], 'id');
         $id = $ids ? max($ids) + 1 : 1;
 
-        $new_entry = [
-            'id' => (string) $id,
-            'uniqid' => uniqid(),
-            'date' => date('d.m.Y H:i:s'),
-            'mediafolder' => $mediafolder,
-            'mediaCacheData' => [
-                '@attributes' => [
-                    'type' => $defaultGalleryType,
-                    'fullscreen' => $galleryFullScreen
-                ],
-                'file' => []
-            ]
-        ];
+        // In case creating entry from existing entry from other section
+        // Update references
+        if ($newEntry) {
+            if (isset($newEntry['mediafolder'])) {
+                $this->copyFolder(
+                    $this->XML_ROOT . '/' . $this->MEDIA_FOLDER . '/' . $newEntry['mediafolder'],
+                    $this->XML_ROOT . '/' . $this->MEDIA_FOLDER . '/' . $mediafolder
+                );
+            }
+
+            $newEntry = array_replace_recursive($newEntry, [
+                'id' => (string) $id,
+                'mediafolder' => $mediafolder,
+            ]);
+
+            // Remove entry tags when moving to other section
+            unset($newEntry['tags']);
+        } else {
+            $newEntry = [
+                'id' => (string) $id,
+                'uniqid' => uniqid(),
+                'date' => date('d.m.Y H:i:s'),
+                'mediafolder' => $mediafolder,
+                'mediaCacheData' => [
+                    '@attributes' => [
+                        'type' => $defaultGalleryType,
+                        'fullscreen' => $galleryFullScreen
+                    ],
+                    'file' => []
+                ]
+            ];
+        }
 
         if ($tag) {
             $sectionTagsDataService = new SectionTagsDataService($this->SITE, $this->SECTION_NAME);
@@ -669,7 +694,7 @@ class SectionEntriesDataService extends Storage
                 if ($tag_key !== false) {
                     $tag_title = $tags['tag'][$tag_key]['@value'];
 
-                    $new_entry['tags'] = [
+                    $newEntry['tags'] = [
                         'tag' => [$tag_title]
                     ];
                 }
@@ -678,25 +703,25 @@ class SectionEntriesDataService extends Storage
 
         // Insert entry in correct position
         $entry_order = count($entries['entry']);
-        if ($before_entry) {
-            $order = array_search($before_entry, array_column($entries['entry'], 'id'));
+        if ($beforeEntry) {
+            $order = array_search($beforeEntry, array_column($entries['entry'], 'id'));
 
             if ($order !== false) {
                 $entry_order = $order;
-                array_splice($entries['entry'], $order, 0, [$new_entry]);
+                array_splice($entries['entry'], $order, 0, [$newEntry]);
             } else {
-                $entries['entry'][] = $new_entry;
+                $entries['entry'][] = $newEntry;
             }
         } else {
-            $entries['entry'][] = $new_entry;
+            $entries['entry'][] = $newEntry;
         }
 
         // Save sorted entries
         $this->array2xmlFile($entries, $this->XML_FILE, $this->ROOT_ELEMENT);
 
         // Add params for frontend state
-        $new_entry['sectionName'] = $this->SECTION_NAME;
-        $new_entry['order'] = $entry_order;
+        $newEntry['sectionName'] = $this->SECTION_NAME;
+        $newEntry['order'] = $entry_order;
 
         // Update section entry count
         $siteSectionsDataService = new SiteSectionsDataService($this->SITE);
@@ -738,11 +763,35 @@ class SectionEntriesDataService extends Storage
 
         return [
             'section_order' => $section_order,
-            'entry' => $new_entry,
+            'entry' => $newEntry,
             'tags' => $sectionTagsDataService->getSectionTagsState(),
             'has_direct_content' => $has_direct_content,
             'entry_count' => $section_entry_count
         ];
+    }
+
+    /**
+     * Move entry to other section
+     */
+    public function moveEntry($entryId, $toSection)
+    {
+        $entries = $this->get();
+        $entryIndex = array_search($entryId, array_column($entries['entry'], 'id'));
+
+        if ($entryIndex === false) {
+            return [
+                'error_message' => 'Entry with ID "' . $entryId . '" not found!'
+            ];
+        }
+
+        $entry = $entries['entry'][$entryIndex];
+        $toSectionEntriesDS = new self($this->SITE, $toSection);
+        $data = $toSectionEntriesDS->createEntry($entry, null, null);
+
+        $deletedEntry = $this->deleteEntry($entryId);
+        $data['deleted_entry'] = $deletedEntry;
+
+        return $data;
     }
 
     public function deleteEntry($entry_id)

@@ -199,6 +199,7 @@ class BertaTemplate extends BertaBase
         foreach ($entries as $entry) {
             $sectionEntriesRS = new SectionEntryRenderService(
                 self::$options['MULTISITE'],
+                $siteSections,
                 $entry,
                 $sectionData,
                 $siteSettingsState,

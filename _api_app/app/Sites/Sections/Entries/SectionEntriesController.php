@@ -20,7 +20,7 @@ class SectionEntriesController extends Controller
     {
         $json = $request->json()->all();
         $sectionEntriesDataService = new SectionEntriesDataService($json['site'], $json['section']);
-        $res = $sectionEntriesDataService->createEntry($json['before_entry'], $json['tag']);
+        $res = $sectionEntriesDataService->createEntry(null, $json['before_entry'], $json['tag']);
 
         return response()->json($res);
     }
@@ -46,6 +46,17 @@ class SectionEntriesController extends Controller
         $json = $request->json()->all();
         $sectionEntriesDataService = new SectionEntriesDataService($json['site'], $json['section']);
         $res = $sectionEntriesDataService->order($json['entryId'], $json['value']);
+        return response()->json($res);
+    }
+
+    /**
+     * Move entry to other section
+     */
+    public function move(Request $request)
+    {
+        $json = $request->json()->all();
+        $sectionEntriesDataService = new SectionEntriesDataService($json['site'], $json['currentSection']);
+        $res = $sectionEntriesDataService->moveEntry($json['entryId'], $json['toSection']);
         return response()->json($res);
     }
 
@@ -136,6 +147,7 @@ class SectionEntriesController extends Controller
         $siteSettingsDS = new SiteSettingsDataService($site);
         $siteTemplateSettingsDS = new SiteTemplateSettingsDataService($site);
 
+        $sections = $siteSectionsDS->getState();
         $sectionData = $siteSectionsDS->get($section);
         if (!$sectionData) {
             return abort(404, "Section with name {$section} not found!");
@@ -147,9 +159,9 @@ class SectionEntriesController extends Controller
                 continue;
             }
 
-
             $sectionEntriesRS = new SectionEntryRenderService(
                 $site,
+                $sections,
                 $entry,
                 $sectionData,
                 $siteSettingsDS->getState(),

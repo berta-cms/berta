@@ -39,6 +39,7 @@ class StateController extends Controller
             'siteSectionBackgrounds' => route('site_section_backgrounds'),
             'sectionTags' => route('section_tags'),
             'sectionEntries' => route('section_entries'),
+            'sectionEntriesMove' => route('section_entries_move'),
             'entryGallery' => route('entry_gallery'),
         ];
         $state['sites'] = $sitesDataService->getState();

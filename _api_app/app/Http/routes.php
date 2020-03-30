@@ -72,6 +72,7 @@ $app->group(['prefix' => 'v1/sites/sections', 'namespace' => 'App\Sites\Sections
     $app->post('entries', 'SectionEntriesController@create');
     $app->put('entries', 'SectionEntriesController@order');
     $app->delete('entries', 'SectionEntriesController@delete');
+    $app->patch('entries/move', ['as' => 'section_entries_move', 'uses' => 'SectionEntriesController@move']);
     $app->put('entries/galleries', ['as' => 'entry_gallery', 'uses' => 'SectionEntriesController@galleryOrder']);
     $app->post('entries/galleries', 'SectionEntriesController@galleryUpload');
     $app->patch('entries/galleries', 'SectionEntriesController@galleryCrop');

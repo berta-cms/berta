@@ -29,6 +29,7 @@ class TestController extends Controller
         $entry = current($entriesDataService->get()['entry']);
 
         $sectionsDataService = new SiteSectionsDataService('');
+        $sections = $sectionsDataService->getState();
         $section = current($sectionsDataService->get());
 
         $siteSettingsDataService = new SiteSettingsDataService('');
@@ -41,6 +42,7 @@ class TestController extends Controller
 
         $entryRenderService = new SectionEntryRenderService(
             '',
+            $sections,
             $entry,
             $section,
             $siteSettings,
