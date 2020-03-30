@@ -46,19 +46,7 @@
             {* multisites menu ********************************************************************* *}
             {$sitesMenu}
 
-            { if ($berta.environment == 'site' && $berta.settings.navigation.landingSectionPageHeadingVisible=='yes') || $berta.environment == 'engine' || ($berta.environment == 'site' && $berta.settings.navigation.landingSectionPageHeadingVisible=='no' && $berta.sectionName != $berta.sections|@key) }
-                { if $berta.settings.pageHeading.image }
-                	<h1><a href="{ bertaLink }">{ responsiveImage image = $berta.settings.pageHeading prefix=image path = $berta.options.MEDIA_ABS_ROOT alt=$berta.settings.texts.pageTitle }</a></h1>
-                { else }
-                	<h1 class="xEditable xProperty-siteHeading"{if $berta.environment == 'engine'} data-path="{ $berta.options.MULTISITE }/settings/siteTexts/siteHeading"{ /if }>
-                    { if $berta.environment == "engine" }
-                        { $siteHeading }
-                    { else }
-                        <a href="{ bertaLink }">{ $siteHeading }</a>
-                    { /if }
-                    </h1>
-                { /if }
-			{ /if }
+            {$siteHeader}
 
 			{if ($berta.environment == 'site' && $berta.settings.navigation.landingSectionMenuVisible=='yes') || $berta.environment == 'engine' || ($berta.environment == 'site' && $berta.settings.navigation.landingSectionMenuVisible=='no' && $berta.sectionName != $berta.sections|@key) }
 				<div id="additionalText"{if $berta.settings.pageLayout.responsive!='yes'} class="xEditableDragXY xProperty-additionalTextXY" style="{ additionalTextPos xy=$additionalTextXY }"{/if}{if $berta.environment == 'engine' && $berta.settings.pageLayout.responsive != 'yes'} data-path="{ $berta.options.MULTISITE }/settings/siteTexts/additionalTextXY"{ /if }>
@@ -75,66 +63,8 @@
 				</div>
 			{/if}
 
-			<div id="siteTopMenu">
-				{if $berta.settings.pageLayout.responsive == 'yes'}
-                    <a href="#" id="menuToggle"><span></span></a>
-                {/if}
-
-				{* *** sections menu ***************************************************************** *}
-				{ assign var="sName" value=$berta.sectionName }
-				{
-
-				if count($berta.publishedSections) > 0 &&
-					(
-						($berta.environment == 'site' && $berta.settings.navigation.landingSectionMenuVisible=='yes') ||
-						$berta.environment == 'engine' ||
-						($berta.environment == 'site' && $berta.settings.navigation.landingSectionMenuVisible=='no' && $berta.sectionName != $berta.sections|@key)
-					)
-				}
-					<ul id="mainMenu">
-						{ assign var="firstSection" value="1" }
-						{ foreach from=$berta.publishedSections item="section" name="sectionsMenuLoop" }
-							{ if $berta.sectionName == $section.name }<li class="selected">{ else }<li>{ /if }
-								{ if !$firstSection }
-									<span class="separator">{ $berta.settings.menu.separator }</span>
-								{ /if }
-								<a href="{ bertaLink section=$section.name }" target="{ bertaTarget section=$section.name }">{ $section.title }</a>
-
-								{ assign var="subName" value=$section.name }
-								{ if $berta.settings.pageLayout.responsive == 'yes' && !empty($berta.tags.$subName) }
-                                    <ul class="subMenu xSection-{ $subName }">
-                                        { foreach $berta.tags.$subName as $tName => $tag }
-                                            <li class="xTag-{ $tName }{ if $berta.tagName == $tName and $subName == $section.name } selected{ /if }">
-                                                <a class="handle" href="{ bertaLink section=$subName tag=$tName }" target="{ bertaTarget section=$subName tag=$tName }">{ $tag.title }</a>
-                                            </li>
-                                        { /foreach }
-                                    </ul>
-                                { /if }
-
-							</li>
-							{ assign var="firstSection" value="0" }
-						{ /foreach }
-					</ul>
-				{ /if }
-
-				{* *** sub menu ********************************************************************* *}
-				{ if !empty($berta.tags.$sName) }
-						<ul id="subMenu" class="subMenu xSection-{ $sName }{ if $berta.tags.$sName|@count > 1 && $berta.environment == 'engine' } xAllowOrdering{ /if }">
-							{ assign var="firstSection" value="1" }
-							{ foreach from=$berta.tags.$sName key="tName" item="tag" name="subMenuLoop" }
-								{ if $berta.tagName == $tName }<li class="selected xTag-{ $tName }">{ else }<li class="xTag-{ $tName }">{ /if }
-									{ if $berta.environment == 'engine' || !$firstSection }
-										<span class="separator">{ $berta.settings.subMenu.separator }</span>
-									{ /if }
-									<a class="handle" href="{ bertaLink section=$berta.sectionName tag=$tName }" target="{ bertaTarget section=$berta.sectionName tag=$tName }">{ $tag.title }</a>
-								</li>
-								{ assign var="firstSection" value="0" }
-							{ /foreach }
-						</ul>
-				{ /if }
-
-				<br class="clear" />
-			</div>
+      {* *** sections menu ***************************************************************** *}
+      {$sectionsMenu}
 
 			<ol id="pageEntries" class="{ entriesListClasses }">
 				{$entriesHTML}

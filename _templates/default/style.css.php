@@ -57,8 +57,7 @@ a:hover {
     fill: <?php echo $s->get('socialMediaLinks', 'color') ?>;
 }
 
-a:active,
-div#siteTopMenu ul li.selected span {
+a:active {
 	color: <?php echo $s->get('links', 'colorActive') ?>;
 	text-decoration: <?php echo $s->get('links', 'textDecorationActive') ?>;
 }
@@ -90,38 +89,33 @@ h1 {
 	margin-right: <?php echo $s->get('pageLayout', 'contentPosition') == 'right' ? 0 : 'auto' ?>;
 }
 
-#siteTopMenu {
+.bt-sections-menu {
     padding: <?php echo $s->get('pageLayout', 'siteMenuMargin') ?>;
 }
 
-#siteTopMenu ul {
-    float: <?php echo $contentFloat ?>;
+.bt-sections-menu ul {
+    text-align: <?php echo $contentFloat ?>;
 }
 
-#siteTopMenu ul li a:link,
-#siteTopMenu ul li a:visited {
+.bt-sections-menu ul li a:link,
+.bt-sections-menu ul li a:visited {
     color: <?php echo $s->get('menu', 'colorLink') ?>;
 }
 
-#siteTopMenu ul li a:active,
-#siteTopMenu ul li.selected > span,
-#siteTopMenu ul li.selected > a {
+.bt-sections-menu ul li a:active,
+.bt-sections-menu ul li.selected > a {
     color: <?php echo $s->get('menu', 'colorActive') ?>;
 }
 
-#siteTopMenu ul li a:hover {
+.bt-sections-menu ul li a:hover {
     color: <?php echo $s->get('menu', 'colorHover') ?>;
 }
 
-#siteTopMenu ul li.selected span.separator {
-    color: <?php echo $s->get('generalFontSettings', 'color') ?>;
-}
-
-#siteTopMenu #mainMenu {
+.bt-sections-menu > ul:not(.subMenu) {
     padding: <?php echo $s->get('menu', 'margin') ?>;
 }
 
-#siteTopMenu #mainMenu li {
+.bt-sections-menu > ul:not(.subMenu) li {
     font-family: <?php echo $s->getFont('menu') ?>;
     font-size: <?php echo $s->get('menu', 'fontSize') ?>;
     font-weight: <?php echo $s->get('menu', 'fontWeight') ?>;
@@ -130,17 +124,17 @@ h1 {
     line-height: <?php echo $s->get('menu', 'lineHeight') ?>;
 }
 
-#siteTopMenu #mainMenu li .separator {
+.bt-sections-menu > ul:not(.subMenu) li:not(:first-child)::before {
+    content: "<?php echo $s->get('menu', 'separator') ?>";
     padding-left: <?php echo $s->get('menu', 'separatorDistance') ?>;
     padding-right: <?php echo $s->get('menu', 'separatorDistance') ?>;
 }
 
-#siteTopMenu #subMenu {
-    clear: <?php echo $contentFloat ?>;
+.bt-sections-menu > .subMenu {
     padding: <?php echo $s->get('subMenu', 'margin') ?>;
 }
 
-#siteTopMenu #subMenu li {
+.bt-sections-menu > .subMenu li {
     font-family: <?php echo $s->getFont('subMenu') ?>;
     font-size: <?php echo $s->get('subMenu', 'fontSize') ?>;
     font-weight: <?php echo $s->get('subMenu', 'fontWeight') ?>;
@@ -149,7 +143,8 @@ h1 {
     line-height: <?php echo $s->get('subMenu', 'lineHeight') ?>;
 }
 
-#siteTopMenu #subMenu li .separator {
+.bt-sections-menu > .subMenu li:not(:first-child)::before {
+    content: "<?php echo $s->get('subMenu', 'separator') ?>";
     padding-left: <?php echo $s->get('subMenu', 'separatorDistance') ?>;
     padding-right: <?php echo $s->get('subMenu', 'separatorDistance') ?>;
 }

@@ -6,9 +6,12 @@ use Validator;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
+use App\Sites\Settings\SiteSettingsDataService;
 use App\Sites\Sections\SiteSectionsDataService;
+use App\Sites\Sections\SectionsMenuRenderService;
 use App\Sites\Sections\Tags\SectionTagsDataService;
 use App\Sites\Sections\Entries\SectionEntriesDataService;
+use App\Sites\TemplateSettings\SiteTemplateSettingsDataService;
 
 class SiteSectionsController extends Controller
 {
@@ -140,5 +143,33 @@ class SiteSectionsController extends Controller
         $ret = $sectionsDataService->backgroundGalleryUpload($path, $file);
 
         return response()->json($ret);
+    }
+
+    public function renderMenu($site = '', Request $request)
+    {
+        $sectionsDS = new SiteSectionsDataService($site);
+        $sections = $sectionsDS->getState();
+        $sectionSlug = $request->get('section');
+        $tagSlug = $request->get('tag');
+        $siteSettingsDS = new SiteSettingsDataService($site);
+        $siteSettings = $siteSettingsDS->getState();
+        $siteTemplateSettingsDS = new SiteTemplateSettingsDataService($site, $siteSettings['template']['template']);
+        $siteTemplateSettings = $siteTemplateSettingsDS->getState();
+        $sectionTagsDS = new SectionTagsDataService($site);
+        $sectionTags = $sectionTagsDS->get();
+
+        $sectionsMenuRS = new SectionsMenuRenderService(
+            $site,
+            $sections,
+            $sectionSlug,
+            $siteSettings,
+            $siteTemplateSettings,
+            $sectionTags,
+            $tagSlug,
+            false,
+            true
+        );
+
+        return $sectionsMenuRS->render();
     }
 }

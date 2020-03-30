@@ -92,7 +92,16 @@ a:active {
     color: <?php echo $s->get('sideBar', 'color') ?> !important;
 }
 
-#sideColumnTop li a:link, #sideColumnTop li a:visited {
+#sideColumnTop ul li {
+    font-family: <?php echo $s->getFont('menu') ?>;
+    font-size: <?php echo $s->get('menu', 'fontSize') ?>;
+    font-weight: <?php echo $s->get('menu', 'fontWeight') ?>;
+    font-style: <?php echo $s->get('menu', 'fontStyle') ?>;
+    line-height: <?php echo $s->get('menu', 'lineHeight') ?>;
+}
+
+#sideColumnTop li a:link,
+#sideColumnTop li a:visited {
     color: <?php echo $s->get('menu', 'colorLink') ?>;
     text-decoration: <?php echo $s->get('menu', 'textDecorationLink') ?>;
 }
@@ -109,38 +118,29 @@ a:active {
     text-decoration: <?php echo $s->get('menu', 'textDecorationActive') ?>;
 }
 
-#sideColumnTop li li a:link,
-#sideColumnTop li li a:visited {
-    color: <?php echo $s->get('tagsMenu', 'colorLink') ?>;
-    text-decoration: <?php echo $s->get('tagsMenu', 'textDecorationLink') ?>;
-}
-
-#sideColumnTop li li a:hover {
-    color: <?php echo $s->get('tagsMenu', 'colorHover') ?>;
-    text-decoration: <?php echo $s->get('tagsMenu', 'textDecorationHover') ?>;
-}
-
-#sideColumnTop li li a:active,
-#sideColumnTop li li.selected > a {
-    color: <?php echo $s->get('tagsMenu', 'colorActive') ?>;
-    text-decoration: <?php echo $s->get('tagsMenu', 'textDecorationActive') ?>;
-}
-
-#sideColumnTop ul li {
-    font-family: <?php echo $s->getFont('menu') ?>;
-    font-size: <?php echo $s->get('menu', 'fontSize') ?>;
-    font-weight: <?php echo $s->get('menu', 'fontWeight') ?>;
-    font-style: <?php echo $s->get('menu', 'fontStyle') ?>;
-    line-height: <?php echo $s->get('menu', 'lineHeight') ?>;
-}
-
-#sideColumnTop ul ul li {
+#sideColumnTop .bt-sections-menu .subMenu li {
     font-family: <?php echo $s->getFont('tagsMenu') ?>;
     font-size: <?php echo $s->get('tagsMenu', 'fontSize') ?>;
     font-weight: <?php echo $s->get('tagsMenu', 'fontWeight') ?>;
     font-style: <?php echo $s->get('tagsMenu', 'fontStyle') ?>;
-    font-variant: <?php echo $s->get('tagsMenu', 'fontVariant') ?>;
     line-height: <?php echo $s->get('tagsMenu', 'lineHeight') ?>;
+}
+
+#sideColumnTop .bt-sections-menu .subMenu li a:link,
+#sideColumnTop .bt-sections-menu .subMenu li a:visited {
+    color: <?php echo $s->get('tagsMenu', 'colorLink') ?>;
+    text-decoration: <?php echo $s->get('tagsMenu', 'textDecorationLink') ?>;
+}
+
+#sideColumnTop .bt-sections-menu .subMenu li a:hover {
+    color: <?php echo $s->get('tagsMenu', 'colorHover') ?>;
+    text-decoration: <?php echo $s->get('tagsMenu', 'textDecorationHover') ?>;
+}
+
+#sideColumnTop .bt-sections-menu .subMenu li a:active,
+#sideColumnTop .bt-sections-menu .subMenu li.selected > a {
+    color: <?php echo $s->get('tagsMenu', 'colorActive') ?>;
+    text-decoration: <?php echo $s->get('tagsMenu', 'textDecorationActive') ?>;
 }
 
 #firstPageMarkedEntries .xEntry {

@@ -30,7 +30,7 @@ video,
   }
 }
 
-nav {
+.bt-sections-menu {
   position: relative;
   z-index: 1;
 
@@ -108,7 +108,7 @@ nav {
 }
 
 #contentContainer h1,
-.menuItem,
+.bt-sections-menu > ul > li,
 .floating-banner {
   left: auto !important;
   position: static !important;
@@ -139,15 +139,18 @@ nav {
     }
   }
 
-  nav {
-    text-align: center;
-  }
+  .bt-sections-menu {
+    > ul {
+      > li {
+        text-align: center;
+      }
+    }
 
-  nav {
-    ul {
+    .subMenu {
       li {
         margin-left: 5px;
         margin-right: 5px;
+        text-align: left;
       }
     }
   }
@@ -157,12 +160,6 @@ nav {
     span,
     span:before,
     span:after {
-      text-align: left;
-    }
-  }
-
-  .menuItem {
-    li {
       text-align: left;
     }
   }

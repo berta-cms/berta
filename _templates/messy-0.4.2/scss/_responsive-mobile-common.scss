@@ -2,8 +2,8 @@
   display: inline-block;
 }
 
-nav {
-  >ul {
+.bt-sections-menu {
+  > ul {
     display: none;
   }
 
@@ -21,7 +21,7 @@ nav {
 }
 
 &.bt-centered-content {
-  .menuItem {
+  .subMenu {
     li {
       text-align: center;
     }

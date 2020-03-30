@@ -115,7 +115,6 @@ class SiteTemplateSettingsDataService extends Storage
                 'properties' => [
                     'contentWidth' => ['$ref' => '#/definitions/cssUnit.df'],
                     'defaultGalleryType' => ['type' => 'string', 'enum' => ['slideshow', 'row']],
-                    'displayTags' => ['type' => 'string', 'enum' => ['yes', 'no']],
                     'galleryMargin' => ['type' => ['string', 'integer']],
                     'galleryNavMargin' => ['type' => ['string', 'integer']],
                     'galleryPosition' => [
