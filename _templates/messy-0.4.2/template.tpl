@@ -249,49 +249,10 @@
                 { /if }
 
                 <!-- PAGE HEADING -->
-                { if ($berta.environment == 'site' && $berta.settings.navigation.landingSectionPageHeadingVisible=='yes') || $berta.environment == 'engine' || ($berta.environment == 'site' && $berta.settings.navigation.landingSectionPageHeadingVisible=='no' && $berta.sectionName != $berta.sections|@key) }
-                    { if $berta.settings.heading.image }
-                        <h1 class="{ messClasses property='siteHeadingXY' isResponsive=$isResponsive }{ if $berta.settings.heading.position == 'fixed' } xFixed{ /if }" style="{ messStyles xy=$siteHeadingXY isResponsive=$isResponsive }"{if $berta.environment == 'engine' && $isResponsive != 'yes'} data-path="{ $berta.options.MULTISITE }/settings/siteTexts/siteHeadingXY"{ /if }><a href="{ bertaLink }">{ responsiveImage image = $berta.settings.heading prefix=image path = $berta.options.MEDIA_ABS_ROOT alt=$berta.settings.texts.pageTitle }</a></h1>
-                    { else }
-                        <h1 class="{ messClasses property='siteHeadingXY' isResponsive=$isResponsive }{ if $berta.settings.heading.position == 'fixed' } xFixed{ /if }" style="{ messStyles xy=$siteHeadingXY isResponsive=$isResponsive }"{if $berta.environment == 'engine' && $isResponsive != 'yes'} data-path="{ $berta.options.MULTISITE }/settings/siteTexts/siteHeadingXY"{ /if }>
-                            <span class="xEditable xProperty-siteHeading"{if $berta.environment == 'engine'} data-path="{ $berta.options.MULTISITE }/settings/siteTexts/siteHeading"{ /if }>
-                            { if $berta.environment == "engine" }
-                                { $siteHeading }
-                            { else }
-                                <a href="{ bertaLink }">{ $siteHeading }</a>
-                            { /if }
-                            </span>
-                        </h1>
-                    { /if }
-                { /if }
+                {$siteHeader}
 
                 <!-- MENU -->
-                { if count($berta.publishedSections) > 0 && (($berta.environment == 'site' && $berta.settings.navigation.landingSectionMenuVisible=='yes') || $berta.environment == 'engine' || ($berta.environment == 'site' && $berta.settings.navigation.landingSectionMenuVisible=='no' && $berta.sectionName != $berta.sections|@key)) }
-                    <nav>
-                        <a href="#" id="menuToggle"><span></span></a>
-                        <ul>
-                            { assign var="currentSectionName" value=$berta.sectionName }
-                            { foreach $berta.publishedSections as $sName => $section }
-                                { if $section.type != 'shopping_cart' }
-                                <li class="menuItem xSection-{ $sName } { messClasses property='positionXY' isResponsive=$isResponsive } { if $currentSectionName == $section.name }menuItemSelected{ /if }{ if $berta.settings.menu.position == 'fixed' } xFixed{ /if }" style="{ messStyles xy=$section.positionXY isResponsive=$isResponsive }"{if $berta.environment == 'engine' && $isResponsive != 'yes'} data-path="{ $berta.options.MULTISITE }/section/{ $section.order }/positionXY"{ /if }>
-                                    <a href="{ bertaLink section=$sName }" target="{ bertaTarget section=$sName }">{ $section.title }</a>
-
-                                    { if $berta.settings.tagsMenu.hidden=='no' && (!empty($berta.tags.$sName) && ($isResponsive == 'yes' || $berta.settings.tagsMenu.alwaysOpen=='yes' || $berta.sectionName==$sName)) }
-                                        <ul class="subMenu xSection-{ $sName }{ if $berta.tags.$sName|@count > 1 && $berta.environment == 'engine' } xAllowOrdering{ /if }">
-                                            { foreach $berta.tags.$sName as $tName => $tag }
-                                                <li class="xTag-{ $tName }{ if $berta.tagName == $tName and $currentSectionName == $section.name } selected{ /if }">
-                                                    <a class="handle" href="{ bertaLink section=$sName tag=$tName }" target="{ bertaTarget section=$sName tag=$tName }">{ $tag.title }</a>
-                                                </li>
-                                            { /foreach }
-                                        </ul>
-                                    { /if }
-                                </li>
-                                { /if }
-                            { /foreach }
-                        </ul>
-                    </nav>
-                { /if }
-
+                {$sectionsMenu}
 
                 {* If not grid view *}
                 { if !($smarty.cookies._berta_grid_view && $berta.section.type == 'grid') }

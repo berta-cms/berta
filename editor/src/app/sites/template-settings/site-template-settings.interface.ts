@@ -92,7 +92,6 @@ export interface TemplateSettingsTemplateResponse {
   entryLayout?: {
     contentWidth?: CssUnitDf;
     defaultGalleryType?: 'slideshow' | 'row';
-    displayTags?: 'yes' | 'no';
     galleryMargin?: string | number;
     galleryNavMargin?: string | number;
     galleryPosition?: 'between title/description' | 'above title' | 'below description';

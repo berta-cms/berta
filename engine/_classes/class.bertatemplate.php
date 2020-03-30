@@ -5,8 +5,11 @@ use App\Sites\SitesMenuRenderService;
 use App\Sites\Settings\SiteSettingsDataService;
 use App\Sites\TemplateSettings\SiteTemplateSettingsDataService;
 use App\Sites\Sections\SiteSectionsDataService;
+use App\Sites\SitesHeaderRenderService;
+use App\Sites\Sections\SectionsMenuRenderService;
 use App\Sites\Sections\Entries\SectionEntriesDataService;
 use App\Sites\Sections\Entries\SectionEntryRenderService;
+use App\Sites\Sections\Tags\SectionTagsDataService;
 
 include_once dirname(__FILE__) . '/../_lib/smarty/Smarty.class.php';
 include_once dirname(__FILE__) . '/Zend/Json.php';
@@ -142,10 +145,13 @@ class BertaTemplate extends BertaBase
         $this->tags = &$tags;
 
         $isEditMode = $this->environment == 'engine';
+        $isPreviewMode = !empty(self::$options['PREVIEW_FOLDER']);
 
         // add entries...
         $this->content = &$content;
         $this->allContent = &$allContent;
+
+        $storage = new Storage(self::$options['MULTISITE'], $isPreviewMode);
 
         $sitesDataService = new SitesDataService();
         $sites = $sitesDataService->get();
@@ -154,6 +160,7 @@ class BertaTemplate extends BertaBase
         $entries = $sectionEntriesDS->getByTag($this->tagName, $isEditMode);
 
         $siteSectionsDS = new SiteSectionsDataService(self::$options['MULTISITE'], self::$options['XML_ROOT']);
+        $siteSections = $siteSectionsDS->getState();
         $sectionData = $siteSectionsDS->get($this->sectionName);
 
         $siteSettingsDS = new SiteSettingsDataService(self::$options['MULTISITE'], self::$options['XML_ROOT']);
@@ -161,6 +168,8 @@ class BertaTemplate extends BertaBase
 
         $siteTemplateSettingsDS = new SiteTemplateSettingsDataService(self::$options['MULTISITE'], $this->name, self::$options['XML_ROOT']);
         $siteTemplateSettingsState =  $siteTemplateSettingsDS->getState();
+        $sectionTagsDS = new SectionTagsDataService(self::$options['MULTISITE']);
+        $sectionTags = $sectionTagsDS->get();
 
         $sitesMenuRenderService = new SitesMenuRenderService(
             self::$options['MULTISITE'],
@@ -173,6 +182,19 @@ class BertaTemplate extends BertaBase
         $sitesMenu = $sitesMenuRenderService->render();
         $this->addVariable('sitesMenu', $sitesMenu);
 
+        $sitesHeaderRenderService = new SitesHeaderRenderService(
+            self::$options['MULTISITE'],
+            $siteSettingsState,
+            $siteTemplateSettingsState,
+            $siteSections,
+            $this->sectionName,
+            $storage,
+            $isPreviewMode,
+            $isEditMode
+        );
+        $siteHeader = $sitesHeaderRenderService->render();
+        $this->addVariable('siteHeader', $siteHeader);
+
         $entriesHTML = '';
         foreach ($entries as $entry) {
             $sectionEntriesRS = new SectionEntryRenderService(
@@ -181,7 +203,7 @@ class BertaTemplate extends BertaBase
                 $sectionData,
                 $siteSettingsState,
                 $siteTemplateSettingsState,
-                (new Storage(self::$options['MULTISITE'], !empty(self::$options['PREVIEW_FOLDER']))),
+                $storage,
                 $isEditMode,
                 isset($shopEnabled) && $shopEnabled
             );
@@ -189,6 +211,20 @@ class BertaTemplate extends BertaBase
         }
 
         $this->addVariable('entriesHTML', $entriesHTML);
+
+        $sectionsMenuRS = new SectionsMenuRenderService(
+            self::$options['MULTISITE'],
+            $siteSections,
+            $this->sectionName,
+            $siteSettingsState,
+            $siteTemplateSettingsState,
+            $sectionTags,
+            $this->tagName,
+            $isPreviewMode,
+            $isEditMode
+        );
+        $sectionsMenu = $sectionsMenuRS->render();
+        $this->addVariable('sectionsMenu', $sectionsMenu);
 
         // We still need entries for portfolio view and for section type = mashup
         // TODO remove assigning entries to template when rendering is moved to API app

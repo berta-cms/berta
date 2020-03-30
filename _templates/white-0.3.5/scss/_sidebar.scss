@@ -27,20 +27,20 @@
   }
 }
 
+#multisites {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+
+  li {
+    display: inline-block;
+    margin: 0 10px 10px 0;
+    padding: 0;
+  }
+}
+
 #sideColumnTop {
   padding: 30px 20px 20px;
-
-  #multisites {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-
-    li {
-      display: inline-block;
-      margin: 0 10px 10px 0;
-      padding: 0;
-    }
-  }
 
   h1 {
     min-height: 40px;
