@@ -51,7 +51,7 @@ function smarty_function_bertaLink($params, &$smarty)
 
     if (!empty($params['section'])) {
         if (!$sectionIsFirst || $berta->environment == 'engine'
-            || $sectionHasDirectContent && count($berta->tags[$params['section']]) > 0
+            || $sectionHasDirectContent && !empty($berta->tags[$params['section']])
             || !$subSectionIsFirst) {
             $link[] = !$constructPrettyLink ? ('section=' . $params['section']) : $params['section'];
         }

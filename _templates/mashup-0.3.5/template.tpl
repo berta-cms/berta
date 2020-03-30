@@ -48,19 +48,7 @@
 	              {* multisites menu ********************************************************************* *}
                 {$sitesMenu}
 
-                { if ($berta.environment == 'site' && $berta.settings.navigation.landingSectionPageHeadingVisible=='yes') || $berta.environment == 'engine' || ($berta.environment == 'site' && $berta.settings.navigation.landingSectionPageHeadingVisible=='no' && $berta.sectionName != $berta.sections|@key) }
-                    { if $berta.settings.sideBar.image }
-                    <h1><a href="{ bertaLink }">{ responsiveImage image = $berta.settings.sideBar prefix=image path = $berta.options.MEDIA_ABS_ROOT alt=$berta.settings.texts.pageTitle }</a></h1>
-                    { else }
-                    <h1 class="xEditable xProperty-siteHeading"{if $berta.environment == 'engine'} data-path="{ $berta.options.MULTISITE }/settings/siteTexts/siteHeading"{ /if }>
-                        { if $berta.environment == "engine" }
-                            { $siteHeading }
-                        { else }
-                            <a href="{ bertaLink }">{ $siteHeading }</a>
-                        { /if }
-                    </h1>
-                    { /if }
-                { /if }
+                {$siteHeader}
 
 				{ if ($berta.environment == 'site' && $berta.settings.navigation.landingSectionMenuVisible=='yes') || $berta.environment == 'engine' || ($berta.environment == 'site' && $berta.settings.navigation.landingSectionMenuVisible=='no' && $berta.sectionName != $berta.sections|@key) }
 					<div id="additionalText"{if $berta.settings.pageLayout.responsive!='yes'} class="xEditableDragXY xProperty-additionalTextXY" style="{ additionalTextPos xy=$additionalTextXY }"{/if}{if $berta.environment == 'engine' && $berta.settings.pageLayout.responsive != 'yes'} data-path="{ $berta.options.MULTISITE }/settings/siteTexts/additionalTextXY"{ /if }>
@@ -77,32 +65,7 @@
 					</div>
 				{/if}
 
-				{ if count($berta.publishedSections) > 0 && (($berta.environment == 'site' && $berta.settings.navigation.landingSectionMenuVisible=='yes') || $berta.environment == 'engine' || ($berta.environment == 'site' && $berta.settings.navigation.landingSectionMenuVisible=='no' && $berta.sectionName != $berta.sections|@key)) }
-
-					{if $berta.settings.pageLayout.responsive == 'yes'}
-	                    <a href="#" id="menuToggle"><span></span></a>
-	                {/if}
-					<ul>
-						{ assign var="currnetSectionName" value=$berta.sectionName }
-						{ foreach from=$berta.publishedSections item="section" key="sName" name="sectionsMenuLoop" }
-							{ if $currnetSectionName == $section.name }<li class="selected">{ else }<li>{ /if }
-								<a href="{ bertaLink section=$sName }" target="{ bertaTarget section=$sName }">{ $section.title }</a>
-
-								{ if !empty($berta.tags.$sName) }
-									<ul class="subMenu xSection-{ $sName }{ if $berta.tags.$sName|@count > 1 && $berta.environment == 'engine' } xAllowOrdering{ /if }">
-										{ foreach from=$berta.tags.$sName key="tName" item="tag" name="subSectionsMenuLoop" }
-											{ if $berta.tagName == $tName and $currnetSectionName == $section.name }<li class="selected xTag-{ $tName }">{ else }<li class="xTag-{ $tName }">{ /if }
-												<a class="handle" href="{ bertaLink section=$sName tag=$tName }" target="{ bertaTarget section=$sName tag=$tName }">{ $tag.title }</a>
-											</li>
-								 		{ /foreach }
-									</ul>
-								{ /if }
-
-							</li>
-						{ /foreach }
-					</ul>
-				{ /if }
-
+        {$sectionsMenu}
 			</div>
 			<div id="sideColumnBottom">
         {if $berta.settings.socialMediaButtons.socialMediaLocation == 'footer' && $berta.settings.socialMediaButtons.socialMediaHTML}
@@ -129,6 +92,11 @@
 				{/if}
 
 				<div id="firstPageMarkedEntries" class="{ entriesListClasses } xNoEntryOrdering{if intval($berta.settings.pageLayout.mashUpColumns)>1} columns-{intval($berta.settings.pageLayout.mashUpColumns)}{ /if }">
+          {*
+            temporary workaround for firstPageMarkedEntry plugin function otherwise error about undefined function smarty_function_bertaLink is thrown
+            TODO move firstPageMarkedEntry rendering to API
+          *}
+          <!-- { bertaLink } -->
 					{ selectMarkedEntries assign="markedEntries" count=$berta.section.marked_items_count }
 					{ foreach from=$markedEntries item="entry" name="markedEntriesLoop" }
 						{ firstPageMarkedEntry entry=$entry imageselect=$berta.section.marked_items_imageselect }

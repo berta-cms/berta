@@ -185,15 +185,11 @@
       width: 100%;
     }
 
+    #multisites {
+      display: block;
+    }
+
     #sideColumnTop {
-      >ul {
-        display: none;
-      }
-
-      #multisites {
-        display: block;
-      }
-
       h1 {
         min-height: initial;
       }
@@ -202,6 +198,12 @@
         li {
           margin-top: 1em;
         }
+      }
+    }
+
+    .bt-sections-menu {
+      >ul {
+        display: none;
       }
     }
 
@@ -266,6 +268,7 @@
 
   @media (max-width: 480px) {
     #firstPageMarkedEntries {
+
       &.columns-2 .xEntry,
       &.columns-3 .xEntry,
       &.columns-4 .xEntry {

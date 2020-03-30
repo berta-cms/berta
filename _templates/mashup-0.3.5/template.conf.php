@@ -789,16 +789,6 @@ $templateConf = [
             'title' => I18n::_('Empty space below gallery'),
             'description' => I18n::_('Distance between the gallery and the content below'),
         ],
-        'displayTags' => [
-            'format' => 'select',
-            'values' => [
-                'yes',
-                'no',
-            ],
-            'default' => 'no',
-            'title' => I18n::_('Display tags by each entry'),
-            'description' => I18n::_('This determines whether people will see tags you set for each entry. Regardless of this settting, tags still will make up the main menu.'),
-        ],
     ],
 
     'socialMediaLinks' => [

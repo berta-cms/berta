@@ -358,7 +358,11 @@ var BertaEditor = new Class({
       var entry = this.entriesList.getElement('.xEntryId-' + idToHighlight);
       if (entry) {
         var pos = entry.getPosition();
-        window.scrollTo(pos.x, pos.y);
+        if (this.options.templateName.substr(0, 5) == 'messy') {
+          window.scrollTo(pos.x, pos.y);
+        } else {
+          window.scrollTo(0, pos.y);
+        }
       }
     }
   },

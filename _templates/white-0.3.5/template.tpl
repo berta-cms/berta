@@ -40,19 +40,7 @@
 	              {* multisites menu ********************************************************************* *}
                 {$sitesMenu}
 
-                { if ($berta.environment == 'site' && $berta.settings.navigation.landingSectionPageHeadingVisible=='yes') || $berta.environment == 'engine' || ($berta.environment == 'site' && $berta.settings.navigation.landingSectionPageHeadingVisible=='no' && $berta.sectionName != $berta.sections|@key) }
-                    { if $berta.settings.pageHeading.image }
-                    <h1><a href="{ bertaLink }">{ responsiveImage image = $berta.settings.pageHeading prefix=image path = $berta.options.MEDIA_ABS_ROOT alt=$berta.settings.texts.pageTitle }</a></h1>
-                    { else }
-                    <h1 class="xEditable xProperty-siteHeading"{if $berta.environment == 'engine'} data-path="{ $berta.options.MULTISITE }/settings/siteTexts/siteHeading"{ /if }>
-                        { if $berta.environment == "engine" }
-                            { $siteHeading }
-                        { else }
-                            <a href="{ bertaLink }">{ $siteHeading }</a>
-                        { /if }
-                    </h1>
-                    { /if }
-                { /if }
+                {$siteHeader}
 
               	{ if ($berta.environment == 'site' && $berta.settings.navigation.landingSectionMenuVisible=='yes') || $berta.environment == 'engine' || ($berta.environment == 'site' && $berta.settings.navigation.landingSectionMenuVisible=='no' && $berta.sectionName != $berta.sections|@key) }
 					<div id="additionalText"{if $berta.settings.pageLayout.responsive!='yes'} class="xEditableDragXY xProperty-additionalTextXY" style="{ additionalTextPos xy=$additionalTextXY }"{/if}{if $berta.environment == 'engine' && $berta.settings.pageLayout.responsive != 'yes'} data-path="{ $berta.options.MULTISITE }/settings/siteTexts/additionalTextXY"{ /if }>
@@ -69,31 +57,7 @@
 					</div>
 				{/if}
 
-				{ if count($berta.publishedSections) > 0 && (($berta.environment == 'site' && $berta.settings.navigation.landingSectionMenuVisible=='yes') || $berta.environment == 'engine' || ($berta.environment == 'site' && $berta.settings.navigation.landingSectionMenuVisible=='no' && $berta.sectionName != $berta.sections|@key)) }
-
-					{if $berta.settings.pageLayout.responsive == 'yes'}
-	                    <a href="#" id="menuToggle"><span></span></a>
-	                {/if}
-					<ul>
-						{ assign var="sName" value=$berta.sectionName }
-						{ foreach from=$berta.publishedSections item="section" name="sectionsMenuLoop" }
-							{ if $berta.sectionName == $section.name }<li class="selected">{ else }<li>{ /if }
-								<a href="{ bertaLink section=$section.name }" target="{ bertaTarget section=$section.name }">{ $section.title }</a>
-
-								{ if $sName == $section.name and !empty($berta.tags.$sName) }
-									<ul class="subMenu xSection-{ $sName }{ if $berta.tags.$sName|@count > 1 && $berta.environment == 'engine' } xAllowOrdering{ /if }">
-										{ foreach from=$berta.tags.$sName key="tName" item="tag" name="subSectionsMenuLoop" }
-											{ if $berta.tagName == $tName }<li class="selected xTag-{ $tName }">{ else }<li class="xTag-{ $tName }">{ /if }
-												<a class="handle" href="{ bertaLink section=$berta.sectionName tag=$tName }" target="{ bertaTarget section=$berta.sectionName tag=$tName }">{ $tag.title }</a>
-                                            </li>
-										{ /foreach }
-									</ul>
-								{ /if }
-
-							</li>
-						{ /foreach }
-					</ul>
-				{ /if }
+        {$sectionsMenu}
 			</div>
 			<div id="sideColumnBottom">
 				{if $berta.settings.socialMediaButtons.socialMediaLocation == 'footer' && $berta.settings.socialMediaButtons.socialMediaHTML}
