@@ -3,8 +3,9 @@
 namespace App\Sites;
 
 use Illuminate\Http\Request;
-use App\Configuration\SiteTemplatesConfigService;
 use App\Http\Controllers\Controller;
+use App\Shared\Storage;
+use App\Configuration\SiteTemplatesConfigService;
 use App\Sites\Sections\Entries\SectionEntriesDataService;
 use App\Sites\Sections\SiteSectionsDataService;
 use App\Sites\Sections\Tags\SectionTagsDataService;
@@ -12,6 +13,7 @@ use App\Sites\Settings\SiteSettingsDataService;
 use App\Sites\SitesDataService;
 use App\Sites\TemplateSettings\SiteTemplateSettingsDataService;
 use App\Sites\SitesMenuRenderService;
+use App\Sites\SitesHeaderRenderService;
 
 class SitesController extends Controller
 {
@@ -133,5 +135,31 @@ class SitesController extends Controller
         );
 
         return $sitesMenuRenderService->render();
+    }
+
+    public function renderHeader($site = '', Request $request)
+    {
+        $siteSettingsDS = new SiteSettingsDataService($site);
+        $siteSettings = $siteSettingsDS->getState();
+
+        $sectionsDS = new SiteSectionsDataService($site);
+        $sections = $sectionsDS->getState();
+        $sectionSlug = $request->get('section');
+
+        $siteTemplateSettingsDS = new SiteTemplateSettingsDataService($site, $siteSettings['template']['template']);
+        $siteTemplateSettings = $siteTemplateSettingsDS->getState();
+
+        $sitesHeaderRS = new SitesHeaderRenderService(
+            $site,
+            $siteSettings,
+            $siteTemplateSettings,
+            $sections,
+            $sectionSlug,
+            (new Storage($site)),
+            false,
+            true
+        );
+
+        return $sitesHeaderRS->render();
     }
 }

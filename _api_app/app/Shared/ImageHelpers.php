@@ -124,6 +124,20 @@ class ImageHelpers
         ];
     }
 
+    public static function getImageItem(
+        $filename,
+        Storage $storageService,
+        $attributes
+    ) {
+        if (!empty($attributes['alt'])) {
+            $attributes['alt'] = htmlspecialchars(strip_tags($attributes['alt']));
+        }
+        $attributes['src'] = $storageService->MEDIA_URL . '/' . $filename;
+        $attributes['srcset'] = $storageService->MEDIA_URL . '/_' . $attributes['width'] . 'x' . $attributes['height'] . '_' . $filename . ' 1x, ' . $storageService->MEDIA_URL . '/' . $filename . ' 2x';
+
+        return $attributes;
+    }
+
     /**
      * Create or return a thumbnail image for image file
      *

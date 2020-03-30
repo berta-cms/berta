@@ -166,6 +166,7 @@ class SiteSectionsController extends Controller
             $siteTemplateSettings,
             $sectionTags,
             $tagSlug,
+            false,
             true
         );
 
