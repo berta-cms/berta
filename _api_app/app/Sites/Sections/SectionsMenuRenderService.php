@@ -102,8 +102,8 @@ class SectionsMenuRenderService
             return;
         }
 
-        $currentSectionOrder = array_search($this->sectionSlug, array_column($sections, 'name'));
-        $currentSection = $sections[$currentSectionOrder];
+        $currentSectionOrder = array_search($this->sectionSlug, array_column($this->sections, 'name'));
+        $currentSection = $this->sections[$currentSectionOrder];
         $currentSectionType = isset($currentSection['@attributes']['type']) ? $currentSection['@attributes']['type'] : null;
         $isResponsiveTemplate = isset($this->siteTemplateSettings['pageLayout']['responsive']) && $this->siteTemplateSettings['pageLayout']['responsive'] == 'yes';
         $this->isResponsive = $currentSectionType == 'portfolio' || $isResponsiveTemplate;
