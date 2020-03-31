@@ -164,9 +164,9 @@ class SitesHeaderRenderService
             }
         }
 
-        if (!empty($sections)) {
-            $currentSectionOrder = array_search($this->sectionSlug, array_column($sections, 'name'));
-            $currentSection = $sections[$currentSectionOrder];
+        if (!empty($this->sections)) {
+            $currentSectionOrder = array_search($this->sectionSlug, array_column($this->sections, 'name'));
+            $currentSection = $this->sections[$currentSectionOrder];
             $currentSectionType = isset($currentSection['@attributes']['type']) ? $currentSection['@attributes']['type'] : null;
         }
 
