@@ -99,8 +99,8 @@ class SitesHeaderRenderService
             $filename,
             $this->storageService,
             [
-                'width' => $this->siteTemplateSettings[$settingGroup]['image_width'],
-                'height' => $this->siteTemplateSettings[$settingGroup]['image_height'],
+                'width' => !empty($this->siteTemplateSettings[$settingGroup]['image_width']) ? $this->siteTemplateSettings[$settingGroup]['image_width'] : null,
+                'height' => !empty($this->siteTemplateSettings[$settingGroup]['image_height']) ? $this->siteTemplateSettings[$settingGroup]['image_height'] : null,
                 'alt' => $alt
             ]
         );
