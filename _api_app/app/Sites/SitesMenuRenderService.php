@@ -6,35 +6,9 @@ use App\Shared\Helpers;
 
 class SitesMenuRenderService
 {
-    private $currentSite;
-    private $isEditMode;
-    private $siteSettings;
-    private $siteTemplateSettings;
-    private $sites;
     private $DRAGGABLE_MENU_CLASSES = 'mess xEditableDragXY xProperty-multisitesXY';
 
-    /**
-     * Construct SitesRenderService instance
-     *
-     * @param string $currentSite
-     * @param bool $isEditMode
-     * @param array $siteTemplateSettings
-     */
-    public function __construct(
-        $currentSite,
-        $isEditMode,
-        array $siteSettings,
-        array $siteTemplateSettings,
-        array $sites
-    ) {
-        $this->currentSite = $currentSite;
-        $this->isEditMode = $isEditMode;
-        $this->siteSettings = $siteSettings;
-        $this->siteTemplateSettings = $siteTemplateSettings;
-        $this->sites = $sites;
-    }
-
-    public function getStyles($params)
+    private function getStyles($params)
     {
         $pos = !empty($params) ? explode(',', $params) :
             [
@@ -44,15 +18,29 @@ class SitesMenuRenderService
         return 'left:' . $pos[0] . 'px;top:' . $pos[1] . 'px;';
     }
 
-    public function getViewData()
-    {
-        $sites = $this->sites;
-        $isResponsive = isset($this->siteTemplateSettings['pageLayout']['responsive']) && $this->siteTemplateSettings['pageLayout']['responsive'] == 'yes';
-        $template = isset($this->siteSettings['template']['template']) ? $this->siteSettings['template']['template'] : '';
+    /**
+     * Prepare data for template
+     *
+     * @param string $currentSite
+     * @param boolean $isEditMode
+     * @param array $siteSettings
+     * @param array $siteTemplateSettings
+     * @param array $sites
+     * @return array
+     */
+    private function getViewData(
+        $currentSite,
+        $isEditMode,
+        $siteSettings,
+        $siteTemplateSettings,
+        $sites
+    ) {
+        $isResponsive = isset($siteTemplateSettings['pageLayout']['responsive']) && $siteTemplateSettings['pageLayout']['responsive'] == 'yes';
+        $template = isset($siteSettings['template']['template']) ? $siteSettings['template']['template'] : '';
         $templateName = explode('-', $template)[0];
         $menuAttributes = [];
 
-        if (!$this->isEditMode) {
+        if (!$isEditMode) {
             $sites = array_filter($sites, function ($site) {
                 return $site['@attributes']['published'] == 1;
             });
@@ -63,14 +51,14 @@ class SitesMenuRenderService
         }
 
         // Hide current site from menu
-        if (!$this->isEditMode) {
-            $sites = array_filter($sites, function ($site) {
-                return $this->currentSite !== $site['name'];
+        if (!$isEditMode) {
+            $sites = array_filter($sites, function ($site) use ($currentSite) {
+                return $currentSite !== $site['name'];
             });
         }
 
-        $data['sites'] = array_map(function ($site) {
-            if ($this->isEditMode) {
+        $data['sites'] = array_map(function ($site) use ($currentSite, $isEditMode) {
+            if ($isEditMode) {
                 $link = !empty($site['name']) ? './?site=' . $site['name'] : './';
             } else {
                 $link = '/' . $site['name'];
@@ -78,19 +66,19 @@ class SitesMenuRenderService
 
             return [
                 'name' => !empty($site['title']) ? $site['title'] : $site['name'],
-                'className' => $this->currentSite === $site['name'] ? 'selected' : null,
+                'className' => $currentSite === $site['name'] ? 'selected' : null,
                 'link' => $link
             ];
         }, $sites);
 
         if ($templateName == 'messy') {
-            if ($this->isEditMode && !$isResponsive) {
-                $menuAttributes['data-path'] = $this->currentSite . '/settings/siteTexts/multisitesXY';
+            if ($isEditMode && !$isResponsive) {
+                $menuAttributes['data-path'] = $currentSite . '/settings/siteTexts/multisitesXY';
             }
 
             if (!$isResponsive) {
                 $menuAttributes['class'] = $this->DRAGGABLE_MENU_CLASSES;
-                $menuAttributes['style'] = $this->getStyles(isset($this->siteSettings['siteTexts']['multisitesXY']) ? $this->siteSettings['siteTexts']['multisitesXY'] : '');
+                $menuAttributes['style'] = $this->getStyles(isset($siteSettings['siteTexts']['multisitesXY']) ? $siteSettings['siteTexts']['multisitesXY'] : '');
             }
         }
 
@@ -98,9 +86,24 @@ class SitesMenuRenderService
         return $data;
     }
 
-    public function render()
-    {
-        $data = $this->getViewData();
+    /**
+     * Render sites menu
+     *
+     * @param string $currentSite
+     * @param boolean $isEditMode
+     * @param array $siteSettings
+     * @param array $siteTemplateSettings
+     * @param array $sites
+     * @return string
+     */
+    public function render(
+        $currentSite,
+        $isEditMode,
+        $siteSettings,
+        $siteTemplateSettings,
+        $sites
+    ) {
+        $data = $this->getViewData($currentSite, $isEditMode, $siteSettings, $siteTemplateSettings, $sites);
         if (!$data) {
             return '';
         }
