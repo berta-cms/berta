@@ -129,6 +129,12 @@ class ImageHelpers
         Storage $storageService,
         $attributes
     ) {
+        if (empty($attributes['width']) || empty($attributes['height'])) {
+            list($width, $height) = getimagesize($storageService->MEDIA_ROOT . '/' . $filename);
+            $attributes['width'] = round($width / 2);
+            $attributes['height'] = round($height / 2);
+        }
+
         if (!empty($attributes['alt'])) {
             $attributes['alt'] = htmlspecialchars(strip_tags($attributes['alt']));
         }
