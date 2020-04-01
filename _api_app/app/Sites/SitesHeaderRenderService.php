@@ -10,6 +10,12 @@ class SitesHeaderRenderService
 {
     private $DRAGGABLE_HEADING_CLASSES = ['mess', 'xEditableDragXY', 'xProperty-siteHeadingXY'];
     private $EDITABLE_CLASSES = ['xEditable', 'xProperty-siteHeading'];
+    private $HEADER_IMAGE_TEMPLATE_SETTING_GROUP = [
+        'default' => 'pageHeading',
+        'messy' => 'heading',
+        'mashup' => 'sideBar',
+        'white' => 'pageHeading'
+    ];
 
     private function getHeadingStyles($params)
     {
@@ -51,14 +57,7 @@ class SitesHeaderRenderService
 
     private function getHeadingImageAttributes($templateName, $siteTemplateSettings, $siteSettings, $storageService)
     {
-        $templateSettingGroup = [
-            'default' => 'pageHeading',
-            'messy' => 'heading',
-            'mashup' => 'sideBar',
-            'white' => 'pageHeading'
-        ];
-
-        $settingGroup = isset($templateSettingGroup[$templateName]) ? $templateSettingGroup[$templateName] : 'heading';
+        $settingGroup = isset($this->HEADER_IMAGE_TEMPLATE_SETTING_GROUP[$templateName]) ? $this->HEADER_IMAGE_TEMPLATE_SETTING_GROUP[$templateName] : 'heading';
         $filename = !empty($siteTemplateSettings[$settingGroup]['image']) ? $siteTemplateSettings[$settingGroup]['image'] : null;
         $alt = !empty($siteSettings['texts']['pageTitle']) ? $siteSettings['texts']['pageTitle'] : '';
 
