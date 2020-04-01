@@ -149,7 +149,9 @@ class SitesController extends Controller
         $siteTemplateSettingsDS = new SiteTemplateSettingsDataService($site, $siteSettings['template']['template']);
         $siteTemplateSettings = $siteTemplateSettingsDS->getState();
 
-        $sitesHeaderRS = new SitesHeaderRenderService(
+        $sitesHeaderRS = new SitesHeaderRenderService();
+
+        return $sitesHeaderRS->render(
             $site,
             $siteSettings,
             $siteTemplateSettings,
@@ -159,7 +161,5 @@ class SitesController extends Controller
             false,
             true
         );
-
-        return $sitesHeaderRS->render();
     }
 }
