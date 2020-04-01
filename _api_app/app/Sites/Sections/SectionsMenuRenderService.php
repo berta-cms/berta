@@ -208,7 +208,7 @@ class SectionsMenuRenderService
             $urlParts['site'] = $this->site;
         }
 
-        $isFirstSection = $section['name'] == current($this->sections)['name'];
+        $isFirstSection = $section['name'] == $this->sections[0]['name'];
         $hasDirectContent = !empty($section['@attributes']['has_direct_content']) && $section['@attributes']['has_direct_content'];
         $alwaysSelectTag = $this->siteSettings['navigation']['alwaysSelectTag'] == 'yes';
         $isFirstTag = !$tag || $alwaysSelectTag && $tag['name'] == current($section['tags'])['name'];
