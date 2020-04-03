@@ -49,58 +49,36 @@ class SectionEntryRenderService
 
         switch ($galleryType) {
             case 'row':
-                $galleryTypeRenderService = new GalleryRowRenderService(
-                    $entry,
-                    $siteSettings,
-                    $siteTemplateSettings,
-                    $storageService,
-                    $isEditMode
-                );
+                $galleryTypeRenderService = new GalleryRowRenderService();
                 break;
 
             case 'column':
-                $galleryTypeRenderService = new GalleryColumnRenderService(
-                    $entry,
-                    $siteSettings,
-                    $siteTemplateSettings,
-                    $storageService,
-                    $isEditMode
-                );
+                $galleryTypeRenderService = new GalleryColumnRenderService();
                 break;
 
             case 'pile':
-                $galleryTypeRenderService = new GalleryPileRenderService(
-                    $entry,
-                    $siteSettings,
-                    $siteTemplateSettings,
-                    $storageService,
-                    $isEditMode
-                );
+                $galleryTypeRenderService = new GalleryPileRenderService();
                 break;
 
             case 'link':
-                $galleryTypeRenderService = new GalleryLinkRenderService(
-                    $entry,
-                    $siteSettings,
-                    $siteTemplateSettings,
-                    $storageService,
-                    $isEditMode
-                );
+                $galleryTypeRenderService = new GalleryLinkRenderService();
                 break;
 
             default:
                 // slideshow
-                $galleryTypeRenderService = new GallerySlideshowRenderService(
-                    $entry,
-                    $siteSettings,
-                    $siteTemplateSettings,
-                    $storageService,
-                    $isEditMode
-                );
+                $galleryTypeRenderService = new GallerySlideshowRenderService();
                 break;
         }
 
-        $gallery = $galleryTypeRenderService->render();
+        $gallery = $galleryTypeRenderService->render(
+            $entry,
+            $siteSettings,
+            $siteTemplateSettings,
+            $storageService,
+            $isEditMode,
+            true,
+            false
+        );
 
         // Shop plugin related data
         // TODO move the logic to plugin code
