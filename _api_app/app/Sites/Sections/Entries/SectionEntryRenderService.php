@@ -14,6 +14,15 @@ use App\Plugins\Shop\ShopSettingsDataService;
 
 class SectionEntryRenderService
 {
+    public function __construct()
+    {
+        $this->gallerySlideshowRenderService = new GallerySlideshowRenderService();
+        $this->galleryRowRenderService = new GalleryRowRenderService();
+        $this->galleryColumnRenderService = new GalleryColumnRenderService();
+        $this->galleryPileRenderService = new GalleryPileRenderService();
+        $this->galleryLinkRenderService = new GalleryLinkRenderService();
+    }
+
     /**
      * Prepare data for view
      */
@@ -49,24 +58,24 @@ class SectionEntryRenderService
 
         switch ($galleryType) {
             case 'row':
-                $galleryTypeRenderService = new GalleryRowRenderService();
+                $galleryTypeRenderService = $this->galleryRowRenderService;
                 break;
 
             case 'column':
-                $galleryTypeRenderService = new GalleryColumnRenderService();
+                $galleryTypeRenderService = $this->galleryColumnRenderService;
                 break;
 
             case 'pile':
-                $galleryTypeRenderService = new GalleryPileRenderService();
+                $galleryTypeRenderService = $this->galleryPileRenderService;
                 break;
 
             case 'link':
-                $galleryTypeRenderService = new GalleryLinkRenderService();
+                $galleryTypeRenderService = $this->galleryLinkRenderService;
                 break;
 
             default:
                 // slideshow
-                $galleryTypeRenderService = new GallerySlideshowRenderService();
+                $galleryTypeRenderService = $this->gallerySlideshowRenderService;
                 break;
         }
 
