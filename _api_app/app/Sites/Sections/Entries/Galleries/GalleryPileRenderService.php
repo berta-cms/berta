@@ -8,6 +8,13 @@ use App\Sites\Sections\Entries\Galleries\GallerySlideshowRenderService;
 
 class GalleryPileRenderService extends EntryGalleryRenderService
 {
+    private $gallerySlideshowRenderService;
+
+    public function __construct(GallerySlideshowRenderService $gallerySlideshowRenderService)
+    {
+        $this->gallerySlideshowRenderService = $gallerySlideshowRenderService;
+    }
+
     public function getViewData(
         $entry,
         $siteSettings,
@@ -106,8 +113,7 @@ class GalleryPileRenderService extends EntryGalleryRenderService
             // Force entry to be as slideshow
             $entry['mediaCacheData']['@attributes']['type'] = 'slideshow';
 
-            $gallerySlideshowRenderService = new GallerySlideshowRenderService();
-            $view .= $gallerySlideshowRenderService->render(
+            $view .= $this->gallerySlideshowRenderService->render(
                 $entry,
                 $siteSettings,
                 $siteTemplateSettings,

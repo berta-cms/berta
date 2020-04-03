@@ -14,12 +14,18 @@ use App\Plugins\Shop\ShopSettingsDataService;
 
 class SectionEntryRenderService
 {
+    private $gallerySlideshowRenderService;
+    private $galleryRowRenderService;
+    private $galleryColumnRenderService;
+    private $galleryPileRenderService;
+    private $galleryLinkRenderService;
+
     public function __construct()
     {
         $this->gallerySlideshowRenderService = new GallerySlideshowRenderService();
-        $this->galleryRowRenderService = new GalleryRowRenderService();
+        $this->galleryRowRenderService = new GalleryRowRenderService($this->gallerySlideshowRenderService);
         $this->galleryColumnRenderService = new GalleryColumnRenderService();
-        $this->galleryPileRenderService = new GalleryPileRenderService();
+        $this->galleryPileRenderService = new GalleryPileRenderService($this->gallerySlideshowRenderService);
         $this->galleryLinkRenderService = new GalleryLinkRenderService();
     }
 

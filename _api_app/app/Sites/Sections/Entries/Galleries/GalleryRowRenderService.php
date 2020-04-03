@@ -8,9 +8,16 @@ use App\Sites\Sections\Entries\Galleries\GallerySlideshowRenderService;
 
 class GalleryRowRenderService extends EntryGalleryRenderService
 {
+    private $gallerySlideshowRenderService;
+
     // @TODO get $spaceBetweenItems from template settings
     // currently we use 12px = 1em as this is a default value for messy template
     private $spaceBetweenItems = 12;
+
+    public function __construct(GallerySlideshowRenderService $gallerySlideshowRenderService)
+    {
+        $this->gallerySlideshowRenderService = $gallerySlideshowRenderService;
+    }
 
     public function getViewData(
         $entry,
@@ -152,8 +159,7 @@ class GalleryRowRenderService extends EntryGalleryRenderService
             // Force entry to be as slideshow
             $entry['mediaCacheData']['@attributes']['type'] = 'slideshow';
 
-            $gallerySlideshowRenderService = new GallerySlideshowRenderService();
-            $view .= $gallerySlideshowRenderService->render(
+            $view .= $this->gallerySlideshowRenderService->render(
                 $entry,
                 $siteSettings,
                 $siteTemplateSettings,
