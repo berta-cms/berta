@@ -10,6 +10,7 @@ use App\Sites\Sections\SectionsMenuRenderService;
 use App\Sites\Sections\Entries\SectionEntriesDataService;
 use App\Sites\Sections\Entries\SectionEntryRenderService;
 use App\Sites\Sections\Tags\SectionTagsDataService;
+use App\Sites\SitesBannersRenderService;
 
 include_once dirname(__FILE__) . '/../_lib/smarty/Smarty.class.php';
 include_once dirname(__FILE__) . '/Zend/Json.php';
@@ -238,6 +239,18 @@ class BertaTemplate extends BertaBase
             Array_XML::makeListIfNotList($socialMediaLinks);
         }
         $this->addVariable('socialMediaLinks', $socialMediaLinks);
+
+        $sitesBannersRS = new SitesBannersRenderService();
+        $siteBanners = $sitesBannersRS->render(
+            self::$options['MULTISITE'],
+            $siteSettingsState,
+            $siteTemplateSettingsState,
+            $siteSections,
+            $this->sectionName,
+            $storage,
+            $isEditMode
+        );
+        $this->addVariable('siteBanners', $siteBanners);
     }
 
     private function getEntriesLists($sName, $tagName, &$content)

@@ -41,6 +41,7 @@ $app->group(['prefix' => 'v1','namespace' => 'App\Sites', 'middleware' => ['setu
 
     $app->get('sites/render-menu[/{site}]', 'SitesController@renderMenu');
     $app->get('sites/render-header[/{site}]', 'SitesController@renderHeader');
+    $app->get('sites/render-banners[/{site}]', 'SitesController@renderBanners');
 
     $app->patch('sites/settings', ['as' => 'site_settings', 'uses' => 'Settings\SiteSettingsController@update']);
     $app->post('sites/settings/upload', ['as' => 'site_settings_upload', 'uses' => 'Settings\SiteSettingsController@upload']);
