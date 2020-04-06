@@ -56,7 +56,7 @@
 						{if $berta.settings.socialMediaButtons.socialMediaLocation == 'additionalText' && $berta.settings.socialMediaButtons.socialMediaHTML}
               { $berta.settings.socialMediaButtons.socialMediaHTML|@html_entity_decode|replace:'<br />':"\n" }
             {elseif $berta.settings.socialMediaLinks.location == 'additionalText' && $socialMediaLinks}
-              { include file="../_includes/inc.social_media_links.tpl" }
+              {$socialMediaLinks}
             {else}
 							<div class="xEditableMCESimple xProperty-additionalText xCaption-additional-text"{if $berta.environment == 'engine'} data-path="{ $berta.options.MULTISITE }/settings/siteTexts/additionalText"{ /if }>
 							  { $additionalText }
@@ -71,7 +71,7 @@
         {if $berta.settings.socialMediaButtons.socialMediaLocation == 'footer' && $berta.settings.socialMediaButtons.socialMediaHTML}
           { $berta.settings.socialMediaButtons.socialMediaHTML|@html_entity_decode|replace:'<br />':"\n" }
         {elseif $berta.settings.socialMediaLinks.location == 'footer' && $socialMediaLinks}
-          { include file="../_includes/inc.social_media_links.tpl" }
+          {$socialMediaLinks}
         {/if}
 				<p id="userCopyright" class="xEditableTA xProperty-siteFooter"{if $berta.environment == 'engine'} data-path="{ $berta.options.MULTISITE }/settings/siteTexts/siteFooter"{ /if }>
           { $siteFooter }
