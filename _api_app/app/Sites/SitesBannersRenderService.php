@@ -7,13 +7,13 @@ use App\Shared\ImageHelpers;
 
 class SitesBannersRenderService
 {
-    private function getClassList($banner, $isResponsive)
+    private function getClassList($banner, $isResponsive, $isEditMode)
     {
         $classes = [];
         $classes[] = 'floating-banner';
         $classes[] = 'banner-' . $banner['index'];
 
-        if (!$isResponsive) {
+        if ($isEditMode && !$isResponsive) {
             $classes[] = 'xEditableDragXY';
             $classes[] = 'xProperty-banner' . $banner['index'] . 'XY';
         }
@@ -43,7 +43,7 @@ class SitesBannersRenderService
     private function getAttributes($banner, $siteName, $siteSettings, $isResponsive, $isEditMode)
     {
         return Helpers::arrayToHtmlAttributes([
-            'class' => $this->getClassList($banner, $isResponsive),
+            'class' => $this->getClassList($banner, $isResponsive, $isEditMode),
             'style' => $this->getStyleList($banner, $siteSettings, $isResponsive),
             'data-path' => $isEditMode && !$isResponsive ? $siteName . '/settings/siteTexts/banner' . $banner['index'] . 'XY' : null
         ]);
@@ -99,8 +99,9 @@ class SitesBannersRenderService
             $currentSectionType = isset($currentSection['@attributes']['type']) ? $currentSection['@attributes']['type'] : null;
         }
 
+        $templateName = explode('-', $siteSettings['template']['template'])[0];
         $isResponsiveTemplate = isset($siteTemplateSettings['pageLayout']['responsive']) && $siteTemplateSettings['pageLayout']['responsive'] == 'yes';
-        $isResponsive = $isResponsiveTemplate || (isset($currentSectionType) && $currentSectionType == 'portfolio');
+        $isResponsive = $isResponsiveTemplate || (isset($currentSectionType) && $currentSectionType == 'portfolio' && $templateName == 'messy');
 
         $banners = array_map(function ($banner) use ($siteName, $siteSettings, $storageService, $isResponsive, $isEditMode) {
             $banner['attributes'] = $this->getAttributes($banner, $siteName, $siteSettings, $isResponsive, $isEditMode);
