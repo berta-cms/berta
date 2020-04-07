@@ -5,17 +5,18 @@ namespace App\Sites;
 use App\Shared\Helpers;
 use App\Shared\ImageHelpers;
 
+use App\Sites\SiteBanner;
 class SitesBannersRenderService
 {
     private function getClassList($banner, $isResponsive, $isEditMode)
     {
         $classes = [];
         $classes[] = 'floating-banner';
-        $classes[] = 'banner-' . $banner['index'];
+        $classes[] = 'banner-' . $banner->index;
 
         if ($isEditMode && !$isResponsive) {
             $classes[] = 'xEditableDragXY';
-            $classes[] = 'xProperty-banner' . $banner['index'] . 'XY';
+            $classes[] = 'xProperty-banner' . $banner->index . 'XY';
         }
 
         return implode(' ', $classes);
@@ -29,13 +30,10 @@ class SitesBannersRenderService
             return;
         }
 
-        $pos = !empty($siteSettings['siteTexts']['banner' . $banner['index'] . 'XY']) ? explode(',', $siteSettings['siteTexts']['banner' . $banner['index'] . 'XY']) : [
-            rand(0, 960),
-            rand(0, 200)
-        ];
-
-        $styles[] = 'left:' . $pos[0] . 'px';
-        $styles[] = 'top:' . $pos[1] . 'px';
+        $left = !empty($banner->left) ? $banner->left : rand(0, 960);
+        $top = !empty($banner->top) ? $banner->top : rand(0, 200);
+        $styles[] = 'left:' . $left . 'px';
+        $styles[] = 'top:' . $top . 'px';
 
         return implode(';', $styles);
     }
@@ -45,18 +43,18 @@ class SitesBannersRenderService
         return Helpers::arrayToHtmlAttributes([
             'class' => $this->getClassList($banner, $isResponsive, $isEditMode),
             'style' => $this->getStyleList($banner, $siteSettings, $isResponsive),
-            'data-path' => $isEditMode && !$isResponsive ? $siteName . '/settings/siteTexts/banner' . $banner['index'] . 'XY' : null
+            'data-path' => $isEditMode && !$isResponsive ? $siteName . '/settings/siteTexts/banner' . $banner->index . 'XY' : null
         ]);
     }
 
     private function getImageAttributes($banner, $siteSettings, $storageService)
     {
         $image = ImageHelpers::getImageItem(
-            $banner['image'],
+            $banner->image,
             $storageService,
             [
-                'width' => !empty($banner['width']) ? $banner['width'] : null,
-                'height' => !empty($banner['height']) ? $banner['height'] : null
+                'width' => !empty($banner->width) ? $banner->width : null,
+                'height' => !empty($banner->height) ? $banner->height : null
             ]
         );
 
@@ -104,8 +102,13 @@ class SitesBannersRenderService
         $isResponsive = $isResponsiveTemplate || (isset($currentSectionType) && $currentSectionType == 'portfolio' && $templateName == 'messy');
 
         $banners = array_map(function ($banner) use ($siteName, $siteSettings, $storageService, $isResponsive, $isEditMode) {
-            $banner['attributes'] = $this->getAttributes($banner, $siteName, $siteSettings, $isResponsive, $isEditMode);
-            $banner['imageAttributes'] = $this->getImageAttributes($banner, $siteSettings, $storageService);
+            if (!empty($siteSettings['siteTexts']['banner' . $banner['index'] . 'XY'])) {
+                list($banner['left'], $banner['top']) = explode(',', $siteSettings['siteTexts']['banner' . $banner['index'] . 'XY']);
+            }
+            $siteBanner = new SiteBanner($banner);
+            $banner['siteBanner'] = $siteBanner;
+            $banner['attributes'] = $this->getAttributes($siteBanner, $siteName, $siteSettings, $isResponsive, $isEditMode);
+            $banner['imageAttributes'] = $this->getImageAttributes($siteBanner, $siteSettings, $storageService);
 
             return $banner;
         }, $banners);
