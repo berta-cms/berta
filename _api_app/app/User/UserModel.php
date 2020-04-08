@@ -76,7 +76,7 @@ class UserModel implements
         return $features;
     }
 
-    private function getHostingData($item)
+    public static function getHostingData($item)
     {
         $ENGINE_ROOT_PATH = realpath(config('app.old_berta_root') . '/engine') . '/';
         include realpath(config('app.old_berta_root') . '/engine/inc.hosting.php');

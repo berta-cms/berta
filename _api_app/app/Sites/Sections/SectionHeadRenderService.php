@@ -2,6 +2,8 @@
 
 namespace App\Sites\Sections;
 
+use App\User\UserModel;
+
 class SectionHeadRenderService
 {
     private static $TITLE_SEPARATOR = ' / ';
@@ -76,6 +78,10 @@ class SectionHeadRenderService
         $isResponsive = $isResponsiveTemplate || (isset($currentSectionType) && $currentSectionType == 'portfolio' && $templateName == 'messy');
 
         $data['title'] = $this->getTitle($siteSettings, $currentSection, $sectionTags, $tagSlug);
+        $data['keywords'] = !empty($currentSection['seoKeywords']) ? $currentSection['seoKeywords'] : $siteSettings['texts']['metaKeywords'];
+        $data['description'] = !empty($currentSection['seoDescription']) ? $currentSection['seoDescription'] : $siteSettings['texts']['metaDescription'];
+        $data['author'] = $siteSettings['texts']['ownerName'];
+        $data['noindex'] = !isset($currentSection['@attributes']['published']) || $currentSection['@attributes']['published'] == '0' || UserModel::getHostingData('NOINDEX');
         $data['isResponsive'] = $isResponsive;
         $data['isAutoResponsive'] = $isAutoResponsive;
 
