@@ -499,7 +499,7 @@ var BertaEditorBase = new Class({
         var gridStep = parseInt(bertaGlobalOptions.gridStep);
         gridStep = isNaN(gridStep) || gridStep < 1 ? 1 : gridStep;
 
-        if ($('pageEntries')) var allEntries = $('pageEntries').getElements('.mess');
+        if ($('pageEntries')) var allEntries = $('pageEntries').getElements('.xEntry.mess');
 
         var dragAll = false;
 
