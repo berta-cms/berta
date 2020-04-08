@@ -2,6 +2,7 @@
 
 namespace App\Sites\Sections;
 
+use App\Shared\I18n;
 use App\User\UserModel;
 
 class SectionHeadRenderService
@@ -62,6 +63,38 @@ class SectionHeadRenderService
         }
     }
 
+    private function getScripts($siteSlug, $siteSettings, $currentSection, $isEditMode)
+    {
+        $scripts = [];
+
+        $bertaGlobalOptions = [
+            'templateName' => $siteSettings['template']['template'],
+            'environment' => $isEditMode ? 'engine' : 'site',
+            'backToTopEnabled' => $siteSettings['navigation']['backToTopEnabled'],
+            'slideshowAutoRewind' => $siteSettings['entryLayout']['gallerySlideshowAutoRewind'],
+            'sectionType' => !empty($currentSection['@attributes']['type']) ? $currentSection['@attributes']['type'] : 'default',
+            'gridStep' => $siteSettings['pageLayout']['gridStep'],
+            'galleryFullScreenBackground' => $siteSettings['entryLayout']['galleryFullScreenBackground'],
+            'galleryFullScreenImageNumbers' => $siteSettings['entryLayout']['galleryFullScreenImageNumbers'],
+            'paths' => [
+                'engineRoot' => '/engine/',
+                'engineABSRoot' => '/engine/',
+                'siteABSMainRoot' => '/',
+                'siteABSRoot' => '/' . (!empty($siteSlug) ? $siteSlug . '/' : ''),
+                'template' => '/_templates/' . $siteSettings['template']['template'] . '/',
+                'site' => $siteSlug
+            ],
+            'i18n' => [
+                'create new entry here' => I18n::_('create new entry here'),
+                'create new entry' => I18n::_('create new entry')
+            ]
+        ];
+
+        return [
+            'bertaGlobalOptions' => json_encode($bertaGlobalOptions)
+        ];
+    }
+
     private function getViewData(
         $siteSlug,
         $sections,
@@ -70,10 +103,12 @@ class SectionHeadRenderService
         $sectionTags,
         $siteSettings,
         $siteTemplateSettings,
-        $storageService
+        $storageService,
+        $isEditMode
     ) {
         $data = [];
         $currentSection = null;
+        I18n::load_language($siteSettings['language']['language']);
 
         if (!empty($sections)) {
             $currentSectionOrder = array_search($sectionSlug, array_column($sections, 'name'));
@@ -94,6 +129,7 @@ class SectionHeadRenderService
         $data['noindex'] = !isset($currentSection['@attributes']['published']) || $currentSection['@attributes']['published'] == '0' || UserModel::getHostingData('NOINDEX');
         $data['googleSiteVerificationTag'] = $siteSettings['settings']['googleSiteVerification'];
         $data['favicon'] = $this->getFavicon($siteSettings, $storageService);
+        $data['scripts'] = $this->getScripts($siteSlug, $siteSettings, $currentSection, $isEditMode);
         $data['isResponsive'] = $isResponsive;
         $data['isAutoResponsive'] = $isAutoResponsive;
 
@@ -108,7 +144,8 @@ class SectionHeadRenderService
         $sectionTags,
         $siteSettings,
         $siteTemplateSettings,
-        $storageService
+        $storageService,
+        $isEditMode
     ) {
         $data = $this->getViewData(
             $siteSlug,
@@ -118,7 +155,8 @@ class SectionHeadRenderService
             $sectionTags,
             $siteSettings,
             $siteTemplateSettings,
-            $storageService
+            $storageService,
+            $isEditMode
         );
 
         return view('Sites/Sections/sectionHead', $data);

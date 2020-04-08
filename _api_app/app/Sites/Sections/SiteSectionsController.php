@@ -188,6 +188,7 @@ class SiteSectionsController extends Controller
         $siteTemplateSettingsDS = new SiteTemplateSettingsDataService($site, $siteSettings['template']['template']);
         $siteTemplateSettings = $siteTemplateSettingsDS->getState();
 
+        $isEditMode = true;
         $isPreviewMode = false;
         $storageService = new Storage($site, $isPreviewMode);
 
@@ -201,7 +202,8 @@ class SiteSectionsController extends Controller
             $sectionTags,
             $siteSettings,
             $siteTemplateSettings,
-            $storageService
+            $storageService,
+            $isEditMode
         );
     }
 }
