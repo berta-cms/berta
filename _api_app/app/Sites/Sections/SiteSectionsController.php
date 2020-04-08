@@ -6,6 +6,7 @@ use Validator;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
+use App\Shared\Storage;
 use App\Sites\Settings\SiteSettingsDataService;
 use App\Sites\Sections\SiteSectionsDataService;
 use App\Sites\Sections\SectionsMenuRenderService;
@@ -187,6 +188,8 @@ class SiteSectionsController extends Controller
         $siteTemplateSettingsDS = new SiteTemplateSettingsDataService($site, $siteSettings['template']['template']);
         $siteTemplateSettings = $siteTemplateSettingsDS->getState();
 
+        $isPreviewMode = false;
+        $storageService = new Storage($site, $isPreviewMode);
 
         $sectionHeadRS = new SectionHeadRenderService();
 
@@ -197,7 +200,8 @@ class SiteSectionsController extends Controller
             $tagSlug,
             $sectionTags,
             $siteSettings,
-            $siteTemplateSettings
+            $siteTemplateSettings,
+            $storageService
         );
     }
 }

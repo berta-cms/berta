@@ -53,6 +53,15 @@ class SectionHeadRenderService
         return implode($this::$TITLE_SEPARATOR, $titleParts);
     }
 
+    private function getFavicon($siteSettings, $storageService)
+    {
+        if (!empty($siteSettings['pageLayout']['favicon'])) {
+            return $storageService->MEDIA_URL . '/' . $siteSettings['pageLayout']['favicon'];
+        } else {
+            return '/_templates/' . $siteSettings['template']['template'] . '/favicon.ico';
+        }
+    }
+
     private function getViewData(
         $siteSlug,
         $sections,
@@ -60,7 +69,8 @@ class SectionHeadRenderService
         $tagSlug,
         $sectionTags,
         $siteSettings,
-        $siteTemplateSettings
+        $siteTemplateSettings,
+        $storageService
     ) {
         $data = [];
         $currentSection = null;
@@ -83,6 +93,7 @@ class SectionHeadRenderService
         $data['author'] = $siteSettings['texts']['ownerName'];
         $data['noindex'] = !isset($currentSection['@attributes']['published']) || $currentSection['@attributes']['published'] == '0' || UserModel::getHostingData('NOINDEX');
         $data['googleSiteVerificationTag'] = $siteSettings['settings']['googleSiteVerification'];
+        $data['favicon'] = $this->getFavicon($siteSettings, $storageService);
         $data['isResponsive'] = $isResponsive;
         $data['isAutoResponsive'] = $isAutoResponsive;
 
@@ -96,7 +107,8 @@ class SectionHeadRenderService
         $tagSlug,
         $sectionTags,
         $siteSettings,
-        $siteTemplateSettings
+        $siteTemplateSettings,
+        $storageService
     ) {
         $data = $this->getViewData(
             $siteSlug,
@@ -105,7 +117,8 @@ class SectionHeadRenderService
             $tagSlug,
             $sectionTags,
             $siteSettings,
-            $siteTemplateSettings
+            $siteTemplateSettings,
+            $storageService
         );
 
         return view('Sites/Sections/sectionHead', $data);
