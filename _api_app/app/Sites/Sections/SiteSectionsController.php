@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Sites\Settings\SiteSettingsDataService;
 use App\Sites\Sections\SiteSectionsDataService;
 use App\Sites\Sections\SectionsMenuRenderService;
+use App\Sites\Sections\SectionHeadRenderService;
 use App\Sites\Sections\Tags\SectionTagsDataService;
 use App\Sites\Sections\Entries\SectionEntriesDataService;
 use App\Sites\TemplateSettings\SiteTemplateSettingsDataService;
@@ -171,5 +172,32 @@ class SiteSectionsController extends Controller
         );
 
         return $sectionsMenuRS->render();
+    }
+
+    public function renderHead($site = '', Request $request)
+    {
+        $sectionsDS = new SiteSectionsDataService($site);
+        $sections = $sectionsDS->getState();
+        $sectionSlug = $request->get('section');
+        $tagSlug = $request->get('tag');
+        $sectionTagsDS = new SectionTagsDataService($site);
+        $sectionTags = $sectionTagsDS->get();
+        $siteSettingsDS = new SiteSettingsDataService($site);
+        $siteSettings = $siteSettingsDS->getState();
+        $siteTemplateSettingsDS = new SiteTemplateSettingsDataService($site, $siteSettings['template']['template']);
+        $siteTemplateSettings = $siteTemplateSettingsDS->getState();
+
+
+        $sectionHeadRS = new SectionHeadRenderService();
+
+        return $sectionHeadRS->render(
+            $site,
+            $sections,
+            $sectionSlug,
+            $tagSlug,
+            $sectionTags,
+            $siteSettings,
+            $siteTemplateSettings
+        );
     }
 }
