@@ -82,6 +82,7 @@ class SectionHeadRenderService
         $data['description'] = !empty($currentSection['seoDescription']) ? $currentSection['seoDescription'] : $siteSettings['texts']['metaDescription'];
         $data['author'] = $siteSettings['texts']['ownerName'];
         $data['noindex'] = !isset($currentSection['@attributes']['published']) || $currentSection['@attributes']['published'] == '0' || UserModel::getHostingData('NOINDEX');
+        $data['googleSiteVerificationTag'] = $siteSettings['settings']['googleSiteVerification'];
         $data['isResponsive'] = $isResponsive;
         $data['isAutoResponsive'] = $isAutoResponsive;
 
