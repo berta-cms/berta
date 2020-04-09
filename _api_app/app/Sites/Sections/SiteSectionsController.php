@@ -188,6 +188,7 @@ class SiteSectionsController extends Controller
         $siteTemplateSettingsDS = new SiteTemplateSettingsDataService($site, $siteSettings['template']['template']);
         $siteTemplateSettings = $siteTemplateSettingsDS->getState();
 
+        $isShopAvailable = config('plugin-Shop.key') === $request->getHost();
         $isEditMode = true;
         $isPreviewMode = false;
         $storageService = new Storage($site, $isPreviewMode);
@@ -203,6 +204,7 @@ class SiteSectionsController extends Controller
             $siteSettings,
             $siteTemplateSettings,
             $storageService,
+            $isShopAvailable,
             $isEditMode
         );
     }

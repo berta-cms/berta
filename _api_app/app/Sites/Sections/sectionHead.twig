@@ -16,4 +16,7 @@
   <script>
     var bertaGlobalOptions = {{ scripts.bertaGlobalOptions|raw }};
   </script>
+  {% for scriptFile in scripts.scriptFiles %}
+    <script src="{{ scriptFile }}"></script>
+  {% endfor %}
 </head>

@@ -82,9 +82,9 @@ class SectionHeadRenderService
         return $script;
     }
 
-    private function getScripts($siteSlug, $siteSettings, $currentSection, $isEditMode)
+    private function getScripts($siteSlug, $siteSettings, $currentSection, $templateName, $isShopAvailable, $isEditMode)
     {
-        $scripts = [];
+        $scriptFiles = [];
 
         $bertaGlobalOptions = [
             'templateName' => $siteSettings['template']['template'],
@@ -109,9 +109,31 @@ class SectionHeadRenderService
             ]
         ];
 
+        if ($isEditMode) {
+            $scriptFiles[] = "/engine/js/backend.min.js?{$this->version}";
+            $scriptFiles[] = "/engine/js/ng-backend.min.js?{$this->version}";
+        } else {
+            $scriptFiles[] = "/engine/js/frontend.min.js?{$this->version}";
+        }
+
+        if ($templateName == 'messy') {
+            // @todo check this case
+            // { if ($berta.section.type == 'shopping_cart' &&  $berta.environment == 'engine') || $berta.section.type != 'shopping_cart'  }
+
+            $scriptFiles[] = "/_templates/" . $siteSettings['template']['template'] . "/mess.js?{$this->version}";
+            $scriptFiles[] = "/_templates/" . $siteSettings['template']['template'] . "/mooMasonry.js?{$this->version}";
+
+            if ($isShopAvailable) {
+                $scriptFiles[] = "/_plugin_shop/js/shop.js?{$this->version}";
+            }
+        } else {
+            $scriptFiles[] = "/_templates/" . $siteSettings['template']['template'] . "/{$templateName}.js?{$this->version}";
+        }
+
         return [
             'bertaGlobalOptions' => json_encode($bertaGlobalOptions),
-            'sentryScript' => $this->getSentryScript()
+            'sentryScript' => $this->getSentryScript(),
+            'scriptFiles' => $scriptFiles
         ];
     }
 
@@ -124,6 +146,7 @@ class SectionHeadRenderService
         $siteSettings,
         $siteTemplateSettings,
         $storageService,
+        $isShopAvailable,
         $isEditMode
     ) {
         $data = [];
@@ -149,7 +172,7 @@ class SectionHeadRenderService
         $data['noindex'] = !isset($currentSection['@attributes']['published']) || $currentSection['@attributes']['published'] == '0' || UserModel::getHostingData('NOINDEX');
         $data['googleSiteVerificationTag'] = $siteSettings['settings']['googleSiteVerification'];
         $data['favicon'] = $this->getFavicon($siteSettings, $storageService);
-        $data['scripts'] = $this->getScripts($siteSlug, $siteSettings, $currentSection, $isEditMode);
+        $data['scripts'] = $this->getScripts($siteSlug, $siteSettings, $currentSection, $templateName, $isShopAvailable, $isEditMode);
         $data['isResponsive'] = $isResponsive;
         $data['isAutoResponsive'] = $isAutoResponsive;
 
@@ -165,6 +188,7 @@ class SectionHeadRenderService
         $siteSettings,
         $siteTemplateSettings,
         $storageService,
+        $isShopAvailable,
         $isEditMode
     ) {
         $data = $this->getViewData(
@@ -176,6 +200,7 @@ class SectionHeadRenderService
             $siteSettings,
             $siteTemplateSettings,
             $storageService,
+            $isShopAvailable,
             $isEditMode
         );
 
