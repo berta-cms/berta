@@ -334,9 +334,6 @@ class BertaTemplate extends BertaBase
         }
 
         $vars['berta']['settings'] = $this->settings->getApplied();
-        //print_r($vars['berta']['settings']);
-
-        $vars['berta']['pageTitle'] = $this->settings->get('texts', 'pageTitle');
 
         global $shopEnabled;
         $vars['berta']['shop_enabled'] = false;
@@ -388,7 +385,6 @@ class BertaTemplate extends BertaBase
 
             // set current section and page title
             if ($this->sectionName == $sName) {
-                $vars['berta']['pageTitle'] .= ' / ' . (!empty($s['title']) ? htmlspecialchars($s['title']['value']) : '');
                 $vars['berta']['section'] = &$vars['berta']['sections'][$sName];
             }
 
@@ -403,9 +399,6 @@ class BertaTemplate extends BertaBase
         // add subsections...
         $vars['berta']['tagName'] = $this->tagName;
         $vars['berta']['tags'] = $this->tags;
-        if ($this->tagName) {
-            $vars['berta']['pageTitle'] .= ' / ' . $this->tags[$this->sectionName][$this->tagName]['title'];
-        }
 
         // add siteTexts ...
         $texts = $this->settings->base->getAll('siteTexts');
@@ -415,89 +408,7 @@ class BertaTemplate extends BertaBase
             }
         }
 
-        // berta scripts ...
-        $engineAbsRoot = self::$options['ENGINE_ROOT_URL'];
-        $templatesAbsRoot = self::$options['TEMPLATES_ABS_ROOT'];
-
-        if ($this->apacheRewriteUsed) {
-            $site = !empty(self::$options['MULTISITE']) ? self::$options['MULTISITE'] . '/' : '';
-        } else {
-            $site = !empty(self::$options['MULTISITE']) ? '?site=' . self::$options['MULTISITE'] : '' ;
-        }
-
-        $jsSettings = [
-            'templateName' => $this->name,
-            'environment' => $this->environment,
-            'backToTopEnabled' => $this->settings->get('navigation', 'backToTopEnabled'),
-            'slideshowAutoRewind' => $this->settings->get('entryLayout', 'gallerySlideshowAutoRewind'),
-            'sectionType' => $vars['berta']['section']['type'],
-            'gridStep' => $this->settings->get('pageLayout', 'gridStep'),
-            'galleryFullScreenBackground' => $this->settings->get('entryLayout', 'galleryFullScreenBackground'),
-            'galleryFullScreenImageNumbers' => $this->settings->get('entryLayout', 'galleryFullScreenImageNumbers'),
-            'paths' => [
-                'engineRoot' => htmlspecialchars(self::$options['ENGINE_ROOT_URL']),
-                'engineABSRoot' => htmlspecialchars($engineAbsRoot),
-                'siteABSMainRoot' => htmlspecialchars(self::$options['SITE_ROOT_URL']),
-                'siteABSRoot' => htmlspecialchars(self::$options['SITE_ROOT_URL']) . $site,
-                'template' => htmlspecialchars(self::$options['SITE_ROOT_URL'] . '_templates/' . $this->name . '/'),
-                'site' => htmlspecialchars(self::$options['MULTISITE'])
-            ],
-
-            'i18n' => [
-                'create new entry here' => I18n::_('create new entry here'),
-                'create new entry' => I18n::_('create new entry'),
-            ]
-        ];
-
-        $sttingsJS = Zend_Json::encode($jsSettings);
-
-        $version = self::$options['version'];
-        $timestamp = time();
-        $site = !empty(self::$options['MULTISITE']) ? '&amp;site=' . self::$options['MULTISITE'] : '';
-        $forceResponsiveStyleParam = $jsSettings['sectionType'] == 'portfolio' ? '&amp;responsive=1' : '';
-        $isEngineParam = $this->environment == 'engine' ? '&amp;engine=1' : '';
-        $isPreview = isset($_REQUEST['preview']) ? '&amp;preview=1' : '';
-
-        if ($this->loggedIn) {
-            $vars['berta']['css'] = <<<DOC
-    <link rel="stylesheet" href="{$engineAbsRoot}css/backend.min.css?{$version}" type="text/css">
-    <link rel="stylesheet" href="{$engineAbsRoot}css/editor.css.php?{$version}" type="text/css">
-    <link rel="stylesheet" href="{$templatesAbsRoot}{$this->name}/editor.css.php?{$version}" type="text/css">
-DOC;
-        } else {
-            $vars['berta']['css'] = <<<DOC
-    <link rel="stylesheet" href="{$engineAbsRoot}css/frontend.min.css?{$version}" type="text/css">
-DOC;
-        }
-
-        $vars['berta']['css'] .= <<<DOC
-    <link rel="stylesheet" href="{$templatesAbsRoot}{$this->name}/style.css?{$version}" type="text/css">
-DOC;
-
-        $vars['berta']['css'] .= <<<DOC
-    <link rel="stylesheet" href="{$templatesAbsRoot}{$this->name}/style.css.php?{$timestamp}{$site}{$forceResponsiveStyleParam}{$isEngineParam}{$isPreview}" type="text/css">
-DOC;
-
-        $sentryScripts = self::sentryScripts();
-        $vars['berta']['scripts'] = <<<DOC
-    {$sentryScripts}
-    <script>
-        var bertaGlobalOptions = $sttingsJS;
-    </script>
-DOC;
-        if ($this->loggedIn) {
-            $vars['berta']['scripts'] .= <<<DOC
-    <script src="{$engineAbsRoot}js/backend.min.js?{$version}"></script>
-    <script src="{$engineAbsRoot}js/ng-backend.min.js?{$version}"></script>
-DOC;
-        } else {
-            $vars['berta']['scripts'] .= <<<DOC
-    <script src="{$engineAbsRoot}js/frontend.min.js?{$version}"></script>
-DOC;
-        }
-
         // counter ...
-
         $vars['berta']['google_id'] = $this->settings->get('settings', 'googleAnalyticsId');
         if ($vars['berta']['google_id'] == 'none') {
             $vars['berta']['google_id'] = '';
