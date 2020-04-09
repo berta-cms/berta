@@ -12,6 +12,7 @@
   {{ googleSiteVerificationTag|raw }}
   <title>{{ title }}</title>
   <link rel="icon" href="{{ favicon }}">
+  {{ scripts.sentryScript|raw }}
   <script>
     var bertaGlobalOptions = {{ scripts.bertaGlobalOptions|raw }};
   </script>

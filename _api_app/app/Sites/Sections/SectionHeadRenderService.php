@@ -7,7 +7,14 @@ use App\User\UserModel;
 
 class SectionHeadRenderService
 {
+    protected $version;
     private static $TITLE_SEPARATOR = ' / ';
+
+    public function __construct()
+    {
+        include realpath(config('app.old_berta_root') . '/engine/inc.version.php');
+        $this->version = $options['version'];
+    }
 
     private function getTitle($siteSettings, $currentSection, $sectionTags, $tagSlug)
     {
@@ -63,6 +70,18 @@ class SectionHeadRenderService
         }
     }
 
+    public function getSentryScript()
+    {
+        $script = '';
+        $sentryScriptFile = config('app.old_berta_root') . '/../../includes/sentry_template.html';
+
+        if (file_exists($sentryScriptFile)) {
+            $script = file_get_contents($sentryScriptFile);
+            $script = str_replace('RELEASE_VERSION', $this->version, $script);
+        }
+        return $script;
+    }
+
     private function getScripts($siteSlug, $siteSettings, $currentSection, $isEditMode)
     {
         $scripts = [];
@@ -91,7 +110,8 @@ class SectionHeadRenderService
         ];
 
         return [
-            'bertaGlobalOptions' => json_encode($bertaGlobalOptions)
+            'bertaGlobalOptions' => json_encode($bertaGlobalOptions),
+            'sentryScript' => $this->getSentryScript()
         ];
     }
 
