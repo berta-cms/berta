@@ -5,6 +5,9 @@ namespace App\Sites\Sections;
 use App\Shared\I18n;
 use App\User\UserModel;
 
+use Illuminate\Support\Str;
+use App\Plugins\Shop\ShopSettingsDataService;
+
 class SectionHeadRenderService
 {
     protected $version;
@@ -68,6 +71,79 @@ class SectionHeadRenderService
         } else {
             return '/_templates/' . $siteSettings['template']['template'] . '/favicon.ico';
         }
+    }
+
+    private function getStyles($siteSlug, $siteSettings, $currentSection, $siteTemplateSettings, $siteTemplatesConfig, $templateName, $currentSectionType, $isShopAvailable, $isResponsive, $isAutoResponsive, $isPreviewMode, $isEditMode)
+    {
+        $googleWebFonts = [];
+        $cssFiles = [];
+        $inlineCSS = '';
+
+        if ($isShopAvailable) {
+            $shopSettingsDS = new ShopSettingsDataService($siteSlug);
+            $shopSettings = $shopSettingsDS->get();
+            $siteTemplateSettings = array_merge($siteTemplateSettings, $shopSettings);
+        }
+
+        foreach ($siteTemplateSettings as $settingGroup) {
+            foreach ($settingGroup as $key => $value) {
+                if (Str::endsWith($key, 'googleFont') && !empty($value)) {
+                    $googleWebFonts[] = urlencode($value);
+                }
+            }
+        }
+        $googleWebFonts = array_unique($googleWebFonts);
+        $googleWebFonts = implode('|', $googleWebFonts);
+
+        if($isEditMode) {
+            $cssFiles[] = "/engine/css/backend.min.css?{$this->version}";
+            $cssFiles[] = "/engine/css/editor.css.php?{$this->version}";
+            $cssFiles[] = "/_templates/". $siteSettings['template']['template']."/editor.css.php?{$this->version}";
+        } else {
+            $cssFiles[] = "/engine/css/frontend.min.css?{$this->version}";
+        }
+
+        $cssFiles[] = "/_templates/". $siteSettings['template']['template']."/style.css?{$this->version}";
+
+        $queryParams = '';
+        $queryParams .= !empty($siteSlug) ? "&site={$siteSlug}" : '';
+        $queryParams .= $currentSectionType == 'portfolio' ? '&responsive=1' : '';
+        $queryParams .= $isEditMode ? '&engine=1' : '';
+        $queryParams .= $isPreviewMode ? '&preview=1' : '';
+        $cssFiles[] = "/_templates/". $siteSettings['template']['template']."/style.css.php?{$this->version}{$queryParams}";
+
+        if ($templateName == 'messy') {
+            if ($isResponsive || $isAutoResponsive) {
+                if ($isAutoResponsive) {
+                    $inlineCSS .= '@media (max-width: 767px) {';
+                }
+
+                $entryPadding = !empty($currentSection['entryPadding']) ? $currentSection['entryPadding'] : $siteTemplatesConfig[$siteSettings['template']['template']]['sectionTypes']['default']['entryPadding'];
+                $entryMaxWidth = !empty($currentSection['entryMaxWidth']) ? $currentSection['entryMaxWidth'] : '';
+                $inlineCSS .= "
+                    #pageEntries .xEntry {
+                        padding: {$entryPadding};
+                        ".
+                        ($entryMaxWidth ? "max-width: {$entryMaxWidth}" : '')
+                        ."
+                    }
+                ";
+                if ($isAutoResponsive) {
+                    $inlineCSS .= '}';
+                }
+            }
+
+            if ($isShopAvailable) {
+                $cssFiles[] = "/_plugin_shop/css/shop.css.php?{$this->version}" . ($siteSlug ? "&site={$siteSlug}" : '');
+            }
+        }
+
+        return [
+            'googleWebFonts' => $googleWebFonts,
+            'cssFiles' => $cssFiles,
+            'inlineCSS' => $inlineCSS,
+            'customCSS' => $siteTemplateSettings['css']['customCSS']
+        ];
     }
 
     public function getSentryScript()
@@ -145,12 +221,15 @@ class SectionHeadRenderService
         $sectionTags,
         $siteSettings,
         $siteTemplateSettings,
+        $siteTemplatesConfig,
         $storageService,
         $isShopAvailable,
+        $isPreviewMode,
         $isEditMode
     ) {
         $data = [];
         $currentSection = null;
+        $currentSectionType = null;
         I18n::load_language($siteSettings['language']['language']);
 
         if (!empty($sections)) {
@@ -172,6 +251,7 @@ class SectionHeadRenderService
         $data['noindex'] = !isset($currentSection['@attributes']['published']) || $currentSection['@attributes']['published'] == '0' || UserModel::getHostingData('NOINDEX');
         $data['googleSiteVerificationTag'] = $siteSettings['settings']['googleSiteVerification'];
         $data['favicon'] = $this->getFavicon($siteSettings, $storageService);
+        $data['styles'] = $this->getStyles($siteSlug, $siteSettings, $currentSection, $siteTemplateSettings, $siteTemplatesConfig, $templateName, $currentSectionType, $isShopAvailable, $isResponsive, $isAutoResponsive, $isPreviewMode, $isEditMode);
         $data['scripts'] = $this->getScripts($siteSlug, $siteSettings, $currentSection, $templateName, $isShopAvailable, $isEditMode);
         $data['isResponsive'] = $isResponsive;
         $data['isAutoResponsive'] = $isAutoResponsive;
@@ -187,8 +267,10 @@ class SectionHeadRenderService
         $sectionTags,
         $siteSettings,
         $siteTemplateSettings,
+        $siteTemplatesConfig,
         $storageService,
         $isShopAvailable,
+        $isPreviewMode,
         $isEditMode
     ) {
         $data = $this->getViewData(
@@ -199,8 +281,10 @@ class SectionHeadRenderService
             $sectionTags,
             $siteSettings,
             $siteTemplateSettings,
+            $siteTemplatesConfig,
             $storageService,
             $isShopAvailable,
+            $isPreviewMode,
             $isEditMode
         );
 

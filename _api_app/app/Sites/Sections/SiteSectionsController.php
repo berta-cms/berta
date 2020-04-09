@@ -6,6 +6,7 @@ use Validator;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
+use App\Configuration\SiteTemplatesConfigService;
 use App\Shared\Storage;
 use App\Sites\Settings\SiteSettingsDataService;
 use App\Sites\Sections\SiteSectionsDataService;
@@ -187,6 +188,8 @@ class SiteSectionsController extends Controller
         $siteSettings = $siteSettingsDS->getState();
         $siteTemplateSettingsDS = new SiteTemplateSettingsDataService($site, $siteSettings['template']['template']);
         $siteTemplateSettings = $siteTemplateSettingsDS->getState();
+        $siteTemplatesConfigService = new SiteTemplatesConfigService();
+        $siteTemplatesConfig = $siteTemplatesConfigService->getDefaults();
 
         $isShopAvailable = config('plugin-Shop.key') === $request->getHost();
         $isEditMode = true;
@@ -203,8 +206,10 @@ class SiteSectionsController extends Controller
             $sectionTags,
             $siteSettings,
             $siteTemplateSettings,
+            $siteTemplatesConfig,
             $storageService,
             $isShopAvailable,
+            $isPreviewMode,
             $isEditMode
         );
     }
