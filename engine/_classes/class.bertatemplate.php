@@ -1,9 +1,11 @@
 <?php
+use App\Configuration\SiteTemplatesConfigService;
 use App\Shared\Storage;
 use App\Sites\SitesDataService;
 use App\Sites\SitesMenuRenderService;
 use App\Sites\Settings\SiteSettingsDataService;
 use App\Sites\TemplateSettings\SiteTemplateSettingsDataService;
+use App\Sites\Sections\SectionHeadRenderService;
 use App\Sites\Sections\SiteSectionsDataService;
 use App\Sites\SitesHeaderRenderService;
 use App\Sites\Sections\SectionsMenuRenderService;
@@ -170,6 +172,26 @@ class BertaTemplate extends BertaBase
         $siteTemplateSettingsState =  $siteTemplateSettingsDS->getState();
         $sectionTagsDS = new SectionTagsDataService(self::$options['MULTISITE']);
         $sectionTags = $sectionTagsDS->get();
+
+        $siteTemplatesConfigService = new SiteTemplatesConfigService();
+        $siteTemplatesConfig = $siteTemplatesConfigService->getDefaults();
+
+        $sectionHeadRS = new SectionHeadRenderService();
+        $sectionHead = $sectionHeadRS->render(
+            self::$options['MULTISITE'],
+            $siteSections,
+            $this->sectionName,
+            $this->tagName,
+            $sectionTags,
+            $siteSettingsState,
+            $siteTemplateSettingsState,
+            $siteTemplatesConfig,
+            $storage,
+            isset($shopEnabled) && $shopEnabled,
+            $isPreviewMode,
+            $isEditMode
+        );
+        $this->addVariable('sectionHead', $sectionHead);
 
         $sitesMenuRenderService = new SitesMenuRenderService(
             self::$options['MULTISITE'],
