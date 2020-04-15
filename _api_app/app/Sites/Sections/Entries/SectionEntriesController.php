@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 
 use App\Sites\Sections\Entries\SectionEntriesDataService;
 use App\Sites\Sections\Entries\SectionEntryRenderService;
+use App\Sites\Sections\Entries\PortfolioThumbnailsRenderService;
 use App\Sites\Sections\SiteSectionsDataService;
 use App\Sites\Settings\SiteSettingsDataService;
 use App\Sites\TemplateSettings\SiteTemplateSettingsDataService;
@@ -178,5 +179,20 @@ class SectionEntriesController extends Controller
         }
 
         return response($res);
+    }
+
+    public function renderPortfolioThumbnails($site, $sectionName)
+    {
+        $siteSectionsDS = new SiteSectionsDataService($site);
+        $section = $siteSectionsDS->get($sectionName);
+
+        $sectionEntriesDS = new SectionEntriesDataService($site, $sectionName);
+        $entries = $sectionEntriesDS->get()['entry'];
+
+        $isEditMode = true;
+
+        $portfolioThumbnailsRS = new PortfolioThumbnailsRenderService();
+
+        return $portfolioThumbnailsRS->render($section, $entries, $isEditMode);
     }
 }

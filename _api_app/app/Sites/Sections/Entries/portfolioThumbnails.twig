@@ -1,0 +1,21 @@
+<div class="portfolioThumbnailsWrap">
+	<div class="portfolioThumbnails clearfix">
+		{% for entry in entries %}
+      <div class="portfolioThumbnail" data-id="{{ entry.id }}">
+        <div class="wrap">
+          {% if isEditMode %}
+            <div class="xHandle"></div>
+          {% endif %}
+          <a href="#{{ entry.slug }}">
+
+            <!-- { entryGalleryFirstImage entry=$entry } -->
+
+            {% if entry.caption %}
+              <span>{{entry.caption }}</span>
+            {% endif %}
+          </a>
+        </div>
+      </div>
+		{% endfor %}
+	</div>
+</div>

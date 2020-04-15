@@ -78,6 +78,7 @@ $app->group(['prefix' => 'v1/sites/sections', 'namespace' => 'App\Sites\Sections
     $app->patch('entries/galleries', 'SectionEntriesController@galleryCrop');
     $app->delete('entries/galleries', 'SectionEntriesController@galleryDelete');
     $app->get('entries/render/{site}/{section}[/{id}]', 'SectionEntriesController@renderEntries');
+    $app->get('entries/render-portfolio-thumbnails/{site}/{section}', 'SectionEntriesController@renderPortfolioThumbnails');
 });
 
 $app->group(['prefix' => 'v1/plugin', 'namespace' => 'App\Plugins', 'middleware' => ['setup', 'auth']], function () use ($app) {
