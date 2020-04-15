@@ -1,5 +1,7 @@
 <?php
+use Illuminate\Http\Request;
 use App\Shared\Storage;
+use App\User\UserModel;
 use App\Sites\SitesDataService;
 use App\Sites\SitesMenuRenderService;
 use App\Sites\Settings\SiteSettingsDataService;
@@ -7,6 +9,7 @@ use App\Sites\TemplateSettings\SiteTemplateSettingsDataService;
 use App\Sites\Sections\SiteSectionsDataService;
 use App\Sites\SitesHeaderRenderService;
 use App\Sites\Sections\SectionsMenuRenderService;
+use App\Sites\Sections\SectionFooterRenderService;
 use App\Sites\Sections\Entries\SectionEntriesDataService;
 use App\Sites\Sections\Entries\SectionEntryRenderService;
 use App\Sites\Sections\Tags\SectionTagsDataService;
@@ -226,6 +229,19 @@ class BertaTemplate extends BertaBase
         );
         $sectionsMenu = $sectionsMenuRS->render();
         $this->addVariable('sectionsMenu', $sectionsMenu);
+
+        $user = new UserModel();
+        $request = Request::capture();
+        $sectionFooterRS = new SectionFooterRenderService();
+
+        $sectionFooter = $sectionFooterRS->render(
+            $siteSettingsState,
+            $siteSections,
+            $user,
+            $request,
+            $isEditMode
+        );
+        $this->addVariable('sectionFooter', $sectionFooter);
 
         // We still need entries for portfolio view and for section type = mashup
         // TODO remove assigning entries to template when rendering is moved to API app
