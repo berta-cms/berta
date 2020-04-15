@@ -6,9 +6,11 @@ use Validator;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
+use App\User\UserModel;
 use App\Sites\Settings\SiteSettingsDataService;
 use App\Sites\Sections\SiteSectionsDataService;
 use App\Sites\Sections\SectionsMenuRenderService;
+use App\Sites\Sections\SectionFooterRenderService;
 use App\Sites\Sections\Tags\SectionTagsDataService;
 use App\Sites\Sections\Entries\SectionEntriesDataService;
 use App\Sites\TemplateSettings\SiteTemplateSettingsDataService;
@@ -171,5 +173,25 @@ class SiteSectionsController extends Controller
         );
 
         return $sectionsMenuRS->render();
+    }
+
+    public function renderFooter($site = '', Request $request)
+    {
+        $sectionsDS = new SiteSectionsDataService($site);
+        $sections = $sectionsDS->getState();
+        $siteSettingsDS = new SiteSettingsDataService($site);
+        $siteSettings = $siteSettingsDS->getState();
+        $isEditMode = false;
+        $user = new UserModel();
+
+        $sectionFooterRS = new SectionFooterRenderService();
+
+        return $sectionFooterRS->render(
+            $siteSettings,
+            $sections,
+            $user,
+            $request,
+            $isEditMode
+        );
     }
 }

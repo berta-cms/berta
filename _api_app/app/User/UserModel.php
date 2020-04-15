@@ -17,6 +17,8 @@ class UserModel implements
     public $features;
     public $profile_url;
     public $forgot_password_url;
+    public $intercomAppId;
+    public $intercomSecretKey;
 
     public function __construct() {
         /** @var {array} $options - Gets the old berta user from PHP file. */
@@ -28,6 +30,8 @@ class UserModel implements
         $this->profile_url = $this->getHostingData('HOSTING_PROFILE');
         $this->forgot_password_url = $this->getHostingData('FORGOTPASSWORD_LINK');
         $this->features = $this->getFeatures();
+        $this->intercomAppId = $this->getHostingData('INTERCOM_APP_ID');
+        $this->intercomSecretKey = $this->getHostingData('INTERCOM_SECRET_KEY');
     }
 
 
