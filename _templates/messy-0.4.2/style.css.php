@@ -73,7 +73,7 @@ a:active {
     font-style: <?php echo $s->get('heading', 'fontStyle') ?>;
     font-variant: <?php echo $s->get('heading', 'fontVariant') ?>;
     line-height: <?php echo $s->get('heading', 'lineHeight') ?>;
-    position: <?php echo $s->get('heading', 'position') ?> !important;§
+    position: <?php echo $s->get('heading', 'position') ?> !important;
 }
 
 h1 a,

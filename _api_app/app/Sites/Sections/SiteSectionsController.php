@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 
 use App\Configuration\SiteTemplatesConfigService;
 use App\Shared\Storage;
+use App\User\UserModel;
 use App\Sites\Settings\SiteSettingsDataService;
 use App\Sites\Sections\SiteSectionsDataService;
 use App\Sites\Sections\SectionsMenuRenderService;
@@ -190,6 +191,7 @@ class SiteSectionsController extends Controller
         $siteTemplateSettings = $siteTemplateSettingsDS->getState();
         $siteTemplatesConfigService = new SiteTemplatesConfigService();
         $siteTemplatesConfig = $siteTemplatesConfigService->getDefaults();
+        $user = new UserModel();
 
         $isShopAvailable = config('plugin-Shop.key') === $request->getHost();
         $isEditMode = true;
@@ -207,6 +209,7 @@ class SiteSectionsController extends Controller
             $siteSettings,
             $siteTemplateSettings,
             $siteTemplatesConfig,
+            $user,
             $storageService,
             $isShopAvailable,
             $isPreviewMode,

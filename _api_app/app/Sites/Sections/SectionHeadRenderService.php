@@ -3,7 +3,6 @@
 namespace App\Sites\Sections;
 
 use App\Shared\I18n;
-use App\User\UserModel;
 
 use Illuminate\Support\Str;
 use App\Plugins\Shop\ShopSettingsDataService;
@@ -222,6 +221,7 @@ class SectionHeadRenderService
         $siteSettings,
         $siteTemplateSettings,
         $siteTemplatesConfig,
+        $user,
         $storageService,
         $isShopAvailable,
         $isPreviewMode,
@@ -248,7 +248,7 @@ class SectionHeadRenderService
         $data['keywords'] = !empty($currentSection['seoKeywords']) ? $currentSection['seoKeywords'] : $siteSettings['texts']['metaKeywords'];
         $data['description'] = !empty($currentSection['seoDescription']) ? $currentSection['seoDescription'] : $siteSettings['texts']['metaDescription'];
         $data['author'] = $siteSettings['texts']['ownerName'];
-        $data['noindex'] = !isset($currentSection['@attributes']['published']) || $currentSection['@attributes']['published'] == '0' || UserModel::getHostingData('NOINDEX');
+        $data['noindex'] = !isset($currentSection['@attributes']['published']) || $currentSection['@attributes']['published'] == '0' || $user->noindex;
         $data['googleSiteVerificationTag'] = $siteSettings['settings']['googleSiteVerification'];
         $data['favicon'] = $this->getFavicon($siteSettings, $storageService);
         $data['styles'] = $this->getStyles($siteSlug, $siteSettings, $currentSection, $siteTemplateSettings, $siteTemplatesConfig, $templateName, $currentSectionType, $isShopAvailable, $isResponsive, $isAutoResponsive, $isPreviewMode, $isEditMode);
@@ -268,6 +268,7 @@ class SectionHeadRenderService
         $siteSettings,
         $siteTemplateSettings,
         $siteTemplatesConfig,
+        $user,
         $storageService,
         $isShopAvailable,
         $isPreviewMode,
@@ -282,6 +283,7 @@ class SectionHeadRenderService
             $siteSettings,
             $siteTemplateSettings,
             $siteTemplatesConfig,
+            $user,
             $storageService,
             $isShopAvailable,
             $isPreviewMode,

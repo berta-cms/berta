@@ -17,6 +17,7 @@ class UserModel implements
     public $features;
     public $profile_url;
     public $forgot_password_url;
+    public $noindex;
 
     public function __construct() {
         /** @var {array} $options - Gets the old berta user from PHP file. */
@@ -28,6 +29,7 @@ class UserModel implements
         $this->profile_url = $this->getHostingData('HOSTING_PROFILE');
         $this->forgot_password_url = $this->getHostingData('FORGOTPASSWORD_LINK');
         $this->features = $this->getFeatures();
+        $this->noindex = $this->getHostingData('NOINDEX');
     }
 
 
@@ -76,7 +78,7 @@ class UserModel implements
         return $features;
     }
 
-    public static function getHostingData($item)
+    private function getHostingData($item)
     {
         $ENGINE_ROOT_PATH = realpath(config('app.old_berta_root') . '/engine') . '/';
         include realpath(config('app.old_berta_root') . '/engine/inc.hosting.php');

@@ -1,6 +1,7 @@
 <?php
 use App\Configuration\SiteTemplatesConfigService;
 use App\Shared\Storage;
+use App\User\UserModel;
 use App\Sites\SitesDataService;
 use App\Sites\SitesMenuRenderService;
 use App\Sites\Settings\SiteSettingsDataService;
@@ -173,6 +174,8 @@ class BertaTemplate extends BertaBase
         $sectionTagsDS = new SectionTagsDataService(self::$options['MULTISITE']);
         $sectionTags = $sectionTagsDS->get();
 
+        $user = new UserModel();
+
         $siteTemplatesConfigService = new SiteTemplatesConfigService();
         $siteTemplatesConfig = $siteTemplatesConfigService->getDefaults();
 
@@ -186,6 +189,7 @@ class BertaTemplate extends BertaBase
             $siteSettingsState,
             $siteTemplateSettingsState,
             $siteTemplatesConfig,
+            $user,
             $storage,
             isset($shopEnabled) && $shopEnabled,
             $isPreviewMode,

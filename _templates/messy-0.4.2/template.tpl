@@ -2,6 +2,14 @@
 <html>
 {$sectionHead}
 
+{if $berta.section.type == 'portfolio'}
+  {assign var=isResponsive value='yes'}
+{else}
+  {assign var=isResponsive value=$berta.settings.pageLayout.responsive}
+{/if}
+{if $isResponsive !== 'yes' && $berta.settings.pageLayout.autoResponsive == 'yes' && $berta.environment == 'site'}
+  {assign var=isAutoResponsive value=true}
+{/if}
 <body class="xContent-{ $berta.section.name }{if $berta.tagName} xSubmenu-{$berta.tagName}{/if}{if $berta.environment == 'engine'} page-xMySite{/if}{if $berta.section.type} xSectionType-{ $berta.section.type }{/if}{if $isResponsive=='yes'} bt-responsive{/if}{if $isAutoResponsive} bt-auto-responsive{/if}{if $berta.settings.pageLayout.centeredContents == 'yes'} bt-centered-content{/if}">
     { if ($berta.section.type == 'shopping_cart' &&  $berta.environment == 'engine') || $berta.section.type != 'shopping_cart'  }
 
