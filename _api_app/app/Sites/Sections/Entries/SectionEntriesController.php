@@ -183,16 +183,21 @@ class SectionEntriesController extends Controller
 
     public function renderPortfolioThumbnails($site, $sectionName)
     {
+        $siteSettingsDS = new SiteSettingsDataService($site);
+        $siteSettings = $siteSettingsDS->getState();
+
         $siteSectionsDS = new SiteSectionsDataService($site);
         $section = $siteSectionsDS->get($sectionName);
 
         $sectionEntriesDS = new SectionEntriesDataService($site, $sectionName);
         $entries = $sectionEntriesDS->get()['entry'];
 
+        $storageService = new Storage($site);
+
         $isEditMode = true;
 
         $portfolioThumbnailsRS = new PortfolioThumbnailsRenderService();
 
-        return $portfolioThumbnailsRS->render($section, $entries, $isEditMode);
+        return $portfolioThumbnailsRS->render($siteSettings, $storageService, $section, $entries, $isEditMode);
     }
 }

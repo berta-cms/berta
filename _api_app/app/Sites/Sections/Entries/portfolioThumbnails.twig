@@ -7,9 +7,9 @@
             <div class="xHandle"></div>
           {% endif %}
           <a href="#{{ entry.slug }}">
-
-            <!-- { entryGalleryFirstImage entry=$entry } -->
-
+            {% if entry.image %}
+              <img{{ entry.image.attributes|raw }}>
+            {% endif %}
             {% if entry.caption %}
               <span>{{entry.caption }}</span>
             {% endif %}
