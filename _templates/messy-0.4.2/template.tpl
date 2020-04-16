@@ -261,9 +261,7 @@
                 </div>
                 { /if }
 
-                {if $berta.section.type == 'portfolio'}
-                    { include file="../_includes/inc.portfolio_thumbnails.tpl"  }
-                {/if}
+                {$portfolioThumbnails}
 
                 { if ($berta.environment == 'site' && $berta.settings.navigation.landingSectionMenuVisible=='yes') || $berta.environment == 'engine' || ($berta.environment == 'site' && $berta.settings.navigation.landingSectionMenuVisible=='no' && $berta.sectionName != $berta.sections|@key) }
                     <div id="additionalText" class="{ messClasses property='additionalTextXY' isResponsive=$isResponsive }" style="{ messStyles xy=$additionalTextXY isResponsive=$isResponsive }"{if $berta.environment == 'engine' && $isResponsive != 'yes'} data-path="{ $berta.options.MULTISITE }/settings/siteTexts/additionalTextXY"{ /if }>

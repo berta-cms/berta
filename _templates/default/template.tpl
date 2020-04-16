@@ -70,9 +70,7 @@
 				{$entriesHTML}
 			</ol>
 
-            {if $berta.section.type == 'portfolio'}
-                { include file="../_includes/inc.portfolio_thumbnails.tpl"  }
-            {/if}
+      {$portfolioThumbnails}
 
 			<div id="additionalFooterText" class="{if !($berta.settings.socialMediaButtons.socialMediaLocation == 'footer' && $berta.settings.socialMediaButtons.socialMediaHTML) && !($berta.settings.socialMediaLinks.location == 'footer' && $socialMediaLinks)}xEditableMCESimple {/if}xProperty-additionalFooterText xCaption-additional-footer-text clearfix"{if $berta.environment == 'engine' && !($berta.settings.socialMediaButtons.socialMediaLocation == 'footer' && $berta.settings.socialMediaButtons.socialMediaHTML) && !($berta.settings.socialMediaLinks.location == 'footer' && $socialMediaLinks)} data-path="{ $berta.options.MULTISITE }/settings/siteTexts/additionalFooterText"{/if}>
         {if $berta.settings.socialMediaButtons.socialMediaLocation == 'footer' && $berta.settings.socialMediaButtons.socialMediaHTML}

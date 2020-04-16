@@ -9,6 +9,7 @@ use App\Sites\SitesHeaderRenderService;
 use App\Sites\Sections\SectionsMenuRenderService;
 use App\Sites\Sections\Entries\SectionEntriesDataService;
 use App\Sites\Sections\Entries\SectionEntryRenderService;
+use App\Sites\Sections\Entries\PortfolioThumbnailsRenderService;
 use App\Sites\Sections\Tags\SectionTagsDataService;
 
 include_once dirname(__FILE__) . '/../_lib/smarty/Smarty.class.php';
@@ -212,6 +213,16 @@ class BertaTemplate extends BertaBase
         }
 
         $this->addVariable('entriesHTML', $entriesHTML);
+
+        $portfolioThumbnailsRS = new PortfolioThumbnailsRenderService();
+        $portfolioThumbnails = $portfolioThumbnailsRS->render(
+            $siteSettingsState,
+            $storage,
+            $sectionData,
+            $entries,
+            $isEditMode
+        );
+        $this->addVariable('portfolioThumbnails', $portfolioThumbnails);
 
         $sectionsMenuRS = new SectionsMenuRenderService(
             self::$options['MULTISITE'],
