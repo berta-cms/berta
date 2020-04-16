@@ -55,8 +55,6 @@ var BertaEditor = new Class({
         disk_cache: true
       });
     }
-
-    this.bgImageInit();
   },
 
   onDOMReadyDo: function () {
@@ -365,69 +363,6 @@ var BertaEditor = new Class({
         }
       }
     }
-  },
-
-  bgImageInit: function () {
-    var imContainer = $('xFilledBackground');
-    if (imContainer) {
-      var im = imContainer.getElement('img');
-      if (im.complete) {
-        this.bgImageInit_do();
-      } else {
-        im.onload = this.bgImageInit_do.bind(this);
-      }
-    }
-  },
-
-  bgImageInit_do: function () {
-    var imContainer = $('xFilledBackground');
-    var im = imContainer.getElement('img');
-    var wOrig = im.width,
-      hOrig = im.height;
-
-    var imAlignment = imContainer.getClassStoredValue('xPosition');
-    imContainer.setStyle('display', 'block');
-
-    var fnOnResize = function () {
-      var wndSize = $(window).getSize();
-      var w = wndSize.x,
-        h = wndSize.y;
-      var posX, posY;
-
-      // scale
-      var scaleX = w / wOrig,
-        scaleY = h / hOrig;
-      if (scaleX > scaleY)
-        scaleY = scaleX;
-      else
-        scaleX = scaleY;
-
-      // position X
-      if (imAlignment == 'top_left' || imAlignment == 'center_left' || imAlignment == 'bottom_left') {
-        posX = 0;
-      } else if (imAlignment == 'top_right' || imAlignment == 'center_right' || imAlignment == 'bottom_right') {
-        posX = Math.round(w - wOrig * scaleX);
-      } else {
-        posX = Math.round((w - wOrig * scaleX) / 2);
-      }
-
-      // position Y
-      if (imAlignment == 'top_left' || imAlignment == 'top_center' || imAlignment == 'top_right') {
-        posY = 0;
-      } else if (imAlignment != 'center' && imAlignment != 'center_left' && imAlignment != 'center_right') {
-        posY = Math.round(h - hOrig * scaleY);
-      } else {
-        posY = Math.round((h - hOrig * scaleY) / 2);
-      }
-
-      im.setStyle('width', wOrig * scaleX + 'px');
-      im.setStyle('height', hOrig * scaleY + 'px');
-      im.setStyle('left', posX + 'px');
-      im.setStyle('top', posY + 'px');
-    };
-
-    $(window).addEvent('resize', fnOnResize);
-    fnOnResize();
   },
 
   //sets iframe mode to transparent to allow click and edit in tiny mce
