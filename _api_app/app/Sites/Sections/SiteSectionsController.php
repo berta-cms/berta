@@ -186,11 +186,12 @@ class SiteSectionsController extends Controller
         $sections = $sectionsDS->getState();
 
         $sectionSlug = $request->get('section');
-        $isEditMode = false;
+        $isEditMode = true;
 
         $additionalTextRS = new AdditionalTextRenderService();
 
         return $additionalTextRS->render(
+            $site,
             $siteSettings,
             $siteTemplateSettings,
             $sections,
