@@ -5,7 +5,7 @@ namespace App\Sites\Sections;
 use Validator;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-
+use App\Sites\SocialMediaLinksRenderService;
 use App\Sites\Settings\SiteSettingsDataService;
 use App\Sites\Sections\SiteSectionsDataService;
 use App\Sites\Sections\SectionsMenuRenderService;
@@ -16,7 +16,6 @@ use App\Sites\TemplateSettings\SiteTemplateSettingsDataService;
 
 class SiteSectionsController extends Controller
 {
-
     public function create(Request $request)
     {
         $json = $request->json()->all();
@@ -120,7 +119,7 @@ class SiteSectionsController extends Controller
         }
 
         $validator = Validator::make(['file' => $file], [
-            'file' => 'max:' .  config('app.image_max_file_size') . '|mimes:' . implode(',', config('app.image_mimes')) . '|not_corrupted_image'
+            'file' => 'max:' . config('app.image_max_file_size') . '|mimes:' . implode(',', config('app.image_mimes')) . '|not_corrupted_image'
         ]);
 
         if ($validator->fails()) {
@@ -188,7 +187,8 @@ class SiteSectionsController extends Controller
         $sectionSlug = $request->get('section');
         $isEditMode = true;
 
-        $additionalTextRS = new AdditionalTextRenderService();
+        $socialMediaLinksRS = new SocialMediaLinksRenderService();
+        $additionalTextRS = new AdditionalTextRenderService($socialMediaLinksRS);
 
         return $additionalTextRS->render(
             $site,

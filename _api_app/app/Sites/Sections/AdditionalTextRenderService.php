@@ -6,7 +6,14 @@ use App\Shared\Helpers;
 
 class AdditionalTextRenderService
 {
+    public $socialMediaLinksRS;
     private $DRAGGABLE_CLASSES = ['xEditableDragXY', 'xProperty-additionalTextXY'];
+    private $EDITABLE_CLASSES = ['xEditableMCESimple', 'xProperty-additionalText', 'xCaption-additional-text'];
+
+    public function __construct($socialMediaLinksRS)
+    {
+        $this->socialMediaLinksRS = $socialMediaLinksRS;
+    }
 
     // @TODO move this to sections helper class
     private function isLandingPage($sections, $sectionSlug, $isEditMode)
@@ -64,6 +71,48 @@ class AdditionalTextRenderService
         return Helpers::arrayToHtmlAttributes($attributes);
     }
 
+    private function getContentAttributes($siteSlug, $isEditMode)
+    {
+        $attributes = [];
+
+        if ($isEditMode) {
+            $attributes['class'] = implode(' ', $this->EDITABLE_CLASSES);
+            $attributes['data-path'] = "{$siteSlug}/settings/siteTexts/additionalText";
+        }
+
+        return  Helpers::arrayToHtmlAttributes($attributes);
+    }
+
+    private function getContent($siteSlug, $siteSettings, $isEditMode)
+    {
+        $attributes = null;
+        $showSocialMediaButtons = $siteSettings['socialMediaButtons']['socialMediaLocation'] == 'additionalText';
+
+        if ($showSocialMediaButtons && !empty($siteSettings['socialMediaButtons']['socialMediaHTML'])) {
+            return [
+                'html' => $siteSettings['socialMediaButtons']['socialMediaHTML'],
+                'attributes' => $attributes
+            ];
+        }
+
+        $showSocialMediaLinks = $siteSettings['socialMediaLinks']['location'] == 'additionalText';
+
+        if ($showSocialMediaLinks) {
+            $socialMediaLinks = $this->socialMediaLinksRS->render($siteSettings);
+            if (!empty($socialMediaLinks)) {
+                return [
+                    'html' => $socialMediaLinks,
+                    'attributes' => $attributes
+                ];
+            }
+        }
+
+        return [
+            'html' => !empty($siteSettings['siteTexts']['additionalText']) ? $siteSettings['siteTexts']['additionalText'] : '',
+            'attributes' => $this->getContentAttributes($siteSlug, $isEditMode)
+        ];
+    }
+
     private function getViewData(
         $siteSlug,
         $siteSettings,
@@ -75,9 +124,12 @@ class AdditionalTextRenderService
         $isEditMode
     ) {
         $wrapperAttributes = $this->getWrapperAttributes($siteSlug, $siteSettings, $templateName, $isResponsive, $isEditMode);
+        $content = $this->getContent($siteSlug, $siteSettings, $isEditMode);
 
         return [
-            'wrapperAttributes' => $wrapperAttributes
+            'wrapperAttributes' => $wrapperAttributes,
+            'content' => $content,
+            'isEditMode' => $isEditMode
         ];
     }
 
