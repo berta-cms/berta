@@ -265,19 +265,7 @@
                     { include file="../_includes/inc.portfolio_thumbnails.tpl"  }
                 {/if}
 
-                { if ($berta.environment == 'site' && $berta.settings.navigation.landingSectionMenuVisible=='yes') || $berta.environment == 'engine' || ($berta.environment == 'site' && $berta.settings.navigation.landingSectionMenuVisible=='no' && $berta.sectionName != $berta.sections|@key) }
-                    <div id="additionalText" class="{ messClasses property='additionalTextXY' isResponsive=$isResponsive }" style="{ messStyles xy=$additionalTextXY isResponsive=$isResponsive }"{if $berta.environment == 'engine' && $isResponsive != 'yes'} data-path="{ $berta.options.MULTISITE }/settings/siteTexts/additionalTextXY"{ /if }>
-                        {if $berta.settings.socialMediaButtons.socialMediaLocation == 'additionalText' && $berta.settings.socialMediaButtons.socialMediaHTML}
-                            { $berta.settings.socialMediaButtons.socialMediaHTML|@html_entity_decode|replace:'<br />':"\n" }
-                        {elseif $berta.settings.socialMediaLinks.location == 'additionalText' && $socialMediaLinks}
-                            {$socialMediaLinks}
-                        {else}
-                            <div class="xEditableMCESimple xProperty-additionalText xCaption-additional-text"{if $berta.environment == 'engine'} data-path="{ $berta.options.MULTISITE }/settings/siteTexts/additionalText"{ /if }>
-                                { $additionalText }
-                            </div>
-                        {/if}
-                    </div>
-                {/if}
+                {$additionalTextBlock}
 
                 {section name=banners loop=10}
                     { assign var="setting_name_image" value="banner`$smarty.section.banners.iteration`_image" }

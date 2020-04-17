@@ -58,11 +58,12 @@ class AdditionalTextRenderService
             $attributes['data-path'] = "{$siteSlug}/settings/siteTexts/additionalTextXY";
         }
 
-        if (!$isResponsive) {
+        if ($isEditMode && !$isResponsive) {
             $classes = $this->DRAGGABLE_CLASSES;
-            if ($templateName == 'messy') {
-                $classes[] = 'mess';
-            }
+        }
+
+        if ($templateName == 'messy') {
+            $classes[] = 'mess';
         }
 
         $attributes['class'] = implode(' ', $classes);
