@@ -162,4 +162,13 @@ class SitesController extends Controller
 
         return $sitesHeaderRS->render();
     }
+
+    public function renderSocialMediaLinks($site = '', Request $request)
+    {
+        $siteSettingsDS = new SiteSettingsDataService($site);
+        $siteSettings = $siteSettingsDS->getState();
+
+        $socialMediaLinksRS = new SocialMediaLinksRenderService();
+        return $socialMediaLinksRS->render($siteSettings);
+    }
 }
