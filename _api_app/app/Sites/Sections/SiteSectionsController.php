@@ -175,11 +175,15 @@ class SiteSectionsController extends Controller
         return $sectionsMenuRS->render();
     }
 
-    public function renderAdditionalFooterText($site = '', Request $request)
+    public function renderAdditionalFooterText($siteSlug = '')
     {
+        $siteSettingsDS = new SiteSettingsDataService($siteSlug);
+        $siteSettings = $siteSettingsDS->getState();
+        $isEditMode = true;
+
         $socialMediaLinksRS = new SocialMediaLinksRenderService();
         $additionalTextRS = new AdditionalFooterTextRenderService($socialMediaLinksRS);
 
-        return $additionalTextRS->render();
+        return $additionalTextRS->render($siteSlug, $siteSettings, $isEditMode);
     }
 }
