@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 
 use App\Sites\Sections\Entries\SectionEntriesDataService;
 use App\Sites\Sections\Entries\SectionEntryRenderService;
+use App\Sites\Sections\Entries\SectionMashupEntriesRenderService;
 use App\Sites\Sections\SiteSectionsDataService;
 use App\Sites\Settings\SiteSettingsDataService;
 use App\Sites\TemplateSettings\SiteTemplateSettingsDataService;
@@ -178,5 +179,12 @@ class SectionEntriesController extends Controller
         }
 
         return response($res);
+    }
+
+    public function renderMashupEntries($siteSlug = '')
+    {
+        $mashupEntriesRS = new SectionMashupEntriesRenderService();
+
+        return $mashupEntriesRS->render($siteSlug);
     }
 }
