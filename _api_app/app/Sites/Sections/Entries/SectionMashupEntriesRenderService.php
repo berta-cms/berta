@@ -45,6 +45,10 @@ class SectionMashupEntriesRenderService
 
     private function getStyles($entry, $isResponsive)
     {
+        if ($isResponsive) {
+            return null;
+        }
+
         $styles = [];
 
         $viewportWidth = 980;

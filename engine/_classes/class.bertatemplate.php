@@ -1,5 +1,6 @@
 <?php
 use App\Shared\Storage;
+use App\Configuration\SiteTemplatesConfigService;
 use App\Sites\SitesDataService;
 use App\Sites\SitesMenuRenderService;
 use App\Sites\Settings\SiteSettingsDataService;
@@ -9,6 +10,7 @@ use App\Sites\SitesHeaderRenderService;
 use App\Sites\Sections\SectionsMenuRenderService;
 use App\Sites\Sections\Entries\SectionEntriesDataService;
 use App\Sites\Sections\Entries\SectionEntryRenderService;
+use App\Sites\Sections\Entries\SectionMashupEntriesRenderService;
 use App\Sites\Sections\Tags\SectionTagsDataService;
 
 include_once dirname(__FILE__) . '/../_lib/smarty/Smarty.class.php';
@@ -212,6 +214,21 @@ class BertaTemplate extends BertaBase
         }
 
         $this->addVariable('entriesHTML', $entriesHTML);
+
+        $siteTemplatesConfigService = new SiteTemplatesConfigService();
+        $mashupEntriesRS = new SectionMashupEntriesRenderService($siteTemplatesConfigService);
+        $mashupEntries = $mashupEntriesRS->render(
+            $storage,
+            self::$options['MULTISITE'],
+            $siteSettingsState,
+            $siteTemplateSettingsState,
+            $siteSections,
+            $this->sectionName,
+            $this->tagName,
+            $isPreviewMode,
+            $isEditMode
+        );
+        $this->addVariable('mashupEntries', $mashupEntries);
 
         $sectionsMenuRS = new SectionsMenuRenderService(
             self::$options['MULTISITE'],

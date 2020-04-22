@@ -148,7 +148,8 @@ a:active {
 }
 
 <?php if($s->get('firstPage', 'imageHaveShadows') == 'yes') { ?>
-    .firstPagePic .xGallery {
+    .firstPagePic img,
+    .firstPagePic video {
         -webkit-box-shadow: 5px 5px 2px #ccc;
         -moz-box-shadow: 5px 5px 2px #ccc;
         box-shadow: 5px 5px 2px #ccc;
