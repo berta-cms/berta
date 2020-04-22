@@ -65,7 +65,7 @@ class SectionMashupEntriesRenderService
         return implode(';', $styles);
     }
 
-    private function getAttributes($entry, $siteTemplateSettings, $isResponsive, $isEditMode)
+    private function getAttributes($entry, $siteSlug, $siteTemplateSettings, $isResponsive, $isEditMode)
     {
         $classes = [
             'firstPagePic',
@@ -88,6 +88,10 @@ class SectionMashupEntriesRenderService
 
         $attributes['class'] = implode(' ', $classes);
         $attributes['style'] = $this->getStyles($entry, $isResponsive);
+
+        if ($isEditMode && !$isResponsive) {
+            $attributes['data-path'] = "{$siteSlug}/entry/{$entry['section']['name']}/{$entry['id']}/content/positionXY";
+        }
 
         return Helpers::arrayToHtmlAttributes($attributes);
     }
@@ -184,7 +188,7 @@ class SectionMashupEntriesRenderService
 
         $entries = array_map(function ($entry) use ($storageService, $siteSlug, $siteSettings, $siteTemplateSettings, $isResponsive, $isRandom, $isPreviewMode, $isEditMode) {
             $entry['item'] = $this->getContent($entry, $storageService, $siteSettings, $siteSlug, $isRandom, $isPreviewMode, $isEditMode);
-            $entry['attributes'] = $this->getAttributes($entry, $siteTemplateSettings, $isResponsive, $isEditMode);
+            $entry['attributes'] = $this->getAttributes($entry, $siteSlug, $siteTemplateSettings, $isResponsive, $isEditMode);
             return $entry;
         }, $entries);
 
