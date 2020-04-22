@@ -96,7 +96,7 @@ class SectionMashupEntriesRenderService
         return Helpers::arrayToHtmlAttributes($attributes);
     }
 
-    private function getContent($entry, $storageService, $siteSettings, $siteSlug, $isRandom, $isPreviewMode, $isEditMode)
+    private function getContent($entry, $storageService, $siteSettings, $siteTemplateSettings, $siteSlug, $isRandom, $isPreviewMode, $isEditMode)
     {
         $url = null;
         $galleryItem = null;
@@ -134,6 +134,12 @@ class SectionMashupEntriesRenderService
             $storageService,
             $siteSettings
         );
+
+        $imageSizeRatio = (float) $siteTemplateSettings['firstPage']['imageSizeRatio'];
+        if ($imageSizeRatio > 0) {
+            $galleryItem['width'] = !empty($galleryItem['width'] && $galleryItem['width'] > 0) ?  $galleryItem['width'] * $imageSizeRatio : $galleryItem['width'];
+            $galleryItem['height'] = !empty($galleryItem['height'] && $galleryItem['height'] > 0) ?  $galleryItem['height'] * $imageSizeRatio : $galleryItem['height'];
+        }
 
         return [
             'url' => $url,
@@ -187,7 +193,7 @@ class SectionMashupEntriesRenderService
         }
 
         $entries = array_map(function ($entry) use ($storageService, $siteSlug, $siteSettings, $siteTemplateSettings, $isResponsive, $isRandom, $isPreviewMode, $isEditMode) {
-            $entry['item'] = $this->getContent($entry, $storageService, $siteSettings, $siteSlug, $isRandom, $isPreviewMode, $isEditMode);
+            $entry['item'] = $this->getContent($entry, $storageService, $siteSettings, $siteTemplateSettings, $siteSlug, $isRandom, $isPreviewMode, $isEditMode);
             $entry['attributes'] = $this->getAttributes($entry, $siteSlug, $siteTemplateSettings, $isResponsive, $isEditMode);
             return $entry;
         }, $entries);
