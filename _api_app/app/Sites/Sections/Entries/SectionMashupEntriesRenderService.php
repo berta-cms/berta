@@ -129,7 +129,6 @@ class SectionMashupEntriesRenderService
 
         $galleryItem = ImageHelpers::getGalleryItem(
             $item,
-            1,
             $entry,
             $storageService,
             $siteSettings

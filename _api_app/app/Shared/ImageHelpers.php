@@ -10,7 +10,6 @@ class ImageHelpers
      * Returns single gallery item with additional options for frontend
      *
      * @param array $image Single image
-     * @param float $sizeRatio Range 0 - 1
      * @param array $entry Single entry
      * @param Storage $storageService
      * @param array $siteSettings
@@ -18,17 +17,10 @@ class ImageHelpers
      */
     public static function getGalleryItem(
         array $image,
-        $sizeRatio,
         array $entry,
         Storage $storageService,
         array $siteSettings
     ) {
-        // Ratio is calculated only for mashup template first page marked entries
-        // isset($this->siteTemplateSettings['firstPage']['imageSizeRatio']) ? $this->siteTemplateSettings['firstPage']['imageSizeRatio'] : 1;
-        if ($sizeRatio <= 0) {
-            $sizeRatio = 1;
-        }
-
         $isImage = isset($image['@attributes']['type']) && $image['@attributes']['type'] == 'image';
         $isPoster = isset($image['@attributes']['poster_frame']);
         $imageName = $isPoster ? $image['@attributes']['poster_frame'] : $image['@attributes']['src'];
