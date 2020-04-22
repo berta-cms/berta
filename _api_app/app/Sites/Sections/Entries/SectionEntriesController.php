@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Shared\Storage;
 use App\Http\Controllers\Controller;
 
+use App\Configuration\SiteTemplatesConfigService;
 use App\Sites\Sections\Entries\SectionEntriesDataService;
 use App\Sites\Sections\Entries\SectionEntryRenderService;
 use App\Sites\Sections\Entries\SectionMashupEntriesRenderService;
@@ -181,10 +182,34 @@ class SectionEntriesController extends Controller
         return response($res);
     }
 
-    public function renderMashupEntries($siteSlug = '')
+    public function renderMashupEntries($siteSlug = '', Request $request)
     {
-        $mashupEntriesRS = new SectionMashupEntriesRenderService();
 
-        return $mashupEntriesRS->render($siteSlug);
+        $siteSettingsDS = new SiteSettingsDataService($siteSlug);
+        $siteSettings = $siteSettingsDS->getState();
+        $siteTemplateSettingsDS = new SiteTemplateSettingsDataService($siteSlug, $siteSettings['template']['template']);
+        $siteTemplateSettings = $siteTemplateSettingsDS->getState();
+        $sectionsDS = new SiteSectionsDataService($siteSlug);
+        $sections = $sectionsDS->getState();
+        $sectionSlug = $request->get('section');
+        $tagSlug = $request->get('tag');
+        $isPreviewMode = false;
+        $isEditMode = false;
+
+        $storageService = new Storage($siteSlug, $isPreviewMode);
+        $siteTemplatesConfigService = new SiteTemplatesConfigService();
+        $mashupEntriesRS = new SectionMashupEntriesRenderService($siteTemplatesConfigService);
+
+        return $mashupEntriesRS->render(
+            $storageService,
+            $siteSlug,
+            $siteSettings,
+            $siteTemplateSettings,
+            $sections,
+            $sectionSlug,
+            $tagSlug,
+            $isPreviewMode,
+            $isEditMode
+        );
     }
 }
