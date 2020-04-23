@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Sites\Settings\SiteSettingsDataService;
 use App\Sites\Sections\SiteSectionsDataService;
 use App\Sites\Sections\SectionsMenuRenderService;
+use App\Sites\Sections\SectionBackgroundGalleryRenderService;
 use App\Sites\Sections\Tags\SectionTagsDataService;
 use App\Sites\Sections\Entries\SectionEntriesDataService;
 use App\Sites\TemplateSettings\SiteTemplateSettingsDataService;
@@ -171,5 +172,25 @@ class SiteSectionsController extends Controller
         );
 
         return $sectionsMenuRS->render();
+    }
+
+    public function renderBackgroundGallery($siteSlug = '', Request $request)
+    {
+        $siteSettingsDS = new SiteSettingsDataService($siteSlug);
+        $siteSettings = $siteSettingsDS->getState();
+        $siteTemplateSettingsDS = new SiteTemplateSettingsDataService($siteSlug, $siteSettings['template']['template']);
+        $siteTemplateSettings = $siteTemplateSettingsDS->getState();
+        $sectionSlug = $request->get('section');
+        $sectionsDS = new SiteSectionsDataService($siteSlug);
+        $sections = $sectionsDS->getState();
+
+        $sectionBackgroundGalleryRS = new SectionBackgroundGalleryRenderService();
+
+        return $sectionBackgroundGalleryRS->render(
+            $siteSettings,
+            $siteTemplateSettings,
+            $sectionSlug,
+            $sections
+        );
     }
 }
