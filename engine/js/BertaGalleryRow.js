@@ -221,6 +221,7 @@ var BertaGalleryRow = new Class({
             'width': mWidth,
             'class': 'xGalleryItem xGalleryItemType-video',
             'controls': true,
+            'controlsList': 'nodownload',
             'poster': src && src.charAt(0) !== '#' ? src : null,
           });
 
