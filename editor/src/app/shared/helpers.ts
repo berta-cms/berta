@@ -238,7 +238,8 @@ export function getIconFromUrl(url: string) {
     'behance',
     'pinterest',
     'vimeo',
-    'youtube'
+    'youtube',
+    'tumblr'
   ];
 
   let parsedUrl: URL;
