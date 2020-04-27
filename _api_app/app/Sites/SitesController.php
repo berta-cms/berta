@@ -126,15 +126,15 @@ class SitesController extends Controller
     public function renderMenu($site = '', Request $request)
     {
         $sitesDS = new SitesDataService();
-        $sitesMenuRenderService = new SitesMenuRenderService(
+        $sitesMenuRenderService = new SitesMenuRenderService();
+
+        return $sitesMenuRenderService->render(
             $site,
             true,
             [],
             [],
             $sitesDS->get()
         );
-
-        return $sitesMenuRenderService->render();
     }
 
     public function renderHeader($site = '', Request $request)
