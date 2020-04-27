@@ -195,8 +195,9 @@ class BertaTemplate extends BertaBase
         $this->addVariable('siteHeader', $siteHeader);
 
         $entriesHTML = '';
+        $sectionEntriesRS = new SectionEntryRenderService();
         foreach ($entries as $entry) {
-            $sectionEntriesRS = new SectionEntryRenderService(
+            $entriesHTML .= $sectionEntriesRS->render(
                 self::$options['MULTISITE'],
                 $siteSections,
                 $entry,
@@ -207,7 +208,6 @@ class BertaTemplate extends BertaBase
                 $isEditMode,
                 isset($shopEnabled) && $shopEnabled
             );
-            $entriesHTML .= $sectionEntriesRS->render();
         }
 
         $this->addVariable('entriesHTML', $entriesHTML);

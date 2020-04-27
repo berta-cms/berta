@@ -40,7 +40,9 @@ class TestController extends Controller
 
         $storageService = new Storage('');
 
-        $entryRenderService = new SectionEntryRenderService(
+        $entryRenderService = new SectionEntryRenderService();
+
+        return $entryRenderService->render(
             '',
             $sections,
             $entry,
@@ -51,7 +53,5 @@ class TestController extends Controller
             true,
             true
         );
-
-        return $entryRenderService->render();
     }
 }
