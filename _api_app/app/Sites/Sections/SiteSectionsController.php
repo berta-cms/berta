@@ -5,17 +5,18 @@ namespace App\Sites\Sections;
 use Validator;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-
+use App\Sites\SocialMediaLinksRenderService;
 use App\Sites\Settings\SiteSettingsDataService;
 use App\Sites\Sections\SiteSectionsDataService;
 use App\Sites\Sections\SectionsMenuRenderService;
+use App\Sites\Sections\AdditionalTextRenderService;
+use App\Sites\Sections\AdditionalFooterTextRenderService;
 use App\Sites\Sections\Tags\SectionTagsDataService;
 use App\Sites\Sections\Entries\SectionEntriesDataService;
 use App\Sites\TemplateSettings\SiteTemplateSettingsDataService;
 
 class SiteSectionsController extends Controller
 {
-
     public function create(Request $request)
     {
         $json = $request->json()->all();
@@ -119,7 +120,7 @@ class SiteSectionsController extends Controller
         }
 
         $validator = Validator::make(['file' => $file], [
-            'file' => 'max:' .  config('app.image_max_file_size') . '|mimes:' . implode(',', config('app.image_mimes')) . '|not_corrupted_image'
+            'file' => 'max:' . config('app.image_max_file_size') . '|mimes:' . implode(',', config('app.image_mimes')) . '|not_corrupted_image'
         ]);
 
         if ($validator->fails()) {
@@ -158,7 +159,9 @@ class SiteSectionsController extends Controller
         $sectionTagsDS = new SectionTagsDataService($site);
         $sectionTags = $sectionTagsDS->get();
 
-        $sectionsMenuRS = new SectionsMenuRenderService(
+        $sectionsMenuRS = new SectionsMenuRenderService();
+
+        return $sectionsMenuRS->render(
             $site,
             $sections,
             $sectionSlug,
@@ -169,7 +172,44 @@ class SiteSectionsController extends Controller
             false,
             true
         );
+    }
 
-        return $sectionsMenuRS->render();
+    public function renderAdditionalText($site = '', Request $request)
+    {
+        $siteSettingsDS = new SiteSettingsDataService($site);
+        $siteSettings = $siteSettingsDS->getState();
+
+        $siteTemplateSettingsDS = new SiteTemplateSettingsDataService($site, $siteSettings['template']['template']);
+        $siteTemplateSettings = $siteTemplateSettingsDS->getState();
+
+        $sectionsDS = new SiteSectionsDataService($site);
+        $sections = $sectionsDS->getState();
+
+        $sectionSlug = $request->get('section');
+        $isEditMode = true;
+
+        $socialMediaLinksRS = new SocialMediaLinksRenderService();
+        $additionalTextRS = new AdditionalTextRenderService($socialMediaLinksRS);
+
+        return $additionalTextRS->render(
+            $site,
+            $siteSettings,
+            $siteTemplateSettings,
+            $sections,
+            $sectionSlug,
+            $isEditMode
+        );
+    }
+
+    public function renderAdditionalFooterText($siteSlug = '')
+    {
+        $siteSettingsDS = new SiteSettingsDataService($siteSlug);
+        $siteSettings = $siteSettingsDS->getState();
+        $isEditMode = true;
+
+        $socialMediaLinksRS = new SocialMediaLinksRenderService();
+        $additionalTextRS = new AdditionalFooterTextRenderService($socialMediaLinksRS);
+
+        return $additionalTextRS->render($siteSlug, $siteSettings, $isEditMode);
     }
 }

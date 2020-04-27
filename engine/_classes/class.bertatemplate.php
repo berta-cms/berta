@@ -6,11 +6,14 @@ use App\Sites\Settings\SiteSettingsDataService;
 use App\Sites\TemplateSettings\SiteTemplateSettingsDataService;
 use App\Sites\Sections\SiteSectionsDataService;
 use App\Sites\SitesHeaderRenderService;
+use App\Sites\SocialMediaLinksRenderService;
+use App\Sites\SitesBannersRenderService;
 use App\Sites\Sections\SectionsMenuRenderService;
+use App\Sites\Sections\AdditionalTextRenderService;
+use App\Sites\Sections\AdditionalFooterTextRenderService;
 use App\Sites\Sections\Entries\SectionEntriesDataService;
 use App\Sites\Sections\Entries\SectionEntryRenderService;
 use App\Sites\Sections\Tags\SectionTagsDataService;
-use App\Sites\SitesBannersRenderService;
 
 include_once dirname(__FILE__) . '/../_lib/smarty/Smarty.class.php';
 include_once dirname(__FILE__) . '/Zend/Json.php';
@@ -168,22 +171,22 @@ class BertaTemplate extends BertaBase
         $siteSettingsState = $siteSettingsDS->getState();
 
         $siteTemplateSettingsDS = new SiteTemplateSettingsDataService(self::$options['MULTISITE'], $this->name, self::$options['XML_ROOT']);
-        $siteTemplateSettingsState =  $siteTemplateSettingsDS->getState();
+        $siteTemplateSettingsState = $siteTemplateSettingsDS->getState();
         $sectionTagsDS = new SectionTagsDataService(self::$options['MULTISITE']);
         $sectionTags = $sectionTagsDS->get();
 
-        $sitesMenuRenderService = new SitesMenuRenderService(
+        $sitesMenuRenderService = new SitesMenuRenderService();
+        $sitesMenu = $sitesMenuRenderService->render(
             self::$options['MULTISITE'],
             $isEditMode,
             $siteSettingsState,
             $siteTemplateSettingsState,
             $sites
         );
-
-        $sitesMenu = $sitesMenuRenderService->render();
         $this->addVariable('sitesMenu', $sitesMenu);
 
-        $sitesHeaderRenderService = new SitesHeaderRenderService(
+        $sitesHeaderRenderService = new SitesHeaderRenderService();
+        $siteHeader = $sitesHeaderRenderService->render(
             self::$options['MULTISITE'],
             $siteSettingsState,
             $siteTemplateSettingsState,
@@ -193,12 +196,12 @@ class BertaTemplate extends BertaBase
             $isPreviewMode,
             $isEditMode
         );
-        $siteHeader = $sitesHeaderRenderService->render();
         $this->addVariable('siteHeader', $siteHeader);
 
         $entriesHTML = '';
+        $sectionEntriesRS = new SectionEntryRenderService();
         foreach ($entries as $entry) {
-            $sectionEntriesRS = new SectionEntryRenderService(
+            $entriesHTML .= $sectionEntriesRS->render(
                 self::$options['MULTISITE'],
                 $siteSections,
                 $entry,
@@ -209,12 +212,12 @@ class BertaTemplate extends BertaBase
                 $isEditMode,
                 isset($shopEnabled) && $shopEnabled
             );
-            $entriesHTML .= $sectionEntriesRS->render();
         }
 
         $this->addVariable('entriesHTML', $entriesHTML);
 
-        $sectionsMenuRS = new SectionsMenuRenderService(
+        $sectionsMenuRS = new SectionsMenuRenderService();
+        $sectionsMenu = $sectionsMenuRS->render(
             self::$options['MULTISITE'],
             $siteSections,
             $this->sectionName,
@@ -225,7 +228,6 @@ class BertaTemplate extends BertaBase
             $isPreviewMode,
             $isEditMode
         );
-        $sectionsMenu = $sectionsMenuRS->render();
         $this->addVariable('sectionsMenu', $sectionsMenu);
 
         // We still need entries for portfolio view and for section type = mashup
@@ -233,11 +235,8 @@ class BertaTemplate extends BertaBase
         list($entries, $entriesForTag) = $this->getEntriesLists($this->sectionName, $this->tagName, $this->content);
         $this->addVariable('entries', $entriesForTag);
 
-        $socialMediaLinks = [];
-        if (isset($this->settings->base->settings['socialMediaLinks']['links']['link'])) {
-            $socialMediaLinks = $this->settings->base->settings['socialMediaLinks']['links']['link'];
-            Array_XML::makeListIfNotList($socialMediaLinks);
-        }
+        $socialMediaLinksRS = new SocialMediaLinksRenderService();
+        $socialMediaLinks = $socialMediaLinksRS->render($siteSettingsState);
         $this->addVariable('socialMediaLinks', $socialMediaLinks);
 
         $sitesBannersRS = new SitesBannersRenderService();
@@ -251,6 +250,25 @@ class BertaTemplate extends BertaBase
             $isEditMode
         );
         $this->addVariable('siteBanners', $siteBanners);
+
+        $additionalTextRS = new AdditionalTextRenderService($socialMediaLinksRS);
+        $additionalTextBlock = $additionalTextRS->render(
+            self::$options['MULTISITE'],
+            $siteSettingsState,
+            $siteTemplateSettingsState,
+            $siteSections,
+            $this->sectionName,
+            $isEditMode
+        );
+        $this->addVariable('additionalTextBlock', $additionalTextBlock);
+
+        $additionalFooterTextRS = new AdditionalFooterTextRenderService($socialMediaLinksRS);
+        $additionalFooterTextBlock = $additionalFooterTextRS->render(
+            self::$options['MULTISITE'],
+            $siteSettingsState,
+            $isEditMode
+        );
+        $this->addVariable('additionalFooterTextBlock', $additionalFooterTextBlock);
     }
 
     private function getEntriesLists($sName, $tagName, &$content)

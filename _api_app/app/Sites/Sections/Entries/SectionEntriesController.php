@@ -154,12 +154,13 @@ class SectionEntriesController extends Controller
         }
 
         $res = '';
+        $sectionEntriesRS = new SectionEntryRenderService();
         foreach ($sectionEntriesDS->get()['entry'] as $entry) {
             if ($id !== null && $entry['id'] !== $id) {
                 continue;
             }
 
-            $sectionEntriesRS = new SectionEntryRenderService(
+            $res .= $sectionEntriesRS->render(
                 $site,
                 $sections,
                 $entry,
@@ -170,7 +171,6 @@ class SectionEntriesController extends Controller
                 false,
                 config('plugin-Shop.key') === $request->getHost()
             );
-            $res .= $sectionEntriesRS->render();
         }
 
         if ($res === '' && $id !== null) {
