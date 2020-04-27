@@ -28,14 +28,21 @@ body {
 	text-align: <?php echo $contentFloat ?>;
 
 	background-color: <?php echo $s->get('background', 'backgroundColor') ?>;
-	<?php if($s->get('background', 'backgroundImageEnabled') == 'yes' && ($bgAttachment = $s->get('background', 'backgroundAttachment')) != 'fill') { ?>
-		<?php if($s->get('background', 'backgroundImage')) { ?>
+	<?php if ($s->get('background', 'backgroundImageEnabled') == 'yes') { ?>
+		<?php if ($s->get('background', 'backgroundImage')) { ?>
 			background-image:url(<?php echo Berta::$options['MEDIA_ABS_ROOT'] . $s->get('background', 'backgroundImage') ?>);
 		<?php } ?>
 		background-repeat: <?php echo $s->get('background', 'backgroundRepeat') ?>;
-		background-position: <?php echo $s->get('background', 'backgroundPosition') ?>;
-		background-attachment: <?php echo $bgAttachment ?>;
-	<?php } ?>
+        background-position: <?php echo $s->get('background', 'backgroundPosition') ?>;
+        <?php
+        $bgAttachment = $s->get('background', 'backgroundAttachment');
+        if ($bgAttachment == 'fill') { ?>
+            background-size: cover;
+            background-attachment: fixed;
+        <?php } else { ?>
+            background-attachment: <?php echo $bgAttachment ?>;
+        <?php }
+	} ?>
 }
 
 a:link {
