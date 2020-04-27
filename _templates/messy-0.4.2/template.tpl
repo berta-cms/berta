@@ -205,9 +205,7 @@
                 </div>
                 { /if }
 
-                {if $berta.section.type == 'portfolio'}
-                    { include file="../_includes/inc.portfolio_thumbnails.tpl"  }
-                {/if}
+                {$portfolioThumbnails}
 
                 {$additionalTextBlock}
 

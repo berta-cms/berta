@@ -18,6 +18,7 @@ use App\Sites\Sections\AdditionalTextRenderService;
 use App\Sites\Sections\AdditionalFooterTextRenderService;
 use App\Sites\Sections\Entries\SectionEntriesDataService;
 use App\Sites\Sections\Entries\SectionEntryRenderService;
+use App\Sites\Sections\Entries\PortfolioThumbnailsRenderService;
 use App\Sites\Sections\Tags\SectionTagsDataService;
 
 include_once dirname(__FILE__) . '/../_lib/smarty/Smarty.class.php';
@@ -160,6 +161,7 @@ class BertaTemplate extends BertaBase
         $this->content = &$content;
         $this->allContent = &$allContent;
 
+        $request = Request::capture();
         $storage = new Storage(self::$options['MULTISITE'], $isPreviewMode);
 
         $sitesDataService = new SitesDataService();
@@ -241,8 +243,17 @@ class BertaTemplate extends BertaBase
                 isset($shopEnabled) && $shopEnabled
             );
         }
-
         $this->addVariable('entriesHTML', $entriesHTML);
+
+        $portfolioThumbnailsRS = new PortfolioThumbnailsRenderService();
+        $portfolioThumbnails = $portfolioThumbnailsRS->render(
+            $siteSettingsState,
+            $storage,
+            $sectionData,
+            $entries,
+            $isEditMode
+        );
+        $this->addVariable('portfolioThumbnails', $portfolioThumbnails);
 
         $sectionsMenuRS = new SectionsMenuRenderService();
         $sectionsMenu = $sectionsMenuRS->render(
@@ -258,10 +269,7 @@ class BertaTemplate extends BertaBase
         );
         $this->addVariable('sectionsMenu', $sectionsMenu);
 
-        $user = new UserModel();
-        $request = Request::capture();
         $sectionFooterRS = new SectionFooterRenderService();
-
         $sectionFooter = $sectionFooterRS->render(
             $siteSettingsState,
             $siteSections,

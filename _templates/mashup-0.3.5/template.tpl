@@ -91,9 +91,7 @@
 
 						<br class="clear" />
 
-                        {if $berta.section.type == 'portfolio'}
-                            { include file="../_includes/inc.portfolio_thumbnails.tpl"  }
-                        {/if}
+            {$portfolioThumbnails}
 					</div>
 				</div>
 			</div>
