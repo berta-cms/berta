@@ -7,12 +7,13 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Configuration\SiteTemplatesConfigService;
 
-use App\Shared\Storage;
 use App\User\UserModel;
+use App\Shared\Storage;
 use App\Sites\SocialMediaLinksRenderService;
 use App\Sites\Settings\SiteSettingsDataService;
 use App\Sites\Sections\SiteSectionsDataService;
 use App\Sites\Sections\SectionsMenuRenderService;
+use App\Sites\Sections\SectionFooterRenderService;
 use App\Sites\Sections\SectionHeadRenderService;
 use App\Sites\Sections\AdditionalTextRenderService;
 use App\Sites\Sections\AdditionalFooterTextRenderService;
@@ -254,6 +255,26 @@ class SiteSectionsController extends Controller
             $storageService,
             $isShopAvailable,
             $isPreviewMode,
+            $isEditMode
+        );
+    }
+
+    public function renderFooter($site = '', Request $request)
+    {
+        $sectionsDS = new SiteSectionsDataService($site);
+        $sections = $sectionsDS->getState();
+        $siteSettingsDS = new SiteSettingsDataService($site);
+        $siteSettings = $siteSettingsDS->getState();
+        $isEditMode = false;
+        $user = new UserModel();
+
+        $sectionFooterRS = new SectionFooterRenderService();
+
+        return $sectionFooterRS->render(
+            $siteSettings,
+            $sections,
+            $user,
+            $request,
             $isEditMode
         );
     }

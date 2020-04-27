@@ -50,14 +50,6 @@
 		{ $siteBanners }
 	</div>
 
-  { include file="../_includes/inc.back_to_top.tpl" }
-
-  { include file="../_includes/inc.photoswipe_html.tpl" }
-
-  { intercomScript }
-
-  { include file="../_includes/inc.js_include.tpl" }
-
-  { include file="../_includes/inc.counter.tpl"  }
+  { $sectionFooter }
 </body>
 </html>
