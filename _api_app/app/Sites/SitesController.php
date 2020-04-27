@@ -126,15 +126,15 @@ class SitesController extends Controller
     public function renderMenu($site = '', Request $request)
     {
         $sitesDS = new SitesDataService();
-        $sitesMenuRenderService = new SitesMenuRenderService(
+        $sitesMenuRenderService = new SitesMenuRenderService();
+
+        return $sitesMenuRenderService->render(
             $site,
             true,
             [],
             [],
             $sitesDS->get()
         );
-
-        return $sitesMenuRenderService->render();
     }
 
     public function renderHeader($site = '', Request $request)
@@ -149,7 +149,9 @@ class SitesController extends Controller
         $siteTemplateSettingsDS = new SiteTemplateSettingsDataService($site, $siteSettings['template']['template']);
         $siteTemplateSettings = $siteTemplateSettingsDS->getState();
 
-        $sitesHeaderRS = new SitesHeaderRenderService(
+        $sitesHeaderRS = new SitesHeaderRenderService();
+
+        return $sitesHeaderRS->render(
             $site,
             $siteSettings,
             $siteTemplateSettings,
@@ -159,7 +161,39 @@ class SitesController extends Controller
             false,
             true
         );
+    }
 
-        return $sitesHeaderRS->render();
+    public function renderSocialMediaLinks($site = '', Request $request)
+    {
+        $siteSettingsDS = new SiteSettingsDataService($site);
+        $siteSettings = $siteSettingsDS->getState();
+
+        $socialMediaLinksRS = new SocialMediaLinksRenderService();
+        return $socialMediaLinksRS->render($siteSettings);
+    }
+
+    public function renderBanners($site = '', Request $request)
+    {
+        $siteSettingsDS = new SiteSettingsDataService($site);
+        $siteSettings = $siteSettingsDS->getState();
+
+        $siteTemplateSettingsDS = new SiteTemplateSettingsDataService($site, $siteSettings['template']['template']);
+        $siteTemplateSettings = $siteTemplateSettingsDS->getState();
+
+        $sectionsDS = new SiteSectionsDataService($site);
+        $sections = $sectionsDS->getState();
+        $sectionSlug = $request->get('section');
+
+        $sitesBannersRS = new SitesBannersRenderService();
+
+        return $sitesBannersRS->render(
+            $site,
+            $siteSettings,
+            $siteTemplateSettings,
+            $sections,
+            $sectionSlug,
+            (new Storage($site)),
+            true
+        );
     }
 }

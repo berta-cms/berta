@@ -1,71 +1,15 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <meta charset="UTF-8">
-    {if $berta.section.type == 'portfolio'}
-        {assign var=isResponsive value='yes'}
-    {else}
-        {assign var=isResponsive value=$berta.settings.pageLayout.responsive}
-    {/if}
+{$sectionHead}
 
-    {if $isResponsive !== 'yes' && $berta.settings.pageLayout.autoResponsive == 'yes' && $berta.environment == 'site'}
-        {assign var=isAutoResponsive value=true}
-    {/if}
-
-    {if $isResponsive=='yes' || $isAutoResponsive}<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">{/if}
-    <meta name="keywords" content="{if $berta.section.seoKeywords}{ $berta.section.seoKeywords|strip_tags|escape }{else}{ $berta.settings.texts.metaKeywords|strip_tags|escape }{/if}">
-    <meta name="description" content="{if $berta.section.seoDescription}{ $berta.section.seoDescription|strip_tags|escape }{else}{ $berta.settings.texts.metaDescription|strip_tags|escape }{/if}">
-    <meta name="author" content="{ $berta.settings.texts.ownerName }">
-    {if $berta.options.NOINDEX || !$berta.section.published}<meta name="robots" content="noindex, nofollow">{/if}
-    {$berta.settings.settings.googleSiteVerification|@html_entity_decode}
-    <title>{if $berta.section.seoTitle}{ $berta.section.seoTitle|strip_tags|escape }{else}{ $berta.pageTitle|strip_tags|escape }{/if}</title>
-
-    { if $berta.settings.pageLayout.favicon }
-    <link rel="SHORTCUT ICON" href="{ $berta.options.MEDIA_ABS_ROOT }{ $berta.settings.pageLayout.favicon }">
-    { else }
-    <link rel="SHORTCUT ICON" href="{ $berta.options.TEMPLATES_ABS_ROOT }{ $berta.templateName }/favicon.ico">
-    { /if }
-    { if ($berta.section.type == 'shopping_cart' &&  $berta.environment == 'engine') || $berta.section.type != 'shopping_cart'  }
-    { $berta.scripts }
-    { $berta.css }
-    {* CSS for responsive layout *}
-    {if $isResponsive == 'yes' || $isAutoResponsive}
-        <style type="text/css">
-            {if $isAutoResponsive}
-              @media (max-width: 767px) {literal}{{/literal}
-            {/if}
-
-            #pageEntries .xEntry {literal}{{/literal}
-                padding: {if $berta.section.entryPadding }{ $berta.section.entryPadding }{ else }{ $berta.sectionTypes.default.params.entryPadding.default }{/if};
-                {if $berta.section.entryMaxWidth}
-                    max-width: { $berta.section.entryMaxWidth };
-                {/if}
-            {literal}}{/literal}
-
-            {if $isAutoResponsive}
-              {literal}}{/literal}
-            {/if}
-        </style>
-    {/if}
-    { if $berta.shop_enabled == true }
-        <link rel="stylesheet" href="{ $berta.options.SITE_ROOT_URL }_plugin_shop/css/shop.css.php?{$berta.options.version}{if $berta.options.MULTISITE}&amp;site={$berta.options.MULTISITE}{/if}" type="text/css">
-    { /if }
-
-    {if $berta.settings.css.customCSS}
-        <style type="text/css">
-        {$berta.settings.css.customCSS|@html_entity_decode|replace:'<br />':"\n"}
-        </style>
-    {/if}
-    { googleWebFontsAPI }
-    { /if }
-    <script type="text/javascript" src="{ $berta.options.TEMPLATES_ABS_ROOT }{ $berta.templateName }/mess.js?{$berta.options.version}"></script>
-    <script type="text/javascript" src="{ $berta.options.TEMPLATES_ABS_ROOT }{ $berta.templateName }/mooMasonry.js"></script>
-
-    { if $berta.shop_enabled == true }
-        <script type="text/javascript" src="{ $berta.options.SITE_ROOT_URL }_plugin_shop/js/shop.js?{$berta.options.version}"></script>
-    { /if }
-</head>
-
+{if $berta.section.type == 'portfolio'}
+  {assign var=isResponsive value='yes'}
+{else}
+  {assign var=isResponsive value=$berta.settings.pageLayout.responsive}
+{/if}
+{if $isResponsive !== 'yes' && $berta.settings.pageLayout.autoResponsive == 'yes' && $berta.environment == 'site'}
+  {assign var=isAutoResponsive value=true}
+{/if}
 <body class="xContent-{ $berta.section.name }{if $berta.tagName} xSubmenu-{$berta.tagName}{/if}{if $berta.environment == 'engine'} page-xMySite{/if}{if $berta.section.type} xSectionType-{ $berta.section.type }{/if}{if $isResponsive=='yes'} bt-responsive{/if}{if $isAutoResponsive} bt-auto-responsive{/if}{if $berta.settings.pageLayout.centeredContents == 'yes'} bt-centered-content{/if}">
     { if ($berta.section.type == 'shopping_cart' &&  $berta.environment == 'engine') || $berta.section.type != 'shopping_cart'  }
 
@@ -255,46 +199,11 @@
                 </div>
                 { /if }
 
-                {if $berta.section.type == 'portfolio'}
-                    { include file="../_includes/inc.portfolio_thumbnails.tpl"  }
-                {/if}
+                {$portfolioThumbnails}
 
-                { if ($berta.environment == 'site' && $berta.settings.navigation.landingSectionMenuVisible=='yes') || $berta.environment == 'engine' || ($berta.environment == 'site' && $berta.settings.navigation.landingSectionMenuVisible=='no' && $berta.sectionName != $berta.sections|@key) }
-                    <div id="additionalText" class="{ messClasses property='additionalTextXY' isResponsive=$isResponsive }" style="{ messStyles xy=$additionalTextXY isResponsive=$isResponsive }"{if $berta.environment == 'engine' && $isResponsive != 'yes'} data-path="{ $berta.options.MULTISITE }/settings/siteTexts/additionalTextXY"{ /if }>
-                        {if $berta.settings.socialMediaButtons.socialMediaLocation == 'additionalText' && $berta.settings.socialMediaButtons.socialMediaHTML}
-                            { $berta.settings.socialMediaButtons.socialMediaHTML|@html_entity_decode|replace:'<br />':"\n" }
-                        {elseif $berta.settings.socialMediaLinks.location == 'additionalText' && $socialMediaLinks}
-                            { include file="../_includes/inc.social_media_links.tpl" }
-                        {else}
-                            <div class="xEditableMCESimple xProperty-additionalText xCaption-additional-text"{if $berta.environment == 'engine'} data-path="{ $berta.options.MULTISITE }/settings/siteTexts/additionalText"{ /if }>
-                                { $additionalText }
-                            </div>
-                        {/if}
-                    </div>
-                {/if}
+                {$additionalTextBlock}
 
-                {section name=banners loop=10}
-                    { assign var="setting_name_image" value="banner`$smarty.section.banners.iteration`_image" }
-                    { assign var="setting_name_link" value="banner`$smarty.section.banners.iteration`_link" }
-                    { assign var="setting_pos_name" value="banner`$smarty.section.banners.iteration`XY" }
-
-                    { if $berta.settings.banners.$setting_name_image }
-                        <div class="floating-banner banner-{$smarty.section.banners.iteration}{ if $isResponsive!='yes' } xEditableDragXY xProperty-{ $setting_pos_name }{/if}"{ if $isResponsive!='yes' } style="{ bannerPos xy_name=$setting_pos_name }"{/if}{if $berta.environment == 'engine' && $isResponsive != 'yes'} data-path="{ $berta.options.MULTISITE }/settings/siteTexts/banner{$smarty.section.banners.iteration}XY"{ /if }>
-                            { if $isResponsive!='yes' }
-                                <div class="xHandle"></div>
-                            {/if}
-                            { if $berta.settings.banners.$setting_name_link }
-                                <a href="{ $berta.settings.banners.$setting_name_link }" target="_blank">
-                                    { responsiveImage image = $berta.settings.banners prefix=$setting_name_image path = $berta.options.MEDIA_ABS_ROOT }
-                                </a>
-                            { else }
-                                { responsiveImage image = $berta.settings.banners prefix=$setting_name_image path = $berta.options.MEDIA_ABS_ROOT }
-                            { /if }
-                        </div>
-
-                    { /if }
-                {/section}
-
+                { $siteBanners }
             </div>
 
             {* grid trigger *}
@@ -314,15 +223,7 @@
         { /if }
 
         <div id="bottom" class="clearfix">
-            <div id="additionalFooterText" class="{if !($berta.settings.socialMediaButtons.socialMediaLocation == 'footer' && $berta.settings.socialMediaButtons.socialMediaHTML) && !($berta.settings.socialMediaLinks.location == 'footer' && $socialMediaLinks)}xEditableMCESimple {/if}xProperty-additionalFooterText xCaption-additional-footer-text clearfix"{if $berta.environment == 'engine' && !($berta.settings.socialMediaButtons.socialMediaLocation == 'footer' && $berta.settings.socialMediaButtons.socialMediaHTML) && !($berta.settings.socialMediaLinks.location == 'footer' && $socialMediaLinks)} data-path="{ $berta.options.MULTISITE }/settings/siteTexts/additionalFooterText"{/if}>
-                {if $berta.settings.socialMediaButtons.socialMediaLocation == 'footer' && $berta.settings.socialMediaButtons.socialMediaHTML}
-                    { $berta.settings.socialMediaButtons.socialMediaHTML|@html_entity_decode|replace:'<br />':"\n" }
-                {elseif $berta.settings.socialMediaLinks.location == 'footer' && $socialMediaLinks}
-                    { include file="../_includes/inc.social_media_links.tpl" }
-                {else}
-                    { $additionalFooterText }
-                {/if}
-            </div>
+            {$additionalFooterTextBlock}
 
             { if !($berta.settings.settings.hideBertaCopyright=='yes' && $berta.hostingPlan>1) }
                 <p id="bertaCopyright">{ bertaCopyright }</p>
@@ -332,15 +233,7 @@
             </p>
         </div>
 
-        { include file="../_includes/inc.back_to_top.tpl" }
-
-        { include file="../_includes/inc.photoswipe_html.tpl" }
-
-        { intercomScript }
-
-        { include file="../_includes/inc.js_include.tpl" }
-
-        { include file="../_includes/inc.counter.tpl" }
+        { $sectionFooter }
     { /if }
 
     {if $berta.msg}
