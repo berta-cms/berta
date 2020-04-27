@@ -4,69 +4,62 @@ namespace App\Sites\Sections\Entries\Galleries;
 
 use App\Shared\Storage;
 use App\Shared\Helpers;
+use App\Sites\Sections\Entries\Galleries\EntryGalleryRenderService;
 
 class GallerySlideshowRenderService extends EntryGalleryRenderService
 {
-    public $entry;
-    public $siteSettings;
-    public $siteTemplateSettings;
-    public $storageService;
-    public $isEditMode;
-    public $isLoopAvailable;
-    public $asRowGallery;
-
-    public $galleryItemsData;
-    public $galleryItems;
-
-    public function __construct(
-        array $entry,
-        array $siteSettings,
-        array $siteTemplateSettings,
-        Storage $storageService,
+    public function getViewData(
+        $entry,
+        $siteSettings,
+        $siteTemplateSettings,
+        $storageService,
         $isEditMode,
-        $isLoopAvailable = true,
-        $asRowGallery = false
+        $isLoopAvailable,
+        $asRowGallery,
+        $galleryItemsData,
+        $galleryItems,
+        $galleryType
     ) {
-        $this->entry = $entry;
-        $this->siteSettings = $siteSettings;
-        $this->siteTemplateSettings = $siteTemplateSettings;
-        $this->storageService = $storageService;
-        $this->isEditMode = $isEditMode;
-        $this->isLoopAvailable = $isLoopAvailable;
-        $this->asRowGallery = $asRowGallery;
+        $galleryItemsData = $this->getGalleryItemsData($entry);
+        $galleryItems = $this->generateGalleryItems($galleryItemsData, $entry, $storageService, $siteSettings);
+        $galleryType = isset($entry['mediaCacheData']['@attributes']['type']) ? $entry['mediaCacheData']['@attributes']['type'] : $siteTemplateSettings['entryLayout']['defaultGalleryType'];
 
-        parent::__construct();
+        $data = parent::getViewData(
+            $entry,
+            $siteSettings,
+            $siteTemplateSettings,
+            $storageService,
+            $isEditMode,
+            $isLoopAvailable,
+            $asRowGallery,
+            $galleryItemsData,
+            $galleryItems,
+            $galleryType
+        );
 
-        $this->galleryItemsData = $this->getGalleryItemsData($this->entry);
-        $this->galleryItems = $this->generateGalleryItems($this->galleryItemsData);
-    }
-
-    public function getViewData()
-    {
-        $data = parent::getViewData();
-        $data['galleryClassList'] = $this->getGalleryClassList();
+        $data['galleryClassList'] = $this->getGalleryClassList($galleryItemsData, $galleryType, $entry, $siteSettings);
         $data['attributes'] = [
             'gallery' => Helpers::arrayToHtmlAttributes([
                 'data-fullscreen' => $data['isFullscreen'] ? 1 : null,
-                'data-as-row-gallery' => $this->asRowGallery,
-                'data-autoplay' => ($this->isLoopAvailable && !empty($this->entry['mediaCacheData']['@attributes']['autoplay'])) ? $this->entry['mediaCacheData']['@attributes']['autoplay'] : '0',
-                'data-loop' => $this->isLoopAvailable && isset($this->siteSettings['entryLayout']['gallerySlideshowAutoRewind']) && $this->siteSettings['entryLayout']['gallerySlideshowAutoRewind'] == 'yes'
+                'data-as-row-gallery' => $asRowGallery,
+                'data-autoplay' => ($isLoopAvailable && !empty($entry['mediaCacheData']['@attributes']['autoplay'])) ? $entry['mediaCacheData']['@attributes']['autoplay'] : '0',
+                'data-loop' => $isLoopAvailable && isset($siteSettings['entryLayout']['gallerySlideshowAutoRewind']) && $siteSettings['entryLayout']['gallerySlideshowAutoRewind'] == 'yes'
             ])
         ];
-        $data['galleryStyles'] = $this->getGalleryStyles();
+        $data['galleryStyles'] = $this->getGalleryStyles($entry, $galleryItems, $siteSettings);
 
-        $data['items'] = $this->galleryItems;
-        $data['showNavigation'] = count($this->galleryItemsData) > 1;
+        $data['items'] = $galleryItems;
+        $data['showNavigation'] = count($galleryItemsData) > 1;
 
         return $data;
     }
 
-    public function getGalleryClassList()
+    public function getGalleryClassList($galleryItemsData, $galleryType, $entry, $siteSettings)
     {
-        $classes = parent::getGalleryClassList();
+        $classes = parent::getGalleryClassList($galleryItemsData, $galleryType, $entry, $siteSettings);
 
-        if (!empty($this->galleryItemsData)) {
-            $gallerySlideNumbersVisible = !empty($this->entry['mediaCacheData']['@attributes']['slide_numbers_visible']) ? $this->entry['mediaCacheData']['@attributes']['slide_numbers_visible'] : $this->siteSettings['entryLayout']['gallerySlideNumberVisibilityDefault'];
+        if (!empty($galleryItemsData)) {
+            $gallerySlideNumbersVisible = !empty($entry['mediaCacheData']['@attributes']['slide_numbers_visible']) ? $entry['mediaCacheData']['@attributes']['slide_numbers_visible'] : $siteSettings['entryLayout']['gallerySlideNumberVisibilityDefault'];
 
             $classes[] = 'xSlideNumbersVisible-' . $gallerySlideNumbersVisible;
         }
@@ -74,11 +67,11 @@ class GallerySlideshowRenderService extends EntryGalleryRenderService
         return implode(' ', $classes);
     }
 
-    public function getGalleryStyles()
+    public function getGalleryStyles($entry, $galleryItems, $siteSettings)
     {
         $styles = [];
 
-        $galleryWidth = $this->getGalleryWidth();
+        $galleryWidth = $this->getGalleryWidth($entry, $galleryItems, $siteSettings);
         if ($galleryWidth) {
             $styles[] = "width: {$galleryWidth}px";
         }
@@ -86,33 +79,51 @@ class GallerySlideshowRenderService extends EntryGalleryRenderService
         return implode(';', $styles);
     }
 
-    public function getGalleryWidth()
+    public function getGalleryWidth($entry, $galleryItems, $siteSettings)
     {
-        if (!$this->galleryItems) {
+        if (!$galleryItems) {
             return false;
         }
 
-        $template = $this->siteSettings['template']['template'];
+        $template = $siteSettings['template']['template'];
         $templateName = explode('-', $template)[0];
         $isMessyTemplate = $templateName == 'messy';
-        $galleryWidthByWidestSlide = !empty($this->entry['mediaCacheData']['@attributes']['gallery_width_by_widest_slide']) ? $this->entry['mediaCacheData']['@attributes']['gallery_width_by_widest_slide'] : 'no';
+        $galleryWidthByWidestSlide = !empty($entry['mediaCacheData']['@attributes']['gallery_width_by_widest_slide']) ? $entry['mediaCacheData']['@attributes']['gallery_width_by_widest_slide'] : 'no';
 
         // Set slideshow gallery width by widest slide
         // except if current template is messy and gallery setting `galleryWidthByWidestSlide` is OFF
         if (!$isMessyTemplate || $isMessyTemplate && $galleryWidthByWidestSlide === 'yes') {
-            return max(array_column($this->galleryItems, 'width'));
+            return max(array_column($galleryItems, 'width'));
         }
 
-        return $this->galleryItems[0]['width'];
+        return $galleryItems[0]['width'];
     }
 
-    public function render()
-    {
-        if ($this->isEditMode && empty($this->galleryItemsData)) {
+    public function render(
+        $entry,
+        $siteSettings,
+        $siteTemplateSettings,
+        $storageService,
+        $isEditMode,
+        $isLoopAvailable,
+        $asRowGallery
+    ) {
+        if ($isEditMode && empty($entry['mediaCacheData']['file'])) {
             return view('Sites/Sections/Entries/Galleries/editEmptyGallery');
         }
 
-        $data = $this->getViewData();
+        $data = $this->getViewData(
+            $entry,
+            $siteSettings,
+            $siteTemplateSettings,
+            $storageService,
+            $isEditMode,
+            $isLoopAvailable,
+            $asRowGallery,
+            null,
+            null,
+            null
+        );
 
         return view('Sites/Sections/Entries/Galleries/gallerySlideshow', $data);
     }

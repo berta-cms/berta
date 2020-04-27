@@ -17,6 +17,7 @@ class UserModel implements
     public $features;
     public $profile_url;
     public $forgot_password_url;
+    public $noindex;
     public $intercomAppId;
     public $intercomSecretKey;
 
@@ -30,6 +31,7 @@ class UserModel implements
         $this->profile_url = $this->getHostingData('HOSTING_PROFILE');
         $this->forgot_password_url = $this->getHostingData('FORGOTPASSWORD_LINK');
         $this->features = $this->getFeatures();
+        $this->noindex = $this->getHostingData('NOINDEX');
         $this->intercomAppId = $this->getHostingData('INTERCOM_APP_ID');
         $this->intercomSecretKey = $this->getHostingData('INTERCOM_SECRET_KEY');
     }

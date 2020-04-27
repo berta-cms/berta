@@ -54,7 +54,7 @@ export class TextInputService {
       return null;
     }
 
-    if (event.key === 'ArrowDown' || event.keyCode === 40 || event.key === 'ArrowUp' || event.keyCode === 38) {
+    if (event.target.tagName !== 'TEXTAREA' && (event.key === 'ArrowDown' || event.keyCode === 40 || event.key === 'ArrowUp' || event.keyCode === 38)) {
       const integerUnits = ['px', '%', 'pt'];
       const decimalUnits = ['em', 'rem', 'vw', 'vh'];
 
