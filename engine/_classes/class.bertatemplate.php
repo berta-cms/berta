@@ -1,8 +1,8 @@
 <?php
 use Illuminate\Http\Request;
-use App\Configuration\SiteTemplatesConfigService;
 use App\Shared\Storage;
 use App\User\UserModel;
+use App\Configuration\SiteTemplatesConfigService;
 use App\Sites\SitesDataService;
 use App\Sites\SitesMenuRenderService;
 use App\Sites\Settings\SiteSettingsDataService;
@@ -10,6 +10,7 @@ use App\Sites\TemplateSettings\SiteTemplateSettingsDataService;
 use App\Sites\Sections\SectionHeadRenderService;
 use App\Sites\Sections\SiteSectionsDataService;
 use App\Sites\SitesHeaderRenderService;
+use App\Sites\Sections\SectionBackgroundGalleryRenderService;
 use App\Sites\SocialMediaLinksRenderService;
 use App\Sites\SitesBannersRenderService;
 use App\Sites\Sections\SectionsMenuRenderService;
@@ -204,6 +205,18 @@ class BertaTemplate extends BertaBase
             $isEditMode
         );
         $this->addVariable('sectionHead', $sectionHead);
+
+        $sectionBackgroundGalleryRS = new SectionBackgroundGalleryRenderService();
+        $backgroundGallery = $sectionBackgroundGalleryRS->render(
+            $storage,
+            $siteSettingsState,
+            $siteTemplateSettingsState,
+            $this->sectionName,
+            $siteSections,
+            $request,
+            $isEditMode
+        );
+        $this->addVariable('backgroundGallery', $backgroundGallery);
 
         $sitesMenuRenderService = new SitesMenuRenderService();
         $sitesMenu = $sitesMenuRenderService->render(

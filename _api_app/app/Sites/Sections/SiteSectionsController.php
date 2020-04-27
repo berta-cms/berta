@@ -5,14 +5,15 @@ namespace App\Sites\Sections;
 use Validator;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Configuration\SiteTemplatesConfigService;
 
 use App\User\UserModel;
 use App\Shared\Storage;
+use App\Configuration\SiteTemplatesConfigService;
 use App\Sites\SocialMediaLinksRenderService;
 use App\Sites\Settings\SiteSettingsDataService;
 use App\Sites\Sections\SiteSectionsDataService;
 use App\Sites\Sections\SectionsMenuRenderService;
+use App\Sites\Sections\SectionBackgroundGalleryRenderService;
 use App\Sites\Sections\SectionFooterRenderService;
 use App\Sites\Sections\SectionHeadRenderService;
 use App\Sites\Sections\AdditionalTextRenderService;
@@ -274,6 +275,32 @@ class SiteSectionsController extends Controller
             $siteSettings,
             $sections,
             $user,
+            $request,
+            $isEditMode
+        );
+    }
+
+    public function renderBackgroundGallery($siteSlug = '', Request $request)
+    {
+        $siteSettingsDS = new SiteSettingsDataService($siteSlug);
+        $siteSettings = $siteSettingsDS->getState();
+        $siteTemplateSettingsDS = new SiteTemplateSettingsDataService($siteSlug, $siteSettings['template']['template']);
+        $siteTemplateSettings = $siteTemplateSettingsDS->getState();
+        $sectionSlug = $request->get('section');
+        $sectionsDS = new SiteSectionsDataService($siteSlug);
+        $sections = $sectionsDS->getState();
+        $isEditMode = true;
+        $isPreviewMode = false;
+        $storageService = new Storage($siteSlug, $isPreviewMode);
+
+        $sectionBackgroundGalleryRS = new SectionBackgroundGalleryRenderService();
+
+        return $sectionBackgroundGalleryRS->render(
+            $storageService,
+            $siteSettings,
+            $siteTemplateSettings,
+            $sectionSlug,
+            $sections,
             $request,
             $isEditMode
         );
