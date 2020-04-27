@@ -167,7 +167,7 @@ class BertaTemplate extends BertaBase
         $siteSettingsState = $siteSettingsDS->getState();
 
         $siteTemplateSettingsDS = new SiteTemplateSettingsDataService(self::$options['MULTISITE'], $this->name, self::$options['XML_ROOT']);
-        $siteTemplateSettingsState =  $siteTemplateSettingsDS->getState();
+        $siteTemplateSettingsState = $siteTemplateSettingsDS->getState();
         $sectionTagsDS = new SectionTagsDataService(self::$options['MULTISITE']);
         $sectionTags = $sectionTagsDS->get();
 
@@ -212,7 +212,8 @@ class BertaTemplate extends BertaBase
 
         $this->addVariable('entriesHTML', $entriesHTML);
 
-        $sectionsMenuRS = new SectionsMenuRenderService(
+        $sectionsMenuRS = new SectionsMenuRenderService();
+        $sectionsMenu = $sectionsMenuRS->render(
             self::$options['MULTISITE'],
             $siteSections,
             $this->sectionName,
@@ -223,7 +224,6 @@ class BertaTemplate extends BertaBase
             $isPreviewMode,
             $isEditMode
         );
-        $sectionsMenu = $sectionsMenuRS->render();
         $this->addVariable('sectionsMenu', $sectionsMenu);
 
         // We still need entries for portfolio view and for section type = mashup
