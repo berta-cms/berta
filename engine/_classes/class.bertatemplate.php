@@ -6,7 +6,10 @@ use App\Sites\Settings\SiteSettingsDataService;
 use App\Sites\TemplateSettings\SiteTemplateSettingsDataService;
 use App\Sites\Sections\SiteSectionsDataService;
 use App\Sites\SitesHeaderRenderService;
+use App\Sites\SocialMediaLinksRenderService;
 use App\Sites\Sections\SectionsMenuRenderService;
+use App\Sites\Sections\AdditionalTextRenderService;
+use App\Sites\Sections\AdditionalFooterTextRenderService;
 use App\Sites\Sections\Entries\SectionEntriesDataService;
 use App\Sites\Sections\Entries\SectionEntryRenderService;
 use App\Sites\Sections\Tags\SectionTagsDataService;
@@ -231,12 +234,28 @@ class BertaTemplate extends BertaBase
         list($entries, $entriesForTag) = $this->getEntriesLists($this->sectionName, $this->tagName, $this->content);
         $this->addVariable('entries', $entriesForTag);
 
-        $socialMediaLinks = [];
-        if (isset($this->settings->base->settings['socialMediaLinks']['links']['link'])) {
-            $socialMediaLinks = $this->settings->base->settings['socialMediaLinks']['links']['link'];
-            Array_XML::makeListIfNotList($socialMediaLinks);
-        }
+        $socialMediaLinksRS = new SocialMediaLinksRenderService();
+        $socialMediaLinks = $socialMediaLinksRS->render($siteSettingsState);
         $this->addVariable('socialMediaLinks', $socialMediaLinks);
+
+        $additionalTextRS = new AdditionalTextRenderService($socialMediaLinksRS);
+        $additionalTextBlock = $additionalTextRS->render(
+            self::$options['MULTISITE'],
+            $siteSettingsState,
+            $siteTemplateSettingsState,
+            $siteSections,
+            $this->sectionName,
+            $isEditMode
+        );
+        $this->addVariable('additionalTextBlock', $additionalTextBlock);
+
+        $additionalFooterTextRS = new AdditionalFooterTextRenderService($socialMediaLinksRS);
+        $additionalFooterTextBlock = $additionalFooterTextRS->render(
+            self::$options['MULTISITE'],
+            $siteSettingsState,
+            $isEditMode
+        );
+        $this->addVariable('additionalFooterTextBlock', $additionalFooterTextBlock);
     }
 
     private function getEntriesLists($sName, $tagName, &$content)
