@@ -8,44 +8,14 @@ use App\Shared\ImageHelpers;
 
 class SitesHeaderRenderService
 {
-    private $siteName;
-    private $siteSettings;
-    private $siteTemplateSettings;
-    private $sections;
-    private $sectionSlug;
-    private $storageService;
-    private $isPreviewMode;
-    private $isEditMode;
-
-    private $templateName;
-    private $isResponsive;
     private $DRAGGABLE_HEADING_CLASSES = ['mess', 'xEditableDragXY', 'xProperty-siteHeadingXY'];
     private $EDITABLE_CLASSES = ['xEditable', 'xProperty-siteHeading'];
-
-    /**
-     * Construct SitesHeaderRenderService instance
-     */
-    public function __construct(
-        $siteName,
-        array $siteSettings,
-        array $siteTemplateSettings,
-        array $sections,
-        $sectionSlug,
-        Storage $storageService,
-        $isPreviewMode,
-        $isEditMode
-    ) {
-        $this->siteName = $siteName;
-        $this->siteSettings = $siteSettings;
-        $this->siteTemplateSettings = $siteTemplateSettings;
-        $this->sections = $sections;
-        $this->sectionSlug = $sectionSlug;
-        $this->storageService = $storageService;
-        $this->isPreviewMode = $isPreviewMode;
-        $this->isEditMode = $isEditMode;
-
-        $this->templateName = explode('-', $this->siteSettings['template']['template'])[0];
-    }
+    private $HEADER_IMAGE_TEMPLATE_SETTING_GROUP = [
+        'default' => 'pageHeading',
+        'messy' => 'heading',
+        'mashup' => 'sideBar',
+        'white' => 'pageHeading'
+    ];
 
     private function getHeadingStyles($params)
     {
@@ -57,26 +27,26 @@ class SitesHeaderRenderService
         return 'left:' . $pos[0] . 'px;top:' . $pos[1] . 'px;';
     }
 
-    private function getHeadingAttributes()
+    private function getHeadingAttributes($isResponsive, $templateName, $isEditMode, $siteName, $siteSettings, $siteTemplateSettings)
     {
         // We need heading attributes only for Messy template
-        if ($this->templateName !== 'messy') {
+        if ($templateName !== 'messy') {
             return '';
         }
 
         $attributes = [];
         $classes = [];
 
-        if ($this->isEditMode && !$this->isResponsive) {
-            $attributes['data-path'] = $this->siteName . '/settings/siteTexts/siteHeadingXY';
+        if ($isEditMode && !$isResponsive) {
+            $attributes['data-path'] = $siteName . '/settings/siteTexts/siteHeadingXY';
             $classes = $this->DRAGGABLE_HEADING_CLASSES;
         }
 
-        if (!$this->isResponsive) {
-            $attributes['style'] = $this->getHeadingStyles(isset($this->siteSettings['siteTexts']['siteHeadingXY']) ? $this->siteSettings['siteTexts']['siteHeadingXY'] : '');
+        if (!$isResponsive) {
+            $attributes['style'] = $this->getHeadingStyles(isset($siteSettings['siteTexts']['siteHeadingXY']) ? $siteSettings['siteTexts']['siteHeadingXY'] : '');
         }
 
-        if ($this->siteTemplateSettings['heading']['position'] == 'fixed') {
+        if ($siteTemplateSettings['heading']['position'] == 'fixed') {
             $classes[] = 'xFixed';
         }
 
@@ -85,11 +55,11 @@ class SitesHeaderRenderService
         return Helpers::arrayToHtmlAttributes($attributes);
     }
 
-    private function getHeadingImage()
+    private function getHeadingImageAttributes($templateName, $siteTemplateSettings, $siteSettings, $storageService)
     {
-        $settingGroup = $this->templateName == 'mashup' ? 'sideBar' : 'heading';
-        $filename = !empty($this->siteTemplateSettings[$settingGroup]['image']) ? $this->siteTemplateSettings[$settingGroup]['image'] : null;
-        $alt = !empty($this->siteSettings['texts']['pageTitle']) ? $this->siteSettings['texts']['pageTitle'] : '';
+        $settingGroup = isset($this->HEADER_IMAGE_TEMPLATE_SETTING_GROUP[$templateName]) ? $this->HEADER_IMAGE_TEMPLATE_SETTING_GROUP[$templateName] : 'heading';
+        $filename = !empty($siteTemplateSettings[$settingGroup]['image']) ? $siteTemplateSettings[$settingGroup]['image'] : null;
+        $alt = !empty($siteSettings['texts']['pageTitle']) ? $siteSettings['texts']['pageTitle'] : '';
 
         if (empty($filename)) {
             return null;
@@ -97,10 +67,10 @@ class SitesHeaderRenderService
 
         $image = ImageHelpers::getImageItem(
             $filename,
-            $this->storageService,
+            $storageService,
             [
-                'width' => !empty($this->siteTemplateSettings[$settingGroup]['image_width']) ? $this->siteTemplateSettings[$settingGroup]['image_width'] : null,
-                'height' => !empty($this->siteTemplateSettings[$settingGroup]['image_height']) ? $this->siteTemplateSettings[$settingGroup]['image_height'] : null,
+                'width' => !empty($siteTemplateSettings[$settingGroup]['image_width']) ? $siteTemplateSettings[$settingGroup]['image_width'] : null,
+                'height' => !empty($siteTemplateSettings[$settingGroup]['image_height']) ? $siteTemplateSettings[$settingGroup]['image_height'] : null,
                 'alt' => $alt
             ]
         );
@@ -108,14 +78,14 @@ class SitesHeaderRenderService
         return Helpers::arrayToHtmlAttributes($image);
     }
 
-    private function getUrl()
+    private function getUrl($siteName, $isEditMode, $isPreviewMode)
     {
         $urlParts = [];
-        if (!empty($this->siteName)) {
-            $urlParts['site'] = $this->siteName;
+        if (!empty($siteName)) {
+            $urlParts['site'] = $siteName;
         }
 
-        if ($this->isEditMode) {
+        if ($isEditMode) {
             if (empty($urlParts)) {
                 return '.';
             }
@@ -127,65 +97,109 @@ class SitesHeaderRenderService
 
             return '?' . implode('&', $parts);
         } else {
-            return '/' . implode('/', $urlParts) . ($this->isPreviewMode ? '?preview=1' : '');
+            return '/' . implode('/', $urlParts) . ($isPreviewMode ? '?preview=1' : '');
         }
     }
 
-    private function getEditableAttributes() {
-        if (!$this->isEditMode) {
+    private function getEditableAttributes($isEditMode, $siteName)
+    {
+        if (!$isEditMode) {
             return;
         }
 
         $attributes = [
             'class' => implode(' ', $this->EDITABLE_CLASSES),
-            'data-path' => $this->siteName . '/settings/siteTexts/siteHeading'
+            'data-path' => $siteName . '/settings/siteTexts/siteHeading'
         ];
 
         return Helpers::arrayToHtmlAttributes($attributes);
     }
 
-    private function getViewData()
-    {
+    /**
+     * Prepare template data
+     *
+     * @param string $siteName
+     * @param array $siteSettings
+     * @param array $siteTemplateSettings
+     * @param array $sections
+     * @param string $sectionSlug
+     * @param Storage $storageService
+     * @param boolean $isPreviewMode
+     * @param boolean $isEditMode
+     * @return array
+     */
+    private function getViewData(
+        $siteName,
+        $siteSettings,
+        $siteTemplateSettings,
+        $sections,
+        $sectionSlug,
+        $storageService,
+        $isPreviewMode,
+        $isEditMode
+    ) {
         $data = [];
-        $isLandingSectionPageHeadingVisible = $this->siteSettings['navigation']['landingSectionPageHeadingVisible'] == 'yes';
+        $isLandingSectionPageHeadingVisible = $siteSettings['navigation']['landingSectionPageHeadingVisible'] == 'yes';
+        $templateName = explode('-', $siteSettings['template']['template'])[0];
 
         // Filter sections
-        $sections = array_filter($this->sections, function ($section) {
+        $availableSections = array_filter($sections, function ($section) use ($isEditMode) {
             $isEmptyTitle = empty($section['title']);
             $isCartSection = isset($section['@attributes']['type']) && $section['@attributes']['type'] == 'shopping_cart';
-            $isPublished = $this->isEditMode || $section['@attributes']['published'] == '1';
+            $isPublished = $isEditMode || $section['@attributes']['published'] == '1';
             return !$isEmptyTitle && !$isCartSection && $isPublished;
         });
 
-        if (!$this->isEditMode && !$isLandingSectionPageHeadingVisible) {
+        if (!$isEditMode && !$isLandingSectionPageHeadingVisible) {
             // is current page a landing page
-            if (!empty($sections) && current($sections)['name'] == $this->sectionSlug) {
+            if (!empty($availableSections) && current($availableSections)['name'] == $sectionSlug) {
                 return;
             }
         }
 
-        if (!empty($this->sections)) {
-            $currentSectionOrder = array_search($this->sectionSlug, array_column($this->sections, 'name'));
-            $currentSection = $this->sections[$currentSectionOrder];
+        if (!empty($sections)) {
+            $currentSectionOrder = array_search($sectionSlug, array_column($sections, 'name'));
+            $currentSection = $sections[$currentSectionOrder];
             $currentSectionType = isset($currentSection['@attributes']['type']) ? $currentSection['@attributes']['type'] : null;
         }
 
-        $isResponsiveTemplate = isset($this->siteTemplateSettings['pageLayout']['responsive']) && $this->siteTemplateSettings['pageLayout']['responsive'] == 'yes';
-        $this->isResponsive = $isResponsiveTemplate || (isset($currentSectionType) && $currentSectionType == 'portfolio');
+        $isResponsiveTemplate = isset($siteTemplateSettings['pageLayout']['responsive']) && $siteTemplateSettings['pageLayout']['responsive'] == 'yes';
+        $isResponsive = $isResponsiveTemplate || (isset($currentSectionType) && $currentSectionType == 'portfolio');
 
-        $data['title'] = isset($this->siteSettings['siteTexts']['siteHeading']) ? $this->siteSettings['siteTexts']['siteHeading'] : '';
-        $data['headingAttributes'] = $this->getHeadingAttributes();
-        $data['headingImageAttributes'] = $this->getHeadingImage();
-        $data['link'] = $this->getUrl();
-        $data['editableAttributes'] = $this->getEditableAttributes();
-        $data['isEditMode'] = $this->isEditMode;
+        $data['title'] = isset($siteSettings['siteTexts']['siteHeading']) ? $siteSettings['siteTexts']['siteHeading'] : '';
+        $data['headingAttributes'] = $this->getHeadingAttributes($isResponsive, $templateName, $isEditMode, $siteName, $siteSettings, $siteTemplateSettings);
+        $data['headingImageAttributes'] = $this->getHeadingImageAttributes($templateName, $siteTemplateSettings, $siteSettings, $storageService);
+        $data['link'] = $this->getUrl($siteName, $isEditMode, $isPreviewMode);
+        $data['editableAttributes'] = $this->getEditableAttributes($isEditMode, $siteName);
+        $data['isEditMode'] = $isEditMode;
 
         return $data;
     }
 
-    public function render()
-    {
-        $data = $this->getViewData();
+    /**
+     * Render site header
+     *
+     * @param string $siteName
+     * @param array $siteSettings
+     * @param array $siteTemplateSettings
+     * @param array $sections
+     * @param string $sectionSlug
+     * @param Storage $storageService
+     * @param boolean $isPreviewMode
+     * @param boolean $isEditMode
+     * @return string
+     */
+    public function render(
+        $siteName,
+        $siteSettings,
+        $siteTemplateSettings,
+        $sections,
+        $sectionSlug,
+        $storageService,
+        $isPreviewMode,
+        $isEditMode
+    ) {
+        $data = $this->getViewData($siteName, $siteSettings, $siteTemplateSettings, $sections, $sectionSlug, $storageService, $isPreviewMode, $isEditMode);
         if (!$data) {
             return '';
         }

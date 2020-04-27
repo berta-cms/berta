@@ -170,22 +170,22 @@ class BertaTemplate extends BertaBase
         $siteSettingsState = $siteSettingsDS->getState();
 
         $siteTemplateSettingsDS = new SiteTemplateSettingsDataService(self::$options['MULTISITE'], $this->name, self::$options['XML_ROOT']);
-        $siteTemplateSettingsState =  $siteTemplateSettingsDS->getState();
+        $siteTemplateSettingsState = $siteTemplateSettingsDS->getState();
         $sectionTagsDS = new SectionTagsDataService(self::$options['MULTISITE']);
         $sectionTags = $sectionTagsDS->get();
 
-        $sitesMenuRenderService = new SitesMenuRenderService(
+        $sitesMenuRenderService = new SitesMenuRenderService();
+        $sitesMenu = $sitesMenuRenderService->render(
             self::$options['MULTISITE'],
             $isEditMode,
             $siteSettingsState,
             $siteTemplateSettingsState,
             $sites
         );
-
-        $sitesMenu = $sitesMenuRenderService->render();
         $this->addVariable('sitesMenu', $sitesMenu);
 
-        $sitesHeaderRenderService = new SitesHeaderRenderService(
+        $sitesHeaderRenderService = new SitesHeaderRenderService();
+        $siteHeader = $sitesHeaderRenderService->render(
             self::$options['MULTISITE'],
             $siteSettingsState,
             $siteTemplateSettingsState,
@@ -195,12 +195,12 @@ class BertaTemplate extends BertaBase
             $isPreviewMode,
             $isEditMode
         );
-        $siteHeader = $sitesHeaderRenderService->render();
         $this->addVariable('siteHeader', $siteHeader);
 
         $entriesHTML = '';
+        $sectionEntriesRS = new SectionEntryRenderService();
         foreach ($entries as $entry) {
-            $sectionEntriesRS = new SectionEntryRenderService(
+            $entriesHTML .= $sectionEntriesRS->render(
                 self::$options['MULTISITE'],
                 $siteSections,
                 $entry,
@@ -211,12 +211,12 @@ class BertaTemplate extends BertaBase
                 $isEditMode,
                 isset($shopEnabled) && $shopEnabled
             );
-            $entriesHTML .= $sectionEntriesRS->render();
         }
 
         $this->addVariable('entriesHTML', $entriesHTML);
 
-        $sectionsMenuRS = new SectionsMenuRenderService(
+        $sectionsMenuRS = new SectionsMenuRenderService();
+        $sectionsMenu = $sectionsMenuRS->render(
             self::$options['MULTISITE'],
             $siteSections,
             $this->sectionName,
@@ -227,7 +227,6 @@ class BertaTemplate extends BertaBase
             $isPreviewMode,
             $isEditMode
         );
-        $sectionsMenu = $sectionsMenuRS->render();
         $this->addVariable('sectionsMenu', $sectionsMenu);
 
         // We still need entries for portfolio view and for section type = mashup

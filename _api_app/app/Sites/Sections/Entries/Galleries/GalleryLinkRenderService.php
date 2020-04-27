@@ -3,68 +3,67 @@
 namespace App\Sites\Sections\Entries\Galleries;
 
 use App\Shared\Storage;
+use App\Sites\Sections\Entries\Galleries\EntryGalleryRenderService;
 
 class GalleryLinkRenderService extends EntryGalleryRenderService
 {
-    public $entry;
-    public $siteSettings;
-    public $siteTemplateSettings;
-    public $storageService;
-    public $isEditMode;
-
-    public $galleryItemsData;
-    public $galleryItems;
-
-    public function __construct(
-        array $entry,
-        array $siteSettings,
-        array $siteTemplateSettings,
-        Storage $storageService,
-        $isEditMode
+    public function getViewData(
+        $entry,
+        $siteSettings,
+        $siteTemplateSettings,
+        $storageService,
+        $isEditMode,
+        $isLoopAvailable,
+        $asRowGallery,
+        $galleryItemsData,
+        $galleryItems,
+        $galleryType
     ) {
-        $this->entry = $entry;
-        $this->siteSettings = $siteSettings;
-        $this->siteTemplateSettings = $siteTemplateSettings;
-        $this->storageService = $storageService;
-        $this->isEditMode = $isEditMode;
+        $galleryItemsData = $this->getGalleryItemsData($entry);
+        $galleryItems = $this->generateGalleryItems($galleryItemsData, $entry, $storageService, $siteSettings);
+        $galleryType = isset($entry['mediaCacheData']['@attributes']['type']) ? $entry['mediaCacheData']['@attributes']['type'] : $siteTemplateSettings['entryLayout']['defaultGalleryType'];
 
-        parent::__construct();
+        $data = parent::getViewData(
+            $entry,
+            $siteSettings,
+            $siteTemplateSettings,
+            $storageService,
+            $isEditMode,
+            $isLoopAvailable,
+            $asRowGallery,
+            $galleryItemsData,
+            $galleryItems,
+            $galleryType
+        );
 
-        $this->galleryItemsData = $this->getGalleryItemsData($this->entry);
-        $this->galleryItems = $this->generateGalleryItems($this->galleryItemsData);
-    }
-
-    public function getViewData()
-    {
-        $data = parent::getViewData();
-        $data['galleryClassList'] = $this->getGalleryClassList();
-        $data['galleryStyles'] = $this->getGalleryStyles();
-        $data['linkAddress'] = !empty($this->entry['mediaCacheData']['@attributes']['link_address']) ? $this->entry['mediaCacheData']['@attributes']['link_address'] : '';
-        $data['linkTarget'] = !empty($this->entry['mediaCacheData']['@attributes']['linkTarget']) ? $this->entry['mediaCacheData']['@attributes']['linkTarget'] : '_self';
-        $data['items'] = $this->getLimitedGalleryItems();
+        $data['galleryClassList'] = $this->getGalleryClassList($galleryItemsData, $galleryType, $entry, $siteSettings);
+        $data['galleryStyles'] = $this->getGalleryStyles($galleryItems);
+        $data['linkAddress'] = !empty($entry['mediaCacheData']['@attributes']['link_address']) ? $entry['mediaCacheData']['@attributes']['link_address'] : '';
+        $data['linkTarget'] = !empty($entry['mediaCacheData']['@attributes']['linkTarget']) ? $entry['mediaCacheData']['@attributes']['linkTarget'] : '_self';
+        $data['items'] = $this->getLimitedGalleryItems($galleryItems);
 
         return $data;
     }
 
-    public function getGalleryClassList()
+    public function getGalleryClassList($galleryItemsData, $galleryType, $entry, $siteSettings)
     {
-        $classes = parent::getGalleryClassList();
-        if (count($this->galleryItems) > 1) {
+        $classes = parent::getGalleryClassList($galleryItemsData, $galleryType, $entry, $siteSettings);
+        if (count($galleryItemsData) > 1) {
             $classes[] = 'bt-has-hover';
         }
 
         return implode(' ', $classes);
     }
 
-    private function getGalleryStyles()
+    private function getGalleryStyles($galleryItems)
     {
         $styles = [];
 
-        if (!$this->galleryItems) {
+        if (!$galleryItems) {
             return '';
         }
 
-        $item = current($this->galleryItems);
+        $item = current($galleryItems);
         $styles[] = "width: {$item['width']}px";
         // in case of video use video ratio to calculate height
         $height = $item['height'] ? $item['height'] : $item['width'] * .5625; // 16:9 ratio
@@ -73,21 +72,39 @@ class GalleryLinkRenderService extends EntryGalleryRenderService
         return implode(';', $styles);
     }
 
-    private function getLimitedGalleryItems()
+    private function getLimitedGalleryItems($galleryItems)
     {
         // Limit to two items
         // First is a visible item
         // Second is element visible on hover
-        return array_slice($this->galleryItems, 0, 2);
+        return array_slice($galleryItems, 0, 2);
     }
 
-    public function render()
-    {
-        if ($this->isEditMode && empty($this->galleryItemsData)) {
+    public function render(
+        $entry,
+        $siteSettings,
+        $siteTemplateSettings,
+        $storageService,
+        $isEditMode,
+        $isLoopAvailable,
+        $asRowGallery
+    ) {
+        if ($isEditMode && empty($entry['mediaCacheData']['file'])) {
             return view('Sites/Sections/Entries/Galleries/editEmptyGallery');
         }
 
-        $data = $this->getViewData();
+        $data = $this->getViewData(
+            $entry,
+            $siteSettings,
+            $siteTemplateSettings,
+            $storageService,
+            $isEditMode,
+            $isLoopAvailable,
+            $asRowGallery,
+            null,
+            null,
+            null
+        );
 
         return view('Sites/Sections/Entries/Galleries/galleryLink', $data);
     }

@@ -159,7 +159,9 @@ class SiteSectionsController extends Controller
         $sectionTagsDS = new SectionTagsDataService($site);
         $sectionTags = $sectionTagsDS->get();
 
-        $sectionsMenuRS = new SectionsMenuRenderService(
+        $sectionsMenuRS = new SectionsMenuRenderService();
+
+        return $sectionsMenuRS->render(
             $site,
             $sections,
             $sectionSlug,
@@ -170,8 +172,6 @@ class SiteSectionsController extends Controller
             false,
             true
         );
-
-        return $sectionsMenuRS->render();
     }
 
     public function renderAdditionalText($site = '', Request $request)

@@ -126,15 +126,15 @@ class SitesController extends Controller
     public function renderMenu($site = '', Request $request)
     {
         $sitesDS = new SitesDataService();
-        $sitesMenuRenderService = new SitesMenuRenderService(
+        $sitesMenuRenderService = new SitesMenuRenderService();
+
+        return $sitesMenuRenderService->render(
             $site,
             true,
             [],
             [],
             $sitesDS->get()
         );
-
-        return $sitesMenuRenderService->render();
     }
 
     public function renderHeader($site = '', Request $request)
@@ -149,7 +149,9 @@ class SitesController extends Controller
         $siteTemplateSettingsDS = new SiteTemplateSettingsDataService($site, $siteSettings['template']['template']);
         $siteTemplateSettings = $siteTemplateSettingsDS->getState();
 
-        $sitesHeaderRS = new SitesHeaderRenderService(
+        $sitesHeaderRS = new SitesHeaderRenderService();
+
+        return $sitesHeaderRS->render(
             $site,
             $siteSettings,
             $siteTemplateSettings,
@@ -159,8 +161,6 @@ class SitesController extends Controller
             false,
             true
         );
-
-        return $sitesHeaderRS->render();
     }
 
     public function renderSocialMediaLinks($site = '', Request $request)

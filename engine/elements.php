@@ -36,7 +36,9 @@ if ($jsonRequest) {
                 $entryIndex = array_search($decoded['entry'], array_column($entries['entry'], 'id'));
                 $entry = $entries['entry'][$entryIndex];
 
-                $sectionEntriesRS = new SectionEntryRenderService(
+                $sectionEntriesRS = new SectionEntryRenderService();
+
+                echo $sectionEntriesRS->getViewData(
                     $site,
                     $sections,
                     $entry,
@@ -46,9 +48,7 @@ if ($jsonRequest) {
                     $storageService,
                     true,
                     isset($shopEnabled) && $shopEnabled
-                );
-
-                echo $sectionEntriesRS->getViewData()['gallery'];
+                )['gallery'];
             }
 
             break;
