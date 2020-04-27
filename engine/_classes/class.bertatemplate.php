@@ -179,6 +179,7 @@ class BertaTemplate extends BertaBase
         $backgroundGallery = $sectionBackgroundGalleryRS->render(
             $storage,
             $siteSettingsState,
+            $siteTemplateSettingsState,
             $this->sectionName,
             $siteSections,
             $request,

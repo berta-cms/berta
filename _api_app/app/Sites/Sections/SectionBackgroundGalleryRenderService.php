@@ -2,6 +2,7 @@
 
 namespace App\Sites\Sections;
 
+use Mobile_Detect;
 use App\Shared\Helpers;
 
 class SectionBackgroundGalleryRenderService
@@ -34,7 +35,7 @@ class SectionBackgroundGalleryRenderService
         $currentItemIndex = 0;
         $selectedGridImageFound = false;
 
-        if (!$selectedGridImage) {
+        if ($selectedGridImage) {
             $itemIndex = array_search($selectedGridImage, array_column(array_column($files, '@attributes'), 'src'));
             if ($itemIndex !== false) {
                 $currentItemIndex = $itemIndex;
@@ -85,24 +86,38 @@ class SectionBackgroundGalleryRenderService
     private function getViewData(
         $storageService,
         $siteSettings,
+        $siteTemplateSettings,
         $sectionSlug,
         $sections,
         $currentSection,
         $selectedGridImage,
+        $isResponsive,
         $isEditMode
     ) {
         $wrapperAttributes = $this->getWrapperAttributes($currentSection, $isEditMode);
         $items = $this->getGalleryItems($currentSection, $storageService, $selectedGridImage);
 
+        $deviceDetectService = new Mobile_Detect();
+        $isMobileDevice = $deviceDetectService->isMobile();
+        $showNavigation = (count($items['all']) > 1 || !empty($items['all'][0]['caption']));
+        $showDesktopNavigation = $showNavigation && !$isMobileDevice;
+        $showNavigationArrows = empty($currentSection['mediaCacheData']['@attributes']['hide_navigation']) || $currentSection['mediaCacheData']['@attributes']['hide_navigation'] == 'no';
+        $showSlideCounters = $showNavigationArrows && !$isResponsive;
+        $showMobileNavigationArrows = $showNavigation && $showNavigationArrows && $isMobileDevice;
+
         return [
             'wrapperAttributes' => $wrapperAttributes,
-            'items' => $items
+            'items' => $items,
+            'showDesktopNavigation' => $showDesktopNavigation,
+            'showSlideCounters' => $showSlideCounters,
+            'showMobileNavigationArrows' => $showMobileNavigationArrows
         ];
     }
 
     public function render(
         $storageService,
         $siteSettings,
+        $siteTemplateSettings,
         $sectionSlug,
         $sections,
         $request,
@@ -132,15 +147,20 @@ class SectionBackgroundGalleryRenderService
             return '';
         }
 
+        $isResponsiveTemplate = isset($siteTemplateSettings['pageLayout']['responsive']) && $siteTemplateSettings['pageLayout']['responsive'] == 'yes';
+        $isResponsive = $isResponsiveTemplate || (isset($currentSectionType) && $currentSectionType == 'portfolio');
+
         $selectedGridImage = $request->cookie('_berta_grid_img_link');
 
         $data = $this->getViewData(
             $storageService,
             $siteSettings,
+            $siteTemplateSettings,
             $sectionSlug,
             $sections,
             $currentSection,
             $selectedGridImage,
+            $isResponsive,
             $isEditMode
         );
 

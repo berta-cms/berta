@@ -20,5 +20,17 @@
         <div class="caption-content">{{ items.current.caption|raw }}</div>
       {% endif %}
     </div>
+
+    {% if showDesktopNavigation %}
+      <div id="xBackgroundLeft"></div>
+      <div id="xBackgroundRight"></div>
+      <div id="xBackgroundLeftCounter"{% if not showSlideCounters %} class="xHidden"{% endif %}><div class="counterContent"></div></div>
+      <div id="xBackgroundRightCounter"{% if not showSlideCounters %} class="xHidden"{% endif %}><div class="counterContent"></div></div>
+    {% endif %}
   </div>
+
+  {% if showMobileNavigationArrows %}
+    <div id="xBackgroundPrevious"><a href="#"><span>previous</span></a></div>
+    <div id="xBackgroundNext"><a href="#"><span>next</span></a></div>
+  {% endif %}
 </div>
