@@ -5,9 +5,8 @@
   #pageEntries li.xEntry .xGalleryContainer:not(.xGalleryType-pile) .xGallery,
   #pageEntries li.xEntry .xGalleryContainer .xGallery .xGalleryItem,
   #pageEntries li.xEntry .xGalleryContainer .xGallery .xGalleryItem .image,
-  #firstPageMarkedEntries .xEntry .xGalleryContainer .xGallery,
-  #firstPageMarkedEntries .xEntry .xGalleryContainer .xGallery .xGalleryItem,
-  #firstPageMarkedEntries .xEntry .xGalleryContainer .xGallery .xGalleryItem .image {
+  #firstPageMarkedEntries .xEntry img,
+  #firstPageMarkedEntries .xEntry video {
     max-width: 100%;
     height: auto !important;
   }
@@ -15,7 +14,6 @@
   #pageEntries li.xEntry,
   #pageEntries li.xEntry .xGalleryContainer .xGallery .xGalleryItem,
   #firstPageMarkedEntries .xEntry,
-  #firstPageMarkedEntries .xEntry .xGalleryContainer .xGallery .xGalleryItem,
   .row .column {
     box-sizing: border-box;
   }
@@ -32,16 +30,6 @@
   }
 
   #firstPageMarkedEntries {
-    .xEntry {
-      .xGalleryContainer {
-        .xGallery {
-          .xGalleryItem {
-            font-size: 0;
-          }
-        }
-      }
-    }
-
     &.columns-2,
     &.columns-3,
     &.columns-4 {
