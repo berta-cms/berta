@@ -171,4 +171,29 @@ class SitesController extends Controller
         $socialMediaLinksRS = new SocialMediaLinksRenderService();
         return $socialMediaLinksRS->render($siteSettings);
     }
+
+    public function renderBanners($site = '', Request $request)
+    {
+        $siteSettingsDS = new SiteSettingsDataService($site);
+        $siteSettings = $siteSettingsDS->getState();
+
+        $siteTemplateSettingsDS = new SiteTemplateSettingsDataService($site, $siteSettings['template']['template']);
+        $siteTemplateSettings = $siteTemplateSettingsDS->getState();
+
+        $sectionsDS = new SiteSectionsDataService($site);
+        $sections = $sectionsDS->getState();
+        $sectionSlug = $request->get('section');
+
+        $sitesBannersRS = new SitesBannersRenderService();
+
+        return $sitesBannersRS->render(
+            $site,
+            $siteSettings,
+            $siteTemplateSettings,
+            $sections,
+            $sectionSlug,
+            (new Storage($site)),
+            true
+        );
+    }
 }

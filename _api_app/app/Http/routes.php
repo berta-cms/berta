@@ -41,6 +41,7 @@ $app->group(['prefix' => 'v1','namespace' => 'App\Sites', 'middleware' => ['setu
 
     $app->get('sites/render-menu[/{site}]', 'SitesController@renderMenu');
     $app->get('sites/render-header[/{site}]', 'SitesController@renderHeader');
+    $app->get('sites/render-banners[/{site}]', 'SitesController@renderBanners');
     $app->get('sites/render-social-media-links[/{site}]', 'SitesController@renderSocialMediaLinks');
 
     $app->patch('sites/settings', ['as' => 'site_settings', 'uses' => 'Settings\SiteSettingsController@update']);

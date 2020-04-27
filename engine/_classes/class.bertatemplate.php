@@ -7,6 +7,7 @@ use App\Sites\TemplateSettings\SiteTemplateSettingsDataService;
 use App\Sites\Sections\SiteSectionsDataService;
 use App\Sites\SitesHeaderRenderService;
 use App\Sites\SocialMediaLinksRenderService;
+use App\Sites\SitesBannersRenderService;
 use App\Sites\Sections\SectionsMenuRenderService;
 use App\Sites\Sections\AdditionalTextRenderService;
 use App\Sites\Sections\AdditionalFooterTextRenderService;
@@ -237,6 +238,18 @@ class BertaTemplate extends BertaBase
         $socialMediaLinksRS = new SocialMediaLinksRenderService();
         $socialMediaLinks = $socialMediaLinksRS->render($siteSettingsState);
         $this->addVariable('socialMediaLinks', $socialMediaLinks);
+
+        $sitesBannersRS = new SitesBannersRenderService();
+        $siteBanners = $sitesBannersRS->render(
+            self::$options['MULTISITE'],
+            $siteSettingsState,
+            $siteTemplateSettingsState,
+            $siteSections,
+            $this->sectionName,
+            $storage,
+            $isEditMode
+        );
+        $this->addVariable('siteBanners', $siteBanners);
 
         $additionalTextRS = new AdditionalTextRenderService($socialMediaLinksRS);
         $additionalTextBlock = $additionalTextRS->render(

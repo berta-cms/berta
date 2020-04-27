@@ -126,25 +126,7 @@
 		{ /if }
 
 		<div class="floating-banners">
-		{section name=banners loop=10}
-		    { assign var="setting_name_image" value="banner`$smarty.section.banners.iteration`_image" }
-			{ assign var="setting_name_link" value="banner`$smarty.section.banners.iteration`_link" }
-			{ assign var="setting_pos_name" value="banner`$smarty.section.banners.iteration`XY" }
-
-			{ if $berta.settings.banners.$setting_name_image }
-				<div class="floating-banner banner-{$smarty.section.banners.iteration}{if $berta.settings.pageLayout.responsive!='yes' } xEditableDragXY xProperty-{ $setting_pos_name }{/if}"{if $berta.settings.pageLayout.responsive!='yes' } style="{ bannerPos xy_name=$setting_pos_name }"{/if}{if $berta.environment == 'engine' && $berta.settings.pageLayout.responsive != 'yes'} data-path="{ $berta.options.MULTISITE }/settings/siteTexts/banner{$smarty.section.banners.iteration}XY"{ /if }>
-					<div class="xHandle"></div>
-					{ if $berta.settings.banners.$setting_name_link }
-						<a href="{ $berta.settings.banners.$setting_name_link }" target="_blank">
-							{ responsiveImage image = $berta.settings.banners prefix=$setting_name_image path = $berta.options.MEDIA_ABS_ROOT }
-						</a>
-					{ else }
-						{ responsiveImage image = $berta.settings.banners prefix=$setting_name_image path = $berta.options.MEDIA_ABS_ROOT }
-					{ /if }
-				</div>
-
-			{ /if }
-		{/section}
+		  { $siteBanners }
 		</div>
 
 	</div>
