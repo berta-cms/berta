@@ -10,6 +10,7 @@ use App\Sites\Settings\SiteSettingsDataService;
 use App\Sites\Sections\SiteSectionsDataService;
 use App\Sites\Sections\SectionsMenuRenderService;
 use App\Sites\Sections\AdditionalTextRenderService;
+use App\Sites\Sections\AdditionalFooterTextRenderService;
 use App\Sites\Sections\Tags\SectionTagsDataService;
 use App\Sites\Sections\Entries\SectionEntriesDataService;
 use App\Sites\TemplateSettings\SiteTemplateSettingsDataService;
@@ -198,5 +199,17 @@ class SiteSectionsController extends Controller
             $sectionSlug,
             $isEditMode
         );
+    }
+
+    public function renderAdditionalFooterText($siteSlug = '')
+    {
+        $siteSettingsDS = new SiteSettingsDataService($siteSlug);
+        $siteSettings = $siteSettingsDS->getState();
+        $isEditMode = true;
+
+        $socialMediaLinksRS = new SocialMediaLinksRenderService();
+        $additionalTextRS = new AdditionalFooterTextRenderService($socialMediaLinksRS);
+
+        return $additionalTextRS->render($siteSlug, $siteSettings, $isEditMode);
     }
 }
