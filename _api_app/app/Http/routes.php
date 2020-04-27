@@ -60,6 +60,7 @@ $app->group(['prefix' => 'v1/sites', 'namespace' => 'App\Sites\Sections', 'middl
     $app->delete('sections', 'SiteSectionsController@delete');
 
     $app->get('sections/render-menu[/{site}]', 'SiteSectionsController@renderMenu');
+    $app->get('sections/render-additional-text[/{site}]', 'SiteSectionsController@renderAdditionalText');
     $app->get('sections/render-additional-footer-text[/{site}]', 'SiteSectionsController@renderAdditionalFooterText');
 
     $app->put('sections/backgrounds', ['as' => 'site_section_backgrounds', 'uses' => 'SiteSectionsController@backgroundGalleryOrder']);

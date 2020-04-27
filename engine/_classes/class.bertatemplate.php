@@ -8,6 +8,7 @@ use App\Sites\Sections\SiteSectionsDataService;
 use App\Sites\SitesHeaderRenderService;
 use App\Sites\SocialMediaLinksRenderService;
 use App\Sites\Sections\SectionsMenuRenderService;
+use App\Sites\Sections\AdditionalTextRenderService;
 use App\Sites\Sections\AdditionalFooterTextRenderService;
 use App\Sites\Sections\Entries\SectionEntriesDataService;
 use App\Sites\Sections\Entries\SectionEntryRenderService;
@@ -235,9 +236,19 @@ class BertaTemplate extends BertaBase
         $this->addVariable('entries', $entriesForTag);
 
         $socialMediaLinksRS = new SocialMediaLinksRenderService();
-        // TODO: remove socialMediaLinksRS render() from here when additional header and addtional footer text is merged in twig services
         $socialMediaLinks = $socialMediaLinksRS->render($siteSettingsState);
         $this->addVariable('socialMediaLinks', $socialMediaLinks);
+
+        $additionalTextRS = new AdditionalTextRenderService($socialMediaLinksRS);
+        $additionalTextBlock = $additionalTextRS->render(
+            self::$options['MULTISITE'],
+            $siteSettingsState,
+            $siteTemplateSettingsState,
+            $siteSections,
+            $this->sectionName,
+            $isEditMode
+        );
+        $this->addVariable('additionalTextBlock', $additionalTextBlock);
 
         $additionalFooterTextRS = new AdditionalFooterTextRenderService($socialMediaLinksRS);
         $additionalFooterTextBlock = $additionalFooterTextRS->render(
@@ -245,7 +256,6 @@ class BertaTemplate extends BertaBase
             $siteSettingsState,
             $isEditMode
         );
-
         $this->addVariable('additionalFooterTextBlock', $additionalFooterTextBlock);
     }
 
