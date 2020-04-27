@@ -181,7 +181,8 @@ class BertaTemplate extends BertaBase
         );
         $this->addVariable('sitesMenu', $sitesMenu);
 
-        $sitesHeaderRenderService = new SitesHeaderRenderService(
+        $sitesHeaderRenderService = new SitesHeaderRenderService();
+        $siteHeader = $sitesHeaderRenderService->render(
             self::$options['MULTISITE'],
             $siteSettingsState,
             $siteTemplateSettingsState,
@@ -191,7 +192,6 @@ class BertaTemplate extends BertaBase
             $isPreviewMode,
             $isEditMode
         );
-        $siteHeader = $sitesHeaderRenderService->render();
         $this->addVariable('siteHeader', $siteHeader);
 
         $entriesHTML = '';
