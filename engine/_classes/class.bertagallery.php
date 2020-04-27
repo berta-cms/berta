@@ -288,7 +288,7 @@ class BertaGallery extends BertaBase
 
         $html = '
             <div class="xGalleryItem xGalleryItemType-video">
-                <video width="' . $width . '" controls'.$poster.$autoplay.'>
+                <video width="' . $width . '" controls controlsList="nodownload"'.$poster.$autoplay.'>
                     <source src="'. $mFolderABS . $img['@attributes']['src'] .'" type="video/mp4">
                 </video>
                 <div class="xGalleryImageCaption">' . (!empty($img['value']) ? $img['value'] : '') . '</div>

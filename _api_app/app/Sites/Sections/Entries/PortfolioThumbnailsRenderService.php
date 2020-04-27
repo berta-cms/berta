@@ -10,6 +10,11 @@ class PortfolioThumbnailsRenderService
     private function getFirstEntryImage($siteSettings, $storageService, $entry)
     {
         $image = null;
+
+        if (empty($entry['mediaCacheData']['file'])) {
+            return null;
+        }
+
         foreach ($entry['mediaCacheData']['file'] as $file) {
             if ($file['@attributes']['type'] == 'image' || !empty($file['@attributes']['poster_frame'])) {
                 $image = $file;
