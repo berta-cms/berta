@@ -1,4 +1,5 @@
 <?php
+use Illuminate\Http\Request;
 use App\Shared\Storage;
 use App\Sites\SitesDataService;
 use App\Sites\SitesMenuRenderService;
@@ -6,6 +7,7 @@ use App\Sites\Settings\SiteSettingsDataService;
 use App\Sites\TemplateSettings\SiteTemplateSettingsDataService;
 use App\Sites\Sections\SiteSectionsDataService;
 use App\Sites\SitesHeaderRenderService;
+use App\Sites\Sections\SectionBackgroundGalleryRenderService;
 use App\Sites\Sections\SectionsMenuRenderService;
 use App\Sites\Sections\Entries\SectionEntriesDataService;
 use App\Sites\Sections\Entries\SectionEntryRenderService;
@@ -170,6 +172,19 @@ class BertaTemplate extends BertaBase
         $siteTemplateSettingsState =  $siteTemplateSettingsDS->getState();
         $sectionTagsDS = new SectionTagsDataService(self::$options['MULTISITE']);
         $sectionTags = $sectionTagsDS->get();
+
+        $request = Request::capture();
+
+        $sectionBackgroundGalleryRS = new SectionBackgroundGalleryRenderService();
+        $backgroundGallery = $sectionBackgroundGalleryRS->render(
+            $storage,
+            $siteSettingsState,
+            $this->sectionName,
+            $siteSections,
+            $request,
+            $isEditMode
+        );
+        $this->addVariable('backgroundGallery', $backgroundGallery);
 
         $sitesMenuRenderService = new SitesMenuRenderService(
             self::$options['MULTISITE'],
