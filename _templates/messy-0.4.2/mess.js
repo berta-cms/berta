@@ -102,7 +102,9 @@ var MessyMess = new Class({
 
     if (bertaGlobalOptions.environment == 'engine') {
       messyItems.each(function (el) {
-        if (!el.hasClass('xEntry')) el.adopt(new Element('div', { 'class': 'xHandle' }));
+        if (el.getChildren('.xHandle').length === 0 && !el.hasClass('xEntry')) {
+          el.adopt(new Element('div', { 'class': 'xHandle' }));
+        }
       });
       $$('.xEntryMove').addClass('xHandle');
       $$('.xEntryToBack').addEvent('click', this.editor_saveOrder.bindWithEvent(this));

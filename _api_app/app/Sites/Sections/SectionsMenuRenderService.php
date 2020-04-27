@@ -6,52 +6,19 @@ use App\Shared\Helpers;
 
 class SectionsMenuRenderService
 {
-    private $site;
-    private $sections;
-    private $sectionSlug;
-    private $siteSettings;
-    private $siteTemplateSettings;
-    private $sectionTags;
-    private $tagSlug;
-    private $isPreviewMode;
-    private $isEditMode;
-    private $isResponsive;
-    private $templateName;
+    private $DRAGGABLE_MENU_CLASSES = ['mess', 'xEditableDragXY', 'xProperty-positionXY'];
 
-    public function __construct(
-        $site,
-        array $sections,
-        $sectionSlug,
-        array $siteSettings,
-        array $siteTemplateSettings,
-        array $sectionTags,
-        $tagSlug,
-        $isPreviewMode,
-        $isEditMode
-    ) {
-        $this->site = $site;
-        $this->sections = $sections;
-        $this->sectionSlug = $sectionSlug;
-        $this->siteSettings = $siteSettings;
-        $this->siteTemplateSettings = $siteTemplateSettings;
-        $this->sectionTags = $sectionTags;
-        $this->tagSlug = $tagSlug;
-        $this->isPreviewMode = $isPreviewMode;
-        $this->isEditMode = $isEditMode;
-        $this->templateName = explode('-', $this->siteSettings['template']['template'])[0];
-    }
-
-    private function getTags()
+    private function getTags($sectionTags, $sectionSlug, $tagSlug)
     {
-        $tags = array_filter($this->sectionTags['section'], function ($section) {
+        $tags = array_filter($sectionTags['section'], function ($section) {
             return !empty($section['tag']);
         });
 
-        $tags = array_reduce($tags, function ($sections, $section) {
-            $sections[$section['@attributes']['name']] = array_map(function ($tag) use ($section) {
+        $tags = array_reduce($tags, function ($sections, $section) use ($sectionSlug, $tagSlug) {
+            $sections[$section['@attributes']['name']] = array_map(function ($tag) use ($section, $sectionSlug, $tagSlug) {
                 return [
                     'attributes' => Helpers::arrayToHtmlAttributes([
-                        'class' => $this->getSubmenuItemClassList($tag, $section)
+                        'class' => $this->getSubmenuItemClassList($tag, $section, $sectionSlug, $tagSlug)
                     ]),
                     'title' => $tag['@value'],
                     'name' => $tag['@attributes']['name']
@@ -63,73 +30,82 @@ class SectionsMenuRenderService
         return $tags;
     }
 
-    private function getViewData()
-    {
-        $sections = $this->sections;
-        $tags = $this->getTags();
+    private function getViewData(
+        $site,
+        $sections,
+        $sectionSlug,
+        $siteSettings,
+        $siteTemplateSettings,
+        $sectionTags,
+        $tagSlug,
+        $isPreviewMode,
+        $isEditMode
+    ) {
+        $templateName = explode('-', $siteSettings['template']['template'])[0];
+        $tags = $this->getTags($sectionTags, $sectionSlug, $tagSlug);
         $submenu = [];
 
         // Filter sections
-        $sections = array_filter($sections, function ($section) {
+        $availableSections = array_filter($sections, function ($section) {
             $isEmptyTitle = empty($section['title']);
             $isCartSection = isset($section['@attributes']['type']) && $section['@attributes']['type'] == 'shopping_cart';
             return !$isEmptyTitle && !$isCartSection;
         });
 
-        if (!$this->isEditMode) {
+        if (!$isEditMode) {
             // Remove unpublished sections from public page
-            $sections = array_filter($sections, function ($section) {
+            $availableSections = array_filter($availableSections, function ($section) {
                 return $section['@attributes']['published'] == '1';
             });
 
             // Show menu in first section?
-            if ($this->siteSettings['navigation']['landingSectionMenuVisible'] == 'no' && !empty($sections) && current($sections)['name'] == $this->sectionSlug) {
-                $sections = [];
+            if ($siteSettings['navigation']['landingSectionMenuVisible'] == 'no' && !empty($availableSections) && current($availableSections)['name'] == $sectionSlug) {
+                $availableSections = [];
             }
 
             // Is first section visible in menu?
             // Hide except if there is tags
-            if ($this->siteSettings['navigation']['landingSectionVisible'] == 'no' && !empty($sections)) {
-                $firstSectionSlug = current($sections)['name'];
+            if ($siteSettings['navigation']['landingSectionVisible'] == 'no' && !empty($availableSections)) {
+                $firstSectionSlug = current($availableSections)['name'];
 
                 if (empty($tags[$firstSectionSlug])) {
-                    array_shift($sections);
+                    array_shift($availableSections);
                 }
             }
         }
 
-        if (empty($sections)) {
+        if (empty($availableSections)) {
             return;
         }
 
-        $currentSectionOrder = array_search($this->sectionSlug, array_column($this->sections, 'name'));
-        $currentSection = $this->sections[$currentSectionOrder];
+        $currentSectionOrder = array_search($sectionSlug, array_column($sections, 'name'));
+        $currentSection = $sections[$currentSectionOrder];
         $currentSectionType = isset($currentSection['@attributes']['type']) ? $currentSection['@attributes']['type'] : null;
-        $isResponsiveTemplate = isset($this->siteTemplateSettings['pageLayout']['responsive']) && $this->siteTemplateSettings['pageLayout']['responsive'] == 'yes';
-        $this->isResponsive = $currentSectionType == 'portfolio' || $isResponsiveTemplate;
+        $isResponsiveTemplate = isset($siteTemplateSettings['pageLayout']['responsive']) && $siteTemplateSettings['pageLayout']['responsive'] == 'yes';
+        $isResponsive = $currentSectionType == 'portfolio' || $isResponsiveTemplate;
 
-        $sections = array_map(function ($section) use ($tags, $isResponsiveTemplate) {
+        $availableSections = array_map(function ($section) use ($tags, $isResponsiveTemplate, $sectionSlug, $templateName, $siteTemplateSettings, $isResponsive, $isEditMode, $site, $sections, $siteSettings, $isPreviewMode) {
             $section['attributes'] = Helpers::arrayToHtmlAttributes([
-                'class' => $this->getSectionClassList($section),
-                'style' => $this->getSectionStyleList($section),
-                'data-path' => $this->isEditMode && !$this->isResponsive ? $this->site . '/section/' . $section['order'] . '/positionXY' : ''
+                'class' => $this->getSectionClassList($section, $sectionSlug, $templateName, $siteTemplateSettings, $isResponsive),
+                'style' => $this->getSectionStyleList($section, $isResponsive, $templateName),
+                'data-path' => $isEditMode && !$isResponsive ? $site . '/section/' . $section['order'] . '/positionXY' : ''
             ]);
 
             $section['linkAttributes'] = Helpers::arrayToHtmlAttributes([
-                'href' => $this->getUrl($section),
+                'href' => $this->getUrl($section, null, $site, $sections, $siteSettings, $isEditMode, $isPreviewMode),
                 'target' => !empty($section['@attributes']['type']) && $section['@attributes']['type'] == 'external_link' ? (!empty($section['target']) ? $section['target'] : '_blank') : ''
             ]);
 
             $section['tags'] = !empty($tags[$section['name']]) ? $tags[$section['name']] : [];
 
-            switch ($this->templateName) {
+            switch ($templateName) {
                 case 'messy':
-                    $section['tags'] = array_filter($section['tags'], function ($tag) use ($section) {
-                        if ($this->siteTemplateSettings['tagsMenu']['hidden'] == 'yes') {
+                    $section['tags'] = array_filter($section['tags'], function ($tag) use ($section, $siteTemplateSettings, $isResponsive, $sectionSlug) {
+                        if ($siteTemplateSettings['tagsMenu']['hidden'] == 'yes') {
                             return false;
                         }
 
-                        if (!$this->isResponsive && $this->siteTemplateSettings['tagsMenu']['alwaysOpen'] != 'yes' && $this->sectionSlug != $section['name']) {
+                        if (!$isResponsive && $siteTemplateSettings['tagsMenu']['alwaysOpen'] != 'yes' && $sectionSlug != $section['name']) {
                             return false;
                         }
 
@@ -138,8 +114,8 @@ class SectionsMenuRenderService
                     break;
 
                 case 'white':
-                    $section['tags'] = array_filter($section['tags'], function ($tag) use ($section) {
-                        if ($this->sectionSlug != $section['name']) {
+                    $section['tags'] = array_filter($section['tags'], function ($tag) use ($section, $sectionSlug) {
+                        if ($sectionSlug != $section['name']) {
                             return false;
                         }
 
@@ -155,35 +131,35 @@ class SectionsMenuRenderService
 
             if (!empty($section['tags'])) {
                 $section['submenuAttributes'] = Helpers::arrayToHtmlAttributes([
-                    'class' => $this->getSubmenuClassList($section)
+                    'class' => $this->getSubmenuClassList($section, $isEditMode)
                 ]);
 
-                $section['tags'] = array_map(function ($tag) use ($section) {
+                $section['tags'] = array_map(function ($tag) use ($section, $site, $sections, $siteSettings, $isEditMode, $isPreviewMode) {
                     $tag['linkAttributes'] = Helpers::arrayToHtmlAttributes([
                         'class' => 'handle',
-                        'href' => $this->getUrl($section, $tag)
+                        'href' => $this->getUrl($section, $tag, $site, $sections, $siteSettings, $isEditMode, $isPreviewMode)
                     ]);
                     return $tag;
                 }, $section['tags']);
             }
 
             return $section;
-        }, $sections);
+        }, $availableSections);
 
         // Separate submenu for `default` template
-        if ($this->templateName == 'default' && isset($tags[$this->sectionSlug])) {
-            $submenu['tags'] = $tags[$this->sectionSlug];
+        if ($templateName == 'default' && isset($tags[$sectionSlug])) {
+            $submenu['tags'] = $tags[$sectionSlug];
             $currentSection['tags'] = $submenu['tags'];
 
             if (!empty($currentSection['tags'])) {
                 $submenu['submenuAttributes'] = Helpers::arrayToHtmlAttributes([
-                    'class' => $this->getSubmenuClassList($currentSection)
+                    'class' => $this->getSubmenuClassList($currentSection, $isEditMode)
                 ]);
 
-                $submenu['tags'] = array_map(function ($tag) use ($currentSection) {
+                $submenu['tags'] = array_map(function ($tag) use ($currentSection, $site, $sections, $siteSettings, $isEditMode, $isPreviewMode) {
                     $tag['linkAttributes'] = Helpers::arrayToHtmlAttributes([
                         'class' => 'handle',
-                        'href' => $this->getUrl($currentSection, $tag)
+                        'href' => $this->getUrl($currentSection, $tag, $site, $sections, $siteSettings, $isEditMode, $isPreviewMode)
                     ]);
                     return $tag;
                 }, $submenu['tags']);
@@ -191,12 +167,12 @@ class SectionsMenuRenderService
         }
 
         return [
-            'sections' => $sections,
+            'sections' => $availableSections,
             'submenu' => $submenu
         ];
     }
 
-    private function getUrl($section, $tag = null)
+    private function getUrl($section, $tag = null, $site, $sections, $siteSettings, $isEditMode, $isPreviewMode)
     {
         $urlParts = [];
         $isExternalLink = isset($section['@attributes']['type']) && $section['@attributes']['type'] == 'external_link';
@@ -204,24 +180,24 @@ class SectionsMenuRenderService
             return $section['link'];
         }
 
-        if (!empty($this->site)) {
-            $urlParts['site'] = $this->site;
+        if (!empty($site)) {
+            $urlParts['site'] = $site;
         }
 
-        $isFirstSection = $section['name'] == $this->sections[0]['name'];
+        $isFirstSection = $section['name'] == $sections[0]['name'];
         $hasDirectContent = !empty($section['@attributes']['has_direct_content']) && $section['@attributes']['has_direct_content'];
-        $alwaysSelectTag = $this->siteSettings['navigation']['alwaysSelectTag'] == 'yes';
+        $alwaysSelectTag = $siteSettings['navigation']['alwaysSelectTag'] == 'yes';
         $isFirstTag = !$tag || $alwaysSelectTag && $tag['name'] == current($section['tags'])['name'];
 
-        if ($this->isEditMode || !$isFirstSection || !$isFirstTag || ($hasDirectContent && !empty($section['tags']))) {
+        if ($isEditMode || !$isFirstSection || !$isFirstTag || ($hasDirectContent && !empty($section['tags']))) {
             $urlParts['section'] = $section['name'];
         }
 
-        if ($tag && ($this->isEditMode || $hasDirectContent || !$isFirstTag)) {
+        if ($tag && ($isEditMode || $hasDirectContent || !$isFirstTag)) {
             $urlParts['tag'] = $tag['name'];
         }
 
-        if ($this->isEditMode) {
+        if ($isEditMode) {
             if (empty($urlParts)) {
                 return '.';
             }
@@ -233,37 +209,37 @@ class SectionsMenuRenderService
 
             return '?' . implode('&', $parts);
         } else {
-            return '/' . implode('/', $urlParts) . ($this->isPreviewMode ? '?preview=1' : '');
+            return '/' . implode('/', $urlParts) . ($isPreviewMode ? '?preview=1' : '');
         }
     }
 
-    private function getSectionClassList($section)
+    private function getSectionClassList($section, $sectionSlug, $templateName, $siteTemplateSettings, $isResponsive)
     {
         $classList = [];
 
-        if ($section['name'] == $this->sectionSlug) {
+        if ($section['name'] == $sectionSlug) {
             $classList[] = 'selected';
         }
 
-        if ($this->templateName == 'messy') {
+        if ($templateName == 'messy') {
             $classList[] = 'xSection-' . $section['name'];
 
-            if ($this->siteTemplateSettings['menu']['position'] == 'fixed') {
+            if ($siteTemplateSettings['menu']['position'] == 'fixed') {
                 $classList[] = 'xFixed';
             }
 
-            if (!$this->isResponsive) {
-                $classList = array_merge($classList, ['mess', 'xEditableDragXY', 'xProperty-positionXY']);
+            if (!$isResponsive) {
+                $classList = array_merge($classList, $this->DRAGGABLE_MENU_CLASSES);
             }
         }
 
         return implode(' ', $classList);
     }
 
-    private function getSectionStyleList($section)
+    private function getSectionStyleList($section, $isResponsive, $templateName)
     {
         $styles = [];
-        if ($this->templateName == 'messy' && !$this->isResponsive) {
+        if ($templateName == 'messy' && !$isResponsive) {
             if (isset($section['positionXY'])) {
                 list($left, $top) = explode(',', $section['positionXY']);
             } else {
@@ -290,33 +266,52 @@ class SectionsMenuRenderService
         return null;
     }
 
-    private function getSubmenuClassList($section)
+    private function getSubmenuClassList($section, $isEditMode)
     {
         $classList = ['subMenu'];
         $classList[] = 'xSection-' . $section['name'];
 
-        if ($this->isEditMode && count($section['tags']) > 1) {
+        if ($isEditMode && count($section['tags']) > 1) {
             $classList[] = 'xAllowOrdering';
         }
 
         return implode(' ', $classList);
     }
 
-    private function getSubmenuItemClassList($tag, $section)
+    private function getSubmenuItemClassList($tag, $section, $sectionSlug, $tagSlug)
     {
         $classList = [];
         $classList[] = 'xTag-' . $tag['@attributes']['name'];
 
-        if ($tag['@attributes']['name'] == $this->tagSlug && $section['@attributes']['name'] == $this->sectionSlug) {
+        if ($tag['@attributes']['name'] == $tagSlug && $section['@attributes']['name'] == $sectionSlug) {
             $classList[] = 'selected';
         }
 
         return implode(' ', $classList);
     }
 
-    public function render()
-    {
-        $data = $this->getViewData();
+    public function render(
+        $site,
+        $sections,
+        $sectionSlug,
+        $siteSettings,
+        $siteTemplateSettings,
+        $sectionTags,
+        $tagSlug,
+        $isPreviewMode,
+        $isEditMode
+    ) {
+        $data = $this->getViewData(
+            $site,
+            $sections,
+            $sectionSlug,
+            $siteSettings,
+            $siteTemplateSettings,
+            $sectionTags,
+            $tagSlug,
+            $isPreviewMode,
+            $isEditMode
+        );
         if (empty($data['sections'])) {
             return '';
         }

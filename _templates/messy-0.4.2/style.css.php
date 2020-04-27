@@ -25,14 +25,21 @@ body {
     line-height: <?php echo $s->get('generalFontSettings', 'lineHeight') ?>;
 
     background-color: <?php echo $s->get('background', 'backgroundColor') ?>;
-    <?php if($s->get('background', 'backgroundImageEnabled') == 'yes') { ?>
-        <?php if($s->get('background', 'backgroundImage')) { ?>
-            background-image:url(<?php echo Berta::$options['MEDIA_ABS_ROOT'] . $s->get('background', 'backgroundImage') ?>);
-        <?php } ?>
-        background-repeat: <?php echo $s->get('background', 'backgroundRepeat') ?>;
+	<?php if ($s->get('background', 'backgroundImageEnabled') == 'yes') { ?>
+		<?php if($s->get('background', 'backgroundImage')) { ?>
+			background-image:url(<?php echo Berta::$options['MEDIA_ABS_ROOT'] . $s->get('background', 'backgroundImage') ?>);
+		<?php } ?>
+		background-repeat: <?php echo $s->get('background', 'backgroundRepeat') ?>;
         background-position: <?php echo $s->get('background', 'backgroundPosition') ?>;
-        background-attachment: <?php echo $s->get('background', 'backgroundAttachment') ?>;
-    <?php } ?>
+        <?php
+        $bgAttachment = $s->get('background', 'backgroundAttachment');
+        if ($bgAttachment == 'fill') { ?>
+            background-size: cover;
+            background-attachment: fixed;
+        <?php } else { ?>
+            background-attachment: <?php echo $bgAttachment ?>;
+        <?php }
+	} ?>
 }
 
 body:not(.bt-responsive):not(.bt-auto-responsive) #contentContainer.xCentered {
@@ -73,7 +80,7 @@ a:active {
     font-style: <?php echo $s->get('heading', 'fontStyle') ?>;
     font-variant: <?php echo $s->get('heading', 'fontVariant') ?>;
     line-height: <?php echo $s->get('heading', 'lineHeight') ?>;
-    position: <?php echo $s->get('heading', 'position') ?> !important;§
+    position: <?php echo $s->get('heading', 'position') ?> !important;
 }
 
 h1 a,

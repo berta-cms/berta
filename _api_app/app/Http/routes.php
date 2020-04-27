@@ -41,6 +41,8 @@ $app->group(['prefix' => 'v1','namespace' => 'App\Sites', 'middleware' => ['setu
 
     $app->get('sites/render-menu[/{site}]', 'SitesController@renderMenu');
     $app->get('sites/render-header[/{site}]', 'SitesController@renderHeader');
+    $app->get('sites/render-banners[/{site}]', 'SitesController@renderBanners');
+    $app->get('sites/render-social-media-links[/{site}]', 'SitesController@renderSocialMediaLinks');
 
     $app->patch('sites/settings', ['as' => 'site_settings', 'uses' => 'Settings\SiteSettingsController@update']);
     $app->post('sites/settings/upload', ['as' => 'site_settings_upload', 'uses' => 'Settings\SiteSettingsController@upload']);
@@ -58,8 +60,12 @@ $app->group(['prefix' => 'v1/sites', 'namespace' => 'App\Sites\Sections', 'middl
     $app->put('sections', 'SiteSectionsController@order');
     $app->delete('sections', 'SiteSectionsController@delete');
 
+    $app->get('sections/render-head[/{site}]', 'SiteSectionsController@renderHead');
     $app->get('sections/render-menu[/{site}]', 'SiteSectionsController@renderMenu');
     $app->get('sections/render-background-gallery[/{siteSlug}]', 'SiteSectionsController@renderBackgroundGallery');
+    $app->get('sections/render-additional-text[/{site}]', 'SiteSectionsController@renderAdditionalText');
+    $app->get('sections/render-additional-footer-text[/{site}]', 'SiteSectionsController@renderAdditionalFooterText');
+    $app->get('sections/render-footer[/{site}]', 'SiteSectionsController@renderFooter');
 
     $app->put('sections/backgrounds', ['as' => 'site_section_backgrounds', 'uses' => 'SiteSectionsController@backgroundGalleryOrder']);
     $app->post('sections/backgrounds', 'SiteSectionsController@backgroundGalleryUpload');
@@ -79,6 +85,7 @@ $app->group(['prefix' => 'v1/sites/sections', 'namespace' => 'App\Sites\Sections
     $app->patch('entries/galleries', 'SectionEntriesController@galleryCrop');
     $app->delete('entries/galleries', 'SectionEntriesController@galleryDelete');
     $app->get('entries/render/{site}/{section}[/{id}]', 'SectionEntriesController@renderEntries');
+    $app->get('entries/render-portfolio-thumbnails/{site}/{section}', 'SectionEntriesController@renderPortfolioThumbnails');
 });
 
 $app->group(['prefix' => 'v1/plugin', 'namespace' => 'App\Plugins', 'middleware' => ['setup', 'auth']], function () use ($app) {

@@ -7,23 +7,24 @@ use App\Shared\ImageHelpers;
 
 abstract class EntryGalleryRenderService
 {
-    private $galleryType;
-
-    public function __construct()
-    {
-        $this->galleryType = isset($this->entry['mediaCacheData']['@attributes']['type']) ? $this->entry['mediaCacheData']['@attributes']['type'] : $this->siteTemplateSettings['entryLayout']['defaultGalleryType'];
-    }
-
     // Force Extending class to define this method
-    abstract protected function render();
+    abstract protected function render(
+        $entry,
+        $siteSettings,
+        $siteTemplateSettings,
+        $storageService,
+        $isEditMode,
+        $isLoopAvailable,
+        $asRowGallery
+    );
 
-    public function getGalleryClassList()
+    public function getGalleryClassList($galleryItemsData, $galleryType, $entry, $siteSettings)
     {
         $classes = ['xGalleryContainer'];
 
-        if (!empty($this->getGalleryItemsData($this->entry))) {
+        if (!empty($galleryItemsData)) {
             $classes[] = 'xGalleryHasImages';
-            $classes[] = 'xGalleryType-' . $this->galleryType;
+            $classes[] = 'xGalleryType-' . $galleryType;
         }
 
         return $classes;
@@ -39,28 +40,28 @@ abstract class EntryGalleryRenderService
         return $items;
     }
 
-    public function generateGalleryItems($galleryItemsData)
+    public function generateGalleryItems($galleryItemsData, $entry, $storageService, $siteSettings)
     {
         $items = [];
         foreach ($galleryItemsData as $item) {
             $items[] = ImageHelpers::getGalleryItem(
                 $item,
                 1,
-                $this->entry,
-                $this->storageService,
-                $this->siteSettings
+                $entry,
+                $storageService,
+                $siteSettings
             );
         }
 
         return $items;
     }
 
-    private function getNavigationItems()
+    private function getNavigationItems($galleryItemsData, $galleryItems, $isEditMode)
     {
         $navigationItems = [];
 
-        foreach ($this->galleryItemsData as $i => $item) {
-            $navigationItem = array_merge($item, $this->galleryItems[$i]);
+        foreach ($galleryItemsData as $i => $item) {
+            $navigationItem = array_merge($item, $galleryItems[$i]);
             $navigationItem['index'] = $i + 1;
             $navigationItem['autoPlay'] = isset($navigationItem['@attributes']['autoplay']) ? $navigationItem['@attributes']['autoplay'] : 0;
 
@@ -69,7 +70,7 @@ abstract class EntryGalleryRenderService
                 $navigationItem['src'] = $navigationItem['poster'] ? $navigationItem['poster'] : '#';
             }
 
-            if ($this->isEditMode) {
+            if ($isEditMode) {
                 $navigationItem['src'] .= '?no_cache=' . rand();
             }
 
@@ -99,14 +100,24 @@ abstract class EntryGalleryRenderService
         return $navigationItems;
     }
 
-    public function getViewData()
-    {
+    public function getViewData(
+        $entry,
+        $siteSettings,
+        $siteTemplateSettings,
+        $storageService,
+        $isEditMode,
+        $isLoopAvailable,
+        $asRowGallery,
+        $galleryItemsData,
+        $galleryItems,
+        $galleryType
+    ) {
         $data = [];
-        $data['isEditMode'] = $this->isEditMode;
-        $data['isFullscreen'] = !$this->isEditMode && isset($this->entry['mediaCacheData']['@attributes']['fullscreen']) && $this->entry['mediaCacheData']['@attributes']['fullscreen'] == 'yes';
-        $data['galleryClassList'] = $this->getGalleryClassList();
-        $data['rowGalleryPadding'] = !empty($this->entry['mediaCacheData']['@attributes']['row_gallery_padding']) ? $this->entry['mediaCacheData']['@attributes']['row_gallery_padding'] : false;
-        $data['navigationItems'] = $this->getNavigationItems();
+        $data['isEditMode'] = $isEditMode;
+        $data['isFullscreen'] = !$isEditMode && isset($entry['mediaCacheData']['@attributes']['fullscreen']) && $entry['mediaCacheData']['@attributes']['fullscreen'] == 'yes';
+        $data['galleryClassList'] = $this->getGalleryClassList($galleryItemsData, $galleryType, null, null);
+        $data['rowGalleryPadding'] = !empty($entry['mediaCacheData']['@attributes']['row_gallery_padding']) ? $entry['mediaCacheData']['@attributes']['row_gallery_padding'] : false;
+        $data['navigationItems'] = $this->getNavigationItems($galleryItemsData, $galleryItems, $isEditMode);
 
         return $data;
     }

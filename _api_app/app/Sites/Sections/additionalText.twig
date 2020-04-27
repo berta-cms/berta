@@ -1,0 +1,12 @@
+<div{{ wrapperAttributes|raw }}>
+  {% if isEditMode %}
+    <div class="xHandle"></div>
+  {% endif %}
+  {% if content.attributes %}
+    <div{{ content.attributes|raw }}>
+  {% endif %}
+    {{ content.html|raw }}
+  {% if content.attributes %}
+    </div>
+  {% endif %}
+</div>
