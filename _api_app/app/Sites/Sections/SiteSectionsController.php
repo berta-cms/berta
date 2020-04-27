@@ -7,23 +7,16 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Configuration\SiteTemplatesConfigService;
 
-<<<<<<< HEAD
 use App\User\UserModel;
-use App\Sites\Settings\SiteSettingsDataService;
-use App\Sites\Sections\SiteSectionsDataService;
-use App\Sites\Sections\SectionsMenuRenderService;
-use App\Sites\Sections\SectionFooterRenderService;
-=======
 use App\Shared\Storage;
-use App\User\UserModel;
 use App\Sites\SocialMediaLinksRenderService;
 use App\Sites\Settings\SiteSettingsDataService;
 use App\Sites\Sections\SiteSectionsDataService;
 use App\Sites\Sections\SectionsMenuRenderService;
+use App\Sites\Sections\SectionFooterRenderService;
 use App\Sites\Sections\SectionHeadRenderService;
 use App\Sites\Sections\AdditionalTextRenderService;
 use App\Sites\Sections\AdditionalFooterTextRenderService;
->>>>>>> master
 use App\Sites\Sections\Tags\SectionTagsDataService;
 use App\Sites\Sections\Entries\SectionEntriesDataService;
 use App\Sites\TemplateSettings\SiteTemplateSettingsDataService;
