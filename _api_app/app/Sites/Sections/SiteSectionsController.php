@@ -5,10 +5,15 @@ namespace App\Sites\Sections;
 use Validator;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Configuration\SiteTemplatesConfigService;
+
+use App\Shared\Storage;
+use App\User\UserModel;
 use App\Sites\SocialMediaLinksRenderService;
 use App\Sites\Settings\SiteSettingsDataService;
 use App\Sites\Sections\SiteSectionsDataService;
 use App\Sites\Sections\SectionsMenuRenderService;
+use App\Sites\Sections\SectionHeadRenderService;
 use App\Sites\Sections\AdditionalTextRenderService;
 use App\Sites\Sections\AdditionalFooterTextRenderService;
 use App\Sites\Sections\Tags\SectionTagsDataService;
@@ -211,5 +216,45 @@ class SiteSectionsController extends Controller
         $additionalTextRS = new AdditionalFooterTextRenderService($socialMediaLinksRS);
 
         return $additionalTextRS->render($siteSlug, $siteSettings, $isEditMode);
+    }
+
+    public function renderHead($site = '', Request $request)
+    {
+        $sectionsDS = new SiteSectionsDataService($site);
+        $sections = $sectionsDS->getState();
+        $sectionSlug = $request->get('section');
+        $tagSlug = $request->get('tag');
+        $sectionTagsDS = new SectionTagsDataService($site);
+        $sectionTags = $sectionTagsDS->get();
+        $siteSettingsDS = new SiteSettingsDataService($site);
+        $siteSettings = $siteSettingsDS->getState();
+        $siteTemplateSettingsDS = new SiteTemplateSettingsDataService($site, $siteSettings['template']['template']);
+        $siteTemplateSettings = $siteTemplateSettingsDS->getState();
+        $siteTemplatesConfigService = new SiteTemplatesConfigService();
+        $siteTemplatesConfig = $siteTemplatesConfigService->getDefaults();
+        $user = new UserModel();
+
+        $isShopAvailable = config('plugin-Shop.key') === $request->getHost();
+        $isEditMode = true;
+        $isPreviewMode = false;
+        $storageService = new Storage($site, $isPreviewMode);
+
+        $sectionHeadRS = new SectionHeadRenderService();
+
+        return $sectionHeadRS->render(
+            $site,
+            $sections,
+            $sectionSlug,
+            $tagSlug,
+            $sectionTags,
+            $siteSettings,
+            $siteTemplateSettings,
+            $siteTemplatesConfig,
+            $user,
+            $storageService,
+            $isShopAvailable,
+            $isPreviewMode,
+            $isEditMode
+        );
     }
 }
