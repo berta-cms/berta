@@ -77,6 +77,7 @@ class SectionHeadRenderService
         $googleWebFonts = [];
         $cssFiles = [];
         $inlineCSS = '';
+        $cacheBoost = time();
 
         if ($isShopAvailable) {
             $shopSettingsDS = new ShopSettingsDataService($siteSlug);
@@ -96,8 +97,8 @@ class SectionHeadRenderService
 
         if($isEditMode) {
             $cssFiles[] = "/engine/css/backend.min.css?{$this->version}";
-            $cssFiles[] = "/engine/css/editor.css.php?{$this->version}";
-            $cssFiles[] = "/_templates/". $siteSettings['template']['template']."/editor.css.php?{$this->version}";
+            $cssFiles[] = "/engine/css/editor.css.php?{$cacheBoost}&{$this->version}";
+            $cssFiles[] = "/_templates/". $siteSettings['template']['template']."/editor.css.php?{$cacheBoost}&{$this->version}";
         } else {
             $cssFiles[] = "/engine/css/frontend.min.css?{$this->version}";
         }
@@ -109,7 +110,7 @@ class SectionHeadRenderService
         $queryParams .= $currentSectionType == 'portfolio' ? '&responsive=1' : '';
         $queryParams .= $isEditMode ? '&engine=1' : '';
         $queryParams .= $isPreviewMode ? '&preview=1' : '';
-        $cssFiles[] = "/_templates/". $siteSettings['template']['template']."/style.css.php?{$this->version}{$queryParams}";
+        $cssFiles[] = "/_templates/". $siteSettings['template']['template']."/style.css.php?{$cacheBoost}&{$this->version}{$queryParams}";
 
         if ($templateName == 'messy') {
             if ($isResponsive || $isAutoResponsive) {
@@ -133,7 +134,7 @@ class SectionHeadRenderService
             }
 
             if ($isShopAvailable) {
-                $cssFiles[] = "/_plugin_shop/css/shop.css.php?{$this->version}" . ($siteSlug ? "&site={$siteSlug}" : '');
+                $cssFiles[] = "/_plugin_shop/css/shop.css.php?{$cacheBoost}&{$this->version}" . ($siteSlug ? "&site={$siteSlug}" : '');
             }
         }
 
