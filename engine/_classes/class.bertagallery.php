@@ -19,25 +19,6 @@ class BertaGallery extends BertaBase
         return $imgs;
     }
 
-    public static function getFirstImage($entry)
-    {
-        global $berta;
-        $img = '';
-        $imgs = BertaGallery::getImagesArray($entry);
-
-        if ($imgs && count($imgs) > 0) {
-            $imageTargetWidth = $berta->template->settings->get('media', 'imagesMediumWidth', false, true);
-            $imageTargetHeight = $berta->template->settings->get('media', 'imagesMediumHeight', false, true);
-            list($firstImageHTML, $firstImageWidth, $firstImageHeight) = BertaGallery::getImageHTML($imgs[0], $entry['mediafolder']['value'], null, null, $imageTargetWidth, $imageTargetHeight);
-            preg_match('/<img.*?>/', $firstImageHTML, $img);
-
-            if ($img) {
-                $img = current($img);
-            }
-        }
-        return $img;
-    }
-
     public static function getHTMLForEntry($entry, $isAdminMode = false)
     {
         global $berta;
@@ -307,7 +288,7 @@ class BertaGallery extends BertaBase
 
         $html = '
             <div class="xGalleryItem xGalleryItemType-video">
-                <video width="' . $width . '" controls'.$poster.$autoplay.'>
+                <video width="' . $width . '" controls controlsList="nodownload"'.$poster.$autoplay.'>
                     <source src="'. $mFolderABS . $img['@attributes']['src'] .'" type="video/mp4">
                 </video>
                 <div class="xGalleryImageCaption">' . (!empty($img['value']) ? $img['value'] : '') . '</div>

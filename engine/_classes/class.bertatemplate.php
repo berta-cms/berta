@@ -1,17 +1,31 @@
 <?php
+use Illuminate\Http\Request;
 use App\Shared\Storage;
+use App\User\UserModel;
 use App\Configuration\SiteTemplatesConfigService;
 use App\Sites\SitesDataService;
 use App\Sites\SitesMenuRenderService;
 use App\Sites\Settings\SiteSettingsDataService;
 use App\Sites\TemplateSettings\SiteTemplateSettingsDataService;
+use App\Sites\Sections\SectionHeadRenderService;
 use App\Sites\Sections\SiteSectionsDataService;
 use App\Sites\SitesHeaderRenderService;
+use App\Sites\Sections\SectionBackgroundGalleryRenderService;
+use App\Sites\SocialMediaLinksRenderService;
+use App\Sites\SitesBannersRenderService;
 use App\Sites\Sections\SectionsMenuRenderService;
+use App\Sites\Sections\SectionFooterRenderService;
+use App\Sites\Sections\AdditionalTextRenderService;
+use App\Sites\Sections\AdditionalFooterTextRenderService;
 use App\Sites\Sections\Entries\SectionEntriesDataService;
 use App\Sites\Sections\Entries\SectionEntryRenderService;
 use App\Sites\Sections\Entries\SectionMashupEntriesRenderService;
+use App\Sites\Sections\Entries\PortfolioThumbnailsRenderService;
 use App\Sites\Sections\Tags\SectionTagsDataService;
+
+use App\Plugins\Shop\ShopSettingsDataService;
+use App\Plugins\Shop\ShopShippingRegionsDataService;
+use App\Plugins\Shop\ShopCartRenderService;
 
 include_once dirname(__FILE__) . '/../_lib/smarty/Smarty.class.php';
 include_once dirname(__FILE__) . '/Zend/Json.php';
@@ -153,6 +167,7 @@ class BertaTemplate extends BertaBase
         $this->content = &$content;
         $this->allContent = &$allContent;
 
+        $request = Request::capture();
         $storage = new Storage(self::$options['MULTISITE'], $isPreviewMode);
 
         $sitesDataService = new SitesDataService();
@@ -169,22 +184,57 @@ class BertaTemplate extends BertaBase
         $siteSettingsState = $siteSettingsDS->getState();
 
         $siteTemplateSettingsDS = new SiteTemplateSettingsDataService(self::$options['MULTISITE'], $this->name, self::$options['XML_ROOT']);
-        $siteTemplateSettingsState =  $siteTemplateSettingsDS->getState();
+        $siteTemplateSettingsState = $siteTemplateSettingsDS->getState();
         $sectionTagsDS = new SectionTagsDataService(self::$options['MULTISITE']);
         $sectionTags = $sectionTagsDS->get();
 
-        $sitesMenuRenderService = new SitesMenuRenderService(
+        $user = new UserModel();
+
+        $siteTemplatesConfigService = new SiteTemplatesConfigService();
+        $siteTemplatesConfig = $siteTemplatesConfigService->getDefaults();
+
+        $sectionHeadRS = new SectionHeadRenderService();
+        $sectionHead = $sectionHeadRS->render(
+            self::$options['MULTISITE'],
+            $siteSections,
+            $this->sectionName,
+            $this->tagName,
+            $sectionTags,
+            $siteSettingsState,
+            $siteTemplateSettingsState,
+            $siteTemplatesConfig,
+            $user,
+            $storage,
+            isset($shopEnabled) && $shopEnabled,
+            $isPreviewMode,
+            $isEditMode
+        );
+        $this->addVariable('sectionHead', $sectionHead);
+
+        $sectionBackgroundGalleryRS = new SectionBackgroundGalleryRenderService();
+        $backgroundGallery = $sectionBackgroundGalleryRS->render(
+            $storage,
+            $siteSettingsState,
+            $siteTemplateSettingsState,
+            $this->sectionName,
+            $siteSections,
+            $request,
+            $isEditMode
+        );
+        $this->addVariable('backgroundGallery', $backgroundGallery);
+
+        $sitesMenuRenderService = new SitesMenuRenderService();
+        $sitesMenu = $sitesMenuRenderService->render(
             self::$options['MULTISITE'],
             $isEditMode,
             $siteSettingsState,
             $siteTemplateSettingsState,
             $sites
         );
-
-        $sitesMenu = $sitesMenuRenderService->render();
         $this->addVariable('sitesMenu', $sitesMenu);
 
-        $sitesHeaderRenderService = new SitesHeaderRenderService(
+        $sitesHeaderRenderService = new SitesHeaderRenderService();
+        $siteHeader = $sitesHeaderRenderService->render(
             self::$options['MULTISITE'],
             $siteSettingsState,
             $siteTemplateSettingsState,
@@ -194,7 +244,6 @@ class BertaTemplate extends BertaBase
             $isPreviewMode,
             $isEditMode
         );
-        $siteHeader = $sitesHeaderRenderService->render();
         $this->addVariable('siteHeader', $siteHeader);
 
         $entriesHTML = '';
@@ -212,7 +261,6 @@ class BertaTemplate extends BertaBase
                 isset($shopEnabled) && $shopEnabled
             );
         }
-
         $this->addVariable('entriesHTML', $entriesHTML);
 
         $siteTemplatesConfigService = new SiteTemplatesConfigService();
@@ -230,7 +278,18 @@ class BertaTemplate extends BertaBase
         );
         $this->addVariable('mashupEntries', $mashupEntries);
 
-        $sectionsMenuRS = new SectionsMenuRenderService(
+        $portfolioThumbnailsRS = new PortfolioThumbnailsRenderService();
+        $portfolioThumbnails = $portfolioThumbnailsRS->render(
+            $siteSettingsState,
+            $storage,
+            $sectionData,
+            $entries,
+            $isEditMode
+        );
+        $this->addVariable('portfolioThumbnails', $portfolioThumbnails);
+
+        $sectionsMenuRS = new SectionsMenuRenderService();
+        $sectionsMenu = $sectionsMenuRS->render(
             self::$options['MULTISITE'],
             $siteSections,
             $this->sectionName,
@@ -241,20 +300,77 @@ class BertaTemplate extends BertaBase
             $isPreviewMode,
             $isEditMode
         );
-        $sectionsMenu = $sectionsMenuRS->render();
         $this->addVariable('sectionsMenu', $sectionsMenu);
+
+        $sectionFooterRS = new SectionFooterRenderService();
+        $sectionFooter = $sectionFooterRS->render(
+            $siteSettingsState,
+            $siteSections,
+            $user,
+            $request,
+            $isEditMode
+        );
+        $this->addVariable('sectionFooter', $sectionFooter);
 
         // We still need entries for portfolio view and for section type = mashup
         // TODO remove assigning entries to template when rendering is moved to API app
         list($entries, $entriesForTag) = $this->getEntriesLists($this->sectionName, $this->tagName, $this->content);
         $this->addVariable('entries', $entriesForTag);
 
-        $socialMediaLinks = [];
-        if (isset($this->settings->base->settings['socialMediaLinks']['links']['link'])) {
-            $socialMediaLinks = $this->settings->base->settings['socialMediaLinks']['links']['link'];
-            Array_XML::makeListIfNotList($socialMediaLinks);
-        }
+        $socialMediaLinksRS = new SocialMediaLinksRenderService();
+        $socialMediaLinks = $socialMediaLinksRS->render($siteSettingsState);
         $this->addVariable('socialMediaLinks', $socialMediaLinks);
+
+        $sitesBannersRS = new SitesBannersRenderService();
+        $siteBanners = $sitesBannersRS->render(
+            self::$options['MULTISITE'],
+            $siteSettingsState,
+            $siteTemplateSettingsState,
+            $siteSections,
+            $this->sectionName,
+            $storage,
+            $isEditMode
+        );
+        $this->addVariable('siteBanners', $siteBanners);
+
+        $additionalTextRS = new AdditionalTextRenderService($socialMediaLinksRS);
+        $additionalTextBlock = $additionalTextRS->render(
+            self::$options['MULTISITE'],
+            $siteSettingsState,
+            $siteTemplateSettingsState,
+            $siteSections,
+            $this->sectionName,
+            $isEditMode
+        );
+        $this->addVariable('additionalTextBlock', $additionalTextBlock);
+
+        $additionalFooterTextRS = new AdditionalFooterTextRenderService($socialMediaLinksRS);
+        $additionalFooterTextBlock = $additionalFooterTextRS->render(
+            self::$options['MULTISITE'],
+            $siteSettingsState,
+            $isEditMode
+        );
+        $this->addVariable('additionalFooterTextBlock', $additionalFooterTextBlock);
+
+        if (isset($shopEnabled) && $shopEnabled) {
+            $shopSettingsDS = new ShopSettingsDataService(self::$options['MULTISITE']);
+            $shopSettings = $shopSettingsDS->get();
+            $regionDS = new ShopShippingRegionsDataService(self::$options['MULTISITE']);
+            $shippingRegions = $regionDS->get();
+
+            $cartRS = new ShopCartRenderService();
+            $cartSection = $cartRS->render(
+                self::$options['MULTISITE'],
+                $siteSettingsState,
+                $shopSettings,
+                $shippingRegions,
+                $request,
+                $siteSections,
+                $this->sectionName,
+                $isEditMode
+            );
+            $this->addVariable('cartSection', $cartSection);
+        }
     }
 
     private function getEntriesLists($sName, $tagName, &$content)
@@ -329,9 +445,6 @@ class BertaTemplate extends BertaBase
         }
 
         $vars['berta']['settings'] = $this->settings->getApplied();
-        //print_r($vars['berta']['settings']);
-
-        $vars['berta']['pageTitle'] = $this->settings->get('texts', 'pageTitle');
 
         global $shopEnabled;
         $vars['berta']['shop_enabled'] = false;
@@ -383,7 +496,6 @@ class BertaTemplate extends BertaBase
 
             // set current section and page title
             if ($this->sectionName == $sName) {
-                $vars['berta']['pageTitle'] .= ' / ' . (!empty($s['title']) ? htmlspecialchars($s['title']['value']) : '');
                 $vars['berta']['section'] = &$vars['berta']['sections'][$sName];
             }
 
@@ -398,9 +510,6 @@ class BertaTemplate extends BertaBase
         // add subsections...
         $vars['berta']['tagName'] = $this->tagName;
         $vars['berta']['tags'] = $this->tags;
-        if ($this->tagName) {
-            $vars['berta']['pageTitle'] .= ' / ' . $this->tags[$this->sectionName][$this->tagName]['title'];
-        }
 
         // add siteTexts ...
         $texts = $this->settings->base->getAll('siteTexts');
@@ -410,89 +519,7 @@ class BertaTemplate extends BertaBase
             }
         }
 
-        // berta scripts ...
-        $engineAbsRoot = self::$options['ENGINE_ROOT_URL'];
-        $templatesAbsRoot = self::$options['TEMPLATES_ABS_ROOT'];
-
-        if ($this->apacheRewriteUsed) {
-            $site = !empty(self::$options['MULTISITE']) ? self::$options['MULTISITE'] . '/' : '';
-        } else {
-            $site = !empty(self::$options['MULTISITE']) ? '?site=' . self::$options['MULTISITE'] : '' ;
-        }
-
-        $jsSettings = [
-            'templateName' => $this->name,
-            'environment' => $this->environment,
-            'backToTopEnabled' => $this->settings->get('navigation', 'backToTopEnabled'),
-            'slideshowAutoRewind' => $this->settings->get('entryLayout', 'gallerySlideshowAutoRewind'),
-            'sectionType' => $vars['berta']['section']['type'],
-            'gridStep' => $this->settings->get('pageLayout', 'gridStep'),
-            'galleryFullScreenBackground' => $this->settings->get('entryLayout', 'galleryFullScreenBackground'),
-            'galleryFullScreenImageNumbers' => $this->settings->get('entryLayout', 'galleryFullScreenImageNumbers'),
-            'paths' => [
-                'engineRoot' => htmlspecialchars(self::$options['ENGINE_ROOT_URL']),
-                'engineABSRoot' => htmlspecialchars($engineAbsRoot),
-                'siteABSMainRoot' => htmlspecialchars(self::$options['SITE_ROOT_URL']),
-                'siteABSRoot' => htmlspecialchars(self::$options['SITE_ROOT_URL']) . $site,
-                'template' => htmlspecialchars(self::$options['SITE_ROOT_URL'] . '_templates/' . $this->name . '/'),
-                'site' => htmlspecialchars(self::$options['MULTISITE'])
-            ],
-
-            'i18n' => [
-                'create new entry here' => I18n::_('create new entry here'),
-                'create new entry' => I18n::_('create new entry'),
-            ]
-        ];
-
-        $sttingsJS = Zend_Json::encode($jsSettings);
-
-        $version = self::$options['version'];
-        $timestamp = time();
-        $site = !empty(self::$options['MULTISITE']) ? '&amp;site=' . self::$options['MULTISITE'] : '';
-        $forceResponsiveStyleParam = $jsSettings['sectionType'] == 'portfolio' ? '&amp;responsive=1' : '';
-        $isEngineParam = $this->environment == 'engine' ? '&amp;engine=1' : '';
-        $isPreview = isset($_REQUEST['preview']) ? '&amp;preview=1' : '';
-
-        if ($this->loggedIn) {
-            $vars['berta']['css'] = <<<DOC
-    <link rel="stylesheet" href="{$engineAbsRoot}css/backend.min.css?{$version}" type="text/css">
-    <link rel="stylesheet" href="{$engineAbsRoot}css/editor.css.php?{$version}" type="text/css">
-    <link rel="stylesheet" href="{$templatesAbsRoot}{$this->name}/editor.css.php?{$version}" type="text/css">
-DOC;
-        } else {
-            $vars['berta']['css'] = <<<DOC
-    <link rel="stylesheet" href="{$engineAbsRoot}css/frontend.min.css?{$version}" type="text/css">
-DOC;
-        }
-
-        $vars['berta']['css'] .= <<<DOC
-    <link rel="stylesheet" href="{$templatesAbsRoot}{$this->name}/style.css?{$version}" type="text/css">
-DOC;
-
-        $vars['berta']['css'] .= <<<DOC
-    <link rel="stylesheet" href="{$templatesAbsRoot}{$this->name}/style.css.php?{$timestamp}{$site}{$forceResponsiveStyleParam}{$isEngineParam}{$isPreview}" type="text/css">
-DOC;
-
-        $sentryScripts = self::sentryScripts();
-        $vars['berta']['scripts'] = <<<DOC
-    {$sentryScripts}
-    <script>
-        var bertaGlobalOptions = $sttingsJS;
-    </script>
-DOC;
-        if ($this->loggedIn) {
-            $vars['berta']['scripts'] .= <<<DOC
-    <script src="{$engineAbsRoot}js/backend.min.js?{$version}"></script>
-    <script src="{$engineAbsRoot}js/ng-backend.min.js?{$version}"></script>
-DOC;
-        } else {
-            $vars['berta']['scripts'] .= <<<DOC
-    <script src="{$engineAbsRoot}js/frontend.min.js?{$version}"></script>
-DOC;
-        }
-
         // counter ...
-
         $vars['berta']['google_id'] = $this->settings->get('settings', 'googleAnalyticsId');
         if ($vars['berta']['google_id'] == 'none') {
             $vars['berta']['google_id'] = '';

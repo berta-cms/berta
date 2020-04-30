@@ -1,7 +1,7 @@
 {
     "name": "berta-cms/berta",
     "description": "Berta CMS",
-    "version": "1.8.3",
+    "version": "1.8.5",
     "keywords": ["berta", "cms", "lumen"],
     "license": "GPL-3.0",
     "type": "project",
@@ -12,7 +12,8 @@
         "swaggest/json-schema": "^0.11.5",
         "rcrowe/twigbridge": "^0.9.6",
         "firebase/php-jwt": "^5.0",
-        "sentry/sentry-laravel": "0.11.0"
+        "sentry/sentry-laravel": "0.11.0",
+        "mobiledetect/mobiledetectlib": "^2.8"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

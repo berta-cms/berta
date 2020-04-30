@@ -6,16 +6,24 @@ use Validator;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
+use App\User\UserModel;
+use App\Shared\Storage;
+use App\Configuration\SiteTemplatesConfigService;
+use App\Sites\SocialMediaLinksRenderService;
 use App\Sites\Settings\SiteSettingsDataService;
 use App\Sites\Sections\SiteSectionsDataService;
 use App\Sites\Sections\SectionsMenuRenderService;
+use App\Sites\Sections\SectionBackgroundGalleryRenderService;
+use App\Sites\Sections\SectionFooterRenderService;
+use App\Sites\Sections\SectionHeadRenderService;
+use App\Sites\Sections\AdditionalTextRenderService;
+use App\Sites\Sections\AdditionalFooterTextRenderService;
 use App\Sites\Sections\Tags\SectionTagsDataService;
 use App\Sites\Sections\Entries\SectionEntriesDataService;
 use App\Sites\TemplateSettings\SiteTemplateSettingsDataService;
 
 class SiteSectionsController extends Controller
 {
-
     public function create(Request $request)
     {
         $json = $request->json()->all();
@@ -119,7 +127,7 @@ class SiteSectionsController extends Controller
         }
 
         $validator = Validator::make(['file' => $file], [
-            'file' => 'max:' .  config('app.image_max_file_size') . '|mimes:' . implode(',', config('app.image_mimes')) . '|not_corrupted_image'
+            'file' => 'max:' . config('app.image_max_file_size') . '|mimes:' . implode(',', config('app.image_mimes')) . '|not_corrupted_image'
         ]);
 
         if ($validator->fails()) {
@@ -158,7 +166,9 @@ class SiteSectionsController extends Controller
         $sectionTagsDS = new SectionTagsDataService($site);
         $sectionTags = $sectionTagsDS->get();
 
-        $sectionsMenuRS = new SectionsMenuRenderService(
+        $sectionsMenuRS = new SectionsMenuRenderService();
+
+        return $sectionsMenuRS->render(
             $site,
             $sections,
             $sectionSlug,
@@ -169,7 +179,130 @@ class SiteSectionsController extends Controller
             false,
             true
         );
+    }
 
-        return $sectionsMenuRS->render();
+    public function renderAdditionalText($site = '', Request $request)
+    {
+        $siteSettingsDS = new SiteSettingsDataService($site);
+        $siteSettings = $siteSettingsDS->getState();
+
+        $siteTemplateSettingsDS = new SiteTemplateSettingsDataService($site, $siteSettings['template']['template']);
+        $siteTemplateSettings = $siteTemplateSettingsDS->getState();
+
+        $sectionsDS = new SiteSectionsDataService($site);
+        $sections = $sectionsDS->getState();
+
+        $sectionSlug = $request->get('section');
+        $isEditMode = true;
+
+        $socialMediaLinksRS = new SocialMediaLinksRenderService();
+        $additionalTextRS = new AdditionalTextRenderService($socialMediaLinksRS);
+
+        return $additionalTextRS->render(
+            $site,
+            $siteSettings,
+            $siteTemplateSettings,
+            $sections,
+            $sectionSlug,
+            $isEditMode
+        );
+    }
+
+    public function renderAdditionalFooterText($siteSlug = '')
+    {
+        $siteSettingsDS = new SiteSettingsDataService($siteSlug);
+        $siteSettings = $siteSettingsDS->getState();
+        $isEditMode = true;
+
+        $socialMediaLinksRS = new SocialMediaLinksRenderService();
+        $additionalTextRS = new AdditionalFooterTextRenderService($socialMediaLinksRS);
+
+        return $additionalTextRS->render($siteSlug, $siteSettings, $isEditMode);
+    }
+
+    public function renderHead($site = '', Request $request)
+    {
+        $sectionsDS = new SiteSectionsDataService($site);
+        $sections = $sectionsDS->getState();
+        $sectionSlug = $request->get('section');
+        $tagSlug = $request->get('tag');
+        $sectionTagsDS = new SectionTagsDataService($site);
+        $sectionTags = $sectionTagsDS->get();
+        $siteSettingsDS = new SiteSettingsDataService($site);
+        $siteSettings = $siteSettingsDS->getState();
+        $siteTemplateSettingsDS = new SiteTemplateSettingsDataService($site, $siteSettings['template']['template']);
+        $siteTemplateSettings = $siteTemplateSettingsDS->getState();
+        $siteTemplatesConfigService = new SiteTemplatesConfigService();
+        $siteTemplatesConfig = $siteTemplatesConfigService->getDefaults();
+        $user = new UserModel();
+
+        $isShopAvailable = config('plugin-Shop.key') === $request->getHost();
+        $isEditMode = true;
+        $isPreviewMode = false;
+        $storageService = new Storage($site, $isPreviewMode);
+
+        $sectionHeadRS = new SectionHeadRenderService();
+
+        return $sectionHeadRS->render(
+            $site,
+            $sections,
+            $sectionSlug,
+            $tagSlug,
+            $sectionTags,
+            $siteSettings,
+            $siteTemplateSettings,
+            $siteTemplatesConfig,
+            $user,
+            $storageService,
+            $isShopAvailable,
+            $isPreviewMode,
+            $isEditMode
+        );
+    }
+
+    public function renderFooter($site = '', Request $request)
+    {
+        $sectionsDS = new SiteSectionsDataService($site);
+        $sections = $sectionsDS->getState();
+        $siteSettingsDS = new SiteSettingsDataService($site);
+        $siteSettings = $siteSettingsDS->getState();
+        $isEditMode = false;
+        $user = new UserModel();
+
+        $sectionFooterRS = new SectionFooterRenderService();
+
+        return $sectionFooterRS->render(
+            $siteSettings,
+            $sections,
+            $user,
+            $request,
+            $isEditMode
+        );
+    }
+
+    public function renderBackgroundGallery($siteSlug = '', Request $request)
+    {
+        $siteSettingsDS = new SiteSettingsDataService($siteSlug);
+        $siteSettings = $siteSettingsDS->getState();
+        $siteTemplateSettingsDS = new SiteTemplateSettingsDataService($siteSlug, $siteSettings['template']['template']);
+        $siteTemplateSettings = $siteTemplateSettingsDS->getState();
+        $sectionSlug = $request->get('section');
+        $sectionsDS = new SiteSectionsDataService($siteSlug);
+        $sections = $sectionsDS->getState();
+        $isEditMode = true;
+        $isPreviewMode = false;
+        $storageService = new Storage($siteSlug, $isPreviewMode);
+
+        $sectionBackgroundGalleryRS = new SectionBackgroundGalleryRenderService();
+
+        return $sectionBackgroundGalleryRS->render(
+            $storageService,
+            $siteSettings,
+            $siteTemplateSettings,
+            $sectionSlug,
+            $sections,
+            $request,
+            $isEditMode
+        );
     }
 }

@@ -12,7 +12,7 @@
                 </div>
               {% else %}
                 <div class="xGalleryItem xGalleryItemType-video">
-                  <video width="{{ item.width }}" controls{% if item.poster %} poster="{{ item.poster }}"{% endif %}{% if item.autoplay %} data-autoplay="1"{% endif %}>
+                  <video width="{{ item.width }}" controls controlsList="nodownload"{% if item.poster %} poster="{{ item.poster }}"{% endif %}{% if item.autoplay %} data-autoplay="1"{% endif %}>
                     <source src="{{ item.original }}" type="video/mp4">
                   </video>
                   <div class="xGalleryImageCaption">{{ item.caption|raw }}</div>

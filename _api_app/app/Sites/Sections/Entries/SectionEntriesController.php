@@ -11,6 +11,7 @@ use App\Configuration\SiteTemplatesConfigService;
 use App\Sites\Sections\Entries\SectionEntriesDataService;
 use App\Sites\Sections\Entries\SectionEntryRenderService;
 use App\Sites\Sections\Entries\SectionMashupEntriesRenderService;
+use App\Sites\Sections\Entries\PortfolioThumbnailsRenderService;
 use App\Sites\Sections\SiteSectionsDataService;
 use App\Sites\Settings\SiteSettingsDataService;
 use App\Sites\TemplateSettings\SiteTemplateSettingsDataService;
@@ -184,7 +185,6 @@ class SectionEntriesController extends Controller
 
     public function renderMashupEntries($siteSlug = '', Request $request)
     {
-
         $siteSettingsDS = new SiteSettingsDataService($siteSlug);
         $siteSettings = $siteSettingsDS->getState();
         $siteTemplateSettingsDS = new SiteTemplateSettingsDataService($siteSlug, $siteSettings['template']['template']);
@@ -211,5 +211,25 @@ class SectionEntriesController extends Controller
             $isPreviewMode,
             $isEditMode
         );
+    }
+
+    public function renderPortfolioThumbnails($site, $sectionName)
+    {
+        $siteSettingsDS = new SiteSettingsDataService($site);
+        $siteSettings = $siteSettingsDS->getState();
+
+        $siteSectionsDS = new SiteSectionsDataService($site);
+        $section = $siteSectionsDS->get($sectionName);
+
+        $sectionEntriesDS = new SectionEntriesDataService($site, $sectionName);
+        $entries = $sectionEntriesDS->get()['entry'];
+
+        $storageService = new Storage($site);
+
+        $isEditMode = true;
+
+        $portfolioThumbnailsRS = new PortfolioThumbnailsRenderService();
+
+        return $portfolioThumbnailsRS->render($siteSettings, $storageService, $section, $entries, $isEditMode);
     }
 }
