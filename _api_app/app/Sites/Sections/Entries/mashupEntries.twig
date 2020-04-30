@@ -10,7 +10,7 @@
         {% if entry.item.galleryItem.type == 'image' %}
           <img src="{{ entry.item.galleryItem.src }}" width="{{ entry.item.galleryItem.width }}" height="{{ entry.item.galleryItem.height }}"{% if entry.item.galleryItem.srcset %} srcset="{{ entry.item.galleryItem.srcset }}"{% endif %} alt="{{ entry.item.galleryItem.alt }}">
         {% else %}
-          <video width="{{ entry.item.galleryItem.width }}" controls{% if entry.item.galleryItem.poster %} poster="{{ entry.item.galleryItem.poster }}"{% endif %}{% if entry.item.galleryItem.autoplay %} data-autoplay="1"{% endif %}>
+          <video width="{{ entry.item.galleryItem.width }}" controls controlsList="nodownload"{% if entry.item.galleryItem.poster %} poster="{{ entry.item.galleryItem.poster }}"{% endif %}{% if entry.item.galleryItem.autoplay %} data-autoplay="1"{% endif %}>
             <source src="{{ entry.item.galleryItem.original }}" type="video/mp4">
           </video>
         {% endif %}
