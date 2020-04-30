@@ -29,7 +29,7 @@ class PortfolioThumbnailsRenderService
         // Force use medium size for thumbnails
         $entry['mediaCacheData']['@attributes']['size'] = 'medium';
 
-        $image = ImageHelpers::getGalleryItem($image, 1, $entry, $storageService, $siteSettings);
+        $image = ImageHelpers::getGalleryItem($image, $entry, $storageService, $siteSettings);
         $attributes = Helpers::arrayToHtmlAttributes([
             'src' => $image['src'],
             'srcset' => $image['srcset']

@@ -19,6 +19,7 @@ use App\Sites\Sections\AdditionalTextRenderService;
 use App\Sites\Sections\AdditionalFooterTextRenderService;
 use App\Sites\Sections\Entries\SectionEntriesDataService;
 use App\Sites\Sections\Entries\SectionEntryRenderService;
+use App\Sites\Sections\Entries\SectionMashupEntriesRenderService;
 use App\Sites\Sections\Entries\PortfolioThumbnailsRenderService;
 use App\Sites\Sections\Tags\SectionTagsDataService;
 
@@ -261,6 +262,21 @@ class BertaTemplate extends BertaBase
             );
         }
         $this->addVariable('entriesHTML', $entriesHTML);
+
+        $siteTemplatesConfigService = new SiteTemplatesConfigService();
+        $mashupEntriesRS = new SectionMashupEntriesRenderService($siteTemplatesConfigService);
+        $mashupEntries = $mashupEntriesRS->render(
+            $storage,
+            self::$options['MULTISITE'],
+            $siteSettingsState,
+            $siteTemplateSettingsState,
+            $siteSections,
+            $this->sectionName,
+            $this->tagName,
+            $isPreviewMode,
+            $isEditMode
+        );
+        $this->addVariable('mashupEntries', $mashupEntries);
 
         $portfolioThumbnailsRS = new PortfolioThumbnailsRenderService();
         $portfolioThumbnails = $portfolioThumbnailsRS->render(

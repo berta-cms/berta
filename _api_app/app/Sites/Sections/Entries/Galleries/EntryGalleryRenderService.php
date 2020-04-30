@@ -46,7 +46,6 @@ abstract class EntryGalleryRenderService
         foreach ($galleryItemsData as $item) {
             $items[] = ImageHelpers::getGalleryItem(
                 $item,
-                1,
                 $entry,
                 $storageService,
                 $siteSettings
