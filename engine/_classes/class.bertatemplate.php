@@ -22,6 +22,10 @@ use App\Sites\Sections\Entries\SectionEntryRenderService;
 use App\Sites\Sections\Entries\PortfolioThumbnailsRenderService;
 use App\Sites\Sections\Tags\SectionTagsDataService;
 
+use App\Plugins\Shop\ShopSettingsDataService;
+use App\Plugins\Shop\ShopShippingRegionsDataService;
+use App\Plugins\Shop\ShopCartRenderService;
+
 include_once dirname(__FILE__) . '/../_lib/smarty/Smarty.class.php';
 include_once dirname(__FILE__) . '/Zend/Json.php';
 
@@ -331,6 +335,26 @@ class BertaTemplate extends BertaBase
             $isEditMode
         );
         $this->addVariable('additionalFooterTextBlock', $additionalFooterTextBlock);
+
+        if (isset($shopEnabled) && $shopEnabled) {
+            $shopSettingsDS = new ShopSettingsDataService(self::$options['MULTISITE']);
+            $shopSettings = $shopSettingsDS->get();
+            $regionDS = new ShopShippingRegionsDataService(self::$options['MULTISITE']);
+            $shippingRegions = $regionDS->get();
+
+            $cartRS = new ShopCartRenderService();
+            $cartSection = $cartRS->render(
+                self::$options['MULTISITE'],
+                $siteSettingsState,
+                $shopSettings,
+                $shippingRegions,
+                $request,
+                $siteSections,
+                $this->sectionName,
+                $isEditMode
+            );
+            $this->addVariable('cartSection', $cartSection);
+        }
     }
 
     private function getEntriesLists($sName, $tagName, &$content)

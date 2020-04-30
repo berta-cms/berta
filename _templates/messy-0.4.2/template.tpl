@@ -45,7 +45,7 @@
         { if $berta.environment == 'engine' }
         <div style="height: 50px"></div>
         { /if }
-        { include file="../../_plugin_shop/_includes/inc.shopping_cart.tpl"  }
+        {$cartSection}
         </div> {* allContainer *}
     { else }
 
