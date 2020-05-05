@@ -105,11 +105,7 @@
         </div>
 
         {* *** grid view ********************************************************** *}
-        { if ($berta.section.type == 'grid' && $smarty.cookies._berta_grid_view) }
-        <div id="xGridView">
-            { gridView section=$berta.section tag=$berta.tagName }
-        </div>
-        { /if }
+        {$gridView}
 
         <div id="bottom" class="clearfix">
             {$additionalFooterTextBlock}

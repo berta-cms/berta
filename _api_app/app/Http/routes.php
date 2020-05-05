@@ -63,6 +63,7 @@ $app->group(['prefix' => 'v1/sites', 'namespace' => 'App\Sites\Sections', 'middl
     $app->get('sections/render-head[/{site}]', 'SiteSectionsController@renderHead');
     $app->get('sections/render-menu[/{site}]', 'SiteSectionsController@renderMenu');
     $app->get('sections/render-background-gallery[/{siteSlug}]', 'SiteSectionsController@renderBackgroundGallery');
+    $app->get('sections/render-grid-view[/{siteSlug}]', 'SiteSectionsController@renderGridView');
     $app->get('sections/render-additional-text[/{site}]', 'SiteSectionsController@renderAdditionalText');
     $app->get('sections/render-additional-footer-text[/{site}]', 'SiteSectionsController@renderAdditionalFooterText');
     $app->get('sections/render-footer[/{site}]', 'SiteSectionsController@renderFooter');

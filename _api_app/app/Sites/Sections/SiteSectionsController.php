@@ -14,6 +14,7 @@ use App\Sites\Settings\SiteSettingsDataService;
 use App\Sites\Sections\SiteSectionsDataService;
 use App\Sites\Sections\SectionsMenuRenderService;
 use App\Sites\Sections\SectionBackgroundGalleryRenderService;
+use App\Sites\Sections\GridViewRenderService;
 use App\Sites\Sections\SectionFooterRenderService;
 use App\Sites\Sections\SectionHeadRenderService;
 use App\Sites\Sections\AdditionalTextRenderService;
@@ -302,6 +303,33 @@ class SiteSectionsController extends Controller
             $sectionSlug,
             $sections,
             $request,
+            $isEditMode
+        );
+    }
+
+    public function renderGridView($siteSlug = '', Request $request)
+    {
+        $siteSettingsDS = new SiteSettingsDataService($siteSlug);
+        $siteSettings = $siteSettingsDS->getState();
+        $sectionSlug = $request->get('section');
+        $sectionsDS = new SiteSectionsDataService($siteSlug);
+        $sections = $sectionsDS->getState();
+        $tagSlug = $request->get('tag');
+        $isEditMode = false;
+        $isPreviewMode = false;
+        $storageService = new Storage($siteSlug, $isPreviewMode);
+
+        $gridViewRS = new GridViewRenderService();
+
+        return $gridViewRS->render(
+            $siteSlug,
+            $storageService,
+            $siteSettings,
+            $sectionSlug,
+            $sections,
+            $tagSlug,
+            $request,
+            $isPreviewMode,
             $isEditMode
         );
     }
