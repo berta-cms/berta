@@ -11,6 +11,7 @@ use App\Sites\Sections\SectionHeadRenderService;
 use App\Sites\Sections\SiteSectionsDataService;
 use App\Sites\SitesHeaderRenderService;
 use App\Sites\Sections\SectionBackgroundGalleryRenderService;
+use App\Sites\Sections\GridViewRenderService;
 use App\Sites\SocialMediaLinksRenderService;
 use App\Sites\SitesBannersRenderService;
 use App\Sites\Sections\SectionsMenuRenderService;
@@ -277,6 +278,20 @@ class BertaTemplate extends BertaBase
             $isEditMode
         );
         $this->addVariable('mashupEntries', $mashupEntries);
+
+        $gridViewRS = new GridViewRenderService();
+        $gridView = $gridViewRS->render(
+            self::$options['MULTISITE'],
+            $storage,
+            $siteSettingsState,
+            $this->sectionName,
+            $siteSections,
+            $this->tagName,
+            $request,
+            $isPreviewMode,
+            $isEditMode
+        );
+        $this->addVariable('gridView', $gridView);
 
         $portfolioThumbnailsRS = new PortfolioThumbnailsRenderService();
         $portfolioThumbnails = $portfolioThumbnailsRS->render(
