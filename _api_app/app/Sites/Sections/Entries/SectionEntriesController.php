@@ -12,6 +12,7 @@ use App\Sites\Sections\Entries\SectionEntriesDataService;
 use App\Sites\Sections\Entries\SectionEntryRenderService;
 use App\Sites\Sections\Entries\SectionMashupEntriesRenderService;
 use App\Sites\Sections\Entries\PortfolioThumbnailsRenderService;
+use App\Sites\Sections\Entries\Galleries\EntryGalleryEditorRenderService;
 use App\Sites\Sections\SiteSectionsDataService;
 use App\Sites\Settings\SiteSettingsDataService;
 use App\Sites\TemplateSettings\SiteTemplateSettingsDataService;
@@ -91,7 +92,7 @@ class SectionEntriesController extends Controller
     {
         $file = $request->file('value');
         $path = $request->get('path');
-        $posterVideo = explode('/', $path)[4];
+        $isVideoPosterImage = count(explode('/', $path)) == 5;
 
         if (!$file->isValid()) {
             return response()->json([
@@ -100,7 +101,7 @@ class SectionEntriesController extends Controller
             ]);
         }
 
-        $isImage = in_array($file->guessExtension(), config('app.image_mimes')) || $posterVideo;
+        $isImage = in_array($file->guessExtension(), config('app.image_mimes')) || $isVideoPosterImage;
         $validator = Validator::make(['file' => $file], [
             'file' => $isImage ?
                 'max:' .  config('app.image_max_file_size') . '|mimes:' . implode(',', config('app.image_mimes')) . '|not_corrupted_image'
@@ -181,6 +182,38 @@ class SectionEntriesController extends Controller
         }
 
         return response($res);
+    }
+
+    public function renderEntryGalleryEditor($site = '', $section, $id)
+    {
+        $siteSettingsDS = new SiteSettingsDataService($site);
+        $siteSettings = $siteSettingsDS->getState();
+        $siteSectionsDS = new SiteSectionsDataService($site);
+        $siteSection = $siteSectionsDS->get($section);
+
+        if (empty($section)) {
+            return abort(404, "Section with name {$section} not found!");
+        }
+
+        $sectionEntriesDS = new SectionEntriesDataService($site, $section);
+        $entries = $sectionEntriesDS->get()['entry'];
+        $index = array_search($id, array_column($entries, 'id'));
+
+        if ($index === false) {
+            return abort(404, "Entry with id {$id} not found!");
+        }
+
+        $entry = $entries[$index];
+        $storageService = new Storage($site);
+        $entryGalleryEditorRS = new EntryGalleryEditorRenderService();
+
+        return $entryGalleryEditorRS->render(
+            $site,
+            $siteSettings,
+            $siteSection,
+            $storageService,
+            $entry
+        );
     }
 
     public function renderMashupEntries($siteSlug = '', Request $request)

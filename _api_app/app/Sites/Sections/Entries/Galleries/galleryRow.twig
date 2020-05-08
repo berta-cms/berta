@@ -1,6 +1,6 @@
 <div class="{{ galleryClassList }}"{% if isFullscreen %} data-fullscreen="1"{% endif %}>
   {% if items %}
-    <div class="xGallery" style="{{ galleryStyles }}" {% if rowGalleryPadding %} rowGalleryPadding="{{ rowGalleryPadding }}"{% endif %}>
+    <div class="xGallery" style="{{ galleryStyles }}" {% if rowGalleryPadding %} xRowGalleryPadding="{{ rowGalleryPadding }}"{% endif %}>
 
       {%- for item in items -%}
         {%- if item.type == 'image' -%}
