@@ -30,7 +30,7 @@ if ($jsonRequest) {
     $section = $siteSectionsDS->get($decoded['section']);
     $storageService = new Storage($site);
 
-    if ($decoded['entry']) {
+    if (!empty($decoded['entry'])) {
         $sectionEntriesDS = new SectionEntriesDataService($site, $decoded['section']);
         $entries = $sectionEntriesDS->get();
         $entryIndex = array_search($decoded['entry'], array_column($entries['entry'], 'id'));
