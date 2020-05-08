@@ -129,10 +129,7 @@
               <div class="dimsForm">
                 <div class="posterContainer"></div>
                 <input type="file">
-                <a class="poster" href="#">
-                  {% if item.thumbnail %}change{% else %}upload
-                  {% endif %}
-                  poster frame</a>
+                <a class="poster" href="#">{% if item.thumbnail %}change{% else %}upload{% endif %} poster frame</a>
               </div>
 
               <div class="xAutoPlay">
@@ -146,7 +143,7 @@
             {% endif %}
 
             <div class="xEGEImageCaption xEditableMCESimple xProperty-galleryImageCaption xCaption-caption xParam-{{ item.src }}" data-path="{{ item.captionDataPath }}">
-              {{ item.caption }}
+              {{ item.caption|raw }}
             </div>
           </li>
         {% endfor %}

@@ -125,7 +125,7 @@ var BertaPosterUploader = new Class({
     this.item = this.selectFile.getParent('li');
     var xEntryAddImagesLink = this.galleryEditor.container.getElement('.xEntryAddImagesLink');
     this.uploadUrl = xEntryAddImagesLink.getAttribute('href');
-    this.path = xEntryAddImagesLink.data('data-path') + videoSrc;
+    this.path = xEntryAddImagesLink.data('data-path') + '/' + videoSrc;
     this.fileInput = this.selectFile.getPrevious();
     this.addUploader();
   },

@@ -92,7 +92,7 @@ class SectionEntriesController extends Controller
     {
         $file = $request->file('value');
         $path = $request->get('path');
-        $posterVideo = explode('/', $path)[4];
+        $isVideoPosterImage = count(explode('/', $path)) == 5;
 
         if (!$file->isValid()) {
             return response()->json([
@@ -101,7 +101,7 @@ class SectionEntriesController extends Controller
             ]);
         }
 
-        $isImage = in_array($file->guessExtension(), config('app.image_mimes')) || $posterVideo;
+        $isImage = in_array($file->guessExtension(), config('app.image_mimes')) || $isVideoPosterImage;
         $validator = Validator::make(['file' => $file], [
             'file' => $isImage ?
                 'max:' .  config('app.image_max_file_size') . '|mimes:' . implode(',', config('app.image_mimes')) . '|not_corrupted_image'
