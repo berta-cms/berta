@@ -378,7 +378,7 @@ var BertaEditorBase = new Class({
         el.store('onElementSave', onElementSave);
         el.addClass(editorClass.substr(1));
 
-        if (results = el.get('html').match(/\#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/)) {
+        if (results = el.get('html').trim().match(/\#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/)) {
           new Element('SPAN', {
             'class': 'colorPreview',
             'styles': {
@@ -392,11 +392,7 @@ var BertaEditorBase = new Class({
             this.addClass('xEditing');
             this.set('old_content', el.get('html'));
 
-            var tempValue;
-            if (results = this.get('html').match(/\#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/))
-              tempValue = results[0]; // set to the matched color value
-            else
-              tempValue = el.get('title'); // set to default value
+            var colorValue = this.get('html').trim();
 
             if (!editor.mooRainbow)
               editor.mooRainbow = new MooRainbow(null, {
@@ -409,24 +405,21 @@ var BertaEditorBase = new Class({
             editor.mooRainbow.removeEvents('change');
             editor.mooRainbow.removeEvents('complete');
             editor.mooRainbow.removeEvents('abort');
-            editor.mooRainbow.addEvent('change', function (color) {
-              //inlineBertaEditor.inputBox.set('value', color.hex);
-            });
             editor.mooRainbow.addEvent('complete', function (color) {
-              editor.elementEdit_save(editor, el, tempValue, tempValue, color.hex, color.hex);
-              //inlineBertaEditor.onSave();
+              editor.elementEdit_save(editor, el, colorValue, colorValue, color.hex, color.hex);
             });
             editor.mooRainbow.addEvent('abort', function (color) {
-              editor.elementEdit_save(editor, el, tempValue, tempValue, color.hex, color.hex);
-              //inlineBertaEditor.inputBox.set('value', tempValue);
-              //inlineBertaEditor.onSave();
+              editor.elementEdit_save(editor, el, colorValue, colorValue, color.hex, color.hex);
             });
 
-            var currentColor = new Color(tempValue, 'RGB');
             editor.mooRainbow.show.delay(10, editor.mooRainbow);
-            editor.mooRainbow.backupColor = currentColor;
-            editor.mooRainbow.layout.backup.setStyle('background-color', editor.mooRainbow.backupColor.rgbToHex());
-            editor.mooRainbow.manualSet(currentColor);
+
+            if (colorValue.match(/\#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/)) {
+              var currentColor = new Color(colorValue, 'RGB');
+              editor.mooRainbow.backupColor = currentColor;
+              editor.mooRainbow.layout.backup.setStyle('background-color', editor.mooRainbow.backupColor.rgbToHex());
+              editor.mooRainbow.manualSet(currentColor);
+            }
 
             editor.fireEvent(BertaEditorBase.EDITABLE_START, [el, null]);
           }

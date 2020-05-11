@@ -8,7 +8,7 @@ class EntryGalleryEditorRenderService
 {
     private function getGalleryItems($entry, $storageService, $basePath)
     {
-        $files = $entry['mediaCacheData']['file'];
+        $files = !empty($entry['mediaCacheData']['file']) ? $entry['mediaCacheData']['file'] : [];
         $items = array_map(function ($item, $index) use ($entry, $storageService, $basePath) {
             $thumbnail = '';
             $imagePath = '';
@@ -26,7 +26,6 @@ class EntryGalleryEditorRenderService
             $autoplay = !empty($item['@attributes']['autoplay']) ? $item['@attributes']['autoplay'] : '0';
 
             return array_merge($item['@attributes'], [
-                'index' => $index,
                 'imagePath' => $imagePath,
                 'thumbnail' => $thumbnail,
                 'caption' => $item['@value'],

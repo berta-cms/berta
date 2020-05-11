@@ -568,7 +568,7 @@ class SiteSectionsDataService extends Storage
         if ($section_order !== false) {
             $section = &$sections['section'][$section_order];
             $section['mediaCacheData'] = isset($section['mediaCacheData']) ? $section['mediaCacheData'] : ['file' => []];
-            $files = $this->asList($section['mediaCacheData']['file']);
+            $files = isset($section['mediaCacheData']['file']) ? $this->asList($section['mediaCacheData']['file']) : [];
 
             $reordered = [];
 
@@ -634,7 +634,8 @@ class SiteSectionsDataService extends Storage
             $section['mediafolder'] = $mediaDirName;
         }
 
-        if (!isset($section['mediaCacheData'])) {
+        if (!isset($section['mediaCacheData']['file'])) {
+            unset($section['mediaCacheData']['@value']);
             $section['mediaCacheData']['file'] = [];
         }
 
