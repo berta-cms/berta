@@ -161,6 +161,8 @@ class BertaTemplate extends BertaBase
         $this->tagName = $tagName;
         $this->tags = &$tags;
 
+        $this->addEngineVariables();
+
         $isEditMode = $this->environment == 'engine';
         $isPreviewMode = !empty(self::$options['PREVIEW_FOLDER']);
 
@@ -426,8 +428,6 @@ class BertaTemplate extends BertaBase
 
     public function output()
     {
-        $this->addEngineVariables();
-
         if ($this->sectionName == 'sitemap.xml') {
             header('Content-type: text/xml; charset=utf-8');
             $tpl = self::$options['TEMPLATES_FULL_SERVER_PATH'] . '_includes/sitemap.xml';
