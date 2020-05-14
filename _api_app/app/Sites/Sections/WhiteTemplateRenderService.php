@@ -35,6 +35,8 @@ class WhiteTemplateRenderService extends SectionTemplateRenderService
             $isEditMode
         );
 
+        $data['bodyClasses'] = $this->getBodyClasses($siteTemplateSettings, $sections, $sectionSlug, $tagSlug, $isEditMode);
+
         return $data;
     }
 
