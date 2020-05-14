@@ -46,7 +46,6 @@ class WhiteTemplateRenderService extends SectionTemplateRenderService
         // $data['isResponsive'] = $siteTemplateSettings['pageLayout']['responsive'] == 'yes';
         $data['sideColumnAttributes'] = $this->getSideColumnAttributes($siteTemplateSettings);
         $data['socialMediaLinks'] = $this->getSocialMediaLinks($siteSettings);
-        $data['userCopyright'] = $this->getUserCopyright($siteSlug, $siteSettings, $isEditMode);
 
         return $data;
     }

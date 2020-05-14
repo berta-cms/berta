@@ -126,6 +126,8 @@ abstract class SectionTemplateRenderService
             $isEditMode
         );
 
+        $data['userCopyright'] = $this->getUserCopyright($siteSlug, $siteSettings, $isEditMode);
+
         $data['sectionFooter'] = $this->sectionFooterRS->render(
             $siteSettings,
             $sections,
