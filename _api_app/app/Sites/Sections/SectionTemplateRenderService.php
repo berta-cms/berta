@@ -2,23 +2,39 @@
 
 namespace App\Sites\Sections;
 
+use App\Sites\SitesMenuRenderService;
+use App\Sites\SitesHeaderRenderService;
+use App\Sites\SocialMediaLinksRenderService;
 use App\Sites\Sections\SectionHeadRenderService;
+use App\Sites\Sections\SectionsMenuRenderService;
 use App\Sites\Sections\SectionFooterRenderService;
+use App\Sites\Sections\AdditionalTextRenderService;
 
 abstract class SectionTemplateRenderService
 {
     private $sectionHeadRS;
     private $sectionFooterRS;
+    private $sitesMenuRS;
+    private $sitesHeaderRS;
+    private $socialMediaLinksRS;
+    private $additionalTextRS;
+    private $sectionsMenuRS;
 
     public function __construct()
     {
         $this->sectionHeadRS = new SectionHeadRenderService();
         $this->sectionFooterRS = new SectionFooterRenderService();
+        $this->sitesMenuRS = new SitesMenuRenderService();
+        $this->sitesHeaderRS = new SitesHeaderRenderService();
+        $this->socialMediaLinksRS = new SocialMediaLinksRenderService();
+        $this->additionalTextRS = new AdditionalTextRenderService($this->socialMediaLinksRS);
+        $this->sectionsMenuRS = new SectionsMenuRenderService();
     }
 
     // Force Extending class to define this method
     abstract protected function render(
         $request,
+        $sites,
         $siteSlug,
         $sections,
         $sectionSlug,
@@ -36,6 +52,7 @@ abstract class SectionTemplateRenderService
 
     public function getViewData(
         $request,
+        $sites,
         $siteSlug,
         $sections,
         $sectionSlug,
@@ -64,6 +81,46 @@ abstract class SectionTemplateRenderService
             $user,
             $storageService,
             $isShopAvailable,
+            $isPreviewMode,
+            $isEditMode
+        );
+
+        $data['sitesMenu'] = $this->sitesMenuRS->render(
+            $siteSlug,
+            $isEditMode,
+            $siteSettings,
+            $siteTemplateSettings,
+            $sites
+        );
+
+        $data['siteHeader'] = $this->sitesHeaderRS->render(
+            $siteSlug,
+            $siteSettings,
+            $siteTemplateSettings,
+            $sections,
+            $sectionSlug,
+            $storageService,
+            $isPreviewMode,
+            $isEditMode
+        );
+
+        $data['additionalTextBlock'] = $this->additionalTextRS->render(
+            $siteSlug,
+            $siteSettings,
+            $siteTemplateSettings,
+            $sections,
+            $sectionSlug,
+            $isEditMode
+        );
+
+        $data['sectionsMenu'] = $this->sectionsMenuRS->render(
+            $siteSlug,
+            $sections,
+            $sectionSlug,
+            $siteSettings,
+            $siteTemplateSettings,
+            $tags,
+            $tagSlug,
             $isPreviewMode,
             $isEditMode
         );

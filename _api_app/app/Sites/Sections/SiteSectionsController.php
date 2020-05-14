@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\User\UserModel;
 use App\Shared\Storage;
 use App\Configuration\SiteTemplatesConfigService;
+use App\Sites\SitesDataService;
 use App\Sites\SocialMediaLinksRenderService;
 use App\Sites\Settings\SiteSettingsDataService;
 use App\Sites\Sections\SiteSectionsDataService;
@@ -355,6 +356,9 @@ class SiteSectionsController extends Controller
 
     public function renderTemplate($siteSlug = '', Request $request)
     {
+        $sitesDataService = new SitesDataService();
+        $sites = $sitesDataService->get();
+
         $siteSettingsDS = new SiteSettingsDataService($siteSlug);
         $siteSettings = $siteSettingsDS->getState();
 
@@ -406,6 +410,7 @@ class SiteSectionsController extends Controller
 
         return $templateRenderService->render(
             $request,
+            $sites,
             $siteSlug,
             $sections,
             $sectionSlug,

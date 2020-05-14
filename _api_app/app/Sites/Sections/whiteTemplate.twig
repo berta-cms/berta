@@ -6,6 +6,16 @@
 <!--[if (gt IE 9)|!(IE)]><!--> <html> <!--<![endif]-->
   {{ sectionHead|raw }}
   <body class="{{ bodyClasses }}">
+    <div id="allContainer"{% if isCenteredPageLayout %} class="xCentered"{% endif %}>
+      <div{{ sideColumnAttributes|raw }}>
+        <div id="sideColumnTop">
+          {{ sitesMenu|raw }}
+          {{ siteHeader|raw }}
+          {{ additionalTextBlock|raw }}
+          {{ sectionsMenu|raw }}
+        </div>
+      </div>
+    </div>
     {{ sectionFooter|raw }}
   </body>
 </html>
