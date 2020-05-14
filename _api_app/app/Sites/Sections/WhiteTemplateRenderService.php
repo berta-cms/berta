@@ -5,6 +5,7 @@ namespace App\Sites\Sections;
 class WhiteTemplateRenderService extends SectionTemplateRenderService
 {
     public function getViewData(
+        $request,
         $siteSlug,
         $sections,
         $sectionSlug,
@@ -20,6 +21,7 @@ class WhiteTemplateRenderService extends SectionTemplateRenderService
         $isEditMode
     ) {
         $data = parent::getViewData(
+            $request,
             $siteSlug,
             $sections,
             $sectionSlug,
@@ -41,6 +43,7 @@ class WhiteTemplateRenderService extends SectionTemplateRenderService
     }
 
     public function render(
+        $request,
         $siteSlug,
         $sections,
         $sectionSlug,
@@ -56,6 +59,7 @@ class WhiteTemplateRenderService extends SectionTemplateRenderService
         $isEditMode
     ) {
         $data = $this->getViewData(
+            $request,
             $siteSlug,
             $sections,
             $sectionSlug,

@@ -3,18 +3,22 @@
 namespace App\Sites\Sections;
 
 use App\Sites\Sections\SectionHeadRenderService;
+use App\Sites\Sections\SectionFooterRenderService;
 
 abstract class SectionTemplateRenderService
 {
     private $sectionHeadRS;
+    private $sectionFooterRS;
 
     public function __construct()
     {
         $this->sectionHeadRS = new SectionHeadRenderService();
+        $this->sectionFooterRS = new SectionFooterRenderService();
     }
 
     // Force Extending class to define this method
     abstract protected function render(
+        $request,
         $siteSlug,
         $sections,
         $sectionSlug,
@@ -31,6 +35,7 @@ abstract class SectionTemplateRenderService
     );
 
     public function getViewData(
+        $request,
         $siteSlug,
         $sections,
         $sectionSlug,
@@ -60,6 +65,14 @@ abstract class SectionTemplateRenderService
             $storageService,
             $isShopAvailable,
             $isPreviewMode,
+            $isEditMode
+        );
+
+        $data['sectionFooter'] = $this->sectionFooterRS->render(
+            $siteSettings,
+            $sections,
+            $user,
+            $request,
             $isEditMode
         );
 

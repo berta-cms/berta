@@ -405,6 +405,7 @@ class SiteSectionsController extends Controller
         }
 
         return $templateRenderService->render(
+            $request,
             $siteSlug,
             $sections,
             $sectionSlug,
