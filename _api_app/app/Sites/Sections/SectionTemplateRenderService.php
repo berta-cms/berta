@@ -2,6 +2,7 @@
 
 namespace App\Sites\Sections;
 
+use App\Shared\Helpers;
 use App\Sites\SitesMenuRenderService;
 use App\Sites\SitesHeaderRenderService;
 use App\Sites\SocialMediaLinksRenderService;
@@ -185,5 +186,41 @@ abstract class SectionTemplateRenderService
         }
 
         return implode(' ', $classes);
+    }
+
+    // used only for White and Mashup
+    public function getSocialMediaLinks($siteSettings)
+    {
+        if ($siteSettings['socialMediaButtons']['socialMediaLocation'] == 'footer' && !empty($siteSettings['socialMediaButtons']['socialMediaHTML'])) {
+            return $siteSettings['socialMediaButtons']['socialMediaHTML'];
+        }
+
+        if ($siteSettings['socialMediaLinks']['location'] == 'footer') {
+            return $this->socialMediaLinksRS->render($siteSettings);
+        }
+
+        return '';
+    }
+
+    public function getUserCopyright($siteSlug, $siteSettings, $isEditMode)
+    {
+        $content = !empty($siteSettings['siteTexts']['siteFooter']) ? $siteSettings['siteTexts']['siteFooter'] : '';
+        $attributes['id'] = 'userCopyright';
+        $classes = [];
+
+        if ($isEditMode) {
+            $classes = [
+                'xEditableTA',
+                'xProperty-siteFooter'
+            ];
+            $attributes['data-path'] = "{$siteSlug}/settings/siteTexts/siteFooter";
+        }
+
+        $attributes['class'] = implode(' ', $classes);
+
+        return [
+            'content' => $content,
+            'attributes' => Helpers::arrayToHtmlAttributes($attributes)
+        ];
     }
 }

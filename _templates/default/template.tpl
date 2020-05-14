@@ -31,9 +31,9 @@
 
       {$additionalFooterTextBlock}
 
-			<div class="footer xEditableTA xProperty-siteFooter"{if $berta.environment == 'engine'} data-path="{ $berta.options.MULTISITE }/settings/siteTexts/siteFooter"{ /if }>
+      <p id="userCopyright" class="xEditableTA xProperty-siteFooter"{if $berta.environment == 'engine'} data-path="{ $berta.options.MULTISITE }/settings/siteTexts/siteFooter"{ /if }>
         { $siteFooter }
-      </div>
+      </p>
 			{ if !($berta.settings.settings.hideBertaCopyright=='yes' && $berta.hostingPlan>1) }
 				<div class="bertaCopyright">{ bertaCopyright }</div>
 			{ /if }
