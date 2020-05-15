@@ -387,6 +387,9 @@ class SiteSectionsController extends Controller
         $isPreviewMode = false;
         $storageService = new Storage($siteSlug, $isPreviewMode);
 
+        $sectionEntriesDS = new SectionEntriesDataService($siteSlug, $sectionSlug);
+        $entries = $sectionEntriesDS->getByTag($tagSlug, $isEditMode);
+
         $templateName = explode('-', $siteSettings['template']['template'])[0];
 
         switch ($templateName) {
@@ -416,6 +419,7 @@ class SiteSectionsController extends Controller
             $sectionSlug,
             $tagSlug,
             $tags,
+            $entries,
             $siteSettings,
             $siteTemplateSettings,
             $siteTemplatesConfig,

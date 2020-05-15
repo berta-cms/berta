@@ -11,6 +11,7 @@ use App\Sites\Sections\SectionHeadRenderService;
 use App\Sites\Sections\SectionsMenuRenderService;
 use App\Sites\Sections\SectionFooterRenderService;
 use App\Sites\Sections\AdditionalTextRenderService;
+use App\Sites\Sections\Entries\SectionEntryRenderService;
 
 abstract class SectionTemplateRenderService
 {
@@ -21,6 +22,7 @@ abstract class SectionTemplateRenderService
     private $socialMediaLinksRS;
     private $additionalTextRS;
     private $sectionsMenuRS;
+    private $sectionEntryRS;
 
     public function __construct()
     {
@@ -31,6 +33,7 @@ abstract class SectionTemplateRenderService
         $this->socialMediaLinksRS = new SocialMediaLinksRenderService();
         $this->additionalTextRS = new AdditionalTextRenderService($this->socialMediaLinksRS);
         $this->sectionsMenuRS = new SectionsMenuRenderService();
+        $this->sectionEntryRS = new SectionEntryRenderService();
     }
 
     // Force Extending class to define this method
@@ -42,6 +45,7 @@ abstract class SectionTemplateRenderService
         $sectionSlug,
         $tagSlug,
         $tags,
+        $entries,
         $siteSettings,
         $siteTemplateSettings,
         $siteTemplatesConfig,
@@ -60,6 +64,7 @@ abstract class SectionTemplateRenderService
         $sectionSlug,
         $tagSlug,
         $tags,
+        $entries,
         $siteSettings,
         $siteTemplateSettings,
         $siteTemplatesConfig,
@@ -125,6 +130,18 @@ abstract class SectionTemplateRenderService
             $tagSlug,
             $isPreviewMode,
             $isEditMode
+        );
+
+        $data['entries'] = $this->getEntries(
+            $siteSlug,
+            $sections,
+            $sectionSlug,
+            $entries,
+            $siteSettings,
+            $siteTemplateSettings,
+            $storageService,
+            $isEditMode,
+            $isShopAvailable
         );
 
         $data['userCopyright'] = $this->getUserCopyright($siteSlug, $siteSettings, $isEditMode);
@@ -195,7 +212,8 @@ abstract class SectionTemplateRenderService
 
     // @todo define getPageEntriesAttributes method in MessyTemplateRenderService class
     // because for Messy attributes are different - possibly call this function as parent and add missing attributes there
-    public function getPageEntriesAttributes($sections, $sectionSlug, $tagSlug){
+    public function getPageEntriesAttributes($sections, $sectionSlug, $tagSlug)
+    {
         $currentSection = $this->getCurrentSection($sections, $sectionSlug);
         $attributes = [];
         $classes = [
@@ -210,6 +228,35 @@ abstract class SectionTemplateRenderService
         $attributes['class'] = implode(' ', $classes);
 
         return  Helpers::arrayToHtmlAttributes($attributes);
+    }
+
+    private function getEntries(
+        $siteSlug,
+        $sections,
+        $sectionSlug,
+        $entries,
+        $siteSettings,
+        $siteTemplateSettings,
+        $storageService,
+        $isEditMode,
+        $isShopAvailable
+    ) {
+        $currentSection = $this->getCurrentSection($sections, $sectionSlug);
+        $entriesHTML = '';
+        foreach ($entries as $entry) {
+            $entriesHTML .= $this->sectionEntryRS->render(
+                $siteSlug,
+                $sections,
+                $entry,
+                $currentSection,
+                $siteSettings,
+                $siteTemplateSettings,
+                $storageService,
+                $isEditMode,
+                $isShopAvailable
+            );
+        }
+        return $entriesHTML;
     }
 
     // used only for White and Mashup
