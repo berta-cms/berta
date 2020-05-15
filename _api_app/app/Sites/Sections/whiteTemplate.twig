@@ -19,6 +19,9 @@
           <p{{ userCopyright.attributes|raw }}>
             {{ userCopyright.content|raw }}
           </p>
+          {% if bertaCopyright %}
+            <p id="bertaCopyright">{{ bertaCopyright|raw }}</p>
+          {% endif %}
         </div>
       </div>
     </div>

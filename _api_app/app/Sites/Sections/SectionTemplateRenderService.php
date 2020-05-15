@@ -2,6 +2,7 @@
 
 namespace App\Sites\Sections;
 
+use App\Shared\I18n;
 use App\Shared\Helpers;
 use App\Sites\SitesMenuRenderService;
 use App\Sites\SitesHeaderRenderService;
@@ -128,6 +129,8 @@ abstract class SectionTemplateRenderService
 
         $data['userCopyright'] = $this->getUserCopyright($siteSlug, $siteSettings, $isEditMode);
 
+        $data['bertaCopyright'] = $this->getBertaCopyright($siteSettings, $user);
+
         $data['sectionFooter'] = $this->sectionFooterRS->render(
             $siteSettings,
             $sections,
@@ -204,7 +207,7 @@ abstract class SectionTemplateRenderService
         return '';
     }
 
-    public function getUserCopyright($siteSlug, $siteSettings, $isEditMode)
+    private function getUserCopyright($siteSlug, $siteSettings, $isEditMode)
     {
         $content = !empty($siteSettings['siteTexts']['siteFooter']) ? $siteSettings['siteTexts']['siteFooter'] : '';
         $attributes['id'] = 'userCopyright';
@@ -224,5 +227,17 @@ abstract class SectionTemplateRenderService
             'content' => $content,
             'attributes' => Helpers::arrayToHtmlAttributes($attributes)
         ];
+    }
+
+    private function getBertaCopyright($siteSettings, $user)
+    {
+        $hideBertaCopyright = !empty($siteSettings['settings']['hideBertaCopyright']) && $siteSettings['settings']['hideBertaCopyright'] == 'yes';
+        if ($hideBertaCopyright && $user->getPlan() > 1) {
+            return '';
+        }
+
+        I18n::load_language($siteSettings['language']['language']);
+
+        return I18n::_('berta_copyright_text');
     }
 }
