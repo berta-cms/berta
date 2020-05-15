@@ -3,9 +3,20 @@
 namespace App\Sites\Sections;
 
 use App\Shared\Helpers;
+use App\Configuration\SiteTemplatesConfigService;
+use App\Sites\Sections\Entries\SectionMashupEntriesRenderService;
 
-class WhiteTemplateRenderService extends SectionTemplateRenderService
+class MashupTemplateRenderService extends SectionTemplateRenderService
 {
+    private $mashupEntriesRS;
+
+    public function __construct()
+    {
+        parent::__construct();
+        $siteTemplatesConfigService = new SiteTemplatesConfigService();
+        $this->mashupEntriesRS = new SectionMashupEntriesRenderService($siteTemplatesConfigService);
+    }
+
     public function getViewData(
         $request,
         $sites,
@@ -43,13 +54,29 @@ class WhiteTemplateRenderService extends SectionTemplateRenderService
             $isEditMode
         );
 
+        $currentSection = $this->getCurrentSection($sections, $sectionSlug);
+        $currentSectionType = $this->getCurrentSectionType($currentSection);
+
         $data['bodyClasses'] = $this->getBodyClasses($siteTemplateSettings, $sections, $sectionSlug, $tagSlug, $isEditMode);
         $data['isCenteredPageLayout'] = $siteTemplateSettings['pageLayout']['centered'] == 'yes';
         $data['isResponsive'] = $siteTemplateSettings['pageLayout']['responsive'] == 'yes';
+        $data['sectionType'] = $currentSectionType;
         $data['sideColumnAttributes'] = $this->getSideColumnAttributes($siteTemplateSettings);
+        $data['contentContainerAttributes'] = $this->getContentContainerAttributes($siteTemplateSettings, $currentSectionType);
         $data['mainColumnAttributes'] = $this->getMainColumnAttributes($siteTemplateSettings);
         $data['pageEntriesAttributes'] = $this->getPageEntriesAttributes($sections, $sectionSlug, $tagSlug);
         $data['socialMediaLinks'] = $this->getSocialMediaLinks($siteSettings);
+        $data['mashupEntries'] = $this->mashupEntriesRS->render(
+            $storageService,
+            $siteSlug,
+            $siteSettings,
+            $siteTemplateSettings,
+            $sections,
+            $sectionSlug,
+            $tagSlug,
+            $isPreviewMode,
+            $isEditMode
+        );
 
         return $data;
     }
@@ -91,7 +118,22 @@ class WhiteTemplateRenderService extends SectionTemplateRenderService
             $isEditMode
         );
 
-        return view('Sites/Sections/whiteTemplate', $data);
+        return view('Sites/Sections/mashupTemplate', $data);
+    }
+
+    private function getContentContainerAttributes($siteTemplateSettings, $currentSectionType)
+    {
+        $attributes = [];
+        $classes = [];
+        if ($currentSectionType == 'mash_up') {
+            $classes[] = 'noEntries';
+        }
+        if ($siteTemplateSettings['pageLayout']['responsive'] == 'yes') {
+            $classes[] = 'xResponsive';
+        }
+        $attributes['class'] = implode(' ', $classes);
+
+        return Helpers::arrayToHtmlAttributes($attributes);
     }
 
     private function getMainColumnAttributes($siteTemplateSettings)

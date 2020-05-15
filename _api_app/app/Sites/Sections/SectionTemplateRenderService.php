@@ -230,6 +230,22 @@ abstract class SectionTemplateRenderService
         return implode(' ', $classes);
     }
 
+    public function getSideColumnAttributes($siteTemplateSettings)
+    {
+        $attributes = [];
+        $classes = [];
+        if ($siteTemplateSettings['pageLayout']['centered'] == 'yes') {
+            $classes[] = 'xCentered';
+        }
+        if ($siteTemplateSettings['pageLayout']['responsive'] == 'yes') {
+            $classes[] = 'xResponsive';
+        }
+
+        $attributes['class'] = implode(' ', $classes);
+
+        return Helpers::arrayToHtmlAttributes($attributes);
+    }
+
     // @todo define getPageEntriesAttributes method in MessyTemplateRenderService class
     // because for Messy attributes are different - possibly call this function as parent and add missing attributes there
     public function getPageEntriesAttributes($sections, $sectionSlug, $tagSlug)
