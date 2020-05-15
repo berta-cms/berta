@@ -6,12 +6,14 @@ use App\Shared\I18n;
 use App\Shared\Helpers;
 use App\Sites\SitesMenuRenderService;
 use App\Sites\SitesHeaderRenderService;
+use App\Sites\SitesBannersRenderService;
 use App\Sites\SocialMediaLinksRenderService;
 use App\Sites\Sections\SectionHeadRenderService;
 use App\Sites\Sections\SectionsMenuRenderService;
 use App\Sites\Sections\SectionFooterRenderService;
 use App\Sites\Sections\AdditionalTextRenderService;
 use App\Sites\Sections\Entries\SectionEntryRenderService;
+use App\Sites\Sections\Entries\PortfolioThumbnailsRenderService;
 
 abstract class SectionTemplateRenderService
 {
@@ -23,6 +25,8 @@ abstract class SectionTemplateRenderService
     private $additionalTextRS;
     private $sectionsMenuRS;
     private $sectionEntryRS;
+    private $portfolioThumbnailsRS;
+    private $sitesBannersRS;
 
     public function __construct()
     {
@@ -34,6 +38,8 @@ abstract class SectionTemplateRenderService
         $this->additionalTextRS = new AdditionalTextRenderService($this->socialMediaLinksRS);
         $this->sectionsMenuRS = new SectionsMenuRenderService();
         $this->sectionEntryRS = new SectionEntryRenderService();
+        $this->portfolioThumbnailsRS = new PortfolioThumbnailsRenderService();
+        $this->sitesBannersRS = new SitesBannersRenderService();
     }
 
     // Force Extending class to define this method
@@ -142,6 +148,18 @@ abstract class SectionTemplateRenderService
             $storageService,
             $isEditMode,
             $isShopAvailable
+        );
+
+        $data['portfolioThumbnails'] = $this->getPortfolioThumbnails($siteSettings, $storageService, $sections, $sectionSlug, $entries, $isEditMode);
+
+        $data['siteBanners'] = $this->sitesBannersRS->render(
+            $siteSlug,
+            $siteSettings,
+            $siteTemplateSettings,
+            $sections,
+            $sectionSlug,
+            $storageService,
+            $isEditMode
         );
 
         $data['userCopyright'] = $this->getUserCopyright($siteSlug, $siteSettings, $isEditMode);
@@ -257,6 +275,12 @@ abstract class SectionTemplateRenderService
             );
         }
         return $entriesHTML;
+    }
+
+    private function getPortfolioThumbnails($siteSettings, $storageService, $sections, $sectionSlug, $entries, $isEditMode)
+    {
+        $currentSection = $this->getCurrentSection($sections, $sectionSlug);
+        return $this->portfolioThumbnailsRS->render($siteSettings, $storageService, $currentSection, $entries, $isEditMode);
     }
 
     // used only for White and Mashup
