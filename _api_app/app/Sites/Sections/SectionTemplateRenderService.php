@@ -12,6 +12,7 @@ use App\Sites\Sections\SectionHeadRenderService;
 use App\Sites\Sections\SectionsMenuRenderService;
 use App\Sites\Sections\SectionFooterRenderService;
 use App\Sites\Sections\AdditionalTextRenderService;
+use App\Sites\Sections\AdditionalFooterTextRenderService;
 use App\Sites\Sections\Entries\SectionEntryRenderService;
 use App\Sites\Sections\Entries\PortfolioThumbnailsRenderService;
 
@@ -36,6 +37,7 @@ abstract class SectionTemplateRenderService
         $this->sitesHeaderRS = new SitesHeaderRenderService();
         $this->socialMediaLinksRS = new SocialMediaLinksRenderService();
         $this->additionalTextRS = new AdditionalTextRenderService($this->socialMediaLinksRS);
+        $this->additionalFooterTextRS = new AdditionalFooterTextRenderService($this->socialMediaLinksRS);
         $this->sectionsMenuRS = new SectionsMenuRenderService();
         $this->sectionEntryRS = new SectionEntryRenderService();
         $this->portfolioThumbnailsRS = new PortfolioThumbnailsRenderService();
@@ -295,6 +297,11 @@ abstract class SectionTemplateRenderService
         }
 
         return '';
+    }
+
+    public function getAdditionalFooterText($siteSlug, $siteSettings, $isEditMode)
+    {
+        return $this->additionalFooterTextRS->render($siteSlug, $siteSettings, $isEditMode);
     }
 
     private function getUserCopyright($siteSlug, $siteSettings, $isEditMode)
