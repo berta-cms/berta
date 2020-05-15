@@ -7,7 +7,7 @@
   {{ sectionHead|raw }}
   <body class="{{ bodyClasses }}">
     <div id="allContainer"{% if isCenteredPageLayout %} class="xCentered"{% endif %}>
-      <div{{ sideColumnAttributes|raw }}>
+      <div id="sideColumn"{{ sideColumnAttributes|raw }}>
         <div id="sideColumnTop">
           {{ sitesMenu|raw }}
           {{ siteHeader|raw }}
@@ -16,12 +16,19 @@
         </div>
         <div id="sideColumnBottom">
           {{ socialMediaLinks|raw }}
-          <p{{ userCopyright.attributes|raw }}>
+          <p id="userCopyright"{{ userCopyright.attributes|raw }}>
             {{ userCopyright.content|raw }}
           </p>
           {% if bertaCopyright %}
             <p id="bertaCopyright">{{ bertaCopyright|raw }}</p>
           {% endif %}
+        </div>
+      </div>
+      <div id="contentContainer"{% if isResponsive %} class="xResponsive"{% endif %}>
+        <div id="mainColumn"{{ mainColumnAttributes|raw }}>
+          <ol id="pageEntries"{{ pageEntriesAttributes|raw }}>
+
+          </ol>
         </div>
       </div>
     </div>

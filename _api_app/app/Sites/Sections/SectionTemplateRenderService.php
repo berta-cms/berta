@@ -193,6 +193,25 @@ abstract class SectionTemplateRenderService
         return implode(' ', $classes);
     }
 
+    // @todo define getPageEntriesAttributes method in MessyTemplateRenderService class
+    // because for Messy attributes are different - possibly call this function as parent and add missing attributes there
+    public function getPageEntriesAttributes($sections, $sectionSlug, $tagSlug){
+        $currentSection = $this->getCurrentSection($sections, $sectionSlug);
+        $attributes = [];
+        $classes = [
+            'xEntriesList',
+            'xSection-' . $currentSection['name']
+        ];
+
+        if (!empty($tagSlug)) {
+            $classes[] = 'xTag-' . $tagSlug;
+        }
+
+        $attributes['class'] = implode(' ', $classes);
+
+        return  Helpers::arrayToHtmlAttributes($attributes);
+    }
+
     // used only for White and Mashup
     public function getSocialMediaLinks($siteSettings)
     {
@@ -210,7 +229,7 @@ abstract class SectionTemplateRenderService
     private function getUserCopyright($siteSlug, $siteSettings, $isEditMode)
     {
         $content = !empty($siteSettings['siteTexts']['siteFooter']) ? $siteSettings['siteTexts']['siteFooter'] : '';
-        $attributes['id'] = 'userCopyright';
+        $attributes = [];
         $classes = [];
 
         if ($isEditMode) {
