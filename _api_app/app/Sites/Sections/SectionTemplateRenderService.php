@@ -203,8 +203,6 @@ abstract class SectionTemplateRenderService
         return $currentSection['@attributes']['type'];
     }
 
-    // @todo define getBodyClasses method in MessyTemplateRenderService class
-    // because for Messy body classes are different
     public function getBodyClasses($siteTemplateSettings, $sections, $sectionSlug, $tagSlug, $isEditMode)
     {
         $currentSection = $this->getCurrentSection($sections, $sectionSlug);
@@ -246,8 +244,6 @@ abstract class SectionTemplateRenderService
         return Helpers::arrayToHtmlAttributes($attributes);
     }
 
-    // @todo define getPageEntriesAttributes method in MessyTemplateRenderService class
-    // because for Messy attributes are different - possibly call this function as parent and add missing attributes there
     public function getPageEntriesAttributes($sections, $sectionSlug, $tagSlug)
     {
         $currentSection = $this->getCurrentSection($sections, $sectionSlug);
