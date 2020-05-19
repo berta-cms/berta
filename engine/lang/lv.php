@@ -89,9 +89,9 @@ return [
     /* help text */    'Your name will be put in a meta-tag in the code of your site. You can choose any name ;)' => 'Tavs vārds tiks saglabāts meta-tagā lapas kodā. Vārds var būt jebkāds.',
     /* setting name */ 'Page title (title bar)' => 'Lapas virsraksts',
     /* help text */    'Text that appears in the bowser title bar' => 'Teksts, kas redzams pārlūka loga augšpusē',
-    /* setting name */ '<META> description' => '&lt;META&gt; apraksts',
+    /* setting name */ '<META> description' => '<META> apraksts',
     /* help text */    'Site description. It should not be longer than one or two sentences.' => 'Lapas apraksts. Tam nevajadzētu pārsniegt 2 teikumus.',
-    /* setting name */ '<META> keywords' => '&lt;META&gt; atslēgvārdi',
+    /* setting name */ '<META> keywords' => '<META> atslēgvārdi',
     /* help text */    'Keywords visible only to search engines. Keywords along with the description can improve your site ranking in search results.' => 'Atslēgvārdi ir redzami tikai meklētājiem, tādiem kā Google. Tie var uzlabot tavas lapas pozīciju meklēšanas rezultātos. Vēlams, lai tie ir atbilstoši lapas saturam.',
 
     /* setting tab */ 'Navigation' => 'Navigācija',

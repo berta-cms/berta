@@ -91,9 +91,9 @@ return [
         /* help text */    'Your name will be put in a meta-tag in the code of your site. You can choose any name ;)' => 'Ваше имя будет указано в meta-тэгах в коде сайта. Вы можете указать любое имя.',
         /* setting name */ 'Page title (title bar)' => 'Название страницы (в заголовке сайта)',
         /* help text */    'Text that appears in the bowser title bar' => 'Текст, который отображен в верхней части просматриваемого окна',
-        /* setting name */ '<META> description' => 'META описание',
+        /* setting name */ '<META> description' => '<META> описание',
         /* help text */    'Site description. It should not be longer than one or two sentences.' => 'Описание сайта. Описание не должно превышать одного-двух предложений.',
-        /* setting name */ '<META> keywords' => 'META ключевые слова',
+        /* setting name */ '<META> keywords' => '<META> ключевые слова',
         /* help text */    'Keywords visible only to search engines. Keywords along with the description can improve your site ranking in search results.' => 'Ключевые слова видны только поисковым системам, таким как Google. Они могут улучшить позиции вашего сайта в результатах поиска. Желательно, чтобы они соответствовали содержанию страницы.',
 
         /* setting tab */ 'Navigation' => 'Навигация',
@@ -309,26 +309,6 @@ return [
         'mobile_device_detected' => 'Невозможно редактировать содержание через данное мобильное устройство!',
         'javascript_include' => 'Код Javascript, который будет включен прямо перед элементом body. Узнайте больше о том, как <a href="https://github.com/berta-cms/berta/wiki/Include-JavaScript-code" target="_blank" title="How to include JavaScript code">добавить код JavaScript.</a>',
     'description_custom_css' => 'Добавьте свой код CSS здесь. Ранее заданные дефиниции CSS будут обновлены. Больше информации найдете в нашем <a href="https://github.com/berta-cms/berta/wiki/Add-custom-CSS" target="_blank">Справочнике</a>.',
-/*
-    '' => '',
-        '' => '',
-        '' => '',
-        '' => '',
-        '' => '',
-        '' => '',
-        '' => '',
-        '' => '',
-        '' => '',
-        '' => '',
-        '' => '',
-        '' => '',
-        '' => '',
-        '' => '',
-        '' => '',
-        '' => '',
-        '' => '',
-        '' => ''
-*/
 
         // Videos panel & newsticker
         'To enable Berta\'s tutorial videos, your computer needs to be connected to the internet!<br />When the internet access is enabled, sign out of engine panel and log in again to view the videos.' => 'Чтобы просмотреть обучающее видео о Berta, вашему компьютеру необходим доступ в интернет.<br />Когда подключите компьютер к интернету, выйдите и снова зайдите в панель управления сайтом, чтобы посмотреть видео.',

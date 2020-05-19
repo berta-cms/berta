@@ -91,9 +91,9 @@ return [
     /* help text */    'Your name will be put in a meta-tag in the code of your site. You can choose any name ;)' => 'Twoje imię będzie zapisane w kodzie strony w znaczniku meta tag. Imię może być dowolne.',
     /* setting name */ 'Page title (title bar)' => 'Tytuł strony',
     /* help text */    'Text that appears in the bowser title bar' => 'Tekst, który jest widoczny na górze przeglądarki',
-    /* setting name */ '<META> description' => '&lt;META&gt; opis',
+    /* setting name */ '<META> description' => '<META> opis',
     /* help text */    'Site description. It should not be longer than one or two sentences.' => 'Opis strony. Nie powinien być dłuższy niż 2 zdania.',
-    /* setting name */ '<META> keywords' => '&lt;META&gt; słowa kluczowe',
+    /* setting name */ '<META> keywords' => '<META> słowa kluczowe',
     /* help text */    'Keywords visible only to search engines. Keywords along with the description can improve your site ranking in search results.' => 'Słowa kluczowe są widoczne tylko dla wyszukiwarek, takich jak Google. Może to poprawić pozycję twojej strony w wynikach wyszukiwania. Powinny odpowiadać treści strony.',
 
     /* setting tab */ 'Navigation' => 'Navigacja',
