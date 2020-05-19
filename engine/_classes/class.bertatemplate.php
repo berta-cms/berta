@@ -27,6 +27,10 @@ use App\Sites\Sections\Tags\SectionTagsDataService;
 use App\Plugins\Shop\ShopSettingsDataService;
 use App\Plugins\Shop\ShopShippingRegionsDataService;
 use App\Plugins\Shop\ShopCartRenderService;
+use App\Sites\Sections\MessyTemplateRenderService;
+use App\Sites\Sections\MashupTemplateRenderService;
+use App\Sites\Sections\DefaultTemplateRenderService;
+use App\Sites\Sections\WhiteTemplateRenderService;
 
 include_once dirname(__FILE__) . '/../_lib/smarty/Smarty.class.php';
 include_once dirname(__FILE__) . '/Zend/Json.php';
@@ -52,6 +56,8 @@ class BertaTemplate extends BertaBase
     private $sections;
     private $tagName;
     private $tags;
+
+    private $twigOutput;
 
     public function __construct($templateName, $generalSettingsInstance = false, $loggedIn = false, $apacheRewriteUsed = false)
     {
@@ -171,223 +177,75 @@ class BertaTemplate extends BertaBase
         $this->allContent = &$allContent;
 
         $request = Request::capture();
-        $storage = new Storage(self::$options['MULTISITE'], $isPreviewMode);
+        $siteSlug = self::$options['MULTISITE'];
 
         $sitesDataService = new SitesDataService();
         $sites = $sitesDataService->get();
 
-        $sectionEntriesDS = new SectionEntriesDataService(self::$options['MULTISITE'], $this->sectionName, '', self::$options['XML_ROOT']);
-        $entries = $sectionEntriesDS->getByTag($this->tagName, $isEditMode);
+        $siteSettingsDS = new SiteSettingsDataService($siteSlug, self::$options['XML_ROOT']);
+        $siteSettings = $siteSettingsDS->getState();
 
-        $siteSectionsDS = new SiteSectionsDataService(self::$options['MULTISITE'], self::$options['XML_ROOT']);
-        $siteSections = $siteSectionsDS->getState();
-        $sectionData = $siteSectionsDS->get($this->sectionName);
+        $sectionsDS = new SiteSectionsDataService($siteSlug, self::$options['XML_ROOT']);
+        $siteSections = $sectionsDS->getState();
 
-        $siteSettingsDS = new SiteSettingsDataService(self::$options['MULTISITE'], self::$options['XML_ROOT']);
-        $siteSettingsState = $siteSettingsDS->getState();
+        $sectionSlug = $this->sectionName;
+        $tagSlug = $this->tagName;
 
-        $siteTemplateSettingsDS = new SiteTemplateSettingsDataService(self::$options['MULTISITE'], $this->name, self::$options['XML_ROOT']);
-        $siteTemplateSettingsState = $siteTemplateSettingsDS->getState();
-        $sectionTagsDS = new SectionTagsDataService(self::$options['MULTISITE']);
-        $sectionTags = $sectionTagsDS->get();
+        $sectionTagsDS = new SectionTagsDataService($siteSlug);
+        $tags = $sectionTagsDS->get();
 
-        $user = new UserModel();
+        $siteTemplateSettingsDS = new SiteTemplateSettingsDataService($siteSlug, $siteSettings['template']['template'], self::$options['XML_ROOT']);
+        $siteTemplateSettings = $siteTemplateSettingsDS->getState();
 
         $siteTemplatesConfigService = new SiteTemplatesConfigService();
         $siteTemplatesConfig = $siteTemplatesConfigService->getDefaults();
 
-        $sectionHeadRS = new SectionHeadRenderService();
-        $sectionHead = $sectionHeadRS->render(
-            self::$options['MULTISITE'],
+        $user = new UserModel();
+
+        $isShopAvailable = isset($shopEnabled) && $shopEnabled;
+
+        $storageService = new Storage($siteSlug, $isPreviewMode);
+
+        $sectionEntriesDS = new SectionEntriesDataService($siteSlug, $sectionSlug, '', self::$options['XML_ROOT']);
+        $entries = $sectionEntriesDS->getByTag($tagSlug, $isEditMode);
+
+        switch ($this->templateName) {
+            case 'white':
+                $templateRenderService = new WhiteTemplateRenderService();
+                break;
+
+            case 'default':
+                $templateRenderService = new DefaultTemplateRenderService();
+                break;
+
+            case 'mashup':
+                $templateRenderService = new MashupTemplateRenderService();
+                break;
+
+            default:
+                // Messy
+                $templateRenderService = new MessyTemplateRenderService();
+                break;
+        }
+
+        $this->twigOutput = $templateRenderService->render(
+            $request,
+            $sites,
+            $siteSlug,
             $siteSections,
-            $this->sectionName,
-            $this->tagName,
-            $sectionTags,
-            $siteSettingsState,
-            $siteTemplateSettingsState,
+            $sectionSlug,
+            $tagSlug,
+            $tags,
+            $entries,
+            $siteSettings,
+            $siteTemplateSettings,
             $siteTemplatesConfig,
             $user,
-            $storage,
-            isset($shopEnabled) && $shopEnabled,
+            $storageService,
+            $isShopAvailable,
             $isPreviewMode,
             $isEditMode
         );
-        $this->addVariable('sectionHead', $sectionHead);
-
-        $sectionBackgroundGalleryRS = new SectionBackgroundGalleryRenderService();
-        $backgroundGallery = $sectionBackgroundGalleryRS->render(
-            $storage,
-            $siteSettingsState,
-            $siteTemplateSettingsState,
-            $this->sectionName,
-            $siteSections,
-            $request,
-            $isEditMode
-        );
-        $this->addVariable('backgroundGallery', $backgroundGallery);
-
-        $sitesMenuRenderService = new SitesMenuRenderService();
-        $sitesMenu = $sitesMenuRenderService->render(
-            self::$options['MULTISITE'],
-            $isEditMode,
-            $siteSettingsState,
-            $siteTemplateSettingsState,
-            $sites
-        );
-        $this->addVariable('sitesMenu', $sitesMenu);
-
-        $sitesHeaderRenderService = new SitesHeaderRenderService();
-        $siteHeader = $sitesHeaderRenderService->render(
-            self::$options['MULTISITE'],
-            $siteSettingsState,
-            $siteTemplateSettingsState,
-            $siteSections,
-            $this->sectionName,
-            $storage,
-            $isPreviewMode,
-            $isEditMode
-        );
-        $this->addVariable('siteHeader', $siteHeader);
-
-        $entriesHTML = '';
-        $sectionEntriesRS = new SectionEntryRenderService();
-        foreach ($entries as $entry) {
-            $entriesHTML .= $sectionEntriesRS->render(
-                self::$options['MULTISITE'],
-                $siteSections,
-                $entry,
-                $sectionData,
-                $siteSettingsState,
-                $siteTemplateSettingsState,
-                $storage,
-                $isEditMode,
-                isset($shopEnabled) && $shopEnabled
-            );
-        }
-        $this->addVariable('entriesHTML', $entriesHTML);
-
-        $siteTemplatesConfigService = new SiteTemplatesConfigService();
-        $mashupEntriesRS = new SectionMashupEntriesRenderService($siteTemplatesConfigService);
-        $mashupEntries = $mashupEntriesRS->render(
-            $storage,
-            self::$options['MULTISITE'],
-            $siteSettingsState,
-            $siteTemplateSettingsState,
-            $siteSections,
-            $this->sectionName,
-            $this->tagName,
-            $isPreviewMode,
-            $isEditMode
-        );
-        $this->addVariable('mashupEntries', $mashupEntries);
-
-        $gridViewRS = new GridViewRenderService();
-        $gridView = $gridViewRS->render(
-            self::$options['MULTISITE'],
-            $storage,
-            $siteSettingsState,
-            $this->sectionName,
-            $siteSections,
-            $this->tagName,
-            $request,
-            $isPreviewMode,
-            $isEditMode
-        );
-        $this->addVariable('gridView', $gridView);
-
-        $portfolioThumbnailsRS = new PortfolioThumbnailsRenderService();
-        $portfolioThumbnails = $portfolioThumbnailsRS->render(
-            $siteSettingsState,
-            $storage,
-            $sectionData,
-            $entries,
-            $isEditMode
-        );
-        $this->addVariable('portfolioThumbnails', $portfolioThumbnails);
-
-        $sectionsMenuRS = new SectionsMenuRenderService();
-        $sectionsMenu = $sectionsMenuRS->render(
-            self::$options['MULTISITE'],
-            $siteSections,
-            $this->sectionName,
-            $siteSettingsState,
-            $siteTemplateSettingsState,
-            $sectionTags,
-            $this->tagName,
-            $isPreviewMode,
-            $isEditMode
-        );
-        $this->addVariable('sectionsMenu', $sectionsMenu);
-
-        $sectionFooterRS = new SectionFooterRenderService();
-        $sectionFooter = $sectionFooterRS->render(
-            $siteSettingsState,
-            $siteSections,
-            $user,
-            $request,
-            $isEditMode
-        );
-        $this->addVariable('sectionFooter', $sectionFooter);
-
-        // We still need entries for portfolio view and for section type = mashup
-        // TODO remove assigning entries to template when rendering is moved to API app
-        list($entries, $entriesForTag) = $this->getEntriesLists($this->sectionName, $this->tagName, $this->content);
-        $this->addVariable('entries', $entriesForTag);
-
-        $socialMediaLinksRS = new SocialMediaLinksRenderService();
-        $socialMediaLinks = $socialMediaLinksRS->render($siteSettingsState);
-        $this->addVariable('socialMediaLinks', $socialMediaLinks);
-
-        $sitesBannersRS = new SitesBannersRenderService();
-        $siteBanners = $sitesBannersRS->render(
-            self::$options['MULTISITE'],
-            $siteSettingsState,
-            $siteTemplateSettingsState,
-            $siteSections,
-            $this->sectionName,
-            $storage,
-            $isEditMode
-        );
-        $this->addVariable('siteBanners', $siteBanners);
-
-        $additionalTextRS = new AdditionalTextRenderService($socialMediaLinksRS);
-        $additionalTextBlock = $additionalTextRS->render(
-            self::$options['MULTISITE'],
-            $siteSettingsState,
-            $siteTemplateSettingsState,
-            $siteSections,
-            $this->sectionName,
-            $isEditMode
-        );
-        $this->addVariable('additionalTextBlock', $additionalTextBlock);
-
-        $additionalFooterTextRS = new AdditionalFooterTextRenderService($socialMediaLinksRS);
-        $additionalFooterTextBlock = $additionalFooterTextRS->render(
-            self::$options['MULTISITE'],
-            $siteSettingsState,
-            $isEditMode
-        );
-        $this->addVariable('additionalFooterTextBlock', $additionalFooterTextBlock);
-
-        if (isset($shopEnabled) && $shopEnabled) {
-            $shopSettingsDS = new ShopSettingsDataService(self::$options['MULTISITE']);
-            $shopSettings = $shopSettingsDS->get();
-            $regionDS = new ShopShippingRegionsDataService(self::$options['MULTISITE']);
-            $shippingRegions = $regionDS->get();
-
-            $cartRS = new ShopCartRenderService();
-            $cartSection = $cartRS->render(
-                self::$options['MULTISITE'],
-                $siteSettingsState,
-                $shopSettings,
-                $shippingRegions,
-                $request,
-                $siteSections,
-                $this->sectionName,
-                $isEditMode
-            );
-            $this->addVariable('cartSection', $cartSection);
-        }
     }
 
     private function getEntriesLists($sName, $tagName, &$content)
@@ -431,11 +289,10 @@ class BertaTemplate extends BertaBase
         if ($this->sectionName == 'sitemap.xml') {
             header('Content-type: text/xml; charset=utf-8');
             $tpl = self::$options['TEMPLATES_FULL_SERVER_PATH'] . '_includes/sitemap.xml';
-        } else {
-            $tpl = $this->templateFile;
+            return $this->smarty->fetch($tpl);
         }
 
-        return $this->smarty->fetch($tpl);
+        return $this->twigOutput;
     }
 
     // PRIVATE ...

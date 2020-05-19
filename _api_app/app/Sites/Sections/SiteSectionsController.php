@@ -371,9 +371,6 @@ class SiteSectionsController extends Controller
         $sectionTagsDS = new SectionTagsDataService($siteSlug);
         $tags = $sectionTagsDS->get();
 
-        $siteSettingsDS = new SiteSettingsDataService($siteSlug);
-        $siteSettings = $siteSettingsDS->getState();
-
         $siteTemplateSettingsDS = new SiteTemplateSettingsDataService($siteSlug, $siteSettings['template']['template']);
         $siteTemplateSettings = $siteTemplateSettingsDS->getState();
 
