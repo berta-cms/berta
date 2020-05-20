@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+  {{ sectionHead|raw }}
+  <body class="{{ bodyClassList }}">
+    {% if sectionType != 'shopping_cart' %}
+      {{ backgroundGallery|raw }}
+      {% if backgroundVideoEmbed %}
+        <div id="xBackgroundVideoEmbed" class="{{ backgroundVideoEmbed.class }}">
+          {{ backgroundVideoEmbed.content|raw }}
+        </div>
+      {% endif %}
+      {% if gridlinesAttributes %}
+        <div id="xGridBackground"{{ gridlinesAttributes|raw }}></div>
+      {% endif %}
+    {% endif %}
+    <div id="allContainer">
+      {% if sectionType == 'shopping_cart' %}
+        {{ cartSection|raw }}
+      {% else %}
+        <div id="contentContainer"{{ contentContainerAttributes|raw }}>
+          {{ shoppingCartLink|raw }}
+          {{ sitesMenu|raw }}
+          {% if showBackgroundGalleryEditor %}
+            <div id="xBgEditorPanelContainer"></div>
+            <div id="xBgEditorPanelTrigContainer">
+              <a href="#" id="xBgEditorPanelTrig" title="edit background gallery"><span>background settings</span></a>
+            </div>
+          {% endif %}
+          {{ siteHeader|raw }}
+          {{ sectionsMenu|raw }}
+          {% if not isGridViewEnabled %}
+            <div id="pageEntries"{{ pageEntriesClasses|raw }}>
+              {{ entries|raw }}
+            </div>
+          {% endif %}
+          {{ portfolioThumbnails|raw }}
+          {{ additionalTextBlock|raw }}
+          {{ siteBanners|raw }}
+        </div>
+        {% if gridTrigger %}
+          <div id="xGridViewTriggerContainer"{{ gridTrigger.attributes|raw }}>
+            <a id="xGridViewTrigger" href="{{ gridTrigger.link }}"><span>thumbnails</span></a>
+          </div>
+        {% endif %}
+      {% endif %}
+    </div>
+    {{ gridView|raw }}
+    <div id="bottom" class="clearfix">
+        {{ additionalFooterText|raw }}
+        {% if bertaCopyright %}
+          <p id="bertaCopyright">{{ bertaCopyright|raw }}</p>
+        {% endif %}
+        <p id="userCopyright"{{ userCopyright.attributes|raw }}>
+          {{ userCopyright.content|raw }}
+        </p>
+    </div>
+    {{ sectionFooter|raw }}
+    {% if alertMessage %}
+      <script type="text/javascript">alert('{{ alertMessage }}');</script>
+    {% endif %}
+  </body>
+</html>

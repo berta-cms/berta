@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\User\UserModel;
 use App\Shared\Storage;
 use App\Configuration\SiteTemplatesConfigService;
+use App\Sites\SitesDataService;
 use App\Sites\SocialMediaLinksRenderService;
 use App\Sites\Settings\SiteSettingsDataService;
 use App\Sites\Sections\SiteSectionsDataService;
@@ -20,6 +21,7 @@ use App\Sites\Sections\SectionFooterRenderService;
 use App\Sites\Sections\SectionHeadRenderService;
 use App\Sites\Sections\AdditionalTextRenderService;
 use App\Sites\Sections\AdditionalFooterTextRenderService;
+use App\Sites\Sections\WhiteTemplateRenderService;
 use App\Sites\Sections\Tags\SectionTagsDataService;
 use App\Sites\Sections\Entries\SectionEntriesDataService;
 use App\Sites\TemplateSettings\SiteTemplateSettingsDataService;
@@ -347,6 +349,80 @@ class SiteSectionsController extends Controller
             $sections,
             $tagSlug,
             $request,
+            $isPreviewMode,
+            $isEditMode
+        );
+    }
+
+    public function renderTemplate($siteSlug = '', Request $request)
+    {
+        $sitesDataService = new SitesDataService();
+        $sites = $sitesDataService->get();
+
+        $siteSettingsDS = new SiteSettingsDataService($siteSlug);
+        $siteSettings = $siteSettingsDS->getState();
+
+        $sectionsDS = new SiteSectionsDataService($siteSlug);
+        $sections = $sectionsDS->getState();
+
+        $sectionSlug = $request->get('section');
+        $tagSlug = $request->get('tag');
+
+        $sectionTagsDS = new SectionTagsDataService($siteSlug);
+        $tags = $sectionTagsDS->get();
+
+        $siteTemplateSettingsDS = new SiteTemplateSettingsDataService($siteSlug, $siteSettings['template']['template']);
+        $siteTemplateSettings = $siteTemplateSettingsDS->getState();
+
+        $siteTemplatesConfigService = new SiteTemplatesConfigService();
+        $siteTemplatesConfig = $siteTemplatesConfigService->getDefaults();
+
+        $user = new UserModel();
+
+        $isShopAvailable = config('plugin-Shop.key') === $request->getHost();
+        $isEditMode = false;
+        $isPreviewMode = false;
+        $storageService = new Storage($siteSlug, $isPreviewMode);
+
+        $sectionEntriesDS = new SectionEntriesDataService($siteSlug, $sectionSlug);
+        $entries = $sectionEntriesDS->getByTag($tagSlug, $isEditMode);
+
+        $templateName = explode('-', $siteSettings['template']['template'])[0];
+
+        switch ($templateName) {
+            case 'white':
+                $templateRenderService = new WhiteTemplateRenderService();
+                break;
+
+            case 'default':
+                $templateRenderService = new DefaultTemplateRenderService();
+                break;
+
+            case 'mashup':
+                $templateRenderService = new MashupTemplateRenderService();
+                break;
+
+            default:
+                // Messy
+                $templateRenderService = new MessyTemplateRenderService();
+                break;
+        }
+
+        return $templateRenderService->render(
+            $request,
+            $sites,
+            $siteSlug,
+            $sections,
+            $sectionSlug,
+            $tagSlug,
+            $tags,
+            $entries,
+            $siteSettings,
+            $siteTemplateSettings,
+            $siteTemplatesConfig,
+            $user,
+            $storageService,
+            $isShopAvailable,
             $isPreviewMode,
             $isEditMode
         );
