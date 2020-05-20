@@ -13,7 +13,7 @@
         <div id="xGridBackground"{{ gridlinesAttributes|raw }}></div>
       {% endif %}
     {% endif %}
-    <div class="allContainer">
+    <div id="allContainer">
       {% if sectionType == 'shopping_cart' %}
         {{ cartSection|raw }}
       {% else %}
@@ -44,7 +44,7 @@
         {% endif %}
       {% endif %}
     </div>
-    {{ gridView }}
+    {{ gridView|raw }}
     <div id="bottom" class="clearfix">
         {{ additionalFooterText|raw }}
         {% if bertaCopyright %}

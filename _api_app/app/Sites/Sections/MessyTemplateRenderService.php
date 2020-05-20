@@ -248,7 +248,7 @@ class MessyTemplateRenderService extends SectionTemplateRenderService
         $gridStepBase = $gridStep * 5;
         $color = $siteSettings['pageLayout']['gridColor'] == 'white' ? '255, 255, 255' : '0, 0, 0';
         $styles = [
-            "background-size:{$gridStepBase}px {$gridStepBase}px {$gridStepBase}px {$gridStepBase}px {$gridStep}px {$gridStep}px {$gridStep}px {$gridStep}px",
+            "background-size:{$gridStepBase}px {$gridStepBase}px, {$gridStepBase}px {$gridStepBase}px, {$gridStep}px {$gridStep}px, {$gridStep}px {$gridStep}px",
             "background-image:linear-gradient(rgba({$color}, 0.5) 1px, transparent 1px), linear-gradient(90deg, rgba({$color}, 0.5) 1px, transparent 0px), linear-gradient(rgba({$color}, 0.2) 1px, transparent 1px), linear-gradient(90deg, rgba({$color}, 0.2) 1px, transparent 0px)"
         ];
 
