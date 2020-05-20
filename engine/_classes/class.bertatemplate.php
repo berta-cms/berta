@@ -25,7 +25,6 @@ class BertaTemplate extends BertaBase
     public $name;
     public $templateName;
     public $loggedIn = false;
-    public $templateHTML;
 
     public $sectionTypes;
 
@@ -110,13 +109,8 @@ class BertaTemplate extends BertaBase
         }
 
         if (file_exists($tPath) && file_exists($tPath . '/template.conf.php')) {
-            $this->smarty->template_dir = $tPath;
-            $this->smarty->plugins_dir = ['plugins', self::$options['TEMPLATES_FULL_SERVER_PATH'] . '_plugins', $tPath . '/plugins'];
-
             list($this->sectionTypes, $this->settingsDefinition) = include $tPath . '/template.conf.php';
 
-            $this->templateHTML = @file_get_contents($tPath . '/template.tpl');
-            $this->templateFile = $tPath . '/template.tpl';
             $this->settings = new Settings($this->settingsDefinition, $generalSettingsInstance, $this->name);
 
             // instantiate settings for each section type definition (extend $this->settings)
@@ -132,11 +126,6 @@ class BertaTemplate extends BertaBase
             return true;
         }
         return false;
-    }
-
-    public function addVariable($varName, $varValue)
-    {
-        $this->smarty->assign($varName, $varValue);
     }
 
     public function addContent($requestURI, $sectionName, &$sections, $tagName, &$tags, &$content, &$allContent)
@@ -229,42 +218,6 @@ class BertaTemplate extends BertaBase
             $isPreviewMode,
             $isEditMode
         );
-    }
-
-    private function getEntriesLists($sName, $tagName, &$content)
-    {
-        $haveToSave = false;
-        $entries = [];
-        $entriesForTag = [];
-
-        if (!empty($content['entry'])) {
-            foreach ($content['entry'] as $idx => $p) {
-                if ((string) $idx == '@attributes') {
-                    continue;
-                }
-
-                if (!empty($p['id']) && !empty($p['id']['value'])
-                    && !empty($p['uniqid']) && !empty($p['uniqid']['value'])
-                    && !empty($p['mediafolder']) && !empty($p['mediafolder']['value'])) {
-                    $id = $p['id']['value'];
-                    $entries[$id] = BertaTemplate::entryForTemplate($p, ['section' => $this->sections[$sName]]);
-
-                    if (!$tagName && !$entries[$id]['tags']
-                            || $tagName && isset($entries[$id]['tags'][$tagName])) {
-                        $entriesForTag[$id] = $entries[$id];
-                    }
-                } else {
-                    unset($this->content['entry'][$idx]);
-                    $haveToSave = true;
-                }
-            }
-        }
-
-        if ($haveToSave && class_exists('BertaEditor')) {
-            BertaEditor::saveBlog($this->sectionName, $this->content);
-        }
-
-        return [$entries, $entriesForTag];
     }
 
     public function output()
@@ -431,51 +384,6 @@ class BertaTemplate extends BertaBase
         }
         $d->close();
         return $returnArr;
-    }
-
-    public static function entryForTemplate($p, $additionalValues = false)
-    {
-        $e = [];
-
-        // preset variables..
-        $e['__raw'] = $p;
-        $e['id'] = $p['id']['value'];
-        $e['uniqid'] = $p['uniqid']['value'];
-        $e['date'] = !empty($p['date']) && !empty($p['date']['value']) ? $p['date']['value'] : '';
-        $e['mediafolder'] = $p['mediafolder']['value'];
-        $e['marked'] = !empty($p['marked']['value']) ? '1' : '0';
-
-        if ($additionalValues) {
-            foreach ($additionalValues as $key => $value) {
-                if (!isset($e[$key])) {	// don't overwrite
-                    $e[$key] = $value;
-                }
-            }
-        }
-
-        // entry content..
-        if (!empty($p['content'])) {
-            foreach ($p['content'] as $key => $value) {
-                if (!isset($e[$key])) {	// don't overwrite
-                    $e[$key] = !empty($value['value']) ? $value['value'] : '';
-                }
-            }
-        }
-
-        // tags..
-        $tagsList = [];
-
-        if (!empty($p['tags']['tag'])) {
-            Array_XML::makeListIfNotList($p['tags']['tag']);
-            foreach ($p['tags']['tag'] as $tName => $t) {
-                if (!empty($t['value'])) {
-                    $tagsList[strtolower(BertaUtils::canonizeString($t['value']))] = $t['value'];
-                }
-            }
-        }
-        $e['tags'] = $tagsList;
-
-        return $e;
     }
 
     public static function sentryScripts()
