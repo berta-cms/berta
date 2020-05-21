@@ -5,7 +5,6 @@ namespace App\Sites\Sections;
 use Validator;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-
 use App\User\UserModel;
 use App\Shared\Storage;
 use App\Configuration\SiteTemplatesConfigService;
@@ -14,6 +13,7 @@ use App\Sites\SocialMediaLinksRenderService;
 use App\Sites\Settings\SiteSettingsDataService;
 use App\Sites\Sections\SiteSectionsDataService;
 use App\Sites\Sections\SectionsMenuRenderService;
+use App\Sites\Sections\SitemapRenderService;
 use App\Sites\Sections\SectionBackgroundGalleryRenderService;
 use App\Sites\Sections\SectionBackgroundGalleryEditorRenderService;
 use App\Sites\Sections\GridViewRenderService;
@@ -182,6 +182,24 @@ class SiteSectionsController extends Controller
             $tagSlug,
             false,
             true
+        );
+    }
+
+    public function renderSitemap($siteSlug = '', Request $request)
+    {
+        $sectionsDS = new SiteSectionsDataService($siteSlug);
+        $sections = $sectionsDS->getState();
+
+        $sectionTagsDS = new SectionTagsDataService($siteSlug);
+        $sectionTags = $sectionTagsDS->get();
+
+        $sitemapRS = new SitemapRenderService();
+
+        return $sitemapRS->render(
+            $request,
+            $siteSlug,
+            $sections,
+            $sectionTags
         );
     }
 
