@@ -119,15 +119,20 @@ class BertaTemplate extends BertaBase
         $this->tagName = $tagName;
         $this->tags = &$tags;
 
-        $this->addEngineVariables();
-
-        $isEditMode = $this->environment == 'engine';
-        $isPreviewMode = !empty(self::$options['PREVIEW_FOLDER']);
-
         // add entries...
         $this->content = &$content;
         $this->allContent = &$allContent;
 
+        $isShopAvailable = isset($shopEnabled) && $shopEnabled;
+
+        if ($isShopAvailable) {
+            global $db;
+            // We need to initialize BertaShop here for correct migration order
+            new BertaShop($db, $this->loggedIn);
+        }
+
+        $isEditMode = $this->environment == 'engine';
+        $isPreviewMode = !empty(self::$options['PREVIEW_FOLDER']);
         $request = Request::capture();
         $siteSlug = self::$options['MULTISITE'];
 
@@ -166,8 +171,6 @@ class BertaTemplate extends BertaBase
         $siteTemplatesConfig = $siteTemplatesConfigService->getDefaults();
 
         $user = new UserModel();
-
-        $isShopAvailable = isset($shopEnabled) && $shopEnabled;
 
         $storageService = new Storage($siteSlug, $isPreviewMode);
 
@@ -216,112 +219,6 @@ class BertaTemplate extends BertaBase
     public function output()
     {
         return $this->twigOutput;
-    }
-
-    // PRIVATE ...
-
-    private function addEngineVariables()
-    {
-        $vars = [];
-        $vars['berta'] = [];
-        $vars['berta']['environment'] = $this->environment;
-        $vars['berta']['templateName'] = $this->name;
-        $vars['berta']['options'] = &self::$options;
-
-        $hostingPlan = false;
-        if (@file_exists(self::$options['ENGINE_ROOT_PATH'] . 'plan')) {
-            $hostingPlan = file_get_contents(self::$options['ENGINE_ROOT_PATH'] . 'plan');
-        }
-        $vars['berta']['hostingPlan'] = $hostingPlan;
-
-        if (isset($_SESSION['_berta_msg'])) {
-            $vars['berta']['msg'] = $_SESSION['_berta_msg'];
-            unset($_SESSION['_berta_msg']);
-        }
-
-        $vars['berta']['settings'] = $this->settings->getApplied();
-
-        global $shopEnabled;
-        $vars['berta']['shop_enabled'] = false;
-        if (isset($shopEnabled) && $shopEnabled === true) {
-            $vars['berta']['shop_enabled'] = true;
-
-            global $db;
-            $BertaShop = new BertaShop($db, $this->loggedIn);
-            $vars['berta']['shopData'] = $BertaShop->getTemplateData();
-        }
-
-        // add sectionTypes default settings;
-        $vars['berta']['sectionTypes'] = $this->sectionTypes;
-
-        // add sections ...
-        $vars['berta']['requestURI'] = $this->requestURI;
-        $vars['berta']['sectionName'] = $this->sectionName;
-        $vars['berta']['section'] = null;
-        $vars['berta']['sections'] = [];
-        $vars['berta']['publishedSections'] = [];
-        $isFirstSection = true;
-        foreach ($this->sections as $sName => $s) {
-            // add system variables
-            $vars['berta']['sections'][$sName] = [
-                'name' => $s['name']['value'],
-                'title' => !empty($s['title']) ? htmlspecialchars($s['title']['value']) : '',
-                'has_direct_content' => !empty($s['@attributes']['has_direct_content']) ? '1' : '0',
-                'published' => !empty($s['@attributes']['published']) ? '1' : '0',
-                'num_entries' => isset($s['@attributes']['num_entries']) ? (int) $s['@attributes']['num_entries'] : 0,
-                'type' => !empty($s['@attributes']['type']) ? $s['@attributes']['type'] : 'default'
-            ];
-            // add variables from template section-type settings
-            foreach ($s as $key => $val) {
-                if ($key != '@attributes' && !isset($vars['berta']['sections'][$sName][$key])) {
-                    $vars['berta']['sections'][$sName][$key] = isset($val['value']) ? $val['value'] : $val;
-                }
-            }
-
-            // - show all sections when in engine mode
-            // - show landing section in menu if landingSectionVisible=yes or it has tags menu
-            if ($this->environment == 'engine' ||
-                    $vars['berta']['sections'][$sName]['published'] &&
-                    ($this->settings->get('navigation', 'landingSectionVisible') == 'yes' || !$isFirstSection || !empty($this->tags[$sName]))) {
-                $vars['berta']['publishedSections'][$sName] = &$vars['berta']['sections'][$sName];
-            }
-            if ($vars['berta']['sections'][$sName]['published']) {
-                $isFirstSection = false;
-            }
-
-            // set current section and page title
-            if ($this->sectionName == $sName) {
-                $vars['berta']['section'] = &$vars['berta']['sections'][$sName];
-            }
-
-            if (empty($s['title']['value'])) {
-                unset(
-                    $vars['berta']['sections'][$sName],
-                    $vars['berta']['publishedSections'][$sName]
-                );
-            }
-        }
-
-        // add subsections...
-        $vars['berta']['tagName'] = $this->tagName;
-        $vars['berta']['tags'] = $this->tags;
-
-        // add siteTexts ...
-        $texts = $this->settings->base->getAll('siteTexts');
-        foreach ($texts as $tVar => $t) {
-            if (!isset($vars[$tVar])) {
-                $vars[$tVar] = $t;
-            }
-        }
-
-        // counter ...
-        $vars['berta']['google_id'] = $this->settings->get('settings', 'googleAnalyticsId');
-        if ($vars['berta']['google_id'] == 'none') {
-            $vars['berta']['google_id'] = '';
-        }
-
-        // add vars
-        reset($vars);
     }
 
     public static function getAllTemplates()
