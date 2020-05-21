@@ -16,13 +16,8 @@ use App\Sites\Sections\DefaultTemplateRenderService;
 use App\Sites\Sections\WhiteTemplateRenderService;
 use App\Sites\Sections\SitemapRenderService;
 
-include_once dirname(__FILE__) . '/../_lib/smarty/Smarty.class.php';
-include_once dirname(__FILE__) . '/Zend/Json.php';
-
 class BertaTemplate extends BertaBase
 {
-    private $smarty;
-
     public $name;
     public $templateName;
     public $loggedIn = false;
@@ -49,22 +44,6 @@ class BertaTemplate extends BertaBase
         $this->loggedIn = $loggedIn;
         $this->environment = !empty(self::$options['ENVIRONMENT']) ? self::$options['ENVIRONMENT'] : 'site';
         $this->apacheRewriteUsed = $apacheRewriteUsed;
-
-        $this->smarty = new Smarty();
-        $this->smarty->auto_literal = false;	// to allow space aroun
-        $this->smarty->compile_dir = self::$options['CACHE_ROOT'];
-        $this->smarty->cache_dir = self::$options['CACHE_ROOT'];
-        $this->smarty->template_dir = self::$options['TEMPLATES_FULL_SERVER_PATH'];
-        $this->smarty->plugins_dir = ['plugins', self::$options['TEMPLATES_FULL_SERVER_PATH'] . '_plugins'];
-        $this->smarty->register->resource(
-            'text',
-            [
-            'BertaTemplate',
-            'smarty_resource_text_get_template',
-            'smarty_resource_text_get_timestamp',
-            'smarty_resource_text_get_secure',
-            'smarty_resource_text_get_trusted']
-        );
 
         $this->load($this->name, $generalSettingsInstance);
     }
@@ -343,42 +322,6 @@ class BertaTemplate extends BertaBase
 
         // add vars
         reset($vars);
-        foreach ($vars as $vName => $vContent) {
-            $this->smarty->assign($vName, $vContent);
-        }
-    }
-
-    public static function smarty_resource_text_get_template($tpl_name, &$tpl_source, &$smarty_obj)
-    {
-        $tpl_source = $tpl_name;
-        return true;
-    }
-
-    public static function smarty_resource_text_get_timestamp($tpl_name, &$tpl_timestamp, &$smarty_obj)
-    {
-        $tpl_timestamp = time();
-        return true;
-    }
-
-    public static function smarty_resource_text_get_secure($tpl_name, &$smarty_obj)
-    {
-        return true;
-    }
-
-    public static function smarty_resource_text_get_trusted($tpl_name, &$smarty_obj)
-    {
-    }
-
-    // BACK-END AND UTILITY...
-
-    public function loadSmartyPlugin($type, $name)
-    {
-        for ($i = count($this->smarty->plugins_dir) - 1; $i >= 0; $i--) {
-            $path = realpath($this->smarty->plugins_dir[$i]) . '/' . $type . '.' . $name . '.php';
-            if (file_exists($path)) {
-                include_once $path;
-            }
-        }
     }
 
     public static function getAllTemplates()
