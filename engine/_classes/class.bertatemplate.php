@@ -14,14 +14,10 @@ use App\Sites\Sections\MessyTemplateRenderService;
 use App\Sites\Sections\MashupTemplateRenderService;
 use App\Sites\Sections\DefaultTemplateRenderService;
 use App\Sites\Sections\WhiteTemplateRenderService;
-
-include_once dirname(__FILE__) . '/../_lib/smarty/Smarty.class.php';
-include_once dirname(__FILE__) . '/Zend/Json.php';
+use App\Sites\Sections\SitemapRenderService;
 
 class BertaTemplate extends BertaBase
 {
-    private $smarty;
-
     public $name;
     public $templateName;
     public $loggedIn = false;
@@ -48,22 +44,6 @@ class BertaTemplate extends BertaBase
         $this->loggedIn = $loggedIn;
         $this->environment = !empty(self::$options['ENVIRONMENT']) ? self::$options['ENVIRONMENT'] : 'site';
         $this->apacheRewriteUsed = $apacheRewriteUsed;
-
-        $this->smarty = new Smarty();
-        $this->smarty->auto_literal = false;	// to allow space aroun
-        $this->smarty->compile_dir = self::$options['CACHE_ROOT'];
-        $this->smarty->cache_dir = self::$options['CACHE_ROOT'];
-        $this->smarty->template_dir = self::$options['TEMPLATES_FULL_SERVER_PATH'];
-        $this->smarty->plugins_dir = ['plugins', self::$options['TEMPLATES_FULL_SERVER_PATH'] . '_plugins'];
-        $this->smarty->register->resource(
-            'text',
-            [
-            'BertaTemplate',
-            'smarty_resource_text_get_template',
-            'smarty_resource_text_get_timestamp',
-            'smarty_resource_text_get_secure',
-            'smarty_resource_text_get_trusted']
-        );
 
         $this->load($this->name, $generalSettingsInstance);
     }
@@ -139,32 +119,50 @@ class BertaTemplate extends BertaBase
         $this->tagName = $tagName;
         $this->tags = &$tags;
 
-        $this->addEngineVariables();
-
-        $isEditMode = $this->environment == 'engine';
-        $isPreviewMode = !empty(self::$options['PREVIEW_FOLDER']);
-
         // add entries...
         $this->content = &$content;
         $this->allContent = &$allContent;
 
+        $isShopAvailable = isset($shopEnabled) && $shopEnabled;
+
+        if ($isShopAvailable) {
+            global $db;
+            // We need to initialize BertaShop here for correct migration order
+            new BertaShop($db, $this->loggedIn);
+        }
+
+        $isEditMode = $this->environment == 'engine';
+        $isPreviewMode = !empty(self::$options['PREVIEW_FOLDER']);
         $request = Request::capture();
         $siteSlug = self::$options['MULTISITE'];
+
+        $sectionsDS = new SiteSectionsDataService($siteSlug, self::$options['XML_ROOT']);
+        $siteSections = $sectionsDS->getState();
+
+        $sectionTagsDS = new SectionTagsDataService($siteSlug);
+        $tags = $sectionTagsDS->get();
+
+        if ($this->sectionName == 'sitemap.xml') {
+            header('Content-type: text/xml; charset=utf-8');
+            $sitemapRS = new SitemapRenderService();
+            $this->twigOutput = $sitemapRS->render(
+                $request,
+                $siteSlug,
+                $siteSections,
+                $tags
+            );
+
+            return;
+        }
+
+        $sectionSlug = $this->sectionName;
+        $tagSlug = $this->tagName;
 
         $sitesDataService = new SitesDataService();
         $sites = $sitesDataService->get();
 
         $siteSettingsDS = new SiteSettingsDataService($siteSlug, self::$options['XML_ROOT']);
         $siteSettings = $siteSettingsDS->getState();
-
-        $sectionsDS = new SiteSectionsDataService($siteSlug, self::$options['XML_ROOT']);
-        $siteSections = $sectionsDS->getState();
-
-        $sectionSlug = $this->sectionName;
-        $tagSlug = $this->tagName;
-
-        $sectionTagsDS = new SectionTagsDataService($siteSlug);
-        $tags = $sectionTagsDS->get();
 
         $siteTemplateSettingsDS = new SiteTemplateSettingsDataService($siteSlug, $siteSettings['template']['template'], self::$options['XML_ROOT']);
         $siteTemplateSettings = $siteTemplateSettingsDS->getState();
@@ -173,8 +171,6 @@ class BertaTemplate extends BertaBase
         $siteTemplatesConfig = $siteTemplatesConfigService->getDefaults();
 
         $user = new UserModel();
-
-        $isShopAvailable = isset($shopEnabled) && $shopEnabled;
 
         $storageService = new Storage($siteSlug, $isPreviewMode);
 
@@ -222,155 +218,7 @@ class BertaTemplate extends BertaBase
 
     public function output()
     {
-        if ($this->sectionName == 'sitemap.xml') {
-            header('Content-type: text/xml; charset=utf-8');
-            $tpl = self::$options['TEMPLATES_FULL_SERVER_PATH'] . '_includes/sitemap.xml';
-            return $this->smarty->fetch($tpl);
-        }
-
         return $this->twigOutput;
-    }
-
-    // PRIVATE ...
-
-    private function addEngineVariables()
-    {
-        $vars = [];
-        $vars['berta'] = [];
-        $vars['berta']['environment'] = $this->environment;
-        $vars['berta']['templateName'] = $this->name;
-        $vars['berta']['options'] = &self::$options;
-
-        $hostingPlan = false;
-        if (@file_exists(self::$options['ENGINE_ROOT_PATH'] . 'plan')) {
-            $hostingPlan = file_get_contents(self::$options['ENGINE_ROOT_PATH'] . 'plan');
-        }
-        $vars['berta']['hostingPlan'] = $hostingPlan;
-
-        if (isset($_SESSION['_berta_msg'])) {
-            $vars['berta']['msg'] = $_SESSION['_berta_msg'];
-            unset($_SESSION['_berta_msg']);
-        }
-
-        $vars['berta']['settings'] = $this->settings->getApplied();
-
-        global $shopEnabled;
-        $vars['berta']['shop_enabled'] = false;
-        if (isset($shopEnabled) && $shopEnabled === true) {
-            $vars['berta']['shop_enabled'] = true;
-
-            global $db;
-            $BertaShop = new BertaShop($db, $this->loggedIn);
-            $vars['berta']['shopData'] = $BertaShop->getTemplateData();
-        }
-
-        // add sectionTypes default settings;
-        $vars['berta']['sectionTypes'] = $this->sectionTypes;
-
-        // add sections ...
-        $vars['berta']['requestURI'] = $this->requestURI;
-        $vars['berta']['sectionName'] = $this->sectionName;
-        $vars['berta']['section'] = null;
-        $vars['berta']['sections'] = [];
-        $vars['berta']['publishedSections'] = [];
-        $isFirstSection = true;
-        foreach ($this->sections as $sName => $s) {
-            // add system variables
-            $vars['berta']['sections'][$sName] = [
-                'name' => $s['name']['value'],
-                'title' => !empty($s['title']) ? htmlspecialchars($s['title']['value']) : '',
-                'has_direct_content' => !empty($s['@attributes']['has_direct_content']) ? '1' : '0',
-                'published' => !empty($s['@attributes']['published']) ? '1' : '0',
-                'num_entries' => isset($s['@attributes']['num_entries']) ? (int) $s['@attributes']['num_entries'] : 0,
-                'type' => !empty($s['@attributes']['type']) ? $s['@attributes']['type'] : 'default'
-            ];
-            // add variables from template section-type settings
-            foreach ($s as $key => $val) {
-                if ($key != '@attributes' && !isset($vars['berta']['sections'][$sName][$key])) {
-                    $vars['berta']['sections'][$sName][$key] = isset($val['value']) ? $val['value'] : $val;
-                }
-            }
-
-            // - show all sections when in engine mode
-            // - show landing section in menu if landingSectionVisible=yes or it has tags menu
-            if ($this->environment == 'engine' ||
-                    $vars['berta']['sections'][$sName]['published'] &&
-                    ($this->settings->get('navigation', 'landingSectionVisible') == 'yes' || !$isFirstSection || !empty($this->tags[$sName]))) {
-                $vars['berta']['publishedSections'][$sName] = &$vars['berta']['sections'][$sName];
-            }
-            if ($vars['berta']['sections'][$sName]['published']) {
-                $isFirstSection = false;
-            }
-
-            // set current section and page title
-            if ($this->sectionName == $sName) {
-                $vars['berta']['section'] = &$vars['berta']['sections'][$sName];
-            }
-
-            if (empty($s['title']['value'])) {
-                unset(
-                    $vars['berta']['sections'][$sName],
-                    $vars['berta']['publishedSections'][$sName]
-                );
-            }
-        }
-
-        // add subsections...
-        $vars['berta']['tagName'] = $this->tagName;
-        $vars['berta']['tags'] = $this->tags;
-
-        // add siteTexts ...
-        $texts = $this->settings->base->getAll('siteTexts');
-        foreach ($texts as $tVar => $t) {
-            if (!isset($vars[$tVar])) {
-                $vars[$tVar] = $t;
-            }
-        }
-
-        // counter ...
-        $vars['berta']['google_id'] = $this->settings->get('settings', 'googleAnalyticsId');
-        if ($vars['berta']['google_id'] == 'none') {
-            $vars['berta']['google_id'] = '';
-        }
-
-        // add vars
-        reset($vars);
-        foreach ($vars as $vName => $vContent) {
-            $this->smarty->assign($vName, $vContent);
-        }
-    }
-
-    public static function smarty_resource_text_get_template($tpl_name, &$tpl_source, &$smarty_obj)
-    {
-        $tpl_source = $tpl_name;
-        return true;
-    }
-
-    public static function smarty_resource_text_get_timestamp($tpl_name, &$tpl_timestamp, &$smarty_obj)
-    {
-        $tpl_timestamp = time();
-        return true;
-    }
-
-    public static function smarty_resource_text_get_secure($tpl_name, &$smarty_obj)
-    {
-        return true;
-    }
-
-    public static function smarty_resource_text_get_trusted($tpl_name, &$smarty_obj)
-    {
-    }
-
-    // BACK-END AND UTILITY...
-
-    public function loadSmartyPlugin($type, $name)
-    {
-        for ($i = count($this->smarty->plugins_dir) - 1; $i >= 0; $i--) {
-            $path = realpath($this->smarty->plugins_dir[$i]) . '/' . $type . '.' . $name . '.php';
-            if (file_exists($path)) {
-                include_once $path;
-            }
-        }
     }
 
     public static function getAllTemplates()
