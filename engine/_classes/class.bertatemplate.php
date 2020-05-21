@@ -14,6 +14,7 @@ use App\Sites\Sections\MessyTemplateRenderService;
 use App\Sites\Sections\MashupTemplateRenderService;
 use App\Sites\Sections\DefaultTemplateRenderService;
 use App\Sites\Sections\WhiteTemplateRenderService;
+use App\Sites\Sections\SitemapRenderService;
 
 include_once dirname(__FILE__) . '/../_lib/smarty/Smarty.class.php';
 include_once dirname(__FILE__) . '/Zend/Json.php';
@@ -151,20 +152,33 @@ class BertaTemplate extends BertaBase
         $request = Request::capture();
         $siteSlug = self::$options['MULTISITE'];
 
+        $sectionsDS = new SiteSectionsDataService($siteSlug, self::$options['XML_ROOT']);
+        $siteSections = $sectionsDS->getState();
+
+        $sectionTagsDS = new SectionTagsDataService($siteSlug);
+        $tags = $sectionTagsDS->get();
+
+        if ($this->sectionName == 'sitemap.xml') {
+            header('Content-type: text/xml; charset=utf-8');
+            $sitemapRS = new SitemapRenderService();
+            $this->twigOutput = $sitemapRS->render(
+                $request,
+                $siteSlug,
+                $siteSections,
+                $tags
+            );
+
+            return;
+        }
+
+        $sectionSlug = $this->sectionName;
+        $tagSlug = $this->tagName;
+
         $sitesDataService = new SitesDataService();
         $sites = $sitesDataService->get();
 
         $siteSettingsDS = new SiteSettingsDataService($siteSlug, self::$options['XML_ROOT']);
         $siteSettings = $siteSettingsDS->getState();
-
-        $sectionsDS = new SiteSectionsDataService($siteSlug, self::$options['XML_ROOT']);
-        $siteSections = $sectionsDS->getState();
-
-        $sectionSlug = $this->sectionName;
-        $tagSlug = $this->tagName;
-
-        $sectionTagsDS = new SectionTagsDataService($siteSlug);
-        $tags = $sectionTagsDS->get();
 
         $siteTemplateSettingsDS = new SiteTemplateSettingsDataService($siteSlug, $siteSettings['template']['template'], self::$options['XML_ROOT']);
         $siteTemplateSettings = $siteTemplateSettingsDS->getState();
@@ -222,12 +236,6 @@ class BertaTemplate extends BertaBase
 
     public function output()
     {
-        if ($this->sectionName == 'sitemap.xml') {
-            header('Content-type: text/xml; charset=utf-8');
-            $tpl = self::$options['TEMPLATES_FULL_SERVER_PATH'] . '_includes/sitemap.xml';
-            return $this->smarty->fetch($tpl);
-        }
-
         return $this->twigOutput;
     }
 
