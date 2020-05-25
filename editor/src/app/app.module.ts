@@ -26,6 +26,7 @@ import { PopupComponent } from './popup/popup.component';
 import { ErrorState } from './error-state/error.state';
 import { SharedModule } from './shared/shared.module';
 import { SentryErrorHandler } from './sentry.error-handler';
+import { StyleService } from './preview/style.service';
 
 
 @NgModule({
@@ -58,6 +59,7 @@ import { SentryErrorHandler } from './sentry.error-handler';
     SitesSharedModule
   ],
   providers: [
+    StyleService,
     {provide: ErrorHandler, useClass: SentryErrorHandler}
   ],
   bootstrap: [AppComponent]

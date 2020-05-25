@@ -2,15 +2,19 @@ import { Component, OnInit, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 import { SafeUrl, DomSanitizer } from '@angular/platform-browser';
 import { HttpClient } from '@angular/common/http';
-import { Observable, combineLatest } from 'rxjs';
-import { take, filter, debounceTime } from 'rxjs/operators';
+import { Observable, combineLatest, Subscription } from 'rxjs';
+import { take, filter, debounceTime, pairwise } from 'rxjs/operators';
 import { Store } from '@ngxs/store';
 
 import { AppState } from '../app-state/app.state';
 import { UserState } from '../user/user.state';
+import { SiteTemplateSettingsState } from '../sites/template-settings/site-template-settings.state';
 import { PreviewService } from './preview.service';
 import { AppShowLoading, UpdateAppStateAction } from '../app-state/app.actions';
 import { UserLogoutAction } from '../user/user.actions';
+import { StyleService } from './style.service';
+import { SettingsGroupModel } from '../shared/interfaces';
+import { SiteSettingsState } from '../sites/settings/site-settings.state';
 
 interface IframeLocation {
   site: null|string;
@@ -47,12 +51,14 @@ export class PreviewComponent implements OnInit {
     site: undefined,
     section: undefined
   };
+  styleChangesSubscription: Subscription;
 
   constructor(
     private router: Router,
     private store: Store,
     private ngZone: NgZone,
     private service: PreviewService,
+    private styleService: StyleService,
     private sanitizer: DomSanitizer,
     private http: HttpClient) {
   }
@@ -184,6 +190,52 @@ export class PreviewComponent implements OnInit {
         iframe.contentWindow.onbeforeunload = () => {
           this.service.disconnectIframeView(iframe);
         };
+
+        const styleElement = iframe.contentDocument.createElement('style');
+        iframe.contentDocument.head.appendChild(styleElement);
+        this.styleService.initializeStyleSheet(styleElement.sheet as CSSStyleSheet);
+
+        this.styleChangesSubscription = this.store.select(SiteTemplateSettingsState.getCurrentSiteTemplateSettings).pipe(
+          pairwise()
+        ).subscribe((settingsPair: SettingsGroupModel[][]) => {
+          const prevSettings = settingsPair[0];
+          const curSettings = settingsPair[1];
+
+          const stylesToChange = curSettings.reduce((stylesToChange: any, settingsGroup) => {
+            settingsGroup.settings.forEach(setting => {
+              const prevSettingGroup = prevSettings.find(prevSettingsGroup => prevSettingsGroup.slug == settingsGroup.slug);
+              if (!prevSettingGroup) {
+                return stylesToChange;
+              }
+              const prevSetting = prevSettingGroup.settings.find(prevSetting => prevSetting.slug == setting.slug);
+              if (!prevSetting) {
+                return stylesToChange;
+              }
+              if (setting.value !== prevSetting.value) {
+                stylesToChange.push({
+                  group: settingsGroup.slug,
+                  slug: setting.slug,
+                  value: setting.value
+                });
+              }
+            });
+
+            return stylesToChange;
+          }, []);
+
+          stylesToChange.forEach(styleToChange => {
+            this.styleService.updateStyle(styleToChange);
+          });
+        });
+
+        // Unsubscribe from style changes if template has changed
+        // After iframe reload styles updates again
+        this.store.select(SiteSettingsState.getCurrentSiteTemplate).pipe(
+          pairwise(),
+          take(1)
+        ).subscribe(() => {
+          this.styleChangesSubscription.unsubscribe();
+        });
       },
       error: (error) => {
         console.error(error);
