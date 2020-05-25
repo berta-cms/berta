@@ -39,11 +39,8 @@ export class StyleService {
 
     setting.css.forEach(rule => {
       const cssRule = this.findOrCreateRule(rule.selector, rule.breakpoint);
-      cssRule.style.setProperty(rule.property, style.value);
+      cssRule.style.setProperty(rule.property, style.value || setting.default);
     });
-
-
-    console.log(this.styleSheet);
   }
 
   findOrCreateRule(selector: string, breakpoint: string): CSSStyleRule {
