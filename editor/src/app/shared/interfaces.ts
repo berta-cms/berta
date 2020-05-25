@@ -42,6 +42,11 @@ export interface SettingConfigModel {
     title: string;
     value: string | number;
   }>;
+  css?: Array<{
+    selector: string;
+    property: string;
+    breakpoint?: string;
+  }>;
   html_entities?: boolean;
   css_units?: boolean;
   min_width?: number | string;

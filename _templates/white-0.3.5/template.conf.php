@@ -59,6 +59,12 @@ $templateConf = [
             'default' => '#000000',
             'title' => I18n::_('Color'),
             'description' => '',
+            'css' => [
+                [
+                    'selector' => 'body',
+                    'property' => 'color'
+                ]
+            ]
         ],
         'fontFamily' => [
             'format' => 'fontselect',
@@ -210,6 +216,12 @@ $templateConf = [
             'default' => '#FFFFFF',
             'title' => I18n::_('Background color'),
             'description' => '',
+            'css' => [
+                [
+                    'selector' => 'body',
+                    'property' => 'background-color'
+                ]
+            ]
         ],
         'backgroundImageEnabled' => [
             'format' => 'select',
