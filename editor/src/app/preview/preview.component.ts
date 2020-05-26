@@ -197,9 +197,7 @@ export class PreviewComponent implements OnInit {
 
         this.styleChangesSubscription = this.store.select(SiteTemplateSettingsState.getCurrentSiteTemplateSettings).pipe(
           pairwise()
-        ).subscribe((settingsPair: SettingsGroupModel[][]) => {
-          const prevSettings = settingsPair[0];
-          const curSettings = settingsPair[1];
+        ).subscribe(([prevSettings, curSettings]: SettingsGroupModel[][]) => {
 
           const stylesToChange = curSettings.reduce((stylesToChange: any, settingsGroup) => {
             settingsGroup.settings.forEach(setting => {
