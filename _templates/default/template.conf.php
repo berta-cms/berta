@@ -301,7 +301,6 @@ $templateConf = [
                     'property' => 'background-color'
                 ]
             ]
-
         ],
         'backgroundImageEnabled' => [
             'format' => 'select',

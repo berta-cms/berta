@@ -591,7 +591,6 @@ $templateConf = [
                     'property' => 'margin-bottom'
                 ]
             ]
-
         ],
     ],
 
