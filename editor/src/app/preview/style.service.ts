@@ -69,11 +69,11 @@ export class StyleService {
     }
 
     if (breakpoint) {
-      cssMediaRule.insertRule(`${selector} {}`, 0);
-      return cssMediaRule.cssRules[0] as CSSStyleRule;
+      cssMediaRule.insertRule(`${selector} {}`, cssMediaRule.cssRules.length);
+      return cssMediaRule.cssRules[cssMediaRule.cssRules.length - 1] as CSSStyleRule;
     } else {
-      this.styleSheet.insertRule(`${selector} {}`);
-      return this.styleSheet.cssRules[0] as CSSStyleRule;
+      this.styleSheet.insertRule(`${selector} {}`, this.styleSheet.cssRules.length);
+      return this.styleSheet.cssRules[this.styleSheet.cssRules.length - 1] as CSSStyleRule;
     }
   }
 }
