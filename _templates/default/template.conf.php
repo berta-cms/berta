@@ -60,6 +60,12 @@ $templateConf = [
             'default' => '#333333',
             'title' => I18n::_('Color'),
             'description' => '',
+            'css' => [
+                [
+                    'selector' => 'body',
+                    'property' => 'color'
+                ]
+            ]
         ],
         'fontFamily' => [
             'format' => 'fontselect',
@@ -83,6 +89,12 @@ $templateConf = [
             'allow_blank' => true,
             'title' => I18n::_('Font size'),
             'description' => '',
+            'css' => [
+                [
+                    'selector' => 'body',
+                    'property' => 'font-size'
+                ]
+            ]
         ],
         'fontWeight' => [
             'format' => 'select',
@@ -93,6 +105,12 @@ $templateConf = [
             'default' => 'normal',
             'title' => I18n::_('Font weight'),
             'description' => '',
+            'css' => [
+                [
+                    'selector' => 'body',
+                    'property' => 'font-weight'
+                ]
+            ]
         ],
         'fontStyle' => [
             'format' => 'select',
@@ -103,6 +121,12 @@ $templateConf = [
             'default' => 'normal',
             'title' => I18n::_('Font style'),
             'description' => '',
+            'css' => [
+                [
+                    'selector' => 'body',
+                    'property' => 'font-style'
+                ]
+            ]
         ],
         'fontVariant' => [
             'format' => 'select',
@@ -113,6 +137,12 @@ $templateConf = [
             'default' => 'normal',
             'title' => I18n::_('Font variant'),
             'description' => '',
+            'css' => [
+                [
+                    'selector' => 'body',
+                    'property' => 'font-variant'
+                ]
+            ]
         ],
         'lineHeight' => [
             'format' => 'text',
@@ -121,6 +151,12 @@ $templateConf = [
             'allow_blank' => true,
             'title' => I18n::_('Line height'),
             'description' => I18n::_('Height of text line. Use em, px or % values or the default value "normal"'),
+            'css' => [
+                [
+                    'selector' => 'body',
+                    'property' => 'line-height'
+                ]
+            ]
         ],
     ],
 
@@ -133,24 +169,48 @@ $templateConf = [
             'default' => '#888888',
             'title' => I18n::_('Link color'),
             'description' => '',
+            'css' => [
+                [
+                    'selector' => 'a:link',
+                    'property' => 'color'
+                ]
+            ]
         ],
         'colorVisited' => [
             'format' => 'color',
             'default' => '#888888',
             'title' => I18n::_('Visited link color'),
             'description' => '',
+            'css' => [
+                [
+                    'selector' => 'a:visited',
+                    'property' => 'color'
+                ]
+            ]
         ],
         'colorHover' => [
             'format' => 'color',
             'default' => '#888888',
             'title' => I18n::_('Link color when hovered'),
             'description' => '',
+            'css' => [
+                [
+                    'selector' => 'a:hover',
+                    'property' => 'color'
+                ]
+            ]
         ],
         'colorActive' => [
             'format' => 'color',
             'default' => '#888888',
             'title' => I18n::_('Link color when clicked'),
             'description' => '',
+            'css' => [
+                [
+                    'selector' => 'a:active',
+                    'property' => 'color'
+                ]
+            ]
         ],
         'textDecorationLink' => [
             'format' => 'select',
@@ -163,6 +223,12 @@ $templateConf = [
             'default' => 'none',
             'title' => I18n::_('Link decoration'),
             'description' => '',
+            'css' => [
+                [
+                    'selector' => 'a:link',
+                    'property' => 'text-decoration'
+                ]
+            ]
         ],
         'textDecorationVisited' => [
             'format' => 'select',
@@ -175,6 +241,12 @@ $templateConf = [
             'default' => 'none',
             'title' => I18n::_('Visited link decoration'),
             'description' => '',
+            'css' => [
+                [
+                    'selector' => 'a:visited',
+                    'property' => 'text-decoration'
+                ]
+            ]
         ],
         'textDecorationHover' => [
             'format' => 'select',
@@ -187,6 +259,12 @@ $templateConf = [
             'default' => 'underline',
             'title' => I18n::_('Link decoration when hovered'),
             'description' => '',
+            'css' => [
+                [
+                    'selector' => 'a:hover',
+                    'property' => 'text-decoration'
+                ]
+            ]
         ],
         'textDecorationActive' => [
             'format' => 'select',
@@ -199,6 +277,12 @@ $templateConf = [
             'default' => 'underline',
             'title' => I18n::_('Link decoration when clicked'),
             'description' => '',
+            'css' => [
+                [
+                    'selector' => 'a:active',
+                    'property' => 'text-decoration'
+                ]
+            ]
         ],
     ],
 
@@ -211,6 +295,13 @@ $templateConf = [
             'default' => '#FFFFFF',
             'title' => I18n::_('Background color'),
             'description' => '',
+            'css' => [
+                [
+                    'selector' => 'body',
+                    'property' => 'background-color'
+                ]
+            ]
+
         ],
         'backgroundImageEnabled' => [
             'format' => 'select',
@@ -309,6 +400,16 @@ $templateConf = [
             'css_units' => true,
             'title' => I18n::_('Width of content area'),
             'description' => '',
+            'css' => [
+                [
+                    'selector' => '#contentContainer',
+                    'property' => 'width'
+                ],
+                [
+                    'selector' => '.bt-responsive #contentContainer',
+                    'property' => 'max-width'
+                ]
+            ]
         ],
         'bodyMargin' => [
             'format' => 'text',
@@ -317,6 +418,12 @@ $templateConf = [
             'css_units' => true,
             'title' => I18n::_('Page margins'),
             'description' => I18n::_('How far the content is from browser edges. Please see the short CSS guide at the bottom of this page.'),
+            'css' => [
+                [
+                    'selector' => '#contentContainer',
+                    'property' => 'padding'
+                ]
+            ]
         ],
         'siteMenuMargin' => [
             'format' => 'text',
@@ -325,6 +432,12 @@ $templateConf = [
             'css_units' => true,
             'title' => I18n::_('Top menu margins'),
             'description' => I18n::_('How big is the distance from the top menu to the other page elements'),
+            'css' => [
+                [
+                    'selector' => '.bt-sections-menu',
+                    'property' => 'padding'
+                ]
+            ]
         ],
         'group_responsive' => [
             'format' => false,
@@ -362,6 +475,32 @@ $templateConf = [
             'default' => '#333333',
             'title' => I18n::_('Color'),
             'description' => '',
+            'css' => [
+                [
+                    'selector' => 'h1',
+                    'property' => 'color'
+                ],
+                [
+                    'selector' => '#contentContainer h1 a',
+                    'property' => 'color'
+                ],
+                [
+                    'selector' => '#contentContainer h1 a:link',
+                    'property' => 'color'
+                ],
+                [
+                    'selector' => '#contentContainer h1 a:visited',
+                    'property' => 'color'
+                ],
+                [
+                    'selector' => '#contentContainer h1 a:hover',
+                    'property' => 'color'
+                ],
+                [
+                    'selector' => '#contentContainer h1 a:active',
+                    'property' => 'color'
+                ]
+            ]
         ],
         'fontFamily' => [
             'format' => 'fontselect',
@@ -385,6 +524,12 @@ $templateConf = [
             'allow_blank' => true,
             'title' => I18n::_('Font size'),
             'description' => '',
+            'css' => [
+                [
+                    'selector' => 'h1',
+                    'property' => 'font-size'
+                ]
+            ]
         ],
         'fontWeight' => [
             'format' => 'select',
@@ -395,6 +540,12 @@ $templateConf = [
             'default' => 'bold',
             'title' => I18n::_('Font weight'),
             'description' => '',
+            'css' => [
+                [
+                    'selector' => 'h1',
+                    'property' => 'font-weight'
+                ]
+            ]
         ],
         'fontStyle' => [
             'format' => 'select',
@@ -405,6 +556,12 @@ $templateConf = [
             'default' => 'normal',
             'title' => I18n::_('Font style'),
             'description' => '',
+            'css' => [
+                [
+                    'selector' => 'h1',
+                    'property' => 'font-style'
+                ]
+            ]
         ],
         'fontVariant' => [
             'format' => 'select',
@@ -415,6 +572,12 @@ $templateConf = [
             'default' => 'normal',
             'title' => I18n::_('Font variant'),
             'description' => '',
+            'css' => [
+                [
+                    'selector' => 'h1',
+                    'property' => 'font-variant'
+                ]
+            ]
         ],
         'lineHeight' => [
             'format' => 'text',
@@ -423,6 +586,12 @@ $templateConf = [
             'allow_blank' => true,
             'title' => I18n::_('Line height'),
             'description' => I18n::_('Height of text line. Use em, px or % values or the default value "normal"'),
+            'css' => [
+                [
+                    'selector' => 'h1',
+                    'property' => 'line-height'
+                ]
+            ]
         ],
         'margin' => [
             'format' => 'text',
@@ -431,6 +600,12 @@ $templateConf = [
             'allow_blank' => true,
             'title' => I18n::_('Margins'),
             'description' => I18n::_('How far the heading is from other elements in page. Please see the short CSS guide at the bottom of this page.'),
+            'css' => [
+                [
+                    'selector' => 'h1',
+                    'property' => 'margin'
+                ]
+            ]
         ],
     ],
 
@@ -444,6 +619,13 @@ $templateConf = [
             'allow_blank' => true,
             'title' => I18n::_('Menu items separator'),
             'description' => '',
+            // @todo prepare value before preview with quotes around in style service: `"${style.value}"`
+            // 'css' => [
+            //     [
+            //         'selector' => '.bt-sections-menu > ul:not(.subMenu) li:not(:first-child)::before',
+            //         'property' => 'content'
+            //     ]
+            // ]
         ],
         'separatorDistance' => [
             'format' => 'text',
@@ -452,6 +634,16 @@ $templateConf = [
             'allow_blank' => true,
             'title' => I18n::_('Space width around separator'),
             'description' => I18n::_('The distance from the separator to the menu item on both sides'),
+            'css' => [
+                [
+                    'selector' => '.bt-sections-menu > ul:not(.subMenu) li:not(:first-child)::before',
+                    'property' => 'padding-left'
+                ],
+                [
+                    'selector' => '.bt-sections-menu > ul:not(.subMenu) li:not(:first-child)::before',
+                    'property' => 'padding-right'
+                ],
+            ]
         ],
         'fontSize' => [
             'format' => 'text',
@@ -460,6 +652,12 @@ $templateConf = [
             'allow_blank' => true,
             'title' => I18n::_('Font size'),
             'description' => '',
+            'css' => [
+                [
+                    'selector' => '.bt-sections-menu > ul:not(.subMenu) li',
+                    'property' => 'font-size'
+                ]
+            ]
         ],
         'fontFamily' => [
             'format' => 'fontselect',
@@ -481,18 +679,44 @@ $templateConf = [
             'default' => '#888888',
             'title' => I18n::_('Color'),
             'description' => '',
+            'css' => [
+                [
+                    'selector' => '.bt-sections-menu ul li a:link',
+                    'property' => 'color'
+                ],
+                [
+                    'selector' => '.bt-sections-menu ul li a:visited',
+                    'property' => 'color'
+                ]
+            ]
         ],
         'colorHover' => [
             'format' => 'color',
             'default' => '#888888',
             'title' => I18n::_('Color when hovered'),
             'description' => I18n::_('Color of the element under mouse cursor'),
+            'css' => [
+                [
+                    'selector' => '.bt-sections-menu ul li a:hover',
+                    'property' => 'color'
+                ]
+            ]
         ],
         'colorActive' => [
             'format' => 'color',
             'default' => '#888888',
             'title' => I18n::_('Color when selected'),
             'description' => I18n::_('Color of the element of the currently opened section'),
+            'css' => [
+                [
+                    'selector' => '.bt-sections-menu ul li a:active',
+                    'property' => 'color'
+                ],
+                [
+                    'selector' => '.bt-sections-menu ul li.selected > a',
+                    'property' => 'color'
+                ]
+            ]
         ],
         'fontWeight' => [
             'format' => 'select',
@@ -504,6 +728,12 @@ $templateConf = [
             'default' => 'inherit',
             'title' => I18n::_('Font weight'),
             'description' => '',
+            'css' => [
+                [
+                    'selector' => '.bt-sections-menu > ul:not(.subMenu) li',
+                    'property' => 'font-weight'
+                ]
+            ]
         ],
         'fontStyle' => [
             'format' => 'select',
@@ -515,6 +745,12 @@ $templateConf = [
             'default' => 'inherit',
             'title' => I18n::_('Font style'),
             'description' => '',
+            'css' => [
+                [
+                    'selector' => '.bt-sections-menu > ul:not(.subMenu) li',
+                    'property' => 'font-style'
+                ]
+            ]
         ],
         'fontVariant' => [
             'format' => 'select',
@@ -526,6 +762,12 @@ $templateConf = [
             'default' => 'inherit',
             'title' => I18n::_('Font variant'),
             'description' => '',
+            'css' => [
+                [
+                    'selector' => '.bt-sections-menu > ul:not(.subMenu) li',
+                    'property' => 'font-variant'
+                ]
+            ]
         ],
         'lineHeight' => [
             'format' => 'text',
@@ -534,6 +776,12 @@ $templateConf = [
             'allow_blank' => true,
             'title' => I18n::_('Line height'),
             'description' => I18n::_('Height of text line. Use em, px or % values or the default value "normal"'),
+            'css' => [
+                [
+                    'selector' => '.bt-sections-menu > ul:not(.subMenu) li',
+                    'property' => 'line-height'
+                ]
+            ]
         ],
         'margin' => [
             'format' => 'text',
@@ -542,6 +790,12 @@ $templateConf = [
             'allow_blank' => true,
             'title' => I18n::_('Margins'),
             'description' => I18n::_('How far the menu is form other elements in page. Please see the short CSS guide at the bottom of this page.'),
+            'css' => [
+                [
+                    'selector' => '.bt-sections-menu > ul:not(.subMenu)',
+                    'property' => 'padding'
+                ]
+            ]
         ],
     ],
 
@@ -555,6 +809,13 @@ $templateConf = [
             'allow_blank' => true,
             'title' => I18n::_('Menu items separator'),
             'description' => '',
+            // @todo prepare value before preview with quotes around in style service: `"${style.value}"`
+            // 'css' => [
+            //     [
+            //         'selector' => '.bt-sections-menu > .subMenu li:not(:first-child)::before',
+            //         'property' => 'content'
+            //     ]
+            // ]
         ],
         'separatorDistance' => [
             'format' => 'text',
@@ -563,6 +824,16 @@ $templateConf = [
             'allow_blank' => true,
             'title' => I18n::_('Space width around separator'),
             'description' => I18n::_('The distance from the separator to the menu item on both sides'),
+            'css' => [
+                [
+                    'selector' => '.bt-sections-menu > .subMenu li:not(:first-child)::before',
+                    'property' => 'padding-left'
+                ],
+                [
+                    'selector' => '.bt-sections-menu > .subMenu li:not(:first-child)::before',
+                    'property' => 'padding-right'
+                ]
+            ]
         ],
         'fontSize' => [
             'format' => 'text',
@@ -571,6 +842,12 @@ $templateConf = [
             'allow_blank' => true,
             'title' => I18n::_('Font size'),
             'description' => '',
+            'css' => [
+                [
+                    'selector' => '.bt-sections-menu > .subMenu li',
+                    'property' => 'font-size'
+                ]
+            ]
         ],
         'fontFamily' => [
             'format' => 'fontselect',
@@ -597,6 +874,12 @@ $templateConf = [
             'default' => 'inherit',
             'title' => I18n::_('Font weight'),
             'description' => '',
+            'css' => [
+                [
+                    'selector' => '.bt-sections-menu > .subMenu li',
+                    'property' => 'font-weight'
+                ]
+            ]
         ],
         'fontStyle' => [
             'format' => 'select',
@@ -608,6 +891,12 @@ $templateConf = [
             'default' => 'inherit',
             'title' => I18n::_('Font style'),
             'description' => '',
+            'css' => [
+                [
+                    'selector' => '.bt-sections-menu > .subMenu li',
+                    'property' => 'font-style'
+                ]
+            ]
         ],
         'fontVariant' => [
             'format' => 'select',
@@ -619,6 +908,12 @@ $templateConf = [
             'default' => 'inherit',
             'title' => I18n::_('Font variant'),
             'description' => '',
+            'css' => [
+                [
+                    'selector' => '.bt-sections-menu > .subMenu li',
+                    'property' => 'font-variant'
+                ]
+            ]
         ],
         'lineHeight' => [
             'format' => 'text',
@@ -627,6 +922,12 @@ $templateConf = [
             'allow_blank' => true,
             'title' => I18n::_('Line height'),
             'description' => I18n::_('Height of text line. Use em, px or % values or the default value "normal"'),
+            'css' => [
+                [
+                    'selector' => '.bt-sections-menu > .subMenu li',
+                    'property' => 'line-height'
+                ]
+            ]
         ],
         'margin' => [
             'format' => 'text',
@@ -635,6 +936,12 @@ $templateConf = [
             'allow_blank' => true,
             'title' => I18n::_('Margins'),
             'description' => I18n::_('How far the menu is form other elements in page. Please see the short CSS guide at the bottom of this page.'),
+            'css' => [
+                [
+                    'selector' => '.bt-sections-menu > .subMenu',
+                    'property' => 'padding'
+                ]
+            ]
         ],
     ],
 
@@ -649,6 +956,12 @@ $templateConf = [
             'allow_blank' => true,
             'title' => I18n::_('Entry margins'),
             'description' => I18n::_('Margins around entries. Please see the short CSS guide at the bottom of this page.'),
+            'css' => [
+                [
+                    'selector' => '#pageEntries li.xEntry',
+                    'property' => 'margin'
+                ]
+            ]
         ],
         'galleryPosition' => [
             'format' => 'select',
@@ -678,6 +991,21 @@ $templateConf = [
             'css_units' => true,
             'title' => I18n::_('Space between images in row and column'),
             'description' => I18n::_('Horizontal/vertical space between images when gallery is in "row"/"column" mode'),
+            'css' => [
+                [
+                    'selector' => '#pageEntries li.xEntry .xGalleryType-column .xGalleryItem',
+                    'property' => 'padding-bottom'
+                ],
+                [
+                    'selector' => '#pageEntries li.xEntry .xGalleryType-row:not(.bt-gallery-has-one-item) .xGalleryItem',
+                    'property' => 'margin-right'
+                ],
+                [
+                    'selector' => '.bt-responsive #pageEntries li.xEntry .xGalleryType-row:not(.bt-gallery-has-one-item) .xGallery .xGalleryItem',
+                    'property' => 'padding-bottom',
+                    'breakpoint' => '(max-width: 767px)'
+                ]
+            ]
         ],
         'galleryMargin' => [
             'format' => 'text',
@@ -686,6 +1014,12 @@ $templateConf = [
             'allow_blank' => true,
             'title' => I18n::_('Gallery margins'),
             'description' => I18n::_('Margin around gallery block'),
+            'css' => [
+                [
+                    'selector' => '#pageEntries li.xEntry .xGalleryContainer .xGallery',
+                    'property' => 'margin'
+                ]
+            ]
         ],
     ],
 
@@ -698,6 +1032,12 @@ $templateConf = [
             'default' => '#333333',
             'title' => I18n::_('Color'),
             'description' => '',
+            'css' => [
+                [
+                    'selector' => '#pageEntries li.xEntry h2',
+                    'property' => 'color'
+                ]
+            ]
         ],
         'fontFamily' => [
             'format' => 'fontselect',
@@ -721,6 +1061,12 @@ $templateConf = [
             'allow_blank' => true,
             'title' => I18n::_('Font size'),
             'description' => '',
+            'css' => [
+                [
+                    'selector' => '#pageEntries li.xEntry h2',
+                    'property' => 'font-size'
+                ]
+            ]
         ],
         'fontWeight' => [
             'format' => 'select',
@@ -731,6 +1077,12 @@ $templateConf = [
             'default' => 'normal',
             'title' => I18n::_('Font weight'),
             'description' => '',
+            'css' => [
+                [
+                    'selector' => '#pageEntries li.xEntry h2',
+                    'property' => 'font-weight'
+                ]
+            ]
         ],
         'fontStyle' => [
             'format' => 'select',
@@ -741,6 +1093,12 @@ $templateConf = [
             'default' => 'normal',
             'title' => I18n::_('Font style'),
             'description' => '',
+            'css' => [
+                [
+                    'selector' => '#pageEntries li.xEntry h2',
+                    'property' => 'font-style'
+                ]
+            ]
         ],
         'fontVariant' => [
             'format' => 'select',
@@ -751,6 +1109,12 @@ $templateConf = [
             'default' => 'normal',
             'title' => I18n::_('Font variant'),
             'description' => '',
+            'css' => [
+                [
+                    'selector' => '#pageEntries li.xEntry h2',
+                    'property' => 'font-variant'
+                ]
+            ]
         ],
         'lineHeight' => [
             'format' => 'text',
@@ -759,6 +1123,12 @@ $templateConf = [
             'allow_blank' => true,
             'title' => I18n::_('Line height'),
             'description' => I18n::_('Height of text line. Use em, px or % values or the default value "normal"'),
+            'css' => [
+                [
+                    'selector' => '#pageEntries li.xEntry h2',
+                    'property' => 'line-height'
+                ]
+            ]
         ],
         'margin' => [
             'format' => 'text',
@@ -767,6 +1137,12 @@ $templateConf = [
             'allow_blank' => true,
             'title' => I18n::_('Margins'),
             'description' => I18n::_('How far the entry heading is form other elements in page. Please see the short CSS guide at the bottom of this page.'),
+            'css' => [
+                [
+                    'selector' => '#pageEntries li.xEntry h2',
+                    'property' => 'margin'
+                ]
+            ]
         ],
     ],
 
@@ -779,6 +1155,12 @@ $templateConf = [
             'default' => '#333333',
             'title' => I18n::_('Color'),
             'description' => '',
+            'css' => [
+                [
+                    'selector' => '#pageEntries li.xEntry .entryContent',
+                    'property' => 'color'
+                ]
+            ]
         ],
         'fontFamily' => [
             'format' => 'fontselect',
@@ -802,6 +1184,12 @@ $templateConf = [
             'allow_blank' => true,
             'title' => I18n::_('Font size'),
             'description' => '',
+            'css' => [
+                [
+                    'selector' => '#pageEntries li.xEntry .entryContent',
+                    'property' => 'font-size'
+                ]
+            ]
         ],
         'fontWeight' => [
             'format' => 'select',
@@ -813,6 +1201,12 @@ $templateConf = [
             'default' => 'inherit',
             'title' => I18n::_('Font weight'),
             'description' => '',
+            'css' => [
+                [
+                    'selector' => '#pageEntries li.xEntry .entryContent',
+                    'property' => 'font-weight'
+                ]
+            ]
         ],
         'fontStyle' => [
             'format' => 'select',
@@ -824,6 +1218,12 @@ $templateConf = [
             'default' => 'inherit',
             'title' => I18n::_('Font style'),
             'description' => '',
+            'css' => [
+                [
+                    'selector' => '#pageEntries li.xEntry .entryContent',
+                    'property' => 'font-style'
+                ]
+            ]
         ],
         'fontVariant' => [
             'format' => 'select',
@@ -835,6 +1235,12 @@ $templateConf = [
             'default' => 'inherit',
             'title' => I18n::_('Font variant'),
             'description' => '',
+            'css' => [
+                [
+                    'selector' => '#pageEntries li.xEntry .entryContent',
+                    'property' => 'font-variant'
+                ]
+            ]
         ],
         'lineHeight' => [
             'format' => 'text',
@@ -843,6 +1249,12 @@ $templateConf = [
             'allow_blank' => true,
             'title' => I18n::_('Line height'),
             'description' => I18n::_('Height of text line. Use em, px or % values or the default value "normal"'),
+            'css' => [
+                [
+                    'selector' => '#pageEntries li.xEntry .entryContent',
+                    'property' => 'line-height'
+                ]
+            ]
         ],
     ],
 
@@ -855,6 +1267,12 @@ $templateConf = [
             'default' => '#000000',
             'title' => I18n::_('Button color'),
             'description' => '',
+            'css' => [
+                [
+                    'selector' => '.social-icon path',
+                    'property' => 'fill'
+                ]
+            ]
         ],
     ],
 

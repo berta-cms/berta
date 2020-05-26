@@ -44,9 +44,23 @@ export class StyleService {
   }
 
   findOrCreateRule(selector: string, breakpoint: string): CSSStyleRule {
-    // @todo implement breakpoint usage
+    let cssMediaRule: CSSMediaRule;
+    let cssRulesList = this.styleSheet.cssRules;
 
-    const cssRule = Array.prototype.find.call(this.styleSheet.cssRules, (rule: CSSStyleRule) => {
+    if (breakpoint) {
+      cssMediaRule = Array.prototype.find.call(this.styleSheet.cssRules, (rule: CSSMediaRule) => {
+        return rule.conditionText === breakpoint;
+      });
+
+      if (!cssMediaRule) {
+        this.styleSheet.insertRule(`@media ${breakpoint} {}`, this.styleSheet.cssRules.length);
+        cssMediaRule = this.styleSheet.cssRules[this.styleSheet.cssRules.length - 1] as CSSMediaRule;
+      }
+
+      cssRulesList = cssMediaRule.cssRules;
+    }
+
+    const cssRule = Array.prototype.find.call(cssRulesList, (rule: CSSStyleRule) => {
       return rule.selectorText === selector;
     });
 
@@ -54,9 +68,12 @@ export class StyleService {
       return cssRule;
     }
 
-    const insertIndex = this.styleSheet.cssRules.length;
-    this.styleSheet.insertRule(`${selector} {}`, insertIndex);
-
-    return this.styleSheet.cssRules[insertIndex] as CSSStyleRule;
+    if (breakpoint) {
+      cssMediaRule.insertRule(`${selector} {}`, 0);
+      return cssMediaRule.cssRules[0] as CSSStyleRule;
+    } else {
+      this.styleSheet.insertRule(`${selector} {}`);
+      return this.styleSheet.cssRules[0] as CSSStyleRule;
+    }
   }
 }
