@@ -78,6 +78,12 @@ $templateConf = [
             'default' => '#1a1a1a',
             'title' => I18n::_('Color'),
             'description' => '',
+            'css' => [
+                [
+                    'selector' => 'body',
+                    'property' => 'color'
+                ]
+            ]
         ],
         'fontFamily' => [
             'format' => 'fontselect',
@@ -101,6 +107,12 @@ $templateConf = [
             'allow_blank' => true,
             'title' => I18n::_('Font size'),
             'description' => '',
+            'css' => [
+                [
+                    'selector' => 'body',
+                    'property' => 'font-size'
+                ]
+            ]
         ],
         'fontWeight' => [
             'format' => 'select',
@@ -111,6 +123,12 @@ $templateConf = [
             'default' => 'normal',
             'title' => I18n::_('Font weight'),
             'description' => '',
+            'css' => [
+                [
+                    'selector' => 'body',
+                    'property' => 'font-weight'
+                ]
+            ]
         ],
         'fontStyle' => [
             'format' => 'select',
@@ -121,6 +139,12 @@ $templateConf = [
             'default' => 'normal',
             'title' => I18n::_('Font style'),
             'description' => '',
+            'css' => [
+                [
+                    'selector' => 'body',
+                    'property' => 'font-style'
+                ]
+            ]
         ],
         'fontVariant' => [
             'format' => 'select',
@@ -131,6 +155,12 @@ $templateConf = [
             'default' => 'normal',
             'title' => I18n::_('Font variant'),
             'description' => '',
+            'css' => [
+                [
+                    'selector' => 'body',
+                    'property' => 'font-variant'
+                ]
+            ]
         ],
         'lineHeight' => [
             'format' => 'text',
@@ -139,6 +169,12 @@ $templateConf = [
             'allow_blank' => true,
             'title' => I18n::_('Line height'),
             'description' => I18n::_('Height of text line. Use em, px or % values or the default value "normal"'),
+            'css' => [
+                [
+                    'selector' => 'body',
+                    'property' => 'line-height'
+                ]
+            ]
         ],
     ],
 
@@ -151,24 +187,48 @@ $templateConf = [
             'default' => '#0000ff',
             'title' => I18n::_('Link color'),
             'description' => '',
+            'css' => [
+                [
+                    'selector' => 'a:link',
+                    'property' => 'color'
+                ]
+            ]
         ],
         'colorVisited' => [
             'format' => 'color',
             'default' => '#666666',
             'title' => I18n::_('Visited link color'),
             'description' => '',
+            'css' => [
+                [
+                    'selector' => 'a:visited',
+                    'property' => 'color'
+                ]
+            ]
         ],
         'colorHover' => [
             'format' => 'color',
             'default' => '#0000ff',
             'title' => I18n::_('Link color when hovered'),
             'description' => '',
+            'css' => [
+                [
+                    'selector' => 'a:hover',
+                    'property' => 'color'
+                ]
+            ]
         ],
         'colorActive' => [
             'format' => 'color',
             'default' => '#0000ff',
             'title' => I18n::_('Link color when clicked'),
             'description' => '',
+            'css' => [
+                [
+                    'selector' => 'a:active',
+                    'property' => 'color'
+                ]
+            ]
         ],
         'textDecorationLink' => [
             'format' => 'select',
@@ -181,6 +241,12 @@ $templateConf = [
             'default' => 'none',
             'title' => I18n::_('Link decoration'),
             'description' => '',
+            'css' => [
+                [
+                    'selector' => 'a:link',
+                    'property' => 'text-decoration'
+                ]
+            ]
         ],
         'textDecorationVisited' => [
             'format' => 'select',
@@ -193,6 +259,12 @@ $templateConf = [
             'default' => 'none',
             'title' => I18n::_('Visited link decoration'),
             'description' => '',
+            'css' => [
+                [
+                    'selector' => 'a:visited',
+                    'property' => 'text-decoration'
+                ]
+            ]
         ],
         'textDecorationHover' => [
             'format' => 'select',
@@ -205,6 +277,12 @@ $templateConf = [
             'default' => 'underline',
             'title' => I18n::_('Link decoration when hovered'),
             'description' => '',
+            'css' => [
+                [
+                    'selector' => 'a:hover',
+                    'property' => 'text-decoration'
+                ]
+            ]
         ],
         'textDecorationActive' => [
             'format' => 'select',
@@ -217,6 +295,12 @@ $templateConf = [
             'default' => 'underline',
             'title' => I18n::_('Link decoration when clicked'),
             'description' => '',
+            'css' => [
+                [
+                    'selector' => 'a:active',
+                    'property' => 'text-decoration'
+                ]
+            ]
         ],
     ],
 
@@ -229,6 +313,12 @@ $templateConf = [
             'default' => '#FFFFFF',
             'title' => I18n::_('Background color'),
             'description' => '',
+            'css' => [
+                [
+                    'selector' => 'body',
+                    'property' => 'background-color'
+                ]
+            ]
         ],
         'backgroundImageEnabled' => [
             'format' => 'select',
@@ -329,6 +419,16 @@ $templateConf = [
             'css_units' => true,
             'title' => I18n::_('How far content is from sidebar?'),
             'description' => I18n::_('The horizontal distance between the menu and the content area.'),
+            'css' => [
+                [
+                    'selector' => '#mainColumn',
+                    'property' => 'padding-left'
+                ],
+                [
+                    'selector' => '#mainColumn',
+                    'property' => 'padding-right'
+                ]
+            ]
         ],
         'group_responsive' => [
             'format' => false,
@@ -411,6 +511,16 @@ $templateConf = [
             'css_units' => true,
             'title' => I18n::_('Left margin'),
             'description' => I18n::_('How far the sidebar is from the left side of the screen. This gets ignored, if centered layout is enabled.'),
+            'css' => [
+                [
+                    'selector' => '#mainColumnContainer',
+                    'property' => 'padding-left'
+                ],
+                [
+                    'selector' => '#sideColumn',
+                    'property' => 'padding-left'
+                ]
+            ]
         ],
         'marginTop' => [
             'format' => 'text',
@@ -419,6 +529,12 @@ $templateConf = [
             'css_units' => true,
             'title' => I18n::_('Top padding'),
             'description' => I18n::_('How far the header is from the top of the screen?'),
+            'css' => [
+                [
+                    'selector' => '#sideColumnTop',
+                    'property' => 'padding-top'
+                ]
+            ]
         ],
         'marginBottom' => [
             'format' => 'text',
@@ -427,6 +543,12 @@ $templateConf = [
             'css_units' => true,
             'title' => I18n::_('Space between header and menu'),
             'description' => I18n::_('How far the menu is from the header text or header image.'),
+            'css' => [
+                [
+                    'selector' => '#sideColumnTop h1',
+                    'property' => 'margin-bottom'
+                ]
+            ]
         ],
         'transparent' => [
             'format' => 'select',
@@ -457,6 +579,16 @@ $templateConf = [
             'default' => '#1a1a1a',
             'title' => I18n::_('Heading text color'),
             'description' => '',
+            'css' => [
+                [
+                    'selector' => '#sideColumnTop h1',
+                    'property' => 'color'
+                ],
+                [
+                    'selector' => '#sideColumnTop h1 a',
+                    'property' => 'color'
+                ]
+            ]
         ],
         'fontFamily' => [
             'format' => 'fontselect',
@@ -480,6 +612,12 @@ $templateConf = [
             'allow_blank' => true,
             'title' => I18n::_('Heading font size'),
             'description' => '',
+            'css' => [
+                [
+                    'selector' => '#sideColumnTop h1',
+                    'property' => 'font-size'
+                ]
+            ]
         ],
         'fontWeight' => [
             'format' => 'select',
@@ -490,6 +628,12 @@ $templateConf = [
             'default' => 'normal',
             'title' => I18n::_('Heading font weight'),
             'description' => '',
+            'css' => [
+                [
+                    'selector' => '#sideColumnTop h1',
+                    'property' => 'font-weight'
+                ]
+            ]
         ],
         'fontStyle' => [
             'format' => 'select',
@@ -500,6 +644,12 @@ $templateConf = [
             'default' => 'normal',
             'title' => I18n::_('Heading font style'),
             'description' => '',
+            'css' => [
+                [
+                    'selector' => '#sideColumnTop h1',
+                    'property' => 'font-style'
+                ]
+            ]
         ],
         'fontVariant' => [
             'format' => 'select',
@@ -510,6 +660,12 @@ $templateConf = [
             'default' => 'normal',
             'title' => I18n::_('Heading font variant'),
             'description' => '',
+            'css' => [
+                [
+                    'selector' => '#sideColumnTop h1',
+                    'property' => 'font-variant'
+                ]
+            ]
         ],
         'lineHeight' => [
             'format' => 'text',
@@ -518,6 +674,12 @@ $templateConf = [
             'allow_blank' => true,
             'title' => I18n::_('Heading line height'),
             'description' => I18n::_('Height of text line. Use em, px or % values or the default value "normal"'),
+            'css' => [
+                [
+                    'selector' => '#sideColumnTop h1',
+                    'property' => 'line-height'
+                ]
+            ]
         ],
     ],
 
@@ -547,6 +709,12 @@ $templateConf = [
             'allow_blank' => true,
             'title' => I18n::_('Font size'),
             'description' => '',
+            'css' => [
+                [
+                    'selector' => '#sideColumnTop ul li',
+                    'property' => 'font-size'
+                ]
+            ]
         ],
         'fontWeight' => [
             'format' => 'select',
@@ -557,6 +725,12 @@ $templateConf = [
             'default' => 'normal',
             'title' => I18n::_('Font weight'),
             'description' => '',
+            'css' => [
+                [
+                    'selector' => '#sideColumnTop ul li',
+                    'property' => 'font-weight'
+                ]
+            ]
         ],
         'fontStyle' => [
             'format' => 'select',
@@ -567,6 +741,12 @@ $templateConf = [
             'default' => 'normal',
             'title' => I18n::_('Font style'),
             'description' => '',
+            'css' => [
+                [
+                    'selector' => '#sideColumnTop ul li',
+                    'property' => 'font-style'
+                ]
+            ]
         ],
         'lineHeight' => [
             'format' => 'text',
@@ -575,24 +755,72 @@ $templateConf = [
             'allow_blank' => true,
             'title' => I18n::_('Line height'),
             'description' => I18n::_('Height of text line. Use em, px or % values or the default value "normal"'),
+            'css' => [
+                [
+                    'selector' => '#sideColumnTop ul li',
+                    'property' => 'line-height'
+                ]
+            ]
         ],
         'colorLink' => [
             'format' => 'color',
             'default' => '#1a1a1a',
             'title' => I18n::_('Color'),
             'description' => '',
+            'css' => [
+                [
+                    'selector' => '#sideColumnTop li a:link',
+                    'property' => 'color'
+                ],
+                [
+                    'selector' => '#sideColumnTop li a:visited',
+                    'property' => 'color'
+                ],
+                [
+                    'selector' => '#pageEntries .xGalleryContainer ul.xGalleryNav li a',
+                    'property' => 'color'
+                ]
+            ]
         ],
         'colorHover' => [
             'format' => 'color',
             'default' => '#0000ff',
             'title' => I18n::_('Color when hovered'),
             'description' => '',
+            'css' => [
+                [
+                    'selector' => '#sideColumnTop li a:hover',
+                    'property' => 'color'
+                ],
+                [
+                    'selector' => '#pageEntries .xGalleryContainer ul.xGalleryNav li a:hover',
+                    'property' => 'color'
+                ]
+            ]
         ],
         'colorActive' => [
             'format' => 'color',
             'default' => '#1a1a1a',
             'title' => I18n::_('Color when opened'),
             'description' => '',
+            'css' => [
+                [
+                    'selector' => '#sideColumnTop li a:active',
+                    'property' => 'color'
+                ],
+                [
+                    'selector' => '#sideColumnTop li.selected > a',
+                    'property' => 'color'
+                ],
+                [
+                    'selector' => '#sideColumnTop li.selected > span',
+                    'property' => 'color'
+                ],
+                [
+                    'selector' => '#pageEntries .xGalleryContainer ul.xGalleryNav li.selected a',
+                    'property' => 'color'
+                ]
+            ]
         ],
         'textDecorationLink' => [
             'format' => 'select',
@@ -605,6 +833,20 @@ $templateConf = [
             'default' => 'none',
             'title' => I18n::_('Decoration'),
             'description' => '',
+            'css' => [
+                [
+                    'selector' => '#sideColumnTop li a:link',
+                    'property' => 'text-decoration'
+                ],
+                [
+                    'selector' => '#sideColumnTop li a:visited',
+                    'property' => 'text-decoration'
+                ],
+                [
+                    'selector' => '#pageEntries .xGalleryContainer ul.xGalleryNav li a',
+                    'property' => 'text-decoration'
+                ]
+            ]
         ],
         'textDecorationHover' => [
             'format' => 'select',
@@ -617,6 +859,16 @@ $templateConf = [
             'default' => 'none',
             'title' => I18n::_('Decoration when hovered'),
             'description' => '',
+            'css' => [
+                [
+                    'selector' => '#sideColumnTop li a:hover',
+                    'property' => 'text-decoration'
+                ],
+                [
+                    'selector' => '#pageEntries .xGalleryContainer ul.xGalleryNav li a:hover',
+                    'property' => 'text-decoration'
+                ]
+            ]
         ],
         'textDecorationActive' => [
             'format' => 'select',
@@ -629,6 +881,24 @@ $templateConf = [
             'default' => 'underline',
             'title' => I18n::_('Decoration when opened'),
             'description' => '',
+            'css' => [
+                [
+                    'selector' => '#sideColumnTop li a:active',
+                    'property' => 'text-decoration'
+                ],
+                [
+                    'selector' => '#sideColumnTop li.selected > a',
+                    'property' => 'text-decoration'
+                ],
+                [
+                    'selector' => '#sideColumnTop li.selected > span',
+                    'property' => 'text-decoration'
+                ],
+                [
+                    'selector' => '#pageEntries .xGalleryContainer ul.xGalleryNav li.selected a',
+                    'property' => 'text-decoration'
+                ]
+            ]
         ],
     ],
 
@@ -658,6 +928,12 @@ $templateConf = [
             'allow_blank' => true,
             'title' => I18n::_('Font size'),
             'description' => '',
+            'css' => [
+                [
+                    'selector' => '#sideColumnTop .bt-sections-menu .subMenu li',
+                    'property' => 'font-size'
+                ]
+            ]
         ],
         'fontWeight' => [
             'format' => 'select',
@@ -668,6 +944,12 @@ $templateConf = [
             'default' => 'normal',
             'title' => I18n::_('Font weight'),
             'description' => '',
+            'css' => [
+                [
+                    'selector' => '#sideColumnTop .bt-sections-menu .subMenu li',
+                    'property' => 'font-weight'
+                ]
+            ]
         ],
         'fontStyle' => [
             'format' => 'select',
@@ -678,6 +960,12 @@ $templateConf = [
             'default' => 'normal',
             'title' => I18n::_('Font style'),
             'description' => '',
+            'css' => [
+                [
+                    'selector' => '#sideColumnTop .bt-sections-menu .subMenu li',
+                    'property' => 'font-style'
+                ]
+            ]
         ],
         'lineHeight' => [
             'format' => 'text',
@@ -686,24 +974,56 @@ $templateConf = [
             'allow_blank' => true,
             'title' => I18n::_('Line height'),
             'description' => I18n::_('Height of text line. Use em, px or % values or the default value "normal"'),
+            'css' => [
+                [
+                    'selector' => '#sideColumnTop .bt-sections-menu .subMenu li',
+                    'property' => 'line-height'
+                ]
+            ]
         ],
         'colorLink' => [
             'format' => 'color',
             'default' => '#1a1a1a',
             'title' => I18n::_('Color'),
             'description' => '',
+            'css' => [
+                [
+                    'selector' => '#sideColumnTop .bt-sections-menu .subMenu li a:link',
+                    'property' => 'color'
+                ],
+                [
+                    'selector' => '#sideColumnTop .bt-sections-menu .subMenu li a:visited',
+                    'property' => 'color'
+                ]
+            ]
         ],
         'colorHover' => [
             'format' => 'color',
             'default' => '#0000ff',
             'title' => I18n::_('Color when hovered'),
             'description' => '',
+            'css' => [
+                [
+                    'selector' => '#sideColumnTop .bt-sections-menu .subMenu li a:hover',
+                    'property' => 'color'
+                ]
+            ]
         ],
         'colorActive' => [
             'format' => 'color',
             'default' => '#1a1a1a',
             'title' => I18n::_('Color when selected'),
             'description' => '',
+            'css' => [
+                [
+                    'selector' => '#sideColumnTop .bt-sections-menu .subMenu li a:active',
+                    'property' => 'color'
+                ],
+                [
+                    'selector' => '#sideColumnTop .bt-sections-menu .subMenu li.selected > a',
+                    'property' => 'color'
+                ]
+            ]
         ],
         'textDecorationLink' => [
             'format' => 'select',
@@ -716,6 +1036,16 @@ $templateConf = [
             'default' => 'none',
             'title' => I18n::_('Decoration'),
             'description' => '',
+            'css' => [
+                [
+                    'selector' => '#sideColumnTop .bt-sections-menu .subMenu li a:link',
+                    'property' => 'text-decoration'
+                ],
+                [
+                    'selector' => '#sideColumnTop .bt-sections-menu .subMenu li a:visited',
+                    'property' => 'text-decoration'
+                ]
+            ]
         ],
         'textDecorationHover' => [
             'format' => 'select',
@@ -728,6 +1058,12 @@ $templateConf = [
             'default' => 'none',
             'title' => I18n::_('Decoration when hovered'),
             'description' => '',
+            'css' => [
+                [
+                    'selector' => '#sideColumnTop .bt-sections-menu .subMenu li a:hover',
+                    'property' => 'text-decoration'
+                ]
+            ]
         ],
         'textDecorationActive' => [
             'format' => 'select',
@@ -740,6 +1076,16 @@ $templateConf = [
             'default' => 'line-through',
             'title' => I18n::_('Decoration when opened'),
             'description' => '',
+            'css' => [
+                [
+                    'selector' => '#sideColumnTop .bt-sections-menu .subMenu li a:active',
+                    'property' => 'text-decoration'
+                ],
+                [
+                    'selector' => '#sideColumnTop .bt-sections-menu .subMenu li.selected > a',
+                    'property' => 'text-decoration'
+                ]
+            ]
         ],
     ],
 
@@ -754,6 +1100,12 @@ $templateConf = [
             'css_units' => true,
             'title' => I18n::_('Space between entries'),
             'description' => I18n::_('Distance from entry to entry. In pixels.'),
+            'css' => [
+                [
+                    'selector' => '#pageEntries li.xEntry',
+                    'property' => 'margin-bottom'
+                ]
+            ]
         ],
         'defaultGalleryType' => [
             'format' => 'select',
@@ -772,6 +1124,25 @@ $templateConf = [
             'css_units' => true,
             'title' => I18n::_('Space between images in row and column'),
             'description' => I18n::_('Horizontal/vertical space between images when gallery is in "row"/"column" mode'),
+            'css' => [
+                [
+                    'selector' => '.xGalleryType-column div.xGalleryItem',
+                    'property' => 'padding-bottom'
+                ],
+                [
+                    'selector' => '.xGalleryType-row:not(.bt-gallery-has-one-item) .xGalleryItem',
+                    'property' => 'margin-right'
+                ],
+                [
+                    'selector' => '.xSectionType-portfolio #pageEntries li.xEntry .xGalleryType-row:not(.bt-gallery-has-one-item) .xGallery .xGalleryItem',
+                    'property' => 'padding-bottom'
+                ],
+                [
+                    'selector' => '.bt-responsive #pageEntries li.xEntry .xGalleryType-row:not(.bt-gallery-has-one-item) .xGallery .xGalleryItem',
+                    'property' => 'padding-bottom',
+                    'breakpoint' => '(max-width: 767px)'
+                ]
+            ]
         ],
         'galleryNavMargin' => [
             'format' => 'text',
@@ -780,6 +1151,12 @@ $templateConf = [
             'css_units' => true,
             'title' => I18n::_('Space between images and image navigation'),
             'description' => I18n::_('Vertical space between images and image navigation (the digits below the image) when gallery is in "slideshow" mode'),
+            'css' => [
+                [
+                    'selector' => '#pageEntries li.xEntry .xGalleryType-slideshow .xGallery',
+                    'property' => 'margin-bottom'
+                ]
+            ]
         ],
         'galleryMargin' => [
             'format' => 'text',
@@ -788,6 +1165,12 @@ $templateConf = [
             'css_units' => true,
             'title' => I18n::_('Empty space below gallery'),
             'description' => I18n::_('Distance between the gallery and the content below'),
+            'css' => [
+                [
+                    'selector' => '#pageEntries li.xEntry .xGalleryContainer',
+                    'property' => 'margin-bottom'
+                ]
+            ]
         ],
     ],
 
@@ -800,6 +1183,12 @@ $templateConf = [
             'default' => '#000000',
             'title' => I18n::_('Button color'),
             'description' => '',
+            'css' => [
+                [
+                    'selector' => '.social-icon path',
+                    'property' => 'fill'
+                ]
+            ]
         ],
     ],
 
