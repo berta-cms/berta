@@ -586,7 +586,7 @@ $templateConf = [
                 [
                     'selector' => '#contentContainer h1',
                     'property' => 'position',
-                    // 'template' => '%s !important'
+                    'important' => true
                 ]
             ]
         ],
@@ -611,27 +611,27 @@ $templateConf = [
                 [
                     'selector' => 'h1 a',
                     'property' => 'color',
-                    // 'template' => '%s !important'
+                    'important' => true
                 ],
                 [
                     'selector' => 'h1 a:link',
                     'property' => 'color',
-                    // 'template' => '%s !important'
+                    'important' => true
                 ],
                 [
                     'selector' => 'h1 a:visited',
                     'property' => 'color',
-                    // 'template' => '%s !important'
+                    'important' => true
                 ],
                 [
                     'selector' => 'h1 a:hover',
                     'property' => 'color',
-                    // 'template' => '%s !important'
+                    'important' => true
                 ],
                 [
                     'selector' => 'h1 a:active',
                     'property' => 'color',
-                    // 'template' => '%s !important'
+                    'important' => true
                 ],
                 [
                     'selector' => '#xBackground #xBackgroundRightCounter',
@@ -793,7 +793,7 @@ $templateConf = [
                 [
                     'selector' => '.bt-sections-menu > ul > li',
                     'property' => 'position',
-                    // 'template' => '%s !important'
+                    'important' => true
                 ]
             ]
         ],
@@ -921,7 +921,7 @@ $templateConf = [
                 [
                     'selector' => '.bt-sections-menu > ul > li.selected > a',
                     'property' => 'color',
-                    // 'template' => '%s !important'
+                    'important' => true
                 ],
                 [
                     'selector' => '#pageEntries .xGalleryContainer ul.xGalleryNav li.selected a',
@@ -996,7 +996,7 @@ $templateConf = [
                 [
                     'selector' => '.bt-sections-menu > ul > li.selected > a',
                     'property' => 'text-decoration',
-                    // 'template' => '%s !important'
+                    'important' => true
                 ],
                 [
                     'selector' => '#pageEntries .xGalleryContainer ul.xGalleryNav li.selected a',
@@ -1126,7 +1126,7 @@ $templateConf = [
                 [
                     'selector' => '.bt-sections-menu .subMenu li.selected > a',
                     'property' => 'color',
-                    // 'template' => '%s !important'
+                    'important' => true
                 ]
             ]
         ],
@@ -1189,7 +1189,7 @@ $templateConf = [
                 [
                     'selector' => '.bt-sections-menu .subMenu li.selected > a',
                     'property' => 'text-decoration',
-                    // 'template' => '%s !important'
+                    'important' => true
                 ]
             ]
         ],

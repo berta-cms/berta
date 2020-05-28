@@ -39,7 +39,8 @@ export class StyleService {
 
     setting.css.forEach(rule => {
       const cssRule = this.findOrCreateRule(rule.selector, rule.breakpoint);
-      cssRule.style.setProperty(rule.property, style.value || setting.default);
+      const value = style.value || setting.default
+      cssRule.style.setProperty(rule.property, value, rule.important ? 'important' : null);
     });
   }
 
