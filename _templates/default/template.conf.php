@@ -618,13 +618,13 @@ $templateConf = [
             'allow_blank' => true,
             'title' => I18n::_('Menu items separator'),
             'description' => '',
-            // @todo prepare value before preview with quotes around in style service: `"${style.value}"`
-            // 'css' => [
-            //     [
-            //         'selector' => '.bt-sections-menu > ul:not(.subMenu) li:not(:first-child)::before',
-            //         'property' => 'content'
-            //     ]
-            // ]
+            'css' => [
+                [
+                    'selector' => '.bt-sections-menu > ul:not(.subMenu) li:not(:first-child)::before',
+                    'property' => 'content',
+                    'template' => '`"${value}"`'
+                ]
+            ]
         ],
         'separatorDistance' => [
             'format' => 'text',
@@ -808,13 +808,13 @@ $templateConf = [
             'allow_blank' => true,
             'title' => I18n::_('Menu items separator'),
             'description' => '',
-            // @todo prepare value before preview with quotes around in style service: `"${style.value}"`
-            // 'css' => [
-            //     [
-            //         'selector' => '.bt-sections-menu > .subMenu li:not(:first-child)::before',
-            //         'property' => 'content'
-            //     ]
-            // ]
+            'css' => [
+                [
+                    'selector' => '.bt-sections-menu > .subMenu li:not(:first-child)::before',
+                    'property' => 'content',
+                    'template' => '`"${value}"`'
+                ]
+            ]
         ],
         'separatorDistance' => [
             'format' => 'text',

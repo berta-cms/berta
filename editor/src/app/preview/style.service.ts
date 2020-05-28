@@ -39,7 +39,10 @@ export class StyleService {
 
     setting.css.forEach(rule => {
       const cssRule = this.findOrCreateRule(rule.selector, rule.breakpoint);
-      const value = style.value || setting.default
+      let value = style.value || setting.default
+      if (rule.template) {
+        value = eval(rule.template);
+      }
       cssRule.style.setProperty(rule.property, value, rule.important ? 'important' : null);
     });
   }
