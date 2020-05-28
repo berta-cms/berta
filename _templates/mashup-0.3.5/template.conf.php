@@ -587,6 +587,7 @@ $templateConf = [
                 [
                     'selector' => '#sideColumnTop h1 a',
                     'property' => 'color'
+                    // 'template' => '%s !important'
                 ]
             ]
         ],

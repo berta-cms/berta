@@ -454,22 +454,27 @@ $templateConf = [
                 [
                     'selector' => '#sideColumnTop h1 a',
                     'property' => 'color'
+                    // 'template' => '%s !important'
                 ],
                 [
                     'selector' => '#sideColumnTop h1 a:link',
                     'property' => 'color'
+                    // 'template' => '%s !important'
                 ],
                 [
                     'selector' => '#sideColumnTop h1 a:visited',
                     'property' => 'color'
+                    // 'template' => '%s !important'
                 ],
                 [
                     'selector' => '#sideColumnTop h1 a:hover',
                     'property' => 'color'
+                    // 'template' => '%s !important'
                 ],
                 [
                     'selector' => '#sideColumnTop h1 a:active',
                     'property' => 'color'
+                    // 'template' => '%s !important'
                 ]
             ]
         ],
