@@ -8,12 +8,12 @@ import { Store } from '@ngxs/store';
 
 import { AppState } from '../app-state/app.state';
 import { UserState } from '../user/user.state';
+import { SitesState } from '../sites/sites-state/sites.state';
 import { SiteTemplateSettingsState } from '../sites/template-settings/site-template-settings.state';
 import { PreviewService } from './preview.service';
 import { AppShowLoading, UpdateAppStateAction } from '../app-state/app.actions';
 import { UserLogoutAction } from '../user/user.actions';
 import { StyleService } from './style.service';
-import { SettingsGroupModel } from '../shared/interfaces';
 import { SiteSettingsState } from '../sites/settings/site-settings.state';
 
 interface IframeLocation {
@@ -195,10 +195,16 @@ export class PreviewComponent implements OnInit {
         iframe.contentDocument.head.appendChild(styleElement);
         this.styleService.initializeStyleSheet(styleElement.sheet as CSSStyleSheet);
 
-        this.styleChangesSubscription = this.store.select(SiteTemplateSettingsState.getCurrentSiteTemplateSettings).pipe(
-          pairwise()
-        ).subscribe(([prevSettings, curSettings]: SettingsGroupModel[][]) => {
-
+        this.styleChangesSubscription = combineLatest(
+          this.store.select(SitesState.getCurrentSite),
+          this.store.select(SiteSettingsState.getCurrentSiteTemplate).pipe(
+            filter(template => !!template)
+          ),
+          this.store.select(SiteTemplateSettingsState.getCurrentSiteTemplateSettings).pipe(
+            pairwise(),
+            filter(([_, curSettings]) => !!curSettings),
+          )
+        ).subscribe(([site, template, [prevSettings, curSettings]]) => {
           const stylesToChange = curSettings.reduce((stylesToChange: any, settingsGroup) => {
             settingsGroup.settings.forEach(setting => {
               const prevSettingGroup = prevSettings.find(prevSettingsGroup => prevSettingsGroup.slug == settingsGroup.slug);
@@ -222,7 +228,7 @@ export class PreviewComponent implements OnInit {
           }, []);
 
           stylesToChange.forEach(styleToChange => {
-            this.styleService.updateStyle(styleToChange);
+            this.styleService.updateStyle(site, template, styleToChange, curSettings);
           });
         });
 

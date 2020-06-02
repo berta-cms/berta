@@ -48,6 +48,7 @@ export interface SettingConfigModel {
     breakpoint?: string;
     important?: boolean;
     template?: string;
+    value?: string;
   }>;
   html_entities?: boolean;
   css_units?: boolean;

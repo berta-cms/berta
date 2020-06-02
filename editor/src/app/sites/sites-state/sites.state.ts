@@ -1,9 +1,10 @@
 import { set } from 'lodash/fp';
 import { concat } from 'rxjs';
 import { take, switchMap, tap } from 'rxjs/operators';
-import { State, Action, StateContext, NgxsOnInit, ofActionSuccessful, Actions } from '@ngxs/store';
+import { State, Action, StateContext, NgxsOnInit, ofActionSuccessful, Actions, Selector } from '@ngxs/store';
 
 import { SiteStateModel } from './site-state.model';
+import { AppState } from '../../app-state/app.state';
 import { AppStateService } from '../../app-state/app-state.service';
 import {
   CreateSiteAction,
@@ -42,6 +43,11 @@ import { UserLoginAction } from '../../user/user.actions';
   defaults: []
 })
 export class SitesState implements NgxsOnInit {
+
+  @Selector([AppState.getSite])
+  static getCurrentSite(sites: SiteStateModel[], siteSlug: string) {
+    return sites.find(site => site.name === siteSlug);
+  }
 
   constructor(
     private appStateService: AppStateService,

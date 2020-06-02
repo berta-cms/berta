@@ -2,7 +2,10 @@ import { Injectable } from '@angular/core';
 import { Store } from '@ngxs/store';
 import { take } from 'rxjs/operators';
 import { TemplateSiteModel } from '../sites/template-settings/site-templates.interface';
+import { SettingsGroupModel } from '../shared/interfaces';
 import { SiteTemplatesState } from '../sites/template-settings/site-templates.state';
+import { WhiteTemplateStyleService } from './white-template-style.service';
+import { SiteStateModel } from '../sites/sites-state/site-state.model';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +15,8 @@ export class StyleService {
   templateConfig: TemplateSiteModel['templateConf'];
 
   constructor(
-    private store: Store) {
+    private store: Store,
+    private whiteTemplateStyleService: WhiteTemplateStyleService) {
   }
 
   initializeStyleSheet(styleSheet: CSSStyleSheet) {
@@ -22,7 +26,7 @@ export class StyleService {
     });
   }
 
-  updateStyle(style) {
+  updateStyle(site: SiteStateModel, template: string, style, templateSettings: SettingsGroupModel[]) {
     const settingGroup = this.templateConfig[style.group];
     if (!settingGroup) {
       return;
@@ -33,13 +37,28 @@ export class StyleService {
       return;
     }
 
-    if (!setting.css) {
+    if (!style.value) {
+      style.value = setting.default;
+    }
+
+    let cssList = setting.css || [];
+    const templateName = template.split('-')[0];
+    switch (templateName) {
+      case 'white':
+        cssList = this.whiteTemplateStyleService.getCSSList(style, cssList, site, templateSettings);
+        break;
+
+      default:
+        break;
+    }
+
+    if (cssList.length < 1) {
       return;
     }
 
-    setting.css.forEach(rule => {
+    cssList.forEach(rule => {
       const cssRule = this.findOrCreateRule(rule.selector, rule.breakpoint);
-      let value = style.value || setting.default
+      let value = rule.value || style.value;
       if (rule.template) {
         value = eval(rule.template);
       }

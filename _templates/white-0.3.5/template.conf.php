@@ -320,7 +320,13 @@ $templateConf = [
             'max_height' => 3000,
             'affectsStyle' => true,
             'title' => I18n::_('Background image'),
-            'description' => I18n::_('Picture to use for page background.')
+            'description' => I18n::_('Picture to use for page background.'),
+            'css' => [
+                [
+                    'selector' => 'body',
+                    'property' => 'background-image'
+                ]
+            ]
         ],
         'backgroundRepeat' => [
             'format' => 'select',
@@ -332,7 +338,13 @@ $templateConf = [
             ],
             'default' => 'repeat',
             'title' => I18n::_('Background tiling'),
-            'description' => I18n::_('How the background fills the screen?')
+            'description' => I18n::_('How the background fills the screen?'),
+            'css' => [
+                [
+                    'selector' => 'body',
+                    'property' => 'background-repeat'
+                ]
+            ]
         ],
         'backgroundPosition' => [
             'format' => 'select',
@@ -349,7 +361,13 @@ $templateConf = [
             ],
             'default' => 'top left',
             'title' => I18n::_('Background alignment'),
-            'description' => I18n::_('Where the background image is positioned?')
+            'description' => I18n::_('Where the background image is positioned?'),
+            'css' => [
+                [
+                    'selector' => 'body',
+                    'property' => 'background-position'
+                ]
+            ]
         ],
         'backgroundAttachment' => [
             'format' => 'select',

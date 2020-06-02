@@ -119,6 +119,8 @@ class SitesDataService extends Storage
     {
         $sites = $this->get();
         foreach ($sites as $order => $site) {
+            $sitesDS = new self($site['name']);
+            $sites[$order]['mediaUrl'] = $sitesDS->MEDIA_URL;
             $sites[$order]['order'] = $order;
         }
 
