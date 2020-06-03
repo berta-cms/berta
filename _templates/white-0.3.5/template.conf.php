@@ -402,7 +402,13 @@ $templateConf = [
             'allow_blank' => true,
             'css_units' => true,
             'title' => I18n::_('Entry text max width'),
-            'description' => I18n::_('Width of texts in the entries. This does not apply to the width of images.')
+            'description' => I18n::_('Width of texts in the entries. This does not apply to the width of images.'),
+            'css' => [
+                [
+                    'selector' => '#mainColumn',
+                    'property' => 'max-width'
+                ]
+            ]
         ],
         'paddingTop' => [
             'format' => 'text',
@@ -410,7 +416,13 @@ $templateConf = [
             'allow_blank' => true,
             'css_units' => true,
             'title' => I18n::_('How far content is from page top?'),
-            'description' => I18n::_('The vertical distance between the top of the page and the content area.')
+            'description' => I18n::_('The vertical distance between the top of the page and the content area.'),
+            'css' => [
+                [
+                    'selector' => '#mainColumn',
+                    'property' => 'padding-top'
+                ]
+            ]
         ],
         'paddingLeft' => [
             'format' => 'text',
@@ -418,7 +430,31 @@ $templateConf = [
             'allow_blank' => true,
             'css_units' => true,
             'title' => I18n::_('How far content is from menu?'),
-            'description' => I18n::_('The horizontal distance between the menu and the content area.')
+            'description' => I18n::_('The horizontal distance between the menu and the content area.'),
+            'css' => [
+                [
+                    'selector' => '#mainColumn',
+                    'property' => 'padding-left'
+                ],
+                [
+                    'selector' => '#mainColumn',
+                    'property' => 'padding-right'
+                ],
+                [
+                    'selector' => '.floating-banners',
+                    'property' => 'padding-left'
+                ],
+                [
+                    'selector' => '.bt-responsive #sideColumn',
+                    'property' => 'padding-left',
+                    'breakpoint' => '(max-width: 767px)'
+                ],
+                [
+                    'selector' => '.bt-responsive #sideColumnBottom',
+                    'property' => 'padding-left',
+                    'breakpoint' => '(max-width: 767px)'
+                ]
+            ]
         ],
         'leftColumnWidth' => [
             'format' => 'text',
@@ -427,6 +463,24 @@ $templateConf = [
             'css_units' => true,
             'title' => I18n::_('Width of the left column'),
             'description' => '',
+            'css' => [
+                [
+                    'selector' => '#sideColumn',
+                    'property' => 'width'
+                ],
+                [
+                    'selector' => '#mainColumn',
+                    'property' => 'margin-left'
+                ],
+                [
+                    'selector' => '.xNarrow #mainColumn.xCentered',
+                    'property' => 'margin-left'
+                ],
+                [
+                    'selector' => '.floating-banners',
+                    'property' => 'margin-left'
+                ],
+            ]
         ],
         'group_responsive' => [
             'format' => false,

@@ -50,6 +50,36 @@ export class WhiteTemplateStyleService {
       );
     }
 
+    if (style.group === 'pageLayout' && ['contentWidth', 'paddingLeft', 'leftColumnWidth'].indexOf(style.slug) > -1) {
+      const contentWidth: number = parseInt(this.getSettingValue(templateSettings, 'pageLayout', 'contentWidth') as string, 10);
+      const leftColumnWidth: number = parseInt(this.getSettingValue(templateSettings, 'pageLayout', 'leftColumnWidth') as string, 10);
+      const paddingLeft: number = parseInt(this.getSettingValue(templateSettings, 'pageLayout', 'paddingLeft') as string, 10);
+
+      cssList.push(
+        {
+          selector: '#allContainer.xCentered',
+          property: 'max-width',
+          value: `${contentWidth + leftColumnWidth + paddingLeft}px`
+        }
+      );
+
+      cssList.push(
+        {
+          selector: '#sideColumn.xCentered',
+          property: 'margin-left',
+          value: `-${(contentWidth + leftColumnWidth + paddingLeft) / 2}px`
+        }
+      );
+
+      cssList.push(
+        {
+          selector: '#mainColumn.xCentered',
+          property: 'margin-left',
+          value: `-${(leftColumnWidth + contentWidth + paddingLeft) / 2 - leftColumnWidth}px`
+        }
+      );
+    }
+
     return cssList;
   }
 

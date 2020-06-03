@@ -41,7 +41,7 @@ export class StyleService {
       style.value = setting.default;
     }
 
-    let cssList = setting.css || [];
+    let cssList = setting.css ? [...setting.css] : [];
     const templateName = template.split('-')[0];
     switch (templateName) {
       case 'white':
