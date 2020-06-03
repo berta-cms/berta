@@ -340,6 +340,12 @@ $templateConf = [
             'affectsStyle' => true,
             'title' => I18n::_('Background image'),
             'description' => I18n::_('Picture to use for page background.'),
+            'css' => [
+                [
+                    'selector' => 'body',
+                    'property' => 'background-image'
+                ]
+            ]
         ],
         'backgroundRepeat' => [
             'format' => 'select',
@@ -352,6 +358,12 @@ $templateConf = [
             'default' => 'repeat',
             'title' => I18n::_('Background tiling'),
             'description' => I18n::_('How the background fills the screen?'),
+            'css' => [
+                [
+                    'selector' => 'body',
+                    'property' => 'background-repeat'
+                ]
+            ]
         ],
         'backgroundPosition' => [
             'format' => 'select',
@@ -369,6 +381,12 @@ $templateConf = [
             'default' => 'top left',
             'title' => I18n::_('Background alignment'),
             'description' => I18n::_('Where the background image is positioned?'),
+            'css' => [
+                [
+                    'selector' => 'body',
+                    'property' => 'background-position'
+                ]
+            ]
         ],
         'backgroundAttachment' => [
             'format' => 'select',
@@ -403,6 +421,16 @@ $templateConf = [
             'css_units' => true,
             'title' => I18n::_('Entry text max width'),
             'description' => I18n::_('Width of texts in the entries. This does not apply to the width of images.'),
+            'css' => [
+                [
+                    'selector' => '#firstPageMarkedEntries .xEntry',
+                    'property' => 'max-width'
+                ],
+                [
+                    'selector' => '#mainColumn',
+                    'property' => 'max-width'
+                ]
+            ]
         ],
         'paddingTop' => [
             'format' => 'text',
@@ -411,6 +439,12 @@ $templateConf = [
             'css_units' => true,
             'title' => I18n::_('How far content is from page top?'),
             'description' => I18n::_('The vertical distance between the top of the page and the content area.'),
+            'css' => [
+                [
+                    'selector' => '#mainColumn',
+                    'property' => 'padding-top'
+                ]
+            ]
         ],
         'paddingLeft' => [
             'format' => 'text',
@@ -469,6 +503,13 @@ $templateConf = [
             'css_units' => false,
             'title' => I18n::_('Image size ratio'),
             'description' => I18n::_('Images in the first page layout will be resized by this ratio. Think of it as percentage, e.g., 0.7 = 70% of the original image size.'),
+            'css' => [
+                [
+                    'selector' => '.bt-responsive #firstPageMarkedEntries .xEntry',
+                    'property' => 'max-width',
+                    'template' => '`${value * 100}%`'
+                ]
+            ]
         ],
         'imageHaveShadows' => [
             'format' => 'select',
@@ -503,6 +544,24 @@ $templateConf = [
             'css_units' => true,
             'title' => I18n::_('Width'),
             'description' => '',
+            'css' => [
+                [
+                    'selector' => '#sideColumn',
+                    'property' => 'width'
+                ],
+                [
+                    'selector' => '#mainColumn',
+                    'property' => 'margin-left'
+                ],
+                [
+                    'selector' => '.xNarrow #mainColumn.xCentered',
+                    'property' => 'margin-left'
+                ],
+                [
+                    'selector' => '.floating-banners',
+                    'property' => 'margin-left'
+                ],
+            ]
         ],
         'marginLeft' => [
             'format' => 'text',
@@ -518,7 +577,7 @@ $templateConf = [
                 ],
                 [
                     'selector' => '#sideColumn',
-                    'property' => 'padding-left'
+                    'property' => 'left'
                 ]
             ]
         ],

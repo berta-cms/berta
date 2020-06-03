@@ -29,6 +29,7 @@ import { SentryErrorHandler } from './sentry.error-handler';
 import { StyleService } from './preview/style.service';
 import { WhiteTemplateStyleService } from './preview/white-template-style.service';
 import { DefaultTemplateStyleService } from './preview/default-template-style.service';
+import { MashupTemplateStyleService } from './preview/mashup-template-style.service';
 
 
 @NgModule({
@@ -64,6 +65,7 @@ import { DefaultTemplateStyleService } from './preview/default-template-style.se
     StyleService,
     WhiteTemplateStyleService,
     DefaultTemplateStyleService,
+    MashupTemplateStyleService,
     {provide: ErrorHandler, useClass: SentryErrorHandler}
   ],
   bootstrap: [AppComponent]
