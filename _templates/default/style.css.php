@@ -182,7 +182,7 @@ h1 {
 
 #pageEntries li.xEntry .xGalleryContainer {
     clear: <?php echo $contentFloat ?>;
-    margin: <?php echo $contentFloat ? '0' : '0 0 0 auto' ?>;
+    margin: <?php echo $contentFloat == 'left' ? '0' : '0 0 0 auto' ?>;
 }
 
 #pageEntries li.xEntry .xGalleryContainer .xGallery {
@@ -199,7 +199,7 @@ h1 {
 
 #pageEntries .xGalleryContainer ul.xGalleryNav li {
     float: <?php echo $contentFloat ?>;
-    padding: <?php echo $contentFloat ? '0 5px 0 0' : '0 0 0 5px' ?>;
+    padding: <?php echo $contentFloat == 'left' ? '0 5px 0 0' : '0 0 0 5px' ?>;
 }
 
 #pageEntries li.xEntry .entryText {

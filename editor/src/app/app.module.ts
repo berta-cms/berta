@@ -28,6 +28,7 @@ import { SharedModule } from './shared/shared.module';
 import { SentryErrorHandler } from './sentry.error-handler';
 import { StyleService } from './preview/style.service';
 import { WhiteTemplateStyleService } from './preview/white-template-style.service';
+import { DefaultTemplateStyleService } from './preview/default-template-style.service';
 
 
 @NgModule({
@@ -62,6 +63,7 @@ import { WhiteTemplateStyleService } from './preview/white-template-style.servic
   providers: [
     StyleService,
     WhiteTemplateStyleService,
+    DefaultTemplateStyleService,
     {provide: ErrorHandler, useClass: SentryErrorHandler}
   ],
   bootstrap: [AppComponent]

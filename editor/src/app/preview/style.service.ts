@@ -5,6 +5,7 @@ import { TemplateSiteModel } from '../sites/template-settings/site-templates.int
 import { SettingsGroupModel } from '../shared/interfaces';
 import { SiteTemplatesState } from '../sites/template-settings/site-templates.state';
 import { WhiteTemplateStyleService } from './white-template-style.service';
+import { DefaultTemplateStyleService } from './default-template-style.service';
 import { SiteStateModel } from '../sites/sites-state/site-state.model';
 
 @Injectable({
@@ -16,7 +17,8 @@ export class StyleService {
 
   constructor(
     private store: Store,
-    private whiteTemplateStyleService: WhiteTemplateStyleService) {
+    private whiteTemplateStyleService: WhiteTemplateStyleService,
+    private defaultTemplateStyleService: DefaultTemplateStyleService) {
   }
 
   initializeStyleSheet(styleSheet: CSSStyleSheet) {
@@ -46,6 +48,10 @@ export class StyleService {
     switch (templateName) {
       case 'white':
         cssList = this.whiteTemplateStyleService.getCSSList(style, cssList, site, templateSettings);
+        break;
+
+      case 'default':
+        cssList = this.defaultTemplateStyleService.getCSSList(style, cssList, site, templateSettings);
         break;
 
       default:
