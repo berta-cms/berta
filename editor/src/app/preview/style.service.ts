@@ -7,6 +7,7 @@ import { SiteTemplatesState } from '../sites/template-settings/site-templates.st
 import { WhiteTemplateStyleService } from './white-template-style.service';
 import { DefaultTemplateStyleService } from './default-template-style.service';
 import { MashupTemplateStyleService } from './mashup-template-style.service';
+import { MessyTemplateStyleService } from './messy-template-style.service';
 import { SiteStateModel } from '../sites/sites-state/site-state.model';
 
 @Injectable({
@@ -20,7 +21,8 @@ export class StyleService {
     private store: Store,
     private whiteTemplateStyleService: WhiteTemplateStyleService,
     private defaultTemplateStyleService: DefaultTemplateStyleService,
-    private mashupTemplateStyleService: MashupTemplateStyleService) {
+    private mashupTemplateStyleService: MashupTemplateStyleService,
+    private messyTemplateStyleService: MessyTemplateStyleService) {
   }
 
   initializeStyleSheet(styleSheet: CSSStyleSheet) {
@@ -60,7 +62,9 @@ export class StyleService {
         cssList = this.mashupTemplateStyleService.getCSSList(style, cssList, site, templateSettings);
         break;
 
+      // Messy
       default:
+        cssList = this.messyTemplateStyleService.getCSSList(style, cssList, site, template, templateSettings);
         break;
     }
 

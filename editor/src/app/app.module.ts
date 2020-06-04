@@ -30,6 +30,7 @@ import { StyleService } from './preview/style.service';
 import { WhiteTemplateStyleService } from './preview/white-template-style.service';
 import { DefaultTemplateStyleService } from './preview/default-template-style.service';
 import { MashupTemplateStyleService } from './preview/mashup-template-style.service';
+import { MessyTemplateStyleService } from './preview/messy-template-style.service';
 
 
 @NgModule({
@@ -66,6 +67,7 @@ import { MashupTemplateStyleService } from './preview/mashup-template-style.serv
     WhiteTemplateStyleService,
     DefaultTemplateStyleService,
     MashupTemplateStyleService,
+    MessyTemplateStyleService,
     {provide: ErrorHandler, useClass: SentryErrorHandler}
   ],
   bootstrap: [AppComponent]

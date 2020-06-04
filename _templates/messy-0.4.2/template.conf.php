@@ -368,6 +368,12 @@ $templateConf = [
             'affectsStyle' => true,
             'title' => I18n::_('Background image'),
             'description' => I18n::_('Picture to use for page background.'),
+            'css' => [
+                [
+                    'selector' => 'body',
+                    'property' => 'background-image'
+                ]
+            ]
         ],
         'backgroundRepeat' => [
             'format' => 'select',
@@ -380,6 +386,12 @@ $templateConf = [
             'default' => 'repeat',
             'title' => I18n::_('Background tiling'),
             'description' => I18n::_('How the background fills the screen?'),
+            'css' => [
+                [
+                    'selector' => 'body',
+                    'property' => 'background-repeat'
+                ]
+            ]
         ],
         'backgroundPosition' => [
             'format' => 'select',
@@ -397,6 +409,12 @@ $templateConf = [
             'default' => 'top left',
             'title' => I18n::_('Background alignment'),
             'description' => I18n::_('Where the background image is positioned?'),
+            'css' => [
+                [
+                    'selector' => 'body',
+                    'property' => 'background-position'
+                ]
+            ]
         ],
         'backgroundAttachment' => [
             'format' => 'select',
@@ -1375,6 +1393,16 @@ $templateConf = [
             'css_units' => true,
             'title' => I18n::_('Entry text max width'),
             'description' => '',
+            'css' => [
+                [
+                    'selector' => '#pageEntries .xEntry',
+                    'property' => 'max-width'
+                ],
+                [
+                    'selector' => '#xBackground .visual-caption',
+                    'property' => 'width'
+                ]
+            ]
         ],
         'defaultGalleryType' => [
             'format' => 'select',
