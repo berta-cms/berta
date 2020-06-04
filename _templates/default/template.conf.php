@@ -73,6 +73,12 @@ $templateConf = [
             'default' => reset($fontOptions),
             'title' => I18n::_('Font face'),
             'description' => '',
+            'css' => [
+                [
+                    'selector' => 'body',
+                    'property' => 'font-family'
+                ]
+            ]
         ],
         'googleFont' => [
             'format' => 'text',
@@ -81,6 +87,12 @@ $templateConf = [
             'html_entities' => true,
             'title' => 'Google web fonts',
             'description' => I18n::_('googleFont_description'),
+            'css' => [
+                [
+                    'selector' => 'body',
+                    'property' => 'font-family'
+                ]
+            ]
         ],
         'fontSize' => [
             'format' => 'text',
@@ -525,6 +537,12 @@ $templateConf = [
             'default' => 'inherit',
             'title' => I18n::_('Font face'),
             'description' => '',
+            'css' => [
+                [
+                    'selector' => 'h1',
+                    'property' => 'font-family'
+                ]
+            ]
         ],
         'googleFont' => [
             'format' => 'text',
@@ -533,6 +551,12 @@ $templateConf = [
             'html_entities' => true,
             'title' => 'Google web fonts',
             'description' => I18n::_('googleFont_description'),
+            'css' => [
+                [
+                    'selector' => 'h1',
+                    'property' => 'font-family'
+                ]
+            ]
         ],
         'fontSize' => [
             'format' => 'text',
@@ -682,6 +706,12 @@ $templateConf = [
             'default' => 'inherit',
             'title' => I18n::_('Font face'),
             'description' => '',
+            'css' => [
+                [
+                    'selector' => '.bt-sections-menu > ul:not(.subMenu) li',
+                    'property' => 'font-family'
+                ]
+            ]
         ],
         'googleFont' => [
             'format' => 'text',
@@ -690,6 +720,12 @@ $templateConf = [
             'html_entities' => true,
             'title' => 'Google web fonts',
             'description' => I18n::_('googleFont_description'),
+            'css' => [
+                [
+                    'selector' => '.bt-sections-menu > ul:not(.subMenu) li',
+                    'property' => 'font-family'
+                ]
+            ]
         ],
         'colorLink' => [
             'format' => 'color',
@@ -872,6 +908,12 @@ $templateConf = [
             'default' => 'inherit',
             'title' => I18n::_('Font face'),
             'description' => '',
+            'css' => [
+                [
+                    'selector' => '.bt-sections-menu > .subMenu li',
+                    'property' => 'font-family'
+                ]
+            ]
         ],
         'googleFont' => [
             'format' => 'text',
@@ -880,6 +922,12 @@ $templateConf = [
             'html_entities' => true,
             'title' => 'Google web fonts',
             'description' => I18n::_('googleFont_description'),
+            'css' => [
+                [
+                    'selector' => '.bt-sections-menu > .subMenu li',
+                    'property' => 'font-family'
+                ]
+            ]
         ],
         'fontWeight' => [
             'format' => 'select',
@@ -1062,6 +1110,12 @@ $templateConf = [
             'default' => 'inherit',
             'title' => I18n::_('Font face'),
             'description' => '',
+            'css' => [
+                [
+                    'selector' => '#pageEntries li.xEntry h2',
+                    'property' => 'font-family'
+                ]
+            ]
         ],
         'googleFont' => [
             'format' => 'text',
@@ -1070,6 +1124,12 @@ $templateConf = [
             'html_entities' => true,
             'title' => 'Google web fonts',
             'description' => I18n::_('googleFont_description'),
+            'css' => [
+                [
+                    'selector' => '#pageEntries li.xEntry h2',
+                    'property' => 'font-family'
+                ]
+            ]
         ],
         'fontSize' => [
             'format' => 'text',
@@ -1185,6 +1245,12 @@ $templateConf = [
             'default' => 'inherit',
             'title' => I18n::_('Font face'),
             'description' => '',
+            'css' => [
+                [
+                    'selector' => '#pageEntries li.xEntry .entryContent',
+                    'property' => 'font-family'
+                ]
+            ]
         ],
         'googleFont' => [
             'format' => 'text',
@@ -1193,6 +1259,12 @@ $templateConf = [
             'html_entities' => true,
             'title' => 'Google web fonts',
             'description' => I18n::_('googleFont_description'),
+            'css' => [
+                [
+                    'selector' => '#pageEntries li.xEntry .entryContent',
+                    'property' => 'font-family'
+                ]
+            ]
         ],
         'fontSize' => [
             'format' => 'text',

@@ -193,7 +193,7 @@ export class PreviewComponent implements OnInit {
 
         const styleElement = iframe.contentDocument.createElement('style');
         iframe.contentDocument.head.appendChild(styleElement);
-        this.styleService.initializeStyleSheet(styleElement.sheet as CSSStyleSheet);
+        this.styleService.initializeStyleSheet(iframe.contentWindow, styleElement.sheet as CSSStyleSheet);
 
         this.styleChangesSubscription = combineLatest(
           this.store.select(SitesState.getCurrentSite),

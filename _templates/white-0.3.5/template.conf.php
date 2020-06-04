@@ -72,6 +72,12 @@ $templateConf = [
             'default' => 'Arial, sans-serif',
             'title' => I18n::_('Font face'),
             'description' => '',
+            'css' => [
+                [
+                    'selector' => 'body',
+                    'property' => 'font-family'
+                ]
+            ]
         ],
         'googleFont' => [
             'format' => 'text',
@@ -79,7 +85,13 @@ $templateConf = [
             'allow_blank' => true,
             'html_entities' => true,
             'title' => 'Google web fonts',
-            'description' => I18n::_('googleFont_description')
+            'description' => I18n::_('googleFont_description'),
+            'css' => [
+                [
+                    'selector' => 'body',
+                    'property' => 'font-family'
+                ]
+            ]
         ],
         'fontSize' => [
             'format' => 'text',
@@ -556,6 +568,12 @@ $templateConf = [
             'default' => 'inherit',
             'title' => I18n::_('Font face'),
             'description' => '',
+            'css' => [
+                [
+                    'selector' => '#sideColumnTop h1',
+                    'property' => 'font-family'
+                ]
+            ]
         ],
         'googleFont' => [
             'format' => 'text',
@@ -563,7 +581,13 @@ $templateConf = [
             'allow_blank' => true,
             'html_entities' => true,
             'title' => 'Google web fonts',
-            'description' => I18n::_('googleFont_description')
+            'description' => I18n::_('googleFont_description'),
+            'css' => [
+                [
+                    'selector' => '#sideColumnTop h1',
+                    'property' => 'font-family'
+                ]
+            ]
         ],
         'fontSize' => [
             'format' => 'text',

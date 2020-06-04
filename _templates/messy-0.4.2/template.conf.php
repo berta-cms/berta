@@ -119,6 +119,12 @@ $templateConf = [
             'default' => 'Arial, sans-serif',
             'title' => I18n::_('Font face'),
             'description' => '',
+            'css' => [
+                [
+                    'selector' => 'body',
+                    'property' => 'font-family'
+                ]
+            ]
         ],
         'googleFont' => [
             'format' => 'text',
@@ -127,6 +133,12 @@ $templateConf = [
             'html_entities' => true,
             'title' => 'Google web fonts',
             'description' => I18n::_('googleFont_description'),
+            'css' => [
+                [
+                    'selector' => 'body',
+                    'property' => 'font-family'
+                ]
+            ]
         ],
         'fontSize' => [
             'format' => 'text',
@@ -667,6 +679,12 @@ $templateConf = [
             'default' => '"Arial black", Gadget',
             'title' => I18n::_('Font face'),
             'description' => '',
+            'css' => [
+                [
+                    'selector' => '#contentContainer h1',
+                    'property' => 'font-family'
+                ]
+            ]
         ],
         'googleFont' => [
             'format' => 'text',
@@ -675,6 +693,20 @@ $templateConf = [
             'html_entities' => true,
             'title' => 'Google web fonts',
             'description' => I18n::_('googleFont_description'),
+            'css' => [
+                [
+                    'selector' => '#contentContainer h1',
+                    'property' => 'font-family'
+                ],
+                [
+                    'selector' => '#xBackground #xBackgroundRightCounter',
+                    'property' => 'font-family'
+                ],
+                [
+                    'selector' => '#xBackground #xBackgroundLeftCounter',
+                    'property' => 'font-family'
+                ]
+            ]
         ],
         'fontSize' => [
             'format' => 'text',
@@ -821,6 +853,12 @@ $templateConf = [
             'default' => '"Arial black", Gadget',
             'title' => I18n::_('Font face'),
             'description' => '',
+            'css' => [
+                [
+                    'selector' => '.bt-sections-menu > ul > li',
+                    'property' => 'font-family'
+                ]
+            ]
         ],
         'googleFont' => [
             'format' => 'text',
@@ -829,6 +867,12 @@ $templateConf = [
             'html_entities' => true,
             'title' => 'Google web fonts',
             'description' => I18n::_('googleFont_description'),
+            'css' => [
+                [
+                    'selector' => '.bt-sections-menu > ul > li',
+                    'property' => 'font-family'
+                ]
+            ]
         ],
         'fontSize' => [
             'format' => 'text',
@@ -1034,6 +1078,12 @@ $templateConf = [
             'default' => '"Arial black", Gadget',
             'title' => I18n::_('Font face'),
             'description' => '',
+            'css' => [
+                [
+                    'selector' => '.bt-sections-menu .subMenu li',
+                    'property' => 'font-family'
+                ]
+            ]
         ],
         'googleFont' => [
             'format' => 'text',
@@ -1042,6 +1092,12 @@ $templateConf = [
             'html_entities' => true,
             'title' => 'Google web fonts',
             'description' => I18n::_('googleFont_description'),
+            'css' => [
+                [
+                    'selector' => '.bt-sections-menu .subMenu li',
+                    'property' => 'font-family'
+                ]
+            ]
         ],
         'fontSize' => [
             'format' => 'text',
@@ -1283,6 +1339,12 @@ $templateConf = [
             'default' => 'Arial, sans-serif',
             'title' => I18n::_('Font face'),
             'description' => '',
+            'css' => [
+                [
+                    'selector' => '#pageEntries .xEntry h2',
+                    'property' => 'font-family'
+                ]
+            ]
         ],
         'googleFont' => [
             'format' => 'text',
@@ -1291,6 +1353,12 @@ $templateConf = [
             'html_entities' => true,
             'title' => 'Google web fonts',
             'description' => I18n::_('googleFont_description'),
+            'css' => [
+                [
+                    'selector' => '#pageEntries .xEntry h2',
+                    'property' => 'font-family'
+                ]
+            ]
         ],
         'fontSize' => [
             'format' => 'text',

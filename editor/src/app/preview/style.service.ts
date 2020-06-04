@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngxs/store';
 import { take } from 'rxjs/operators';
+import * as WebFont from 'webfontloader';
 import { TemplateSiteModel } from '../sites/template-settings/site-templates.interface';
 import { SettingsGroupModel } from '../shared/interfaces';
 import { SiteTemplatesState } from '../sites/template-settings/site-templates.state';
@@ -14,6 +15,7 @@ import { SiteStateModel } from '../sites/sites-state/site-state.model';
   providedIn: 'root'
 })
 export class StyleService {
+  contextWindow: Window;
   styleSheet: CSSStyleSheet;
   templateConfig: TemplateSiteModel['templateConf'];
 
@@ -25,7 +27,8 @@ export class StyleService {
     private messyTemplateStyleService: MessyTemplateStyleService) {
   }
 
-  initializeStyleSheet(styleSheet: CSSStyleSheet) {
+  initializeStyleSheet(contextWindow: Window, styleSheet: CSSStyleSheet) {
+    this.contextWindow = contextWindow;
     this.styleSheet = styleSheet;
     this.store.select(SiteTemplatesState.getCurrentTemplateConfig).pipe(take(1)).subscribe((templateConfig) => {
       this.templateConfig = templateConfig;
@@ -67,6 +70,8 @@ export class StyleService {
         cssList = this.messyTemplateStyleService.getCSSList(style, cssList, site, template, templateSettings);
         break;
     }
+
+    cssList = this.updateFontFamily(style, cssList, templateSettings);
 
     if (cssList.length < 1) {
       return;
@@ -114,5 +119,40 @@ export class StyleService {
       this.styleSheet.insertRule(`${selector} {}`, this.styleSheet.cssRules.length);
       return this.styleSheet.cssRules[this.styleSheet.cssRules.length - 1] as CSSStyleRule;
     }
+  }
+
+  updateFontFamily(style, cssList, templateSettings:SettingsGroupModel[]) {
+    const fontSettings = ['fontFamily', 'googleFont'];
+    if (!fontSettings.some(setting => style.slug.endsWith(setting))) {
+      return cssList;
+    }
+
+    const googleFontSetting = templateSettings.find(g => g.slug === style.group).settings.find(s => s.slug.endsWith('googleFont'));
+    const generalFontSetting = templateSettings.find(g => g.slug === style.group).settings.find(s => s.slug.endsWith('fontFamily'));
+    if (!googleFontSetting || !googleFontSetting.value) {
+      return cssList.map(item => {
+        return {
+          ...item,
+          value: generalFontSetting.value
+        };
+      });
+    }
+
+    let fontName: string, fontStyle: string;
+    [fontName, fontStyle] = (googleFontSetting.value as string).split(':');
+
+    WebFont.load({
+      google: {
+        families: [`${googleFontSetting.value}:latin,latin-ext,cyrillic-ext,greek-ext,greek,vietnamese,cyrillic`]
+      },
+      context: this.contextWindow
+    });
+
+    return cssList.map(item => {
+      return {
+        ...item,
+        value: fontName
+      };
+    });
   }
 }
