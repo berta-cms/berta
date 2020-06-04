@@ -1343,6 +1343,14 @@ $templateConf = [
                 [
                     'selector' => '#pageEntries .xEntry h2',
                     'property' => 'font-family'
+                ],
+                [
+                    'selector' => '#shoppingCartTitle',
+                    'property' => 'font-family'
+                ],
+                [
+                    'selector' => '#shoppingCartEmpty',
+                    'property' => 'font-family'
                 ]
             ]
         ],
@@ -1356,6 +1364,14 @@ $templateConf = [
             'css' => [
                 [
                     'selector' => '#pageEntries .xEntry h2',
+                    'property' => 'font-family'
+                ],
+                [
+                    'selector' => '#shoppingCartTitle',
+                    'property' => 'font-family'
+                ],
+                [
+                    'selector' => '#shoppingCartEmpty',
                     'property' => 'font-family'
                 ]
             ]
