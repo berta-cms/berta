@@ -1319,6 +1319,14 @@ $templateConf = [
                 [
                     'selector' => '#pageEntries .xEntry h2',
                     'property' => 'font-weight'
+                ],
+                [
+                    'selector' => '#shoppingCartTitle',
+                    'property' => 'font-weight'
+                ],
+                [
+                    'selector' => '#shoppingCartEmpty',
+                    'property' => 'font-weight'
                 ]
             ]
         ],
@@ -1335,6 +1343,14 @@ $templateConf = [
                 [
                     'selector' => '#pageEntries .xEntry h2',
                     'property' => 'font-style'
+                ],
+                [
+                    'selector' => '#shoppingCartTitle',
+                    'property' => 'font-style'
+                ],
+                [
+                    'selector' => '#shoppingCartEmpty',
+                    'property' => 'font-style'
                 ]
             ]
         ],
@@ -1350,6 +1366,14 @@ $templateConf = [
             'css' => [
                 [
                     'selector' => '#pageEntries .xEntry h2',
+                    'property' => 'font-variant'
+                ],
+                [
+                    'selector' => '#shoppingCartTitle',
+                    'property' => 'font-variant'
+                ],
+                [
+                    'selector' => '#shoppingCartEmpty',
                     'property' => 'font-variant'
                 ]
             ]
