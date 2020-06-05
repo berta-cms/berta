@@ -239,6 +239,7 @@ export class PreviewComponent implements OnInit {
           take(1)
         ).subscribe(() => {
           this.styleChangesSubscription.unsubscribe();
+          iframe.contentWindow.location.reload();
         });
       },
       error: (error) => {
