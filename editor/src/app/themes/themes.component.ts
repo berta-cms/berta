@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { Store } from '@ngxs/store';
 
+import { PopupService } from '../popup/popup.service';
 import { AppStateModel } from '../app-state/app-state.interface';
 import { AppState } from '../app-state/app.state';
 import {
@@ -42,7 +43,8 @@ export class ThemesComponent implements OnInit {
   constructor(
     private store: Store,
     private router: Router,
-    private sanitizer: DomSanitizer) {
+    private sanitizer: DomSanitizer,
+    private popupService: PopupService) {
   }
 
   ngOnInit() {
@@ -82,18 +84,35 @@ export class ThemesComponent implements OnInit {
       return;
     }
 
-    this.store.dispatch(new ApplyThemeSitesAction({
-      site: this.appState.site,
-      theme: theme
-    })).subscribe({
-      next: () => {
-        // @TODO update merged site state
-        // Current workaround is to reload the window
-        this.router.navigate(['/'], { replaceUrl: true, queryParams: { section: null }, queryParamsHandling: 'merge' }).then(() => {
-          window.location.reload();
-        });
-      },
-      error: (error) => console.error(error)
+    this.popupService.showPopup({
+      type: 'warn',
+      content: 'Are you sure you want to apply this theme? All the settings will be overwritten and can\'t be undone!',
+      showOverlay: true,
+      actions: [
+        {
+          type: 'primary',
+          label: 'OK',
+          callback: (popupService) => {
+            this.store.dispatch(new ApplyThemeSitesAction({
+              site: this.appState.site,
+              theme: theme
+            })).subscribe({
+              next: () => {
+                // @TODO update merged site state
+                // Current workaround is to reload the window
+                this.router.navigate(['/'], { replaceUrl: true, queryParams: { section: null }, queryParamsHandling: 'merge' }).then(() => {
+                  window.location.reload();
+                });
+              },
+              error: (error) => console.error(error)
+            });
+            popupService.closePopup();
+          }
+        },
+        {
+          label: 'Cancel'
+        }
+      ],
     });
   }
 }
