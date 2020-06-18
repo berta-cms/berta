@@ -48,6 +48,7 @@ export class PreviewService {
   private templateSettingsRequireReload = {
     pageLayout: [
       'centered',
+      'centeredWidth',
       'responsive',
       'mashUpColumns',
       'autoResponsive',
