@@ -612,13 +612,14 @@ $templateConf = [
             'default' => 'absolute',
             'title' => I18n::_('Heading position'),
             'description' => I18n::_('description_heading_position'),
-            'css' => [
-                [
-                    'selector' => '#contentContainer h1',
-                    'property' => 'position',
-                    'important' => true
-                ]
-            ]
+            // @todo Fix the positing calculation in js. For now reload is required.
+            // 'css' => [
+            //     [
+            //         'selector' => '#contentContainer h1',
+            //         'property' => 'position',
+            //         'important' => true
+            //     ]
+            // ]
         ],
         'image' => [
             'format' => 'image',
@@ -839,13 +840,14 @@ $templateConf = [
             'default' => 'absolute',
             'title' => I18n::_('Menu position'),
             'description' => I18n::_('description_menu_position'),
-            'css' => [
-                [
-                    'selector' => '.bt-sections-menu > ul > li',
-                    'property' => 'position',
-                    'important' => true
-                ]
-            ]
+            // @todo Fix the positing calculation in js. For now reload is required.
+            // 'css' => [
+            //     [
+            //         'selector' => '.bt-sections-menu > ul > li',
+            //         'property' => 'position',
+            //         'important' => true
+            //     ]
+            // ]
         ],
         'fontFamily' => [
             'format' => 'fontselect',

@@ -70,7 +70,11 @@ export class PreviewService {
       'image'
     ],
     heading: [
-      'image'
+      'image',
+      'position'
+    ],
+    menu: [
+      'position'
     ],
     tagsMenu: [
       'alwaysOpen',
