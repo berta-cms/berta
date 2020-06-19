@@ -86,7 +86,7 @@ export class ThemesComponent implements OnInit {
 
     this.popupService.showPopup({
       type: 'warn',
-      content: 'Are you sure you want to apply this theme? All the settings will be overwritten and can\'t be undone!',
+      content: 'Are you sure you want to apply this theme? All design related settings will be overwritten and can\'t be undone!',
       showOverlay: true,
       actions: [
         {
