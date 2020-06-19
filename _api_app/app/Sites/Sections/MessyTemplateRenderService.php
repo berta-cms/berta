@@ -326,7 +326,16 @@ class MessyTemplateRenderService extends SectionTemplateRenderService
         if (!empty($tagSlug)) {
             $urlParts['tag'] = $tagSlug;
         }
-        $link = '/' . implode('/', $urlParts) . ($isPreviewMode ? '?preview=1' : '');
+
+        if ($isEditMode) {
+            $parts = [];
+            foreach ($urlParts as $property => $value) {
+                $parts[] = $property . '=' . $value;
+            }
+            $link = '?' . implode('&', $parts);
+        } else {
+            $link = '/' . implode('/', $urlParts) . ($isPreviewMode ? '?preview=1' : '');
+        }
 
         return [
             'attributes' => Helpers::arrayToHtmlAttributes($attributes),
