@@ -26,6 +26,10 @@ import { PopupService } from '../popup/popup.service';
 
     <ng-template #logInForm>
       <div *ngIf="appState.isBertaHosting" class="form-group social-login">
+        <div class="notification">
+          Facebook login temporary disabled. <br>
+          Use <a href="http://hosting.local.berta.me/forgot-password-">password reset</a> and login using email address.
+        </div>
         <a href="{{ appState.loginUrl }}?remote_redirect={{ appState.authenticateUrl }}&amp;provider=facebook" class="button facebook">
         <bt-icon-facebook></bt-icon-facebook>
         <p>Log in with Facebook</p></a>
