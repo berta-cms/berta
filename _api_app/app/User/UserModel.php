@@ -17,6 +17,7 @@ class UserModel implements
     public $features;
     public $profile_url;
     public $forgot_password_url;
+    public $plans;
     public $noindex;
     public $intercomAppId;
     public $intercomSecretKey;
@@ -31,6 +32,7 @@ class UserModel implements
         $this->password = $options['AUTH_password'];
         $this->profile_url = $this->getHostingData('HOSTING_PROFILE');
         $this->forgot_password_url = $this->getHostingData('FORGOTPASSWORD_LINK');
+        $this->plans = $this->getHostingData('PLANS');
         $this->features = $this->getFeatures();
         $this->noindex = $this->getHostingData('NOINDEX');
         $this->intercomAppId = $this->getHostingData('INTERCOM_APP_ID');
@@ -76,6 +78,10 @@ class UserModel implements
         // 3 - Shop
         $plan = $this->getPlan();
         $is_trial = $plan === null && $this->profile_url;
+
+        if (!$this->profile_url || $plan) {
+            $features[] = 'custom_javascript';
+        }
 
         if ($is_trial || $plan > 1) {
             $features[] = 'multisite';
