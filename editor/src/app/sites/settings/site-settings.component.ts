@@ -7,6 +7,7 @@ import { map, filter, scan, take } from 'rxjs/operators';
 import { splitCamel, uCFirst, getIconFromUrl } from '../../shared/helpers';
 import { Animations } from '../../shared/animations';
 import { UserStateModel } from '../../user/user.state.model';
+import { AppStateModel } from 'src/app/app-state/app-state.interface';
 import { AppState } from '../../app-state/app.state';
 import { UserState } from '../../user/user.state';
 import { SiteSettingsState } from './site-settings.state';
@@ -38,6 +39,7 @@ import { SettingModel, SettingChildModel, SettingConfigModel, SettingGroupConfig
                          [setting]="setting.setting"
                          [config]="setting.config"
                          [disabled]="isDisabled(settingGroup, setting.setting, setting.config, user$ | async)"
+                         [disabledReason]="disabledReason(setting.config, user$ | async, appState$ | async)"
                          [error]="settingError[settingGroup.slug + ':' + setting.setting.slug]"
                          (update)="updateSetting(settingGroup.slug, $event)"></berta-setting>
 
@@ -84,6 +86,7 @@ export class SiteSettingsComponent implements OnInit {
   settingError: { [k: string]: string } = {};
 
   @Select(UserState) user$: Observable<UserStateModel>;
+  @Select(AppState) appState$: Observable<AppStateModel>;
 
   constructor(
     private store: Store,
@@ -95,7 +98,7 @@ export class SiteSettingsComponent implements OnInit {
     this.settings$ = combineLatest(
       this.store.select(SiteSettingsState.getCurrentSiteSettings),
       this.store.select(SiteSettingsConfigState),
-      this.store.select(AppState)
+      this.appState$
     ).pipe(
       filter(([settings, config]) => settings && settings.length > 0 && config && Object.keys(config).length > 0),
       map(([settings, config, appState]) => {
@@ -225,6 +228,19 @@ export class SiteSettingsComponent implements OnInit {
 
   isDisabled(settingGroup: SettingsGroupModel, setting: SettingModel, config: SettingConfigModel, user: UserStateModel) {
     return this.settingUpdate[settingGroup.slug + ':' + setting.slug] || (config.requires_feature && user.features.indexOf(config.requires_feature) === -1);
+  }
+
+  disabledReason(config: SettingConfigModel, user: UserStateModel, appState: AppStateModel) {
+    if (!config.requires_feature || user.features.indexOf(config.requires_feature) > -1) {
+      return;
+    }
+
+    const requiredPlan = appState.plans.find(plan => plan.features.indexOf(config.requires_feature) > -1);
+    if (!requiredPlan) {
+      return;
+    }
+
+    return `(Upgrade to ${requiredPlan.name})`;
   }
 
   updateSetting(settingGroup: string, updateEvent) {

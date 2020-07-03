@@ -15,6 +15,7 @@ import { UpdateInputFocus } from '../../app-state/app.actions';
                         [placeholder]="config.placeholder"
                         [value]="setting.value"
                         [disabled]="disabled"
+                        [disabledReason]="disabledReason"
                         [allowBlank]="config.allow_blank"
                         [enabledOnUpdate]="config.enabledOnUpdate"
                         (inputFocus)="updateComponentFocus($event)"
@@ -67,6 +68,7 @@ import { UpdateInputFocus } from '../../app-state/app.actions';
                             [placeholder]="config.placeholder"
                             [value]="setting.value"
                             [disabled]="disabled"
+                            [disabledReason]="disabledReason"
                             [enabledOnUpdate]="config.enabledOnUpdate"
                             (inputFocus)="updateComponentFocus($event)"
                             (update)="updateComponentField(setting.slug, $event)"></berta-long-text-input>
@@ -115,6 +117,7 @@ export class SettingComponent implements OnInit {
   @Input('setting') setting: SettingModel;
   @Input('config') config: SettingConfigModel;
   @Input() disabled: boolean;
+  @Input() disabledReason: string;
   @Input() error: string;
   @Output('update') update = new EventEmitter<{field: string, value: SettingModel['value']}>();
 
