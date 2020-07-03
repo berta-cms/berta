@@ -93,7 +93,7 @@ class MessyTemplateRenderService extends SectionTemplateRenderService
             $isPreviewMode,
             $isEditMode
         );
-        $data['additionalFooterText'] = $this->getAdditionalFooterText($siteSlug, $siteSettings, $isEditMode);
+        $data['additionalFooterText'] = $this->getAdditionalFooterText($siteSlug, $siteSettings, $user, $isEditMode);
         $data['alertMessage'] = $this->getAlertMessage();
 
         if ($isShopAvailable) {

@@ -249,12 +249,15 @@ class SectionHeadRenderService
         $data['description'] = !empty($currentSection['seoDescription']) ? $currentSection['seoDescription'] : $siteSettings['texts']['metaDescription'];
         $data['author'] = $siteSettings['texts']['ownerName'];
         $data['noindex'] = !isset($currentSection['@attributes']['published']) || $currentSection['@attributes']['published'] == '0' || $user->noindex;
-        $data['googleSiteVerificationTag'] = $siteSettings['settings']['googleSiteVerification'];
         $data['favicon'] = $this->getFavicon($siteSettings, $storageService);
         $data['styles'] = $this->getStyles($siteSlug, $siteSettings, $currentSection, $siteTemplateSettings, $siteTemplatesConfig, $templateName, $currentSectionType, $isShopAvailable, $isResponsive, $isAutoResponsive, $isPreviewMode, $isEditMode);
         $data['scripts'] = $this->getScripts($siteSlug, $siteSettings, $currentSection, $templateName, $isShopAvailable, $isEditMode);
         $data['isResponsive'] = $isResponsive;
         $data['isAutoResponsive'] = $isAutoResponsive;
+
+        if (in_array('custom_javascript', $user->features)) {
+            $data['googleSiteVerificationTag'] = $siteSettings['settings']['googleSiteVerification'];
+        }
 
         return $data;
     }
