@@ -98,11 +98,16 @@ class SitesMenuRenderService
      */
     public function render(
         $currentSite,
+        $user,
         $isEditMode,
         $siteSettings,
         $siteTemplateSettings,
         $sites
     ) {
+        if (!in_array('multisite', $user->features)) {
+            return '';
+        }
+
         $data = $this->getViewData($currentSite, $isEditMode, $siteSettings, $siteTemplateSettings, $sites);
         if (!$data) {
             return '';
