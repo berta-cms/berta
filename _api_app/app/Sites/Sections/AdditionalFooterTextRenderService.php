@@ -30,9 +30,9 @@ class AdditionalFooterTextRenderService
         return Helpers::arrayToHtmlAttributes($attributes);
     }
 
-    private function getViewData($siteSlug, $siteSettings, $isEditMode)
+    private function getViewData($siteSlug, $siteSettings, $user, $isEditMode)
     {
-        $showSocialMediaButtons = $siteSettings['socialMediaButtons']['socialMediaLocation'] == 'footer' && !empty($siteSettings['socialMediaButtons']['socialMediaHTML']);
+        $showSocialMediaButtons = in_array('custom_javascript', $user->features) && $siteSettings['socialMediaButtons']['socialMediaLocation'] == 'footer' && !empty($siteSettings['socialMediaButtons']['socialMediaHTML']);
         $showSocialMediaLinks = $siteSettings['socialMediaLinks']['location'] == 'footer' && !empty($siteSettings['socialMediaLinks']['links']);
         $showAdditionalFooterText = false;
 
@@ -53,7 +53,7 @@ class AdditionalFooterTextRenderService
         ];
     }
 
-    public function render($siteSlug, $siteSettings, $isEditMode)
+    public function render($siteSlug, $siteSettings, $user, $isEditMode)
     {
         $templateName = explode('-', $siteSettings['template']['template'])[0];
 
@@ -61,7 +61,7 @@ class AdditionalFooterTextRenderService
             return '';
         }
 
-        $data = $this->getViewData($siteSlug, $siteSettings, $isEditMode);
+        $data = $this->getViewData($siteSlug, $siteSettings, $user, $isEditMode);
 
         return view('Sites/Sections/additionalFooterText', $data);
     }

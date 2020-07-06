@@ -312,9 +312,9 @@ abstract class SectionTemplateRenderService
         return '';
     }
 
-    public function getAdditionalFooterText($siteSlug, $siteSettings, $isEditMode)
+    public function getAdditionalFooterText($siteSlug, $siteSettings, $user, $isEditMode)
     {
-        return $this->additionalFooterTextRS->render($siteSlug, $siteSettings, $isEditMode);
+        return $this->additionalFooterTextRS->render($siteSlug, $siteSettings, $user, $isEditMode);
     }
 
     private function getUserCopyright($siteSlug, $siteSettings, $isEditMode)

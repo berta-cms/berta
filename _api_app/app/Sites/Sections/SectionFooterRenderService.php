@@ -27,16 +27,23 @@ class SectionFooterRenderService
 
     private function getViewData($siteSettings, $sections, $user, $request, $isEditMode)
     {
-        return [
+        $data = [
             'photoswipeTheme' => $siteSettings['entryLayout']['galleryFullScreenBackground'],
             'photoswipeCaptionAlign' => $siteSettings['entryLayout']['galleryFullScreenCaptionAlign'],
             'intercom' => $this->getIntercomSettings($sections, $user, $isEditMode),
-            'customSocialMediaButtonsJs' => $siteSettings['socialMediaButtons']['socialMediaJS'],
-            'customUserJs' => $siteSettings['settings']['jsInclude'],
             'googleAnalyticsId' => $siteSettings['settings']['googleAnalyticsId'],
             'hostName' => $request->getHost(),
             'isEditMode' => $isEditMode
         ];
+
+        if (in_array('custom_javascript', $user->features)) {
+            $data = array_merge($data, [
+                'customUserJs' => $siteSettings['settings']['jsInclude'],
+                'customSocialMediaButtonsJs' => $siteSettings['socialMediaButtons']['socialMediaJS']
+            ]);
+        }
+
+        return $data;
     }
 
     public function render($siteSettings, $sections, $user, $request, $isEditMode)

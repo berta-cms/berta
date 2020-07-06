@@ -1,3 +1,9 @@
+export interface PlanModel {
+  id: string,
+  name: string,
+  features: string[]
+}
+
 export interface AppStateModel {
   setup: boolean;
   showOverlay: boolean;
@@ -8,6 +14,7 @@ export interface AppStateModel {
   urls: {[name: string]: string};
   forgotPasswordUrl: string;
   isBertaHosting: boolean;
+  plans: PlanModel[];
   loginUrl: string;
   authenticateUrl: string;
   version: string;

@@ -315,6 +315,7 @@
 
   &.bt-disabled {
     opacity: .3;
+    pointer-events: none;
   }
 
   &.error {

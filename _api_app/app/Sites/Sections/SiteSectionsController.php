@@ -237,9 +237,10 @@ class SiteSectionsController extends Controller
         $isEditMode = true;
 
         $socialMediaLinksRS = new SocialMediaLinksRenderService();
+        $user = new UserModel();
         $additionalTextRS = new AdditionalFooterTextRenderService($socialMediaLinksRS);
 
-        return $additionalTextRS->render($siteSlug, $siteSettings, $isEditMode);
+        return $additionalTextRS->render($siteSlug, $siteSettings, $user, $isEditMode);
     }
 
     public function renderHead($site = '', Request $request)

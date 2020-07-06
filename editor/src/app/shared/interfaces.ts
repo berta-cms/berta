@@ -60,6 +60,7 @@ export interface SettingConfigModel {
   link?: boolean;
   validator?: 'GoogleAnalytics' | string;
   children?: Array<{[k: string]: SettingConfigModel}>;
+  requires_feature?: string;
   [k: string]: any;
 }
 

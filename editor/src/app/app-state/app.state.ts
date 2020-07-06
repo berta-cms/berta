@@ -28,6 +28,7 @@ const defaultState: AppStateModel = {
   urls: {},
   forgotPasswordUrl: '',
   isBertaHosting: false,
+  plans: [],
   loginUrl: '',
   authenticateUrl: '',
   version: '',
@@ -163,6 +164,7 @@ export class AppState implements NgxsOnInit {
       ...defaultState,
       forgotPasswordUrl: state.forgotPasswordUrl,
       isBertaHosting: state.isBertaHosting,
+      plans: state.plans,
       loginUrl: state.loginUrl,
       authenticateUrl: state.authenticateUrl,
       version: state.version
