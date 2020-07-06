@@ -102,6 +102,7 @@ abstract class SectionTemplateRenderService
 
         $data['sitesMenu'] = $this->sitesMenuRS->render(
             $siteSlug,
+            $user,
             $isEditMode,
             $siteSettings,
             $siteTemplateSettings,
