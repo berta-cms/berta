@@ -239,7 +239,8 @@ export function getIconFromUrl(url: string) {
     'pinterest',
     'vimeo',
     'youtube',
-    'tumblr'
+    'tumblr',
+    'spotify'
   ];
 
   let parsedUrl: URL;
