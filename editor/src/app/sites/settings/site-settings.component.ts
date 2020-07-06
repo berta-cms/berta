@@ -240,7 +240,7 @@ export class SiteSettingsComponent implements OnInit {
       return;
     }
 
-    return `(Upgrade to ${requiredPlan.name})`;
+    return `(Upgrade to ${requiredPlan.name} plan)`;
   }
 
   updateSetting(settingGroup: string, updateEvent) {
