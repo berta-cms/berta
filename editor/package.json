@@ -23,7 +23,7 @@
     "@ngxs/store": "^3.4.3",
     "@sentry/browser": "^5.4.0",
     "core-js": "^2.5.4",
-    "lodash": "^4.17.10",
+    "lodash": "^4.17.19",
     "ngx-color-picker": "^6.6.3",
     "rxjs": "^6.5.2",
     "webfontloader": "^1.6.28",
