@@ -7,7 +7,7 @@ import { TextInputService } from './text-input.service';
   template: `
     <div class="form-group" [class.bt-focus]="textInputService.focus | async" [class.bt-disabled]="disabled">
       <label>
-        {{ label }}
+        {{ label }} <span [innerHTML]="disabledReason"></span>
         <textarea (focus)="onFocus()"
                   (keydown)="onKeyDown($event)"
                   (blur)="onBlur($event)"
@@ -29,6 +29,7 @@ export class LongTextInputComponent implements OnInit {
   @Input() type?: string;
   @Input() placeholder?: string;
   @Input() disabled?: boolean;
+  @Input() disabledReason?: string;
   @Input() enabledOnUpdate?: boolean;
   @Input() value: string;
   @Output() update = new EventEmitter<string>();

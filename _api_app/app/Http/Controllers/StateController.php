@@ -106,6 +106,7 @@ class StateController extends Controller
             'loginUrl' => $user->profile_url ? $user->profile_url : route('login'),
             'authenticateUrl' => route('authenticate'),
             'isBertaHosting' => $user->profile_url != false,
+            'plans' => $user->plans,
             'themes' => $themesDS->getThemes()
         ];
 

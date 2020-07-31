@@ -46,7 +46,7 @@ class DefaultTemplateRenderService extends SectionTemplateRenderService
         $data['bodyClasses'] = $this->getBodyClasses($siteTemplateSettings, $sections, $sectionSlug, $tagSlug, $isEditMode);
         $data['isResponsive'] = $siteTemplateSettings['pageLayout']['responsive'] == 'yes';
         $data['pageEntriesAttributes'] = $this->getPageEntriesAttributes($sections, $sectionSlug, $tagSlug);
-        $data['additionalFooterText'] = $this->getAdditionalFooterText($siteSlug, $siteSettings, $isEditMode);
+        $data['additionalFooterText'] = $this->getAdditionalFooterText($siteSlug, $siteSettings, $user, $isEditMode);
 
         return $data;
     }

@@ -44,17 +44,19 @@
         {% endif %}
       {% endif %}
     </div>
-    {{ gridView|raw }}
-    <div id="bottom" class="clearfix">
-        {{ additionalFooterText|raw }}
-        {% if bertaCopyright %}
-          <p id="bertaCopyright">{{ bertaCopyright|raw }}</p>
-        {% endif %}
-        <p id="userCopyright"{{ userCopyright.attributes|raw }}>
-          {{ userCopyright.content|raw }}
-        </p>
-    </div>
-    {{ sectionFooter|raw }}
+    {% if sectionType != 'shopping_cart' %}
+      {{ gridView|raw }}
+      <div id="bottom" class="clearfix">
+          {{ additionalFooterText|raw }}
+          {% if bertaCopyright %}
+            <p id="bertaCopyright">{{ bertaCopyright|raw }}</p>
+          {% endif %}
+          <p id="userCopyright"{{ userCopyright.attributes|raw }}>
+            {{ userCopyright.content|raw }}
+          </p>
+      </div>
+      {{ sectionFooter|raw }}
+    {% endif %}
     {% if alertMessage %}
       <script type="text/javascript">alert('{{ alertMessage }}');</script>
     {% endif %}

@@ -42,6 +42,14 @@ export interface SettingConfigModel {
     title: string;
     value: string | number;
   }>;
+  css?: Array<{
+    selector: string;
+    property: string;
+    breakpoint?: string;
+    important?: boolean;
+    template?: string;
+    value?: string;
+  }>;
   html_entities?: boolean;
   css_units?: boolean;
   min_width?: number | string;
@@ -52,6 +60,7 @@ export interface SettingConfigModel {
   link?: boolean;
   validator?: 'GoogleAnalytics' | string;
   children?: Array<{[k: string]: SettingConfigModel}>;
+  requires_feature?: string;
   [k: string]: any;
 }
 

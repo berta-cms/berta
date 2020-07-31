@@ -45,6 +45,42 @@ import { UpdateShopSettingsAction } from '../shop/settings/shop-settings.actions
 })
 export class PreviewService {
   private iframeReloadSubscription: Subscription;
+  private templateSettingsRequireReload = {
+    pageLayout: [
+      'centered',
+      'centeredWidth',
+      'responsive',
+      'mashUpColumns',
+      'autoResponsive',
+      'centeredContents'
+    ],
+    pageHeading: [
+      'image'
+    ],
+    css: [
+      'customCSS'
+    ],
+    entryLayout: [
+      'galleryPosition'
+    ],
+    firstPage: [
+      'hoverWiggle'
+    ],
+    sideBar: [
+      'image'
+    ],
+    heading: [
+      'image',
+      'position'
+    ],
+    menu: [
+      'position'
+    ],
+    tagsMenu: [
+      'alwaysOpen',
+      'hidden'
+    ]
+  };
 
   constructor(
     private appService: AppStateService,
@@ -420,7 +456,12 @@ export class PreviewService {
         }, [false, false]),
         filter(([prev, cur]) => prev !== cur && !cur)
       )),
-      filter(actionsPassed => actionsPassed.length > 0),
+      filter(actionsPassed => {
+        return actionsPassed.length > 0 && !actionsPassed.every(action => {
+          const slug = Object.keys(action.payload)[0];
+          return action instanceof UpdateSiteTemplateSettingsAction && !(this.templateSettingsRequireReload[action.settingGroup] && this.templateSettingsRequireReload[action.settingGroup].indexOf(slug) > -1);
+        });
+      })
     ).subscribe(() => {
       iframe.contentWindow.location.reload();
     });

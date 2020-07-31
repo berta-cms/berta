@@ -26,6 +26,7 @@
     "lodash": "^4.17.10",
     "ngx-color-picker": "^6.6.3",
     "rxjs": "^6.5.2",
+    "webfontloader": "^1.6.28",
     "zone.js": "^0.9.1"
   },
   "devDependencies": {

@@ -5,6 +5,7 @@ namespace App\Sites;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Shared\Storage;
+use App\User\UserModel;
 use App\Configuration\SiteTemplatesConfigService;
 use App\Sites\Sections\Entries\SectionEntriesDataService;
 use App\Sites\Sections\SiteSectionsDataService;
@@ -127,9 +128,11 @@ class SitesController extends Controller
     {
         $sitesDS = new SitesDataService();
         $sitesMenuRenderService = new SitesMenuRenderService();
+        $user = new UserModel();
 
         return $sitesMenuRenderService->render(
             $site,
+            $user,
             true,
             [],
             [],

@@ -415,7 +415,8 @@ $settingsDefinition = [
             'default' => '',
             'html_entities' => true,
             'title' => I18n::_('HTML code'),
-            'description' => I18n::_('Paste or write your HTML code here.')
+            'description' => I18n::_('Paste or write your HTML code here.'),
+            'requires_feature' => 'custom_javascript'
         ],
         'socialMediaJS' => [
             'format' => 'longtext',
@@ -423,7 +424,8 @@ $settingsDefinition = [
             'default' => '',
             'html_entities' => true,
             'title' => I18n::_('Javascript code'),
-            'description' => I18n::_('Paste or write your Javascript code here.')
+            'description' => I18n::_('Paste or write your Javascript code here.'),
+            'requires_feature' => 'custom_javascript'
         ],
         'socialMediaLocation' => [
             'format' => 'select',
@@ -658,7 +660,8 @@ $settingsDefinition = [
             'default' => '',
             'html_entities' => true,
             'title' => I18n::_('Google site verification tag'),
-            'description' => I18n::_('Google ownership verification <meta> tag. <a href="http://support.google.com/a/bin/answer.py?hl=en&answer=186017" target="_blank">More info</a>.')
+            'description' => I18n::_('Google ownership verification <meta> tag. <a href="http://support.google.com/a/bin/answer.py?hl=en&answer=186017" target="_blank">More info</a>.'),
+            'requires_feature' => 'custom_javascript'
         ],
         'jsInclude' => [
             'format' => 'longtext',
@@ -666,7 +669,8 @@ $settingsDefinition = [
             'default' => '',
             'html_entities' => true,
             'title' => I18n::_('Javascript include'),
-            'description' => I18n::_('javascript_include')
+            'description' => I18n::_('javascript_include'),
+            'requires_feature' => 'custom_javascript'
         ],
     ],
 ];
