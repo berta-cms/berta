@@ -8,8 +8,6 @@ import { WhiteTemplateRenderService } from './white-template-render.service';
   providedIn: 'root'
 })
 export class RenderService {
-  private contentWindow: Window;
-  private contentDocument: Document;
   private templateName: string;
 
   constructor(
@@ -25,11 +23,9 @@ export class RenderService {
       return;
     }
 
-    this.contentWindow = contentWindow;
-    this.contentDocument = contentWindow.document;
-    const templateName = this.store.selectSnapshot(SiteSettingsState.getCurrentSiteTemplate).split('-').shift();
+    this.templateName = this.store.selectSnapshot(SiteSettingsState.getCurrentSiteTemplate).split('-').shift();
 
-    switch (templateName) {
+    switch (this.templateName) {
       case 'white':
         this.whiteTemplateRenderService.startRender(contentWindow);
         break;
@@ -48,7 +44,21 @@ export class RenderService {
   }
 
   stopRender() {
-    // unsubscribe events
+    switch (this.templateName) {
+      case 'white':
+        this.whiteTemplateRenderService.stopRender();
+        break;
+
+      case 'default':
+        break;
+
+      case 'mashup':
+        break;
+
+      // Messy
+      default:
+        break;
+    }
   }
 
 }

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, combineLatest } from 'rxjs';
+import { Observable, combineLatest, Subscription } from 'rxjs';
 import { skip } from 'rxjs/operators';
 import * as sitesMenuTemplate from '../../templates/sitesMenu.twig';
 import { SiteStateModel } from './sites-state/site-state.model';
@@ -10,6 +10,7 @@ import { Store } from '@ngxs/store';
   providedIn: 'root'
 })
 export class SitesMenuRenderService {
+  private dataSubscription: Subscription;
   templateSelector = '#multisites';
 
   constructor(private store: Store) {
@@ -26,12 +27,12 @@ export class SitesMenuRenderService {
       return;
     }
 
-    combineLatest(
+    this.dataSubscription = combineLatest([
       viewObservables.currentSite,
       viewObservables.sites.pipe(skip(1))
-    ).subscribe(([currentSite, sites]) => {
+    ]).subscribe(([currentSite, sites]) => {
       const data = {
-        attributes: '', // @todo calculate attributes accoriding to state
+        attributes: '', // @todo calculate attributes according to state (required only for messy template)
         sites: sites.map((site: SiteStateModel) => {
           return {
             name: site.title,
@@ -49,9 +50,10 @@ export class SitesMenuRenderService {
       }
 
       targetElement.insertAdjacentHTML(location.position, html);
-
-      // @todo fix: render happens too ofter: unsubscribe after unrender or fix the current subscription from happening too often
-      // console.log('site menu rendered!');
     });
+  }
+
+  stopRender() {
+    this.dataSubscription.unsubscribe();
   }
 }

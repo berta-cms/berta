@@ -34,4 +34,8 @@ export class WhiteTemplateRenderService extends TemplateRenderService {
     });
   }
 
+
+  stopRender() {
+    this.sitesMenuRenderService.stopRender();
+  }
 }
