@@ -13,7 +13,8 @@
         "rcrowe/twigbridge": "^0.9.6",
         "firebase/php-jwt": "^5.0",
         "sentry/sentry-laravel": "0.11.0",
-        "mobiledetect/mobiledetectlib": "^2.8"
+        "mobiledetect/mobiledetectlib": "^2.8",
+        "kylekatarnls/update-helper": "^1.2"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
