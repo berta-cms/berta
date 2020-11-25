@@ -7,6 +7,7 @@ import { map, buffer, filter, scan, switchMap } from 'rxjs/operators';
 import { AppState } from '../app-state/app.state';
 import { AppStateService } from '../app-state/app-state.service';
 import { PopupService } from '../popup/popup.service';
+import { RenderService } from '../render/render.service';
 import { AppHideLoading } from '../app-state/app.actions';
 import {
   UpdateSiteSectionFromSyncAction,
@@ -85,6 +86,7 @@ export class PreviewService {
   constructor(
     private appService: AppStateService,
     private popupService: PopupService,
+    private renderService: RenderService,
     private actions$: Actions,
     private store: Store) {
   }
@@ -458,6 +460,10 @@ export class PreviewService {
       )),
       filter(actionsPassed => {
         return actionsPassed.length > 0 && !actionsPassed.every(action => {
+          if (!action.payload) {
+            return false;
+          }
+
           const slug = Object.keys(action.payload)[0];
           return action instanceof UpdateSiteTemplateSettingsAction && !(this.templateSettingsRequireReload[action.settingGroup] && this.templateSettingsRequireReload[action.settingGroup].indexOf(slug) > -1);
         });
@@ -465,10 +471,13 @@ export class PreviewService {
     ).subscribe(() => {
       iframe.contentWindow.location.reload();
     });
+
+    this.renderService.startRender(iframe.contentWindow);
   }
 
   disconnectIframeView(iframe: HTMLIFrameElement) {
     this.iframeReloadSubscription.unsubscribe();
+    this.renderService.stopRender();
   }
 
   parseSyncUrl(url) {
