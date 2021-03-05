@@ -69,6 +69,11 @@ class UserModel implements
         return intval(file_get_contents($path));
     }
 
+    public function isBertaHosting()
+    {
+        return !empty($this->profile_url);
+    }
+
     private function getFeatures()
     {
         $features = [];
