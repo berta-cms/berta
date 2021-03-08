@@ -146,9 +146,14 @@ class SectionHeadRenderService
         ];
     }
 
-    public function getSentryScript()
+    public function getSentryScript($user)
     {
         $script = '';
+
+        if (!$user->isBertaHosting()) {
+            return $script;
+        }
+
         $sentryScriptFile = config('app.old_berta_root') . '/../../includes/sentry_template.html';
 
         if (file_exists($sentryScriptFile)) {
@@ -158,7 +163,7 @@ class SectionHeadRenderService
         return $script;
     }
 
-    private function getScripts($siteSlug, $siteSettings, $currentSection, $templateName, $isShopAvailable, $isEditMode)
+    private function getScripts($siteSlug, $siteSettings, $currentSection, $templateName, $isShopAvailable, $isEditMode, $user)
     {
         $scriptFiles = [];
 
@@ -208,7 +213,7 @@ class SectionHeadRenderService
 
         return [
             'bertaGlobalOptions' => json_encode($bertaGlobalOptions),
-            'sentryScript' => $this->getSentryScript(),
+            'sentryScript' => $this->getSentryScript($user),
             'scriptFiles' => $scriptFiles
         ];
     }
@@ -251,7 +256,7 @@ class SectionHeadRenderService
         $data['noindex'] = !isset($currentSection['@attributes']['published']) || $currentSection['@attributes']['published'] == '0' || $user->noindex;
         $data['favicon'] = $this->getFavicon($siteSettings, $storageService);
         $data['styles'] = $this->getStyles($siteSlug, $siteSettings, $currentSection, $siteTemplateSettings, $siteTemplatesConfig, $templateName, $currentSectionType, $isShopAvailable, $isResponsive, $isAutoResponsive, $isPreviewMode, $isEditMode);
-        $data['scripts'] = $this->getScripts($siteSlug, $siteSettings, $currentSection, $templateName, $isShopAvailable, $isEditMode);
+        $data['scripts'] = $this->getScripts($siteSlug, $siteSettings, $currentSection, $templateName, $isShopAvailable, $isEditMode, $user);
         $data['isResponsive'] = $isResponsive;
         $data['isAutoResponsive'] = $isAutoResponsive;
 
