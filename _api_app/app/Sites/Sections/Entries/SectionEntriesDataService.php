@@ -202,6 +202,7 @@ class SectionEntriesDataService extends Storage
             $this->ENTRIES = $this->xmlFile2array($this->XML_FILE);
 
             if (!$this->ENTRIES) {
+                $this->ENTRIES = [];
                 $this->ENTRIES[self::$ROOT_LIST_ELEMENT] = [];
             } else {
                 if (!isset($this->ENTRIES[self::$ROOT_LIST_ELEMENT]) || !$this->ENTRIES[self::$ROOT_LIST_ELEMENT]) {
