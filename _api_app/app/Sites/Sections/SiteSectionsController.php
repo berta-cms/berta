@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\User\UserModel;
 use App\Shared\Storage;
+use App\Shared\Helpers;
 use App\Configuration\SiteTemplatesConfigService;
 use App\Sites\SitesDataService;
 use App\Sites\SocialMediaLinksRenderService;
@@ -259,7 +260,7 @@ class SiteSectionsController extends Controller
         $siteTemplatesConfig = $siteTemplatesConfigService->getDefaults();
         $user = new UserModel();
 
-        $isShopAvailable = config('plugin-Shop.key') === $request->getHost();
+        $isShopAvailable = Helpers::isValidDomain($request->getHost(), config('plugin-Shop.key'));
         $isEditMode = true;
         $isPreviewMode = false;
         $storageService = new Storage($site, $isPreviewMode);
@@ -398,7 +399,7 @@ class SiteSectionsController extends Controller
 
         $user = new UserModel();
 
-        $isShopAvailable = config('plugin-Shop.key') === $request->getHost();
+        $isShopAvailable = Helpers::isValidDomain($request->getHost(), config('plugin-Shop.key'));
         $isEditMode = false;
         $isPreviewMode = false;
         $storageService = new Storage($siteSlug, $isPreviewMode);

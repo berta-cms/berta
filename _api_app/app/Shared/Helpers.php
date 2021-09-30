@@ -348,4 +348,16 @@ class Helpers
 
         return $html;
     }
+
+    public static function isValidDomain($requestDomain, $domains)
+    {
+        if (empty($requestDomain) || empty($domains)) {
+            return false;
+        }
+        $requestDomain = preg_replace("/^(www)+([.]){1}/", '', strtolower($requestDomain));
+        $domains = explode(',', strtolower($domains));
+        $domains = array_map('trim', $domains);
+
+        return in_array($requestDomain, $domains);
+    }
 }

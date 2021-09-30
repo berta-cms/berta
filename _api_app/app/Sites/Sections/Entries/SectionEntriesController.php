@@ -5,6 +5,7 @@ namespace App\Sites\Sections\Entries;
 use Validator;
 use Illuminate\Http\Request;
 use App\Shared\Storage;
+use App\Shared\Helpers;
 use App\Http\Controllers\Controller;
 
 use App\Configuration\SiteTemplatesConfigService;
@@ -173,7 +174,7 @@ class SectionEntriesController extends Controller
                 $siteTemplateSettingsDS->getState(),
                 (new Storage($site)),
                 false,
-                config('plugin-Shop.key') === $request->getHost()
+                Helpers::isValidDomain($request->getHost(), config('plugin-Shop.key'))
             );
         }
 
