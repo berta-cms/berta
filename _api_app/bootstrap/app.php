@@ -108,7 +108,7 @@ $app->routeMiddleware([
 |
 */
 
-$app->register(Sentry\SentryLaravel\SentryLumenServiceProvider::class);
+$app->register(Sentry\Laravel\ServiceProvider::class);
 $app->register(App\Providers\AppServiceProvider::class);
 $app->register(App\User\UserAuthServiceProvider::class);
 $app->register(App\Providers\EventServiceProvider::class);
