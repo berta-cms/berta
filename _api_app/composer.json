@@ -1,8 +1,13 @@
 {
-    "name": "laravel/lumen",
-    "description": "The Laravel Lumen Framework.",
-    "keywords": ["framework", "laravel", "lumen"],
-    "license": "MIT",
+    "name": "berta-cms/berta",
+    "description": "Berta CMS",
+    "version": "1.8.15",
+    "keywords": [
+        "berta",
+        "cms",
+        "lumen"
+    ],
+    "license": "GPL-3.0",
     "type": "project",
     "require": {
         "php": "^7.3|^8.0",
@@ -15,9 +20,7 @@
     },
     "autoload": {
         "psr-4": {
-            "App\\": "app/",
-            "Database\\Factories\\": "database/factories/",
-            "Database\\Seeders\\": "database/seeders/"
+            "App\\": "app/"
         }
     },
     "autoload-dev": {
