@@ -1,0 +1,38 @@
+<head>
+  <meta charset="UTF-8">
+  {% if isResponsive or isAutoResponsive %}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  {% endif %}
+  <meta name="keywords" content="{{ keywords }}">
+  <meta name="description" content="{{ description }}">
+  <meta name="author" content="{{ author }}">
+  {% if noindex %}
+    <meta name="robots" content="noindex, nofollow">
+  {% endif %}
+  {{ googleSiteVerificationTag|raw }}
+  <title>{{ title }}</title>
+  <link rel="icon" href="{{ favicon }}">
+  {% if styles.googleWebFonts %}
+    <link href="//fonts.googleapis.com/css?family={{ styles.googleWebFonts }}&amp;subset=latin,latin-ext,cyrillic-ext,greek-ext,greek,vietnamese,cyrillic" rel="stylesheet">
+  {% endif %}
+  {% for cssFile in styles.cssFiles %}
+    <link rel="stylesheet" href="{{ cssFile }}">
+  {% endfor %}
+  {% if styles.inlineCSS %}
+    <style>
+      {{ styles.inlineCSS|raw }}
+    </style>
+  {% endif %}
+  {% if styles.customCSS %}
+    <style>
+      {{ styles.customCSS|raw }}
+    </style>
+  {% endif %}
+  {{ scripts.sentryScript|raw }}
+  <script>
+    var bertaGlobalOptions = {{ scripts.bertaGlobalOptions|raw }};
+  </script>
+  {% for scriptFile in scripts.scriptFiles %}
+    <script src="{{ scriptFile }}"></script>
+  {% endfor %}
+</head>

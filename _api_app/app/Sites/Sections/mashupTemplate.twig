@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<!--[if lt IE 7 ]> <html class="ie6 ie-old"> <![endif]-->
+<!--[if IE 7 ]>    <html class="ie7 ie-old"> <![endif]-->
+<!--[if IE 8 ]>    <html class="ie8"> <![endif]-->
+<!--[if IE 9 ]>    <html class="ie9"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--> <html> <!--<![endif]-->
+  {{ sectionHead|raw }}
+  <body class="{{ bodyClasses }}">
+    <div id="allContainer"{% if isCenteredPageLayout %} class="xCentered"{% endif %}>
+      <div id="sideColumn"{{ sideColumnAttributes|raw }}>
+        <div id="sideColumnTop">
+          {{ sitesMenu|raw }}
+          {{ siteHeader|raw }}
+          {{ additionalTextBlock|raw }}
+          {{ sectionsMenu|raw }}
+        </div>
+        <div id="sideColumnBottom">
+          {{ socialMediaLinks|raw }}
+          <p id="userCopyright"{{ userCopyright.attributes|raw }}>
+            {{ userCopyright.content|raw }}
+          </p>
+          {% if bertaCopyright %}
+            <p id="bertaCopyright">{{ bertaCopyright|raw }}</p>
+          {% endif %}
+        </div>
+      </div>
+      <div id="contentContainer"{{ contentContainerAttributes|raw }}>
+        {% if sectionType == 'mash_up' %}
+          {% if isResponsive %}
+            <div id="mainColumnContainer">
+              <div id="mainColumn"{{ mainColumnAttributes|raw }}>
+          {% endif %}
+          {{ mashupEntries|raw }}
+          {% if isResponsive %}
+              </div>
+            </div>
+          {% endif %}
+        {% else %}
+          <div id="mainColumnContainer">
+            <div id="mainColumn"{{ mainColumnAttributes|raw }}>
+              <ol id="pageEntries"{{ pageEntriesAttributes|raw }}>
+                {{ entries|raw }}
+              </ol>
+              <br class="clear" />
+              {{ portfolioThumbnails|raw }}
+            </div>
+          </div>
+        {% endif %}
+      </div>
+      <div class="floating-banners">
+        {{ siteBanners|raw }}
+      </div>
+    </div>
+    {{ sectionFooter|raw }}
+  </body>
+</html>

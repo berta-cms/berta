@@ -1,0 +1,180 @@
+<div class="xEntryGalleryEditor-wrap">
+  <div class="xEntryGalleryEditor xPanel clearfix">
+    <div class="xEntryGalleryMenu">
+      <div class="xEntryMedia tab">
+        <a href="#" class="xParams-media selected" title="add images and videos">
+          <span>media</span>
+        </a>
+      </div>
+      <div class="xEntryMediaSettings tab">
+        <a href="#" class="xParams-media_settings" title="gallery settings">
+          <span>settings</span>
+        </a>
+      </div>
+      <div class="xEntryFullScreenSettings tab">
+        <a href="#" class="xParams-fullscreen" title="lightbox on/off">
+          <span>lightbox</span>
+        </a>
+      </div>
+      <div class="xEntryImageSizeSettings tab">
+        <a href="#" class="xParams-image_size" title="large/medium/small image size">
+          <span>image size</span>
+        </a>
+      </div>
+      <a class="xEntryGalCloseLink xEditorLink" href="#" title="close image editor">
+        <span>X</span>
+      </a>
+    </div>
+
+    <div class="xEntryGalleryAddMedia">
+      <input type="file" name="Filedata" class="xHidden" multiple>
+      <a class="xEntryAddImagesLink" href="/_api/v1/sites/sections/entries/galleries" data-path="{{ dataPath.addMedia }}">+ add media</a>
+    </div>
+
+    <div class="xEntryGallerySettings xGreyBack xHidden">
+      <div class="caption">gallery type</div>
+      <div class="xEntrySetGalType xFloatLeft xEditableSelectRC xCommand-SET_GALLERY_TYPE" x_options="slideshow||row||column||pile||link" data-path="{{ dataPath.galleryType }}">
+        {{ galleryType }}
+      </div>
+
+      <div class="clear"></div>
+
+      <div class="xEntrySlideshowSettings galleryTypeSettings{% if galleryType != 'slideshow' %} xHidden{% endif %}">
+        <div class="caption">autoplay seconds</div>
+        <div class="xEntryAutoPlay xFloatLeft xEditableRC xCommand-SET_AUTOPLAY xCaption-0" title="{{ autoplay }}" data-path="{{ dataPath.autoplay }}">
+          {{ autoplay }}
+        </div>
+
+        <div class="clear"></div>
+
+        <div class="caption">show image numbers</div>
+        <div class="xEntrySlideNumberVisibility xFloatLeft xEditableSelectRC xCommand-SET_SLIDE_NUMBER_VISIBILITY" x_options="yes||no" data-path="{{ dataPath.slideNumbersVisibility }}">
+          {{ slideNumbersVisibility }}
+        </div>
+
+        {% if templateName == 'messy' %}
+          <div class="clear"></div>
+          <div class="caption">width by widest slide</div>
+          <div class="xGalleryWidthByWidestSlide xFloatLeft xEditableSelectRC xCommand-GALLERY_WIDTH_BY_WIDEST_SLIDE" x_options="no||yes" data-path="{{ dataPath.galleryWidthByWidestSlide }}">
+            {{ galleryWidthByWidestSlide }}
+          </div>
+        {% endif %}
+      </div>
+
+      <div class="xEntryLinkSettings galleryTypeSettings{% if galleryType != 'link' %} xHidden{% endif %}">
+        <div class="caption">link address</div>
+        <div class="xEntryLinkAddress xFloatLeft xEditableRC xCommand-SET_LINK_ADDRESS" title="{{ linkAddress }}" data-path="{{ dataPath.linkAddress }}">
+          {{ linkAddress }}
+        </div>
+        <div class="clear"></div>
+        <div class="caption">link target</div>
+        <div class="xEntryLinkTarget xFloatLeft xEditableSelectRC xCommand-SET_LINK_TARGET" x_options="_self||_blank" data-path="{{ dataPath.linkTarget }}">
+          {{ linkTarget }}
+        </div>
+      </div>
+
+      <div class="xEntryRowSettings galleryTypeSettings{% if galleryType != 'row' %} xHidden{% endif %}">
+        <div class="caption">image padding</div>
+        <div class="xRowGalleryPadding xFloatLeft xEditableRC xCommand-SET_ROW_GALLERY_PADDING xCaption-0" title="{{ rowGalleryPadding }}" data-path="{{ dataPath.rowGalleryPadding }}">
+          {{ rowGalleryPadding }}
+        </div>
+      </div>
+    </div>
+
+    <div class="xEntryGalleryFullScreen xHidden">
+      <div class="caption">fullscreen</div>
+      <div class="xEntrySetFullScreen xFloatLeft xEditableSelectRC xCommand-SET_FULLSCREEN" x_options="yes||no" data-path="{{ dataPath.fullscreen }}">
+        {{ fullscreen }}
+      </div>
+      <div class="clear"></div>
+    </div>
+
+    <div class="xEntryGalleryImageSize xHidden">
+      <div class="caption">image size</div>
+      <div class="xEntrySetImageSize xFloatLeft xEditableSelectRC xCommand-SET_GALLERY_SIZE" x_options="large||medium||small" data-path="{{ dataPath.imageSize }}">
+        {{ imageSize }}
+      </div>
+      <div class="clear"></div>
+    </div>
+
+    <div class="images">
+      <ul>
+        {% for item in items %}
+          <li class="{{ item.type }}" filename="{{ item.src }}">
+            {% if item.type == 'image' %}
+              <img src="{{ item.thumbnail }}" class="img">
+            {% endif %}
+
+            {% if item.type == 'video' %}
+              <div class="placeholderContainer" {% if item.thumbnail %} style="background-image: url({{ item.thumbnail }})" {% endif %}>
+                <div class="placeholder"></div>
+              </div>
+            {% endif %}
+
+            <span class="grabHandle xMAlign-container">
+              <span class="xMAlign-outer">
+                <a class="xMAlign-inner" title="click and drag to move">
+                  <span></span>
+                </a>
+              </span>
+            </span>
+
+            {% if item.type == 'image' %}
+              <a href="#" class="crop" data-src="{{ item.imagePath }}"></a>
+            {% endif %}
+
+            <a href="#" class="delete"></a>
+
+            {% if item.type == 'video' %}
+              <div class="dimsForm">
+                <div class="posterContainer"></div>
+                <input type="file">
+                <a class="poster" href="#">{% if item.thumbnail %}change{% else %}upload{% endif %} poster frame</a>
+              </div>
+
+              <div class="xAutoPlay">
+                <label>
+                  <span class="xEditableRealCheck xProperty-videoAutoplay xParam-{{ item.src }}" data-path="{{ item.autoplayDataPath }}">
+                    {{ item.autoplay }}
+                  </span>
+                  autoplay
+                </label>
+              </div>
+            {% endif %}
+
+            <div class="xEGEImageCaption xEditableMCESimple xProperty-galleryImageCaption xCaption-caption xParam-{{ item.src }}" data-path="{{ item.captionDataPath }}">
+              {{ item.caption|raw }}
+            </div>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <div class="xEntryGalleryCrop xHidden">
+      <section class="checkBoard">
+        <img src="" class="cropImage">
+        <p class="loader xHidden"><img src="/engine/layout/loader.gif"></p>
+      </section>
+      <section class="cropToolbar">
+        <p>original size (px):</p>
+        <p class="widthOrigUI"></p>
+        <p class="heightOrigUI"></p>
+
+        <p class="newSize">new size (px):</p>
+        <div class="clearfix">
+          <div class="manualSizeBox">
+            <p class="widthRealUI"><input type="text" name="widthReal" class="widthReal" value=""></p>
+            <p class="heightRealUI"><input type="text" name="heightReal" class="heightReal"></p>
+          </div>
+          <div class="manualSizeBox">
+            <span class="ratio" title="keep proportions"></span>
+          </div>
+        </div>
+        <input type="hidden" name="leftReal" class="leftReal">
+        <input type="hidden" name="topReal" class="topReal">
+        <button class="processCrop">Crop</button>
+        <button class="cancel">Cancel</button>
+      </section>
+    </div>
+  </div>
+</div>

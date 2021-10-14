@@ -1,0 +1,13 @@
+<h1{{ headingAttributes|raw }}>
+  {% if headingImageAttributes %}
+    <a href="{{ link }}"><img{{ headingImageAttributes|raw }}></a>
+  {% else %}
+    {% if isEditMode %}
+      <span{{ editableAttributes|raw }}>
+        {{ title|raw }}
+      </span>
+    {% else %}
+      <a href="{{ link }}">{{ title|raw }}</a>
+    {% endif %}
+  {% endif %}
+</h1>

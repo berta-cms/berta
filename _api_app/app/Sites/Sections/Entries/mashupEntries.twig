@@ -1,0 +1,27 @@
+<div{{ wrapperAttributes|raw }}>
+  {% for entry in entries %}
+    <div{{ entry.attributes|raw }}>
+      {% if not entry.item.galleryItem %}
+        {{ entry.item.content|raw }}
+      {% else %}
+        {% if entry.item.url %}
+          <a href="{{ entry.item.url }}">
+        {% endif %}
+        {% if entry.item.galleryItem.type == 'image' %}
+          <img src="{{ entry.item.galleryItem.src }}" width="{{ entry.item.galleryItem.width }}" height="{{ entry.item.galleryItem.height }}"{% if entry.item.galleryItem.srcset %} srcset="{{ entry.item.galleryItem.srcset }}"{% endif %} alt="{{ entry.item.galleryItem.alt }}">
+        {% else %}
+          <video width="{{ entry.item.galleryItem.width }}" controls controlsList="nodownload"{% if entry.item.galleryItem.poster %} poster="{{ entry.item.galleryItem.poster }}"{% endif %}{% if entry.item.galleryItem.autoplay %} data-autoplay="1"{% endif %}>
+            <source src="{{ entry.item.galleryItem.original }}" type="video/mp4">
+          </video>
+        {% endif %}
+        {% if entry.item.url %}
+          </a>
+        {% endif %}
+      {% endif %}
+      {% if isEditMode %}
+        <div class="xHandle"></div>
+      {% endif %}
+    </div>
+  {% endfor %}
+  <br class="clear" />
+</div>

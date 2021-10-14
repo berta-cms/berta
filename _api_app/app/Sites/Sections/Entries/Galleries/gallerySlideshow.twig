@@ -1,0 +1,53 @@
+<div class="{{ galleryClassList }}"{{ attributes.gallery|raw }}>
+  {% if items %}
+    <div class="xGallery" style="{{ galleryStyles }}" {% if rowGalleryPadding %} rowGalleryPadding="{{ rowGalleryPadding }}"{% endif %}>
+      <div class="swiper-container">
+        <div class="swiper-wrapper">
+          {% for item in items %}
+            <div class="swiper-slide">
+              {% if item.type == 'image' %}
+                <div class="xGalleryItem xGalleryItemType-image xImgIndex-1" style="width: {{ item.width }}px; height: {{ item.height }}px">
+                  <img src="{{ item.src }}" width="{{ item.width }}" height="{{ item.height }}"{% if item.srcset %} srcset="{{ item.srcset }}"{% endif %} alt="{{ item.alt }}">
+                  <div class="xGalleryImageCaption">{{ item.caption|raw }}</div>
+                </div>
+              {% else %}
+                <div class="xGalleryItem xGalleryItemType-video">
+                  <video width="{{ item.width }}" controls controlsList="nodownload"{% if item.poster %} poster="{{ item.poster }}"{% endif %}{% if item.autoplay %} data-autoplay="1"{% endif %}>
+                    <source src="{{ item.original }}" type="video/mp4">
+                  </video>
+                  <div class="xGalleryImageCaption">{{ item.caption|raw }}</div>
+                </div>
+              {% endif %}
+            </div>
+          {% endfor %}
+        </div>
+
+        {% if showNavigation %}
+          <div class="swiper-button-prev"></div>
+          <div class="swiper-button-next"></div>
+        {% endif %}
+      </div>
+
+      {% if isEditMode %}
+        <a href="#" class="xGalleryEditButton xEditorLink xSysCaption xMAlign-container">
+          <span class="xMAlign-outer-gallery">
+            <span class="xMAlign-inner-gallery">edit gallery</span>
+          </span>
+        </a>
+      {% endif %}
+    </div>
+
+    <ul class="xGalleryNav"{% if not showNavigation %} style="display:none"{% endif %}>
+      {% for item in navigationItems %}
+        <li>
+          <a href="{{ item.src }}" target="_blank"{{ item.attributes|raw }}>
+            <span>{{ item.index }}</span>
+          </a>
+          <div class="xGalleryImageCaption">{{ item.caption|raw }}</div>
+        </li>
+      {% endfor %}
+    </ul>
+
+    <div class="loader xHidden"></div>
+  {% endif %}
+</div>

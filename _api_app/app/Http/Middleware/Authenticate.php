@@ -4,7 +4,13 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Contracts\Auth\Factory as Auth;
+use \Illuminate\Http\Request;
 
+/**
+ * @class AuthenticateAPI
+ *
+ * This class authenticates requests.
+ */
 class Authenticate
 {
     /**
@@ -33,10 +39,17 @@ class Authenticate
      * @param  string|null  $guard
      * @return mixed
      */
-    public function handle($request, Closure $next, $guard = null)
+    public function handle(Request $request, Closure $next, $guard = null)
     {
+        $apiPrefix = config('app.api_prefix');
+        $isAPIRequest = strpos($request->getRequestUri(), '/'. $apiPrefix) === 0;
+
         if ($this->auth->guard($guard)->guest()) {
-            return response('Unauthorized.', 401);
+            if ($isAPIRequest) {
+                // Return JSON for API requests, so JS would work correctly.
+                return response()->json(['message' => 'Unauthorized', 'data' => null], 401);
+            }
+            return response('Unauthorized', 401);
         }
 
         return $next($request);
