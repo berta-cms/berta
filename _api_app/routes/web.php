@@ -94,3 +94,15 @@ $router->group(['prefix' => 'v1/sites/sections', 'namespace' => 'Sites\Sections\
     $router->get('entries/render-mashup[/{site}]', 'SectionEntriesController@renderMashupEntries');
     $router->get('entries/render-portfolio-thumbnails/{site}/{section}', 'SectionEntriesController@renderPortfolioThumbnails');
 });
+
+$router->group(['prefix' => 'v1/plugin', 'namespace' => 'Plugins', 'middleware' => ['setup', 'auth']], function () use ($router) {
+    foreach (scandir("{$router->app->path()}/Plugins") as $fileOrDir) {
+        if (in_array($fileOrDir, ['.', '..'])) { continue; }
+
+        $dirPath = "{$router->app->path()}/Plugins/{$fileOrDir}";
+
+        if (is_dir($dirPath) && is_file("{$dirPath}/routes.php")) {
+            require "{$dirPath}/routes.php";
+        }
+    }
+});
