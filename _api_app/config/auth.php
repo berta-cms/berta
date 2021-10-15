@@ -35,7 +35,9 @@ return [
     */
 
     'guards' => [
-        'api' => ['driver' => 'jwt_token'],
+        'jwt_token' => [
+            'driver' => 'jwt_token'
+        ],
     ],
 
     /*

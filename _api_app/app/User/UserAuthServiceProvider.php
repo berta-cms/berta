@@ -54,7 +54,7 @@ class UserAuthServiceProvider extends ServiceProvider
         // the User instance via an API token or any other method necessary.
 
         $this->app['auth']->viaRequest('jwt_token', function ($request) {
-            $token = $this->getBearerToken($request);
+            $token = self::getBearerToken($request);
 
             if (
                 $token && Helpers::validate_token($token) ||
@@ -76,7 +76,7 @@ class UserAuthServiceProvider extends ServiceProvider
     /**
      * Get hearder Authorization
      * */
-    function getAuthorizationHeader()
+    static function getAuthorizationHeader()
     {
         $headers = null;
         if (isset($_SERVER['X-Authorization'])) {
@@ -107,11 +107,11 @@ class UserAuthServiceProvider extends ServiceProvider
     /**
      * get access token from header
      * */
-    function getBearerToken(Request $request)
+    static function getBearerToken(Request $request)
     {
         $headers = $request->headers->get('x-authorization', null);
         if (!$headers) {
-            $headers = $this->getAuthorizationHeader();
+            $headers = self::getAuthorizationHeader();
         }
 
         // HEADER: Get the access token from the header
