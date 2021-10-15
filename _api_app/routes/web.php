@@ -11,11 +11,11 @@
 | It is a breeze. Simply tell Lumen the URIs it should respond to
 | and give it the Closure to call when that URI is requested.
 |
-*/
+ */
 
-$router->group(['middleware' => 'setup'], function () use ($router) {
+$router->group(['namespace' => 'Http\Controllers', 'middleware' => 'setup'], function () use ($router) {
     $router->post('auth/login', ['uses' => 'AuthController@authenticate']);
-    $router->get('auth/login', ['as'=> 'authenticate', 'uses' => 'AuthController@authenticate']);
+    $router->get('auth/login', ['as' => 'authenticate', 'uses' => 'AuthController@authenticate']);
     $router->post('v1/login', ['as' => 'login', 'uses' => 'AuthController@apiLogin']);
     $router->put('v1/logout', ['uses' => 'AuthController@apiLogout']);
 
@@ -23,15 +23,15 @@ $router->group(['middleware' => 'setup'], function () use ($router) {
     $router->get('v1/sentry-dsn', ['uses' => 'StateController@getSentryDSN']);
 });
 
-$router->group(['prefix' => 'v1', 'middleware' => ['setup', 'auth:jwt_token']], function () use ($router) {
+$router->group(['prefix' => 'v1', 'namespace' => 'Http\Controllers', 'middleware' => ['setup', 'auth']], function () use ($router) {
 
     $router->patch('user/changepassword', 'AuthController@changePassword');
 
     $router->get('state[/{site}]', 'StateController@get');
-    $router->get('locale-settings', ['as'=>'locale_settings', 'prefix'=>'locale_settings', 'uses' => 'StateController@getLocaleSettings']);
+    $router->get('locale-settings', ['as' => 'locale_settings', 'prefix' => 'locale_settings', 'uses' => 'StateController@getLocaleSettings']);
 });
 
-$router->group(['prefix' => 'v1','namespace' => 'App\Sites', 'middleware' => ['setup', 'auth:jwt_token']], function () use ($router) {
+$router->group(['prefix' => 'v1', 'namespace' => 'Sites', 'middleware' => ['setup', 'auth']], function () use ($router) {
     $router->post('sites', ['as' => 'sites', 'uses' => 'SitesController@create']);
     $router->patch('sites', 'SitesController@update');
     $router->put('sites', 'SitesController@order');
@@ -54,7 +54,7 @@ $router->group(['prefix' => 'v1','namespace' => 'App\Sites', 'middleware' => ['s
     $router->post('sites/template-settings/upload', ['as' => 'site_template_settings_upload', 'uses' => 'TemplateSettings\SiteTemplateSettingsController@upload']);
 });
 
-$router->group(['prefix' => 'v1/sites', 'namespace' => 'App\Sites\Sections', 'middleware' => ['setup', 'auth']], function () use ($router) {
+$router->group(['prefix' => 'v1/sites', 'namespace' => 'Sites\Sections', 'middleware' => ['setup', 'auth']], function () use ($router) {
     $router->post('sections', ['as' => 'site_sections', 'uses' => 'SiteSectionsController@create']);
     $router->patch('sections', 'SiteSectionsController@update');
     $router->patch('sections/reset', ['as' => 'site_sections_reset', 'uses' => 'SiteSectionsController@reset']);
@@ -79,7 +79,7 @@ $router->group(['prefix' => 'v1/sites', 'namespace' => 'App\Sites\Sections', 'mi
     $router->put('sections/tags', ['as' => 'section_tags', 'uses' => 'Tags\SectionTagsController@order']);
 });
 
-$router->group(['prefix' => 'v1/sites/sections', 'namespace' => 'App\Sites\Sections\Entries', 'middleware' => ['setup', 'auth']], function () use ($router) {
+$router->group(['prefix' => 'v1/sites/sections', 'namespace' => 'Sites\Sections\Entries', 'middleware' => ['setup', 'auth']], function () use ($router) {
     $router->patch('entries', ['as' => 'section_entries', 'uses' => 'SectionEntriesController@update']);
     $router->post('entries', 'SectionEntriesController@create');
     $router->put('entries', 'SectionEntriesController@order');
