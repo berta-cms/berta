@@ -15,7 +15,8 @@
         "laravel/lumen-framework": "^8.0",
         "mobiledetect/mobiledetectlib": "^2.8",
         "rcrowe/twigbridge": "^0.12.3",
-        "sentry/sentry-laravel": "^2.9"
+        "sentry/sentry-laravel": "^2.9",
+        "swaggest/json-schema": "^0.12.38"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",
