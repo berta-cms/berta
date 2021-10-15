@@ -13,6 +13,7 @@
         "php": "^7.3|^8.0",
         "firebase/php-jwt": "^5.4",
         "laravel/lumen-framework": "^8.0",
+        "mobiledetect/mobiledetectlib": "^2.8",
         "rcrowe/twigbridge": "^0.12.3",
         "sentry/sentry-laravel": "^2.9"
     },
