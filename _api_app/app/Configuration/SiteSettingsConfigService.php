@@ -2,11 +2,8 @@
 
 namespace App\Configuration;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\Request;
 
 use App\Shared\I18n;
-use App\Shared\Helpers;
-use App\User\UserAuthServiceProvider;
 
 class SiteSettingsConfigService
 {
@@ -16,11 +13,9 @@ class SiteSettingsConfigService
     // We need a default template here in case old Berta has not set this value yet
     // @TODO Create settings XML file with default template in api
     private $defaultTemplate = 'messy-0.4.2';
-    private $request;
 
     public function __construct()
     {
-        $this->request = Request::capture();
     }
 
     public function get($lang = 'en')
@@ -35,12 +30,7 @@ class SiteSettingsConfigService
             $options = [];
         }
 
-        // Can't cal Auth::check() here, because old berta calls this class out of application context
-        // So we are checking the token from request manually here
-        $token = UserAuthServiceProvider::getBearerToken($this->request);
-        $userLoggedIn = $token && Helpers::validate_token($token);
-
-        $berta = (object)['security' => (object)['userLoggedIn' => $userLoggedIn]];
+        $berta = (object)['security' => (object)['userLoggedIn' => Auth::check()]];
         $ENGINE_ROOT_PATH = config('app.old_berta_root') . '/engine/';
         $SITE_ROOT_PATH = config('app.old_berta_root') . '/';
         $options['XML_ROOT'] = "{$SITE_ROOT_PATH}storage/";

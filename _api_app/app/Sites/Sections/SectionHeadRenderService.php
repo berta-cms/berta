@@ -298,10 +298,6 @@ class SectionHeadRenderService
             $isEditMode
         );
 
-
-        // dd(config('view'));
-
         return view('Sites/Sections/sectionHead', $data);
-        // return view('hello', $data);
     }
 }
