@@ -30,15 +30,14 @@ return [
     | users are actually retrieved out of your database or other storage
     | mechanisms used by this application to persist your user's data.
     |
-    | Supported: "session", "token"  // The supported drivers are the built in I guess...
+    | Supported: "token"
     |
     */
 
     'guards' => [
-        // the name can be used after middleware name in router e.g.: 'auth:jwt_token'
-        // The name referenced in default guard will be used if no name is passed after column ('auth')
-        // 'name of auth guard for later reference' => ['driver' => 'name to reference in auth service provider `viaRequest`']
-        'jwt_token' => ['driver' => 'jwt_token'],
+        'jwt_token' => [
+            'driver' => 'jwt_token'
+        ],
     ],
 
     /*

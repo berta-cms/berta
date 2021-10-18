@@ -25,5 +25,4 @@ $app = require __DIR__.'/../_api_app/bootstrap/app.php';
 |
 */
 
-$request = Illuminate\Http\Request::capture();
-$app->run($request);
+$app->run();

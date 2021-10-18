@@ -11,6 +11,9 @@ error_reporting(E_ALL);
  */
 include_once 'loader.helper.php';
 
+// Boot Lumen app to get correct app context
+$app->boot();
+
 // You can now use your logger
 // $logger->info('My logger is now ready');
 
@@ -85,7 +88,7 @@ if (empty($SITE_ROOT_URL)) {
 
 // magic quotes --------------------------------------------------------------------------------------------------------------------------------------
 
-if (!@get_magic_quotes_gpc()) {
+if (!(function_exists("get_magic_quotes_gpc") && @get_magic_quotes_gpc())) {
     function addSlashesRecursive($var)
     {
         if (is_array($var)) {
