@@ -2,6 +2,7 @@
 
 namespace App\Sites\Sections\Entries;
 
+use Illuminate\Support\Arr;
 use App\Shared\Storage;
 use App\Shared\ImageHelpers;
 use App\Events\SectionUpdated;
@@ -639,7 +640,7 @@ class SectionEntriesDataService extends Storage
 
         $entries = $this->get();
 
-        $ids = array_pluck($entries['entry'], 'id');
+        $ids = Arr::pluck($entries['entry'], 'id');
         $id = $ids ? max($ids) + 1 : 1;
 
         // In case creating entry from existing entry from other section
