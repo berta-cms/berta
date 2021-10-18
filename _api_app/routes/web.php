@@ -106,3 +106,11 @@ $router->group(['prefix' => 'v1/plugin', 'namespace' => 'Plugins', 'middleware' 
         }
     }
 });
+
+/**
+ * This includes test controller for easier development
+ * @todo: replace this with automated tests
+ */
+if (app()->environment('local', 'stage')) {
+    require __DIR__ . '/testRoutes.php';
+}
