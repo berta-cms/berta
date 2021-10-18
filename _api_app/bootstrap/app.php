@@ -114,8 +114,6 @@ $app->routeMiddleware([
 |
 */
 
-// $app->register(App\Providers\AuthServiceProvider::class);
-
 $app->register(Sentry\Laravel\ServiceProvider::class);
 $app->register(App\Providers\AppServiceProvider::class);
 $app->register(App\User\UserAuthServiceProvider::class);

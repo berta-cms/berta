@@ -12,8 +12,8 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
-        App\Events\SectionUpdated::class => [
-            App\Listeners\UnsetSectionDemoStatus::class,
+        'App\Events\SectionUpdated' => [
+            'App\Listeners\UnsetSectionDemoStatus',
         ],
     ];
 }
