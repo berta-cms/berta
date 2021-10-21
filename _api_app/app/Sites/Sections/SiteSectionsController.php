@@ -158,7 +158,7 @@ class SiteSectionsController extends Controller
         return response()->json($ret);
     }
 
-    public function renderMenu($site = '', Request $request)
+    public function renderMenu(Request $request, $site = '')
     {
         $sectionsDS = new SiteSectionsDataService($site);
         $sections = $sectionsDS->getState();
@@ -186,7 +186,7 @@ class SiteSectionsController extends Controller
         );
     }
 
-    public function renderSitemap($siteSlug = '', Request $request)
+    public function renderSitemap(Request $request, $siteSlug = '')
     {
         $sectionsDS = new SiteSectionsDataService($siteSlug);
         $sections = $sectionsDS->getState();
@@ -204,7 +204,7 @@ class SiteSectionsController extends Controller
         );
     }
 
-    public function renderAdditionalText($site = '', Request $request)
+    public function renderAdditionalText(Request $request, $site = '')
     {
         $siteSettingsDS = new SiteSettingsDataService($site);
         $siteSettings = $siteSettingsDS->getState();
@@ -244,7 +244,7 @@ class SiteSectionsController extends Controller
         return $additionalTextRS->render($siteSlug, $siteSettings, $user, $isEditMode);
     }
 
-    public function renderHead($site = '', Request $request)
+    public function renderHead(Request $request, $site = '')
     {
         $sectionsDS = new SiteSectionsDataService($site);
         $sections = $sectionsDS->getState();
@@ -284,7 +284,7 @@ class SiteSectionsController extends Controller
         );
     }
 
-    public function renderFooter($site = '', Request $request)
+    public function renderFooter(Request $request, $site = '')
     {
         $sectionsDS = new SiteSectionsDataService($site);
         $sections = $sectionsDS->getState();
@@ -304,7 +304,7 @@ class SiteSectionsController extends Controller
         );
     }
 
-    public function renderBackgroundGallery($siteSlug = '', Request $request)
+    public function renderBackgroundGallery(Request $request, $siteSlug = '')
     {
         $siteSettingsDS = new SiteSettingsDataService($siteSlug);
         $siteSettings = $siteSettingsDS->getState();
@@ -330,7 +330,7 @@ class SiteSectionsController extends Controller
         );
     }
 
-    public function renderBackgroundGalleryEditor($siteSlug = '', Request $request)
+    public function renderBackgroundGalleryEditor(Request $request, $siteSlug = '')
     {
         $sectionsDS = new SiteSectionsDataService($siteSlug);
         $sections = $sectionsDS->getState();
@@ -347,7 +347,7 @@ class SiteSectionsController extends Controller
         );
     }
 
-    public function renderGridView($siteSlug = '', Request $request)
+    public function renderGridView(Request $request, $siteSlug = '')
     {
         $siteSettingsDS = new SiteSettingsDataService($siteSlug);
         $siteSettings = $siteSettingsDS->getState();
@@ -374,7 +374,7 @@ class SiteSectionsController extends Controller
         );
     }
 
-    public function renderTemplate($siteSlug = '', Request $request)
+    public function renderTemplate(Request $request, $siteSlug = '')
     {
         $sitesDataService = new SitesDataService();
         $sites = $sitesDataService->get();
