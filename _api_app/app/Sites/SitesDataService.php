@@ -127,7 +127,7 @@ class SitesDataService extends Storage
         return $sites;
     }
 
-    public function create($cloneFrom = null, Request $request)
+    public function create(Request $request, $cloneFrom = null)
     {
         $sites = $this->get();
         $name = 'untitled-' . uniqid();
