@@ -124,7 +124,7 @@ class SitesController extends Controller
         return response()->json($json);
     }
 
-    public function renderMenu($site = '', Request $request)
+    public function renderMenu(Request $request, $site = '')
     {
         $sitesDS = new SitesDataService();
         $sitesMenuRenderService = new SitesMenuRenderService();
@@ -140,7 +140,7 @@ class SitesController extends Controller
         );
     }
 
-    public function renderHeader($site = '', Request $request)
+    public function renderHeader(Request $request, $site = '')
     {
         $siteSettingsDS = new SiteSettingsDataService($site);
         $siteSettings = $siteSettingsDS->getState();
@@ -166,7 +166,7 @@ class SitesController extends Controller
         );
     }
 
-    public function renderSocialMediaLinks($site = '', Request $request)
+    public function renderSocialMediaLinks(Request $request, $site = '')
     {
         $siteSettingsDS = new SiteSettingsDataService($site);
         $siteSettings = $siteSettingsDS->getState();
@@ -175,7 +175,7 @@ class SitesController extends Controller
         return $socialMediaLinksRS->render($siteSettings);
     }
 
-    public function renderBanners($site = '', Request $request)
+    public function renderBanners(Request $request, $site = '')
     {
         $siteSettingsDS = new SiteSettingsDataService($site);
         $siteSettings = $siteSettingsDS->getState();
