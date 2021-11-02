@@ -93,15 +93,15 @@ class SectionEntriesController extends Controller
     {
         $file = $request->file('value');
         $path = $request->get('path');
-        $isVideoPosterImage = count(explode('/', $path)) == 5;
 
-        if (!$file->isValid()) {
+        if (!$file || !$file->isValid() || !$path) {
             return response()->json([
                 'status' => 0,
                 'error' => 'Upload failed.'
             ]);
         }
 
+        $isVideoPosterImage = count(explode('/', $path)) == 5;
         $isImage = in_array($file->guessExtension(), config('app.image_mimes')) || $isVideoPosterImage;
         $validator = Validator::make(['file' => $file], [
             'file' => $isImage ?

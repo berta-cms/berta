@@ -32,7 +32,7 @@ class SiteTemplateSettingsController extends Controller
         $file = $request->file('value');
         $path = $request->get('path');
 
-        if (!$file->isValid()) {
+        if (!$file || !$file->isValid() || !$path) {
             return Helpers::api_response('Upload failed.', (object)[], 500);
         }
 

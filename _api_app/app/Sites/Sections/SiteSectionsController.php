@@ -124,7 +124,7 @@ class SiteSectionsController extends Controller
         $file = $request->file('value');
         $path = $request->get('path');
 
-        if (!$file->isValid()) {
+        if (!$file || !$file->isValid() || !$path) {
             return response()->json([
                 'status' => 0,
                 'error' => 'Upload failed.'
