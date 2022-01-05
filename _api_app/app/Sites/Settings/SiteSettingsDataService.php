@@ -2,6 +2,7 @@
 
 namespace App\Sites\Settings;
 
+use Illuminate\Support\Str;
 use App\Configuration\SiteSettingsConfigService;
 use App\Shared\Storage;
 use App\Shared\ImageHelpers;
@@ -588,7 +589,7 @@ class SiteSettingsDataService extends Storage
         list($name) = explode('-', $settings['template']['template']);
         // This is equivalent to find function in JS
         $actualName = current(array_filter($availableTemplates, function($template) use ($name) {
-            return starts_with($template, $name);
+            return Str::startsWith($template, $name);
         }));
 
         if (!$actualName) {

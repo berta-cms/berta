@@ -128,8 +128,10 @@
         min-height: initial;
       }
 
-      >ul {
-        display: none;
+      .bt-sections-menu {
+        >ul {
+          display: none;
+        }
       }
 
       ul {

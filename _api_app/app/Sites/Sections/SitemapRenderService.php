@@ -20,7 +20,7 @@ class SitemapRenderService
         return $tags;
     }
 
-    private function getUrl($section, $tag = null, $siteSlug, $sections, $request)
+    private function getUrl($section, $siteSlug, $sections, $request, $tag = null)
     {
         $urlParts = [];
 
@@ -72,13 +72,13 @@ class SitemapRenderService
                 return $urls;
             }
 
-            $urls[] = $this->getUrl($section, null, $siteSlug, $sections, $request);
+            $urls[] = $this->getUrl($section, $siteSlug, $sections, $request, null);
             $hasDirectContent = !empty($section['@attributes']['has_direct_content']) && $section['@attributes']['has_direct_content'];
             foreach ($section['tags'] as $i => $tag) {
                 if (!$hasDirectContent && !$i) {
                     continue;
                 }
-                $urls[] = $this->getUrl($section, $tag, $siteSlug, $sections, $request);
+                $urls[] = $this->getUrl($section, $siteSlug, $sections, $request, $tag);
             }
 
             return $urls;

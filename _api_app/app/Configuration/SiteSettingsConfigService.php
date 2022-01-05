@@ -29,6 +29,7 @@ class SiteSettingsConfigService
         if (!isset($options)) {
             $options = [];
         }
+
         $berta = (object)['security' => (object)['userLoggedIn' => Auth::check()]];
         $ENGINE_ROOT_PATH = config('app.old_berta_root') . '/engine/';
         $SITE_ROOT_PATH = config('app.old_berta_root') . '/';

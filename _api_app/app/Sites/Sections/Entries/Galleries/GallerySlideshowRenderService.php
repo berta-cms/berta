@@ -58,7 +58,7 @@ class GallerySlideshowRenderService extends EntryGalleryRenderService
     {
         $classes = parent::getGalleryClassList($galleryItemsData, $galleryType, $entry, $siteSettings);
 
-        if (!empty($galleryItemsData)) {
+        if (!empty($galleryItemsData) && !empty($entry)) {
             $gallerySlideNumbersVisible = !empty($entry['mediaCacheData']['@attributes']['slide_numbers_visible']) ? $entry['mediaCacheData']['@attributes']['slide_numbers_visible'] : $siteSettings['entryLayout']['gallerySlideNumberVisibilityDefault'];
 
             $classes[] = 'xSlideNumbersVisible-' . $gallerySlideNumbersVisible;

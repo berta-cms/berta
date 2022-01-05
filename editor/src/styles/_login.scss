@@ -49,8 +49,6 @@ berta-login {
       &.facebook {
         background-color: $facebook-color;
         margin-top: 20px;
-        opacity: .3;
-        pointer-events: none;
 
         & bt-icon-facebook {
           justify-content: center;
@@ -97,14 +95,6 @@ berta-login {
 
     p {
       margin-bottom: 0;
-    }
-
-    .notification {
-
-      a {
-        display: inline;
-        color: $black;
-      }
     }
   }
 

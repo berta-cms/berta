@@ -127,7 +127,7 @@ class SitesDataService extends Storage
         return $sites;
     }
 
-    public function create($cloneFrom = null, Request $request)
+    public function create(Request $request, $cloneFrom = null)
     {
         $sites = $this->get();
         $name = 'untitled-' . uniqid();
@@ -175,7 +175,7 @@ class SitesDataService extends Storage
         $this->array2xmlFile(['site' => $sites], $this->XML_FILE, $this->ROOT_ELEMENT);
         $site['order'] = count($sites) - 1;
 
-        if (config('plugin-Shop.key') === $request->getHost()) {
+        if (Helpers::isValidDomain($request->getHost(), config('plugin-Shop.key'))) {
             $clientsDataService = new ShopClientsDataService($name);
             $clientsDataService->TruncateClients();
             $ordersDataService = new ShopOrdersDataService($name);

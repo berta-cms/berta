@@ -92,7 +92,7 @@ class SectionsMenuRenderService
             ]);
 
             $section['linkAttributes'] = Helpers::arrayToHtmlAttributes([
-                'href' => $this->getUrl($section, null, $site, $sections, $siteSettings, $isEditMode, $isPreviewMode),
+                'href' => $this->getUrl($section, $site, $sections, $siteSettings, $isEditMode, $isPreviewMode, null),
                 'target' => !empty($section['@attributes']['type']) && $section['@attributes']['type'] == 'external_link' ? (!empty($section['target']) ? $section['target'] : '_blank') : ''
             ]);
 
@@ -137,7 +137,7 @@ class SectionsMenuRenderService
                 $section['tags'] = array_map(function ($tag) use ($section, $site, $sections, $siteSettings, $isEditMode, $isPreviewMode) {
                     $tag['linkAttributes'] = Helpers::arrayToHtmlAttributes([
                         'class' => 'handle',
-                        'href' => $this->getUrl($section, $tag, $site, $sections, $siteSettings, $isEditMode, $isPreviewMode)
+                        'href' => $this->getUrl($section, $site, $sections, $siteSettings, $isEditMode, $isPreviewMode, $tag)
                     ]);
                     return $tag;
                 }, $section['tags']);
@@ -159,7 +159,7 @@ class SectionsMenuRenderService
                 $submenu['tags'] = array_map(function ($tag) use ($currentSection, $site, $sections, $siteSettings, $isEditMode, $isPreviewMode) {
                     $tag['linkAttributes'] = Helpers::arrayToHtmlAttributes([
                         'class' => 'handle',
-                        'href' => $this->getUrl($currentSection, $tag, $site, $sections, $siteSettings, $isEditMode, $isPreviewMode)
+                        'href' => $this->getUrl($currentSection, $site, $sections, $siteSettings, $isEditMode, $isPreviewMode, $tag)
                     ]);
                     return $tag;
                 }, $submenu['tags']);
@@ -172,7 +172,7 @@ class SectionsMenuRenderService
         ];
     }
 
-    private function getUrl($section, $tag = null, $site, $sections, $siteSettings, $isEditMode, $isPreviewMode)
+    private function getUrl($section, $site, $sections, $siteSettings, $isEditMode, $isPreviewMode, $tag = null)
     {
         $urlParts = [];
         $isExternalLink = isset($section['@attributes']['type']) && $section['@attributes']['type'] == 'external_link';

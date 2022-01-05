@@ -5,6 +5,7 @@ namespace App\Sites\Sections\Entries;
 use Validator;
 use Illuminate\Http\Request;
 use App\Shared\Storage;
+use App\Shared\Helpers;
 use App\Http\Controllers\Controller;
 
 use App\Configuration\SiteTemplatesConfigService;
@@ -92,15 +93,15 @@ class SectionEntriesController extends Controller
     {
         $file = $request->file('value');
         $path = $request->get('path');
-        $isVideoPosterImage = count(explode('/', $path)) == 5;
 
-        if (!$file->isValid()) {
+        if (!$file || !$file->isValid() || !$path) {
             return response()->json([
                 'status' => 0,
                 'error' => 'Upload failed.'
             ]);
         }
 
+        $isVideoPosterImage = count(explode('/', $path)) == 5;
         $isImage = in_array($file->guessExtension(), config('app.image_mimes')) || $isVideoPosterImage;
         $validator = Validator::make(['file' => $file], [
             'file' => $isImage ?
@@ -145,7 +146,7 @@ class SectionEntriesController extends Controller
     /**
      * This method is entry rendering example
      */
-    public function renderEntries($site, $section, $id=null, Request $request) {
+    public function renderEntries($site, $section, Request $request, $id=null) {
         $sectionEntriesDS = new SectionEntriesDataService($site, $section);
         $siteSectionsDS = new SiteSectionsDataService($site);
         $siteSettingsDS = new SiteSettingsDataService($site);
@@ -173,7 +174,7 @@ class SectionEntriesController extends Controller
                 $siteTemplateSettingsDS->getState(),
                 (new Storage($site)),
                 false,
-                config('plugin-Shop.key') === $request->getHost()
+                Helpers::isValidDomain($request->getHost(), config('plugin-Shop.key'))
             );
         }
 
@@ -184,7 +185,7 @@ class SectionEntriesController extends Controller
         return response($res);
     }
 
-    public function renderEntryGalleryEditor($site = '', $section, $id)
+    public function renderEntryGalleryEditor($section, $id, $site = '')
     {
         $siteSettingsDS = new SiteSettingsDataService($site);
         $siteSettings = $siteSettingsDS->getState();
@@ -216,26 +217,26 @@ class SectionEntriesController extends Controller
         );
     }
 
-    public function renderMashupEntries($siteSlug = '', Request $request)
+    public function renderMashupEntries(Request $request, $site = '')
     {
-        $siteSettingsDS = new SiteSettingsDataService($siteSlug);
+        $siteSettingsDS = new SiteSettingsDataService($site);
         $siteSettings = $siteSettingsDS->getState();
-        $siteTemplateSettingsDS = new SiteTemplateSettingsDataService($siteSlug, $siteSettings['template']['template']);
+        $siteTemplateSettingsDS = new SiteTemplateSettingsDataService($site, $siteSettings['template']['template']);
         $siteTemplateSettings = $siteTemplateSettingsDS->getState();
-        $sectionsDS = new SiteSectionsDataService($siteSlug);
+        $sectionsDS = new SiteSectionsDataService($site);
         $sections = $sectionsDS->getState();
         $sectionSlug = $request->get('section');
         $tagSlug = $request->get('tag');
         $isPreviewMode = false;
         $isEditMode = false;
 
-        $storageService = new Storage($siteSlug, $isPreviewMode);
+        $storageService = new Storage($site, $isPreviewMode);
         $siteTemplatesConfigService = new SiteTemplatesConfigService();
         $mashupEntriesRS = new SectionMashupEntriesRenderService($siteTemplatesConfigService);
 
         return $mashupEntriesRS->render(
             $storageService,
-            $siteSlug,
+            $site,
             $siteSettings,
             $siteTemplateSettings,
             $sections,

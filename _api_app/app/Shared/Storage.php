@@ -2,6 +2,7 @@
 
 namespace App\Shared;
 
+use Illuminate\Support\Str;
 use App\Shared\Helpers;
 use Swaggest\JsonSchema\Schema;
 
@@ -213,7 +214,7 @@ class Storage
 
         // Remove thumbnails
         foreach (scandir($dir) as $file) {
-            if (!is_file($dir . '/' . $file) || substr($file, 0, 1) !== '_' || !ends_with($file, $fileName)) {
+            if (!is_file($dir . '/' . $file) || substr($file, 0, 1) !== '_' || !Str::endsWith($file, $fileName)) {
                 continue;
             }
             unlink($dir . '/' . $file);

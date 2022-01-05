@@ -53,7 +53,7 @@ class UserAuthServiceProvider extends ServiceProvider
         // should return either a User instance or null. You're free to obtain
         // the User instance via an API token or any other method necessary.
 
-        Auth::viaRequest('jwt_token', function (Request $request) {
+        $this->app['auth']->viaRequest('jwt_token', function ($request) {
             $token = $this->getBearerToken($request);
 
             if (
