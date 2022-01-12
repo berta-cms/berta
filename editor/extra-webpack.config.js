@@ -16,7 +16,7 @@ module.exports = {
   plugins: [
     new EventHooksPlugin({
       beforeRun: function () {
-        cpx.copySync('../_api_app/app/Sites/**/*.twig', 'src/templates', {
+        cpx.copySync('../_api_app/app/**/*.twig', 'src/templates', {
           clean: true
         }, function (err) {
           if (err) {

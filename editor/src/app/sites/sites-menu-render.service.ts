@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, combineLatest, Subscription } from 'rxjs';
 import { skip } from 'rxjs/operators';
-import * as sitesMenuTemplate from '../../templates/sitesMenu.twig';
+import * as sitesMenuTemplate from '../../templates/Sites/sitesMenu.twig';
 import { SiteStateModel } from './sites-state/site-state.model';
 import { UserState } from '../user/user.state';
 import { Store } from '@ngxs/store';

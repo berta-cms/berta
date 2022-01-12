@@ -1,39 +1,37 @@
-import { Injectable } from '@angular/core';
-import { Store } from '@ngxs/store';
-import { TemplateRenderService } from './template-render.service';
+import { Injectable } from "@angular/core";
+import { Store } from "@ngxs/store";
+import { TemplateRenderService } from "./template-render.service";
 import { SitesMenuRenderService } from "../sites/sites-menu-render.service";
+import * as Template from "../../templates/Sites/Sections/whiteTemplate.twig";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
 export class WhiteTemplateRenderService extends TemplateRenderService {
-
   constructor(
     store: Store,
-    private sitesMenuRenderService: SitesMenuRenderService) {
+    private sitesMenuRenderService: SitesMenuRenderService
+  ) {
     super(store);
   }
 
-  getViewObservables() {
-    const commonViewObservables = super.getViewObservables();
-    const viewObservables = {
-      ...commonViewObservables, ...{
-        // place for template specific observables
-      }
-    };
+  getViewData() {
+    const commonViewData = super.getViewData();
+    // const viewData = {
+    //   ...commonViewData, ...{
+    //     // place for template specific view data here
+    //   }
 
-    return viewObservables;
+    // return viewData;
+    return commonViewData;
   }
 
   startRender(contentWindow: Window) {
-    const viewObservables = this.getViewObservables();
+    const viewData = this.getViewData();
+    const htmlOutput = Template(viewData);
 
-    this.sitesMenuRenderService.startRender(contentWindow, viewObservables, {
-      element: '#sideColumnTop',
-      position: 'afterbegin'
-    });
+    this.replaceIframeContent(contentWindow, htmlOutput);
   }
-
 
   stopRender() {
     this.sitesMenuRenderService.stopRender();

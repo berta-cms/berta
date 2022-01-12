@@ -1,26 +1,31 @@
-import { Injectable } from '@angular/core';
-import { Store } from '@ngxs/store';
-import { AppState } from '../app-state/app.state';
-import { SitesState } from '../sites/sites-state/sites.state';
+import { Injectable } from "@angular/core";
+import { Store } from "@ngxs/store";
+import { SiteSettingsState } from "../sites/settings/site-settings.state";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
 export class TemplateRenderService {
-  store: Store;
+  constructor(public readonly store: Store) {}
 
-  constructor(
-     store: Store) {
-
-      this.store = store;
-  }
-
-  getViewObservables() {
-    const viewObservables = {
-      currentSite: this.store.select(AppState.getSite),
-      sites: this.store.select(SitesState),
+  getViewData() {
+    console.log("getViewData t");
+    const viewData = {
+      siteSettings: this.store.selectSnapshot(
+        SiteSettingsState.getCurrentSiteSettings
+      ),
     };
 
-    return viewObservables;
+    return viewData;
+  }
+
+  replaceIframeContent(contentWindow: Window, html: string) {
+    Array.from(contentWindow.document.childNodes).forEach((node) =>
+      node.remove()
+    );
+
+    contentWindow.document.open();
+    contentWindow.document.write(html);
+    contentWindow.document.close();
   }
 }

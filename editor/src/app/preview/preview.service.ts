@@ -469,10 +469,10 @@ export class PreviewService {
         });
       })
     ).subscribe(() => {
-      iframe.contentWindow.location.reload();
+      // iframe.contentWindow.location.reload();
+      this.renderService.startRender(iframe.contentWindow);
     });
 
-    this.renderService.startRender(iframe.contentWindow);
   }
 
   disconnectIframeView(iframe: HTMLIFrameElement) {
