@@ -1,11 +1,11 @@
-import { Injectable } from '@angular/core';
-import { Store } from '@ngxs/store';
-import { SiteSettingsState } from '../sites/settings/site-settings.state';
-import { UserState } from '../user/user.state';
-import { WhiteTemplateRenderService } from './white-template-render.service';
+import { Injectable } from "@angular/core";
+import { Store } from "@ngxs/store";
+import { SiteSettingsState } from "../sites/settings/site-settings.state";
+import { UserState } from "../user/user.state";
+import { WhiteTemplateRenderService } from "./white-template-render.service";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
 export class RenderService {
   private templateName: string;
@@ -13,9 +13,7 @@ export class RenderService {
   constructor(
     private store: Store,
     private whiteTemplateRenderService: WhiteTemplateRenderService
-    ) {
-
-  }
+  ) {}
 
   startRender(contentWindow: Window) {
     const isLoggedIn = this.store.selectSnapshot(UserState.isLoggedIn);
@@ -23,36 +21,20 @@ export class RenderService {
       return;
     }
 
-    this.templateName = this.store.selectSnapshot(SiteSettingsState.getCurrentSiteTemplate).split('-').shift();
+    this.templateName = this.store
+      .selectSnapshot(SiteSettingsState.getCurrentSiteTemplate)
+      .split("-")
+      .shift();
 
     switch (this.templateName) {
-      case 'white':
+      case "white":
         this.whiteTemplateRenderService.startRender(contentWindow);
         break;
 
-      case 'default':
+      case "default":
         break;
 
-      case 'mashup':
-        break;
-
-      // Messy
-      default:
-        break;
-    }
-
-  }
-
-  stopRender() {
-    switch (this.templateName) {
-      case 'white':
-        this.whiteTemplateRenderService.stopRender();
-        break;
-
-      case 'default':
-        break;
-
-      case 'mashup':
+      case "mashup":
         break;
 
       // Messy
@@ -60,5 +42,4 @@ export class RenderService {
         break;
     }
   }
-
 }

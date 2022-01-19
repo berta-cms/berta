@@ -1,8 +1,8 @@
 import { Injectable } from "@angular/core";
 import { Store } from "@ngxs/store";
 import { TemplateRenderService } from "./template-render.service";
-import { SitesMenuRenderService } from "../sites/sites-menu-render.service";
 import * as Template from "../../templates/Sites/Sections/whiteTemplate.twig";
+import { SectionHeadRenderService } from "../sites/sections/section-head-render.service";
 
 @Injectable({
   providedIn: "root",
@@ -10,9 +10,9 @@ import * as Template from "../../templates/Sites/Sections/whiteTemplate.twig";
 export class WhiteTemplateRenderService extends TemplateRenderService {
   constructor(
     store: Store,
-    private sitesMenuRenderService: SitesMenuRenderService
+    sectionHeadRenderService: SectionHeadRenderService
   ) {
-    super(store);
+    super(store, sectionHeadRenderService);
   }
 
   getViewData() {
@@ -31,9 +31,5 @@ export class WhiteTemplateRenderService extends TemplateRenderService {
     const htmlOutput = Template(viewData);
 
     this.replaceIframeContent(contentWindow, htmlOutput);
-  }
-
-  stopRender() {
-    this.sitesMenuRenderService.stopRender();
   }
 }
