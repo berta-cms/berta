@@ -1,7 +1,7 @@
 export interface PlanModel {
-  id: string,
-  name: string,
-  features: string[]
+  id: string;
+  name: string;
+  features: string[];
 }
 
 export interface AppStateModel {
@@ -11,7 +11,8 @@ export interface AppStateModel {
   inputFocused: boolean;
   site: string | null;
   section: string | null;
-  urls: {[name: string]: string};
+  tag: string | null;
+  urls: { [name: string]: string };
   forgotPasswordUrl: string;
   isBertaHosting: boolean;
   plans: PlanModel[];
