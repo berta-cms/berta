@@ -1,5 +1,9 @@
 import { set } from 'lodash/fp';
-import { SettingConfigModel, SettingConfigGroupResponse, SettingGroupConfigModel } from './interfaces';
+import {
+  SettingConfigModel,
+  SettingConfigGroupResponse,
+  SettingGroupConfigModel,
+} from './interfaces';
 
 /**
  * Split camelCased string in to an array of strings.
@@ -13,7 +17,6 @@ export function splitCamel(camelCasedString: string): Array<string> {
   return camelCasedString.match(/([a-z]+)|([A-Z][a-z]+)|([A-Z]+(?![a-z]))/g);
 }
 
-
 /**
  * Uppercase the first letter of given string
  *
@@ -25,7 +28,6 @@ export function splitCamel(camelCasedString: string): Array<string> {
 export function uCFirst(str: string): string {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
-
 
 /**
  * Split camelCased string in to multiple words based on uppercase letters.
@@ -41,10 +43,9 @@ export function camel2Words(camelCasedString: string): string {
     return uCFirst(camelCasedString);
   }
   return splitCamel(camelCasedString)
-    .map(word => uCFirst(word))
+    .map((word) => uCFirst(word))
     .join(' ');
 }
-
 
 /**
  *  Function to test if an object is a plain object, i.e. is constructed
@@ -55,10 +56,8 @@ export function camel2Words(camelCasedString: string): string {
  *  @param obj - value to test
  */
 export function isPlainObject(obj: any): boolean {
-
   // Basic check for Type object that's not null
   if (typeof obj === 'object' && obj !== null) {
-
     // If Object.getPrototypeOf supported, use it
     if (typeof Object.getPrototypeOf === 'function') {
       const proto = Object.getPrototypeOf(obj);
@@ -80,10 +79,9 @@ export function isPlainObject(obj: any): boolean {
  */
 export function stringToCurrency(number: string): string {
   return parseFloat(number).toLocaleString('en-US', {
-    minimumFractionDigits: 2
+    minimumFractionDigits: 2,
   });
 }
-
 
 /**
  * Transforms deep payload object into flat array with key path and value
@@ -115,20 +113,21 @@ export function stringToCurrency(number: string): string {
  *
  * @param payload object to convert
  */
-export function objectToPathArray(payload: Object): {path: string[], value: any}[] {
+export function objectToPathArray(
+  payload: Object
+): { path: string[]; value: any }[] {
   const results = [];
 
   for (const key in payload) {
     if (isPlainObject(payload[key])) {
-      for ( const child of objectToPathArray(payload[key])) {
+      for (const child of objectToPathArray(payload[key])) {
         child.path.unshift(key);
         results.push(child);
       }
-
     } else {
       results.push({
         path: [key],
-        value: payload[key]
+        value: payload[key],
       });
     }
   }
@@ -136,20 +135,20 @@ export function objectToPathArray(payload: Object): {path: string[], value: any}
   return results;
 }
 
-
 /**
  * Update values parameter in each of settings for given group and return the new group
  *
  * @param settingGroupConfigResponse - setting group configuration from API response
  * @return - setting group where all settings that have select values are updated for the app
  */
-export function initSettingConfigGroup(settingGroupConfigResponse: SettingConfigGroupResponse): SettingGroupConfigModel {
+export function initSettingConfigGroup(
+  settingGroupConfigResponse: SettingConfigGroupResponse
+): SettingGroupConfigModel {
   const result: SettingGroupConfigModel = {};
 
   for (const settingSlug in settingGroupConfigResponse) {
     if (settingSlug === '_') {
       result['_'] = settingGroupConfigResponse[settingSlug];
-
     } else if (
       'values' in settingGroupConfigResponse[settingSlug] ||
       settingGroupConfigResponse[settingSlug].format === 'select' ||
@@ -159,41 +158,44 @@ export function initSettingConfigGroup(settingGroupConfigResponse: SettingConfig
       let values: SettingConfigModel['values'] = [];
 
       if (isPlainObject(selectValues)) {
-        values = Object.keys(selectValues).map((value => {
+        values = Object.keys(selectValues).map((value) => {
           return { value: value, title: selectValues[value] };
-        }));
-
+        });
       } else if (selectValues instanceof Array) {
-        values = selectValues.map(value => {
+        values = selectValues.map((value) => {
           return { value: value, title: camel2Words(String(value)) };
         });
-
       } else {
-        values = [{
-          value: String(selectValues),
-          title: String(selectValues)
-        }];
+        values = [
+          {
+            value: String(selectValues),
+            title: String(selectValues),
+          },
+        ];
       }
 
       // Turn ['yes', 'no'] select type into toggle input type
-      if (values.length === 2 &&
-          ((values[0].value === 'yes' && values[1].value === 'no') || (values[0].value === 'no' && values[1].value === 'yes'))) {
+      if (
+        values.length === 2 &&
+        ((values[0].value === 'yes' && values[1].value === 'no') ||
+          (values[0].value === 'no' && values[1].value === 'yes'))
+      ) {
         settingGroupConfigResponse[settingSlug].format = 'toggle';
       }
 
       result[settingSlug] = {
         ...settingGroupConfigResponse[settingSlug],
-        values: values
+        values: values,
       };
-
     } else {
-      result[settingSlug] = settingGroupConfigResponse[settingSlug] as SettingGroupConfigModel;
+      result[settingSlug] = settingGroupConfigResponse[
+        settingSlug
+      ] as SettingGroupConfigModel;
     }
   }
 
   return result;
 }
-
 
 /**
  * Assign value to object by path and return updated object
@@ -207,7 +209,6 @@ export function assignByPath(obj: any, path: string, value: any) {
   return set(pathArr, value, obj);
 }
 
-
 /**
  * Removes invalid characters by XML 1.0 specification
  *
@@ -215,10 +216,10 @@ export function assignByPath(obj: any, path: string, value: any) {
  * @returns cleaned string
  */
 export function removeXMLInvalidChars(string: string): string {
-  const notSafeRegex = /[^\x09\x0A\x0D\x20-\xFF\x85\xA0-\uD7FF\uE000-\uFDCF\uFDE0-\uFFFD]/gm;
+  const notSafeRegex =
+    /[^\x09\x0A\x0D\x20-\xFF\x85\xA0-\uD7FF\uE000-\uFDCF\uFDE0-\uFFFD]/gm;
   return string.replace(notSafeRegex, '');
 }
-
 
 /**
  * Get icon name from URL
@@ -240,7 +241,7 @@ export function getIconFromUrl(url: string) {
     'vimeo',
     'youtube',
     'tumblr',
-    'spotify'
+    'spotify',
   ];
 
   let parsedUrl: URL;
@@ -255,11 +256,28 @@ export function getIconFromUrl(url: string) {
     if (hostParts.length > 1) {
       const hostName = hostParts[hostParts.length - 2];
 
-      if (availableIcons.indexOf(hostName) > -1 ) {
+      if (availableIcons.indexOf(hostName) > -1) {
         iconName = hostName;
       }
     }
   }
 
   return iconName;
+}
+
+/**
+ * Converts object of attributes to string of HTML attributes
+ */
+export function toHtmlAttributes(attributes: {
+  [key: string]: string;
+}): string {
+  let html = '';
+
+  Object.keys(attributes)
+    .filter((attribute) => attributes[attribute].length > 0)
+    .map((attribute) => {
+      html += ` ${attribute}="${attributes[attribute]}"`;
+    });
+
+  return html;
 }

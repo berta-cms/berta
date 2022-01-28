@@ -22,18 +22,37 @@ export class WhiteTemplateRenderService extends TemplateRenderService {
     const viewData = {
       ...commonViewData,
       ...{
-        // place for template specific view data here
+        // place for template specific data for view
         bodyClasses: this.sectionRenderService.getBodyClasses(
           commonViewData.siteTemplateSettings,
           commonViewData.sections,
           commonViewData.sectionSlug,
           commonViewData.tagSlug
         ),
+        isCenteredPageLayout:
+          commonViewData.siteTemplateSettings.pageLayout.centered === 'yes',
+        isResponsive:
+          commonViewData.siteTemplateSettings.pageLayout.responsive === 'yes',
+        sideColumnAttributes: this.sectionRenderService.getSideColumnAttributes(
+          commonViewData.siteTemplateSettings
+        ),
+        mainColumnAttributes: this.sectionRenderService.getMainColumnAttributes(
+          commonViewData.siteTemplateSettings
+        ),
+        pageEntriesAttributes:
+          this.sectionRenderService.getPageEntriesAttributes(
+            commonViewData.sections,
+            commonViewData.sectionSlug,
+            commonViewData.tagSlug
+          ),
+        socialMediaLinks: this.sectionRenderService.getSocialMediaLinks(
+          commonViewData.appState,
+          commonViewData.siteSettings
+        ),
       },
     };
 
     return viewData;
-    // return commonViewData;
   }
 
   startRender(contentWindow: Window) {

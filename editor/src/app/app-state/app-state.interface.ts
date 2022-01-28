@@ -21,4 +21,5 @@ export interface AppStateModel {
   version: string;
   lastRoute: string;
   themes: string[];
+  socialMediaIcons: { [key: string]: string };
 }

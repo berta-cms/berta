@@ -6,6 +6,26 @@ use App\Sites\SocialMediaLink;
 
 class SocialMediaLinksRenderService
 {
+    public static function getSocialMediaIcons()
+    {
+        $icons = [];
+        $dir = config('app.old_berta_root') . '/_templates/_includes/icons';
+
+        $files = array_diff(scandir($dir), ['.', '..']);
+        foreach ($files as $file) {
+
+            $name = pathinfo($file)['filename'];
+            $icons[$name] = self::getSocialMediaIcon($name);
+        }
+
+        return $icons;
+    }
+
+    private static function getSocialMediaIcon($name)
+    {
+        return file_get_contents(realpath(config('app.old_berta_root') . '/_templates/_includes/icons/' . $name . '.svg'));
+    }
+
     private function getViewData($siteSettings)
     {
         $data = [];
@@ -13,7 +33,7 @@ class SocialMediaLinksRenderService
         if (!empty($siteSettings['socialMediaLinks']['links'])) {
             $data['socialMediaLinks'] = array_map(function ($link) {
                 $linkModel = new SocialMediaLink($link);
-                $linkModel->icon = file_get_contents(realpath(config('app.old_berta_root') . '/_templates/_includes/icons/' . $linkModel->icon  . '.svg' ));
+                $linkModel->icon = self::getSocialMediaIcon($linkModel->icon);
                 return $linkModel;
             }, $siteSettings['socialMediaLinks']['links']);
         }

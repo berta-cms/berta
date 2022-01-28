@@ -101,6 +101,7 @@ export class TemplateRenderService {
       siteTemplateSettings.pageLayout.autoResponsive === 'yes';
 
     const viewData = {
+      appState: appState,
       siteSettings: siteSettings,
       sections: sections,
       siteTemplateSettings: siteTemplateSettings,
