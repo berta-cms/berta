@@ -27,7 +27,7 @@ export class SocialMediaLinksRenderService {
   render(appState, siteSettings) {
     const viewData = this.getViewData(appState, siteSettings);
 
-    if (!viewData.socialMediaLinks) {
+    if (!viewData || !viewData.socialMediaLinks) {
       return '';
     }
 

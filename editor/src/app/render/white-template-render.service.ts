@@ -4,6 +4,7 @@ import { TemplateRenderService } from './template-render.service';
 import * as Template from '../../templates/Sites/Sections/whiteTemplate.twig';
 import { SectionRenderService } from '../sites/sections/section-render.service';
 import { SectionHeadRenderService } from '../sites/sections/section-head-render.service';
+import { SitesMenuRenderService } from '../sites/sites-menu-render.service';
 
 @Injectable({
   providedIn: 'root',
@@ -12,9 +13,15 @@ export class WhiteTemplateRenderService extends TemplateRenderService {
   constructor(
     store: Store,
     sectionRenderService: SectionRenderService,
-    sectionHeadRenderService: SectionHeadRenderService
+    sectionHeadRenderService: SectionHeadRenderService,
+    sitesMenuRenderService: SitesMenuRenderService
   ) {
-    super(store, sectionRenderService, sectionHeadRenderService);
+    super(
+      store,
+      sectionRenderService,
+      sectionHeadRenderService,
+      sitesMenuRenderService
+    );
   }
 
   getViewData(): { [key: string]: any } {

@@ -5,6 +5,8 @@ import { SectionHeadRenderService } from '../sites/sections/section-head-render.
 import { SectionRenderService } from '../sites/sections/section-render.service';
 import { SiteSectionsState } from '../sites/sections/sections-state/site-sections.state';
 import { SiteSettingsState } from '../sites/settings/site-settings.state';
+import { SitesMenuRenderService } from '../sites/sites-menu-render.service';
+import { SitesState } from '../sites/sites-state/sites.state';
 import { SiteTemplateSettingsState } from '../sites/template-settings/site-template-settings.state';
 import { SiteTemplatesState } from '../sites/template-settings/site-templates.state';
 import { UserState } from '../user/user.state';
@@ -16,13 +18,17 @@ export class TemplateRenderService {
   constructor(
     public readonly store: Store,
     public sectionRenderService: SectionRenderService,
-    public sectionHeadRenderService: SectionHeadRenderService
+    public sectionHeadRenderService: SectionHeadRenderService,
+    public sitesMenuRenderService: SitesMenuRenderService
   ) {}
 
   getViewData(): { [key: string]: any } {
+    const user = this.store.selectSnapshot(UserState);
+    const isShopAvailable = user.features.includes('shop');
     const appState = this.store.selectSnapshot(AppState);
     const siteSlug = this.store.selectSnapshot(AppState.getSite);
     const sectionSlug = this.store.selectSnapshot(AppState.getSection);
+    const sites = this.store.selectSnapshot(SitesState);
 
     // @todo: get first tag in list if no tag selected
     const tagSlug = this.store.selectSnapshot(AppState.getTag);
@@ -77,9 +83,6 @@ export class TemplateRenderService {
       SiteSectionsState.getCurrentSiteSections
     );
 
-    const user = this.store.selectSnapshot(UserState);
-    const isShopAvailable = user.features.includes('shop');
-
     const currentSection = this.sectionRenderService.getCurrentSection(
       sections,
       sectionSlug
@@ -107,6 +110,7 @@ export class TemplateRenderService {
       siteTemplateSettings: siteTemplateSettings,
       sectionSlug: sectionSlug,
       tagSlug: tagSlug,
+      user: user,
 
       sectionHead: this.sectionHeadRenderService.render(
         appState,
@@ -124,6 +128,15 @@ export class TemplateRenderService {
         isResponsive,
         isAutoResponsive,
         user
+      ),
+
+      sitesMenu: this.sitesMenuRenderService.render(
+        appState,
+        user,
+        siteSettings,
+        templateName,
+        siteTemplateSettings,
+        sites
       ),
     };
 

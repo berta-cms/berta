@@ -1,8 +1,8 @@
-import { Injectable } from "@angular/core";
-import * as Template from "../../../templates/Sites/Sections/sectionHead.twig";
+import { Injectable } from '@angular/core';
+import * as Template from '../../../templates/Sites/Sections/sectionHead.twig';
 
 @Injectable({
-  providedIn: "root",
+  providedIn: 'root',
 })
 export class SectionHeadRenderService {
   constructor() {}
@@ -33,7 +33,7 @@ export class SectionHeadRenderService {
     // favicon
 
     const googleSiteVerificationTag = user.features.includes(
-      "custom_javascript"
+      'custom_javascript'
     )
       ? siteSettings.settings.googleSiteVerification
       : null;
@@ -86,7 +86,7 @@ export class SectionHeadRenderService {
     Object.keys(siteTemplateSettings).map((groupSlug) => {
       Object.keys(siteTemplateSettings[groupSlug]).map((setting) => {
         if (
-          setting.endsWith("googleFont") &&
+          setting.endsWith('googleFont') &&
           siteTemplateSettings[groupSlug][setting]
         ) {
           googleWebFonts.push(siteTemplateSettings[groupSlug][setting]);
@@ -99,10 +99,10 @@ export class SectionHeadRenderService {
     );
 
     const cacheBoost = Date.now();
-    let queryParams = "&engine=1";
+    let queryParams = '&engine=1';
 
-    if (currentSectionType == "portfolio") {
-      queryParams += "&responsive=1";
+    if (currentSectionType == 'portfolio') {
+      queryParams += '&responsive=1';
     }
 
     if (siteSlug) {
@@ -113,23 +113,24 @@ export class SectionHeadRenderService {
       `/engine/css/backend.min.css?${appState.version}`,
       `/engine/css/editor.css.php?${cacheBoost}`,
       `/_templates/${siteSettings.template.template}/editor.css.php?${cacheBoost}`,
-      `/_templates/${siteSettings.template.template}/style.css?${appState.version}${queryParams}`,
+      `/_templates/${siteSettings.template.template}/style.css?${appState.version}`,
+      `/_templates/${siteSettings.template.template}/style.css.php?${cacheBoost}&${appState.version}${queryParams}`,
     ];
 
-    let inlineCSS = "";
+    let inlineCSS = '';
 
-    if (templateName === "messy") {
+    if (templateName === 'messy') {
       if (isShopAvailable) {
         cssFiles.push(
           `/_plugin_shop/css/shop.css.php?${cacheBoost}${
-            siteSlug ? `&site=${siteSlug}` : ""
+            siteSlug ? `&site=${siteSlug}` : ''
           }`
         );
       }
 
       if (isResponsive || isAutoResponsive) {
         if (isAutoResponsive) {
-          inlineCSS += "@media (max-width: 767px) {";
+          inlineCSS += '@media (max-width: 767px) {';
         }
 
         const entryPadding =
@@ -139,23 +140,23 @@ export class SectionHeadRenderService {
         const entryMaxWidth =
           currentSection && currentSection.entryMaxWidth
             ? currentSection.entryMaxWidth
-            : "";
+            : '';
 
         inlineCSS += `
                   #pageEntries .xEntry {
                       padding: ${entryPadding};
-                      ${entryMaxWidth ? `max-width: ${entryMaxWidth}` : ""}
+                      ${entryMaxWidth ? `max-width: ${entryMaxWidth}` : ''}
                   }
               `;
 
         if (isAutoResponsive) {
-          inlineCSS += "}";
+          inlineCSS += '}';
         }
       }
     }
 
     return {
-      googleWebFonts: uniqueGoogleWebFonts.join("|"),
+      googleWebFonts: uniqueGoogleWebFonts.join('|'),
       cssFiles: cssFiles,
       inlineCSS: inlineCSS,
       customCSS: siteTemplateSettings.css.customCSS,
@@ -173,32 +174,32 @@ export class SectionHeadRenderService {
   ) {
     const bertaGlobalOptions = {
       templateName: templateName,
-      environment: "engine",
+      environment: 'engine',
       backToTopEnabled: siteSettings.navigation.backToTopEnabled,
       slideshowAutoRewind: siteSettings.entryLayout.gallerySlideshowAutoRewind,
       sectionType:
         currentSection &&
-        currentSection["@attributes"] &&
-        currentSection["@attributes"].type
-          ? currentSection["@attributes"].type
-          : "default",
+        currentSection['@attributes'] &&
+        currentSection['@attributes'].type
+          ? currentSection['@attributes'].type
+          : 'default',
       gridStep: siteSettings.pageLayout.gridStep,
       galleryFullScreenBackground:
         siteSettings.entryLayout.galleryFullScreenBackground,
       galleryFullScreenImageNumbers:
         siteSettings.entryLayout.galleryFullScreenImageNumbers,
       paths: {
-        engineRoot: "/engine/",
-        engineABSRoot: "/engine/",
-        siteABSMainRoot: "/",
-        siteABSRoot: `/${siteSlug ? `${siteSlug}/` : ""}`,
+        engineRoot: '/engine/',
+        engineABSRoot: '/engine/',
+        siteABSMainRoot: '/',
+        siteABSRoot: `/${siteSlug ? `${siteSlug}/` : ''}`,
         template: `/_templates/${siteSettings.template.template}/`,
         site: siteSlug,
       },
       // @todo: load current language translation here, we don't have all translations in state
       i18n: {
-        "create new entry here": "create new entry here",
-        "create new entry": "create new entry",
+        'create new entry here': 'create new entry here',
+        'create new entry': 'create new entry',
       },
     };
 
@@ -207,7 +208,7 @@ export class SectionHeadRenderService {
       `/engine/js/ng-backend.min.js?${appState.version}`,
     ];
 
-    if (templateName === "messy") {
+    if (templateName === 'messy') {
       scriptFiles.push(
         `/_templates/${siteSettings.template.template}/mess.js?${appState.version}`
       );
