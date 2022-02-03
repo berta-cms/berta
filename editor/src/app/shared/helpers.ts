@@ -281,3 +281,26 @@ export function toHtmlAttributes(attributes: {
 
   return html;
 }
+
+export function toImageHtmlAttributes(
+  siteSlug: string,
+  attributes: { filename: string; width: string | null; height: string | null }
+) {
+  let html = '';
+  const mediaUrl = `/storage/${
+    siteSlug.length ? `-sites/${siteSlug}/` : ''
+  }media`;
+
+  html += ` src="${mediaUrl}/${attributes.filename}"`;
+
+  if (attributes.width) {
+    html += ` srcset="${mediaUrl}/_${attributes.width}x${attributes.height}_${attributes.filename} 1x, ${mediaUrl}/${attributes.filename} 2x"`;
+    html += ` width="${attributes.width}"`;
+  }
+
+  if (attributes.height) {
+    html += ` height="${attributes.height}"`;
+  }
+
+  return html;
+}

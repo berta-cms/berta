@@ -5,6 +5,7 @@ import { SectionHeadRenderService } from '../sites/sections/section-head-render.
 import { SectionRenderService } from '../sites/sections/section-render.service';
 import { SiteSectionsState } from '../sites/sections/sections-state/site-sections.state';
 import { SiteSettingsState } from '../sites/settings/site-settings.state';
+import { SitesHeaderRenderService } from '../sites/sites-header-render.service';
 import { SitesMenuRenderService } from '../sites/sites-menu-render.service';
 import { SitesState } from '../sites/sites-state/sites.state';
 import { SiteTemplateSettingsState } from '../sites/template-settings/site-template-settings.state';
@@ -19,7 +20,8 @@ export class TemplateRenderService {
     public readonly store: Store,
     public sectionRenderService: SectionRenderService,
     public sectionHeadRenderService: SectionHeadRenderService,
-    public sitesMenuRenderService: SitesMenuRenderService
+    public sitesMenuRenderService: SitesMenuRenderService,
+    public sitesHeaderRenderService: SitesHeaderRenderService
   ) {}
 
   getViewData(): { [key: string]: any } {
@@ -111,7 +113,6 @@ export class TemplateRenderService {
       sectionSlug: sectionSlug,
       tagSlug: tagSlug,
       user: user,
-
       sectionHead: this.sectionHeadRenderService.render(
         appState,
         siteSlug,
@@ -129,7 +130,6 @@ export class TemplateRenderService {
         isAutoResponsive,
         user
       ),
-
       sitesMenu: this.sitesMenuRenderService.render(
         appState,
         user,
@@ -137,6 +137,13 @@ export class TemplateRenderService {
         templateName,
         siteTemplateSettings,
         sites
+      ),
+      siteHeader: this.sitesHeaderRenderService.render(
+        siteSlug,
+        siteSettings,
+        templateName,
+        siteTemplateSettings,
+        isResponsive
       ),
     };
 
