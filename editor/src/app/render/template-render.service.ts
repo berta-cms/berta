@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngxs/store';
 import { AppState } from '../app-state/app.state';
+import { AdditionalTextRenderService } from '../sites/sections/additional-text-render.service';
 import { SectionHeadRenderService } from '../sites/sections/section-head-render.service';
 import { SectionRenderService } from '../sites/sections/section-render.service';
 import { SiteSectionsState } from '../sites/sections/sections-state/site-sections.state';
@@ -21,7 +22,8 @@ export class TemplateRenderService {
     public sectionRenderService: SectionRenderService,
     public sectionHeadRenderService: SectionHeadRenderService,
     public sitesMenuRenderService: SitesMenuRenderService,
-    public sitesHeaderRenderService: SitesHeaderRenderService
+    public sitesHeaderRenderService: SitesHeaderRenderService,
+    public additionalTextRenderService: AdditionalTextRenderService
   ) {}
 
   getViewData(): { [key: string]: any } {
@@ -143,6 +145,13 @@ export class TemplateRenderService {
         siteSettings,
         templateName,
         siteTemplateSettings,
+        isResponsive
+      ),
+      additionalTextBlock: this.additionalTextRenderService.render(
+        appState,
+        siteSlug,
+        siteSettings,
+        templateName,
         isResponsive
       ),
     };
