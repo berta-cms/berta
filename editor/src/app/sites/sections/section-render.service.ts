@@ -35,6 +35,14 @@ export class SectionRenderService {
     return currentSection['@attributes'].type;
   }
 
+  isResponsive(currentSection: SiteSectionStateModel, siteTemplateSettings) {
+    const isResponsiveTemplate =
+      siteTemplateSettings.pageLayout.responsive === 'yes';
+    const currentSectionType = this.getCurrentSectionType(currentSection);
+
+    return isResponsiveTemplate || currentSectionType === 'portfolio';
+  }
+
   getBodyClasses(
     siteTemplateSettings,
     sections: SiteSectionStateModel[],

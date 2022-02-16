@@ -3,10 +3,13 @@ export interface SiteSectionStateModel {
   order: number;
   title: string;
   site_name: string;
+  link?: string;
+  target?: string;
   seoTitle?: string;
   seoKeywords?: string;
   seoDescription?: string;
   backgroundVideoEmbed?: string;
+  positionXY?: string;
   mediafolder?: string;
   mediaCacheData?: {
     file?: {
@@ -16,7 +19,7 @@ export interface SiteSectionStateModel {
         src: string;
         width: number;
         height: number;
-      }
+      };
     }[];
     '@attributes'?: {
       hide_navigation?: 'yes' | 'no';
@@ -29,7 +32,7 @@ export interface SiteSectionStateModel {
     tags_behavior?: string;
     entry_count?: number;
     published?: 0 | 1;
-    has_direct_content?: 0 | 1;
+    has_direct_content?: '0' | '1';
     type?: string;
   };
 }
