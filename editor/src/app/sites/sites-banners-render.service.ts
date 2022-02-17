@@ -48,8 +48,6 @@ export class SitesBannersRenderService {
     const width = banner.image_width || null;
     const height = banner.image_height || null;
 
-    console.log({ width, height });
-
     return toImageHtmlAttributes(siteSlug, {
       filename: banner.image,
       width,

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngxs/store';
 import { AppState } from '../app-state/app.state';
+import { toHtmlAttributes } from '../shared/helpers';
 import { AdditionalTextRenderService } from '../sites/sections/additional-text-render.service';
 import { SectionHeadRenderService } from '../sites/sections/section-head-render.service';
 import { SectionRenderService } from '../sites/sections/section-render.service';
@@ -32,6 +33,34 @@ export class TemplateRenderService {
     public sectionTagsService: SectionTagsService,
     public sitesBannersRenderService: SitesBannersRenderService
   ) {}
+
+  getUserCopyright(siteSlug, siteSettings) {
+    const content =
+      siteSettings.siteTexts && siteSettings.siteTexts.siteFooter
+        ? siteSettings.siteTexts.siteFooter
+        : '';
+    const attributes = {
+      class: 'xEditableTA xProperty-siteFooter',
+      'data-path': `${siteSlug}/settings/siteTexts/siteFooter`,
+    };
+
+    return {
+      content: content,
+      attributes: toHtmlAttributes(attributes),
+    };
+  }
+
+  getBertaCopyright(siteSettings, user) {
+    const hideBertaCopyright =
+      siteSettings.settings.hideBertaCopyright === 'yes';
+
+    if (hideBertaCopyright && user.features.includes('hide_berta_copyright')) {
+      return '';
+    }
+
+    // @todo: load current language translation here, we don't have all translations in state
+    return 'Built with <a href="http://www.berta.me/" target="_blank" title="Create your own website with Berta.me in minutes!">Berta.me</a>';
+  }
 
   getViewData(): { [key: string]: any } {
     const user = this.store.selectSnapshot(UserState);
@@ -178,6 +207,8 @@ export class TemplateRenderService {
         siteSettings,
         isResponsive
       ),
+      userCopyright: this.getUserCopyright(siteSlug, siteSettings),
+      bertaCopyright: this.getBertaCopyright(siteSettings, user),
     };
 
     return viewData;

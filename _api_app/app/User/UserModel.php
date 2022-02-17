@@ -3,13 +3,13 @@
 namespace App\User;
 
 use Illuminate\Auth\Authenticatable;
-use Laravel\Lumen\Auth\Authorizable;
-use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
+use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
+use Laravel\Lumen\Auth\Authorizable;
 
 class UserModel implements
-    AuthenticatableContract,
-    AuthorizableContract
+AuthenticatableContract,
+AuthorizableContract
 {
     use Authenticatable, Authorizable;
     public $name;
@@ -90,6 +90,7 @@ class UserModel implements
 
         if ($is_trial || $plan > 1) {
             $features[] = 'multisite';
+            $features[] = 'hide_berta_copyright';
         }
 
         if ($is_trial || $plan == 3) {
