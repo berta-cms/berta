@@ -9,6 +9,7 @@ import { SiteSectionsState } from '../sites/sections/sections-state/site-section
 import { SectionTagsService } from '../sites/sections/tags/section-tags.service';
 import { SectionTagsState } from '../sites/sections/tags/section-tags.state';
 import { SiteSettingsState } from '../sites/settings/site-settings.state';
+import { SitesBannersRenderService } from '../sites/sites-banners-render.service';
 import { SitesHeaderRenderService } from '../sites/sites-header-render.service';
 import { SitesMenuRenderService } from '../sites/sites-menu-render.service';
 import { SitesState } from '../sites/sites-state/sites.state';
@@ -28,7 +29,8 @@ export class TemplateRenderService {
     public sitesHeaderRenderService: SitesHeaderRenderService,
     public additionalTextRenderService: AdditionalTextRenderService,
     public sectionsMenuRenderService: SectionsMenuRenderService,
-    public sectionTagsService: SectionTagsService
+    public sectionTagsService: SectionTagsService,
+    public sitesBannersRenderService: SitesBannersRenderService
   ) {}
 
   getViewData(): { [key: string]: any } {
@@ -170,6 +172,11 @@ export class TemplateRenderService {
         siteTemplateSettings,
         sectionTags,
         tagSlug
+      ),
+      siteBanners: this.sitesBannersRenderService.render(
+        siteSlug,
+        siteSettings,
+        isResponsive
       ),
     };
 

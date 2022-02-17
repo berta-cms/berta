@@ -86,7 +86,7 @@ export class SitesHeaderRenderService {
   }
 
   getUrl(siteSlug: string): string {
-    return siteSlug.length ? `?site=${siteSlug}` : '.';
+    return siteSlug.length ? `/engine/editor/?site=${siteSlug}` : '.';
   }
 
   getEditableAttributes(siteSlug: string) {
