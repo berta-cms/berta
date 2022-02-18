@@ -3,6 +3,7 @@ import { Store } from '@ngxs/store';
 import { AppState } from '../app-state/app.state';
 import { toHtmlAttributes } from '../shared/helpers';
 import { AdditionalTextRenderService } from '../sites/sections/additional-text-render.service';
+import { SectionFooterRenderService } from '../sites/sections/section-footer-render.service';
 import { SectionHeadRenderService } from '../sites/sections/section-head-render.service';
 import { SectionRenderService } from '../sites/sections/section-render.service';
 import { SectionsMenuRenderService } from '../sites/sections/sections-menu-render.service';
@@ -31,7 +32,8 @@ export class TemplateRenderService {
     public additionalTextRenderService: AdditionalTextRenderService,
     public sectionsMenuRenderService: SectionsMenuRenderService,
     public sectionTagsService: SectionTagsService,
-    public sitesBannersRenderService: SitesBannersRenderService
+    public sitesBannersRenderService: SitesBannersRenderService,
+    public sectionFooterRenderService: SectionFooterRenderService
   ) {}
 
   getUserCopyright(siteSlug, siteSettings) {
@@ -209,6 +211,11 @@ export class TemplateRenderService {
       ),
       userCopyright: this.getUserCopyright(siteSlug, siteSettings),
       bertaCopyright: this.getBertaCopyright(siteSettings, user),
+      sectionFooter: this.sectionFooterRenderService.render(
+        siteSettings,
+        sections,
+        user
+      ),
     };
 
     return viewData;

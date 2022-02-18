@@ -10,6 +10,7 @@ import { AdditionalTextRenderService } from '../sites/sections/additional-text-r
 import { SectionsMenuRenderService } from '../sites/sections/sections-menu-render.service';
 import { SectionTagsService } from '../sites/sections/tags/section-tags.service';
 import { SitesBannersRenderService } from '../sites/sites-banners-render.service';
+import { SectionFooterRenderService } from '../sites/sections/section-footer-render.service';
 
 @Injectable({
   providedIn: 'root',
@@ -24,7 +25,8 @@ export class WhiteTemplateRenderService extends TemplateRenderService {
     additionalTextRenderService: AdditionalTextRenderService,
     sectionsMenuRenderService: SectionsMenuRenderService,
     sectionTagsService: SectionTagsService,
-    sitesBannersRenderService: SitesBannersRenderService
+    sitesBannersRenderService: SitesBannersRenderService,
+    sectionFooterRenderService: SectionFooterRenderService
   ) {
     super(
       store,
@@ -35,7 +37,8 @@ export class WhiteTemplateRenderService extends TemplateRenderService {
       additionalTextRenderService,
       sectionsMenuRenderService,
       sectionTagsService,
-      sitesBannersRenderService
+      sitesBannersRenderService,
+      sectionFooterRenderService
     );
   }
 

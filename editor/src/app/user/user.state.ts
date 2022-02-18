@@ -3,9 +3,17 @@ import { State, StateContext, NgxsOnInit, Action, Selector } from '@ngxs/store';
 import { tap, filter, take } from 'rxjs/operators';
 
 import { UserStateModel } from './user.state.model';
-import { UserLoginAction, UserLogoutAction, SetUserNextUrlAction } from './user.actions';
+import {
+  UserLoginAction,
+  UserLogoutAction,
+  SetUserNextUrlAction,
+} from './user.actions';
 import { AppStateService } from '../app-state/app-state.service';
-import { ResetAppStateAction, AppShowLoading, AppHideLoading } from '../app-state/app.actions';
+import {
+  ResetAppStateAction,
+  AppShowLoading,
+  AppHideLoading,
+} from '../app-state/app.actions';
 import { ResetSectionEntriesAction } from '../sites/sections/entries/entries-state/section-entries.actions';
 import { ResetSitesAction } from '../sites/sites-state/sites.actions';
 import { ResetSiteSectionsAction } from '../sites/sections/sections-state/site-sections.actions';
@@ -15,23 +23,24 @@ import { ResetSiteSettingsConfigAction } from '../sites/settings/site-settings-c
 import { ResetSiteTemplateSettingsAction } from '../sites/template-settings/site-template-settings.actions';
 import { ResetSiteTemplatesAction } from '../sites/template-settings/site-templates.actions';
 
-
 const defaultState: UserStateModel = {
   name: null,
   token: null,
   features: [],
-  profileUrl: null
+  profileUrl: null,
+  intercom: null,
 };
 
 @State<UserStateModel>({
   name: 'user',
-  defaults: defaultState
+  defaults: defaultState,
 })
 export class UserState implements NgxsOnInit {
   constructor(
     private appStateService: AppStateService,
     private router: Router,
-    private route: ActivatedRoute) {}
+    private route: ActivatedRoute
+  ) {}
 
   @Selector()
   static isLoggedIn(state: UserStateModel): boolean {
@@ -43,26 +52,30 @@ export class UserState implements NgxsOnInit {
     const token = window.localStorage.getItem('token');
     const features = window.localStorage.getItem('features');
     const profileUrl = window.localStorage.getItem('profileUrl');
+    const intercom = window.localStorage.getItem('intercom');
 
-    this.route.queryParams.pipe(
-      filter(params => !!params.token),
-      take(1)
-    ).subscribe(params => {
-      /* assume user is has not logged in: */
-      patchState({name: null, token: null, features: null, profileUrl: null});
-      dispatch(new AppShowLoading());
-      /* Always re-log in with the token (if we have the token) */
-      dispatch(new UserLoginAction({token: params.token})).pipe(
+    this.route.queryParams
+      .pipe(
+        filter((params) => !!params.token),
         take(1)
-      ).subscribe(() => dispatch(new AppHideLoading()));
-      return;
-    });
+      )
+      .subscribe((params) => {
+        /* assume user is has not logged in: */
+        patchState(defaultState);
+        dispatch(new AppShowLoading());
+        /* Always re-log in with the token (if we have the token) */
+        dispatch(new UserLoginAction({ token: params.token }))
+          .pipe(take(1))
+          .subscribe(() => dispatch(new AppHideLoading()));
+        return;
+      });
 
     patchState({
       name: name,
       token: token,
       features: JSON.parse(features),
-      profileUrl: JSON.parse(profileUrl)
+      profileUrl: JSON.parse(profileUrl),
+      intercom: JSON.parse(intercom),
     });
   }
 
@@ -74,19 +87,23 @@ export class UserState implements NgxsOnInit {
           name: resp.data.name,
           token: resp.data.token,
           features: resp.data.features,
-          profileUrl: resp.data.profileUrl
+          profileUrl: resp.data.profileUrl,
+          intercom: resp.data.intercom,
         });
       })
     );
   }
 
   @Action(UserLogoutAction)
-  logout({ dispatch, setState }: StateContext<UserStateModel>, action: UserLogoutAction) {
-    const newState = {...defaultState};
+  logout(
+    { dispatch, setState }: StateContext<UserStateModel>,
+    action: UserLogoutAction
+  ) {
+    const newState = { ...defaultState };
 
     this.appStateService.logout().subscribe({
       next: () => {},
-      error: (error) => console.error(error)
+      error: (error) => console.error(error),
     });
 
     /* Reset the state of app */
@@ -107,7 +124,10 @@ export class UserState implements NgxsOnInit {
   }
 
   @Action(SetUserNextUrlAction)
-  setNextUrl({ patchState }: StateContext<UserStateModel>, action: SetUserNextUrlAction) {
-    patchState({nextUrl: action.payload});
+  setNextUrl(
+    { patchState }: StateContext<UserStateModel>,
+    action: SetUserNextUrlAction
+  ) {
+    patchState({ nextUrl: action.payload });
   }
 }

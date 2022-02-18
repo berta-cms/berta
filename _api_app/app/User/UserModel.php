@@ -19,8 +19,7 @@ AuthorizableContract
     public $forgot_password_url;
     public $plans;
     public $noindex;
-    public $intercomAppId;
-    public $intercomSecretKey;
+    public $intercom;
 
     public function __construct()
     {
@@ -35,8 +34,7 @@ AuthorizableContract
         $this->plans = $this->getHostingData('PLANS');
         $this->features = $this->getFeatures();
         $this->noindex = $this->getHostingData('NOINDEX');
-        $this->intercomAppId = $this->getHostingData('INTERCOM_APP_ID');
-        $this->intercomSecretKey = $this->getHostingData('INTERCOM_SECRET_KEY');
+        $this->intercom = $this->getIntercomData();
     }
 
     /**
@@ -110,5 +108,21 @@ AuthorizableContract
         }
 
         return $options[$item];
+    }
+
+    private function getIntercomData()
+    {
+        $intercomAppId = $this->getHostingData('INTERCOM_APP_ID');
+        $intercomSecretKey = $this->getHostingData('INTERCOM_SECRET_KEY');
+        if (!$intercomAppId || !$intercomSecretKey) {
+            return null;
+        }
+        $userHash = hash_hmac('sha256', $this->name, $intercomSecretKey);
+
+        return [
+            'appId' => $intercomAppId,
+            'userName' => $this->name,
+            'userHash' => $userHash,
+        ];
     }
 }

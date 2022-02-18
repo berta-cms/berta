@@ -2,26 +2,18 @@
 
 namespace App\Sites\Sections;
 
-use App\Shared\Helpers;
-
 class SectionFooterRenderService
 {
     private function getIntercomSettings($sections, $user, $isEditMode)
     {
-        if (!$isEditMode || empty($sections)) {
+        if (!$isEditMode || !$user->intercom || empty($sections)) {
             return;
         }
-
-        if (!$user->intercomAppId || !$user->intercomSecretKey) {
-            return;
-        }
-
-        $userHash = hash_hmac('sha256', $user->name, $user->intercomSecretKey);
 
         return [
-            'appId' => $user->intercomAppId,
+            'appId' => $user->intercom['appId'],
             'userName' => $user->name,
-            'userHash' => $userHash
+            'userHash' => $user->intercom['userHash'],
         ];
     }
 
@@ -33,13 +25,13 @@ class SectionFooterRenderService
             'intercom' => $this->getIntercomSettings($sections, $user, $isEditMode),
             'googleAnalyticsId' => $siteSettings['settings']['googleAnalyticsId'],
             'hostName' => $request->getHost(),
-            'isEditMode' => $isEditMode
+            'isEditMode' => $isEditMode,
         ];
 
         if (in_array('custom_javascript', $user->features)) {
             $data = array_merge($data, [
                 'customUserJs' => $siteSettings['settings']['jsInclude'],
-                'customSocialMediaButtonsJs' => $siteSettings['socialMediaButtons']['socialMediaJS']
+                'customSocialMediaButtonsJs' => $siteSettings['socialMediaButtons']['socialMediaJS'],
             ]);
         }
 

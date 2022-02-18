@@ -1,11 +1,11 @@
-import { Injectable } from "@angular/core";
-import { Store } from "@ngxs/store";
-import { SiteSettingsState } from "../sites/settings/site-settings.state";
-import { UserState } from "../user/user.state";
-import { WhiteTemplateRenderService } from "./white-template-render.service";
+import { Injectable } from '@angular/core';
+import { Store } from '@ngxs/store';
+import { SiteSettingsState } from '../sites/settings/site-settings.state';
+import { UserState } from '../user/user.state';
+import { WhiteTemplateRenderService } from './white-template-render.service';
 
 @Injectable({
-  providedIn: "root",
+  providedIn: 'root',
 })
 export class RenderService {
   private templateName: string;
@@ -16,6 +16,11 @@ export class RenderService {
   ) {}
 
   startRender(contentWindow: Window) {
+    // Remove intercom object from window to prevent Intercon widget load error
+    if (contentWindow['Intercom']) {
+      delete contentWindow['Intercom'];
+    }
+
     const isLoggedIn = this.store.selectSnapshot(UserState.isLoggedIn);
     if (!isLoggedIn) {
       return;
@@ -23,18 +28,18 @@ export class RenderService {
 
     this.templateName = this.store
       .selectSnapshot(SiteSettingsState.getCurrentSiteTemplate)
-      .split("-")
+      .split('-')
       .shift();
 
     switch (this.templateName) {
-      case "white":
+      case 'white':
         this.whiteTemplateRenderService.startRender(contentWindow);
         break;
 
-      case "default":
+      case 'default':
         break;
 
-      case "mashup":
+      case 'mashup':
         break;
 
       // Messy

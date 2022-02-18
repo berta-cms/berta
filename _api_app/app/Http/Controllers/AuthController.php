@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-/** workaround for lumen 5.2 bug: https://stackoverflow.com/questions/34917653/lumen-class-url-does-not-exist */
-use Illuminate\Http\RedirectResponse;
-use Firebase\JWT\JWT;
 use App\Shared\Helpers;
+/** workaround for lumen 5.2 bug: https://stackoverflow.com/questions/34917653/lumen-class-url-does-not-exist */
 use App\User\UserModel;
+use Firebase\JWT\JWT;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 
 class AuthController extends Controller
 {
@@ -19,7 +19,7 @@ class AuthController extends Controller
         $app_id = config('app.id');
         $payload = [
             'iat' => time(), // Time when JWT was issued.
-            'exp' => time() + self::$expiration_time // Expiration time
+            'exp' => time() + self::$expiration_time, // Expiration time
         ];
 
         return JWT::encode($payload, $app_key);
@@ -32,7 +32,7 @@ class AuthController extends Controller
 
         if (!$token) {
             if ($isAjax) {
-                return Helpers::api_response('Invalid token!', (object)[], 401);
+                return Helpers::api_response('Invalid token!', (object) [], 401);
             } else {
                 return new RedirectResponse(\Berta::$options['SITE_ROOT_URL'] . 'engine/login?autherror=1');
             }
@@ -75,7 +75,7 @@ class AuthController extends Controller
     {
         $token = $this->authenticateRequestAndGetToken($request);
         if (!$token) {
-            return Helpers::api_response('Login failed!', (object)[], 401);
+            return Helpers::api_response('Login failed!', (object) [], 401);
         }
 
         /** @todo: remove this when we move to the new app. This will be necessary for some time for the iframe */
@@ -87,7 +87,8 @@ class AuthController extends Controller
             'name' => $user->name,
             'token' => $token,
             'features' => $user->features,
-            'profileUrl' => $user->profile_url
+            'profileUrl' => $user->profile_url,
+            'intercom' => $user->intercom,
         ]);
     }
 
@@ -96,9 +97,9 @@ class AuthController extends Controller
         try {
             $this->logout();
         } catch (\Throwable $t) {
-            return Helpers::api_response('Logout failed!', (object)[], 400);
+            return Helpers::api_response('Logout failed!', (object) [], 400);
         } catch (\Exception $e) {
-            return Helpers::api_response('Logout failed!', (object)[], 400);
+            return Helpers::api_response('Logout failed!', (object) [], 400);
         }
 
         return Helpers::api_response('Logout successful');
@@ -115,15 +116,15 @@ class AuthController extends Controller
         $password = $options['AUTH_password'];
 
         if ($password != $old_password) {
-            return Helpers::api_response('Current password doesn\'t match!', (object)[], 412);
+            return Helpers::api_response('Current password doesn\'t match!', (object) [], 412);
         } elseif ($new_password != $retype_password) {
-            return Helpers::api_response('New and retyped password doesn\'t match!', (object)[], 412);
+            return Helpers::api_response('New and retyped password doesn\'t match!', (object) [], 412);
         } elseif (strlen($new_password) < 6) {
-            return Helpers::api_response('Password must be at least 6 characters long!', (object)[], 412);
+            return Helpers::api_response('Password must be at least 6 characters long!', (object) [], 412);
         } elseif (!preg_match('/^[A-Za-z0-9]+$/', $new_password)) {
-            return Helpers::api_response('Password must contain only alphanumeric characters!', (object)[], 412);
+            return Helpers::api_response('Password must contain only alphanumeric characters!', (object) [], 412);
         } elseif (!is_writable($conf_file)) {
-            return Helpers::api_response('Config file is not writable!', (object)[], 400);
+            return Helpers::api_response('Config file is not writable!', (object) [], 400);
         } else {
             $content = file_get_contents($conf_file);
             $new_content = str_replace(
