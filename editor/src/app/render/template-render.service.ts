@@ -3,10 +3,15 @@ import { Store } from '@ngxs/store';
 import { AppState } from '../app-state/app.state';
 import { toHtmlAttributes } from '../shared/helpers';
 import { AdditionalTextRenderService } from '../sites/sections/additional-text-render.service';
+import { SectionEntry } from '../sites/sections/entries/entries-state/section-entries-state.model';
+import { SectionEntriesState } from '../sites/sections/entries/entries-state/section-entries.state';
+import { SectionEntriesService } from '../sites/sections/entries/section-entries.service';
+import { SectionEntryRenderService } from '../sites/sections/entries/section-entry-render.service';
 import { SectionFooterRenderService } from '../sites/sections/section-footer-render.service';
 import { SectionHeadRenderService } from '../sites/sections/section-head-render.service';
 import { SectionRenderService } from '../sites/sections/section-render.service';
 import { SectionsMenuRenderService } from '../sites/sections/sections-menu-render.service';
+import { SiteSectionStateModel } from '../sites/sections/sections-state/site-sections-state.model';
 import { SiteSectionsState } from '../sites/sections/sections-state/site-sections.state';
 import { SectionTagsService } from '../sites/sections/tags/section-tags.service';
 import { SectionTagsState } from '../sites/sections/tags/section-tags.state';
@@ -33,7 +38,9 @@ export class TemplateRenderService {
     public sectionsMenuRenderService: SectionsMenuRenderService,
     public sectionTagsService: SectionTagsService,
     public sitesBannersRenderService: SitesBannersRenderService,
-    public sectionFooterRenderService: SectionFooterRenderService
+    public sectionFooterRenderService: SectionFooterRenderService,
+    public sectionEntriesService: SectionEntriesService,
+    public sectionEntryRenderService: SectionEntryRenderService
   ) {}
 
   getUserCopyright(siteSlug, siteSettings) {
@@ -62,6 +69,42 @@ export class TemplateRenderService {
 
     // @todo: load current language translation here, we don't have all translations in state
     return 'Built with <a href="http://www.berta.me/" target="_blank" title="Create your own website with Berta.me in minutes!">Berta.me</a>';
+  }
+
+  getEntries(
+    siteSlug,
+    sections,
+    sectionSlug,
+    currentSection: SiteSectionStateModel,
+    currentSectionType: string,
+    tagSlug,
+    entries: SectionEntry[],
+    siteSettings,
+    siteTemplateSettings,
+    isShopAvailable,
+    templateName,
+    isResponsive
+  ) {
+    const sectionEntries = this.sectionEntriesService.getSectionEntries(
+      entries,
+      currentSection.name,
+      tagSlug
+    );
+
+    let entriesHTML = '';
+    sectionEntries.forEach((entry) => {
+      entriesHTML += this.sectionEntryRenderService.render(
+        siteSlug,
+        entry,
+        templateName,
+        currentSection,
+        currentSectionType,
+        siteTemplateSettings,
+        isResponsive
+      );
+    });
+
+    return entriesHTML;
   }
 
   getViewData(): { [key: string]: any } {
@@ -136,6 +179,10 @@ export class TemplateRenderService {
       SiteTemplatesState.getCurrentTemplateSectionTypes
     );
 
+    const entries = this.store.selectSnapshot(
+      SectionEntriesState.getCurrentSiteEntries
+    );
+
     const isResponsiveTemplate =
       siteTemplateSettings.pageLayout.responsive === 'yes';
 
@@ -203,6 +250,20 @@ export class TemplateRenderService {
         siteTemplateSettings,
         sectionTags,
         tagSlug
+      ),
+      entries: this.getEntries(
+        siteSlug,
+        sections,
+        sectionSlug,
+        currentSection,
+        currentSectionType,
+        tagSlug,
+        entries,
+        siteSettings,
+        siteTemplateSettings,
+        isShopAvailable,
+        templateName,
+        isResponsive
       ),
       siteBanners: this.sitesBannersRenderService.render(
         siteSlug,
