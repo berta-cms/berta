@@ -286,8 +286,6 @@ export class GalleryRenderService {
       };
     });
 
-    console.log({ data });
-
     return data;
   }
 

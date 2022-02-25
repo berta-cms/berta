@@ -171,8 +171,6 @@ export class GallerySlideshowRenderService extends GalleryRenderService {
       null
     );
 
-    console.log({ viewData });
-
     const htmlOutput = SlideshowTemplate(viewData);
 
     return htmlOutput;

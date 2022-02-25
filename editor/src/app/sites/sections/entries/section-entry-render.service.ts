@@ -109,8 +109,6 @@ export class SectionEntryRenderService {
         ? entry.mediaCacheData['@attributes'].type
         : siteTemplateSettings.entryLayout.defaultGalleryType;
 
-    console.log(galleryType);
-
     let gallery;
 
     switch (galleryType) {
