@@ -1,13 +1,19 @@
 import { Injectable } from '@angular/core';
-import { toHtmlAttributes } from 'src/app/shared/helpers';
-import * as Template from '../../../../templates/Sites/Sections/Entries/entry.twig';
+import { toHtmlAttributes } from '../../../../app/shared/helpers';
+import * as EntryTemplate from '../../../../templates/Sites/Sections/Entries/entry.twig';
+import * as EntryContents from '../../../../templates/Sites/Sections/Entries/_entryContents.twig';
 import { SiteSectionStateModel } from '../sections-state/site-sections-state.model';
 import { SectionEntry } from './entries-state/section-entries-state.model';
+import { GallerySlideshowRenderService } from './galleries/gallery-slideshow-render.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SectionEntryRenderService {
+  constructor(
+    private gallerySlideshowRenderService: GallerySlideshowRenderService
+  ) {}
+
   getClassList(
     entry: SectionEntry,
     currentSection: SiteSectionStateModel,
@@ -85,6 +91,7 @@ export class SectionEntryRenderService {
   }
 
   getViewData(
+    siteSettings,
     siteSlug: string,
     entry: SectionEntry,
     templateName: string,
@@ -94,6 +101,59 @@ export class SectionEntryRenderService {
     isResponsive: boolean
   ) {
     const apiPath = `${siteSlug}/entry/${currentSection.name}/${entry.id}/`;
+
+    const galleryType =
+      entry.mediaCacheData &&
+      entry.mediaCacheData['@attributes'] &&
+      entry.mediaCacheData['@attributes'].type
+        ? entry.mediaCacheData['@attributes'].type
+        : siteTemplateSettings.entryLayout.defaultGalleryType;
+
+    console.log(galleryType);
+
+    let gallery;
+
+    switch (galleryType) {
+      case 'row':
+        // galleryRowRenderService;
+        break;
+
+      case 'column':
+        // galleryColumnRenderService;
+        break;
+
+      case 'pile':
+        // galleryPileRenderService;
+        break;
+
+      case 'link':
+        // galleryLinkRenderService;
+        break;
+
+      default:
+        gallery = this.gallerySlideshowRenderService.render(
+          siteSlug,
+          siteSettings,
+          templateName,
+          entry,
+          siteTemplateSettings,
+          true,
+          false
+        );
+        break;
+    }
+
+    let entryContents = EntryContents({
+      ...entry,
+      ...{
+        galleryPosition: siteTemplateSettings.entryLayout.galleryPosition
+          ? siteTemplateSettings.entryLayout.galleryPosition
+          : currentSectionType === 'portfolio'
+          ? 'after text wrap'
+          : 'above title',
+        gallery: gallery,
+      },
+    });
 
     return {
       entryHTMLTag: templateName === 'messy' ? 'div' : 'li',
@@ -119,10 +179,13 @@ export class SectionEntryRenderService {
               : '',
         }),
       },
+      entryContents: entryContents,
+      // gallery: '...', <--- no need for this variable, it is generated only serverside at the moment
     };
   }
 
   render(
+    siteSettings,
     siteSlug: string,
     entry: SectionEntry,
     templateName: string,
@@ -132,6 +195,7 @@ export class SectionEntryRenderService {
     isResponsive: boolean
   ) {
     const viewData = this.getViewData(
+      siteSettings,
       siteSlug,
       entry,
       templateName,
@@ -140,7 +204,7 @@ export class SectionEntryRenderService {
       siteTemplateSettings,
       isResponsive
     );
-    const htmlOutput = Template(viewData);
+    const htmlOutput = EntryTemplate(viewData);
 
     return htmlOutput;
   }

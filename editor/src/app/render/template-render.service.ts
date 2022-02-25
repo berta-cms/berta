@@ -94,6 +94,7 @@ export class TemplateRenderService {
     let entriesHTML = '';
     sectionEntries.forEach((entry) => {
       entriesHTML += this.sectionEntryRenderService.render(
+        siteSettings,
         siteSlug,
         entry,
         templateName,

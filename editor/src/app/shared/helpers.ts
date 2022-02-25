@@ -274,7 +274,9 @@ export function toHtmlAttributes(attributes: {
   let html = '';
 
   Object.keys(attributes)
-    .filter((attribute) => attributes[attribute].length > 0)
+    .filter(
+      (attribute) => attributes[attribute] && attributes[attribute].length > 0
+    )
     .map((attribute) => {
       html += ` ${attribute}="${attributes[attribute]}"`;
     });
