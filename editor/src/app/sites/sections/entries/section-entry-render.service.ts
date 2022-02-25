@@ -5,6 +5,7 @@ import * as EntryContents from '../../../../templates/Sites/Sections/Entries/_en
 import { SiteSectionStateModel } from '../sections-state/site-sections-state.model';
 import { SectionEntry } from './entries-state/section-entries-state.model';
 import { GalleryColumnRenderService } from './galleries/gallery-column-render.service';
+import { GalleryLinkRenderService } from './galleries/gallery-link-render.service';
 import { GalleryPileRenderService } from './galleries/gallery-pile-render.service';
 import { GalleryRowRenderService } from './galleries/gallery-row-render.service';
 import { GallerySlideshowRenderService } from './galleries/gallery-slideshow-render.service';
@@ -17,7 +18,8 @@ export class SectionEntryRenderService {
     private gallerySlideshowRenderService: GallerySlideshowRenderService,
     private galleryRowRenderService: GalleryRowRenderService,
     private galleryColumnRenderService: GalleryColumnRenderService,
-    private galleryPileRenderService: GalleryPileRenderService
+    private galleryPileRenderService: GalleryPileRenderService,
+    private galleryLinkRenderService: GalleryLinkRenderService
   ) {}
 
   getClassList(
@@ -159,7 +161,16 @@ export class SectionEntryRenderService {
         break;
 
       case 'link':
-        // galleryLinkRenderService;
+        gallery = this.galleryLinkRenderService.render(
+          appState,
+          siteSlug,
+          siteSettings,
+          templateName,
+          entry,
+          siteTemplateSettings,
+          true,
+          false
+        );
         break;
 
       default:
