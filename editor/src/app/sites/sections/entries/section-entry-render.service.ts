@@ -4,6 +4,7 @@ import * as EntryTemplate from '../../../../templates/Sites/Sections/Entries/ent
 import * as EntryContents from '../../../../templates/Sites/Sections/Entries/_entryContents.twig';
 import { SiteSectionStateModel } from '../sections-state/site-sections-state.model';
 import { SectionEntry } from './entries-state/section-entries-state.model';
+import { GalleryColumnRenderService } from './galleries/gallery-column-render.service';
 import { GalleryRowRenderService } from './galleries/gallery-row-render.service';
 import { GallerySlideshowRenderService } from './galleries/gallery-slideshow-render.service';
 
@@ -13,7 +14,8 @@ import { GallerySlideshowRenderService } from './galleries/gallery-slideshow-ren
 export class SectionEntryRenderService {
   constructor(
     private gallerySlideshowRenderService: GallerySlideshowRenderService,
-    private galleryRowRenderService: GalleryRowRenderService
+    private galleryRowRenderService: GalleryRowRenderService,
+    private galleryColumnRenderService: GalleryColumnRenderService
   ) {}
 
   getClassList(
@@ -129,7 +131,16 @@ export class SectionEntryRenderService {
         break;
 
       case 'column':
-        // galleryColumnRenderService;
+        gallery = this.galleryColumnRenderService.render(
+          appState,
+          siteSlug,
+          siteSettings,
+          templateName,
+          entry,
+          siteTemplateSettings,
+          true,
+          false
+        );
         break;
 
       case 'pile':
