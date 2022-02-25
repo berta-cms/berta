@@ -110,6 +110,7 @@ class StateController extends Controller
             'plans' => $user->plans,
             'themes' => $themesDS->getThemes(),
             'socialMediaIcons' => SocialMediaLinksRenderService::getSocialMediaIcons(),
+            'rowGalleryImageLimit' => config('app.row_gallery_image_limit'),
         ];
 
         return Helpers::api_response('', $meta);

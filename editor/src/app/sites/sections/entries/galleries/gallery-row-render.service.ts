@@ -1,13 +1,15 @@
 import { Injectable } from '@angular/core';
-import * as Template from '../../../../../templates/Sites/Sections/Entries/Galleries/gallerySlideshow.twig';
+import * as Template from '../../../../../templates/Sites/Sections/Entries/Galleries/galleryRow.twig';
 import * as EditEmptyGallery from '../../../../../templates/Sites/Sections/Entries/Galleries/editEmptyGallery.twig';
 import { GalleryRenderService } from './gallery-render.service';
-import { toHtmlAttributes } from '../../../../../app/shared/helpers';
+import { AppStateModel } from 'src/app/app-state/app-state.interface';
 
 @Injectable({
   providedIn: 'root',
 })
-export class GallerySlideshowRenderService extends GalleryRenderService {
+export class GalleryRowRenderService extends GalleryRenderService {
+  SPACE_BETWEEN_ITEMS = 12;
+
   getGalleryClassList(
     galleryItemsData,
     galleryType,
@@ -21,51 +23,59 @@ export class GallerySlideshowRenderService extends GalleryRenderService {
       siteSettings
     );
 
-    if (galleryItemsData && galleryItemsData.length && entry) {
-      const gallerySlideNumbersVisible =
-        entry &&
-        entry.mediaCacheData &&
-        entry.mediaCacheData['@attributes'] &&
-        entry.mediaCacheData['@attributes'].slide_numbers_visible
-          ? entry.mediaCacheData['@attributes'].slide_numbers_visible
-          : siteSettings.entryLayout.gallerySlideNumberVisibilityDefault;
-      (classes as string[]).push(
-        `xSlideNumbersVisible-${gallerySlideNumbersVisible}`
-      );
+    if (galleryItemsData && galleryItemsData.length === 1) {
+      (classes as string[]).push('bt-gallery-has-one-item');
     }
 
     return (classes as string[]).join(' ');
   }
 
-  getGalleryStyles(entry, galleryItems, templateName): string {
-    const galleryWidth = this.getGalleryWidth(
-      entry,
-      galleryItems,
-      templateName
-    );
+  getGalleryStyles(galleryItems): string {
+    const galleryWidth = this.getGalleryWidth(galleryItems);
 
     return galleryWidth ? `width:${galleryWidth}px` : null;
   }
 
-  getGalleryWidth(entry, galleryItems, templateName) {
+  getGalleryWidth(galleryItems) {
     if (!galleryItems.length) {
       return null;
     }
 
-    const galleryWidthByWidestSlide =
+    return galleryItems.reduce((width: number, galleryItem) => {
+      return width + galleryItem.width + this.SPACE_BETWEEN_ITEMS;
+    }, 0);
+  }
+
+  getGalleryItemsLimit(entry, appState: AppStateModel) {
+    const gallerySize =
       entry.mediaCacheData &&
       entry.mediaCacheData['@attributes'] &&
-      entry.mediaCacheData['@attributes'].gallery_width_by_widest_slide ===
-        'yes';
+      entry.mediaCacheData['@attributes'].size
+        ? entry.mediaCacheData['@attributes'].size
+        : 'large';
 
-    if (
-      templateName !== 'messy' ||
-      (templateName === 'messy' && galleryWidthByWidestSlide)
-    ) {
-      return Math.max(...galleryItems.map((item) => item.width));
+    return appState.rowGalleryImageLimit[gallerySize];
+  }
+
+  getGalleryLoaderSize(galleryItems, galleryItemsLimit) {
+    if (galleryItems.length <= galleryItemsLimit) {
+      return false;
     }
 
-    return galleryItems[0].width;
+    // Calculate width of loader from remaining items total width
+    const loaderWidth = this.getGalleryWidth(
+      galleryItems.slice(0, galleryItemsLimit)
+    );
+    const lastItem = galleryItems.slice(-1)[0];
+
+    const loaderHeight = lastItem.height
+      ? lastItem.height
+      : lastItem.width * 0.5625; // 16:9 ratio
+
+    return {
+      width: loaderWidth,
+      height: loaderHeight,
+    };
   }
 
   getViewData(
@@ -109,6 +119,8 @@ export class GallerySlideshowRenderService extends GalleryRenderService {
       galleryType
     );
 
+    const galleryItemsLimit = this.getGalleryItemsLimit(entry, appState);
+
     return {
       ...data,
       ...{
@@ -118,27 +130,9 @@ export class GallerySlideshowRenderService extends GalleryRenderService {
           entry,
           siteSettings
         ),
-        attributes: {
-          gallery: toHtmlAttributes({
-            'data-fullscreen': data.isFullscreen ? '1' : null,
-            'data-as-row-gallery': asRowGallery,
-            'data-autoplay':
-              isLoopAvailable &&
-              entry.mediaCacheData &&
-              entry.mediaCacheData['@attributes'] &&
-              entry.mediaCacheData['@attributes'].autoplay
-                ? entry.mediaCacheData['@attributes'].autoplay
-                : '0',
-            'data-loop':
-              isLoopAvailable &&
-              siteSettings.entryLayout.gallerySlideshowAutoRewind === 'yes'
-                ? '1'
-                : '0',
-          }),
-        },
-        galleryStyles: this.getGalleryStyles(entry, galleryItems, templateName),
-        items: galleryItems,
-        showNavigation: galleryItems.length > 1,
+        galleryStyles: this.getGalleryStyles(galleryItems),
+        items: galleryItems.slice(0, galleryItemsLimit),
+        loader: this.getGalleryLoaderSize(galleryItems, galleryItemsLimit),
       },
     };
   }

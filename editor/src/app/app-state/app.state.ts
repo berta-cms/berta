@@ -43,6 +43,7 @@ const defaultState: AppStateModel = {
   lastRoute: '/settings',
   themes: [],
   socialMediaIcons: {},
+  rowGalleryImageLimit: {},
 };
 
 @State<AppStateModel>({
@@ -203,6 +204,7 @@ export class AppState implements NgxsOnInit {
       authenticateUrl: state.authenticateUrl,
       version: state.version,
       socialMediaIcons: state.socialMediaIcons,
+      rowGalleryImageLimit: state.rowGalleryImageLimit,
     });
   }
 

@@ -290,6 +290,7 @@ export class GalleryRenderService {
   }
 
   getViewData(
+    appState,
     siteSlug,
     entry,
     siteSettings,

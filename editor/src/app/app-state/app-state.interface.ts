@@ -22,4 +22,5 @@ export interface AppStateModel {
   lastRoute: string;
   themes: string[];
   socialMediaIcons: { [key: string]: string };
+  rowGalleryImageLimit: { [key: string]: string };
 }

@@ -4,6 +4,7 @@ import * as EntryTemplate from '../../../../templates/Sites/Sections/Entries/ent
 import * as EntryContents from '../../../../templates/Sites/Sections/Entries/_entryContents.twig';
 import { SiteSectionStateModel } from '../sections-state/site-sections-state.model';
 import { SectionEntry } from './entries-state/section-entries-state.model';
+import { GalleryRowRenderService } from './galleries/gallery-row-render.service';
 import { GallerySlideshowRenderService } from './galleries/gallery-slideshow-render.service';
 
 @Injectable({
@@ -11,7 +12,8 @@ import { GallerySlideshowRenderService } from './galleries/gallery-slideshow-ren
 })
 export class SectionEntryRenderService {
   constructor(
-    private gallerySlideshowRenderService: GallerySlideshowRenderService
+    private gallerySlideshowRenderService: GallerySlideshowRenderService,
+    private galleryRowRenderService: GalleryRowRenderService
   ) {}
 
   getClassList(
@@ -91,6 +93,7 @@ export class SectionEntryRenderService {
   }
 
   getViewData(
+    appState,
     siteSettings,
     siteSlug: string,
     entry: SectionEntry,
@@ -113,7 +116,16 @@ export class SectionEntryRenderService {
 
     switch (galleryType) {
       case 'row':
-        // galleryRowRenderService;
+        gallery = this.galleryRowRenderService.render(
+          appState,
+          siteSlug,
+          siteSettings,
+          templateName,
+          entry,
+          siteTemplateSettings,
+          true,
+          false
+        );
         break;
 
       case 'column':
@@ -130,6 +142,7 @@ export class SectionEntryRenderService {
 
       default:
         gallery = this.gallerySlideshowRenderService.render(
+          appState,
           siteSlug,
           siteSettings,
           templateName,
@@ -183,6 +196,7 @@ export class SectionEntryRenderService {
   }
 
   render(
+    appState,
     siteSettings,
     siteSlug: string,
     entry: SectionEntry,
@@ -193,6 +207,7 @@ export class SectionEntryRenderService {
     isResponsive: boolean
   ) {
     const viewData = this.getViewData(
+      appState,
       siteSettings,
       siteSlug,
       entry,
