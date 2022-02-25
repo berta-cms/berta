@@ -5,6 +5,7 @@ import * as EntryContents from '../../../../templates/Sites/Sections/Entries/_en
 import { SiteSectionStateModel } from '../sections-state/site-sections-state.model';
 import { SectionEntry } from './entries-state/section-entries-state.model';
 import { GalleryColumnRenderService } from './galleries/gallery-column-render.service';
+import { GalleryPileRenderService } from './galleries/gallery-pile-render.service';
 import { GalleryRowRenderService } from './galleries/gallery-row-render.service';
 import { GallerySlideshowRenderService } from './galleries/gallery-slideshow-render.service';
 
@@ -15,7 +16,8 @@ export class SectionEntryRenderService {
   constructor(
     private gallerySlideshowRenderService: GallerySlideshowRenderService,
     private galleryRowRenderService: GalleryRowRenderService,
-    private galleryColumnRenderService: GalleryColumnRenderService
+    private galleryColumnRenderService: GalleryColumnRenderService,
+    private galleryPileRenderService: GalleryPileRenderService
   ) {}
 
   getClassList(
@@ -144,7 +146,16 @@ export class SectionEntryRenderService {
         break;
 
       case 'pile':
-        // galleryPileRenderService;
+        gallery = this.galleryPileRenderService.render(
+          appState,
+          siteSlug,
+          siteSettings,
+          templateName,
+          entry,
+          siteTemplateSettings,
+          true,
+          false
+        );
         break;
 
       case 'link':
