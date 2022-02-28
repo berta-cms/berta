@@ -72,6 +72,7 @@ export class TemplateRenderService {
   }
 
   getEntries(
+    user,
     appState,
     siteSlug,
     sections,
@@ -95,11 +96,13 @@ export class TemplateRenderService {
     let entriesHTML = '';
     sectionEntries.forEach((entry) => {
       entriesHTML += this.sectionEntryRenderService.render(
+        user,
         appState,
         siteSettings,
         siteSlug,
         entry,
         templateName,
+        sections,
         currentSection,
         currentSectionType,
         siteTemplateSettings,
@@ -255,6 +258,7 @@ export class TemplateRenderService {
         tagSlug
       ),
       entries: this.getEntries(
+        user,
         appState,
         siteSlug,
         sections,

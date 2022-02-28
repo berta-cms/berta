@@ -1,7 +1,13 @@
 import { Injectable } from '@angular/core';
+import { UserStateModel } from 'src/app/user/user.state.model';
 import { toHtmlAttributes } from '../../../../app/shared/helpers';
 import * as EntryTemplate from '../../../../templates/Sites/Sections/Entries/entry.twig';
 import * as EntryContents from '../../../../templates/Sites/Sections/Entries/_entryContents.twig';
+import * as EntryTitle from '../../../../templates/Sites/Sections/Entries/_entryTitle.twig';
+import * as EntryEditor from '../../../../templates/Sites/Sections/Entries/_entryEditor.twig';
+import * as CartTitle from '../../../../templates/Sites/Sections/Entries/shop/_cartTitle.twig';
+import * as AddToCart from '../../../../templates/Sites/Sections/Entries/shop/_addToCart.twig';
+import * as ProductAttributesEditor from '../../../../templates/Sites/Sections/Entries/shop/_productAttributesEditor.twig';
 import { SiteSectionStateModel } from '../sections-state/site-sections-state.model';
 import { SectionEntry } from './entries-state/section-entries-state.model';
 import { GalleryColumnRenderService } from './galleries/gallery-column-render.service';
@@ -9,6 +15,7 @@ import { GalleryLinkRenderService } from './galleries/gallery-link-render.servic
 import { GalleryPileRenderService } from './galleries/gallery-pile-render.service';
 import { GalleryRowRenderService } from './galleries/gallery-row-render.service';
 import { GallerySlideshowRenderService } from './galleries/gallery-slideshow-render.service';
+import { join } from 'lodash';
 
 @Injectable({
   providedIn: 'root',
@@ -99,17 +106,20 @@ export class SectionEntryRenderService {
   }
 
   getViewData(
+    user: UserStateModel,
     appState,
     siteSettings,
     siteSlug: string,
     entry: SectionEntry,
     templateName: string,
+    sections: SiteSectionStateModel[],
     currentSection: SiteSectionStateModel,
     currentSectionType: string,
     siteTemplateSettings,
     isResponsive: boolean
   ) {
     const apiPath = `${siteSlug}/entry/${currentSection.name}/${entry.id}/`;
+    let entryTitle, addToCart, productAttributesEditor;
 
     const galleryType =
       entry.mediaCacheData &&
@@ -187,6 +197,60 @@ export class SectionEntryRenderService {
         break;
     }
 
+    if (currentSectionType === 'portfolio' || templateName === 'default') {
+      entryTitle = EntryTitle({
+        ...entry,
+        ...{
+          attributes: {
+            title: toHtmlAttributes({
+              'data-path': `${apiPath}content/title`,
+            }),
+          },
+        },
+      });
+    }
+
+    if (user.features.includes('shop') && currentSectionType === 'shop') {
+      entryTitle = CartTitle({
+        ...entry,
+        ...{
+          attributes: {
+            cartTitle: toHtmlAttributes({
+              'data-path': `${apiPath}content/cartTitle`,
+            }),
+          },
+        },
+      });
+
+      // @todo - get shop state
+      addToCart = AddToCart({
+        ...entry,
+        ...{
+          isEditMode: true,
+          attributes: {
+            cartPrice: toHtmlAttributes({
+              'data-path': `${apiPath}content/cartPrice`,
+            }),
+          },
+          // cartPriceFormatted: '...',
+          // cartAttributes: '...'
+          // ...
+        },
+      });
+
+      productAttributesEditor = ProductAttributesEditor({
+        apiPath: apiPath,
+        cartAttributesEdit:
+          entry.content && entry.content.cartAttributes
+            ? entry.content.cartAttributes
+            : '',
+        // @todo - get shop state
+        weightUnits: '...', // shopSettings.weightUnit
+        entryWeight:
+          entry.content && entry.content.weight ? entry.content.weight : '',
+      });
+    }
+
     let entryContents = EntryContents({
       ...entry,
       ...{
@@ -196,7 +260,49 @@ export class SectionEntryRenderService {
           ? 'after text wrap'
           : 'above title',
         gallery: gallery,
+        templateName: templateName,
+        galleryType: galleryType,
+        entryTitle: entryTitle ? entryTitle : '',
+        showDescription: true,
+        attributes: {
+          description: toHtmlAttributes({
+            'data-path': `${apiPath}content/description`,
+          }),
+          url: toHtmlAttributes({
+            'data-path': `${apiPath}content/url`,
+          }),
+        },
+        showUrl: templateName === 'default',
+        isEditMode: true,
+        addToCart: addToCart ? addToCart : '',
       },
+    });
+
+    entryContents = EntryEditor({
+      // Sections list for moving entry to other section
+      // Exclude current section, external link and shopping cart
+      sections: sections.filter((section) => {
+        return (
+          currentSection.name !== section.name &&
+          !(
+            section['@attributes'] &&
+            section['@attributes'].type &&
+            ['external_link', 'shopping_cart'].includes(
+              section['@attributes'].type
+            )
+          )
+        );
+      }),
+      templateName: templateName,
+      tagList: entry.tags && entry.tags.tag ? entry.tags.tag.join(', ') : '',
+      apiPath: apiPath,
+      entryFixed:
+        entry.content && entry.content.fixed ? entry.content.fixed : '0',
+      entryWidth:
+        entry.content && entry.content.width ? entry.content.width : '',
+      entryMarked: entry.marked ? entry.marked : '0',
+      productAttributesEditor: productAttributesEditor,
+      entryContents: entryContents,
     });
 
     return {
@@ -229,22 +335,26 @@ export class SectionEntryRenderService {
   }
 
   render(
+    user: UserStateModel,
     appState,
     siteSettings,
     siteSlug: string,
     entry: SectionEntry,
     templateName: string,
+    sections: SiteSectionStateModel[],
     currentSection: SiteSectionStateModel,
     currentSectionType: string,
     siteTemplateSettings,
     isResponsive: boolean
   ) {
     const viewData = this.getViewData(
+      user,
       appState,
       siteSettings,
       siteSlug,
       entry,
       templateName,
+      sections,
       currentSection,
       currentSectionType,
       siteTemplateSettings,
