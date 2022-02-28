@@ -5,6 +5,7 @@ import { toHtmlAttributes } from '../shared/helpers';
 import { AdditionalTextRenderService } from '../sites/sections/additional-text-render.service';
 import { SectionEntry } from '../sites/sections/entries/entries-state/section-entries-state.model';
 import { SectionEntriesState } from '../sites/sections/entries/entries-state/section-entries.state';
+import { PortfolioThumbnailsRenderService } from '../sites/sections/entries/portfolio-thumbnails-render.service';
 import { SectionEntriesService } from '../sites/sections/entries/section-entries.service';
 import { SectionEntryRenderService } from '../sites/sections/entries/section-entry-render.service';
 import { SectionFooterRenderService } from '../sites/sections/section-footer-render.service';
@@ -40,7 +41,8 @@ export class TemplateRenderService {
     public sitesBannersRenderService: SitesBannersRenderService,
     public sectionFooterRenderService: SectionFooterRenderService,
     public sectionEntriesService: SectionEntriesService,
-    public sectionEntryRenderService: SectionEntryRenderService
+    public sectionEntryRenderService: SectionEntryRenderService,
+    public portfolioThumbnailsRenderService: PortfolioThumbnailsRenderService
   ) {}
 
   getUserCopyright(siteSlug, siteSettings) {
@@ -272,6 +274,14 @@ export class TemplateRenderService {
         isShopAvailable,
         templateName,
         isResponsive
+      ),
+      portfolioThumbnails: this.portfolioThumbnailsRenderService.render(
+        siteSlug,
+        siteSettings,
+        currentSection,
+        currentSectionType,
+        tagSlug,
+        entries
       ),
       siteBanners: this.sitesBannersRenderService.render(
         siteSlug,

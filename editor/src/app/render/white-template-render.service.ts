@@ -13,6 +13,7 @@ import { SitesBannersRenderService } from '../sites/sites-banners-render.service
 import { SectionFooterRenderService } from '../sites/sections/section-footer-render.service';
 import { SectionEntriesService } from '../sites/sections/entries/section-entries.service';
 import { SectionEntryRenderService } from '../sites/sections/entries/section-entry-render.service';
+import { PortfolioThumbnailsRenderService } from '../sites/sections/entries/portfolio-thumbnails-render.service';
 
 @Injectable({
   providedIn: 'root',
@@ -30,7 +31,8 @@ export class WhiteTemplateRenderService extends TemplateRenderService {
     sitesBannersRenderService: SitesBannersRenderService,
     sectionFooterRenderService: SectionFooterRenderService,
     sectionEntriesService: SectionEntriesService,
-    sectionEntryRenderService: SectionEntryRenderService
+    sectionEntryRenderService: SectionEntryRenderService,
+    portfolioThumbnailsRenderService: PortfolioThumbnailsRenderService
   ) {
     super(
       store,
@@ -44,7 +46,8 @@ export class WhiteTemplateRenderService extends TemplateRenderService {
       sitesBannersRenderService,
       sectionFooterRenderService,
       sectionEntriesService,
-      sectionEntryRenderService
+      sectionEntryRenderService,
+      portfolioThumbnailsRenderService
     );
   }
 

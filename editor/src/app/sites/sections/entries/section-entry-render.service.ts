@@ -15,7 +15,6 @@ import { GalleryLinkRenderService } from './galleries/gallery-link-render.servic
 import { GalleryPileRenderService } from './galleries/gallery-pile-render.service';
 import { GalleryRowRenderService } from './galleries/gallery-row-render.service';
 import { GallerySlideshowRenderService } from './galleries/gallery-slideshow-render.service';
-import { join } from 'lodash';
 
 @Injectable({
   providedIn: 'root',
