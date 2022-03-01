@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Store } from '@ngxs/store';
 import { AppState } from '../app-state/app.state';
 import { toHtmlAttributes } from '../shared/helpers';
+import { AdditionalFooterTextRenderService } from '../sites/sections/additional-footer-text-render.service';
 import { AdditionalTextRenderService } from '../sites/sections/additional-text-render.service';
 import { SectionEntry } from '../sites/sections/entries/entries-state/section-entries-state.model';
 import { SectionEntriesState } from '../sites/sections/entries/entries-state/section-entries.state';
@@ -24,6 +25,7 @@ import { SitesState } from '../sites/sites-state/sites.state';
 import { SiteTemplateSettingsState } from '../sites/template-settings/site-template-settings.state';
 import { SiteTemplatesState } from '../sites/template-settings/site-templates.state';
 import { UserState } from '../user/user.state';
+import { UserStateModel } from '../user/user.state.model';
 
 @Injectable({
   providedIn: 'root',
@@ -42,7 +44,8 @@ export class TemplateRenderService {
     public sectionFooterRenderService: SectionFooterRenderService,
     public sectionEntriesService: SectionEntriesService,
     public sectionEntryRenderService: SectionEntryRenderService,
-    public portfolioThumbnailsRenderService: PortfolioThumbnailsRenderService
+    public portfolioThumbnailsRenderService: PortfolioThumbnailsRenderService,
+    public additionalFooterTextRenderService: AdditionalFooterTextRenderService
   ) {}
 
   getUserCopyright(siteSlug, siteSettings) {
@@ -205,7 +208,9 @@ export class TemplateRenderService {
 
     const viewData = {
       appState: appState,
+      siteSlug: siteSlug,
       siteSettings: siteSettings,
+      templateName: templateName,
       sections: sections,
       siteTemplateSettings: siteTemplateSettings,
       sectionSlug: sectionSlug,

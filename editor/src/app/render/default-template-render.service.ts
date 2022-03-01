@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngxs/store';
 import { TemplateRenderService } from './template-render.service';
-import * as Template from '../../templates/Sites/Sections/whiteTemplate.twig';
+import * as Template from '../../templates/Sites/Sections/defaultTemplate.twig';
 import { SectionRenderService } from '../sites/sections/section-render.service';
 import { SectionHeadRenderService } from '../sites/sections/section-head-render.service';
 import { SitesMenuRenderService } from '../sites/sites-menu-render.service';
@@ -19,7 +19,7 @@ import { AdditionalFooterTextRenderService } from '../sites/sections/additional-
 @Injectable({
   providedIn: 'root',
 })
-export class WhiteTemplateRenderService extends TemplateRenderService {
+export class DefaultTemplateRenderService extends TemplateRenderService {
   constructor(
     store: Store,
     sectionRenderService: SectionRenderService,
@@ -66,25 +66,22 @@ export class WhiteTemplateRenderService extends TemplateRenderService {
           commonViewData.sectionSlug,
           commonViewData.tagSlug
         ),
-        isCenteredPageLayout:
-          commonViewData.siteTemplateSettings.pageLayout.centered === 'yes',
+
         isResponsive:
           commonViewData.siteTemplateSettings.pageLayout.responsive === 'yes',
-        sideColumnAttributes: this.sectionRenderService.getSideColumnAttributes(
-          commonViewData.siteTemplateSettings
-        ),
-        mainColumnAttributes: this.sectionRenderService.getMainColumnAttributes(
-          commonViewData.siteTemplateSettings
-        ),
+
         pageEntriesAttributes:
           this.sectionRenderService.getPageEntriesAttributes(
             commonViewData.sections,
             commonViewData.sectionSlug,
             commonViewData.tagSlug
           ),
-        socialMediaLinks: this.sectionRenderService.getSocialMediaLinks(
+        additionalFooterText: this.additionalFooterTextRenderService.render(
           commonViewData.appState,
-          commonViewData.siteSettings
+          commonViewData.siteSlug,
+          commonViewData.siteSettings,
+          commonViewData.templateName,
+          commonViewData.user
         ),
       },
     };

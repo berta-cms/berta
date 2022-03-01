@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Store } from '@ngxs/store';
 import { SiteSettingsState } from '../sites/settings/site-settings.state';
 import { UserState } from '../user/user.state';
+import { DefaultTemplateRenderService } from './default-template-render.service';
 import { WhiteTemplateRenderService } from './white-template-render.service';
 
 @Injectable({
@@ -12,7 +13,8 @@ export class RenderService {
 
   constructor(
     private store: Store,
-    private whiteTemplateRenderService: WhiteTemplateRenderService
+    private whiteTemplateRenderService: WhiteTemplateRenderService,
+    private defaultTemplateRenderService: DefaultTemplateRenderService
   ) {}
 
   startRender(contentWindow: Window) {
@@ -37,6 +39,7 @@ export class RenderService {
         break;
 
       case 'default':
+        this.defaultTemplateRenderService.startRender(contentWindow);
         break;
 
       case 'mashup':
