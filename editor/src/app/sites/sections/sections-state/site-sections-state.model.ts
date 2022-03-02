@@ -11,6 +11,8 @@ export interface SiteSectionStateModel {
   backgroundVideoEmbed?: string;
   positionXY?: string;
   mediafolder?: string;
+  marked_items_imageselect?: string;
+  marked_items_count?: string;
   mediaCacheData?: {
     file?: {
       '@value': string;

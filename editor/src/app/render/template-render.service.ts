@@ -6,6 +6,7 @@ import { AdditionalFooterTextRenderService } from '../sites/sections/additional-
 import { AdditionalTextRenderService } from '../sites/sections/additional-text-render.service';
 import { SectionEntry } from '../sites/sections/entries/entries-state/section-entries-state.model';
 import { SectionEntriesState } from '../sites/sections/entries/entries-state/section-entries.state';
+import { MashupEntriesRenderService } from '../sites/sections/entries/mashup-entries-render.service';
 import { PortfolioThumbnailsRenderService } from '../sites/sections/entries/portfolio-thumbnails-render.service';
 import { SectionEntriesService } from '../sites/sections/entries/section-entries.service';
 import { SectionEntryRenderService } from '../sites/sections/entries/section-entry-render.service';
@@ -45,7 +46,8 @@ export class TemplateRenderService {
     public sectionEntriesService: SectionEntriesService,
     public sectionEntryRenderService: SectionEntryRenderService,
     public portfolioThumbnailsRenderService: PortfolioThumbnailsRenderService,
-    public additionalFooterTextRenderService: AdditionalFooterTextRenderService
+    public additionalFooterTextRenderService: AdditionalFooterTextRenderService,
+    public mashupEntriesRenderService: MashupEntriesRenderService
   ) {}
 
   getUserCopyright(siteSlug, siteSettings) {
@@ -212,10 +214,14 @@ export class TemplateRenderService {
       siteSettings: siteSettings,
       templateName: templateName,
       sections: sections,
+      currentSection: currentSection,
+      currentSectionType: currentSectionType,
       siteTemplateSettings: siteTemplateSettings,
+      siteTemplateSectionTypes: siteTemplateSectionTypes,
       sectionSlug: sectionSlug,
       tagSlug: tagSlug,
       user: user,
+      allEntries: entries,
       sectionHead: this.sectionHeadRenderService.render(
         appState,
         siteSlug,
