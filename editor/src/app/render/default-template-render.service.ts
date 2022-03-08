@@ -16,6 +16,8 @@ import { SectionEntryRenderService } from '../sites/sections/entries/section-ent
 import { PortfolioThumbnailsRenderService } from '../sites/sections/entries/portfolio-thumbnails-render.service';
 import { AdditionalFooterTextRenderService } from '../sites/sections/additional-footer-text-render.service';
 import { MashupEntriesRenderService } from '../sites/sections/entries/mashup-entries-render.service';
+import { GridViewRenderService } from '../sites/sections/grid-view-render.service';
+import { BackgroundGalleryRenderService } from '../sites/sections/background-gallery-render.service';
 
 @Injectable({
   providedIn: 'root',
@@ -36,7 +38,9 @@ export class DefaultTemplateRenderService extends TemplateRenderService {
     sectionEntryRenderService: SectionEntryRenderService,
     portfolioThumbnailsRenderService: PortfolioThumbnailsRenderService,
     additionalFooterTextRenderService: AdditionalFooterTextRenderService,
-    mashupEntriesRenderService: MashupEntriesRenderService
+    mashupEntriesRenderService: MashupEntriesRenderService,
+    gridViewRenderService: GridViewRenderService,
+    backgroundGalleryRenderService: BackgroundGalleryRenderService
   ) {
     super(
       store,
@@ -53,7 +57,9 @@ export class DefaultTemplateRenderService extends TemplateRenderService {
       sectionEntryRenderService,
       portfolioThumbnailsRenderService,
       additionalFooterTextRenderService,
-      mashupEntriesRenderService
+      mashupEntriesRenderService,
+      gridViewRenderService,
+      backgroundGalleryRenderService
     );
   }
 

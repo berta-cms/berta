@@ -4,12 +4,14 @@ import { AppState } from '../app-state/app.state';
 import { toHtmlAttributes } from '../shared/helpers';
 import { AdditionalFooterTextRenderService } from '../sites/sections/additional-footer-text-render.service';
 import { AdditionalTextRenderService } from '../sites/sections/additional-text-render.service';
+import { BackgroundGalleryRenderService } from '../sites/sections/background-gallery-render.service';
 import { SectionEntry } from '../sites/sections/entries/entries-state/section-entries-state.model';
 import { SectionEntriesState } from '../sites/sections/entries/entries-state/section-entries.state';
 import { MashupEntriesRenderService } from '../sites/sections/entries/mashup-entries-render.service';
 import { PortfolioThumbnailsRenderService } from '../sites/sections/entries/portfolio-thumbnails-render.service';
 import { SectionEntriesService } from '../sites/sections/entries/section-entries.service';
 import { SectionEntryRenderService } from '../sites/sections/entries/section-entry-render.service';
+import { GridViewRenderService } from '../sites/sections/grid-view-render.service';
 import { SectionFooterRenderService } from '../sites/sections/section-footer-render.service';
 import { SectionHeadRenderService } from '../sites/sections/section-head-render.service';
 import { SectionRenderService } from '../sites/sections/section-render.service';
@@ -26,7 +28,6 @@ import { SitesState } from '../sites/sites-state/sites.state';
 import { SiteTemplateSettingsState } from '../sites/template-settings/site-template-settings.state';
 import { SiteTemplatesState } from '../sites/template-settings/site-templates.state';
 import { UserState } from '../user/user.state';
-import { UserStateModel } from '../user/user.state.model';
 
 @Injectable({
   providedIn: 'root',
@@ -47,7 +48,9 @@ export class TemplateRenderService {
     public sectionEntryRenderService: SectionEntryRenderService,
     public portfolioThumbnailsRenderService: PortfolioThumbnailsRenderService,
     public additionalFooterTextRenderService: AdditionalFooterTextRenderService,
-    public mashupEntriesRenderService: MashupEntriesRenderService
+    public mashupEntriesRenderService: MashupEntriesRenderService,
+    public gridViewRenderService: GridViewRenderService,
+    public backgroundGalleryRenderService: BackgroundGalleryRenderService
   ) {}
 
   getUserCopyright(siteSlug, siteSettings) {
@@ -222,6 +225,9 @@ export class TemplateRenderService {
       tagSlug: tagSlug,
       user: user,
       allEntries: entries,
+      isResponsive: isResponsive,
+      isAutoResponsive: isAutoResponsive,
+      isShopAvailable: isShopAvailable,
       sectionHead: this.sectionHeadRenderService.render(
         appState,
         siteSlug,

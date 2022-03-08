@@ -44,6 +44,7 @@ const defaultState: AppStateModel = {
   themes: [],
   socialMediaIcons: {},
   rowGalleryImageLimit: {},
+  gridImagePrefix: '',
 };
 
 @State<AppStateModel>({
@@ -205,6 +206,7 @@ export class AppState implements NgxsOnInit {
       version: state.version,
       socialMediaIcons: state.socialMediaIcons,
       rowGalleryImageLimit: state.rowGalleryImageLimit,
+      gridImagePrefix: state.gridImagePrefix,
     });
   }
 

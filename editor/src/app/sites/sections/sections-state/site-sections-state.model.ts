@@ -13,6 +13,9 @@ export interface SiteSectionStateModel {
   mediafolder?: string;
   marked_items_imageselect?: string;
   marked_items_count?: string;
+  columns?: string;
+  sectionBgColor?: string;
+  backgroundVideoRatio?: string;
   mediaCacheData?: {
     file?: {
       '@value': string;
@@ -26,8 +29,10 @@ export interface SiteSectionStateModel {
     '@attributes'?: {
       hide_navigation?: 'yes' | 'no';
       caption_bg_color?: string;
+      caption_color?: string;
       autoplay?: 0 | 1;
       image_size?: string;
+      animation?: string;
     };
   };
   '@attributes'?: {

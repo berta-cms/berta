@@ -111,6 +111,7 @@ class StateController extends Controller
             'themes' => $themesDS->getThemes(),
             'socialMediaIcons' => SocialMediaLinksRenderService::getSocialMediaIcons(),
             'rowGalleryImageLimit' => config('app.row_gallery_image_limit'),
+            'gridImagePrefix' => config('app.grid_image_prefix'),
         ];
 
         return Helpers::api_response('', $meta);

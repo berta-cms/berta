@@ -23,4 +23,5 @@ export interface AppStateModel {
   themes: string[];
   socialMediaIcons: { [key: string]: string };
   rowGalleryImageLimit: { [key: string]: string };
+  gridImagePrefix: string;
 }

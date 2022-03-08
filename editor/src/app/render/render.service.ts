@@ -4,6 +4,7 @@ import { SiteSettingsState } from '../sites/settings/site-settings.state';
 import { UserState } from '../user/user.state';
 import { DefaultTemplateRenderService } from './default-template-render.service';
 import { MashupTemplateRenderService } from './mashup-template-render.service';
+import { MessyTemplateRenderService } from './messy-template-render.service';
 import { WhiteTemplateRenderService } from './white-template-render.service';
 
 @Injectable({
@@ -16,7 +17,8 @@ export class RenderService {
     private store: Store,
     private whiteTemplateRenderService: WhiteTemplateRenderService,
     private defaultTemplateRenderService: DefaultTemplateRenderService,
-    private mashupTemplateRenderService: MashupTemplateRenderService
+    private mashupTemplateRenderService: MashupTemplateRenderService,
+    private messyTemplateRenderService: MessyTemplateRenderService
   ) {}
 
   startRender(contentWindow: Window) {
@@ -50,6 +52,7 @@ export class RenderService {
 
       // Messy
       default:
+        this.messyTemplateRenderService.startRender(contentWindow);
         break;
     }
   }
