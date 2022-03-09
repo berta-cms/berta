@@ -321,3 +321,19 @@ export function getCookie(name) {
   const parts = value.split(`; ${name}=`);
   if (parts.length === 2) return parts.pop().split(';').shift();
 }
+
+export function formatPrice(price, currency) {
+  const floatPrice = parseFloat(price);
+  if (isNaN(floatPrice)) {
+    return '';
+  }
+
+  return `${floatPrice.toFixed(2)} ${currency}`;
+}
+
+export function toCartAttributes(attributes: string): string[] {
+  return attributes
+    .split(',')
+    .map((attribute) => attribute.trim())
+    .filter((attribute) => attribute.length > 0);
+}

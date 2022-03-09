@@ -31,6 +31,7 @@ import { WhiteTemplateStyleService } from './preview/white-template-style.servic
 import { DefaultTemplateStyleService } from './preview/default-template-style.service';
 import { MashupTemplateStyleService } from './preview/mashup-template-style.service';
 import { MessyTemplateStyleService } from './preview/messy-template-style.service';
+import { ShopSettingsState } from './shop/settings/shop-settings.state';
 
 @NgModule({
   declarations: [
@@ -51,7 +52,7 @@ import { MessyTemplateStyleService } from './preview/messy-template-style.servic
     HttpClientModule,
     AppRoutingModule,
     SharedModule,
-    NgxsModule.forRoot([AppState, UserState, ErrorState], {
+    NgxsModule.forRoot([AppState, UserState, ErrorState, ShopSettingsState], {
       developmentMode: !environment.production,
     }),
     NgxsReduxDevtoolsPluginModule.forRoot({ disabled: environment.production }),

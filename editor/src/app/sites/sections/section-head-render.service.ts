@@ -20,6 +20,7 @@ export class SectionHeadRenderService {
     siteTemplatesConfig,
     siteTemplateSectionTypes,
     isShopAvailable,
+    shopSettings,
     isResponsive,
     isAutoResponsive,
     user
@@ -52,6 +53,7 @@ export class SectionHeadRenderService {
         templateName,
         currentSectionType,
         isShopAvailable,
+        shopSettings,
         isResponsive,
         isAutoResponsive
       ),
@@ -77,19 +79,24 @@ export class SectionHeadRenderService {
     templateName,
     currentSectionType,
     isShopAvailable,
+    shopSettings,
     isResponsive,
     isAutoResponsive
   ) {
-    // @todo: we also need shop settings state here to get google web fonts from there
     let googleWebFonts = [];
+    let templateSettings = siteTemplateSettings;
 
-    Object.keys(siteTemplateSettings).map((groupSlug) => {
-      Object.keys(siteTemplateSettings[groupSlug]).map((setting) => {
+    if (isShopAvailable) {
+      templateSettings = { ...templateSettings, ...shopSettings };
+    }
+
+    Object.keys(templateSettings).map((groupSlug) => {
+      Object.keys(templateSettings[groupSlug]).map((setting) => {
         if (
           setting.endsWith('googleFont') &&
-          siteTemplateSettings[groupSlug][setting]
+          templateSettings[groupSlug][setting]
         ) {
-          googleWebFonts.push(siteTemplateSettings[groupSlug][setting]);
+          googleWebFonts.push(templateSettings[groupSlug][setting]);
         }
       });
     });
@@ -246,6 +253,7 @@ export class SectionHeadRenderService {
     siteTemplatesConfig,
     siteTemplateSectionTypes,
     isShopAvailable,
+    shopSettings,
     isResponsive,
     isAutoResponsive,
     user
@@ -263,6 +271,7 @@ export class SectionHeadRenderService {
       siteTemplatesConfig,
       siteTemplateSectionTypes,
       isShopAvailable,
+      shopSettings,
       isResponsive,
       isAutoResponsive,
       user

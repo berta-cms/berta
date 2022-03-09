@@ -1,6 +1,10 @@
 import { Injectable } from '@angular/core';
 import { UserStateModel } from 'src/app/user/user.state.model';
-import { toHtmlAttributes } from '../../../../app/shared/helpers';
+import {
+  formatPrice,
+  toCartAttributes,
+  toHtmlAttributes,
+} from '../../../../app/shared/helpers';
 import * as EntryTemplate from '../../../../templates/Sites/Sections/Entries/entry.twig';
 import * as EntryContents from '../../../../templates/Sites/Sections/Entries/_entryContents.twig';
 import * as EntryTitle from '../../../../templates/Sites/Sections/Entries/_entryTitle.twig';
@@ -69,7 +73,8 @@ export class SectionEntryRenderService {
     entry: SectionEntry,
     templateName: string,
     isResponsive: boolean,
-    currentSectionType: string
+    currentSectionType: string,
+    shopSettings
   ): string {
     if (templateName !== 'messy' || isResponsive) {
       return '';
@@ -91,14 +96,14 @@ export class SectionEntryRenderService {
 
     if (entry.content && entry.content.width) {
       styles.push(`width:${entry.content.width}px`);
-
-      // @TODO get shop settings from state here
-
-      // } else if (currentSectionType === 'shop' && siteSettings.shop.entryWidth) {
-      //   const width = parseInt(siteSettings.shop.entryWidth, 10);
-      //   if (width > 0) {
-      //     styles.push(`width:${width}px`);
-      //   }
+    } else if (
+      currentSectionType === 'shop' &&
+      shopSettings.group_price_item.entryWidth
+    ) {
+      const width = parseInt(shopSettings.group_price_item.entryWidth, 10);
+      if (width > 0) {
+        styles.push(`width:${width}px`);
+      }
     }
 
     return styles.join(';');
@@ -115,7 +120,8 @@ export class SectionEntryRenderService {
     currentSection: SiteSectionStateModel,
     currentSectionType: string,
     siteTemplateSettings,
-    isResponsive: boolean
+    isResponsive: boolean,
+    shopSettings
   ) {
     const apiPath = `${siteSlug}/entry/${currentSection.name}/${entry.id}/`;
     let entryTitle, addToCart, productAttributesEditor;
@@ -221,7 +227,6 @@ export class SectionEntryRenderService {
         },
       });
 
-      // @todo - get shop state
       addToCart = AddToCart({
         ...entry,
         ...{
@@ -231,9 +236,20 @@ export class SectionEntryRenderService {
               'data-path': `${apiPath}content/cartPrice`,
             }),
           },
-          // cartPriceFormatted: '...',
-          // cartAttributes: '...'
-          // ...
+          cartPriceFormatted:
+            entry.content && entry.content.cartPrice
+              ? formatPrice(
+                  entry.content.cartPrice,
+                  shopSettings.group_config.currency
+                )
+              : '',
+          cartAttributes:
+            entry.content && entry.content.cartAttributes
+              ? toCartAttributes(entry.content.cartAttributes)
+              : '',
+          addToBasketLabel: shopSettings.group_config.addToBasket,
+          addedToBasketText: shopSettings.group_config.addedToBasket,
+          outOfStockText: shopSettings.group_config.outOfStock,
         },
       });
 
@@ -243,8 +259,7 @@ export class SectionEntryRenderService {
           entry.content && entry.content.cartAttributes
             ? entry.content.cartAttributes
             : '',
-        // @todo - get shop state
-        weightUnits: '...', // shopSettings.weightUnit
+        weightUnits: shopSettings.group_config.weightUnit,
         entryWeight:
           entry.content && entry.content.weight ? entry.content.weight : '',
       });
@@ -320,7 +335,8 @@ export class SectionEntryRenderService {
             entry,
             templateName,
             isResponsive,
-            currentSectionType
+            currentSectionType,
+            shopSettings
           ),
           'data-path':
             templateName == 'messy' && !isResponsive
@@ -344,7 +360,8 @@ export class SectionEntryRenderService {
     currentSection: SiteSectionStateModel,
     currentSectionType: string,
     siteTemplateSettings,
-    isResponsive: boolean
+    isResponsive: boolean,
+    shopSettings
   ) {
     const viewData = this.getViewData(
       user,
@@ -357,7 +374,8 @@ export class SectionEntryRenderService {
       currentSection,
       currentSectionType,
       siteTemplateSettings,
-      isResponsive
+      isResponsive,
+      shopSettings
     );
     const htmlOutput = EntryTemplate(viewData);
 

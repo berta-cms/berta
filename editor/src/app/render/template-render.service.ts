@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { Store } from '@ngxs/store';
 import { AppState } from '../app-state/app.state';
 import { toHtmlAttributes } from '../shared/helpers';
+import { ShopSettingsComponent } from '../shop/settings/shop-settings.component';
+import { ShopSettingsState } from '../shop/settings/shop-settings.state';
 import { AdditionalFooterTextRenderService } from '../sites/sections/additional-footer-text-render.service';
 import { AdditionalTextRenderService } from '../sites/sections/additional-text-render.service';
 import { BackgroundGalleryRenderService } from '../sites/sections/background-gallery-render.service';
@@ -94,6 +96,7 @@ export class TemplateRenderService {
     siteSettings,
     siteTemplateSettings,
     isShopAvailable,
+    shopSettings,
     templateName,
     isResponsive
   ) {
@@ -116,7 +119,8 @@ export class TemplateRenderService {
         currentSection,
         currentSectionType,
         siteTemplateSettings,
-        isResponsive
+        isResponsive,
+        shopSettings
       );
     });
 
@@ -211,6 +215,22 @@ export class TemplateRenderService {
       siteTemplateSettings.pageLayout &&
       siteTemplateSettings.pageLayout.autoResponsive === 'yes';
 
+    const shopSettings = this.store
+      .selectSnapshot(ShopSettingsState.getCurrentSiteSettings)
+      .reduce((settings, settingGroup) => {
+        settingGroup.settings.forEach((setting) => {
+          settings = {
+            ...settings,
+            [settingGroup.slug]: {
+              ...settings[settingGroup.slug],
+              [setting.slug]: setting.value,
+            },
+          };
+        });
+
+        return settings;
+      }, {});
+
     const viewData = {
       appState: appState,
       siteSlug: siteSlug,
@@ -241,6 +261,7 @@ export class TemplateRenderService {
         siteTemplatesConfig,
         siteTemplateSectionTypes,
         isShopAvailable,
+        shopSettings,
         isResponsive,
         isAutoResponsive,
         user
@@ -289,6 +310,7 @@ export class TemplateRenderService {
         siteSettings,
         siteTemplateSettings,
         isShopAvailable,
+        shopSettings,
         templateName,
         isResponsive
       ),
