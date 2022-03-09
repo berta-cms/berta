@@ -18,7 +18,6 @@ import { ShopOrdersComponent } from './orders/shop-orders.component';
 import { ShopRegionalCostsComponent } from './regional-costs/shop-regional-costs.component';
 import { ShopSettingsComponent } from './settings/shop-settings.component';
 
-
 @NgModule({
   imports: [
     CommonModule,
@@ -29,10 +28,16 @@ import { ShopSettingsComponent } from './settings/shop-settings.component';
       ShopOrdersState,
       ShopRegionalCostsState,
       ShopSettingsState,
-      ShopSettingsConfigState
+      ShopSettingsConfigState,
     ]),
-    SitesSharedModule
+    SitesSharedModule,
   ],
-  declarations: [ShopComponent, ShopProductsComponent, ShopOrdersComponent, ShopRegionalCostsComponent, ShopSettingsComponent]
+  declarations: [
+    ShopComponent,
+    ShopProductsComponent,
+    ShopOrdersComponent,
+    ShopRegionalCostsComponent,
+    ShopSettingsComponent,
+  ],
 })
-export class ShopModule { }
+export class ShopModule {}

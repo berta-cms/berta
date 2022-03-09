@@ -17,7 +17,7 @@ import { HeaderComponent } from './header/header.component';
 import { PreviewToggleComponent } from './header/preview-toggle.component';
 import { ProfileDropdownComponent } from './profile-dropdown/profile-dropdown.component';
 import { LoginComponent } from './login/login.component';
-import { ThemesComponent } from './themes/themes.component'
+import { ThemesComponent } from './themes/themes.component';
 import { UserState } from './user/user.state';
 import { UserAccountComponent } from './user/user-account.component';
 import { SitesSharedModule } from './sites/shared/sites-shared.module';
@@ -32,7 +32,6 @@ import { DefaultTemplateStyleService } from './preview/default-template-style.se
 import { MashupTemplateStyleService } from './preview/mashup-template-style.service';
 import { MessyTemplateStyleService } from './preview/messy-template-style.service';
 
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -44,7 +43,7 @@ import { MessyTemplateStyleService } from './preview/messy-template-style.servic
     LoginComponent,
     PreviewComponent,
     ThemesComponent,
-    PopupComponent
+    PopupComponent,
   ],
   imports: [
     BrowserModule,
@@ -52,15 +51,13 @@ import { MessyTemplateStyleService } from './preview/messy-template-style.servic
     HttpClientModule,
     AppRoutingModule,
     SharedModule,
-    NgxsModule.forRoot([
-      AppState,
-      UserState,
-      ErrorState
-    ], { developmentMode: !environment.production }),
+    NgxsModule.forRoot([AppState, UserState, ErrorState], {
+      developmentMode: !environment.production,
+    }),
     NgxsReduxDevtoolsPluginModule.forRoot({ disabled: environment.production }),
-    NgxsLoggerPluginModule.forRoot({ disabled: true }),  // it logs too much, enable only when needed
+    NgxsLoggerPluginModule.forRoot({ disabled: true }), // it logs too much, enable only when needed
     SitesModule,
-    SitesSharedModule
+    SitesSharedModule,
   ],
   providers: [
     StyleService,
@@ -68,8 +65,8 @@ import { MessyTemplateStyleService } from './preview/messy-template-style.servic
     DefaultTemplateStyleService,
     MashupTemplateStyleService,
     MessyTemplateStyleService,
-    {provide: ErrorHandler, useClass: SentryErrorHandler}
+    { provide: ErrorHandler, useClass: SentryErrorHandler },
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
