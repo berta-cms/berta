@@ -18,6 +18,7 @@ import { AdditionalFooterTextRenderService } from '../sites/sections/additional-
 import { MashupEntriesRenderService } from '../sites/sections/entries/mashup-entries-render.service';
 import { GridViewRenderService } from '../sites/sections/grid-view-render.service';
 import { BackgroundGalleryRenderService } from '../sites/sections/background-gallery-render.service';
+import { ShopCartRenderService } from '../shop/shop-cart-render.service';
 
 @Injectable({
   providedIn: 'root',
@@ -40,7 +41,8 @@ export class WhiteTemplateRenderService extends TemplateRenderService {
     additionalFooterTextRenderService: AdditionalFooterTextRenderService,
     mashupEntriesRenderService: MashupEntriesRenderService,
     gridViewRenderService: GridViewRenderService,
-    backgroundGalleryRenderService: BackgroundGalleryRenderService
+    backgroundGalleryRenderService: BackgroundGalleryRenderService,
+    shopCartRenderService: ShopCartRenderService
   ) {
     super(
       store,
@@ -59,7 +61,8 @@ export class WhiteTemplateRenderService extends TemplateRenderService {
       additionalFooterTextRenderService,
       mashupEntriesRenderService,
       gridViewRenderService,
-      backgroundGalleryRenderService
+      backgroundGalleryRenderService,
+      shopCartRenderService
     );
   }
 

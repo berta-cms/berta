@@ -32,6 +32,7 @@ import { DefaultTemplateStyleService } from './preview/default-template-style.se
 import { MashupTemplateStyleService } from './preview/mashup-template-style.service';
 import { MessyTemplateStyleService } from './preview/messy-template-style.service';
 import { ShopSettingsState } from './shop/settings/shop-settings.state';
+import { ShopRegionalCostsState } from './shop/regional-costs/shop-regional-costs.state';
 
 @NgModule({
   declarations: [
@@ -52,9 +53,18 @@ import { ShopSettingsState } from './shop/settings/shop-settings.state';
     HttpClientModule,
     AppRoutingModule,
     SharedModule,
-    NgxsModule.forRoot([AppState, UserState, ErrorState, ShopSettingsState], {
-      developmentMode: !environment.production,
-    }),
+    NgxsModule.forRoot(
+      [
+        AppState,
+        UserState,
+        ErrorState,
+        ShopSettingsState,
+        ShopRegionalCostsState,
+      ],
+      {
+        developmentMode: !environment.production,
+      }
+    ),
     NgxsReduxDevtoolsPluginModule.forRoot({ disabled: environment.production }),
     NgxsLoggerPluginModule.forRoot({ disabled: true }), // it logs too much, enable only when needed
     SitesModule,

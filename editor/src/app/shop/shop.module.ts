@@ -10,7 +10,6 @@ import { SitesSharedModule } from '../sites/shared/sites-shared.module';
 import { ShopState } from './shop.state';
 import { ShopProductsState } from './products/shop-products.state';
 import { ShopOrdersState } from './orders/shop-orders.state';
-import { ShopRegionalCostsState } from './regional-costs/shop-regional-costs.state';
 import { ShopSettingsConfigState } from './settings/shop-settings-config.state';
 import { ShopProductsComponent } from './products/shop-products.component';
 import { ShopOrdersComponent } from './orders/shop-orders.component';
@@ -25,7 +24,6 @@ import { ShopSettingsComponent } from './settings/shop-settings.component';
       ShopState,
       ShopProductsState,
       ShopOrdersState,
-      ShopRegionalCostsState,
       ShopSettingsConfigState,
     ]),
     SitesSharedModule,

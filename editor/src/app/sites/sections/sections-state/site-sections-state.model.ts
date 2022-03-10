@@ -38,7 +38,7 @@ export interface SiteSectionStateModel {
   '@attributes'?: {
     tags_behavior?: string;
     entry_count?: number;
-    published?: 0 | 1;
+    published?: '0' | '1';
     has_direct_content?: '0' | '1';
     type?: string;
   };

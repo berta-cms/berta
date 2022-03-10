@@ -20,6 +20,7 @@ import { SiteSectionStateModel } from '../sites/sections/sections-state/site-sec
 import { getCookie, toHtmlAttributes } from '../shared/helpers';
 import { GridViewRenderService } from '../sites/sections/grid-view-render.service';
 import { BackgroundGalleryRenderService } from '../sites/sections/background-gallery-render.service';
+import { ShopCartRenderService } from '../shop/shop-cart-render.service';
 
 @Injectable({
   providedIn: 'root',
@@ -42,7 +43,8 @@ export class MessyTemplateRenderService extends TemplateRenderService {
     additionalFooterTextRenderService: AdditionalFooterTextRenderService,
     mashupEntriesRenderService: MashupEntriesRenderService,
     gridViewRenderService: GridViewRenderService,
-    backgroundGalleryRenderService: BackgroundGalleryRenderService
+    backgroundGalleryRenderService: BackgroundGalleryRenderService,
+    shopCartRenderService: ShopCartRenderService
   ) {
     super(
       store,
@@ -61,7 +63,8 @@ export class MessyTemplateRenderService extends TemplateRenderService {
       additionalFooterTextRenderService,
       mashupEntriesRenderService,
       gridViewRenderService,
-      backgroundGalleryRenderService
+      backgroundGalleryRenderService,
+      shopCartRenderService
     );
   }
 
@@ -268,8 +271,18 @@ export class MessyTemplateRenderService extends TemplateRenderService {
           commonViewData.user
         ),
         alertMessage: false,
-        // @todo get shippingRegions and shopSettings
-        // cartSection: commonViewData.isShopAvailable && commonViewData.currentSectionType == 'shopping_cart' ? 'shopCartRS.render()' : null
+        cartSection:
+          commonViewData.isShopAvailable &&
+          commonViewData.currentSectionType === 'shopping_cart'
+            ? this.shopCartRenderService.renderCart(
+                commonViewData.siteSlug,
+                commonViewData.siteSettings,
+                commonViewData.templateName,
+                commonViewData.currentSection,
+                commonViewData.shopSettings,
+                commonViewData.shippingRegions
+              )
+            : null,
         backgroundGallery: !(
           commonViewData.isShopAvailable &&
           commonViewData.currentSectionType == 'shopping_cart'
@@ -297,13 +310,17 @@ export class MessyTemplateRenderService extends TemplateRenderService {
         )
           ? this.getGridlinesAttributes(commonViewData.siteSettings)
           : null,
-
-        // @todo get shopSettings in state
         shoppingCartLink: !(
           commonViewData.isShopAvailable &&
           commonViewData.currentSectionType == 'shopping_cart'
         )
-          ? 'renderCartLink...'
+          ? this.shopCartRenderService.renderCartLink(
+              commonViewData.siteSlug,
+              commonViewData.siteSettings,
+              commonViewData.shopSettings,
+              commonViewData.sections,
+              commonViewData.isResponsive
+            )
           : null,
       },
     };

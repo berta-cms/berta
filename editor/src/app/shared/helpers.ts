@@ -307,6 +307,32 @@ export function toImageHtmlAttributes(
   return html;
 }
 
+export function getImageItem(
+  siteSlug: string,
+  filename: string,
+  attributes: { [key: string]: string }
+) {
+  const mediaUrl = `/storage/${
+    siteSlug.length ? `-sites/${siteSlug}/` : ''
+  }media`;
+
+  if (attributes.alt) {
+    attributes.alt = attributes.alt
+      .replace(/\n/g, ' ') // remove new line
+      .replace(/(<([^>]+)>)/gi, '') // remove html tags
+      .replace(/  +/g, ' ') // remove too many empty spaces
+      .trim();
+  }
+
+  attributes.src = `${mediaUrl}/${filename}`;
+
+  if (attributes.width && attributes.height) {
+    attributes.srcset = `${mediaUrl}/_${attributes.width}x${attributes.height}_${filename} 1x, ${mediaUrl}/${filename} 2x`;
+  }
+
+  return attributes;
+}
+
 export function shuffleArray(array) {
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));

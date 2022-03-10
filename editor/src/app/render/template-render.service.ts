@@ -2,8 +2,9 @@ import { Injectable } from '@angular/core';
 import { Store } from '@ngxs/store';
 import { AppState } from '../app-state/app.state';
 import { toHtmlAttributes } from '../shared/helpers';
-import { ShopSettingsComponent } from '../shop/settings/shop-settings.component';
+import { ShopRegionalCostsState } from '../shop/regional-costs/shop-regional-costs.state';
 import { ShopSettingsState } from '../shop/settings/shop-settings.state';
+import { ShopCartRenderService } from '../shop/shop-cart-render.service';
 import { AdditionalFooterTextRenderService } from '../sites/sections/additional-footer-text-render.service';
 import { AdditionalTextRenderService } from '../sites/sections/additional-text-render.service';
 import { BackgroundGalleryRenderService } from '../sites/sections/background-gallery-render.service';
@@ -52,7 +53,8 @@ export class TemplateRenderService {
     public additionalFooterTextRenderService: AdditionalFooterTextRenderService,
     public mashupEntriesRenderService: MashupEntriesRenderService,
     public gridViewRenderService: GridViewRenderService,
-    public backgroundGalleryRenderService: BackgroundGalleryRenderService
+    public backgroundGalleryRenderService: BackgroundGalleryRenderService,
+    public shopCartRenderService: ShopCartRenderService
   ) {}
 
   getUserCopyright(siteSlug, siteSettings) {
@@ -231,6 +233,10 @@ export class TemplateRenderService {
         return settings;
       }, {});
 
+    const shippingRegions = this.store.selectSnapshot(
+      ShopRegionalCostsState.getCurrentSiteRegionalCosts
+    );
+
     const viewData = {
       appState: appState,
       siteSlug: siteSlug,
@@ -248,6 +254,8 @@ export class TemplateRenderService {
       isResponsive: isResponsive,
       isAutoResponsive: isAutoResponsive,
       isShopAvailable: isShopAvailable,
+      shopSettings: shopSettings,
+      shippingRegions: shippingRegions,
       sectionHead: this.sectionHeadRenderService.render(
         appState,
         siteSlug,
