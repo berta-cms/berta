@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f138023a18f921a970e7fbf0e445fd7a",
+    "content-hash": "30023948902a6fa048f1e9e34f838a59",
     "packages": [
         {
             "name": "brick/math",
@@ -3997,31 +3997,30 @@
         },
         {
             "name": "rcrowe/twigbridge",
-            "version": "v0.12.3",
+            "version": "v0.14.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/rcrowe/TwigBridge.git",
-                "reference": "5d6dc0c907c5db476cf0caf3210eb10e44a78369"
+                "reference": "f4968efb99537cc1b37c5bf20280614aadc31825"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/rcrowe/TwigBridge/zipball/5d6dc0c907c5db476cf0caf3210eb10e44a78369",
-                "reference": "5d6dc0c907c5db476cf0caf3210eb10e44a78369",
+                "url": "https://api.github.com/repos/rcrowe/TwigBridge/zipball/f4968efb99537cc1b37c5bf20280614aadc31825",
+                "reference": "f4968efb99537cc1b37c5bf20280614aadc31825",
                 "shasum": ""
             },
             "require": {
-                "illuminate/support": "^5.5|^6|^7|^8",
-                "illuminate/view": "^5.5|^6|^7|^8",
-                "php": ">=7.1",
-                "twig/twig": "^2.11"
+                "illuminate/support": "^6|^7|^8|^9",
+                "illuminate/view": "^6|^7|^8|^9",
+                "php": "^7.2.5 || ^8.0",
+                "twig/twig": "~3.0"
             },
             "require-dev": {
                 "ext-json": "*",
-                "laravel/framework": "5.5.*",
-                "mockery/mockery": "0.9.*",
-                "phpunit/phpunit": "~6.0",
-                "satooshi/php-coveralls": "~0.6",
-                "squizlabs/php_codesniffer": "~1.5"
+                "laravel/framework": "^6|^7|^8|^9",
+                "mockery/mockery": "^1.3.1",
+                "phpunit/phpunit": "^6.5.14 || ^7.5.20 || ^8.5.8 || ^9.3.7",
+                "squizlabs/php_codesniffer": "^3.6"
             },
             "suggest": {
                 "laravelcollective/html": "For bringing back html/form in Laravel 5.x",
@@ -4030,7 +4029,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "0.12-dev"
+                    "dev-master": "0.13-dev"
                 },
                 "laravel": {
                     "providers": [
@@ -4068,9 +4067,9 @@
             ],
             "support": {
                 "issues": "https://github.com/rcrowe/TwigBridge/issues",
-                "source": "https://github.com/rcrowe/TwigBridge/tree/v0.12.3"
+                "source": "https://github.com/rcrowe/TwigBridge/tree/v0.14.0"
             },
-            "time": "2020-10-14T18:14:32+00:00"
+            "time": "2022-03-08T17:21:17+00:00"
         },
         {
             "name": "sentry/sdk",
@@ -6758,16 +6757,16 @@
         },
         {
             "name": "twig/twig",
-            "version": "v2.14.7",
+            "version": "v3.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/Twig.git",
-                "reference": "8e202327ee1ed863629de9b18a5ec70ac614d88f"
+                "reference": "e939eae92386b69b49cfa4599dd9bead6bf4a342"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/8e202327ee1ed863629de9b18a5ec70ac614d88f",
-                "reference": "8e202327ee1ed863629de9b18a5ec70ac614d88f",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/e939eae92386b69b49cfa4599dd9bead6bf4a342",
+                "reference": "e939eae92386b69b49cfa4599dd9bead6bf4a342",
                 "shasum": ""
             },
             "require": {
@@ -6782,13 +6781,10 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.14-dev"
+                    "dev-master": "3.4-dev"
                 }
             },
             "autoload": {
-                "psr-0": {
-                    "Twig_": "lib/"
-                },
                 "psr-4": {
                     "Twig\\": "src/"
                 }
@@ -6821,7 +6817,7 @@
             ],
             "support": {
                 "issues": "https://github.com/twigphp/Twig/issues",
-                "source": "https://github.com/twigphp/Twig/tree/v2.14.7"
+                "source": "https://github.com/twigphp/Twig/tree/v3.4.1"
             },
             "funding": [
                 {
@@ -6833,7 +6829,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-09-17T08:39:54+00:00"
+            "time": "2022-05-17T05:48:52+00:00"
         },
         {
             "name": "vlucas/phpdotenv",

@@ -458,7 +458,7 @@ export class PreviewService {
       )),
       filter(actionsPassed => {
         return actionsPassed.length > 0 && !actionsPassed.every(action => {
-          const slug = Object.keys(action.payload)[0];
+          const slug = action.payload ? Object.keys(action.payload)[0] : "";
           return action instanceof UpdateSiteTemplateSettingsAction && !(this.templateSettingsRequireReload[action.settingGroup] && this.templateSettingsRequireReload[action.settingGroup].indexOf(slug) > -1);
         });
       })
