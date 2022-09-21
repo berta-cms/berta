@@ -186,7 +186,7 @@
   }
 
   .toggle-wrapper {
-    $toggle-width: 30px;
+    $toggle-width: 40px;
     $toggle-height: 22px;
     $toggle-slider-size: 20px;
 
@@ -212,8 +212,13 @@
       &:hover:enabled + span {
         border-color: $grey-80;
       }
+      &:checked + span {
+        background-color: $grey-80;
+      }
       &:checked + span:after {
         left: $toggle-width - $toggle-slider-size - 2;
+        background-color: $white;
+        border-color: $grey-80;
       }
     }
 
@@ -228,7 +233,7 @@
       width: $toggle-width;
 
       &:after {
-        background-color: $grey-80;
+        background-color: $grey-40;
         border: 1px solid $white;
         border-radius: 50%;
         content: '';
