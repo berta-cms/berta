@@ -12,6 +12,13 @@ export interface TemplateSiteModel {
     [settingGroupSlug: string]: SettingGroupConfigModel
   };
   sectionTypes: SiteTemplateSectionTypesModel;
+  translations: TemplateTranslationsModel;
+}
+
+export interface TemplateTranslationsModel {
+  [groupSlug: string]: {
+    [slug: string]: string;
+  }
 }
 
 export interface SiteTemplateSectionTypesModel {
@@ -35,6 +42,7 @@ export interface SiteTemplatesResponseModel {
 export interface TemplateModelResponse {
   templateConf: TemplateConfResponse;
   sectionTypes: SiteTemplateSectionTypesResponse;
+  translations: TemplateTranslationsResponse;
 }
 
 export interface TemplateConfResponse {
@@ -49,4 +57,10 @@ export interface SiteTemplateSectionTypesResponse {
     }
     [k: string]: any;
   };
+}
+
+export interface TemplateTranslationsResponse {
+  [groupSlug: string]: {
+    [slug: string]: string;
+  }
 }

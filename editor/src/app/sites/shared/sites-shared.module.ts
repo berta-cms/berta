@@ -18,11 +18,14 @@ import { IconDeleteComponent } from './icon-delete.component';
 import { IconPublishComponent } from './icon-publish.component';
 import { IconReadonlyComponent } from '../../inputs/icon-readonly.component';
 import { RouteButton } from 'src/app/inputs/route-button.component';
+import { TooltipModule } from 'ng2-tooltip-directive';
+import { HelpTooltipComponent } from './help-tooltip.component';
 
 @NgModule({
   imports: [
     CommonModule,
-    ColorPickerModule
+    ColorPickerModule,
+    TooltipModule,
   ],
   declarations: [
     SettingComponent,
@@ -41,7 +44,8 @@ import { RouteButton } from 'src/app/inputs/route-button.component';
     RouteButton,
     IconCloneComponent,
     IconDeleteComponent,
-    IconPublishComponent
+    IconPublishComponent,
+    HelpTooltipComponent
   ],
   exports: [
     SettingComponent,
@@ -60,7 +64,8 @@ import { RouteButton } from 'src/app/inputs/route-button.component';
     RouteButton,
     IconCloneComponent,
     IconDeleteComponent,
-    IconPublishComponent
+    IconPublishComponent,
+    HelpTooltipComponent
   ]
 })
 export class SitesSharedModule { }

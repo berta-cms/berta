@@ -24,6 +24,7 @@
     "@sentry/browser": "^5.4.0",
     "core-js": "^2.5.4",
     "lodash": "^4.17.21",
+    "ng2-tooltip-directive": "^2.9.20",
     "ngx-color-picker": "^6.6.3",
     "rxjs": "^6.5.2",
     "webfontloader": "^1.6.28",

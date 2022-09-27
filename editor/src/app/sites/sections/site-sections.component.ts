@@ -17,6 +17,7 @@ import {
   RenameSiteSectionAction,
   ReOrderSiteSectionsAction } from './sections-state/site-sections.actions';
 import { SettingConfigModel, SettingModel } from '../../shared/interfaces';
+import { TemplateTranslationsModel } from '../template-settings/site-templates.interface';
 
 interface SectionData {
   section: SiteSectionStateModel;
@@ -36,6 +37,7 @@ interface SectionData {
                      [isExpanded]="sd.section.name === currentSection"
                      [params]="sd.params"
                      [templateSectionTypes]="sectionTypes$ | async"
+                     [translations]="translations$ | async"
                      (inputFocus)="updateComponentFocus($event)"
                      (update)="updateSection(sd, $event)"></berta-section>
     </div>
@@ -46,6 +48,7 @@ export class SiteSectionsComponent implements OnInit {
   sectionsData$: Observable<SectionData[]>;
   sectionsList: SectionData[];
   sectionTypes$: Observable<{value: string, title: string}[]>;
+  translations$: Observable<TemplateTranslationsModel>;
   currentSection: string;
 
 
@@ -61,6 +64,10 @@ export class SiteSectionsComponent implements OnInit {
         });
       }),
       shareReplay(1)  // Reuse the same observable for all sections
+    );
+
+    this.translations$ = this.store.select(SiteTemplatesState.getCurrentTemplateSectionTranslations).pipe(
+      shareReplay(1)  // Reuse the same observable for all sections)
     );
 
     this.sectionsData$ = combineLatest(

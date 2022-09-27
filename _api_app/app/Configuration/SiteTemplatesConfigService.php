@@ -219,14 +219,12 @@ class SiteTemplatesConfigService
 
     public function __construct()
     {
-        $this->TEMPLATE_ROOT = realpath(config('app.old_berta_root'). '/_templates');
+        $this->TEMPLATE_ROOT = realpath(config('app.old_berta_root') . '/_templates');
     }
 
     public function get($lang = 'en')
     {
         $ret = [];
-        $sectionTypes = [];
-        $templateConf = [];
         I18n::load_language($lang);
 
         foreach ($this->getAllTemplates() as $tpl) {
@@ -243,8 +241,9 @@ class SiteTemplatesConfigService
             $conf = str_replace('<?php', 'namespace App\Shared;', $conf);
             list(
                 $ret[$tpl]['sectionTypes'],
-                $ret[$tpl]['templateConf']
-                ) = eval($conf);
+                $ret[$tpl]['templateConf'],
+                $ret[$tpl]['translations']
+            ) = eval($conf);
         }
 
         return $ret;
@@ -288,10 +287,12 @@ class SiteTemplatesConfigService
         $d = dir($this->TEMPLATE_ROOT);
 
         while (false !== ($entry = $d->read())) {
-            if ($entry != '.' &&
+            if (
+                $entry != '.' &&
                 $entry != '..' &&
                 substr($entry, 0, 1) != '_'
-                && is_dir($this->TEMPLATE_ROOT . '/' . $entry)) {
+                && is_dir($this->TEMPLATE_ROOT . '/' . $entry)
+            ) {
                 $returnArr[] = $entry;
             }
         }

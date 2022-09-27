@@ -12,6 +12,7 @@ import { UpdateInputFocus } from '../../app-state/app.actions';
     <ng-container [ngSwitch]="config.format">
       <berta-text-input *ngSwitchCase="'text'"
                         [label]="config.title"
+                        [tip]="config.tip"
                         [placeholder]="config.placeholder"
                         [value]="setting.value"
                         [disabled]="disabled"
@@ -75,6 +76,7 @@ import { UpdateInputFocus } from '../../app-state/app.actions';
 
       <berta-select-input *ngSwitchCase="'select'"
                           [label]="config.title"
+                          [tip]="config.tip"
                           [value]="setting.value"
                           [values]="config.values"
                           (inputFocus)="updateComponentFocus($event)"

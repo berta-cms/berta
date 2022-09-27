@@ -1619,4 +1619,11 @@ if (@file_exists('../_plugin_shop/template.conf.php')) {
     include '../_plugin_shop/template.conf.php';
 }
 
-return [$sectionTypes, $templateConf];
+$translations = [
+    'sectionTypes' => [
+        'type' => I18n::_('section_type'),
+        'type_tip' => I18n::_('section_type_tip'),
+    ]
+];
+
+return [$sectionTypes, $templateConf, $translations];
