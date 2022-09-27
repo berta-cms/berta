@@ -6,7 +6,9 @@ import { SettingModel, SettingConfigModel } from '../shared/interfaces';
   template: `
     <div class="form-group" [class.bt-focus]="focus" [class.bt-disabled]="disabled">
       <label>
-        {{ label }}
+        <span class="label-text">
+          {{ label }}<berta-help-tooltip *ngIf="tip" [content]="tip"></berta-help-tooltip>
+        </span>
 
         <div class="select-wrapper">
           <div class="button-wrapper">
@@ -28,6 +30,7 @@ import { SettingModel, SettingConfigModel } from '../shared/interfaces';
 })
 export class SelectInputComponent implements OnInit {
   @Input() label: string;
+  @Input() tip?: string;
   @Input() value: SettingModel['value'];
   @Input() values: SettingConfigModel['values'];
   @Output() update = new EventEmitter();

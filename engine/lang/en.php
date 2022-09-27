@@ -33,5 +33,12 @@ return [
     'mobile_device_detected' => 'You can\'t use mobile device to edit your site!',
     'javascript_include' => 'Javascript code included right before closing &lt;/body&gt; element. Learn more how to <a href="https://github.com/berta-cms/berta/wiki/Include-JavaScript-code" target="_blank" title="How to include JavaScript code">include JavaScript code</a>.',
     'description_custom_css' => 'Place your custom CSS code here. Any existing CSS definitions will be overwritten. For more information visit our <a href="https://github.com/berta-cms/berta/wiki/Add-custom-CSS" target="_blank">WIKI</a>.',
-    'seo_help_text' => 'Search Engine Optimization (SEO) helps Google to find your website and improves its rank in search results. <a href="https://support.google.com/webmasters/answer/35624" target="_blank">Learn more how it works</a>.'
+    'seo_help_text' => 'Search Engine Optimization (SEO) helps Google to find your website and improves its rank in search results. <a href="https://support.google.com/webmasters/answer/35624" target="_blank">Learn more how it works</a>.',
+    'section_type' => 'Type',
+    'section_type_tip' => 'Defines the layout and functionality of the section.',
+    'select_on' => 'On',
+    'select_off' => 'Off',
+    'shuffle_marked' => 'Shuffle marked entries and galleries',
+    'entries_limit' => 'Entries limit',
+    'entries_limit_tip' => 'How many entries to show in this section',
 ];

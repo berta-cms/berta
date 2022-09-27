@@ -25,6 +25,7 @@ export interface SettingGroupConfigModel {
 export interface SettingConfigModel {
   default?: null | string | number | boolean;
   description?: string;
+  tip?: string;
   title?: string;
   placeholder?: string;
   enabledOnUpdate?: boolean;
@@ -81,6 +82,7 @@ export interface SettingConfigGroupResponse {
 export interface SettingConfigResponse {
   default?: null | string | number | boolean;
   description?: string;
+  tip?: string;
   title?: string;
   format?:
     | 'text'

@@ -34,4 +34,11 @@ return [
     'mobile_device_detected' => '¡Usted no puede usar un dispositivo móvil para editar su sitio!',
     'javascript_include' => 'incluir código Javascript justo antes de cerrar el elemento &lt;/body&gt;. Obtenga más información de cómo <a href="https://github.com/berta-cms/berta/wiki/Include-JavaScript-code" target="_blank" title="Cómo incluir código JavaScript">incluir código JavaScript</a>.',
     'description_custom_css' => 'Coloca el código CSS personalizado aquí. Cualquier definiciones CSS existentes se sobrescribirán. Para obtener más información, visite nuestro <a href="https://github.com/berta-cms/berta/wiki/Add-custom-CSS" target="_blank">WIKI</a>.',
+    'section_type' => 'Type',
+    'section_type_tip' => 'Defines the layout and functionality of the section.',
+    'select_on' => 'On',
+    'select_off' => 'Off',
+    'shuffle_marked' => 'Shuffle marked entries and galleries',
+    'entries_limit' => 'Entries limit',
+    'entries_limit_tip' => 'How many entries to show in this section',
 ];
