@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<!--[if lt IE 7 ]> <html class="ie ie6 ie-old"> <![endif]-->
+<!--[if IE 7 ]>    <html class="ie ie7 ie-old"> <![endif]-->
+<!--[if IE 8 ]>    <html class="ie ie8"> <![endif]-->
+<!--[if IE 9 ]>    <html class="ie ie9"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--> <html> <!--<![endif]-->
+  <div [innerHtml]="sectionHead | safe: 'html'" id="head"></div>
+  <body [class]="bodyClasses">
+    <div id="allContainer">
+      <div id="contentContainer" [class.xResponsive]="isResponsive">
+        <div [innerHtml]="sitesMenu | safe: 'html'"></div>
+        <div [innerHtml]="siteHeader | safe: 'html'"></div>
+        <div [innerHtml]="additionalTextBlock | safe: 'html'"></div>
+        <div [innerHtml]="sectionsMenu | safe: 'html'"></div>
+      </div>
+    </div>
+  </body>
+</html>

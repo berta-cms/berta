@@ -9,6 +9,7 @@ import { SiteSectionsState } from './sections-state/site-sections.state';
 import { SectionTagsState } from './tags/section-tags.state';
 import { SectionEntriesModule } from './entries/section-entries.module';
 import { SitesSharedModule } from '../shared/sites-shared.module';
+import {SafePipe} from "../../pipes/pipe";
 
 @NgModule({
   imports: [
@@ -22,6 +23,9 @@ import { SitesSharedModule } from '../shared/sites-shared.module';
     SectionEntriesModule,
     SitesSharedModule
   ],
-  declarations: [SiteSectionsComponent, SectionComponent]
+    exports: [
+        SafePipe,
+    ],
+  declarations: [SiteSectionsComponent, SectionComponent, SafePipe,]
 })
 export class SiteSectionsModule { }

@@ -1,8 +1,13 @@
-import { Component, OnInit, NgZone } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  NgZone,
+  ViewContainerRef,
+} from '@angular/core';
 import { Router } from '@angular/router';
 import { SafeUrl, DomSanitizer } from '@angular/platform-browser';
 import { HttpClient } from '@angular/common/http';
-import { Observable, combineLatest, Subscription } from 'rxjs';
+import { Observable, combineLatest, Subscription, Observer} from 'rxjs';
 import { take, filter, debounceTime, pairwise } from 'rxjs/operators';
 import { Store } from '@ngxs/store';
 
@@ -66,15 +71,16 @@ export class PreviewComponent implements OnInit {
     private service: PreviewService,
     private styleService: StyleService,
     private sanitizer: DomSanitizer,
-    private http: HttpClient
+    private http: HttpClient,
+    private vcRef: ViewContainerRef,
   ) {}
 
   ngOnInit() {
     // We need a start value for previewUrl while Observable is not ready
     // otherwise iframe loads wrong iframe src url: current url + 'null' (http://local.berta.me/engine/null)
     // This solves iframe in iframe loading
-    this.previewUrl =
-      this.sanitizer.bypassSecurityTrustResourceUrl('about:blank');
+    // this.previewUrl =
+    //   this.sanitizer.bypassSecurityTrustResourceUrl('about:blank');
 
     // Load iframe with current site and section
     combineLatest(
@@ -92,7 +98,7 @@ export class PreviewComponent implements OnInit {
       ),
       this.store.select(UserState.isLoggedIn)
     ).subscribe(([[site, section], isLoggedIn]) => {
-      let url = location.protocol + '//' + location.hostname;
+      let url = location.protocol + '//' + location.hostname + ':' + location.port;
       const queryParams = [];
 
       if (isLoggedIn) {
@@ -211,14 +217,16 @@ export class PreviewComponent implements OnInit {
           };
         }
 
+        this.service.loadBasicLayout(iframe.contentDocument, this.vcRef)
+        // this.service.replaceIframeContent(iframe.contentWindow, '<body class="bt-responsive xContent-home xSectionType-default"><div style="background: #0c4dff; height: 100vh;"><berta-hello></berta-hello></div></body>')
         /* Reload the iframe when the settings change */
-        this.service.connectIframeReload(iframe);
-        iframe.contentWindow.onbeforeunload = () => {
-          this.service.disconnectIframeView(iframe);
-        };
+        // this.service.connectIframeReload(iframe);
+        // iframe.contentWindow.onbeforeunload = () => {
+        //   this.service.disconnectIframeView(iframe);
+        // };
 
         const styleElement = iframe.contentDocument.createElement('style');
-        iframe.contentDocument.head.appendChild(styleElement);
+        iframe.contentDocument.getElementById('head').appendChild(styleElement);
         this.styleService.initializeStyleSheet(
           iframe.contentWindow,
           styleElement.sheet as CSSStyleSheet
@@ -236,6 +244,8 @@ export class PreviewComponent implements OnInit {
               filter(([_, curSettings]) => !!curSettings)
             )
         ).subscribe(([site, template, [prevSettings, curSettings]]) => {
+          if (!prevSettings) return
+
           const stylesToChange = curSettings.reduce(
             (stylesToChange: any, settingsGroup) => {
               settingsGroup.settings.forEach((setting) => {
@@ -295,7 +305,7 @@ export class PreviewComponent implements OnInit {
   private waitFullLoad(
     iframe: HTMLIFrameElement
   ): Observable<HTMLIFrameElement> {
-    return Observable.create((observer) => {
+    return Observable.create((observer: Observer<HTMLIFrameElement>) => {
       const maxChecks = 120;
       let intervalCount = 0;
       let lastError = '';
@@ -304,21 +314,11 @@ export class PreviewComponent implements OnInit {
         .split('/')
         .pop();
 
-      const loadCheck = setInterval(() => {
-        if (intervalCount >= maxChecks) {
-          clearInterval(loadCheck);
-          observer.error({
-            message: 'Could not load iframe: ' + lastError,
-            data: iframe,
-          });
-          observer.complete();
-          return;
-        }
-
+      while (intervalCount < maxChecks) {
         if (!iframe.contentDocument) {
           lastError = 'Iframe has no contentDocument';
           intervalCount++;
-          return;
+          continue
         }
 
         if (lastUrlPart === 'login.php' || lastUrlPart === 'engine') {
@@ -336,12 +336,19 @@ export class PreviewComponent implements OnInit {
           lastError =
             'Berta classes `xLoginPageBody` or `xContent-[]` or `xSectionType-` are missing from body element';
           intervalCount++;
-          return;
+          continue;
         }
 
         observer.next(iframe);
         observer.complete();
-      }, 500);
+        return
+      }
+
+      observer.error({
+        message: 'Could not load iframe: ' + lastError,
+        data: iframe,
+      });
+      observer.complete();
     });
   }
 }

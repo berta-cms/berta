@@ -1,4 +1,4 @@
-import { Injectable } from "@angular/core";
+import { Injectable, ViewContainerRef } from "@angular/core";
 
 import { Store, Actions, ofActionSuccessful } from "@ngxs/store";
 import { Subscription, Observable } from "rxjs";
@@ -45,6 +45,7 @@ import { SiteSectionsState } from "../sites/sections/sections-state/site-section
 import { SectionTagsState } from "../sites/sections/tags/section-tags.state";
 import { OrderSectionTagsFromSyncAction } from "../sites/sections/tags/section-tags.actions";
 import { UpdateShopSettingsAction } from "../shop/settings/shop-settings.actions";
+import {LoaderService} from "../themes/loader.service";
 
 @Injectable({
   providedIn: "root",
@@ -74,6 +75,7 @@ export class PreviewService {
     private appService: AppStateService,
     private popupService: PopupService,
     private renderService: RenderService,
+    private loaderService: LoaderService,
     private actions$: Actions,
     private store: Store
   ) {}
@@ -533,6 +535,10 @@ export class PreviewService {
         // iframe.contentWindow.location.reload();
         this.renderService.startRender(iframe.contentWindow);
       });
+  }
+
+  loadBasicLayout(dom: Document, vcRef: ViewContainerRef) {
+    this.loaderService.loadTheme(dom, vcRef)
   }
 
   disconnectIframeView(iframe: HTMLIFrameElement) {

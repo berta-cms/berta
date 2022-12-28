@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import * as ShoppingCart from '../../templates/Plugins/Shop/shoppingCart.twig';
-import * as ShoppingCartLink from '../../templates/Plugins/Shop/shoppingCartLink.twig';
+// import * as ShoppingCart from '../../templates/Plugins/Shop/shoppingCart.twig';
+// import * as ShoppingCartLink from '../../templates/Plugins/Shop/shoppingCartLink.twig';
 import { getImageItem, toHtmlAttributes } from '../shared/helpers';
 import { SiteSectionStateModel } from '../sites/sections/sections-state/site-sections-state.model';
 
@@ -67,20 +67,7 @@ export class ShopCartRenderService {
       return '';
     }
 
-    const htmlOutput = ShoppingCartLink({
-      attributes: this.getCartLinkAttributes(
-        siteSlug,
-        siteSettings,
-        isResponsive
-      ),
-      link: this.getCartLink(siteSlug, section),
-      title: section.title,
-      image: shopSettings.group_price_item.cartImage
-        ? getImageItem(siteSlug, shopSettings.group_price_item.cartImage, {
-            alt: section.title,
-          })
-        : null,
-    });
+    const htmlOutput = '';
 
     return htmlOutput;
   }
@@ -628,76 +615,7 @@ export class ShopCartRenderService {
       return '';
     }
 
-    const htmlOutput = ShoppingCart({
-      config: shopSettings.group_config,
-      currency: shopSettings.group_config.currency,
-      isEditMode: true,
-      emptyCart: this.getEmptyCartData(siteSlug, siteSettings),
-      cartTitle: section.title,
-      expiredCart: this.getExpiredCartData(siteSlug, siteSettings),
-      tableHeadTitle: this.getTableHeadTitleData(siteSlug, siteSettings),
-      tableHeadQuantity: this.getTableHeadQuantityData(siteSlug, siteSettings),
-      tableHeadPrice: this.getTableHeadPriceData(siteSlug, siteSettings),
-      tableHeadSum: this.getTableHeadSumData(siteSlug, siteSettings),
-      discountAvailable: shopSettings.group_config.promoCodeDiscount.length > 0,
-      promoCode: this.getPromoCodeData(siteSlug, siteSettings),
-      promoButton: this.getPromoButtonData(siteSlug, siteSettings),
-      shippingTo: this.getShippingToData(siteSlug, siteSettings),
-      shippingRegions: shippingRegions,
-      shippingTotal: this.getShippingTotalData(siteSlug, siteSettings),
-      discount: this.getDiscountData(siteSlug, siteSettings),
-      total: this.getTotalData(siteSlug, siteSettings),
-      includedVat: this.getIncludedVatData(siteSlug, siteSettings),
-      billingAddress: this.getBillingAddressData(siteSlug, siteSettings),
-      legalPerson: this.getLegalPersonData(siteSlug, siteSettings),
-      company: this.getCompanyData(siteSlug, siteSettings),
-      companyRegistrationNumber: this.getCompanyRegistrationNumberData(
-        siteSlug,
-        siteSettings
-      ),
-      legalAddress: this.getLegalAddressData(siteSlug, siteSettings),
-      nameSurname: this.getNameSurnameData(siteSlug, siteSettings),
-      address: this.getAddressData(siteSlug, siteSettings),
-      phone: this.getPhoneData(siteSlug, siteSettings),
-      email: this.getEmailData(siteSlug, siteSettings),
-      comments: this.getCommentsData(siteSlug, siteSettings),
-      deliverToBillingAddress: this.getDeliverToBillingAddressData(
-        siteSlug,
-        siteSettings
-      ),
-      shippingAddressHeader: this.getShippingAddressHeaderData(
-        siteSlug,
-        siteSettings
-      ),
-      receiveNews: this.getReceiveNewsData(siteSlug, siteSettings),
-      paymentHeader: this.getPaymentHeaderData(siteSlug, siteSettings),
-      paymentDescription: this.getPaymentDescriptionData(
-        siteSlug,
-        siteSettings
-      ),
-      isPaypalAvailable: ['paypal', 'both'].includes(
-        shopSettings.group_config.paymentMethod
-      ),
-      isManualTransferAvailable: ['bank', 'both'].includes(
-        shopSettings.group_config.paymentMethod
-      ),
-      manualTransfer: this.getManualTransferData(siteSlug, siteSettings),
-      checkoutDescription: this.getCheckoutDescriptionData(
-        siteSlug,
-        siteSettings
-      ),
-      totalLabel: siteSettings.siteTexts.cartTextTotal
-        ? siteSettings.siteTexts.cartTextTotal
-        : 'total',
-      terms: this.getTermsData(siteSlug, siteSettings),
-      fillRequiredFields: this.getFillRequiredFieldsData(
-        siteSlug,
-        siteSettings
-      ),
-      checkoutButton: this.getCheckoutButtonData(siteSlug, siteSettings),
-      returnToStore: this.getReturnToStoreData(siteSlug, siteSettings),
-      returnUrl: location.protocol + '//' + location.hostname,
-    });
+    const htmlOutput = '';
 
     return htmlOutput;
   }

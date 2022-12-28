@@ -217,21 +217,7 @@ export class TemplateRenderService {
       siteTemplateSettings.pageLayout &&
       siteTemplateSettings.pageLayout.autoResponsive === 'yes';
 
-    const shopSettings = this.store
-      .selectSnapshot(ShopSettingsState.getCurrentSiteSettings)
-      .reduce((settings, settingGroup) => {
-        settingGroup.settings.forEach((setting) => {
-          settings = {
-            ...settings,
-            [settingGroup.slug]: {
-              ...settings[settingGroup.slug],
-              [setting.slug]: setting.value,
-            },
-          };
-        });
-
-        return settings;
-      }, {});
+    const shopSettings = [];
 
     const shippingRegions = this.store.selectSnapshot(
       ShopRegionalCostsState.getCurrentSiteRegionalCosts
