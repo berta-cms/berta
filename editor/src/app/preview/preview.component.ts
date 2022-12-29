@@ -226,11 +226,14 @@ export class PreviewComponent implements OnInit {
         // };
 
         const styleElement = iframe.contentDocument.createElement('style');
-        iframe.contentDocument.getElementById('head').appendChild(styleElement);
-        this.styleService.initializeStyleSheet(
-          iframe.contentWindow,
-          styleElement.sheet as CSSStyleSheet
-        );
+        setTimeout(() => {
+          iframe.contentDocument.getElementsByTagName('head')[0].appendChild(styleElement);
+
+          this.styleService.initializeStyleSheet(
+            iframe.contentWindow,
+            styleElement.sheet as CSSStyleSheet
+          );
+        }, 0)
 
         this.styleChangesSubscription = combineLatest(
           this.store.select(SitesState.getCurrentSite),
