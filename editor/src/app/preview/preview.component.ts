@@ -227,7 +227,7 @@ export class PreviewComponent implements OnInit {
 
         const styleElement = iframe.contentDocument.createElement('style');
         setTimeout(() => {
-          iframe.contentDocument.getElementsByTagName('head')[0].appendChild(styleElement);
+          iframe.contentDocument.head.appendChild(styleElement);
 
           this.styleService.initializeStyleSheet(
             iframe.contentWindow,

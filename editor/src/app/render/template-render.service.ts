@@ -31,6 +31,7 @@ import { SitesState } from '../sites/sites-state/sites.state';
 import { SiteTemplateSettingsState } from '../sites/template-settings/site-template-settings.state';
 import { SiteTemplatesState } from '../sites/template-settings/site-templates.state';
 import { UserState } from '../user/user.state';
+import {UserCopyright} from "../../types/user-copyright";
 
 @Injectable({
   providedIn: 'root',
@@ -57,7 +58,7 @@ export class TemplateRenderService {
     public shopCartRenderService: ShopCartRenderService
   ) {}
 
-  getUserCopyright(siteSlug, siteSettings) {
+  getUserCopyright(siteSlug, siteSettings): UserCopyright {
     const content =
       siteSettings.siteTexts && siteSettings.siteTexts.siteFooter
         ? siteSettings.siteTexts.siteFooter
@@ -69,7 +70,7 @@ export class TemplateRenderService {
 
     return {
       content: content,
-      attributes: toHtmlAttributes(attributes),
+      attributes: attributes,
     };
   }
 

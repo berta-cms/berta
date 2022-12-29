@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { toHtmlAttributes } from '../../shared/helpers';
 import { SocialMediaLinksRenderService } from '../social-media-links-render.service';
 import { SiteSectionStateModel } from './sections-state/site-sections-state.model';
+import {ClassAttr} from "../../../types/attributes";
 
 @Injectable({
   providedIn: 'root',
@@ -108,11 +109,9 @@ export class SectionRenderService {
     sections: SiteSectionStateModel[],
     sectionSlug: string,
     tagSlug: string
-  ) {
+  ): ClassAttr {
     const currentSection = this.getCurrentSection(sections, sectionSlug);
-    let attributes: {
-      [key: string]: string;
-    } = {};
+    let attributes: ClassAttr = {class: ''};
 
     let classes = ['xEntriesList', `xSection-${currentSection.name}`];
 
@@ -122,7 +121,7 @@ export class SectionRenderService {
 
     attributes.class = classes.join(' ');
 
-    return toHtmlAttributes(attributes);
+    return attributes;
   }
 
   // used only for White and Mashup

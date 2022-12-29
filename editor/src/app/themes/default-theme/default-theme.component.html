@@ -4,15 +4,31 @@
 <!--[if IE 8 ]>    <html class="ie ie8"> <![endif]-->
 <!--[if IE 9 ]>    <html class="ie ie9"> <![endif]-->
 <!--[if (gt IE 9)|!(IE)]><!--> <html> <!--<![endif]-->
-  <div [outerHTML]="sectionHead | safe: 'html'"></div>
+  <head [innerHtml]="sectionHead | safe: 'html'"></head>
   <body [class]="bodyClasses">
     <div id="allContainer">
       <div id="contentContainer" [class.xResponsive]="isResponsive">
-        <div [outerHTML]="sitesMenu | safe: 'html'"></div>
-        <div [outerHTML]="siteHeader | safe: 'html'"></div>
-        <div [outerHTML]="additionalTextBlock | safe: 'html'"></div>
-        <div [outerHTML]="sectionsMenu | safe: 'html'"></div>
+        <ul [innerHtml]="sitesMenu | safe: 'html'"></ul>
+        <h1 [innerHtml]="siteHeader | safe: 'html'"></h1>
+        <div [innerHtml]="additionalTextBlock | safe: 'html'"></div>
+        <nav [innerHtml]="sectionsMenu | safe: 'html'"></nav>
+
+<!--        throws error: this.entriesList.getClassStoredValue is not a function-->
+        <ol id="pageEntries" [class]="pageEntriesAttributes.class" [innerHtml]="entries | safe: 'html'"></ol>
+<!--        throws error: this.entriesList.getClassStoredValue is not a function-->
+
+        <div [innerHtml]="portfolioThumbnails | safe: 'html'"></div>
+        <div [innerHtml]="additionalFooterText | safe: 'html'"></div>
+        <p
+          id="userCopyright"
+          [class]="userCopyright.attributes.class"
+          [attr.data-path]="userCopyright.attributes['data-path']"
+          [innerHtml]="userCopyright.content | safe: 'html'"
+        ></p>
+        <div *ngIf="bertaCopyright" id="bertaCopyright" [innerHtml]="bertaCopyright | safe: 'html'"></div>
       </div>
+      <div [innerHtml]="siteBanners | safe: 'html'"></div>
     </div>
+    <div [innerHtml]="sectionFooter | safe: 'html'"></div>
   </body>
 </html>

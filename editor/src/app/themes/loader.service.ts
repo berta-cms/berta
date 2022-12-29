@@ -31,7 +31,7 @@ export class LoaderService {
     Array.from(dom.childNodes).forEach((node) =>
       node.remove()
     );
-    dom.appendChild(componentRef.location.nativeElement)
+    dom.appendChild(componentRef.location.nativeElement.firstChild)
   }
 
   private loadThemeComponent(): ThemeItem {
