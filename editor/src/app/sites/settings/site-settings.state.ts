@@ -16,7 +16,8 @@ import {
   UpdateSiteSettingsFromSyncAction,
   AddSiteSettingChildrenAction,
   DeleteSiteSettingChildrenAction,
-  UpdateSiteSettingChildreAction} from './site-settings.actions';
+  UpdateSiteSettingChildreAction, UpdateNavigationSiteSettingsAction
+} from './site-settings.actions';
 import { UserLoginAction } from '../../user/user.actions';
 import { AddSiteSectionAction } from '../sections/sections-state/site-sections.actions';
 
@@ -85,7 +86,7 @@ export class SiteSettingsState implements NgxsOnInit {
   }
 
   @Action(UpdateSiteSettingsAction)
-  updateSiteSettings({ getState, patchState }: StateContext<SitesSettingsStateModel>, action: UpdateSiteSettingsAction) {
+  updateSiteSettings({ getState, patchState, dispatch }: StateContext<SitesSettingsStateModel>, action: UpdateSiteSettingsAction) {
     const currentSite = this.store.selectSnapshot(AppState.getSite);
     const settingKey = Object.keys(action.payload)[0];
     const data = {
@@ -99,6 +100,13 @@ export class SiteSettingsState implements NgxsOnInit {
           /* This should probably be handled in sync */
           console.error(response.error_message);
         } else {
+          console.log(action)
+          switch (action.settingGroup) {
+            case "navigation":
+              dispatch(new UpdateNavigationSiteSettingsAction(action.payload))
+              break
+          }
+
           const currentState = getState();
 
           patchState({[currentSite]: currentState[currentSite].map(settingGroup => {

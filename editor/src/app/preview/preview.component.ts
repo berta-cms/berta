@@ -2,7 +2,6 @@ import {
   Component,
   OnInit,
   NgZone,
-  ViewContainerRef,
 } from '@angular/core';
 import { Router } from '@angular/router';
 import { SafeUrl, DomSanitizer } from '@angular/platform-browser';
@@ -72,7 +71,6 @@ export class PreviewComponent implements OnInit {
     private styleService: StyleService,
     private sanitizer: DomSanitizer,
     private http: HttpClient,
-    private vcRef: ViewContainerRef,
   ) {}
 
   ngOnInit() {
@@ -217,8 +215,8 @@ export class PreviewComponent implements OnInit {
           };
         }
 
-        this.service.loadBasicLayout(iframe.contentDocument, this.vcRef)
-        // this.service.replaceIframeContent(iframe.contentWindow, '<body class="bt-responsive xContent-home xSectionType-default"><div style="background: #0c4dff; height: 100vh;"><berta-hello></berta-hello></div></body>')
+        this.service.loadRerenderService(iframe)
+
         /* Reload the iframe when the settings change */
         // this.service.connectIframeReload(iframe);
         // iframe.contentWindow.onbeforeunload = () => {
@@ -226,14 +224,12 @@ export class PreviewComponent implements OnInit {
         // };
 
         const styleElement = iframe.contentDocument.createElement('style');
-        setTimeout(() => {
-          iframe.contentDocument.head.appendChild(styleElement);
+        iframe.contentDocument.head.appendChild(styleElement);
 
-          this.styleService.initializeStyleSheet(
-            iframe.contentWindow,
-            styleElement.sheet as CSSStyleSheet
-          );
-        }, 0)
+        this.styleService.initializeStyleSheet(
+          iframe.contentWindow,
+          styleElement.sheet as CSSStyleSheet
+        );
 
         this.styleChangesSubscription = combineLatest(
           this.store.select(SitesState.getCurrentSite),

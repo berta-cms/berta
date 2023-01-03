@@ -68,6 +68,21 @@ export class ShopCartRenderService {
     }
 
     const htmlOutput = '';
+    // uncomment this part in case you want shop feature back
+    // const htmlOutput = ShoppingCartLink({
+    //   attributes: this.getCartLinkAttributes(
+    //     siteSlug,
+    //     siteSettings,
+    //     isResponsive
+    //   ),
+    //   link: this.getCartLink(siteSlug, section),
+    //   title: section.title,
+    //   image: shopSettings.group_price_item.cartImage
+    //     ? getImageItem(siteSlug, shopSettings.group_price_item.cartImage, {
+    //       alt: section.title,
+    //     })
+    //     : null,
+    // });
 
     return htmlOutput;
   }

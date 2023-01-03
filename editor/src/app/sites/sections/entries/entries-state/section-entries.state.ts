@@ -284,11 +284,26 @@ export class SectionEntriesState implements NgxsOnInit {
           const currentState = getState();
           const [currentSite, , currentSection, entryId] = action.path.split('/');
           const siteName = currentSite === '0' ? '' : currentSite;
-          let path = action.path.split('/').slice(4).join('/');
+          let firstPathPart = action.path.split('/').slice(0,4).join('/');
+          let lastPathPart = action.path.split('/').slice(4).join('/');
           let payload = action.payload;
 
-          if (path === 'tags/tag') {
-            path = 'tags';
+          if (lastPathPart === 'tags/tag') {
+            // slugs update
+            // piece of a logic to update entry 'slugs' field right after 'tag' field was changed
+            let foundEntry = SectionEntriesState.getCurrentSiteEntries(currentState, siteName).find(
+              entry => entry.id === entryId && entry.sectionName === currentSection
+            )
+            let defaultTitle = 'Some title'
+            if (foundEntry.content && foundEntry.content.title) defaultTitle = foundEntry.content.title
+
+            dispatch(new UpdateSectionEntryFromSyncAction(
+              firstPathPart + '/' + 'content/title',
+              defaultTitle
+            ))
+            // end slugs update
+
+            lastPathPart = 'tags';
             payload = response.entry.tags;
           }
 
@@ -298,7 +313,7 @@ export class SectionEntriesState implements NgxsOnInit {
                 return entry;
               }
 
-              return assignByPath(entry, path, payload);
+              return assignByPath(entry, lastPathPart, payload);
             })
           });
 

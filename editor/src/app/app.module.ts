@@ -33,7 +33,6 @@ import { MashupTemplateStyleService } from './preview/mashup-template-style.serv
 import { MessyTemplateStyleService } from './preview/messy-template-style.service';
 import { ShopSettingsState } from './shop/settings/shop-settings.state';
 import { ShopRegionalCostsState } from './shop/regional-costs/shop-regional-costs.state';
-import { DefaultThemeComponent } from './themes/default-theme/default-theme.component';
 import {SiteSectionsModule} from "./sites/sections/site-sections.module";
 
 @NgModule({
@@ -48,9 +47,7 @@ import {SiteSectionsModule} from "./sites/sections/site-sections.module";
     PreviewComponent,
     ThemesComponent,
     PopupComponent,
-    DefaultThemeComponent,
   ],
-  entryComponents: [DefaultThemeComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,

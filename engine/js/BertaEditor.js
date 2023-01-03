@@ -38,8 +38,15 @@ var BertaEditor = new Class({
     this.processHandler.addObservable(this);
     this.processHandler.test = 'aaa';
 
+    window.addEventListener('addEntry',this.onAddEntry.bindWithEvent(this))
     window.addEvent('domready', this.onDOMReady.bindWithEvent(this));
     window.addEvent('load', this.onLoad.bindWithEvent(this));
+  },
+
+  onAddEntry: function () {
+    // after adding entry sync state
+    window.redux_store.dispatch(Actions.getState(window.getCurrentSite()));
+    this.onDOMReadyDo()
   },
 
   onDOMReady: function () {
@@ -518,7 +525,7 @@ var BertaEditor = new Class({
           path: this.options.paths.engineABSRoot
         });
         window.location.hash = 'entry-' + resp.entryid;
-        window.location.reload();
+        // window.location.reload();
       }.bindWithEvent(this)
     ));
   },
