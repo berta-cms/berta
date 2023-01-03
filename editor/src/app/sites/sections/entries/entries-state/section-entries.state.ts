@@ -272,6 +272,8 @@ export class SectionEntriesState implements NgxsOnInit {
   @Action(UpdateSectionEntryFromSyncAction)
   updateSectionEntryFromSync({ getState, patchState, dispatch }: StateContext<SectionEntriesStateModel>,
                              action: UpdateSectionEntryFromSyncAction) {
+    if (action.nOfReq >= 2) return
+
     return this.appStateService.sync('sectionEntries', {
       path: action.path,
       value: action.payload
@@ -284,22 +286,16 @@ export class SectionEntriesState implements NgxsOnInit {
           const currentState = getState();
           const [currentSite, , currentSection, entryId] = action.path.split('/');
           const siteName = currentSite === '0' ? '' : currentSite;
-          let firstPathPart = action.path.split('/').slice(0,4).join('/');
           let lastPathPart = action.path.split('/').slice(4).join('/');
           let payload = action.payload;
 
           if (lastPathPart === 'tags/tag') {
             // slugs update
             // piece of a logic to update entry 'slugs' field right after 'tag' field was changed
-            let foundEntry = SectionEntriesState.getCurrentSiteEntries(currentState, siteName).find(
-              entry => entry.id === entryId && entry.sectionName === currentSection
-            )
-            let defaultTitle = 'Some title'
-            if (foundEntry.content && foundEntry.content.title) defaultTitle = foundEntry.content.title
-
             dispatch(new UpdateSectionEntryFromSyncAction(
-              firstPathPart + '/' + 'content/title',
-              defaultTitle
+              action.path,
+              action.payload,
+              ++action.nOfReq
             ))
             // end slugs update
 

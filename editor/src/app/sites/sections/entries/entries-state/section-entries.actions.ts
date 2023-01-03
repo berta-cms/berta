@@ -78,7 +78,8 @@ export class InitSectionEntriesAction {
 export class UpdateSectionEntryFromSyncAction {
   static readonly type = 'SECTION_ENTRY:UPDATE:SYNC';
   constructor(public path: string,
-              public payload: any) {
+              public payload: any,
+              public nOfReq = 0) {
   }
 }
 
