@@ -3,12 +3,13 @@ import {DefaultTemplateRenderService} from "../render/default-template-render.se
 import {Actions, ofActionDispatched, ofActionSuccessful} from "@ngxs/store";
 import {
   CloneSectionAction,
-  DeleteSiteSectionAction, RenameSiteSectionAction,
-  ReOrderSiteSectionsAction, UpdateSiteSectionAction
+  DeleteSiteSectionAction,
+  RenameSiteSectionAction,
+  ReOrderSiteSectionsAction,
 } from "../sites/sections/sections-state/site-sections.actions";
 import {
   AddSectionEntryFromSyncAction,
-  DeleteSectionEntryFromSyncAction,
+  DeleteSectionEntryFromSyncAction, UpdateSectionEntryFromSyncAction,
 } from "../sites/sections/entries/entries-state/section-entries.actions";
 import {UpdateNavigationSiteSettingsAction} from "../sites/settings/site-settings.actions";
 
@@ -35,7 +36,6 @@ export class DefaultTemplateRerenderService {
     )).subscribe(
       () => {
         const viewData = this.defaultRenderService.getViewData()
-        console.log('siteSectionSubscr: ', viewData)
 
         DefaultTemplateRerenderService.replaceContent(dom, 'sectionsMenu', viewData.sectionsMenu)
       }
@@ -47,16 +47,10 @@ export class DefaultTemplateRerenderService {
     )).subscribe(
       () => {
         const viewData = this.defaultRenderService.getViewData()
-        console.log('entryCreationSubscr: ', viewData)
 
         DefaultTemplateRerenderService.replaceContent(dom, 'pageEntries', viewData.entries)
 
-        // remove extra 'create entry' button due to backend js reload
-        const createEntriesList = dom.getElementsByClassName('xCreateNewEntry')
-        createEntriesList[createEntriesList.length-1].remove()
-
-        // reload backend js
-        win.dispatchEvent(new Event('addEntry'))
+        DefaultTemplateRerenderService.removeExtraAddBtnAndAddListeners(iframe)
       }
     )
 
@@ -66,29 +60,24 @@ export class DefaultTemplateRerenderService {
     )).subscribe(
       () => {
         const viewData = this.defaultRenderService.getViewData()
-        console.log('entryDeletionSubscr: ', viewData)
 
         DefaultTemplateRerenderService.replaceContent(dom, 'sectionsMenu', viewData.sectionsMenu)
+
+        DefaultTemplateRerenderService.removeExtraAddBtnAndAddListeners(iframe)
       }
     )
 
     const siteSectionUpdateSubscr = this.actions$.pipe(ofActionSuccessful(
-      UpdateSiteSectionAction,
+      UpdateSectionEntryFromSyncAction,
     )).subscribe(
       () => {
         const viewData = this.defaultRenderService.getViewData()
-        console.log('siteSectionUpdateSubscr: ', viewData)
 
         DefaultTemplateRerenderService.replaceContent(dom, 'sectionsMenu', viewData.sectionsMenu)
 
         DefaultTemplateRerenderService.replaceContent(dom, 'pageEntries', viewData.entries)
 
-        // remove extra 'create entry' button due to backend js reload
-        const createEntriesList = dom.getElementsByClassName('xCreateNewEntry')
-        createEntriesList[createEntriesList.length-1].remove()
-
-        // reload backend js
-        win.dispatchEvent(new Event('addEntry'))
+        DefaultTemplateRerenderService.removeExtraAddBtnAndAddListeners(iframe)
       }
     )
 
@@ -129,5 +118,14 @@ export class DefaultTemplateRerenderService {
     const element = dom.getElementById(sectionId)
     element.innerHTML = ''
     element.appendChild(dom.createRange().createContextualFragment(sectionHtml))
+  }
+
+  private static removeExtraAddBtnAndAddListeners(iframe: HTMLIFrameElement) {
+    // remove extra 'create entry' button due to backend js reload
+    const createEntriesList = iframe.contentDocument.getElementsByClassName('xCreateNewEntry')
+    createEntriesList[createEntriesList.length-1].remove()
+
+    // reload backend js
+    iframe.contentWindow.dispatchEvent(new Event('addEntry'))
   }
 }

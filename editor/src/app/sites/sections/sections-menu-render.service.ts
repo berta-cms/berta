@@ -167,7 +167,7 @@ export class SectionsMenuRenderService {
           }),
           linkAttributes: toHtmlAttributes({
             class: 'handle',
-            href: this.getUrl(section, siteSlug, tagSlug),
+            href: this.getUrl(section, siteSlug, tag['@attributes'].name),
           }),
         };
       });
