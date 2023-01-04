@@ -27,12 +27,6 @@ export class HandleSiteSettingsChildrenChangesAction {
   }
 }
 
-export class UpdateSocialMediaLinksSiteSettingsAction {
-  static readonly type = 'SITE_SETTINGS_SOCIAL_MEDIA_LINKS:UPDATE';
-  constructor(public payload: {[k: string]: any}) {
-  }
-}
-
 export class UpdateSiteSettingsFromSyncAction {
   static readonly type = 'SITE_SETTINGS:UPDATE:SYNC';
   constructor(public path: string,

@@ -18,7 +18,7 @@ import {
   DeleteSiteSettingChildrenAction,
   UpdateSiteSettingChildreAction,
   UpdateNavigationSiteSettingsAction,
-  UpdateSocialMediaLinksSiteSettingsAction, HandleSiteSettingsChildrenChangesAction
+  HandleSiteSettingsChildrenChangesAction,
 } from './site-settings.actions';
 import { UserLoginAction } from '../../user/user.actions';
 import { AddSiteSectionAction } from '../sections/sections-state/site-sections.actions';
@@ -125,7 +125,8 @@ export class SiteSettingsState implements NgxsOnInit {
               dispatch(new UpdateNavigationSiteSettingsAction(action.payload))
               break
             case "socialMediaLinks":
-              dispatch(new UpdateSocialMediaLinksSiteSettingsAction(action.payload))
+            case "socialMediaButtons":
+              dispatch(new HandleSiteSettingsChildrenChangesAction(action.settingGroup))
               break
           }
         }

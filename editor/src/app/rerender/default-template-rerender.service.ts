@@ -12,9 +12,8 @@ import {
   DeleteSectionEntryFromSyncAction, UpdateSectionEntryFromSyncAction,
 } from "../sites/sections/entries/entries-state/section-entries.actions";
 import {
-  AddSiteSettingChildrenAction,
-  DeleteSiteSettingChildrenAction, HandleSiteSettingsChildrenChangesAction,
-  UpdateNavigationSiteSettingsAction, UpdateSocialMediaLinksSiteSettingsAction
+  HandleSiteSettingsChildrenChangesAction,
+  UpdateNavigationSiteSettingsAction,
 } from "../sites/settings/site-settings.actions";
 import {SiteSettingsState} from "../sites/settings/site-settings.state";
 
@@ -22,6 +21,8 @@ import {SiteSettingsState} from "../sites/settings/site-settings.state";
   providedIn: 'root'
 })
 export class DefaultTemplateRerenderService {
+  private static readonly S = ['socialMediaLinks', 'socialMediaButtons']
+
   constructor(
     private defaultRenderService: DefaultTemplateRenderService,
     private actions$: Actions,
@@ -93,40 +94,12 @@ export class DefaultTemplateRerenderService {
       (action: HandleSiteSettingsChildrenChangesAction) => {
         const viewData = this.defaultRenderService.getViewData()
 
-        const siteSettings = this.store.selectSnapshot(SiteSettingsState.getCurrentSiteSettings)
-        const settingsObj = siteSettings.find(setting => setting.slug === action.settingGroup)
-
-        if (action.settingGroup === 'socialMediaLinks') {
-          const locationSetting = settingsObj.settings.find((s) => s.slug === 'location')
-
-          if (locationSetting.value === 'additionalText') {
-            DefaultTemplateRerenderService.replaceContent(dom, 'additionalTextBlock', viewData.additionalTextBlock)
-          } else if (locationSetting.value === 'footer') {
-            DefaultTemplateRerenderService.replaceContent(dom, 'additionalFooterTextBlock', viewData.additionalFooterText)
-          }
-
-          DefaultTemplateRerenderService.removeExtraAddBtnAndAddListeners(iframe)
+        if (DefaultTemplateRerenderService.S.includes(action.settingGroup)) {
+          DefaultTemplateRerenderService.replaceContent(dom, 'additionalTextBlock', viewData.additionalTextBlock)
+          DefaultTemplateRerenderService.replaceContent(dom, 'additionalFooterTextBlock', viewData.additionalFooterText)
         }
-      }
-    )
 
-    const socialMediaLinksSubscr = this.actions$.pipe(ofActionSuccessful(
-      UpdateSocialMediaLinksSiteSettingsAction,
-    )).subscribe(
-      (action: UpdateSocialMediaLinksSiteSettingsAction) => {
-        const setting = Object.keys(action.payload)[0]
-        switch (setting) {
-          case 'location':
-            const viewData = this.defaultRenderService.getViewData()
-
-            DefaultTemplateRerenderService.replaceContent(dom, 'additionalTextBlock', viewData.additionalTextBlock)
-
-            DefaultTemplateRerenderService.replaceContent(dom, 'additionalFooterTextBlock', viewData.additionalFooterText)
-
-            DefaultTemplateRerenderService.removeExtraAddBtnAndAddListeners(iframe)
-
-            break
-        }
+        DefaultTemplateRerenderService.removeExtraAddBtnAndAddListeners(iframe)
       }
     )
 
@@ -160,7 +133,6 @@ export class DefaultTemplateRerenderService {
       entryDeletionSubscr.unsubscribe()
       siteSectionUpdateSubscr.unsubscribe()
       siteSettingChildrenHandleSubscr.unsubscribe()
-      socialMediaLinksSubscr.unsubscribe()
       navigationSubscr.unsubscribe()
     }
   }
