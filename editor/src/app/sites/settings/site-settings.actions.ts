@@ -21,6 +21,17 @@ export class UpdateNavigationSiteSettingsAction {
   constructor(public payload: {[k: string]: any}) {
   }
 }
+export class HandleSiteSettingsChildrenChangesAction {
+  static readonly type = 'SITE_SETTINGS:HANDLE_CHILDREN_CHANGES';
+  constructor(public settingGroup: string) {
+  }
+}
+
+export class UpdateSocialMediaLinksSiteSettingsAction {
+  static readonly type = 'SITE_SETTINGS_SOCIAL_MEDIA_LINKS:UPDATE';
+  constructor(public payload: {[k: string]: any}) {
+  }
+}
 
 export class UpdateSiteSettingsFromSyncAction {
   static readonly type = 'SITE_SETTINGS:UPDATE:SYNC';

@@ -12,7 +12,9 @@
         <div id="siteHeader">
           {{ siteHeader|raw }}
         </div>
-        {{ additionalTextBlock|raw }}
+        <div id="additionalTextBlock">
+          {{ additionalTextBlock|raw }}
+        </div>
         <div id="sectionsMenu">
           {{ sectionsMenu|raw }}
         </div>
@@ -20,7 +22,9 @@
           {{ entries|raw }}
         </ol>
         {{ portfolioThumbnails|raw }}
-        {{ additionalFooterText|raw }}
+        <div id="additionalFooterTextBlock">
+          {{ additionalFooterText|raw }}
+        </div>
         <p id="userCopyright"{{ userCopyright.attributes|raw }}>
           {{ userCopyright.content|raw }}
         </p>
