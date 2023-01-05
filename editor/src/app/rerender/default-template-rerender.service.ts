@@ -15,7 +15,7 @@ import {
   HandleSiteSettingsChildrenChangesAction,
   UpdateNavigationSiteSettingsAction,
 } from "../sites/settings/site-settings.actions";
-import {SiteSettingsState} from "../sites/settings/site-settings.state";
+import {HandleSiteTemplateSettingsAction} from "../sites/template-settings/site-template-settings.actions";
 
 @Injectable({
   providedIn: 'root'
@@ -112,6 +112,55 @@ export class DefaultTemplateRerenderService {
       }
     )
 
+    const siteTemplateSettingHandleSubscr = this.actions$.pipe(ofActionSuccessful(
+      HandleSiteTemplateSettingsAction
+    )).subscribe(
+      (action: HandleSiteTemplateSettingsAction) => {
+        const viewData = this.defaultRenderService.getViewData()
+
+        if (action.settingGroup === 'pageLayout') {
+          const element = dom.getElementById('contentContainer')
+
+          if (viewData.isResponsive) {
+            element.classList.add('xResponsive')
+          } else {
+            element.classList.remove('xResponsive')
+          }
+
+          DefaultTemplateRerenderService.replaceContent(dom, 'siteHeader', viewData.siteHeader)
+          DefaultTemplateRerenderService.replaceContent(dom, 'additionalTextBlock', viewData.additionalTextBlock)
+          DefaultTemplateRerenderService.replaceContent(dom, 'sectionsMenu', viewData.sectionsMenu)
+          DefaultTemplateRerenderService.replaceContent(dom, 'pageEntries', viewData.entries)
+          DefaultTemplateRerenderService.replaceContent(dom, 'portfolioThumbnails', viewData.portfolioThumbnails)
+          DefaultTemplateRerenderService.replaceContent(dom, 'additionalFooterTextBlock', viewData.additionalFooterText)
+          DefaultTemplateRerenderService.replaceContent(dom, 'siteBanners', viewData.siteBanners)
+          DefaultTemplateRerenderService.replaceContent(dom, 'sectionFooter', viewData.sectionFooter)
+
+          DefaultTemplateRerenderService.removeExtraAddBtnAndAddListeners(iframe)
+        } else if (action.settingGroup === 'pageHeading') {
+          DefaultTemplateRerenderService.replaceContent(dom, 'siteHeader', viewData.siteHeader)
+        } else if (action.settingGroup === 'entryLayout') {
+          DefaultTemplateRerenderService.replaceContent(dom, 'pageEntries', viewData.entries)
+          DefaultTemplateRerenderService.removeExtraAddBtnAndAddListeners(iframe)
+        } else if (action.settingGroup === 'css') {
+          const customStylesId = 'customCSSStyles'
+          const customCSS = action.payload.customCSS
+
+          const html = dom.getElementById('html')
+          const head = html.getElementsByTagName('head')[0]
+
+          let style = dom.getElementById(customStylesId)
+          if (!style) {
+            style = dom.createElement('style')
+            style.id = customStylesId
+          }
+
+          style.innerHTML = customCSS
+          head.appendChild(style)
+        }
+      }
+    )
+
     // navigation setting adjusting
     const navigationSubscr = this.actions$.pipe(ofActionDispatched(
       UpdateNavigationSiteSettingsAction
@@ -142,6 +191,7 @@ export class DefaultTemplateRerenderService {
       entryDeletionSubscr.unsubscribe()
       siteSectionUpdateSubscr.unsubscribe()
       siteSettingChildrenHandleSubscr.unsubscribe()
+      siteTemplateSettingHandleSubscr.unsubscribe()
       navigationSubscr.unsubscribe()
     }
   }

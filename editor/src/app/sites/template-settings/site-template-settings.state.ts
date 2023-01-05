@@ -1,5 +1,5 @@
-import { concat, of } from 'rxjs';
-import { take, switchMap, tap, map } from 'rxjs/operators';
+import { concat } from 'rxjs';
+import { take, switchMap, tap } from 'rxjs/operators';
 import { State, Action, StateContext, Selector, NgxsOnInit, Store, Actions, ofActionSuccessful } from '@ngxs/store';
 
 import { AppStateService } from '../../app-state/app-state.service';
@@ -18,7 +18,7 @@ import {
   RenameSiteTemplateSettingsSitenameAction,
   CreateSiteTemplateSettingsAction,
   ResetSiteTemplateSettingsAction,
-  InitSiteTemplateSettingsAction
+  InitSiteTemplateSettingsAction, HandleSiteTemplateSettingsAction
 } from './site-template-settings.actions';
 import { UserLoginAction } from '../../user/user.actions';
 
@@ -89,7 +89,7 @@ export class SiteTemplateSettingsState implements NgxsOnInit {
   }
 
   @Action(UpdateSiteTemplateSettingsAction)
-  updateSiteTemplateSettings({ patchState, getState }: StateContext<SitesTemplateSettingsStateModel>,
+  updateSiteTemplateSettings({ patchState, getState, dispatch }: StateContext<SitesTemplateSettingsStateModel>,
     action: UpdateSiteTemplateSettingsAction) {
 
     const currentSite = this.store.selectSnapshot(AppState.getSite);
@@ -128,6 +128,17 @@ export class SiteTemplateSettingsState implements NgxsOnInit {
               })
             }
           });
+        }
+
+        switch (action.settingGroup) {
+          case "pageLayout":
+          case "pageHeading":
+          case "entryLayout":
+            dispatch(new HandleSiteTemplateSettingsAction(action.settingGroup))
+            break
+          case "css":
+            dispatch(new HandleSiteTemplateSettingsAction(action.settingGroup, action.payload))
+            break
         }
       })
     );
