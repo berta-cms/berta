@@ -2,7 +2,7 @@ import {Injectable} from "@angular/core";
 import {DefaultTemplateRenderService} from "../render/default-template-render.service";
 import {Actions, ofActionDispatched, ofActionSuccessful, Store} from "@ngxs/store";
 import {
-  CloneSectionAction,
+  CreateSectionAction,
   DeleteSiteSectionAction,
   RenameSiteSectionAction,
   ReOrderSiteSectionsAction,
@@ -37,9 +37,8 @@ export class DefaultTemplateRerenderService {
     const siteSectionSubscr = this.actions$.pipe(ofActionSuccessful(
       ReOrderSiteSectionsAction,
       DeleteSiteSectionAction,
-      CloneSectionAction,
+      CreateSectionAction,
       RenameSiteSectionAction,
-      // CreateSectionAction, // don't need this action. But left for documentation
     )).subscribe(
       () => {
         const viewData = this.defaultRenderService.getViewData()
