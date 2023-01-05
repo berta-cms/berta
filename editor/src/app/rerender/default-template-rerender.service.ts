@@ -56,6 +56,7 @@ export class DefaultTemplateRerenderService {
         const viewData = this.defaultRenderService.getViewData()
 
         DefaultTemplateRerenderService.replaceContent(dom, 'pageEntries', viewData.entries)
+        DefaultTemplateRerenderService.replaceContent(dom, 'portfolioThumbnails', viewData.portfolioThumbnails)
 
         DefaultTemplateRerenderService.removeExtraAddBtnAndAddListeners(iframe)
       }
@@ -83,6 +84,8 @@ export class DefaultTemplateRerenderService {
         DefaultTemplateRerenderService.replaceContent(dom, 'sectionsMenu', viewData.sectionsMenu)
 
         DefaultTemplateRerenderService.replaceContent(dom, 'pageEntries', viewData.entries)
+
+        DefaultTemplateRerenderService.replaceContent(dom, 'portfolioThumbnails', viewData.portfolioThumbnails)
 
         DefaultTemplateRerenderService.removeExtraAddBtnAndAddListeners(iframe)
       }
