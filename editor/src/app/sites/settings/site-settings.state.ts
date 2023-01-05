@@ -126,6 +126,9 @@ export class SiteSettingsState implements NgxsOnInit {
               break
             case "socialMediaLinks":
             case "socialMediaButtons":
+            case "media":
+            case "banners":
+            case "settings":
               dispatch(new HandleSiteSettingsChildrenChangesAction(action.settingGroup))
               break
           }

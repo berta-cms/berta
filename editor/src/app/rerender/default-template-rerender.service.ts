@@ -21,7 +21,7 @@ import {SiteSettingsState} from "../sites/settings/site-settings.state";
   providedIn: 'root'
 })
 export class DefaultTemplateRerenderService {
-  private static readonly S = ['socialMediaLinks', 'socialMediaButtons']
+  private static readonly SOCIAL_MEDIA_SETTINGS = ['socialMediaLinks', 'socialMediaButtons']
 
   constructor(
     private defaultRenderService: DefaultTemplateRenderService,
@@ -97,9 +97,15 @@ export class DefaultTemplateRerenderService {
       (action: HandleSiteSettingsChildrenChangesAction) => {
         const viewData = this.defaultRenderService.getViewData()
 
-        if (DefaultTemplateRerenderService.S.includes(action.settingGroup)) {
+        if (DefaultTemplateRerenderService.SOCIAL_MEDIA_SETTINGS.includes(action.settingGroup)) {
           DefaultTemplateRerenderService.replaceContent(dom, 'additionalTextBlock', viewData.additionalTextBlock)
           DefaultTemplateRerenderService.replaceContent(dom, 'additionalFooterTextBlock', viewData.additionalFooterText)
+        } else if (action.settingGroup === 'media') {
+          DefaultTemplateRerenderService.replaceContent(dom, 'pageEntries', viewData.entries)
+        } else if (action.settingGroup === 'banners') {
+          DefaultTemplateRerenderService.replaceContent(dom, 'siteBanners', viewData.siteBanners)
+        } else if (action.settingGroup === 'settings') {
+          DefaultTemplateRerenderService.replaceContent(dom, 'sectionFooter', viewData.sectionFooter)
         }
 
         DefaultTemplateRerenderService.removeExtraAddBtnAndAddListeners(iframe)
