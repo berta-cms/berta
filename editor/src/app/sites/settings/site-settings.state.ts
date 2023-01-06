@@ -277,7 +277,7 @@ export class SiteSettingsState implements NgxsOnInit {
   }
 
   @Action(UpdateSiteSettingChildreAction)
-  updateSiteSettingChildren({ getState, patchState }: StateContext<SitesSettingsStateModel>, action: UpdateSiteSettingChildreAction) {
+  updateSiteSettingChildren({ getState, patchState, dispatch }: StateContext<SitesSettingsStateModel>, action: UpdateSiteSettingChildreAction) {
 
     const currentSite = this.store.selectSnapshot(AppState.getSite);
     const settingSlug = action.slug;
@@ -328,6 +328,8 @@ export class SiteSettingsState implements NgxsOnInit {
               })
             };
           })});
+
+          dispatch(new HandleSiteSettingsChildrenChangesAction(action.settingGroup))
         }
       })
     );
