@@ -85,7 +85,7 @@ export class SectionRenderService {
 
     attributes.class = classes.join(' ');
 
-    return toHtmlAttributes(attributes);
+    return attributes;
   }
 
   getMainColumnAttributes(siteTemplateSettings) {

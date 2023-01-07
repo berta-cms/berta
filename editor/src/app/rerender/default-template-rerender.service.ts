@@ -1,121 +1,72 @@
 import {Injectable} from "@angular/core";
 import {DefaultTemplateRenderService} from "../render/default-template-render.service";
-import {Actions, ofActionDispatched, ofActionSuccessful, Store} from "@ngxs/store";
+import {Actions, ofActionDispatched, ofActionSuccessful} from "@ngxs/store";
 import {
-  CreateSectionAction,
-  DeleteSiteSectionAction,
-  RenameSiteSectionAction,
-  ReOrderSiteSectionsAction,
-} from "../sites/sections/sections-state/site-sections.actions";
-import {
-  AddSectionEntryFromSyncAction,
-  DeleteSectionEntryFromSyncAction, UpdateSectionEntryFromSyncAction,
-} from "../sites/sections/entries/entries-state/section-entries.actions";
-import {
-  HandleSiteSettingsChildrenChangesAction,
   UpdateNavigationSiteSettingsAction,
 } from "../sites/settings/site-settings.actions";
 import {HandleSiteTemplateSettingsAction} from "../sites/template-settings/site-template-settings.actions";
+import {TemplateRerenderService} from "./template-rerender.service";
+import {SiteSettingChildrenHandler} from "./types/components";
+import {replaceContent, removeExtraAddBtnAndAddListeners} from "./utilities/content";
 
 @Injectable({
   providedIn: 'root'
 })
-export class DefaultTemplateRerenderService {
-  private static readonly SOCIAL_MEDIA_SETTINGS = ['socialMediaLinks', 'socialMediaButtons']
+export class DefaultTemplateRerenderService extends TemplateRerenderService {
+
+  /* config for live settings re-rendering.
+  'id' is id of the wrapper element. All content inside will be replaced with a new one
+  'dataKey' is a key of re-rendered data from 'viewData' object
+   */
+  private static readonly SETTINGS_IDS_DATA_KEYS: SiteSettingChildrenHandler = {
+    socialMediaComp: [
+      {id: 'additionalTextBlock', dataKey: 'additionalTextBlock'},
+      {id: 'additionalFooterTextBlock', dataKey: 'additionalFooterText'},
+      {id: 'sectionFooter', dataKey: 'sectionFooter'},
+    ],
+    media: {id: 'pageEntries', dataKey: 'entries'},
+    banners: {id: 'siteBanners', dataKey: 'siteBanners'},
+    settings: {id: 'sectionFooter', dataKey: 'sectionFooter'},
+  }
 
   constructor(
-    private defaultRenderService: DefaultTemplateRenderService,
-    private actions$: Actions,
-    private store: Store,
-  ) {}
+    defaultRenderService: DefaultTemplateRenderService,
+    actions$: Actions,
+  ) {
+    super(
+      defaultRenderService,
+      actions$,
+    )
+  }
 
   handle(iframe: HTMLIFrameElement) {
     const dom = iframe.contentDocument
     const win = iframe.contentWindow
 
     // sites sections crud
-    const siteSectionSubscr = this.actions$.pipe(ofActionSuccessful(
-      ReOrderSiteSectionsAction,
-      DeleteSiteSectionAction,
-      CreateSectionAction,
-      RenameSiteSectionAction,
-    )).subscribe(
-      () => {
-        const viewData = this.defaultRenderService.getViewData()
-
-        DefaultTemplateRerenderService.replaceContent(dom, 'sectionsMenu', viewData.sectionsMenu)
-      }
-    );
+    const siteSectionSubscr = this.handleSiteSectionsRerender(dom);
 
     // entry creation
-    const entryCreationSubscr = this.actions$.pipe(ofActionSuccessful(
-      AddSectionEntryFromSyncAction
-    )).subscribe(
-      () => {
-        const viewData = this.defaultRenderService.getViewData()
-
-        DefaultTemplateRerenderService.replaceContent(dom, 'pageEntries', viewData.entries)
-        DefaultTemplateRerenderService.replaceContent(dom, 'portfolioThumbnails', viewData.portfolioThumbnails)
-
-        DefaultTemplateRerenderService.removeExtraAddBtnAndAddListeners(iframe)
-      }
-    )
+    const entryCreationSubscr = this.handleEntryCreationRerender(iframe)
 
     // re-renders sections menu every time after entry deletion or tag updates
-    const entryDeletionSubscr = this.actions$.pipe(ofActionSuccessful(
-      DeleteSectionEntryFromSyncAction,
-    )).subscribe(
-      () => {
-        const viewData = this.defaultRenderService.getViewData()
+    const entryDeletionSubscr = this.handleEntryDeletionRerender(iframe)
 
-        DefaultTemplateRerenderService.replaceContent(dom, 'sectionsMenu', viewData.sectionsMenu)
+    // re-renders sections menu, entries and portfolio after submenu creation
+    const siteSectionEntryUpdateSubscr = this.handleSectionEntryUpdateRerender(iframe)
 
-        DefaultTemplateRerenderService.removeExtraAddBtnAndAddListeners(iframe)
-      }
+    // re-renders in case of settings changes
+    const siteSettingChildrenHandleSubscr = this.handleSiteSettingChildrenHandleRerender(
+      iframe,
+      DefaultTemplateRerenderService.SETTINGS_IDS_DATA_KEYS,
     )
 
-    const siteSectionUpdateSubscr = this.actions$.pipe(ofActionSuccessful(
-      UpdateSectionEntryFromSyncAction,
-    )).subscribe(
-      () => {
-        const viewData = this.defaultRenderService.getViewData()
-
-        DefaultTemplateRerenderService.replaceContent(dom, 'sectionsMenu', viewData.sectionsMenu)
-
-        DefaultTemplateRerenderService.replaceContent(dom, 'pageEntries', viewData.entries)
-
-        DefaultTemplateRerenderService.replaceContent(dom, 'portfolioThumbnails', viewData.portfolioThumbnails)
-
-        DefaultTemplateRerenderService.removeExtraAddBtnAndAddListeners(iframe)
-      }
-    )
-
-    const siteSettingChildrenHandleSubscr = this.actions$.pipe(ofActionSuccessful(
-      HandleSiteSettingsChildrenChangesAction
-    )).subscribe(
-      (action: HandleSiteSettingsChildrenChangesAction) => {
-        const viewData = this.defaultRenderService.getViewData()
-
-        if (DefaultTemplateRerenderService.SOCIAL_MEDIA_SETTINGS.includes(action.settingGroup)) {
-          DefaultTemplateRerenderService.replaceContent(dom, 'additionalTextBlock', viewData.additionalTextBlock)
-          DefaultTemplateRerenderService.replaceContent(dom, 'additionalFooterTextBlock', viewData.additionalFooterText)
-        } else if (action.settingGroup === 'media') {
-          DefaultTemplateRerenderService.replaceContent(dom, 'pageEntries', viewData.entries)
-        } else if (action.settingGroup === 'banners') {
-          DefaultTemplateRerenderService.replaceContent(dom, 'siteBanners', viewData.siteBanners)
-        } else if (action.settingGroup === 'settings') {
-          DefaultTemplateRerenderService.replaceContent(dom, 'sectionFooter', viewData.sectionFooter)
-        }
-
-        DefaultTemplateRerenderService.removeExtraAddBtnAndAddListeners(iframe)
-      }
-    )
-
+    // re-renders in case of design settings changes
     const siteTemplateSettingHandleSubscr = this.actions$.pipe(ofActionSuccessful(
       HandleSiteTemplateSettingsAction
     )).subscribe(
       (action: HandleSiteTemplateSettingsAction) => {
-        const viewData = this.defaultRenderService.getViewData()
+        const viewData = this.renderService.getViewData()
 
         if (action.settingGroup === 'pageLayout') {
           const element = dom.getElementById('contentContainer')
@@ -126,36 +77,24 @@ export class DefaultTemplateRerenderService {
             element.classList.remove('xResponsive')
           }
 
-          DefaultTemplateRerenderService.replaceContent(dom, 'siteHeader', viewData.siteHeader)
-          DefaultTemplateRerenderService.replaceContent(dom, 'additionalTextBlock', viewData.additionalTextBlock)
-          DefaultTemplateRerenderService.replaceContent(dom, 'sectionsMenu', viewData.sectionsMenu)
-          DefaultTemplateRerenderService.replaceContent(dom, 'pageEntries', viewData.entries)
-          DefaultTemplateRerenderService.replaceContent(dom, 'portfolioThumbnails', viewData.portfolioThumbnails)
-          DefaultTemplateRerenderService.replaceContent(dom, 'additionalFooterTextBlock', viewData.additionalFooterText)
-          DefaultTemplateRerenderService.replaceContent(dom, 'siteBanners', viewData.siteBanners)
-          DefaultTemplateRerenderService.replaceContent(dom, 'sectionFooter', viewData.sectionFooter)
+          replaceContent(dom, 'sitesMenu', viewData.sitesMenu)
+          replaceContent(dom, 'siteHeader', viewData.siteHeader)
+          replaceContent(dom, 'additionalTextBlock', viewData.additionalTextBlock)
+          replaceContent(dom, 'sectionsMenu', viewData.sectionsMenu)
+          replaceContent(dom, 'pageEntries', viewData.entries)
+          replaceContent(dom, 'portfolioThumbnails', viewData.portfolioThumbnails)
+          replaceContent(dom, 'additionalFooterTextBlock', viewData.additionalFooterText)
+          replaceContent(dom, 'siteBanners', viewData.siteBanners)
+          replaceContent(dom, 'sectionFooter', viewData.sectionFooter)
 
-          DefaultTemplateRerenderService.removeExtraAddBtnAndAddListeners(iframe)
+          removeExtraAddBtnAndAddListeners(iframe)
         } else if (action.settingGroup === 'pageHeading') {
-          DefaultTemplateRerenderService.replaceContent(dom, 'siteHeader', viewData.siteHeader)
+          replaceContent(dom, 'siteHeader', viewData.siteHeader)
         } else if (action.settingGroup === 'entryLayout') {
-          DefaultTemplateRerenderService.replaceContent(dom, 'pageEntries', viewData.entries)
-          DefaultTemplateRerenderService.removeExtraAddBtnAndAddListeners(iframe)
+          replaceContent(dom, 'pageEntries', viewData.entries)
+          removeExtraAddBtnAndAddListeners(iframe)
         } else if (action.settingGroup === 'css') {
-          const customStylesId = 'customCSSStyles'
-          const customCSS = action.payload.customCSS
-
-          const html = dom.getElementById('html')
-          const head = html.getElementsByTagName('head')[0]
-
-          let style = dom.getElementById(customStylesId)
-          if (!style) {
-            style = dom.createElement('style')
-            style.id = customStylesId
-          }
-
-          style.innerHTML = customCSS
-          head.appendChild(style)
+          DefaultTemplateRerenderService.handleCssDesignSettingChange(dom, action)
         }
       }
     )
@@ -171,7 +110,7 @@ export class DefaultTemplateRerenderService {
             break
 
           case 'landingSectionPageHeadingVisible':
-            const viewData = this.defaultRenderService.getViewData()
+            const viewData = this.renderService.getViewData()
 
             const siteHeader = dom.getElementById('siteHeader')
             siteHeader.innerHTML = ''
@@ -184,29 +123,14 @@ export class DefaultTemplateRerenderService {
       }
     )
 
-    win.onbeforeunload = () => {
-      siteSectionSubscr.unsubscribe()
-      entryCreationSubscr.unsubscribe()
-      entryDeletionSubscr.unsubscribe()
-      siteSectionUpdateSubscr.unsubscribe()
-      siteSettingChildrenHandleSubscr.unsubscribe()
-      siteTemplateSettingHandleSubscr.unsubscribe()
-      navigationSubscr.unsubscribe()
-    }
-  }
-
-  private static replaceContent(dom: Document, sectionId: string, sectionHtml: string) {
-    const element = dom.getElementById(sectionId)
-    element.innerHTML = ''
-    element.appendChild(dom.createRange().createContextualFragment(sectionHtml))
-  }
-
-  private static removeExtraAddBtnAndAddListeners(iframe: HTMLIFrameElement) {
-    // remove extra 'create entry' button due to backend js reload
-    const createEntriesList = iframe.contentDocument.getElementsByClassName('xCreateNewEntry')
-    createEntriesList[createEntriesList.length-1].remove()
-
-    // reload backend js
-    iframe.contentWindow.dispatchEvent(new Event('addEntry'))
+    this.unsubscribe(win, [
+      siteSectionSubscr,
+      entryCreationSubscr,
+      entryDeletionSubscr,
+      siteSectionEntryUpdateSubscr,
+      siteSettingChildrenHandleSubscr,
+      siteTemplateSettingHandleSubscr,
+      navigationSubscr,
+    ])
   }
 }

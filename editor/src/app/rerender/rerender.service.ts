@@ -2,6 +2,7 @@ import {Injectable} from "@angular/core";
 import {Store} from "@ngxs/store";
 import {SiteSettingsState} from "../sites/settings/site-settings.state";
 import {DefaultTemplateRerenderService} from "./default-template-rerender.service";
+import {MashupTemplateRerenderService} from "./mashup/mashup-template-rerender.service";
 
 @Injectable({
   providedIn: 'root'
@@ -10,6 +11,7 @@ export class RerenderService {
   constructor(
     private store: Store,
     private defaultRerenderService: DefaultTemplateRerenderService,
+    private mashupRerenderService: MashupTemplateRerenderService,
   ) {}
 
   handleRerendering(iframe: HTMLIFrameElement) {
@@ -28,7 +30,7 @@ export class RerenderService {
         break
 
       case 'mashup':
-        // this.mashupTemplateRenderService.startRender(contentWindow);
+        this.mashupRerenderService.handle(iframe)
         break;
 
       // Messy
