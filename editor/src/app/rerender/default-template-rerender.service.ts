@@ -69,6 +69,7 @@ export class DefaultTemplateRerenderService {
         const viewData = this.defaultRenderService.getViewData()
 
         DefaultTemplateRerenderService.replaceContent(dom, 'sectionsMenu', viewData.sectionsMenu)
+        DefaultTemplateRerenderService.replaceContent(dom, 'pageEntries', viewData.entries)
 
         DefaultTemplateRerenderService.removeExtraAddBtnAndAddListeners(iframe)
       }
@@ -105,6 +106,8 @@ export class DefaultTemplateRerenderService {
           DefaultTemplateRerenderService.replaceContent(dom, 'siteBanners', viewData.siteBanners)
         } else if (action.settingGroup === 'settings') {
           DefaultTemplateRerenderService.replaceContent(dom, 'sectionFooter', viewData.sectionFooter)
+        } else if (action.settingGroup === 'entryLayout') {
+          DefaultTemplateRerenderService.replaceContent(dom, 'pageEntries', viewData.entries)
         }
 
         DefaultTemplateRerenderService.removeExtraAddBtnAndAddListeners(iframe)
