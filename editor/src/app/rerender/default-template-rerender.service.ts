@@ -118,12 +118,15 @@ export class DefaultTemplateRerenderService {
         const viewData = this.defaultRenderService.getViewData()
 
         if (action.settingGroup === 'pageLayout') {
-          const element = dom.getElementById('contentContainer')
+          const body = dom.getElementById('body')
+          const contentContainer = dom.getElementById('contentContainer')
 
           if (viewData.isResponsive) {
-            element.classList.add('xResponsive')
+            body.classList.add('bt-responsive')
+            contentContainer.classList.add('xResponsive')
           } else {
-            element.classList.remove('xResponsive')
+            body.classList.remove('bt-responsive')
+            contentContainer.classList.remove('xResponsive')
           }
 
           DefaultTemplateRerenderService.replaceContent(dom, 'siteHeader', viewData.siteHeader)
