@@ -25,6 +25,7 @@ export class TemplateRerenderService {
   private static readonly MEDIA_SETTINGS = 'media'
   private static readonly BANNERS_SETTINGS = 'banners'
   private static readonly SETTINGS = 'settings'
+  private static readonly ENTRY_LAYOUT = 'entryLayout'
 
   constructor(
     public renderService: TemplateRenderService,
@@ -43,6 +44,9 @@ export class TemplateRerenderService {
         break
       case TemplateRerenderService.SETTINGS:
         compList.push(info.settings)
+        break
+      case TemplateRerenderService.ENTRY_LAYOUT:
+        compList.push(info.entryLayout)
         break
       case TemplateRerenderService.SOCIAL_MEDIA_LINKS:
       case TemplateRerenderService.SOCIAL_MEDIA_BTNS:
@@ -106,6 +110,7 @@ export class TemplateRerenderService {
         const viewData = this.renderService.getViewData()
 
         replaceContent(iframe.contentDocument, 'sectionsMenu', viewData.sectionsMenu)
+        replaceContent(iframe.contentDocument, 'pageEntries', viewData.entries)
 
         removeExtraAddBtnAndAddListeners(iframe)
       }

@@ -27,6 +27,7 @@ export class DefaultTemplateRerenderService extends TemplateRerenderService {
     media: {id: 'pageEntries', dataKey: 'entries'},
     banners: {id: 'siteBanners', dataKey: 'siteBanners'},
     settings: {id: 'sectionFooter', dataKey: 'sectionFooter'},
+    entryLayout: {id: 'pageEntries', dataKey: 'entries'},
   }
 
   constructor(
