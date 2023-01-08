@@ -3,6 +3,7 @@ import {Store} from "@ngxs/store";
 import {SiteSettingsState} from "../sites/settings/site-settings.state";
 import {DefaultTemplateRerenderService} from "./default-template-rerender.service";
 import {MashupTemplateRerenderService} from "./mashup/mashup-template-rerender.service";
+import {WhiteTemplateRerenderService} from "./white/white-template-rerender.service";
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +13,7 @@ export class RerenderService {
     private store: Store,
     private defaultRerenderService: DefaultTemplateRerenderService,
     private mashupRerenderService: MashupTemplateRerenderService,
+    private whiteRerenderService: WhiteTemplateRerenderService,
   ) {}
 
   handleRerendering(iframe: HTMLIFrameElement) {
@@ -22,7 +24,7 @@ export class RerenderService {
 
     switch (templateName) {
       case 'white':
-        // this.whiteTemplateRenderService.startRender(contentWindow);
+        this.whiteRerenderService.handle(iframe);
         break;
 
       case 'default':

@@ -1,48 +1,19 @@
 import {Injectable} from "@angular/core";
-import {reloadBackendJs, removeExtraAddBtnAndAddListeners, replaceContent} from "../utilities/content";
+import {reloadBackendJs, replaceContent} from "../utilities/content";
 import {createEl} from "../utilities/element";
+import {PageLayoutService as MainPageLayoutService} from "../common/page-layout.service"
 
 @Injectable({
   providedIn: 'root'
 })
-export class PageLayoutService {
+export class PageLayoutService extends MainPageLayoutService {
   handle(iframe: HTMLIFrameElement, viewData) {
     if (viewData.sectionType === "mash_up") {
       PageLayoutService.handlePLayoutChangesMashSection(iframe, viewData)
       return
     }
 
-    PageLayoutService.handlePLayoutChangesDefSection(iframe, viewData)
-  }
-
-  private static handlePLayoutChangesDefSection(iframe: HTMLIFrameElement, viewData) {
-    const dom = iframe.contentDocument
-
-    const allContainer = dom.getElementById('allContainer')
-    const mainColumn = dom.getElementById('mainColumn')
-    const sideColumn = dom.getElementById('sideColumn')
-
-    if (viewData.isCenteredPageLayout) {
-      allContainer.classList.add('xCentered')
-      mainColumn.classList.add('xCentered')
-      sideColumn.classList.add('xCentered')
-    } else {
-      allContainer.classList.remove('xCentered')
-      mainColumn.classList.remove('xCentered')
-      sideColumn.classList.remove('xCentered')
-    }
-
-    PageLayoutService.handleIsResponsiveSetting(dom, sideColumn, viewData.isResponsive)
-
-    // if we change 'Page layout' => 'How far content is from page top?'
-    mainColumn.setAttribute('data-paddingtop', viewData.mainColumnAttributes['data-paddingtop'])
-    mainColumn.style.paddingTop = viewData.mainColumnAttributes['data-paddingtop']
-
-    PageLayoutService.replaceCommonContent(dom, viewData)
-
-    replaceContent(dom, 'pageEntries', viewData.entries)
-    replaceContent(dom, 'portfolioThumbnails', viewData.portfolioThumbnails)
-    removeExtraAddBtnAndAddListeners(iframe)
+    super.handle(iframe, viewData)
   }
 
   private static handlePLayoutChangesMashSection(iframe: HTMLIFrameElement, viewData) {
@@ -51,6 +22,7 @@ export class PageLayoutService {
     const allContainer = dom.getElementById('allContainer')
     const sideColumn = dom.getElementById('sideColumn')
     const contentContainer = dom.getElementById('contentContainer')
+    const body = dom.getElementById('body')
 
     PageLayoutService.handleMainColumn(dom, contentContainer, viewData)
 
@@ -62,7 +34,15 @@ export class PageLayoutService {
       sideColumn.classList.remove('xCentered')
     }
 
-    PageLayoutService.handleIsResponsiveSetting(dom, sideColumn, viewData.isResponsive)
+    if (viewData.isResponsive) {
+      body.classList.add('bt-responsive')
+      sideColumn.classList.add('xResponsive')
+      contentContainer.classList.add('xResponsive')
+    } else {
+      body.classList.remove('bt-responsive')
+      sideColumn.classList.remove('xResponsive')
+      contentContainer.classList.remove('xResponsive')
+    }
 
     PageLayoutService.replaceCommonContent(dom, viewData)
 
@@ -101,31 +81,5 @@ export class PageLayoutService {
     // if we change 'Page layout' => 'How far content is from page top?'
     mainColumn.setAttribute('data-paddingtop', viewData.mainColumnAttributes['data-paddingtop'])
     mainColumn.style.paddingTop = viewData.mainColumnAttributes['data-paddingtop']
-  }
-
-  private static handleIsResponsiveSetting(dom: Document, sideColumn: HTMLElement, isResponsive: boolean) {
-    const body = dom.getElementById('body')
-    const contentContainer = dom.getElementById('contentContainer')
-
-    if (isResponsive) {
-      body.classList.add('bt-responsive')
-      sideColumn.classList.add('xResponsive')
-      contentContainer.classList.add('xResponsive')
-    } else {
-      body.classList.remove('bt-responsive')
-      sideColumn.classList.remove('xResponsive')
-      contentContainer.classList.remove('xResponsive')
-    }
-  }
-
-  private static replaceCommonContent(dom: Document, viewData) {
-    replaceContent(dom, 'sitesMenu', viewData.sitesMenu)
-    replaceContent(dom, 'siteHeader', viewData.siteHeader)
-    replaceContent(dom, 'additionalTextBlock', viewData.additionalTextBlock)
-    replaceContent(dom, 'sectionsMenu', viewData.sectionsMenu)
-    replaceContent(dom, 'socialMediaLinks', viewData.socialMediaLinks)
-    replaceContent(dom, 'userCopyright', viewData.userCopyright.content)
-    replaceContent(dom, 'bertaCopyright', viewData.bertaCopyright)
-    replaceContent(dom, 'siteBanners', viewData.siteBanners)
   }
 }
