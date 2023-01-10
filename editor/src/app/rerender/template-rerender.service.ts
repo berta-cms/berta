@@ -26,6 +26,14 @@ export class TemplateRerenderService {
   private static readonly BANNERS_SETTINGS = 'banners'
   private static readonly SETTINGS = 'settings'
   private static readonly ENTRY_LAYOUT = 'entryLayout'
+  protected static readonly COMMON_SETTING_GROUPS = [
+    TemplateRerenderService.SOCIAL_MEDIA_LINKS,
+    TemplateRerenderService.SOCIAL_MEDIA_BTNS,
+    TemplateRerenderService.MEDIA_SETTINGS,
+    TemplateRerenderService.BANNERS_SETTINGS,
+    TemplateRerenderService.SETTINGS,
+    TemplateRerenderService.ENTRY_LAYOUT,
+  ]
 
   constructor(
     public renderService: TemplateRenderService,
@@ -108,7 +116,10 @@ export class TemplateRerenderService {
     )).subscribe(
       () => {
         const viewData = this.renderService.getViewData()
-
+        /*
+        we need redirect to main section when removing last submenu entry
+         */
+        // window.location.replace('http://localhost/engine/?section=home')
         replaceContent(iframe.contentDocument, 'sectionsMenu', viewData.sectionsMenu)
         replaceContent(iframe.contentDocument, 'pageEntries', viewData.entries)
 
@@ -140,17 +151,25 @@ export class TemplateRerenderService {
       HandleSiteSettingsChildrenChangesAction
     )).subscribe(
       (action: HandleSiteSettingsChildrenChangesAction) => {
-        const viewData = this.renderService.getViewData()
-
-        let compList = TemplateRerenderService.getSiteSettingsChildrenComp(action, info)
-
-        compList.forEach(comp =>
-          replaceContent(iframe.contentDocument, comp.id, viewData[comp.dataKey])
-        )
-
-        removeExtraAddBtnAndAddListeners(iframe)
+        this.execCommonSiteSettingsRerender(iframe, action, info)
       }
     )
+  }
+
+  protected execCommonSiteSettingsRerender(
+    iframe: HTMLIFrameElement,
+    action: HandleSiteSettingsChildrenChangesAction,
+    info: SiteSettingChildrenHandler,
+  ): void {
+    const viewData = this.renderService.getViewData()
+
+    let compList = TemplateRerenderService.getSiteSettingsChildrenComp(action, info)
+
+    compList.forEach(comp =>
+      replaceContent(iframe.contentDocument, comp.id, viewData[comp.dataKey])
+    )
+
+    removeExtraAddBtnAndAddListeners(iframe)
   }
 
   public unsubscribe(win: Window, subList: Subscription[]): void {
