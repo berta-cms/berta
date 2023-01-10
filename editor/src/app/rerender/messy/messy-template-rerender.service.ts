@@ -53,6 +53,9 @@ export class MessyTemplateRerenderService extends TemplateRerenderService {
     // re-renders sections menu every time after entry deletion or tag updates
     const entryDeletionSubscr = this.handleEntryDeletionRerender(iframe)
 
+    // redirects to main section if we removed the last entry from submenu
+    const lastEntryDeletionSubscr = this.handleLastEntryDeletion()
+
     // re-renders sections menu, entries and portfolio after submenu creation
     const siteSectionEntryUpdateSubscr = this.handleSectionEntryUpdateRerender(iframe)
 
@@ -105,6 +108,7 @@ export class MessyTemplateRerenderService extends TemplateRerenderService {
       siteSectionSubscr,
       entryCreationSubscr,
       entryDeletionSubscr,
+      lastEntryDeletionSubscr,
       siteSectionEntryUpdateSubscr,
       siteSettingChildrenHandleSubscr,
       siteTemplateSettingHandleSubscr,

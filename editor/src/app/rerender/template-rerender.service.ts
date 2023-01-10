@@ -8,7 +8,7 @@ import {
 import {TemplateRenderService} from "../render/template-render.service";
 import {
   AddSectionEntryFromSyncAction,
-  DeleteSectionEntryFromSyncAction, UpdateSectionEntryFromSyncAction
+  DeleteSectionEntryFromSyncAction, DeleteSectionLastEntry, UpdateSectionEntryFromSyncAction
 } from "../sites/sections/entries/entries-state/section-entries.actions";
 import {Subscription} from "rxjs";
 import {HandleSiteSettingsChildrenChangesAction} from "../sites/settings/site-settings.actions";
@@ -116,14 +116,22 @@ export class TemplateRerenderService {
     )).subscribe(
       () => {
         const viewData = this.renderService.getViewData()
-        /*
-        we need redirect to main section when removing last submenu entry
-         */
-        // window.location.replace('http://localhost/engine/?section=home')
-        replaceContent(iframe.contentDocument, 'sectionsMenu', viewData.sectionsMenu)
+
         replaceContent(iframe.contentDocument, 'pageEntries', viewData.entries)
 
         removeExtraAddBtnAndAddListeners(iframe)
+      }
+    )
+  }
+
+  public handleLastEntryDeletion(): Subscription {
+    return this.actions$.pipe(ofActionSuccessful(
+      DeleteSectionLastEntry
+    )).subscribe(
+      (action: DeleteSectionLastEntry) => {
+        let url = location.protocol + '//' + location.hostname + ':' + location.port;
+
+        window.location.replace(`${url}/engine/?section=${action.section}`)
       }
     )
   }
