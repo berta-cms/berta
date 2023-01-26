@@ -450,6 +450,17 @@ var BertaEditorBase = new Class({
         var xGuideLineX;
         var xGuideLineY;
 
+        var handleEl = el.getElement('.xHandle')
+        if (!handleEl) {
+          handleEl = new Element('div', {
+            'class': 'xHandle',
+            styles: {
+              left: '0px'
+            }
+          });
+          handleEl.inject(el)
+        }
+
         el.getElement('.xHandle').addEvents({
           click: function (event) {
             event.preventDefault();

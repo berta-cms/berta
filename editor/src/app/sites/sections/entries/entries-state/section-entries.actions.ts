@@ -102,6 +102,14 @@ export class DeleteSectionEntryFromSyncAction {
   }
 }
 
+export class DeleteSectionLastEntry {
+  static readonly type = 'SECTION_LAST_ENTRY:DELETE';
+  constructor(
+    public section: string,
+  ) {
+  }
+}
+
 export class UpdateEntryGalleryFromSyncAction {
   static readonly type = 'SECTION_ENTRY_GALLERY:UPDATE:SYNC';
   constructor(public site: string,

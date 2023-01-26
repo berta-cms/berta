@@ -79,9 +79,9 @@ export class BackgroundGalleryRenderService {
               ? 'sel'
               : '',
         },
-        imageClass: {
+        imageClass: toHtmlAttributes({
           class: currentItemIndex === index ? 'sel' : '',
-        },
+        }),
         captionStyles: toHtmlAttributes({
           style: captionStyles.join(';'),
         }),

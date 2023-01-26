@@ -8,7 +8,9 @@
   <body class="{{ bodyClasses }}" id="body">
     <div id="allContainer">
       <div id="contentContainer"{% if isResponsive %} class="xResponsive"{% endif %}>
-        {{ sitesMenu|raw }}
+        <div id="sitesMenu">
+          {{ sitesMenu|raw }}
+        </div>
         <div id="siteHeader">
           {{ siteHeader|raw }}
         </div>

@@ -216,9 +216,9 @@ export class MessyTemplateRenderService extends TemplateRenderService {
       `background-image:linear-gradient(rgba(${color}, 0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(${color}, 0.5) 1px, transparent 0px), linear-gradient(rgba(${color}, 0.2) 1px, transparent 1px), linear-gradient(90deg, rgba(${color}, 0.2) 1px, transparent 0px)`,
     ];
 
-    return toHtmlAttributes({
+    return {
       style: styles.join(';'),
-    });
+    };
   }
 
   getViewData(): { [key: string]: any } {
@@ -235,6 +235,10 @@ export class MessyTemplateRenderService extends TemplateRenderService {
           commonViewData.isResponsive,
           commonViewData.isAutoResponsive
         ),
+        isCenteredPageLayout:
+          commonViewData.siteTemplateSettings.pageLayout.centered === 'yes',
+        isAutoResponsive:
+          commonViewData.siteTemplateSettings.pageLayout.autoResponsive === 'yes',
         sectionType: commonViewData.currentSectionType,
         contentContainerAttributes: this.getContentContainerAttributes(
           commonViewData.siteTemplateSettings,

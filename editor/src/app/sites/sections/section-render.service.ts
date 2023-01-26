@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { toHtmlAttributes } from '../../shared/helpers';
 import { SocialMediaLinksRenderService } from '../social-media-links-render.service';
 import { SiteSectionStateModel } from './sections-state/site-sections-state.model';
 import {ClassAttr} from "../../../types/attributes";
@@ -85,7 +84,7 @@ export class SectionRenderService {
 
     attributes.class = classes.join(' ');
 
-    return toHtmlAttributes(attributes);
+    return attributes;
   }
 
   getMainColumnAttributes(siteTemplateSettings) {
@@ -102,7 +101,7 @@ export class SectionRenderService {
         siteTemplateSettings.pageLayout.paddingTop;
     }
 
-    return toHtmlAttributes(attributes);
+    return attributes;
   }
 
   getPageEntriesAttributes(

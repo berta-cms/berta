@@ -23,7 +23,8 @@ export class UpdateNavigationSiteSettingsAction {
 }
 export class HandleSiteSettingsChildrenChangesAction {
   static readonly type = 'SITE_SETTINGS:HANDLE_CHILDREN_CHANGES';
-  constructor(public settingGroup: string) {
+  constructor(public settingGroup: string,
+              public payload?: any) {
   }
 }
 
