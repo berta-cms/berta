@@ -1,16 +1,17 @@
 import {Injectable} from "@angular/core";
 import {TemplateRerenderService} from "../template-rerender.service";
-import {WhiteTemplateRenderService} from "../../render/white-template-render.service";
 import {Actions, ofActionSuccessful} from "@ngxs/store";
+import {MessyTemplateRenderService} from "../../render/messy-template-render.service";
 import {SiteSettingChildrenHandler} from "../types/components";
-import {HandleSiteTemplateSettingsAction} from "../../sites/template-settings/site-template-settings.actions";
+import {HandleSiteSettingsChildrenChangesAction} from "../../sites/settings/site-settings.actions";
 import {replaceContent} from "../utilities/content";
-import {PageLayoutService} from "../common/page-layout.service";
+import {PageLayoutService} from "./page-layout.service";
+import {HandleSiteTemplateSettingsAction} from "../../sites/template-settings/site-template-settings.actions";
 
 @Injectable({
   providedIn: 'root',
 })
-export class WhiteTemplateRerenderService extends TemplateRerenderService{
+export class MessyTemplateRerenderService extends TemplateRerenderService {
 
   /* config for live settings re-rendering.
   'id' is id of the wrapper element. All content inside will be replaced with a new one
@@ -19,7 +20,7 @@ export class WhiteTemplateRerenderService extends TemplateRerenderService{
   private static readonly SETTINGS_IDS_DATA_KEYS: SiteSettingChildrenHandler = {
     socialMediaComp: [
       {id: 'additionalTextBlock', dataKey: 'additionalTextBlock'},
-      {id: 'socialMediaLinks', dataKey: 'socialMediaLinks'},
+      {id: 'additionalFooterTextBlock', dataKey: 'additionalFooterText'},
       {id: 'sectionFooter', dataKey: 'sectionFooter'},
     ],
     media: {id: 'pageEntries', dataKey: 'entries'},
@@ -29,13 +30,13 @@ export class WhiteTemplateRerenderService extends TemplateRerenderService{
   }
 
   constructor(
-    whiteRenderService: WhiteTemplateRenderService,
+    messyRenderService: MessyTemplateRenderService,
     actions$: Actions,
     private pageLayoutService: PageLayoutService,
   ) {
     super(
-      whiteRenderService,
-      actions$
+      messyRenderService,
+      actions$,
     );
   }
 
@@ -59,9 +60,23 @@ export class WhiteTemplateRerenderService extends TemplateRerenderService{
     const siteSectionEntryUpdateSubscr = this.handleSectionEntryUpdateRerender(iframe)
 
     // re-renders in case of settings changes
-    const siteSettingChildrenHandleSubscr = this.handleSiteSettingChildrenHandleRerender(
-      iframe,
-      WhiteTemplateRerenderService.SETTINGS_IDS_DATA_KEYS,
+    const siteSettingChildrenHandleSubscr = this.actions$.pipe(ofActionSuccessful(
+      HandleSiteSettingsChildrenChangesAction
+    )).subscribe(
+      (action: HandleSiteSettingsChildrenChangesAction) => {
+        // if setting group is one of the common settings then exec in standard way
+        if (MessyTemplateRerenderService.COMMON_SETTING_GROUPS.includes(action.settingGroup)) {
+          this.execCommonSiteSettingsRerender(iframe, action, MessyTemplateRerenderService.SETTINGS_IDS_DATA_KEYS)
+          return
+        }
+
+        // if not common setting, handle action here
+        const viewData = this.renderService.getViewData()
+
+        if (action.settingGroup === 'pageLayout') {
+          this.pageLayoutService.handleSettings(iframe, action, viewData)
+        }
+      }
     )
 
     // re-renders in case of design settings changes
@@ -70,16 +85,21 @@ export class WhiteTemplateRerenderService extends TemplateRerenderService{
     )).subscribe(
       (action: HandleSiteTemplateSettingsAction) => {
         const viewData = this.renderService.getViewData()
-        console.log('siteTemplateSettingHandleSubscr', viewData)
 
         if (action.settingGroup === 'pageLayout') {
           this.pageLayoutService.handle(iframe, viewData)
 
-        } else if (action.settingGroup === 'pageHeading') {
+        } else if (action.settingGroup === 'heading') {
           replaceContent(dom, 'siteHeader', viewData.siteHeader)
 
+        } else if (action.settingGroup === 'menu') {
+          replaceContent(dom, 'sectionsMenu', viewData.sectionsMenu)
+
+        } else if (action.settingGroup === 'tagsMenu') {
+          replaceContent(dom, 'sectionsMenu', viewData.sectionsMenu)
+
         } else if (action.settingGroup === 'css') {
-          WhiteTemplateRerenderService.handleCssDesignSettingChange(dom, action)
+          MessyTemplateRerenderService.handleCssDesignSettingChange(dom, action)
         }
       }
     )

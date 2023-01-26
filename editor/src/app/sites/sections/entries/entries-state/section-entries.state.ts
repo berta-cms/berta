@@ -20,7 +20,9 @@ import {
   DeleteSectionEntryFromSyncAction,
   UpdateEntryGalleryFromSyncAction,
   AddSectionEntryFromSyncAction,
-  MoveSectionEntryFromSyncAction} from './section-entries.actions';
+  MoveSectionEntryFromSyncAction,
+  DeleteSectionLastEntry,
+} from './section-entries.actions';
 import { UserLoginAction } from '../../../../user/user.actions';
 import { UpdateSiteSectionAction } from '../../sections-state/site-sections.actions';
 import { UpdateSectionTagsAction } from '../../tags/section-tags.actions';
@@ -375,6 +377,11 @@ export class SectionEntriesState implements NgxsOnInit {
   @Action(DeleteSectionEntryFromSyncAction)
   deleteSectionEntryFromSync({ getState, patchState, dispatch }: StateContext<SectionEntriesStateModel>,
                              action: DeleteSectionEntryFromSyncAction) {
+
+    // taking deleted entry in order to compare find out if it was the last entry in submenu
+    const entriesList = getState()[action.site]
+    const deletedEntry = entriesList.find(entry => entry.id === action.entryId && entry.sectionName === action.section)
+
     return this.appStateService.sync('sectionEntries', {
       site: action.site,
       section: action.section,
@@ -423,6 +430,20 @@ export class SectionEntriesState implements NgxsOnInit {
 
           if (response.tags) {
             dispatch(new UpdateSectionTagsAction(action.site, action.section, response.tags));
+          }
+        }
+
+        // if deleted entry was the last in submenu, then emit the event in order to redirect to main section
+        const entriesList = getState()[action.site]
+        if (deletedEntry.tags) {
+          const entriesWithSameTag = entriesList.filter(
+            entry => entry.sectionName === action.section
+              && entry.tags
+              && entry.tags.tag.includes(deletedEntry.tags.tag[0])
+          )
+
+          if (!entriesWithSameTag.length) {
+            dispatch(new DeleteSectionLastEntry(action.section))
           }
         }
       })

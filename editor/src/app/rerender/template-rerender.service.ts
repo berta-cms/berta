@@ -8,7 +8,7 @@ import {
 import {TemplateRenderService} from "../render/template-render.service";
 import {
   AddSectionEntryFromSyncAction,
-  DeleteSectionEntryFromSyncAction, UpdateSectionEntryFromSyncAction
+  DeleteSectionEntryFromSyncAction, DeleteSectionLastEntry, UpdateSectionEntryFromSyncAction
 } from "../sites/sections/entries/entries-state/section-entries.actions";
 import {Subscription} from "rxjs";
 import {HandleSiteSettingsChildrenChangesAction} from "../sites/settings/site-settings.actions";
@@ -26,6 +26,14 @@ export class TemplateRerenderService {
   private static readonly BANNERS_SETTINGS = 'banners'
   private static readonly SETTINGS = 'settings'
   private static readonly ENTRY_LAYOUT = 'entryLayout'
+  protected static readonly COMMON_SETTING_GROUPS = [
+    TemplateRerenderService.SOCIAL_MEDIA_LINKS,
+    TemplateRerenderService.SOCIAL_MEDIA_BTNS,
+    TemplateRerenderService.MEDIA_SETTINGS,
+    TemplateRerenderService.BANNERS_SETTINGS,
+    TemplateRerenderService.SETTINGS,
+    TemplateRerenderService.ENTRY_LAYOUT,
+  ]
 
   constructor(
     public renderService: TemplateRenderService,
@@ -109,10 +117,21 @@ export class TemplateRerenderService {
       () => {
         const viewData = this.renderService.getViewData()
 
-        replaceContent(iframe.contentDocument, 'sectionsMenu', viewData.sectionsMenu)
         replaceContent(iframe.contentDocument, 'pageEntries', viewData.entries)
 
         removeExtraAddBtnAndAddListeners(iframe)
+      }
+    )
+  }
+
+  public handleLastEntryDeletion(): Subscription {
+    return this.actions$.pipe(ofActionSuccessful(
+      DeleteSectionLastEntry
+    )).subscribe(
+      (action: DeleteSectionLastEntry) => {
+        let url = location.protocol + '//' + location.hostname + ':' + location.port;
+
+        window.location.replace(`${url}/engine/?section=${action.section}`)
       }
     )
   }
@@ -140,17 +159,25 @@ export class TemplateRerenderService {
       HandleSiteSettingsChildrenChangesAction
     )).subscribe(
       (action: HandleSiteSettingsChildrenChangesAction) => {
-        const viewData = this.renderService.getViewData()
-
-        let compList = TemplateRerenderService.getSiteSettingsChildrenComp(action, info)
-
-        compList.forEach(comp =>
-          replaceContent(iframe.contentDocument, comp.id, viewData[comp.dataKey])
-        )
-
-        removeExtraAddBtnAndAddListeners(iframe)
+        this.execCommonSiteSettingsRerender(iframe, action, info)
       }
     )
+  }
+
+  protected execCommonSiteSettingsRerender(
+    iframe: HTMLIFrameElement,
+    action: HandleSiteSettingsChildrenChangesAction,
+    info: SiteSettingChildrenHandler,
+  ): void {
+    const viewData = this.renderService.getViewData()
+
+    let compList = TemplateRerenderService.getSiteSettingsChildrenComp(action, info)
+
+    compList.forEach(comp =>
+      replaceContent(iframe.contentDocument, comp.id, viewData[comp.dataKey])
+    )
+
+    removeExtraAddBtnAndAddListeners(iframe)
   }
 
   public unsubscribe(win: Window, subList: Subscription[]): void {
