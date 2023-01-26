@@ -78,7 +78,8 @@ export class InitSectionEntriesAction {
 export class UpdateSectionEntryFromSyncAction {
   static readonly type = 'SECTION_ENTRY:UPDATE:SYNC';
   constructor(public path: string,
-              public payload: any) {
+              public payload: any,
+              public nOfReq = 0) {
   }
 }
 
@@ -98,6 +99,14 @@ export class DeleteSectionEntryFromSyncAction {
       public site: string,
       public section: string,
       public entryId: string) {
+  }
+}
+
+export class DeleteSectionLastEntry {
+  static readonly type = 'SECTION_LAST_ENTRY:DELETE';
+  constructor(
+    public section: string,
+  ) {
   }
 }
 

@@ -33,6 +33,7 @@ import { MashupTemplateStyleService } from './preview/mashup-template-style.serv
 import { MessyTemplateStyleService } from './preview/messy-template-style.service';
 import { ShopSettingsState } from './shop/settings/shop-settings.state';
 import { ShopRegionalCostsState } from './shop/regional-costs/shop-regional-costs.state';
+import {SiteSectionsModule} from "./sites/sections/site-sections.module";
 
 @NgModule({
   declarations: [
@@ -69,6 +70,7 @@ import { ShopRegionalCostsState } from './shop/regional-costs/shop-regional-cost
     NgxsLoggerPluginModule.forRoot({ disabled: true }), // it logs too much, enable only when needed
     SitesModule,
     SitesSharedModule,
+    SiteSectionsModule,
   ],
   providers: [
     StyleService,

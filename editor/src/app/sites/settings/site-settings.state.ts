@@ -16,7 +16,10 @@ import {
   UpdateSiteSettingsFromSyncAction,
   AddSiteSettingChildrenAction,
   DeleteSiteSettingChildrenAction,
-  UpdateSiteSettingChildreAction} from './site-settings.actions';
+  UpdateSiteSettingChildreAction,
+  UpdateNavigationSiteSettingsAction,
+  HandleSiteSettingsChildrenChangesAction,
+} from './site-settings.actions';
 import { UserLoginAction } from '../../user/user.actions';
 import { AddSiteSectionAction } from '../sections/sections-state/site-sections.actions';
 
@@ -85,7 +88,7 @@ export class SiteSettingsState implements NgxsOnInit {
   }
 
   @Action(UpdateSiteSettingsAction)
-  updateSiteSettings({ getState, patchState }: StateContext<SitesSettingsStateModel>, action: UpdateSiteSettingsAction) {
+  updateSiteSettings({ getState, patchState, dispatch }: StateContext<SitesSettingsStateModel>, action: UpdateSiteSettingsAction) {
     const currentSite = this.store.selectSnapshot(AppState.getSite);
     const settingKey = Object.keys(action.payload)[0];
     const data = {
@@ -116,6 +119,21 @@ export class SiteSettingsState implements NgxsOnInit {
               })
             };
           })});
+
+          switch (action.settingGroup) {
+            case "navigation":
+              dispatch(new UpdateNavigationSiteSettingsAction(action.payload))
+              break
+            case "socialMediaLinks":
+            case "socialMediaButtons":
+            case "media":
+            case "banners":
+            case "settings":
+            case "entryLayout":
+            case "pageLayout":
+              dispatch(new HandleSiteSettingsChildrenChangesAction(action.settingGroup, action.payload))
+              break
+          }
         }
       })
     );
@@ -168,7 +186,7 @@ export class SiteSettingsState implements NgxsOnInit {
   }
 
   @Action(AddSiteSettingChildrenAction)
-  addSiteSettingChildren({ getState, patchState }: StateContext<SitesSettingsStateModel>, action: AddSiteSettingChildrenAction) {
+  addSiteSettingChildren({ getState, patchState, dispatch }: StateContext<SitesSettingsStateModel>, action: AddSiteSettingChildrenAction) {
     const currentSite = this.store.selectSnapshot(AppState.getSite);
     const settingKey = action.slug;
     const data = {
@@ -213,13 +231,15 @@ export class SiteSettingsState implements NgxsOnInit {
               })
             };
           })});
+
+          dispatch(new HandleSiteSettingsChildrenChangesAction(action.settingGroup))
         }
       })
     );
   }
 
   @Action(DeleteSiteSettingChildrenAction)
-  deleteSiteSettingChildren({ getState, patchState }: StateContext<SitesSettingsStateModel>, action: DeleteSiteSettingChildrenAction) {
+  deleteSiteSettingChildren({ getState, patchState, dispatch }: StateContext<SitesSettingsStateModel>, action: DeleteSiteSettingChildrenAction) {
     const currentSite = this.store.selectSnapshot(AppState.getSite);
     const settingKey = action.slug;
     const data = {
@@ -251,13 +271,15 @@ export class SiteSettingsState implements NgxsOnInit {
               })
             };
           })});
+
+          dispatch(new HandleSiteSettingsChildrenChangesAction(action.settingGroup))
         }
       })
     );
   }
 
   @Action(UpdateSiteSettingChildreAction)
-  updateSiteSettingChildren({ getState, patchState }: StateContext<SitesSettingsStateModel>, action: UpdateSiteSettingChildreAction) {
+  updateSiteSettingChildren({ getState, patchState, dispatch }: StateContext<SitesSettingsStateModel>, action: UpdateSiteSettingChildreAction) {
 
     const currentSite = this.store.selectSnapshot(AppState.getSite);
     const settingSlug = action.slug;
@@ -308,6 +330,8 @@ export class SiteSettingsState implements NgxsOnInit {
               })
             };
           })});
+
+          dispatch(new HandleSiteSettingsChildrenChangesAction(action.settingGroup))
         }
       })
     );

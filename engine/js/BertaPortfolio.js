@@ -5,6 +5,12 @@ var BertaPortfolio = new Class({
   initialize: function (options) {
     this.setOptions(options);
     window.addEvent('domready', this.onDOMReady.bindWithEvent(this));
+    window.addEventListener('addEntry',this.onAddPortfolio.bindWithEvent(this))
+  },
+
+  onAddPortfolio: function () {
+    // after adding portfolio entry
+    this.portfolioThumbnails()
   },
 
   onDOMReady: function () {

@@ -45,6 +45,7 @@ import { SiteSectionsState } from "../sites/sections/sections-state/site-section
 import { SectionTagsState } from "../sites/sections/tags/section-tags.state";
 import { OrderSectionTagsFromSyncAction } from "../sites/sections/tags/section-tags.actions";
 import { UpdateShopSettingsAction } from "../shop/settings/shop-settings.actions";
+import {RerenderService} from "../rerender/rerender.service";
 
 @Injectable({
   providedIn: "root",
@@ -75,6 +76,7 @@ export class PreviewService {
     private popupService: PopupService,
     private renderService: RenderService,
     private actions$: Actions,
+    private rerenderService: RerenderService,
     private store: Store
   ) {}
 
@@ -601,5 +603,11 @@ export class PreviewService {
         });
       });
     });
+  }
+
+  loadRerenderService(iframe: HTMLIFrameElement) {
+    this.catchExternalLinks(iframe.contentWindow.document);
+
+    this.rerenderService.handleRerendering(iframe)
   }
 }

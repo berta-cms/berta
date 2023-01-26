@@ -81,20 +81,20 @@ export class MashupTemplateRenderService extends TemplateRenderService {
       classes.push('xResponsive');
     }
 
-    return toHtmlAttributes({
+    return {
       class: classes.join(' '),
-    });
+    };
   }
 
-  getMainColumnAttributes(siteTemplateSettings) {
-    return toHtmlAttributes({
+  getMainColumnAttributes(siteTemplateSettings): {class: string, 'data-paddingtop': string} {
+    return {
       class:
         siteTemplateSettings.pageLayout.centered === 'yes' ? 'xCentered' : null,
       'data-paddingtop':
         siteTemplateSettings.pageLayout.responsive === 'yes'
           ? siteTemplateSettings.pageLayout.paddingTop
           : null,
-    });
+    };
   }
 
   getViewData(): { [key: string]: any } {
