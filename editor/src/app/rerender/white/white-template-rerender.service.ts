@@ -1,16 +1,16 @@
 import {Injectable} from "@angular/core";
-import {MashupTemplateRenderService} from "../../render/mashup-template-render.service";
-import {Actions, ofActionSuccessful} from "@ngxs/store";
 import {TemplateRerenderService} from "../template-rerender.service";
+import {WhiteTemplateRenderService} from "../../render/white-template-render.service";
+import {Actions, ofActionSuccessful} from "@ngxs/store";
 import {SiteSettingChildrenHandler} from "../types/components";
 import {HandleSiteTemplateSettingsAction} from "../../sites/template-settings/site-template-settings.actions";
-import {PageLayoutService} from "./page-layout.service";
 import {replaceContent} from "../utilities/content";
+import {PageLayoutService} from "../common/page-layout.service";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
-export class MashupTemplateRerenderService extends TemplateRerenderService {
+export class WhiteTemplateRerenderService extends TemplateRerenderService{
 
   /* config for live settings re-rendering.
   'id' is id of the wrapper element. All content inside will be replaced with a new one
@@ -29,14 +29,14 @@ export class MashupTemplateRerenderService extends TemplateRerenderService {
   }
 
   constructor(
-    mashupRenderService: MashupTemplateRenderService,
+    whiteRenderService: WhiteTemplateRenderService,
     actions$: Actions,
     private pageLayoutService: PageLayoutService,
   ) {
     super(
-      mashupRenderService,
-      actions$,
-    )
+      whiteRenderService,
+      actions$
+    );
   }
 
   handle(iframe: HTMLIFrameElement) {
@@ -61,7 +61,7 @@ export class MashupTemplateRerenderService extends TemplateRerenderService {
     // re-renders in case of settings changes
     const siteSettingChildrenHandleSubscr = this.handleSiteSettingChildrenHandleRerender(
       iframe,
-      MashupTemplateRerenderService.SETTINGS_IDS_DATA_KEYS,
+      WhiteTemplateRerenderService.SETTINGS_IDS_DATA_KEYS,
     )
 
     // re-renders in case of design settings changes
@@ -75,11 +75,11 @@ export class MashupTemplateRerenderService extends TemplateRerenderService {
         if (action.settingGroup === 'pageLayout') {
           this.pageLayoutService.handle(iframe, viewData)
 
-        } else if (action.settingGroup === 'sideBar') {
+        } else if (action.settingGroup === 'pageHeading') {
           replaceContent(dom, 'siteHeader', viewData.siteHeader)
 
         } else if (action.settingGroup === 'css') {
-          MashupTemplateRerenderService.handleCssDesignSettingChange(dom, action)
+          WhiteTemplateRerenderService.handleCssDesignSettingChange(dom, action)
         }
       }
     )

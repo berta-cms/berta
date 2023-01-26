@@ -135,6 +135,9 @@ export class SiteTemplateSettingsState implements NgxsOnInit {
           case "pageHeading":
           case "entryLayout":
           case "sideBar":
+          case "heading":
+          case "menu":
+          case "tagsMenu":
             dispatch(new HandleSiteTemplateSettingsAction(action.settingGroup))
             break
           case "css":

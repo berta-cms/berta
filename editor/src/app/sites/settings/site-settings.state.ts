@@ -130,7 +130,8 @@ export class SiteSettingsState implements NgxsOnInit {
             case "banners":
             case "settings":
             case "entryLayout":
-              dispatch(new HandleSiteSettingsChildrenChangesAction(action.settingGroup))
+            case "pageLayout":
+              dispatch(new HandleSiteSettingsChildrenChangesAction(action.settingGroup, action.payload))
               break
           }
         }

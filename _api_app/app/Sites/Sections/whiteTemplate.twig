@@ -3,19 +3,29 @@
 <!--[if IE 7 ]>    <html class="ie7 ie-old"> <![endif]-->
 <!--[if IE 8 ]>    <html class="ie8"> <![endif]-->
 <!--[if IE 9 ]>    <html class="ie9"> <![endif]-->
-<!--[if (gt IE 9)|!(IE)]><!--> <html> <!--<![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--> <html id="html"> <!--<![endif]-->
   {{ sectionHead|raw }}
-  <body class="{{ bodyClasses }}">
+  <body class="{{ bodyClasses }}" id="body">
     <div id="allContainer"{% if isCenteredPageLayout %} class="xCentered"{% endif %}>
       <div id="sideColumn"{{ sideColumnAttributes|raw }}>
         <div id="sideColumnTop">
-          {{ sitesMenu|raw }}
-          {{ siteHeader|raw }}
-          {{ additionalTextBlock|raw }}
-          {{ sectionsMenu|raw }}
+          <div id="sitesMenu">
+            {{ sitesMenu|raw }}
+          </div>
+          <div id="siteHeader">
+            {{ siteHeader|raw }}
+          </div>
+          <div id="additionalTextBlock">
+            {{ additionalTextBlock|raw }}
+          </div>
+          <div id="sectionsMenu">
+            {{ sectionsMenu|raw }}
+          </div>
         </div>
         <div id="sideColumnBottom">
-          {{ socialMediaLinks|raw }}
+          <div id="socialMediaLinks">
+            {{ socialMediaLinks|raw }}
+          </div>
           <p id="userCopyright"{{ userCopyright.attributes|raw }}>
             {{ userCopyright.content|raw }}
           </p>
@@ -30,13 +40,17 @@
             {{ entries|raw }}
           </ol>
           <br class="clear" />
-          {{ portfolioThumbnails|raw }}
+          <div id="portfolioThumbnails">
+            {{ portfolioThumbnails|raw }}
+          </div>
         </div>
       </div>
-      <div class="floating-banners">
+      <div class="floating-banners" id="siteBanners">
         {{ siteBanners|raw }}
       </div>
     </div>
-    {{ sectionFooter|raw }}
+    <div id="sectionFooter">
+      {{ sectionFooter|raw }}
+    </div>
   </body>
 </html>

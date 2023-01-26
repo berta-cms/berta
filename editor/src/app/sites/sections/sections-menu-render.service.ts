@@ -30,6 +30,11 @@ export class SectionsMenuRenderService {
 
       if (siteTemplateSettings.menu.position === 'fixed') {
         classes.push('xFixed');
+      } else {
+        const i = classes.indexOf('xFixed')
+        if (i > -1) {
+          classes.splice(i, 1);
+        }
       }
 
       if (!isResponsive) {
@@ -43,7 +48,8 @@ export class SectionsMenuRenderService {
   getSectionStyleList(
     section: SiteSectionStateModel,
     isResponsive: boolean,
-    templateName: string
+    templateName: string,
+    siteTemplateSettings,
   ): string {
     if (templateName !== 'messy' || isResponsive) {
       return '';
@@ -56,7 +62,12 @@ export class SectionsMenuRenderService {
           Math.floor(Math.random() * 600 + 1),
         ];
 
-    return `left:${left}px;top:${top}px`;
+    let position = 'absolute'
+    if (siteTemplateSettings.menu.position === 'fixed') {
+      position = 'fixed'
+    }
+
+    return `left:${left}px;top:${top}px;position:${position} !important;`;
   }
 
   getUrl(
@@ -262,7 +273,8 @@ export class SectionsMenuRenderService {
             style: this.getSectionStyleList(
               section,
               isResponsive,
-              templateName
+              templateName,
+              siteTemplateSettings,
             ),
             'data-path': !isResponsive
               ? `${siteSlug}/section/${section.order}/positionXY`
