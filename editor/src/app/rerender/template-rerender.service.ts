@@ -113,7 +113,7 @@ export class TemplateRerenderService {
       });
   }
 
-  public handleSiteSectionsRerender(dom: Document): Subscription {
+  public handleSiteSectionsRerender(iframe: HTMLIFrameElement): Subscription {
     return this.actions$
       .pipe(
         ofActionSuccessful(
@@ -125,7 +125,12 @@ export class TemplateRerenderService {
       )
       .subscribe(() => {
         const viewData = this.renderService.getViewData();
-        replaceContent(dom, 'sectionsMenu', viewData.sectionsMenu);
+        replaceContent(
+          iframe.contentDocument,
+          'sectionsMenu',
+          viewData.sectionsMenu
+        );
+        iframe.contentWindow.dispatchEvent(new Event('sectionsMenuRerendered'));
       });
   }
 

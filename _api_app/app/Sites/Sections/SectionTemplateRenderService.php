@@ -24,6 +24,7 @@ abstract class SectionTemplateRenderService
     private $sitesHeaderRS;
     private $socialMediaLinksRS;
     private $additionalTextRS;
+    private $additionalFooterTextRS;
     private $sectionsMenuRS;
     private $sectionEntryRS;
     private $portfolioThumbnailsRS;

@@ -42,7 +42,7 @@ export class WhiteTemplateRerenderService extends TemplateRerenderService {
     const sitesMenuSubscr = this.handleSitesMenuRerender(dom);
 
     // sites sections crud
-    const siteSectionSubscr = this.handleSiteSectionsRerender(dom);
+    const siteSectionSubscr = this.handleSiteSectionsRerender(iframe);
 
     // entry creation
     const entryCreationSubscr = this.handleEntryCreationRerender(iframe);
