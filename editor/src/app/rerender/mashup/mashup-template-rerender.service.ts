@@ -21,7 +21,6 @@ export class MashupTemplateRerenderService extends TemplateRerenderService {
       { id: 'socialMediaLinks', dataKey: 'socialMediaLinks' },
       { id: 'sectionFooter', dataKey: 'sectionFooter' },
     ],
-    media: { id: 'pageEntries', dataKey: 'entries' },
     banners: { id: 'siteBanners', dataKey: 'siteBanners' },
     settings: { id: 'sectionFooter', dataKey: 'sectionFooter' },
     entryLayout: { id: 'pageEntries', dataKey: 'entries' },
@@ -38,6 +37,8 @@ export class MashupTemplateRerenderService extends TemplateRerenderService {
   handle(iframe: HTMLIFrameElement) {
     const dom = iframe.contentDocument;
     const win = iframe.contentWindow;
+
+    const iframeHardReloadSubscr = this.handleIframeHardReload(win);
 
     const sitesMenuSubscr = this.handleSitesMenuRerender(dom);
 
@@ -84,6 +85,7 @@ export class MashupTemplateRerenderService extends TemplateRerenderService {
       });
 
     this.unsubscribe(win, [
+      iframeHardReloadSubscr,
       sitesMenuSubscr,
       siteSectionSubscr,
       entryCreationSubscr,

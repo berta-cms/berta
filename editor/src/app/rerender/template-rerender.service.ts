@@ -14,7 +14,10 @@ import {
   UpdateSectionEntryFromSyncAction,
 } from '../sites/sections/entries/entries-state/section-entries.actions';
 import { Subscription } from 'rxjs';
-import { HandleSiteSettingsChildrenChangesAction } from '../sites/settings/site-settings.actions';
+import {
+  HandleSiteSettingsChildrenChangesAction,
+  UpdateSiteSettingsAction,
+} from '../sites/settings/site-settings.actions';
 import { Component, SiteSettingChildrenHandler } from './types/components';
 import {
   removeExtraAddBtnAndAddListeners,
@@ -40,7 +43,6 @@ export class TemplateRerenderService {
   protected static readonly COMMON_SETTING_GROUPS = [
     TemplateRerenderService.SOCIAL_MEDIA_LINKS,
     TemplateRerenderService.SOCIAL_MEDIA_BTNS,
-    TemplateRerenderService.MEDIA_SETTINGS,
     TemplateRerenderService.BANNERS_SETTINGS,
     TemplateRerenderService.SETTINGS,
     TemplateRerenderService.ENTRY_LAYOUT,
@@ -58,9 +60,6 @@ export class TemplateRerenderService {
     let compList: Component[] = [];
 
     switch (action.settingGroup) {
-      case TemplateRerenderService.MEDIA_SETTINGS:
-        compList.push(info.media);
-        break;
       case TemplateRerenderService.BANNERS_SETTINGS:
         compList.push(info.banners);
         break;
@@ -76,6 +75,16 @@ export class TemplateRerenderService {
     }
 
     return compList;
+  }
+
+  public handleIframeHardReload(win: Window): Subscription {
+    return this.actions$
+      .pipe(ofActionSuccessful(UpdateSiteSettingsAction))
+      .subscribe((action: UpdateSiteSettingsAction) => {
+        if (action.settingGroup === TemplateRerenderService.MEDIA_SETTINGS) {
+          win.location.reload();
+        }
+      });
   }
 
   protected static handleCssDesignSettingChange(
