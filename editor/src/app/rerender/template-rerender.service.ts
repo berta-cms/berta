@@ -81,11 +81,26 @@ export class TemplateRerenderService {
 
   public handleIframeHardReload(win: Window): Subscription {
     return this.actions$
-      .pipe(ofActionSuccessful(UpdateSiteSettingsAction))
-      .subscribe((action: UpdateSiteSettingsAction) => {
-        if (action.settingGroup === TemplateRerenderService.MEDIA_SETTINGS) {
-          win.location.reload();
-        }
+      .pipe(
+        ofActionSuccessful(UpdateSiteSettingsAction, UpdateSiteSectionAction),
+        filter((action) => {
+          const reloadConditionFromSiteSettingsAction =
+            action instanceof UpdateSiteSettingsAction &&
+            action.settingGroup === TemplateRerenderService.MEDIA_SETTINGS;
+
+          const reloadConditionFromSectionAction =
+            action instanceof UpdateSiteSectionAction &&
+            action.payload['@attributes'] &&
+            action.payload['@attributes'].type;
+
+          return (
+            reloadConditionFromSiteSettingsAction ||
+            reloadConditionFromSectionAction
+          );
+        })
+      )
+      .subscribe(() => {
+        win.location.reload();
       });
   }
 
@@ -138,9 +153,7 @@ export class TemplateRerenderService {
           return (
             !(action instanceof UpdateSiteSectionAction) ||
             action.payload.link ||
-            action.payload.target ||
-            (action.payload['@attributes'] &&
-              action.payload['@attributes'].type)
+            action.payload.target
           );
         })
       )
