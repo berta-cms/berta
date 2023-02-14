@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Actions, ofActionSuccessful } from '@ngxs/store';
+import { filter } from 'rxjs/operators';
 import {
   CreateSectionAction,
   DeleteSiteSectionAction,
   RenameSiteSectionAction,
   ReOrderSiteSectionsAction,
+  UpdateSiteSectionAction,
 } from '../sites/sections/sections-state/site-sections.actions';
 import { TemplateRenderService } from '../render/template-render.service';
 import {
@@ -129,8 +131,18 @@ export class TemplateRerenderService {
           ReOrderSiteSectionsAction,
           DeleteSiteSectionAction,
           CreateSectionAction,
-          RenameSiteSectionAction
-        )
+          RenameSiteSectionAction,
+          UpdateSiteSectionAction
+        ),
+        filter((action) => {
+          return (
+            !(action instanceof UpdateSiteSectionAction) ||
+            action.payload.link ||
+            action.payload.target ||
+            (action.payload['@attributes'] &&
+              action.payload['@attributes'].type)
+          );
+        })
       )
       .subscribe(() => {
         const viewData = this.renderService.getViewData();
