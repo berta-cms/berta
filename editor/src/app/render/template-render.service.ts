@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngxs/store';
 import { AppState } from '../app-state/app.state';
-import { toHtmlAttributes } from '../shared/helpers';
 import { ShopRegionalCostsState } from '../shop/regional-costs/shop-regional-costs.state';
 import { ShopSettingsState } from '../shop/settings/shop-settings.state';
 import { ShopCartRenderService } from '../shop/shop-cart-render.service';
@@ -31,7 +30,7 @@ import { SitesState } from '../sites/sites-state/sites.state';
 import { SiteTemplateSettingsState } from '../sites/template-settings/site-template-settings.state';
 import { SiteTemplatesState } from '../sites/template-settings/site-templates.state';
 import { UserState } from '../user/user.state';
-import {UserCopyright} from "../../types/user-copyright";
+import { UserCopyright } from '../../types/user-copyright';
 
 @Injectable({
   providedIn: 'root',
@@ -218,23 +217,21 @@ export class TemplateRenderService {
       siteTemplateSettings.pageLayout &&
       siteTemplateSettings.pageLayout.autoResponsive === 'yes';
 
-    const shopSettings = [];
-    // uncomment this part in case you want shop feature back
-    // const shopSettings = this.store
-    //   .selectSnapshot(ShopSettingsState.getCurrentSiteSettings)
-    //   .reduce((settings, settingGroup) => {
-    //     settingGroup.settings.forEach((setting) => {
-    //       settings = {
-    //         ...settings,
-    //         [settingGroup.slug]: {
-    //           ...settings[settingGroup.slug],
-    //           [setting.slug]: setting.value,
-    //         },
-    //       };
-    //     });
-    //
-    //     return settings;
-    //   }, {});
+    const shopSettings = this.store
+      .selectSnapshot(ShopSettingsState.getCurrentSiteSettings)
+      .reduce((settings, settingGroup) => {
+        settingGroup.settings.forEach((setting) => {
+          settings = {
+            ...settings,
+            [settingGroup.slug]: {
+              ...settings[settingGroup.slug],
+              [setting.slug]: setting.value,
+            },
+          };
+        });
+
+        return settings;
+      }, {});
 
     const shippingRegions = this.store.selectSnapshot(
       ShopRegionalCostsState.getCurrentSiteRegionalCosts
