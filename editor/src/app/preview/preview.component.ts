@@ -1,12 +1,8 @@
-import {
-  Component,
-  OnInit,
-  NgZone,
-} from '@angular/core';
+import { Component, OnInit, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 import { SafeUrl, DomSanitizer } from '@angular/platform-browser';
 import { HttpClient } from '@angular/common/http';
-import { Observable, combineLatest, Subscription, Observer} from 'rxjs';
+import { Observable, combineLatest, Subscription, Observer } from 'rxjs';
 import { take, filter, debounceTime, pairwise } from 'rxjs/operators';
 import { Store } from '@ngxs/store';
 
@@ -19,6 +15,7 @@ import { AppShowLoading, UpdateAppStateAction } from '../app-state/app.actions';
 import { UserLogoutAction } from '../user/user.actions';
 import { StyleService } from './style.service';
 import { SiteSettingsState } from '../sites/settings/site-settings.state';
+import { ShopSettingsState } from '../shop/settings/shop-settings.state';
 
 interface IframeLocation {
   site: null | string;
@@ -62,6 +59,7 @@ export class PreviewComponent implements OnInit {
     tag: undefined,
   };
   styleChangesSubscription: Subscription;
+  shopStyleChangesSubscription: Subscription;
 
   constructor(
     private router: Router,
@@ -70,7 +68,7 @@ export class PreviewComponent implements OnInit {
     private service: PreviewService,
     private styleService: StyleService,
     private sanitizer: DomSanitizer,
-    private http: HttpClient,
+    private http: HttpClient
   ) {}
 
   ngOnInit() {
@@ -96,7 +94,8 @@ export class PreviewComponent implements OnInit {
       ),
       this.store.select(UserState.isLoggedIn)
     ).subscribe(([[site, section], isLoggedIn]) => {
-      let url = location.protocol + '//' + location.hostname + ':' + location.port;
+      let url =
+        location.protocol + '//' + location.hostname + ':' + location.port;
       const queryParams = [];
 
       if (isLoggedIn) {
@@ -215,7 +214,7 @@ export class PreviewComponent implements OnInit {
           };
         }
 
-        this.service.loadRerenderService(iframe)
+        this.service.loadRerenderService(iframe);
 
         /* Reload the iframe when the settings change */
         // this.service.connectIframeReload(iframe);
@@ -243,7 +242,7 @@ export class PreviewComponent implements OnInit {
               filter(([_, curSettings]) => !!curSettings)
             )
         ).subscribe(([site, template, [prevSettings, curSettings]]) => {
-          if (!prevSettings) return
+          if (!prevSettings) return;
 
           const stylesToChange = curSettings.reduce(
             (stylesToChange: any, settingsGroup) => {
@@ -285,6 +284,52 @@ export class PreviewComponent implements OnInit {
           });
         });
 
+        this.shopStyleChangesSubscription = combineLatest([
+          this.store.select(ShopSettingsState.getCurrentSiteSettings).pipe(
+            pairwise(),
+            filter(([_, curSettings]) => !!curSettings)
+          ),
+        ]).subscribe(([[prevSettings, curSettings]]) => {
+          if (!prevSettings) return;
+
+          const shopStylesToChange = curSettings.reduce(
+            (shopStylesToChange: any, settingsGroup) => {
+              settingsGroup.settings.forEach((setting) => {
+                const prevSettingGroup = prevSettings.find(
+                  (prevSettingsGroup) =>
+                    prevSettingsGroup.slug == settingsGroup.slug
+                );
+                if (!prevSettingGroup) {
+                  return shopStylesToChange;
+                }
+                const prevSetting = prevSettingGroup.settings.find(
+                  (prevSetting) => prevSetting.slug == setting.slug
+                );
+                if (!prevSetting) {
+                  return shopStylesToChange;
+                }
+                if (
+                  setting.value !== prevSetting.value &&
+                  settingsGroup.slug === 'group_price_item'
+                ) {
+                  shopStylesToChange.push({
+                    group: settingsGroup.slug,
+                    slug: setting.slug,
+                    value: setting.value,
+                  });
+                }
+              });
+
+              return shopStylesToChange;
+            },
+            []
+          );
+
+          shopStylesToChange.forEach((shopStyleToChange) => {
+            this.styleService.updateShopStyle(shopStyleToChange, curSettings);
+          });
+        });
+
         // Unsubscribe from style changes if template has changed
         // After iframe reload styles updates again
         this.store
@@ -292,6 +337,7 @@ export class PreviewComponent implements OnInit {
           .pipe(pairwise(), take(1))
           .subscribe(() => {
             this.styleChangesSubscription.unsubscribe();
+            this.shopStyleChangesSubscription.unsubscribe();
             iframe.contentWindow.location.reload();
           });
       },
@@ -317,7 +363,7 @@ export class PreviewComponent implements OnInit {
         if (!iframe.contentDocument) {
           lastError = 'Iframe has no contentDocument';
           intervalCount++;
-          continue
+          continue;
         }
 
         if (lastUrlPart === 'login.php' || lastUrlPart === 'engine') {
@@ -340,7 +386,7 @@ export class PreviewComponent implements OnInit {
 
         observer.next(iframe);
         observer.complete();
-        return
+        return;
       }
 
       observer.error({
