@@ -25,7 +25,10 @@ import {
   removeExtraAddBtnAndAddListeners,
   replaceContent,
 } from './utilities/content';
-import { HandleSiteTemplateSettingsAction } from '../sites/template-settings/site-template-settings.actions';
+import {
+  HandleSiteTemplateSettingsAction,
+  UpdateSiteTemplateSettingsAction,
+} from '../sites/template-settings/site-template-settings.actions';
 import {
   DeleteSiteAction,
   ReOrderSitesAction,
@@ -86,7 +89,8 @@ export class TemplateRerenderService {
         ofActionSuccessful(
           UpdateSiteSettingsAction,
           UpdateSiteSectionAction,
-          UpdateShopSettingsAction
+          UpdateShopSettingsAction,
+          UpdateSiteTemplateSettingsAction
         ),
         filter((action) => {
           const reloadConditionFromSiteSettingsAction =
@@ -117,10 +121,15 @@ export class TemplateRerenderService {
               (action.groupSlug === 'group_price_item' &&
                 ['cartImage', 'entryWidth'].includes(action.payload.field)));
 
+          const reloadConditionFromSiteTemplateSettingsAction =
+            action instanceof UpdateSiteTemplateSettingsAction &&
+            action.payload.responsive;
+
           return (
             reloadConditionFromSiteSettingsAction ||
             reloadConditionFromSectionAction ||
-            reloadConditionFromShopSettingsAction
+            reloadConditionFromShopSettingsAction ||
+            reloadConditionFromSiteTemplateSettingsAction
           );
         })
       )
