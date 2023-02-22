@@ -31,6 +31,7 @@ import {
   ReOrderSitesAction,
   UpdateSiteAction,
 } from '../sites/sites-state/sites.actions';
+import { UpdateShopSettingsAction } from '../shop/settings/shop-settings.actions';
 
 @Injectable({
   providedIn: 'root',
@@ -82,7 +83,11 @@ export class TemplateRerenderService {
   public handleIframeHardReload(win: Window): Subscription {
     return this.actions$
       .pipe(
-        ofActionSuccessful(UpdateSiteSettingsAction, UpdateSiteSectionAction),
+        ofActionSuccessful(
+          UpdateSiteSettingsAction,
+          UpdateSiteSectionAction,
+          UpdateShopSettingsAction
+        ),
         filter((action) => {
           const reloadConditionFromSiteSettingsAction =
             action instanceof UpdateSiteSettingsAction &&
@@ -100,9 +105,22 @@ export class TemplateRerenderService {
               action.payload.marked_items_imageselect ||
               typeof action.payload.marked_items_count !== 'undefined');
 
+          const reloadConditionFromShopSettingsAction =
+            action instanceof UpdateShopSettingsAction &&
+            ((action.groupSlug === 'group_config' &&
+              [
+                'currency',
+                'addToBasket',
+                'promoCodeDiscount',
+                'termsLink',
+              ].includes(action.payload.field)) ||
+              (action.groupSlug === 'group_price_item' &&
+                ['cartImage', 'entryWidth'].includes(action.payload.field)));
+
           return (
             reloadConditionFromSiteSettingsAction ||
-            reloadConditionFromSectionAction
+            reloadConditionFromSectionAction ||
+            reloadConditionFromShopSettingsAction
           );
         })
       )
