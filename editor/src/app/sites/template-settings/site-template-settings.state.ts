@@ -1,13 +1,22 @@
 import { concat } from 'rxjs';
 import { take, switchMap, tap } from 'rxjs/operators';
-import { State, Action, StateContext, Selector, NgxsOnInit, Store, Actions, ofActionSuccessful } from '@ngxs/store';
+import {
+  State,
+  Action,
+  StateContext,
+  Selector,
+  NgxsOnInit,
+  Store,
+  Actions,
+  ofActionSuccessful,
+} from '@ngxs/store';
 
 import { AppStateService } from '../../app-state/app-state.service';
 import { FileUploadService } from '../shared/file-upload.service';
 import {
   SitesTemplateSettingsStateModel,
   SitesTemplateSettingsResponse,
-  TemplateSettingsTemplateResponse
+  TemplateSettingsTemplateResponse,
 } from './site-template-settings.interface';
 import { SettingsGroupModel } from '../../shared/interfaces';
 import { SiteSettingsState } from '../settings/site-settings.state';
@@ -18,23 +27,22 @@ import {
   RenameSiteTemplateSettingsSitenameAction,
   CreateSiteTemplateSettingsAction,
   ResetSiteTemplateSettingsAction,
-  InitSiteTemplateSettingsAction, HandleSiteTemplateSettingsAction
+  InitSiteTemplateSettingsAction,
+  HandleSiteTemplateSettingsAction,
 } from './site-template-settings.actions';
 import { UserLoginAction } from '../../user/user.actions';
 
-
 @State<SitesTemplateSettingsStateModel>({
   name: 'siteTemplateSettings',
-  defaults: {}
+  defaults: {},
 })
 export class SiteTemplateSettingsState implements NgxsOnInit {
-
   @Selector([AppState.getSite, SiteSettingsState.getCurrentSiteTemplate])
   static getCurrentSiteTemplateSettings(
     state: SiteTemplateSettingsState,
     site: string,
-    currentTemplateSlug: string) {
-
+    currentTemplateSlug: string
+  ) {
     if (!(state && currentTemplateSlug && state[site])) {
       return;
     }
@@ -43,13 +51,17 @@ export class SiteTemplateSettingsState implements NgxsOnInit {
 
   @Selector([SiteTemplateSettingsState.getCurrentSiteTemplateSettings])
   static getIsResponsive(_, currentSiteTemplateSettings) {
-    const settingGroup = currentSiteTemplateSettings.find(g => g.slug === 'pageLayout');
+    const settingGroup = currentSiteTemplateSettings.find(
+      (g) => g.slug === 'pageLayout'
+    );
 
     if (!settingGroup) {
       return false;
     }
 
-    const isResponsive = settingGroup.settings.find(s => s.slug === 'responsive' && s.value === 'yes');
+    const isResponsive = settingGroup.settings.find(
+      (s) => s.slug === 'responsive' && s.value === 'yes'
+    );
     return !!isResponsive;
   }
 
@@ -57,51 +69,78 @@ export class SiteTemplateSettingsState implements NgxsOnInit {
     private store: Store,
     private actions$: Actions,
     private appStateService: AppStateService,
-    private fileUploadService: FileUploadService) {
-  }
+    private fileUploadService: FileUploadService
+  ) {}
 
   ngxsOnInit({ dispatch }: StateContext<SitesTemplateSettingsStateModel>) {
     concat(
-      this.appStateService.getInitialState('', 'site_template_settings').pipe(take(1)),
-      this.actions$.pipe(ofActionSuccessful(UserLoginAction), switchMap(() => {
-        return this.appStateService.getInitialState('', 'site_template_settings').pipe(take(1));
-      }))
-    )
-    .subscribe({
+      this.appStateService
+        .getInitialState('', 'site_template_settings')
+        .pipe(take(1)),
+      this.actions$.pipe(
+        ofActionSuccessful(UserLoginAction),
+        switchMap(() => {
+          return this.appStateService
+            .getInitialState('', 'site_template_settings')
+            .pipe(take(1));
+        })
+      )
+    ).subscribe({
       next: (response: SitesTemplateSettingsResponse) => {
         dispatch(new InitSiteTemplateSettingsAction(response));
       },
-      error: (error) => console.error(error)
+      error: (error) => console.error(error),
     });
   }
 
   @Action(CreateSiteTemplateSettingsAction)
-  createSiteTemplateSettings({ patchState }: StateContext<SitesTemplateSettingsStateModel>,
-                             action: CreateSiteTemplateSettingsAction) {
-    const newTemplateSettings = {[action.site.name]: {}};
+  createSiteTemplateSettings(
+    { patchState }: StateContext<SitesTemplateSettingsStateModel>,
+    action: CreateSiteTemplateSettingsAction
+  ) {
+    const newTemplateSettings = { [action.site.name]: {} };
 
     for (const templateSlug in action.templateSettings) {
-      newTemplateSettings[action.site.name][templateSlug] = this.initializeSettingsForTemplate(
-        action.templateSettings[templateSlug]
-      );
+      newTemplateSettings[action.site.name][templateSlug] =
+        this.initializeSettingsForTemplate(
+          action.templateSettings[templateSlug]
+        );
     }
     patchState(newTemplateSettings);
   }
 
   @Action(UpdateSiteTemplateSettingsAction)
-  updateSiteTemplateSettings({ patchState, getState, dispatch }: StateContext<SitesTemplateSettingsStateModel>,
-    action: UpdateSiteTemplateSettingsAction) {
-
+  updateSiteTemplateSettings(
+    {
+      patchState,
+      getState,
+      dispatch,
+    }: StateContext<SitesTemplateSettingsStateModel>,
+    action: UpdateSiteTemplateSettingsAction
+  ) {
     const currentSite = this.store.selectSnapshot(AppState.getSite);
-    const currentSiteTemplate = this.store.selectSnapshot(SiteSettingsState.getCurrentSiteTemplate);
+    const currentSiteTemplate = this.store.selectSnapshot(
+      SiteSettingsState.getCurrentSiteTemplate
+    );
     const settingKey = Object.keys(action.payload)[0];
     const data = {
-      path: currentSite + '/site_template_settings/' + currentSiteTemplate + '/' + action.settingGroup + '/' + settingKey,
-      value: action.payload[settingKey]
+      path:
+        currentSite +
+        '/site_template_settings/' +
+        currentSiteTemplate +
+        '/' +
+        action.settingGroup +
+        '/' +
+        settingKey,
+      value: action.payload[settingKey],
     };
 
-    return (data.value instanceof File ? this.fileUploadService.upload('siteTemplateSettingsUpload', data) : this.appStateService.sync('siteTemplateSettings', data)).pipe(
-      tap(response => {
+    return (
+      data.value instanceof File
+        ? this.fileUploadService.upload('siteTemplateSettingsUpload', data)
+        : this.appStateService.sync('siteTemplateSettings', data)
+    ).pipe(
+      tap((response) => {
         if (response.error_message) {
           // @TODO handle error message
           console.error(response.error_message);
@@ -111,38 +150,50 @@ export class SiteTemplateSettingsState implements NgxsOnInit {
           patchState({
             [currentSite]: {
               ...currentState[currentSite],
-              [currentSiteTemplate]: currentState[currentSite][currentSiteTemplate].map(settingGroup => {
+              [currentSiteTemplate]: currentState[currentSite][
+                currentSiteTemplate
+              ].map((settingGroup) => {
                 if (settingGroup.slug !== action.settingGroup) {
                   return settingGroup;
                 }
 
                 return {
                   ...settingGroup,
-                  settings: settingGroup.settings.map(setting => {
+                  settings: settingGroup.settings.map((setting) => {
                     if (setting.slug !== settingKey) {
                       return setting;
                     }
                     return { ...setting, value: response.value };
-                  })
+                  }),
                 };
-              })
-            }
+              }),
+            },
           });
         }
 
         switch (action.settingGroup) {
-          case "pageLayout":
-          case "pageHeading":
-          case "entryLayout":
-          case "sideBar":
-          case "heading":
-          case "menu":
-          case "tagsMenu":
-            dispatch(new HandleSiteTemplateSettingsAction(action.settingGroup))
-            break
-          case "css":
-            dispatch(new HandleSiteTemplateSettingsAction(action.settingGroup, action.payload))
-            break
+          case 'pageLayout':
+          case 'pageHeading':
+          case 'entryLayout':
+          case 'sideBar':
+          case 'heading':
+          case 'menu':
+          case 'tagsMenu':
+            dispatch(
+              new HandleSiteTemplateSettingsAction(
+                action.settingGroup,
+                action.payload
+              )
+            );
+            break;
+          case 'css':
+            dispatch(
+              new HandleSiteTemplateSettingsAction(
+                action.settingGroup,
+                action.payload
+              )
+            );
+            break;
         }
       })
     );
@@ -151,8 +202,8 @@ export class SiteTemplateSettingsState implements NgxsOnInit {
   @Action(RenameSiteTemplateSettingsSitenameAction)
   renameSiteTemplateSettingsSitename(
     { setState, getState }: StateContext<SitesTemplateSettingsStateModel>,
-    action: RenameSiteTemplateSettingsSitenameAction) {
-
+    action: RenameSiteTemplateSettingsSitenameAction
+  ) {
     const state = getState();
     const newState = {};
 
@@ -171,20 +222,25 @@ export class SiteTemplateSettingsState implements NgxsOnInit {
   @Action(DeleteSiteTemplateSettingsAction)
   deleteSiteTemplateSettings(
     { setState, getState }: StateContext<SitesTemplateSettingsStateModel>,
-    action: DeleteSiteTemplateSettingsAction) {
-
-    const newState = {...getState()};
+    action: DeleteSiteTemplateSettingsAction
+  ) {
+    const newState = { ...getState() };
     delete newState[action.siteName];
     setState(newState);
   }
 
   @Action(ResetSiteTemplateSettingsAction)
-  resetSiteTemplateSettings({ setState }: StateContext<SitesTemplateSettingsStateModel>) {
+  resetSiteTemplateSettings({
+    setState,
+  }: StateContext<SitesTemplateSettingsStateModel>) {
     setState({});
   }
 
   @Action(InitSiteTemplateSettingsAction)
-  initSiteTemplateSettings({ setState }: StateContext<SitesTemplateSettingsStateModel>, action: InitSiteTemplateSettingsAction) {
+  initSiteTemplateSettings(
+    { setState }: StateContext<SitesTemplateSettingsStateModel>,
+    action: InitSiteTemplateSettingsAction
+  ) {
     /** Initializing state: */
     const newState: SitesTemplateSettingsStateModel = {};
 
@@ -192,23 +248,27 @@ export class SiteTemplateSettingsState implements NgxsOnInit {
       newState[siteSlug] = {};
 
       for (const templateSlug in action.payload[siteSlug]) {
-        newState[siteSlug][templateSlug] = this.initializeSettingsForTemplate(action.payload[siteSlug][templateSlug]);
+        newState[siteSlug][templateSlug] = this.initializeSettingsForTemplate(
+          action.payload[siteSlug][templateSlug]
+        );
       }
     }
 
     setState(newState);
   }
 
-  initializeSettingsForTemplate(settings: TemplateSettingsTemplateResponse): SettingsGroupModel[] {
-    return Object.keys(settings).map(settingGroupSlug => {
+  initializeSettingsForTemplate(
+    settings: TemplateSettingsTemplateResponse
+  ): SettingsGroupModel[] {
+    return Object.keys(settings).map((settingGroupSlug) => {
       return {
         slug: settingGroupSlug,
-        settings: Object.keys(settings[settingGroupSlug]).map(settingSlug => {
+        settings: Object.keys(settings[settingGroupSlug]).map((settingSlug) => {
           return {
             slug: settingSlug,
-            value: settings[settingGroupSlug][settingSlug]
+            value: settings[settingGroupSlug][settingSlug],
           };
-        })
+        }),
       };
     });
   }

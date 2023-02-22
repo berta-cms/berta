@@ -91,10 +91,10 @@ export class MessyTemplateRerenderService extends TemplateRerenderService {
       .subscribe((action: HandleSiteTemplateSettingsAction) => {
         const viewData = this.renderService.getViewData();
 
-        if (
-          action.settingGroup === 'pageLayout' &&
-          !(action.payload && action.payload.responsive)
-        ) {
+        if (action.settingGroup === 'pageLayout') {
+          if (action.payload.responsive) {
+            win.location.reload();
+          }
           this.pageLayoutService.handle(iframe, viewData);
         } else if (action.settingGroup === 'heading') {
           replaceContent(dom, 'siteHeader', viewData.siteHeader);

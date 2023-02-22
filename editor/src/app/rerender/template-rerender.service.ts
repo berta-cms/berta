@@ -89,8 +89,7 @@ export class TemplateRerenderService {
         ofActionSuccessful(
           UpdateSiteSettingsAction,
           UpdateSiteSectionAction,
-          UpdateShopSettingsAction,
-          UpdateSiteTemplateSettingsAction
+          UpdateShopSettingsAction
         ),
         filter((action) => {
           const reloadConditionFromSiteSettingsAction =
@@ -121,20 +120,14 @@ export class TemplateRerenderService {
               (action.groupSlug === 'group_price_item' &&
                 ['cartImage', 'entryWidth'].includes(action.payload.field)));
 
-          const reloadConditionFromSiteTemplateSettingsAction =
-            action instanceof UpdateSiteTemplateSettingsAction &&
-            action.payload.responsive;
-
           return (
             reloadConditionFromSiteSettingsAction ||
             reloadConditionFromSectionAction ||
-            reloadConditionFromShopSettingsAction ||
-            reloadConditionFromSiteTemplateSettingsAction
+            reloadConditionFromShopSettingsAction
           );
         })
       )
       .subscribe(() => {
-        console.log('hard reload');
         win.location.reload();
       });
   }

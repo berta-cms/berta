@@ -70,7 +70,6 @@ export class WhiteTemplateRerenderService extends TemplateRerenderService {
       .pipe(ofActionSuccessful(HandleSiteTemplateSettingsAction))
       .subscribe((action: HandleSiteTemplateSettingsAction) => {
         const viewData = this.renderService.getViewData();
-        console.log('siteTemplateSettingHandleSubscr', viewData);
 
         if (action.settingGroup === 'pageLayout') {
           this.pageLayoutService.handle(iframe, viewData);

@@ -133,7 +133,6 @@ export class StyleService {
   }
 
   updateShopStyle(style, templateSettings: SettingsGroupModel[]) {
-    console.log({ style, templateSettings });
     const settingGroup = this.shopSettingsConfig[style.group];
     if (!settingGroup) {
       return;
