@@ -90,8 +90,15 @@ export class TemplateRerenderService {
 
           const reloadConditionFromSectionAction =
             action instanceof UpdateSiteSectionAction &&
-            action.payload['@attributes'] &&
-            action.payload['@attributes'].type;
+            ((action.payload['@attributes'] &&
+              action.payload['@attributes'].type) ||
+              action.payload.columns ||
+              typeof action.payload.entryMaxWidth !== 'undefined' ||
+              typeof action.payload.entryPadding !== 'undefined' ||
+              typeof action.payload.backgroundVideoEmbed !== 'undefined' ||
+              action.payload.backgroundVideoRatio ||
+              action.payload.marked_items_imageselect ||
+              typeof action.payload.marked_items_count !== 'undefined');
 
           return (
             reloadConditionFromSiteSettingsAction ||
@@ -100,6 +107,7 @@ export class TemplateRerenderService {
         })
       )
       .subscribe(() => {
+        console.log('hard reload');
         win.location.reload();
       });
   }
