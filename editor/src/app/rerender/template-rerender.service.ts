@@ -152,7 +152,7 @@ export class TemplateRerenderService {
     head.appendChild(style);
   }
 
-  public handleSitesMenuRerender(dom: Document): Subscription {
+  public handleSitesMenuRerender(iframe: HTMLIFrameElement): Subscription {
     return this.actions$
       .pipe(
         ofActionSuccessful(
@@ -163,7 +163,8 @@ export class TemplateRerenderService {
       )
       .subscribe(() => {
         const viewData = this.renderService.getViewData();
-        replaceContent(dom, 'sitesMenu', viewData.sitesMenu);
+        replaceContent(iframe.contentDocument, 'sitesMenu', viewData.sitesMenu);
+        iframe.contentWindow.dispatchEvent(new Event('sitesMenuRerendered'));
       });
   }
 

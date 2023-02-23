@@ -42,7 +42,7 @@ export class DefaultTemplateRerenderService extends TemplateRerenderService {
 
     const iframeHardReloadSubscr = this.handleIframeHardReload(win);
 
-    const sitesMenuSubscr = this.handleSitesMenuRerender(dom);
+    const sitesMenuSubscr = this.handleSitesMenuRerender(iframe);
 
     // sites sections crud
     const siteSectionSubscr = this.handleSiteSectionsRerender(iframe);

@@ -37,11 +37,14 @@ var BertaEditor = new Class({
     this.processHandler.addObservable(this);
     this.processHandler.test = "aaa";
 
-    window.addEventListener("addEntry", this.onAddEntry.bindWithEvent(this));
-    window.addEventListener(
-      "sectionsMenuRerendered",
-      this.submenuSortingInit.bindWithEvent(this)
+    ["sitesMenuRerendered", "sectionsMenuRerendered"].forEach(
+      function (e) {
+        window.addEventListener(e, this.onDOMReadyDo.bindWithEvent(this));
+      }.bindWithEvent(this)
     );
+
+    window.addEventListener("addEntry", this.onAddEntry.bindWithEvent(this));
+
     window.addEvent("domready", this.onDOMReady.bindWithEvent(this));
     window.addEvent("load", this.onLoad.bindWithEvent(this));
   },
