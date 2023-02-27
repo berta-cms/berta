@@ -1,14 +1,14 @@
-import { Injectable } from "@angular/core";
+import { Injectable } from '@angular/core';
 
-import { Store, Actions, ofActionSuccessful } from "@ngxs/store";
-import { Subscription, Observable } from "rxjs";
-import { map, buffer, filter, scan, switchMap } from "rxjs/operators";
+import { Store, Actions, ofActionSuccessful } from '@ngxs/store';
+import { Subscription, Observable } from 'rxjs';
+import { map, buffer, filter, scan, switchMap } from 'rxjs/operators';
 
-import { AppState } from "../app-state/app.state";
-import { AppStateService } from "../app-state/app-state.service";
-import { PopupService } from "../popup/popup.service";
-import { RenderService } from "../render/render.service";
-import { AppHideLoading } from "../app-state/app.actions";
+import { AppState } from '../app-state/app.state';
+import { AppStateService } from '../app-state/app-state.service';
+import { PopupService } from '../popup/popup.service';
+import { RenderService } from '../render/render.service';
+import { AppHideLoading } from '../app-state/app.actions';
 import {
   UpdateSiteSectionFromSyncAction,
   AddSiteSectionsAction,
@@ -18,21 +18,21 @@ import {
   DeleteSiteSectionsAction,
   UpdateSiteSectionBackgroundFromSyncAction,
   ReOrderSiteSectionsAction,
-} from "../sites/sections/sections-state/site-sections.actions";
+} from '../sites/sections/sections-state/site-sections.actions';
 import {
   UpdateSiteSettingsFromSyncAction,
   UpdateSiteSettingsAction,
   AddSiteSettingChildrenAction,
   UpdateSiteSettingChildreAction,
   DeleteSiteSettingChildrenAction,
-} from "../sites/settings/site-settings.actions";
-import { UpdateSiteTemplateSettingsAction } from "../sites/template-settings/site-template-settings.actions";
+} from '../sites/settings/site-settings.actions';
+import { UpdateSiteTemplateSettingsAction } from '../sites/template-settings/site-template-settings.actions';
 import {
   CreateSiteAction,
   DeleteSiteAction,
   UpdateSiteAction,
   ReOrderSitesAction,
-} from "../sites/sites-state/sites.actions";
+} from '../sites/sites-state/sites.actions';
 import {
   UpdateSectionEntryFromSyncAction,
   OrderSectionEntriesFromSyncAction,
@@ -40,35 +40,35 @@ import {
   UpdateEntryGalleryFromSyncAction,
   AddSectionEntryFromSyncAction,
   MoveSectionEntryFromSyncAction,
-} from "../sites/sections/entries/entries-state/section-entries.actions";
-import { SiteSectionsState } from "../sites/sections/sections-state/site-sections.state";
-import { SectionTagsState } from "../sites/sections/tags/section-tags.state";
-import { OrderSectionTagsFromSyncAction } from "../sites/sections/tags/section-tags.actions";
-import { UpdateShopSettingsAction } from "../shop/settings/shop-settings.actions";
-import {RerenderService} from "../rerender/rerender.service";
+} from '../sites/sections/entries/entries-state/section-entries.actions';
+import { SiteSectionsState } from '../sites/sections/sections-state/site-sections.state';
+import { SectionTagsState } from '../sites/sections/tags/section-tags.state';
+import { OrderSectionTagsFromSyncAction } from '../sites/sections/tags/section-tags.actions';
+import { UpdateShopSettingsAction } from '../shop/settings/shop-settings.actions';
+import { RerenderService } from '../rerender/rerender.service';
 
 @Injectable({
-  providedIn: "root",
+  providedIn: 'root',
 })
 export class PreviewService {
   private iframeReloadSubscription: Subscription;
   private templateSettingsRequireReload = {
     pageLayout: [
-      "centered",
-      "centeredWidth",
-      "responsive",
-      "mashUpColumns",
-      "autoResponsive",
-      "centeredContents",
+      'centered',
+      'centeredWidth',
+      'responsive',
+      'mashUpColumns',
+      'autoResponsive',
+      'centeredContents',
     ],
-    pageHeading: ["image"],
-    css: ["customCSS"],
-    entryLayout: ["galleryPosition"],
-    firstPage: ["hoverWiggle"],
-    sideBar: ["image"],
-    heading: ["image", "position"],
-    menu: ["position"],
-    tagsMenu: ["alwaysOpen", "hidden"],
+    pageHeading: ['image'],
+    css: ['customCSS'],
+    entryLayout: ['galleryPosition'],
+    firstPage: ['hoverWiggle'],
+    sideBar: ['image'],
+    heading: ['image', 'position'],
+    menu: ['position'],
+    tagsMenu: ['alwaysOpen', 'hidden'],
   };
 
   constructor(
@@ -82,10 +82,10 @@ export class PreviewService {
 
   sync(url, data, method) {
     const urlParts = this.parseSyncUrl(url);
-    const urlIdentifier = urlParts.join("/");
+    const urlIdentifier = urlParts.join('/');
 
     switch (urlIdentifier) {
-      case "sites/settings":
+      case 'sites/settings':
         /** trigger setting update actions
          * @example:
         SYNC URL: http://local.berta.me/_api/v1/sites/settings
@@ -105,7 +105,7 @@ export class PreviewService {
             map((state) => state.siteSettings),
             map((state) => {
               const [currentSite, , settingGroupSlug, settingKey] =
-                data.path.split("/");
+                data.path.split('/');
               const settingGroup = state[currentSite].find(
                 (group) => group.slug === settingGroupSlug
               );
@@ -123,7 +123,7 @@ export class PreviewService {
             })
           );
 
-      case "sites/sections":
+      case 'sites/sections':
         /** trigger section update actions like gallery properties
            * @example:
           SYNC URL: http://local.berta.me/_api/v1/sites/sections
@@ -135,8 +135,8 @@ export class PreviewService {
           .pipe(
             map((state) => state.siteSections),
             map((state) => {
-              const [currentSite, , sectionOrder] = data.path.split("/");
-              const siteName = currentSite === "0" ? "" : currentSite;
+              const [currentSite, , sectionOrder] = data.path.split('/');
+              const siteName = currentSite === '0' ? '' : currentSite;
               const section = state.find(
                 (_section) =>
                   _section.site_name === siteName &&
@@ -155,7 +155,7 @@ export class PreviewService {
             })
           );
 
-      case "sites/sections/tags":
+      case 'sites/sections/tags':
         return this.store
           .dispatch(
             new OrderSectionTagsFromSyncAction(
@@ -169,10 +169,10 @@ export class PreviewService {
             map((state) => state.sectionTags),
             map((state) => {
               const order = state[data.site].section
-                .find((section) => section["@attributes"].name === data.section)
+                .find((section) => section['@attributes'].name === data.section)
                 .tag.map((tag) => tag)
                 .sort((a, b) => a.order - b.order)
-                .map((tag) => tag["@attributes"].name);
+                .map((tag) => tag['@attributes'].name);
 
               return {
                 site_name: data.site,
@@ -182,21 +182,21 @@ export class PreviewService {
             })
           );
 
-      case "sites/sections/backgrounds":
+      case 'sites/sections/backgrounds':
         /* Background has its own endpoint
             SYNC URL: http://local.berta.me/_api/v1/sites/sections/backgrounds
             preview.service.ts:18 SYNC DATA: {site: "0", section: "maig", file: "chrome_2018-03-21_15-39-07.jpg"}
             preview.service.ts:19 SYNC METHOD: DELETE
           */
-        if (method === "DELETE") {
+        if (method === 'DELETE') {
           return this.appService.sync(
-            "siteSectionBackgrounds",
+            'siteSectionBackgrounds',
             {
               site: data.site,
               section: data.section,
               file: data.file,
             },
-            "DELETE"
+            'DELETE'
           );
         } else {
           return this.store
@@ -226,9 +226,9 @@ export class PreviewService {
             );
         }
 
-      case "sites/sections/entries":
+      case 'sites/sections/entries':
         /* trigger entry actions */
-        if (method === "POST") {
+        if (method === 'POST') {
           return this.store
             .dispatch(
               new AddSectionEntryFromSyncAction(data.site, data.section, {
@@ -250,7 +250,7 @@ export class PreviewService {
                 return { entryid: entryid };
               })
             );
-        } else if (method === "PATCH") {
+        } else if (method === 'PATCH') {
           return this.store
             .dispatch(
               new UpdateSectionEntryFromSyncAction(data.path, data.value)
@@ -259,14 +259,14 @@ export class PreviewService {
               map((state) => state.sectionEntries),
               map((state) => {
                 const [currentSiteName, , currentSectionName, entryId] =
-                  data.path.split("/");
-                const siteName = currentSiteName === "0" ? "" : currentSiteName;
+                  data.path.split('/');
+                const siteName = currentSiteName === '0' ? '' : currentSiteName;
                 const entry = state[siteName].find(
                   (_entry) =>
                     _entry.id === entryId &&
                     _entry.sectionName === currentSectionName
                 );
-                const prop = data.path.split("/").slice(4).join("/");
+                const prop = data.path.split('/').slice(4).join('/');
                 let ret: any = {
                   entry: entry,
                   path: data.path,
@@ -275,7 +275,7 @@ export class PreviewService {
                   value: data.value,
                 };
 
-                if (prop === "tags/tag") {
+                if (prop === 'tags/tag') {
                   const section = this.store
                     .selectSnapshot(SiteSectionsState.getCurrentSiteSections)
                     .find((_section) => _section.name === currentSectionName);
@@ -283,7 +283,7 @@ export class PreviewService {
                     .selectSnapshot(SectionTagsState.getCurrentSiteTags)
                     .find(
                       (_section) =>
-                        _section["@attributes"].name === currentSectionName
+                        _section['@attributes'].name === currentSectionName
                     );
                   const entryTags = entry.tags ? entry.tags.tag : [];
 
@@ -295,11 +295,11 @@ export class PreviewService {
                       section_name: section.name,
                       section_order: section.order,
                       has_direct_content:
-                        section["@attributes"].has_direct_content,
+                        section['@attributes'].has_direct_content,
                       tags: sectionTags,
-                      real: entryTags.join(", "),
-                      update: entryTags.join(" / "),
-                      value: entryTags.join(" / "),
+                      real: entryTags.join(', '),
+                      update: entryTags.join(' / '),
+                      value: entryTags.join(' / '),
                     },
                   };
                 }
@@ -307,7 +307,7 @@ export class PreviewService {
                 return ret;
               })
             );
-        } else if (method === "PUT") {
+        } else if (method === 'PUT') {
           return this.store
             .dispatch(
               new OrderSectionEntriesFromSyncAction(
@@ -332,18 +332,18 @@ export class PreviewService {
                 };
               })
             );
-        } else if (method === "DELETE") {
+        } else if (method === 'DELETE') {
           return Observable.create((observer) => {
             this.store.dispatch(new AppHideLoading());
             this.popupService.showPopup({
-              type: "warn",
-              content: "Are you sure you want to delete this entry?",
+              type: 'warn',
+              content: 'Are you sure you want to delete this entry?',
               showOverlay: true,
               isModal: true,
               actions: [
                 {
-                  type: "primary",
-                  label: "OK",
+                  type: 'primary',
+                  label: 'OK',
                   callback: (popupService) => {
                     observer.next();
                     observer.complete();
@@ -351,7 +351,7 @@ export class PreviewService {
                   },
                 },
                 {
-                  label: "Cancel",
+                  label: 'Cancel',
                   callback: (popupService) => {
                     observer.complete();
                     popupService.closePopup();
@@ -376,17 +376,17 @@ export class PreviewService {
               const tags = this.store
                 .selectSnapshot(SectionTagsState.getCurrentSiteTags)
                 .find(
-                  (_section) => _section["@attributes"].name === data.section
+                  (_section) => _section['@attributes'].name === data.section
                 );
 
               return {
                 site_name: data.site,
                 section_name: data.section,
                 entry_id: data.entryId,
-                entry_count: section["@attributes"].entry_count,
+                entry_count: section['@attributes'].entry_count,
                 section: section,
                 section_order: section.order,
-                has_direct_content: section["@attributes"].has_direct_content,
+                has_direct_content: section['@attributes'].has_direct_content,
                 tags: tags,
               };
             })
@@ -394,7 +394,7 @@ export class PreviewService {
         }
         break;
 
-      case "sites/sections/entries/move":
+      case 'sites/sections/entries/move':
         return this.store.dispatch(
           new MoveSectionEntryFromSyncAction(
             data.site,
@@ -404,18 +404,18 @@ export class PreviewService {
           )
         );
 
-      case "sites/sections/entries/galleries":
-        if (method === "DELETE") {
+      case 'sites/sections/entries/galleries':
+        if (method === 'DELETE') {
           return this.appService
             .sync(
-              "entryGallery",
+              'entryGallery',
               {
                 site: data.site,
                 section: data.section,
                 entryId: data.entryId,
                 file: data.file,
               },
-              "DELETE"
+              'DELETE'
             )
             .pipe(
               map(() => {
@@ -542,12 +542,12 @@ export class PreviewService {
   }
 
   parseSyncUrl(url) {
-    const parts = url.split("/");
+    const parts = url.split('/');
     if (parts.length > 0 && /^https?:$/.test(parts[0])) {
       // http://local.berta.me/_api/v1/sites/sections => ["http:", "", "local.berta.me", "_api", "v1", "sites", "sections"]
       return parts.slice(5);
     }
-    if (parts[0] === "") {
+    if (parts[0] === '') {
       // /sites/sections => ["", "sites", "sections"]
       return parts.slice(1);
     }
@@ -555,16 +555,16 @@ export class PreviewService {
   }
 
   catchExternalLinks(document) {
-    const links = document.getElementsByTagName("a");
+    const links = document.getElementsByTagName('a');
 
     Array.from(links).forEach((link) => {
-      (link as HTMLElement).addEventListener("click", (event) => {
+      (link as HTMLElement).addEventListener('click', (event) => {
         const target = event.target as HTMLElement;
         let targetHost: string;
         let url: URL;
 
         try {
-          url = new URL(target.getAttribute("href"));
+          url = new URL(target.getAttribute('href'));
           targetHost = url.hostname;
 
           // in case url is relative url it can't be parsed with new URL(...)
@@ -574,7 +574,7 @@ export class PreviewService {
         targetHost = targetHost || document.location.hostname;
 
         if (
-          target.getAttribute("target") === "_blank" ||
+          target.getAttribute('target') === '_blank' ||
           targetHost === document.location.hostname ||
           event.defaultPrevented
         ) {
@@ -584,20 +584,20 @@ export class PreviewService {
         event.preventDefault();
 
         this.popupService.showPopup({
-          type: "warn",
-          content: "You are about to leave Berta editor. Proceed?",
+          type: 'warn',
+          content: 'You are about to leave Berta editor. Proceed?',
           showOverlay: true,
           actions: [
             {
-              type: "primary",
-              label: "OK",
+              type: 'primary',
+              label: 'OK',
               callback: (popupService) => {
                 popupService.closePopup();
                 window.location.href = url.href;
               },
             },
             {
-              label: "Cancel",
+              label: 'Cancel',
             },
           ],
         });
@@ -608,6 +608,6 @@ export class PreviewService {
   loadRerenderService(iframe: HTMLIFrameElement) {
     this.catchExternalLinks(iframe.contentWindow.document);
 
-    this.rerenderService.handleRerendering(iframe)
+    this.rerenderService.handleRerendering(iframe);
   }
 }

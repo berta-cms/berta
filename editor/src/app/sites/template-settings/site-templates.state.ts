@@ -46,6 +46,15 @@ export class SiteTemplatesState implements NgxsOnInit {
     return currentTemplate.sectionTypes;
   }
 
+  @Selector([SiteTemplatesState.getCurrentTemplate])
+  static getCurrentTemplateSectionTranslations(_: SiteTemplatesStateModel, currentTemplate: TemplateSiteModel) {
+    if (!currentTemplate) {
+      return;
+    }
+
+    return currentTemplate.translations;
+  }
+
   constructor(
     private store: Store,
     private actions$: Actions,
@@ -90,7 +99,8 @@ export class SiteTemplatesState implements NgxsOnInit {
       const templateSettingGroups: TemplateModelResponse = action.payload[templateSlug].templateConf;
       siteTemplateState[templateSlug] = {
         templateConf: {},
-        sectionTypes: {}
+        sectionTypes: {},
+        translations: action.payload[templateSlug].translations
       };
 
       for (const groupSlug in templateSettingGroups) {

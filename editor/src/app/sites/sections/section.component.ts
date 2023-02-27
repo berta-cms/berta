@@ -6,7 +6,7 @@ import { Store } from '@ngxs/store';
 import { Animations } from '../../shared/animations';
 import { PopupService } from 'src/app/popup/popup.service';
 import { SiteSectionStateModel } from './sections-state/site-sections-state.model';
-import { SiteTemplateSectionTypesModel } from '../template-settings/site-templates.interface';
+import { SiteTemplateSectionTypesModel, TemplateTranslationsModel } from '../template-settings/site-templates.interface';
 import { DeleteSiteSectionAction, CloneSectionAction } from './sections-state/site-sections.actions';
 import { AppState } from 'src/app/app-state/app.state';
 
@@ -46,7 +46,8 @@ import { AppState } from 'src/app/app-state/app.state';
       </h3>
       <div class="settings" [@isExpanded]="isExpanded">
         <div class="setting">
-          <berta-select-input [label]="'Type'"
+          <berta-select-input [label]="translations.sectionTypes?.type"
+                              [tip]="translations.sectionTypes?.type_tip"
                               [value]="section['@attributes'].type"
                               [values]="templateSectionTypes"
                               (inputFocus)="updateComponentFocus($event)"
@@ -105,6 +106,7 @@ export class SectionComponent implements OnInit {
   @Input('section') section: SiteSectionStateModel;
   @Input('isExpanded') isExpanded: boolean;
   @Input('templateSectionTypes') templateSectionTypes: SiteTemplateSectionTypesModel;
+  @Input('translations') translations: TemplateTranslationsModel;
   @Input('params') params: any[] = [];
 
   @Output() inputFocus = new EventEmitter();

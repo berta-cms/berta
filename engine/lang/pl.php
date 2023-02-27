@@ -230,7 +230,7 @@ return [
     /* setting tab */ 'Entry footer' => 'Stopka wpisu',
 
     // Translations for Mashup template
-      /* setting name */ 'First page' => 'Pierwsza strona',
+    /* setting name */ 'First page' => 'Pierwsza strona',
     /* setting name */ 'Sidebar' => 'Pasek boczny',
     /* setting tab */  'Page layout' => 'Wygląd strony',
     /* setting name */ 'Entry text max width' => 'Maksymalna szerokość wpisu',
@@ -310,10 +310,10 @@ return [
     'description_heading_position' => 'Pozycja nagłówka, niezmienna lub zmienna',
     'description_submenu_alwaysopen' => 'Rozdziały zawsze są otwarte.',
     'Submenu is allways open' => 'Menu podrzędne zawsze otwarte',
-     'Submenu is hidden' => 'Menu podrzędne schowane',
+    'Submenu is hidden' => 'Menu podrzędne schowane',
     'mobile_device_detected' => 'Poprawiać treść stronie nie jest możliwe z tym urządzeniem mobilnym!',
     'javascript_include' => 'Kod javascript, który będzie dodany przed elementem &lt;/body&gt;. Dowiedz się więcej jak <a href="https://github.com/berta-cms/berta/wiki/Include-JavaScript-code" target="_blank" title="How to include JavaScript code">Jak zawierać kod JavaScript.</a>',
-     'description_custom_css' => 'Wprowadź swój kod CSS tu. Definicje CSS, które istniały wcześniej, zostaną przepisane. Do uzyskania więcej informacji obejrzyj   <a href="https://github.com/berta-cms/berta/wiki/Add-custom-CSS" target="_blank">WIKI</a>.',
+    'description_custom_css' => 'Wprowadź swój kod CSS tu. Definicje CSS, które istniały wcześniej, zostaną przepisane. Do uzyskania więcej informacji obejrzyj   <a href="https://github.com/berta-cms/berta/wiki/Add-custom-CSS" target="_blank">WIKI</a>.',
 
     // Videos panel & newsticker
     'To enable Berta\'s tutorial videos, your computer needs to be connected to the internet!<br />When the internet access is enabled, sign out of engine panel and log in again to view the videos.' => 'Aby obejrzeć pouczenie Berty, komputer musi posiadać podłączenie internetowe.<br />Kiedy komputer jest podłączony do internetu, wyloguj się z panela <em>engine</em> i zaloguj się ponownie.',
@@ -363,4 +363,11 @@ return [
     'Weight units (g, oz) used for postage cost calculation.' => 'Jednostka wagi (g, oz), która jest używana, obliczając koszty wysyłki pocztowej.',
     'Design' => 'Projekt',
     'Shop entry width' => 'Szerokość wpisu sklepu',
+    'section_type' => 'Type',
+    'section_type_tip' => 'Defines the layout and functionality of the section.',
+    'select_on' => 'On',
+    'select_off' => 'Off',
+    'shuffle_marked' => 'Shuffle marked entries and galleries',
+    'entries_limit' => 'Entries limit',
+    'entries_limit_tip' => 'How many entries to show in this section',
 ];

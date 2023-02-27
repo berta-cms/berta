@@ -953,4 +953,11 @@ $templateConf = [
     ],
 ];
 
-return [$sectionTypes, $templateConf];
+$translations = [
+    'sectionTypes' => [
+        'type' => I18n::_('section_type'),
+        'type_tip' => I18n::_('section_type_tip'),
+    ]
+];
+
+return [$sectionTypes, $templateConf, $translations];

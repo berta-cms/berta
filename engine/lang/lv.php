@@ -133,8 +133,8 @@ return [
     /* help text */    'Positioning of the image caption text.' => 'Paskaidrojuma (caption) teksta pozīcija',
     /* setting subcategory */ 'Image gallery appearance:' => 'Attēlu galerijas izskats:',
     /* setting name */ 'Slideshow loop mode' => 'Slaidrādes atkārtošanas režīms',
-    /* setting name */	'Show slideshow image numbers' => 'Rādīt slaidrādes attēlu nummurus',
-    /* help text */		'Set the default state of image number visibility in slideshow galleries.' => 'Nosaka, vai pēc noklusējuma rādīt attēlu nummurus slaidrādes galerijām, vai nē.',
+    /* setting name */    'Show slideshow image numbers' => 'Rādīt slaidrādes attēlu nummurus',
+    /* help text */        'Set the default state of image number visibility in slideshow galleries.' => 'Nosaka, vai pēc noklusējuma rādīt attēlu nummurus slaidrādes galerijām, vai nē.',
     /* setting name */ 'Video player' => 'Video player izskats',
     /* help text */    'Choose between the two visually different players for your video files.' => 'Izvēlies starp diviem dažādiem video player veidiem.',
 
@@ -369,4 +369,11 @@ return [
     'seo_help_text' => 'Search Engine Optimization (SEO) palīdz uzlabot mājaslapas reitingu Google meklēšanas rezultātos. <a href="https://support.google.com/webmasters/answer/35624" target="_blank">Uzzini vairāk, kā tas strādā</a>.',
     'Keywords' => 'Atslēgvārdi',
     'Content description' => 'Satura apraksts',
+    'section_type' => 'Veids',
+    'section_type_tip' => 'Nosaka sadaļas funkcionalitāti un satura izklājumu.',
+    'select_on' => 'Ieslēgts',
+    'select_off' => 'Izslēgts',
+    'shuffle_marked' => 'Rādīt ierakstus un galerijas jauktā secībā',
+    'entries_limit' => 'Ierakstu ierobežojums',
+    'entries_limit_tip' => 'Cik ierakstus rādīt šajā sadaļā.',
 ];

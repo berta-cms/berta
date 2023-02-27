@@ -50,19 +50,20 @@ $sectionTypes = [
             'marked_items_imageselect' => [
                 'format' => 'select',
                 'values' => [
-                    'random' => 'random image',
-                    'first' => 'first image',
+                    'random' => I18n::_('select_on'),
+                    'first' => I18n::_('select_off'),
                 ],
                 'default' => 'first',
-                'html_before' => '<div>show </div>',
+                'html_before' => I18n::_('shuffle_marked'),
             ],
             'marked_items_count' => [
                 'format' => 'text',
-                'html_before' => '<br class="clear" /><div>from each of </div>',
-                'html_after' => '<div> marked entries</div><br class="clear" /><div>from all sections except this one</div>',
+                'html_before' => I18n::_('entries_limit'),
                 'default' => '5',
+                'tip' => I18n::_('entries_limit_tip'),
             ],
-        ]],
+        ]
+    ],
     'portfolio' => [
         'title' => 'Portfolio',
     ],
@@ -1315,4 +1316,11 @@ $templateConf = [
     ],
 ];
 
-return [$sectionTypes, $templateConf];
+$translations = [
+    'sectionTypes' => [
+        'type' => I18n::_('section_type'),
+        'type_tip' => I18n::_('section_type_tip'),
+    ]
+];
+
+return [$sectionTypes, $templateConf, $translations];
