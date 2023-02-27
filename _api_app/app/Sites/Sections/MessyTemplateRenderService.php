@@ -2,13 +2,13 @@
 
 namespace App\Sites\Sections;
 
-use App\Shared\Helpers;
 use App\Configuration\SiteTemplatesConfigService;
 use App\Plugins\Shop\ShopCartRenderService;
 use App\Plugins\Shop\ShopSettingsDataService;
 use App\Plugins\Shop\ShopShippingRegionsDataService;
-use App\Sites\Sections\SectionTemplateRenderService;
+use App\Shared\Helpers;
 use App\Sites\Sections\SectionBackgroundGalleryRenderService;
+use App\Sites\Sections\SectionTemplateRenderService;
 
 class MessyTemplateRenderService extends SectionTemplateRenderService
 {
@@ -199,7 +199,7 @@ class MessyTemplateRenderService extends SectionTemplateRenderService
     ) {
         $classes = [
             'xContent-' . $currentSection['name'],
-            'xSectionType-' . $currentSectionType
+            'xSectionType-' . $currentSectionType,
         ];
 
         if (!empty($tagSlug)) {
@@ -234,7 +234,7 @@ class MessyTemplateRenderService extends SectionTemplateRenderService
 
         return [
             'content' => $section['backgroundVideoEmbed'],
-            'class' => $class
+            'class' => $class,
         ];
     }
 
@@ -249,7 +249,7 @@ class MessyTemplateRenderService extends SectionTemplateRenderService
         $color = $siteSettings['pageLayout']['gridColor'] == 'white' ? '255, 255, 255' : '0, 0, 0';
         $styles = [
             "background-size:{$gridStepBase}px {$gridStepBase}px, {$gridStepBase}px {$gridStepBase}px, {$gridStep}px {$gridStep}px, {$gridStep}px {$gridStep}px",
-            "background-image:linear-gradient(rgba({$color}, 0.5) 1px, transparent 1px), linear-gradient(90deg, rgba({$color}, 0.5) 1px, transparent 0px), linear-gradient(rgba({$color}, 0.2) 1px, transparent 1px), linear-gradient(90deg, rgba({$color}, 0.2) 1px, transparent 0px)"
+            "background-image:linear-gradient(rgba({$color}, 0.5) 1px, transparent 1px), linear-gradient(90deg, rgba({$color}, 0.5) 1px, transparent 0px), linear-gradient(rgba({$color}, 0.2) 1px, transparent 1px), linear-gradient(90deg, rgba({$color}, 0.2) 1px, transparent 0px)",
         ];
 
         $attributes['style'] = implode(';', $styles);
@@ -278,7 +278,7 @@ class MessyTemplateRenderService extends SectionTemplateRenderService
         $classes = [
             'xEntriesList',
             'clearfix',
-            'xSection-' . $currentSection['name']
+            'xSection-' . $currentSection['name'],
         ];
 
         if (!empty($tagSlug)) {
@@ -295,7 +295,7 @@ class MessyTemplateRenderService extends SectionTemplateRenderService
 
         $attributes['class'] = implode(' ', $classes);
 
-        return  Helpers::arrayToHtmlAttributes($attributes);
+        return Helpers::arrayToHtmlAttributes($attributes);
     }
 
     private function getGridTrigger($request, $siteSlug, $sections, $currentSection, $currentSectionType, $tagSlug, $isPreviewMode, $isEditMode)
@@ -339,7 +339,7 @@ class MessyTemplateRenderService extends SectionTemplateRenderService
 
         return [
             'attributes' => Helpers::arrayToHtmlAttributes($attributes),
-            'link' => $link
+            'link' => $link,
         ];
     }
 

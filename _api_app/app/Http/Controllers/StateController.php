@@ -2,22 +2,23 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Configuration\SiteSettingsConfigService;
 use App\Configuration\SiteTemplatesConfigService;
 use App\Shared\Helpers;
-use App\Sites\ThemesDataService;
 use App\Sites\Sections\Entries\SectionEntriesDataService;
 use App\Sites\Sections\SiteSectionsDataService;
 use App\Sites\Sections\Tags\SectionTagsDataService;
 use App\Sites\Settings\SiteSettingsDataService;
 use App\Sites\SitesDataService;
+use App\Sites\SocialMediaLinksRenderService;
 use App\Sites\TemplateSettings\SiteTemplateSettingsDataService;
+use App\Sites\ThemesDataService;
 use App\User\UserModel;
+use Illuminate\Http\Request;
 
 class StateController extends Controller
 {
-    public function get($site='')
+    public function get($site = '')
     {
         $site = $site === '0' ? '' : $site;
         $sitesDataService = new SitesDataService();
@@ -66,7 +67,7 @@ class StateController extends Controller
                 $templateSettings = $templateSettingsDataService->getState();
 
                 if (!($templateSettings)) {
-                    $templateSettings = (object)null;
+                    $templateSettings = (object) null;
                 }
 
                 $state['site_template_settings'][$siteName][$template] = $templateSettings;
@@ -107,7 +108,10 @@ class StateController extends Controller
             'authenticateUrl' => route('authenticate'),
             'isBertaHosting' => $user->profile_url != false,
             'plans' => $user->plans,
-            'themes' => $themesDS->getThemes()
+            'themes' => $themesDS->getThemes(),
+            'socialMediaIcons' => SocialMediaLinksRenderService::getSocialMediaIcons(),
+            'rowGalleryImageLimit' => config('app.row_gallery_image_limit'),
+            'gridImagePrefix' => config('app.grid_image_prefix'),
         ];
 
         return Helpers::api_response('', $meta);

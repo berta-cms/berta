@@ -1,5 +1,70 @@
-{% include 'Sites/Sections/sectionFooterBackToTop' %}
-{% include 'Sites/Sections/sectionFooterPhotoswipe' %}
-{% include 'Sites/Sections/sectionFooterIntercom' %}
-{% include 'Sites/Sections/sectionFooterUserJsIncludes' %}
-{% include 'Sites/Sections/sectionFooterGoogleAnalytics' %}
+<a class="bt-back-to-top js-back-to-top" href="#">
+  <svg height="5.06066" viewBox="0 0 8.7071066 5.0606604" width="8.707107" xmlns="http://www.w3.org/2000/svg"><path d="m8.3535534 4.7071068-4-4.00000002-4.00000001 4.00000002" fill="none" stroke="#fff"/></svg>
+</a>
+
+{% if not isEditMode %}
+	<div class="pswp theme-{{ photoswipeTheme }}" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="pswp__bg"></div>
+		<div class="pswp__scroll-wrap">
+			<div class="pswp__container">
+				<div class="pswp__item"></div>
+				<div class="pswp__item"></div>
+				<div class="pswp__item"></div>
+			</div>
+			<div class="pswp__ui pswp__ui--hidden">
+				<div class="pswp__top-bar">
+					<div class="pswp__counter"></div>
+					<button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+					<button class="pswp__button pswp__button--share" title="Share"></button>
+					<button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+					<button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+					<div class="pswp__preloader">
+						<div class="pswp__preloader__icn">
+							<div class="pswp__preloader__cut">
+								<div class="pswp__preloader__donut"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+					<div class="pswp__share-tooltip"></div>
+				</div>
+
+				<button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)"></button>
+				<button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button>
+
+				<div class="pswp__caption">
+					<div class="pswp__caption__center align-{{ photoswipeCaptionAlign }}"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endif %}
+
+{% if intercom %}
+  <script>
+    window.intercomSettings = {
+      app_id: '{{ intercom.appId }}',
+      email: '{{ intercom.userName }}',
+      user_hash: '{{ intercom.userHash }}'
+    };
+  </script>
+  <script>
+    (function(){var w=window;var ic=w.Intercom;if(typeof ic==="function"){ic('reattach_activator');ic('update',intercomSettings);}else{var d=document;var i=function(){i.c(arguments)};i.q=[];i.c=function(args){i.q.push(args)};w.Intercom=i;function l(){var s=d.createElement('script');s.type='text/javascript';s.async=true;s.src='https://widget.intercom.io/widget/{{ intercom.appId }}';var x=d.getElementsByTagName('script')[0];x.parentNode.insertBefore(s,x);}if(w.attachEvent){w.attachEvent('onload',l);}else{w.addEventListener('load',l,false);}}})()
+  </script>
+{% endif %}
+
+{{ customSocialMediaButtonsJs|raw }}
+{{ customUserJs|raw }}
+
+{% if googleAnalyticsId %}
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', '{{ googleAnalyticsId }}', '{{ hostName }}');
+    ga('send', 'pageview');
+  </script>
+{% endif %}

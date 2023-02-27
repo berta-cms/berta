@@ -20,7 +20,9 @@ import {
   DeleteSectionEntryFromSyncAction,
   UpdateEntryGalleryFromSyncAction,
   AddSectionEntryFromSyncAction,
-  MoveSectionEntryFromSyncAction} from './section-entries.actions';
+  MoveSectionEntryFromSyncAction,
+  DeleteSectionLastEntry,
+} from './section-entries.actions';
 import { UserLoginAction } from '../../../../user/user.actions';
 import { UpdateSiteSectionAction } from '../../sections-state/site-sections.actions';
 import { UpdateSectionTagsAction } from '../../tags/section-tags.actions';
@@ -104,6 +106,14 @@ export class SectionEntriesState implements NgxsOnInit {
 
           if (response.tags) {
             dispatch(new UpdateSectionTagsAction(action.site, action.section, response.tags));
+          }
+
+          if (response.entry.tags) {
+            dispatch(new UpdateSectionEntryFromSyncAction(
+              `${action.site}/entry/${action.section}/${response.entry.id}/tags/tag`,
+              response.entry.tags.tag[0],
+              1
+            ))
           }
         }
       })
@@ -272,6 +282,8 @@ export class SectionEntriesState implements NgxsOnInit {
   @Action(UpdateSectionEntryFromSyncAction)
   updateSectionEntryFromSync({ getState, patchState, dispatch }: StateContext<SectionEntriesStateModel>,
                              action: UpdateSectionEntryFromSyncAction) {
+    if (action.nOfReq >= 2) return
+
     return this.appStateService.sync('sectionEntries', {
       path: action.path,
       value: action.payload
@@ -284,11 +296,20 @@ export class SectionEntriesState implements NgxsOnInit {
           const currentState = getState();
           const [currentSite, , currentSection, entryId] = action.path.split('/');
           const siteName = currentSite === '0' ? '' : currentSite;
-          let path = action.path.split('/').slice(4).join('/');
+          let lastPathPart = action.path.split('/').slice(4).join('/');
           let payload = action.payload;
 
-          if (path === 'tags/tag') {
-            path = 'tags';
+          if (lastPathPart === 'tags/tag') {
+            // slugs update
+            // piece of a logic to update entry 'slugs' field right after 'tag' field was changed
+            dispatch(new UpdateSectionEntryFromSyncAction(
+              action.path,
+              action.payload,
+              ++action.nOfReq
+            ))
+            // end slugs update
+
+            lastPathPart = 'tags';
             payload = response.entry.tags;
           }
 
@@ -298,7 +319,7 @@ export class SectionEntriesState implements NgxsOnInit {
                 return entry;
               }
 
-              return assignByPath(entry, path, payload);
+              return assignByPath(entry, lastPathPart, payload);
             })
           });
 
@@ -356,6 +377,11 @@ export class SectionEntriesState implements NgxsOnInit {
   @Action(DeleteSectionEntryFromSyncAction)
   deleteSectionEntryFromSync({ getState, patchState, dispatch }: StateContext<SectionEntriesStateModel>,
                              action: DeleteSectionEntryFromSyncAction) {
+
+    // taking deleted entry in order to compare find out if it was the last entry in submenu
+    const entriesList = getState()[action.site]
+    const deletedEntry = entriesList.find(entry => entry.id === action.entryId && entry.sectionName === action.section)
+
     return this.appStateService.sync('sectionEntries', {
       site: action.site,
       section: action.section,
@@ -404,6 +430,20 @@ export class SectionEntriesState implements NgxsOnInit {
 
           if (response.tags) {
             dispatch(new UpdateSectionTagsAction(action.site, action.section, response.tags));
+          }
+        }
+
+        // if deleted entry was the last in submenu, then emit the event in order to redirect to main section
+        const entriesList = getState()[action.site]
+        if (deletedEntry.tags) {
+          const entriesWithSameTag = entriesList.filter(
+            entry => entry.sectionName === action.section
+              && entry.tags
+              && entry.tags.tag.includes(deletedEntry.tags.tag[0])
+          )
+
+          if (!entriesWithSameTag.length) {
+            dispatch(new DeleteSectionLastEntry(action.section))
           }
         }
       })

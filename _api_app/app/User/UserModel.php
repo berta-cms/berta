@@ -3,13 +3,13 @@
 namespace App\User;
 
 use Illuminate\Auth\Authenticatable;
-use Laravel\Lumen\Auth\Authorizable;
-use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
+use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
+use Laravel\Lumen\Auth\Authorizable;
 
 class UserModel implements
-    AuthenticatableContract,
-    AuthorizableContract
+AuthenticatableContract,
+AuthorizableContract
 {
     use Authenticatable, Authorizable;
     public $name;
@@ -19,8 +19,7 @@ class UserModel implements
     public $forgot_password_url;
     public $plans;
     public $noindex;
-    public $intercomAppId;
-    public $intercomSecretKey;
+    public $intercom;
 
     public function __construct()
     {
@@ -35,8 +34,7 @@ class UserModel implements
         $this->plans = $this->getHostingData('PLANS');
         $this->features = $this->getFeatures();
         $this->noindex = $this->getHostingData('NOINDEX');
-        $this->intercomAppId = $this->getHostingData('INTERCOM_APP_ID');
-        $this->intercomSecretKey = $this->getHostingData('INTERCOM_SECRET_KEY');
+        $this->intercom = $this->getIntercomData();
     }
 
     /**
@@ -90,6 +88,7 @@ class UserModel implements
 
         if ($is_trial || $plan > 1) {
             $features[] = 'multisite';
+            $features[] = 'hide_berta_copyright';
         }
 
         if ($is_trial || $plan == 3) {
@@ -109,5 +108,21 @@ class UserModel implements
         }
 
         return $options[$item];
+    }
+
+    private function getIntercomData()
+    {
+        $intercomAppId = $this->getHostingData('INTERCOM_APP_ID');
+        $intercomSecretKey = $this->getHostingData('INTERCOM_SECRET_KEY');
+        if (!$intercomAppId || !$intercomSecretKey) {
+            return null;
+        }
+        $userHash = hash_hmac('sha256', $this->name, $intercomSecretKey);
+
+        return [
+            'appId' => $intercomAppId,
+            'userName' => $this->name,
+            'userHash' => $userHash,
+        ];
     }
 }

@@ -4,5 +4,6 @@ export interface SectionEntriesStateModel {
 
 export interface SectionEntry {
   sectionName: string;
+  marked?: string;
   [k: string]: any;
 }

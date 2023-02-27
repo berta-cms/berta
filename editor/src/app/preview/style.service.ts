@@ -10,32 +10,52 @@ import { DefaultTemplateStyleService } from './default-template-style.service';
 import { MashupTemplateStyleService } from './mashup-template-style.service';
 import { MessyTemplateStyleService } from './messy-template-style.service';
 import { SiteStateModel } from '../sites/sites-state/site-state.model';
+import {
+  ShopSettingsConfigModel,
+  ShopSettingsConfigState,
+} from '../shop/settings/shop-settings-config.state';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class StyleService {
   contextWindow: Window;
   styleSheet: CSSStyleSheet;
   templateConfig: TemplateSiteModel['templateConf'];
+  shopSettingsConfig: ShopSettingsConfigModel;
 
   constructor(
     private store: Store,
     private whiteTemplateStyleService: WhiteTemplateStyleService,
     private defaultTemplateStyleService: DefaultTemplateStyleService,
     private mashupTemplateStyleService: MashupTemplateStyleService,
-    private messyTemplateStyleService: MessyTemplateStyleService) {
-  }
+    private messyTemplateStyleService: MessyTemplateStyleService
+  ) {}
 
   initializeStyleSheet(contextWindow: Window, styleSheet: CSSStyleSheet) {
     this.contextWindow = contextWindow;
     this.styleSheet = styleSheet;
-    this.store.select(SiteTemplatesState.getCurrentTemplateConfig).pipe(take(1)).subscribe((templateConfig) => {
-      this.templateConfig = templateConfig;
-    });
+    this.store
+      .select(SiteTemplatesState.getCurrentTemplateConfig)
+      .pipe(take(1))
+      .subscribe((templateConfig) => {
+        this.templateConfig = templateConfig;
+      });
+
+    this.store
+      .select(ShopSettingsConfigState)
+      .pipe(take(1))
+      .subscribe((shopSettingsConfig) => {
+        this.shopSettingsConfig = shopSettingsConfig;
+      });
   }
 
-  updateStyle(site: SiteStateModel, template: string, style, templateSettings: SettingsGroupModel[]) {
+  updateStyle(
+    site: SiteStateModel,
+    template: string,
+    style,
+    templateSettings: SettingsGroupModel[]
+  ) {
     const settingGroup = this.templateConfig[style.group];
     if (!settingGroup) {
       return;
@@ -54,20 +74,41 @@ export class StyleService {
     const templateName = template.split('-')[0];
     switch (templateName) {
       case 'white':
-        cssList = this.whiteTemplateStyleService.getCSSList(style, cssList, site, templateSettings);
+        cssList = this.whiteTemplateStyleService.getCSSList(
+          style,
+          cssList,
+          site,
+          templateSettings
+        );
         break;
 
       case 'default':
-        cssList = this.defaultTemplateStyleService.getCSSList(style, cssList, site, templateSettings);
+        cssList = this.defaultTemplateStyleService.getCSSList(
+          style,
+          cssList,
+          site,
+          templateSettings
+        );
         break;
 
       case 'mashup':
-        cssList = this.mashupTemplateStyleService.getCSSList(style, cssList, site, templateSettings);
+        cssList = this.mashupTemplateStyleService.getCSSList(
+          style,
+          cssList,
+          site,
+          templateSettings
+        );
         break;
 
       // Messy
       default:
-        cssList = this.messyTemplateStyleService.getCSSList(style, cssList, site, template, templateSettings);
+        cssList = this.messyTemplateStyleService.getCSSList(
+          style,
+          cssList,
+          site,
+          template,
+          templateSettings
+        );
         break;
     }
 
@@ -77,13 +118,54 @@ export class StyleService {
       return;
     }
 
-    cssList.forEach(rule => {
+    cssList.forEach((rule) => {
       const cssRule = this.findOrCreateRule(rule.selector, rule.breakpoint);
       let value = rule.value || style.value;
       if (rule.template) {
         value = eval(rule.template);
       }
-      cssRule.style.setProperty(rule.property, value, rule.important ? 'important' : null);
+      cssRule.style.setProperty(
+        rule.property,
+        value,
+        rule.important ? 'important' : null
+      );
+    });
+  }
+
+  updateShopStyle(style, templateSettings: SettingsGroupModel[]) {
+    const settingGroup = this.shopSettingsConfig[style.group];
+    if (!settingGroup) {
+      return;
+    }
+
+    const setting = settingGroup[style.slug];
+    if (!setting) {
+      return;
+    }
+
+    if (!style.value) {
+      style.value = setting.default;
+    }
+
+    let cssList = setting.css ? [...setting.css] : [];
+
+    cssList = this.updateFontFamily(style, cssList, templateSettings);
+
+    if (cssList.length < 1) {
+      return;
+    }
+
+    cssList.forEach((rule) => {
+      const cssRule = this.findOrCreateRule(rule.selector, rule.breakpoint);
+      let value = rule.value || style.value;
+      if (rule.template) {
+        value = eval(rule.template);
+      }
+      cssRule.style.setProperty(
+        rule.property,
+        value,
+        rule.important ? 'important' : null
+      );
     });
   }
 
@@ -92,21 +174,32 @@ export class StyleService {
     let cssRulesList = this.styleSheet.cssRules;
 
     if (breakpoint) {
-      cssMediaRule = Array.prototype.find.call(this.styleSheet.cssRules, (rule: CSSMediaRule) => {
-        return rule.conditionText === breakpoint;
-      });
+      cssMediaRule = Array.prototype.find.call(
+        this.styleSheet.cssRules,
+        (rule: CSSMediaRule) => {
+          return rule.conditionText === breakpoint;
+        }
+      );
 
       if (!cssMediaRule) {
-        this.styleSheet.insertRule(`@media ${breakpoint} {}`, this.styleSheet.cssRules.length);
-        cssMediaRule = this.styleSheet.cssRules[this.styleSheet.cssRules.length - 1] as CSSMediaRule;
+        this.styleSheet.insertRule(
+          `@media ${breakpoint} {}`,
+          this.styleSheet.cssRules.length
+        );
+        cssMediaRule = this.styleSheet.cssRules[
+          this.styleSheet.cssRules.length - 1
+        ] as CSSMediaRule;
       }
 
       cssRulesList = cssMediaRule.cssRules;
     }
 
-    const cssRule = Array.prototype.find.call(cssRulesList, (rule: CSSStyleRule) => {
-      return rule.selectorText === selector;
-    });
+    const cssRule = Array.prototype.find.call(
+      cssRulesList,
+      (rule: CSSStyleRule) => {
+        return rule.selectorText === selector;
+      }
+    );
 
     if (cssRule) {
       return cssRule;
@@ -114,26 +207,37 @@ export class StyleService {
 
     if (breakpoint) {
       cssMediaRule.insertRule(`${selector} {}`, cssMediaRule.cssRules.length);
-      return cssMediaRule.cssRules[cssMediaRule.cssRules.length - 1] as CSSStyleRule;
+      return cssMediaRule.cssRules[
+        cssMediaRule.cssRules.length - 1
+      ] as CSSStyleRule;
     } else {
-      this.styleSheet.insertRule(`${selector} {}`, this.styleSheet.cssRules.length);
-      return this.styleSheet.cssRules[this.styleSheet.cssRules.length - 1] as CSSStyleRule;
+      this.styleSheet.insertRule(
+        `${selector} {}`,
+        this.styleSheet.cssRules.length
+      );
+      return this.styleSheet.cssRules[
+        this.styleSheet.cssRules.length - 1
+      ] as CSSStyleRule;
     }
   }
 
-  updateFontFamily(style, cssList, templateSettings:SettingsGroupModel[]) {
+  updateFontFamily(style, cssList, templateSettings: SettingsGroupModel[]) {
     const fontSettings = ['fontFamily', 'googleFont'];
-    if (!fontSettings.some(setting => style.slug.endsWith(setting))) {
+    if (!fontSettings.some((setting) => style.slug.endsWith(setting))) {
       return cssList;
     }
 
-    const googleFontSetting = templateSettings.find(g => g.slug === style.group).settings.find(s => s.slug.endsWith('googleFont'));
-    const generalFontSetting = templateSettings.find(g => g.slug === style.group).settings.find(s => s.slug.endsWith('fontFamily'));
+    const googleFontSetting = templateSettings
+      .find((g) => g.slug === style.group)
+      .settings.find((s) => s.slug.endsWith('googleFont'));
+    const generalFontSetting = templateSettings
+      .find((g) => g.slug === style.group)
+      .settings.find((s) => s.slug.endsWith('fontFamily'));
     if (!googleFontSetting || !googleFontSetting.value) {
-      return cssList.map(item => {
+      return cssList.map((item) => {
         return {
           ...item,
-          value: generalFontSetting.value
+          value: generalFontSetting.value,
         };
       });
     }
@@ -143,15 +247,17 @@ export class StyleService {
 
     WebFont.load({
       google: {
-        families: [`${googleFontSetting.value}:latin,latin-ext,cyrillic-ext,greek-ext,greek,vietnamese,cyrillic`]
+        families: [
+          `${googleFontSetting.value}:latin,latin-ext,cyrillic-ext,greek-ext,greek,vietnamese,cyrillic`,
+        ],
       },
-      context: this.contextWindow
+      context: this.contextWindow,
     });
 
-    return cssList.map(item => {
+    return cssList.map((item) => {
       return {
         ...item,
-        value: fontName
+        value: fontName,
       };
     });
   }

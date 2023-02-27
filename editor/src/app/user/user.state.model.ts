@@ -4,4 +4,9 @@ export interface UserStateModel {
   features: string[];
   profileUrl: string | null;
   nextUrl?: string;
+  intercom?: {
+    appId: string;
+    userHash: string;
+    userName: string;
+  };
 }

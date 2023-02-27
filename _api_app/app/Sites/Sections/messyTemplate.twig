@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html>
+<html id="html">
   {{ sectionHead|raw }}
-  <body class="{{ bodyClassList }}">
+  <body class="{{ bodyClassList }}" id="body">
     {% if sectionType != 'shopping_cart' %}
       {{ backgroundGallery|raw }}
       {% if backgroundVideoEmbed %}
@@ -19,23 +19,35 @@
       {% else %}
         <div id="contentContainer"{{ contentContainerAttributes|raw }}>
           {{ shoppingCartLink|raw }}
-          {{ sitesMenu|raw }}
+          <div id="sitesMenu">
+            {{ sitesMenu|raw }}
+          </div>
           {% if showBackgroundGalleryEditor %}
             <div id="xBgEditorPanelContainer"></div>
             <div id="xBgEditorPanelTrigContainer">
               <a href="#" id="xBgEditorPanelTrig" title="edit background gallery"><span>background settings</span></a>
             </div>
           {% endif %}
-          {{ siteHeader|raw }}
-          {{ sectionsMenu|raw }}
+          <div id="siteHeader">
+            {{ siteHeader|raw }}
+          </div>
+          <div id="sectionsMenu">
+            {{ sectionsMenu|raw }}
+          </div>
           {% if not isGridViewEnabled %}
             <div id="pageEntries"{{ pageEntriesClasses|raw }}>
               {{ entries|raw }}
             </div>
           {% endif %}
-          {{ portfolioThumbnails|raw }}
-          {{ additionalTextBlock|raw }}
-          {{ siteBanners|raw }}
+          <div id="portfolioThumbnails">
+            {{ portfolioThumbnails|raw }}
+          </div>
+          <div id="additionalTextBlock">
+            {{ additionalTextBlock|raw }}
+          </div>
+          <div id="siteBanners">
+            {{ siteBanners|raw }}
+          </div>
         </div>
         {% if gridTrigger %}
           <div id="xGridViewTriggerContainer"{{ gridTrigger.attributes|raw }}>
@@ -47,7 +59,9 @@
     {% if sectionType != 'shopping_cart' %}
       {{ gridView|raw }}
       <div id="bottom" class="clearfix">
+        <div id="additionalFooterTextBlock">
           {{ additionalFooterText|raw }}
+        </div>
           {% if bertaCopyright %}
             <p id="bertaCopyright">{{ bertaCopyright|raw }}</p>
           {% endif %}
@@ -55,7 +69,9 @@
             {{ userCopyright.content|raw }}
           </p>
       </div>
+    <div id="sectionFooter">
       {{ sectionFooter|raw }}
+    </div>
     {% endif %}
     {% if alertMessage %}
       <script type="text/javascript">alert('{{ alertMessage }}');</script>

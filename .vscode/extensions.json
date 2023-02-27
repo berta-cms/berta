@@ -4,7 +4,6 @@
   "recommendations": [
     // Extension identifier format: ${publisher}.${name}. Example: vscode.csharp
     "junstyle.php-cs-fixer",  // PHP file formatting
-    "felixfbecker.php-intellisense",  // Intellisense for PHP
     "mikestead.dotenv",  // .env syntax highlight for lumen
     "EditorConfig.editorconfig",  // Common editor configuration
     "dbaeumer.vscode-eslint",  // Linting for JS files

@@ -17,7 +17,7 @@ import { HeaderComponent } from './header/header.component';
 import { PreviewToggleComponent } from './header/preview-toggle.component';
 import { ProfileDropdownComponent } from './profile-dropdown/profile-dropdown.component';
 import { LoginComponent } from './login/login.component';
-import { ThemesComponent } from './themes/themes.component'
+import { ThemesComponent } from './themes/themes.component';
 import { UserState } from './user/user.state';
 import { UserAccountComponent } from './user/user-account.component';
 import { SitesSharedModule } from './sites/shared/sites-shared.module';
@@ -31,7 +31,9 @@ import { WhiteTemplateStyleService } from './preview/white-template-style.servic
 import { DefaultTemplateStyleService } from './preview/default-template-style.service';
 import { MashupTemplateStyleService } from './preview/mashup-template-style.service';
 import { MessyTemplateStyleService } from './preview/messy-template-style.service';
-
+import { ShopSettingsState } from './shop/settings/shop-settings.state';
+import { ShopRegionalCostsState } from './shop/regional-costs/shop-regional-costs.state';
+import {SiteSectionsModule} from "./sites/sections/site-sections.module";
 
 @NgModule({
   declarations: [
@@ -44,7 +46,7 @@ import { MessyTemplateStyleService } from './preview/messy-template-style.servic
     LoginComponent,
     PreviewComponent,
     ThemesComponent,
-    PopupComponent
+    PopupComponent,
   ],
   imports: [
     BrowserModule,
@@ -52,15 +54,23 @@ import { MessyTemplateStyleService } from './preview/messy-template-style.servic
     HttpClientModule,
     AppRoutingModule,
     SharedModule,
-    NgxsModule.forRoot([
-      AppState,
-      UserState,
-      ErrorState
-    ], { developmentMode: !environment.production }),
+    NgxsModule.forRoot(
+      [
+        AppState,
+        UserState,
+        ErrorState,
+        ShopSettingsState,
+        ShopRegionalCostsState,
+      ],
+      {
+        developmentMode: !environment.production,
+      }
+    ),
     NgxsReduxDevtoolsPluginModule.forRoot({ disabled: environment.production }),
-    NgxsLoggerPluginModule.forRoot({ disabled: true }),  // it logs too much, enable only when needed
+    NgxsLoggerPluginModule.forRoot({ disabled: true }), // it logs too much, enable only when needed
     SitesModule,
-    SitesSharedModule
+    SitesSharedModule,
+    SiteSectionsModule,
   ],
   providers: [
     StyleService,
@@ -68,8 +78,8 @@ import { MessyTemplateStyleService } from './preview/messy-template-style.servic
     DefaultTemplateStyleService,
     MashupTemplateStyleService,
     MessyTemplateStyleService,
-    {provide: ErrorHandler, useClass: SentryErrorHandler}
+    { provide: ErrorHandler, useClass: SentryErrorHandler },
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

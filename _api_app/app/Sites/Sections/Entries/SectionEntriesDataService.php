@@ -2,15 +2,15 @@
 
 namespace App\Sites\Sections\Entries;
 
-use Illuminate\Support\Arr;
-use App\Shared\Storage;
-use App\Shared\ImageHelpers;
 use App\Events\SectionUpdated;
-use App\Sites\Settings\SiteSettingsDataService;
-use App\Sites\TemplateSettings\SiteTemplateSettingsDataService;
+use App\Shared\Helpers;
+use App\Shared\ImageHelpers;
+use App\Shared\Storage;
 use App\Sites\Sections\SiteSectionsDataService;
 use App\Sites\Sections\Tags\SectionTagsDataService;
-use App\Shared\Helpers;
+use App\Sites\Settings\SiteSettingsDataService;
+use App\Sites\TemplateSettings\SiteTemplateSettingsDataService;
+use Illuminate\Support\Arr;
 
 /**
  * @class SectionEntriesDataService
@@ -75,15 +75,15 @@ class SectionEntriesDataService extends Storage
                     'type' => 'object',
                     '$comment' => 'This represents the <entry> elements in a list. They can only be <entry> in this list',
                     'properties' => [
-                        'id' => ['type' => 'integer', 'minimum' => '0'],  // Maybe it's 1 (see xml files)
+                        'id' => ['type' => 'integer', 'minimum' => '0'], // Maybe it's 1 (see xml files)
                         'uniqid' => ['type' => 'string'],
-                        'date' => ['type' => 'string', 'format' => 'berta-date'],  // think about how to standardize date format through berta
+                        'date' => ['type' => 'string', 'format' => 'berta-date'], // think about how to standardize date format through berta
                         'mediafolder' => ['type' => 'string'],
                         'mediaCacheData' => [
                             'type' => 'object',
                             'properties' => [
                                 'file' => [
-                                /** @todo: FIX: We're getting error here, because converter can't distinguish single item array from an object */
+                                    /** @todo: FIX: We're getting error here, because converter can't distinguish single item array from an object */
                                     'type' => 'array',
                                     '$comment' => 'This is a list of <file> elements. This element can only contain <file> elements',
                                     'items' => [
@@ -100,12 +100,12 @@ class SectionEntriesDataService extends Storage
                                                     'type' => [
                                                         'type' => ['type' => 'string', 'enum' => ['image', 'video']],
                                                     ],
-                                                    'width' => ['type' => 'integer', 'minimum' => 0]
+                                                    'width' => ['type' => 'integer', 'minimum' => 0],
                                                 ],
-                                                'required' => ['src', 'type']
-                                            ]
-                                        ]
-                                    ]
+                                                'required' => ['src', 'type'],
+                                            ],
+                                        ],
+                                    ],
                                 ],
                                 '@attributes' => [
                                     'type' => 'object',
@@ -115,22 +115,22 @@ class SectionEntriesDataService extends Storage
                                         'link_address' => ['type' => 'string'],
                                         'linkTarget' => [
                                             'type' => 'string',
-                                            'enum' => ['_self', '_blank']
+                                            'enum' => ['_self', '_blank'],
                                         ],
                                         'row_gallery_padding' => ['type' => 'string', 'format' => 'css-unit'],
                                         'size' => [
                                             'type' => 'string',
-                                            'enum' => ['large', 'medium', 'small']
+                                            'enum' => ['large', 'medium', 'small'],
                                         ],
                                         'slide_numbers_visible' => ['type' => 'string', 'enum' => ['yes', 'no']],
                                         'gallery_width_by_widest_slide' => ['type' => 'string', 'enum' => ['no', 'yes']],
                                         'type' => [
                                             'type' => 'string',
-                                            'enum' => ['slideshow', 'row', 'column', 'pile', 'link']
-                                        ]
-                                    ]
-                                ]
-                            ]
+                                            'enum' => ['slideshow', 'row', 'column', 'pile', 'link'],
+                                        ],
+                                    ],
+                                ],
+                            ],
                         ],
                         'content' => [
                             'type' => 'object',
@@ -140,43 +140,43 @@ class SectionEntriesDataService extends Storage
                                 'positionXY' => ['type' => 'string', 'pattern' => '^[0-9]+,[0-9]+$'],
                                 'title' => ['type' => 'string'],
                                 'url' => ['type' => 'string', 'format' => 'URI'],
-                                'width' => ['type' => 'string', 'format' => 'css-unit']
-                            ]
+                                'width' => ['type' => 'string', 'format' => 'css-unit'],
+                            ],
                         ],
                         'updated' => ['type' => 'string', 'format' => 'berta-date-time'],
                         'tags' => [
                             'type' => 'object',
                             'properties' => [
-                                'tag' => ['type' => 'array', 'items' => ['type' => 'string']]
-                            ]
+                                'tag' => ['type' => 'array', 'items' => ['type' => 'string']],
+                            ],
                         ],
-                        'marked' => ['type' => 'integer']
-                    ]
-                ]
+                        'marked' => ['type' => 'integer'],
+                    ],
+                ],
             ],
             '@attributes' => [
                 'type' => 'object',
                 'properties' => [
                     'section' => [
                         'type' => 'string',
-                        '$comment' => 'name of section these entries belong to. See $this->SECTION_NAME'
+                        '$comment' => 'name of section these entries belong to. See $this->SECTION_NAME',
                     ],
                     'version' => [
                         'type' => 'string',
-                        '$comment' => 'Version of berta, this was created in'
+                        '$comment' => 'Version of berta, this was created in',
                     ],
                     'last_upd_ver' => [
                         'type' => 'string',
-                        '$comment' => 'internal berta version entry is created/updated with (used for migrations)'
-                    ]
-                ]
-            ]
-        ]
+                        '$comment' => 'internal berta version entry is created/updated with (used for migrations)',
+                    ],
+                ],
+            ],
+        ],
     ];
 
     protected static $DEFAULT_VALUES = [];
-    private $ROOT_ELEMENT = 'blog';  // The XML document element - the one that wraps all the content in file
-    private static $ROOT_LIST_ELEMENT = 'entry';  // XML element that wraps each element in the top level list - child of ROOT_ELEMENT
+    private $ROOT_ELEMENT = 'blog'; // The XML document element - the one that wraps all the content in file
+    private static $ROOT_LIST_ELEMENT = 'entry'; // XML element that wraps each element in the top level list - child of ROOT_ELEMENT
     private $SECTION_NAME;
     private $SECTION_TITLE;
     private $ENTRIES = [];
@@ -226,6 +226,13 @@ class SectionEntriesDataService extends Storage
                         if (!$this->ENTRIES[self::$ROOT_LIST_ELEMENT][$order]['tags']['tag'][0]) {
                             $this->ENTRIES[self::$ROOT_LIST_ELEMENT][$order]['tags']['tag'] = [];
                         }
+
+                        $this->ENTRIES[self::$ROOT_LIST_ELEMENT][$order]['tags']['slugs'] = array_map(
+                            function ($tag) {
+                                return Helpers::slugify($tag, '-', '-');
+                            },
+                            $this->ENTRIES[self::$ROOT_LIST_ELEMENT][$order]['tags']['tag']
+                        );
                     }
                 }
             }
@@ -249,12 +256,7 @@ class SectionEntriesDataService extends Storage
 
         // Filter entries by tag
         $entries = array_filter($entries[self::$ROOT_LIST_ELEMENT], function ($entry) use ($tag) {
-            $entryTags = [];
-            if (!empty($entry['tags']['tag'])) {
-                $entryTags = array_map(function ($tag) {
-                    return Helpers::slugify($tag, '-', '-');
-                }, $entry['tags']['tag']);
-            }
+            $entryTags = !empty($entry['tags']['slugs']) ? $entry['tags']['slugs'] : [];
 
             if ($tag) {
                 return !empty($entryTags) && in_array($tag, $entryTags);
@@ -400,7 +402,7 @@ class SectionEntriesDataService extends Storage
                     'section',
                     $section_order,
                     '@attributes',
-                    'has_direct_content'
+                    'has_direct_content',
                 ]),
                 $has_direct_content
             );
@@ -418,7 +420,7 @@ class SectionEntriesDataService extends Storage
                 'section' => $section,
                 'section_order' => $section_order,
                 'tags' => $sectionTagsDataService->getSectionTagsState(),
-                'has_direct_content' => $has_direct_content
+                'has_direct_content' => $has_direct_content,
             ]);
         }
 
@@ -429,8 +431,8 @@ class SectionEntriesDataService extends Storage
     {
         while (file_exists($this->XML_FILE)) {
             if (preg_match('/(?P<name>.*)-(?P<digit>\d+)$/', $this->SECTION_NAME, $matches)) {
-                $this->SECTION_NAME = $matches['name'] . '-' . ((int)$matches['digit'] + 1);
-                $this->setTitle($matches['name'] . ' ' . ((int)$matches['digit'] + 1));
+                $this->SECTION_NAME = $matches['name'] . '-' . ((int) $matches['digit'] + 1);
+                $this->setTitle($matches['name'] . ' ' . ((int) $matches['digit'] + 1));
             } else {
                 $this->SECTION_NAME = $this->SECTION_NAME . '-2';
                 $this->setTitle($this->SECTION_TITLE . ' 2');
@@ -442,7 +444,7 @@ class SectionEntriesDataService extends Storage
         if ($name === null) {
             $blog = [
                 '@attributes' => ['section' => $this->SECTION_NAME],
-                self::$ROOT_LIST_ELEMENT => []
+                self::$ROOT_LIST_ELEMENT => [],
             ];
         } else {
             $entries = new SectionEntriesDataService($this->SITE, $name);
@@ -476,7 +478,7 @@ class SectionEntriesDataService extends Storage
         return [
             'name' => $this->SECTION_NAME,
             'title' => $this->SECTION_TITLE,
-            self::$ROOT_LIST_ELEMENT => $blog
+            self::$ROOT_LIST_ELEMENT => $blog,
         ];
     }
 
@@ -499,7 +501,7 @@ class SectionEntriesDataService extends Storage
         return [
             'site_name' => $this->SITE,
             'section_name' => $this->SECTION_NAME,
-            'order' => $order
+            'order' => $order,
         ];
     }
 
@@ -579,7 +581,7 @@ class SectionEntriesDataService extends Storage
                         if (!@rmdir($mediaFolder)) {
                             return [
                                 'success' => false,
-                                'error_message' => 'Unable to remove folder "' . $mediaFolder . '"!'
+                                'error_message' => 'Unable to remove folder "' . $mediaFolder . '"!',
                             ];
                         };
                     }
@@ -591,7 +593,7 @@ class SectionEntriesDataService extends Storage
         if (!@unlink($this->XML_FILE)) {
             return [
                 'success' => false,
-                'error_message' => 'Unable to remove file "' . $this->XML_FILE . '"!'
+                'error_message' => 'Unable to remove file "' . $this->XML_FILE . '"!',
             ];
         }
 
@@ -669,10 +671,10 @@ class SectionEntriesDataService extends Storage
                 'mediaCacheData' => [
                     '@attributes' => [
                         'type' => $defaultGalleryType,
-                        'fullscreen' => $galleryFullScreen
+                        'fullscreen' => $galleryFullScreen,
                     ],
-                    'file' => []
-                ]
+                    'file' => [],
+                ],
             ];
         }
 
@@ -697,7 +699,7 @@ class SectionEntriesDataService extends Storage
                     $tag_title = $tags['tag'][$tag_key]['@value'];
 
                     $newEntry['tags'] = [
-                        'tag' => [$tag_title]
+                        'tag' => [$tag_title],
                     ];
                 }
             }
@@ -736,7 +738,7 @@ class SectionEntriesDataService extends Storage
                 'section',
                 $section_order,
                 '@attributes',
-                'entry_count'
+                'entry_count',
             ]),
             $section_entry_count
         );
@@ -755,7 +757,7 @@ class SectionEntriesDataService extends Storage
                 'section',
                 $section_order,
                 '@attributes',
-                'has_direct_content'
+                'has_direct_content',
             ]),
             $has_direct_content
         );
@@ -768,7 +770,7 @@ class SectionEntriesDataService extends Storage
             'entry' => $newEntry,
             'tags' => $sectionTagsDataService->getSectionTagsState(),
             'has_direct_content' => $has_direct_content,
-            'entry_count' => $section_entry_count
+            'entry_count' => $section_entry_count,
         ];
     }
 
@@ -782,7 +784,7 @@ class SectionEntriesDataService extends Storage
 
         if ($entryIndex === false) {
             return [
-                'error_message' => 'Entry with ID "' . $entryId . '" not found!'
+                'error_message' => 'Entry with ID "' . $entryId . '" not found!',
             ];
         }
 
@@ -803,7 +805,7 @@ class SectionEntriesDataService extends Storage
 
         if ($entry_order === false) {
             return [
-                'error_message' => 'Entry with ID "' . $entry_id . '" not found!'
+                'error_message' => 'Entry with ID "' . $entry_id . '" not found!',
             ];
         }
 
@@ -829,7 +831,7 @@ class SectionEntriesDataService extends Storage
                 'section',
                 $section_order,
                 '@attributes',
-                'entry_count'
+                'entry_count',
             ]),
             $section_entry_count
         );
@@ -845,7 +847,7 @@ class SectionEntriesDataService extends Storage
                 'section',
                 $section_order,
                 '@attributes',
-                'has_direct_content'
+                'has_direct_content',
             ]),
             $has_direct_content
         );
@@ -868,7 +870,7 @@ class SectionEntriesDataService extends Storage
             'entry_id' => $entry['id'],
             'tags' => $sectionTagsDataService->getSectionTagsState(),
             'has_direct_content' => $has_direct_content,
-            'entry_count' => $section_entry_count
+            'entry_count' => $section_entry_count,
         ];
     }
 
@@ -954,25 +956,25 @@ class SectionEntriesDataService extends Storage
             $entry['mediaCacheData']['file'][] = [
                 '@attributes' => [
                     'type' => 'video',
-                    'src' => $fileName
-                ]
+                    'src' => $fileName,
+                ],
             ];
 
             $entries[self::$ROOT_LIST_ELEMENT][$entry_order] = $entry;
             $this->array2xmlFile($entries, $this->XML_FILE, $this->ROOT_ELEMENT);
 
             return [
-               'status' => 1,
-               'hash' => md5_file($mediaDir . '/' . $fileName),
-               'type' => 'video',
-               'smallthumb_path' => null,
-               'smallthumb_width' => null,
-               'smallthumb_height' => null,
-               'path' => $this->MEDIA_URL . '/' . $mediaDirName . '/' . $fileName,
-               'filename' => $fileName,
-               'size' => $fileSize,
-               'width' => null,
-               'height' => null
+                'status' => 1,
+                'hash' => md5_file($mediaDir . '/' . $fileName),
+                'type' => 'video',
+                'smallthumb_path' => null,
+                'smallthumb_width' => null,
+                'smallthumb_height' => null,
+                'path' => $this->MEDIA_URL . '/' . $mediaDirName . '/' . $fileName,
+                'filename' => $fileName,
+                'size' => $fileSize,
+                'width' => null,
+                'height' => null,
             ];
         }
 
@@ -993,7 +995,7 @@ class SectionEntriesDataService extends Storage
                 $slide['@attributes'] = array_merge($slide['@attributes'], [
                     'poster_frame' => $fileName,
                     'width' => $width,
-                    'height' => $height
+                    'height' => $height,
                 ]);
 
                 $entry['mediaCacheData']['file'][$slide_order] = $slide;
@@ -1006,8 +1008,8 @@ class SectionEntriesDataService extends Storage
                     'type' => 'image',
                     'src' => $fileName,
                     'width' => $width,
-                    'height' => $height
-                ]
+                    'height' => $height,
+                ],
             ];
         }
 
@@ -1026,7 +1028,7 @@ class SectionEntriesDataService extends Storage
             'filename' => $fileName,
             'size' => $fileSize,
             'width' => $width,
-            'height' => $height
+            'height' => $height,
         ];
     }
 
@@ -1057,14 +1059,14 @@ class SectionEntriesDataService extends Storage
         $slide['@attributes'] = array_merge($slide['@attributes'], [
             'src' => $fileName,
             'width' => $width,
-            'height' => $height
+            'height' => $height,
         ]);
 
         $entry['mediaCacheData']['file'][$data['imageOrder']] = $slide;
         $entries[self::$ROOT_LIST_ELEMENT][$entryOrder] = $entry;
         $this->array2xmlFile($entries, $this->XML_FILE, $this->ROOT_ELEMENT);
 
-        return  [
+        return [
             'update' => $fileName,
             'updateText' => $fileName,
             'real' => $oldFileName,
@@ -1074,8 +1076,8 @@ class SectionEntriesDataService extends Storage
                 'path' => $this->MEDIA_URL . '/' . $mediaDirName . '/',
                 'smallThumb' => $this->MEDIA_URL . '/' . $mediaDirName . '/' . basename($smallThumb),
                 'width' => $width,
-                'height' => $height
-            ]
+                'height' => $height,
+            ],
         ];
     }
 

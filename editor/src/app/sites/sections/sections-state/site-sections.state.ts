@@ -146,6 +146,10 @@ export class SiteSectionsState implements NgxsOnInit {
             }
             /* Quick workaround for deep settings: */
             if (action.payload['@attributes']) {
+              // sometimes we are getting numbers as action payload. But there are places in code where we need strings. Like '1'.
+              const attrNames = Object.keys(action.payload['@attributes'])
+              attrNames.forEach(key => action.payload['@attributes'][key] = action.payload['@attributes'][key] + '')
+
               /** @todo rebuild this recursive */
               const attributes = { ...section['@attributes'], ...action.payload['@attributes'] };
               return { ...section, ...action.payload, ...{ '@attributes': attributes } };
