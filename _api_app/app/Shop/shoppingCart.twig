@@ -1,0 +1,512 @@
+<div id="shoppingCartOuter">
+  <div id="shoppingCartEmpty"{% if not isEditMode %} class="hidden"{% endif %}>
+    <div{{ emptyCart.attributes|raw }}>
+        {{ emptyCart.content }}
+    </div>
+  </div>
+
+  <div id="shoppingCartTitle">{{ cartTitle }}</div>
+
+  <div id="shoppingCartExpired"{% if not isEditMode %} class="hidden"{% endif %}>
+    <div{{ expiredCart.attributes|raw }}>
+        {{ expiredCart.content }}
+    </div>
+  </div>
+
+  <div id="shoppingCartContents">
+    <div class="row thead">
+      <div class="column column-half padded title">
+        {% if isEditMode %}
+          <div{{ tableHeadTitle.attributes|raw }}>
+            {{ tableHeadTitle.content }}
+          </div>
+        {% else %}
+            {{ tableHeadTitle.content }}
+        {% endif %}
+      </div>
+
+      <div class="column column-half properties">
+        <div class="row">
+          <div class="column column-half padded qty">
+            {% if isEditMode %}
+              <div{{ tableHeadQuantity.attributes|raw }}>
+                {{ tableHeadQuantity.content }}
+              </div>
+            {% else %}
+                {{ tableHeadQuantity.content }}
+            {% endif %}
+          </div>
+          <div class="column column-fourth padded price">
+            {% if isEditMode %}
+              <div{{ tableHeadPrice.attributes|raw }}>
+                {{ tableHeadPrice.content }}
+              </div>
+            {% else %}
+                {{ tableHeadPrice.content }}
+            {% endif %}
+          </div>
+          <div class="column column-fourth padded sum">
+            {% if isEditMode %}
+              <div{{ tableHeadSum.attributes|raw }}>
+                {{ tableHeadSum.content }}
+              </div>
+            {% else %}
+                {{ tableHeadSum.content }}
+            {% endif %}
+            ({{ currency }})
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tbody prodList">
+      <div class="row prodline">
+        <div class="column column-half padded title"><span></span> <div class="image hidden"></div></div>
+        <div class="column column-half">
+          <div class="row">
+            <div class="column column-half padded qty"><span></span> <span class="adremovecart"><a href="#" class="add">+</a> <a href="#" class="remove">-</a></span></div>
+            <div class="column column-fourth padded price"></div>
+            <div class="column column-fourth padded sum"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row tbody shipping">
+      <div class="column column-half padded promo">
+        {% if discountAvailable %}
+          <div id="promoCodeEntry">
+            {% if isEditMode %}
+              <div{{ promoCode.attributes|raw }}>
+                {{ promoCode.content }}
+              </div>
+            {% else %}
+                {{ promoCode.content }}
+            {% endif %}
+            <span class="pull-right">
+              <input type="text" name="promo_code" id="promo_code" />
+              {% if isEditMode %}
+                <div{{ promoButton.attributes|raw }}>
+                  {{ promoButton.content }}
+                </div>
+              {% else %}
+                  <input type="button" value="{{ promoButton.content }}" />
+              {% endif %}
+            </span>
+          </div>
+        {% endif %}
+      </div>
+
+      <div class="column column-half padded">
+        <div class="padded-left">
+          <div{{ shippingTo.attributes|raw }}>
+            {{ shippingTo.content }}
+          </div>
+
+          <select id="shipping_select" class="pull-right">
+            {% for region in shippingRegions %}
+              <option value="{{ region.id }}">{{ region.name }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="row tbody">
+      <div class="column padded-left column-half pull-right">
+        <div class="padded shippingTotal">
+          <input type="hidden" name="total_weight" id="total_weight" value="" />
+          <span{{ shippingTotal.attributes|raw }}>
+            {{ shippingTotal.content }}
+          </span>
+          <div class="total pull-right">{{ currency }} <span id="shippingTotalSum"></span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row tbody discount{% if not isEditMode %} hidden{% endif %}">
+      <div class="column column-half padded-left pull-right">
+        <div class="padded shoppingCartDiscount">
+          <input type="hidden" id="discount_precents" value="" />
+          <input type="hidden" id="discount_applied" value="0" />
+          {% if isEditMode %}
+            <div{{ discount.attributes|raw }}>
+              {{ discount.content }}
+            </div>
+          {% else %}
+              {{ discount.content }}
+          {% endif %}
+          <span class="pull-right sumDiscount"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="row tbody total">
+      <div class="column column-half padded-left pull-right">
+        <div class="padded shoppingCartTotal">
+          {% if isEditMode %}
+            <div{{ total.attributes|raw }}>
+              {{ total.content }}
+            </div>
+          {% else %}
+              {{ total.content }}
+          {% endif %}
+
+          {% if isEditMode %}
+            <div{{ includedVat.attributes|raw }}>
+              {{ includedVat.content }}
+            </div>
+          {% endif %}
+          <div class="vatprice hidden">{{ includedVat.content }} (<span></span>%)</div>
+          <div class="pull-right total">{{ currency }} <span class="sumTotal"></span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row" id="cartBottomPart">
+    <div class="column column-half" id="cartFromleftPart">
+      <div class="padded-right">
+        <input type="hidden" name="cartemail" value="{{ config.email }}" id="cartemail">
+        <div class="cc-fields" id="billing_address_form">
+          <h2{{ billingAddress.attributes|raw }}>
+            {{ billingAddress.content }}
+          </h2>
+
+          <div class="padded">
+            <p class="checkbox">
+              {% if isEditMode %}
+                <div{{ legalPerson.attributes|raw }}>
+                  {{ legalPerson.content }}
+                </div>
+              {% else %}
+                <input type="checkbox" id="cartTextLegalPerson" value="1" /> <label for="cartTextLegalPerson" class="auto-width"> {{ legalPerson.content }}</label>
+              {% endif %}
+            </p>
+
+            <p class="xLegalPerson{% if not isEditMode %} hidden{% endif %}">
+              <label for="cartTextCompany">
+                {% if isEditMode %}
+                  <div{{ company.attributes|raw }}>
+                    {{ company.content }}
+                  </div>
+                {% else %}
+                    {{ company.content }}
+                {% endif %}
+              </label>
+              {% if not isEditMode %}
+                <input class="iText" type="text" name="cartTextCompany" id="cartTextCompany">
+              {% endif %}
+            </p>
+
+            <p class="xLegalPerson{% if not isEditMode %} hidden{% endif %}">
+              <label for="cartTextCompanyRegNo">
+                {% if isEditMode %}
+                  <div{{ companyRegistrationNumber.attributes|raw }}>
+                    {{ companyRegistrationNumber.content }}
+                  </div>
+                {% else %}
+                    {{ companyRegistrationNumber.content }}
+                {% endif %}
+              </label>
+              {% if not isEditMode %}
+                <input class="iText" type="text" name="cartTextCompanyRegNo" id="cartTextCompanyRegNo">
+              {% endif %}
+            </p>
+
+            <p class="xLegalPerson{% if not isEditMode %} hidden{% endif %}">
+              <label for="cartTextLegalAddress">
+                {% if isEditMode %}
+                  <div{{ legalAddress.attributes|raw }}>
+                    {{ legalAddress.content }}
+                  </div>
+                {% else %}
+                    {{ legalAddress.content }}
+                {% endif %}
+              </label>
+              {% if not isEditMode %}
+                <input class="iText" type="text" name="cartTextLegalAddress" id="cartTextLegalAddress">
+              {% endif %}
+            </p>
+
+            <p>
+              <label for="nname">
+                {% if isEditMode %}
+                  <div{{ nameSurname.attributes|raw }}>
+                    {{ nameSurname.content }}
+                  </div>
+                {% else %}
+                    {{ nameSurname.content }}
+                {% endif %}
+              </label>
+              {% if not isEditMode %}
+                <input class="iText" type="text" name="nname" id="nname">
+              {% endif %}
+            </p>
+
+            <p>
+              <label for="address">
+                {% if isEditMode %}
+                  <div{{ address.attributes|raw }}>
+                    {{ address.content }}
+                  </div>
+                {% else %}
+                    {{ address.content }}
+                {% endif %}
+              </label>
+              {% if not isEditMode %}
+                <input class="iText" type="text" name="address" id="address">
+              {% endif %}
+            </p>
+
+            <p>
+              <label for="phone">
+                {% if isEditMode %}
+                  <div{{ phone.attributes|raw }}>
+                    {{ phone.content }}
+                  </div>
+                {% else %}
+                    {{ phone.content }}
+                {% endif %}
+              </label>
+              {% if not isEditMode %}
+                <input class="iText" type="text" name="phone" id="phone">
+              {% endif %}
+            </p>
+
+            <p>
+              <label for="email-reg">
+                {% if isEditMode %}
+                  <div{{ email.attributes|raw }}>
+                    {{ email.content }}
+                  </div>
+                {% else %}
+                    {{ email.content }}
+                {% endif %}
+              </label>
+              {% if not isEditMode %}
+                <input class="iText" type="text" name="email" id="email-reg">
+              {% endif %}
+            </p>
+
+            <p>
+              <label for="notes">
+                {% if isEditMode %}
+                  <div{{ comments.attributes|raw }}>
+                    {{ comments.content }}
+                  </div>
+                {% else %}
+                    {{ comments.content }}
+                {% endif %}
+              </label>
+              {% if not isEditMode %}
+                <textarea rows="3" cols="5" name="notes" id="notes"></textarea>
+              {% endif %}
+            </p>
+
+            {% if isEditMode %}
+              <div{{ deliverToBillingAddress.attributes|raw }}>
+                {{ deliverToBillingAddress.content }}
+              </div>
+            {% else %}
+              <p class="no-margin-bottom">
+                <input type="checkbox" id="deliver_billing_addr" checked="checked" /> <label for="deliver_billing_addr" class="auto-width">{{ deliverToBillingAddress.content }}</label>
+              </p>
+            {% endif %}
+          </div>
+        </div>
+
+        <div class="cc-fields{% if not isEditMode %} hidden{% endif %}" id="shipping_address_form">
+          <h2{{ shippingAddressHeader.attributes|raw }}>
+            {{ shippingAddressHeader.content }}
+          </h2>
+
+          <div class="padded">
+            <p>
+              <label for="ship_nname">
+                {% if isEditMode %}
+                  <div{{ nameSurname.attributes|raw }}>
+                    {{ nameSurname.content }}
+                  </div>
+                {% else %}
+                    {{ nameSurname.content }}
+                {% endif %}
+              </label>
+              {% if not isEditMode %}
+                <input class="iText" type="text" name="ship_nname" id="ship_nname">
+              {% endif %}
+            </p>
+
+            <p>
+              <label for="ship_address">
+                {% if isEditMode %}
+                  <div{{ address.attributes|raw }}>
+                    {{ address.content }}
+                  </div>
+                {% else %}
+                    {{ address.content }}
+                {% endif %}
+              </label>
+              {% if not isEditMode %}
+                <input class="iText" type="text" name="ship_address" id="ship_address">
+              {% endif %}
+            </p>
+
+            <p>
+              <label for="ship_phone">
+                {% if isEditMode %}
+                  <div{{ phone.attributes|raw }}>
+                    {{ phone.content }}
+                  </div>
+                {% else %}
+                    {{ phone.content }}
+                {% endif %}
+              </label>
+              {% if not isEditMode %}
+                <input class="iText" type="text" name="ship_phone" id="ship_phone">
+              {% endif %}
+            </p>
+
+            <p>
+              <label for="ship_email-reg">
+                {% if isEditMode %}
+                  <div{{ email.attributes|raw }}>
+                    {{ email.content }}
+                  </div>
+                {% else %}
+                    {{ email.content }}
+                {% endif %}
+              </label>
+              {% if not isEditMode %}
+                <input class="iText" type="text" name="ship_email" id="ship_email-reg">
+              {% endif %}
+            </p>
+
+            <p>
+              <label for="ship_notes">
+                {% if isEditMode %}
+                  <div{{ comments.attributes|raw }}>
+                    {{ comments.content }}
+                  </div>
+                {% else %}
+                    {{ comments.content }}
+                {% endif %}
+              </label>
+              {% if not isEditMode %}
+                <textarea rows="3" cols="5" name="ship_notes" id="ship_notes"></textarea>
+              {% endif %}
+            </p>
+          </div>
+        </div>
+
+        {% if isEditMode %}
+          <div class="padded">
+            <div{{ receiveNews.attributes|raw }}>
+              {{ receiveNews.content }}
+            </div>
+          </div>
+        {% elseif receiveNews.content %}
+          <div class="padded padded-top-bottom-off">
+            <input type="checkbox" id="receive_news_updates" />&nbsp;<label for="receive_news_updates">{{ receiveNews.content }}</label>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="column column-half">
+      <div id="cartFromrightPart" class="padded-left">
+        <h2{{ paymentHeader.attributes|raw }}>
+          {{ paymentHeader.content }}
+        </h2>
+
+        <div class="padded choosePaymentMethod">
+
+          {% if isEditMode or paymentDescription.content %}
+            <p{{ paymentDescription.attributes|raw }}>
+              {{ paymentDescription.content }}
+            </p>
+          {% endif %}
+
+          <input type="hidden" name="payment_method" id="payment_method" value="{{ config.paymentMethod }}" />
+
+          {% if isPaypalAvailable %}
+            <div class="choosePaymentRadio">
+              <label for="pm_creditcard"><input type="radio" name="pm" id="pm_creditcard" checked="checked" />
+              <img src="/_plugin_shop/images/creditcard.png" alt="Credit card" /></label>
+            </div>
+            <div class="choosePaymentRadio">
+              <label for="pm_paypal"><input type="radio" name="pm" id="pm_paypal" />
+              <img src="/_plugin_shop/images/paypal.png" alt="Paypal" /></label>
+            </div>
+          {% endif %}
+
+          {% if isManualTransferAvailable %}
+            <div class="choosePaymentRadio">
+              <label for="pm_bank_transfer"><input type="radio" name="pm" id="pm_bank_transfer"{% if config.paymentMethod == 'bank' %} checked="checked"{% endif %}>
+                {% if isEditMode %}
+                  <div{{ manualTransfer.attributes|raw }}>
+                    {{ manualTransfer.content }}
+                  </div>
+                {% else %}
+                    {{ manualTransfer.content }}
+                {% endif %}
+              </label>
+            </div>
+          {% endif %}
+        </div>
+
+        <div class="padded checkOut">
+          {% if isEditMode or checkoutDescription.content %}
+            <p{{ checkoutDescription.attributes|raw }}>
+              {{ checkoutDescription.content }}
+            </p>
+          {% endif %}
+
+          <p class="text-right checkoutSumTotal">{{ totalLabel }} {{ currency }} <span class="sumTotal"></span></p>
+
+          {% if isEditMode %}
+            {% if config.termsLink %}
+              <div{{ terms.attributes|raw }}>
+                {{ terms.content }}
+              </div>
+            {% endif %}
+
+            <div{{ fillRequiredFields.attributes|raw }}>
+              {{ fillRequiredFields.content }}
+            </div>
+
+            <div{{ checkoutButton.attributes|raw }}>
+              {{ checkoutButton.content }}
+            </div>
+
+            <div{{ returnToStore.attributes|raw }}>
+              {{ returnToStore.content }}
+            </div>
+
+          {% else %}
+            {% if config.termsLink %}
+              <p class="text-right"><a href="{{ config.termsLink }}" class="cartTextTerms" target="_blank">{{ terms.content }}</a></p>
+            {% endif %}
+
+            <p class="text-right no-margin" id="required-fields-error">{{ fillRequiredFields.content }}</p>
+
+            <p class="text-right"><a href="#" id="checkoutSubmit">{{ checkoutButton.content }}</a></p>
+
+            <p class="text-right no-margin"><a href="javascript:;" onclick="milkbox.closeMilkbox();">{{ returnToStore.content }}</a></p>
+          {% endif %}
+
+          <form id="paypalCheckoutForm" method="post">
+            <input type="hidden" name="charset" value="utf-8" />
+            <input type="hidden" name="cmd" value="_cart" />
+            <input type="hidden" name="upload" value="1" />
+            <input type="hidden" name="business" value="" />
+            <input type="hidden" name="currency_code" value="" />
+            <input type="hidden" name="no_shipping" value="2" />
+            <input type="hidden" name="return" value="{{ returnUrl }}" />
+          </form>
+          <div id="shoppingCart" class="hidden"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

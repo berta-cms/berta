@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import * as ShoppingCart from '../../templates/Plugins/Shop/shoppingCart.twig';
-import * as ShoppingCartLink from '../../templates/Plugins/Shop/shoppingCartLink.twig';
+import * as ShoppingCart from '../../templates/Shop/shoppingCart.twig';
+import * as ShoppingCartLink from '../../templates/Shop/shoppingCartLink.twig';
 import { getImageItem, toHtmlAttributes } from '../shared/helpers';
 import { SiteSectionStateModel } from '../sites/sections/sections-state/site-sections-state.model';
 

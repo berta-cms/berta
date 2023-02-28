@@ -1,0 +1,14 @@
+<div id="shoppingCart"{{ attributes|raw }}>
+	<a href="{{ link|raw }}">
+		<span class="title">
+			{% if image %}
+				<img src="{{ image.src }}" alt="{{ image.alt }}" title="{{ image.alt }}">
+			{% else %}
+				{{ title }}
+			{% endif %}
+		</span>
+		<span class="numItemsContainer hidden">
+			(<span class="numItems">0</span>)
+		</span>
+	</a>
+</div>

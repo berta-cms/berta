@@ -14,6 +14,7 @@ class MessyTemplateRenderService extends SectionTemplateRenderService
 {
     private $sectionBackgroundGalleryRS;
     private $gridViewRS;
+    private $siteTemplatesConfigService;
 
     public function __construct()
     {
