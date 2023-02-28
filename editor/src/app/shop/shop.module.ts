@@ -15,6 +15,8 @@ import { ShopProductsComponent } from './products/shop-products.component';
 import { ShopOrdersComponent } from './orders/shop-orders.component';
 import { ShopRegionalCostsComponent } from './regional-costs/shop-regional-costs.component';
 import { ShopSettingsComponent } from './settings/shop-settings.component';
+import { ShopSettingsState } from './settings/shop-settings.state';
+import { ShopRegionalCostsState } from './regional-costs/shop-regional-costs.state';
 
 @NgModule({
   imports: [
@@ -25,6 +27,8 @@ import { ShopSettingsComponent } from './settings/shop-settings.component';
       ShopProductsState,
       ShopOrdersState,
       ShopSettingsConfigState,
+      ShopSettingsState,
+      ShopRegionalCostsState,
     ]),
     SitesSharedModule,
   ],
