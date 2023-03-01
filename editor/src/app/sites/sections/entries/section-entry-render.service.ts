@@ -98,6 +98,7 @@ export class SectionEntryRenderService {
       styles.push(`width:${entry.content.width}px`);
     } else if (
       currentSectionType === 'shop' &&
+      shopSettings.group_price_item &&
       shopSettings.group_price_item.entryWidth
     ) {
       const width = parseInt(shopSettings.group_price_item.entryWidth, 10);

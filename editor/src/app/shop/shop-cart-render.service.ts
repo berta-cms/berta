@@ -63,7 +63,7 @@ export class ShopCartRenderService {
         section['@attributes'].type === 'shopping_cart'
     );
 
-    if (!section) {
+    if (!section || !shopSettings.group_price_item) {
       return '';
     }
 

@@ -102,6 +102,10 @@ export class TemplateRenderService {
     templateName,
     isResponsive
   ) {
+    if (!currentSection) {
+      return '';
+    }
+
     const sectionEntries = this.sectionEntriesService.getSectionEntries(
       entries,
       currentSection.name,
@@ -217,25 +221,29 @@ export class TemplateRenderService {
       siteTemplateSettings.pageLayout &&
       siteTemplateSettings.pageLayout.autoResponsive === 'yes';
 
-    const shopSettings = this.store
-      .selectSnapshot(ShopSettingsState.getCurrentSiteSettings)
-      .reduce((settings, settingGroup) => {
-        settingGroup.settings.forEach((setting) => {
-          settings = {
-            ...settings,
-            [settingGroup.slug]: {
-              ...settings[settingGroup.slug],
-              [setting.slug]: setting.value,
-            },
-          };
-        });
+    const shopSettings = isShopAvailable
+      ? this.store
+          .selectSnapshot(ShopSettingsState.getCurrentSiteSettings)
+          .reduce((settings, settingGroup) => {
+            settingGroup.settings.forEach((setting) => {
+              settings = {
+                ...settings,
+                [settingGroup.slug]: {
+                  ...settings[settingGroup.slug],
+                  [setting.slug]: setting.value,
+                },
+              };
+            });
 
-        return settings;
-      }, {});
+            return settings;
+          }, {})
+      : {};
 
-    const shippingRegions = this.store.selectSnapshot(
-      ShopRegionalCostsState.getCurrentSiteRegionalCosts
-    );
+    const shippingRegions = isShopAvailable
+      ? this.store.selectSnapshot(
+          ShopRegionalCostsState.getCurrentSiteRegionalCosts
+        )
+      : {};
 
     const viewData = {
       appState: appState,

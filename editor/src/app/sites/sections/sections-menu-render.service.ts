@@ -21,7 +21,7 @@ export class SectionsMenuRenderService {
   ): string {
     let classes: string[] = [];
 
-    if (section.name === currentSection.name) {
+    if (currentSection && section.name === currentSection.name) {
       classes.push('selected');
     }
 
@@ -31,7 +31,7 @@ export class SectionsMenuRenderService {
       if (siteTemplateSettings.menu.position === 'fixed') {
         classes.push('xFixed');
       } else {
-        const i = classes.indexOf('xFixed')
+        const i = classes.indexOf('xFixed');
         if (i > -1) {
           classes.splice(i, 1);
         }
@@ -49,7 +49,7 @@ export class SectionsMenuRenderService {
     section: SiteSectionStateModel,
     isResponsive: boolean,
     templateName: string,
-    siteTemplateSettings,
+    siteTemplateSettings
   ): string {
     if (templateName !== 'messy' || isResponsive) {
       return '';
@@ -62,9 +62,9 @@ export class SectionsMenuRenderService {
           Math.floor(Math.random() * 600 + 1),
         ];
 
-    let position = 'absolute'
+    let position = 'absolute';
     if (siteTemplateSettings.menu.position === 'fixed') {
-      position = 'fixed'
+      position = 'fixed';
     }
 
     return `left:${left}px;top:${top}px;position:${position} !important;`;
@@ -246,7 +246,7 @@ export class SectionsMenuRenderService {
 
       const submenuAttributes = this.submenuAttributes(section, sectionTags);
 
-      if (templateName === 'default') {
+      if (templateName === 'default' && currentSection) {
         if (currentSection.name === section.name) {
           submenu = {
             tags: sectionTags,
@@ -274,7 +274,7 @@ export class SectionsMenuRenderService {
               section,
               isResponsive,
               templateName,
-              siteTemplateSettings,
+              siteTemplateSettings
             ),
             'data-path': !isResponsive
               ? `${siteSlug}/section/${section.order}/positionXY`

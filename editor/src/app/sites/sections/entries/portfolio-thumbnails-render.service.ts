@@ -84,6 +84,10 @@ export class PortfolioThumbnailsRenderService {
     tagSlug: string,
     entries: SectionEntry[]
   ) {
+    if (!currentSection) {
+      return '';
+    }
+
     const sectionEntries = this.sectionEntriesService.getSectionEntries(
       entries,
       currentSection.name,

@@ -223,6 +223,11 @@ export class MessyTemplateRenderService extends TemplateRenderService {
 
   getViewData(): { [key: string]: any } {
     const commonViewData = super.getViewData();
+
+    if (!commonViewData.currentSection) {
+      return commonViewData;
+    }
+
     const viewData = {
       ...commonViewData,
       ...{
@@ -238,7 +243,8 @@ export class MessyTemplateRenderService extends TemplateRenderService {
         isCenteredPageLayout:
           commonViewData.siteTemplateSettings.pageLayout.centered === 'yes',
         isAutoResponsive:
-          commonViewData.siteTemplateSettings.pageLayout.autoResponsive === 'yes',
+          commonViewData.siteTemplateSettings.pageLayout.autoResponsive ===
+          'yes',
         sectionType: commonViewData.currentSectionType,
         contentContainerAttributes: this.getContentContainerAttributes(
           commonViewData.siteTemplateSettings,

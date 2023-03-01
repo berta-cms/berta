@@ -68,6 +68,11 @@ export class DefaultTemplateRenderService extends TemplateRenderService {
 
   getViewData(): { [key: string]: any } {
     const commonViewData = super.getViewData();
+
+    if (!commonViewData.currentSection) {
+      return commonViewData;
+    }
+
     const viewData = {
       ...commonViewData,
       ...{

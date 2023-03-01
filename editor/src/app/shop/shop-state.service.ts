@@ -43,7 +43,12 @@ export class ShopStateService {
         this.store.select((state) => state.app),
         this.store.select((state) => state.user)
       ).pipe(
-        filter(([appState, user]) => !!user.token && appState.site !== null), // Make sure user is logged in
+        filter(
+          ([appState, user]) =>
+            !!user.token &&
+            appState.site !== null &&
+            user.features.includes('shop')
+        ), // Make sure user is logged in
         take(1),
         tap(() => this.store.dispatch(new AppShowLoading())),
         // `exhaustMap` waits for the first request to complete instead of canceling and starting new ones.

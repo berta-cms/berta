@@ -86,7 +86,10 @@ export class MashupTemplateRenderService extends TemplateRenderService {
     };
   }
 
-  getMainColumnAttributes(siteTemplateSettings): {class: string, 'data-paddingtop': string} {
+  getMainColumnAttributes(siteTemplateSettings): {
+    class: string;
+    'data-paddingtop': string;
+  } {
     return {
       class:
         siteTemplateSettings.pageLayout.centered === 'yes' ? 'xCentered' : null,
@@ -99,6 +102,11 @@ export class MashupTemplateRenderService extends TemplateRenderService {
 
   getViewData(): { [key: string]: any } {
     const commonViewData = super.getViewData();
+
+    if (!commonViewData.currentSection) {
+      return commonViewData;
+    }
+
     const viewData = {
       ...commonViewData,
       ...{

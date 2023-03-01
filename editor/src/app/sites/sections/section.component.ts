@@ -32,18 +32,22 @@ import { AppState } from 'src/app/app-state/app.state';
         <div class="expand"></div>
         <button
           [attr.title]="
-            section['@attributes'].published === '1' ? 'Unpublish' : 'Publish'
+            [1, '1'].includes(section['@attributes'].published)
+              ? 'Unpublish'
+              : 'Publish'
           "
           (click)="
             updateField({
               '@attributes': {
-                published: section['@attributes'].published === '1' ? '0' : '1'
+                published: [1, '1'].includes(section['@attributes'].published)
+                  ? '0'
+                  : '1'
               }
             })
           "
         >
           <berta-icon-publish
-            [published]="section['@attributes'].published === '1'"
+            [published]="[1, '1'].includes(section['@attributes'].published)"
           ></berta-icon-publish>
         </button>
         <button title="copy" (click)="cloneSection()">
