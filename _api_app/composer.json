@@ -11,7 +11,7 @@
   "type": "project",
   "require": {
     "php": "^7.3|^8.0",
-    "firebase/php-jwt": "^5.4",
+    "firebase/php-jwt": "^6.0",
     "laravel/lumen-framework": "^8.0",
     "mobiledetect/mobiledetectlib": "^2.8",
     "rcrowe/twigbridge": "^0.14.0",
