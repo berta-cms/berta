@@ -4,7 +4,7 @@
   "license": "GPL-3.0",
   "version": "2.0.0",
   "devDependencies": {
-    "gulp": "^3.9.0",
+    "gulp": "^4.0.2",
     "gulp-autoprefixer": "^6.0.0",
     "gulp-clean": "^0.4.0",
     "gulp-concat": "^2.5.2",
