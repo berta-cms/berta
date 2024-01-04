@@ -9,73 +9,78 @@ import { SiteSettingsComponent } from './sites/settings/site-settings.component'
 import { SiteTemplateSettingsComponent } from './sites/template-settings/site-template-settings.component';
 import { UserAccountComponent } from './user/user-account.component';
 import { AuthGuardService } from './auth-guard.service';
-
+import { SiteMediaComponent } from './sites/media/site-media.component';
 
 const routes: Routes = [
   {
     path: 'multisite',
     component: SitesComponent,
-    canActivate: [AuthGuardService]
+    canActivate: [AuthGuardService],
   },
   {
     path: 'sections/:section',
     component: SiteSectionsComponent,
-    canActivate: [AuthGuardService]
+    canActivate: [AuthGuardService],
   },
   {
     path: 'sections',
     component: SiteSectionsComponent,
-    canActivate: [AuthGuardService]
+    canActivate: [AuthGuardService],
   },
   {
     path: 'settings/:group',
     component: SiteSettingsComponent,
-    canActivate: [AuthGuardService]
+    canActivate: [AuthGuardService],
   },
   {
     path: 'settings',
     component: SiteSettingsComponent,
-    canActivate: [AuthGuardService]
+    canActivate: [AuthGuardService],
   },
   {
     path: 'themes',
     component: ThemesComponent,
-    canActivate: [AuthGuardService]
+    canActivate: [AuthGuardService],
   },
   {
     path: 'design/:group',
     component: SiteTemplateSettingsComponent,
-    canActivate: [AuthGuardService]
+    canActivate: [AuthGuardService],
   },
   {
     path: 'design',
     component: SiteTemplateSettingsComponent,
-    canActivate: [AuthGuardService]
+    canActivate: [AuthGuardService],
+  },
+  {
+    path: 'media',
+    component: SiteMediaComponent,
+    canActivate: [AuthGuardService],
   },
   {
     path: 'account',
     component: UserAccountComponent,
-    canActivate: [AuthGuardService]
+    canActivate: [AuthGuardService],
   },
   {
     path: 'shop',
-    loadChildren: () => import('./shop/shop.module').then(m => m.ShopModule),
+    loadChildren: () => import('./shop/shop.module').then((m) => m.ShopModule),
     /** Can load appears not to be working correctly. @todo: update Angular, see if it helps */
     // canLoad: [AuthGuardService],
-    canActivate: [AuthGuardService]
+    canActivate: [AuthGuardService],
   },
   {
     path: 'login',
-    component: LoginComponent
+    component: LoginComponent,
   },
   {
     path: '**',
-    component: NotFoundComponent
-  }
+    component: NotFoundComponent,
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

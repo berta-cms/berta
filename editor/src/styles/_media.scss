@@ -1,0 +1,32 @@
+berta-site-media {
+  display: flex;
+  min-height: 100%;
+
+  aside {
+    padding-top: 0;
+    width: 384px;
+    border-right: 1px solid $grey-10;
+
+    .setting-group {
+      h3 {
+        display: block;
+
+        a {
+          text-decoration: none;
+          color: $black;
+
+          &:hover,
+          &.active {
+            color: $berta-accent;
+          }
+        }
+
+        > div {
+          a {
+            font-size: $input-font-size;
+          }
+        }
+      }
+    }
+  }
+}
