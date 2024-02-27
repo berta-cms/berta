@@ -119,6 +119,16 @@ export class AddEntryGalleryFileAction {
   ) {}
 }
 
+export class DeleteEntryGalleryFileAction {
+  static readonly type = 'SECTION_ENTRY_GALLERY:DELETE_FILE';
+  constructor(
+    public site: string,
+    public section: string,
+    public entryId: string,
+    public file: string
+  ) {}
+}
+
 export class OrderEntryGalleryFilesAction {
   static readonly type = 'SECTION_ENTRY_GALLERY:ORDER';
   constructor(

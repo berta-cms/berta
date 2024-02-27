@@ -36,6 +36,7 @@ import {
   DeleteSectionLastEntry,
   AddEntryGalleryFileAction,
   OrderEntryGalleryFilesAction,
+  DeleteEntryGalleryFileAction,
 } from './section-entries.actions';
 import { UserLoginAction } from '../../../../user/user.actions';
 import { UpdateSiteSectionAction } from '../../sections-state/site-sections.actions';
@@ -724,6 +725,56 @@ export class SectionEntriesState implements NgxsOnInit {
                   const mediaCacheData = {
                     ...entry.mediaCacheData,
                     file: response.files,
+                  };
+                  return {
+                    ...entry,
+                    mediaCacheData: mediaCacheData,
+                  };
+                }
+
+                return entry;
+              }),
+            });
+          }
+        })
+      );
+  }
+
+  @Action(DeleteEntryGalleryFileAction)
+  deleteEntryGalleryFile(
+    { getState, patchState }: StateContext<SectionEntriesStateModel>,
+    action: DeleteEntryGalleryFileAction
+  ) {
+    return this.appStateService
+      .sync(
+        'entryGallery',
+        {
+          site: action.site,
+          section: action.section,
+          entryId: action.entryId,
+          file: action.file,
+        },
+        'DELETE'
+      )
+      .pipe(
+        tap((response) => {
+          if (response.error_message) {
+            // @TODO handle error message
+            console.error(response.error_message);
+          } else {
+            const currentState = getState();
+
+            patchState({
+              [action.site]: currentState[action.site].map((entry) => {
+                if (
+                  entry.sectionName === action.section &&
+                  entry.id === action.entryId
+                ) {
+                  const mediaCacheData = {
+                    ...entry.mediaCacheData,
+                    file: entry.mediaCacheData.file.filter(
+                      (f) => f['@attributes'].src !== response.file
+                    ),
                   };
                   return {
                     ...entry,

@@ -7,9 +7,11 @@ import {
 import { AppState } from '../../../app/app-state/app.state';
 import {
   AddEntryGalleryFileAction,
+  DeleteEntryGalleryFileAction,
   OrderEntryGalleryFilesAction,
 } from '../sections/entries/entries-state/section-entries.actions';
 import { SiteStateModel } from '../sites-state/site-state.model';
+import { PopupService } from '../../../app/popup/popup.service';
 
 @Component({
   selector: 'berta-entry-gallery',
@@ -34,8 +36,15 @@ import { SiteStateModel } from '../sites-state/site-state.model';
           <div *ngIf="file['@attributes'].type === 'video'" class="media video">
             [ video ]
           </div>
-          <button title="move" class="reorder">
+          <button title="move" class="action reorder">
             <bt-icon-move></bt-icon-move>
+          </button>
+          <button
+            title="delete"
+            class="action delete"
+            (click)="deleteItem(file['@attributes'].src)"
+          >
+            <bt-icon-delete></bt-icon-delete>
           </button>
         </div>
       </div>
@@ -56,7 +65,7 @@ export class EntryGalleryComponent implements OnInit {
   site = this.store.selectSnapshot(AppState.getSite);
   mediaUrl = `/storage/${this.site ? `-sites/${this.site}/` : ''}media`;
 
-  constructor(private store: Store) {}
+  constructor(private store: Store, private popupService: PopupService) {}
 
   ngOnInit() {
     this.itemList = [...this.entry.mediaCacheData.file];
@@ -84,5 +93,34 @@ export class EntryGalleryComponent implements OnInit {
         itemList.map((f) => f['@attributes'].src)
       )
     );
+  }
+
+  deleteItem(file: string) {
+    this.popupService.showPopup({
+      type: 'warn',
+      content: 'Are you sure you want to delete this item?',
+      showOverlay: true,
+      actions: [
+        {
+          type: 'primary',
+          label: 'OK',
+          callback: (popupService) => {
+            this.store.dispatch(
+              new DeleteEntryGalleryFileAction(
+                this.site,
+                this.entry.sectionName,
+                this.entry.id,
+                file
+              )
+            );
+
+            popupService.closePopup();
+          },
+        },
+        {
+          label: 'Cancel',
+        },
+      ],
+    });
   }
 }

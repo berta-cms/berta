@@ -58,28 +58,44 @@ berta-site-media {
   img {
     max-width: 100%;
     max-height: 100%;
-    // pointer-events: none;
   }
 
-  .reorder {
+  .action {
     display: none;
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
     background-color: rgba($white, 0.5);
     padding: 0.25em;
-    cursor: grab;
 
     svg {
       display: block;
     }
   }
 
+  .delete {
+    top: 0;
+    right: 0;
+    cursor: pointer;
+
+    &:hover {
+      svg {
+        path {
+          fill: $error-color;
+        }
+      }
+    }
+  }
+
+  .reorder {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    cursor: grab;
+  }
+
   &:hover {
     cursor: grab;
 
-    .reorder {
+    .action {
       display: block;
     }
   }
