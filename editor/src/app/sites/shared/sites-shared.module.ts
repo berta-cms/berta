@@ -17,16 +17,14 @@ import { IconCloneComponent } from './icon-clone.component';
 import { IconDeleteComponent } from './icon-delete.component';
 import { IconPublishComponent } from './icon-publish.component';
 import { IconReadonlyComponent } from '../../inputs/icon-readonly.component';
-import { RouteButton } from 'src/app/inputs/route-button.component';
+import { RouteButton } from '../../../app/inputs/route-button.component';
 import { TooltipModule } from 'ng2-tooltip-directive';
 import { HelpTooltipComponent } from './help-tooltip.component';
+import { FilesInputComponent } from '../../../app/inputs/files-input.component';
+import { IconMoveComponent } from './icon-move.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    ColorPickerModule,
-    TooltipModule,
-  ],
+  imports: [CommonModule, ColorPickerModule, TooltipModule],
   declarations: [
     SettingComponent,
     SettingRowComponent,
@@ -40,12 +38,14 @@ import { HelpTooltipComponent } from './help-tooltip.component';
     ColorInputComponent,
     SelectInputComponent,
     FileInputComponent,
+    FilesInputComponent,
     IconReadonlyComponent,
     RouteButton,
     IconCloneComponent,
     IconDeleteComponent,
     IconPublishComponent,
-    HelpTooltipComponent
+    IconMoveComponent,
+    HelpTooltipComponent,
   ],
   exports: [
     SettingComponent,
@@ -60,12 +60,14 @@ import { HelpTooltipComponent } from './help-tooltip.component';
     ColorInputComponent,
     SelectInputComponent,
     FileInputComponent,
+    FilesInputComponent,
     IconReadonlyComponent,
     RouteButton,
     IconCloneComponent,
     IconDeleteComponent,
     IconPublishComponent,
-    HelpTooltipComponent
-  ]
+    IconMoveComponent,
+    HelpTooltipComponent,
+  ],
 })
-export class SitesSharedModule { }
+export class SitesSharedModule {}

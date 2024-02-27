@@ -1,13 +1,13 @@
 .form-group {
   font-size: $input-font-size;
-  transition: opacity .2s;
+  transition: opacity 0.2s;
 
   label {
     align-items: center;
     color: $black;
     display: flex;
     justify-content: space-between;
-    transition: color .2s;
+    transition: color 0.2s;
   }
 
   input,
@@ -29,7 +29,7 @@
     display: flex;
     margin-left: 1em;
     min-width: 50%;
-    transition: border-color .2s;
+    transition: border-color 0.2s;
     width: 50%;
 
     svg {
@@ -38,8 +38,8 @@
 
     .icon {
       fill: $grey-40;
-      transition: fill .2s;
-      margin-right: .75em;
+      transition: fill 0.2s;
+      margin-right: 0.75em;
 
       &.clear {
         cursor: pointer;
@@ -53,16 +53,16 @@
     }
 
     .icon-empty {
-      margin-left: .75em;
+      margin-left: 0.75em;
 
       + input {
-        padding-left: .25em;
+        padding-left: 0.25em;
       }
     }
 
     > input,
     .icon-remove {
-      transition: stroke .2s;
+      transition: stroke 0.2s;
     }
 
     > input,
@@ -77,8 +77,8 @@
       font-size: 1em;
       min-width: 1rem;
       outline: none;
-      padding: .75em;
-      transition: color .2s;
+      padding: 0.75em;
+      transition: color 0.2s;
       width: 100%;
 
       &:focus {
@@ -119,7 +119,7 @@
       align-items: center;
       box-sizing: border-box;
       display: flex;
-      padding-right: .75em;
+      padding-right: 0.75em;
       width: 100%;
     }
 
@@ -136,7 +136,7 @@
 
       path {
         stroke: $grey-40;
-        transition: stroke .2s;
+        transition: stroke 0.2s;
       }
     }
 
@@ -157,7 +157,7 @@
       li {
         color: $grey-80;
         overflow-x: hidden;
-        padding: .75em;
+        padding: 0.75em;
         text-overflow: ellipsis;
 
         &:hover {
@@ -181,7 +181,7 @@
     }
 
     .add {
-      margin-right: .75em;
+      margin-right: 0.75em;
     }
   }
 
@@ -198,7 +198,7 @@
       position: absolute;
       visibility: hidden;
       &:disabled {
-        +span {
+        + span {
           border-color: $grey-10;
           cursor: default;
           &:after {
@@ -229,19 +229,19 @@
       cursor: pointer;
       display: inline-block;
       height: $toggle-height;
-      transition: background-color .2s, border-color .2s;
+      transition: background-color 0.2s, border-color 0.2s;
       width: $toggle-width;
 
       &:after {
         background-color: $grey-40;
         border: 1px solid $white;
         border-radius: 50%;
-        content: '';
+        content: "";
         display: block;
         height: $toggle-slider-size;
         left: 0;
         position: relative;
-        transition: left .2s, border-color .2s;
+        transition: left 0.2s, border-color 0.2s;
         width: $toggle-slider-size;
       }
     }
@@ -254,10 +254,10 @@
     color: $grey-40;
     display: block;
     font-size: 1em;
-    margin: .75em 0 0;
+    margin: 0.75em 0 0;
     outline: none;
-    padding: .75em;
-    transition: color .2s, border-color .2s;
+    padding: 0.75em;
+    transition: color 0.2s, border-color 0.2s;
     width: 100%;
 
     &:focus {
@@ -319,7 +319,7 @@
   }
 
   &.bt-disabled {
-    opacity: .3;
+    opacity: 0.3;
     pointer-events: none;
   }
 
@@ -353,7 +353,19 @@
 
   .error-message {
     color: $error-color;
-    margin: .5em 0;
+    margin: 0.5em 0;
+  }
+}
+
+berta-files-input {
+  .form-group {
+    label {
+      display: inline-block;
+    }
+    .file-input-wrapper {
+      margin: 0;
+      width: auto;
+    }
   }
 }
 
@@ -363,7 +375,7 @@ color-picker {
 
 .color-picker {
   button {
-    margin-left: .5em;
+    margin-left: 0.5em;
   }
 }
 
@@ -385,13 +397,13 @@ color-picker {
 
           &:before {
             background-color: $grey-40;
-            content: '';
+            content: "";
             display: block;
             height: 60%;
             left: 0;
             position: absolute;
             top: 20%;
-            transition: background-color .2s;
+            transition: background-color 0.2s;
             width: 1px;
           }
 

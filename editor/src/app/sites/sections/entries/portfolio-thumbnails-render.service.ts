@@ -16,15 +16,15 @@ export class PortfolioThumbnailsRenderService {
   ) {}
 
   getFirstEntryImage(siteSlug: string, siteSettings, entry: SectionEntry) {
-    if (!entry.mediaCacheData && !entry.mediaCacheData.file) {
+    if (!entry.mediaCacheData && entry.mediaCacheData.file.length === 0) {
       return null;
     }
 
     const item = entry.mediaCacheData.file.find((file) => {
       return (
         file['@attributes'] &&
-        (file['@attributes'].type == 'image' ||
-          file['@attributes'].poster_frame)
+        (file['@attributes'].type === 'image' ||
+          !!file['@attributes'].poster_frame)
       );
     });
 

@@ -7,25 +7,46 @@ import { SiteSectionStateModel } from '../sections/sections-state/site-sections-
 import { AppState } from '../../app-state/app.state';
 import { SiteSectionsState } from '../sections/sections-state/site-sections.state';
 import { SectionTagsInterface } from '../sections/tags/section-tags-state.model';
-import { AppStateModel } from 'src/app/app-state/app-state.interface';
 import { SectionTagsState } from '../sections/tags/section-tags.state';
+import { SectionEntriesState } from '../sections/entries/entries-state/section-entries.state';
+import { ActivatedRoute } from '@angular/router';
+import { SitesState } from '../sites-state/sites.state';
+import { SiteStateModel } from '../sites-state/site-state.model';
 
 @Component({
   selector: 'berta-site-media',
   template: `
-    <aside>
+    <aside *ngIf="currentSite$ | async">
+      <div class="setting-group">
+        <h3>
+          <a
+            [routerLink]="['/media']"
+            [queryParams]="{
+              site:
+                (currentSite$ | async).name === ''
+                  ? null
+                  : (currentSite$ | async).name,
+              all: 1
+            }"
+            [class.active]="showAllSections"
+            >All
+          </a>
+        </h3>
+      </div>
       <div class="setting-group" *ngFor="let section of sectionsList">
         <h3>
           <a
             [routerLink]="['/media']"
             [queryParams]="{
               site:
-                (currentSite$ | async).site === ''
+                (currentSite$ | async).name === ''
                   ? null
-                  : (currentSite$ | async).site,
+                  : (currentSite$ | async).name,
               section: section.section.name
             }"
-            [class.active]="section.section.name === activeNav.section"
+            [class.active]="
+              !showAllSections && section.section.name === activeNav.section
+            "
             >{{ section.section.title || '...' }}
           </a>
           <div *ngFor="let tag of section.tags">
@@ -33,9 +54,9 @@ import { SectionTagsState } from '../sections/tags/section-tags.state';
               [routerLink]="['/media']"
               [queryParams]="{
                 site:
-                  (currentSite$ | async).site === ''
+                  (currentSite$ | async).name === ''
                     ? null
-                    : (currentSite$ | async).site,
+                    : (currentSite$ | async).name,
                 section: section.section.name,
                 tag: tag['@attributes'].name
               }"
@@ -49,10 +70,25 @@ import { SectionTagsState } from '../sections/tags/section-tags.state';
         </h3>
       </div>
     </aside>
+    <div class="content">
+      <div *ngFor="let selectedSection of selectedSections">
+        <h3>{{ selectedSection.section.title || '...' }}</h3>
+        <h5 *ngIf="selectedTag">
+          {{ selectedTag['@value'] }}
+        </h5>
+        <berta-entry-gallery
+          *ngFor="let entry of selectedSection.entries"
+          [currentSite]="currentSite$ | async"
+          [entry]="entry"
+        ></berta-entry-gallery>
+      </div>
+    </div>
   `,
 })
 export class SiteMediaComponent implements OnInit {
-  @Select('app') public currentSite$: Observable<AppStateModel>;
+  @Select(SitesState.getCurrentSite)
+  public currentSite$: Observable<SiteStateModel>;
+
   sectionsList: {
     section: SiteSectionStateModel;
     tags: SectionTagsInterface[];
@@ -64,16 +100,22 @@ export class SiteMediaComponent implements OnInit {
     tag: string | null;
   };
 
-  constructor(private store: Store) {}
+  selectedSections: { section: SiteSectionStateModel; tags: any }[];
+  selectedTag: string | null;
+  showAllSections: boolean;
+
+  constructor(private store: Store, private route: ActivatedRoute) {}
 
   ngOnInit() {
     combineLatest([
       this.store.select(SiteSectionsState.getCurrentSiteSections),
       this.store.select(SectionTagsState.getCurrentSiteTags),
       this.store.select(AppState.getActiveNav),
+      this.store.select(SectionEntriesState.getCurrentSiteEntries),
+      this.route.queryParams,
     ])
       .pipe(
-        map(([sections, tags, activeNav]) => {
+        map(([sections, tags, activeNav, entries, queryParams]) => {
           return {
             sections: sections
               .filter(
@@ -91,9 +133,16 @@ export class SiteMediaComponent implements OnInit {
                   (tag) => tag['@attributes'].name === section.name
                 );
 
-                return { section, tags: sectionTags ? sectionTags.tag : [] };
+                return {
+                  section,
+                  tags: sectionTags
+                    ? [...sectionTags.tag].sort((a, b) => a.order - b.order)
+                    : [],
+                };
               }),
             activeNav,
+            entries,
+            queryParams,
           };
         })
       )
@@ -107,6 +156,36 @@ export class SiteMediaComponent implements OnInit {
             (this.sectionsList[0] && this.sectionsList[0].section.name),
           tag: data.activeNav.tag,
         };
+
+        this.showAllSections = data.queryParams.all === '1';
+
+        this.selectedSections = this.sectionsList
+          .filter(
+            (s) =>
+              this.showAllSections || s.section.name === this.activeNav.section
+          )
+          .map((section) => {
+            return {
+              ...section,
+              entries: data.entries
+                .filter((e) => e.sectionName === section.section.name)
+                .filter((e) => {
+                  return this.activeNav.tag
+                    ? e.tags && e.tags.slugs.indexOf(this.activeNav.tag) > -1
+                    : this.showAllSections
+                    ? true
+                    : !e.tags || e.tags.slugs.length === 0;
+                })
+                .sort((a, b) => a.order - b.order),
+            };
+          });
+
+        this.selectedTag =
+          this.activeNav.tag && this.activeNav.section
+            ? this.selectedSections
+                .find((s) => s.section.name === this.activeNav.section)
+                .tags.find((t) => t['@attributes'].name === this.activeNav.tag)
+            : null;
       });
   }
 }
