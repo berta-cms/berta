@@ -12,6 +12,7 @@ import { SectionEntriesState } from '../sections/entries/entries-state/section-e
 import { ActivatedRoute } from '@angular/router';
 import { SitesState } from '../sites-state/sites.state';
 import { SiteStateModel } from '../sites-state/site-state.model';
+import { SectionEntry } from '../sections/entries/entries-state/section-entries-state.model';
 
 @Component({
   selector: 'berta-site-media',
@@ -71,13 +72,18 @@ import { SiteStateModel } from '../sites-state/site-state.model';
       </div>
     </aside>
     <div class="content">
-      <div *ngFor="let selectedSection of selectedSections">
+      <div
+        *ngFor="
+          let selectedSection of selectedSections;
+          trackBy: identifySection
+        "
+      >
         <h3>{{ selectedSection.section.title || '...' }}</h3>
         <h5 *ngIf="selectedTag">
           {{ selectedTag['@value'] }}
         </h5>
         <berta-entry-gallery
-          *ngFor="let entry of selectedSection.entries"
+          *ngFor="let entry of selectedSection.entries; trackBy: identifyEntry"
           [currentSite]="currentSite$ | async"
           [entry]="entry"
         ></berta-entry-gallery>
@@ -187,5 +193,13 @@ export class SiteMediaComponent implements OnInit {
                 .tags.find((t) => t['@attributes'].name === this.activeNav.tag)
             : null;
       });
+  }
+
+  identifySection(index, item: SiteSectionStateModel) {
+    return item.name;
+  }
+
+  identifyEntry(index, item: SectionEntry) {
+    return item;
   }
 }

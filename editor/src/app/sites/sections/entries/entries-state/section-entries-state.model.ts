@@ -3,6 +3,7 @@ export interface SectionEntriesStateModel {
 }
 
 export interface SectionEntry {
+  id: string;
   sectionName: string;
   marked?: string;
   mediaCacheData: SectionEntryGallery;
