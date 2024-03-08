@@ -19,13 +19,15 @@ import { PopupService } from '../../../app/popup/popup.service';
     <div class="entry-gallery">
       entry #{{ entry.id }}
 
-      <div
-        class="entry-gallery-items"
-        dragula="entryItems"
-        (dragulaModelChange)="reorder($event)"
-        [(dragulaModel)]="itemList"
-      >
-        <div *ngFor="let file of itemList" class="entry-gallery-item">
+      <div class="entry-gallery-items">
+        <div
+          *ngFor="let file of itemList"
+          class="entry-gallery-item"
+          ngSortgridItem
+          [ngSortGridGroup]="entry.sectionName + entry.id"
+          [ngSortGridItems]="itemList"
+          (sorted)="reorder($event)"
+        >
           <div *ngIf="file['@attributes'].type === 'image'" class="media image">
             <img
               src="{{ currentSite.mediaUrl }}/{{
@@ -85,6 +87,9 @@ export class EntryGalleryComponent implements OnInit {
   }
 
   reorder(itemList: SectionEntryGalleryFile[]) {
+    if (itemList.length < 2) {
+      return;
+    }
     this.store.dispatch(
       new OrderEntryGalleryFilesAction(
         this.site,

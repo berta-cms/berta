@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { DragulaModule } from 'ng2-dragula';
+import { NgsgModule } from 'ng-sortgrid';
 import { SitesSharedModule } from '../shared/sites-shared.module';
 import { SiteMediaComponent } from './site-media.component';
 import { EntryGalleryComponent } from './entry-gallery.component';
@@ -10,7 +10,7 @@ import { EntryGalleryComponent } from './entry-gallery.component';
   imports: [
     CommonModule,
     RouterModule.forChild([]),
-    DragulaModule.forRoot(),
+    NgsgModule,
     SitesSharedModule,
   ],
   declarations: [SiteMediaComponent, EntryGalleryComponent],
