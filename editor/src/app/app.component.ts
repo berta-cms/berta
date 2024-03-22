@@ -175,8 +175,9 @@ export class AppComponent implements OnInit, OnDestroy {
           this.currentRouteUrl = url;
           this.isSidebarFullscreen =
             this.sidebarFullscreenRoutes.indexOf(url) > -1;
-          this.isSidebarFullWidth =
-            this.sidebarFullWidthRoutes.indexOf(url) > -1;
+          this.isSidebarFullWidth = this.sidebarFullWidthRoutes.some(
+            (route) => url.indexOf(route) === 0
+          );
           return (this.routeIsRoot = url === '/');
         }),
         mergeMap((url) =>

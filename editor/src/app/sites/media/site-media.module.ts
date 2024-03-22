@@ -5,6 +5,7 @@ import { NgsgModule } from 'ng-sortgrid';
 import { SitesSharedModule } from '../shared/sites-shared.module';
 import { SiteMediaComponent } from './site-media.component';
 import { EntryGalleryComponent } from './entry-gallery.component';
+import { EntryGalleryEditorComponent } from './entry-gallery-editor.component';
 
 @NgModule({
   imports: [
@@ -13,6 +14,10 @@ import { EntryGalleryComponent } from './entry-gallery.component';
     NgsgModule,
     SitesSharedModule,
   ],
-  declarations: [SiteMediaComponent, EntryGalleryComponent],
+  declarations: [
+    SiteMediaComponent,
+    EntryGalleryComponent,
+    EntryGalleryEditorComponent,
+  ],
 })
 export class SiteMediaModule {}

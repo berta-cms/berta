@@ -3,6 +3,7 @@ berta-site-media {
   min-height: 100%;
 
   aside {
+    flex-shrink: 0;
     padding-top: 0;
     width: 384px;
     border-right: 1px solid $grey-10;
@@ -31,18 +32,23 @@ berta-site-media {
   }
 
   .content {
-    width: 100%;
     padding: 1.3em;
-
     h3:first-child {
       margin-top: 0;
     }
   }
 }
 
+.entry-gallery-items {
+  display: flex;
+  flex-wrap: wrap;
+  row-gap: 0.25em;
+  column-gap: 0.25em;
+  margin-bottom: 1em;
+}
+
 .entry-gallery-item {
   background-color: $grey-40;
-  margin: 0 0.25em 0.25em;
   position: relative;
   width: 110px;
   height: 80px;
@@ -53,6 +59,7 @@ berta-site-media {
     align-items: center;
     justify-content: center;
     height: 100%;
+    cursor: pointer;
   }
 
   img {
@@ -103,11 +110,14 @@ berta-site-media {
 
 berta-entry-gallery {
   .entry-gallery {
-    margin-bottom: 1em;
-  }
+    margin-bottom: 2em;
 
-  .entry-gallery-items {
-    display: flex;
-    flex-wrap: wrap;
+    .header {
+      margin-bottom: 1em;
+    }
+
+    .media {
+      cursor: default;
+    }
   }
 }

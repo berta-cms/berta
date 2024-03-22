@@ -10,6 +10,7 @@ import { SiteTemplateSettingsComponent } from './sites/template-settings/site-te
 import { UserAccountComponent } from './user/user-account.component';
 import { AuthGuardService } from './auth-guard.service';
 import { SiteMediaComponent } from './sites/media/site-media.component';
+import { EntryGalleryEditorComponent } from './sites/media/entry-gallery-editor.component';
 
 const routes: Routes = [
   {
@@ -55,6 +56,11 @@ const routes: Routes = [
   {
     path: 'media',
     component: SiteMediaComponent,
+    canActivate: [AuthGuardService],
+  },
+  {
+    path: 'media/gallery/:section/:entry_id',
+    component: EntryGalleryEditorComponent,
     canActivate: [AuthGuardService],
   },
   {

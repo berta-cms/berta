@@ -1,0 +1,19 @@
+berta-entry-gallery-editor {
+  display: flex;
+  min-height: 100%;
+
+  aside {
+    flex-shrink: 0;
+    padding-top: 0;
+    width: 384px;
+    border-right: 1px solid $grey-10;
+  }
+
+  .content {
+    padding: 1.3em;
+  }
+
+  .entry-gallery {
+    margin-bottom: 1em;
+  }
+}
