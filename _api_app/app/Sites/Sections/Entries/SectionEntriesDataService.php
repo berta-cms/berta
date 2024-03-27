@@ -1113,6 +1113,11 @@ class SectionEntriesDataService extends Storage
             $this->deleteMedia($mediafolder, $file);
 
             $file = current(array_splice($files, $file_order, 1));
+
+            $entries['entry'][$entry_order]['mediaCacheData']['file'] = array_filter($files, function ($f) use ($file) {
+                return $f['@attributes']['src'] != $file;
+            });
+
             $this->array2xmlFile($entries, $this->XML_FILE, $this->ROOT_ELEMENT);
 
             return [

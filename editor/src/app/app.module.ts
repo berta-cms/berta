@@ -34,6 +34,7 @@ import { MessyTemplateStyleService } from './preview/messy-template-style.servic
 import { SiteSectionsModule } from './sites/sections/site-sections.module';
 import { ShopSettingsState } from './shop/settings/shop-settings.state';
 import { ShopRegionalCostsState } from './shop/regional-costs/shop-regional-costs.state';
+import { SiteMediaModule } from './sites/media/site-media.module';
 
 @NgModule({
   declarations: [
@@ -71,6 +72,7 @@ import { ShopRegionalCostsState } from './shop/regional-costs/shop-regional-cost
     SitesModule,
     SitesSharedModule,
     SiteSectionsModule,
+    SiteMediaModule,
   ],
   providers: [
     StyleService,

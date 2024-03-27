@@ -3,7 +3,26 @@ export interface SectionEntriesStateModel {
 }
 
 export interface SectionEntry {
+  id: string;
   sectionName: string;
   marked?: string;
+  mediaCacheData: SectionEntryGallery;
   [k: string]: any;
+}
+
+export interface SectionEntryGallery {
+  file: SectionEntryGalleryFile[];
+  [k: string]: any;
+}
+
+export interface SectionEntryGalleryFile {
+  '@value': string;
+  '@attributes': {
+    type: string;
+    src: string;
+    width?: string;
+    height?: string;
+    autoplay?: string;
+    poster_frame?: string;
+  };
 }

@@ -88,6 +88,15 @@ export class AppState implements NgxsOnInit {
   }
 
   @Selector()
+  static getActiveNav(state: AppStateModel) {
+    return {
+      site: state.site,
+      section: state.section,
+      tag: state.tag,
+    };
+  }
+
+  @Selector()
   static getLastRoute(state: AppStateModel) {
     return state.lastRoute;
   }

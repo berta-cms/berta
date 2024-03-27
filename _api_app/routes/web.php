@@ -86,7 +86,7 @@ $router->group(['prefix' => 'v1/sites/sections', 'namespace' => 'Sites\Sections\
     $router->delete('entries', 'SectionEntriesController@delete');
     $router->patch('entries/move', ['as' => 'section_entries_move', 'uses' => 'SectionEntriesController@move']);
     $router->put('entries/galleries', ['as' => 'entry_gallery', 'uses' => 'SectionEntriesController@galleryOrder']);
-    $router->post('entries/galleries', 'SectionEntriesController@galleryUpload');
+    $router->post('entries/galleries', ['as' => 'entry_gallery_upload', 'uses' => 'SectionEntriesController@galleryUpload']);
     $router->patch('entries/galleries', 'SectionEntriesController@galleryCrop');
     $router->delete('entries/galleries', 'SectionEntriesController@galleryDelete');
     $router->get('entries/render/{site}/{section}[/{id}]', 'SectionEntriesController@renderEntries');
@@ -97,7 +97,9 @@ $router->group(['prefix' => 'v1/sites/sections', 'namespace' => 'Sites\Sections\
 
 $router->group(['prefix' => 'v1/plugin', 'namespace' => 'Plugins', 'middleware' => ['setup', 'auth']], function () use ($router) {
     foreach (scandir("{$router->app->path()}/Plugins") as $fileOrDir) {
-        if (in_array($fileOrDir, ['.', '..'])) { continue; }
+        if (in_array($fileOrDir, ['.', '..'])) {
+            continue;
+        }
 
         $dirPath = "{$router->app->path()}/Plugins/{$fileOrDir}";
 
