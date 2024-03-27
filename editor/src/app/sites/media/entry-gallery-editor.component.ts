@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable, combineLatest } from 'rxjs';
 import { Select, Store } from '@ngxs/store';
+import { Animations } from '../../shared/animations';
 import {
   SectionEntry,
   SectionEntryGalleryFile,
@@ -9,6 +10,7 @@ import {
   AddEntryGalleryFileAction,
   DeleteEntryGalleryFileAction,
   OrderEntryGalleryFilesAction,
+  UpdateEntryGalleryFileAction,
 } from '../sections/entries/entries-state/section-entries.actions';
 import { SiteStateModel } from '../sites-state/site-state.model';
 import { PopupService } from '../../../app/popup/popup.service';
@@ -22,7 +24,68 @@ import { SitesState } from '../sites-state/sites.state';
 @Component({
   selector: 'berta-entry-gallery-editor',
   template: `
-    <aside>[entry gallery editor]</aside>
+    <aside>
+      <div
+        *ngIf="selectedFile"
+        class="setting-group"
+        [class.is-expanded]="fileSettingsIsOpen"
+      >
+        <h3
+          (click)="fileSettingsIsOpen = !fileSettingsIsOpen"
+          class="hoverable"
+        >
+          File setting
+          <svg
+            class="drop-icon"
+            width="10"
+            height="6"
+            viewBox="0 0 10 6"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M9 1L4.75736 5.24264L0.514719 1"
+              stroke="#9b9b9b"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </h3>
+        <div class="settings" [@isExpanded]="fileSettingsIsOpen">
+          <berta-setting
+            [setting]="{ slug: '@value', value: selectedFile['@value'] }"
+            [config]="{
+              title: 'Caption',
+              format: 'richtext',
+              enabledOnUpdate: true
+            }"
+            [error]="''"
+            (update)="updateFile($event)"
+          >
+          </berta-setting>
+          <berta-setting
+            *ngIf="selectedFile['@attributes']['type'] === 'video'"
+            [setting]="{
+              slug: '@attributes/autoplay',
+              value: selectedFile['@attributes']['autoplay']
+            }"
+            [config]="{
+              title: 'Autoplay',
+              format: 'toggle',
+              values: [
+                { title: '', value: '0' },
+                { title: '', value: '1' }
+              ],
+              enabledOnUpdate: true
+            }"
+            [error]="''"
+            [disabled]="false"
+            (update)="updateFile($event)"
+          >
+          </berta-setting>
+        </div>
+      </div>
+    </aside>
     <div class="content" *ngIf="currentSection && currentEntry">
       <h3>
         Gallery editor / entry #{{ currentEntry.id }} /
@@ -36,10 +99,12 @@ import { SitesState } from '../sites-state/sites.state';
             trackBy: identifyGalleryItem
           "
           class="entry-gallery-item"
+          [class.selected]="file === selectedFile"
           ngSortgridItem
           [ngSortGridGroup]="currentEntry.sectionName + currentEntry.id"
           [ngSortGridItems]="currentEntry.mediaCacheData.file"
           (sorted)="reorder($event)"
+          (click)="setSelectedFile(file)"
         >
           <div *ngIf="file['@attributes'].type === 'image'" class="media image">
             <img
@@ -58,7 +123,7 @@ import { SitesState } from '../sites-state/sites.state';
           <button
             title="delete"
             class="action delete"
-            (click)="deleteItem(file['@attributes'].src)"
+            (click)="deleteItem($event, file['@attributes'].src)"
           >
             <bt-icon-delete></bt-icon-delete>
           </button>
@@ -72,6 +137,7 @@ import { SitesState } from '../sites-state/sites.state';
       ></berta-files-input>
     </div>
   `,
+  animations: [Animations.slideToggle],
 })
 export class EntryGalleryEditorComponent implements OnInit {
   @Select(SitesState.getCurrentSite)
@@ -79,6 +145,8 @@ export class EntryGalleryEditorComponent implements OnInit {
   currentSite: SiteStateModel;
   currentSection: SiteSectionStateModel;
   currentEntry: SectionEntry;
+  selectedFile: SectionEntryGalleryFile;
+  fileSettingsIsOpen = true;
 
   constructor(
     private route: ActivatedRoute,
@@ -115,8 +183,39 @@ export class EntryGalleryEditorComponent implements OnInit {
           this.currentSite = site;
           this.currentSection = section;
           this.currentEntry = entry;
+
+          this.setSelectedFile();
         });
       });
+  }
+
+  updateFile(e) {
+    const index = this.currentEntry['mediaCacheData']['file'].findIndex(
+      (f) => f === this.selectedFile
+    );
+    const path = `${this.currentSite.name}/entry/${this.currentEntry.sectionName}/${this.currentEntry.id}/mediaCacheData/file/${index}/${e.field}`;
+    this.store.dispatch(new UpdateEntryGalleryFileAction(path, e.value));
+  }
+
+  setSelectedFile(selectedFile: SectionEntryGalleryFile = null) {
+    if (this.currentEntry.mediaCacheData.file.length === 0) {
+      this.selectedFile = null;
+      return;
+    }
+
+    const lookupFile = selectedFile || this.selectedFile;
+    if (lookupFile) {
+      const selectedFile = this.currentEntry.mediaCacheData.file.find(
+        (f) => f['@attributes'].src === lookupFile['@attributes'].src
+      );
+
+      if (selectedFile) {
+        this.selectedFile = selectedFile;
+        return;
+      }
+    }
+
+    this.selectedFile = this.currentEntry.mediaCacheData.file[0];
   }
 
   uploadFiles(files: File[]) {
@@ -150,7 +249,8 @@ export class EntryGalleryEditorComponent implements OnInit {
     );
   }
 
-  deleteItem(file: string) {
+  deleteItem(event: PointerEvent, file: string) {
+    event.stopPropagation();
     this.popupService.showPopup({
       type: 'warn',
       content: 'Are you sure you want to delete this item?',

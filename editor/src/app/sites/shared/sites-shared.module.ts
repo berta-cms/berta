@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { AngularEditorModule } from '@kolkov/angular-editor';
 import { SettingComponent } from './setting.component';
 import { SettingRowComponent } from './setting-row.component';
 import { SettingRowAddComponent } from './setting-row-add.component';
@@ -8,6 +10,7 @@ import { ColorPickerModule } from 'ngx-color-picker';
 import { TextInputComponent } from '../../inputs/text-input.component';
 import { UrlInputComponent } from '../../inputs/url-input.component';
 import { LongTextInputComponent } from '../../inputs/long-text-input.component';
+import { RichTextInputComponent } from '../../inputs/rich-text-input.component';
 import { InlineTextInputComponent } from '../../inputs/inline-text-input.component';
 import { ToggleInputComponent } from '../../inputs/toggle-input.component';
 import { ColorInputComponent } from '../../inputs/color-input.component';
@@ -24,7 +27,13 @@ import { FilesInputComponent } from '../../../app/inputs/files-input.component';
 import { IconMoveComponent } from './icon-move.component';
 
 @NgModule({
-  imports: [CommonModule, ColorPickerModule, TooltipModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    AngularEditorModule,
+    ColorPickerModule,
+    TooltipModule,
+  ],
   declarations: [
     SettingComponent,
     SettingRowComponent,
@@ -33,6 +42,7 @@ import { IconMoveComponent } from './icon-move.component';
     TextInputComponent,
     UrlInputComponent,
     LongTextInputComponent,
+    RichTextInputComponent,
     InlineTextInputComponent,
     ToggleInputComponent,
     ColorInputComponent,
@@ -55,6 +65,7 @@ import { IconMoveComponent } from './icon-move.component';
     TextInputComponent,
     UrlInputComponent,
     LongTextInputComponent,
+    RichTextInputComponent,
     InlineTextInputComponent,
     ToggleInputComponent,
     ColorInputComponent,

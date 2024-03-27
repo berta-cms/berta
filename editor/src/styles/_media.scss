@@ -42,8 +42,8 @@ berta-site-media {
 .entry-gallery-items {
   display: flex;
   flex-wrap: wrap;
-  row-gap: 0.25em;
-  column-gap: 0.25em;
+  row-gap: 0.5em;
+  column-gap: 0.5em;
   margin-bottom: 1em;
 }
 
@@ -105,6 +105,10 @@ berta-site-media {
     .action {
       display: block;
     }
+  }
+
+  &.selected {
+    outline: 2px solid $black;
   }
 }
 

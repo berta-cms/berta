@@ -119,6 +119,11 @@ export class AddEntryGalleryFileAction {
   ) {}
 }
 
+export class UpdateEntryGalleryFileAction {
+  static readonly type = 'SECTION_ENTRY_GALLERY:UPDATE_FILE';
+  constructor(public path: string, public payload: any) {}
+}
+
 export class DeleteEntryGalleryFileAction {
   static readonly type = 'SECTION_ENTRY_GALLERY:DELETE_FILE';
   constructor(
