@@ -12,6 +12,10 @@ export interface SectionEntry {
 
 export interface SectionEntryGallery {
   file: SectionEntryGalleryFile[];
+  '@attributes': {
+    type: string;
+    [k: string]: any;
+  };
   [k: string]: any;
 }
 

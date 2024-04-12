@@ -38,6 +38,7 @@ import {
   OrderEntryGalleryFilesAction,
   DeleteEntryGalleryFileAction,
   UpdateEntryGalleryFileAction,
+  UpdateSectionEntryAction,
 } from './section-entries.actions';
 import { UserLoginAction } from '../../../../user/user.actions';
 import { UpdateSiteSectionAction } from '../../sections-state/site-sections.actions';
@@ -440,6 +441,46 @@ export class SectionEntriesState implements NgxsOnInit {
                 )
               );
             }
+          }
+        })
+      );
+  }
+
+  @Action(UpdateSectionEntryAction)
+  updateSectionEntry(
+    { getState, patchState }: StateContext<SectionEntriesStateModel>,
+    action: UpdateSectionEntryAction
+  ) {
+    return this.appStateService
+      .sync('sectionEntries', {
+        path: action.path,
+        value: action.payload,
+      })
+      .pipe(
+        tap((response) => {
+          if (response.error_message) {
+            /* This should probably be handled in sync */
+            console.error(response.error_message);
+          } else {
+            const currentState = getState();
+            const [currentSite, , currentSection, entryId] =
+              action.path.split('/');
+            const siteName = currentSite === '0' ? '' : currentSite;
+            let lastPathPart = action.path.split('/').slice(4).join('/');
+            let payload = action.payload;
+
+            patchState({
+              [siteName]: currentState[siteName].map((entry) => {
+                if (
+                  entry.id !== entryId ||
+                  entry.sectionName !== currentSection
+                ) {
+                  return entry;
+                }
+
+                return assignByPath(entry, lastPathPart, payload);
+              }),
+            });
           }
         })
       );

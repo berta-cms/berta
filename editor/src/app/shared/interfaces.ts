@@ -35,6 +35,7 @@ export interface SettingConfigModel {
   enabledOnUpdate?: boolean;
   format?:
     | 'text'
+    | 'url'
     | 'longtext'
     | 'richtext'
     | 'select'

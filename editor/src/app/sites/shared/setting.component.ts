@@ -109,6 +109,7 @@ import { UpdateInputFocus } from '../../app-state/app.actions';
         [value]="setting.value"
         [values]="config.values"
         (inputFocus)="updateComponentFocus($event)"
+        [enabledOnUpdate]="config.enabledOnUpdate"
         (update)="updateComponentField(setting.slug, $event)"
       >
       </berta-select-input>

@@ -75,6 +75,11 @@ export class UpdateSectionEntryFromSyncAction {
   constructor(public path: string, public payload: any, public nOfReq = 0) {}
 }
 
+export class UpdateSectionEntryAction {
+  static readonly type = 'SECTION_ENTRY:UPDATE';
+  constructor(public path: string, public payload: any) {}
+}
+
 export class OrderSectionEntriesFromSyncAction {
   static readonly type = 'SECTION_ENTRIES:ORDER:SYNC';
   constructor(
