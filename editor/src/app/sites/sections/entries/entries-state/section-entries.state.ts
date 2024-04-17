@@ -39,6 +39,7 @@ import {
   DeleteEntryGalleryFileAction,
   UpdateEntryGalleryFileAction,
   UpdateSectionEntryAction,
+  UpdateEntryGalleryVideoPosterAction,
 } from './section-entries.actions';
 import { UserLoginAction } from '../../../../user/user.actions';
 import { UpdateSiteSectionAction } from '../../sections-state/site-sections.actions';
@@ -771,6 +772,64 @@ export class SectionEntriesState implements NgxsOnInit {
           }
         })
       );
+  }
+
+  @Action(UpdateEntryGalleryVideoPosterAction)
+  updateEntryGalleryVideoPoster(
+    { getState, patchState }: StateContext<SectionEntriesStateModel>,
+    action: UpdateEntryGalleryVideoPosterAction
+  ) {
+    const data = {
+      path: `${action.site}/entry/${action.section}/${action.entryId}/${action.fileName}`,
+      value: action.payload,
+    };
+
+    return this.fileUploadService.upload('entryGallery', data).pipe(
+      tap((response) => {
+        if (response.error_message) {
+          // @TODO handle error message
+          console.error(response.error_message);
+
+          return response.error_message;
+        } else {
+          const currentState = getState();
+
+          patchState({
+            [action.site]: currentState[action.site].map((entry) => {
+              if (
+                entry.sectionName === action.section &&
+                entry.id === action.entryId
+              ) {
+                const mediaCacheData = {
+                  ...entry.mediaCacheData,
+                  file: entry.mediaCacheData.file.map((file) => {
+                    if (file['@attributes'].src === action.fileName) {
+                      return {
+                        ...file,
+                        '@attributes': {
+                          ...file['@attributes'],
+                          poster_frame: response.filename,
+                          width: response.width,
+                          height: response.height,
+                        },
+                      };
+                    }
+                    return file;
+                  }),
+                };
+
+                return {
+                  ...entry,
+                  mediaCacheData: mediaCacheData,
+                };
+              }
+
+              return entry;
+            }),
+          });
+        }
+      })
+    );
   }
 
   @Action(OrderEntryGalleryFilesAction)

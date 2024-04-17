@@ -69,11 +69,11 @@ import { UpdateInputFocus } from '../../app-state/app.actions';
       <berta-file-input
         *ngSwitchCase="'image'"
         [label]="config.title"
-        [templateSlug]="templateSlug"
         [property]="setting.slug"
         [accept]="'image/*'"
         [value]="setting.value"
         [disabled]="disabled"
+        [disableRemove]="config.disableRemove"
         [error]="error"
         (update)="updateComponentField(setting.slug, $event)"
       ></berta-file-input>

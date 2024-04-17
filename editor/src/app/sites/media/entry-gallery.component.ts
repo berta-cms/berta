@@ -30,7 +30,24 @@ import { SiteStateModel } from '../sites-state/site-state.model';
             />
           </div>
           <div *ngIf="file['@attributes'].type === 'video'" class="media video">
-            [ video ]
+            <video
+              [attr.poster]="
+                file['@attributes'].poster_frame
+                  ? currentSite.mediaUrl +
+                    '/' +
+                    entry.mediafolder +
+                    '/' +
+                    file['@attributes'].poster_frame
+                  : null
+              "
+            >
+              <source
+                src="{{ currentSite.mediaUrl }}/{{ entry.mediafolder }}/{{
+                  file['@attributes'].src
+                }}"
+                type="video/mp4"
+              />
+            </video>
           </div>
         </div>
       </div>

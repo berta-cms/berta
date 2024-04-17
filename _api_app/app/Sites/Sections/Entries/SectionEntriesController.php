@@ -98,7 +98,7 @@ class SectionEntriesController extends Controller
             return response()->json([
                 'status' => 0,
                 'error' => 'Upload failed.'
-            ]);
+            ], 400);
         }
 
         $isVideoPosterImage = count(explode('/', $path)) == 5;
@@ -114,7 +114,7 @@ class SectionEntriesController extends Controller
             return response()->json([
                 'status' => 0,
                 'error' => implode(' ', $validator->messages()->all())
-            ]);
+            ], 400);
         }
 
         $path_arr = explode('/', $path);
@@ -127,7 +127,7 @@ class SectionEntriesController extends Controller
             return response()->json([
                 'status' => 0,
                 'error' => 'Media folder not writable.'
-            ]);
+            ], 400);
         }
 
         $ret = $sectionEntriesDataService->galleryUpload($path, $file);
@@ -146,7 +146,8 @@ class SectionEntriesController extends Controller
     /**
      * This method is entry rendering example
      */
-    public function renderEntries($site, $section, Request $request, $id=null) {
+    public function renderEntries($site, $section, Request $request, $id = null)
+    {
         $sectionEntriesDS = new SectionEntriesDataService($site, $section);
         $siteSectionsDS = new SiteSectionsDataService($site);
         $siteSettingsDS = new SiteSettingsDataService($site);

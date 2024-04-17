@@ -129,6 +129,17 @@ export class UpdateEntryGalleryFileAction {
   constructor(public path: string, public payload: any) {}
 }
 
+export class UpdateEntryGalleryVideoPosterAction {
+  static readonly type = 'SECTION_ENTRY_GALLERY:UPDATE_VIDEO_POSTER';
+  constructor(
+    public site: string,
+    public section: string,
+    public entryId: string,
+    public fileName: string,
+    public payload: File
+  ) {}
+}
+
 export class DeleteEntryGalleryFileAction {
   static readonly type = 'SECTION_ENTRY_GALLERY:DELETE_FILE';
   constructor(

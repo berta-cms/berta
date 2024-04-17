@@ -11,12 +11,13 @@ import {
   DeleteEntryGalleryFileAction,
   OrderEntryGalleryFilesAction,
   UpdateEntryGalleryFileAction,
+  UpdateEntryGalleryVideoPosterAction,
   UpdateSectionEntryAction,
 } from '../sections/entries/entries-state/section-entries.actions';
 import { SiteStateModel } from '../sites-state/site-state.model';
 import { PopupService } from '../../../app/popup/popup.service';
 import { ActivatedRoute } from '@angular/router';
-import { filter, map } from 'rxjs/operators';
+import { filter, map, take } from 'rxjs/operators';
 import { SiteSectionsState } from '../sections/sections-state/site-sections.state';
 import { SectionEntriesState } from '../sections/entries/entries-state/section-entries.state';
 import { SiteSectionStateModel } from '../sections/sections-state/site-sections-state.model';
@@ -65,6 +66,24 @@ import { SiteSettingsState } from '../settings/site-settings.state';
             (update)="updateFile($event)"
           >
           </berta-setting>
+
+          <berta-setting
+            *ngIf="selectedFile['@attributes']['type'] === 'video'"
+            [setting]="{
+              slug: '@attributes/poster_frame',
+              value: selectedFile['@attributes']['poster_frame']
+            }"
+            [config]="{
+              title: 'Poster frame',
+              format: 'image',
+              enabledOnUpdate: true,
+              disableRemove: true
+            }"
+            [error]="''"
+            [disabled]="false"
+            (update)="updateVideoPosterFile($event)"
+          ></berta-setting>
+
           <berta-setting
             *ngIf="selectedFile['@attributes']['type'] === 'video'"
             [setting]="{
@@ -349,7 +368,24 @@ import { SiteSettingsState } from '../settings/site-settings.state';
             />
           </div>
           <div *ngIf="file['@attributes'].type === 'video'" class="media video">
-            [ video ]
+            <video
+              [attr.poster]="
+                file['@attributes'].poster_frame
+                  ? currentSite.mediaUrl +
+                    '/' +
+                    currentEntry.mediafolder +
+                    '/' +
+                    file['@attributes'].poster_frame
+                  : null
+              "
+            >
+              <source
+                src="{{ currentSite.mediaUrl }}/{{
+                  currentEntry.mediafolder
+                }}/{{ file['@attributes'].src }}"
+                type="video/mp4"
+              />
+            </video>
           </div>
           <button title="move" class="action reorder">
             <bt-icon-move></bt-icon-move>
@@ -366,7 +402,7 @@ import { SiteSettingsState } from '../settings/site-settings.state';
       <berta-files-input
         [accept]="'image/*, video/mp4'"
         [disabled]="disabled"
-        [errors]="errors"
+        [errors]="uploadFilesErrors"
         (update)="uploadFiles($event)"
       ></berta-files-input>
     </div>
@@ -383,6 +419,7 @@ export class EntryGalleryEditorComponent implements OnInit {
   selectedFile: SectionEntryGalleryFile;
   fileSettingsIsOpen = true;
   gallerySettingsIsOpen = true;
+  uploadFilesErrors: string[] = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -437,6 +474,18 @@ export class EntryGalleryEditorComponent implements OnInit {
     this.store.dispatch(new UpdateEntryGalleryFileAction(path, e.value));
   }
 
+  updateVideoPosterFile(e) {
+    this.store.dispatch(
+      new UpdateEntryGalleryVideoPosterAction(
+        this.currentSite.name,
+        this.currentEntry.sectionName,
+        this.currentEntry.id,
+        this.selectedFile['@attributes'].src,
+        e.value
+      )
+    );
+  }
+
   updateGallerySettings(e) {
     const path = `${this.currentSite.name}/entry/${this.currentEntry.sectionName}/${this.currentEntry.id}/mediaCacheData/@attributes/${e.field}`;
     this.store.dispatch(new UpdateSectionEntryAction(path, e.value));
@@ -467,15 +516,25 @@ export class EntryGalleryEditorComponent implements OnInit {
   }
 
   uploadFiles(files: File[]) {
+    this.uploadFilesErrors = [];
+
     files.map((file) => {
-      this.store.dispatch(
-        new AddEntryGalleryFileAction(
-          this.currentSite.name,
-          this.currentEntry.sectionName,
-          this.currentEntry.id,
-          file
+      this.store
+        .dispatch(
+          new AddEntryGalleryFileAction(
+            this.currentSite.name,
+            this.currentEntry.sectionName,
+            this.currentEntry.id,
+            file
+          )
         )
-      );
+        .pipe(take(1))
+        .subscribe(
+          () => {},
+          (error) => {
+            this.uploadFilesErrors.push(error.error.error);
+          }
+        );
     });
   }
 
