@@ -140,6 +140,22 @@ export class UpdateEntryGalleryVideoPosterAction {
   ) {}
 }
 
+export class UpdateEntryGalleryImageCropAction {
+  static readonly type = 'SECTION_ENTRY_GALLERY:IMAGE_CROP';
+  constructor(
+    public site: string,
+    public section: string,
+    public entryId: string,
+    public fileOrder: string,
+    public payload: {
+      x: number;
+      y: number;
+      width: number;
+      height: number;
+    }
+  ) {}
+}
+
 export class DeleteEntryGalleryFileAction {
   static readonly type = 'SECTION_ENTRY_GALLERY:DELETE_FILE';
   constructor(

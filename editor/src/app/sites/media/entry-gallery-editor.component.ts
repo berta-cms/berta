@@ -16,7 +16,7 @@ import {
 } from '../sections/entries/entries-state/section-entries.actions';
 import { SiteStateModel } from '../sites-state/site-state.model';
 import { PopupService } from '../../../app/popup/popup.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { filter, map, take } from 'rxjs/operators';
 import { SiteSectionsState } from '../sections/sections-state/site-sections.state';
 import { SectionEntriesState } from '../sections/entries/entries-state/section-entries.state';
@@ -37,7 +37,7 @@ import { SiteSettingsState } from '../settings/site-settings.state';
           (click)="fileSettingsIsOpen = !fileSettingsIsOpen"
           class="hoverable"
         >
-          File setting
+          File settings
           <svg
             class="drop-icon"
             width="10"
@@ -116,7 +116,7 @@ import { SiteSettingsState } from '../settings/site-settings.state';
           (click)="gallerySettingsIsOpen = !gallerySettingsIsOpen"
           class="hoverable"
         >
-          Gallery setting
+          Gallery settings
           <svg
             class="drop-icon"
             width="10"
@@ -391,6 +391,14 @@ import { SiteSettingsState } from '../settings/site-settings.state';
             <bt-icon-move></bt-icon-move>
           </button>
           <button
+            *ngIf="file['@attributes'].type === 'image'"
+            title="crop"
+            class="action crop"
+            (click)="openCropItemPage($event, file['@attributes'].src)"
+          >
+            <bt-icon-crop></bt-icon-crop>
+          </button>
+          <button
             title="delete"
             class="action delete"
             (click)="deleteItem($event, file['@attributes'].src)"
@@ -422,6 +430,7 @@ export class EntryGalleryEditorComponent implements OnInit {
   uploadFilesErrors: string[] = [];
 
   constructor(
+    private router: Router,
     private route: ActivatedRoute,
     private store: Store,
     private popupService: PopupService
@@ -554,6 +563,15 @@ export class EntryGalleryEditorComponent implements OnInit {
         itemList.map((f) => f['@attributes'].src)
       )
     );
+  }
+
+  openCropItemPage(event: PointerEvent, fileName: string) {
+    event.stopPropagation();
+    const image_order = this.currentEntry.mediaCacheData.file.findIndex(
+      (file) => file['@attributes'].src === fileName
+    );
+    const url = `/media/image/${this.currentEntry.sectionName}/${this.currentEntry.id}/${image_order}`;
+    this.router.navigate([url], { queryParamsHandling: 'preserve' });
   }
 
   deleteItem(event: PointerEvent, file: string) {

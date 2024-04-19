@@ -93,6 +93,20 @@ berta-site-media {
     }
   }
 
+  .crop {
+    top: 0;
+    left: 0;
+    cursor: pointer;
+
+    &:hover {
+      svg {
+        path {
+          fill: $berta-accent;
+        }
+      }
+    }
+  }
+
   .reorder {
     top: 50%;
     left: 50%;

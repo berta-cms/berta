@@ -40,6 +40,7 @@ import {
   UpdateEntryGalleryFileAction,
   UpdateSectionEntryAction,
   UpdateEntryGalleryVideoPosterAction,
+  UpdateEntryGalleryImageCropAction,
 } from './section-entries.actions';
 import { UserLoginAction } from '../../../../user/user.actions';
 import { UpdateSiteSectionAction } from '../../sections-state/site-sections.actions';
@@ -824,6 +825,66 @@ export class SectionEntriesState implements NgxsOnInit {
                 };
               }
 
+              return entry;
+            }),
+          });
+        }
+      })
+    );
+  }
+
+  @Action(UpdateEntryGalleryImageCropAction)
+  updateEntryGalleryImageCrop(
+    { getState, patchState }: StateContext<SectionEntriesStateModel>,
+    action: UpdateEntryGalleryImageCropAction
+  ) {
+    const data = {
+      site: action.site,
+      section: action.section,
+      entryId: action.entryId,
+      imageOrder: action.fileOrder,
+      x: action.payload.x,
+      y: action.payload.y,
+      w: action.payload.width,
+      h: action.payload.height,
+    };
+
+    return this.appStateService.sync('entryGallery', data).pipe(
+      tap((response) => {
+        if (response.error_message) {
+          // @TODO handle error message
+          console.error(response.error_message);
+          return response.error_message;
+        } else {
+          const currentState = getState();
+          patchState({
+            [action.site]: currentState[action.site].map((entry) => {
+              if (
+                entry.sectionName === action.section &&
+                entry.id === action.entryId
+              ) {
+                const mediaCacheData = {
+                  ...entry.mediaCacheData,
+                  file: entry.mediaCacheData.file.map((file, index) => {
+                    if (index === parseInt(action.fileOrder)) {
+                      return {
+                        ...file,
+                        '@attributes': {
+                          ...file['@attributes'],
+                          src: response.update,
+                          width: response.params.width,
+                          height: response.params.height,
+                        },
+                      };
+                    }
+                    return file;
+                  }),
+                };
+                return {
+                  ...entry,
+                  mediaCacheData: mediaCacheData,
+                };
+              }
               return entry;
             }),
           });

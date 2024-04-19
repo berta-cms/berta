@@ -25,6 +25,7 @@ import { TooltipModule } from 'ng2-tooltip-directive';
 import { HelpTooltipComponent } from './help-tooltip.component';
 import { FilesInputComponent } from '../../../app/inputs/files-input.component';
 import { IconMoveComponent } from './icon-move.component';
+import { IconCropComponent } from './icon-crop.component';
 
 @NgModule({
   imports: [
@@ -53,6 +54,7 @@ import { IconMoveComponent } from './icon-move.component';
     RouteButton,
     IconCloneComponent,
     IconDeleteComponent,
+    IconCropComponent,
     IconPublishComponent,
     IconMoveComponent,
     HelpTooltipComponent,
@@ -76,6 +78,7 @@ import { IconMoveComponent } from './icon-move.component';
     RouteButton,
     IconCloneComponent,
     IconDeleteComponent,
+    IconCropComponent,
     IconPublishComponent,
     IconMoveComponent,
     HelpTooltipComponent,

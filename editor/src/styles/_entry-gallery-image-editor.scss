@@ -1,0 +1,35 @@
+berta-entry-gallery-image-editor {
+  display: flex;
+  min-height: 100%;
+
+  aside {
+    flex-shrink: 0;
+    padding-top: 0;
+    width: 384px;
+    border-right: 1px solid $grey-10;
+
+    .setting {
+      .button {
+        margin-right: 1em;
+      }
+    }
+  }
+
+  .content {
+    padding: 1.3em;
+
+    image-cropper {
+      .source-image {
+        display: block;
+      }
+
+      .cropper {
+        margin-left: 0 !important;
+      }
+    }
+  }
+
+  .entry-gallery {
+    margin-bottom: 1em;
+  }
+}
