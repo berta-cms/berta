@@ -21,12 +21,9 @@ import { SectionEntry } from '../sections/entries/entries-state/section-entries-
       <div class="setting-group">
         <h3>
           <a
-            [routerLink]="['/media']"
+            [routerLink]="['/media/list']"
+            queryParamsHandling="merge"
             [queryParams]="{
-              site:
-                (currentSite$ | async).name === ''
-                  ? null
-                  : (currentSite$ | async).name,
               all: 1
             }"
             [class.active]="showAllSections"
@@ -37,14 +34,9 @@ import { SectionEntry } from '../sections/entries/entries-state/section-entries-
       <div class="setting-group" *ngFor="let section of sectionsList">
         <h3>
           <a
-            [routerLink]="['/media']"
-            [queryParams]="{
-              site:
-                (currentSite$ | async).name === ''
-                  ? null
-                  : (currentSite$ | async).name,
-              section: section.section.name
-            }"
+            [routerLink]="['/media/list/' + section.section.name]"
+            queryParamsHandling="merge"
+            [queryParams]="{ all: null }"
             [class.active]="
               !showAllSections && section.section.name === activeNav.section
             "
@@ -52,15 +44,14 @@ import { SectionEntry } from '../sections/entries/entries-state/section-entries-
           </a>
           <div *ngFor="let tag of section.tags">
             <a
-              [routerLink]="['/media']"
-              [queryParams]="{
-                site:
-                  (currentSite$ | async).name === ''
-                    ? null
-                    : (currentSite$ | async).name,
-                section: section.section.name,
-                tag: tag['@attributes'].name
-              }"
+              [routerLink]="[
+                '/media/list/' +
+                  section.section.name +
+                  '/' +
+                  tag['@attributes'].name
+              ]"
+              queryParamsHandling="merge"
+              [queryParams]="{ all: null }"
               [class.active]="
                 section.section.name === activeNav.section &&
                 tag['@attributes'].name === activeNav.tag
@@ -92,8 +83,7 @@ import { SectionEntry } from '../sections/entries/entries-state/section-entries-
   `,
 })
 export class SiteMediaComponent implements OnInit {
-  @Select(SitesState.getCurrentSite)
-  public currentSite$: Observable<SiteStateModel>;
+  @Select(SitesState.getCurrentSite) currentSite$: Observable<SiteStateModel>;
 
   sectionsList: {
     section: SiteSectionStateModel;
@@ -118,10 +108,11 @@ export class SiteMediaComponent implements OnInit {
       this.store.select(SectionTagsState.getCurrentSiteTags),
       this.store.select(AppState.getActiveNav),
       this.store.select(SectionEntriesState.getCurrentSiteEntries),
+      this.route.paramMap,
       this.route.queryParams,
     ])
       .pipe(
-        map(([sections, tags, activeNav, entries, queryParams]) => {
+        map(([sections, tags, activeNav, entries, paramMap, queryParams]) => {
           return {
             sections: sections
               .filter(
@@ -148,6 +139,7 @@ export class SiteMediaComponent implements OnInit {
               }),
             activeNav,
             entries,
+            paramMap,
             queryParams,
           };
         })
@@ -158,9 +150,9 @@ export class SiteMediaComponent implements OnInit {
         this.activeNav = {
           site: data.activeNav.site,
           section:
-            data.activeNav.section ||
+            data.paramMap['params']['section'] ||
             (this.sectionsList[0] && this.sectionsList[0].section.name),
-          tag: data.activeNav.tag,
+          tag: data.paramMap['params']['tag'],
         };
 
         this.showAllSections = data.queryParams.all === '1';
@@ -186,12 +178,18 @@ export class SiteMediaComponent implements OnInit {
             };
           });
 
-        this.selectedTag =
-          this.activeNav.tag && this.activeNav.section
-            ? this.selectedSections
-                .find((s) => s.section.name === this.activeNav.section)
-                .tags.find((t) => t['@attributes'].name === this.activeNav.tag)
-            : null;
+        this.selectedTag = null;
+        if (this.activeNav.tag && this.activeNav.section) {
+          const selectedSection = this.selectedSections.find(
+            (s) => s.section.name === this.activeNav.section
+          );
+
+          this.selectedTag =
+            selectedSection &&
+            selectedSection.tags.find(
+              (t) => t['@attributes'].name === this.activeNav.tag
+            );
+        }
       });
   }
 

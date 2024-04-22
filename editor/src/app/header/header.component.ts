@@ -43,7 +43,7 @@ import { UserStateModel } from '../user/user.state.model';
             >Design</a
           >
           <a
-            [routerLink]="['/media']"
+            [routerLink]="['/media/list']"
             [routerLinkActive]="'nav-active'"
             queryParamsHandling="preserve"
             >Media</a

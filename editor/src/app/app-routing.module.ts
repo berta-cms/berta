@@ -55,7 +55,17 @@ const routes: Routes = [
     canActivate: [AuthGuardService],
   },
   {
-    path: 'media',
+    path: 'media/list',
+    component: SiteMediaComponent,
+    canActivate: [AuthGuardService],
+  },
+  {
+    path: 'media/list/:section',
+    component: SiteMediaComponent,
+    canActivate: [AuthGuardService],
+  },
+  {
+    path: 'media/list/:section/:tag',
     component: SiteMediaComponent,
     canActivate: [AuthGuardService],
   },

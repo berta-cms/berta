@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
-import { Observable, combineLatest } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Select, Store } from '@ngxs/store';
 import { Animations } from '../../shared/animations';
 import {
@@ -10,7 +10,7 @@ import {
 import { UpdateEntryGalleryImageCropAction } from '../sections/entries/entries-state/section-entries.actions';
 import { SiteStateModel } from '../sites-state/site-state.model';
 import { ActivatedRoute } from '@angular/router';
-import { filter, map } from 'rxjs/operators';
+import { filter, map, switchMap } from 'rxjs/operators';
 import { SectionEntriesState } from '../sections/entries/entries-state/section-entries.state';
 import { SiteSectionStateModel } from '../sections/sections-state/site-sections-state.model';
 import { SitesState } from '../sites-state/sites.state';
@@ -113,29 +113,38 @@ export class EntryGalleryImageEditorComponent implements OnInit {
         this.sectionName = params['params']['section'];
         this.entryId = params['params']['entry_id'];
         this.imageOrder = params['params']['image_order'];
-        combineLatest([
-          this.currentSite$,
-          this.store.select(SectionEntriesState.getCurrentSiteEntries).pipe(
-            filter((e) => e.length > 0),
-            map((e) =>
-              e.find(
-                (e) =>
-                  e.sectionName === this.sectionName && e.id === this.entryId
-              )
-            )
-          ),
-        ]).subscribe(([site, entry]) => {
-          this.site = site;
-          this.galleryFile = entry.mediaCacheData.file[this.imageOrder];
 
-          const path = `${site.mediaUrl}/${entry.mediafolder}/${this.galleryFile['@attributes'].src}`;
+        this.currentSite$
+          .pipe(
+            switchMap((site) => {
+              this.site = site;
+              return this.store
+                .select(SectionEntriesState.getCurrentSiteEntries)
+                .pipe(
+                  map(
+                    (e) =>
+                      e.length > 0 &&
+                      e.find(
+                        (e) =>
+                          e.sectionName === this.sectionName &&
+                          e.id === this.entryId
+                      )
+                  ),
+                  filter((e) => !!e)
+                );
+            })
+          )
+          .subscribe((entry) => {
+            this.galleryFile = entry.mediaCacheData.file[this.imageOrder];
 
-          this.http
-            .get(path, { responseType: 'blob' })
-            .subscribe((imageBlob) => {
-              this.galleryFileBlob = imageBlob;
-            });
-        });
+            const path = `${this.site.mediaUrl}/${entry.mediafolder}/${this.galleryFile['@attributes'].src}`;
+
+            this.http
+              .get(path, { responseType: 'blob' })
+              .subscribe((imageBlob) => {
+                this.galleryFileBlob = imageBlob;
+              });
+          });
       });
   }
 
