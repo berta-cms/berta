@@ -11,6 +11,21 @@ berta-entry-gallery-editor {
 
   .content {
     padding: 1.3em;
+    flex-grow: 1;
+
+    .header {
+      display: flex;
+      column-gap: 1em;
+      align-items: center;
+
+      h3 {
+        flex-grow: 1;
+      }
+
+      .close {
+        font-size: 1.5em;
+      }
+    }
   }
 
   .entry-gallery {

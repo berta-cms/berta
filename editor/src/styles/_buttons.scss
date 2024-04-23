@@ -45,3 +45,10 @@
     pointer-events: none;
   }
 }
+
+button {
+  &.close {
+    background: none;
+    cursor: pointer;
+  }
+}

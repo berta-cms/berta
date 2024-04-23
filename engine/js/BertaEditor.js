@@ -494,66 +494,20 @@ var BertaEditor = new Class({
   },
 
   onGalleryEditClick: function (event) {
-    // replaces the gallery with gallery editor
     event.stop();
-    var galleryContainers = $(event.target).getParents(".xGalleryContainer");
-    var galleryContainer = galleryContainers[0];
-    var galleryContainerLast = galleryContainers.getLast();
-    galleryContainer.replaces(galleryContainerLast);
+    var site = getCurrentSite();
+    var entryObj = $(event.target).getParent(".xEntry");
+    var entryId = entryObj.getClassStoredValue("xEntryId");
 
-    var galleryInstance, galleryInstanceIndex;
-    if (
-      this.galleries.some(function (item, index) {
-        // if the containers match then this is the right gallery instance
-        if ($(item.container) == $(galleryContainer)) {
-          galleryInstance = item;
-          galleryInstanceIndex = index;
-          return true;
-        }
-        return false;
-      })
-    ) {
-      // remove the gallery instance
-      galleryInstance.detach();
-      this.galleries.splice(galleryInstanceIndex, 1);
-
-      // instantiate the gallery editor
-      var bGEditor = new BertaGalleryEditor(galleryContainer, {
-        engineRoot: this.options.paths.engineRoot,
-      });
-      //this.processHandler.addObservable(bGEditor);
-      this.galleryEditors.push(bGEditor);
-
-      bGEditor.addEvent(
-        "load",
-        function () {
-          this.fireEvent(BertaEditorBase.EDITABLE_START, [
-            galleryContainer,
-            bGEditor,
-          ]);
-        }.bind(this)
-      );
-
-      // onClose destroys the editor, removes its instance and loads the gallery back
-      bGEditor.addEvent(
-        "close",
-        function () {
-          //this.processHandler.removeObservable(bGEditor);
-          var eIdx = this.galleryEditors.indexOf(bGEditor);
-          if (eIdx >= 0) {
-            this.galleryEditors.splice(eIdx);
-          }
-          bGEditor = null;
-
-          this.galleryLoad(galleryContainer);
-
-          if (this.options.templateName.substr(0, 5) == "messy") {
-            $$(".xCreateNewEntry").show();
-            $$(".xEntry .xCreateNewEntry").hide();
-          }
-        }.bind(this)
-      );
-    }
+    window.parent.postMessage(
+      {
+        action: "bt-navigate",
+        site: site,
+        section: this.currentSection,
+        entryId: entryId,
+      },
+      "*"
+    );
   },
 
   galleryLoad: function (container) {

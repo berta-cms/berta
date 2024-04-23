@@ -340,10 +340,13 @@ import { SiteSettingsState } from '../settings/site-settings.state';
       </div>
     </aside>
     <div class="content" *ngIf="currentSection && currentEntry">
-      <h3>
-        Gallery editor / entry #{{ currentEntry.id }} /
-        {{ currentSection.title || 'Untitled' }}
-      </h3>
+      <div class="header">
+        <h3>
+          Gallery editor / entry #{{ currentEntry.id }} /
+          {{ currentSection.title || 'Untitled' }}
+        </h3>
+        <button class="close" (click)="closeEditor()">&#10006;</button>
+      </div>
 
       <div class="entry-gallery-items">
         <div
@@ -602,5 +605,9 @@ export class EntryGalleryEditorComponent implements OnInit {
         },
       ],
     });
+  }
+
+  closeEditor() {
+    this.router.navigate(['/'], { queryParamsHandling: 'preserve' });
   }
 }
