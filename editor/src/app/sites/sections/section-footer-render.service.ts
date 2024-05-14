@@ -19,7 +19,6 @@ export class SectionFooterRenderService {
   getViewData(siteSettings, sections: SiteSectionStateModel[], user) {
     let viewData = {
       intercom: this.getIntercomSettings(sections, user),
-      googleAnalyticsId: siteSettings.settings.googleAnalyticsId,
       hostName: location.hostname,
       isEditMode: true,
     };

@@ -259,6 +259,7 @@ class SectionHeadRenderService
         $data['scripts'] = $this->getScripts($siteSlug, $siteSettings, $currentSection, $templateName, $isShopAvailable, $isEditMode, $user);
         $data['isResponsive'] = $isResponsive;
         $data['isAutoResponsive'] = $isAutoResponsive;
+        $data['googleAnalyticsId'] = $siteSettings['settings']['googleAnalyticsId'];
 
         if (in_array('custom_javascript', $user->features)) {
             $data['googleSiteVerificationTag'] = $siteSettings['settings']['googleSiteVerification'];

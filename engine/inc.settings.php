@@ -650,7 +650,8 @@ $settingsDefinition = [
             'allow_blank' => true,
             'default' => '',
             'html_entities' => true,
-            'title' => I18n::_('Google Analytics ID'),
+            'title' => I18n::_('Google Analytics measurement ID'),
+            'placeholder' => 'G-XXXXXXXXXX',
             'validator' => 'GoogleAnalytics',
             'description' => I18n::_('The ID of the <a href="http://google.com/analytics" target="_blank">Google Analytics</a> site profile. To obtain an ID, register in <a href="http://google.com/analytics" target="_blank">Google Analytics</a> and create a profile for your site.')
         ],
