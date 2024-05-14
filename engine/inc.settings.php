@@ -653,7 +653,7 @@ $settingsDefinition = [
             'title' => I18n::_('Google Analytics measurement ID'),
             'placeholder' => 'G-XXXXXXXXXX',
             'validator' => 'GoogleAnalytics',
-            'description' => I18n::_('The ID of the <a href="https://support.google.com/analytics/answer/12270356?hl=en" target="_blank">Google Analytics</a> website property.')
+            'description' => I18n::_('How to get the <a href="https://support.google.com/analytics/answer/12270356?hl=en" target="_blank">measurement ID</a>.')
         ],
         'googleSiteVerification' => [
             'format' => 'text',
