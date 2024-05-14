@@ -43,6 +43,7 @@ export class SectionHeadRenderService {
       isResponsive: isResponsive,
       isAutoResponsive: isAutoResponsive,
       googleSiteVerificationTag: googleSiteVerificationTag,
+      googleAnalyticsId: siteSettings.settings.googleAnalyticsId,
       styles: this.getStyles(
         appState,
         siteSlug,

@@ -23,7 +23,6 @@ class SectionFooterRenderService
             'photoswipeTheme' => $siteSettings['entryLayout']['galleryFullScreenBackground'],
             'photoswipeCaptionAlign' => $siteSettings['entryLayout']['galleryFullScreenCaptionAlign'],
             'intercom' => $this->getIntercomSettings($sections, $user, $isEditMode),
-            'googleAnalyticsId' => $siteSettings['settings']['googleAnalyticsId'],
             'hostName' => $request->getHost(),
             'isEditMode' => $isEditMode,
         ];

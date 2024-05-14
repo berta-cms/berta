@@ -140,8 +140,6 @@ return [
     /* setting name */ 'Interface language' => 'Język ',
 
     /* setting tab */ 'Other settings' => 'Różne',
-    /* setting name */ 'Google Analytics ID' => 'Google Analytics ID',
-    /* help text */    'The ID of the Google Analytics site profile (example: <em>UA-1234567-12</em>). To obtain an ID, register in <a href="http://google.com/analytics" target="_blank">Google Analytics</a> and create a profile for your site.' => 'Numer Google Analytics. Idź do <a href="http://google.com/analytics" target="_blank">Google Analytics</a>, laby stworzyć swój profil oraz uzyskać swój ID (na przykład: <em>UA-1234567-12</em>)',
 
     // Translations from entries view (and editing)
 
