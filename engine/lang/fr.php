@@ -138,9 +138,7 @@ return [
     /* setting name */ 'Interface language' => 'Langue de l’interface',
 
     /* setting tab */ 'Other settings' => 'Autres paramètres',
-    /* setting name */ 'Google Analytics ID' => 'ID Google Analytics',
     /* setting name */ 'Google site verification tag' => 'Balise META de vérification Google',
-    /* help text */    'The ID of the Google Analytics site profile (example: <em>UA-1234567-12</em>). To obtain an ID, register in <a href="http://google.com/analytics" target="_blank">Google Analytics</a> and create a profile for your site.' => 'L’identifiant de votre compte Google Analytics (exemple : <em>UA-1234567-12</em>). Pour obtenir un identifiant, enregistrez vous sur <a href="http://google.com/analytics" target="_blank">Google Analytics</a> et créez un profil pour votre site.',
 
     // Translations from entries view (and editing)
 
