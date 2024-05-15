@@ -101,6 +101,8 @@ abstract class SectionTemplateRenderService
             $isEditMode
         );
 
+        $data['googleTagManagerNoscript'] = $this->googleTagManagerNoscriptRender($siteSettings);
+
         $data['sitesMenu'] = $this->sitesMenuRS->render(
             $siteSlug,
             $user,
@@ -350,5 +352,15 @@ abstract class SectionTemplateRenderService
         I18n::load_language($siteSettings['language']['language']);
 
         return I18n::_('berta_copyright_text');
+    }
+
+    private function googleTagManagerNoscriptRender($siteSettings)
+    {
+        return view(
+            '/Sites/Sections/googleTagManagerNoscript',
+            [
+                'googleTagManagerContainerId' => $siteSettings['settings']['googleTagManagerContainerId']
+            ]
+        );
     }
 }

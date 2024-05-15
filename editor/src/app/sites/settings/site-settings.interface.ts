@@ -45,6 +45,7 @@ export interface SiteSettingsSiteResponse {
   settings?: {
     hideBertaCopyright?: string;
     googleAnalyticsId?: string;
+    googleTagManagerContainerId?: string;
     googleSiteVerification?: string;
     jsInclude?: string;
   };

@@ -45,6 +45,7 @@ use App\Configuration\SiteTemplatesConfigService;
  *   <settings>
  *     <hideBertaCopyright><![CDATA[yes]]></hideBertaCopyright>
  *     <googleAnalyticsId><![CDATA[123]]></googleAnalyticsId>
+ *     <googleTagManagerContainerId><![CDATA[456]]></googleTagManagerContainerId>
  *     <googleSiteVerification><![CDATA[&lt;meta name=&quot;google-site-verification&quot; content=&quot;xyz&quot; /&gt;]]></googleSiteVerification>
  *     <jsInclude><![CDATA[&lt;script&gt;<br />var b = 2;<br />&lt;/script&gt;]]></jsInclude>
  *   </settings>
@@ -155,6 +156,7 @@ class SiteSettingsDataService extends Storage
                 'properties' => [
                     'hideBertaCopyright' => ['type' => 'string'],
                     'googleAnalyticsId' => ['type' => 'string'],
+                    'googleTagManagerContainerId' => ['type' => 'string'],
                     'googleSiteVerification' => ['type' => 'string'],
                     'jsInclude' => ['type' => 'string'],
                 ],

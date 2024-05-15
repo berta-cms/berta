@@ -6,6 +6,7 @@
 <!--[if (gt IE 9)|!(IE)]><!--> <html id="html"> <!--<![endif]-->
   {{ sectionHead|raw }}
   <body class="{{ bodyClasses }}" id="body">
+    {{ googleTagManagerNoscript|raw }}
     <div id="allContainer">
       <div id="contentContainer"{% if isResponsive %} class="xResponsive"{% endif %}>
         <div id="sitesMenu">

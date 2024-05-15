@@ -260,6 +260,7 @@ class SectionHeadRenderService
         $data['isResponsive'] = $isResponsive;
         $data['isAutoResponsive'] = $isAutoResponsive;
         $data['googleAnalyticsId'] = $siteSettings['settings']['googleAnalyticsId'];
+        $data['googleTagManagerContainerId'] = $siteSettings['settings']['googleTagManagerContainerId'];
 
         if (in_array('custom_javascript', $user->features)) {
             $data['googleSiteVerificationTag'] = $siteSettings['settings']['googleSiteVerification'];
