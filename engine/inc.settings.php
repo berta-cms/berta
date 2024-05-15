@@ -653,7 +653,16 @@ $settingsDefinition = [
             'title' => I18n::_('Google Analytics measurement ID'),
             'placeholder' => 'G-XXXXXXXXXX',
             'validator' => 'GoogleAnalytics',
-            'description' => I18n::_('How to get the <a href="https://support.google.com/analytics/answer/12270356?hl=en" target="_blank">measurement ID</a>.')
+            'description' => I18n::_('How to get the <a href="https://support.google.com/analytics/answer/12270356?hl=en" target="_blank">measurement ID</a>. Leave blank if Google Tag Manager container ID is filled.')
+        ],
+        'googleTagManagerContainerId' => [
+            'format' => 'text',
+            'allow_blank' => true,
+            'default' => '',
+            'html_entities' => true,
+            'title' => I18n::_('Google Tag Manager container ID'),
+            'placeholder' => 'GTM-XXXXXX',
+            'description' => I18n::_('How to get the <a href="https://support.google.com/tagmanager/answer/14847097?hl=en" target="_blank">container ID</a>. Leave blank if Google Analytics measurement ID is filled.')
         ],
         'googleSiteVerification' => [
             'format' => 'text',

@@ -31,6 +31,7 @@ import { SiteTemplateSettingsState } from '../sites/template-settings/site-templ
 import { SiteTemplatesState } from '../sites/template-settings/site-templates.state';
 import { UserState } from '../user/user.state';
 import { UserCopyright } from '../../types/user-copyright';
+import * as GoogleTagManagerNoscriptTemplate from '../../templates/Sites/Sections/googleTagManagerNoscript.twig';
 
 @Injectable({
   providedIn: 'root',
@@ -282,6 +283,8 @@ export class TemplateRenderService {
         isAutoResponsive,
         user
       ),
+      googleTagManagerNoscript:
+        this.googleTagManagerNoscriptRender(siteSettings),
       sitesMenu: this.sitesMenuRenderService.render(
         appState,
         user,
@@ -363,5 +366,12 @@ export class TemplateRenderService {
     contentWindow.document.open();
     contentWindow.document.write(html);
     contentWindow.document.close();
+  }
+
+  googleTagManagerNoscriptRender(siteSettings) {
+    return GoogleTagManagerNoscriptTemplate({
+      googleTagManagerContainerId:
+        siteSettings.settings.googleTagManagerContainerId,
+    });
   }
 }

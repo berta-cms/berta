@@ -6,6 +6,7 @@
 <!--[if (gt IE 9)|!(IE)]><!--> <html id="html"> <!--<![endif]-->
   {{ sectionHead|raw }}
   <body class="{{ bodyClasses }}" id="body">
+    {{ googleTagManagerNoscript|raw }}
     <div id="allContainer"{% if isCenteredPageLayout %} class="xCentered"{% endif %}>
       <div id="sideColumn"{{ sideColumnAttributes|raw }}>
         <div id="sideColumnTop">

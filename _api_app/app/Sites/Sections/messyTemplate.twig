@@ -2,6 +2,7 @@
 <html id="html">
   {{ sectionHead|raw }}
   <body class="{{ bodyClassList }}" id="body">
+    {{ googleTagManagerNoscript|raw }}
     {% if sectionType != 'shopping_cart' %}
       {{ backgroundGallery|raw }}
       {% if backgroundVideoEmbed %}
