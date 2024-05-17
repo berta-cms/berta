@@ -8,6 +8,9 @@ $options['HOSTING_PROFILE'] = isset($hostingConfig['login']) ? $hostingConfig['l
 $options['FORGOTPASSWORD_LINK'] = isset($hostingConfig['forgotPassword']) ? $hostingConfig['forgotPassword'] : 'http://support.berta.me/kb/login-name-and-password/forgot-my-password-for-self-hosted-berta';
 $options['INTERCOM_APP_ID'] = isset($hostingConfig['intercomAppId']) ? $hostingConfig['intercomAppId'] : false;
 $options['INTERCOM_SECRET_KEY'] = isset($hostingConfig['intercomSecretKey']) ? $hostingConfig['intercomSecretKey'] : false;
+$options['HELPCRUNCH_API_ORGANIZATION'] = isset($hostingConfig['helpcrunchApiOrganization']) ? $hostingConfig['helpcrunchApiOrganization'] : false;
+$options['HELPCRUNCH_APP_ID'] = isset($hostingConfig['helpcrunchAppId']) ? $hostingConfig['helpcrunchAppId'] : false;
+$options['HELPCRUNCH_API_KEY'] = isset($hostingConfig['helpcrunchApiKey']) ? $hostingConfig['helpcrunchApiKey'] : false;
 $options['EMAIL_FROM_ADDRESS'] = isset($hostingConfig['emailFromAddress']) ? $hostingConfig['emailFromAddress'] : false;
 
 //individual hosting config file for berta

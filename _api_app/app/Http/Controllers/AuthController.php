@@ -89,6 +89,7 @@ class AuthController extends Controller
             'features' => $user->features,
             'profileUrl' => $user->profile_url,
             'intercom' => $user->intercom,
+            'helpcrunch' => $user->helpcrunch,
         ]);
     }
 

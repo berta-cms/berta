@@ -257,6 +257,10 @@ export class AppStateService {
             'intercom',
             JSON.stringify(resp.data.intercom)
           );
+          window.localStorage.setItem(
+            'helpcrunch',
+            JSON.stringify(resp.data.helpcrunch)
+          );
         })
       );
   }
@@ -267,6 +271,7 @@ export class AppStateService {
     window.localStorage.removeItem('features');
     window.localStorage.removeItem('profileUrl');
     window.localStorage.removeItem('intercom');
+    window.localStorage.removeItem('helpcrunch');
 
     this.cachedSiteStates = {};
 

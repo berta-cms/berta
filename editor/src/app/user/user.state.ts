@@ -29,6 +29,7 @@ const defaultState: UserStateModel = {
   features: [],
   profileUrl: null,
   intercom: null,
+  helpcrunch: null,
 };
 
 @State<UserStateModel>({
@@ -53,6 +54,7 @@ export class UserState implements NgxsOnInit {
     const features = window.localStorage.getItem('features');
     const profileUrl = window.localStorage.getItem('profileUrl');
     const intercom = window.localStorage.getItem('intercom');
+    const helpcrunch = window.localStorage.getItem('helpcrunch');
 
     this.route.queryParams
       .pipe(
@@ -76,6 +78,7 @@ export class UserState implements NgxsOnInit {
       features: JSON.parse(features),
       profileUrl: JSON.parse(profileUrl),
       intercom: JSON.parse(intercom),
+      helpcrunch: JSON.parse(helpcrunch),
     });
   }
 
@@ -89,6 +92,7 @@ export class UserState implements NgxsOnInit {
           features: resp.data.features,
           profileUrl: resp.data.profileUrl,
           intercom: resp.data.intercom,
+          helpcrunch: resp.data.helpcrunch,
         });
       })
     );

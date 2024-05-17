@@ -8,8 +8,8 @@ use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Laravel\Lumen\Auth\Authorizable;
 
 class UserModel implements
-AuthenticatableContract,
-AuthorizableContract
+    AuthenticatableContract,
+    AuthorizableContract
 {
     use Authenticatable, Authorizable;
     public $name;
@@ -20,6 +20,7 @@ AuthorizableContract
     public $plans;
     public $noindex;
     public $intercom;
+    public $helpcrunch;
 
     public function __construct()
     {
@@ -35,6 +36,7 @@ AuthorizableContract
         $this->features = $this->getFeatures();
         $this->noindex = $this->getHostingData('NOINDEX');
         $this->intercom = $this->getIntercomData();
+        $this->helpcrunch = $this->getHelpcrunchData();
     }
 
     /**
@@ -123,6 +125,28 @@ AuthorizableContract
             'appId' => $intercomAppId,
             'userName' => $this->name,
             'userHash' => $userHash,
+        ];
+    }
+
+    private function getHelpcrunchData()
+    {
+        $helpcrunchApiOrganization = $this->getHostingData('HELPCRUNCH_API_ORGANIZATION');
+        $helpcrunchAppId = $this->getHostingData('HELPCRUNCH_APP_ID');
+        $helpcrunchApiKey = $this->getHostingData('HELPCRUNCH_API_KEY');
+        $uid = !empty($_SESSION['_berta__user']['uid']) ? $_SESSION['_berta__user']['uid'] : null;
+
+        if (!$helpcrunchApiOrganization || !$helpcrunchAppId || !$helpcrunchApiKey || !$uid) {
+            return null;
+        }
+
+        $security_hash = hash_hmac('sha256', $uid, $helpcrunchApiKey);
+
+        return [
+            'organization' => $helpcrunchApiOrganization,
+            'appId' => $helpcrunchAppId,
+            'user_id' => $uid,
+            'security_hash' => $security_hash,
+            'email' => $this->name
         ];
     }
 }

@@ -308,6 +308,10 @@ class Helpers
             $app_id = config('app.id');
             JWT::$leeway = 60;
             $decoded = JWT::decode($token, $app_key, ['HS256']);
+            if (!empty($decoded->uid)) {
+                $_SESSION['uid'] = $decoded->uid;
+            }
+
             return true;
 
         } catch (\Throwable $t) {
