@@ -104,9 +104,10 @@ class BertaSecurity
     {
         if ($name && $pass) {
             if ($name == $realName && $pass == $realPass) {
+                $uid = !empty($_SESSION['uid']) ? $_SESSION['uid'] : null;
                 $this->destroy();
                 session_start();
-                $this->updateUserSettings(['name' => $realName]);
+                $this->updateUserSettings(['name' => $realName, 'uid' => $uid]);
 
                 //log login event
                 BertaUtils::logEvent('login');

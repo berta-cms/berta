@@ -114,6 +114,7 @@ export class AppComponent implements OnInit, OnDestroy {
   isSidebarFullscreen = false;
   sidebarFullscreenRoutes = ['/themes'];
 
+  @Select(UserState) user$: Observable<UserStateModel>;
   @Select(AppState.getShowOverlay) showOverlay$;
   @Select(AppState.getInputFocus) inputFocus$: Observable<boolean>;
   @Select(UserState.isLoggedIn) isLoggedIn$;
@@ -189,6 +190,31 @@ export class AppComponent implements OnInit, OnDestroy {
       filter(isSetup => isSetup)
     ).subscribe(() => {
       this.router.navigate(['/'], { queryParamsHandling: 'preserve' });
+    });
+
+    this.user$.subscribe((user)=>{
+      if (user.helpcrunch) {
+        window['helpcrunchSettings'] = {
+          organization: user.helpcrunch.organization,
+          appId: user.helpcrunch.appId,
+          user:{
+            user_id: user.helpcrunch.user_id,
+            security_hash: user.helpcrunch.security_hash,
+            email: user.helpcrunch.email,
+            custom_data: {
+              app: 'berta',
+              user_id: user.helpcrunch.user_id
+            }
+          },
+        };
+
+        if (window['HelpCrunch'] === undefined) {
+          let helpcrunchScript = document.createElement('script');
+          helpcrunchScript.type = 'text/javascript';
+          helpcrunchScript.src = "/engine/js/helpcrunch.js";
+          document.body.appendChild(helpcrunchScript);
+        }
+      } 
     });
 
     if (isDevMode()) {
