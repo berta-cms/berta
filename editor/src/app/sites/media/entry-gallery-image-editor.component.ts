@@ -26,7 +26,7 @@ import { CropperPosition, ImageCroppedEvent } from 'ngx-image-cropper';
           (click)="fileSettingsIsOpen = !fileSettingsIsOpen"
           class="hoverable"
         >
-          File settings
+          Crop settings
           <svg
             class="drop-icon"
             width="10"

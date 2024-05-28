@@ -37,7 +37,7 @@ import { SiteSettingsState } from '../settings/site-settings.state';
           (click)="fileSettingsIsOpen = !fileSettingsIsOpen"
           class="hoverable"
         >
-          File settings
+          Item settings
           <svg
             class="drop-icon"
             width="10"
@@ -58,7 +58,8 @@ import { SiteSettingsState } from '../settings/site-settings.state';
           <berta-setting
             [setting]="{ slug: '@value', value: selectedFile['@value'] }"
             [config]="{
-              title: 'Caption',
+              title: 'Caption for ' + selectedFile['@attributes']['src'],
+              placeholder: 'Enter item caption here...',
               format: 'richtext',
               enabledOnUpdate: true
             }"
@@ -409,13 +410,15 @@ import { SiteSettingsState } from '../settings/site-settings.state';
             <bt-icon-delete></bt-icon-delete>
           </button>
         </div>
+
+        <berta-files-input
+          [accept]="'image/*, video/mp4'"
+          [label]="'add items'"
+          [disabled]="disabled"
+          [errors]="uploadFilesErrors"
+          (update)="uploadFiles($event)"
+        ></berta-files-input>
       </div>
-      <berta-files-input
-        [accept]="'image/*, video/mp4'"
-        [disabled]="disabled"
-        [errors]="uploadFilesErrors"
-        (update)="uploadFiles($event)"
-      ></berta-files-input>
     </div>
   `,
   animations: [Animations.slideToggle],

@@ -7,6 +7,10 @@ berta-entry-gallery-editor {
     padding-top: 0;
     width: 384px;
     border-right: 1px solid $grey-10;
+
+    .fa-remove:before {
+      content: "" !important;
+    }
   }
 
   .content {
@@ -24,6 +28,38 @@ berta-entry-gallery-editor {
 
       .close {
         font-size: 1.5em;
+      }
+    }
+
+    berta-files-input {
+      width: 110px;
+      height: 80px;
+
+      .form-group,
+      label {
+        width: 100%;
+        height: 100%;
+      }
+
+      .file-input-wrapper {
+        flex-direction: column-reverse;
+        height: 100%;
+        align-items: center;
+        justify-content: center;
+        row-gap: 0.25em;
+        border-radius: 0;
+
+        .file-input {
+          text-align: center;
+          padding: 0;
+          flex-grow: 0;
+        }
+
+        .add {
+          width: 30px;
+          height: 30px;
+          margin-right: 0;
+        }
       }
     }
   }

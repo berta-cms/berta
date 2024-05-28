@@ -18,6 +18,7 @@ import { AngularEditorConfig } from '@kolkov/angular-editor';
     `
       :host label {
         display: block;
+        margin-bottom: 0.5em;
       }
     `,
   ],
@@ -40,12 +41,14 @@ export class RichTextInputComponent implements OnInit {
   editorConfig: AngularEditorConfig = {
     editable: true,
     height: 'auto',
-    minHeight: '0',
+    minHeight: '3em',
     maxHeight: 'auto',
     width: 'auto',
     minWidth: '0',
     toolbarHiddenButtons: [
       [
+        'undo',
+        'redo',
         'underline',
         'strikeThrough',
         'subscript',
@@ -81,5 +84,7 @@ export class RichTextInputComponent implements OnInit {
       });
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.editorConfig.placeholder = this.placeholder;
+  }
 }
