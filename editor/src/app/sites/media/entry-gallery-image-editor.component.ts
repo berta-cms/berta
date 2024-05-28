@@ -15,7 +15,7 @@ import { SectionEntriesState } from '../sections/entries/entries-state/section-e
 import { SiteSectionStateModel } from '../sections/sections-state/site-sections-state.model';
 import { SitesState } from '../sites-state/sites.state';
 import { HttpClient } from '@angular/common/http';
-import { ImageCroppedEvent } from 'ngx-image-cropper';
+import { CropperPosition, ImageCroppedEvent } from 'ngx-image-cropper';
 
 @Component({
   selector: 'berta-entry-gallery-image-editor',
@@ -44,6 +44,38 @@ import { ImageCroppedEvent } from 'ngx-image-cropper';
           </svg>
         </h3>
         <div class="settings" [@isExpanded]="fileSettingsIsOpen">
+          <berta-setting
+            *ngIf="cropperIsReady"
+            [setting]="{
+              slug: 'width',
+              value: size.width
+            }"
+            [config]="{
+              title: 'Width',
+              format: 'text',
+              enabledOnUpdate: true
+            }"
+            [error]="''"
+            [disabled]="false"
+            (update)="updateSize($event)"
+          >
+          </berta-setting>
+          <berta-setting
+            *ngIf="cropperIsReady"
+            [setting]="{
+              slug: 'height',
+              value: size.height
+            }"
+            [config]="{
+              title: 'Height',
+              format: 'text',
+              enabledOnUpdate: true
+            }"
+            [error]="''"
+            [disabled]="false"
+            (update)="updateSize($event)"
+          >
+          </berta-setting>
           <div class="setting">
             <button
               *ngIf="cropperIsReady"
@@ -73,6 +105,7 @@ import { ImageCroppedEvent } from 'ngx-image-cropper';
           format="png"
           (imageCropped)="imageCropped($event)"
           (cropperReady)="cropperReady()"
+          [cropper]="position"
         ></image-cropper>
       </div>
     </div>
@@ -91,13 +124,17 @@ export class EntryGalleryImageEditorComponent implements OnInit {
   cropperIsReady = false;
   canCrop = false;
   imageCroppedEvent: ImageCroppedEvent | undefined;
+  position: CropperPosition;
+  size: { width: number; height: number };
 
   constructor(
     private _location: Location,
     private store: Store,
     private route: ActivatedRoute,
     private http: HttpClient
-  ) {}
+  ) {
+    this.position = { x1: 0, y1: 0, x2: 0, y2: 0 };
+  }
 
   ngOnInit() {
     this.route.paramMap
@@ -153,6 +190,38 @@ export class EntryGalleryImageEditorComponent implements OnInit {
     this.canCrop =
       event.width !== parseInt(this.galleryFile['@attributes'].width) ||
       event.height !== parseInt(this.galleryFile['@attributes'].height);
+    this.size = { width: event.width, height: event.height };
+  }
+
+  updateSize(e) {
+    let value = parseInt(e.value);
+
+    if (isNaN(value) || value < 1) {
+      value = 1;
+    }
+
+    if (e.field === 'width') {
+      const x2 =
+        this.imageCroppedEvent.cropperPosition.x1 +
+        value *
+          (this.imageCroppedEvent.cropperPosition.x2 /
+            this.imageCroppedEvent.imagePosition.x2);
+      this.position = {
+        ...this.imageCroppedEvent.cropperPosition,
+        x2,
+      };
+    }
+
+    if (e.field === 'height') {
+      this.position = {
+        ...this.imageCroppedEvent.cropperPosition,
+        y2:
+          this.imageCroppedEvent.cropperPosition.y1 +
+          value *
+            (this.imageCroppedEvent.cropperPosition.y2 /
+              this.imageCroppedEvent.imagePosition.y2),
+      };
+    }
   }
 
   cropperReady() {
