@@ -1066,6 +1066,12 @@ class SectionEntriesDataService extends Storage
         $entries[self::$ROOT_LIST_ELEMENT][$entryOrder] = $entry;
         $this->array2xmlFile($entries, $this->XML_FILE, $this->ROOT_ELEMENT);
 
+        // create image variant for gallery size
+        $storageService = new Storage($data['site']);
+        $siteSettingsDataService = new SiteSettingsDataService($data['site']);
+        $siteSettings = $siteSettingsDataService->getState();
+        ImageHelpers::getGalleryItem($slide, $entry, $storageService, $siteSettings);
+
         return [
             'update' => $fileName,
             'updateText' => $fileName,

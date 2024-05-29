@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 use App\Shared\Storage;
 use App\Shared\Helpers;
 use App\Http\Controllers\Controller;
-
 use App\Configuration\SiteTemplatesConfigService;
 use App\Sites\Sections\Entries\SectionEntriesDataService;
 use App\Sites\Sections\Entries\SectionEntryRenderService;
