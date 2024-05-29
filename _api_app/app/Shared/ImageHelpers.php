@@ -218,13 +218,17 @@ class ImageHelpers
         $info = getimagesize($file);
 
         switch ($info[2]) {
-            case IMAGETYPE_GIF:$image = imagecreatefromgif($file);
+            case IMAGETYPE_GIF:
+                $image = imagecreatefromgif($file);
                 break;
-            case IMAGETYPE_JPEG:$image = imagecreatefromjpeg($file);
+            case IMAGETYPE_JPEG:
+                $image = imagecreatefromjpeg($file);
                 break;
-            case IMAGETYPE_PNG:$image = imagecreatefrompng($file);
+            case IMAGETYPE_PNG:
+                $image = imagecreatefrompng($file);
                 break;
-            default:return false;
+            default:
+                return false;
         }
 
         //in case of incorrect params
@@ -259,13 +263,17 @@ class ImageHelpers
             imagecopy($image_resized, $image, 0, 0, $x, $y, $w, $h);
 
             switch ($info[2]) {
-                case IMAGETYPE_GIF:imagegif($image_resized, $file);
+                case IMAGETYPE_GIF:
+                    imagegif($image_resized, $file);
                     break;
-                case IMAGETYPE_JPEG:imagejpeg($image_resized, $file, 97);
+                case IMAGETYPE_JPEG:
+                    imagejpeg($image_resized, $file, 97);
                     break;
-                case IMAGETYPE_PNG:imagepng($image_resized, $file);
+                case IMAGETYPE_PNG:
+                    imagepng($image_resized, $file);
                     break;
-                default:return false;
+                default:
+                    return false;
             }
         }
 
@@ -306,8 +314,8 @@ class ImageHelpers
 
             $canMakeThumb = function_exists('imagejpeg') &&
                 (($imageInfo[2] == IMAGETYPE_GIF && function_exists('imagecreatefromgif')) ||
-                ($imageInfo[2] == IMAGETYPE_JPEG && function_exists('imagecreatefromjpeg')) ||
-                ($imageInfo[2] == IMAGETYPE_PNG && function_exists('imagecreatefrompng')));
+                    ($imageInfo[2] == IMAGETYPE_JPEG && function_exists('imagecreatefromjpeg')) ||
+                    ($imageInfo[2] == IMAGETYPE_PNG && function_exists('imagecreatefrompng')));
 
             if ($canMakeThumb) {
                 if ($thumbWidth && !$thumbHeight) {
@@ -401,13 +409,17 @@ class ImageHelpers
 
         // Loading image to memory according to type
         switch ($info[2]) {
-            case IMAGETYPE_GIF:$image = imagecreatefromgif($file);
+            case IMAGETYPE_GIF:
+                $image = imagecreatefromgif($file);
                 break;
-            case IMAGETYPE_JPEG:$image = imagecreatefromjpeg($file);
+            case IMAGETYPE_JPEG:
+                $image = imagecreatefromjpeg($file);
                 break;
-            case IMAGETYPE_PNG:$image = imagecreatefrompng($file);
+            case IMAGETYPE_PNG:
+                $image = imagecreatefrompng($file);
                 break;
-            default:return false;
+            default:
+                return false;
         }
 
         // Don't resize animated gifs
