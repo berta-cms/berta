@@ -444,9 +444,10 @@ class ImageHelpers
                 }
             }
             imagecopyresampled($image_resized, $image, 0, 0, 0, 0, $final_width, $final_height, $width_old, $height_old);
-            // make the image progressive
-            imageinterlace($image_resized, true);
         }
+
+        // make the image progressive
+        imageinterlace($image_resized, true);
 
         // Taking care of original, if needed
         if ($delete_original) {
