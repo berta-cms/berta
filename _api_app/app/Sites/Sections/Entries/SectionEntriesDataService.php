@@ -978,6 +978,8 @@ class SectionEntriesDataService extends Storage
             ];
         }
 
+        ImageHelpers::downscaleToMaxSize($mediaDir . '/' . $fileName);
+
         list($width, $height) = getimagesize($mediaDir . '/' . $fileName);
         $smallThumb = ImageHelpers::getThumbnail($mediaDir . '/' . $fileName);
         list($smallThumbWidth, $smallThumbHeight) = getimagesize($smallThumb);

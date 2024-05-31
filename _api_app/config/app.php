@@ -112,7 +112,9 @@ return [
     'old_berta_root' => realpath(__DIR__ . '/../../'),
     'berta_storage_path' => realpath(__DIR__ . '/../../storage'),
     'api_prefix' => env('API_PREFIX', '_api'),
-    'image_max_file_size' => 1024 * 3, // 3MB in kilobytes
+    'image_max_width' => 2560,
+    'image_max_height' => 2560,
+    'image_max_file_size' => 1024 * 10, // 10MB in kilobytes
     'video_max_file_size' => 1024 * 256, // 256MB in kilobytes
     'image_mimes' => [
         'png',

@@ -277,6 +277,7 @@ class SiteSettingsDataService extends Storage
         'template/template' => 'messy-0.4.2',
         'berta/lastUpdated' => 'D, d M Y H:i:s'
     ];
+    private $siteSettingsConfigService;
     private $siteSettingsDefaults;
     private $siteSettingsConfig;
     private $siteTemplatesConfigService;
@@ -336,7 +337,7 @@ class SiteSettingsDataService extends Storage
                     if (isset($this->siteSettingsConfig[$groupSlug][$settingSlug]['children'])) {
                         // Add non existing properties from config with empty values
                         $config = array_fill_keys(array_keys($this->siteSettingsConfig[$groupSlug][$settingSlug]['children']), '');
-                        $siteSettings[$groupSlug][$settingSlug] = array_map(function($item) use ($config) {
+                        $siteSettings[$groupSlug][$settingSlug] = array_map(function ($item) use ($config) {
                             return array_merge($config, $item);
                         }, $siteSettings[$groupSlug][$settingSlug]);
                     }
@@ -397,7 +398,7 @@ class SiteSettingsDataService extends Storage
         if ($isSettingChildren) {
             $setting = $this->getValueByPath($settings, $path);
             // Setting asList not found, try to save setting without index
-            if ($setting === NULL) {
+            if ($setting === null) {
                 array_splice($path_arr, 3, 1);
                 $path = implode('/', $path_arr);
             }
@@ -461,7 +462,7 @@ class SiteSettingsDataService extends Storage
     {
         $isImage = in_array($file->guessExtension(), config('app.image_mimes'));
         $mediaDir = $this->getOrCreateMediaDir();
-        $oldFileName = $this->getValueByPath( $this->get(), implode('/', array_slice(explode('/', $path), 2)));
+        $oldFileName = $this->getValueByPath($this->get(), implode('/', array_slice(explode('/', $path), 2)));
         $fileName = $this->getUniqueFileName($mediaDir, $file->getClientOriginalName());
         $file->move($mediaDir, $fileName);
 
@@ -472,7 +473,9 @@ class SiteSettingsDataService extends Storage
             return self::saveValueByPath($path, $fileName);
         }
 
-        list($width, $height) = getimagesize($mediaDir .'/'. $fileName);
+        ImageHelpers::downscaleToMaxSize($mediaDir . '/' . $fileName);
+
+        list($width, $height) = getimagesize($mediaDir . '/' . $fileName);
         $width = round($width / 2);
         $height = round($height / 2);
 
@@ -564,7 +567,8 @@ class SiteSettingsDataService extends Storage
         return $child;
     }
 
-    public function reload() {
+    public function reload()
+    {
         $this->SITE_SETTINGS = $this->fixTemplateName($this->xmlFile2array($this->XML_FILE));
     }
 
@@ -579,7 +583,8 @@ class SiteSettingsDataService extends Storage
      * @param array $settings
      * @return array
      */
-    private function fixTemplateName($settings) {
+    private function fixTemplateName($settings)
+    {
         $availableTemplates = array_keys($this->siteTemplatesConfigService->get());
 
         if (empty($settings['template']['template']) || in_array($settings['template']['template'], $availableTemplates)) {
@@ -588,7 +593,7 @@ class SiteSettingsDataService extends Storage
 
         list($name) = explode('-', $settings['template']['template']);
         // This is equivalent to find function in JS
-        $actualName = current(array_filter($availableTemplates, function($template) use ($name) {
+        $actualName = current(array_filter($availableTemplates, function ($template) use ($name) {
             return Str::startsWith($template, $name);
         }));
 
@@ -622,7 +627,7 @@ class SiteSettingsDataService extends Storage
                 // overwrite with defined value from new settings
                 if (isset($newSiteSettings[$groupKey][$settingKey])) {
                     $currentSiteSettings[$groupKey][$settingKey] = $newSiteSettings[$groupKey][$settingKey];
-                // remove existing one and keep the new default value from template settings definitions
+                    // remove existing one and keep the new default value from template settings definitions
                 } else {
                     unset($currentSiteSettings[$groupKey][$settingKey]);
                 }

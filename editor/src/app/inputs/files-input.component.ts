@@ -54,7 +54,7 @@ export class FilesInputComponent implements OnInit {
   @Input() errors: string[];
   @Output() update = new EventEmitter();
 
-  maxFileSize = 3145728; // 3 MB
+  maxFileSize = 10485760; // 10 MB
 
   ngOnInit() {
     this.errors = this.errors || [];

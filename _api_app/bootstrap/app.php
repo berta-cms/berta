@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__.'/../vendor/autoload.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 
 (new Laravel\Lumen\Bootstrap\LoadEnvironmentVariables(
     dirname(__DIR__)
@@ -37,7 +37,9 @@ $app->withEloquent();
 */
 
 foreach (scandir("{$app->path()}/Plugins") as $fileOrDir) {
-    if (in_array($fileOrDir, ['.', '..'])) { continue; }
+    if (in_array($fileOrDir, ['.', '..'])) {
+        continue;
+    }
 
     $dirPath = "{$app->path()}/Plugins/{$fileOrDir}";
 
@@ -119,6 +121,7 @@ $app->register(App\Providers\AppServiceProvider::class);
 $app->register(App\User\UserAuthServiceProvider::class);
 $app->register(App\Providers\EventServiceProvider::class);
 $app->register(TwigBridge\ServiceProvider::class);
+$app->register(Intervention\Image\ImageServiceProvider::class);
 
 /*
 |--------------------------------------------------------------------------
@@ -134,7 +137,7 @@ $app->register(TwigBridge\ServiceProvider::class);
 $app->router->group([
     'namespace' => 'App',
 ], function ($router) {
-    require __DIR__.'/../routes/web.php';
+    require __DIR__ . '/../routes/web.php';
 });
 
 return $app;

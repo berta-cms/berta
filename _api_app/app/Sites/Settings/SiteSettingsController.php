@@ -2,9 +2,8 @@
 
 namespace App\Sites\Settings;
 
-use Validator;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
-
 use App\Shared\Helpers;
 use App\Http\Controllers\Controller;
 use App\Sites\Settings\SiteSettingsDataService;
@@ -61,7 +60,8 @@ class SiteSettingsController extends Controller
         return response()->json($res);
     }
 
-    public function upload(Request $request) {
+    public function upload(Request $request)
+    {
         $file = $request->file('value');
         $path = $request->get('path');
 
@@ -75,12 +75,12 @@ class SiteSettingsController extends Controller
 
         $isImage = in_array($file->guessExtension(), config('app.image_mimes'));
 
-        $validator->sometimes('file', 'not_corrupted_image', function($file) use ($isImage) {
+        $validator->sometimes('file', 'not_corrupted_image', function ($file) use ($isImage) {
             return $isImage;
         });
 
         if ($validator->fails()) {
-            return Helpers::api_response($validator->messages()->all(), (object)[], 400);
+            return Helpers::api_response($validator->getMessageBag()->all(), (object)[], 400);
         }
 
         $path_arr = explode('/', $path);

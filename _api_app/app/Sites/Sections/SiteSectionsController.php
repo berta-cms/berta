@@ -2,7 +2,7 @@
 
 namespace App\Sites\Sections;
 
-use Validator;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\User\UserModel;
@@ -138,7 +138,7 @@ class SiteSectionsController extends Controller
         if ($validator->fails()) {
             return response()->json([
                 'status' => 0,
-                'error' => implode(' ', $validator->messages()->all())
+                'error' => implode(' ', $validator->getMessageBag()->all())
             ]);
         }
 

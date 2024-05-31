@@ -3,6 +3,7 @@
 namespace App\Shared;
 
 use App\Shared\Storage;
+use Intervention\Image\ImageManagerStatic as Image;
 
 class ImageHelpers
 {
@@ -528,23 +529,23 @@ class ImageHelpers
      * @param object $file file object to test
      * @return boolean
      */
-    public static function isCorrupted($file)
+    public static function isCorrupted($path)
     {
         try {
-            $type = exif_imagetype($file);
+            $type = exif_imagetype($path);
             if (!$type) {
                 return true;
             }
 
             switch ($type) {
                 case IMAGETYPE_GIF:
-                    $image = imagecreatefromgif($file);
+                    $image = imagecreatefromgif($path);
                     break;
                 case IMAGETYPE_JPEG:
-                    $image = imagecreatefromjpeg($file);
+                    $image = imagecreatefromjpeg($path);
                     break;
                 case IMAGETYPE_PNG:
-                    $image = imagecreatefrompng($file);
+                    $image = imagecreatefrompng($path);
                     break;
                 default:
                     $image = false;
@@ -553,5 +554,20 @@ class ImageHelpers
         } catch (\Exception $e) {
             return true;
         }
+    }
+
+    public static function downscaleToMaxSize($path)
+    {
+        $img = Image::make($path);
+        $img->resize(
+            config('app.image_max_width'),
+            config('app.image_max_height'),
+            function ($constraint) {
+                $constraint->aspectRatio();
+                $constraint->upsize();
+            }
+        );
+        $img->interlace();
+        $img->save($path);
     }
 }

@@ -2,7 +2,7 @@
 
 namespace App\Sites\Sections\Entries;
 
-use Validator;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use App\Shared\Storage;
 use App\Shared\Helpers;
@@ -19,7 +19,6 @@ use App\Sites\TemplateSettings\SiteTemplateSettingsDataService;
 
 class SectionEntriesController extends Controller
 {
-
     public function create(Request $request)
     {
         $json = $request->json()->all();
@@ -112,7 +111,7 @@ class SectionEntriesController extends Controller
         if ($validator->fails()) {
             return response()->json([
                 'status' => 0,
-                'error' => implode(' ', $validator->messages()->all())
+                'error' => implode(' ', $validator->getMessageBag()->all())
             ], 400);
         }
 
