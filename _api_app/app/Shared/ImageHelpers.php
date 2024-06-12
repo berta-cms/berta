@@ -3,6 +3,7 @@
 namespace App\Shared;
 
 use App\Shared\Storage;
+use Intervention\Image\ImageManagerStatic as Image;
 
 class ImageHelpers
 {
@@ -218,13 +219,17 @@ class ImageHelpers
         $info = getimagesize($file);
 
         switch ($info[2]) {
-            case IMAGETYPE_GIF:$image = imagecreatefromgif($file);
+            case IMAGETYPE_GIF:
+                $image = imagecreatefromgif($file);
                 break;
-            case IMAGETYPE_JPEG:$image = imagecreatefromjpeg($file);
+            case IMAGETYPE_JPEG:
+                $image = imagecreatefromjpeg($file);
                 break;
-            case IMAGETYPE_PNG:$image = imagecreatefrompng($file);
+            case IMAGETYPE_PNG:
+                $image = imagecreatefrompng($file);
                 break;
-            default:return false;
+            default:
+                return false;
         }
 
         //in case of incorrect params
@@ -259,13 +264,17 @@ class ImageHelpers
             imagecopy($image_resized, $image, 0, 0, $x, $y, $w, $h);
 
             switch ($info[2]) {
-                case IMAGETYPE_GIF:imagegif($image_resized, $file);
+                case IMAGETYPE_GIF:
+                    imagegif($image_resized, $file);
                     break;
-                case IMAGETYPE_JPEG:imagejpeg($image_resized, $file, 97);
+                case IMAGETYPE_JPEG:
+                    imagejpeg($image_resized, $file, 97);
                     break;
-                case IMAGETYPE_PNG:imagepng($image_resized, $file);
+                case IMAGETYPE_PNG:
+                    imagepng($image_resized, $file);
                     break;
-                default:return false;
+                default:
+                    return false;
             }
         }
 
@@ -306,8 +315,8 @@ class ImageHelpers
 
             $canMakeThumb = function_exists('imagejpeg') &&
                 (($imageInfo[2] == IMAGETYPE_GIF && function_exists('imagecreatefromgif')) ||
-                ($imageInfo[2] == IMAGETYPE_JPEG && function_exists('imagecreatefromjpeg')) ||
-                ($imageInfo[2] == IMAGETYPE_PNG && function_exists('imagecreatefrompng')));
+                    ($imageInfo[2] == IMAGETYPE_JPEG && function_exists('imagecreatefromjpeg')) ||
+                    ($imageInfo[2] == IMAGETYPE_PNG && function_exists('imagecreatefrompng')));
 
             if ($canMakeThumb) {
                 if ($thumbWidth && !$thumbHeight) {
@@ -401,13 +410,17 @@ class ImageHelpers
 
         // Loading image to memory according to type
         switch ($info[2]) {
-            case IMAGETYPE_GIF:$image = imagecreatefromgif($file);
+            case IMAGETYPE_GIF:
+                $image = imagecreatefromgif($file);
                 break;
-            case IMAGETYPE_JPEG:$image = imagecreatefromjpeg($file);
+            case IMAGETYPE_JPEG:
+                $image = imagecreatefromjpeg($file);
                 break;
-            case IMAGETYPE_PNG:$image = imagecreatefrompng($file);
+            case IMAGETYPE_PNG:
+                $image = imagecreatefrompng($file);
                 break;
-            default:return false;
+            default:
+                return false;
         }
 
         // Don't resize animated gifs
@@ -433,6 +446,9 @@ class ImageHelpers
             }
             imagecopyresampled($image_resized, $image, 0, 0, 0, 0, $final_width, $final_height, $width_old, $height_old);
         }
+
+        // make the image progressive
+        imageinterlace($image_resized, true);
 
         // Taking care of original, if needed
         if ($delete_original) {
@@ -513,23 +529,23 @@ class ImageHelpers
      * @param object $file file object to test
      * @return boolean
      */
-    public static function isCorrupted($file)
+    public static function isCorrupted($path)
     {
         try {
-            $type = exif_imagetype($file);
+            $type = exif_imagetype($path);
             if (!$type) {
                 return true;
             }
 
             switch ($type) {
                 case IMAGETYPE_GIF:
-                    $image = imagecreatefromgif($file);
+                    $image = imagecreatefromgif($path);
                     break;
                 case IMAGETYPE_JPEG:
-                    $image = imagecreatefromjpeg($file);
+                    $image = imagecreatefromjpeg($path);
                     break;
                 case IMAGETYPE_PNG:
-                    $image = imagecreatefrompng($file);
+                    $image = imagecreatefrompng($path);
                     break;
                 default:
                     $image = false;
@@ -538,5 +554,20 @@ class ImageHelpers
         } catch (\Exception $e) {
             return true;
         }
+    }
+
+    public static function downscaleToMaxSize($path)
+    {
+        $img = Image::make($path);
+        $img->resize(
+            config('app.image_max_width'),
+            config('app.image_max_height'),
+            function ($constraint) {
+                $constraint->aspectRatio();
+                $constraint->upsize();
+            }
+        );
+        $img->interlace();
+        $img->save($path);
     }
 }

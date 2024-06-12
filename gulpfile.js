@@ -219,7 +219,9 @@ gulp.task('js_backend', function () {
   return gulp.src(js_backend_files)
     .pipe(gulp_sourcemaps.init())
     .pipe(gulp_concat('backend.min.js'))
-    .pipe(gulp_uglify_js())
+    .pipe(gulp_uglify_js().on('error', function(e){
+      console.log(e);
+    }))
     .pipe(gulp_sourcemaps.write('/maps'))
     .pipe(gulp.dest('engine/js'))
     .pipe(livereload())

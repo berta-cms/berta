@@ -129,6 +129,22 @@ export class PreviewComponent implements OnInit {
   onLoad(event) {
     this.waitFullLoad(event.target).subscribe({
       next: (iframe) => {
+        window.addEventListener('message', (event) => {
+          switch (event.data.action) {
+            case 'bt-navigate':
+              this.router.navigate(
+                [`/media/gallery/${event.data.section}/${event.data.entryId}`],
+                {
+                  queryParamsHandling: 'merge',
+                  queryParams: {
+                    site: event.data.site || null,
+                  },
+                }
+              );
+              break;
+          }
+        });
+
         const lastUrlPart = iframe.contentDocument.location.href
           .replace(/\/$/, '')
           .split('/')

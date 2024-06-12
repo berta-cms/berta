@@ -7,7 +7,6 @@ use App\Shared\Storage;
 use App\Shared\ImageHelpers;
 use App\Sites\Settings\SiteSettingsDataService;
 
-
 /**
  * This class is a service that handles site template settings data for Berta CMS.
  * Settings are stored in `settings.[template].xml` file for the corresponding site.
@@ -69,11 +68,13 @@ class SiteTemplateSettingsDataService extends Storage
                     'backgroundImageEnabled' => ['type' => 'string', 'enum' => ['yes', 'no']],
                     'backgroundPosition' => [
                         'type' => 'string',
-                        'enum' => ['top left', 'top center', 'top right', 'center left', 'center', 'center right',
-                                   'bottom left', 'bottom center', 'bottom right']
+                        'enum' => [
+                            'top left', 'top center', 'top right', 'center left', 'center', 'center right',
+                            'bottom left', 'bottom center', 'bottom right'
+                        ]
                     ],
                     'backgroundRepeat' => [
-                        'type' => 'string', 'enum' => [ 'repeat', 'repeat-x', 'repeat-y', 'no-repeat']
+                        'type' => 'string', 'enum' => ['repeat', 'repeat-x', 'repeat-y', 'no-repeat']
                     ]
                 ]
             ],
@@ -191,7 +192,7 @@ class SiteTemplateSettingsDataService extends Storage
                     'colorActive' => ['type' => 'string', 'format' => 'color'],
                     'colorHover' => ['type' => 'string', 'format' => 'color'],
                     'colorLink' => ['type' => 'string', 'format' => 'color'],
-                    'fontFamily' =>['$ref' => '#/definitions/fontFamily.df'],
+                    'fontFamily' => ['$ref' => '#/definitions/fontFamily.df'],
                     'fontSize' => ['$ref' => '#/definitions/cssUnit.df'],
                     'fontStyle' => ['$ref' => '#/definitions/fontStyle.df'],
                     'fontVariant' => ['$ref' => '#/definitions/fontVariant.df'],
@@ -251,7 +252,7 @@ class SiteTemplateSettingsDataService extends Storage
             ],
             'sideBar' => [
                 'type' => 'object',
-                    'properties' => [
+                'properties' => [
                     'backgroundColor' => ['type' => 'string', 'format' => 'color'],
                     'color' => ['type' => 'string', 'format' => 'color'],
                     'fontFamily' => ['$ref' => '#/definitions/fontFamily.df'],
@@ -355,9 +356,11 @@ class SiteTemplateSettingsDataService extends Storage
         ]
     ];
     protected static $DEFAULT_VALUES = [];
+    private $xml_root;
     private $ROOT_ELEMENT = 'settings';
     private $TEMPLATE;
     private $XML_FILE;
+    private $siteTemplatesConfigService;
     private $siteTemplateDefaults;
 
     public function __construct($site = '', $template = 'messy-0.4.2', $xml_root = null)
@@ -441,11 +444,13 @@ class SiteTemplateSettingsDataService extends Storage
     public function uploadFileByPath($path, $file)
     {
         $mediaDir = $this->getOrCreateMediaDir();
-        $oldFileName = $this->getValueByPath( $this->get(), implode('/', array_slice(explode('/', $path), 3)));
+        $oldFileName = $this->getValueByPath($this->get(), implode('/', array_slice(explode('/', $path), 3)));
         $fileName = $this->getUniqueFileName($mediaDir, $file->getClientOriginalName());
         $file->move($mediaDir, $fileName);
 
-        list($width, $height) = getimagesize($mediaDir .'/'. $fileName);
+        ImageHelpers::downscaleToMaxSize($mediaDir . '/' . $fileName);
+
+        list($width, $height) = getimagesize($mediaDir . '/' . $fileName);
         $width = round($width / 2);
         $height = round($height / 2);
 

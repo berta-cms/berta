@@ -2,17 +2,16 @@
 
 namespace App\Sites\TemplateSettings;
 
-use Validator;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
-
 use App\Shared\Helpers;
 use App\Http\Controllers\Controller;
 use App\Sites\TemplateSettings\SiteTemplateSettingsDataService;
 
 class SiteTemplateSettingsController extends Controller
 {
-
-    public function update(Request $request) {
+    public function update(Request $request)
+    {
         $json = $request->json()->all();
         $path_arr = explode('/', $json['path']);
         $site = $path_arr[0];
@@ -28,7 +27,8 @@ class SiteTemplateSettingsController extends Controller
         return response()->json($res);
     }
 
-    public function upload(Request $request) {
+    public function upload(Request $request)
+    {
         $file = $request->file('value');
         $path = $request->get('path');
 
@@ -41,7 +41,7 @@ class SiteTemplateSettingsController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return Helpers::api_response($validator->messages()->all(), (object)[], 400);
+            return Helpers::api_response($validator->getMessageBag()->all(), (object)[], 400);
         }
 
         $path_arr = explode('/', $path);
@@ -60,5 +60,4 @@ class SiteTemplateSettingsController extends Controller
 
         return response()->json($res);
     }
-
 }

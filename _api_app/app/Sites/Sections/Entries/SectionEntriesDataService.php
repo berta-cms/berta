@@ -978,6 +978,8 @@ class SectionEntriesDataService extends Storage
             ];
         }
 
+        ImageHelpers::downscaleToMaxSize($mediaDir . '/' . $fileName);
+
         list($width, $height) = getimagesize($mediaDir . '/' . $fileName);
         $smallThumb = ImageHelpers::getThumbnail($mediaDir . '/' . $fileName);
         list($smallThumbWidth, $smallThumbHeight) = getimagesize($smallThumb);
@@ -1066,6 +1068,12 @@ class SectionEntriesDataService extends Storage
         $entries[self::$ROOT_LIST_ELEMENT][$entryOrder] = $entry;
         $this->array2xmlFile($entries, $this->XML_FILE, $this->ROOT_ELEMENT);
 
+        // create image variant for gallery size
+        $storageService = new Storage($data['site']);
+        $siteSettingsDataService = new SiteSettingsDataService($data['site']);
+        $siteSettings = $siteSettingsDataService->getState();
+        ImageHelpers::getGalleryItem($slide, $entry, $storageService, $siteSettings);
+
         return [
             'update' => $fileName,
             'updateText' => $fileName,
@@ -1113,6 +1121,11 @@ class SectionEntriesDataService extends Storage
             $this->deleteMedia($mediafolder, $file);
 
             $file = current(array_splice($files, $file_order, 1));
+
+            $entries['entry'][$entry_order]['mediaCacheData']['file'] = array_filter($files, function ($f) use ($file) {
+                return $f['@attributes']['src'] != $file;
+            });
+
             $this->array2xmlFile($entries, $this->XML_FILE, $this->ROOT_ELEMENT);
 
             return [

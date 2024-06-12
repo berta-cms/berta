@@ -10,9 +10,16 @@ import {
 } from '../sites/sections/sections-state/site-sections.actions';
 import { TemplateRenderService } from '../render/template-render.service';
 import {
+  AddEntryGalleryFileAction,
   AddSectionEntryFromSyncAction,
+  DeleteEntryGalleryFileAction,
   DeleteSectionEntryFromSyncAction,
   DeleteSectionLastEntry,
+  OrderEntryGalleryFilesAction,
+  UpdateEntryGalleryFileAction,
+  UpdateEntryGalleryImageCropAction,
+  UpdateEntryGalleryVideoPosterAction,
+  UpdateSectionEntryAction,
   UpdateSectionEntryFromSyncAction,
 } from '../sites/sections/entries/entries-state/section-entries.actions';
 import { Subscription } from 'rxjs';
@@ -241,7 +248,18 @@ export class TemplateRerenderService {
     iframe: HTMLIFrameElement
   ): Subscription {
     return this.actions$
-      .pipe(ofActionSuccessful(UpdateSectionEntryFromSyncAction))
+      .pipe(
+        ofActionSuccessful(
+          UpdateSectionEntryFromSyncAction,
+          UpdateSectionEntryAction,
+          OrderEntryGalleryFilesAction,
+          AddEntryGalleryFileAction,
+          DeleteEntryGalleryFileAction,
+          UpdateEntryGalleryImageCropAction,
+          UpdateEntryGalleryFileAction,
+          UpdateEntryGalleryVideoPosterAction
+        )
+      )
       .subscribe(() => {
         const viewData = this.renderService.getViewData();
 

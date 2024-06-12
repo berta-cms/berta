@@ -25,7 +25,7 @@ import { SettingModel } from '../shared/interfaces';
             <path fill-rule="evenodd" clip-rule="evenodd" d="M6 12C9.31371 12 12 9.31371 12 6C12 2.68629 9.31371 0 6 0C2.68629 0 0 2.68629 0 6C0 9.31371 2.68629 12 6 12Z" fill="#9b9b9b" class="icon"/>
             <path d="M6 3.33333V8.66667" stroke="white" stroke-linecap="square"/><path d="M8.66671 6H3.33337" stroke="white" stroke-linecap="square"/>
           </svg>
-          <svg *ngIf="value"
+          <svg *ngIf="!disableRemove && value"
                (click)="removeFile($event, fileInput)"
                role="button"
                tabindex="0"
@@ -50,10 +50,11 @@ export class FileInputComponent implements OnInit {
   @Input() value: string|File;
   @Input() accept: string;
   @Input() disabled: string;
+  @Input() disableRemove?: boolean;
   @Input() error: string;
   @Output() update = new EventEmitter();
 
-  maxFileSize = 3145728;  // 3 MB
+  maxFileSize = 10485760;  // 10 MB
   private lastValue: SettingModel['value']|File;
 
   ngOnInit() {

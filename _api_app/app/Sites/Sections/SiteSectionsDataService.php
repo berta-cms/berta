@@ -135,10 +135,11 @@ class SiteSectionsDataService extends Storage
     public $ROOT_ELEMENT = 'sections';
     private $SECTIONS = array();
     private $XML_FILE;
+    private $XML_ROOT;
     private $site_name;
     private $isPreview;
 
-    public function __construct($site = '', $xml_root = null, $isPreview=false)
+    public function __construct($site = '', $xml_root = null, $isPreview = false)
     {
         parent::__construct($site, $isPreview);
         $this->site_name = $site;
@@ -177,7 +178,7 @@ class SiteSectionsDataService extends Storage
         }
 
         if ($sectionName !== null) {
-            foreach($this->SECTIONS as $_section) {
+            foreach ($this->SECTIONS as $_section) {
                 if ($_section['name'] === (string) $sectionName) {
                     return $_section;
                 }
@@ -324,7 +325,6 @@ class SiteSectionsDataService extends Storage
 
             //Compare the title when we rename it
             if ($old_name !== $new_name) {
-
                 // Rename section name
                 $this->setValueByPath(
                     $sections,
@@ -621,13 +621,16 @@ class SiteSectionsDataService extends Storage
         $fileName = $this->getUniqueFileName($mediaDir, $file->getClientOriginalName());
         $fileSize = $file->getSize();
         $file->move($mediaDir, $fileName);
-        list($width, $height) = getimagesize($mediaDir .'/'. $fileName);
 
-        $smallThumb = ImageHelpers::getThumbnail($mediaDir .'/'. $fileName);
+        ImageHelpers::downscaleToMaxSize($mediaDir . '/' . $fileName);
+
+        list($width, $height) = getimagesize($mediaDir . '/' . $fileName);
+
+        $smallThumb = ImageHelpers::getThumbnail($mediaDir . '/' . $fileName);
         list($smallThumbWidth, $smallThumbHeight) = getimagesize($smallThumb);
-        $bgImage = ImageHelpers::getBackgroundImage($mediaDir .'/'. $fileName);
+        $bgImage = ImageHelpers::getBackgroundImage($mediaDir . '/' . $fileName);
         list($bgImageWidth, $bgImageHeight) = getimagesize($bgImage);
-        $gridImage = ImageHelpers::getGridImage($mediaDir .'/'. $fileName);
+        $gridImage = ImageHelpers::getGridImage($mediaDir . '/' . $fileName);
         list($gridImageWidth, $gridImageHeight) = getimagesize($gridImage);
 
         if (!isset($section['mediafolder'])) {
@@ -654,7 +657,7 @@ class SiteSectionsDataService extends Storage
 
         return [
             'status' => 1,
-            'hash' => md5_file($mediaDir .'/'. $fileName),
+            'hash' => md5_file($mediaDir . '/' . $fileName),
             'type' => 'image',
             'smallthumb_path' => $this->MEDIA_URL . '/' . $mediaDirName . '/' . basename($smallThumb),
             'smallthumb_width' => $smallThumbWidth,
@@ -730,7 +733,7 @@ class SiteSectionsDataService extends Storage
         }
     }
 
-   /**
+    /**
      * Merge site sections from other source folder
      * @param string $src_root site sections source root folder
      */
@@ -739,7 +742,7 @@ class SiteSectionsDataService extends Storage
         $currentSiteSections = $this->get();
 
         // filter and delete `demo` sections
-        $currentSiteSections = array_values(array_filter($currentSiteSections, function($section) {
+        $currentSiteSections = array_values(array_filter($currentSiteSections, function ($section) {
             $isDemo = isset($section['@attributes']['demo']) && $section['@attributes']['demo'];
             if ($isDemo) {
                 $this->delete($section['name']);
@@ -785,7 +788,7 @@ class SiteSectionsDataService extends Storage
             // Replace existing section with theme section
             if ($sectionOrder !== false) {
                 $currentSiteSections[$sectionOrder] = $themeSiteSection;
-            // Merge as new section at the beginning of section list
+                // Merge as new section at the beginning of section list
             } else {
                 array_unshift($currentSiteSections, $themeSiteSection);
             }

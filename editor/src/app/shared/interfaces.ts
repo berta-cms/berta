@@ -5,7 +5,11 @@ export interface SettingsGroupModel {
 
 export interface SettingModel {
   slug: string;
-  value: string|number|boolean|Array<{[k:string]: string|number|boolean}>;
+  value:
+    | string
+    | number
+    | boolean
+    | Array<{ [k: string]: string | number | boolean }>;
 }
 
 export interface SettingChildModel {
@@ -31,7 +35,9 @@ export interface SettingConfigModel {
   enabledOnUpdate?: boolean;
   format?:
     | 'text'
+    | 'url'
     | 'longtext'
+    | 'richtext'
     | 'select'
     | 'fontselect'
     | 'toggle'
@@ -60,7 +66,7 @@ export interface SettingConfigModel {
   allow_blank?: boolean;
   link?: boolean;
   validator?: 'GoogleAnalytics' | string;
-  children?: Array<{[k: string]: SettingConfigModel}>;
+  children?: Array<{ [k: string]: SettingConfigModel }>;
   requires_feature?: string;
   [k: string]: any;
 }
@@ -97,8 +103,8 @@ export interface SettingConfigResponse {
   values?:
     | (string | number)[]
     | {
-      [k: string]: string | number;
-    };
+        [k: string]: string | number;
+      };
   html_entities?: boolean;
   css_units?: boolean;
   min_width?: number | string;
@@ -108,6 +114,6 @@ export interface SettingConfigResponse {
   allow_blank?: boolean;
   link?: boolean;
   validator?: 'GoogleAnalytics' | string;
-  children?: Array<{[k: string]: SettingConfigModel}>;
+  children?: Array<{ [k: string]: SettingConfigModel }>;
   [k: string]: any;
 }
