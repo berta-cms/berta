@@ -86,6 +86,12 @@ a:active {
     color: <?php echo $s->get('pageHeading', 'color') ?> !important;
 }
 
+#additionalText {
+    color: <?php echo $s->get('additionalText', 'color') ?>;
+    font-family: <?php echo $s->getFont('additionalText') ?>;
+    font-size: <?php echo $s->get('additionalText', 'fontSize') ?>;
+}
+
 #sideColumnTop a:link,
 #sideColumnTop a:visited {
     color: <?php echo $s->get('menu', 'colorLink') ?>;

@@ -89,6 +89,12 @@ h1 {
 	color: <?php echo $s->get('pageHeading', 'color') ?>;
 }
 
+#additionalText {
+    color: <?php echo $s->get('additionalText', 'color') ?>;
+    font-family: <?php echo $s->getFont('additionalText') ?>;
+    font-size: <?php echo $s->get('additionalText', 'fontSize') ?>;
+}
+
 #contentContainer {
 	width: <?php echo $s->get('pageLayout', 'contentWidth') ?>;
 	padding: <?php echo $s->get('pageLayout', 'bodyMargin') ?>;

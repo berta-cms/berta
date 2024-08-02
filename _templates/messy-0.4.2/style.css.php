@@ -197,6 +197,12 @@ h1 a:active {
     text-decoration: <?php echo $s->get('menu', 'textDecorationActive') ?>;
 }
 
+#additionalText {
+    color: <?php echo $s->get('additionalText', 'color') ?>;
+    font-family: <?php echo $s->getFont('additionalText') ?>;
+    font-size: <?php echo $s->get('additionalText', 'fontSize') ?>;
+}
+
 #xBackground #xBackgroundLoader {
     background: url(layout/loader_<?php echo $s->get('pageLayout', 'bgButtonType') ?>.gif) no-repeat;
 }

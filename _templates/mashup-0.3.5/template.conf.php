@@ -768,6 +768,65 @@ $templateConf = [
         ],
     ],
 
+    'additionalText' => [
+        '_' => [
+            'title' => I18n::_('Additional text'),
+        ],
+        'color' => [
+            'format' => 'color',
+            'default' => 'inherit',
+            'title' => I18n::_('Color'),
+            'description' => '',
+            'css' => [
+                [
+                    'selector' => '#additionalText',
+                    'property' => 'color'
+                ]
+            ]
+        ],
+        'fontFamily' => [
+            'format' => 'fontselect',
+            'values' => $fontOptionsWithInherit,
+            'default' => 'inherit',
+            'title' => I18n::_('Font face'),
+            'description' => '',
+            'css' => [
+                [
+                    'selector' => '#additionalText',
+                    'property' => 'font-family'
+                ]
+            ]
+        ],
+        'googleFont' => [
+            'format' => 'text',
+            'default' => '',
+            'allow_blank' => true,
+            'html_entities' => true,
+            'title' => I18n::_('Google web fonts'),
+            'description' => I18n::_('googleFont_description'),
+            'css' => [
+                [
+                    'selector' => '#additionalText',
+                    'property' => 'font-family'
+                ]
+            ]
+        ],
+        'fontSize' => [
+            'format' => 'text',
+            'css_units' => true,
+            'default' => 'inherit',
+            'allow_blank' => true,
+            'title' => I18n::_('Font size'),
+            'description' => '',
+            'css' => [
+                [
+                    'selector' => '#additionalText',
+                    'property' => 'font-size'
+                ]
+            ]
+        ],
+    ],
+
     'menu' => [
         '_' => [
             'title' => I18n::_('Main menu'),

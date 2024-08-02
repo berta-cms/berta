@@ -99,6 +99,12 @@ a:active {
     color: <?php echo $s->get('sideBar', 'color') ?> !important;
 }
 
+#additionalText {
+    color: <?php echo $s->get('additionalText', 'color') ?>;
+    font-family: <?php echo $s->getFont('additionalText') ?>;
+    font-size: <?php echo $s->get('additionalText', 'fontSize') ?>;
+}
+
 #sideColumnTop ul li {
     font-family: <?php echo $s->getFont('menu') ?>;
     font-size: <?php echo $s->get('menu', 'fontSize') ?>;
