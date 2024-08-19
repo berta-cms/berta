@@ -558,7 +558,7 @@ class ImageHelpers
 
     public static function downscaleToMaxSize($path)
     {
-        $img = Image::make($path);
+        $img = Image::make($path)->orientate();
         $img->resize(
             config('app.image_max_width'),
             config('app.image_max_height'),
