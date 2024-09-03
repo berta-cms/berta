@@ -35,8 +35,8 @@ class SectionHeadRenderService
                     $currentSection['name'],
                     array_column(
                         array_column(
-                        $sectionTags['section'],
-                        '@attributes'
+                            $sectionTags['section'],
+                            '@attributes'
                         ),
                         'name'
                     )
@@ -48,7 +48,7 @@ class SectionHeadRenderService
                         array_column(
                             array_column(
                                 $sectionTags['section'][$sectionIndex]['tag'],
-                            '@attributes'
+                                '@attributes'
                             ),
                             'name'
                         )
@@ -95,22 +95,22 @@ class SectionHeadRenderService
         $googleWebFonts = array_unique($googleWebFonts);
         $googleWebFonts = implode('|', $googleWebFonts);
 
-        if($isEditMode) {
+        if ($isEditMode) {
             $cssFiles[] = "/engine/css/backend.min.css?{$this->version}";
             $cssFiles[] = "/engine/css/editor.css.php?{$cacheBoost}&{$this->version}";
-            $cssFiles[] = "/_templates/". $siteSettings['template']['template']."/editor.css.php?{$cacheBoost}&{$this->version}";
+            $cssFiles[] = "/_templates/" . $siteSettings['template']['template'] . "/editor.css.php?{$cacheBoost}&{$this->version}";
         } else {
             $cssFiles[] = "/engine/css/frontend.min.css?{$this->version}";
         }
 
-        $cssFiles[] = "/_templates/". $siteSettings['template']['template']."/style.css?{$this->version}";
+        $cssFiles[] = "/_templates/" . $siteSettings['template']['template'] . "/style.css?{$this->version}";
 
         $queryParams = '';
         $queryParams .= !empty($siteSlug) ? "&site={$siteSlug}" : '';
         $queryParams .= $currentSectionType == 'portfolio' ? '&responsive=1' : '';
         $queryParams .= $isEditMode ? '&engine=1' : '';
         $queryParams .= $isPreviewMode ? '&preview=1' : '';
-        $cssFiles[] = "/_templates/". $siteSettings['template']['template']."/style.css.php?{$cacheBoost}&{$this->version}{$queryParams}";
+        $cssFiles[] = "/_templates/" . $siteSettings['template']['template'] . "/style.css.php?{$cacheBoost}&{$this->version}{$queryParams}";
 
         if ($templateName == 'messy') {
             if ($isResponsive || $isAutoResponsive) {
@@ -123,9 +123,9 @@ class SectionHeadRenderService
                 $inlineCSS .= "
                     #pageEntries .xEntry {
                         padding: {$entryPadding};
-                        ".
-                        ($entryMaxWidth ? "max-width: {$entryMaxWidth}" : '')
-                        ."
+                        " .
+                    ($entryMaxWidth ? "max-width: {$entryMaxWidth}" : '')
+                    . "
                     }
                 ";
                 if ($isAutoResponsive) {
@@ -236,6 +236,7 @@ class SectionHeadRenderService
         $data = [];
         $currentSection = null;
         $currentSectionType = null;
+
         I18n::load_language($siteSettings['language']['language']);
 
         if (!empty($sections)) {

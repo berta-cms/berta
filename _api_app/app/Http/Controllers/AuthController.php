@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Shared\Helpers;
+
 /** workaround for lumen 5.2 bug: https://stackoverflow.com/questions/34917653/lumen-class-url-does-not-exist */
+
 use App\User\UserModel;
 use Firebase\JWT\JWT;
 use Illuminate\Http\RedirectResponse;

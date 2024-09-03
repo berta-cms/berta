@@ -11,9 +11,6 @@ error_reporting(E_ALL);
  */
 include_once 'loader.helper.php';
 
-// Boot Lumen app to get correct app context
-$app->boot();
-
 // You can now use your logger
 // $logger->info('My logger is now ready');
 
@@ -80,7 +77,7 @@ include_once 'inc.functions.php';
 
 include_once $ENGINE_ROOT_PATH . '_classes/class.berta.php';
 include_once $ENGINE_ROOT_PATH . '_classes/class.bertagallery.php';
-include_once $ENGINE_ROOT_PATH . 'inc.engineprefs.php';			// since this include $options refer to BertaBase::$options
+include_once $ENGINE_ROOT_PATH . 'inc.engineprefs.php';            // since this include $options refer to BertaBase::$options
 include_once $ENGINE_ROOT_PATH . 'inc.sentry_error_handling.php';
 if (empty($SITE_ROOT_URL)) {
     $SITE_ROOT_URL = $options['SITE_ROOT_URL'];

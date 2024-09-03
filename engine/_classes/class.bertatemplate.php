@@ -1,4 +1,5 @@
 <?php
+
 use Illuminate\Http\Request;
 use App\Shared\Storage;
 use App\User\UserModel;
@@ -34,6 +35,9 @@ class BertaTemplate extends BertaBase
     private $sections;
     private $tagName;
     private $tags;
+    private $environment;
+    private $content;
+    private $allContent;
 
     private $twigOutput;
 
@@ -80,7 +84,7 @@ class BertaTemplate extends BertaBase
                 if ($template_all == $template) {
                     $this->name = $tpl;
                     break;
-                //default template = messy
+                    //default template = messy
                 } else {
                     $this->name = 'default';
                 }
