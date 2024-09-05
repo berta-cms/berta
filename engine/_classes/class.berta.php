@@ -26,8 +26,8 @@ class Berta extends BertaBase
     public $tagName;
 
     public $content;
-    private $requestURI;
-    private $allContent;
+    public $requestURI;
+    public $allContent;
 
     public function __construct(array $options = [])
     {

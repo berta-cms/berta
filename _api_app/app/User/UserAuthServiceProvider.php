@@ -3,18 +3,15 @@
 namespace App\User;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
-
 use App\Shared\Helpers;
 use App\User\UserModel;
 use App\Http\Controllers\AuthController;
 
-
 class UserAuthServiceProvider extends ServiceProvider
 {
     private $bertaSecurity;
+    private $authController;
     /**
      * Register any application services.
      *
@@ -26,15 +23,15 @@ class UserAuthServiceProvider extends ServiceProvider
          * For `\BertaSecurity` to work, we need other Berta classes, because there many configuration options that are
          * defined there. All of these includes are only used to make `\BertaSecurity` work.
          */
-        require_once(realpath(config('app.old_berta_root'). '/engine/_classes/class.bertabase.php'));
-        require_once(realpath(config('app.old_berta_root'). '/engine/_classes/class.bertautils.php'));
+        require_once(realpath(config('app.old_berta_root') . '/engine/_classes/class.bertabase.php'));
+        require_once(realpath(config('app.old_berta_root') . '/engine/_classes/class.bertautils.php'));
         /** @var {\Berta} \Berta - Old berta app class */
-        require_once(realpath(config('app.old_berta_root'). '/engine/_classes/class.berta.php'));
+        require_once(realpath(config('app.old_berta_root') . '/engine/_classes/class.berta.php'));
         /** @var {\BertaSecurity} \BertaSecurity - Old berta security class, so the old login system would work  */
-        require_once(realpath(config('app.old_berta_root'). '/engine/_classes/class.bertasecurity.php'));
+        require_once(realpath(config('app.old_berta_root') . '/engine/_classes/class.bertasecurity.php'));
 
         /** @var {array} $options - this gets the berta version */
-        include realpath(config('app.old_berta_root'). '/engine/inc.version.php');
+        include realpath(config('app.old_berta_root') . '/engine/inc.version.php');
         \Berta::$options['version'] = $options['version'];
         \Berta::$options['SITE_ROOT_URL'] = '/';
 
@@ -76,29 +73,30 @@ class UserAuthServiceProvider extends ServiceProvider
     /**
      * Get hearder Authorization
      * */
-    function getAuthorizationHeader()
+    private function getAuthorizationHeader()
     {
         $headers = null;
         if (isset($_SERVER['X-Authorization'])) {
             $headers = trim($_SERVER['X-Authorization']);
-        } else if (isset($_SERVER['X-authorization'])) {
+        } elseif (isset($_SERVER['X-authorization'])) {
             $headers = trim($_SERVER['X-authorization']);
-        } else if (isset($_SERVER['x-authorization'])) {
+        } elseif (isset($_SERVER['x-authorization'])) {
             $headers = trim($_SERVER['x-authorization']);
-        } else if (isset($_SERVER['HTTP_AUTHORIZATION'])) { //Nginx or fast CGI
+        } elseif (isset($_SERVER['HTTP_AUTHORIZATION'])) { //Nginx or fast CGI
             $headers = trim($_SERVER["HTTP_AUTHORIZATION"]);
         } elseif (function_exists('apache_request_headers')) {
             $requestHeaders = apache_request_headers();
             // Server-side fix for bug in old Android versions (a nice side-effect of this fix means we don't care about capitalization for Authorization)
-            $requestHeaders = array_combine(array_map('ucwords', array_keys($requestHeaders)), array_values($requestHeaders));
+            $requestHeaders = array_combine(
+                array_map('ucwords', array_keys($requestHeaders)),
+                array_values($requestHeaders)
+            );
 
             if (isset($requestHeaders['X-Authorization'])) {
                 $headers = trim($requestHeaders['X-Authorization']);
-            }
-            else if (isset($requestHeaders['X-authorization'])) {
+            } elseif (isset($requestHeaders['X-authorization'])) {
                 $headers = trim($requestHeaders['X-authorization']);
-            }
-            else if (isset($requestHeaders['x-authorization'])) {
+            } elseif (isset($requestHeaders['x-authorization'])) {
                 $headers = trim($requestHeaders['x-authorization']);
             }
         }
@@ -107,7 +105,7 @@ class UserAuthServiceProvider extends ServiceProvider
     /**
      * get access token from header
      * */
-    function getBearerToken(Request $request)
+    private function getBearerToken(Request $request)
     {
         $headers = $request->headers->get('x-authorization', null);
         if (!$headers) {
