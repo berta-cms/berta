@@ -28,9 +28,8 @@ export class SectionTagsService {
       return null;
     }
 
-    const sectionTags = tags.find(
-      (tag) => tag['@attributes'].name === section.name
-    );
+    const sectionTags =
+      tags && tags.find((tag) => tag['@attributes'].name === section.name);
 
     if (!sectionTags) {
       return null;

@@ -258,7 +258,8 @@ class SectionTagsDataService extends Storage
             $tags['section'][$section_order]['tag'] = $section_tags;
 
             $this->array2xmlFile($tags, $this->XML_FILE, $this->ROOT_ELEMENT);
-            event(new SectionUpdated($this->SITE, $this->SECTION_NAME));
+            // event(new SectionUpdated($this->SITE, $this->SECTION_NAME));
+            SectionUpdated::dispatch($this->SITE, $this->SECTION_NAME);
 
             $order = array_column(
                 array_column(

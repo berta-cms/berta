@@ -9,8 +9,6 @@ class UnsetSectionDemoStatus
 {
     /**
      * Create the event listener.
-     *
-     * @return void
      */
     public function __construct()
     {
@@ -19,11 +17,8 @@ class UnsetSectionDemoStatus
 
     /**
      * Handle the event.
-     *
-     * @param  ExampleEvent  $event
-     * @return void
      */
-    public function handle(SectionUpdated $event)
+    public function handle(SectionUpdated $event): void
     {
         $siteSectionsDS = new SiteSectionsDataService($event->siteName);
         $siteSectionsDS->unsetDemoStatus($event->sectionName);

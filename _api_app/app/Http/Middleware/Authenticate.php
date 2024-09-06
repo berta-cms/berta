@@ -3,14 +3,10 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Contracts\Auth\Factory as Auth;
-use \Illuminate\Http\Request;
 
-/**
- * @class AuthenticateAPI
- *
- * This class authenticates requests.
- */
 class Authenticate
 {
     /**
@@ -34,6 +30,16 @@ class Authenticate
     /**
      * Handle an incoming request.
      *
+     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
+     */
+    // public function handle(Request $request, Closure $next): Response
+    // {
+    //     return $next($request);
+    // }
+
+    /**
+     * Handle an incoming request.
+     *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure  $next
      * @param  string|null  $guard
@@ -42,7 +48,7 @@ class Authenticate
     public function handle(Request $request, Closure $next, $guard = null)
     {
         $apiPrefix = config('app.api_prefix');
-        $isAPIRequest = strpos($request->getRequestUri(), '/'. $apiPrefix) === 0;
+        $isAPIRequest = strpos($request->getRequestUri(), '/' . $apiPrefix) === 0;
 
         if ($this->auth->guard($guard)->guest()) {
             if ($isAPIRequest) {

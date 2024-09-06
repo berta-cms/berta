@@ -33,7 +33,7 @@ abstract class BertaBaseModel implements \ArrayAccess, \Iterator
     }
 
     /* ArrayAccess properties: */
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         if (is_null($offset)) {
             throw new \OutOfRangeException('Only known Model property can be set', 500);
@@ -44,47 +44,47 @@ abstract class BertaBaseModel implements \ArrayAccess, \Iterator
         }
     }
 
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         return $this->hasPublicProperty($offset);
     }
 
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
         if ($this->hasPublicProperty($offset)) {
             $this->{$offset} = null;
         }
     }
 
-    public function offsetGet($offset)
+    public function offsetGet($offset): mixed
     {
         return $this->hasPublicProperty($offset) ? $this->{$offset} : null;
     }
 
     /* Iterator properties */
-    public function rewind()
+    public function rewind(): void
     {
         $this->position = 0;
     }
 
-    public function current()
+    public function current(): mixed
     {
         $properties = $this->getPublicPropertiesReflect();
         return $this->{$properties[$this->position]->getName()};
     }
 
-    public function key()
+    public function key(): mixed
     {
         $properties = $this->getPublicPropertiesReflect();
         return $properties[$this->position]->getName();
     }
 
-    public function next()
+    public function next(): void
     {
         $this->position += 1;
     }
 
-    public function valid()
+    public function valid(): bool
     {
         $properties = $this->getPublicPropertiesReflect();
         return count($properties) > $this->position;

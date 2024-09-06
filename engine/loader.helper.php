@@ -1,9 +1,13 @@
 <?php
+
 /**
  * First we check if the necessary PHP libraries are available, otherwise will have fatal error.
  */
 
-require_once dirname(__dir__) . '/_api_app/bootstrap/app.php';
+use Illuminate\Http\Request;
+
+require_once __DIR__ . '/../_api_app/bootstrap/load_app.php';
+(require_once __DIR__ . '/../_api_app/bootstrap/app.php')->handle(Request::capture());
 
 use Monolog\Logger;
 use Monolog\Formatter\LineFormatter;

@@ -1,7 +1,8 @@
 <?php
 
-use Laravel\Lumen\Testing\DatabaseMigrations;
-use Laravel\Lumen\Testing\DatabaseTransactions;
+namespace Tests\Unit;
+
+use PHPUnit\Framework\TestCase;
 
 class ExampleTest extends TestCase
 {
@@ -15,7 +16,8 @@ class ExampleTest extends TestCase
         $this->get('/v1/meta');
 
         $this->assertEquals(
-            $this->response->getStatusCode(), 200
+            $this->response->getStatusCode(),
+            200
         );
     }
 }
