@@ -58,16 +58,21 @@ export class SectionTagsState implements NgxsOnInit {
       patchState({
         [action.siteName]: {
           ...state[action.siteName],
-          section: state[action.siteName].section.some(section => section['@attributes'].name === action.sectionName) ?
-            state[action.siteName].section.map(section => {
-              if (section['@attributes'].name === action.sectionName) {
-                return action.tags;
-              }
-              return section;
-            })
-            :
-            [...state[action.siteName].section, action.tags]
-        }
+          section:
+            state[action.siteName].section &&
+            state[action.siteName].section.some(
+              (section) => section['@attributes'].name === action.sectionName
+            )
+              ? state[action.siteName].section.map((section) => {
+                  if (section['@attributes'].name === action.sectionName) {
+                    return action.tags;
+                  }
+                  return section;
+                })
+              : (state[action.siteName].section
+              ? [...state[action.siteName].section, action.tags]
+              : [...[], action.tags]),
+        },
       });
     } else {
       patchState({

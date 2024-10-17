@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Shared\Helpers;
-/** workaround for lumen 5.2 bug: https://stackoverflow.com/questions/34917653/lumen-class-url-does-not-exist */
 use App\User\UserModel;
 use Firebase\JWT\JWT;
 use Illuminate\Http\RedirectResponse;
@@ -11,6 +10,7 @@ use Illuminate\Http\Request;
 
 class AuthController extends Controller
 {
+    private $bertaSecurity;
     protected static $expiration_time = 86400; // 24 hours = 86400 seconds
 
     protected function generateToken()
@@ -68,7 +68,7 @@ class AuthController extends Controller
         $this->bertaSecurity = new \BertaSecurity();
         $this->bertaSecurity->destroy();
 
-        setcookie('token', null, -1, '/');
+        setcookie('token', '', -1, '/');
     }
 
     public function apiLogin(Request $request)

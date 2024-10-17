@@ -116,11 +116,14 @@ export class SectionsMenuRenderService {
   }
 
   getTags(sectionTags) {
-    return sectionTags.reduce((sections, section) => {
-      sections[section['@attributes'].name] = section.tag;
+    return (
+      sectionTags &&
+      sectionTags.reduce((sections, section) => {
+        sections[section['@attributes'].name] = section.tag;
 
-      return sections;
-    }, {});
+        return sections;
+      }, {})
+    );
   }
 
   getSectionTags(
@@ -133,7 +136,7 @@ export class SectionsMenuRenderService {
     siteTemplateSettings,
     isResponsive
   ) {
-    const sectionTags = tags[section.name] || [];
+    const sectionTags = tags ? tags[section.name] || [] : [];
 
     const filteredTags = sectionTags
       .filter((tag) => {

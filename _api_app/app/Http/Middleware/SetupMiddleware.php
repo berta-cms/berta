@@ -3,21 +3,20 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 use App\Shared\Helpers;
 
 class SetupMiddleware
 {
     /**
-     * Run the request filter.
+     * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
-     * @return mixed
+     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle($request, Closure $next)
+    public function handle(Request $request, Closure $next): Response
     {
         $this->updateEnvFile();
-
         return $next($request);
     }
 
@@ -42,7 +41,7 @@ class SetupMiddleware
         if ($env !== $env_new) {
             $content = '';
 
-            foreach ($env_new as $key=>$value) {
+            foreach ($env_new as $key => $value) {
                 $content .= $key . '=' . $value . "\n";
             }
             file_put_contents(base_path() . '/.env', $content);

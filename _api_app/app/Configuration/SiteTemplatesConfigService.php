@@ -3,7 +3,6 @@
 namespace App\Configuration;
 
 use Swaggest\JsonSchema\Schema;
-
 use App\Shared\Helpers;
 use App\Shared\I18n;
 
@@ -287,12 +286,7 @@ class SiteTemplatesConfigService
         $d = dir($this->TEMPLATE_ROOT);
 
         while (false !== ($entry = $d->read())) {
-            if (
-                $entry != '.' &&
-                $entry != '..' &&
-                substr($entry, 0, 1) != '_'
-                && is_dir($this->TEMPLATE_ROOT . '/' . $entry)
-            ) {
+            if ($entry != '.' && $entry != '..' && substr($entry, 0, 1) != '_' && is_dir($this->TEMPLATE_ROOT . '/' . $entry)) {
                 $returnArr[] = $entry;
             }
         }

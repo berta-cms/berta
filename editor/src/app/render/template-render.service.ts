@@ -222,23 +222,29 @@ export class TemplateRenderService {
       siteTemplateSettings.pageLayout &&
       siteTemplateSettings.pageLayout.autoResponsive === 'yes';
 
-    const shopSettings = isShopAvailable
-      ? this.store
-          .selectSnapshot(ShopSettingsState.getCurrentSiteSettings)
-          .reduce((settings, settingGroup) => {
-            settingGroup.settings.forEach((setting) => {
-              settings = {
-                ...settings,
-                [settingGroup.slug]: {
-                  ...settings[settingGroup.slug],
-                  [setting.slug]: setting.value,
-                },
-              };
-            });
+    let shopSettings = {};
 
-            return settings;
-          }, {})
-      : {};
+    if (isShopAvailable) {
+      const shopSettingsState = this.store.selectSnapshot(
+        ShopSettingsState.getCurrentSiteSettings
+      );
+
+      if (shopSettingsState) {
+        shopSettings = shopSettingsState.reduce((settings, settingGroup) => {
+          settingGroup.settings.forEach((setting) => {
+            settings = {
+              ...settings,
+              [settingGroup.slug]: {
+                ...settings[settingGroup.slug],
+                [setting.slug]: setting.value,
+              },
+            };
+          });
+
+          return settings;
+        }, {});
+      }
+    }
 
     const shippingRegions = isShopAvailable
       ? this.store.selectSnapshot(
