@@ -558,6 +558,11 @@ class ImageHelpers
 
     public static function downscaleToMaxSize($path)
     {
+        // todo: Intervention image v2 does not support animated gifs, update to v3
+        if (self::isAnimated($path)) {
+            return;
+        }
+
         $img = Image::make($path)->orientate();
         $img->resize(
             config('app.image_max_width'),
