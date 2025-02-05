@@ -26,6 +26,8 @@ class Berta extends BertaBase
     public $tagName;
 
     public $content;
+    public $requestURI;
+    public $allContent;
 
     public function __construct(array $options = [])
     {
@@ -44,7 +46,7 @@ class Berta extends BertaBase
     // 1st: init settings
     public function init(array $setttingsDefaults)
     {
-        $this->settings = new Settings($setttingsDefaults);				// general site-wide settings
+        $this->settings = new Settings($setttingsDefaults); // general site-wide settings
 
         I18n::load_language($this->settings->get('language', 'language'));
 
@@ -78,8 +80,10 @@ class Berta extends BertaBase
         // content ...
         $this->content = BertaContent::loadBlog($sectionName);
         $this->allContent = [$this->sectionName => $this->content];
-        if (!empty($this->sections[$this->sectionName]['get_all_entries_by_section'])
-           && $this->sections[$this->sectionName]['get_all_entries_by_section']['value'] == 'yes') {
+        if (
+            !empty($this->sections[$this->sectionName]['get_all_entries_by_section'])
+            && $this->sections[$this->sectionName]['get_all_entries_by_section']['value'] == 'yes'
+        ) {
             foreach ($this->sections as $sName => $s) {
                 if ($this->sectionName != $sName) {
                     $this->allContent[$sName] = BertaContent::loadBlog($sName);
@@ -98,10 +102,12 @@ class Berta extends BertaBase
         // but in the front-ends mode, if there are subsections, the first of them is automatically selected.
 
         //I'm not sure what I'm doing here - this can make a bug in sorting order
-        if (!empty($this->tags[$this->sectionName])
-                && empty($this->tagName)
-                && empty($this->sections[$this->sectionName]['@attributes']['has_direct_content'])
-                && $this->settings->get('navigation', 'alwaysSelectTag') == 'yes') {
+        if (
+            !empty($this->tags[$this->sectionName])
+            && empty($this->tagName)
+            && empty($this->sections[$this->sectionName]['@attributes']['has_direct_content'])
+            && $this->settings->get('navigation', 'alwaysSelectTag') == 'yes'
+        ) {
             $this->tagName = array_keys($this->tags[$this->sectionName]);
             $this->tagName = reset($this->tagName);
         }

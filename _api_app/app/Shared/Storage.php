@@ -5,6 +5,7 @@ namespace App\Shared;
 use Illuminate\Support\Str;
 use App\Shared\Helpers;
 use Swaggest\JsonSchema\Schema;
+use Illuminate\Support\Facades\Config;
 
 class Storage
 {
@@ -29,10 +30,10 @@ class Storage
     public function __construct($site = '', $isPreview = false)
     {
         $this->SITE = $site;
-        $this->XML_MAIN_ROOT = realpath(config('app.old_berta_root') . '/storage');
+        $this->XML_MAIN_ROOT = realpath(Config::get('app.old_berta_root') . '/storage');
         $this->XML_STORAGE_ROOT = $this->XML_MAIN_ROOT;
         $this->XML_SITES_ROOT = $this->XML_MAIN_ROOT . '/-sites';
-        $this->THEMES_ROOT = realpath(config('app.old_berta_root') . '/_themes');
+        $this->THEMES_ROOT = realpath(Config::get('app.old_berta_root') . '/_themes');
         $preview_folder = $isPreview ? $this->PREVIEW_FOLDER . '/' : '';
 
         if (!empty($site) and $site !== '0') {
@@ -175,7 +176,6 @@ class Storage
 
         if (!$nrFileParts) {
             $fileName = $name . '_1.' . $extension;
-            ;
             if (!file_exists($dir . '/' . $fileName)) {
                 return $fileName;
             }

@@ -9,11 +9,11 @@ class Settings
     public $settings = [];
     public $settingsDefinition;
 
-    public $base;					// the super-settings, that propogate to these settings, if there's not value
-    public $templateName;			// name of the template (without version info)
-    public $templateFullName;		// full name of the template (the actual folder name with version)
-    public $templateVersion;		// version of the template (derived from folder name)
-    public $fileName;				// the actual template file name
+    public $base; // the super-settings, that propogate to these settings, if there's not value
+    public $templateName; // name of the template (without version info)
+    public $templateFullName; // full name of the template (the actual folder name with version)
+    public $templateVersion; // version of the template (derived from folder name)
+    public $fileName; // the actual template file name
 
     public function __construct($settingsDefinition, $settingsBaseInstance = false, $templateName = false, $settings = false)
     {
@@ -240,9 +240,12 @@ class Settings
     public function oppositeAlign($align)
     {
         switch ($align) {
-            case 'left': return 'right';
-            case 'right': return 'left';
-            default: return 'none';
+            case 'left':
+                return 'right';
+            case 'right':
+                return 'left';
+            default:
+                return 'none';
         }
     }
 

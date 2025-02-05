@@ -7,7 +7,6 @@ use App\Shared\Storage;
 use App\Events\SectionUpdated;
 use App\Sites\Sections\Entries\SectionEntriesDataService;
 
-
 /**
  * This class is a service that handles site tags (subsections) data for Berta CMS.
  * Tags are stored in `tags.xml` file for the corresponding site.
@@ -258,7 +257,7 @@ class SectionTagsDataService extends Storage
             $tags['section'][$section_order]['tag'] = $section_tags;
 
             $this->array2xmlFile($tags, $this->XML_FILE, $this->ROOT_ELEMENT);
-            event(new SectionUpdated($this->SITE, $this->SECTION_NAME));
+            SectionUpdated::dispatch($this->SITE, $this->SECTION_NAME);
 
             $order = array_column(
                 array_column(

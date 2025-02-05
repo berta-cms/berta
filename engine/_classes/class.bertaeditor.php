@@ -543,7 +543,7 @@ class BertaEditor extends BertaContent
                           'xRequired-' . (!empty($sDef['allow_blank']) ? '0' : '1') . ' ' .
                           (!empty($sDef['validator']) ? 'xValidator-' . $sDef['validator'] . ' ' : '') .
                           $pStr .
-                   '" title="' . htmlspecialchars($sDef['default']) . '"';
+                   '" title="' . htmlspecialchars($sDef['default'] ?? '') . '"';
 
         if (!empty($path)) {
             $html .= ' data-path="' . $path . '"';
