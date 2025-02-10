@@ -126,7 +126,7 @@ class Settings
     {
         if (isset($this->settings[$collection][$prop])) {
             $s = trim($this->settings[$collection][$prop]);
-            if (!$s && $this->base) {
+            if (!$s && $this->base && $this->base->exists($collection, $prop)) {
                 $s = trim($this->base->get($collection, $prop, $useEmptyIfEmpty));
             }
             if (!$s && $useEmptyIfEmpty) {
