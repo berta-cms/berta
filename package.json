@@ -27,7 +27,7 @@
     "promise-polyfill": "^7.0.2",
     "redux": "^3.7.2",
     "redux-thunk": "^2.2.0",
-    "swiper": "^4.5.0",
+    "swiper": "^6.5.1",
     "whatwg-fetch": "^2.0.3"
   },
   "scripts": {
