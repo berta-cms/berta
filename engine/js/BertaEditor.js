@@ -458,6 +458,16 @@ var BertaEditor = new Class({
 
   onBgEditClick: function (event) {
     event.stop();
+    var site = getCurrentSite();
+
+    window.parent.postMessage(
+      {
+        action: "BackgroundGalleryEditorOpen",
+        site: site,
+        section: this.currentSection,
+      },
+      "*"
+    );
 
     var bgEditorPanel = null;
     var bgEditorContainer = $("xBgEditorPanelContainer");
@@ -501,7 +511,7 @@ var BertaEditor = new Class({
 
     window.parent.postMessage(
       {
-        action: "bt-navigate",
+        action: "EntryGalleryEditorOpen",
         site: site,
         section: this.currentSection,
         entryId: entryId,

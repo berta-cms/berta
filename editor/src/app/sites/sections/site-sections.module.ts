@@ -2,30 +2,31 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { DragDropModule } from '@angular/cdk/drag-drop';
-import { SiteSectionsComponent } from './site-sections.component';
-import { SectionComponent } from './section.component';
 import { NgxsModule } from '@ngxs/store';
+import { SafePipe } from '../../pipes/pipe';
 import { SiteSectionsState } from './sections-state/site-sections.state';
 import { SectionTagsState } from './tags/section-tags.state';
-import { SectionEntriesModule } from './entries/section-entries.module';
 import { SitesSharedModule } from '../shared/sites-shared.module';
-import {SafePipe} from "../../pipes/pipe";
+import { SectionEntriesModule } from './entries/section-entries.module';
+import { SiteSectionsComponent } from './site-sections.component';
+import { SectionComponent } from './section.component';
+import { BackgroundGalleryEditorComponent } from './background-gallery-editor.component';
 
 @NgModule({
   imports: [
     CommonModule,
     DragDropModule,
     RouterModule.forChild([]),
-    NgxsModule.forFeature([
-      SiteSectionsState,
-      SectionTagsState
-    ]),
+    NgxsModule.forFeature([SiteSectionsState, SectionTagsState]),
     SectionEntriesModule,
-    SitesSharedModule
+    SitesSharedModule,
   ],
-    exports: [
-        SafePipe,
-    ],
-  declarations: [SiteSectionsComponent, SectionComponent, SafePipe,]
+  exports: [SafePipe],
+  declarations: [
+    SiteSectionsComponent,
+    SectionComponent,
+    BackgroundGalleryEditorComponent,
+    SafePipe,
+  ],
 })
-export class SiteSectionsModule { }
+export class SiteSectionsModule {}

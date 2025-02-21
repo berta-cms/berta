@@ -12,6 +12,7 @@ import { AuthGuardService } from './auth-guard.service';
 import { SiteMediaComponent } from './sites/media/site-media.component';
 import { EntryGalleryEditorComponent } from './sites/media/entry-gallery-editor.component';
 import { EntryGalleryImageEditorComponent } from './sites/media/entry-gallery-image-editor.component';
+import { BackgroundGalleryEditorComponent } from './sites/sections/background-gallery-editor.component';
 
 const routes: Routes = [
   {
@@ -77,6 +78,11 @@ const routes: Routes = [
   {
     path: 'media/image/:section/:entry_id/:image_order',
     component: EntryGalleryImageEditorComponent,
+    canActivate: [AuthGuardService],
+  },
+  {
+    path: 'background-gallery/:section',
+    component: BackgroundGalleryEditorComponent,
     canActivate: [AuthGuardService],
   },
   {
