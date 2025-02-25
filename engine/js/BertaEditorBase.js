@@ -1250,39 +1250,23 @@ var BertaEditorBase = new Class({
     this.tinyMCESettings.Base = new Class({
       Implements: Options,
       options: {
-        mode: 'exact',
-        theme: 'advanced',
+        license_key: 'gpl',
+        promotion: false,
+        branding: false,
+        menubar: false,
+        plugins: 'save code table lists link',
+        toolbar: 'save undo redo bold italic forecolor backcolor bullist numlist link unlink code | fontsize blocks alignleft aligncenter alignright alignjustify outdent indent table removeformat',
         width: '563px',
-        height: '300px !important',
-        theme_advanced_buttons1: 'save,|,pasteword,|,undo,redo,|,bold,italic,forecolor,backcolor,fontsizeselect,formatselect,bullist,numlist,|,link,unlink,insertanything,|,code,pdw_toggle',
-        theme_advanced_buttons2: 'justifyleft,justifycenter,justifyright,justifyfull,|,outdent,indent,|,tablecontrols,|,removeformat,cleanup',
-        theme_advanced_buttons3: '',
-        theme_advanced_path: true,
-        theme_advanced_toolbar_location: 'top',
-        theme_advanced_toolbar_align: 'left',
-        theme_advanced_statusbar_location: 'bottom',
-        theme_advanced_resizing: true,
-
+        height: '300',
         save_enablewhendirty: false,
         save_onsavecallback: this.tinyMCE_onSave.bind(this),
-
-        plugins: 'save,insertanything,paste,table,pdw',
-
-        pdw_toggle_on: 1,
-        pdw_toggle_toolbars: '2',
-
-        theme_advanced_blockformats: 'p,h2,h3',
-
         valid_elements: 'iframe[*],object[*],embed[*],param[*],form[*],input[*],textarea[*],select[*],option[*],' +
           'p[class|style|id],b[class],i[class],strong[class],em[class],a[*],br[*],u[class],sup[*],sub[*],' +
           'ul[*],li,ol[*],img[*],hr[class],h2[class|style|id],h3[class|style|id],div[*],blockquote[*],table[*],thead[*],tbody[*],tr[*],td[*],span[*],ins[*],blockquote[*],time[*],' +
           'audio[*],source[*]',
-        custom_elements: '',
-        extended_valid_elements: '',
+        block_formats: 'Paragraph=p;  Heading 2=h2; Heading 3=h3',
         convert_urls: false,
         relative_urls: false,
-
-        media_use_script: false,
       },
       initialize: function (options) {
         this.setOptions(options);
@@ -1291,14 +1275,10 @@ var BertaEditorBase = new Class({
 
     this.tinyMCESettings.full = new this.tinyMCESettings.Base();
     this.tinyMCESettings.simple = new this.tinyMCESettings.Base({
-      mode: 'exact',
-      theme_advanced_buttons1: 'save,bold,italic,removeformat,link,code',
-      theme_advanced_buttons2: '',
       valid_elements: 'p[*],b,i,strong,em,a[*],br[*],u,img[*],div[*],blockquote[*],iframe[*],span[*],ins[*],sup[*],sub[*]',
       width: '100%',
-      height: '60px !important',
-      theme_advanced_statusbar_location: null,
-      plugins: 'save,insertanything'
+      plugins: 'save link code',
+      toolbar: 'save bold italic link unlink removeformat code',
     });
   },
 

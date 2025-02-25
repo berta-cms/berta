@@ -145,6 +145,10 @@ input[type="submit"]:hover {
     min-height: 1em;
 }
 
+.tox-tinymce-aux {
+    z-index: 100002;
+}
+
 .xEditable,
 .xEditableColor
 .xEditableSelect,
