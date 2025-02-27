@@ -82,8 +82,6 @@ var js_backend_files = [
   'engine/js/Assets.js',
   'engine/js/BertaEditorBase.js',
   'engine/js/inline_edit.js',
-  'engine/js/BertaGalleryEditorAssets.js',
-  'engine/js/BertaGalleryEditor.js',
   'engine/js/BertaEditor.js',
   'node_modules/tinymce/tinymce.min.js',
   'node_modules/tinymce/themes/silver/theme.min.js',

@@ -9,7 +9,6 @@ var BertaEditor = new Class({
   /* editing related variables */
   edittingMode: "entries",
   galleries: new Array(),
-  galleryEditors: new Array(), // contains all instances of BertaGalleryEditor
   processHandler: null, // an instance of UnlinearProcessHandler
 
   /* DOM elements */
@@ -485,37 +484,6 @@ var BertaEditor = new Class({
       },
       "*"
     );
-  },
-
-  galleryLoad: function (container) {
-    // load the gallery HTML into the container
-    container.addClass("xSavingAtLarge");
-    var data = function (obj) {
-      var _data = {
-        section: obj.currentSection,
-        entry: container.getParent(".xEntry").getClassStoredValue("xEntryId"),
-        property: "gallery",
-      };
-
-      return _data;
-    };
-    new Request.HTML({
-      url: this.options.elementsUrl,
-      onComplete: function (resp) {
-        container = resp[0].replaces(container);
-        // instantiate the gallery for the container
-        this.initGallery(container);
-
-        // add the "edit gallery" link event
-        container
-          .getElement(".xGalleryEditButton")
-          .addEvent("click", this.onGalleryEditClick.bindWithEvent(this));
-
-        this.fireEvent(BertaEditorBase.EDITABLE_FINISH, [container]);
-      }.bind(this),
-    }).post({
-      json: JSON.encode(data(this)),
-    });
   },
 
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

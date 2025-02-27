@@ -49,12 +49,8 @@ var BertaEditorBase = new Class({
 
     xBertaEditorClassAction: '.xAction',
     xBertaEditorClassReset: '.xReset',
-
-    xBertaEditorClassGallery: '.xEntryGalleryEditor',
-
     xEmptyClass: '.xEmpty',
     updateUrl: '/engine/update.php',
-    elementsUrl: '/engine/elements.php'
   },
 
   tinyMCESettings: {
@@ -77,7 +73,6 @@ var BertaEditorBase = new Class({
     this.query = window.location.search.replace('?', '').parseQueryString();
     if (this.query.site) {
       this.options.updateUrl = this.options.updateUrl + '?site=' + this.query.site;
-      this.options.elementsUrl = this.options.elementsUrl + '?site=' + this.query.site;
     }
     if (!window.console) window.console = {};
     if (!window.console.debug) window.console.debug = function () {};

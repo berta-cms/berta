@@ -93,10 +93,6 @@ Route::middleware([SetupMiddleware::class, Authenticate::class])->prefix('v1/sit
     Route::patch('entries/galleries', [SectionEntriesController::class, 'galleryCrop']);
     Route::delete('entries/galleries', [SectionEntriesController::class, 'galleryDelete']);
     Route::get('entries/render/{site}/{section}/{id?}', [SectionEntriesController::class, 'renderEntries']);
-    Route::get('entries/render-gallery-editor/{site}/{section}/{id}', [
-        SectionEntriesController::class,
-        'renderEntryGalleryEditor'
-    ]);
     Route::get('entries/render-mashup[/{site}]', [SectionEntriesController::class, 'renderMashupEntries']);
     Route::get('entries/render-portfolio-thumbnails/{site}/{section}', [
         SectionEntriesController::class,
