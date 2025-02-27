@@ -2,11 +2,16 @@ import { Injectable } from '@angular/core';
 import { Actions, ofActionSuccessful } from '@ngxs/store';
 import { filter } from 'rxjs/operators';
 import {
+  AddSiteSectionBackgroundFileAction,
   CreateSectionAction,
   DeleteSiteSectionAction,
+  DeleteSiteSectionBackgroundFileAction,
+  OrderSiteSectionBackgroundAction,
   RenameSiteSectionAction,
   ReOrderSiteSectionsAction,
+  UpdateSectionBackgroundFileAction,
   UpdateSiteSectionAction,
+  UpdateSiteSectionByPathAction,
 } from '../sites/sections/sections-state/site-sections.actions';
 import { TemplateRenderService } from '../render/template-render.service';
 import {
@@ -96,7 +101,12 @@ export class TemplateRerenderService {
         ofActionSuccessful(
           UpdateSiteSettingsAction,
           UpdateSiteSectionAction,
-          UpdateShopSettingsAction
+          UpdateShopSettingsAction,
+          OrderSiteSectionBackgroundAction,
+          DeleteSiteSectionBackgroundFileAction,
+          AddSiteSectionBackgroundFileAction,
+          UpdateSectionBackgroundFileAction,
+          UpdateSiteSectionByPathAction
         ),
         filter((action) => {
           const reloadConditionFromSiteSettingsAction =
@@ -127,10 +137,20 @@ export class TemplateRerenderService {
               (action.groupSlug === 'group_price_item' &&
                 ['cartImage', 'entryWidth'].includes(action.payload.field)));
 
+          const reloadConditionFromBackgroundGalleryActions =
+            action instanceof OrderSiteSectionBackgroundAction ||
+            action instanceof DeleteSiteSectionBackgroundFileAction ||
+            action instanceof AddSiteSectionBackgroundFileAction ||
+            action instanceof UpdateSectionBackgroundFileAction ||
+            action instanceof UpdateSiteSectionByPathAction ||
+            (action instanceof UpdateSiteSectionAction &&
+              action.payload.sectionBgColor);
+
           return (
             reloadConditionFromSiteSettingsAction ||
             reloadConditionFromSectionAction ||
-            reloadConditionFromShopSettingsAction
+            reloadConditionFromShopSettingsAction ||
+            reloadConditionFromBackgroundGalleryActions
           );
         })
       )

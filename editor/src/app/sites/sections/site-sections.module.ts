@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { NgxsModule } from '@ngxs/store';
+import { NgsgModule } from 'ng-sortgrid';
 import { SafePipe } from '../../pipes/pipe';
 import { SiteSectionsState } from './sections-state/site-sections.state';
 import { SectionTagsState } from './tags/section-tags.state';
@@ -16,6 +17,7 @@ import { BackgroundGalleryEditorComponent } from './background-gallery-editor.co
   imports: [
     CommonModule,
     DragDropModule,
+    NgsgModule,
     RouterModule.forChild([]),
     NgxsModule.forFeature([SiteSectionsState, SectionTagsState]),
     SectionEntriesModule,

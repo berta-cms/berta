@@ -4,7 +4,7 @@ import { take, switchMap, tap } from 'rxjs/operators';
 import { Store, State, Action, StateContext, Selector, NgxsOnInit, Actions, ofActionSuccessful } from '@ngxs/store';
 
 import { assignByPath } from 'src/app/shared/helpers';
-import { SiteSectionStateModel } from './site-sections-state.model';
+import { SiteSectionBackgroundFile, SiteSectionStateModel } from './site-sections-state.model';
 import { AppStateService } from '../../../app-state/app-state.service';
 import { AppState } from '../../../app-state/app.state';
 import {
@@ -21,13 +21,19 @@ import {
   InitSiteSectionsAction,
   UpdateSiteSectionBackgroundFromSyncAction,
   AddSiteSectionAction,
-  ReOrderSiteSectionsAction} from './site-sections.actions';
+  ReOrderSiteSectionsAction,
+  OrderSiteSectionBackgroundAction,
+  DeleteSiteSectionBackgroundFileAction,
+  AddSiteSectionBackgroundFileAction,
+  UpdateSectionBackgroundFileAction,
+  UpdateSiteSectionByPathAction} from './site-sections.actions';
 import { DeleteSectionTagsAction, RenameSectionTagsAction, AddSectionTagsAction } from '../tags/section-tags.actions';
 import {
   DeleteSectionEntriesAction,
   RenameSectionEntriesAction,
   AddSectionEntriesAction } from '../entries/entries-state/section-entries.actions';
 import { UserLoginAction } from '../../../user/user.actions';
+import { FileUploadService } from '../../shared/file-upload.service';
 
 
 @State<SiteSectionStateModel[]>({
@@ -52,7 +58,9 @@ export class SiteSectionsState implements NgxsOnInit {
 
   constructor(private appStateService: AppStateService,
               private actions$: Actions,
-              private store: Store) {
+              private store: Store,
+            private fileUploadService: FileUploadService
+          ) {
   }
 
   ngxsOnInit({ dispatch }: StateContext<SiteSectionStateModel[]>) {
@@ -161,6 +169,34 @@ export class SiteSectionsState implements NgxsOnInit {
     );
   }
 
+  @Action(UpdateSiteSectionByPathAction)
+  updateSiteSectionByPath({setState, getState}: StateContext<SiteSectionStateModel[]>, action: UpdateSiteSectionByPathAction) {
+    return this.appStateService.sync('siteSections', {
+      path: action.path,
+      value: action.payload
+    }).pipe(
+      tap(response => {
+        if (response.error_message) {
+          // @TODO handle error message
+          console.error(response.error_message);
+        } else {
+          const state = getState();
+          const path = action.path.split('/');
+          const [currentSite, _, sectionOrder] = path;
+          const siteName = currentSite === '0' ? '' : currentSite;
+
+          setState(state.map(section => {
+            if (section.site_name !== siteName || section.order !== parseInt(sectionOrder, 10)) {
+              return section;
+            }
+
+            return assignByPath(section, path.slice(3).join('/'), action.payload);
+          }));
+        }
+      })
+    );
+  }
+
   @Action(UpdateSiteSectionFromSyncAction)
   updateSiteSettingsFromSync({setState, getState}: StateContext<SiteSectionStateModel[]>, action: UpdateSiteSectionFromSyncAction) {
     return this.appStateService.sync('siteSections', {
@@ -218,6 +254,146 @@ export class SiteSectionsState implements NgxsOnInit {
       })
     );
   }
+
+  @Action(OrderSiteSectionBackgroundAction)
+  orderSiteSectionBackground({ getState, setState }: StateContext<SiteSectionStateModel[]>,
+                                      action: OrderSiteSectionBackgroundAction) {
+    return this.appStateService.sync('siteSectionBackgrounds', {
+      site: action.site,
+      section: action.section,
+      files: action.files
+      },
+      'PUT'
+    ).pipe(
+      tap(response => {
+        if (response.error_message) {
+          // @TODO handle error message
+          console.error(response.error_message);
+        } else {
+          const state = getState();
+
+          setState(state.map(section => {
+            if (section.site_name !== action.site || section.name !== action.section) {
+              return section;
+            }
+
+            const mediaCacheData = { ...section.mediaCacheData, file: response.files };
+            return { ...section, mediafolder: response.mediafolder, mediaCacheData: mediaCacheData };
+          }));
+        }
+      })
+    );
+  }
+
+
+  @Action(DeleteSiteSectionBackgroundFileAction)
+  deleteSiteSectionBackgroundFile({ getState, setState }: StateContext<SiteSectionStateModel[]>,
+                                      action: DeleteSiteSectionBackgroundFileAction) {
+    return this.appStateService.sync('siteSectionBackgrounds', {
+      site: action.site,
+      section: action.section,
+      file: action.file
+      },
+      'DELETE'
+    ).pipe(
+      tap(response => {
+        if (response.error_message) {
+          // @TODO handle error message
+          console.error(response.error_message);
+        } else {
+          const state = getState();
+
+          setState(state.map(section => {
+            if (section.site_name !== action.site || section.name !== action.section) {
+              return section;
+            }
+
+            const mediaCacheData = {
+              ...section.mediaCacheData,
+              file: section.mediaCacheData.file.filter((f) => f['@attributes'].src !== response.file)
+            };
+            return { ...section, mediaCacheData: mediaCacheData };
+          }));
+        }
+      })
+    );
+  }
+
+  @Action(AddSiteSectionBackgroundFileAction)
+  addSiteSectionBackgroundFile(
+      { getState, setState }: StateContext<SiteSectionStateModel[]>,
+      action: AddSiteSectionBackgroundFileAction
+    ) {
+      const data = {
+        path: `${action.site}/section/${action.section}`,
+        value: action.file,
+      };
+
+      return this.fileUploadService.upload('siteSectionBackgrounds', data).pipe(
+        tap((response) => {
+          if (response.error_message) {
+            // @TODO handle error message
+            console.error(response.error_message);
+
+            return response.error_message;
+          } else {
+            const state = getState();
+
+            setState(state.map(section => {
+              if (section.site_name !== action.site || section.name !== action.section) {
+                return section;
+              }
+
+              const newFile: SiteSectionBackgroundFile = {
+                '@value': '',
+                '@attributes': {
+                  type: response.type,
+                  src: response.filename,
+                  width: response.width,
+                  height: response.height
+                },
+              };
+
+              const mediaCacheData = {
+                ...section.mediaCacheData,
+                file: [...(section.mediaCacheData && section.mediaCacheData.file ? section.mediaCacheData.file : []), newFile],
+              };
+
+              return { ...section, mediafolder: response.mediafolder, mediaCacheData: mediaCacheData };
+            }));
+          }
+        })
+      );
+    }
+
+
+    @Action(UpdateSectionBackgroundFileAction)
+    updateSectionBackgroundFile({setState, getState}: StateContext<SiteSectionStateModel[]>, action: UpdateSectionBackgroundFileAction) {
+      return this.appStateService.sync('siteSections', {
+        path: action.path,
+        value: action.payload
+      }).pipe(
+        tap(response => {
+          if (response.error_message) {
+            /* This should probably be handled in sync */
+            console.error(response.error_message);
+          } else {
+            const state = getState();
+            const path = action.path.split('/');
+            const [currentSite, _, sectionOrder] = path;
+            const siteName = currentSite === '0' ? '' : currentSite;
+
+            setState(state.map(section => {
+              if (section.site_name !== siteName || section.order !== parseInt(sectionOrder, 10)) {
+                return section;
+              }
+
+              return assignByPath(section, path.slice(3).join('/'), action.payload);
+            }));
+          }
+        })
+      );
+    }
 
   @Action(RenameSiteSectionAction)
   renameSiteSection({ getState, setState, dispatch }: StateContext<SiteSectionStateModel[]>, action: RenameSiteSectionAction) {

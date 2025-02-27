@@ -368,10 +368,6 @@ class SiteSectionsDataService extends Storage
             }
         }
 
-        if ($prop === 'caption_bg_color') {
-            $value = implode(',', sscanf($value, '#%02x%02x%02x'));
-        }
-
         $this->setValueByPath(
             $sections,
             implode('/', $path_arr),
@@ -545,6 +541,11 @@ class SiteSectionsDataService extends Storage
             $this->deleteMedia($mediafolder, $file);
 
             $file = current(array_splice($files, $file_order, 1));
+
+            $sections['section'][$section_order]['mediaCacheData']['file'] = array_filter($files, function ($f) use ($file) {
+                return $f['@attributes']['src'] != $file;
+            });
+
             $this->array2xmlFile($sections, $this->XML_FILE, $this->ROOT_ELEMENT);
             SectionUpdated::dispatch($this->SITE, $name);
 
@@ -607,10 +608,11 @@ class SiteSectionsDataService extends Storage
 
     public function backgroundGalleryUpload($path, $file)
     {
-        $section_idx = explode('/', $path)[2];
-        $mediaRootDir = $this->getOrCreateMediaDir();
         $sections = $this->get();
-        $section = $sections[$section_idx];
+        $section_name = explode('/', $path)[2];
+        $section_order = array_search($section_name, array_column($sections, 'name'));
+        $mediaRootDir = $this->getOrCreateMediaDir();
+        $section = $sections[$section_order];
         $mediaDirName = isset($section['mediafolder']) ? $section['mediafolder'] : $section['name'] . '-background';
         $mediaDir = $mediaRootDir . '/' . $mediaDirName;
 
@@ -651,7 +653,7 @@ class SiteSectionsDataService extends Storage
             ]
         ];
 
-        $sections[$section_idx] = $section;
+        $sections[$section_order] = $section;
         $this->array2xmlFile(['section' => $sections], $this->XML_FILE, $this->ROOT_ELEMENT);
         SectionUpdated::dispatch($this->SITE, $section['name']);
 
@@ -662,6 +664,7 @@ class SiteSectionsDataService extends Storage
             'smallthumb_path' => $this->MEDIA_URL . '/' . $mediaDirName . '/' . basename($smallThumb),
             'smallthumb_width' => $smallThumbWidth,
             'smallthumb_height' => $smallThumbHeight,
+            'mediafolder' => $mediaDirName,
             'path' => $this->MEDIA_URL . '/' . $mediaDirName . '/' . $fileName,
             'path_orig' => $this->MEDIA_URL . '/' . $mediaDirName . '/' . $fileName,
             'filename' => $fileName,

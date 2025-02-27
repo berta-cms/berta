@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Sites;
 
 use Illuminate\Http\Request;
@@ -135,8 +136,8 @@ class SitesDataService extends Storage
 
         if ($cloneFrom != null) {
             $src = $cloneFrom == '0' ? $this->XML_MAIN_ROOT : $this->XML_SITES_ROOT . '/' . $cloneFrom;
-            $name = 'copy-of-'.$cloneFrom;
-            if($cloneFrom == '0') {
+            $name = 'copy-of-' . $cloneFrom;
+            if ($cloneFrom == '0') {
                 $title = $this->MAIN_SITE_DEFAULT_TITLE;
             } else {
                 foreach ($sites as $site) {
@@ -146,15 +147,15 @@ class SitesDataService extends Storage
                     }
                 }
             }
-            $title = 'Copy of '.$title;
+            $title = 'Copy of ' . $title;
             $copyTitle = $title;
             $copyName = $name;
-            $i=1;
+            $i = 1;
 
             foreach ($sites as $site) {
                 if ($name === $site['name']) {
-                    $name = $copyName.'-'.$i;
-                    $title = $copyTitle.' '.$i;
+                    $name = $copyName . '-' . $i;
+                    $title = $copyTitle . ' ' . $i;
                     $i++;
                 }
             }
@@ -173,6 +174,9 @@ class SitesDataService extends Storage
         array_push($sites, $site);
 
         $this->array2xmlFile(['site' => $sites], $this->XML_FILE, $this->ROOT_ELEMENT);
+
+        $sitesDS = new self($site['name']);
+        $site['mediaUrl'] = $sitesDS->MEDIA_URL;
         $site['order'] = count($sites) - 1;
 
         if (Helpers::isValidDomain($request->getHost(), config('plugin-Shop.key'))) {

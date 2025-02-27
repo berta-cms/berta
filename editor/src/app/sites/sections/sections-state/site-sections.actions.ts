@@ -34,12 +34,48 @@ export class UpdateSiteSectionFromSyncAction {
   }
 }
 
+export class UpdateSiteSectionByPathAction {
+  static readonly type = 'SITE_SECTION:UPDATE_BY_PATH';
+  constructor(public path: string,
+              public payload: string) {
+  }
+}
+
 export class UpdateSiteSectionBackgroundFromSyncAction {
   static readonly type = 'SITE_SECTION_BACKGROUND:UPDATE:SYNC';
   constructor(public site: string,
               public section: string,
               public files: string[]) {
   }
+}
+
+export class OrderSiteSectionBackgroundAction {
+  static readonly type = 'SITE_SECTION_BACKGROUND:ORDER';
+  constructor(public site: string,
+              public section: string,
+              public files: string[]) {
+  }
+}
+
+export class DeleteSiteSectionBackgroundFileAction {
+  static readonly type = 'SITE_SECTION_BACKGROUND:DELETE_FILE';
+  constructor(public site: string,
+              public section: string,
+              public file: string) {
+  }
+}
+
+export class AddSiteSectionBackgroundFileAction {
+  static readonly type = 'SITE_SECTION_BACKGROUND:ADD_FILE';
+  constructor(public site: string,
+              public section: string,
+              public file: File) {
+  }
+}
+
+export class UpdateSectionBackgroundFileAction {
+  static readonly type = 'SITE_SECTION_BACKGROUND:UPDATE_FILE';
+  constructor(public path: string, public payload: string) {}
 }
 
 export class RenameSiteSectionAction {

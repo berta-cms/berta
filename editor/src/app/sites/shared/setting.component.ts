@@ -39,6 +39,7 @@ import { UpdateInputFocus } from '../../app-state/app.actions';
         *ngSwitchCase="'color'"
         [label]="config.title"
         [value]="setting.value"
+        [enabledOnUpdate]="config.enabledOnUpdate"
         (inputFocus)="updateComponentFocus($event)"
         (update)="updateComponentField(setting.slug, $event)"
       ></berta-color-input>

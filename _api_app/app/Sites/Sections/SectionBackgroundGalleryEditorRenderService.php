@@ -36,13 +36,7 @@ class SectionBackgroundGalleryEditorRenderService
         $fadeContent = !empty($currentSection['mediaCacheData']['@attributes']['fade_content']) ? $currentSection['mediaCacheData']['@attributes']['fade_content'] : 'disabled';
         $backgroundColor = !empty($currentSection['sectionBgColor']) ? $currentSection['sectionBgColor'] : 'none';
         $captionColor = !empty($currentSection['mediaCacheData']['@attributes']['caption_color']) ? $currentSection['mediaCacheData']['@attributes']['caption_color'] : 'none';
-        $captionBackgroundColor = 'none';
-        if (!empty($currentSection['mediaCacheData']['@attributes']['caption_bg_color'])) {
-            $captionBackgroundColor = '#';
-            foreach (explode(',', $currentSection['mediaCacheData']['@attributes']['caption_bg_color']) as $val) {
-                $captionBackgroundColor .= dechex($val);
-            }
-        }
+        $captionBackgroundColor = !empty($currentSection['mediaCacheData']['@attributes']['caption_bg_color']) ? $currentSection['mediaCacheData']['@attributes']['caption_bg_color'] : 'none';
         $imageSize = !empty($currentSection['mediaCacheData']['@attributes']['image_size']) ? $currentSection['mediaCacheData']['@attributes']['image_size'] : 'medium';
         $autoPlay = !empty($currentSection['mediaCacheData']['@attributes']['autoplay']) ? $currentSection['mediaCacheData']['@attributes']['autoplay'] : '0';
 
