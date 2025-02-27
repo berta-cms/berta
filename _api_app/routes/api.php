@@ -65,10 +65,6 @@ Route::middleware([SetupMiddleware::class, Authenticate::class])->prefix('v1/sit
         SiteSectionsController::class,
         'renderBackgroundGallery'
     ]);
-    Route::get('sections/render-background-gallery-editor/{siteSlug?}', [
-        SiteSectionsController::class,
-        'renderBackgroundGalleryEditor'
-    ]);
     Route::get('sections/render-grid-view/{siteSlug?}', [SiteSectionsController::class, 'renderGridView']);
     Route::get('sections/render-additional-text/{site?}', [SiteSectionsController::class, 'renderAdditionalText']);
     Route::get('sections/render-additional-footer-text/{site?}', [

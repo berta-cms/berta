@@ -1,9 +1,9 @@
 <?php
+
 use App\Shared\Storage;
 use App\Sites\Settings\SiteSettingsDataService;
 use App\Sites\TemplateSettings\SiteTemplateSettingsDataService;
 use App\Sites\Sections\SiteSectionsDataService;
-use App\Sites\Sections\SectionBackgroundGalleryEditorRenderService;
 use App\Sites\Sections\Entries\SectionEntriesDataService;
 use App\Sites\Sections\Entries\SectionEntryRenderService;
 use App\Sites\Sections\Entries\Galleries\EntryGalleryEditorRenderService;
@@ -72,19 +72,6 @@ if ($jsonRequest) {
                 );
             }
 
-            break;
-
-        case 'bgEditor':
-            if ($decoded['section']) {
-                $backgroundGalleryEditorRS = new SectionBackgroundGalleryEditorRenderService();
-
-                echo $backgroundGalleryEditorRS->render(
-                    $site,
-                    $decoded['section'],
-                    $sections,
-                    $storageService
-                );
-            }
             break;
     }
 }

@@ -468,39 +468,6 @@ var BertaEditor = new Class({
       },
       "*"
     );
-
-    // var bgEditorPanel = null;
-    // var bgEditorContainer = $("xBgEditorPanelContainer");
-
-    // var bBgEditor = new BertaBgEditor(bgEditorContainer, {
-    //   engineRoot: this.options.paths.engineRoot,
-    // });
-
-    // bBgEditor.addEvent(
-    //   "load",
-    //   function () {
-    //     this.fireEvent(BertaEditorBase.EDITABLE_START, [
-    //       bgEditorContainer,
-    //       bBgEditor,
-    //     ]);
-    //     event.target.hide();
-    //   }.bind(this)
-    // );
-
-    // bBgEditor.addEvent(
-    //   "close",
-    //   function () {
-    //     bgEditorPanel = $("xBgEditorPanel");
-    //     bgEditorPanel.destroy();
-    //     bgEditorPanel.dispose();
-    //     bBgEditor = null;
-    //     event.target.show();
-    //     this.fireEvent(BertaEditorBase.EDITABLE_FINISH, [
-    //       bgEditorContainer,
-    //       bBgEditor,
-    //     ]);
-    //   }.bind(this)
-    // );
   },
 
   onGalleryEditClick: function (event) {
