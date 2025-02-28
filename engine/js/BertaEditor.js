@@ -57,16 +57,6 @@ var BertaEditor = new Class({
   onDOMReady: function () {
     // delay onDOMReady processing to allow all elements on page properly initialize
     this.onDOMReadyDo.delay(1000, this);
-
-    if (window.tinyMCE_GZ) {
-      tinyMCE_GZ.baseURL = this.options.paths.engineABSRoot + "_lib/tiny_mce";
-      tinyMCE_GZ.init({
-        themes: "advanced",
-        plugins: "save,paste,insertanything",
-        languages: "en",
-        disk_cache: true,
-      });
-    }
   },
 
   onDOMReadyDo: function () {

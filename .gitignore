@@ -4,7 +4,6 @@ storage/*
 .DS_Store
 _plugin_shop/
 editor/src/templates
-engine/_lib/tiny_mce/*.gz
 .buildpath
 .dropbox
 .project
