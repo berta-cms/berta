@@ -1245,6 +1245,8 @@ var BertaEditorBase = new Class({
     this.tinyMCESettings.Base = new Class({
       Implements: Options,
       options: {
+        icons_url: '../_lib/tinymce/icons.js',
+        icons: 'berta',
         license_key: 'gpl',
         promotion: false,
         branding: false,

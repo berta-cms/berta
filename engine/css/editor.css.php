@@ -145,8 +145,20 @@ input[type="submit"]:hover {
     min-height: 1em;
 }
 
+.tox-tinymce{
+    border-radius: 0;
+}
+
 .tox-tinymce-aux {
     z-index: 100002;
+}
+
+.tox:not(.tox-tinymce-inline) .tox-editor-header{
+    padding: 0;
+}
+
+.tox .tox-toolbar__group {
+    padding: 0 4px 0 5px;
 }
 
 .xEditable,
