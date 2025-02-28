@@ -2,35 +2,40 @@ import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 
 @Component({
   selector: 'berta-color-input',
-  template: `
-    <div class="form-group" [class.bt-focus]="focus" [class.bt-disabled]="disabled">
-      <label>
-        {{ label }}
-        <div class="color-picker-wrapper">
-          <input [(colorPicker)]="value"
-                 [value]="value"
-                 (colorPickerOpen)="onColorPickerOpen()"
-                 (colorPickerClose)="saveColor(value)"
-                 (colorPickerCancel)="cancelColor()"
-                 [cpOKButton]="true"
-                 [cpOKButtonClass]="'button'"
-                 [cpCancelButton]="true"
-                 [cpCancelButtonClass]="'button secondary'"
-                 [cpSaveClickOutside]="true"
-                 type="text"
-                 readonly>
-          <div class="color-preview"
-               [style.background-color]="value">
-          </div>
-        </div>
-      </label>
-    </div>`
+  template: ` <div
+    class="form-group"
+    [class.bt-focus]="focus"
+    [class.bt-disabled]="disabled"
+  >
+    <label>
+      {{ label }}
+      <div class="color-picker-wrapper">
+        <input
+          [(colorPicker)]="value"
+          [value]="value"
+          (colorPickerOpen)="onColorPickerOpen()"
+          (colorPickerClose)="saveColor(value)"
+          (colorPickerCancel)="cancelColor()"
+          [cpOutputFormat]="'rgba'"
+          [cpOKButton]="true"
+          [cpOKButtonClass]="'button'"
+          [cpCancelButton]="true"
+          [cpCancelButtonClass]="'button secondary'"
+          [cpSaveClickOutside]="true"
+          type="text"
+          readonly
+        />
+        <div class="color-preview" [style.background-color]="value"></div>
+      </div>
+    </label>
+  </div>`,
 })
 export class ColorInputComponent implements OnInit {
   @Input() label: string;
   @Input() value: string;
   @Output() update = new EventEmitter();
   @Output() inputFocus = new EventEmitter();
+  @Input() enabledOnUpdate?: boolean;
 
   focus = false;
   disabled = false;
@@ -66,7 +71,11 @@ export class ColorInputComponent implements OnInit {
       return;
     }
     this.lastValue = value;
-    this.disabled = true;
+
+    if (!this.enabledOnUpdate) {
+      this.disabled = true;
+    }
+
     this.update.emit(value);
   }
 

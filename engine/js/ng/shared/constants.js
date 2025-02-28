@@ -3,7 +3,6 @@
 
   window.editables = {
     xEditable: 'xEditable',                     // simple input
-    xEditableColor: 'xEditableColor',           // simple input
     xEditableSelect: 'xEditableSelect',         // select
     xEditableSelectRC: 'xEditableSelectRC',     // select
     xEditableFontSelect: 'xEditableFontSelect', // select
@@ -21,7 +20,6 @@
     text: window.editables.xEditable,
     longtext: window.editables.xEditableTA,
     richtext: window.editables.xEditableMCESimple,
-    color: window.editables.xEditableColor,
     image: window.editables.xEditableImage,
     icon: window.editables.xEditableICO,
     select: window.editables.xEditableSelectRC,

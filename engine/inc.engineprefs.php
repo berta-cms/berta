@@ -152,7 +152,6 @@ $options['row_gallery_image_limit'] = [
  */
 
 $xEditSelectorSimple = 'xEditable';	// simple input
-$xEditSelectorColor = 'xEditableColor';	// simple input
 $xEditSelectorSelect = 'xEditableSelect';	// select
 $xEditSelectorSelectRC = 'xEditableSelectRC';	// select
 $xEditSelectorFontSelect = 'xEditableFontSelect';	// select
@@ -168,7 +167,6 @@ $xEmpty = 'xEmpty';
 $editsForSettings = ['text' => $xEditSelectorSimple,
                           'longtext' => $xEditSelectorTA,
                           'richtext' => $xEditSelectorMCESimple,
-                          'color' => $xEditSelectorColor,
                           'image' => $xEditSelectorImage,
                           'icon' => $xEditSelectorICO,
                           'select' => $xEditSelectorSelectRC,

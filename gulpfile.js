@@ -1,10 +1,10 @@
 var gulp = require('gulp'),
     gulp_sourcemaps = require('gulp-sourcemaps'),
     gulp_concat = require('gulp-concat'),
+    gulpif = require('gulp-if'),
     gulp_rebase_css_urls = require('gulp-rebase-css-urls'),
     gulp_minify_css = require('gulp-minify-css'),
     gulp_uglify_js = require('gulp-uglify'),
-    watch = require('gulp-watch'),
     livereload = require('gulp-livereload'),
     notify = require('gulp-notify'),
     jshint = require('gulp-jshint'),
@@ -50,7 +50,7 @@ var css_backend_files = [
   'node_modules/swiper/dist/css/swiper.min.css',
   'engine/_lib/berta/default.css',
   'engine/_lib/berta/swiper.css',
-  'engine/_lib/moorainbow/mooRainbow.css'
+  'node_modules/tinymce/skins/ui/oxide/skin.min.css',
 ];
 
 var css_frontend_files = [
@@ -81,13 +81,16 @@ var js_backend_files = [
   'engine/js/Assets.js',
   'engine/js/BertaEditorBase.js',
   'engine/js/inline_edit.js',
-  'engine/js/BertaGalleryEditorAssets.js',
-  'engine/js/BertaGalleryEditor.js',
-  'engine/js/BertaBgEditor.js',
   'engine/js/BertaEditor.js',
-  'engine/_lib/tiny_mce/tiny_mce_gzip.js',
-  'engine/_lib/moorainbow/mooRainbow.1.2b2.js',
-  'engine/_lib/lassocrop/lassocrop.js',
+  'node_modules/tinymce/tinymce.min.js',
+  'node_modules/tinymce/themes/silver/theme.min.js',
+  'node_modules/tinymce/icons/default/icons.min.js',
+  'node_modules/tinymce/models/dom/model.min.js',
+  'node_modules/tinymce/plugins/save/plugin.min.js',
+  'node_modules/tinymce/plugins/code/plugin.min.js',
+  'node_modules/tinymce/plugins/table/plugin.min.js',
+  'node_modules/tinymce/plugins/lists/plugin.min.js',
+  'node_modules/tinymce/plugins/link/plugin.min.js',
   'node_modules/promise-polyfill/dist/polyfill.min.js',
   'node_modules/whatwg-fetch/fetch.js',
   'node_modules/immutable/dist/immutable.min.js',
@@ -218,10 +221,10 @@ gulp.task('css_frontend', function () {
 gulp.task('js_backend', function () {
   return gulp.src(js_backend_files)
     .pipe(gulp_sourcemaps.init())
-    .pipe(gulp_concat('backend.min.js'))
-    .pipe(gulp_uglify_js().on('error', function(e){
+    .pipe(gulpif('!**/*.min.js',gulp_uglify_js().on('error', function(e){
       console.log(e);
-    }))
+    })))
+    .pipe(gulp_concat('backend.min.js'))
     .pipe(gulp_sourcemaps.write('/maps'))
     .pipe(gulp.dest('engine/js'))
     .pipe(livereload())
@@ -242,10 +245,12 @@ gulp.task('js_ng_backend', function () {
 gulp.task('js_frontend', function () {
   return gulp.src(js_frontend_files)
     .pipe(gulp_sourcemaps.init())
+    .pipe(gulpif('!**/*.min.js',gulp_uglify_js().on('error', function(e){
+      console.log(e);
+    })))
     .pipe(gulp_concat('frontend.min.js'))
-    .pipe(gulp_uglify_js())
-    .pipe(gulp_sourcemaps.write('/maps'))
     .pipe(gulp.dest('engine/js'))
+    .pipe(gulp_sourcemaps.write('/maps'))
     .pipe(livereload())
     .pipe(notify('JS: frontend compiled!'));
 });

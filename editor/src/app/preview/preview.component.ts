@@ -131,9 +131,21 @@ export class PreviewComponent implements OnInit {
       next: (iframe) => {
         window.addEventListener('message', (event) => {
           switch (event.data.action) {
-            case 'bt-navigate':
+            case 'EntryGalleryEditorOpen':
               this.router.navigate(
                 [`/media/gallery/${event.data.section}/${event.data.entryId}`],
+                {
+                  queryParamsHandling: 'merge',
+                  queryParams: {
+                    site: event.data.site || null,
+                  },
+                }
+              );
+              break;
+
+            case 'BackgroundGalleryEditorOpen':
+              this.router.navigate(
+                [`/background-gallery/${event.data.section}`],
                 {
                   queryParamsHandling: 'merge',
                   queryParams: {

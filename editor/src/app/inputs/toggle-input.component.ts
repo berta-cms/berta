@@ -26,7 +26,7 @@ export class ToggleInputComponent {
   @Output() update = new EventEmitter();
   disabled = false;
 
-  private activeValues = ['yes', '1'];
+  private activeValues = ['yes', '1', 'enabled'];
 
   isChecked(value) {
     return this.activeValues.some((val) => val === value);

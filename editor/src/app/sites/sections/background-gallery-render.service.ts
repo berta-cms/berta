@@ -58,7 +58,7 @@ export class BackgroundGalleryRenderService {
         currentSection.mediaCacheData['@attributes'].caption_bg_color
       ) {
         captionStyles.push(
-          `background-color: rgba(${currentSection.mediaCacheData['@attributes'].caption_bg_color}, 0.5)`
+          `background-color: ${currentSection.mediaCacheData['@attributes'].caption_bg_color}`
         );
       }
 
@@ -138,8 +138,7 @@ export class BackgroundGalleryRenderService {
       !currentSection.mediaCacheData ||
       !currentSection.mediaCacheData.file ||
       currentSection.mediaCacheData.file.length < 1 ||
-      currentSectionType !== 'grid' ||
-      !!getCookie('_berta_grid_view')
+      (currentSectionType === 'grid' && !!getCookie('_berta_grid_view'))
     ) {
       return '';
     }

@@ -16,7 +16,6 @@ use App\Sites\Sections\SiteSectionsDataService;
 use App\Sites\Sections\SectionsMenuRenderService;
 use App\Sites\Sections\SitemapRenderService;
 use App\Sites\Sections\SectionBackgroundGalleryRenderService;
-use App\Sites\Sections\SectionBackgroundGalleryEditorRenderService;
 use App\Sites\Sections\GridViewRenderService;
 use App\Sites\Sections\SectionFooterRenderService;
 use App\Sites\Sections\SectionHeadRenderService;
@@ -327,23 +326,6 @@ class SiteSectionsController extends Controller
             $sections,
             $request,
             $isEditMode
-        );
-    }
-
-    public function renderBackgroundGalleryEditor(Request $request, $siteSlug = '')
-    {
-        $sectionsDS = new SiteSectionsDataService($siteSlug);
-        $sections = $sectionsDS->getState();
-        $sectionSlug = $request->get('section');
-        $storageService = new Storage($siteSlug);
-
-        $backgroundGalleryEditorRS = new SectionBackgroundGalleryEditorRenderService();
-
-        return $backgroundGalleryEditorRS->render(
-            $siteSlug,
-            $sectionSlug,
-            $sections,
-            $storageService
         );
     }
 

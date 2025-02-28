@@ -144,7 +144,7 @@ export class AppComponent implements OnInit, OnDestroy {
   isSidebarFullscreen = false;
   isSidebarFullWidth = false;
   sidebarFullscreenRoutes = ['/themes'];
-  sidebarFullWidthRoutes = ['/media'];
+  sidebarFullWidthRoutes = ['/media', '/background-gallery'];
 
   @Select(UserState) user$: Observable<UserStateModel>;
   @Select(AppState.getShowOverlay) showOverlay$;
@@ -234,29 +234,29 @@ export class AppComponent implements OnInit, OnDestroy {
       this.router.navigate(['/'], { queryParamsHandling: 'preserve' });
     });
 
-    this.user$.subscribe((user)=>{
+    this.user$.subscribe((user) => {
       if (user.helpcrunch) {
         window['helpcrunchSettings'] = {
           organization: user.helpcrunch.organization,
           appId: user.helpcrunch.appId,
-          user:{
+          user: {
             user_id: user.helpcrunch.user_id,
             security_hash: user.helpcrunch.security_hash,
             email: user.helpcrunch.email,
             custom_data: {
               app: 'berta',
-              user_id: user.helpcrunch.user_id
-            }
+              user_id: user.helpcrunch.user_id,
+            },
           },
         };
 
         if (window['HelpCrunch'] === undefined) {
           let helpcrunchScript = document.createElement('script');
           helpcrunchScript.type = 'text/javascript';
-          helpcrunchScript.src = "/engine/js/helpcrunch.js";
+          helpcrunchScript.src = '/engine/js/helpcrunch.js';
           document.body.appendChild(helpcrunchScript);
         }
-      } 
+      }
     });
 
     if (isDevMode()) {

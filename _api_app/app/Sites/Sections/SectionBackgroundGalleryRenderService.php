@@ -56,7 +56,7 @@ class SectionBackgroundGalleryRenderService
 
             $captionStyles = [];
             if (!empty($currentSection['mediaCacheData']['@attributes']['caption_bg_color'])) {
-                $captionStyles[] = "background-color: rgba({$currentSection['mediaCacheData']['@attributes']['caption_bg_color']}, 0.5)";
+                $captionStyles[] = "background-color: {$currentSection['mediaCacheData']['@attributes']['caption_bg_color']}";
             }
             if (!empty($currentSection['mediaCacheData']['@attributes']['caption_color'])) {
                 $captionStyles[] = "color: {$currentSection['mediaCacheData']['@attributes']['caption_color']}";

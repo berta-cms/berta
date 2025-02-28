@@ -9,7 +9,6 @@ var BertaEditor = new Class({
   /* editing related variables */
   edittingMode: "entries",
   galleries: new Array(),
-  galleryEditors: new Array(), // contains all instances of BertaGalleryEditor
   processHandler: null, // an instance of UnlinearProcessHandler
 
   /* DOM elements */
@@ -25,7 +24,6 @@ var BertaEditor = new Class({
   submenuSortables: new Array(),
   orderSortables: null,
   tagsMenu: null,
-  mooRainbow: null,
   /* old */
 
   initialize: function (options) {
@@ -58,16 +56,6 @@ var BertaEditor = new Class({
   onDOMReady: function () {
     // delay onDOMReady processing to allow all elements on page properly initialize
     this.onDOMReadyDo.delay(1000, this);
-
-    if (window.tinyMCE_GZ) {
-      tinyMCE_GZ.baseURL = this.options.paths.engineABSRoot + "_lib/tiny_mce";
-      tinyMCE_GZ.init({
-        themes: "advanced",
-        plugins: "save,paste,insertanything",
-        languages: "en",
-        disk_cache: true,
-      });
-    }
   },
 
   onDOMReadyDo: function () {
@@ -381,13 +369,6 @@ var BertaEditor = new Class({
       }.bind(this)
     );
 
-    // color edit field (settings page) /////////////////////////////////////////////////////////////////////////////////////////
-    $$(this.options.xBertaEditorClassColor).each(
-      function (el) {
-        this.elementEdit_init(el, this.options.xBertaEditorClassColor);
-      }.bind(this)
-    );
-
     // dragging /////////////////////////////////////////////////////////////////////////////////////////
     $$(this.options.xBertaEditorClassDragXY).each(
       function (el) {
@@ -458,38 +439,15 @@ var BertaEditor = new Class({
 
   onBgEditClick: function (event) {
     event.stop();
+    var site = getCurrentSite();
 
-    var bgEditorPanel = null;
-    var bgEditorContainer = $("xBgEditorPanelContainer");
-
-    var bBgEditor = new BertaBgEditor(bgEditorContainer, {
-      engineRoot: this.options.paths.engineRoot,
-    });
-
-    bBgEditor.addEvent(
-      "load",
-      function () {
-        this.fireEvent(BertaEditorBase.EDITABLE_START, [
-          bgEditorContainer,
-          bBgEditor,
-        ]);
-        event.target.hide();
-      }.bind(this)
-    );
-
-    bBgEditor.addEvent(
-      "close",
-      function () {
-        bgEditorPanel = $("xBgEditorPanel");
-        bgEditorPanel.destroy();
-        bgEditorPanel.dispose();
-        bBgEditor = null;
-        event.target.show();
-        this.fireEvent(BertaEditorBase.EDITABLE_FINISH, [
-          bgEditorContainer,
-          bBgEditor,
-        ]);
-      }.bind(this)
+    window.parent.postMessage(
+      {
+        action: "BackgroundGalleryEditorOpen",
+        site: site,
+        section: this.currentSection,
+      },
+      "*"
     );
   },
 
@@ -501,44 +459,13 @@ var BertaEditor = new Class({
 
     window.parent.postMessage(
       {
-        action: "bt-navigate",
+        action: "EntryGalleryEditorOpen",
         site: site,
         section: this.currentSection,
         entryId: entryId,
       },
       "*"
     );
-  },
-
-  galleryLoad: function (container) {
-    // load the gallery HTML into the container
-    container.addClass("xSavingAtLarge");
-    var data = function (obj) {
-      var _data = {
-        section: obj.currentSection,
-        entry: container.getParent(".xEntry").getClassStoredValue("xEntryId"),
-        property: "gallery",
-      };
-
-      return _data;
-    };
-    new Request.HTML({
-      url: this.options.elementsUrl,
-      onComplete: function (resp) {
-        container = resp[0].replaces(container);
-        // instantiate the gallery for the container
-        this.initGallery(container);
-
-        // add the "edit gallery" link event
-        container
-          .getElement(".xGalleryEditButton")
-          .addEvent("click", this.onGalleryEditClick.bindWithEvent(this));
-
-        this.fireEvent(BertaEditorBase.EDITABLE_FINISH, [container]);
-      }.bind(this),
-    }).post({
-      json: JSON.encode(data(this)),
-    });
   },
 
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

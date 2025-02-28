@@ -42,8 +42,7 @@ class SectionEntryRenderService
         $storageService,
         $isEditMode,
         $isShopAvailable
-    )
-    {
+    ) {
         $sectionType = isset($section['@attributes']['type']) ? $section['@attributes']['type'] : null;
         $isShopAvailable = $isShopAvailable && $sectionType == 'shop';
         $galleryType = isset($entry['mediaCacheData']['@attributes']['type']) ? $entry['mediaCacheData']['@attributes']['type'] : $siteTemplateSettings['entryLayout']['defaultGalleryType'];
@@ -188,8 +187,6 @@ class SectionEntryRenderService
                 ])
             ],
             'entryContents' => $entryContents,
-            // 'gallery' variable is used in elements.php
-            // TODO possibly we can create a new endpoint in API and replace old elements.php endpoint
             'gallery' => $gallery,
         ];
     }

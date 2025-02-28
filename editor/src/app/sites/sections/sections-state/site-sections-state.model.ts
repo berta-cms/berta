@@ -17,15 +17,7 @@ export interface SiteSectionStateModel {
   sectionBgColor?: string;
   backgroundVideoRatio?: string;
   mediaCacheData?: {
-    file?: {
-      '@value': string;
-      '@attributes': {
-        type: string;
-        src: string;
-        width: number;
-        height: number;
-      };
-    }[];
+    file?: SiteSectionBackgroundFile[];
     '@attributes'?: {
       hide_navigation?: 'yes' | 'no';
       caption_bg_color?: string;
@@ -41,5 +33,15 @@ export interface SiteSectionStateModel {
     published?: '0' | '1';
     has_direct_content?: '0' | '1';
     type?: string;
+  };
+}
+
+export interface SiteSectionBackgroundFile {
+  '@value': string;
+  '@attributes': {
+    type: string;
+    src: string;
+    width: number;
+    height: number;
   };
 }
