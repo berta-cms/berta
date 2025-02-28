@@ -91,7 +91,6 @@ var js_backend_files = [
   'node_modules/tinymce/plugins/table/plugin.min.js',
   'node_modules/tinymce/plugins/lists/plugin.min.js',
   'node_modules/tinymce/plugins/link/plugin.min.js',
-  'engine/_lib/lassocrop/lassocrop.js',
   'node_modules/promise-polyfill/dist/polyfill.min.js',
   'node_modules/whatwg-fetch/fetch.js',
   'node_modules/immutable/dist/immutable.min.js',
