@@ -24,7 +24,6 @@ var BertaEditor = new Class({
   submenuSortables: new Array(),
   orderSortables: null,
   tagsMenu: null,
-  mooRainbow: null,
   /* old */
 
   initialize: function (options) {
@@ -367,13 +366,6 @@ var BertaEditor = new Class({
     $$(this.options.xBertaEditorClassSelectRC).each(
       function (el) {
         this.elementEdit_init(el, this.options.xBertaEditorClassSelectRC);
-      }.bind(this)
-    );
-
-    // color edit field (settings page) /////////////////////////////////////////////////////////////////////////////////////////
-    $$(this.options.xBertaEditorClassColor).each(
-      function (el) {
-        this.elementEdit_init(el, this.options.xBertaEditorClassColor);
       }.bind(this)
     );
 

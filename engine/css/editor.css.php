@@ -162,7 +162,6 @@ input[type="submit"]:hover {
 }
 
 .xEditable,
-.xEditableColor
 .xEditableSelect,
 .xEditableSelectRC,
 .xEditableFontSelect,
@@ -188,7 +187,6 @@ input[type="submit"]:hover {
 }
 
 .xEditable:hover,
-.xEditableColor:hover,
 .xEditableSelect:hover,
 .xEditableSelectRC:hover,
 .xEditableFontSelect:hover,

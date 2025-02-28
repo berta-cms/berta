@@ -50,7 +50,6 @@ var css_backend_files = [
   'node_modules/swiper/dist/css/swiper.min.css',
   'engine/_lib/berta/default.css',
   'engine/_lib/berta/swiper.css',
-  'engine/_lib/moorainbow/mooRainbow.css',
   'node_modules/tinymce/skins/ui/oxide/skin.min.css',
 ];
 
@@ -92,7 +91,6 @@ var js_backend_files = [
   'node_modules/tinymce/plugins/table/plugin.min.js',
   'node_modules/tinymce/plugins/lists/plugin.min.js',
   'node_modules/tinymce/plugins/link/plugin.min.js',
-  'engine/_lib/moorainbow/mooRainbow.1.2b2.js',
   'engine/_lib/lassocrop/lassocrop.js',
   'node_modules/promise-polyfill/dist/polyfill.min.js',
   'node_modules/whatwg-fetch/fetch.js',

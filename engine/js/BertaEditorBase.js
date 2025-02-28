@@ -33,7 +33,6 @@ var BertaEditorBase = new Class({
 
   options: {
     xBertaEditorClassSimple: '.xEditable',
-    xBertaEditorClassColor: '.xEditableColor',
     xBertaEditorClassSelect: '.xEditableSelect',
     xBertaEditorClassSelectRC: '.xEditableSelectRC',
     xBertaEditorClassFontSelect: '.xEditableFontSelect',
@@ -367,58 +366,6 @@ var BertaEditorBase = new Class({
           }
         }.bindWithEvent(this));
 
-        break;
-
-      case this.options.xBertaEditorClassColor:
-        el.store('onElementSave', onElementSave);
-        el.addClass(editorClass.substr(1));
-
-        if (results = el.get('html').trim().match(/\#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/)) {
-          new Element('SPAN', {
-            'class': 'colorPreview',
-            'styles': {
-              'background-color': results[0]
-            }
-          }).inject(el, 'top');
-        }
-
-        el.addEvent('click', function (event, editor) {
-          if (!this.hasClass('xSaving') && !this.hasClass('xEditing')) {
-            this.addClass('xEditing');
-            this.set('old_content', el.get('html'));
-
-            var colorValue = this.get('html').trim();
-
-            if (!editor.mooRainbow)
-              editor.mooRainbow = new MooRainbow(null, {
-                id: 'xMooRainbow',
-                wheel: true,
-                imgPath: '../_lib/moorainbow/images/'
-              });
-            editor.mooRainbow.element = this;
-
-            editor.mooRainbow.removeEvents('change');
-            editor.mooRainbow.removeEvents('complete');
-            editor.mooRainbow.removeEvents('abort');
-            editor.mooRainbow.addEvent('complete', function (color) {
-              editor.elementEdit_save(editor, el, colorValue, colorValue, color.hex, color.hex);
-            });
-            editor.mooRainbow.addEvent('abort', function (color) {
-              editor.elementEdit_save(editor, el, colorValue, colorValue, color.hex, color.hex);
-            });
-
-            editor.mooRainbow.show.delay(10, editor.mooRainbow);
-
-            if (colorValue.match(/\#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/)) {
-              var currentColor = new Color(colorValue, 'RGB');
-              editor.mooRainbow.backupColor = currentColor;
-              editor.mooRainbow.layout.backup.setStyle('background-color', editor.mooRainbow.backupColor.rgbToHex());
-              editor.mooRainbow.manualSet(currentColor);
-            }
-
-            editor.fireEvent(BertaEditorBase.EDITABLE_START, [el, null]);
-          }
-        }.bindWithEvent(el, this));
         break;
 
       case this.options.xEditableRealCheck:
@@ -1047,18 +994,6 @@ var BertaEditorBase = new Class({
           case el.hasClass(this.options.xBertaEditorClassYesNo.substr(1)):
             el.getElements('a').removeClass('active');
             el.getElement('a.xValue-' + resp.update).addClass('active');
-            break;
-
-          case el.hasClass(this.options.xBertaEditorClassColor.substr(1)):
-            // for color select we need to inject the color block
-            el.set('html', resp.update);
-            new Element('SPAN', {
-              'class': 'colorPreview',
-              'styles': {
-                'background-color': resp.update
-              }
-            }).inject(el, 'top');
-
             break;
 
           case el.hasClass(this.options.xBertaEditorClassSelectRC.substr(1)):
