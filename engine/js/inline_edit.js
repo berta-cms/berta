@@ -174,21 +174,30 @@ var inlineEdit = new Class({
     }
   },
 
-  setAllStyles: function (prevel, el) {
-    var stylesToCopy = ['font-family', 'font-weight', 'font-style', 'text-transform', 'line-height', 'letter-spacing', 'font', 'color'];
-    for (var i = 0; i < stylesToCopy.length; i++) {
-      if (prevel.getStyle(stylesToCopy[i])) el.setStyle(stylesToCopy[i], prevel.getStyle(stylesToCopy[i]));
-    }
+  setAllStyles: function (element, editor) {
+    var stylesToCopy = ['font-family', 'font-weight', 'font-style', 'text-transform', 'line-height', 'letter-spacing', 'font', 'color', 'background-color'];
+
+    stylesToCopy.map(function (style) {
+      var selector = style === 'background-color' ? element.getParent('body') : element;
+      var value = selector.getStyle(style);
+      if (value) {
+        editor.setStyle(style, value);
+      } 
+    });    
 
   }, 
 
-  setAllStylesMCE: function (prevel, mceEditor) {
-    var stylesToCopy = ['font-size', 'font-family', 'font-weight', 'font-style', 'text-transform', 'line-height', 'letter-spacing', 'font', 'color'];
-    var s, b = mceEditor.dom.select('body');
-    for (var i = 0; i < stylesToCopy.length; i++) {
-      s = prevel.getStyle(stylesToCopy[i]);
-      if (s) mceEditor.dom.setStyle(b, stylesToCopy[i], s);
-    }
+  setAllStylesMCE: function (element, mceEditor) {
+    var stylesToCopy = ['font-size', 'font-family', 'font-weight', 'font-style', 'text-transform', 'line-height', 'letter-spacing', 'font', 'color', 'background-color'];
+    var editorBody = mceEditor.dom.select('body');
+
+    stylesToCopy.map(function (style) {
+      var selector = style === 'background-color' ? element.getParent('body') : element;
+      var value = selector.getStyle(style);
+      if (value) {
+        mceEditor.dom.setStyle(editorBody, style, value);
+      } 
+    });
   }
 });
 
