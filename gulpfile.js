@@ -42,7 +42,12 @@ var css_backend_files = [
   "node_modules/swiper/dist/css/swiper.min.css",
   "engine/_lib/berta/default.css",
   "engine/_lib/berta/swiper.css",
+];
+
+var tinymce_skin_files = [
   "node_modules/tinymce/skins/ui/oxide/skin.min.css",
+  "node_modules/tinymce/skins/ui/oxide/content.min.css",
+  "node_modules/tinymce/skins/content/default/content.min.css",
 ];
 
 var css_frontend_files = [
@@ -195,6 +200,13 @@ gulp.task("copy_vendor_assets", ["cleanup"], function () {
     .pipe(gulp.dest("engine/css/vendor"));
 });
 
+gulp.task("copy_tinymce_skin_files", function () {
+  gulp.src("engine/js/skins", { read: false }).pipe(clean({ force: true }));
+  return gulp
+    .src(tinymce_skin_files, { base: "./node_modules/tinymce/" })
+    .pipe(gulp.dest("engine/js"));
+});
+
 gulp.task("css_backend", function () {
   return gulp
     .src(css_backend_files)
@@ -295,6 +307,7 @@ gulp.task(
   "default",
   [
     "copy_vendor_assets",
+    "copy_tinymce_skin_files",
     "scss_messy",
     "scss_white",
     "scss_default",
