@@ -1199,6 +1199,7 @@ var BertaEditorBase = new Class({
         block_formats: 'Paragraph=p;  Heading 2=h2; Heading 3=h3',
         convert_urls: false,
         relative_urls: false,
+        sandbox_iframes: false,
       },
       initialize: function (options) {
         this.setOptions(options);
