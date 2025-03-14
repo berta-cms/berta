@@ -20,7 +20,6 @@ export class ValidationService {
     cssUnitsRequired: boolean,
     validation: string
   ) {
-    console.log('validation', validation);
     this.value = value.trim();
     this.allowBlank = allowBlank;
     this.validation = validation;
