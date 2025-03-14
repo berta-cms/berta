@@ -5,13 +5,20 @@ return [
 
     // Translations from the top "admin" menu
 
-    /* menu item */ 'close this' => 'закрыть',
-    /* menu item */ 'my site' => 'мой сайт',
-    /* menu item */ 'sections' => 'разделы',
-    /* menu item */ 'settings' => 'настройки',
-    /* menu item */ 'design' => 'дизайн',
-    /* menu item */ 'profile' => 'профиль',
-    /* menu item */ 'log out' => 'выйти',
+    /* menu item */
+    'close this' => 'закрыть',
+    /* menu item */
+    'my site' => 'мой сайт',
+    /* menu item */
+    'sections' => 'разделы',
+    /* menu item */
+    'settings' => 'настройки',
+    /* menu item */
+    'design' => 'дизайн',
+    /* menu item */
+    'profile' => 'профиль',
+    /* menu item */
+    'log out' => 'выйти',
 
     // Translatins from login / logout window
 
@@ -43,14 +50,22 @@ return [
 
     // Translatins from sections editor (sections.php)
 
-    /* title */ 'Sections' => 'Разделы',
-    /* column */ 'Title as displayed in main menu' => 'Название, отображаемое в главном меню',
-    /* column */ 'Type' => 'Вид',
-    /* column */ 'Details' => 'Настройки',
-    /* column */ 'Is published?' => 'Опубликован?',
-    /* column */ 'Delete' => 'Удалить',
-    /* button */ 'create new section' => 'создать новый раздел',
-    /* button */ 'delete' => 'удалить',
+    /* title */
+    'Sections' => 'Разделы',
+    /* column */
+    'Title as displayed in main menu' => 'Название, отображаемое в главном меню',
+    /* column */
+    'Type' => 'Вид',
+    /* column */
+    'Details' => 'Настройки',
+    /* column */
+    'Is published?' => 'Опубликован?',
+    /* column */
+    'Delete' => 'Удалить',
+    /* button */
+    'create new section' => 'создать новый раздел',
+    /* button */
+    'delete' => 'удалить',
 
     'What are sections?' => 'Что такое разделы?',
     'sections_help_text' => 'Разделы – это основные элементы сайта и их названия формируют главное меню.',
@@ -68,8 +83,10 @@ return [
 
     // Translations from settings page (settings.php)
 
-    /* title */ 'Settings' => 'Настройки',
-    /* title */ 'Design' => 'Шаблон',
+    /* title */
+    'Settings' => 'Настройки',
+    /* title */
+    'Design' => 'Шаблон',
     'These are settings for template' => 'Это настройки шаблона',
 
     'Some help with CSS values' => 'Объяснение значений CSS',
@@ -83,63 +100,112 @@ return [
     'Texts in the website' => 'Текст на сайте',
     'Site heading' => 'Главный заголовок страницы',
 
-    /* setting tab & setting name */ 'Template' => 'Шаблон',
-    /* help text */    'Шаблоны – это "скины" или темы вашего сайта. Вы можете выбрать один шаблон из установленных в вашей папке шаблонов. Чтобы добавить новый шаблон в этот список, загрузите его в папку шаблонов через FTP клиент.' => 'Шаблоны – это "скины" или темы, которые меняют расположение и вид элементов сайта.',
+    /* setting tab & setting name */
+    'Template' => 'Шаблон',
+    /* help text */
+    'Шаблоны – это "скины" или темы вашего сайта. Вы можете выбрать один шаблон из установленных в вашей папке шаблонов. Чтобы добавить новый шаблон в этот список, загрузите его в папку шаблонов через FTP клиент.' => 'Шаблоны – это "скины" или темы, которые меняют расположение и вид элементов сайта.',
 
-    /* setting tab */ 'Info' => 'Информация',
-    /* setting name */ 'Your name' => 'Ваше имя',
-    /* help text */    'Your name will be put in a meta-tag in the code of your site. You can choose any name ;)' => 'Ваше имя будет указано в meta-тэгах в коде сайта. Вы можете указать любое имя.',
-    /* setting name */ 'Page title (title bar)' => 'Название страницы (в заголовке сайта)',
-    /* help text */    'Text that appears in the bowser title bar' => 'Текст, который отображен в верхней части просматриваемого окна',
-    /* setting name */ '<META> description' => '<META> описание',
-    /* help text */    'Site description. It should not be longer than one or two sentences.' => 'Описание сайта. Описание не должно превышать одного-двух предложений.',
-    /* setting name */ '<META> keywords' => '<META> ключевые слова',
-    /* help text */    'Keywords visible only to search engines. Keywords along with the description can improve your site ranking in search results.' => 'Ключевые слова видны только поисковым системам, таким как Google. Они могут улучшить позиции вашего сайта в результатах поиска. Желательно, чтобы они соответствовали содержанию страницы.',
+    /* setting tab */
+    'Info' => 'Информация',
+    /* setting name */
+    'Your name' => 'Ваше имя',
+    /* help text */
+    'Your name will be put in a meta-tag in the code of your site. You can choose any name ;)' => 'Ваше имя будет указано в meta-тэгах в коде сайта. Вы можете указать любое имя.',
+    /* setting name */
+    'Page title (title bar)' => 'Название страницы (в заголовке сайта)',
+    /* help text */
+    'Text that appears in the bowser title bar' => 'Текст, который отображен в верхней части просматриваемого окна',
+    /* setting name */
+    '<META> description' => '<META> описание',
+    /* help text */
+    'Site description. It should not be longer than one or two sentences.' => 'Описание сайта. Описание не должно превышать одного-двух предложений.',
+    /* setting name */
+    '<META> keywords' => '<META> ключевые слова',
+    /* help text */
+    'Keywords visible only to search engines. Keywords along with the description can improve your site ranking in search results.' => 'Ключевые слова видны только поисковым системам, таким как Google. Они могут улучшить позиции вашего сайта в результатах поиска. Желательно, чтобы они соответствовали содержанию страницы.',
 
-    /* setting tab */ 'Navigation' => 'Навигация',
-    /* setting name */ 'Is first section visible in menu?' => 'Показывать первый раздел в главном меню?',
-    /* help text */    'Choose "no" to hide the first section in the main menu. Link from the page title (or header image) will lead to it. NOTE: This setting has no effect, if the section has a submenu; then it is visible at all times.' => 'Выберите "Нет", если предпочитаете не показывать первый раздел. Только название сайта или шапка будет вести в этот раздел. Учти, что настройка не активна, если в разделе есть подменю; тогда он виден всегда.',
-    /* setting name */ 'Show menu in first section?' => 'Показывать меню на первой странице?',
-    /* help text */    'Choose "no" to hide the menu in first section.' => ' Выберите "нет", чтобы спрятать меню на первой странице.',
-    /* setting name */ 'Always auto-select a submenu item?' => 'Всегда выбирать первое подменю?',
-    /* help text */    'Choose "yes" to automatically select the first submenu item when clicking on a menu item. This works only when there is a submenu.' => 'Выберите "да", чтобы активировать подменю при выборе меню по умолчанию. Функция активна только, когда есть субменю.',
+    /* setting tab */
+    'Navigation' => 'Навигация',
+    /* setting name */
+    'Is first section visible in menu?' => 'Показывать первый раздел в главном меню?',
+    /* help text */
+    'Choose "no" to hide the first section in the main menu. Link from the page title (or header image) will lead to it. NOTE: This setting has no effect, if the section has a submenu; then it is visible at all times.' => 'Выберите "Нет", если предпочитаете не показывать первый раздел. Только название сайта или шапка будет вести в этот раздел. Учти, что настройка не активна, если в разделе есть подменю; тогда он виден всегда.',
+    /* setting name */
+    'Show menu in first section?' => 'Показывать меню на первой странице?',
+    /* help text */
+    'Choose "no" to hide the menu in first section.' => ' Выберите "нет", чтобы спрятать меню на первой странице.',
+    /* setting name */
+    'Always auto-select a submenu item?' => 'Всегда выбирать первое подменю?',
+    /* help text */
+    'Choose "yes" to automatically select the first submenu item when clicking on a menu item. This works only when there is a submenu.' => 'Выберите "да", чтобы активировать подменю при выборе меню по умолчанию. Функция активна только, когда есть субменю.',
 
-    /* setting name */ 'Favicon' => 'Иконка',
-    /* help text */    'Small picture to display in the address bar of the browser. The file must be in .ICO format and 16x16 pixels big.' => 'Маленькое изображение размера 16x16 px, которое отображается в броузере рядом с адресной строкой.  Файл должен быть в формате.ICO.',
-    /* setting name */ 'Grid step' => 'Шаг сетки',
-    /* help text */    'Distance in pixels for snap-to-grid dragging.' => 'Расстояние в пикселях для фиксации элементов по сетке шаблона. Если значение больше 1, элементы будут выстраиваться по невидимой сетке.',
+    /* setting name */
+    'Favicon' => 'Иконка',
+    /* help text */
+    'Small picture to display in the address bar of the browser. The file must be in .ICO format and 16x16 pixels big.' => 'Маленькое изображение размера 16x16 px, которое отображается в броузере рядом с адресной строкой.  Файл должен быть в формате.ICO.',
+    /* setting name */
+    'Grid step' => 'Шаг сетки',
+    /* help text */
+    'Distance in pixels for snap-to-grid dragging.' => 'Расстояние в пикселях для фиксации элементов по сетке шаблона. Если значение больше 1, элементы будут выстраиваться по невидимой сетке.',
 
-    /* setting tab */  'Entry layout' => 'Расположение записи',
-    /* setting name */ 'Small image width' => 'Ширина маленького изображения',
-    /* setting name */ 'Small image height' => 'Высота маленького изображения',
-    /* help text */    'Maximum size of a small image (visible if \'Small images\' are switched on in the gallery editor). These settings don\'t affect original image.' => 'Максимальный размер маленького изображения. Будет отображаться, когда в редакторе галереи будет активированы маленькие изображения. Эти установки не влияют на оригинальное изображение.',
-    /* setting name */ 'Large image width' => 'Ширина большого изображения',
-    /* setting name */ 'Large image height' => 'Высота большого изображения',
-    /* help text */    'Maximum size of a large image (visible if \'Large images\' are switched on in the gallery editor). These settings don\'t affect original image.' => 'Максимальные размер большого изображения. Будет отображаться, когда в редакторе галереи будет активированы большие изображения. Эти установки не влияют на оригинальное изображение.',
+    /* setting tab */
+    'Entry layout' => 'Расположение записи',
+    /* setting name */
+    'Small image width' => 'Ширина маленького изображения',
+    /* setting name */
+    'Small image height' => 'Высота маленького изображения',
+    /* help text */
+    'Maximum size of a small image (visible if \'Small images\' are switched on in the gallery editor). These settings don\'t affect original image.' => 'Максимальный размер маленького изображения. Будет отображаться, когда в редакторе галереи будет активированы маленькие изображения. Эти установки не влияют на оригинальное изображение.',
+    /* setting name */
+    'Large image width' => 'Ширина большого изображения',
+    /* setting name */
+    'Large image height' => 'Высота большого изображения',
+    /* help text */
+    'Maximum size of a large image (visible if \'Large images\' are switched on in the gallery editor). These settings don\'t affect original image.' => 'Максимальные размер большого изображения. Будет отображаться, когда в редакторе галереи будет активированы большие изображения. Эти установки не влияют на оригинальное изображение.',
 
-    /* setting tab */ 'Media' => 'Медиа',
-    /* setting subcategory */ 'Lightbox settings:' => 'Настройки всплывающего окна:',
-    /* setting name */ 'Is enabled by default' => 'Активированы по умолчанию',
-    /* help text */    'Enables Lightbox mode for new entries.' => 'Активировать режим всплывающих окон для новых записей.',
-    /* setting name */ 'Background color' => 'Цвет фона',
-    /* help text */    'Color of the Lightbox background layer.' => 'Цвет фона всплывающего окна(белый/черный/отсутствует)',
-    /* setting name */ 'Image numbers' => 'Нумерация изображений',
-    /* setting name */ 'Caption alignment' => 'Положение описания',
-    /* help text */    'Positioning of the image caption text.' => 'Положение описания изображения',
-    /* setting subcategory */ 'Image gallery appearance:' => 'Вид галереи:',
-    /* setting name */      'Show slideshow image numbers' => 'Отображать нумерацию изображения',
-    /* help text */         'Set the default state of image number visibility in slideshow galleries.' => 'Отображает нумерацию изображений в галереях по умолчанию.',
-    /* setting name */ 'Video player' => 'Вид видео проигрывателя',
-    /* help text */    'Choose between the two visually different players for your video files.' => 'Выберите между двумя предлагаемыми видами видео проигрывателей.',
+    /* setting tab */
+    'Media' => 'Медиа',
+    /* setting subcategory */
+    'Lightbox settings:' => 'Настройки всплывающего окна:',
+    /* setting name */
+    'Is enabled by default' => 'Активированы по умолчанию',
+    /* help text */
+    'Enables Lightbox mode for new entries.' => 'Активировать режим всплывающих окон для новых записей.',
+    /* setting name */
+    'Background color' => 'Цвет фона',
+    /* help text */
+    'Color of the Lightbox background layer.' => 'Цвет фона всплывающего окна(белый/черный/отсутствует)',
+    /* setting name */
+    'Image numbers' => 'Нумерация изображений',
+    /* setting name */
+    'Caption alignment' => 'Положение описания',
+    /* help text */
+    'Positioning of the image caption text.' => 'Положение описания изображения',
+    /* setting subcategory */
+    'Image gallery appearance:' => 'Вид галереи:',
+    /* setting name */
+    'Show slideshow image numbers' => 'Отображать нумерацию изображения',
+    /* help text */
+    'Set the default state of image number visibility in slideshow galleries.' => 'Отображает нумерацию изображений в галереях по умолчанию.',
+    /* setting name */
+    'Video player' => 'Вид видео проигрывателя',
+    /* help text */
+    'Choose between the two visually different players for your video files.' => 'Выберите между двумя предлагаемыми видами видео проигрывателей.',
 
-    /* setting tab */ 'Banners' => 'Баннеры',
-    /* setting name */ 'Banner image' => 'Файл баннера',
-    /* setting name */ 'Banner link' => 'Ссылка баннера',
+    /* setting tab */
+    'Banners' => 'Баннеры',
+    /* setting name */
+    'Banner image' => 'Файл баннера',
+    /* setting name */
+    'Banner link' => 'Ссылка баннера',
 
-    /* setting tab */ 'Language' => 'Язык',
-    /* setting name */ 'Interface language' => 'Язык интерфейса',
+    /* setting tab */
+    'Language' => 'Язык',
+    /* setting name */
+    'Interface language' => 'Язык интерфейса',
 
-    /* setting tab */ 'Other settings' => 'Другие настройки',
+    /* setting tab */
+    'Other settings' => 'Другие настройки',
 
     // Translations from entries view (and editing)
 
@@ -149,145 +215,258 @@ return [
 
     // Translations for default template
 
-    /* setting tab */ 'General font settings' => 'Базовые настройки шрифта',
-    /* setting name */ 'Color' => 'Цвет',
-    /* setting name */ 'Font face' => 'Шрифт букв',
-    /* setting name */ 'Font size' => 'Размер шрифта',
-    /* setting name */ 'Font weight' => 'Вес шрифта',
-    /* setting name */ 'Font style' => 'Стиль шрифта',
-    /* setting name */ 'Font variant' => 'Вариант шрифта',
-    /* setting name */ 'Line height' => 'Высота строки',
-    /* help text */    'Height of text line. Use em, px or % values or the default value "normal"' => 'Расстояние между двумя строками. Используйте значения "em", "px" или "%", или значение по умолчанию "normal"',
+    /* setting tab */
+    'General font settings' => 'Базовые настройки шрифта',
+    /* setting name */
+    'Color' => 'Цвет',
+    /* setting name */
+    'Font face' => 'Шрифт букв',
+    /* setting name */
+    'Font size' => 'Размер шрифта',
+    /* setting name */
+    'Font weight' => 'Вес шрифта',
+    /* setting name */
+    'Font style' => 'Стиль шрифта',
+    /* setting name */
+    'Font variant' => 'Вариант шрифта',
+    /* setting name */
+    'Line height' => 'Высота строки',
+    /* help text */
+    'Height of text line. Use em, px or % values or the default value "normal"' => 'Расстояние между двумя строками. Используйте значения "em", "px" или "%", или значение по умолчанию "normal"',
 
-    /* setting tab */ 'Hyperlinks' => 'Гиперссылки',
-    /* setting name */ 'Link color' => 'Цвет гиперссылки',
-    /* setting name */ 'Visited link color' => 'Цвет активированной гиперссылки',
-    /* setting name */ 'Link color when hovered' => 'Цвет ссылки при наведении курсора',
-    /* setting name */ 'Link color when clicked' => 'Цвет ссылки после нажатия',
-    /* setting name */ 'Link decoration' => 'Стилизация гиперссылки',
-    /* setting name */ 'Visited link decoration' => 'Стилизация активированной гиперссылки',
-    /* setting name */ 'Link decoration when hovered' => 'Стилизация гиперссылки при наведении курсора',
-    /* setting name */ 'Link decoration when clicked' => 'Стилизация гиперссылки после нажатия',
+    /* setting tab */
+    'Hyperlinks' => 'Гиперссылки',
+    /* setting name */
+    'Link color' => 'Цвет гиперссылки',
+    /* setting name */
+    'Visited link color' => 'Цвет активированной гиперссылки',
+    /* setting name */
+    'Link color when hovered' => 'Цвет ссылки при наведении курсора',
+    /* setting name */
+    'Link color when clicked' => 'Цвет ссылки после нажатия',
+    /* setting name */
+    'Link decoration' => 'Стилизация гиперссылки',
+    /* setting name */
+    'Visited link decoration' => 'Стилизация активированной гиперссылки',
+    /* setting name */
+    'Link decoration when hovered' => 'Стилизация гиперссылки при наведении курсора',
+    /* setting name */
+    'Link decoration when clicked' => 'Стилизация гиперссылки после нажатия',
 
-    /* setting tab */ 'Background' => 'Фон',
-    /* setting name */ 'Background color' => 'Цвет фона',
-    /* help text */    'IMPORTANT! These settings will be overwritten, if you are using background gallery feature. You access it by clicking "edit background gallery" button in each section.' => 'ВАЖНО! Данные настройки не активны, если использована функция фоновой галереи. Перейти к редактированию можно по кнопке  "редактировать фоновую галерею".',
-    /* setting name */ 'Is background image enabled?' => 'Разрешить фоновое изображение?',
-    /* setting name */ 'Background image' => 'Фоновое изображение',
-    /* help text */    'Picture to use for page background.' => 'Выбрать фоновое изображение',
-    /* setting name */ 'Background tiling' => 'Повтор фона',
-    /* help text */    'How the background fills the screen?' => 'Как фон заполняет экран?',
-    /* setting name */ 'Background alignment' => 'Расположение фона',
-    /* help text */    'Where the background image is positioned?' => 'Положение фонового изображения',
-    /* setting name */ 'Background position' => 'Положение фона',
-    /* help text */    'Sets how background behaves in relation with the browser window.' => 'Определяет, как ведет себя фон при изменении размера окна.',
+    /* setting tab */
+    'Background' => 'Фон',
+    /* setting name */
+    'Background color' => 'Цвет фона',
+    /* help text */
+    'IMPORTANT! These settings will be overwritten, if you are using background gallery feature. You access it by clicking "edit background gallery" button in each section.' => 'ВАЖНО! Данные настройки не активны, если использована функция фоновой галереи. Перейти к редактированию можно по кнопке  "редактировать фоновую галерею".',
+    /* setting name */
+    'Is background image enabled?' => 'Разрешить фоновое изображение?',
+    /* setting name */
+    'Background image' => 'Фоновое изображение',
+    /* help text */
+    'Picture to use for page background.' => 'Выбрать фоновое изображение',
+    /* setting name */
+    'Background tiling' => 'Повтор фона',
+    /* help text */
+    'How the background fills the screen?' => 'Как фон заполняет экран?',
+    /* setting name */
+    'Background alignment' => 'Расположение фона',
+    /* help text */
+    'Where the background image is positioned?' => 'Положение фонового изображения',
+    /* setting name */
+    'Background position' => 'Положение фона',
+    /* help text */
+    'Sets how background behaves in relation with the browser window.' => 'Определяет, как ведет себя фон при изменении размера окна.',
 
-    /* setting name */ 'Background button type' => 'Тип фоновых кнопок',
-    /* help name */    'Select type for background gallery buttons.' => 'Выберите тип кнопок для фоновой галереи',
+    /* setting name */
+    'Background button type' => 'Тип фоновых кнопок',
+    /* help name */
+    'Select type for background gallery buttons.' => 'Выберите тип кнопок для фоновой галереи',
 
-    /* setting name */ 'Content position' => 'Положение содержания',
-    /* setting name */ 'Text alignment' => 'Расположение текста',
-    /* setting name */ 'Width of content area' => 'Ширина блока с содержанием',
-    /* setting name */ 'Page margins' => 'Отступы страницы',
-    /* help text */    'How far the content is from browser edges. Please see the short CSS guide at the bottom of this page.' => 'Расстояние между содержанием страницы и границами окна браузера. Информацию о значениях CSS найдете в конце страницы.',
-    /* setting name */ 'Top menu margins' => 'Отступы верхнего меню',
-    /* help text */    'How big is the distance from the top menu to the other page elements' => 'Расстояние между главным меню и другими элементами страницы',
+    /* setting name */
+    'Content position' => 'Положение содержания',
+    /* setting name */
+    'Text alignment' => 'Расположение текста',
+    /* setting name */
+    'Width of content area' => 'Ширина блока с содержанием',
+    /* setting name */
+    'Page margins' => 'Отступы страницы',
+    /* help text */
+    'How far the content is from browser edges.' => 'Расстояние между содержанием страницы и границами окна браузера.',
+    /* setting name */
+    'Top menu margins' => 'Отступы верхнего меню',
+    /* help text */
+    'How big is the distance from the top menu to the other page elements' => 'Расстояние между главным меню и другими элементами страницы',
 
-    /* setting tab */ 'Page heading' => 'Заголовок страницы',
-    /* setting name */ 'Header image' => 'Изображение шапки сайта',
-    /* help text */    'Picture to use instead of text.' => 'Изображение, которое будет использовано вместо заголовка в шапке страницы.',
-    /* help text */    'How far the heading is from other elements in page. Please see the short CSS guide at the bottom of this page.' => 'Расстояние между шапкой страницы и другими элементами. Информацию о значениях CSS найдете в конце страницы.',
-    /* help text */    'How far the menu is form other elements in page. Please see the short CSS guide at the bottom of this page.' => 'Расстояние между меню и другими элементами страницы. Информацию о значениях CSS найдете в конце страницы.',
+    /* setting tab */
+    'Page heading' => 'Заголовок страницы',
+    /* setting name */
+    'Header image' => 'Изображение шапки сайта',
+    /* help text */
+    'Picture to use instead of text.' => 'Изображение, которое будет использовано вместо заголовка в шапке страницы.',
+    /* help text */
+    'How far the heading is from other elements in page.' => 'Расстояние между шапкой страницы и другими элементами.',
+    /* help text */
+    'How far the menu is form other elements in page.' => 'Расстояние между меню и другими элементами страницы.',
 
-    /* setting tab */ 'Main menu' => 'Главное меню',
-    /* setting name */ 'Menu items separator' => 'Разделитель меню',
-    /* setting name */ 'Space width around separator' => 'Отступ разделителя от заголовков',
-    /* help text */    'The distance from the separator to the menu item on both sides' => 'Расстояние между разделителем и заголовками с двух сторон',
+    /* setting tab */
+    'Main menu' => 'Главное меню',
+    /* setting name */
+    'Menu items separator' => 'Разделитель меню',
+    /* setting name */
+    'Space width around separator' => 'Отступ разделителя от заголовков',
+    /* help text */
+    'The distance from the separator to the menu item on both sides' => 'Расстояние между разделителем и заголовками с двух сторон',
 
-    /* setting tab */ 'Submenu' => 'Субменю',
+    /* setting tab */
+    'Submenu' => 'Субменю',
 
-    /* setting name */ 'Entry margins' => 'Отступы записи',
-    /* help text */    'Margins around entries. Please see the short CSS guide at the bottom of this page.' => 'Отступы вокруг записи. Информацию о значениях CSS найдете в конце страницы.',
-    /* setting name */ 'Gallery position' => 'Положение галереи',
-    /* setting name */ 'Default gallery type' => 'Тип галереи по умолчанию',
-    /* help text */    'Slideshow means that an image menu plus only one image is visible at a time. Row means that all images are visible.' => '"Слайд" выводит только одно изображение с нумерацией под ним. "В ряд" выводит сразу все изображения друг за другом.',
-    /* setting name */ 'Space between images in row and column' => 'Расстояние между изображениями в ряду и колонке',
-    /* help text */    'Horizontal/vertical space between images when gallery is in "row"/"column" mode' => 'Горизонтальное/вертикальное расстояние между изображениями, когда галерея активна в режиме ряд/колонка',
-    /* setting name */ 'Gallery margins' => 'Отступ галереи',
-    /* help text */    'Margin around gallery block' => 'Отступы вокруг блока галереи',
+    /* setting name */
+    'Entry margins' => 'Отступы записи',
+    /* help text */
+    'Margins around entries.' => 'Отступы вокруг записи.',
+    /* setting name */
+    'Gallery position' => 'Положение галереи',
+    /* setting name */
+    'Default gallery type' => 'Тип галереи по умолчанию',
+    /* help text */
+    'Slideshow means that an image menu plus only one image is visible at a time. Row means that all images are visible.' => '"Слайд" выводит только одно изображение с нумерацией под ним. "В ряд" выводит сразу все изображения друг за другом.',
+    /* setting name */
+    'Space between images in row and column' => 'Расстояние между изображениями в ряду и колонке',
+    /* help text */
+    'Horizontal/vertical space between images when gallery is in "row"/"column" mode' => 'Горизонтальное/вертикальное расстояние между изображениями, когда галерея активна в режиме ряд/колонка',
+    /* setting name */
+    'Gallery margins' => 'Отступ галереи',
+    /* help text */
+    'Margin around gallery block' => 'Отступы вокруг блока галереи',
 
-    /* setting tab */  'Entry heading' => 'Заголовок записи',
-    /* help text */    'How far the entry heading is form other elements in page. Please see the short CSS guide at the bottom of this page.' => 'Как далеко заголовок записи находится от других элементов страницы. Информацию о значениях CSS найдете в конце страницы.',
+    /* setting tab */
+    'Entry heading' => 'Заголовок записи',
+    /* help text */
+    'How far the entry heading is form other elements in page.' => 'Как далеко заголовок записи находится от других элементов страницы.',
 
-    /* setting tab */ 'Entry footer' => 'Нижняя часть (футер) записи',
+    /* setting tab */
+    'Entry footer' => 'Нижняя часть (футер) записи',
 
     // Translations for Mashup template
 
-    /* setting name */ 'First page' => 'Первая страница',
-    /* setting name */ 'Sidebar' => 'Боковая панель',
-    /* setting tab */  'Page layout' => 'Расположение страницы',
-    /* setting name */ 'Entry text max width' => 'Максимальная ширина записи',
-    /* help text */    'Width of texts in the entries. This does not apply to the width of images.' => 'Ширина текста в записях. Настройка не влияет на ширину изображений.',
-    /* setting name */ 'How far content is from page top?' => 'Расстояние содержания страницы от верха страницы.',
-    /* help text */    'The vertical distance between the top of the page and the content area.' => 'Вертикальное расстояние между верхней частью страницы и содержанием.',
-    /* setting name */ 'How far content is from sidebar?' => 'Расстояние содержания страницы от боковой панели.',
-    /* help text */    'The horizontal distance between the menu and the content area.' => 'Горизонтальное расстояние между главным меню и содержанием страницы.',
+    /* setting name */
+    'First page' => 'Первая страница',
+    /* setting name */
+    'Sidebar' => 'Боковая панель',
+    /* setting tab */
+    'Page layout' => 'Расположение страницы',
+    /* setting name */
+    'Entry text max width' => 'Максимальная ширина записи',
+    /* help text */
+    'Width of texts in the entries. This does not apply to the width of images.' => 'Ширина текста в записях. Настройка не влияет на ширину изображений.',
+    /* setting name */
+    'How far content is from page top?' => 'Расстояние содержания страницы от верха страницы.',
+    /* help text */
+    'The vertical distance between the top of the page and the content area.' => 'Вертикальное расстояние между верхней частью страницы и содержанием.',
+    /* setting name */
+    'How far content is from sidebar?' => 'Расстояние содержания страницы от боковой панели.',
+    /* help text */
+    'The horizontal distance between the menu and the content area.' => 'Горизонтальное расстояние между главным меню и содержанием страницы.',
 
-    /* setting name */ 'Space between entries' => 'Расстояние между записями',
-    /* help text */    'Distance from entry to entry. In pixels.' => 'Расстояние от одной записи до другой. В пикселях.',
+    /* setting name */
+    'Space between entries' => 'Расстояние между записями',
+    /* help text */
+    'Distance from entry to entry. In pixels.' => 'Расстояние от одной записи до другой. В пикселях.',
 
-    /* setting name */ 'Width' => 'Ширина',
-    /* setting name */ 'Left margin' => 'Отступ слева',
-    /* help text */    'How far the sidebar is from the left side of the screen.' => 'Определяет расстояние боковой панели от левой стороны экрана.',
-    /* setting name */ 'Top padding' => 'Расстояние сверху',
-    /* help text */    'How far the header is from the top of the screen?' => 'Определяет расстояние шапки страницы от верхней части экрана.',
-    /* setting name */ 'Space between header and menu' => 'Расстояние между шапкой и главным меню',
-    /* help text */    'How far the menu is from the header text or header image.' => 'Определяет расстояние главного меню от шапки или заголовка страницы.',
-    /* setting name */ 'Heading text color' => 'Цвет текста в шапке сайта',
-    /* setting name */ 'Is transparent?' => 'Сделать прозрачным?',
-    /* setting name */ 'Heading font' => 'Шрифт в заголовке',
-    /* setting name */ 'Heading font size' => 'Размер шрифта в заголовке',
-    /* setting name */ 'Heading font weight' => 'Вес шрифта в заголовке',
-    /* setting name */ 'Heading font style' => 'Стиль шрифта в заголовке',
-    /* setting name */ 'Heading font variant' => 'Вариант шрифта в заголовке',
-    /* setting name */ 'Heading line height' => 'Высота строки в заголовке',
+    /* setting name */
+    'Width' => 'Ширина',
+    /* setting name */
+    'Left margin' => 'Отступ слева',
+    /* help text */
+    'How far the sidebar is from the left side of the screen.' => 'Определяет расстояние боковой панели от левой стороны экрана.',
+    /* setting name */
+    'Top padding' => 'Расстояние сверху',
+    /* help text */
+    'How far the header is from the top of the screen?' => 'Определяет расстояние шапки страницы от верхней части экрана.',
+    /* setting name */
+    'Space between header and menu' => 'Расстояние между шапкой и главным меню',
+    /* help text */
+    'How far the menu is from the header text or header image.' => 'Определяет расстояние главного меню от шапки или заголовка страницы.',
+    /* setting name */
+    'Heading text color' => 'Цвет текста в шапке сайта',
+    /* setting name */
+    'Is transparent?' => 'Сделать прозрачным?',
+    /* setting name */
+    'Heading font' => 'Шрифт в заголовке',
+    /* setting name */
+    'Heading font size' => 'Размер шрифта в заголовке',
+    /* setting name */
+    'Heading font weight' => 'Вес шрифта в заголовке',
+    /* setting name */
+    'Heading font style' => 'Стиль шрифта в заголовке',
+    /* setting name */
+    'Heading font variant' => 'Вариант шрифта в заголовке',
+    /* setting name */
+    'Heading line height' => 'Высота строки в заголовке',
 
-    /* setting name */ 'Image size ratio' => 'Соотношение размера изображения',
-    /* help text */    'Images in the first page layout will be resized by this ratio. Think of it as percentage, e.g., 0.7 = 70% of the original image size.' => 'Определяет соотношение, по которому изображение будет уменьшено в шаблоне страницы. Например, 0.7 = 70% от оригинального размера.',
-    /* setting name */ 'Images have shadows?' => 'Добавить тень к изображениям?',
-    /* setting name */ 'Images wiggle on mouse-over?' => 'Изображение делает движение при наведении курсора мыши?',
+    /* setting name */
+    'Image size ratio' => 'Соотношение размера изображения',
+    /* help text */
+    'Images in the first page layout will be resized by this ratio. Think of it as percentage, e.g., 0.7 = 70% of the original image size.' => 'Определяет соотношение, по которому изображение будет уменьшено в шаблоне страницы. Например, 0.7 = 70% от оригинального размера.',
+    /* setting name */
+    'Images have shadows?' => 'Добавить тень к изображениям?',
+    /* setting name */
+    'Images wiggle on mouse-over?' => 'Изображение делает движение при наведении курсора мыши?',
 
-    /* setting name */ 'Color when opened' => 'Цвет элемента после открытия',
-    /* setting name */ 'Decoration when opened' => 'Декорирование элемента после открытия',
+    /* setting name */
+    'Color when opened' => 'Цвет элемента после открытия',
+    /* setting name */
+    'Decoration when opened' => 'Декорирование элемента после открытия',
 
     // Translations for White template
 
-    /* setting name */ 'Empty space on top' => 'Пустое пространство на верху страницы',
-    /* setting name */ 'Empty space on bottom' => 'Пустое пространство внизу страницы',
-    /* setting name */ 'How far content is from menu?' => 'Расстояние между содержанием и главным меню',
-    /* setting name */ 'Width of the left column' => 'Ширина левой колонки',
+    /* setting name */
+    'Empty space on top' => 'Пустое пространство на верху страницы',
+    /* setting name */
+    'Empty space on bottom' => 'Пустое пространство внизу страницы',
+    /* setting name */
+    'How far content is from menu?' => 'Расстояние между содержанием и главным меню',
+    /* setting name */
+    'Width of the left column' => 'Ширина левой колонки',
 
     // Translations for Messy template
 
-    /* setting name */ 'Space between images and image navigation' => 'Расстояние между изображением и элементом навигации',
-    /* help text */    'Vertical space between images and image navigation (the digits below the image) when gallery is in "slideshow" mode' => 'Вертикальное расстояние между изображением и элементом навигации (под изображением), когда галерея открыта в режиме слайдов',
-    /* setting name */ 'Empty space below gallery' => 'Пустое пространство под галереей',
-    /* help text */    'Distance between the gallery and the content below' => 'Расстояние между галереей и содержанием под ней',
+    /* setting name */
+    'Space between images and image navigation' => 'Расстояние между изображением и элементом навигации',
+    /* help text */
+    'Vertical space between images and image navigation (the digits below the image) when gallery is in "slideshow" mode' => 'Вертикальное расстояние между изображением и элементом навигации (под изображением), когда галерея открыта в режиме слайдов',
+    /* setting name */
+    'Empty space below gallery' => 'Пустое пространство под галереей',
+    /* help text */
+    'Distance between the gallery and the content below' => 'Расстояние между галереей и содержанием под ней',
 
-    /* setting name */ 'Logo image' => 'Изображение логотипа',
+    /* setting name */
+    'Logo image' => 'Изображение логотипа',
 
-    /* setting name */ 'Color when hovered' => 'Цвет элемента при наведении курсора мыши',
-    /* help text */    'Color of the element under mouse cursor' => 'Цвет элемента, который находится под стрелкой курсора',
-    /* setting name */ 'Color when selected' => 'Цвет активного элемента',
-    /* help text */    'Color of the element of the currently opened section' => 'Цвет элемента открытой секции',
-    /* setting name */ 'Decoration' => 'Декорирование',
-    /* setting name */ 'Decoration when hovered' => 'Декорирование элемента при наведении курсора',
-    /* setting name */ 'Decoration when selected' => 'Декорирование активного элемента',
+    /* setting name */
+    'Color when hovered' => 'Цвет элемента при наведении курсора мыши',
+    /* help text */
+    'Color of the element under mouse cursor' => 'Цвет элемента, который находится под стрелкой курсора',
+    /* setting name */
+    'Color when selected' => 'Цвет активного элемента',
+    /* help text */
+    'Color of the element of the currently opened section' => 'Цвет элемента открытой секции',
+    /* setting name */
+    'Decoration' => 'Декорирование',
+    /* setting name */
+    'Decoration when hovered' => 'Декорирование элемента при наведении курсора',
+    /* setting name */
+    'Decoration when selected' => 'Декорирование активного элемента',
 
-    /* setting name */ 'Thumbnails' => 'Предпросмотр изображения',
-    /* setting name */ 'Thumbnails can be turned on by setting the section type to "Thumbnails enabled" & adding more than 1 images to background gallery.' => 'Предпросмотр изображения могут быть активированы, при включении функции "Разрешить предпросмотр" и добавить более одного изображения для фоновой галереи.',
-    /* setting name */ 'Thumbnail container width' => 'Ширина контейнера для предпросмотра изображения',
-    /* help text */    'IMPORTANT! This must be set as percentage. i.e. 60%' => 'ВАЖНО! Данный параметр вводится как процентное соотношение. Например, 60%',
+    /* setting name */
+    'Thumbnails' => 'Предпросмотр изображения',
+    /* setting name */
+    'Thumbnails can be turned on by setting the section type to "Thumbnails enabled" & adding more than 1 images to background gallery.' => 'Предпросмотр изображения могут быть активированы, при включении функции "Разрешить предпросмотр" и добавить более одного изображения для фоновой галереи.',
+    /* setting name */
+    'Thumbnail container width' => 'Ширина контейнера для предпросмотра изображения',
+    /* help text */
+    'IMPORTANT! This must be set as percentage. i.e. 60%' => 'ВАЖНО! Данный параметр вводится как процентное соотношение. Например, 60%',
 
     'googleFont_description' => 'Укажите название Google шрифта. Ознакомтесь, какие шрифты доступны: <a href="http://www.google.com/webfonts" target="_blank">Web шрифты Google</a>. Если выбран Google шрифт, системные шрифты не будут приниматься во внимание. Например: <em>Marvel</em>, <em>Marvel:700italic</em> или <em>Josefin Slab:700italic</em>',
     'Menu position' => 'Положение меню',

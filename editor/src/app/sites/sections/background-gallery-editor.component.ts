@@ -128,7 +128,8 @@ import { PopupService } from '../../../app/popup/popup.service';
             [config]="{
               title: 'Autoplay seconds',
               format: 'text',
-              enabledOnUpdate: true
+              enabledOnUpdate: true,
+              validation: 'zero_or_positive_integer'
             }"
             [error]="''"
             [disabled]="false"
