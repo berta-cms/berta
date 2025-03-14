@@ -8,7 +8,7 @@
     {% endif %}
 
     <div class="tagsList">
-      <div title="{{ tagList }}" class="xEditableRC xNoHTMLEntities xProperty-submenu xFormatModifier-toTags" data-path="{{apiPath}}tags/tag">{{ tagList }}</div>
+      <div title="{{ tagList }}" class="xEditableRC xNoHTMLEntities xProperty-submenu xFormatModifier-toTags xSkipSetStyles-1" data-path="{{apiPath}}tags/tag">{{ tagList }}</div>
     </div>
     <div class="xEntryDropdown"></div>
     <br class="clear" />
@@ -31,7 +31,7 @@
         </li>
         <li>
           <div class="customWidth">
-            <div title="{{ entryWidth }}" class="xEditableRC xCSSUnits-1 xProperty-width" data-path="{{apiPath}}content/width">{{ entryWidth }}</div>
+            <div title="{{ entryWidth }}" class="xEditableRC xCSSUnits-1 xSkipSetStyles-1 xProperty-width" data-path="{{apiPath}}content/width">{{ entryWidth }}</div>
           </div>
         </li>
       {% endif %}
