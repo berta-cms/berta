@@ -32,6 +32,9 @@ export class ValidationService {
     if (!this.allowBlank && !this.value) {
       this.ok = false;
       this.message = 'This field is required';
+    } else if (this.allowBlank && !this.value) {
+      this.ok = true;
+      this.message = '';
     } else if (
       this.cssUnitsRequired &&
       !this.value.match(/^-?\d*\.?\d+(px|em|rem|vw|vh|pt|%)$/)
