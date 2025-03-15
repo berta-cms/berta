@@ -142,7 +142,6 @@ $templateConf = [
         ],
         'fontSize' => [
             'format' => 'text',
-            'css_units' => true,
             'default' => '12px',
             'allow_blank' => true,
             'title' => I18n::_('Font size'),
@@ -204,7 +203,6 @@ $templateConf = [
         ],
         'lineHeight' => [
             'format' => 'text',
-            'css_units' => true,
             'default' => '18px',
             'allow_blank' => true,
             'title' => I18n::_('Line height'),
@@ -487,7 +485,8 @@ $templateConf = [
             'format' => 'text',
             'default' => '960px',
             'allow_blank' => true,
-            'css_units' => true, 'title' => I18n::_('Centered content width'),
+            'css_units' => true,
+            'title' => I18n::_('Centered content width'),
             'description' => I18n::_('Content width if layout is centered.'),
             'css' => [
                 [
@@ -525,7 +524,9 @@ $templateConf = [
         ],
 
         'group_responsive' => [
-            'format' => false, 'default' => false, 'title' => I18n::_('Responsive design'),
+            'format' => false,
+            'default' => false,
+            'title' => I18n::_('Responsive design'),
         ],
         'autoResponsive' => [
             'format' => 'select',
@@ -562,7 +563,7 @@ $templateConf = [
             'default' => '20px 10px',
             'allow_blank' => true,
             'title' => I18n::_('Heading margin'),
-            'description' => I18n::_('Margin around page heading or logo. Please see the short CSS guide at the bottom of this page.'),
+            'description' => I18n::_('Margin around page heading or logo.'),
             'css' => [
                 [
                     'selector' => '.bt-responsive #contentContainer h1',
@@ -580,7 +581,7 @@ $templateConf = [
             'default' => '20px 10px',
             'allow_blank' => true,
             'title' => I18n::_('Menu margin'),
-            'description' => I18n::_('Margin around menu. Please see the short CSS guide at the bottom of this page.'),
+            'description' => I18n::_('Margin around menu.'),
             'css' => [
                 [
                     'selector' => '.portfolioThumbnailsWrap',
@@ -625,7 +626,11 @@ $templateConf = [
             'format' => 'image',
             'default' => '',
             'allow_blank' => true,
-            'min_width' => 1, 'min_height' => 1, 'max_width' => 140, 'max_height' => 400, 'title' => I18n::_('Logo image'),
+            'min_width' => 1,
+            'min_height' => 1,
+            'max_width' => 140,
+            'max_height' => 400,
+            'title' => I18n::_('Logo image'),
             'description' => '<span class="warning">' . I18n::_('Displayed image will be half of the original size, full size will be used for hi-res displays.') . '</span>',
         ],
         'color' => [
@@ -711,7 +716,6 @@ $templateConf = [
         ],
         'fontSize' => [
             'format' => 'text',
-            'css_units' => true,
             'default' => '30px',
             'allow_blank' => true,
             'title' => I18n::_('Font size'),
@@ -805,7 +809,6 @@ $templateConf = [
         ],
         'lineHeight' => [
             'format' => 'text',
-            'css_units' => true,
             'default' => '1em',
             'allow_blank' => true,
             'title' => I18n::_('Line height'),
@@ -878,7 +881,6 @@ $templateConf = [
         ],
         'fontSize' => [
             'format' => 'text',
-            'css_units' => true,
             'default' => '20px',
             'allow_blank' => true,
             'title' => I18n::_('Font size'),
@@ -924,7 +926,6 @@ $templateConf = [
         ],
         'lineHeight' => [
             'format' => 'text',
-            'css_units' => true,
             'default' => '1em',
             'allow_blank' => true,
             'title' => I18n::_('Line height'),
@@ -1103,7 +1104,6 @@ $templateConf = [
         ],
         'fontSize' => [
             'format' => 'text',
-            'css_units' => true,
             'default' => '16px',
             'allow_blank' => true,
             'title' => I18n::_('Font size'),
@@ -1149,7 +1149,6 @@ $templateConf = [
         ],
         'lineHeight' => [
             'format' => 'text',
-            'css_units' => true,
             'default' => '1.5em',
             'allow_blank' => true,
             'title' => I18n::_('Line height'),
@@ -1380,7 +1379,6 @@ $templateConf = [
         ],
         'fontSize' => [
             'format' => 'text',
-            'css_units' => true,
             'default' => '1.8em',
             'allow_blank' => true,
             'title' => I18n::_('Font size'),
@@ -1466,7 +1464,6 @@ $templateConf = [
         ],
         'lineHeight' => [
             'format' => 'text',
-            'css_units' => true,
             'default' => 'normal',
             'allow_blank' => true,
             'title' => I18n::_('Line height'),
@@ -1482,7 +1479,7 @@ $templateConf = [
             'format' => 'text',
             'default' => '15px 0 15px 0',
             'title' => I18n::_('Margins'),
-            'description' => I18n::_('How far the entry heading is form other elements in page. Please see the short CSS guide at the bottom of this page.'),
+            'description' => I18n::_('How far the entry heading is form other elements in page.'),
             'css' => [
                 [
                     'selector' => '#pageEntries .xEntry h2',
@@ -1627,7 +1624,6 @@ $templateConf = [
         ],
         'fontSize' => [
             'format' => 'text',
-            'css_units' => true,
             'default' => 'inherit',
             'allow_blank' => true,
             'title' => I18n::_('Font size'),

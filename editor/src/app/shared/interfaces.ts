@@ -64,6 +64,7 @@ export interface SettingConfigModel {
   max_width?: number | string;
   max_height?: number | string;
   allow_blank?: boolean;
+  validation?: string;
   link?: boolean;
   validator?: 'GoogleAnalytics' | string;
   children?: Array<{ [k: string]: SettingConfigModel }>;
@@ -112,6 +113,7 @@ export interface SettingConfigResponse {
   max_width?: number | string;
   max_height?: number | string;
   allow_blank?: boolean;
+  validation?: string;
   link?: boolean;
   validator?: 'GoogleAnalytics' | string;
   children?: Array<{ [k: string]: SettingConfigModel }>;

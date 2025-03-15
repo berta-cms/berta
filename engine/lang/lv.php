@@ -5,13 +5,20 @@ return [
 
     // Translations from the top "admin" menu
 
-    /* menu item */ 'close this' => 'aizvērt',
-    /* menu item */ 'my site' => 'mana berta',
-    /* menu item */ 'sections' => 'sadaļas',
-    /* menu item */ 'settings' => 'uzstādījumi',
-    /* menu item */ 'design' => 'dizains',
-    /* menu item */ 'profile' => 'konts',
-    /* menu item */ 'log out' => 'izlogoties',
+    /* menu item */
+    'close this' => 'aizvērt',
+    /* menu item */
+    'my site' => 'mana berta',
+    /* menu item */
+    'sections' => 'sadaļas',
+    /* menu item */
+    'settings' => 'uzstādījumi',
+    /* menu item */
+    'design' => 'dizains',
+    /* menu item */
+    'profile' => 'konts',
+    /* menu item */
+    'log out' => 'izlogoties',
 
     // Translatins from login / logout window
 
@@ -41,14 +48,22 @@ return [
 
     // Translatins from sections editor (sections.php)
 
-    /* title */ 'Sections' => 'Sadaļas',
-    /* column */ 'Title as displayed in main menu' => 'Nosaukums (galvenajā izvēlnē)',
-    /* column */ 'Type' => 'Veids',
-    /* column */ 'Details' => 'Uzstādījumi',
-    /* column */ 'Is published?' => 'Publicēts?',
-    /* column */ 'Delete' => 'Dzēst',
-    /* button */ 'create new section' => 'izveidot jaunu sadaļu',
-    /* button */ 'delete' => 'dzēst',
+    /* title */
+    'Sections' => 'Sadaļas',
+    /* column */
+    'Title as displayed in main menu' => 'Nosaukums (galvenajā izvēlnē)',
+    /* column */
+    'Type' => 'Veids',
+    /* column */
+    'Details' => 'Uzstādījumi',
+    /* column */
+    'Is published?' => 'Publicēts?',
+    /* column */
+    'Delete' => 'Dzēst',
+    /* button */
+    'create new section' => 'izveidot jaunu sadaļu',
+    /* button */
+    'delete' => 'dzēst',
 
     'What are sections?' => 'Kas ir sadaļas?',
     'sections_help_text' => 'Sadaļas ir lapas pamatelementi un to nosaukumi veido galveno izvēlni (menu).',
@@ -66,8 +81,10 @@ return [
 
     // Translations from settings page (settings.php)
 
-    /* title */ 'Settings' => 'Uzstādījumi',
-    /* title */ 'Design' => 'Dizains',
+    /* title */
+    'Settings' => 'Uzstādījumi',
+    /* title */
+    'Design' => 'Dizains',
     'These are settings for template' => 'Šie ir uzstādījumi veidnei',
 
     'Some help with CSS values' => 'CSS vērtību skaidrojums',
@@ -81,71 +98,127 @@ return [
     'Texts in the website' => 'Teksti lapā',
     'Site heading' => 'Lapas virsraksts',
 
-    /* setting tab & setting name */ 'Template' => 'Veidne',
-    /* help text */    'Templates are like skins or themes for your site. You can choose one template from the ones installed in your templates folder. To add a new template to this list, upload it to the templates folder via FTP.' => 'Veidnes ir "ādiņas" jeb tēmas, kuras izmaina lapas elementu izvietojumu un izskatu.',
+    /* setting tab & setting name */
+    'Template' => 'Veidne',
+    /* help text */
+    'Templates are like skins or themes for your site. You can choose one template from the ones installed in your templates folder. To add a new template to this list, upload it to the templates folder via FTP.' => 'Veidnes ir "ādiņas" jeb tēmas, kuras izmaina lapas elementu izvietojumu un izskatu.',
 
-    /* setting tab */ 'Info' => 'Vispārīgi',
-    /* setting name */ 'Your name' => 'Tavs vārds',
-    /* help text */    'Your name will be put in a meta-tag in the code of your site. You can choose any name ;)' => 'Tavs vārds tiks saglabāts meta-tagā lapas kodā. Vārds var būt jebkāds.',
-    /* setting name */ 'Page title (title bar)' => 'Lapas virsraksts',
-    /* help text */    'Text that appears in the bowser title bar' => 'Teksts, kas redzams pārlūka loga augšpusē',
-    /* setting name */ '<META> description' => '<META> apraksts',
-    /* help text */    'Site description. It should not be longer than one or two sentences.' => 'Lapas apraksts. Tam nevajadzētu pārsniegt 2 teikumus.',
-    /* setting name */ '<META> keywords' => '<META> atslēgvārdi',
-    /* help text */    'Keywords visible only to search engines. Keywords along with the description can improve your site ranking in search results.' => 'Atslēgvārdi ir redzami tikai meklētājiem, tādiem kā Google. Tie var uzlabot tavas lapas pozīciju meklēšanas rezultātos. Vēlams, lai tie ir atbilstoši lapas saturam.',
+    /* setting tab */
+    'Info' => 'Vispārīgi',
+    /* setting name */
+    'Your name' => 'Tavs vārds',
+    /* help text */
+    'Your name will be put in a meta-tag in the code of your site. You can choose any name ;)' => 'Tavs vārds tiks saglabāts meta-tagā lapas kodā. Vārds var būt jebkāds.',
+    /* setting name */
+    'Page title (title bar)' => 'Lapas virsraksts',
+    /* help text */
+    'Text that appears in the bowser title bar' => 'Teksts, kas redzams pārlūka loga augšpusē',
+    /* setting name */
+    '<META> description' => '<META> apraksts',
+    /* help text */
+    'Site description. It should not be longer than one or two sentences.' => 'Lapas apraksts. Tam nevajadzētu pārsniegt 2 teikumus.',
+    /* setting name */
+    '<META> keywords' => '<META> atslēgvārdi',
+    /* help text */
+    'Keywords visible only to search engines. Keywords along with the description can improve your site ranking in search results.' => 'Atslēgvārdi ir redzami tikai meklētājiem, tādiem kā Google. Tie var uzlabot tavas lapas pozīciju meklēšanas rezultātos. Vēlams, lai tie ir atbilstoši lapas saturam.',
 
-    /* setting tab */ 'Navigation' => 'Navigācija',
-    /* setting name */ 'Is first section visible in menu?' => 'Vai pirmā sadaļa redzama galvenajā izvēlnē (menu)?',
-    /* help text */    'Choose "no" to hide the first section in the main menu. Link from the page title (or header image) will lead to it. NOTE: This setting has no effect, if the section has a submenu; then it is visible at all times.' => 'Izvēlies "No", ja vēlies, lai pirmā sadaļa nav redzama. Uz sadaļu varēs nokļūt tikai atverot lapu vai uzklikšķinot uz lapas logo. Ņem vērā, ka iestatījums nedarbojas, ja šai sadaļai ir apakšizvēlnes (Tagi).',
-    /* setting name */ 'Show menu in first section?' => 'Rādīt izvēlni pirmajā sadaļā?',
-    /* help text */    'Choose "no" to hide the menu in first section.' => 'Izvēlies "No", lai paslēptu izvēlni pirmajā sadaļā.',
-    /* setting name */ 'Always auto-select a submenu item?' => 'Automātiski izvēlēties pirmo apakšizvēlni?',
-    /* help text */    'Choose "yes" to automatically select the first submenu item when clicking on a menu item. This works only when there is a submenu.' => 'Izvēlies "Yes" un pēc izvēlnes iezīmēšanas automātiski tiks izvēlēta apakšizvēlne.',
-    /* setting name */ 'Enable navigation to page top' => 'Atļaut navigāciju uz lapas sākumu',
-    /* help text */    'Shows navigation button at the bottom when page is scrolled.' => 'Rāda navigācijas pogu, kad lapa tiek ritināta.',
+    /* setting tab */
+    'Navigation' => 'Navigācija',
+    /* setting name */
+    'Is first section visible in menu?' => 'Vai pirmā sadaļa redzama galvenajā izvēlnē (menu)?',
+    /* help text */
+    'Choose "no" to hide the first section in the main menu. Link from the page title (or header image) will lead to it. NOTE: This setting has no effect, if the section has a submenu; then it is visible at all times.' => 'Izvēlies "No", ja vēlies, lai pirmā sadaļa nav redzama. Uz sadaļu varēs nokļūt tikai atverot lapu vai uzklikšķinot uz lapas logo. Ņem vērā, ka iestatījums nedarbojas, ja šai sadaļai ir apakšizvēlnes (Tagi).',
+    /* setting name */
+    'Show menu in first section?' => 'Rādīt izvēlni pirmajā sadaļā?',
+    /* help text */
+    'Choose "no" to hide the menu in first section.' => 'Izvēlies "No", lai paslēptu izvēlni pirmajā sadaļā.',
+    /* setting name */
+    'Always auto-select a submenu item?' => 'Automātiski izvēlēties pirmo apakšizvēlni?',
+    /* help text */
+    'Choose "yes" to automatically select the first submenu item when clicking on a menu item. This works only when there is a submenu.' => 'Izvēlies "Yes" un pēc izvēlnes iezīmēšanas automātiski tiks izvēlēta apakšizvēlne.',
+    /* setting name */
+    'Enable navigation to page top' => 'Atļaut navigāciju uz lapas sākumu',
+    /* help text */
+    'Shows navigation button at the bottom when page is scrolled.' => 'Rāda navigācijas pogu, kad lapa tiek ritināta.',
 
-    /* setting name */ 'Favicon' => 'Favicon',
-    /* help text */    'Small picture to display in the address bar of the browser. The file must be in .ICO format and 16x16 pixels big.' => '16x16 pikseļu attēls, kurš atrodams pretī adrešu laukam pārlūkprogrammā. Failam jābūt .ICO formātā.',
-    /* setting name */ 'Grid step' => 'Režģa solis',
-    /* help text */    'Distance in pixels for snap-to-grid dragging.' => 'Režģa rūtiņas izmērs pikseļos. Ja lielāks par 1, tad elementi pielips pie šī neredzamā režģa (snap to grid).',
+    /* setting name */
+    'Favicon' => 'Favicon',
+    /* help text */
+    'Small picture to display in the address bar of the browser. The file must be in .ICO format and 16x16 pixels big.' => '16x16 pikseļu attēls, kurš atrodams pretī adrešu laukam pārlūkprogrammā. Failam jābūt .ICO formātā.',
+    /* setting name */
+    'Grid step' => 'Režģa solis',
+    /* help text */
+    'Distance in pixels for snap-to-grid dragging.' => 'Režģa rūtiņas izmērs pikseļos. Ja lielāks par 1, tad elementi pielips pie šī neredzamā režģa (snap to grid).',
 
-    /* setting tab */  'Entry layout' => 'Ieraksta izskats',
+    /* setting tab */
+    'Entry layout' => 'Ieraksta izskats',
 
-    /* setting name */ 'Small image width' => 'Mazā attēla platums',
-    /* setting name */ 'Small image height' => 'Mazā attēla augstums',
-    /* help text */    'Maximum size of a small image (visible if \'Small images\' are switched on in the gallery editor). These settings don\'t affect original image.' => 'Maksimālais mazā attēla izmērs. Tas būs redzams, kad galerijas redaktorā tiks ieslēgts "Mazās bildes"',
-    /* setting name */ 'Medium image width' => 'Vidējā attēla platums',
-    /* setting name */ 'Medium image height' => 'Vidējā attēla augstums',
-    /* help text */    'Maximum size of a medium image (visible if \'Medium images\' are switched on in the gallery editor). These settings don\'t affect original image.' => 'Maksimālais vidējā attēla izmērs. Tas būs redzams, kad galerijas redaktorā tiks ieslēgts "Vidējās bildes"',
-    /* setting name */ 'Large image width' => 'Lielā attēla platums',
-    /* setting name */ 'Large image height' => 'Lielā attēla augstums',
-    /* help text */    'Maximum size of a large image (visible if \'Large images\' are switched on in the gallery editor). These settings don\'t affect original image.' => 'Maksimālais mazā attēla izmērs. Tas būs redzams, kad galerijas redaktorā tiks ieslēgts "Lielās bildes"',
+    /* setting name */
+    'Small image width' => 'Mazā attēla platums',
+    /* setting name */
+    'Small image height' => 'Mazā attēla augstums',
+    /* help text */
+    'Maximum size of a small image (visible if \'Small images\' are switched on in the gallery editor). These settings don\'t affect original image.' => 'Maksimālais mazā attēla izmērs. Tas būs redzams, kad galerijas redaktorā tiks ieslēgts "Mazās bildes"',
+    /* setting name */
+    'Medium image width' => 'Vidējā attēla platums',
+    /* setting name */
+    'Medium image height' => 'Vidējā attēla augstums',
+    /* help text */
+    'Maximum size of a medium image (visible if \'Medium images\' are switched on in the gallery editor). These settings don\'t affect original image.' => 'Maksimālais vidējā attēla izmērs. Tas būs redzams, kad galerijas redaktorā tiks ieslēgts "Vidējās bildes"',
+    /* setting name */
+    'Large image width' => 'Lielā attēla platums',
+    /* setting name */
+    'Large image height' => 'Lielā attēla augstums',
+    /* help text */
+    'Maximum size of a large image (visible if \'Large images\' are switched on in the gallery editor). These settings don\'t affect original image.' => 'Maksimālais mazā attēla izmērs. Tas būs redzams, kad galerijas redaktorā tiks ieslēgts "Lielās bildes"',
 
-    /* setting tab */ 'Media' => 'Media',
-    /* setting subcategory */ 'Lightbox settings:' => 'Lightbox iestatījumi:',
-    /* setting name */ 'Is enabled by default' => 'Pēc noklusējuma ieslēgts',
-    /* help text */    'Enables Lightbox mode for new entries.' => 'Ieslēdz Lightbox režīmu jauniem ierakstiem.',
-    /* setting name */ 'Background color' => 'fona krāsa',
-    /* help text */    'Color of the Lightbox background layer.' => 'Lightbox fona krāsa (balts/melns/nekāda)',
-    /* setting name */ 'Image numbers' => 'Cipari zem attēla',
-    /* help text */    'Enables/disables Lightbox slide numbers.' => 'Ieslēgt/izslēgt Lightbox slaida numurus.',
-    /* setting name */ 'Caption alignment' => 'Paskaidrojuma teksta pozīcija',
-    /* help text */    'Positioning of the image caption text.' => 'Paskaidrojuma (caption) teksta pozīcija',
-    /* setting subcategory */ 'Image gallery appearance:' => 'Attēlu galerijas izskats:',
-    /* setting name */ 'Slideshow loop mode' => 'Slaidrādes atkārtošanas režīms',
-    /* setting name */    'Show slideshow image numbers' => 'Rādīt slaidrādes attēlu nummurus',
-    /* help text */        'Set the default state of image number visibility in slideshow galleries.' => 'Nosaka, vai pēc noklusējuma rādīt attēlu nummurus slaidrādes galerijām, vai nē.',
-    /* setting name */ 'Video player' => 'Video player izskats',
-    /* help text */    'Choose between the two visually different players for your video files.' => 'Izvēlies starp diviem dažādiem video player veidiem.',
+    /* setting tab */
+    'Media' => 'Media',
+    /* setting subcategory */
+    'Lightbox settings:' => 'Lightbox iestatījumi:',
+    /* setting name */
+    'Is enabled by default' => 'Pēc noklusējuma ieslēgts',
+    /* help text */
+    'Enables Lightbox mode for new entries.' => 'Ieslēdz Lightbox režīmu jauniem ierakstiem.',
+    /* setting name */
+    'Background color' => 'fona krāsa',
+    /* help text */
+    'Color of the Lightbox background layer.' => 'Lightbox fona krāsa (balts/melns/nekāda)',
+    /* setting name */
+    'Image numbers' => 'Cipari zem attēla',
+    /* help text */
+    'Enables/disables Lightbox slide numbers.' => 'Ieslēgt/izslēgt Lightbox slaida numurus.',
+    /* setting name */
+    'Caption alignment' => 'Paskaidrojuma teksta pozīcija',
+    /* help text */
+    'Positioning of the image caption text.' => 'Paskaidrojuma (caption) teksta pozīcija',
+    /* setting subcategory */
+    'Image gallery appearance:' => 'Attēlu galerijas izskats:',
+    /* setting name */
+    'Slideshow loop mode' => 'Slaidrādes atkārtošanas režīms',
+    /* setting name */
+    'Show slideshow image numbers' => 'Rādīt slaidrādes attēlu nummurus',
+    /* help text */
+    'Set the default state of image number visibility in slideshow galleries.' => 'Nosaka, vai pēc noklusējuma rādīt attēlu nummurus slaidrādes galerijām, vai nē.',
+    /* setting name */
+    'Video player' => 'Video player izskats',
+    /* help text */
+    'Choose between the two visually different players for your video files.' => 'Izvēlies starp diviem dažādiem video player veidiem.',
 
-    /* setting tab */ 'Banners' => 'Banneri',
-    /* setting name */ 'Banner image' => 'Bannera attēls',
-    /* setting name */ 'Banner link' => 'Bannera saite',
+    /* setting tab */
+    'Banners' => 'Banneri',
+    /* setting name */
+    'Banner image' => 'Bannera attēls',
+    /* setting name */
+    'Banner link' => 'Bannera saite',
 
-    /* setting tab */ 'Language' => 'Lokalizācija',
-    /* setting name */ 'Interface language' => 'Valoda',
+    /* setting tab */
+    'Language' => 'Lokalizācija',
+    /* setting name */
+    'Interface language' => 'Valoda',
 
-    /* setting tab */ 'Other settings' => 'Dažādi',
+    /* setting tab */
+    'Other settings' => 'Dažādi',
 
     // Translations from entries view (and editing)
 
@@ -155,145 +228,258 @@ return [
 
     // Translations for default template
 
-    /* setting tab */ 'General font settings' => 'Teksta iestatījumi',
-    /* setting name */ 'Color' => 'Krāsa',
-    /* setting name */ 'Font face' => 'Burtu šrifts',
-    /* setting name */ 'Font size' => 'Šritfta izmērs',
-    /* setting name */ 'Font weight' => 'Šrifta treknums',
-    /* setting name */ 'Font style' => 'Šrifta stils',
-    /* setting name */ 'Font variant' => 'Burtu veids',
-    /* setting name */ 'Line height' => 'Rindas augstums',
-    /* help text */    'Height of text line. Use em, px or % values or the default value "normal"' => 'Attālums starp divu teksta rindiņu pamatnēm. Izmanto "em", "px" vai "%" vienības, kā arī noklusēto vērtību "normal"',
+    /* setting tab */
+    'General font settings' => 'Teksta iestatījumi',
+    /* setting name */
+    'Color' => 'Krāsa',
+    /* setting name */
+    'Font face' => 'Burtu šrifts',
+    /* setting name */
+    'Font size' => 'Šritfta izmērs',
+    /* setting name */
+    'Font weight' => 'Šrifta treknums',
+    /* setting name */
+    'Font style' => 'Šrifta stils',
+    /* setting name */
+    'Font variant' => 'Burtu veids',
+    /* setting name */
+    'Line height' => 'Rindas augstums',
+    /* help text */
+    'Height of text line. Use em, px or % values or the default value "normal"' => 'Attālums starp divu teksta rindiņu pamatnēm. Izmanto "em", "px" vai "%" vienības, kā arī noklusēto vērtību "normal"',
 
-    /* setting tab */ 'Hyperlinks' => 'Saites',
-    /* setting name */ 'Link color' => 'Saites krāsa',
-    /* setting name */ 'Visited link color' => 'Apciemotas saites krāsa',
-    /* setting name */ 'Link color when hovered' => 'Aktīvas (hover) saites krāsa',
-    /* setting name */ 'Link color when clicked' => 'Piespiestas (clicked) saites krāsa',
-    /* setting name */ 'Link decoration' => 'Saites rotājums',
-    /* setting name */ 'Visited link decoration' => 'Apciemotas saites rotājums',
-    /* setting name */ 'Link decoration when hovered' => 'Aktīvas (hover) saites rotājums',
-    /* setting name */ 'Link decoration when clicked' => 'Piespiestas (clicked) saites rotājums',
+    /* setting tab */
+    'Hyperlinks' => 'Saites',
+    /* setting name */
+    'Link color' => 'Saites krāsa',
+    /* setting name */
+    'Visited link color' => 'Apciemotas saites krāsa',
+    /* setting name */
+    'Link color when hovered' => 'Aktīvas (hover) saites krāsa',
+    /* setting name */
+    'Link color when clicked' => 'Piespiestas (clicked) saites krāsa',
+    /* setting name */
+    'Link decoration' => 'Saites rotājums',
+    /* setting name */
+    'Visited link decoration' => 'Apciemotas saites rotājums',
+    /* setting name */
+    'Link decoration when hovered' => 'Aktīvas (hover) saites rotājums',
+    /* setting name */
+    'Link decoration when clicked' => 'Piespiestas (clicked) saites rotājums',
 
-    /* setting tab */ 'Background' => 'Fons',
-    /* setting name */ 'Background color' => 'Fona krāsa',
-    /* help text */    'IMPORTANT! These settings will be overwritten, if you are using background gallery feature. You access it by clicking "edit background gallery" button in each section.' => 'UZMANĪBU! Šie uzstādījumi netiek ņemti vērā, ja tiek lietota fona galerija.',
-    /* setting name */ 'Is background image enabled?' => 'Fona attēls atļauts?',
-    /* setting name */ 'Background image' => 'Fona attēls',
-    /* help text */    'Picture to use for page background.' => 'Izvēlies fona attēlu',
-    /* setting name */ 'Background tiling' => 'Fona atkārtojums',
-    /* help text */    'How the background fills the screen?' => 'Kā fons piepilda ekrānu?',
-    /* setting name */ 'Background alignment' => 'Fona izkārtojums',
-    /* help text */    'Where the background image is positioned?' => 'Fona attēla pozīcija',
-    /* setting name */ 'Background position' => 'Fona pozīcija',
-    /* help text */    'Sets how background behaves in relation with the browser window.' => 'Kā fona attēls uzvedas, ja tiek mainīts pārlūka loga izmērs',
+    /* setting tab */
+    'Background' => 'Fons',
+    /* setting name */
+    'Background color' => 'Fona krāsa',
+    /* help text */
+    'IMPORTANT! These settings will be overwritten, if you are using background gallery feature. You access it by clicking "edit background gallery" button in each section.' => 'UZMANĪBU! Šie uzstādījumi netiek ņemti vērā, ja tiek lietota fona galerija.',
+    /* setting name */
+    'Is background image enabled?' => 'Fona attēls atļauts?',
+    /* setting name */
+    'Background image' => 'Fona attēls',
+    /* help text */
+    'Picture to use for page background.' => 'Izvēlies fona attēlu',
+    /* setting name */
+    'Background tiling' => 'Fona atkārtojums',
+    /* help text */
+    'How the background fills the screen?' => 'Kā fons piepilda ekrānu?',
+    /* setting name */
+    'Background alignment' => 'Fona izkārtojums',
+    /* help text */
+    'Where the background image is positioned?' => 'Fona attēla pozīcija',
+    /* setting name */
+    'Background position' => 'Fona pozīcija',
+    /* help text */
+    'Sets how background behaves in relation with the browser window.' => 'Kā fona attēls uzvedas, ja tiek mainīts pārlūka loga izmērs',
 
-    /* setting name */ 'Background button type' => 'Fona pogu tips',
-    /* help name */    'Select type for background gallery buttons.' => 'Izvēlies tipu fona galerijas pogām',
+    /* setting name */
+    'Background button type' => 'Fona pogu tips',
+    /* help name */
+    'Select type for background gallery buttons.' => 'Izvēlies tipu fona galerijas pogām',
 
-    /* setting name */ 'Content position' => 'Satura pozīcija',
-    /* setting name */ 'Text alignment' => 'Teksta izkārtojums',
-    /* setting name */ 'Width of content area' => 'Satura joslas platums',
-    /* setting name */ 'Page margins' => 'Lapas apmales',
-    /* help text */    'How far the content is from browser edges. Please see the short CSS guide at the bottom of this page.' => 'Kāds ir attālums no lapas satura līdz pārlūkprogrammas malām. Skaties CSS vērtību skaidrojumu lapas apakšā.',
-    /* setting name */ 'Top menu margins' => 'Izvēlnes augšas apmale',
-    /* help text */    'How big is the distance from the top menu to the other page elements' => 'Attālums starp galvenās izvēlnes līdz citiem lapas elementiem',
+    /* setting name */
+    'Content position' => 'Satura pozīcija',
+    /* setting name */
+    'Text alignment' => 'Teksta izkārtojums',
+    /* setting name */
+    'Width of content area' => 'Satura joslas platums',
+    /* setting name */
+    'Page margins' => 'Lapas apmales',
+    /* help text */
+    'How far the content is from browser edges.' => 'Kāds ir attālums no lapas satura līdz pārlūkprogrammas malām.',
+    /* setting name */
+    'Top menu margins' => 'Izvēlnes augšas apmale',
+    /* help text */
+    'How big is the distance from the top menu to the other page elements' => 'Attālums starp galvenās izvēlnes līdz citiem lapas elementiem',
 
-    /* setting tab */ 'Page heading' => 'Lapas virsraksts',
-    /* setting name */ 'Header image' => 'Lapas galvenes attēls',
-    /* help text */    'Picture to use instead of text.' => 'Attēls, kas tiks izmantots teksta vietā lapas galvenē (header).',
-    /* help text */    'How far the heading is from other elements in page. Please see the short CSS guide at the bottom of this page.' => 'Cik tālu lapas galvene (header) atrodas no citiem elementiem. Skaties CSS vērtību skaidrojumu lapas apakšā.',
-    /* help text */    'How far the menu is form other elements in page. Please see the short CSS guide at the bottom of this page.' => 'Cik tālu lapas izvēlne atrodas no citiem lapas elementiem. Skaties CSS vērtību skaidrojumu lapas apakšā.',
+    /* setting tab */
+    'Page heading' => 'Lapas virsraksts',
+    /* setting name */
+    'Header image' => 'Lapas galvenes attēls',
+    /* help text */
+    'Picture to use instead of text.' => 'Attēls, kas tiks izmantots teksta vietā lapas galvenē (header).',
+    /* help text */
+    'How far the heading is from other elements in page.' => 'Cik tālu lapas galvene (header) atrodas no citiem elementiem.',
+    /* help text */
+    'How far the menu is form other elements in page.' => 'Cik tālu lapas izvēlne atrodas no citiem lapas elementiem.',
 
-    /* setting tab */ 'Main menu' => 'Galvenā izvēlne',
-    /* setting name */ 'Menu items separator' => 'Izvēlnes atdalošais simbols',
-    /* setting name */ 'Space width around separator' => 'Attālums ap atdalošo simbolu',
-    /* help text */    'The distance from the separator to the menu item on both sides' => 'Attālums starp atdalītāj-simbolu un izvēlnes vienību',
+    /* setting tab */
+    'Main menu' => 'Galvenā izvēlne',
+    /* setting name */
+    'Menu items separator' => 'Izvēlnes atdalošais simbols',
+    /* setting name */
+    'Space width around separator' => 'Attālums ap atdalošo simbolu',
+    /* help text */
+    'The distance from the separator to the menu item on both sides' => 'Attālums starp atdalītāj-simbolu un izvēlnes vienību',
 
-    /* setting tab */ 'Submenu' => 'Apakšizvēlne',
+    /* setting tab */
+    'Submenu' => 'Apakšizvēlne',
 
-    /* setting name */ 'Entry margins' => 'Ieraksta apmales',
-    /* help text */    'Margins around entries. Please see the short CSS guide at the bottom of this page.' => 'Apmales ap ierakstiem. Lūdzu skatiet CSS skaidrojumu lapas apakšā.',
-    /* setting name */ 'Gallery position' => 'Galerijas pozīcija',
-    /* setting name */ 'Default gallery type' => 'Galerijas tips pēc noklusēšanas',
-    /* help text */    'Slideshow means that an image menu plus only one image is visible at a time. Row means that all images are visible.' => '"Slaidrāde" nozīmē, ka redzams ir attēls ar cipariem, bet "Rindā" nozīmē, ka visi attēli redzami uzreiz rindā.',
-    /* setting name */ 'Space between images in row and column' => 'Attālums starp attēliem rindā un kolonnā',
-    /* help text */    'Horizontal/vertical space between images when gallery is in "row"/"column" mode' => 'Horizontālais/vertikālais attālums starp attēliem "row"/"column" režīmos',
-    /* setting name */ 'Gallery margins' => 'Galerijas apmales',
-    /* help text */    'Margin around gallery block' => 'Apmales ap galerijas bloku',
+    /* setting name */
+    'Entry margins' => 'Ieraksta apmales',
+    /* help text */
+    'Margins around entries.' => 'Apmales ap ierakstiem. Lūdzu skatiet CSS skaidrojumu lapas apakšā.',
+    /* setting name */
+    'Gallery position' => 'Galerijas pozīcija',
+    /* setting name */
+    'Default gallery type' => 'Galerijas tips pēc noklusēšanas',
+    /* help text */
+    'Slideshow means that an image menu plus only one image is visible at a time. Row means that all images are visible.' => '"Slaidrāde" nozīmē, ka redzams ir attēls ar cipariem, bet "Rindā" nozīmē, ka visi attēli redzami uzreiz rindā.',
+    /* setting name */
+    'Space between images in row and column' => 'Attālums starp attēliem rindā un kolonnā',
+    /* help text */
+    'Horizontal/vertical space between images when gallery is in "row"/"column" mode' => 'Horizontālais/vertikālais attālums starp attēliem "row"/"column" režīmos',
+    /* setting name */
+    'Gallery margins' => 'Galerijas apmales',
+    /* help text */
+    'Margin around gallery block' => 'Apmales ap galerijas bloku',
 
-    /* setting tab */  'Entry heading' => 'Ieraksta virsraksts',
-    /* help text */    'How far the entry heading is form other elements in page. Please see the short CSS guide at the bottom of this page.' => 'Cik tālu ieraksta virsraksts atrodas no pārējiem lapas elementiem. Skatiet CSS skaidrojumu lapas apakšā.',
+    /* setting tab */
+    'Entry heading' => 'Ieraksta virsraksts',
+    /* help text */
+    'How far the entry heading is form other elements in page.' => 'Cik tālu ieraksta virsraksts atrodas no pārējiem lapas elementiem. Skatiet CSS skaidrojumu lapas apakšā.',
 
-    /* setting tab */ 'Entry footer' => 'Ieraksta apakša',
+    /* setting tab */
+    'Entry footer' => 'Ieraksta apakša',
 
     // Translations for Mashup template
 
-    /* setting name */ 'First page' => 'Pirmā lapa',
-    /* setting name */ 'Sidebar' => 'Sānjosla',
-    /* setting tab */  'Page layout' => 'Lapas izskats',
-    /* setting name */ 'Entry text max width' => 'Ieraksta teksta maksimālais platums',
-    /* help text */    'Width of texts in the entries. This does not apply to the width of images.' => 'Teksta platums ierakstos.',
-    /* setting name */ 'How far content is from page top?' => 'Lapas satura attālums no lapas augšas.',
-    /* help text */    'The vertical distance between the top of the page and the content area.' => 'Vertikālais attālums no lapas augšas līdz lapas saturam.',
-    /* setting name */ 'How far content is from sidebar?' => 'Lapas satura attālums no sānjoslas.',
-    /* help text */    'The horizontal distance between the menu and the content area.' => 'Horizontālais attālums starp galveno izvēlni un lapas saturu.',
+    /* setting name */
+    'First page' => 'Pirmā lapa',
+    /* setting name */
+    'Sidebar' => 'Sānjosla',
+    /* setting tab */
+    'Page layout' => 'Lapas izskats',
+    /* setting name */
+    'Entry text max width' => 'Ieraksta teksta maksimālais platums',
+    /* help text */
+    'Width of texts in the entries. This does not apply to the width of images.' => 'Teksta platums ierakstos.',
+    /* setting name */
+    'How far content is from page top?' => 'Lapas satura attālums no lapas augšas.',
+    /* help text */
+    'The vertical distance between the top of the page and the content area.' => 'Vertikālais attālums no lapas augšas līdz lapas saturam.',
+    /* setting name */
+    'How far content is from sidebar?' => 'Lapas satura attālums no sānjoslas.',
+    /* help text */
+    'The horizontal distance between the menu and the content area.' => 'Horizontālais attālums starp galveno izvēlni un lapas saturu.',
 
-    /* setting name */ 'Space between entries' => 'Attālums starp ierakstiem',
-    /* help text */    'Distance from entry to entry. In pixels.' => 'Attālums no ieraksta līdz ierakstam. Pikseļos.',
+    /* setting name */
+    'Space between entries' => 'Attālums starp ierakstiem',
+    /* help text */
+    'Distance from entry to entry. In pixels.' => 'Attālums no ieraksta līdz ierakstam. Pikseļos.',
 
-    /* setting name */ 'Width' => 'Platums',
-    /* setting name */ 'Left margin' => 'Attālums no kreisās malas',
-    /* help text */    'How far the sidebar is from the left side of the screen.' => 'Cik tālu sānjosla atrodas no ekrāna kreisās malas?',
-    /* setting name */ 'Top padding' => 'Attālums no augšas',
-    /* help text */    'How far the header is from the top of the screen?' => 'Cik tālu sānjosla atrodas no ekrāna augšas?',
-    /* setting name */ 'Space between header and menu' => 'Attālums starp galveni un galveno izvēlni',
-    /* help text */    'How far the menu is from the header text or header image.' => 'Cik tālu galvenā izvēlne atrodas no galvenes teksta vai attēla?',
-    /* setting name */ 'Heading text color' => 'Galvenes teksta krāsa',
-    /* setting name */ 'Is transparent?' => 'Ir caurspīdīga?',
-    /* setting name */ 'Heading font' => 'Galvenes burtu šrifts',
-    /* setting name */ 'Heading font size' => 'Galvenes burtu izmērs',
-    /* setting name */ 'Heading font weight' => 'Galvenes burtu treknums',
-    /* setting name */ 'Heading font style' => 'Galvenes burtu stils',
-    /* setting name */ 'Heading font variant' => 'Galvenes burtu veids',
-    /* setting name */ 'Heading line height' => 'Galvenes rindas augstums',
+    /* setting name */
+    'Width' => 'Platums',
+    /* setting name */
+    'Left margin' => 'Attālums no kreisās malas',
+    /* help text */
+    'How far the sidebar is from the left side of the screen.' => 'Cik tālu sānjosla atrodas no ekrāna kreisās malas?',
+    /* setting name */
+    'Top padding' => 'Attālums no augšas',
+    /* help text */
+    'How far the header is from the top of the screen?' => 'Cik tālu sānjosla atrodas no ekrāna augšas?',
+    /* setting name */
+    'Space between header and menu' => 'Attālums starp galveni un galveno izvēlni',
+    /* help text */
+    'How far the menu is from the header text or header image.' => 'Cik tālu galvenā izvēlne atrodas no galvenes teksta vai attēla?',
+    /* setting name */
+    'Heading text color' => 'Galvenes teksta krāsa',
+    /* setting name */
+    'Is transparent?' => 'Ir caurspīdīga?',
+    /* setting name */
+    'Heading font' => 'Galvenes burtu šrifts',
+    /* setting name */
+    'Heading font size' => 'Galvenes burtu izmērs',
+    /* setting name */
+    'Heading font weight' => 'Galvenes burtu treknums',
+    /* setting name */
+    'Heading font style' => 'Galvenes burtu stils',
+    /* setting name */
+    'Heading font variant' => 'Galvenes burtu veids',
+    /* setting name */
+    'Heading line height' => 'Galvenes rindas augstums',
 
-    /* setting name */ 'Image size ratio' => 'Attēla izmēra attiecība',
-    /* help text */    'Images in the first page layout will be resized by this ratio. Think of it as percentage, e.g., 0.7 = 70% of the original image size.' => 'Attēlu izmēri pirmās lapas izkārtojumā tiks izmainīti pēc šīs attiecības. Piemēram, 0.7 = 70% no sākotnējā izmēra.',
-    /* setting name */ 'Images have shadows?' => 'Attēliem ir ēnas?',
-    /* setting name */ 'Images wiggle on mouse-over?' => 'Attēli izkustas uz tiem uzbraucot ar peli?',
+    /* setting name */
+    'Image size ratio' => 'Attēla izmēra attiecība',
+    /* help text */
+    'Images in the first page layout will be resized by this ratio. Think of it as percentage, e.g., 0.7 = 70% of the original image size.' => 'Attēlu izmēri pirmās lapas izkārtojumā tiks izmainīti pēc šīs attiecības. Piemēram, 0.7 = 70% no sākotnējā izmēra.',
+    /* setting name */
+    'Images have shadows?' => 'Attēliem ir ēnas?',
+    /* setting name */
+    'Images wiggle on mouse-over?' => 'Attēli izkustas uz tiem uzbraucot ar peli?',
 
-    /* setting name */ 'Color when opened' => 'Atvērtā elementa krāsa',
-    /* setting name */ 'Decoration when opened' => 'Atvērtā elementa rotājums',
+    /* setting name */
+    'Color when opened' => 'Atvērtā elementa krāsa',
+    /* setting name */
+    'Decoration when opened' => 'Atvērtā elementa rotājums',
 
     // Translations for White template
 
-    /* setting name */ 'Empty space on top' => 'Tukša vieta izvēlnes augšpusē',
-    /* setting name */ 'Empty space on bottom' => 'Tukša vieta izvēlnes apakšpusē',
-    /* setting name */ 'How far content is from menu?' => 'Cik tālu lapas saturs atrodas no galvenās izvēlnes?',
-    /* setting name */ 'Width of the left column' => 'Kreisās kolonnas platums',
+    /* setting name */
+    'Empty space on top' => 'Tukša vieta izvēlnes augšpusē',
+    /* setting name */
+    'Empty space on bottom' => 'Tukša vieta izvēlnes apakšpusē',
+    /* setting name */
+    'How far content is from menu?' => 'Cik tālu lapas saturs atrodas no galvenās izvēlnes?',
+    /* setting name */
+    'Width of the left column' => 'Kreisās kolonnas platums',
 
     // Translations for Messy template
 
-    /* setting name */ 'Space between images and image navigation' => 'Attālums starp attēlu un navigācijas elementu',
-    /* help text */    'Vertical space between images and image navigation (the digits below the image) when gallery is in "slideshow" mode' => 'Vertikālais attālums starp attēlu un navigācijas elementu (zem bildes), kad galerija ir "slaidrādes" režīmā',
-    /* setting name */ 'Empty space below gallery' => 'Tukšuma izmērs zem galerijas',
-    /* help text */    'Distance between the gallery and the content below' => 'Attālums starp galeriju un saturu zem tā',
+    /* setting name */
+    'Space between images and image navigation' => 'Attālums starp attēlu un navigācijas elementu',
+    /* help text */
+    'Vertical space between images and image navigation (the digits below the image) when gallery is in "slideshow" mode' => 'Vertikālais attālums starp attēlu un navigācijas elementu (zem bildes), kad galerija ir "slaidrādes" režīmā',
+    /* setting name */
+    'Empty space below gallery' => 'Tukšuma izmērs zem galerijas',
+    /* help text */
+    'Distance between the gallery and the content below' => 'Attālums starp galeriju un saturu zem tā',
 
-    /* setting name */ 'Logo image' => 'Logo attēls',
+    /* setting name */
+    'Logo image' => 'Logo attēls',
 
-    /* setting name */ 'Color when hovered' => 'Izgaismotā elementa krāsa',
-    /* help text */    'Color of the element under mouse cursor' => 'Krāsa elementam, kas atrodas zem peles kursora bultiņas',
-    /* setting name */ 'Color when selected' => 'Aktīvā elementa krāsa',
-    /* help text */    'Color of the element of the currently opened section' => 'Krāsa patlaban atvērtās sadaļas elementam',
-    /* setting name */ 'Decoration' => 'Rotājums',
-    /* setting name */ 'Decoration when hovered' => 'Izgaismotā elementa rotājums',
-    /* setting name */ 'Decoration when selected' => 'Aktīvā elementa rotājums',
+    /* setting name */
+    'Color when hovered' => 'Izgaismotā elementa krāsa',
+    /* help text */
+    'Color of the element under mouse cursor' => 'Krāsa elementam, kas atrodas zem peles kursora bultiņas',
+    /* setting name */
+    'Color when selected' => 'Aktīvā elementa krāsa',
+    /* help text */
+    'Color of the element of the currently opened section' => 'Krāsa patlaban atvērtās sadaļas elementam',
+    /* setting name */
+    'Decoration' => 'Rotājums',
+    /* setting name */
+    'Decoration when hovered' => 'Izgaismotā elementa rotājums',
+    /* setting name */
+    'Decoration when selected' => 'Aktīvā elementa rotājums',
 
-    /* setting name */ 'Thumbnails' => 'Sīktēli',
-    /* setting name */ 'Thumbnails can be turned on by setting the section type to "Thumbnails enabled" & adding more than 1 images to background gallery.' => 'Sīktēli var tikt ieslēgti iestatot sadaļas tipu kā "Thumbnails enabled" un pievienojot vairāk kā vienu bildi fona galerijai.',
-    /* setting name */ 'Thumbnail container width' => 'Sīktēlu konteinera platums',
-    /* help text */    'IMPORTANT! This must be set as percentage. i.e. 60%' => 'UZMANĪBU! Šim parametram jābūt ievadītam kā procentiem. Piemēram, 60%',
+    /* setting name */
+    'Thumbnails' => 'Sīktēli',
+    /* setting name */
+    'Thumbnails can be turned on by setting the section type to "Thumbnails enabled" & adding more than 1 images to background gallery.' => 'Sīktēli var tikt ieslēgti iestatot sadaļas tipu kā "Thumbnails enabled" un pievienojot vairāk kā vienu bildi fona galerijai.',
+    /* setting name */
+    'Thumbnail container width' => 'Sīktēlu konteinera platums',
+    /* help text */
+    'IMPORTANT! This must be set as percentage. i.e. 60%' => 'UZMANĪBU! Šim parametram jābūt ievadītam kā procentiem. Piemēram, 60%',
 
     'googleFont_description' => 'Ieraksti google fonta nosaukumu. Apskati kādi fonti ir piejami: <a href="http://www.google.com/webfonts" target="_blank">Google web fonti</a> Ja izvēlēts google fonts, tad sistēmas fonti netiks ņemti vērā. Piemērs: <em>Marvel</em>, <em>Marvel:700italic</em> vai <em>Josefin Slab:700italic</em>',
     'Menu position' => 'Izvēlnes pozīcija',

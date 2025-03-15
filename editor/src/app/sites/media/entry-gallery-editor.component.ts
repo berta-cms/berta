@@ -170,7 +170,8 @@ import { SiteSettingsState } from '../settings/site-settings.state';
             [config]="{
               title: 'Autoplay seconds',
               format: 'text',
-              enabledOnUpdate: true
+              enabledOnUpdate: true,
+              validation: 'zero_or_positive_integer'
             }"
             [error]="''"
             [disabled]="false"

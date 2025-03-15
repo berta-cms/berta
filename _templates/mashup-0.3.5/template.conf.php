@@ -60,6 +60,7 @@ $sectionTypes = [
                 'format' => 'text',
                 'html_before' => I18n::_('entries_limit'),
                 'default' => '5',
+                'validation' => 'positive_integer',
                 'tip' => I18n::_('entries_limit_tip'),
             ],
         ]
@@ -115,7 +116,6 @@ $templateConf = [
         ],
         'fontSize' => [
             'format' => 'text',
-            'css_units' => true,
             'default' => '11px',
             'allow_blank' => true,
             'title' => I18n::_('Font size'),
@@ -177,7 +177,6 @@ $templateConf = [
         ],
         'lineHeight' => [
             'format' => 'text',
-            'css_units' => true,
             'default' => 'normal',
             'allow_blank' => true,
             'title' => I18n::_('Line height'),
@@ -424,7 +423,8 @@ $templateConf = [
             'values' => [
                 'yes',
                 'no',
-            ], 'title' => I18n::_('Centered layout'),
+            ],
+            'title' => I18n::_('Centered layout'),
             'description' => I18n::_('Sets whether layout should be centered or not.'),
         ],
         'contentWidth' => [
@@ -488,7 +488,8 @@ $templateConf = [
             'values' => [
                 'no',
                 'yes',
-            ], 'title' => I18n::_('Enabled'),
+            ],
+            'title' => I18n::_('Enabled'),
             'description' => I18n::_('Sets whether layout should be responsive or not.'),
         ],
         'mashUpColumns' => [
@@ -513,7 +514,7 @@ $templateConf = [
             'format' => 'text',
             'default' => '0.4',
             'allow_blank' => true,
-            'css_units' => false,
+            'validation' => 'positive_number',
             'title' => I18n::_('Image size ratio'),
             'description' => I18n::_('Images in the first page layout will be resized by this ratio. Think of it as percentage, e.g., 0.7 = 70% of the original image size.'),
             'css' => [
@@ -642,8 +643,11 @@ $templateConf = [
         'image' => [
             'format' => 'image',
             'default' => '',
-            'min_width' => 1, 'min_height' => 1, 'max_width' => 'setting:template:sideBar:width',
-            'max_height' => 1600, 'title' => I18n::_('Logo image'),
+            'min_width' => 1,
+            'min_height' => 1,
+            'max_width' => 'setting:template:sideBar:width',
+            'max_height' => 1600,
+            'title' => I18n::_('Logo image'),
             'description' => '<span class="warning">' . I18n::_('Displayed image will be half of the original size, full size will be used for hi-res displays.') . '</span>',
         ],
         'color' => [
@@ -692,7 +696,6 @@ $templateConf = [
         ],
         'fontSize' => [
             'format' => 'text',
-            'css_units' => true,
             'default' => '10px',
             'allow_blank' => true,
             'title' => I18n::_('Heading font size'),
@@ -754,7 +757,6 @@ $templateConf = [
         ],
         'lineHeight' => [
             'format' => 'text',
-            'css_units' => true,
             'default' => '1em',
             'allow_blank' => true,
             'title' => I18n::_('Heading line height'),
@@ -813,7 +815,6 @@ $templateConf = [
         ],
         'fontSize' => [
             'format' => 'text',
-            'css_units' => true,
             'default' => 'inherit',
             'allow_blank' => true,
             'title' => I18n::_('Font size'),
@@ -860,7 +861,6 @@ $templateConf = [
         ],
         'fontSize' => [
             'format' => 'text',
-            'css_units' => true,
             'default' => '10px',
             'allow_blank' => true,
             'title' => I18n::_('Font size'),
@@ -906,7 +906,6 @@ $templateConf = [
         ],
         'lineHeight' => [
             'format' => 'text',
-            'css_units' => true,
             'default' => '16px',
             'allow_blank' => true,
             'title' => I18n::_('Line height'),
@@ -1091,7 +1090,6 @@ $templateConf = [
         ],
         'fontSize' => [
             'format' => 'text',
-            'css_units' => true,
             'default' => '11px',
             'allow_blank' => true,
             'title' => I18n::_('Font size'),
@@ -1137,7 +1135,6 @@ $templateConf = [
         ],
         'lineHeight' => [
             'format' => 'text',
-            'css_units' => true,
             'default' => '16px',
             'allow_blank' => true,
             'title' => I18n::_('Line height'),

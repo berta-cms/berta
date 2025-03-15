@@ -96,7 +96,6 @@ $templateConf = [
         ],
         'fontSize' => [
             'format' => 'text',
-            'css_units' => true,
             'default' => '9pt',
             'allow_blank' => true,
             'title' => I18n::_('Font size'),
@@ -158,7 +157,6 @@ $templateConf = [
         ],
         'lineHeight' => [
             'format' => 'text',
-            'css_units' => true,
             'default' => 'normal',
             'allow_blank' => true,
             'title' => I18n::_('Line height'),
@@ -444,9 +442,8 @@ $templateConf = [
             'format' => 'text',
             'default' => '20px 40px 40px',
             'allow_blank' => true,
-            'css_units' => true,
             'title' => I18n::_('Page margins'),
-            'description' => I18n::_('How far the content is from browser edges. Please see the short CSS guide at the bottom of this page.'),
+            'description' => I18n::_('How far the content is from browser edges.'),
             'css' => [
                 [
                     'selector' => '#contentContainer',
@@ -458,7 +455,6 @@ $templateConf = [
             'format' => 'text',
             'default' => '0',
             'allow_blank' => true,
-            'css_units' => true,
             'title' => I18n::_('Top menu margins'),
             'description' => I18n::_('How big is the distance from the top menu to the other page elements'),
             'css' => [
@@ -560,7 +556,6 @@ $templateConf = [
         ],
         'fontSize' => [
             'format' => 'text',
-            'css_units' => true,
             'default' => '1.2em',
             'allow_blank' => true,
             'title' => I18n::_('Font size'),
@@ -622,7 +617,6 @@ $templateConf = [
         ],
         'lineHeight' => [
             'format' => 'text',
-            'css_units' => true,
             'default' => '0.8em',
             'allow_blank' => true,
             'title' => I18n::_('Line height'),
@@ -636,11 +630,10 @@ $templateConf = [
         ],
         'margin' => [
             'format' => 'text',
-            'css_units' => true,
             'default' => '10px 0 15px',
             'allow_blank' => true,
             'title' => I18n::_('Margins'),
-            'description' => I18n::_('How far the heading is from other elements in page. Please see the short CSS guide at the bottom of this page.'),
+            'description' => I18n::_('How far the heading is from other elements in page.'),
             'css' => [
                 [
                     'selector' => 'h1',
@@ -695,7 +688,6 @@ $templateConf = [
         ],
         'fontSize' => [
             'format' => 'text',
-            'css_units' => true,
             'default' => 'inherit',
             'allow_blank' => true,
             'title' => I18n::_('Font size'),
@@ -747,7 +739,6 @@ $templateConf = [
         ],
         'fontSize' => [
             'format' => 'text',
-            'css_units' => true,
             'default' => 'inherit',
             'allow_blank' => true,
             'title' => I18n::_('Font size'),
@@ -883,7 +874,6 @@ $templateConf = [
         ],
         'lineHeight' => [
             'format' => 'text',
-            'css_units' => true,
             'default' => 'inherit',
             'allow_blank' => true,
             'title' => I18n::_('Line height'),
@@ -897,11 +887,10 @@ $templateConf = [
         ],
         'margin' => [
             'format' => 'text',
-            'css_units' => true,
             'default' => '0',
             'allow_blank' => true,
             'title' => I18n::_('Margins'),
-            'description' => I18n::_('How far the menu is form other elements in page. Please see the short CSS guide at the bottom of this page.'),
+            'description' => I18n::_('How far the menu is form other elements in page.'),
             'css' => [
                 [
                     'selector' => '.bt-sections-menu > ul:not(.subMenu)',
@@ -949,7 +938,6 @@ $templateConf = [
         ],
         'fontSize' => [
             'format' => 'text',
-            'css_units' => true,
             'default' => 'inherit',
             'allow_blank' => true,
             'title' => I18n::_('Font size'),
@@ -1041,7 +1029,6 @@ $templateConf = [
         ],
         'lineHeight' => [
             'format' => 'text',
-            'css_units' => true,
             'default' => 'inherit',
             'allow_blank' => true,
             'title' => I18n::_('Line height'),
@@ -1055,11 +1042,10 @@ $templateConf = [
         ],
         'margin' => [
             'format' => 'text',
-            'css_units' => true,
             'default' => '0 0 10px',
             'allow_blank' => true,
             'title' => I18n::_('Margins'),
-            'description' => I18n::_('How far the menu is form other elements in page. Please see the short CSS guide at the bottom of this page.'),
+            'description' => I18n::_('How far the menu is form other elements in page.'),
             'css' => [
                 [
                     'selector' => '.bt-sections-menu > .subMenu',
@@ -1075,11 +1061,10 @@ $templateConf = [
         ],
         'margin' => [
             'format' => 'text',
-            'css_units' => true,
             'default' => '0 0 4em',
             'allow_blank' => true,
             'title' => I18n::_('Entry margins'),
-            'description' => I18n::_('Margins around entries. Please see the short CSS guide at the bottom of this page.'),
+            'description' => I18n::_('Margins around entries.'),
             'css' => [
                 [
                     'selector' => '#pageEntries li.xEntry',
@@ -1133,7 +1118,6 @@ $templateConf = [
         ],
         'galleryMargin' => [
             'format' => 'text',
-            'css_units' => true,
             'default' => '0',
             'allow_blank' => true,
             'title' => I18n::_('Gallery margins'),
@@ -1192,7 +1176,6 @@ $templateConf = [
         ],
         'fontSize' => [
             'format' => 'text',
-            'css_units' => true,
             'default' => '1.8em',
             'allow_blank' => true,
             'title' => I18n::_('Font size'),
@@ -1254,7 +1237,6 @@ $templateConf = [
         ],
         'lineHeight' => [
             'format' => 'text',
-            'css_units' => true,
             'default' => 'normal',
             'allow_blank' => true,
             'title' => I18n::_('Line height'),
@@ -1268,11 +1250,10 @@ $templateConf = [
         ],
         'margin' => [
             'format' => 'text',
-            'css_units' => true,
             'default' => '0',
             'allow_blank' => true,
             'title' => I18n::_('Margins'),
-            'description' => I18n::_('How far the entry heading is form other elements in page. Please see the short CSS guide at the bottom of this page.'),
+            'description' => I18n::_('How far the entry heading is form other elements in page.'),
             'css' => [
                 [
                     'selector' => '#pageEntries li.xEntry h2',
@@ -1327,7 +1308,6 @@ $templateConf = [
         ],
         'fontSize' => [
             'format' => 'text',
-            'css_units' => true,
             'default' => 'inherit',
             'allow_blank' => true,
             'title' => I18n::_('Font size'),
@@ -1392,7 +1372,6 @@ $templateConf = [
         ],
         'lineHeight' => [
             'format' => 'text',
-            'css_units' => true,
             'default' => 'inherit',
             'allow_blank' => true,
             'title' => I18n::_('Line height'),

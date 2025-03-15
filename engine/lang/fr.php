@@ -5,13 +5,20 @@ return [
 
     // Translations from the top "admin" menu
 
-    /* menu item */ 'close this' => 'fermer',
-    /* menu item */ 'my site' => 'mon site',
-    /* menu item */ 'sections' => 'sections',
-    /* menu item */ 'settings' => 'paramètres',
-    /* menu item */ 'design' => 'design',
-    /* menu item */ 'profile' => 'profil',
-    /* menu item */ 'log out' => 'se déconnecter',
+    /* menu item */
+    'close this' => 'fermer',
+    /* menu item */
+    'my site' => 'mon site',
+    /* menu item */
+    'sections' => 'sections',
+    /* menu item */
+    'settings' => 'paramètres',
+    /* menu item */
+    'design' => 'design',
+    /* menu item */
+    'profile' => 'profil',
+    /* menu item */
+    'log out' => 'se déconnecter',
 
     // Translatins from login / logout window
 
@@ -43,14 +50,22 @@ return [
 
     // Translatins from sections editor (sections.php)
 
-    /* title */ 'Sections' => 'Sections',
-    /* column */ 'Title as displayed in main menu' => 'Titre affiché dans le menu principal',
-    /* column */ 'Type' => 'Type',
-    /* column */ 'Details' => 'Détails',
-    /* column */ 'Is published?' => 'Publié ?',
-    /* column */ 'Delete' => 'Supprimer',
-    /* button */ 'create new section' => 'créer une nouvelle section',
-    /* button */ 'delete' => 'supprimer',
+    /* title */
+    'Sections' => 'Sections',
+    /* column */
+    'Title as displayed in main menu' => 'Titre affiché dans le menu principal',
+    /* column */
+    'Type' => 'Type',
+    /* column */
+    'Details' => 'Détails',
+    /* column */
+    'Is published?' => 'Publié ?',
+    /* column */
+    'Delete' => 'Supprimer',
+    /* button */
+    'create new section' => 'créer une nouvelle section',
+    /* button */
+    'delete' => 'supprimer',
 
     'What are sections?' => 'Que sont les sections ?',
     'sections_help_text' => 'Les sections sont les principales divisions de votre site. Elles servent à contenir et organiser votre contenu. Chaque section est accessible dans le menu principal. ',
@@ -68,8 +83,10 @@ return [
 
     // Translations from settings page (settings.php)
 
-    /* title */ 'Settings' => 'Paramètres',
-    /* title */ 'Design' => 'Design',
+    /* title */
+    'Settings' => 'Paramètres',
+    /* title */
+    'Design' => 'Design',
     'These are settings for template' => 'Voici les paramètres des templates',
 
     'Some help with CSS values' => 'Un peu d’aide avec les propriétés CSS',
@@ -83,62 +100,110 @@ return [
     'Texts in the website' => 'Textes dans le site',
     'Site heading' => 'Titre principal',
 
-    /* setting tab & setting name */ 'Template' => 'Template',
-    /* help text */    'Templates are like skins or themes for your site. You can choose one template from the ones installed in your templates folder. To add a new template to this list, upload it to the templates folder via FTP.' => 'Les templates définissent l’apparence de votre site. Vous pouvez choisir un jeu de templates parmi ceux installés dans votre dossier de templates. Pour ajouter un nouveau jeu à cette liste, téléchargez-le dans ce dossier via FTP.',
+    /* setting tab & setting name */
+    'Template' => 'Template',
+    /* help text */
+    'Templates are like skins or themes for your site. You can choose one template from the ones installed in your templates folder. To add a new template to this list, upload it to the templates folder via FTP.' => 'Les templates définissent l’apparence de votre site. Vous pouvez choisir un jeu de templates parmi ceux installés dans votre dossier de templates. Pour ajouter un nouveau jeu à cette liste, téléchargez-le dans ce dossier via FTP.',
 
-    /* setting tab */ 'Info' => 'Info',
-    /* setting name */ 'Your name' => 'Votre nom',
-    /* help text */    'Your name will be put in a meta-tag in the code of your site. You can choose any name ;)' => 'Votre nom sera affiché dans une balise meta au sein du code de votre site. Vous pouvez choisir celui que vous souhaitez ;)',
-    /* setting name */ 'Page title (title bar)' => 'Titre de la page',
-    /* help text */    'Text that appears in the bowser title bar' => 'Ce texte apparaîtra dans la barre de titre de votre navigateur',
-    /* setting name */ '<META> description' => '<META> description',
-    /* help text */    'Site description. It should not be longer than one or two sentences.' => 'Description du site. Pas plus d’une ou deux phrases.',
-    /* setting name */ '<META> keywords' => '<META> mots-clés',
-    /* help text */    'Keywords visible only to search engines. Keywords along with the description can improve your site ranking in search results.' => 'Ces mots-clés ne sont visibles que pour les moteurs de recherche. Associés à la description, ils permettent d’améliorer votre positionnement dans les moteurs.',
+    /* setting tab */
+    'Info' => 'Info',
+    /* setting name */
+    'Your name' => 'Votre nom',
+    /* help text */
+    'Your name will be put in a meta-tag in the code of your site. You can choose any name ;)' => 'Votre nom sera affiché dans une balise meta au sein du code de votre site. Vous pouvez choisir celui que vous souhaitez ;)',
+    /* setting name */
+    'Page title (title bar)' => 'Titre de la page',
+    /* help text */
+    'Text that appears in the bowser title bar' => 'Ce texte apparaîtra dans la barre de titre de votre navigateur',
+    /* setting name */
+    '<META> description' => '<META> description',
+    /* help text */
+    'Site description. It should not be longer than one or two sentences.' => 'Description du site. Pas plus d’une ou deux phrases.',
+    /* setting name */
+    '<META> keywords' => '<META> mots-clés',
+    /* help text */
+    'Keywords visible only to search engines. Keywords along with the description can improve your site ranking in search results.' => 'Ces mots-clés ne sont visibles que pour les moteurs de recherche. Associés à la description, ils permettent d’améliorer votre positionnement dans les moteurs.',
 
-    /* setting tab */ 'Navigation' => 'Navigation',
-    /* setting name */ 'Is first section visible in menu?' => 'Afficher la première section dans le menu ?',
-    /* help text */    'Choose "no" to hide the first section in the main menu. Link from the page title (or header image) will lead to it. NOTE: This setting has no effect, if the section has a submenu; then it is visible at all times.' => 'Choisissez « non » pour masquer la première section. Le lien créé depuis le titre du site (ou l’image d’entête) y mènera. À noter : ce paramètre n’a pas d’effet si la section a un sous-menu ; elle sera alors visible en permanence.',
-    /* setting name */ 'Show menu in first section?' => 'Afficher le menu dans la première section ?',
-    /* help text */    'Choose "no" to hide the menu in first section.' => 'Choisissez « non » pour masquer le menu dans la première section.',
-    /* setting name */ 'Always auto-select a submenu item?' => 'Sélectionner automatiquement un élément du sous-menu ?',
-    /* help text */    'Choose "yes" to automatically select the first submenu item when clicking on a menu item. This works only when there is a submenu.' => 'Choisissez « oui » pour sélectionner automatiquement le premier sous-menu en cliquant sur un élément du menu. Ne fonctionne que si un sous-menu existe.',
+    /* setting tab */
+    'Navigation' => 'Navigation',
+    /* setting name */
+    'Is first section visible in menu?' => 'Afficher la première section dans le menu ?',
+    /* help text */
+    'Choose "no" to hide the first section in the main menu. Link from the page title (or header image) will lead to it. NOTE: This setting has no effect, if the section has a submenu; then it is visible at all times.' => 'Choisissez « non » pour masquer la première section. Le lien créé depuis le titre du site (ou l’image d’entête) y mènera. À noter : ce paramètre n’a pas d’effet si la section a un sous-menu ; elle sera alors visible en permanence.',
+    /* setting name */
+    'Show menu in first section?' => 'Afficher le menu dans la première section ?',
+    /* help text */
+    'Choose "no" to hide the menu in first section.' => 'Choisissez « non » pour masquer le menu dans la première section.',
+    /* setting name */
+    'Always auto-select a submenu item?' => 'Sélectionner automatiquement un élément du sous-menu ?',
+    /* help text */
+    'Choose "yes" to automatically select the first submenu item when clicking on a menu item. This works only when there is a submenu.' => 'Choisissez « oui » pour sélectionner automatiquement le premier sous-menu en cliquant sur un élément du menu. Ne fonctionne que si un sous-menu existe.',
 
-    /* setting name */ 'Favicon' => 'Favicon',
-    /* help text */    'Small picture to display in the address bar of the browser. The file must be in .ICO format and 16x16 pixels big.' => 'L’icône de votre site dans la barre de titre du navigateur. Le fichier doit être au format .ICO et mesurer 16x16 pixels.',
-    /* setting name */ 'Grid step' => 'Divisions de la grille',
-    /* help text */    'Distance in pixels for snap-to-grid dragging.' => 'La distance en pixels pour le magnétisme de la grille lors du glisser/déposer',
+    /* setting name */
+    'Favicon' => 'Favicon',
+    /* help text */
+    'Small picture to display in the address bar of the browser. The file must be in .ICO format and 16x16 pixels big.' => 'L’icône de votre site dans la barre de titre du navigateur. Le fichier doit être au format .ICO et mesurer 16x16 pixels.',
+    /* setting name */
+    'Grid step' => 'Divisions de la grille',
+    /* help text */
+    'Distance in pixels for snap-to-grid dragging.' => 'La distance en pixels pour le magnétisme de la grille lors du glisser/déposer',
 
-    /* setting tab */  'Entry layout' => 'Entrées',
-    /* setting name */ 'Small image width' => 'Largeur des vignettes',
-    /* setting name */ 'Small image height' => 'Hauteur des vignettes',
-    /* help text */    'Maximum size of a small image (visible if \'Small images\' are switched on in the gallery editor). These settings don\'t affect original image.' => 'Taille maximale des vignettes (visible si « Vignettes » est activé dans l’éditeur de la galerie. Ce paramètre n’affecte pas l’image originale.',
-    /* setting name */ 'Large image width' => 'Largeur des grandes images',
-    /* setting name */ 'Large image height' => 'Hauteur des grandes images',
-    /* help text */    'Maximum size of a large image (visible if \'Large images\' are switched on in the gallery editor). These settings don\'t affect original image.' => 'Taille maximale des grandes images (visible si « Grandes images » est activé dans l’éditeur de la galerie. Ce paramètre n’affecte pas l’image originale.',
+    /* setting tab */
+    'Entry layout' => 'Entrées',
+    /* setting name */
+    'Small image width' => 'Largeur des vignettes',
+    /* setting name */
+    'Small image height' => 'Hauteur des vignettes',
+    /* help text */
+    'Maximum size of a small image (visible if \'Small images\' are switched on in the gallery editor). These settings don\'t affect original image.' => 'Taille maximale des vignettes (visible si « Vignettes » est activé dans l’éditeur de la galerie. Ce paramètre n’affecte pas l’image originale.',
+    /* setting name */
+    'Large image width' => 'Largeur des grandes images',
+    /* setting name */
+    'Large image height' => 'Hauteur des grandes images',
+    /* help text */
+    'Maximum size of a large image (visible if \'Large images\' are switched on in the gallery editor). These settings don\'t affect original image.' => 'Taille maximale des grandes images (visible si « Grandes images » est activé dans l’éditeur de la galerie. Ce paramètre n’affecte pas l’image originale.',
 
-    /* setting tab */ 'Media' => 'Média',
-    /* setting subcategory */ 'Lightbox settings:' => 'Paramètres Lightbox:',
-    /* setting name */ 'Is enabled by default' => 'Activée par défaut',
-    /* help text */    'Enables Lightbox mode for new entries.' => 'Activer le mode Lightbox pour les nouvelles entrées.',
-    /* setting name */ 'Background color' => 'Couleur de fond',
-    /* help text */    'Color of the Lightbox background layer.' => 'Couleur du calque Lightbox',
-    /* setting name */ 'Image numbers' => 'Numéros d’image',
-    /* setting name */ 'Caption alignment' => 'Alignement de la légende',
-    /* help text */    'Positioning of the image caption text.' => 'Positionnement du texte de légende.',
-    /* setting subcategory */ 'Image gallery appearance:' => 'Apparence de la galerie d’image:',
-    /* setting name */ 'Video player' => 'Lecteur vidéo',
-    /* help text */    'Choose between the two visually different players for your video files.' => 'Choisissez parmie les deux lecteurs pour la lecture de vos vidéos.',
+    /* setting tab */
+    'Media' => 'Média',
+    /* setting subcategory */
+    'Lightbox settings:' => 'Paramètres Lightbox:',
+    /* setting name */
+    'Is enabled by default' => 'Activée par défaut',
+    /* help text */
+    'Enables Lightbox mode for new entries.' => 'Activer le mode Lightbox pour les nouvelles entrées.',
+    /* setting name */
+    'Background color' => 'Couleur de fond',
+    /* help text */
+    'Color of the Lightbox background layer.' => 'Couleur du calque Lightbox',
+    /* setting name */
+    'Image numbers' => 'Numéros d’image',
+    /* setting name */
+    'Caption alignment' => 'Alignement de la légende',
+    /* help text */
+    'Positioning of the image caption text.' => 'Positionnement du texte de légende.',
+    /* setting subcategory */
+    'Image gallery appearance:' => 'Apparence de la galerie d’image:',
+    /* setting name */
+    'Video player' => 'Lecteur vidéo',
+    /* help text */
+    'Choose between the two visually different players for your video files.' => 'Choisissez parmie les deux lecteurs pour la lecture de vos vidéos.',
 
-    /* setting tab */ 'Banners' => 'Bannières',
-    /* setting name */ 'Banner image' => 'Image de la bannière',
-    /* setting name */ 'Banner link' => 'Lien de la bannière',
+    /* setting tab */
+    'Banners' => 'Bannières',
+    /* setting name */
+    'Banner image' => 'Image de la bannière',
+    /* setting name */
+    'Banner link' => 'Lien de la bannière',
 
-    /* setting tab */ 'Language' => 'Langue',
-    /* setting name */ 'Interface language' => 'Langue de l’interface',
+    /* setting tab */
+    'Language' => 'Langue',
+    /* setting name */
+    'Interface language' => 'Langue de l’interface',
 
-    /* setting tab */ 'Other settings' => 'Autres paramètres',
-    /* setting name */ 'Google site verification tag' => 'Balise META de vérification Google',
+    /* setting tab */
+    'Other settings' => 'Autres paramètres',
+    /* setting name */
+    'Google site verification tag' => 'Balise META de vérification Google',
 
     // Translations from entries view (and editing)
 
@@ -148,145 +213,258 @@ return [
 
     // Translations for default template
 
-    /* setting tab */ 'General font settings' => 'Paramètres typo',
-    /* setting name */ 'Color' => 'Couleur',
-    /* setting name */ 'Font face' => 'Famille',
-    /* setting name */ 'Font size' => 'Corps',
-    /* setting name */ 'Font weight' => 'Graisse',
-    /* setting name */ 'Font style' => 'Style',
-    /* setting name */ 'Font variant' => 'Variantes',
-    /* setting name */ 'Line height' => 'Interligne',
-    /* help text */    'Height of text line. Use em, px or % values or the default value "normal"' => 'La hauteur des lignes de texte. Utilisez les unités em, px ou %, ou la valeur par défaut « normal ».',
+    /* setting tab */
+    'General font settings' => 'Paramètres typo',
+    /* setting name */
+    'Color' => 'Couleur',
+    /* setting name */
+    'Font face' => 'Famille',
+    /* setting name */
+    'Font size' => 'Corps',
+    /* setting name */
+    'Font weight' => 'Graisse',
+    /* setting name */
+    'Font style' => 'Style',
+    /* setting name */
+    'Font variant' => 'Variantes',
+    /* setting name */
+    'Line height' => 'Interligne',
+    /* help text */
+    'Height of text line. Use em, px or % values or the default value "normal"' => 'La hauteur des lignes de texte. Utilisez les unités em, px ou %, ou la valeur par défaut « normal ».',
 
-    /* setting tab */ 'Hyperlinks' => 'Liens',
-    /* setting name */ 'Link color' => 'Couleur des liens',
-    /* setting name */ 'Visited link color' => 'Couleur des liens visités',
-    /* setting name */ 'Link color when hovered' => 'Couleur des liens survolés',
-    /* setting name */ 'Link color when clicked' => 'Couleur des liens au click',
-    /* setting name */ 'Link decoration' => 'Décoration des liens',
-    /* setting name */ 'Visited link decoration' => 'Décoration des liens visités',
-    /* setting name */ 'Link decoration when hovered' => 'Décoration des liens au survol',
-    /* setting name */ 'Link decoration when clicked' => 'Décoration des liens au click',
+    /* setting tab */
+    'Hyperlinks' => 'Liens',
+    /* setting name */
+    'Link color' => 'Couleur des liens',
+    /* setting name */
+    'Visited link color' => 'Couleur des liens visités',
+    /* setting name */
+    'Link color when hovered' => 'Couleur des liens survolés',
+    /* setting name */
+    'Link color when clicked' => 'Couleur des liens au click',
+    /* setting name */
+    'Link decoration' => 'Décoration des liens',
+    /* setting name */
+    'Visited link decoration' => 'Décoration des liens visités',
+    /* setting name */
+    'Link decoration when hovered' => 'Décoration des liens au survol',
+    /* setting name */
+    'Link decoration when clicked' => 'Décoration des liens au click',
 
-    /* setting tab */ 'Background' => 'Arrière plan',
-    /* setting name */ 'Background color' => 'Couleur d’arrière plan',
-    /* help text */    'IMPORTANT! These settings will be overwritten, if you are using background gallery feature. You access it by clicking "edit background gallery" button in each section.' => 'Important ! Ces paramètres seront surchargés si vous utilisez la fonctionnalité d’image d’arrière plan dans les galeries. Pour y accéder, cliquez sur le bouton « éditez l’image de fond de la galerie » dans chaque section.',
-    /* setting name */ 'Is background image enabled?' => 'Activer l’image d’arrière plan ?',
-    /* setting name */ 'Background image' => 'Image d’arrière plan',
-    /* help text */    'Picture to use for page background.' => 'L’image à utiliser en tant qu’arrière plan.',
-    /* setting name */ 'Background tiling' => 'Répéter l’arrière plan ?',
-    /* help text */    'How the background fills the screen?' => 'Mode de répétition de l’arrière plan.',
-    /* setting name */ 'Background alignment' => 'Position de l’arrière plan',
-    /* help text */    'Where the background image is positioned?' => 'Positionnement de l’arrière plan',
-    /* setting name */ 'Background position' => 'Comportement de l’arrière plan',
-    /* help text */    'Sets how background behaves in relation with the browser window.' => 'Définit le comportement de l’arrière plan par rapport à la fenêtre du navigateur.',
+    /* setting tab */
+    'Background' => 'Arrière plan',
+    /* setting name */
+    'Background color' => 'Couleur d’arrière plan',
+    /* help text */
+    'IMPORTANT! These settings will be overwritten, if you are using background gallery feature. You access it by clicking "edit background gallery" button in each section.' => 'Important ! Ces paramètres seront surchargés si vous utilisez la fonctionnalité d’image d’arrière plan dans les galeries. Pour y accéder, cliquez sur le bouton « éditez l’image de fond de la galerie » dans chaque section.',
+    /* setting name */
+    'Is background image enabled?' => 'Activer l’image d’arrière plan ?',
+    /* setting name */
+    'Background image' => 'Image d’arrière plan',
+    /* help text */
+    'Picture to use for page background.' => 'L’image à utiliser en tant qu’arrière plan.',
+    /* setting name */
+    'Background tiling' => 'Répéter l’arrière plan ?',
+    /* help text */
+    'How the background fills the screen?' => 'Mode de répétition de l’arrière plan.',
+    /* setting name */
+    'Background alignment' => 'Position de l’arrière plan',
+    /* help text */
+    'Where the background image is positioned?' => 'Positionnement de l’arrière plan',
+    /* setting name */
+    'Background position' => 'Comportement de l’arrière plan',
+    /* help text */
+    'Sets how background behaves in relation with the browser window.' => 'Définit le comportement de l’arrière plan par rapport à la fenêtre du navigateur.',
 
-    /* setting name */ 'Background button type' => 'Type de bouton d’arrière plan',
-    /* help name */    'Select type for background gallery buttons.' => 'Sélectionnez la couleur des boutons pour les galeries en arrière plan.',
+    /* setting name */
+    'Background button type' => 'Type de bouton d’arrière plan',
+    /* help name */
+    'Select type for background gallery buttons.' => 'Sélectionnez la couleur des boutons pour les galeries en arrière plan.',
 
-    /* setting name */ 'Content position' => 'Poistion du contenu',
-    /* setting name */ 'Text alignment' => 'Alignement du texte',
-    /* setting name */ 'Width of content area' => 'Largeur de la zone de contenu',
-    /* setting name */ 'Page margins' => 'Marges de la page',
-    /* help text */    'How far the content is from browser edges. Please see the short CSS guide at the bottom of this page.' => 'Distance entre le contenu et les limites du navigateur. Référez-vous au guide CSS en bas de page.',
-    /* setting name */ 'Top menu margins' => 'Marges du menu supérieur',
-    /* help text */    'How big is the distance from the top menu to the other page elements' => 'Distance entre le menu supérieur et les autres éléments de la page.',
+    /* setting name */
+    'Content position' => 'Poistion du contenu',
+    /* setting name */
+    'Text alignment' => 'Alignement du texte',
+    /* setting name */
+    'Width of content area' => 'Largeur de la zone de contenu',
+    /* setting name */
+    'Page margins' => 'Marges de la page',
+    /* help text */
+    'How far the content is from browser edges.' => 'Distance entre le contenu et les limites du navigateur.',
+    /* setting name */
+    'Top menu margins' => 'Marges du menu supérieur',
+    /* help text */
+    'How big is the distance from the top menu to the other page elements' => 'Distance entre le menu supérieur et les autres éléments de la page.',
 
-    /* setting tab */ 'Page heading' => 'Entête de page',
-    /* setting name */ 'Header image' => 'Image d’entête',
-    /* help text */    'Picture to use instead of text.' => 'Image à utiliser au lieu du texte',
-    /* help text */    'How far the heading is from other elements in page. Please see the short CSS guide at the bottom of this page.' => 'Distance entre l’entête et les autres éléments de la page. Référez-vous au guide CSS en bas de page.',
-    /* help text */    'How far the menu is form other elements in page. Please see the short CSS guide at the bottom of this page.' => 'Distance entre le menu  et les autres éléments de la page. Référez-vous au guide CSS en bas de page.',
+    /* setting tab */
+    'Page heading' => 'Entête de page',
+    /* setting name */
+    'Header image' => 'Image d’entête',
+    /* help text */
+    'Picture to use instead of text.' => 'Image à utiliser au lieu du texte',
+    /* help text */
+    'How far the heading is from other elements in page.' => 'Distance entre l’entête et les autres éléments de la page.',
+    /* help text */
+    'How far the menu is form other elements in page.' => 'Distance entre le menu  et les autres éléments de la page.',
 
-    /* setting tab */ 'Main menu' => 'Menu principal',
-    /* setting name */ 'Menu items separator' => 'Séparateur des éléments de menu',
-    /* setting name */ 'Space width around separator' => 'Espacement des séparateurs',
-    /* help text */    'The distance from the separator to the menu item on both sides' => 'Distance entre le séparateur et les éléments de menu.',
+    /* setting tab */
+    'Main menu' => 'Menu principal',
+    /* setting name */
+    'Menu items separator' => 'Séparateur des éléments de menu',
+    /* setting name */
+    'Space width around separator' => 'Espacement des séparateurs',
+    /* help text */
+    'The distance from the separator to the menu item on both sides' => 'Distance entre le séparateur et les éléments de menu.',
 
-    /* setting tab */ 'Submenu' => 'Sous-menu',
+    /* setting tab */
+    'Submenu' => 'Sous-menu',
 
-    /* setting name */ 'Entry margins' => 'Marges',
-    /* help text */    'Margins around entries. Please see the short CSS guide at the bottom of this page.' => 'MArges autour de l’entrée. Référez-vous au guide CSS en bas de page.',
-    /* setting name */ 'Gallery position' => 'Position de la galerie',
-    /* setting name */ 'Default gallery type' => 'Type de galerie par défaut',
-    /* help text */    'Slideshow means that an image menu plus only one image is visible at a time. Row means that all images are visible.' => 'Le mode « slideshow » n’affiche qu’une image à la fois. Le mode « row » rend toutes les images visibles.',
-    /* setting name */ 'Space between images in row and column' => 'Espace entre les images',
-    /* help text */    'Horizontal/vertical space between images when gallery is in "row"/"column" mode' => 'Espace entre les images pquand la galerie est en mode « row » ou « column ».',
-    /* setting name */ 'Gallery margins' => 'Marges de la galerie',
-    /* help text */    'Margin around gallery block' => 'Marges autour de la galerie',
+    /* setting name */
+    'Entry margins' => 'Marges',
+    /* help text */
+    'Margins around entries.' => 'Marges autour de l’entrée.',
+    /* setting name */
+    'Gallery position' => 'Position de la galerie',
+    /* setting name */
+    'Default gallery type' => 'Type de galerie par défaut',
+    /* help text */
+    'Slideshow means that an image menu plus only one image is visible at a time. Row means that all images are visible.' => 'Le mode « slideshow » n’affiche qu’une image à la fois. Le mode « row » rend toutes les images visibles.',
+    /* setting name */
+    'Space between images in row and column' => 'Espace entre les images',
+    /* help text */
+    'Horizontal/vertical space between images when gallery is in "row"/"column" mode' => 'Espace entre les images pquand la galerie est en mode « row » ou « column ».',
+    /* setting name */
+    'Gallery margins' => 'Marges de la galerie',
+    /* help text */
+    'Margin around gallery block' => 'Marges autour de la galerie',
 
-    /* setting tab */  'Entry heading' => 'Entête d’entrée',
-    /* help text */    'How far the entry heading is form other elements in page. Please see the short CSS guide at the bottom of this page.' => 'Distance entre l’entête de l’entrée et les autres éléments de la page. Référez-vous au guide CSS en bas de page.',
+    /* setting tab */
+    'Entry heading' => 'Entête d’entrée',
+    /* help text */
+    'How far the entry heading is form other elements in page.' => 'Distance entre l’entête de l’entrée et les autres éléments de la page.',
 
-    /* setting tab */ 'Entry footer' => 'Pied de page',
+    /* setting tab */
+    'Entry footer' => 'Pied de page',
 
     // Translations for Mashup template
 
-    /* setting name */ 'First page' => 'Première page',
-    /* setting name */ 'Sidebar' => 'Sidebar',
-    /* setting tab */  'Page layout' => 'Mise en page',
-    /* setting name */ 'Entry text max width' => 'Largeur maximale du texte',
-    /* help text */    'Width of texts in the entries. This does not apply to the width of images.' => 'Détermine la largeur maximale des textes. Ne s’applique pas aux images',
-    /* setting name */ 'How far content is from page top?' => 'Distance du contenu par rapport au haut de page',
-    /* help text */    'The vertical distance between the top of the page and the content area.' => 'Distance verticale entre le haut de page et la zone de contenu.',
-    /* setting name */ 'How far content is from sidebar?' => 'Distance entre le contenu et la sidebar',
-    /* help text */    'The horizontal distance between the menu and the content area.' => 'Distance horizontale entre le menu et la zone de contenu.',
+    /* setting name */
+    'First page' => 'Première page',
+    /* setting name */
+    'Sidebar' => 'Sidebar',
+    /* setting tab */
+    'Page layout' => 'Mise en page',
+    /* setting name */
+    'Entry text max width' => 'Largeur maximale du texte',
+    /* help text */
+    'Width of texts in the entries. This does not apply to the width of images.' => 'Détermine la largeur maximale des textes. Ne s’applique pas aux images',
+    /* setting name */
+    'How far content is from page top?' => 'Distance du contenu par rapport au haut de page',
+    /* help text */
+    'The vertical distance between the top of the page and the content area.' => 'Distance verticale entre le haut de page et la zone de contenu.',
+    /* setting name */
+    'How far content is from sidebar?' => 'Distance entre le contenu et la sidebar',
+    /* help text */
+    'The horizontal distance between the menu and the content area.' => 'Distance horizontale entre le menu et la zone de contenu.',
 
-    /* setting name */ 'Space between entries' => 'Espace entre les entrées',
-    /* help text */    'Distance from entry to entry. In pixels.' => 'Distance entre les entrées, en pixels.',
+    /* setting name */
+    'Space between entries' => 'Espace entre les entrées',
+    /* help text */
+    'Distance from entry to entry. In pixels.' => 'Distance entre les entrées, en pixels.',
 
-    /* setting name */ 'Width' => 'Largeur',
-    /* setting name */ 'Left margin' => 'Marge gauche',
-    /* help text */    'How far the sidebar is from the left side of the screen.' => 'Distance entre le menu et la gauche de l’écran.',
-    /* setting name */ 'Top padding' => 'Marge supérieure',
-    /* help text */    'How far the header is from the top of the screen?' => 'Distance entre l’entête et le haut de l’écran.',
-    /* setting name */ 'Space between header and menu' => 'Espace entre l’entête et le menu',
-    /* help text */    'How far the menu is from the header text or header image.' => 'Distance entre l’entête (texte ou image) et le menu.',
-    /* setting name */ 'Heading text color' => 'Couleur du texte d’entête',
-    /* setting name */ 'Is transparent?' => 'Transparent ?',
-    /* setting name */ 'Heading font' => 'Typo d’entête',
-    /* setting name */ 'Heading font size' => 'Corps',
-    /* setting name */ 'Heading font weight' => 'Graisse',
-    /* setting name */ 'Heading font style' => 'Style',
-    /* setting name */ 'Heading font variant' => 'Variantes',
-    /* setting name */ 'Heading line height' => 'Interligne',
+    /* setting name */
+    'Width' => 'Largeur',
+    /* setting name */
+    'Left margin' => 'Marge gauche',
+    /* help text */
+    'How far the sidebar is from the left side of the screen.' => 'Distance entre le menu et la gauche de l’écran.',
+    /* setting name */
+    'Top padding' => 'Marge supérieure',
+    /* help text */
+    'How far the header is from the top of the screen?' => 'Distance entre l’entête et le haut de l’écran.',
+    /* setting name */
+    'Space between header and menu' => 'Espace entre l’entête et le menu',
+    /* help text */
+    'How far the menu is from the header text or header image.' => 'Distance entre l’entête (texte ou image) et le menu.',
+    /* setting name */
+    'Heading text color' => 'Couleur du texte d’entête',
+    /* setting name */
+    'Is transparent?' => 'Transparent ?',
+    /* setting name */
+    'Heading font' => 'Typo d’entête',
+    /* setting name */
+    'Heading font size' => 'Corps',
+    /* setting name */
+    'Heading font weight' => 'Graisse',
+    /* setting name */
+    'Heading font style' => 'Style',
+    /* setting name */
+    'Heading font variant' => 'Variantes',
+    /* setting name */
+    'Heading line height' => 'Interligne',
 
-    /* setting name */ 'Image size ratio' => 'Ratio de taille d’image',
-    /* help text */    'Images in the first page layout will be resized by this ratio. Think of it as percentage, e.g., 0.7 = 70% of the original image size.' => 'Les images dans la mise en page de la première page seront redimensionnée par ce ratio. Envisagez le comme un pourcentage ; 0.7 = 70% de l’image originale.',
-    /* setting name */ 'Images have shadows?' => 'Ombres associées aux images ?',
-    /* setting name */ 'Images wiggle on mouse-over?' => 'Tremblement des images au survol ?',
+    /* setting name */
+    'Image size ratio' => 'Ratio de taille d’image',
+    /* help text */
+    'Images in the first page layout will be resized by this ratio. Think of it as percentage, e.g., 0.7 = 70% of the original image size.' => 'Les images dans la mise en page de la première page seront redimensionnée par ce ratio. Envisagez le comme un pourcentage ; 0.7 = 70% de l’image originale.',
+    /* setting name */
+    'Images have shadows?' => 'Ombres associées aux images ?',
+    /* setting name */
+    'Images wiggle on mouse-over?' => 'Tremblement des images au survol ?',
 
-    /* setting name */ 'Color when opened' => 'Couleur à l’ouverture',
-    /* setting name */ 'Decoration when opened' => 'Décoration à l’ouverture',
+    /* setting name */
+    'Color when opened' => 'Couleur à l’ouverture',
+    /* setting name */
+    'Decoration when opened' => 'Décoration à l’ouverture',
 
     // Translations for White template
 
-    /* setting name */ 'Empty space on top' => 'Espace vide en haut',
-    /* setting name */ 'Empty space on bottom' => 'Espace vide en bas',
-    /* setting name */ 'How far content is from menu?' => 'Distance entre le contenu et le menu',
-    /* setting name */ 'Width of the left column' => 'Largeur de la colonne gauche',
+    /* setting name */
+    'Empty space on top' => 'Espace vide en haut',
+    /* setting name */
+    'Empty space on bottom' => 'Espace vide en bas',
+    /* setting name */
+    'How far content is from menu?' => 'Distance entre le contenu et le menu',
+    /* setting name */
+    'Width of the left column' => 'Largeur de la colonne gauche',
 
     // Translations for Messy template
 
-    /* setting name */ 'Space between images and image navigation' => 'Distance entre les images et leur barre de navigation',
-    /* help text */    'Vertical space between images and image navigation (the digits below the image) when gallery is in "slideshow" mode' => 'Espace vertical entre les images et les numéros lorsque la galerie est en mode « slideshow ».',
-    /* setting name */ 'Empty space below gallery' => 'Esapce sous la galerie',
-    /* help text */    'Distance between the gallery and the content below' => 'Distance entre la galerie et le contenu',
+    /* setting name */
+    'Space between images and image navigation' => 'Distance entre les images et leur barre de navigation',
+    /* help text */
+    'Vertical space between images and image navigation (the digits below the image) when gallery is in "slideshow" mode' => 'Espace vertical entre les images et les numéros lorsque la galerie est en mode « slideshow ».',
+    /* setting name */
+    'Empty space below gallery' => 'Esapce sous la galerie',
+    /* help text */
+    'Distance between the gallery and the content below' => 'Distance entre la galerie et le contenu',
 
-    /* setting name */ 'Logo image' => 'Image d’entête',
+    /* setting name */
+    'Logo image' => 'Image d’entête',
 
-    /* setting name */ 'Color when hovered' => 'Couleur au survol',
-    /* help text */    'Color of the element under mouse cursor' => 'Couleur de l’élément survolé par la souris.',
-    /* setting name */ 'Color when selected' => 'Couleur si sélectionné',
-    /* help text */    'Color of the element of the currently opened section' => 'Couleur de l’élément de la section courante.',
-    /* setting name */ 'Decoration' => 'Décoration',
-    /* setting name */ 'Decoration when hovered' => 'Décoration au survol',
-    /* setting name */ 'Decoration when selected' => 'Décoration si sélectionné',
+    /* setting name */
+    'Color when hovered' => 'Couleur au survol',
+    /* help text */
+    'Color of the element under mouse cursor' => 'Couleur de l’élément survolé par la souris.',
+    /* setting name */
+    'Color when selected' => 'Couleur si sélectionné',
+    /* help text */
+    'Color of the element of the currently opened section' => 'Couleur de l’élément de la section courante.',
+    /* setting name */
+    'Decoration' => 'Décoration',
+    /* setting name */
+    'Decoration when hovered' => 'Décoration au survol',
+    /* setting name */
+    'Decoration when selected' => 'Décoration si sélectionné',
 
-    /* setting name */ 'Thumbnails' => 'Vignettes',
-    /* setting name */ 'Thumbnails can be turned on by setting the section type to "Thumbnails enabled" & adding more than 1 images to background gallery.' => 'Les vignettes peuvent être activées en paramétrant le type de la section à « Thumbnails enabled » et en ajoutant plus d’une image à la galerie d’arrière plan. ',
-    /* setting name */ 'Thumbnail container width' => 'Largeur de la zone des vignettes',
-    /* help text */    'IMPORTANT! This must be set as percentage. i.e. 60%' => 'Important : à spécifier en pourcentages, ex. : 60%',
+    /* setting name */
+    'Thumbnails' => 'Vignettes',
+    /* setting name */
+    'Thumbnails can be turned on by setting the section type to "Thumbnails enabled" & adding more than 1 images to background gallery.' => 'Les vignettes peuvent être activées en paramétrant le type de la section à « Thumbnails enabled » et en ajoutant plus d’une image à la galerie d’arrière plan. ',
+    /* setting name */
+    'Thumbnail container width' => 'Largeur de la zone des vignettes',
+    /* help text */
+    'IMPORTANT! This must be set as percentage. i.e. 60%' => 'Important : à spécifier en pourcentages, ex. : 60%',
 
     'googleFont_description' => 'Tapez le nom d’une fonte Google font. Pour voir les fontes disponibles, rendez-vous sur <a href="http://www.google.com/webfonts" target="_blank">Google web fonts</a>. Attention  – les fontes Google font prennent le dessus sur les fontes système. Laissez le champ vide pour utiliser une fonte système. Exemple : <em>Marvel</em>, <em>Marvel:700italic</em> ou <em>Josefin Slab:700italic</em>',
     'Menu position' => 'Position du menu',

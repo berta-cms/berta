@@ -95,7 +95,6 @@ $templateConf = [
         ],
         'fontSize' => [
             'format' => 'text',
-            'css_units' => true,
             'default' => '11px',
             'allow_blank' => true,
             'title' => I18n::_('Font size'),
@@ -157,7 +156,6 @@ $templateConf = [
         ],
         'lineHeight' => [
             'format' => 'text',
-            'css_units' => true,
             'default' => 'normal',
             'allow_blank' => true,
             'title' => I18n::_('Line height'),
@@ -591,7 +589,6 @@ $templateConf = [
         ],
         'fontSize' => [
             'format' => 'text',
-            'css_units' => true,
             'default' => '20px',
             'allow_blank' => true,
             'title' => I18n::_('Font size'),
@@ -653,7 +650,6 @@ $templateConf = [
         ],
         'lineHeight' => [
             'format' => 'text',
-            'css_units' => true,
             'default' => '1em',
             'allow_blank' => true,
             'title' => I18n::_('Line height'),
@@ -740,7 +736,6 @@ $templateConf = [
         ],
         'fontSize' => [
             'format' => 'text',
-            'css_units' => true,
             'default' => 'inherit',
             'allow_blank' => true,
             'title' => I18n::_('Font size'),
