@@ -145,20 +145,20 @@ input[type="submit"]:hover {
     min-height: 1em;
 }
 
-.tox-tinymce {
-    border-radius: 0 !important;
+.xEditableMCE .tox-tinymce {
+    border-radius: 0;
 }
 
-.tox-tinymce-aux {
-    z-index: 100002 !important;
+body .tox-tinymce-aux {
+    z-index: 100002;
 }
 
-.tox:not(.tox-tinymce-inline) .tox-editor-header {
-    padding: 0 !important;
+.xEditableMCE .tox:not(.tox-tinymce-inline) .tox-editor-header {
+    padding: 0;
 }
 
-.tox .tox-toolbar__group {
-    padding: 0 4px 0 5px !important;
+.xEditableMCE .tox .tox-toolbar__group {
+    padding: 0 4px 0 5px;
 }
 
 .xEditable,
@@ -299,7 +299,7 @@ input[type="submit"]:hover {
         width: 40px;
         height: 40px;
     }
-      
+
     #xBgEditorPanelTrigContainer a:hover {
         color: #0c4dff;
     }
