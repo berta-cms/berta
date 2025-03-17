@@ -3,7 +3,8 @@
 namespace App\Shared;
 
 use App\Shared\Storage;
-use Intervention\Image\ImageManagerStatic as Image;
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Gd\Driver;
 
 class ImageHelpers
 {
@@ -558,21 +559,16 @@ class ImageHelpers
 
     public static function downscaleToMaxSize($path)
     {
-        // todo: Intervention image v2 does not support animated gifs, update to v3
+        // Intervention image does not support animated gif resizing nicely
         if (self::isAnimated($path)) {
             return;
         }
 
-        $img = Image::make($path)->orientate();
-        $img->resize(
-            config('app.image_max_width'),
-            config('app.image_max_height'),
-            function ($constraint) {
-                $constraint->aspectRatio();
-                $constraint->upsize();
-            }
-        );
-        $img->interlace();
-        $img->save($path);
+        $imageManager = new ImageManager(new Driver());
+
+        $imageManager
+            ->read($path)
+            ->scaleDown(config('app.image_max_width'), config('app.image_max_height'))
+            ->save($path, progressive: true);
     }
 }

@@ -13,7 +13,7 @@
     "require": {
         "php": "^8.2",
         "firebase/php-jwt": "^5.4",
-        "intervention/image": "^2.7",
+        "intervention/image": "^3.11",
         "laravel/framework": "^12.0",
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.9",
