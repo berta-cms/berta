@@ -19,6 +19,8 @@ import { UpdateInputFocus } from '../../app-state/app.actions';
         [disabled]="disabled"
         [disabledReason]="disabledReason"
         [allowBlank]="config.allow_blank"
+        [validation]="config.validation"
+        [cssUnitsRequired]="config.css_units"
         [enabledOnUpdate]="config.enabledOnUpdate"
         (inputFocus)="updateComponentFocus($event)"
         (update)="updateComponentField(setting.slug, $event)"

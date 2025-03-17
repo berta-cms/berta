@@ -78,9 +78,6 @@ if(!1) { ?><style type="text/css"><?php } ?>
 				text-decoration:none !important;
 		  	}
 				.xEntryEditWrapButtons a.xEntryToBack span { display: none; }
-		.xEntryEditWrapButtons a.xEntryDelete { background-image: url('<?php echo $ENGINE_ROOT_URL ?>layout/icon-delete.png'); }
-		.xEntryEditWrapButtons a.xEntryDelete:hover { background-color: none; }
-			.xEntryEditWrapButtons a.xEntryDelete span { display: none; }
 
 		.xEntryCheck span { /*display: inline-block; float: right; margin-left: 3px;*/ }
 
