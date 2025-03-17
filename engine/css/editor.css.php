@@ -111,7 +111,7 @@ input[type="submit"]:hover {
 
 .xEmpty {	/* class of the span that is placed inside empty editable elements */
     display: inline-block;
-    background: url('<?php echo $ENGINE_ROOT_URL ?>layout/editable-back.png') repeat;
+    background-color: rgba(255, 255, 153, .79);
     font-style: italic;
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;
@@ -195,7 +195,7 @@ input[type="submit"]:hover {
 .xEditableRC:hover,
 .xEditableYesNo:hover,
 .xAction:hover {
-    background: url('/engine/layout/editable-back.png') repeat;
+    background-color: rgba(255, 255, 153, .79);
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;
     border-radius: 5px;
@@ -283,49 +283,26 @@ input[type="submit"]:hover {
     .xPanel .xGreyBack a:hover { color: #666; }
 
 
-.xMoveImNavLink, .xMoveTopLink, .xDeleteTopLink, .xAddTopLink, .xShowTopLink, .xHideTopLink, .xSelectTopLinkOn, .xSelectTopLinkOff {
-    display: block;
-    float: left;
-    width: 9px;
-    height: 9px;
-    margin: 2px 4px 0 0;
-    font-size: 1px; line-height: 1px;
-}
-.xMoveImNavLink { background: url(<?php echo $ENGINE_ROOT_URL ?>layout/grab-small.png) no-repeat; cursor: move; }
-.xMoveTopLink { background: url(<?php echo $ENGINE_ROOT_URL ?>layout/grab-small.png) no-repeat; cursor: move; }
-.xDeleteTopLink { background: url(<?php echo $ENGINE_ROOT_URL ?>layout/delete-small.png) no-repeat; cursor: pointer; }
-.xAddTopLink { background: url(<?php echo $ENGINE_ROOT_URL ?>layout/add-small.png) no-repeat; cursor: pointer; margin-left: 20px; }
-.xSelectTopLinkOn { background: url(<?php echo $ENGINE_ROOT_URL ?>layout/select-small-on.gif) no-repeat; cursor: default; }
-.xSelectTopLinkOff { background: url(<?php echo $ENGINE_ROOT_URL ?>layout/select-small-off.gif) no-repeat; cursor: default; }
-
-
 /* background editor button ----------------------------------------------------------------------------------------------- */
 
 #xBgEditorPanelTrigContainer {
     margin: 0;
-     padding: 0;
+    padding: 0;
     position: absolute;
     right: 0; top: 0;
-    background-color: transparent !important;
-    display: block;
-    height: 40px;
 }
     #xBgEditorPanelTrigContainer a {
-        background: url('/engine/layout/gallery_icons_sprite.png') no-repeat;
-        background-position: -280px 0px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(255, 255, 153, .79);
         width: 40px;
         height: 40px;
-        display: block;
     }
-        #xBgEditorPanelTrigContainer a:hover {
-            background-position: -280px -80px;
-        }
-
-        #xBgEditorPanelTrigContainer a span {
-            display: block;
-            height: 40px;
-        }
-            #xBgEditorPanelTrigContainer a span { display: none; }
+      
+    #xBgEditorPanelTrigContainer a:hover {
+        color: #0c4dff;
+    }
 
 
 /* entries --------------------------------------------------------------------------------------------------- */
@@ -338,7 +315,7 @@ input[type="submit"]:hover {
     visibility: hidden;
     height: 20px;
     margin: -26px 0 0 0;
-    background: transparent url('/engine/layout/bg-entry-header.png') repeat;
+    background-color: rgba(255, 102, 153, .57);
     padding: 2px 0 2px 5px;
     -moz-border-radius: 8px;
     -webkit-border-radius: 8px;
@@ -366,8 +343,6 @@ input[type="submit"]:hover {
         background-color: #fff;
         padding: 0px;
     }
-
-    .xEntryEditWrapButtons a.xEntryDelete { background-image: url('/engine/layout/icon-delete.png'); }
 
     .xEntryEditWrapButtons a.xEntryMove { background-image: url('/engine/layout/icon-move-vertical.png'); cursor: grab; }
     .xEntryEditWrapButtons a.xEntryMoveForbidden { background-image: url('/engine/layout/icon-move-vertical.png'); cursor: default; opacity: 0.4; -moz-opacity: 0.4; }
@@ -501,7 +476,7 @@ input[type="submit"]:hover {
             height: 100%;
             left: 0;
             top: 0;
-            background: url('<?php echo $ENGINE_ROOT_URL ?>layout/editable-back.png') repeat;
+            background-color: rgba(255, 255, 153, .79);
             -moz-opacity: 0; opacity: 0;
             z-index: 2;
         }
@@ -532,8 +507,7 @@ a.xCreateNewEntry {
         width: 100%;
         height: 20px;
         padding: 3px 0 1px;
-
-        background: transparent url('/engine/layout/clickable-back.png') repeat;
+        background-color: rgba(153, 255, 179, .79);
         -moz-border-radius: 8px;
         -webkit-border-radius: 8px;
         border-radius: 8px;
@@ -543,7 +517,7 @@ a.xCreateNewEntry {
         text-decoration: none !important;
     }
 a.xCreateNewEntry:hover {
-    background: transparent url('/engine/layout/clickable-back.png') repeat;
+    background-color: rgba(153, 255, 179, .79);
 }
 a.xCreateNewEntry.xSaving {
     background-color: #B7FFCA;
