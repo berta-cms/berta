@@ -145,20 +145,20 @@ input[type="submit"]:hover {
     min-height: 1em;
 }
 
-.tox-tinymce{
-    border-radius: 0;
+.tox-tinymce {
+    border-radius: 0 !important;
 }
 
 .tox-tinymce-aux {
-    z-index: 100002;
+    z-index: 100002 !important;
 }
 
-.tox:not(.tox-tinymce-inline) .tox-editor-header{
-    padding: 0;
+.tox:not(.tox-tinymce-inline) .tox-editor-header {
+    padding: 0 !important;
 }
 
 .tox .tox-toolbar__group {
-    padding: 0 4px 0 5px;
+    padding: 0 4px 0 5px !important;
 }
 
 .xEditable,
