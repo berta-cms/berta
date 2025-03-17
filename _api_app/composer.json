@@ -14,7 +14,7 @@
         "php": "^8.2",
         "firebase/php-jwt": "^5.4",
         "intervention/image": "^2.7",
-        "laravel/framework": "^11.9",
+        "laravel/framework": "^12.0",
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.9",
         "mobiledetect/mobiledetectlib": "^2.8",
@@ -28,7 +28,7 @@
         "laravel/sail": "^1.26",
         "mockery/mockery": "^1.6",
         "nunomaduro/collision": "^8.0",
-        "phpunit/phpunit": "^11.0.1"
+        "phpunit/phpunit": "^11.0"
     },
     "autoload": {
         "psr-4": {
