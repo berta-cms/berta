@@ -20,7 +20,7 @@
         "mobiledetect/mobiledetectlib": "^4.8",
         "rcrowe/twigbridge": "^0.14.0",
         "sentry/sentry-laravel": "^4.13",
-        "swaggest/json-schema": "^0.12.38"
+        "swaggest/json-schema": "^0.12.43"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
