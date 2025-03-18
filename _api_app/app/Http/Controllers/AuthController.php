@@ -16,13 +16,12 @@ class AuthController extends Controller
     protected function generateToken()
     {
         $app_key = config('app.key');
-        $app_id = config('app.id');
         $payload = [
             'iat' => time(), // Time when JWT was issued.
             'exp' => time() + self::$expiration_time, // Expiration time
         ];
 
-        return JWT::encode($payload, $app_key);
+        return JWT::encode($payload, $app_key, 'HS256');
     }
 
     public function authenticate(Request $request)
@@ -145,7 +144,7 @@ class AuthController extends Controller
         $token = $request->input('auth_key');
         $valid_token = false;
 
-        if ($token && Helpers::validate_token($token)) {
+        if ($token && Helpers::validateToken($token)) {
             $valid_token = true;
         }
 
