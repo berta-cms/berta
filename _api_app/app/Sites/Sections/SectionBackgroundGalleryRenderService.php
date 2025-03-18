@@ -2,7 +2,7 @@
 
 namespace App\Sites\Sections;
 
-use Mobile_Detect;
+use Detection\MobileDetect;
 use App\Shared\Helpers;
 
 class SectionBackgroundGalleryRenderService
@@ -97,7 +97,7 @@ class SectionBackgroundGalleryRenderService
         $wrapperAttributes = $this->getWrapperAttributes($currentSection, $isEditMode);
         $items = $this->getGalleryItems($currentSection, $storageService, $selectedGridImage);
 
-        $deviceDetectService = new Mobile_Detect();
+        $deviceDetectService = new MobileDetect();
         $isMobileDevice = $deviceDetectService->isMobile();
         $showNavigation = (count($items['all']) > 1 || !empty($items['all'][0]['caption']));
         $showDesktopNavigation = $showNavigation && !$isMobileDevice;
