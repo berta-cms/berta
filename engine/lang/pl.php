@@ -505,7 +505,7 @@ return [
 
     'To enable Berta\'s news ticker, your computer needs to be connected to the internet!' => 'Aby zobaczyć nowości Berta, niezbędne jest połączenie internetowe do komputera!',
 
-    //shop translations
+    // shop translations
     'Shop' => 'Sklep',
     'shop' => 'sklep',
     'Inventory' => 'Magazyn',

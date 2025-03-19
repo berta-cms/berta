@@ -2,7 +2,7 @@
 
 include_once $ENGINE_ROOT_PATH . '_classes/class.bertaeditor.php';
 
-if (!empty($berta->content['entry'])) {
+if (! empty($berta->content['entry'])) {
     $tplName = $berta->template->settings->templateName;
 
     // Updates for 0.8.2

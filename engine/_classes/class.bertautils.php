@@ -71,11 +71,11 @@ class BertaUtils extends BertaBase
             'ā' => 'a', 'č' => 'c', 'ē' => 'e', 'ģ' => 'g', 'ī' => 'i', 'ķ' => 'k', 'ļ' => 'l', 'ņ' => 'n',
             'š' => 's', 'ū' => 'u', 'ž' => 'z',
 
-            //Lithuanian
+            // Lithuanian
             'Ą' => 'A', 'Ę' => 'E', 'Ė' => 'E', 'Į' => 'I', 'Ų' => 'U',
             'ą' => 'a', 'ę' => 'e', 'ė' => 'e', 'į' => 'i', 'ų' => 'u',
 
-            //Other
+            // Other
             'ɗ' => 'd', 'ə' => 'e', 'ʍ' => 'm', 'ş' => 's', 'ţ' => 't',
             'Ɗ' => 'D', 'Ə' => 'E', 'Ş' => 'S', 'Ţ' => 'T',
         ];
@@ -89,7 +89,7 @@ class BertaUtils extends BertaBase
             $tagTitle = mb_ereg_replace("[^\w$allowNonWordChars]", $replacementStr, $tagTitle);
         }
 
-        //no duplicates
+        // no duplicates
         $tagTitle = mb_ereg_replace("[$replacementStr]{2,}", $replacementStr, $tagTitle);
 
         // convert .- to .
@@ -136,7 +136,7 @@ class BertaUtils extends BertaBase
         $image = '';
         $final_width = 0;
         $final_height = 0;
-        list($width_old, $height_old) = $info;
+        [$width_old, $height_old] = $info;
 
         // Calculating proportionality
         if ($proportional) {
@@ -232,20 +232,20 @@ class BertaUtils extends BertaBase
 
     public static function is_animated($filename)
     {
-        if (!($fh = @fopen($filename, 'rb'))) {
+        if (! ($fh = @fopen($filename, 'rb'))) {
             return false;
         }
         $count = 0;
-        //an animated gif contains multiple "frames", with each frame having a
-        //header made up of:
+        // an animated gif contains multiple "frames", with each frame having a
+        // header made up of:
         // * a static 4-byte sequence (\x00\x21\xF9\x04)
         // * 4 variable bytes
         // * a static 2-byte sequence (\x00\x2C) (some variants may use \x00\x21 ?)
 
         // We read through the file til we reach the end of the file, or we've found
         // at least 2 frame headers
-        while (!feof($fh) && $count < 2) {
-            $chunk = fread($fh, 1024 * 100); //read 100kb at a time
+        while (! feof($fh) && $count < 2) {
+            $chunk = fread($fh, 1024 * 100); // read 100kb at a time
             $count += preg_match_all('#\x00\x21\xF9\x04.{4}\x00(\x2C|\x21)#s', $chunk, $matches);
         }
         fclose($fh);
@@ -264,12 +264,13 @@ class BertaUtils extends BertaBase
             $db = new PDO('sqlite:' . $dbPath);
         } catch (PDOException $e) {
             echo $e->getMessage();
-            die();
+            exit();
         }
+
         return $db;
     }
 
-    //log events in sqlite
+    // log events in sqlite
     public static function logEvent($action = '')
     {
         $options = self::$options;
@@ -286,7 +287,7 @@ class BertaUtils extends BertaBase
                 )
             ');
 
-            $q = $db->prepare('INSERT INTO log VALUES (NULL, :created_at, :action, :get, :post)') or die(print_r($db->errorInfo(), true));
+            $q = $db->prepare('INSERT INTO log VALUES (NULL, :created_at, :action, :get, :post)') or exit(print_r($db->errorInfo(), true));
             $q->execute(
                 [
                     ':created_at' => date('Y-m-d H:i:s'),
@@ -296,7 +297,7 @@ class BertaUtils extends BertaBase
                 ]
             );
 
-            //send stats to server
+            // send stats to server
             if ($action == 'before update' || $action == 'login') {
                 $data = [
                     'session_id' => session_id(),

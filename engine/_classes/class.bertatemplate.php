@@ -1,42 +1,51 @@
 <?php
 
-use Illuminate\Http\Request;
-use App\Shared\Storage;
-use App\User\UserModel;
 use App\Configuration\SiteTemplatesConfigService;
-use App\Sites\SitesDataService;
-use App\Sites\Settings\SiteSettingsDataService;
-use App\Sites\TemplateSettings\SiteTemplateSettingsDataService;
-use App\Sites\Sections\SiteSectionsDataService;
-use App\Sites\Sections\Entries\SectionEntriesDataService;
-use App\Sites\Sections\Tags\SectionTagsDataService;
-
-use App\Sites\Sections\MessyTemplateRenderService;
-use App\Sites\Sections\MashupTemplateRenderService;
+use App\Shared\Storage;
 use App\Sites\Sections\DefaultTemplateRenderService;
-use App\Sites\Sections\WhiteTemplateRenderService;
+use App\Sites\Sections\Entries\SectionEntriesDataService;
+use App\Sites\Sections\MashupTemplateRenderService;
+use App\Sites\Sections\MessyTemplateRenderService;
 use App\Sites\Sections\SitemapRenderService;
+use App\Sites\Sections\SiteSectionsDataService;
+use App\Sites\Sections\Tags\SectionTagsDataService;
+use App\Sites\Sections\WhiteTemplateRenderService;
+use App\Sites\Settings\SiteSettingsDataService;
+use App\Sites\SitesDataService;
+use App\Sites\TemplateSettings\SiteTemplateSettingsDataService;
+use App\User\UserModel;
+use Illuminate\Http\Request;
 
 class BertaTemplate extends BertaBase
 {
     public $name;
+
     public $templateName;
+
     public $loggedIn = false;
 
     public $sectionTypes;
 
     public $settingsDefinition;
+
     public $settings;
 
     public $apacheRewriteUsed;
 
     private $requestURI;
+
     private $sectionName;
+
     private $sections;
+
     private $tagName;
+
     private $tags;
+
     private $environment;
+
     private $content;
+
     private $allContent;
 
     private $twigOutput;
@@ -46,7 +55,7 @@ class BertaTemplate extends BertaBase
         $this->name = $templateName;
         $this->templateName = explode('-', $this->name)[0];
         $this->loggedIn = $loggedIn;
-        $this->environment = !empty(self::$options['ENVIRONMENT']) ? self::$options['ENVIRONMENT'] : 'site';
+        $this->environment = ! empty(self::$options['ENVIRONMENT']) ? self::$options['ENVIRONMENT'] : 'site';
         $this->apacheRewriteUsed = $apacheRewriteUsed;
 
         $this->load($this->name, $generalSettingsInstance);
@@ -54,10 +63,10 @@ class BertaTemplate extends BertaBase
 
     public function load($templateName, $generalSettingsInstance = false)
     {
-        //set default template as messy
-        if (!$templateName) {
+        // set default template as messy
+        if (! $templateName) {
             foreach ($this->getAllTemplates() as $tpl) {
-                list($template_all) = explode('-', $tpl);
+                [$template_all] = explode('-', $tpl);
                 if ($template_all == 'messy') {
                     $templateName = $tpl;
                     break;
@@ -65,7 +74,7 @@ class BertaTemplate extends BertaBase
                     $templateName = 'default';
                 }
             }
-            //save in settings
+            // save in settings
             $settings = new Settings(false);
             $settings->update('template', 'template', ['value' => $templateName]);
             $settings->save();
@@ -74,17 +83,17 @@ class BertaTemplate extends BertaBase
         $this->name = $templateName;
 
         $tPath = self::$options['TEMPLATES_FULL_SERVER_PATH'] . $this->name;
-        if (!file_exists($tPath)) {
+        if (! file_exists($tPath)) {
             $template = explode('-', $this->name);
             $template = $template[0];
 
-            //try to get same template with different version if not exists
+            // try to get same template with different version if not exists
             foreach ($this->getAllTemplates() as $tpl) {
-                list($template_all) = explode('-', $tpl);
+                [$template_all] = explode('-', $tpl);
                 if ($template_all == $template) {
                     $this->name = $tpl;
                     break;
-                    //default template = messy
+                    // default template = messy
                 } else {
                     $this->name = 'default';
                 }
@@ -93,7 +102,7 @@ class BertaTemplate extends BertaBase
         }
 
         if (file_exists($tPath) && file_exists($tPath . '/template.conf.php')) {
-            list($this->sectionTypes, $this->settingsDefinition) = include $tPath . '/template.conf.php';
+            [$this->sectionTypes, $this->settingsDefinition] = include $tPath . '/template.conf.php';
 
             $this->settings = new Settings($this->settingsDefinition, $generalSettingsInstance, $this->name);
 
@@ -107,8 +116,10 @@ class BertaTemplate extends BertaBase
                     isset($t['settings']) ? $t['settings'] : false
                 );
             }
+
             return true;
         }
+
         return false;
     }
 
@@ -136,7 +147,7 @@ class BertaTemplate extends BertaBase
         }
 
         $isEditMode = $this->environment == 'engine';
-        $isPreviewMode = !empty(self::$options['PREVIEW_FOLDER']);
+        $isPreviewMode = ! empty(self::$options['PREVIEW_FOLDER']);
         $request = Request::capture();
         $siteSlug = self::$options['MULTISITE'];
 
@@ -148,7 +159,7 @@ class BertaTemplate extends BertaBase
 
         if ($this->sectionName == 'sitemap.xml') {
             header('Content-type: text/xml; charset=utf-8');
-            $sitemapRS = new SitemapRenderService();
+            $sitemapRS = new SitemapRenderService;
             $this->twigOutput = $sitemapRS->render(
                 $request,
                 $siteSlug,
@@ -162,7 +173,7 @@ class BertaTemplate extends BertaBase
         $sectionSlug = $this->sectionName;
         $tagSlug = $this->tagName;
 
-        $sitesDataService = new SitesDataService();
+        $sitesDataService = new SitesDataService;
         $sites = $sitesDataService->get();
 
         $siteSettingsDS = new SiteSettingsDataService($siteSlug, self::$options['XML_ROOT']);
@@ -171,10 +182,10 @@ class BertaTemplate extends BertaBase
         $siteTemplateSettingsDS = new SiteTemplateSettingsDataService($siteSlug, $siteSettings['template']['template'], self::$options['XML_ROOT']);
         $siteTemplateSettings = $siteTemplateSettingsDS->getState();
 
-        $siteTemplatesConfigService = new SiteTemplatesConfigService();
+        $siteTemplatesConfigService = new SiteTemplatesConfigService;
         $siteTemplatesConfig = $siteTemplatesConfigService->getDefaults();
 
-        $user = new UserModel();
+        $user = new UserModel;
 
         $storageService = new Storage($siteSlug, $isPreviewMode);
 
@@ -183,20 +194,20 @@ class BertaTemplate extends BertaBase
 
         switch ($this->templateName) {
             case 'white':
-                $templateRenderService = new WhiteTemplateRenderService();
+                $templateRenderService = new WhiteTemplateRenderService;
                 break;
 
             case 'default':
-                $templateRenderService = new DefaultTemplateRenderService();
+                $templateRenderService = new DefaultTemplateRenderService;
                 break;
 
             case 'mashup':
-                $templateRenderService = new MashupTemplateRenderService();
+                $templateRenderService = new MashupTemplateRenderService;
                 break;
 
             default:
                 // Messy
-                $templateRenderService = new MessyTemplateRenderService();
+                $templateRenderService = new MessyTemplateRenderService;
                 break;
         }
 
@@ -235,6 +246,7 @@ class BertaTemplate extends BertaBase
             }
         }
         $d->close();
+
         return $returnArr;
     }
 
@@ -246,6 +258,7 @@ class BertaTemplate extends BertaBase
             $scripts = file_get_contents($file);
             $scripts = str_replace('RELEASE_VERSION', self::$options['version'], $scripts);
         }
+
         return $scripts;
     }
 }

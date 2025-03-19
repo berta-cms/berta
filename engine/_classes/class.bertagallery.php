@@ -5,7 +5,7 @@ class BertaGallery extends BertaBase
     public static function getImagesArray($entry)
     {
         $imgs = [];
-        if (!empty($entry['mediaCacheData']['file']) && count($entry['mediaCacheData']['file']) > 0) {
+        if (! empty($entry['mediaCacheData']['file']) && count($entry['mediaCacheData']['file']) > 0) {
             $imgs = [];
             Array_XML::makeListIfNotList($entry['mediaCacheData']['file']);
             foreach ($entry['mediaCacheData']['file'] as $idx => $im) {
@@ -16,6 +16,7 @@ class BertaGallery extends BertaBase
                 $imgs[] = $im;
             }
         }
+
         return $imgs;
     }
 
@@ -23,22 +24,22 @@ class BertaGallery extends BertaBase
     {
         global $berta;
         $imgs = BertaGallery::getImagesArray($entry);
-        $galleryType = !empty($entry['mediaCacheData']['@attributes']['type']) ? $entry['mediaCacheData']['@attributes']['type'] : 'slideshow';
-        $imageSize = !empty($entry['mediaCacheData']['@attributes']['size']) ? $entry['mediaCacheData']['@attributes']['size'] : 'large';
-        $galleryFullScreen = !$isAdminMode && isset($entry['mediaCacheData']['@attributes']['fullscreen']) && $entry['mediaCacheData']['@attributes']['fullscreen'] == 'yes';
-        $galleryAutoPlay = !empty($entry['mediaCacheData']['@attributes']['autoplay']) ? $entry['mediaCacheData']['@attributes']['autoplay'] : '0';
-        $gallerySlideNumbersVisible = !empty($entry['mediaCacheData']['@attributes']['slide_numbers_visible']) ? $entry['mediaCacheData']['@attributes']['slide_numbers_visible'] : $berta->settings->get('entryLayout', 'gallerySlideNumberVisibilityDefault');
-        $galleryWidthByWidestSlide = !empty($entry['mediaCacheData']['@attributes']['gallery_width_by_widest_slide']) ? $entry['mediaCacheData']['@attributes']['gallery_width_by_widest_slide'] : 'no';
-        $galleryLinkAddress = !empty($entry['mediaCacheData']['@attributes']['link_address']) ? $entry['mediaCacheData']['@attributes']['link_address'] : '';
-        $galleryLinkTarget = !empty($entry['mediaCacheData']['@attributes']['linkTarget']) ? $entry['mediaCacheData']['@attributes']['linkTarget'] : '';
-        $rowGalleryPadding = !empty($entry['mediaCacheData']['@attributes']['row_gallery_padding']) ? $entry['mediaCacheData']['@attributes']['row_gallery_padding'] : false;
+        $galleryType = ! empty($entry['mediaCacheData']['@attributes']['type']) ? $entry['mediaCacheData']['@attributes']['type'] : 'slideshow';
+        $imageSize = ! empty($entry['mediaCacheData']['@attributes']['size']) ? $entry['mediaCacheData']['@attributes']['size'] : 'large';
+        $galleryFullScreen = ! $isAdminMode && isset($entry['mediaCacheData']['@attributes']['fullscreen']) && $entry['mediaCacheData']['@attributes']['fullscreen'] == 'yes';
+        $galleryAutoPlay = ! empty($entry['mediaCacheData']['@attributes']['autoplay']) ? $entry['mediaCacheData']['@attributes']['autoplay'] : '0';
+        $gallerySlideNumbersVisible = ! empty($entry['mediaCacheData']['@attributes']['slide_numbers_visible']) ? $entry['mediaCacheData']['@attributes']['slide_numbers_visible'] : $berta->settings->get('entryLayout', 'gallerySlideNumberVisibilityDefault');
+        $galleryWidthByWidestSlide = ! empty($entry['mediaCacheData']['@attributes']['gallery_width_by_widest_slide']) ? $entry['mediaCacheData']['@attributes']['gallery_width_by_widest_slide'] : 'no';
+        $galleryLinkAddress = ! empty($entry['mediaCacheData']['@attributes']['link_address']) ? $entry['mediaCacheData']['@attributes']['link_address'] : '';
+        $galleryLinkTarget = ! empty($entry['mediaCacheData']['@attributes']['linkTarget']) ? $entry['mediaCacheData']['@attributes']['linkTarget'] : '';
+        $rowGalleryPadding = ! empty($entry['mediaCacheData']['@attributes']['row_gallery_padding']) ? $entry['mediaCacheData']['@attributes']['row_gallery_padding'] : false;
 
         $html = BertaGallery::getHTML($imgs, $entry['mediafolder']['value'], $galleryType, $isAdminMode, false, 1, $galleryFullScreen, $imageSize, $galleryAutoPlay, $gallerySlideNumbersVisible, $galleryWidthByWidestSlide, $galleryLinkAddress, $galleryLinkTarget, $rowGalleryPadding);
 
         // Add a slideshow html markup as a backup for mobile devices for gallery type
         // - pile
         // - row with at least two images
-        if (!$isAdminMode && ($galleryType == 'pile' || ($galleryType == 'row' && count($imgs)>1))) {
+        if (! $isAdminMode && ($galleryType == 'pile' || ($galleryType == 'row' && count($imgs) > 1))) {
             $galleryType = 'slideshow';
             $html .= BertaGallery::getHTML($imgs, $entry['mediafolder']['value'], $galleryType, $isAdminMode, false, 1, $galleryFullScreen, $imageSize, $galleryAutoPlay, $gallerySlideNumbersVisible, $galleryWidthByWidestSlide, $galleryLinkAddress, $galleryLinkTarget, $rowGalleryPadding);
         }
@@ -60,7 +61,7 @@ class BertaGallery extends BertaBase
         // print output ...
 
         if ($imgs && count($imgs) > 0) {
-            list($firstImageHTML, $firstImageWidth, $firstImageHeight) = BertaGallery::getImageHTML($imgs[0], $mediaFolderName, $isAdminMode, $sizeRatio, $imageTargetWidth, $imageTargetHeight);
+            [$firstImageHTML, $firstImageWidth, $firstImageHeight] = BertaGallery::getImageHTML($imgs[0], $mediaFolderName, $isAdminMode, $sizeRatio, $imageTargetWidth, $imageTargetHeight);
             $firstImageWidth = $firstImageWidth ? $firstImageWidth : $imageTargetWidth;
 
             $specificClasses = '';
@@ -86,12 +87,12 @@ class BertaGallery extends BertaBase
                 $slides = [];
                 foreach ($imgs as $img) {
                     if ($img['@attributes']['type'] == 'image') {
-                        list($slideHTML, $slideWidth) = BertaGallery::getImageHTML($img, $mediaFolderName, $isAdminMode, $sizeRatio, $imageTargetWidth, $imageTargetHeight);
+                        [$slideHTML, $slideWidth] = BertaGallery::getImageHTML($img, $mediaFolderName, $isAdminMode, $sizeRatio, $imageTargetWidth, $imageTargetHeight);
                         if ($widestImage < $slideWidth) {
                             $widestImage = $slideWidth;
                         }
                     } else {
-                        list($slideHTML, $slideWidth) = BertaGallery::getVideoHTML($img, $mediaFolderName, $isAdminMode, $sizeRatio, $imageTargetWidth, $imageTargetHeight);
+                        [$slideHTML, $slideWidth] = BertaGallery::getVideoHTML($img, $mediaFolderName, $isAdminMode, $sizeRatio, $imageTargetWidth, $imageTargetHeight);
                         if ($widestImage < $slideWidth) {
                             $widestImage = $slideWidth;
                         }
@@ -99,7 +100,7 @@ class BertaGallery extends BertaBase
                     $slides[] = $slideHTML;
                 }
                 $galleryContent .= BertaGallery::getSlideshowHTML($slides);
-            } else if ($galleryType == 'row') {
+            } elseif ($galleryType == 'row') {
                 // Returned image limit
                 $imageLimit = self::$options['row_gallery_image_limit'][$imageSize];
                 $totalWidth = 0;
@@ -109,9 +110,9 @@ class BertaGallery extends BertaBase
                     if ($img['@attributes']['type'] == 'image') {
                         // Possibly we don't have to calculate total width,
                         // we can solve this with css no-wrap or float: left or display: inline or even better - display flex
-                        list($itemHTML, $itemWidth, $itemHeight) = BertaGallery::getImageHTML($img, $mediaFolderName, $isAdminMode, $sizeRatio, $imageTargetWidth, $imageTargetHeight);
+                        [$itemHTML, $itemWidth, $itemHeight] = BertaGallery::getImageHTML($img, $mediaFolderName, $isAdminMode, $sizeRatio, $imageTargetWidth, $imageTargetHeight);
                     } else {
-                        list($itemHTML, $itemWidth) = BertaGallery::getVideoHTML($img, $mediaFolderName, $isAdminMode, $sizeRatio, $imageTargetWidth, $imageTargetHeight);
+                        [$itemHTML, $itemWidth] = BertaGallery::getVideoHTML($img, $mediaFolderName, $isAdminMode, $sizeRatio, $imageTargetWidth, $imageTargetHeight);
                         $itemHeight = $itemWidth * .5625; // 16:9 ratio
                     }
 
@@ -127,7 +128,7 @@ class BertaGallery extends BertaBase
                     if (count($imgs) > $imageLimit && $i + 1 == $imageLimit) {
                         $loader = [
                             'height' => $itemHeight,
-                            'currentWidth' => $totalWidth
+                            'currentWidth' => $totalWidth,
                         ];
                     }
                 }
@@ -152,7 +153,7 @@ class BertaGallery extends BertaBase
 
             // Set slideshow gallery width by widest slide
             // except if current template is messy and gallery setting `galleryWidthByWidestSlide` is OFF
-            if ($galleryType == 'slideshow' && (!$isMessyTemplate || $isMessyTemplate && $galleryWidthByWidestSlide === 'yes')) {
+            if ($galleryType == 'slideshow' && (! $isMessyTemplate || $isMessyTemplate && $galleryWidthByWidestSlide === 'yes')) {
                 $firstImageWidth = $widestImage;
             }
 
@@ -161,8 +162,8 @@ class BertaGallery extends BertaBase
             } else {
                 $dimensions = ' style="width: ' . $firstImageWidth . 'px;' . ($galleryType !== 'slideshow' ? 'height: ' . $firstImageHeight . 'px;' : '') . '"';
             }
-            $strOut = '<div class="xGalleryContainer xGalleryHasImages xGalleryType-' . $galleryType . $specificClasses . '"'. ($galleryFullScreen ? ' data-fullscreen="1"' : '') .'>';
-            $strOut .= "<div class=\"xGallery\"" . $dimensions . ($rowGalleryPadding ? ' xRowGalleryPadding="' . $rowGalleryPadding . '"' : '') . '>';
+            $strOut = '<div class="xGalleryContainer xGalleryHasImages xGalleryType-' . $galleryType . $specificClasses . '"' . ($galleryFullScreen ? ' data-fullscreen="1"' : '') . '>';
+            $strOut .= '<div class="xGallery"' . $dimensions . ($rowGalleryPadding ? ' xRowGalleryPadding="' . $rowGalleryPadding . '"' : '') . '>';
             $strOut .= $galleryContent;
 
             if ($isAdminMode) {
@@ -177,7 +178,7 @@ class BertaGallery extends BertaBase
 
             $strOut .= '</div>';
         } elseif ($isAdminMode) {
-            $strOut = '<div class="xGalleryContainer">'; //.
+            $strOut = '<div class="xGalleryContainer">'; // .
 
             $strOut .= '<div class="imageEmpty">';
             if ($isAdminMode) {
@@ -199,7 +200,7 @@ class BertaGallery extends BertaBase
         $html = '<div class="swiper-container">';
         $html .= '<div class="swiper-wrapper">';
         foreach ($slides as $i => $slide) {
-            $html .= '<div class="swiper-slide">'. $slide . '</div>';
+            $html .= '<div class="swiper-slide">' . $slide . '</div>';
         }
         $html .= '</div>';
 
@@ -221,8 +222,8 @@ class BertaGallery extends BertaBase
 
         $firstImageHTML = $firstImageWidth = $firstImageHeight = null;
         if ($img) {
-            if ($img['@attributes']['type'] == 'image' || !empty($img['@attributes']['poster_frame'])) {
-                $isPoster = !empty($img['@attributes']['poster_frame']);
+            if ($img['@attributes']['type'] == 'image' || ! empty($img['@attributes']['poster_frame'])) {
+                $isPoster = ! empty($img['@attributes']['poster_frame']);
                 $imgSrc = $isPoster ? $img['@attributes']['poster_frame'] : $img['@attributes']['src'];
                 $srcset = '';
 
@@ -233,12 +234,12 @@ class BertaGallery extends BertaBase
                     $alt = '';
                 }
 
-                if (!empty($img['@attributes']['width']) && !empty($img['@attributes']['height'])) {
+                if (! empty($img['@attributes']['width']) && ! empty($img['@attributes']['height'])) {
                     $width = (int) $img['@attributes']['width'];
                     $height = (int) $img['@attributes']['height'];
                 }
 
-                if ($isPoster || !$width || !$height) {
+                if ($isPoster || ! $width || ! $height) {
                     $imgSize = getimagesize($mFolder . $imgSrc);
                     $width = $imgSize ? (int) $imgSize[0] : false;
                     $height = $imgSize ? (int) $imgSize[1] : false;
@@ -249,14 +250,14 @@ class BertaGallery extends BertaBase
                 $imgSrc_original = $imgSrc;
 
                 if ($width && $height && $imageTargetWidth && $imageTargetHeight && ($width > $imageTargetWidth || $height > $imageTargetHeight)) {
-                    list($width, $height) = self::fitInBounds($width, $height, $imageTargetWidth, $imageTargetHeight);
+                    [$width, $height] = self::fitInBounds($width, $height, $imageTargetWidth, $imageTargetHeight);
                     $imgSrc = self::getResizedSrc($mFolder, $imgSrc, $width, $height);
 
                     // start generate image for @2x displays
                     $imageTargetWidth_2x = $width * 2;
                     $imageTargetHeight_2x = $height * 2;
                     if ($width_original && $height_original && $imageTargetWidth_2x && $imageTargetHeight_2x && ($width_original >= $imageTargetWidth_2x || $height_original >= $imageTargetHeight_2x)) {
-                        list($width_2x, $height_2x) = self::fitInBounds($width_original, $height_original, $imageTargetWidth_2x, $imageTargetHeight_2x);
+                        [$width_2x, $height_2x] = self::fitInBounds($width_original, $height_original, $imageTargetWidth_2x, $imageTargetHeight_2x);
                         $imgSrc_2x = self::getResizedSrc($mFolder, $imgSrc_original, $width_2x, $height_2x);
                         $srcset = ' srcset="' . $mFolderABS . $imgSrc . ' 1x, ' . $mFolderABS . $imgSrc_2x . ' 2x"';
                     }
@@ -268,7 +269,7 @@ class BertaGallery extends BertaBase
 
                 $firstImageHTML = '<div class="xGalleryItem xGalleryItemType-image xImgIndex-1" style="' . ($width ? "width:{$width}px;" : '') . '' . ($height ? "height:{$height}px;" : '') . '">' .
                     '<img src="' . $mFolderABS . $imgSrc . '" ' . ($width ? "width=\"$width\"" : '') . ' ' . ($height ? "height=\"$height\"" : '') . $srcset . ' alt="' . $alt . '" />' .
-                    '<div class="xGalleryImageCaption">' . (!empty($img['value']) ? $img['value'] : '') . '</div>' .
+                    '<div class="xGalleryImageCaption">' . (! empty($img['value']) ? $img['value'] : '') . '</div>' .
                     '</div>';
             }
         }
@@ -280,20 +281,21 @@ class BertaGallery extends BertaBase
     {
         $targetWidth = $imageTargetWidth;
         $mFolderABS = self::$options['MEDIA_ABS_ROOT'] . $mediaFolder . '/';
-        list(, $width) = BertaGallery::getImageHTML($img, $mediaFolder, $isAdminMode, $sizeRatio, $imageTargetWidth, $imageTargetHeight);
+        [, $width] = BertaGallery::getImageHTML($img, $mediaFolder, $isAdminMode, $sizeRatio, $imageTargetWidth, $imageTargetHeight);
         $width = $width ? $width : $targetWidth;
 
         $poster = isset($img['@attributes']['poster_frame']) ? ' poster="' . $mFolderABS . $img['@attributes']['poster_frame'] . '"' : '';
-        $autoplay = isset($img['@attributes']['autoplay']) && $img['@attributes']['autoplay'] > 0 ? ' data-autoplay="' .$img['@attributes']['autoplay'] . '"' : '';
+        $autoplay = isset($img['@attributes']['autoplay']) && $img['@attributes']['autoplay'] > 0 ? ' data-autoplay="' . $img['@attributes']['autoplay'] . '"' : '';
 
         $html = '
             <div class="xGalleryItem xGalleryItemType-video">
-                <video width="' . $width . '" controls controlsList="nodownload"'.$poster.$autoplay.'>
-                    <source src="'. $mFolderABS . $img['@attributes']['src'] .'" type="video/mp4">
+                <video width="' . $width . '" controls controlsList="nodownload"' . $poster . $autoplay . '>
+                    <source src="' . $mFolderABS . $img['@attributes']['src'] . '" type="video/mp4">
                 </video>
-                <div class="xGalleryImageCaption">' . (!empty($img['value']) ? $img['value'] : '') . '</div>
+                <div class="xGalleryImageCaption">' . (! empty($img['value']) ? $img['value'] : '') . '</div>
             </div>
             ';
+
         return [$html, $width];
     }
 
@@ -307,7 +309,7 @@ class BertaGallery extends BertaBase
             $srcset = '';
 
             if ($imgs[$i]['@attributes']['type'] == 'video') {
-                $src = !empty($imgs[$i]['@attributes']['poster_frame']) ? $imgs[$i]['@attributes']['poster_frame'] : '';
+                $src = ! empty($imgs[$i]['@attributes']['poster_frame']) ? $imgs[$i]['@attributes']['poster_frame'] : '';
                 if ($src) {
                     $isPoster = true;
                 }
@@ -324,18 +326,18 @@ class BertaGallery extends BertaBase
                 $videoLink = '';
             }
 
-            if (!empty($imgs[$i]['@attributes']['width']) && !empty($imgs[$i]['@attributes']['height']) && !$isPoster) {
+            if (! empty($imgs[$i]['@attributes']['width']) && ! empty($imgs[$i]['@attributes']['height']) && ! $isPoster) {
                 $width = (int) $imgs[$i]['@attributes']['width'];
                 $height = (int) $imgs[$i]['@attributes']['height'];
             }
 
-            if ((!$width || !$height) && $src) {
+            if ((! $width || ! $height) && $src) {
                 $imgSize = getimagesize($mFolder . $src);
                 $width = $imgSize ? (int) $imgSize[0] : false;
                 $height = $imgSize ? (int) $imgSize[1] : false;
             }
 
-            //default image size (video without poster)
+            // default image size (video without poster)
             $width = $width ? $width : 300;
             $height = $height ? $height : 150;
 
@@ -344,14 +346,14 @@ class BertaGallery extends BertaBase
             $src_original = $src;
 
             if ($width && $height && $imageTargetWidth && $imageTargetHeight && ($width > $imageTargetWidth || $height > $imageTargetHeight)) {
-                list($width, $height) = self::fitInBounds($width, $height, $imageTargetWidth, $imageTargetHeight);
+                [$width, $height] = self::fitInBounds($width, $height, $imageTargetWidth, $imageTargetHeight);
                 $src = self::getResizedSrc($mFolder, $src, $width, $height);
 
                 // start generate image for @2x displays
                 $imageTargetWidth_2x = $width * 2;
                 $imageTargetHeight_2x = $height * 2;
                 if ($width_original && $height_original && $imageTargetWidth_2x && $imageTargetHeight_2x && ($width_original >= $imageTargetWidth_2x || $height_original >= $imageTargetHeight_2x)) {
-                    list($width_2x, $height_2x) = self::fitInBounds($width_original, $height_original, $imageTargetWidth_2x, $imageTargetHeight_2x);
+                    [$width_2x, $height_2x] = self::fitInBounds($width_original, $height_original, $imageTargetWidth_2x, $imageTargetHeight_2x);
                     $src_2x = self::getResizedSrc($mFolder, $src_original, $width_2x, $height_2x);
                     $srcset = ' data-srcset="' . $mFolderABS . $src . ' 1x, ' . $mFolderABS . $src_2x . ' 2x"';
                 }
@@ -372,7 +374,7 @@ class BertaGallery extends BertaBase
                 $imageTargetHeightLarge = $berta->template->settings->get('media', 'imagesLargeHeight', false, true);
 
                 if ($width_original && $height_original && $imageTargetWidthLarge && $imageTargetHeightLarge && ($width_original >= $imageTargetWidthLarge || $height_original >= $imageTargetHeightLarge)) {
-                    list($width_large, $height_large) = self::fitInBounds($width_original, $height_original, $imageTargetWidthLarge, $imageTargetHeightLarge);
+                    [$width_large, $height_large] = self::fitInBounds($width_original, $height_original, $imageTargetWidthLarge, $imageTargetHeightLarge);
                     $src_large = $mFolderABS . self::getResizedSrc($mFolder, $src_original, $width_large, $height_large);
                 }
             }
@@ -403,7 +405,7 @@ class BertaGallery extends BertaBase
                 'xImgIndex-' . ($i + 1) . ' ' .
                 '"' . $srcset . ' target="_blank"><span>' .
                 ($i + 1) .
-                '</span></a><div class="xGalleryImageCaption">' . (!empty($imgs[$i]['value']) ? $imgs[$i]['value'] : '') . '</div></li>' . "\n";
+                '</span></a><div class="xGalleryImageCaption">' . (! empty($imgs[$i]['value']) ? $imgs[$i]['value'] : '') . '</div></li>' . "\n";
         }
         $navStr .= '</ul>';
 
@@ -447,9 +449,9 @@ class BertaGallery extends BertaBase
                 ($imageInfo[2] == IMAGETYPE_PNG && function_exists('imagecreatefrompng')));
 
             if ($canMakeThumb) {
-                if ($thumbWidth && !$thumbHeight) {
+                if ($thumbWidth && ! $thumbHeight) {
                     $thumbHeight = ($thumbWidth / $imageInfo[0]) * $imageInfo[1];
-                } elseif (!$thumbWidth && $thumbHeight) {
+                } elseif (! $thumbWidth && $thumbHeight) {
                     $thumbWidth = ($thumbHeight / $imageInfo[1]) * $imageInfo[0];
                 }
 

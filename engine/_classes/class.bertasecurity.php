@@ -16,23 +16,31 @@
 class BertaSecurity
 {
     const BERTASECURITY_ERROR_SESSION_VARIABLE = 1;		// session variable corrupt
+
     const BERTASECURITY_ERROR_SESSION_EXPIRED = 2;			// session expired
+
     const BERTASECURITY_ERROR_SESSION_IP_CONFLICT = 3;		// ip address has changed
+
     const BERTASECURITY_ERROR_LOGIN_VARIABLE = 4;			// login variables corrupt or empty
+
     const BERTASECURITY_ERROR_LOGIN_INCORRECT = 5;			// login user and password incorrect
 
     public $authExpiresSeconds;	// session idle time
+
     public $authUseAuthentification = false;
 
     public $authentificated = false; // if
+
     public $userLoggedIn = false;
 
     public $user;				// array of all user information available in the database (id, ident, nick, email, etc.)
 
     public $accessIP;				// array containing ip address by bytes
+
     public $accessIPStr = '';
 
     public $errAuth = 0;	// the reason (id), why autentification failed;
+
     public $errLogin = 0;	// the reason (id), why login failed;
 
     public function __construct($authEnvironment = 'site', $authExpiresSeconds = 86400)
@@ -54,7 +62,7 @@ class BertaSecurity
 
     public function authentificate()
     {
-        if (!isset($_SESSION)) {
+        if (! isset($_SESSION)) {
             session_start();
         }
         $curTime = time();
@@ -66,21 +74,24 @@ class BertaSecurity
                     $this->user = $_SESSION['_berta__user'];
                     $this->userLoggedIn = true;
 
-                    if (!empty($_REQUEST['_security_reload_user'])) {
+                    if (! empty($_REQUEST['_security_reload_user'])) {
                         $this->updateUserSettings($this->user);
                     }
 
                     return $this->userLoggedIn = true;
                 } else {
                     $this->destroy(self::BERTASECURITY_ERROR_SESSION_IP_CONFLICT); // ip conflict
+
                     return $this->userLoggedIn = false;
                 }
             } else {
                 $this->destroy(self::BERTASECURITY_ERROR_SESSION_EXPIRED);
+
                 return $this->userLoggedIn = false;
             }
-        } elseif (isset($_SESSION['_berta__user']) && !is_array($_SESSION['_berta__user'])) {
+        } elseif (isset($_SESSION['_berta__user']) && ! is_array($_SESSION['_berta__user'])) {
             $this->destroy(self::BERTASECURITY_ERROR_SESSION_VARIABLE);
+
             return $this->userLoggedIn = false;
         } else {
             return $this->userLoggedIn = false;
@@ -104,21 +115,23 @@ class BertaSecurity
     {
         if ($name && $pass) {
             if ($name == $realName && $pass == $realPass) {
-                $uid = !empty($_SESSION['uid']) ? $_SESSION['uid'] : null;
+                $uid = ! empty($_SESSION['uid']) ? $_SESSION['uid'] : null;
                 $this->destroy();
                 session_start();
                 $this->updateUserSettings(['name' => $realName, 'uid' => $uid]);
 
-                //log login event
+                // log login event
                 BertaUtils::logEvent('login');
 
                 return $this->userLoggedIn = true;
             } else {
                 $this->errLogin = self::BERTASECURITY_ERROR_LOGIN_INCORRECT;	// wrong creditentials
+
                 return false;
             }
         } else {
             $this->errLogin = self::BERTASECURITY_ERROR_LOGIN_VARIABLE;	// no identification supplied
+
             return false;
         }
     }
@@ -143,10 +156,10 @@ class BertaSecurity
             $this->user['prev_ip'] = $user['last_ip'];
         }
         $this->user = array_merge($user, [
-                          'user_name' => $user['name'] ? $user['name'] : $user['nickname'],
-                          'login_time' => time(),
-                          'last_access' => time(),
-                          'last_ip' => $_SERVER['REMOTE_ADDR']]);
+            'user_name' => $user['name'] ? $user['name'] : $user['nickname'],
+            'login_time' => time(),
+            'last_access' => time(),
+            'last_ip' => $_SERVER['REMOTE_ADDR']]);
 
         $_SESSION['_berta__user'] = $this->user;
     }

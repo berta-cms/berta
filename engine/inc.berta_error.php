@@ -1,5 +1,5 @@
 <?php
-if (!isset($BERTA_ERROR)) {
+if (! isset($BERTA_ERROR)) {
     $BERTA_ERROR = '';
 }
 

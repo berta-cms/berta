@@ -1,4 +1,5 @@
 <?php
+
 // common hosting config file for all bertas
 if (file_exists($ENGINE_ROOT_PATH . 'hosting')) {
     $hostingConfig = json_decode(file_get_contents($ENGINE_ROOT_PATH . 'hosting'), true);
@@ -13,7 +14,7 @@ $options['HELPCRUNCH_APP_ID'] = isset($hostingConfig['helpcrunchAppId']) ? $host
 $options['HELPCRUNCH_API_KEY'] = isset($hostingConfig['helpcrunchApiKey']) ? $hostingConfig['helpcrunchApiKey'] : false;
 $options['EMAIL_FROM_ADDRESS'] = isset($hostingConfig['emailFromAddress']) ? $hostingConfig['emailFromAddress'] : false;
 
-//individual hosting config file for berta
+// individual hosting config file for berta
 if (file_exists($ENGINE_ROOT_PATH . 'hosting_config')) {
     $hostingConfigBerta = parse_ini_string(file_get_contents($ENGINE_ROOT_PATH . 'hosting_config'));
 }

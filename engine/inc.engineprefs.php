@@ -1,4 +1,5 @@
 <?php
+
 date_default_timezone_set(@date_default_timezone_get());
 
 $options['IS_AJAX'] = $IS_AJAX;
@@ -23,16 +24,15 @@ require 'inc.version.php';
  * Interface language (I18n)
  * A file named like the value of this option must be placed into engine/lang folder, containing all translations
  */
-
 $options['default_language'] = 'en';
 $options['languages'] = ['en' => 'English', 'lv' => 'Latviešu', 'fr' => 'Français', 'ru' => 'Русский', 'nl' => 'Nederlands', 'pl' => 'Polski', 'es' => 'Spanish'];
 
 $options['MOBILE_DEVICE'] = $MOBILE_DEVICE;
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /**
  * Base paths - absolute root and host
@@ -57,7 +57,6 @@ $options['tags']['all_value'] = 'a181a603769c1f98ad927e7367c7aa51';
 /**
  * System folders
  */
-
 $options['ENGINE_ROOT_URL'] = $ENGINE_ROOT_URL;
 $options['ENGINE_ROOT_PATH'] = $ENGINE_ROOT_PATH;
 $options['SITE_ROOT_PATH'] = $SITE_ROOT_PATH;
@@ -72,16 +71,15 @@ $options['PREVIEW_FOLDER'] = isset($_REQUEST['preview']) ? 'preview/' : '';
 /**
  * Writable folders
  */
-
 $options['XML_MAIN_ROOT'] = $SITE_ROOT_PATH . 'storage/';
 $options['XML_SITES_ROOT'] = $options['XML_MAIN_ROOT'] . '-sites/';
 
-$options['MULTISITES'] = BertaContent::getSites(!$INDEX_INCLUDED);
+$options['MULTISITES'] = BertaContent::getSites(! $INDEX_INCLUDED);
 $options['MULTISITE'] = BertaContent::getSite($options);
 
 $options['MEDIA_FOLDER_NAME'] = 'media';
 
-if (!empty($options['MULTISITE'])) {
+if (! empty($options['MULTISITE'])) {
     $options['XML_ROOT'] = $options['XML_SITES_ROOT'] . $options['MULTISITE'] . '/' . $options['PREVIEW_FOLDER'];
 
     $options['MEDIA_ROOT'] = $options['XML_ROOT'] . $options['MEDIA_FOLDER_NAME'] . '/';
@@ -107,12 +105,12 @@ if (!empty($options['MULTISITE'])) {
 require 'inc.hosting.php';
 
 // if hosted on HIP, need to show "hosted on HIP"
-//$options['hip_ipaddr'] = array('85.31.99.218', '85.31.102.201');
+// $options['hip_ipaddr'] = array('85.31.99.218', '85.31.102.201');
 $options['hip_ipaddr'] = [];
 
 // external
 $options['remote_update_uri'] = [
-    'http://www.berta.me/news_ticker_videos_update.php'
+    'http://www.berta.me/news_ticker_videos_update.php',
 ];
 foreach ($options['hip_ipaddr'] as $ip) {
     $options['remote_update_uri'][] = 'http://' . $ip . '/berta-remote/news_ticker_videos_update.php';
@@ -144,13 +142,12 @@ $options['images']['large_height'] = 600;
 $options['row_gallery_image_limit'] = [
     'large' => 3,
     'medium' => 5,
-    'small' => 7
+    'small' => 7,
 ];
 
 /**
  * Editables
  */
-
 $xEditSelectorSimple = 'xEditable';	// simple input
 $xEditSelectorSelect = 'xEditableSelect';	// select
 $xEditSelectorSelectRC = 'xEditableSelectRC';	// select
@@ -165,9 +162,9 @@ $xEditSelectorYesNo = 'xEditableYesNo';	// the "yes/no" switch
 $xEmpty = 'xEmpty';
 
 $editsForSettings = ['text' => $xEditSelectorSimple,
-                          'longtext' => $xEditSelectorTA,
-                          'richtext' => $xEditSelectorMCESimple,
-                          'image' => $xEditSelectorImage,
-                          'icon' => $xEditSelectorICO,
-                          'select' => $xEditSelectorSelectRC,
-                          'fontselect' => $xEditSelectorFontSelect];
+    'longtext' => $xEditSelectorTA,
+    'richtext' => $xEditSelectorMCESimple,
+    'image' => $xEditSelectorImage,
+    'icon' => $xEditSelectorICO,
+    'select' => $xEditSelectorSelectRC,
+    'fontselect' => $xEditSelectorFontSelect];

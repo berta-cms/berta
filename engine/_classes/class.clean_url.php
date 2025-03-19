@@ -72,14 +72,17 @@
 class CleanURL
 {
     public $basename;
+
     public $uri;
+
     public $parts;
+
     public $slashes;
 
     public function parseURL($urlStr = '')
     {
         /* grab URL query string and script name */
-        if (!$urlStr) {
+        if (! $urlStr) {
             $urlStr = $_SERVER['REQUEST_URI'];
         }
 
@@ -118,7 +121,7 @@ class CleanURL
            to define relative path */
         $numslash = count($this->parts);
         $slashes = '';
-        for ($i = 0;$i < $numslash;$i++) {
+        for ($i = 0; $i < $numslash; $i++) {
             $slashes .= '../';
         }
         $this->slashes = $slashes;
@@ -136,13 +139,14 @@ class CleanURL
     public function getParts($limit = 0)
     {
         /* return array of sliced query string */
-        if (!$limit) {
+        if (! $limit) {
             return $this->parts;
         }
         $urlParts = [];
         for ($i = 0; $i < $limit; $i++) {
             $urlParts[$i] = empty($this->parts[$i]) ? false : $this->parts[$i];
         }
+
         return $urlParts;
     }
 
@@ -154,7 +158,7 @@ class CleanURL
         $urlparts = $this->getParts();
         for ($i = 0; $i < $numargs; $i++) {
             /* make them available for webpage */
-            eval('$GLOBALS["' . $arg_list[$i] . '"]= ' . (!empty($urlparts[$i]) ? "'$urlparts[$i]'" : 'false') . ';');
+            eval('$GLOBALS["' . $arg_list[$i] . '"]= ' . (! empty($urlparts[$i]) ? "'$urlparts[$i]'" : 'false') . ';');
         }
     }
 
@@ -162,11 +166,12 @@ class CleanURL
     {
         /* convert normal URL query string to clean URL */
         $url = parse_url($stringurl);
-        $strurl = ''; //basename($url['path'],".php");
+        $strurl = ''; // basename($url['path'],".php");
         $qstring = parse_str($url['query'], $vars);
-        foreach($vars as $k => $v) {
+        foreach ($vars as $k => $v) {
             $strurl .= '/' . $v;
         }
+
         return $strurl;
     }
 }

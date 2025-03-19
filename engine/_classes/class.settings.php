@@ -7,12 +7,17 @@ define('SETTINGS_EMPTY', '$$$emptysettingsvalue$$$');
 class Settings
 {
     public $settings = [];
+
     public $settingsDefinition;
 
     public $base; // the super-settings, that propogate to these settings, if there's not value
+
     public $templateName; // name of the template (without version info)
+
     public $templateFullName; // full name of the template (the actual folder name with version)
+
     public $templateVersion; // version of the template (derived from folder name)
+
     public $fileName; // the actual template file name
 
     public function __construct($settingsDefinition, $settingsBaseInstance = false, $templateName = false, $settings = false)
@@ -23,7 +28,7 @@ class Settings
 
         $tParts = explode('-', $templateName);
         $this->templateName = $tParts[0];
-        $this->templateVersion = !empty($tParts[1]) ? $tParts[1] : 0;
+        $this->templateVersion = ! empty($tParts[1]) ? $tParts[1] : 0;
 
         $this->fileName = $this->templateName ? str_replace('%', $this->templateName, BertaBase::$options['settings.%.xml']) : BertaBase::$options['settings.xml'];
 
@@ -43,11 +48,13 @@ class Settings
                 $xml = file_get_contents($xml_file);
                 flock($fp, LOCK_UN);
                 $this->settings = Array_XML::xml2array($xml, 'settings');
+
                 return $this->settings;
             } else {
                 throw new \Exception('Could not read locked file: ' . $xml_file);
             }
         }
+
         return false;
     }
 
@@ -79,12 +86,14 @@ class Settings
                 fflush($fp);
                 flock($fp, LOCK_UN);
                 fclose($fp);
+
                 return true;
             } else {
                 fclose($fp);
                 throw new \Exception('Could not write locked file: ' . $xml_file);
             }
         }
+
         return false;
     }
 
@@ -94,6 +103,7 @@ class Settings
             $this->settings[$collection] = [];
         }
         $this->settings[$collection][$prop] = $value;
+
         return true;
     }
 
@@ -102,17 +112,20 @@ class Settings
         if (isset($this->settings[$collection][$prop])) {
             unset($this->settings[$collection][$prop]);
         }
+
         return true;
     }
 
     public function getFont($collection)
     {
-        if (isset($this->settings[$collection]['googleFont']) && !empty($this->settings[$collection]['googleFont'])) {
+        if (isset($this->settings[$collection]['googleFont']) && ! empty($this->settings[$collection]['googleFont'])) {
             $googleFont = explode(':', $this->settings[$collection]['googleFont']);
+
             return $googleFont[0];
         } elseif ($collection == 'priceItem') {
-            if (isset($this->settings['shop'][$collection . 'googleFont']) && !empty($this->settings['shop'][$collection . 'googleFont'])) {
+            if (isset($this->settings['shop'][$collection . 'googleFont']) && ! empty($this->settings['shop'][$collection . 'googleFont'])) {
                 $googleFont = explode(':', $this->settings['shop'][$collection . 'googleFont']);
+
                 return $googleFont[0];
             } else {
                 return $this->get('shop', $collection . 'fontFamily');
@@ -126,10 +139,10 @@ class Settings
     {
         if (isset($this->settings[$collection][$prop])) {
             $s = trim($this->settings[$collection][$prop]);
-            if (!$s && $this->base && $this->base->exists($collection, $prop)) {
+            if (! $s && $this->base && $this->base->exists($collection, $prop)) {
                 $s = trim($this->base->get($collection, $prop, $useEmptyIfEmpty));
             }
-            if (!$s && $useEmptyIfEmpty) {
+            if (! $s && $useEmptyIfEmpty) {
                 return $this->getEmpty($prop);
             } else {
                 return $s;
@@ -151,16 +164,17 @@ class Settings
     {
         $retArr = [];
         if ($collection != 'siteTexts') {
-            if (!empty($this->settingsDefinition[$collection])) {
+            if (! empty($this->settingsDefinition[$collection])) {
                 foreach ($this->settingsDefinition[$collection] as $prop => $propDefaults) {
                     $retArr[$prop] = $this->get($collection, $prop, $useEmptyIfEmpty);
                 }
             }
-        } elseif (!empty($this->settings[$collection])) {
+        } elseif (! empty($this->settings[$collection])) {
             foreach ($this->settings[$collection] as $prop => $value) {
                 $retArr[$prop] = $value;
             }
         }
+
         return $retArr;
     }
 
@@ -170,7 +184,7 @@ class Settings
         foreach ($this->settingsDefinition as $col => $arr) {
             $defArray[$col] = [];
             foreach ($arr as $s => $def) {
-                if (!empty($def['default'])) {
+                if (! empty($def['default'])) {
                     $defArray[$col][$s] = $def['default'];
                 }
             }
@@ -228,9 +242,9 @@ class Settings
 
     public function isRequired($collection, $prop)
     {
-        if (!isset($this->settingsDefinition[$collection][$prop])) {
+        if (! isset($this->settingsDefinition[$collection][$prop])) {
             return false;
-        } elseif (!empty($this->settingsDefinition[$collection][$prop]['allow_blank'])) {
+        } elseif (! empty($this->settingsDefinition[$collection][$prop]['allow_blank'])) {
             return false;
         }
 
@@ -267,7 +281,7 @@ function array_merge_replace_recursive()
     foreach ($params as $array) {
         foreach ($array as $key => $value) {
             // Numeric keyed values are added (unless already there)
-            if (is_numeric($key) && (!in_array($value, $return))) {
+            if (is_numeric($key) && (! in_array($value, $return))) {
                 if (is_array($value)) {
                     $return[] = array_merge_replace_recursive($return[$key], $value);
                 } else {

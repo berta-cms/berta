@@ -4,18 +4,18 @@ $IS_CSS_FILE = true;
 define('SETTINGS_INSTALLREQUIRED', false);
 define('SETTINGS_INSTALLCHECKREQUIRED', false);
 define('BERTA_ENVIRONMENT', 'engine');
-include('../inc.page.php');
+include '../inc.page.php';
 
-$expires= 60 * 60 * 24 * 14; // 14 days
+$expires = 60 * 60 * 24 * 14; // 14 days
 header('Pragma: public');
 header('Cache-Control: max-age=' . $expires);
 header('Expires: ' . gmdate('D, d M Y H:i:s', time() + $expires) . ' GMT');
 header('Last-Modified: ' . gmdate('D, d M Y H:i:s', time() - $expires * 2) . ' GMT');
-header("Content-Type: text/css");
+header('Content-Type: text/css');
 
-$settings =& $berta->template->settings;
+$settings = &$berta->template->settings;
 
-if(!1) { ?><style type="text/css"><?php } ?>
+if (! 1) { ?><style type="text/css"><?php } ?>
 
 .warning {
     color: #BB0000;
@@ -809,4 +809,4 @@ input#xFirstTimeCheckContinue {
 }
 
 
-<?php if(!1) { ?></style><?php } ?>
+<?php if (! 1) { ?></style><?php } ?>
