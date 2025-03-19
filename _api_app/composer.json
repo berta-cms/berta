@@ -12,23 +12,23 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
-        "firebase/php-jwt": "^5.4",
-        "intervention/image": "^2.7",
-        "laravel/framework": "^11.9",
+        "firebase/php-jwt": "^6.11",
+        "intervention/image": "^3.11",
+        "laravel/framework": "^12.0",
         "laravel/sanctum": "^4.0",
-        "laravel/tinker": "^2.9",
-        "mobiledetect/mobiledetectlib": "^2.8",
+        "laravel/tinker": "^2.10",
+        "mobiledetect/mobiledetectlib": "^4.8",
         "rcrowe/twigbridge": "^0.14.0",
-        "sentry/sentry-laravel": "^4.8",
-        "swaggest/json-schema": "^0.12.38"
+        "sentry/sentry-laravel": "^4.13",
+        "swaggest/json-schema": "^0.12.43"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
         "laravel/pint": "^1.13",
-        "laravel/sail": "^1.26",
+        "laravel/sail": "^1.41",
         "mockery/mockery": "^1.6",
-        "nunomaduro/collision": "^8.0",
-        "phpunit/phpunit": "^11.0.1"
+        "nunomaduro/collision": "^8.7",
+        "phpunit/phpunit": "^11.0"
     },
     "autoload": {
         "psr-4": {

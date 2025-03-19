@@ -54,7 +54,7 @@ class UserAuthServiceProvider extends ServiceProvider
             $token = $this->getBearerToken($request);
 
             if (
-                $token && Helpers::validate_token($token) ||
+                $token && Helpers::validateToken($token) ||
                 // If the token is not provided, we need to check if OLD berta is authenticated
                 // This is due to Old Systems dependency on the new ONE, sometimes it will need to know
                 // Sometimes the old system will need to know if it's authenticated through the new system

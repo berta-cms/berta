@@ -2,7 +2,9 @@
 
 namespace App\Shared;
 
+use Illuminate\Support\Facades\Log;
 use Firebase\JWT\JWT;
+use Firebase\JWT\Key;
 
 /**
  * Using a class, so we can import the helper functions and use them in
@@ -543,23 +545,22 @@ class Helpers
         );
     }
 
-    public static function validate_token($token)
+    public static function validateToken($token)
     {
         try {
             $app_key = config('app.key');
-            $app_id = config('app.id');
             JWT::$leeway = 60;
-            $decoded = JWT::decode($token, $app_key, ['HS256']);
+            $decoded = JWT::decode($token, new Key($app_key, 'HS256'));
             if (!empty($decoded->uid)) {
                 $_SESSION['uid'] = $decoded->uid;
             }
 
             return true;
         } catch (\Throwable $t) {
-            \Log::error($t);
+            Log::error($t);
             return null;
         } catch (\Exception $e) {
-            \Log::error($e);
+            Log::error($e);
             return null;
         }
     }
