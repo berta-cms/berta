@@ -1,11 +1,11 @@
 <?php
 
-if(empty($CHECK_INCLUDED)) {
+if (empty($CHECK_INCLUDED)) {
     /** @todo
      * - fix this path:  */
-	define('AUTH_AUTHREQUIRED', true);
-	define('SETTINGS_INSTALLREQUIRED', false);
-	include '../../engine/inc.page.php';
+    define('AUTH_AUTHREQUIRED', true);
+    define('SETTINGS_INSTALLREQUIRED', false);
+    include '../../engine/inc.page.php';
 }
 
 include $ENGINE_ROOT_PATH . 'inc.settings.php';
@@ -28,10 +28,10 @@ $uriPath = explode('?', $_SERVER['REQUEST_URI'])[0];
 <?php include $ENGINE_ROOT_PATH . 'inc.head.php'; ?>
 </head><?php
 
-if(!empty($settings['berta']['installed'])) {
+if (! empty($settings['berta']['installed'])) {
     $redirectURL = strstr($uriPath, '/editor') ? $ENGINE_ROOT_URL . 'editor/' : $SITE_ROOT_URL;
 
-	?><body class="xLoginPageBody">
+    ?><body class="xLoginPageBody">
 		<div class="xMAlign-container xPanel">
 			<div class="xMAlign-outer">
 				<div class="xMAlign-inner">
@@ -46,7 +46,7 @@ if(!empty($settings['berta']['installed'])) {
     $site = empty($options['MULTISITE']) ? '' : $options['MULTISITE'];
     $basePath = $site . '/settings';
 
-	?><body class="xLoginPageBody xSetupWizard" x_mode="settings">
+    ?><body class="xLoginPageBody xSetupWizard" x_mode="settings">
 		<div class="xMAlign-container xPanel">
 			<div class="xMAlign-outer">
 				<div class="xMAlign-inner justify">
@@ -60,47 +60,47 @@ if(!empty($settings['berta']['installed'])) {
 
                         <?php
                             echo BertaEditor::getSettingsItemEditHTML(
-								'siteTexts/siteHeading',
-								$berta->settings->getDefinition('siteTexts', 'siteHeading'),
-								$berta->settings->get('siteTexts', 'siteHeading', false),
-								array('xCaption' => str_replace(' ', '+', $berta->settings->getDefinitionParam('siteTexts', 'siteHeading', 'title'))),
-                                "p",
+                                'siteTexts/siteHeading',
+                                $berta->settings->getDefinition('siteTexts', 'siteHeading'),
+                                $berta->settings->get('siteTexts', 'siteHeading', false),
+                                ['xCaption' => str_replace(' ', '+', $berta->settings->getDefinitionParam('siteTexts', 'siteHeading', 'title'))],
+                                'p',
                                 $basePath . '/siteTexts/siteHeading'
                             );
-                        ?>
+    ?>
 
 						<p>2. <?php echo I18n::_('What is your name?') ?></p>
 						<p class="subInfo"><?php echo I18n::_('It will appear in the copyright notice in the footer. You may leave it blank.') ?></p>
 
 						<?php echo BertaEditor::getSettingsItemEditHTML(
-								'texts/ownerName',
-								$berta->settings->getDefinition('texts', 'ownerName'),
-								$berta->settings->get('texts', 'ownerName', false),
-								array('xCaption' => str_replace(' ', '+', $berta->settings->getDefinitionParam('texts', 'ownerName', 'title'))),
-                                "p",
-                                $basePath . '/texts/ownerName'
-                            );
-                        ?>
+						    'texts/ownerName',
+						    $berta->settings->getDefinition('texts', 'ownerName'),
+						    $berta->settings->get('texts', 'ownerName', false),
+						    ['xCaption' => str_replace(' ', '+', $berta->settings->getDefinitionParam('texts', 'ownerName', 'title'))],
+						    'p',
+						    $basePath . '/texts/ownerName'
+						);
+    ?>
 
 						<p>3. <?php echo I18n::_('What is this website about?') ?></p>
 						<p class="subInfo"><?php echo I18n::_('It will appear under your site name in search engine results.') ?></p>
 						<p class="subInfo"><?php echo I18n::_('Note: the fields that already have value appear yellow only when you roll over them with your mouse. Click on the text below to edit.') ?></p>
 
 						<?php echo BertaEditor::getSettingsItemEditHTML(
-								'texts/metaDescription',
-								$berta->settings->getDefinition('texts', 'metaDescription'),
-								$berta->settings->get('texts', 'metaDescription', false),
-								array('xCaption' => str_replace(' ', '+', $berta->settings->getDefinitionParam('texts', 'metaDescription', 'title'))),
-                                "p",
-                                $basePath . '/texts/metaDescription'
-                            );
-                        ?>
+						    'texts/metaDescription',
+						    $berta->settings->getDefinition('texts', 'metaDescription'),
+						    $berta->settings->get('texts', 'metaDescription', false),
+						    ['xCaption' => str_replace(' ', '+', $berta->settings->getDefinitionParam('texts', 'metaDescription', 'title'))],
+						    'p',
+						    $basePath . '/texts/metaDescription'
+						);
+    ?>
 
                         <p><input type="button" value=" <?php echo I18n::_('Done!') ?> " id="xFinishInstall" data-path="<?php echo $basePath?>/berta/installed"></p>
 					</div>
 					<?php
 
-				?></div>
+    ?></div>
 			</div>
 		</div>
     </body>
