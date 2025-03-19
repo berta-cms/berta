@@ -3,15 +3,15 @@
   // for the documentation about the extensions.json format
   "recommendations": [
     // Extension identifier format: ${publisher}.${name}. Example: vscode.csharp
-    "junstyle.php-cs-fixer",  // PHP file formatting
-    "mikestead.dotenv",  // .env syntax highlight for lumen
-    "EditorConfig.editorconfig",  // Common editor configuration
-    "dbaeumer.vscode-eslint",  // Linting for JS files
-    "HookyQR.beautify",  // Formatter for JS files
+    "mikestead.dotenv", // .env syntax highlight for lumen
+    "EditorConfig.editorconfig", // Common editor configuration
+    "dbaeumer.vscode-eslint", // Linting for JS files
+    "HookyQR.beautify", // Formatter for JS files
     "mrmlnc.vscode-apache",
     "IBM.xmllanguagesupport",
     "DotJoshJohnson.xml",
     "mblode.twig-language-2",
-    "natewallace.angular2-inline"
+    "natewallace.angular2-inline",
+    "open-southeners.laravel-pint"
   ]
 }
