@@ -2,8 +2,6 @@
 
 namespace App\Sites\Sections;
 
-use App\Shared\Helpers;
-
 class DefaultTemplateRenderService extends SectionTemplateRenderService
 {
     public function getViewData(

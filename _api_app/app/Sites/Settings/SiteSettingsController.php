@@ -2,11 +2,10 @@
 
 namespace App\Sites\Settings;
 
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Http\Request;
-use App\Shared\Helpers;
 use App\Http\Controllers\Controller;
-use App\Sites\Settings\SiteSettingsDataService;
+use App\Shared\Helpers;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class SiteSettingsController extends Controller
 {
@@ -65,12 +64,12 @@ class SiteSettingsController extends Controller
         $file = $request->file('value');
         $path = $request->get('path');
 
-        if (!$file || !$file->isValid() || !$path) {
-            return Helpers::api_response('Upload failed.', (object)[], 500);
+        if (! $file || ! $file->isValid() || ! $path) {
+            return Helpers::api_response('Upload failed.', (object) [], 500);
         }
 
         $validator = Validator::make(['file' => $file], [
-            'file' => 'max:' .  config('app.image_max_file_size') . '|mimes:' . implode(',', config('app.image_mimes')) . ',' . implode(',', config('app.ico_mimes'))
+            'file' => 'max:' . config('app.image_max_file_size') . '|mimes:' . implode(',', config('app.image_mimes')) . ',' . implode(',', config('app.ico_mimes')),
         ]);
 
         $isImage = in_array($file->guessExtension(), config('app.image_mimes'));
@@ -80,7 +79,7 @@ class SiteSettingsController extends Controller
         });
 
         if ($validator->fails()) {
-            return Helpers::api_response($validator->getMessageBag()->all(), (object)[], 400);
+            return Helpers::api_response($validator->getMessageBag()->all(), (object) [], 400);
         }
 
         $path_arr = explode('/', $path);
@@ -88,8 +87,8 @@ class SiteSettingsController extends Controller
         $settingsDataService = new SiteSettingsDataService($site);
         $mediaDir = $settingsDataService->getOrCreateMediaDir();
 
-        if (!is_writable($mediaDir)) {
-            return Helpers::api_response('Media folder not writable.', (object)[], 500);
+        if (! is_writable($mediaDir)) {
+            return Helpers::api_response('Media folder not writable.', (object) [], 500);
         }
 
         $res = $settingsDataService->uploadFileByPath($path, $file);

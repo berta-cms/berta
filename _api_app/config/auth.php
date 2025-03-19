@@ -37,7 +37,7 @@ return [
 
     'guards' => [
         'jwt_token' => [
-            'driver' => 'jwt_token'
+            'driver' => 'jwt_token',
         ],
     ],
 

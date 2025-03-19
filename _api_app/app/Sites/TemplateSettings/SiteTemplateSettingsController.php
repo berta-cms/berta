@@ -2,11 +2,10 @@
 
 namespace App\Sites\TemplateSettings;
 
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Http\Request;
-use App\Shared\Helpers;
 use App\Http\Controllers\Controller;
-use App\Sites\TemplateSettings\SiteTemplateSettingsDataService;
+use App\Shared\Helpers;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class SiteTemplateSettingsController extends Controller
 {
@@ -32,16 +31,16 @@ class SiteTemplateSettingsController extends Controller
         $file = $request->file('value');
         $path = $request->get('path');
 
-        if (!$file || !$file->isValid() || !$path) {
-            return Helpers::api_response('Upload failed.', (object)[], 500);
+        if (! $file || ! $file->isValid() || ! $path) {
+            return Helpers::api_response('Upload failed.', (object) [], 500);
         }
 
         $validator = Validator::make(['file' => $file], [
-            'file' => 'max:' .  config('app.image_max_file_size') . '|mimes:' . implode(',', config('app.image_mimes')) . '|not_corrupted_image'
+            'file' => 'max:' . config('app.image_max_file_size') . '|mimes:' . implode(',', config('app.image_mimes')) . '|not_corrupted_image',
         ]);
 
         if ($validator->fails()) {
-            return Helpers::api_response($validator->getMessageBag()->all(), (object)[], 400);
+            return Helpers::api_response($validator->getMessageBag()->all(), (object) [], 400);
         }
 
         $path_arr = explode('/', $path);
@@ -50,8 +49,8 @@ class SiteTemplateSettingsController extends Controller
         $templateSettingsDataService = new SiteTemplateSettingsDataService($site, $template);
         $mediaDir = $templateSettingsDataService->getOrCreateMediaDir();
 
-        if (!is_writable($mediaDir)) {
-            return Helpers::api_response('Media folder not writable.', (object)[], 500);
+        if (! is_writable($mediaDir)) {
+            return Helpers::api_response('Media folder not writable.', (object) [], 500);
         }
 
         $res = $templateSettingsDataService->uploadFileByPath($path, $file);

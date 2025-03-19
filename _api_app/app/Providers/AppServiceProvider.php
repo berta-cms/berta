@@ -2,9 +2,9 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Facades\Validator;
 use App\Shared\ImageHelpers;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -44,7 +44,7 @@ class AppServiceProvider extends ServiceProvider
         }
 
         Validator::extend('not_corrupted_image', function ($attribute, $value, $parameters) {
-            return !ImageHelpers::isCorrupted($value);
+            return ! ImageHelpers::isCorrupted($value);
         });
     }
 }

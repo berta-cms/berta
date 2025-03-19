@@ -7,7 +7,9 @@ use App\Shared\Helpers;
 class AdditionalFooterTextRenderService
 {
     public $socialMediaLinksRS;
+
     private $USED_IN_TEMPLATES = ['messy', 'default'];
+
     private $EDITABLE_CLASSES = ['xEditableMCESimple', 'xProperty-additionalFooterText', 'xCaption-additional-footer-text'];
 
     public function __construct($socialMediaLinksRS)
@@ -32,8 +34,8 @@ class AdditionalFooterTextRenderService
 
     private function getViewData($siteSlug, $siteSettings, $user, $isEditMode)
     {
-        $showSocialMediaButtons = in_array('custom_javascript', $user->features) && $siteSettings['socialMediaButtons']['socialMediaLocation'] == 'footer' && !empty($siteSettings['socialMediaButtons']['socialMediaHTML']);
-        $showSocialMediaLinks = $siteSettings['socialMediaLinks']['location'] == 'footer' && !empty($siteSettings['socialMediaLinks']['links']);
+        $showSocialMediaButtons = in_array('custom_javascript', $user->features) && $siteSettings['socialMediaButtons']['socialMediaLocation'] == 'footer' && ! empty($siteSettings['socialMediaButtons']['socialMediaHTML']);
+        $showSocialMediaLinks = $siteSettings['socialMediaLinks']['location'] == 'footer' && ! empty($siteSettings['socialMediaLinks']['links']);
         $showAdditionalFooterText = false;
 
         if ($showSocialMediaButtons) {
@@ -41,7 +43,7 @@ class AdditionalFooterTextRenderService
         } elseif ($showSocialMediaLinks) {
             $content = $this->socialMediaLinksRS->render($siteSettings);
         } else {
-            $content = !empty($siteSettings['siteTexts']['additionalFooterText']) ? $siteSettings['siteTexts']['additionalFooterText'] : '';
+            $content = ! empty($siteSettings['siteTexts']['additionalFooterText']) ? $siteSettings['siteTexts']['additionalFooterText'] : '';
             $showAdditionalFooterText = true;
         }
 
@@ -49,7 +51,7 @@ class AdditionalFooterTextRenderService
 
         return [
             'content' => $content,
-            'attributes' => $attributes
+            'attributes' => $attributes,
         ];
     }
 
@@ -57,7 +59,7 @@ class AdditionalFooterTextRenderService
     {
         $templateName = explode('-', $siteSettings['template']['template'])[0];
 
-        if (!in_array($templateName, $this->USED_IN_TEMPLATES)) {
+        if (! in_array($templateName, $this->USED_IN_TEMPLATES)) {
             return '';
         }
 

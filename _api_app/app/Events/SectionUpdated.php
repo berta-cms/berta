@@ -12,9 +12,10 @@ use Illuminate\Queue\SerializesModels;
 
 class SectionUpdated
 {
-    use Dispatchable, SerializesModels; //InteractsWithSockets
+    use Dispatchable, SerializesModels; // InteractsWithSockets
 
     public $siteName;
+
     public $sectionName;
 
     /**

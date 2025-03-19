@@ -2,9 +2,6 @@
 
 namespace App\Sites\Sections\Entries\Galleries;
 
-use App\Shared\Storage;
-use App\Sites\Sections\Entries\Galleries\EntryGalleryRenderService;
-
 class GalleryColumnRenderService extends EntryGalleryRenderService
 {
     public function getViewData(
@@ -46,6 +43,7 @@ class GalleryColumnRenderService extends EntryGalleryRenderService
     public function getGalleryClassList($galleryItemsData, $galleryType, $entry, $siteSettings)
     {
         $classes = parent::getGalleryClassList($galleryItemsData, $galleryType, $entry, $siteSettings);
+
         return implode(' ', $classes);
     }
 
@@ -53,7 +51,7 @@ class GalleryColumnRenderService extends EntryGalleryRenderService
     {
         $styles = [];
 
-        if (!$galleryItems) {
+        if (! $galleryItems) {
             return '';
         }
 

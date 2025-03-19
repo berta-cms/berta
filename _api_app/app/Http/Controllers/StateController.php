@@ -21,9 +21,9 @@ class StateController extends Controller
     public function get($site = '')
     {
         $site = $site === '0' ? '' : $site;
-        $sitesDataService = new SitesDataService();
-        $siteSettingsConfigService = new SiteSettingsConfigService();
-        $siteTemplatesConfigService = new SiteTemplatesConfigService();
+        $sitesDataService = new SitesDataService;
+        $siteSettingsConfigService = new SiteSettingsConfigService;
+        $siteTemplatesConfigService = new SiteTemplatesConfigService;
         $allTemplates = $siteTemplatesConfigService->getAllTemplates();
 
         $state['urls'] = [
@@ -67,7 +67,7 @@ class StateController extends Controller
                 );
                 $templateSettings = $templateSettingsDataService->getState();
 
-                if (!($templateSettings)) {
+                if (! ($templateSettings)) {
                     $templateSettings = (object) null;
                 }
 
@@ -100,8 +100,8 @@ class StateController extends Controller
     public function getMeta()
     {
         include realpath(config('app.old_berta_root') . '/engine/inc.version.php');
-        $user = new UserModel();
-        $themesDS = new ThemesDataService();
+        $user = new UserModel;
+        $themesDS = new ThemesDataService;
         $meta = [
             'version' => $options['version'],
             'forgotPasswordUrl' => $user->forgot_password_url,
@@ -126,17 +126,16 @@ class StateController extends Controller
     /**
      * Returns translated settings for site localization: templates and settings config
      *
-     * @param Request $request
      * @return json
      */
     public function getLocaleSettings(Request $request)
     {
         $lang = $request->query('language');
 
-        $siteTemplatesConfigService = new SiteTemplatesConfigService();
+        $siteTemplatesConfigService = new SiteTemplatesConfigService;
         $state['siteTemplates'] = $siteTemplatesConfigService->get($lang);
 
-        $siteSettingsConfigService = new SiteSettingsConfigService();
+        $siteSettingsConfigService = new SiteSettingsConfigService;
         $state['siteSettingsConfig'] = $siteSettingsConfigService->get($lang);
 
         return response()->json($state);

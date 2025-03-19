@@ -2,15 +2,15 @@
 
 namespace App\Sites\Sections;
 
-use App\Shared\Helpers;
-use App\Shared\Storage;
-use App\Shared\ImageHelpers;
-use App\Shared\ConfigHelpers;
-use App\Events\SectionUpdated;
 use App\Configuration\SiteTemplatesConfigService;
-use App\Sites\Settings\SiteSettingsDataService;
+use App\Events\SectionUpdated;
+use App\Shared\ConfigHelpers;
+use App\Shared\Helpers;
+use App\Shared\ImageHelpers;
+use App\Shared\Storage;
 use App\Sites\Sections\Entries\SectionEntriesDataService;
 use App\Sites\Sections\Tags\SectionTagsDataService;
+use App\Sites\Settings\SiteSettingsDataService;
 
 /**
  * This class is a service that handles site section data for Berta CMS.
@@ -41,12 +41,11 @@ use App\Sites\Sections\Tags\SectionTagsDataService;
 class SiteSectionsDataService extends Storage
 {
     /**
-     * @var array $JSON_SCHEMA
-     * Associative array representing data structure handled by this service.
-     *
+     * @var array
+     *            Associative array representing data structure handled by this service.
      */
     public static $JSON_SCHEMA = [
-        '$schema' => "http://json-schema.org/draft-07/schema#",
+        '$schema' => 'http://json-schema.org/draft-07/schema#',
         'type' => 'array',
         'items' => [ // <section>
             'type' => 'object',
@@ -76,10 +75,10 @@ class SiteSectionsDataService extends Storage
                                             'width' => ['type' => 'integer'],
                                             'height' => ['type' => 'integer'],
                                         ],
-                                        'required' => ['type', 'src', 'width', 'height']
+                                        'required' => ['type', 'src', 'width', 'height'],
                                     ],
                                 ],
-                                'required' => ['@value', '@attributes']
+                                'required' => ['@value', '@attributes'],
                             ],
                         ],
                         '@attributes' => [
@@ -123,6 +122,7 @@ class SiteSectionsDataService extends Storage
             'required' => ['name'],
         ],
     ];
+
     protected static $DEFAULT_VALUES = [
         'name' => '',
         '@attributes' => [
@@ -133,10 +133,15 @@ class SiteSectionsDataService extends Storage
     ];
 
     public $ROOT_ELEMENT = 'sections';
-    private $SECTIONS = array();
+
+    private $SECTIONS = [];
+
     private $XML_FILE;
+
     private $XML_ROOT;
+
     private $site_name;
+
     private $isPreview;
 
     public function __construct($site = '', $xml_root = null, $isPreview = false)
@@ -155,11 +160,11 @@ class SiteSectionsDataService extends Storage
      */
     public function get($sectionName = null)
     {
-        if (!$this->SECTIONS) {
+        if (! $this->SECTIONS) {
             $this->SECTIONS = $this->xmlFile2array($this->XML_FILE);
 
             if ($this->SECTIONS) {
-                if (!isset($this->SECTIONS['section']) || !$this->SECTIONS['section']) {
+                if (! isset($this->SECTIONS['section']) || ! $this->SECTIONS['section']) {
                     $this->SECTIONS['section'] = [];
                 }
 
@@ -169,7 +174,7 @@ class SiteSectionsDataService extends Storage
                     if (isset($section['mediaCacheData']['file'])) {
                         $this->SECTIONS[$order]['mediaCacheData']['file'] = $this->asList($section['mediaCacheData']['file']);
 
-                        if (!$this->SECTIONS[$order]['mediaCacheData']['file'][0]) {
+                        if (! $this->SECTIONS[$order]['mediaCacheData']['file'][0]) {
                             $this->SECTIONS[$order]['mediaCacheData']['file'] = [];
                         }
                     }
@@ -183,6 +188,7 @@ class SiteSectionsDataService extends Storage
                     return $_section;
                 }
             }
+
             return null;
         }
 
@@ -213,7 +219,7 @@ class SiteSectionsDataService extends Storage
         $section_order = array_search($name, array_column($sections, 'name'));
 
         if ($section_order !== false) {
-            return array('error_message' => 'Section "' . $name . '" already exists!');
+            return ['error_message' => 'Section "' . $name . '" already exists!'];
         }
 
         // Berta requires existing section file for entries
@@ -221,7 +227,7 @@ class SiteSectionsDataService extends Storage
         $section_entries = $entries->create();
 
         $section = [
-            '@attributes' => array('tags_behavior' => 'invisible', 'published' => 1),
+            '@attributes' => ['tags_behavior' => 'invisible', 'published' => 1],
             'name' => $name,
             'title' => $title ? $title : '',
         ];
@@ -243,7 +249,7 @@ class SiteSectionsDataService extends Storage
         $section_order = array_search($name, array_column($sections, 'name'));
 
         if ($section_order === false) {
-            return array('error_message' => 'Section "' . $name . '" not found!');
+            return ['error_message' => 'Section "' . $name . '" not found!'];
         }
 
         // Berta requires existing section file for entries
@@ -275,8 +281,7 @@ class SiteSectionsDataService extends Storage
 
         // update direct content property
         // @TODO redux also should know about this attribute change!
-        $sections[$section_order]['@attributes']['has_direct_content'] = !$allHaveTags ? '1' : '0';
-
+        $sections[$section_order]['@attributes']['has_direct_content'] = ! $allHaveTags ? '1' : '0';
 
         $this->array2xmlFile(['section' => $sections], $this->XML_FILE, $this->ROOT_ELEMENT);
 
@@ -287,12 +292,11 @@ class SiteSectionsDataService extends Storage
         return $section;
     }
 
-
     /**
      * Saves a value with a given path and saves the change to XML file
      *
-     * @param string $path Slash delimited path to the value
-     * @param mixed $value Value to be saved
+     * @param  string  $path  Slash delimited path to the value
+     * @param  mixed  $value  Value to be saved
      * @return array Array of changed value and/or error messages
      */
     public function saveValueByPath($path, $value)
@@ -303,14 +307,14 @@ class SiteSectionsDataService extends Storage
         $order = $path_arr[1];
         $sectionName = $sections['section'][$order]['name'];
         $value = trim($value);
-        $ret = array(
+        $ret = [
             'site' => $this->site_name,
             'order' => $order,
             'old_name' => null,
             'path' => $path,
             'value' => $value,
             'real' => $value,
-        );
+        ];
 
         if ($prop === 'title') {
             $old_name = $sectionName;
@@ -320,10 +324,11 @@ class SiteSectionsDataService extends Storage
             if (empty($value)) {
                 $ret['value'] = $old_title;
                 $ret['error_message'] = 'Section name cannot be empty!';
+
                 return $ret;
             }
 
-            //Compare the title when we rename it
+            // Compare the title when we rename it
             if ($old_name !== $new_name) {
                 // Rename section name
                 $this->setValueByPath(
@@ -351,8 +356,9 @@ class SiteSectionsDataService extends Storage
                 $entries = new SectionEntriesDataService($this->SITE, $old_name, $old_title);
                 $ret = array_merge($ret, $entries->rename($new_name, $value));
 
-                if (!$ret['success']) {
+                if (! $ret['success']) {
                     $ret['value'] = $old_title;
+
                     return $ret;
                 }
 
@@ -388,7 +394,7 @@ class SiteSectionsDataService extends Storage
         $siteSettingsDataService = new SiteSettingsDataService($this->site_name);
         $siteSettings = $siteSettingsDataService->get();
 
-        $siteTemplatesConfigService = new SiteTemplatesConfigService();
+        $siteTemplatesConfigService = new SiteTemplatesConfigService;
         $siteTemplatesConfig = $siteTemplatesConfigService->get();
 
         $config_path = ConfigHelpers::getSectionPathByXmlPath($path, $siteTemplatesConfig, $siteSettings, $sections);
@@ -411,8 +417,6 @@ class SiteSectionsDataService extends Storage
         $this->deleteValueByPath("/section/{$sectionOrder}/@attributes/demo");
     }
 
-    /**
-     */
     public function deleteValueByPath($path)
     {
         $sections['section'] = $this->get();
@@ -420,16 +424,15 @@ class SiteSectionsDataService extends Storage
         $section_idx = $path_arr[1];
         $this->unsetValueByPath($sections, implode('/', $path_arr));
         $this->array2xmlFile($sections, $this->XML_FILE, $this->ROOT_ELEMENT);
-        $ret = array(
+        $ret = [
             'site' => $this->SITE,
             'section_idx' => $section_idx,
             'path' => $path,
-        );
+        ];
+
         return $ret;
     }
 
-    /**
-     */
     public function delete($name)
     {
         $sections['section'] = $this->get();
@@ -440,14 +443,14 @@ class SiteSectionsDataService extends Storage
             $entries = new SectionEntriesDataService($this->SITE, $name, '', $this->XML_ROOT, $this->isPreview);
             $res = $entries->delete();
 
-            if (!$res['success']) {
+            if (! $res['success']) {
                 return $res;
             }
 
             // delete section media
             $section = $sections['section'][$section_idx];
 
-            if (array_key_exists('mediafolder', $section) and !empty($section['mediafolder'])) {
+            if (array_key_exists('mediafolder', $section) and ! empty($section['mediafolder'])) {
                 $mediaFolder = $this->MEDIA_ROOT . '/' . $section['mediafolder'];
 
                 if (file_exists($mediaFolder)) {
@@ -459,11 +462,11 @@ class SiteSectionsDataService extends Storage
                         }
                     }
 
-                    if (!@rmdir($mediaFolder)) {
-                        return array(
+                    if (! @rmdir($mediaFolder)) {
+                        return [
                             'success' => false,
                             'error_message' => 'Unable to remove folder "' . $mediaFolder . '"!',
-                        );
+                        ];
                     }
                 }
             }
@@ -477,21 +480,22 @@ class SiteSectionsDataService extends Storage
             $this->array2xmlFile($sections, $this->XML_FILE, $this->ROOT_ELEMENT);
             $ret = $section[0];
             $ret['site'] = $this->SITE;
+
             return $ret;
         }
 
-        return array('error_message' => 'Section "' . $name . '" not found!');
+        return ['error_message' => 'Section "' . $name . '" not found!'];
     }
 
     /**
      * Reorder sections and save to XML file
      *
-     * @param array $names Array of section names in a new order
+     * @param  array  $names  Array of section names in a new order
      */
     public function order($names)
     {
         $sections['section'] = $this->get();
-        $new_order = array();
+        $new_order = [];
 
         foreach ($names as $section_name) {
             $section_idx = array_search($section_name, array_column($sections['section'], 'name'));
@@ -507,8 +511,6 @@ class SiteSectionsDataService extends Storage
         }
     }
 
-    /**
-     */
     public function backgroundGalleryDelete($name, $file)
     {
         $sections['section'] = $this->get();
@@ -517,7 +519,7 @@ class SiteSectionsDataService extends Storage
         if ($section_order !== false) {
             $section = &$sections['section'][$section_order];
 
-            if (!isset($section['mediaCacheData'])) {
+            if (! isset($section['mediaCacheData'])) {
                 return ['error_message' => 'File "' . $file . '" not found!'];
             }
 
@@ -559,8 +561,6 @@ class SiteSectionsDataService extends Storage
         return ['error_message' => 'Section "' . $name . '" not found!'];
     }
 
-    /**
-     */
     public function backgroundGalleryOrder($name, $new_files)
     {
         $sections['section'] = $this->get();
@@ -616,7 +616,7 @@ class SiteSectionsDataService extends Storage
         $mediaDirName = isset($section['mediafolder']) ? $section['mediafolder'] : $section['name'] . '-background';
         $mediaDir = $mediaRootDir . '/' . $mediaDirName;
 
-        if (!file_exists($mediaDir)) {
+        if (! file_exists($mediaDir)) {
             mkdir($mediaDir, 0777, true);
         }
 
@@ -626,20 +626,20 @@ class SiteSectionsDataService extends Storage
 
         ImageHelpers::downscaleToMaxSize($mediaDir . '/' . $fileName);
 
-        list($width, $height) = getimagesize($mediaDir . '/' . $fileName);
+        [$width, $height] = getimagesize($mediaDir . '/' . $fileName);
 
         $smallThumb = ImageHelpers::getThumbnail($mediaDir . '/' . $fileName);
-        list($smallThumbWidth, $smallThumbHeight) = getimagesize($smallThumb);
+        [$smallThumbWidth, $smallThumbHeight] = getimagesize($smallThumb);
         $bgImage = ImageHelpers::getBackgroundImage($mediaDir . '/' . $fileName);
-        list($bgImageWidth, $bgImageHeight) = getimagesize($bgImage);
+        [$bgImageWidth, $bgImageHeight] = getimagesize($bgImage);
         $gridImage = ImageHelpers::getGridImage($mediaDir . '/' . $fileName);
-        list($gridImageWidth, $gridImageHeight) = getimagesize($gridImage);
+        [$gridImageWidth, $gridImageHeight] = getimagesize($gridImage);
 
-        if (!isset($section['mediafolder'])) {
+        if (! isset($section['mediafolder'])) {
             $section['mediafolder'] = $mediaDirName;
         }
 
-        if (!isset($section['mediaCacheData']['file'])) {
+        if (! isset($section['mediaCacheData']['file'])) {
             unset($section['mediaCacheData']['@value']);
             $section['mediaCacheData']['file'] = [];
         }
@@ -649,8 +649,8 @@ class SiteSectionsDataService extends Storage
                 'type' => 'image',
                 'src' => $fileName,
                 'width' => $width,
-                'height' => $height
-            ]
+                'height' => $height,
+            ],
         ];
 
         $sections[$section_order] = $section;
@@ -674,7 +674,7 @@ class SiteSectionsDataService extends Storage
             'bg_image_width' => $bgImageWidth,
             'bg_image_height' => $bgImageHeight,
             'grid_image_width' => $gridImageWidth,
-            'grid_image_height' => $gridImageHeight
+            'grid_image_height' => $gridImageHeight,
         ];
     }
 
@@ -682,8 +682,6 @@ class SiteSectionsDataService extends Storage
      * Private methods
      ************************************************************/
 
-    /**
-     */
     private function getUniqueSlug($old_name, $new_title)
     {
         $sections['section'] = $this->get();
@@ -717,15 +715,13 @@ class SiteSectionsDataService extends Storage
         return $slug;
     }
 
-    /**
-     */
     private function deleteMedia($folder, $file = '')
     {
         @unlink($folder . $file);
 
         if ($handle = opendir($folder)) {
             while (false !== ($f = readdir($handle))) {
-                if (!$file || strpos($f, $file) !== false) {
+                if (! $file || strpos($f, $file) !== false) {
                     if (substr($f, 0, 1) == '_') {
                         @unlink($folder . $f);
                     }
@@ -738,7 +734,8 @@ class SiteSectionsDataService extends Storage
 
     /**
      * Merge site sections from other source folder
-     * @param string $src_root site sections source root folder
+     *
+     * @param  string  $src_root  site sections source root folder
      */
     public function mergeSiteSections($src_root)
     {
@@ -751,7 +748,7 @@ class SiteSectionsDataService extends Storage
                 $this->delete($section['name']);
             }
 
-            return !$isDemo;
+            return ! $isDemo;
         }));
 
         $siteSectionsDS = new self('', $src_root);

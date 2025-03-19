@@ -2,9 +2,7 @@
 
 namespace App\Sites\Sections\Entries\Galleries;
 
-use App\Shared\Storage;
 use App\Shared\Helpers;
-use App\Sites\Sections\Entries\Galleries\EntryGalleryRenderService;
 
 class GallerySlideshowRenderService extends EntryGalleryRenderService
 {
@@ -42,9 +40,9 @@ class GallerySlideshowRenderService extends EntryGalleryRenderService
             'gallery' => Helpers::arrayToHtmlAttributes([
                 'data-fullscreen' => $data['isFullscreen'] ? 1 : null,
                 'data-as-row-gallery' => $asRowGallery,
-                'data-autoplay' => ($isLoopAvailable && !empty($entry['mediaCacheData']['@attributes']['autoplay'])) ? $entry['mediaCacheData']['@attributes']['autoplay'] : '0',
-                'data-loop' => $isLoopAvailable && isset($siteSettings['entryLayout']['gallerySlideshowAutoRewind']) && $siteSettings['entryLayout']['gallerySlideshowAutoRewind'] == 'yes'
-            ])
+                'data-autoplay' => ($isLoopAvailable && ! empty($entry['mediaCacheData']['@attributes']['autoplay'])) ? $entry['mediaCacheData']['@attributes']['autoplay'] : '0',
+                'data-loop' => $isLoopAvailable && isset($siteSettings['entryLayout']['gallerySlideshowAutoRewind']) && $siteSettings['entryLayout']['gallerySlideshowAutoRewind'] == 'yes',
+            ]),
         ];
         $data['galleryStyles'] = $this->getGalleryStyles($entry, $galleryItems, $siteSettings);
 
@@ -58,8 +56,8 @@ class GallerySlideshowRenderService extends EntryGalleryRenderService
     {
         $classes = parent::getGalleryClassList($galleryItemsData, $galleryType, $entry, $siteSettings);
 
-        if (!empty($galleryItemsData) && !empty($entry)) {
-            $gallerySlideNumbersVisible = !empty($entry['mediaCacheData']['@attributes']['slide_numbers_visible']) ? $entry['mediaCacheData']['@attributes']['slide_numbers_visible'] : $siteSettings['entryLayout']['gallerySlideNumberVisibilityDefault'];
+        if (! empty($galleryItemsData) && ! empty($entry)) {
+            $gallerySlideNumbersVisible = ! empty($entry['mediaCacheData']['@attributes']['slide_numbers_visible']) ? $entry['mediaCacheData']['@attributes']['slide_numbers_visible'] : $siteSettings['entryLayout']['gallerySlideNumberVisibilityDefault'];
 
             $classes[] = 'xSlideNumbersVisible-' . $gallerySlideNumbersVisible;
         }
@@ -81,18 +79,18 @@ class GallerySlideshowRenderService extends EntryGalleryRenderService
 
     public function getGalleryWidth($entry, $galleryItems, $siteSettings)
     {
-        if (!$galleryItems) {
+        if (! $galleryItems) {
             return false;
         }
 
         $template = $siteSettings['template']['template'];
         $templateName = explode('-', $template)[0];
         $isMessyTemplate = $templateName == 'messy';
-        $galleryWidthByWidestSlide = !empty($entry['mediaCacheData']['@attributes']['gallery_width_by_widest_slide']) ? $entry['mediaCacheData']['@attributes']['gallery_width_by_widest_slide'] : 'no';
+        $galleryWidthByWidestSlide = ! empty($entry['mediaCacheData']['@attributes']['gallery_width_by_widest_slide']) ? $entry['mediaCacheData']['@attributes']['gallery_width_by_widest_slide'] : 'no';
 
         // Set slideshow gallery width by widest slide
         // except if current template is messy and gallery setting `galleryWidthByWidestSlide` is OFF
-        if (!$isMessyTemplate || $isMessyTemplate && $galleryWidthByWidestSlide === 'yes') {
+        if (! $isMessyTemplate || $isMessyTemplate && $galleryWidthByWidestSlide === 'yes') {
             return max(array_column($galleryItems, 'width'));
         }
 

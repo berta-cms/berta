@@ -16,13 +16,13 @@ class PortfolioThumbnailsRenderService
         }
 
         foreach ($entry['mediaCacheData']['file'] as $file) {
-            if ($file['@attributes']['type'] == 'image' || !empty($file['@attributes']['poster_frame'])) {
+            if ($file['@attributes']['type'] == 'image' || ! empty($file['@attributes']['poster_frame'])) {
                 $image = $file;
                 break;
             }
         }
 
-        if (!$image) {
+        if (! $image) {
             return null;
         }
 
@@ -32,27 +32,28 @@ class PortfolioThumbnailsRenderService
         $image = ImageHelpers::getGalleryItem($image, $entry, $storageService, $siteSettings);
         $attributes = Helpers::arrayToHtmlAttributes([
             'src' => $image['src'],
-            'srcset' => $image['srcset']
+            'srcset' => $image['srcset'],
         ]);
 
         return [
-            'attributes' => $attributes
+            'attributes' => $attributes,
         ];
     }
 
     private function getViewData($siteSettings, $storageService, $entries, $isEditMode)
     {
         $entries = array_map(function ($entry) use ($siteSettings, $storageService, $isEditMode) {
-            $title = !empty($entry['content']['title']) ? $entry['content']['title'] : 'entry-' . $entry['id'];
-            $entry['caption'] = !empty($entry['content']['title']) ? $entry['content']['title'] : ($isEditMode ? $title : null);
+            $title = ! empty($entry['content']['title']) ? $entry['content']['title'] : 'entry-' . $entry['id'];
+            $entry['caption'] = ! empty($entry['content']['title']) ? $entry['content']['title'] : ($isEditMode ? $title : null);
             $entry['slug'] = Helpers::slugify($title, '-', '-');
             $entry['image'] = $this->getFirstEntryImage($siteSettings, $storageService, $entry);
+
             return $entry;
         }, $entries);
 
         return [
             'entries' => $entries,
-            'isEditMode' => $isEditMode
+            'isEditMode' => $isEditMode,
         ];
     }
 

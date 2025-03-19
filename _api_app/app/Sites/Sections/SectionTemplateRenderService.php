@@ -2,47 +2,52 @@
 
 namespace App\Sites\Sections;
 
-use App\Shared\I18n;
 use App\Shared\Helpers;
-use App\Sites\SitesMenuRenderService;
-use App\Sites\SitesHeaderRenderService;
-use App\Sites\SitesBannersRenderService;
-use App\Sites\SocialMediaLinksRenderService;
-use App\Sites\Sections\SectionHeadRenderService;
-use App\Sites\Sections\SectionsMenuRenderService;
-use App\Sites\Sections\SectionFooterRenderService;
-use App\Sites\Sections\AdditionalTextRenderService;
-use App\Sites\Sections\AdditionalFooterTextRenderService;
-use App\Sites\Sections\Entries\SectionEntryRenderService;
+use App\Shared\I18n;
 use App\Sites\Sections\Entries\PortfolioThumbnailsRenderService;
+use App\Sites\Sections\Entries\SectionEntryRenderService;
+use App\Sites\SitesBannersRenderService;
+use App\Sites\SitesHeaderRenderService;
+use App\Sites\SitesMenuRenderService;
+use App\Sites\SocialMediaLinksRenderService;
 
 abstract class SectionTemplateRenderService
 {
     private $sectionHeadRS;
+
     private $sectionFooterRS;
+
     private $sitesMenuRS;
+
     private $sitesHeaderRS;
+
     private $socialMediaLinksRS;
+
     private $additionalTextRS;
+
     private $additionalFooterTextRS;
+
     private $sectionsMenuRS;
+
     private $sectionEntryRS;
+
     private $portfolioThumbnailsRS;
+
     private $sitesBannersRS;
 
     public function __construct()
     {
-        $this->sectionHeadRS = new SectionHeadRenderService();
-        $this->sectionFooterRS = new SectionFooterRenderService();
-        $this->sitesMenuRS = new SitesMenuRenderService();
-        $this->sitesHeaderRS = new SitesHeaderRenderService();
-        $this->socialMediaLinksRS = new SocialMediaLinksRenderService();
+        $this->sectionHeadRS = new SectionHeadRenderService;
+        $this->sectionFooterRS = new SectionFooterRenderService;
+        $this->sitesMenuRS = new SitesMenuRenderService;
+        $this->sitesHeaderRS = new SitesHeaderRenderService;
+        $this->socialMediaLinksRS = new SocialMediaLinksRenderService;
         $this->additionalTextRS = new AdditionalTextRenderService($this->socialMediaLinksRS);
         $this->additionalFooterTextRS = new AdditionalFooterTextRenderService($this->socialMediaLinksRS);
-        $this->sectionsMenuRS = new SectionsMenuRenderService();
-        $this->sectionEntryRS = new SectionEntryRenderService();
-        $this->portfolioThumbnailsRS = new PortfolioThumbnailsRenderService();
-        $this->sitesBannersRS = new SitesBannersRenderService();
+        $this->sectionsMenuRS = new SectionsMenuRenderService;
+        $this->sectionEntryRS = new SectionEntryRenderService;
+        $this->portfolioThumbnailsRS = new PortfolioThumbnailsRenderService;
+        $this->sitesBannersRS = new SitesBannersRenderService;
     }
 
     // Force Extending class to define this method
@@ -214,10 +219,10 @@ abstract class SectionTemplateRenderService
 
         $classes = [
             'xContent-' . $currentSection['name'],
-            'xSectionType-' . $currentSectionType
+            'xSectionType-' . $currentSectionType,
         ];
 
-        if (!empty($tagSlug)) {
+        if (! empty($tagSlug)) {
             $classes[] = 'xSubmenu-' . $tagSlug;
         }
 
@@ -254,16 +259,16 @@ abstract class SectionTemplateRenderService
         $attributes = [];
         $classes = [
             'xEntriesList',
-            'xSection-' . $currentSection['name']
+            'xSection-' . $currentSection['name'],
         ];
 
-        if (!empty($tagSlug)) {
+        if (! empty($tagSlug)) {
             $classes[] = 'xTag-' . $tagSlug;
         }
 
         $attributes['class'] = implode(' ', $classes);
 
-        return  Helpers::arrayToHtmlAttributes($attributes);
+        return Helpers::arrayToHtmlAttributes($attributes);
     }
 
     private function getEntries(
@@ -292,19 +297,21 @@ abstract class SectionTemplateRenderService
                 $isShopAvailable
             );
         }
+
         return $entriesHTML;
     }
 
     private function getPortfolioThumbnails($siteSettings, $storageService, $sections, $sectionSlug, $entries, $isEditMode)
     {
         $currentSection = $this->getCurrentSection($sections, $sectionSlug);
+
         return $this->portfolioThumbnailsRS->render($siteSettings, $storageService, $currentSection, $entries, $isEditMode);
     }
 
     // used only for White and Mashup
     public function getSocialMediaLinks($siteSettings)
     {
-        if ($siteSettings['socialMediaButtons']['socialMediaLocation'] == 'footer' && !empty($siteSettings['socialMediaButtons']['socialMediaHTML'])) {
+        if ($siteSettings['socialMediaButtons']['socialMediaLocation'] == 'footer' && ! empty($siteSettings['socialMediaButtons']['socialMediaHTML'])) {
             return $siteSettings['socialMediaButtons']['socialMediaHTML'];
         }
 
@@ -322,14 +329,14 @@ abstract class SectionTemplateRenderService
 
     private function getUserCopyright($siteSlug, $siteSettings, $isEditMode)
     {
-        $content = !empty($siteSettings['siteTexts']['siteFooter']) ? $siteSettings['siteTexts']['siteFooter'] : '';
+        $content = ! empty($siteSettings['siteTexts']['siteFooter']) ? $siteSettings['siteTexts']['siteFooter'] : '';
         $attributes = [];
         $classes = [];
 
         if ($isEditMode) {
             $classes = [
                 'xEditableTA',
-                'xProperty-siteFooter'
+                'xProperty-siteFooter',
             ];
             $attributes['data-path'] = "{$siteSlug}/settings/siteTexts/siteFooter";
         }
@@ -338,13 +345,13 @@ abstract class SectionTemplateRenderService
 
         return [
             'content' => $content,
-            'attributes' => Helpers::arrayToHtmlAttributes($attributes)
+            'attributes' => Helpers::arrayToHtmlAttributes($attributes),
         ];
     }
 
     private function getBertaCopyright($siteSettings, $user)
     {
-        $hideBertaCopyright = !empty($siteSettings['settings']['hideBertaCopyright']) && $siteSettings['settings']['hideBertaCopyright'] == 'yes';
+        $hideBertaCopyright = ! empty($siteSettings['settings']['hideBertaCopyright']) && $siteSettings['settings']['hideBertaCopyright'] == 'yes';
         if ($hideBertaCopyright && $user->getPlan() > 1) {
             return '';
         }
@@ -359,7 +366,7 @@ abstract class SectionTemplateRenderService
         return view(
             '/Sites/Sections/googleTagManagerNoscript',
             [
-                'googleTagManagerContainerId' => $siteSettings['settings']['googleTagManagerContainerId']
+                'googleTagManagerContainerId' => $siteSettings['settings']['googleTagManagerContainerId'],
             ]
         );
     }

@@ -2,9 +2,9 @@
 
 namespace App\Shared;
 
-use Illuminate\Support\Facades\Log;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
+use Illuminate\Support\Facades\Log;
 
 /**
  * Using a class, so we can import the helper functions and use them in
@@ -15,7 +15,6 @@ class Helpers
     /**
      * Turn an array to an array object combination representing JSON data structure and return it.
      *
-     * @param array $array
      * @return object|array
      *
      * Associative arrays are converted to stdClass objects,
@@ -50,43 +49,42 @@ class Helpers
                 $ret[$key] = self::arrayToJsonObject($value);
 
                 /** @todo: This should be done by XML conversion function: */
-            } else if (is_string($value) && is_numeric($value)) {
-                $ret[$key] = strpos($value, '.') === false ? (int)$value : (float)$value;
+            } elseif (is_string($value) && is_numeric($value)) {
+                $ret[$key] = strpos($value, '.') === false ? (int) $value : (float) $value;
             } else {
                 $ret[$key] = $value;
             }
         }
         if (self::isAssociativeArray($ret)) {
-            return (object)$ret;
+            return (object) $ret;
         }
+
         return $ret;
     }
 
     /**
      * Check if the given array is map type array, like JSON object or Python map.
      *
-     * @param array $array
-     * @return boolean
+     * @return bool
      */
     public static function isAssociativeArray(array $array)
     {
         /* This might be an issue for JSON conversion:
         - we can not know if an empty array is supposed to be associative */
-        if ($array === array()) {
+        if ($array === []) {
             return false;
         }
 
         if (array_keys($array) === range(0, count($array) - 1)) {
             return false;
         }
+
         return true;
     }
 
-    /**
-     */
     public static function slugify($text, $replacementStr = '-', $allowNonWordChars = '', $reallyRemoveOtherChars = false)
     {
-        $char_map = array(
+        $char_map = [
             // Latin
             'À' => 'A',
             'Á' => 'A',
@@ -385,7 +383,7 @@ class Helpers
             'ū' => 'u',
             'ž' => 'z',
 
-            //Lithuanian
+            // Lithuanian
             'Ą' => 'A',
             'Ę' => 'E',
             'Ė' => 'E',
@@ -397,7 +395,7 @@ class Helpers
             'į' => 'i',
             'ų' => 'u',
 
-            //Other
+            // Other
             'ɗ' => 'd',
             'ə' => 'e',
             'ʍ' => 'm',
@@ -407,7 +405,7 @@ class Helpers
             'Ə' => 'E',
             'Ş' => 'S',
             'Ţ' => 'T',
-        );
+        ];
 
         $text = str_replace(array_keys($char_map), $char_map, $text);
 
@@ -418,7 +416,7 @@ class Helpers
             $text = mb_ereg_replace("[^\w$allowNonWordChars]", $replacementStr, $text);
         }
 
-        //no duplicates
+        // no duplicates
         $text = mb_ereg_replace("[$replacementStr]{2,}", $replacementStr, $text);
 
         // convert .- to .
@@ -450,7 +448,7 @@ class Helpers
      */
     public static function createEntryTagList($tags)
     {
-        if (!$tags) {
+        if (! $tags) {
             return '';
         }
         if (is_array($tags)) {
@@ -462,9 +460,9 @@ class Helpers
 
     public static function formatPrice($price, $currency)
     {
-        $price = (float)$price;
+        $price = (float) $price;
         if ($price) {
-            return sprintf("%01.2f", $price) . ' ' . $currency;
+            return sprintf('%01.2f', $price) . ' ' . $currency;
         }
 
         return '';
@@ -485,7 +483,6 @@ class Helpers
         return $attributes;
     }
 
-
     /**
      * Converts tags comma separated string to array
      */
@@ -501,22 +498,21 @@ class Helpers
         return array_unique($tags);
     }
 
-
     /**
      * Converts array as list or arrays
      */
     public static function asList($val)
     {
-        if (!$val) {
+        if (! $val) {
             return [];
         }
 
         if (is_array($val)) {
             if (array_values($val) !== $val) {
-                return array(0 => $val);
+                return [0 => $val];
             }
         } else {
-            return array(0 => $val);
+            return [0 => $val];
         }
 
         return $val;
@@ -527,21 +523,21 @@ class Helpers
         return sprintf(
             '%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
             // 32 bits for "time_low"
-            mt_rand(0, 0xffff),
-            mt_rand(0, 0xffff),
+            mt_rand(0, 0xFFFF),
+            mt_rand(0, 0xFFFF),
             // 16 bits for "time_mid"
-            mt_rand(0, 0xffff),
+            mt_rand(0, 0xFFFF),
             // 16 bits for "time_hi_and_version",
             // four most significant bits holds version number 4
-            mt_rand(0, 0x0fff) | 0x4000,
+            mt_rand(0, 0x0FFF) | 0x4000,
             // 16 bits, 8 bits for "clk_seq_hi_res",
             // 8 bits for "clk_seq_low",
             // two most significant bits holds zero and one for variant DCE1.1
-            mt_rand(0, 0x3fff) | 0x8000,
+            mt_rand(0, 0x3FFF) | 0x8000,
             // 48 bits for "node"
-            mt_rand(0, 0xffff),
-            mt_rand(0, 0xffff),
-            mt_rand(0, 0xffff)
+            mt_rand(0, 0xFFFF),
+            mt_rand(0, 0xFFFF),
+            mt_rand(0, 0xFFFF)
         );
     }
 
@@ -551,16 +547,18 @@ class Helpers
             $app_key = config('app.key');
             JWT::$leeway = 60;
             $decoded = JWT::decode($token, new Key($app_key, 'HS256'));
-            if (!empty($decoded->uid)) {
+            if (! empty($decoded->uid)) {
                 $_SESSION['uid'] = $decoded->uid;
             }
 
             return true;
         } catch (\Throwable $t) {
             Log::error($t);
+
             return null;
         } catch (\Exception $e) {
             Log::error($e);
+
             return null;
         }
     }
@@ -569,7 +567,7 @@ class Helpers
     {
         return response()->json([
             'message' => $message,
-            'data' => $data
+            'data' => $data,
         ], $status);
     }
 
@@ -580,7 +578,7 @@ class Helpers
     {
         // Filter out attributes without value
         $attributes = array_filter($attributes, function ($value) {
-            return !empty($value);
+            return ! empty($value);
         });
 
         if (empty($attributes)) {
@@ -600,7 +598,7 @@ class Helpers
         if (empty($requestDomain) || empty($domains)) {
             return false;
         }
-        $requestDomain = preg_replace("/^(www)+([.]){1}/", '', strtolower($requestDomain));
+        $requestDomain = preg_replace('/^(www)+([.]){1}/', '', strtolower($requestDomain));
         $domains = explode(',', strtolower($domains));
         $domains = array_map('trim', $domains);
 

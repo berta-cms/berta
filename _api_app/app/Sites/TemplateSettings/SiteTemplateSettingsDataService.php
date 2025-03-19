@@ -3,8 +3,8 @@
 namespace App\Sites\TemplateSettings;
 
 use App\Configuration\SiteTemplatesConfigService;
-use App\Shared\Storage;
 use App\Shared\ImageHelpers;
+use App\Shared\Storage;
 use App\Sites\Settings\SiteSettingsDataService;
 
 /**
@@ -15,6 +15,7 @@ use App\Sites\Settings\SiteSettingsDataService;
  * any other site has it's settings in `storage/-sites/[site name]/settings.[template].xml`
  *
  * @example: berta/sample-data/settings.[template-name].xml
+ *
  * @example an example of XML file:
  * <?xml version="1.0" encoding="utf-8"?>
  * <settings>
@@ -49,7 +50,6 @@ use App\Sites\Settings\SiteSettingsDataService;
  *    <customCSS><![CDATA[.example {<br />color: red;<br />}]]></customCSS>
  *  </css>
  * </settings>
- *
  */
 class SiteTemplateSettingsDataService extends Storage
 {
@@ -70,19 +70,19 @@ class SiteTemplateSettingsDataService extends Storage
                         'type' => 'string',
                         'enum' => [
                             'top left', 'top center', 'top right', 'center left', 'center', 'center right',
-                            'bottom left', 'bottom center', 'bottom right'
-                        ]
+                            'bottom left', 'bottom center', 'bottom right',
+                        ],
                     ],
                     'backgroundRepeat' => [
-                        'type' => 'string', 'enum' => ['repeat', 'repeat-x', 'repeat-y', 'no-repeat']
-                    ]
-                ]
+                        'type' => 'string', 'enum' => ['repeat', 'repeat-x', 'repeat-y', 'no-repeat'],
+                    ],
+                ],
             ],
             'css' => [
                 'type' => 'object',
                 'properties' => [
-                    'customCSS' => ['type' => 'string']
-                ]
+                    'customCSS' => ['type' => 'string'],
+                ],
             ],
             'entryFooter' => [
                 'type' => 'object',
@@ -95,7 +95,7 @@ class SiteTemplateSettingsDataService extends Storage
                     'fontWeight' => ['$ref' => '#/definitions/fontWeight.df'],
                     'googleFont' => ['type' => 'string'],
                     'lineHeight' => ['$ref' => '#/definitions/cssUnit.df'],
-                ]
+                ],
             ],
             'entryHeading' => [
                 'type' => 'object',
@@ -109,7 +109,7 @@ class SiteTemplateSettingsDataService extends Storage
                     'googleFont' => ['type' => 'string'],
                     'lineHeight' => ['$ref' => '#/definitions/cssUnit.df'],
                     'margin' => ['$ref' => '#/definitions/cssUnit.df'],
-                ]
+                ],
             ],
             'entryLayout' => [
                 'type' => 'object',
@@ -119,20 +119,20 @@ class SiteTemplateSettingsDataService extends Storage
                     'galleryMargin' => ['type' => ['string', 'integer']],
                     'galleryNavMargin' => ['type' => ['string', 'integer']],
                     'galleryPosition' => [
-                        'type' => 'string', 'enum' => ['between title/description', 'above title', 'below description']
+                        'type' => 'string', 'enum' => ['between title/description', 'above title', 'below description'],
                     ],
                     'margin' => ['$ref' => '#/definitions/cssUnit.df'],
                     'spaceBetween' => ['$ref' => '#/definitions/cssUnit.df'],
-                    'spaceBetweenImages' => ['$ref' => '#/definitions/cssUnit.df']
-                ]
+                    'spaceBetweenImages' => ['$ref' => '#/definitions/cssUnit.df'],
+                ],
             ],
             'firstPage' => [
                 'type' => 'object',
                 'properties' => [
                     'hoverWiggle' => ['type' => 'string', 'enum' => ['yes', 'no']],
                     'imageHaveShadows' => ['type' => 'string', 'enum' => ['yes', 'no']],
-                    'imageSizeRatio' => ['type' => 'number']
-                ]
+                    'imageSizeRatio' => ['type' => 'number'],
+                ],
             ],
             'generalFontSettings' => [
                 'type' => 'object',
@@ -144,14 +144,14 @@ class SiteTemplateSettingsDataService extends Storage
                     'fontVariant' => ['$ref' => '#/definitions/fontVariant.df'],
                     'fontWeight' => ['$ref' => '#/definitions/fontWeight.df'],
                     'googleFont' => ['type' => 'string'],
-                    'lineHeight' => ['$ref' => '#/definitions/cssUnit.df']
-                ]
+                    'lineHeight' => ['$ref' => '#/definitions/cssUnit.df'],
+                ],
             ],
             'grid' => [
                 'type' => 'object',
                 'properties' => [
-                    'contentWidth' => ['$ref' => '#/definitions/cssUnit.df']
-                ]
+                    'contentWidth' => ['$ref' => '#/definitions/cssUnit.df'],
+                ],
             ],
             'heading' => [
                 'type' => 'object',
@@ -169,9 +169,9 @@ class SiteTemplateSettingsDataService extends Storage
                     'lineHeight' => ['$ref' => '#/definitions/cssUnit.df'],
                     'position' => [
                         'type' => 'string',
-                        'enum' => ['static', 'relative', 'absolute', 'fixed', 'sticky']
-                    ]
-                ]
+                        'enum' => ['static', 'relative', 'absolute', 'fixed', 'sticky'],
+                    ],
+                ],
             ],
             'links' => [
                 'type' => 'object',
@@ -183,8 +183,8 @@ class SiteTemplateSettingsDataService extends Storage
                     'textDecorationLink' => ['$ref' => '#/definitions/textDecoration.df'],
                     'textDecorationVisited' => ['$ref' => '#/definitions/textDecoration.df'],
                     'textDecorationHover' => ['$ref' => '#/definitions/textDecoration.df'],
-                    'textDecorationActive' => ['$ref' => '#/definitions/textDecoration.df']
-                ]
+                    'textDecorationActive' => ['$ref' => '#/definitions/textDecoration.df'],
+                ],
             ],
             'menu' => [
                 'type' => 'object',
@@ -205,8 +205,8 @@ class SiteTemplateSettingsDataService extends Storage
                     'separatorDistance' => ['$ref' => '#/definitions/cssUnit.df'],
                     'textDecorationActive' => ['$ref' => '#/definitions/textDecoration.df'],
                     'textDecorationHover' => ['$ref' => '#/definitions/textDecoration.df'],
-                    'textDecorationLink' => ['$ref' => '#/definitions/textDecoration.df']
-                ]
+                    'textDecorationLink' => ['$ref' => '#/definitions/textDecoration.df'],
+                ],
             ],
             'pageHeading' => [
                 'type' => 'object',
@@ -224,8 +224,8 @@ class SiteTemplateSettingsDataService extends Storage
                     'lineHeight' => ['type' => 'string'],
                     'margin' => ['$ref' => '#/definitions/cssUnit.df'],
                     'marginBottom' => ['type' => 'string'],
-                    'marginTop' => ['type' => 'string']
-                ]
+                    'marginTop' => ['type' => 'string'],
+                ],
             ],
             'pageLayout' => [
                 'type' => 'object',
@@ -247,8 +247,8 @@ class SiteTemplateSettingsDataService extends Storage
                     'paddingTop' => ['$ref' => '#/definitions/cssUnit.df'],
                     'autoResponsive' => ['type' => 'string', 'enum' => ['yes', 'no']],
                     'responsive' => ['type' => 'string', 'enum' => ['no', 'yes']],
-                    'siteMenuMargin' => ['$ref' => '#/definitions/cssUnit.df']
-                ]
+                    'siteMenuMargin' => ['$ref' => '#/definitions/cssUnit.df'],
+                ],
             ],
             'sideBar' => [
                 'type' => 'object',
@@ -269,8 +269,8 @@ class SiteTemplateSettingsDataService extends Storage
                     'marginLeft' => ['$ref' => '#/definitions/cssUnit.df'],
                     'marginTop' => ['$ref' => '#/definitions/cssUnit.df'],
                     'transparent' => ['type' => 'string', 'enum' => ['yes', 'no']],
-                    'width' => ['$ref' => '#/definitions/cssUnit.df']
-                ]
+                    'width' => ['$ref' => '#/definitions/cssUnit.df'],
+                ],
             ],
             'subMenu' => [
                 'type' => 'object',
@@ -284,8 +284,8 @@ class SiteTemplateSettingsDataService extends Storage
                     'lineHeight' => ['$ref' => '#/definitions/cssUnit.df'],
                     'margin' => ['$ref' => '#/definitions/cssUnit.df'],
                     'separator' => ['type' => 'string'],
-                    'separatorDistance' => ['$ref' => '#/definitions/cssUnit.df']
-                ]
+                    'separatorDistance' => ['$ref' => '#/definitions/cssUnit.df'],
+                ],
             ],
             'tagsMenu' => [
                 'type' => 'object',
@@ -305,9 +305,9 @@ class SiteTemplateSettingsDataService extends Storage
                     'x' => ['type' => 'integer'],
                     'y' => ['type' => 'integer'],
                     'alwaysOpen' => ['type' => 'string', 'enum' => ['yes', 'no']],
-                    'hidden' => ['type' => 'string', 'enum' => ['yes', 'no']]
-                ]
-            ]
+                    'hidden' => ['type' => 'string', 'enum' => ['yes', 'no']],
+                ],
+            ],
         ],
         'definitions' => [
             /**
@@ -317,7 +317,7 @@ class SiteTemplateSettingsDataService extends Storage
              */
             'fontWeight.df' => [
                 'type' => 'string',
-                'enum' => ['normal', 'bold', 'bolder', 'light', 'lighter', 'inherit']
+                'enum' => ['normal', 'bold', 'bolder', 'light', 'lighter', 'inherit'],
             ],
             'fontFamily.df' => [
                 'type' => 'string',
@@ -336,31 +336,38 @@ class SiteTemplateSettingsDataService extends Storage
                     'Tahoma, Geneva, sans-serif',
                     '"Times New Roman", Times, serif',
                     '"Trebuchet MS", Helvetica, sans-serif',
-                    'Verdana, Geneva, sans-serif'
-                ]
+                    'Verdana, Geneva, sans-serif',
+                ],
             ],
             'fontStyle.df' => [  // https://developer.mozilla.org/en-US/docs/Web/CSS/font-style
-                'type' => 'string', 'enum' => ['normal', 'italic', 'oblique', 'inherit']
+                'type' => 'string', 'enum' => ['normal', 'italic', 'oblique', 'inherit'],
             ],
             'fontVariant.df' => [
-                'type' => 'string', 'enum' => ['small-caps', 'inherit', 'normal']
+                'type' => 'string', 'enum' => ['small-caps', 'inherit', 'normal'],
             ],
             'textDecoration.df' => [
                 'type' => 'string',
-                'enum' => ['none', 'underline', 'overline', 'line-through']
+                'enum' => ['none', 'underline', 'overline', 'line-through'],
             ],
             'cssUnit.df' => [
                 'type' => ['string', 'integer'],
-                'format' => 'css-unit'
-            ]
-        ]
+                'format' => 'css-unit',
+            ],
+        ],
     ];
+
     protected static $DEFAULT_VALUES = [];
+
     private $xml_root;
+
     private $ROOT_ELEMENT = 'settings';
+
     private $TEMPLATE;
+
     private $XML_FILE;
+
     private $siteTemplatesConfigService;
+
     private $siteTemplateDefaults;
 
     public function __construct($site = '', $template = 'messy-0.4.2', $xml_root = null)
@@ -370,13 +377,14 @@ class SiteTemplateSettingsDataService extends Storage
         $this->TEMPLATE = explode('-', $template)[0];
         $this->XML_FILE = $this->xml_root . '/settings.' . $this->TEMPLATE . '.xml';
 
-        $this->siteTemplatesConfigService = new SiteTemplatesConfigService();
+        $this->siteTemplatesConfigService = new SiteTemplatesConfigService;
         $this->siteTemplateDefaults = $this->siteTemplatesConfigService->getDefaults()[$template]['templateConf'];
     }
 
     public function get()
     {
         $siteTemplateSettings = $this->xmlFile2array($this->XML_FILE);
+
         return $siteTemplateSettings;
     }
 
@@ -414,8 +422,8 @@ class SiteTemplateSettingsDataService extends Storage
     /**
      * Saves a value with a given path and saves the change to XML file
      *
-     * @param string $path Slash delimited path to the value
-     * @param mixed $value Value to be saved
+     * @param  string  $path  Slash delimited path to the value
+     * @param  mixed  $value  Value to be saved
      * @return array Array of changed value and/or error messages
      */
     public function saveValueByPath($path, $value)
@@ -424,11 +432,11 @@ class SiteTemplateSettingsDataService extends Storage
         $path_arr = array_slice(explode('/', $path), 3);
         $value = trim($value);
 
-        $ret = array(
+        $ret = [
             'site' => $this->SITE == '0' ? '' : $this->SITE,
             'path' => $path,
             'value' => $value,
-        );
+        ];
 
         $this->setValueByPath(
             $site_template_settings,
@@ -450,7 +458,7 @@ class SiteTemplateSettingsDataService extends Storage
 
         ImageHelpers::downscaleToMaxSize($mediaDir . '/' . $fileName);
 
-        list($width, $height) = getimagesize($mediaDir . '/' . $fileName);
+        [$width, $height] = getimagesize($mediaDir . '/' . $fileName);
         $width = round($width / 2);
         $height = round($height / 2);
 
@@ -465,10 +473,10 @@ class SiteTemplateSettingsDataService extends Storage
         return self::saveValueByPath($path, $fileName);
     }
 
-
     /**
      * Merge site template settings from other source folder
-     * @param string $src_root template settings source root folder
+     *
+     * @param  string  $src_root  template settings source root folder
      */
     public function mergeSiteTemplateSettings($src_root)
     {
@@ -487,13 +495,13 @@ class SiteTemplateSettingsDataService extends Storage
                 $newSiteTemplateSettings[$groupKey][$settingKey] = $value;
                 $isImageSetting = isset($sourceTemplateConfig[$groupKey][$settingKey]) && $sourceTemplateConfig[$groupKey][$settingKey]['format'] == 'image';
 
-                if (!$isImageSetting) {
+                if (! $isImageSetting) {
                     continue;
                 }
 
                 $affectsStyle = isset($sourceTemplateConfig[$groupKey][$settingKey]['affectsStyle']) && $sourceTemplateConfig[$groupKey][$settingKey]['affectsStyle'];
 
-                if (!$affectsStyle) {
+                if (! $affectsStyle) {
                     // Keep images form old settings if they don't affect style
                     if (isset($currentSiteTemplateSettings[$groupKey][$settingKey])) {
                         $newSiteTemplateSettings[$groupKey][$settingKey] = $currentSiteTemplateSettings[$groupKey][$settingKey];

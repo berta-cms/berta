@@ -22,7 +22,7 @@ abstract class EntryGalleryRenderService
     {
         $classes = ['xGalleryContainer'];
 
-        if (!empty($galleryItemsData)) {
+        if (! empty($galleryItemsData)) {
             $classes[] = 'xGalleryHasImages';
             $classes[] = 'xGalleryType-' . $galleryType;
         }
@@ -81,7 +81,7 @@ abstract class EntryGalleryRenderService
                     'xOrigHref-' . ($navigationItem['type'] == 'image' ? $navigationItem['original'] : ''),
                     'xW-' . $navigationItem['width'],
                     'xH-' . $navigationItem['height'],
-                    'xImgIndex-' . $navigationItem['index']
+                    'xImgIndex-' . $navigationItem['index'],
                 ]),
                 'data-original-src' => $navigationItem['original'],
                 'data-original-width' => $navigationItem['original_width'],
@@ -90,7 +90,7 @@ abstract class EntryGalleryRenderService
                 'data-mobile-src' => $navigationItem['large_src'],
                 'data-mobile-width' => $navigationItem['large_width'],
                 'data-mobile-height' => $navigationItem['large_height'],
-                'data-srcset' => $navigationItem['srcset'] ? $navigationItem['srcset'] : null
+                'data-srcset' => $navigationItem['srcset'] ? $navigationItem['srcset'] : null,
             ]);
 
             $navigationItems[] = $navigationItem;
@@ -113,9 +113,9 @@ abstract class EntryGalleryRenderService
     ) {
         $data = [];
         $data['isEditMode'] = $isEditMode;
-        $data['isFullscreen'] = !$isEditMode && isset($entry['mediaCacheData']['@attributes']['fullscreen']) && $entry['mediaCacheData']['@attributes']['fullscreen'] == 'yes';
+        $data['isFullscreen'] = ! $isEditMode && isset($entry['mediaCacheData']['@attributes']['fullscreen']) && $entry['mediaCacheData']['@attributes']['fullscreen'] == 'yes';
         $data['galleryClassList'] = $this->getGalleryClassList($galleryItemsData, $galleryType, null, null);
-        $data['rowGalleryPadding'] = !empty($entry['mediaCacheData']['@attributes']['row_gallery_padding']) ? $entry['mediaCacheData']['@attributes']['row_gallery_padding'] : false;
+        $data['rowGalleryPadding'] = ! empty($entry['mediaCacheData']['@attributes']['row_gallery_padding']) ? $entry['mediaCacheData']['@attributes']['row_gallery_padding'] : false;
         $data['navigationItems'] = $this->getNavigationItems($galleryItemsData, $galleryItems, $isEditMode);
 
         return $data;

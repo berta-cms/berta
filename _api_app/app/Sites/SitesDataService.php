@@ -2,15 +2,15 @@
 
 namespace App\Sites;
 
-use Illuminate\Http\Request;
-use App\Shared\Helpers;
-use App\Shared\Storage;
-use App\Sites\Settings\SiteSettingsDataService;
-use App\Sites\TemplateSettings\SiteTemplateSettingsDataService;
-use App\Sites\Sections\SiteSectionsDataService;
 use App\Plugins\Shop\ShopClientsDataService;
 use App\Plugins\Shop\ShopOrdersDataService;
 use App\Plugins\Shop\ShopProductsDataService;
+use App\Shared\Helpers;
+use App\Shared\Storage;
+use App\Sites\Sections\SiteSectionsDataService;
+use App\Sites\Settings\SiteSettingsDataService;
+use App\Sites\TemplateSettings\SiteTemplateSettingsDataService;
+use Illuminate\Http\Request;
 
 /**
  * @class Sites
@@ -40,7 +40,7 @@ use App\Plugins\Shop\ShopProductsDataService;
 class SitesDataService extends Storage
 {
     public static $JSON_SCHEMA = [
-        '$schema' => "http://json-schema.org/draft-06/schema#",
+        '$schema' => 'http://json-schema.org/draft-06/schema#',
         'type' => 'array',
         'items' => [
             'type' => 'object',
@@ -60,6 +60,7 @@ class SitesDataService extends Storage
             'required' => ['name'],
         ],
     ];
+
     protected static $DEFAULT_VALUES = [
         'name' => '',
         '@attributes' => [
@@ -69,8 +70,11 @@ class SitesDataService extends Storage
     ];
 
     private $ROOT_ELEMENT = 'sites';
-    private $SITES = array();
+
+    private $SITES = [];
+
     private $XML_FILE;
+
     private $MAIN_SITE_DEFAULT_TITLE = 'Main site';
 
     public function __construct($site = '')
@@ -86,10 +90,10 @@ class SitesDataService extends Storage
      */
     public function get()
     {
-        if (!($this->SITES)) {
+        if (! ($this->SITES)) {
             $this->SITES = $this->xmlFile2array($this->XML_FILE);
 
-            if (!($this->SITES)) {
+            if (! ($this->SITES)) {
                 // Return only main site when storage/-sites does not exist
                 $this->SITES[] = [
                     'name' => '',
@@ -101,7 +105,7 @@ class SitesDataService extends Storage
 
                 // Add site name if not defined in XML
                 foreach ($this->SITES as $i => $site) {
-                    if (!isset($site['name'])) {
+                    if (! isset($site['name'])) {
                         $this->SITES[$i]['name'] = '';
                     }
                 }
@@ -169,7 +173,7 @@ class SitesDataService extends Storage
         $site = [
             'name' => $name,
             'title' => $cloneFrom != null ? $title : '',
-            '@attributes' => array('published' => 0),
+            '@attributes' => ['published' => 0],
         ];
         array_push($sites, $site);
 
@@ -194,8 +198,8 @@ class SitesDataService extends Storage
     /**
      * Saves a value with a given path and saves the change to XML file
      *
-     * @param string $path Slash delimited path to the value
-     * @param mixed $value Value to be saved
+     * @param  string  $path  Slash delimited path to the value
+     * @param  mixed  $value  Value to be saved
      * @return array Array of changed value and/or error messages
      */
     public function saveValueByPath($path, $value)
@@ -206,20 +210,21 @@ class SitesDataService extends Storage
         $site_root = $this->XML_SITES_ROOT . '/' . $site_name;
         $prop = array_pop($path_arr);
         $value = trim($value);
-        $ret = array(
+        $ret = [
             'path' => $path,
             'value' => $value,
             'status_code' => 200,
-        );
+        ];
 
-        if (!file_exists($this->XML_SITES_ROOT)) {
+        if (! file_exists($this->XML_SITES_ROOT)) {
             @mkdir($this->XML_SITES_ROOT, 0777);
         }
 
-        if (!file_exists($site_root)) {
+        if (! file_exists($site_root)) {
             $ret['value'] = $site_name;
             $ret['error_message'] = 'Current site storage dir does not exist! you\'ll have to delete this site!';
             $ret['status_code'] = 400;
+
             return $ret;
         }
 
@@ -228,6 +233,7 @@ class SitesDataService extends Storage
                 $ret['value'] = $site_name;
                 $ret['error_message'] = 'Site name cannot be empty!';
                 $ret['status_code'] = 400;
+
                 return $ret;
             }
 
@@ -238,13 +244,15 @@ class SitesDataService extends Storage
                 $ret['value'] = $site_name;
                 $ret['error_message'] = 'Site cannot be created! another site with the same (or too similar name) exists.';
                 $ret['status_code'] = 400;
+
                 return $ret;
             }
 
-            if (!@rename($site_root, $new_root)) {
+            if (! @rename($site_root, $new_root)) {
                 $ret['value'] = $site_name;
                 $ret['error_message'] = 'Storage dir cannot be renamed! check permissions and be sure the name of the site is not TOO fancy.';
                 $ret['status_code'] = 500;
+
                 return $ret;
             }
 
@@ -294,8 +302,6 @@ class SitesDataService extends Storage
         $siteSectionsDS->mergeSiteSections($this->THEMES_ROOT . '/' . $themeName);
     }
 
-    /**
-     */
     public function delete($name)
     {
         $sites['site'] = $this->get();
@@ -306,21 +312,22 @@ class SitesDataService extends Storage
             $this->delFolder($dir);
             $site = array_splice($sites['site'], $order, 1);
             $this->array2xmlFile($sites, $this->XML_FILE, $this->ROOT_ELEMENT);
+
             return $site[0];
         }
 
-        return array('error_message' => 'Site "' . $name . '" not found!');
+        return ['error_message' => 'Site "' . $name . '" not found!'];
     }
 
     /**
      * Reorder sites and save to XML file
      *
-     * @param array $names Array of site names in a new order
+     * @param  array  $names  Array of site names in a new order
      */
     public function order($names)
     {
         $sites['site'] = $this->get();
-        $new_order = array();
+        $new_order = [];
 
         foreach ($names as $name) {
             $site_name = ($name == '0') ? '' : $name;

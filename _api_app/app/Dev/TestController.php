@@ -14,13 +14,14 @@ use App\Sites\TemplateSettings\SiteTemplateSettingsDataService;
  * @class TestController
  *
  * This class is created for the purpose of easy testing of data services while developing.
+ *
  * @todo: Replace this with automated testing
  */
 class TestController extends Controller
 {
     public function get()
     {
-        return "THIS IS TEST!!!";
+        return 'THIS IS TEST!!!';
     }
 
     public function renderEntry()
@@ -40,7 +41,7 @@ class TestController extends Controller
 
         $storageService = new Storage('');
 
-        $entryRenderService = new SectionEntryRenderService();
+        $entryRenderService = new SectionEntryRenderService;
 
         return $entryRenderService->render(
             '',

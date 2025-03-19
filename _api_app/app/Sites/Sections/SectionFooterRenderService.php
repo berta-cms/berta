@@ -6,7 +6,7 @@ class SectionFooterRenderService
 {
     private function getIntercomSettings($sections, $user, $isEditMode)
     {
-        if (!$isEditMode || !$user->intercom || empty($sections)) {
+        if (! $isEditMode || ! $user->intercom || empty($sections)) {
             return;
         }
 

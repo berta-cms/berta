@@ -2,30 +2,27 @@
 
 namespace App\Sites;
 
-use Illuminate\Http\Request;
+use App\Configuration\SiteTemplatesConfigService;
 use App\Http\Controllers\Controller;
 use App\Shared\Storage;
-use App\User\UserModel;
-use App\Configuration\SiteTemplatesConfigService;
 use App\Sites\Sections\Entries\SectionEntriesDataService;
 use App\Sites\Sections\SiteSectionsDataService;
 use App\Sites\Sections\Tags\SectionTagsDataService;
 use App\Sites\Settings\SiteSettingsDataService;
-use App\Sites\SitesDataService;
 use App\Sites\TemplateSettings\SiteTemplateSettingsDataService;
-use App\Sites\SitesMenuRenderService;
-use App\Sites\SitesHeaderRenderService;
+use App\User\UserModel;
+use Illuminate\Http\Request;
 
 class SitesController extends Controller
 {
     public function create(Request $request)
     {
-        $sites = new SitesDataService();
+        $sites = new SitesDataService;
         $json = $request->json()->all();
         $cloneFrom = $json['site'] == -1 ? null : $json['site'];
         $isClone = $cloneFrom !== null;
         $site = $sites->create($request, $cloneFrom);
-        $siteTemplatesConfigService = new SiteTemplatesConfigService();
+        $siteTemplatesConfigService = new SiteTemplatesConfigService;
         $allTemplates = $siteTemplatesConfigService->getAllTemplates();
 
         /**
@@ -33,7 +30,6 @@ class SitesController extends Controller
          * @todo think about improving Storage classes
          * @todo review this controller, sections
          */
-
         $siteSettingsDataService = new SiteSettingsDataService($site['name']);
         $settings = $isClone ? $siteSettingsDataService->getState() : $siteSettingsDataService->getDefaultSettings();
         $sections = $isClone ? new SiteSectionsDataService($site['name']) : null;
@@ -70,7 +66,7 @@ class SitesController extends Controller
 
     public function update(Request $request)
     {
-        $sites = new SitesDataService();
+        $sites = new SitesDataService;
         $json = $request->json()->all();
 
         $res = $sites->saveValueByPath($json['path'], $json['value']);
@@ -109,7 +105,7 @@ class SitesController extends Controller
 
     public function delete(Request $request)
     {
-        $sites = new SitesDataService();
+        $sites = new SitesDataService;
         $json = $request->json()->all();
         $res = $sites->delete($json['site']);
 
@@ -118,17 +114,18 @@ class SitesController extends Controller
 
     public function order(Request $request)
     {
-        $sites = new SitesDataService();
+        $sites = new SitesDataService;
         $json = $request->json()->all();
         $sites->order($json);
+
         return response()->json($json);
     }
 
     public function renderMenu(Request $request, $site = '')
     {
-        $sitesDS = new SitesDataService();
-        $sitesMenuRenderService = new SitesMenuRenderService();
-        $user = new UserModel();
+        $sitesDS = new SitesDataService;
+        $sitesMenuRenderService = new SitesMenuRenderService;
+        $user = new UserModel;
 
         return $sitesMenuRenderService->render(
             $site,
@@ -152,7 +149,7 @@ class SitesController extends Controller
         $siteTemplateSettingsDS = new SiteTemplateSettingsDataService($site, $siteSettings['template']['template']);
         $siteTemplateSettings = $siteTemplateSettingsDS->getState();
 
-        $sitesHeaderRS = new SitesHeaderRenderService();
+        $sitesHeaderRS = new SitesHeaderRenderService;
 
         return $sitesHeaderRS->render(
             $site,
@@ -171,7 +168,8 @@ class SitesController extends Controller
         $siteSettingsDS = new SiteSettingsDataService($site);
         $siteSettings = $siteSettingsDS->getState();
 
-        $socialMediaLinksRS = new SocialMediaLinksRenderService();
+        $socialMediaLinksRS = new SocialMediaLinksRenderService;
+
         return $socialMediaLinksRS->render($siteSettings);
     }
 
@@ -187,7 +185,7 @@ class SitesController extends Controller
         $sections = $sectionsDS->getState();
         $sectionSlug = $request->get('section');
 
-        $sitesBannersRS = new SitesBannersRenderService();
+        $sitesBannersRS = new SitesBannersRenderService;
 
         return $sitesBannersRS->render(
             $site,

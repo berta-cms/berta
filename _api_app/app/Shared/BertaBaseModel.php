@@ -5,6 +5,7 @@ namespace App\Shared;
 abstract class BertaBaseModel implements \ArrayAccess, \Iterator
 {
     private $position = 0;
+
     private $publicPropertyReflect;
 
     /**
@@ -29,6 +30,7 @@ abstract class BertaBaseModel implements \ArrayAccess, \Iterator
             }
             $result[$property] = $this->{$property};
         }
+
         return $result;
     }
 
@@ -70,12 +72,14 @@ abstract class BertaBaseModel implements \ArrayAccess, \Iterator
     public function current(): mixed
     {
         $properties = $this->getPublicPropertiesReflect();
+
         return $this->{$properties[$this->position]->getName()};
     }
 
     public function key(): mixed
     {
         $properties = $this->getPublicPropertiesReflect();
+
         return $properties[$this->position]->getName();
     }
 
@@ -87,6 +91,7 @@ abstract class BertaBaseModel implements \ArrayAccess, \Iterator
     public function valid(): bool
     {
         $properties = $this->getPublicPropertiesReflect();
+
         return count($properties) > $this->position;
     }
 
@@ -95,6 +100,7 @@ abstract class BertaBaseModel implements \ArrayAccess, \Iterator
     {
         $classReflection = new \ReflectionClass(get_called_class());
         $propertiesReflected = $classReflection->getProperties(\ReflectionProperty::IS_PUBLIC);
+
         return array_map(function ($propertyReflect) {
             return $propertyReflect->getName();
         }, $propertiesReflected);
@@ -109,15 +115,17 @@ abstract class BertaBaseModel implements \ArrayAccess, \Iterator
                 return true;
             }
         }
+
         return false;
     }
 
     private function getPublicPropertiesReflect()
     {
-        if (!isset($this->publicPropertyReflect)) {
+        if (! isset($this->publicPropertyReflect)) {
             $reflection = new \ReflectionObject($this);
             $this->publicPropertyReflect = $reflection->getProperties(\ReflectionProperty::IS_PUBLIC);
         }
+
         return $this->publicPropertyReflect;
     }
 }

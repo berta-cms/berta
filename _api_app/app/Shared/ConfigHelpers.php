@@ -6,23 +6,23 @@ class ConfigHelpers
 {
     public static function formatValue($config, $path, $value)
     {
-        //search setting config by path
+        // search setting config by path
         $keys = explode('/', $path);
         foreach ($keys as $key) {
-            if (!isset($config[$key])) {
+            if (! isset($config[$key])) {
                 $config = null;
                 break;
             }
             $config = $config[$key];
         }
 
-        if (!$config || !isset($config['format'])) {
+        if (! $config || ! isset($config['format'])) {
             return $value;
         }
 
         switch ($config['format']) {
             case 'url':
-                if ($value && !preg_match('/http(s?)\:\/\//i', $value)) {
+                if ($value && ! preg_match('/http(s?)\:\/\//i', $value)) {
                     $value = 'https://' . $value;
                 }
                 break;
@@ -46,6 +46,7 @@ class ConfigHelpers
             if (is_numeric($key)) {
                 array_pop($settingPath);
                 $settingPath[] = 'children';
+
                 continue;
             }
             $settingPath[] = $key;
@@ -67,7 +68,7 @@ class ConfigHelpers
         $section = $sections['section'][$sectionOrder];
         $sectionType = isset($section['@attributes']['type']) ? $section['@attributes']['type'] : 'default';
 
-        if (!isset($siteTemplateConfig['sectionTypes'][$sectionType]['params'][$property])) {
+        if (! isset($siteTemplateConfig['sectionTypes'][$sectionType]['params'][$property])) {
             return false;
         }
 

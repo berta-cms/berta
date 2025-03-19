@@ -2,8 +2,8 @@
 
 namespace App\Sites\Sections;
 
-use App\Shared\Helpers;
 use App\Configuration\SiteTemplatesConfigService;
+use App\Shared\Helpers;
 use App\Sites\Sections\Entries\SectionMashupEntriesRenderService;
 
 class MashupTemplateRenderService extends SectionTemplateRenderService
@@ -13,7 +13,7 @@ class MashupTemplateRenderService extends SectionTemplateRenderService
     public function __construct()
     {
         parent::__construct();
-        $siteTemplatesConfigService = new SiteTemplatesConfigService();
+        $siteTemplatesConfigService = new SiteTemplatesConfigService;
         $this->mashupEntriesRS = new SectionMashupEntriesRenderService($siteTemplatesConfigService);
     }
 

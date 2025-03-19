@@ -9,13 +9,13 @@ class GridViewRenderService
     private function getUrl($siteSlug, $currentSection, $tagSlug, $isPreviewMode, $isEditMode)
     {
         $urlParts = [];
-        if (!empty($siteSlug)) {
+        if (! empty($siteSlug)) {
             $urlParts['site'] = $siteSlug;
         }
 
         $urlParts['section'] = $currentSection['name'];
 
-        if (!empty($tagSlug)) {
+        if (! empty($tagSlug)) {
             $urlParts['tag'] = $tagSlug;
         }
 
@@ -40,6 +40,7 @@ class GridViewRenderService
         $items = array_map(function ($item) use ($siteSlug, $currentSection, $tagSlug, $storageService, $isPreviewMode, $isEditMode) {
             $item['url'] = $this->getUrl($siteSlug, $currentSection, $tagSlug, $isPreviewMode, $isEditMode);
             $item['src'] = $storageService->MEDIA_URL . '/' . $currentSection['mediafolder'] . '/' . config('app.grid_image_prefix') . $item['@attributes']['src'];
+
             return $item;
         }, $currentSection['mediaCacheData']['file']);
 
@@ -74,25 +75,25 @@ class GridViewRenderService
     ) {
         $templateName = explode('-', $siteSettings['template']['template'])[0];
 
-        if (!in_array($templateName, $this->USED_IN_TEMPLATES)) {
+        if (! in_array($templateName, $this->USED_IN_TEMPLATES)) {
             return '';
         }
 
         $currentSection = null;
         $currentSectionType = null;
 
-        if (!empty($sections)) {
+        if (! empty($sections)) {
             $currentSectionOrder = array_search($sectionSlug, array_column($sections, 'name'));
             $currentSection = $sections[$currentSectionOrder];
             $currentSectionType = isset($currentSection['@attributes']['type']) ? $currentSection['@attributes']['type'] : null;
         }
 
-        if (!$currentSection || empty($currentSection['mediaCacheData']['file'])) {
+        if (! $currentSection || empty($currentSection['mediaCacheData']['file'])) {
             return '';
         }
 
         $isGridViewEnabled = $currentSectionType == 'grid' && $request->cookie('_berta_grid_view');
-        if (!$isGridViewEnabled) {
+        if (! $isGridViewEnabled) {
             return '';
         }
 

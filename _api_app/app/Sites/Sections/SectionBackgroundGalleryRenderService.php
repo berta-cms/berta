@@ -2,8 +2,8 @@
 
 namespace App\Sites\Sections;
 
-use Detection\MobileDetect;
 use App\Shared\Helpers;
+use Detection\MobileDetect;
 
 class SectionBackgroundGalleryRenderService
 {
@@ -13,15 +13,15 @@ class SectionBackgroundGalleryRenderService
     {
         $attributes['id'] = 'xBackground';
         $classes = [
-            'xBgDataAutoplay-' . (!empty($currentSection['mediaCacheData']['@attributes']['autoplay']) ? $currentSection['mediaCacheData']['@attributes']['autoplay'] : ''),
-            'xBgDataImageSize-' . (!empty($currentSection['mediaCacheData']['@attributes']['image_size']) ? $currentSection['mediaCacheData']['@attributes']['image_size'] : ''),
-            'xBgDataFading-' . (!$isEditMode && !empty($currentSection['mediaCacheData']['@attributes']['fade_content']) ? $currentSection['mediaCacheData']['@attributes']['fade_content'] : ''),
-            'xBgDataAnimation-' . (!empty($currentSection['mediaCacheData']['@attributes']['animation']) ? $currentSection['mediaCacheData']['@attributes']['animation'] : ''),
+            'xBgDataAutoplay-' . (! empty($currentSection['mediaCacheData']['@attributes']['autoplay']) ? $currentSection['mediaCacheData']['@attributes']['autoplay'] : ''),
+            'xBgDataImageSize-' . (! empty($currentSection['mediaCacheData']['@attributes']['image_size']) ? $currentSection['mediaCacheData']['@attributes']['image_size'] : ''),
+            'xBgDataFading-' . (! $isEditMode && ! empty($currentSection['mediaCacheData']['@attributes']['fade_content']) ? $currentSection['mediaCacheData']['@attributes']['fade_content'] : ''),
+            'xBgDataAnimation-' . (! empty($currentSection['mediaCacheData']['@attributes']['animation']) ? $currentSection['mediaCacheData']['@attributes']['animation'] : ''),
         ];
 
         $attributes['class'] = implode(' ', $classes);
 
-        if (!empty($currentSection['sectionBgColor'])) {
+        if (! empty($currentSection['sectionBgColor'])) {
             $attributes['style'] = "background-color: {$currentSection['sectionBgColor']}";
         }
 
@@ -47,7 +47,7 @@ class SectionBackgroundGalleryRenderService
             $captionClass = [];
             $imageClass = [];
             if ($index === $currentItemIndex) {
-                if (!empty($file['@value']) && !$selectedGridImageFound) {
+                if (! empty($file['@value']) && ! $selectedGridImageFound) {
                     $captionClass['class'] = 'sel';
                 } else {
                     $imageClass['class'] = 'sel';
@@ -55,16 +55,16 @@ class SectionBackgroundGalleryRenderService
             }
 
             $captionStyles = [];
-            if (!empty($currentSection['mediaCacheData']['@attributes']['caption_bg_color'])) {
+            if (! empty($currentSection['mediaCacheData']['@attributes']['caption_bg_color'])) {
                 $captionStyles[] = "background-color: {$currentSection['mediaCacheData']['@attributes']['caption_bg_color']}";
             }
-            if (!empty($currentSection['mediaCacheData']['@attributes']['caption_color'])) {
+            if (! empty($currentSection['mediaCacheData']['@attributes']['caption_color'])) {
                 $captionStyles[] = "color: {$currentSection['mediaCacheData']['@attributes']['caption_color']}";
             }
             $captionStyle['style'] = implode(';', $captionStyles);
 
             $items[] = [
-                'caption' => !$selectedGridImageFound ? $file['@value'] : '',
+                'caption' => ! $selectedGridImageFound ? $file['@value'] : '',
                 'captionClass' => Helpers::arrayToHtmlAttributes($captionClass),
                 'imageClass' => Helpers::arrayToHtmlAttributes($imageClass),
                 'captionStyles' => Helpers::arrayToHtmlAttributes($captionStyle),
@@ -79,7 +79,7 @@ class SectionBackgroundGalleryRenderService
 
         return [
             'all' => $items,
-            'current' => $current
+            'current' => $current,
         ];
     }
 
@@ -97,12 +97,12 @@ class SectionBackgroundGalleryRenderService
         $wrapperAttributes = $this->getWrapperAttributes($currentSection, $isEditMode);
         $items = $this->getGalleryItems($currentSection, $storageService, $selectedGridImage);
 
-        $deviceDetectService = new MobileDetect();
+        $deviceDetectService = new MobileDetect;
         $isMobileDevice = $deviceDetectService->isMobile();
-        $showNavigation = (count($items['all']) > 1 || !empty($items['all'][0]['caption']));
-        $showDesktopNavigation = $showNavigation && !$isMobileDevice;
+        $showNavigation = (count($items['all']) > 1 || ! empty($items['all'][0]['caption']));
+        $showDesktopNavigation = $showNavigation && ! $isMobileDevice;
         $showNavigationArrows = empty($currentSection['mediaCacheData']['@attributes']['hide_navigation']) || $currentSection['mediaCacheData']['@attributes']['hide_navigation'] == 'no';
-        $showSlideCounters = $showNavigationArrows && !$isResponsive;
+        $showSlideCounters = $showNavigationArrows && ! $isResponsive;
         $showMobileNavigationArrows = $showNavigation && $showNavigationArrows && $isMobileDevice;
 
         return [
@@ -110,7 +110,7 @@ class SectionBackgroundGalleryRenderService
             'items' => $items,
             'showDesktopNavigation' => $showDesktopNavigation,
             'showSlideCounters' => $showSlideCounters,
-            'showMobileNavigationArrows' => $showMobileNavigationArrows
+            'showMobileNavigationArrows' => $showMobileNavigationArrows,
         ];
     }
 
@@ -125,20 +125,20 @@ class SectionBackgroundGalleryRenderService
     ) {
         $templateName = explode('-', $siteSettings['template']['template'])[0];
 
-        if (!in_array($templateName, $this->USED_IN_TEMPLATES)) {
+        if (! in_array($templateName, $this->USED_IN_TEMPLATES)) {
             return '';
         }
 
         $currentSection = null;
         $currentSectionType = null;
 
-        if (!empty($sections)) {
+        if (! empty($sections)) {
             $currentSectionOrder = array_search($sectionSlug, array_column($sections, 'name'));
             $currentSection = $sections[$currentSectionOrder];
             $currentSectionType = isset($currentSection['@attributes']['type']) ? $currentSection['@attributes']['type'] : null;
         }
 
-        if (!$currentSection || empty($currentSection['mediaCacheData']['file'])) {
+        if (! $currentSection || empty($currentSection['mediaCacheData']['file'])) {
             return '';
         }
 
