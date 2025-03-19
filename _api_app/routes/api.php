@@ -18,8 +18,8 @@ Route::middleware(SetupMiddleware::class)->group(function () {
     Route::post('v1/login', [AuthController::class, 'apiLogin'])->name('login');
     Route::put('v1/logout', [AuthController::class, 'apiLogout']);
 
-    Route::get('v1/meta', [StateController::class, 'getMeta']);
-    Route::get('v1/sentry-dsn', [StateController::class, 'getSentryDSN']);
+    Route::get('v1/meta', [StateController::class, 'getMeta'])->name('meta');
+    Route::get('v1/sentry-dsn', [StateController::class, 'getSentryDSN'])->name('sentry');
 });
 
 Route::middleware([SetupMiddleware::class, Authenticate::class])->prefix('v1')->group(function () {
