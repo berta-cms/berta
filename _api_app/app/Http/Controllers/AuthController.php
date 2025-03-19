@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 class AuthController extends Controller
 {
     private $bertaSecurity;
+
     protected static $expiration_time = 86400; // 24 hours = 86400 seconds
 
     protected function generateToken()
@@ -29,7 +30,7 @@ class AuthController extends Controller
         $isAjax = $request->ajax();
         $token = $this->authenticateRequestAndGetToken($request);
 
-        if (!$token) {
+        if (! $token) {
             if ($isAjax) {
                 return Helpers::api_response('Invalid token!', (object) [], 401);
             } else {
@@ -56,7 +57,7 @@ class AuthController extends Controller
         require_once realpath(config('app.old_berta_root') . '/engine/_classes/class.bertautils.php');
         /** @var {\Berta} \Berta - Old berta app class */
         require_once realpath(config('app.old_berta_root') . '/engine/_classes/class.berta.php');
-        /** @var {\BertaSecurity} \BertaSecurity - Old berta security class, so the old login system would work  */
+        /** @var {\BertaSecurity} \BertaSecurity - Old berta security class, so the old login system would work */
         require_once realpath(config('app.old_berta_root') . '/engine/_classes/class.bertasecurity.php');
 
         /** @var {array} $options - this gets the berta version */
@@ -64,7 +65,7 @@ class AuthController extends Controller
         \Berta::$options['version'] = $options['version'];
         \Berta::$options['SITE_ROOT_URL'] = '/';
 
-        $this->bertaSecurity = new \BertaSecurity();
+        $this->bertaSecurity = new \BertaSecurity;
         $this->bertaSecurity->destroy();
 
         setcookie('token', '', -1, '/');
@@ -73,14 +74,14 @@ class AuthController extends Controller
     public function apiLogin(Request $request)
     {
         $token = $this->authenticateRequestAndGetToken($request);
-        if (!$token) {
+        if (! $token) {
             return Helpers::api_response('Login failed!', (object) [], 401);
         }
 
         /** @todo: remove this when we move to the new app. This will be necessary for some time for the iframe */
         setcookie('token', $token, time() + self::$expiration_time, '/');
 
-        $user = new UserModel();
+        $user = new UserModel;
 
         return Helpers::api_response('Login successful!', [
             'name' => $user->name,
@@ -121,9 +122,9 @@ class AuthController extends Controller
             return Helpers::api_response('New and retyped password doesn\'t match!', (object) [], 412);
         } elseif (strlen($new_password) < 6) {
             return Helpers::api_response('Password must be at least 6 characters long!', (object) [], 412);
-        } elseif (!preg_match('/^[A-Za-z0-9]+$/', $new_password)) {
+        } elseif (! preg_match('/^[A-Za-z0-9]+$/', $new_password)) {
             return Helpers::api_response('Password must contain only alphanumeric characters!', (object) [], 412);
-        } elseif (!is_writable($conf_file)) {
+        } elseif (! is_writable($conf_file)) {
             return Helpers::api_response('Config file is not writable!', (object) [], 400);
         } else {
             $content = file_get_contents($conf_file);
@@ -152,7 +153,7 @@ class AuthController extends Controller
         $auth_user = $options['AUTH_user'];
         $auth_pass = $options['AUTH_password'];
 
-        if (!$valid_token && !($request->input('auth_user') == $auth_user && $request->input('auth_pass') == $auth_pass)) {
+        if (! $valid_token && ! ($request->input('auth_user') == $auth_user && $request->input('auth_pass') == $auth_pass)) {
             return null;
         }
 
@@ -164,11 +165,10 @@ class AuthController extends Controller
         require_once realpath(config('app.old_berta_root') . '/engine/_classes/class.bertautils.php');
         /** @var {\Berta} \Berta - Old berta app class */
         require_once realpath(config('app.old_berta_root') . '/engine/_classes/class.berta.php');
-        /** @var {\BertaSecurity} \BertaSecurity - Old berta security class, so the old login system would work  */
+        /** @var {\BertaSecurity} \BertaSecurity - Old berta security class, so the old login system would work */
         require_once realpath(config('app.old_berta_root') . '/engine/_classes/class.bertasecurity.php');
 
         /** @var {array} $options - this gets the berta version */
-
         $ENGINE_ROOT_PATH = realpath(config('app.old_berta_root') . '/engine') . '/';
         include realpath(config('app.old_berta_root') . '/engine/inc.hosting.php');
         \Berta::$options['HOSTING_PROFILE'] = $options['HOSTING_PROFILE'];
@@ -178,9 +178,9 @@ class AuthController extends Controller
         /** @! This may not work with berta deep in subdirectories */
         \Berta::$options['SITE_ROOT_URL'] = str_replace('\\', '/', dirname(dirname($_SERVER['PHP_SELF'])));
 
-        $this->bertaSecurity = new \BertaSecurity();
+        $this->bertaSecurity = new \BertaSecurity;
 
-        if (!$valid_token) {
+        if (! $valid_token) {
             $token = $this->generateToken();
         }
 

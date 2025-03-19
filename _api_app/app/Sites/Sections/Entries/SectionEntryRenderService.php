@@ -2,31 +2,33 @@
 
 namespace App\Sites\Sections\Entries;
 
-use App\Shared\Helpers;
-use App\Shared\ImageHelpers;
-use App\Shared\Storage;
-use App\Sites\Sections\Entries\Galleries\GallerySlideshowRenderService;
-use App\Sites\Sections\Entries\Galleries\GalleryRowRenderService;
-use App\Sites\Sections\Entries\Galleries\GalleryColumnRenderService;
-use App\Sites\Sections\Entries\Galleries\GalleryPileRenderService;
-use App\Sites\Sections\Entries\Galleries\GalleryLinkRenderService;
 use App\Plugins\Shop\ShopSettingsDataService;
+use App\Shared\Helpers;
+use App\Sites\Sections\Entries\Galleries\GalleryColumnRenderService;
+use App\Sites\Sections\Entries\Galleries\GalleryLinkRenderService;
+use App\Sites\Sections\Entries\Galleries\GalleryPileRenderService;
+use App\Sites\Sections\Entries\Galleries\GalleryRowRenderService;
+use App\Sites\Sections\Entries\Galleries\GallerySlideshowRenderService;
 
 class SectionEntryRenderService
 {
     private $gallerySlideshowRenderService;
+
     private $galleryRowRenderService;
+
     private $galleryColumnRenderService;
+
     private $galleryPileRenderService;
+
     private $galleryLinkRenderService;
 
     public function __construct()
     {
-        $this->gallerySlideshowRenderService = new GallerySlideshowRenderService();
+        $this->gallerySlideshowRenderService = new GallerySlideshowRenderService;
         $this->galleryRowRenderService = new GalleryRowRenderService($this->gallerySlideshowRenderService);
-        $this->galleryColumnRenderService = new GalleryColumnRenderService();
+        $this->galleryColumnRenderService = new GalleryColumnRenderService;
         $this->galleryPileRenderService = new GalleryPileRenderService($this->gallerySlideshowRenderService);
-        $this->galleryLinkRenderService = new GalleryLinkRenderService();
+        $this->galleryLinkRenderService = new GalleryLinkRenderService;
     }
 
     /**
@@ -51,13 +53,13 @@ class SectionEntryRenderService
         $isResponsiveTemplate = isset($siteTemplateSettings['pageLayout']['responsive']) && $siteTemplateSettings['pageLayout']['responsive'] == 'yes';
         $isResponsive = $sectionType == 'portfolio' || $isResponsiveTemplate;
 
-        if (($sectionType == 'portfolio' || $templateName == 'default') && ($isEditMode || (isset($entry['content']['title']) && !empty($entry['content']['title'])))) {
+        if (($sectionType == 'portfolio' || $templateName == 'default') && ($isEditMode || (isset($entry['content']['title']) && ! empty($entry['content']['title'])))) {
             $entryTitle = view('Sites/Sections/Entries/_entryTitle', array_merge($entry, [
                 'attributes' => [
                     'title' => Helpers::arrayToHtmlAttributes([
-                        'data-path' => $isEditMode ? "{$apiPath}content/title" : null
-                    ])
-                ]
+                        'data-path' => $isEditMode ? "{$apiPath}content/title" : null,
+                    ]),
+                ],
             ]));
         }
 
@@ -97,13 +99,13 @@ class SectionEntryRenderService
         // Shop plugin related data
         // TODO move the logic to plugin code
         if ($isShopAvailable) {
-            if ($isEditMode || (isset($entry['content']['cartTitle']) && !empty($entry['content']['cartTitle']))) {
+            if ($isEditMode || (isset($entry['content']['cartTitle']) && ! empty($entry['content']['cartTitle']))) {
                 $entryTitle = view('Sites/Sections/Entries/shop/_cartTitle', array_merge($entry, [
                     'attributes' => [
                         'cartTitle' => Helpers::arrayToHtmlAttributes([
-                            'data-path' => $isEditMode ? "{$apiPath}content/cartTitle" : null
-                        ])
-                    ]
+                            'data-path' => $isEditMode ? "{$apiPath}content/cartTitle" : null,
+                        ]),
+                    ],
                 ]));
             }
 
@@ -114,21 +116,21 @@ class SectionEntryRenderService
                 'isEditMode' => $isEditMode,
                 'attributes' => [
                     'cartPrice' => Helpers::arrayToHtmlAttributes([
-                        'data-path' => $isEditMode ? "{$apiPath}content/cartPrice" : null
-                    ])
+                        'data-path' => $isEditMode ? "{$apiPath}content/cartPrice" : null,
+                    ]),
                 ],
                 'cartPriceFormatted' => isset($entry['content']['cartPrice']) ? Helpers::formatPrice($entry['content']['cartPrice'], $shopSettings['currency']) : '',
                 'cartAttributes' => isset($entry['content']['cartAttributes']) ? Helpers::toCartAttributes($entry['content']['cartAttributes']) : '',
                 'addToBasketLabel' => $shopSettings['addToBasket'],
                 'addedToBasketText' => $shopSettings['addedToBasket'],
-                'outOfStockText' => $shopSettings['outOfStock']
+                'outOfStockText' => $shopSettings['outOfStock'],
             ]));
 
             $productAttributesEditor = view('Sites/Sections/Entries/shop/_productAttributesEditor', [
                 'apiPath' => $apiPath,
                 'cartAttributesEdit' => isset($entry['content']['cartAttributes']) ? $entry['content']['cartAttributes'] : '',
                 'weightUnits' => $shopSettings['weightUnit'],
-                'entryWeight' => isset($entry['content']['weight']) ? $entry['content']['weight'] : ''
+                'entryWeight' => isset($entry['content']['weight']) ? $entry['content']['weight'] : '',
             ]);
         }
         // End shop plugin related data
@@ -140,18 +142,18 @@ class SectionEntryRenderService
             'templateName' => $templateName,
             'galleryType' => $galleryType,
             'entryTitle' => isset($entryTitle) ? $entryTitle : '',
-            'showDescription' => $isEditMode || (isset($entry['content']['description']) && !empty($entry['content']['description'])),
+            'showDescription' => $isEditMode || (isset($entry['content']['description']) && ! empty($entry['content']['description'])),
             'attributes' => [
                 'description' => Helpers::arrayToHtmlAttributes([
-                    'data-path' => $isEditMode ? "{$apiPath}content/description" : null
+                    'data-path' => $isEditMode ? "{$apiPath}content/description" : null,
                 ]),
                 'url' => Helpers::arrayToHtmlAttributes([
-                    'data-path' => $isEditMode ? "{$apiPath}content/url" : null
-                ])
+                    'data-path' => $isEditMode ? "{$apiPath}content/url" : null,
+                ]),
             ],
-            'showUrl' => $templateName == 'default' && ($isEditMode || (isset($entry['content']['url']) && !empty($entry['content']['url']))),
+            'showUrl' => $templateName == 'default' && ($isEditMode || (isset($entry['content']['url']) && ! empty($entry['content']['url']))),
             'isEditMode' => $isEditMode,
-            'addToCart' => isset($addToCart) ? $addToCart : ''
+            'addToCart' => isset($addToCart) ? $addToCart : '',
         ]));
 
         if ($isEditMode) {
@@ -159,8 +161,9 @@ class SectionEntryRenderService
             // Exclude current section, external link and shopping cart
             $sections = array_filter($sections, function ($s) use ($section) {
                 $isCurrentSection = $s['name'] === $section['name'];
-                $validSectionType = empty($s['@attributes']['type']) ? true : !in_array($s['@attributes']['type'], ['external_link', 'shopping_cart']);
-                return !$isCurrentSection && $validSectionType;
+                $validSectionType = empty($s['@attributes']['type']) ? true : ! in_array($s['@attributes']['type'], ['external_link', 'shopping_cart']);
+
+                return ! $isCurrentSection && $validSectionType;
             });
 
             $entryContents = view('Sites/Sections/Entries/_entryEditor', [
@@ -183,8 +186,8 @@ class SectionEntryRenderService
                 'entry' => Helpers::arrayToHtmlAttributes([
                     'class' => $this->getClassList($entry, $section, $siteTemplateSettings, $templateName, $sectionType),
                     'style' => $this->getStyleList($entry, $siteSettings, $siteTemplateSettings, $templateName, $sectionType),
-                    'data-path' => $isEditMode && $templateName == 'messy' && !$isResponsive ? "{$apiPath}content/positionXY" : null
-                ])
+                    'data-path' => $isEditMode && $templateName == 'messy' && ! $isResponsive ? "{$apiPath}content/positionXY" : null,
+                ]),
             ],
             'entryContents' => $entryContents,
             'gallery' => $gallery,
@@ -250,11 +253,11 @@ class SectionEntryRenderService
             }
 
             if (isset($entry['content']['positionXY'])) {
-                list($left, $top) = explode(',', $entry['content']['positionXY']);
+                [$left, $top] = explode(',', $entry['content']['positionXY']);
             } else {
                 // new (non updated) entries are placed in top right corder
                 $placeInFullScreen = isset($entry['updated']);
-                list($left, $top) = [
+                [$left, $top] = [
                     rand($placeInFullScreen ? 0 : 900, 960),
                     rand($placeInFullScreen ? 0 : 30, $placeInFullScreen ? 600 : 200),
                 ];
@@ -273,9 +276,10 @@ class SectionEntryRenderService
                 }
             }
 
-            if (!empty($styles)) {
+            if (! empty($styles)) {
                 $styles = array_map(function ($style) {
                     $key = key($style);
+
                     return $key . ': ' . ($style[$key]);
                 }, $styles);
 

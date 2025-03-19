@@ -2,10 +2,6 @@
 
 namespace App\Sites\Sections\Entries\Galleries;
 
-use App\Shared\Storage;
-use App\Sites\Sections\Entries\Galleries\EntryGalleryRenderService;
-use App\Sites\Sections\Entries\Galleries\GallerySlideshowRenderService;
-
 class GalleryRowRenderService extends EntryGalleryRenderService
 {
     private $gallerySlideshowRenderService;
@@ -95,7 +91,7 @@ class GalleryRowRenderService extends EntryGalleryRenderService
 
     private function getGalleryItemsLimit($entry)
     {
-        $imageSize = !empty($entry['mediaCacheData']['@attributes']['size']) ? $entry['mediaCacheData']['@attributes']['size'] : 'large';
+        $imageSize = ! empty($entry['mediaCacheData']['@attributes']['size']) ? $entry['mediaCacheData']['@attributes']['size'] : 'large';
         $limit = config('app.row_gallery_image_limit.' . $imageSize);
 
         return $limit;
@@ -122,7 +118,7 @@ class GalleryRowRenderService extends EntryGalleryRenderService
 
         return [
             'width' => $loaderWidth,
-            'height' => $loaderHeight
+            'height' => $loaderHeight,
         ];
     }
 
@@ -155,7 +151,7 @@ class GalleryRowRenderService extends EntryGalleryRenderService
         $view = view('Sites/Sections/Entries/Galleries/galleryRow', $data);
 
         // Add a slideshow as a fallback for mobile devices when there is at least two slides
-        if (!$isEditMode && !empty($entry['mediaCacheData']['file']) && count($entry['mediaCacheData']['file']) > 1) {
+        if (! $isEditMode && ! empty($entry['mediaCacheData']['file']) && count($entry['mediaCacheData']['file']) > 1) {
             // Force entry to be as slideshow
             $entry['mediaCacheData']['@attributes']['type'] = 'slideshow';
 

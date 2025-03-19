@@ -7,13 +7,14 @@ class SitemapRenderService
     private function getTags($sectionTags)
     {
         $tags = array_filter($sectionTags['section'], function ($section) {
-            return !empty($section['tag']);
+            return ! empty($section['tag']);
         });
 
         $tags = array_reduce($tags, function ($sections, $section) {
-            $sections[$section['@attributes']['name']] = array_map(function ($tag) use ($section) {
+            $sections[$section['@attributes']['name']] = array_map(function ($tag) {
                 return $tag['@attributes']['name'];
             }, $section['tag']);
+
             return $sections;
         }, []);
 
@@ -24,13 +25,13 @@ class SitemapRenderService
     {
         $urlParts = [];
 
-        if (!empty($siteSlug)) {
+        if (! empty($siteSlug)) {
             $urlParts['site'] = $siteSlug;
         }
 
         $isFirstSection = $section['name'] == $sections[0]['name'];
 
-        if (!$isFirstSection || $tag) {
+        if (! $isFirstSection || $tag) {
             $urlParts['section'] = $section['name'];
         }
 
@@ -57,25 +58,28 @@ class SitemapRenderService
             $isPublished = $section['@attributes']['published'] == '1';
             $isEmptyTitle = empty($section['title']);
             $isCartSection = isset($section['@attributes']['type']) && $section['@attributes']['type'] == 'shopping_cart';
-            return $isPublished && !$isEmptyTitle && !$isCartSection;
+
+            return $isPublished && ! $isEmptyTitle && ! $isCartSection;
         });
 
-        $availableSections = array_map(function ($section) use ($tags, $siteSlug, $sections) {
-            $section['tags'] = !empty($tags[$section['name']]) ? $tags[$section['name']] : [];
+        $availableSections = array_map(function ($section) use ($tags) {
+            $section['tags'] = ! empty($tags[$section['name']]) ? $tags[$section['name']] : [];
+
             return $section;
         }, $availableSections);
 
         $urls = array_reduce($availableSections, function ($urls, $section) use ($request, $siteSlug, $sections) {
             $isExternalLink = isset($section['@attributes']['type']) && $section['@attributes']['type'] == 'external_link';
-            if ($isExternalLink && !empty($section['link'])) {
+            if ($isExternalLink && ! empty($section['link'])) {
                 array_push($urls, $section['link']);
+
                 return $urls;
             }
 
             $urls[] = $this->getUrl($section, $siteSlug, $sections, $request, null);
-            $hasDirectContent = !empty($section['@attributes']['has_direct_content']) && $section['@attributes']['has_direct_content'];
+            $hasDirectContent = ! empty($section['@attributes']['has_direct_content']) && $section['@attributes']['has_direct_content'];
             foreach ($section['tags'] as $i => $tag) {
-                if (!$hasDirectContent && !$i) {
+                if (! $hasDirectContent && ! $i) {
                     continue;
                 }
                 $urls[] = $this->getUrl($section, $siteSlug, $sections, $request, $tag);
@@ -85,7 +89,7 @@ class SitemapRenderService
         }, []);
 
         return [
-            'urls' => $urls
+            'urls' => $urls,
         ];
     }
 

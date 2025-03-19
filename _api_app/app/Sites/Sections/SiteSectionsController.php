@@ -2,29 +2,19 @@
 
 namespace App\Sites\Sections;
 
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use App\User\UserModel;
-use App\Shared\Storage;
-use App\Shared\Helpers;
 use App\Configuration\SiteTemplatesConfigService;
+use App\Http\Controllers\Controller;
+use App\Shared\Helpers;
+use App\Shared\Storage;
+use App\Sites\Sections\Entries\SectionEntriesDataService;
+use App\Sites\Sections\Tags\SectionTagsDataService;
+use App\Sites\Settings\SiteSettingsDataService;
 use App\Sites\SitesDataService;
 use App\Sites\SocialMediaLinksRenderService;
-use App\Sites\Settings\SiteSettingsDataService;
-use App\Sites\Sections\SiteSectionsDataService;
-use App\Sites\Sections\SectionsMenuRenderService;
-use App\Sites\Sections\SitemapRenderService;
-use App\Sites\Sections\SectionBackgroundGalleryRenderService;
-use App\Sites\Sections\GridViewRenderService;
-use App\Sites\Sections\SectionFooterRenderService;
-use App\Sites\Sections\SectionHeadRenderService;
-use App\Sites\Sections\AdditionalTextRenderService;
-use App\Sites\Sections\AdditionalFooterTextRenderService;
-use App\Sites\Sections\WhiteTemplateRenderService;
-use App\Sites\Sections\Tags\SectionTagsDataService;
-use App\Sites\Sections\Entries\SectionEntriesDataService;
 use App\Sites\TemplateSettings\SiteTemplateSettingsDataService;
+use App\User\UserModel;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class SiteSectionsController extends Controller
 {
@@ -99,6 +89,7 @@ class SiteSectionsController extends Controller
         $json = $request->json()->all();
         $sectionsDataService = new SiteSectionsDataService($json['site']);
         $sectionsDataService->order($json['sections']);
+
         return response()->json($json);
     }
 
@@ -107,6 +98,7 @@ class SiteSectionsController extends Controller
         $json = $request->json()->all();
         $sectionsDataService = new SiteSectionsDataService($json['site']);
         $res = $sectionsDataService->backgroundGalleryDelete($json['section'], $json['file']);
+
         return response()->json($res);
     }
 
@@ -115,6 +107,7 @@ class SiteSectionsController extends Controller
         $json = $request->json()->all();
         $sectionsDataService = new SiteSectionsDataService($json['site']);
         $ret = $sectionsDataService->backgroundGalleryOrder($json['section'], $json['files']);
+
         return response()->json($ret);
     }
 
@@ -123,21 +116,21 @@ class SiteSectionsController extends Controller
         $file = $request->file('value');
         $path = $request->get('path');
 
-        if (!$file || !$file->isValid() || !$path) {
+        if (! $file || ! $file->isValid() || ! $path) {
             return response()->json([
                 'status' => 0,
-                'error' => 'Upload failed.'
+                'error' => 'Upload failed.',
             ]);
         }
 
         $validator = Validator::make(['file' => $file], [
-            'file' => 'max:' . config('app.image_max_file_size') . '|mimes:' . implode(',', config('app.image_mimes')) . '|not_corrupted_image'
+            'file' => 'max:' . config('app.image_max_file_size') . '|mimes:' . implode(',', config('app.image_mimes')) . '|not_corrupted_image',
         ]);
 
         if ($validator->fails()) {
             return response()->json([
                 'status' => 0,
-                'error' => implode(' ', $validator->getMessageBag()->all())
+                'error' => implode(' ', $validator->getMessageBag()->all()),
             ]);
         }
 
@@ -146,10 +139,10 @@ class SiteSectionsController extends Controller
         $sectionsDataService = new SiteSectionsDataService($site);
         $mediaRootDir = $sectionsDataService->getOrCreateMediaDir();
 
-        if (!is_writable($mediaRootDir)) {
+        if (! is_writable($mediaRootDir)) {
             return response()->json([
                 'status' => 0,
-                'error' => 'Media folder not writable.'
+                'error' => 'Media folder not writable.',
             ]);
         }
         $ret = $sectionsDataService->backgroundGalleryUpload($path, $file);
@@ -170,7 +163,7 @@ class SiteSectionsController extends Controller
         $sectionTagsDS = new SectionTagsDataService($site);
         $sectionTags = $sectionTagsDS->get();
 
-        $sectionsMenuRS = new SectionsMenuRenderService();
+        $sectionsMenuRS = new SectionsMenuRenderService;
 
         return $sectionsMenuRS->render(
             $site,
@@ -193,7 +186,7 @@ class SiteSectionsController extends Controller
         $sectionTagsDS = new SectionTagsDataService($siteSlug);
         $sectionTags = $sectionTagsDS->get();
 
-        $sitemapRS = new SitemapRenderService();
+        $sitemapRS = new SitemapRenderService;
 
         return $sitemapRS->render(
             $request,
@@ -217,7 +210,7 @@ class SiteSectionsController extends Controller
         $sectionSlug = $request->get('section');
         $isEditMode = true;
 
-        $socialMediaLinksRS = new SocialMediaLinksRenderService();
+        $socialMediaLinksRS = new SocialMediaLinksRenderService;
         $additionalTextRS = new AdditionalTextRenderService($socialMediaLinksRS);
 
         return $additionalTextRS->render(
@@ -236,8 +229,8 @@ class SiteSectionsController extends Controller
         $siteSettings = $siteSettingsDS->getState();
         $isEditMode = true;
 
-        $socialMediaLinksRS = new SocialMediaLinksRenderService();
-        $user = new UserModel();
+        $socialMediaLinksRS = new SocialMediaLinksRenderService;
+        $user = new UserModel;
         $additionalTextRS = new AdditionalFooterTextRenderService($socialMediaLinksRS);
 
         return $additionalTextRS->render($siteSlug, $siteSettings, $user, $isEditMode);
@@ -255,16 +248,16 @@ class SiteSectionsController extends Controller
         $siteSettings = $siteSettingsDS->getState();
         $siteTemplateSettingsDS = new SiteTemplateSettingsDataService($site, $siteSettings['template']['template']);
         $siteTemplateSettings = $siteTemplateSettingsDS->getState();
-        $siteTemplatesConfigService = new SiteTemplatesConfigService();
+        $siteTemplatesConfigService = new SiteTemplatesConfigService;
         $siteTemplatesConfig = $siteTemplatesConfigService->getDefaults();
-        $user = new UserModel();
+        $user = new UserModel;
 
         $isShopAvailable = Helpers::isValidDomain($request->getHost(), config('plugin-Shop.key'));
         $isEditMode = true;
         $isPreviewMode = false;
         $storageService = new Storage($site, $isPreviewMode);
 
-        $sectionHeadRS = new SectionHeadRenderService();
+        $sectionHeadRS = new SectionHeadRenderService;
 
         return $sectionHeadRS->render(
             $site,
@@ -290,9 +283,9 @@ class SiteSectionsController extends Controller
         $siteSettingsDS = new SiteSettingsDataService($site);
         $siteSettings = $siteSettingsDS->getState();
         $isEditMode = false;
-        $user = new UserModel();
+        $user = new UserModel;
 
-        $sectionFooterRS = new SectionFooterRenderService();
+        $sectionFooterRS = new SectionFooterRenderService;
 
         return $sectionFooterRS->render(
             $siteSettings,
@@ -316,7 +309,7 @@ class SiteSectionsController extends Controller
         $isPreviewMode = false;
         $storageService = new Storage($siteSlug, $isPreviewMode);
 
-        $sectionBackgroundGalleryRS = new SectionBackgroundGalleryRenderService();
+        $sectionBackgroundGalleryRS = new SectionBackgroundGalleryRenderService;
 
         return $sectionBackgroundGalleryRS->render(
             $storageService,
@@ -341,7 +334,7 @@ class SiteSectionsController extends Controller
         $isPreviewMode = false;
         $storageService = new Storage($siteSlug, $isPreviewMode);
 
-        $gridViewRS = new GridViewRenderService();
+        $gridViewRS = new GridViewRenderService;
 
         return $gridViewRS->render(
             $siteSlug,
@@ -358,7 +351,7 @@ class SiteSectionsController extends Controller
 
     public function renderTemplate(Request $request, $siteSlug = '')
     {
-        $sitesDataService = new SitesDataService();
+        $sitesDataService = new SitesDataService;
         $sites = $sitesDataService->get();
 
         $siteSettingsDS = new SiteSettingsDataService($siteSlug);
@@ -376,10 +369,10 @@ class SiteSectionsController extends Controller
         $siteTemplateSettingsDS = new SiteTemplateSettingsDataService($siteSlug, $siteSettings['template']['template']);
         $siteTemplateSettings = $siteTemplateSettingsDS->getState();
 
-        $siteTemplatesConfigService = new SiteTemplatesConfigService();
+        $siteTemplatesConfigService = new SiteTemplatesConfigService;
         $siteTemplatesConfig = $siteTemplatesConfigService->getDefaults();
 
-        $user = new UserModel();
+        $user = new UserModel;
 
         $isShopAvailable = Helpers::isValidDomain($request->getHost(), config('plugin-Shop.key'));
         $isEditMode = false;
@@ -393,20 +386,20 @@ class SiteSectionsController extends Controller
 
         switch ($templateName) {
             case 'white':
-                $templateRenderService = new WhiteTemplateRenderService();
+                $templateRenderService = new WhiteTemplateRenderService;
                 break;
 
             case 'default':
-                $templateRenderService = new DefaultTemplateRenderService();
+                $templateRenderService = new DefaultTemplateRenderService;
                 break;
 
             case 'mashup':
-                $templateRenderService = new MashupTemplateRenderService();
+                $templateRenderService = new MashupTemplateRenderService;
                 break;
 
             default:
                 // Messy
-                $templateRenderService = new MessyTemplateRenderService();
+                $templateRenderService = new MessyTemplateRenderService;
                 break;
         }
 

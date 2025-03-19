@@ -12,31 +12,39 @@ include_once 'class.settings.php';
 class Berta extends BertaBase
 {
     public $security;
+
     public $settings;
+
     public $environment;
+
     public $apacheRewriteUsed = false;
+
     public $request_uri;
 
     public $sections;
+
     public $sectionName;
 
     public $template;
 
     public $tags;
+
     public $tagName;
 
     public $content;
+
     public $requestURI;
+
     public $allContent;
 
     public function __construct(array $options = [])
     {
         // Initialize I18n
-        new I18n();
+        new I18n;
 
         // Set variables
-        $this->environment = !empty(self::$options['ENVIRONMENT']) ? self::$options['ENVIRONMENT'] : 'site';
-        $this->apacheRewriteUsed = !empty($_REQUEST['__rewrite']) ? true : false;
+        $this->environment = ! empty(self::$options['ENVIRONMENT']) ? self::$options['ENVIRONMENT'] : 'site';
+        $this->apacheRewriteUsed = ! empty($_REQUEST['__rewrite']) ? true : false;
         $this->security = new BertaSecurity($this->environment);
 
         // [Bad bad bad practice!] Update logged in status in the options
@@ -63,12 +71,12 @@ class Berta extends BertaBase
         // seciton ...
         $this->sections = BertaContent::getSections();
 
-        if (!$sectionName || empty($this->sections[$sectionName]) && $sectionName != 'sitemap.xml') {
+        if (! $sectionName || empty($this->sections[$sectionName]) && $sectionName != 'sitemap.xml') {
             if ($this->environment == 'engine') {
                 $sectionName = current(array_keys($this->sections));
             } else {
                 foreach ($this->sections as $sName => $s) {
-                    if (!empty($s['@attributes']['published'])) {
+                    if (! empty($s['@attributes']['published'])) {
                         $sectionName = $sName;
                         break;
                     }
@@ -81,7 +89,7 @@ class Berta extends BertaBase
         $this->content = BertaContent::loadBlog($sectionName);
         $this->allContent = [$this->sectionName => $this->content];
         if (
-            !empty($this->sections[$this->sectionName]['get_all_entries_by_section'])
+            ! empty($this->sections[$this->sectionName]['get_all_entries_by_section'])
             && $this->sections[$this->sectionName]['get_all_entries_by_section']['value'] == 'yes'
         ) {
             foreach ($this->sections as $sName => $s) {
@@ -94,16 +102,16 @@ class Berta extends BertaBase
         // subsections ...
         $this->tags = BertaContent::getTags();
         $this->tagName = $tagName;
-        if (!isset($this->tags[$this->sectionName][$this->tagName])) {
+        if (! isset($this->tags[$this->sectionName][$this->tagName])) {
             $this->tagName = false;
         }
 
         // in the engine mode one can view all entries for a section, even if the section has subsections
         // but in the front-ends mode, if there are subsections, the first of them is automatically selected.
 
-        //I'm not sure what I'm doing here - this can make a bug in sorting order
+        // I'm not sure what I'm doing here - this can make a bug in sorting order
         if (
-            !empty($this->tags[$this->sectionName])
+            ! empty($this->tags[$this->sectionName])
             && empty($this->tagName)
             && empty($this->sections[$this->sectionName]['@attributes']['has_direct_content'])
             && $this->settings->get('navigation', 'alwaysSelectTag') == 'yes'

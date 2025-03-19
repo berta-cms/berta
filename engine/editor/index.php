@@ -3,7 +3,7 @@
 if (empty($INDEX_INCLUDED)) {
     $INDEX_INCLUDED = false;
 }
-if (!$INDEX_INCLUDED) {
+if (! $INDEX_INCLUDED) {
     define('AUTH_AUTHREQUIRED', true);  // require authentification if inside engine folder
     define('BERTA_ENVIRONMENT', 'engine');
 } else {

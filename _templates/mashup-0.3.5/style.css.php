@@ -11,7 +11,7 @@ if ($lastMod = $berta->settings->get('berta', 'lastUpdated')) {
 }
 header('Content-Type: text/css');
 
-if(!1) { ?><style type="text/css"><?php } ?>
+if (! 1) { ?><style type="text/css"><?php } ?>
 
 body {
 	color: <?php echo $s->get('generalFontSettings', 'color') ?>;
@@ -31,13 +31,13 @@ body {
         background-position: <?php echo $s->get('background', 'backgroundPosition') ?>;
         <?php
         $bgAttachment = $s->get('background', 'backgroundAttachment');
-        if ($bgAttachment == 'fill') { ?>
+	    if ($bgAttachment == 'fill') { ?>
             background-size: cover;
             background-attachment: fixed;
         <?php } else { ?>
             background-attachment: <?php echo $bgAttachment ?>;
         <?php }
-	} ?>
+        } ?>
 }
 
 a:link {
@@ -71,7 +71,7 @@ a:active {
 #sideColumn {
     left: <?php echo $s->get('sideBar', 'marginLeft') ?>;
     width: <?php echo $s->get('sideBar', 'width') ?>;
-    <?php if($s->get('sideBar', 'transparent') == 'no') { ?>
+    <?php if ($s->get('sideBar', 'transparent') == 'no') { ?>
         background-color: <?php echo $s->get('sideBar', 'backgroundColor') ?>;
     <?php } ?>
 }
@@ -160,7 +160,7 @@ a:active {
     max-width: <?php echo $s->get('pageLayout', 'contentWidth') ?>;
 }
 
-<?php if($s->get('firstPage', 'imageHaveShadows') == 'yes') { ?>
+<?php if ($s->get('firstPage', 'imageHaveShadows') == 'yes') { ?>
     .firstPagePic img,
     .firstPagePic video {
         -webkit-box-shadow: 5px 5px 2px #ccc;
@@ -238,7 +238,7 @@ a:active {
 }
 
 .bt-responsive #firstPageMarkedEntries .xEntry {
-    max-width: <?php echo $s->get('firstPage', 'imageSizeRatio')*100 ?>%;
+    max-width: <?php echo $s->get('firstPage', 'imageSizeRatio') * 100 ?>%;
 }
 
 /* tablet */
@@ -256,4 +256,4 @@ a:active {
     }
 }
 
-<?php if(!1) { ?></style><?php } ?>
+<?php if (! 1) { ?></style><?php } ?>

@@ -507,7 +507,7 @@ return [
 
     'To enable Berta\'s news ticker, your computer needs to be connected to the internet!' => 'Lai redzētu Bertas jaunumus, Jūsu datoram nepieciešama interneta pieeja!',
 
-    //shop translations
+    // shop translations
     'Shop' => 'Veikals',
     'shop' => 'veikals',
     'Inventory' => 'Noliktava',

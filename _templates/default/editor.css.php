@@ -1,10 +1,10 @@
 <?php
-header("Content-Type: text/css");
+header('Content-Type: text/css');
 
-include('../../engine/inc.page.php');
-$s =& $berta->template->settings;
+include '../../engine/inc.page.php';
+$s = &$berta->template->settings;
 
-if(!1) { ?><style type="text/css"><?php } ?>
+if (! 1) { ?><style type="text/css"><?php } ?>
 
 #additionalText {
 	width: auto;
@@ -41,4 +41,4 @@ if(!1) { ?><style type="text/css"><?php } ?>
 	visibility: visible;
 }
 
-<?php if(!1) { ?></style><?php } ?>
+<?php if (! 1) { ?></style><?php } ?>

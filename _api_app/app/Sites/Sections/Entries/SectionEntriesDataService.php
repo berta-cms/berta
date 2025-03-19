@@ -23,7 +23,6 @@ use Illuminate\Support\Arr;
  * For other sites it's: `storage/-sites/[site name]/blog.[section name].xml`
  *
  * @example file: sample-data/blog.[section-name].xml
- *
  * @example XML:
  * ```xml
  * <?xml version="1.0" encoding="utf-8"?>
@@ -175,12 +174,19 @@ class SectionEntriesDataService extends Storage
     ];
 
     protected static $DEFAULT_VALUES = [];
+
     private $ROOT_ELEMENT = 'blog'; // The XML document element - the one that wraps all the content in file
+
     private static $ROOT_LIST_ELEMENT = 'entry'; // XML element that wraps each element in the top level list - child of ROOT_ELEMENT
+
     private $SECTION_NAME;
+
     private $SECTION_TITLE;
+
     private $ENTRIES = [];
+
     private $XML_ROOT;
+
     private $XML_FILE;
 
     public function __construct($site = '', $sectionName = '', $sectionTitle = '', $xml_root = null, $isPreview = false)
@@ -199,14 +205,14 @@ class SectionEntriesDataService extends Storage
      */
     public function get()
     {
-        if (!$this->ENTRIES) {
+        if (! $this->ENTRIES) {
             $this->ENTRIES = $this->xmlFile2array($this->XML_FILE);
 
-            if (!$this->ENTRIES) {
+            if (! $this->ENTRIES) {
                 $this->ENTRIES = [];
                 $this->ENTRIES[self::$ROOT_LIST_ELEMENT] = [];
             } else {
-                if (!isset($this->ENTRIES[self::$ROOT_LIST_ELEMENT]) || !$this->ENTRIES[self::$ROOT_LIST_ELEMENT]) {
+                if (! isset($this->ENTRIES[self::$ROOT_LIST_ELEMENT]) || ! $this->ENTRIES[self::$ROOT_LIST_ELEMENT]) {
                     $this->ENTRIES[self::$ROOT_LIST_ELEMENT] = [];
                 }
                 $this->ENTRIES[self::$ROOT_LIST_ELEMENT] = $this->asList($this->ENTRIES[self::$ROOT_LIST_ELEMENT]);
@@ -216,14 +222,14 @@ class SectionEntriesDataService extends Storage
                     if (isset($entry['mediaCacheData']['file'])) {
                         $this->ENTRIES[self::$ROOT_LIST_ELEMENT][$order]['mediaCacheData']['file'] = $this->asList($entry['mediaCacheData']['file']);
 
-                        if (!$this->ENTRIES[self::$ROOT_LIST_ELEMENT][$order]['mediaCacheData']['file'][0]) {
+                        if (! $this->ENTRIES[self::$ROOT_LIST_ELEMENT][$order]['mediaCacheData']['file'][0]) {
                             $this->ENTRIES[self::$ROOT_LIST_ELEMENT][$order]['mediaCacheData']['file'] = [];
                         }
                     }
                     if (isset($entry['tags']['tag'])) {
                         $this->ENTRIES[self::$ROOT_LIST_ELEMENT][$order]['tags']['tag'] = $this->asList($entry['tags']['tag']);
 
-                        if (!$this->ENTRIES[self::$ROOT_LIST_ELEMENT][$order]['tags']['tag'][0]) {
+                        if (! $this->ENTRIES[self::$ROOT_LIST_ELEMENT][$order]['tags']['tag'][0]) {
                             $this->ENTRIES[self::$ROOT_LIST_ELEMENT][$order]['tags']['tag'] = [];
                         }
 
@@ -250,16 +256,16 @@ class SectionEntriesDataService extends Storage
     {
         $entries = $this->get();
 
-        if (!$entries[self::$ROOT_LIST_ELEMENT]) {
+        if (! $entries[self::$ROOT_LIST_ELEMENT]) {
             return $entries[self::$ROOT_LIST_ELEMENT];
         }
 
         // Filter entries by tag
         $entries = array_filter($entries[self::$ROOT_LIST_ELEMENT], function ($entry) use ($tag) {
-            $entryTags = !empty($entry['tags']['slugs']) ? $entry['tags']['slugs'] : [];
+            $entryTags = ! empty($entry['tags']['slugs']) ? $entry['tags']['slugs'] : [];
 
             if ($tag) {
-                return !empty($entryTags) && in_array($tag, $entryTags);
+                return ! empty($entryTags) && in_array($tag, $entryTags);
             } else {
                 return empty($entry['tags']['tag']);
             }
@@ -277,7 +283,7 @@ class SectionEntriesDataService extends Storage
 
         $siteSectionsDataService = new SiteSectionsDataService($this->SITE);
         $sections = $siteSectionsDataService->get();
-        if (!empty($sections)) {
+        if (! empty($sections)) {
             $section_order = array_search($this->SECTION_NAME, array_column($sections, 'name'));
             $section = $sections[$section_order];
             $sectionType = isset($section['@attributes']['type']) ? $section['@attributes']['type'] : 'default';
@@ -287,7 +293,7 @@ class SectionEntriesDataService extends Storage
 
         // if messy template and auto responsive is ON and environment is `site`
         // reorder entries based on XY position
-        if ($templateName == 'messy' && !$isEditMode && !$isResponsive && $isAutoResponsive) {
+        if ($templateName == 'messy' && ! $isEditMode && ! $isResponsive && $isAutoResponsive) {
             $entries = $this->orderByXYPosition($entries);
         }
 
@@ -299,8 +305,8 @@ class SectionEntriesDataService extends Storage
         usort($entries, function ($item1, $item2) {
             $pos1 = isset($item1['content']['positionXY']) ? $item1['content']['positionXY'] : '0,0';
             $pos2 = isset($item2['content']['positionXY']) ? $item2['content']['positionXY'] : '0,0';
-            list($pos1X, $pos1Y) = explode(',', $pos1);
-            list($pos2X, $pos2Y) = explode(',', $pos2);
+            [$pos1X, $pos1Y] = explode(',', $pos1);
+            [$pos2X, $pos2Y] = explode(',', $pos2);
 
             if ($pos1X == $pos2X && $pos1Y == $pos2Y) {
                 return 0;
@@ -337,8 +343,8 @@ class SectionEntriesDataService extends Storage
     /**
      * Saves a value with a given path and saves the change to XML file
      *
-     * @param string $path Slash delimited path to the value
-     * @param mixed $value Value to be saved
+     * @param  string  $path  Slash delimited path to the value
+     * @param  mixed  $value  Value to be saved
      * @return array Array of changed value and/or error messages
      */
     public function saveValueByPath($path, $value)
@@ -395,7 +401,7 @@ class SectionEntriesDataService extends Storage
             $section_order = array_search($this->SECTION_NAME, array_column($sections, 'name'));
             $sectionTagsDataService = new SectionTagsDataService($this->SITE, $this->SECTION_NAME);
             $section_tags = $sectionTagsDataService->populateTags();
-            $has_direct_content = !$section_tags['allHaveTags'] ? 1 : 0;
+            $has_direct_content = ! $section_tags['allHaveTags'] ? 1 : 0;
             $siteSectionsDataService->saveValueByPath(
                 implode('/', [
                     $this->SITE,
@@ -509,10 +515,11 @@ class SectionEntriesDataService extends Storage
     {
         $ret = ['success' => true];
 
-        if (!file_exists($this->XML_FILE)) {
+        if (! file_exists($this->XML_FILE)) {
             $ret['success'] = false;
             $ret['value'] = $this->SECTION_TITLE;
             $ret['error_message'] = 'Current section storage file does not exist! you\'ll have to delete this section!';
+
             return $ret;
         }
 
@@ -522,13 +529,15 @@ class SectionEntriesDataService extends Storage
             $ret['success'] = false;
             $ret['value'] = $this->SECTION_TITLE;
             $ret['error_message'] = 'Section cannot be created! another section with the same (or too similar name) exists!';
+
             return $ret;
         }
 
-        if (!@rename($this->XML_FILE, $xml_file)) {
+        if (! @rename($this->XML_FILE, $xml_file)) {
             $ret['success'] = false;
             $ret['value'] = $this->SECTION_TITLE;
             $ret['error_message'] = 'Section storage file cannot be renamed! check permissions and be sure the name of the section is not TOO fancy!';
+
             return $ret;
         }
 
@@ -564,9 +573,9 @@ class SectionEntriesDataService extends Storage
         $entries = $this->get();
 
         // delete media files
-        if (array_key_exists(self::$ROOT_LIST_ELEMENT, $entries) and !empty($entries[self::$ROOT_LIST_ELEMENT])) {
+        if (array_key_exists(self::$ROOT_LIST_ELEMENT, $entries) and ! empty($entries[self::$ROOT_LIST_ELEMENT])) {
             foreach ($entries[self::$ROOT_LIST_ELEMENT] as $entry) {
-                if (!empty($entry['mediafolder'])) {
+                if (! empty($entry['mediafolder'])) {
                     $mediaFolder = $this->MEDIA_ROOT . '/' . $entry['mediafolder'];
 
                     if (file_exists($mediaFolder)) {
@@ -578,19 +587,19 @@ class SectionEntriesDataService extends Storage
                             }
                         }
 
-                        if (!@rmdir($mediaFolder)) {
+                        if (! @rmdir($mediaFolder)) {
                             return [
                                 'success' => false,
                                 'error_message' => 'Unable to remove folder "' . $mediaFolder . '"!',
                             ];
-                        };
+                        }
                     }
                 }
             }
         }
 
         // Delete entries
-        if (!@unlink($this->XML_FILE)) {
+        if (! @unlink($this->XML_FILE)) {
             return [
                 'success' => false,
                 'error_message' => 'Unable to remove file "' . $this->XML_FILE . '"!',
@@ -633,10 +642,11 @@ class SectionEntriesDataService extends Storage
             $galleryFullScreen = $siteSettings['entryLayout']['galleryFullScreenDefault'];
         }
 
-        if (!@mkdir($this->MEDIA_ROOT . '/' . $mediafolder, 0777)) {
+        if (! @mkdir($this->MEDIA_ROOT . '/' . $mediafolder, 0777)) {
             $ret['value'] = $mediafolder;
             $ret['error_message'] = 'Can\'t create media folder! Check permissions.';
             $ret['status_code'] = 400;
+
             return $ret;
         }
 
@@ -750,7 +760,7 @@ class SectionEntriesDataService extends Storage
         $siteSectionsDataService = new SiteSectionsDataService($this->SITE);
         $sectionTagsDataService = new SectionTagsDataService($this->SITE, $this->SECTION_NAME);
         $section_tags = $sectionTagsDataService->populateTags();
-        $has_direct_content = !$section_tags['allHaveTags'] ? 1 : 0;
+        $has_direct_content = ! $section_tags['allHaveTags'] ? 1 : 0;
         $siteSectionsDataService->saveValueByPath(
             implode('/', [
                 $this->SITE,
@@ -812,7 +822,7 @@ class SectionEntriesDataService extends Storage
         $entry = $entries['entry'][$entry_order];
 
         // Delete entry media folder
-        if (isset($entry['mediafolder']) && !empty($entry['mediafolder'])) {
+        if (isset($entry['mediafolder']) && ! empty($entry['mediafolder'])) {
             $this->delFolder($this->MEDIA_ROOT . '/' . $entry['mediafolder']);
         }
 
@@ -840,7 +850,7 @@ class SectionEntriesDataService extends Storage
         $siteSectionsDataService = new SiteSectionsDataService($this->SITE);
         $sectionTagsDataService = new SectionTagsDataService($this->SITE, $this->SECTION_NAME);
         $section_tags = $sectionTagsDataService->populateTags();
-        $has_direct_content = !$section_tags['allHaveTags'] ? 1 : 0;
+        $has_direct_content = ! $section_tags['allHaveTags'] ? 1 : 0;
         $siteSectionsDataService->saveValueByPath(
             implode('/', [
                 $this->SITE,
@@ -876,7 +886,7 @@ class SectionEntriesDataService extends Storage
 
     private function setTitle($title)
     {
-        if (!empty($this->SECTION_TITLE)) {
+        if (! empty($this->SECTION_TITLE)) {
             $this->SECTION_TITLE = $title;
         }
     }
@@ -888,7 +898,7 @@ class SectionEntriesDataService extends Storage
 
         if ($entry_order !== false) {
             $entry = &$entries['entry'][$entry_order];
-            if (!isset($entry['mediaCacheData']) || !isset($entry['mediaCacheData']['file'])) {
+            if (! isset($entry['mediaCacheData']) || ! isset($entry['mediaCacheData']['file'])) {
                 $entry['mediaCacheData']['file'] = [];
             }
 
@@ -943,7 +953,7 @@ class SectionEntriesDataService extends Storage
         $mediaDir = $mediaRootDir . '/' . $mediaDirName;
         unset($entry['mediaCacheData']['@value']);
 
-        if (!file_exists($mediaDir)) {
+        if (! file_exists($mediaDir)) {
             mkdir($mediaDir, 0777, true);
         }
 
@@ -952,7 +962,7 @@ class SectionEntriesDataService extends Storage
         $file->move($mediaDir, $fileName);
 
         // A video file
-        if (!$isImage) {
+        if (! $isImage) {
             $entry['mediaCacheData']['file'][] = [
                 '@attributes' => [
                     'type' => 'video',
@@ -980,9 +990,9 @@ class SectionEntriesDataService extends Storage
 
         ImageHelpers::downscaleToMaxSize($mediaDir . '/' . $fileName);
 
-        list($width, $height) = getimagesize($mediaDir . '/' . $fileName);
+        [$width, $height] = getimagesize($mediaDir . '/' . $fileName);
         $smallThumb = ImageHelpers::getThumbnail($mediaDir . '/' . $fileName);
-        list($smallThumbWidth, $smallThumbHeight) = getimagesize($smallThumb);
+        [$smallThumbWidth, $smallThumbHeight] = getimagesize($smallThumb);
 
         // Add new Poster
         if ($posterVideo) {
@@ -1043,7 +1053,7 @@ class SectionEntriesDataService extends Storage
         $oldFileName = $slide['@attributes']['src'];
         $mediaRootDir = $this->getOrCreateMediaDir();
 
-        if (!is_writable($mediaRootDir)) {
+        if (! is_writable($mediaRootDir)) {
             throw new \Exception('Upload failed.');
         }
 
@@ -1097,7 +1107,7 @@ class SectionEntriesDataService extends Storage
         if ($entry_order !== false) {
             $entry = &$entries['entry'][$entry_order];
 
-            if (!isset($entry['mediaCacheData'])) {
+            if (! isset($entry['mediaCacheData'])) {
                 return ['error_message' => 'File "' . $file . '" not found!'];
             }
 
@@ -1146,7 +1156,7 @@ class SectionEntriesDataService extends Storage
 
         if ($handle = opendir($folder)) {
             while (false !== ($f = readdir($handle))) {
-                if (!$file || strpos($f, $file) !== false) {
+                if (! $file || strpos($f, $file) !== false) {
                     if (substr($f, 0, 1) == '_') {
                         @unlink($folder . $f);
                     }
@@ -1159,7 +1169,8 @@ class SectionEntriesDataService extends Storage
 
     /**
      * Copy all section entries gallery files to destination folder
-     * @param string $dst_root destination folder
+     *
+     * @param  string  $dst_root  destination folder
      */
     public function copyMediaFiles($dst_root)
     {

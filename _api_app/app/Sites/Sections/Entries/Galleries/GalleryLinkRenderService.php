@@ -2,9 +2,6 @@
 
 namespace App\Sites\Sections\Entries\Galleries;
 
-use App\Shared\Storage;
-use App\Sites\Sections\Entries\Galleries\EntryGalleryRenderService;
-
 class GalleryLinkRenderService extends EntryGalleryRenderService
 {
     public function getViewData(
@@ -38,8 +35,8 @@ class GalleryLinkRenderService extends EntryGalleryRenderService
 
         $data['galleryClassList'] = $this->getGalleryClassList($galleryItemsData, $galleryType, $entry, $siteSettings);
         $data['galleryStyles'] = $this->getGalleryStyles($galleryItems);
-        $data['linkAddress'] = !empty($entry['mediaCacheData']['@attributes']['link_address']) ? $entry['mediaCacheData']['@attributes']['link_address'] : '';
-        $data['linkTarget'] = !empty($entry['mediaCacheData']['@attributes']['linkTarget']) ? $entry['mediaCacheData']['@attributes']['linkTarget'] : '_self';
+        $data['linkAddress'] = ! empty($entry['mediaCacheData']['@attributes']['link_address']) ? $entry['mediaCacheData']['@attributes']['link_address'] : '';
+        $data['linkTarget'] = ! empty($entry['mediaCacheData']['@attributes']['linkTarget']) ? $entry['mediaCacheData']['@attributes']['linkTarget'] : '_self';
         $data['items'] = $this->getLimitedGalleryItems($galleryItems);
 
         return $data;
@@ -59,7 +56,7 @@ class GalleryLinkRenderService extends EntryGalleryRenderService
     {
         $styles = [];
 
-        if (!$galleryItems) {
+        if (! $galleryItems) {
             return '';
         }
 

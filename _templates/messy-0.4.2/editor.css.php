@@ -1,12 +1,12 @@
 <?php
 
-header("Content-Type: text/css");
+header('Content-Type: text/css');
 
-include('../../engine/inc.page.php');
-$s =& $berta->template->settings;
+include '../../engine/inc.page.php';
+$s = &$berta->template->settings;
 $templatePath = Berta::$options['TEMPLATES_ABS_ROOT'] . $berta->template->name . '/';
 
-if(!1) { ?><style type="text/css"><?php } ?>
+if (! 1) { ?><style type="text/css"><?php } ?>
 
 
 	#xTopPanelContainer {
@@ -144,4 +144,4 @@ if(!1) { ?><style type="text/css"><?php } ?>
 	}
 
 
-<?php if(!1) { ?></style><?php } ?>
+<?php if (! 1) { ?></style><?php } ?>

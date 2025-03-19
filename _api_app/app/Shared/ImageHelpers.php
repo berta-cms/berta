@@ -2,19 +2,16 @@
 
 namespace App\Shared;
 
-use App\Shared\Storage;
-use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Gd\Driver;
+use Intervention\Image\ImageManager;
 
 class ImageHelpers
 {
     /**
      * Returns single gallery item with additional options for frontend
      *
-     * @param array $image Single image
-     * @param array $entry Single entry
-     * @param Storage $storageService
-     * @param array $siteSettings
+     * @param  array  $image  Single image
+     * @param  array  $entry  Single entry
      * @return null|array
      */
     public static function getGalleryItem(
@@ -45,7 +42,7 @@ class ImageHelpers
             $height = (int) $image['@attributes']['height'];
         }
 
-        if ($isPoster || !$width || !$height) {
+        if ($isPoster || ! $width || ! $height) {
             $imageSize = getimagesize($imagePath . $imageName);
             if ($imageSize) {
                 $width = (int) $imageSize[0];
@@ -63,7 +60,7 @@ class ImageHelpers
         $imageNameOriginal = $imageName;
 
         if ($width && $height && $imageTargetWidth && $imageTargetHeight && ($width > $imageTargetWidth || $height > $imageTargetHeight)) {
-            list($width, $height) = self::fitInBounds($width, $height, $imageTargetWidth, $imageTargetHeight);
+            [$width, $height] = self::fitInBounds($width, $height, $imageTargetWidth, $imageTargetHeight);
 
             $imageName = self::getResizedSrc($imagePath, $imageName, $width, $height);
 
@@ -71,7 +68,7 @@ class ImageHelpers
             $imageTargetWidth2x = $width * 2;
             $imageTargetHeight2x = $height * 2;
             if ($widthOriginal && $heightOriginal && $imageTargetWidth2x && $imageTargetHeight2x && ($widthOriginal >= $imageTargetWidth2x || $heightOriginal >= $imageTargetHeight2x)) {
-                list($width2x, $height2x) = self::fitInBounds($widthOriginal, $heightOriginal, $imageTargetWidth2x, $imageTargetHeight2x);
+                [$width2x, $height2x] = self::fitInBounds($widthOriginal, $heightOriginal, $imageTargetWidth2x, $imageTargetHeight2x);
                 $imageName2x = self::getResizedSrc($imagePath, $imageNameOriginal, $width2x, $height2x);
                 $srcset = $imageUrlPath . $imageName . ' 1x, ' . $imageUrlPath . $imageName2x . ' 2x';
             }
@@ -89,7 +86,7 @@ class ImageHelpers
             $imageTargetHeightLarge = $siteSettings['media']['imagesLargeHeight'];
 
             if ($widthOriginal && $heightOriginal && $imageTargetWidthLarge && $imageTargetHeightLarge && ($widthOriginal >= $imageTargetWidthLarge || $heightOriginal >= $imageTargetHeightLarge)) {
-                list($widthLarge, $heightLarge) = self::fitInBounds($widthOriginal, $heightOriginal, $imageTargetWidthLarge, $imageTargetHeightLarge);
+                [$widthLarge, $heightLarge] = self::fitInBounds($widthOriginal, $heightOriginal, $imageTargetWidthLarge, $imageTargetHeightLarge);
                 $srcLarge = $imageUrlPath . self::getResizedSrc($imagePath, $imageNameOriginal, $widthLarge, $heightLarge);
             }
         }
@@ -124,12 +121,12 @@ class ImageHelpers
         $attributes
     ) {
         if (empty($attributes['width']) || empty($attributes['height'])) {
-            list($width, $height) = getimagesize($storageService->MEDIA_ROOT . '/' . $filename);
+            [$width, $height] = getimagesize($storageService->MEDIA_ROOT . '/' . $filename);
             $attributes['width'] = round($width / 2);
             $attributes['height'] = round($height / 2);
         }
 
-        if (!empty($attributes['alt'])) {
+        if (! empty($attributes['alt'])) {
             $attributes['alt'] = htmlspecialchars(strip_tags($attributes['alt']));
         }
         $attributes['src'] = $storageService->MEDIA_URL . '/' . $filename;
@@ -141,7 +138,7 @@ class ImageHelpers
     /**
      * Create or return a thumbnail image for image file
      *
-     * @param string $imagePath path to the source image file
+     * @param  string  $imagePath  path to the source image file
      * @return string path to target image file
      */
     public static function getThumbnail($imagePath)
@@ -150,7 +147,7 @@ class ImageHelpers
         $dirName = dirname($imagePath);
         $thumbPath = $dirName . '/' . config('app.small_thumb_prefix') . $fileName;
 
-        if (!file_exists($thumbPath)) {
+        if (! file_exists($thumbPath)) {
             self::createThumbnail(
                 $imagePath,
                 $thumbPath,
@@ -165,7 +162,7 @@ class ImageHelpers
     /**
      * Create or return a background image for image file
      *
-     * @param string $imagePath path to the source image file
+     * @param  string  $imagePath  path to the source image file
      * @return string path to target image file
      */
     public static function getBackgroundImage($imagePath)
@@ -174,7 +171,7 @@ class ImageHelpers
         $dirName = dirname($imagePath);
         $thumbPath = $dirName . '/' . config('app.bg_image_prefix') . $fileName;
 
-        if (!file_exists($thumbPath)) {
+        if (! file_exists($thumbPath)) {
             copy($imagePath, $thumbPath);
         }
 
@@ -184,7 +181,7 @@ class ImageHelpers
     /**
      * Create or return a grid image for image file
      *
-     * @param string $imagePath path to the source image file
+     * @param  string  $imagePath  path to the source image file
      * @return string path to target image file
      */
     public static function getGridImage($imagePath)
@@ -193,7 +190,7 @@ class ImageHelpers
         $dirName = dirname($imagePath);
         $thumbPath = $dirName . '/' . config('app.grid_image_prefix') . $fileName;
 
-        if (!file_exists($thumbPath)) {
+        if (! file_exists($thumbPath)) {
             self::createThumbnail(
                 $imagePath,
                 $thumbPath,
@@ -208,11 +205,11 @@ class ImageHelpers
     /**
      * Image crop
      *
-     * @param string $file path to the source image file
-     * @param integer $x target image x coordinate
-     * @param integer $y target image y coordinate
-     * @param integer $w target image width
-     * @param integer $h target image height
+     * @param  string  $file  path to the source image file
+     * @param  int  $x  target image x coordinate
+     * @param  int  $y  target image y coordinate
+     * @param  int  $w  target image width
+     * @param  int  $h  target image height
      * @return array target image width and height
      */
     public static function crop($file, $x, $y, $w, $h)
@@ -233,7 +230,7 @@ class ImageHelpers
                 return false;
         }
 
-        //in case of incorrect params
+        // in case of incorrect params
         $imageWidth = imagesx($image);
         $imageHeight = imagesy($image);
         $w = $x + $w > $imageWidth ? $imageWidth - $x : $w;
@@ -320,9 +317,9 @@ class ImageHelpers
                     ($imageInfo[2] == IMAGETYPE_PNG && function_exists('imagecreatefrompng')));
 
             if ($canMakeThumb) {
-                if ($thumbWidth && !$thumbHeight) {
+                if ($thumbWidth && ! $thumbHeight) {
                     $thumbHeight = ($thumbWidth / $imageInfo[0]) * $imageInfo[1];
-                } elseif (!$thumbWidth && $thumbHeight) {
+                } elseif (! $thumbWidth && $thumbHeight) {
                     $thumbWidth = ($thumbHeight / $imageInfo[1]) * $imageInfo[0];
                 }
 
@@ -363,14 +360,14 @@ class ImageHelpers
      * credit to Maxim Chernyak
      * http://mediumexposure.com/techblog/smart-image-resizing-while-preserving-transparency-php-and-gd-library
      *
-     * @param string $file path to the source image file
-     * @param integer $width target image width
-     * @param integer $height target image height
-     * @param boolean $proportional keep source image proportions
-     * @param string $output return type
-     * @param boolean $delete_original delete source file
-     * @param boolean $use_linux_commands use linux commands for file delete
-     * @return boolean|object|stream see $output param
+     * @param  string  $file  path to the source image file
+     * @param  int  $width  target image width
+     * @param  int  $height  target image height
+     * @param  bool  $proportional  keep source image proportions
+     * @param  string  $output  return type
+     * @param  bool  $delete_original  delete source file
+     * @param  bool  $use_linux_commands  use linux commands for file delete
+     * @return bool|object|stream see $output param
      */
     private static function resize(
         $file,
@@ -390,7 +387,7 @@ class ImageHelpers
         $image = '';
         $final_width = 0;
         $final_height = 0;
-        list($width_old, $height_old) = $info;
+        [$width_old, $height_old] = $info;
 
         // Calculating proportionality
         if ($proportional) {
@@ -498,25 +495,25 @@ class ImageHelpers
     /**
      * Checks file whether it is animated (gif)
      *
-     * @param string $filename full path to file
-     * @return boolean
+     * @param  string  $filename  full path to file
+     * @return bool
      */
     private static function isAnimated($filename)
     {
-        if (!($fh = @fopen($filename, 'rb'))) {
+        if (! ($fh = @fopen($filename, 'rb'))) {
             return false;
         }
         $count = 0;
-        //an animated gif contains multiple "frames", with each frame having a
-        //header made up of:
+        // an animated gif contains multiple "frames", with each frame having a
+        // header made up of:
         // * a static 4-byte sequence (\x00\x21\xF9\x04)
         // * 4 variable bytes
         // * a static 2-byte sequence (\x00\x2C) (some variants may use \x00\x21 ?)
 
         // We read through the file til we reach the end of the file, or we've found
         // at least 2 frame headers
-        while (!feof($fh) && $count < 2) {
-            $chunk = fread($fh, 1024 * 100); //read 100kb at a time
+        while (! feof($fh) && $count < 2) {
+            $chunk = fread($fh, 1024 * 100); // read 100kb at a time
             $count += preg_match_all('#\x00\x21\xF9\x04.{4}\x00(\x2C|\x21)#s', $chunk, $matches);
         }
         fclose($fh);
@@ -527,14 +524,14 @@ class ImageHelpers
     /**
      * Checks image object whether it is corrupted
      *
-     * @param object $file file object to test
-     * @return boolean
+     * @param  object  $file  file object to test
+     * @return bool
      */
     public static function isCorrupted($path)
     {
         try {
             $type = exif_imagetype($path);
-            if (!$type) {
+            if (! $type) {
                 return true;
             }
 
@@ -551,6 +548,7 @@ class ImageHelpers
                 default:
                     $image = false;
             }
+
             return $image ? false : true;
         } catch (\Exception $e) {
             return true;
@@ -564,7 +562,7 @@ class ImageHelpers
             return;
         }
 
-        $imageManager = new ImageManager(new Driver());
+        $imageManager = new ImageManager(new Driver);
 
         $imageManager
             ->read($path)

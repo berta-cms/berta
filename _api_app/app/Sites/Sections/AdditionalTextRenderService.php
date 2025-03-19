@@ -7,7 +7,9 @@ use App\Shared\Helpers;
 class AdditionalTextRenderService
 {
     public $socialMediaLinksRS;
+
     private $DRAGGABLE_CLASSES = ['xEditableDragXY', 'xProperty-additionalTextXY'];
+
     private $EDITABLE_CLASSES = ['xEditableMCESimple', 'xProperty-additionalText', 'xCaption-additional-text'];
 
     public function __construct($socialMediaLinksRS)
@@ -22,8 +24,9 @@ class AdditionalTextRenderService
         $sections = array_filter($sections, function ($section) use ($isEditMode) {
             $isEmptyTitle = empty($section['title']);
             $isCartSection = isset($section['@attributes']['type']) && $section['@attributes']['type'] == 'shopping_cart';
-            $isPublished = $isEditMode || (!empty($section['@attributes']['published']) && $section['@attributes']['published'] == '1');
-            return !$isEmptyTitle && !$isCartSection && $isPublished;
+            $isPublished = $isEditMode || (! empty($section['@attributes']['published']) && $section['@attributes']['published'] == '1');
+
+            return ! $isEmptyTitle && ! $isCartSection && $isPublished;
         });
 
         if (empty($sections)) {
@@ -39,13 +42,14 @@ class AdditionalTextRenderService
             return null;
         }
 
-        $xyPos = !empty($siteSettings['siteTexts']['additionalTextXY']) ? $siteSettings['siteTexts']['additionalTextXY'] : null;
+        $xyPos = ! empty($siteSettings['siteTexts']['additionalTextXY']) ? $siteSettings['siteTexts']['additionalTextXY'] : null;
 
-        $pos = !empty($xyPos) ? explode(',', $xyPos) :
+        $pos = ! empty($xyPos) ? explode(',', $xyPos) :
             [
                 rand(0, 960),
-                rand(0, 600)
+                rand(0, 600),
             ];
+
         return 'left:' . $pos[0] . 'px;top:' . $pos[1] . 'px;';
     }
 
@@ -54,11 +58,11 @@ class AdditionalTextRenderService
         $attributes['id'] = 'additionalText';
         $classes = [];
 
-        if ($isEditMode && !$isResponsive) {
+        if ($isEditMode && ! $isResponsive) {
             $attributes['data-path'] = "{$siteSlug}/settings/siteTexts/additionalTextXY";
         }
 
-        if ($isEditMode && !$isResponsive) {
+        if ($isEditMode && ! $isResponsive) {
             $classes = $this->DRAGGABLE_CLASSES;
         }
 
@@ -81,7 +85,7 @@ class AdditionalTextRenderService
             $attributes['data-path'] = "{$siteSlug}/settings/siteTexts/additionalText";
         }
 
-        return  Helpers::arrayToHtmlAttributes($attributes);
+        return Helpers::arrayToHtmlAttributes($attributes);
     }
 
     private function getContent($siteSlug, $siteSettings, $isEditMode)
@@ -89,10 +93,10 @@ class AdditionalTextRenderService
         $attributes = null;
         $showSocialMediaButtons = $siteSettings['socialMediaButtons']['socialMediaLocation'] == 'additionalText';
 
-        if ($showSocialMediaButtons && !empty($siteSettings['socialMediaButtons']['socialMediaHTML'])) {
+        if ($showSocialMediaButtons && ! empty($siteSettings['socialMediaButtons']['socialMediaHTML'])) {
             return [
                 'html' => $siteSettings['socialMediaButtons']['socialMediaHTML'],
-                'attributes' => $attributes
+                'attributes' => $attributes,
             ];
         }
 
@@ -100,17 +104,17 @@ class AdditionalTextRenderService
 
         if ($showSocialMediaLinks) {
             $socialMediaLinks = $this->socialMediaLinksRS->render($siteSettings);
-            if (!empty($socialMediaLinks)) {
+            if (! empty($socialMediaLinks)) {
                 return [
                     'html' => $socialMediaLinks,
-                    'attributes' => $attributes
+                    'attributes' => $attributes,
                 ];
             }
         }
 
         return [
-            'html' => !empty($siteSettings['siteTexts']['additionalText']) ? $siteSettings['siteTexts']['additionalText'] : '',
-            'attributes' => $this->getContentAttributes($siteSlug, $isEditMode)
+            'html' => ! empty($siteSettings['siteTexts']['additionalText']) ? $siteSettings['siteTexts']['additionalText'] : '',
+            'attributes' => $this->getContentAttributes($siteSlug, $isEditMode),
         ];
     }
 
@@ -130,7 +134,7 @@ class AdditionalTextRenderService
         return [
             'wrapperAttributes' => $wrapperAttributes,
             'content' => $content,
-            'isEditMode' => $isEditMode
+            'isEditMode' => $isEditMode,
         ];
     }
 
@@ -144,7 +148,7 @@ class AdditionalTextRenderService
     ) {
         $showMenuInFirstSection = $siteSettings['navigation']['landingSectionMenuVisible'] == 'yes';
 
-        if (!$isEditMode && !$showMenuInFirstSection && $this->isLandingPage($sections, $sectionSlug, $isEditMode)) {
+        if (! $isEditMode && ! $showMenuInFirstSection && $this->isLandingPage($sections, $sectionSlug, $isEditMode)) {
             return '';
         }
 
@@ -152,7 +156,7 @@ class AdditionalTextRenderService
         $currentSection = null;
         $currentSectionType = null;
 
-        if (!empty($sections)) {
+        if (! empty($sections)) {
             $currentSectionOrder = array_search($sectionSlug, array_column($sections, 'name'));
             $currentSection = $sections[$currentSectionOrder];
             $currentSectionType = isset($currentSection['@attributes']['type']) ? $currentSection['@attributes']['type'] : null;

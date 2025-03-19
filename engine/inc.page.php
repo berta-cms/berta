@@ -6,6 +6,7 @@ error_reporting(E_ALL);
 
 /**
  * Here are included everything that needs to be autoloaded. So we can use it through `Use` keyword.
+ *
  * @var {Symfony\Component\ClassLoader\ClassLoader} $loader
  * @var {Monolog\Logger} $logger
  */
@@ -14,8 +15,8 @@ include_once 'loader.helper.php';
 // You can now use your logger
 // $logger->info('My logger is now ready');
 
-//detect ajax request
-$IS_AJAX = isset($_SERVER['HTTP_X_REQUESTED_WITH']) && !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest';
+// detect ajax request
+$IS_AJAX = isset($_SERVER['HTTP_X_REQUESTED_WITH']) && ! empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest';
 
 // Detects mobile devices
 include_once '_lib/mobile_device_detect/mobile_device_detect.php';
@@ -38,7 +39,7 @@ if (empty($INDEX_INCLUDED)) {
  * Used for PHP file includes and file saving/loading.
  */
 if (empty($SITE_ROOT_PATH)) {
-    $SITE_ROOT_PATH = dirname(__dir__) . '/';
+    $SITE_ROOT_PATH = dirname(__DIR__) . '/';
 }
 
 /** @var {string} $SITE_ROOT_URL - The root path of site used in URL generation.
@@ -61,12 +62,12 @@ if (empty($ENGINE_ROOT_URL)) {
 
 $hasSupportedPhpVersion = version_compare(PHP_VERSION, '8.2', '>=');
 
-if (!$hasSupportedPhpVersion) {
+if (! $hasSupportedPhpVersion) {
     if (file_exists($SITE_ROOT_PATH . 'INSTALL/includes/first_visit_serverreqs.php')) {
         $CHECK_INCLUDED = true;
         include $SITE_ROOT_PATH . 'INSTALL/includes/first_visit_serverreqs.php';
     } else {
-        die('Berta needs PHP >= 8.2 support on server.');
+        exit('Berta needs PHP >= 8.2 support on server.');
     }
 }
 
@@ -85,12 +86,13 @@ if (empty($SITE_ROOT_URL)) {
 
 // magic quotes --------------------------------------------------------------------------------------------------------------------------------------
 
-if (!(function_exists("get_magic_quotes_gpc") && @get_magic_quotes_gpc())) {
+if (! (function_exists('get_magic_quotes_gpc') && @get_magic_quotes_gpc())) {
     function addSlashesRecursive($var)
     {
         if (is_array($var)) {
             return array_map('addSlashesRecursive', $var);
         }
+
         return addslashes($var);
     }
     $_GET = array_map('addSlashesRecursive', $_GET);
@@ -100,18 +102,18 @@ if (!(function_exists("get_magic_quotes_gpc") && @get_magic_quotes_gpc())) {
 
 // authentification ----------------------------------------------------------------------------------------------------------------------------------
 
-if (!defined('AUTH_AUTHREQUIRED')) {
+if (! defined('AUTH_AUTHREQUIRED')) {
     define('AUTH_AUTHREQUIRED', false);
 }
-if (!defined('BERTA_ENVIRONMENT')) {
+if (! defined('BERTA_ENVIRONMENT')) {
     define('BERTA_ENVIRONMENT', 'site');
 }
-if (!defined('DO_UPLOAD')) {
+if (! defined('DO_UPLOAD')) {
     define('DO_UPLOAD', false);
 }
 $options['ENVIRONMENT'] = BERTA_ENVIRONMENT;
 
-$berta = new Berta();
+$berta = new Berta;
 
 if (DO_UPLOAD && isset($_GET['session_id'])) {
     session_write_close();
@@ -119,12 +121,12 @@ if (DO_UPLOAD && isset($_GET['session_id'])) {
     session_start();
 }
 
-if (AUTH_AUTHREQUIRED && !$berta->security->authentificated) {
+if (AUTH_AUTHREQUIRED && ! $berta->security->authentificated) {
     if ($IS_AJAX) {
-        die("<script>window.location.href='" . $ENGINE_ROOT_URL . 'login.php' . "'</script>");
+        exit("<script>window.location.href='" . $ENGINE_ROOT_URL . 'login.php' . "'</script>");
     } elseif (DO_UPLOAD) {
         http_response_code(401);
-        die();
+        exit();
     } else {
         $berta->security->goToLoginPage($ENGINE_ROOT_URL . 'login.php');
     }
@@ -137,10 +139,10 @@ include $ENGINE_ROOT_PATH . 'inc.settings.php';
 $berta->init($settingsDefinition);
 
 // settings install management ----------------------------------------
-if (!defined('SETTINGS_INSTALLREQUIRED')) {
+if (! defined('SETTINGS_INSTALLREQUIRED')) {
     define('SETTINGS_INSTALLREQUIRED', true);
 }
-if (!empty($_REQUEST['_berta_install_done'])) {
+if (! empty($_REQUEST['_berta_install_done'])) {
     /** @todo: auto-create the first section */
 
     // final installer adjustments
@@ -154,9 +156,9 @@ if (!empty($_REQUEST['_berta_install_done'])) {
     $berta->settings->update('berta', 'installed', 1);
     $berta->settings->save();
 }
-if (SETTINGS_INSTALLREQUIRED && !$berta->settings->get('berta', 'installed')) {
+if (SETTINGS_INSTALLREQUIRED && ! $berta->settings->get('berta', 'installed')) {
     if ($berta->security->userLoggedIn) {
-        $step = !empty($_REQUEST['_berta_install_step']) ? (int) $_REQUEST['_berta_install_step'] : 1;
+        $step = ! empty($_REQUEST['_berta_install_step']) ? (int) $_REQUEST['_berta_install_step'] : 1;
         if ($step < 1) {
             $step = 1;
         }
@@ -185,14 +187,14 @@ if (SETTINGS_INSTALLREQUIRED && !$berta->settings->get('berta', 'installed')) {
             $CHECK_INCLUDED = true;
             include $SITE_ROOT_PATH . 'INSTALL/includes/first_visit.php';
         } else {
-            die('Berta not installed.');
+            exit('Berta not installed.');
         }
         exit;
     }
 }
 
 // check installation ------------------------------------------------------------------------------------------------------------------------------------------
-if (!defined('SETTINGS_INSTALLCHECKREQUIRED')) {
+if (! defined('SETTINGS_INSTALLCHECKREQUIRED')) {
     define('SETTINGS_INSTALLCHECKREQUIRED', true);
 }
 if (SETTINGS_INSTALLCHECKREQUIRED && $berta->settings->get('berta', 'installed')) {
@@ -215,5 +217,6 @@ function convertToQueryString()
             $strOutArr[] = $itmName . '=' . $itm;
         }
     }
+
     return implode('&', $strOutArr);
 }

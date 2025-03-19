@@ -5,7 +5,6 @@ namespace App\Sites;
 use App\Shared\Helpers;
 use App\Shared\ImageHelpers;
 
-use App\Sites\SiteBanner;
 class SitesBannersRenderService
 {
     private function getClassList($banner, $isResponsive, $isEditMode)
@@ -14,7 +13,7 @@ class SitesBannersRenderService
         $classes[] = 'floating-banner';
         $classes[] = 'banner-' . $banner->index;
 
-        if ($isEditMode && !$isResponsive) {
+        if ($isEditMode && ! $isResponsive) {
             $classes[] = 'xEditableDragXY';
             $classes[] = 'xProperty-banner' . $banner->index . 'XY';
         }
@@ -30,8 +29,8 @@ class SitesBannersRenderService
             return;
         }
 
-        $left = !empty($banner->left) ? $banner->left : rand(0, 960);
-        $top = !empty($banner->top) ? $banner->top : rand(0, 200);
+        $left = ! empty($banner->left) ? $banner->left : rand(0, 960);
+        $top = ! empty($banner->top) ? $banner->top : rand(0, 200);
         $styles[] = 'left:' . $left . 'px';
         $styles[] = 'top:' . $top . 'px';
 
@@ -43,7 +42,7 @@ class SitesBannersRenderService
         return Helpers::arrayToHtmlAttributes([
             'class' => $this->getClassList($banner, $isResponsive, $isEditMode),
             'style' => $this->getStyleList($banner, $siteSettings, $isResponsive),
-            'data-path' => $isEditMode && !$isResponsive ? $siteName . '/settings/siteTexts/banner' . $banner->index . 'XY' : null
+            'data-path' => $isEditMode && ! $isResponsive ? $siteName . '/settings/siteTexts/banner' . $banner->index . 'XY' : null,
         ]);
     }
 
@@ -53,8 +52,8 @@ class SitesBannersRenderService
             $banner->image,
             $storageService,
             [
-                'width' => !empty($banner->width) ? $banner->width : null,
-                'height' => !empty($banner->height) ? $banner->height : null
+                'width' => ! empty($banner->width) ? $banner->width : null,
+                'height' => ! empty($banner->height) ? $banner->height : null,
             ]
         );
 
@@ -84,14 +83,14 @@ class SitesBannersRenderService
         }
 
         $banners = array_filter($banners, function ($banner) {
-            return !empty($banner['image']);
+            return ! empty($banner['image']);
         });
 
         if (empty($banners)) {
             return $data;
         }
 
-        if (!empty($sections)) {
+        if (! empty($sections)) {
             $currentSectionOrder = array_search($sectionSlug, array_column($sections, 'name'));
             $currentSection = $sections[$currentSectionOrder];
             $currentSectionType = isset($currentSection['@attributes']['type']) ? $currentSection['@attributes']['type'] : null;
@@ -102,8 +101,8 @@ class SitesBannersRenderService
         $isResponsive = $isResponsiveTemplate || (isset($currentSectionType) && $currentSectionType == 'portfolio' && $templateName == 'messy');
 
         $banners = array_map(function ($banner) use ($siteName, $siteSettings, $storageService, $isResponsive, $isEditMode) {
-            if (!empty($siteSettings['siteTexts']['banner' . $banner['index'] . 'XY'])) {
-                list($banner['left'], $banner['top']) = explode(',', $siteSettings['siteTexts']['banner' . $banner['index'] . 'XY']);
+            if (! empty($siteSettings['siteTexts']['banner' . $banner['index'] . 'XY'])) {
+                [$banner['left'], $banner['top']] = explode(',', $siteSettings['siteTexts']['banner' . $banner['index'] . 'XY']);
             }
             $siteBanner = new SiteBanner($banner);
             $banner['siteBanner'] = $siteBanner;
@@ -116,7 +115,7 @@ class SitesBannersRenderService
         return [
             'banners' => $banners,
             'isResponsive' => $isResponsive,
-            'isEditMode' => $isEditMode
+            'isEditMode' => $isEditMode,
         ];
     }
 
@@ -138,9 +137,10 @@ class SitesBannersRenderService
             $storageService,
             $isEditMode
         );
-        if (!$data) {
+        if (! $data) {
             return '';
         }
+
         return view('Sites/sitesBanners', $data);
     }
 }

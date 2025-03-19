@@ -1,16 +1,16 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Middleware\SetupMiddleware;
-use App\Http\Middleware\Authenticate;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\StateController;
+use App\Http\Middleware\Authenticate;
+use App\Http\Middleware\SetupMiddleware;
 use App\Sites\Sections\Entries\SectionEntriesController;
 use App\Sites\Sections\SiteSectionsController;
 use App\Sites\Sections\Tags\SectionTagsController;
 use App\Sites\Settings\SiteSettingsController;
 use App\Sites\SitesController;
 use App\Sites\TemplateSettings\SiteTemplateSettingsController;
+use Illuminate\Support\Facades\Route;
 
 Route::middleware(SetupMiddleware::class)->group(function () {
     Route::post('auth/login', [AuthController::class, 'authenticate']);
@@ -44,11 +44,11 @@ Route::middleware([SetupMiddleware::class, Authenticate::class])->prefix('v1')->
     Route::delete('sites/settings', [SiteSettingsController::class, 'deleteChildren']);
     Route::patch('sites/template-settings', [
         SiteTemplateSettingsController::class,
-        'update'
+        'update',
     ])->name('site_template_settings');
     Route::post('sites/template-settings/upload', [
         SiteTemplateSettingsController::class,
-        'upload'
+        'upload',
     ])->name('site_template_settings_upload');
 });
 
@@ -63,19 +63,19 @@ Route::middleware([SetupMiddleware::class, Authenticate::class])->prefix('v1/sit
     Route::get('sections/render-sitemap/{siteSlug?}', [SiteSectionsController::class, 'renderSitemap']);
     Route::get('sections/render-background-gallery/{siteSlug?}', [
         SiteSectionsController::class,
-        'renderBackgroundGallery'
+        'renderBackgroundGallery',
     ]);
     Route::get('sections/render-grid-view/{siteSlug?}', [SiteSectionsController::class, 'renderGridView']);
     Route::get('sections/render-additional-text/{site?}', [SiteSectionsController::class, 'renderAdditionalText']);
     Route::get('sections/render-additional-footer-text/{site?}', [
         SiteSectionsController::class,
-        'renderAdditionalFooterText'
+        'renderAdditionalFooterText',
     ]);
     Route::get('sections/render-footer/{site?}', [SiteSectionsController::class, 'renderFooter']);
     Route::get('sections/render-template/{siteSlug?}', [SiteSectionsController::class, 'renderTemplate']);
     Route::put('sections/backgrounds', [
         SiteSectionsController::class,
-        'backgroundGalleryOrder'
+        'backgroundGalleryOrder',
     ])->name('site_section_backgrounds');
     Route::post('sections/backgrounds', [SiteSectionsController::class, 'backgroundGalleryUpload']);
     Route::delete('sections/backgrounds', [SiteSectionsController::class, 'backgroundGalleryDelete']);
@@ -96,7 +96,7 @@ Route::middleware([SetupMiddleware::class, Authenticate::class])->prefix('v1/sit
     Route::get('entries/render-mashup[/{site}]', [SectionEntriesController::class, 'renderMashupEntries']);
     Route::get('entries/render-portfolio-thumbnails/{site}/{section}', [
         SectionEntriesController::class,
-        'renderPortfolioThumbnails'
+        'renderPortfolioThumbnails',
     ]);
 });
 

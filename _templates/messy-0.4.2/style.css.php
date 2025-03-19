@@ -1,19 +1,19 @@
 <?php
 
 $IS_CSS_FILE = true;
-include('../../engine/inc.page.php');
-$s =& $berta->template->settings;
+include '../../engine/inc.page.php';
+$s = &$berta->template->settings;
 
-$expires= 60 * 60 * 24 * 1;	// 1 day
+$expires = 60 * 60 * 24 * 1;	// 1 day
 header('Pragma: public');
 header('Cache-Control: max-age=' . $expires);
 header('Expires: ' . gmdate('D, d M Y H:i:s', time() + $expires) . ' GMT');
-if($lastMod = $berta->settings->get('berta', 'lastUpdated')) {
+if ($lastMod = $berta->settings->get('berta', 'lastUpdated')) {
     header('Last-Modified: ' . $lastMod);
 }
-header("Content-Type: text/css");
+header('Content-Type: text/css');
 
-if(!1) { ?><style type="text/css"><?php } ?>
+if (! 1) { ?><style type="text/css"><?php } ?>
 
 body {
     color: <?php echo $s->get('generalFontSettings', 'color') ?>;
@@ -26,20 +26,20 @@ body {
 
     background-color: <?php echo $s->get('background', 'backgroundColor') ?>;
 	<?php if ($s->get('background', 'backgroundImageEnabled') == 'yes') { ?>
-		<?php if($s->get('background', 'backgroundImage')) { ?>
+		<?php if ($s->get('background', 'backgroundImage')) { ?>
 			background-image:url(<?php echo Berta::$options['MEDIA_ABS_ROOT'] . $s->get('background', 'backgroundImage') ?>);
 		<?php } ?>
 		background-repeat: <?php echo $s->get('background', 'backgroundRepeat') ?>;
         background-position: <?php echo $s->get('background', 'backgroundPosition') ?>;
         <?php
         $bgAttachment = $s->get('background', 'backgroundAttachment');
-        if ($bgAttachment == 'fill') { ?>
+	    if ($bgAttachment == 'fill') { ?>
             background-size: cover;
             background-attachment: fixed;
         <?php } else { ?>
             background-attachment: <?php echo $bgAttachment ?>;
         <?php }
-	} ?>
+        } ?>
 }
 
 body:not(.bt-responsive):not(.bt-auto-responsive) #contentContainer.xCentered {
@@ -64,7 +64,7 @@ a:active {
 }
 
 .xCenteringGuide {
-    <?php if($s->get('pageLayout', 'centeringGuidesColor') == 'dark') { ?>
+    <?php if ($s->get('pageLayout', 'centeringGuidesColor') == 'dark') { ?>
         background-color: rgba(0,0,0,0.5);
     <?php } else { ?>
         background-color: rgba(255,255,255,0.5);
@@ -209,11 +209,11 @@ h1 a:active {
 
 #xBackground .visual-caption {
     width: <?php echo $s->get('entryLayout', 'contentWidth') ?>;
-    margin-left: -<?php echo intval($s->get('entryLayout', 'contentWidth'))/2 ?>px;
+    margin-left: -<?php echo intval($s->get('entryLayout', 'contentWidth')) / 2 ?>px;
 }
 
 #xBackground #xBackgroundRight {
-    <?php if (preg_match('/msie/i',$DEVICE_USER_AGENT)) { ?>
+    <?php if (preg_match('/msie/i', $DEVICE_USER_AGENT)) { ?>
         cursor: url(layout/arrow_right_<?php echo $s->get('pageLayout', 'bgButtonType') ?>.cur), pointer;
     <?php } else { ?>
         cursor: url(layout/arrow_right_<?php echo $s->get('pageLayout', 'bgButtonType') ?>.gif), pointer;
@@ -221,7 +221,7 @@ h1 a:active {
 }
 
 #xBackground #xBackgroundLeft {
-    <?php if (preg_match('/msie/i',$DEVICE_USER_AGENT)) { ?>
+    <?php if (preg_match('/msie/i', $DEVICE_USER_AGENT)) { ?>
         cursor: url(layout/arrow_left_<?php echo $s->get('pageLayout', 'bgButtonType') ?>.cur), pointer;
     <?php } else { ?>
         cursor: url(layout/arrow_left_<?php echo $s->get('pageLayout', 'bgButtonType') ?>.gif), pointer;
@@ -240,7 +240,7 @@ h1 a:active {
 }
 
 #xBackground #xBackgroundRightCounter .counterContent {
-    <?php if (preg_match('/msie/i',$DEVICE_USER_AGENT)) { ?>
+    <?php if (preg_match('/msie/i', $DEVICE_USER_AGENT)) { ?>
         cursor: url(layout/arrow_right_<?php echo $s->get('pageLayout', 'bgButtonType') ?>.cur), pointer;
     <?php } else { ?>
         cursor: url(layout/arrow_right_<?php echo $s->get('pageLayout', 'bgButtonType') ?>.gif), pointer;
@@ -248,7 +248,7 @@ h1 a:active {
 }
 
 #xBackground #xBackgroundLeftCounter .counterContent {
-    <?php if (preg_match('/msie/i',$DEVICE_USER_AGENT)) { ?>
+    <?php if (preg_match('/msie/i', $DEVICE_USER_AGENT)) { ?>
         cursor: url(layout/arrow_left_<?php echo $s->get('pageLayout', 'bgButtonType') ?>.cur), pointer;
     <?php } else { ?>
         cursor: url(layout/arrow_left_<?php echo $s->get('pageLayout', 'bgButtonType') ?>.gif), pointer;
@@ -261,8 +261,8 @@ h1 a:active {
 }
 
 #xGridView {
-    left: <?php echo (100 - intval($s->get('grid', 'contentWidth')))/2 ?>%;
-    right: <?php echo (100 - intval($s->get('grid', 'contentWidth')))/2 ?>%;
+    left: <?php echo (100 - intval($s->get('grid', 'contentWidth'))) / 2 ?>%;
+    right: <?php echo (100 - intval($s->get('grid', 'contentWidth'))) / 2 ?>%;
     width: <?php echo $s->get('grid', 'contentWidth') ?>;
 }
 
@@ -311,4 +311,4 @@ h1 a:active {
 
 }
 
-<?php if(!1) { ?></style><?php } ?>
+<?php if (! 1) { ?></style><?php } ?>

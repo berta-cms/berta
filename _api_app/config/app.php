@@ -112,13 +112,13 @@ return [
         'png',
         'jpeg',
         'jpg',
-        'gif'
+        'gif',
     ],
     'ico_mimes' => [
-        'ico'
+        'ico',
     ],
     'video_mimes' => [
-        'mp4'
+        'mp4',
     ],
     'small_thumb_prefix' => '_smallthumb_',
     'small_thumb_width' => false, // false means "auto"
@@ -133,7 +133,7 @@ return [
     'row_gallery_image_limit' => [
         'large' => 3,
         'medium' => 5,
-        'small' => 7
+        'small' => 7,
     ],
 
     'previous_keys' => [

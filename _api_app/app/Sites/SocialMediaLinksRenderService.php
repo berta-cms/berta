@@ -2,8 +2,6 @@
 
 namespace App\Sites;
 
-use App\Sites\SocialMediaLink;
-
 class SocialMediaLinksRenderService
 {
     public static function getSocialMediaIcons()
@@ -30,10 +28,11 @@ class SocialMediaLinksRenderService
     {
         $data = [];
 
-        if (!empty($siteSettings['socialMediaLinks']['links'])) {
+        if (! empty($siteSettings['socialMediaLinks']['links'])) {
             $data['socialMediaLinks'] = array_map(function ($link) {
                 $linkModel = new SocialMediaLink($link);
                 $linkModel->icon = self::getSocialMediaIcon($linkModel->icon);
+
                 return $linkModel;
             }, $siteSettings['socialMediaLinks']['links']);
         }
@@ -45,7 +44,7 @@ class SocialMediaLinksRenderService
     {
         $data = $this->getViewData($siteSettings);
 
-        if (!$data) {
+        if (! $data) {
             return '';
         }
 

@@ -2,13 +2,13 @@
 
 namespace App\Sites\Settings;
 
-use Illuminate\Support\Str;
 use App\Configuration\SiteSettingsConfigService;
-use App\Shared\Storage;
-use App\Shared\ImageHelpers;
-use App\Shared\ConfigHelpers;
-use App\Sites\Sections\SiteSectionsDataService;
 use App\Configuration\SiteTemplatesConfigService;
+use App\Shared\ConfigHelpers;
+use App\Shared\ImageHelpers;
+use App\Shared\Storage;
+use App\Sites\Sections\SiteSectionsDataService;
+use Illuminate\Support\Str;
 
 /**
  * This class is a service that handles site settings data for Berta CMS.
@@ -100,8 +100,8 @@ use App\Configuration\SiteTemplatesConfigService;
 class SiteSettingsDataService extends Storage
 {
     /**
-     * @var array $JSON_SCHEMA
-     * Associative array representing data structure handled by this service.
+     * @var array
+     *            Associative array representing data structure handled by this service.
      */
     public static $JSON_SCHEMA = [
         '$schema' => 'http://json-schema.org/draft-06/schema#',
@@ -272,16 +272,24 @@ class SiteSettingsDataService extends Storage
             ],
         ],
     ];
+
     public $ROOT_ELEMENT = 'settings';
+
     private $XML_FILE;
+
     private $SITE_SETTINGS = [];
+
     private static $DEFAULT_SITE_SETTINGS = [
         'template/template' => 'messy-0.4.2',
-        'berta/lastUpdated' => 'D, d M Y H:i:s'
+        'berta/lastUpdated' => 'D, d M Y H:i:s',
     ];
+
     private $siteSettingsConfigService;
+
     private $siteSettingsDefaults;
+
     private $siteSettingsConfig;
+
     private $siteTemplatesConfigService;
 
     public function __construct($site = '', $xml_root = null)
@@ -290,10 +298,10 @@ class SiteSettingsDataService extends Storage
         $xml_root = $xml_root ? $xml_root : $this->getSiteXmlRoot($site);
         $this->XML_FILE = $xml_root . '/settings.xml';
 
-        $this->siteSettingsConfigService = new SiteSettingsConfigService();
+        $this->siteSettingsConfigService = new SiteSettingsConfigService;
         $this->siteSettingsDefaults = $this->siteSettingsConfigService->getDefaults();
         $this->siteSettingsConfig = $this->siteSettingsConfigService->get();
-        $this->siteTemplatesConfigService = new SiteTemplatesConfigService();
+        $this->siteTemplatesConfigService = new SiteTemplatesConfigService;
     }
 
     public function getDefaultSettings()
@@ -348,6 +356,7 @@ class SiteSettingsDataService extends Storage
         }
 
         $siteSettings = self::mergeSiteSettingsDefaults($this->siteSettingsDefaults, $siteSettings);
+
         return $siteSettings;
     }
 
@@ -371,21 +380,22 @@ class SiteSettingsDataService extends Storage
     /**
      * Returns all settings of a given site as an array
      *
-     * @param string $site name of the site
+     * @param  string  $site  name of the site
      * @return array Array of settings
      */
     public function getSettingsBySite($site)
     {
         $xml_root = $this->getSiteXmlRoot($site);
         $xml_file = $xml_root . '/settings.xml';
+
         return $this->xmlFile2array($xml_file);
     }
 
     /**
      * Saves a value with a given path and saves the change to XML file
      *
-     * @param string $path Slash delimited path to the value
-     * @param mixed $value Value to be saved
+     * @param  string  $path  Slash delimited path to the value
+     * @param  mixed  $value  Value to be saved
      * @return array Array of changed value and/or error messages
      */
     public function saveValueByPath($path, $value)
@@ -414,8 +424,9 @@ class SiteSettingsDataService extends Storage
             'value' => $value,
         ];
 
-        if (!file_exists($this->XML_FILE)) {
+        if (! file_exists($this->XML_FILE)) {
             $ret['error_message'] = 'Settings file not found in storage!';
+
             return $ret;
         }
 
@@ -436,7 +447,7 @@ class SiteSettingsDataService extends Storage
             $sectionsDataService = new SiteSectionsDataService($this->SITE);
             $sections = $sectionsDataService->get();
 
-            if (!$sections) {
+            if (! $sections) {
                 $section = $sectionsDataService->create('home', 'Home');
                 $ret['section'] = $section;
             }
@@ -456,8 +467,8 @@ class SiteSettingsDataService extends Storage
     /**
      * Upload a file for site setting
      *
-     * @param string $path Path to setting in XML structure
-     * @param object $file File object
+     * @param  string  $path  Path to setting in XML structure
+     * @param  object  $file  File object
      * @return array Array of changed value
      */
     public function uploadFileByPath($path, $file)
@@ -468,16 +479,17 @@ class SiteSettingsDataService extends Storage
         $fileName = $this->getUniqueFileName($mediaDir, $file->getClientOriginalName());
         $file->move($mediaDir, $fileName);
 
-        if (!$isImage) {
+        if (! $isImage) {
             if ($oldFileName) {
                 $this->removeImageWithThumbnails($mediaDir, $oldFileName);
             }
+
             return self::saveValueByPath($path, $fileName);
         }
 
         ImageHelpers::downscaleToMaxSize($mediaDir . '/' . $fileName);
 
-        list($width, $height) = getimagesize($mediaDir . '/' . $fileName);
+        [$width, $height] = getimagesize($mediaDir . '/' . $fileName);
         $width = round($width / 2);
         $height = round($height / 2);
 
@@ -527,6 +539,7 @@ class SiteSettingsDataService extends Storage
         }
 
         $this->array2xmlFile($this->SITE_SETTINGS, $this->XML_FILE, $this->ROOT_ELEMENT);
+
         return $value;
     }
 
@@ -557,7 +570,7 @@ class SiteSettingsDataService extends Storage
             );
 
             // Also remove parent node if parent is empty
-            if (!$this->SITE_SETTINGS[$path_arr[0]]) {
+            if (! $this->SITE_SETTINGS[$path_arr[0]]) {
                 $this->unsetValueByPath(
                     $this->SITE_SETTINGS,
                     $path_arr[0]
@@ -566,6 +579,7 @@ class SiteSettingsDataService extends Storage
         }
 
         $this->array2xmlFile($this->SITE_SETTINGS, $this->XML_FILE, $this->ROOT_ELEMENT);
+
         return $child;
     }
 
@@ -582,7 +596,7 @@ class SiteSettingsDataService extends Storage
      * To work around this legacy feature we fid the template that starts with the same name
      * and use it's current version instead.
      *
-     * @param array $settings
+     * @param  array  $settings
      * @return array
      */
     private function fixTemplateName($settings)
@@ -593,13 +607,13 @@ class SiteSettingsDataService extends Storage
             return $settings;
         }
 
-        list($name) = explode('-', $settings['template']['template']);
+        [$name] = explode('-', $settings['template']['template']);
         // This is equivalent to find function in JS
         $actualName = current(array_filter($availableTemplates, function ($template) use ($name) {
             return Str::startsWith($template, $name);
         }));
 
-        if (!$actualName) {
+        if (! $actualName) {
             $actualName = self::$DEFAULT_SITE_SETTINGS['template/template'];
         }
 
@@ -611,7 +625,8 @@ class SiteSettingsDataService extends Storage
 
     /**
      * Merge site settings from other source folder
-     * @param string $src_root settings source root folder
+     *
+     * @param  string  $src_root  settings source root folder
      */
     public function mergeSiteSettings($src_root)
     {
@@ -622,7 +637,7 @@ class SiteSettingsDataService extends Storage
         // Merge only those settings that affects site style
         foreach ($siteSettingsConfig as $groupKey => $group) {
             foreach ($group as $settingKey => $setting) {
-                if (!(isset($setting['affectsStyle']) && $setting['affectsStyle'])) {
+                if (! (isset($setting['affectsStyle']) && $setting['affectsStyle'])) {
                     continue;
                 }
 

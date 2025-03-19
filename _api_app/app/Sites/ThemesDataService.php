@@ -3,9 +3,6 @@
 namespace App\Sites;
 
 use App\Shared\Storage;
-use App\Configuration\SiteSettingsConfigService;
-use App\Sites\Sections\SiteSectionsDataService;
-use App\Sites\Sections\Entries\SectionEntriesDataService;
 
 /**
  * Service for ready made berta themes
@@ -20,7 +17,7 @@ class ThemesDataService extends Storage
     public function getThemes()
     {
         $themes = [];
-        if (!is_dir($this->THEMES_ROOT)) {
+        if (! is_dir($this->THEMES_ROOT)) {
             return $themes;
         }
 

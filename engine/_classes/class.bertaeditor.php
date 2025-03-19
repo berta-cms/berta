@@ -1,4 +1,5 @@
 <?php
+
 class BertaEditor extends BertaContent
 {
     public static function getSectionMediafolder($sName)
@@ -31,6 +32,7 @@ class BertaEditor extends BertaContent
             $fileName = self::$options['XML_ROOT'] . self::$options['sections.xml'];
             file_put_contents($fileName, $xml);
             @chmod($fileName, 0666);
+
             return true;
         }
     }
@@ -60,6 +62,7 @@ class BertaEditor extends BertaContent
             } else {
                 throw new \Exception('Could not write locked file: ' . $xml_file);
             }
+
             return true;
         }
     }
@@ -68,7 +71,7 @@ class BertaEditor extends BertaContent
     {
         $arrayToSave = ['section' => []];
         foreach ($tags as $sName => $s) {
-            if (!$sectionsList || isset($sectionsList[$sName])) {
+            if (! $sectionsList || isset($sectionsList[$sName])) {
                 $sectionTags = [];
                 $c = 0;
                 foreach ($s as $tName => $t) {
@@ -84,6 +87,7 @@ class BertaEditor extends BertaContent
             $fileName = self::$options['XML_ROOT'] . self::$options['tags.xml'];
             if (@file_put_contents($fileName, $xml)) {
                 @chmod($fileName, 0666);
+
                 return true;
             }
         }
@@ -97,7 +101,7 @@ class BertaEditor extends BertaContent
 
         $newCache = [];
         $allHaveTags = true;
-        if (isset($blog['entry']) && !empty($blog['entry'])) {
+        if (isset($blog['entry']) && ! empty($blog['entry'])) {
             foreach ($blog['entry'] as $eId => $e) {
                 if ($eId === '@attributes') {
                     continue;
@@ -121,8 +125,8 @@ class BertaEditor extends BertaContent
             }
         }
 
-        //to keep sorting order, we need to check old and new tag arrays
-        //loop through old and check if exists and update, else do not add
+        // to keep sorting order, we need to check old and new tag arrays
+        // loop through old and check if exists and update, else do not add
         $tempCache = [];
         if (isset($tagsArr[$sectionName])) {
             foreach ($tagsArr[$sectionName] as $tag => $tagVars) {
@@ -132,9 +136,9 @@ class BertaEditor extends BertaContent
             }
         }
 
-        //loop through new and check if exists, if not - add at bottom
+        // loop through new and check if exists, if not - add at bottom
         foreach ($newCache as $tag => $tagVars) {
-            if (!isset($tagsArr[$sectionName][$tag])) {
+            if (! isset($tagsArr[$sectionName][$tag])) {
                 $tempCache[$tag] = $tagVars;
             }
         }
@@ -143,11 +147,11 @@ class BertaEditor extends BertaContent
 
         // update direct content property
         $sectionsList = BertaEditor::getSections();
-        if (!empty($sectionsList[$sectionName])) {
+        if (! empty($sectionsList[$sectionName])) {
             if (empty($sectionsList[$sectionName]['@attributes'])) {
                 $sectionsList[$sectionName]['@attributes'] = [];
             }
-            $sectionsList[$sectionName]['@attributes']['has_direct_content'] = !$allHaveTags ? '1' : '0';
+            $sectionsList[$sectionName]['@attributes']['has_direct_content'] = ! $allHaveTags ? '1' : '0';
         }
         BertaEditor::saveSections($sectionsList);
 
@@ -159,16 +163,16 @@ class BertaEditor extends BertaContent
 
     public static function updateImageCacheForSection(&$section)
     {
-        if (!empty($section)) {
+        if (! empty($section)) {
             $mediaFiles = [];
-            if (!empty($section['mediafolder']['value'])) {
+            if (! empty($section['mediafolder']['value'])) {
                 $mediaFiles = BertaEditor::gatherMediaFilesIn($section['mediafolder']['value']);
             }
 
             if ($mediaFiles) {
                 $sectionCache = &$section['mediaCacheData'];
 
-                if (!count($sectionCache) || empty($sectionCache['file'])) {
+                if (! count($sectionCache) || empty($sectionCache['file'])) {
                     // if the media cache is empty, create a fresh array
                     $mediaCacheData = ['file' => []];
                     if (isset($section['mediaCacheData'])) {
@@ -179,13 +183,13 @@ class BertaEditor extends BertaContent
                     $sectionCache = &$section['mediaCacheData'];
                     foreach ($mediaFiles as $im) {
                         $attr = ['type' => $im['type'], 'src' => $im['src']];
-                        if (!empty($im['poster_frame'])) {
+                        if (! empty($im['poster_frame'])) {
                             $attr['poster_frame'] = $im['poster_frame'];
                         }
-                        if (!empty($im['width'])) {
+                        if (! empty($im['width'])) {
                             $attr['width'] = $im['width'];
                         }
-                        if (!empty($im['height'])) {
+                        if (! empty($im['height'])) {
                             $attr['height'] = $im['height'];
                         }
                         $sectionCache['file'][] = ['value' => '', '@attributes' => $attr];
@@ -210,22 +214,22 @@ class BertaEditor extends BertaContent
                                 if ($srcFromCache == $im['src']) {
                                     $foundIndex = true;
                                     $_section = ['@attributes' => []];
-                                    if (!$isFromOldVersion) {
-                                        $_section['value'] = !empty($cacheIm['value']) ? $cacheIm['value'] : '';
+                                    if (! $isFromOldVersion) {
+                                        $_section['value'] = ! empty($cacheIm['value']) ? $cacheIm['value'] : '';
                                     }
-                                    if (!empty($cacheIm['@attributes'])) {
+                                    if (! empty($cacheIm['@attributes'])) {
                                         $_section['@attributes'] = $cacheIm['@attributes'];
                                     }
                                     $_section['@attributes']['src'] = $im['src'];
 
                                     $_section['@attributes']['type'] = $im['type'];
-                                    if (!empty($im['poster_frame'])) {
+                                    if (! empty($im['poster_frame'])) {
                                         $_section['@attributes']['poster_frame'] = $im['poster_frame'];
                                     }
-                                    if (!empty($im['width'])) {
+                                    if (! empty($im['width'])) {
                                         $_section['@attributes']['width'] = $im['width'];
                                     }
-                                    if (!empty($im['height'])) {
+                                    if (! empty($im['height'])) {
                                         $_section['@attributes']['height'] = $im['height'];
                                     }
 
@@ -238,7 +242,7 @@ class BertaEditor extends BertaContent
                         }
 
                         // if the file was not found in the folder, delete the entry
-                        if (!$foundIndex) {
+                        if (! $foundIndex) {
                             unset($sectionCache['file'][$cacheIndex]);
                         }
                     }
@@ -246,13 +250,13 @@ class BertaEditor extends BertaContent
                     // loop through the rest of real files and add them to cache
                     foreach ($mediaFiles as $im) {
                         $attr = ['type' => $im['type'], 'src' => $im['src']];
-                        if (!empty($im['poster_frame'])) {
+                        if (! empty($im['poster_frame'])) {
                             $attr['poster_frame'] = $im['poster_frame'];
                         }
-                        if (!empty($im['width'])) {
+                        if (! empty($im['width'])) {
                             $attr['width'] = $im['width'];
                         }
-                        if (!empty($im['height'])) {
+                        if (! empty($im['height'])) {
                             $attr['height'] = $im['height'];
                         }
                         $sectionCache['file'][] = ['value' => '', '@attributes' => $attr];
@@ -278,21 +282,21 @@ class BertaEditor extends BertaContent
 
     public static function updateImageCacheFor(&$blog, $entryId = false)
     {
-        if (!empty($blog['entry'])) {
+        if (! empty($blog['entry'])) {
             foreach ($blog['entry'] as $eId => $e) {
                 if ((string) $eId == '@attributes') {
                     continue;
                 }
-                if (!$entryId || (!empty($e['id']['value']) && $entryId == $e['id']['value'])) {
+                if (! $entryId || (! empty($e['id']['value']) && $entryId == $e['id']['value'])) {
                     $mediaFiles = [];
-                    if (!empty($e['mediafolder']['value'])) {
+                    if (! empty($e['mediafolder']['value'])) {
                         $mediaFiles = BertaEditor::gatherMediaFilesIn($e['mediafolder']['value']);
                     }
 
                     if ($mediaFiles) {
                         $entryCache = &$blog['entry'][$eId]['mediaCacheData'];
 
-                        if (!count($entryCache) || empty($entryCache['file'])) {
+                        if (! count($entryCache) || empty($entryCache['file'])) {
                             // if the media cache is empty, create a fresh array
                             $mediaCacheData = ['file' => []];
                             if (isset($blog['entry'][$eId]['mediaCacheData'])) {
@@ -303,13 +307,13 @@ class BertaEditor extends BertaContent
                             $entryCache = &$blog['entry'][$eId]['mediaCacheData'];
                             foreach ($mediaFiles as $im) {
                                 $attr = ['type' => $im['type'], 'src' => $im['src']];
-                                if (!empty($im['poster_frame'])) {
+                                if (! empty($im['poster_frame'])) {
                                     $attr['poster_frame'] = $im['poster_frame'];
                                 }
-                                if (!empty($im['width'])) {
+                                if (! empty($im['width'])) {
                                     $attr['width'] = $im['width'];
                                 }
-                                if (!empty($im['height'])) {
+                                if (! empty($im['height'])) {
                                     $attr['height'] = $im['height'];
                                 }
                                 $entryCache['file'][] = ['value' => '', '@attributes' => $attr];
@@ -333,22 +337,22 @@ class BertaEditor extends BertaContent
                                     if ($srcFromCache == $im['src']) {
                                         $foundIndex = true;
                                         $entry = ['@attributes' => []];
-                                        if (!$isFromOldVersion) {
-                                            $entry['value'] = !empty($cacheIm['value']) ? $cacheIm['value'] : '';
+                                        if (! $isFromOldVersion) {
+                                            $entry['value'] = ! empty($cacheIm['value']) ? $cacheIm['value'] : '';
                                         }
-                                        if (!empty($cacheIm['@attributes'])) {
+                                        if (! empty($cacheIm['@attributes'])) {
                                             $entry['@attributes'] = $cacheIm['@attributes'];
                                         }
                                         $entry['@attributes']['src'] = $im['src'];
 
                                         $entry['@attributes']['type'] = $im['type'];
-                                        if (!empty($im['poster_frame'])) {
+                                        if (! empty($im['poster_frame'])) {
                                             $entry['@attributes']['poster_frame'] = $im['poster_frame'];
                                         }
-                                        if (!empty($im['width'])) {
+                                        if (! empty($im['width'])) {
                                             $entry['@attributes']['width'] = $im['width'];
                                         }
-                                        if (!empty($im['height'])) {
+                                        if (! empty($im['height'])) {
                                             $entry['@attributes']['height'] = $im['height'];
                                         }
 
@@ -360,7 +364,7 @@ class BertaEditor extends BertaContent
                                 }
 
                                 // if the file was not found in the folder, delete the entry
-                                if (!$foundIndex) {
+                                if (! $foundIndex) {
                                     unset($entryCache['file'][$cacheIndex]);
                                 }
                             }
@@ -368,13 +372,13 @@ class BertaEditor extends BertaContent
                             // loop through the rest of real files and add them to cache
                             foreach ($mediaFiles as $im) {
                                 $attr = ['type' => $im['type'], 'src' => $im['src']];
-                                if (!empty($im['poster_frame'])) {
+                                if (! empty($im['poster_frame'])) {
                                     $attr['poster_frame'] = $im['poster_frame'];
                                 }
-                                if (!empty($im['width'])) {
+                                if (! empty($im['width'])) {
                                     $attr['width'] = $im['width'];
                                 }
-                                if (!empty($im['height'])) {
+                                if (! empty($im['height'])) {
                                     $attr['height'] = $im['height'];
                                 }
                                 $entryCache['file'][] = ['value' => '', '@attributes' => $attr];
@@ -460,12 +464,13 @@ class BertaEditor extends BertaContent
                 $mediaIdx++;
             }
 
-            if (!function_exists('mediaArrCmp')) {
+            if (! function_exists('mediaArrCmp')) {
                 function mediaArrCmp($m1, $m2)
                 {
                     if ($m1['src'] == $m2['src']) {
                         return 0;
                     }
+
                     return ($m1['src'] < $m2['src']) ? -1 : 1;
                 }
             }
@@ -503,7 +508,7 @@ class BertaEditor extends BertaContent
             /* This is the correct way to loop over the directory. */
 
             while (false !== ($f = readdir($handle))) {
-                if (!$file || strpos($f, $file) !== false) {
+                if (! $file || strpos($f, $file) !== false) {
                     if (substr($f, 0, 1) == '_') {
                         @unlink($folder . $f);
                     }
@@ -526,26 +531,26 @@ class BertaEditor extends BertaContent
         $pStr = '';
         if ($additionalParams) {
             foreach ($additionalParams as $pN => $p) {
-                $pStr .= $pN . (!is_null($p) ? ('-' . $p) : '') . ' ';
+                $pStr .= $pN . (! is_null($p) ? ('-' . $p) : '') . ' ';
             }
         }
         $html = '';
 
-        if (!empty($sDef['html_before'])) {
+        if (! empty($sDef['html_before'])) {
             $html .= $sDef['html_before'];
         }
 
-        $html .= '<' . $tag . ' class="value ' . (!empty($editsForSettings[$sDef['format']]) ? $editsForSettings[$sDef['format']] : '') . ' ' .
+        $html .= '<' . $tag . ' class="value ' . (! empty($editsForSettings[$sDef['format']]) ? $editsForSettings[$sDef['format']] : '') . ' ' .
                           'xProperty-' . $property . ' ' .
                           (empty($sDef['html_entities']) ? 'xNoHTMLEntities' : '') . ' ' .
                           'xCSSUnits-' . (empty($sDef['css_units']) ? '0' : '1') . ' ' .
                           (empty($sDef['link']) ? '' : 'xLink') . ' ' .
-                          'xRequired-' . (!empty($sDef['allow_blank']) ? '0' : '1') . ' ' .
-                          (!empty($sDef['validator']) ? 'xValidator-' . $sDef['validator'] . ' ' : '') .
+                          'xRequired-' . (! empty($sDef['allow_blank']) ? '0' : '1') . ' ' .
+                          (! empty($sDef['validator']) ? 'xValidator-' . $sDef['validator'] . ' ' : '') .
                           $pStr .
                    '" title="' . htmlspecialchars($sDef['default'] ?? '') . '"';
 
-        if (!empty($path)) {
+        if (! empty($path)) {
             $html .= ' data-path="' . $path . '"';
         }
 
@@ -559,13 +564,13 @@ class BertaEditor extends BertaContent
                 }
             }
             $html .= ' x_options="' . htmlspecialchars(implode('||', $values)) . '"';
-            $value = isset($values[$value]) && !intval($value) > 0 ? $sDef['values'][$value] : $value;
+            $value = isset($values[$value]) && ! intval($value) > 0 ? $sDef['values'][$value] : $value;
         }
 
         $html .= '>';
         $html .= $value . '</' . $tag . '>';
 
-        if (!empty($sDef['html_after'])) {
+        if (! empty($sDef['html_after'])) {
             $html .= $sDef['html_after'];
         }
 

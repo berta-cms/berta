@@ -10,14 +10,23 @@ use Illuminate\Foundation\Auth\Access\Authorizable;
 class UserModel implements AuthenticatableContract, AuthorizableContract
 {
     use Authenticatable, Authorizable;
+
     public $name;
+
     public $password;
+
     public $features;
+
     public $profile_url;
+
     public $forgot_password_url;
+
     public $plans;
+
     public $noindex;
+
     public $intercom;
+
     public $helpcrunch;
 
     public function __construct()
@@ -60,7 +69,7 @@ class UserModel implements AuthenticatableContract, AuthorizableContract
     public function getPlan()
     {
         $path = config('app.old_berta_root') . '/engine/plan';
-        if (!file_exists($path)) {
+        if (! file_exists($path)) {
             return null;
         }
 
@@ -69,7 +78,7 @@ class UserModel implements AuthenticatableContract, AuthorizableContract
 
     public function isBertaHosting()
     {
-        return !empty($this->profile_url);
+        return ! empty($this->profile_url);
     }
 
     private function getFeatures()
@@ -82,7 +91,7 @@ class UserModel implements AuthenticatableContract, AuthorizableContract
         $plan = $this->getPlan();
         $is_trial = $plan === null && $this->profile_url;
 
-        if (!$this->profile_url || $plan) {
+        if (! $this->profile_url || $plan) {
             $features[] = 'custom_javascript';
         }
 
@@ -103,7 +112,7 @@ class UserModel implements AuthenticatableContract, AuthorizableContract
         $ENGINE_ROOT_PATH = realpath(config('app.old_berta_root') . '/engine') . '/';
         include realpath(config('app.old_berta_root') . '/engine/inc.hosting.php');
 
-        if (!isset($options[$item])) {
+        if (! isset($options[$item])) {
             return null;
         }
 
@@ -114,7 +123,7 @@ class UserModel implements AuthenticatableContract, AuthorizableContract
     {
         $intercomAppId = $this->getHostingData('INTERCOM_APP_ID');
         $intercomSecretKey = $this->getHostingData('INTERCOM_SECRET_KEY');
-        if (!$intercomAppId || !$intercomSecretKey) {
+        if (! $intercomAppId || ! $intercomSecretKey) {
             return null;
         }
         $userHash = hash_hmac('sha256', $this->name, $intercomSecretKey);
@@ -131,9 +140,9 @@ class UserModel implements AuthenticatableContract, AuthorizableContract
         $helpcrunchApiOrganization = $this->getHostingData('HELPCRUNCH_API_ORGANIZATION');
         $helpcrunchAppId = $this->getHostingData('HELPCRUNCH_APP_ID');
         $helpcrunchApiKey = $this->getHostingData('HELPCRUNCH_API_KEY');
-        $uid = !empty($_SESSION['_berta__user']['uid']) ? $_SESSION['_berta__user']['uid'] : null;
+        $uid = ! empty($_SESSION['_berta__user']['uid']) ? $_SESSION['_berta__user']['uid'] : null;
 
-        if (!$helpcrunchApiOrganization || !$helpcrunchAppId || !$helpcrunchApiKey || !$uid) {
+        if (! $helpcrunchApiOrganization || ! $helpcrunchAppId || ! $helpcrunchApiKey || ! $uid) {
             return null;
         }
 
@@ -144,7 +153,7 @@ class UserModel implements AuthenticatableContract, AuthorizableContract
             'appId' => $helpcrunchAppId,
             'user_id' => $uid,
             'security_hash' => $security_hash,
-            'email' => $this->name
+            'email' => $this->name,
         ];
     }
 }

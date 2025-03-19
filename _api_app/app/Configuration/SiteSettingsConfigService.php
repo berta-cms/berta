@@ -1,9 +1,9 @@
 <?php
 
 namespace App\Configuration;
-use Illuminate\Support\Facades\Auth;
 
 use App\Shared\I18n;
+use Illuminate\Support\Facades\Auth;
 
 class SiteSettingsConfigService
 {
@@ -14,9 +14,7 @@ class SiteSettingsConfigService
     // @TODO Create settings XML file with default template in api
     private $defaultTemplate = 'messy-0.4.2';
 
-    public function __construct()
-    {
-    }
+    public function __construct() {}
 
     public function get($lang = 'en')
     {
@@ -26,11 +24,11 @@ class SiteSettingsConfigService
 
         /* Setup for the @@@HACK: */
         I18n::load_language($lang);
-        if (!isset($options)) {
+        if (! isset($options)) {
             $options = [];
         }
 
-        $berta = (object)['security' => (object)['userLoggedIn' => Auth::check()]];
+        $berta = (object) ['security' => (object) ['userLoggedIn' => Auth::check()]];
         $ENGINE_ROOT_PATH = config('app.old_berta_root') . '/engine/';
         $SITE_ROOT_PATH = config('app.old_berta_root') . '/';
         $options['XML_ROOT'] = "{$SITE_ROOT_PATH}storage/";
@@ -91,6 +89,7 @@ class SiteSettingsConfigService
             }
         }
         $d->close();
+
         return $returnArr;
     }
 }

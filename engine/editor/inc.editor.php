@@ -1,7 +1,8 @@
 <?php
+
 /** THis file can not be loaded directly through browser, it's only meant to be included */
 $included_files = get_included_files();
-if (!in_array(__FILE__, get_included_files()) || $included_files[0] == __FILE__) {
+if (! in_array(__FILE__, get_included_files()) || $included_files[0] == __FILE__) {
     /* IF this file is not included, redirect to root of the page */
     header('Location: /');
     exit;
@@ -10,7 +11,7 @@ if (!in_array(__FILE__, get_included_files()) || $included_files[0] == __FILE__)
 if ($berta->security->userLoggedIn) {
     include_once $ENGINE_ROOT_PATH . '_classes/class.bertaeditor.php';
 }
-//$t->point("page");
+// $t->point("page");
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //  GPC variables   -------------------------------------------------------------------------------------------------------------
@@ -23,7 +24,7 @@ $tagName = false;
 $urlStr = false;
 if ($berta->apacheRewriteUsed) {
     include $ENGINE_ROOT_PATH . '_classes/class.clean_url.php';
-    $cU = new CleanURL();
+    $cU = new CleanURL;
 
     $urlStr = $_SERVER['REQUEST_URI'];
     if (strpos($urlStr, $SITE_ROOT_URL) === 0) {
@@ -31,7 +32,7 @@ if ($berta->apacheRewriteUsed) {
     }
     $cU->parseURL($urlStr);
 
-    if (!empty($options['MULTISITE'])) {
+    if (! empty($options['MULTISITE'])) {
         $urlParts = $cU->getParts(3);
         $site = $urlParts[0];
         $sectionName = $urlParts[1];
@@ -45,9 +46,9 @@ if ($berta->apacheRewriteUsed) {
 } else {
     $urlStr = $_SERVER['REQUEST_URI'];
 
-    $sectionName = $querySectionName = !empty($_REQUEST['section']) ? strtolower($_REQUEST['section']) : false;
-    //$subSectionName = !empty($_REQUEST['subsection']) ? strtolower($_REQUEST['subsection']) : false;
-    $tagName = !empty($_REQUEST['tag']) ? strtolower($_REQUEST['tag']) : false;
+    $sectionName = $querySectionName = ! empty($_REQUEST['section']) ? strtolower($_REQUEST['section']) : false;
+    // $subSectionName = !empty($_REQUEST['subsection']) ? strtolower($_REQUEST['subsection']) : false;
+    $tagName = ! empty($_REQUEST['tag']) ? strtolower($_REQUEST['tag']) : false;
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -61,7 +62,7 @@ if ($querySectionName && $querySectionName != 'sitemap.xml' && $berta->sectionNa
     include dirname(__DIR__) . '/error/404.php';
     exit;
 }
-//$t->point("content init");
+// $t->point("content init");
 
 // ------------------------------------------------------------------------------------------------------------------------------
 //  CHECK VERSIONS   ------------------------------------------------------------------------------------------------------------
@@ -78,5 +79,5 @@ if (empty($berta->content['@attributes']['last_upd_ver']) || ($berta->content['@
 $html = $berta->output();
 echo $html;
 
-//$t->point("html written");
-//echo '<br class="clear" />'; $t->report();
+// $t->point("html written");
+// echo '<br class="clear" />'; $t->report();

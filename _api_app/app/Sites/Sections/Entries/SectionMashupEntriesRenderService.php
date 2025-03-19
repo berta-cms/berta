@@ -4,11 +4,11 @@ namespace App\Sites\Sections\Entries;
 
 use App\Shared\Helpers;
 use App\Shared\ImageHelpers;
-use App\Sites\Sections\Entries\SectionEntriesDataService;
 
 class SectionMashupEntriesRenderService
 {
     private $USED_IN_TEMPLATES = ['mashup'];
+
     private $siteTemplatesConfigService;
 
     public function __construct($siteTemplatesConfigService)
@@ -26,7 +26,7 @@ class SectionMashupEntriesRenderService
         $classes = [
             'xEntriesList',
             'xSection-' . $sectionSlug,
-            'xTag-' . $tagSlug
+            'xTag-' . $tagSlug,
         ];
 
         if ($isEditMode) {
@@ -54,10 +54,10 @@ class SectionMashupEntriesRenderService
         $viewportWidth = 980;
         $viewportHeight = 800;
 
-        $width = !empty($entry['item']['galleryItem']['width']) ? $entry['item']['galleryItem']['width'] : 0;
-        $height = !empty($entry['item']['galleryItem']['height']) ? $entry['item']['galleryItem']['height'] : 0;
+        $width = ! empty($entry['item']['galleryItem']['width']) ? $entry['item']['galleryItem']['width'] : 0;
+        $height = ! empty($entry['item']['galleryItem']['height']) ? $entry['item']['galleryItem']['height'] : 0;
 
-        list($left, $top) = !empty($entry['content']['positionXY']) ? explode(',', $entry['content']['positionXY']) : [rand(0, $viewportWidth - $width), rand(0, $viewportHeight - $height)];
+        [$left, $top] = ! empty($entry['content']['positionXY']) ? explode(',', $entry['content']['positionXY']) : [rand(0, $viewportWidth - $width), rand(0, $viewportHeight - $height)];
 
         $styles[] = "left:{$left}px";
         $styles[] = "top:{$top}px";
@@ -71,10 +71,10 @@ class SectionMashupEntriesRenderService
             'firstPagePic',
             'xEntry',
             'xEntryId-' . $entry['id'],
-            'xSection-' . $entry['section']['name']
+            'xSection-' . $entry['section']['name'],
         ];
 
-        if (!empty($entry['content']['fixed']) && $entry['content']['fixed'] == '1') {
+        if (! empty($entry['content']['fixed']) && $entry['content']['fixed'] == '1') {
             $classes[] = 'xFixed';
         }
 
@@ -82,14 +82,14 @@ class SectionMashupEntriesRenderService
             $classes[] = 'firstPageWiggle';
         }
 
-        if ($isEditMode && !$isResponsive) {
+        if ($isEditMode && ! $isResponsive) {
             $classes = array_merge($classes, ['xEditableDragXY', 'xProperty-positionXY']);
         }
 
         $attributes['class'] = implode(' ', $classes);
         $attributes['style'] = $this->getStyles($entry, $isResponsive);
 
-        if ($isEditMode && !$isResponsive) {
+        if ($isEditMode && ! $isResponsive) {
             $attributes['data-path'] = "{$siteSlug}/entry/{$entry['section']['name']}/{$entry['id']}/content/positionXY";
         }
 
@@ -103,29 +103,28 @@ class SectionMashupEntriesRenderService
 
         if (empty($entry['mediaCacheData']['file'])) {
             return [
-                'content' => !empty($entry['content']['description']) ? $entry['content']['description'] : '',
+                'content' => ! empty($entry['content']['description']) ? $entry['content']['description'] : '',
                 'url' => $url,
-                'galleryItem' => $galleryItem
+                'galleryItem' => $galleryItem,
             ];
         }
 
         $files = $entry['mediaCacheData']['file'];
         $item = $isRandom ? $files[array_rand($files)] : $files[0];
 
-        if (!$isEditMode && $item['@attributes']['type'] == 'image') {
+        if (! $isEditMode && $item['@attributes']['type'] == 'image') {
             $urlParts = [];
-            if (!empty($siteSlug)) {
+            if (! empty($siteSlug)) {
                 $urlParts[] = $siteSlug;
             }
             $urlParts[] = $entry['section']['name'];
 
-            if (!empty($entry['tags']['tag'])) {
+            if (! empty($entry['tags']['tag'])) {
                 $urlParts[] = Helpers::slugify($entry['tags']['tag'][0], '-', '-');
             }
 
             $url = '/' . implode('/', $urlParts) . ($isPreviewMode ? '?preview=1' : '');
         }
-
 
         $galleryItem = ImageHelpers::getGalleryItem(
             $item,
@@ -136,13 +135,13 @@ class SectionMashupEntriesRenderService
 
         $imageSizeRatio = (float) $siteTemplateSettings['firstPage']['imageSizeRatio'];
         if ($imageSizeRatio > 0) {
-            $galleryItem['width'] = !empty($galleryItem['width'] && $galleryItem['width'] > 0) ?  $galleryItem['width'] * $imageSizeRatio : $galleryItem['width'];
-            $galleryItem['height'] = !empty($galleryItem['height'] && $galleryItem['height'] > 0) ?  $galleryItem['height'] * $imageSizeRatio : $galleryItem['height'];
+            $galleryItem['width'] = ! empty($galleryItem['width'] && $galleryItem['width'] > 0) ? $galleryItem['width'] * $imageSizeRatio : $galleryItem['width'];
+            $galleryItem['height'] = ! empty($galleryItem['height'] && $galleryItem['height'] > 0) ? $galleryItem['height'] * $imageSizeRatio : $galleryItem['height'];
         }
 
         return [
             'url' => $url,
-            'galleryItem' => $galleryItem
+            'galleryItem' => $galleryItem,
         ];
     }
 
@@ -180,13 +179,13 @@ class SectionMashupEntriesRenderService
             }
         }
 
-        $order = !empty($currentSection['marked_items_imageselect']) ? $currentSection['marked_items_imageselect'] : $sectionTypeConfig['marked_items_imageselect']['default'];
+        $order = ! empty($currentSection['marked_items_imageselect']) ? $currentSection['marked_items_imageselect'] : $sectionTypeConfig['marked_items_imageselect']['default'];
         $isRandom = $order == 'random';
         if ($isRandom) {
             shuffle($entries);
         }
 
-        $count = !empty($currentSection['marked_items_count']) ? $currentSection['marked_items_count'] : $sectionTypeConfig['marked_items_count']['default'];
+        $count = ! empty($currentSection['marked_items_count']) ? $currentSection['marked_items_count'] : $sectionTypeConfig['marked_items_count']['default'];
         if (count($entries) > $count) {
             $entries = array_slice($entries, 0, $count);
         }
@@ -194,6 +193,7 @@ class SectionMashupEntriesRenderService
         $entries = array_map(function ($entry) use ($storageService, $siteSlug, $siteSettings, $siteTemplateSettings, $isResponsive, $isRandom, $isPreviewMode, $isEditMode) {
             $entry['item'] = $this->getContent($entry, $storageService, $siteSettings, $siteTemplateSettings, $siteSlug, $isRandom, $isPreviewMode, $isEditMode);
             $entry['attributes'] = $this->getAttributes($entry, $siteSlug, $siteTemplateSettings, $isResponsive, $isEditMode);
+
             return $entry;
         }, $entries);
 
@@ -238,7 +238,7 @@ class SectionMashupEntriesRenderService
         return [
             'entries' => $entries,
             'wrapperAttributes' => $wrapperAttributes,
-            'isEditMode' => $isEditMode
+            'isEditMode' => $isEditMode,
         ];
     }
 
@@ -255,14 +255,14 @@ class SectionMashupEntriesRenderService
     ) {
         $templateName = explode('-', $siteSettings['template']['template'])[0];
 
-        if (!in_array($templateName, $this->USED_IN_TEMPLATES)) {
+        if (! in_array($templateName, $this->USED_IN_TEMPLATES)) {
             return '';
         }
 
         $currentSection = null;
         $currentSectionType = null;
 
-        if (!empty($sections)) {
+        if (! empty($sections)) {
             $currentSectionOrder = array_search($sectionSlug, array_column($sections, 'name'));
             $currentSection = $sections[$currentSectionOrder];
             $currentSectionType = isset($currentSection['@attributes']['type']) ? $currentSection['@attributes']['type'] : null;

@@ -2,19 +2,15 @@
 
 namespace App\Sites\Sections\Entries;
 
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Http\Request;
-use App\Shared\Storage;
-use App\Shared\Helpers;
-use App\Http\Controllers\Controller;
 use App\Configuration\SiteTemplatesConfigService;
-use App\Sites\Sections\Entries\SectionEntriesDataService;
-use App\Sites\Sections\Entries\SectionEntryRenderService;
-use App\Sites\Sections\Entries\SectionMashupEntriesRenderService;
-use App\Sites\Sections\Entries\PortfolioThumbnailsRenderService;
+use App\Http\Controllers\Controller;
+use App\Shared\Helpers;
+use App\Shared\Storage;
 use App\Sites\Sections\SiteSectionsDataService;
 use App\Sites\Settings\SiteSettingsDataService;
 use App\Sites\TemplateSettings\SiteTemplateSettingsDataService;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class SectionEntriesController extends Controller
 {
@@ -48,6 +44,7 @@ class SectionEntriesController extends Controller
         $json = $request->json()->all();
         $sectionEntriesDataService = new SectionEntriesDataService($json['site'], $json['section']);
         $res = $sectionEntriesDataService->order($json['entryId'], $json['value']);
+
         return response()->json($res);
     }
 
@@ -59,6 +56,7 @@ class SectionEntriesController extends Controller
         $json = $request->json()->all();
         $sectionEntriesDataService = new SectionEntriesDataService($json['site'], $json['currentSection']);
         $res = $sectionEntriesDataService->moveEntry($json['entryId'], $json['toSection']);
+
         return response()->json($res);
     }
 
@@ -67,6 +65,7 @@ class SectionEntriesController extends Controller
         $json = $request->json()->all();
         $sectionEntriesDataService = new SectionEntriesDataService($json['site'], $json['section']);
         $res = $sectionEntriesDataService->deleteEntry($json['entryId']);
+
         return response()->json($res);
     }
 
@@ -75,6 +74,7 @@ class SectionEntriesController extends Controller
         $json = $request->json()->all();
         $sectionEntriesDataService = new SectionEntriesDataService($json['site'], $json['section']);
         $ret = $sectionEntriesDataService->galleryOrder($json['section'], $json['entryId'], $json['files']);
+
         return response()->json($ret);
     }
 
@@ -83,6 +83,7 @@ class SectionEntriesController extends Controller
         $json = $request->json()->all();
         $sectionEntriesDataService = new SectionEntriesDataService($json['site'], $json['section']);
         $ret = $sectionEntriesDataService->galleryDelete($json['section'], $json['entryId'], $json['file']);
+
         return response()->json($ret);
     }
 
@@ -91,10 +92,10 @@ class SectionEntriesController extends Controller
         $file = $request->file('value');
         $path = $request->get('path');
 
-        if (!$file || !$file->isValid() || !$path) {
+        if (! $file || ! $file->isValid() || ! $path) {
             return response()->json([
                 'status' => 0,
-                'error' => 'Upload failed.'
+                'error' => 'Upload failed.',
             ], 400);
         }
 
@@ -102,15 +103,15 @@ class SectionEntriesController extends Controller
         $isImage = in_array($file->guessExtension(), config('app.image_mimes')) || $isVideoPosterImage;
         $validator = Validator::make(['file' => $file], [
             'file' => $isImage ?
-                'max:' .  config('app.image_max_file_size') . '|mimes:' . implode(',', config('app.image_mimes')) . '|not_corrupted_image'
+                'max:' . config('app.image_max_file_size') . '|mimes:' . implode(',', config('app.image_mimes')) . '|not_corrupted_image'
                 :
-                'max:' .  config('app.video_max_file_size') . '|mimes:' . implode(',', config('app.video_mimes'))
+                'max:' . config('app.video_max_file_size') . '|mimes:' . implode(',', config('app.video_mimes')),
         ]);
 
         if ($validator->fails()) {
             return response()->json([
                 'status' => 0,
-                'error' => implode(' ', $validator->getMessageBag()->all())
+                'error' => implode(' ', $validator->getMessageBag()->all()),
             ], 400);
         }
 
@@ -120,10 +121,10 @@ class SectionEntriesController extends Controller
         $sectionEntriesDataService = new SectionEntriesDataService($site, $section);
         $mediaDir = $sectionEntriesDataService->getOrCreateMediaDir();
 
-        if (!is_writable($mediaDir)) {
+        if (! is_writable($mediaDir)) {
             return response()->json([
                 'status' => 0,
-                'error' => 'Media folder not writable.'
+                'error' => 'Media folder not writable.',
             ], 400);
         }
 
@@ -137,6 +138,7 @@ class SectionEntriesController extends Controller
         $data = $request->all();
         $sectionEntriesDataService = new SectionEntriesDataService($data['site'], $data['section']);
         $ret = $sectionEntriesDataService->galleryCrop($data);
+
         return response()->json($ret);
     }
 
@@ -152,12 +154,12 @@ class SectionEntriesController extends Controller
 
         $sections = $siteSectionsDS->getState();
         $sectionData = $siteSectionsDS->get($section);
-        if (!$sectionData) {
+        if (! $sectionData) {
             return abort(404, "Section with name {$section} not found!");
         }
 
         $res = '';
-        $sectionEntriesRS = new SectionEntryRenderService();
+        $sectionEntriesRS = new SectionEntryRenderService;
         foreach ($sectionEntriesDS->get()['entry'] as $entry) {
             if ($id !== null && $entry['id'] !== $id) {
                 continue;
@@ -197,7 +199,7 @@ class SectionEntriesController extends Controller
         $isEditMode = false;
 
         $storageService = new Storage($site, $isPreviewMode);
-        $siteTemplatesConfigService = new SiteTemplatesConfigService();
+        $siteTemplatesConfigService = new SiteTemplatesConfigService;
         $mashupEntriesRS = new SectionMashupEntriesRenderService($siteTemplatesConfigService);
 
         return $mashupEntriesRS->render(
@@ -228,7 +230,7 @@ class SectionEntriesController extends Controller
 
         $isEditMode = true;
 
-        $portfolioThumbnailsRS = new PortfolioThumbnailsRenderService();
+        $portfolioThumbnailsRS = new PortfolioThumbnailsRenderService;
 
         return $portfolioThumbnailsRS->render($siteSettings, $storageService, $section, $entries, $isEditMode);
     }

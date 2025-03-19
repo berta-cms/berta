@@ -7,5 +7,6 @@ use App\Shared\BertaBaseModel;
 class SocialMediaLink extends BertaBaseModel
 {
     public $icon;
+
     public $url;
 }

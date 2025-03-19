@@ -201,15 +201,15 @@ return [
 
     /* setting tab */
     'HTML code' => 'HTML code',
-    /*setting name*/
+    /* setting name */
     'Paste or write your HTML code here.' => 'Plak of schrijf jouw HTML code hier.',
     /* setting tab */
     'Javascript code' => 'Javascript code',
-    /*setting name*/
+    /* setting name */
     'Paste or write your Javascript code here.' => 'Plak of schrijf jouw Javascript code hier.',
     /* setting tab */
     'Location' => 'Plaatsing',
-    /*setting name*/
+    /* setting name */
     'Location of social media buttons. Content of addition text or addition footer will be replaced.' => 'Plaatsing van  de social media buttons. De inhoud van additional text of additional footer text wordt door deze inhoud vervangen.',
 
     /* setting tab */

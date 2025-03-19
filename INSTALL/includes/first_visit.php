@@ -1,11 +1,11 @@
 <?php
 
-if(empty($CHECK_INCLUDED)) {
+if (empty($CHECK_INCLUDED)) {
     /** @todo
      * - Check why is the 'inc.page.php' included here if this file is included in it */
-	define('AUTH_AUTHREQUIRED', true);
-	define('SETTINGS_INSTALLREQUIRED', false);
-	include '../../engine/inc.page.php';
+    define('AUTH_AUTHREQUIRED', true);
+    define('SETTINGS_INSTALLREQUIRED', false);
+    include '../../engine/inc.page.php';
 }
 
 $version = $options['version'];
@@ -23,7 +23,7 @@ $version = $options['version'];
 	<div class="xMAlign-container xPanel">
 		<div class="xMAlign-outer">
 			<div class="xMAlign-inner">
-				<?php echo sprintf(I18n::_('welcome_text__not_installed'), $ENGINE_ROOT_URL . (!empty($options['MULTISITE']) ? '?site='.$options['MULTISITE'] : '')) ?>
+				<?php echo sprintf(I18n::_('welcome_text__not_installed'), $ENGINE_ROOT_URL . (! empty($options['MULTISITE']) ? '?site=' . $options['MULTISITE'] : '')) ?>
 			</div>
 		</div>
 	</div>

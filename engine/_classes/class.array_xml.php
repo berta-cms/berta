@@ -1,21 +1,27 @@
 <?php
+
 /*************************************************************************/
-/* This class stores associative arrays in an xml formated string.       */
-/* There's also a function thar retrieves them. If you try to use        */
-/* xml2array with a general xml, it can fail, since there can be some    */
-/* repeated indexes....                                                  */
+/* This class stores associative arrays in an xml formated string. */
+/* There's also a function thar retrieves them. If you try to use */
+/* xml2array with a general xml, it can fail, since there can be some */
+/* repeated indexes.... */
 /*************************************************************************/
 
 class Array_XML
 {
     public $text;
+
     public $arrays;
+
     public $keys;
+
     public $node_flag;
+
     public $depth;
+
     public $xml_parser;
 
-    /*Converts an array to an xml string*/
+    /* Converts an array to an xml string */
     public static function array2xml($array, $baseTag = 'data', $level = 0)
     {
         if ($level == 0) {
@@ -32,7 +38,7 @@ class Array_XML
                 continue;
             }
 
-            if (!is_array($value)) {
+            if (! is_array($value)) {
                 $txt .= "$padding<{$key}>{$value}</{$key}>\n";
             } else {
                 if (isset($value['value'])) {
@@ -69,6 +75,7 @@ class Array_XML
         }
 
         $txt .= $level == 0 ? "</{$baseTag}>" : '';
+
         return $txt;
     }
 
@@ -78,21 +85,23 @@ class Array_XML
         foreach ($attrList as $a => $v) {
             array_push($strOut, "$a=\"" . htmlspecialchars($v) . '"');
         }
+
         return implode(' ', $strOut);
     }
 
     /**
-      * convert xml string to php array - useful to get a serializable value
-      *
-      * @param string $xmlstr
-      * @return array
-      *
-      * @author Adrien aka Gaarf & contributors
-      * @see http://gaarf.info/2009/08/13/xml-string-to-php-array/
-    */
+     * convert xml string to php array - useful to get a serializable value
+     *
+     * @param  string  $xmlstr
+     * @return array
+     *
+     * @author Adrien aka Gaarf & contributors
+     *
+     * @see http://gaarf.info/2009/08/13/xml-string-to-php-array/
+     */
     public static function xml2array($xmlstr, $baseTag = 'data', $get_attributes = false)
     {
-        $doc = new DOMDocument();
+        $doc = new DOMDocument;
         $doc->loadXML($xmlstr);
         $root = $doc->documentElement;
         $output = Array_XML::domnode_to_array($root);
@@ -114,6 +123,7 @@ class Array_XML
                 }
             }
         }
+
         return $array;
     }
 
@@ -121,46 +131,47 @@ class Array_XML
     {
         $output = [];
         switch ($node->nodeType) {
-      case XML_CDATA_SECTION_NODE:
-      case XML_TEXT_NODE:
-        $output = trim($node->textContent);
-      break;
-      case XML_ELEMENT_NODE:
-        for ($i = 0, $m = $node->childNodes->length; $i < $m; $i++) {
-            $child = $node->childNodes->item($i);
-            $v = Array_XML::domnode_to_array($child);
+            case XML_CDATA_SECTION_NODE:
+            case XML_TEXT_NODE:
+                $output = trim($node->textContent);
+                break;
+            case XML_ELEMENT_NODE:
+                for ($i = 0, $m = $node->childNodes->length; $i < $m; $i++) {
+                    $child = $node->childNodes->item($i);
+                    $v = Array_XML::domnode_to_array($child);
 
-            if (isset($child->tagName) && !(is_array($v) && !$v)) {
-                $t = $child->tagName;
-                if (!isset($output[$t])) {
-                    $output[$t] = [];
+                    if (isset($child->tagName) && ! (is_array($v) && ! $v)) {
+                        $t = $child->tagName;
+                        if (! isset($output[$t])) {
+                            $output[$t] = [];
+                        }
+                        $output[$t][] = $v;
+                    } elseif ($v || $v === '0') {
+                        $output = (string) $v;
+                    }
                 }
-                $output[$t][] = $v;
-            } elseif ($v || $v === '0') {
-                $output = (string) $v;
-            }
+
+                if ($node->attributes->length && ! is_array($output)) { // Has attributes but isn't an array
+                    $output = ['value' => $output]; // Change output into an array.
+                }
+
+                if (is_array($output)) {
+                    if ($node->attributes->length) {
+                        $a = [];
+                        foreach ($node->attributes as $attrName => $attrNode) {
+                            $a[$attrName] = (string) $attrNode->value;
+                        }
+                        $output['@attributes'] = $a;
+                    }
+                    foreach ($output as $t => $v) {
+                        if (is_array($v) && count($v) == 1 && $t != '@attributes') {
+                            $output[$t] = $v[0];
+                        }
+                    }
+                }
+                break;
         }
 
-        if ($node->attributes->length && !is_array($output)) { //Has attributes but isn't an array
-          $output = ['value' => $output]; //Change output into an array.
-        }
-
-        if (is_array($output)) {
-            if ($node->attributes->length) {
-                $a = [];
-                foreach ($node->attributes as $attrName => $attrNode) {
-                    $a[$attrName] = (string) $attrNode->value;
-                }
-                $output['@attributes'] = $a;
-            }
-            foreach ($output as $t => $v) {
-                if (is_array($v) && count($v) == 1 && $t != '@attributes') {
-                    $output[$t] = $v[0];
-                }
-            }
-        }
-      break;
-    }
         return $output;
     }
 
@@ -170,7 +181,7 @@ class Array_XML
             if ((string) $aId == '@attributes') {
                 continue;
             }
-            if (!is_array($child) && trim((string) $child) != '') {
+            if (! is_array($child) && trim((string) $child) != '') {
                 $array[$aId] = '<![CDATA[' . $child . ']]>';
             }
             if (is_array($array[$aId])) {
@@ -181,7 +192,7 @@ class Array_XML
 
     public static function makeListIfNotList(&$item)
     {
-        if (is_array($item) && count($item) > 0 && !isset($item[0])) {
+        if (is_array($item) && count($item) > 0 && ! isset($item[0])) {
             $item = [0 => $item];
         }
     }

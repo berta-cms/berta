@@ -2,10 +2,6 @@
 
 namespace App\Sites\Sections\Entries\Galleries;
 
-use App\Shared\Storage;
-use App\Sites\Sections\Entries\Galleries\EntryGalleryRenderService;
-use App\Sites\Sections\Entries\Galleries\GallerySlideshowRenderService;
-
 class GalleryPileRenderService extends EntryGalleryRenderService
 {
     private $gallerySlideshowRenderService;
@@ -54,6 +50,7 @@ class GalleryPileRenderService extends EntryGalleryRenderService
     public function getGalleryClassList($galleryItemsData, $galleryType, $entry, $siteSettings)
     {
         $classes = parent::getGalleryClassList($galleryItemsData, $galleryType, $entry, $siteSettings);
+
         return implode(' ', $classes);
     }
 
@@ -61,7 +58,7 @@ class GalleryPileRenderService extends EntryGalleryRenderService
     {
         $styles = [];
 
-        if (!$galleryItems) {
+        if (! $galleryItems) {
             return '';
         }
 
@@ -109,7 +106,7 @@ class GalleryPileRenderService extends EntryGalleryRenderService
         $view = view('Sites/Sections/Entries/Galleries/galleryPile', $data);
 
         // Add a slideshow as a fallback for mobile devices
-        if (!$isEditMode) {
+        if (! $isEditMode) {
             // Force entry to be as slideshow
             $entry['mediaCacheData']['@attributes']['type'] = 'slideshow';
 

@@ -2,9 +2,9 @@
 
 namespace App\Configuration;
 
-use Swaggest\JsonSchema\Schema;
 use App\Shared\Helpers;
 use App\Shared\I18n;
+use Swaggest\JsonSchema\Schema;
 
 /**
  * @class SiteTemplatesConfigService
@@ -123,7 +123,9 @@ use App\Shared\I18n;
  *  }
  *
  * Template configurations can be found at `berta/_templates/[template name]/template.conf.php`.
+ *
  * @todo: Templates should be moved to this folder.
+ *
  * @todo: Template settings should be moved to XML so we have everything in a standardized way.
  */
 class SiteTemplatesConfigService
@@ -147,7 +149,7 @@ class SiteTemplatesConfigService
                         'additionalProperties' => [ // generalFontSettings, links, background, ...
                             'type' => 'object',
                             'properties' => [
-                                "_" => [
+                                '_' => [
                                     'type' => 'object',
                                     'properties' => [
                                         'title' => ['type' => 'string'],
@@ -238,11 +240,11 @@ class SiteTemplatesConfigService
             // @@@:HACK: read in template config and set up namespace
             //           so that I18n would be visible there
             $conf = str_replace('<?php', 'namespace App\Shared;', $conf);
-            list(
+            [
                 $ret[$tpl]['sectionTypes'],
                 $ret[$tpl]['templateConf'],
                 $ret[$tpl]['translations']
-            ) = eval($conf);
+            ] = eval($conf);
         }
 
         return $ret;
@@ -267,7 +269,7 @@ class SiteTemplatesConfigService
                 }
             }
             foreach ($config['sectionTypes'] as $group => $groupSettings) {
-                if (!isset($groupSettings['params'])) {
+                if (! isset($groupSettings['params'])) {
                     continue;
                 }
 
@@ -302,6 +304,7 @@ class SiteTemplatesConfigService
         $schema = Schema::import($json_object);
         $templates = $this->get();
         $result = $schema->in(Helpers::arrayToJsonObject($templates));
+
         return true;
     }
 }

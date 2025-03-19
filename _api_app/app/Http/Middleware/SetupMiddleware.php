@@ -2,10 +2,10 @@
 
 namespace App\Http\Middleware;
 
+use App\Shared\Helpers;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
-use App\Shared\Helpers;
 
 class SetupMiddleware
 {
@@ -17,6 +17,7 @@ class SetupMiddleware
     public function handle(Request $request, Closure $next): Response
     {
         $this->updateEnvFile();
+
         return $next($request);
     }
 
@@ -52,15 +53,15 @@ class SetupMiddleware
     {
         $res = [];
 
-        if (!file_exists($file)) {
+        if (! file_exists($file)) {
             return $res;
         }
 
         $content = trim(file_get_contents(realpath($file)));
         $rows = preg_split('/\s+/', $content);
         // Loop through given data
-        foreach ((array)$rows as $key => $value) {
-            list($key, $value) = explode('=', $value, 2);
+        foreach ((array) $rows as $key => $value) {
+            [$key, $value] = explode('=', $value, 2);
             $res[$key] = $value;
         }
 

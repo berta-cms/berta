@@ -16,7 +16,7 @@ class BertaContent extends BertaBase
                     Array_XML::makeListIfNotList($xmlFeed['site']);
                     foreach ($xmlFeed['site'] as $s) {
                         if ($published || isset($_REQUEST['preview']) || (isset($s['@attributes']['published']) && $s['@attributes']['published'])) {
-                            if (!empty($s['name']['value']) && trim($s['name']['value']) != '') {
+                            if (! empty($s['name']['value']) && trim($s['name']['value']) != '') {
                                 $sArr[trim($s['name']['value'])] = $s;
                             } else {
                                 $sArr[] = $s;
@@ -25,21 +25,22 @@ class BertaContent extends BertaBase
                     }
                 }
             }
-            //create main site element if no XML exists
+            // create main site element if no XML exists
         } else {
             $sArr[] = [
                 '@attributes' => ['published' => 1],
                 'name' => null,
-                'title' => ['value' => 'Main site']
+                'title' => ['value' => 'Main site'],
             ];
         }
+
         return $sArr;
     }
 
     public static function getSite($options)
     {
         $site = '';
-        $apacheRewriteUsed = !empty($_REQUEST['__rewrite']);
+        $apacheRewriteUsed = ! empty($_REQUEST['__rewrite']);
 
         if ($apacheRewriteUsed) {
             $urlStr = $_SERVER['REQUEST_URI'];
@@ -51,7 +52,7 @@ class BertaContent extends BertaBase
             if (isset($urlArr[1]) && array_key_exists($urlArr[1], $options['MULTISITES'])) {
                 $site = $urlArr[1];
             }
-        } elseif (!empty($_REQUEST['site']) && array_key_exists($_REQUEST['site'], $options['MULTISITES'])) {
+        } elseif (! empty($_REQUEST['site']) && array_key_exists($_REQUEST['site'], $options['MULTISITES'])) {
             $site = $_REQUEST['site'];
         }
 
@@ -72,7 +73,7 @@ class BertaContent extends BertaBase
                     $indexes = [];
                     $idx = 0;
                     foreach ($xmlFeed['section'] as $s) {
-                        if (!empty($s['name']['value']) && trim($s['name']['value']) != '') {
+                        if (! empty($s['name']['value']) && trim($s['name']['value']) != '') {
                             $name = trim($s['name']['value']);
                             $s['order'] = $idx;
                             $sArr[$name] = $s;
@@ -101,10 +102,11 @@ class BertaContent extends BertaBase
 
                 if ($xmlStr) {
                     $xmlFeed = Array_XML::xml2array($xmlStr, 'blog', true);
-                    if (!empty($xmlFeed['entry']) && is_array($xmlFeed['entry']) && empty($xmlFeed['entry'][0])) {
+                    if (! empty($xmlFeed['entry']) && is_array($xmlFeed['entry']) && empty($xmlFeed['entry'][0])) {
                         $xmlFeed['entry'] = [0 => $xmlFeed['entry']];
                     }
                 }
+
                 return $xmlFeed;
             }
         }
@@ -124,11 +126,12 @@ class BertaContent extends BertaBase
         }
 
         $retVal = false;
+
         return $retVal;
     }
 
     /* ---------------------------------------------------------------------------------------------------------------------- */
-    /*  S U B   S E C T I O N S                                                                                                         */
+    /*  S U B   S E C T I O N S */
     /* ---------------------------------------------------------------------------------------------------------------------- */
 
     public static function getTags()
@@ -143,16 +146,16 @@ class BertaContent extends BertaBase
             if (isset($xmlFeed['section']) && is_array($xmlFeed['section'])) {
                 Array_XML::makeListIfNotList($xmlFeed['section']);
                 foreach ($xmlFeed['section'] as $section) {
-                    $name = !empty($section['@attributes']['name']) ? $section['@attributes']['name'] : false;
+                    $name = ! empty($section['@attributes']['name']) ? $section['@attributes']['name'] : false;
                     if ($name && isset($section['tag']) && is_array($section['tag'])) {
                         Array_XML::makeListIfNotList($section['tag']);
                         $ssArr[$name] = [];
                         foreach ($section['tag'] as $subSection) {
-                            if (!empty($subSection['@attributes']['name']) && !empty($subSection['value'])) {
+                            if (! empty($subSection['@attributes']['name']) && ! empty($subSection['value'])) {
                                 $ssArr[$name][$subSection['@attributes']['name']] = [
-                                'title' => $subSection['value'],
-                                'entry_count' => !empty($subSection['@attributes']['entry_count']) ? $subSection['@attributes']['entry_count'] : 0
-                            ];
+                                    'title' => $subSection['value'],
+                                    'entry_count' => ! empty($subSection['@attributes']['entry_count']) ? $subSection['@attributes']['entry_count'] : 0,
+                                ];
                             }
                         }
                     }
@@ -167,6 +170,7 @@ class BertaContent extends BertaBase
     public static function getXEmpty($property)
     {
         $xEmpty = 'xEmpty';
+
         return self::$options['logged_in'] ? ('<span class="' . $xEmpty . '">&nbsp;' . $property . '&nbsp;</span>') : '';
     }
 }

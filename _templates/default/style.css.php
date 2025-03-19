@@ -15,7 +15,7 @@ header('Content-Type: text/css');
 $contentFloat = substr($s->get('pageLayout', 'contentAlign'), -4) == 'left' ? 'left' : 'right';
 $contentTextAlign = strpos($s->get('pageLayout', 'contentAlign'), 'justify') === 0 ? 'justify' : $s->get('pageLayout', 'contentAlign');
 
-if(!1) { ?><style type="text/css"><?php } ?>
+if (! 1) { ?><style type="text/css"><?php } ?>
 
 body {
 	color: <?php echo $s->get('generalFontSettings', 'color') ?>;
@@ -36,13 +36,13 @@ body {
         background-position: <?php echo $s->get('background', 'backgroundPosition') ?>;
         <?php
         $bgAttachment = $s->get('background', 'backgroundAttachment');
-        if ($bgAttachment == 'fill') { ?>
+	    if ($bgAttachment == 'fill') { ?>
             background-size: cover;
             background-attachment: fixed;
         <?php } else { ?>
             background-attachment: <?php echo $bgAttachment ?>;
         <?php }
-	} ?>
+        } ?>
 }
 
 a:link {
@@ -251,4 +251,4 @@ h1 {
     }
 }
 
-<?php if(!1) { ?></style><?php } ?>
+<?php if (! 1) { ?></style><?php } ?>
