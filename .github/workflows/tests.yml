@@ -20,8 +20,5 @@ jobs:
       - name: Install Dependencies
         run: composer install --no-interaction --prefer-dist --optimize-autoloader --working-dir=_api_app
 
-      - name: Change dir to _api_app
-        run: cd _api_app
-
       - name: Tests
-        run: ./vendor/bin/pest --ci
+        run: cd _api_app && ./vendor/bin/pest --ci
