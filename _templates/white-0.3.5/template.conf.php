@@ -32,7 +32,7 @@ $sectionTypes = [
                 'format' => 'url',
                 'default' => '',
                 'allow_blank' => true,
-                'link' => true
+                'link' => true,
             ],
             'target' => [
                 'format' => 'select',
@@ -42,7 +42,7 @@ $sectionTypes = [
                 ],
                 'default' => '_blank',
             ],
-        ]
+        ],
     ],
     'portfolio' => [
         'title' => 'Portfolio',
@@ -52,7 +52,7 @@ $sectionTypes = [
 $templateConf = [
     'generalFontSettings' => [
         '_' => [
-            'title' => I18n::_('General font settings')
+            'title' => I18n::_('General font settings'),
         ],
         'color' => [
             'format' => 'color',
@@ -62,9 +62,9 @@ $templateConf = [
             'css' => [
                 [
                     'selector' => 'body',
-                    'property' => 'color'
-                ]
-            ]
+                    'property' => 'color',
+                ],
+            ],
         ],
         'fontFamily' => [
             'format' => 'fontselect',
@@ -75,9 +75,9 @@ $templateConf = [
             'css' => [
                 [
                     'selector' => 'body',
-                    'property' => 'font-family'
-                ]
-            ]
+                    'property' => 'font-family',
+                ],
+            ],
         ],
         'googleFont' => [
             'format' => 'text',
@@ -89,9 +89,9 @@ $templateConf = [
             'css' => [
                 [
                     'selector' => 'body',
-                    'property' => 'font-family'
-                ]
-            ]
+                    'property' => 'font-family',
+                ],
+            ],
         ],
         'fontSize' => [
             'format' => 'text',
@@ -102,9 +102,9 @@ $templateConf = [
             'css' => [
                 [
                     'selector' => 'body',
-                    'property' => 'font-size'
-                ]
-            ]
+                    'property' => 'font-size',
+                ],
+            ],
         ],
         'fontWeight' => [
             'format' => 'select',
@@ -118,9 +118,9 @@ $templateConf = [
             'css' => [
                 [
                     'selector' => 'body',
-                    'property' => 'font-weight'
-                ]
-            ]
+                    'property' => 'font-weight',
+                ],
+            ],
         ],
         'fontStyle' => [
             'format' => 'select',
@@ -134,9 +134,9 @@ $templateConf = [
             'css' => [
                 [
                     'selector' => 'body',
-                    'property' => 'font-style'
-                ]
-            ]
+                    'property' => 'font-style',
+                ],
+            ],
         ],
         'fontVariant' => [
             'format' => 'select',
@@ -150,9 +150,9 @@ $templateConf = [
             'css' => [
                 [
                     'selector' => 'body',
-                    'property' => 'font-variant'
-                ]
-            ]
+                    'property' => 'font-variant',
+                ],
+            ],
         ],
         'lineHeight' => [
             'format' => 'text',
@@ -163,15 +163,15 @@ $templateConf = [
             'css' => [
                 [
                     'selector' => 'body',
-                    'property' => 'line-height'
-                ]
-            ]
+                    'property' => 'line-height',
+                ],
+            ],
         ],
     ],
 
     'links' => [
         '_' => [
-            'title' => I18n::_('Hyperlinks')
+            'title' => I18n::_('Hyperlinks'),
         ],
         'colorLink' => [
             'format' => 'color',
@@ -181,9 +181,9 @@ $templateConf = [
             'css' => [
                 [
                     'selector' => 'a:link',
-                    'property' => 'color'
-                ]
-            ]
+                    'property' => 'color',
+                ],
+            ],
         ],
         'colorVisited' => [
             'format' => 'color',
@@ -193,9 +193,9 @@ $templateConf = [
             'css' => [
                 [
                     'selector' => 'a:visited',
-                    'property' => 'color'
-                ]
-            ]
+                    'property' => 'color',
+                ],
+            ],
         ],
         'colorHover' => [
             'format' => 'color',
@@ -205,9 +205,9 @@ $templateConf = [
             'css' => [
                 [
                     'selector' => 'a:hover',
-                    'property' => 'color'
-                ]
-            ]
+                    'property' => 'color',
+                ],
+            ],
         ],
         'colorActive' => [
             'format' => 'color',
@@ -217,9 +217,9 @@ $templateConf = [
             'css' => [
                 [
                     'selector' => 'a:active',
-                    'property' => 'color'
-                ]
-            ]
+                    'property' => 'color',
+                ],
+            ],
         ],
         'textDecorationLink' => [
             'format' => 'select',
@@ -235,9 +235,9 @@ $templateConf = [
             'css' => [
                 [
                     'selector' => 'a:link',
-                    'property' => 'text-decoration'
-                ]
-            ]
+                    'property' => 'text-decoration',
+                ],
+            ],
         ],
         'textDecorationVisited' => [
             'format' => 'select',
@@ -253,9 +253,9 @@ $templateConf = [
             'css' => [
                 [
                     'selector' => 'a:visited',
-                    'property' => 'text-decoration'
-                ]
-            ]
+                    'property' => 'text-decoration',
+                ],
+            ],
         ],
         'textDecorationHover' => [
             'format' => 'select',
@@ -271,9 +271,9 @@ $templateConf = [
             'css' => [
                 [
                     'selector' => 'a:hover',
-                    'property' => 'text-decoration'
-                ]
-            ]
+                    'property' => 'text-decoration',
+                ],
+            ],
         ],
         'textDecorationActive' => [
             'format' => 'select',
@@ -289,15 +289,15 @@ $templateConf = [
             'css' => [
                 [
                     'selector' => 'a:active',
-                    'property' => 'text-decoration'
-                ]
-            ]
+                    'property' => 'text-decoration',
+                ],
+            ],
         ],
     ],
 
     'background' => [
         '_' => [
-            'title' => I18n::_('Background')
+            'title' => I18n::_('Background'),
         ],
         'backgroundColor' => [
             'format' => 'color',
@@ -307,9 +307,9 @@ $templateConf = [
             'css' => [
                 [
                     'selector' => 'body',
-                    'property' => 'background-color'
-                ]
-            ]
+                    'property' => 'background-color',
+                ],
+            ],
         ],
         'backgroundImageEnabled' => [
             'format' => 'select',
@@ -334,9 +334,9 @@ $templateConf = [
             'css' => [
                 [
                     'selector' => 'body',
-                    'property' => 'background-image'
-                ]
-            ]
+                    'property' => 'background-image',
+                ],
+            ],
         ],
         'backgroundRepeat' => [
             'format' => 'select',
@@ -352,9 +352,9 @@ $templateConf = [
             'css' => [
                 [
                     'selector' => 'body',
-                    'property' => 'background-repeat'
-                ]
-            ]
+                    'property' => 'background-repeat',
+                ],
+            ],
         ],
         'backgroundPosition' => [
             'format' => 'select',
@@ -375,9 +375,9 @@ $templateConf = [
             'css' => [
                 [
                     'selector' => 'body',
-                    'property' => 'background-position'
-                ]
-            ]
+                    'property' => 'background-position',
+                ],
+            ],
         ],
         'backgroundAttachment' => [
             'format' => 'select',
@@ -388,13 +388,13 @@ $templateConf = [
             ],
             'default' => 'scroll',
             'title' => I18n::_('Background position'),
-            'description' => I18n::_('Sets how background behaves in relation with the browser window.')
+            'description' => I18n::_('Sets how background behaves in relation with the browser window.'),
         ],
     ],
 
     'pageLayout' => [
         '_' => [
-            'title' => I18n::_('Page layout')
+            'title' => I18n::_('Page layout'),
         ],
         'centered' => [
             'format' => 'select',
@@ -404,7 +404,7 @@ $templateConf = [
                 'no',
             ],
             'title' => I18n::_('Centered layout'),
-            'description' => I18n::_('Sets whether layout should be centered or not.')
+            'description' => I18n::_('Sets whether layout should be centered or not.'),
         ],
         'contentWidth' => [
             'format' => 'text',
@@ -416,9 +416,9 @@ $templateConf = [
             'css' => [
                 [
                     'selector' => '#mainColumn',
-                    'property' => 'max-width'
-                ]
-            ]
+                    'property' => 'max-width',
+                ],
+            ],
         ],
         'paddingTop' => [
             'format' => 'text',
@@ -430,9 +430,9 @@ $templateConf = [
             'css' => [
                 [
                     'selector' => '#mainColumn',
-                    'property' => 'padding-top'
-                ]
-            ]
+                    'property' => 'padding-top',
+                ],
+            ],
         ],
         'paddingLeft' => [
             'format' => 'text',
@@ -444,27 +444,27 @@ $templateConf = [
             'css' => [
                 [
                     'selector' => '#mainColumn',
-                    'property' => 'padding-left'
+                    'property' => 'padding-left',
                 ],
                 [
                     'selector' => '#mainColumn',
-                    'property' => 'padding-right'
+                    'property' => 'padding-right',
                 ],
                 [
                     'selector' => '.floating-banners',
-                    'property' => 'padding-left'
+                    'property' => 'padding-left',
                 ],
                 [
                     'selector' => '.bt-responsive #sideColumn',
                     'property' => 'padding-left',
-                    'breakpoint' => '(max-width: 767px)'
+                    'breakpoint' => '(max-width: 767px)',
                 ],
                 [
                     'selector' => '.bt-responsive #sideColumnBottom',
                     'property' => 'padding-left',
-                    'breakpoint' => '(max-width: 767px)'
-                ]
-            ]
+                    'breakpoint' => '(max-width: 767px)',
+                ],
+            ],
         ],
         'leftColumnWidth' => [
             'format' => 'text',
@@ -476,26 +476,26 @@ $templateConf = [
             'css' => [
                 [
                     'selector' => '#sideColumn',
-                    'property' => 'width'
+                    'property' => 'width',
                 ],
                 [
                     'selector' => '#mainColumn',
-                    'property' => 'margin-left'
+                    'property' => 'margin-left',
                 ],
                 [
                     'selector' => '.xNarrow #mainColumn.xCentered',
-                    'property' => 'margin-left'
+                    'property' => 'margin-left',
                 ],
                 [
                     'selector' => '.floating-banners',
-                    'property' => 'margin-left'
+                    'property' => 'margin-left',
                 ],
-            ]
+            ],
         ],
         'group_responsive' => [
             'format' => false,
             'default' => false,
-            'title' => I18n::_('Responsive design')
+            'title' => I18n::_('Responsive design'),
         ],
         'responsive' => [
             'format' => 'select',
@@ -505,13 +505,13 @@ $templateConf = [
                 'yes',
             ],
             'title' => I18n::_('Enabled'),
-            'description' => I18n::_('Sets whether layout should be responsive or not.')
+            'description' => I18n::_('Sets whether layout should be responsive or not.'),
         ],
     ],
 
     'pageHeading' => [
         '_' => [
-            'title' => I18n::_('Page heading')
+            'title' => I18n::_('Page heading'),
         ],
         'image' => [
             'format' => 'image',
@@ -531,34 +531,34 @@ $templateConf = [
             'css' => [
                 [
                     'selector' => '#sideColumnTop h1',
-                    'property' => 'color'
+                    'property' => 'color',
                 ],
                 [
                     'selector' => '#sideColumnTop h1 a',
                     'property' => 'color',
-                    'important' => true
+                    'important' => true,
                 ],
                 [
                     'selector' => '#sideColumnTop h1 a:link',
                     'property' => 'color',
-                    'important' => true
+                    'important' => true,
                 ],
                 [
                     'selector' => '#sideColumnTop h1 a:visited',
                     'property' => 'color',
-                    'important' => true
+                    'important' => true,
                 ],
                 [
                     'selector' => '#sideColumnTop h1 a:hover',
                     'property' => 'color',
-                    'important' => true
+                    'important' => true,
                 ],
                 [
                     'selector' => '#sideColumnTop h1 a:active',
                     'property' => 'color',
-                    'important' => true
-                ]
-            ]
+                    'important' => true,
+                ],
+            ],
         ],
         'fontFamily' => [
             'format' => 'fontselect',
@@ -569,9 +569,9 @@ $templateConf = [
             'css' => [
                 [
                     'selector' => '#sideColumnTop h1',
-                    'property' => 'font-family'
-                ]
-            ]
+                    'property' => 'font-family',
+                ],
+            ],
         ],
         'googleFont' => [
             'format' => 'text',
@@ -583,9 +583,9 @@ $templateConf = [
             'css' => [
                 [
                     'selector' => '#sideColumnTop h1',
-                    'property' => 'font-family'
-                ]
-            ]
+                    'property' => 'font-family',
+                ],
+            ],
         ],
         'fontSize' => [
             'format' => 'text',
@@ -596,9 +596,9 @@ $templateConf = [
             'css' => [
                 [
                     'selector' => '#sideColumnTop h1',
-                    'property' => 'font-size'
-                ]
-            ]
+                    'property' => 'font-size',
+                ],
+            ],
         ],
         'fontWeight' => [
             'format' => 'select',
@@ -612,9 +612,9 @@ $templateConf = [
             'css' => [
                 [
                     'selector' => '#sideColumnTop h1',
-                    'property' => 'font-weight'
-                ]
-            ]
+                    'property' => 'font-weight',
+                ],
+            ],
         ],
         'fontStyle' => [
             'format' => 'select',
@@ -628,9 +628,9 @@ $templateConf = [
             'css' => [
                 [
                     'selector' => '#sideColumnTop h1',
-                    'property' => 'font-style'
-                ]
-            ]
+                    'property' => 'font-style',
+                ],
+            ],
         ],
         'fontVariant' => [
             'format' => 'select',
@@ -644,9 +644,9 @@ $templateConf = [
             'css' => [
                 [
                     'selector' => '#sideColumnTop h1',
-                    'property' => 'font-variant'
-                ]
-            ]
+                    'property' => 'font-variant',
+                ],
+            ],
         ],
         'lineHeight' => [
             'format' => 'text',
@@ -657,9 +657,9 @@ $templateConf = [
             'css' => [
                 [
                     'selector' => '#sideColumnTop h1',
-                    'property' => 'line-height'
-                ]
-            ]
+                    'property' => 'line-height',
+                ],
+            ],
         ],
         'marginTop' => [
             'format' => 'text',
@@ -671,9 +671,9 @@ $templateConf = [
             'css' => [
                 [
                     'selector' => '#sideColumnTop h1',
-                    'property' => 'margin-top'
-                ]
-            ]
+                    'property' => 'margin-top',
+                ],
+            ],
         ],
         'marginBottom' => [
             'format' => 'text',
@@ -685,9 +685,9 @@ $templateConf = [
             'css' => [
                 [
                     'selector' => '#sideColumnTop h1',
-                    'property' => 'margin-bottom'
-                ]
-            ]
+                    'property' => 'margin-bottom',
+                ],
+            ],
         ],
     ],
 
@@ -703,9 +703,9 @@ $templateConf = [
             'css' => [
                 [
                     'selector' => '#additionalText',
-                    'property' => 'color'
-                ]
-            ]
+                    'property' => 'color',
+                ],
+            ],
         ],
         'fontFamily' => [
             'format' => 'fontselect',
@@ -716,9 +716,9 @@ $templateConf = [
             'css' => [
                 [
                     'selector' => '#additionalText',
-                    'property' => 'font-family'
-                ]
-            ]
+                    'property' => 'font-family',
+                ],
+            ],
         ],
         'googleFont' => [
             'format' => 'text',
@@ -730,9 +730,9 @@ $templateConf = [
             'css' => [
                 [
                     'selector' => '#additionalText',
-                    'property' => 'font-family'
-                ]
-            ]
+                    'property' => 'font-family',
+                ],
+            ],
         ],
         'fontSize' => [
             'format' => 'text',
@@ -743,15 +743,15 @@ $templateConf = [
             'css' => [
                 [
                     'selector' => '#additionalText',
-                    'property' => 'font-size'
-                ]
-            ]
+                    'property' => 'font-size',
+                ],
+            ],
         ],
     ],
 
     'menu' => [
         '_' => [
-            'title' => I18n::_('Main menu')
+            'title' => I18n::_('Main menu'),
         ],
         'colorLink' => [
             'format' => 'color',
@@ -761,17 +761,17 @@ $templateConf = [
             'css' => [
                 [
                     'selector' => '#sideColumnTop a:link',
-                    'property' => 'color'
+                    'property' => 'color',
                 ],
                 [
                     'selector' => '#sideColumnTop a:visited',
-                    'property' => 'color'
+                    'property' => 'color',
                 ],
                 [
                     'selector' => 'ol#pageEntries .xGalleryContainer ul.xGalleryNav li a',
-                    'property' => 'color'
-                ]
-            ]
+                    'property' => 'color',
+                ],
+            ],
         ],
         'colorHover' => [
             'format' => 'color',
@@ -781,13 +781,13 @@ $templateConf = [
             'css' => [
                 [
                     'selector' => '#sideColumnTop a:hover',
-                    'property' => 'color'
+                    'property' => 'color',
                 ],
                 [
                     'selector' => 'ol#pageEntries .xGalleryContainer ul.xGalleryNav li a:hover',
-                    'property' => 'color'
-                ]
-            ]
+                    'property' => 'color',
+                ],
+            ],
         ],
         'colorActive' => [
             'format' => 'color',
@@ -797,22 +797,22 @@ $templateConf = [
             'css' => [
                 [
                     'selector' => '#sideColumnTop a:active',
-                    'property' => 'color'
+                    'property' => 'color',
                 ],
                 [
                     'selector' => '#sideColumnTop li.selected > a',
-                    'property' => 'color'
+                    'property' => 'color',
                 ],
                 [
                     'selector' => '#sideColumnTop li.selected > span',
-                    'property' => 'color'
+                    'property' => 'color',
                 ],
 
                 [
                     'selector' => 'ol#pageEntries .xGalleryContainer ul.xGalleryNav li.selected a',
-                    'property' => 'color'
-                ]
-            ]
+                    'property' => 'color',
+                ],
+            ],
         ],
         'textDecorationLink' => [
             'format' => 'select',
@@ -828,17 +828,17 @@ $templateConf = [
             'css' => [
                 [
                     'selector' => '#sideColumnTop a:link',
-                    'property' => 'text-decoration'
+                    'property' => 'text-decoration',
                 ],
                 [
                     'selector' => '#sideColumnTop a:visited',
-                    'property' => 'text-decoration'
+                    'property' => 'text-decoration',
                 ],
                 [
                     'selector' => 'ol#pageEntries .xGalleryContainer ul.xGalleryNav li a',
-                    'property' => 'text-decoration'
-                ]
-            ]
+                    'property' => 'text-decoration',
+                ],
+            ],
         ],
         'textDecorationHover' => [
             'format' => 'select',
@@ -854,13 +854,13 @@ $templateConf = [
             'css' => [
                 [
                     'selector' => '#sideColumnTop a:hover',
-                    'property' => 'text-decoration'
+                    'property' => 'text-decoration',
                 ],
                 [
                     'selector' => 'ol#pageEntries .xGalleryContainer ul.xGalleryNav li a:hover',
-                    'property' => 'text-decoration'
-                ]
-            ]
+                    'property' => 'text-decoration',
+                ],
+            ],
         ],
         'textDecorationActive' => [
             'format' => 'select',
@@ -876,27 +876,27 @@ $templateConf = [
             'css' => [
                 [
                     'selector' => '#sideColumnTop a:active',
-                    'property' => 'text-decoration'
+                    'property' => 'text-decoration',
                 ],
                 [
                     'selector' => '#sideColumnTop li.selected > a',
-                    'property' => 'text-decoration'
+                    'property' => 'text-decoration',
                 ],
                 [
                     'selector' => '#sideColumnTop li.selected > span',
-                    'property' => 'text-decoration'
+                    'property' => 'text-decoration',
                 ],
                 [
                     'selector' => 'ol#pageEntries .xGalleryContainer ul.xGalleryNav li.selected a',
-                    'property' => 'text-decoration'
-                ]
-            ]
+                    'property' => 'text-decoration',
+                ],
+            ],
         ],
     ],
 
     'entryLayout' => [
         '_' => [
-            'title' => I18n::_('Entry layout')
+            'title' => I18n::_('Entry layout'),
         ],
         'spaceBetween' => [
             'format' => 'text',
@@ -908,9 +908,9 @@ $templateConf = [
             'css' => [
                 [
                     'selector' => 'ol#pageEntries li.xEntry',
-                    'property' => 'margin-bottom'
-                ]
-            ]
+                    'property' => 'margin-bottom',
+                ],
+            ],
         ],
         'defaultGalleryType' => [
             'format' => 'select',
@@ -932,17 +932,17 @@ $templateConf = [
             'css' => [
                 [
                     'selector' => 'ol#pageEntries li.xEntry .xGalleryType-column .xGalleryItem',
-                    'property' => 'padding-bottom'
+                    'property' => 'padding-bottom',
                 ],
                 [
                     'selector' => 'ol#pageEntries li.xEntry .xGalleryType-row:not(.bt-gallery-has-one-item) .xGalleryItem',
-                    'property' => 'margin-right'
+                    'property' => 'margin-right',
                 ],
                 [
                     'selector' => '.bt-responsive ol#pageEntries li.xEntry .xGalleryType-row:not(.bt-gallery-has-one-item) .xGallery .xGalleryItem',
-                    'property' => 'padding-bottom'
-                ]
-            ]
+                    'property' => 'padding-bottom',
+                ],
+            ],
         ],
         'galleryNavMargin' => [
             'format' => 'text',
@@ -954,9 +954,9 @@ $templateConf = [
             'css' => [
                 [
                     'selector' => 'ol#pageEntries li.xEntry .xGalleryType-slideshow .xGallery',
-                    'property' => 'margin-bottom'
-                ]
-            ]
+                    'property' => 'margin-bottom',
+                ],
+            ],
         ],
         'galleryMargin' => [
             'format' => 'text',
@@ -968,15 +968,15 @@ $templateConf = [
             'css' => [
                 [
                     'selector' => 'ol#pageEntries li.xEntry .xGalleryContainer',
-                    'property' => 'margin-bottom'
-                ]
-            ]
+                    'property' => 'margin-bottom',
+                ],
+            ],
         ],
     ],
 
     'socialMediaLinks' => [
         '_' => [
-            'title' => I18n::_('Social media buttons')
+            'title' => I18n::_('Social media buttons'),
         ],
         'color' => [
             'format' => 'color',
@@ -986,15 +986,15 @@ $templateConf = [
             'css' => [
                 [
                     'selector' => '.social-icon path',
-                    'property' => 'fill'
-                ]
-            ]
+                    'property' => 'fill',
+                ],
+            ],
         ],
     ],
 
     'css' => [
         '_' => [
-            'title' => I18n::_('Custom CSS')
+            'title' => I18n::_('Custom CSS'),
         ],
         'customCSS' => [
             'format' => 'longtext',
@@ -1002,7 +1002,7 @@ $templateConf = [
             'default' => '',
             'html_entities' => true,
             'title' => I18n::_('Custom CSS'),
-            'description' => I18n::_('description_custom_css')
+            'description' => I18n::_('description_custom_css'),
         ],
     ],
 ];
@@ -1011,7 +1011,7 @@ $translations = [
     'sectionTypes' => [
         'type' => I18n::_('section_type'),
         'type_tip' => I18n::_('section_type_tip'),
-    ]
+    ],
 ];
 
 return [$sectionTypes, $templateConf, $translations];

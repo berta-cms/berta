@@ -1,12 +1,12 @@
 <?php
 
-header("Content-Type: text/css");
+header('Content-Type: text/css');
 
-include('../../engine/inc.page.php');
-$s =& $berta->template->settings;
-$isResponsive = $s->get('pageLayout', 'responsive')=='yes';
+include '../../engine/inc.page.php';
+$s = &$berta->template->settings;
+$isResponsive = $s->get('pageLayout', 'responsive') == 'yes';
 
-if(!1) { ?><style type="text/css"><?php } ?>
+if (! 1) { ?><style type="text/css"><?php } ?>
 
 
 	body {
@@ -47,11 +47,11 @@ if(!1) { ?><style type="text/css"><?php } ?>
 		visibility: visible;
 	}
 
-	<?php if($isResponsive){ ?>
+	<?php if ($isResponsive) { ?>
 		#additionalText:hover .xHandle,
 		.floating-banner:hover .xHandle {
 			visibility: hidden;
 		}
 	<?php } ?>
 
-<?php if(!1) { ?></style><?php } ?>
+<?php if (! 1) { ?></style><?php } ?>

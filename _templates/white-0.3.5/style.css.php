@@ -1,10 +1,10 @@
 <?php
-header("Content-Type: text/css");
-include('../../engine/inc.page.php');
+header('Content-Type: text/css');
+include '../../engine/inc.page.php';
 
-$s =& $berta->template->settings;
+$s = &$berta->template->settings;
 
-if(!1) { ?><style type="text/css"><?php } ?>
+if (! 1) { ?><style type="text/css"><?php } ?>
 
 body {
 	color: <?php echo $s->get('generalFontSettings', 'color') ?>;
@@ -17,20 +17,20 @@ body {
 
 	background-color: <?php echo $s->get('background', 'backgroundColor') ?>;
 	<?php if ($s->get('background', 'backgroundImageEnabled') == 'yes') { ?>
-		<?php if($s->get('background', 'backgroundImage')) { ?>
+		<?php if ($s->get('background', 'backgroundImage')) { ?>
 			background-image:url(<?php echo Berta::$options['MEDIA_ABS_ROOT'] . $s->get('background', 'backgroundImage') ?>);
 		<?php } ?>
 		background-repeat: <?php echo $s->get('background', 'backgroundRepeat') ?>;
         background-position: <?php echo $s->get('background', 'backgroundPosition') ?>;
         <?php
         $bgAttachment = $s->get('background', 'backgroundAttachment');
-        if ($bgAttachment == 'fill') { ?>
+	    if ($bgAttachment == 'fill') { ?>
             background-size: cover;
             background-attachment: fixed;
         <?php } else { ?>
             background-attachment: <?php echo $bgAttachment ?>;
         <?php }
-	} ?>
+        } ?>
 }
 
 a:link {
@@ -181,4 +181,4 @@ ol#pageEntries .xGalleryContainer ul.xGalleryNav li.selected a {
     }
 }
 
-<?php if(!1) { ?></style><?php } ?>
+<?php if (! 1) { ?></style><?php } ?>
