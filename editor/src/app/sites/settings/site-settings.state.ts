@@ -1,7 +1,20 @@
 import { concat, of } from 'rxjs';
 import { take, switchMap, tap, map } from 'rxjs/operators';
-import { State, Action, StateContext, Selector, NgxsOnInit, Store, Actions, ofActionSuccessful } from '@ngxs/store';
-import { SitesSettingsStateModel, SiteSettingsResponse, SiteSettingsSiteResponse } from './site-settings.interface';
+import {
+  State,
+  Action,
+  StateContext,
+  Selector,
+  NgxsOnInit,
+  Store,
+  Actions,
+  ofActionSuccessful,
+} from '@ngxs/store';
+import {
+  SitesSettingsStateModel,
+  SiteSettingsResponse,
+  SiteSettingsSiteResponse,
+} from './site-settings.interface';
 import { SettingsGroupModel } from '../../shared/interfaces';
 import { FileUploadService } from '../shared/file-upload.service';
 import { AppStateService } from '../../app-state/app-state.service';
@@ -23,15 +36,16 @@ import {
 import { UserLoginAction } from '../../user/user.actions';
 import { AddSiteSectionAction } from '../sections/sections-state/site-sections.actions';
 
-
 @State<SitesSettingsStateModel>({
   name: 'siteSettings',
-  defaults: {}
+  defaults: {},
 })
 export class SiteSettingsState implements NgxsOnInit {
-
   @Selector([AppState.getSite])
-  static getCurrentSiteSettings(siteSettings: SitesSettingsStateModel, siteSlug: string) {
+  static getCurrentSiteSettings(
+    siteSettings: SitesSettingsStateModel,
+    siteSlug: string
+  ) {
     if (!siteSettings || siteSlug === null) {
       return;
     }
@@ -44,8 +58,12 @@ export class SiteSettingsState implements NgxsOnInit {
     if (!currentSiteSettings) {
       return;
     }
-    const templateSettings = currentSiteSettings.find(settingGroup => settingGroup.slug === 'template');
-    const template = templateSettings && templateSettings.settings.find(setting => setting.slug === 'template');
+    const templateSettings = currentSiteSettings.find(
+      (settingGroup) => settingGroup.slug === 'template'
+    );
+    const template =
+      templateSettings &&
+      templateSettings.settings.find((setting) => setting.slug === 'template');
     return template && template.value;
   }
 
@@ -54,8 +72,12 @@ export class SiteSettingsState implements NgxsOnInit {
     if (!currentSiteSettings) {
       return;
     }
-    const languageSettings = currentSiteSettings.find(settingGroup => settingGroup.slug === 'language');
-    const language = languageSettings && languageSettings.settings.find(setting => setting.slug === 'language');
+    const languageSettings = currentSiteSettings.find(
+      (settingGroup) => settingGroup.slug === 'language'
+    );
+    const language =
+      languageSettings &&
+      languageSettings.settings.find((setting) => setting.slug === 'language');
     return language && language.value;
   }
 
@@ -63,76 +85,99 @@ export class SiteSettingsState implements NgxsOnInit {
     private store: Store,
     private actions$: Actions,
     private appStateService: AppStateService,
-    private fileUploadService: FileUploadService) {
-  }
+    private fileUploadService: FileUploadService
+  ) {}
 
   ngxsOnInit({ dispatch }: StateContext<SitesSettingsStateModel>) {
     concat(
       this.appStateService.getInitialState('', 'site_settings').pipe(take(1)),
-      this.actions$.pipe(ofActionSuccessful(UserLoginAction), switchMap(() => {
-        return this.appStateService.getInitialState('', 'site_settings').pipe(take(1));
-      }))
-    )
-    .subscribe({
+      this.actions$.pipe(
+        ofActionSuccessful(UserLoginAction),
+        switchMap(() => {
+          return this.appStateService
+            .getInitialState('', 'site_settings')
+            .pipe(take(1));
+        })
+      )
+    ).subscribe({
       next: (response: SiteSettingsResponse) => {
         dispatch(new InitSiteSettingsAction(response));
       },
-      error: (error) => console.error(error)
+      error: (error) => console.error(error),
     });
   }
 
   @Action(CreateSiteSettingsAction)
-  createSiteSettings({ patchState }: StateContext<SitesSettingsStateModel>, action: CreateSiteSettingsAction) {
-    const newSettings = {[action.site.name]: this.initializeSettingsForSite(action.settings)};
+  createSiteSettings(
+    { patchState }: StateContext<SitesSettingsStateModel>,
+    action: CreateSiteSettingsAction
+  ) {
+    const newSettings = {
+      [action.site.name]: this.initializeSettingsForSite(action.settings),
+    };
     patchState(newSettings);
   }
 
   @Action(UpdateSiteSettingsAction)
-  updateSiteSettings({ getState, patchState, dispatch }: StateContext<SitesSettingsStateModel>, action: UpdateSiteSettingsAction) {
+  updateSiteSettings(
+    { getState, patchState, dispatch }: StateContext<SitesSettingsStateModel>,
+    action: UpdateSiteSettingsAction
+  ) {
     const currentSite = this.store.selectSnapshot(AppState.getSite);
     const settingKey = Object.keys(action.payload)[0];
     const data = {
       path: currentSite + '/settings/' + action.settingGroup + '/' + settingKey,
-      value: action.payload[settingKey]
+      value: action.payload[settingKey],
     };
 
-    return (data.value instanceof File ? this.fileUploadService.upload('siteSettingsUpload', data) : this.appStateService.sync('siteSettings', data)).pipe(
-      tap(response => {
+    return (
+      data.value instanceof File
+        ? this.fileUploadService.upload('siteSettingsUpload', data)
+        : this.appStateService.sync('siteSettings', data)
+    ).pipe(
+      tap((response) => {
         if (response.error_message) {
           /* This should probably be handled in sync */
           console.error(response.error_message);
         } else {
           const currentState = getState();
 
-          patchState({[currentSite]: currentState[currentSite].map(settingGroup => {
-            if (settingGroup.slug !== action.settingGroup) {
-              return settingGroup;
-            }
+          patchState({
+            [currentSite]: currentState[currentSite].map((settingGroup) => {
+              if (settingGroup.slug !== action.settingGroup) {
+                return settingGroup;
+              }
 
-            return {
-              ...settingGroup,
-              settings: settingGroup.settings.map(setting => {
-                if (setting.slug !== settingKey) {
-                  return setting;
-                }
-                return { ...setting, value: response.value };
-              })
-            };
-          })});
+              return {
+                ...settingGroup,
+                settings: settingGroup.settings.map((setting) => {
+                  if (setting.slug !== settingKey) {
+                    return setting;
+                  }
+                  return { ...setting, value: response.value };
+                }),
+              };
+            }),
+          });
 
           switch (action.settingGroup) {
-            case "navigation":
-              dispatch(new UpdateNavigationSiteSettingsAction(action.payload))
-              break
-            case "socialMediaLinks":
-            case "socialMediaButtons":
-            case "media":
-            case "banners":
-            case "settings":
-            case "entryLayout":
-            case "pageLayout":
-              dispatch(new HandleSiteSettingsChildrenChangesAction(action.settingGroup, action.payload))
-              break
+            case 'navigation':
+              dispatch(new UpdateNavigationSiteSettingsAction(action.payload));
+              break;
+            case 'socialMediaLinks':
+            case 'socialMediaButtons':
+            case 'media':
+            case 'banners':
+            case 'settings':
+            case 'entryLayout':
+            case 'pageLayout':
+              dispatch(
+                new HandleSiteSettingsChildrenChangesAction(
+                  action.settingGroup,
+                  action.payload
+                )
+              );
+              break;
           }
         }
       })
@@ -140,205 +185,261 @@ export class SiteSettingsState implements NgxsOnInit {
   }
 
   @Action(UpdateSiteSettingsFromSyncAction)
-  updateSiteSettingsFromSync({patchState, getState, dispatch}: StateContext<SitesSettingsStateModel>,
-                             action: UpdateSiteSettingsFromSyncAction) {
-    return this.appStateService.sync('siteSettings', {
-      path: action.path,
-      value: action.payload
-    }).pipe(
-      tap(response => {
-        if (response.error_message) {
-          /* This should probably be handled in sync */
-          console.error(response.error_message);
-        } else {
-          const currentState = getState();
-          const [currentSite, _, settingGroup, settingKey] = action.path.split('/');
-
-          patchState({[currentSite]: currentState[currentSite].map(_settingGroup => {
-            if (_settingGroup.slug !== settingGroup) {
-              return _settingGroup;
-            }
-
-            if (_settingGroup.settings.some(setting => setting.slug === settingKey)) {
-              return {
-                ..._settingGroup,
-                settings: _settingGroup.settings.map(setting => {
-                  if (setting.slug !== settingKey) {
-                    return setting;
-                  }
-                  return { ...setting, value: response.value };
-                })
-              };
-            }
-
-            return {
-              ..._settingGroup,
-              settings: [..._settingGroup.settings, {slug: settingKey, value: response.value}]
-            };
-          })});
-
-          if (response.section) {
-            dispatch(new AddSiteSectionAction(response.section));
-          }
-        }
+  updateSiteSettingsFromSync(
+    { patchState, getState, dispatch }: StateContext<SitesSettingsStateModel>,
+    action: UpdateSiteSettingsFromSyncAction
+  ) {
+    return this.appStateService
+      .sync('siteSettings', {
+        path: action.path,
+        value: action.payload,
       })
-    );
+      .pipe(
+        tap((response) => {
+          if (response.error_message) {
+            /* This should probably be handled in sync */
+            console.error(response.error_message);
+          } else {
+            const currentState = getState();
+            const [currentSite, _, settingGroup, settingKey] =
+              action.path.split('/');
+
+            patchState({
+              [currentSite]: currentState[currentSite].map((_settingGroup) => {
+                if (_settingGroup.slug !== settingGroup) {
+                  return _settingGroup;
+                }
+
+                if (
+                  _settingGroup.settings.some(
+                    (setting) => setting.slug === settingKey
+                  )
+                ) {
+                  return {
+                    ..._settingGroup,
+                    settings: _settingGroup.settings.map((setting) => {
+                      if (setting.slug !== settingKey) {
+                        return setting;
+                      }
+                      return { ...setting, value: response.value };
+                    }),
+                  };
+                }
+
+                return {
+                  ..._settingGroup,
+                  settings: [
+                    ..._settingGroup.settings,
+                    { slug: settingKey, value: response.value },
+                  ],
+                };
+              }),
+            });
+
+            if (response.section) {
+              dispatch(new AddSiteSectionAction(response.section));
+            }
+          }
+        })
+      );
   }
 
   @Action(AddSiteSettingChildrenAction)
-  addSiteSettingChildren({ getState, patchState, dispatch }: StateContext<SitesSettingsStateModel>, action: AddSiteSettingChildrenAction) {
+  addSiteSettingChildren(
+    { getState, patchState, dispatch }: StateContext<SitesSettingsStateModel>,
+    action: AddSiteSettingChildrenAction
+  ) {
     const currentSite = this.store.selectSnapshot(AppState.getSite);
     const settingKey = action.slug;
     const data = {
       path: currentSite + '/settings/' + action.settingGroup + '/' + settingKey,
-      value: action.payload
+      value: action.payload,
     };
 
     return this.appStateService.sync('siteSettings', data, 'POST').pipe(
-      tap(response => {
+      tap((response) => {
         if (response.error_message) {
           /* This should probably be handled in sync */
           console.error(response.error_message);
         } else {
           const currentState = getState();
 
-          patchState({[currentSite]: currentState[currentSite].map(settingGroup => {
-            if (settingGroup.slug !== action.settingGroup) {
-              return settingGroup;
-            }
+          patchState({
+            [currentSite]: currentState[currentSite].map((settingGroup) => {
+              if (settingGroup.slug !== action.settingGroup) {
+                return settingGroup;
+              }
 
-            return {
-              ...settingGroup,
-              settings: settingGroup.settings.map(setting => {
-                if (setting.slug !== settingKey) {
-                  return setting;
-                }
-
-                const newChild: any = Object.keys(response).map(slug => {
-                  return {
-                    slug: slug,
-                    value: response[slug]
+              return {
+                ...settingGroup,
+                settings: settingGroup.settings.map((setting) => {
+                  if (setting.slug !== settingKey) {
+                    return setting;
                   }
-                });
 
-                return {
-                  ...setting,
-                  value: [
-                    ...setting.value as Array<{[k:string]: string|number|boolean}>,
-                    newChild
-                  ]
-                };
-              })
-            };
-          })});
+                  const newChild: any = Object.keys(response).map((slug) => {
+                    return {
+                      slug: slug,
+                      value: response[slug],
+                    };
+                  });
 
-          dispatch(new HandleSiteSettingsChildrenChangesAction(action.settingGroup))
+                  return {
+                    ...setting,
+                    value: [
+                      ...(setting.value as Array<{
+                        [k: string]: string | number | boolean;
+                      }>),
+                      newChild,
+                    ],
+                  };
+                }),
+              };
+            }),
+          });
+
+          dispatch(
+            new HandleSiteSettingsChildrenChangesAction(action.settingGroup)
+          );
         }
       })
     );
   }
 
   @Action(DeleteSiteSettingChildrenAction)
-  deleteSiteSettingChildren({ getState, patchState, dispatch }: StateContext<SitesSettingsStateModel>, action: DeleteSiteSettingChildrenAction) {
+  deleteSiteSettingChildren(
+    { getState, patchState, dispatch }: StateContext<SitesSettingsStateModel>,
+    action: DeleteSiteSettingChildrenAction
+  ) {
     const currentSite = this.store.selectSnapshot(AppState.getSite);
     const settingKey = action.slug;
     const data = {
       path: currentSite + '/settings/' + action.settingGroup + '/' + settingKey,
-      value: action.payload
+      value: action.payload,
     };
 
     return this.appStateService.sync('siteSettings', data, 'DELETE').pipe(
-      tap(response => {
+      tap((response) => {
         if (response.error_message) {
           /* This should probably be handled in sync */
           console.error(response.error_message);
         } else {
           const currentState = getState();
 
-          patchState({[currentSite]: currentState[currentSite].map(settingGroup => {
-            if (settingGroup.slug !== action.settingGroup) {
-              return settingGroup;
-            }
+          patchState({
+            [currentSite]: currentState[currentSite].map((settingGroup) => {
+              if (settingGroup.slug !== action.settingGroup) {
+                return settingGroup;
+              }
 
-            return {
-              ...settingGroup,
-              settings: settingGroup.settings.map(setting => {
-                if (setting.slug !== settingKey) {
-                  return setting;
-                }
+              return {
+                ...settingGroup,
+                settings: settingGroup.settings.map((setting) => {
+                  if (setting.slug !== settingKey) {
+                    return setting;
+                  }
 
-                return {...setting, value: (setting.value as Array<{[k:string]: string|number|boolean}>).filter((_, i) => i !== action.payload)};
-              })
-            };
-          })});
+                  return {
+                    ...setting,
+                    value: (
+                      setting.value as Array<{
+                        [k: string]: string | number | boolean;
+                      }>
+                    ).filter((_, i) => i !== action.payload),
+                  };
+                }),
+              };
+            }),
+          });
 
-          dispatch(new HandleSiteSettingsChildrenChangesAction(action.settingGroup))
+          dispatch(
+            new HandleSiteSettingsChildrenChangesAction(action.settingGroup)
+          );
         }
       })
     );
   }
 
   @Action(UpdateSiteSettingChildreAction)
-  updateSiteSettingChildren({ getState, patchState, dispatch }: StateContext<SitesSettingsStateModel>, action: UpdateSiteSettingChildreAction) {
-
+  updateSiteSettingChildren(
+    { getState, patchState, dispatch }: StateContext<SitesSettingsStateModel>,
+    action: UpdateSiteSettingChildreAction
+  ) {
     const currentSite = this.store.selectSnapshot(AppState.getSite);
     const settingSlug = action.slug;
     const childParentSlug = settingSlug.substr(0, settingSlug.length - 1);
     const childSlug = Object.keys(action.payload)[0];
-    const path = [currentSite, 'settings', action.settingGroup, settingSlug, childParentSlug, action.index, childSlug];
+    const path = [
+      currentSite,
+      'settings',
+      action.settingGroup,
+      settingSlug,
+      childParentSlug,
+      action.index,
+      childSlug,
+    ];
     const data = {
       path: path.join('/'),
-      value: action.payload[childSlug]
+      value: action.payload[childSlug],
     };
 
     return this.appStateService.sync('siteSettings', data).pipe(
-      tap(response => {
+      tap((response) => {
         if (response.error_message) {
           /* This should probably be handled in sync */
           console.error(response.error_message);
         } else {
           const currentState = getState();
 
-          patchState({[currentSite]: currentState[currentSite].map(settingGroup => {
-            if (settingGroup.slug !== action.settingGroup) {
-              return settingGroup;
-            }
+          patchState({
+            [currentSite]: currentState[currentSite].map((settingGroup) => {
+              if (settingGroup.slug !== action.settingGroup) {
+                return settingGroup;
+              }
 
-            return {
-              ...settingGroup,
-              settings: settingGroup.settings.map(setting => {
-                if (setting.slug !== settingSlug) {
-                  return setting;
-                }
-
-                return {...setting, value: (setting.value as any).map((row, index) => {
-
-                  if (action.index !== index) {
-                    return row;
+              return {
+                ...settingGroup,
+                settings: settingGroup.settings.map((setting) => {
+                  if (setting.slug !== settingSlug) {
+                    return setting;
                   }
 
-                  const slug = Object.keys(action.payload)[0];
+                  return {
+                    ...setting,
+                    value: (setting.value as any).map((row, index) => {
+                      if (action.index !== index) {
+                        return row;
+                      }
 
-                  return row.map(child => {
-                    if (child.slug !== slug) {
-                      return child;
-                    }
+                      const slug = Object.keys(action.payload)[0];
 
-                    return { ...child, value: response.value };
-                  });
-                })};
-              })
-            };
-          })});
+                      return row.map((child) => {
+                        if (child.slug !== slug) {
+                          return child;
+                        }
 
-          dispatch(new HandleSiteSettingsChildrenChangesAction(action.settingGroup))
+                        return { ...child, value: response.value };
+                      });
+                    }),
+                  };
+                }),
+              };
+            }),
+          });
+
+          dispatch(
+            new HandleSiteSettingsChildrenChangesAction(action.settingGroup)
+          );
         }
       })
     );
   }
 
   @Action(RenameSiteSettingsSitenameAction)
-  renameSiteSettingsSitename({ setState, getState }: StateContext<SitesSettingsStateModel>, action: RenameSiteSettingsSitenameAction) {
+  renameSiteSettingsSitename(
+    { setState, getState }: StateContext<SitesSettingsStateModel>,
+    action: RenameSiteSettingsSitenameAction
+  ) {
     const state = getState();
     const newState = {};
 
@@ -355,32 +456,37 @@ export class SiteSettingsState implements NgxsOnInit {
   }
 
   @Action(DeleteSiteSettingsAction)
-  deleteSiteSettings({ setState, getState }: StateContext<SitesSettingsStateModel>, action: DeleteSiteSettingsAction) {
-    const newState = {...getState()};
+  deleteSiteSettings(
+    { setState, getState }: StateContext<SitesSettingsStateModel>,
+    action: DeleteSiteSettingsAction
+  ) {
+    const newState = { ...getState() };
     delete newState[action.siteName];
     setState(newState);
   }
 
-  initializeSettingsForSite(settings: SiteSettingsSiteResponse): SettingsGroupModel[] {
-    return Object.keys(settings).map(settingGroupSlug => {
+  initializeSettingsForSite(
+    settings: SiteSettingsSiteResponse
+  ): SettingsGroupModel[] {
+    return Object.keys(settings).map((settingGroupSlug) => {
       return {
         slug: settingGroupSlug,
-        settings: Object.keys(settings[settingGroupSlug]).map(settingSlug => {
+        settings: Object.keys(settings[settingGroupSlug]).map((settingSlug) => {
           return {
             slug: settingSlug,
-            value: settings[settingGroupSlug][settingSlug] instanceof Array ?
-              settings[settingGroupSlug][settingSlug].map(children => {
-                return Object.keys(children).map(slug => {
-                  return {
-                    slug: slug,
-                    value: children[slug]
-                  }
-                })
-              })
-              :
-              settings[settingGroupSlug][settingSlug]
+            value:
+              settings[settingGroupSlug][settingSlug] instanceof Array
+                ? settings[settingGroupSlug][settingSlug].map((children) => {
+                    return Object.keys(children).map((slug) => {
+                      return {
+                        slug: slug,
+                        value: children[slug],
+                      };
+                    });
+                  })
+                : settings[settingGroupSlug][settingSlug],
           };
-        })
+        }),
       };
     });
   }
@@ -391,11 +497,16 @@ export class SiteSettingsState implements NgxsOnInit {
   }
 
   @Action(InitSiteSettingsAction)
-  initSiteSettings({ setState }: StateContext<SitesSettingsStateModel>, action: InitSiteSettingsAction) {
+  initSiteSettings(
+    { setState }: StateContext<SitesSettingsStateModel>,
+    action: InitSiteSettingsAction
+  ) {
     const newState: SitesSettingsStateModel = {};
 
     for (const siteSlug in action.payload) {
-      newState[siteSlug] = this.initializeSettingsForSite(action.payload[siteSlug]);
+      newState[siteSlug] = this.initializeSettingsForSite(
+        action.payload[siteSlug]
+      );
     }
 
     setState(newState);

@@ -2,26 +2,26 @@ export function createEl(
   dom: Document,
   tag: string,
   id: string,
-  cssText?: string,
+  cssText?: string
 ): HTMLElement {
-  const el = dom.createElement(tag)
-  el.id = id
+  const el = dom.createElement(tag);
+  el.id = id;
 
   if (cssText) {
-    el.style.cssText = cssText
+    el.style.cssText = cssText;
   }
 
-  return el
+  return el;
 }
 
 export function updateElCssById(
   dom: Document,
   id: string,
-  cssText: string,
+  cssText: string
 ): HTMLElement {
-  const el = dom.getElementById(id)
+  const el = dom.getElementById(id);
 
-  el.style.cssText = cssText
+  el.style.cssText = cssText;
 
-  return el
+  return el;
 }

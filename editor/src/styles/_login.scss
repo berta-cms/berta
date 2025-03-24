@@ -38,7 +38,7 @@ berta-login {
       align-items: center;
       margin-bottom: 1.3em;
       padding: 1px 0 1px 0;
-      transition: background-color .2s;
+      transition: background-color 0.2s;
 
       & p {
         margin-top: 0;
@@ -79,7 +79,7 @@ berta-login {
           height: 100%;
           width: 37px;
           display: flex;
-          justify-content: center
+          justify-content: center;
         }
 
         & svg {
@@ -89,7 +89,6 @@ berta-login {
         &:hover {
           background-color: #0c4dff;
         }
-
       }
     }
 

@@ -16,72 +16,135 @@ import {
   UpdateSiteSettingsAction,
   AddSiteSettingChildrenAction,
   DeleteSiteSettingChildrenAction,
-  UpdateSiteSettingChildreAction
+  UpdateSiteSettingChildreAction,
 } from './site-settings.actions';
-import { SettingModel, SettingChildModel, SettingConfigModel, SettingGroupConfigModel, SettingsGroupModel } from '../../shared/interfaces';
-
+import {
+  SettingModel,
+  SettingChildModel,
+  SettingConfigModel,
+  SettingGroupConfigModel,
+  SettingsGroupModel,
+} from '../../shared/interfaces';
 
 @Component({
   selector: 'berta-site-settings',
   template: `
-    <div class="setting-group"
-         [class.is-expanded]="camelifySlug(currentGroup) === settingGroup.slug"
-         *ngFor="let settingGroup of settings$ | async">
-      <h3 [routerLink]="['/settings', camelifySlug(currentGroup) === settingGroup.slug ? '' : slugifyCamel(settingGroup.slug)]" queryParamsHandling="preserve" role="link" class="hoverable">
+    <div
+      class="setting-group"
+      [class.is-expanded]="camelifySlug(currentGroup) === settingGroup.slug"
+      *ngFor="let settingGroup of settings$ | async"
+    >
+      <h3
+        [routerLink]="[
+          '/settings',
+          camelifySlug(currentGroup) === settingGroup.slug
+            ? ''
+            : slugifyCamel(settingGroup.slug)
+        ]"
+        queryParamsHandling="preserve"
+        role="link"
+        class="hoverable"
+      >
         {{ settingGroup.config.title || settingGroup.slug }}
-        <svg class="drop-icon" width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M9 1L4.75736 5.24264L0.514719 1" stroke="#9b9b9b" stroke-linecap="round" stroke-linejoin="round"/>
+        <svg
+          class="drop-icon"
+          width="10"
+          height="6"
+          viewBox="0 0 10 6"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M9 1L4.75736 5.24264L0.514719 1"
+            stroke="#9b9b9b"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
         </svg>
       </h3>
-      <div class="settings" [@isExpanded]="camelifySlug(currentGroup) === settingGroup.slug">
+      <div
+        class="settings"
+        [@isExpanded]="camelifySlug(currentGroup) === settingGroup.slug"
+      >
         <div *ngFor="let setting of settingGroup.settings">
-          <berta-setting *ngIf="!setting.config.children"
-                         [setting]="setting.setting"
-                         [config]="setting.config"
-                         [disabled]="isDisabled(settingGroup, setting.setting, setting.config, user$ | async)"
-                         [disabledReason]="disabledReason(setting.config, user$ | async, appState$ | async)"
-                         [error]="settingError[settingGroup.slug + ':' + setting.setting.slug]"
-                         (update)="updateSetting(settingGroup.slug, $event)"></berta-setting>
+          <berta-setting
+            *ngIf="!setting.config.children"
+            [setting]="setting.setting"
+            [config]="setting.config"
+            [disabled]="
+              isDisabled(
+                settingGroup,
+                setting.setting,
+                setting.config,
+                user$ | async
+              )
+            "
+            [disabledReason]="
+              disabledReason(setting.config, user$ | async, appState$ | async)
+            "
+            [error]="
+              settingError[settingGroup.slug + ':' + setting.setting.slug]
+            "
+            (update)="updateSetting(settingGroup.slug, $event)"
+          ></berta-setting>
 
           <div *ngIf="setting.config.children">
             <div class="setting">
               <h4>{{ setting.config.title }}</h4>
             </div>
 
-            <berta-setting-row *ngFor="let inputFields of setting.children; let index = index"
-                               [inputFields]="inputFields"
-                               (update)="updateChildren(settingGroup.slug, setting.setting.slug, index, $event)"
-                               (delete)="deleteChildren(settingGroup.slug, setting.setting.slug, index)">
+            <berta-setting-row
+              *ngFor="let inputFields of setting.children; let index = index"
+              [inputFields]="inputFields"
+              (update)="
+                updateChildren(
+                  settingGroup.slug,
+                  setting.setting.slug,
+                  index,
+                  $event
+                )
+              "
+              (delete)="
+                deleteChildren(settingGroup.slug, setting.setting.slug, index)
+              "
+            >
             </berta-setting-row>
 
-            <berta-setting-row-add [config]="setting.config.children"
-                                   (add)="addChildren(settingGroup.slug, setting.setting.slug, $event)">
+            <berta-setting-row-add
+              [config]="setting.config.children"
+              (add)="
+                addChildren(settingGroup.slug, setting.setting.slug, $event)
+              "
+            >
             </berta-setting-row-add>
 
             <div class="setting" *ngIf="setting.config.description">
-              <p class="setting-description" [innerHTML]="getSettingDescription(setting.config.description)"></p>
+              <p
+                class="setting-description"
+                [innerHTML]="getSettingDescription(setting.config.description)"
+              ></p>
             </div>
           </div>
         </div>
       </div>
     </div>
   `,
-  animations: [
-    Animations.slideToggle
-  ]
+  animations: [Animations.slideToggle],
 })
 export class SiteSettingsComponent implements OnInit {
   defaultGroup = 'template';
   currentGroup: string;
-  settings$: Observable<Array<{
-    config: SettingGroupConfigModel['_'],
-    settings: Array<{
-      setting: SettingModel,
-      config: SettingConfigModel,
-      children?: Array<SettingChildModel[]>
-    }>,
-    slug: string
-  }>>;
+  settings$: Observable<
+    Array<{
+      config: SettingGroupConfigModel['_'];
+      settings: Array<{
+        setting: SettingModel;
+        config: SettingConfigModel;
+        children?: Array<SettingChildModel[]>;
+      }>;
+      slug: string;
+    }>
+  >;
   settingUpdate: { [k: string]: boolean } = {};
   settingError: { [k: string]: string } = {};
 
@@ -91,8 +154,8 @@ export class SiteSettingsComponent implements OnInit {
   constructor(
     private store: Store,
     private route: ActivatedRoute,
-    private sanitizer: DomSanitizer) {
-  }
+    private sanitizer: DomSanitizer
+  ) {}
 
   ngOnInit() {
     this.settings$ = combineLatest(
@@ -100,32 +163,42 @@ export class SiteSettingsComponent implements OnInit {
       this.store.select(SiteSettingsConfigState),
       this.appState$
     ).pipe(
-      filter(([settings, config]) => settings && settings.length > 0 && config && Object.keys(config).length > 0),
+      filter(
+        ([settings, config]) =>
+          settings &&
+          settings.length > 0 &&
+          config &&
+          Object.keys(config).length > 0
+      ),
       map(([settings, config, appState]) => {
         return settings
-          .filter(settingGroup => !config[settingGroup.slug]._.invisible)
-          .filter(settingGroup => settingGroup.slug !== 'theme' || appState.themes.length > 0)
-          .map(settingGroup => {
+          .filter((settingGroup) => !config[settingGroup.slug]._.invisible)
+          .filter(
+            (settingGroup) =>
+              settingGroup.slug !== 'theme' || appState.themes.length > 0
+          )
+          .map((settingGroup) => {
             return {
               settings: settingGroup.settings
-                .filter(setting => !!config[settingGroup.slug][setting.slug])  // don't show settings that have no config
-                .map(setting => {
+                .filter((setting) => !!config[settingGroup.slug][setting.slug]) // don't show settings that have no config
+                .map((setting) => {
                   let settingObj: {
-                    setting: SettingModel,
-                    config: SettingConfigModel,
-                    children?: Array<SettingChildModel[]>
+                    setting: SettingModel;
+                    config: SettingConfigModel;
+                    children?: Array<SettingChildModel[]>;
                   } = {
                     setting: setting,
-                    config: config[settingGroup.slug][setting.slug]
+                    config: config[settingGroup.slug][setting.slug],
                   };
-                  const childrenConfig = config[settingGroup.slug][setting.slug].children;
+                  const childrenConfig =
+                    config[settingGroup.slug][setting.slug].children;
 
                   if (childrenConfig) {
-                    const children = (setting.value as any).map(row => {
-                      return row.map(child => {
+                    const children = (setting.value as any).map((row) => {
+                      return row.map((child) => {
                         return {
                           setting: child,
-                          config: childrenConfig[child.slug]
+                          config: childrenConfig[child.slug],
                         };
                       });
                     });
@@ -136,10 +209,9 @@ export class SiteSettingsComponent implements OnInit {
                   return settingObj;
                 }),
               config: config[settingGroup.slug]._,
-              slug: settingGroup.slug
+              slug: settingGroup.slug,
             };
           });
-
       }),
       /**
        * settingGroups in this step aren't the ones we get from the store,
@@ -150,55 +222,68 @@ export class SiteSettingsComponent implements OnInit {
           return settingGroups;
         }
 
-        return settingGroups.map(settingGroup => {
-          const prevSettingGroup = prevSettingGroups.find(psg => {
-            return psg.slug === settingGroup.slug &&
+        return settingGroups.map((settingGroup) => {
+          const prevSettingGroup = prevSettingGroups.find((psg) => {
+            return (
+              psg.slug === settingGroup.slug &&
               psg.config === settingGroup.config &&
-              psg.settings.length === settingGroup.settings.length;
+              psg.settings.length === settingGroup.settings.length
+            );
           });
 
           if (prevSettingGroup) {
-            if (settingGroup.settings.some(((setting, index) => prevSettingGroup.settings[index].setting !== setting.setting))) {
+            if (
+              settingGroup.settings.some(
+                (setting, index) =>
+                  prevSettingGroup.settings[index].setting !== setting.setting
+              )
+            ) {
               /* Careful, not to mutate anything coming from the store: */
-              prevSettingGroup.settings = settingGroup.settings.map((setting, index) => {
+              prevSettingGroup.settings = settingGroup.settings.map(
+                (setting, index) => {
+                  const prevSetting = prevSettingGroup.settings.find((ps) => {
+                    return (
+                      ps.setting === setting.setting &&
+                      ps.config === setting.config
+                    );
+                  });
 
-                const prevSetting = prevSettingGroup.settings.find(ps => {
-                  return ps.setting === setting.setting && ps.config === setting.config;
-                });
-
-                if (prevSetting) {
-                  return prevSetting;
-                }
-
-                // @todo this doesn't work as expected, needs to be fixed to use previous objects
-                if (setting.children) {
-                  const prevSettingChildren = prevSettingGroup.settings[index].children;
-
-                  if (prevSettingChildren.length > 0) {
-
-                    setting.children = setting.children.map((row, index) => {
-                      const prevSettingRow = prevSettingChildren[index];
-
-                      if (prevSettingRow) {
-                        return row.map((child, i) => {
-
-                          const prevChild = prevSettingRow[i];
-
-                          if (prevChild && prevChild.setting === child.config) {
-                            return prevChild;
-                          }
-
-                          return child;
-                        });
-                      }
-
-                      return row;
-                    });
+                  if (prevSetting) {
+                    return prevSetting;
                   }
-                }
 
-                return setting;
-              });
+                  // @todo this doesn't work as expected, needs to be fixed to use previous objects
+                  if (setting.children) {
+                    const prevSettingChildren =
+                      prevSettingGroup.settings[index].children;
+
+                    if (prevSettingChildren.length > 0) {
+                      setting.children = setting.children.map((row, index) => {
+                        const prevSettingRow = prevSettingChildren[index];
+
+                        if (prevSettingRow) {
+                          return row.map((child, i) => {
+                            const prevChild = prevSettingRow[i];
+
+                            if (
+                              prevChild &&
+                              prevChild.setting === child.config
+                            ) {
+                              return prevChild;
+                            }
+
+                            return child;
+                          });
+                        }
+
+                        return row;
+                      });
+                    }
+                  }
+
+                  return setting;
+                }
+              );
             }
             return prevSettingGroup;
           }
@@ -207,35 +292,60 @@ export class SiteSettingsComponent implements OnInit {
       })
     );
 
-    this.route.paramMap.subscribe(params => {
-      this.currentGroup = params['params']['group'] || (params['params']['group'] === undefined ? this.defaultGroup : '');
+    this.route.paramMap.subscribe((params) => {
+      this.currentGroup =
+        params['params']['group'] ||
+        (params['params']['group'] === undefined ? this.defaultGroup : '');
     });
   }
 
   slugifyCamel(camelText: string) {
-    return splitCamel(camelText).map(piece => piece.toLowerCase()).join('-');
+    return splitCamel(camelText)
+      .map((piece) => piece.toLowerCase())
+      .join('-');
   }
 
   camelifySlug(slug: string) {
-    return slug.split('-').map((piece, i) => {
-      return i ? uCFirst(piece) : piece;
-    }).join('');
+    return slug
+      .split('-')
+      .map((piece, i) => {
+        return i ? uCFirst(piece) : piece;
+      })
+      .join('');
   }
 
   getSettingDescription(text: string): SafeHtml {
     return this.sanitizer.bypassSecurityTrustHtml(text);
   }
 
-  isDisabled(settingGroup: SettingsGroupModel, setting: SettingModel, config: SettingConfigModel, user: UserStateModel) {
-    return this.settingUpdate[settingGroup.slug + ':' + setting.slug] || (config.requires_feature && user.features.indexOf(config.requires_feature) === -1);
+  isDisabled(
+    settingGroup: SettingsGroupModel,
+    setting: SettingModel,
+    config: SettingConfigModel,
+    user: UserStateModel
+  ) {
+    return (
+      this.settingUpdate[settingGroup.slug + ':' + setting.slug] ||
+      (config.requires_feature &&
+        user.features.indexOf(config.requires_feature) === -1)
+    );
   }
 
-  disabledReason(config: SettingConfigModel, user: UserStateModel, appState: AppStateModel) {
-    if (!config.requires_feature || user.features.indexOf(config.requires_feature) > -1) {
+  disabledReason(
+    config: SettingConfigModel,
+    user: UserStateModel,
+    appState: AppStateModel
+  ) {
+    if (
+      !config.requires_feature ||
+      user.features.indexOf(config.requires_feature) > -1
+    ) {
       return;
     }
 
-    const requiredPlan = appState.plans.find(plan => plan.features.indexOf(config.requires_feature) > -1);
+    const requiredPlan = appState.plans.find(
+      (plan) => plan.features.indexOf(config.requires_feature) > -1
+    );
     if (!requiredPlan) {
       return;
     }
@@ -248,43 +358,73 @@ export class SiteSettingsComponent implements OnInit {
     this.settingError[`${settingGroup}:${updateEvent.field}`] = '';
     this.settingUpdate[`${settingGroup}:${updateEvent.field}`] = true;
 
-    this.store.dispatch(new UpdateSiteSettingsAction(settingGroup, data))
+    this.store
+      .dispatch(new UpdateSiteSettingsAction(settingGroup, data))
       .pipe(take(1))
-      .subscribe(() => {
-        this.settingUpdate[`${settingGroup}:${updateEvent.field}`] = false;
-      }, error => {
-        if (error.error && error.error.message) {
-          this.settingError[`${settingGroup}:${updateEvent.field}`] = error.error.message;
+      .subscribe(
+        () => {
+          this.settingUpdate[`${settingGroup}:${updateEvent.field}`] = false;
+        },
+        (error) => {
+          if (error.error && error.error.message) {
+            this.settingError[`${settingGroup}:${updateEvent.field}`] =
+              error.error.message;
+          }
+          this.settingUpdate[`${settingGroup}:${updateEvent.field}`] = false;
         }
-        this.settingUpdate[`${settingGroup}:${updateEvent.field}`] = false;
-      });
+      );
   }
 
   addChildren(settingGroup: string, slug: string, updateEvent) {
-    const hasSomeValue = Object.keys(updateEvent).some(item => updateEvent[item].trim().length > 0);
+    const hasSomeValue = Object.keys(updateEvent).some(
+      (item) => updateEvent[item].trim().length > 0
+    );
     if (hasSomeValue) {
       // Update social media icon by url
-      if (settingGroup === 'socialMediaLinks' && slug === 'links' && updateEvent.url !== undefined) {
+      if (
+        settingGroup === 'socialMediaLinks' &&
+        slug === 'links' &&
+        updateEvent.url !== undefined
+      ) {
         const iconName = getIconFromUrl(updateEvent.url);
         updateEvent['icon'] = iconName;
       }
 
-      this.store.dispatch(new AddSiteSettingChildrenAction(settingGroup, slug, updateEvent));
+      this.store.dispatch(
+        new AddSiteSettingChildrenAction(settingGroup, slug, updateEvent)
+      );
     }
   }
 
-  updateChildren(settingGroup: string, slug: string, index: number, updateEvent) {
+  updateChildren(
+    settingGroup: string,
+    slug: string,
+    index: number,
+    updateEvent
+  ) {
     const data = { [updateEvent.field]: updateEvent.value };
-    this.store.dispatch(new UpdateSiteSettingChildreAction(settingGroup, slug, index, data));
+    this.store.dispatch(
+      new UpdateSiteSettingChildreAction(settingGroup, slug, index, data)
+    );
 
     // Update social media icon by url
-    if (settingGroup === 'socialMediaLinks' && slug === 'links' && updateEvent.field === 'url') {
+    if (
+      settingGroup === 'socialMediaLinks' &&
+      slug === 'links' &&
+      updateEvent.field === 'url'
+    ) {
       const iconName = getIconFromUrl(updateEvent.value);
-      this.store.dispatch(new UpdateSiteSettingChildreAction(settingGroup, slug, index, { icon: iconName }));
+      this.store.dispatch(
+        new UpdateSiteSettingChildreAction(settingGroup, slug, index, {
+          icon: iconName,
+        })
+      );
     }
   }
 
   deleteChildren(settingGroup: string, slug: string, index: number) {
-    this.store.dispatch(new DeleteSiteSettingChildrenAction(settingGroup, slug, index));
+    this.store.dispatch(
+      new DeleteSiteSettingChildrenAction(settingGroup, slug, index)
+    );
   }
 }

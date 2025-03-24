@@ -3,29 +3,29 @@ export class UpdateShopRegionAction {
   constructor(
     public id: number,
     public payload: {
-      field: string,
-      value: any
-    }) {
-  }
+      field: string;
+      value: any;
+    }
+  ) {}
 }
 
 export class AddShopRegionAction {
   static readonly type = 'SHOP_REGION:ADD';
   constructor(
     public payload: {
-      name: string,
-      vat?: number
-    }) {
-  }
+      name: string;
+      vat?: number;
+    }
+  ) {}
 }
 
 export class DeleteShopRegionAction {
   static readonly type = 'SHOP_REGION:DELETE';
   constructor(
     public payload: {
-      id: number
-    }) {
-  }
+      id: number;
+    }
+  ) {}
 }
 
 /* --- Costs --- */
@@ -35,10 +35,10 @@ export class UpdateShopRegionCostAction {
     public id: number,
     public costId: number,
     public payload: {
-      field: string,
-      value: any
-    }) {
-  }
+      field: string;
+      value: any;
+    }
+  ) {}
 }
 
 export class AddShopRegionCostAction {
@@ -46,10 +46,10 @@ export class AddShopRegionCostAction {
   constructor(
     public regionId: number,
     public payload: {
-      weight: number,
-      price: number
-    }) {
-  }
+      weight: number;
+      price: number;
+    }
+  ) {}
 }
 
 export class DeleteShopRegionCostAction {
@@ -57,32 +57,25 @@ export class DeleteShopRegionCostAction {
   constructor(
     public regionId: number,
     public payload: {
-      id: number
-    }) {
-  }
+      id: number;
+    }
+  ) {}
 }
 
 /* Site: */
 export class RenameShopRegionSiteAction {
   static readonly type = 'SHOP_REGION:SITE_RENAME';
-  constructor(
-    public siteName: string,
-    public payload: string) {
-  }
+  constructor(public siteName: string, public payload: string) {}
 }
 
 export class DeleteShopRegionSiteAction {
   static readonly type = 'SHOP_REGION:SITE_DELETE';
-  constructor(
-    public payload: string) {
-  }
+  constructor(public payload: string) {}
 }
 
 export class AddShopRegionSiteAction {
   static readonly type = 'SHOP_REGION:SITE_ADD';
-  constructor(
-    public payload: string) {
-  }
+  constructor(public payload: string) {}
 }
 
 /* Init: */

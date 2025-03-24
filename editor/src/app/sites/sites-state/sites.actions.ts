@@ -2,8 +2,7 @@ import { SiteStateModel } from './site-state.model';
 
 export class CreateSiteAction {
   static readonly type = 'SITE:CREATE';
-  constructor(public site?: SiteStateModel) {
-  }
+  constructor(public site?: SiteStateModel) {}
 }
 
 export class UpdateSiteAction {
@@ -11,36 +10,28 @@ export class UpdateSiteAction {
   constructor(
     public site: SiteStateModel,
     public field: string,
-    public value: string) {
-  }
+    public value: string
+  ) {}
 }
 
 export class RenameSiteAction {
   static readonly type = 'SITE:RENAME';
-  constructor(
-    public site: SiteStateModel,
-    public value: string) {
-  }
+  constructor(public site: SiteStateModel, public value: string) {}
 }
 
 export class CloneSiteAction {
   static readonly type = 'SITE:CLONE';
-  constructor(public site: SiteStateModel) {
-  }
+  constructor(public site: SiteStateModel) {}
 }
 
 export class DeleteSiteAction {
   static readonly type = 'SITE:DELETE';
-  constructor(public site: SiteStateModel) {
-  }
+  constructor(public site: SiteStateModel) {}
 }
 
 export class ReOrderSitesAction {
   static readonly type = 'SITE:REORDER';
-  constructor(
-    public currentOrder: number,
-    public payload: number) {
-  }
+  constructor(public currentOrder: number, public payload: number) {}
 }
 
 export class ResetSitesAction {
@@ -54,10 +45,10 @@ export class InitSitesAction {
 
 export class PreviewThemeSitesAction {
   static readonly type = 'SITE:PREVIEW_THEME';
-  constructor(public payload: {site: string, theme: string}) {}
+  constructor(public payload: { site: string; theme: string }) {}
 }
 
 export class ApplyThemeSitesAction {
   static readonly type = 'SITE:APPLY_THEME';
-  constructor(public payload: {site: string, theme: string}) {}
+  constructor(public payload: { site: string; theme: string }) {}
 }

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { SocialMediaLinksRenderService } from '../social-media-links-render.service';
 import { SiteSectionStateModel } from './sections-state/site-sections-state.model';
-import {ClassAttr} from "../../../types/attributes";
+import { ClassAttr } from '../../../types/attributes';
 
 @Injectable({
   providedIn: 'root',
@@ -110,7 +110,7 @@ export class SectionRenderService {
     tagSlug: string
   ): ClassAttr {
     const currentSection = this.getCurrentSection(sections, sectionSlug);
-    let attributes: ClassAttr = {class: ''};
+    let attributes: ClassAttr = { class: '' };
 
     let classes = ['xEntriesList', `xSection-${currentSection.name}`];
 

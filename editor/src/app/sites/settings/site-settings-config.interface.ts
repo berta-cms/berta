@@ -5,9 +5,8 @@ export interface SiteSettingsConfigStateModel {
 }
 
 export interface SiteSettingsConfigGroup extends SettingConfigGroupResponse {
-  values?: { [k: string]: string | number; };
+  values?: { [k: string]: string | number };
 }
-
 
 /* Responses */
 export interface SiteSettingsConfigResponse {

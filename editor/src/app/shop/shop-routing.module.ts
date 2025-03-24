@@ -5,17 +5,17 @@ import { ShopComponent } from './shop.component';
 const routes: Routes = [
   {
     path: ':section',
-    component: ShopComponent
+    component: ShopComponent,
   },
   {
     path: '',
     component: ShopComponent,
-    data: { section: '' }
-  }
+    data: { section: '' },
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class ShopRoutingModule { }
+export class ShopRoutingModule {}

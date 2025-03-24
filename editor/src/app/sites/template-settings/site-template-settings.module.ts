@@ -11,12 +11,9 @@ import { SitesSharedModule } from '../shared/sites-shared.module';
   imports: [
     CommonModule,
     RouterModule.forChild([]),
-    NgxsModule.forFeature([
-      SiteTemplateSettingsState,
-      SiteTemplatesState
-    ]),
-    SitesSharedModule
+    NgxsModule.forFeature([SiteTemplateSettingsState, SiteTemplatesState]),
+    SitesSharedModule,
   ],
-  declarations: [SiteTemplateSettingsComponent]
+  declarations: [SiteTemplateSettingsComponent],
 })
-export class SiteTemplateSettingsModule { }
+export class SiteTemplateSettingsModule {}

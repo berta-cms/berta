@@ -1,7 +1,22 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { concat, of } from 'rxjs';
-import { take, tap, catchError, pairwise, filter, switchMap, map } from 'rxjs/operators';
-import { State, StateContext, NgxsOnInit, Selector, Action, Store } from '@ngxs/store';
+import {
+  take,
+  tap,
+  catchError,
+  pairwise,
+  filter,
+  switchMap,
+  map,
+} from 'rxjs/operators';
+import {
+  State,
+  StateContext,
+  NgxsOnInit,
+  Selector,
+  Action,
+  Store,
+} from '@ngxs/store';
 
 import { FileUploadService } from '../../sites/shared/file-upload.service';
 import { ShopStateService } from '../shop-state.service';
@@ -13,11 +28,11 @@ import {
   RenameShopSettingsSiteAction,
   AddShopSettingsSiteAction,
   ResetShopSettingsAction,
-  InitShopSettingsAction} from './shop-settings.actions';
+  InitShopSettingsAction,
+} from './shop-settings.actions';
 import { AppStateService } from '../../app-state/app-state.service';
 import { ShopState } from '../shop.state';
 import { UserState } from '../../user/user.state';
-
 
 interface ShopSettingsModel {
   [site: string]: Array<{
@@ -28,13 +43,11 @@ interface ShopSettingsModel {
 
 const defaultState: ShopSettingsModel = {};
 
-
 @State<ShopSettingsModel>({
   name: 'shopSettings',
-  defaults: defaultState
+  defaults: defaultState,
 })
 export class ShopSettingsState implements NgxsOnInit {
-
   @Selector([AppState.getSite])
   static getCurrentSiteSettings(state: ShopSettingsModel, site: string) {
     return state[site];
@@ -42,29 +55,32 @@ export class ShopSettingsState implements NgxsOnInit {
 
   @Selector([ShopSettingsState.getCurrentSiteSettings])
   static getCurrentWeightUnit(_, currentSiteSettings) {
-    return currentSiteSettings
-      .find(group => {
-        return group.slug === 'group_config';
-      }).settings
-      .find(setting => setting.slug === 'weightUnit').value || '';
+    return (
+      currentSiteSettings
+        .find((group) => {
+          return group.slug === 'group_config';
+        })
+        .settings.find((setting) => setting.slug === 'weightUnit').value || ''
+    );
   }
 
   @Selector([ShopSettingsState.getCurrentSiteSettings])
   static getCurrentCurrency(_, currentSiteSettings) {
-    return currentSiteSettings
-      .find(group => {
-        return group.slug === 'group_config';
-      }).settings
-      .find(setting => setting.slug === 'currency').value || '';
+    return (
+      currentSiteSettings
+        .find((group) => {
+          return group.slug === 'group_config';
+        })
+        .settings.find((setting) => setting.slug === 'currency').value || ''
+    );
   }
-
 
   constructor(
     private store$: Store,
     private appStateService: AppStateService,
     private stateService: ShopStateService,
-    private fileUploadService: FileUploadService) {
-  }
+    private fileUploadService: FileUploadService
+  ) {}
 
   ngxsOnInit({ dispatch }: StateContext<ShopSettingsModel>) {
     return concat(
@@ -73,52 +89,68 @@ export class ShopSettingsState implements NgxsOnInit {
       this.store$.select(UserState.isLoggedIn).pipe(
         pairwise(),
         filter(([wasLoggedIn, isLoggedIn]) => !wasLoggedIn && isLoggedIn),
-        switchMap(() => this.stateService.getInitialState('', 'settings').pipe(take(1)))
+        switchMap(() =>
+          this.stateService.getInitialState('', 'settings').pipe(take(1))
+        )
       )
     ).subscribe((settings) => {
-      const newState: {[k: string]: any} = {};
+      const newState: { [k: string]: any } = {};
 
       for (const siteSlug in settings) {
-        newState[siteSlug] = this.initializeShopSettingsForSite(settings[siteSlug]);
+        newState[siteSlug] = this.initializeShopSettingsForSite(
+          settings[siteSlug]
+        );
       }
 
       dispatch(new InitShopSettingsAction(newState));
     });
   }
 
-
   @Action(InitShopSettingsAction)
-  initializeShopOrders({ setState }: StateContext<ShopSettingsModel>, action: InitShopSettingsAction) {
+  initializeShopOrders(
+    { setState }: StateContext<ShopSettingsModel>,
+    action: InitShopSettingsAction
+  ) {
     setState(action.payload);
   }
 
   @Action(UpdateShopSettingsAction)
-  updateShopSettings({getState, patchState}: StateContext<ShopSettingsModel>, action: UpdateShopSettingsAction) {
+  updateShopSettings(
+    { getState, patchState }: StateContext<ShopSettingsModel>,
+    action: UpdateShopSettingsAction
+  ) {
     const state = getState();
     const site = this.store$.selectSnapshot(AppState.getSite);
     const syncURLs = this.store$.selectSnapshot(ShopState.getURLs);
     const data = {
       path: `${site}/${action.groupSlug}/${action.payload.field}`,
-      value: action.payload.value
+      value: action.payload.value,
     };
 
-    return (data.value instanceof File ? this.fileUploadService.upload(syncURLs.settingsUpload, data) : this.appStateService.sync(syncURLs.settings, data)).pipe(
-      tap(response => {
+    return (
+      data.value instanceof File
+        ? this.fileUploadService.upload(syncURLs.settingsUpload, data)
+        : this.appStateService.sync(syncURLs.settings, data)
+    ).pipe(
+      tap((response) => {
         patchState({
-          [site]: state[site].map(settingGroup => {
+          [site]: state[site].map((settingGroup) => {
             if (settingGroup.slug !== action.groupSlug) {
               return settingGroup;
             }
-            return {...settingGroup, settings: settingGroup.settings.map(setting => {
-              if (setting.slug !== action.payload.field) {
-                return setting;
-              }
-              return {...setting, value: response.data.value};
-            })};
-          })
+            return {
+              ...settingGroup,
+              settings: settingGroup.settings.map((setting) => {
+                if (setting.slug !== action.payload.field) {
+                  return setting;
+                }
+                return { ...setting, value: response.data.value };
+              }),
+            };
+          }),
         });
       }),
-      catchError((error: HttpErrorResponse|Error) => {
+      catchError((error: HttpErrorResponse | Error) => {
         if (error instanceof HttpErrorResponse) {
           console.error(error.error.message);
         } else {
@@ -130,15 +162,15 @@ export class ShopSettingsState implements NgxsOnInit {
   }
 
   private initializeShopSettingsForSite(settings: any): any[] {
-    return Object.keys(settings).map(settingGroupSlug => {
+    return Object.keys(settings).map((settingGroupSlug) => {
       return {
         slug: settingGroupSlug,
-        settings: Object.keys(settings[settingGroupSlug]).map(settingSlug => {
+        settings: Object.keys(settings[settingGroupSlug]).map((settingSlug) => {
           return {
             slug: settingSlug,
-            value: settings[settingGroupSlug][settingSlug]
+            value: settings[settingGroupSlug][settingSlug],
           };
-        })
+        }),
       };
     });
   }
@@ -146,7 +178,8 @@ export class ShopSettingsState implements NgxsOnInit {
   @Action(RenameShopSettingsSiteAction)
   renameShopSettingsSite(
     { setState, getState }: StateContext<ShopSettingsModel>,
-    action: RenameShopSettingsSiteAction) {
+    action: RenameShopSettingsSiteAction
+  ) {
     const state = getState();
     const newState = {};
 
@@ -165,7 +198,8 @@ export class ShopSettingsState implements NgxsOnInit {
   @Action(DeleteShopSettingsSiteAction)
   deleteShopSettingsSite(
     { setState, getState }: StateContext<ShopSettingsModel>,
-    action: DeleteShopSettingsSiteAction) {
+    action: DeleteShopSettingsSiteAction
+  ) {
     const state = getState();
     const newState = {};
 
@@ -182,13 +216,18 @@ export class ShopSettingsState implements NgxsOnInit {
   @Action(AddShopSettingsSiteAction)
   addShopSettingsSite(
     { patchState }: StateContext<ShopSettingsModel>,
-    action: AddShopSettingsSiteAction) {
-
-    return this.stateService.getInitialState(action.payload, 'settings').pipe(
-      take(1)
-    ).subscribe((settings) => {
-      patchState({[action.payload]: this.initializeShopSettingsForSite(settings[action.payload])});
-    });
+    action: AddShopSettingsSiteAction
+  ) {
+    return this.stateService
+      .getInitialState(action.payload, 'settings')
+      .pipe(take(1))
+      .subscribe((settings) => {
+        patchState({
+          [action.payload]: this.initializeShopSettingsForSite(
+            settings[action.payload]
+          ),
+        });
+      });
   }
 
   @Action(ResetShopSettingsAction)

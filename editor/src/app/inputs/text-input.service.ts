@@ -7,7 +7,7 @@ import { Injectable } from '@angular/core';
  */
 @Injectable()
 export class TextInputService {
-  private lastValue: string|null = null;
+  private lastValue: string | null = null;
   private hideIcon = false;
   private isLongInput = false;
 
@@ -15,8 +15,10 @@ export class TextInputService {
   public focus = new BehaviorSubject<boolean>(false);
   public showIcon = new BehaviorSubject<boolean>(true);
 
-
-  initValue(value, {hideIcon, isLongInput}: {hideIcon?: boolean, isLongInput?: boolean}) {
+  initValue(
+    value,
+    { hideIcon, isLongInput }: { hideIcon?: boolean; isLongInput?: boolean }
+  ) {
     this.lastValue = value;
     this.hideIcon = !!hideIcon;
     this.isLongInput = !!isLongInput;
@@ -48,23 +50,32 @@ export class TextInputService {
   }
 
   updateField(event) {
-    if (event instanceof KeyboardEvent && (event.key === 'Escape' || event.keyCode === 27)) {
+    if (
+      event instanceof KeyboardEvent &&
+      (event.key === 'Escape' || event.keyCode === 27)
+    ) {
       (event.target as HTMLInputElement).value = this.lastValue;
       (event.target as HTMLInputElement).blur();
       return null;
     }
 
-    if (event.target.tagName !== 'TEXTAREA' && (event.key === 'ArrowDown' || event.keyCode === 40 || event.key === 'ArrowUp' || event.keyCode === 38)) {
+    if (
+      event.target.tagName !== 'TEXTAREA' &&
+      (event.key === 'ArrowDown' ||
+        event.keyCode === 40 ||
+        event.key === 'ArrowUp' ||
+        event.keyCode === 38)
+    ) {
       const integerUnits = ['px', '%', 'pt'];
       const decimalUnits = ['em', 'rem', 'vw', 'vh'];
 
-      const unitRegex  = /[a-z%]+/g;
+      const unitRegex = /[a-z%]+/g;
       const digitRegex = /-?[0-9]\d*(\.\d+)?/g;
 
       const found = event.target.value.match(unitRegex);
       const digit = event.target.value.match(digitRegex);
 
-      if (digit !== null && digit.length <= 1 ) {
+      if (digit !== null && digit.length <= 1) {
         let value = Number(digit.shift());
         const unit = found === null ? null : found.shift();
         let i = 0;
@@ -95,8 +106,11 @@ export class TextInputService {
       return null;
     }
 
-    if (event instanceof KeyboardEvent &&
-        ((this.isLongInput && !event.ctrlKey) || !(event.key === 'Enter' || event.keyCode === 13))) {
+    if (
+      event instanceof KeyboardEvent &&
+      ((this.isLongInput && !event.ctrlKey) ||
+        !(event.key === 'Enter' || event.keyCode === 13))
+    ) {
       return null;
     }
 

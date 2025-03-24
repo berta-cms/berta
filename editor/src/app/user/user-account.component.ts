@@ -15,29 +15,35 @@ import { UpdateInputFocus } from '../app-state/app.actions';
             {{ error }}
           </div>
         </div>
-        <berta-text-input [label]="'Old password'"
-                          [value]="oldPassword"
-                          [type]="'password'"
-                          [enabledOnUpdate]="true"
-                          [hideIcon]="true"
-                          (inputFocus)="updateComponentFocus($event)"
-                          (update)="updateField('oldPassword', $event)"></berta-text-input>
+        <berta-text-input
+          [label]="'Old password'"
+          [value]="oldPassword"
+          [type]="'password'"
+          [enabledOnUpdate]="true"
+          [hideIcon]="true"
+          (inputFocus)="updateComponentFocus($event)"
+          (update)="updateField('oldPassword', $event)"
+        ></berta-text-input>
 
-        <berta-text-input [label]="'New password'"
-                          [value]="newPassword"
-                          [type]="'password'"
-                          [enabledOnUpdate]="true"
-                          [hideIcon]="true"
-                          (inputFocus)="updateComponentFocus($event)"
-                          (update)="updateField('newPassword', $event)"></berta-text-input>
+        <berta-text-input
+          [label]="'New password'"
+          [value]="newPassword"
+          [type]="'password'"
+          [enabledOnUpdate]="true"
+          [hideIcon]="true"
+          (inputFocus)="updateComponentFocus($event)"
+          (update)="updateField('newPassword', $event)"
+        ></berta-text-input>
 
-        <berta-text-input [label]="'Retype new password'"
-                          [value]="retypePassword"
-                          [type]="'password'"
-                          [enabledOnUpdate]="true"
-                          [hideIcon]="true"
-                          (inputFocus)="updateComponentFocus($event)"
-                          (update)="updateField('retypePassword', $event)"></berta-text-input>
+        <berta-text-input
+          [label]="'Retype new password'"
+          [value]="retypePassword"
+          [type]="'password'"
+          [enabledOnUpdate]="true"
+          [hideIcon]="true"
+          (inputFocus)="updateComponentFocus($event)"
+          (update)="updateField('retypePassword', $event)"
+        ></berta-text-input>
 
         <div class="form-group">
           <button type="submit" class="button">Change password</button>
@@ -45,26 +51,22 @@ import { UpdateInputFocus } from '../app-state/app.actions';
           <div *ngIf="message" class="info-message">{{ message }}</div>
 
           <div class="setting-description">
-            Password must be at least 6 characters long and containing alphanumeric (A-Z, a-z, 0-9) characters.
+            Password must be at least 6 characters long and containing
+            alphanumeric (A-Z, a-z, 0-9) characters.
           </div>
         </div>
-
       </form>
     </div>
-  `
+  `,
 })
 export class UserAccountComponent {
-
   error = '';
   message = '';
   oldPassword = '';
   newPassword = '';
   retypePassword = '';
 
-  constructor(
-    private store: Store,
-    private userService: UserService) {
-  }
+  constructor(private store: Store, private userService: UserService) {}
 
   updateField(field, value) {
     this[field] = value;
@@ -85,14 +87,16 @@ export class UserAccountComponent {
       return;
     }
 
-    this.userService.changePassword(this.oldPassword, this.newPassword).subscribe({
-      next: (response: any) => {
-        event.target.reset();
-        this.message = response.message;
-      },
-      error: (error) => {
-        this.error = error.error.message;
-      }
-    });
+    this.userService
+      .changePassword(this.oldPassword, this.newPassword)
+      .subscribe({
+        next: (response: any) => {
+          event.target.reset();
+          this.message = response.message;
+        },
+        error: (error) => {
+          this.error = error.error.message;
+        },
+      });
   }
 }

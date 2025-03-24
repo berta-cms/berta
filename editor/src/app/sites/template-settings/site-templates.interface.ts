@@ -1,4 +1,9 @@
-import { SettingConfigGroupResponse, SettingGroupConfigModel, SettingConfigModel, SettingConfigResponse } from '../../shared/interfaces';
+import {
+  SettingConfigGroupResponse,
+  SettingGroupConfigModel,
+  SettingConfigModel,
+  SettingConfigResponse,
+} from '../../shared/interfaces';
 
 export interface SiteTemplatesStateModel {
   default?: TemplateSiteModel;
@@ -9,7 +14,7 @@ export interface SiteTemplatesStateModel {
 
 export interface TemplateSiteModel {
   templateConf: {
-    [settingGroupSlug: string]: SettingGroupConfigModel
+    [settingGroupSlug: string]: SettingGroupConfigModel;
   };
   sectionTypes: SiteTemplateSectionTypesModel;
   translations: TemplateTranslationsModel;
@@ -18,7 +23,7 @@ export interface TemplateSiteModel {
 export interface TemplateTranslationsModel {
   [groupSlug: string]: {
     [slug: string]: string;
-  }
+  };
 }
 
 export interface SiteTemplateSectionTypesModel {
@@ -26,7 +31,7 @@ export interface SiteTemplateSectionTypesModel {
     title: string;
     params?: {
       [paramSlug: string]: SettingConfigModel;
-    }
+    };
     [k: string]: any;
   };
 }
@@ -54,7 +59,7 @@ export interface SiteTemplateSectionTypesResponse {
     title: string;
     params?: {
       [paramSlug: string]: SettingConfigResponse;
-    }
+    };
     [k: string]: any;
   };
 }
@@ -62,5 +67,5 @@ export interface SiteTemplateSectionTypesResponse {
 export interface TemplateTranslationsResponse {
   [groupSlug: string]: {
     [slug: string]: string;
-  }
+  };
 }

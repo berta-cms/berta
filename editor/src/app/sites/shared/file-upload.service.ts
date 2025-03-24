@@ -6,17 +6,15 @@ import { Store } from '@ngxs/store';
 
 import { AppStateService } from '../../app-state/app-state.service';
 
-
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class FileUploadService {
-
   constructor(
     private store: Store,
     private http: HttpClient,
-    private appStateService: AppStateService) {
-  }
+    private appStateService: AppStateService
+  ) {}
 
   upload(urlName: string, data) {
     const formData = new FormData();
@@ -24,22 +22,29 @@ export class FileUploadService {
     formData.append('value', data.value);
 
     return combineLatest(
-      this.store.select(state => state.app),
-      this.store.select(state => state.user)
+      this.store.select((state) => state.app),
+      this.store.select((state) => state.user)
     ).pipe(
-      filter(([appState, user]) => !!user.token && (appState.urls[urlName] || urlName)),
+      filter(
+        ([appState, user]) =>
+          !!user.token && (appState.urls[urlName] || urlName)
+      ),
       take(1),
       switchMap(([appState, user]) => {
         this.appStateService.showLoading();
 
-        return this.http.post<any>(appState.urls[urlName] || urlName, formData, {
-          headers: { 'X-Authorization': 'Bearer ' + user.token }
-        });
+        return this.http.post<any>(
+          appState.urls[urlName] || urlName,
+          formData,
+          {
+            headers: { 'X-Authorization': 'Bearer ' + user.token },
+          }
+        );
       }),
       tap(() => {
-        this.appStateService.hideLoading()
+        this.appStateService.hideLoading();
       }),
-      catchError(error => {
+      catchError((error) => {
         this.appStateService.hideLoading();
         throw error;
       })

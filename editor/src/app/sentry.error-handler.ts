@@ -3,11 +3,9 @@ import * as Sentry from '@sentry/browser';
 import { ErrorHandler, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
-
-
 @Injectable()
 export class SentryErrorHandler extends ErrorHandler {
-  sentryDSN: string|null = null;
+  sentryDSN: string | null = null;
 
   constructor(private http: HttpClient) {
     super();
@@ -15,10 +13,12 @@ export class SentryErrorHandler extends ErrorHandler {
   }
 
   initSentry() {
-    this.http.get('/_api/v1/sentry-dsn', { responseType: 'text' }).subscribe((response) => {
-      this.sentryDSN = response;
-      Sentry.init({ dsn: response });
-    });
+    this.http
+      .get('/_api/v1/sentry-dsn', { responseType: 'text' })
+      .subscribe((response) => {
+        this.sentryDSN = response;
+        Sentry.init({ dsn: response });
+      });
   }
 
   handleError(error) {
