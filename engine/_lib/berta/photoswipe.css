@@ -62,26 +62,32 @@
 @media (-webkit-min-device-pixel-ratio: 1.1),
 (min-resolution: 105dpi),
 (min-resolution: 1.1dppx) {
+
   .pswp--svg .pswp__button,
   .pswp--svg .pswp__button--arrow--left:before,
   .pswp--svg .pswp__button--arrow--right:before {
-      background-image: url('/engine/layout/photoswipe-theme-black.svg');
+    background-image: url('/engine/layout/photoswipe-theme-black.svg');
   }
 
   .pswp.theme-white .pswp--svg .pswp__button,
   .pswp.theme-white .pswp--svg .pswp__button--arrow--left:before,
   .pswp.theme-white .pswp--svg .pswp__button--arrow--right:before {
-      background-image: url('/engine/layout/photoswipe-theme-white.svg');
+    background-image: url('/engine/layout/photoswipe-theme-white.svg');
   }
 
   .pswp--svg .pswp__button--arrow--left,
   .pswp--svg .pswp__button--arrow--right,
   .pswp.theme-white .pswp--svg .pswp__button--arrow--left,
-  .pswp.theme-white .pswp--svg .pswp__button--arrow--right{
+  .pswp.theme-white .pswp--svg .pswp__button--arrow--right {
     background: none;
   }
 }
 
+/* Black theme */
+.pswp .pswp__caption__center a {
+  color: #ccc;
+  text-decoration: underline;
+}
 
 /* White theme */
 .pswp.theme-white .pswp__bg {
@@ -108,7 +114,8 @@
 
 .pswp.theme-white .pswp__counter,
 .pswp.theme-white .pswp__caption small,
-.pswp.theme-white .pswp__caption__center {
+.pswp.theme-white .pswp__caption__center,
+.pswp.theme-white .pswp__caption__center a {
   color: #000;
 }
 
