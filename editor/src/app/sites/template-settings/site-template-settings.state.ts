@@ -29,6 +29,7 @@ import {
   ResetSiteTemplateSettingsAction,
   InitSiteTemplateSettingsAction,
   HandleSiteTemplateSettingsAction,
+  ResetToDefaultsSiteTemplateSettingsAction,
 } from './site-template-settings.actions';
 import { UserLoginAction } from '../../user/user.actions';
 
@@ -255,6 +256,37 @@ export class SiteTemplateSettingsState implements NgxsOnInit {
     }
 
     setState(newState);
+  }
+
+  @Action(ResetToDefaultsSiteTemplateSettingsAction)
+  resetToDefaultsSiteTemplateSettings(
+    { patchState, getState }: StateContext<SitesTemplateSettingsStateModel>,
+    action: ResetToDefaultsSiteTemplateSettingsAction
+  ) {
+    return this.appStateService
+      .sync('siteTemplateSettings', action, 'PUT')
+      .pipe(
+        tap((response) => {
+          if (response.error_message) {
+            // @TODO handle error message
+            console.error(response.error_message);
+          } else {
+            const currentSite = this.store.selectSnapshot(AppState.getSite);
+            const currentSiteTemplate = this.store.selectSnapshot(
+              SiteSettingsState.getCurrentSiteTemplate
+            );
+            const currentState = getState();
+
+            patchState({
+              [currentSite]: {
+                ...currentState[currentSite],
+                [currentSiteTemplate]:
+                  this.initializeSettingsForTemplate(response),
+              },
+            });
+          }
+        })
+      );
   }
 
   initializeSettingsForTemplate(

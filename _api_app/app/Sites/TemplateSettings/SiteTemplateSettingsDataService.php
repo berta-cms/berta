@@ -519,4 +519,13 @@ class SiteTemplateSettingsDataService extends Storage
 
         $this->array2xmlFile($newSiteTemplateSettings, $this->XML_FILE, $this->ROOT_ELEMENT);
     }
+
+    public function resetToDefaults()
+    {
+        if (file_exists($this->XML_FILE)) {
+            unlink($this->XML_FILE);
+        }
+
+        return $this->siteTemplateDefaults;
+    }
 }

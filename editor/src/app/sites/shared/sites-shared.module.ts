@@ -21,6 +21,7 @@ import { IconDeleteComponent } from './icon-delete.component';
 import { IconPublishComponent } from './icon-publish.component';
 import { IconReadonlyComponent } from '../../inputs/icon-readonly.component';
 import { RouteButton } from '../../../app/inputs/route-button.component';
+import { ActionButton } from 'src/app/inputs/action-button.component';
 import { TooltipModule } from 'ng2-tooltip-directive';
 import { HelpTooltipComponent } from './help-tooltip.component';
 import { FilesInputComponent } from '../../../app/inputs/files-input.component';
@@ -52,6 +53,7 @@ import { IconCropComponent } from './icon-crop.component';
     FilesInputComponent,
     IconReadonlyComponent,
     RouteButton,
+    ActionButton,
     IconCloneComponent,
     IconDeleteComponent,
     IconCropComponent,
@@ -76,6 +78,7 @@ import { IconCropComponent } from './icon-crop.component';
     FilesInputComponent,
     IconReadonlyComponent,
     RouteButton,
+    ActionButton,
     IconCloneComponent,
     IconDeleteComponent,
     IconCropComponent,

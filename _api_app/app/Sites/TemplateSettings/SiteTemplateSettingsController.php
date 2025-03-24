@@ -59,4 +59,12 @@ class SiteTemplateSettingsController extends Controller
 
         return response()->json($res);
     }
+
+    public function resetToDefaults(Request $request)
+    {
+        $json = $request->json()->all();
+        $templateSettingsDataService = new SiteTemplateSettingsDataService($json['siteName'], $json['templateName']);
+
+        return $templateSettingsDataService->resetToDefaults();
+    }
 }

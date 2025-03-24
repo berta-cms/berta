@@ -39,7 +39,7 @@ import {
 } from './utilities/content';
 import {
   HandleSiteTemplateSettingsAction,
-  UpdateSiteTemplateSettingsAction,
+  ResetToDefaultsSiteTemplateSettingsAction,
 } from '../sites/template-settings/site-template-settings.actions';
 import {
   DeleteSiteAction,
@@ -106,7 +106,8 @@ export class TemplateRerenderService {
           DeleteSiteSectionBackgroundFileAction,
           AddSiteSectionBackgroundFileAction,
           UpdateSectionBackgroundFileAction,
-          UpdateSiteSectionByPathAction
+          UpdateSiteSectionByPathAction,
+          ResetToDefaultsSiteTemplateSettingsAction
         ),
         filter((action) => {
           const reloadConditionFromSiteSettingsAction =
@@ -146,11 +147,15 @@ export class TemplateRerenderService {
             (action instanceof UpdateSiteSectionAction &&
               action.payload.sectionBgColor);
 
+          const reloadConditionFromSiteTemplateSettings =
+            action instanceof ResetToDefaultsSiteTemplateSettingsAction;
+
           return (
             reloadConditionFromSiteSettingsAction ||
             reloadConditionFromSectionAction ||
             reloadConditionFromShopSettingsAction ||
-            reloadConditionFromBackgroundGalleryActions
+            reloadConditionFromBackgroundGalleryActions ||
+            reloadConditionFromSiteTemplateSettings
           );
         })
       )
