@@ -1,20 +1,23 @@
-import { State, StateContext, Selector, NgxsOnInit, Store, Action } from '@ngxs/store';
+import {
+  State,
+  StateContext,
+  Selector,
+  NgxsOnInit,
+  Store,
+  Action,
+} from '@ngxs/store';
 import { ErrorStateModel } from './error.interface';
 import { PopupService } from '../popup/popup.service';
 import { filter } from 'rxjs/operators';
 import { PushErrorAction } from './error.actions';
 
-
-
 const defaultState: ErrorStateModel[] = [];
-
 
 @State<ErrorStateModel[]>({
   name: 'error',
-  defaults: defaultState
+  defaults: defaultState,
 })
 export class ErrorState implements NgxsOnInit {
-
   @Selector()
   static getLastError(state: ErrorStateModel[]) {
     if (state.length === 0) {
@@ -23,25 +26,28 @@ export class ErrorState implements NgxsOnInit {
     return state[state.length - 1];
   }
 
-  constructor(
-    private store: Store,
-    private popupService: PopupService) {
-  }
+  constructor(private store: Store, private popupService: PopupService) {}
 
   ngxsOnInit() {
-    this.store.select(ErrorState.getLastError)
-      .pipe(filter(lastError => !!lastError))
+    this.store
+      .select(ErrorState.getLastError)
+      .pipe(filter((lastError) => !!lastError))
       .subscribe((lastError: ErrorStateModel) => {
         this.popupService.showPopup({
           type: 'error',
-          content: (lastError.httpStatus ? `${lastError.httpStatus}: ` : '') + lastError.message,
-          timeout: 3000
+          content:
+            (lastError.httpStatus ? `${lastError.httpStatus}: ` : '') +
+            lastError.message,
+          timeout: 3000,
         });
       });
   }
 
   @Action(PushErrorAction)
-  pushError({ getState, setState }: StateContext<ErrorStateModel[]>, action: PushErrorAction) {
+  pushError(
+    { getState, setState }: StateContext<ErrorStateModel[]>,
+    action: PushErrorAction
+  ) {
     setState([...getState(), action.payload]);
   }
 }

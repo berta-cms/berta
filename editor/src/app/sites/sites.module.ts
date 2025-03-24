@@ -11,21 +11,17 @@ import { SiteSettingsModule } from './settings/site-settings.module';
 import { SiteTemplateSettingsModule } from './template-settings/site-template-settings.module';
 import { SitesSharedModule } from './shared/sites-shared.module';
 
-
-
 @NgModule({
   imports: [
     CommonModule,
     DragDropModule,
     RouterModule.forChild([]),
-    NgxsModule.forFeature([
-      SitesState
-    ]),
+    NgxsModule.forFeature([SitesState]),
     SiteSectionsModule,
     SiteSettingsModule,
     SiteTemplateSettingsModule,
-    SitesSharedModule
+    SitesSharedModule,
   ],
-  declarations: [SitesComponent, SiteComponent]
+  declarations: [SitesComponent, SiteComponent],
 })
-export class SitesModule { }
+export class SitesModule {}

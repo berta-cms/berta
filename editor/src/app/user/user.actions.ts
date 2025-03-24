@@ -2,11 +2,11 @@ export class UserLoginAction {
   static readonly type = 'USER:LOGIN';
   constructor(
     public payload: {
-      username?: string,
-      password?: string
-      token?: string
-    }) {
-  }
+      username?: string;
+      password?: string;
+      token?: string;
+    }
+  ) {}
 }
 
 export class UserLogoutAction {

@@ -3,32 +3,25 @@ export class UpdateShopProductAction {
   constructor(
     public id: string,
     public payload: {
-      field: string,
-      value: any
-    }) {
-  }
+      field: string;
+      value: any;
+    }
+  ) {}
 }
 
 export class RenameShopProductSiteAction {
   static readonly type = 'SHOP_PRODUCT:SITE_RENAME';
-  constructor(
-    public siteName: string,
-    public payload: string) {
-  }
+  constructor(public siteName: string, public payload: string) {}
 }
 
 export class DeleteShopProductSiteAction {
   static readonly type = 'SHOP_PRODUCT:SITE_DELETE';
-  constructor(
-    public payload: string) {
-  }
+  constructor(public payload: string) {}
 }
 
 export class AddShopProductSiteAction {
   static readonly type = 'SHOP_PRODUCT:SITE_ADD';
-  constructor(
-    public payload: string) {
-  }
+  constructor(public payload: string) {}
 }
 
 /* Init: */

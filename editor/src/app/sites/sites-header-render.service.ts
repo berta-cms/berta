@@ -60,12 +60,12 @@ export class SitesHeaderRenderService {
 
     if (siteTemplateSettings.heading.position === 'fixed') {
       classes.push('xFixed');
-      attributes.style += ';position: fixed !important;'
+      attributes.style += ';position: fixed !important;';
     } else {
-      const i = classes.indexOf('xFixed')
+      const i = classes.indexOf('xFixed');
       if (i > -1) {
         classes.splice(i, 1);
-        attributes.style += ';position: absolute !important;'
+        attributes.style += ';position: absolute !important;';
       }
     }
 

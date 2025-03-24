@@ -6,21 +6,23 @@ import { SitesSettingsStateModel } from './site-settings.interface';
 import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: SitesModule
+  providedIn: SitesModule,
 })
 export class SiteSettingsService {
-
-  constructor(private appStateService: AppStateService) { }
+  constructor(private appStateService: AppStateService) {}
 
   getInitialState(): Observable<SitesSettingsStateModel> {
-    return this.appStateService.getInitialState('', 'site_settings').pipe(  // @todo: initialize default settings in service
-      switchMap(siteSettings => {
-        return this.appStateService.getInitialState('', 'siteSettingsConfig').pipe(
-          map(siteSettingsConfig => [siteSettings, siteSettingsConfig]));
+    return this.appStateService.getInitialState('', 'site_settings').pipe(
+      // @todo: initialize default settings in service
+      switchMap((siteSettings) => {
+        return this.appStateService
+          .getInitialState('', 'siteSettingsConfig')
+          .pipe(
+            map((siteSettingsConfig) => [siteSettings, siteSettingsConfig])
+          );
       }),
       take(1),
       map(([siteSettings, siteSettingsConfig]) => {
-
         return siteSettings;
       })
     );

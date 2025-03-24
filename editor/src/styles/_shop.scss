@@ -18,7 +18,7 @@ berta-shop {
 
         &.is-tag {
           &:before {
-            content: '- ';
+            content: "- ";
           }
         }
       }
@@ -40,7 +40,7 @@ berta-shop-orders {
       box-sizing: border-box;
       color: $grey-40;
       margin-left: 1em;
-      padding-left: .75em;
+      padding-left: 0.75em;
       width: 50%;
     }
   }
@@ -74,7 +74,7 @@ berta-shop-products {
   margin: 1.3em 0;
 
   &:first-child {
-    margin-top: .5em;
+    margin-top: 0.5em;
   }
 
   &:not(:first-child) {
@@ -101,7 +101,7 @@ berta-shop-products {
       font-weight: bold;
       outline: none;
       padding: 0;
-      transition: color .2s;
+      transition: color 0.2s;
 
       &:focus {
         color: $berta-accent;
@@ -110,11 +110,11 @@ berta-shop-products {
 
     .edit-icon {
       cursor: pointer;
-      margin-left: .15em;
-      max-height: .85em;
+      margin-left: 0.15em;
+      max-height: 0.85em;
 
       .icon {
-        transition: fill .2s;
+        transition: fill 0.2s;
       }
 
       &:hover {
@@ -131,12 +131,12 @@ berta-shop-products {
       cursor: pointer;
       margin-left: 1em;
       padding: 0;
-      transition: color .2s;
+      transition: color 0.2s;
 
       svg {
         path {
           fill: $black;
-          transition: fill .2s;
+          transition: fill 0.2s;
         }
       }
 
@@ -174,7 +174,7 @@ berta-shop-products {
   }
 
   .bt-sh-regional-cost {
-    .input-row  {
+    .input-row {
       .button {
         min-width: 30%;
       }
@@ -185,7 +185,7 @@ berta-shop-products {
 .bt-sh-region-add {
   h4 {
     font-weight: bold;
-    padding-bottom: .5em;
+    padding-bottom: 0.5em;
   }
 
   &:not(:first-child) {
@@ -194,7 +194,7 @@ berta-shop-products {
     }
   }
 
-  .input-row  {
+  .input-row {
     .button {
       min-width: 30%;
     }

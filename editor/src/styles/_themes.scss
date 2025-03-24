@@ -13,7 +13,7 @@ berta-themes {
     float: left;
     margin: 0 0 2.6em 1.3em;
 
-    &:nth-child(3n+1) {
+    &:nth-child(3n + 1) {
       clear: left;
       margin-left: 0;
     }
@@ -21,7 +21,7 @@ berta-themes {
     .image-container {
       position: relative;
       border: 2px solid $grey-10;
-      transition: border-color .4s ease-in-out;
+      transition: border-color 0.4s ease-in-out;
 
       a {
         position: absolute;
@@ -31,22 +31,22 @@ berta-themes {
         bottom: 0;
         opacity: 0;
         color: $berta-accent-light;
-        transition: opacity .4s ease-in-out;
+        transition: opacity 0.4s ease-in-out;
 
         span {
           position: absolute;
           opacity: 0;
           top: 40%;
           left: 23%;
-          transition: .4s;
+          transition: 0.4s;
 
           svg {
             display: block;
             margin: 0 auto;
-            margin-bottom: .25em;
+            margin-bottom: 0.25em;
 
             path {
-              transition: fill .4s ease-in-out;
+              transition: fill 0.4s ease-in-out;
             }
           }
         }
@@ -65,10 +65,10 @@ berta-themes {
       }
 
       &:hover {
-        border-color: rgba($color: $berta-accent, $alpha: .7);
+        border-color: rgba($color: $berta-accent, $alpha: 0.7);
 
         a {
-          background-color: rgba($color: $berta-accent, $alpha: .7);
+          background-color: rgba($color: $berta-accent, $alpha: 0.7);
           opacity: 1;
 
           span {
@@ -81,7 +81,7 @@ berta-themes {
 
     p {
       text-transform: capitalize;
-      margin: .5em 0 0;
+      margin: 0.5em 0 0;
       text-align: left;
     }
   }

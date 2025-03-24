@@ -42,8 +42,18 @@ export type FontFamilyDf =
 export type CssUnitDf = string | number;
 export type FontStyleDf = 'normal' | 'italic' | 'oblique' | 'inherit';
 export type FontVariantDf = 'small-caps' | 'inherit' | 'normal';
-export type FontWeightDf = 'normal' | 'bold' | 'bolder' | 'light' | 'lighter' | 'inherit';
-export type TextDecorationDf = 'none' | 'underline' | 'overline' | 'line-through';
+export type FontWeightDf =
+  | 'normal'
+  | 'bold'
+  | 'bolder'
+  | 'light'
+  | 'lighter'
+  | 'inherit';
+export type TextDecorationDf =
+  | 'none'
+  | 'underline'
+  | 'overline'
+  | 'line-through';
 
 export interface TemplateSettingsTemplateResponse {
   background?: {
@@ -94,7 +104,10 @@ export interface TemplateSettingsTemplateResponse {
     defaultGalleryType?: 'slideshow' | 'row';
     galleryMargin?: string | number;
     galleryNavMargin?: string | number;
-    galleryPosition?: 'between title/description' | 'above title' | 'below description';
+    galleryPosition?:
+      | 'between title/description'
+      | 'above title'
+      | 'below description';
     margin?: CssUnitDf;
     spaceBetween?: CssUnitDf;
     spaceBetweenImages?: CssUnitDf;

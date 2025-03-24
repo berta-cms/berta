@@ -1005,6 +1005,18 @@ $templateConf = [
             'description' => I18n::_('description_custom_css'),
         ],
     ],
+
+    'settings' => [
+        '_' => [
+            'title' => I18n::_('Other settings'),
+        ],
+        'resetTemplate' => [
+            'format' => 'action',
+            'default' => 'resetTemplate',
+            'title' => I18n::_('Reset design'),
+            'description' => I18n::_('Reset design to default values.'),
+        ],
+    ],
 ];
 
 $translations = [

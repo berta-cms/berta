@@ -50,6 +50,10 @@ Route::middleware([SetupMiddleware::class, Authenticate::class])->prefix('v1')->
         SiteTemplateSettingsController::class,
         'upload',
     ])->name('site_template_settings_upload');
+    Route::put('sites/template-settings', [
+        SiteTemplateSettingsController::class,
+        'resetToDefaults',
+    ])->name('site_template_settings_reset_to_defaults');
 });
 
 Route::middleware([SetupMiddleware::class, Authenticate::class])->prefix('v1/sites')->group(function () {

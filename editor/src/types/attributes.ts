@@ -1,7 +1,7 @@
 export interface ClassAttr {
-  class: string
+  class: string;
 }
 
 export interface ClassDataPathAttr extends ClassAttr {
-  'data-path': string
+  'data-path': string;
 }

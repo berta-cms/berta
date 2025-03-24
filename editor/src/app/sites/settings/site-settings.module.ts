@@ -7,19 +7,13 @@ import { NgxsModule } from '@ngxs/store';
 import { SiteSettingsConfigState } from './site-settings-config.state';
 import { SitesSharedModule } from '../shared/sites-shared.module';
 
-
 @NgModule({
   imports: [
     CommonModule,
     RouterModule.forChild([]),
-    NgxsModule.forFeature([
-      SiteSettingsState,
-      SiteSettingsConfigState
-    ]),
-    SitesSharedModule
+    NgxsModule.forFeature([SiteSettingsState, SiteSettingsConfigState]),
+    SitesSharedModule,
   ],
-  declarations: [
-    SiteSettingsComponent
-  ]
+  declarations: [SiteSettingsComponent],
 })
-export class SiteSettingsModule { }
+export class SiteSettingsModule {}

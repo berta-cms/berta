@@ -4,23 +4,31 @@ import { TextInputService } from './text-input.service';
 
 @Component({
   selector: 'berta-long-text-input',
-  template: `
-    <div class="form-group" [class.bt-focus]="textInputService.focus | async" [class.bt-disabled]="disabled">
-      <label>
-        {{ label }} <span [innerHTML]="disabledReason"></span>
-        <textarea (focus)="onFocus()"
-                  (keydown)="onKeyDown($event)"
-                  (blur)="onBlur($event)"
-                  rows="3">{{ value }}</textarea>
-      </label>
-    </div>`,
-  styles: [`
-    :host label {
-      display: block;
-    }
-  `],
-    /* Provide text input service here, so each component has it's own service */
-    providers: [TextInputService]
+  template: ` <div
+    class="form-group"
+    [class.bt-focus]="textInputService.focus | async"
+    [class.bt-disabled]="disabled"
+  >
+    <label>
+      {{ label }} <span [innerHTML]="disabledReason"></span>
+      <textarea
+        (focus)="onFocus()"
+        (keydown)="onKeyDown($event)"
+        (blur)="onBlur($event)"
+        rows="3"
+        >{{ value }}</textarea
+      >
+    </label>
+  </div>`,
+  styles: [
+    `
+      :host label {
+        display: block;
+      }
+    `,
+  ],
+  /* Provide text input service here, so each component has it's own service */
+  providers: [TextInputService],
 })
 export class LongTextInputComponent implements OnInit {
   @Input() label?: string;
@@ -35,20 +43,19 @@ export class LongTextInputComponent implements OnInit {
   @Output() update = new EventEmitter<string>();
   @Output() inputFocus = new EventEmitter<boolean>();
 
-
-  constructor (
-    public textInputService: TextInputService) {
-  }
+  constructor(public textInputService: TextInputService) {}
 
   ngOnInit() {
-    this.textInputService.initValue(this.value, {isLongInput: true});
-    this.textInputService.value.pipe(
-      tap(() => {
-        if (!this.enabledOnUpdate) {
-          this.disabled = true;
-        }
-      })
-    ).subscribe((value) => this.update.emit(value));
+    this.textInputService.initValue(this.value, { isLongInput: true });
+    this.textInputService.value
+      .pipe(
+        tap(() => {
+          if (!this.enabledOnUpdate) {
+            this.disabled = true;
+          }
+        })
+      )
+      .subscribe((value) => this.update.emit(value));
   }
 
   onFocus() {

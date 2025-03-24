@@ -69,6 +69,13 @@ import { UpdateInputFocus } from '../../app-state/app.actions';
         [route]="setting.value"
       ></berta-route-button>
 
+      <berta-action-button
+        *ngSwitchCase="'action'"
+        [label]="config.title"
+        [action]="config.default"
+        (emitAction)="runAction($event)"
+      ></berta-action-button>
+
       <berta-file-input
         *ngSwitchCase="'image'"
         [label]="config.title"
@@ -170,6 +177,7 @@ export class SettingComponent implements OnInit {
     field: string;
     value: SettingModel['value'];
   }>();
+  @Output('emitAction') emitAction = new EventEmitter<{ action: string }>();
 
   description: SafeHtml;
 
@@ -195,6 +203,10 @@ export class SettingComponent implements OnInit {
           case 'update':
             this.update.emit(val);
             break;
+
+          case 'emitAction':
+            this.emitAction.emit(val);
+            break;
         }
       }
     });
@@ -206,5 +218,9 @@ export class SettingComponent implements OnInit {
 
   updateComponentField(field, value) {
     this.syncEvents$.next(['update', { field, value }]);
+  }
+
+  runAction(event: { action: string }) {
+    this.syncEvents$.next(['emitAction', { action: event.action }]);
   }
 }

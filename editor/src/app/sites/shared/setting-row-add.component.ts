@@ -2,29 +2,33 @@ import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 
 import { SettingConfigModel } from '../../shared/interfaces';
 
-
 @Component({
   selector: 'berta-setting-row-add',
   template: `
     <form class="setting" (submit)="addRow($event)">
       <div class="input-row">
-        <berta-setting *ngFor="let inputField of inputFields | keyvalue"
-                      [class.bt-auto-width]="['icon-readonly'].indexOf(inputField.value.config.format) > -1"
-                      [setting]="inputField.value.setting"
-                      [config]="inputField.value.config"
-                      (update)="updateField($event)"
-                      (keydown.enter)="addRow($event)"></berta-setting>
+        <berta-setting
+          *ngFor="let inputField of inputFields | keyvalue"
+          [class.bt-auto-width]="
+            ['icon-readonly'].indexOf(inputField.value.config.format) > -1
+          "
+          [setting]="inputField.value.setting"
+          [config]="inputField.value.config"
+          (update)="updateField($event)"
+          (keydown.enter)="addRow($event)"
+        ></berta-setting>
 
-        <button type="submit"
-                class="button">Add</button>
+        <button type="submit" class="button">Add</button>
       </div>
     </form>
   `,
-  styles: [`
-    :host {
-      display: block;
-    }
-  `]
+  styles: [
+    `
+      :host {
+        display: block;
+      }
+    `,
+  ],
 })
 export class SettingRowAddComponent implements OnInit {
   @Input('config') config: SettingConfigModel;
@@ -33,15 +37,14 @@ export class SettingRowAddComponent implements OnInit {
 
   inputFields: any;
 
-
-  constructor() { }
+  constructor() {}
 
   ngOnInit() {
     this.inputFields = {};
-    Object.keys(this.config).map(slug => {
+    Object.keys(this.config).map((slug) => {
       this.inputFields[slug] = {
         setting: { slug: slug, value: this.config[slug].default || '' },
-        config: { ...this.config[slug], ...{ enabledOnUpdate: true } }
+        config: { ...this.config[slug], ...{ enabledOnUpdate: true } },
       };
     });
   }
