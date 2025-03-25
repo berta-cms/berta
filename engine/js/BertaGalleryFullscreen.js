@@ -4,7 +4,7 @@ var BertaGalleryFullscreen = function (galleryEl, slideIndex) {
   var items = galleryEl.querySelectorAll('.xGalleryItem');
   var isLoopSlideshow = galleryEl.querySelector('[data-swiper-slide-index]') !== null;
 
-  galleryEl.querySelectorAll('.xGalleryNav a').forEach(function (item, i) {
+  galleryEl.querySelectorAll('.xGalleryNav > li > a').forEach(function (item, i) {
     var slide;
     var isImageSlide = item.classList.contains('xType-image');
 
@@ -20,7 +20,7 @@ var BertaGalleryFullscreen = function (galleryEl, slideIndex) {
           w: parseInt(item.getAttribute('data-mobile-width'), 10),
           h: parseInt(item.getAttribute('data-mobile-height'), 10)
         },
-        title: item.getAttribute('data-caption'),
+        title: item.getNext('.xGalleryImageCaption').innerHTML,
       };
 
     // Video slide
