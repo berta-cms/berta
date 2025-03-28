@@ -60,6 +60,8 @@ var BertaEditorBase = new Class({
   elementEdit_instances: new Array(),
 
   shiftPressed: false,
+  xGuideLineX: null,
+  xGuideLineY: null,
 
   query: null,
 
@@ -104,6 +106,22 @@ var BertaEditorBase = new Class({
           handle.setStyle("left", 0);
         }
       }
+    });
+  },
+
+  initGuideLines: function () {
+    if ($("xGuideLineX")) {
+      return;
+    }
+
+    this.xGuideLineX = new Element("div", {
+      id: "xGuideLineX",
+      class: "xGuideLine",
+    });
+
+    this.xGuideLineY = new Element("div", {
+      id: "xGuideLineY",
+      class: "xGuideLine",
     });
   },
 
@@ -480,9 +498,6 @@ var BertaEditorBase = new Class({
         el.store("onElementSave", onElementSave);
         el.addClass(editorClass.substr(1));
 
-        var xGuideLineX;
-        var xGuideLineY;
-
         var handleEl = el.getElement(".xHandle");
         if (!handleEl) {
           handleEl = new Element("div", {
@@ -502,40 +517,32 @@ var BertaEditorBase = new Class({
             //create guidelines
             var winSize = document.getScrollSize();
 
-            xGuideLineX = new Element("div", {
-              id: "xGuideLineX",
-              class: "xGuideLine",
-              styles: {
-                width: winSize.x + "px",
-              },
-            });
-            xGuideLineY = new Element("div", {
-              id: "xGuideLineY",
-              class: "xGuideLine",
-              styles: {
-                height: winSize.y + "px",
-              },
-            });
+            self.xGuideLineX.setStyle("width", winSize.x + "px");
+            self.xGuideLineY.setStyle("height", winSize.y + "px");
 
-            xGuideLineX.inject(document.body);
+            self.xGuideLineX.inject(document.body);
             if (
               document.body.getElement("#contentContainer.xCentered") &&
               el.hasClass("xFixed") == false
             ) {
-              xGuideLineY.inject(document.body.getElement("#contentContainer"));
+              self.xGuideLineY.inject(
+                document.body.getElement("#contentContainer")
+              );
             } else if (
               document.body.getElement("#allContainer.xCentered") &&
               el.hasClass("xFixed") == false
             ) {
-              xGuideLineY.inject(document.body.getElement("#allContainer"));
+              self.xGuideLineY.inject(
+                document.body.getElement("#allContainer")
+              );
             } else {
-              xGuideLineY.inject(document.body);
+              self.xGuideLineY.inject(document.body);
             }
-            self.drawGuideLines(el, xGuideLineX, xGuideLineY);
+            self.drawGuideLines(el);
           },
           mouseleave: function (event) {
-            xGuideLineX.destroy();
-            xGuideLineY.destroy();
+            self.xGuideLineX.setStyle("width", "0px");
+            self.xGuideLineY.setStyle("height", "0px");
           },
         });
 
@@ -595,7 +602,7 @@ var BertaEditorBase = new Class({
                 " Y:" +
                 parseInt(el.getStyle("top"))
             );
-            self.drawGuideLines(el, xGuideLineX, xGuideLineY);
+            self.drawGuideLines(el);
 
             if (dragAll) {
               el.movedTop = parseInt(el.getStyle("top")) - el.startTop;
@@ -727,11 +734,11 @@ var BertaEditorBase = new Class({
     });
   },
 
-  drawGuideLines: function (el, xGuideLineX, xGuideLineY) {
+  drawGuideLines: function (el) {
     var x = el.getStyle("top");
     var y = el.getStyle("left");
-    xGuideLineX.setStyle("top", x);
-    xGuideLineY.setStyle("left", y);
+    this.xGuideLineX.setStyle("top", x);
+    this.xGuideLineY.setStyle("left", y);
   },
 
   eSup_onYesNoClick: function (event) {

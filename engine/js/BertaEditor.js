@@ -370,7 +370,12 @@ var BertaEditor = new Class({
     );
 
     // dragging /////////////////////////////////////////////////////////////////////////////////////////
-    $$(this.options.xBertaEditorClassDragXY).each(
+    var draggableElements = $$(this.options.xBertaEditorClassDragXY);
+    if (draggableElements.length) {
+      this.initGuideLines();
+    }
+
+    draggableElements.each(
       function (el) {
         this.elementEdit_init(el, this.options.xBertaEditorClassDragXY);
       }.bind(this)
