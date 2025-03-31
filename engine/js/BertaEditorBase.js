@@ -196,7 +196,7 @@ var BertaEditorBase = new Class({
         el.addEvent(
           "click",
           function (event, editor) {
-            $$(".xEditOwerlay").destroy();
+            $$(".xEditOverlay").destroy();
             if (!this.hasClass("xSaving") && !this.hasClass("xEditing")) {
               el.addClass("xEditing");
               if (this.inlineIsEmpty()) this.innerHTML = "";
@@ -221,7 +221,7 @@ var BertaEditorBase = new Class({
           }.bindWithEvent(el, this)
         );
 
-        self.initEditOwerlay(el);
+        self.initEditOverlay(el);
         break;
 
       case this.options.xBertaEditorClassRC:
@@ -715,9 +715,9 @@ var BertaEditorBase = new Class({
   ///  Supporting functions for editables  /////////////////////////////////////////////////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-  initEditOwerlay: function (el) {
+  initEditOverlay: function (el) {
     var editButton = new Element("a", {
-      class: "xEditOwerlay",
+      class: "xEditOverlay",
     });
 
     el.addEvents({

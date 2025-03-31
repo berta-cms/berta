@@ -250,7 +250,7 @@ body .tox-tinymce-aux {
         text-decoration: none !important;
     }
 
-.xEditOwerlay {
+.xEditOverlay {
     position: absolute;
     top: 0;
     left: 0;
