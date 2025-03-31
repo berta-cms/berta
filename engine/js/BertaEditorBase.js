@@ -196,7 +196,7 @@ var BertaEditorBase = new Class({
         el.addEvent(
           "click",
           function (event, editor) {
-            $$(".xEditOwerlay").destroy();
+            $$(".xEditOverlay").destroy();
             if (!this.hasClass("xSaving") && !this.hasClass("xEditing")) {
               el.addClass("xEditing");
               if (this.inlineIsEmpty()) this.innerHTML = "";
@@ -221,7 +221,7 @@ var BertaEditorBase = new Class({
           }.bindWithEvent(el, this)
         );
 
-        self.initEditOwerlay(el);
+        self.initEditOverlay(el);
         break;
 
       case this.options.xBertaEditorClassRC:
@@ -715,9 +715,9 @@ var BertaEditorBase = new Class({
   ///  Supporting functions for editables  /////////////////////////////////////////////////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-  initEditOwerlay: function (el) {
+  initEditOverlay: function (el) {
     var editButton = new Element("a", {
-      class: "xEditOwerlay",
+      class: "xEditOverlay",
     });
 
     el.addEvents({
@@ -725,7 +725,7 @@ var BertaEditorBase = new Class({
         if (!el.hasClass("xEditing")) {
           editButton.style.width = el.getSize().x + "px";
           editButton.style.height = el.getSize().y + "px";
-          editButton.inject(el, "top");
+          editButton.inject(el);
         }
       },
       mouseleave: function () {
@@ -1376,11 +1376,7 @@ var BertaEditorBase = new Class({
         height: "300",
         save_enablewhendirty: false,
         save_onsavecallback: this.tinyMCE_onSave.bind(this),
-        valid_elements:
-          "iframe[*],object[*],embed[*],param[*],form[*],input[*],textarea[*],select[*],option[*]," +
-          "p[class|style|id],b[class],i[class],strong[class],em[class],a[*],br[*],u[class],sup[*],sub[*]," +
-          "ul[*],li,ol[*],img[*],hr[class],h2[class|style|id],h3[class|style|id],div[*],blockquote[*],table[*],thead[*],tbody[*],tr[*],td[*],span[*],ins[*],blockquote[*],time[*]," +
-          "audio[*],source[*]",
+        invalid_elements: "script",
         block_formats: "Paragraph=p;  Heading 2=h2; Heading 3=h3",
         convert_urls: false,
         relative_urls: false,
@@ -1393,8 +1389,6 @@ var BertaEditorBase = new Class({
 
     this.tinyMCESettings.full = new this.tinyMCESettings.Base();
     this.tinyMCESettings.simple = new this.tinyMCESettings.Base({
-      valid_elements:
-        "p[*],b,i,strong,em,a[*],br[*],u,img[*],div[*],blockquote[*],iframe[*],span[*],ins[*],sup[*],sub[*]",
       width: "100%",
       plugins: "save link code",
       toolbar: "save bold italic link unlink removeformat code",
