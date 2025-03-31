@@ -725,7 +725,7 @@ var BertaEditorBase = new Class({
         if (!el.hasClass("xEditing")) {
           editButton.style.width = el.getSize().x + "px";
           editButton.style.height = el.getSize().y + "px";
-          editButton.inject(el, "top");
+          editButton.inject(el);
         }
       },
       mouseleave: function () {
