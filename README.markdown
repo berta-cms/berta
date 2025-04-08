@@ -7,4 +7,3 @@ For more information, visit https://berta.me
 
 - [Installation](https://github.com/berta-cms/berta/wiki/Installation)
 - [Upgrade from previous versions](https://github.com/berta-cms/berta/wiki/Upgrade-from-previous-versions)
-- [Developer guidelines](https://github.com/berta-cms/berta/wiki/Developer-guidelines/)
