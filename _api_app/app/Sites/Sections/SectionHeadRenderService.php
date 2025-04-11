@@ -3,6 +3,7 @@
 namespace App\Sites\Sections;
 
 use App\Plugins\Shop\ShopSettingsDataService;
+use App\Shared\Helpers;
 use App\Shared\I18n;
 use Illuminate\Support\Str;
 
@@ -63,13 +64,45 @@ class SectionHeadRenderService
         return implode($this::$TITLE_SEPARATOR, $titleParts);
     }
 
-    private function getFavicon($siteSettings, $storageService)
+    private function getFavicons($siteSettings, $storageService)
     {
+        $sizes = config('app.favicon_sizes');
+        $hostname = request()->getSchemeAndHttpHost();
+        $favicons = [];
+
         if (! empty($siteSettings['pageLayout']['favicon'])) {
-            return $storageService->MEDIA_URL . '/' . $siteSettings['pageLayout']['favicon'];
+            $filename = $siteSettings['pageLayout']['favicon'];
+
+            if (Str::endsWith($filename, '.ico')) {
+                $favicons[] = [
+                    'rel' => 'icon',
+                    'type' => 'image/x-icon',
+                    'href' => $hostname . $storageService->MEDIA_URL . '/' . $filename,
+                ];
+            } else {
+                foreach ($sizes as $size) {
+                    $favicons[] = [
+                        'rel' => $size[0] === 180 ? 'apple-touch-icon' : 'icon',
+                        'type' => $size[0] === 180 ? null : 'image/png',
+                        'sizes' => $size[0] . 'x' . $size[1],
+                        'href' => $hostname . $storageService->MEDIA_URL . '/_' . $size[0] . 'x' . $size[1] . '_' . $filename,
+                    ];
+                }
+            }
         } else {
-            return '/_templates/' . $siteSettings['template']['template'] . '/favicon.ico';
+            foreach ($sizes as $size) {
+                $favicons[] = [
+                    'rel' => $size[0] === 180 ? 'apple-touch-icon' : 'icon',
+                    'type' => $size[0] === 180 ? null : 'image/png',
+                    'sizes' => $size[0] . 'x' . $size[1],
+                    'href' => $hostname . '/_templates/_includes/images/_' . $size[0] . 'x' . $size[1] . '_logo.png',
+                ];
+            }
         }
+
+        return array_map(function ($favicon) {
+            return Helpers::arrayToHtmlAttributes($favicon);
+        }, $favicons);
     }
 
     private function getStyles($siteSlug, $siteSettings, $currentSection, $siteTemplateSettings, $siteTemplatesConfig, $templateName, $currentSectionType, $isShopAvailable, $isResponsive, $isAutoResponsive, $isPreviewMode, $isEditMode)
@@ -256,7 +289,7 @@ class SectionHeadRenderService
         $data['description'] = ! empty($currentSection['seoDescription']) ? $currentSection['seoDescription'] : $siteSettings['texts']['metaDescription'];
         $data['author'] = $siteSettings['texts']['ownerName'];
         $data['noindex'] = ! isset($currentSection['@attributes']['published']) || $currentSection['@attributes']['published'] == '0' || $user->noindex;
-        $data['favicon'] = $this->getFavicon($siteSettings, $storageService);
+        $data['favicons'] = $this->getFavicons($siteSettings, $storageService);
         $data['styles'] = $this->getStyles($siteSlug, $siteSettings, $currentSection, $siteTemplateSettings, $siteTemplatesConfig, $templateName, $currentSectionType, $isShopAvailable, $isResponsive, $isAutoResponsive, $isPreviewMode, $isEditMode);
         $data['scripts'] = $this->getScripts($siteSlug, $siteSettings, $currentSection, $templateName, $isShopAvailable, $isEditMode, $user);
         $data['isResponsive'] = $isResponsive;

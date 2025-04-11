@@ -142,7 +142,7 @@ return [
     /* setting name */
     'Favicon' => 'Favicon',
     /* help text */
-    'Small picture to display in the address bar of the browser. The file must be in .ICO format and 16x16 pixels big.' => 'Obraz 16x16 pikseli, który znajduje się w oknie adresu przeglądarki. Plik musi być w formacie .ICO.',
+    'Small picture to display in the address bar of the browser. The file must be in PNG format and 180x180 pixels big.' => 'Obraz 180x180 pikseli, który znajduje się w oknie adresu przeglądarki. Plik musi być w formacie PNG.',
     /* setting name */
     'Grid step' => 'Krok siatki',
     /* help text */

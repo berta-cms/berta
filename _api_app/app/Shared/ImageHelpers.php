@@ -569,4 +569,15 @@ class ImageHelpers
             ->scaleDown(config('app.image_max_width'), config('app.image_max_height'))
             ->save($path, progressive: true);
     }
+
+    public static function generateFavicons($path, $filename)
+    {
+        $sizes = config('app.favicon_sizes');
+
+        foreach ($sizes as $size) {
+            [$width, $height] = $size;
+
+            self::getResizedSrc($path, $filename, $width, $height);
+        }
+    }
 }

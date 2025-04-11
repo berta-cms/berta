@@ -489,6 +489,16 @@ class SiteSettingsDataService extends Storage
 
         ImageHelpers::downscaleToMaxSize($mediaDir . '/' . $fileName);
 
+        if (Str::endsWith($path, 'settings/pageLayout/favicon')) {
+            if ($oldFileName) {
+                $this->removeImageWithThumbnails($mediaDir, $oldFileName);
+            }
+
+            ImageHelpers::generateFavicons($mediaDir, $fileName);
+
+            return self::saveValueByPath($path, $fileName);
+        }
+
         [$width, $height] = getimagesize($mediaDir . '/' . $fileName);
         $width = round($width / 2);
         $height = round($height / 2);
