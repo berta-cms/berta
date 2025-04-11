@@ -11,7 +11,9 @@
   {% endif %}
   {{ googleSiteVerificationTag|raw }}
   <title>{{ title }}</title>
-  <link rel="icon" href="{{ favicon }}">
+  {% for favicon in favicons %}
+    <link{{ favicon|raw }}>
+  {% endfor %}
   {% if styles.googleWebFonts %}
     <link href="//fonts.googleapis.com/css?family={{ styles.googleWebFonts }}&amp;subset=latin,latin-ext,cyrillic-ext,greek-ext,greek,vietnamese,cyrillic" rel="stylesheet">
   {% endif %}

@@ -144,7 +144,7 @@ return [
     /* setting name */
     'Favicon' => 'Favicon',
     /* help text */
-    'Small picture to display in the address bar of the browser. The file must be in .ICO format and 16x16 pixels big.' => '16x16 pikseļu attēls, kurš atrodams pretī adrešu laukam pārlūkprogrammā. Failam jābūt .ICO formātā.',
+    'Small picture to display in the address bar of the browser. The file must be in PNG format and 180x180 pixels big.' => '180x180 pikseļu attēls, kurš atrodams pretī adrešu laukam pārlūkprogrammā. Failam jābūt PNG formātā.',
     /* setting name */
     'Grid step' => 'Režģa solis',
     /* help text */

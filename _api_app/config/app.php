@@ -108,6 +108,12 @@ return [
     'image_max_height' => 2560,
     'image_max_file_size' => 1024 * 10, // 10MB in kilobytes
     'video_max_file_size' => 1024 * 256, // 256MB in kilobytes
+    'favicon_sizes' => [
+        [180, 180],
+        [96, 96],
+        [32, 32],
+        [16, 16],
+    ],
     'image_mimes' => [
         'png',
         'jpeg',

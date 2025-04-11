@@ -142,7 +142,7 @@ return [
     /* setting name */
     'Favicon' => 'Favicon',
     /* help text */
-    'Small picture to display in the address bar of the browser. The file must be in .ICO format and 16x16 pixels big.' => 'L’icône de votre site dans la barre de titre du navigateur. Le fichier doit être au format .ICO et mesurer 16x16 pixels.',
+    'Small picture to display in the address bar of the browser. The file must be in PNG format and 180x180 pixels big.' => 'L’icône de votre site dans la barre de titre du navigateur. Le fichier doit être au format PNG et mesurer 180x180 pixels.',
     /* setting name */
     'Grid step' => 'Divisions de la grille',
     /* help text */

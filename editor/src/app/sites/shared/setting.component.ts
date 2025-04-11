@@ -51,7 +51,7 @@ import { UpdateInputFocus } from '../../app-state/app.actions';
         [label]="config.title"
         [templateSlug]="templateSlug"
         [property]="setting.slug"
-        [accept]="'image/x-icon'"
+        [accept]="'image/png'"
         [value]="setting.value"
         [disabled]="disabled"
         [error]="error"

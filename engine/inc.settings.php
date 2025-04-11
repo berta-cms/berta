@@ -136,7 +136,7 @@ $settingsDefinition = [
             'default' => '',
             'allow_blank' => true,
             'title' => I18n::_('Favicon'),
-            'description' => I18n::_('Small picture to display in the address bar of the browser. The file must be in .ICO format and 16x16 pixels big.'),
+            'description' => I18n::_('Small picture to display in the address bar of the browser. The file must be in PNG format and 180x180 pixels big.'),
         ],
         'gridStep' => [
             'format' => 'text',

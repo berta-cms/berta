@@ -142,7 +142,7 @@ return [
     /* setting name */
     'Favicon' => 'Favicon',
     /* help text */
-    'Small picture to display in the address bar of the browser. The file must be in .ICO format and 16x16 pixels big.' => 'Kleine afbeelding die in de adressbar van de browser zichtbaar is. Het bestand moet in .ICO formaat en 16 x 16 pixels groot zijn.',
+    'Small picture to display in the address bar of the browser. The file must be in PNG format and 180x180 pixels big.' => 'Kleine afbeelding die in de adressbar van de browser zichtbaar is. Het bestand moet in PNG formaat en 180x180 pixels groot zijn.',
     /* setting name */
     'Grid step' => 'Grid Step',
     /* help text */

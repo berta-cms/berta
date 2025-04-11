@@ -142,7 +142,7 @@ return [
     /* setting name */
     'Favicon' => 'Иконка',
     /* help text */
-    'Small picture to display in the address bar of the browser. The file must be in .ICO format and 16x16 pixels big.' => 'Маленькое изображение размера 16x16 px, которое отображается в броузере рядом с адресной строкой.  Файл должен быть в формате.ICO.',
+    'Small picture to display in the address bar of the browser. The file must be in PNG format and 180x180 pixels big.' => 'Маленькое изображение размера 180x180 px, которое отображается в броузере рядом с адресной строкой. Файл должен быть в формате PNG.',
     /* setting name */
     'Grid step' => 'Шаг сетки',
     /* help text */
