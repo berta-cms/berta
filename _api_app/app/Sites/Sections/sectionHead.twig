@@ -11,6 +11,14 @@
   {% endif %}
   {{ googleSiteVerificationTag|raw }}
   <title>{{ title }}</title>
+  <script type="application/ld+json">
+    {
+      "@context" : "https://schema.org",
+      "@type" : "WebSite",
+      "name" : "{{ author }}",
+      "url" : "{{ baseUrl }}"
+    }
+  </script>
   {% for favicon in favicons %}
     <link{{ favicon|raw }}>
   {% endfor %}
