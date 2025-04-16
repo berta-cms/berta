@@ -288,6 +288,7 @@ class SectionHeadRenderService
         $data['keywords'] = ! empty($currentSection['seoKeywords']) ? $currentSection['seoKeywords'] : $siteSettings['texts']['metaKeywords'];
         $data['description'] = ! empty($currentSection['seoDescription']) ? $currentSection['seoDescription'] : $siteSettings['texts']['metaDescription'];
         $data['author'] = $siteSettings['texts']['ownerName'];
+        $data['baseUrl'] = request()->getSchemeAndHttpHost();
         $data['noindex'] = ! isset($currentSection['@attributes']['published']) || $currentSection['@attributes']['published'] == '0' || $user->noindex;
         $data['favicons'] = $this->getFavicons($siteSettings, $storageService);
         $data['styles'] = $this->getStyles($siteSlug, $siteSettings, $currentSection, $siteTemplateSettings, $siteTemplatesConfig, $templateName, $currentSectionType, $isShopAvailable, $isResponsive, $isAutoResponsive, $isPreviewMode, $isEditMode);
