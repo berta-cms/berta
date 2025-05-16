@@ -21,7 +21,7 @@ return [
                             A continuación, pulse Intro o haga clic en cualquier lugar fuera del campo para guardar.
                             De esta manera, será a través de su sitio - todo lo que tiene un fondo de color amarillo es editable. También será capaz de cambiar esta configuración más tarde.',
 
-    'googleFont_description' => 'Escriba un nombre de fuente google fuente. Para comprobar las fuentes disponibles vaya a <a href="http://www.google.com/webfonts" target="_blank">Google web fonts</a>. Recuerde - fuente del sistema anula la google fuente. Dejar en blanco si desea utilizar la fuente del sistema. Ejemplo: <em>Marvel</em>, <em>Marvel:700italic</em> or <em>Josefin Slab:700italic</em>',
+    'googleFont_description' => 'Escriba un nombre de fuente google fuente. Para comprobar las fuentes disponibles vaya a <a href="https://fonts.google.com" target="_blank">Google Fonts</a>. Recuerde - fuente del sistema anula la google fuente. Dejar en blanco si desea utilizar la fuente del sistema. Ejemplo: <em>Marvel</em>, <em>Marvel:700italic</em> or <em>Josefin Slab:700italic</em>',
     'description_tagsMenu_x' => 'Submenu X posición en píxeles (es decir, 10px)',
     'description_tagsMenu_y' => 'Submenu Y posición en píxeles (es decir, 10px)',
     'description_menu_position' => 'Posición de menú',

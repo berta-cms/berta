@@ -496,7 +496,7 @@ return [
     /* help text */
     'IMPORTANT! This must be set as percentage. i.e. 60%' => 'Belangrijk! Dit moet als percentage worden ingevoerd, bijv. 60%',
 
-    'googleFont_description' => 'Type of copy/paste een Google font naam. Beschikbare fonts vind je hier: <a href="http://www.google.com/webfonts" target="_blank">Google web fonts</a>. Let op: Google font overschrijft systeem font. Vakje leeglaten als je een systeem font wilt gebruiken. Voorbeeld: <em>Marvel</em>, <em>Marvel:700italic</em> of <em>Josefin Slab:700italic</em>',
+    'googleFont_description' => 'Type of copy/paste een Google font naam. Beschikbare fonts vind je hier: <a href="https://fonts.google.com" target="_blank">Google Fonts</a>. Let op: Google font overschrijft systeem font. Vakje leeglaten als je een systeem font wilt gebruiken. Voorbeeld: <em>Marvel</em>, <em>Marvel:700italic</em> of <em>Josefin Slab:700italic</em>',
     'Menu position' => 'Menu position',
     'Positon X' => 'Positie X',
     'Positon Y' => 'Positie Y',

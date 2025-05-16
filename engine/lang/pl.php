@@ -479,7 +479,7 @@ return [
     /* help text */
     'IMPORTANT! This must be set as percentage. i.e. 60%' => 'UWAGA! Ten parametr musi być wprowadzony jako procenty. Na przykład, 60%',
 
-    'googleFont_description' => 'Wpisz nazwę czcionki google. Obejrzyj, jakie czcionki są dostępne: <a href="http://www.google.com/webfonts" target="_blank">Google web fonti</a> Jeżeli wybrana jest czcionka google, wtedy czcionki systemu nie będą brane pod uwagę. Na przykład: <em>Marvel</em>, <em>Marvel:700italic</em> lub <em>Josefin Slab:700italic</em>',
+    'googleFont_description' => 'Wpisz nazwę czcionki google. Obejrzyj, jakie czcionki są dostępne: <a href="https://fonts.google.com" target="_blank">Google Fonts</a>. Jeżeli wybrana jest czcionka google, wtedy czcionki systemu nie będą brane pod uwagę. Na przykład: <em>Marvel</em>, <em>Marvel:700italic</em> lub <em>Josefin Slab:700italic</em>',
     'Menu position' => 'Pozycja menu',
     'Positon X' => 'Pozycja X',
     'Positon Y' => 'Pozycja Y',
