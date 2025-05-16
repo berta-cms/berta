@@ -466,7 +466,7 @@ return [
     /* help text */
     'IMPORTANT! This must be set as percentage. i.e. 60%' => 'Important : à spécifier en pourcentages, ex. : 60%',
 
-    'googleFont_description' => 'Tapez le nom d’une fonte Google font. Pour voir les fontes disponibles, rendez-vous sur <a href="http://www.google.com/webfonts" target="_blank">Google web fonts</a>. Attention  – les fontes Google font prennent le dessus sur les fontes système. Laissez le champ vide pour utiliser une fonte système. Exemple : <em>Marvel</em>, <em>Marvel:700italic</em> ou <em>Josefin Slab:700italic</em>',
+    'googleFont_description' => 'Tapez le nom d’une fonte Google font. Pour voir les fontes disponibles, rendez-vous sur <a href="https://fonts.google.com" target="_blank">Google Fonts</a>. Attention  – les fontes Google font prennent le dessus sur les fontes système. Laissez le champ vide pour utiliser une fonte système. Exemple : <em>Marvel</em>, <em>Marvel:700italic</em> ou <em>Josefin Slab:700italic</em>',
     'Menu position' => 'Position du menu',
     'Positon X' => 'Position X',
     'Positon Y' => 'Position Y',

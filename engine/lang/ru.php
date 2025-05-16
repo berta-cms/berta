@@ -468,7 +468,7 @@ return [
     /* help text */
     'IMPORTANT! This must be set as percentage. i.e. 60%' => 'ВАЖНО! Данный параметр вводится как процентное соотношение. Например, 60%',
 
-    'googleFont_description' => 'Укажите название Google шрифта. Ознакомтесь, какие шрифты доступны: <a href="http://www.google.com/webfonts" target="_blank">Web шрифты Google</a>. Если выбран Google шрифт, системные шрифты не будут приниматься во внимание. Например: <em>Marvel</em>, <em>Marvel:700italic</em> или <em>Josefin Slab:700italic</em>',
+    'googleFont_description' => 'Укажите название Google шрифта. Ознакомтесь, какие шрифты доступны: <a href="https://fonts.google.com" target="_blank">Google Fonts</a>. Если выбран Google шрифт, системные шрифты не будут приниматься во внимание. Например: <em>Marvel</em>, <em>Marvel:700italic</em> или <em>Josefin Slab:700italic</em>',
     'Menu position' => 'Положение меню',
     'Positon X' => 'Положение X',
     'Positon Y' => 'Положение Y',
