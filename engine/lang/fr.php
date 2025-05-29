@@ -165,12 +165,8 @@ return [
 
     /* setting tab */
     'Media' => 'Média',
-    /* setting subcategory */
-    'Lightbox settings:' => 'Paramètres Lightbox:',
     /* setting name */
     'Is enabled by default' => 'Activée par défaut',
-    /* help text */
-    'Enables Lightbox mode for new entries.' => 'Activer le mode Lightbox pour les nouvelles entrées.',
     /* setting name */
     'Background color' => 'Couleur de fond',
     /* help text */

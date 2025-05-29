@@ -165,16 +165,10 @@ return [
 
     /* setting tab */
     'Media' => 'Media',
-    /* setting subcategory */
-    'Lightbox settings:' => 'Lightbox ustawienia:',
     /* setting name */
     'Is enabled by default' => 'Włączony domyślnie',
-    /* help text */
-    'Enables Lightbox mode for new entries.' => 'Włącza  tryb Lightbox dla nowych wpisów.',
     /* setting name */
     'Background color' => 'Kolor tła',
-    /* help text */
-    'Color of the Lightbox background layer.' => 'Kolor tła Lightbox (biała/czarna/żadna)',
     /* setting name */
     'Image numbers' => 'Cyfry pod obrazem',
     /* setting name */

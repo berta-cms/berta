@@ -165,16 +165,10 @@ return [
 
     /* setting tab */
     'Media' => 'Медиа',
-    /* setting subcategory */
-    'Lightbox settings:' => 'Настройки всплывающего окна:',
     /* setting name */
     'Is enabled by default' => 'Активированы по умолчанию',
-    /* help text */
-    'Enables Lightbox mode for new entries.' => 'Активировать режим всплывающих окон для новых записей.',
     /* setting name */
     'Background color' => 'Цвет фона',
-    /* help text */
-    'Color of the Lightbox background layer.' => 'Цвет фона всплывающего окна(белый/черный/отсутствует)',
     /* setting name */
     'Image numbers' => 'Нумерация изображений',
     /* setting name */

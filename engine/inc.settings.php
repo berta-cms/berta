@@ -234,10 +234,10 @@ $settingsDefinition = [
         '_' => [
             'title' => I18n::_('Entry layout'),
         ],
-        'group_lightbox' => [
+        'galleryFullScreenSettings' => [
             'format' => false,
             'default' => false,
-            'title' => I18n::_('Lightbox settings:'),
+            'title' => I18n::_('Gallery fullscreen settings:'),
         ],
         'galleryFullScreenDefault' => [
             'format' => 'select',
@@ -245,7 +245,7 @@ $settingsDefinition = [
             'values' => ['yes', 'no'],
             'affectsStyle' => true,
             'title' => I18n::_('Is enabled by default'),
-            'description' => I18n::_('Enables Lightbox mode for new entries.'),
+            'description' => I18n::_('Enables gallery fullscreen mode for new entries.'),
         ],
         'galleryFullScreenBackground' => [
             'format' => 'select',
@@ -256,7 +256,7 @@ $settingsDefinition = [
             ],
             'affectsStyle' => true,
             'title' => I18n::_('Background color'),
-            'description' => I18n::_('Color of the Lightbox background layer.'),
+            'description' => I18n::_('Color of the fullscreen gallery background.'),
         ],
         'galleryFullScreenImageNumbers' => [
             'format' => 'select',
@@ -267,7 +267,7 @@ $settingsDefinition = [
             ],
             'affectsStyle' => true,
             'title' => I18n::_('Image numbers'),
-            'description' => I18n::_('Enables/disables Lightbox slide numbers.'),
+            'description' => I18n::_('Enables fullscreen gallery slide numbers.'),
         ],
         'galleryFullScreenCaptionAlign' => [
             'format' => 'select',
