@@ -169,8 +169,6 @@ return [
     'Is enabled by default' => 'Activée par défaut',
     /* setting name */
     'Background color' => 'Couleur de fond',
-    /* help text */
-    'Color of the Lightbox background layer.' => 'Couleur du calque Lightbox',
     /* setting name */
     'Image numbers' => 'Numéros d’image',
     /* setting name */
