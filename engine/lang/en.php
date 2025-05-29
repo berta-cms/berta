@@ -20,7 +20,7 @@ return [
                                         Please check that PHP version 5 or above is installed on the server.</p>',
     'setup_info_text' => 'Click on yellow fields to edit. Press ENTER or click outside a yellow field to save your entry. This way you can edit content in Berta.me.',
 
-    'googleFont_description' => 'Type in any google font name. To check available fonts go to <a href="http://www.google.com/webfonts" target="_blank">Google web fonts</a>. Remember – google font overrides system font. Leave empty if you want to use system font. Example: <em>Marvel</em>, <em>Marvel:700italic</em> or <em>Josefin Slab:700italic</em>',
+    'googleFont_description' => 'Type in any google font name. To check available fonts go to <a href="https://fonts.google.com" target="_blank">Google Fonts</a>. Remember – google font overrides system font. Leave empty if you want to use system font. Example: <em>Marvel</em>, <em>Marvel:700italic</em> or <em>Josefin Slab:700italic</em>',
     'description_tagsMenu_x' => 'Submenu X position in pixels (i.e. 10px)',
     'description_tagsMenu_y' => 'Submenu Y position in pixels (i.e. 10px)',
     'description_menu_position' => 'Menu position',
