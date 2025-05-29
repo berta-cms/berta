@@ -175,19 +175,19 @@ return [
     /* setting tab */
     'Media' => 'Media',
     /* setting subcategory */
-    'Lightbox settings:' => 'Lightbox iestatījumi:',
+    'Gallery fullscreen settings:' => 'Galerijas pilnekrāna iestatījumi:',
     /* setting name */
     'Is enabled by default' => 'Pēc noklusējuma ieslēgts',
     /* help text */
-    'Enables Lightbox mode for new entries.' => 'Ieslēdz Lightbox režīmu jauniem ierakstiem.',
+    'Enables gallery fullscreen mode for new entries.' => 'Ieslēdz galerijas pilnekrāna režīmu jauniem ierakstiem.',
     /* setting name */
     'Background color' => 'fona krāsa',
     /* help text */
-    'Color of the Lightbox background layer.' => 'Lightbox fona krāsa (balts/melns/nekāda)',
+    'Color of the fullscreen gallery background.' => 'Galerijas pilnekrāna fona krāsa.',
     /* setting name */
     'Image numbers' => 'Cipari zem attēla',
     /* help text */
-    'Enables/disables Lightbox slide numbers.' => 'Ieslēgt/izslēgt Lightbox slaida numurus.',
+    'Enables fullscreen gallery slide numbers.' => 'Ieslēgt pilnekrāna galerijas slaidu numurus.',
     /* setting name */
     'Caption alignment' => 'Paskaidrojuma teksta pozīcija',
     /* help text */

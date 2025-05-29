@@ -165,16 +165,10 @@ return [
 
     /* setting tab */
     'Media' => 'Media',
-    /* setting subcategory */
-    'Lightbox settings:' => 'Lightbox instellingen:',
     /* setting name */
     'Is enabled by default' => 'Staat default aan',
-    /* help text */
-    'Enables Lightbox mode for new entries.' => 'Zet Lightbox mode voor nieuwe Entries aan.',
     /* setting name */
     'Background color' => 'Background color',
-    /* help text */
-    'Color of the Lightbox background layer.' => 'Color van de Lightbox background laag.',
     /* setting name */
     'Image numbers' => 'Image numbers',
     /* setting name */
