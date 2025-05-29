@@ -481,7 +481,7 @@ return [
     /* help text */
     'IMPORTANT! This must be set as percentage. i.e. 60%' => 'UZMANĪBU! Šim parametram jābūt ievadītam kā procentiem. Piemēram, 60%',
 
-    'googleFont_description' => 'Ieraksti google fonta nosaukumu. Apskati kādi fonti ir piejami: <a href="http://www.google.com/webfonts" target="_blank">Google web fonti</a> Ja izvēlēts google fonts, tad sistēmas fonti netiks ņemti vērā. Piemērs: <em>Marvel</em>, <em>Marvel:700italic</em> vai <em>Josefin Slab:700italic</em>',
+    'googleFont_description' => 'Ieraksti google fonta nosaukumu. Apskati kādi fonti ir piejami: <a href="https://fonts.google.com" target="_blank">Google Fonts</a>. Ja izvēlēts google fonts, tad sistēmas fonti netiks ņemti vērā. Piemērs: <em>Marvel</em>, <em>Marvel:700italic</em> vai <em>Josefin Slab:700italic</em>',
     'Menu position' => 'Izvēlnes pozīcija',
     'Positon X' => 'X pozīcija',
     'Positon Y' => 'Y pozīcija',
