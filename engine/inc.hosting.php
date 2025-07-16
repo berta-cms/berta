@@ -6,7 +6,7 @@ if (file_exists($ENGINE_ROOT_PATH . 'hosting')) {
 }
 $options['PLANS'] = isset($hostingConfig['plans']) ? $hostingConfig['plans'] : [];
 $options['HOSTING_PROFILE'] = isset($hostingConfig['login']) ? $hostingConfig['login'] : false;
-$options['FORGOTPASSWORD_LINK'] = isset($hostingConfig['forgotPassword']) ? $hostingConfig['forgotPassword'] : 'http://support.berta.me/kb/login-name-and-password/forgot-my-password-for-self-hosted-berta';
+$options['FORGOTPASSWORD_LINK'] = isset($hostingConfig['forgotPassword']) ? $hostingConfig['forgotPassword'] : 'https://github.com/berta-cms/berta/wiki/Installation';
 $options['INTERCOM_APP_ID'] = isset($hostingConfig['intercomAppId']) ? $hostingConfig['intercomAppId'] : false;
 $options['INTERCOM_SECRET_KEY'] = isset($hostingConfig['intercomSecretKey']) ? $hostingConfig['intercomSecretKey'] : false;
 $options['HELPCRUNCH_API_ORGANIZATION'] = isset($hostingConfig['helpcrunchApiOrganization']) ? $hostingConfig['helpcrunchApiOrganization'] : false;

@@ -55,9 +55,7 @@ import { UserStateModel } from '../user/user.state.model';
             queryParamsHandling="preserve"
             >Shop</a
           >
-          <a href="http://support.berta.me/kb" target="_blank"
-            >Knowledge base</a
-          >
+          <a href="https://support.berta.me" target="_blank">Knowledge base</a>
         </nav>
         <berta-profile-dropdown></berta-profile-dropdown>
       </div>
