@@ -13,11 +13,11 @@
     "gulp-jshint": "^2.1.0",
     "gulp-rebase-css-urls": "git+https://github.com/welldone-software/gulp-rebase-css-urls.git",
     "gulp-replace": "^1.1.4",
-    "gulp-sass": "^4.1.1",
+    "gulp-sass": "^6.0.1",
     "gulp-sourcemaps": "^3.0.0",
     "gulp-uglify": "^3.0.2",
     "jshint": "^2.13.6",
-    "node-sass": "^4.14.1"
+    "node-sass": "^9.0.0"
   },
   "dependencies": {
     "immutable": "^3.8.2",
