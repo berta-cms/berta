@@ -33,7 +33,7 @@ class ImageHelpers
 
         if (isset($image['@value'])) {
             $alt = str_replace(["\r\n", "\n"], ' ', $image['@value']);
-            $alt = trim(preg_replace('/\s\s+/', ' ', htmlspecialchars(strip_tags($alt))));
+            $alt = trim(preg_replace('/\s\s+/', ' ', strip_tags($alt)));
             $caption = $image['@value'];
         }
 
