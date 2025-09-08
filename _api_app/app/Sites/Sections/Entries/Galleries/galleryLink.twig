@@ -4,7 +4,7 @@
       {% for item in items %}
         {% if item.type == 'image' %}
           <div class="xGalleryItem xGalleryItemType-image xImgIndex-1" style="width: {{ item.width }}px; height: {{ item.height }}px">
-            <img src="{{ item.src }}" width="{{ item.width }}" height="{{ item.height }}"{% if item.srcset %} srcset="{{ item.srcset }}"{% endif %} alt="{{ item.alt }}">
+            <img src="{{ item.src }}" width="{{ item.width }}" height="{{ item.height }}"{% if item.srcset %} srcset="{{ item.srcset }}"{% endif %} alt="{{ item.alt|raw }}">
             <div class="xGalleryImageCaption">{{ item.caption|raw }}</div>
           </div>
         {% else %}
