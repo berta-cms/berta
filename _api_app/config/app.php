@@ -128,7 +128,7 @@ return [
     ],
     'small_thumb_prefix' => '_smallthumb_',
     'small_thumb_width' => false, // false means "auto"
-    'small_thumb_height' => 80,
+    'small_thumb_height' => 300,
     'bg_image_prefix' => '_bg_',
     'grid_image_prefix' => '_grid_',
     'grid_thumb_width' => 140,
