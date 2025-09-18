@@ -574,17 +574,6 @@ body.xLoginPageBody {
                 text-align: left;
             }
 
-            body.xLoginPageBody .xLogout {
-                display: block;
-                width: 220px;
-                margin: 0 auto 0;
-            }
-
-            body.xLoginPageBody .xLoginLogo {
-                text-align: left;
-                margin-bottom: 30px;
-            }
-
             body.xLoginPageBody .xMaintenanceInfo {
                 clear: both;
                 margin: 0 0 20px;
@@ -600,65 +589,6 @@ body.xLoginPageBody {
 
             body.xLoginPageBody .error { }
 
-            a.social_button {
-                display: block;
-                padding: .4em 1em;
-                border-radius: 4px;
-                color: #fff;
-                text-align: center;
-                text-decoration: none !important;
-                letter-spacing: .05em;
-                vertical-align: top;
-                transition: .4s;
-            }
-
-            a.social_button:hover {
-                color: #fff;
-            }
-
-            a.social_button span {
-                font-size: 16px;
-                font-weight: normal;
-                display: inline-block;
-                margin-right: 0.5em;
-                vertical-align: middle;
-            }
-
-            .social_button_facebook {
-                background-color: #4e69a2;
-                margin-bottom: 5px;
-            }
-
-            .social_button_facebook:hover {
-                background-color: #324877;
-            }
-
-            .social_button_google {
-                background-color: #dd4b39;
-            }
-
-            .social_button_google:hover {
-                background-color: #A63426;
-            }
-
-            body.xLoginPageBody p.social_or {
-                text-align: center;
-                margin: 10px 0;
-                padding: 0;
-            }
-
-            body.xLoginPageBody input.xLoginField {
-                display: block;
-                clear: both;
-                width: 214px;
-                margin: 0 0 5px;
-            }
-            body.xLoginPageBody input.xLoginSubmit {
-                display: block;
-                clear: both;
-                width: 110px;
-                margin: 0 0 5px;
-            }
 
             body.xLoginPageBody .xBottomNote {
                 clear: both;

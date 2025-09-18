@@ -38,7 +38,7 @@ $options['MOBILE_DEVICE'] = $MOBILE_DEVICE;
  * Base paths - absolute root and host
  */
 $options['SITE_HOST_ADDRESS'] = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 'https' : 'http') .
-                                    '://' . $_SERVER['HTTP_HOST'];
+    '://' . $_SERVER['HTTP_HOST'];
 
 /**
  * File name templates
@@ -116,18 +116,6 @@ foreach ($options['hip_ipaddr'] as $ip) {
     $options['remote_update_uri'][] = 'http://' . $ip . '/berta-remote/news_ticker_videos_update.php';
 }
 
-// thumbnail size for editor layout
-$options['images']['small_thumb_width'] = false;	// false means "auto"
-$options['images']['small_thumb_height'] = 80;
-$options['images']['small_thumb_prefix'] = '_smallthumb_';	// MUST start with an underscore ("_")
-
-// background image prefix
-$options['images']['bg_image_prefix'] = '_bg_';
-$options['images']['grid_image_prefix'] = '_grid_';
-
-// preview pic size and prefix
-$options['images']['preview_prefix'] = '_preview_';	// MUST start with an underscore ("_")
-
 $options['images']['small_width'] = 200;
 $options['images']['small_height'] = 200;
 
@@ -148,23 +136,25 @@ $options['row_gallery_image_limit'] = [
 /**
  * Editables
  */
-$xEditSelectorSimple = 'xEditable';	// simple input
-$xEditSelectorSelect = 'xEditableSelect';	// select
-$xEditSelectorSelectRC = 'xEditableSelectRC';	// select
-$xEditSelectorFontSelect = 'xEditableFontSelect';	// select
-$xEditSelectorImage = 'xEditableImage';	// image upload
-$xEditSelectorICO = 'xEditableICO';	// ico upload
-$xEditSelectorTA = 'xEditableTA';	// textarea
-$xEditSelectorMCE = 'xEditableMCE';	// textarea
-$xEditSelectorMCESimple = 'xEditableMCESimple';	// textarea
-$xEditSelectorRC = 'xEditableRC';	// with "real" content
-$xEditSelectorYesNo = 'xEditableYesNo';	// the "yes/no" switch
+$xEditSelectorSimple = 'xEditable';    // simple input
+$xEditSelectorSelect = 'xEditableSelect';    // select
+$xEditSelectorSelectRC = 'xEditableSelectRC';    // select
+$xEditSelectorFontSelect = 'xEditableFontSelect';    // select
+$xEditSelectorImage = 'xEditableImage';    // image upload
+$xEditSelectorICO = 'xEditableICO';    // ico upload
+$xEditSelectorTA = 'xEditableTA';    // textarea
+$xEditSelectorMCE = 'xEditableMCE';    // textarea
+$xEditSelectorMCESimple = 'xEditableMCESimple';    // textarea
+$xEditSelectorRC = 'xEditableRC';    // with "real" content
+$xEditSelectorYesNo = 'xEditableYesNo';    // the "yes/no" switch
 $xEmpty = 'xEmpty';
 
-$editsForSettings = ['text' => $xEditSelectorSimple,
+$editsForSettings = [
+    'text' => $xEditSelectorSimple,
     'longtext' => $xEditSelectorTA,
     'richtext' => $xEditSelectorMCESimple,
     'image' => $xEditSelectorImage,
     'icon' => $xEditSelectorICO,
     'select' => $xEditSelectorSelectRC,
-    'fontselect' => $xEditSelectorFontSelect];
+    'fontselect' => $xEditSelectorFontSelect
+];
