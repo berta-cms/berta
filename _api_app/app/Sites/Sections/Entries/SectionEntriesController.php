@@ -128,7 +128,7 @@ class SectionEntriesController extends Controller
             ], 400);
         }
 
-        $ret = $sectionEntriesDataService->galleryUpload($path, $file);
+        $ret = $sectionEntriesDataService->galleryUpload($site, $path, $file);
 
         return response()->json($ret);
     }

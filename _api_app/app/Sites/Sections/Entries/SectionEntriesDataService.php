@@ -939,7 +939,7 @@ class SectionEntriesDataService extends Storage
         return ['error_message' => 'Entry with ID "' . $entry_id . '" not found!'];
     }
 
-    public function galleryUpload($path, $file)
+    public function galleryUpload($site, $path, $file)
     {
         $mediaRootDir = $this->getOrCreateMediaDir();
         $entries = $this->get();
@@ -1015,7 +1015,7 @@ class SectionEntriesDataService extends Storage
 
             // Add new Image
         } else {
-            $entry['mediaCacheData']['file'][] = [
+            $item = [
                 '@attributes' => [
                     'type' => 'image',
                     'src' => $fileName,
@@ -1023,6 +1023,19 @@ class SectionEntriesDataService extends Storage
                     'height' => $height,
                 ],
             ];
+            $entry['mediaCacheData']['file'][] = $item;
+
+            $storageService = new Storage($site);
+            $siteSettingsDataService = new SiteSettingsDataService($site);
+            $siteSettings = $siteSettingsDataService->getState();
+
+            // create image variant for gallery size
+            ImageHelpers::getGalleryItem(
+                $item,
+                $entry,
+                $storageService,
+                $siteSettings
+            );
         }
 
         $entries[self::$ROOT_LIST_ELEMENT][$entry_order] = $entry;

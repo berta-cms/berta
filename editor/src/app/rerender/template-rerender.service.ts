@@ -107,7 +107,8 @@ export class TemplateRerenderService {
           AddSiteSectionBackgroundFileAction,
           UpdateSectionBackgroundFileAction,
           UpdateSiteSectionByPathAction,
-          ResetToDefaultsSiteTemplateSettingsAction
+          ResetToDefaultsSiteTemplateSettingsAction,
+          UpdateSectionEntryAction
         ),
         filter((action) => {
           const reloadConditionFromSiteSettingsAction =
@@ -150,12 +151,17 @@ export class TemplateRerenderService {
           const reloadConditionFromSiteTemplateSettings =
             action instanceof ResetToDefaultsSiteTemplateSettingsAction;
 
+          const reloadConditionFromUpdateSectionEntryActions =
+            action instanceof UpdateSectionEntryAction &&
+            action.path.endsWith('mediaCacheData/@attributes/size');
+
           return (
             reloadConditionFromSiteSettingsAction ||
             reloadConditionFromSectionAction ||
             reloadConditionFromShopSettingsAction ||
             reloadConditionFromBackgroundGalleryActions ||
-            reloadConditionFromSiteTemplateSettings
+            reloadConditionFromSiteTemplateSettings ||
+            reloadConditionFromUpdateSectionEntryActions
           );
         })
       )
