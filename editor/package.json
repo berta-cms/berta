@@ -13,7 +13,7 @@
   "private": true,
   "dependencies": {
     "@angular/animations": "^8.2.14",
-    "@angular/cdk": "^8.0.1",
+    "@angular/cdk": "^8.2.3",
     "@angular/common": "^8.2.14",
     "@angular/compiler": "^8.2.14",
     "@angular/core": "^8.2.14",
@@ -25,6 +25,7 @@
     "@ngxs/store": "^3.4.3",
     "@sentry/browser": "^5.4.0",
     "core-js": "^2.5.4",
+    "tslib": "^1.10.0",
     "lodash": "^4.17.21",
     "ng-sortgrid": "^1.3.3",
     "ng2-tooltip-directive": "^2.9.20",
