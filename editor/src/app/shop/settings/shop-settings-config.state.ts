@@ -8,6 +8,7 @@ import {
 } from './shop-settings.actions';
 import { concat } from 'rxjs';
 import { UserState } from '../../user/user.state';
+import { Injectable } from '@angular/core';
 
 export interface ShopSettingsConfigModel {
   [site: string]: any;
@@ -19,6 +20,7 @@ const defaultState: ShopSettingsConfigModel = {};
   name: 'shopSettingsConfig',
   defaults: defaultState,
 })
+@Injectable()
 export class ShopSettingsConfigState implements NgxsOnInit {
   constructor(private store$: Store, private stateService: ShopStateService) {}
 

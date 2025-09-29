@@ -35,6 +35,7 @@ import {
 import { ShopState } from '../shop.state';
 import { AppStateService } from '../../app-state/app-state.service';
 import { UserState } from '../../user/user.state';
+import { Injectable } from '@angular/core';
 
 interface ShopRegion {
   id: number;
@@ -59,6 +60,7 @@ const defaultState: ShopRegionalCostsModel = {};
   name: 'shopRegionalCosts',
   defaults: defaultState,
 })
+@Injectable()
 export class ShopRegionalCostsState implements NgxsOnInit {
   @Selector([AppState.getSite])
   static getCurrentSiteRegionalCosts(

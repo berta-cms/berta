@@ -24,6 +24,7 @@ import {
 } from './app.actions';
 import { AppStateService } from './app-state.service';
 import { UserLoginAction } from '../user/user.actions';
+import { Injectable } from '@angular/core';
 
 const defaultState: AppStateModel = {
   setup: false,
@@ -51,6 +52,7 @@ const defaultState: AppStateModel = {
   name: 'app',
   defaults: defaultState,
 })
+@Injectable()
 export class AppState implements NgxsOnInit {
   @Selector()
   static isSetup(state: AppStateModel) {

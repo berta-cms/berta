@@ -24,11 +24,13 @@ import {
   InitSiteTemplatesAction,
 } from './site-templates.actions';
 import { UserLoginAction } from '../../user/user.actions';
+import { Injectable } from '@angular/core';
 
 @State<SiteTemplatesStateModel>({
   name: 'siteTemplates',
   defaults: {},
 })
+@Injectable()
 export class SiteTemplatesState implements NgxsOnInit {
   @Selector([SiteSettingsState.getCurrentSiteTemplate])
   static getCurrentTemplate(

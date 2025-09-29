@@ -18,6 +18,7 @@ import {
   InitShopOrdersAction,
 } from './shop-orders.actions';
 import { UserState } from '../../user/user.state';
+import { Injectable } from '@angular/core';
 
 interface ShopOrdersModel {
   [site: string]: any[];
@@ -29,6 +30,7 @@ const defaultState: ShopOrdersModel = {};
   name: 'shopOrders',
   defaults: defaultState,
 })
+@Injectable()
 export class ShopOrdersState implements NgxsOnInit {
   @Selector([AppState.getSite])
   static getCurrentSiteOrders(state: ShopOrdersModel, site: string) {

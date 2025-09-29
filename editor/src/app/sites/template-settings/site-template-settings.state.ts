@@ -32,11 +32,13 @@ import {
   ResetToDefaultsSiteTemplateSettingsAction,
 } from './site-template-settings.actions';
 import { UserLoginAction } from '../../user/user.actions';
+import { Injectable } from '@angular/core';
 
 @State<SitesTemplateSettingsStateModel>({
   name: 'siteTemplateSettings',
   defaults: {},
 })
+@Injectable()
 export class SiteTemplateSettingsState implements NgxsOnInit {
   @Selector([AppState.getSite, SiteSettingsState.getCurrentSiteTemplate])
   static getCurrentSiteTemplateSettings(

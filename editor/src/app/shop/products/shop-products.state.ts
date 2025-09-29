@@ -32,6 +32,7 @@ import { ShopState } from '../shop.state';
 import { HttpErrorResponse } from '@angular/common/http';
 import { concat } from 'rxjs';
 import { UserState } from '../../user/user.state';
+import { Injectable } from '@angular/core';
 
 interface ShopProduct {
   id: string;
@@ -51,6 +52,7 @@ const defaultState: ShopProductsModel = {};
   name: 'shopProducts',
   defaults: defaultState,
 })
+@Injectable()
 export class ShopProductsState implements NgxsOnInit {
   @Selector([AppState.getSite])
   static getCurrentSiteProducts(

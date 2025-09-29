@@ -21,11 +21,13 @@ import {
   InitSiteSettingsConfigAction,
 } from './site-settings-config.actions';
 import { UserLoginAction } from '../../user/user.actions';
+import { Injectable } from '@angular/core';
 
 @State<SiteSettingsConfigStateModel>({
   name: 'siteSettingsConfig',
   defaults: {},
 })
+@Injectable()
 export class SiteSettingsConfigState implements NgxsOnInit {
   constructor(
     private store: Store,
