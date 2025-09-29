@@ -12,26 +12,26 @@
         "@schematics/angular:component": {
           "inlineTemplate": true,
           "inlineStyle": true,
-          "styleext": "scss",
-          "spec": false
+          "style": "scss",
+          "skipTests": true
         },
         "@schematics/angular:class": {
-          "spec": false
+          "skipTests": true
         },
         "@schematics/angular:directive": {
-          "spec": false
+          "skipTests": true
         },
         "@schematics/angular:guard": {
-          "spec": false
+          "skipTests": true
         },
         "@schematics/angular:module": {
-          "spec": false
+          "skipTests": true
         },
         "@schematics/angular:pipe": {
-          "spec": false
+          "skipTests": true
         },
         "@schematics/angular:service": {
-          "spec": false
+          "skipTests": true
         }
       },
       "architect": {

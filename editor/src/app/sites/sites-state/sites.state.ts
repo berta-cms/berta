@@ -52,11 +52,13 @@ import {
   AddSiteEntriesAction,
 } from '../sections/entries/entries-state/section-entries.actions';
 import { UserLoginAction } from '../../user/user.actions';
+import { Injectable } from '@angular/core';
 
 @State<SiteStateModel[]>({
   name: 'sites',
   defaults: [],
 })
+@Injectable()
 export class SitesState implements NgxsOnInit {
   @Selector([AppState.getSite])
   static getCurrentSite(sites: SiteStateModel[], siteSlug: string) {

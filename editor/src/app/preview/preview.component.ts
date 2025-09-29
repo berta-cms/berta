@@ -75,8 +75,8 @@ export class PreviewComponent implements OnInit {
     // We need a start value for previewUrl while Observable is not ready
     // otherwise iframe loads wrong iframe src url: current url + 'null' (http://local.berta.me/engine/null)
     // This solves iframe in iframe loading
-    // this.previewUrl =
-    //   this.sanitizer.bypassSecurityTrustResourceUrl('about:blank');
+    this.previewUrl =
+      this.sanitizer.bypassSecurityTrustResourceUrl('about:blank');
 
     // Load iframe with current site and section
     combineLatest(

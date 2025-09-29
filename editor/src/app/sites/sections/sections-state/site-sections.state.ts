@@ -52,11 +52,13 @@ import {
 } from '../entries/entries-state/section-entries.actions';
 import { UserLoginAction } from '../../../user/user.actions';
 import { FileUploadService } from '../../shared/file-upload.service';
+import { Injectable } from '@angular/core';
 
 @State<SiteSectionStateModel[]>({
   name: 'siteSections',
   defaults: [],
 })
+@Injectable()
 export class SiteSectionsState implements NgxsOnInit {
   @Selector([AppState.getSite])
   static getCurrentSiteSections(state, site): SiteSectionStateModel[] {

@@ -46,11 +46,13 @@ import { UserLoginAction } from '../../../../user/user.actions';
 import { UpdateSiteSectionAction } from '../../sections-state/site-sections.actions';
 import { UpdateSectionTagsAction } from '../../tags/section-tags.actions';
 import { FileUploadService } from '../../../../../app/sites/shared/file-upload.service';
+import { Injectable } from '@angular/core';
 
 @State<SectionEntriesStateModel>({
   name: 'sectionEntries',
   defaults: {},
 })
+@Injectable()
 export class SectionEntriesState implements NgxsOnInit {
   @Selector([AppState.getSite])
   static getCurrentSiteEntries(state, site): SectionEntry[] {

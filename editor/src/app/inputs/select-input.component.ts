@@ -72,7 +72,7 @@ export class SelectInputComponent implements OnInit {
   @Output() inputFocus = new EventEmitter();
   @Input() enabledOnUpdate?: boolean;
 
-  @ViewChild('dropDownAnchor', { static: false }) dropDownAnchor: ElementRef;
+  @ViewChild('dropDownAnchor') dropDownAnchor: ElementRef;
   focus = false;
   disabled = false;
   blurTimeoutId: any;

@@ -33,6 +33,7 @@ import {
 import { AppStateService } from '../../app-state/app-state.service';
 import { ShopState } from '../shop.state';
 import { UserState } from '../../user/user.state';
+import { Injectable } from '@angular/core';
 
 interface ShopSettingsModel {
   [site: string]: Array<{
@@ -47,6 +48,7 @@ const defaultState: ShopSettingsModel = {};
   name: 'shopSettings',
   defaults: defaultState,
 })
+@Injectable()
 export class ShopSettingsState implements NgxsOnInit {
   @Selector([AppState.getSite])
   static getCurrentSiteSettings(state: ShopSettingsModel, site: string) {

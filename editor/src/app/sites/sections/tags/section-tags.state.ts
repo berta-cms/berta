@@ -29,11 +29,13 @@ import {
   OrderSectionTagsFromSyncAction,
 } from './section-tags.actions';
 import { UserLoginAction } from '../../../user/user.actions';
+import { Injectable } from '@angular/core';
 
 @State<SectionTagsStateModel>({
   name: 'sectionTags',
   defaults: {},
 })
+@Injectable()
 export class SectionTagsState implements NgxsOnInit {
   @Selector([AppState.getSite])
   static getCurrentSiteTags(state, site): SectionTagsInterface[] {

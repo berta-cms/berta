@@ -40,6 +40,7 @@ import {
 } from './orders/shop-orders.actions';
 import { UserState } from '../user/user.state';
 import { ResetShopAction, InitShopAction } from './shop.actions';
+import { Injectable } from '@angular/core';
 
 const defaultState: ShopModel = {
   sections: [],
@@ -50,6 +51,7 @@ const defaultState: ShopModel = {
   name: 'shop',
   defaults: defaultState,
 })
+@Injectable()
 export class ShopState implements NgxsOnInit {
   @Selector()
   static getSections(state: ShopModel): Array<string> {

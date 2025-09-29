@@ -35,11 +35,13 @@ import {
 } from './site-settings.actions';
 import { UserLoginAction } from '../../user/user.actions';
 import { AddSiteSectionAction } from '../sections/sections-state/site-sections.actions';
+import { Injectable } from '@angular/core';
 
 @State<SitesSettingsStateModel>({
   name: 'siteSettings',
   defaults: {},
 })
+@Injectable()
 export class SiteSettingsState implements NgxsOnInit {
   @Selector([AppState.getSite])
   static getCurrentSiteSettings(

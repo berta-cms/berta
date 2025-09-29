@@ -22,6 +22,7 @@ import { ResetSiteSettingsAction } from '../sites/settings/site-settings.actions
 import { ResetSiteSettingsConfigAction } from '../sites/settings/site-settings-config.actions';
 import { ResetSiteTemplateSettingsAction } from '../sites/template-settings/site-template-settings.actions';
 import { ResetSiteTemplatesAction } from '../sites/template-settings/site-templates.actions';
+import { Injectable } from '@angular/core';
 
 const defaultState: UserStateModel = {
   name: null,
@@ -36,6 +37,7 @@ const defaultState: UserStateModel = {
   name: 'user',
   defaults: defaultState,
 })
+@Injectable()
 export class UserState implements NgxsOnInit {
   constructor(
     private appStateService: AppStateService,

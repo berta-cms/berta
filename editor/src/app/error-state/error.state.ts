@@ -10,6 +10,7 @@ import { ErrorStateModel } from './error.interface';
 import { PopupService } from '../popup/popup.service';
 import { filter } from 'rxjs/operators';
 import { PushErrorAction } from './error.actions';
+import { Injectable } from '@angular/core';
 
 const defaultState: ErrorStateModel[] = [];
 
@@ -17,6 +18,7 @@ const defaultState: ErrorStateModel[] = [];
   name: 'error',
   defaults: defaultState,
 })
+@Injectable()
 export class ErrorState implements NgxsOnInit {
   @Selector()
   static getLastError(state: ErrorStateModel[]) {
