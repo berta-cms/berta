@@ -710,7 +710,7 @@ export class SectionEntriesState implements NgxsOnInit {
             newFile['@attributes'].width = response.width;
           }
           if (response.height) {
-            newFile['@attributes'].width = response.height;
+            newFile['@attributes'].height = response.height;
           }
 
           patchState({
@@ -868,7 +868,7 @@ export class SectionEntriesState implements NgxsOnInit {
                 const mediaCacheData = {
                   ...entry.mediaCacheData,
                   file: entry.mediaCacheData.file.map((file, index) => {
-                    if (index === parseInt(action.fileOrder)) {
+                    if (index === parseInt(action.fileOrder, 10)) {
                       return {
                         ...file,
                         '@attributes': {

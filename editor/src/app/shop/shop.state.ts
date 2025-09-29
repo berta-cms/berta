@@ -86,7 +86,7 @@ export class ShopState implements NgxsOnInit {
 
           return [leftOverPrevSiteNames[0], newSiteName];
         }),
-        filter((oldSiteName, newSiteName) => !!oldSiteName || !!newSiteName)
+        filter(([oldSiteName, newSiteName]) => !!oldSiteName || !!newSiteName)
       )
       .subscribe(([oldSiteName, newSiteName]) => {
         /**
@@ -150,12 +150,12 @@ export class ShopState implements NgxsOnInit {
       )
       .subscribe(() => {
         dispatch([
-          ResetShopAction,
-          ResetShopProductsAction,
-          ResetShopOrdersAction,
-          ResetShopRegionalCostsAction,
-          ResetShopSettingsAction,
-          ResetShopSettingsConfigAction,
+          new ResetShopAction(),
+          new ResetShopProductsAction(),
+          new ResetShopOrdersAction(),
+          new ResetShopRegionalCostsAction(),
+          new ResetShopSettingsAction(),
+          new ResetShopSettingsConfigAction(),
         ]);
       });
   }
