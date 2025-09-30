@@ -472,10 +472,7 @@ export class BackgroundGalleryEditorComponent implements OnInit {
     });
   }
 
-  identifyGalleryItem(
-    _,
-    item: SiteSectionStateModel['mediaCacheData']['file']
-  ) {
+  identifyGalleryItem(_, item: SiteSectionBackgroundFile) {
     return item['@attributes'].src;
   }
 
