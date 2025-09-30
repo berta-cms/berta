@@ -20,7 +20,7 @@ import {
   UpdateSiteSectionByPathAction,
 } from './sections-state/site-sections.actions';
 import { PopupService } from '../../../app/popup/popup.service';
-import { NgsgOrderChange } from 'ng-sortgrid';
+import type { NgsgOrderChange } from 'ng-sortgrid';
 
 @Component({
   selector: 'berta-background-gallery-editor',
@@ -409,11 +409,7 @@ export class BackgroundGalleryEditorComponent implements OnInit {
     this.store.dispatch(new UpdateSectionBackgroundFileAction(path, e.value));
   }
 
-  reorder(
-    orderChangeEvent: NgsgOrderChange<
-      SiteSectionStateModel['mediaCacheData']['file']
-    >
-  ) {
+  reorder(orderChangeEvent: NgsgOrderChange<SiteSectionBackgroundFile>) {
     if (orderChangeEvent.currentOrder.length < 2) {
       return;
     }

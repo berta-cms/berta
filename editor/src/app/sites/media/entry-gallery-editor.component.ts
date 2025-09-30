@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable, combineLatest } from 'rxjs';
 import { Select, Store } from '@ngxs/store';
-import { NgsgOrderChange } from 'ng-sortgrid';
+import type { NgsgOrderChange } from 'ng-sortgrid';
 import { Animations } from '../../shared/animations';
 import {
   SectionEntry,

@@ -859,6 +859,7 @@ export class SectionEntriesState implements NgxsOnInit {
           return response.error_message;
         } else {
           const currentState = getState();
+          const targetIndex = Number.parseInt(String(action.fileOrder), 10);
           patchState({
             [action.site]: currentState[action.site].map((entry) => {
               if (
@@ -868,7 +869,7 @@ export class SectionEntriesState implements NgxsOnInit {
                 const mediaCacheData = {
                   ...entry.mediaCacheData,
                   file: entry.mediaCacheData.file.map((file, index) => {
-                    if (index === parseInt(action.fileOrder, 10)) {
+                    if (index === targetIndex) {
                       return {
                         ...file,
                         '@attributes': {

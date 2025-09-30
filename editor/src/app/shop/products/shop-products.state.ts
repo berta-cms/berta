@@ -189,7 +189,7 @@ export class ShopProductsState implements NgxsOnInit {
   ) {
     return this.stateService.getInitialState(action.payload, 'products').pipe(
       take(1),
-      tap((products) =>
+      tap((products: ShopProductsModel) =>
         patchState({ [action.payload]: products[action.payload] })
       )
     );

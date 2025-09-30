@@ -93,8 +93,8 @@ export class SelectInputComponent implements OnInit {
     this.inputFocus.emit(this.focus);
   }
 
-  onKeyDown($event) {
-    if ($event.key === 'Escape' || $event.keyCode === 27) {
+  onKeyDown($event: KeyboardEvent) {
+    if ($event.key === 'Escape' || $event.key === 'Esc') {
       this.closeDropDown();
       this.dropDownAnchor.nativeElement.blur();
     }
