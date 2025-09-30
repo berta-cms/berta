@@ -126,9 +126,12 @@ export class SiteMediaComponent implements OnInit {
                   )
               )
               .map((section) => {
-                const sectionTags = tags.find(
-                  (tag) => tag['@attributes'].name === section.name
-                );
+                const sectionTags =
+                  tags && tags.length > 0
+                    ? tags.find(
+                        (tag) => tag['@attributes'].name === section.name
+                      )
+                    : null;
 
                 return {
                   section,
@@ -169,10 +172,12 @@ export class SiteMediaComponent implements OnInit {
                 .filter((e) => e.sectionName === section.section.name)
                 .filter((e) => {
                   return this.activeNav.tag
-                    ? e.tags && e.tags.slugs.indexOf(this.activeNav.tag) > -1
+                    ? e.tags &&
+                        e.tags.slugs &&
+                        e.tags.slugs.indexOf(this.activeNav.tag) > -1
                     : this.showAllSections
                     ? true
-                    : !e.tags || e.tags.slugs.length === 0;
+                    : !e.tags || (e.tags.slugs && e.tags.slugs.length === 0);
                 })
                 .sort((a, b) => a.order - b.order),
             };
