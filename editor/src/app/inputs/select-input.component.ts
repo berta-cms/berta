@@ -72,7 +72,7 @@ export class SelectInputComponent implements OnInit {
   @Output() inputFocus = new EventEmitter();
   @Input() enabledOnUpdate?: boolean;
 
-  @ViewChild('dropDownAnchor') dropDownAnchor: ElementRef;
+  @ViewChild('dropDownAnchor') dropDownAnchor: ElementRef<HTMLButtonElement>;
   focus = false;
   disabled = false;
   blurTimeoutId: any;
@@ -93,8 +93,8 @@ export class SelectInputComponent implements OnInit {
     this.inputFocus.emit(this.focus);
   }
 
-  onKeyDown($event) {
-    if ($event.key === 'Escape' || $event.keyCode === 27) {
+  onKeyDown($event: KeyboardEvent) {
+    if ($event.key === 'Escape' || $event.key === 'Esc') {
       this.closeDropDown();
       this.dropDownAnchor.nativeElement.blur();
     }

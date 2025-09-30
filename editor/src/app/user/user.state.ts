@@ -113,15 +113,17 @@ export class UserState implements NgxsOnInit {
     });
 
     /* Reset the state of app */
-    dispatch(ResetAppStateAction);
-    dispatch(ResetSitesAction);
-    dispatch(ResetSiteSectionsAction);
-    dispatch(ResetSiteSectionsTagsAction);
-    dispatch(ResetSectionEntriesAction);
-    dispatch(ResetSiteSettingsAction);
-    dispatch(ResetSiteSettingsConfigAction);
-    dispatch(ResetSiteTemplateSettingsAction);
-    dispatch(ResetSiteTemplatesAction);
+    dispatch([
+      new ResetAppStateAction(),
+      new ResetSitesAction(),
+      new ResetSiteSectionsAction(),
+      new ResetSiteSectionsTagsAction(),
+      new ResetSectionEntriesAction(),
+      new ResetSiteSettingsAction(),
+      new ResetSiteSettingsConfigAction(),
+      new ResetSiteTemplateSettingsAction(),
+      new ResetSiteTemplatesAction(),
+    ]);
 
     if (action.saveNextUrl) {
       newState.nextUrl = this.router.url;

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable, combineLatest } from 'rxjs';
 import { Select, Store } from '@ngxs/store';
+import type { NgsgOrderChange } from 'ng-sortgrid';
 import { Animations } from '../../shared/animations';
 import {
   SectionEntry,
@@ -558,8 +559,8 @@ export class EntryGalleryEditorComponent implements OnInit {
     return item['@attributes'].src;
   }
 
-  reorder(itemList: SectionEntryGalleryFile[]) {
-    if (itemList.length < 2) {
+  reorder(orderChangeEvent: NgsgOrderChange<SectionEntryGalleryFile>) {
+    if (orderChangeEvent.currentOrder.length < 2) {
       return;
     }
     this.store.dispatch(
@@ -567,7 +568,7 @@ export class EntryGalleryEditorComponent implements OnInit {
         this.currentSite.name,
         this.currentEntry.sectionName,
         this.currentEntry.id,
-        itemList.map((f) => f['@attributes'].src)
+        orderChangeEvent.currentOrder.map((f) => f['@attributes'].src)
       )
     );
   }

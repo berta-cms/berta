@@ -20,6 +20,7 @@ import {
   UpdateSiteSectionByPathAction,
 } from './sections-state/site-sections.actions';
 import { PopupService } from '../../../app/popup/popup.service';
+import type { NgsgOrderChange } from 'ng-sortgrid';
 
 @Component({
   selector: 'berta-background-gallery-editor',
@@ -408,15 +409,15 @@ export class BackgroundGalleryEditorComponent implements OnInit {
     this.store.dispatch(new UpdateSectionBackgroundFileAction(path, e.value));
   }
 
-  reorder(itemList: SiteSectionStateModel['mediaCacheData']['file']) {
-    if (itemList.length < 2) {
+  reorder(orderChangeEvent: NgsgOrderChange<SiteSectionBackgroundFile>) {
+    if (orderChangeEvent.currentOrder.length < 2) {
       return;
     }
     this.store.dispatch(
       new OrderSiteSectionBackgroundAction(
         this.currentSite.name,
         this.currentSection.name,
-        itemList.map((f) => f['@attributes'].src)
+        orderChangeEvent.currentOrder.map((f) => f['@attributes'].src)
       )
     );
   }
@@ -471,10 +472,7 @@ export class BackgroundGalleryEditorComponent implements OnInit {
     });
   }
 
-  identifyGalleryItem(
-    _,
-    item: SiteSectionStateModel['mediaCacheData']['file']
-  ) {
+  identifyGalleryItem(_, item: SiteSectionBackgroundFile) {
     return item['@attributes'].src;
   }
 
