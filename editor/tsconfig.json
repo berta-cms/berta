@@ -11,6 +11,6 @@
     "target": "es2020",
     "module": "es2020",
     "typeRoots": ["node_modules/@types"],
-    "lib": ["es2018", "dom"]
+    "lib": ["es2020", "dom"]
   }
 }
