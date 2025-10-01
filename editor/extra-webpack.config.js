@@ -9,8 +9,11 @@ module.exports = {
     }]
   },
 
-  node: {
-    fs: 'empty'
+  resolve: {
+    fallback: {
+      fs: false,
+      path: false,
+    }
   },
 
   plugins: [
