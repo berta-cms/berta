@@ -7,7 +7,9 @@
     "build": "ng build --configuration production",
     "dev": "ng build --watch",
     "test": "ng test",
-    "lint": "ng lint",
+    "dev": "ng build --watch",
+    "test": "ng test",
+    "e2e": "ng e2e"
     "e2e": "ng e2e"
   },
   "engines": {
