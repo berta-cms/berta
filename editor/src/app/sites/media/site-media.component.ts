@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { combineLatest } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, takeUntil } from 'rxjs/operators';
 import { SiteSectionStateModel } from '../sections/sections-state/site-sections-state.model';
 import { AppState } from '../../app-state/app.state';
 import { SiteSectionsState } from '../sections/sections-state/site-sections.state';
@@ -82,7 +82,7 @@ import { SectionEntry } from '../sections/entries/entries-state/section-entries-
     </div>
   `,
 })
-export class SiteMediaComponent implements OnInit {
+export class SiteMediaComponent implements OnInit, OnDestroy {
   @Select(SitesState.getCurrentSite) currentSite$: Observable<SiteStateModel>;
 
   sectionsList: {
@@ -99,6 +99,7 @@ export class SiteMediaComponent implements OnInit {
   selectedSections: { section: SiteSectionStateModel; tags: any }[];
   selectedTag: string | null;
   showAllSections: boolean;
+  private destroy$ = new Subject<void>();
 
   constructor(private store: Store, private route: ActivatedRoute) {}
 
@@ -145,17 +146,20 @@ export class SiteMediaComponent implements OnInit {
             paramMap,
             queryParams,
           };
-        })
+        }),
+        takeUntil(this.destroy$)
       )
       .subscribe((data) => {
         this.sectionsList = [...data.sections];
 
+        const sectionParam = data.paramMap.get('section');
+        const tagParam = data.paramMap.get('tag');
         this.activeNav = {
           site: data.activeNav.site,
           section:
-            data.paramMap['params']['section'] ||
+            sectionParam ||
             (this.sectionsList[0] && this.sectionsList[0].section.name),
-          tag: data.paramMap['params']['tag'],
+          tag: tagParam,
         };
 
         this.showAllSections = data.queryParams.all === '1';
@@ -204,5 +208,10 @@ export class SiteMediaComponent implements OnInit {
 
   identifyEntry(index, item: SectionEntry) {
     return item;
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }
