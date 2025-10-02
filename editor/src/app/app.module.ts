@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, ErrorHandler } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
+import { APP_BASE_HREF } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { NgxsModule } from '@ngxs/store';
@@ -81,6 +82,7 @@ import { SiteMediaModule } from './sites/media/site-media.module';
     MashupTemplateStyleService,
     MessyTemplateStyleService,
     { provide: ErrorHandler, useClass: SentryErrorHandler },
+    { provide: APP_BASE_HREF, useValue: '/engine/' },
   ],
   bootstrap: [AppComponent],
 })

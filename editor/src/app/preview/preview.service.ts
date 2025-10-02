@@ -513,11 +513,16 @@ export class PreviewService {
           return (
             actionsPassed.length > 0 &&
             !actionsPassed.every((action) => {
-              if (!action.payload) {
+              // Only check payload if it exists on the action
+              if (
+                !('payload' in action) ||
+                typeof (action as any).payload !== 'object' ||
+                (action as any).payload === null
+              ) {
                 return false;
               }
 
-              const slug = Object.keys(action.payload)[0];
+              const slug = Object.keys((action as any).payload)[0];
               return (
                 action instanceof UpdateSiteTemplateSettingsAction &&
                 !(

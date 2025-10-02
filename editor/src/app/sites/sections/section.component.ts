@@ -252,7 +252,8 @@ export class SectionComponent implements OnInit {
                 filter((obj) => !!Object.keys(obj).length)
               )
               .subscribe((obj) => {
-                const route = 'params' in obj ? obj['params'] : [];
+                const route =
+                  'params' in obj ? Object.values(obj['params']) : [];
                 const qParams = 'query' in obj ? obj['query'] : {};
 
                 this.router.navigate(route, {
