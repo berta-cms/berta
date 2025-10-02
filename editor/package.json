@@ -10,12 +10,12 @@
     "e2e": "ng e2e"
   },
   "engines": {
-    "node": "^14.15.0 || ^16.10.0"
+    "node": "^14.20.0 || ^16.13.0 || ^18.10.0"
   },
   "private": true,
   "dependencies": {
     "@angular/animations": "^14.3.0",
-    "@angular/cdk": "^14.2.7",
+    "@angular/cdk": "15.2.9",
     "@angular/common": "^14.3.0",
     "@angular/compiler": "^14.3.0",
     "@angular/core": "^14.3.0",
@@ -23,13 +23,11 @@
     "@angular/platform-browser": "^14.3.0",
     "@angular/platform-browser-dynamic": "^14.3.0",
     "@angular/router": "^14.3.0",
-    "@kolkov/angular-editor": "^2.1.0",
     "@ngxs/store": "~3.7.4",
     "@sentry/browser": "^5.4.0",
     "core-js": "^3.45.1",
     "lodash": "^4.17.21",
-    "ng-sortgrid": "^6.0.1",
-    "ng2-tooltip-directive": "^2.10.3",
+    "ng-sortgrid": "^15.0.1",
     "ngx-color-picker": "^8.0.1",
     "ngx-image-cropper": "^3.0.0",
     "rxjs": "^7.4.0",
@@ -38,7 +36,7 @@
     "zone.js": "~0.11.4"
   },
   "devDependencies": {
-    "@angular-builders/custom-webpack": "^14.1.0",
+    "@angular-builders/custom-webpack": "^15.0.0",
     "@angular-devkit/build-angular": "^14.2.13",
     "@angular-devkit/core": "^14.2.13",
     "@angular/cli": "^14.2.13",
