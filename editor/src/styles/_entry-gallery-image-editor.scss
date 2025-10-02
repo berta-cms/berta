@@ -17,16 +17,6 @@ berta-entry-gallery-image-editor {
 
   .content {
     padding: 1.3em;
-
-    image-cropper {
-      .ngx-ic-source-image {
-        display: block;
-      }
-
-      .ngx-ic-cropper {
-        margin-left: 0 !important;
-      }
-    }
   }
 
   .entry-gallery {

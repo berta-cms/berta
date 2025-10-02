@@ -72,18 +72,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "berta:build"
+            "buildTarget": "berta:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "berta:build:production"
+              "buildTarget": "berta:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "berta:build"
+            "buildTarget": "berta:build"
           }
         },
         "test": {
