@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Location } from '@angular/common';
+import { Location, NgIf } from '@angular/common';
 import { Observable } from 'rxjs';
 import { Select, Store } from '@ngxs/store';
 import { Animations } from '../../shared/animations';
@@ -15,10 +15,18 @@ import { SectionEntriesState } from '../sections/entries/entries-state/section-e
 import { SiteSectionStateModel } from '../sections/sections-state/site-sections-state.model';
 import { SitesState } from '../sites-state/sites.state';
 import { HttpClient } from '@angular/common/http';
-import { CropperPosition, ImageCroppedEvent } from 'ngx-image-cropper';
+import {
+  ImageCropperComponent,
+  CropperPosition,
+  ImageCroppedEvent,
+  LoadedImage,
+} from 'ngx-image-cropper';
+import { SitesSharedModule } from '../shared/sites-shared.module';
 
 @Component({
   selector: 'berta-entry-gallery-image-editor',
+  standalone: true,
+  imports: [ImageCropperComponent, NgIf, SitesSharedModule],
   template: `
     <aside>
       <div class="setting-group" [class.is-expanded]="fileSettingsIsOpen">
@@ -103,8 +111,9 @@ import { CropperPosition, ImageCroppedEvent } from 'ngx-image-cropper';
           [imageFile]="galleryFileBlob"
           [maintainAspectRatio]="false"
           format="png"
-          (imageCropped)="imageCropped($event)"
+          (imageLoaded)="imageLoaded($event)"
           (cropperReady)="cropperReady()"
+          (imageCropped)="imageCropped($event)"
           [cropper]="position"
         ></image-cropper>
       </div>
@@ -185,6 +194,18 @@ export class EntryGalleryImageEditorComponent implements OnInit {
       });
   }
 
+  imageLoaded(image: LoadedImage) {
+    this.size = {
+      width: image.original.size.width,
+      height: image.original.size.height,
+    };
+  }
+
+  cropperReady() {
+    this.position = { x1: 0, y1: 0, x2: this.size.width, y2: this.size.height };
+    this.cropperIsReady = true;
+  }
+
   imageCropped(event: ImageCroppedEvent) {
     this.imageCroppedEvent = event;
     this.canCrop =
@@ -222,10 +243,6 @@ export class EntryGalleryImageEditorComponent implements OnInit {
               this.imageCroppedEvent.imagePosition.y2),
       };
     }
-  }
-
-  cropperReady() {
-    this.cropperIsReady = true;
   }
 
   navigateBack() {

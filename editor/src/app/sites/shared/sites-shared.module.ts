@@ -22,7 +22,7 @@ import { IconPublishComponent } from './icon-publish.component';
 import { IconReadonlyComponent } from '../../inputs/icon-readonly.component';
 import { RouteButton } from '../../../app/inputs/route-button.component';
 import { ActionButton } from 'src/app/inputs/action-button.component';
-import { TooltipModule } from 'ng2-tooltip-directive';
+import { TooltipModule } from '@cloudfactorydk/ng2-tooltip-directive';
 import { HelpTooltipComponent } from './help-tooltip.component';
 import { FilesInputComponent } from '../../../app/inputs/files-input.component';
 import { IconMoveComponent } from './icon-move.component';

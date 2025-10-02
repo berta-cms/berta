@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { NgsgModule } from 'ng-sortgrid';
-import { ImageCropperModule } from 'ngx-image-cropper';
 import { SitesSharedModule } from '../shared/sites-shared.module';
 import { SiteMediaComponent } from './site-media.component';
 import { EntryGalleryComponent } from './entry-gallery.component';
@@ -14,14 +13,13 @@ import { EntryGalleryImageEditorComponent } from './entry-gallery-image-editor.c
     CommonModule,
     RouterModule.forChild([]),
     NgsgModule,
-    ImageCropperModule,
     SitesSharedModule,
+    EntryGalleryImageEditorComponent,
   ],
   declarations: [
     SiteMediaComponent,
     EntryGalleryComponent,
     EntryGalleryEditorComponent,
-    EntryGalleryImageEditorComponent,
   ],
 })
 export class SiteMediaModule {}
