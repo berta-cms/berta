@@ -10,7 +10,7 @@
     "e2e": "ng e2e"
   },
   "engines": {
-    "node": "^16.14.0 || ^18.10.0"
+    "node": "^18.13.0 || ^20.9.0"
   },
   "private": true,
   "dependencies": {
@@ -24,7 +24,6 @@
     "@angular/platform-browser-dynamic": "^16.2.12",
     "@angular/router": "^16.2.12",
     "@cloudfactorydk/ng2-tooltip-directive": "^16.0.0",
-    "@kolkov/angular-editor": "^2.1.0",
     "@ngxs/store": "~3.8.0",
     "@sentry/browser": "^5.4.0",
     "core-js": "^3.45.1",
