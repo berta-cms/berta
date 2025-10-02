@@ -19,11 +19,11 @@ berta-entry-gallery-image-editor {
     padding: 1.3em;
 
     image-cropper {
-      .source-image {
+      .ngx-ic-source-image {
         display: block;
       }
 
-      .cropper {
+      .ngx-ic-cropper {
         margin-left: 0 !important;
       }
     }
