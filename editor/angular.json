@@ -36,9 +36,6 @@
         "build": {
           "builder": "@angular-builders/custom-webpack:browser",
           "options": {
-            "customWebpackConfig": {
-              "path": "./extra-webpack.config.js"
-            },
             "outputPath": "../engine/dist",
             "baseHref": "/engine/dist/",
             "index": "src/index.html",
