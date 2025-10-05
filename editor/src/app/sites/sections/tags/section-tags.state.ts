@@ -37,7 +37,7 @@ import { Injectable } from '@angular/core';
 })
 @Injectable()
 export class SectionTagsState implements NgxsOnInit {
-  @Selector([AppState.getSite])
+  @Selector([SectionTagsState, AppState.getSite])
   static getCurrentSiteTags(state, site): SectionTagsInterface[] {
     return state[site] ? state[site].section : [];
   }

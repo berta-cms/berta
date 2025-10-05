@@ -50,13 +50,13 @@ const defaultState: ShopSettingsModel = {};
 })
 @Injectable()
 export class ShopSettingsState implements NgxsOnInit {
-  @Selector([AppState.getSite])
+  @Selector([ShopSettingsState, AppState.getSite])
   static getCurrentSiteSettings(state: ShopSettingsModel, site: string) {
     return state[site];
   }
 
   @Selector([ShopSettingsState.getCurrentSiteSettings])
-  static getCurrentWeightUnit(_, currentSiteSettings) {
+  static getCurrentWeightUnit(currentSiteSettings) {
     return (
       currentSiteSettings
         .find((group) => {
@@ -67,7 +67,7 @@ export class ShopSettingsState implements NgxsOnInit {
   }
 
   @Selector([ShopSettingsState.getCurrentSiteSettings])
-  static getCurrentCurrency(_, currentSiteSettings) {
+  static getCurrentCurrency(currentSiteSettings) {
     return (
       currentSiteSettings
         .find((group) => {

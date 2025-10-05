@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import { Select, Store } from '@ngxs/store';
 
-import { PopupService } from 'src/app/popup/popup.service';
+import { PopupService } from '../../popup/popup.service';
 import { ShopSettingsState } from '../settings/shop-settings.state';
 import { ShopRegionalCostsState } from './shop-regional-costs.state';
 import { UpdateInputFocus } from '../../app-state/app.actions';

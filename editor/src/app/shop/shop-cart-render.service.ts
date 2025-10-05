@@ -1,14 +1,15 @@
 import { Injectable } from '@angular/core';
-import * as ShoppingCart from '../../templates/Shop/shoppingCart.twig';
-import * as ShoppingCartLink from '../../templates/Shop/shoppingCartLink.twig';
 import { getImageItem, toHtmlAttributes } from '../shared/helpers';
 import { SiteSectionStateModel } from '../sites/sections/sections-state/site-sections-state.model';
+import { TwigTemplateRenderService } from '../render/twig-template-render.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ShopCartRenderService {
   USED_IN_TEMPLATES = ['messy'];
+
+  constructor(private twigTemplateRenderService: TwigTemplateRenderService) {}
 
   getCartLinkAttributes(siteSlug: string, siteSettings, isResponsive: boolean) {
     let styles: string[] = [];
@@ -67,7 +68,7 @@ export class ShopCartRenderService {
       return '';
     }
 
-    const htmlOutput = ShoppingCartLink({
+    const viewData = {
       attributes: this.getCartLinkAttributes(
         siteSlug,
         siteSettings,
@@ -80,9 +81,17 @@ export class ShopCartRenderService {
             alt: section.title,
           })
         : null,
-    });
+    };
 
-    return htmlOutput;
+    try {
+      return this.twigTemplateRenderService.render(
+        'Shop/shoppingCartLink',
+        viewData
+      );
+    } catch (error) {
+      console.error('Failed to render template:', error);
+      return '';
+    }
   }
 
   getEmptyCartData(siteSlug, siteSettings) {
@@ -628,7 +637,7 @@ export class ShopCartRenderService {
       return '';
     }
 
-    const htmlOutput = ShoppingCart({
+    const viewData = {
       config: shopSettings.group_config,
       currency: shopSettings.group_config.currency,
       isEditMode: true,
@@ -697,8 +706,16 @@ export class ShopCartRenderService {
       checkoutButton: this.getCheckoutButtonData(siteSlug, siteSettings),
       returnToStore: this.getReturnToStoreData(siteSlug, siteSettings),
       returnUrl: location.protocol + '//' + location.hostname,
-    });
+    };
 
-    return htmlOutput;
+    try {
+      return this.twigTemplateRenderService.render(
+        'Shop/shoppingCart',
+        viewData
+      );
+    } catch (error) {
+      console.error('Failed to render template:', error);
+      return '';
+    }
   }
 }

@@ -131,8 +131,15 @@ export class SiteComponent implements OnInit {
               map(() => state)
             );
           }),
-          map((state) =>
-            state.sites.find((site) => site.order === this.site.order)
+          switchMap(() =>
+            this.store
+              .select((state) => state.sites)
+              .pipe(
+                take(1),
+                map((sitesState: SiteStateModel[]) =>
+                  sitesState.find((site) => site.order === this.site.order)
+                )
+              )
           )
         )
         .subscribe((renamedSite) => {
@@ -149,7 +156,7 @@ export class SiteComponent implements OnInit {
 
   cloneSite() {
     this.store
-      .select(SitesState)
+      .select((state) => state.sites)
       .pipe(
         take(1),
         map((sites: SiteStateModel[]) => {
@@ -157,11 +164,18 @@ export class SiteComponent implements OnInit {
         }),
         switchMap((siteNames) =>
           this.store.dispatch(new CloneSiteAction(this.site)).pipe(
-            map(({ sites: sitesState }) => {
-              return sitesState.find(
-                (site) => siteNames.indexOf(site.name) === -1
-              );
-            })
+            switchMap(() =>
+              this.store
+                .select((state) => state.sites)
+                .pipe(
+                  take(1),
+                  map((sitesState: SiteStateModel[]) => {
+                    return sitesState.find(
+                      (site) => siteNames.indexOf(site.name) === -1
+                    );
+                  })
+                )
+            )
           )
         )
       )

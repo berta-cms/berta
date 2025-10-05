@@ -43,7 +43,7 @@ export class StyleService {
       });
 
     this.store
-      .select(ShopSettingsConfigState)
+      .select((state) => state.sitesettingsConfig)
       .pipe(take(1))
       .subscribe((shopSettingsConfig) => {
         this.shopSettingsConfig = shopSettingsConfig;

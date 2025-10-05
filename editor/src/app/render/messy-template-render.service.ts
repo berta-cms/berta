@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngxs/store';
 import { TemplateRenderService } from './template-render.service';
-import * as Template from '../../templates/Sites/Sections/messyTemplate.twig';
 import { SectionRenderService } from '../sites/sections/section-render.service';
 import { SectionHeadRenderService } from '../sites/sections/section-head-render.service';
 import { SitesMenuRenderService } from '../sites/sites-menu-render.service';
@@ -21,6 +20,7 @@ import { getCookie, toHtmlAttributes } from '../shared/helpers';
 import { GridViewRenderService } from '../sites/sections/grid-view-render.service';
 import { BackgroundGalleryRenderService } from '../sites/sections/background-gallery-render.service';
 import { ShopCartRenderService } from '../shop/shop-cart-render.service';
+import { TwigTemplateRenderService } from './twig-template-render.service';
 
 @Injectable({
   providedIn: 'root',
@@ -44,7 +44,8 @@ export class MessyTemplateRenderService extends TemplateRenderService {
     mashupEntriesRenderService: MashupEntriesRenderService,
     gridViewRenderService: GridViewRenderService,
     backgroundGalleryRenderService: BackgroundGalleryRenderService,
-    shopCartRenderService: ShopCartRenderService
+    shopCartRenderService: ShopCartRenderService,
+    twigTemplateRenderService: TwigTemplateRenderService
   ) {
     super(
       store,
@@ -64,7 +65,8 @@ export class MessyTemplateRenderService extends TemplateRenderService {
       mashupEntriesRenderService,
       gridViewRenderService,
       backgroundGalleryRenderService,
-      shopCartRenderService
+      shopCartRenderService,
+      twigTemplateRenderService
     );
   }
 
@@ -340,8 +342,16 @@ export class MessyTemplateRenderService extends TemplateRenderService {
 
   startRender(contentWindow: Window) {
     const viewData = this.getViewData();
-    const htmlOutput = Template(viewData);
 
-    this.replaceIframeContent(contentWindow, htmlOutput);
+    try {
+      const htmlOutput = this.twigTemplateRenderService.render(
+        'Sites/Sections/defaultTemplate',
+        viewData
+      );
+      this.replaceIframeContent(contentWindow, htmlOutput);
+    } catch (error) {
+      console.error('Failed to render template:', error);
+      return '';
+    }
   }
 }

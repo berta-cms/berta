@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { toHtmlAttributes } from 'src/app/shared/helpers';
-import * as Template from '../../../../templates/Sites/Sections/Entries/portfolioThumbnails.twig';
+import { toHtmlAttributes } from '../../../shared/helpers';
 import { SiteSectionStateModel } from '../sections-state/site-sections-state.model';
 import { SectionEntry } from './entries-state/section-entries-state.model';
 import { GalleryRenderService } from './galleries/gallery-render.service';
 import { SectionEntriesService } from './section-entries.service';
+import { TwigTemplateRenderService } from '../../../render/twig-template-render.service';
 
 @Injectable({
   providedIn: 'root',
@@ -12,7 +12,8 @@ import { SectionEntriesService } from './section-entries.service';
 export class PortfolioThumbnailsRenderService {
   constructor(
     public sectionEntriesService: SectionEntriesService,
-    public galleryRenderService: GalleryRenderService
+    public galleryRenderService: GalleryRenderService,
+    private twigTemplateRenderService: TwigTemplateRenderService
   ) {}
 
   getFirstEntryImage(siteSlug: string, siteSettings, entry: SectionEntry) {
@@ -99,8 +100,15 @@ export class PortfolioThumbnailsRenderService {
     }
 
     const viewData = this.getViewData(siteSlug, siteSettings, sectionEntries);
-    const htmlOutput = Template(viewData);
 
-    return htmlOutput;
+    try {
+      return this.twigTemplateRenderService.render(
+        'Sites/Sections/Entries/portfolioThumbnails',
+        viewData
+      );
+    } catch (error) {
+      console.error('Failed to render template:', error);
+      return '';
+    }
   }
 }

@@ -1,6 +1,9 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, ErrorHandler } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
+import {
+  provideHttpClient,
+  withInterceptorsFromDi,
+} from '@angular/common/http';
 import { APP_BASE_HREF } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -50,10 +53,10 @@ import { SiteMediaModule } from './sites/media/site-media.module';
     ThemesComponent,
     PopupComponent,
   ],
+  bootstrap: [AppComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    HttpClientModule,
     AppRoutingModule,
     SharedModule,
     NgxsModule.forRoot(
@@ -83,7 +86,7 @@ import { SiteMediaModule } from './sites/media/site-media.module';
     MessyTemplateStyleService,
     { provide: ErrorHandler, useClass: SentryErrorHandler },
     { provide: APP_BASE_HREF, useValue: '/engine/' },
+    provideHttpClient(withInterceptorsFromDi()),
   ],
-  bootstrap: [AppComponent],
 })
 export class AppModule {}

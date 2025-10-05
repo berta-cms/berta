@@ -55,17 +55,18 @@ export class ShopSettingsComponent implements OnInit {
   constructor(private store: Store) {}
 
   ngOnInit() {
-    this.settings$ = combineLatest(
+    this.settings$ = combineLatest([
       this.store.select(ShopSettingsState.getCurrentSiteSettings),
-      this.store.select(ShopSettingsConfigState)
-    ).pipe(
-      filter(
-        ([settings, config]) =>
+      this.store.select((state) => state.shopSettingsConfig),
+    ]).pipe(
+      filter(([settings, config]) => {
+        return (
           settings &&
           settings.length > 0 &&
           config &&
           Object.keys(config).length > 0
-      ),
+        );
+      }),
       map(([settings, config]) => {
         return settings
           .filter((settingGroup) => !config[settingGroup.slug]._.invisible)

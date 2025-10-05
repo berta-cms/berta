@@ -79,11 +79,11 @@ export class PreviewComponent implements OnInit {
       this.sanitizer.bypassSecurityTrustResourceUrl('about:blank');
 
     // Load iframe with current site and section
-    combineLatest(
-      combineLatest(
+    combineLatest([
+      combineLatest([
         this.store.select(AppState.getSite),
-        this.store.select(AppState.getSection)
-      ).pipe(
+        this.store.select(AppState.getSection),
+      ]).pipe(
         debounceTime(10),
         filter(([site, section]) => {
           return (
@@ -92,8 +92,8 @@ export class PreviewComponent implements OnInit {
           );
         })
       ),
-      this.store.select(UserState.isLoggedIn)
-    ).subscribe(([[site, section], isLoggedIn]) => {
+      this.store.select(UserState.isLoggedIn),
+    ]).subscribe(([[site, section], isLoggedIn]) => {
       let url =
         location.protocol + '//' + location.hostname + ':' + location.port;
       const queryParams = [];
@@ -190,14 +190,14 @@ export class PreviewComponent implements OnInit {
           try to login user with existing token
         */
         if (lastUrlPart === 'login.php' || lastUrlPart === 'engine') {
-          const user = this.store.selectSnapshot(UserState);
+          const user = this.store.selectSnapshot((state) => state.user);
 
           if (!user.token) {
-            this.store.dispatch(UserLogoutAction);
+            this.store.dispatch(new UserLogoutAction());
             return;
           }
 
-          const appState = this.store.selectSnapshot(AppState);
+          const appState = this.store.selectSnapshot((state) => state.app);
 
           return this.http
             .get(appState.authenticateUrl, {
@@ -218,7 +218,7 @@ export class PreviewComponent implements OnInit {
               },
               error: (error) => {
                 console.error(error);
-                this.store.dispatch(UserLogoutAction);
+                this.store.dispatch(new UserLogoutAction());
               },
             });
         }
@@ -228,7 +228,7 @@ export class PreviewComponent implements OnInit {
             /* Return promise to the old berta */
             return new Promise((resolve, reject) => {
               this.ngZone.run(() => {
-                this.store.dispatch(AppShowLoading);
+                this.store.dispatch(new AppShowLoading());
                 this.service.sync(url, data, method).subscribe({
                   next: (response) => {
                     resolve(response);
@@ -258,7 +258,7 @@ export class PreviewComponent implements OnInit {
           styleElement.sheet as CSSStyleSheet
         );
 
-        this.styleChangesSubscription = combineLatest(
+        this.styleChangesSubscription = combineLatest([
           this.store.select(SitesState.getCurrentSite),
           this.store
             .select(SiteSettingsState.getCurrentSiteTemplate)
@@ -268,8 +268,8 @@ export class PreviewComponent implements OnInit {
             .pipe(
               pairwise(),
               filter(([_, curSettings]) => !!curSettings)
-            )
-        ).subscribe(([site, template, [prevSettings, curSettings]]) => {
+            ),
+        ]).subscribe(([site, template, [prevSettings, curSettings]]) => {
           if (!prevSettings) return;
 
           const stylesToChange = curSettings.reduce(

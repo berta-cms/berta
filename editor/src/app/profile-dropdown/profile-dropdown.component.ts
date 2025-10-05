@@ -112,6 +112,6 @@ export class ProfileDropdownComponent {
   constructor(private store: Store) {}
 
   logOut() {
-    this.store.dispatch(UserLogoutAction);
+    this.store.dispatch(new UserLogoutAction());
   }
 }

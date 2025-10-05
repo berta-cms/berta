@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { AppStateModel } from 'src/app/app-state/app-state.interface';
-import { toHtmlAttributes } from 'src/app/shared/helpers';
-import { UserStateModel } from 'src/app/user/user.state.model';
-import * as Template from '../../../templates/Sites/Sections/additionalFooterText.twig';
+import { AppStateModel } from '../../app-state/app-state.interface';
+import { toHtmlAttributes } from '../../shared/helpers';
+import { UserStateModel } from '../../user/user.state.model';
 import { SocialMediaLinksRenderService } from '../social-media-links-render.service';
+import { TwigTemplateRenderService } from '../../render/twig-template-render.service';
 
 @Injectable({
   providedIn: 'root',
@@ -17,7 +17,8 @@ export class AdditionalFooterTextRenderService {
   ];
 
   constructor(
-    private socialMediaLinksRenderService: SocialMediaLinksRenderService
+    private socialMediaLinksRenderService: SocialMediaLinksRenderService,
+    private twigTemplateRenderService: TwigTemplateRenderService
   ) {}
 
   getAttributes(showAdditionalFooterText: boolean, siteSlug: string) {
@@ -79,8 +80,15 @@ export class AdditionalFooterTextRenderService {
     }
 
     const viewData = this.getViewData(appState, siteSlug, siteSettings, user);
-    const htmlOutput = Template(viewData);
 
-    return htmlOutput;
+    try {
+      return this.twigTemplateRenderService.render(
+        'Sites/Sections/additionalFooterText',
+        viewData
+      );
+    } catch (error) {
+      console.error('Failed to render template:', error);
+      return '';
+    }
   }
 }

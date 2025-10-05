@@ -1,14 +1,16 @@
 import { Injectable } from '@angular/core';
 import { AppStateModel } from '../../../app/app-state/app-state.interface';
 import { getCookie } from '../../../app/shared/helpers';
-import * as Template from '../../../templates/Sites/Sections/gridView.twig';
 import { SiteSectionStateModel } from './sections-state/site-sections-state.model';
+import { TwigTemplateRenderService } from '../../render/twig-template-render.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class GridViewRenderService {
   USED_IN_TEMPLATES = ['messy'];
+
+  constructor(private twigTemplateRenderService: TwigTemplateRenderService) {}
 
   getUrl(
     siteSlug: string,
@@ -94,8 +96,14 @@ export class GridViewRenderService {
       tagSlug
     );
 
-    const htmlOutput = Template(viewData);
-
-    return htmlOutput;
+    try {
+      return this.twigTemplateRenderService.render(
+        'Sites/Sections/gridView',
+        viewData
+      );
+    } catch (error) {
+      console.error('Failed to render template:', error);
+      return '';
+    }
   }
 }

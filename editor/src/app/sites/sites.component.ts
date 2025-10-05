@@ -46,15 +46,16 @@ export class SitesComponent implements OnInit {
 
   createSite() {
     this.store
-      .select(SitesState)
+      .select((state) => state.sites)
       .pipe(
         take(1),
         map((sites: SiteStateModel[]) => {
           return sites.map((site) => site.name);
         }),
         switchMap((siteNames) =>
-          this.store.dispatch(CreateSiteAction).pipe(
-            map(({ sites: sitesState }) => {
+          this.store.dispatch(new CreateSiteAction()).pipe(
+            switchMap(() => this.store.selectOnce((state) => state.sites)),
+            map((sitesState: SiteStateModel[]) => {
               return sitesState.find(
                 (site) => siteNames.indexOf(site.name) === -1
               );

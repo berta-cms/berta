@@ -51,10 +51,10 @@ export class AppStateService {
 
   sync(urlName: string, data: any, method?: string) {
     method = method || 'PATCH';
-    return combineLatest(
+    return combineLatest([
       this.store.select((state) => state.app),
-      this.store.select((state) => state.user)
-    ).pipe(
+      this.store.select((state) => state.user),
+    ]).pipe(
       filter(
         ([appState, user]) =>
           !!user.token && (appState.urls[urlName] || urlName)
@@ -134,10 +134,10 @@ export class AppStateService {
 
   getInitialState(site: string = '', stateSlice?: string, force = false) {
     if (!this.cachedSiteStates[site] || force) {
-      this.cachedSiteStates[site] = combineLatest(
+      this.cachedSiteStates[site] = combineLatest([
         this.store.select((state) => state.app),
-        this.store.select((state) => state.user)
-      ).pipe(
+        this.store.select((state) => state.user),
+      ]).pipe(
         filter(([appState, user]) => !!user.token && appState.site !== null), // Make sure user is logged in
         take(1),
         tap(() => this.showLoading()),

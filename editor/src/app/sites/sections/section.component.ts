@@ -4,7 +4,7 @@ import { combineLatest } from 'rxjs';
 import { take, filter, switchMap, map } from 'rxjs/operators';
 import { Store } from '@ngxs/store';
 import { Animations } from '../../shared/animations';
-import { PopupService } from 'src/app/popup/popup.service';
+import { PopupService } from '../../popup/popup.service';
 import { SiteSectionStateModel } from './sections-state/site-sections-state.model';
 import {
   SiteTemplateSectionTypesModel,
@@ -14,7 +14,7 @@ import {
   DeleteSiteSectionAction,
   CloneSectionAction,
 } from './sections-state/site-sections.actions';
-import { AppState } from 'src/app/app-state/app.state';
+import { AppState } from '../../app-state/app.state';
 
 @Component({
   selector: 'berta-section',
@@ -227,10 +227,10 @@ export class SectionComponent implements OnInit {
               .dispatch(new DeleteSiteSectionAction(this.section))
               .pipe(
                 switchMap(() => {
-                  return combineLatest(
+                  return combineLatest([
                     this.route.queryParams,
-                    this.route.paramMap
-                  );
+                    this.route.paramMap,
+                  ]);
                 }),
                 take(1),
                 map(([query, params]) => {

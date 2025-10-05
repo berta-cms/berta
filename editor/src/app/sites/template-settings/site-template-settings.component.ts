@@ -18,7 +18,7 @@ import {
   SettingConfigModel,
 } from '../../shared/interfaces';
 import { PopupService } from '../../popup/popup.service';
-import { AppState } from 'src/app/app-state/app.state';
+import { AppState } from '../../app-state/app.state';
 
 @Component({
   selector: 'berta-site-template-settings',
@@ -101,13 +101,13 @@ export class SiteTemplateSettingsComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.templateSettings$ = combineLatest(
+    this.templateSettings$ = combineLatest([
       this.store.select(
         SiteTemplateSettingsState.getCurrentSiteTemplateSettings
       ),
       this.store.select(SiteTemplatesState.getCurrentTemplateConfig),
-      this.store.select(SiteSettingsState.getCurrentSiteTemplate)
-    ).pipe(
+      this.store.select(SiteSettingsState.getCurrentSiteTemplate),
+    ]).pipe(
       filter(
         ([settings, config]) =>
           settings &&

@@ -21,10 +21,10 @@ export class FileUploadService {
     formData.append('path', data.path);
     formData.append('value', data.value);
 
-    return combineLatest(
+    return combineLatest([
       this.store.select((state) => state.app),
-      this.store.select((state) => state.user)
-    ).pipe(
+      this.store.select((state) => state.user),
+    ]).pipe(
       filter(
         ([appState, user]) =>
           !!user.token && (appState.urls[urlName] || urlName)
