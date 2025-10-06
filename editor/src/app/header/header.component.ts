@@ -8,8 +8,8 @@ import { UserState } from '../user/user.state';
 import { UserStateModel } from '../user/user.state.model';
 
 @Component({
-  selector: 'berta-header',
-  template: `
+    selector: 'berta-header',
+    template: `
     <header>
       <div
         class="loading"
@@ -63,8 +63,8 @@ import { UserStateModel } from '../user/user.state.model';
       <berta-preview-toggle></berta-preview-toggle>
     </header>
   `,
-  styles: [
-    `
+    styles: [
+        `
       header {
         display: flex;
         justify-content: flex-end;
@@ -107,7 +107,8 @@ import { UserStateModel } from '../user/user.state.model';
         text-decoration: none;
       }
     `,
-  ],
+    ],
+    standalone: false
 })
 export class HeaderComponent {
   @Select(UserState) user$: Observable<UserStateModel>;

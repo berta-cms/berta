@@ -11,8 +11,8 @@ import { TextInputService } from './text-input.service';
 import { ValidationService } from './validation.service';
 
 @Component({
-  selector: 'berta-text-input',
-  template: ` <div
+    selector: 'berta-text-input',
+    template: ` <div
     class="form-group"
     [class.bt-focus]="textInputService.focus | async"
     [class.bt-disabled]="disabled"
@@ -84,18 +84,19 @@ import { ValidationService } from './validation.service';
       {{ error }}
     </div>
   </div>`,
-  styles: [
-    `
+    styles: [
+        `
       :host {
         display: block;
       }
     `,
-  ],
-  /* ChangeDetection here is disabled and will make the component update only if an observable is updated.
-   ** We could avoid the use of this with a one-direction data flow */
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  /* Provide text input service here, so each component has it's own service */
-  providers: [TextInputService, ValidationService],
+    ],
+    /* ChangeDetection here is disabled and will make the component update only if an observable is updated.
+     ** We could avoid the use of this with a one-direction data flow */
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    /* Provide text input service here, so each component has it's own service */
+    providers: [TextInputService, ValidationService],
+    standalone: false
 })
 export class TextInputComponent implements OnInit {
   @Input() label?: string;

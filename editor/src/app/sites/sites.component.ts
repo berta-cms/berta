@@ -13,8 +13,8 @@ import {
 import { SitesState } from './sites-state/sites.state';
 
 @Component({
-  selector: 'berta-sites',
-  template: `
+    selector: 'berta-sites',
+    template: `
     <div cdkDropList (cdkDropListDropped)="onDrop($event)">
       <berta-site
         *ngFor="let site of sitesList"
@@ -27,6 +27,7 @@ import { SitesState } from './sites-state/sites.state';
       Create new site
     </button>
   `,
+    standalone: false
 })
 export class SitesComponent implements OnInit {
   @Select('sites') public sites$: Observable<SiteStateModel[]>;

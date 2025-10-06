@@ -1,14 +1,15 @@
+@use "variables";
 .bt-not-found {
   padding: 1.3em;
 
   h3 {
-    color: $black;
+    color: variables.$black;
     font-size: 1em;
     font-weight: normal;
     margin: 0 0 1em;
   }
 
   p {
-    font-size: $input-font-size;
+    font-size: variables.$input-font-size;
   }
 }

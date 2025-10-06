@@ -10,8 +10,8 @@ import {
 import { SettingModel, SettingConfigModel } from '../shared/interfaces';
 
 @Component({
-  selector: 'berta-select-input',
-  template: ` <div
+    selector: 'berta-select-input',
+    template: ` <div
     class="form-group"
     [class.bt-focus]="focus"
     [class.bt-disabled]="disabled"
@@ -62,6 +62,7 @@ import { SettingModel, SettingConfigModel } from '../shared/interfaces';
       </div>
     </label>
   </div>`,
+    standalone: false
 })
 export class SelectInputComponent implements OnInit {
   @Input() label: string;

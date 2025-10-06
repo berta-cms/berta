@@ -8,8 +8,8 @@ TODO:
 */
 
 @Component({
-  selector: 'berta-popup',
-  template: `
+    selector: 'berta-popup',
+    template: `
     <div *ngIf="!!popupState" class="bt-popup-wrap">
       <div
         class="bt-popup-content"
@@ -38,8 +38,8 @@ TODO:
       (click)="overlayClick($event)"
     ></div>
   `,
-  styles: [
-    `
+    styles: [
+        `
       .bt-popup-wrap {
         display: flex;
         position: fixed;
@@ -60,7 +60,8 @@ TODO:
         height: 100%;
       }
     `,
-  ],
+    ],
+    standalone: false
 })
 export class PopupComponent implements OnInit {
   popupState: PopupState = null;

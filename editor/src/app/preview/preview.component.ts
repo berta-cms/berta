@@ -24,8 +24,8 @@ interface IframeLocation {
 }
 
 @Component({
-  selector: 'berta-preview',
-  template: `
+    selector: 'berta-preview',
+    template: `
     <iframe
       sandbox="allow-same-origin allow-scripts allow-modals allow-popups allow-forms"
       [src]="previewUrl"
@@ -33,8 +33,8 @@ interface IframeLocation {
       frameborder="0"
     ></iframe>
   `,
-  styles: [
-    `
+    styles: [
+        `
       :host {
         width: 100%;
         height: 100%;
@@ -49,7 +49,8 @@ interface IframeLocation {
         align-self: stretch;
       }
     `,
-  ],
+    ],
+    standalone: false
 })
 export class PreviewComponent implements OnInit {
   previewUrl: SafeUrl;

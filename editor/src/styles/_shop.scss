@@ -1,10 +1,12 @@
+@use "variables";
+
 berta-shop {
   .setting-group {
     > .settings {
       .subgroup:not(:first-child) {
         .setting {
           h4 {
-            border-top: 1px solid $grey-10;
+            border-top: 1px solid variables.$grey-10;
             padding-top: 1.3em;
           }
         }
@@ -32,13 +34,13 @@ berta-shop-orders {
 
   p {
     display: flex;
-    font-size: $input-font-size;
+    font-size: variables.$input-font-size;
     justify-content: space-between;
 
     > span {
-      border-left: 1px solid $grey-1;
+      border-left: 1px solid variables.$grey-1;
       box-sizing: border-box;
-      color: $grey-40;
+      color: variables.$grey-40;
       margin-left: 1em;
       padding-left: 0.75em;
       width: 50%;
@@ -49,7 +51,7 @@ berta-shop-orders {
 berta-shop-orders {
   .setting {
     &:not(:last-child) {
-      border-bottom: 1px solid $grey-10;
+      border-bottom: 1px solid variables.$grey-10;
     }
   }
 }
@@ -57,7 +59,7 @@ berta-shop-orders {
 berta-shop-products {
   .product {
     &:not(:last-child) {
-      border-bottom: 1px solid $grey-10;
+      border-bottom: 1px solid variables.$grey-10;
       margin-bottom: 1.3em;
     }
   }
@@ -79,7 +81,7 @@ berta-shop-products {
 
   &:not(:first-child) {
     .header {
-      border-top: 1px solid $grey-10;
+      border-top: 1px solid variables.$grey-10;
       padding-top: 2.5em;
     }
   }
@@ -89,7 +91,7 @@ berta-shop-products {
     justify-content: space-between;
 
     berta-inline-text-input {
-      font-size: $input-font-size;
+      font-size: variables.$input-font-size;
       font-weight: bold;
     }
 
@@ -104,7 +106,7 @@ berta-shop-products {
       transition: color 0.2s;
 
       &:focus {
-        color: $berta-accent;
+        color: variables.$berta-accent;
       }
     }
 
@@ -119,7 +121,7 @@ berta-shop-products {
 
       &:hover {
         .icon {
-          fill: $berta-accent;
+          fill: variables.$berta-accent;
         }
       }
     }
@@ -127,7 +129,7 @@ berta-shop-products {
     button {
       background: none;
       border: 0;
-      color: $black;
+      color: variables.$black;
       cursor: pointer;
       margin-left: 1em;
       padding: 0;
@@ -135,18 +137,18 @@ berta-shop-products {
 
       svg {
         path {
-          fill: $black;
+          fill: variables.$black;
           transition: fill 0.2s;
         }
       }
 
       &:hover,
       &.active {
-        color: $berta-accent;
+        color: variables.$berta-accent;
 
         svg {
           path {
-            fill: $berta-accent;
+            fill: variables.$berta-accent;
           }
         }
       }
@@ -156,7 +158,7 @@ berta-shop-products {
         &.active {
           svg {
             path {
-              fill: $error-color;
+              fill: variables.$error-color;
             }
           }
         }
@@ -170,7 +172,7 @@ berta-shop-products {
   }
 
   .costs-label {
-    font-size: $input-font-size;
+    font-size: variables.$input-font-size;
   }
 
   .bt-sh-regional-cost {
@@ -209,7 +211,7 @@ berta-shop-orders {
   p {
     > span {
       border-left: 0;
-      color: $black;
+      color: variables.$black;
       padding-left: 0;
     }
   }

@@ -1,10 +1,12 @@
+@use "variables";
+
 .form-group {
-  font-size: $input-font-size;
+  font-size: variables.$input-font-size;
   transition: opacity 0.2s;
 
   label {
     align-items: center;
-    color: $black;
+    color: variables.$black;
     display: flex;
     justify-content: space-between;
     transition: color 0.2s;
@@ -13,7 +15,7 @@
   input,
   textarea {
     &::placeholder {
-      color: $grey-20;
+      color: variables.$grey-20;
     }
   }
 
@@ -22,9 +24,9 @@
   .select-wrapper,
   .file-input-wrapper {
     align-items: center;
-    background-color: $white;
-    border: 1px solid $grey-40;
-    border-radius: $border-radius;
+    background-color: variables.$white;
+    border: 1px solid variables.$grey-40;
+    border-radius: variables.$border-radius;
     box-sizing: border-box;
     display: flex;
     margin-left: 1em;
@@ -37,7 +39,7 @@
     }
 
     .icon {
-      fill: $grey-40;
+      fill: variables.$grey-40;
       transition: fill 0.2s;
       margin-right: 0.75em;
 
@@ -46,7 +48,7 @@
 
         &:hover {
           path {
-            stroke: $error-color;
+            stroke: variables.$error-color;
           }
         }
       }
@@ -70,9 +72,9 @@
     .file-input {
       background-color: transparent;
       border: 0;
-      border-radius: $border-radius;
+      border-radius: variables.$border-radius;
       box-sizing: border-box;
-      color: $grey-80;
+      color: variables.$grey-80;
       flex-grow: 1;
       font-size: 1em;
       min-width: 1rem;
@@ -82,7 +84,7 @@
       width: 100%;
 
       &:focus {
-        color: $berta-accent;
+        color: variables.$berta-accent;
       }
     }
   }
@@ -135,15 +137,15 @@
       min-width: 10px;
 
       path {
-        stroke: $grey-40;
+        stroke: variables.$grey-40;
         transition: stroke 0.2s;
       }
     }
 
     ul {
-      background-color: $white;
-      border: 1px solid $grey-80;
-      border-radius: 0 0 $border-radius $border-radius;
+      background-color: variables.$white;
+      border: 1px solid variables.$grey-80;
+      border-radius: 0 0 variables.$border-radius variables.$border-radius;
       box-sizing: border-box;
       display: none;
       left: -1px;
@@ -155,13 +157,13 @@
       z-index: 1;
 
       li {
-        color: $grey-80;
+        color: variables.$grey-80;
         overflow-x: hidden;
         padding: 0.75em;
         text-overflow: ellipsis;
 
         &:hover {
-          color: $berta-accent;
+          color: variables.$berta-accent;
         }
       }
     }
@@ -199,32 +201,32 @@
       visibility: hidden;
       &:disabled {
         + span {
-          border-color: $grey-10;
+          border-color: variables.$grey-10;
           cursor: default;
           &:after {
-            background-color: $grey-10;
+            background-color: variables.$grey-10;
           }
         }
       }
       &:active:enabled + span {
-        border-color: $grey-80;
+        border-color: variables.$grey-80;
       }
       &:hover:enabled + span {
-        border-color: $grey-80;
+        border-color: variables.$grey-80;
       }
       &:checked + span {
-        background-color: $grey-80;
+        background-color: variables.$grey-80;
       }
       &:checked + span:after {
         left: $toggle-width - $toggle-slider-size - 2;
-        background-color: $white;
-        border-color: $grey-80;
+        background-color: variables.$white;
+        border-color: variables.$grey-80;
       }
     }
 
     span {
-      background-color: $white;
-      border: 1px solid $grey-40;
+      background-color: variables.$white;
+      border: 1px solid variables.$grey-40;
       border-radius: $toggle-width;
       cursor: pointer;
       display: inline-block;
@@ -233,8 +235,8 @@
       width: $toggle-width;
 
       &:after {
-        background-color: $grey-40;
-        border: 1px solid $white;
+        background-color: variables.$grey-40;
+        border: 1px solid variables.$white;
         border-radius: 50%;
         content: "";
         display: block;
@@ -248,10 +250,10 @@
   }
 
   textarea {
-    border: 1px solid $grey-40;
-    border-radius: $border-radius;
+    border: 1px solid variables.$grey-40;
+    border-radius: variables.$border-radius;
     box-sizing: border-box;
-    color: $grey-40;
+    color: variables.$grey-40;
     display: block;
     font-size: 1em;
     margin: 0.75em 0 0;
@@ -261,7 +263,7 @@
     width: 100%;
 
     &:focus {
-      color: $berta-accent;
+      color: variables.$berta-accent;
     }
   }
 
@@ -278,7 +280,7 @@
     input,
     .button-wrapper button,
     textarea:not(:focus):not([disabled]) {
-      color: $grey-80;
+      color: variables.$grey-80;
     }
 
     .text-input-wrapper,
@@ -286,23 +288,23 @@
     .select-wrapper,
     .file-input-wrapper,
     textarea {
-      border: 1px solid $grey-80;
+      border: 1px solid variables.$grey-80;
 
       .icon {
-        fill: $grey-80;
+        fill: variables.$grey-80;
       }
 
       .icon-remove {
-        stroke: $grey-80;
+        stroke: variables.$grey-80;
       }
     }
 
     .select-wrapper {
-      color: $grey-80;
+      color: variables.$grey-80;
 
       .drop-icon {
         path {
-          stroke: $grey-80;
+          stroke: variables.$grey-80;
         }
       }
     }
@@ -310,7 +312,7 @@
 
   &.bt-focus {
     .select-wrapper {
-      border-radius: $border-radius $border-radius 0 0;
+      border-radius: variables.$border-radius variables.$border-radius 0 0;
 
       ul {
         display: block;
@@ -329,7 +331,7 @@
     input,
     .button-wrapper button,
     textarea:not(:focus) {
-      color: $error-color;
+      color: variables.$error-color;
     }
 
     .text-input-wrapper,
@@ -338,21 +340,21 @@
     .select-wrapper ul,
     .file-input-wrapper,
     textarea:not(:focus) {
-      border-color: $error-color;
+      border-color: variables.$error-color;
 
       .icon {
-        fill: $error-color;
+        fill: variables.$error-color;
       }
 
       .drop-icon path,
       .icon-remove {
-        stroke: $error-color;
+        stroke: variables.$error-color;
       }
     }
   }
 
   .error-message {
-    color: $error-color;
+    color: variables.$error-color;
     margin: 0.5em 0;
   }
 }
@@ -396,7 +398,7 @@ color-picker {
           position: relative;
 
           &:before {
-            background-color: $grey-40;
+            background-color: variables.$grey-40;
             content: "";
             display: block;
             height: 60%;
@@ -409,7 +411,7 @@ color-picker {
 
           &:hover {
             &:before {
-              background-color: $grey-80;
+              background-color: variables.$grey-80;
             }
           }
         }
@@ -417,7 +419,7 @@ color-picker {
         &.bt-focus {
           .text-input-wrapper {
             &:before {
-              background-color: $grey-80;
+              background-color: variables.$grey-80;
             }
           }
         }
@@ -430,9 +432,9 @@ color-picker {
       + berta-setting {
         .form-group {
           .text-input-wrapper {
-            border-bottom-left-radius: $border-radius;
-            border-top-left-radius: $border-radius;
-            border-left: 1px solid $grey-40;
+            border-bottom-left-radius: variables.$border-radius;
+            border-top-left-radius: variables.$border-radius;
+            border-left: 1px solid variables.$grey-40;
 
             &:before {
               display: none;
@@ -464,7 +466,7 @@ color-picker {
   .button {
     border-bottom-left-radius: 0;
     border-top-left-radius: 0;
-    font-size: $input-font-size;
+    font-size: variables.$input-font-size;
     white-space: nowrap;
   }
 }

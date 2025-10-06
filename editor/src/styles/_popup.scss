@@ -1,70 +1,70 @@
-@import "variables";
+@use "variables";
 
 .bt-popup-wrap {
-  top: $bt-header-height;
+  top: variables.$bt-header-height;
 }
 
 .bt-popup-content {
-  background-color: $white;
-  border: 1px solid $grey-90;
-  border-radius: $border-radius;
-  color: $grey-90;
-  font-size: $base-font-size;
+  background-color: variables.$white;
+  border: 1px solid variables.$grey-90;
+  border-radius: variables.$border-radius;
+  color: variables.$grey-90;
+  font-size: variables.$base-font-size;
   margin-top: 1rem;
   padding: 1.3rem;
   text-align: center;
   width: 430px;
 
   &.bt-popup-warn {
-    border-color: $warn-color;
-    color: $warn-color;
+    border-color: variables.$warn-color;
+    color: variables.$warn-color;
 
     .bt-primary {
-      background-color: $warn-color;
+      background-color: variables.$warn-color;
     }
 
     .bt-secondary {
-      border-color: $warn-color;
-      color: $warn-color;
+      border-color: variables.$warn-color;
+      color: variables.$warn-color;
 
       &:hover {
-        background: $warn-color;
+        background: variables.$warn-color;
       }
     }
   }
 
   &.bt-popup-error {
-    border-color: $error-color;
-    color: $error-color;
+    border-color: variables.$error-color;
+    color: variables.$error-color;
 
     .bt-primary {
-      background-color: $error-color;
+      background-color: variables.$error-color;
     }
 
     .bt-secondary {
-      border-color: $error-color;
-      color: $error-color;
+      border-color: variables.$error-color;
+      color: variables.$error-color;
 
       &:hover {
-        background: $error-color;
+        background: variables.$error-color;
       }
     }
   }
 
   &.bt-popup-success {
-    border-color: $berta-accent;
-    color: $berta-accent;
+    border-color: variables.$berta-accent;
+    color: variables.$berta-accent;
 
     .bt-primary {
-      background-color: $berta-accent;
+      background-color: variables.$berta-accent;
     }
 
     .bt-secondary {
-      border-color: $berta-accent;
-      color: $berta-accent;
+      border-color: variables.$berta-accent;
+      color: variables.$berta-accent;
 
       &:hover {
-        background: $berta-accent;
+        background: variables.$berta-accent;
       }
     }
   }
@@ -80,7 +80,7 @@
     // -ms-progress-appearance: none;
     // -webkit-appearance: none;
     appearance: none;
-    border-radius: $border-radius;
+    border-radius: variables.$border-radius;
     flex-shrink: 1;
     padding: 0.75em 1.3em;
     width: 30%;
@@ -88,7 +88,7 @@
   }
 
   .bt-primary {
-    color: $white;
+    color: variables.$white;
 
     &:hover {
       opacity: 0.6;
@@ -96,16 +96,16 @@
   }
 
   .bt-secondary {
-    background: $white;
+    background: variables.$white;
     border-width: 1px;
     border-style: solid;
 
     &:hover {
-      color: $white;
+      color: variables.$white;
     }
   }
 }
 
 .bt-popup-overlay {
-  background: rgba($black, 0.3);
+  background: rgba(variables.$black, 0.3);
 }

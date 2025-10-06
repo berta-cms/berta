@@ -14,8 +14,8 @@ import { SectionTagsInterface } from '../../sites/sections/tags/section-tags-sta
 import { SectionEntry } from '../../sites/sections/entries/entries-state/section-entries-state.model';
 
 @Component({
-  selector: 'berta-shop-products',
-  template: `
+    selector: 'berta-shop-products',
+    template: `
     <div
       *ngFor="let group of productGroups$ | async"
       class="setting"
@@ -36,6 +36,7 @@ import { SectionEntry } from '../../sites/sections/entries/entries-state/section
       </div>
     </div>
   `,
+    standalone: false
 })
 export class ShopProductsComponent implements OnInit {
   productGroups$: Observable<

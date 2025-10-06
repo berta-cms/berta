@@ -1,8 +1,8 @@
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'berta-inline-text-input',
-  template: `
+    selector: 'berta-inline-text-input',
+    template: `
     <span *ngIf="!focus" class="input-placeholder" (click)="onTextClick()">{{
       value || '...'
     }}</span>
@@ -34,8 +34,8 @@ import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
       />
     </svg>
   `,
-  styles: [
-    `
+    styles: [
+        `
       :host {
         display: flex;
         align-items: center;
@@ -45,7 +45,8 @@ import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
         cursor: pointer;
       }
     `,
-  ],
+    ],
+    standalone: false
 })
 export class InlineTextInputComponent implements OnInit {
   @Input() value: string;

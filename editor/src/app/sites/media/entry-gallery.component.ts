@@ -8,8 +8,8 @@ import { AppState } from '../../../app/app-state/app.state';
 import { SiteStateModel } from '../sites-state/site-state.model';
 
 @Component({
-  selector: 'berta-entry-gallery',
-  template: `
+    selector: 'berta-entry-gallery',
+    template: `
     <div class="entry-gallery">
       <div class="header">
         entry #{{ entry.id }}
@@ -57,6 +57,7 @@ import { SiteStateModel } from '../sites-state/site-state.model';
       ></berta-route-button>
     </div>
   `,
+    standalone: false
 })
 export class EntryGalleryComponent {
   @Input('entry') entry: SectionEntry;

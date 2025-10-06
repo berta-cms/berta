@@ -17,8 +17,8 @@ import {
 import { AppState } from '../../app-state/app.state';
 
 @Component({
-  selector: 'berta-section',
-  template: `
+    selector: 'berta-section',
+    template: `
     <div class="setting-group" [class.is-expanded]="isExpanded">
       <h3>
         <berta-inline-text-input
@@ -130,8 +130,8 @@ import { AppState } from '../../app-state/app.state';
       </div>
     </div>
   `,
-  styles: [
-    `
+    styles: [
+        `
       :host {
         display: block;
       }
@@ -141,8 +141,9 @@ import { AppState } from '../../app-state/app.state';
         flex-grow: 1;
       }
     `,
-  ],
-  animations: [Animations.slideToggle],
+    ],
+    animations: [Animations.slideToggle],
+    standalone: false
 })
 export class SectionComponent implements OnInit {
   @Input('section') section: SiteSectionStateModel;

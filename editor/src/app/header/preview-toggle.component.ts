@@ -8,8 +8,8 @@ import { AppState } from '../app-state/app.state';
 
 /** @todo add icons */
 @Component({
-  selector: 'berta-preview-toggle',
-  template: `
+    selector: 'berta-preview-toggle',
+    template: `
     <button class="bt-view-editor" type="button" (click)="togglePreview()">
       <svg
         *ngIf="!isPreviewActive"
@@ -39,13 +39,14 @@ import { AppState } from '../app-state/app.state';
       </svg>
     </button>
   `,
-  styles: [
-    `
+    styles: [
+        `
       :host {
         display: flex;
       }
     `,
-  ],
+    ],
+    standalone: false
 })
 export class PreviewToggleComponent implements OnInit {
   @Select(AppState.getLastRoute) lastRoute$: Observable<string>;

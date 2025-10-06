@@ -12,13 +12,12 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
       }
     `,
   ],
+  standalone: false,
 })
 export class ActionButton {
   @Input() label: string;
   @Input() action: string;
   @Output() emitAction = new EventEmitter<{ action: string }>();
-
-  constructor() {}
 
   runAction() {
     this.emitAction.emit({ action: this.action });

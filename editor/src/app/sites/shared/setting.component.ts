@@ -7,8 +7,8 @@ import { SettingModel, SettingConfigModel } from '../../shared/interfaces';
 import { UpdateInputFocus } from '../../app-state/app.actions';
 
 @Component({
-  selector: 'berta-setting',
-  template: `
+    selector: 'berta-setting',
+    template: `
     <ng-container [ngSwitch]="config.format">
       <berta-text-input
         *ngSwitchCase="'text'"
@@ -153,8 +153,8 @@ import { UpdateInputFocus } from '../../app-state/app.actions';
       class="setting-description"
     ></p>
   `,
-  styles: [
-    `
+    styles: [
+        `
       :host {
         display: block;
       }
@@ -164,7 +164,8 @@ import { UpdateInputFocus } from '../../app-state/app.actions';
         align-items: center;
       }
     `,
-  ],
+    ],
+    standalone: false
 })
 export class SettingComponent implements OnInit {
   @Input('templateSlug') templateSlug: string;

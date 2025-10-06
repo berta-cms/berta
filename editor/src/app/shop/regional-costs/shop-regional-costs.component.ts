@@ -17,8 +17,8 @@ import {
 } from './shop-regional-costs.actions';
 
 @Component({
-  selector: 'berta-shop-regional-costs',
-  template: `
+    selector: 'berta-shop-regional-costs',
+    template: `
     <div class="bt-sh-region" *ngFor="let region of regionalCosts$ | async">
       <div class="setting header">
         <berta-inline-text-input
@@ -143,13 +143,14 @@ import {
       </div>
     </form>
   `,
-  styles: [
-    `
+    styles: [
+        `
       :host {
         display: block;
       }
     `,
-  ],
+    ],
+    standalone: false
 })
 export class ShopRegionalCostsComponent implements OnInit {
   @Select(ShopRegionalCostsState.getCurrentSiteRegionalCosts) regionalCosts$;

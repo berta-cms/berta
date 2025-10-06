@@ -29,6 +29,7 @@ import { SettingConfigModel } from '../../shared/interfaces';
       }
     `,
   ],
+  standalone: false,
 })
 export class SettingRowAddComponent implements OnInit {
   @Input('config') config: SettingConfigModel;
@@ -36,8 +37,6 @@ export class SettingRowAddComponent implements OnInit {
   @Output() add = new EventEmitter();
 
   inputFields: any;
-
-  constructor() {}
 
   ngOnInit() {
     this.inputFields = {};

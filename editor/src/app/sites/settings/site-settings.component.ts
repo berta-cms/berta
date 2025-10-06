@@ -27,8 +27,8 @@ import {
 } from '../../shared/interfaces';
 
 @Component({
-  selector: 'berta-site-settings',
-  template: `
+    selector: 'berta-site-settings',
+    template: `
     <div
       class="setting-group"
       [class.is-expanded]="camelifySlug(currentGroup) === settingGroup.slug"
@@ -129,7 +129,8 @@ import {
       </div>
     </div>
   `,
-  animations: [Animations.slideToggle],
+    animations: [Animations.slideToggle],
+    standalone: false
 })
 export class SiteSettingsComponent implements OnInit {
   defaultGroup = 'template';

@@ -1,7 +1,9 @@
+@use "variables";
+
 aside {
-  background-color: $white;
-  border-right: 1px solid $grey-30; // for develompent
-  padding-top: $bt-header-height;
+  background-color: variables.$white;
+  border-right: 1px solid variables.$grey-30;
+  padding-top: variables.$bt-header-height;
 
   > .close {
     display: none;
@@ -15,7 +17,7 @@ aside {
 
     &:hover {
       path {
-        fill: $berta-accent;
+        fill: variables.$berta-accent;
       }
     }
   }
@@ -32,8 +34,8 @@ aside {
 
   h3 {
     align-items: center;
-    border-bottom: 1px solid $grey-10;
-    color: $black;
+    border-bottom: 1px solid variables.$grey-10;
+    color: variables.$black;
     display: flex;
     font-size: 1em;
     font-weight: normal;
@@ -44,18 +46,18 @@ aside {
     transition: color 0.2s;
 
     .url-line {
-      font-size: $input-font-size;
+      font-size: variables.$input-font-size;
       margin-top: 0.5em;
 
       a {
-        color: $black;
+        color: variables.$black;
         text-decoration: none;
       }
 
       &:hover {
         span,
         a {
-          color: $berta-accent;
+          color: variables.$berta-accent;
           cursor: pointer;
         }
       }
@@ -71,14 +73,14 @@ aside {
       transition: color 0.2s;
 
       &:focus {
-        color: $berta-accent;
+        color: variables.$berta-accent;
       }
     }
 
     button {
       background: none;
       border: 0;
-      color: $black;
+      color: variables.$black;
       cursor: pointer;
       margin-left: 0.8rem;
       padding: 0;
@@ -86,18 +88,18 @@ aside {
 
       svg {
         path {
-          fill: $black;
+          fill: variables.$black;
           transition: fill 0.2s;
         }
       }
 
       &:hover,
       &.active {
-        color: $berta-accent;
+        color: variables.$berta-accent;
 
         svg {
           path {
-            fill: $berta-accent;
+            fill: variables.$berta-accent;
           }
         }
       }
@@ -107,7 +109,7 @@ aside {
         &.active {
           svg {
             path {
-              fill: $error-color;
+              fill: variables.$error-color;
             }
           }
         }
@@ -118,7 +120,7 @@ aside {
       transition: transform 0.2s;
 
       path {
-        stroke: $black;
+        stroke: variables.$black;
         transition: stroke 0.2s;
       }
     }
@@ -134,7 +136,7 @@ aside {
 
       &:hover {
         .icon {
-          fill: $berta-accent;
+          fill: variables.$berta-accent;
         }
       }
     }
@@ -143,11 +145,11 @@ aside {
       cursor: pointer;
 
       &:hover {
-        color: $berta-accent;
+        color: variables.$berta-accent;
 
         .drop-icon {
           path {
-            stroke: $berta-accent;
+            stroke: variables.$berta-accent;
           }
         }
       }
@@ -155,8 +157,8 @@ aside {
   }
 
   h4 {
-    border-top: 1px solid $grey-10;
-    color: $black;
+    border-top: 1px solid variables.$grey-10;
+    color: variables.$black;
     font-size: 0.9em;
     font-weight: normal;
     margin: 0;
@@ -183,7 +185,7 @@ aside {
       }
 
       .button {
-        font-size: $input-font-size;
+        font-size: variables.$input-font-size;
       }
 
       &:first-child {
@@ -204,18 +206,18 @@ aside {
   }
 
   .card {
-    background-color: $white;
-    border: 1px solid $grey-10;
-    border-radius: $border-radius;
+    background-color: variables.$white;
+    border: 1px solid variables.$grey-10;
+    border-radius: variables.$border-radius;
     box-sizing: border-box;
-    color: $grey-80;
+    color: variables.$grey-80;
     margin: 1.3em 0;
     padding: 0.5em 1em;
   }
 
   table {
     border-collapse: collapse;
-    font-size: $input-font-size;
+    font-size: variables.$input-font-size;
     width: 100%;
 
     th,
@@ -233,22 +235,22 @@ aside {
     }
 
     tr:not(:first-child) {
-      border-top: 1px solid $grey-10;
+      border-top: 1px solid variables.$grey-10;
     }
   }
 
   .setting-description {
-    color: $grey-40;
-    font-size: $input-font-size;
+    color: variables.$grey-40;
+    font-size: variables.$input-font-size;
     margin-top: 1em;
 
     a {
-      color: $grey-40;
+      color: variables.$grey-40;
     }
   }
 
   &.is-expanded {
-    background-color: $grey-1;
+    background-color: variables.$grey-1;
 
     h3 {
       border-bottom: 0;
@@ -257,21 +259,21 @@ aside {
         transform: scaleY(-1);
 
         path {
-          stroke: $berta-accent;
+          stroke: variables.$berta-accent;
         }
       }
 
       &:hover {
-        color: $black;
+        color: variables.$black;
       }
     }
 
     > .settings {
-      border-bottom: 1px solid $grey-10;
+      border-bottom: 1px solid variables.$grey-10;
     }
   }
 
   &.active {
-    background-color: $grey-1;
+    background-color: variables.$grey-1;
   }
 }

@@ -2,10 +2,10 @@ import { Component, Input, OnInit } from '@angular/core';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 
 @Component({
-  selector: 'berta-icon-readonly',
-  template: `<img [src]="iconSrc" />`,
-  styles: [
-    `
+    selector: 'berta-icon-readonly',
+    template: `<img [src]="iconSrc" />`,
+    styles: [
+        `
       :host {
         display: block;
         transform: translateY(50%);
@@ -17,7 +17,8 @@ import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
         height: 16px;
       }
     `,
-  ],
+    ],
+    standalone: false
 })
 export class IconReadonlyComponent implements OnInit {
   @Input() value: string;

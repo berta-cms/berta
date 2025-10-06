@@ -2,8 +2,8 @@ import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { SettingModel } from '../shared/interfaces';
 
 @Component({
-  selector: 'berta-file-input',
-  template: ` <div
+    selector: 'berta-file-input',
+    template: ` <div
     class="form-group"
     [class.error]="error"
     [class.bt-disabled]="disabled"
@@ -76,6 +76,7 @@ import { SettingModel } from '../shared/interfaces';
       {{ error }}
     </div>
   </div>`,
+    standalone: false
 })
 export class FileInputComponent implements OnInit {
   @Input() label: string;

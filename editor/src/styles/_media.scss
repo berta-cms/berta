@@ -1,3 +1,5 @@
+@use "variables";
+
 berta-site-media {
   display: flex;
   min-height: 100%;
@@ -6,7 +8,7 @@ berta-site-media {
     flex-shrink: 0;
     padding-top: 0;
     width: 384px;
-    border-right: 1px solid $grey-10;
+    border-right: 1px solid variables.$grey-10;
 
     .setting-group {
       h3 {
@@ -14,17 +16,17 @@ berta-site-media {
 
         a {
           text-decoration: none;
-          color: $black;
+          color: variables.$black;
 
           &:hover,
           &.active {
-            color: $berta-accent;
+            color: variables.$berta-accent;
           }
         }
 
         > div {
           a {
-            font-size: $input-font-size;
+            font-size: variables.$input-font-size;
           }
         }
       }
@@ -48,7 +50,7 @@ berta-site-media {
 }
 
 .entry-gallery-item {
-  background-color: $grey-40;
+  background-color: variables.$grey-40;
   position: relative;
   width: 156px;
   height: 117px;
@@ -72,7 +74,7 @@ berta-site-media {
   .action {
     display: none;
     position: absolute;
-    background-color: rgba($white, 0.5);
+    background-color: rgba(variables.$white, 0.5);
     padding: 0.25em;
 
     svg {
@@ -88,7 +90,7 @@ berta-site-media {
     &:hover {
       svg {
         path {
-          fill: $error-color;
+          fill: variables.$error-color;
         }
       }
     }
@@ -102,7 +104,7 @@ berta-site-media {
     &:hover {
       svg {
         path {
-          fill: $berta-accent;
+          fill: variables.$berta-accent;
         }
       }
     }
@@ -124,7 +126,7 @@ berta-site-media {
   }
 
   &.selected {
-    outline: 2px solid $black;
+    outline: 2px solid variables.$black;
   }
 }
 

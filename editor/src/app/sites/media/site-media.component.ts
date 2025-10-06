@@ -15,8 +15,8 @@ import { SiteStateModel } from '../sites-state/site-state.model';
 import { SectionEntry } from '../sections/entries/entries-state/section-entries-state.model';
 
 @Component({
-  selector: 'berta-site-media',
-  template: `
+    selector: 'berta-site-media',
+    template: `
     <aside *ngIf="currentSite$ | async">
       <div class="setting-group">
         <h3>
@@ -81,6 +81,7 @@ import { SectionEntry } from '../sections/entries/entries-state/section-entries-
       </div>
     </div>
   `,
+    standalone: false
 })
 export class SiteMediaComponent implements OnInit, OnDestroy {
   @Select(SitesState.getCurrentSite) currentSite$: Observable<SiteStateModel>;

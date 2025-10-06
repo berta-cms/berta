@@ -3,8 +3,8 @@ import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { TextInputService } from './text-input.service';
 
 @Component({
-  selector: 'berta-url-input',
-  template: ` <div
+    selector: 'berta-url-input',
+    template: ` <div
     class="form-group"
     [class.bt-focus]="textInputService.focus | async"
     [class.bt-disabled]="disabled"
@@ -69,15 +69,16 @@ import { TextInputService } from './text-input.service';
       </div>
     </label>
   </div>`,
-  styles: [
-    `
+    styles: [
+        `
       :host {
         display: block;
       }
     `,
-  ],
-  /* Provide text input service here, so each component has it's own service */
-  providers: [TextInputService],
+    ],
+    /* Provide text input service here, so each component has it's own service */
+    providers: [TextInputService],
+    standalone: false
 })
 export class UrlInputComponent implements OnInit {
   @Input() label?: string;

@@ -1,5 +1,7 @@
+@use "variables";
+
 .cdk-drop-list {
-  background-color: $grey-10;
+  background-color: variables.$grey-10;
 }
 
 .cdk-drag {

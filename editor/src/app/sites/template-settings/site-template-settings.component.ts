@@ -21,8 +21,8 @@ import { PopupService } from '../../popup/popup.service';
 import { AppState } from '../../app-state/app.state';
 
 @Component({
-  selector: 'berta-site-template-settings',
-  template: `
+    selector: 'berta-site-template-settings',
+    template: `
     <div
       class="setting-group"
       [class.is-expanded]="camelifySlug(currentGroup) === settingGroup.slug"
@@ -75,7 +75,8 @@ import { AppState } from '../../app-state/app.state';
       </div>
     </div>
   `,
-  animations: [Animations.slideToggle],
+    animations: [Animations.slideToggle],
+    standalone: false
 })
 export class SiteTemplateSettingsComponent implements OnInit {
   defaultGroup = 'general-font-settings';
