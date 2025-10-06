@@ -9,150 +9,153 @@ import { UpdateInputFocus } from '../../app-state/app.actions';
 @Component({
     selector: 'berta-setting',
     template: `
-    <ng-container [ngSwitch]="config.format">
-      <berta-text-input
-        *ngSwitchCase="'text'"
-        [label]="config.title"
-        [tip]="config.tip"
-        [placeholder]="config.placeholder"
-        [value]="setting.value"
-        [disabled]="disabled"
-        [disabledReason]="disabledReason"
-        [allowBlank]="config.allow_blank"
-        [validation]="config.validation"
-        [cssUnitsRequired]="config.css_units"
-        [enabledOnUpdate]="config.enabledOnUpdate"
-        (inputFocus)="updateComponentFocus($event)"
-        (update)="updateComponentField(setting.slug, $event)"
-      ></berta-text-input>
-
-      <berta-url-input
-        *ngSwitchCase="'url'"
-        [label]="config.title"
-        [placeholder]="config.placeholder"
-        [value]="setting.value"
-        [allowBlank]="config.allow_blank"
-        [enabledOnUpdate]="config.enabledOnUpdate"
-        (inputFocus)="updateComponentFocus($event)"
-        (update)="updateComponentField(setting.slug, $event)"
-      ></berta-url-input>
-
-      <berta-color-input
-        *ngSwitchCase="'color'"
-        [label]="config.title"
-        [value]="setting.value"
-        [enabledOnUpdate]="config.enabledOnUpdate"
-        (inputFocus)="updateComponentFocus($event)"
-        (update)="updateComponentField(setting.slug, $event)"
-      ></berta-color-input>
-
-      <berta-file-input
-        *ngSwitchCase="'icon'"
-        [label]="config.title"
-        [templateSlug]="templateSlug"
-        [property]="setting.slug"
-        [accept]="'image/png'"
-        [value]="setting.value"
-        [disabled]="disabled"
-        [error]="error"
-        (update)="updateComponentField(setting.slug, $event)"
-      ></berta-file-input>
-
-      <berta-icon-readonly
-        *ngSwitchCase="'icon-readonly'"
-        [value]="setting.value"
-      ></berta-icon-readonly>
-
-      <berta-route-button
-        *ngSwitchCase="'route'"
-        [label]="config.title"
-        [route]="setting.value"
-      ></berta-route-button>
-
-      <berta-action-button
-        *ngSwitchCase="'action'"
-        [label]="config.title"
-        [action]="config.default"
-        (emitAction)="runAction($event)"
-      ></berta-action-button>
-
-      <berta-file-input
-        *ngSwitchCase="'image'"
-        [label]="config.title"
-        [property]="setting.slug"
-        [accept]="'image/*'"
-        [value]="setting.value"
-        [disabled]="disabled"
-        [disableRemove]="config.disableRemove"
-        [error]="error"
-        (update)="updateComponentField(setting.slug, $event)"
-      ></berta-file-input>
-
-      <berta-long-text-input
-        *ngSwitchCase="'longtext'"
-        [label]="config.title"
-        [placeholder]="config.placeholder"
-        [value]="setting.value"
-        [disabled]="disabled"
-        [disabledReason]="disabledReason"
-        [enabledOnUpdate]="config.enabledOnUpdate"
-        (inputFocus)="updateComponentFocus($event)"
-        (update)="updateComponentField(setting.slug, $event)"
-      ></berta-long-text-input>
-
-      <berta-rich-text-input
-        *ngSwitchCase="'richtext'"
-        [label]="config.title"
-        [placeholder]="config.placeholder"
-        [value]="setting.value"
-        [disabled]="disabled"
-        [disabledReason]="disabledReason"
-        [enabledOnUpdate]="config.enabledOnUpdate"
-        (inputFocus)="updateComponentFocus($event)"
-        (update)="updateComponentField(setting.slug, $event)"
-      ></berta-rich-text-input>
-
-      <berta-select-input
-        *ngSwitchCase="'select'"
-        [label]="config.title"
-        [tip]="config.tip"
-        [value]="setting.value"
-        [values]="config.values"
-        (inputFocus)="updateComponentFocus($event)"
-        [enabledOnUpdate]="config.enabledOnUpdate"
-        (update)="updateComponentField(setting.slug, $event)"
+@switch (config.format) {
+  @case ('text') {
+    <berta-text-input
+      [label]="config.title"
+      [tip]="config.tip"
+      [placeholder]="config.placeholder"
+      [value]="setting.value"
+      [disabled]="disabled"
+      [disabledReason]="disabledReason"
+      [allowBlank]="config.allow_blank"
+      [validation]="config.validation"
+      [cssUnitsRequired]="config.css_units"
+      [enabledOnUpdate]="config.enabledOnUpdate"
+      (inputFocus)="updateComponentFocus($event)"
+      (update)="updateComponentField(setting.slug, $event)"
+    ></berta-text-input>
+  }
+  @case ('url') {
+    <berta-url-input
+      [label]="config.title"
+      [placeholder]="config.placeholder"
+      [value]="setting.value"
+      [allowBlank]="config.allow_blank"
+      [enabledOnUpdate]="config.enabledOnUpdate"
+      (inputFocus)="updateComponentFocus($event)"
+      (update)="updateComponentField(setting.slug, $event)"
+    ></berta-url-input>
+  }
+  @case ('color') {
+    <berta-color-input
+      [label]="config.title"
+      [value]="setting.value"
+      [enabledOnUpdate]="config.enabledOnUpdate"
+      (inputFocus)="updateComponentFocus($event)"
+      (update)="updateComponentField(setting.slug, $event)"
+    ></berta-color-input>
+  }
+  @case ('icon') {
+    <berta-file-input
+      [label]="config.title"
+      [templateSlug]="templateSlug"
+      [property]="setting.slug"
+      [accept]="'image/png'"
+      [value]="setting.value"
+      [disabled]="disabled"
+      [error]="error"
+      (update)="updateComponentField(setting.slug, $event)"
+    ></berta-file-input>
+  }
+  @case ('icon-readonly') {
+    <berta-icon-readonly
+      [value]="setting.value"
+    ></berta-icon-readonly>
+  }
+  @case ('route') {
+    <berta-route-button
+      [label]="config.title"
+      [route]="setting.value"
+    ></berta-route-button>
+  }
+  @case ('action') {
+    <berta-action-button
+      [label]="config.title"
+      [action]="config.default"
+      (emitAction)="runAction($event)"
+    ></berta-action-button>
+  }
+  @case ('image') {
+    <berta-file-input
+      [label]="config.title"
+      [property]="setting.slug"
+      [accept]="'image/*'"
+      [value]="setting.value"
+      [disabled]="disabled"
+      [disableRemove]="config.disableRemove"
+      [error]="error"
+      (update)="updateComponentField(setting.slug, $event)"
+    ></berta-file-input>
+  }
+  @case ('longtext') {
+    <berta-long-text-input
+      [label]="config.title"
+      [placeholder]="config.placeholder"
+      [value]="setting.value"
+      [disabled]="disabled"
+      [disabledReason]="disabledReason"
+      [enabledOnUpdate]="config.enabledOnUpdate"
+      (inputFocus)="updateComponentFocus($event)"
+      (update)="updateComponentField(setting.slug, $event)"
+    ></berta-long-text-input>
+  }
+  @case ('richtext') {
+    <berta-rich-text-input
+      [label]="config.title"
+      [placeholder]="config.placeholder"
+      [value]="setting.value"
+      [disabled]="disabled"
+      [disabledReason]="disabledReason"
+      [enabledOnUpdate]="config.enabledOnUpdate"
+      (inputFocus)="updateComponentFocus($event)"
+      (update)="updateComponentField(setting.slug, $event)"
+    ></berta-rich-text-input>
+  }
+  @case ('select') {
+    <berta-select-input
+      [label]="config.title"
+      [tip]="config.tip"
+      [value]="setting.value"
+      [values]="config.values"
+      (inputFocus)="updateComponentFocus($event)"
+      [enabledOnUpdate]="config.enabledOnUpdate"
+      (update)="updateComponentField(setting.slug, $event)"
       >
-      </berta-select-input>
-
-      <berta-select-input
-        *ngSwitchCase="'fontselect'"
-        [label]="config.title"
-        [value]="setting.value"
-        [values]="config.values"
-        (inputFocus)="updateComponentFocus($event)"
-        (update)="updateComponentField(setting.slug, $event)"
+    </berta-select-input>
+  }
+  @case ('fontselect') {
+    <berta-select-input
+      [label]="config.title"
+      [value]="setting.value"
+      [values]="config.values"
+      (inputFocus)="updateComponentFocus($event)"
+      (update)="updateComponentField(setting.slug, $event)"
       >
-      </berta-select-input>
-
-      <berta-toggle-input
-        *ngSwitchCase="'toggle'"
-        [label]="config.title"
-        [value]="setting.value"
-        [values]="config.values"
-        [enabledOnUpdate]="config.enabledOnUpdate"
-        (update)="updateComponentField(setting.slug, $event)"
+    </berta-select-input>
+  }
+  @case ('toggle') {
+    <berta-toggle-input
+      [label]="config.title"
+      [value]="setting.value"
+      [values]="config.values"
+      [enabledOnUpdate]="config.enabledOnUpdate"
+      (update)="updateComponentField(setting.slug, $event)"
       >
-      </berta-toggle-input>
+    </berta-toggle-input>
+  }
+  @default {
+    <h4>{{ config.title }}</h4>
+  }
+}
 
-      <h4 *ngSwitchDefault>{{ config.title }}</h4>
-    </ng-container>
-
-    <p
-      *ngIf="description"
-      [innerHTML]="description"
-      class="setting-description"
-    ></p>
-  `,
+@if (description) {
+  <p
+    [innerHTML]="description"
+    class="setting-description"
+  ></p>
+}
+`,
     styles: [
         `
       :host {

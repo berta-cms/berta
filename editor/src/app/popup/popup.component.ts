@@ -10,34 +10,40 @@ TODO:
 @Component({
     selector: 'berta-popup',
     template: `
-    <div *ngIf="!!popupState" class="bt-popup-wrap">
-      <div
-        class="bt-popup-content"
-        [class.bt-popup-info]="popupType === 'info'"
-        [class.bt-popup-warn]="popupType === 'warn'"
-        [class.bt-popup-error]="popupType === 'error'"
-        [class.bt-popup-success]="popupType === 'success'"
-      >
-        {{ popupState.content }}
-        <div *ngIf="actions" class="bt-popup-action-wrap">
-          <button
-            type="button"
-            [class.bt-primary]="action.type === 'primary'"
-            [class.bt-secondary]="action.type !== 'primary'"
-            (click)="actionClick(action, $event)"
-            *ngFor="let action of actions"
+    @if (!!popupState) {
+      <div class="bt-popup-wrap">
+        <div
+          class="bt-popup-content"
+          [class.bt-popup-info]="popupType === 'info'"
+          [class.bt-popup-warn]="popupType === 'warn'"
+          [class.bt-popup-error]="popupType === 'error'"
+          [class.bt-popup-success]="popupType === 'success'"
           >
-            {{ action.label }}
-          </button>
+          {{ popupState.content }}
+          @if (actions) {
+            <div class="bt-popup-action-wrap">
+              @for (action of actions; track action) {
+                <button
+                  type="button"
+                  [class.bt-primary]="action.type === 'primary'"
+                  [class.bt-secondary]="action.type !== 'primary'"
+                  (click)="actionClick(action, $event)"
+                  >
+                  {{ action.label }}
+                </button>
+              }
+            </div>
+          }
         </div>
       </div>
-    </div>
-    <div
-      *ngIf="popupState && (popupState.showOverlay || popupState.isModal)"
-      class="bt-popup-overlay"
-      (click)="overlayClick($event)"
-    ></div>
-  `,
+    }
+    @if (popupState && (popupState.showOverlay || popupState.isModal)) {
+      <div
+        class="bt-popup-overlay"
+        (click)="overlayClick($event)"
+      ></div>
+    }
+    `,
     styles: [
         `
       .bt-popup-wrap {

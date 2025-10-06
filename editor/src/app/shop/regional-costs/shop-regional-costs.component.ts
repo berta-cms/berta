@@ -19,99 +19,103 @@ import {
 @Component({
     selector: 'berta-shop-regional-costs',
     template: `
-    <div class="bt-sh-region" *ngFor="let region of regionalCosts$ | async">
-      <div class="setting header">
-        <berta-inline-text-input
-          [value]="region.name"
-          (update)="updateRegion('name', $event, region.id)"
-          (inputFocus)="updateInputFocus($event)"
-        ></berta-inline-text-input>
-        <button
-          type="button"
-          class="delete"
-          (click)="deleteRegion(region.id, $event)"
-        >
-          <bt-icon-delete></bt-icon-delete>
-        </button>
-      </div>
-      <div class="setting">
-        <berta-text-input
-          label="VAT (%)"
-          [value]="region.vat"
-          (update)="updateRegion('vat', $event, region.id)"
-          (inputFocus)="updateInputFocus($event)"
-        ></berta-text-input>
-      </div>
-      <div class="setting">
-        <h4>Costs</h4>
-        <p class="costs-label">
-          {{ weightTitle$ | async }} {{ priceTitle$ | async }}
-        </p>
-      </div>
-      <div class="bt-sh-regional-cost" *ngFor="let cost of region.costs">
+    @for (region of regionalCosts$ | async; track region) {
+      <div class="bt-sh-region">
+        <div class="setting header">
+          <berta-inline-text-input
+            [value]="region.name"
+            (update)="updateRegion('name', $event, region.id)"
+            (inputFocus)="updateInputFocus($event)"
+          ></berta-inline-text-input>
+          <button
+            type="button"
+            class="delete"
+            (click)="deleteRegion(region.id, $event)"
+            >
+            <bt-icon-delete></bt-icon-delete>
+          </button>
+        </div>
         <div class="setting">
-          <div class="input-row">
-            <berta-text-input
-              [value]="cost.weight"
-              [placeholder]="weightLabel$ | async"
-              [title]="weightTitle$ | async"
+          <berta-text-input
+            label="VAT (%)"
+            [value]="region.vat"
+            (update)="updateRegion('vat', $event, region.id)"
+            (inputFocus)="updateInputFocus($event)"
+          ></berta-text-input>
+        </div>
+        <div class="setting">
+          <h4>Costs</h4>
+          <p class="costs-label">
+            {{ weightTitle$ | async }} {{ priceTitle$ | async }}
+          </p>
+        </div>
+        @for (cost of region.costs; track cost) {
+          <div class="bt-sh-regional-cost">
+            <div class="setting">
+              <div class="input-row">
+                <berta-text-input
+                  [value]="cost.weight"
+                  [placeholder]="weightLabel$ | async"
+                  [title]="weightTitle$ | async"
               (update)="
                 updateRegionalCost('weight', $event, region.id, cost.id)
               "
+                  (inputFocus)="updateInputFocus($event)"
+                ></berta-text-input>
+                <berta-text-input
+                  [value]="cost.price"
+                  [placeholder]="priceLabel$ | async"
+                  [title]="priceTitle$ | async"
+                  (update)="updateRegionalCost('price', $event, region.id, cost.id)"
+                  (inputFocus)="updateInputFocus($event)"
+                ></berta-text-input>
+                <button
+                  type="button"
+                  class="button"
+                  (click)="deleteCost(cost.id, region.id, $event)"
+                  >
+                  Delete
+                </button>
+              </div>
+            </div>
+          </div>
+        }
+        <form
+          class="setting bt-sh-regional-cost"
+          (submit)="addCost(region.id, $event)"
+          >
+          <div class="input-row">
+            <berta-text-input
+              value=""
+              [placeholder]="weightLabel$ | async"
+              [title]="weightTitle$ | async"
+              [enabledOnUpdate]="true"
+              [disabled]="addCostDisabled"
+              (update)="newCost.weight = $event"
               (inputFocus)="updateInputFocus($event)"
+              (keydown.enter)="addCost(region.id, $event)"
             ></berta-text-input>
             <berta-text-input
-              [value]="cost.price"
+              value=""
               [placeholder]="priceLabel$ | async"
               [title]="priceTitle$ | async"
-              (update)="updateRegionalCost('price', $event, region.id, cost.id)"
+              [enabledOnUpdate]="true"
+              [disabled]="addCostDisabled"
+              (update)="newCost.price = $event"
               (inputFocus)="updateInputFocus($event)"
+              (keydown.enter)="addCost(region.id, $event)"
             ></berta-text-input>
             <button
-              type="button"
+              type="submit"
               class="button"
-              (click)="deleteCost(cost.id, region.id, $event)"
-            >
-              Delete
+              [attr.disabled]="addCostDisabled ? '' : null"
+              >
+              Add
             </button>
           </div>
-        </div>
+        </form>
       </div>
-      <form
-        class="setting bt-sh-regional-cost"
-        (submit)="addCost(region.id, $event)"
-      >
-        <div class="input-row">
-          <berta-text-input
-            value=""
-            [placeholder]="weightLabel$ | async"
-            [title]="weightTitle$ | async"
-            [enabledOnUpdate]="true"
-            [disabled]="addCostDisabled"
-            (update)="newCost.weight = $event"
-            (inputFocus)="updateInputFocus($event)"
-            (keydown.enter)="addCost(region.id, $event)"
-          ></berta-text-input>
-          <berta-text-input
-            value=""
-            [placeholder]="priceLabel$ | async"
-            [title]="priceTitle$ | async"
-            [enabledOnUpdate]="true"
-            [disabled]="addCostDisabled"
-            (update)="newCost.price = $event"
-            (inputFocus)="updateInputFocus($event)"
-            (keydown.enter)="addCost(region.id, $event)"
-          ></berta-text-input>
-          <button
-            type="submit"
-            class="button"
-            [attr.disabled]="addCostDisabled ? '' : null"
-          >
-            Add
-          </button>
-        </div>
-      </form>
-    </div>
+    }
     <form (submit)="addRegion($event)" class="setting bt-sh-region-add">
       <h4>Add region</h4>
       <div class="input-row">
@@ -137,12 +141,12 @@ import {
           type="submit"
           class="button"
           [attr.disabled]="addRegionDisabled ? '' : null"
-        >
+          >
           Add
         </button>
       </div>
     </form>
-  `,
+    `,
     styles: [
         `
       :host {

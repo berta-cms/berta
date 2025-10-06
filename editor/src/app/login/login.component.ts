@@ -20,38 +20,41 @@ import { PopupService } from '../popup/popup.service';
 @Component({
     selector: 'berta-login',
     template: `
-    <div *ngIf="!(isLoggedIn$ | async)" class="login-container setting-group">
-      <h3><img src="/engine/layout/berta.png" /></h3>
-
-      <div class="bt-login-loading" *ngIf="isLoading$ | async; else logInForm">
-        <berta-loading></berta-loading>
-      </div>
-
-      <ng-template #logInForm>
-        <div *ngIf="appState.isBertaHosting" class="form-group social-login">
-          <a
+    @if (!(isLoggedIn$ | async)) {
+      <div class="login-container setting-group">
+        <h3><img src="/engine/layout/berta.png" /></h3>
+        @if (isLoading$ | async) {
+          <div class="bt-login-loading">
+            <berta-loading></berta-loading>
+          </div>
+        } @else {
+          @if (appState.isBertaHosting) {
+            <div class="form-group social-login">
+              <a
             href="{{ appState.loginUrl }}?remote_redirect={{
               appState.authenticateUrl
             }}&amp;provider=facebook"
-            class="button facebook"
-          >
-            <bt-icon-facebook></bt-icon-facebook>
-            <p>Log in with Facebook</p></a
-          >
-          <a
+                class="button facebook"
+                >
+                <bt-icon-facebook></bt-icon-facebook>
+                <p>Log in with Facebook</p></a
+                >
+                <a
             href="{{ appState.loginUrl }}?remote_redirect={{
               appState.authenticateUrl
             }}&amp;provider=google"
-            class="button google"
-          >
-            <bt-icon-google></bt-icon-google>
-            <p>Sign in with Google</p></a
-          >
-          <p>or</p>
-        </div>
-
-        <div *ngIf="message" class="error-message">{{ message }}</div>
-        <form
+                  class="button google"
+                  >
+                  <bt-icon-google></bt-icon-google>
+                  <p>Sign in with Google</p></a
+                  >
+                  <p>or</p>
+                </div>
+              }
+              @if (message) {
+                <div class="error-message">{{ message }}</div>
+              }
+              <form
           [attr.action]="
             appState.isBertaHosting
               ? appState.loginUrl +
@@ -59,43 +62,43 @@ import { PopupService } from '../popup/popup.service';
                 appState.authenticateUrl
               : null
           "
-          method="post"
-          (submit)="login($event)"
-        >
-          <berta-text-input
-            [placeholder]="'Username'"
-            [name]="'auth_user'"
-            [value]="username"
-            [enabledOnUpdate]="true"
-            [hideIcon]="true"
-            (inputFocus)="updateComponentFocus($event)"
-            (update)="updateField('username', $event)"
-          ></berta-text-input>
-          <berta-text-input
-            [placeholder]="'Password'"
-            [name]="'auth_pass'"
-            [value]="password"
-            [type]="'password'"
-            [enabledOnUpdate]="true"
-            [hideIcon]="true"
-            (inputFocus)="updateComponentFocus($event)"
-            (update)="updateField('password', $event)"
-          ></berta-text-input>
-          <div class="form-group buttons">
-            <button type="submit" class="button">Log in</button>
-            <a href="{{ appState.forgotPasswordUrl }}" target="_blank"
-              >Forgot password?</a
-            >
-          </div>
-        </form>
-      </ng-template>
-
-      <div class="footer">
-        <span>berta {{ appState.version }}</span>
-        <span>2008 - {{ currentYear }}</span>
-      </div>
-    </div>
-  `,
+                method="post"
+                (submit)="login($event)"
+                >
+                <berta-text-input
+                  [placeholder]="'Username'"
+                  [name]="'auth_user'"
+                  [value]="username"
+                  [enabledOnUpdate]="true"
+                  [hideIcon]="true"
+                  (inputFocus)="updateComponentFocus($event)"
+                  (update)="updateField('username', $event)"
+                ></berta-text-input>
+                <berta-text-input
+                  [placeholder]="'Password'"
+                  [name]="'auth_pass'"
+                  [value]="password"
+                  [type]="'password'"
+                  [enabledOnUpdate]="true"
+                  [hideIcon]="true"
+                  (inputFocus)="updateComponentFocus($event)"
+                  (update)="updateField('password', $event)"
+                ></berta-text-input>
+                <div class="form-group buttons">
+                  <button type="submit" class="button">Log in</button>
+                  <a href="{{ appState.forgotPasswordUrl }}" target="_blank"
+                    >Forgot password?</a
+                    >
+                  </div>
+                </form>
+              }
+              <div class="footer">
+                <span>berta {{ appState.version }}</span>
+                <span>2008 - {{ currentYear }}</span>
+              </div>
+            </div>
+          }
+    `,
     standalone: false
 })
 export class LoginComponent implements OnInit {

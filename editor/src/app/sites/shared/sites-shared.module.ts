@@ -22,7 +22,7 @@ import { IconPublishComponent } from './icon-publish.component';
 import { IconReadonlyComponent } from '../../inputs/icon-readonly.component';
 import { RouteButton } from '../../../app/inputs/route-button.component';
 import { ActionButton } from '../../inputs/action-button.component';
-import { TooltipModule } from '@amin-karimi/ng2-tooltip-directive';
+import { NgxTooltipDirectivesModule } from 'ngx-tooltip-directives';
 import { HelpTooltipComponent } from './help-tooltip.component';
 import { FilesInputComponent } from '../../../app/inputs/files-input.component';
 import { IconMoveComponent } from './icon-move.component';
@@ -35,7 +35,7 @@ import { IconCropComponent } from './icon-crop.component';
     AngularEditorModule,
     ColorPickerComponent,
     ColorPickerDirective,
-    TooltipModule,
+    NgxTooltipDirectivesModule,
   ],
   declarations: [
     SettingComponent,

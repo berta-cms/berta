@@ -8,21 +8,22 @@ import { PopupService } from '../../../app/popup/popup.service';
     template: `
     <div class="setting">
       <div class="input-row">
-        <berta-setting
-          *ngFor="let inputField of inputFields | keyvalue"
+        @for (inputField of inputFields | keyvalue; track inputField) {
+          <berta-setting
           [class.bt-auto-width]="
             ['icon-readonly'].indexOf(inputField.value.config.format) > -1
           "
-          [setting]="inputField.value.setting"
-          [config]="inputField.value.config"
-          (update)="updateField($event)"
-        ></berta-setting>
+            [setting]="inputField.value.setting"
+            [config]="inputField.value.config"
+            (update)="updateField($event)"
+          ></berta-setting>
+        }
         <button type="button" class="button" (click)="deleteRow($event)">
           Delete
         </button>
       </div>
     </div>
-  `,
+    `,
     styles: [
         `
       :host {

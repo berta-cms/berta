@@ -3,37 +3,41 @@ import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 @Component({
     selector: 'berta-inline-text-input',
     template: `
-    <span *ngIf="!focus" class="input-placeholder" (click)="onTextClick()">{{
-      value || '...'
-    }}</span>
-    <input
-      *ngIf="focus"
-      bertaAutofocus
-      [value]="value"
-      (focus)="onFocus()"
-      (keydown)="updateField($event)"
-      (blur)="onBlur($event)"
-      type="text"
-    />
-    <svg
-      *ngIf="!focus"
-      (click)="onFocus()"
-      class="edit-icon"
-      title="Edit"
-      type="button"
-      xmlns="http://www.w3.org/2000/svg"
-      width="16"
-      height="16"
-      version="1.1"
-      viewBox="0 0 16 16"
-    >
-      <path
-        class="icon"
-        d="m3.8 14.6 1-1-2.5-2.5-1 1v1.1h1.4v1.4zm5.5-9.8q0-0.2-0.2-0.2-0.1 0-0.2 0.1l-5.7 5.7q-0.1 0.1-0.1 0.2 0 0.2 0.2 0.2 0.1 0 0.2-0.1l5.7-5.7q0.1-0.1 0.1-0.2zm-0.6-2 4.4 4.4-8.8 8.8h-4.4v-4.4zm7.2 1q0 0.6-0.4 1l-1.8 1.8-4.4-4.4 1.8-1.7q0.4-0.4 1-0.4 0.6 0 1 0.4l2.5 2.5q0.4 0.4 0.4 1z"
-        stroke-width="0"
-      />
-    </svg>
-  `,
+    @if (!focus) {
+      <span class="input-placeholder" (click)="onTextClick()">{{
+        value || '...'
+      }}</span>
+    }
+    @if (focus) {
+      <input
+        bertaAutofocus
+        [value]="value"
+        (focus)="onFocus()"
+        (keydown)="updateField($event)"
+        (blur)="onBlur($event)"
+        type="text"
+        />
+    }
+    @if (!focus) {
+      <svg
+        (click)="onFocus()"
+        class="edit-icon"
+        title="Edit"
+        type="button"
+        xmlns="http://www.w3.org/2000/svg"
+        width="16"
+        height="16"
+        version="1.1"
+        viewBox="0 0 16 16"
+        >
+        <path
+          class="icon"
+          d="m3.8 14.6 1-1-2.5-2.5-1 1v1.1h1.4v1.4zm5.5-9.8q0-0.2-0.2-0.2-0.1 0-0.2 0.1l-5.7 5.7q-0.1 0.1-0.1 0.2 0 0.2 0.2 0.2 0.1 0 0.2-0.1l5.7-5.7q0.1-0.1 0.1-0.2zm-0.6-2 4.4 4.4-8.8 8.8h-4.4v-4.4zm7.2 1q0 0.6-0.4 1l-1.8 1.8-4.4-4.4 1.8-1.7q0.4-0.4 1-0.4 0.6 0 1 0.4l2.5 2.5q0.4 0.4 0.4 1z"
+          stroke-width="0"
+          />
+      </svg>
+    }
+    `,
     styles: [
         `
       :host {

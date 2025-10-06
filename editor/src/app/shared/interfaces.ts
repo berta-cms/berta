@@ -42,8 +42,11 @@ export interface SettingConfigModel {
     | 'fontselect'
     | 'toggle'
     | 'icon'
+    | 'icon-readonly'
     | 'image'
     | 'color'
+    | 'route'
+    | 'action'
     | boolean;
   values?: Array<{
     title: string;

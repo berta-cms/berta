@@ -35,23 +35,24 @@ interface SectionData {
       class="berta-site-sections"
       cdkDropList
       (cdkDropListDropped)="onDrop($event)"
-    >
-      <berta-section
-        *ngFor="let sd of sectionsList"
-        cdkDrag
-        [section]="sd.section"
-        [isExpanded]="sd.section.name === currentSection"
-        [params]="sd.params"
-        [templateSectionTypes]="sectionTypes$ | async"
-        [translations]="translations$ | async"
-        (inputFocus)="updateComponentFocus($event)"
-        (update)="updateSection(sd, $event)"
-      ></berta-section>
+      >
+      @for (sd of sectionsList; track sd) {
+        <berta-section
+          cdkDrag
+          [section]="sd.section"
+          [isExpanded]="sd.section.name === currentSection"
+          [params]="sd.params"
+          [templateSectionTypes]="sectionTypes$ | async"
+          [translations]="translations$ | async"
+          (inputFocus)="updateComponentFocus($event)"
+          (update)="updateSection(sd, $event)"
+        ></berta-section>
+      }
     </div>
     <button type="button" class="button" (click)="createSection()">
       Create new section
     </button>
-  `,
+    `,
     standalone: false
 })
 export class SiteSectionsComponent implements OnInit {

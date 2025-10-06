@@ -11,68 +11,73 @@ import { ShopState } from './shop.state';
 @Component({
     selector: 'berta-shop',
     template: `
-    <div
-      class="setting-group"
-      [class.is-expanded]="currentShopSection === shopSection.urlSegment"
-      *ngFor="let shopSection of shopSections$ | async"
-    >
-      <h3
-        (click)="toggleSection(shopSection.urlSegment)"
-        role="link"
-        class="hoverable"
-      >
-        {{ shopSection.title }}
-        <svg
-          class="drop-icon"
-          width="10"
-          height="6"
-          viewBox="0 0 10 6"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M9 1L4.75736 5.24264L0.514719 1"
-            stroke="#9b9b9b"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          />
-        </svg>
-      </h3>
+    @for (shopSection of shopSections$ | async; track shopSection) {
       <div
-        class="settings"
-        [@isExpanded]="currentShopSection === shopSection.urlSegment"
-      >
-        <berta-shop-products
-          *ngIf="
+        class="setting-group"
+        [class.is-expanded]="currentShopSection === shopSection.urlSegment"
+        >
+        <h3
+          (click)="toggleSection(shopSection.urlSegment)"
+          role="link"
+          class="hoverable"
+          >
+          {{ shopSection.title }}
+          <svg
+            class="drop-icon"
+            width="10"
+            height="6"
+            viewBox="0 0 10 6"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            >
+            <path
+              d="M9 1L4.75736 5.24264L0.514719 1"
+              stroke="#9b9b9b"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              />
+          </svg>
+        </h3>
+        <div
+          class="settings"
+          [@isExpanded]="currentShopSection === shopSection.urlSegment"
+          >
+          @if (
             currentShopSection === 'products' &&
             shopSection.urlSegment === currentShopSection
-          "
-        >
-        </berta-shop-products>
-        <berta-shop-orders
-          *ngIf="
+            ) {
+            <berta-shop-products
+              >
+            </berta-shop-products>
+          }
+          @if (
             currentShopSection === 'orders' &&
             shopSection.urlSegment === currentShopSection
-          "
-        >
-        </berta-shop-orders>
-        <berta-shop-regional-costs
-          *ngIf="
+            ) {
+            <berta-shop-orders
+              >
+            </berta-shop-orders>
+          }
+          @if (
             currentShopSection === 'regional-costs' &&
             shopSection.urlSegment === currentShopSection
-          "
-        >
-        </berta-shop-regional-costs>
-        <berta-shop-settings
-          *ngIf="
+            ) {
+            <berta-shop-regional-costs
+              >
+            </berta-shop-regional-costs>
+          }
+          @if (
             currentShopSection === 'settings' &&
             shopSection.urlSegment === currentShopSection
-          "
-        >
-        </berta-shop-settings>
+            ) {
+            <berta-shop-settings
+              >
+            </berta-shop-settings>
+          }
+        </div>
       </div>
-    </div>
-  `,
+    }
+    `,
     styles: [
         `
       :host {

@@ -10,11 +10,13 @@ import { UpdateInputFocus } from '../app-state/app.actions';
     <div class="user-account-container setting-group">
       <h3>Change password</h3>
       <form action="" (submit)="changePassword($event)">
-        <div *ngIf="error" class="form-group">
-          <div class="error-message">
-            {{ error }}
+        @if (error) {
+          <div class="form-group">
+            <div class="error-message">
+              {{ error }}
+            </div>
           </div>
-        </div>
+        }
         <berta-text-input
           [label]="'Old password'"
           [value]="oldPassword"
@@ -24,7 +26,7 @@ import { UpdateInputFocus } from '../app-state/app.actions';
           (inputFocus)="updateComponentFocus($event)"
           (update)="updateField('oldPassword', $event)"
         ></berta-text-input>
-
+    
         <berta-text-input
           [label]="'New password'"
           [value]="newPassword"
@@ -34,7 +36,7 @@ import { UpdateInputFocus } from '../app-state/app.actions';
           (inputFocus)="updateComponentFocus($event)"
           (update)="updateField('newPassword', $event)"
         ></berta-text-input>
-
+    
         <berta-text-input
           [label]="'Retype new password'"
           [value]="retypePassword"
@@ -44,12 +46,14 @@ import { UpdateInputFocus } from '../app-state/app.actions';
           (inputFocus)="updateComponentFocus($event)"
           (update)="updateField('retypePassword', $event)"
         ></berta-text-input>
-
+    
         <div class="form-group">
           <button type="submit" class="button">Change password</button>
-
-          <div *ngIf="message" class="info-message">{{ message }}</div>
-
+    
+          @if (message) {
+            <div class="info-message">{{ message }}</div>
+          }
+    
           <div class="setting-description">
             Password must be at least 6 characters long and containing
             alphanumeric (A-Z, a-z, 0-9) characters.
@@ -57,7 +61,7 @@ import { UpdateInputFocus } from '../app-state/app.actions';
         </div>
       </form>
     </div>
-  `,
+    `,
     standalone: false
 })
 export class UserAccountComponent {

@@ -29,48 +29,47 @@ import { SiteSettingsState } from '../settings/site-settings.state';
     selector: 'berta-entry-gallery-editor',
     template: `
     <aside>
-      <div
-        *ngIf="selectedFile"
-        class="setting-group"
-        [class.is-expanded]="fileSettingsIsOpen"
-      >
-        <h3
-          (click)="fileSettingsIsOpen = !fileSettingsIsOpen"
-          class="hoverable"
-        >
-          Item settings
-          <svg
-            class="drop-icon"
-            width="10"
-            height="6"
-            viewBox="0 0 10 6"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
+      @if (selectedFile) {
+        <div
+          class="setting-group"
+          [class.is-expanded]="fileSettingsIsOpen"
           >
-            <path
-              d="M9 1L4.75736 5.24264L0.514719 1"
-              stroke="#9b9b9b"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-          </svg>
-        </h3>
-        <div class="settings" [@isExpanded]="fileSettingsIsOpen">
-          <berta-setting
-            [setting]="{ slug: '@value', value: selectedFile['@value'] }"
+          <h3
+            (click)="fileSettingsIsOpen = !fileSettingsIsOpen"
+            class="hoverable"
+            >
+            Item settings
+            <svg
+              class="drop-icon"
+              width="10"
+              height="6"
+              viewBox="0 0 10 6"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              >
+              <path
+                d="M9 1L4.75736 5.24264L0.514719 1"
+                stroke="#9b9b9b"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                />
+            </svg>
+          </h3>
+          <div class="settings" [@isExpanded]="fileSettingsIsOpen">
+            <berta-setting
+              [setting]="{ slug: '@value', value: selectedFile['@value'] }"
             [config]="{
               title: 'Caption for ' + selectedFile['@attributes']['src'],
               placeholder: 'Enter item caption here...',
               format: 'richtext',
               enabledOnUpdate: true
             }"
-            [error]="''"
-            (update)="updateFile($event)"
-          >
-          </berta-setting>
-
-          <berta-setting
-            *ngIf="selectedFile['@attributes']['type'] === 'video'"
+              [error]="''"
+              (update)="updateFile($event)"
+              >
+            </berta-setting>
+            @if (selectedFile['@attributes']['type'] === 'video') {
+              <berta-setting
             [setting]="{
               slug: '@attributes/poster_frame',
               value: selectedFile['@attributes']['poster_frame']
@@ -81,13 +80,13 @@ import { SiteSettingsState } from '../settings/site-settings.state';
               enabledOnUpdate: true,
               disableRemove: true
             }"
-            [error]="''"
-            [disabled]="false"
-            (update)="updateVideoPosterFile($event)"
-          ></berta-setting>
-
-          <berta-setting
-            *ngIf="selectedFile['@attributes']['type'] === 'video'"
+                [error]="''"
+                [disabled]="false"
+                (update)="updateVideoPosterFile($event)"
+              ></berta-setting>
+            }
+            @if (selectedFile['@attributes']['type'] === 'video') {
+              <berta-setting
             [setting]="{
               slug: '@attributes/autoplay',
               value: selectedFile['@attributes']['autoplay']
@@ -101,42 +100,44 @@ import { SiteSettingsState } from '../settings/site-settings.state';
               ],
               enabledOnUpdate: true
             }"
-            [error]="''"
-            [disabled]="false"
-            (update)="updateFile($event)"
-          >
-          </berta-setting>
+                [error]="''"
+                [disabled]="false"
+                (update)="updateFile($event)"
+                >
+              </berta-setting>
+            }
+          </div>
         </div>
-      </div>
-
-      <div
-        *ngIf="currentEntry"
-        class="setting-group"
-        [class.is-expanded]="gallerySettingsIsOpen"
-      >
-        <h3
-          (click)="gallerySettingsIsOpen = !gallerySettingsIsOpen"
-          class="hoverable"
-        >
-          Gallery settings
-          <svg
-            class="drop-icon"
-            width="10"
-            height="6"
-            viewBox="0 0 10 6"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
+      }
+    
+      @if (currentEntry) {
+        <div
+          class="setting-group"
+          [class.is-expanded]="gallerySettingsIsOpen"
           >
-            <path
-              d="M9 1L4.75736 5.24264L0.514719 1"
-              stroke="#9b9b9b"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-          </svg>
-        </h3>
-        <div class="settings" [@isExpanded]="gallerySettingsIsOpen">
-          <berta-setting
+          <h3
+            (click)="gallerySettingsIsOpen = !gallerySettingsIsOpen"
+            class="hoverable"
+            >
+            Gallery settings
+            <svg
+              class="drop-icon"
+              width="10"
+              height="6"
+              viewBox="0 0 10 6"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              >
+              <path
+                d="M9 1L4.75736 5.24264L0.514719 1"
+                stroke="#9b9b9b"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                />
+            </svg>
+          </h3>
+          <div class="settings" [@isExpanded]="gallerySettingsIsOpen">
+            <berta-setting
             [setting]="{
               slug: 'type',
               value: currentEntry['mediaCacheData']['@attributes'].type
@@ -153,16 +154,15 @@ import { SiteSettingsState } from '../settings/site-settings.state';
               ],
               enabledOnUpdate: true
             }"
-            [error]="''"
-            [disabled]="false"
-            (update)="updateGallerySettings($event)"
-          >
-          </berta-setting>
-
-          <berta-setting
-            *ngIf="
+              [error]="''"
+              [disabled]="false"
+              (update)="updateGallerySettings($event)"
+              >
+            </berta-setting>
+            @if (
               currentEntry['mediaCacheData']['@attributes'].type === 'slideshow'
-            "
+              ) {
+              <berta-setting
             [setting]="{
               slug: 'autoplay',
               value:
@@ -174,16 +174,16 @@ import { SiteSettingsState } from '../settings/site-settings.state';
               enabledOnUpdate: true,
               validation: 'zero_or_positive_integer'
             }"
-            [error]="''"
-            [disabled]="false"
-            (update)="updateGallerySettings($event)"
-          >
-          </berta-setting>
-
-          <berta-setting
-            *ngIf="
+                [error]="''"
+                [disabled]="false"
+                (update)="updateGallerySettings($event)"
+                >
+              </berta-setting>
+            }
+            @if (
               currentEntry['mediaCacheData']['@attributes'].type === 'slideshow'
-            "
+              ) {
+              <berta-setting
             [setting]="{
               slug: 'slide_numbers_visible',
               value:
@@ -199,17 +199,17 @@ import { SiteSettingsState } from '../settings/site-settings.state';
               ],
               enabledOnUpdate: true
             }"
-            [error]="''"
-            [disabled]="false"
-            (update)="updateGallerySettings($event)"
-          >
-          </berta-setting>
-
-          <berta-setting
-            *ngIf="
+                [error]="''"
+                [disabled]="false"
+                (update)="updateGallerySettings($event)"
+                >
+              </berta-setting>
+            }
+            @if (
               currentEntry['mediaCacheData']['@attributes'].type ===
-                'slideshow' && templateName === 'messy'
-            "
+              'slideshow' && templateName === 'messy'
+              ) {
+              <berta-setting
             [setting]="{
               slug: 'gallery_width_by_widest_slide',
               value:
@@ -225,14 +225,14 @@ import { SiteSettingsState } from '../settings/site-settings.state';
               ],
               enabledOnUpdate: true
             }"
-            [error]="''"
-            [disabled]="false"
-            (update)="updateGallerySettings($event)"
-          >
-          </berta-setting>
-
-          <berta-setting
-            *ngIf="currentEntry['mediaCacheData']['@attributes'].type === 'row'"
+                [error]="''"
+                [disabled]="false"
+                (update)="updateGallerySettings($event)"
+                >
+              </berta-setting>
+            }
+            @if (currentEntry['mediaCacheData']['@attributes'].type === 'row') {
+              <berta-setting
             [setting]="{
               slug: 'row_gallery_padding',
               value:
@@ -244,16 +244,16 @@ import { SiteSettingsState } from '../settings/site-settings.state';
               format: 'text',
               enabledOnUpdate: true
             }"
-            [error]="''"
-            [disabled]="false"
-            (update)="updateGallerySettings($event)"
-          >
-          </berta-setting>
-
-          <berta-setting
-            *ngIf="
+                [error]="''"
+                [disabled]="false"
+                (update)="updateGallerySettings($event)"
+                >
+              </berta-setting>
+            }
+            @if (
               currentEntry['mediaCacheData']['@attributes'].type === 'link'
-            "
+              ) {
+              <berta-setting
             [setting]="{
               slug: 'link_address',
               value:
@@ -265,16 +265,16 @@ import { SiteSettingsState } from '../settings/site-settings.state';
               placeholder: 'https://example.com',
               enabledOnUpdate: true
             }"
-            [error]="''"
-            [disabled]="false"
-            (update)="updateGallerySettings($event)"
-          >
-          </berta-setting>
-
-          <berta-setting
-            *ngIf="
+                [error]="''"
+                [disabled]="false"
+                (update)="updateGallerySettings($event)"
+                >
+              </berta-setting>
+            }
+            @if (
               currentEntry['mediaCacheData']['@attributes'].type === 'link'
-            "
+              ) {
+              <berta-setting
             [setting]="{
               slug: 'linkTarget',
               value:
@@ -290,13 +290,13 @@ import { SiteSettingsState } from '../settings/site-settings.state';
               ],
               enabledOnUpdate: true
             }"
-            [error]="''"
-            [disabled]="false"
-            (update)="updateGallerySettings($event)"
-          >
-          </berta-setting>
-
-          <berta-setting
+                [error]="''"
+                [disabled]="false"
+                (update)="updateGallerySettings($event)"
+                >
+              </berta-setting>
+            }
+            <berta-setting
             [setting]="{
               slug: 'fullscreen',
               value:
@@ -312,13 +312,12 @@ import { SiteSettingsState } from '../settings/site-settings.state';
               ],
               enabledOnUpdate: true
             }"
-            [error]="''"
-            [disabled]="false"
-            (update)="updateGallerySettings($event)"
-          >
-          </berta-setting>
-
-          <berta-setting
+              [error]="''"
+              [disabled]="false"
+              (update)="updateGallerySettings($event)"
+              >
+            </berta-setting>
+            <berta-setting
             [setting]="{
               slug: 'size',
               value:
@@ -334,47 +333,50 @@ import { SiteSettingsState } from '../settings/site-settings.state';
               ],
               enabledOnUpdate: true
             }"
-            [error]="''"
-            [disabled]="false"
-            (update)="updateGallerySettings($event)"
-          >
-          </berta-setting>
+              [error]="''"
+              [disabled]="false"
+              (update)="updateGallerySettings($event)"
+              >
+            </berta-setting>
+          </div>
         </div>
-      </div>
+      }
     </aside>
-    <div class="content" *ngIf="currentSection && currentEntry">
-      <div class="header">
-        <h3>
-          Gallery editor / entry #{{ currentEntry.id }} /
-          {{ currentSection.title || 'Untitled' }}
-        </h3>
-        <button class="close" (click)="closeEditor()">&#10006;</button>
-      </div>
-
-      <div class="entry-gallery-items">
-        <div
-          *ngFor="
-            let file of currentEntry.mediaCacheData.file;
-            trackBy: identifyGalleryItem
-          "
-          class="entry-gallery-item"
-          [class.selected]="file === selectedFile"
-          ngSortgridItem
-          [ngSortGridGroup]="currentEntry.sectionName + currentEntry.id"
-          [ngSortGridItems]="currentEntry.mediaCacheData.file"
-          (sorted)="reorder($event)"
-          (click)="setSelectedFile(file)"
-        >
-          <div *ngIf="file['@attributes'].type === 'image'" class="media image">
-            <img
-              draggable="false"
+    @if (currentSection && currentEntry) {
+      <div class="content">
+        <div class="header">
+          <h3>
+            Gallery editor / entry #{{ currentEntry.id }} /
+            {{ currentSection.title || 'Untitled' }}
+          </h3>
+          <button class="close" (click)="closeEditor()">&#10006;</button>
+        </div>
+        <div class="entry-gallery-items">
+          @for (
+            file of currentEntry.mediaCacheData.file; track identifyGalleryItem($index,
+            file)) {
+            <div
+              class="entry-gallery-item"
+              [class.selected]="file === selectedFile"
+              ngSortgridItem
+              [ngSortGridGroup]="currentEntry.sectionName + currentEntry.id"
+              [ngSortGridItems]="currentEntry.mediaCacheData.file"
+              (sorted)="reorder($event)"
+              (click)="setSelectedFile(file)"
+              >
+              @if (file['@attributes'].type === 'image') {
+                <div class="media image">
+                  <img
+                    draggable="false"
               src="{{ currentSite.mediaUrl }}/{{
                 currentEntry.mediafolder
               }}/_smallthumb_{{ file['@attributes'].src }}"
-            />
-          </div>
-          <div *ngIf="file['@attributes'].type === 'video'" class="media video">
-            <video
+                    />
+                </div>
+              }
+              @if (file['@attributes'].type === 'video') {
+                <div class="media video">
+                  <video
               [attr.poster]="
                 file['@attributes'].poster_frame
                   ? currentSite.mediaUrl +
@@ -384,45 +386,48 @@ import { SiteSettingsState } from '../settings/site-settings.state';
                     file['@attributes'].poster_frame
                   : null
               "
-            >
-              <source
+                    >
+                    <source
                 src="{{ currentSite.mediaUrl }}/{{
                   currentEntry.mediafolder
                 }}/{{ file['@attributes'].src }}"
-                type="video/mp4"
-              />
-            </video>
-          </div>
-          <button title="move" class="action reorder">
-            <bt-icon-move></bt-icon-move>
-          </button>
-          <button
-            *ngIf="file['@attributes'].type === 'image'"
-            title="crop"
-            class="action crop"
-            (click)="openCropItemPage($event, file['@attributes'].src)"
-          >
-            <bt-icon-crop></bt-icon-crop>
-          </button>
-          <button
-            title="delete"
-            class="action delete"
-            (click)="deleteItem($event, file['@attributes'].src)"
-          >
-            <bt-icon-delete></bt-icon-delete>
-          </button>
+                      type="video/mp4"
+                      />
+                  </video>
+                </div>
+              }
+              <button title="move" class="action reorder">
+                <bt-icon-move></bt-icon-move>
+              </button>
+              @if (file['@attributes'].type === 'image') {
+                <button
+                  title="crop"
+                  class="action crop"
+                  (click)="openCropItemPage($event, file['@attributes'].src)"
+                  >
+                  <bt-icon-crop></bt-icon-crop>
+                </button>
+              }
+              <button
+                title="delete"
+                class="action delete"
+                (click)="deleteItem($event, file['@attributes'].src)"
+                >
+                <bt-icon-delete></bt-icon-delete>
+              </button>
+            </div>
+          }
+          <berta-files-input
+            [accept]="'image/*, video/mp4'"
+            [label]="'add items'"
+            [disabled]="disabled"
+            [errors]="uploadFilesErrors"
+            (update)="uploadFiles($event)"
+          ></berta-files-input>
         </div>
-
-        <berta-files-input
-          [accept]="'image/*, video/mp4'"
-          [label]="'add items'"
-          [disabled]="disabled"
-          [errors]="uploadFilesErrors"
-          (update)="uploadFiles($event)"
-        ></berta-files-input>
       </div>
-    </div>
-  `,
+    }
+    `,
     animations: [Animations.slideToggle],
     standalone: false
 })

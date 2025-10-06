@@ -16,26 +16,29 @@ import { SectionEntry } from '../../sites/sections/entries/entries-state/section
 @Component({
     selector: 'berta-shop-products',
     template: `
-    <div
-      *ngFor="let group of productGroups$ | async"
-      class="setting"
-      [class.bt-is-empty]="group.products.length === 0"
-    >
-      <h4 [class.is-tag]="group.isTag">{{ group.title }}</h4>
-      <div *ngFor="let product of group.products" class="product">
-        <berta-text-input
-          [value]="product.instock"
-          [label]="product.name"
-          [title]="'In stock'"
-          (update)="updateProducts('instock', $event, product.id)"
-          (inputFocus)="updateInputFocus($event)"
-        ></berta-text-input>
-        <p>
-          Reservations: <span>{{ product.reservation }}</span>
-        </p>
+    @for (group of productGroups$ | async; track group) {
+      <div
+        class="setting"
+        [class.bt-is-empty]="group.products.length === 0"
+        >
+        <h4 [class.is-tag]="group.isTag">{{ group.title }}</h4>
+        @for (product of group.products; track product) {
+          <div class="product">
+            <berta-text-input
+              [value]="product.instock"
+              [label]="product.name"
+              [title]="'In stock'"
+              (update)="updateProducts('instock', $event, product.id)"
+              (inputFocus)="updateInputFocus($event)"
+            ></berta-text-input>
+            <p>
+              Reservations: <span>{{ product.reservation }}</span>
+            </p>
+          </div>
+        }
       </div>
-    </div>
-  `,
+    }
+    `,
     standalone: false
 })
 export class ShopProductsComponent implements OnInit {
