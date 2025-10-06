@@ -6,8 +6,6 @@ import { SiteStateModel } from '../sites/sites-state/site-state.model';
   providedIn: 'root',
 })
 export class MashupTemplateStyleService {
-  constructor() {}
-
   getCSSList(
     style,
     cssList,
