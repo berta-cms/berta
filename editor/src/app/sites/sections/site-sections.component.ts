@@ -29,8 +29,8 @@ interface SectionData {
 }
 
 @Component({
-  selector: 'berta-site-sections',
-  template: `
+    selector: 'berta-site-sections',
+    template: `
     <div
       class="berta-site-sections"
       cdkDropList
@@ -52,6 +52,7 @@ interface SectionData {
       Create new section
     </button>
   `,
+    standalone: false
 })
 export class SiteSectionsComponent implements OnInit {
   sectionsData$: Observable<SectionData[]>;

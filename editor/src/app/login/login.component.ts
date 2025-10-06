@@ -18,8 +18,8 @@ import { AppState } from '../app-state/app.state';
 import { PopupService } from '../popup/popup.service';
 
 @Component({
-  selector: 'berta-login',
-  template: `
+    selector: 'berta-login',
+    template: `
     <div *ngIf="!(isLoggedIn$ | async)" class="login-container setting-group">
       <h3><img src="/engine/layout/berta.png" /></h3>
 
@@ -96,6 +96,7 @@ import { PopupService } from '../popup/popup.service';
       </div>
     </div>
   `,
+    standalone: false
 })
 export class LoginComponent implements OnInit {
   appState: AppStateModel;

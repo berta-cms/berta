@@ -1,21 +1,21 @@
-@import "variables";
-@import "drag-drop";
-@import "sortgrid";
-@import "buttons";
-@import "forms";
-@import "aside";
-@import "not-found";
-@import "sites";
-@import "sections";
-@import "themes";
-@import "shop";
-@import "login";
-@import "account";
-@import "popup";
-@import "media";
-@import "entry-gallery-editor";
-@import "entry-gallery-image-editor";
-@import "background-gallery-editor";
+@use "variables";
+@use "drag-drop";
+@use "sortgrid";
+@use "buttons";
+@use "forms";
+@use "aside";
+@use "not-found";
+@use "sites";
+@use "sections";
+@use "themes";
+@use "shop";
+@use "login";
+@use "account";
+@use "popup";
+@use "media";
+@use "entry-gallery-editor";
+@use "entry-gallery-image-editor";
+@use "background-gallery-editor";
 
 html,
 body {
@@ -39,59 +39,59 @@ button {
 }
 
 header {
-  background-color: $black;
-  height: $bt-header-height;
+  background-color: variables.$black;
+  height: variables.$bt-header-height;
 
   a {
-    color: $grey-30;
-    font-size: $bt-header-font-size;
-    line-height: $bt-header-line-height;
-    padding: $bt-header-item-padding;
+    color: variables.$grey-30;
+    font-size: variables.$bt-header-font-size;
+    line-height: variables.$bt-header-line-height;
+    padding: variables.$bt-header-item-padding;
     text-decoration: none;
     transition: color 0.2s;
 
     &:hover {
-      color: $berta-accent;
+      color: variables.$berta-accent;
     }
 
     &.nav-active {
-      color: $white;
+      color: variables.$white;
     }
   }
 
   .bt-view-editor {
     align-items: center;
-    background-color: $grey-90;
-    color: $grey-40;
+    background-color: variables.$grey-90;
+    color: variables.$grey-40;
     cursor: pointer;
     display: flex;
-    padding: $bt-header-item-padding;
+    padding: variables.$bt-header-item-padding;
     transition: background-color 0.2s;
 
     path {
-      fill: $grey-30;
+      fill: variables.$grey-30;
     }
 
     &:hover {
-      background-color: $berta-accent;
+      background-color: variables.$berta-accent;
     }
   }
 }
 
 berta-profile-dropdown {
-  background-color: $black;
+  background-color: variables.$black;
 
   .bt-profile-anchor {
     background-color: inherit;
     min-width: 9.375rem;
 
     &:focus {
-      color: $white;
+      color: variables.$white;
     }
   }
 
   ul {
-    background-color: $black;
+    background-color: variables.$black;
   }
 
   .bt-profile-anchor,
@@ -99,29 +99,29 @@ berta-profile-dropdown {
     align-items: center;
     background-color: transparent;
     box-sizing: border-box;
-    color: $grey-30;
+    color: variables.$grey-30;
     display: flex;
-    font-size: $bt-header-font-size;
+    font-size: variables.$bt-header-font-size;
     justify-content: space-between;
-    line-height: $bt-header-line-height;
-    padding: $bt-header-item-padding;
+    line-height: variables.$bt-header-line-height;
+    padding: variables.$bt-header-item-padding;
     text-align: left;
     text-decoration: none;
     transition: color 0.2s;
 
     svg {
       path {
-        fill: $grey-30;
+        fill: variables.$grey-30;
         transition: fill 0.2s;
       }
     }
 
     &:hover {
-      color: $berta-accent;
+      color: variables.$berta-accent;
 
       svg {
         path {
-          fill: $berta-accent;
+          fill: variables.$berta-accent;
         }
       }
     }
@@ -129,5 +129,5 @@ berta-profile-dropdown {
 }
 
 .overlay {
-  background: rgba($black, 0.3);
+  background: rgba(variables.$black, 0.3);
 }

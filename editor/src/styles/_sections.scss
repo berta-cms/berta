@@ -1,3 +1,5 @@
+@use "variables";
+
 .berta-site-sections {
   display: block;
 
@@ -8,6 +10,6 @@
 }
 
 berta-section {
-  background-color: $white;
+  background-color: variables.$white;
   display: block;
 }

@@ -9,8 +9,8 @@ import { Animations } from '../shared/animations';
 import { ShopState } from './shop.state';
 
 @Component({
-  selector: 'berta-shop',
-  template: `
+    selector: 'berta-shop',
+    template: `
     <div
       class="setting-group"
       [class.is-expanded]="currentShopSection === shopSection.urlSegment"
@@ -73,14 +73,15 @@ import { ShopState } from './shop.state';
       </div>
     </div>
   `,
-  styles: [
-    `
+    styles: [
+        `
       :host {
         display: block;
       }
     `,
-  ],
-  animations: [Animations.slideToggle],
+    ],
+    animations: [Animations.slideToggle],
+    standalone: false
 })
 export class ShopComponent implements OnInit {
   currentShopSection = '';

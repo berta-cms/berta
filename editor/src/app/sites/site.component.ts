@@ -15,8 +15,8 @@ import { SitesState } from './sites-state/sites.state';
 import { AppStateModel } from '../app-state/app-state.interface';
 
 @Component({
-  selector: 'berta-site',
-  template: `
+    selector: 'berta-site',
+    template: `
     <div
       class="setting-group"
       [class.active]="(currentSite$ | async).site == site.name"
@@ -74,8 +74,8 @@ import { AppStateModel } from '../app-state/app-state.interface';
       </h3>
     </div>
   `,
-  styles: [
-    `
+    styles: [
+        `
       :host h3 {
         display: block;
       }
@@ -91,7 +91,8 @@ import { AppStateModel } from '../app-state/app-state.interface';
         display: flex;
       }
     `,
-  ],
+    ],
+    standalone: false
 })
 export class SiteComponent implements OnInit {
   @Input('site') site: SiteStateModel;

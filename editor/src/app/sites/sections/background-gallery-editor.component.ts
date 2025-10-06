@@ -23,8 +23,8 @@ import { PopupService } from '../../../app/popup/popup.service';
 import type { NgsgOrderChange } from 'ng-sortgrid';
 
 @Component({
-  selector: 'berta-background-gallery-editor',
-  template: `
+    selector: 'berta-background-gallery-editor',
+    template: `
     <aside *ngIf="currentSection">
       <div
         *ngIf="selectedFile"
@@ -321,7 +321,8 @@ import type { NgsgOrderChange } from 'ng-sortgrid';
       </div>
     </div>
   `,
-  animations: [Animations.slideToggle],
+    animations: [Animations.slideToggle],
+    standalone: false
 })
 export class BackgroundGalleryEditorComponent implements OnInit {
   @Select(SitesState.getCurrentSite)

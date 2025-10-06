@@ -4,8 +4,8 @@ import { SettingChildModel, SettingModel } from '../../shared/interfaces';
 import { PopupService } from '../../../app/popup/popup.service';
 
 @Component({
-  selector: 'berta-setting-row',
-  template: `
+    selector: 'berta-setting-row',
+    template: `
     <div class="setting">
       <div class="input-row">
         <berta-setting
@@ -23,13 +23,14 @@ import { PopupService } from '../../../app/popup/popup.service';
       </div>
     </div>
   `,
-  styles: [
-    `
+    styles: [
+        `
       :host {
         display: block;
       }
     `,
-  ],
+    ],
+    standalone: false
 })
 export class SettingRowComponent {
   @Input('inputFields') inputFields: Array<SettingChildModel[]>;

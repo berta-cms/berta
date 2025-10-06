@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'bt-icon-google',
-  template: `
+    selector: 'bt-icon-google',
+    template: `
     <svg
       xmlns:x="http://ns.adobe.com/Extensibility/1.0/"
       xmlns:i="http://ns.adobe.com/AdobeIllustrator/10.0/"
@@ -51,5 +51,6 @@ import { Component } from '@angular/core';
       </g>
     </svg>
   `,
+    standalone: false
 })
 export class IconGoogleComponent {}

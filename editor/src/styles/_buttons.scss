@@ -1,8 +1,11 @@
+@use "variables";
+@use "sass:color";
+
 .button {
-  background-color: $black;
+  background-color: variables.$black;
   border: 0;
-  border-radius: $border-radius;
-  color: $grey-30;
+  border-radius: variables.$border-radius;
+  color: variables.$grey-30;
   display: inline-block;
   font-size: 1em;
   line-height: 1;
@@ -13,35 +16,35 @@
   white-space: nowrap;
 
   &:hover {
-    background-color: $berta-accent;
-    color: $white;
+    background-color: variables.$berta-accent;
+    color: variables.$white;
   }
 
   &:focus,
   &:active {
-    background-color: darken($berta-accent, 10%);
-    color: darken($grey-30, 10%);
+    background-color: color.adjust(variables.$berta-accent, $lightness: -10%);
+    color: color.adjust(variables.$grey-30, $lightness: -10%);
   }
 
   &.secondary {
-    background-color: $grey-20;
-    color: $white;
+    background-color: variables.$grey-20;
+    color: variables.$white;
   }
 
   &.inverse {
-    background-color: $white;
-    color: $black;
-    box-shadow: inset 0 0 0 1px $black;
+    background-color: variables.$white;
+    color: variables.$black;
+    box-shadow: inset 0 0 0 1px variables.$black;
 
     &:hover {
-      color: $berta-accent;
-      box-shadow: inset 0 0 0 1px $berta-accent;
+      color: variables.$berta-accent;
+      box-shadow: inset 0 0 0 1px variables.$berta-accent;
     }
   }
 
   &.disabled,
   &[disabled] {
-    background-color: $grey-10;
+    background-color: variables.$grey-10;
     pointer-events: none;
   }
 }

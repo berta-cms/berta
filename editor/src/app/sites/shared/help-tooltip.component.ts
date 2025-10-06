@@ -1,8 +1,8 @@
 import { Component, Input } from '@angular/core';
 
 @Component({
-  selector: 'berta-help-tooltip',
-  template: `
+    selector: 'berta-help-tooltip',
+    template: `
     <span [tooltip]="content" showDelay="500" (click)="onClick($event)">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
         <path
@@ -11,8 +11,8 @@ import { Component, Input } from '@angular/core';
       </svg>
     </span>
   `,
-  styles: [
-    `
+    styles: [
+        `
       :host {
         cursor: pointer;
         margin: 0 0.25em;
@@ -26,7 +26,8 @@ import { Component, Input } from '@angular/core';
         fill: #4a4a4a;
       }
     `,
-  ],
+    ],
+    standalone: false
 })
 export class HelpTooltipComponent {
   @Input() content: string;

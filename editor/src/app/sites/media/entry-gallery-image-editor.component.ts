@@ -24,10 +24,9 @@ import {
 import { SitesSharedModule } from '../shared/sites-shared.module';
 
 @Component({
-  selector: 'berta-entry-gallery-image-editor',
-  standalone: true,
-  imports: [ImageCropperComponent, NgIf, SitesSharedModule],
-  template: `
+    selector: 'berta-entry-gallery-image-editor',
+    imports: [ImageCropperComponent, NgIf, SitesSharedModule],
+    template: `
     <aside>
       <div class="setting-group" [class.is-expanded]="fileSettingsIsOpen">
         <h3
@@ -119,7 +118,7 @@ import { SitesSharedModule } from '../shared/sites-shared.module';
       </div>
     </div>
   `,
-  animations: [Animations.slideToggle],
+    animations: [Animations.slideToggle]
 })
 export class EntryGalleryImageEditorComponent implements OnInit {
   @Select(SitesState.getCurrentSite) currentSite$: Observable<SiteStateModel>;

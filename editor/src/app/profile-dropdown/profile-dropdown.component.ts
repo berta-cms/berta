@@ -8,8 +8,8 @@ import { UserLogoutAction } from '../user/user.actions';
 
 /** @todo add icons */
 @Component({
-  selector: 'berta-profile-dropdown',
-  template: `
+    selector: 'berta-profile-dropdown',
+    template: `
     <button type="button" class="bt-profile-anchor">
       {{ (user$ | async).name }}
     </button>
@@ -71,8 +71,8 @@ import { UserLogoutAction } from '../user/user.actions';
       </li>
     </ul>
   `,
-  styles: [
-    `
+    styles: [
+        `
       :host {
         display: block;
         position: relative;
@@ -104,7 +104,8 @@ import { UserLogoutAction } from '../user/user.actions';
         width: 100%;
       }
     `,
-  ],
+    ],
+    standalone: false
 })
 export class ProfileDropdownComponent {
   @Select(UserState) user$: Observable<UserStateModel>;

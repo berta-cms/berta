@@ -26,8 +26,8 @@ import { SitesState } from '../sites-state/sites.state';
 import { SiteSettingsState } from '../settings/site-settings.state';
 
 @Component({
-  selector: 'berta-entry-gallery-editor',
-  template: `
+    selector: 'berta-entry-gallery-editor',
+    template: `
     <aside>
       <div
         *ngIf="selectedFile"
@@ -423,7 +423,8 @@ import { SiteSettingsState } from '../settings/site-settings.state';
       </div>
     </div>
   `,
-  animations: [Animations.slideToggle],
+    animations: [Animations.slideToggle],
+    standalone: false
 })
 export class EntryGalleryEditorComponent implements OnInit {
   @Select(SitesState.getCurrentSite)

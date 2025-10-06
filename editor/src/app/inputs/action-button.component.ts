@@ -1,17 +1,18 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
-  selector: 'berta-action-button',
-  template: `<button type="button" class="button" (click)="runAction()">
+    selector: 'berta-action-button',
+    template: `<button type="button" class="button" (click)="runAction()">
     {{ label }}
   </button>`,
-  styles: [
-    `
+    styles: [
+        `
       :host {
         display: block;
       }
     `,
-  ],
+    ],
+    standalone: false
 })
 export class ActionButton {
   @Input() label: string;

@@ -6,8 +6,8 @@ import { ShopSettingsState } from '../settings/shop-settings.state';
 import { ShopOrdersState } from './shop-orders.state';
 
 @Component({
-  selector: 'berta-shop-orders',
-  template: `
+    selector: 'berta-shop-orders',
+    template: `
     <div *ngFor="let order of orders$ | async" class="setting">
       <p>
         Order ID
@@ -99,6 +99,7 @@ import { ShopOrdersState } from './shop-orders.state';
       </div>
     </div>
   `,
+    standalone: false
 })
 export class ShopOrdersComponent {
   @Select(ShopOrdersState.getCurrentSiteOrders) orders$;

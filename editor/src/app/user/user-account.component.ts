@@ -5,8 +5,8 @@ import { UserService } from './user.service';
 import { UpdateInputFocus } from '../app-state/app.actions';
 
 @Component({
-  selector: 'berta-user-account',
-  template: `
+    selector: 'berta-user-account',
+    template: `
     <div class="user-account-container setting-group">
       <h3>Change password</h3>
       <form action="" (submit)="changePassword($event)">
@@ -58,6 +58,7 @@ import { UpdateInputFocus } from '../app-state/app.actions';
       </form>
     </div>
   `,
+    standalone: false
 })
 export class UserAccountComponent {
   error = '';

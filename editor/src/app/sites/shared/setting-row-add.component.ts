@@ -3,8 +3,8 @@ import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { SettingConfigModel } from '../../shared/interfaces';
 
 @Component({
-  selector: 'berta-setting-row-add',
-  template: `
+    selector: 'berta-setting-row-add',
+    template: `
     <form class="setting" (submit)="addRow($event)">
       <div class="input-row">
         <berta-setting
@@ -22,13 +22,14 @@ import { SettingConfigModel } from '../../shared/interfaces';
       </div>
     </form>
   `,
-  styles: [
-    `
+    styles: [
+        `
       :host {
         display: block;
       }
     `,
-  ],
+    ],
+    standalone: false
 })
 export class SettingRowAddComponent implements OnInit {
   @Input('config') config: SettingConfigModel;

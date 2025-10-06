@@ -1,4 +1,4 @@
-@import "variables";
+@use "variables";
 
 berta-sites {
   display: block;
@@ -10,6 +10,6 @@ berta-sites {
 }
 
 berta-site {
-  background-color: $white;
+  background-color: variables.$white;
   display: block;
 }

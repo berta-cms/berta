@@ -12,8 +12,8 @@ import {
 } from '../sites/sites-state/sites.actions';
 
 @Component({
-  selector: 'berta-themes',
-  template: `
+    selector: 'berta-themes',
+    template: `
     <ul class="themes-container">
       <li *ngFor="let theme of themes">
         <div class="image-container">
@@ -61,6 +61,7 @@ import {
       </li>
     </ul>
   `,
+    standalone: false
 })
 export class ThemesComponent implements OnInit {
   appState: AppStateModel;

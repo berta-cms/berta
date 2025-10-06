@@ -12,8 +12,8 @@ import { ShopSettingsConfigState } from './shop-settings-config.state';
 import { UpdateShopSettingsAction } from './shop-settings.actions';
 
 @Component({
-  selector: 'berta-shop-settings',
-  template: `
+    selector: 'berta-shop-settings',
+    template: `
     <div *ngFor="let settingGroup of settings$ | async" class="subgroup">
       <div class="setting">
         <h4>{{ settingGroup.config.title || settingGroup.slug }}</h4>
@@ -30,13 +30,14 @@ import { UpdateShopSettingsAction } from './shop-settings.actions';
       ></berta-setting>
     </div>
   `,
-  styles: [
-    `
+    styles: [
+        `
       h4 {
         font-weight: bold;
       }
     `,
-  ],
+    ],
+    standalone: false
 })
 export class ShopSettingsComponent implements OnInit {
   settings$: Observable<

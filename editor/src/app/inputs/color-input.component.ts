@@ -1,8 +1,8 @@
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'berta-color-input',
-  template: ` <div
+    selector: 'berta-color-input',
+    template: ` <div
     class="form-group"
     [class.bt-focus]="focus"
     [class.bt-disabled]="disabled"
@@ -29,6 +29,7 @@ import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
       </div>
     </label>
   </div>`,
+    standalone: false
 })
 export class ColorInputComponent implements OnInit {
   @Input() label: string;

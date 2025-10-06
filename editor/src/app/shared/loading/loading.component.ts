@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'berta-loading',
-  template: `
+    selector: 'berta-loading',
+    template: `
     <div class="animation-wrap">
       <svg
         xmlns:dc="http://purl.org/dc/elements/1.1/"
@@ -28,8 +28,8 @@ import { Component, OnInit } from '@angular/core';
       </svg>
     </div>
   `,
-  styles: [
-    `
+    styles: [
+        `
       .animation-wrap {
         position: relative;
         padding-bottom: 100%;
@@ -71,6 +71,7 @@ import { Component, OnInit } from '@angular/core';
         }
       }
     `,
-  ],
+    ],
+    standalone: false
 })
 export class LoadingComponent {}
