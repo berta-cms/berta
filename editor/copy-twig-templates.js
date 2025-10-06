@@ -7,4 +7,4 @@ const cpx = require("cpx");
 cpx.copySync("../_api_app/app/**/*.twig", "src/templates", {
   clean: true,
 });
-console.log("Twig files copied.");
+console.log("✓ Twig files copied from backend to Angular app.");

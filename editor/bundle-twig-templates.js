@@ -32,7 +32,6 @@ function findTwigFiles(dir, fileList = [], baseDir = dir) {
 const templates = findTwigFiles(TWIG_DIR);
 
 const output = `// Auto-generated file - do not edit manually
-// Generated at: ${new Date().toISOString()}
 
 export const TWIG_TEMPLATES: Record<string, string> = {
 ${templates

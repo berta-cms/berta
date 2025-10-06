@@ -88,8 +88,8 @@ export class MashupTemplateRenderService extends TemplateRenderService {
   }
 
   getMainColumnAttributes(siteTemplateSettings): {
-    class: string;
-    'data-paddingtop': string;
+    class: string | null;
+    'data-paddingtop': string | null;
   } {
     return {
       class:

@@ -72,14 +72,12 @@ export class SiteSectionsState implements NgxsOnInit {
       .sort((sectionA, sectionB) => (sectionA.order > sectionB.order ? 1 : -1));
   }
 
-  @Selector([SiteSectionsState, AppState.getSite])
+  @Selector([SiteSectionsState.getCurrentSiteSections])
   static getCurrentSiteShopSections(
-    state: SiteSectionStateModel[],
-    site: string
+    sections: SiteSectionStateModel[]
   ): SiteSectionStateModel[] {
-    return SiteSectionsState.getCurrentSiteSections(state, site).filter(
-      (section) =>
-        section['@attributes'].type && section['@attributes'].type === 'shop'
+    return sections.filter(
+      (section) => section['@attributes']?.type === 'shop'
     );
   }
 
