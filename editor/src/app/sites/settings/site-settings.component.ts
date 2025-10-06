@@ -7,7 +7,7 @@ import { map, filter, scan, take } from 'rxjs/operators';
 import { splitCamel, uCFirst, getIconFromUrl } from '../../shared/helpers';
 import { Animations } from '../../shared/animations';
 import { UserStateModel } from '../../user/user.state.model';
-import { AppStateModel } from 'src/app/app-state/app-state.interface';
+import { AppStateModel } from '../../app-state/app-state.interface';
 import { AppState } from '../../app-state/app.state';
 import { UserState } from '../../user/user.state';
 import { SiteSettingsState } from './site-settings.state';
@@ -148,8 +148,8 @@ export class SiteSettingsComponent implements OnInit {
   settingUpdate: { [k: string]: boolean } = {};
   settingError: { [k: string]: string } = {};
 
-  @Select(UserState) user$: Observable<UserStateModel>;
-  @Select(AppState) appState$: Observable<AppStateModel>;
+  @Select((state) => state.user) user$: Observable<UserStateModel>;
+  @Select((state) => state.app) appState$: Observable<AppStateModel>;
 
   constructor(
     private store: Store,
@@ -158,11 +158,11 @@ export class SiteSettingsComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.settings$ = combineLatest(
+    this.settings$ = combineLatest([
       this.store.select(SiteSettingsState.getCurrentSiteSettings),
-      this.store.select(SiteSettingsConfigState),
-      this.appState$
-    ).pipe(
+      this.store.select((state) => state.siteSettingsConfig),
+      this.appState$,
+    ]).pipe(
       filter(
         ([settings, config]) =>
           settings &&

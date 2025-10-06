@@ -74,16 +74,18 @@ export class ThemesComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.store.select(AppState).subscribe((state: AppStateModel) => {
-      this.appState = state;
-      this.themes = this.appState.themes.map((theme) => {
-        const url = window.location.origin + '/_themes/' + theme + '.png';
-        return {
-          name: theme,
-          imageSrc: this.sanitizer.bypassSecurityTrustResourceUrl(url),
-        };
+    this.store
+      .select((state) => state.app)
+      .subscribe((state: AppStateModel) => {
+        this.appState = state;
+        this.themes = this.appState.themes.map((theme) => {
+          const url = window.location.origin + '/_themes/' + theme + '.png';
+          return {
+            name: theme,
+            imageSrc: this.sanitizer.bypassSecurityTrustResourceUrl(url),
+          };
+        });
       });
-    });
   }
 
   previewTheme(event, theme) {

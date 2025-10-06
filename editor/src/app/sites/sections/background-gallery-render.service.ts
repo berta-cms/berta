@@ -1,13 +1,15 @@
 import { Injectable } from '@angular/core';
 import { getCookie, toHtmlAttributes } from '../../../app/shared/helpers';
-import * as Template from '../../../templates/Sites/Sections/sectionBackgroundGallery.twig';
 import { SiteSectionStateModel } from './sections-state/site-sections-state.model';
+import { TwigTemplateRenderService } from '../../render/twig-template-render.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class BackgroundGalleryRenderService {
   USED_IN_TEMPLATES = ['messy'];
+
+  constructor(private twigTemplateRenderService: TwigTemplateRenderService) {}
 
   getWrapperAttributes(currentSection: SiteSectionStateModel) {
     let classes = [
@@ -145,8 +147,14 @@ export class BackgroundGalleryRenderService {
 
     const viewData = this.getViewData(siteSlug, currentSection, isResponsive);
 
-    const htmlOutput = Template(viewData);
-
-    return htmlOutput;
+    try {
+      return this.twigTemplateRenderService.render(
+        'Sites/Sections/sectionBackgroundGallery',
+        viewData
+      );
+    } catch (error) {
+      console.error('Failed to render template:', error);
+      return '';
+    }
   }
 }

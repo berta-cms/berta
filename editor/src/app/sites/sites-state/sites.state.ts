@@ -60,7 +60,7 @@ import { Injectable } from '@angular/core';
 })
 @Injectable()
 export class SitesState implements NgxsOnInit {
-  @Selector([AppState.getSite])
+  @Selector([SitesState, AppState.getSite])
   static getCurrentSite(sites: SiteStateModel[], siteSlug: string) {
     return sites.find((site) => site.name === siteSlug);
   }
@@ -230,11 +230,13 @@ export class SitesState implements NgxsOnInit {
                   return set('order', order, site);
                 })
             );
-            dispatch(new DeleteSiteSectionsAction(siteName));
-            dispatch(new DeleteSiteSettingsAction(siteName));
-            dispatch(new DeleteSiteTemplateSettingsAction(siteName));
-            dispatch(new DeleteSiteSectionsTagsAction(siteName));
-            dispatch(new DeleteSiteSectionsEntriesAction(siteName));
+            dispatch([
+              new DeleteSiteSectionsAction(siteName),
+              new DeleteSiteSettingsAction(siteName),
+              new DeleteSiteTemplateSettingsAction(siteName),
+              new DeleteSiteSectionsTagsAction(siteName),
+              new DeleteSiteSectionsEntriesAction(siteName),
+            ]);
           }
         })
       );

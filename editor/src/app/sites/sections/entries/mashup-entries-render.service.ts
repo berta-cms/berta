@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { shuffleArray, toHtmlAttributes } from 'src/app/shared/helpers';
-import * as Template from '../../../../templates/Sites/Sections/Entries/mashupEntries.twig';
+import { shuffleArray, toHtmlAttributes } from '../../../shared/helpers';
 import { SiteSectionStateModel } from '../sections-state/site-sections-state.model';
 import { SectionEntry } from './entries-state/section-entries-state.model';
 import { GalleryRenderService } from './galleries/gallery-render.service';
+import { TwigTemplateRenderService } from '../../../render/twig-template-render.service';
 
 @Injectable({
   providedIn: 'root',
@@ -11,7 +11,10 @@ import { GalleryRenderService } from './galleries/gallery-render.service';
 export class MashupEntriesRenderService {
   USED_IN_TEMPLATES = ['mashup'];
 
-  constructor(public galleryRenderService: GalleryRenderService) {}
+  constructor(
+    public galleryRenderService: GalleryRenderService,
+    private twigTemplateRenderService: TwigTemplateRenderService
+  ) {}
 
   getContent(
     siteSlug: string,
@@ -273,8 +276,15 @@ export class MashupEntriesRenderService {
       entries,
       tagSlug
     );
-    const htmlOutput = Template(viewData);
 
-    return htmlOutput;
+    try {
+      return this.twigTemplateRenderService.render(
+        'Sites/Sections/Entries/mashupEntries',
+        viewData
+      );
+    } catch (error) {
+      console.error('Failed to render template:', error);
+      return '';
+    }
   }
 }

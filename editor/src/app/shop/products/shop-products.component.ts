@@ -1,7 +1,7 @@
-import { Component, OnInit, isDevMode } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Observable, combineLatest } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
-import { Select, Store } from '@ngxs/store';
+import { map } from 'rxjs/operators';
+import { Store } from '@ngxs/store';
 
 import { SiteSectionsState } from '../../sites/sections/sections-state/site-sections.state';
 import { SectionTagsState } from '../../sites/sections/tags/section-tags.state';
@@ -9,9 +9,9 @@ import { SectionEntriesState } from '../../sites/sections/entries/entries-state/
 import { ShopProductsState } from './shop-products.state';
 import { UpdateShopProductAction } from './shop-products.actions';
 import { UpdateInputFocus } from '../../app-state/app.actions';
-import { SiteSectionStateModel } from 'src/app/sites/sections/sections-state/site-sections-state.model';
-import { SectionTagsInterface } from 'src/app/sites/sections/tags/section-tags-state.model';
-import { SectionEntry } from 'src/app/sites/sections/entries/entries-state/section-entries-state.model';
+import { SiteSectionStateModel } from '../../sites/sections/sections-state/site-sections-state.model';
+import { SectionTagsInterface } from '../../sites/sections/tags/section-tags-state.model';
+import { SectionEntry } from '../../sites/sections/entries/entries-state/section-entries-state.model';
 
 @Component({
   selector: 'berta-shop-products',
@@ -51,12 +51,12 @@ export class ShopProductsComponent implements OnInit {
   constructor(private store: Store) {}
 
   ngOnInit() {
-    this.productGroups$ = combineLatest(
+    this.productGroups$ = combineLatest([
       this.store.select(SiteSectionsState.getCurrentSiteShopSections),
       this.store.select(SectionTagsState.getCurrentSiteTags),
       this.store.select(SectionEntriesState.getCurrentSiteEntries),
-      this.store.select(ShopProductsState.getCurrentSiteProducts)
-    ).pipe(
+      this.store.select(ShopProductsState.getCurrentSiteProducts),
+    ]).pipe(
       map(
         ([sections, tags, entries, products]: [
           SiteSectionStateModel[],
@@ -174,13 +174,6 @@ export class ShopProductsComponent implements OnInit {
 
             return _groups;
           }, []);
-
-          // if (leftOverProducts.length > 0 && isDevMode()) {
-          //   groups.push({
-          //     title: 'No section',
-          //     products: leftOverProducts
-          //   });
-          // }
 
           return groups.filter(
             (group) => group.products.length > 0 || group.hasProducts

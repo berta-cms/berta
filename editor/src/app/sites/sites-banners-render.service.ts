@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
-import * as Template from '../../templates/Sites/sitesBanners.twig';
 import { toHtmlAttributes, toImageHtmlAttributes } from '../shared/helpers';
+import { TwigTemplateRenderService } from '../render/twig-template-render.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SitesBannersRenderService {
+  constructor(private twigTemplateRenderService: TwigTemplateRenderService) {}
+
   getClassList(banner, isResponsive) {
     let classes = ['floating-banner', `banner-${banner.index}`];
 
@@ -94,8 +96,15 @@ export class SitesBannersRenderService {
 
   render(siteSlug, siteSettings, isResponsive) {
     const viewData = this.getViewData(siteSlug, siteSettings, isResponsive);
-    const htmlOutput = Template(viewData);
 
-    return htmlOutput;
+    try {
+      return this.twigTemplateRenderService.render(
+        'Sites/sitesBanners',
+        viewData
+      );
+    } catch (error) {
+      console.error('Failed to render template:', error);
+      return '';
+    }
   }
 }

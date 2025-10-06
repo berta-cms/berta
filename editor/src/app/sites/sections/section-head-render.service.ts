@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
-import * as Template from '../../../templates/Sites/Sections/sectionHead.twig';
+import { TwigTemplateRenderService } from '../../render/twig-template-render.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SectionHeadRenderService {
-  constructor() {}
+  constructor(private twigTemplateRenderService: TwigTemplateRenderService) {}
 
   getViewData(
     appState,
@@ -279,8 +279,15 @@ export class SectionHeadRenderService {
       isAutoResponsive,
       user
     );
-    const htmlOutput = Template(viewData);
 
-    return htmlOutput;
+    try {
+      return this.twigTemplateRenderService.render(
+        'Sites/Sections/sectionHead',
+        viewData
+      );
+    } catch (error) {
+      console.error('Failed to render template:', error);
+      return '';
+    }
   }
 }

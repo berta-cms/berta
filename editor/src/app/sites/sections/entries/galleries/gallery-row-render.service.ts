@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
-import * as Template from '../../../../../templates/Sites/Sections/Entries/Galleries/galleryRow.twig';
-import * as EditEmptyGallery from '../../../../../templates/Sites/Sections/Entries/Galleries/editEmptyGallery.twig';
 import { GalleryRenderService } from './gallery-render.service';
-import { AppStateModel } from 'src/app/app-state/app-state.interface';
+import { AppStateModel } from '../../../../app-state/app-state.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -152,7 +150,15 @@ export class GalleryRowRenderService extends GalleryRenderService {
       !entry.mediaCacheData.file ||
       entry.mediaCacheData.file.length < 1
     ) {
-      return EditEmptyGallery();
+      try {
+        return this.twigTemplateRenderService.render(
+          'Sites/Sections/Entries/Galleries/editEmptyGallery',
+          {}
+        );
+      } catch (error) {
+        console.error('Failed to render template:', error);
+        return '';
+      }
     }
 
     const viewData = this.getViewData(
@@ -169,8 +175,14 @@ export class GalleryRowRenderService extends GalleryRenderService {
       null
     );
 
-    const htmlOutput = Template(viewData);
-
-    return htmlOutput;
+    try {
+      return this.twigTemplateRenderService.render(
+        'Sites/Sections/Entries/Galleries/galleryRow',
+        viewData
+      );
+    } catch (error) {
+      console.error('Failed to render template:', error);
+      return '';
+    }
   }
 }

@@ -34,21 +34,21 @@
       },
       "architect": {
         "build": {
-          "builder": "@angular-builders/custom-webpack:browser",
+          "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "customWebpackConfig": {
-              "path": "./extra-webpack.config.js"
+            "outputPath": {
+              "base": "../engine/dist",
+              "browser": ""
             },
-            "outputPath": "../engine/dist",
             "baseHref": "/engine/dist/",
             "index": "src/index.html",
-            "main": "src/main.ts",
-            "polyfills": "src/polyfills.ts",
+            "polyfills": ["src/polyfills.ts"],
             "tsConfig": "src/tsconfig.app.json",
             "assets": ["src/favicon.ico", "src/assets"],
             "styles": ["src/styles/styles.scss"],
             "allowedCommonJsDependencies": ["lodash", "webfontloader"],
-            "scripts": []
+            "scripts": ["./node_modules/twig/twig.min.js"],
+            "browser": "src/main.ts"
           },
           "configurations": {
             "production": {
@@ -63,9 +63,12 @@
               "sourceMap": false,
               "namedChunks": false,
               "aot": true,
-              "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": true
+              "extractLicenses": true
+            },
+            "development": {
+              "optimization": true,
+              "extractLicenses": false,
+              "sourceMap": true
             }
           }
         },

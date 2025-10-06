@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { Store, Actions, ofActionSuccessful } from '@ngxs/store';
 import { Subscription, Observable } from 'rxjs';
-import { map, buffer, filter, scan, switchMap } from 'rxjs/operators';
+import { map, buffer, filter, scan, switchMap, mergeMap } from 'rxjs/operators';
 
 import { AppState } from '../app-state/app.state';
 import { AppStateService } from '../app-state/app-state.service';
@@ -46,6 +46,7 @@ import { SectionTagsState } from '../sites/sections/tags/section-tags.state';
 import { OrderSectionTagsFromSyncAction } from '../sites/sections/tags/section-tags.actions';
 import { UpdateShopSettingsAction } from '../shop/settings/shop-settings.actions';
 import { RerenderService } from '../rerender/rerender.service';
+import { SiteSettingsState } from '../sites/settings/site-settings.state';
 
 @Injectable({
   providedIn: 'root',
@@ -102,8 +103,8 @@ export class PreviewService {
         return this.store
           .dispatch(new UpdateSiteSettingsFromSyncAction(data.path, data.value))
           .pipe(
-            map((state) => state.siteSettings),
-            map((state) => {
+            mergeMap(() => this.store.select((state) => state.siteSettings)),
+            map((state: SiteSettingsState) => {
               const [currentSite, , settingGroupSlug, settingKey] =
                 data.path.split('/');
               const settingGroup = state[currentSite].find(
@@ -133,7 +134,7 @@ export class PreviewService {
         return this.store
           .dispatch(new UpdateSiteSectionFromSyncAction(data.path, data.value))
           .pipe(
-            map((state) => state.siteSections),
+            map((state) => state['siteSections']),
             map((state) => {
               const [currentSite, , sectionOrder] = data.path.split('/');
               const siteName = currentSite === '0' ? '' : currentSite;
@@ -166,7 +167,7 @@ export class PreviewService {
             )
           )
           .pipe(
-            map((state) => state.sectionTags),
+            map((state) => state['sectionTags']),
             map((state) => {
               const order = state[data.site].section
                 .find((section) => section['@attributes'].name === data.section)
@@ -208,7 +209,7 @@ export class PreviewService {
               )
             )
             .pipe(
-              map((state) => state.siteSections),
+              map((state) => state['siteSections']),
               map((state) => {
                 const section = state.find(
                   (_section) =>
@@ -237,7 +238,7 @@ export class PreviewService {
               })
             )
             .pipe(
-              map((state) => state.sectionEntries),
+              map((state) => state['sectionEntries']),
               map((state) => {
                 // Newly created entry is with greatest `id`
                 const entryid = Math.max.apply(
@@ -256,7 +257,7 @@ export class PreviewService {
               new UpdateSectionEntryFromSyncAction(data.path, data.value)
             )
             .pipe(
-              map((state) => state.sectionEntries),
+              map((state) => state['sectionEntries']),
               map((state) => {
                 const [currentSiteName, , currentSectionName, entryId] =
                   data.path.split('/');
@@ -318,7 +319,7 @@ export class PreviewService {
               )
             )
             .pipe(
-              map((state) => state.sectionEntries),
+              map((state) => state['sectionEntries']),
               map((state) => {
                 const order = state[data.site]
                   .filter((entry) => entry.sectionName === data.section)
@@ -438,7 +439,7 @@ export class PreviewService {
               )
             )
             .pipe(
-              map((state) => state.sectionEntries),
+              map((state) => state['sectionEntries']),
               map((state) => {
                 const entry = state[data.site].find(
                   (_entry) =>

@@ -87,11 +87,11 @@ export class SiteSectionsComponent implements OnInit {
         shareReplay(1) // Reuse the same observable for all sections)
       );
 
-    this.sectionsData$ = combineLatest(
+    this.sectionsData$ = combineLatest([
       this.store.select(SiteSectionsState.getCurrentSiteSections),
       this.store.select(SiteTemplatesState.getCurrentTemplateSectionTypes),
-      this.store.select(SiteTemplateSettingsState.getIsResponsive)
-    ).pipe(
+      this.store.select(SiteTemplateSettingsState.getIsResponsive),
+    ]).pipe(
       filter(([sections, sectionTypes]) => !!sections && !!sectionTypes),
       map(([sections, sectionTypes, isResponsive]) => {
         return sections.map((section) => {
@@ -192,10 +192,11 @@ export class SiteSectionsComponent implements OnInit {
   }
 
   createSection() {
-    this.store.dispatch(CreateSectionAction).subscribe({
+    this.store.dispatch(new CreateSectionAction()).subscribe({
       next: (state) => {
         const currentSite = this.store.selectSnapshot(AppState.getSite);
-        const createdSection = state.siteSections
+        const createdSection = this.store
+          .selectSnapshot((state) => state.siteSections)
           .filter((section) => section.site_name === currentSite)
           .reduce((prev, current) => {
             return prev.order > current.order ? prev : current;
@@ -223,7 +224,7 @@ export class SiteSectionsComponent implements OnInit {
         .subscribe({
           next: (state) => {
             const currentSite = this.store.selectSnapshot(AppState.getSite);
-            const updatedSection = state.siteSections.find((section) => {
+            const updatedSection = state['siteSections'].find((section) => {
               return (
                 section.site_name === currentSite &&
                 section.order === sectionData.section.order

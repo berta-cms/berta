@@ -39,10 +39,10 @@ export class ShopStateService {
 
   getInitialState(site: string = '', section?: string, force = false) {
     if (!this.cachedSectionStates[site] || force) {
-      this.cachedSectionStates[site] = combineLatest(
+      this.cachedSectionStates[site] = combineLatest([
         this.store.select((state) => state.app),
-        this.store.select((state) => state.user)
-      ).pipe(
+        this.store.select((state) => state.user),
+      ]).pipe(
         filter(
           ([appState, user]) =>
             !!user.token &&

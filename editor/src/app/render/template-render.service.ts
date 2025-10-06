@@ -26,12 +26,10 @@ import { SiteSettingsState } from '../sites/settings/site-settings.state';
 import { SitesBannersRenderService } from '../sites/sites-banners-render.service';
 import { SitesHeaderRenderService } from '../sites/sites-header-render.service';
 import { SitesMenuRenderService } from '../sites/sites-menu-render.service';
-import { SitesState } from '../sites/sites-state/sites.state';
 import { SiteTemplateSettingsState } from '../sites/template-settings/site-template-settings.state';
 import { SiteTemplatesState } from '../sites/template-settings/site-templates.state';
-import { UserState } from '../user/user.state';
 import { UserCopyright } from '../../types/user-copyright';
-import * as GoogleTagManagerNoscriptTemplate from '../../templates/Sites/Sections/googleTagManagerNoscript.twig';
+import { TwigTemplateRenderService } from './twig-template-render.service';
 
 @Injectable({
   providedIn: 'root',
@@ -55,7 +53,8 @@ export class TemplateRenderService {
     public mashupEntriesRenderService: MashupEntriesRenderService,
     public gridViewRenderService: GridViewRenderService,
     public backgroundGalleryRenderService: BackgroundGalleryRenderService,
-    public shopCartRenderService: ShopCartRenderService
+    public shopCartRenderService: ShopCartRenderService,
+    public twigTemplateRenderService: TwigTemplateRenderService
   ) {}
 
   getUserCopyright(siteSlug, siteSettings): UserCopyright {
@@ -135,9 +134,9 @@ export class TemplateRenderService {
   }
 
   getViewData(): { [key: string]: any } {
-    const user = this.store.selectSnapshot(UserState);
+    const user = this.store.selectSnapshot((state) => state.user);
     const isShopAvailable = user.features.includes('shop');
-    const appState = this.store.selectSnapshot(AppState);
+    const appState = this.store.selectSnapshot((state) => state.app);
     const siteSettings: { [key: string]: { [key: string]: any } } = this.store
       .selectSnapshot(SiteSettingsState.getCurrentSiteSettings)
       .reduce((settings, settingGroup) => {
@@ -155,7 +154,7 @@ export class TemplateRenderService {
       }, {});
     const siteSlug = this.store.selectSnapshot(AppState.getSite);
     const sectionSlug = this.store.selectSnapshot(AppState.getSection);
-    const sites = this.store.selectSnapshot(SitesState);
+    const sites = this.store.selectSnapshot((state) => state.sites);
     const sectionTags = this.store.selectSnapshot(
       SectionTagsState.getCurrentSiteTags
     );
@@ -375,9 +374,17 @@ export class TemplateRenderService {
   }
 
   googleTagManagerNoscriptRender(siteSettings) {
-    return GoogleTagManagerNoscriptTemplate({
-      googleTagManagerContainerId:
-        siteSettings.settings.googleTagManagerContainerId,
-    });
+    try {
+      return this.twigTemplateRenderService.render(
+        'Sites/Sections/googleTagManagerNoscript',
+        {
+          googleTagManagerContainerId:
+            siteSettings.settings.googleTagManagerContainerId,
+        }
+      );
+    } catch (error) {
+      console.error('Failed to render template:', error);
+      return '';
+    }
   }
 }

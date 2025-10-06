@@ -32,7 +32,7 @@ import { Injectable } from '@angular/core';
 })
 @Injectable()
 export class SiteTemplatesState implements NgxsOnInit {
-  @Selector([SiteSettingsState.getCurrentSiteTemplate])
+  @Selector([SiteTemplatesState, SiteSettingsState.getCurrentSiteTemplate])
   static getCurrentTemplate(
     state: SiteTemplatesStateModel,
     templateSlug: string
@@ -44,10 +44,7 @@ export class SiteTemplatesState implements NgxsOnInit {
   }
 
   @Selector([SiteTemplatesState.getCurrentTemplate])
-  static getCurrentTemplateConfig(
-    _: SiteTemplatesStateModel,
-    currentTemplate: TemplateSiteModel
-  ) {
+  static getCurrentTemplateConfig(currentTemplate: TemplateSiteModel) {
     if (!currentTemplate) {
       return;
     }
@@ -56,10 +53,7 @@ export class SiteTemplatesState implements NgxsOnInit {
   }
 
   @Selector([SiteTemplatesState.getCurrentTemplate])
-  static getCurrentTemplateSectionTypes(
-    _: SiteTemplatesStateModel,
-    currentTemplate: TemplateSiteModel
-  ) {
+  static getCurrentTemplateSectionTypes(currentTemplate: TemplateSiteModel) {
     if (!currentTemplate) {
       return;
     }
@@ -69,7 +63,6 @@ export class SiteTemplatesState implements NgxsOnInit {
 
   @Selector([SiteTemplatesState.getCurrentTemplate])
   static getCurrentTemplateSectionTranslations(
-    _: SiteTemplatesStateModel,
     currentTemplate: TemplateSiteModel
   ) {
     if (!currentTemplate) {

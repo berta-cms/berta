@@ -1,12 +1,14 @@
 import { Injectable } from '@angular/core';
-import * as Template from '../../templates/Sites/sitesMenu.twig';
 import { toHtmlAttributes } from '../shared/helpers';
+import { TwigTemplateRenderService } from '../render/twig-template-render.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SitesMenuRenderService {
   DRAGGABLE_MENU_CLASSES = 'mess xEditableDragXY xProperty-multisitesXY';
+
+  constructor(private twigTemplateRenderService: TwigTemplateRenderService) {}
 
   getStyles(siteSettings) {
     const [left, top] =
@@ -80,7 +82,11 @@ export class SitesMenuRenderService {
       return '';
     }
 
-    const htmlOutput = Template(viewData);
-    return htmlOutput;
+    try {
+      return this.twigTemplateRenderService.render('Sites/sitesMenu', viewData);
+    } catch (error) {
+      console.error('Failed to render template:', error);
+      return '';
+    }
   }
 }

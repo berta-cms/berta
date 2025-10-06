@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import * as Template from '../../templates/Sites/sitesHeader.twig';
 import { toHtmlAttributes, toImageHtmlAttributes } from '../shared/helpers';
+import { TwigTemplateRenderService } from '../render/twig-template-render.service';
 
 @Injectable({
   providedIn: 'root',
@@ -18,6 +18,8 @@ export class SitesHeaderRenderService {
     mashup: 'sideBar',
     white: 'pageHeading',
   };
+
+  constructor(private twigTemplateRenderService: TwigTemplateRenderService) {}
 
   getHeadingStyles(siteSettings) {
     const [left, top] =
@@ -153,7 +155,14 @@ export class SitesHeaderRenderService {
       isResponsive
     );
 
-    const htmlOutput = Template(viewData);
-    return htmlOutput;
+    try {
+      return this.twigTemplateRenderService.render(
+        'Sites/sitesHeader',
+        viewData
+      );
+    } catch (error) {
+      console.error('Failed to render template:', error);
+      return '';
+    }
   }
 }

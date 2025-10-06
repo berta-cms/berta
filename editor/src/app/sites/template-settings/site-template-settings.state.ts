@@ -40,9 +40,13 @@ import { Injectable } from '@angular/core';
 })
 @Injectable()
 export class SiteTemplateSettingsState implements NgxsOnInit {
-  @Selector([AppState.getSite, SiteSettingsState.getCurrentSiteTemplate])
+  @Selector([
+    SiteTemplateSettingsState,
+    AppState.getSite,
+    SiteSettingsState.getCurrentSiteTemplate,
+  ])
   static getCurrentSiteTemplateSettings(
-    state: SiteTemplateSettingsState,
+    state: SitesTemplateSettingsStateModel,
     site: string,
     currentTemplateSlug: string
   ) {
@@ -53,8 +57,8 @@ export class SiteTemplateSettingsState implements NgxsOnInit {
   }
 
   @Selector([SiteTemplateSettingsState.getCurrentSiteTemplateSettings])
-  static getIsResponsive(_, currentSiteTemplateSettings) {
-    const settingGroup = currentSiteTemplateSettings.find(
+  static getIsResponsive(currentSiteTemplateSettings) {
+    const settingGroup = currentSiteTemplateSettings?.find(
       (g) => g.slug === 'pageLayout'
     );
 

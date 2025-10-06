@@ -121,9 +121,11 @@ export class LoginComponent implements OnInit {
       }
     });
 
-    this.store.select(AppState).subscribe((state: AppStateModel) => {
-      this.appState = state;
-    });
+    this.store
+      .select((state) => state.app)
+      .subscribe((state: AppStateModel) => {
+        this.appState = state;
+      });
 
     this.route.queryParams.subscribe((params) => {
       if (params.autherror) {

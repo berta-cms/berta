@@ -32,7 +32,7 @@ const defaultState: ShopOrdersModel = {};
 })
 @Injectable()
 export class ShopOrdersState implements NgxsOnInit {
-  @Selector([AppState.getSite])
+  @Selector([ShopOrdersState, AppState.getSite])
   static getCurrentSiteOrders(state: ShopOrdersModel, site: string) {
     return state[site];
   }

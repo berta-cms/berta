@@ -1,10 +1,13 @@
 import { Injectable } from '@angular/core';
 import { toHtmlAttributes } from '../../../../../app/shared/helpers';
+import { TwigTemplateRenderService } from '../../../../render/twig-template-render.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class GalleryRenderService {
+  constructor(public twigTemplateRenderService: TwigTemplateRenderService) {}
+
   getGalleryItemsData(entry) {
     return entry.mediaCacheData && entry.mediaCacheData.file
       ? entry.mediaCacheData.file

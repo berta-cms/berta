@@ -67,7 +67,7 @@ export class ShopState implements NgxsOnInit {
 
   ngxsOnInit({ patchState, setState, dispatch }: StateContext<ShopModel>) {
     this.store$
-      .select(SitesState)
+      .select((state) => state.sites)
       .pipe(
         filter((sites) => !!sites && sites.length > 0),
         map((sites) => sites.map((site) => site.name)),

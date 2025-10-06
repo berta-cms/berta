@@ -54,7 +54,7 @@ const defaultState: ShopProductsModel = {};
 })
 @Injectable()
 export class ShopProductsState implements NgxsOnInit {
-  @Selector([AppState.getSite])
+  @Selector([ShopProductsState, AppState.getSite])
   static getCurrentSiteProducts(
     state: ShopProductsModel,
     site: string

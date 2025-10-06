@@ -43,7 +43,7 @@ import { Injectable } from '@angular/core';
 })
 @Injectable()
 export class SiteSettingsState implements NgxsOnInit {
-  @Selector([AppState.getSite])
+  @Selector([SiteSettingsState, AppState.getSite])
   static getCurrentSiteSettings(
     siteSettings: SitesSettingsStateModel,
     siteSlug: string
@@ -56,7 +56,7 @@ export class SiteSettingsState implements NgxsOnInit {
   }
 
   @Selector([SiteSettingsState.getCurrentSiteSettings])
-  static getCurrentSiteTemplate(_, currentSiteSettings): string | undefined {
+  static getCurrentSiteTemplate(currentSiteSettings): string | undefined {
     if (!currentSiteSettings) {
       return;
     }
@@ -70,7 +70,7 @@ export class SiteSettingsState implements NgxsOnInit {
   }
 
   @Selector([SiteSettingsState.getCurrentSiteSettings])
-  static getCurrentSiteLanguage(_, currentSiteSettings): string | undefined {
+  static getCurrentSiteLanguage(currentSiteSettings): string | undefined {
     if (!currentSiteSettings) {
       return;
     }

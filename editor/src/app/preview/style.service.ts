@@ -10,10 +10,7 @@ import { DefaultTemplateStyleService } from './default-template-style.service';
 import { MashupTemplateStyleService } from './mashup-template-style.service';
 import { MessyTemplateStyleService } from './messy-template-style.service';
 import { SiteStateModel } from '../sites/sites-state/site-state.model';
-import {
-  ShopSettingsConfigModel,
-  ShopSettingsConfigState,
-} from '../shop/settings/shop-settings-config.state';
+import { ShopSettingsConfigModel } from '../shop/settings/shop-settings-config.state';
 
 @Injectable({
   providedIn: 'root',
@@ -43,7 +40,7 @@ export class StyleService {
       });
 
     this.store
-      .select(ShopSettingsConfigState)
+      .select((state) => state.shopSettingsConfig)
       .pipe(take(1))
       .subscribe((shopSettingsConfig) => {
         this.shopSettingsConfig = shopSettingsConfig;

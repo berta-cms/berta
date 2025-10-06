@@ -182,10 +182,12 @@ export class AppComponent implements OnInit, OnDestroy {
           return (this.routeIsRoot = url === '/');
         }),
         mergeMap((url) =>
-          this.store.select(AppState).pipe(
-            map((state) => [url, state]),
-            take(1)
-          )
+          this.store
+            .select((state) => state.app)
+            .pipe(
+              map((state) => [url, state]),
+              take(1)
+            )
         ),
         filter(([, state]) => {
           return this.routeIsRoot === state.showOverlay;
@@ -195,7 +197,7 @@ export class AppComponent implements OnInit, OnDestroy {
         if (url !== '/') {
           this.showOverlay();
         } else {
-          this.store.dispatch(AppHideOverlay);
+          this.store.dispatch(new AppHideOverlay());
         }
       });
 
@@ -203,7 +205,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.loginSub = this.actions$
       .pipe(
         ofActionSuccessful(UserLoginAction),
-        switchMap(() => this.store.select(UserState).pipe(take(1)))
+        switchMap(() => this.store.select((state) => state.user).pipe(take(1)))
       )
       .subscribe((user: UserStateModel) => {
         if (user.nextUrl) {
@@ -272,7 +274,7 @@ export class AppComponent implements OnInit, OnDestroy {
         filter((isInputFocused) => !isInputFocused)
       )
       .subscribe(() => {
-        this.store.dispatch(AppHideOverlay);
+        this.store.dispatch(new AppHideOverlay());
         this.router.navigate(['/'], { queryParamsHandling: 'preserve' });
       });
   }
@@ -284,7 +286,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   showOverlay() {
-    this.store.dispatch(AppShowOverlay);
+    this.store.dispatch(new AppShowOverlay());
   }
 
   ngOnDestroy() {

@@ -12,7 +12,7 @@ import {
   ofActionSuccessful,
 } from '@ngxs/store';
 
-import { assignByPath } from 'src/app/shared/helpers';
+import { assignByPath } from '../../../shared/helpers';
 import {
   SiteSectionBackgroundFile,
   SiteSectionStateModel,
@@ -60,8 +60,11 @@ import { Injectable } from '@angular/core';
 })
 @Injectable()
 export class SiteSectionsState implements NgxsOnInit {
-  @Selector([AppState.getSite])
-  static getCurrentSiteSections(state, site): SiteSectionStateModel[] {
+  @Selector([SiteSectionsState, AppState.getSite])
+  static getCurrentSiteSections(
+    state: SiteSectionStateModel[],
+    site: string
+  ): SiteSectionStateModel[] {
     return state
       .filter((section) => {
         return section.site_name === site;
@@ -69,11 +72,12 @@ export class SiteSectionsState implements NgxsOnInit {
       .sort((sectionA, sectionB) => (sectionA.order > sectionB.order ? 1 : -1));
   }
 
-  @Selector([AppState.getSite])
-  static getCurrentSiteShopSections(state, site): SiteSectionStateModel[] {
-    return SiteSectionsState.getCurrentSiteSections(state, site).filter(
-      (section) =>
-        section['@attributes'].type && section['@attributes'].type === 'shop'
+  @Selector([SiteSectionsState.getCurrentSiteSections])
+  static getCurrentSiteShopSections(
+    sections: SiteSectionStateModel[]
+  ): SiteSectionStateModel[] {
+    return sections.filter(
+      (section) => section['@attributes']?.type === 'shop'
     );
   }
 

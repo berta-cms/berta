@@ -62,7 +62,7 @@ const defaultState: ShopRegionalCostsModel = {};
 })
 @Injectable()
 export class ShopRegionalCostsState implements NgxsOnInit {
-  @Selector([AppState.getSite])
+  @Selector([ShopRegionalCostsState, AppState.getSite])
   static getCurrentSiteRegionalCosts(
     state: ShopRegionalCostsModel,
     site: string

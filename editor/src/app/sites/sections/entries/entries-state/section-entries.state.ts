@@ -54,7 +54,7 @@ import { Injectable } from '@angular/core';
 })
 @Injectable()
 export class SectionEntriesState implements NgxsOnInit {
-  @Selector([AppState.getSite])
+  @Selector([SectionEntriesState, AppState.getSite])
   static getCurrentSiteEntries(state, site): SectionEntry[] {
     const entries = state[site] || [];
     return entries;

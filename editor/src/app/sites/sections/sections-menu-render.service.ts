@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { toHtmlAttributes } from 'src/app/shared/helpers';
-import * as Template from '../../../templates/Sites/Sections/sectionsMenu.twig';
+import { toHtmlAttributes } from '../../shared/helpers';
 import { SectionRenderService } from './section-render.service';
 import { SiteSectionStateModel } from './sections-state/site-sections-state.model';
+import { TwigTemplateRenderService } from '../../render/twig-template-render.service';
 
 @Injectable({
   providedIn: 'root',
@@ -10,7 +10,10 @@ import { SiteSectionStateModel } from './sections-state/site-sections-state.mode
 export class SectionsMenuRenderService {
   DRAGGABLE_MENU_CLASSES = ['mess', 'xEditableDragXY', 'xProperty-positionXY'];
 
-  constructor(public sectionRenderService: SectionRenderService) {}
+  constructor(
+    public sectionRenderService: SectionRenderService,
+    public twigTemplateRenderService: TwigTemplateRenderService
+  ) {}
 
   getSectionClassList(
     section: SiteSectionStateModel,
@@ -333,8 +336,14 @@ export class SectionsMenuRenderService {
       return '';
     }
 
-    const htmlOutput = Template(viewData);
-
-    return htmlOutput;
+    try {
+      return this.twigTemplateRenderService.render(
+        'Sites/Sections/sectionsMenu',
+        viewData
+      );
+    } catch (error) {
+      console.error('Failed to render template:', error);
+      return '';
+    }
   }
 }

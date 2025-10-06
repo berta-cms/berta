@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { toHtmlAttributes } from '../../shared/helpers';
-import * as Template from '../../../templates/Sites/Sections/additionalText.twig';
 import { SocialMediaLinksRenderService } from '../social-media-links-render.service';
+import { TwigTemplateRenderService } from '../../render/twig-template-render.service';
 
 @Injectable({
   providedIn: 'root',
@@ -15,7 +15,8 @@ export class AdditionalTextRenderService {
   ];
 
   constructor(
-    public socialMediaLinksRenderService: SocialMediaLinksRenderService
+    public socialMediaLinksRenderService: SocialMediaLinksRenderService,
+    private twigTemplateRenderService: TwigTemplateRenderService
   ) {}
 
   getStyles(siteSettings: any, isResponsive: boolean): string {
@@ -130,8 +131,15 @@ export class AdditionalTextRenderService {
       templateName,
       isResponsive
     );
-    const htmlOutput = Template(viewData);
 
-    return htmlOutput;
+    try {
+      return this.twigTemplateRenderService.render(
+        'Sites/Sections/additionalText',
+        viewData
+      );
+    } catch (error) {
+      console.error('Failed to render template:', error);
+      return '';
+    }
   }
 }
