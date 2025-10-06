@@ -73,7 +73,10 @@ export class SiteSectionsState implements NgxsOnInit {
   }
 
   @Selector([SiteSectionsState, AppState.getSite])
-  static getCurrentSiteShopSections(state, site): SiteSectionStateModel[] {
+  static getCurrentSiteShopSections(
+    state: SiteSectionStateModel[],
+    site: string
+  ): SiteSectionStateModel[] {
     return SiteSectionsState.getCurrentSiteSections(state, site).filter(
       (section) =>
         section['@attributes'].type && section['@attributes'].type === 'shop'

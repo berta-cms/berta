@@ -39,6 +39,7 @@ ${templates
   .map(
     (t) =>
       `  '${t.name}': \`${t.content
+        .replace(/\\/g, "\\\\")
         .replace(/`/g, "\\`")
         .replace(/\$/g, "\\$")}\``
   )

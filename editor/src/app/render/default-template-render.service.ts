@@ -119,7 +119,6 @@ export class DefaultTemplateRenderService extends TemplateRenderService {
       this.replaceIframeContent(contentWindow, htmlOutput);
     } catch (error) {
       console.error('Failed to render template:', error);
-      return '';
     }
   }
 }

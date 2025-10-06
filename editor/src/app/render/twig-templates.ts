@@ -1,5 +1,5 @@
 // Auto-generated file - do not edit manually
-// Generated at: 2025-10-05T16:06:37.258Z
+// Generated at: 2025-10-06T07:30:43.347Z
 
 export const TWIG_TEMPLATES: Record<string, string> = {
   'Shop/shoppingCart': `<div id="shoppingCartOuter">
