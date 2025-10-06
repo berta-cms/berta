@@ -27,7 +27,7 @@ import { TextInputService } from './text-input.service';
       }
     `,
     ],
-    /* Provide text input service here, so each component has it's own service */
+    /* Provide text input service here, so each component has its own service */
     providers: [TextInputService],
     standalone: false
 })
