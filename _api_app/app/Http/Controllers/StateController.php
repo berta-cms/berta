@@ -120,7 +120,7 @@ class StateController extends Controller
 
     public function getSentryDSN()
     {
-        return response(env('SENTRY_PUBLIC_DSN', ''))->header('Content-Type', 'text/plain; charset=UTF-8');
+        return response(env('SENTRY_FRONTEND_DSN', ''))->header('Content-Type', 'text/plain; charset=UTF-8');
     }
 
     /**

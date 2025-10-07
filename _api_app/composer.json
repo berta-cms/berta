@@ -19,7 +19,7 @@
         "laravel/tinker": "^2.10",
         "mobiledetect/mobiledetectlib": "^4.8",
         "rcrowe/twigbridge": "^0.14.0",
-        "sentry/sentry-laravel": "^4.13",
+        "sentry/sentry-laravel": "4.16.0",
         "swaggest/json-schema": "^0.12.43"
     },
     "require-dev": {
