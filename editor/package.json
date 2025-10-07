@@ -26,7 +26,7 @@
     "@angular/router": "^20.3.3",
     "@kolkov/angular-editor": "^2.1.0",
     "@ngxs/store": "~20.1.0",
-    "@sentry/browser": "^5.4.0",
+    "@sentry/angular": "^10.17.0",
     "core-js": "^3.45.1",
     "lodash": "^4.17.21",
     "ng-sortgrid": "^20.0.0",
