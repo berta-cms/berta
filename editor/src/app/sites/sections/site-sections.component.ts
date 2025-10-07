@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Store } from '@ngxs/store';
@@ -29,31 +29,31 @@ interface SectionData {
 }
 
 @Component({
-    selector: 'berta-site-sections',
-    template: `
+  selector: 'berta-site-sections',
+  template: `
     <div
       class="berta-site-sections"
       cdkDropList
       (cdkDropListDropped)="onDrop($event)"
-      >
+    >
       @for (sd of sectionsList; track sd) {
-        <berta-section
-          cdkDrag
-          [section]="sd.section"
-          [isExpanded]="sd.section.name === currentSection"
-          [params]="sd.params"
-          [templateSectionTypes]="sectionTypes$ | async"
-          [translations]="translations$ | async"
-          (inputFocus)="updateComponentFocus($event)"
-          (update)="updateSection(sd, $event)"
-        ></berta-section>
+      <berta-section
+        cdkDrag
+        [section]="sd.section"
+        [isExpanded]="sd.section.name === currentSection"
+        [params]="sd.params"
+        [templateSectionTypes]="sectionTypes$ | async"
+        [translations]="translations$ | async"
+        (inputFocus)="updateComponentFocus($event)"
+        (update)="updateSection(sd, $event)"
+      ></berta-section>
       }
     </div>
     <button type="button" class="button" (click)="createSection()">
       Create new section
     </button>
-    `,
-    standalone: false
+  `,
+  standalone: false,
 })
 export class SiteSectionsComponent implements OnInit {
   sectionsData$: Observable<SectionData[]>;
