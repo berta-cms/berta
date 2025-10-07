@@ -8,7 +8,6 @@
     "build": "ng build --configuration production",
     "dev": "ng build --watch --configuration development",
     "test": "ng test",
-    "e2e": "ng e2e",
     "sentry:sourcemaps": "npm run build && sentry-cli sourcemaps inject --org hello-world-ik --project berta-frontend ../engine/dist && sentry-cli sourcemaps upload --org hello-world-ik --project berta-frontend ../engine/dist"
   },
   "engines": {
@@ -62,7 +61,6 @@
     "karma-coverage-istanbul-reporter": "~3.0.2",
     "karma-jasmine": "~4.0.0",
     "karma-jasmine-html-reporter": "^1.5.0",
-    "protractor": "~7.0.0",
     "ts-node": "~9.1.1",
     "tslint": "~6.1.0",
     "typescript": "~5.8.3"
