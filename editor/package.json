@@ -1,6 +1,6 @@
 {
   "name": "berta",
-  "version": "1.0.2",
+  "version": "2.6.4",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -8,7 +8,7 @@
     "build": "ng build --configuration production",
     "dev": "ng build --watch --configuration development",
     "test": "ng test",
-    "sentry:sourcemaps": "npm run build && sentry-cli sourcemaps inject --org hello-world-ik --project berta-frontend ../engine/dist && sentry-cli sourcemaps upload --org hello-world-ik --project berta-frontend ../engine/dist"
+    "sentry:sourcemaps": "npm run build && sentry-cli sourcemaps inject --org hello-world-ik --project berta-frontend --release $npm_package_version ../engine/dist && sentry-cli sourcemaps upload --org hello-world-ik --project berta-frontend --release $npm_package_version ../engine/dist"
   },
   "engines": {
     "node": "^20.19.0 || ^22.12.0 || ^24.0.0"
@@ -26,7 +26,7 @@
     "@angular/router": "^20.3.3",
     "@kolkov/angular-editor": "^2.1.0",
     "@ngxs/store": "~20.1.0",
-    "@sentry/cli": "^2.56.0",
+    "@sentry/angular": "^10.18.0",
     "core-js": "^3.45.1",
     "lodash": "^4.17.21",
     "ng-sortgrid": "^20.0.0",
@@ -47,9 +47,8 @@
     "@angular/language-service": "^20.3.3",
     "@ngxs/devtools-plugin": "~20.1.0",
     "@ngxs/logger-plugin": "~20.1.0",
-    "@sentry/angular": "^10.18.0",
+    "@sentry/cli": "^2.56.0",
     "@types/jasmine": "~3.8.0",
-    "@types/jasminewd2": "~2.0.3",
     "@types/lodash": "^4.14.182",
     "@types/node": "^20.14.8",
     "codelyzer": "^6.0.2",

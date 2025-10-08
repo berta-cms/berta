@@ -1,7 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Store } from '@ngxs/store';
 import { SectionEntry } from '../sections/entries/entries-state/section-entries-state.model';
-import { AppState } from '../../../app/app-state/app.state';
 import { SiteStateModel } from '../sites-state/site-state.model';
 
 @Component({
@@ -61,9 +59,4 @@ import { SiteStateModel } from '../sites-state/site-state.model';
 export class EntryGalleryComponent {
   @Input('entry') entry: SectionEntry;
   @Input('currentSite') currentSite: SiteStateModel;
-
-  site = this.store.selectSnapshot(AppState.getSite);
-  mediaUrl = `/storage/${this.site ? `-sites/${this.site}/` : ''}media`;
-
-  constructor(private store: Store) {}
 }
