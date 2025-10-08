@@ -7,21 +7,22 @@ import { SettingConfigModel } from '../../shared/interfaces';
   template: `
     <form class="setting" (submit)="addRow($event)">
       <div class="input-row">
-        <berta-setting
-          *ngFor="let inputField of inputFields | keyvalue"
+        @for (inputField of inputFields | keyvalue; track inputField) {
+          <berta-setting
           [class.bt-auto-width]="
             ['icon-readonly'].indexOf(inputField.value.config.format) > -1
           "
-          [setting]="inputField.value.setting"
-          [config]="inputField.value.config"
-          (update)="updateField($event)"
-          (keydown.enter)="addRow($event)"
-        ></berta-setting>
-
+            [setting]="inputField.value.setting"
+            [config]="inputField.value.config"
+            (update)="updateField($event)"
+            (keydown.enter)="addRow($event)"
+          ></berta-setting>
+        }
+    
         <button type="submit" class="button">Add</button>
       </div>
     </form>
-  `,
+    `,
   styles: [
     `
       :host {

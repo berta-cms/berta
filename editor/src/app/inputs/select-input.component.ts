@@ -12,16 +12,18 @@ import { SettingModel, SettingConfigModel } from '../shared/interfaces';
 @Component({
     selector: 'berta-select-input',
     template: ` <div
-    class="form-group"
-    [class.bt-focus]="focus"
-    [class.bt-disabled]="disabled"
-  >
-    <label>
-      <span class="label-text">
-        {{ label
-        }}<berta-help-tooltip *ngIf="tip" [content]="tip"></berta-help-tooltip>
+      class="form-group"
+      [class.bt-focus]="focus"
+      [class.bt-disabled]="disabled"
+      >
+      <label>
+        <span class="label-text">
+          {{ label
+          }}@if (tip) {
+          <berta-help-tooltip [content]="tip"></berta-help-tooltip>
+        }
       </span>
-
+    
       <div class="select-wrapper">
         <div class="button-wrapper">
           <button
@@ -31,7 +33,7 @@ import { SettingModel, SettingConfigModel } from '../shared/interfaces';
             (click)="toggleDropDown()"
             (keydown)="onKeyDown($event)"
             (blur)="onBlur()"
-          >
+            >
             {{ getCurrentTitleByValue(value) }}
           </button>
           <svg
@@ -41,27 +43,28 @@ import { SettingModel, SettingConfigModel } from '../shared/interfaces';
             viewBox="0 0 10 6"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
-          >
+            >
             <path
               d="M9 1L4.75736 5.24264L0.514719 1"
               stroke="#9b9b9b"
               stroke-linecap="round"
               stroke-linejoin="round"
-            />
+              />
           </svg>
         </div>
         <ul>
-          <li
-            *ngFor="let val of values"
-            [title]="val.title"
-            (click)="updateField(val.value)"
-          >
-            {{ val.title }}
-          </li>
+          @for (val of values; track val) {
+            <li
+              [title]="val.title"
+              (click)="updateField(val.value)"
+              >
+              {{ val.title }}
+            </li>
+          }
         </ul>
       </div>
     </label>
-  </div>`,
+    </div>`,
     standalone: false
 })
 export class SelectInputComponent implements OnInit {

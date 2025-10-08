@@ -20,7 +20,7 @@ import { AppStateModel } from '../app-state/app-state.interface';
     <div
       class="setting-group"
       [class.active]="(currentSite$ | async).site == site.name"
-    >
+      >
       <h3>
         <div class="control-line">
           <berta-inline-text-input
@@ -29,8 +29,8 @@ import { AppStateModel } from '../app-state/app-state.interface';
             (update)="updateField('title', $event)"
           ></berta-inline-text-input>
           <div class="expand"></div>
-          <button
-            *ngIf="!modificationDisabled"
+          @if (!modificationDisabled) {
+            <button
             [attr.title]="
               site['@attributes'].published > 0 ? 'Unpublish' : 'Publish'
             "
@@ -40,40 +40,43 @@ import { AppStateModel } from '../app-state/app-state.interface';
                 site['@attributes'].published > 0 ? '0' : '1'
               )
             "
-          >
-            <berta-icon-publish
-              [published]="site['@attributes'].published > 0"
-            ></berta-icon-publish>
-          </button>
+              >
+              <berta-icon-publish
+                [published]="site['@attributes'].published > 0"
+              ></berta-icon-publish>
+            </button>
+          }
           <button title="copy" (click)="cloneSite()">
             <bt-icon-clone></bt-icon-clone>
           </button>
-          <button
-            *ngIf="!modificationDisabled"
-            title="delete"
-            class="delete"
-            (click)="deleteSite()"
-          >
-            <bt-icon-delete></bt-icon-delete>
-          </button>
+          @if (!modificationDisabled) {
+            <button
+              title="delete"
+              class="delete"
+              (click)="deleteSite()"
+              >
+              <bt-icon-delete></bt-icon-delete>
+            </button>
+          }
         </div>
         <div class="url-line">
           <a
             [routerLink]="['/multisite']"
             [queryParams]="site.name === '' ? null : { site: site.name }"
             >{{ hostname }}/</a
-          >
-          <berta-inline-text-input
-            *ngIf="!modificationDisabled"
-            [value]="site.name"
-            (inputFocus)="updateComponentFocus($event)"
-            (textClick)="navigateToSite(site.name)"
-            (update)="updateField('name', $event)"
-          ></berta-inline-text-input>
-        </div>
-      </h3>
-    </div>
-  `,
+            >
+            @if (!modificationDisabled) {
+              <berta-inline-text-input
+                [value]="site.name"
+                (inputFocus)="updateComponentFocus($event)"
+                (textClick)="navigateToSite(site.name)"
+                (update)="updateField('name', $event)"
+              ></berta-inline-text-input>
+            }
+          </div>
+        </h3>
+      </div>
+    `,
     styles: [
         `
       :host h3 {

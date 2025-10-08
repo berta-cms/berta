@@ -25,73 +25,74 @@ import type { NgsgOrderChange } from 'ng-sortgrid';
 @Component({
     selector: 'berta-background-gallery-editor',
     template: `
-    <aside *ngIf="currentSection">
-      <div
-        *ngIf="selectedFile"
-        class="setting-group"
-        [class.is-expanded]="fileSettingsIsOpen"
-      >
-        <h3
-          (click)="fileSettingsIsOpen = !fileSettingsIsOpen"
-          class="hoverable"
-        >
-          Item settings
-          <svg
-            class="drop-icon"
-            width="10"
-            height="6"
-            viewBox="0 0 10 6"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M9 1L4.75736 5.24264L0.514719 1"
-              stroke="#9b9b9b"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-          </svg>
-        </h3>
-        <div class="settings" [@isExpanded]="fileSettingsIsOpen">
-          <berta-setting
-            [setting]="{ slug: '@value', value: selectedFile['@value'] }"
+    @if (currentSection) {
+      <aside>
+        @if (selectedFile) {
+          <div
+            class="setting-group"
+            [class.is-expanded]="fileSettingsIsOpen"
+            >
+            <h3
+              (click)="fileSettingsIsOpen = !fileSettingsIsOpen"
+              class="hoverable"
+              >
+              Item settings
+              <svg
+                class="drop-icon"
+                width="10"
+                height="6"
+                viewBox="0 0 10 6"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                >
+                <path
+                  d="M9 1L4.75736 5.24264L0.514719 1"
+                  stroke="#9b9b9b"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  />
+              </svg>
+            </h3>
+            <div class="settings" [@isExpanded]="fileSettingsIsOpen">
+              <berta-setting
+                [setting]="{ slug: '@value', value: selectedFile['@value'] }"
             [config]="{
               title: 'Caption for ' + selectedFile['@attributes']['src'],
               placeholder: 'Enter item caption here...',
               format: 'richtext',
               enabledOnUpdate: true
             }"
-            [error]="''"
-            (update)="updateFile($event)"
-          >
-          </berta-setting>
-        </div>
-      </div>
-
-      <div class="setting-group" [class.is-expanded]="gallerySettingsIsOpen">
-        <h3
-          (click)="gallerySettingsIsOpen = !gallerySettingsIsOpen"
-          class="hoverable"
-        >
-          Gallery settings
-          <svg
-            class="drop-icon"
-            width="10"
-            height="6"
-            viewBox="0 0 10 6"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M9 1L4.75736 5.24264L0.514719 1"
-              stroke="#9b9b9b"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-          </svg>
-        </h3>
-        <div class="settings" [@isExpanded]="gallerySettingsIsOpen">
-          <berta-setting
+                [error]="''"
+                (update)="updateFile($event)"
+                >
+              </berta-setting>
+            </div>
+          </div>
+        }
+        <div class="setting-group" [class.is-expanded]="gallerySettingsIsOpen">
+          <h3
+            (click)="gallerySettingsIsOpen = !gallerySettingsIsOpen"
+            class="hoverable"
+            >
+            Gallery settings
+            <svg
+              class="drop-icon"
+              width="10"
+              height="6"
+              viewBox="0 0 10 6"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              >
+              <path
+                d="M9 1L4.75736 5.24264L0.514719 1"
+                stroke="#9b9b9b"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                />
+            </svg>
+          </h3>
+          <div class="settings" [@isExpanded]="gallerySettingsIsOpen">
+            <berta-setting
             [setting]="{
               slug: 'image_size',
               value:
@@ -111,12 +112,12 @@ import type { NgsgOrderChange } from 'ng-sortgrid';
               ],
               enabledOnUpdate: true
             }"
-            [error]="''"
-            [disabled]="false"
-            (update)="updateGallerySettings($event)"
-          >
-          </berta-setting>
-          <berta-setting
+              [error]="''"
+              [disabled]="false"
+              (update)="updateGallerySettings($event)"
+              >
+            </berta-setting>
+            <berta-setting
             [setting]="{
               slug: 'autoplay',
               value:
@@ -132,12 +133,12 @@ import type { NgsgOrderChange } from 'ng-sortgrid';
               enabledOnUpdate: true,
               validation: 'zero_or_positive_integer'
             }"
-            [error]="''"
-            [disabled]="false"
-            (update)="updateGallerySettings($event)"
-          >
-          </berta-setting>
-          <berta-setting
+              [error]="''"
+              [disabled]="false"
+              (update)="updateGallerySettings($event)"
+              >
+            </berta-setting>
+            <berta-setting
             [setting]="{
               slug: 'sectionBgColor',
               value: currentSection.sectionBgColor
@@ -149,12 +150,12 @@ import type { NgsgOrderChange } from 'ng-sortgrid';
               format: 'color',
               enabledOnUpdate: true
             }"
-            [error]="''"
-            [disabled]="false"
-            (update)="updateSectionSettings($event)"
-          >
-          </berta-setting>
-          <berta-setting
+              [error]="''"
+              [disabled]="false"
+              (update)="updateSectionSettings($event)"
+              >
+            </berta-setting>
+            <berta-setting
             [setting]="{
               slug: 'caption_color',
               value:
@@ -169,12 +170,12 @@ import type { NgsgOrderChange } from 'ng-sortgrid';
               format: 'color',
               enabledOnUpdate: true
             }"
-            [error]="''"
-            [disabled]="false"
-            (update)="updateGallerySettings($event)"
-          >
-          </berta-setting>
-          <berta-setting
+              [error]="''"
+              [disabled]="false"
+              (update)="updateGallerySettings($event)"
+              >
+            </berta-setting>
+            <berta-setting
             [setting]="{
               slug: 'caption_bg_color',
               value:
@@ -190,12 +191,12 @@ import type { NgsgOrderChange } from 'ng-sortgrid';
               format: 'color',
               enabledOnUpdate: true
             }"
-            [error]="''"
-            [disabled]="false"
-            (update)="updateGallerySettings($event)"
-          >
-          </berta-setting>
-          <berta-setting
+              [error]="''"
+              [disabled]="false"
+              (update)="updateGallerySettings($event)"
+              >
+            </berta-setting>
+            <berta-setting
             [setting]="{
               slug: 'hide_navigation',
               value:
@@ -214,12 +215,12 @@ import type { NgsgOrderChange } from 'ng-sortgrid';
               ],
               enabledOnUpdate: true
             }"
-            [error]="''"
-            [disabled]="false"
-            (update)="updateGallerySettings($event)"
-          >
-          </berta-setting>
-          <berta-setting
+              [error]="''"
+              [disabled]="false"
+              (update)="updateGallerySettings($event)"
+              >
+            </berta-setting>
+            <berta-setting
             [setting]="{
               slug: 'animation',
               value:
@@ -238,12 +239,12 @@ import type { NgsgOrderChange } from 'ng-sortgrid';
               ],
               enabledOnUpdate: true
             }"
-            [error]="''"
-            [disabled]="false"
-            (update)="updateGallerySettings($event)"
-          >
-          </berta-setting>
-          <berta-setting
+              [error]="''"
+              [disabled]="false"
+              (update)="updateGallerySettings($event)"
+              >
+            </berta-setting>
+            <berta-setting
             [setting]="{
               slug: 'fade_content',
               value:
@@ -262,65 +263,66 @@ import type { NgsgOrderChange } from 'ng-sortgrid';
               ],
               enabledOnUpdate: true
             }"
-            [error]="''"
-            [disabled]="false"
-            (update)="updateGallerySettings($event)"
-          >
-          </berta-setting>
+              [error]="''"
+              [disabled]="false"
+              (update)="updateGallerySettings($event)"
+              >
+            </berta-setting>
+          </div>
         </div>
-      </div>
-    </aside>
-    <div class="content" *ngIf="currentSection">
-      <div class="header">
-        <h3>
-          Background gallery editor / {{ currentSection.title || 'Untitled' }}
-        </h3>
-        <button class="close" (click)="closeEditor()">&#10006;</button>
-      </div>
-
-      <div class="entry-gallery-items">
-        <div
-          *ngFor="
-            let file of currentSection.mediaCacheData?.file;
-            trackBy: identifyGalleryItem
-          "
-          class="entry-gallery-item"
-          [class.selected]="file === selectedFile"
-          ngSortgridItem
-          [ngSortGridItems]="currentSection.mediaCacheData.file"
-          (sorted)="reorder($event)"
-          (click)="setSelectedFile(file)"
-        >
-          <div class="media image">
-            <img
-              draggable="false"
+      </aside>
+    }
+    @if (currentSection) {
+      <div class="content">
+        <div class="header">
+          <h3>
+            Background gallery editor / {{ currentSection.title || 'Untitled' }}
+          </h3>
+          <button class="close" (click)="closeEditor()">&#10006;</button>
+        </div>
+        <div class="entry-gallery-items">
+          @for (
+            file of currentSection.mediaCacheData?.file; track identifyGalleryItem($index,
+            file)) {
+            <div
+              class="entry-gallery-item"
+              [class.selected]="file === selectedFile"
+              ngSortgridItem
+              [ngSortGridItems]="currentSection.mediaCacheData.file"
+              (sorted)="reorder($event)"
+              (click)="setSelectedFile(file)"
+              >
+              <div class="media image">
+                <img
+                  draggable="false"
               src="{{ currentSite.mediaUrl }}/{{
                 currentSection.mediafolder
               }}/_smallthumb_{{ file['@attributes'].src }}"
-            />
-          </div>
-
-          <button title="move" class="action reorder">
-            <bt-icon-move></bt-icon-move>
-          </button>
-          <button
-            title="delete"
-            class="action delete"
-            (click)="deleteItem($event, file['@attributes'].src)"
-          >
-            <bt-icon-delete></bt-icon-delete>
-          </button>
+                  />
+              </div>
+              <button title="move" class="action reorder">
+                <bt-icon-move></bt-icon-move>
+              </button>
+              <button
+                title="delete"
+                class="action delete"
+                (click)="deleteItem($event, file['@attributes'].src)"
+                >
+                <bt-icon-delete></bt-icon-delete>
+              </button>
+            </div>
+          }
+          <berta-files-input
+            [accept]="'image/*'"
+            [label]="'add items'"
+            [disabled]="disabled"
+            [errors]="uploadFilesErrors"
+            (update)="uploadFiles($event)"
+          ></berta-files-input>
         </div>
-        <berta-files-input
-          [accept]="'image/*'"
-          [label]="'add items'"
-          [disabled]="disabled"
-          [errors]="uploadFilesErrors"
-          (update)="uploadFiles($event)"
-        ></berta-files-input>
       </div>
-    </div>
-  `,
+    }
+    `,
     animations: [Animations.slideToggle],
     standalone: false
 })

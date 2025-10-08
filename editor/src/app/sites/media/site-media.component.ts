@@ -15,9 +15,10 @@ import { SiteStateModel } from '../sites-state/site-state.model';
 import { SectionEntry } from '../sections/entries/entries-state/section-entries-state.model';
 
 @Component({
-    selector: 'berta-site-media',
-    template: `
-    <aside *ngIf="currentSite$ | async">
+  selector: 'berta-site-media',
+  template: `
+    @if (currentSite$ | async) {
+    <aside>
       <div class="setting-group">
         <h3>
           <a
@@ -31,7 +32,8 @@ import { SectionEntry } from '../sections/entries/entries-state/section-entries-
           </a>
         </h3>
       </div>
-      <div class="setting-group" *ngFor="let section of sectionsList">
+      @for (section of sectionsList; track section) {
+      <div class="setting-group">
         <h3>
           <a
             [routerLink]="['/media/list/' + section.section.name]"
@@ -42,7 +44,8 @@ import { SectionEntry } from '../sections/entries/entries-state/section-entries-
             "
             >{{ section.section.title || '...' }}
           </a>
-          <div *ngFor="let tag of section.tags">
+          @for (tag of section.tags; track tag) {
+          <div>
             <a
               [routerLink]="[
                 '/media/list/' +
@@ -59,29 +62,33 @@ import { SectionEntry } from '../sections/entries/entries-state/section-entries-
               >{{ tag['@value'] }}
             </a>
           </div>
+          }
         </h3>
       </div>
+      }
     </aside>
+    }
     <div class="content">
-      <div
-        *ngFor="
-          let selectedSection of selectedSections;
-          trackBy: identifySection
-        "
-      >
+      @for ( selectedSection of selectedSections; track identifySection($index,
+      selectedSection.section)) {
+      <div>
         <h3>{{ selectedSection.section.title || '...' }}</h3>
-        <h5 *ngIf="selectedTag">
+        @if (selectedTag) {
+        <h5>
           {{ selectedTag['@value'] }}
         </h5>
+        } @for (entry of selectedSection.entries; track identifyEntry($index,
+        entry)) {
         <berta-entry-gallery
-          *ngFor="let entry of selectedSection.entries; trackBy: identifyEntry"
           [currentSite]="currentSite$ | async"
           [entry]="entry"
         ></berta-entry-gallery>
+        }
       </div>
+      }
     </div>
   `,
-    standalone: false
+  standalone: false,
 })
 export class SiteMediaComponent implements OnInit, OnDestroy {
   @Select(SitesState.getCurrentSite) currentSite$: Observable<SiteStateModel>;
@@ -97,7 +104,10 @@ export class SiteMediaComponent implements OnInit, OnDestroy {
     tag: string | null;
   };
 
-  selectedSections: { section: SiteSectionStateModel; tags: any }[];
+  selectedSections: {
+    section: SiteSectionStateModel;
+    tags: any;
+  }[];
   selectedTag: string | null;
   showAllSections: boolean;
   private destroy$ = new Subject<void>();

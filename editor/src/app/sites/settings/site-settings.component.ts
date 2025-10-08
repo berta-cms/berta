@@ -29,48 +29,49 @@ import {
 @Component({
     selector: 'berta-site-settings',
     template: `
-    <div
-      class="setting-group"
-      [class.is-expanded]="camelifySlug(currentGroup) === settingGroup.slug"
-      *ngFor="let settingGroup of settings$ | async"
-    >
-      <h3
+    @for (settingGroup of settings$ | async; track settingGroup) {
+      <div
+        class="setting-group"
+        [class.is-expanded]="camelifySlug(currentGroup) === settingGroup.slug"
+        >
+        <h3
         [routerLink]="[
           '/settings',
           camelifySlug(currentGroup) === settingGroup.slug
             ? ''
             : slugifyCamel(settingGroup.slug)
         ]"
-        queryParamsHandling="preserve"
-        role="link"
-        class="hoverable"
-      >
-        {{ settingGroup.config.title || settingGroup.slug }}
-        <svg
-          class="drop-icon"
-          width="10"
-          height="6"
-          viewBox="0 0 10 6"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M9 1L4.75736 5.24264L0.514719 1"
-            stroke="#9b9b9b"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          />
-        </svg>
-      </h3>
-      <div
-        class="settings"
-        [@isExpanded]="camelifySlug(currentGroup) === settingGroup.slug"
-      >
-        <div *ngFor="let setting of settingGroup.settings">
-          <berta-setting
-            *ngIf="!setting.config.children"
-            [setting]="setting.setting"
-            [config]="setting.config"
+          queryParamsHandling="preserve"
+          role="link"
+          class="hoverable"
+          >
+          {{ settingGroup.config.title || settingGroup.slug }}
+          <svg
+            class="drop-icon"
+            width="10"
+            height="6"
+            viewBox="0 0 10 6"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            >
+            <path
+              d="M9 1L4.75736 5.24264L0.514719 1"
+              stroke="#9b9b9b"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              />
+          </svg>
+        </h3>
+        <div
+          class="settings"
+          [@isExpanded]="camelifySlug(currentGroup) === settingGroup.slug"
+          >
+          @for (setting of settingGroup.settings; track setting) {
+            <div>
+              @if (!setting.config.children) {
+                <berta-setting
+                  [setting]="setting.setting"
+                  [config]="setting.config"
             [disabled]="
               isDisabled(
                 settingGroup,
@@ -85,17 +86,17 @@ import {
             [error]="
               settingError[settingGroup.slug + ':' + setting.setting.slug]
             "
-            (update)="updateSetting(settingGroup.slug, $event)"
-          ></berta-setting>
-
-          <div *ngIf="setting.config.children">
-            <div class="setting">
-              <h4>{{ setting.config.title }}</h4>
-            </div>
-
-            <berta-setting-row
-              *ngFor="let inputFields of setting.children; let index = index"
-              [inputFields]="inputFields"
+                  (update)="updateSetting(settingGroup.slug, $event)"
+                ></berta-setting>
+              }
+              @if (setting.config.children) {
+                <div>
+                  <div class="setting">
+                    <h4>{{ setting.config.title }}</h4>
+                  </div>
+                  @for (inputFields of setting.children; track inputFields; let index = $index) {
+                    <berta-setting-row
+                      [inputFields]="inputFields"
               (update)="
                 updateChildren(
                   settingGroup.slug,
@@ -107,28 +108,32 @@ import {
               (delete)="
                 deleteChildren(settingGroup.slug, setting.setting.slug, index)
               "
-            >
-            </berta-setting-row>
-
-            <berta-setting-row-add
-              [config]="setting.config.children"
+                      >
+                    </berta-setting-row>
+                  }
+                  <berta-setting-row-add
+                    [config]="setting.config.children"
               (add)="
                 addChildren(settingGroup.slug, setting.setting.slug, $event)
               "
-            >
-            </berta-setting-row-add>
-
-            <div class="setting" *ngIf="setting.config.description">
-              <p
-                class="setting-description"
-                [innerHTML]="getSettingDescription(setting.config.description)"
-              ></p>
+                    >
+                  </berta-setting-row-add>
+                  @if (setting.config.description) {
+                    <div class="setting">
+                      <p
+                        class="setting-description"
+                        [innerHTML]="getSettingDescription(setting.config.description)"
+                      ></p>
+                    </div>
+                  }
+                </div>
+              }
             </div>
-          </div>
+          }
         </div>
       </div>
-    </div>
-  `,
+    }
+    `,
     animations: [Animations.slideToggle],
     standalone: false
 })

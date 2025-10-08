@@ -16,17 +16,18 @@ import { SitesState } from './sites-state/sites.state';
     selector: 'berta-sites',
     template: `
     <div cdkDropList (cdkDropListDropped)="onDrop($event)">
-      <berta-site
-        *ngFor="let site of sitesList"
-        cdkDrag
-        [site]="site"
-        (inputFocus)="updateComponentFocus($event)"
-      ></berta-site>
+      @for (site of sitesList; track site) {
+        <berta-site
+          cdkDrag
+          [site]="site"
+          (inputFocus)="updateComponentFocus($event)"
+        ></berta-site>
+      }
     </div>
     <button type="button" class="button" (click)="createSite()">
       Create new site
     </button>
-  `,
+    `,
     standalone: false
 })
 export class SitesComponent implements OnInit {

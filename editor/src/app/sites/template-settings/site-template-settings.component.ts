@@ -23,58 +23,60 @@ import { AppState } from '../../app-state/app.state';
 @Component({
     selector: 'berta-site-template-settings',
     template: `
-    <div
-      class="setting-group"
-      [class.is-expanded]="camelifySlug(currentGroup) === settingGroup.slug"
-      *ngFor="let settingGroup of templateSettings$ | async"
-    >
-      <h3
+    @for (settingGroup of templateSettings$ | async; track settingGroup) {
+      <div
+        class="setting-group"
+        [class.is-expanded]="camelifySlug(currentGroup) === settingGroup.slug"
+        >
+        <h3
         [routerLink]="[
           '/design',
           camelifySlug(currentGroup) === settingGroup.slug
             ? ''
             : slugifyCamel(settingGroup.slug)
         ]"
-        queryParamsHandling="preserve"
-        role="link"
-        class="hoverable"
-      >
-        {{ settingGroup.config.title || settingGroup.slug }}
-        <svg
-          class="drop-icon"
-          width="10"
-          height="6"
-          viewBox="0 0 10 6"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M9 1L4.75736 5.24264L0.514719 1"
-            stroke="#9b9b9b"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          />
-        </svg>
-      </h3>
-      <div
-        class="settings"
-        [@isExpanded]="camelifySlug(currentGroup) === settingGroup.slug"
-      >
-        <berta-setting
-          *ngFor="let setting of settingGroup.settings"
-          [templateSlug]="settingGroup.templateSlug"
-          [setting]="setting.setting"
-          [config]="setting.config"
+          queryParamsHandling="preserve"
+          role="link"
+          class="hoverable"
+          >
+          {{ settingGroup.config.title || settingGroup.slug }}
+          <svg
+            class="drop-icon"
+            width="10"
+            height="6"
+            viewBox="0 0 10 6"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            >
+            <path
+              d="M9 1L4.75736 5.24264L0.514719 1"
+              stroke="#9b9b9b"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              />
+          </svg>
+        </h3>
+        <div
+          class="settings"
+          [@isExpanded]="camelifySlug(currentGroup) === settingGroup.slug"
+          >
+          @for (setting of settingGroup.settings; track setting) {
+            <berta-setting
+              [templateSlug]="settingGroup.templateSlug"
+              [setting]="setting.setting"
+              [config]="setting.config"
           [disabled]="
             settingUpdate[settingGroup.slug + ':' + setting.setting.slug]
           "
-          [error]="settingError[settingGroup.slug + ':' + setting.setting.slug]"
-          (update)="updateSetting(settingGroup.slug, $event)"
-          (emitAction)="emitAction($event)"
-        ></berta-setting>
+              [error]="settingError[settingGroup.slug + ':' + setting.setting.slug]"
+              (update)="updateSetting(settingGroup.slug, $event)"
+              (emitAction)="emitAction($event)"
+            ></berta-setting>
+          }
+        </div>
       </div>
-    </div>
-  `,
+    }
+    `,
     animations: [Animations.slideToggle],
     standalone: false
 })

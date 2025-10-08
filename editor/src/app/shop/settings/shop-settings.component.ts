@@ -14,22 +14,25 @@ import { UpdateShopSettingsAction } from './shop-settings.actions';
 @Component({
     selector: 'berta-shop-settings',
     template: `
-    <div *ngFor="let settingGroup of settings$ | async" class="subgroup">
-      <div class="setting">
-        <h4>{{ settingGroup.config.title || settingGroup.slug }}</h4>
-      </div>
-      <berta-setting
-        *ngFor="let setting of settingGroup.settings"
-        [setting]="setting.setting"
-        [config]="setting.config"
+    @for (settingGroup of settings$ | async; track settingGroup) {
+      <div class="subgroup">
+        <div class="setting">
+          <h4>{{ settingGroup.config.title || settingGroup.slug }}</h4>
+        </div>
+        @for (setting of settingGroup.settings; track setting) {
+          <berta-setting
+            [setting]="setting.setting"
+            [config]="setting.config"
         [disabled]="
           settingUpdate[settingGroup.slug + ':' + setting.setting.slug]
         "
-        [error]="settingError[settingGroup.slug + ':' + setting.setting.slug]"
-        (update)="updateSetting(settingGroup.slug, $event)"
-      ></berta-setting>
-    </div>
-  `,
+            [error]="settingError[settingGroup.slug + ':' + setting.setting.slug]"
+            (update)="updateSetting(settingGroup.slug, $event)"
+          ></berta-setting>
+        }
+      </div>
+    }
+    `,
     styles: [
         `
       h4 {

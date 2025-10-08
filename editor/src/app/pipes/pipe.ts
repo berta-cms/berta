@@ -13,8 +13,8 @@ import {
  * Sanitize HTML
  */
 @Pipe({
-    name: 'safe',
-    standalone: false
+  name: 'safe',
+  standalone: false,
 })
 export class SafePipe implements PipeTransform {
   /**
@@ -22,7 +22,6 @@ export class SafePipe implements PipeTransform {
    *
    * @param _sanitizer: DomSanitezer
    */
-  // tslint:disable-next-line
   constructor(protected _sanitizer: DomSanitizer) {}
 
   /**

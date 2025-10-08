@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule, ErrorHandler } from '@angular/core';
+import { NgModule, ErrorHandler, APP_INITIALIZER } from '@angular/core';
 import {
   provideHttpClient,
   withInterceptorsFromDi,
@@ -29,7 +29,6 @@ import { PreviewComponent } from './preview/preview.component';
 import { PopupComponent } from './popup/popup.component';
 import { ErrorState } from './error-state/error.state';
 import { SharedModule } from './shared/shared.module';
-import { SentryErrorHandler } from './sentry.error-handler';
 import { StyleService } from './preview/style.service';
 import { WhiteTemplateStyleService } from './preview/white-template-style.service';
 import { DefaultTemplateStyleService } from './preview/default-template-style.service';
@@ -39,6 +38,10 @@ import { SiteSectionsModule } from './sites/sections/site-sections.module';
 import { ShopSettingsState } from './shop/settings/shop-settings.state';
 import { ShopRegionalCostsState } from './shop/regional-costs/shop-regional-costs.state';
 import { SiteMediaModule } from './sites/media/site-media.module';
+import { SentryConfigService } from './sentry/sentry-config.service';
+import * as Sentry from '@sentry/angular';
+import { Router } from '@angular/router';
+import { sentryInitFactory } from './sentry/sentry-init.factory';
 
 @NgModule({
   declarations: [
@@ -79,12 +82,29 @@ import { SiteMediaModule } from './sites/media/site-media.module';
     SiteMediaModule,
   ],
   providers: [
+    SentryConfigService,
+    {
+      provide: ErrorHandler,
+      useValue: Sentry.createErrorHandler({
+        showDialog: false,
+        logErrors: true,
+      }),
+    },
+    {
+      provide: Sentry.TraceService,
+      deps: [Router],
+    },
+    {
+      provide: APP_INITIALIZER,
+      useFactory: sentryInitFactory,
+      deps: [SentryConfigService, Router],
+      multi: true,
+    },
     StyleService,
     WhiteTemplateStyleService,
     DefaultTemplateStyleService,
     MashupTemplateStyleService,
     MessyTemplateStyleService,
-    { provide: ErrorHandler, useClass: SentryErrorHandler },
     { provide: APP_BASE_HREF, useValue: '/engine/' },
     provideHttpClient(withInterceptorsFromDi()),
   ],
