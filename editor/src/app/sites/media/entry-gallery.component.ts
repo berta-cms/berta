@@ -13,7 +13,8 @@ import { SiteStateModel } from '../sites-state/site-state.model';
         }
       </div>
       <div class="entry-gallery-items">
-        @for (file of entry.mediaCacheData.file; track file) {
+        @for (file of entry.mediaCacheData.file; track file['@attributes'].src)
+        {
         <div class="entry-gallery-item">
           @if (file['@attributes'].type === 'image') {
           <div class="media image">
