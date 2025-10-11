@@ -58,7 +58,7 @@ export class ShopSettingsConfigState implements NgxsOnInit {
   }
 
   @Action(ResetShopSettingsConfigAction)
-  sesetShopSettingsConfig({ setState }: StateContext<ShopSettingsConfigModel>) {
+  resetShopSettingsConfig({ setState }: StateContext<ShopSettingsConfigModel>) {
     setState(defaultState);
   }
 }
