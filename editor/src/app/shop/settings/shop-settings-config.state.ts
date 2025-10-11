@@ -1,4 +1,4 @@
-import { take, pairwise, filter, switchMap } from 'rxjs/operators';
+import { take, pairwise, filter, switchMap, tap } from 'rxjs/operators';
 import { State, StateContext, NgxsOnInit, Action, Store } from '@ngxs/store';
 import { ShopStateService } from '../shop-state.service';
 import { initSettingConfigGroup } from '../../shared/helpers';
@@ -9,6 +9,7 @@ import {
 import { concat } from 'rxjs';
 import { UserState } from '../../user/user.state';
 import { Injectable } from '@angular/core';
+import { AppState } from 'src/app/app-state/app.state';
 
 export interface ShopSettingsConfigModel {
   [site: string]: any;
@@ -25,32 +26,33 @@ export class ShopSettingsConfigState implements NgxsOnInit {
   constructor(private store$: Store, private stateService: ShopStateService) {}
 
   ngxsOnInit({ dispatch }: StateContext<ShopSettingsConfigModel>) {
-    return concat(
-      this.stateService.getInitialState('', 'settingsConfig').pipe(take(1)),
-      /* LOGIN: */
-      this.store$.select(UserState.isLoggedIn).pipe(
-        pairwise(),
-        filter(([wasLoggedIn, isLoggedIn]) => !wasLoggedIn && isLoggedIn),
-        switchMap(() =>
-          this.stateService.getInitialState('', 'settingsConfig').pipe(take(1))
+    this.store$
+      .select(AppState.getSite)
+      .pipe(
+        filter((site) => site !== null),
+        take(1),
+        switchMap((site) =>
+          this.stateService
+            .getInitialState(site, 'settingsConfig')
+            .pipe(take(1))
         )
       )
-    ).subscribe((settingsConfig) => {
-      const settingGroups = {};
+      .subscribe((settingsConfig) => {
+        const settingGroups = {};
 
-      for (const groupSlug in settingsConfig) {
-        settingGroups[groupSlug] = initSettingConfigGroup(
-          settingsConfig[groupSlug]
-        );
-        delete settingGroups[groupSlug][groupSlug];
-      }
+        for (const groupSlug in settingsConfig) {
+          settingGroups[groupSlug] = initSettingConfigGroup(
+            settingsConfig[groupSlug]
+          );
+          delete settingGroups[groupSlug][groupSlug];
+        }
 
-      dispatch(new InitShopSettingsConfigAction(settingGroups));
-    });
+        dispatch(new InitShopSettingsConfigAction(settingGroups));
+      });
   }
 
   @Action(InitShopSettingsConfigAction)
-  initializeShopOrders(
+  initShopSettingsConfig(
     { setState }: StateContext<ShopSettingsConfigModel>,
     action: InitShopSettingsConfigAction
   ) {

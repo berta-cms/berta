@@ -9,6 +9,7 @@ import { SiteSettingsComponent } from './sites/settings/site-settings.component'
 import { SiteTemplateSettingsComponent } from './sites/template-settings/site-template-settings.component';
 import { UserAccountComponent } from './user/user-account.component';
 import { AuthGuardService } from './auth-guard.service';
+import { AuthGuardShopService } from './auth-guard-shop.service';
 import { SiteMediaComponent } from './sites/media/site-media.component';
 import { EntryGalleryEditorComponent } from './sites/media/entry-gallery-editor.component';
 import { EntryGalleryImageEditorComponent } from './sites/media/entry-gallery-image-editor.component';
@@ -93,9 +94,7 @@ const routes: Routes = [
   {
     path: 'shop',
     loadChildren: () => import('./shop/shop.module').then((m) => m.ShopModule),
-    /** Can load appears not to be working correctly. @todo: update Angular, see if it helps */
-    // canLoad: [AuthGuardService],
-    canActivate: [AuthGuardService],
+    canMatch: [AuthGuardShopService],
   },
   {
     path: 'login',

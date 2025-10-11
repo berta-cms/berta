@@ -8,11 +8,6 @@ export class DeleteShopOrdersSiteAction {
   constructor(public payload: string) {}
 }
 
-export class AddShopOrdersSiteAction {
-  static readonly type = 'SHOP_ORDERS:SITE_ADD';
-  constructor(public payload: string) {}
-}
-
 /* Init: */
 export class InitShopOrdersAction {
   public static type = 'SHOP_ORDERS:INIT';

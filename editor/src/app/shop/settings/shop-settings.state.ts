@@ -1,13 +1,12 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { concat, of } from 'rxjs';
 import {
   take,
   tap,
   catchError,
-  pairwise,
   filter,
   switchMap,
   map,
+  distinct,
 } from 'rxjs/operators';
 import {
   State,
@@ -26,13 +25,11 @@ import {
   UpdateShopSettingsAction,
   DeleteShopSettingsSiteAction,
   RenameShopSettingsSiteAction,
-  AddShopSettingsSiteAction,
   ResetShopSettingsAction,
   InitShopSettingsAction,
 } from './shop-settings.actions';
 import { AppStateService } from '../../app-state/app-state.service';
 import { ShopState } from '../shop.state';
-import { UserState } from '../../user/user.state';
 import { Injectable } from '@angular/core';
 
 interface ShopSettingsModel {
@@ -85,35 +82,31 @@ export class ShopSettingsState implements NgxsOnInit {
   ) {}
 
   ngxsOnInit({ dispatch }: StateContext<ShopSettingsModel>) {
-    return concat(
-      this.stateService.getInitialState('', 'settings').pipe(take(1)),
-      /* LOGIN: */
-      this.store$.select(UserState.isLoggedIn).pipe(
-        pairwise(),
-        filter(([wasLoggedIn, isLoggedIn]) => !wasLoggedIn && isLoggedIn),
-        switchMap(() =>
-          this.stateService.getInitialState('', 'settings').pipe(take(1))
+    this.store$
+      .select(AppState.getSite)
+      .pipe(
+        filter((site) => site !== null),
+        distinct((site) => site),
+        switchMap((site) =>
+          this.stateService.getInitialState(site, 'settings').pipe(
+            take(1),
+            map((settings) => ({ site, settings }))
+          )
         )
       )
-    ).subscribe((settings) => {
-      const newState: { [k: string]: any } = {};
-
-      for (const siteSlug in settings) {
-        newState[siteSlug] = this.initializeShopSettingsForSite(
-          settings[siteSlug]
-        );
-      }
-
-      dispatch(new InitShopSettingsAction(newState));
-    });
+      .subscribe(({ site, settings }) => {
+        const newState: { [k: string]: any } = {};
+        newState[site] = this.initializeShopSettingsForSite(settings[site]);
+        dispatch(new InitShopSettingsAction(newState));
+      });
   }
 
   @Action(InitShopSettingsAction)
-  initializeShopOrders(
-    { setState }: StateContext<ShopSettingsModel>,
+  initShopSettings(
+    { patchState }: StateContext<ShopSettingsModel>,
     action: InitShopSettingsAction
   ) {
-    setState(action.payload);
+    patchState(action.payload);
   }
 
   @Action(UpdateShopSettingsAction)
@@ -213,23 +206,6 @@ export class ShopSettingsState implements NgxsOnInit {
     }
 
     setState(newState);
-  }
-
-  @Action(AddShopSettingsSiteAction)
-  addShopSettingsSite(
-    { patchState }: StateContext<ShopSettingsModel>,
-    action: AddShopSettingsSiteAction
-  ) {
-    return this.stateService
-      .getInitialState(action.payload, 'settings')
-      .pipe(take(1))
-      .subscribe((settings) => {
-        patchState({
-          [action.payload]: this.initializeShopSettingsForSite(
-            settings[action.payload]
-          ),
-        });
-      });
   }
 
   @Action(ResetShopSettingsAction)

@@ -6,6 +6,8 @@ import {
   pairwise,
   filter,
   switchMap,
+  distinct,
+  map,
 } from 'rxjs/operators';
 import { HttpErrorResponse } from '@angular/common/http';
 import {
@@ -77,27 +79,31 @@ export class ShopRegionalCostsState implements NgxsOnInit {
   ) {}
 
   ngxsOnInit({ dispatch }: StateContext<ShopRegionalCostsModel>) {
-    return concat(
-      this.stateService.getInitialState('', 'regionalCosts').pipe(take(1)),
-      /* LOGIN: */
-      this.store$.select(UserState.isLoggedIn).pipe(
-        pairwise(),
-        filter(([wasLoggedIn, isLoggedIn]) => !wasLoggedIn && isLoggedIn),
-        switchMap(() =>
-          this.stateService.getInitialState('', 'regionalCosts').pipe(take(1))
+    this.store$
+      .select(AppState.getSite)
+      .pipe(
+        filter((site) => site !== null),
+        distinct((site) => site),
+        switchMap((site) =>
+          this.stateService.getInitialState(site, 'regionalCosts').pipe(
+            take(1),
+            map((regionalCosts) => ({ site, regionalCosts }))
+          )
         )
       )
-    ).subscribe((regionalCosts) => {
-      dispatch(new InitShopRegionalCostsAction(regionalCosts));
-    });
+      .subscribe(({ site, regionalCosts }) => {
+        dispatch(
+          new InitShopRegionalCostsAction({ [site]: regionalCosts[site] })
+        );
+      });
   }
 
   @Action(InitShopRegionalCostsAction)
-  initializeShopOrders(
-    { setState }: StateContext<ShopRegionalCostsModel>,
+  initShopRegionalCosts(
+    { patchState }: StateContext<ShopRegionalCostsModel>,
     action: InitShopRegionalCostsAction
   ) {
-    setState(action.payload);
+    patchState(action.payload);
   }
 
   @Action(UpdateShopRegionAction)
@@ -399,19 +405,6 @@ export class ShopRegionalCostsState implements NgxsOnInit {
     }
 
     setState(newState);
-  }
-
-  @Action(AddShopRegionSiteAction)
-  addShopRegionsSite(
-    { patchState }: StateContext<ShopRegionalCostsModel>,
-    action: AddShopRegionSiteAction
-  ) {
-    return this.stateService
-      .getInitialState(action.payload, 'regionalCosts')
-      .pipe(take(1))
-      .subscribe((regionalCosts) => {
-        patchState({ [action.payload]: regionalCosts[action.payload] });
-      });
   }
 
   @Action(ResetShopRegionalCostsAction)
