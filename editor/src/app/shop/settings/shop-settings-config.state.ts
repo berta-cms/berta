@@ -1,4 +1,4 @@
-import { take, pairwise, filter, switchMap, tap } from 'rxjs/operators';
+import { take, filter, switchMap } from 'rxjs/operators';
 import { State, StateContext, NgxsOnInit, Action, Store } from '@ngxs/store';
 import { ShopStateService } from '../shop-state.service';
 import { initSettingConfigGroup } from '../../shared/helpers';
@@ -6,8 +6,6 @@ import {
   ResetShopSettingsConfigAction,
   InitShopSettingsConfigAction,
 } from './shop-settings.actions';
-import { concat } from 'rxjs';
-import { UserState } from '../../user/user.state';
 import { Injectable } from '@angular/core';
 import { AppState } from 'src/app/app-state/app.state';
 
@@ -60,7 +58,7 @@ export class ShopSettingsConfigState implements NgxsOnInit {
   }
 
   @Action(ResetShopSettingsConfigAction)
-  resetProducts({ setState }: StateContext<ShopSettingsConfigModel>) {
+  resetShopSettingsConfig({ setState }: StateContext<ShopSettingsConfigModel>) {
     setState(defaultState);
   }
 }
