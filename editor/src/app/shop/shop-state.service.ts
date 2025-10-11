@@ -43,19 +43,14 @@ export class ShopStateService {
         this.store.select((state) => state.app),
         this.store.select((state) => state.user),
       ]).pipe(
-        filter(
-          ([appState, user]) =>
-            !!user.token &&
-            appState.site !== null &&
-            user.features.includes('shop')
-        ), // Make sure user is logged in
+        filter(([appState]) => appState.site !== null),
         take(1),
         tap(() => this.store.dispatch(new AppShowLoading())),
         // `exhaustMap` waits for the first request to complete instead of canceling and starting new ones.
-        exhaustMap(([appState, user]) => {
+        exhaustMap(([, user]) => {
           return this.http.get('/_api/v1/plugin/shop', {
             headers: { 'X-Authorization': 'Bearer ' + user.token },
-            params: site ? { site: site } : {}, // Use null instead of empty string so we can fetch home page
+            params: site ? { site: site } : {},
           });
         }),
         retryWhen((attempts) => {

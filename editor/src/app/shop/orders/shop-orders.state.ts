@@ -1,5 +1,4 @@
-import { concat } from 'rxjs';
-import { take, pairwise, filter, switchMap } from 'rxjs/operators';
+import { take, filter, switchMap, distinct, map } from 'rxjs/operators';
 import {
   State,
   StateContext,
@@ -13,11 +12,9 @@ import { AppState } from '../../app-state/app.state';
 import {
   RenameShopOrdersSiteAction,
   DeleteShopOrdersSiteAction,
-  AddShopOrdersSiteAction,
   ResetShopOrdersAction,
   InitShopOrdersAction,
 } from './shop-orders.actions';
-import { UserState } from '../../user/user.state';
 import { Injectable } from '@angular/core';
 
 interface ShopOrdersModel {
@@ -40,27 +37,29 @@ export class ShopOrdersState implements NgxsOnInit {
   constructor(private store$: Store, private stateService: ShopStateService) {}
 
   ngxsOnInit({ dispatch }: StateContext<ShopOrdersModel>) {
-    return concat(
-      this.stateService.getInitialState('', 'orders').pipe(take(1)),
-      /* LOGIN: */
-      this.store$.select(UserState.isLoggedIn).pipe(
-        pairwise(),
-        filter(([wasLoggedIn, isLoggedIn]) => !wasLoggedIn && isLoggedIn),
-        switchMap(() =>
-          this.stateService.getInitialState('', 'orders').pipe(take(1))
+    this.store$
+      .select(AppState.getSite)
+      .pipe(
+        filter((site) => site !== null),
+        distinct((site) => site),
+        switchMap((site) =>
+          this.stateService.getInitialState(site, 'orders').pipe(
+            take(1),
+            map((orders) => ({ site, orders }))
+          )
         )
       )
-    ).subscribe((orders) => {
-      dispatch(new InitShopOrdersAction(orders));
-    });
+      .subscribe(({ site, orders }) => {
+        dispatch(new InitShopOrdersAction({ [site]: orders[site] }));
+      });
   }
 
   @Action(InitShopOrdersAction)
-  initializeShopOrders(
-    { setState }: StateContext<ShopOrdersModel>,
+  initShopOrders(
+    { patchState }: StateContext<ShopOrdersModel>,
     action: InitShopOrdersAction
   ) {
-    setState(action.payload);
+    patchState(action.payload);
   }
 
   @Action(RenameShopOrdersSiteAction)
@@ -91,19 +90,6 @@ export class ShopOrdersState implements NgxsOnInit {
     const state = { ...getState() };
     delete state[action.payload];
     setState(state);
-  }
-
-  @Action(AddShopOrdersSiteAction)
-  addOrdersSite(
-    { patchState }: StateContext<ShopOrdersModel>,
-    action: AddShopOrdersSiteAction
-  ) {
-    return this.stateService
-      .getInitialState(action.payload, 'orders')
-      .pipe(take(1))
-      .subscribe((orders) => {
-        patchState({ [action.payload]: orders[action.payload] });
-      });
   }
 
   @Action(ResetShopOrdersAction)

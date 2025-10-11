@@ -13,16 +13,16 @@ import {
   take,
   tap,
   catchError,
-  pairwise,
   filter,
   switchMap,
+  distinct,
+  map,
 } from 'rxjs/operators';
 import { AppState } from '../../app-state/app.state';
 import {
   UpdateShopProductAction,
   RenameShopProductSiteAction,
   DeleteShopProductSiteAction,
-  AddShopProductSiteAction,
   ResetShopProductsAction,
   InitShopProductsAction,
 } from './shop-products.actions';
@@ -30,8 +30,6 @@ import { UpdateSectionEntryFromSyncAction } from '../../sites/sections/entries/e
 import { AppStateService } from '../../app-state/app-state.service';
 import { ShopState } from '../shop.state';
 import { HttpErrorResponse } from '@angular/common/http';
-import { concat } from 'rxjs';
-import { UserState } from '../../user/user.state';
 import { Injectable } from '@angular/core';
 
 interface ShopProduct {
@@ -70,19 +68,21 @@ export class ShopProductsState implements NgxsOnInit {
   ) {}
 
   ngxsOnInit({ dispatch }: StateContext<ShopProductsModel>) {
-    concat(
-      this.stateService.getInitialState('', 'products').pipe(take(1)),
-      /* LOGIN: */
-      this.store$.select(UserState.isLoggedIn).pipe(
-        pairwise(),
-        filter(([wasLoggedIn, isLoggedIn]) => !wasLoggedIn && isLoggedIn),
-        switchMap(() =>
-          this.stateService.getInitialState('', 'products').pipe(take(1))
+    this.store$
+      .select(AppState.getSite)
+      .pipe(
+        filter((site) => site !== null),
+        distinct((site) => site),
+        switchMap((site) =>
+          this.stateService.getInitialState(site, 'products').pipe(
+            take(1),
+            map((products) => ({ site, products }))
+          )
         )
       )
-    ).subscribe((products) => {
-      dispatch(new InitShopProductsAction(products));
-    });
+      .subscribe(({ site, products }) => {
+        dispatch(new InitShopProductsAction({ [site]: products[site] }));
+      });
 
     // Update products from server on entry update (name, attribute, instock, reservations)
     this.actions$
@@ -94,20 +94,28 @@ export class ShopProductsState implements NgxsOnInit {
           return actions.indexOf(prop) > -1;
         }),
         switchMap(() =>
-          this.stateService.getInitialState('', 'products', true).pipe(take(1))
+          this.store$.select(AppState.getSite).pipe(
+            filter((site) => site !== null),
+            switchMap((site) =>
+              this.stateService.getInitialState(site, 'products', true).pipe(
+                take(1),
+                map((products) => ({ site, products }))
+              )
+            )
+          )
         )
       )
-      .subscribe((products) => {
-        dispatch(new InitShopProductsAction(products));
+      .subscribe(({ site, products }) => {
+        dispatch(new InitShopProductsAction({ [site]: products[site] }));
       });
   }
 
   @Action(InitShopProductsAction)
-  initializeShopOrders(
-    { setState }: StateContext<ShopProductsModel>,
+  initShopProducts(
+    { patchState }: StateContext<ShopProductsModel>,
     action: InitShopProductsAction
   ) {
-    setState(action.payload);
+    patchState(action.payload);
   }
 
   @Action(UpdateShopProductAction)
@@ -180,19 +188,6 @@ export class ShopProductsState implements NgxsOnInit {
     const state = { ...getState() };
     delete state[action.payload];
     setState(state);
-  }
-
-  @Action(AddShopProductSiteAction)
-  addProductsSite(
-    { patchState }: StateContext<ShopProductsModel>,
-    action: AddShopProductSiteAction
-  ) {
-    return this.stateService.getInitialState(action.payload, 'products').pipe(
-      take(1),
-      tap((products: ShopProductsModel) =>
-        patchState({ [action.payload]: products[action.payload] })
-      )
-    );
   }
 
   @Action(ResetShopProductsAction)

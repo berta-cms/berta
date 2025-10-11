@@ -9,84 +9,65 @@ import { Animations } from '../shared/animations';
 import { ShopState } from './shop.state';
 
 @Component({
-    selector: 'berta-shop',
-    template: `
-    @for (shopSection of shopSections$ | async; track shopSection) {
-      <div
-        class="setting-group"
-        [class.is-expanded]="currentShopSection === shopSection.urlSegment"
+  selector: 'berta-shop',
+  template: `
+    @for (shopSection of shopSections$ | async; track shopSection.slug) {
+    <div
+      class="setting-group"
+      [class.is-expanded]="currentShopSection === shopSection.urlSegment"
+    >
+      <h3
+        (click)="toggleSection(shopSection.urlSegment)"
+        role="link"
+        class="hoverable"
+      >
+        {{ shopSection.title }}
+        <svg
+          class="drop-icon"
+          width="10"
+          height="6"
+          viewBox="0 0 10 6"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
         >
-        <h3
-          (click)="toggleSection(shopSection.urlSegment)"
-          role="link"
-          class="hoverable"
-          >
-          {{ shopSection.title }}
-          <svg
-            class="drop-icon"
-            width="10"
-            height="6"
-            viewBox="0 0 10 6"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            >
-            <path
-              d="M9 1L4.75736 5.24264L0.514719 1"
-              stroke="#9b9b9b"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              />
-          </svg>
-        </h3>
-        <div
-          class="settings"
-          [@isExpanded]="currentShopSection === shopSection.urlSegment"
-          >
-          @if (
-            currentShopSection === 'products' &&
-            shopSection.urlSegment === currentShopSection
-            ) {
-            <berta-shop-products
-              >
-            </berta-shop-products>
-          }
-          @if (
-            currentShopSection === 'orders' &&
-            shopSection.urlSegment === currentShopSection
-            ) {
-            <berta-shop-orders
-              >
-            </berta-shop-orders>
-          }
-          @if (
-            currentShopSection === 'regional-costs' &&
-            shopSection.urlSegment === currentShopSection
-            ) {
-            <berta-shop-regional-costs
-              >
-            </berta-shop-regional-costs>
-          }
-          @if (
-            currentShopSection === 'settings' &&
-            shopSection.urlSegment === currentShopSection
-            ) {
-            <berta-shop-settings
-              >
-            </berta-shop-settings>
-          }
-        </div>
+          <path
+            d="M9 1L4.75736 5.24264L0.514719 1"
+            stroke="#9b9b9b"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      </h3>
+      <div
+        class="settings"
+        [@isExpanded]="currentShopSection === shopSection.urlSegment"
+      >
+        @if ( currentShopSection === 'products' && shopSection.urlSegment ===
+        currentShopSection ) {
+        <berta-shop-products> </berta-shop-products>
+        } @if ( currentShopSection === 'orders' && shopSection.urlSegment ===
+        currentShopSection ) {
+        <berta-shop-orders> </berta-shop-orders>
+        } @if ( currentShopSection === 'regional-costs' &&
+        shopSection.urlSegment === currentShopSection ) {
+        <berta-shop-regional-costs> </berta-shop-regional-costs>
+        } @if ( currentShopSection === 'settings' && shopSection.urlSegment ===
+        currentShopSection ) {
+        <berta-shop-settings> </berta-shop-settings>
+        }
       </div>
+    </div>
     }
-    `,
-    styles: [
-        `
+  `,
+  styles: [
+    `
       :host {
         display: block;
       }
     `,
-    ],
-    animations: [Animations.slideToggle],
-    standalone: false
+  ],
+  animations: [Animations.slideToggle],
+  standalone: false,
 })
 export class ShopComponent implements OnInit {
   currentShopSection = '';
@@ -138,7 +119,7 @@ export class ShopComponent implements OnInit {
     });
   }
 
-  toggleSection(sectionUrlSegment) {
+  toggleSection(sectionUrlSegment: string) {
     if (this.currentShopSection === sectionUrlSegment) {
       this.router.navigate(['/shop'], { queryParamsHandling: 'preserve' });
     } else {

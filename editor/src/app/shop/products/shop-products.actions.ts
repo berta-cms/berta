@@ -19,11 +19,6 @@ export class DeleteShopProductSiteAction {
   constructor(public payload: string) {}
 }
 
-export class AddShopProductSiteAction {
-  static readonly type = 'SHOP_PRODUCT:SITE_ADD';
-  constructor(public payload: string) {}
-}
-
 /* Init: */
 export class InitShopProductsAction {
   public static type = 'SHOP_PRODUCT:INIT';
