@@ -95,11 +95,7 @@ export class PreviewComponent implements OnInit {
       ),
       this.store.select(UserState.isLoggedIn),
     ]).subscribe(([[site, section], isLoggedIn]) => {
-      let url =
-        location.protocol +
-        '//' +
-        location.hostname +
-        (location.port ? ':' + location.port : '');
+      let url = location.origin;
       const queryParams = [];
 
       if (isLoggedIn) {

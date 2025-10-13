@@ -17,8 +17,8 @@ import { UserStateModel } from './user/user.state.model';
 import { AppStateService } from './app-state/app-state.service';
 
 @Component({
-    selector: 'berta-root',
-    template: `
+  selector: 'berta-root',
+  template: `
     <!--The content below is only a placeholder and can be replaced.-->
     <berta-header></berta-header>
     <main>
@@ -53,8 +53,8 @@ import { AppStateService } from './app-state/app-state.service';
     ></div>
     <berta-popup></berta-popup>
   `,
-    styles: [
-        `
+  styles: [
+    `
       :host {
         display: flex;
         flex-direction: column;
@@ -136,8 +136,8 @@ import { AppStateService } from './app-state/app-state.service';
         }
       }
     `,
-    ],
-    standalone: false
+  ],
+  standalone: false,
 })
 export class AppComponent implements OnInit, OnDestroy {
   title = 'berta';
@@ -225,7 +225,7 @@ export class AppComponent implements OnInit, OnDestroy {
       });
 
     this.isLoggedIn$.subscribe((isLoggedIn) => {
-      let url = location.protocol + '//' + location.hostname;
+      let url = location.origin;
 
       if (isLoggedIn) {
         url += '/engine/editor/';
