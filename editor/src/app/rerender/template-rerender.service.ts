@@ -268,8 +268,7 @@ export class TemplateRerenderService {
     return this.actions$
       .pipe(ofActionSuccessful(DeleteSectionLastEntry))
       .subscribe((action: DeleteSectionLastEntry) => {
-        let url =
-          location.protocol + '//' + location.hostname + ':' + location.port;
+        let url = location.origin;
 
         window.location.replace(`${url}/engine/?section=${action.section}`);
       });

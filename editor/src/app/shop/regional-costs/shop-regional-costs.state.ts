@@ -35,6 +35,7 @@ import { ShopState } from '../shop.state';
 import { AppStateService } from '../../app-state/app-state.service';
 import { UserState } from '../../user/user.state';
 import { Injectable } from '@angular/core';
+import { combineLatest } from 'rxjs';
 
 interface ShopRegion {
   id: number;
@@ -76,10 +77,13 @@ export class ShopRegionalCostsState implements NgxsOnInit {
   ) {}
 
   ngxsOnInit({ dispatch }: StateContext<ShopRegionalCostsModel>) {
-    this.store$
-      .select(AppState.getSite)
+    combineLatest([
+      this.store$.select(AppState.getSite),
+      this.store$.select(UserState.isLoggedIn),
+    ])
       .pipe(
-        filter((site) => site !== null),
+        filter(([site, isLoggedIn]) => site !== null && isLoggedIn),
+        map(([site]) => site),
         distinct((site) => site),
         switchMap((site) =>
           this.stateService.getInitialState(site, 'regionalCosts').pipe(
