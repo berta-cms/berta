@@ -269,7 +269,10 @@ export class TemplateRerenderService {
       .pipe(ofActionSuccessful(DeleteSectionLastEntry))
       .subscribe((action: DeleteSectionLastEntry) => {
         let url =
-          location.protocol + '//' + location.hostname + ':' + location.port;
+          location.protocol +
+          '//' +
+          location.hostname +
+          (location.port ? ':' + location.port : '');
 
         window.location.replace(`${url}/engine/?section=${action.section}`);
       });
