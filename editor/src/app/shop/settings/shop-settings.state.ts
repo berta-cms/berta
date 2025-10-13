@@ -31,6 +31,8 @@ import {
 import { AppStateService } from '../../app-state/app-state.service';
 import { ShopState } from '../shop.state';
 import { Injectable } from '@angular/core';
+import { combineLatest } from 'rxjs';
+import { UserState } from 'src/app/user/user.state';
 
 interface ShopSettingsModel {
   [site: string]: Array<{
@@ -54,6 +56,9 @@ export class ShopSettingsState implements NgxsOnInit {
 
   @Selector([ShopSettingsState.getCurrentSiteSettings])
   static getCurrentWeightUnit(currentSiteSettings) {
+    if (!currentSiteSettings) {
+      return;
+    }
     return (
       currentSiteSettings
         .find((group) => {
@@ -65,6 +70,9 @@ export class ShopSettingsState implements NgxsOnInit {
 
   @Selector([ShopSettingsState.getCurrentSiteSettings])
   static getCurrentCurrency(currentSiteSettings) {
+    if (!currentSiteSettings) {
+      return;
+    }
     return (
       currentSiteSettings
         .find((group) => {
@@ -82,10 +90,13 @@ export class ShopSettingsState implements NgxsOnInit {
   ) {}
 
   ngxsOnInit({ dispatch }: StateContext<ShopSettingsModel>) {
-    this.store$
-      .select(AppState.getSite)
+    combineLatest([
+      this.store$.select(AppState.getSite),
+      this.store$.select(UserState.isLoggedIn),
+    ])
       .pipe(
-        filter((site) => site !== null),
+        filter(([site, isLoggedIn]) => site !== null && isLoggedIn),
+        map(([site]) => site),
         distinct((site) => site),
         switchMap((site) =>
           this.stateService.getInitialState(site, 'settings').pipe(
