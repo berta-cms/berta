@@ -2,7 +2,7 @@
   "name": "berta",
   "description": "Berta CMS",
   "license": "GPL-3.0",
-  "version": "2.6.5",
+  "version": "2.6.6",
   "devDependencies": {
     "gulp": "^4.0.2",
     "gulp-autoprefixer": "^7.0.1",
