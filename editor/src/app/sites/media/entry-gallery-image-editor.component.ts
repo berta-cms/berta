@@ -24,15 +24,15 @@ import {
 import { SitesSharedModule } from '../shared/sites-shared.module';
 
 @Component({
-    selector: 'berta-entry-gallery-image-editor',
-    imports: [ImageCropperComponent, SitesSharedModule],
-    template: `
+  selector: 'berta-entry-gallery-image-editor',
+  imports: [ImageCropperComponent, SitesSharedModule],
+  template: `
     <aside>
       <div class="setting-group" [class.is-expanded]="fileSettingsIsOpen">
         <h3
           (click)="fileSettingsIsOpen = !fileSettingsIsOpen"
           class="hoverable"
-          >
+        >
           Crop settings
           <svg
             class="drop-icon"
@@ -41,18 +41,18 @@ import { SitesSharedModule } from '../shared/sites-shared.module';
             viewBox="0 0 10 6"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
-            >
+          >
             <path
               d="M9 1L4.75736 5.24264L0.514719 1"
               stroke="#9b9b9b"
               stroke-linecap="round"
               stroke-linejoin="round"
-              />
+            />
           </svg>
         </h3>
         <div class="settings" [@isExpanded]="fileSettingsIsOpen">
           @if (cropperIsReady) {
-            <berta-setting
+          <berta-setting
             [setting]="{
               slug: 'width',
               value: size.width
@@ -62,14 +62,13 @@ import { SitesSharedModule } from '../shared/sites-shared.module';
               format: 'text',
               enabledOnUpdate: true
             }"
-              [error]="''"
-              [disabled]="false"
-              (update)="updateSize($event)"
-              >
-            </berta-setting>
-          }
-          @if (cropperIsReady) {
-            <berta-setting
+            [error]="''"
+            [disabled]="false"
+            (update)="updateSize($event)"
+          >
+          </berta-setting>
+          } @if (cropperIsReady) {
+          <berta-setting
             [setting]="{
               slug: 'height',
               value: size.height
@@ -79,28 +78,28 @@ import { SitesSharedModule } from '../shared/sites-shared.module';
               format: 'text',
               enabledOnUpdate: true
             }"
-              [error]="''"
-              [disabled]="false"
-              (update)="updateSize($event)"
-              >
-            </berta-setting>
+            [error]="''"
+            [disabled]="false"
+            (update)="updateSize($event)"
+          >
+          </berta-setting>
           }
           <div class="setting">
             @if (cropperIsReady) {
-              <button
-                type="button"
-                class="button"
-                [class.disabled]="!canCrop"
-                (click)="cropImage()"
-                >
-                Crop
-              </button>
+            <button
+              type="button"
+              class="button"
+              [class.disabled]="!canCrop"
+              (click)="cropImage()"
+            >
+              Crop
+            </button>
             }
             <button
               type="button"
               class="button inverse"
               (click)="navigateBack()"
-              >
+            >
               Close
             </button>
           </div>
@@ -120,8 +119,8 @@ import { SitesSharedModule } from '../shared/sites-shared.module';
         ></image-cropper>
       </div>
     </div>
-    `,
-    animations: [Animations.slideToggle]
+  `,
+  animations: [Animations.slideToggle],
 })
 export class EntryGalleryImageEditorComponent implements OnInit {
   @Select(SitesState.getCurrentSite) currentSite$: Observable<SiteStateModel>;
@@ -184,6 +183,10 @@ export class EntryGalleryImageEditorComponent implements OnInit {
           )
           .subscribe((entry) => {
             this.galleryFile = entry.mediaCacheData.file[this.imageOrder];
+
+            if (!this.galleryFile) {
+              return;
+            }
 
             const path = `${this.site.mediaUrl}/${entry.mediafolder}/${this.galleryFile['@attributes'].src}`;
 
