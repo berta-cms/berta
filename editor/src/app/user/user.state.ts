@@ -50,6 +50,19 @@ export class UserState implements NgxsOnInit {
     return !!state.token;
   }
 
+  @Selector([UserState, UserState.isLoggedIn])
+  static hasFeatureShop(user: UserStateModel, isLoggedIn: boolean): boolean {
+    return isLoggedIn && user.features.includes('shop');
+  }
+
+  @Selector([UserState, UserState.isLoggedIn])
+  static hasFeatureMultisite(
+    user: UserStateModel,
+    isLoggedIn: boolean
+  ): boolean {
+    return isLoggedIn && user.features.includes('multisite');
+  }
+
   ngxsOnInit({ patchState, dispatch }: StateContext<UserStateModel>) {
     const name = window.localStorage.getItem('name');
     const token = window.localStorage.getItem('token');

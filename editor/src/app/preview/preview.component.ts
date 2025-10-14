@@ -362,7 +362,11 @@ export class PreviewComponent implements OnInit {
         // After iframe reload styles updates again
         this.store
           .select(SiteSettingsState.getCurrentSiteTemplate)
-          .pipe(pairwise(), take(1))
+          .pipe(
+            pairwise(),
+            filter(([p]) => p !== undefined),
+            take(1)
+          )
           .subscribe(() => {
             this.styleChangesSubscription.unsubscribe();
             this.shopStyleChangesSubscription.unsubscribe();

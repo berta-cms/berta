@@ -92,10 +92,10 @@ export class ShopSettingsState implements NgxsOnInit {
   ngxsOnInit({ dispatch }: StateContext<ShopSettingsModel>) {
     combineLatest([
       this.store$.select(AppState.getSite),
-      this.store$.select(UserState.isLoggedIn),
+      this.store$.select(UserState.hasFeatureShop),
     ])
       .pipe(
-        filter(([site, isLoggedIn]) => site !== null && isLoggedIn),
+        filter(([site, hasFeatureShop]) => site !== null && hasFeatureShop),
         map(([site]) => site),
         distinct((site) => site),
         switchMap((site) =>
