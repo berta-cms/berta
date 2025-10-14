@@ -17,7 +17,11 @@ export class PortfolioThumbnailsRenderService {
   ) {}
 
   getFirstEntryImage(siteSlug: string, siteSettings, entry: SectionEntry) {
-    if (!entry.mediaCacheData && entry.mediaCacheData.file.length === 0) {
+    if (
+      !entry.mediaCacheData ||
+      !entry.mediaCacheData.file ||
+      entry.mediaCacheData.file.length === 0
+    ) {
       return null;
     }
 

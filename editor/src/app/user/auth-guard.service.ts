@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Router, ActivatedRouteSnapshot, Route } from '@angular/router';
 import { Select, Store } from '@ngxs/store';
-import { UserState } from './user/user.state';
+import { UserState } from './user.state';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { SetUserNextUrlAction } from './user/user.actions';
+import { SetUserNextUrlAction } from './user.actions';
 
 @Injectable({
   providedIn: 'root',

@@ -8,8 +8,9 @@ import { SitesComponent } from './sites/sites.component';
 import { SiteSettingsComponent } from './sites/settings/site-settings.component';
 import { SiteTemplateSettingsComponent } from './sites/template-settings/site-template-settings.component';
 import { UserAccountComponent } from './user/user-account.component';
-import { AuthGuardService } from './auth-guard.service';
-import { AuthGuardShopService } from './auth-guard-shop.service';
+import { AuthGuardService } from './user/auth-guard.service';
+import { AuthGuardShopService } from './user/auth-guard-shop.service';
+import { AuthGuardMultisiteService } from './user/auth-guard-multisite.service';
 import { SiteMediaComponent } from './sites/media/site-media.component';
 import { EntryGalleryEditorComponent } from './sites/media/entry-gallery-editor.component';
 import { EntryGalleryImageEditorComponent } from './sites/media/entry-gallery-image-editor.component';
@@ -19,7 +20,7 @@ const routes: Routes = [
   {
     path: 'multisite',
     component: SitesComponent,
-    canActivate: [AuthGuardService],
+    canMatch: [AuthGuardMultisiteService],
   },
   {
     path: 'sections/:section',

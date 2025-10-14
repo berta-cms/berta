@@ -4,6 +4,9 @@ export function replaceContent(
   sectionHtml: string
 ): void {
   const element = dom.getElementById(sectionId);
+  if (!element) {
+    return;
+  }
   element.innerHTML = '';
   element.appendChild(dom.createRange().createContextualFragment(sectionHtml));
 }
