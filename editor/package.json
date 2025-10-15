@@ -27,7 +27,6 @@
     "@kolkov/angular-editor": "^2.1.0",
     "@ngxs/store": "~20.1.0",
     "@sentry/angular": "^10.18.0",
-    "core-js": "^3.45.1",
     "lodash": "^4.17.21",
     "ng-sortgrid": "^20.0.0",
     "ngx-color-picker": "^20.1.1",
