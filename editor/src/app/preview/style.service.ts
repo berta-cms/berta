@@ -119,7 +119,7 @@ export class StyleService {
       const cssRule = this.findOrCreateRule(rule.selector, rule.breakpoint);
       let value = rule.value || style.value;
       if (rule.template) {
-        value = eval(rule.template);
+        value = new Function('value', `return ${rule.template}`)(value);
       }
       cssRule.style.setProperty(
         rule.property,
@@ -156,7 +156,7 @@ export class StyleService {
       const cssRule = this.findOrCreateRule(rule.selector, rule.breakpoint);
       let value = rule.value || style.value;
       if (rule.template) {
-        value = eval(rule.template);
+        value = new Function('value', `return ${rule.template}`)(value);
       }
       cssRule.style.setProperty(
         rule.property,
