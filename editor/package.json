@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "prebuild": "node copy-twig-templates.js && node bundle-twig-templates.js",
+    "prebuild": "node copy-twig-templates.mjs && node bundle-twig-templates.js",
     "build": "ng build --configuration production",
     "dev": "ng build --watch --configuration development",
     "test": "ng test",
@@ -49,7 +49,7 @@
     "@types/jasmine": "~5.1.0",
     "@types/lodash": "^4.14.182",
     "@types/node": "^20.14.8",
-    "cpx": "^1.5.0",
+    "cpy": "^12.0.1",
     "jasmine-core": "~5.9.0",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.2.0",
