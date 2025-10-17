@@ -42,10 +42,10 @@ describe('AppComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should render title', () => {
+  it('should render main template structure', () => {
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    // Verify that the main template structure is rendered
+    // Verify that the main element is rendered
     expect(compiled.querySelector('main')).toBeTruthy();
   });
 
