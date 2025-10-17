@@ -24,7 +24,7 @@ class TestAppComponent {
   title = 'berta';
 }
 
-describe('AppComponent', () => {
+describe('TestAppComponent', () => {
   let fixture: ComponentFixture<TestAppComponent>;
   let component: TestAppComponent;
 
