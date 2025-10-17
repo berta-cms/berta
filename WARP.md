@@ -16,8 +16,6 @@ This file provides guidance to WARP (warp.dev) when working with code in this re
 - **Build for development**: `cd editor && npm run dev` (builds with watch)
 - **Build for production**: `cd editor && npm run build`
 - **Run tests**: `cd editor && npm test`
-- **Lint code**: `cd editor && npm run lint`
-- **Run e2e tests**: `cd editor && npm run e2e`
 
 ### Laravel API (_api_app/_ directory)
 - **Install dependencies**: `cd _api_app && composer install`
@@ -50,8 +48,7 @@ Berta is a file-based CMS consisting of three main components that work together
 
 #### Angular Editor
 - NGXS state management for application state
-- Component-based architecture with inline templates
-- Custom webpack configuration for builds
+- Component-based modular architecture with inline templates
 - Outputs built files to `../engine/dist/`
 
 #### Laravel API Backend  

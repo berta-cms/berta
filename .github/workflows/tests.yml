@@ -3,8 +3,9 @@ name: Tests
 on: ['push', 'pull_request']
 
 jobs:
-  ci:
+  laravel-tests:
     runs-on: ubuntu-latest
+    name: Laravel API Tests
 
     steps:
       - name: Checkout
@@ -22,3 +23,24 @@ jobs:
 
       - name: Tests
         run: cd _api_app && ./vendor/bin/pest --ci
+
+  angular-tests:
+    runs-on: ubuntu-latest
+    name: Angular Editor Tests
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: editor/package-lock.json
+
+      - name: Install Dependencies
+        run: cd editor && npm ci
+
+      - name: Run Tests
+        run: cd editor && npm test -- --watch=false --browsers=ChromeHeadless
