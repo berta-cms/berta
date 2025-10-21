@@ -1,11 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  Component,
+  DestroyRef,
+  inject,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { Store } from '@ngxs/store';
-
 import { PopupService } from '../popup/popup.service';
 import { AppStateModel } from '../app-state/app-state.interface';
-import { AppState } from '../app-state/app.state';
 import {
   PreviewThemeSitesAction,
   ApplyThemeSitesAction,
@@ -65,8 +70,9 @@ import {
   `,
   standalone: false,
 })
-export class ThemesComponent implements OnInit {
+export class ThemesComponent implements OnInit, OnDestroy {
   appState: AppStateModel;
+  destroyRef: DestroyRef;
   themes: { name: string; imageSrc: SafeUrl }[];
 
   constructor(
@@ -74,12 +80,16 @@ export class ThemesComponent implements OnInit {
     private router: Router,
     private sanitizer: DomSanitizer,
     private popupService: PopupService,
-  ) {}
+  ) {
+    this.destroyRef = inject(DestroyRef);
+  }
 
   ngOnInit() {
     this.store
       .select((state) => state.app)
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((state: AppStateModel) => {
+        console.log('ThemesComponent: AppState updated');
         this.appState = state;
         this.themes = this.appState.themes.map((theme) => {
           const url = window.location.origin + '/_themes/' + theme + '.png';
@@ -89,6 +99,10 @@ export class ThemesComponent implements OnInit {
           };
         });
       });
+  }
+
+  ngOnDestroy() {
+    console.log('ThemesComponent: ngOnDestroy');
   }
 
   previewTheme(event, theme) {
