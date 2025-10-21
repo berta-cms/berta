@@ -106,7 +106,7 @@ export class AppState implements NgxsOnInit {
   constructor(
     private router: Router,
     private actions$: Actions,
-    private appStateService: AppStateService
+    private appStateService: AppStateService,
   ) {}
 
   ngxsOnInit({ getState, dispatch }: StateContext<AppStateModel>) {
@@ -133,7 +133,7 @@ export class AppState implements NgxsOnInit {
               site: newSiteName,
               section: newSectionName,
               tag: newTagName,
-            })
+            }),
           );
         }
       });
@@ -142,7 +142,7 @@ export class AppState implements NgxsOnInit {
       .pipe(
         filter((event) => event instanceof NavigationEnd),
         map((event: NavigationEnd) => event.url.split('?')[0]),
-        filter((url) => url !== '/' && url !== '/login')
+        filter((url) => url !== '/' && url !== '/login'),
       )
       .subscribe((url: string) => {
         dispatch(new UpdateAppStateAction({ lastRoute: url }));
@@ -163,8 +163,8 @@ export class AppState implements NgxsOnInit {
       // After each subsequent successful login, initialize the state
       this.actions$.pipe(
         ofActionSuccessful(UserLoginAction),
-        switchMap(() => this.appStateService.getInitialState('').pipe(take(1)))
-      )
+        switchMap(() => this.appStateService.getInitialState('').pipe(take(1))),
+      ),
     ).subscribe({
       next: (response) => {
         dispatch(new InitAppStateAction({ urls: response.urls }));
@@ -176,7 +176,7 @@ export class AppState implements NgxsOnInit {
   @Action(UpdateInputFocus)
   updateInputFocus(
     { patchState }: StateContext<AppStateModel>,
-    action: UpdateInputFocus
+    action: UpdateInputFocus,
   ) {
     patchState({ inputFocused: action.isFocused });
   }
@@ -224,7 +224,7 @@ export class AppState implements NgxsOnInit {
   @Action(InitAppStateAction)
   InitState(
     { patchState }: StateContext<AppStateModel>,
-    action: InitAppStateAction
+    action: InitAppStateAction,
   ) {
     patchState({ urls: action.payload.urls });
   }
@@ -232,7 +232,7 @@ export class AppState implements NgxsOnInit {
   @Action(UpdateAppStateAction)
   updateState(
     { patchState }: StateContext<AppStateModel>,
-    action: UpdateAppStateAction
+    action: UpdateAppStateAction,
   ) {
     patchState(action.payload);
   }

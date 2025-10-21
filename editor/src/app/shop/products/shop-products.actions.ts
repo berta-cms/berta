@@ -5,13 +5,16 @@ export class UpdateShopProductAction {
     public payload: {
       field: string;
       value: any;
-    }
+    },
   ) {}
 }
 
 export class RenameShopProductSiteAction {
   static readonly type = 'SHOP_PRODUCT:SITE_RENAME';
-  constructor(public siteName: string, public payload: string) {}
+  constructor(
+    public siteName: string,
+    public payload: string,
+  ) {}
 }
 
 export class DeleteShopProductSiteAction {

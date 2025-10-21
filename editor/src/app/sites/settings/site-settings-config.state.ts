@@ -32,7 +32,7 @@ export class SiteSettingsConfigState implements NgxsOnInit {
   constructor(
     private store: Store,
     private actions$: Actions,
-    private appStateService: AppStateService
+    private appStateService: AppStateService,
   ) {}
 
   ngxsOnInit({ dispatch }: StateContext<SiteSettingsConfigStateModel>) {
@@ -46,8 +46,8 @@ export class SiteSettingsConfigState implements NgxsOnInit {
           return this.appStateService
             .getInitialState('', 'siteSettingsConfig')
             .pipe(take(1));
-        })
-      )
+        }),
+      ),
     ).subscribe({
       next: (siteSettingsConfig: SiteSettingsConfigResponse) => {
         dispatch(new InitSiteSettingsConfigAction(siteSettingsConfig));
@@ -64,8 +64,8 @@ export class SiteSettingsConfigState implements NgxsOnInit {
         switchMap(([, language]) =>
           this.appStateService
             .getLocaleSettings(language, 'siteSettingsConfig')
-            .pipe(take(1))
-        )
+            .pipe(take(1)),
+        ),
       )
       .subscribe((siteSettingsConfig: SiteSettingsConfigResponse) => {
         dispatch(new InitSiteSettingsConfigAction(siteSettingsConfig));
@@ -82,13 +82,13 @@ export class SiteSettingsConfigState implements NgxsOnInit {
   @Action(InitSiteSettingsConfigAction)
   initSiteSettingsConfig(
     { setState }: StateContext<SiteSettingsConfigStateModel>,
-    action: InitSiteSettingsConfigAction
+    action: InitSiteSettingsConfigAction,
   ) {
     const settingGroups = {};
 
     for (const groupSlug in action.payload) {
       settingGroups[groupSlug] = initSettingConfigGroup(
-        action.payload[groupSlug]
+        action.payload[groupSlug],
       );
     }
 

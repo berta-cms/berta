@@ -9,44 +9,47 @@ import { SiteStateModel } from '../sites-state/site-state.model';
       <div class="header">
         entry #{{ entry.id }}
         @if (entry && entry.tags && entry.tags.tag.length > 0) {
-        <span>({{ entry.tags.tag.join(', ') }})</span>
+          <span>({{ entry.tags.tag.join(', ') }})</span>
         }
       </div>
       <div class="entry-gallery-items">
-        @for (file of entry.mediaCacheData.file; track file['@attributes'].src)
-        {
-        <div class="entry-gallery-item">
-          @if (file['@attributes'].type === 'image') {
-          <div class="media image">
-            <img
-              src="{{ currentSite.mediaUrl }}/{{
-                entry.mediafolder
-              }}/_smallthumb_{{ file['@attributes'].src }}"
-            />
-          </div>
-          } @if (file['@attributes'].type === 'video') {
-          <div class="media video">
-            <video
-              [attr.poster]="
-                file['@attributes'].poster_frame
-                  ? currentSite.mediaUrl +
-                    '/' +
-                    entry.mediafolder +
-                    '/' +
+        @for (
+          file of entry.mediaCacheData.file;
+          track file['@attributes'].src
+        ) {
+          <div class="entry-gallery-item">
+            @if (file['@attributes'].type === 'image') {
+              <div class="media image">
+                <img
+                  src="{{ currentSite.mediaUrl }}/{{
+                    entry.mediafolder
+                  }}/_smallthumb_{{ file['@attributes'].src }}"
+                />
+              </div>
+            }
+            @if (file['@attributes'].type === 'video') {
+              <div class="media video">
+                <video
+                  [attr.poster]="
                     file['@attributes'].poster_frame
-                  : null
-              "
-            >
-              <source
-                src="{{ currentSite.mediaUrl }}/{{ entry.mediafolder }}/{{
-                  file['@attributes'].src
-                }}"
-                type="video/mp4"
-              />
-            </video>
+                      ? currentSite.mediaUrl +
+                        '/' +
+                        entry.mediafolder +
+                        '/' +
+                        file['@attributes'].poster_frame
+                      : null
+                  "
+                >
+                  <source
+                    src="{{ currentSite.mediaUrl }}/{{ entry.mediafolder }}/{{
+                      file['@attributes'].src
+                    }}"
+                    type="video/mp4"
+                  />
+                </video>
+              </div>
+            }
           </div>
-          }
-        </div>
         }
       </div>
       <berta-route-button

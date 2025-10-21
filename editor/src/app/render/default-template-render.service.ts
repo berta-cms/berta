@@ -43,7 +43,7 @@ export class DefaultTemplateRenderService extends TemplateRenderService {
     gridViewRenderService: GridViewRenderService,
     backgroundGalleryRenderService: BackgroundGalleryRenderService,
     shopCartRenderService: ShopCartRenderService,
-    twigTemplateRenderService: TwigTemplateRenderService
+    twigTemplateRenderService: TwigTemplateRenderService,
   ) {
     super(
       store,
@@ -64,7 +64,7 @@ export class DefaultTemplateRenderService extends TemplateRenderService {
       gridViewRenderService,
       backgroundGalleryRenderService,
       shopCartRenderService,
-      twigTemplateRenderService
+      twigTemplateRenderService,
     );
   }
 
@@ -83,7 +83,7 @@ export class DefaultTemplateRenderService extends TemplateRenderService {
           commonViewData.siteTemplateSettings,
           commonViewData.sections,
           commonViewData.sectionSlug,
-          commonViewData.tagSlug
+          commonViewData.tagSlug,
         ),
 
         isResponsive:
@@ -93,14 +93,14 @@ export class DefaultTemplateRenderService extends TemplateRenderService {
           this.sectionRenderService.getPageEntriesAttributes(
             commonViewData.sections,
             commonViewData.sectionSlug,
-            commonViewData.tagSlug
+            commonViewData.tagSlug,
           ),
         additionalFooterText: this.additionalFooterTextRenderService.render(
           commonViewData.appState,
           commonViewData.siteSlug,
           commonViewData.siteSettings,
           commonViewData.templateName,
-          commonViewData.user
+          commonViewData.user,
         ),
       },
     };
@@ -114,7 +114,7 @@ export class DefaultTemplateRenderService extends TemplateRenderService {
     try {
       const htmlOutput = this.twigTemplateRenderService.render(
         'Sites/Sections/defaultTemplate',
-        viewData
+        viewData,
       );
       this.replaceIframeContent(contentWindow, htmlOutput);
     } catch (error) {

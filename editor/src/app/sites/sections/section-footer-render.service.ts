@@ -43,7 +43,7 @@ export class SectionFooterRenderService {
     try {
       return this.twigTemplateRenderService.render(
         'Sites/Sections/sectionFooter',
-        viewData
+        viewData,
       );
     } catch (error) {
       console.error('Failed to render template:', error);

@@ -11,7 +11,7 @@ export class MessyTemplateStyleService {
     cssList,
     site: SiteStateModel,
     template: string,
-    templateSettings: SettingsGroupModel[]
+    templateSettings: SettingsGroupModel[],
   ) {
     if (
       style.group === 'background' &&
@@ -21,7 +21,7 @@ export class MessyTemplateStyleService {
       const backgroundImage = this.getSettingValue(
         templateSettings,
         'background',
-        'backgroundImage'
+        'backgroundImage',
       );
 
       cssList.push({
@@ -39,7 +39,7 @@ export class MessyTemplateStyleService {
         this.getSettingValue(
           templateSettings,
           'background',
-          'backgroundImageEnabled'
+          'backgroundImageEnabled',
         ) === 'yes';
       cssList = cssList.map((item) => {
         return {
@@ -155,7 +155,7 @@ export class MessyTemplateStyleService {
   getSettingValue(
     templateSettings: SettingsGroupModel[],
     group: string,
-    slug: string
+    slug: string,
   ) {
     return templateSettings
       .find((g) => g.slug === group)

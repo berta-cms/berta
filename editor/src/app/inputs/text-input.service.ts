@@ -17,7 +17,7 @@ export class TextInputService {
 
   initValue(
     value,
-    { hideIcon, isLongInput }: { hideIcon?: boolean; isLongInput?: boolean }
+    { hideIcon, isLongInput }: { hideIcon?: boolean; isLongInput?: boolean },
   ) {
     this.lastValue = value;
     this.hideIcon = !!hideIcon;

@@ -15,7 +15,7 @@ export class GridViewRenderService {
   getUrl(
     siteSlug: string,
     currentSection: SiteSectionStateModel,
-    tagSlug: string
+    tagSlug: string,
   ) {
     let urlParts: string[] = [];
 
@@ -36,7 +36,7 @@ export class GridViewRenderService {
     appState: AppStateModel,
     siteSlug: string,
     currentSection: SiteSectionStateModel,
-    tagSlug: string
+    tagSlug: string,
   ) {
     const items = currentSection.mediaCacheData.file.map((image) => {
       return {
@@ -57,13 +57,13 @@ export class GridViewRenderService {
     appState: AppStateModel,
     siteSlug: string,
     currentSection: SiteSectionStateModel,
-    tagSlug: string
+    tagSlug: string,
   ) {
     const items = this.getImageItems(
       appState,
       siteSlug,
       currentSection,
-      tagSlug
+      tagSlug,
     );
 
     return { items: items };
@@ -75,7 +75,7 @@ export class GridViewRenderService {
     templateName: string,
     currentSection: SiteSectionStateModel,
     currentSectionType: string,
-    tagSlug: string
+    tagSlug: string,
   ) {
     if (
       !this.USED_IN_TEMPLATES.includes(templateName) ||
@@ -93,13 +93,13 @@ export class GridViewRenderService {
       appState,
       siteSlug,
       currentSection,
-      tagSlug
+      tagSlug,
     );
 
     try {
       return this.twigTemplateRenderService.render(
         'Sites/Sections/gridView',
-        viewData
+        viewData,
       );
     } catch (error) {
       console.error('Failed to render template:', error);

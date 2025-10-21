@@ -8,7 +8,7 @@ export class SectionEntriesService {
   getSectionEntries(
     entries: SectionEntry[],
     sectionSlug: string,
-    tagSlug: string | null
+    tagSlug: string | null,
   ): SectionEntry[] {
     return entries
       .filter((entry) => {

@@ -29,7 +29,7 @@ export class MashupTemplateRerenderService extends TemplateRerenderService {
   constructor(
     mashupRenderService: MashupTemplateRenderService,
     actions$: Actions,
-    private pageLayoutService: PageLayoutService
+    private pageLayoutService: PageLayoutService,
   ) {
     super(mashupRenderService, actions$);
   }
@@ -62,7 +62,7 @@ export class MashupTemplateRerenderService extends TemplateRerenderService {
     const siteSettingChildrenHandleSubscr =
       this.handleSiteSettingChildrenHandleRerender(
         iframe,
-        MashupTemplateRerenderService.SETTINGS_IDS_DATA_KEYS
+        MashupTemplateRerenderService.SETTINGS_IDS_DATA_KEYS,
       );
 
     // re-renders in case of design settings changes
@@ -78,7 +78,7 @@ export class MashupTemplateRerenderService extends TemplateRerenderService {
         } else if (action.settingGroup === 'css') {
           MashupTemplateRerenderService.handleCssDesignSettingChange(
             dom,
-            action
+            action,
           );
         }
       });

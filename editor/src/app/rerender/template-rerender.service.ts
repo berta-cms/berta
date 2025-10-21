@@ -68,12 +68,12 @@ export class TemplateRerenderService {
 
   constructor(
     public renderService: TemplateRenderService,
-    public actions$: Actions
+    public actions$: Actions,
   ) {}
 
   private static getSiteSettingsChildrenComp(
     action: HandleSiteSettingsChildrenChangesAction,
-    info: SiteSettingChildrenHandler
+    info: SiteSettingChildrenHandler,
   ): Component[] {
     let compList: Component[] = [];
 
@@ -108,7 +108,7 @@ export class TemplateRerenderService {
           UpdateSectionBackgroundFileAction,
           UpdateSiteSectionByPathAction,
           ResetToDefaultsSiteTemplateSettingsAction,
-          UpdateSectionEntryAction
+          UpdateSectionEntryAction,
         ),
         filter((action) => {
           const reloadConditionFromSiteSettingsAction =
@@ -163,7 +163,7 @@ export class TemplateRerenderService {
             reloadConditionFromSiteTemplateSettings ||
             reloadConditionFromUpdateSectionEntryActions
           );
-        })
+        }),
       )
       .subscribe(() => {
         win.location.reload();
@@ -172,7 +172,7 @@ export class TemplateRerenderService {
 
   protected static handleCssDesignSettingChange(
     dom: Document,
-    action: HandleSiteTemplateSettingsAction
+    action: HandleSiteTemplateSettingsAction,
   ) {
     const customStylesId = 'customCSSStyles';
     const customCSS = action.payload.customCSS;
@@ -196,8 +196,8 @@ export class TemplateRerenderService {
         ofActionSuccessful(
           ReOrderSitesAction,
           UpdateSiteAction,
-          DeleteSiteAction
-        )
+          DeleteSiteAction,
+        ),
       )
       .subscribe(() => {
         const viewData = this.renderService.getViewData();
@@ -214,7 +214,7 @@ export class TemplateRerenderService {
           DeleteSiteSectionAction,
           CreateSectionAction,
           RenameSiteSectionAction,
-          UpdateSiteSectionAction
+          UpdateSiteSectionAction,
         ),
         filter((action) => {
           return (
@@ -222,14 +222,14 @@ export class TemplateRerenderService {
             action.payload.link ||
             action.payload.target
           );
-        })
+        }),
       )
       .subscribe(() => {
         const viewData = this.renderService.getViewData();
         replaceContent(
           iframe.contentDocument,
           'sectionsMenu',
-          viewData.sectionsMenu
+          viewData.sectionsMenu,
         );
         iframe.contentWindow.dispatchEvent(new Event('sectionsMenuRerendered'));
       });
@@ -245,7 +245,7 @@ export class TemplateRerenderService {
         replaceContent(
           iframe.contentDocument,
           'portfolioThumbnails',
-          viewData.portfolioThumbnails
+          viewData.portfolioThumbnails,
         );
 
         removeExtraAddBtnAndAddListeners(iframe);
@@ -275,7 +275,7 @@ export class TemplateRerenderService {
   }
 
   public handleSectionEntryUpdateRerender(
-    iframe: HTMLIFrameElement
+    iframe: HTMLIFrameElement,
   ): Subscription {
     return this.actions$
       .pipe(
@@ -287,8 +287,8 @@ export class TemplateRerenderService {
           DeleteEntryGalleryFileAction,
           UpdateEntryGalleryImageCropAction,
           UpdateEntryGalleryFileAction,
-          UpdateEntryGalleryVideoPosterAction
-        )
+          UpdateEntryGalleryVideoPosterAction,
+        ),
       )
       .subscribe(() => {
         const viewData = this.renderService.getViewData();
@@ -296,7 +296,7 @@ export class TemplateRerenderService {
         replaceContent(
           iframe.contentDocument,
           'sectionsMenu',
-          viewData.sectionsMenu
+          viewData.sectionsMenu,
         );
 
         replaceContent(iframe.contentDocument, 'pageEntries', viewData.entries);
@@ -304,7 +304,7 @@ export class TemplateRerenderService {
         replaceContent(
           iframe.contentDocument,
           'portfolioThumbnails',
-          viewData.portfolioThumbnails
+          viewData.portfolioThumbnails,
         );
 
         removeExtraAddBtnAndAddListeners(iframe);
@@ -313,7 +313,7 @@ export class TemplateRerenderService {
 
   public handleSiteSettingChildrenHandleRerender(
     iframe: HTMLIFrameElement,
-    info: SiteSettingChildrenHandler
+    info: SiteSettingChildrenHandler,
   ): Subscription {
     return this.actions$
       .pipe(ofActionSuccessful(HandleSiteSettingsChildrenChangesAction))
@@ -325,17 +325,17 @@ export class TemplateRerenderService {
   protected execCommonSiteSettingsRerender(
     iframe: HTMLIFrameElement,
     action: HandleSiteSettingsChildrenChangesAction,
-    info: SiteSettingChildrenHandler
+    info: SiteSettingChildrenHandler,
   ): void {
     const viewData = this.renderService.getViewData();
 
     let compList = TemplateRerenderService.getSiteSettingsChildrenComp(
       action,
-      info
+      info,
     );
 
     compList.forEach((comp) =>
-      replaceContent(iframe.contentDocument, comp.id, viewData[comp.dataKey])
+      replaceContent(iframe.contentDocument, comp.id, viewData[comp.dataKey]),
     );
 
     removeExtraAddBtnAndAddListeners(iframe);

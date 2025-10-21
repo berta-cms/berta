@@ -49,7 +49,7 @@ export class BackgroundGalleryRenderService {
   getGalleryItems(siteSlug: string, currentSection: SiteSectionStateModel) {
     const selectedGridImage = getCookie('_berta_grid_img_link');
     const currentItemIndex = currentSection.mediaCacheData.file.findIndex(
-      (item) => item['@attributes'].src === selectedGridImage
+      (item) => item['@attributes'].src === selectedGridImage,
     );
 
     const items = currentSection.mediaCacheData.file.map((item, index) => {
@@ -60,7 +60,7 @@ export class BackgroundGalleryRenderService {
         currentSection.mediaCacheData['@attributes'].caption_bg_color
       ) {
         captionStyles.push(
-          `background-color: ${currentSection.mediaCacheData['@attributes'].caption_bg_color}`
+          `background-color: ${currentSection.mediaCacheData['@attributes'].caption_bg_color}`,
         );
       }
 
@@ -69,7 +69,7 @@ export class BackgroundGalleryRenderService {
         currentSection.mediaCacheData['@attributes'].caption_color
       ) {
         captionStyles.push(
-          `color: ${currentSection.mediaCacheData['@attributes'].caption_color}`
+          `color: ${currentSection.mediaCacheData['@attributes'].caption_color}`,
         );
       }
 
@@ -106,7 +106,7 @@ export class BackgroundGalleryRenderService {
   getViewData(
     siteSlug: string,
     currentSection: SiteSectionStateModel,
-    isResponsive: boolean
+    isResponsive: boolean,
   ) {
     const items = this.getGalleryItems(siteSlug, currentSection);
     const showNavigation =
@@ -132,7 +132,7 @@ export class BackgroundGalleryRenderService {
     templateName: string,
     currentSection: SiteSectionStateModel,
     currentSectionType: string,
-    isResponsive: boolean
+    isResponsive: boolean,
   ) {
     if (
       !this.USED_IN_TEMPLATES.includes(templateName) ||
@@ -150,7 +150,7 @@ export class BackgroundGalleryRenderService {
     try {
       return this.twigTemplateRenderService.render(
         'Sites/Sections/sectionBackgroundGallery',
-        viewData
+        viewData,
       );
     } catch (error) {
       console.error('Failed to render template:', error);

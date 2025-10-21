@@ -55,7 +55,7 @@ export class ShopProductsState implements NgxsOnInit {
   @Selector([ShopProductsState, AppState.getSite])
   static getCurrentSiteProducts(
     state: ShopProductsModel,
-    site: string
+    site: string,
   ): Array<ShopProduct> {
     return state[site];
   }
@@ -64,7 +64,7 @@ export class ShopProductsState implements NgxsOnInit {
     private store$: Store,
     private actions$: Actions,
     private appStateService: AppStateService,
-    private stateService: ShopStateService
+    private stateService: ShopStateService,
   ) {}
 
   ngxsOnInit({ dispatch }: StateContext<ShopProductsModel>) {
@@ -76,9 +76,9 @@ export class ShopProductsState implements NgxsOnInit {
         switchMap((site) =>
           this.stateService.getInitialState(site, 'products').pipe(
             take(1),
-            map((products) => ({ site, products }))
-          )
-        )
+            map((products) => ({ site, products })),
+          ),
+        ),
       )
       .subscribe(({ site, products }) => {
         dispatch(new InitShopProductsAction({ [site]: products[site] }));
@@ -99,11 +99,11 @@ export class ShopProductsState implements NgxsOnInit {
             switchMap((site) =>
               this.stateService.getInitialState(site, 'products', true).pipe(
                 take(1),
-                map((products) => ({ site, products }))
-              )
-            )
-          )
-        )
+                map((products) => ({ site, products })),
+              ),
+            ),
+          ),
+        ),
       )
       .subscribe(({ site, products }) => {
         dispatch(new InitShopProductsAction({ [site]: products[site] }));
@@ -113,7 +113,7 @@ export class ShopProductsState implements NgxsOnInit {
   @Action(InitShopProductsAction)
   initShopProducts(
     { patchState }: StateContext<ShopProductsModel>,
-    action: InitShopProductsAction
+    action: InitShopProductsAction,
   ) {
     patchState(action.payload);
   }
@@ -121,7 +121,7 @@ export class ShopProductsState implements NgxsOnInit {
   @Action(UpdateShopProductAction)
   updateShopProduct(
     { getState, patchState }: StateContext<ShopProductsModel>,
-    action: UpdateShopProductAction
+    action: UpdateShopProductAction,
   ) {
     const currentSite = this.store$.selectSnapshot(AppState.getSite);
     const syncURLs = this.store$.selectSnapshot(ShopState.getURLs);
@@ -134,7 +134,7 @@ export class ShopProductsState implements NgxsOnInit {
           path: `${currentSite}/${action.id}/${action.payload.field}`,
           value: action.payload.value,
         },
-        'PATCH'
+        'PATCH',
       )
       .pipe(
         tap((response) => {
@@ -157,14 +157,14 @@ export class ShopProductsState implements NgxsOnInit {
             console.error(error.message);
           }
           throw error;
-        })
+        }),
       );
   }
 
   @Action(RenameShopProductSiteAction)
   renameProductsSite(
     { getState, setState }: StateContext<ShopProductsModel>,
-    action: RenameShopProductSiteAction
+    action: RenameShopProductSiteAction,
   ) {
     const state = getState(),
       newState = {};
@@ -183,7 +183,7 @@ export class ShopProductsState implements NgxsOnInit {
   @Action(DeleteShopProductSiteAction)
   deleteProductsSite(
     { getState, setState }: StateContext<ShopProductsModel>,
-    action: DeleteShopProductSiteAction
+    action: DeleteShopProductSiteAction,
   ) {
     const state = { ...getState() };
     delete state[action.payload];

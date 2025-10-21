@@ -10,13 +10,13 @@ export class GallerySlideshowRenderService extends GalleryRenderService {
     galleryItemsData,
     galleryType,
     entry,
-    siteSettings
+    siteSettings,
   ): string[] | string {
     let classes = super.getGalleryClassList(
       galleryItemsData,
       galleryType,
       entry,
-      siteSettings
+      siteSettings,
     );
 
     if (galleryItemsData && galleryItemsData.length && entry) {
@@ -28,7 +28,7 @@ export class GallerySlideshowRenderService extends GalleryRenderService {
           ? entry.mediaCacheData['@attributes'].slide_numbers_visible
           : siteSettings.entryLayout.gallerySlideNumberVisibilityDefault;
       (classes as string[]).push(
-        `xSlideNumbersVisible-${gallerySlideNumbersVisible}`
+        `xSlideNumbersVisible-${gallerySlideNumbersVisible}`,
       );
     }
 
@@ -39,7 +39,7 @@ export class GallerySlideshowRenderService extends GalleryRenderService {
     const galleryWidth = this.getGalleryWidth(
       entry,
       galleryItems,
-      templateName
+      templateName,
     );
 
     return galleryWidth ? `width:${galleryWidth}px` : null;
@@ -77,14 +77,14 @@ export class GallerySlideshowRenderService extends GalleryRenderService {
     asRowGallery,
     galleryItemsData,
     galleryItems,
-    galleryType
+    galleryType,
   ): { [key: string]: any } {
     galleryItemsData = this.getGalleryItemsData(entry);
     galleryItems = this.generateGalleryItems(
       siteSlug,
       galleryItemsData,
       entry,
-      siteSettings
+      siteSettings,
     );
     galleryType =
       entry.mediaCacheData &&
@@ -104,7 +104,7 @@ export class GallerySlideshowRenderService extends GalleryRenderService {
       asRowGallery,
       galleryItemsData,
       galleryItems,
-      galleryType
+      galleryType,
     );
 
     return {
@@ -114,7 +114,7 @@ export class GallerySlideshowRenderService extends GalleryRenderService {
           galleryItemsData,
           galleryType,
           entry,
-          siteSettings
+          siteSettings,
         ),
         attributes: {
           gallery: toHtmlAttributes({
@@ -149,7 +149,7 @@ export class GallerySlideshowRenderService extends GalleryRenderService {
     entry,
     siteTemplateSettings,
     isLoopAvailable,
-    asRowGallery
+    asRowGallery,
   ) {
     if (
       !entry.mediaCacheData ||
@@ -159,7 +159,7 @@ export class GallerySlideshowRenderService extends GalleryRenderService {
       try {
         return this.twigTemplateRenderService.render(
           'Sites/Sections/Entries/Galleries/editEmptyGallery',
-          {}
+          {},
         );
       } catch (error) {
         console.error('Failed to render template:', error);
@@ -178,13 +178,13 @@ export class GallerySlideshowRenderService extends GalleryRenderService {
       asRowGallery,
       null,
       null,
-      null
+      null,
     );
 
     try {
       return this.twigTemplateRenderService.render(
         'Sites/Sections/Entries/Galleries/gallerySlideshow',
-        viewData
+        viewData,
       );
     } catch (error) {
       console.error('Failed to render template:', error);

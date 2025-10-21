@@ -39,7 +39,10 @@ export class AppStateService {
   cachedSiteStates: { [k: string]: Observable<{ [k: string]: any }> } = {};
   cachedLocaleSettings: { [k: string]: Observable<{ [k: string]: any }> } = {};
 
-  constructor(private http: HttpClient, private store: Store) {}
+  constructor(
+    private http: HttpClient,
+    private store: Store,
+  ) {}
 
   showLoading() {
     this.store.dispatch(new AppShowLoading());
@@ -57,7 +60,7 @@ export class AppStateService {
     ]).pipe(
       filter(
         ([appState, user]) =>
-          !!user.token && (appState.urls[urlName] || urlName)
+          !!user.token && (appState.urls[urlName] || urlName),
       ),
       take(1),
       switchMap(([appState, user]) => {
@@ -81,7 +84,7 @@ export class AppStateService {
               'Content-Type': 'application/json',
               'X-Authorization': 'Bearer ' + user.token,
             },
-          }
+          },
         );
       }),
       retryWhen((attempts) => {
@@ -108,11 +111,11 @@ export class AppStateService {
                 pairwise(),
                 filter(
                   ([prevUser, user]) =>
-                    !!user.token && prevUser.token !== user.token
+                    !!user.token && prevUser.token !== user.token,
                 ),
-                take(1)
+                take(1),
               );
-          })
+          }),
         );
       }),
       tap(() => this.hideLoading()),
@@ -120,7 +123,7 @@ export class AppStateService {
         this.showError(error, data);
         this.hideLoading();
         throw error;
-      })
+      }),
     );
   }
 
@@ -128,7 +131,7 @@ export class AppStateService {
     return this.http.get('/_api/v1/meta').pipe(
       map((resp: APIResponse) => {
         return resp.data;
-      })
+      }),
     );
   }
 
@@ -148,7 +151,7 @@ export class AppStateService {
             '/_api/v1/state' + (_site ? '/' + _site : _site),
             {
               headers: { 'X-Authorization': 'Bearer ' + user.token },
-            }
+            },
           );
         }),
         retryWhen((attempts) => {
@@ -175,11 +178,11 @@ export class AppStateService {
                   pairwise(),
                   filter(
                     ([prevUser, user]) =>
-                      !!user.token && prevUser.token !== user.token
+                      !!user.token && prevUser.token !== user.token,
                   ),
-                  take(1)
+                  take(1),
                 );
-            })
+            }),
           );
         }),
         tap(() => this.hideLoading()),
@@ -193,13 +196,13 @@ export class AppStateService {
           }
           delete this.cachedSiteStates[site];
           throw error;
-        })
+        }),
       );
     }
 
     if (stateSlice) {
       return this.cachedSiteStates[site].pipe(
-        map((stateCache) => stateCache[stateSlice])
+        map((stateCache) => stateCache[stateSlice]),
       );
     }
 
@@ -209,19 +212,19 @@ export class AppStateService {
   getLocaleSettings(
     language: string = 'en',
     stateSlice?: string,
-    force = false
+    force = false,
   ) {
     if (!this.cachedLocaleSettings[language] || force) {
       this.cachedLocaleSettings[language] = this.sync(
         'localeSettings',
         { language: language },
-        'GET'
+        'GET',
       ).pipe(shareReplay(CACHE_SIZE));
     }
 
     if (stateSlice) {
       return this.cachedLocaleSettings[language].pipe(
-        map((stateCache) => stateCache[stateSlice])
+        map((stateCache) => stateCache[stateSlice]),
       );
     }
 
@@ -247,21 +250,21 @@ export class AppStateService {
           window.localStorage.setItem('token', resp.data.token);
           window.localStorage.setItem(
             'features',
-            JSON.stringify(resp.data.features)
+            JSON.stringify(resp.data.features),
           );
           window.localStorage.setItem(
             'profileUrl',
-            JSON.stringify(resp.data.profileUrl)
+            JSON.stringify(resp.data.profileUrl),
           );
           window.localStorage.setItem(
             'intercom',
-            JSON.stringify(resp.data.intercom)
+            JSON.stringify(resp.data.intercom),
           );
           window.localStorage.setItem(
             'helpcrunch',
-            JSON.stringify(resp.data.helpcrunch)
+            JSON.stringify(resp.data.helpcrunch),
           );
-        })
+        }),
       );
   }
 
@@ -299,7 +302,7 @@ export class AppStateService {
         message: message,
         httpStatus: error.status ? error.status : undefined,
         field: data.path ? data.path : '',
-      })
+      }),
     );
   }
 }

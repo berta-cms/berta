@@ -10,7 +10,7 @@ export class WhiteTemplateStyleService {
     style,
     cssList,
     site: SiteStateModel,
-    templateSettings: SettingsGroupModel[]
+    templateSettings: SettingsGroupModel[],
   ) {
     if (
       style.group === 'background' &&
@@ -20,7 +20,7 @@ export class WhiteTemplateStyleService {
       const backgroundImage = this.getSettingValue(
         templateSettings,
         'background',
-        'backgroundImage'
+        'backgroundImage',
       );
 
       cssList.push({
@@ -38,7 +38,7 @@ export class WhiteTemplateStyleService {
         this.getSettingValue(
           templateSettings,
           'background',
-          'backgroundImageEnabled'
+          'backgroundImageEnabled',
         ) === 'yes';
       cssList = cssList.map((item) => {
         return {
@@ -73,25 +73,25 @@ export class WhiteTemplateStyleService {
         this.getSettingValue(
           templateSettings,
           'pageLayout',
-          'contentWidth'
+          'contentWidth',
         ) as string,
-        10
+        10,
       );
       const leftColumnWidth: number = parseInt(
         this.getSettingValue(
           templateSettings,
           'pageLayout',
-          'leftColumnWidth'
+          'leftColumnWidth',
         ) as string,
-        10
+        10,
       );
       const paddingLeft: number = parseInt(
         this.getSettingValue(
           templateSettings,
           'pageLayout',
-          'paddingLeft'
+          'paddingLeft',
         ) as string,
-        10
+        10,
       );
 
       cssList.push({
@@ -121,7 +121,7 @@ export class WhiteTemplateStyleService {
   getSettingValue(
     templateSettings: SettingsGroupModel[],
     group: string,
-    slug: string
+    slug: string,
   ) {
     return templateSettings
       .find((g) => g.slug === group)

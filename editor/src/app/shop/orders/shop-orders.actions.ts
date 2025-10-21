@@ -1,6 +1,9 @@
 export class RenameShopOrdersSiteAction {
   static readonly type = 'SHOP_ORDERS:SITE_RENAME';
-  constructor(public siteName: string, public payload: string) {}
+  constructor(
+    public siteName: string,
+    public payload: string,
+  ) {}
 }
 
 export class DeleteShopOrdersSiteAction {

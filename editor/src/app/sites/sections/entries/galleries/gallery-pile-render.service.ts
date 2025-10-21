@@ -9,13 +9,13 @@ export class GalleryPileRenderService extends GalleryRenderService {
     galleryItemsData,
     galleryType,
     entry,
-    siteSettings
+    siteSettings,
   ): string[] | string {
     let classes = super.getGalleryClassList(
       galleryItemsData,
       galleryType,
       entry,
-      siteSettings
+      siteSettings,
     );
 
     return (classes as string[]).join(' ');
@@ -42,14 +42,14 @@ export class GalleryPileRenderService extends GalleryRenderService {
     asRowGallery,
     galleryItemsData,
     galleryItems,
-    galleryType
+    galleryType,
   ): { [key: string]: any } {
     galleryItemsData = this.getGalleryItemsData(entry);
     galleryItems = this.generateGalleryItems(
       siteSlug,
       galleryItemsData,
       entry,
-      siteSettings
+      siteSettings,
     );
     galleryType =
       entry.mediaCacheData &&
@@ -69,7 +69,7 @@ export class GalleryPileRenderService extends GalleryRenderService {
       asRowGallery,
       galleryItemsData,
       galleryItems,
-      galleryType
+      galleryType,
     );
 
     return {
@@ -79,7 +79,7 @@ export class GalleryPileRenderService extends GalleryRenderService {
           galleryItemsData,
           galleryType,
           entry,
-          siteSettings
+          siteSettings,
         ),
         galleryStyles: this.getGalleryStyles(galleryItems),
         items: galleryItems.slice(0, 1),
@@ -95,7 +95,7 @@ export class GalleryPileRenderService extends GalleryRenderService {
     entry,
     siteTemplateSettings,
     isLoopAvailable,
-    asRowGallery
+    asRowGallery,
   ) {
     if (
       !entry.mediaCacheData ||
@@ -105,7 +105,7 @@ export class GalleryPileRenderService extends GalleryRenderService {
       try {
         return this.twigTemplateRenderService.render(
           'Sites/Sections/Entries/Galleries/editEmptyGallery',
-          {}
+          {},
         );
       } catch (error) {
         console.error('Failed to render template:', error);
@@ -124,13 +124,13 @@ export class GalleryPileRenderService extends GalleryRenderService {
       asRowGallery,
       null,
       null,
-      null
+      null,
     );
 
     try {
       return this.twigTemplateRenderService.render(
         'Sites/Sections/Entries/Galleries/galleryPile',
-        viewData
+        viewData,
       );
     } catch (error) {
       console.error('Failed to render template:', error);

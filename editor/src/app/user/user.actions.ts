@@ -5,7 +5,7 @@ export class UserLoginAction {
       username?: string;
       password?: string;
       token?: string;
-    }
+    },
   ) {}
 }
 

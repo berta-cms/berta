@@ -5,7 +5,7 @@ export class UpdateShopRegionAction {
     public payload: {
       field: string;
       value: any;
-    }
+    },
   ) {}
 }
 
@@ -15,7 +15,7 @@ export class AddShopRegionAction {
     public payload: {
       name: string;
       vat?: number;
-    }
+    },
   ) {}
 }
 
@@ -24,7 +24,7 @@ export class DeleteShopRegionAction {
   constructor(
     public payload: {
       id: number;
-    }
+    },
   ) {}
 }
 
@@ -37,7 +37,7 @@ export class UpdateShopRegionCostAction {
     public payload: {
       field: string;
       value: any;
-    }
+    },
   ) {}
 }
 
@@ -48,7 +48,7 @@ export class AddShopRegionCostAction {
     public payload: {
       weight: number;
       price: number;
-    }
+    },
   ) {}
 }
 
@@ -58,14 +58,17 @@ export class DeleteShopRegionCostAction {
     public regionId: number,
     public payload: {
       id: number;
-    }
+    },
   ) {}
 }
 
 /* Site: */
 export class RenameShopRegionSiteAction {
   static readonly type = 'SHOP_REGION:SITE_RENAME';
-  constructor(public siteName: string, public payload: string) {}
+  constructor(
+    public siteName: string,
+    public payload: string,
+  ) {}
 }
 
 export class DeleteShopRegionSiteAction {

@@ -30,7 +30,7 @@ export class MessyTemplateRerenderService extends TemplateRerenderService {
   constructor(
     messyRenderService: MessyTemplateRenderService,
     actions$: Actions,
-    private pageLayoutService: PageLayoutService
+    private pageLayoutService: PageLayoutService,
   ) {
     super(messyRenderService, actions$);
   }
@@ -66,13 +66,13 @@ export class MessyTemplateRerenderService extends TemplateRerenderService {
         // if setting group is one of the common settings then exec in standard way
         if (
           MessyTemplateRerenderService.COMMON_SETTING_GROUPS.includes(
-            action.settingGroup
+            action.settingGroup,
           )
         ) {
           this.execCommonSiteSettingsRerender(
             iframe,
             action,
-            MessyTemplateRerenderService.SETTINGS_IDS_DATA_KEYS
+            MessyTemplateRerenderService.SETTINGS_IDS_DATA_KEYS,
           );
           return;
         }
@@ -105,7 +105,7 @@ export class MessyTemplateRerenderService extends TemplateRerenderService {
         } else if (action.settingGroup === 'css') {
           MessyTemplateRerenderService.handleCssDesignSettingChange(
             dom,
-            action
+            action,
           );
         }
       });

@@ -12,7 +12,10 @@ import { SetUserNextUrlAction } from './user.actions';
 export class AuthGuardService implements CanActivate {
   @Select(UserState.isLoggedIn) isLoggedIn$: Observable<boolean>;
 
-  constructor(private store: Store, private router: Router) {}
+  constructor(
+    private store: Store,
+    private router: Router,
+  ) {}
 
   canActivate(route: ActivatedRouteSnapshot) {
     return this.isLoggedIn$.pipe(
@@ -26,11 +29,11 @@ export class AuthGuardService implements CanActivate {
             : '';
 
           this.store.dispatch(
-            new SetUserNextUrlAction('/' + route.url.toString() + queryParams)
+            new SetUserNextUrlAction('/' + route.url.toString() + queryParams),
           );
           this.router.navigate(['/login']);
         }
-      })
+      }),
     );
   }
 }

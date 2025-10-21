@@ -18,73 +18,78 @@ import { SectionEntry } from '../sections/entries/entries-state/section-entries-
   selector: 'berta-site-media',
   template: `
     @if (currentSite$ | async) {
-    <aside>
-      <div class="setting-group">
-        <h3>
-          <a
-            [routerLink]="['/media/list']"
-            queryParamsHandling="merge"
-            [queryParams]="{
-              all: 1
-            }"
-            [class.active]="showAllSections"
-            >All
-          </a>
-        </h3>
-      </div>
-      @for (section of sectionsList; track section) {
-      <div class="setting-group">
-        <h3>
-          <a
-            [routerLink]="['/media/list/' + section.section.name]"
-            queryParamsHandling="merge"
-            [queryParams]="{ all: null }"
-            [class.active]="
-              !showAllSections && section.section.name === activeNav.section
-            "
-            >{{ section.section.title || '...' }}
-          </a>
-          @for (tag of section.tags; track tag) {
-          <div>
+      <aside>
+        <div class="setting-group">
+          <h3>
             <a
-              [routerLink]="[
-                '/media/list/' +
-                  section.section.name +
-                  '/' +
-                  tag['@attributes'].name
-              ]"
+              [routerLink]="['/media/list']"
               queryParamsHandling="merge"
-              [queryParams]="{ all: null }"
-              [class.active]="
-                section.section.name === activeNav.section &&
-                tag['@attributes'].name === activeNav.tag
-              "
-              >{{ tag['@value'] }}
+              [queryParams]="{
+                all: 1,
+              }"
+              [class.active]="showAllSections"
+              >All
             </a>
+          </h3>
+        </div>
+        @for (section of sectionsList; track section) {
+          <div class="setting-group">
+            <h3>
+              <a
+                [routerLink]="['/media/list/' + section.section.name]"
+                queryParamsHandling="merge"
+                [queryParams]="{ all: null }"
+                [class.active]="
+                  !showAllSections && section.section.name === activeNav.section
+                "
+                >{{ section.section.title || '...' }}
+              </a>
+              @for (tag of section.tags; track tag) {
+                <div>
+                  <a
+                    [routerLink]="[
+                      '/media/list/' +
+                        section.section.name +
+                        '/' +
+                        tag['@attributes'].name,
+                    ]"
+                    queryParamsHandling="merge"
+                    [queryParams]="{ all: null }"
+                    [class.active]="
+                      section.section.name === activeNav.section &&
+                      tag['@attributes'].name === activeNav.tag
+                    "
+                    >{{ tag['@value'] }}
+                  </a>
+                </div>
+              }
+            </h3>
           </div>
-          }
-        </h3>
-      </div>
-      }
-    </aside>
+        }
+      </aside>
     }
     <div class="content">
-      @for ( selectedSection of selectedSections; track identifySection($index,
-      selectedSection.section)) {
-      <div>
-        <h3>{{ selectedSection.section.title || '...' }}</h3>
-        @if (selectedTag) {
-        <h5>
-          {{ selectedTag['@value'] }}
-        </h5>
-        } @for (entry of selectedSection.entries; track identifyEntry($index,
-        entry)) {
-        <berta-entry-gallery
-          [currentSite]="currentSite$ | async"
-          [entry]="entry"
-        ></berta-entry-gallery>
-        }
-      </div>
+      @for (
+        selectedSection of selectedSections;
+        track identifySection($index, selectedSection.section)
+      ) {
+        <div>
+          <h3>{{ selectedSection.section.title || '...' }}</h3>
+          @if (selectedTag) {
+            <h5>
+              {{ selectedTag['@value'] }}
+            </h5>
+          }
+          @for (
+            entry of selectedSection.entries;
+            track identifyEntry($index, entry)
+          ) {
+            <berta-entry-gallery
+              [currentSite]="currentSite$ | async"
+              [entry]="entry"
+            ></berta-entry-gallery>
+          }
+        </div>
       }
     </div>
   `,
@@ -112,7 +117,10 @@ export class SiteMediaComponent implements OnInit, OnDestroy {
   showAllSections: boolean;
   private destroy$ = new Subject<void>();
 
-  constructor(private store: Store, private route: ActivatedRoute) {}
+  constructor(
+    private store: Store,
+    private route: ActivatedRoute,
+  ) {}
 
   ngOnInit() {
     combineLatest([
@@ -133,15 +141,15 @@ export class SiteMediaComponent implements OnInit, OnDestroy {
                     section['@attributes'] &&
                     section['@attributes'].type &&
                     ['external_link', 'shopping_cart'].indexOf(
-                      section['@attributes'].type
+                      section['@attributes'].type,
                     ) > -1
-                  )
+                  ),
               )
               .map((section) => {
                 const sectionTags =
                   tags && tags.length > 0
                     ? tags.find(
-                        (tag) => tag['@attributes'].name === section.name
+                        (tag) => tag['@attributes'].name === section.name,
                       )
                     : null;
 
@@ -158,7 +166,7 @@ export class SiteMediaComponent implements OnInit, OnDestroy {
             queryParams,
           };
         }),
-        takeUntil(this.destroy$)
+        takeUntil(this.destroy$),
       )
       .subscribe((data) => {
         this.sectionsList = [...data.sections];
@@ -178,7 +186,7 @@ export class SiteMediaComponent implements OnInit, OnDestroy {
         this.selectedSections = this.sectionsList
           .filter(
             (s) =>
-              this.showAllSections || s.section.name === this.activeNav.section
+              this.showAllSections || s.section.name === this.activeNav.section,
           )
           .map((section) => {
             return {
@@ -191,8 +199,8 @@ export class SiteMediaComponent implements OnInit, OnDestroy {
                         e.tags.slugs &&
                         e.tags.slugs.indexOf(this.activeNav.tag) > -1
                     : this.showAllSections
-                    ? true
-                    : !e.tags || (e.tags.slugs && e.tags.slugs.length === 0);
+                      ? true
+                      : !e.tags || (e.tags.slugs && e.tags.slugs.length === 0);
                 })
                 .sort((a, b) => a.order - b.order),
             };
@@ -201,13 +209,13 @@ export class SiteMediaComponent implements OnInit, OnDestroy {
         this.selectedTag = null;
         if (this.activeNav.tag && this.activeNav.section) {
           const selectedSection = this.selectedSections.find(
-            (s) => s.section.name === this.activeNav.section
+            (s) => s.section.name === this.activeNav.section,
           );
 
           this.selectedTag =
             selectedSection &&
             selectedSection.tags.find(
-              (t) => t['@attributes'].name === this.activeNav.tag
+              (t) => t['@attributes'].name === this.activeNav.tag,
             );
         }
       });

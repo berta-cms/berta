@@ -72,7 +72,7 @@ import { sentryInitFactory } from './sentry/sentry-init.factory';
       ],
       {
         developmentMode: !environment.production,
-      }
+      },
     ),
     NgxsReduxDevtoolsPluginModule.forRoot({ disabled: environment.production }),
     NgxsLoggerPluginModule.forRoot({ disabled: true }), // it logs too much, enable only when needed

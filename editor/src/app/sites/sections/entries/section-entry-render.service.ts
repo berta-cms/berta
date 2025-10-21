@@ -24,7 +24,7 @@ export class SectionEntryRenderService {
     private galleryColumnRenderService: GalleryColumnRenderService,
     private galleryPileRenderService: GalleryPileRenderService,
     private galleryLinkRenderService: GalleryLinkRenderService,
-    private twigTemplateRenderService: TwigTemplateRenderService
+    private twigTemplateRenderService: TwigTemplateRenderService,
   ) {}
 
   getClassList(
@@ -32,7 +32,7 @@ export class SectionEntryRenderService {
     currentSection: SiteSectionStateModel,
     templateName: string,
     currentSectionType: string,
-    isResponsive: boolean
+    isResponsive: boolean,
   ): string {
     let classes: string[] = [
       'entry',
@@ -69,7 +69,7 @@ export class SectionEntryRenderService {
     templateName: string,
     isResponsive: boolean,
     currentSectionType: string,
-    shopSettings
+    shopSettings,
   ): string {
     if (templateName !== 'messy' || isResponsive) {
       return '';
@@ -117,7 +117,7 @@ export class SectionEntryRenderService {
     currentSectionType: string,
     siteTemplateSettings,
     isResponsive: boolean,
-    shopSettings
+    shopSettings,
   ) {
     const apiPath = `${siteSlug}/entry/${currentSection.name}/${entry.id}/`;
     let entryTitle, addToCart, productAttributesEditor;
@@ -141,7 +141,7 @@ export class SectionEntryRenderService {
           entry,
           siteTemplateSettings,
           true,
-          false
+          false,
         );
         break;
 
@@ -154,7 +154,7 @@ export class SectionEntryRenderService {
           entry,
           siteTemplateSettings,
           true,
-          false
+          false,
         );
         break;
 
@@ -167,7 +167,7 @@ export class SectionEntryRenderService {
           entry,
           siteTemplateSettings,
           true,
-          false
+          false,
         );
         break;
 
@@ -180,7 +180,7 @@ export class SectionEntryRenderService {
           entry,
           siteTemplateSettings,
           true,
-          false
+          false,
         );
         break;
 
@@ -193,7 +193,7 @@ export class SectionEntryRenderService {
           entry,
           siteTemplateSettings,
           true,
-          false
+          false,
         );
         break;
     }
@@ -211,7 +211,7 @@ export class SectionEntryRenderService {
                 }),
               },
             },
-          }
+          },
         );
       } catch (error) {
         console.error('Failed to render template:', error);
@@ -232,7 +232,7 @@ export class SectionEntryRenderService {
                 }),
               },
             },
-          }
+          },
         );
       } catch (error) {
         console.error('Failed to render template:', error);
@@ -255,7 +255,7 @@ export class SectionEntryRenderService {
                 entry.content && entry.content.cartPrice
                   ? formatPrice(
                       entry.content.cartPrice,
-                      shopSettings.group_config.currency
+                      shopSettings.group_config.currency,
                     )
                   : '',
               cartAttributes:
@@ -266,7 +266,7 @@ export class SectionEntryRenderService {
               addedToBasketText: shopSettings.group_config.addedToBasket,
               outOfStockText: shopSettings.group_config.outOfStock,
             },
-          }
+          },
         );
       } catch (error) {
         console.error('Failed to render template:', error);
@@ -285,7 +285,7 @@ export class SectionEntryRenderService {
             weightUnits: shopSettings.group_config.weightUnit,
             entryWeight:
               entry.content && entry.content.weight ? entry.content.weight : '',
-          }
+          },
         );
       } catch (error) {
         console.error('Failed to render template:', error);
@@ -304,8 +304,8 @@ export class SectionEntryRenderService {
             galleryPosition: siteTemplateSettings.entryLayout.galleryPosition
               ? siteTemplateSettings.entryLayout.galleryPosition
               : currentSectionType === 'portfolio'
-              ? 'after text wrap'
-              : 'above title',
+                ? 'after text wrap'
+                : 'above title',
             gallery: gallery,
             templateName: templateName,
             galleryType: galleryType,
@@ -323,7 +323,7 @@ export class SectionEntryRenderService {
             isEditMode: true,
             addToCart: addToCart ? addToCart : '',
           },
-        }
+        },
       );
     } catch (error) {
       console.error('Failed to render template:', error);
@@ -343,7 +343,7 @@ export class SectionEntryRenderService {
                 section['@attributes'] &&
                 section['@attributes'].type &&
                 ['external_link', 'shopping_cart'].includes(
-                  section['@attributes'].type
+                  section['@attributes'].type,
                 )
               )
             );
@@ -359,7 +359,7 @@ export class SectionEntryRenderService {
           entryMarked: entry.marked ? entry.marked : '0',
           productAttributesEditor: productAttributesEditor,
           entryContents: entryContents,
-        }
+        },
       );
     } catch (error) {
       console.error('Failed to render template:', error);
@@ -376,14 +376,14 @@ export class SectionEntryRenderService {
             currentSection,
             templateName,
             currentSectionType,
-            isResponsive
+            isResponsive,
           ),
           style: this.getStyleList(
             entry,
             templateName,
             isResponsive,
             currentSectionType,
-            shopSettings
+            shopSettings,
           ),
           'data-path':
             templateName == 'messy' && !isResponsive
@@ -408,7 +408,7 @@ export class SectionEntryRenderService {
     currentSectionType: string,
     siteTemplateSettings,
     isResponsive: boolean,
-    shopSettings
+    shopSettings,
   ) {
     const viewData = this.getViewData(
       user,
@@ -422,13 +422,13 @@ export class SectionEntryRenderService {
       currentSectionType,
       siteTemplateSettings,
       isResponsive,
-      shopSettings
+      shopSettings,
     );
 
     try {
       return this.twigTemplateRenderService.render(
         'Sites/Sections/Entries/entry',
-        viewData
+        viewData,
       );
     } catch (error) {
       console.error('Failed to render template:', error);

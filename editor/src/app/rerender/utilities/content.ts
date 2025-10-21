@@ -1,7 +1,7 @@
 export function replaceContent(
   dom: Document,
   sectionId: string,
-  sectionHtml: string
+  sectionHtml: string,
 ): void {
   const element = dom.getElementById(sectionId);
   if (!element) {
@@ -12,7 +12,7 @@ export function replaceContent(
 }
 
 export function removeExtraAddBtnAndAddListeners(
-  iframe: HTMLIFrameElement
+  iframe: HTMLIFrameElement,
 ): void {
   // remove extra 'create entry' button due to backend js reload
   const createEntriesList =

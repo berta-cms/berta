@@ -36,7 +36,7 @@ export class GalleryRenderService {
     if (isImage) {
       srcLarge = `${imageUrlPath}${this.getImageNameBySize(
         imageName,
-        itemSizes.large
+        itemSizes.large,
       )}`;
     }
 
@@ -44,10 +44,10 @@ export class GalleryRenderService {
       itemSizes.display2x.width && itemSizes.display2x.height
         ? `${imageUrlPath}${this.getImageNameBySize(
             imageName,
-            itemSizes.display
+            itemSizes.display,
           )} 1x, ${imageUrlPath}${this.getImageNameBySize(
             imageName,
-            itemSizes.display2x
+            itemSizes.display2x,
           )} 2x`
         : '';
 
@@ -87,7 +87,7 @@ export class GalleryRenderService {
   }
   getImageNameBySize(
     imageName: string,
-    size: { width: number; height: number }
+    size: { width: number; height: number },
   ): string {
     return `_${size.width}x${size.height}_${imageName}`;
   }
@@ -115,11 +115,11 @@ export class GalleryRenderService {
 
     const imageTargetWidth = parseInt(
       siteSettings.media[`images${imageSize}Width`],
-      10
+      10,
     );
     const imageTargetHeight = parseInt(
       siteSettings.media[`images${imageSize}Height`],
-      10
+      10,
     );
 
     const originalWidth = width;
@@ -136,7 +136,7 @@ export class GalleryRenderService {
         width,
         height,
         imageTargetWidth,
-        imageTargetHeight
+        imageTargetHeight,
       );
 
       imageTargetWidth2x = width * 2;
@@ -154,7 +154,7 @@ export class GalleryRenderService {
           originalWidth,
           originalHeight,
           imageTargetWidth2x,
-          imageTargetHeight2x
+          imageTargetHeight2x,
         );
       }
     }
@@ -165,11 +165,11 @@ export class GalleryRenderService {
     if (isImage) {
       const imageTargetWidthLarge = parseInt(
         siteSettings.media.imagesLargeWidth,
-        10
+        10,
       );
       const imageTargetHeightLarge = parseInt(
         siteSettings.media.imagesLargeHeight,
-        10
+        10,
       );
 
       if (
@@ -184,7 +184,7 @@ export class GalleryRenderService {
           originalWidth,
           originalHeight,
           imageTargetWidthLarge,
-          imageTargetHeightLarge
+          imageTargetHeightLarge,
         );
       }
     }
@@ -214,7 +214,7 @@ export class GalleryRenderService {
     width: number,
     height: number,
     imageTargetWidth: number,
-    imageTargetHeight: number
+    imageTargetHeight: number,
   ): [number, number] {
     const rw = width / imageTargetWidth;
     const rh = height / imageTargetHeight;
@@ -236,7 +236,7 @@ export class GalleryRenderService {
     galleryItemsData,
     galleryType,
     entry,
-    siteSettings
+    siteSettings,
   ): string[] | string {
     let classes = ['xGalleryContainer'];
     if (galleryItemsData.length) {
@@ -303,7 +303,7 @@ export class GalleryRenderService {
     asRowGallery,
     galleryItemsData,
     galleryItems,
-    galleryType
+    galleryType,
   ): { [key: string]: any } {
     return {
       isEditMode: true,
@@ -312,7 +312,7 @@ export class GalleryRenderService {
         galleryItemsData,
         galleryType,
         null,
-        null
+        null,
       ),
       rowGalleryPadding:
         entry.mediaCacheData &&

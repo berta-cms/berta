@@ -14,14 +14,14 @@ export const Animations = {
         style({
           height: '0',
           overflow: 'hidden',
-        })
+        }),
       ),
       state(
         'true',
         style({
           height: '*',
           overflow: 'visible',
-        })
+        }),
       ),
       transition('* => *', animate('.25s ease')),
     ]),

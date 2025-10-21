@@ -55,13 +55,13 @@ export class ShopCartRenderService {
     siteSettings,
     shopSettings,
     sections: SiteSectionStateModel[],
-    isResponsive: boolean
+    isResponsive: boolean,
   ) {
     const section = sections.find(
       (section) =>
         section['@attributes'] &&
         section['@attributes'].published === '1' &&
-        section['@attributes'].type === 'shopping_cart'
+        section['@attributes'].type === 'shopping_cart',
     );
 
     if (!section || !shopSettings.group_price_item) {
@@ -72,7 +72,7 @@ export class ShopCartRenderService {
       attributes: this.getCartLinkAttributes(
         siteSlug,
         siteSettings,
-        isResponsive
+        isResponsive,
       ),
       link: this.getCartLink(siteSlug, section),
       title: section.title,
@@ -86,7 +86,7 @@ export class ShopCartRenderService {
     try {
       return this.twigTemplateRenderService.render(
         'Shop/shoppingCartLink',
-        viewData
+        viewData,
       );
     } catch (error) {
       console.error('Failed to render template:', error);
@@ -130,7 +130,7 @@ export class ShopCartRenderService {
     return {
       attributes: toHtmlAttributes({
         class: ['xEditable', 'xProperty-cartTextTitle', 'xCaption-title'].join(
-          ' '
+          ' ',
         ),
         style: 'width: 100px',
         'data-path': `${siteSlug}/settings/siteTexts/cartTextTitle`,
@@ -161,7 +161,7 @@ export class ShopCartRenderService {
     return {
       attributes: toHtmlAttributes({
         class: ['xEditable', 'xProperty-cartTextPrice', 'xCaption-price'].join(
-          ' '
+          ' ',
         ),
         'data-path': `${siteSlug}/settings/siteTexts/cartTextPrice`,
       }),
@@ -203,7 +203,7 @@ export class ShopCartRenderService {
     return {
       attributes: toHtmlAttributes({
         class: ['xEditable', 'xProperty-cartTextPromoBtn', 'xCaption-OK'].join(
-          ' '
+          ' ',
         ),
         'data-path': `${siteSlug}/settings/siteTexts/cartTextPromoBtn`,
       }),
@@ -265,7 +265,7 @@ export class ShopCartRenderService {
     return {
       attributes: toHtmlAttributes({
         class: ['xEditable', 'xProperty-cartTextTotal', 'xCaption-total'].join(
-          ' '
+          ' ',
         ),
         'data-path': `${siteSlug}/settings/siteTexts/cartTextTotal`,
       }),
@@ -423,7 +423,7 @@ export class ShopCartRenderService {
     return {
       attributes: toHtmlAttributes({
         class: ['xEditable', 'xProperty-cartTextEmail', 'xCaption-email'].join(
-          ' '
+          ' ',
         ),
         'data-path': `${siteSlug}/settings/siteTexts/cartTextEmail`,
       }),
@@ -631,7 +631,7 @@ export class ShopCartRenderService {
     templateName: string,
     section: SiteSectionStateModel,
     shopSettings,
-    shippingRegions
+    shippingRegions,
   ) {
     if (!this.USED_IN_TEMPLATES.includes(templateName)) {
       return '';
@@ -662,7 +662,7 @@ export class ShopCartRenderService {
       company: this.getCompanyData(siteSlug, siteSettings),
       companyRegistrationNumber: this.getCompanyRegistrationNumberData(
         siteSlug,
-        siteSettings
+        siteSettings,
       ),
       legalAddress: this.getLegalAddressData(siteSlug, siteSettings),
       nameSurname: this.getNameSurnameData(siteSlug, siteSettings),
@@ -672,28 +672,28 @@ export class ShopCartRenderService {
       comments: this.getCommentsData(siteSlug, siteSettings),
       deliverToBillingAddress: this.getDeliverToBillingAddressData(
         siteSlug,
-        siteSettings
+        siteSettings,
       ),
       shippingAddressHeader: this.getShippingAddressHeaderData(
         siteSlug,
-        siteSettings
+        siteSettings,
       ),
       receiveNews: this.getReceiveNewsData(siteSlug, siteSettings),
       paymentHeader: this.getPaymentHeaderData(siteSlug, siteSettings),
       paymentDescription: this.getPaymentDescriptionData(
         siteSlug,
-        siteSettings
+        siteSettings,
       ),
       isPaypalAvailable: ['paypal', 'both'].includes(
-        shopSettings.group_config.paymentMethod
+        shopSettings.group_config.paymentMethod,
       ),
       isManualTransferAvailable: ['bank', 'both'].includes(
-        shopSettings.group_config.paymentMethod
+        shopSettings.group_config.paymentMethod,
       ),
       manualTransfer: this.getManualTransferData(siteSlug, siteSettings),
       checkoutDescription: this.getCheckoutDescriptionData(
         siteSlug,
-        siteSettings
+        siteSettings,
       ),
       totalLabel: siteSettings.siteTexts.cartTextTotal
         ? siteSettings.siteTexts.cartTextTotal
@@ -701,7 +701,7 @@ export class ShopCartRenderService {
       terms: this.getTermsData(siteSlug, siteSettings),
       fillRequiredFields: this.getFillRequiredFieldsData(
         siteSlug,
-        siteSettings
+        siteSettings,
       ),
       checkoutButton: this.getCheckoutButtonData(siteSlug, siteSettings),
       returnToStore: this.getReturnToStoreData(siteSlug, siteSettings),
@@ -711,7 +711,7 @@ export class ShopCartRenderService {
     try {
       return this.twigTemplateRenderService.render(
         'Shop/shoppingCart',
-        viewData
+        viewData,
       );
     } catch (error) {
       console.error('Failed to render template:', error);

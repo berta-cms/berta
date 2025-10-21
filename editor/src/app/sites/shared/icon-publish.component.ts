@@ -1,8 +1,8 @@
 import { Component, Input } from '@angular/core';
 
 @Component({
-    selector: 'berta-icon-publish',
-    template: `
+  selector: 'berta-icon-publish',
+  template: `
     <svg
       (mouseover)="onMouseOver()"
       (mouseout)="onMouseOut()"
@@ -38,7 +38,7 @@ import { Component, Input } from '@angular/core';
       />
     </svg>
   `,
-    standalone: false
+  standalone: false,
 })
 export class IconPublishComponent {
   @Input() published: boolean;

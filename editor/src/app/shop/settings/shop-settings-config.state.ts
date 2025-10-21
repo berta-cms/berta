@@ -21,7 +21,10 @@ const defaultState: ShopSettingsConfigModel = {};
 })
 @Injectable()
 export class ShopSettingsConfigState implements NgxsOnInit {
-  constructor(private store$: Store, private stateService: ShopStateService) {}
+  constructor(
+    private store$: Store,
+    private stateService: ShopStateService,
+  ) {}
 
   ngxsOnInit({ dispatch }: StateContext<ShopSettingsConfigModel>) {
     this.store$
@@ -32,15 +35,15 @@ export class ShopSettingsConfigState implements NgxsOnInit {
         switchMap((site) =>
           this.stateService
             .getInitialState(site, 'settingsConfig')
-            .pipe(take(1))
-        )
+            .pipe(take(1)),
+        ),
       )
       .subscribe((settingsConfig) => {
         const settingGroups = {};
 
         for (const groupSlug in settingsConfig) {
           settingGroups[groupSlug] = initSettingConfigGroup(
-            settingsConfig[groupSlug]
+            settingsConfig[groupSlug],
           );
           delete settingGroups[groupSlug][groupSlug];
         }
@@ -52,7 +55,7 @@ export class ShopSettingsConfigState implements NgxsOnInit {
   @Action(InitShopSettingsConfigAction)
   initShopSettingsConfig(
     { setState }: StateContext<ShopSettingsConfigModel>,
-    action: InitShopSettingsConfigAction
+    action: InitShopSettingsConfigAction,
   ) {
     setState(action.payload);
   }

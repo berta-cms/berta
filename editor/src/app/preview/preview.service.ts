@@ -23,7 +23,7 @@ import {
   UpdateSiteSettingsFromSyncAction,
   UpdateSiteSettingsAction,
   AddSiteSettingChildrenAction,
-  UpdateSiteSettingChildreAction,
+  UpdateSiteSettingChildrenAction,
   DeleteSiteSettingChildrenAction,
 } from '../sites/settings/site-settings.actions';
 import { UpdateSiteTemplateSettingsAction } from '../sites/template-settings/site-template-settings.actions';
@@ -78,7 +78,7 @@ export class PreviewService {
     private renderService: RenderService,
     private actions$: Actions,
     private rerenderService: RerenderService,
-    private store: Store
+    private store: Store,
   ) {}
 
   sync(url, data, method) {
@@ -108,10 +108,10 @@ export class PreviewService {
               const [currentSite, , settingGroupSlug, settingKey] =
                 data.path.split('/');
               const settingGroup = state[currentSite].find(
-                (group) => group.slug === settingGroupSlug
+                (group) => group.slug === settingGroupSlug,
               );
               const setting = settingGroup.settings.find(
-                (_setting) => _setting.slug === settingKey
+                (_setting) => _setting.slug === settingKey,
               );
 
               return {
@@ -121,7 +121,7 @@ export class PreviewService {
                 update: setting.value,
                 value: setting.value,
               };
-            })
+            }),
           );
 
       case 'sites/sections':
@@ -141,7 +141,7 @@ export class PreviewService {
               const section = state.find(
                 (_section) =>
                   _section.site_name === siteName &&
-                  _section.order === parseInt(sectionOrder, 10)
+                  _section.order === parseInt(sectionOrder, 10),
               );
 
               return {
@@ -153,7 +153,7 @@ export class PreviewService {
                 value: data.value,
                 section: section,
               };
-            })
+            }),
           );
 
       case 'sites/sections/tags':
@@ -163,8 +163,8 @@ export class PreviewService {
               data.site,
               data.section,
               data.tag,
-              data.value
-            )
+              data.value,
+            ),
           )
           .pipe(
             map((state) => state['sectionTags']),
@@ -180,7 +180,7 @@ export class PreviewService {
                 section_name: data.section,
                 order: order,
               };
-            })
+            }),
           );
 
       case 'sites/sections/backgrounds':
@@ -197,7 +197,7 @@ export class PreviewService {
               section: data.section,
               file: data.file,
             },
-            'DELETE'
+            'DELETE',
           );
         } else {
           return this.store
@@ -205,8 +205,8 @@ export class PreviewService {
               new UpdateSiteSectionBackgroundFromSyncAction(
                 data.site,
                 data.section,
-                data.files
-              )
+                data.files,
+              ),
             )
             .pipe(
               map((state) => state['siteSections']),
@@ -214,7 +214,7 @@ export class PreviewService {
                 const section = state.find(
                   (_section) =>
                     _section.site_name === data.site &&
-                    _section.name === data.section
+                    _section.name === data.section,
                 );
 
                 return {
@@ -223,7 +223,7 @@ export class PreviewService {
                   files: section.mediaCacheData.file,
                   mediafolder: section.mediafolder,
                 };
-              })
+              }),
             );
         }
 
@@ -235,7 +235,7 @@ export class PreviewService {
               new AddSectionEntryFromSyncAction(data.site, data.section, {
                 tag: data.tag,
                 before_entry: data.before_entry,
-              })
+              }),
             )
             .pipe(
               map((state) => state['sectionEntries']),
@@ -245,16 +245,16 @@ export class PreviewService {
                   null,
                   state[data.site]
                     .filter((entry) => entry.sectionName === data.section)
-                    .map((entry) => parseInt(entry.id, 10))
+                    .map((entry) => parseInt(entry.id, 10)),
                 );
 
                 return { entryid: entryid };
-              })
+              }),
             );
         } else if (method === 'PATCH') {
           return this.store
             .dispatch(
-              new UpdateSectionEntryFromSyncAction(data.path, data.value)
+              new UpdateSectionEntryFromSyncAction(data.path, data.value),
             )
             .pipe(
               map((state) => state['sectionEntries']),
@@ -265,7 +265,7 @@ export class PreviewService {
                 const entry = state[siteName].find(
                   (_entry) =>
                     _entry.id === entryId &&
-                    _entry.sectionName === currentSectionName
+                    _entry.sectionName === currentSectionName,
                 );
                 const prop = data.path.split('/').slice(4).join('/');
                 let ret: any = {
@@ -284,7 +284,7 @@ export class PreviewService {
                     .selectSnapshot(SectionTagsState.getCurrentSiteTags)
                     .find(
                       (_section) =>
-                        _section['@attributes'].name === currentSectionName
+                        _section['@attributes'].name === currentSectionName,
                     );
                   const entryTags = entry.tags ? entry.tags.tag : [];
 
@@ -306,7 +306,7 @@ export class PreviewService {
                 }
 
                 return ret;
-              })
+              }),
             );
         } else if (method === 'PUT') {
           return this.store
@@ -315,8 +315,8 @@ export class PreviewService {
                 data.site,
                 data.section,
                 data.entryId,
-                data.value
-              )
+                data.value,
+              ),
             )
             .pipe(
               map((state) => state['sectionEntries']),
@@ -331,7 +331,7 @@ export class PreviewService {
                   section_name: data.section,
                   order: order,
                 };
-              })
+              }),
             );
         } else if (method === 'DELETE') {
           return Observable.create((observer) => {
@@ -366,8 +366,8 @@ export class PreviewService {
                 new DeleteSectionEntryFromSyncAction(
                   data.site,
                   data.section,
-                  data.entryId
-                )
+                  data.entryId,
+                ),
               );
             }),
             map(() => {
@@ -377,7 +377,7 @@ export class PreviewService {
               const tags = this.store
                 .selectSnapshot(SectionTagsState.getCurrentSiteTags)
                 .find(
-                  (_section) => _section['@attributes'].name === data.section
+                  (_section) => _section['@attributes'].name === data.section,
                 );
 
               return {
@@ -390,7 +390,7 @@ export class PreviewService {
                 has_direct_content: section['@attributes'].has_direct_content,
                 tags: tags,
               };
-            })
+            }),
           );
         }
         break;
@@ -401,8 +401,8 @@ export class PreviewService {
             data.site,
             data.currentSection,
             data.entryId,
-            data.toSection
-          )
+            data.toSection,
+          ),
         );
 
       case 'sites/sections/entries/galleries':
@@ -416,7 +416,7 @@ export class PreviewService {
                 entryId: data.entryId,
                 file: data.file,
               },
-              'DELETE'
+              'DELETE',
             )
             .pipe(
               map(() => {
@@ -426,7 +426,7 @@ export class PreviewService {
                   entry_id: data.entryId,
                   file: data.file,
                 };
-              })
+              }),
             );
         } else {
           return this.store
@@ -435,8 +435,8 @@ export class PreviewService {
                 data.site,
                 data.section,
                 data.entryId,
-                data.files
-              )
+                data.files,
+              ),
             )
             .pipe(
               map((state) => state['sectionEntries']),
@@ -444,7 +444,7 @@ export class PreviewService {
                 const entry = state[data.site].find(
                   (_entry) =>
                     _entry.id === data.entryId &&
-                    _entry.sectionName === data.section
+                    _entry.sectionName === data.section,
                 );
 
                 return {
@@ -454,7 +454,7 @@ export class PreviewService {
                   mediafolder: entry.mediafolder,
                   files: entry.mediaCacheData.file,
                 };
-              })
+              }),
             );
         }
 
@@ -489,11 +489,11 @@ export class PreviewService {
             DeleteSiteSectionsAction,
             UpdateSiteSettingsAction,
             AddSiteSettingChildrenAction,
-            UpdateSiteSettingChildreAction,
+            UpdateSiteSettingChildrenAction,
             DeleteSiteSettingChildrenAction,
             UpdateSiteTemplateSettingsAction,
             UpdateShopSettingsAction,
-          ]
+          ],
         ),
         /* Only reload when the overlay gets closed: */
         buffer(
@@ -501,14 +501,14 @@ export class PreviewService {
             scan(
               (
                 [_, prevShowOverlay]: [boolean, boolean],
-                showOverlay: boolean
+                showOverlay: boolean,
               ) => {
                 return [prevShowOverlay, showOverlay];
               },
-              [false, false]
+              [false, false],
             ),
-            filter(([prev, cur]) => prev !== cur && !cur)
-          )
+            filter(([prev, cur]) => prev !== cur && !cur),
+          ),
         ),
         filter((actionsPassed) => {
           return (
@@ -535,7 +535,7 @@ export class PreviewService {
               );
             })
           );
-        })
+        }),
       )
       .subscribe(() => {
         // iframe.contentWindow.location.reload();

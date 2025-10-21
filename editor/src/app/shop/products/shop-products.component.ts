@@ -14,13 +14,10 @@ import { SectionTagsInterface } from '../../sites/sections/tags/section-tags-sta
 import { SectionEntry } from '../../sites/sections/entries/entries-state/section-entries-state.model';
 
 @Component({
-    selector: 'berta-shop-products',
-    template: `
+  selector: 'berta-shop-products',
+  template: `
     @for (group of productGroups$ | async; track group) {
-      <div
-        class="setting"
-        [class.bt-is-empty]="group.products.length === 0"
-        >
+      <div class="setting" [class.bt-is-empty]="group.products.length === 0">
         <h4 [class.is-tag]="group.isTag">{{ group.title }}</h4>
         @for (product of group.products; track product) {
           <div class="product">
@@ -38,8 +35,8 @@ import { SectionEntry } from '../../sites/sections/entries/entries-state/section
         }
       </div>
     }
-    `,
-    standalone: false
+  `,
+  standalone: false,
 })
 export class ShopProductsComponent implements OnInit {
   productGroups$: Observable<
@@ -66,7 +63,7 @@ export class ShopProductsComponent implements OnInit {
           SiteSectionStateModel[],
           SectionTagsInterface[],
           SectionEntry[],
-          any
+          any,
         ]) => {
           let leftOverProducts = [...products];
 
@@ -86,7 +83,7 @@ export class ShopProductsComponent implements OnInit {
                     attributes
                       .map(
                         (attribute) =>
-                          name + (name.length ? ' ' : '') + attribute
+                          name + (name.length ? ' ' : '') + attribute,
                       )
                       .indexOf(product.name) > -1
                   ) {
@@ -103,7 +100,7 @@ export class ShopProductsComponent implements OnInit {
 
                 return _prodRef;
               },
-              []
+              [],
             );
 
             return _productData;
@@ -117,7 +114,7 @@ export class ShopProductsComponent implements OnInit {
               productData.reduce(
                 (
                   [_groupProducts, _sectionTagProducts, leftOverProductData],
-                  product
+                  product,
                 ) => {
                   if (product.entry.sectionName === section.name) {
                     if (
@@ -138,13 +135,13 @@ export class ShopProductsComponent implements OnInit {
                     leftOverProductData,
                   ];
                 },
-                [[], [], []]
+                [[], [], []],
               );
 
             // Add section as entry group
             const sectionTags = tags.find(
               (tag) =>
-                tag['@attributes'].name === section.name && tag.tag.length > 0
+                tag['@attributes'].name === section.name && tag.tag.length > 0,
             );
             _groups.push({
               isTag: false,
@@ -160,7 +157,7 @@ export class ShopProductsComponent implements OnInit {
                 .map((tag) => {
                   const tagProducts = sectionTagProducts.filter((product) => {
                     return product.entry.tags.tag.some(
-                      (entryTag) => entryTag === tag['@value']
+                      (entryTag) => entryTag === tag['@value'],
                     );
                   });
 
@@ -180,10 +177,10 @@ export class ShopProductsComponent implements OnInit {
           }, []);
 
           return groups.filter(
-            (group) => group.products.length > 0 || group.hasProducts
+            (group) => group.products.length > 0 || group.hasProducts,
           );
-        }
-      )
+        },
+      ),
     );
   }
 

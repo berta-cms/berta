@@ -10,13 +10,16 @@ export class UpdateSiteAction {
   constructor(
     public site: SiteStateModel,
     public field: string,
-    public value: string
+    public value: string,
   ) {}
 }
 
 export class RenameSiteAction {
   static readonly type = 'SITE:RENAME';
-  constructor(public site: SiteStateModel, public value: string) {}
+  constructor(
+    public site: SiteStateModel,
+    public value: string,
+  ) {}
 }
 
 export class CloneSiteAction {
@@ -31,7 +34,10 @@ export class DeleteSiteAction {
 
 export class ReOrderSitesAction {
   static readonly type = 'SITE:REORDER';
-  constructor(public currentOrder: number, public payload: number) {}
+  constructor(
+    public currentOrder: number,
+    public payload: number,
+  ) {}
 }
 
 export class ResetSitesAction {

@@ -9,7 +9,10 @@ import { UserState } from './user.state';
   providedIn: 'root',
 })
 export class UserService {
-  constructor(private http: HttpClient, private store: Store) {}
+  constructor(
+    private http: HttpClient,
+    private store: Store,
+  ) {}
 
   changePassword(oldPassword, newPassword) {
     return this.store
@@ -27,9 +30,9 @@ export class UserService {
             },
             {
               headers: { 'X-Authorization': 'Bearer ' + user.token },
-            }
+            },
           );
-        })
+        }),
       );
   }
 }

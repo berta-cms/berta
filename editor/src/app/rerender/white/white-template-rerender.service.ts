@@ -29,7 +29,7 @@ export class WhiteTemplateRerenderService extends TemplateRerenderService {
   constructor(
     whiteRenderService: WhiteTemplateRenderService,
     actions$: Actions,
-    private pageLayoutService: PageLayoutService
+    private pageLayoutService: PageLayoutService,
   ) {
     super(whiteRenderService, actions$);
   }
@@ -62,7 +62,7 @@ export class WhiteTemplateRerenderService extends TemplateRerenderService {
     const siteSettingChildrenHandleSubscr =
       this.handleSiteSettingChildrenHandleRerender(
         iframe,
-        WhiteTemplateRerenderService.SETTINGS_IDS_DATA_KEYS
+        WhiteTemplateRerenderService.SETTINGS_IDS_DATA_KEYS,
       );
 
     // re-renders in case of design settings changes
@@ -78,7 +78,7 @@ export class WhiteTemplateRerenderService extends TemplateRerenderService {
         } else if (action.settingGroup === 'css') {
           WhiteTemplateRerenderService.handleCssDesignSettingChange(
             dom,
-            action
+            action,
           );
         }
       });

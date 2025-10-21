@@ -1,11 +1,11 @@
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
-import { debounceTime, distinctUntilChanged, tap } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 
 @Component({
-    selector: 'berta-rich-text-input',
-    template: ` <div class="form-group">
+  selector: 'berta-rich-text-input',
+  template: ` <div class="form-group">
     <label>{{ label }}</label>
     <angular-editor
       [(ngModel)]="value"
@@ -14,15 +14,15 @@ import { AngularEditorConfig } from '@kolkov/angular-editor';
     >
     </angular-editor>
   </div>`,
-    styles: [
-        `
+  styles: [
+    `
       :host label {
         display: block;
         margin-bottom: 0.5em;
       }
     `,
-    ],
-    standalone: false
+  ],
+  standalone: false,
 })
 export class RichTextInputComponent implements OnInit {
   @Input() label?: string;

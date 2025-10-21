@@ -11,7 +11,7 @@ export class SentryConfigService {
   async getSentryDsn(): Promise<string> {
     try {
       const dsn = await firstValueFrom(
-        this.http.get('/_api/v1/sentry-dsn', { responseType: 'text' })
+        this.http.get('/_api/v1/sentry-dsn', { responseType: 'text' }),
       );
       return dsn;
     } catch (error) {

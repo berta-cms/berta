@@ -13,7 +13,7 @@ export class TwigTemplateRenderService {
     // Verify Twig is loaded
     if (typeof Twig === 'undefined') {
       console.error(
-        'Twig library not loaded! Make sure twig.min.js is included in angular.json scripts.'
+        'Twig library not loaded! Make sure twig.min.js is included in angular.json scripts.',
       );
     }
   }

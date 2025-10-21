@@ -36,7 +36,7 @@ export class SocialMediaLinksRenderService {
     try {
       return this.twigTemplateRenderService.render(
         'Sites/socialMediaLinks',
-        viewData
+        viewData,
       );
     } catch (error) {
       console.error('Failed to render template:', error);

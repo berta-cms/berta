@@ -4,15 +4,15 @@ import { SettingChildModel, SettingModel } from '../../shared/interfaces';
 import { PopupService } from '../../../app/popup/popup.service';
 
 @Component({
-    selector: 'berta-setting-row',
-    template: `
+  selector: 'berta-setting-row',
+  template: `
     <div class="setting">
       <div class="input-row">
         @for (inputField of inputFields | keyvalue; track inputField) {
           <berta-setting
-          [class.bt-auto-width]="
-            ['icon-readonly'].indexOf(inputField.value.config.format) > -1
-          "
+            [class.bt-auto-width]="
+              ['icon-readonly'].indexOf(inputField.value.config.format) > -1
+            "
             [setting]="inputField.value.setting"
             [config]="inputField.value.config"
             (update)="updateField($event)"
@@ -23,15 +23,15 @@ import { PopupService } from '../../../app/popup/popup.service';
         </button>
       </div>
     </div>
-    `,
-    styles: [
-        `
+  `,
+  styles: [
+    `
       :host {
         display: block;
       }
     `,
-    ],
-    standalone: false
+  ],
+  standalone: false,
 })
 export class SettingRowComponent {
   @Input('inputFields') inputFields: Array<SettingChildModel[]>;

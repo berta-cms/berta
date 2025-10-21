@@ -8,15 +8,12 @@ import { splitCamel, uCFirst, getIconFromUrl } from '../../shared/helpers';
 import { Animations } from '../../shared/animations';
 import { UserStateModel } from '../../user/user.state.model';
 import { AppStateModel } from '../../app-state/app-state.interface';
-import { AppState } from '../../app-state/app.state';
-import { UserState } from '../../user/user.state';
 import { SiteSettingsState } from './site-settings.state';
-import { SiteSettingsConfigState } from './site-settings-config.state';
 import {
   UpdateSiteSettingsAction,
   AddSiteSettingChildrenAction,
   DeleteSiteSettingChildrenAction,
-  UpdateSiteSettingChildreAction,
+  UpdateSiteSettingChildrenAction,
 } from './site-settings.actions';
 import {
   SettingModel,
@@ -27,24 +24,24 @@ import {
 } from '../../shared/interfaces';
 
 @Component({
-    selector: 'berta-site-settings',
-    template: `
+  selector: 'berta-site-settings',
+  template: `
     @for (settingGroup of settings$ | async; track settingGroup) {
       <div
         class="setting-group"
         [class.is-expanded]="camelifySlug(currentGroup) === settingGroup.slug"
-        >
+      >
         <h3
-        [routerLink]="[
-          '/settings',
-          camelifySlug(currentGroup) === settingGroup.slug
-            ? ''
-            : slugifyCamel(settingGroup.slug)
-        ]"
+          [routerLink]="[
+            '/settings',
+            camelifySlug(currentGroup) === settingGroup.slug
+              ? ''
+              : slugifyCamel(settingGroup.slug),
+          ]"
           queryParamsHandling="preserve"
           role="link"
           class="hoverable"
-          >
+        >
           {{ settingGroup.config.title || settingGroup.slug }}
           <svg
             class="drop-icon"
@@ -53,39 +50,43 @@ import {
             viewBox="0 0 10 6"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
-            >
+          >
             <path
               d="M9 1L4.75736 5.24264L0.514719 1"
               stroke="#9b9b9b"
               stroke-linecap="round"
               stroke-linejoin="round"
-              />
+            />
           </svg>
         </h3>
         <div
           class="settings"
           [@isExpanded]="camelifySlug(currentGroup) === settingGroup.slug"
-          >
+        >
           @for (setting of settingGroup.settings; track setting) {
             <div>
               @if (!setting.config.children) {
                 <berta-setting
                   [setting]="setting.setting"
                   [config]="setting.config"
-            [disabled]="
-              isDisabled(
-                settingGroup,
-                setting.setting,
-                setting.config,
-                user$ | async
-              )
-            "
-            [disabledReason]="
-              disabledReason(setting.config, user$ | async, appState$ | async)
-            "
-            [error]="
-              settingError[settingGroup.slug + ':' + setting.setting.slug]
-            "
+                  [disabled]="
+                    isDisabled(
+                      settingGroup,
+                      setting.setting,
+                      setting.config,
+                      user$ | async
+                    )
+                  "
+                  [disabledReason]="
+                    disabledReason(
+                      setting.config,
+                      user$ | async,
+                      appState$ | async
+                    )
+                  "
+                  [error]="
+                    settingError[settingGroup.slug + ':' + setting.setting.slug]
+                  "
                   (update)="updateSetting(settingGroup.slug, $event)"
                 ></berta-setting>
               }
@@ -94,35 +95,49 @@ import {
                   <div class="setting">
                     <h4>{{ setting.config.title }}</h4>
                   </div>
-                  @for (inputFields of setting.children; track inputFields; let index = $index) {
+                  @for (
+                    inputFields of setting.children;
+                    track inputFields;
+                    let index = $index
+                  ) {
                     <berta-setting-row
                       [inputFields]="inputFields"
-              (update)="
-                updateChildren(
-                  settingGroup.slug,
-                  setting.setting.slug,
-                  index,
-                  $event
-                )
-              "
-              (delete)="
-                deleteChildren(settingGroup.slug, setting.setting.slug, index)
-              "
-                      >
+                      (update)="
+                        updateChildren(
+                          settingGroup.slug,
+                          setting.setting.slug,
+                          index,
+                          $event
+                        )
+                      "
+                      (delete)="
+                        deleteChildren(
+                          settingGroup.slug,
+                          setting.setting.slug,
+                          index
+                        )
+                      "
+                    >
                     </berta-setting-row>
                   }
                   <berta-setting-row-add
                     [config]="setting.config.children"
-              (add)="
-                addChildren(settingGroup.slug, setting.setting.slug, $event)
-              "
-                    >
+                    (add)="
+                      addChildren(
+                        settingGroup.slug,
+                        setting.setting.slug,
+                        $event
+                      )
+                    "
+                  >
                   </berta-setting-row-add>
                   @if (setting.config.description) {
                     <div class="setting">
                       <p
                         class="setting-description"
-                        [innerHTML]="getSettingDescription(setting.config.description)"
+                        [innerHTML]="
+                          getSettingDescription(setting.config.description)
+                        "
                       ></p>
                     </div>
                   }
@@ -133,9 +148,9 @@ import {
         </div>
       </div>
     }
-    `,
-    animations: [Animations.slideToggle],
-    standalone: false
+  `,
+  animations: [Animations.slideToggle],
+  standalone: false,
 })
 export class SiteSettingsComponent implements OnInit {
   defaultGroup = 'template';
@@ -160,7 +175,7 @@ export class SiteSettingsComponent implements OnInit {
   constructor(
     private store: Store,
     private route: ActivatedRoute,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
   ) {}
 
   ngOnInit() {
@@ -174,14 +189,14 @@ export class SiteSettingsComponent implements OnInit {
           settings &&
           settings.length > 0 &&
           config &&
-          Object.keys(config).length > 0
+          Object.keys(config).length > 0,
       ),
       map(([settings, config, appState]) => {
         return settings
           .filter((settingGroup) => !config[settingGroup.slug]._.invisible)
           .filter(
             (settingGroup) =>
-              settingGroup.slug !== 'theme' || appState.themes.length > 0
+              settingGroup.slug !== 'theme' || appState.themes.length > 0,
           )
           .map((settingGroup) => {
             return {
@@ -241,7 +256,7 @@ export class SiteSettingsComponent implements OnInit {
             if (
               settingGroup.settings.some(
                 (setting, index) =>
-                  prevSettingGroup.settings[index].setting !== setting.setting
+                  prevSettingGroup.settings[index].setting !== setting.setting,
               )
             ) {
               /* Careful, not to mutate anything coming from the store: */
@@ -288,14 +303,14 @@ export class SiteSettingsComponent implements OnInit {
                   }
 
                   return setting;
-                }
+                },
               );
             }
             return prevSettingGroup;
           }
           return settingGroup;
         });
-      })
+      }),
     );
 
     this.route.paramMap.subscribe((params) => {
@@ -328,7 +343,7 @@ export class SiteSettingsComponent implements OnInit {
     settingGroup: SettingsGroupModel,
     setting: SettingModel,
     config: SettingConfigModel,
-    user: UserStateModel
+    user: UserStateModel,
   ) {
     return (
       this.settingUpdate[settingGroup.slug + ':' + setting.slug] ||
@@ -340,7 +355,7 @@ export class SiteSettingsComponent implements OnInit {
   disabledReason(
     config: SettingConfigModel,
     user: UserStateModel,
-    appState: AppStateModel
+    appState: AppStateModel,
   ) {
     if (
       !config.requires_feature ||
@@ -350,7 +365,7 @@ export class SiteSettingsComponent implements OnInit {
     }
 
     const requiredPlan = appState.plans.find(
-      (plan) => plan.features.indexOf(config.requires_feature) > -1
+      (plan) => plan.features.indexOf(config.requires_feature) > -1,
     );
     if (!requiredPlan) {
       return;
@@ -377,13 +392,13 @@ export class SiteSettingsComponent implements OnInit {
               error.error.message;
           }
           this.settingUpdate[`${settingGroup}:${updateEvent.field}`] = false;
-        }
+        },
       );
   }
 
   addChildren(settingGroup: string, slug: string, updateEvent) {
     const hasSomeValue = Object.keys(updateEvent).some(
-      (item) => updateEvent[item].trim().length > 0
+      (item) => updateEvent[item].trim().length > 0,
     );
     if (hasSomeValue) {
       // Update social media icon by url
@@ -397,7 +412,7 @@ export class SiteSettingsComponent implements OnInit {
       }
 
       this.store.dispatch(
-        new AddSiteSettingChildrenAction(settingGroup, slug, updateEvent)
+        new AddSiteSettingChildrenAction(settingGroup, slug, updateEvent),
       );
     }
   }
@@ -406,11 +421,11 @@ export class SiteSettingsComponent implements OnInit {
     settingGroup: string,
     slug: string,
     index: number,
-    updateEvent
+    updateEvent,
   ) {
     const data = { [updateEvent.field]: updateEvent.value };
     this.store.dispatch(
-      new UpdateSiteSettingChildreAction(settingGroup, slug, index, data)
+      new UpdateSiteSettingChildrenAction(settingGroup, slug, index, data),
     );
 
     // Update social media icon by url
@@ -421,16 +436,16 @@ export class SiteSettingsComponent implements OnInit {
     ) {
       const iconName = getIconFromUrl(updateEvent.value);
       this.store.dispatch(
-        new UpdateSiteSettingChildreAction(settingGroup, slug, index, {
+        new UpdateSiteSettingChildrenAction(settingGroup, slug, index, {
           icon: iconName,
-        })
+        }),
       );
     }
   }
 
   deleteChildren(settingGroup: string, slug: string, index: number) {
     this.store.dispatch(
-      new DeleteSiteSettingChildrenAction(settingGroup, slug, index)
+      new DeleteSiteSettingChildrenAction(settingGroup, slug, index),
     );
   }
 }

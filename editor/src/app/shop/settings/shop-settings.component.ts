@@ -12,8 +12,8 @@ import { ShopSettingsConfigState } from './shop-settings-config.state';
 import { UpdateShopSettingsAction } from './shop-settings.actions';
 
 @Component({
-    selector: 'berta-shop-settings',
-    template: `
+  selector: 'berta-shop-settings',
+  template: `
     @for (settingGroup of settings$ | async; track settingGroup) {
       <div class="subgroup">
         <div class="setting">
@@ -23,24 +23,26 @@ import { UpdateShopSettingsAction } from './shop-settings.actions';
           <berta-setting
             [setting]="setting.setting"
             [config]="setting.config"
-        [disabled]="
-          settingUpdate[settingGroup.slug + ':' + setting.setting.slug]
-        "
-            [error]="settingError[settingGroup.slug + ':' + setting.setting.slug]"
+            [disabled]="
+              settingUpdate[settingGroup.slug + ':' + setting.setting.slug]
+            "
+            [error]="
+              settingError[settingGroup.slug + ':' + setting.setting.slug]
+            "
             (update)="updateSetting(settingGroup.slug, $event)"
           ></berta-setting>
         }
       </div>
     }
-    `,
-    styles: [
-        `
+  `,
+  styles: [
+    `
       h4 {
         font-weight: bold;
       }
     `,
-    ],
-    standalone: false
+  ],
+  standalone: false,
 })
 export class ShopSettingsComponent implements OnInit {
   settings$: Observable<
@@ -111,7 +113,7 @@ export class ShopSettingsComponent implements OnInit {
             if (
               settingGroup.settings.some(
                 (setting, index) =>
-                  prevSettingGroup.settings[index].setting !== setting.setting
+                  prevSettingGroup.settings[index].setting !== setting.setting,
               )
             ) {
               /* Careful, not to mutate anything coming from the store: */
@@ -127,14 +129,14 @@ export class ShopSettingsComponent implements OnInit {
                     return prevSetting;
                   }
                   return setting;
-                }
+                },
               );
             }
             return prevSettingGroup;
           }
           return settingGroup;
         });
-      })
+      }),
     );
   }
 
@@ -147,7 +149,7 @@ export class ShopSettingsComponent implements OnInit {
         new UpdateShopSettingsAction(settingGroup, {
           field: event.field,
           value: event.value,
-        })
+        }),
       )
       .pipe(take(1))
       .subscribe(
@@ -160,7 +162,7 @@ export class ShopSettingsComponent implements OnInit {
               error.error.message;
           }
           this.settingUpdate[`${settingGroup}:${event.field}`] = false;
-        }
+        },
       );
   }
 }

@@ -13,7 +13,7 @@ export class AddSectionEntryFromSyncAction {
     public payload: {
       tag: string;
       before_entry: string;
-    }
+    },
   ) {}
 }
 
@@ -23,18 +23,24 @@ export class MoveSectionEntryFromSyncAction {
     public site: string,
     public currentSection: string,
     public entryId: string,
-    public toSection: string
+    public toSection: string,
   ) {}
 }
 
 export class AddSectionEntriesAction {
   static readonly type = 'SECTION_ENTRIES:ADD';
-  constructor(public siteName: string, public entries: SectionEntry[]) {}
+  constructor(
+    public siteName: string,
+    public entries: SectionEntry[],
+  ) {}
 }
 
 export class AddSiteEntriesAction {
   static readonly type = 'SITE_SECTIONS_ENTRIES:ADD';
-  constructor(public site: SiteStateModel, public entries: SectionEntry[]) {}
+  constructor(
+    public site: SiteStateModel,
+    public entries: SectionEntry[],
+  ) {}
 }
 
 export class DeleteSectionEntriesAction {
@@ -52,13 +58,16 @@ export class RenameSectionEntriesAction {
   constructor(
     public siteName: string,
     public section: SiteSectionStateModel,
-    public newSectionName: string
+    public newSectionName: string,
   ) {}
 }
 
 export class RenameSectionEntriesSitenameAction {
   static readonly type = 'SITE_SECTIONS_ENTRIES_SITENAME:RENAME';
-  constructor(public site: SiteStateModel, public siteName: string) {}
+  constructor(
+    public site: SiteStateModel,
+    public siteName: string,
+  ) {}
 }
 
 export class ResetSectionEntriesAction {
@@ -72,12 +81,19 @@ export class InitSectionEntriesAction {
 
 export class UpdateSectionEntryFromSyncAction {
   static readonly type = 'SECTION_ENTRY:UPDATE:SYNC';
-  constructor(public path: string, public payload: any, public nOfReq = 0) {}
+  constructor(
+    public path: string,
+    public payload: any,
+    public nOfReq = 0,
+  ) {}
 }
 
 export class UpdateSectionEntryAction {
   static readonly type = 'SECTION_ENTRY:UPDATE';
-  constructor(public path: string, public payload: any) {}
+  constructor(
+    public path: string,
+    public payload: any,
+  ) {}
 }
 
 export class OrderSectionEntriesFromSyncAction {
@@ -86,7 +102,7 @@ export class OrderSectionEntriesFromSyncAction {
     public site: string,
     public section: string,
     public entryId: string,
-    public value: string
+    public value: string,
   ) {}
 }
 
@@ -95,7 +111,7 @@ export class DeleteSectionEntryFromSyncAction {
   constructor(
     public site: string,
     public section: string,
-    public entryId: string
+    public entryId: string,
   ) {}
 }
 
@@ -110,7 +126,7 @@ export class UpdateEntryGalleryFromSyncAction {
     public site: string,
     public section: string,
     public entryId: string,
-    public files: string[]
+    public files: string[],
   ) {}
 }
 
@@ -120,13 +136,16 @@ export class AddEntryGalleryFileAction {
     public site: string,
     public section: string,
     public entryId: string,
-    public file: File
+    public file: File,
   ) {}
 }
 
 export class UpdateEntryGalleryFileAction {
   static readonly type = 'SECTION_ENTRY_GALLERY:UPDATE_FILE';
-  constructor(public path: string, public payload: any) {}
+  constructor(
+    public path: string,
+    public payload: any,
+  ) {}
 }
 
 export class UpdateEntryGalleryVideoPosterAction {
@@ -136,7 +155,7 @@ export class UpdateEntryGalleryVideoPosterAction {
     public section: string,
     public entryId: string,
     public fileName: string,
-    public payload: File
+    public payload: File,
   ) {}
 }
 
@@ -152,7 +171,7 @@ export class UpdateEntryGalleryImageCropAction {
       y: number;
       width: number;
       height: number;
-    }
+    },
   ) {}
 }
 
@@ -162,7 +181,7 @@ export class DeleteEntryGalleryFileAction {
     public site: string,
     public section: string,
     public entryId: string,
-    public file: string
+    public file: string,
   ) {}
 }
 
@@ -172,6 +191,6 @@ export class OrderEntryGalleryFilesAction {
     public site: string,
     public section: string,
     public entryId: string,
-    public files: string[]
+    public files: string[],
   ) {}
 }

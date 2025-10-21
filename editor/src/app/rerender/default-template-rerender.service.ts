@@ -31,7 +31,7 @@ export class DefaultTemplateRerenderService extends TemplateRerenderService {
 
   constructor(
     defaultRenderService: DefaultTemplateRenderService,
-    actions$: Actions
+    actions$: Actions,
   ) {
     super(defaultRenderService, actions$);
   }
@@ -64,7 +64,7 @@ export class DefaultTemplateRerenderService extends TemplateRerenderService {
     const siteSettingChildrenHandleSubscr =
       this.handleSiteSettingChildrenHandleRerender(
         iframe,
-        DefaultTemplateRerenderService.SETTINGS_IDS_DATA_KEYS
+        DefaultTemplateRerenderService.SETTINGS_IDS_DATA_KEYS,
       );
 
     // re-renders in case of design settings changes
@@ -90,19 +90,19 @@ export class DefaultTemplateRerenderService extends TemplateRerenderService {
           replaceContent(
             dom,
             'additionalTextBlock',
-            viewData.additionalTextBlock
+            viewData.additionalTextBlock,
           );
           replaceContent(dom, 'sectionsMenu', viewData.sectionsMenu);
           replaceContent(dom, 'pageEntries', viewData.entries);
           replaceContent(
             dom,
             'portfolioThumbnails',
-            viewData.portfolioThumbnails
+            viewData.portfolioThumbnails,
           );
           replaceContent(
             dom,
             'additionalFooterTextBlock',
-            viewData.additionalFooterText
+            viewData.additionalFooterText,
           );
           replaceContent(dom, 'siteBanners', viewData.siteBanners);
           replaceContent(dom, 'sectionFooter', viewData.sectionFooter);
@@ -116,7 +116,7 @@ export class DefaultTemplateRerenderService extends TemplateRerenderService {
         } else if (action.settingGroup === 'css') {
           DefaultTemplateRerenderService.handleCssDesignSettingChange(
             dom,
-            action
+            action,
           );
         }
       });
@@ -140,7 +140,7 @@ export class DefaultTemplateRerenderService extends TemplateRerenderService {
               return;
 
             siteHeader.appendChild(
-              dom.createRange().createContextualFragment(viewData.siteHeader)
+              dom.createRange().createContextualFragment(viewData.siteHeader),
             );
             break;
         }

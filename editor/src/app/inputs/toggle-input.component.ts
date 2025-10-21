@@ -2,8 +2,8 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { SettingModel, SettingConfigModel } from '../shared/interfaces';
 
 @Component({
-    selector: 'berta-toggle-input',
-    template: ` <div class="form-group" [class.bt-disabled]="disabled">
+  selector: 'berta-toggle-input',
+  template: ` <div class="form-group" [class.bt-disabled]="disabled">
     <label>
       {{ label }}
 
@@ -17,7 +17,7 @@ import { SettingModel, SettingConfigModel } from '../shared/interfaces';
       </div>
     </label>
   </div>`,
-    standalone: false
+  standalone: false,
 })
 export class ToggleInputComponent {
   @Input() label: string;

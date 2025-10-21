@@ -5,7 +5,7 @@ export class CreateSiteSettingsAction {
   static readonly type = 'SITE_SETTINGS:CREATE';
   constructor(
     public site: SiteStateModel,
-    public settings: SiteSettingsResponse
+    public settings: SiteSettingsResponse,
   ) {}
 }
 
@@ -13,7 +13,7 @@ export class UpdateSiteSettingsAction {
   static readonly type = 'SITE_SETTINGS:UPDATE';
   constructor(
     public settingGroup: string,
-    public payload: { [k: string]: any }
+    public payload: { [k: string]: any },
   ) {}
 }
 
@@ -23,17 +23,26 @@ export class UpdateNavigationSiteSettingsAction {
 }
 export class HandleSiteSettingsChildrenChangesAction {
   static readonly type = 'SITE_SETTINGS:HANDLE_CHILDREN_CHANGES';
-  constructor(public settingGroup: string, public payload?: any) {}
+  constructor(
+    public settingGroup: string,
+    public payload?: any,
+  ) {}
 }
 
 export class UpdateSiteSettingsFromSyncAction {
   static readonly type = 'SITE_SETTINGS:UPDATE:SYNC';
-  constructor(public path: string, public payload: any) {}
+  constructor(
+    public path: string,
+    public payload: any,
+  ) {}
 }
 
 export class RenameSiteSettingsSitenameAction {
   static readonly type = 'SITE_SETTINGS_SITENAME:RENAME';
-  constructor(public site: SiteStateModel, public siteName: string) {}
+  constructor(
+    public site: SiteStateModel,
+    public siteName: string,
+  ) {}
 }
 
 export class DeleteSiteSettingsAction {
@@ -55,7 +64,7 @@ export class AddSiteSettingChildrenAction {
   constructor(
     public settingGroup: string,
     public slug: string,
-    public payload: any
+    public payload: any,
   ) {}
 }
 
@@ -64,16 +73,16 @@ export class DeleteSiteSettingChildrenAction {
   constructor(
     public settingGroup: string,
     public slug: string,
-    public payload: number
+    public payload: number,
   ) {}
 }
 
-export class UpdateSiteSettingChildreAction {
+export class UpdateSiteSettingChildrenAction {
   static readonly type = 'SITE_SETTINGS:UPDATE_CHILDREN';
   constructor(
     public settingGroup: string,
     public slug: string,
     public index: number,
-    public payload: { [k: string]: any }
+    public payload: { [k: string]: any },
   ) {}
 }

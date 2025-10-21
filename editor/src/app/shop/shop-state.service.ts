@@ -35,7 +35,10 @@ const MAX_REQUEST_RETRIES = 100;
 export class ShopStateService {
   cachedSectionStates: { [k: string]: Observable<{ [k: string]: any }> } = {};
 
-  constructor(private http: HttpClient, private store: Store) {}
+  constructor(
+    private http: HttpClient,
+    private store: Store,
+  ) {}
 
   getInitialState(site: string = '', section?: string, force = false) {
     if (!this.cachedSectionStates[site] || force) {
@@ -78,11 +81,11 @@ export class ShopStateService {
                   pairwise(),
                   filter(
                     ([prevUser, user]) =>
-                      !!user.token && prevUser.token !== user.token
+                      !!user.token && prevUser.token !== user.token,
                   ),
-                  take(1)
+                  take(1),
                 );
-            })
+            }),
           );
         }),
         tap(() => this.store.dispatch(new AppHideLoading())),
@@ -100,13 +103,13 @@ export class ShopStateService {
         }),
         map((resp: APIResponse) => {
           return resp.data;
-        })
+        }),
       );
     }
 
     if (section) {
       return this.cachedSectionStates[site].pipe(
-        map((stateCache) => stateCache[section])
+        map((stateCache) => stateCache[section]),
       );
     }
 
@@ -134,7 +137,7 @@ export class ShopStateService {
         message: message,
         httpStatus: error.status ? error.status : undefined,
         field: data.path ? data.path : '',
-      })
+      }),
     );
   }
 }

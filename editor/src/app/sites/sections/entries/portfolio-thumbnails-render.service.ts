@@ -13,7 +13,7 @@ export class PortfolioThumbnailsRenderService {
   constructor(
     public sectionEntriesService: SectionEntriesService,
     public galleryRenderService: GalleryRenderService,
-    private twigTemplateRenderService: TwigTemplateRenderService
+    private twigTemplateRenderService: TwigTemplateRenderService,
   ) {}
 
   getFirstEntryImage(siteSlug: string, siteSettings, entry: SectionEntry) {
@@ -51,7 +51,7 @@ export class PortfolioThumbnailsRenderService {
           },
         },
       },
-      siteSettings
+      siteSettings,
     );
 
     return {
@@ -87,7 +87,7 @@ export class PortfolioThumbnailsRenderService {
     currentSection: SiteSectionStateModel,
     currentSectionType: string,
     tagSlug: string,
-    entries: SectionEntry[]
+    entries: SectionEntry[],
   ) {
     if (!currentSection) {
       return '';
@@ -96,7 +96,7 @@ export class PortfolioThumbnailsRenderService {
     const sectionEntries = this.sectionEntriesService.getSectionEntries(
       entries,
       currentSection.name,
-      tagSlug
+      tagSlug,
     );
 
     if (currentSectionType !== 'portfolio' || !sectionEntries.length) {
@@ -108,7 +108,7 @@ export class PortfolioThumbnailsRenderService {
     try {
       return this.twigTemplateRenderService.render(
         'Sites/Sections/Entries/portfolioThumbnails',
-        viewData
+        viewData,
       );
     } catch (error) {
       console.error('Failed to render template:', error);

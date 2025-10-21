@@ -57,7 +57,10 @@ export class ShopState implements NgxsOnInit {
     return state.urls;
   }
 
-  constructor(private store$: Store, private stateService: ShopStateService) {}
+  constructor(
+    private store$: Store,
+    private stateService: ShopStateService,
+  ) {}
 
   ngxsOnInit({ dispatch }: StateContext<ShopModel>) {
     this.store$
@@ -73,14 +76,14 @@ export class ShopState implements NgxsOnInit {
               return siteName;
             }
             leftOverPrevSiteNames = leftOverPrevSiteNames.filter(
-              (sn) => sn !== siteName
+              (sn) => sn !== siteName,
             );
             return _newSiteName;
           }, null);
 
           return [leftOverPrevSiteNames[0], newSiteName];
         }),
-        filter(([oldSiteName, newSiteName]) => !!oldSiteName || !!newSiteName)
+        filter(([oldSiteName, newSiteName]) => !!oldSiteName || !!newSiteName),
       )
       .subscribe(([oldSiteName, newSiteName]) => {
         // Site renamed
@@ -108,8 +111,8 @@ export class ShopState implements NgxsOnInit {
         filter((site) => site !== null),
         take(1),
         switchMap((site) =>
-          this.stateService.getInitialState(site).pipe(take(1))
-        )
+          this.stateService.getInitialState(site).pipe(take(1)),
+        ),
       )
       .subscribe((state) => {
         dispatch(
@@ -121,7 +124,7 @@ export class ShopState implements NgxsOnInit {
               );
             }),
             urls: state.urls,
-          })
+          }),
         );
       });
 
@@ -130,7 +133,7 @@ export class ShopState implements NgxsOnInit {
       .select(UserState.isLoggedIn)
       .pipe(
         pairwise(),
-        filter(([wasLoggedIn, isLoggedIn]) => wasLoggedIn && !isLoggedIn)
+        filter(([wasLoggedIn, isLoggedIn]) => wasLoggedIn && !isLoggedIn),
       )
       .subscribe(() => {
         dispatch([
@@ -147,7 +150,7 @@ export class ShopState implements NgxsOnInit {
   @Action(InitShopAction)
   initializeShop(
     { setState }: StateContext<ShopModel>,
-    action: InitShopAction
+    action: InitShopAction,
   ) {
     setState(action.payload);
   }

@@ -18,7 +18,7 @@ export class AdditionalFooterTextRenderService {
 
   constructor(
     private socialMediaLinksRenderService: SocialMediaLinksRenderService,
-    private twigTemplateRenderService: TwigTemplateRenderService
+    private twigTemplateRenderService: TwigTemplateRenderService,
   ) {}
 
   getAttributes(showAdditionalFooterText: boolean, siteSlug: string) {
@@ -30,9 +30,8 @@ export class AdditionalFooterTextRenderService {
 
     if (showAdditionalFooterText) {
       classes = [...classes, ...this.EDITABLE_CLASSES];
-      attributes[
-        'data-path'
-      ] = `${siteSlug}/settings/siteTexts/additionalFooterText`;
+      attributes['data-path'] =
+        `${siteSlug}/settings/siteTexts/additionalFooterText`;
     }
 
     attributes['class'] = classes.join(' ');
@@ -44,7 +43,7 @@ export class AdditionalFooterTextRenderService {
     appState: AppStateModel,
     siteSlug: string,
     siteSettings,
-    user: UserStateModel
+    user: UserStateModel,
   ) {
     const showSocialMediaButtons =
       user.features.includes('custom_javascript') &&
@@ -59,8 +58,8 @@ export class AdditionalFooterTextRenderService {
     const content = showSocialMediaButtons
       ? siteSettings.socialMediaButtons.socialMediaHTML
       : showSocialMediaLinks
-      ? this.socialMediaLinksRenderService.render(appState, siteSettings)
-      : siteSettings.siteTexts.additionalFooterText || '';
+        ? this.socialMediaLinksRenderService.render(appState, siteSettings)
+        : siteSettings.siteTexts.additionalFooterText || '';
 
     return {
       content: content,
@@ -73,7 +72,7 @@ export class AdditionalFooterTextRenderService {
     siteSlug: string,
     siteSettings,
     templateName: string,
-    user: UserStateModel
+    user: UserStateModel,
   ) {
     if (!this.USED_IN_TEMPLATES.includes(templateName)) {
       return '';
@@ -84,7 +83,7 @@ export class AdditionalFooterTextRenderService {
     try {
       return this.twigTemplateRenderService.render(
         'Sites/Sections/additionalFooterText',
-        viewData
+        viewData,
       );
     } catch (error) {
       console.error('Failed to render template:', error);

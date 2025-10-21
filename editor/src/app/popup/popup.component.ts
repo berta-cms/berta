@@ -8,8 +8,8 @@ TODO:
 */
 
 @Component({
-    selector: 'berta-popup',
-    template: `
+  selector: 'berta-popup',
+  template: `
     @if (!!popupState) {
       <div class="bt-popup-wrap">
         <div
@@ -18,7 +18,7 @@ TODO:
           [class.bt-popup-warn]="popupType === 'warn'"
           [class.bt-popup-error]="popupType === 'error'"
           [class.bt-popup-success]="popupType === 'success'"
-          >
+        >
           {{ popupState.content }}
           @if (actions) {
             <div class="bt-popup-action-wrap">
@@ -28,7 +28,7 @@ TODO:
                   [class.bt-primary]="action.type === 'primary'"
                   [class.bt-secondary]="action.type !== 'primary'"
                   (click)="actionClick(action, $event)"
-                  >
+                >
                   {{ action.label }}
                 </button>
               }
@@ -38,14 +38,11 @@ TODO:
       </div>
     }
     @if (popupState && (popupState.showOverlay || popupState.isModal)) {
-      <div
-        class="bt-popup-overlay"
-        (click)="overlayClick($event)"
-      ></div>
+      <div class="bt-popup-overlay" (click)="overlayClick($event)"></div>
     }
-    `,
-    styles: [
-        `
+  `,
+  styles: [
+    `
       .bt-popup-wrap {
         display: flex;
         position: fixed;
@@ -66,8 +63,8 @@ TODO:
         height: 100%;
       }
     `,
-    ],
-    standalone: false
+  ],
+  standalone: false,
 })
 export class PopupComponent implements OnInit {
   popupState: PopupState = null;

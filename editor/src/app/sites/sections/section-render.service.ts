@@ -8,7 +8,7 @@ import { ClassAttr } from '../../../types/attributes';
 })
 export class SectionRenderService {
   constructor(
-    private socialMediaLinksRenderService: SocialMediaLinksRenderService
+    private socialMediaLinksRenderService: SocialMediaLinksRenderService,
   ) {}
 
   getCurrentSection(sections: SiteSectionStateModel[], sectionSlug: string) {
@@ -47,7 +47,7 @@ export class SectionRenderService {
     siteTemplateSettings,
     sections: SiteSectionStateModel[],
     sectionSlug: string,
-    tagSlug: string
+    tagSlug: string,
   ) {
     const currentSection = this.getCurrentSection(sections, sectionSlug);
     const currentSectionType = this.getCurrentSectionType(currentSection);
@@ -107,7 +107,7 @@ export class SectionRenderService {
   getPageEntriesAttributes(
     sections: SiteSectionStateModel[],
     sectionSlug: string,
-    tagSlug: string
+    tagSlug: string,
   ): ClassAttr {
     const currentSection = this.getCurrentSection(sections, sectionSlug);
     let attributes: ClassAttr = { class: '' };

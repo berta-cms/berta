@@ -67,7 +67,7 @@ export class SitesState implements NgxsOnInit {
 
   constructor(
     private appStateService: AppStateService,
-    private actions$: Actions
+    private actions$: Actions,
   ) {}
 
   ngxsOnInit({ setState, dispatch }: StateContext<SiteStateModel[]>) {
@@ -76,9 +76,9 @@ export class SitesState implements NgxsOnInit {
       this.actions$.pipe(
         ofActionSuccessful(UserLoginAction),
         switchMap(() =>
-          this.appStateService.getInitialState('', 'sites').pipe(take(1))
-        )
-      )
+          this.appStateService.getInitialState('', 'sites').pipe(take(1)),
+        ),
+      ),
     ).subscribe({
       next: (response) => {
         dispatch(new InitSitesAction(response as SiteStateModel[]));
@@ -90,7 +90,7 @@ export class SitesState implements NgxsOnInit {
   @Action(CreateSiteAction)
   createSite(
     { setState, getState, dispatch }: StateContext<SiteStateModel[]>,
-    action: CreateSiteAction
+    action: CreateSiteAction,
   ) {
     const siteName = action.site
       ? action.site.name === ''
@@ -116,8 +116,8 @@ export class SitesState implements NgxsOnInit {
             dispatch(
               new CreateSiteTemplateSettingsAction(
                 newSite,
-                response.siteTemplateSettings
-              )
+                response.siteTemplateSettings,
+              ),
             );
           }
 
@@ -129,14 +129,14 @@ export class SitesState implements NgxsOnInit {
 
           dispatch(new AddSiteSectionsTagsAction(newSite, response.tags));
         }
-      })
+      }),
     );
   }
 
   @Action(UpdateSiteAction)
   updateSite(
     { setState, getState, dispatch }: StateContext<SiteStateModel[]>,
-    action: UpdateSiteAction
+    action: UpdateSiteAction,
   ) {
     const currentState = getState();
     const path =
@@ -158,42 +158,42 @@ export class SitesState implements NgxsOnInit {
                 return set(action.field, response.value, site);
               }
               return site;
-            })
+            }),
           );
 
           // Site related data rename
           if (action.field === 'name') {
             dispatch(
-              new RenameSiteSectionsSitenameAction(action.site, response.value)
+              new RenameSiteSectionsSitenameAction(action.site, response.value),
             );
             dispatch(
-              new RenameSiteSettingsSitenameAction(action.site, response.value)
+              new RenameSiteSettingsSitenameAction(action.site, response.value),
             );
             dispatch(
               new RenameSiteTemplateSettingsSitenameAction(
                 action.site,
-                response.value
-              )
+                response.value,
+              ),
             );
             dispatch(
-              new RenameSectionTagsSitenameAction(action.site, response.value)
+              new RenameSectionTagsSitenameAction(action.site, response.value),
             );
             dispatch(
               new RenameSectionEntriesSitenameAction(
                 action.site,
-                response.value
-              )
+                response.value,
+              ),
             );
           }
         }
-      })
+      }),
     );
   }
 
   @Action(RenameSiteAction)
   renameSite(
     { dispatch }: StateContext<SiteStateModel[]>,
-    action: RenameSiteAction
+    action: RenameSiteAction,
   ) {
     return dispatch(new UpdateSiteAction(action.site, 'name', action.value));
   }
@@ -201,7 +201,7 @@ export class SitesState implements NgxsOnInit {
   @Action(CloneSiteAction)
   cloneSite(
     { dispatch }: StateContext<SiteStateModel[]>,
-    action: CloneSiteAction
+    action: CloneSiteAction,
   ) {
     return dispatch(new CreateSiteAction(action.site));
   }
@@ -209,7 +209,7 @@ export class SitesState implements NgxsOnInit {
   @Action(DeleteSiteAction)
   deleteSite(
     { setState, getState, dispatch }: StateContext<SiteStateModel[]>,
-    action: DeleteSiteAction
+    action: DeleteSiteAction,
   ) {
     return this.appStateService
       .sync('sites', { site: action.site.name }, 'DELETE')
@@ -228,7 +228,7 @@ export class SitesState implements NgxsOnInit {
                 // Update order
                 .map((site, order) => {
                   return set('order', order, site);
-                })
+                }),
             );
             dispatch([
               new DeleteSiteSectionsAction(siteName),
@@ -238,14 +238,14 @@ export class SitesState implements NgxsOnInit {
               new DeleteSiteSectionsEntriesAction(siteName),
             ]);
           }
-        })
+        }),
       );
   }
 
   @Action(ReOrderSitesAction)
   reOrderSites(
     { getState, setState }: StateContext<SiteStateModel[]>,
-    action: ReOrderSitesAction
+    action: ReOrderSitesAction,
   ) {
     const sitesToSort = [...getState()];
     const indexToSortBy =
@@ -270,7 +270,7 @@ export class SitesState implements NgxsOnInit {
       .sync(
         'sites',
         sitesToSort.map((site) => site.name),
-        'PUT'
+        'PUT',
       )
       .pipe(
         tap((response) => {
@@ -288,10 +288,10 @@ export class SitesState implements NgxsOnInit {
                     order: (<string[]>response).indexOf(site.name),
                   };
                 })
-                .sort((siteA, siteB) => (siteB.order > siteA.order ? -1 : 1))
+                .sort((siteA, siteB) => (siteB.order > siteA.order ? -1 : 1)),
             );
           }
-        })
+        }),
       );
   }
 
@@ -303,7 +303,7 @@ export class SitesState implements NgxsOnInit {
   @Action(InitSitesAction)
   initSites(
     { setState }: StateContext<SiteStateModel[]>,
-    action: InitSitesAction
+    action: InitSitesAction,
   ) {
     setState(action.payload);
   }
@@ -313,7 +313,7 @@ export class SitesState implements NgxsOnInit {
     return this.appStateService.sync(
       'siteThemePreview',
       action.payload,
-      'POST'
+      'POST',
     );
   }
 

@@ -52,48 +52,49 @@ import { SitesSharedModule } from '../shared/sites-shared.module';
         </h3>
         <div class="settings" [@isExpanded]="fileSettingsIsOpen">
           @if (cropperIsReady) {
-          <berta-setting
-            [setting]="{
-              slug: 'width',
-              value: size.width
-            }"
-            [config]="{
-              title: 'Width',
-              format: 'text',
-              enabledOnUpdate: true
-            }"
-            [error]="''"
-            [disabled]="false"
-            (update)="updateSize($event)"
-          >
-          </berta-setting>
-          } @if (cropperIsReady) {
-          <berta-setting
-            [setting]="{
-              slug: 'height',
-              value: size.height
-            }"
-            [config]="{
-              title: 'Height',
-              format: 'text',
-              enabledOnUpdate: true
-            }"
-            [error]="''"
-            [disabled]="false"
-            (update)="updateSize($event)"
-          >
-          </berta-setting>
+            <berta-setting
+              [setting]="{
+                slug: 'width',
+                value: size.width,
+              }"
+              [config]="{
+                title: 'Width',
+                format: 'text',
+                enabledOnUpdate: true,
+              }"
+              [error]="''"
+              [disabled]="false"
+              (update)="updateSize($event)"
+            >
+            </berta-setting>
+          }
+          @if (cropperIsReady) {
+            <berta-setting
+              [setting]="{
+                slug: 'height',
+                value: size.height,
+              }"
+              [config]="{
+                title: 'Height',
+                format: 'text',
+                enabledOnUpdate: true,
+              }"
+              [error]="''"
+              [disabled]="false"
+              (update)="updateSize($event)"
+            >
+            </berta-setting>
           }
           <div class="setting">
             @if (cropperIsReady) {
-            <button
-              type="button"
-              class="button"
-              [class.disabled]="!canCrop"
-              (click)="cropImage()"
-            >
-              Crop
-            </button>
+              <button
+                type="button"
+                class="button"
+                [class.disabled]="!canCrop"
+                (click)="cropImage()"
+              >
+                Crop
+              </button>
             }
             <button
               type="button"
@@ -141,7 +142,7 @@ export class EntryGalleryImageEditorComponent implements OnInit {
     private _location: Location,
     private store: Store,
     private route: ActivatedRoute,
-    private http: HttpClient
+    private http: HttpClient,
   ) {
     this.position = { x1: 0, y1: 0, x2: 0, y2: 0 };
   }
@@ -153,8 +154,8 @@ export class EntryGalleryImageEditorComponent implements OnInit {
           (p) =>
             p['params']['section'] !== undefined &&
             p['params']['entry_id'] !== undefined &&
-            p['params']['image_order'] !== undefined
-        )
+            p['params']['image_order'] !== undefined,
+        ),
       )
       .subscribe((params) => {
         this.sectionName = params['params']['section'];
@@ -174,12 +175,12 @@ export class EntryGalleryImageEditorComponent implements OnInit {
                       e.find(
                         (e) =>
                           e.sectionName === this.sectionName &&
-                          e.id === this.entryId
-                      )
+                          e.id === this.entryId,
+                      ),
                   ),
-                  filter((e) => !!e)
+                  filter((e) => !!e),
                 );
-            })
+            }),
           )
           .subscribe((entry) => {
             this.galleryFile = entry.mediaCacheData.file[this.imageOrder];
@@ -266,8 +267,8 @@ export class EntryGalleryImageEditorComponent implements OnInit {
           y: this.imageCroppedEvent.imagePosition.y1,
           width: this.imageCroppedEvent.width,
           height: this.imageCroppedEvent.height,
-        }
-      )
+        },
+      ),
     );
   }
 }

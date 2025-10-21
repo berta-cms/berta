@@ -45,7 +45,7 @@ export class MessyTemplateRenderService extends TemplateRenderService {
     gridViewRenderService: GridViewRenderService,
     backgroundGalleryRenderService: BackgroundGalleryRenderService,
     shopCartRenderService: ShopCartRenderService,
-    twigTemplateRenderService: TwigTemplateRenderService
+    twigTemplateRenderService: TwigTemplateRenderService,
   ) {
     super(
       store,
@@ -66,7 +66,7 @@ export class MessyTemplateRenderService extends TemplateRenderService {
       gridViewRenderService,
       backgroundGalleryRenderService,
       shopCartRenderService,
-      twigTemplateRenderService
+      twigTemplateRenderService,
     );
   }
 
@@ -76,7 +76,7 @@ export class MessyTemplateRenderService extends TemplateRenderService {
     currentSectionType: string,
     tagSlug: string,
     isResponsive: boolean,
-    isAutoResponsive: boolean
+    isAutoResponsive: boolean,
   ) {
     let classes = [
       `xContent-${currentSection.name}`,
@@ -122,7 +122,7 @@ export class MessyTemplateRenderService extends TemplateRenderService {
   getPageEntriesClasses(
     currentSection: SiteSectionStateModel,
     tagSlug: string,
-    isResponsive: boolean
+    isResponsive: boolean,
   ) {
     let classes = [
       'xEntriesList',
@@ -151,7 +151,7 @@ export class MessyTemplateRenderService extends TemplateRenderService {
     siteSlug: string,
     currentSection: SiteSectionStateModel,
     currentSectionType: string,
-    tagSlug: string
+    tagSlug: string,
   ) {
     if (
       currentSectionType !== 'grid' ||
@@ -186,7 +186,7 @@ export class MessyTemplateRenderService extends TemplateRenderService {
 
   getBackgroundVideoEmbed(
     currentSection: SiteSectionStateModel,
-    siteTemplateSectionTypes
+    siteTemplateSectionTypes,
   ) {
     return {
       content: currentSection.backgroundVideoEmbed
@@ -240,7 +240,7 @@ export class MessyTemplateRenderService extends TemplateRenderService {
           commonViewData.currentSectionType,
           commonViewData.tagSlug,
           commonViewData.isResponsive,
-          commonViewData.isAutoResponsive
+          commonViewData.isAutoResponsive,
         ),
         isCenteredPageLayout:
           commonViewData.siteTemplateSettings.pageLayout.centered === 'yes',
@@ -250,12 +250,12 @@ export class MessyTemplateRenderService extends TemplateRenderService {
         sectionType: commonViewData.currentSectionType,
         contentContainerAttributes: this.getContentContainerAttributes(
           commonViewData.siteTemplateSettings,
-          commonViewData.isResponsive
+          commonViewData.isResponsive,
         ),
         pageEntriesClasses: this.getPageEntriesClasses(
           commonViewData.currentSection,
           commonViewData.tagSlug,
-          commonViewData.isResponsive
+          commonViewData.isResponsive,
         ),
         showBackgroundGalleryEditor: commonViewData.sections.length > 0,
         isGridViewEnabled:
@@ -265,7 +265,7 @@ export class MessyTemplateRenderService extends TemplateRenderService {
           commonViewData.siteSlug,
           commonViewData.currentSection,
           commonViewData.currentSectionType,
-          commonViewData.tagSlug
+          commonViewData.tagSlug,
         ),
         gridView: this.gridViewRenderService.render(
           commonViewData.appState,
@@ -273,14 +273,14 @@ export class MessyTemplateRenderService extends TemplateRenderService {
           commonViewData.templateName,
           commonViewData.currentSection,
           commonViewData.currentSectionType,
-          commonViewData.tagSlug
+          commonViewData.tagSlug,
         ),
         additionalFooterText: this.additionalFooterTextRenderService.render(
           commonViewData.appState,
           commonViewData.siteSlug,
           commonViewData.siteSettings,
           commonViewData.templateName,
-          commonViewData.user
+          commonViewData.user,
         ),
         alertMessage: false,
         cartSection:
@@ -292,7 +292,7 @@ export class MessyTemplateRenderService extends TemplateRenderService {
                 commonViewData.templateName,
                 commonViewData.currentSection,
                 commonViewData.shopSettings,
-                commonViewData.shippingRegions
+                commonViewData.shippingRegions,
               )
             : null,
         backgroundGallery: !(
@@ -304,7 +304,7 @@ export class MessyTemplateRenderService extends TemplateRenderService {
               commonViewData.templateName,
               commonViewData.currentSection,
               commonViewData.currentSectionType,
-              commonViewData.isResponsive
+              commonViewData.isResponsive,
             )
           : null,
         backgroundVideoEmbed: !(
@@ -313,7 +313,7 @@ export class MessyTemplateRenderService extends TemplateRenderService {
         )
           ? this.getBackgroundVideoEmbed(
               commonViewData.currentSection,
-              commonViewData.siteTemplateSectionTypes
+              commonViewData.siteTemplateSectionTypes,
             )
           : null,
         gridlinesAttributes: !(
@@ -331,7 +331,7 @@ export class MessyTemplateRenderService extends TemplateRenderService {
               commonViewData.siteSettings,
               commonViewData.shopSettings,
               commonViewData.sections,
-              commonViewData.isResponsive
+              commonViewData.isResponsive,
             )
           : null,
       },
@@ -346,7 +346,7 @@ export class MessyTemplateRenderService extends TemplateRenderService {
     try {
       const htmlOutput = this.twigTemplateRenderService.render(
         'Sites/Sections/defaultTemplate',
-        viewData
+        viewData,
       );
       this.replaceIframeContent(contentWindow, htmlOutput);
     } catch (error) {

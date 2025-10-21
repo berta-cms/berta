@@ -29,7 +29,7 @@ export class PageLayoutService {
       dom,
       sideColumn,
       mainColumn,
-      viewData
+      viewData,
     );
 
     PageLayoutService.replaceCommonContent(dom, viewData);
@@ -43,7 +43,7 @@ export class PageLayoutService {
     dom: Document,
     sideColumn: HTMLElement,
     mainColumn: HTMLElement,
-    viewData
+    viewData,
   ) {
     const body = dom.getElementById('body');
     const contentContainer = dom.getElementById('contentContainer');
@@ -56,7 +56,7 @@ export class PageLayoutService {
       // if we change 'Page layout' => 'How far content is from page top?'
       mainColumn.setAttribute(
         'data-paddingtop',
-        viewData.mainColumnAttributes['data-paddingtop']
+        viewData.mainColumnAttributes['data-paddingtop'],
       );
       mainColumn.style.paddingTop =
         viewData.mainColumnAttributes['data-paddingtop'];
