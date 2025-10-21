@@ -28,7 +28,10 @@ export class ErrorState implements NgxsOnInit {
     return state[state.length - 1];
   }
 
-  constructor(private store: Store, private popupService: PopupService) {}
+  constructor(
+    private store: Store,
+    private popupService: PopupService,
+  ) {}
 
   ngxsOnInit() {
     this.store
@@ -48,7 +51,7 @@ export class ErrorState implements NgxsOnInit {
   @Action(PushErrorAction)
   pushError(
     { getState, setState }: StateContext<ErrorStateModel[]>,
-    action: PushErrorAction
+    action: PushErrorAction,
   ) {
     setState([...getState(), action.payload]);
   }

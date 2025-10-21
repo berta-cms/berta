@@ -42,7 +42,7 @@ export class UserState implements NgxsOnInit {
   constructor(
     private appStateService: AppStateService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
   ) {}
 
   @Selector()
@@ -58,7 +58,7 @@ export class UserState implements NgxsOnInit {
   @Selector([UserState, UserState.isLoggedIn])
   static hasFeatureMultisite(
     user: UserStateModel,
-    isLoggedIn: boolean
+    isLoggedIn: boolean,
   ): boolean {
     return isLoggedIn && user.features.includes('multisite');
   }
@@ -74,7 +74,7 @@ export class UserState implements NgxsOnInit {
     this.route.queryParams
       .pipe(
         filter((params) => !!params.token),
-        take(1)
+        take(1),
       )
       .subscribe((params) => {
         /* assume user is has not logged in: */
@@ -109,14 +109,14 @@ export class UserState implements NgxsOnInit {
           intercom: resp.data.intercom,
           helpcrunch: resp.data.helpcrunch,
         });
-      })
+      }),
     );
   }
 
   @Action(UserLogoutAction)
   logout(
     { dispatch, setState }: StateContext<UserStateModel>,
-    action: UserLogoutAction
+    action: UserLogoutAction,
   ) {
     const newState = { ...defaultState };
 
@@ -147,7 +147,7 @@ export class UserState implements NgxsOnInit {
   @Action(SetUserNextUrlAction)
   setNextUrl(
     { patchState }: StateContext<UserStateModel>,
-    action: SetUserNextUrlAction
+    action: SetUserNextUrlAction,
   ) {
     patchState({ nextUrl: action.payload });
   }

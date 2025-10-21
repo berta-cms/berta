@@ -27,7 +27,7 @@ export class SitesMenuRenderService {
     siteSettings,
     templateName,
     siteTemplateSettings,
-    sites
+    sites,
   ) {
     const isResponsive = siteTemplateSettings.pageLayout.responsive === 'yes';
     let menuAttributes: {
@@ -60,7 +60,7 @@ export class SitesMenuRenderService {
     siteSettings,
     templateName,
     siteTemplateSettings,
-    sites
+    sites,
   ) {
     if (!user.features.includes('multisite')) {
       return '';
@@ -75,7 +75,7 @@ export class SitesMenuRenderService {
       siteSettings,
       templateName,
       siteTemplateSettings,
-      sites
+      sites,
     );
 
     if (!viewData.sites.length) {

@@ -80,7 +80,7 @@ export class SitesBannersRenderService {
               banner,
               siteSettings,
               siteSlug,
-              isResponsive
+              isResponsive,
             ),
             imageAttributes: this.getImageAttributes(banner, siteSlug),
           },
@@ -100,7 +100,7 @@ export class SitesBannersRenderService {
     try {
       return this.twigTemplateRenderService.render(
         'Sites/sitesBanners',
-        viewData
+        viewData,
       );
     } catch (error) {
       console.error('Failed to render template:', error);

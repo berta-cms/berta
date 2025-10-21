@@ -10,7 +10,7 @@ export class SectionTagsService {
     siteSettings: { [key: string]: { [key: string]: any } },
     tags: SectionTagsInterface[],
     section: SiteSectionStateModel,
-    tagSlug: string
+    tagSlug: string,
   ): string | null {
     if (!section) {
       return null;

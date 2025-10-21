@@ -38,7 +38,7 @@ export class SitesHeaderRenderService {
     templateName,
     siteSlug,
     siteSettings,
-    siteTemplateSettings
+    siteTemplateSettings,
   ) {
     let attributes: {
       [key: string]: string;
@@ -110,19 +110,19 @@ export class SitesHeaderRenderService {
     siteSettings,
     templateName,
     siteTemplateSettings,
-    isResponsive
+    isResponsive,
   ) {
     const headingAttributes = this.getHeadingAttributes(
       isResponsive,
       templateName,
       siteSlug,
       siteSettings,
-      siteTemplateSettings
+      siteTemplateSettings,
     );
     const headingImageAttributes = this.getHeadingImageAttributes(
       siteSlug,
       templateName,
-      siteTemplateSettings
+      siteTemplateSettings,
     );
     const link = this.getUrl(siteSlug);
     const editableAttributes = this.getEditableAttributes(siteSlug);
@@ -145,20 +145,20 @@ export class SitesHeaderRenderService {
     siteSettings,
     templateName,
     siteTemplateSettings,
-    isResponsive
+    isResponsive,
   ) {
     const viewData = this.getViewData(
       siteSlug,
       siteSettings,
       templateName,
       siteTemplateSettings,
-      isResponsive
+      isResponsive,
     );
 
     try {
       return this.twigTemplateRenderService.render(
         'Sites/sitesHeader',
-        viewData
+        viewData,
       );
     } catch (error) {
       console.error('Failed to render template:', error);

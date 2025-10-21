@@ -18,7 +18,7 @@ export class RenderService {
     private whiteTemplateRenderService: WhiteTemplateRenderService,
     private defaultTemplateRenderService: DefaultTemplateRenderService,
     private mashupTemplateRenderService: MashupTemplateRenderService,
-    private messyTemplateRenderService: MessyTemplateRenderService
+    private messyTemplateRenderService: MessyTemplateRenderService,
   ) {}
 
   startRender(contentWindow: Window) {

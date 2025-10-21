@@ -86,7 +86,7 @@ export class ShopSettingsState implements NgxsOnInit {
     private store$: Store,
     private appStateService: AppStateService,
     private stateService: ShopStateService,
-    private fileUploadService: FileUploadService
+    private fileUploadService: FileUploadService,
   ) {}
 
   ngxsOnInit({ dispatch }: StateContext<ShopSettingsModel>) {
@@ -101,9 +101,9 @@ export class ShopSettingsState implements NgxsOnInit {
         switchMap((site) =>
           this.stateService.getInitialState(site, 'settings').pipe(
             take(1),
-            map((settings) => ({ site, settings }))
-          )
-        )
+            map((settings) => ({ site, settings })),
+          ),
+        ),
       )
       .subscribe(({ site, settings }) => {
         const newState: { [k: string]: any } = {};
@@ -115,7 +115,7 @@ export class ShopSettingsState implements NgxsOnInit {
   @Action(InitShopSettingsAction)
   initShopSettings(
     { patchState }: StateContext<ShopSettingsModel>,
-    action: InitShopSettingsAction
+    action: InitShopSettingsAction,
   ) {
     patchState(action.payload);
   }
@@ -123,7 +123,7 @@ export class ShopSettingsState implements NgxsOnInit {
   @Action(UpdateShopSettingsAction)
   updateShopSettings(
     { getState, patchState }: StateContext<ShopSettingsModel>,
-    action: UpdateShopSettingsAction
+    action: UpdateShopSettingsAction,
   ) {
     const state = getState();
     const site = this.store$.selectSnapshot(AppState.getSite);
@@ -163,7 +163,7 @@ export class ShopSettingsState implements NgxsOnInit {
           console.error(error.message);
         }
         throw error;
-      })
+      }),
     );
   }
 
@@ -184,7 +184,7 @@ export class ShopSettingsState implements NgxsOnInit {
   @Action(RenameShopSettingsSiteAction)
   renameShopSettingsSite(
     { setState, getState }: StateContext<ShopSettingsModel>,
-    action: RenameShopSettingsSiteAction
+    action: RenameShopSettingsSiteAction,
   ) {
     const state = getState();
     const newState = {};
@@ -204,7 +204,7 @@ export class ShopSettingsState implements NgxsOnInit {
   @Action(DeleteShopSettingsSiteAction)
   deleteShopSettingsSite(
     { setState, getState }: StateContext<ShopSettingsModel>,
-    action: DeleteShopSettingsSiteAction
+    action: DeleteShopSettingsSiteAction,
   ) {
     const state = getState();
     const newState = {};

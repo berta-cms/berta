@@ -54,7 +54,7 @@ export class TemplateRenderService {
     public gridViewRenderService: GridViewRenderService,
     public backgroundGalleryRenderService: BackgroundGalleryRenderService,
     public shopCartRenderService: ShopCartRenderService,
-    public twigTemplateRenderService: TwigTemplateRenderService
+    public twigTemplateRenderService: TwigTemplateRenderService,
   ) {}
 
   getUserCopyright(siteSlug, siteSettings): UserCopyright {
@@ -100,7 +100,7 @@ export class TemplateRenderService {
     isShopAvailable,
     shopSettings,
     templateName,
-    isResponsive
+    isResponsive,
   ) {
     if (!currentSection) {
       return '';
@@ -109,7 +109,7 @@ export class TemplateRenderService {
     const sectionEntries = this.sectionEntriesService.getSectionEntries(
       entries,
       currentSection.name,
-      tagSlug
+      tagSlug,
     );
 
     let entriesHTML = '';
@@ -126,7 +126,7 @@ export class TemplateRenderService {
         currentSectionType,
         siteTemplateSettings,
         isResponsive,
-        shopSettings
+        shopSettings,
       );
     });
 
@@ -156,14 +156,14 @@ export class TemplateRenderService {
     const sectionSlug = this.store.selectSnapshot(AppState.getSection);
     const sites = this.store.selectSnapshot((state) => state.sites);
     const sectionTags = this.store.selectSnapshot(
-      SectionTagsState.getCurrentSiteTags
+      SectionTagsState.getCurrentSiteTags,
     );
     const sections = this.store.selectSnapshot(
-      SiteSectionsState.getCurrentSiteSections
+      SiteSectionsState.getCurrentSiteSections,
     );
     const currentSection = this.sectionRenderService.getCurrentSection(
       sections,
-      sectionSlug
+      sectionSlug,
     );
     const currentSectionType =
       this.sectionRenderService.getCurrentSectionType(currentSection);
@@ -172,7 +172,7 @@ export class TemplateRenderService {
       siteSettings,
       sectionTags,
       currentSection,
-      selectedTag
+      selectedTag,
     );
 
     const templateName = this.store
@@ -182,7 +182,7 @@ export class TemplateRenderService {
     const siteTemplateSettings: { [key: string]: { [key: string]: any } } =
       this.store
         .selectSnapshot(
-          SiteTemplateSettingsState.getCurrentSiteTemplateSettings
+          SiteTemplateSettingsState.getCurrentSiteTemplateSettings,
         )
         .reduce((settings, settingGroup) => {
           settingGroup.settings.forEach((setting) => {
@@ -198,15 +198,15 @@ export class TemplateRenderService {
         }, {});
 
     const siteTemplatesConfig = this.store.selectSnapshot(
-      SiteTemplatesState.getCurrentTemplateConfig
+      SiteTemplatesState.getCurrentTemplateConfig,
     );
 
     const siteTemplateSectionTypes = this.store.selectSnapshot(
-      SiteTemplatesState.getCurrentTemplateSectionTypes
+      SiteTemplatesState.getCurrentTemplateSectionTypes,
     );
 
     const entries = this.store.selectSnapshot(
-      SectionEntriesState.getCurrentSiteEntries
+      SectionEntriesState.getCurrentSiteEntries,
     );
 
     const isResponsiveTemplate =
@@ -225,7 +225,7 @@ export class TemplateRenderService {
 
     if (isShopAvailable) {
       const shopSettingsState = this.store.selectSnapshot(
-        ShopSettingsState.getCurrentSiteSettings
+        ShopSettingsState.getCurrentSiteSettings,
       );
 
       if (shopSettingsState) {
@@ -247,7 +247,7 @@ export class TemplateRenderService {
 
     const shippingRegions = isShopAvailable
       ? this.store.selectSnapshot(
-          ShopRegionalCostsState.getCurrentSiteRegionalCosts
+          ShopRegionalCostsState.getCurrentSiteRegionalCosts,
         )
       : {};
 
@@ -286,7 +286,7 @@ export class TemplateRenderService {
         shopSettings,
         isResponsive,
         isAutoResponsive,
-        user
+        user,
       ),
       googleTagManagerNoscript:
         this.googleTagManagerNoscriptRender(siteSettings),
@@ -296,21 +296,21 @@ export class TemplateRenderService {
         siteSettings,
         templateName,
         siteTemplateSettings,
-        sites
+        sites,
       ),
       siteHeader: this.sitesHeaderRenderService.render(
         siteSlug,
         siteSettings,
         templateName,
         siteTemplateSettings,
-        isResponsive
+        isResponsive,
       ),
       additionalTextBlock: this.additionalTextRenderService.render(
         appState,
         siteSlug,
         siteSettings,
         templateName,
-        isResponsive
+        isResponsive,
       ),
       sectionsMenu: this.sectionsMenuRenderService.render(
         siteSlug,
@@ -319,7 +319,7 @@ export class TemplateRenderService {
         templateName,
         siteTemplateSettings,
         sectionTags,
-        tagSlug
+        tagSlug,
       ),
       entries: this.getEntries(
         user,
@@ -336,7 +336,7 @@ export class TemplateRenderService {
         isShopAvailable,
         shopSettings,
         templateName,
-        isResponsive
+        isResponsive,
       ),
       portfolioThumbnails: this.portfolioThumbnailsRenderService.render(
         siteSlug,
@@ -344,19 +344,19 @@ export class TemplateRenderService {
         currentSection,
         currentSectionType,
         tagSlug,
-        entries
+        entries,
       ),
       siteBanners: this.sitesBannersRenderService.render(
         siteSlug,
         siteSettings,
-        isResponsive
+        isResponsive,
       ),
       userCopyright: this.getUserCopyright(siteSlug, siteSettings),
       bertaCopyright: this.getBertaCopyright(siteSettings, user),
       sectionFooter: this.sectionFooterRenderService.render(
         siteSettings,
         sections,
-        user
+        user,
       ),
     };
 
@@ -365,7 +365,7 @@ export class TemplateRenderService {
 
   replaceIframeContent(contentWindow: Window, html: string) {
     Array.from(contentWindow.document.childNodes).forEach((node) =>
-      node.remove()
+      node.remove(),
     );
 
     contentWindow.document.open();
@@ -380,7 +380,7 @@ export class TemplateRenderService {
         {
           googleTagManagerContainerId:
             siteSettings.settings.googleTagManagerContainerId,
-        }
+        },
       );
     } catch (error) {
       console.error('Failed to render template:', error);

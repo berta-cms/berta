@@ -2,7 +2,7 @@ export function createEl(
   dom: Document,
   tag: string,
   id: string,
-  cssText?: string
+  cssText?: string,
 ): HTMLElement {
   const el = dom.createElement(tag);
   el.id = id;
@@ -17,7 +17,7 @@ export function createEl(
 export function updateElCssById(
   dom: Document,
   id: string,
-  cssText: string
+  cssText: string,
 ): HTMLElement {
   const el = dom.getElementById(id);
 

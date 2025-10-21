@@ -10,7 +10,7 @@ export class DefaultTemplateStyleService {
     style,
     cssList,
     site: SiteStateModel,
-    templateSettings: SettingsGroupModel[]
+    templateSettings: SettingsGroupModel[],
   ) {
     if (
       style.group === 'background' &&
@@ -20,7 +20,7 @@ export class DefaultTemplateStyleService {
       const backgroundImage = this.getSettingValue(
         templateSettings,
         'background',
-        'backgroundImage'
+        'backgroundImage',
       );
 
       cssList.push({
@@ -38,7 +38,7 @@ export class DefaultTemplateStyleService {
         this.getSettingValue(
           templateSettings,
           'background',
-          'backgroundImageEnabled'
+          'backgroundImageEnabled',
         ) === 'yes';
       cssList = cssList.map((item) => {
         return {
@@ -177,7 +177,7 @@ export class DefaultTemplateStyleService {
   getSettingValue(
     templateSettings: SettingsGroupModel[],
     group: string,
-    slug: string
+    slug: string,
   ) {
     return templateSettings
       .find((g) => g.slug === group)

@@ -12,7 +12,7 @@ export class SectionsMenuRenderService {
 
   constructor(
     public sectionRenderService: SectionRenderService,
-    public twigTemplateRenderService: TwigTemplateRenderService
+    public twigTemplateRenderService: TwigTemplateRenderService,
   ) {}
 
   getSectionClassList(
@@ -20,7 +20,7 @@ export class SectionsMenuRenderService {
     currentSection,
     templateName: string,
     siteTemplateSettings,
-    isResponsive: boolean
+    isResponsive: boolean,
   ): string {
     let classes: string[] = [];
 
@@ -52,7 +52,7 @@ export class SectionsMenuRenderService {
     section: SiteSectionStateModel,
     isResponsive: boolean,
     templateName: string,
-    siteTemplateSettings
+    siteTemplateSettings,
   ): string {
     if (templateName !== 'messy' || isResponsive) {
       return '';
@@ -76,7 +76,7 @@ export class SectionsMenuRenderService {
   getUrl(
     section: SiteSectionStateModel,
     siteSlug: string,
-    tagSlug: string | null
+    tagSlug: string | null,
   ): string {
     let urlParts = [];
     const isExternalLink =
@@ -104,7 +104,7 @@ export class SectionsMenuRenderService {
     section: SiteSectionStateModel,
     tag,
     currentSection,
-    tagSlug
+    tagSlug,
   ) {
     let classList = [`xTag-${tag['@attributes'].name}`];
 
@@ -137,7 +137,7 @@ export class SectionsMenuRenderService {
     currentSection,
     templateName,
     siteTemplateSettings,
-    isResponsive
+    isResponsive,
   ) {
     const sectionTags = tags ? tags[section.name] || [] : [];
 
@@ -179,7 +179,7 @@ export class SectionsMenuRenderService {
               section,
               tag,
               currentSection,
-              tagSlug
+              tagSlug,
             ),
           }),
           linkAttributes: toHtmlAttributes({
@@ -211,17 +211,17 @@ export class SectionsMenuRenderService {
     templateName,
     siteTemplateSettings,
     sectionTags,
-    tagSlug: string | null
+    tagSlug: string | null,
   ) {
     const currentSection = this.sectionRenderService.getCurrentSection(
       sections,
-      sectionSlug
+      sectionSlug,
     );
     const isResponsiveTemplate =
       siteTemplateSettings.pageLayout.responsive === 'yes';
     const isResponsive = this.sectionRenderService.isResponsive(
       currentSection,
-      siteTemplateSettings
+      siteTemplateSettings,
     );
 
     const tags = this.getTags(sectionTags);
@@ -233,7 +233,7 @@ export class SectionsMenuRenderService {
           section['@attributes'] &&
           section['@attributes'].type &&
           section['@attributes'].type === 'shopping_cart'
-        )
+        ),
     );
 
     let submenu = {};
@@ -247,7 +247,7 @@ export class SectionsMenuRenderService {
         currentSection,
         templateName,
         siteTemplateSettings,
-        isResponsive
+        isResponsive,
       );
 
       const submenuAttributes = this.submenuAttributes(section, sectionTags);
@@ -274,13 +274,13 @@ export class SectionsMenuRenderService {
               currentSection,
               templateName,
               siteTemplateSettings,
-              isResponsive
+              isResponsive,
             ),
             style: this.getSectionStyleList(
               section,
               isResponsive,
               templateName,
-              siteTemplateSettings
+              siteTemplateSettings,
             ),
             'data-path': !isResponsive
               ? `${siteSlug}/section/${section.order}/positionXY`
@@ -316,7 +316,7 @@ export class SectionsMenuRenderService {
     templateName,
     siteTemplateSettings,
     sectionTags,
-    tagSlug
+    tagSlug,
   ) {
     if (!sections) {
       return '';
@@ -329,7 +329,7 @@ export class SectionsMenuRenderService {
       templateName,
       siteTemplateSettings,
       sectionTags,
-      tagSlug
+      tagSlug,
     );
 
     if (!viewData.sections || viewData.sections.length === 0) {
@@ -339,7 +339,7 @@ export class SectionsMenuRenderService {
     try {
       return this.twigTemplateRenderService.render(
         'Sites/Sections/sectionsMenu',
-        viewData
+        viewData,
       );
     } catch (error) {
       console.error('Failed to render template:', error);

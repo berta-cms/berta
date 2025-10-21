@@ -15,12 +15,12 @@ export class RerenderService {
     private defaultRerenderService: DefaultTemplateRerenderService,
     private mashupRerenderService: MashupTemplateRerenderService,
     private whiteRerenderService: WhiteTemplateRerenderService,
-    private messyRerenderService: MessyTemplateRerenderService
+    private messyRerenderService: MessyTemplateRerenderService,
   ) {}
 
   handleRerendering(iframe: HTMLIFrameElement) {
     const templateFullName = this.store.selectSnapshot(
-      SiteSettingsState.getCurrentSiteTemplate
+      SiteSettingsState.getCurrentSiteTemplate,
     );
 
     if (!templateFullName) {

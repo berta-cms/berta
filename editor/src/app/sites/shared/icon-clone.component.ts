@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 
 @Component({
-    selector: 'bt-icon-clone',
-    template: `
+  selector: 'bt-icon-clone',
+  template: `
     <svg
       xmlns="http://www.w3.org/2000/svg"
       width="16"
@@ -16,6 +16,6 @@ import { Component } from '@angular/core';
       />
     </svg>
   `,
-    standalone: false
+  standalone: false,
 })
 export class IconCloneComponent {}

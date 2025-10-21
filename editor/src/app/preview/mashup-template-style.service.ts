@@ -10,7 +10,7 @@ export class MashupTemplateStyleService {
     style,
     cssList,
     site: SiteStateModel,
-    templateSettings: SettingsGroupModel[]
+    templateSettings: SettingsGroupModel[],
   ) {
     if (
       style.group === 'background' &&
@@ -20,7 +20,7 @@ export class MashupTemplateStyleService {
       const backgroundImage = this.getSettingValue(
         templateSettings,
         'background',
-        'backgroundImage'
+        'backgroundImage',
       );
 
       cssList.push({
@@ -38,7 +38,7 @@ export class MashupTemplateStyleService {
         this.getSettingValue(
           templateSettings,
           'background',
-          'backgroundImageEnabled'
+          'backgroundImageEnabled',
         ) === 'yes';
       cssList = cssList.map((item) => {
         return {
@@ -73,21 +73,21 @@ export class MashupTemplateStyleService {
         this.getSettingValue(
           templateSettings,
           'pageLayout',
-          'contentWidth'
+          'contentWidth',
         ) as string,
-        10
+        10,
       );
       const paddingLeft: number = parseInt(
         this.getSettingValue(
           templateSettings,
           'pageLayout',
-          'paddingLeft'
+          'paddingLeft',
         ) as string,
-        10
+        10,
       );
       const sideBarWidth: number = parseInt(
         this.getSettingValue(templateSettings, 'sideBar', 'width') as string,
-        10
+        10,
       );
 
       cssList.push({
@@ -136,7 +136,7 @@ export class MashupTemplateStyleService {
       const backgroundColor = this.getSettingValue(
         templateSettings,
         'sideBar',
-        'backgroundColor'
+        'backgroundColor',
       );
       cssList.push({
         selector: '#sideColumn',
@@ -151,7 +151,7 @@ export class MashupTemplateStyleService {
   getSettingValue(
     templateSettings: SettingsGroupModel[],
     group: string,
-    slug: string
+    slug: string,
   ) {
     return templateSettings
       .find((g) => g.slug === group)

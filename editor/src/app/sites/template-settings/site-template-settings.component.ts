@@ -21,24 +21,24 @@ import { PopupService } from '../../popup/popup.service';
 import { AppState } from '../../app-state/app.state';
 
 @Component({
-    selector: 'berta-site-template-settings',
-    template: `
+  selector: 'berta-site-template-settings',
+  template: `
     @for (settingGroup of templateSettings$ | async; track settingGroup) {
       <div
         class="setting-group"
         [class.is-expanded]="camelifySlug(currentGroup) === settingGroup.slug"
-        >
+      >
         <h3
-        [routerLink]="[
-          '/design',
-          camelifySlug(currentGroup) === settingGroup.slug
-            ? ''
-            : slugifyCamel(settingGroup.slug)
-        ]"
+          [routerLink]="[
+            '/design',
+            camelifySlug(currentGroup) === settingGroup.slug
+              ? ''
+              : slugifyCamel(settingGroup.slug),
+          ]"
           queryParamsHandling="preserve"
           role="link"
           class="hoverable"
-          >
+        >
           {{ settingGroup.config.title || settingGroup.slug }}
           <svg
             class="drop-icon"
@@ -47,28 +47,30 @@ import { AppState } from '../../app-state/app.state';
             viewBox="0 0 10 6"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
-            >
+          >
             <path
               d="M9 1L4.75736 5.24264L0.514719 1"
               stroke="#9b9b9b"
               stroke-linecap="round"
               stroke-linejoin="round"
-              />
+            />
           </svg>
         </h3>
         <div
           class="settings"
           [@isExpanded]="camelifySlug(currentGroup) === settingGroup.slug"
-          >
+        >
           @for (setting of settingGroup.settings; track setting) {
             <berta-setting
               [templateSlug]="settingGroup.templateSlug"
               [setting]="setting.setting"
               [config]="setting.config"
-          [disabled]="
-            settingUpdate[settingGroup.slug + ':' + setting.setting.slug]
-          "
-              [error]="settingError[settingGroup.slug + ':' + setting.setting.slug]"
+              [disabled]="
+                settingUpdate[settingGroup.slug + ':' + setting.setting.slug]
+              "
+              [error]="
+                settingError[settingGroup.slug + ':' + setting.setting.slug]
+              "
               (update)="updateSetting(settingGroup.slug, $event)"
               (emitAction)="emitAction($event)"
             ></berta-setting>
@@ -76,9 +78,9 @@ import { AppState } from '../../app-state/app.state';
         </div>
       </div>
     }
-    `,
-    animations: [Animations.slideToggle],
-    standalone: false
+  `,
+  animations: [Animations.slideToggle],
+  standalone: false,
 })
 export class SiteTemplateSettingsComponent implements OnInit {
   defaultGroup = 'general-font-settings';
@@ -100,13 +102,13 @@ export class SiteTemplateSettingsComponent implements OnInit {
   constructor(
     private store: Store,
     private route: ActivatedRoute,
-    private popupService: PopupService
+    private popupService: PopupService,
   ) {}
 
   ngOnInit() {
     this.templateSettings$ = combineLatest([
       this.store.select(
-        SiteTemplateSettingsState.getCurrentSiteTemplateSettings
+        SiteTemplateSettingsState.getCurrentSiteTemplateSettings,
       ),
       this.store.select(SiteTemplatesState.getCurrentTemplateConfig),
       this.store.select(SiteSettingsState.getCurrentSiteTemplate),
@@ -116,7 +118,7 @@ export class SiteTemplateSettingsComponent implements OnInit {
           settings &&
           settings.length > 0 &&
           config &&
-          Object.keys(config).length > 0
+          Object.keys(config).length > 0,
       ),
       map(([settings, config, templateSlug]) => {
         return settings
@@ -163,7 +165,7 @@ export class SiteTemplateSettingsComponent implements OnInit {
             if (
               settingGroup.settings.some(
                 (setting, index) =>
-                  prevSettingGroup.settings[index].setting !== setting.setting
+                  prevSettingGroup.settings[index].setting !== setting.setting,
               )
             ) {
               /* Careful, not to mutate anything coming from the store: */
@@ -179,14 +181,14 @@ export class SiteTemplateSettingsComponent implements OnInit {
                     return prevSetting;
                   }
                   return setting;
-                }
+                },
               );
             }
             return prevSettingGroup;
           }
           return settingGroup;
         });
-      })
+      }),
     );
 
     this.route.paramMap.subscribe((params) => {
@@ -225,13 +227,13 @@ export class SiteTemplateSettingsComponent implements OnInit {
         this.store.dispatch(
           new UpdateSiteTemplateSettingsAction(settingGroup, {
             autoResponsive: 'no',
-          })
+          }),
         );
       } else if (data['autoResponsive'] && data['autoResponsive'] === 'yes') {
         this.store.dispatch(
           new UpdateSiteTemplateSettingsAction(settingGroup, {
             responsive: 'no',
-          })
+          }),
         );
       }
     }
@@ -249,7 +251,7 @@ export class SiteTemplateSettingsComponent implements OnInit {
               error.error.message;
           }
           this.settingUpdate[`${settingGroup}:${updateEvent.field}`] = false;
-        }
+        },
       );
   }
 
@@ -274,14 +276,14 @@ export class SiteTemplateSettingsComponent implements OnInit {
           callback: (popupService) => {
             const currentSite = this.store.selectSnapshot(AppState.getSite);
             const currentSiteTemplate = this.store.selectSnapshot(
-              SiteSettingsState.getCurrentSiteTemplate
+              SiteSettingsState.getCurrentSiteTemplate,
             );
 
             this.store.dispatch(
               new ResetToDefaultsSiteTemplateSettingsAction(
                 currentSite,
-                currentSiteTemplate
-              )
+                currentSiteTemplate,
+              ),
             );
             popupService.closePopup();
           },

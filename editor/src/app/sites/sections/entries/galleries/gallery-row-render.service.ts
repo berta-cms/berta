@@ -12,13 +12,13 @@ export class GalleryRowRenderService extends GalleryRenderService {
     galleryItemsData,
     galleryType,
     entry,
-    siteSettings
+    siteSettings,
   ): string[] | string {
     let classes = super.getGalleryClassList(
       galleryItemsData,
       galleryType,
       entry,
-      siteSettings
+      siteSettings,
     );
 
     if (galleryItemsData && galleryItemsData.length === 1) {
@@ -62,7 +62,7 @@ export class GalleryRowRenderService extends GalleryRenderService {
 
     // Calculate width of loader from remaining items total width
     const loaderWidth = this.getGalleryWidth(
-      galleryItems.slice(0, galleryItemsLimit)
+      galleryItems.slice(0, galleryItemsLimit),
     );
     const lastItem = galleryItems.slice(-1)[0];
 
@@ -87,14 +87,14 @@ export class GalleryRowRenderService extends GalleryRenderService {
     asRowGallery,
     galleryItemsData,
     galleryItems,
-    galleryType
+    galleryType,
   ): { [key: string]: any } {
     galleryItemsData = this.getGalleryItemsData(entry);
     galleryItems = this.generateGalleryItems(
       siteSlug,
       galleryItemsData,
       entry,
-      siteSettings
+      siteSettings,
     );
     galleryType =
       entry.mediaCacheData &&
@@ -114,7 +114,7 @@ export class GalleryRowRenderService extends GalleryRenderService {
       asRowGallery,
       galleryItemsData,
       galleryItems,
-      galleryType
+      galleryType,
     );
 
     const galleryItemsLimit = this.getGalleryItemsLimit(entry, appState);
@@ -126,7 +126,7 @@ export class GalleryRowRenderService extends GalleryRenderService {
           galleryItemsData,
           galleryType,
           entry,
-          siteSettings
+          siteSettings,
         ),
         galleryStyles: this.getGalleryStyles(galleryItems),
         items: galleryItems.slice(0, galleryItemsLimit),
@@ -143,7 +143,7 @@ export class GalleryRowRenderService extends GalleryRenderService {
     entry,
     siteTemplateSettings,
     isLoopAvailable,
-    asRowGallery
+    asRowGallery,
   ) {
     if (
       !entry.mediaCacheData ||
@@ -153,7 +153,7 @@ export class GalleryRowRenderService extends GalleryRenderService {
       try {
         return this.twigTemplateRenderService.render(
           'Sites/Sections/Entries/Galleries/editEmptyGallery',
-          {}
+          {},
         );
       } catch (error) {
         console.error('Failed to render template:', error);
@@ -172,13 +172,13 @@ export class GalleryRowRenderService extends GalleryRenderService {
       asRowGallery,
       null,
       null,
-      null
+      null,
     );
 
     try {
       return this.twigTemplateRenderService.render(
         'Sites/Sections/Entries/Galleries/galleryRow',
-        viewData
+        viewData,
       );
     } catch (error) {
       console.error('Failed to render template:', error);

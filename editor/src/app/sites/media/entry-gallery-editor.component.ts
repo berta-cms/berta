@@ -30,380 +30,398 @@ import { SiteSettingsState } from '../settings/site-settings.state';
   template: `
     <aside>
       @if (selectedFile) {
-      <div class="setting-group" [class.is-expanded]="fileSettingsIsOpen">
-        <h3
-          (click)="fileSettingsIsOpen = !fileSettingsIsOpen"
-          class="hoverable"
-        >
-          Item settings
-          <svg
-            class="drop-icon"
-            width="10"
-            height="6"
-            viewBox="0 0 10 6"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
+        <div class="setting-group" [class.is-expanded]="fileSettingsIsOpen">
+          <h3
+            (click)="fileSettingsIsOpen = !fileSettingsIsOpen"
+            class="hoverable"
           >
-            <path
-              d="M9 1L4.75736 5.24264L0.514719 1"
-              stroke="#9b9b9b"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-          </svg>
-        </h3>
-        <div class="settings" [@isExpanded]="fileSettingsIsOpen">
-          <berta-setting
-            [setting]="{ slug: '@value', value: selectedFile['@value'] }"
-            [config]="{
-              title: 'Caption for ' + selectedFile['@attributes']['src'],
-              placeholder: 'Enter item caption here...',
-              format: 'richtext',
-              enabledOnUpdate: true
-            }"
-            [error]="''"
-            (update)="updateFile($event)"
-          >
-          </berta-setting>
-          @if (selectedFile['@attributes']['type'] === 'video') {
-          <berta-setting
-            [setting]="{
-              slug: '@attributes/poster_frame',
-              value: selectedFile['@attributes']['poster_frame']
-            }"
-            [config]="{
-              title: 'Poster frame',
-              format: 'image',
-              enabledOnUpdate: true,
-              disableRemove: true
-            }"
-            [error]="''"
-            [disabled]="false"
-            (update)="updateVideoPosterFile($event)"
-          ></berta-setting>
-          } @if (selectedFile['@attributes']['type'] === 'video') {
-          <berta-setting
-            [setting]="{
-              slug: '@attributes/autoplay',
-              value: selectedFile['@attributes']['autoplay']
-            }"
-            [config]="{
-              title: 'Autoplay',
-              format: 'toggle',
-              values: [
-                { title: '', value: '0' },
-                { title: '', value: '1' }
-              ],
-              enabledOnUpdate: true
-            }"
-            [error]="''"
-            [disabled]="false"
-            (update)="updateFile($event)"
-          >
-          </berta-setting>
-          }
+            Item settings
+            <svg
+              class="drop-icon"
+              width="10"
+              height="6"
+              viewBox="0 0 10 6"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M9 1L4.75736 5.24264L0.514719 1"
+                stroke="#9b9b9b"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </h3>
+          <div class="settings" [@isExpanded]="fileSettingsIsOpen">
+            <berta-setting
+              [setting]="{ slug: '@value', value: selectedFile['@value'] }"
+              [config]="{
+                title: 'Caption for ' + selectedFile['@attributes']['src'],
+                placeholder: 'Enter item caption here...',
+                format: 'richtext',
+                enabledOnUpdate: true,
+              }"
+              [error]="''"
+              (update)="updateFile($event)"
+            >
+            </berta-setting>
+            @if (selectedFile['@attributes']['type'] === 'video') {
+              <berta-setting
+                [setting]="{
+                  slug: '@attributes/poster_frame',
+                  value: selectedFile['@attributes']['poster_frame'],
+                }"
+                [config]="{
+                  title: 'Poster frame',
+                  format: 'image',
+                  enabledOnUpdate: true,
+                  disableRemove: true,
+                }"
+                [error]="''"
+                [disabled]="false"
+                (update)="updateVideoPosterFile($event)"
+              ></berta-setting>
+            }
+            @if (selectedFile['@attributes']['type'] === 'video') {
+              <berta-setting
+                [setting]="{
+                  slug: '@attributes/autoplay',
+                  value: selectedFile['@attributes']['autoplay'],
+                }"
+                [config]="{
+                  title: 'Autoplay',
+                  format: 'toggle',
+                  values: [
+                    { title: '', value: '0' },
+                    { title: '', value: '1' },
+                  ],
+                  enabledOnUpdate: true,
+                }"
+                [error]="''"
+                [disabled]="false"
+                (update)="updateFile($event)"
+              >
+              </berta-setting>
+            }
+          </div>
         </div>
-      </div>
-      } @if (currentEntry) {
-      <div class="setting-group" [class.is-expanded]="gallerySettingsIsOpen">
-        <h3
-          (click)="gallerySettingsIsOpen = !gallerySettingsIsOpen"
-          class="hoverable"
-        >
-          Gallery settings
-          <svg
-            class="drop-icon"
-            width="10"
-            height="6"
-            viewBox="0 0 10 6"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
+      }
+      @if (currentEntry) {
+        <div class="setting-group" [class.is-expanded]="gallerySettingsIsOpen">
+          <h3
+            (click)="gallerySettingsIsOpen = !gallerySettingsIsOpen"
+            class="hoverable"
           >
-            <path
-              d="M9 1L4.75736 5.24264L0.514719 1"
-              stroke="#9b9b9b"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-          </svg>
-        </h3>
-        <div class="settings" [@isExpanded]="gallerySettingsIsOpen">
-          <berta-setting
-            [setting]="{
-              slug: 'type',
-              value: currentEntry['mediaCacheData']['@attributes'].type
-            }"
-            [config]="{
-              title: 'Gallery type',
-              format: 'select',
-              values: [
-                { title: 'Slideshow', value: 'slideshow' },
-                { title: 'Row', value: 'row' },
-                { title: 'Column', value: 'column' },
-                { title: 'Pile', value: 'pile' },
-                { title: 'Link', value: 'link' }
-              ],
-              enabledOnUpdate: true
-            }"
-            [error]="''"
-            [disabled]="false"
-            (update)="updateGallerySettings($event)"
-          >
-          </berta-setting>
-          @if ( currentEntry['mediaCacheData']['@attributes'].type ===
-          'slideshow' ) {
-          <berta-setting
-            [setting]="{
-              slug: 'autoplay',
-              value:
-                currentEntry['mediaCacheData']['@attributes'].autoplay || '0'
-            }"
-            [config]="{
-              title: 'Autoplay seconds',
-              format: 'text',
-              enabledOnUpdate: true,
-              validation: 'zero_or_positive_integer'
-            }"
-            [error]="''"
-            [disabled]="false"
-            (update)="updateGallerySettings($event)"
-          >
-          </berta-setting>
-          } @if ( currentEntry['mediaCacheData']['@attributes'].type ===
-          'slideshow' ) {
-          <berta-setting
-            [setting]="{
-              slug: 'slide_numbers_visible',
-              value:
-                currentEntry['mediaCacheData']['@attributes']
-                  .slide_numbers_visible || 'yes'
-            }"
-            [config]="{
-              title: 'Show image numbers',
-              format: 'toggle',
-              values: [
-                { title: '', value: 'yes' },
-                { title: '', value: 'no' }
-              ],
-              enabledOnUpdate: true
-            }"
-            [error]="''"
-            [disabled]="false"
-            (update)="updateGallerySettings($event)"
-          >
-          </berta-setting>
-          } @if ( currentEntry['mediaCacheData']['@attributes'].type ===
-          'slideshow' && templateName === 'messy' ) {
-          <berta-setting
-            [setting]="{
-              slug: 'gallery_width_by_widest_slide',
-              value:
-                currentEntry['mediaCacheData']['@attributes']
-                  .gallery_width_by_widest_slide || 'no'
-            }"
-            [config]="{
-              title: 'Width by widest slide',
-              format: 'toggle',
-              values: [
-                { title: '', value: 'yes' },
-                { title: '', value: 'no' }
-              ],
-              enabledOnUpdate: true
-            }"
-            [error]="''"
-            [disabled]="false"
-            (update)="updateGallerySettings($event)"
-          >
-          </berta-setting>
-          } @if (currentEntry['mediaCacheData']['@attributes'].type === 'row') {
-          <berta-setting
-            [setting]="{
-              slug: 'row_gallery_padding',
-              value:
-                currentEntry['mediaCacheData']['@attributes']
-                  .row_gallery_padding || '0'
-            }"
-            [config]="{
-              title: 'Image padding',
-              format: 'text',
-              enabledOnUpdate: true
-            }"
-            [error]="''"
-            [disabled]="false"
-            (update)="updateGallerySettings($event)"
-          >
-          </berta-setting>
-          } @if ( currentEntry['mediaCacheData']['@attributes'].type === 'link'
-          ) {
-          <berta-setting
-            [setting]="{
-              slug: 'link_address',
-              value:
-                currentEntry['mediaCacheData']['@attributes'].link_address || ''
-            }"
-            [config]="{
-              title: 'Link address',
-              format: 'url',
-              placeholder: 'https://example.com',
-              enabledOnUpdate: true
-            }"
-            [error]="''"
-            [disabled]="false"
-            (update)="updateGallerySettings($event)"
-          >
-          </berta-setting>
-          } @if ( currentEntry['mediaCacheData']['@attributes'].type === 'link'
-          ) {
-          <berta-setting
-            [setting]="{
-              slug: 'linkTarget',
-              value:
-                currentEntry['mediaCacheData']['@attributes'].linkTarget ||
-                '_self'
-            }"
-            [config]="{
-              title: 'Open in',
-              format: 'select',
-              values: [
-                { title: 'Same window', value: '_self' },
-                { title: 'New window', value: '_blank' }
-              ],
-              enabledOnUpdate: true
-            }"
-            [error]="''"
-            [disabled]="false"
-            (update)="updateGallerySettings($event)"
-          >
-          </berta-setting>
-          }
-          <berta-setting
-            [setting]="{
-              slug: 'fullscreen',
-              value:
-                currentEntry['mediaCacheData']['@attributes'].fullscreen ||
-                'yes'
-            }"
-            [config]="{
-              title: 'Fullscreen mode',
-              format: 'toggle',
-              values: [
-                { title: '', value: 'yes' },
-                { title: '', value: 'no' }
-              ],
-              enabledOnUpdate: true
-            }"
-            [error]="''"
-            [disabled]="false"
-            (update)="updateGallerySettings($event)"
-          >
-          </berta-setting>
-          <berta-setting
-            [setting]="{
-              slug: 'size',
-              value:
-                currentEntry['mediaCacheData']['@attributes'].size || 'large'
-            }"
-            [config]="{
-              title: 'File size',
-              format: 'select',
-              values: [
-                { title: 'Large', value: 'large' },
-                { title: 'Medium', value: 'medium' },
-                { title: 'Small', value: 'small' }
-              ],
-              enabledOnUpdate: true
-            }"
-            [error]="''"
-            [disabled]="false"
-            (update)="updateGallerySettings($event)"
-          >
-          </berta-setting>
+            Gallery settings
+            <svg
+              class="drop-icon"
+              width="10"
+              height="6"
+              viewBox="0 0 10 6"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M9 1L4.75736 5.24264L0.514719 1"
+                stroke="#9b9b9b"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </h3>
+          <div class="settings" [@isExpanded]="gallerySettingsIsOpen">
+            <berta-setting
+              [setting]="{
+                slug: 'type',
+                value: currentEntry['mediaCacheData']['@attributes'].type,
+              }"
+              [config]="{
+                title: 'Gallery type',
+                format: 'select',
+                values: [
+                  { title: 'Slideshow', value: 'slideshow' },
+                  { title: 'Row', value: 'row' },
+                  { title: 'Column', value: 'column' },
+                  { title: 'Pile', value: 'pile' },
+                  { title: 'Link', value: 'link' },
+                ],
+                enabledOnUpdate: true,
+              }"
+              [error]="''"
+              [disabled]="false"
+              (update)="updateGallerySettings($event)"
+            >
+            </berta-setting>
+            @if (
+              currentEntry['mediaCacheData']['@attributes'].type === 'slideshow'
+            ) {
+              <berta-setting
+                [setting]="{
+                  slug: 'autoplay',
+                  value:
+                    currentEntry['mediaCacheData']['@attributes'].autoplay ||
+                    '0',
+                }"
+                [config]="{
+                  title: 'Autoplay seconds',
+                  format: 'text',
+                  enabledOnUpdate: true,
+                  validation: 'zero_or_positive_integer',
+                }"
+                [error]="''"
+                [disabled]="false"
+                (update)="updateGallerySettings($event)"
+              >
+              </berta-setting>
+            }
+            @if (
+              currentEntry['mediaCacheData']['@attributes'].type === 'slideshow'
+            ) {
+              <berta-setting
+                [setting]="{
+                  slug: 'slide_numbers_visible',
+                  value:
+                    currentEntry['mediaCacheData']['@attributes']
+                      .slide_numbers_visible || 'yes',
+                }"
+                [config]="{
+                  title: 'Show image numbers',
+                  format: 'toggle',
+                  values: [
+                    { title: '', value: 'yes' },
+                    { title: '', value: 'no' },
+                  ],
+                  enabledOnUpdate: true,
+                }"
+                [error]="''"
+                [disabled]="false"
+                (update)="updateGallerySettings($event)"
+              >
+              </berta-setting>
+            }
+            @if (
+              currentEntry['mediaCacheData']['@attributes'].type ===
+                'slideshow' && templateName === 'messy'
+            ) {
+              <berta-setting
+                [setting]="{
+                  slug: 'gallery_width_by_widest_slide',
+                  value:
+                    currentEntry['mediaCacheData']['@attributes']
+                      .gallery_width_by_widest_slide || 'no',
+                }"
+                [config]="{
+                  title: 'Width by widest slide',
+                  format: 'toggle',
+                  values: [
+                    { title: '', value: 'yes' },
+                    { title: '', value: 'no' },
+                  ],
+                  enabledOnUpdate: true,
+                }"
+                [error]="''"
+                [disabled]="false"
+                (update)="updateGallerySettings($event)"
+              >
+              </berta-setting>
+            }
+            @if (currentEntry['mediaCacheData']['@attributes'].type === 'row') {
+              <berta-setting
+                [setting]="{
+                  slug: 'row_gallery_padding',
+                  value:
+                    currentEntry['mediaCacheData']['@attributes']
+                      .row_gallery_padding || '0',
+                }"
+                [config]="{
+                  title: 'Image padding',
+                  format: 'text',
+                  enabledOnUpdate: true,
+                }"
+                [error]="''"
+                [disabled]="false"
+                (update)="updateGallerySettings($event)"
+              >
+              </berta-setting>
+            }
+            @if (
+              currentEntry['mediaCacheData']['@attributes'].type === 'link'
+            ) {
+              <berta-setting
+                [setting]="{
+                  slug: 'link_address',
+                  value:
+                    currentEntry['mediaCacheData']['@attributes']
+                      .link_address || '',
+                }"
+                [config]="{
+                  title: 'Link address',
+                  format: 'url',
+                  placeholder: 'https://example.com',
+                  enabledOnUpdate: true,
+                }"
+                [error]="''"
+                [disabled]="false"
+                (update)="updateGallerySettings($event)"
+              >
+              </berta-setting>
+            }
+            @if (
+              currentEntry['mediaCacheData']['@attributes'].type === 'link'
+            ) {
+              <berta-setting
+                [setting]="{
+                  slug: 'linkTarget',
+                  value:
+                    currentEntry['mediaCacheData']['@attributes'].linkTarget ||
+                    '_self',
+                }"
+                [config]="{
+                  title: 'Open in',
+                  format: 'select',
+                  values: [
+                    { title: 'Same window', value: '_self' },
+                    { title: 'New window', value: '_blank' },
+                  ],
+                  enabledOnUpdate: true,
+                }"
+                [error]="''"
+                [disabled]="false"
+                (update)="updateGallerySettings($event)"
+              >
+              </berta-setting>
+            }
+            <berta-setting
+              [setting]="{
+                slug: 'fullscreen',
+                value:
+                  currentEntry['mediaCacheData']['@attributes'].fullscreen ||
+                  'yes',
+              }"
+              [config]="{
+                title: 'Fullscreen mode',
+                format: 'toggle',
+                values: [
+                  { title: '', value: 'yes' },
+                  { title: '', value: 'no' },
+                ],
+                enabledOnUpdate: true,
+              }"
+              [error]="''"
+              [disabled]="false"
+              (update)="updateGallerySettings($event)"
+            >
+            </berta-setting>
+            <berta-setting
+              [setting]="{
+                slug: 'size',
+                value:
+                  currentEntry['mediaCacheData']['@attributes'].size || 'large',
+              }"
+              [config]="{
+                title: 'File size',
+                format: 'select',
+                values: [
+                  { title: 'Large', value: 'large' },
+                  { title: 'Medium', value: 'medium' },
+                  { title: 'Small', value: 'small' },
+                ],
+                enabledOnUpdate: true,
+              }"
+              [error]="''"
+              [disabled]="false"
+              (update)="updateGallerySettings($event)"
+            >
+            </berta-setting>
+          </div>
         </div>
-      </div>
       }
     </aside>
     @if (currentSection && currentEntry) {
-    <div class="content">
-      <div class="header">
-        <h3>
-          Gallery editor / entry #{{ currentEntry.id }} /
-          {{ currentSection.title || 'Untitled' }}
-        </h3>
-        <button class="close" (click)="closeEditor()">&#10006;</button>
-      </div>
-      <div class="entry-gallery-items">
-        @for ( file of currentEntry.mediaCacheData.file; track
-        identifyGalleryItem($index, file)) {
-        <div
-          class="entry-gallery-item"
-          [class.selected]="file === selectedFile"
-          ngSortgridItem
-          [ngSortGridGroup]="currentEntry.sectionName + currentEntry.id"
-          [ngSortGridItems]="currentEntry.mediaCacheData.file"
-          (sorted)="reorder($event)"
-          (click)="setSelectedFile(file)"
-        >
-          @if (file['@attributes'].type === 'image') {
-          <div class="media image">
-            <img
-              draggable="false"
-              src="{{ currentSite.mediaUrl }}/{{
-                currentEntry.mediafolder
-              }}/_smallthumb_{{ file['@attributes'].src }}"
-            />
-          </div>
-          } @if (file['@attributes'].type === 'video') {
-          <div class="media video">
-            <video
-              [attr.poster]="
-                file['@attributes'].poster_frame
-                  ? currentSite.mediaUrl +
-                    '/' +
-                    currentEntry.mediafolder +
-                    '/' +
-                    file['@attributes'].poster_frame
-                  : null
-              "
-            >
-              <source
-                src="{{ currentSite.mediaUrl }}/{{
-                  currentEntry.mediafolder
-                }}/{{ file['@attributes'].src }}"
-                type="video/mp4"
-              />
-            </video>
-          </div>
-          }
-          <button title="move" class="action reorder">
-            <bt-icon-move></bt-icon-move>
-          </button>
-          @if (file['@attributes'].type === 'image') {
-          <button
-            title="crop"
-            class="action crop"
-            (click)="openCropItemPage($event, file['@attributes'].src)"
-          >
-            <bt-icon-crop></bt-icon-crop>
-          </button>
-          }
-          <button
-            title="delete"
-            class="action delete"
-            (click)="deleteItem($event, file['@attributes'].src)"
-          >
-            <bt-icon-delete></bt-icon-delete>
-          </button>
+      <div class="content">
+        <div class="header">
+          <h3>
+            Gallery editor / entry #{{ currentEntry.id }} /
+            {{ currentSection.title || 'Untitled' }}
+          </h3>
+          <button class="close" (click)="closeEditor()">&#10006;</button>
         </div>
-        }
-        <berta-files-input
-          [accept]="'image/*, video/mp4'"
-          [label]="'add items'"
-          [disabled]="disabled"
-          [errors]="uploadFilesErrors"
-          (update)="uploadFiles($event)"
-        ></berta-files-input>
+        <div class="entry-gallery-items">
+          @for (
+            file of currentEntry.mediaCacheData.file;
+            track identifyGalleryItem($index, file)
+          ) {
+            <div
+              class="entry-gallery-item"
+              [class.selected]="file === selectedFile"
+              ngSortgridItem
+              [ngSortGridGroup]="currentEntry.sectionName + currentEntry.id"
+              [ngSortGridItems]="currentEntry.mediaCacheData.file"
+              (sorted)="reorder($event)"
+              (click)="setSelectedFile(file)"
+            >
+              @if (file['@attributes'].type === 'image') {
+                <div class="media image">
+                  <img
+                    draggable="false"
+                    src="{{ currentSite.mediaUrl }}/{{
+                      currentEntry.mediafolder
+                    }}/_smallthumb_{{ file['@attributes'].src }}"
+                  />
+                </div>
+              }
+              @if (file['@attributes'].type === 'video') {
+                <div class="media video">
+                  <video
+                    [attr.poster]="
+                      file['@attributes'].poster_frame
+                        ? currentSite.mediaUrl +
+                          '/' +
+                          currentEntry.mediafolder +
+                          '/' +
+                          file['@attributes'].poster_frame
+                        : null
+                    "
+                  >
+                    <source
+                      src="{{ currentSite.mediaUrl }}/{{
+                        currentEntry.mediafolder
+                      }}/{{ file['@attributes'].src }}"
+                      type="video/mp4"
+                    />
+                  </video>
+                </div>
+              }
+              <button title="move" class="action reorder">
+                <bt-icon-move></bt-icon-move>
+              </button>
+              @if (file['@attributes'].type === 'image') {
+                <button
+                  title="crop"
+                  class="action crop"
+                  (click)="openCropItemPage($event, file['@attributes'].src)"
+                >
+                  <bt-icon-crop></bt-icon-crop>
+                </button>
+              }
+              <button
+                title="delete"
+                class="action delete"
+                (click)="deleteItem($event, file['@attributes'].src)"
+              >
+                <bt-icon-delete></bt-icon-delete>
+              </button>
+            </div>
+          }
+          <berta-files-input
+            [accept]="'image/*, video/mp4'"
+            [label]="'add items'"
+            [disabled]="disabled"
+            [errors]="uploadFilesErrors"
+            (update)="uploadFiles($event)"
+          ></berta-files-input>
+        </div>
       </div>
-    </div>
     }
   `,
   animations: [Animations.slideToggle],
@@ -425,7 +443,7 @@ export class EntryGalleryEditorComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private store: Store,
-    private popupService: PopupService
+    private popupService: PopupService,
   ) {}
 
   ngOnInit() {
@@ -434,8 +452,8 @@ export class EntryGalleryEditorComponent implements OnInit {
         filter(
           (p) =>
             p['params']['section'] !== undefined &&
-            p['params']['entry_id'] !== undefined
-        )
+            p['params']['entry_id'] !== undefined,
+        ),
       )
       .subscribe((params) => {
         const sectionName = params['params']['section'];
@@ -448,13 +466,13 @@ export class EntryGalleryEditorComponent implements OnInit {
             .pipe(filter((template) => !!template)),
           this.store.select(SiteSectionsState.getCurrentSiteSections).pipe(
             filter((s) => s.length > 0),
-            map((s) => s.find((s) => s.name === sectionName))
+            map((s) => s.find((s) => s.name === sectionName)),
           ),
           this.store.select(SectionEntriesState.getCurrentSiteEntries).pipe(
             filter((e) => e.length > 0),
             map((e) =>
-              e.find((e) => e.sectionName === sectionName && e.id === entryId)
-            )
+              e.find((e) => e.sectionName === sectionName && e.id === entryId),
+            ),
           ),
         ]).subscribe(([site, template, section, entry]) => {
           this.currentSite = site;
@@ -469,7 +487,7 @@ export class EntryGalleryEditorComponent implements OnInit {
 
   updateFile(e) {
     const index = this.currentEntry['mediaCacheData']['file'].findIndex(
-      (f) => f === this.selectedFile
+      (f) => f === this.selectedFile,
     );
     const path = `${this.currentSite.name}/entry/${this.currentEntry.sectionName}/${this.currentEntry.id}/mediaCacheData/file/${index}/${e.field}`;
     this.store.dispatch(new UpdateEntryGalleryFileAction(path, e.value));
@@ -482,8 +500,8 @@ export class EntryGalleryEditorComponent implements OnInit {
         this.currentEntry.sectionName,
         this.currentEntry.id,
         this.selectedFile['@attributes'].src,
-        e.value
-      )
+        e.value,
+      ),
     );
   }
 
@@ -502,7 +520,7 @@ export class EntryGalleryEditorComponent implements OnInit {
     const lookupFile = selectedFile || this.selectedFile;
     if (lookupFile) {
       const selectedFile = this.currentEntry.mediaCacheData.file.find(
-        (f) => f['@attributes'].src === lookupFile['@attributes'].src
+        (f) => f['@attributes'].src === lookupFile['@attributes'].src,
       );
 
       if (selectedFile) {
@@ -524,15 +542,15 @@ export class EntryGalleryEditorComponent implements OnInit {
             this.currentSite.name,
             this.currentEntry.sectionName,
             this.currentEntry.id,
-            file
-          )
+            file,
+          ),
         )
         .pipe(take(1))
         .subscribe(
           () => {},
           (error) => {
             this.uploadFilesErrors.push(error.error.error);
-          }
+          },
         );
     });
   }
@@ -550,15 +568,15 @@ export class EntryGalleryEditorComponent implements OnInit {
         this.currentSite.name,
         this.currentEntry.sectionName,
         this.currentEntry.id,
-        orderChangeEvent.currentOrder.map((f) => f['@attributes'].src)
-      )
+        orderChangeEvent.currentOrder.map((f) => f['@attributes'].src),
+      ),
     );
   }
 
   openCropItemPage(event: PointerEvent, fileName: string) {
     event.stopPropagation();
     const image_order = this.currentEntry.mediaCacheData.file.findIndex(
-      (file) => file['@attributes'].src === fileName
+      (file) => file['@attributes'].src === fileName,
     );
     const url = `/media/image/${this.currentEntry.sectionName}/${this.currentEntry.id}/${image_order}`;
     this.router.navigate([url], { queryParamsHandling: 'preserve' });
@@ -580,8 +598,8 @@ export class EntryGalleryEditorComponent implements OnInit {
                 this.currentSite.name,
                 this.currentEntry.sectionName,
                 this.currentEntry.id,
-                file
-              )
+                file,
+              ),
             );
 
             popupService.closePopup();

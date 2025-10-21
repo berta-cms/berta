@@ -44,7 +44,7 @@ export class SectionTagsState implements NgxsOnInit {
 
   constructor(
     private actions$: Actions,
-    private appStateService: AppStateService
+    private appStateService: AppStateService,
   ) {}
 
   ngxsOnInit({ dispatch }: StateContext<SectionTagsStateModel>) {
@@ -56,8 +56,8 @@ export class SectionTagsState implements NgxsOnInit {
           return this.appStateService
             .getInitialState('', 'section_tags')
             .pipe(take(1));
-        })
-      )
+        }),
+      ),
     ).subscribe((sectionTags) => {
       dispatch(new InitSiteSectionsTagsAction(sectionTags));
     });
@@ -66,7 +66,7 @@ export class SectionTagsState implements NgxsOnInit {
   @Action(UpdateSectionTagsAction)
   updateSectionTags(
     { getState, patchState }: StateContext<SectionTagsStateModel>,
-    action: UpdateSectionTagsAction
+    action: UpdateSectionTagsAction,
   ) {
     const state = getState();
 
@@ -81,7 +81,7 @@ export class SectionTagsState implements NgxsOnInit {
           section:
             state[action.siteName].section &&
             state[action.siteName].section.some(
-              (section) => section['@attributes'].name === action.sectionName
+              (section) => section['@attributes'].name === action.sectionName,
             )
               ? state[action.siteName].section.map((section) => {
                   if (section['@attributes'].name === action.sectionName) {
@@ -90,8 +90,8 @@ export class SectionTagsState implements NgxsOnInit {
                   return section;
                 })
               : state[action.siteName].section
-              ? [...state[action.siteName].section, action.tags]
-              : [...[], action.tags],
+                ? [...state[action.siteName].section, action.tags]
+                : [...[], action.tags],
         },
       });
     } else {
@@ -106,7 +106,7 @@ export class SectionTagsState implements NgxsOnInit {
   @Action(RenameSectionTagsAction)
   renameSectionTags(
     { patchState, getState }: StateContext<SectionTagsStateModel>,
-    action: RenameSectionTagsAction
+    action: RenameSectionTagsAction,
   ) {
     const state = getState();
 
@@ -139,7 +139,7 @@ export class SectionTagsState implements NgxsOnInit {
   @Action(AddSectionTagsAction)
   addSectionTags(
     { patchState, getState }: StateContext<SectionTagsStateModel>,
-    action: AddSectionTagsAction
+    action: AddSectionTagsAction,
   ) {
     const state = getState();
     const newTags = {};
@@ -157,7 +157,7 @@ export class SectionTagsState implements NgxsOnInit {
   @Action(AddSiteSectionsTagsAction)
   addSiteSectionsTags(
     { patchState, getState }: StateContext<SectionTagsStateModel>,
-    action: AddSiteSectionsTagsAction
+    action: AddSiteSectionsTagsAction,
   ) {
     const currentState = getState();
     const newTags = {};
@@ -168,7 +168,7 @@ export class SectionTagsState implements NgxsOnInit {
   @Action(RenameSectionTagsSitenameAction)
   renameSectionTagsSitename(
     { setState, getState }: StateContext<SectionTagsStateModel>,
-    action: RenameSectionTagsSitenameAction
+    action: RenameSectionTagsSitenameAction,
   ) {
     const state = getState();
     const newState = {};
@@ -188,7 +188,7 @@ export class SectionTagsState implements NgxsOnInit {
   @Action(DeleteSectionTagsAction)
   deleteSectionTags(
     { getState, patchState }: StateContext<SectionTagsStateModel>,
-    action: DeleteSectionTagsAction
+    action: DeleteSectionTagsAction,
   ) {
     const state = getState();
 
@@ -212,7 +212,7 @@ export class SectionTagsState implements NgxsOnInit {
   @Action(DeleteSiteSectionsTagsAction)
   deleteSiteSectionsTags(
     { getState, setState }: StateContext<SectionTagsStateModel>,
-    action: DeleteSiteSectionsTagsAction
+    action: DeleteSiteSectionsTagsAction,
   ) {
     const newState = { ...getState() };
     delete newState[action.siteName];
@@ -227,7 +227,7 @@ export class SectionTagsState implements NgxsOnInit {
   @Action(InitSiteSectionsTagsAction)
   initSectionTags(
     { setState }: StateContext<SectionTagsStateModel>,
-    action: InitSiteSectionsTagsAction
+    action: InitSiteSectionsTagsAction,
   ) {
     setState(action.payload);
   }
@@ -235,7 +235,7 @@ export class SectionTagsState implements NgxsOnInit {
   @Action(OrderSectionTagsFromSyncAction)
   orderSectionTagsFromSync(
     { getState, patchState }: StateContext<SectionTagsStateModel>,
-    action: OrderSectionTagsFromSyncAction
+    action: OrderSectionTagsFromSyncAction,
   ) {
     return this.appStateService
       .sync(
@@ -246,7 +246,7 @@ export class SectionTagsState implements NgxsOnInit {
           tag: action.tag,
           value: action.value,
         },
-        'PUT'
+        'PUT',
       )
       .pipe(
         tap((response) => {
@@ -275,7 +275,7 @@ export class SectionTagsState implements NgxsOnInit {
               },
             });
           }
-        })
+        }),
       );
   }
 }

@@ -17,8 +17,8 @@ import {
 } from './shop-regional-costs.actions';
 
 @Component({
-    selector: 'berta-shop-regional-costs',
-    template: `
+  selector: 'berta-shop-regional-costs',
+  template: `
     @for (region of regionalCosts$ | async; track region) {
       <div class="bt-sh-region">
         <div class="setting header">
@@ -31,7 +31,7 @@ import {
             type="button"
             class="delete"
             (click)="deleteRegion(region.id, $event)"
-            >
+          >
             <bt-icon-delete></bt-icon-delete>
           </button>
         </div>
@@ -57,23 +57,25 @@ import {
                   [value]="cost.weight"
                   [placeholder]="weightLabel$ | async"
                   [title]="weightTitle$ | async"
-              (update)="
-                updateRegionalCost('weight', $event, region.id, cost.id)
-              "
+                  (update)="
+                    updateRegionalCost('weight', $event, region.id, cost.id)
+                  "
                   (inputFocus)="updateInputFocus($event)"
                 ></berta-text-input>
                 <berta-text-input
                   [value]="cost.price"
                   [placeholder]="priceLabel$ | async"
                   [title]="priceTitle$ | async"
-                  (update)="updateRegionalCost('price', $event, region.id, cost.id)"
+                  (update)="
+                    updateRegionalCost('price', $event, region.id, cost.id)
+                  "
                   (inputFocus)="updateInputFocus($event)"
                 ></berta-text-input>
                 <button
                   type="button"
                   class="button"
                   (click)="deleteCost(cost.id, region.id, $event)"
-                  >
+                >
                   Delete
                 </button>
               </div>
@@ -83,7 +85,7 @@ import {
         <form
           class="setting bt-sh-regional-cost"
           (submit)="addCost(region.id, $event)"
-          >
+        >
           <div class="input-row">
             <berta-text-input
               value=""
@@ -109,7 +111,7 @@ import {
               type="submit"
               class="button"
               [attr.disabled]="addCostDisabled ? '' : null"
-              >
+            >
               Add
             </button>
           </div>
@@ -141,20 +143,20 @@ import {
           type="submit"
           class="button"
           [attr.disabled]="addRegionDisabled ? '' : null"
-          >
+        >
           Add
         </button>
       </div>
     </form>
-    `,
-    styles: [
-        `
+  `,
+  styles: [
+    `
       :host {
         display: block;
       }
     `,
-    ],
-    standalone: false
+  ],
+  standalone: false,
 })
 export class ShopRegionalCostsComponent implements OnInit {
   @Select(ShopRegionalCostsState.getCurrentSiteRegionalCosts) regionalCosts$;
@@ -173,7 +175,10 @@ export class ShopRegionalCostsComponent implements OnInit {
     price: 0,
   };
 
-  constructor(private store: Store, private popupService: PopupService) {}
+  constructor(
+    private store: Store,
+    private popupService: PopupService,
+  ) {}
 
   ngOnInit() {
     this.weightLabel$ = this.store
@@ -182,7 +187,7 @@ export class ShopRegionalCostsComponent implements OnInit {
         map((wUnit) => {
           return `weight (${wUnit})`;
         }),
-        shareReplay(1)
+        shareReplay(1),
       );
 
     this.weightTitle$ = this.store
@@ -191,7 +196,7 @@ export class ShopRegionalCostsComponent implements OnInit {
         map((wUnit) => {
           return `if weight is less than (${wUnit})`;
         }),
-        shareReplay(1)
+        shareReplay(1),
       );
 
     this.priceLabel$ = this.store
@@ -200,7 +205,7 @@ export class ShopRegionalCostsComponent implements OnInit {
         map((currency) => {
           return `price (${currency})`;
         }),
-        shareReplay(1)
+        shareReplay(1),
       );
 
     this.priceTitle$ = this.store
@@ -209,7 +214,7 @@ export class ShopRegionalCostsComponent implements OnInit {
         map((currency) => {
           return `then price is (${currency})`;
         }),
-        shareReplay(1)
+        shareReplay(1),
       );
   }
 
@@ -219,7 +224,7 @@ export class ShopRegionalCostsComponent implements OnInit {
 
   updateRegionalCost(field: string, value, id: number, cost_id: number) {
     this.store.dispatch(
-      new UpdateShopRegionCostAction(id, cost_id, { field, value })
+      new UpdateShopRegionCostAction(id, cost_id, { field, value }),
     );
   }
 
@@ -289,7 +294,7 @@ export class ShopRegionalCostsComponent implements OnInit {
           callback: (popupService) => {
             event.target.disabled = true;
             this.store.dispatch(
-              new DeleteShopRegionCostAction(regionId, { id: id })
+              new DeleteShopRegionCostAction(regionId, { id: id }),
             );
             popupService.closePopup();
           },

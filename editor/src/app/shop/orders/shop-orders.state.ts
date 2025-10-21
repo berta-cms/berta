@@ -34,7 +34,10 @@ export class ShopOrdersState implements NgxsOnInit {
     return state[site];
   }
 
-  constructor(private store$: Store, private stateService: ShopStateService) {}
+  constructor(
+    private store$: Store,
+    private stateService: ShopStateService,
+  ) {}
 
   ngxsOnInit({ dispatch }: StateContext<ShopOrdersModel>) {
     this.store$
@@ -45,9 +48,9 @@ export class ShopOrdersState implements NgxsOnInit {
         switchMap((site) =>
           this.stateService.getInitialState(site, 'orders').pipe(
             take(1),
-            map((orders) => ({ site, orders }))
-          )
-        )
+            map((orders) => ({ site, orders })),
+          ),
+        ),
       )
       .subscribe(({ site, orders }) => {
         dispatch(new InitShopOrdersAction({ [site]: orders[site] }));
@@ -57,7 +60,7 @@ export class ShopOrdersState implements NgxsOnInit {
   @Action(InitShopOrdersAction)
   initShopOrders(
     { patchState }: StateContext<ShopOrdersModel>,
-    action: InitShopOrdersAction
+    action: InitShopOrdersAction,
   ) {
     patchState(action.payload);
   }
@@ -65,7 +68,7 @@ export class ShopOrdersState implements NgxsOnInit {
   @Action(RenameShopOrdersSiteAction)
   renameOrdersSite(
     { setState, getState }: StateContext<ShopOrdersModel>,
-    action: RenameShopOrdersSiteAction
+    action: RenameShopOrdersSiteAction,
   ) {
     const state = getState();
     const newState = {};
@@ -85,7 +88,7 @@ export class ShopOrdersState implements NgxsOnInit {
   @Action(DeleteShopOrdersSiteAction)
   deleteOrdersSite(
     { getState, setState }: StateContext<ShopOrdersModel>,
-    action: DeleteShopOrdersSiteAction
+    action: DeleteShopOrdersSiteAction,
   ) {
     const state = { ...getState() };
     delete state[action.payload];

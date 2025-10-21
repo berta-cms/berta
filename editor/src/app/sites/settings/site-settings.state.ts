@@ -46,7 +46,7 @@ export class SiteSettingsState implements NgxsOnInit {
   @Selector([SiteSettingsState, AppState.getSite])
   static getCurrentSiteSettings(
     siteSettings: SitesSettingsStateModel,
-    siteSlug: string
+    siteSlug: string,
   ) {
     if (!siteSettings || siteSlug === null) {
       return;
@@ -61,7 +61,7 @@ export class SiteSettingsState implements NgxsOnInit {
       return;
     }
     const templateSettings = currentSiteSettings.find(
-      (settingGroup) => settingGroup.slug === 'template'
+      (settingGroup) => settingGroup.slug === 'template',
     );
     const template =
       templateSettings &&
@@ -75,7 +75,7 @@ export class SiteSettingsState implements NgxsOnInit {
       return;
     }
     const languageSettings = currentSiteSettings.find(
-      (settingGroup) => settingGroup.slug === 'language'
+      (settingGroup) => settingGroup.slug === 'language',
     );
     const language =
       languageSettings &&
@@ -87,7 +87,7 @@ export class SiteSettingsState implements NgxsOnInit {
     private store: Store,
     private actions$: Actions,
     private appStateService: AppStateService,
-    private fileUploadService: FileUploadService
+    private fileUploadService: FileUploadService,
   ) {}
 
   ngxsOnInit({ dispatch }: StateContext<SitesSettingsStateModel>) {
@@ -99,8 +99,8 @@ export class SiteSettingsState implements NgxsOnInit {
           return this.appStateService
             .getInitialState('', 'site_settings')
             .pipe(take(1));
-        })
-      )
+        }),
+      ),
     ).subscribe({
       next: (response: SiteSettingsResponse) => {
         dispatch(new InitSiteSettingsAction(response));
@@ -112,7 +112,7 @@ export class SiteSettingsState implements NgxsOnInit {
   @Action(CreateSiteSettingsAction)
   createSiteSettings(
     { patchState }: StateContext<SitesSettingsStateModel>,
-    action: CreateSiteSettingsAction
+    action: CreateSiteSettingsAction,
   ) {
     const newSettings = {
       [action.site.name]: this.initializeSettingsForSite(action.settings),
@@ -123,7 +123,7 @@ export class SiteSettingsState implements NgxsOnInit {
   @Action(UpdateSiteSettingsAction)
   updateSiteSettings(
     { getState, patchState, dispatch }: StateContext<SitesSettingsStateModel>,
-    action: UpdateSiteSettingsAction
+    action: UpdateSiteSettingsAction,
   ) {
     const currentSite = this.store.selectSnapshot(AppState.getSite);
     const settingKey = Object.keys(action.payload)[0];
@@ -176,20 +176,20 @@ export class SiteSettingsState implements NgxsOnInit {
               dispatch(
                 new HandleSiteSettingsChildrenChangesAction(
                   action.settingGroup,
-                  action.payload
-                )
+                  action.payload,
+                ),
               );
               break;
           }
         }
-      })
+      }),
     );
   }
 
   @Action(UpdateSiteSettingsFromSyncAction)
   updateSiteSettingsFromSync(
     { patchState, getState, dispatch }: StateContext<SitesSettingsStateModel>,
-    action: UpdateSiteSettingsFromSyncAction
+    action: UpdateSiteSettingsFromSyncAction,
   ) {
     return this.appStateService
       .sync('siteSettings', {
@@ -214,7 +214,7 @@ export class SiteSettingsState implements NgxsOnInit {
 
                 if (
                   _settingGroup.settings.some(
-                    (setting) => setting.slug === settingKey
+                    (setting) => setting.slug === settingKey,
                   )
                 ) {
                   return {
@@ -242,14 +242,14 @@ export class SiteSettingsState implements NgxsOnInit {
               dispatch(new AddSiteSectionAction(response.section));
             }
           }
-        })
+        }),
       );
   }
 
   @Action(AddSiteSettingChildrenAction)
   addSiteSettingChildren(
     { getState, patchState, dispatch }: StateContext<SitesSettingsStateModel>,
-    action: AddSiteSettingChildrenAction
+    action: AddSiteSettingChildrenAction,
   ) {
     const currentSite = this.store.selectSnapshot(AppState.getSite);
     const settingKey = action.slug;
@@ -301,17 +301,17 @@ export class SiteSettingsState implements NgxsOnInit {
           });
 
           dispatch(
-            new HandleSiteSettingsChildrenChangesAction(action.settingGroup)
+            new HandleSiteSettingsChildrenChangesAction(action.settingGroup),
           );
         }
-      })
+      }),
     );
   }
 
   @Action(DeleteSiteSettingChildrenAction)
   deleteSiteSettingChildren(
     { getState, patchState, dispatch }: StateContext<SitesSettingsStateModel>,
-    action: DeleteSiteSettingChildrenAction
+    action: DeleteSiteSettingChildrenAction,
   ) {
     const currentSite = this.store.selectSnapshot(AppState.getSite);
     const settingKey = action.slug;
@@ -355,17 +355,17 @@ export class SiteSettingsState implements NgxsOnInit {
           });
 
           dispatch(
-            new HandleSiteSettingsChildrenChangesAction(action.settingGroup)
+            new HandleSiteSettingsChildrenChangesAction(action.settingGroup),
           );
         }
-      })
+      }),
     );
   }
 
   @Action(UpdateSiteSettingChildreAction)
   updateSiteSettingChildren(
     { getState, patchState, dispatch }: StateContext<SitesSettingsStateModel>,
-    action: UpdateSiteSettingChildreAction
+    action: UpdateSiteSettingChildreAction,
   ) {
     const currentSite = this.store.selectSnapshot(AppState.getSite);
     const settingSlug = action.slug;
@@ -430,17 +430,17 @@ export class SiteSettingsState implements NgxsOnInit {
           });
 
           dispatch(
-            new HandleSiteSettingsChildrenChangesAction(action.settingGroup)
+            new HandleSiteSettingsChildrenChangesAction(action.settingGroup),
           );
         }
-      })
+      }),
     );
   }
 
   @Action(RenameSiteSettingsSitenameAction)
   renameSiteSettingsSitename(
     { setState, getState }: StateContext<SitesSettingsStateModel>,
-    action: RenameSiteSettingsSitenameAction
+    action: RenameSiteSettingsSitenameAction,
   ) {
     const state = getState();
     const newState = {};
@@ -460,7 +460,7 @@ export class SiteSettingsState implements NgxsOnInit {
   @Action(DeleteSiteSettingsAction)
   deleteSiteSettings(
     { setState, getState }: StateContext<SitesSettingsStateModel>,
-    action: DeleteSiteSettingsAction
+    action: DeleteSiteSettingsAction,
   ) {
     const newState = { ...getState() };
     delete newState[action.siteName];
@@ -468,7 +468,7 @@ export class SiteSettingsState implements NgxsOnInit {
   }
 
   initializeSettingsForSite(
-    settings: SiteSettingsSiteResponse
+    settings: SiteSettingsSiteResponse,
   ): SettingsGroupModel[] {
     return Object.keys(settings).map((settingGroupSlug) => {
       return {
@@ -501,13 +501,13 @@ export class SiteSettingsState implements NgxsOnInit {
   @Action(InitSiteSettingsAction)
   initSiteSettings(
     { setState }: StateContext<SitesSettingsStateModel>,
-    action: InitSiteSettingsAction
+    action: InitSiteSettingsAction,
   ) {
     const newState: SitesSettingsStateModel = {};
 
     for (const siteSlug in action.payload) {
       newState[siteSlug] = this.initializeSettingsForSite(
-        action.payload[siteSlug]
+        action.payload[siteSlug],
       );
     }
 

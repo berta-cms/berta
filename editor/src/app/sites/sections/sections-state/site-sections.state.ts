@@ -63,7 +63,7 @@ export class SiteSectionsState implements NgxsOnInit {
   @Selector([SiteSectionsState, AppState.getSite])
   static getCurrentSiteSections(
     state: SiteSectionStateModel[],
-    site: string
+    site: string,
   ): SiteSectionStateModel[] {
     return state
       .filter((section) => {
@@ -74,10 +74,10 @@ export class SiteSectionsState implements NgxsOnInit {
 
   @Selector([SiteSectionsState.getCurrentSiteSections])
   static getCurrentSiteShopSections(
-    sections: SiteSectionStateModel[]
+    sections: SiteSectionStateModel[],
   ): SiteSectionStateModel[] {
     return sections.filter(
-      (section) => section['@attributes']?.type === 'shop'
+      (section) => section['@attributes']?.type === 'shop',
     );
   }
 
@@ -85,7 +85,7 @@ export class SiteSectionsState implements NgxsOnInit {
     private appStateService: AppStateService,
     private actions$: Actions,
     private store: Store,
-    private fileUploadService: FileUploadService
+    private fileUploadService: FileUploadService,
   ) {}
 
   ngxsOnInit({ dispatch }: StateContext<SiteSectionStateModel[]>) {
@@ -97,8 +97,8 @@ export class SiteSectionsState implements NgxsOnInit {
           return this.appStateService
             .getInitialState('', 'site_sections')
             .pipe(take(1));
-        })
-      )
+        }),
+      ),
     ).subscribe((sections) => {
       dispatch(new InitSiteSectionsAction(sections));
     });
@@ -107,7 +107,7 @@ export class SiteSectionsState implements NgxsOnInit {
   @Action(CreateSectionAction)
   createSection(
     { dispatch }: StateContext<SiteSectionStateModel[]>,
-    action: CreateSectionAction
+    action: CreateSectionAction,
   ) {
     const siteName = this.store.selectSnapshot(AppState.getSite);
     const data = {
@@ -134,14 +134,14 @@ export class SiteSectionsState implements NgxsOnInit {
             dispatch(new AddSectionTagsAction(siteName, response.tags));
           }
         }
-      })
+      }),
     );
   }
 
   @Action(AddSiteSectionAction)
   addSiteSection(
     { getState, setState }: StateContext<SiteSectionStateModel[]>,
-    action: AddSiteSectionAction
+    action: AddSiteSectionAction,
   ) {
     const state = getState();
     setState([...state, action.section]);
@@ -150,7 +150,7 @@ export class SiteSectionsState implements NgxsOnInit {
   @Action(AddSiteSectionsAction)
   addSiteSections(
     { getState, setState }: StateContext<SiteSectionStateModel[]>,
-    action: AddSiteSectionsAction
+    action: AddSiteSectionsAction,
   ) {
     const state = getState();
     setState([...state, ...action.sections]);
@@ -159,7 +159,7 @@ export class SiteSectionsState implements NgxsOnInit {
   @Action(CloneSectionAction)
   cloneSection(
     { dispatch }: StateContext<SiteSectionStateModel[]>,
-    action: CloneSectionAction
+    action: CloneSectionAction,
   ) {
     dispatch(new CreateSectionAction(action.section));
   }
@@ -167,7 +167,7 @@ export class SiteSectionsState implements NgxsOnInit {
   @Action(UpdateSiteSectionAction)
   updateSiteSection(
     { getState, setState }: StateContext<SiteSectionStateModel[]>,
-    action: UpdateSiteSectionAction
+    action: UpdateSiteSectionAction,
   ) {
     // @todo rewite this path lookup from payload
     const fieldKeys = [Object.keys(action.payload)[0]];
@@ -205,7 +205,7 @@ export class SiteSectionsState implements NgxsOnInit {
                 attrNames.forEach(
                   (key) =>
                     (action.payload['@attributes'][key] =
-                      action.payload['@attributes'][key] + '')
+                      action.payload['@attributes'][key] + ''),
                 );
 
                 /** @todo rebuild this recursive */
@@ -220,17 +220,17 @@ export class SiteSectionsState implements NgxsOnInit {
                 };
               }
               return { ...section, ...action.payload }; // Deep set must be done here for complex properties
-            })
+            }),
           );
         }
-      })
+      }),
     );
   }
 
   @Action(UpdateSiteSectionByPathAction)
   updateSiteSectionByPath(
     { setState, getState }: StateContext<SiteSectionStateModel[]>,
-    action: UpdateSiteSectionByPathAction
+    action: UpdateSiteSectionByPathAction,
   ) {
     return this.appStateService
       .sync('siteSections', {
@@ -260,19 +260,19 @@ export class SiteSectionsState implements NgxsOnInit {
                 return assignByPath(
                   section,
                   path.slice(3).join('/'),
-                  action.payload
+                  action.payload,
                 );
-              })
+              }),
             );
           }
-        })
+        }),
       );
   }
 
   @Action(UpdateSiteSectionFromSyncAction)
   updateSiteSettingsFromSync(
     { setState, getState }: StateContext<SiteSectionStateModel[]>,
-    action: UpdateSiteSectionFromSyncAction
+    action: UpdateSiteSectionFromSyncAction,
   ) {
     return this.appStateService
       .sync('siteSections', {
@@ -302,19 +302,19 @@ export class SiteSectionsState implements NgxsOnInit {
                 return assignByPath(
                   section,
                   path.slice(3).join('/'),
-                  action.payload
+                  action.payload,
                 );
-              })
+              }),
             );
           }
-        })
+        }),
       );
   }
 
   @Action(UpdateSiteSectionBackgroundFromSyncAction)
   updateSiteSectionBackgroundFromSync(
     { getState, setState }: StateContext<SiteSectionStateModel[]>,
-    action: UpdateSiteSectionBackgroundFromSyncAction
+    action: UpdateSiteSectionBackgroundFromSyncAction,
   ) {
     return this.appStateService
       .sync(
@@ -324,7 +324,7 @@ export class SiteSectionsState implements NgxsOnInit {
           section: action.section,
           files: action.files,
         },
-        'PUT'
+        'PUT',
       )
       .pipe(
         tap((response) => {
@@ -352,17 +352,17 @@ export class SiteSectionsState implements NgxsOnInit {
                   mediafolder: response.mediafolder,
                   mediaCacheData: mediaCacheData,
                 };
-              })
+              }),
             );
           }
-        })
+        }),
       );
   }
 
   @Action(OrderSiteSectionBackgroundAction)
   orderSiteSectionBackground(
     { getState, setState }: StateContext<SiteSectionStateModel[]>,
-    action: OrderSiteSectionBackgroundAction
+    action: OrderSiteSectionBackgroundAction,
   ) {
     return this.appStateService
       .sync(
@@ -372,7 +372,7 @@ export class SiteSectionsState implements NgxsOnInit {
           section: action.section,
           files: action.files,
         },
-        'PUT'
+        'PUT',
       )
       .pipe(
         tap((response) => {
@@ -400,17 +400,17 @@ export class SiteSectionsState implements NgxsOnInit {
                   mediafolder: response.mediafolder,
                   mediaCacheData: mediaCacheData,
                 };
-              })
+              }),
             );
           }
-        })
+        }),
       );
   }
 
   @Action(DeleteSiteSectionBackgroundFileAction)
   deleteSiteSectionBackgroundFile(
     { getState, setState }: StateContext<SiteSectionStateModel[]>,
-    action: DeleteSiteSectionBackgroundFileAction
+    action: DeleteSiteSectionBackgroundFileAction,
   ) {
     return this.appStateService
       .sync(
@@ -420,7 +420,7 @@ export class SiteSectionsState implements NgxsOnInit {
           section: action.section,
           file: action.file,
         },
-        'DELETE'
+        'DELETE',
       )
       .pipe(
         tap((response) => {
@@ -442,21 +442,21 @@ export class SiteSectionsState implements NgxsOnInit {
                 const mediaCacheData = {
                   ...section.mediaCacheData,
                   file: section.mediaCacheData.file.filter(
-                    (f) => f['@attributes'].src !== response.file
+                    (f) => f['@attributes'].src !== response.file,
                   ),
                 };
                 return { ...section, mediaCacheData: mediaCacheData };
-              })
+              }),
             );
           }
-        })
+        }),
       );
   }
 
   @Action(AddSiteSectionBackgroundFileAction)
   addSiteSectionBackgroundFile(
     { getState, setState }: StateContext<SiteSectionStateModel[]>,
-    action: AddSiteSectionBackgroundFileAction
+    action: AddSiteSectionBackgroundFileAction,
   ) {
     const data = {
       path: `${action.site}/section/${action.section}`,
@@ -507,17 +507,17 @@ export class SiteSectionsState implements NgxsOnInit {
                 mediafolder: response.mediafolder,
                 mediaCacheData: mediaCacheData,
               };
-            })
+            }),
           );
         }
-      })
+      }),
     );
   }
 
   @Action(UpdateSectionBackgroundFileAction)
   updateSectionBackgroundFile(
     { setState, getState }: StateContext<SiteSectionStateModel[]>,
-    action: UpdateSectionBackgroundFileAction
+    action: UpdateSectionBackgroundFileAction,
   ) {
     return this.appStateService
       .sync('siteSections', {
@@ -547,19 +547,19 @@ export class SiteSectionsState implements NgxsOnInit {
                 return assignByPath(
                   section,
                   path.slice(3).join('/'),
-                  action.payload
+                  action.payload,
                 );
-              })
+              }),
             );
           }
-        })
+        }),
       );
   }
 
   @Action(RenameSiteSectionAction)
   renameSiteSection(
     { getState, setState, dispatch }: StateContext<SiteSectionStateModel[]>,
-    action: RenameSiteSectionAction
+    action: RenameSiteSectionAction,
   ) {
     const path =
       action.section.site_name + '/section/' + action.order + '/title';
@@ -588,7 +588,7 @@ export class SiteSectionsState implements NgxsOnInit {
                 title: response.section.title,
                 name: response.section.name,
               };
-            })
+            }),
           );
 
           // Section related data rename
@@ -596,25 +596,25 @@ export class SiteSectionsState implements NgxsOnInit {
             new RenameSectionTagsAction(
               action.section.site_name,
               action.section,
-              response.section.name
-            )
+              response.section.name,
+            ),
           );
           dispatch(
             new RenameSectionEntriesAction(
               action.section.site_name,
               action.section,
-              response.section.name
-            )
+              response.section.name,
+            ),
           );
         }
-      })
+      }),
     );
   }
 
   @Action(RenameSiteSectionsSitenameAction)
   renameSiteSectionsSitename(
     { getState, setState }: StateContext<SiteSectionStateModel[]>,
-    action: RenameSiteSectionsSitenameAction
+    action: RenameSiteSectionsSitenameAction,
   ) {
     const state = getState();
 
@@ -624,18 +624,18 @@ export class SiteSectionsState implements NgxsOnInit {
           return section;
         }
         return { ...section, ...{ site_name: action.siteName } };
-      })
+      }),
     );
   }
 
   @Action(ReOrderSiteSectionsAction)
   reOrderSiteSections(
     { getState, setState }: StateContext<SiteSectionStateModel[]>,
-    action: ReOrderSiteSectionsAction
+    action: ReOrderSiteSectionsAction,
   ) {
     const siteName = this.store.selectSnapshot(AppState.getSite);
     const sectionsToSort = this.store.selectSnapshot(
-      SiteSectionsState.getCurrentSiteSections
+      SiteSectionsState.getCurrentSiteSections,
     );
     const indexToSortBy =
       action.currentOrder < action.payload
@@ -662,7 +662,7 @@ export class SiteSectionsState implements NgxsOnInit {
           site: siteName,
           sections: sectionsToSort.map((section) => section.name),
         },
-        'PUT'
+        'PUT',
       )
       .pipe(
         tap((response) => {
@@ -684,17 +684,17 @@ export class SiteSectionsState implements NgxsOnInit {
                   ...section,
                   order: (<string[]>response.sections).indexOf(section.name),
                 };
-              })
+              }),
             );
           }
-        })
+        }),
       );
   }
 
   @Action(DeleteSiteSectionAction)
   deleteSiteSection(
     { getState, setState, dispatch }: StateContext<SiteSectionStateModel[]>,
-    action: DeleteSiteSectionAction
+    action: DeleteSiteSectionAction,
   ) {
     const data = {
       site: action.section.site_name,
@@ -718,7 +718,7 @@ export class SiteSectionsState implements NgxsOnInit {
                   !(
                     section.site_name === response.site &&
                     section.name === response.name
-                  )
+                  ),
               )
               // Update order
               .map((section) => {
@@ -730,19 +730,19 @@ export class SiteSectionsState implements NgxsOnInit {
                   }
                 }
                 return section;
-              })
+              }),
           );
           dispatch(new DeleteSectionTagsAction(action.section));
           dispatch(new DeleteSectionEntriesAction(action.section));
         }
-      })
+      }),
     );
   }
 
   @Action(DeleteSiteSectionsAction)
   deleteSiteSections(
     { getState, setState }: StateContext<SiteSectionStateModel[]>,
-    action: DeleteSiteSectionsAction
+    action: DeleteSiteSectionsAction,
   ) {
     const state = getState();
     setState(state.filter((section) => section.site_name !== action.siteName));
@@ -756,7 +756,7 @@ export class SiteSectionsState implements NgxsOnInit {
   @Action(InitSiteSectionsAction)
   initSiteSections(
     { setState }: StateContext<SiteSectionStateModel[]>,
-    action: InitSiteSectionsAction
+    action: InitSiteSectionsAction,
   ) {
     let sections = action.payload;
 

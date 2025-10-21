@@ -43,7 +43,7 @@ export class WhiteTemplateRenderService extends TemplateRenderService {
     gridViewRenderService: GridViewRenderService,
     backgroundGalleryRenderService: BackgroundGalleryRenderService,
     shopCartRenderService: ShopCartRenderService,
-    twigTemplateRenderService: TwigTemplateRenderService
+    twigTemplateRenderService: TwigTemplateRenderService,
   ) {
     super(
       store,
@@ -64,7 +64,7 @@ export class WhiteTemplateRenderService extends TemplateRenderService {
       gridViewRenderService,
       backgroundGalleryRenderService,
       shopCartRenderService,
-      twigTemplateRenderService
+      twigTemplateRenderService,
     );
   }
 
@@ -83,27 +83,27 @@ export class WhiteTemplateRenderService extends TemplateRenderService {
           commonViewData.siteTemplateSettings,
           commonViewData.sections,
           commonViewData.sectionSlug,
-          commonViewData.tagSlug
+          commonViewData.tagSlug,
         ),
         isCenteredPageLayout:
           commonViewData.siteTemplateSettings.pageLayout.centered === 'yes',
         isResponsive:
           commonViewData.siteTemplateSettings.pageLayout.responsive === 'yes',
         sideColumnAttributes: this.sectionRenderService.getSideColumnAttributes(
-          commonViewData.siteTemplateSettings
+          commonViewData.siteTemplateSettings,
         ),
         mainColumnAttributes: this.sectionRenderService.getMainColumnAttributes(
-          commonViewData.siteTemplateSettings
+          commonViewData.siteTemplateSettings,
         ),
         pageEntriesAttributes:
           this.sectionRenderService.getPageEntriesAttributes(
             commonViewData.sections,
             commonViewData.sectionSlug,
-            commonViewData.tagSlug
+            commonViewData.tagSlug,
           ),
         socialMediaLinks: this.sectionRenderService.getSocialMediaLinks(
           commonViewData.appState,
-          commonViewData.siteSettings
+          commonViewData.siteSettings,
         ),
       },
     };
@@ -117,7 +117,7 @@ export class WhiteTemplateRenderService extends TemplateRenderService {
     try {
       const htmlOutput = this.twigTemplateRenderService.render(
         'Sites/Sections/whiteTemplate',
-        viewData
+        viewData,
       );
       this.replaceIframeContent(contentWindow, htmlOutput);
     } catch (error) {

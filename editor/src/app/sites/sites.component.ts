@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Store, Select } from '@ngxs/store';
 import { Observable } from 'rxjs';
@@ -10,11 +10,10 @@ import {
   CreateSiteAction,
   ReOrderSitesAction,
 } from './sites-state/sites.actions';
-import { SitesState } from './sites-state/sites.state';
 
 @Component({
-    selector: 'berta-sites',
-    template: `
+  selector: 'berta-sites',
+  template: `
     <div cdkDropList (cdkDropListDropped)="onDrop($event)">
       @for (site of sitesList; track site) {
         <berta-site
@@ -27,14 +26,17 @@ import { SitesState } from './sites-state/sites.state';
     <button type="button" class="button" (click)="createSite()">
       Create new site
     </button>
-    `,
-    standalone: false
+  `,
+  standalone: false,
 })
 export class SitesComponent implements OnInit {
   @Select('sites') public sites$: Observable<SiteStateModel[]>;
   sitesList: SiteStateModel[];
 
-  constructor(private store: Store, private router: Router) {}
+  constructor(
+    private store: Store,
+    private router: Router,
+  ) {}
 
   ngOnInit() {
     this.sites$.subscribe((sites) => {
@@ -59,11 +61,11 @@ export class SitesComponent implements OnInit {
             switchMap(() => this.store.selectOnce((state) => state.sites)),
             map((sitesState: SiteStateModel[]) => {
               return sitesState.find(
-                (site) => siteNames.indexOf(site.name) === -1
+                (site) => siteNames.indexOf(site.name) === -1,
               );
-            })
-          )
-        )
+            }),
+          ),
+        ),
       )
       .subscribe((newSite) => {
         if (!newSite) {
@@ -80,7 +82,7 @@ export class SitesComponent implements OnInit {
 
     moveItemInArray(this.sitesList, event.previousIndex, event.currentIndex);
     this.store.dispatch(
-      new ReOrderSitesAction(event.previousIndex, event.currentIndex)
+      new ReOrderSitesAction(event.previousIndex, event.currentIndex),
     );
   }
 }

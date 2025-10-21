@@ -37,16 +37,16 @@ interface SectionData {
       (cdkDropListDropped)="onDrop($event)"
     >
       @for (sd of sectionsList; track sd) {
-      <berta-section
-        cdkDrag
-        [section]="sd.section"
-        [isExpanded]="sd.section.name === currentSection"
-        [params]="sd.params"
-        [templateSectionTypes]="sectionTypes$ | async"
-        [translations]="translations$ | async"
-        (inputFocus)="updateComponentFocus($event)"
-        (update)="updateSection(sd, $event)"
-      ></berta-section>
+        <berta-section
+          cdkDrag
+          [section]="sd.section"
+          [isExpanded]="sd.section.name === currentSection"
+          [params]="sd.params"
+          [templateSectionTypes]="sectionTypes$ | async"
+          [translations]="translations$ | async"
+          (inputFocus)="updateComponentFocus($event)"
+          (update)="updateSection(sd, $event)"
+        ></berta-section>
       }
     </div>
     <button type="button" class="button" (click)="createSection()">
@@ -65,7 +65,7 @@ export class SiteSectionsComponent implements OnInit {
   constructor(
     private store: Store,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
   ) {}
 
   ngOnInit() {
@@ -80,13 +80,13 @@ export class SiteSectionsComponent implements OnInit {
             };
           });
         }),
-        shareReplay(1) // Reuse the same observable for all sections
+        shareReplay(1), // Reuse the same observable for all sections
       );
 
     this.translations$ = this.store
       .select(SiteTemplatesState.getCurrentTemplateSectionTranslations)
       .pipe(
-        shareReplay(1) // Reuse the same observable for all sections)
+        shareReplay(1), // Reuse the same observable for all sections)
       );
 
     this.sectionsData$ = combineLatest([
@@ -116,7 +116,7 @@ export class SiteSectionsComponent implements OnInit {
                     ['default', 'shop'].indexOf(section['@attributes'].type) >
                       -1 &&
                     ['columns', 'entryMaxWidth', 'entryPadding'].indexOf(
-                      param
+                      param,
                     ) > -1
                   ) {
                     return false;
@@ -177,7 +177,7 @@ export class SiteSectionsComponent implements OnInit {
 
           return { section, params: [] };
         });
-      })
+      }),
     );
 
     this.sectionsData$.subscribe((sectionsData) => {
@@ -220,8 +220,8 @@ export class SiteSectionsComponent implements OnInit {
           new RenameSiteSectionAction(
             sectionData.section,
             parseInt(updateEvent.section, 10),
-            updateEvent.data
-          )
+            updateEvent.data,
+          ),
         )
         .subscribe({
           next: (state) => {
@@ -252,7 +252,7 @@ export class SiteSectionsComponent implements OnInit {
 
                   return obj;
                 }),
-                filter((obj) => !!Object.keys(obj).length)
+                filter((obj) => !!Object.keys(obj).length),
               )
               .subscribe((obj) => {
                 const route =
@@ -273,8 +273,8 @@ export class SiteSectionsComponent implements OnInit {
         new UpdateSiteSectionAction(
           sectionData.section.site_name,
           parseInt(updateEvent.section, 10),
-          updateEvent.data
-        )
+          updateEvent.data,
+        ),
       );
     }
   }
@@ -286,7 +286,7 @@ export class SiteSectionsComponent implements OnInit {
 
     moveItemInArray(this.sectionsList, event.previousIndex, event.currentIndex);
     this.store.dispatch(
-      new ReOrderSiteSectionsAction(event.previousIndex, event.currentIndex)
+      new ReOrderSiteSectionsAction(event.previousIndex, event.currentIndex),
     );
   }
 }

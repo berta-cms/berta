@@ -114,7 +114,7 @@ export function stringToCurrency(number: string): string {
  * @param payload object to convert
  */
 export function objectToPathArray(
-  payload: Object
+  payload: Object,
 ): { path: string[]; value: any }[] {
   const results = [];
 
@@ -142,7 +142,7 @@ export function objectToPathArray(
  * @return - setting group where all settings that have select values are updated for the app
  */
 export function initSettingConfigGroup(
-  settingGroupConfigResponse: SettingConfigGroupResponse
+  settingGroupConfigResponse: SettingConfigGroupResponse,
 ): SettingGroupConfigModel {
   const result: SettingGroupConfigModel = {};
 
@@ -275,7 +275,7 @@ export function toHtmlAttributes(attributes: {
 
   Object.keys(attributes)
     .filter(
-      (attribute) => attributes[attribute] && attributes[attribute].length > 0
+      (attribute) => attributes[attribute] && attributes[attribute].length > 0,
     )
     .map((attribute) => {
       html += ` ${attribute}="${attributes[attribute]}"`;
@@ -286,7 +286,7 @@ export function toHtmlAttributes(attributes: {
 
 export function toImageHtmlAttributes(
   siteSlug: string,
-  attributes: { filename: string; width: string | null; height: string | null }
+  attributes: { filename: string; width: string | null; height: string | null },
 ) {
   let html = '';
   const mediaUrl = `/storage/${
@@ -310,7 +310,7 @@ export function toImageHtmlAttributes(
 export function getImageItem(
   siteSlug: string,
   filename: string,
-  attributes: { [key: string]: string }
+  attributes: { [key: string]: string },
 ) {
   const mediaUrl = `/storage/${
     siteSlug.length ? `-sites/${siteSlug}/` : ''

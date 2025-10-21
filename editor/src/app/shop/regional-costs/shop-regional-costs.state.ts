@@ -65,7 +65,7 @@ export class ShopRegionalCostsState implements NgxsOnInit {
   @Selector([ShopRegionalCostsState, AppState.getSite])
   static getCurrentSiteRegionalCosts(
     state: ShopRegionalCostsModel,
-    site: string
+    site: string,
   ) {
     return state[site];
   }
@@ -73,7 +73,7 @@ export class ShopRegionalCostsState implements NgxsOnInit {
   constructor(
     private store$: Store,
     private appStateService: AppStateService,
-    private stateService: ShopStateService
+    private stateService: ShopStateService,
   ) {}
 
   ngxsOnInit({ dispatch }: StateContext<ShopRegionalCostsModel>) {
@@ -88,13 +88,13 @@ export class ShopRegionalCostsState implements NgxsOnInit {
         switchMap((site) =>
           this.stateService.getInitialState(site, 'regionalCosts').pipe(
             take(1),
-            map((regionalCosts) => ({ site, regionalCosts }))
-          )
-        )
+            map((regionalCosts) => ({ site, regionalCosts })),
+          ),
+        ),
       )
       .subscribe(({ site, regionalCosts }) => {
         dispatch(
-          new InitShopRegionalCostsAction({ [site]: regionalCosts[site] })
+          new InitShopRegionalCostsAction({ [site]: regionalCosts[site] }),
         );
       });
   }
@@ -102,7 +102,7 @@ export class ShopRegionalCostsState implements NgxsOnInit {
   @Action(InitShopRegionalCostsAction)
   initShopRegionalCosts(
     { patchState }: StateContext<ShopRegionalCostsModel>,
-    action: InitShopRegionalCostsAction
+    action: InitShopRegionalCostsAction,
   ) {
     patchState(action.payload);
   }
@@ -110,7 +110,7 @@ export class ShopRegionalCostsState implements NgxsOnInit {
   @Action(UpdateShopRegionAction)
   updateShopRegion(
     { getState, patchState }: StateContext<ShopRegionalCostsModel>,
-    action: UpdateShopRegionAction
+    action: UpdateShopRegionAction,
   ) {
     const state = getState();
     const site = this.store$.selectSnapshot(AppState.getSite);
@@ -123,7 +123,7 @@ export class ShopRegionalCostsState implements NgxsOnInit {
           path: `${site}/${action.id}/${action.payload.field}`,
           value: action.payload.value,
         },
-        'PATCH'
+        'PATCH',
       )
       .pipe(
         tap((response: { message: string; data: any }) => {
@@ -143,14 +143,14 @@ export class ShopRegionalCostsState implements NgxsOnInit {
             console.error(error.message);
           }
           throw error;
-        })
+        }),
       );
   }
 
   @Action(AddShopRegionAction)
   addShopRegion(
     { getState, patchState }: StateContext<ShopRegionalCostsModel>,
-    action: AddShopRegionAction
+    action: AddShopRegionAction,
   ) {
     const state = getState();
     const site = this.store$.selectSnapshot(AppState.getSite);
@@ -163,7 +163,7 @@ export class ShopRegionalCostsState implements NgxsOnInit {
           site: site,
           data: { vat: 0, ...action.payload },
         },
-        'POST'
+        'POST',
       )
       .pipe(
         tap((response: { message: string; data: any }) => {
@@ -186,14 +186,14 @@ export class ShopRegionalCostsState implements NgxsOnInit {
             console.error(error.message);
           }
           throw error;
-        })
+        }),
       );
   }
 
   @Action(DeleteShopRegionAction)
   deleteShopRegion(
     { getState, patchState }: StateContext<ShopRegionalCostsModel>,
-    action: DeleteShopRegionAction
+    action: DeleteShopRegionAction,
   ) {
     const state = getState();
     const site = this.store$.selectSnapshot(AppState.getSite);
@@ -203,13 +203,13 @@ export class ShopRegionalCostsState implements NgxsOnInit {
       .sync(
         syncURLs.regions + `/${site || 0}/${action.payload.id}`,
         {},
-        'DELETE'
+        'DELETE',
       )
       .pipe(
         tap(() => {
           patchState({
             [site]: state[site].filter(
-              (region) => +region.id !== +action.payload.id
+              (region) => +region.id !== +action.payload.id,
             ),
           });
         }),
@@ -220,14 +220,14 @@ export class ShopRegionalCostsState implements NgxsOnInit {
             console.error(error.message);
           }
           throw error;
-        })
+        }),
       );
   }
 
   @Action(UpdateShopRegionCostAction)
   updateShopRegionalCost(
     { getState, patchState }: StateContext<ShopRegionalCostsModel>,
-    action: UpdateShopRegionCostAction
+    action: UpdateShopRegionCostAction,
   ) {
     const state = getState();
     const site = this.store$.selectSnapshot(AppState.getSite);
@@ -241,7 +241,7 @@ export class ShopRegionalCostsState implements NgxsOnInit {
           path: `${site}/${action.id}/${action.payload.field}`,
           value: action.payload.value,
         },
-        'PATCH'
+        'PATCH',
       )
       .pipe(
         tap((response: { message: string; data: any }) => {
@@ -272,14 +272,14 @@ export class ShopRegionalCostsState implements NgxsOnInit {
             console.error(error.message);
           }
           throw error;
-        })
+        }),
       );
   }
 
   @Action(AddShopRegionCostAction)
   addShopRegionalCost(
     { getState, patchState }: StateContext<ShopRegionalCostsModel>,
-    action: AddShopRegionCostAction
+    action: AddShopRegionCostAction,
   ) {
     const state = getState();
     const site = this.store$.selectSnapshot(AppState.getSite);
@@ -293,7 +293,7 @@ export class ShopRegionalCostsState implements NgxsOnInit {
           site: site,
           data: { id_region: action.regionId, ...action.payload },
         },
-        'POST'
+        'POST',
       )
       .pipe(
         tap((response: { message: string; data: any }) => {
@@ -323,14 +323,14 @@ export class ShopRegionalCostsState implements NgxsOnInit {
             console.error(error.message);
           }
           throw error;
-        })
+        }),
       );
   }
 
   @Action(DeleteShopRegionCostAction)
   deleteShopRegionalCost(
     { getState, patchState }: StateContext<ShopRegionalCostsModel>,
-    action: DeleteShopRegionCostAction
+    action: DeleteShopRegionCostAction,
   ) {
     const state = getState();
     const site = this.store$.selectSnapshot(AppState.getSite);
@@ -340,7 +340,7 @@ export class ShopRegionalCostsState implements NgxsOnInit {
       .sync(
         syncURLs.regionalCosts + `/${site || 0}/${action.payload.id}`,
         {},
-        'DELETE'
+        'DELETE',
       )
       .pipe(
         tap(() => {
@@ -366,14 +366,14 @@ export class ShopRegionalCostsState implements NgxsOnInit {
             console.error(error.message);
           }
           throw error;
-        })
+        }),
       );
   }
 
   @Action(RenameShopRegionSiteAction)
   renameShopRegionsSite(
     { setState, getState }: StateContext<ShopRegionalCostsModel>,
-    action: RenameShopRegionSiteAction
+    action: RenameShopRegionSiteAction,
   ) {
     const state = getState();
     const newState = {};
@@ -393,7 +393,7 @@ export class ShopRegionalCostsState implements NgxsOnInit {
   @Action(DeleteShopRegionSiteAction)
   deleteShopRegionsSite(
     { setState, getState }: StateContext<ShopRegionalCostsModel>,
-    action: DeleteShopRegionSiteAction
+    action: DeleteShopRegionSiteAction,
   ) {
     const state = getState();
     const newState = {};

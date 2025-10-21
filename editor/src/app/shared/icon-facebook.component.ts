@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 
 @Component({
-    selector: 'bt-icon-facebook',
-    template: `
+  selector: 'bt-icon-facebook',
+  template: `
     <svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 216 216"
@@ -15,6 +15,6 @@ import { Component } from '@angular/core';
       ></path>
     </svg>
   `,
-    standalone: false
+  standalone: false,
 })
 export class IconFacebookComponent {}

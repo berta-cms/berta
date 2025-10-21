@@ -35,7 +35,7 @@ export class SiteTemplatesState implements NgxsOnInit {
   @Selector([SiteTemplatesState, SiteSettingsState.getCurrentSiteTemplate])
   static getCurrentTemplate(
     state: SiteTemplatesStateModel,
-    templateSlug: string
+    templateSlug: string,
   ) {
     if (!templateSlug) {
       return;
@@ -63,7 +63,7 @@ export class SiteTemplatesState implements NgxsOnInit {
 
   @Selector([SiteTemplatesState.getCurrentTemplate])
   static getCurrentTemplateSectionTranslations(
-    currentTemplate: TemplateSiteModel
+    currentTemplate: TemplateSiteModel,
   ) {
     if (!currentTemplate) {
       return;
@@ -75,7 +75,7 @@ export class SiteTemplatesState implements NgxsOnInit {
   constructor(
     private store: Store,
     private actions$: Actions,
-    private appStateService: AppStateService
+    private appStateService: AppStateService,
   ) {}
 
   ngxsOnInit({ dispatch }: StateContext<SiteTemplatesStateModel>) {
@@ -87,8 +87,8 @@ export class SiteTemplatesState implements NgxsOnInit {
           return this.appStateService
             .getInitialState('', 'siteTemplates')
             .pipe(take(1));
-        })
-      )
+        }),
+      ),
     ).subscribe({
       next: (siteTemplateResponse: SiteTemplatesResponseModel) => {
         dispatch(new InitSiteTemplatesAction(siteTemplateResponse));
@@ -105,8 +105,8 @@ export class SiteTemplatesState implements NgxsOnInit {
         switchMap(([, language]) =>
           this.appStateService
             .getLocaleSettings(language, 'siteTemplates')
-            .pipe(take(1))
-        )
+            .pipe(take(1)),
+        ),
       )
       .subscribe((siteTemplateResponse: SiteTemplatesResponseModel) => {
         dispatch(new InitSiteTemplatesAction(siteTemplateResponse));
@@ -121,7 +121,7 @@ export class SiteTemplatesState implements NgxsOnInit {
   @Action(InitSiteTemplatesAction)
   initSiteTemplates(
     { setState }: StateContext<SiteTemplatesStateModel>,
-    action: InitSiteTemplatesAction
+    action: InitSiteTemplatesAction,
   ) {
     /** Initialize state: */
     const siteTemplateState: SiteTemplatesStateModel = {};

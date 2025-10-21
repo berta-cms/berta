@@ -21,18 +21,24 @@ export class UpdateSiteSectionAction {
   constructor(
     public site: string,
     public order: number,
-    public payload: { [k: string]: any }
+    public payload: { [k: string]: any },
   ) {}
 }
 
 export class UpdateSiteSectionFromSyncAction {
   static readonly type = 'SITE_SECTION:UPDATE:SYNC';
-  constructor(public path: string, public payload: any) {}
+  constructor(
+    public path: string,
+    public payload: any,
+  ) {}
 }
 
 export class UpdateSiteSectionByPathAction {
   static readonly type = 'SITE_SECTION:UPDATE_BY_PATH';
-  constructor(public path: string, public payload: string) {}
+  constructor(
+    public path: string,
+    public payload: string,
+  ) {}
 }
 
 export class UpdateSiteSectionBackgroundFromSyncAction {
@@ -40,7 +46,7 @@ export class UpdateSiteSectionBackgroundFromSyncAction {
   constructor(
     public site: string,
     public section: string,
-    public files: string[]
+    public files: string[],
   ) {}
 }
 
@@ -49,7 +55,7 @@ export class OrderSiteSectionBackgroundAction {
   constructor(
     public site: string,
     public section: string,
-    public files: string[]
+    public files: string[],
   ) {}
 }
 
@@ -58,18 +64,25 @@ export class DeleteSiteSectionBackgroundFileAction {
   constructor(
     public site: string,
     public section: string,
-    public file: string
+    public file: string,
   ) {}
 }
 
 export class AddSiteSectionBackgroundFileAction {
   static readonly type = 'SITE_SECTION_BACKGROUND:ADD_FILE';
-  constructor(public site: string, public section: string, public file: File) {}
+  constructor(
+    public site: string,
+    public section: string,
+    public file: File,
+  ) {}
 }
 
 export class UpdateSectionBackgroundFileAction {
   static readonly type = 'SITE_SECTION_BACKGROUND:UPDATE_FILE';
-  constructor(public path: string, public payload: string) {}
+  constructor(
+    public path: string,
+    public payload: string,
+  ) {}
 }
 
 export class RenameSiteSectionAction {
@@ -77,13 +90,16 @@ export class RenameSiteSectionAction {
   constructor(
     public section: SiteSectionStateModel,
     public order: number,
-    public payload: { [k: string]: any }
+    public payload: { [k: string]: any },
   ) {}
 }
 
 export class RenameSiteSectionsSitenameAction {
   static readonly type = 'SITE_SECTIONS_SITENAME:RENAME';
-  constructor(public site: SiteStateModel, public siteName: string) {}
+  constructor(
+    public site: SiteStateModel,
+    public siteName: string,
+  ) {}
 }
 
 export class CloneSectionAction {
@@ -98,7 +114,10 @@ export class DeleteSiteSectionAction {
 
 export class ReOrderSiteSectionsAction {
   static readonly type = 'SITE_SECTIONS:REORDER';
-  constructor(public currentOrder: number, public payload: number) {}
+  constructor(
+    public currentOrder: number,
+    public payload: number,
+  ) {}
 }
 
 export class DeleteSiteSectionsAction {

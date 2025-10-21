@@ -29,8 +29,8 @@ import { AppStateService } from './app-state/app-state.service';
       >
         <!-- the sidebar -->
         <div class="scroll-wrap"><router-outlet></router-outlet></div>
-        <a href="#" (click)="closeSidebar($event)" class="close"
-          ><svg
+        <a href="#" (click)="closeSidebar($event)" class="close">
+          <svg
             height="16"
             viewBox="0 0 16 16"
             width="16"
@@ -39,8 +39,9 @@ import { AppStateService } from './app-state/app-state.service';
             <path
               d="m16 12.8754q0 .5387-.377104.9158l-1.83165 1.8317q-.377105.3771-.915825.3771-.538721 0-.915825-.3771l-3.959596-3.9596-3.959596 3.9596q-.3771043.3771-.9158249.3771-.5387205 0-.9158249-.3771l-1.83164982-1.8317q-.37710438-.3771-.37710438-.9158 0-.5387.37710438-.9158l3.95959592-3.9596-3.95959592-3.9596q-.37710438-.3771-.37710438-.9158 0-.5387.37710438-.9158l1.83164982-1.8317q.3771044-.3771.9158249-.3771.5387206 0 .9158249.3771l3.959596 3.9596 3.959596-3.9596q.377104-.3771.915825-.3771.53872 0 .915825.3771l1.83165 1.8317q.377104.3771.377104.9158 0 .5387-.377104.9158l-3.959596 3.9596 3.959596 3.9596q.377104.3771.377104.9158z"
               stroke-width=".013468"
-            /></svg
-        ></a>
+            />
+          </svg>
+        </a>
       </aside>
       <section>
         <berta-preview></berta-preview>
@@ -163,7 +164,7 @@ export class AppComponent implements OnInit, OnDestroy {
     private store: Store,
     private _ngZone: NgZone,
     private stateService: AppStateService,
-    private actions$: Actions
+    private actions$: Actions,
   ) {}
 
   ngOnInit() {
@@ -178,7 +179,7 @@ export class AppComponent implements OnInit, OnDestroy {
           this.isSidebarFullscreen =
             this.sidebarFullscreenRoutes.indexOf(url) > -1;
           this.isSidebarFullWidth = this.sidebarFullWidthRoutes.some(
-            (route) => url.indexOf(route) === 0
+            (route) => url.indexOf(route) === 0,
           );
           return (this.routeIsRoot = url === '/');
         }),
@@ -187,12 +188,12 @@ export class AppComponent implements OnInit, OnDestroy {
             .select((state) => state.app)
             .pipe(
               map((state) => [url, state]),
-              take(1)
-            )
+              take(1),
+            ),
         ),
         filter(([, state]) => {
           return this.routeIsRoot === state.showOverlay;
-        })
+        }),
       )
       .subscribe(([url]) => {
         if (url !== '/') {
@@ -206,7 +207,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.loginSub = this.actions$
       .pipe(
         ofActionSuccessful(UserLoginAction),
-        switchMap(() => this.store.select((state) => state.user).pipe(take(1)))
+        switchMap(() => this.store.select((state) => state.user).pipe(take(1))),
       )
       .subscribe((user: UserStateModel) => {
         if (user.nextUrl) {
@@ -272,7 +273,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.inputFocus$
       .pipe(
         take(1),
-        filter((isInputFocused) => !isInputFocused)
+        filter((isInputFocused) => !isInputFocused),
       )
       .subscribe(() => {
         this.store.dispatch(new AppHideOverlay());

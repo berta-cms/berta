@@ -15,12 +15,12 @@ import { SitesState } from './sites-state/sites.state';
 import { AppStateModel } from '../app-state/app-state.interface';
 
 @Component({
-    selector: 'berta-site',
-    template: `
+  selector: 'berta-site',
+  template: `
     <div
       class="setting-group"
       [class.active]="(currentSite$ | async).site == site.name"
-      >
+    >
       <h3>
         <div class="control-line">
           <berta-inline-text-input
@@ -31,16 +31,16 @@ import { AppStateModel } from '../app-state/app-state.interface';
           <div class="expand"></div>
           @if (!modificationDisabled) {
             <button
-            [attr.title]="
-              site['@attributes'].published > 0 ? 'Unpublish' : 'Publish'
-            "
-            (click)="
-              updateField(
-                '@attributes.published',
-                site['@attributes'].published > 0 ? '0' : '1'
-              )
-            "
-              >
+              [attr.title]="
+                site['@attributes'].published > 0 ? 'Unpublish' : 'Publish'
+              "
+              (click)="
+                updateField(
+                  '@attributes.published',
+                  site['@attributes'].published > 0 ? '0' : '1'
+                )
+              "
+            >
               <berta-icon-publish
                 [published]="site['@attributes'].published > 0"
               ></berta-icon-publish>
@@ -50,11 +50,7 @@ import { AppStateModel } from '../app-state/app-state.interface';
             <bt-icon-clone></bt-icon-clone>
           </button>
           @if (!modificationDisabled) {
-            <button
-              title="delete"
-              class="delete"
-              (click)="deleteSite()"
-              >
+            <button title="delete" class="delete" (click)="deleteSite()">
               <bt-icon-delete></bt-icon-delete>
             </button>
           }
@@ -64,21 +60,21 @@ import { AppStateModel } from '../app-state/app-state.interface';
             [routerLink]="['/multisite']"
             [queryParams]="site.name === '' ? null : { site: site.name }"
             >{{ hostname }}/</a
-            >
-            @if (!modificationDisabled) {
-              <berta-inline-text-input
-                [value]="site.name"
-                (inputFocus)="updateComponentFocus($event)"
-                (textClick)="navigateToSite(site.name)"
-                (update)="updateField('name', $event)"
-              ></berta-inline-text-input>
-            }
-          </div>
-        </h3>
-      </div>
-    `,
-    styles: [
-        `
+          >
+          @if (!modificationDisabled) {
+            <berta-inline-text-input
+              [value]="site.name"
+              (inputFocus)="updateComponentFocus($event)"
+              (textClick)="navigateToSite(site.name)"
+              (update)="updateField('name', $event)"
+            ></berta-inline-text-input>
+          }
+        </div>
+      </h3>
+    </div>
+  `,
+  styles: [
+    `
       :host h3 {
         display: block;
       }
@@ -94,8 +90,8 @@ import { AppStateModel } from '../app-state/app-state.interface';
         display: flex;
       }
     `,
-    ],
-    standalone: false
+  ],
+  standalone: false,
 })
 export class SiteComponent implements OnInit {
   @Input('site') site: SiteStateModel;
@@ -111,7 +107,7 @@ export class SiteComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private store: Store,
-    private popupService: PopupService
+    private popupService: PopupService,
   ) {}
 
   ngOnInit() {
@@ -132,14 +128,14 @@ export class SiteComponent implements OnInit {
             return this.route.queryParams.pipe(
               take(1),
               filter((params) => params.site && params.site === this.site.name),
-              map(() => state)
+              map(() => state),
             );
           }),
           switchMap(() => this.store.select((state) => state.sites)),
           take(1),
           map((sitesState: SiteStateModel[]) =>
-            sitesState.find((site) => site.order === this.site.order)
-          )
+            sitesState.find((site) => site.order === this.site.order),
+          ),
         )
         .subscribe((renamedSite) => {
           this.router.navigate([], {
@@ -166,10 +162,10 @@ export class SiteComponent implements OnInit {
             switchMap(() => this.store.select((state) => state.sites)),
             take(1),
             map((sitesState: SiteStateModel[]) =>
-              sitesState.find((site) => siteNames.indexOf(site.name) === -1)
-            )
-          )
-        )
+              sitesState.find((site) => siteNames.indexOf(site.name) === -1),
+            ),
+          ),
+        ),
       )
       .subscribe((newSite) => {
         if (!newSite) {
@@ -196,10 +192,10 @@ export class SiteComponent implements OnInit {
                   return this.route.queryParams.pipe(
                     take(1),
                     filter(
-                      (params) => params.site && params.site === this.site.name
-                    )
+                      (params) => params.site && params.site === this.site.name,
+                    ),
                   );
-                })
+                }),
               )
               .subscribe(() => {
                 this.router.navigate([], { queryParams: { site: null } });

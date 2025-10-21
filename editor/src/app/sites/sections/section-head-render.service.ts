@@ -23,7 +23,7 @@ export class SectionHeadRenderService {
     shopSettings,
     isResponsive,
     isAutoResponsive,
-    user
+    user,
   ) {
     // skip some template variables, no need for them in editor
     // title
@@ -34,7 +34,7 @@ export class SectionHeadRenderService {
     // favicon
 
     const googleSiteVerificationTag = user.features.includes(
-      'custom_javascript'
+      'custom_javascript',
     )
       ? siteSettings.settings.googleSiteVerification
       : null;
@@ -58,7 +58,7 @@ export class SectionHeadRenderService {
         isShopAvailable,
         shopSettings,
         isResponsive,
-        isAutoResponsive
+        isAutoResponsive,
       ),
       scripts: this.getScripts(
         appState,
@@ -67,7 +67,7 @@ export class SectionHeadRenderService {
         currentSection,
         templateName,
         isShopAvailable,
-        user
+        user,
       ),
     };
   }
@@ -84,7 +84,7 @@ export class SectionHeadRenderService {
     isShopAvailable,
     shopSettings,
     isResponsive,
-    isAutoResponsive
+    isAutoResponsive,
   ) {
     let googleWebFonts = [];
     let templateSettings = siteTemplateSettings;
@@ -105,7 +105,7 @@ export class SectionHeadRenderService {
     });
 
     const uniqueGoogleWebFonts = googleWebFonts.filter(
-      (v, i, a) => a.indexOf(v) === i
+      (v, i, a) => a.indexOf(v) === i,
     );
 
     const cacheBoost = Date.now();
@@ -134,7 +134,7 @@ export class SectionHeadRenderService {
         cssFiles.push(
           `/_plugin_shop/css/shop.css.php?${cacheBoost}${
             siteSlug ? `&site=${siteSlug}` : ''
-          }`
+          }`,
         );
       }
 
@@ -180,7 +180,7 @@ export class SectionHeadRenderService {
     currentSection,
     templateName,
     isShopAvailable,
-    user
+    user,
   ) {
     const bertaGlobalOptions = {
       templateName: templateName,
@@ -220,10 +220,10 @@ export class SectionHeadRenderService {
 
     if (templateName === 'messy') {
       scriptFiles.push(
-        `/_templates/${siteSettings.template.template}/mess.js?${appState.version}`
+        `/_templates/${siteSettings.template.template}/mess.js?${appState.version}`,
       );
       scriptFiles.push(
-        `/_templates/${siteSettings.template.template}/mooMasonry.js?${appState.version}`
+        `/_templates/${siteSettings.template.template}/mooMasonry.js?${appState.version}`,
       );
 
       if (isShopAvailable) {
@@ -231,7 +231,7 @@ export class SectionHeadRenderService {
       }
     } else {
       scriptFiles.push(
-        `/_templates/${siteSettings.template.template}/${templateName}.js?${appState.version}`
+        `/_templates/${siteSettings.template.template}/${templateName}.js?${appState.version}`,
       );
     }
 
@@ -259,7 +259,7 @@ export class SectionHeadRenderService {
     shopSettings,
     isResponsive,
     isAutoResponsive,
-    user
+    user,
   ) {
     const viewData = this.getViewData(
       appState,
@@ -277,13 +277,13 @@ export class SectionHeadRenderService {
       shopSettings,
       isResponsive,
       isAutoResponsive,
-      user
+      user,
     );
 
     try {
       return this.twigTemplateRenderService.render(
         'Sites/Sections/sectionHead',
-        viewData
+        viewData,
       );
     } catch (error) {
       console.error('Failed to render template:', error);

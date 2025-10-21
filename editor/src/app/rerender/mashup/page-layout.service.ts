@@ -18,7 +18,7 @@ export class PageLayoutService extends MainPageLayoutService {
 
   private static handlePLayoutChangesMashSection(
     iframe: HTMLIFrameElement,
-    viewData
+    viewData,
   ) {
     const dom = iframe.contentDocument;
 
@@ -56,7 +56,7 @@ export class PageLayoutService extends MainPageLayoutService {
   private static handleMainColumn(
     dom: Document,
     contentContainer: HTMLElement,
-    viewData
+    viewData,
   ) {
     if (!viewData.isResponsive) {
       // setting is not responsive, so we need to clean contentContainer, create new mashupEntries and append them to contentContainer
@@ -88,7 +88,7 @@ export class PageLayoutService extends MainPageLayoutService {
     // if we change 'Page layout' => 'How far content is from page top?'
     mainColumn.setAttribute(
       'data-paddingtop',
-      viewData.mainColumnAttributes['data-paddingtop']
+      viewData.mainColumnAttributes['data-paddingtop'],
     );
     mainColumn.style.paddingTop =
       viewData.mainColumnAttributes['data-paddingtop'];

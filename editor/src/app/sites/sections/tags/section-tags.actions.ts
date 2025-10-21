@@ -10,20 +10,23 @@ export class UpdateSectionTagsAction {
   constructor(
     public siteName: string,
     public sectionName: string,
-    public tags: SectionTagsInterface
+    public tags: SectionTagsInterface,
   ) {}
 }
 
 export class AddSectionTagsAction {
   static readonly type = 'SECTION_TAGS:ADD';
-  constructor(public siteName: string, public tags: SectionTagsInterface[]) {}
+  constructor(
+    public siteName: string,
+    public tags: SectionTagsInterface[],
+  ) {}
 }
 
 export class AddSiteSectionsTagsAction {
   static readonly type = 'SITE_SECTIONS_TAGS:ADD';
   constructor(
     public site: SiteStateModel,
-    public tags: SectionTagsInterface[]
+    public tags: SectionTagsInterface[],
   ) {}
 }
 
@@ -32,7 +35,7 @@ export class RenameSectionTagsAction {
   constructor(
     public siteName: string,
     public section: SiteSectionStateModel,
-    public newSectionName: string
+    public newSectionName: string,
   ) {}
 }
 
@@ -48,7 +51,10 @@ export class DeleteSiteSectionsTagsAction {
 
 export class RenameSectionTagsSitenameAction {
   static readonly type = 'SITE_SECTIONS_TAGS_SITENAME:RENAME';
-  constructor(public site: SiteStateModel, public siteName: string) {}
+  constructor(
+    public site: SiteStateModel,
+    public siteName: string,
+  ) {}
 }
 
 export class ResetSiteSectionsTagsAction {
@@ -66,6 +72,6 @@ export class OrderSectionTagsFromSyncAction {
     public site: string,
     public section: string,
     public tag: string,
-    public value: string
+    public value: string,
   ) {}
 }

@@ -63,7 +63,7 @@ export class SectionEntriesState implements NgxsOnInit {
   constructor(
     private actions$: Actions,
     private appStateService: AppStateService,
-    private fileUploadService: FileUploadService
+    private fileUploadService: FileUploadService,
   ) {}
 
   ngxsOnInit({ dispatch }: StateContext<SectionEntriesStateModel>) {
@@ -75,8 +75,8 @@ export class SectionEntriesState implements NgxsOnInit {
           return this.appStateService
             .getInitialState('', 'sectionEntries')
             .pipe(take(1));
-        })
-      )
+        }),
+      ),
     ).subscribe((sectionEntries) => {
       dispatch(new InitSectionEntriesAction(sectionEntries));
     });
@@ -85,7 +85,7 @@ export class SectionEntriesState implements NgxsOnInit {
   @Action(AddSectionEntryFromSyncAction)
   addSectionEntryFromSync(
     { getState, patchState, dispatch }: StateContext<SectionEntriesStateModel>,
-    action: AddSectionEntryFromSyncAction
+    action: AddSectionEntryFromSyncAction,
   ) {
     return this.appStateService
       .sync(
@@ -96,7 +96,7 @@ export class SectionEntriesState implements NgxsOnInit {
           tag: action.payload.tag,
           before_entry: action.payload.before_entry,
         },
-        'POST'
+        'POST',
       )
       .pipe(
         tap((response) => {
@@ -126,7 +126,7 @@ export class SectionEntriesState implements NgxsOnInit {
                 '@attributes': {
                   entry_count: response.entry_count,
                 },
-              })
+              }),
             );
 
             dispatch(
@@ -134,7 +134,7 @@ export class SectionEntriesState implements NgxsOnInit {
                 '@attributes': {
                   has_direct_content: response.has_direct_content,
                 },
-              })
+              }),
             );
 
             if (response.tags) {
@@ -142,8 +142,8 @@ export class SectionEntriesState implements NgxsOnInit {
                 new UpdateSectionTagsAction(
                   action.site,
                   action.section,
-                  response.tags
-                )
+                  response.tags,
+                ),
               );
             }
 
@@ -152,19 +152,19 @@ export class SectionEntriesState implements NgxsOnInit {
                 new UpdateSectionEntryFromSyncAction(
                   `${action.site}/entry/${action.section}/${response.entry.id}/tags/tag`,
                   response.entry.tags.tag[0],
-                  1
-                )
+                  1,
+                ),
               );
             }
           }
-        })
+        }),
       );
   }
 
   @Action(MoveSectionEntryFromSyncAction)
   moveSectionEntryFromSync(
     { getState, patchState, dispatch }: StateContext<SectionEntriesStateModel>,
-    action: MoveSectionEntryFromSyncAction
+    action: MoveSectionEntryFromSyncAction,
   ) {
     return this.appStateService
       .sync('sectionEntriesMove', {
@@ -182,7 +182,7 @@ export class SectionEntriesState implements NgxsOnInit {
             const deletedEntry = currentState[action.site].find(
               (entry) =>
                 entry.sectionName === action.currentSection &&
-                entry.id === action.entryId
+                entry.id === action.entryId,
             );
 
             patchState({
@@ -193,7 +193,7 @@ export class SectionEntriesState implements NgxsOnInit {
                       !(
                         entry.sectionName === action.currentSection &&
                         entry.id === action.entryId
-                      )
+                      ),
                   )
                   .map((entry) => {
                     if (
@@ -217,8 +217,8 @@ export class SectionEntriesState implements NgxsOnInit {
                   '@attributes': {
                     entry_count: response.deleted_entry.entry_count,
                   },
-                }
-              )
+                },
+              ),
             );
 
             dispatch(
@@ -230,8 +230,8 @@ export class SectionEntriesState implements NgxsOnInit {
                     has_direct_content:
                       response.deleted_entry.has_direct_content,
                   },
-                }
-              )
+                },
+              ),
             );
 
             if (response.deleted_entry.tags) {
@@ -239,8 +239,8 @@ export class SectionEntriesState implements NgxsOnInit {
                 new UpdateSectionTagsAction(
                   action.site,
                   action.currentSection,
-                  response.deleted_entry.tags
-                )
+                  response.deleted_entry.tags,
+                ),
               );
             }
 
@@ -249,7 +249,7 @@ export class SectionEntriesState implements NgxsOnInit {
                 '@attributes': {
                   entry_count: response.entry_count,
                 },
-              })
+              }),
             );
 
             dispatch(
@@ -257,17 +257,17 @@ export class SectionEntriesState implements NgxsOnInit {
                 '@attributes': {
                   has_direct_content: response.has_direct_content,
                 },
-              })
+              }),
             );
           }
-        })
+        }),
       );
   }
 
   @Action(AddSectionEntriesAction)
   addSectionEntries(
     { patchState, getState }: StateContext<SectionEntriesStateModel>,
-    action: AddSectionEntriesAction
+    action: AddSectionEntriesAction,
   ) {
     const state = getState();
     patchState({
@@ -278,7 +278,7 @@ export class SectionEntriesState implements NgxsOnInit {
   @Action(AddSiteEntriesAction)
   addSiteEntries(
     { patchState, getState }: StateContext<SectionEntriesStateModel>,
-    action: AddSiteEntriesAction
+    action: AddSiteEntriesAction,
   ) {
     const currentState = getState();
     const newEntries = {};
@@ -289,7 +289,7 @@ export class SectionEntriesState implements NgxsOnInit {
   @Action(RenameSectionEntriesAction)
   renameSectionEntries(
     { patchState, getState }: StateContext<SectionEntriesStateModel>,
-    action: RenameSectionEntriesAction
+    action: RenameSectionEntriesAction,
   ) {
     const state = getState();
 
@@ -304,7 +304,7 @@ export class SectionEntriesState implements NgxsOnInit {
             return { ...entry, sectionName: action.newSectionName };
           }
           return entry;
-        }
+        },
       ),
     });
   }
@@ -312,7 +312,7 @@ export class SectionEntriesState implements NgxsOnInit {
   @Action(RenameSectionEntriesSitenameAction)
   renameSectionEntriesSitename(
     { setState, getState }: StateContext<SectionEntriesStateModel>,
-    action: RenameSectionEntriesSitenameAction
+    action: RenameSectionEntriesSitenameAction,
   ) {
     const state = getState();
     const newState = {};
@@ -332,7 +332,7 @@ export class SectionEntriesState implements NgxsOnInit {
   @Action(DeleteSectionEntriesAction)
   deleteSectionEntries(
     { patchState, getState }: StateContext<SectionEntriesStateModel>,
-    action: DeleteSectionEntriesAction
+    action: DeleteSectionEntriesAction,
   ) {
     const state = getState();
 
@@ -344,7 +344,7 @@ export class SectionEntriesState implements NgxsOnInit {
       [action.section.site_name]: state[action.section.site_name].filter(
         (entry) => {
           return entry.sectionName !== action.section.name;
-        }
+        },
       ),
     });
   }
@@ -352,7 +352,7 @@ export class SectionEntriesState implements NgxsOnInit {
   @Action(DeleteSiteSectionsEntriesAction)
   deleteSiteSectionsEntries(
     { getState, setState }: StateContext<SectionEntriesStateModel>,
-    action: DeleteSiteSectionsEntriesAction
+    action: DeleteSiteSectionsEntriesAction,
   ) {
     const newState = { ...getState() };
     delete newState[action.siteName];
@@ -367,7 +367,7 @@ export class SectionEntriesState implements NgxsOnInit {
   @Action(InitSectionEntriesAction)
   initSectionEntries(
     { setState }: StateContext<SectionEntriesStateModel>,
-    action: InitSectionEntriesAction
+    action: InitSectionEntriesAction,
   ) {
     setState(action.payload);
   }
@@ -375,7 +375,7 @@ export class SectionEntriesState implements NgxsOnInit {
   @Action(UpdateSectionEntryFromSyncAction)
   updateSectionEntryFromSync(
     { getState, patchState, dispatch }: StateContext<SectionEntriesStateModel>,
-    action: UpdateSectionEntryFromSyncAction
+    action: UpdateSectionEntryFromSyncAction,
   ) {
     if (action.nOfReq >= 2) return;
 
@@ -404,8 +404,8 @@ export class SectionEntriesState implements NgxsOnInit {
                 new UpdateSectionEntryFromSyncAction(
                   action.path,
                   action.payload,
-                  ++action.nOfReq
-                )
+                  ++action.nOfReq,
+                ),
               );
               // end slugs update
 
@@ -432,7 +432,7 @@ export class SectionEntriesState implements NgxsOnInit {
                   '@attributes': {
                     has_direct_content: response.has_direct_content,
                   },
-                })
+                }),
               );
             }
 
@@ -441,19 +441,19 @@ export class SectionEntriesState implements NgxsOnInit {
                 new UpdateSectionTagsAction(
                   siteName,
                   currentSection,
-                  response.tags
-                )
+                  response.tags,
+                ),
               );
             }
           }
-        })
+        }),
       );
   }
 
   @Action(UpdateSectionEntryAction)
   updateSectionEntry(
     { getState, patchState }: StateContext<SectionEntriesStateModel>,
-    action: UpdateSectionEntryAction
+    action: UpdateSectionEntryAction,
   ) {
     return this.appStateService
       .sync('sectionEntries', {
@@ -486,14 +486,14 @@ export class SectionEntriesState implements NgxsOnInit {
               }),
             });
           }
-        })
+        }),
       );
   }
 
   @Action(OrderSectionEntriesFromSyncAction)
   OrderSectionEntriesFromSyncAction(
     { getState, patchState }: StateContext<SectionEntriesStateModel>,
-    action: OrderSectionEntriesFromSyncAction
+    action: OrderSectionEntriesFromSyncAction,
   ) {
     return this.appStateService
       .sync(
@@ -504,7 +504,7 @@ export class SectionEntriesState implements NgxsOnInit {
           entryId: action.entryId,
           value: action.value,
         },
-        'PUT'
+        'PUT',
       )
       .pipe(
         tap((response) => {
@@ -524,20 +524,20 @@ export class SectionEntriesState implements NgxsOnInit {
               }),
             });
           }
-        })
+        }),
       );
   }
 
   @Action(DeleteSectionEntryFromSyncAction)
   deleteSectionEntryFromSync(
     { getState, patchState, dispatch }: StateContext<SectionEntriesStateModel>,
-    action: DeleteSectionEntryFromSyncAction
+    action: DeleteSectionEntryFromSyncAction,
   ) {
     // taking deleted entry in order to compare find out if it was the last entry in submenu
     const entriesList = getState()[action.site];
     const deletedEntry = entriesList.find(
       (entry) =>
-        entry.id === action.entryId && entry.sectionName === action.section
+        entry.id === action.entryId && entry.sectionName === action.section,
     );
 
     return this.appStateService
@@ -548,7 +548,7 @@ export class SectionEntriesState implements NgxsOnInit {
           section: action.section,
           entryId: action.entryId,
         },
-        'DELETE'
+        'DELETE',
       )
       .pipe(
         tap((response) => {
@@ -560,7 +560,7 @@ export class SectionEntriesState implements NgxsOnInit {
             const deletedEntry = currentState[action.site].find(
               (entry) =>
                 entry.sectionName === action.section &&
-                entry.id === action.entryId
+                entry.id === action.entryId,
             );
 
             patchState({
@@ -570,7 +570,7 @@ export class SectionEntriesState implements NgxsOnInit {
                     !(
                       entry.sectionName === action.section &&
                       entry.id === action.entryId
-                    )
+                    ),
                 )
                 .map((entry) => {
                   if (
@@ -589,7 +589,7 @@ export class SectionEntriesState implements NgxsOnInit {
                 '@attributes': {
                   entry_count: response.entry_count,
                 },
-              })
+              }),
             );
 
             dispatch(
@@ -597,7 +597,7 @@ export class SectionEntriesState implements NgxsOnInit {
                 '@attributes': {
                   has_direct_content: response.has_direct_content,
                 },
-              })
+              }),
             );
 
             if (response.tags) {
@@ -605,8 +605,8 @@ export class SectionEntriesState implements NgxsOnInit {
                 new UpdateSectionTagsAction(
                   action.site,
                   action.section,
-                  response.tags
-                )
+                  response.tags,
+                ),
               );
             }
           }
@@ -618,21 +618,21 @@ export class SectionEntriesState implements NgxsOnInit {
               (entry) =>
                 entry.sectionName === action.section &&
                 entry.tags &&
-                entry.tags.tag.includes(deletedEntry.tags.tag[0])
+                entry.tags.tag.includes(deletedEntry.tags.tag[0]),
             );
 
             if (!entriesWithSameTag.length) {
               dispatch(new DeleteSectionLastEntry(action.section));
             }
           }
-        })
+        }),
       );
   }
 
   @Action(UpdateEntryGalleryFromSyncAction)
   updateEntryGalleryFromSync(
     { getState, patchState }: StateContext<SectionEntriesStateModel>,
-    action: UpdateEntryGalleryFromSyncAction
+    action: UpdateEntryGalleryFromSyncAction,
   ) {
     return this.appStateService
       .sync(
@@ -643,7 +643,7 @@ export class SectionEntriesState implements NgxsOnInit {
           entryId: action.entryId,
           files: action.files,
         },
-        'PUT'
+        'PUT',
       )
       .pipe(
         tap((response) => {
@@ -674,14 +674,14 @@ export class SectionEntriesState implements NgxsOnInit {
               }),
             });
           }
-        })
+        }),
       );
   }
 
   @Action(AddEntryGalleryFileAction)
   addEntryGalleryFile(
     { getState, patchState }: StateContext<SectionEntriesStateModel>,
-    action: AddEntryGalleryFileAction
+    action: AddEntryGalleryFileAction,
   ) {
     const data = {
       path: `${action.site}/entry/${action.section}/${action.entryId}`,
@@ -734,14 +734,14 @@ export class SectionEntriesState implements NgxsOnInit {
             }),
           });
         }
-      })
+      }),
     );
   }
 
   @Action(UpdateEntryGalleryFileAction)
   updateEntryGalleryFile(
     { getState, patchState }: StateContext<SectionEntriesStateModel>,
-    action: UpdateEntryGalleryFileAction
+    action: UpdateEntryGalleryFileAction,
   ) {
     return this.appStateService
       .sync('sectionEntries', {
@@ -773,14 +773,14 @@ export class SectionEntriesState implements NgxsOnInit {
               }),
             });
           }
-        })
+        }),
       );
   }
 
   @Action(UpdateEntryGalleryVideoPosterAction)
   updateEntryGalleryVideoPoster(
     { getState, patchState }: StateContext<SectionEntriesStateModel>,
-    action: UpdateEntryGalleryVideoPosterAction
+    action: UpdateEntryGalleryVideoPosterAction,
   ) {
     const data = {
       path: `${action.site}/entry/${action.section}/${action.entryId}/${action.fileName}`,
@@ -831,14 +831,14 @@ export class SectionEntriesState implements NgxsOnInit {
             }),
           });
         }
-      })
+      }),
     );
   }
 
   @Action(UpdateEntryGalleryImageCropAction)
   updateEntryGalleryImageCrop(
     { getState, patchState }: StateContext<SectionEntriesStateModel>,
-    action: UpdateEntryGalleryImageCropAction
+    action: UpdateEntryGalleryImageCropAction,
   ) {
     const data = {
       site: action.site,
@@ -892,14 +892,14 @@ export class SectionEntriesState implements NgxsOnInit {
             }),
           });
         }
-      })
+      }),
     );
   }
 
   @Action(OrderEntryGalleryFilesAction)
   orderEntryGalleryFiles(
     { getState, patchState }: StateContext<SectionEntriesStateModel>,
-    action: OrderEntryGalleryFilesAction
+    action: OrderEntryGalleryFilesAction,
   ) {
     return this.appStateService
       .sync(
@@ -910,7 +910,7 @@ export class SectionEntriesState implements NgxsOnInit {
           entryId: action.entryId,
           files: action.files,
         },
-        'PUT'
+        'PUT',
       )
       .pipe(
         tap((response) => {
@@ -940,14 +940,14 @@ export class SectionEntriesState implements NgxsOnInit {
               }),
             });
           }
-        })
+        }),
       );
   }
 
   @Action(DeleteEntryGalleryFileAction)
   deleteEntryGalleryFile(
     { getState, patchState }: StateContext<SectionEntriesStateModel>,
-    action: DeleteEntryGalleryFileAction
+    action: DeleteEntryGalleryFileAction,
   ) {
     return this.appStateService
       .sync(
@@ -958,7 +958,7 @@ export class SectionEntriesState implements NgxsOnInit {
           entryId: action.entryId,
           file: action.file,
         },
-        'DELETE'
+        'DELETE',
       )
       .pipe(
         tap((response) => {
@@ -977,7 +977,7 @@ export class SectionEntriesState implements NgxsOnInit {
                   const mediaCacheData = {
                     ...entry.mediaCacheData,
                     file: entry.mediaCacheData.file.filter(
-                      (f) => f['@attributes'].src !== response.file
+                      (f) => f['@attributes'].src !== response.file,
                     ),
                   };
                   return {
@@ -990,7 +990,7 @@ export class SectionEntriesState implements NgxsOnInit {
               }),
             });
           }
-        })
+        }),
       );
   }
 }

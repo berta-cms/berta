@@ -16,7 +16,7 @@ export class AdditionalTextRenderService {
 
   constructor(
     public socialMediaLinksRenderService: SocialMediaLinksRenderService,
-    private twigTemplateRenderService: TwigTemplateRenderService
+    private twigTemplateRenderService: TwigTemplateRenderService,
   ) {}
 
   getStyles(siteSettings: any, isResponsive: boolean): string {
@@ -39,7 +39,7 @@ export class AdditionalTextRenderService {
     siteSlug: any,
     siteSettings: any,
     templateName: any,
-    isResponsive: boolean
+    isResponsive: boolean,
   ) {
     let attributes: {
       [key: string]: string;
@@ -47,9 +47,8 @@ export class AdditionalTextRenderService {
     let classes: string[] = [];
 
     if (!isResponsive) {
-      attributes[
-        'data-path'
-      ] = `${siteSlug}/settings/siteTexts/additionalTextXY`;
+      attributes['data-path'] =
+        `${siteSlug}/settings/siteTexts/additionalTextXY`;
       classes = this.DRAGGABLE_CLASSES;
     }
 
@@ -88,7 +87,7 @@ export class AdditionalTextRenderService {
     if (showSocialMediaLinks) {
       const socialMediaLinks = this.socialMediaLinksRenderService.render(
         appState,
-        siteSettings
+        siteSettings,
       );
 
       if (socialMediaLinks.length) {
@@ -112,7 +111,7 @@ export class AdditionalTextRenderService {
       siteSlug,
       siteSettings,
       templateName,
-      isResponsive
+      isResponsive,
     );
     const content = this.getContent(appState, siteSlug, siteSettings);
 
@@ -129,13 +128,13 @@ export class AdditionalTextRenderService {
       siteSlug,
       siteSettings,
       templateName,
-      isResponsive
+      isResponsive,
     );
 
     try {
       return this.twigTemplateRenderService.render(
         'Sites/Sections/additionalText',
-        viewData
+        viewData,
       );
     } catch (error) {
       console.error('Failed to render template:', error);

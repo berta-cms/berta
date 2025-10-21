@@ -13,7 +13,7 @@ export class MashupEntriesRenderService {
 
   constructor(
     public galleryRenderService: GalleryRenderService,
-    private twigTemplateRenderService: TwigTemplateRenderService
+    private twigTemplateRenderService: TwigTemplateRenderService,
   ) {}
 
   getContent(
@@ -21,7 +21,7 @@ export class MashupEntriesRenderService {
     entry: SectionEntry,
     siteSettings,
     siteTemplateSettings,
-    isRandom: boolean
+    isRandom: boolean,
   ) {
     if (
       !entry.mediaCacheData ||
@@ -50,11 +50,11 @@ export class MashupEntriesRenderService {
       siteSlug,
       item,
       entry,
-      siteSettings
+      siteSettings,
     );
 
     const imageSizeRatio = parseFloat(
-      siteTemplateSettings.firstPage.imageSizeRatio
+      siteTemplateSettings.firstPage.imageSizeRatio,
     );
 
     if (imageSizeRatio > 0) {
@@ -108,7 +108,7 @@ export class MashupEntriesRenderService {
     contentItem,
     siteSlug: string,
     siteTemplateSettings,
-    isResponsive: boolean
+    isResponsive: boolean,
   ) {
     let classes = [
       'firstPagePic',
@@ -145,7 +145,7 @@ export class MashupEntriesRenderService {
     currentSection: SiteSectionStateModel,
     siteTemplateSectionTypes,
     siteSettings,
-    siteTemplateSettings
+    siteTemplateSettings,
   ) {
     const order = currentSection.marked_items_imageselect
       ? currentSection.marked_items_imageselect
@@ -155,7 +155,7 @@ export class MashupEntriesRenderService {
 
     let mashupEntries = entries.filter(
       (entry) =>
-        entry.sectionName !== currentSection.name && entry.marked === '1'
+        entry.sectionName !== currentSection.name && entry.marked === '1',
     );
 
     if (isRandom) {
@@ -176,7 +176,7 @@ export class MashupEntriesRenderService {
           entry,
           siteSettings,
           siteTemplateSettings,
-          isRandom
+          isRandom,
         );
         return {
           ...entry,
@@ -187,7 +187,7 @@ export class MashupEntriesRenderService {
               contentItem,
               siteSlug,
               siteTemplateSettings,
-              isResponsive
+              isResponsive,
             ),
           },
         };
@@ -199,7 +199,7 @@ export class MashupEntriesRenderService {
   getWrapperAttributes(
     siteTemplateSettings,
     currentSection: SiteSectionStateModel,
-    tagSlug: string
+    tagSlug: string,
   ) {
     let classes = [
       'xEntriesList',
@@ -210,7 +210,7 @@ export class MashupEntriesRenderService {
 
     const columnCount = parseInt(
       siteTemplateSettings.pageLayout.mashUpColumns,
-      10
+      10,
     );
     if (columnCount > 1) {
       classes.push(`columns-${columnCount}`);
@@ -229,7 +229,7 @@ export class MashupEntriesRenderService {
     siteTemplateSettings,
     siteTemplateSectionTypes,
     entries: SectionEntry[],
-    tagSlug: string
+    tagSlug: string,
   ) {
     return {
       entries: this.getEntries(
@@ -238,12 +238,12 @@ export class MashupEntriesRenderService {
         currentSection,
         siteTemplateSectionTypes,
         siteSettings,
-        siteTemplateSettings
+        siteTemplateSettings,
       ),
       wrapperAttributes: this.getWrapperAttributes(
         siteTemplateSettings,
         currentSection,
-        tagSlug
+        tagSlug,
       ),
       isEditMode: true,
     };
@@ -258,7 +258,7 @@ export class MashupEntriesRenderService {
     siteTemplateSettings,
     siteTemplateSectionTypes,
     entries: SectionEntry[],
-    tagSlug: string
+    tagSlug: string,
   ) {
     if (
       !this.USED_IN_TEMPLATES.includes(templateName) ||
@@ -274,13 +274,13 @@ export class MashupEntriesRenderService {
       siteTemplateSettings,
       siteTemplateSectionTypes,
       entries,
-      tagSlug
+      tagSlug,
     );
 
     try {
       return this.twigTemplateRenderService.render(
         'Sites/Sections/Entries/mashupEntries',
-        viewData
+        viewData,
       );
     } catch (error) {
       console.error('Failed to render template:', error);

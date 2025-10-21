@@ -5,8 +5,8 @@ import { UserService } from './user.service';
 import { UpdateInputFocus } from '../app-state/app.actions';
 
 @Component({
-    selector: 'berta-user-account',
-    template: `
+  selector: 'berta-user-account',
+  template: `
     <div class="user-account-container setting-group">
       <h3>Change password</h3>
       <form action="" (submit)="changePassword($event)">
@@ -26,7 +26,7 @@ import { UpdateInputFocus } from '../app-state/app.actions';
           (inputFocus)="updateComponentFocus($event)"
           (update)="updateField('oldPassword', $event)"
         ></berta-text-input>
-    
+
         <berta-text-input
           [label]="'New password'"
           [value]="newPassword"
@@ -36,7 +36,7 @@ import { UpdateInputFocus } from '../app-state/app.actions';
           (inputFocus)="updateComponentFocus($event)"
           (update)="updateField('newPassword', $event)"
         ></berta-text-input>
-    
+
         <berta-text-input
           [label]="'Retype new password'"
           [value]="retypePassword"
@@ -46,14 +46,14 @@ import { UpdateInputFocus } from '../app-state/app.actions';
           (inputFocus)="updateComponentFocus($event)"
           (update)="updateField('retypePassword', $event)"
         ></berta-text-input>
-    
+
         <div class="form-group">
           <button type="submit" class="button">Change password</button>
-    
+
           @if (message) {
             <div class="info-message">{{ message }}</div>
           }
-    
+
           <div class="setting-description">
             Password must be at least 6 characters long and containing
             alphanumeric (A-Z, a-z, 0-9) characters.
@@ -61,8 +61,8 @@ import { UpdateInputFocus } from '../app-state/app.actions';
         </div>
       </form>
     </div>
-    `,
-    standalone: false
+  `,
+  standalone: false,
 })
 export class UserAccountComponent {
   error = '';
@@ -71,7 +71,10 @@ export class UserAccountComponent {
   newPassword = '';
   retypePassword = '';
 
-  constructor(private store: Store, private userService: UserService) {}
+  constructor(
+    private store: Store,
+    private userService: UserService,
+  ) {}
 
   updateField(field, value) {
     this[field] = value;

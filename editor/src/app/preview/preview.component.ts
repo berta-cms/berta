@@ -69,7 +69,7 @@ export class PreviewComponent implements OnInit {
     private service: PreviewService,
     private styleService: StyleService,
     private sanitizer: DomSanitizer,
-    private http: HttpClient
+    private http: HttpClient,
   ) {}
 
   ngOnInit() {
@@ -91,7 +91,7 @@ export class PreviewComponent implements OnInit {
             site !== this.iframeLocation.site ||
             section !== this.iframeLocation.section
           );
-        })
+        }),
       ),
       this.store.select(UserState.isLoggedIn),
     ]).subscribe(([[site, section], isLoggedIn]) => {
@@ -139,7 +139,7 @@ export class PreviewComponent implements OnInit {
                   queryParams: {
                     site: event.data.site || null,
                   },
-                }
+                },
               );
               break;
 
@@ -151,7 +151,7 @@ export class PreviewComponent implements OnInit {
                   queryParams: {
                     site: event.data.site || null,
                   },
-                }
+                },
               );
               break;
           }
@@ -165,7 +165,7 @@ export class PreviewComponent implements OnInit {
           iframe.contentDocument.body &&
           /xSetupWizard/.test(iframe.contentDocument.body.className);
         const urlParams = new URLSearchParams(
-          iframe.contentDocument.location.search
+          iframe.contentDocument.location.search,
         );
         this.iframeLocation = {
           site: urlParams.get('site') || '',
@@ -255,7 +255,7 @@ export class PreviewComponent implements OnInit {
 
         this.styleService.initializeStyleSheet(
           iframe.contentWindow,
-          styleElement.sheet as CSSStyleSheet
+          styleElement.sheet as CSSStyleSheet,
         );
 
         this.styleChangesSubscription = combineLatest([
@@ -267,7 +267,7 @@ export class PreviewComponent implements OnInit {
             .select(SiteTemplateSettingsState.getCurrentSiteTemplateSettings)
             .pipe(
               pairwise(),
-              filter(([_, curSettings]) => !!curSettings)
+              filter(([_, curSettings]) => !!curSettings),
             ),
         ]).subscribe(([site, template, [prevSettings, curSettings]]) => {
           if (!prevSettings) return;
@@ -277,13 +277,13 @@ export class PreviewComponent implements OnInit {
               settingsGroup.settings.forEach((setting) => {
                 const prevSettingGroup = prevSettings.find(
                   (prevSettingsGroup) =>
-                    prevSettingsGroup.slug == settingsGroup.slug
+                    prevSettingsGroup.slug == settingsGroup.slug,
                 );
                 if (!prevSettingGroup) {
                   return stylesToChange;
                 }
                 const prevSetting = prevSettingGroup.settings.find(
-                  (prevSetting) => prevSetting.slug == setting.slug
+                  (prevSetting) => prevSetting.slug == setting.slug,
                 );
                 if (!prevSetting) {
                   return stylesToChange;
@@ -299,7 +299,7 @@ export class PreviewComponent implements OnInit {
 
               return stylesToChange;
             },
-            []
+            [],
           );
 
           stylesToChange.forEach((styleToChange) => {
@@ -307,7 +307,7 @@ export class PreviewComponent implements OnInit {
               site,
               template,
               styleToChange,
-              curSettings
+              curSettings,
             );
           });
         });
@@ -315,7 +315,7 @@ export class PreviewComponent implements OnInit {
         this.shopStyleChangesSubscription = combineLatest([
           this.store.select(ShopSettingsState.getCurrentSiteSettings).pipe(
             pairwise(),
-            filter(([_, curSettings]) => !!curSettings)
+            filter(([_, curSettings]) => !!curSettings),
           ),
         ]).subscribe(([[prevSettings, curSettings]]) => {
           if (!prevSettings) return;
@@ -325,13 +325,13 @@ export class PreviewComponent implements OnInit {
               settingsGroup.settings.forEach((setting) => {
                 const prevSettingGroup = prevSettings.find(
                   (prevSettingsGroup) =>
-                    prevSettingsGroup.slug == settingsGroup.slug
+                    prevSettingsGroup.slug == settingsGroup.slug,
                 );
                 if (!prevSettingGroup) {
                   return shopStylesToChange;
                 }
                 const prevSetting = prevSettingGroup.settings.find(
-                  (prevSetting) => prevSetting.slug == setting.slug
+                  (prevSetting) => prevSetting.slug == setting.slug,
                 );
                 if (!prevSetting) {
                   return shopStylesToChange;
@@ -350,7 +350,7 @@ export class PreviewComponent implements OnInit {
 
               return shopStylesToChange;
             },
-            []
+            [],
           );
 
           shopStylesToChange.forEach((shopStyleToChange) => {
@@ -365,7 +365,7 @@ export class PreviewComponent implements OnInit {
           .pipe(
             pairwise(),
             filter(([p]) => p !== undefined),
-            take(1)
+            take(1),
           )
           .subscribe(() => {
             this.styleChangesSubscription.unsubscribe();
@@ -380,7 +380,7 @@ export class PreviewComponent implements OnInit {
   }
 
   private waitFullLoad(
-    iframe: HTMLIFrameElement
+    iframe: HTMLIFrameElement,
   ): Observable<HTMLIFrameElement> {
     return Observable.create((observer: Observer<HTMLIFrameElement>) => {
       const maxChecks = 120;
@@ -407,7 +407,7 @@ export class PreviewComponent implements OnInit {
           iframe.contentDocument.body &&
           (iframe.contentDocument.body.classList.length === 0 ||
             !/(xLoginPageBody|xContent-|xSectionType-)/.test(
-              iframe.contentDocument.body.className
+              iframe.contentDocument.body.className,
             ))
         ) {
           lastError =

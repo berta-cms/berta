@@ -72,27 +72,27 @@ export class PageLayoutService extends MainPageLayoutService {
 
       dom
         .querySelectorAll(
-          PageLayoutService.SELECTORS_FOR_CONTENT_CENTERING_ALL_TYPES
+          PageLayoutService.SELECTORS_FOR_CONTENT_CENTERING_ALL_TYPES,
         )
         .forEach((e) => ((e as HTMLElement).style.margin = '0 auto'));
     } else {
       allContainer.style.textAlign = 'left';
 
       const spaceBetweenImages = this.entryLayoutSettings.find(
-        (s) => s.slug === 'spaceBetweenImages'
+        (s) => s.slug === 'spaceBetweenImages',
       ).value;
 
       dom
         .querySelectorAll(
-          PageLayoutService.SELECTORS_FOR_CONTENT_CENTERING_SLIDESHOW_GALLERY
+          PageLayoutService.SELECTORS_FOR_CONTENT_CENTERING_SLIDESHOW_GALLERY,
         )
         .forEach((e) => ((e as HTMLElement).style.margin = '0'));
       dom
         .querySelectorAll(
-          PageLayoutService.SELECTORS_FOR_CONTENT_CENTERING_ROW_GALLERY
+          PageLayoutService.SELECTORS_FOR_CONTENT_CENTERING_ROW_GALLERY,
         )
         .forEach(
-          (e) => ((e as HTMLElement).style.marginRight = spaceBetweenImages)
+          (e) => ((e as HTMLElement).style.marginRight = spaceBetweenImages),
         );
     }
   }
@@ -101,21 +101,21 @@ export class PageLayoutService extends MainPageLayoutService {
     iframe: HTMLIFrameElement,
     contentContainer,
     body,
-    viewData
+    viewData,
   ) {
     const dom = iframe.contentDocument;
     const bottom = dom.getElementById('bottom');
     const centeredWidth = Number.parseInt(
       this.pageLayoutSettings
         .find((s) => s.slug === 'centeredWidth')
-        .value.trim('px')
+        .value.trim('px'),
     );
     const screenWidth = iframe.contentWindow.innerWidth - 15;
     const centeringBlockWidth = (screenWidth - centeredWidth) / 2;
 
     // remove old centering elements
     Array.from(dom.getElementsByClassName('xCenteringGuide')).forEach((el) =>
-      el.remove()
+      el.remove(),
     );
 
     if (viewData.isCenteredPageLayout) {
@@ -151,7 +151,7 @@ export class PageLayoutService extends MainPageLayoutService {
   handleSettings(
     iframe: HTMLIFrameElement,
     action: HandleSiteSettingsChildrenChangesAction,
-    viewData
+    viewData,
   ) {
     const dom = iframe.contentDocument;
 
@@ -164,7 +164,7 @@ export class PageLayoutService extends MainPageLayoutService {
           dom,
           'div',
           'xGridBackground',
-          viewData.gridlinesAttributes.style
+          viewData.gridlinesAttributes.style,
         );
 
         body.insertBefore(createdGrid, body.firstChild);
@@ -183,7 +183,7 @@ export class PageLayoutService extends MainPageLayoutService {
       updateElCssById(
         dom,
         'xGridBackground',
-        viewData.gridlinesAttributes.style
+        viewData.gridlinesAttributes.style,
       );
     }
   }

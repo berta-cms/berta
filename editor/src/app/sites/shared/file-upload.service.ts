@@ -13,7 +13,7 @@ export class FileUploadService {
   constructor(
     private store: Store,
     private http: HttpClient,
-    private appStateService: AppStateService
+    private appStateService: AppStateService,
   ) {}
 
   upload(urlName: string, data) {
@@ -27,7 +27,7 @@ export class FileUploadService {
     ]).pipe(
       filter(
         ([appState, user]) =>
-          !!user.token && (appState.urls[urlName] || urlName)
+          !!user.token && (appState.urls[urlName] || urlName),
       ),
       take(1),
       switchMap(([appState, user]) => {
@@ -38,7 +38,7 @@ export class FileUploadService {
           formData,
           {
             headers: { 'X-Authorization': 'Bearer ' + user.token },
-          }
+          },
         );
       }),
       tap(() => {
@@ -47,7 +47,7 @@ export class FileUploadService {
       catchError((error) => {
         this.appStateService.hideLoading();
         throw error;
-      })
+      }),
     );
   }
 }

@@ -18,7 +18,7 @@ export class ValidationService {
     value: string,
     allowBlank: boolean,
     cssUnitsRequired: boolean,
-    validation: string
+    validation: string,
   ) {
     this.value = value.trim();
     this.allowBlank = allowBlank;

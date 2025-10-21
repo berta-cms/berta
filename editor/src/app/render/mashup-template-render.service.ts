@@ -43,7 +43,7 @@ export class MashupTemplateRenderService extends TemplateRenderService {
     gridViewRenderService: GridViewRenderService,
     backgroundGalleryRenderService: BackgroundGalleryRenderService,
     shopCartRenderService: ShopCartRenderService,
-    twigTemplateRenderService: TwigTemplateRenderService
+    twigTemplateRenderService: TwigTemplateRenderService,
   ) {
     super(
       store,
@@ -64,13 +64,13 @@ export class MashupTemplateRenderService extends TemplateRenderService {
       gridViewRenderService,
       backgroundGalleryRenderService,
       shopCartRenderService,
-      twigTemplateRenderService
+      twigTemplateRenderService,
     );
   }
 
   getContentContainerAttributes(
     siteTemplateSettings,
-    currentSectionType: string
+    currentSectionType: string,
   ) {
     let classes = [];
 
@@ -116,7 +116,7 @@ export class MashupTemplateRenderService extends TemplateRenderService {
           commonViewData.siteTemplateSettings,
           commonViewData.sections,
           commonViewData.sectionSlug,
-          commonViewData.tagSlug
+          commonViewData.tagSlug,
         ),
         isCenteredPageLayout:
           commonViewData.siteTemplateSettings.pageLayout.centered === 'yes',
@@ -124,24 +124,24 @@ export class MashupTemplateRenderService extends TemplateRenderService {
           commonViewData.siteTemplateSettings.pageLayout.responsive === 'yes',
         sectionType: commonViewData.currentSectionType,
         sideColumnAttributes: this.sectionRenderService.getSideColumnAttributes(
-          commonViewData.siteTemplateSettings
+          commonViewData.siteTemplateSettings,
         ),
         contentContainerAttributes: this.getContentContainerAttributes(
           commonViewData.siteTemplateSettings,
-          commonViewData.currentSectionType
+          commonViewData.currentSectionType,
         ),
         mainColumnAttributes: this.getMainColumnAttributes(
-          commonViewData.siteTemplateSettings
+          commonViewData.siteTemplateSettings,
         ),
         pageEntriesAttributes:
           this.sectionRenderService.getPageEntriesAttributes(
             commonViewData.sections,
             commonViewData.sectionSlug,
-            commonViewData.tagSlug
+            commonViewData.tagSlug,
           ),
         socialMediaLinks: this.sectionRenderService.getSocialMediaLinks(
           commonViewData.appState,
-          commonViewData.siteSettings
+          commonViewData.siteSettings,
         ),
         mashupEntries: this.mashupEntriesRenderService.render(
           commonViewData.siteSlug,
@@ -152,7 +152,7 @@ export class MashupTemplateRenderService extends TemplateRenderService {
           commonViewData.siteTemplateSettings,
           commonViewData.siteTemplateSectionTypes,
           commonViewData.allEntries,
-          commonViewData.tagSlug
+          commonViewData.tagSlug,
         ),
       },
     };
@@ -166,7 +166,7 @@ export class MashupTemplateRenderService extends TemplateRenderService {
     try {
       const htmlOutput = this.twigTemplateRenderService.render(
         'Sites/Sections/mashupTemplate',
-        viewData
+        viewData,
       );
       this.replaceIframeContent(contentWindow, htmlOutput);
     } catch (error) {

@@ -3,8 +3,8 @@ import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { TextInputService } from './text-input.service';
 
 @Component({
-    selector: 'berta-long-text-input',
-    template: ` <div
+  selector: 'berta-long-text-input',
+  template: ` <div
     class="form-group"
     [class.bt-focus]="textInputService.focus | async"
     [class.bt-disabled]="disabled"
@@ -20,16 +20,16 @@ import { TextInputService } from './text-input.service';
       >
     </label>
   </div>`,
-    styles: [
-        `
+  styles: [
+    `
       :host label {
         display: block;
       }
     `,
-    ],
-    /* Provide text input service here, so each component has its own service */
-    providers: [TextInputService],
-    standalone: false
+  ],
+  /* Provide text input service here, so each component has its own service */
+  providers: [TextInputService],
+  standalone: false,
 })
 export class LongTextInputComponent implements OnInit {
   @Input() label?: string;
@@ -54,7 +54,7 @@ export class LongTextInputComponent implements OnInit {
           if (!this.enabledOnUpdate) {
             this.disabled = true;
           }
-        })
+        }),
       )
       .subscribe((value) => this.update.emit(value));
   }

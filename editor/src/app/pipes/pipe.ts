@@ -32,7 +32,7 @@ export class SafePipe implements PipeTransform {
    */
   transform(
     value: string,
-    type: string
+    type: string,
   ): SafeHtml | SafeStyle | SafeScript | SafeUrl | SafeResourceUrl {
     switch (type) {
       case 'html':

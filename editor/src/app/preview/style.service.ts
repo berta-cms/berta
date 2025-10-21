@@ -26,7 +26,7 @@ export class StyleService {
     private whiteTemplateStyleService: WhiteTemplateStyleService,
     private defaultTemplateStyleService: DefaultTemplateStyleService,
     private mashupTemplateStyleService: MashupTemplateStyleService,
-    private messyTemplateStyleService: MessyTemplateStyleService
+    private messyTemplateStyleService: MessyTemplateStyleService,
   ) {}
 
   initializeStyleSheet(contextWindow: Window, styleSheet: CSSStyleSheet) {
@@ -51,7 +51,7 @@ export class StyleService {
     site: SiteStateModel,
     template: string,
     style,
-    templateSettings: SettingsGroupModel[]
+    templateSettings: SettingsGroupModel[],
   ) {
     const settingGroup = this.templateConfig[style.group];
     if (!settingGroup) {
@@ -75,7 +75,7 @@ export class StyleService {
           style,
           cssList,
           site,
-          templateSettings
+          templateSettings,
         );
         break;
 
@@ -84,7 +84,7 @@ export class StyleService {
           style,
           cssList,
           site,
-          templateSettings
+          templateSettings,
         );
         break;
 
@@ -93,7 +93,7 @@ export class StyleService {
           style,
           cssList,
           site,
-          templateSettings
+          templateSettings,
         );
         break;
 
@@ -104,7 +104,7 @@ export class StyleService {
           cssList,
           site,
           template,
-          templateSettings
+          templateSettings,
         );
         break;
     }
@@ -124,7 +124,7 @@ export class StyleService {
       cssRule.style.setProperty(
         rule.property,
         value,
-        rule.important ? 'important' : null
+        rule.important ? 'important' : null,
       );
     });
   }
@@ -161,7 +161,7 @@ export class StyleService {
       cssRule.style.setProperty(
         rule.property,
         value,
-        rule.important ? 'important' : null
+        rule.important ? 'important' : null,
       );
     });
   }
@@ -175,13 +175,13 @@ export class StyleService {
         this.styleSheet.cssRules,
         (rule: CSSMediaRule) => {
           return rule.conditionText === breakpoint;
-        }
+        },
       );
 
       if (!cssMediaRule) {
         this.styleSheet.insertRule(
           `@media ${breakpoint} {}`,
-          this.styleSheet.cssRules.length
+          this.styleSheet.cssRules.length,
         );
         cssMediaRule = this.styleSheet.cssRules[
           this.styleSheet.cssRules.length - 1
@@ -195,7 +195,7 @@ export class StyleService {
       cssRulesList,
       (rule: CSSStyleRule) => {
         return rule.selectorText === selector;
-      }
+      },
     );
 
     if (cssRule) {
@@ -210,7 +210,7 @@ export class StyleService {
     } else {
       this.styleSheet.insertRule(
         `${selector} {}`,
-        this.styleSheet.cssRules.length
+        this.styleSheet.cssRules.length,
       );
       return this.styleSheet.cssRules[
         this.styleSheet.cssRules.length - 1
