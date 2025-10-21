@@ -23,7 +23,7 @@ import {
   UpdateSiteSettingsFromSyncAction,
   UpdateSiteSettingsAction,
   AddSiteSettingChildrenAction,
-  UpdateSiteSettingChildreAction,
+  UpdateSiteSettingChildrenAction,
   DeleteSiteSettingChildrenAction,
 } from '../sites/settings/site-settings.actions';
 import { UpdateSiteTemplateSettingsAction } from '../sites/template-settings/site-template-settings.actions';
@@ -489,7 +489,7 @@ export class PreviewService {
             DeleteSiteSectionsAction,
             UpdateSiteSettingsAction,
             AddSiteSettingChildrenAction,
-            UpdateSiteSettingChildreAction,
+            UpdateSiteSettingChildrenAction,
             DeleteSiteSettingChildrenAction,
             UpdateSiteTemplateSettingsAction,
             UpdateShopSettingsAction,

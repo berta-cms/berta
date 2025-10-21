@@ -1,5 +1,5 @@
-import { concat, of } from 'rxjs';
-import { take, switchMap, tap, map } from 'rxjs/operators';
+import { concat } from 'rxjs';
+import { take, switchMap, tap } from 'rxjs/operators';
 import {
   State,
   Action,
@@ -29,7 +29,7 @@ import {
   UpdateSiteSettingsFromSyncAction,
   AddSiteSettingChildrenAction,
   DeleteSiteSettingChildrenAction,
-  UpdateSiteSettingChildreAction,
+  UpdateSiteSettingChildrenAction,
   UpdateNavigationSiteSettingsAction,
   HandleSiteSettingsChildrenChangesAction,
 } from './site-settings.actions';
@@ -362,10 +362,10 @@ export class SiteSettingsState implements NgxsOnInit {
     );
   }
 
-  @Action(UpdateSiteSettingChildreAction)
+  @Action(UpdateSiteSettingChildrenAction)
   updateSiteSettingChildren(
     { getState, patchState, dispatch }: StateContext<SitesSettingsStateModel>,
-    action: UpdateSiteSettingChildreAction,
+    action: UpdateSiteSettingChildrenAction,
   ) {
     const currentSite = this.store.selectSnapshot(AppState.getSite);
     const settingSlug = action.slug;

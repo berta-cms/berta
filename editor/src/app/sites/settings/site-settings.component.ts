@@ -8,15 +8,12 @@ import { splitCamel, uCFirst, getIconFromUrl } from '../../shared/helpers';
 import { Animations } from '../../shared/animations';
 import { UserStateModel } from '../../user/user.state.model';
 import { AppStateModel } from '../../app-state/app-state.interface';
-import { AppState } from '../../app-state/app.state';
-import { UserState } from '../../user/user.state';
 import { SiteSettingsState } from './site-settings.state';
-import { SiteSettingsConfigState } from './site-settings-config.state';
 import {
   UpdateSiteSettingsAction,
   AddSiteSettingChildrenAction,
   DeleteSiteSettingChildrenAction,
-  UpdateSiteSettingChildreAction,
+  UpdateSiteSettingChildrenAction,
 } from './site-settings.actions';
 import {
   SettingModel,
@@ -428,7 +425,7 @@ export class SiteSettingsComponent implements OnInit {
   ) {
     const data = { [updateEvent.field]: updateEvent.value };
     this.store.dispatch(
-      new UpdateSiteSettingChildreAction(settingGroup, slug, index, data),
+      new UpdateSiteSettingChildrenAction(settingGroup, slug, index, data),
     );
 
     // Update social media icon by url
@@ -439,7 +436,7 @@ export class SiteSettingsComponent implements OnInit {
     ) {
       const iconName = getIconFromUrl(updateEvent.value);
       this.store.dispatch(
-        new UpdateSiteSettingChildreAction(settingGroup, slug, index, {
+        new UpdateSiteSettingChildrenAction(settingGroup, slug, index, {
           icon: iconName,
         }),
       );

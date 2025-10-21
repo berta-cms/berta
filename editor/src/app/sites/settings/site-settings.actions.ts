@@ -77,7 +77,7 @@ export class DeleteSiteSettingChildrenAction {
   ) {}
 }
 
-export class UpdateSiteSettingChildreAction {
+export class UpdateSiteSettingChildrenAction {
   static readonly type = 'SITE_SETTINGS:UPDATE_CHILDREN';
   constructor(
     public settingGroup: string,
