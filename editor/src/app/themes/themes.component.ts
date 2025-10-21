@@ -1,10 +1,4 @@
-import {
-  Component,
-  DestroyRef,
-  inject,
-  OnDestroy,
-  OnInit,
-} from '@angular/core';
+import { Component, DestroyRef, inject, OnInit } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
@@ -70,7 +64,7 @@ import {
   `,
   standalone: false,
 })
-export class ThemesComponent implements OnInit, OnDestroy {
+export class ThemesComponent implements OnInit {
   appState: AppStateModel;
   destroyRef: DestroyRef;
   themes: { name: string; imageSrc: SafeUrl }[];
@@ -89,7 +83,6 @@ export class ThemesComponent implements OnInit, OnDestroy {
       .select((state) => state.app)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((state: AppStateModel) => {
-        console.log('ThemesComponent: AppState updated');
         this.appState = state;
         this.themes = this.appState.themes.map((theme) => {
           const url = window.location.origin + '/_themes/' + theme + '.png';
@@ -99,10 +92,6 @@ export class ThemesComponent implements OnInit, OnDestroy {
           };
         });
       });
-  }
-
-  ngOnDestroy() {
-    console.log('ThemesComponent: ngOnDestroy');
   }
 
   previewTheme(event, theme) {
