@@ -66,8 +66,8 @@ import {
 })
 export class ThemesComponent implements OnInit {
   appState: AppStateModel;
-  destroyRef: DestroyRef;
   themes: { name: string; imageSrc: SafeUrl }[];
+  private destroyRef: DestroyRef;
 
   constructor(
     private store: Store,
