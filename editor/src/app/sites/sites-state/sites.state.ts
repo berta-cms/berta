@@ -326,7 +326,10 @@ export class SitesState implements NgxsOnInit {
   }
 
   @Action(SwitchContentsSitesAction)
-  SwitchContentsSites({}, action: SwitchContentsSitesAction) {
+  SwitchContentsSites(
+    _: StateContext<SiteStateModel[]>,
+    action: SwitchContentsSitesAction,
+  ) {
     // @TODO update state with switched contents
     // Current workaround is to reload window to get correct state
     return this.appStateService.sync(

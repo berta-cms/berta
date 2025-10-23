@@ -238,7 +238,16 @@ export class SiteComponent implements OnInit {
                 window.location.reload();
               });
           },
-          error: (error) => console.error(error),
+          error: (error) => {
+            console.error(error);
+            this.popupService.showPopup({
+              type: 'error',
+              content:
+                'Failed to switch contents between sites. Please try again.',
+              showOverlay: true,
+              actions: [{ label: 'OK' }],
+            });
+          },
         });
     });
   }
