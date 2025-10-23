@@ -25,6 +25,7 @@ import {
   ReOrderSitesAction,
   PreviewThemeSitesAction,
   ApplyThemeSitesAction,
+  SwitchContentsSitesAction,
 } from './sites.actions';
 import {
   DeleteSiteSectionsAction,
@@ -322,5 +323,16 @@ export class SitesState implements NgxsOnInit {
     // @TODO API should return new state and we should update state here
     // Current workaround is to reload window to get correct state
     return this.appStateService.sync('siteThemeApply', action.payload, 'PUT');
+  }
+
+  @Action(SwitchContentsSitesAction)
+  SwitchContentsSites({}, action: SwitchContentsSitesAction) {
+    // @TODO update state with switched contents
+    // Current workaround is to reload window to get correct state
+    return this.appStateService.sync(
+      'siteSwitchContentsBetweenSites',
+      action.payload,
+      'PUT',
+    );
   }
 }

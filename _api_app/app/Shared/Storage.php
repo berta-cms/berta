@@ -15,11 +15,11 @@ class Storage
 
     protected $SITE = '';
 
-    protected $XML_MAIN_ROOT;
+    public $XML_MAIN_ROOT;
 
-    protected $XML_STORAGE_ROOT;
+    public $XML_STORAGE_ROOT;
 
-    protected $XML_SITES_ROOT;
+    public $XML_SITES_ROOT;
 
     protected $XML_PREVIEW_ROOT;
 
@@ -321,7 +321,86 @@ class Storage
         closedir($dir);
     }
 
-    protected function delFolder($dir)
+    public function moveFolderContents($src, $dst, $ignore = [])
+    {
+        if (! is_dir($src)) {
+            return false;
+        }
+
+        if (! is_dir($dst)) {
+            mkdir($dst, 0755, true);
+        }
+
+        // Normalize ignore paths (remove trailing slashes)
+        $ignoreNormalized = array_map(function ($path) {
+            return rtrim($path, '/\\');
+        }, $ignore);
+
+        $iterator = new \RecursiveIteratorIterator(
+            new \RecursiveDirectoryIterator($src, \RecursiveDirectoryIterator::SKIP_DOTS),
+            \RecursiveIteratorIterator::SELF_FIRST
+        );
+
+        // Copy everything (except ignored items)
+        foreach ($iterator as $item) {
+            $subPath = $iterator->getSubPathName();
+
+            // Check if this item should be ignored
+            $shouldIgnore = false;
+            foreach ($ignoreNormalized as $ignorePath) {
+                // Check if current path matches or is inside an ignored path
+                if ($subPath === $ignorePath || strpos($subPath, $ignorePath . DIRECTORY_SEPARATOR) === 0) {
+                    $shouldIgnore = true;
+                    break;
+                }
+            }
+
+            if ($shouldIgnore) {
+                continue;
+            }
+
+            $destPath = $dst . DIRECTORY_SEPARATOR . $subPath;
+
+            if ($item->isDir()) {
+                mkdir($destPath, 0755, true);
+            } else {
+                copy($item, $destPath);
+            }
+        }
+
+        // Clean up source (except ignored items and source folder itself)
+        $iterator = new \RecursiveIteratorIterator(
+            new \RecursiveDirectoryIterator($src, \RecursiveDirectoryIterator::SKIP_DOTS),
+            \RecursiveIteratorIterator::CHILD_FIRST  // Delete children first
+        );
+
+        foreach ($iterator as $item) {
+            $subPath = $iterator->getSubPathName();
+
+            // Check if this item should be ignored
+            $shouldIgnore = false;
+            foreach ($ignoreNormalized as $ignorePath) {
+                if ($subPath === $ignorePath || strpos($subPath, $ignorePath . DIRECTORY_SEPARATOR) === 0) {
+                    $shouldIgnore = true;
+                    break;
+                }
+            }
+
+            if ($shouldIgnore) {
+                continue;
+            }
+
+            if ($item->isDir()) {
+                @rmdir($item); // @ suppresses warnings if dir not empty (due to ignored items)
+            } else {
+                unlink($item);
+            }
+        }
+
+        return true;
+    }
+
+    public function delFolder($dir)
     {
         if (! is_dir($dir)) {
             return;
