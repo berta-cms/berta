@@ -46,6 +46,7 @@ import {
   DeleteSiteSectionsTagsAction,
   RenameSectionTagsSitenameAction,
   AddSiteSectionsTagsAction,
+  SwitchContentsSitesTagsAction,
 } from '../sections/tags/section-tags.actions';
 import {
   DeleteSiteSectionsEntriesAction,
@@ -327,15 +328,31 @@ export class SitesState implements NgxsOnInit {
 
   @Action(SwitchContentsSitesAction)
   SwitchContentsSites(
-    _: StateContext<SiteStateModel[]>,
+    { dispatch }: StateContext<SiteStateModel[]>,
     action: SwitchContentsSitesAction,
   ) {
     // @TODO update state with switched contents
     // Current workaround is to reload window to get correct state
-    return this.appStateService.sync(
-      'siteSwitchContentsBetweenSites',
-      action.payload,
-      'PUT',
-    );
+    return this.appStateService
+      .sync('siteSwitchContentsBetweenSites', action.payload, 'PUT')
+      .pipe(
+        tap((response) => {
+          if (response.error_message) {
+            // @TODO handle error message
+            console.error(response.error_message);
+          } else {
+            dispatch([
+              // new SwitchContentsSitesSectionsAction(siteName),
+              // new SwitchContentsSitesSettingsAction(siteName),
+              // new SwitchContentsSitesTemplateSettingsAction(siteName),
+              new SwitchContentsSitesTagsAction({
+                siteSlugFrom: response.siteSlugFrom,
+                siteSlugTo: response.siteSlugTo,
+              }),
+              // new SwitchContentsSitesSectionsEntriesAction(siteName),
+            ]);
+          }
+        }),
+      );
   }
 }
