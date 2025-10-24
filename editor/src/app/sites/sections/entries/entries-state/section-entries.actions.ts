@@ -62,6 +62,11 @@ export class RenameSectionEntriesAction {
   ) {}
 }
 
+export class SwapContentsSitesSectionsEntriesAction {
+  static readonly type = 'SECTION_ENTRIES:SWAP_SITE_CONTENTS';
+  constructor(public payload: { siteSlugFrom: string; siteSlugTo: string }) {}
+}
+
 export class RenameSectionEntriesSitenameAction {
   static readonly type = 'SITE_SECTIONS_ENTRIES_SITENAME:RENAME';
   constructor(

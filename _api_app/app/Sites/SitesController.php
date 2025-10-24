@@ -103,6 +103,44 @@ class SitesController extends Controller
         return response()->json($json);
     }
 
+    public function swapContentsBetweenSites(Request $request)
+    {
+        $json = $request->json()->all();
+
+        $siteSlugFrom = $json['siteSlugFrom'];
+        $siteSlugTo = $json['siteSlugTo'];
+
+        $siteFromStorage = new Storage($siteSlugFrom);
+        $siteToStorage = new Storage($siteSlugTo);
+
+        $tmpDir = $siteFromStorage->XML_SITES_ROOT . '/' . bin2hex(random_bytes(8));
+
+        // move siteFrom to tmp folder
+        $siteFromStorage->moveFolderContents(
+            $siteFromStorage->XML_STORAGE_ROOT,
+            $tmpDir,
+            $siteFromStorage->XML_STORAGE_ROOT == $siteFromStorage->XML_MAIN_ROOT ? ['-sites'] : []
+        );
+
+        // move to siteFrom folder from siteTo
+        $siteFromStorage->moveFolderContents(
+            $siteToStorage->XML_STORAGE_ROOT,
+            $siteFromStorage->XML_STORAGE_ROOT,
+            $siteToStorage->XML_STORAGE_ROOT == $siteFromStorage->XML_MAIN_ROOT ? ['-sites'] : []
+        );
+
+        // move from tmp to siteTo folder
+        $siteFromStorage->moveFolderContents(
+            $tmpDir,
+            $siteToStorage->XML_STORAGE_ROOT,
+        );
+
+        // delete tmp folder
+        $siteFromStorage->delFolder($tmpDir);
+
+        return response()->json($json);
+    }
+
     public function delete(Request $request)
     {
         $sites = new SitesDataService;

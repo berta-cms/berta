@@ -204,7 +204,7 @@ export class PreviewComponent implements OnInit {
               headers: {
                 Accept: 'application/json',
                 'Content-Type': 'application/json',
-                'X-Requested-With': 'XMLHttpRequest', // Otherwise Lumen don't recognize AJAX request
+                'X-Requested-With': 'XMLHttpRequest', // Otherwise Laravel don't recognize AJAX request
               },
               params: {
                 auth_key: user.token,
@@ -213,7 +213,7 @@ export class PreviewComponent implements OnInit {
             .pipe(take(1))
             .subscribe({
               next: () => {
-                // Token is valid, reload irame
+                // Token is valid, reload iframe
                 iframe.src += '';
               },
               error: (error) => {

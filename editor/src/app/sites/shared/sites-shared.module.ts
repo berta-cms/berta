@@ -27,6 +27,7 @@ import { HelpTooltipComponent } from './help-tooltip.component';
 import { FilesInputComponent } from '../../../app/inputs/files-input.component';
 import { IconMoveComponent } from './icon-move.component';
 import { IconCropComponent } from './icon-crop.component';
+import { IconSwapComponent } from './icon-switch.component';
 
 @NgModule({
   imports: [
@@ -60,6 +61,7 @@ import { IconCropComponent } from './icon-crop.component';
     IconCropComponent,
     IconPublishComponent,
     IconMoveComponent,
+    IconSwapComponent,
     HelpTooltipComponent,
   ],
   exports: [
@@ -85,6 +87,7 @@ import { IconCropComponent } from './icon-crop.component';
     IconCropComponent,
     IconPublishComponent,
     IconMoveComponent,
+    IconSwapComponent,
     HelpTooltipComponent,
   ],
 })

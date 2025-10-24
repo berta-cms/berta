@@ -30,6 +30,7 @@ import {
   InitSiteTemplateSettingsAction,
   HandleSiteTemplateSettingsAction,
   ResetToDefaultsSiteTemplateSettingsAction,
+  SwapContentsSitesTemplateSettingsAction,
 } from './site-template-settings.actions';
 import { UserLoginAction } from '../../user/user.actions';
 import { Injectable } from '@angular/core';
@@ -224,6 +225,19 @@ export class SiteTemplateSettingsState implements NgxsOnInit {
     }
 
     setState(newState);
+  }
+
+  @Action(SwapContentsSitesTemplateSettingsAction)
+  swapContentsSitesTemplateSettings(
+    { getState, setState }: StateContext<SitesTemplateSettingsStateModel>,
+    action: SwapContentsSitesTemplateSettingsAction,
+  ) {
+    const state = getState();
+    setState({
+      ...state,
+      [action.payload.siteSlugFrom]: state[action.payload.siteSlugTo],
+      [action.payload.siteSlugTo]: state[action.payload.siteSlugFrom],
+    });
   }
 
   @Action(DeleteSiteTemplateSettingsAction)

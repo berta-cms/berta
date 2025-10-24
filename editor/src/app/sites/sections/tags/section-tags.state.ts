@@ -27,6 +27,7 @@ import {
   InitSiteSectionsTagsAction,
   UpdateSectionTagsAction,
   OrderSectionTagsFromSyncAction,
+  SwapContentsSitesTagsAction,
 } from './section-tags.actions';
 import { UserLoginAction } from '../../../user/user.actions';
 import { Injectable } from '@angular/core';
@@ -230,6 +231,19 @@ export class SectionTagsState implements NgxsOnInit {
     action: InitSiteSectionsTagsAction,
   ) {
     setState(action.payload);
+  }
+
+  @Action(SwapContentsSitesTagsAction)
+  swapContentsSitesTags(
+    { getState, setState }: StateContext<SectionTagsStateModel>,
+    action: SwapContentsSitesTagsAction,
+  ) {
+    const state = getState();
+    setState({
+      ...state,
+      [action.payload.siteSlugFrom]: state[action.payload.siteSlugTo],
+      [action.payload.siteSlugTo]: state[action.payload.siteSlugFrom],
+    });
   }
 
   @Action(OrderSectionTagsFromSyncAction)

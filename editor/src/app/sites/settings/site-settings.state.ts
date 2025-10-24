@@ -32,6 +32,7 @@ import {
   UpdateSiteSettingChildrenAction,
   UpdateNavigationSiteSettingsAction,
   HandleSiteSettingsChildrenChangesAction,
+  SwapContentsSitesSettingsAction,
 } from './site-settings.actions';
 import { UserLoginAction } from '../../user/user.actions';
 import { AddSiteSectionAction } from '../sections/sections-state/site-sections.actions';
@@ -455,6 +456,19 @@ export class SiteSettingsState implements NgxsOnInit {
     }
 
     setState(newState);
+  }
+
+  @Action(SwapContentsSitesSettingsAction)
+  swapContentsSitesSettings(
+    { getState, setState }: StateContext<SitesSettingsStateModel>,
+    action: SwapContentsSitesSettingsAction,
+  ) {
+    const state = getState();
+    setState({
+      ...state,
+      [action.payload.siteSlugFrom]: state[action.payload.siteSlugTo],
+      [action.payload.siteSlugTo]: state[action.payload.siteSlugFrom],
+    });
   }
 
   @Action(DeleteSiteSettingsAction)
