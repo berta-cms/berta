@@ -31,6 +31,7 @@ import {
   DeleteSiteSectionsAction,
   RenameSiteSectionsSitenameAction,
   AddSiteSectionsAction,
+  SwapContentsSitesSectionsAction,
 } from '../sections/sections-state/site-sections.actions';
 import {
   DeleteSiteSettingsAction,
@@ -342,7 +343,10 @@ export class SitesState implements NgxsOnInit {
             console.error(response.error_message);
           } else {
             dispatch([
-              // new SwapContentsSitesSectionsAction(siteName),
+              new SwapContentsSitesSectionsAction({
+                siteSlugFrom: response.siteSlugFrom,
+                siteSlugTo: response.siteSlugTo,
+              }),
               // new SwapContentsSitesSettingsAction(siteName),
               // new SwapContentsSitesTemplateSettingsAction(siteName),
               new SwapContentsSitesTagsAction({
