@@ -18,4 +18,4 @@ import { Component } from '@angular/core';
   `,
   standalone: false,
 })
-export class IconSwitchComponent {}
+export class IconSwapComponent {}

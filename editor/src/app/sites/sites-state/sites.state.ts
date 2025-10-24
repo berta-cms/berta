@@ -25,7 +25,7 @@ import {
   ReOrderSitesAction,
   PreviewThemeSitesAction,
   ApplyThemeSitesAction,
-  SwitchContentsSitesAction,
+  SwapContentsSitesAction,
 } from './sites.actions';
 import {
   DeleteSiteSectionsAction,
@@ -46,7 +46,7 @@ import {
   DeleteSiteSectionsTagsAction,
   RenameSectionTagsSitenameAction,
   AddSiteSectionsTagsAction,
-  SwitchContentsSitesTagsAction,
+  SwapContentsSitesTagsAction,
 } from '../sections/tags/section-tags.actions';
 import {
   DeleteSiteSectionsEntriesAction,
@@ -326,15 +326,15 @@ export class SitesState implements NgxsOnInit {
     return this.appStateService.sync('siteThemeApply', action.payload, 'PUT');
   }
 
-  @Action(SwitchContentsSitesAction)
-  SwitchContentsSites(
+  @Action(SwapContentsSitesAction)
+  swapContentsSites(
     { dispatch }: StateContext<SiteStateModel[]>,
-    action: SwitchContentsSitesAction,
+    action: SwapContentsSitesAction,
   ) {
     // @TODO update state with switched contents
     // Current workaround is to reload window to get correct state
     return this.appStateService
-      .sync('siteSwitchContentsBetweenSites', action.payload, 'PUT')
+      .sync('siteSwapContentsBetweenSites', action.payload, 'PUT')
       .pipe(
         tap((response) => {
           if (response.error_message) {
@@ -342,14 +342,16 @@ export class SitesState implements NgxsOnInit {
             console.error(response.error_message);
           } else {
             dispatch([
-              // new SwitchContentsSitesSectionsAction(siteName),
-              // new SwitchContentsSitesSettingsAction(siteName),
-              // new SwitchContentsSitesTemplateSettingsAction(siteName),
-              new SwitchContentsSitesTagsAction({
+              // new SwapContentsSitesSectionsAction(siteName),
+              // new SwapContentsSitesSettingsAction(siteName),
+              // new SwapContentsSitesTemplateSettingsAction(siteName),
+              new SwapContentsSitesTagsAction({
                 siteSlugFrom: response.siteSlugFrom,
                 siteSlugTo: response.siteSlugTo,
               }),
-              // new SwitchContentsSitesSectionsEntriesAction(siteName),
+              // new SwapContentsSitesSectionsEntriesAction(siteName),
+
+              // make sure shop states are required to update as well
             ]);
           }
         }),

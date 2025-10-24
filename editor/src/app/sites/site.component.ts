@@ -17,11 +17,11 @@ import {
   CloneSiteAction,
   UpdateSiteAction,
   RenameSiteAction,
-  SwitchContentsSitesAction,
+  SwapContentsSitesAction,
 } from './sites-state/sites.actions';
 import { AppStateModel } from '../app-state/app-state.interface';
 import { Dialog } from '@angular/cdk/dialog';
-import { SitesSwitchContentsComponent } from './sites-switch-contents.component';
+import { SitesSwapContentsComponent } from './sites-swap-contents.component';
 import { AppState } from '../app-state/app.state';
 
 @Component({
@@ -64,8 +64,8 @@ import { AppState } from '../app-state/app.state';
 
           @if (sites.length > 1) {
             <button
-              title="switch contents between other site"
-              (click)="switchContentsBetweenOtherSite()"
+              title="swap content between other site"
+              (click)="swapContentsBetweenOtherSite()"
             >
               <bt-icon-switch />
             </button>
@@ -201,9 +201,9 @@ export class SiteComponent implements OnInit {
       });
   }
 
-  switchContentsBetweenOtherSite() {
+  swapContentsBetweenOtherSite() {
     const availableSites = this.sites.filter((s) => s.name !== this.site.name);
-    const dialogRef = this.dialog.open<string>(SitesSwitchContentsComponent, {
+    const dialogRef = this.dialog.open<string>(SitesSwapContentsComponent, {
       data: {
         currentSite: this.site,
         sites: availableSites,
@@ -218,7 +218,7 @@ export class SiteComponent implements OnInit {
 
       this.store
         .dispatch(
-          new SwitchContentsSitesAction({
+          new SwapContentsSitesAction({
             siteSlugFrom: this.site.name,
             siteSlugTo: selectedSiteSlug,
           }),
@@ -230,9 +230,7 @@ export class SiteComponent implements OnInit {
             // better reload/rerender only the preview iframe
             this.router
               .navigate(['/multisite'], {
-                replaceUrl: true,
                 queryParams: { site: this.site.name },
-                queryParamsHandling: 'merge',
               })
               .then(() => {
                 window.location.reload();
@@ -243,7 +241,7 @@ export class SiteComponent implements OnInit {
             this.popupService.showPopup({
               type: 'error',
               content:
-                'Failed to switch contents between sites. Please try again.',
+                'Failed to swap contents between sites. Please try again.',
               showOverlay: true,
               actions: [{ label: 'OK' }],
             });

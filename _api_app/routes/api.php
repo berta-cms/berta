@@ -34,7 +34,7 @@ Route::middleware([SetupMiddleware::class, Authenticate::class])->prefix('v1')->
     Route::delete('sites', [SitesController::class, 'delete']);
     Route::post('sites/theme-preview', [SitesController::class, 'themePreview'])->name('site_theme_preview');
     Route::put('sites/theme-apply', [SitesController::class, 'themeApply'])->name('site_theme_apply');
-    Route::put('sites/switch-contents-between-sites', [SitesController::class, 'switchContentsBetweenSites'])->name('site_switch_contents_between_sites');
+    Route::put('sites/swap-contents-between-sites', [SitesController::class, 'swapContentsBetweenSites'])->name('site_swap_contents_between_sites');
     Route::get('sites/render-menu/{site?}', [SitesController::class, 'renderMenu']);
     Route::get('sites/render-header/{site?}', [SitesController::class, 'renderHeader']);
     Route::get('sites/render-banners/{site?}', [SitesController::class, 'renderBanners']);

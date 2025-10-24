@@ -103,7 +103,7 @@ class SitesController extends Controller
         return response()->json($json);
     }
 
-    public function switchContentsBetweenSites(Request $request)
+    public function swapContentsBetweenSites(Request $request)
     {
         $json = $request->json()->all();
 

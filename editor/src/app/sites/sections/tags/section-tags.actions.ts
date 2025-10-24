@@ -57,8 +57,8 @@ export class RenameSectionTagsSitenameAction {
   ) {}
 }
 
-export class SwitchContentsSitesTagsAction {
-  static readonly type = 'SITE_SECTIONS_TAGS:SWITCH';
+export class SwapContentsSitesTagsAction {
+  static readonly type = 'SITE_SECTIONS_TAGS:SWAP';
   constructor(public payload: { siteSlugFrom: string; siteSlugTo: string }) {}
 }
 

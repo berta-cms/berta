@@ -10,10 +10,16 @@ cdk-dialog-container {
   min-width: 430px;
 }
 
-.bt-switch-sites {
-  display: flex;
-  column-gap: 1em;
-  align-items: center;
-  justify-content: center;
-  font-weight: bolder;
+berta-sites-swap-contents {
+  p {
+    text-align: center;
+  }
+
+  .bt-switch-sites {
+    display: flex;
+    column-gap: 1em;
+    align-items: center;
+    justify-content: center;
+    font-weight: bolder;
+  }
 }

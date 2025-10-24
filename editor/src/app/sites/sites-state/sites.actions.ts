@@ -59,7 +59,7 @@ export class ApplyThemeSitesAction {
   constructor(public payload: { site: string; theme: string }) {}
 }
 
-export class SwitchContentsSitesAction {
-  static readonly type = 'SITE:SWITCH_CONTENTS';
+export class SwapContentsSitesAction {
+  static readonly type = 'SITE:SWAP_CONTENTS';
   constructor(public payload: { siteSlugFrom: string; siteSlugTo: string }) {}
 }

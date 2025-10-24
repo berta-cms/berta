@@ -12,7 +12,7 @@ import { SiteSettingsModule } from './settings/site-settings.module';
 import { SiteTemplateSettingsModule } from './template-settings/site-template-settings.module';
 import { SitesSharedModule } from './shared/sites-shared.module';
 import { FormsModule } from '@angular/forms';
-import { SitesSwitchContentsComponent } from './sites-switch-contents.component';
+import { SitesSwapContentsComponent } from './sites-swap-contents.component';
 
 @NgModule({
   imports: [
@@ -27,6 +27,6 @@ import { SitesSwitchContentsComponent } from './sites-switch-contents.component'
     SiteTemplateSettingsModule,
     SitesSharedModule,
   ],
-  declarations: [SitesComponent, SiteComponent, SitesSwitchContentsComponent],
+  declarations: [SitesComponent, SiteComponent, SitesSwapContentsComponent],
 })
 export class SitesModule {}
