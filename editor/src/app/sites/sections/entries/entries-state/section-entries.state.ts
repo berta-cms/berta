@@ -41,6 +41,7 @@ import {
   UpdateSectionEntryAction,
   UpdateEntryGalleryVideoPosterAction,
   UpdateEntryGalleryImageCropAction,
+  SwapContentsSitesSectionsEntriesAction,
 } from './section-entries.actions';
 import { UserLoginAction } from '../../../../user/user.actions';
 import { UpdateSiteSectionAction } from '../../sections-state/site-sections.actions';
@@ -327,6 +328,19 @@ export class SectionEntriesState implements NgxsOnInit {
     }
 
     setState(newState);
+  }
+
+  @Action(SwapContentsSitesSectionsEntriesAction)
+  swapContentsSitesSectionsEntries(
+    { getState, setState }: StateContext<SectionEntriesStateModel>,
+    action: SwapContentsSitesSectionsEntriesAction,
+  ) {
+    const state = getState();
+    setState({
+      ...state,
+      [action.payload.siteSlugFrom]: state[action.payload.siteSlugTo],
+      [action.payload.siteSlugTo]: state[action.payload.siteSlugFrom],
+    });
   }
 
   @Action(DeleteSectionEntriesAction)

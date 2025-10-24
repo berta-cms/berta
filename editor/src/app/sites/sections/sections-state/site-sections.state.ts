@@ -630,7 +630,7 @@ export class SiteSectionsState implements NgxsOnInit {
   }
 
   @Action(SwapContentsSitesSectionsAction)
-  swapContentsSitesTags(
+  swapContentsSitesSections(
     { getState, setState }: StateContext<SiteSectionStateModel[]>,
     action: SwapContentsSitesSectionsAction,
   ) {

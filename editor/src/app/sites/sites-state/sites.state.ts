@@ -37,11 +37,13 @@ import {
   DeleteSiteSettingsAction,
   RenameSiteSettingsSitenameAction,
   CreateSiteSettingsAction,
+  SwapContentsSitesSettingsAction,
 } from '../settings/site-settings.actions';
 import {
   DeleteSiteTemplateSettingsAction,
   RenameSiteTemplateSettingsSitenameAction,
   CreateSiteTemplateSettingsAction,
+  SwapContentsSitesTemplateSettingsAction,
 } from '../template-settings/site-template-settings.actions';
 import {
   DeleteSiteSectionsTagsAction,
@@ -53,6 +55,7 @@ import {
   DeleteSiteSectionsEntriesAction,
   RenameSectionEntriesSitenameAction,
   AddSiteEntriesAction,
+  SwapContentsSitesSectionsEntriesAction,
 } from '../sections/entries/entries-state/section-entries.actions';
 import { UserLoginAction } from '../../user/user.actions';
 import { Injectable } from '@angular/core';
@@ -342,20 +345,18 @@ export class SitesState implements NgxsOnInit {
             // @TODO handle error message
             console.error(response.error_message);
           } else {
+            const payload = {
+              siteSlugFrom: response.siteSlugFrom,
+              siteSlugTo: response.siteSlugTo,
+            };
             dispatch([
-              new SwapContentsSitesSectionsAction({
-                siteSlugFrom: response.siteSlugFrom,
-                siteSlugTo: response.siteSlugTo,
-              }),
-              // new SwapContentsSitesSettingsAction(siteName),
-              // new SwapContentsSitesTemplateSettingsAction(siteName),
-              new SwapContentsSitesTagsAction({
-                siteSlugFrom: response.siteSlugFrom,
-                siteSlugTo: response.siteSlugTo,
-              }),
-              // new SwapContentsSitesSectionsEntriesAction(siteName),
+              new SwapContentsSitesSectionsAction(payload),
+              new SwapContentsSitesSettingsAction(payload),
+              new SwapContentsSitesTemplateSettingsAction(payload),
+              new SwapContentsSitesTagsAction(payload),
+              new SwapContentsSitesSectionsEntriesAction(payload),
 
-              // make sure shop states are required to update as well
+              // TODO: make sure shop states are required to update as well
             ]);
           }
         }),
