@@ -44,6 +44,7 @@ import {
 import {
   DeleteSiteAction,
   ReOrderSitesAction,
+  SwapContentsSitesAction,
   UpdateSiteAction,
 } from '../sites/sites-state/sites.actions';
 import { UpdateShopSettingsAction } from '../shop/settings/shop-settings.actions';
@@ -109,6 +110,7 @@ export class TemplateRerenderService {
           UpdateSiteSectionByPathAction,
           ResetToDefaultsSiteTemplateSettingsAction,
           UpdateSectionEntryAction,
+          SwapContentsSitesAction,
         ),
         filter((action) => {
           const reloadConditionFromSiteSettingsAction =
@@ -155,13 +157,17 @@ export class TemplateRerenderService {
             action instanceof UpdateSectionEntryAction &&
             action.path.endsWith('mediaCacheData/@attributes/size');
 
+          const reloadConditionFromSitesActions =
+            action instanceof SwapContentsSitesAction;
+
           return (
             reloadConditionFromSiteSettingsAction ||
             reloadConditionFromSectionAction ||
             reloadConditionFromShopSettingsAction ||
             reloadConditionFromBackgroundGalleryActions ||
             reloadConditionFromSiteTemplateSettings ||
-            reloadConditionFromUpdateSectionEntryActions
+            reloadConditionFromUpdateSectionEntryActions ||
+            reloadConditionFromSitesActions
           );
         }),
       )

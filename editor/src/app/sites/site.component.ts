@@ -225,16 +225,9 @@ export class SiteComponent implements OnInit {
         )
         .subscribe({
           next: () => {
-            // @TODO update switched site states
-            // Current workaround is to reload the window
-            // better reload/rerender only the preview iframe
-            this.router
-              .navigate(['/multisite'], {
-                queryParams: { site: this.site.name },
-              })
-              .then(() => {
-                window.location.reload();
-              });
+            this.router.navigate(['/multisite'], {
+              queryParams: { site: this.site.name },
+            });
           },
           error: (error) => {
             console.error(error);
