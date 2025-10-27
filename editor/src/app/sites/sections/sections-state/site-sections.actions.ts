@@ -102,6 +102,11 @@ export class RenameSiteSectionsSitenameAction {
   ) {}
 }
 
+export class SwapContentsSitesSectionsAction {
+  static readonly type = 'SITE_SECTIONS:SWAP_SITE_CONTENTS';
+  constructor(public payload: { siteSlugFrom: string; siteSlugTo: string }) {}
+}
+
 export class CloneSectionAction {
   static readonly type = 'SITE_SECTION:CLONE';
   constructor(public section: SiteSectionStateModel) {}

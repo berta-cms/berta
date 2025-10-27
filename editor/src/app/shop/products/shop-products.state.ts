@@ -30,7 +30,10 @@ import { UpdateSectionEntryFromSyncAction } from '../../sites/sections/entries/e
 import { AppStateService } from '../../app-state/app-state.service';
 import { ShopState } from '../shop.state';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { DestroyRef, inject, Injectable } from '@angular/core';
+import { combineLatest, startWith } from 'rxjs';
+import { SwapContentsSitesAction } from 'src/app/sites/sites-state/sites.actions';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 interface ShopProduct {
   id: string;
@@ -60,6 +63,9 @@ export class ShopProductsState implements NgxsOnInit {
     return state[site];
   }
 
+  private destroyRef = inject(DestroyRef);
+  private counter = 0;
+
   constructor(
     private store$: Store,
     private actions$: Actions,
@@ -68,42 +74,44 @@ export class ShopProductsState implements NgxsOnInit {
   ) {}
 
   ngxsOnInit({ dispatch }: StateContext<ShopProductsModel>) {
-    this.store$
-      .select(AppState.getSite)
-      .pipe(
-        filter((site) => site !== null),
-        distinct((site) => site),
-        switchMap((site) =>
-          this.stateService.getInitialState(site, 'products').pipe(
-            take(1),
-            map((products) => ({ site, products })),
-          ),
+    combineLatest([
+      this.store$.select(AppState.getSite),
+      this.actions$.pipe(
+        ofActionSuccessful(
+          UpdateSectionEntryFromSyncAction,
+          SwapContentsSitesAction,
         ),
-      )
-      .subscribe(({ site, products }) => {
-        dispatch(new InitShopProductsAction({ [site]: products[site] }));
-      });
-
-    // Update products from server on entry update (name, attribute, instock, reservations)
-    this.actions$
-      .pipe(
-        ofActionSuccessful(UpdateSectionEntryFromSyncAction),
         filter((action) => {
+          // Skip filter for SwapContentsSitesAction
+          if (action instanceof SwapContentsSitesAction) {
+            return true;
+          }
+          // Apply filter for UpdateSectionEntryFromSyncAction
           const actions = ['cartTitle', 'cartPrice', 'cartAttributes'];
           const prop = action.path.split('/').pop();
           return actions.indexOf(prop) > -1;
         }),
-        switchMap(() =>
-          this.store$.select(AppState.getSite).pipe(
-            filter((site) => site !== null),
-            switchMap((site) =>
-              this.stateService.getInitialState(site, 'products', true).pipe(
-                take(1),
-                map((products) => ({ site, products })),
-              ),
-            ),
-          ),
+        startWith(null), // Emit initial value so combineLatest starts immediately
+      ),
+    ])
+      .pipe(
+        filter(([site]) => site !== null),
+        map(([site, action]) => ({
+          site,
+          forceRefresh: action !== null,
+        })),
+        distinct(({ site, forceRefresh }) =>
+          forceRefresh ? this.counter++ : site,
         ),
+        switchMap(({ site, forceRefresh }) =>
+          this.stateService
+            .getInitialState(site, 'products', forceRefresh)
+            .pipe(
+              take(1),
+              map((products) => ({ site, products })),
+            ),
+        ),
+        takeUntilDestroyed(this.destroyRef),
       )
       .subscribe(({ site, products }) => {
         dispatch(new InitShopProductsAction({ [site]: products[site] }));

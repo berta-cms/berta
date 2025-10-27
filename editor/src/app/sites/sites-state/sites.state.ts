@@ -25,31 +25,37 @@ import {
   ReOrderSitesAction,
   PreviewThemeSitesAction,
   ApplyThemeSitesAction,
+  SwapContentsSitesAction,
 } from './sites.actions';
 import {
   DeleteSiteSectionsAction,
   RenameSiteSectionsSitenameAction,
   AddSiteSectionsAction,
+  SwapContentsSitesSectionsAction,
 } from '../sections/sections-state/site-sections.actions';
 import {
   DeleteSiteSettingsAction,
   RenameSiteSettingsSitenameAction,
   CreateSiteSettingsAction,
+  SwapContentsSitesSettingsAction,
 } from '../settings/site-settings.actions';
 import {
   DeleteSiteTemplateSettingsAction,
   RenameSiteTemplateSettingsSitenameAction,
   CreateSiteTemplateSettingsAction,
+  SwapContentsSitesTemplateSettingsAction,
 } from '../template-settings/site-template-settings.actions';
 import {
   DeleteSiteSectionsTagsAction,
   RenameSectionTagsSitenameAction,
   AddSiteSectionsTagsAction,
+  SwapContentsSitesTagsAction,
 } from '../sections/tags/section-tags.actions';
 import {
   DeleteSiteSectionsEntriesAction,
   RenameSectionEntriesSitenameAction,
   AddSiteEntriesAction,
+  SwapContentsSitesSectionsEntriesAction,
 } from '../sections/entries/entries-state/section-entries.actions';
 import { UserLoginAction } from '../../user/user.actions';
 import { Injectable } from '@angular/core';
@@ -322,5 +328,38 @@ export class SitesState implements NgxsOnInit {
     // @TODO API should return new state and we should update state here
     // Current workaround is to reload window to get correct state
     return this.appStateService.sync('siteThemeApply', action.payload, 'PUT');
+  }
+
+  @Action(SwapContentsSitesAction)
+  swapContentsSites(
+    { dispatch }: StateContext<SiteStateModel[]>,
+    action: SwapContentsSitesAction,
+  ) {
+    // @TODO update state with switched contents
+    // Current workaround is to reload window to get correct state
+    return this.appStateService
+      .sync('siteSwapContentsBetweenSites', action.payload, 'PUT')
+      .pipe(
+        tap((response) => {
+          if (response.error_message) {
+            // @TODO handle error message
+            console.error(response.error_message);
+          } else {
+            const payload = {
+              siteSlugFrom: response.siteSlugFrom,
+              siteSlugTo: response.siteSlugTo,
+            };
+            dispatch([
+              new SwapContentsSitesSectionsAction(payload),
+              new SwapContentsSitesSettingsAction(payload),
+              new SwapContentsSitesTemplateSettingsAction(payload),
+              new SwapContentsSitesTagsAction(payload),
+              new SwapContentsSitesSectionsEntriesAction(payload),
+
+              // TODO: make sure shop states are required to update as well
+            ]);
+          }
+        }),
+      );
   }
 }

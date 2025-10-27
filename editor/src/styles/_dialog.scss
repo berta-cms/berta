@@ -1,0 +1,25 @@
+@use "@angular/cdk" as cdk;
+@use "variables";
+
+@include cdk.overlay();
+
+cdk-dialog-container {
+  border-radius: variables.$border-radius;
+  background-color: variables.$white;
+  padding: 1.3rem;
+  min-width: 430px;
+}
+
+berta-sites-swap-contents {
+  p {
+    text-align: center;
+  }
+
+  .bt-switch-sites {
+    display: flex;
+    column-gap: 1em;
+    align-items: center;
+    justify-content: center;
+    font-weight: bolder;
+  }
+}

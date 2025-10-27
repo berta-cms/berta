@@ -15,6 +15,8 @@ import {
   Selector,
   Action,
   Store,
+  Actions,
+  ofActionSuccessful,
 } from '@ngxs/store';
 
 import { FileUploadService } from '../../sites/shared/file-upload.service';
@@ -30,9 +32,11 @@ import {
 } from './shop-settings.actions';
 import { AppStateService } from '../../app-state/app-state.service';
 import { ShopState } from '../shop.state';
-import { Injectable } from '@angular/core';
-import { combineLatest } from 'rxjs';
+import { DestroyRef, inject, Injectable } from '@angular/core';
+import { combineLatest, startWith } from 'rxjs';
 import { UserState } from 'src/app/user/user.state';
+import { SwapContentsSitesAction } from 'src/app/sites/sites-state/sites.actions';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 interface ShopSettingsModel {
   [site: string]: Array<{
@@ -82,8 +86,12 @@ export class ShopSettingsState implements NgxsOnInit {
     );
   }
 
+  private destroyRef = inject(DestroyRef);
+  private counter = 0;
+
   constructor(
     private store$: Store,
+    private actions$: Actions,
     private appStateService: AppStateService,
     private stateService: ShopStateService,
     private fileUploadService: FileUploadService,
@@ -93,17 +101,29 @@ export class ShopSettingsState implements NgxsOnInit {
     combineLatest([
       this.store$.select(AppState.getSite),
       this.store$.select(UserState.hasFeatureShop),
+      this.actions$.pipe(
+        ofActionSuccessful(SwapContentsSitesAction),
+        startWith(null), // Emit initial value so combineLatest starts immediately
+      ),
     ])
       .pipe(
         filter(([site, hasFeatureShop]) => site !== null && hasFeatureShop),
-        map(([site]) => site),
-        distinct((site) => site),
-        switchMap((site) =>
-          this.stateService.getInitialState(site, 'settings').pipe(
-            take(1),
-            map((settings) => ({ site, settings })),
-          ),
+        map(([site, , action]) => ({
+          site,
+          isSwapSitesContentsAction: action !== null,
+        })),
+        distinct(({ site, isSwapSitesContentsAction }) =>
+          isSwapSitesContentsAction ? this.counter++ : site,
         ),
+        switchMap(({ site, isSwapSitesContentsAction }) =>
+          this.stateService
+            .getInitialState(site, 'settings', isSwapSitesContentsAction)
+            .pipe(
+              take(1),
+              map((settings) => ({ site, settings })),
+            ),
+        ),
+        takeUntilDestroyed(this.destroyRef),
       )
       .subscribe(({ site, settings }) => {
         const newState: { [k: string]: any } = {};
@@ -220,7 +240,7 @@ export class ShopSettingsState implements NgxsOnInit {
   }
 
   @Action(ResetShopSettingsAction)
-  resetProducts({ setState }: StateContext<ShopSettingsModel>) {
+  resetShopSettings({ setState }: StateContext<ShopSettingsModel>) {
     setState(defaultState);
   }
 }

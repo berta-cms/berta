@@ -36,6 +36,11 @@ export class RenameSiteTemplateSettingsSitenameAction {
   ) {}
 }
 
+export class SwapContentsSitesTemplateSettingsAction {
+  static readonly type = 'SITE_TEMPLATE_SETTINGS:SWAP_SITE_CONTENTS';
+  constructor(public payload: { siteSlugFrom: string; siteSlugTo: string }) {}
+}
+
 export class DeleteSiteTemplateSettingsAction {
   static readonly type = 'SITE_TEMPLATE_SETTINGS:DELETE';
   constructor(public siteName: string) {}

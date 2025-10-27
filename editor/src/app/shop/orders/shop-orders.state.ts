@@ -1,3 +1,4 @@
+import { startWith } from 'rxjs';
 import { take, filter, switchMap, distinct, map } from 'rxjs/operators';
 import {
   State,
@@ -6,6 +7,8 @@ import {
   Selector,
   Action,
   Store,
+  Actions,
+  ofActionSuccessful,
 } from '@ngxs/store';
 import { ShopStateService } from '../shop-state.service';
 import { AppState } from '../../app-state/app.state';
@@ -15,7 +18,10 @@ import {
   ResetShopOrdersAction,
   InitShopOrdersAction,
 } from './shop-orders.actions';
-import { Injectable } from '@angular/core';
+import { DestroyRef, inject, Injectable } from '@angular/core';
+import { combineLatest } from 'rxjs';
+import { SwapContentsSitesAction } from 'src/app/sites/sites-state/sites.actions';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 interface ShopOrdersModel {
   [site: string]: any[];
@@ -34,23 +40,41 @@ export class ShopOrdersState implements NgxsOnInit {
     return state[site];
   }
 
+  private destroyRef = inject(DestroyRef);
+  private counter = 0;
+
   constructor(
     private store$: Store,
     private stateService: ShopStateService,
+    private actions$: Actions,
   ) {}
 
   ngxsOnInit({ dispatch }: StateContext<ShopOrdersModel>) {
-    this.store$
-      .select(AppState.getSite)
+    combineLatest([
+      this.store$.select(AppState.getSite),
+      this.actions$.pipe(
+        ofActionSuccessful(SwapContentsSitesAction),
+        startWith(null), // Emit initial value so combineLatest starts immediately
+      ),
+    ])
       .pipe(
-        filter((site) => site !== null),
-        distinct((site) => site),
-        switchMap((site) =>
-          this.stateService.getInitialState(site, 'orders').pipe(
-            take(1),
-            map((orders) => ({ site, orders })),
-          ),
+        filter(([site]) => site !== null),
+        map(([site, action]) => ({
+          site,
+          isSwapSitesContentsAction: action !== null,
+        })),
+        distinct(({ site, isSwapSitesContentsAction }) =>
+          isSwapSitesContentsAction ? this.counter++ : site,
         ),
+        switchMap(({ site, isSwapSitesContentsAction }) =>
+          this.stateService
+            .getInitialState(site, 'orders', isSwapSitesContentsAction)
+            .pipe(
+              take(1),
+              map((orders) => ({ site, orders })),
+            ),
+        ),
+        takeUntilDestroyed(this.destroyRef),
       )
       .subscribe(({ site, orders }) => {
         dispatch(new InitShopOrdersAction({ [site]: orders[site] }));

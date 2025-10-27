@@ -39,6 +39,7 @@ import {
   AddSiteSectionBackgroundFileAction,
   UpdateSectionBackgroundFileAction,
   UpdateSiteSectionByPathAction,
+  SwapContentsSitesSectionsAction,
 } from './site-sections.actions';
 import {
   DeleteSectionTagsAction,
@@ -624,6 +625,24 @@ export class SiteSectionsState implements NgxsOnInit {
           return section;
         }
         return { ...section, ...{ site_name: action.siteName } };
+      }),
+    );
+  }
+
+  @Action(SwapContentsSitesSectionsAction)
+  swapContentsSitesSections(
+    { getState, setState }: StateContext<SiteSectionStateModel[]>,
+    action: SwapContentsSitesSectionsAction,
+  ) {
+    const sections = getState();
+    setState(
+      sections.map((section) => {
+        if (section.site_name === action.payload.siteSlugFrom) {
+          return { ...section, site_name: action.payload.siteSlugTo };
+        } else if (section.site_name === action.payload.siteSlugTo) {
+          return { ...section, site_name: action.payload.siteSlugFrom };
+        }
+        return section;
       }),
     );
   }

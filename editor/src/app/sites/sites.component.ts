@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { Store, Select } from '@ngxs/store';
+import { Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { take, map, switchMap } from 'rxjs/operators';
 import { SiteStateModel } from './sites-state/site-state.model';
@@ -10,15 +10,17 @@ import {
   CreateSiteAction,
   ReOrderSitesAction,
 } from './sites-state/sites.actions';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'berta-sites',
   template: `
     <div cdkDropList (cdkDropListDropped)="onDrop($event)">
-      @for (site of sitesList; track site) {
+      @for (site of sitesList; track site.name) {
         <berta-site
           cdkDrag
           [site]="site"
+          [sites]="sites$ | async"
           (inputFocus)="updateComponentFocus($event)"
         ></berta-site>
       }
@@ -30,16 +32,20 @@ import {
   standalone: false,
 })
 export class SitesComponent implements OnInit {
-  @Select('sites') public sites$: Observable<SiteStateModel[]>;
+  destroyRef: DestroyRef;
+  sites$: Observable<SiteStateModel[]>;
   sitesList: SiteStateModel[];
 
   constructor(
     private store: Store,
     private router: Router,
-  ) {}
+  ) {
+    this.destroyRef = inject(DestroyRef);
+    this.sites$ = this.store.select((state) => state.sites);
+  }
 
   ngOnInit() {
-    this.sites$.subscribe((sites) => {
+    this.sites$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((sites) => {
       this.sitesList = [...sites];
     });
   }
@@ -49,8 +55,7 @@ export class SitesComponent implements OnInit {
   }
 
   createSite() {
-    this.store
-      .select((state) => state.sites)
+    this.sites$
       .pipe(
         take(1),
         map((sites: SiteStateModel[]) => {

@@ -1,8 +1,15 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Input,
+  Output,
+  EventEmitter,
+  inject,
+} from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { take, filter, switchMap, map, mergeMap } from 'rxjs/operators';
-import { Store, Select } from '@ngxs/store';
+import { Store } from '@ngxs/store';
 import { PopupService } from '../popup/popup.service';
 import { SiteStateModel } from './sites-state/site-state.model';
 import {
@@ -10,16 +17,19 @@ import {
   CloneSiteAction,
   UpdateSiteAction,
   RenameSiteAction,
+  SwapContentsSitesAction,
 } from './sites-state/sites.actions';
-import { SitesState } from './sites-state/sites.state';
 import { AppStateModel } from '../app-state/app-state.interface';
+import { Dialog } from '@angular/cdk/dialog';
+import { SitesSwapContentsComponent } from './sites-swap-contents.component';
+import { AppState } from '../app-state/app.state';
 
 @Component({
   selector: 'berta-site',
   template: `
     <div
       class="setting-group"
-      [class.active]="(currentSite$ | async).site == site.name"
+      [class.active]="(currentSiteSlug$ | async) == site.name"
     >
       <h3>
         <div class="control-line">
@@ -29,6 +39,7 @@ import { AppStateModel } from '../app-state/app-state.interface';
             (update)="updateField('title', $event)"
           ></berta-inline-text-input>
           <div class="expand"></div>
+
           @if (!modificationDisabled) {
             <button
               [attr.title]="
@@ -46,9 +57,20 @@ import { AppStateModel } from '../app-state/app-state.interface';
               ></berta-icon-publish>
             </button>
           }
+
           <button title="copy" (click)="cloneSite()">
             <bt-icon-clone></bt-icon-clone>
           </button>
+
+          @if (sites.length > 1) {
+            <button
+              title="swap content between other site"
+              (click)="swapContentsBetweenOtherSite()"
+            >
+              <bt-icon-switch />
+            </button>
+          }
+
           @if (!modificationDisabled) {
             <button title="delete" class="delete" (click)="deleteSite()">
               <bt-icon-delete></bt-icon-delete>
@@ -95,10 +117,12 @@ import { AppStateModel } from '../app-state/app-state.interface';
 })
 export class SiteComponent implements OnInit {
   @Input('site') site: SiteStateModel;
+  @Input('sites') sites: SiteStateModel[];
 
   @Output() inputFocus = new EventEmitter();
 
-  @Select('app') public currentSite$: Observable<AppStateModel>;
+  currentSiteSlug$: Observable<AppStateModel['site']>;
+  dialog = inject(Dialog);
 
   hostname: string;
   modificationDisabled: null | true = null;
@@ -108,7 +132,9 @@ export class SiteComponent implements OnInit {
     private route: ActivatedRoute,
     private store: Store,
     private popupService: PopupService,
-  ) {}
+  ) {
+    this.currentSiteSlug$ = this.store.select(AppState.getSite);
+  }
 
   ngOnInit() {
     this.hostname = location.hostname;
@@ -173,6 +199,48 @@ export class SiteComponent implements OnInit {
         }
         this.router.navigate([], { queryParams: { site: newSite.name } });
       });
+  }
+
+  swapContentsBetweenOtherSite() {
+    const availableSites = this.sites.filter((s) => s.name !== this.site.name);
+    const dialogRef = this.dialog.open<string>(SitesSwapContentsComponent, {
+      data: {
+        currentSite: this.site,
+        sites: availableSites,
+        selectedSiteSlug: availableSites[0].name,
+      },
+    });
+
+    dialogRef.closed.subscribe((selectedSiteSlug) => {
+      if (selectedSiteSlug === undefined) {
+        return;
+      }
+
+      this.store
+        .dispatch(
+          new SwapContentsSitesAction({
+            siteSlugFrom: this.site.name,
+            siteSlugTo: selectedSiteSlug,
+          }),
+        )
+        .subscribe({
+          next: () => {
+            this.router.navigate(['/multisite'], {
+              queryParams: { site: this.site.name },
+            });
+          },
+          error: (error) => {
+            console.error(error);
+            this.popupService.showPopup({
+              type: 'error',
+              content:
+                'Failed to swap contents between sites. Please try again.',
+              showOverlay: true,
+              actions: [{ label: 'OK' }],
+            });
+          },
+        });
+    });
   }
 
   deleteSite() {
