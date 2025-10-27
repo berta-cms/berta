@@ -429,7 +429,7 @@ export class ShopRegionalCostsState implements NgxsOnInit {
   }
 
   @Action(ResetShopRegionalCostsAction)
-  resetProducts({ setState }: StateContext<ShopRegionalCostsModel>) {
+  resetShopRegionalCosts({ setState }: StateContext<ShopRegionalCostsModel>) {
     setState(defaultState);
   }
 }
