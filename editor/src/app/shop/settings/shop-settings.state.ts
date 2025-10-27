@@ -7,7 +7,6 @@ import {
   switchMap,
   map,
   distinct,
-  startWith,
 } from 'rxjs/operators';
 import {
   State,
@@ -34,7 +33,7 @@ import {
 import { AppStateService } from '../../app-state/app-state.service';
 import { ShopState } from '../shop.state';
 import { DestroyRef, inject, Injectable } from '@angular/core';
-import { combineLatest } from 'rxjs';
+import { combineLatest, startWith } from 'rxjs';
 import { UserState } from 'src/app/user/user.state';
 import { SwapContentsSitesAction } from 'src/app/sites/sites-state/sites.actions';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';

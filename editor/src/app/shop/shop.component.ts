@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable, combineLatest } from 'rxjs';
-import { map, mergeMap, startWith } from 'rxjs/operators';
+import { Observable, combineLatest, startWith } from 'rxjs';
+import { map, mergeMap } from 'rxjs/operators';
 import { Store } from '@ngxs/store';
 
 import { splitCamel, camel2Words, uCFirst } from '../shared/helpers';

@@ -1,11 +1,5 @@
-import {
-  take,
-  filter,
-  switchMap,
-  distinct,
-  map,
-  startWith,
-} from 'rxjs/operators';
+import { startWith } from 'rxjs';
+import { take, filter, switchMap, distinct, map } from 'rxjs/operators';
 import {
   State,
   StateContext,
