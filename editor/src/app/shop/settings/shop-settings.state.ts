@@ -34,7 +34,7 @@ import {
 import { AppStateService } from '../../app-state/app-state.service';
 import { ShopState } from '../shop.state';
 import { DestroyRef, inject, Injectable } from '@angular/core';
-import { combineLatest, Subject } from 'rxjs';
+import { combineLatest } from 'rxjs';
 import { UserState } from 'src/app/user/user.state';
 import { SwapContentsSitesAction } from 'src/app/sites/sites-state/sites.actions';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
