@@ -58,7 +58,7 @@ export class ShopOrdersState implements NgxsOnInit {
       ),
     ])
       .pipe(
-        filter((site) => site !== null),
+        filter(([site]) => site !== null),
         map(([site, action]) => ({
           site,
           isSwapSitesContentsAction: action !== null,
