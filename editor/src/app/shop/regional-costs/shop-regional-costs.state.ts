@@ -6,6 +6,7 @@ import {
   switchMap,
   distinct,
   map,
+  startWith,
 } from 'rxjs/operators';
 import { HttpErrorResponse } from '@angular/common/http';
 import {
@@ -15,6 +16,8 @@ import {
   Selector,
   Action,
   Store,
+  Actions,
+  ofActionSuccessful,
 } from '@ngxs/store';
 
 import { ShopStateService } from '../shop-state.service';
@@ -34,8 +37,10 @@ import {
 import { ShopState } from '../shop.state';
 import { AppStateService } from '../../app-state/app-state.service';
 import { UserState } from '../../user/user.state';
-import { Injectable } from '@angular/core';
+import { DestroyRef, inject, Injectable } from '@angular/core';
 import { combineLatest } from 'rxjs';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { SwapContentsSitesAction } from 'src/app/sites/sites-state/sites.actions';
 
 interface ShopRegion {
   id: number;
@@ -70,27 +75,43 @@ export class ShopRegionalCostsState implements NgxsOnInit {
     return state[site];
   }
 
+  private destroyRef = inject(DestroyRef);
+  private counter = 0;
+
   constructor(
     private store$: Store,
     private appStateService: AppStateService,
     private stateService: ShopStateService,
+    private actions$: Actions,
   ) {}
 
   ngxsOnInit({ dispatch }: StateContext<ShopRegionalCostsModel>) {
     combineLatest([
       this.store$.select(AppState.getSite),
       this.store$.select(UserState.hasFeatureShop),
+      this.actions$.pipe(
+        ofActionSuccessful(SwapContentsSitesAction),
+        startWith(null), // Emit initial value so combineLatest starts immediately
+      ),
     ])
       .pipe(
         filter(([site, hasFeatureShop]) => site !== null && hasFeatureShop),
-        map(([site]) => site),
-        distinct((site) => site),
-        switchMap((site) =>
-          this.stateService.getInitialState(site, 'regionalCosts').pipe(
-            take(1),
-            map((regionalCosts) => ({ site, regionalCosts })),
-          ),
+        map(([site, , action]) => ({
+          site,
+          isSwapSitesContentsAction: action !== null,
+        })),
+        distinct(({ site, isSwapSitesContentsAction }) =>
+          isSwapSitesContentsAction ? this.counter++ : site,
         ),
+        switchMap(({ site, isSwapSitesContentsAction }) =>
+          this.stateService
+            .getInitialState(site, 'regionalCosts', isSwapSitesContentsAction)
+            .pipe(
+              take(1),
+              map((regionalCosts) => ({ site, regionalCosts })),
+            ),
+        ),
+        takeUntilDestroyed(this.destroyRef),
       )
       .subscribe(({ site, regionalCosts }) => {
         dispatch(
