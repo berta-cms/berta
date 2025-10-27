@@ -113,9 +113,6 @@ export class ShopSettingsState implements NgxsOnInit {
           site,
           isSwapSitesContentsAction: action !== null,
         })),
-        tap(() => {
-          console.log('>>>', this.counter);
-        }),
         distinct(({ site, isSwapSitesContentsAction }) =>
           isSwapSitesContentsAction ? this.counter++ : site,
         ),
