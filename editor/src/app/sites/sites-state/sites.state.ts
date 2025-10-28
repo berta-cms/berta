@@ -148,6 +148,7 @@ export class SitesState implements NgxsOnInit {
     const path =
       'site/' + action.site.order + '/' + action.field.split('.').join('/');
     const data = {
+      site: action.site.name,
       path: path,
       value: action.value,
     };
@@ -161,6 +162,13 @@ export class SitesState implements NgxsOnInit {
           setState(
             currentState.map((site) => {
               if (site.name === action.site.name) {
+                if (action.field === 'name') {
+                  return {
+                    ...site,
+                    name: response.value,
+                    mediaUrl: response.mediaUrl,
+                  };
+                }
                 return set(action.field, response.value, site);
               }
               return site;
