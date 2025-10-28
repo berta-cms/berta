@@ -66,8 +66,8 @@ class SitesController extends Controller
 
     public function update(Request $request)
     {
-        $sites = new SitesDataService;
         $json = $request->json()->all();
+        $sites = new SitesDataService($json['site']);
 
         $res = $sites->saveValueByPath($json['path'], $json['value']);
         // @@@:TODO: Replace this with something sensible, when migration to redux is done

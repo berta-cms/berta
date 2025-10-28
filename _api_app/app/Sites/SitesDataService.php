@@ -256,6 +256,11 @@ class SitesDataService extends Storage
                 return $ret;
             }
 
+            $ret['mediaUrl'] = str_replace(
+                '/-sites/' . $site_name . '/',
+                '/-sites/' . $value . '/',
+                $this->MEDIA_URL
+            );
             $ret['value'] = $value;
         }
 
