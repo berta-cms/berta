@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable, combineLatest } from 'rxjs';
-import { Select, Store } from '@ngxs/store';
+import { Store } from '@ngxs/store';
 import type { NgsgOrderChange } from 'ng-sortgrid';
 import { Animations } from '../../shared/animations';
 import {
@@ -428,15 +428,14 @@ import { SiteSettingsState } from '../settings/site-settings.state';
   standalone: false,
 })
 export class EntryGalleryEditorComponent implements OnInit {
-  @Select(SitesState.getCurrentSite)
-  currentSite$: Observable<SiteStateModel>;
+  private readonly currentSite$: Observable<SiteStateModel>;
   currentSite: SiteStateModel;
   currentSection: SiteSectionStateModel;
   currentEntry: SectionEntry;
   templateName: string;
   selectedFile: SectionEntryGalleryFile;
-  fileSettingsIsOpen = true;
-  gallerySettingsIsOpen = true;
+  fileSettingsIsOpen: boolean = true;
+  gallerySettingsIsOpen: boolean = true;
   uploadFilesErrors: string[] = [];
 
   constructor(
@@ -444,7 +443,9 @@ export class EntryGalleryEditorComponent implements OnInit {
     private route: ActivatedRoute,
     private store: Store,
     private popupService: PopupService,
-  ) {}
+  ) {
+    this.currentSite$ = this.store.select(SitesState.getCurrentSite);
+  }
 
   ngOnInit() {
     this.route.paramMap

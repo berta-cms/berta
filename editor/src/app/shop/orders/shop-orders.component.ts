@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { Select } from '@ngxs/store';
+import { Store } from '@ngxs/store';
+import { Observable } from 'rxjs';
 
 import { stringToCurrency } from '../../shared/helpers';
 import { ShopSettingsState } from '../settings/shop-settings.state';
@@ -128,8 +129,13 @@ import { ShopOrdersState } from './shop-orders.state';
   standalone: false,
 })
 export class ShopOrdersComponent {
-  @Select(ShopOrdersState.getCurrentSiteOrders) orders$;
-  @Select(ShopSettingsState.getCurrentCurrency) currency$;
+  orders$: Observable<any[]>;
+  currency$: Observable<string>;
+
+  constructor(private store: Store) {
+    this.orders$ = this.store.select(ShopOrdersState.getCurrentSiteOrders);
+    this.currency$ = this.store.select(ShopSettingsState.getCurrentCurrency);
+  }
 
   stringToCurrency(price) {
     return stringToCurrency(price);

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { Observable } from 'rxjs';
-import { Select, Store } from '@ngxs/store';
+import { Store } from '@ngxs/store';
 import { Animations } from '../../shared/animations';
 import {
   SectionEntry,
@@ -124,7 +124,7 @@ import { SitesSharedModule } from '../shared/sites-shared.module';
   animations: [Animations.slideToggle],
 })
 export class EntryGalleryImageEditorComponent implements OnInit {
-  @Select(SitesState.getCurrentSite) currentSite$: Observable<SiteStateModel>;
+  currentSite$: Observable<SiteStateModel>;
   site: SiteStateModel;
   sectionName: SiteSectionStateModel['name'];
   entryId: SectionEntry['id'];
@@ -144,6 +144,7 @@ export class EntryGalleryImageEditorComponent implements OnInit {
     private route: ActivatedRoute,
     private http: HttpClient,
   ) {
+    this.currentSite$ = this.store.select(SitesState.getCurrentSite);
     this.position = { x1: 0, y1: 0, x2: 0, y2: 0 };
   }
 

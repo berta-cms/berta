@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivationEnd } from '@angular/router';
 import { Observable } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { Store, Select } from '@ngxs/store';
+import { Store } from '@ngxs/store';
 
 import { AppState } from '../app-state/app.state';
 
@@ -51,14 +51,15 @@ import { AppState } from '../app-state/app.state';
   standalone: false,
 })
 export class PreviewToggleComponent implements OnInit {
-  @Select(AppState.getLastRoute) lastRoute$: Observable<string>;
-
+  lastRoute$: Observable<string>;
   isPreviewActive = true;
 
   constructor(
     private store: Store,
     private router: Router,
-  ) {}
+  ) {
+    this.lastRoute$ = this.store.select(AppState.getLastRoute);
+  }
 
   ngOnInit() {
     this.router.events

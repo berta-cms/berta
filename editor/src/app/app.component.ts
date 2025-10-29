@@ -3,7 +3,7 @@ import { Router, NavigationEnd } from '@angular/router';
 
 import { Subscription, Observable } from 'rxjs';
 import { take, switchMap, mergeMap, filter, map, tap } from 'rxjs/operators';
-import { Store, Select, Actions, ofActionSuccessful } from '@ngxs/store';
+import { Store, Actions, ofActionSuccessful } from '@ngxs/store';
 
 import { AppHideOverlay, AppShowOverlay } from './app-state/app.actions';
 import { AppState } from './app-state/app.state';
@@ -141,23 +141,23 @@ import { AppStateService } from './app-state/app-state.service';
   standalone: false,
 })
 export class AppComponent implements OnInit, OnDestroy {
-  title = 'berta';
+  readonly title = 'berta';
   routeIsRoot = true;
   isSidebarFullscreen = false;
   isSidebarFullWidth = false;
-  sidebarFullscreenRoutes = ['/themes'];
-  sidebarFullWidthRoutes = ['/media', '/background-gallery'];
+  readonly sidebarFullscreenRoutes = ['/themes'];
+  readonly sidebarFullWidthRoutes = ['/media', '/background-gallery'];
 
-  @Select(UserState) user$: Observable<UserStateModel>;
-  @Select(AppState.getShowOverlay) showOverlay$;
-  @Select(AppState.getInputFocus) inputFocus$: Observable<boolean>;
-  @Select(UserState.isLoggedIn) isLoggedIn$;
-  @Select(AppState.isSetup) isSetup$: Observable<boolean>;
+  user$: Observable<UserStateModel>;
+  showOverlay$: Observable<boolean>;
+  inputFocus$: Observable<boolean>;
+  isLoggedIn$: Observable<boolean>;
+  isSetup$: Observable<boolean>;
 
   private loginSub: Subscription;
   private logoutSub: Subscription;
-  private currentRouteUrl: string;
-  private previousRouteUrl: string;
+  private currentRouteUrl: string = '';
+  private previousRouteUrl: string = '';
 
   constructor(
     private router: Router,
@@ -165,7 +165,13 @@ export class AppComponent implements OnInit, OnDestroy {
     private _ngZone: NgZone,
     private stateService: AppStateService,
     private actions$: Actions,
-  ) {}
+  ) {
+    this.user$ = this.store.select((state) => state.user);
+    this.showOverlay$ = this.store.select(AppState.getShowOverlay);
+    this.inputFocus$ = this.store.select(AppState.getInputFocus);
+    this.isLoggedIn$ = this.store.select(UserState.isLoggedIn);
+    this.isSetup$ = this.store.select(AppState.isSetup);
+  }
 
   ngOnInit() {
     this.currentRouteUrl = this.router.url;

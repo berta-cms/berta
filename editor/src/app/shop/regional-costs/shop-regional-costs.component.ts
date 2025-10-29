@@ -1,11 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
-import { Select, Store } from '@ngxs/store';
+import { Store } from '@ngxs/store';
 
 import { PopupService } from '../../popup/popup.service';
 import { ShopSettingsState } from '../settings/shop-settings.state';
-import { ShopRegionalCostsState } from './shop-regional-costs.state';
+import {
+  ShopRegion,
+  ShopRegionalCostsState,
+} from './shop-regional-costs.state';
 import { UpdateInputFocus } from '../../app-state/app.actions';
 import {
   UpdateShopRegionAction,
@@ -159,7 +162,7 @@ import {
   standalone: false,
 })
 export class ShopRegionalCostsComponent implements OnInit {
-  @Select(ShopRegionalCostsState.getCurrentSiteRegionalCosts) regionalCosts$;
+  regionalCosts$: Observable<ShopRegion[]>;
   weightLabel$: Observable<string>;
   weightTitle$: Observable<string>;
   priceLabel$: Observable<string>;
@@ -178,7 +181,11 @@ export class ShopRegionalCostsComponent implements OnInit {
   constructor(
     private store: Store,
     private popupService: PopupService,
-  ) {}
+  ) {
+    this.regionalCosts$ = this.store.select(
+      ShopRegionalCostsState.getCurrentSiteRegionalCosts,
+    );
+  }
 
   ngOnInit() {
     this.weightLabel$ = this.store

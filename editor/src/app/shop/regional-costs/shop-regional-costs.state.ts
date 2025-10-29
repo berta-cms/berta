@@ -41,20 +41,20 @@ import { combineLatest, startWith } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { SwapContentsSitesAction } from 'src/app/sites/sites-state/sites.actions';
 
-interface ShopRegion {
+export interface ShopRegion {
   id: number;
   name: string;
   vat: number;
   costs: ShopRegionalCost[];
 }
 
-interface ShopRegionalCost {
+export interface ShopRegionalCost {
   id: number;
   weight: number;
   price: number;
 }
 
-interface ShopRegionalCostsModel {
+export interface ShopRegionalCostsModel {
   [site: string]: ShopRegion[];
 }
 
