@@ -6,18 +6,13 @@ import { toHtmlAttributes } from '../../../../../app/shared/helpers';
   providedIn: 'root',
 })
 export class GallerySlideshowRenderService extends GalleryRenderService {
-  getGalleryClassList(
+  getSlideshowGalleryClassList(
     galleryItemsData,
     galleryType,
     entry,
     siteSettings,
   ): string[] | string {
-    let classes = super.getGalleryClassList(
-      galleryItemsData,
-      galleryType,
-      entry,
-      siteSettings,
-    );
+    let classes = super.getGalleryClassList(galleryItemsData, galleryType);
 
     if (galleryItemsData && galleryItemsData.length && entry) {
       const gallerySlideNumbersVisible =
@@ -66,8 +61,7 @@ export class GallerySlideshowRenderService extends GalleryRenderService {
     return galleryItems[0].width;
   }
 
-  getViewData(
-    appState,
+  getSlideshowViewData(
     siteSlug,
     entry,
     siteSettings,
@@ -94,14 +88,7 @@ export class GallerySlideshowRenderService extends GalleryRenderService {
         : siteTemplateSettings.entryLayout.defaultGalleryType;
 
     const data = super.getViewData(
-      appState,
-      siteSlug,
       entry,
-      siteSettings,
-      templateName,
-      siteTemplateSettings,
-      isLoopAvailable,
-      asRowGallery,
       galleryItemsData,
       galleryItems,
       galleryType,
@@ -110,7 +97,7 @@ export class GallerySlideshowRenderService extends GalleryRenderService {
     return {
       ...data,
       ...{
-        galleryClassList: this.getGalleryClassList(
+        galleryClassList: this.getSlideshowGalleryClassList(
           galleryItemsData,
           galleryType,
           entry,
@@ -142,7 +129,6 @@ export class GallerySlideshowRenderService extends GalleryRenderService {
   }
 
   render(
-    appState,
     siteSlug,
     siteSettings,
     templateName,
@@ -167,8 +153,7 @@ export class GallerySlideshowRenderService extends GalleryRenderService {
       }
     }
 
-    const viewData = this.getViewData(
-      appState,
+    const viewData = this.getSlideshowViewData(
       siteSlug,
       entry,
       siteSettings,

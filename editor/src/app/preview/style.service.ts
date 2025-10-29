@@ -239,8 +239,8 @@ export class StyleService {
       });
     }
 
-    let fontName: string, fontStyle: string;
-    [fontName, fontStyle] = (googleFontSetting.value as string).split(':');
+    let fontName: string;
+    [fontName] = (googleFontSetting.value as string).split(':');
 
     WebFont.load({
       google: {

@@ -2,11 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { PopupService } from './popup.service';
 import { PopupState, PopupAction } from './popup.interface';
 
-/*
-TODO:
-- Add ability to show component
-*/
-
 @Component({
   selector: 'berta-popup',
   template: `
@@ -27,7 +22,7 @@ TODO:
                   type="button"
                   [class.bt-primary]="action.type === 'primary'"
                   [class.bt-secondary]="action.type !== 'primary'"
-                  (click)="actionClick(action, $event)"
+                  (click)="actionClick(action)"
                 >
                   {{ action.label }}
                 </button>
@@ -133,7 +128,7 @@ export class PopupComponent implements OnInit {
     this.service.closePopup();
   }
 
-  actionClick(action: PopupAction, event: Event) {
+  actionClick(action: PopupAction) {
     if (action.callback instanceof Function) {
       action.callback(this.service);
     } else {

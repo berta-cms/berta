@@ -90,14 +90,12 @@ export class TemplateRenderService {
     appState,
     siteSlug,
     sections,
-    sectionSlug,
     currentSection: SiteSectionStateModel,
     currentSectionType: string,
     tagSlug,
     entries: SectionEntry[],
     siteSettings,
     siteTemplateSettings,
-    isShopAvailable,
     shopSettings,
     templateName,
     isResponsive,
@@ -197,10 +195,6 @@ export class TemplateRenderService {
           return settings;
         }, {});
 
-    const siteTemplatesConfig = this.store.selectSnapshot(
-      SiteTemplatesState.getCurrentTemplateConfig,
-    );
-
     const siteTemplateSectionTypes = this.store.selectSnapshot(
       SiteTemplatesState.getCurrentTemplateSectionTypes,
     );
@@ -273,14 +267,11 @@ export class TemplateRenderService {
       sectionHead: this.sectionHeadRenderService.render(
         appState,
         siteSlug,
-        sections,
         currentSection,
         currentSectionType,
-        sectionSlug,
         siteSettings,
         templateName,
         siteTemplateSettings,
-        siteTemplatesConfig,
         siteTemplateSectionTypes,
         isShopAvailable,
         shopSettings,
@@ -326,14 +317,12 @@ export class TemplateRenderService {
         appState,
         siteSlug,
         sections,
-        sectionSlug,
         currentSection,
         currentSectionType,
         tagSlug,
         entries,
         siteSettings,
         siteTemplateSettings,
-        isShopAvailable,
         shopSettings,
         templateName,
         isResponsive,

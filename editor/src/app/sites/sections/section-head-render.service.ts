@@ -10,14 +10,11 @@ export class SectionHeadRenderService {
   getViewData(
     appState,
     siteSlug,
-    sections,
     currentSection,
     currentSectionType,
-    sectionSlug,
     siteSettings,
     templateName,
     siteTemplateSettings,
-    siteTemplatesConfig,
     siteTemplateSectionTypes,
     isShopAvailable,
     shopSettings,
@@ -67,7 +64,6 @@ export class SectionHeadRenderService {
         currentSection,
         templateName,
         isShopAvailable,
-        user,
       ),
     };
   }
@@ -180,7 +176,6 @@ export class SectionHeadRenderService {
     currentSection,
     templateName,
     isShopAvailable,
-    user,
   ) {
     const bertaGlobalOptions = {
       templateName: templateName,
@@ -246,14 +241,11 @@ export class SectionHeadRenderService {
   render(
     appState,
     siteSlug,
-    sections,
     currentSection,
     currentSectionType,
-    sectionSlug,
     siteSettings,
     templateName,
     siteTemplateSettings,
-    siteTemplatesConfig,
     siteTemplateSectionTypes,
     isShopAvailable,
     shopSettings,
@@ -264,14 +256,11 @@ export class SectionHeadRenderService {
     const viewData = this.getViewData(
       appState,
       siteSlug,
-      sections,
       currentSection,
       currentSectionType,
-      sectionSlug,
       siteSettings,
       templateName,
       siteTemplateSettings,
-      siteTemplatesConfig,
       siteTemplateSectionTypes,
       isShopAvailable,
       shopSettings,
