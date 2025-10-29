@@ -5,7 +5,6 @@ import { map, mergeMap } from 'rxjs/operators';
 import { Store } from '@ngxs/store';
 
 import { splitCamel, camel2Words, uCFirst } from '../shared/helpers';
-import { Animations } from '../shared/animations';
 import { ShopState } from './shop.state';
 
 @Component({
@@ -38,34 +37,33 @@ import { ShopState } from './shop.state';
             />
           </svg>
         </h3>
-        <div
-          class="settings"
-          [@isExpanded]="currentShopSection === shopSection.urlSegment"
-        >
-          @if (
-            currentShopSection === 'products' &&
-            shopSection.urlSegment === currentShopSection
-          ) {
-            <berta-shop-products> </berta-shop-products>
-          }
-          @if (
-            currentShopSection === 'orders' &&
-            shopSection.urlSegment === currentShopSection
-          ) {
-            <berta-shop-orders> </berta-shop-orders>
-          }
-          @if (
-            currentShopSection === 'regional-costs' &&
-            shopSection.urlSegment === currentShopSection
-          ) {
-            <berta-shop-regional-costs> </berta-shop-regional-costs>
-          }
-          @if (
-            currentShopSection === 'settings' &&
-            shopSection.urlSegment === currentShopSection
-          ) {
-            <berta-shop-settings> </berta-shop-settings>
-          }
+        <div class="settings">
+          <div>
+            @if (
+              currentShopSection === 'products' &&
+              shopSection.urlSegment === currentShopSection
+            ) {
+              <berta-shop-products></berta-shop-products>
+            }
+            @if (
+              currentShopSection === 'orders' &&
+              shopSection.urlSegment === currentShopSection
+            ) {
+              <berta-shop-orders></berta-shop-orders>
+            }
+            @if (
+              currentShopSection === 'regional-costs' &&
+              shopSection.urlSegment === currentShopSection
+            ) {
+              <berta-shop-regional-costs></berta-shop-regional-costs>
+            }
+            @if (
+              currentShopSection === 'settings' &&
+              shopSection.urlSegment === currentShopSection
+            ) {
+              <berta-shop-settings></berta-shop-settings>
+            }
+          </div>
         </div>
       </div>
     }
@@ -77,7 +75,6 @@ import { ShopState } from './shop.state';
       }
     `,
   ],
-  animations: [Animations.slideToggle],
   standalone: false,
 })
 export class ShopComponent implements OnInit {

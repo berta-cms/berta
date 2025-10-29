@@ -4,7 +4,6 @@ import { Observable, combineLatest } from 'rxjs';
 import { map, filter, scan, take } from 'rxjs/operators';
 import { Store } from '@ngxs/store';
 import { splitCamel, uCFirst } from '../../shared/helpers';
-import { Animations } from '../../shared/animations';
 import { SiteSettingsState } from '../settings/site-settings.state';
 import { SiteTemplateSettingsState } from './site-template-settings.state';
 import { SiteTemplatesState } from './site-templates.state';
@@ -56,30 +55,28 @@ import { AppState } from '../../app-state/app.state';
             />
           </svg>
         </h3>
-        <div
-          class="settings"
-          [@isExpanded]="camelifySlug(currentGroup) === settingGroup.slug"
-        >
-          @for (setting of settingGroup.settings; track setting) {
-            <berta-setting
-              [templateSlug]="settingGroup.templateSlug"
-              [setting]="setting.setting"
-              [config]="setting.config"
-              [disabled]="
-                settingUpdate[settingGroup.slug + ':' + setting.setting.slug]
-              "
-              [error]="
-                settingError[settingGroup.slug + ':' + setting.setting.slug]
-              "
-              (update)="updateSetting(settingGroup.slug, $event)"
-              (emitAction)="emitAction($event)"
-            ></berta-setting>
-          }
+        <div class="settings">
+          <div>
+            @for (setting of settingGroup.settings; track setting) {
+              <berta-setting
+                [templateSlug]="settingGroup.templateSlug"
+                [setting]="setting.setting"
+                [config]="setting.config"
+                [disabled]="
+                  settingUpdate[settingGroup.slug + ':' + setting.setting.slug]
+                "
+                [error]="
+                  settingError[settingGroup.slug + ':' + setting.setting.slug]
+                "
+                (update)="updateSetting(settingGroup.slug, $event)"
+                (emitAction)="emitAction($event)"
+              ></berta-setting>
+            }
+          </div>
         </div>
       </div>
     }
   `,
-  animations: [Animations.slideToggle],
   standalone: false,
 })
 export class SiteTemplateSettingsComponent implements OnInit {

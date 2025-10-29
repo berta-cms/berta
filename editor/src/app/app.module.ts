@@ -5,7 +5,6 @@ import {
   withInterceptorsFromDi,
 } from '@angular/common/http';
 import { APP_BASE_HREF } from '@angular/common';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { NgxsModule } from '@ngxs/store';
 import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
@@ -59,7 +58,6 @@ import { sentryInitFactory } from './sentry/sentry-init.factory';
   bootstrap: [AppComponent],
   imports: [
     BrowserModule,
-    BrowserAnimationsModule,
     AppRoutingModule,
     SharedModule,
     NgxsModule.forRoot(

@@ -172,7 +172,13 @@ aside {
   }
 
   > .settings {
-    overflow: hidden;
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.25s ease;
+
+    > div {
+      overflow: hidden;
+    }
 
     berta-setting,
     .setting {
@@ -269,6 +275,7 @@ aside {
     }
 
     > .settings {
+      grid-template-rows: 1fr;
       border-bottom: 1px solid variables.$grey-10;
     }
   }

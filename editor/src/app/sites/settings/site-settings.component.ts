@@ -5,7 +5,6 @@ import { Store } from '@ngxs/store';
 import { Observable, combineLatest } from 'rxjs';
 import { map, filter, scan, take } from 'rxjs/operators';
 import { splitCamel, uCFirst, getIconFromUrl } from '../../shared/helpers';
-import { Animations } from '../../shared/animations';
 import { UserStateModel } from '../../user/user.state.model';
 import { AppStateModel } from '../../app-state/app-state.interface';
 import { SiteSettingsState } from './site-settings.state';
@@ -59,97 +58,97 @@ import {
             />
           </svg>
         </h3>
-        <div
-          class="settings"
-          [@isExpanded]="camelifySlug(currentGroup) === settingGroup.slug"
-        >
-          @for (setting of settingGroup.settings; track setting) {
-            <div>
-              @if (!setting.config.children) {
-                <berta-setting
-                  [setting]="setting.setting"
-                  [config]="setting.config"
-                  [disabled]="
-                    isDisabled(
-                      settingGroup,
-                      setting.setting,
-                      setting.config,
-                      user$ | async
-                    )
-                  "
-                  [disabledReason]="
-                    disabledReason(
-                      setting.config,
-                      user$ | async,
-                      appState$ | async
-                    )
-                  "
-                  [error]="
-                    settingError[settingGroup.slug + ':' + setting.setting.slug]
-                  "
-                  (update)="updateSetting(settingGroup.slug, $event)"
-                ></berta-setting>
-              }
-              @if (setting.config.children) {
-                <div>
-                  <div class="setting">
-                    <h4>{{ setting.config.title }}</h4>
-                  </div>
-                  @for (
-                    inputFields of setting.children;
-                    track inputFields;
-                    let index = $index
-                  ) {
-                    <berta-setting-row
-                      [inputFields]="inputFields"
-                      (update)="
-                        updateChildren(
+        <div class="settings">
+          <div>
+            @for (setting of settingGroup.settings; track setting) {
+              <div>
+                @if (!setting.config.children) {
+                  <berta-setting
+                    [setting]="setting.setting"
+                    [config]="setting.config"
+                    [disabled]="
+                      isDisabled(
+                        settingGroup,
+                        setting.setting,
+                        setting.config,
+                        user$ | async
+                      )
+                    "
+                    [disabledReason]="
+                      disabledReason(
+                        setting.config,
+                        user$ | async,
+                        appState$ | async
+                      )
+                    "
+                    [error]="
+                      settingError[
+                        settingGroup.slug + ':' + setting.setting.slug
+                      ]
+                    "
+                    (update)="updateSetting(settingGroup.slug, $event)"
+                  ></berta-setting>
+                }
+                @if (setting.config.children) {
+                  <div>
+                    <div class="setting">
+                      <h4>{{ setting.config.title }}</h4>
+                    </div>
+                    @for (
+                      inputFields of setting.children;
+                      track inputFields;
+                      let index = $index
+                    ) {
+                      <berta-setting-row
+                        [inputFields]="inputFields"
+                        (update)="
+                          updateChildren(
+                            settingGroup.slug,
+                            setting.setting.slug,
+                            index,
+                            $event
+                          )
+                        "
+                        (delete)="
+                          deleteChildren(
+                            settingGroup.slug,
+                            setting.setting.slug,
+                            index
+                          )
+                        "
+                      >
+                      </berta-setting-row>
+                    }
+                    <berta-setting-row-add
+                      [config]="setting.config.children"
+                      (add)="
+                        addChildren(
                           settingGroup.slug,
                           setting.setting.slug,
-                          index,
                           $event
                         )
                       "
-                      (delete)="
-                        deleteChildren(
-                          settingGroup.slug,
-                          setting.setting.slug,
-                          index
-                        )
-                      "
                     >
-                    </berta-setting-row>
-                  }
-                  <berta-setting-row-add
-                    [config]="setting.config.children"
-                    (add)="
-                      addChildren(
-                        settingGroup.slug,
-                        setting.setting.slug,
-                        $event
-                      )
-                    "
-                  >
-                  </berta-setting-row-add>
-                  @if (setting.config.description) {
-                    <div class="setting">
-                      <p
-                        class="setting-description"
-                        [innerHTML]="
-                          getSettingDescription(setting.config.description)
-                        "
-                      ></p>
-                    </div>
-                  }
-                </div>
-              }
-            </div>
-          }
+                    </berta-setting-row-add>
+                    @if (setting.config.description) {
+                      <div class="setting">
+                        <p
+                          class="setting-description"
+                          [innerHTML]="
+                            getSettingDescription(setting.config.description)
+                          "
+                        ></p>
+                      </div>
+                    }
+                  </div>
+                }
+              </div>
+            }
+          </div>
         </div>
       </div>
     }
   `,
-  animations: [Animations.slideToggle],
   standalone: false,
 })
 export class SiteSettingsComponent implements OnInit {
