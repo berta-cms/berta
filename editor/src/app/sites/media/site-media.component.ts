@@ -12,7 +12,6 @@ import { SectionEntriesState } from '../sections/entries/entries-state/section-e
 import { ActivatedRoute } from '@angular/router';
 import { SitesState } from '../sites-state/sites.state';
 import { SiteStateModel } from '../sites-state/site-state.model';
-import { SectionEntry } from '../sections/entries/entries-state/section-entries-state.model';
 
 @Component({
   selector: 'berta-site-media',
@@ -71,7 +70,7 @@ import { SectionEntry } from '../sections/entries/entries-state/section-entries-
     <div class="content">
       @for (
         selectedSection of selectedSections;
-        track identifySection($index, selectedSection.section)
+        track selectedSection.section.name
       ) {
         <div>
           <h3>{{ selectedSection.section.title || '...' }}</h3>
@@ -80,10 +79,7 @@ import { SectionEntry } from '../sections/entries/entries-state/section-entries-
               {{ selectedTag['@value'] }}
             </h5>
           }
-          @for (
-            entry of selectedSection.entries;
-            track identifyEntry($index, entry)
-          ) {
+          @for (entry of selectedSection.entries; track entry) {
             <berta-entry-gallery
               [currentSite]="currentSite$ | async"
               [entry]="entry"
@@ -221,14 +217,6 @@ export class SiteMediaComponent implements OnInit, OnDestroy {
             );
         }
       });
-  }
-
-  identifySection(index, item: SiteSectionStateModel) {
-    return item.name;
-  }
-
-  identifyEntry(index, item: SectionEntry) {
-    return item;
   }
 
   ngOnDestroy() {

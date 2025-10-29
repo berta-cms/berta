@@ -1,38 +1,17 @@
 import { Injectable } from '@angular/core';
 
-import { Store, Actions, ofActionSuccessful } from '@ngxs/store';
-import { Subscription, Observable } from 'rxjs';
-import { map, buffer, filter, scan, switchMap, mergeMap } from 'rxjs/operators';
+import { Store } from '@ngxs/store';
+import { Observable } from 'rxjs';
+import { map, switchMap, mergeMap } from 'rxjs/operators';
 
-import { AppState } from '../app-state/app.state';
 import { AppStateService } from '../app-state/app-state.service';
 import { PopupService } from '../popup/popup.service';
-import { RenderService } from '../render/render.service';
 import { AppHideLoading } from '../app-state/app.actions';
 import {
   UpdateSiteSectionFromSyncAction,
-  AddSiteSectionsAction,
-  UpdateSiteSectionAction,
-  RenameSiteSectionAction,
-  DeleteSiteSectionAction,
-  DeleteSiteSectionsAction,
   UpdateSiteSectionBackgroundFromSyncAction,
-  ReOrderSiteSectionsAction,
 } from '../sites/sections/sections-state/site-sections.actions';
-import {
-  UpdateSiteSettingsFromSyncAction,
-  UpdateSiteSettingsAction,
-  AddSiteSettingChildrenAction,
-  UpdateSiteSettingChildrenAction,
-  DeleteSiteSettingChildrenAction,
-} from '../sites/settings/site-settings.actions';
-import { UpdateSiteTemplateSettingsAction } from '../sites/template-settings/site-template-settings.actions';
-import {
-  CreateSiteAction,
-  DeleteSiteAction,
-  UpdateSiteAction,
-  ReOrderSitesAction,
-} from '../sites/sites-state/sites.actions';
+import { UpdateSiteSettingsFromSyncAction } from '../sites/settings/site-settings.actions';
 import {
   UpdateSectionEntryFromSyncAction,
   OrderSectionEntriesFromSyncAction,
@@ -44,7 +23,6 @@ import {
 import { SiteSectionsState } from '../sites/sections/sections-state/site-sections.state';
 import { SectionTagsState } from '../sites/sections/tags/section-tags.state';
 import { OrderSectionTagsFromSyncAction } from '../sites/sections/tags/section-tags.actions';
-import { UpdateShopSettingsAction } from '../shop/settings/shop-settings.actions';
 import { RerenderService } from '../rerender/rerender.service';
 import { SiteSettingsState } from '../sites/settings/site-settings.state';
 
@@ -52,31 +30,9 @@ import { SiteSettingsState } from '../sites/settings/site-settings.state';
   providedIn: 'root',
 })
 export class PreviewService {
-  private iframeReloadSubscription: Subscription;
-  private templateSettingsRequireReload = {
-    pageLayout: [
-      'centered',
-      'centeredWidth',
-      'responsive',
-      'mashUpColumns',
-      'autoResponsive',
-      'centeredContents',
-    ],
-    pageHeading: ['image'],
-    css: ['customCSS'],
-    entryLayout: ['galleryPosition'],
-    firstPage: ['hoverWiggle'],
-    sideBar: ['image'],
-    heading: ['image', 'position'],
-    menu: ['position'],
-    tagsMenu: ['alwaysOpen', 'hidden'],
-  };
-
   constructor(
     private appService: AppStateService,
     private popupService: PopupService,
-    private renderService: RenderService,
-    private actions$: Actions,
     private rerenderService: RerenderService,
     private store: Store,
   ) {}
@@ -468,83 +424,6 @@ export class PreviewService {
       Catch external links and prevent navigating away from iframe
     */
     this.catchExternalLinks(iframe.contentWindow.document);
-
-    /*
-      Reload the preview iframe after settings affecting preview change
-      Because we don't have preview renderer in frontend yet.
-     */
-    this.iframeReloadSubscription = this.actions$
-      .pipe(
-        ofActionSuccessful(
-          ...[
-            CreateSiteAction,
-            UpdateSiteAction,
-            ReOrderSitesAction,
-            DeleteSiteAction,
-            AddSiteSectionsAction,
-            UpdateSiteSectionAction,
-            RenameSiteSectionAction,
-            ReOrderSiteSectionsAction,
-            DeleteSiteSectionAction,
-            DeleteSiteSectionsAction,
-            UpdateSiteSettingsAction,
-            AddSiteSettingChildrenAction,
-            UpdateSiteSettingChildrenAction,
-            DeleteSiteSettingChildrenAction,
-            UpdateSiteTemplateSettingsAction,
-            UpdateShopSettingsAction,
-          ],
-        ),
-        /* Only reload when the overlay gets closed: */
-        buffer(
-          this.store.select(AppState.getShowOverlay).pipe(
-            scan(
-              (
-                [_, prevShowOverlay]: [boolean, boolean],
-                showOverlay: boolean,
-              ) => {
-                return [prevShowOverlay, showOverlay];
-              },
-              [false, false],
-            ),
-            filter(([prev, cur]) => prev !== cur && !cur),
-          ),
-        ),
-        filter((actionsPassed) => {
-          return (
-            actionsPassed.length > 0 &&
-            !actionsPassed.every((action) => {
-              // Only check payload if it exists on the action
-              if (
-                !('payload' in action) ||
-                typeof (action as any).payload !== 'object' ||
-                (action as any).payload === null
-              ) {
-                return false;
-              }
-
-              const slug = Object.keys((action as any).payload)[0];
-              return (
-                action instanceof UpdateSiteTemplateSettingsAction &&
-                !(
-                  this.templateSettingsRequireReload[action.settingGroup] &&
-                  this.templateSettingsRequireReload[
-                    action.settingGroup
-                  ].indexOf(slug) > -1
-                )
-              );
-            })
-          );
-        }),
-      )
-      .subscribe(() => {
-        // iframe.contentWindow.location.reload();
-        this.renderService.startRender(iframe.contentWindow);
-      });
-  }
-
-  disconnectIframeView(iframe: HTMLIFrameElement) {
-    this.iframeReloadSubscription.unsubscribe();
   }
 
   parseSyncUrl(url) {

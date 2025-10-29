@@ -54,7 +54,7 @@ import { SettingModel } from '../shared/interfaces';
         }
         @if (!disableRemove && value) {
           <svg
-            (click)="removeFile($event, fileInput)"
+            (click)="removeFile($event)"
             role="button"
             tabindex="0"
             aria-label="clear"
@@ -124,7 +124,7 @@ export class FileInputComponent implements OnInit {
     return true;
   }
 
-  removeFile($event, fileInput: HTMLInputElement) {
+  removeFile($event: MouseEvent) {
     $event.stopPropagation();
     $event.preventDefault();
 

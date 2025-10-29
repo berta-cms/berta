@@ -137,56 +137,40 @@ export class SectionEntryRenderService {
           appState,
           siteSlug,
           siteSettings,
-          templateName,
           entry,
           siteTemplateSettings,
-          true,
-          false,
         );
         break;
 
       case 'column':
         gallery = this.galleryColumnRenderService.render(
-          appState,
           siteSlug,
           siteSettings,
-          templateName,
           entry,
           siteTemplateSettings,
-          true,
-          false,
         );
         break;
 
       case 'pile':
         gallery = this.galleryPileRenderService.render(
-          appState,
           siteSlug,
           siteSettings,
-          templateName,
           entry,
           siteTemplateSettings,
-          true,
-          false,
         );
         break;
 
       case 'link':
         gallery = this.galleryLinkRenderService.render(
-          appState,
           siteSlug,
           siteSettings,
-          templateName,
           entry,
           siteTemplateSettings,
-          true,
-          false,
         );
         break;
 
       default:
         gallery = this.gallerySlideshowRenderService.render(
-          appState,
           siteSlug,
           siteSettings,
           templateName,

@@ -8,18 +8,8 @@ import { AppStateModel } from '../../../../app-state/app-state.interface';
 export class GalleryRowRenderService extends GalleryRenderService {
   SPACE_BETWEEN_ITEMS = 12;
 
-  getGalleryClassList(
-    galleryItemsData,
-    galleryType,
-    entry,
-    siteSettings,
-  ): string[] | string {
-    let classes = super.getGalleryClassList(
-      galleryItemsData,
-      galleryType,
-      entry,
-      siteSettings,
-    );
+  getGalleryClassList(galleryItemsData, galleryType): string[] | string {
+    let classes = super.getGalleryClassList(galleryItemsData, galleryType);
 
     if (galleryItemsData && galleryItemsData.length === 1) {
       (classes as string[]).push('bt-gallery-has-one-item');
@@ -76,15 +66,12 @@ export class GalleryRowRenderService extends GalleryRenderService {
     };
   }
 
-  getViewData(
+  getRowViewData(
     appState,
     siteSlug,
     entry,
     siteSettings,
-    templateName,
     siteTemplateSettings,
-    isLoopAvailable,
-    asRowGallery,
     galleryItemsData,
     galleryItems,
     galleryType,
@@ -104,14 +91,7 @@ export class GalleryRowRenderService extends GalleryRenderService {
         : siteTemplateSettings.entryLayout.defaultGalleryType;
 
     const data = super.getViewData(
-      appState,
-      siteSlug,
       entry,
-      siteSettings,
-      templateName,
-      siteTemplateSettings,
-      isLoopAvailable,
-      asRowGallery,
       galleryItemsData,
       galleryItems,
       galleryType,
@@ -125,8 +105,6 @@ export class GalleryRowRenderService extends GalleryRenderService {
         galleryClassList: this.getGalleryClassList(
           galleryItemsData,
           galleryType,
-          entry,
-          siteSettings,
         ),
         galleryStyles: this.getGalleryStyles(galleryItems),
         items: galleryItems.slice(0, galleryItemsLimit),
@@ -135,16 +113,7 @@ export class GalleryRowRenderService extends GalleryRenderService {
     };
   }
 
-  render(
-    appState,
-    siteSlug,
-    siteSettings,
-    templateName,
-    entry,
-    siteTemplateSettings,
-    isLoopAvailable,
-    asRowGallery,
-  ) {
+  render(appState, siteSlug, siteSettings, entry, siteTemplateSettings) {
     if (
       !entry.mediaCacheData ||
       !entry.mediaCacheData.file ||
@@ -161,15 +130,12 @@ export class GalleryRowRenderService extends GalleryRenderService {
       }
     }
 
-    const viewData = this.getViewData(
+    const viewData = this.getRowViewData(
       appState,
       siteSlug,
       entry,
       siteSettings,
-      templateName,
       siteTemplateSettings,
-      isLoopAvailable,
-      asRowGallery,
       null,
       null,
       null,

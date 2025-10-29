@@ -244,12 +244,6 @@ export class PreviewComponent implements OnInit {
 
         this.service.loadRerenderService(iframe);
 
-        /* Reload the iframe when the settings change */
-        // this.service.connectIframeReload(iframe);
-        // iframe.contentWindow.onbeforeunload = () => {
-        //   this.service.disconnectIframeView(iframe);
-        // };
-
         const styleElement = iframe.contentDocument.createElement('style');
         iframe.contentDocument.head.appendChild(styleElement);
 

@@ -142,7 +142,7 @@ export class SectionsMenuRenderService {
     const sectionTags = tags ? tags[section.name] || [] : [];
 
     const filteredTags = sectionTags
-      .filter((tag) => {
+      .filter(() => {
         switch (templateName) {
           case 'messy':
             if (siteTemplateSettings.tagsMenu.hidden === 'yes') {

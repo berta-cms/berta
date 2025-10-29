@@ -5,18 +5,8 @@ import { GalleryRenderService } from './gallery-render.service';
   providedIn: 'root',
 })
 export class GalleryColumnRenderService extends GalleryRenderService {
-  getGalleryClassList(
-    galleryItemsData,
-    galleryType,
-    entry,
-    siteSettings,
-  ): string[] | string {
-    let classes = super.getGalleryClassList(
-      galleryItemsData,
-      galleryType,
-      entry,
-      siteSettings,
-    );
+  getGalleryClassList(galleryItemsData, galleryType): string[] | string {
+    let classes = super.getGalleryClassList(galleryItemsData, galleryType);
 
     return (classes as string[]).join(' ');
   }
@@ -31,15 +21,11 @@ export class GalleryColumnRenderService extends GalleryRenderService {
     return `width:${item.width}px;height:${height}px`;
   }
 
-  getViewData(
-    appState,
+  getColumnViewData(
     siteSlug,
     entry,
     siteSettings,
-    templateName,
     siteTemplateSettings,
-    isLoopAvailable,
-    asRowGallery,
     galleryItemsData,
     galleryItems,
     galleryType,
@@ -59,14 +45,7 @@ export class GalleryColumnRenderService extends GalleryRenderService {
         : siteTemplateSettings.entryLayout.defaultGalleryType;
 
     const data = super.getViewData(
-      appState,
-      siteSlug,
       entry,
-      siteSettings,
-      templateName,
-      siteTemplateSettings,
-      isLoopAvailable,
-      asRowGallery,
       galleryItemsData,
       galleryItems,
       galleryType,
@@ -78,8 +57,6 @@ export class GalleryColumnRenderService extends GalleryRenderService {
         galleryClassList: this.getGalleryClassList(
           galleryItemsData,
           galleryType,
-          entry,
-          siteSettings,
         ),
         galleryStyles: this.getGalleryStyles(galleryItems),
         items: galleryItems.slice(0, 1),
@@ -87,16 +64,7 @@ export class GalleryColumnRenderService extends GalleryRenderService {
     };
   }
 
-  render(
-    appState,
-    siteSlug,
-    siteSettings,
-    templateName,
-    entry,
-    siteTemplateSettings,
-    isLoopAvailable,
-    asRowGallery,
-  ) {
+  render(siteSlug, siteSettings, entry, siteTemplateSettings) {
     if (
       !entry.mediaCacheData ||
       !entry.mediaCacheData.file ||
@@ -113,15 +81,11 @@ export class GalleryColumnRenderService extends GalleryRenderService {
       }
     }
 
-    const viewData = this.getViewData(
-      appState,
+    const viewData = this.getColumnViewData(
       siteSlug,
       entry,
       siteSettings,
-      templateName,
       siteTemplateSettings,
-      isLoopAvailable,
-      asRowGallery,
       null,
       null,
       null,

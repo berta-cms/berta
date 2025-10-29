@@ -8,7 +8,6 @@ import {
 import { filter, map, scan, take } from 'rxjs/operators';
 import { Store } from '@ngxs/store';
 import { ShopSettingsState } from './shop-settings.state';
-import { ShopSettingsConfigState } from './shop-settings-config.state';
 import { UpdateShopSettingsAction } from './shop-settings.actions';
 
 @Component({

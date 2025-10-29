@@ -195,7 +195,7 @@ export class SiteSectionsComponent implements OnInit {
 
   createSection() {
     this.store.dispatch(new CreateSectionAction()).subscribe({
-      next: (state) => {
+      next: () => {
         const currentSite = this.store.selectSnapshot(AppState.getSite);
         const createdSection = this.store
           .selectSnapshot((state) => state.siteSections)

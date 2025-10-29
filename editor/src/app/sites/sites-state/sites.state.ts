@@ -76,7 +76,7 @@ export class SitesState implements NgxsOnInit {
     private actions$: Actions,
   ) {}
 
-  ngxsOnInit({ setState, dispatch }: StateContext<SiteStateModel[]>) {
+  ngxsOnInit({ dispatch }: StateContext<SiteStateModel[]>) {
     concat(
       this.appStateService.getInitialState('', 'sites').pipe(take(1)),
       this.actions$.pipe(

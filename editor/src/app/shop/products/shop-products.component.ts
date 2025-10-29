@@ -69,39 +69,36 @@ export class ShopProductsComponent implements OnInit {
 
           // 1. Add entry data to products
           let productData: any[] = entries.reduce((_productData, entry) => {
-            leftOverProducts = leftOverProducts.reduce(
-              (_prodRef, product, idx) => {
-                const attributes =
-                  entry.content && entry.content.cartAttributes
-                    ? entry.content.cartAttributes.split(/,\s*/i)
-                    : [];
-                const name = (entry.content && entry.content.cartTitle) || '';
+            leftOverProducts = leftOverProducts.reduce((_prodRef, product) => {
+              const attributes =
+                entry.content && entry.content.cartAttributes
+                  ? entry.content.cartAttributes.split(/,\s*/i)
+                  : [];
+              const name = (entry.content && entry.content.cartTitle) || '';
 
-                if (product.uniqid === entry.uniqid) {
-                  if (
-                    (attributes.length === 0 && product.name === name) ||
-                    attributes
-                      .map(
-                        (attribute) =>
-                          name + (name.length ? ' ' : '') + attribute,
-                      )
-                      .indexOf(product.name) > -1
-                  ) {
-                    _productData.push({
-                      ...product,
-                      entry: entry, // make this more precise, we don't need all the properties of entry here
-                    });
-                  } else {
-                    // Ignore any products with this ID and not matching attributes, because they're "deleted"
-                  }
+              if (product.uniqid === entry.uniqid) {
+                if (
+                  (attributes.length === 0 && product.name === name) ||
+                  attributes
+                    .map(
+                      (attribute) =>
+                        name + (name.length ? ' ' : '') + attribute,
+                    )
+                    .indexOf(product.name) > -1
+                ) {
+                  _productData.push({
+                    ...product,
+                    entry: entry, // make this more precise, we don't need all the properties of entry here
+                  });
                 } else {
-                  _prodRef.push(product);
+                  // Ignore any products with this ID and not matching attributes, because they're "deleted"
                 }
+              } else {
+                _prodRef.push(product);
+              }
 
-                return _prodRef;
-              },
-              [],
-            );
+              return _prodRef;
+            }, []);
 
             return _productData;
           }, []);

@@ -5,18 +5,8 @@ import { GalleryRenderService } from './gallery-render.service';
   providedIn: 'root',
 })
 export class GalleryLinkRenderService extends GalleryRenderService {
-  getGalleryClassList(
-    galleryItemsData,
-    galleryType,
-    entry,
-    siteSettings,
-  ): string[] | string {
-    let classes = super.getGalleryClassList(
-      galleryItemsData,
-      galleryType,
-      entry,
-      siteSettings,
-    );
+  getGalleryClassList(galleryItemsData, galleryType): string[] | string {
+    let classes = super.getGalleryClassList(galleryItemsData, galleryType);
 
     if (galleryItemsData.length > 1) {
       (classes as string[]).push('bt-has-hover');
@@ -35,15 +25,11 @@ export class GalleryLinkRenderService extends GalleryRenderService {
     return `width:${item.width}px;height:${height}px`;
   }
 
-  getViewData(
-    appState,
+  getLinkViewData(
     siteSlug,
     entry,
     siteSettings,
-    templateName,
     siteTemplateSettings,
-    isLoopAvailable,
-    asRowGallery,
     galleryItemsData,
     galleryItems,
     galleryType,
@@ -63,14 +49,7 @@ export class GalleryLinkRenderService extends GalleryRenderService {
         : siteTemplateSettings.entryLayout.defaultGalleryType;
 
     const data = super.getViewData(
-      appState,
-      siteSlug,
       entry,
-      siteSettings,
-      templateName,
-      siteTemplateSettings,
-      isLoopAvailable,
-      asRowGallery,
       galleryItemsData,
       galleryItems,
       galleryType,
@@ -82,8 +61,6 @@ export class GalleryLinkRenderService extends GalleryRenderService {
         galleryClassList: this.getGalleryClassList(
           galleryItemsData,
           galleryType,
-          entry,
-          siteSettings,
         ),
         galleryStyles: this.getGalleryStyles(galleryItems),
         linkAddress:
@@ -103,16 +80,7 @@ export class GalleryLinkRenderService extends GalleryRenderService {
     };
   }
 
-  render(
-    appState,
-    siteSlug,
-    siteSettings,
-    templateName,
-    entry,
-    siteTemplateSettings,
-    isLoopAvailable,
-    asRowGallery,
-  ) {
+  render(siteSlug, siteSettings, entry, siteTemplateSettings) {
     if (
       !entry.mediaCacheData ||
       !entry.mediaCacheData.file ||
@@ -129,15 +97,11 @@ export class GalleryLinkRenderService extends GalleryRenderService {
       }
     }
 
-    const viewData = this.getViewData(
-      appState,
+    const viewData = this.getLinkViewData(
       siteSlug,
       entry,
       siteSettings,
-      templateName,
       siteTemplateSettings,
-      isLoopAvailable,
-      asRowGallery,
       null,
       null,
       null,

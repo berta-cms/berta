@@ -232,12 +232,7 @@ export class GalleryRenderService {
     return items;
   }
 
-  getGalleryClassList(
-    galleryItemsData,
-    galleryType,
-    entry,
-    siteSettings,
-  ): string[] | string {
+  getGalleryClassList(galleryItemsData, galleryType): string[] | string {
     let classes = ['xGalleryContainer'];
     if (galleryItemsData.length) {
       classes.push('xGalleryHasImages');
@@ -293,14 +288,7 @@ export class GalleryRenderService {
   }
 
   getViewData(
-    appState,
-    siteSlug,
     entry,
-    siteSettings,
-    templateName,
-    siteTemplateSettings,
-    isLoopAvailable,
-    asRowGallery,
     galleryItemsData,
     galleryItems,
     galleryType,
@@ -308,12 +296,7 @@ export class GalleryRenderService {
     return {
       isEditMode: true,
       isFullscreen: false,
-      galleryClassList: this.getGalleryClassList(
-        galleryItemsData,
-        galleryType,
-        null,
-        null,
-      ),
+      galleryClassList: this.getGalleryClassList(galleryItemsData, galleryType),
       rowGalleryPadding:
         entry.mediaCacheData &&
         entry.mediaCacheData['@attributes'] &&
