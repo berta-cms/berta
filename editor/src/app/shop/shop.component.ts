@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable, combineLatest, startWith } from 'rxjs';
+import { Observable, combineLatest, firstValueFrom, startWith } from 'rxjs';
 import { map, mergeMap } from 'rxjs/operators';
 import { Store } from '@ngxs/store';
 
@@ -13,7 +13,9 @@ import { ShopState } from './shop.state';
     @for (shopSection of shopSections$ | async; track shopSection.slug) {
       <div
         class="setting-group"
-        [class.is-expanded]="currentShopSection === shopSection.urlSegment"
+        [class.is-expanded]="
+          (currentShopSection$ | async) === shopSection.urlSegment
+        "
       >
         <h3
           (click)="toggleSection(shopSection.urlSegment)"
@@ -39,28 +41,16 @@ import { ShopState } from './shop.state';
         </h3>
         <div class="settings">
           <div>
-            @if (
-              currentShopSection === 'products' &&
-              shopSection.urlSegment === currentShopSection
-            ) {
+            @if (shopSection.urlSegment === 'products') {
               <berta-shop-products></berta-shop-products>
             }
-            @if (
-              currentShopSection === 'orders' &&
-              shopSection.urlSegment === currentShopSection
-            ) {
+            @if (shopSection.urlSegment === 'orders') {
               <berta-shop-orders></berta-shop-orders>
             }
-            @if (
-              currentShopSection === 'regional-costs' &&
-              shopSection.urlSegment === currentShopSection
-            ) {
+            @if (shopSection.urlSegment === 'regional-costs') {
               <berta-shop-regional-costs></berta-shop-regional-costs>
             }
-            @if (
-              currentShopSection === 'settings' &&
-              shopSection.urlSegment === currentShopSection
-            ) {
+            @if (shopSection.urlSegment === 'settings') {
               <berta-shop-settings></berta-shop-settings>
             }
           </div>
@@ -77,17 +67,19 @@ import { ShopState } from './shop.state';
   ],
   standalone: false,
 })
-export class ShopComponent implements OnInit {
-  currentShopSection = '';
+export class ShopComponent {
+  currentShopSection$: Observable<string | null>;
   shopSections$: Observable<any>;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private store: Store,
-  ) {}
+  ) {
+    this.currentShopSection$ = this.route.paramMap.pipe(
+      map((params) => params.get('section')),
+    );
 
-  ngOnInit() {
     this.shopSections$ = this.store.select(ShopState.getSections).pipe(
       map((sectionSlugs: string[]) => {
         return sectionSlugs.map((sSlug) => {
@@ -121,14 +113,12 @@ export class ShopComponent implements OnInit {
         return combineLatest(obsArr);
       }),
     );
-
-    this.route.paramMap.subscribe((params) => {
-      this.currentShopSection = params['params']['section'];
-    });
   }
 
-  toggleSection(sectionUrlSegment: string) {
-    if (this.currentShopSection === sectionUrlSegment) {
+  async toggleSection(sectionUrlSegment: string) {
+    const currentShopSection = await firstValueFrom(this.currentShopSection$);
+
+    if (currentShopSection === sectionUrlSegment) {
       this.router.navigate(['/shop'], { queryParamsHandling: 'preserve' });
     } else {
       this.router.navigate(['/shop', sectionUrlSegment], {
