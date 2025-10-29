@@ -1,8 +1,6 @@
 import { Component } from '@angular/core';
+import { Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
-
-import { Select } from '@ngxs/store';
-
 import { AppState } from '../app-state/app.state';
 import { UserState } from '../user/user.state';
 import { UserStateModel } from '../user/user.state.model';
@@ -121,8 +119,15 @@ import { UserStateModel } from '../user/user.state.model';
   standalone: false,
 })
 export class HeaderComponent {
-  @Select(UserState) user$: Observable<UserStateModel>;
-  @Select(UserState.isLoggedIn) isLoggedIn$: Observable<boolean>;
-  @Select(AppState.getShowLoading) isLoading$: Observable<boolean>;
-  @Select(AppState.isSetup) isSetup$: Observable<boolean>;
+  user$: Observable<UserStateModel>;
+  isLoggedIn$: Observable<boolean>;
+  isLoading$: Observable<boolean>;
+  isSetup$: Observable<boolean>;
+
+  constructor(private store: Store) {
+    this.user$ = this.store.select((state) => state.user);
+    this.isLoggedIn$ = this.store.select(UserState.isLoggedIn);
+    this.isLoading$ = this.store.select(AppState.getShowLoading);
+    this.isSetup$ = this.store.select(AppState.isSetup);
+  }
 }

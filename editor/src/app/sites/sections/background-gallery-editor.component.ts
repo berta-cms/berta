@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Select, Store } from '@ngxs/store';
+import { Store } from '@ngxs/store';
 import { Observable, combineLatest } from 'rxjs';
 import { filter, map, take } from 'rxjs/operators';
 import { SitesState } from '../sites-state/sites.state';
@@ -326,21 +326,22 @@ import type { NgsgOrderChange } from 'ng-sortgrid';
   standalone: false,
 })
 export class BackgroundGalleryEditorComponent implements OnInit {
-  @Select(SitesState.getCurrentSite)
-  currentSite$: Observable<SiteStateModel>;
+  private readonly currentSite$: Observable<SiteStateModel>;
   currentSite: SiteStateModel;
   currentSection: SiteSectionStateModel;
   selectedFile: SiteSectionBackgroundFile;
   uploadFilesErrors: string[] = [];
-  fileSettingsIsOpen = true;
-  gallerySettingsIsOpen = true;
+  fileSettingsIsOpen: boolean = true;
+  gallerySettingsIsOpen: boolean = true;
 
   constructor(
     private router: Router,
     private route: ActivatedRoute,
     private store: Store,
     private popupService: PopupService,
-  ) {}
+  ) {
+    this.currentSite$ = this.store.select(SitesState.getCurrentSite);
+  }
 
   ngOnInit() {
     this.route.paramMap

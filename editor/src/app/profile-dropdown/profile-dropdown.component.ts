@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Select, Store } from '@ngxs/store';
+import { Store } from '@ngxs/store';
 
-import { UserState } from '../user/user.state';
 import { UserStateModel } from '../user/user.state.model';
 import { UserLogoutAction } from '../user/user.actions';
 
@@ -112,9 +111,11 @@ import { UserLogoutAction } from '../user/user.actions';
   standalone: false,
 })
 export class ProfileDropdownComponent {
-  @Select(UserState) user$: Observable<UserStateModel>;
+  user$: Observable<UserStateModel>;
 
-  constructor(private store: Store) {}
+  constructor(private store: Store) {
+    this.user$ = this.store.select((state) => state.user);
+  }
 
   logOut() {
     this.store.dispatch(new UserLogoutAction());

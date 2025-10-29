@@ -12,7 +12,6 @@
     "isolatedModules": true,
     "experimentalDecorators": true,
     "importHelpers": true,
-    "useDefineForClassFields": false,
     "target": "ES2022",
     "module": "preserve"
   },

@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Select, Store } from '@ngxs/store';
+import { Store } from '@ngxs/store';
 import { Observable, Subject } from 'rxjs';
 import { combineLatest } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
@@ -32,7 +32,7 @@ import { SectionEntry } from '../sections/entries/entries-state/section-entries-
             </a>
           </h3>
         </div>
-        @for (section of sectionsList; track section) {
+        @for (section of sectionsList; track section.section.name) {
           <div class="setting-group">
             <h3>
               <a
@@ -96,7 +96,7 @@ import { SectionEntry } from '../sections/entries/entries-state/section-entries-
   standalone: false,
 })
 export class SiteMediaComponent implements OnInit, OnDestroy {
-  @Select(SitesState.getCurrentSite) currentSite$: Observable<SiteStateModel>;
+  readonly currentSite$: Observable<SiteStateModel>;
 
   sectionsList: {
     section: SiteSectionStateModel;
@@ -120,7 +120,9 @@ export class SiteMediaComponent implements OnInit, OnDestroy {
   constructor(
     private store: Store,
     private route: ActivatedRoute,
-  ) {}
+  ) {
+    this.currentSite$ = this.store.select(SitesState.getCurrentSite);
+  }
 
   ngOnInit() {
     combineLatest([

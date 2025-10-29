@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { SafeHtml, DomSanitizer } from '@angular/platform-browser';
-import { Store, Select } from '@ngxs/store';
+import { Store } from '@ngxs/store';
 import { Observable, combineLatest } from 'rxjs';
 import { map, filter, scan, take } from 'rxjs/operators';
 import { splitCamel, uCFirst, getIconFromUrl } from '../../shared/helpers';
@@ -169,14 +169,17 @@ export class SiteSettingsComponent implements OnInit {
   settingUpdate: { [k: string]: boolean } = {};
   settingError: { [k: string]: string } = {};
 
-  @Select((state) => state.user) user$: Observable<UserStateModel>;
-  @Select((state) => state.app) appState$: Observable<AppStateModel>;
+  readonly user$: Observable<UserStateModel>;
+  readonly appState$: Observable<AppStateModel>;
 
   constructor(
     private store: Store,
     private route: ActivatedRoute,
     private sanitizer: DomSanitizer,
-  ) {}
+  ) {
+    this.user$ = this.store.select((state) => state.user);
+    this.appState$ = this.store.select((state) => state.app);
+  }
 
   ngOnInit() {
     this.settings$ = combineLatest([
