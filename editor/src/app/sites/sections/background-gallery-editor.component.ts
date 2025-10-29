@@ -5,7 +5,6 @@ import { filter, map, take } from 'rxjs/operators';
 import { SitesState } from '../sites-state/sites.state';
 import { SiteStateModel } from '../sites-state/site-state.model';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Animations } from '../../shared/animations';
 import {
   SiteSectionBackgroundFile,
   SiteSectionStateModel,
@@ -50,19 +49,21 @@ import type { NgsgOrderChange } from 'ng-sortgrid';
                 />
               </svg>
             </h3>
-            <div class="settings" [@isExpanded]="fileSettingsIsOpen">
-              <berta-setting
-                [setting]="{ slug: '@value', value: selectedFile['@value'] }"
-                [config]="{
-                  title: 'Caption for ' + selectedFile['@attributes']['src'],
-                  placeholder: 'Enter item caption here...',
-                  format: 'richtext',
-                  enabledOnUpdate: true,
-                }"
-                [error]="''"
-                (update)="updateFile($event)"
-              >
-              </berta-setting>
+            <div class="settings">
+              <div>
+                <berta-setting
+                  [setting]="{ slug: '@value', value: selectedFile['@value'] }"
+                  [config]="{
+                    title: 'Caption for ' + selectedFile['@attributes']['src'],
+                    placeholder: 'Enter item caption here...',
+                    format: 'richtext',
+                    enabledOnUpdate: true,
+                  }"
+                  [error]="''"
+                  (update)="updateFile($event)"
+                >
+                </berta-setting>
+              </div>
             </div>
           </div>
         }
@@ -88,184 +89,189 @@ import type { NgsgOrderChange } from 'ng-sortgrid';
               />
             </svg>
           </h3>
-          <div class="settings" [@isExpanded]="gallerySettingsIsOpen">
-            <berta-setting
-              [setting]="{
-                slug: 'image_size',
-                value:
-                  currentSection.mediaCacheData &&
-                  currentSection.mediaCacheData['@attributes'] &&
-                  currentSection.mediaCacheData['@attributes'].image_size
-                    ? currentSection.mediaCacheData['@attributes'].image_size
-                    : 'medium',
-              }"
-              [config]="{
-                title: 'Image size',
-                format: 'select',
-                values: [
-                  { title: 'Large', value: 'large' },
-                  { title: 'Medium', value: 'medium' },
-                  { title: 'Small', value: 'small' },
-                ],
-                enabledOnUpdate: true,
-              }"
-              [error]="''"
-              [disabled]="false"
-              (update)="updateGallerySettings($event)"
-            >
-            </berta-setting>
-            <berta-setting
-              [setting]="{
-                slug: 'autoplay',
-                value:
-                  currentSection.mediaCacheData &&
-                  currentSection.mediaCacheData['@attributes'] &&
-                  currentSection.mediaCacheData['@attributes'].autoplay
-                    ? currentSection.mediaCacheData['@attributes'].autoplay
-                    : '0',
-              }"
-              [config]="{
-                title: 'Autoplay seconds',
-                format: 'text',
-                enabledOnUpdate: true,
-                validation: 'zero_or_positive_integer',
-              }"
-              [error]="''"
-              [disabled]="false"
-              (update)="updateGallerySettings($event)"
-            >
-            </berta-setting>
-            <berta-setting
-              [setting]="{
-                slug: 'sectionBgColor',
-                value: currentSection.sectionBgColor
-                  ? currentSection.sectionBgColor
-                  : '',
-              }"
-              [config]="{
-                title: 'Background color',
-                format: 'color',
-                enabledOnUpdate: true,
-              }"
-              [error]="''"
-              [disabled]="false"
-              (update)="updateSectionSettings($event)"
-            >
-            </berta-setting>
-            <berta-setting
-              [setting]="{
-                slug: 'caption_color',
-                value:
-                  currentSection.mediaCacheData &&
-                  currentSection.mediaCacheData['@attributes'] &&
-                  currentSection.mediaCacheData['@attributes'].caption_color
-                    ? currentSection.mediaCacheData['@attributes'].caption_color
+          <div class="settings">
+            <div>
+              <berta-setting
+                [setting]="{
+                  slug: 'image_size',
+                  value:
+                    currentSection.mediaCacheData &&
+                    currentSection.mediaCacheData['@attributes'] &&
+                    currentSection.mediaCacheData['@attributes'].image_size
+                      ? currentSection.mediaCacheData['@attributes'].image_size
+                      : 'medium',
+                }"
+                [config]="{
+                  title: 'Image size',
+                  format: 'select',
+                  values: [
+                    { title: 'Large', value: 'large' },
+                    { title: 'Medium', value: 'medium' },
+                    { title: 'Small', value: 'small' },
+                  ],
+                  enabledOnUpdate: true,
+                }"
+                [error]="''"
+                [disabled]="false"
+                (update)="updateGallerySettings($event)"
+              >
+              </berta-setting>
+              <berta-setting
+                [setting]="{
+                  slug: 'autoplay',
+                  value:
+                    currentSection.mediaCacheData &&
+                    currentSection.mediaCacheData['@attributes'] &&
+                    currentSection.mediaCacheData['@attributes'].autoplay
+                      ? currentSection.mediaCacheData['@attributes'].autoplay
+                      : '0',
+                }"
+                [config]="{
+                  title: 'Autoplay seconds',
+                  format: 'text',
+                  enabledOnUpdate: true,
+                  validation: 'zero_or_positive_integer',
+                }"
+                [error]="''"
+                [disabled]="false"
+                (update)="updateGallerySettings($event)"
+              >
+              </berta-setting>
+              <berta-setting
+                [setting]="{
+                  slug: 'sectionBgColor',
+                  value: currentSection.sectionBgColor
+                    ? currentSection.sectionBgColor
                     : '',
-              }"
-              [config]="{
-                title: 'Caption text color',
-                format: 'color',
-                enabledOnUpdate: true,
-              }"
-              [error]="''"
-              [disabled]="false"
-              (update)="updateGallerySettings($event)"
-            >
-            </berta-setting>
-            <berta-setting
-              [setting]="{
-                slug: 'caption_bg_color',
-                value:
-                  currentSection.mediaCacheData &&
-                  currentSection.mediaCacheData['@attributes'] &&
-                  currentSection.mediaCacheData['@attributes'].caption_bg_color
-                    ? currentSection.mediaCacheData['@attributes']
-                        .caption_bg_color
-                    : '',
-              }"
-              [config]="{
-                title: 'Caption background color',
-                format: 'color',
-                enabledOnUpdate: true,
-              }"
-              [error]="''"
-              [disabled]="false"
-              (update)="updateGallerySettings($event)"
-            >
-            </berta-setting>
-            <berta-setting
-              [setting]="{
-                slug: 'hide_navigation',
-                value:
-                  currentSection.mediaCacheData &&
-                  currentSection.mediaCacheData['@attributes'] &&
-                  currentSection.mediaCacheData['@attributes'].hide_navigation
-                    ? currentSection.mediaCacheData['@attributes']
-                        .hide_navigation
-                    : 'no',
-              }"
-              [config]="{
-                title: 'Hide navigation arrows',
-                format: 'toggle',
-                values: [
-                  { title: '', value: 'yes' },
-                  { title: '', value: 'no' },
-                ],
-                enabledOnUpdate: true,
-              }"
-              [error]="''"
-              [disabled]="false"
-              (update)="updateGallerySettings($event)"
-            >
-            </berta-setting>
-            <berta-setting
-              [setting]="{
-                slug: 'animation',
-                value:
-                  currentSection.mediaCacheData &&
-                  currentSection.mediaCacheData['@attributes'] &&
-                  currentSection.mediaCacheData['@attributes'].animation
-                    ? currentSection.mediaCacheData['@attributes'].animation
-                    : 'enabled',
-              }"
-              [config]="{
-                title: 'Animation',
-                format: 'toggle',
-                values: [
-                  { title: '', value: 'enabled' },
-                  { title: '', value: 'disabled' },
-                ],
-                enabledOnUpdate: true,
-              }"
-              [error]="''"
-              [disabled]="false"
-              (update)="updateGallerySettings($event)"
-            >
-            </berta-setting>
-            <berta-setting
-              [setting]="{
-                slug: 'fade_content',
-                value:
-                  currentSection.mediaCacheData &&
-                  currentSection.mediaCacheData['@attributes'] &&
-                  currentSection.mediaCacheData['@attributes'].fade_content
-                    ? currentSection.mediaCacheData['@attributes'].fade_content
-                    : 'disabled',
-              }"
-              [config]="{
-                title: 'Fade content',
-                format: 'toggle',
-                values: [
-                  { title: '', value: 'enabled' },
-                  { title: '', value: 'disabled' },
-                ],
-                enabledOnUpdate: true,
-              }"
-              [error]="''"
-              [disabled]="false"
-              (update)="updateGallerySettings($event)"
-            >
-            </berta-setting>
+                }"
+                [config]="{
+                  title: 'Background color',
+                  format: 'color',
+                  enabledOnUpdate: true,
+                }"
+                [error]="''"
+                [disabled]="false"
+                (update)="updateSectionSettings($event)"
+              >
+              </berta-setting>
+              <berta-setting
+                [setting]="{
+                  slug: 'caption_color',
+                  value:
+                    currentSection.mediaCacheData &&
+                    currentSection.mediaCacheData['@attributes'] &&
+                    currentSection.mediaCacheData['@attributes'].caption_color
+                      ? currentSection.mediaCacheData['@attributes']
+                          .caption_color
+                      : '',
+                }"
+                [config]="{
+                  title: 'Caption text color',
+                  format: 'color',
+                  enabledOnUpdate: true,
+                }"
+                [error]="''"
+                [disabled]="false"
+                (update)="updateGallerySettings($event)"
+              >
+              </berta-setting>
+              <berta-setting
+                [setting]="{
+                  slug: 'caption_bg_color',
+                  value:
+                    currentSection.mediaCacheData &&
+                    currentSection.mediaCacheData['@attributes'] &&
+                    currentSection.mediaCacheData['@attributes']
+                      .caption_bg_color
+                      ? currentSection.mediaCacheData['@attributes']
+                          .caption_bg_color
+                      : '',
+                }"
+                [config]="{
+                  title: 'Caption background color',
+                  format: 'color',
+                  enabledOnUpdate: true,
+                }"
+                [error]="''"
+                [disabled]="false"
+                (update)="updateGallerySettings($event)"
+              >
+              </berta-setting>
+              <berta-setting
+                [setting]="{
+                  slug: 'hide_navigation',
+                  value:
+                    currentSection.mediaCacheData &&
+                    currentSection.mediaCacheData['@attributes'] &&
+                    currentSection.mediaCacheData['@attributes'].hide_navigation
+                      ? currentSection.mediaCacheData['@attributes']
+                          .hide_navigation
+                      : 'no',
+                }"
+                [config]="{
+                  title: 'Hide navigation arrows',
+                  format: 'toggle',
+                  values: [
+                    { title: '', value: 'yes' },
+                    { title: '', value: 'no' },
+                  ],
+                  enabledOnUpdate: true,
+                }"
+                [error]="''"
+                [disabled]="false"
+                (update)="updateGallerySettings($event)"
+              >
+              </berta-setting>
+              <berta-setting
+                [setting]="{
+                  slug: 'animation',
+                  value:
+                    currentSection.mediaCacheData &&
+                    currentSection.mediaCacheData['@attributes'] &&
+                    currentSection.mediaCacheData['@attributes'].animation
+                      ? currentSection.mediaCacheData['@attributes'].animation
+                      : 'enabled',
+                }"
+                [config]="{
+                  title: 'Animation',
+                  format: 'toggle',
+                  values: [
+                    { title: '', value: 'enabled' },
+                    { title: '', value: 'disabled' },
+                  ],
+                  enabledOnUpdate: true,
+                }"
+                [error]="''"
+                [disabled]="false"
+                (update)="updateGallerySettings($event)"
+              >
+              </berta-setting>
+              <berta-setting
+                [setting]="{
+                  slug: 'fade_content',
+                  value:
+                    currentSection.mediaCacheData &&
+                    currentSection.mediaCacheData['@attributes'] &&
+                    currentSection.mediaCacheData['@attributes'].fade_content
+                      ? currentSection.mediaCacheData['@attributes']
+                          .fade_content
+                      : 'disabled',
+                }"
+                [config]="{
+                  title: 'Fade content',
+                  format: 'toggle',
+                  values: [
+                    { title: '', value: 'enabled' },
+                    { title: '', value: 'disabled' },
+                  ],
+                  enabledOnUpdate: true,
+                }"
+                [error]="''"
+                [disabled]="false"
+                (update)="updateGallerySettings($event)"
+              >
+              </berta-setting>
+            </div>
           </div>
         </div>
       </aside>
@@ -322,7 +328,6 @@ import type { NgsgOrderChange } from 'ng-sortgrid';
       </div>
     }
   `,
-  animations: [Animations.slideToggle],
   standalone: false,
 })
 export class BackgroundGalleryEditorComponent implements OnInit {

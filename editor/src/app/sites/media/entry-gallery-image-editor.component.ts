@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { Observable } from 'rxjs';
 import { Store } from '@ngxs/store';
-import { Animations } from '../../shared/animations';
 import {
   SectionEntry,
   SectionEntryGalleryFile,
@@ -50,59 +49,61 @@ import { SitesSharedModule } from '../shared/sites-shared.module';
             />
           </svg>
         </h3>
-        <div class="settings" [@isExpanded]="fileSettingsIsOpen">
-          @if (cropperIsReady) {
-            <berta-setting
-              [setting]="{
-                slug: 'width',
-                value: size.width,
-              }"
-              [config]="{
-                title: 'Width',
-                format: 'text',
-                enabledOnUpdate: true,
-              }"
-              [error]="''"
-              [disabled]="false"
-              (update)="updateSize($event)"
-            >
-            </berta-setting>
-          }
-          @if (cropperIsReady) {
-            <berta-setting
-              [setting]="{
-                slug: 'height',
-                value: size.height,
-              }"
-              [config]="{
-                title: 'Height',
-                format: 'text',
-                enabledOnUpdate: true,
-              }"
-              [error]="''"
-              [disabled]="false"
-              (update)="updateSize($event)"
-            >
-            </berta-setting>
-          }
-          <div class="setting">
+        <div class="settings">
+          <div>
             @if (cropperIsReady) {
+              <berta-setting
+                [setting]="{
+                  slug: 'width',
+                  value: size.width,
+                }"
+                [config]="{
+                  title: 'Width',
+                  format: 'text',
+                  enabledOnUpdate: true,
+                }"
+                [error]="''"
+                [disabled]="false"
+                (update)="updateSize($event)"
+              >
+              </berta-setting>
+            }
+            @if (cropperIsReady) {
+              <berta-setting
+                [setting]="{
+                  slug: 'height',
+                  value: size.height,
+                }"
+                [config]="{
+                  title: 'Height',
+                  format: 'text',
+                  enabledOnUpdate: true,
+                }"
+                [error]="''"
+                [disabled]="false"
+                (update)="updateSize($event)"
+              >
+              </berta-setting>
+            }
+            <div class="setting">
+              @if (cropperIsReady) {
+                <button
+                  type="button"
+                  class="button"
+                  [class.disabled]="!canCrop"
+                  (click)="cropImage()"
+                >
+                  Crop
+                </button>
+              }
               <button
                 type="button"
-                class="button"
-                [class.disabled]="!canCrop"
-                (click)="cropImage()"
+                class="button inverse"
+                (click)="navigateBack()"
               >
-                Crop
+                Close
               </button>
-            }
-            <button
-              type="button"
-              class="button inverse"
-              (click)="navigateBack()"
-            >
-              Close
-            </button>
+            </div>
           </div>
         </div>
       </div>
@@ -121,7 +122,6 @@ import { SitesSharedModule } from '../shared/sites-shared.module';
       </div>
     </div>
   `,
-  animations: [Animations.slideToggle],
 })
 export class EntryGalleryImageEditorComponent implements OnInit {
   currentSite$: Observable<SiteStateModel>;
