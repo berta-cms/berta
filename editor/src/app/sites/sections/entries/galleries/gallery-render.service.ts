@@ -249,7 +249,7 @@ export class GalleryRenderService {
 
       if (item.type === 'video') {
         item.videoLink = item.original;
-        item.src = item.poster.length ? item.poster.length : '#';
+        item.src = item.poster.length ? item.poster : '#';
       }
 
       item.src += `?no_cache=${Date.now()}`;
