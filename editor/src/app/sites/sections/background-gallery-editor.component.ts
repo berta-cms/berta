@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, DestroyRef, inject } from '@angular/core';
 import { Store } from '@ngxs/store';
-import { Observable, combineLatest } from 'rxjs';
-import { filter, map, take } from 'rxjs/operators';
+import { Observable, combineLatest, Subject } from 'rxjs';
+import { filter, map, take, debounceTime } from 'rxjs/operators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { SitesState } from '../sites-state/sites.state';
 import { SiteStateModel } from '../sites-state/site-state.model';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -295,7 +296,7 @@ import type { NgsgOrderChange } from 'ng-sortgrid';
               ngSortgridItem
               [ngSortGridItems]="currentSection.mediaCacheData.file"
               (sorted)="reorder($event)"
-              (click)="setSelectedFile(file)"
+              (click)="onFileClick(file)"
             >
               <div class="media image">
                 <img
@@ -332,6 +333,9 @@ import type { NgsgOrderChange } from 'ng-sortgrid';
 })
 export class BackgroundGalleryEditorComponent implements OnInit {
   private readonly currentSite$: Observable<SiteStateModel>;
+  private readonly destroyRef = inject(DestroyRef);
+  private fileSelectionSubject$ = new Subject<SiteSectionBackgroundFile>();
+
   currentSite: SiteStateModel;
   currentSection: SiteSectionStateModel;
   selectedFile: SiteSectionBackgroundFile;
@@ -349,8 +353,21 @@ export class BackgroundGalleryEditorComponent implements OnInit {
   }
 
   ngOnInit() {
+    // Debounce file selection to allow pending updates to complete first
+    this.fileSelectionSubject$
+      .pipe(
+        debounceTime(200), // Wait 100ms for any pending updates
+        takeUntilDestroyed(this.destroyRef),
+      )
+      .subscribe((file) => {
+        this.setSelectedFile(file);
+      });
+
     this.route.paramMap
-      .pipe(filter((p) => p['params']['section'] !== undefined))
+      .pipe(
+        filter((p) => p['params']['section'] !== undefined),
+        takeUntilDestroyed(this.destroyRef),
+      )
       .subscribe((params) => {
         const sectionName = params['params']['section'];
 
@@ -360,12 +377,19 @@ export class BackgroundGalleryEditorComponent implements OnInit {
             filter((s) => s.length > 0),
             map((s) => s.find((s) => s.name === sectionName)),
           ),
-        ]).subscribe(([site, section]) => {
-          this.currentSite = site;
-          this.currentSection = section;
-          this.setSelectedFile();
-        });
+        ])
+          .pipe(takeUntilDestroyed(this.destroyRef))
+          .subscribe(([site, section]) => {
+            this.currentSite = site;
+            this.currentSection = section;
+            this.setSelectedFile();
+          });
       });
+  }
+
+  onFileClick(file: SiteSectionBackgroundFile) {
+    // Emit to the debounced subject instead of calling setSelectedFile directly
+    this.fileSelectionSubject$.next(file);
   }
 
   setSelectedFile(selectedFile: SiteSectionBackgroundFile = null) {
