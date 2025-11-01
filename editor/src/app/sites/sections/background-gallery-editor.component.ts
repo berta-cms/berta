@@ -356,7 +356,7 @@ export class BackgroundGalleryEditorComponent implements OnInit {
     // Debounce file selection to allow pending updates to complete first
     this.fileSelectionSubject$
       .pipe(
-        debounceTime(200), // Wait 100ms for any pending updates
+        debounceTime(200), // Wait 200ms for any pending updates
         takeUntilDestroyed(this.destroyRef),
       )
       .subscribe((file) => {
