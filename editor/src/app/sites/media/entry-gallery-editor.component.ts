@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { Observable, combineLatest } from 'rxjs';
+import { Component, OnInit, DestroyRef, inject } from '@angular/core';
+import { Observable, combineLatest, Subject } from 'rxjs';
 import { Store } from '@ngxs/store';
 import type { NgsgOrderChange } from 'ng-sortgrid';
 import {
@@ -17,7 +17,8 @@ import {
 import { SiteStateModel } from '../sites-state/site-state.model';
 import { PopupService } from '../../../app/popup/popup.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { filter, map, take } from 'rxjs/operators';
+import { filter, map, take, debounceTime } from 'rxjs/operators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { SiteSectionsState } from '../sections/sections-state/site-sections.state';
 import { SectionEntriesState } from '../sections/entries/entries-state/section-entries.state';
 import { SiteSectionStateModel } from '../sections/sections-state/site-sections-state.model';
@@ -366,7 +367,7 @@ import { SiteSettingsState } from '../settings/site-settings.state';
               [ngSortGridGroup]="currentEntry.sectionName + currentEntry.id"
               [ngSortGridItems]="currentEntry.mediaCacheData.file"
               (sorted)="reorder($event)"
-              (click)="setSelectedFile(file)"
+              (click)="onFileClick(file)"
             >
               @if (file['@attributes'].type === 'image') {
                 <div class="media image">
@@ -436,6 +437,9 @@ import { SiteSettingsState } from '../settings/site-settings.state';
 })
 export class EntryGalleryEditorComponent implements OnInit {
   private readonly currentSite$: Observable<SiteStateModel>;
+  private readonly destroyRef = inject(DestroyRef);
+  private fileSelectionSubject$ = new Subject<SectionEntryGalleryFile>();
+
   currentSite: SiteStateModel;
   currentSection: SiteSectionStateModel;
   currentEntry: SectionEntry;
@@ -455,6 +459,16 @@ export class EntryGalleryEditorComponent implements OnInit {
   }
 
   ngOnInit() {
+    // Debounce file selection to allow pending updates to complete first
+    this.fileSelectionSubject$
+      .pipe(
+        debounceTime(200), // Wait 200ms for any pending updates
+        takeUntilDestroyed(this.destroyRef),
+      )
+      .subscribe((file) => {
+        this.setSelectedFile(file);
+      });
+
     this.route.paramMap
       .pipe(
         filter(
@@ -462,6 +476,7 @@ export class EntryGalleryEditorComponent implements OnInit {
             p['params']['section'] !== undefined &&
             p['params']['entry_id'] !== undefined,
         ),
+        takeUntilDestroyed(this.destroyRef),
       )
       .subscribe((params) => {
         const sectionName = params['params']['section'];
@@ -482,15 +497,22 @@ export class EntryGalleryEditorComponent implements OnInit {
               e.find((e) => e.sectionName === sectionName && e.id === entryId),
             ),
           ),
-        ]).subscribe(([site, template, section, entry]) => {
-          this.currentSite = site;
-          this.currentSection = section;
-          this.currentEntry = entry;
-          this.templateName = template.split('-').shift();
+        ])
+          .pipe(takeUntilDestroyed(this.destroyRef))
+          .subscribe(([site, template, section, entry]) => {
+            this.currentSite = site;
+            this.currentSection = section;
+            this.currentEntry = entry;
+            this.templateName = template.split('-').shift();
 
-          this.setSelectedFile();
-        });
+            this.setSelectedFile();
+          });
       });
+  }
+
+  onFileClick(file: SectionEntryGalleryFile) {
+    // Emit to the debounced subject instead of calling setSelectedFile directly
+    this.fileSelectionSubject$.next(file);
   }
 
   updateFile(e) {
