@@ -44,6 +44,7 @@ export class RichTextInputComponent
   @Input() enabledOnUpdate?: boolean;
   @Input() value: string;
   @Output() update = new EventEmitter<string>();
+  @Output() inputFocus = new EventEmitter<boolean>();
 
   editorConfig: AngularEditorConfig = {
     editable: true,
@@ -122,7 +123,7 @@ export class RichTextInputComponent
         window.clearTimeout(this.timeoutRef);
       }
       this.timeoutRef = window.setTimeout(() => {
-        if (!this.isClickingToolbar) return; // Don't reset if already reset
+        if (!this.isClickingToolbar) return; // Skip if not interacting with toolbar
         this.isClickingToolbar = false;
         this.timeoutRef = null;
       }, 100);
@@ -134,8 +135,13 @@ export class RichTextInputComponent
       if (!this.isClickingToolbar) {
         this.saveContent(editorElement);
       }
+      this.inputFocus.emit(false);
     };
     editorElement.addEventListener('blur', this.blurListener);
+
+    editorElement.addEventListener('focus', () => {
+      this.inputFocus.emit(true);
+    });
   }
 
   ngOnDestroy() {
