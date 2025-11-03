@@ -391,7 +391,7 @@ export class SectionEntriesState implements NgxsOnInit {
     { getState, patchState, dispatch }: StateContext<SectionEntriesStateModel>,
     action: UpdateSectionEntryFromSyncAction,
   ) {
-    if (action.nOfReq >= 2) return;
+    if ((action.nOfReq ?? 0) >= 2) return undefined;
 
     return this.appStateService
       .sync('sectionEntries', {

@@ -119,7 +119,7 @@ export class PopupComponent implements OnInit {
     });
   }
 
-  overlayClick(event: Event) {
+  overlayClick(event: Event): boolean | void {
     /* Modal popups require action! */
     if (this.popupState && this.popupState.isModal) {
       event.stopPropagation();

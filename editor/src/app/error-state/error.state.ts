@@ -23,7 +23,7 @@ export class ErrorState implements NgxsOnInit {
   @Selector()
   static getLastError(state: ErrorStateModel[]) {
     if (state.length === 0) {
-      return;
+      return undefined;
     }
     return state[state.length - 1];
   }

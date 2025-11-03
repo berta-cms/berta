@@ -45,31 +45,19 @@ export class SiteTemplatesState implements NgxsOnInit {
 
   @Selector([SiteTemplatesState.getCurrentTemplate])
   static getCurrentTemplateConfig(currentTemplate: TemplateSiteModel) {
-    if (!currentTemplate) {
-      return;
-    }
-
-    return currentTemplate.templateConf;
+    return currentTemplate?.templateConf;
   }
 
   @Selector([SiteTemplatesState.getCurrentTemplate])
   static getCurrentTemplateSectionTypes(currentTemplate: TemplateSiteModel) {
-    if (!currentTemplate) {
-      return;
-    }
-
-    return currentTemplate.sectionTypes;
+    return currentTemplate?.sectionTypes;
   }
 
   @Selector([SiteTemplatesState.getCurrentTemplate])
   static getCurrentTemplateSectionTranslations(
     currentTemplate: TemplateSiteModel,
   ) {
-    if (!currentTemplate) {
-      return;
-    }
-
-    return currentTemplate.translations;
+    return currentTemplate?.translations;
   }
 
   constructor(

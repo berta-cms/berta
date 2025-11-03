@@ -186,9 +186,9 @@ export class PreviewComponent implements OnInit {
         this.store.dispatch(new UpdateAppStateAction({ setup: isSetup }));
 
         /*
-          Check for iframe login page
-          try to login user with existing token
-        */
+        Check for iframe login page
+        try to login user with existing token
+      */
         if (lastUrlPart === 'login.php' || lastUrlPart === 'engine') {
           const user = this.store.selectSnapshot((state) => state.user);
 
@@ -199,7 +199,7 @@ export class PreviewComponent implements OnInit {
 
           const appState = this.store.selectSnapshot((state) => state.app);
 
-          return this.http
+          this.http
             .get(appState.authenticateUrl, {
               headers: {
                 Accept: 'application/json',
@@ -221,6 +221,7 @@ export class PreviewComponent implements OnInit {
                 this.store.dispatch(new UserLogoutAction());
               },
             });
+          return;
         }
 
         if (typeof iframe.contentWindow['sync'] === 'function') {
@@ -380,21 +381,33 @@ export class PreviewComponent implements OnInit {
       const maxChecks = 120;
       let intervalCount = 0;
       let lastError = '';
-      const lastUrlPart = iframe.contentDocument.location.href
-        .replace(/\/$/, '')
-        .split('/')
-        .pop();
 
-      while (intervalCount < maxChecks) {
+      const checkInterval = setInterval(() => {
+        const lastUrlPart = iframe.contentDocument?.location.href
+          .replace(/\/$/, '')
+          .split('/')
+          .pop();
+
         if (!iframe.contentDocument) {
           lastError = 'Iframe has no contentDocument';
           intervalCount++;
-          continue;
+
+          if (intervalCount >= maxChecks) {
+            clearInterval(checkInterval);
+            observer.error({
+              message: 'Could not load iframe: ' + lastError,
+              data: iframe,
+            });
+            observer.complete();
+          }
+          return;
         }
 
         if (lastUrlPart === 'login.php' || lastUrlPart === 'engine') {
+          clearInterval(checkInterval);
           observer.next(iframe);
           observer.complete();
+          return;
         }
 
         if (
@@ -407,19 +420,27 @@ export class PreviewComponent implements OnInit {
           lastError =
             'Berta classes `xLoginPageBody` or `xContent-[]` or `xSectionType-` are missing from body element';
           intervalCount++;
-          continue;
+
+          if (intervalCount >= maxChecks) {
+            clearInterval(checkInterval);
+            observer.error({
+              message: 'Could not load iframe: ' + lastError,
+              data: iframe,
+            });
+            observer.complete();
+          }
+          return;
         }
 
+        clearInterval(checkInterval);
         observer.next(iframe);
         observer.complete();
-        return;
-      }
+      }, 100);
 
-      observer.error({
-        message: 'Could not load iframe: ' + lastError,
-        data: iframe,
-      });
-      observer.complete();
+      // Return cleanup function
+      return () => {
+        clearInterval(checkInterval);
+      };
     });
   }
 }

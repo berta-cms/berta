@@ -278,6 +278,8 @@ export class SitesState implements NgxsOnInit {
       } else if (siteB.order === action.currentOrder) {
         return siteA.order < indexToSortBy ? -1 : 1;
       }
+
+      return 0;
     });
 
     return this.appStateService

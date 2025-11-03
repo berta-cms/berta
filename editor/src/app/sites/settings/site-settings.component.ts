@@ -358,19 +358,19 @@ export class SiteSettingsComponent implements OnInit {
     config: SettingConfigModel,
     user: UserStateModel,
     appState: AppStateModel,
-  ) {
+  ): string {
     if (
       !config.requires_feature ||
       user.features.indexOf(config.requires_feature) > -1
     ) {
-      return;
+      return '';
     }
 
     const requiredPlan = appState.plans.find(
       (plan) => plan.features.indexOf(config.requires_feature) > -1,
     );
     if (!requiredPlan) {
-      return;
+      return '';
     }
 
     return `(Upgrade to ${requiredPlan.name} plan)`;

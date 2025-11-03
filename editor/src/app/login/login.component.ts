@@ -147,7 +147,7 @@ export class LoginComponent implements OnInit {
     this.store.dispatch(new UpdateInputFocus(isFocused));
   }
 
-  async login(event: SubmitEvent) {
+  async login(event: SubmitEvent): Promise<boolean | void> {
     const isBertaHosting = (await firstValueFrom(this.appState$))
       .isBertaHosting;
 

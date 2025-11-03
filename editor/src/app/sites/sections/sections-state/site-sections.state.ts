@@ -672,6 +672,8 @@ export class SiteSectionsState implements NgxsOnInit {
       } else if (sectionB.order === action.currentOrder) {
         return sectionA.order < indexToSortBy ? -1 : 1;
       }
+
+      return 0;
     });
 
     return this.appStateService
