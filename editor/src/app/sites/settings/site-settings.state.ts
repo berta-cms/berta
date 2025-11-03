@@ -50,7 +50,7 @@ export class SiteSettingsState implements NgxsOnInit {
     siteSlug: string,
   ) {
     if (!siteSettings || siteSlug === null) {
-      return;
+      return undefined;
     }
 
     return siteSettings[siteSlug];
@@ -59,7 +59,7 @@ export class SiteSettingsState implements NgxsOnInit {
   @Selector([SiteSettingsState.getCurrentSiteSettings])
   static getCurrentSiteTemplate(currentSiteSettings): string | undefined {
     if (!currentSiteSettings) {
-      return;
+      return undefined;
     }
     const templateSettings = currentSiteSettings.find(
       (settingGroup) => settingGroup.slug === 'template',
@@ -73,7 +73,7 @@ export class SiteSettingsState implements NgxsOnInit {
   @Selector([SiteSettingsState.getCurrentSiteSettings])
   static getCurrentSiteLanguage(currentSiteSettings): string | undefined {
     if (!currentSiteSettings) {
-      return;
+      return undefined;
     }
     const languageSettings = currentSiteSettings.find(
       (settingGroup) => settingGroup.slug === 'language',
