@@ -178,6 +178,8 @@ aside {
 
     > div {
       overflow: hidden;
+      opacity: 0;
+      transition: opacity 0.25s ease;
     }
 
     berta-setting,
@@ -277,6 +279,11 @@ aside {
     > .settings {
       grid-template-rows: 1fr;
       border-bottom: 1px solid variables.$grey-10;
+
+      > div {
+        overflow: visible;
+        opacity: 1;
+      }
     }
   }
 
