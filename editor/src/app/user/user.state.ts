@@ -1,6 +1,13 @@
 import { Router, ActivatedRoute } from '@angular/router';
 import { State, StateContext, NgxsOnInit, Action, Selector } from '@ngxs/store';
-import { tap, filter, take } from 'rxjs/operators';
+import {
+  tap,
+  filter,
+  take,
+  catchError,
+  finalize,
+  switchMap,
+} from 'rxjs/operators';
 
 import { UserStateModel } from './user.state.model';
 import {
@@ -23,6 +30,7 @@ import { ResetSiteSettingsConfigAction } from '../sites/settings/site-settings-c
 import { ResetSiteTemplateSettingsAction } from '../sites/template-settings/site-template-settings.actions';
 import { ResetSiteTemplatesAction } from '../sites/template-settings/site-templates.actions';
 import { Injectable } from '@angular/core';
+import { of } from 'rxjs';
 
 const defaultState: UserStateModel = {
   name: null,
@@ -75,17 +83,24 @@ export class UserState implements NgxsOnInit {
       .pipe(
         filter((params) => !!params.token),
         take(1),
+        tap(() => {
+          patchState(defaultState);
+          dispatch(new AppShowLoading());
+        }),
+        switchMap((params) =>
+          dispatch(new UserLoginAction({ token: params.token })).pipe(
+            catchError(() => {
+              // Handle login failure
+              this.router.navigate(['/login'], {
+                queryParams: { autherror: 1 },
+              });
+              return of(null);
+            }),
+            finalize(() => dispatch(new AppHideLoading())),
+          ),
+        ),
       )
-      .subscribe((params) => {
-        /* assume user is has not logged in: */
-        patchState(defaultState);
-        dispatch(new AppShowLoading());
-        /* Always re-log in with the token (if we have the token) */
-        dispatch(new UserLoginAction({ token: params.token }))
-          .pipe(take(1))
-          .subscribe(() => dispatch(new AppHideLoading()));
-        return;
-      });
+      .subscribe();
 
     patchState({
       name: name,
