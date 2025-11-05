@@ -5,7 +5,7 @@ import { Component, Input } from '@angular/core';
   template: `
     <span
       [tooltipStr]="content"
-      showDelay="200"
+      [showDelay]="200"
       textColor="white"
       backgroundColor="black"
       borderColor="transparent"
@@ -39,7 +39,7 @@ import { Component, Input } from '@angular/core';
 export class HelpTooltipComponent {
   @Input() content: string;
 
-  onClick(e: PointerEvent) {
+  onClick(e: MouseEvent): boolean {
     e.stopPropagation();
     return false;
   }

@@ -5,15 +5,13 @@ import { take, filter, switchMap, map } from 'rxjs/operators';
 import { Store } from '@ngxs/store';
 import { PopupService } from '../../popup/popup.service';
 import { SiteSectionStateModel } from './sections-state/site-sections-state.model';
-import {
-  SiteTemplateSectionTypesModel,
-  TemplateTranslationsModel,
-} from '../template-settings/site-templates.interface';
+import { TemplateTranslationsModel } from '../template-settings/site-templates.interface';
 import {
   DeleteSiteSectionAction,
   CloneSectionAction,
 } from './sections-state/site-sections.actions';
 import { AppState } from '../../app-state/app.state';
+import { SettingConfigModel } from '../../shared/interfaces';
 
 @Component({
   selector: 'berta-section',
@@ -152,7 +150,7 @@ export class SectionComponent implements OnInit {
   @Input('section') section: SiteSectionStateModel;
   @Input('isExpanded') isExpanded: boolean;
   @Input('templateSectionTypes')
-  templateSectionTypes: SiteTemplateSectionTypesModel;
+  templateSectionTypes: SettingConfigModel['values'];
   @Input('translations') translations: TemplateTranslationsModel;
   @Input('params') params: any[] = [];
 

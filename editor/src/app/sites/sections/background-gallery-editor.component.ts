@@ -454,7 +454,7 @@ export class BackgroundGalleryEditorComponent implements OnInit {
     );
   }
 
-  deleteItem(event: PointerEvent, file: string) {
+  deleteItem(event: MouseEvent, file: string) {
     event.stopPropagation();
     this.popupService.showPopup({
       type: 'warn',
