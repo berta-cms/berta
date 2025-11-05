@@ -1,6 +1,13 @@
 import { Router, ActivatedRoute } from '@angular/router';
 import { State, StateContext, NgxsOnInit, Action, Selector } from '@ngxs/store';
-import { tap, filter, take, catchError } from 'rxjs/operators';
+import {
+  tap,
+  filter,
+  take,
+  catchError,
+  finalize,
+  switchMap,
+} from 'rxjs/operators';
 
 import { UserStateModel } from './user.state.model';
 import {
@@ -72,16 +79,38 @@ export class UserState implements NgxsOnInit {
     const intercom = window.localStorage.getItem('intercom');
     const helpcrunch = window.localStorage.getItem('helpcrunch');
 
+    // this.route.queryParams
+    //   .pipe(
+    //     filter((params) => !!params.token),
+    //     take(1),
+    //   )
+    //   .subscribe((params) => {
+    //     patchState(defaultState);
+    //     dispatch(new AppShowLoading());
+    //     dispatch(new UserLoginAction({ token: params.token }))
+    //       .pipe(
+    //         catchError(() => {
+    //           // Handle login failure
+    //           this.router.navigate(['/login'], {
+    //             queryParams: { autherror: 1 },
+    //           });
+    //           return of(null);
+    //         }),
+    //         finalize(() => dispatch(new AppHideLoading())),
+    //       )
+    //       .subscribe();
+    //   });
+
     this.route.queryParams
       .pipe(
         filter((params) => !!params.token),
         take(1),
-      )
-      .subscribe((params) => {
-        patchState(defaultState);
-        dispatch(new AppShowLoading());
-        dispatch(new UserLoginAction({ token: params.token }))
-          .pipe(
+        tap(() => {
+          patchState(defaultState);
+          dispatch(new AppShowLoading());
+        }),
+        switchMap((params) =>
+          dispatch(new UserLoginAction({ token: params.token })).pipe(
             catchError(() => {
               // Handle login failure
               this.router.navigate(['/login'], {
@@ -89,11 +118,11 @@ export class UserState implements NgxsOnInit {
               });
               return of(null);
             }),
-          )
-          .subscribe(() => {
-            dispatch(new AppHideLoading());
-          });
-      });
+            finalize(() => dispatch(new AppHideLoading())),
+          ),
+        ),
+      )
+      .subscribe();
 
     patchState({
       name: name,
