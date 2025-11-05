@@ -79,28 +79,6 @@ export class UserState implements NgxsOnInit {
     const intercom = window.localStorage.getItem('intercom');
     const helpcrunch = window.localStorage.getItem('helpcrunch');
 
-    // this.route.queryParams
-    //   .pipe(
-    //     filter((params) => !!params.token),
-    //     take(1),
-    //   )
-    //   .subscribe((params) => {
-    //     patchState(defaultState);
-    //     dispatch(new AppShowLoading());
-    //     dispatch(new UserLoginAction({ token: params.token }))
-    //       .pipe(
-    //         catchError(() => {
-    //           // Handle login failure
-    //           this.router.navigate(['/login'], {
-    //             queryParams: { autherror: 1 },
-    //           });
-    //           return of(null);
-    //         }),
-    //         finalize(() => dispatch(new AppHideLoading())),
-    //       )
-    //       .subscribe();
-    //   });
-
     this.route.queryParams
       .pipe(
         filter((params) => !!params.token),
