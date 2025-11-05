@@ -59,7 +59,6 @@ import { AppState } from '../../app-state/app.state';
           <div>
             @for (setting of settingGroup.settings; track setting) {
               <berta-setting
-                [templateSlug]="settingGroup.templateSlug"
                 [setting]="setting.setting"
                 [config]="setting.config"
                 [disabled]="

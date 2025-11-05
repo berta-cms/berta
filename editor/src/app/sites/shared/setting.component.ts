@@ -49,7 +49,6 @@ import { UpdateInputFocus } from '../../app-state/app.actions';
       @case ('icon') {
         <berta-file-input
           [label]="config.title"
-          [templateSlug]="templateSlug"
           [property]="setting.slug"
           [accept]="'image/png'"
           [value]="setting.value"
@@ -166,7 +165,6 @@ import { UpdateInputFocus } from '../../app-state/app.actions';
   standalone: false,
 })
 export class SettingComponent implements OnInit {
-  @Input('templateSlug') templateSlug: string;
   @Input('setting') setting: SettingModel;
   @Input('config') config: SettingConfigModel;
   @Input() disabled: boolean;
