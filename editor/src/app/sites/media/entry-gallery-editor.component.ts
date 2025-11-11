@@ -603,7 +603,7 @@ export class EntryGalleryEditorComponent implements OnInit {
     );
   }
 
-  openCropItemPage(event: PointerEvent, fileName: string) {
+  openCropItemPage(event: MouseEvent, fileName: string) {
     event.stopPropagation();
     const image_order = this.currentEntry.mediaCacheData.file.findIndex(
       (file) => file['@attributes'].src === fileName,
@@ -612,7 +612,7 @@ export class EntryGalleryEditorComponent implements OnInit {
     this.router.navigate([url], { queryParamsHandling: 'preserve' });
   }
 
-  deleteItem(event: PointerEvent, file: string) {
+  deleteItem(event: MouseEvent, file: string) {
     event.stopPropagation();
     this.popupService.showPopup({
       type: 'warn',

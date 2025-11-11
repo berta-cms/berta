@@ -12,6 +12,7 @@ import { SectionEntriesState } from '../sections/entries/entries-state/section-e
 import { ActivatedRoute } from '@angular/router';
 import { SitesState } from '../sites-state/sites.state';
 import { SiteStateModel } from '../sites-state/site-state.model';
+import { SectionEntry } from '../sections/entries/entries-state/section-entries-state.model';
 
 @Component({
   selector: 'berta-site-media',
@@ -108,6 +109,7 @@ export class SiteMediaComponent implements OnInit, OnDestroy {
   selectedSections: {
     section: SiteSectionStateModel;
     tags: any;
+    entries: SectionEntry[];
   }[];
   selectedTag: string | null;
   showAllSections: boolean;

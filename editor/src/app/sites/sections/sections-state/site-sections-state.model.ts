@@ -25,6 +25,7 @@ export interface SiteSectionStateModel {
       autoplay?: 0 | 1;
       image_size?: string;
       animation?: string;
+      fade_content?: 'enabled' | 'disabled';
     };
   };
   '@attributes'?: {
