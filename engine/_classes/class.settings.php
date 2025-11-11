@@ -75,6 +75,11 @@ class Settings
 
             // Use append flag ('a'), so we wouldn't delete the file, before lock
             $fp = fopen($xml_file, 'a');
+
+            if (! $fp) {
+                throw new \Exception('Could not open file for writing: ' . $xml_file);
+            }
+
             if (flock($fp, LOCK_EX)) {
                 // Clear the file once we have the lock
                 ftruncate($fp, 0);
