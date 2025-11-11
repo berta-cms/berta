@@ -58,6 +58,11 @@ class SetupMiddleware
         }
 
         $content = trim(file_get_contents(realpath($file)));
+
+        if (empty($content)) {
+            return $res;
+        }
+
         $rows = preg_split('/\s+/', $content);
         // Loop through given data
         foreach ((array) $rows as $key => $value) {
