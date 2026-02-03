@@ -30,18 +30,18 @@ import { UserState } from '../user/user.state';
             @if (appState.isBertaHosting) {
               <div class="form-group social-login">
                 <a
-                  href="{{ appState.loginUrl }}?remote_redirect={{
+                  href="{{ appState.facebookLoginUrl }}?remote_redirect={{
                     appState.authenticateUrl
-                  }}&amp;provider=facebook"
+                  }}"
                   class="button facebook"
                 >
                   <bt-icon-facebook></bt-icon-facebook>
                   <p>Log in with Facebook</p></a
                 >
                 <a
-                  href="{{ appState.loginUrl }}?remote_redirect={{
+                  href="{{ appState.googleLoginUrl }}?remote_redirect={{
                     appState.authenticateUrl
-                  }}&amp;provider=google"
+                  }}"
                   class="button google"
                 >
                   <bt-icon-google></bt-icon-google>

@@ -106,6 +106,8 @@ class StateController extends Controller
         $meta = [
             'version' => $options['version'],
             'forgotPasswordUrl' => $user->forgot_password_url,
+            'googleLoginUrl' => $user->google_login_url,
+            'facebookLoginUrl' => $user->facebook_login_url,
             'loginUrl' => $user->profile_url ? $user->profile_url : route('login'),
             'authenticateUrl' => route('authenticate'),
             'isBertaHosting' => $user->profile_url != false,

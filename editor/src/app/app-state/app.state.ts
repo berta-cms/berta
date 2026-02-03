@@ -36,6 +36,8 @@ const defaultState: AppStateModel = {
   tag: null,
   urls: {},
   forgotPasswordUrl: '',
+  googleLoginUrl: '',
+  facebookLoginUrl: '',
   isBertaHosting: false,
   plans: [],
   loginUrl: '',
