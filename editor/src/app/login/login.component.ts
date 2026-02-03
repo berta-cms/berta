@@ -27,26 +27,33 @@ import { UserState } from '../user/user.state';
               <berta-loading></berta-loading>
             </div>
           } @else {
-            @if (appState.isBertaHosting) {
+            @if (
+              appState.isBertaHosting &&
+              (appState.facebookLoginUrl || appState.googleLoginUrl)
+            ) {
               <div class="form-group social-login">
-                <a
-                  href="{{ appState.facebookLoginUrl }}?remote_redirect={{
-                    appState.authenticateUrl
-                  }}"
-                  class="button facebook"
-                >
-                  <bt-icon-facebook></bt-icon-facebook>
-                  <p>Log in with Facebook</p></a
-                >
-                <a
-                  href="{{ appState.googleLoginUrl }}?remote_redirect={{
-                    appState.authenticateUrl
-                  }}"
-                  class="button google"
-                >
-                  <bt-icon-google></bt-icon-google>
-                  <p>Sign in with Google</p></a
-                >
+                @if (appState.facebookLoginUrl) {
+                  <a
+                    href="{{ appState.facebookLoginUrl }}?remote_redirect={{
+                      appState.authenticateUrl
+                    }}"
+                    class="button facebook"
+                  >
+                    <bt-icon-facebook></bt-icon-facebook>
+                    <p>Log in with Facebook</p></a
+                  >
+                }
+                @if (appState.googleLoginUrl) {
+                  <a
+                    href="{{ appState.googleLoginUrl }}?remote_redirect={{
+                      appState.authenticateUrl
+                    }}"
+                    class="button google"
+                  >
+                    <bt-icon-google></bt-icon-google>
+                    <p>Sign in with Google</p></a
+                  >
+                }
                 <p>or</p>
               </div>
             }
