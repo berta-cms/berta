@@ -19,6 +19,10 @@ class UserModel implements AuthenticatableContract, AuthorizableContract
 
     public $profile_url;
 
+    public $google_login_url;
+
+    public $facebook_login_url;
+
     public $forgot_password_url;
 
     public $plans;
@@ -38,6 +42,8 @@ class UserModel implements AuthenticatableContract, AuthorizableContract
         $this->name = $options['AUTH_user'];
         $this->password = $options['AUTH_password'];
         $this->profile_url = $this->getHostingData('HOSTING_PROFILE');
+        $this->google_login_url = $this->getHostingData('GOOGLE_LOGIN');
+        $this->facebook_login_url = $this->getHostingData('FACEBOOK_LOGIN');
         $this->forgot_password_url = $this->getHostingData('FORGOTPASSWORD_LINK');
         $this->plans = $this->getHostingData('PLANS');
         $this->features = $this->getFeatures();
