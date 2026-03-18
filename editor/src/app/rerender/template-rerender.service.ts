@@ -59,12 +59,14 @@ export class TemplateRerenderService {
   private static readonly BANNERS_SETTINGS = 'banners';
   private static readonly SETTINGS = 'settings';
   private static readonly ENTRY_LAYOUT = 'entryLayout';
+  private static readonly SITE_TEXTS = 'siteTexts';
   protected static readonly COMMON_SETTING_GROUPS = [
     TemplateRerenderService.SOCIAL_MEDIA_LINKS,
     TemplateRerenderService.SOCIAL_MEDIA_BTNS,
     TemplateRerenderService.BANNERS_SETTINGS,
     TemplateRerenderService.SETTINGS,
     TemplateRerenderService.ENTRY_LAYOUT,
+    TemplateRerenderService.SITE_TEXTS,
   ];
 
   constructor(
@@ -91,6 +93,10 @@ export class TemplateRerenderService {
       case TemplateRerenderService.SOCIAL_MEDIA_LINKS:
       case TemplateRerenderService.SOCIAL_MEDIA_BTNS:
         compList = info.socialMediaComp;
+        break;
+      case TemplateRerenderService.SITE_TEXTS:
+        if (info.siteTexts) { compList.push(info.siteTexts); }
+        break;
     }
 
     return compList;

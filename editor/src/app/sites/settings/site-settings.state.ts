@@ -167,6 +167,7 @@ export class SiteSettingsState implements NgxsOnInit {
             case 'navigation':
               dispatch(new UpdateNavigationSiteSettingsAction(action.payload));
               break;
+            case 'siteTexts':
             case 'socialMediaLinks':
             case 'socialMediaButtons':
             case 'media':

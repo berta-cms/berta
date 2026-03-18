@@ -29,6 +29,7 @@ import { ResetSiteSettingsAction } from '../sites/settings/site-settings.actions
 import { ResetSiteSettingsConfigAction } from '../sites/settings/site-settings-config.actions';
 import { ResetSiteTemplateSettingsAction } from '../sites/template-settings/site-template-settings.actions';
 import { ResetSiteTemplatesAction } from '../sites/template-settings/site-templates.actions';
+import { ClearAiChatAction } from '../ai-assistant/ai-assistant.actions';
 import { Injectable } from '@angular/core';
 import { of } from 'rxjs';
 
@@ -151,6 +152,7 @@ export class UserState implements NgxsOnInit {
       new ResetSiteSettingsConfigAction(),
       new ResetSiteTemplateSettingsAction(),
       new ResetSiteTemplatesAction(),
+      new ClearAiChatAction(),
     ]);
 
     if (action.saveNextUrl) {

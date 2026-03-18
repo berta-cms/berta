@@ -11,9 +11,10 @@
     ],
     "license": "MIT",
     "require": {
-        "php": "^8.2",
+        "php": "^8.3",
         "firebase/php-jwt": "^6.11",
         "intervention/image": "^3.11",
+        "laravel/ai": "^0.3.0",
         "laravel/framework": "^12.0",
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.10",
@@ -25,7 +26,7 @@
     "require-dev": {
         "fakerphp/faker": "^1.23",
         "laravel/boost": "^2.0",
-        "laravel/pint": "^1.21",
+        "laravel/pint": "^1.29",
         "laravel/sail": "^1.41",
         "mockery/mockery": "^1.6",
         "nunomaduro/collision": "^8.7",

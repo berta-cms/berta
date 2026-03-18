@@ -2,3 +2,11 @@
 command = "php"
 args = ["artisan", "boost:mcp"]
 cwd = "/Users/uldis/projects/berta/berta/_api_app"
+
+[mcp_servers.herd]
+command = "php"
+args = ["/Applications/Herd.app/Contents/Resources/herd-mcp.phar"]
+cwd = "/Users/uldis/projects/berta/berta/_api_app"
+
+[mcp_servers.herd.env]
+SITE_PATH = "/Users/uldis/projects/berta/berta/_api_app"

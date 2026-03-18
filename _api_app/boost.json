@@ -7,11 +7,15 @@
         "opencode"
     ],
     "guidelines": true,
-    "herd_mcp": false,
+    "herd_mcp": true,
     "mcp": true,
     "nightwatch_mcp": false,
+    "packages": [
+        "laravel/ai"
+    ],
     "sail": false,
     "skills": [
-        "pest-testing"
+        "pest-testing",
+        "ai-sdk-development"
     ]
 }

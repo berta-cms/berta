@@ -27,6 +27,7 @@ export class DefaultTemplateRerenderService extends TemplateRerenderService {
     banners: { id: 'siteBanners', dataKey: 'siteBanners' },
     settings: { id: 'sectionFooter', dataKey: 'sectionFooter' },
     entryLayout: { id: 'pageEntries', dataKey: 'entries' },
+    siteTexts: { id: 'siteHeader', dataKey: 'siteHeader' },
   };
 
   constructor(

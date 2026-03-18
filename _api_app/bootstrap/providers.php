@@ -1,6 +1,9 @@
 <?php
 
+use App\Providers\AppServiceProvider;
+use App\User\UserAuthServiceProvider;
+
 return [
-    App\Providers\AppServiceProvider::class,
-    App\User\UserAuthServiceProvider::class,
+    AppServiceProvider::class,
+    UserAuthServiceProvider::class,
 ];

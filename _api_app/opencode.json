@@ -9,6 +9,17 @@
                 "artisan",
                 "boost:mcp"
             ]
+        },
+        "herd": {
+            "type": "local",
+            "enabled": true,
+            "command": [
+                "php",
+                "/Applications/Herd.app/Contents/Resources/herd-mcp.phar"
+            ],
+            "environment": {
+                "SITE_PATH": "/Users/uldis/projects/berta/berta/_api_app"
+            }
         }
     }
 }

@@ -53,6 +53,7 @@ import { AppStateService } from './app-state/app-state.service';
       (click)="hideOverlay()"
     ></div>
     <berta-popup></berta-popup>
+    <berta-ai-assistant></berta-ai-assistant>
   `,
   styles: [
     `

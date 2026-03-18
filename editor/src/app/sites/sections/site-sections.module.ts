@@ -4,7 +4,7 @@ import { RouterModule } from '@angular/router';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { NgxsModule } from '@ngxs/store';
 import { NgsgModule } from 'ng-sortgrid';
-import { SafePipe } from '../../pipes/pipe';
+import { PipesModule } from '../../pipes/pipes.module';
 import { SiteSectionsState } from './sections-state/site-sections.state';
 import { SectionTagsState } from './tags/section-tags.state';
 import { SitesSharedModule } from '../shared/sites-shared.module';
@@ -22,13 +22,13 @@ import { BackgroundGalleryEditorComponent } from './background-gallery-editor.co
     NgxsModule.forFeature([SiteSectionsState, SectionTagsState]),
     SectionEntriesModule,
     SitesSharedModule,
+    PipesModule,
   ],
-  exports: [SafePipe],
+  exports: [PipesModule],
   declarations: [
     SiteSectionsComponent,
     SectionComponent,
     BackgroundGalleryEditorComponent,
-    SafePipe,
   ],
 })
 export class SiteSectionsModule {}

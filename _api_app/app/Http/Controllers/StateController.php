@@ -14,7 +14,9 @@ use App\Sites\SocialMediaLinksRenderService;
 use App\Sites\TemplateSettings\SiteTemplateSettingsDataService;
 use App\Sites\ThemesDataService;
 use App\User\UserModel;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 
 class StateController extends Controller
 {
@@ -45,6 +47,10 @@ class StateController extends Controller
             'entryGallery' => route('entry_gallery'),
             'entryGalleryUpload' => route('entry_gallery_upload'),
         ];
+
+        if (Route::has('ai_chat')) {
+            $state['urls']['aiChat'] = route('ai_chat');
+        }
         $state['sites'] = $sitesDataService->getState();
         $state['site_settings'] = [];
         $state['site_sections'] = [];
@@ -126,10 +132,8 @@ class StateController extends Controller
 
     /**
      * Returns translated settings for site localization: templates and settings config
-     *
-     * @return json
      */
-    public function getLocaleSettings(Request $request)
+    public function getLocaleSettings(Request $request): JsonResponse
     {
         $lang = $request->query('language');
 

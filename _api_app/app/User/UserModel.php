@@ -93,6 +93,7 @@ class UserModel implements AuthenticatableContract, AuthorizableContract
 
         if (! $this->profile_url || $plan) {
             $features[] = 'custom_javascript';
+            $features[] = 'ai_assistant';
         }
 
         if ($is_trial || $plan > 1) {
