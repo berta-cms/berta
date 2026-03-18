@@ -18,7 +18,7 @@
                 "/Applications/Herd.app/Contents/Resources/herd-mcp.phar"
             ],
             "environment": {
-                "SITE_PATH": "/Users/uldis/projects/berta/berta/_api_app"
+                "SITE_PATH": "/path/to/berta/_api_app"
             }
         }
     }

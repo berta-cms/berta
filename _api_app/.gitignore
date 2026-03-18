@@ -18,3 +18,7 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
+.mcp.json
+.cursor/mcp.json
+.codex/config.toml
+opencode.json

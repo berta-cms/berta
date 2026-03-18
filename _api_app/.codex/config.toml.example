@@ -1,12 +1,12 @@
 [mcp_servers.laravel-boost]
 command = "php"
 args = ["artisan", "boost:mcp"]
-cwd = "/Users/uldis/projects/berta/berta/_api_app"
+cwd = "/path/to/berta/_api_app"
 
 [mcp_servers.herd]
 command = "php"
 args = ["/Applications/Herd.app/Contents/Resources/herd-mcp.phar"]
-cwd = "/Users/uldis/projects/berta/berta/_api_app"
+cwd = "/path/to/berta/_api_app"
 
 [mcp_servers.herd.env]
-SITE_PATH = "/Users/uldis/projects/berta/berta/_api_app"
+SITE_PATH = "/path/to/berta/_api_app"
