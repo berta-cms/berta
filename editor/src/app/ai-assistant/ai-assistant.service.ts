@@ -10,11 +10,22 @@ export interface AiChangeItem {
   previous_value?: string | null;
 }
 
+export interface AiSectionChangeItem {
+  operation: 'create' | 'clone' | 'update' | 'delete' | 'reorder';
+  name?: string;
+  title?: string;
+  property?: string;
+  value?: string;
+  previous_value?: string | null;
+  order?: number;
+}
+
 export interface AiChatResponse {
   reply: string;
   is_undo: boolean;
   design_changes: AiChangeItem[];
   settings_changes: AiChangeItem[];
+  section_changes: AiSectionChangeItem[];
 }
 
 @Injectable({
@@ -28,7 +39,7 @@ export class AiAssistantService {
     history: { role: string; content: string }[],
     site: string,
     template: string,
-    changeHistory: { user_message: string; design_changes: AiChangeItem[]; settings_changes: AiChangeItem[] }[] = [],
+    changeHistory: { user_message: string; design_changes: AiChangeItem[]; settings_changes: AiChangeItem[]; section_changes: AiSectionChangeItem[] }[] = [],
   ): Observable<AiChatResponse> {
     return this.appStateService
       .sync('aiChat', { message, history, site, template, change_history: changeHistory }, 'POST')

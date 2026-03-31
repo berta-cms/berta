@@ -13,6 +13,7 @@ export class AiMessageReceivedAction {
     public reply: string,
     public designChanges: { group: string; setting: string; value: string; previous_value?: string | null }[],
     public settingsChanges: { group: string; setting: string; value: string; previous_value?: string | null }[],
+    public sectionChanges: { operation: string; name?: string; title?: string; property?: string; value?: string; previous_value?: string | null; order?: number }[],
     public isUndo: boolean = false,
   ) {}
 }
