@@ -1,6 +1,7 @@
 <?php
 
 use App\Plugins\AiAssistant\AiChatController;
+use App\Plugins\AiAssistant\AiChatRequest;
 use App\Plugins\AiAssistant\AssistantAgent;
 
 use function Pest\Laravel\post;
@@ -145,6 +146,91 @@ it('omits change history section when history is empty', function () {
     $result = $method->invoke($controller, []);
 
     expect($result)->toBe('');
+})->skip(! $pluginInstalled, 'AiAssistant plugin not installed');
+
+it('parses entry_changes from ai response', function () {
+    AssistantAgent::fake([
+        '{"reply": "Created an entry.", "is_undo": false, "design_changes": [], "settings_changes": [], "section_changes": [], "entry_changes": [{"operation": "create", "section": "blog", "description": "<p>Hello world</p>"}]}',
+    ]);
+
+    $agent = new AssistantAgent('system prompt');
+    $result = $agent->chat([['role' => 'user', 'content' => 'add an entry to blog']]);
+
+    expect($result['entry_changes'])->toHaveCount(1)
+        ->and($result['entry_changes'][0]['operation'])->toBe('create')
+        ->and($result['entry_changes'][0]['section'])->toBe('blog')
+        ->and($result['entry_changes'][0]['description'])->toBe('<p>Hello world</p>');
+})->skip(! $pluginInstalled, 'AiAssistant plugin not installed');
+
+it('returns empty entry_changes when not in ai response', function () {
+    AssistantAgent::fake([
+        '{"reply": "Done.", "design_changes": [], "settings_changes": [], "section_changes": []}',
+    ]);
+
+    $agent = new AssistantAgent('system prompt');
+    $result = $agent->chat([['role' => 'user', 'content' => 'hello']]);
+
+    expect($result['entry_changes'])->toBeArray()->toBeEmpty();
+})->skip(! $pluginInstalled, 'AiAssistant plugin not installed');
+
+it('includes entry changes in change history section', function () {
+    $controller = new AiChatController;
+    $method = new ReflectionMethod($controller, 'buildChangeHistorySection');
+
+    $changeHistory = [
+        [
+            'user_message' => 'add an entry',
+            'design_changes' => [],
+            'settings_changes' => [],
+            'section_changes' => [],
+            'entry_changes' => [
+                ['operation' => 'create', 'section' => 'blog', 'entry_id' => '5', 'description' => '<p>Hello</p>'],
+            ],
+        ],
+        [
+            'user_message' => 'update entry description',
+            'design_changes' => [],
+            'settings_changes' => [],
+            'section_changes' => [],
+            'entry_changes' => [
+                ['operation' => 'update', 'section' => 'blog', 'entry_id' => '5', 'value' => '<p>New</p>', 'previous_value' => '<p>Old</p>'],
+            ],
+        ],
+    ];
+
+    $result = $method->invoke($controller, $changeHistory);
+
+    expect($result)
+        ->toContain('add an entry')
+        ->toContain('entry: create #5 in "blog"')
+        ->toContain('undo: delete entry 5')
+        ->toContain('update entry description')
+        ->toContain('entry: update #5 in "blog"')
+        ->toContain('Old')
+        ->toContain('New');
+})->skip(! $pluginInstalled, 'AiAssistant plugin not installed');
+
+it('restricts change_history entry_changes operation to create and update', function () {
+    $request = new AiChatRequest;
+    $rules = $request->rules();
+
+    expect($rules['change_history.*.entry_changes.*.operation'])
+        ->toContain('in:create,update');
+})->skip(! $pluginInstalled, 'AiAssistant plugin not installed');
+
+it('includes entries section in system prompt', function () {
+    $controller = new AiChatController;
+    $method = new ReflectionMethod($controller, 'buildEntriesSection');
+
+    $result = $method->invoke($controller);
+
+    expect($result)
+        ->toContain('Entries')
+        ->toContain('list_section_entries')
+        ->toContain('get_entry_content')
+        ->toContain('description')
+        ->toContain('delete')
+        ->toContain('manually');
 })->skip(! $pluginInstalled, 'AiAssistant plugin not installed');
 
 it('includes help articles in system prompt', function () {

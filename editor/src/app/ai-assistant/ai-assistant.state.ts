@@ -16,7 +16,13 @@ import {
   DeleteSiteSectionAction,
   ReOrderSiteSectionsAction,
 } from '../sites/sections/sections-state/site-sections.actions';
-import { AiAssistantService, AiSectionChangeItem as AiSectionChangeResponseItem } from './ai-assistant.service';
+import {
+  AddSectionEntryFromSyncAction,
+  UpdateSectionEntryFromSyncAction,
+  DeleteSectionEntryFromSyncAction,
+} from '../sites/sections/entries/entries-state/section-entries.actions';
+import { SectionEntriesState } from '../sites/sections/entries/entries-state/section-entries.state';
+import { AiAssistantService, AiEntryChangeItem as AiEntryChangeResponseItem, AiSectionChangeItem as AiSectionChangeResponseItem } from './ai-assistant.service';
 import {
   ToggleAiAssistantAction,
   SendAiMessageAction,
@@ -46,11 +52,21 @@ export interface AiSectionChangeItem {
   order?: number;
 }
 
+export interface AiEntryChangeItem {
+  operation: string;
+  section?: string;
+  entryId?: string;
+  value?: string;
+  previousValue?: string | null;
+  description?: string;
+}
+
 export interface AiChangeHistoryItem {
   userMessage: string;
   designChanges: AiChangeItem[];
   settingsChanges: AiChangeItem[];
   sectionChanges: AiSectionChangeItem[];
+  entryChanges: AiEntryChangeItem[];
 }
 
 export interface AiAssistantStateModel {
@@ -142,6 +158,13 @@ export class AiAssistantState {
         previous_value: c.previousValue,
         order: c.order,
       })),
+      entry_changes: entry.entryChanges.map((c) => ({
+        operation: c.operation as AiEntryChangeResponseItem['operation'],
+        section: c.section,
+        entry_id: c.entryId,
+        value: c.value,
+        previous_value: c.previousValue,
+      })),
     }));
 
     return this.aiAssistantService
@@ -149,7 +172,7 @@ export class AiAssistantState {
       .pipe(
         tap((response) => {
           dispatch(
-            new AiMessageReceivedAction(response.reply, response.design_changes, response.settings_changes, response.section_changes ?? [], response.is_undo),
+            new AiMessageReceivedAction(response.reply, response.design_changes, response.settings_changes, response.section_changes ?? [], response.is_undo, response.entry_changes ?? []),
           );
         }),
         catchError((error) => {
@@ -214,11 +237,20 @@ export class AiAssistantState {
             order: c.order,
           };
         }),
+        entryChanges: action.entryChanges.map((c) => ({
+          operation: c.operation,
+          section: c.section,
+          entryId: c.entry_id,
+          value: c.value,
+          previousValue: c.previous_value ?? null,
+          description: c.description,
+        })),
       };
       const hasChanges =
         newItem.designChanges.length > 0 ||
         newItem.settingsChanges.length > 0 ||
-        newItem.sectionChanges.length > 0;
+        newItem.sectionChanges.length > 0 ||
+        newItem.entryChanges.length > 0;
       changeHistory = hasChanges ? [...state.changeHistory, newItem] : state.changeHistory;
     }
 
@@ -322,16 +354,23 @@ export class AiAssistantState {
       }
     }
 
+    // Map from AI-proposed section name → server-assigned slug, populated during createChain.
+    // Used by createEntryChain to target the correct section even when the slug differs.
+    const sectionNameMap: Record<string, string> = {};
+
     // Create dispatches — sequential, capturing the server-assigned name for undo support
     const createChain = from(createChanges).pipe(
       concatMap((change) => {
         const sectionsBefore = this.store.selectSnapshot(SiteSectionsState.getCurrentSiteSections);
         return dispatch(new CreateSectionAction({ name: null, title: change.title ?? change.name } as any)).pipe(
           tap(() => {
-            if (!action.isUndo) {
-              const sectionsAfter = this.store.selectSnapshot(SiteSectionsState.getCurrentSiteSections);
-              const newSection = sectionsAfter.find((s) => !sectionsBefore.some((b) => b.name === s.name));
-              if (newSection) {
+            const sectionsAfter = this.store.selectSnapshot(SiteSectionsState.getCurrentSiteSections);
+            const newSection = sectionsAfter.find((s) => !sectionsBefore.some((b) => b.name === s.name));
+            if (newSection) {
+              // Record mapping so createEntryChain can resolve the correct section name
+              sectionNameMap[change.name] = newSection.name;
+
+              if (!action.isUndo) {
                 const currentHistory = getState().changeHistory;
                 patchState({
                   changeHistory: currentHistory.map((entry, idx) => {
@@ -416,7 +455,84 @@ export class AiAssistantState {
       }),
     );
 
-    return concat(createChain, cloneChain, reorderChain);
+    // Entry: update dispatches — each update targets content/description
+    const updateEntryChanges = action.entryChanges.filter((c) => c.operation === 'update');
+    for (const change of updateEntryChanges) {
+      if (change.entry_id && change.section) {
+        dispatch(
+          new UpdateSectionEntryFromSyncAction(
+            `${site}/entry/${change.section}/${change.entry_id}/content/description`,
+            change.value ?? '',
+          ),
+        );
+      }
+    }
+
+    // Entry: delete dispatches (used for undo of creates)
+    const deleteEntryChanges = action.entryChanges.filter((c) => c.operation === 'delete');
+    for (const change of deleteEntryChanges) {
+      if (change.entry_id && change.section) {
+        dispatch(new DeleteSectionEntryFromSyncAction(site, change.section, change.entry_id));
+      }
+    }
+
+    // Entry: create dispatches — sequential, capturing server-assigned entry ID for undo
+    const createEntryChanges = action.entryChanges.filter((c) => c.operation === 'create');
+    const createEntryChain = from(createEntryChanges).pipe(
+      concatMap((change) => {
+        if (!change.section) return EMPTY;
+        // Resolve the actual server-assigned section name (in case it was just created above)
+        const targetSection = sectionNameMap[change.section] ?? change.section;
+        const entriesBefore = this.store
+          .selectSnapshot(SectionEntriesState.getCurrentSiteEntries)
+          .filter((e) => e.sectionName === targetSection);
+
+        return dispatch(
+          new AddSectionEntryFromSyncAction(site, targetSection, { tag: null, before_entry: null }),
+        ).pipe(
+          concatMap(() => {
+            const newEntry = this.store
+              .selectSnapshot(SectionEntriesState.getCurrentSiteEntries)
+              .find(
+                (e) =>
+                  e.sectionName === targetSection &&
+                  !entriesBefore.some((b) => b.id === e.id),
+              );
+
+            if (!newEntry) return EMPTY;
+
+            // Store the server-assigned entry ID in change history for undo
+            if (!action.isUndo) {
+              const currentHistory = getState().changeHistory;
+              patchState({
+                changeHistory: currentHistory.map((entry, idx) => {
+                  if (idx !== currentHistory.length - 1) return entry;
+                  return {
+                    ...entry,
+                    entryChanges: entry.entryChanges.map((c) =>
+                      c.operation === 'create' && c.section === change.section && !c.entryId
+                        ? { ...c, entryId: String(newEntry.id) }
+                        : c,
+                    ),
+                  };
+                }),
+              });
+            }
+
+            if (!change.description) return EMPTY;
+
+            return dispatch(
+              new UpdateSectionEntryFromSyncAction(
+                `${site}/entry/${targetSection}/${newEntry.id}/content/description`,
+                change.description,
+              ),
+            );
+          }),
+        );
+      }),
+    );
+
+    return concat(createChain, cloneChain, reorderChain, createEntryChain);
   }
 
   @Action(ClearAiChatAction)
