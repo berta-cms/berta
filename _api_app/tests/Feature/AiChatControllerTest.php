@@ -247,3 +247,91 @@ it('includes help articles in system prompt', function () {
         ->toContain('Domains')
         ->toContain('SSL Certificates and HTTPS');
 })->skip(! $pluginInstalled, 'AiAssistant plugin not installed');
+
+it('parses gallery_changes from ai response', function () {
+    AssistantAgent::fake([
+        '{"reply": "Updated gallery type.", "is_undo": false, "design_changes": [], "settings_changes": [], "section_changes": [], "entry_changes": [], "gallery_changes": [{"operation": "update_setting", "section": "portfolio", "entry_id": "3", "setting": "type", "value": "row"}]}',
+    ]);
+
+    $agent = new AssistantAgent('system prompt');
+    $result = $agent->chat([['role' => 'user', 'content' => 'change gallery to row']]);
+
+    expect($result['gallery_changes'])->toHaveCount(1)
+        ->and($result['gallery_changes'][0]['operation'])->toBe('update_setting')
+        ->and($result['gallery_changes'][0]['section'])->toBe('portfolio')
+        ->and($result['gallery_changes'][0]['entry_id'])->toBe('3')
+        ->and($result['gallery_changes'][0]['setting'])->toBe('type')
+        ->and($result['gallery_changes'][0]['value'])->toBe('row');
+})->skip(! $pluginInstalled, 'AiAssistant plugin not installed');
+
+it('returns empty gallery_changes when not in ai response', function () {
+    AssistantAgent::fake([
+        '{"reply": "Done.", "design_changes": [], "settings_changes": [], "section_changes": []}',
+    ]);
+
+    $agent = new AssistantAgent('system prompt');
+    $result = $agent->chat([['role' => 'user', 'content' => 'hello']]);
+
+    expect($result['gallery_changes'])->toBeArray()->toBeEmpty();
+})->skip(! $pluginInstalled, 'AiAssistant plugin not installed');
+
+it('includes gallery changes in change history section', function () {
+    $controller = new AiChatController;
+    $method = new ReflectionMethod($controller, 'buildChangeHistorySection');
+
+    $changeHistory = [
+        [
+            'user_message' => 'change gallery to row',
+            'design_changes' => [],
+            'settings_changes' => [],
+            'section_changes' => [],
+            'entry_changes' => [],
+            'gallery_changes' => [
+                ['operation' => 'update_setting', 'section' => 'portfolio', 'entry_id' => '3', 'setting' => 'type', 'value' => 'row', 'previous_value' => 'slideshow'],
+            ],
+        ],
+        [
+            'user_message' => 'update image caption',
+            'design_changes' => [],
+            'settings_changes' => [],
+            'section_changes' => [],
+            'entry_changes' => [],
+            'gallery_changes' => [
+                ['operation' => 'update_caption', 'section' => 'portfolio', 'entry_id' => '3', 'file_index' => 0, 'value' => '<p>New caption</p>', 'previous_value' => '<p>Old caption</p>'],
+            ],
+        ],
+    ];
+
+    $result = $method->invoke($controller, $changeHistory);
+
+    expect($result)
+        ->toContain('gallery: update_setting entry #3 in "portfolio"')
+        ->toContain('"slideshow" → "row"')
+        ->toContain('gallery: update_caption entry #3 in "portfolio" file[0]')
+        ->toContain('"Old caption" → "New caption"');
+})->skip(! $pluginInstalled, 'AiAssistant plugin not installed');
+
+it('restricts change_history gallery_changes operation to update_setting and update_caption', function () {
+    $request = new AiChatRequest;
+    $rules = $request->rules();
+
+    expect($rules['change_history.*.gallery_changes.*.operation'])
+        ->toContain('in:update_setting,update_caption');
+})->skip(! $pluginInstalled, 'AiAssistant plugin not installed');
+
+it('includes galleries section in system prompt', function () {
+    $controller = new AiChatController;
+    $method = new ReflectionMethod($controller, 'buildGalleriesSection');
+
+    $result = $method->invoke($controller);
+
+    expect($result)
+        ->toContain('Galleries')
+        ->toContain('get_entry_gallery')
+        ->toContain('update_setting')
+        ->toContain('update_caption')
+        ->toContain('slideshow')
+        ->toContain('fullscreen')
+        ->toContain('file_index')
+        ->toContain('manual');
+})->skip(! $pluginInstalled, 'AiAssistant plugin not installed');

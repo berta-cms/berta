@@ -16,6 +16,7 @@ export class AiMessageReceivedAction {
     public sectionChanges: { operation: string; name?: string; title?: string; property?: string; value?: string; previous_value?: string | null; order?: number }[],
     public isUndo: boolean = false,
     public entryChanges: { operation: 'create' | 'update' | 'delete'; section?: string; entry_id?: string; value?: string; previous_value?: string | null; description?: string }[] = [],
+    public galleryChanges: { operation: 'update_setting' | 'update_caption'; section?: string; entry_id?: string; setting?: string; file_index?: number; value?: string; previous_value?: string | null }[] = [],
   ) {}
 }
 

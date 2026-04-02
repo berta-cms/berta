@@ -22,7 +22,7 @@ import {
   DeleteSectionEntryFromSyncAction,
 } from '../sites/sections/entries/entries-state/section-entries.actions';
 import { SectionEntriesState } from '../sites/sections/entries/entries-state/section-entries.state';
-import { AiAssistantService, AiEntryChangeItem as AiEntryChangeResponseItem, AiSectionChangeItem as AiSectionChangeResponseItem } from './ai-assistant.service';
+import { AiAssistantService, AiEntryChangeItem as AiEntryChangeResponseItem, AiGalleryChangeItem as AiGalleryChangeResponseItem, AiSectionChangeItem as AiSectionChangeResponseItem } from './ai-assistant.service';
 import {
   ToggleAiAssistantAction,
   SendAiMessageAction,
@@ -61,12 +61,23 @@ export interface AiEntryChangeItem {
   description?: string;
 }
 
+export interface AiGalleryChangeItem {
+  operation: string;
+  section?: string;
+  entryId?: string;
+  setting?: string;
+  fileIndex?: number;
+  value?: string;
+  previousValue?: string | null;
+}
+
 export interface AiChangeHistoryItem {
   userMessage: string;
   designChanges: AiChangeItem[];
   settingsChanges: AiChangeItem[];
   sectionChanges: AiSectionChangeItem[];
   entryChanges: AiEntryChangeItem[];
+  galleryChanges: AiGalleryChangeItem[];
 }
 
 export interface AiAssistantStateModel {
@@ -165,6 +176,15 @@ export class AiAssistantState {
         value: c.value,
         previous_value: c.previousValue,
       })),
+      gallery_changes: entry.galleryChanges.map((c) => ({
+        operation: c.operation as AiGalleryChangeResponseItem['operation'],
+        section: c.section,
+        entry_id: c.entryId,
+        setting: c.setting,
+        file_index: c.fileIndex,
+        value: c.value,
+        previous_value: c.previousValue,
+      })),
     }));
 
     return this.aiAssistantService
@@ -172,7 +192,7 @@ export class AiAssistantState {
       .pipe(
         tap((response) => {
           dispatch(
-            new AiMessageReceivedAction(response.reply, response.design_changes, response.settings_changes, response.section_changes ?? [], response.is_undo, response.entry_changes ?? []),
+            new AiMessageReceivedAction(response.reply, response.design_changes, response.settings_changes, response.section_changes ?? [], response.is_undo, response.entry_changes ?? [], response.gallery_changes ?? []),
           );
         }),
         catchError((error) => {
@@ -245,12 +265,22 @@ export class AiAssistantState {
           previousValue: c.previous_value ?? null,
           description: c.description,
         })),
+        galleryChanges: action.galleryChanges.map((c) => ({
+          operation: c.operation,
+          section: c.section,
+          entryId: c.entry_id,
+          setting: c.setting,
+          fileIndex: c.file_index,
+          value: c.value,
+          previousValue: c.previous_value ?? null,
+        })),
       };
       const hasChanges =
         newItem.designChanges.length > 0 ||
         newItem.settingsChanges.length > 0 ||
         newItem.sectionChanges.length > 0 ||
-        newItem.entryChanges.length > 0;
+        newItem.entryChanges.length > 0 ||
+        newItem.galleryChanges.length > 0;
       changeHistory = hasChanges ? [...state.changeHistory, newItem] : state.changeHistory;
     }
 
@@ -473,6 +503,27 @@ export class AiAssistantState {
     for (const change of deleteEntryChanges) {
       if (change.entry_id && change.section) {
         dispatch(new DeleteSectionEntryFromSyncAction(site, change.section, change.entry_id));
+      }
+    }
+
+    // Gallery: update gallery settings and file captions
+    for (const change of action.galleryChanges) {
+      if (!change.entry_id || !change.section) continue;
+
+      if (change.operation === 'update_setting' && change.setting) {
+        dispatch(
+          new UpdateSectionEntryFromSyncAction(
+            `${site}/entry/${change.section}/${change.entry_id}/mediaCacheData/@attributes/${change.setting}`,
+            change.value ?? '',
+          ),
+        );
+      } else if (change.operation === 'update_caption' && change.file_index != null) {
+        dispatch(
+          new UpdateSectionEntryFromSyncAction(
+            `${site}/entry/${change.section}/${change.entry_id}/mediaCacheData/file/${change.file_index}/@value`,
+            change.value ?? '',
+          ),
+        );
       }
     }
 
