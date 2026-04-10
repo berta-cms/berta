@@ -12,7 +12,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.4",
-        "firebase/php-jwt": "^6.11",
+        "firebase/php-jwt": "^7.0",
         "intervention/image": "^3.11",
         "laravel/ai": "^0.3.0",
         "laravel/framework": "^12.0",
