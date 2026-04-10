@@ -213,7 +213,11 @@ class SiteSectionsDataService extends Storage
 
     public function create($name = null, $title = null)
     {
-        $name = $name ? $name : 'untitled-' . uniqid();
+        if (!$name && $title) {
+            $name = $this->getUniqueSlug($title);
+        }
+
+        $name = $name ?: 'untitled-' . uniqid();
         $sections = $this->get();
 
         $section_order = array_search($name, array_column($sections, 'name'));
@@ -319,7 +323,7 @@ class SiteSectionsDataService extends Storage
         if ($prop === 'title') {
             $old_name = $sectionName;
             $old_title = isset($sections['section'][$order]['title']) ? $sections['section'][$order]['title'] : '';
-            $new_name = $this->getUniqueSlug($old_name, $value);
+            $new_name = $this->getUniqueSlug($value);
 
             if (empty($value)) {
                 $ret['value'] = $old_title;
@@ -682,21 +686,18 @@ class SiteSectionsDataService extends Storage
      * Private methods
      ************************************************************/
 
-    private function getUniqueSlug($old_name, $new_title)
+    private function getUniqueSlug($title)
     {
         $sections['section'] = $this->get();
-        $title = trim($new_title);
+        $title = trim($title);
 
         if (strlen($title) < 1) {
             return '';
         }
 
-        $slug = Helpers::slugify($new_title, '-', '\._-', true);
-        $slug = $slug ? $slug : '_';
-
+        $slug = Helpers::slugify($title, '-', '\._-', true);
+        $slug = $slug ?: '_';
         $names = array_values(array_column($sections['section'], 'name'));
-        $old_title_idx = array_search($old_name, $names);
-        $_ = array_splice($names, $old_title_idx, 1);
 
         $notUnique = true;
         $i = 1;
