@@ -21,7 +21,7 @@ class SitemapRenderService
         return $tags;
     }
 
-    private function getUrl($section, $siteSlug, $sections, $request, $tag = null)
+    private function getUrl($section, $siteSlug, $sections, $request, ?string $tag = null)
     {
         $urlParts = [];
 

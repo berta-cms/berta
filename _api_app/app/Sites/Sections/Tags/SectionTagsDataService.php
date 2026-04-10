@@ -117,7 +117,7 @@ class SectionTagsDataService extends Storage
 
     private $TAGS;
 
-    public function __construct($site = '', $sectionName = '', $xml_root = null)
+    public function __construct(string $site = '', string $sectionName = '', ?string $xml_root = null)
     {
         parent::__construct($site);
         $this->XML_ROOT = $xml_root ? $xml_root : $this->getSiteXmlRoot($site);

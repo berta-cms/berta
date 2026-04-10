@@ -25,10 +25,10 @@ if (empty($settings['berta']['installed'])) {
     $testOutput .= '<p><strong>Is your website hosted on a suitable server?</strong></p>';
 
     // php version ...
-    $isOk = version_compare(PHP_VERSION, '8.2', '>=');
+    $isOk = version_compare(PHP_VERSION, '8.4', '>=');
     $listOk &= $isOk;
     $listHasErrors |= ! $isOk;
-    $testOutput .= getStatus($isOk, 'Supported PHP version', 'Berta needs PHP >= 8.2 support on server. Ask your server administrator to enable supported PHP version.');
+    $testOutput .= getStatus($isOk, 'Supported PHP version', 'Berta needs PHP >= 8.4 support on server. Ask your server administrator to enable supported PHP version.');
 
     // multibyte ...
     $isOk = function_exists('mb_ereg_replace') && function_exists('mb_strlen') && function_exists('mb_substr');

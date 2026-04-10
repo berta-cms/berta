@@ -60,14 +60,14 @@ if (empty($ENGINE_ROOT_URL)) {
     $ENGINE_ROOT_URL = $SITE_ROOT_URL . 'engine/';
 }
 
-$hasSupportedPhpVersion = version_compare(PHP_VERSION, '8.2', '>=');
+$hasSupportedPhpVersion = version_compare(PHP_VERSION, '8.4', '>=');
 
 if (! $hasSupportedPhpVersion) {
     if (file_exists($SITE_ROOT_PATH . 'INSTALL/includes/first_visit_serverreqs.php')) {
         $CHECK_INCLUDED = true;
         include $SITE_ROOT_PATH . 'INSTALL/includes/first_visit_serverreqs.php';
     } else {
-        exit('Berta needs PHP >= 8.2 support on server.');
+        exit('Berta needs PHP >= 8.4 support on server.');
     }
 }
 

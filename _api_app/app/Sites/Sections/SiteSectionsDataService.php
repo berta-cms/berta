@@ -144,7 +144,7 @@ class SiteSectionsDataService extends Storage
 
     private $isPreview;
 
-    public function __construct($site = '', $xml_root = null, $isPreview = false)
+    public function __construct(string $site = '', ?string $xml_root = null, bool $isPreview = false)
     {
         parent::__construct($site, $isPreview);
         $this->site_name = $site;
@@ -158,7 +158,7 @@ class SiteSectionsDataService extends Storage
      *
      * @return array Array of sections
      */
-    public function get($sectionName = null)
+    public function get(?string $sectionName = null)
     {
         if (! $this->SECTIONS) {
             $this->SECTIONS = $this->xmlFile2array($this->XML_FILE);
@@ -211,9 +211,9 @@ class SiteSectionsDataService extends Storage
         return $sections;
     }
 
-    public function create($name = null, $title = null)
+    public function create(?string $name = null, ?string $title = null)
     {
-        if (!$name && $title) {
+        if (! $name && $title) {
             $name = $this->getUniqueSlug($title);
         }
 
@@ -246,7 +246,7 @@ class SiteSectionsDataService extends Storage
         return $section;
     }
 
-    public function cloneSection($name = null, $title = null)
+    public function cloneSection(?string $name = null, ?string $title = null)
     {
         $sections = $this->get();
         $title = empty($title) ? $name : $title;

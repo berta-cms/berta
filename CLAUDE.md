@@ -6,13 +6,14 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Berta is a file-based CMS (no database required for content storage). It has three distinct sub-applications that are developed and built independently:
 
-1. **`_api_app/`** — Laravel 12 API backend (PHP 8.2+)
+1. **`_api_app/`** — Laravel 12 API backend (PHP 8.4+)
 2. **`editor/`** — Angular 20 admin editor (TypeScript)
 3. **`engine/`** — Legacy PHP rendering engine with Gulp-built assets
 
 ## Development Commands
 
 ### Laravel API (`_api_app/`)
+
 ```bash
 cd _api_app
 composer install
@@ -24,6 +25,7 @@ npm run build                                     # Build assets
 ```
 
 ### Angular Editor (`editor/`)
+
 ```bash
 cd editor
 npm install
@@ -33,6 +35,7 @@ npm test          # Karma/Jasmine unit tests
 ```
 
 ### Legacy Engine Assets (root)
+
 ```bash
 npm install
 npm run dev       # Gulp watch (compiles Sass for themes/templates)
@@ -50,18 +53,18 @@ npm run build     # Gulp production build
 
 ### Key Directories
 
-| Path | Purpose |
-|------|---------|
-| `_api_app/app/Sites/` | Site/section/entry management domain |
-| `_api_app/app/Shop/` | E-commerce plugin |
-| `_api_app/app/Plugins/` | Plugin system |
-| `_api_app/app/Configuration/` | App configuration classes |
-| `editor/src/` | Angular source (components, state, services) |
-| `engine/_classes/` | Legacy PHP classes for site rendering |
-| `engine/_lib/berta/` | CSS/JS assets bundled by Gulp |
-| `_themes/` | Site themes (capetown, jaipur, kyoto, madrid, etc.) |
-| `_templates/` | Email/system templates with SCSS |
-| `_plugin_shop/` | Shop plugin PHP files |
+| Path                          | Purpose                                             |
+| ----------------------------- | --------------------------------------------------- |
+| `_api_app/app/Sites/`         | Site/section/entry management domain                |
+| `_api_app/app/Shop/`          | E-commerce plugin                                   |
+| `_api_app/app/Plugins/`       | Plugin system                                       |
+| `_api_app/app/Configuration/` | App configuration classes                           |
+| `editor/src/`                 | Angular source (components, state, services)        |
+| `engine/_classes/`            | Legacy PHP classes for site rendering               |
+| `engine/_lib/berta/`          | CSS/JS assets bundled by Gulp                       |
+| `_themes/`                    | Site themes (capetown, jaipur, kyoto, madrid, etc.) |
+| `_templates/`                 | Email/system templates with SCSS                    |
+| `_plugin_shop/`               | Shop plugin PHP files                               |
 
 ### State Management (Angular)
 

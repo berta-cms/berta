@@ -145,7 +145,7 @@ class SectionEntriesController extends Controller
     /**
      * This method is entry rendering example
      */
-    public function renderEntries($site, $section, Request $request, $id = null)
+    public function renderEntries(string $site, string $section, Request $request, ?string $id = null)
     {
         $sectionEntriesDS = new SectionEntriesDataService($site, $section);
         $siteSectionsDS = new SiteSectionsDataService($site);

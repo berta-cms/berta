@@ -292,7 +292,7 @@ class SiteSettingsDataService extends Storage
 
     private $siteTemplatesConfigService;
 
-    public function __construct($site = '', $xml_root = null)
+    public function __construct(string $site = '', ?string $xml_root = null)
     {
         parent::__construct($site);
         $xml_root = $xml_root ? $xml_root : $this->getSiteXmlRoot($site);

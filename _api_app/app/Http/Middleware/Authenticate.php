@@ -23,10 +23,9 @@ class Authenticate
     /**
      * Handle an incoming request.
      *
-     * @param  string|null  $guard
      * @return mixed
      */
-    public function handle(Request $request, Closure $next, $guard = null)
+    public function handle(Request $request, Closure $next, ?string $guard = null)
     {
         $apiPrefix = config('app.api_prefix');
         $isAPIRequest = strpos($request->getRequestUri(), '/' . $apiPrefix) === 0;
