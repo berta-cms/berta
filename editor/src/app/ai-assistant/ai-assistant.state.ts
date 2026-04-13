@@ -640,11 +640,11 @@ export class AiAssistantState {
   }
 
   @Action(ClearAiChatAction)
-  clearChat({ setState }: StateContext<AiAssistantStateModel>) {
+  clearChat({ patchState }: StateContext<AiAssistantStateModel>) {
     const site = this.store.selectSnapshot(AppState.getSite);
     if (site != null) {
       localStorage.removeItem(STORAGE_KEY_PREFIX + site);
     }
-    setState(defaults);
+    patchState({ messages: [], changeHistory: [], isLoading: false });
   }
 }

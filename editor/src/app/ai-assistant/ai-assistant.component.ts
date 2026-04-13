@@ -19,59 +19,94 @@ import {
   selector: 'berta-ai-assistant',
   template: `
     @if (isOpen$ | async) {
-      <div class="ai-panel">
-        <div class="ai-panel-header">
+      <div class="ai-panel" [class.ai-panel--minimized]="isMinimized">
+        <div
+          class="ai-panel-header"
+          [class.ai-panel-header--clickable]="isMinimized"
+          (click)="isMinimized && restore()"
+        >
           <span>AI Assistant</span>
           <div class="ai-panel-actions">
-            <a href="#" (click)="clearChat($event)">Clear</a>
-            <button (click)="close()" class="close-btn" aria-label="Close">
+            @if (!isMinimized) {
+              <a href="#" (click)="clearChat($event)">New chat</a>
+            }
+            <button
+              (click)="$event.stopPropagation(); isMinimized ? restore() : minimize()"
+              class="minimize-btn"
+              [attr.aria-label]="isMinimized ? 'Restore' : 'Minimize'"
+            >
+              <svg
+                class="drop-icon"
+                [class.drop-icon--flipped]="isMinimized"
+                width="8"
+                height="5"
+                viewBox="0 0 10 6"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M9 1L4.75736 5.24264L0.514719 1"
+                  stroke="#777"
+                  stroke-width="1.8"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </button>
+            <button
+              (click)="$event.stopPropagation(); close()"
+              class="close-btn"
+              aria-label="Close"
+            >
               ×
             </button>
           </div>
         </div>
-        <div class="ai-messages" #messagesContainer>
-          @if ((messages$ | async)?.length === 0) {
-            <p class="ai-empty">
-              Ask me to change design or site settings.<br />
-              e.g. "Make the background dark blue" or "Set the page title to My
-              Site"
-            </p>
-          }
-          @for (msg of messages$ | async; track $index) {
-            <div
-              class="ai-message"
-              [class.ai-message--user]="msg.role === 'user'"
-              [class.ai-message--assistant]="msg.role === 'assistant'"
+        @if (!isMinimized) {
+          <div class="ai-messages" #messagesContainer>
+            @if ((messages$ | async)?.length === 0) {
+              <p class="ai-empty">
+                Ask me to change design or site settings.<br />
+                e.g. "Make the background dark blue" or "Set the page title to
+                My Site"
+              </p>
+            }
+            @for (msg of messages$ | async; track $index) {
+              <div
+                class="ai-message"
+                [class.ai-message--user]="msg.role === 'user'"
+                [class.ai-message--assistant]="msg.role === 'assistant'"
+              >
+                @if (msg.role === 'assistant') {
+                  <span [innerHTML]="msg.content | markdown"></span>
+                } @else {
+                  {{ msg.content }}
+                }
+              </div>
+            }
+            @if (isLoading$ | async) {
+              <div class="ai-message ai-message--assistant ai-message--loading">
+                <span class="dot"></span><span class="dot"></span
+                ><span class="dot"></span>
+              </div>
+            }
+          </div>
+          <div class="ai-input-area">
+            <textarea
+              #inputEl
+              [(ngModel)]="inputText"
+              placeholder="Ask me to change design or site settings..."
+              (keydown.enter)="onEnter($event)"
+              rows="3"
+            ></textarea>
+            <button
+              (click)="send()"
+              [disabled]="!inputText.trim() || (isLoading$ | async)"
             >
-              @if (msg.role === 'assistant') {
-                <span [innerHTML]="msg.content | markdown"></span>
-              } @else {
-                {{ msg.content }}
-              }
-            </div>
-          }
-          @if (isLoading$ | async) {
-            <div class="ai-message ai-message--assistant ai-message--loading">
-              <span class="dot"></span><span class="dot"></span
-              ><span class="dot"></span>
-            </div>
-          }
-        </div>
-        <div class="ai-input-area">
-          <textarea
-            #inputEl
-            [(ngModel)]="inputText"
-            placeholder="Ask me to change design or site settings..."
-            (keydown.enter)="onEnter($event)"
-            rows="3"
-          ></textarea>
-          <button
-            (click)="send()"
-            [disabled]="!inputText.trim() || (isLoading$ | async)"
-          >
-            Send
-          </button>
-        </div>
+              Send
+            </button>
+          </div>
+        }
       </div>
     }
   `,
@@ -131,6 +166,37 @@ import {
 
       .close-btn:hover {
         color: #333;
+      }
+
+      .minimize-btn {
+        background: none;
+        border: none;
+        cursor: pointer;
+        line-height: 1;
+        padding: 0;
+        display: flex;
+        align-items: center;
+      }
+
+      .minimize-btn:hover .drop-icon path {
+        stroke: #333;
+      }
+
+      .drop-icon--flipped {
+        transform: scaleY(-1);
+      }
+
+      .ai-panel--minimized {
+        bottom: auto;
+      }
+
+      .ai-panel-header--clickable {
+        cursor: pointer;
+        user-select: none;
+      }
+
+      .ai-panel-header--clickable:hover {
+        background: #f7f7f7;
       }
 
       .ai-messages {
@@ -283,6 +349,7 @@ export class AiAssistantComponent implements AfterViewChecked, OnDestroy {
   messages$: Observable<AiMessage[]>;
   isLoading$: Observable<boolean>;
   inputText = '';
+  isMinimized = false;
 
   @ViewChild('messagesContainer') private messagesContainer: ElementRef;
   @ViewChild('inputEl') private inputEl: ElementRef;
@@ -348,6 +415,16 @@ export class AiAssistantComponent implements AfterViewChecked, OnDestroy {
 
   close() {
     this.store.dispatch(new ToggleAiAssistantAction());
+  }
+
+  minimize() {
+    this.isMinimized = true;
+  }
+
+  restore() {
+    this.isMinimized = false;
+    this.shouldFocus = true;
+    this.shouldScroll = true;
   }
 
   private scrollToBottom() {
