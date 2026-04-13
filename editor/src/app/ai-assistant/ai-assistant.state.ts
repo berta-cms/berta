@@ -5,6 +5,7 @@ import { EMPTY, from, concat } from 'rxjs';
 
 import { Store } from '@ngxs/store';
 import { AppState } from '../app-state/app.state';
+import { UpdateAppStateAction } from '../app-state/app.actions';
 import { SiteSettingsState } from '../sites/settings/site-settings.state';
 import { SiteSectionsState } from '../sites/sections/sections-state/site-sections.state';
 import { UpdateSiteTemplateSettingsAction } from '../sites/template-settings/site-template-settings.actions';
@@ -29,6 +30,7 @@ import {
   AiMessageReceivedAction,
   ClearAiChatAction,
 } from './ai-assistant.actions';
+import { UserLoginAction } from '../user/user.actions';
 
 export interface AiMessage {
   role: 'user' | 'assistant';
@@ -85,13 +87,17 @@ export interface AiAssistantStateModel {
   messages: AiMessage[];
   isLoading: boolean;
   changeHistory: AiChangeHistoryItem[];
+  loadedSite: string | null;
 }
+
+const STORAGE_KEY_PREFIX = 'berta_ai_chat_';
 
 const defaults: AiAssistantStateModel = {
   isOpen: false,
   messages: [],
   isLoading: false,
   changeHistory: [],
+  loadedSite: null,
 };
 
 @State<AiAssistantStateModel>({
@@ -119,6 +125,42 @@ export class AiAssistantState {
     private store: Store,
     private aiAssistantService: AiAssistantService,
   ) {}
+
+  private saveToStorage(site: string, messages: AiMessage[], changeHistory: AiChangeHistoryItem[]) {
+    try {
+      localStorage.setItem(STORAGE_KEY_PREFIX + site, JSON.stringify({ messages, changeHistory }));
+    } catch {}
+  }
+
+  @Action(UpdateAppStateAction)
+  onAppStateUpdate(
+    { patchState, getState }: StateContext<AiAssistantStateModel>,
+    action: UpdateAppStateAction,
+  ) {
+    const site = action.payload?.site;
+    if (site == null) return;
+    if (getState().loadedSite === site) return;
+
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY_PREFIX + site);
+      if (raw) {
+        const { messages, changeHistory } = JSON.parse(raw);
+        patchState({ messages, changeHistory, loadedSite: site });
+      } else {
+        patchState({ messages: [], changeHistory: [], loadedSite: site });
+      }
+    } catch {
+      patchState({ messages: [], changeHistory: [], loadedSite: site });
+    }
+  }
+
+  @Action(UserLoginAction)
+  onLogin({ setState }: StateContext<AiAssistantStateModel>) {
+    Object.keys(localStorage)
+      .filter(key => key.startsWith(STORAGE_KEY_PREFIX))
+      .forEach(key => localStorage.removeItem(key));
+    setState(defaults);
+  }
 
   @Action(ToggleAiAssistantAction)
   toggle({ patchState, getState }: StateContext<AiAssistantStateModel>) {
@@ -284,11 +326,14 @@ export class AiAssistantState {
       changeHistory = hasChanges ? [...state.changeHistory, newItem] : state.changeHistory;
     }
 
+    const updatedMessages = [...state.messages, assistantMessage];
     patchState({
-      messages: [...state.messages, assistantMessage],
+      messages: updatedMessages,
       isLoading: false,
       changeHistory,
     });
+
+    this.saveToStorage(site, updatedMessages, changeHistory);
 
     for (const change of action.designChanges) {
       dispatch(
@@ -415,6 +460,8 @@ export class AiAssistantState {
                     };
                   }),
                 });
+                const updated = getState();
+                this.saveToStorage(site, updated.messages, updated.changeHistory);
               }
             }
           }),
@@ -453,6 +500,8 @@ export class AiAssistantState {
                     };
                   }),
                 });
+                const updated = getState();
+                this.saveToStorage(site, updated.messages, updated.changeHistory);
               }
             }
           }),
@@ -568,6 +617,10 @@ export class AiAssistantState {
                   };
                 }),
               });
+              if (site) {
+                const updated = getState();
+                this.saveToStorage(site, updated.messages, updated.changeHistory);
+              }
             }
 
             if (!change.description) return EMPTY;
@@ -588,6 +641,10 @@ export class AiAssistantState {
 
   @Action(ClearAiChatAction)
   clearChat({ setState }: StateContext<AiAssistantStateModel>) {
+    const site = this.store.selectSnapshot(AppState.getSite);
+    if (site != null) {
+      localStorage.removeItem(STORAGE_KEY_PREFIX + site);
+    }
     setState(defaults);
   }
 }
