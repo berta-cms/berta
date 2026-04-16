@@ -66,7 +66,7 @@ import {
           <div class="ai-messages" #messagesContainer>
             @if ((messages$ | async)?.length === 0) {
               <p class="ai-empty">
-                Ask me to change design or site settings.<br />
+                Ask me to help with your content, design, or settings.<br />
                 e.g. "Make the background dark blue" or "Set the page title to
                 My Site"
               </p>
@@ -95,7 +95,7 @@ import {
             <textarea
               #inputEl
               [(ngModel)]="inputText"
-              placeholder="Ask me to change design or site settings..."
+              placeholder="Ask me to help with your content, design, or settings..."
               (keydown.enter)="onEnter($event)"
               rows="3"
             ></textarea>
