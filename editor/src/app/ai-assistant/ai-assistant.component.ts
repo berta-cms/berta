@@ -92,16 +92,20 @@ import {
             }
           </div>
           <div class="ai-input-area">
+            @if (dailyLimitMessage$ | async; as limitMessage) {
+              <p class="ai-limit-message">{{ limitMessage }}</p>
+            }
             <textarea
               #inputEl
               [(ngModel)]="inputText"
               placeholder="Ask me to help with your content, design, or settings..."
               (keydown.enter)="onEnter($event)"
               rows="3"
+              [disabled]="!!(dailyLimitMessage$ | async)"
             ></textarea>
             <button
               (click)="send()"
-              [disabled]="!inputText.trim() || (isLoading$ | async)"
+              [disabled]="!inputText.trim() || (isLoading$ | async) || !!(dailyLimitMessage$ | async)"
             >
               Send
             </button>
@@ -279,6 +283,17 @@ import {
         flex-shrink: 0;
       }
 
+      .ai-limit-message {
+        margin: 0 0 0.5em;
+        padding: 0.5em 0.75em;
+        background: #fff3cd;
+        border: 1px solid #ffc107;
+        border-radius: 4px;
+        color: #856404;
+        font-size: 12px;
+        line-height: 1.4;
+      }
+
       .ai-input-area textarea {
         flex-grow: 1;
         resize: none;
@@ -348,6 +363,7 @@ export class AiAssistantComponent implements AfterViewChecked, OnDestroy {
   isOpen$: Observable<boolean>;
   messages$: Observable<AiMessage[]>;
   isLoading$: Observable<boolean>;
+  dailyLimitMessage$: Observable<string | null>;
   inputText = '';
   isMinimized = false;
 
@@ -363,9 +379,13 @@ export class AiAssistantComponent implements AfterViewChecked, OnDestroy {
     this.isOpen$ = this.store.select(AiAssistantState.isOpen);
     this.messages$ = this.store.select(AiAssistantState.messages);
     this.isLoading$ = this.store.select(AiAssistantState.isLoading);
+    this.dailyLimitMessage$ = this.store.select(AiAssistantState.dailyLimitMessage);
     this.subs.push(
       this.isOpen$.subscribe((open) => {
         if (open) this.shouldFocus = true;
+      }),
+      this.store.select(AiAssistantState.pendingInput).subscribe((text) => {
+        if (text != null) this.inputText = text;
       }),
       this.messages$.subscribe((msgs) => {
         if (msgs.length > this.messageCount) this.shouldScroll = true;

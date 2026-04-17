@@ -88,6 +88,8 @@ export interface AiAssistantStateModel {
   isLoading: boolean;
   changeHistory: AiChangeHistoryItem[];
   loadedSite: string | null;
+  dailyLimitMessage: string | null;
+  pendingInput: string | null;
 }
 
 const STORAGE_KEY_PREFIX = 'berta_ai_chat_';
@@ -98,6 +100,8 @@ const defaults: AiAssistantStateModel = {
   isLoading: false,
   changeHistory: [],
   loadedSite: null,
+  dailyLimitMessage: null,
+  pendingInput: null,
 };
 
 @State<AiAssistantStateModel>({
@@ -119,6 +123,16 @@ export class AiAssistantState {
   @Selector()
   static isLoading(state: AiAssistantStateModel) {
     return state.isLoading;
+  }
+
+  @Selector()
+  static dailyLimitMessage(state: AiAssistantStateModel) {
+    return state.dailyLimitMessage;
+  }
+
+  @Selector()
+  static pendingInput(state: AiAssistantStateModel) {
+    return state.pendingInput;
   }
 
   constructor(
@@ -177,6 +191,7 @@ export class AiAssistantState {
     patchState({
       messages: [...state.messages, userMessage],
       isLoading: true,
+      pendingInput: null,
     });
 
     const site = this.store.selectSnapshot(AppState.getSite) || '';
@@ -239,7 +254,19 @@ export class AiAssistantState {
         }),
         catchError((error) => {
           console.error('AI assistant error:', error);
-          patchState({ isLoading: false });
+          if (error?.status === 429) {
+            const currentMessages = getState().messages;
+            const lastUserMessage = [...currentMessages].reverse().find(m => m.role === 'user');
+            patchState({
+              isLoading: false,
+              dailyLimitMessage: error?.error?.message ?? 'Daily limit reached.',
+              messages: currentMessages.slice(0, -1),
+              pendingInput: lastUserMessage?.content ?? null,
+            });
+            setTimeout(() => patchState({ dailyLimitMessage: null }), 10000);
+          } else {
+            patchState({ isLoading: false });
+          }
           return EMPTY;
         }),
       );
@@ -645,6 +672,6 @@ export class AiAssistantState {
     if (site != null) {
       localStorage.removeItem(STORAGE_KEY_PREFIX + site);
     }
-    patchState({ messages: [], changeHistory: [], isLoading: false });
+    patchState({ messages: [], changeHistory: [], isLoading: false, dailyLimitMessage: null, pendingInput: null });
   }
 }
