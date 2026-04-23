@@ -15,6 +15,12 @@ import {
   ToggleAiAssistantAction,
 } from './ai-assistant.actions';
 
+const EXAMPLE_PROMPTS = [
+  'Make the background color light green',
+  'Set the main heading to My Works',
+  'Add a new section called Portfolio',
+] as const;
+
 @Component({
   selector: 'berta-ai-assistant',
   template: `
@@ -65,11 +71,14 @@ import {
         @if (!isMinimized) {
           <div class="ai-messages" #messagesContainer>
             @if ((messages$ | async)?.length === 0) {
-              <p class="ai-empty">
-                Ask me to help with your content, design, or settings.<br />
-                e.g. "Make the background dark blue" or "Set the page title to
-                My Site"
-              </p>
+              <div class="ai-empty">
+                <p>Ask me to help with your content, design, or settings.<br />e.g.</p>
+                <div class="ai-examples">
+                  @for (prompt of examplePrompts; track prompt) {
+                    <button class="ai-example-btn" (click)="selectExample(prompt)">{{ prompt }}</button>
+                  }
+                </div>
+              </div>
             }
             @for (msg of messages$ | async; track $index) {
               <div
@@ -220,6 +229,31 @@ import {
         line-height: 1.6;
       }
 
+      .ai-examples {
+        display: flex;
+        flex-direction: column;
+        gap: 0.4em;
+        margin-top: 0.75em;
+        align-items: center;
+      }
+
+      .ai-example-btn {
+        background: none;
+        border: 1px solid #ddd;
+        border-radius: 12px;
+        padding: 0.3em 0.75em;
+        font-size: 12px;
+        color: #666;
+        cursor: pointer;
+        font-family: inherit;
+      }
+
+      .ai-example-btn:hover {
+        background: #f0f0f0;
+        color: #333;
+        border-color: #bbb;
+      }
+
       .ai-message {
         max-width: 85%;
         padding: 0.5em 0.75em;
@@ -366,6 +400,7 @@ export class AiAssistantComponent implements AfterViewChecked, OnDestroy {
   dailyLimitMessage$: Observable<string | null>;
   inputText = '';
   isMinimized = false;
+  readonly examplePrompts = EXAMPLE_PROMPTS;
 
   @ViewChild('messagesContainer') private messagesContainer: ElementRef;
   @ViewChild('inputEl') private inputEl: ElementRef;
@@ -426,6 +461,11 @@ export class AiAssistantComponent implements AfterViewChecked, OnDestroy {
       event.preventDefault();
       this.send();
     }
+  }
+
+  selectExample(prompt: string) {
+    this.inputText = prompt;
+    this.send();
   }
 
   clearChat(event: Event) {
