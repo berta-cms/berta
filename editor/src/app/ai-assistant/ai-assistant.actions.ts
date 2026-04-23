@@ -23,3 +23,8 @@ export class AiMessageReceivedAction {
 export class ClearAiChatAction {
   static readonly type = 'AI_ASSISTANT:CLEAR';
 }
+
+export class SubmitAiFeedbackAction {
+  static readonly type = 'AI_ASSISTANT:SUBMIT_FEEDBACK';
+  constructor(public messageIndex: number, public vote: 'up' | 'down') {}
+}

@@ -103,6 +103,11 @@ export class AppState implements NgxsOnInit {
     return state.lastRoute;
   }
 
+  @Selector()
+  static getAiFeedbackUrl(state: AppStateModel) {
+    return state.urls['aiFeedback'] ?? null;
+  }
+
   constructor(
     private router: Router,
     private actions$: Actions,

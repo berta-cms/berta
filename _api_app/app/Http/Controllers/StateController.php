@@ -51,6 +51,10 @@ class StateController extends Controller
         if (Route::has('ai_chat')) {
             $state['urls']['aiChat'] = route('ai_chat');
         }
+
+        if (Route::has('ai_feedback') && config('services.ai_feedback.script_url')) {
+            $state['urls']['aiFeedback'] = route('ai_feedback');
+        }
         $state['sites'] = $sitesDataService->getState();
         $state['site_settings'] = [];
         $state['site_sections'] = [];

@@ -35,4 +35,9 @@ return [
         ],
     ],
 
+    'ai_feedback' => [
+        'script_url' => env('AI_FEEDBACK_SCRIPT_URL'),
+        'script_secret' => env('AI_FEEDBACK_SCRIPT_SECRET'),
+    ],
+
 ];

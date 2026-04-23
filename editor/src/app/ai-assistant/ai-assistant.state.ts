@@ -29,12 +29,14 @@ import {
   SendAiMessageAction,
   AiMessageReceivedAction,
   ClearAiChatAction,
+  SubmitAiFeedbackAction,
 } from './ai-assistant.actions';
 import { UserLoginAction } from '../user/user.actions';
 
 export interface AiMessage {
   role: 'user' | 'assistant';
   content: string;
+  vote?: 'up' | 'down';
 }
 
 export interface AiChangeItem {
@@ -664,6 +666,38 @@ export class AiAssistantState {
     );
 
     return concat(createChain, cloneChain, reorderChain, createEntryChain);
+  }
+
+  @Action(SubmitAiFeedbackAction)
+  submitFeedback(
+    { getState, patchState }: StateContext<AiAssistantStateModel>,
+    action: SubmitAiFeedbackAction,
+  ) {
+    const state = getState();
+    const messages = state.messages;
+    const assistantMessage = messages[action.messageIndex];
+
+    if (!assistantMessage || assistantMessage.role !== 'assistant') {
+      return EMPTY;
+    }
+
+    const userMessage = [...messages.slice(0, action.messageIndex)].reverse().find((m) => m.role === 'user');
+    const site = this.store.selectSnapshot(AppState.getSite) || '';
+
+    const updatedMessages = messages.map((m, i) =>
+      i === action.messageIndex ? { ...m, vote: action.vote } : m,
+    );
+    patchState({ messages: updatedMessages });
+    this.saveToStorage(site, updatedMessages, state.changeHistory);
+
+    return this.aiAssistantService
+      .feedback(action.vote, userMessage?.content ?? '', assistantMessage.content, messages.map((m) => ({ role: m.role, content: m.content })))
+      .pipe(
+        catchError((error) => {
+          console.error('AI feedback error:', error);
+          return EMPTY;
+        }),
+      );
   }
 
   @Action(ClearAiChatAction)

@@ -66,4 +66,15 @@ export class AiAssistantService {
       .sync('aiChat', { message, history, site, template, change_history: changeHistory }, 'POST')
       .pipe(map((response: any) => response.data as AiChatResponse));
   }
+
+  feedback(
+    vote: 'up' | 'down',
+    userMessage: string,
+    assistantMessage: string,
+    conversation: { role: string; content: string }[],
+  ): Observable<void> {
+    return this.appStateService
+      .sync('aiFeedback', { vote, user_message: userMessage, assistant_message: assistantMessage, conversation }, 'POST')
+      .pipe(map(() => undefined));
+  }
 }
