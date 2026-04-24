@@ -30,6 +30,8 @@ import {
   AiMessageReceivedAction,
   ClearAiChatAction,
   SubmitAiFeedbackAction,
+  FetchAiQuotaAction,
+  AiQuotaFetchedAction,
 } from './ai-assistant.actions';
 import { UserLoginAction } from '../user/user.actions';
 
@@ -91,6 +93,7 @@ export interface AiAssistantStateModel {
   changeHistory: AiChangeHistoryItem[];
   loadedSite: string | null;
   dailyLimitMessage: string | null;
+  dailyUsage: { count: number; limit: number } | null;
   pendingInput: string | null;
 }
 
@@ -103,6 +106,7 @@ const defaults: AiAssistantStateModel = {
   changeHistory: [],
   loadedSite: null,
   dailyLimitMessage: null,
+  dailyUsage: null,
   pendingInput: null,
 };
 
@@ -135,6 +139,11 @@ export class AiAssistantState {
   @Selector()
   static pendingInput(state: AiAssistantStateModel) {
     return state.pendingInput;
+  }
+
+  @Selector()
+  static dailyUsage(state: AiAssistantStateModel) {
+    return state.dailyUsage;
   }
 
   constructor(
@@ -179,8 +188,25 @@ export class AiAssistantState {
   }
 
   @Action(ToggleAiAssistantAction)
-  toggle({ patchState, getState }: StateContext<AiAssistantStateModel>) {
-    patchState({ isOpen: !getState().isOpen });
+  toggle({ patchState, getState, dispatch }: StateContext<AiAssistantStateModel>) {
+    const willOpen = !getState().isOpen;
+    patchState({ isOpen: willOpen });
+    if (willOpen) {
+      dispatch(new FetchAiQuotaAction());
+    }
+  }
+
+  @Action(FetchAiQuotaAction)
+  fetchQuota({ dispatch }: StateContext<AiAssistantStateModel>) {
+    return this.aiAssistantService.getQuota().pipe(
+      tap((usage) => dispatch(new AiQuotaFetchedAction(usage))),
+      catchError(() => EMPTY),
+    );
+  }
+
+  @Action(AiQuotaFetchedAction)
+  quotaFetched({ patchState }: StateContext<AiAssistantStateModel>, action: AiQuotaFetchedAction) {
+    patchState({ dailyUsage: action.usage });
   }
 
   @Action(SendAiMessageAction)
@@ -250,6 +276,9 @@ export class AiAssistantState {
       .chat(action.message, history, site, template, changeHistoryPayload)
       .pipe(
         tap((response) => {
+          if (response.daily_usage) {
+            patchState({ dailyUsage: response.daily_usage });
+          }
           dispatch(
             new AiMessageReceivedAction(response.reply, response.design_changes, response.settings_changes, response.section_changes ?? [], response.is_undo, response.entry_changes ?? [], response.gallery_changes ?? []),
           );

@@ -47,6 +47,7 @@ export interface AiChatResponse {
   section_changes: AiSectionChangeItem[];
   entry_changes: AiEntryChangeItem[];
   gallery_changes: AiGalleryChangeItem[];
+  daily_usage?: { count: number; limit: number };
 }
 
 @Injectable({
@@ -65,6 +66,12 @@ export class AiAssistantService {
     return this.appStateService
       .sync('aiChat', { message, history, site, template, change_history: changeHistory }, 'POST')
       .pipe(map((response: any) => response.data as AiChatResponse));
+  }
+
+  getQuota(): Observable<{ count: number; limit: number }> {
+    return this.appStateService
+      .sync('aiQuota', {}, 'GET')
+      .pipe(map((response: any) => response.data as { count: number; limit: number }));
   }
 
   feedback(
