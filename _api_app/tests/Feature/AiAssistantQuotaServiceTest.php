@@ -38,6 +38,25 @@ it('returns 100 requests per day for shop plan', function () {
     expect($service->getDailyLimit(makeUser(3)))->toBe(100);
 })->skip(! $pluginInstalled, 'AiAssistant plugin not installed');
 
+it('falls back to trial plan (id=0) limit when plan id is not found', function () {
+    $service = new AiAssistantQuotaService;
+    $user = makeUser(9, [
+        ['id' => '0', 'name' => 'Trial', 'features' => [], 'limits' => ['ai_assistant_daily' => 5]],
+        ['id' => '1', 'name' => 'Basic', 'features' => [], 'limits' => ['ai_assistant_daily' => 30]],
+    ]);
+
+    expect($service->getDailyLimit($user))->toBe(5);
+})->skip(! $pluginInstalled, 'AiAssistant plugin not installed');
+
+it('returns 0 when plan id is not found and no trial plan exists', function () {
+    $service = new AiAssistantQuotaService;
+    $user = makeUser(9, [
+        ['id' => '1', 'name' => 'Basic', 'features' => [], 'limits' => ['ai_assistant_daily' => 30]],
+    ]);
+
+    expect($service->getDailyLimit($user))->toBe(0);
+})->skip(! $pluginInstalled, 'AiAssistant plugin not installed');
+
 it('returns 0 when plan has no ai_assistant_daily limit configured', function () {
     $service = new AiAssistantQuotaService;
     $user = makeUser(1, [
