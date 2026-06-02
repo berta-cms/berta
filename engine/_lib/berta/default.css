@@ -21,6 +21,7 @@ body {
     -webkit-transform: rotate(0deg);
     transform: rotate(0deg);
   }
+
   100% {
     -webkit-transform: rotate(360deg);
     transform: rotate(360deg);
@@ -32,6 +33,7 @@ body {
     -webkit-transform: rotate(0deg);
     transform: rotate(0deg);
   }
+
   100% {
     -webkit-transform: rotate(360deg);
     transform: rotate(360deg);
@@ -55,11 +57,11 @@ br.clear {
   display: block;
 }
 
-.xGalleryType-row > .xGallery {
+.xGalleryType-row>.xGallery {
   white-space: nowrap;
 }
 
-.xGalleryType-row > .xGallery > .xGalleryItem {
+.xGalleryType-row>.xGallery>.xGalleryItem {
   display: inline-block;
   vertical-align: top;
 }
@@ -340,7 +342,6 @@ div.xGalleryItem .xGalleryImageVideoBack {
 
   .xSectionType-portfolio #pageEntries .xEntry .xGalleryContainer {
     width: 100%;
-    float: none;
   }
 
   .xSectionType-portfolio .entryTextWrap {
