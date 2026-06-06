@@ -36,6 +36,8 @@ const defaultState: AppStateModel = {
   tag: null,
   urls: {},
   forgotPasswordUrl: '',
+  googleLoginUrl: '',
+  facebookLoginUrl: '',
   isBertaHosting: false,
   plans: [],
   loginUrl: '',
@@ -210,6 +212,8 @@ export class AppState implements NgxsOnInit {
     setState({
       ...defaultState,
       forgotPasswordUrl: state.forgotPasswordUrl,
+      googleLoginUrl: state.googleLoginUrl,
+      facebookLoginUrl: state.facebookLoginUrl,
       isBertaHosting: state.isBertaHosting,
       plans: state.plans,
       loginUrl: state.loginUrl,
