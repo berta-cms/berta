@@ -67,7 +67,7 @@ import { ToggleAiAssistantAction } from '../ai-assistant/ai-assistant.actions';
                   href="#"
                   (click)="toggleAiAssistant($event)"
                   [class.nav-active]="isAiOpen$ | async"
-                  >AI <span class="badge-beta">Beta</span></a
+                  >AI <span class="badge-new">New</span></a
                 >
               }
             </nav>
@@ -125,7 +125,7 @@ import { ToggleAiAssistantAction } from '../ai-assistant/ai-assistant.actions';
         text-decoration: none;
       }
 
-      header nav a .badge-beta {
+      header nav a .badge-new {
         display: inline-block;
         font-size: 9px;
         line-height: 1;
