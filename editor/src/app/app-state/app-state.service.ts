@@ -120,7 +120,11 @@ export class AppStateService {
       }),
       tap(() => this.hideLoading()),
       catchError((error) => {
-        this.showError(error, data);
+        // 429 responses are handled by the specific feature (e.g. AI chat panel),
+        // so skip the generic error notification to avoid a duplicate message.
+        if (!(error instanceof HttpErrorResponse) || error.status !== 429) {
+          this.showError(error, data);
+        }
         this.hideLoading();
         throw error;
       }),

@@ -370,7 +370,7 @@ class SiteTemplateSettingsDataService extends Storage
 
     private $siteTemplateDefaults;
 
-    public function __construct($site = '', $template = 'messy-0.4.2', $xml_root = null)
+    public function __construct(string $site = '', string $template = 'messy-0.4.2', ?string $xml_root = null)
     {
         parent::__construct($site);
         $this->xml_root = $xml_root ? $xml_root : $this->getSiteXmlRoot($site);

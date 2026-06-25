@@ -36,6 +36,8 @@ import { MessyTemplateStyleService } from './preview/messy-template-style.servic
 import { SiteSectionsModule } from './sites/sections/site-sections.module';
 import { ShopSettingsState } from './shop/settings/shop-settings.state';
 import { ShopRegionalCostsState } from './shop/regional-costs/shop-regional-costs.state';
+import { AiAssistantModule } from './ai-assistant/ai-assistant.module';
+import { AiAssistantState } from './ai-assistant/ai-assistant.state';
 import { SiteMediaModule } from './sites/media/site-media.module';
 import { SentryConfigService } from './sentry/sentry-config.service';
 import * as Sentry from '@sentry/angular';
@@ -67,6 +69,7 @@ import { sentryInitFactory } from './sentry/sentry-init.factory';
         ErrorState,
         ShopSettingsState,
         ShopRegionalCostsState,
+        AiAssistantState,
       ],
       {
         developmentMode: !environment.production,
@@ -78,6 +81,7 @@ import { sentryInitFactory } from './sentry/sentry-init.factory';
     SitesSharedModule,
     SiteSectionsModule,
     SiteMediaModule,
+    AiAssistantModule,
   ],
   providers: [
     SentryConfigService,

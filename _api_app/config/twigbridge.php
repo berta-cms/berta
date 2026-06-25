@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Contracts\Support\Htmlable;
+
 /**
  * This file is part of the TwigBridge package.
  *
@@ -83,7 +85,7 @@ return [
         |
         */
         'safe_classes' => [
-            \Illuminate\Contracts\Support\Htmlable::class => ['html'],
+            Htmlable::class => ['html'],
         ],
 
         /*

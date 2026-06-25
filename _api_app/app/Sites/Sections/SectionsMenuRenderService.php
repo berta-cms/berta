@@ -176,7 +176,7 @@ class SectionsMenuRenderService
         ];
     }
 
-    private function getUrl($section, $site, $sections, $siteSettings, $isEditMode, $isPreviewMode, $tag = null)
+    private function getUrl($section, $site, $sections, $siteSettings, $isEditMode, $isPreviewMode, ?array $tag = null)
     {
         $urlParts = [];
         $isExternalLink = isset($section['@attributes']['type']) && $section['@attributes']['type'] == 'external_link';

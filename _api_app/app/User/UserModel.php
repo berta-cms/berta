@@ -81,30 +81,19 @@ class UserModel implements AuthenticatableContract, AuthorizableContract
         return ! empty($this->profile_url);
     }
 
-    private function getFeatures()
+    private function getFeatures(): array
     {
-        $features = [];
-        // Berta plans
-        // 1 - Basic
-        // 2 - Pro
-        // 3 - Shop
-        $plan = $this->getPlan();
-        $is_trial = $plan === null && $this->profile_url;
-
-        if (! $this->profile_url || $plan) {
-            $features[] = 'custom_javascript';
+        if (! $this->isBertaHosting()) {
+            return ['custom_javascript'];
         }
 
-        if ($is_trial || $plan > 1) {
-            $features[] = 'multisite';
-            $features[] = 'hide_berta_copyright';
-        }
+        $planId = (string) $this->getPlan();
+        $plans = $this->plans ?? [];
 
-        if ($is_trial || $plan == 3) {
-            $features[] = 'shop';
-        }
+        $plan = collect($plans)->first(fn ($p) => ($p['id'] ?? null) === $planId)
+            ?? collect($plans)->first(fn ($p) => ($p['id'] ?? null) === '0');
 
-        return $features;
+        return $plan['features'] ?? [];
     }
 
     private function getHostingData($item)

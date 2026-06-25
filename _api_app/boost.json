@@ -1,0 +1,19 @@
+{
+    "agents": [
+        "cursor",
+        "claude_code",
+        "codex",
+        "copilot",
+        "opencode"
+    ],
+    "guidelines": true,
+    "herd_mcp": true,
+    "mcp": true,
+    "nightwatch_mcp": false,
+    "sail": false,
+    "skills": [
+        "ai-sdk-development",
+        "laravel-best-practices",
+        "pest-testing"
+    ]
+}

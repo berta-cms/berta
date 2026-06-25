@@ -3,6 +3,7 @@ export interface SiteSettingChildrenHandler {
   banners: Component;
   settings: Component;
   entryLayout: Component;
+  siteTexts: Component;
 }
 
 export interface Component {

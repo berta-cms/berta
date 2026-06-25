@@ -1,0 +1,18 @@
+{
+    "mcpServers": {
+        "laravel-boost": {
+            "command": "bash",
+            "args": [
+                "-c",
+                "cd _api_app && php artisan mcp:start laravel-boost"
+            ]
+        },
+        "herd": {
+            "command": "bash",
+            "args": [
+                "-c",
+                "SITE_PATH=\"$PWD/_api_app\" php /Applications/Herd.app/Contents/Resources/herd-mcp.phar"
+            ]
+        }
+    }
+}

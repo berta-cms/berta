@@ -4,6 +4,8 @@ import { Observable } from 'rxjs';
 import { AppState } from '../app-state/app.state';
 import { UserState } from '../user/user.state';
 import { UserStateModel } from '../user/user.state.model';
+import { AiAssistantState } from '../ai-assistant/ai-assistant.state';
+import { ToggleAiAssistantAction } from '../ai-assistant/ai-assistant.actions';
 
 @Component({
   selector: 'berta-header',
@@ -60,6 +62,14 @@ import { UserStateModel } from '../user/user.state.model';
               <a href="https://support.berta.me" target="_blank"
                 >Knowledge base</a
               >
+              @if ((user$ | async).features.includes('ai_assistant')) {
+                <a
+                  href="#"
+                  (click)="toggleAiAssistant($event)"
+                  [class.nav-active]="isAiOpen$ | async"
+                  >AI <span class="badge-new">New</span></a
+                >
+              }
             </nav>
           }
           <berta-profile-dropdown></berta-profile-dropdown>
@@ -114,6 +124,21 @@ import { UserStateModel } from '../user/user.state.model';
         display: inline-block;
         text-decoration: none;
       }
+
+      header nav a .badge-new {
+        display: inline-block;
+        font-size: 9px;
+        line-height: 1;
+        padding: 2px 4px;
+        border-radius: 3px;
+        background: #0c4dff;
+        color: #fff;
+        vertical-align: middle;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+        position: relative;
+        top: -1px;
+      }
     `,
   ],
   standalone: false,
@@ -123,11 +148,18 @@ export class HeaderComponent {
   isLoggedIn$: Observable<boolean>;
   isLoading$: Observable<boolean>;
   isSetup$: Observable<boolean>;
+  isAiOpen$: Observable<boolean>;
 
   constructor(private store: Store) {
     this.user$ = this.store.select((state) => state.user);
     this.isLoggedIn$ = this.store.select(UserState.isLoggedIn);
     this.isLoading$ = this.store.select(AppState.getShowLoading);
     this.isSetup$ = this.store.select(AppState.isSetup);
+    this.isAiOpen$ = this.store.select(AiAssistantState.isOpen);
+  }
+
+  toggleAiAssistant(event: Event) {
+    event.preventDefault();
+    this.store.dispatch(new ToggleAiAssistantAction());
   }
 }

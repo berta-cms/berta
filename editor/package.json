@@ -28,6 +28,7 @@
     "@ngxs/store": "~20.1.0",
     "@sentry/angular": "^10.18.0",
     "lodash": "^4.17.21",
+    "marked": "^17.0.4",
     "ng-sortgrid": "^20.0.0",
     "ngx-color-picker": "^20.1.1",
     "ngx-image-cropper": "^9.1.5",
