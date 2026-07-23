@@ -14,6 +14,8 @@ export interface AppStateModel {
   tag: string | null;
   urls: { [name: string]: string };
   forgotPasswordUrl: string;
+  googleLoginUrl: string;
+  facebookLoginUrl: string;
   isBertaHosting: boolean;
   plans: PlanModel[];
   loginUrl: string;
