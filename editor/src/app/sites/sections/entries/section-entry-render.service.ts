@@ -90,7 +90,7 @@ export class SectionEntryRenderService {
     styles.push(`left:${left}px;top:${top}px`);
 
     if (entry.content && entry.content.width) {
-      styles.push(`width:${entry.content.width}px`);
+      styles.push(`width:${entry.content.width}`);
     } else if (
       currentSectionType === 'shop' &&
       shopSettings.group_price_item &&
