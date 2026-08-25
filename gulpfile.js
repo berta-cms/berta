@@ -229,7 +229,7 @@ const backendJs = () => {
     .pipe(gulpif(production, sourcemaps.init()))
     .pipe(
       gulpif(
-        "!**/*.min.js" && production,
+        (file) => production && !/\.min\.js$/i.test(file.path),
         minifyJs().on("error", function (e) {
           console.log(e);
         })
@@ -245,7 +245,7 @@ const frontendJs = () => {
     .pipe(gulpif(production, sourcemaps.init()))
     .pipe(
       gulpif(
-        "!**/*.min.js" && production,
+        (file) => production && !/\.min\.js$/i.test(file.path),
         minifyJs().on("error", function (e) {
           console.log(e);
         })
