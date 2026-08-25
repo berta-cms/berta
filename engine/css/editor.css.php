@@ -459,8 +459,16 @@ body .tox-tinymce-aux {
 
 .xGalleryContainer  {
     clear: left;
-    min-height: 20px;
 }
+    .xGalleryContainer:not(.xGalleryHasImages) {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height .15s ease-out;
+    }
+    .xEntry:hover .xGalleryContainer:not(.xGalleryHasImages),
+    .xEntry:focus-within .xGalleryContainer:not(.xGalleryHasImages) {
+        max-height: 24px;
+    }
     .xGalleryContainer .entryGallery {
         position: relative;
     }
