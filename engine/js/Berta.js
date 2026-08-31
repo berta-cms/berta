@@ -92,6 +92,9 @@ var Berta = new Class({
       case 'link':
         new BertaGalleryLink(item);
         break;
+      case 'grid':
+        new BertaGalleryGrid(item);
+        break;
       default:
         new BertaGallerySlideshow(item);
     }

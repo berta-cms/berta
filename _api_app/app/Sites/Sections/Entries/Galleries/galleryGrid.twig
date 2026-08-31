@@ -1,0 +1,41 @@
+<div class="{{ galleryClassList }}"{% if isFullscreen %} data-fullscreen="1"{% endif %}>
+  {% if items %}
+    <div class="xGallery" xGridColumnsMobile="{{ gridColumnsMobile }}" xGridColumnsDesktop="{{ gridColumnsDesktop }}" xGridColumnsLarge="{{ gridColumnsLargeDesktop }}"{% if gridGap %} xGridGap="{{ gridGap }}"{% endif %}>
+
+      {%- for item in items -%}
+        {%- if item.type == 'image' -%}
+          <div class="xGalleryItem xGalleryItemType-image xImgIndex-1">
+            <img src="{{ item.src }}" width="{{ item.width }}" height="{{ item.height }}"{% if item.srcset %} srcset="{{ item.srcset }}"{% endif %} alt="{{ item.alt|raw }}">
+            <div class="xGalleryImageCaption">{{ item.caption|raw }}</div>
+          </div>
+        {%- else -%}
+          <div class="xGalleryItem xGalleryItemType-video">
+            <video width="{{ item.width }}" controls controlsList="nodownload"{% if item.poster %} poster="{{ item.poster }}"{% endif %}{% if item.autoplay %} data-autoplay="1"{% endif %}>
+              <source src="{{ item.original }}" type="video/mp4">
+            </video>
+            <div class="xGalleryImageCaption">{{ item.caption|raw }}</div>
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+
+      {%- if isEditMode -%}
+        <a href="#" class="xGalleryEditButton xEditorLink xSysCaption xMAlign-container">
+          <span class="xMAlign-outer-gallery">
+            <span class="xMAlign-inner-gallery">edit gallery</span>
+          </span>
+        </a>
+      {%- endif -%}
+    </div>
+
+    <ul class="xGalleryNav" style="display:none">
+      {% for item in navigationItems %}
+        <li>
+          <a href="{{ item.src }}" target="_blank"{{ item.attributes|raw }}>
+            <span>{{ item.index }}</span>
+          </a>
+          <div class="xGalleryImageCaption">{{ item.caption|raw }}</div>
+        </li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+</div>

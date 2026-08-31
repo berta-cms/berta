@@ -101,7 +101,7 @@ export interface TemplateSettingsTemplateResponse {
   };
   entryLayout?: {
     contentWidth?: CssUnitDf;
-    defaultGalleryType?: 'slideshow' | 'row';
+    defaultGalleryType?: 'slideshow' | 'row' | 'grid';
     galleryMargin?: string | number;
     galleryNavMargin?: string | number;
     galleryPosition?:
