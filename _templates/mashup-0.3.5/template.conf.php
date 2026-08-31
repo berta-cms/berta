@@ -1277,6 +1277,7 @@ $templateConf = [
             'values' => [
                 'slideshow',
                 'row',
+                'grid',
             ],
             'default' => 'slideshow',
             'title' => I18n::_('Default gallery type'),

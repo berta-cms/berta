@@ -147,6 +147,7 @@ import { SiteSettingsState } from '../settings/site-settings.state';
                     { title: 'Column', value: 'column' },
                     { title: 'Pile', value: 'pile' },
                     { title: 'Link', value: 'link' },
+                    { title: 'Grid', value: 'grid' },
                   ],
                   enabledOnUpdate: true,
                 }"
@@ -291,6 +292,123 @@ import { SiteSettingsState } from '../settings/site-settings.state';
                       { title: 'New window', value: '_blank' },
                     ],
                     enabledOnUpdate: true,
+                  }"
+                  [error]="''"
+                  [disabled]="false"
+                  (update)="updateGallerySettings($event)"
+                >
+                </berta-setting>
+              }
+              @if (
+                currentEntry['mediaCacheData']['@attributes'].type === 'grid'
+              ) {
+                <berta-setting
+                  [setting]="{
+                    slug: 'grid_columns_mobile',
+                    value:
+                      currentEntry['mediaCacheData']['@attributes']
+                        .grid_columns_mobile || '1',
+                  }"
+                  [config]="{
+                    title: 'Columns (mobile)',
+                    description: 'Screen size < 768px',
+                    format: 'text',
+                    enabledOnUpdate: true,
+                    validation: 'positive_integer',
+                  }"
+                  [error]="''"
+                  [disabled]="false"
+                  (update)="updateGallerySettings($event)"
+                >
+                </berta-setting>
+              }
+              @if (
+                currentEntry['mediaCacheData']['@attributes'].type === 'grid'
+              ) {
+                <berta-setting
+                  [setting]="{
+                    slug: 'grid_columns_desktop',
+                    value:
+                      currentEntry['mediaCacheData']['@attributes']
+                        .grid_columns_desktop || '2',
+                  }"
+                  [config]="{
+                    title: 'Columns (desktop)',
+                    description: 'Screen size between 768px and 1199px',
+                    format: 'text',
+                    enabledOnUpdate: true,
+                    validation: 'positive_integer',
+                  }"
+                  [error]="''"
+                  [disabled]="false"
+                  (update)="updateGallerySettings($event)"
+                >
+                </berta-setting>
+              }
+              @if (
+                currentEntry['mediaCacheData']['@attributes'].type === 'grid'
+              ) {
+                <berta-setting
+                  [setting]="{
+                    slug: 'grid_columns_large_desktop',
+                    value:
+                      currentEntry['mediaCacheData']['@attributes']
+                        .grid_columns_large_desktop || '3',
+                  }"
+                  [config]="{
+                    title: 'Columns (large desktop)',
+                    description: 'Screen size > 1199px',
+                    format: 'text',
+                    enabledOnUpdate: true,
+                    validation: 'positive_integer',
+                  }"
+                  [error]="''"
+                  [disabled]="false"
+                  (update)="updateGallerySettings($event)"
+                >
+                </berta-setting>
+              }
+              @if (
+                currentEntry['mediaCacheData']['@attributes'].type === 'grid'
+              ) {
+                <berta-setting
+                  [setting]="{
+                    slug: 'grid_show_captions',
+                    value:
+                      currentEntry['mediaCacheData']['@attributes']
+                        .grid_show_captions || 'yes',
+                  }"
+                  [config]="{
+                    title: 'Show captions',
+                    format: 'toggle',
+                    values: [
+                      { title: '', value: 'yes' },
+                      { title: '', value: 'no' },
+                    ],
+                    enabledOnUpdate: true,
+                  }"
+                  [error]="''"
+                  [disabled]="false"
+                  (update)="updateGallerySettings($event)"
+                >
+                </berta-setting>
+              }
+              @if (
+                currentEntry['mediaCacheData']['@attributes'].type === 'grid'
+              ) {
+                <berta-setting
+                  [setting]="{
+                    slug: 'grid_gap',
+                    value:
+                      currentEntry['mediaCacheData']['@attributes'].grid_gap ||
+                      '1em',
+                  }"
+                  [config]="{
+                    title: 'Gap between images',
+                    format: 'text',
+                    enabledOnUpdate: true,
+                    allow_blank: true,
+                    css_units: true,
                   }"
                   [error]="''"
                   [disabled]="false"

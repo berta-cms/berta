@@ -8,6 +8,7 @@ import {
 import { SiteSectionStateModel } from '../sections-state/site-sections-state.model';
 import { SectionEntry } from './entries-state/section-entries-state.model';
 import { GalleryColumnRenderService } from './galleries/gallery-column-render.service';
+import { GalleryGridRenderService } from './galleries/gallery-grid-render.service';
 import { GalleryLinkRenderService } from './galleries/gallery-link-render.service';
 import { GalleryPileRenderService } from './galleries/gallery-pile-render.service';
 import { GalleryRowRenderService } from './galleries/gallery-row-render.service';
@@ -24,6 +25,7 @@ export class SectionEntryRenderService {
     private galleryColumnRenderService: GalleryColumnRenderService,
     private galleryPileRenderService: GalleryPileRenderService,
     private galleryLinkRenderService: GalleryLinkRenderService,
+    private galleryGridRenderService: GalleryGridRenderService,
     private twigTemplateRenderService: TwigTemplateRenderService,
   ) {}
 
@@ -162,6 +164,15 @@ export class SectionEntryRenderService {
 
       case 'link':
         gallery = this.galleryLinkRenderService.render(
+          siteSlug,
+          siteSettings,
+          entry,
+          siteTemplateSettings,
+        );
+        break;
+
+      case 'grid':
+        gallery = this.galleryGridRenderService.render(
           siteSlug,
           siteSettings,
           entry,

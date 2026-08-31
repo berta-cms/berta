@@ -304,6 +304,9 @@ var BertaEditor = new Class({
       case "link":
         gallery = new BertaGalleryLink(item);
         break;
+      case "grid":
+        gallery = new BertaGalleryGrid(item);
+        break;
       default:
         gallery = new BertaGallerySlideshow(item);
     }

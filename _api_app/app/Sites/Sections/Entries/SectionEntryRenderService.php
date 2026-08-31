@@ -5,6 +5,7 @@ namespace App\Sites\Sections\Entries;
 use App\Plugins\Shop\ShopSettingsDataService;
 use App\Shared\Helpers;
 use App\Sites\Sections\Entries\Galleries\GalleryColumnRenderService;
+use App\Sites\Sections\Entries\Galleries\GalleryGridRenderService;
 use App\Sites\Sections\Entries\Galleries\GalleryLinkRenderService;
 use App\Sites\Sections\Entries\Galleries\GalleryPileRenderService;
 use App\Sites\Sections\Entries\Galleries\GalleryRowRenderService;
@@ -22,6 +23,8 @@ class SectionEntryRenderService
 
     private $galleryLinkRenderService;
 
+    private $galleryGridRenderService;
+
     public function __construct()
     {
         $this->gallerySlideshowRenderService = new GallerySlideshowRenderService;
@@ -29,6 +32,7 @@ class SectionEntryRenderService
         $this->galleryColumnRenderService = new GalleryColumnRenderService;
         $this->galleryPileRenderService = new GalleryPileRenderService($this->gallerySlideshowRenderService);
         $this->galleryLinkRenderService = new GalleryLinkRenderService;
+        $this->galleryGridRenderService = new GalleryGridRenderService;
     }
 
     /**
@@ -78,6 +82,10 @@ class SectionEntryRenderService
 
             case 'link':
                 $galleryTypeRenderService = $this->galleryLinkRenderService;
+                break;
+
+            case 'grid':
+                $galleryTypeRenderService = $this->galleryGridRenderService;
                 break;
 
             default:

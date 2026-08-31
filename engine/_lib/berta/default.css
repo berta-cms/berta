@@ -96,6 +96,23 @@ br.clear {
 }
 
 
+.xGalleryType-grid>.xGallery {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1em;
+}
+
+.xGalleryType-grid>.xGallery>.xGalleryItem {
+  width: 100% !important;
+  height: auto !important;
+}
+
+.xGalleryType-grid>.xGallery>.xGalleryItem img,
+.xGalleryType-grid>.xGallery>.xGalleryItem video {
+  max-width: 100%;
+  height: auto;
+}
+
 .xGalleryType-row+.xGalleryType-slideshow,
 .xGalleryType-pile+.xGalleryType-slideshow {
   display: none;
@@ -191,6 +208,14 @@ br.clear {
 }
 
 div.xGalleryContainer.xSlideNumbersVisible-no>ul.xGalleryNav {
+  display: none !important;
+}
+
+div.xGalleryContainer.xGalleryType-grid .xGalleryImageCaption {
+  display: block;
+}
+
+div.xGalleryContainer.xGridShowCaptions-no .xGalleryImageCaption {
   display: none !important;
 }
 

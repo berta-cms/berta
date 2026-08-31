@@ -33,8 +33,12 @@ class BertaGallery extends BertaBase
         $galleryLinkAddress = ! empty($entry['mediaCacheData']['@attributes']['link_address']) ? $entry['mediaCacheData']['@attributes']['link_address'] : '';
         $galleryLinkTarget = ! empty($entry['mediaCacheData']['@attributes']['linkTarget']) ? $entry['mediaCacheData']['@attributes']['linkTarget'] : '';
         $rowGalleryPadding = ! empty($entry['mediaCacheData']['@attributes']['row_gallery_padding']) ? $entry['mediaCacheData']['@attributes']['row_gallery_padding'] : false;
+        $gridColumnsMobile = ! empty($entry['mediaCacheData']['@attributes']['grid_columns_mobile']) ? $entry['mediaCacheData']['@attributes']['grid_columns_mobile'] : '1';
+        $gridColumnsDesktop = ! empty($entry['mediaCacheData']['@attributes']['grid_columns_desktop']) ? $entry['mediaCacheData']['@attributes']['grid_columns_desktop'] : '2';
+        $gridColumnsLargeDesktop = ! empty($entry['mediaCacheData']['@attributes']['grid_columns_large_desktop']) ? $entry['mediaCacheData']['@attributes']['grid_columns_large_desktop'] : '3';
+        $gridShowCaptions = ! empty($entry['mediaCacheData']['@attributes']['grid_show_captions']) ? $entry['mediaCacheData']['@attributes']['grid_show_captions'] : 'yes';
 
-        $html = BertaGallery::getHTML($imgs, $entry['mediafolder']['value'], $galleryType, $isAdminMode, false, 1, $galleryFullScreen, $imageSize, $galleryAutoPlay, $gallerySlideNumbersVisible, $galleryWidthByWidestSlide, $galleryLinkAddress, $galleryLinkTarget, $rowGalleryPadding);
+        $html = BertaGallery::getHTML($imgs, $entry['mediafolder']['value'], $galleryType, $isAdminMode, false, 1, $galleryFullScreen, $imageSize, $galleryAutoPlay, $gallerySlideNumbersVisible, $galleryWidthByWidestSlide, $galleryLinkAddress, $galleryLinkTarget, $rowGalleryPadding, $gridColumnsMobile, $gridColumnsDesktop, $gridColumnsLargeDesktop, $gridShowCaptions);
 
         // Add a slideshow html markup as a backup for mobile devices for gallery type
         // - pile
@@ -47,7 +51,7 @@ class BertaGallery extends BertaBase
         return $html;
     }
 
-    public static function getHTML($imgs, $mediaFolderName, $galleryType, $isAdminMode = false, $bReturnFullInfo = false, $sizeRatio = 1, $galleryFullScreen = false, $imageSize = 'large', $galleryAutoPlay = '0', $gallerySlideNumbersVisible = 'yes', $galleryWidthByWidestSlide = 'no', $galleryLinkAddress = '', $galleryLinkTarget = '', $rowGalleryPadding = false)
+    public static function getHTML($imgs, $mediaFolderName, $galleryType, $isAdminMode = false, $bReturnFullInfo = false, $sizeRatio = 1, $galleryFullScreen = false, $imageSize = 'large', $galleryAutoPlay = '0', $gallerySlideNumbersVisible = 'yes', $galleryWidthByWidestSlide = 'no', $galleryLinkAddress = '', $galleryLinkTarget = '', $rowGalleryPadding = false, $gridColumnsMobile = '1', $gridColumnsDesktop = '2', $gridColumnsLargeDesktop = '3', $gridShowCaptions = 'yes')
     {
         global $berta;
         $strOut = '';
@@ -73,6 +77,10 @@ class BertaGallery extends BertaBase
 
                 case 'slideshow':
                     $specificClasses = ' xGalleryAutoPlay-' . $galleryAutoPlay . ' xSlideNumbersVisible-' . $gallerySlideNumbersVisible;
+                    break;
+
+                case 'grid':
+                    $specificClasses = ' xGridShowCaptions-' . $gridShowCaptions;
                     break;
             }
 
@@ -145,6 +153,15 @@ class BertaGallery extends BertaBase
                     ';
                 }
 
+            } elseif ($galleryType == 'grid') {
+                foreach ($imgs as $img) {
+                    if ($img['@attributes']['type'] == 'image') {
+                        [$itemHTML] = BertaGallery::getImageHTML($img, $mediaFolderName, $isAdminMode, $sizeRatio, $imageTargetWidth, $imageTargetHeight);
+                    } else {
+                        [$itemHTML] = BertaGallery::getVideoHTML($img, $mediaFolderName, $isAdminMode, $sizeRatio, $imageTargetWidth, $imageTargetHeight);
+                    }
+                    $galleryContent .= $itemHTML;
+                }
             } else {
                 $galleryContent .= $firstImageHTML;
             }
@@ -159,11 +176,13 @@ class BertaGallery extends BertaBase
 
             if ($galleryType == 'row') {
                 $dimensions = ' style="min-width: ' . $totalWidth . 'px"';
+            } elseif ($galleryType == 'grid') {
+                $dimensions = '';
             } else {
                 $dimensions = ' style="width: ' . $firstImageWidth . 'px;' . ($galleryType !== 'slideshow' ? 'height: ' . $firstImageHeight . 'px;' : '') . '"';
             }
             $strOut = '<div class="xGalleryContainer xGalleryHasImages xGalleryType-' . $galleryType . $specificClasses . '"' . ($galleryFullScreen ? ' data-fullscreen="1"' : '') . '>';
-            $strOut .= '<div class="xGallery"' . $dimensions . ($rowGalleryPadding ? ' xRowGalleryPadding="' . $rowGalleryPadding . '"' : '') . '>';
+            $strOut .= '<div class="xGallery"' . $dimensions . ($rowGalleryPadding ? ' xRowGalleryPadding="' . $rowGalleryPadding . '"' : '') . ($galleryType == 'grid' ? ' xGridColumnsMobile="' . $gridColumnsMobile . '" xGridColumnsDesktop="' . $gridColumnsDesktop . '" xGridColumnsLarge="' . $gridColumnsLargeDesktop . '"' : '') . '>';
             $strOut .= $galleryContent;
 
             if ($isAdminMode) {
@@ -303,7 +322,7 @@ class BertaGallery extends BertaBase
     {
         global $berta;
 
-        $navStr = '<ul class="xGalleryNav" ' . ((count($imgs) == 1 || in_array($galleryType, ['row', 'column', 'pile', 'link'])) ? 'style="display:none"' : '') . '>'; // <link/> / added || $galleryType == 'link'
+        $navStr = '<ul class="xGalleryNav" ' . ((count($imgs) == 1 || in_array($galleryType, ['row', 'column', 'pile', 'link', 'grid'])) ? 'style="display:none"' : '') . '>'; // <link/> / added || $galleryType == 'link'
         for ($i = 0; $i < count($imgs); $i++) {
             $width = $height = $isPoster = 0;
             $srcset = '';
