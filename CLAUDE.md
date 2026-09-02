@@ -42,6 +42,8 @@ npm run dev       # Gulp watch (compiles Sass for themes/templates)
 npm run build     # Gulp production build
 ```
 
+Compiled output (`engine/css/*.min.css`, `engine/js/*.min.js`, `_templates/*/style.css`, etc.) is gitignored, same as `editor/`'s and `_api_app/`'s build output — run `npm run build` once after cloning before the site can render.
+
 ## Architecture
 
 ### How the Parts Connect

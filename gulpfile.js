@@ -9,8 +9,7 @@ const minifyCss = require("gulp-clean-css");
 const minifyJs = require("gulp-uglify");
 const replace = require("gulp-replace");
 const jshint = require("gulp-jshint");
-const sass = require("gulp-sass");
-sass.compiler = require("node-sass");
+const sass = require("gulp-sass")(require("sass"));
 
 let production = false;
 
@@ -143,7 +142,9 @@ const frontendJsFiles = [
 ];
 
 const cleanupVendorAssets = () => {
-  return src("engine/css/vendor", { read: false }).pipe(clean({ force: true }));
+  return src("engine/css/vendor", { read: false, allowEmpty: true }).pipe(
+    clean({ force: true })
+  );
 };
 
 const copyVendorAssets = () => {
@@ -153,7 +154,9 @@ const copyVendorAssets = () => {
 };
 
 const cleanupTinymceSkinFiles = () => {
-  return src("engine/js/skins", { read: false }).pipe(clean({ force: true }));
+  return src("engine/js/skins", { read: false, allowEmpty: true }).pipe(
+    clean({ force: true })
+  );
 };
 const copyTinymceSkinFiles = () => {
   return src(tinymceSkinFiles, { base: "./node_modules/tinymce/" }).pipe(
@@ -199,7 +202,7 @@ const templateCss = (scssFiles, outputDestination) => {
     .pipe(gulpif(production, sourcemaps.init()))
     .pipe(
       sass({
-        outputStyle: production ? "compressed" : "nested",
+        style: production ? "compressed" : "expanded",
       }).on("error", sass.logError)
     )
     .pipe(

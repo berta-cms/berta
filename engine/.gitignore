@@ -2,3 +2,8 @@ hosting
 plan
 dist
 vendor
+css/*.min.css
+css/maps/
+js/*.min.js
+js/maps/
+js/skins/

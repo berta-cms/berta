@@ -1,39 +1,41 @@
-#menuToggle {
-  display: inline-block;
-}
-
-.bt-sections-menu {
-  > ul {
-    display: none;
+@mixin responsive-mobile-common {
+  #menuToggle {
+    display: inline-block;
   }
 
-  ul {
-    li {
-      display: block;
+  .bt-sections-menu {
+    > ul {
+      display: none;
+    }
 
-      ul,
-      &:hover ul {
-        position: relative;
+    ul {
+      li {
         display: block;
+
+        ul,
+        &:hover ul {
+          position: relative;
+          display: block;
+        }
       }
     }
   }
-}
 
-&.bt-centered-content {
-  .subMenu {
-    li {
-      text-align: center;
+  &.bt-centered-content {
+    .subMenu {
+      li {
+        text-align: center;
+      }
     }
   }
-}
 
-#pageEntries {
-  .xEntry {
-    .xGalleryType-row {
-      .xGallery {
-        .xGalleryItem {
-          padding-right: 0;
+  #pageEntries {
+    .xEntry {
+      .xGalleryType-row {
+        .xGallery {
+          .xGalleryItem {
+            padding-right: 0;
+          }
         }
       }
     }
