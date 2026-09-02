@@ -2,7 +2,7 @@
   "name": "berta",
   "description": "Berta CMS",
   "license": "GPL-3.0",
-  "version": "2.9.0",
+  "version": "2.9.1",
   "engines": {
     "node": "^20.19.0 || ^22.12.0 || ^24.0.0"
   },
