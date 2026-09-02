@@ -142,7 +142,9 @@ const frontendJsFiles = [
 ];
 
 const cleanupVendorAssets = () => {
-  return src("engine/css/vendor", { read: false }).pipe(clean({ force: true }));
+  return src("engine/css/vendor", { read: false, allowEmpty: true }).pipe(
+    clean({ force: true })
+  );
 };
 
 const copyVendorAssets = () => {
@@ -152,7 +154,9 @@ const copyVendorAssets = () => {
 };
 
 const cleanupTinymceSkinFiles = () => {
-  return src("engine/js/skins", { read: false }).pipe(clean({ force: true }));
+  return src("engine/js/skins", { read: false, allowEmpty: true }).pipe(
+    clean({ force: true })
+  );
 };
 const copyTinymceSkinFiles = () => {
   return src(tinymceSkinFiles, { base: "./node_modules/tinymce/" }).pipe(
