@@ -9,8 +9,7 @@ const minifyCss = require("gulp-clean-css");
 const minifyJs = require("gulp-uglify");
 const replace = require("gulp-replace");
 const jshint = require("gulp-jshint");
-const sass = require("gulp-sass");
-sass.compiler = require("node-sass");
+const sass = require("gulp-sass")(require("sass"));
 
 let production = false;
 
@@ -199,7 +198,7 @@ const templateCss = (scssFiles, outputDestination) => {
     .pipe(gulpif(production, sourcemaps.init()))
     .pipe(
       sass({
-        outputStyle: production ? "compressed" : "nested",
+        style: production ? "compressed" : "expanded",
       }).on("error", sass.logError)
     )
     .pipe(

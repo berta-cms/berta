@@ -1,5 +1,8 @@
+@use 'responsive-common' as *;
+@use 'responsive-mobile-common' as *;
+
 .bt-responsive {
-  @import '_responsive-common';
+  @include responsive-common;
 
   #pageEntries {
     .xEntry {
@@ -12,7 +15,7 @@
   }
 
   @media (max-width: 767px) {
-    @import 'responsive-mobile-common';
+    @include responsive-mobile-common;
 
     #pageEntries {
       &.columns-3 {
@@ -67,8 +70,8 @@
 
 .bt-auto-responsive {
   @media (max-width: 767px) {
-    @import '_responsive-common';
-    @import 'responsive-mobile-common';
+    @include responsive-common;
+    @include responsive-mobile-common;
 
     #contentContainer {
       width: auto;
