@@ -127,7 +127,7 @@ br.clear {
   overflow: hidden;
 }
 
-.xGalleryType-row+.xGalleryType-slideshow .swiper-container {
+.xGalleryType-row+.xGalleryType-slideshow .swiper {
   overflow: visible;
 }
 
