@@ -1072,9 +1072,9 @@ var BertaEditorBase = new Class({
               var site = getCurrentSite();
               var state = redux_store.getState();
               var template =
-                state.siteSettings.toJSON()[site].template.template;
+                state.siteSettings.toJS()[site].template.template;
               var sectionTypes =
-                state.siteTemplates.toJSON()[template].sectionTypes;
+                state.siteTemplates.toJS()[template].sectionTypes;
               var type = resp.section["@attributes"].type
                 ? resp.section["@attributes"].type
                 : "default";
@@ -1086,7 +1086,7 @@ var BertaEditorBase = new Class({
                 site,
                 resp.order,
                 resp.section,
-                state.siteTemplateSettings.toJSON()[site][template],
+                state.siteTemplateSettings.toJS()[site][template],
                 type_params,
                 "xSection-" + resp.section["name"] + " xSectionField"
               );

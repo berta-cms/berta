@@ -216,7 +216,7 @@ class BertaGallery extends BertaBase
 
     public static function getSlideshowHTML($slides)
     {
-        $html = '<div class="swiper-container">';
+        $html = '<div class="swiper">';
         $html .= '<div class="swiper-wrapper">';
         foreach ($slides as $i => $slide) {
             $html .= '<div class="swiper-slide">' . $slide . '</div>';

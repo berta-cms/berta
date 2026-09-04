@@ -1,9 +1,10 @@
 const { src, dest, watch, series, parallel } = require("gulp");
 const clean = require("gulp-clean");
-const autoprefixer = require("gulp-autoprefixer");
+const autoprefixer = require("gulp-autoprefixer").default;
 const sourcemaps = require("gulp-sourcemaps");
 const gulpif = require("gulp-if");
-const rebaseCssUrls = require("gulp-rebase-css-urls");
+const postcss = require("gulp-postcss");
+const postcssUrl = require("postcss-url");
 const concat = require("gulp-concat");
 const minifyCss = require("gulp-clean-css");
 const minifyJs = require("gulp-uglify");
@@ -43,13 +44,13 @@ const tinymceSkinFiles = [
 ];
 
 const backendCssFiles = [
-  "node_modules/swiper/dist/css/swiper.min.css",
+  "node_modules/swiper/swiper-bundle.min.css",
   "engine/_lib/berta/default.css",
   "engine/_lib/berta/swiper.css",
 ];
 
 const frontendCssFiles = [
-  "node_modules/swiper/dist/css/swiper.min.css",
+  "node_modules/swiper/swiper-bundle.min.css",
   "node_modules/photoswipe/dist/photoswipe.css",
   "node_modules/photoswipe/dist/default-skin/default-skin.css",
   "engine/_lib/berta/default.css",
@@ -92,7 +93,7 @@ const backendJsFiles = [
   "node_modules/immutable/dist/immutable.min.js",
   "node_modules/redux/dist/redux.min.js",
   "node_modules/redux-thunk/dist/redux-thunk.min.js",
-  "node_modules/swiper/dist/js/swiper.min.js",
+  "node_modules/swiper/swiper-bundle.min.js",
 ];
 
 var backendNgJsFiles = [
@@ -136,7 +137,7 @@ const frontendJsFiles = [
   "engine/js/BertaPortfolio.js",
   "engine/js/Berta.js",
   "engine/_lib/milkbox/js/milkbox.js",
-  "node_modules/swiper/dist/js/swiper.min.js",
+  "node_modules/swiper/swiper-bundle.min.js",
   "node_modules/photoswipe/dist/photoswipe.min.js",
   "node_modules/photoswipe/dist/photoswipe-ui-default.min.js",
 ];
@@ -164,10 +165,26 @@ const copyTinymceSkinFiles = () => {
   );
 };
 
+// swiper-bundle.min.css ships pre-minified with native CSS nesting, which
+// gulp-clean-css can't handle correctly (silently mangles `&` selectors, e.g.
+// turning `&:only-child{...}` into a global `&:only-child{...}` rule that
+// matches unrelated only-child elements) — skip both rebasing (it has no
+// url()s needing it anyway) and minification for that file.
+const isVendorPreMinifiedCss = (file) => !/swiper-bundle\.min\.css$/.test(file.path);
+const shouldMinifyCss = (file) => production && isVendorPreMinifiedCss(file);
+
 const backendCss = () => {
   return src(backendCssFiles)
     .pipe(gulpif(production, sourcemaps.init()))
-    .pipe(rebaseCssUrls("engine/css"))
+    .pipe(
+      gulpif(
+        isVendorPreMinifiedCss,
+        postcss([postcssUrl({ url: "rebase" })], {
+          to: "engine/css/backend.min.css",
+        })
+      )
+    )
+    .pipe(gulpif(shouldMinifyCss, minifyCss()))
     .pipe(concat("backend.min.css"))
     .pipe(
       autoprefixer({
@@ -175,7 +192,6 @@ const backendCss = () => {
         cascade: false,
       })
     )
-    .pipe(gulpif(production, minifyCss()))
     .pipe(gulpif(production, sourcemaps.write("/maps")))
     .pipe(dest("engine/css"));
 };
@@ -183,8 +199,16 @@ const backendCss = () => {
 const frontendCss = () => {
   return src(frontendCssFiles)
     .pipe(gulpif(production, sourcemaps.init()))
-    .pipe(rebaseCssUrls("engine/css"))
+    .pipe(
+      gulpif(
+        isVendorPreMinifiedCss,
+        postcss([postcssUrl({ url: "rebase" })], {
+          to: "engine/css/frontend.min.css",
+        })
+      )
+    )
     .pipe(replace("../../node_modules", "./vendor"))
+    .pipe(gulpif(shouldMinifyCss, minifyCss()))
     .pipe(concat("frontend.min.css"))
     .pipe(
       autoprefixer({
@@ -192,7 +216,6 @@ const frontendCss = () => {
         cascade: false,
       })
     )
-    .pipe(gulpif(production, minifyCss()))
     .pipe(gulpif(production, sourcemaps.write("/maps")))
     .pipe(dest("engine/css"));
 };

@@ -63,7 +63,7 @@ var BertaGallerySlideshow = new Class({
       this.nav_highlightItem(li);
 
       if (this.options.fullscreen || this.getNext()) {
-        var swiperEl = this.imageContainer.getElement('.swiper-container');
+        var swiperEl = this.imageContainer.getElement('.swiper');
         var videos = [];
 
         var loadVideo = function (video) {
@@ -105,7 +105,8 @@ var BertaGallerySlideshow = new Class({
           },
           navigation: {
             nextEl: swiperEl.getElement('.swiper-button-next'),
-            prevEl: swiperEl.getElement('.swiper-button-prev')
+            prevEl: swiperEl.getElement('.swiper-button-prev'),
+            addIcons: false
           }
         };
 
@@ -179,7 +180,7 @@ var BertaGallerySlideshow = new Class({
           }
           var slide = gallerySwiper.slides[gallerySwiper.activeIndex];
           var isImageSlide = slide.querySelector('.xGalleryItemType-image') !== null;
-          gallerySwiper.$el[0].setAttribute('data-slide-type', isImageSlide ? 'image' : 'video');
+          gallerySwiper.el.setAttribute('data-slide-type', isImageSlide ? 'image' : 'video');
         });
 
         this.gallerySwiper.on('slideChange', function () {

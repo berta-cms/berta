@@ -746,7 +746,7 @@ export const TWIG_TEMPLATES: Record<string, string> = {
   'Sites/Sections/Entries/Galleries/gallerySlideshow': `<div class="{{ galleryClassList }}"{{ attributes.gallery|raw }}>
   {% if items %}
     <div class="xGallery" style="{{ galleryStyles }}" {% if rowGalleryPadding %} rowGalleryPadding="{{ rowGalleryPadding }}"{% endif %}>
-      <div class="swiper-container">
+      <div class="swiper">
         <div class="swiper-wrapper">
           {% for item in items %}
             <div class="swiper-slide">
