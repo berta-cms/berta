@@ -3,7 +3,8 @@ const clean = require("gulp-clean");
 const autoprefixer = require("gulp-autoprefixer").default;
 const sourcemaps = require("gulp-sourcemaps");
 const gulpif = require("gulp-if");
-const rebaseCssUrls = require("gulp-rebase-css-urls");
+const postcss = require("gulp-postcss");
+const postcssUrl = require("postcss-url");
 const concat = require("gulp-concat");
 const minifyCss = require("gulp-clean-css");
 const minifyJs = require("gulp-uglify");
@@ -164,17 +165,25 @@ const copyTinymceSkinFiles = () => {
   );
 };
 
-// swiper-bundle.min.css ships pre-minified with native CSS nesting, which both
-// gulp-rebase-css-urls (parse error) and gulp-clean-css (silently mangles `&`
-// selectors, e.g. turning `&:only-child{...}` into a global `&:only-child{...}`
-// rule that matches unrelated only-child elements) can't handle correctly.
+// swiper-bundle.min.css ships pre-minified with native CSS nesting, which
+// gulp-clean-css can't handle correctly (silently mangles `&` selectors, e.g.
+// turning `&:only-child{...}` into a global `&:only-child{...}` rule that
+// matches unrelated only-child elements) — skip both rebasing (it has no
+// url()s needing it anyway) and minification for that file.
 const isVendorPreMinifiedCss = (file) => !/swiper-bundle\.min\.css$/.test(file.path);
 const shouldMinifyCss = (file) => production && isVendorPreMinifiedCss(file);
 
 const backendCss = () => {
   return src(backendCssFiles)
     .pipe(gulpif(production, sourcemaps.init()))
-    .pipe(gulpif(isVendorPreMinifiedCss, rebaseCssUrls("engine/css")))
+    .pipe(
+      gulpif(
+        isVendorPreMinifiedCss,
+        postcss([postcssUrl({ url: "rebase" })], {
+          to: "engine/css/backend.min.css",
+        })
+      )
+    )
     .pipe(gulpif(shouldMinifyCss, minifyCss()))
     .pipe(concat("backend.min.css"))
     .pipe(
@@ -190,7 +199,14 @@ const backendCss = () => {
 const frontendCss = () => {
   return src(frontendCssFiles)
     .pipe(gulpif(production, sourcemaps.init()))
-    .pipe(gulpif(isVendorPreMinifiedCss, rebaseCssUrls("engine/css")))
+    .pipe(
+      gulpif(
+        isVendorPreMinifiedCss,
+        postcss([postcssUrl({ url: "rebase" })], {
+          to: "engine/css/frontend.min.css",
+        })
+      )
+    )
     .pipe(replace("../../node_modules", "./vendor"))
     .pipe(gulpif(shouldMinifyCss, minifyCss()))
     .pipe(concat("frontend.min.css"))

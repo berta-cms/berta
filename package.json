@@ -14,12 +14,13 @@
     "gulp-concat": "^2.6.1",
     "gulp-if": "^3.0.0",
     "gulp-jshint": "^2.1.0",
-    "gulp-rebase-css-urls": "git+https://github.com/welldone-software/gulp-rebase-css-urls.git",
+    "gulp-postcss": "^10.0.0",
     "gulp-replace": "^1.1.4",
     "gulp-sass": "^6.0.1",
     "gulp-sourcemaps": "^3.0.0",
     "gulp-uglify": "^3.0.2",
     "jshint": "^2.13.6",
+    "postcss-url": "^10.1.4",
     "sass": "^1.90.0"
   },
   "dependencies": {
