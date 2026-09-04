@@ -1,6 +1,6 @@
 const { src, dest, watch, series, parallel } = require("gulp");
 const clean = require("gulp-clean");
-const autoprefixer = require("gulp-autoprefixer");
+const autoprefixer = require("gulp-autoprefixer").default;
 const sourcemaps = require("gulp-sourcemaps");
 const gulpif = require("gulp-if");
 const rebaseCssUrls = require("gulp-rebase-css-urls");
