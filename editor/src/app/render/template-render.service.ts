@@ -58,13 +58,17 @@ export class TemplateRenderService {
   ) {}
 
   getUserCopyright(siteSlug, siteSettings): UserCopyright {
-    const content =
+    const rawContent =
       siteSettings.siteTexts && siteSettings.siteTexts.siteFooter
         ? siteSettings.siteTexts.siteFooter
         : '';
+    const content = rawContent
+      ? rawContent
+      : '<span class="xEmpty">&nbsp;footer text&nbsp;</span>';
     const attributes = {
-      class: 'xEditableTA xProperty-siteFooter',
+      class: 'xNgEditableTA xProperty-siteFooter',
       'data-path': `${siteSlug}/settings/siteTexts/siteFooter`,
+      'data-empty-caption': 'footer text',
     };
 
     return {

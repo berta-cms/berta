@@ -162,6 +162,8 @@ body .tox-tinymce-aux {
 }
 
 .xEditable,
+.xNgEditable,
+.xNgEditableTA,
 .xEditableSelect,
 .xEditableSelectRC,
 .xEditableFontSelect,
@@ -187,6 +189,8 @@ body .tox-tinymce-aux {
 }
 
 .xEditable:hover,
+.xNgEditable:hover,
+.xNgEditableTA:hover,
 .xEditableSelect:hover,
 .xEditableSelectRC:hover,
 .xEditableFontSelect:hover,

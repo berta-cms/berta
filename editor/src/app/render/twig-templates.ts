@@ -21,7 +21,7 @@ export const TWIG_TEMPLATES: Record<string, string> = {
       <div class="column column-half padded title">
         {% if isEditMode %}
           <div{{ tableHeadTitle.attributes|raw }}>
-            {{ tableHeadTitle.content }}
+            {% if tableHeadTitle.content %}{{ tableHeadTitle.content }}{% else %}<span class="xEmpty">&nbsp;title&nbsp;</span>{% endif %}
           </div>
         {% else %}
             {{ tableHeadTitle.content }}
@@ -33,7 +33,7 @@ export const TWIG_TEMPLATES: Record<string, string> = {
           <div class="column column-half padded qty">
             {% if isEditMode %}
               <div{{ tableHeadQuantity.attributes|raw }}>
-                {{ tableHeadQuantity.content }}
+                {% if tableHeadQuantity.content %}{{ tableHeadQuantity.content }}{% else %}<span class="xEmpty">&nbsp;quantity&nbsp;</span>{% endif %}
               </div>
             {% else %}
                 {{ tableHeadQuantity.content }}
@@ -42,7 +42,7 @@ export const TWIG_TEMPLATES: Record<string, string> = {
           <div class="column column-fourth padded price">
             {% if isEditMode %}
               <div{{ tableHeadPrice.attributes|raw }}>
-                {{ tableHeadPrice.content }}
+                {% if tableHeadPrice.content %}{{ tableHeadPrice.content }}{% else %}<span class="xEmpty">&nbsp;price&nbsp;</span>{% endif %}
               </div>
             {% else %}
                 {{ tableHeadPrice.content }}
@@ -51,7 +51,7 @@ export const TWIG_TEMPLATES: Record<string, string> = {
           <div class="column column-fourth padded sum">
             {% if isEditMode %}
               <div{{ tableHeadSum.attributes|raw }}>
-                {{ tableHeadSum.content }}
+                {% if tableHeadSum.content %}{{ tableHeadSum.content }}{% else %}<span class="xEmpty">&nbsp;sum&nbsp;</span>{% endif %}
               </div>
             {% else %}
                 {{ tableHeadSum.content }}
@@ -81,7 +81,7 @@ export const TWIG_TEMPLATES: Record<string, string> = {
           <div id="promoCodeEntry">
             {% if isEditMode %}
               <div{{ promoCode.attributes|raw }}>
-                {{ promoCode.content }}
+                {% if promoCode.content %}{{ promoCode.content }}{% else %}<span class="xEmpty">&nbsp;Promo code&nbsp;</span>{% endif %}
               </div>
             {% else %}
                 {{ promoCode.content }}
@@ -90,7 +90,7 @@ export const TWIG_TEMPLATES: Record<string, string> = {
               <input type="text" name="promo_code" id="promo_code" />
               {% if isEditMode %}
                 <div{{ promoButton.attributes|raw }}>
-                  {{ promoButton.content }}
+                  {% if promoButton.content %}{{ promoButton.content }}{% else %}<span class="xEmpty">&nbsp;OK&nbsp;</span>{% endif %}
                 </div>
               {% else %}
                   <input type="button" value="{{ promoButton.content }}" />
@@ -134,7 +134,7 @@ export const TWIG_TEMPLATES: Record<string, string> = {
           <input type="hidden" id="discount_applied" value="0" />
           {% if isEditMode %}
             <div{{ discount.attributes|raw }}>
-              {{ discount.content }}
+              {% if discount.content %}{{ discount.content }}{% else %}<span class="xEmpty">&nbsp;discount&nbsp;</span>{% endif %}
             </div>
           {% else %}
               {{ discount.content }}
@@ -149,7 +149,7 @@ export const TWIG_TEMPLATES: Record<string, string> = {
         <div class="padded shoppingCartTotal">
           {% if isEditMode %}
             <div{{ total.attributes|raw }}>
-              {{ total.content }}
+              {% if total.content %}{{ total.content }}{% else %}<span class="xEmpty">&nbsp;total&nbsp;</span>{% endif %}
             </div>
           {% else %}
               {{ total.content }}
@@ -157,7 +157,7 @@ export const TWIG_TEMPLATES: Record<string, string> = {
 
           {% if isEditMode %}
             <div{{ includedVat.attributes|raw }}>
-              {{ includedVat.content }}
+              {% if includedVat.content %}{{ includedVat.content }}{% else %}<span class="xEmpty">&nbsp;incl vat&nbsp;</span>{% endif %}
             </div>
           {% endif %}
           <div class="vatprice hidden">{{ includedVat.content }} (<span></span>%)</div>
@@ -180,7 +180,7 @@ export const TWIG_TEMPLATES: Record<string, string> = {
             <p class="checkbox">
               {% if isEditMode %}
                 <div{{ legalPerson.attributes|raw }}>
-                  {{ legalPerson.content }}
+                  {% if legalPerson.content %}{{ legalPerson.content }}{% else %}<span class="xEmpty">&nbsp;legal person&nbsp;</span>{% endif %}
                 </div>
               {% else %}
                 <input type="checkbox" id="cartTextLegalPerson" value="1" /> <label for="cartTextLegalPerson" class="auto-width"> {{ legalPerson.content }}</label>
@@ -191,7 +191,7 @@ export const TWIG_TEMPLATES: Record<string, string> = {
               <label for="cartTextCompany">
                 {% if isEditMode %}
                   <div{{ company.attributes|raw }}>
-                    {{ company.content }}
+                    {% if company.content %}{{ company.content }}{% else %}<span class="xEmpty">&nbsp;Company&nbsp;</span>{% endif %}
                   </div>
                 {% else %}
                     {{ company.content }}
@@ -206,7 +206,7 @@ export const TWIG_TEMPLATES: Record<string, string> = {
               <label for="cartTextCompanyRegNo">
                 {% if isEditMode %}
                   <div{{ companyRegistrationNumber.attributes|raw }}>
-                    {{ companyRegistrationNumber.content }}
+                    {% if companyRegistrationNumber.content %}{{ companyRegistrationNumber.content }}{% else %}<span class="xEmpty">&nbsp;Company reg. no.&nbsp;</span>{% endif %}
                   </div>
                 {% else %}
                     {{ companyRegistrationNumber.content }}
@@ -221,7 +221,7 @@ export const TWIG_TEMPLATES: Record<string, string> = {
               <label for="cartTextLegalAddress">
                 {% if isEditMode %}
                   <div{{ legalAddress.attributes|raw }}>
-                    {{ legalAddress.content }}
+                    {% if legalAddress.content %}{{ legalAddress.content }}{% else %}<span class="xEmpty">&nbsp;Legal address&nbsp;</span>{% endif %}
                   </div>
                 {% else %}
                     {{ legalAddress.content }}
@@ -236,7 +236,7 @@ export const TWIG_TEMPLATES: Record<string, string> = {
               <label for="nname">
                 {% if isEditMode %}
                   <div{{ nameSurname.attributes|raw }}>
-                    {{ nameSurname.content }}
+                    {% if nameSurname.content %}{{ nameSurname.content }}{% else %}<span class="xEmpty">&nbsp;name surname&nbsp;</span>{% endif %}
                   </div>
                 {% else %}
                     {{ nameSurname.content }}
@@ -251,7 +251,7 @@ export const TWIG_TEMPLATES: Record<string, string> = {
               <label for="address">
                 {% if isEditMode %}
                   <div{{ address.attributes|raw }}>
-                    {{ address.content }}
+                    {% if address.content %}{{ address.content }}{% else %}<span class="xEmpty">&nbsp;address&nbsp;</span>{% endif %}
                   </div>
                 {% else %}
                     {{ address.content }}
@@ -266,7 +266,7 @@ export const TWIG_TEMPLATES: Record<string, string> = {
               <label for="phone">
                 {% if isEditMode %}
                   <div{{ phone.attributes|raw }}>
-                    {{ phone.content }}
+                    {% if phone.content %}{{ phone.content }}{% else %}<span class="xEmpty">&nbsp;phone number&nbsp;</span>{% endif %}
                   </div>
                 {% else %}
                     {{ phone.content }}
@@ -281,7 +281,7 @@ export const TWIG_TEMPLATES: Record<string, string> = {
               <label for="email-reg">
                 {% if isEditMode %}
                   <div{{ email.attributes|raw }}>
-                    {{ email.content }}
+                    {% if email.content %}{{ email.content }}{% else %}<span class="xEmpty">&nbsp;email&nbsp;</span>{% endif %}
                   </div>
                 {% else %}
                     {{ email.content }}
@@ -296,7 +296,7 @@ export const TWIG_TEMPLATES: Record<string, string> = {
               <label for="notes">
                 {% if isEditMode %}
                   <div{{ comments.attributes|raw }}>
-                    {{ comments.content }}
+                    {% if comments.content %}{{ comments.content }}{% else %}<span class="xEmpty">&nbsp;comments&nbsp;</span>{% endif %}
                   </div>
                 {% else %}
                     {{ comments.content }}
@@ -309,7 +309,7 @@ export const TWIG_TEMPLATES: Record<string, string> = {
 
             {% if isEditMode %}
               <div{{ deliverToBillingAddress.attributes|raw }}>
-                {{ deliverToBillingAddress.content }}
+                {% if deliverToBillingAddress.content %}{{ deliverToBillingAddress.content }}{% else %}<span class="xEmpty">&nbsp;deliver to billing_address&nbsp;</span>{% endif %}
               </div>
             {% else %}
               <p class="no-margin-bottom">
@@ -321,7 +321,7 @@ export const TWIG_TEMPLATES: Record<string, string> = {
 
         <div class="cc-fields{% if not isEditMode %} hidden{% endif %}" id="shipping_address_form">
           <h2{{ shippingAddressHeader.attributes|raw }}>
-            {{ shippingAddressHeader.content }}
+            {% if shippingAddressHeader.content %}{{ shippingAddressHeader.content }}{% else %}<span class="xEmpty">&nbsp;shipping address&nbsp;</span>{% endif %}
           </h2>
 
           <div class="padded">
@@ -329,7 +329,7 @@ export const TWIG_TEMPLATES: Record<string, string> = {
               <label for="ship_nname">
                 {% if isEditMode %}
                   <div{{ nameSurname.attributes|raw }}>
-                    {{ nameSurname.content }}
+                    {% if nameSurname.content %}{{ nameSurname.content }}{% else %}<span class="xEmpty">&nbsp;name surname&nbsp;</span>{% endif %}
                   </div>
                 {% else %}
                     {{ nameSurname.content }}
@@ -344,7 +344,7 @@ export const TWIG_TEMPLATES: Record<string, string> = {
               <label for="ship_address">
                 {% if isEditMode %}
                   <div{{ address.attributes|raw }}>
-                    {{ address.content }}
+                    {% if address.content %}{{ address.content }}{% else %}<span class="xEmpty">&nbsp;address&nbsp;</span>{% endif %}
                   </div>
                 {% else %}
                     {{ address.content }}
@@ -359,7 +359,7 @@ export const TWIG_TEMPLATES: Record<string, string> = {
               <label for="ship_phone">
                 {% if isEditMode %}
                   <div{{ phone.attributes|raw }}>
-                    {{ phone.content }}
+                    {% if phone.content %}{{ phone.content }}{% else %}<span class="xEmpty">&nbsp;phone number&nbsp;</span>{% endif %}
                   </div>
                 {% else %}
                     {{ phone.content }}
@@ -374,7 +374,7 @@ export const TWIG_TEMPLATES: Record<string, string> = {
               <label for="ship_email-reg">
                 {% if isEditMode %}
                   <div{{ email.attributes|raw }}>
-                    {{ email.content }}
+                    {% if email.content %}{{ email.content }}{% else %}<span class="xEmpty">&nbsp;email&nbsp;</span>{% endif %}
                   </div>
                 {% else %}
                     {{ email.content }}
@@ -389,7 +389,7 @@ export const TWIG_TEMPLATES: Record<string, string> = {
               <label for="ship_notes">
                 {% if isEditMode %}
                   <div{{ comments.attributes|raw }}>
-                    {{ comments.content }}
+                    {% if comments.content %}{{ comments.content }}{% else %}<span class="xEmpty">&nbsp;comments&nbsp;</span>{% endif %}
                   </div>
                 {% else %}
                     {{ comments.content }}
@@ -405,7 +405,7 @@ export const TWIG_TEMPLATES: Record<string, string> = {
         {% if isEditMode %}
           <div class="padded">
             <div{{ receiveNews.attributes|raw }}>
-              {{ receiveNews.content }}
+              {% if receiveNews.content %}{{ receiveNews.content }}{% else %}<span class="xEmpty">&nbsp;receive news and updates&nbsp;</span>{% endif %}
             </div>
           </div>
         {% elseif receiveNews.content %}
@@ -426,7 +426,7 @@ export const TWIG_TEMPLATES: Record<string, string> = {
 
           {% if isEditMode or paymentDescription.content %}
             <p{{ paymentDescription.attributes|raw }}>
-              {{ paymentDescription.content }}
+              {% if paymentDescription.content %}{{ paymentDescription.content }}{% else %}<span class="xEmpty">&nbsp;payment description&nbsp;</span>{% endif %}
             </p>
           {% endif %}
 
@@ -448,7 +448,7 @@ export const TWIG_TEMPLATES: Record<string, string> = {
               <label for="pm_bank_transfer"><input type="radio" name="pm" id="pm_bank_transfer"{% if config.paymentMethod == 'bank' %} checked="checked"{% endif %}>
                 {% if isEditMode %}
                   <div{{ manualTransfer.attributes|raw }}>
-                    {{ manualTransfer.content }}
+                    {% if manualTransfer.content %}{{ manualTransfer.content }}{% else %}<span class="xEmpty">&nbsp;Manual transfer&nbsp;</span>{% endif %}
                   </div>
                 {% else %}
                     {{ manualTransfer.content }}
@@ -461,7 +461,7 @@ export const TWIG_TEMPLATES: Record<string, string> = {
         <div class="padded checkOut">
           {% if isEditMode or checkoutDescription.content %}
             <p{{ checkoutDescription.attributes|raw }}>
-              {{ checkoutDescription.content }}
+              {% if checkoutDescription.content %}{{ checkoutDescription.content }}{% else %}<span class="xEmpty">&nbsp;checkout description&nbsp;</span>{% endif %}
             </p>
           {% endif %}
 
@@ -470,20 +470,20 @@ export const TWIG_TEMPLATES: Record<string, string> = {
           {% if isEditMode %}
             {% if config.termsLink %}
               <div{{ terms.attributes|raw }}>
-                {{ terms.content }}
+                {% if terms.content %}{{ terms.content }}{% else %}<span class="xEmpty">&nbsp;By purchasing our products you agree to the Terms of Service&nbsp;</span>{% endif %}
               </div>
             {% endif %}
 
             <div{{ fillRequiredFields.attributes|raw }}>
-              {{ fillRequiredFields.content }}
+              {% if fillRequiredFields.content %}{{ fillRequiredFields.content }}{% else %}<span class="xEmpty">&nbsp;Please fill in all required fields&nbsp;</span>{% endif %}
             </div>
 
             <div{{ checkoutButton.attributes|raw }}>
-              {{ checkoutButton.content }}
+              {% if checkoutButton.content %}{{ checkoutButton.content }}{% else %}<span class="xEmpty">&nbsp;checkout and pay&nbsp;</span>{% endif %}
             </div>
 
             <div{{ returnToStore.attributes|raw }}>
-              {{ returnToStore.content }}
+              {% if returnToStore.content %}{{ returnToStore.content }}{% else %}<span class="xEmpty">&nbsp;return to store&nbsp;</span>{% endif %}
             </div>
 
           {% else %}
@@ -822,7 +822,7 @@ export const TWIG_TEMPLATES: Record<string, string> = {
 {% if showUrl %}
   <div class="entryContent">
     {% if isEditMode %}
-      <div class="xEditable xProperty-url"{{ attributes.url|raw }}>{{ content.url }}</div>
+      <div class="xNgEditable xProperty-url"{{ attributes.url|raw }}>{% if content.url %}{{ content.url }}{% else %}<span class="xEmpty">&nbsp;url&nbsp;</span>{% endif %}</div>
     {% else %}
       <div class="xEditable xProperty-url"><a href="{{ content.url }}" target="_blank">{{ content.url }}</a></div>
     {% endif %}
@@ -903,7 +903,7 @@ export const TWIG_TEMPLATES: Record<string, string> = {
   {{ entryContents|raw }}
 </div>
 `,
-  'Sites/Sections/Entries/_entryTitle': `<h2><span class="xEditable xProperty-title xCaption-entry&nbsp;title"{{ attributes.title|raw }}>{{ content.title }}</span></h2>
+  'Sites/Sections/Entries/_entryTitle': `<h2><span class="xNgEditable xProperty-title xCaption-entry&nbsp;title"{{ attributes.title|raw }}>{% if content.title %}{{ content.title }}{% else %}<span class="xEmpty">&nbsp;entry title&nbsp;</span>{% endif %}</span></h2>
 `,
   'Sites/Sections/Entries/entry': `<{{ entryHTMLTag }} id="{{ entryId }}"{{ attributes.entry|raw }}>
   {{ entryContents|raw }}
@@ -982,13 +982,13 @@ export const TWIG_TEMPLATES: Record<string, string> = {
   <span class="outOfStock hidden">{{ outOfStockText }}</span>
 </div>
 `,
-  'Sites/Sections/Entries/shop/_cartTitle': `<h2><span class="xEditable xProperty-cartTitle xCaption-item-name cCartTitle"{{ attributes.cartTitle|raw }}>{{ content.cartTitle }}</span></h2>
+  'Sites/Sections/Entries/shop/_cartTitle': `<h2><span class="xNgEditable xProperty-cartTitle xCaption-item-name cCartTitle"{{ attributes.cartTitle }}>{% if content.cartTitle %}{{ content.cartTitle }}{% else %}<span class="xEmpty">&nbsp;item name&nbsp;</span>{% endif %}</span></h2>
 `,
   'Sites/Sections/Entries/shop/_productAttributesEditor': `<div class="xEntrySeperator"></div>
 <div class="xEntryBoxParams">
   <b>Attribute</b>
-  <div class="xEditable xProperty-cartAttributes xCaption-attribute cCartAttributes xSkipSetStyles-1" data-path="{{apiPath}}content/cartAttributes">{{ cartAttributesEdit }}</div>
-  <div class="xEditable xProperty-weight xCaption-weight xUnits-{{ weightUnits }} xSkipSetStyles-1" data-path="{{apiPath}}content/weight">{{ entryWeight }}</div>
+  <div class="xNgEditable xProperty-cartAttributes xCaption-attribute cCartAttributes xSkipSetStyles-1" data-path="{{apiPath}}content/cartAttributes" data-empty-caption="attribute">{% if cartAttributesEdit %}{{ cartAttributesEdit }}{% else %}<span class="xEmpty">&nbsp;attribute&nbsp;</span>{% endif %}</div>
+  <div class="xNgEditable xProperty-weight xCaption-weight xUnits-{{ weightUnits }} xSkipSetStyles-1" data-path="{{apiPath}}content/weight" data-empty-caption="weight">{% if entryWeight %}{{ entryWeight }}{% else %}<span class="xEmpty">&nbsp;weight&nbsp;</span>{% endif %}</div>
 </div>
 `,
   'Sites/Sections/additionalFooterText': `<div{{ attributes|raw }}>
@@ -1516,7 +1516,7 @@ export const TWIG_TEMPLATES: Record<string, string> = {
   {% else %}
     {% if isEditMode %}
       <span{{ editableAttributes|raw }}>
-        {{ title|raw }}
+        {% if title %}{{ title|raw }}{% else %}<span class="xEmpty">&nbsp;heading&nbsp;</span>{% endif %}
       </span>
     {% else %}
       <a href="{{ link }}">{{ title|raw }}</a>

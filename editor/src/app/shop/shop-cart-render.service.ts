@@ -98,11 +98,12 @@ export class ShopCartRenderService {
     return {
       attributes: toHtmlAttributes({
         class: [
-          'xEditable',
+          'xNgEditable',
           'xProperty-cartTextEmpty',
           'xCaption-shopping+cart+empty',
         ].join(' '),
         'data-path': `${siteSlug}/settings/siteTexts/cartTextEmpty`,
+        'data-empty-caption': 'shopping cart empty',
       }),
       content: siteSettings.siteTexts.cartTextEmpty
         ? siteSettings.siteTexts.cartTextEmpty
@@ -114,11 +115,12 @@ export class ShopCartRenderService {
     return {
       attributes: toHtmlAttributes({
         class: [
-          'xEditable',
+          'xNgEditable',
           'xProperty-cartTextExpired',
           'xCaption-shopping+cart+is+expired',
         ].join(' '),
         'data-path': `${siteSlug}/settings/siteTexts/cartTextExpired`,
+        'data-empty-caption': 'shopping cart is expired',
       }),
       content: siteSettings.siteTexts.cartTextExpired
         ? siteSettings.siteTexts.cartTextExpired
@@ -129,11 +131,12 @@ export class ShopCartRenderService {
   getTableHeadTitleData(siteSlug, siteSettings) {
     return {
       attributes: toHtmlAttributes({
-        class: ['xEditable', 'xProperty-cartTextTitle', 'xCaption-title'].join(
+        class: ['xNgEditable', 'xProperty-cartTextTitle', 'xCaption-title'].join(
           ' ',
         ),
         style: 'width: 100px',
         'data-path': `${siteSlug}/settings/siteTexts/cartTextTitle`,
+        'data-empty-caption': 'title',
       }),
       content: siteSettings.siteTexts.cartTextTitle
         ? siteSettings.siteTexts.cartTextTitle
@@ -145,11 +148,12 @@ export class ShopCartRenderService {
     return {
       attributes: toHtmlAttributes({
         class: [
-          'xEditable',
+          'xNgEditable',
           'xProperty-cartTextQuantity',
           'xCaption-quantity',
         ].join(' '),
         'data-path': `${siteSlug}/settings/siteTexts/cartTextQuantity`,
+        'data-empty-caption': 'quantity',
       }),
       content: siteSettings.siteTexts.cartTextQuantity
         ? siteSettings.siteTexts.cartTextQuantity
@@ -160,10 +164,11 @@ export class ShopCartRenderService {
   getTableHeadPriceData(siteSlug, siteSettings) {
     return {
       attributes: toHtmlAttributes({
-        class: ['xEditable', 'xProperty-cartTextPrice', 'xCaption-price'].join(
+        class: ['xNgEditable', 'xProperty-cartTextPrice', 'xCaption-price'].join(
           ' ',
         ),
         'data-path': `${siteSlug}/settings/siteTexts/cartTextPrice`,
+        'data-empty-caption': 'price',
       }),
       content: siteSettings.siteTexts.cartTextPrice
         ? siteSettings.siteTexts.cartTextPrice
@@ -174,8 +179,9 @@ export class ShopCartRenderService {
   getTableHeadSumData(siteSlug, siteSettings) {
     return {
       attributes: toHtmlAttributes({
-        class: ['xEditable', 'xProperty-cartTextSum', 'xCaption-sum'].join(' '),
+        class: ['xNgEditable', 'xProperty-cartTextSum', 'xCaption-sum'].join(' '),
         'data-path': `${siteSlug}/settings/siteTexts/cartTextSum`,
+        'data-empty-caption': 'sum',
       }),
       content: siteSettings.siteTexts.cartTextSum
         ? siteSettings.siteTexts.cartTextSum
@@ -187,11 +193,12 @@ export class ShopCartRenderService {
     return {
       attributes: toHtmlAttributes({
         class: [
-          'xEditable',
+          'xNgEditable',
           'xProperty-cartTextPromoCode',
           'xCaption-Promo+code',
         ].join(' '),
         'data-path': `${siteSlug}/settings/siteTexts/cartTextPromoCode`,
+        'data-empty-caption': 'Promo code',
       }),
       content: siteSettings.siteTexts.cartTextPromoCode
         ? siteSettings.siteTexts.cartTextPromoCode
@@ -202,10 +209,11 @@ export class ShopCartRenderService {
   getPromoButtonData(siteSlug, siteSettings) {
     return {
       attributes: toHtmlAttributes({
-        class: ['xEditable', 'xProperty-cartTextPromoBtn', 'xCaption-OK'].join(
+        class: ['xNgEditable', 'xProperty-cartTextPromoBtn', 'xCaption-OK'].join(
           ' ',
         ),
         'data-path': `${siteSlug}/settings/siteTexts/cartTextPromoBtn`,
+        'data-empty-caption': 'OK',
       }),
       content: siteSettings.siteTexts.cartTextPromoBtn
         ? siteSettings.siteTexts.cartTextPromoBtn
@@ -217,11 +225,12 @@ export class ShopCartRenderService {
     return {
       attributes: toHtmlAttributes({
         class: [
-          'xEditable',
+          'xNgEditable',
           'xProperty-cartTextShippingTo',
           'xCaption-shipping+to',
         ].join(' '),
         'data-path': `${siteSlug}/settings/siteTexts/cartTextShippingTo`,
+        'data-empty-caption': 'shipping to',
       }),
       content: siteSettings.siteTexts.cartTextShippingTo
         ? siteSettings.siteTexts.cartTextShippingTo
@@ -233,11 +242,12 @@ export class ShopCartRenderService {
     return {
       attributes: toHtmlAttributes({
         class: [
-          'xEditable',
+          'xNgEditable',
           'xProperty-shippingTotalText',
           'xCaption-Shipping',
         ].join(' '),
         'data-path': `${siteSlug}/settings/siteTexts/shippingTotalText`,
+        'data-empty-caption': 'Shipping',
       }),
       content: siteSettings.siteTexts.shippingTotalText
         ? siteSettings.siteTexts.shippingTotalText
@@ -249,11 +259,12 @@ export class ShopCartRenderService {
     return {
       attributes: toHtmlAttributes({
         class: [
-          'xEditable',
+          'xNgEditable',
           'xProperty-cartTextDiscount',
           'xCaption-discount',
         ].join(' '),
         'data-path': `${siteSlug}/settings/siteTexts/cartTextDiscount`,
+        'data-empty-caption': 'discount',
       }),
       content: siteSettings.siteTexts.cartTextDiscount
         ? siteSettings.siteTexts.cartTextDiscount
@@ -264,10 +275,11 @@ export class ShopCartRenderService {
   getTotalData(siteSlug, siteSettings) {
     return {
       attributes: toHtmlAttributes({
-        class: ['xEditable', 'xProperty-cartTextTotal', 'xCaption-total'].join(
+        class: ['xNgEditable', 'xProperty-cartTextTotal', 'xCaption-total'].join(
           ' ',
         ),
         'data-path': `${siteSlug}/settings/siteTexts/cartTextTotal`,
+        'data-empty-caption': 'total',
       }),
       content: siteSettings.siteTexts.cartTextTotal
         ? siteSettings.siteTexts.cartTextTotal
@@ -279,11 +291,12 @@ export class ShopCartRenderService {
     return {
       attributes: toHtmlAttributes({
         class: [
-          'xEditable',
+          'xNgEditable',
           'xProperty-cartTextInclVat',
           'xCaption-incl+vat',
         ].join(' '),
         'data-path': `${siteSlug}/settings/siteTexts/cartTextInclVat`,
+        'data-empty-caption': 'incl vat',
       }),
       content: siteSettings.siteTexts.cartTextInclVat
         ? siteSettings.siteTexts.cartTextInclVat
@@ -295,11 +308,12 @@ export class ShopCartRenderService {
     return {
       attributes: toHtmlAttributes({
         class: [
-          'xEditable',
+          'xNgEditable',
           'xProperty-cartTextBillAddr',
           'xCaption-billing+address',
         ].join(' '),
         'data-path': `${siteSlug}/settings/siteTexts/cartTextBillAddr`,
+        'data-empty-caption': 'billing address',
       }),
       content: siteSettings.siteTexts.cartTextBillAddr
         ? siteSettings.siteTexts.cartTextBillAddr
@@ -311,11 +325,12 @@ export class ShopCartRenderService {
     return {
       attributes: toHtmlAttributes({
         class: [
-          'xEditable',
+          'xNgEditable',
           'xProperty-cartTextLegalPerson',
           'xCaption-legal+person',
         ].join(' '),
         'data-path': `${siteSlug}/settings/siteTexts/cartTextLegalPerson`,
+        'data-empty-caption': 'legal person',
       }),
       content: siteSettings.siteTexts.cartTextLegalPerson
         ? siteSettings.siteTexts.cartTextLegalPerson
@@ -327,11 +342,12 @@ export class ShopCartRenderService {
     return {
       attributes: toHtmlAttributes({
         class: [
-          'xEditable',
+          'xNgEditable',
           'xProperty-cartTextCompany',
           'xCaption-Company',
         ].join(' '),
         'data-path': `${siteSlug}/settings/siteTexts/cartTextCompany`,
+        'data-empty-caption': 'Company',
       }),
       content: siteSettings.siteTexts.cartTextCompany
         ? siteSettings.siteTexts.cartTextCompany
@@ -343,11 +359,12 @@ export class ShopCartRenderService {
     return {
       attributes: toHtmlAttributes({
         class: [
-          'xEditable',
+          'xNgEditable',
           'xProperty-cartTextCompanyRegNo',
           'xCaption-Company+reg.+no.',
         ].join(' '),
         'data-path': `${siteSlug}/settings/siteTexts/cartTextCompanyRegNo`,
+        'data-empty-caption': 'Company reg. no.',
       }),
       content: siteSettings.siteTexts.cartTextCompanyRegNo
         ? siteSettings.siteTexts.cartTextCompanyRegNo
@@ -359,11 +376,12 @@ export class ShopCartRenderService {
     return {
       attributes: toHtmlAttributes({
         class: [
-          'xEditable',
+          'xNgEditable',
           'xProperty-cartTextLegalAddress',
           'xCaption-Legal+address',
         ].join(' '),
         'data-path': `${siteSlug}/settings/siteTexts/cartTextLegalAddress`,
+        'data-empty-caption': 'Legal address',
       }),
       content: siteSettings.siteTexts.cartTextLegalAddress
         ? siteSettings.siteTexts.cartTextLegalAddress
@@ -375,11 +393,12 @@ export class ShopCartRenderService {
     return {
       attributes: toHtmlAttributes({
         class: [
-          'xEditable',
+          'xNgEditable',
           'xProperty-cartTextNameSurname',
           'xCaption-name+surname',
         ].join(' '),
         'data-path': `${siteSlug}/settings/siteTexts/cartTextNameSurname`,
+        'data-empty-caption': 'name surname',
       }),
       content: siteSettings.siteTexts.cartTextNameSurname
         ? siteSettings.siteTexts.cartTextNameSurname
@@ -391,11 +410,12 @@ export class ShopCartRenderService {
     return {
       attributes: toHtmlAttributes({
         class: [
-          'xEditable',
+          'xNgEditable',
           'xProperty-cartTextAddress',
           'xCaption-address',
         ].join(' '),
         'data-path': `${siteSlug}/settings/siteTexts/cartTextAddress`,
+        'data-empty-caption': 'address',
       }),
       content: siteSettings.siteTexts.cartTextAddress
         ? siteSettings.siteTexts.cartTextAddress
@@ -407,11 +427,12 @@ export class ShopCartRenderService {
     return {
       attributes: toHtmlAttributes({
         class: [
-          'xEditable',
+          'xNgEditable',
           'xProperty-cartTextPhoneNumber',
           'xCaption-phone+number',
         ].join(' '),
         'data-path': `${siteSlug}/settings/siteTexts/cartTextPhoneNumber`,
+        'data-empty-caption': 'phone number',
       }),
       content: siteSettings.siteTexts.cartTextPhoneNumber
         ? siteSettings.siteTexts.cartTextPhoneNumber
@@ -422,10 +443,11 @@ export class ShopCartRenderService {
   getEmailData(siteSlug, siteSettings) {
     return {
       attributes: toHtmlAttributes({
-        class: ['xEditable', 'xProperty-cartTextEmail', 'xCaption-email'].join(
+        class: ['xNgEditable', 'xProperty-cartTextEmail', 'xCaption-email'].join(
           ' ',
         ),
         'data-path': `${siteSlug}/settings/siteTexts/cartTextEmail`,
+        'data-empty-caption': 'email',
       }),
       content: siteSettings.siteTexts.cartTextEmail
         ? siteSettings.siteTexts.cartTextEmail
@@ -437,11 +459,12 @@ export class ShopCartRenderService {
     return {
       attributes: toHtmlAttributes({
         class: [
-          'xEditable',
+          'xNgEditable',
           'xProperty-cartTextComments',
           'xCaption-comments',
         ].join(' '),
         'data-path': `${siteSlug}/settings/siteTexts/cartTextComments`,
+        'data-empty-caption': 'comments',
       }),
       content: siteSettings.siteTexts.cartTextComments
         ? siteSettings.siteTexts.cartTextComments
@@ -453,11 +476,12 @@ export class ShopCartRenderService {
     return {
       attributes: toHtmlAttributes({
         class: [
-          'xEditable',
+          'xNgEditable',
           'xProperty-cartTextDeliverBilling',
           'xCaption-deliver+to+billing_address',
         ].join(' '),
         'data-path': `${siteSlug}/settings/siteTexts/cartTextDeliverBilling`,
+        'data-empty-caption': 'deliver to billing_address',
       }),
       content: siteSettings.siteTexts.cartTextDeliverBilling
         ? siteSettings.siteTexts.cartTextDeliverBilling
@@ -469,11 +493,12 @@ export class ShopCartRenderService {
     return {
       attributes: toHtmlAttributes({
         class: [
-          'xEditable',
+          'xNgEditable',
           'xProperty-cartTextShipAddr',
           'xCaption-shipping+address',
         ].join(' '),
         'data-path': `${siteSlug}/settings/siteTexts/cartTextShipAddr`,
+        'data-empty-caption': 'shipping address',
       }),
       content: siteSettings.siteTexts.cartTextShipAddr
         ? siteSettings.siteTexts.cartTextShipAddr
@@ -485,11 +510,12 @@ export class ShopCartRenderService {
     return {
       attributes: toHtmlAttributes({
         class: [
-          'xEditable',
+          'xNgEditable',
           'xProperty-cartTextReceiveNews',
           'xCaption-receive+news+and+updates',
         ].join(' '),
         'data-path': `${siteSlug}/settings/siteTexts/cartTextReceiveNews`,
+        'data-empty-caption': 'receive news and updates',
       }),
       content: siteSettings.siteTexts.cartTextReceiveNews
         ? siteSettings.siteTexts.cartTextReceiveNews
@@ -501,11 +527,12 @@ export class ShopCartRenderService {
     return {
       attributes: toHtmlAttributes({
         class: [
-          'xEditable',
+          'xNgEditable',
           'xProperty-cartTextCPM',
           'xCaption-choose+payment+method',
         ].join(' '),
         'data-path': `${siteSlug}/settings/siteTexts/cartTextCPM`,
+        'data-empty-caption': 'choose payment method',
       }),
       content: siteSettings.siteTexts.cartTextCPM
         ? siteSettings.siteTexts.cartTextCPM
@@ -517,11 +544,12 @@ export class ShopCartRenderService {
     return {
       attributes: toHtmlAttributes({
         class: [
-          'xEditable',
+          'xNgEditable',
           'xProperty-cartTextPaymentDescription',
           'xCaption-payment+description',
         ].join(' '),
         'data-path': `${siteSlug}/settings/siteTexts/cartTextPaymentDescription`,
+        'data-empty-caption': 'payment description',
       }),
       content: siteSettings.siteTexts.cartTextPaymentDescription
         ? siteSettings.siteTexts.cartTextPaymentDescription
@@ -533,11 +561,12 @@ export class ShopCartRenderService {
     return {
       attributes: toHtmlAttributes({
         class: [
-          'xEditable',
+          'xNgEditable',
           'xProperty-cartManualTransfer',
           'xCaption-Manual+transfer',
         ].join(' '),
         'data-path': `${siteSlug}/settings/siteTexts/cartManualTransfer`,
+        'data-empty-caption': 'Manual transfer',
       }),
       content: siteSettings.siteTexts.cartManualTransfer
         ? siteSettings.siteTexts.cartManualTransfer
@@ -549,11 +578,12 @@ export class ShopCartRenderService {
     return {
       attributes: toHtmlAttributes({
         class: [
-          'xEditable',
+          'xNgEditable',
           'xProperty-cartTextCheckoutDescription',
           'xCaption-checkout+description',
         ].join(' '),
         'data-path': `${siteSlug}/settings/siteTexts/cartTextCheckoutDescription`,
+        'data-empty-caption': 'checkout description',
       }),
       content: siteSettings.siteTexts.cartTextCheckoutDescription
         ? siteSettings.siteTexts.cartTextCheckoutDescription
@@ -565,11 +595,12 @@ export class ShopCartRenderService {
     return {
       attributes: toHtmlAttributes({
         class: [
-          'xEditable',
+          'xNgEditable',
           'xProperty-cartTextTerms',
           'xCaption-By+purchasing+our+products+you+agree+to+the+Terms+of+Service',
         ].join(' '),
         'data-path': `${siteSlug}/settings/siteTexts/cartTextTerms`,
+        'data-empty-caption': 'By purchasing our products you agree to the Terms of Service',
       }),
       content: siteSettings.siteTexts.cartTextTerms
         ? siteSettings.siteTexts.cartTextTerms
@@ -581,11 +612,12 @@ export class ShopCartRenderService {
     return {
       attributes: toHtmlAttributes({
         class: [
-          'xEditable',
+          'xNgEditable',
           'xProperty-cartTextFillRequiredFields',
           'xCaption-Please+fill+in+all+required+fields',
         ].join(' '),
         'data-path': `${siteSlug}/settings/siteTexts/cartTextFillRequiredFields`,
+        'data-empty-caption': 'Please fill in all required fields',
       }),
       content: siteSettings.siteTexts.cartTextFillRequiredFields
         ? siteSettings.siteTexts.cartTextFillRequiredFields
@@ -597,11 +629,12 @@ export class ShopCartRenderService {
     return {
       attributes: toHtmlAttributes({
         class: [
-          'xEditable',
+          'xNgEditable',
           'xProperty-cartTextCheckoutButton',
           'xCaption-checkout+and+pay',
         ].join(' '),
         'data-path': `${siteSlug}/settings/siteTexts/cartTextCheckoutButton`,
+        'data-empty-caption': 'checkout and pay',
       }),
       content: siteSettings.siteTexts.cartTextCheckoutButton
         ? siteSettings.siteTexts.cartTextCheckoutButton
@@ -613,11 +646,12 @@ export class ShopCartRenderService {
     return {
       attributes: toHtmlAttributes({
         class: [
-          'xEditable',
+          'xNgEditable',
           'xProperty-cartTextReturnStore',
           'xCaption-return+to+store',
         ].join(' '),
         'data-path': `${siteSlug}/settings/siteTexts/cartTextReturnStore`,
+        'data-empty-caption': 'return to store',
       }),
       content: siteSettings.siteTexts.cartTextReturnStore
         ? siteSettings.siteTexts.cartTextReturnStore

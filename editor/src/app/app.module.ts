@@ -9,6 +9,7 @@ import { APP_BASE_HREF } from '@angular/common';
 import { NgxsModule } from '@ngxs/store';
 import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
 import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
+import { OverlayModule } from '@angular/cdk/overlay';
 
 import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
@@ -25,6 +26,7 @@ import { UserState } from './user/user.state';
 import { UserAccountComponent } from './user/user-account.component';
 import { SitesSharedModule } from './sites/shared/sites-shared.module';
 import { PreviewComponent } from './preview/preview.component';
+import { InlineEditOverlayComponent } from './preview/inline-edit/inline-edit-overlay.component';
 import { PopupComponent } from './popup/popup.component';
 import { ErrorState } from './error-state/error.state';
 import { SharedModule } from './shared/shared.module';
@@ -54,6 +56,7 @@ import { sentryInitFactory } from './sentry/sentry-init.factory';
     UserAccountComponent,
     LoginComponent,
     PreviewComponent,
+    InlineEditOverlayComponent,
     ThemesComponent,
     PopupComponent,
   ],
@@ -82,6 +85,7 @@ import { sentryInitFactory } from './sentry/sentry-init.factory';
     SiteSectionsModule,
     SiteMediaModule,
     AiAssistantModule,
+    OverlayModule,
   ],
   providers: [
     SentryConfigService,

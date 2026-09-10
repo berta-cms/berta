@@ -1066,39 +1066,6 @@ var BertaEditorBase = new Class({
           } else {
             updateAction = Actions.initUpdateSiteSection;
           }
-
-          if (prop === "type") {
-            new_callback = function (resp, respRaw) {
-              var site = getCurrentSite();
-              var state = redux_store.getState();
-              var template =
-                state.siteSettings.toJS()[site].template.template;
-              var sectionTypes =
-                state.siteTemplates.toJS()[template].sectionTypes;
-              var type = resp.section["@attributes"].type
-                ? resp.section["@attributes"].type
-                : "default";
-              var type_params = sectionTypes[type]
-                ? sectionTypes[type].params
-                : sectionTypes["default"].params;
-
-              resp["params"] = this.getTypeHTML(
-                site,
-                resp.order,
-                resp.section,
-                state.siteTemplateSettings.toJS()[site][template],
-                type_params,
-                "xSection-" + resp.section["name"] + " xSectionField"
-              );
-
-              callback(resp, respRaw);
-              // @@@:HACK: Original shit in the above callback doesn't work :(
-              var detailsElement = el.getParent("li").getElement(".csDetails");
-              detailsElement.empty();
-              detailsElement.set("html", resp["params"]);
-              this.editablesInit(detailsElement);
-            }.bind(this);
-          }
         }
 
         if (path_arr[1] === "entry") {
@@ -1481,86 +1448,6 @@ var BertaEditorBase = new Class({
       : null;
 
     return retString;
-  },
-
-  getTypeHTML: function (site, order, section, settings, type_params, params) {
-    var basePath = site + "/section/" + order + "/";
-    var html = "";
-
-    if (type_params) {
-      //remove responsive section settings if needed
-      var isResponsive =
-        settings["pageLayout"] &&
-        settings["pageLayout"]["responsive"] &&
-        settings["pageLayout"]["responsive"] === "yes";
-
-      if (!isResponsive) {
-        if (type_params.columns) {
-          delete type_params.columns;
-        }
-        if (type_params.entryMaxWidth) {
-          delete type_params.entryMaxWidth;
-        }
-        if (type_params.entryPadding) {
-          delete type_params.entryPadding;
-        }
-      }
-
-      params = Object.getOwnPropertyNames(type_params);
-      params.forEach(function (param_name) {
-        var param = type_params[param_name];
-        var values = [];
-        var ctx = {
-          html_before: param.html_before ? param.html_before : "",
-          format: formats[param.format] ? formats[param.format] : "",
-          property: param_name,
-          html_entities: param.html_entities ? "" : "xNoHTMLEntities",
-          css_units: param.css_units ? "1" : "0",
-          link: param.link ? "xLink" : "",
-          allow_blank: "xRequired-" + (param.allow_blank ? "0" : "1"),
-          validation: param.validator ? "xValidator-" + param.validator : "",
-          additional_params: params ? params : "",
-          title: escapeHTML(param.default),
-          path: basePath + param_name,
-          x_options: "",
-          value: section[param_name] ? section[param_name] : "",
-          html_after: param.html_after ? param.html_after : "",
-        };
-
-        ctx.value =
-          !ctx.value && param && param.default ? param.default : ctx.value;
-
-        if (param.format === "select" || param.format === "fontselect") {
-          if (param.values === "templates") {
-            values = getAllTemplates();
-          } else {
-            if (!Array.isArray(param.values)) {
-              Object.getOwnPropertyNames(param.values).forEach(function (
-                value_name
-              ) {
-                values.push(value_name + "|" + param.values[value_name]);
-
-                if (ctx.value === value_name) {
-                  ctx.value = param.values[value_name];
-                }
-              });
-            } else {
-              values = param.values;
-
-              if (values[ctx.value] && !(parseInt(ctx.value, 10) > 0)) {
-                ctx.value = values[ctx.value];
-              }
-            }
-          }
-
-          ctx.x_options = escapeHTML(values.join("||"));
-        }
-
-        html += Templates.get("type_params", Object.assign({}, editables, ctx));
-      });
-    }
-
-    return html;
   },
 });
 

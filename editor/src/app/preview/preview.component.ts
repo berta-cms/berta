@@ -11,6 +11,7 @@ import { UserState } from '../user/user.state';
 import { SitesState } from '../sites/sites-state/sites.state';
 import { SiteTemplateSettingsState } from '../sites/template-settings/site-template-settings.state';
 import { PreviewService } from './preview.service';
+import { InlineEditService } from './inline-edit/inline-edit.service';
 import { AppShowLoading, UpdateAppStateAction } from '../app-state/app.actions';
 import { UserLogoutAction } from '../user/user.actions';
 import { StyleService } from './style.service';
@@ -67,6 +68,7 @@ export class PreviewComponent implements OnInit {
     private store: Store,
     private ngZone: NgZone,
     private service: PreviewService,
+    private inlineEditService: InlineEditService,
     private styleService: StyleService,
     private sanitizer: DomSanitizer,
     private http: HttpClient,
@@ -244,6 +246,7 @@ export class PreviewComponent implements OnInit {
         }
 
         this.service.loadRerenderService(iframe);
+        this.inlineEditService.attach(iframe);
 
         const styleElement = iframe.contentDocument.createElement('style');
         iframe.contentDocument.head.appendChild(styleElement);

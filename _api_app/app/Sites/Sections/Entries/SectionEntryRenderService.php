@@ -62,6 +62,7 @@ class SectionEntryRenderService
                 'attributes' => [
                     'title' => Helpers::arrayToHtmlAttributes([
                         'data-path' => $isEditMode ? "{$apiPath}content/title" : null,
+                        'data-empty-caption' => $isEditMode ? 'entry title' : null,
                     ]),
                 ],
             ]));
@@ -112,6 +113,7 @@ class SectionEntryRenderService
                     'attributes' => [
                         'cartTitle' => Helpers::arrayToHtmlAttributes([
                             'data-path' => $isEditMode ? "{$apiPath}content/cartTitle" : null,
+                            'data-empty-caption' => $isEditMode ? 'item name' : null,
                         ]),
                     ],
                 ]));
@@ -157,6 +159,7 @@ class SectionEntryRenderService
                 ]),
                 'url' => Helpers::arrayToHtmlAttributes([
                     'data-path' => $isEditMode ? "{$apiPath}content/url" : null,
+                    'data-empty-caption' => $isEditMode ? 'url' : null,
                 ]),
             ],
             'showUrl' => $templateName == 'default' && ($isEditMode || (isset($entry['content']['url']) && ! empty($entry['content']['url']))),
