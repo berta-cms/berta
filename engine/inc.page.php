@@ -142,20 +142,6 @@ $berta->init($settingsDefinition);
 if (! defined('SETTINGS_INSTALLREQUIRED')) {
     define('SETTINGS_INSTALLREQUIRED', true);
 }
-if (! empty($_REQUEST['_berta_install_done'])) {
-    /** @todo: auto-create the first section */
-
-    // final installer adjustments
-    if ($berta->settings->get('texts', 'ownerName')) {
-        $berta->settings->update('siteTexts', 'siteFooter', $berta->settings->get('texts', 'ownerName') . ' &copy; ');
-    }
-    if ($berta->settings->get('siteTexts', 'siteHeading')) {
-        $berta->settings->update('texts', 'pageTitle', $berta->settings->get('siteTexts', 'siteHeading'));
-    }
-
-    $berta->settings->update('berta', 'installed', 1);
-    $berta->settings->save();
-}
 if (SETTINGS_INSTALLREQUIRED && ! $berta->settings->get('berta', 'installed')) {
     if ($berta->security->userLoggedIn) {
         $step = ! empty($_REQUEST['_berta_install_step']) ? (int) $_REQUEST['_berta_install_step'] : 1;
@@ -175,12 +161,7 @@ if (SETTINGS_INSTALLREQUIRED && ! $berta->settings->get('berta', 'installed')) {
                 }
                 break;
             case 2:
-                if (file_exists($SITE_ROOT_PATH . 'INSTALL/includes/wizzard.php')) {
-                    $CHECK_INCLUDED = true;
-                    include $SITE_ROOT_PATH . 'INSTALL/includes/wizzard.php';
-                    exit;
-                }
-                break;
+                exit;
         }
     } else {
         if (file_exists($SITE_ROOT_PATH . 'INSTALL/includes/first_visit.php')) {

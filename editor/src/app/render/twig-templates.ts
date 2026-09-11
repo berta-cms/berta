@@ -982,7 +982,7 @@ export const TWIG_TEMPLATES: Record<string, string> = {
   <span class="outOfStock hidden">{{ outOfStockText }}</span>
 </div>
 `,
-  'Sites/Sections/Entries/shop/_cartTitle': `<h2><span class="xNgEditable xProperty-cartTitle xCaption-item-name cCartTitle"{{ attributes.cartTitle }}>{% if content.cartTitle %}{{ content.cartTitle }}{% else %}<span class="xEmpty">&nbsp;item name&nbsp;</span>{% endif %}</span></h2>
+  'Sites/Sections/Entries/shop/_cartTitle': `<h2><span class="xNgEditable xProperty-cartTitle xCaption-item-name cCartTitle"{{ attributes.cartTitle|raw }}>{% if content.cartTitle %}{{ content.cartTitle }}{% else %}<span class="xEmpty">&nbsp;item name&nbsp;</span>{% endif %}</span></h2>
 `,
   'Sites/Sections/Entries/shop/_productAttributesEditor': `<div class="xEntrySeperator"></div>
 <div class="xEntryBoxParams">

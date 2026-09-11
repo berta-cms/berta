@@ -28,6 +28,7 @@ import { SitesSharedModule } from './sites/shared/sites-shared.module';
 import { PreviewComponent } from './preview/preview.component';
 import { InlineEditOverlayComponent } from './preview/inline-edit/inline-edit-overlay.component';
 import { PopupComponent } from './popup/popup.component';
+import { SetupWizardComponent } from './setup/setup-wizard.component';
 import { ErrorState } from './error-state/error.state';
 import { SharedModule } from './shared/shared.module';
 import { StyleService } from './preview/style.service';
@@ -59,6 +60,7 @@ import { sentryInitFactory } from './sentry/sentry-init.factory';
     InlineEditOverlayComponent,
     ThemesComponent,
     PopupComponent,
+    SetupWizardComponent,
   ],
   bootstrap: [AppComponent],
   imports: [
