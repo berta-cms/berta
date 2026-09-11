@@ -4,7 +4,7 @@
   {% else %}
     {% if isEditMode %}
       <span{{ editableAttributes|raw }}>
-        {{ title|raw }}
+        {% if title %}{{ title|raw }}{% else %}<span class="xEmpty">&nbsp;heading&nbsp;</span>{% endif %}
       </span>
     {% else %}
       <a href="{{ link }}">{{ title|raw }}</a>

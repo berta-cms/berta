@@ -29,19 +29,21 @@ import { AppStateService } from './app-state/app-state.service';
       >
         <!-- the sidebar -->
         <div class="scroll-wrap"><router-outlet></router-outlet></div>
-        <a href="#" (click)="closeSidebar($event)" class="close">
-          <svg
-            height="16"
-            viewBox="0 0 16 16"
-            width="16"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="m16 12.8754q0 .5387-.377104.9158l-1.83165 1.8317q-.377105.3771-.915825.3771-.538721 0-.915825-.3771l-3.959596-3.9596-3.959596 3.9596q-.3771043.3771-.9158249.3771-.5387205 0-.9158249-.3771l-1.83164982-1.8317q-.37710438-.3771-.37710438-.9158 0-.5387.37710438-.9158l3.95959592-3.9596-3.95959592-3.9596q-.37710438-.3771-.37710438-.9158 0-.5387.37710438-.9158l1.83164982-1.8317q.3771044-.3771.9158249-.3771.5387206 0 .9158249.3771l3.959596 3.9596 3.959596-3.9596q.377104-.3771.915825-.3771.53872 0 .915825.3771l1.83165 1.8317q.377104.3771.377104.9158 0 .5387-.377104.9158l-3.959596 3.9596 3.959596 3.9596q.377104.3771.377104.9158z"
-              stroke-width=".013468"
-            />
-          </svg>
-        </a>
+        @if (!isSetupRoute) {
+          <a href="#" (click)="closeSidebar($event)" class="close">
+            <svg
+              height="16"
+              viewBox="0 0 16 16"
+              width="16"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="m16 12.8754q0 .5387-.377104.9158l-1.83165 1.8317q-.377105.3771-.915825.3771-.538721 0-.915825-.3771l-3.959596-3.9596-3.959596 3.9596q-.3771043.3771-.9158249.3771-.5387205 0-.9158249-.3771l-1.83164982-1.8317q-.37710438-.3771-.37710438-.9158 0-.5387.37710438-.9158l3.95959592-3.9596-3.95959592-3.9596q-.37710438-.3771-.37710438-.9158 0-.5387.37710438-.9158l1.83164982-1.8317q.3771044-.3771.9158249-.3771.5387206 0 .9158249.3771l3.959596 3.9596 3.959596-3.9596q.377104-.3771.915825-.3771.53872 0 .915825.3771l1.83165 1.8317q.377104.3771.377104.9158 0 .5387-.377104.9158l-3.959596 3.9596 3.959596 3.9596q.377104.3771.377104.9158z"
+                stroke-width=".013468"
+              />
+            </svg>
+          </a>
+        }
       </aside>
       <section>
         <berta-preview></berta-preview>
@@ -146,7 +148,8 @@ export class AppComponent implements OnInit, OnDestroy {
   routeIsRoot = true;
   isSidebarFullscreen = false;
   isSidebarFullWidth = false;
-  readonly sidebarFullscreenRoutes = ['/themes'];
+  isSetupRoute = false;
+  readonly sidebarFullscreenRoutes = ['/themes', '/setup'];
   readonly sidebarFullWidthRoutes = ['/media', '/background-gallery'];
 
   user$: Observable<UserStateModel>;
@@ -185,6 +188,7 @@ export class AppComponent implements OnInit, OnDestroy {
           this.currentRouteUrl = url;
           this.isSidebarFullscreen =
             this.sidebarFullscreenRoutes.indexOf(url) > -1;
+          this.isSetupRoute = url === '/setup';
           this.isSidebarFullWidth = this.sidebarFullWidthRoutes.some(
             (route) => url.indexOf(route) === 0,
           );
@@ -240,9 +244,18 @@ export class AppComponent implements OnInit, OnDestroy {
       }
     });
 
-    // Navigate to root if setup mode
+    // Navigate to the setup wizard if setup mode
     this.isSetup$.pipe(filter((isSetup) => isSetup)).subscribe(() => {
-      this.router.navigate(['/'], { queryParamsHandling: 'preserve' });
+      this.router.navigate(['/setup'], { queryParamsHandling: 'preserve' });
+    });
+
+    // Navigate away from the setup wizard once setup mode ends (e.g. after a
+    // reload following "Done!" — the URL still reads `/setup` at boot, since
+    // that's what the browser last navigated to, until this corrects it)
+    this.isSetup$.pipe(filter((isSetup) => !isSetup)).subscribe(() => {
+      if (this.router.url.split('?')[0] === '/setup') {
+        this.router.navigate(['/'], { queryParamsHandling: 'preserve' });
+      }
     });
 
     this.user$.subscribe((user) => {
@@ -277,6 +290,10 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   hideOverlay() {
+    if (this.isSetupRoute) {
+      return;
+    }
+
     this.inputFocus$
       .pipe(
         take(1),

@@ -11,7 +11,8 @@ import { UserState } from '../user/user.state';
 import { SitesState } from '../sites/sites-state/sites.state';
 import { SiteTemplateSettingsState } from '../sites/template-settings/site-template-settings.state';
 import { PreviewService } from './preview.service';
-import { AppShowLoading, UpdateAppStateAction } from '../app-state/app.actions';
+import { InlineEditService } from './inline-edit/inline-edit.service';
+import { AppShowLoading } from '../app-state/app.actions';
 import { UserLogoutAction } from '../user/user.actions';
 import { StyleService } from './style.service';
 import { SiteSettingsState } from '../sites/settings/site-settings.state';
@@ -67,6 +68,7 @@ export class PreviewComponent implements OnInit {
     private store: Store,
     private ngZone: NgZone,
     private service: PreviewService,
+    private inlineEditService: InlineEditService,
     private styleService: StyleService,
     private sanitizer: DomSanitizer,
     private http: HttpClient,
@@ -129,6 +131,16 @@ export class PreviewComponent implements OnInit {
   onLoad(event) {
     this.waitFullLoad(event.target).subscribe({
       next: (iframe) => {
+        this.service.setCurrentIframe(iframe);
+
+        if (this.store.selectSnapshot(AppState.isSetup)) {
+          // Nothing else real to initialize yet (no sections, no rendered
+          // DOM) — finishSetup() reloads the iframe once install completes
+          // (via the currentIframe reference just above), which fires a
+          // fresh `load` here with real content to wire up.
+          return;
+        }
+
         window.addEventListener('message', (event) => {
           switch (event.data.action) {
             case 'EntryGalleryEditorOpen':
@@ -161,9 +173,6 @@ export class PreviewComponent implements OnInit {
           .replace(/\/$/, '')
           .split('/')
           .pop();
-        const isSetup =
-          iframe.contentDocument.body &&
-          /xSetupWizard/.test(iframe.contentDocument.body.className);
         const urlParams = new URLSearchParams(
           iframe.contentDocument.location.search,
         );
@@ -182,8 +191,6 @@ export class PreviewComponent implements OnInit {
           },
           queryParamsHandling: 'merge',
         });
-
-        this.store.dispatch(new UpdateAppStateAction({ setup: isSetup }));
 
         /*
         Check for iframe login page
@@ -244,6 +251,7 @@ export class PreviewComponent implements OnInit {
         }
 
         this.service.loadRerenderService(iframe);
+        this.inlineEditService.attach(iframe);
 
         const styleElement = iframe.contentDocument.createElement('style');
         iframe.contentDocument.head.appendChild(styleElement);
@@ -381,8 +389,22 @@ export class PreviewComponent implements OnInit {
       const maxChecks = 120;
       let intervalCount = 0;
       let lastError = '';
+      let checkInterval: ReturnType<typeof setInterval>;
 
-      const checkInterval = setInterval(() => {
+      // Setup is required (no site to render yet) — resolve as soon as we know
+      // that, instead of waiting for Berta classes a blank pre-install response
+      // will never have. Reactive (not a one-off snapshot) since settings can
+      // still be loading when the iframe's `load` event first fires.
+      const setupSubscription = this.store
+        .select(AppState.isSetup)
+        .pipe(filter((isSetup) => isSetup))
+        .subscribe(() => {
+          clearInterval(checkInterval);
+          observer.next(iframe);
+          observer.complete();
+        });
+
+      checkInterval = setInterval(() => {
         const lastUrlPart = iframe.contentDocument?.location.href
           .replace(/\/$/, '')
           .split('/')
@@ -440,6 +462,7 @@ export class PreviewComponent implements OnInit {
       // Return cleanup function
       return () => {
         clearInterval(checkInterval);
+        setupSubscription.unsubscribe();
       };
     });
   }

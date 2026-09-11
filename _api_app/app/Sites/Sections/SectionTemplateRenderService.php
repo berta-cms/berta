@@ -329,16 +329,22 @@ abstract class SectionTemplateRenderService
 
     private function getUserCopyright($siteSlug, $siteSettings, $isEditMode)
     {
-        $content = ! empty($siteSettings['siteTexts']['siteFooter']) ? $siteSettings['siteTexts']['siteFooter'] : '';
+        $rawContent = ! empty($siteSettings['siteTexts']['siteFooter']) ? $siteSettings['siteTexts']['siteFooter'] : '';
+        $content = $rawContent;
         $attributes = [];
         $classes = [];
 
         if ($isEditMode) {
             $classes = [
-                'xEditableTA',
+                'xNgEditableTA',
                 'xProperty-siteFooter',
             ];
             $attributes['data-path'] = "{$siteSlug}/settings/siteTexts/siteFooter";
+            $attributes['data-empty-caption'] = 'footer text';
+
+            if (empty($rawContent)) {
+                $content = '<span class="xEmpty">&nbsp;footer text&nbsp;</span>';
+            }
         }
 
         $attributes['class'] = implode(' ', $classes);

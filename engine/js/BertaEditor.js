@@ -145,6 +145,9 @@ var BertaEditor = new Class({
             )
               createNewEntryText = this.options.i18n["create new entry here"];
             else createNewEntryText = this.options.i18n["create new entry"];
+            var existingCreateNewEntry =
+              this.entriesList.getNext(".xCreateNewEntry");
+            if (existingCreateNewEntry) existingCreateNewEntry.destroy();
             new Element("A", {
               class: "xCreateNewEntry xPanel xAction-entryCreateNew",
               href: "#",
@@ -322,20 +325,6 @@ var BertaEditor = new Class({
 
   editablesInit: function () {
     // instantiate all xEditable elements in the page
-    // simple text fields ///////////////////////////////////////////////////////////////////////////////////////////////////////
-    $$(this.options.xBertaEditorClassSimple).each(
-      function (el) {
-        this.elementEdit_init(el, this.options.xBertaEditorClassSimple);
-      }.bind(this)
-    );
-
-    // textareas ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    $$(this.options.xBertaEditorClassTA).each(
-      function (el) {
-        this.elementEdit_init(el, this.options.xBertaEditorClassTA);
-      }.bind(this)
-    );
-
     // mce textareas ////////////////////////////////////////////////////////////////////////////////////////////////////////////
     $$(this.options.xBertaEditorClassMCE).each(
       function (el) {

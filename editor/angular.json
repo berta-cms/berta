@@ -49,7 +49,10 @@
             "polyfills": ["zone.js"],
             "tsConfig": "tsconfig.app.json",
             "assets": ["src/favicon.ico", "src/assets"],
-            "styles": ["src/styles/styles.scss"],
+            "styles": [
+              "node_modules/@angular/cdk/overlay-prebuilt.css",
+              "src/styles/styles.scss"
+            ],
             "allowedCommonJsDependencies": ["lodash", "webfontloader"],
             "scripts": ["./node_modules/twig/twig.min.js"]
           },
@@ -99,7 +102,10 @@
             "tsConfig": "tsconfig.spec.json",
             "inlineStyleLanguage": "scss",
             "assets": ["src/favicon.ico", "src/assets"],
-            "styles": ["src/styles/styles.scss"]
+            "styles": [
+              "node_modules/@angular/cdk/overlay-prebuilt.css",
+              "src/styles/styles.scss"
+            ]
           }
         }
       }

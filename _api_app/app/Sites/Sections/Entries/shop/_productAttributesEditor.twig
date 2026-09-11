@@ -1,6 +1,6 @@
 <div class="xEntrySeperator"></div>
 <div class="xEntryBoxParams">
   <b>Attribute</b>
-  <div class="xEditable xProperty-cartAttributes xCaption-attribute cCartAttributes xSkipSetStyles-1" data-path="{{apiPath}}content/cartAttributes">{{ cartAttributesEdit }}</div>
-  <div class="xEditable xProperty-weight xCaption-weight xUnits-{{ weightUnits }} xSkipSetStyles-1" data-path="{{apiPath}}content/weight">{{ entryWeight }}</div>
+  <div class="xNgEditable xProperty-cartAttributes xCaption-attribute cCartAttributes xSkipSetStyles-1" data-path="{{apiPath}}content/cartAttributes" data-empty-caption="attribute">{% if cartAttributesEdit %}{{ cartAttributesEdit }}{% else %}<span class="xEmpty">&nbsp;attribute&nbsp;</span>{% endif %}</div>
+  <div class="xNgEditable xProperty-weight xCaption-weight xUnits-{{ weightUnits }} xSkipSetStyles-1" data-path="{{apiPath}}content/weight" data-empty-caption="weight">{% if entryWeight %}{{ entryWeight }}{% else %}<span class="xEmpty">&nbsp;weight&nbsp;</span>{% endif %}</div>
 </div>

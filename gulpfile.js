@@ -99,7 +99,6 @@ const backendJsFiles = [
 var backendNgJsFiles = [
   "engine/js/ng/shared/namespace.js",
   "engine/js/ng/shared/utils.js",
-  "engine/js/ng/shared/constants.js",
   "engine/js/ng/shared/action-types.js",
   "engine/js/ng/state.actions.js",
   "engine/js/ng/sites/sites.actions.js",
