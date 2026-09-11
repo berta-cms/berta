@@ -824,7 +824,7 @@ export const TWIG_TEMPLATES: Record<string, string> = {
     {% if isEditMode %}
       <div class="xNgEditable xProperty-url"{{ attributes.url|raw }}>{% if content.url %}{{ content.url }}{% else %}<span class="xEmpty">&nbsp;url&nbsp;</span>{% endif %}</div>
     {% else %}
-      <div class="xEditable xProperty-url"><a href="{{ content.url }}" target="_blank">{{ content.url }}</a></div>
+      <div class="xProperty-url"><a href="{{ content.url }}" target="_blank">{{ content.url }}</a></div>
     {% endif %}
   </div>
 {% endif %}

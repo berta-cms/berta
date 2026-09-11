@@ -161,13 +161,11 @@ body .tox-tinymce-aux {
     padding: 0 4px 0 5px;
 }
 
-.xEditable,
 .xNgEditable,
 .xNgEditableTA,
 .xEditableSelect,
 .xEditableSelectRC,
 .xEditableFontSelect,
-.xEditableTA,
 .xEditableMCE,
 .xEditableRC {
     cursor: default;
@@ -188,13 +186,11 @@ body .tox-tinymce-aux {
     cursor:pointer;
 }
 
-.xEditable:hover,
 .xNgEditable:hover,
 .xNgEditableTA:hover,
 .xEditableSelect:hover,
 .xEditableSelectRC:hover,
 .xEditableFontSelect:hover,
-.xEditableTA:hover,
 .xEditableMCE:hover,
 .xEditableRC:hover,
 .xEditableYesNo:hover,
@@ -660,20 +656,6 @@ input#xFirstTimeCheckContinue {
     width: 210px;
     margin: 10px 0 25px;
 }
-
-#xFirstTimeWizzard {
-
-}
-    #xFirstTimeWizzard p.subInfo { color: #999; margin-top: -6px; font-size: 90%; }
-    #xFirstTimeWizzard p.xEditable {
-        padding: 5px !important;
-        margin-bottom: 20px !important;
-    }
-    #xFirstTimeWizzard p.xEditable:before {
-        content: "› ";
-    }
-    #xFirstTimeWizzard p.xEditable, #xFirstTimeWizzard p.xEditable * { font-size: 16px !important;	}
-
 
     #multisites li.selected {
         font-weight: bold;

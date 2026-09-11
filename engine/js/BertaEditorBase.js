@@ -31,11 +31,9 @@ var BertaEditorBase = new Class({
   Implements: [Options, Events],
 
   options: {
-    xBertaEditorClassSimple: ".xEditable",
     xBertaEditorClassSelect: ".xEditableSelect",
     xBertaEditorClassSelectRC: ".xEditableSelectRC",
     xBertaEditorClassFontSelect: ".xEditableFontSelect",
-    xBertaEditorClassTA: ".xEditableTA",
     xBertaEditorClassMCE: ".xEditableMCE",
     xBertaEditorClassMCESimple: ".xEditableMCESimple",
     xBertaEditorClassRC: ".xEditableRC",
@@ -137,57 +135,6 @@ var BertaEditorBase = new Class({
       self = this;
 
     switch (editorClass) {
-      case this.options.xBertaEditorClassSimple:
-        el.store("onElementSave", onElementSave);
-        el.addClass(editorClass.substr(1));
-        el.addEvent(
-          "click",
-          function (event, editor) {
-            if (!this.hasClass("xSaving") && !this.hasClass("xEditing")) {
-              this.addClass("xEditing");
-              editor.makeEmptyIfEmpty(this);
-              editor.elementEdit_instances.push(
-                this.inlineEdit({
-                  onComplete: editor.elementEdit_save.bind(editor),
-                })
-              );
-              editor.fireEvent(BertaEditorBase.EDITABLE_START, [
-                el,
-                editor.elementEdit_instances[
-                  editor.elementEdit_instances.length - 1
-                ],
-              ]);
-            }
-          }.bindWithEvent(el, this)
-        );
-        break;
-
-      case this.options.xBertaEditorClassTA:
-        el.store("onElementSave", onElementSave);
-        el.addClass(editorClass.substr(1));
-        el.addEvent(
-          "click",
-          function (event, editor) {
-            if (!this.hasClass("xSaving") && !this.hasClass("xEditing")) {
-              this.addClass("xEditing");
-              if (this.inlineIsEmpty()) this.innerHTML = "&nbsp;";
-              editor.elementEdit_instances.push(
-                this.inlineEdit({
-                  type: "textarea",
-                  onComplete: editor.elementEdit_save.bind(editor),
-                })
-              );
-              editor.fireEvent(BertaEditorBase.EDITABLE_START, [
-                el,
-                editor.elementEdit_instances[
-                  editor.elementEdit_instances.length - 1
-                ],
-              ]);
-            }
-          }.bindWithEvent(el, this)
-        );
-        break;
-
       case this.options.xBertaEditorClassMCE:
       case this.options.xBertaEditorClassMCESimple:
         el.store("onElementSave", onElementSave);
@@ -903,10 +850,7 @@ var BertaEditorBase = new Class({
       if (entryInfo.section == "") entryInfo.section = this.sectionName;
 
       // px/em/pt value validator
-      if (
-        el.hasClass(this.options.xBertaEditorClassSimple.substr(1)) ||
-        el.hasClass(this.options.xBertaEditorClassRC.substr(1))
-      ) {
+      if (el.hasClass(this.options.xBertaEditorClassRC.substr(1))) {
         if (/(\spx|\spt|\sem)$/i.test(newContent)) {
           newContent = newContent.replace(
             /(\spx|\spt|\sem)$/i,
@@ -1404,7 +1348,7 @@ var BertaEditorBase = new Class({
   },
 
   escapeForJSON: function (str) {
-    // Replace &quot: xBertaEditorClassSimple editor reads value from element html instead of text
+    // Replace &quot: some editors read value from element html instead of text
     return String(str).replace(/\&quot;/g, '"');
   },
 

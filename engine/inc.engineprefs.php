@@ -136,25 +136,4 @@ $options['row_gallery_image_limit'] = [
 /**
  * Editables
  */
-$xEditSelectorSimple = 'xEditable';    // simple input
-$xEditSelectorSelect = 'xEditableSelect';    // select
-$xEditSelectorSelectRC = 'xEditableSelectRC';    // select
-$xEditSelectorFontSelect = 'xEditableFontSelect';    // select
-$xEditSelectorImage = 'xEditableImage';    // image upload
-$xEditSelectorICO = 'xEditableICO';    // ico upload
-$xEditSelectorTA = 'xEditableTA';    // textarea
-$xEditSelectorMCE = 'xEditableMCE';    // textarea
-$xEditSelectorMCESimple = 'xEditableMCESimple';    // textarea
-$xEditSelectorRC = 'xEditableRC';    // with "real" content
-$xEditSelectorYesNo = 'xEditableYesNo';    // the "yes/no" switch
 $xEmpty = 'xEmpty';
-
-$editsForSettings = [
-    'text' => $xEditSelectorSimple,
-    'longtext' => $xEditSelectorTA,
-    'richtext' => $xEditSelectorMCESimple,
-    'image' => $xEditSelectorImage,
-    'icon' => $xEditSelectorICO,
-    'select' => $xEditSelectorSelectRC,
-    'fontselect' => $xEditSelectorFontSelect
-];
