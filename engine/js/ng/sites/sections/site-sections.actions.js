@@ -121,34 +121,6 @@
     },
 
 
-    renameSiteSectionsSitename: function (data) {
-      return {
-        type: ActionTypes.RENAME_SITE_SECTIONS_SITENAME,
-        data: data
-      };
-    },
-
-
-    resetSiteSection: function (path, onComplete) {
-      return function (dispatch) {
-        dispatch({
-          type: ActionTypes.RESET_SITE_SECTION,
-          path: path
-        });
-
-        sync(window.Berta.urls.siteSectionsReset, {
-          path: path
-        })
-          .then(function (response) {
-            if (response.error_message) {
-              // @TODO dispatch error message
-            }
-            onComplete(response);
-          });
-      };
-    },
-
-
     initOrderSiteSections: function (site, sections, onComplete) {
       return function (dispatch) {
         dispatch({
@@ -224,14 +196,6 @@
       return {
         type: ActionTypes.DELETE_SITE_SECTION,
         resp: resp
-      };
-    },
-
-
-    deleteSiteSections: function (data) {
-      return {
-        type: ActionTypes.DELETE_SITE_SECTIONS,
-        data: data
       };
     },
 

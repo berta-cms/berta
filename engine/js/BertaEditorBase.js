@@ -574,15 +574,6 @@ var BertaEditorBase = new Class({
         var new_callback = callback;
         path_arr = path.split("/");
 
-        if (path_arr[0] === "site") {
-          prop = path_arr[2];
-          if (prop === "name") {
-            updateAction = Actions.renameSite;
-          } else {
-            updateAction = Actions.initUpdateSite;
-          }
-        }
-
         if (path_arr[1] === "settings") {
           updateAction = Actions.initUpdateSiteSettings;
         }

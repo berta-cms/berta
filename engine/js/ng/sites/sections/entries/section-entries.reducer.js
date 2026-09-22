@@ -17,10 +17,6 @@
           return Immutable.fromJS(action.state.sectionEntries);
 
 
-        case ActionTypes.ADD_SITE_SECTIONS_ENTRIES:
-          return state.set(action.data.site_name, action.data.entries);
-
-
         case ActionTypes.ADD_SECTION_ENTRIES:
           return state.map(function (site, site_name) {
             if (site_name === action.data.site_name) {
@@ -48,17 +44,6 @@
             [siteName, index],
             state.getIn([siteName, index]).merge(action.resp.entry)
           );
-
-
-        case ActionTypes.RENAME_SECTION_ENTRIES_SITENAME:
-          var site_old_name = action.data.site.get('name');
-
-          return state.mapKeys(function (site_name) {
-            if (site_name === site_old_name) {
-              return action.data.site_name;
-            }
-            return site_name;
-          });
 
 
         case ActionTypes.RENAME_SECTION_ENTRIES:
@@ -112,12 +97,6 @@
               });
             }
             return site;
-          });
-
-
-        case ActionTypes.DELETE_SITE_SECTIONS_ENTRIES:
-          return state.filter(function (entries, site_name) {
-            return site_name !== action.data.site_name;
           });
 
 

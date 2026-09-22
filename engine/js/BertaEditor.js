@@ -69,22 +69,6 @@ var BertaEditor = new Class({
       case "multipage":
         break;
 
-      case "settings":
-        this.editablesInit();
-
-        // Finish berta install button
-        $("xFinishInstall").addEvent("click", function (e) {
-          var path = e.target.data("data-path");
-
-          redux_store.dispatch(
-            Actions.initUpdateSiteSettings(path, 1, function () {
-              window.location.reload();
-            })
-          );
-        });
-
-        break;
-
       case "entries":
       default:
         this.container = document.getElementById("contentContainer");

@@ -25,14 +25,6 @@
     },
 
 
-    addSiteSectionsEntries: function (data) {
-      return {
-        type: ActionTypes.ADD_SITE_SECTIONS_ENTRIES,
-        data: data
-      };
-    },
-
-
     addSectionEntries: function (data) {
       return {
         type: ActionTypes.ADD_SECTION_ENTRIES,
@@ -85,14 +77,6 @@
       return {
         type: ActionTypes.UPDATE_SECTION_ENTRY,
         resp: resp
-      };
-    },
-
-
-    renameSectionEntriesSitename: function (data) {
-      return {
-        type: ActionTypes.RENAME_SECTION_ENTRIES_SITENAME,
-        data: data
       };
     },
 
@@ -193,14 +177,6 @@
       return {
         type: ActionTypes.DELETE_SECTION_ENTRY,
         resp: resp
-      };
-    },
-
-
-    deleteSiteSectionsEntries: function (data) {
-      return {
-        type: ActionTypes.DELETE_SITE_SECTIONS_ENTRIES,
-        data: data
       };
     },
 

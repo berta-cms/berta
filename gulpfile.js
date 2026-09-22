@@ -101,8 +101,6 @@ var backendNgJsFiles = [
   "engine/js/ng/shared/utils.js",
   "engine/js/ng/shared/action-types.js",
   "engine/js/ng/state.actions.js",
-  "engine/js/ng/sites/sites.actions.js",
-  "engine/js/ng/sites/sites.reducer.js",
   "engine/js/ng/sites/settings/site-settings.actions.js",
   "engine/js/ng/sites/settings/site-settings.reducer.js",
   "engine/js/ng/sites/template-settings/site-template-settings.actions.js",
