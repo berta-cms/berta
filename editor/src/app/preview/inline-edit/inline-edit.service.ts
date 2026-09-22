@@ -95,9 +95,7 @@ export class InlineEditService {
     });
 
     // `.xNgEditableCheckBox` fields (e.g. the entry dropdown's "Fixed
-    // position"/"Marked" toggles) save immediately on click — no CDK overlay
-    // or open/edit/blur lifecycle, so this is a separate, simpler delegated
-    // listener from the one above.
+    // position"/"Marked" toggles) save immediately on click.
     doc.addEventListener('click', (event) => {
       const target = (event.target as HTMLElement)?.closest(
         CHECKBOX_SELECTOR,
