@@ -121,10 +121,8 @@ export class InlineEditService {
 
   /**
    * Click-to-toggle-and-save-immediately handling for `.xNgEditableCheckBox`
-   * fields — the Angular-native replacement for legacy's
-   * `eSup_onRealCheckClick` (`BertaEditorBase.js`). Unlike the text-overlay
-   * fields above, there's no separate open/edit step: the checked state
-   * flips and saves in the same click.
+   * fields. Unlike the text-overlay fields above, there's no separate
+   * open/edit step: the checked state flips and saves in the same click.
    */
   private toggleCheckBox(el: HTMLElement, iframe: HTMLIFrameElement) {
     if (el.classList.contains(SAVING_CLASS)) {
@@ -178,15 +176,14 @@ export class InlineEditService {
   }
 
   /**
-   * Ports legacy's `eSup_onRealCheckClick` fixed-position side effect
-   * (`BertaEditorBase.js`) exactly: toggling `xProperty-fixed` also flips
-   * `.xFixed` on the ancestor `.xEntry` and, when the page layout is
-   * centered, compensates the entry's inline `left` for the coordinate-frame
-   * change `.xFixed` causes (`position: fixed` switches it from
-   * container-relative to viewport-relative). This must match legacy
-   * exactly: the still-legacy drag-and-drop handler reads/re-applies the
-   * same compensation at drag-end, so an uncompensated value here would be
-   * silently corrupted the next time the entry is dragged.
+   * Toggling `xProperty-fixed` also flips `.xFixed` on the ancestor
+   * `.xEntry` and, when the page layout is centered, compensates the
+   * entry's inline `left` for the coordinate-frame change `.xFixed` causes
+   * (`position: fixed` switches it from container-relative to
+   * viewport-relative). This compensation must stay exact: the
+   * drag-and-drop handler in `BertaEditorBase.js` reads/re-applies the same
+   * formula at drag-end, so an uncompensated value here would be silently
+   * corrupted the next time the entry is dragged.
    */
   private applyFixedPositionSideEffect(
     entry: HTMLElement,
