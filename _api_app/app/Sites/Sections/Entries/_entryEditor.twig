@@ -27,7 +27,7 @@
           <a href="#" class="xEntryToBack" title="send to back behind others"><span>Send to back</span></a>
         </li>
         <li>
-          <a><div class="xEntryCheck"><label><span class="xEditableRealCheck xProperty-fixed" data-path="{{apiPath}}content/fixed">{{ entryFixed }}</span>Fixed position</label></div></a>
+          <a><div class="xEntryCheck"><label><span class="xNgEditableCheckBox xProperty-fixed" data-path="{{apiPath}}content/fixed"><input type="button" class="{% if entryFixed == 1 %}checked{% endif %}" value="" /></span>Fixed position</label></div></a>
         </li>
         <li>
           <div class="customWidth">
@@ -36,7 +36,7 @@
         </li>
       {% endif %}
       <li>
-        <a><div class="xEntryCheck"><label><span class="xEditableRealCheck xProperty-marked" data-path="{{apiPath}}marked">{{ entryMarked }}</span>Marked</label></div></a>
+        <a><div class="xEntryCheck"><label><span class="xNgEditableCheckBox xProperty-marked" data-path="{{apiPath}}marked"><input type="button" class="{% if entryMarked == 1 %}checked{% endif %}" value="" /></span>Marked</label></div></a>
       </li>
       <li>
         <a href="#" class="xEntryDelete xAction-entryDelete" title="delete"><span>Delete</span></a>

@@ -13,6 +13,14 @@ import { resolveInlineEditAction } from './inline-edit-path.resolver';
 const EDITABLE_SELECTOR = '.xNgEditable, .xNgEditableTA';
 const MULTILINE_CLASS = 'xNgEditableTA';
 const DROPDOWN_BOX_SELECTOR = '.xEntryDropdownBox';
+const CHECKBOX_SELECTOR = '.xNgEditableCheckBox';
+const FIXED_PROPERTY_CLASS = 'xProperty-fixed';
+const SAVING_CLASS = 'xSaving';
+
+interface CheckBoxRollback {
+  entryWasFixed: boolean;
+  entryLeft: string;
+}
 
 interface OpenEdit {
   el: HTMLElement;
@@ -86,11 +94,137 @@ export class InlineEditService {
       this.openEditor(target, iframe);
     });
 
+    // `.xNgEditableCheckBox` fields (e.g. the entry dropdown's "Fixed
+    // position"/"Marked" toggles) save immediately on click — no CDK overlay
+    // or open/edit/blur lifecycle, so this is a separate, simpler delegated
+    // listener from the one above.
+    doc.addEventListener('click', (event) => {
+      const target = (event.target as HTMLElement)?.closest(
+        CHECKBOX_SELECTOR,
+      ) as HTMLElement | null;
+
+      if (!target) {
+        return;
+      }
+
+      event.preventDefault();
+      event.stopPropagation();
+      this.toggleCheckBox(target, iframe);
+    });
+
     // The previewed site's own page can scroll independently of the app
     // shell around it.
     iframe.contentWindow?.addEventListener('scroll', () =>
       this.refreshOpenEditGeometry(),
     );
+  }
+
+  /**
+   * Click-to-toggle-and-save-immediately handling for `.xNgEditableCheckBox`
+   * fields — the Angular-native replacement for legacy's
+   * `eSup_onRealCheckClick` (`BertaEditorBase.js`). Unlike the text-overlay
+   * fields above, there's no separate open/edit step: the checked state
+   * flips and saves in the same click.
+   */
+  private toggleCheckBox(el: HTMLElement, iframe: HTMLIFrameElement) {
+    if (el.classList.contains(SAVING_CLASS)) {
+      return;
+    }
+
+    const path = el.dataset['path'];
+    const input = el.querySelector('input') as HTMLInputElement | null;
+
+    if (!path || !input) {
+      return;
+    }
+
+    const wasChecked = input.classList.contains('checked');
+    const isFixedProperty = el.classList.contains(FIXED_PROPERTY_CLASS);
+    const entry = isFixedProperty
+      ? (el.closest('.xEntry') as HTMLElement | null)
+      : null;
+    const rollback: CheckBoxRollback | null = entry
+      ? {
+          entryWasFixed: entry.classList.contains('xFixed'),
+          entryLeft: entry.style.left,
+        }
+      : null;
+
+    input.classList.toggle('checked');
+    const value = input.classList.contains('checked') ? '1' : '0';
+
+    if (isFixedProperty && entry) {
+      this.applyFixedPositionSideEffect(entry, value === '1', iframe);
+    }
+
+    el.classList.add(SAVING_CLASS);
+
+    let action;
+    try {
+      action = resolveInlineEditAction(path, value);
+    } catch (error) {
+      console.error(error);
+      this.rollbackCheckBox(el, input, wasChecked, entry, rollback);
+      return;
+    }
+
+    this.store.dispatch(action).subscribe({
+      next: () => el.classList.remove(SAVING_CLASS),
+      error: () => {
+        el.classList.remove(SAVING_CLASS);
+        this.rollbackCheckBox(el, input, wasChecked, entry, rollback);
+      },
+    });
+  }
+
+  /**
+   * Ports legacy's `eSup_onRealCheckClick` fixed-position side effect
+   * (`BertaEditorBase.js`) exactly: toggling `xProperty-fixed` also flips
+   * `.xFixed` on the ancestor `.xEntry` and, when the page layout is
+   * centered, compensates the entry's inline `left` for the coordinate-frame
+   * change `.xFixed` causes (`position: fixed` switches it from
+   * container-relative to viewport-relative). This must match legacy
+   * exactly: the still-legacy drag-and-drop handler reads/re-applies the
+   * same compensation at drag-end, so an uncompensated value here would be
+   * silently corrupted the next time the entry is dragged.
+   */
+  private applyFixedPositionSideEffect(
+    entry: HTMLElement,
+    becomingFixed: boolean,
+    iframe: HTMLIFrameElement,
+  ) {
+    const contentWindow = iframe.contentWindow;
+    const container = iframe.contentDocument?.getElementById(
+      'contentContainer',
+    );
+
+    entry.classList.toggle('xFixed', becomingFixed);
+
+    if (container?.classList.contains('xCentered') && contentWindow) {
+      const currentLeft =
+        parseInt(contentWindow.getComputedStyle(entry).left || '0', 10) || 0;
+      const delta =
+        (contentWindow.innerWidth - container.getBoundingClientRect().width) /
+        2;
+
+      entry.style.left = `${becomingFixed ? currentLeft + delta : currentLeft - delta}px`;
+    }
+  }
+
+  private rollbackCheckBox(
+    el: HTMLElement,
+    input: HTMLInputElement,
+    wasChecked: boolean,
+    entry: HTMLElement | null,
+    rollback: CheckBoxRollback | null,
+  ) {
+    el.classList.remove(SAVING_CLASS);
+    input.classList.toggle('checked', wasChecked);
+
+    if (entry && rollback) {
+      entry.classList.toggle('xFixed', rollback.entryWasFixed);
+      entry.style.left = rollback.entryLeft;
+    }
   }
 
   private openEditor(el: HTMLElement, iframe: HTMLIFrameElement) {
